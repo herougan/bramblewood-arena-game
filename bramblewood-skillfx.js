@@ -1382,5 +1382,20 @@ function chilliHeat(target, o){
     g.to(p, {opacity:.9, duration:.1, delay:(o.burn ? 0 : .4) + i*.06}); g.to(p, {y:`-=${rnd(26, 48)}`, x:`+=${rnd(-10, 10)}`, scale:rnd(1.4, 2.2), opacity:0, duration:rnd(.6, .9), delay:(o.burn ? .1 : .5) + i*.06, ease:'power1.out', onComplete:()=> p.remove()}); }
   g.fromTo(tileOf(target), {x:0}, {x:2, duration:.05, yoyo:true, repeat:o.burn ? 3 : 7, delay:o.burn ? 0 : .35, clearProps:'transform'});
 }
-Object.assign(root.SkillFX, {boltGlob, chilliHeat, BOLT_LOOK});
+// Bloodlust (2026-10-15, user: "New Skill: Bloodlust - ability idk, but I assume when it draws blood, it gets stronger."): a red pulse throbs out of the card twice, like a
+// heartbeat, and the card flushes red for a moment. o.full: it has reached its cap (a deeper, single throb).
+function bloodlustPulse(target, o){
+  o = o || {}; if(!ready() || !target){ call(o.onDone); return; }
+  if(!document.getElementById('sfx-bloodlust-css')){ const st = document.createElement('style'); st.id = 'sfx-bloodlust-css';
+    st.textContent = `.sfx-blood-ring{position:fixed; left:0; top:0; border-radius:14px; border:3px solid rgba(220,30,40,.95); box-shadow:0 0 16px 4px rgba(200,20,30,.7), inset 0 0 14px rgba(200,20,30,.55); pointer-events:none; z-index:60;}
+.sfx-blood-flush{position:fixed; left:0; top:0; border-radius:12px; background:radial-gradient(ellipse at 50% 55%, rgba(210,20,30,.55), rgba(140,0,10,.25) 70%, rgba(140,0,10,0)); mix-blend-mode:multiply; pointer-events:none; z-index:59;}`;
+    (document.head || document.body).appendChild(st); }
+  const g = G(), c = centre(target), beats = o.full ? 1 : 2;
+  const fl = layer('sfx-blood-flush'); g.set(fl, {x:c.r.left, y:c.r.top, width:c.w, height:c.h, opacity:0});
+  g.timeline({onComplete:()=> fl.remove()}).to(fl, {opacity:1, duration:.1}).to(fl, {opacity:.6, duration:.25}).to(fl, {opacity:0, duration:.35});
+  for(let i = 0; i < beats; i++){ const r = layer('sfx-blood-ring'); g.set(r, {x:c.r.left, y:c.r.top, width:c.w, height:c.h, opacity:0, scale:1});
+    g.timeline({delay:i*.28, onComplete:()=>{ r.remove(); if(i === beats - 1) call(o.onDone); }}).to(r, {opacity:1, duration:.06}).to(r, {scale:o.full ? 1.45 : 1.3, opacity:0, duration:.5, ease:'power2.out'}); }
+  const t = tileOf(target); for(let i = 0; i < beats; i++) g.fromTo(t, {scale:1}, {scale:1.06, duration:.08, yoyo:true, repeat:1, delay:i*.28, ease:'power2.out', clearProps:'transform'});
+}
+Object.assign(root.SkillFX, {boltGlob, chilliHeat, bloodlustPulse, BOLT_LOOK});
 })(typeof window !== 'undefined' ? window : globalThis);

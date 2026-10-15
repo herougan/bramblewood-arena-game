@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-15 (fifth list)
+- **Exposed:** Expose N makes the target Exposed for its next N hits: +1 damage from each, and attacks at it can't miss. A red 🎯N badge, a log line, the crosshair look on every Exposed hit.
+- **New skill Bloodlust N** (on no card yet): when its attack draws blood (hits a Bleeding enemy, or makes it Bleed), +N Attack for the fight, up to +3N. A red heartbeat pulse.
+- **Pounce** hits one random enemy, as it always did; it now leaps at that unit instead of drawing a column of ghost cards up the board (that column read as a line of damage; Windy had nothing to do with it).
+- **Time-givers, plain and advanced:** Diurnal / Nocturnal / Tide / Full Moon keep their simple bonus; the advanced forms list what they get instead: "Diurnal – {Evasive, Thorns 1}", "Tide – {+5/+5, Evasive}, {Armor 2}" (Flood, Ebb; both at High Tide), "Full Moon – {…}". New plain **Full Moon N** (+N/+N for good once a full moon rises over it). All editable in the card editor.
+- **Flow is called Flood** everywhere players read it (pills, tooltips, the log, card text).
+- **Swimmer retired:** the 33 Swimmer cards carry plain Tide now; Swimmer is gone from the editor and the lists (the engine still runs it).
+- **Board pills say only the state,** inside the board: ☀️/🌙 X/3 (the moon's phase is the Night icon when a card cares), 💨 with its ⬆/⬇, 🌊 Flood / Ebb / 🌊🌊. No "next round" pill. Map 0 has a Mist pill that says "?"; later misty maps add a Mist card: "There is no day/night cycle." (and "The Moon is not visible." where the moon matters).
+- **The ambush (surprise challenge):** clicking the skirmish pops a quick "Ambush!" window, then the fight starts at once. Lose it and the raiders run off with 10 to 15 Maple Leaves on Map 0, the cap rising 5 a map to 100.
+- **The middle slot** shows again when your row has no units. **No "🔁 Spawn" corner pill** on tokens. **No "a rule of this battlefield"** line on Environment cards.
+
 ## 2026-10-15 (skill reveal)
 - **Skills you learn later show as "?":** Diurnal, Nocturnal and Crepuscular stay "?" until you enter Map 1; Tide and Swimmer until Map 2. The "?" sits on the card's skill strip and in its text ("Something about this card you'll learn soon."); the Skills codex, coach tips, teaching cards, phase and tide pills and battle-log lines don't name them either. The skill still works in fights, a reveal is remembered, and Admin Mode shows everything. The list is one small table (`SKILL_REVEAL`), so more skills can be added.
 - **Map 0 is misty:** no day and night (so no nightfall, howl or night sounds there). Its Mist shows "?" ("Something hangs in the air here. You'll learn more soon.") and Map 0 never marks a field effect as learned; learning by seeing starts on Map 1.

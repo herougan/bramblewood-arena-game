@@ -1529,7 +1529,9 @@
      opposite side of the field") and the enemy's resources at the top right ("The opponent's lumber pill will be on the top right"). */
   .battlefield-divider{position:relative; z-index:25;}
   /* 2026-10-14 (user: "The map pills should be further to the left."): they sit on the board's left edge, not inset along the divider */
-  .bf-pills{position:absolute; top:50%; left:-20px; transform:translateY(-50%); z-index:34; display:flex; flex-wrap:nowrap; align-items:center; gap:5px; max-width:calc(100% - 28px); pointer-events:none;}
+  /* 2026-10-15 (user: "The field effects are hidden to the left."): -20px put the first pill off the board's edge on some widths. They
+     start at the divider's own left end now (just inside the board) and never overflow it. */
+  .bf-pills{position:absolute; top:50%; left:0; transform:translateY(-50%); z-index:34; display:flex; flex-wrap:nowrap; align-items:center; gap:5px; max-width:100%; pointer-events:none;}
   .bf-pills .fp-b i{font-style:normal;}
   .bf-pills .forecast-pill .fp-k{display:inline; margin-right:2px;}
   .bf-pills .forecast-pill .fp-t{display:none;} /* 2026-10-14: icons only, the words are in the tooltip */
@@ -1547,9 +1549,17 @@
   .bf-tip-float .pt-l{display:block; font-weight:500;} .bf-tip-float .pt-l + .pt-l{margin-top:4px;}
   #battlefieldEl .bf-pills .wind-pill{position:relative; top:auto; left:auto; opacity:1; z-index:auto; pointer-events:auto; font-size:12px; background:linear-gradient(135deg, #5f8aa8, #34586f); color:#f2f8ff;}
   #battlefieldEl .bf-pills .wind-pill.is-calm{background:linear-gradient(135deg, #8a7f62, #5d5540);}
+  /* 2026-10-15 (user: "Wind: Put a wind emoji, then a up or down emoji but stacked together"): 💨 with its arrow tucked on its corner */
+  .bf-pills .wind-ico{position:relative; display:inline-block; line-height:1;}
+  .bf-pills .wind-ico .wind-dir{position:absolute; right:-8px; top:-6px; font-style:normal; font-size:.82em; line-height:1; filter:drop-shadow(0 1px 1px rgba(0,0,0,.5));}
+  .bf-pills .wind-pill.is-windy{padding-right:12px !important;}
+  .bf-pills .wind-pill.is-calm .wind-ico{opacity:.55;}
+  .phase-pill.tide-high{background:linear-gradient(135deg, #1a86c8, #0d3f78);}
+  .bf-pills .phase-pill.tide-flow small, .bf-pills .phase-pill.tide-ebb small, .bf-pills .phase-pill.mist-pill small{opacity:1;}
+  .bf-pills .phase-pill.mist-pill{background:linear-gradient(135deg, #8d97a3, #5d6672); color:#f4f7fa;}
   .bf-pills .forecast-pill{border:1px solid rgba(255,255,255,.22); color:#fff3d6; font-family:inherit; flex-wrap:nowrap; max-width:none; white-space:nowrap; border-radius:999px; padding:3px 10px;}
   .bf-pills .phase-pill.tide-flow, .bf-pills .phase-pill.tide-ebb, .bf-pills .phase-pill.arena-rs-pill{margin-left:0;}
-  @media (max-width:699px){ .bf-pills{left:-12px; gap:3px; max-width:calc(100% - 16px);} .bf-pills .phase-pill, .bf-pills .forecast-pill{font-size:10.5px; padding:2px 7px; white-space:nowrap;} .bf-pills .forecast-pill .fp-t{display:none;} #battlefieldEl .bf-pills .wind-pill{font-size:10.5px;} }
+  @media (max-width:699px){ .bf-pills{left:0; gap:3px; max-width:100%;} .bf-pills .phase-pill, .bf-pills .forecast-pill{font-size:10.5px; padding:2px 7px; white-space:nowrap;} .bf-pills .forecast-pill .fp-t{display:none;} #battlefieldEl .bf-pills .wind-pill{font-size:10.5px;} }
   /* the enemy's resource pills: under the fight controls, top right (no longer on the board) */
   .top-right-stack{display:flex; flex-direction:column; align-items:flex-end; gap:6px; margin-left:auto; align-self:flex-start; min-width:0;}
   .top-right-stack > .top-row-controls{margin-left:0; align-self:flex-end;}
@@ -5159,6 +5169,25 @@
   .abadge.poison{background:color-mix(in srgb, var(--poison) 28%, var(--surface-2)); color:var(--poison); font-weight:800;}
   .abadge.bleed{background:color-mix(in srgb, var(--bleed) 28%, var(--surface-2)); color:var(--bleed);}
   .abadge.scar{background:color-mix(in srgb, var(--scar) 28%, var(--surface-2)); color:var(--scar);}
+  /* The surprise challenge (2026-10-15): the quick "Ambush!" sub-window, and the raiders' theft on the defeat card */
+  .ambush-pop{position:fixed; inset:0; z-index:2400; display:flex; align-items:center; justify-content:center; pointer-events:none; background:radial-gradient(circle, rgba(60,10,10,.35), rgba(0,0,0,.15) 70%); animation:ambushPopBg .3s ease-out both;}
+  .ambush-pop-card{width:min(320px, 84vw); padding:16px 18px 14px; border-radius:16px; text-align:center; background:linear-gradient(#fff6e3, #f3dfb6); color:#3b2412; box-shadow:0 14px 34px rgba(0,0,0,.45), 0 0 0 3px #b8432f; animation:ambushPopIn .42s cubic-bezier(.2,1.6,.4,1) both;}
+  .ambush-pop-card h3{margin:2px 0 4px; font:800 26px/1.1 'Baloo 2', system-ui, sans-serif; color:#a1281a; letter-spacing:.02em;}
+  .ambush-pop-card p{margin:0 0 6px; font-weight:700;} .ambush-pop-card small{display:block; font-size:12px; color:#7a5233;}
+  .ambush-pop-ico{font-size:30px; line-height:1;}
+  .ambush-pop.is-out{animation:ambushPopOut .28s ease-in both;}
+  @keyframes ambushPopIn{0%{transform:scale(.4) rotate(-6deg); opacity:0;} 100%{transform:none; opacity:1;}}
+  @keyframes ambushPopBg{from{opacity:0;} to{opacity:1;}} @keyframes ambushPopOut{to{opacity:0; transform:scale(1.06);}}
+  .wl-raiders{position:relative; display:block; width:fit-content; max-width:min(360px, 92%); margin:8px auto 4px; padding:6px 14px; border-radius:12px; background:rgba(190,50,30,.22); border:1px solid rgba(255,140,110,.45); color:#ffe2d8; font-weight:700; text-align:center;}
+  .wl-raid-coins{position:absolute; left:50%; top:50%; width:0; height:0; pointer-events:none;}
+  .wl-raid-coins i{position:absolute; left:-8px; top:-8px; font-style:normal; font-size:16px; line-height:1; opacity:0; animation:raidCoin .9s cubic-bezier(.2,.7,.3,1) calc(.5s + var(--d)) both;}
+  .wl-raid-coins i .coin-ico{width:16px; height:16px;}
+  @keyframes raidCoin{0%{opacity:1; transform:translate(0,0) scale(.6) rotate(0);} 60%{opacity:1;} 100%{opacity:0; transform:translate(var(--dx), var(--dy)) scale(1) rotate(200deg);}}
+  @media (prefers-reduced-motion: reduce){ .ambush-pop, .ambush-pop-card, .wl-raid-coins i{animation:none !important;} .wl-raid-coins{display:none;} }
+  /* the Zeitgeber braces picker in the card editor (2026-10-15) */
+  .grant-box{display:inline-flex; align-items:center; gap:4px; flex-wrap:wrap; font-weight:700;} .grant-box .grant-pick{max-width:120px;}
+  .grant-facet{display:inline-flex; align-items:center; gap:4px; margin-right:8px;} .grant-facet > b{font-size:12px; color:var(--ink-muted);}
+  .abadge.exposed{background:color-mix(in srgb, #e0412f 24%, var(--surface-2)); color:#c62f1f;} /* Exposed (2026-10-15) */
   /* Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid) —
      one overlay animation + badge tint each, matching Stun's existing treatment above. */
   .board-card.is-frozen .card-tile{background:color-mix(in srgb, var(--status-freeze-tint) 30%, var(--bg)); filter:saturate(.7) brightness(1.05);}
@@ -9348,6 +9377,10 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   body.bw-holding .board-card.slot-target{opacity:1; pointer-events:auto;}
   @starting-style{ body.bw-holding .board-card.slot-target{opacity:0;} }
   @media (prefers-reduced-motion: reduce){ .board-card.slot-target{transition:opacity .12s linear !important;} }
+  /* 2026-10-15 (user: "The middle slot should be visible again once you lose all your units."): on an empty row the
+     centre slot is the ✦ placeholder, shown whether or not a card is held (it is also the "+" target then). */
+  .board-card.slot-target.is-centre-target{opacity:1; border:0; background:none;}
+  .board-card.slot-target.is-centre-target:hover .center-slot-inner, .board-card.slot-target.is-centre-target.slot-hover .center-slot-inner{border-color:#6fbf4a; background:rgba(111,191,74,.16); opacity:1;}
   /* Stats by level (card editor) */
   .lvs-box{margin:6px 0 12px; border:1px solid var(--surface-border); border-radius:10px; padding:6px 10px; background:var(--surface-2, rgba(0,0,0,.03));}
   .lvs-box summary{cursor:pointer; font-weight:800;} .lvs-box summary small{font-weight:600; opacity:.7; margin-left:6px;}

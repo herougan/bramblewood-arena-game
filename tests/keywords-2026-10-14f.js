@@ -152,7 +152,8 @@ ok(swings('kf-fence', 'kf-fly', 40) > 5, 'a Flyer is still out of reach half the
 
 // ---- 10. New cards from the list
 { const h = base['hammerhead-shark'], g = base['ironback-gorilla'];
-  ok(h && h.effects.swimmer && h.effects.sweep && (h.archetypes||[]).includes('Ocean') && ['common','uncommon'].includes(h.rarity) && !h.art, 'Hammerhead Shark: an Ocean Swimmer with Cleave');
+  // 2026-10-15 (user: "remove Swimmer for now ... don't let cards have it"): the Swimmers carry plain Tide now.
+  ok(h && h.effects.tide && !h.effects.swimmer && h.effects.sweep && (h.archetypes||[]).includes('Ocean') && ['common','uncommon'].includes(h.rarity) && !h.art, 'Hammerhead Shark: an Ocean Tide unit with Cleave');
   ok(g && g.effects.bludgeon && g.rarity === 'rare' && (g.species||[]).includes('Primate') && !g.art, 'Ironback Gorilla: a rare ape with Bludgeon'); }
 
 // ---- 11. Determinism

@@ -629,3 +629,25 @@ The rules as built (engine: `prongSpecOf`/`PRONG_SPECS`, `fireArrowVolley`, `BOL
   Freeze counter; Shock Bolt N = N damage + Shocked for a round. Helmet deflects them half the time.
 - **Chilli N** (default 2): when it first becomes Ready, +N Attack and fire attacks for the rest of the fight, 1 damage to itself
   at the start of every round. Once a fight.
+
+## 2026-10-15 additions: Bloodlust, Exposed, and Pounce's leap
+
+User (2026-10-15): "New Skill: Bloodlust - ability idk, but I assume when it draws blood, it gets stronger."; "I like expose. It
+should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss."; "I noticed pounce does a line of
+damage to the enemy. Is this because of Windy instead?"
+
+| Skill | Function | Look | Plays on (replay event) |
+|---|---|---|---|
+| 🩸⚔️ Bloodlust | `SkillFX.bloodlustPulse(card, {full})` (`bramblewood-skillfx.js`) | A red heartbeat: two red rings throb out of the card while it flushes red and swells twice; at its cap (+3N) one deeper throb. "🩸 Bloodlust +N⚔" floats up | `statusFx` `bloodlust` (`ninthPassVfx`) |
+| 🎯 Exposed | `SkillFX.targetMark` (applied) and `FX.B.exposeCash` (each hit) | The red crosshair locks on when it is Exposed; on every Exposed hit it snaps shut and shatters with a "🎯 +1" chip. A red "🎯N" status badge counts the hits left | `statusFx` `expose`; `statusFx` `exposedHit` then the `hit` |
+| 🐾 Pounce | `FX.A.pounceKick` + the normal attack lunge | A dust kick where it pushes off, then it leaps at the unit it really hits (the hit is `pounce:true`, not ranged, so no stone is thrown and it no longer draws a column of ghost cards up the board) | `pounce`, then its `hit` |
+
+The rules as built (engine: `bloodlustGain`, `useExposed`, `dodgeCheck` / `combatHitLands`):
+
+- **Bloodlust N** (default 1): when its attack lands damage on an enemy unit that is Bleeding (it already was, or this hit made it
+  bleed), +N Attack for the rest of the fight, up to +3N in all. Its main swing only (not Cleave / Fork side hits or shots).
+- **Expose N / the Expose action**: the target is Exposed for its next N hits. Each hit on it deals +1 (before Armor) and uses one;
+  while it is Exposed, attacks at it can't miss (no Evasive, Swift, Flying, Smoke, Fog or Shadow dodge, no Blind or darkness miss).
+  Poison, Bleed, Decay, curse and Chilli ticks aren't hits.
+- **Pounce N**: unchanged in the engine: one hit of N on one random enemy unit (the castle with none). Windy / Gale never doubled it
+  (Headwind doubles a Flyer's triggers and shots, and Pounce is neither).

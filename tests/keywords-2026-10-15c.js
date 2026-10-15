@@ -101,7 +101,7 @@ ok(/oneOff:p\.oneOff,/.test(src) && /\$\{x\.oneOff \? ' · one-off' : ''\}/.test
 ok(/<b>\$\{escapeHtml\(p\.label\)\}<\/b>\$\{oneOffTagHTML\(p\)\}/.test(src), '5. ...and so does the Skills codex');
 ok(/function ninthPassVfx\(ev\)/.test(src) && /try\{ ninthPassVfx\(ev\); \}catch\(e\)\{\}/.test(src), 'the Bolt and Chilli effects play in fights');
 const fx = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-skillfx.js'), 'utf8');
-ok(/Object\.assign\(root\.SkillFX, \{boltGlob, chilliHeat, BOLT_LOOK\}\);/.test(fx) && ['fire', 'acid', 'poison', 'ice', 'shock'].every(k=> new RegExp(`\\n  ${k}: +\\{core:`).test(fx)), 'SkillFX.boltGlob (one look per element) and chilliHeat');
+ok(/Object\.assign\(root\.SkillFX, \{boltGlob, chilliHeat, bloodlustPulse, BOLT_LOOK\}\);/.test(fx) && ['fire', 'acid', 'poison', 'ice', 'shock'].every(k=> new RegExp(`\\n  ${k}: +\\{core:`).test(fx)), 'SkillFX.boltGlob (one look per element) and chilliHeat');
 const lab = fs.readFileSync(path.join(__dirname, '..', 'tools', 'effects-lab', 'build.py'), 'utf8');
 ['trident', 'pitchfork', 'crabclaws', 'icearrow', 'twinshot', 'firebolt', 'acidbolt', 'poisonbolt', 'icebolt', 'shockbolt', 'chilli'].forEach(k=> ok(lab.includes(`data-skill="${k}"`), `Effects Lab: a ${k} button`));
 const cat = fs.readFileSync(path.join(__dirname, '..', 'docs', 'effects-catalogue.md'), 'utf8');

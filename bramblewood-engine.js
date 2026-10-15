@@ -671,7 +671,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]).map(x=> x && (x.defId || x)), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const e = (CARD_DEFS[id]||{}).effects; return !!(e && (e.crepuscular || e.crepuscularHp)); })); }
   function phaseActive(){ return !!((turnNo && !phaseOff) || phaseFixed); }
   function phaseStatsOf(e, ph){
-    const pick = k=>{ const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; };
+    const pick = k=>{ if(e[k+'Grant'] && typeof e[k+'Grant'] === 'object') return [0, 0]; const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; }; // Diurnal – {…}: the braces, not the plain bonus (2026-10-15)
     if(ph==='twilight'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0], d = (e.diurnal || e.diurnalHp) ? pick('diurnal') : [0,0], c = (e.crepuscular || e.crepuscularHp) ? pick('crepuscular') : [0,0]; return [n[0] + d[0] + c[0], n[1] + d[1] + c[1]]; } // 2026-10-13: both are active in Twilight, and Crepuscular only then
     if(ph==='night' && (e.nocturnal || e.nocturnalHp)) return pick('nocturnal');
     if(ph==='day' && (e.diurnal || e.diurnalHp)) return pick('diurnal');
@@ -688,6 +688,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(!c || c.gap || c.hp <= 0) return;
         { const pk = packs.get(c); c.packChain = pk ? pk.n : 0; c.packChainBonus = pk ? pk.bonus : 0; }
         const e = (CARD_DEFS[c._condBase || c.defId] && CARD_DEFS[c._condBase || c.defId].effects) || {};
+        // Full Moon (2026-10-15): the first full moon over it (night with a full moon, or the Full Moon field) marks it for good.
+        if((e.fullMoon || e.fullMoonGrant) && !c.fullMoonRisen && ((ph === 'night' && moonPhase() === 4) || (field && field.id === 'moon'))){ c.fullMoonRisen = true;
+          if(recordEvents && events) events.push({type:'statusFx', kind:'fullMoon', side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount: e.fullMoonGrant ? 0 : (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)), grant: e.fullMoonGrant ? Object.keys(e.fullMoonGrant) : null}); }
         let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
         a += c.packChainBonus; h += c.packChainBonus;
         { const [ca, ch, grant] = condStatsOf(c, e, pid, players); a += ca; h += ch;
@@ -754,7 +757,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   let lunar = Math.floor(rnd()*8);
   function moonPhase(){ return (field && field.id === 'moon') ? 4 : lunar; }
   function moonFullness(){ const p = moonPhase(); return [0, 0.25, 0.5, 0.75, 1, 0.75, 0.5, 0.25][p]; }
-  function anyMoonborn(players){ return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const d = CARD_DEFS[id && (id.defId || id)]; return !!(d && d.effects && d.effects.moonborn); })); }
+  function anyMoonborn(players){ return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const d = CARD_DEFS[id && (id.defId || id)]; return !!(d && d.effects && (d.effects.moonborn || d.effects.fullMoon || d.effects.fullMoonGrant)); })); } // + Full Moon (2026-10-15)
   // Tide (2026-10-09, the second archetype, decision D19 default; archetypes-design-2026-10-09.md §8): the water
   // flows and ebbs every round once the cycle runs. Round 2 is Flow, round 3 Ebb, and so on. On Flow, Tide units
   // hit +1 (Wash, which pushed the enemy facing it back, was retired 2026-10-14); on Ebb, Tide units take
@@ -791,8 +794,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Ebb +2 Armor) and always on, both at once, every round: before the tide starts, on Flow, on Ebb, under Perma-tide. Nothing that
   // moves the tide can take them away.
   function supremeTideOf(card){ const e = card && (CARD_DEFS[card.defId]||{}).effects; return !!(e && e.supremeTide); }
-  function tideAtk(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return 2; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; }
-  function tideArmor(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return 2; const t = getTide(); return t === 'high' ? 2 : t === 'ebb' ? 1 : 0; }
+  function tideAtk(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; } // Tide – {…}: its facets instead (2026-10-15)
+  function tideArmor(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'ebb' ? 1 : 0; }
   function isTide(card){ return isTideDef(card && CARD_DEFS[card.defId]); } // Swimmers count (2026-10-14)
   // Wind (2026-10-13, 09:56 list: "On windy maps, every alternate turn, there is strong wind. On certain maps, there is always
   // strong wind. The wind flips direction between ally side -> opponent or opponent -> ally side ... tailwind on the allies side,
@@ -1504,8 +1507,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'triggers', 'level', 'baseLevel']);
-  const IRR_COMPANION = {nocturnal:['nocturnalHp'], diurnal:['diurnalHp'], crepuscular:['crepuscularHp'], esprit:['espritHp'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
+  const IRR_NOT_SKILLS = new Set(['resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'triggers', 'level', 'baseLevel']);
+  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp'], esprit:['espritHp'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
     Object.keys(e).forEach(k=>{ if(IRR_NOT_SKILLS.has(k)) return; const v = e[k]; if(v === false || v == null || v === 0 || v === '' || (Array.isArray(v) && !v.length)) return; out.push({key:k}); });
@@ -1530,7 +1533,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       return {key:'trigger', label:lbl, what};
     }
     const v = e[k], off = {};
-    const gone = ()=>{ off[k] = typeof v === 'number' ? 0 : false; (IRR_COMPANION[k]||[]).forEach(x=>{ if(x in e) off[x] = typeof e[x] === 'number' ? 0 : (x === 'loyalGrant' || x === 'usurperGrant' || x === 'swimmerGrant') ? null : false; }); patchUnitDef(c, off); irrNote(c, k, v, null); if(c.irrPartial) delete c.irrPartial[k]; return {key:k, what:'removed', from:v}; };
+    const gone = ()=>{ off[k] = typeof v === 'number' ? 0 : false; (IRR_COMPANION[k]||[]).forEach(x=>{ if(x in e) off[x] = typeof e[x] === 'number' ? 0 : /Grant$/.test(x) ? null : false; }); patchUnitDef(c, off); irrNote(c, k, v, null); if(c.irrPartial) delete c.irrPartial[k]; return {key:k, what:'removed', from:v}; };
     // Pack (2026-10-14, user: "Irradiation will wipe out 2 at a time, similarly"): a point takes 2 off Pack; gone at 0.
     if(k === 'pack'){ const n = packNOf(e), to = n - 2; if(to > 0){ patchUnitDef(c, {pack: to}); irrNote(c, k, v, to); return {key:k, what:'value', from:v, to}; } off[k] = 0; patchUnitDef(c, off); irrNote(c, k, v, null); return {key:k, what:'removed', from:v}; }
     if(typeof v === 'number'){ if(v > 1){ patchUnitDef(c, {[k]: v - 1}); irrNote(c, k, v, v - 1); return {key:k, what:'value', from:v, to:v - 1}; } return gone(); }
@@ -1575,9 +1578,31 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // condition holds, plus any skills in loyalGrant / usurperGrant. Timber, Rock-solid and Iron-will: +1/+1 per Lumber,
   // +2/+2 per Stone, +3/+3 per Metal you hold. All of these ride on the same situational bonus as day and night.
   function pairOf(v){ if(Array.isArray(v)) return [Number(v[0])||0, Number(v[1])||0]; if(v && typeof v === 'object') return [Number(v.attack)||0, Number(v.health)||0]; const n = v === true ? 1 : (Number(v)||0); return [n, n]; }
+// Zeitgeber format (2026-10-15, user: "Diurnal - +1. At more advanced maps, Diurnal - {}. Day grants skills not +1 attack anymore.
+// Swimming is the same thing with Tide ... At first, the basic is quite simple. The advanced use, much stronger. Like Full Moon - {} vs
+// Full Moon - Default: +3/+3 permanently from now on ... Tide - {}, unique from Diurnal - has two facets. So Tide - {Gain 5/5, Evade},
+// {2 Armour}"): each time-giver skill has a plain form (Diurnal, Nocturnal, Tide, Full Moon: the simple bonus) and an advanced form
+// whose braces list what it gets instead:
+//   effects.diurnalGrant / nocturnalGrant = {skill: value, ..., attack?, health?}: while it's Day (Night; both in Twilight), in place
+//     of the plain +A/+H. (effects.diurnal / nocturnal stay true beside it, so the unit still counts as Diurnal / Nocturnal.)
+//   effects.tideGrant = {flood:{...}, ebb:{...}}: the Flood facet while the tide floods, the Ebb facet on the Ebb, both at High Tide,
+//     in place of Flood's +1 Attack and Ebb's +1 Armor (effects.tide stays true beside it). Supreme Tide still doubles the plain ones.
+//   effects.fullMoon = N (default 3): the first time a full moon rises over it (a full moon at night, or the Full Moon field), +N/+N
+//     for the rest of the fight. effects.fullMoonGrant = {...}: the skills in the braces from then on instead.
+// The skills in the braces ride on the same grant as Loyal / Usurper (a derived card, given and taken back as the condition turns).
+  function grantStats(g){ if(!g || typeof g !== 'object') return [0, 0, null]; const rest = Object.assign({}, g); const x = Number(rest.attack)||0, y = Number(rest.health)||0; delete rest.attack; delete rest.health; return [x, y, Object.keys(rest).length ? rest : null]; }
+  function hasTideGrant(e){ return !!(e && e.tideGrant && typeof e.tideGrant === 'object'); }
   function condStatsOf(c, e, pid, players){
     const pl = players[pid], foe = players[otherId(pid)]; let a = 0, h = 0, grant = null;
     const add = (v, g)=>{ const [x, y] = pairOf(v); a += x; h += y; if(g && typeof g === 'object') grant = Object.assign(grant || {}, g); };
+    const addGrant = g=>{ const [x, y, r] = grantStats(g); a += x; h += y; if(r) grant = Object.assign(grant || {}, r); };
+    { const ph = phaseActive() ? getPhase() : null; // Diurnal – {…} / Nocturnal – {…} (2026-10-15)
+      const lit = ph === 'night' && pl && allBoardCards(pl).some(u=> u && !u.gap && u.hp > 0 && effectsOf(u).lantern); // a Lantern keeps a Diurnal unit's day
+      if(e.diurnalGrant && typeof e.diurnalGrant === 'object' && (ph === 'day' || ph === 'twilight' || (lit && !(e.nocturnal || e.nocturnalHp)))) addGrant(e.diurnalGrant);
+      if(e.nocturnalGrant && typeof e.nocturnalGrant === 'object' && (ph === 'night' || ph === 'twilight')) addGrant(e.nocturnalGrant); }
+    if(hasTideGrant(e)){ const t = getTide(); // Tide – {Flood}, {Ebb} (2026-10-15): High Tide brings both facets
+      if(t === 'flow' || t === 'high') addGrant(e.tideGrant.flood); if(t === 'ebb' || t === 'high') addGrant(e.tideGrant.ebb); }
+    if(c.fullMoonRisen){ if(e.fullMoonGrant && typeof e.fullMoonGrant === 'object') addGrant(e.fullMoonGrant); else if(e.fullMoon){ const n = e.fullMoon === true ? 3 : (Number(e.fullMoon)||3); a += n; h += n; } } // Full Moon (2026-10-15)
     if((e.loyal || e.loyalGrant) && leaderOnBoard(pl, c)) add(e.loyal || 0, e.loyalGrant);
     if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)) add(e.usurper || 0, e.usurperGrant);
     if(e.timber){ const n = Math.max(0, pl.lumber||0); a += n; h += n; }
@@ -1661,7 +1686,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // it only weakens attacks aimed at this card.
     const supremeAtt = !!(attDef && attDef.effects && attDef.effects.supreme); // Supreme (2026-10-14): crushes Scare, Armor and shells
     { const tdS = CARD_DEFS[targetCard.defId]; const sc = tdS && tdS.effects && Number(tdS.effects.scare); if(attCard && sc > 0 && !supremeAtt) amt = Math.max(0, amt - sc); }
-    if(targetCard.exposed>0){ amt += targetCard.exposed; targetCard.exposed = 0; } // Expose: bonus dmg on the next hit taken, consumed here (before Armor, so Armor still partially mitigates it)
+    // Exposed (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit
+    // don't miss."): c.exposed is how many more hits it stays Exposed for (Expose N gives N). Each hit it takes deals +1 and uses one
+    // up (before Armor, so Armor still mitigates it); dodgeCheck / combatHitLands / the Blind and dark rolls stop the misses.
+    if(targetCard.exposed>0) amt += useExposed(targetCard);
     // Scar (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Mark"): unlike Expose, this
     // NEVER clears on its own -- every future hit this card takes gets the bonus, permanently
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
@@ -1774,8 +1802,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // Simple flat damage with no defense pipeline (used for missiles/onReadyDamage/thorns,
   // matching the pre-existing behavior — only melee combat runs the full pipeline).
+  const EXPOSE_TICKS = new Set(['poison', 'bleed', 'decay', 'curse', 'chilli', 'recoil']); // status ticks don't use up Exposed (2026-10-15)
   function damageCardFlat(card, amount, dmgType, attDefId, attUid){
-    if(card.exposed>0){ amount += card.exposed; card.exposed = 0; } // Expose applies to ranged/flat hits too, consumed on first hit taken
+    if(card.exposed>0 && !EXPOSE_TICKS.has(dmgType)) amount += useExposed(card); // Exposed (2026-10-15): ranged/flat hits too, +1 and one hit used up (a Poison/Bleed tick isn't a hit)
     const attDef = attDefId ? CARD_DEFS[attDefId] : null;
     // King Slayer applies to ranged/flat hits too, same "applies everywhere, not just melee"
     // precedent Expose's own comment just above already sets. No dedicated VFX event fires from
@@ -2068,6 +2097,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   let lastMissReason = 'evasive';
   function dodgeCheck(card){
     lastMissReason = 'evasive';
+    if(card && card.exposed > 0) return true; // Exposed (2026-10-15): attacks at it don't miss
     return evasiveGate(card);
   }
   // Combat dodges (2026-10-02), each an independent 1-in-2 roll, so they stack multiplicatively:
@@ -2078,6 +2108,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function combatHitLands(attCard, defCard, singleTarget){
     const ad = (CARD_DEFS[attCard.defId] && CARD_DEFS[attCard.defId].effects) || {};
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
+    if(defCard.exposed > 0) return true; // Exposed (2026-10-15): no Evasive / Swift / Flying / Smoke / Fog / Shadow dodge
     // Fencing (2026-10-14, user: "fencing = cannot miss Evade creatures"): a precise blade isn't dodged: no Evade and no Swift roll.
     // A Flyer's dodge still applies (it is out of reach, not quick).
     if(singleTarget && dd.evasive && !ad.fencing && rnd() < 0.5){ lastMissReason = 'evasive'; return false; }
@@ -3137,6 +3168,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
 
   function applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events){
+    if(events){ shieldEvents = events; shieldSideOf = sideOf; } // 2026-10-15: a Pounce on an Exposed unit reports its exposedHit into this play's events
     { const rdef = CARD_DEFS[boardCard.defId]; if(rdef && rdef.effects && rdef.effects.ritual && !boardCard.ritualBase){ const rp = players[playerId]; boardCard.ritualBase = {p: perishedTotal, d: rp.drawnTotal||0, c: rp.castleDealt||0}; } }
     const def = CARD_DEFS[boardCard.defId];
     if(!def.effects) return;
@@ -3225,12 +3257,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Pounce (2026-10-12, user: "On Play – deal damage should be an evergreen keyword"): the named keyword for "when
     // played, deal N damage to a random enemy unit (the castle if there are none)". Fires on play, Waiting or not.
     if(def.effects.pounce){
-      if(recordEvents && events) events.push({type:'pounce', side:sideOf(playerId), defId:boardCard.defId, uid:boardCard.uid, amount:def.effects.pounce});
+      // 2026-10-15 (user: "I noticed pounce does a line of damage to the enemy. Is this because of Windy instead?"): the engine
+      // always dealt one hit to one random enemy; the "line" was the look (a column of ghost cards rising straight up at the unit
+      // opposite, then a thrown stone). The event now names its target and the hit is tagged pounce:true, so the board plays
+      // a leap at the unit actually hit (arena_app.js / bramblewood-fx-a.js).
+      const pev = {type:'pounce', side:sideOf(playerId), defId:boardCard.defId, uid:boardCard.uid, amount:def.effects.pounce, targetSide:sideOf(otherId(playerId))};
+      if(recordEvents && events) events.push(pev);
       const foes = allBoardCards(players[otherId(playerId)]).filter(c=> c.hp>0 && !c.cageOf);
       let target = foes.length ? {kind:'card', card: foes[Math.floor(rnd()*foes.length)]} : {kind:'hq'};
       if(target.kind==='card'){ const sh = shieldCall(players[otherId(playerId)], target.card); if(sh) target = {kind:'card', card:sh}; }
+      if(target.kind==='card'){ pev.targetUid = target.card.uid; pev.targetDefId = target.card.defId; }
       bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
+      const pn0 = events ? events.length : 0;
       fireDamageAction(players, sideOf, playerId, boardCard.defId, Number(def.effects.pounce)||0, 'physical', target, stats, events, null, boardCard.uid);
+      if(events) for(let i = pn0; i < events.length; i++){ const t = events[i].type; if((t==='hit' || t==='hitHQ' || t==='evaded') && events[i].attUid===boardCard.uid){ events[i].pounce = true; events[i].ranged = false; break; } } // plays as a leap, not a shot
     }
     noteTideCard(def);
     // Twin (2026-10-14, user: "Summon a twin on play: For 2 creatures, an early game trickster (base set) and a mutated beast in late
@@ -4271,6 +4311,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     snap.forEach(({pid, on}, c)=>{ if(!live.has(c)) return;
       on.forEach(k=>{ if(!statusOn(c, k)) events.push({type:'statusEnd', status:k, side:sideOf(pid), uid:c.uid, defId:c.defId}); }); });
   }
+  // Bloodlust N (2026-10-15): see the combat hit. +N Attack (base Attack too, so it lasts the fight), capped at +3N in all.
+  function bloodlustGain(card, def, side, events){
+    const n = def.effects.bloodlust === true ? 1 : Math.max(0, Number(def.effects.bloodlust)||0); if(!n) return 0;
+    const g = Math.min(n, 3*n - (card.bloodlust||0)); if(g <= 0) return 0;
+    card.bloodlust = (card.bloodlust||0) + g; card.atk += g; card.baseAtk = (card.baseAtk||0) + g;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'bloodlust', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:g, total:card.bloodlust, max:3*n});
+    return g;
+  }
+  // Exposed (2026-10-15): one hit used up: +1 damage, and the board is told how many are left (0 = no longer Exposed).
+  function useExposed(card){
+    card.exposed = Math.max(0, (card.exposed||0) - 1);
+    if(recordEvents && shieldEvents && card){ const pid = ownerPidOfCard(card), sd = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'); shieldEvents.push({type:'statusFx', kind:'exposedHit', side:sd, targetSide:sd, targetUid:card.uid, targetDefId:card.defId, amount:card.exposed}); }
+    return 1;
+  }
   function noteWoke(card){
     if(!(recordEvents && shieldEvents) || !card || !(card.hp > 0)) return;
     const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusEnd', status:'asleep', woke:true, side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), uid:card.uid, defId:card.defId});
@@ -5252,8 +5306,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Keen Sense (2026-10-14, user: "For moles: senses non-flying enemies even when blind; unaffected by Blind"): darkness and
       // Blind don't make it miss a target that isn't flying (the castle included).
       const keenSense = !!(attDef.effects && attDef.effects.keenSense) && !(target && target.kind === 'card' && target.card && effectsOf(target.card).flying);
-      const sMiss = (a.att.blind>0 || keenSense) ? 0 : sightMiss(a.att, otherId(a.enemyId)); const nightMiss = sMiss > 0 && (sMiss >= 1 || rnd() < sMiss);
-      const blindNow = (a.att.blind>0 && !keenSense && rnd() < 0.5) || nightMiss;
+      // Exposed (2026-10-15): an attack aimed at an Exposed unit can't miss, so Blind and the dark don't roll for it.
+      const atExposed = !!(target && target.kind === 'card' && target.card && target.card.exposed > 0);
+      const sMiss = (a.att.blind>0 || keenSense) ? 0 : sightMiss(a.att, otherId(a.enemyId)); const nightMiss = !atExposed && sMiss > 0 && (sMiss >= 1 || rnd() < sMiss);
+      const blindNow = (!atExposed && a.att.blind>0 && !keenSense && rnd() < 0.5) || nightMiss;
       if(sweepN && !blindNow) sweepStrike(sweepCol - 1, 'left');
       if(blindNow){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
         if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind, night: nightMiss || undefined});
@@ -5272,6 +5328,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const defCard = redirectToGuardian(players[a.enemyId], target.card);
         const guardianRedirect = defCard.uid !== target.card.uid;
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
+        const bleedBeforeHit = defCard.bleed || 0; // Bloodlust (2026-10-15): was it already Bleeding?
         const {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount} = damageCard(defCard, atkThisRound + backstabBonus, dmgType, a.att);
         swingLanded = true;
         aStat.dealt += dmg;
@@ -5350,6 +5407,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // Bleed (passive): this card's attack also stacks Bleed on the target, mirroring Poison.
         { const bl = attDef.effects ? (Number(attDef.effects.bleed)||0) + (Number(attDef.effects.perforate)||0) + (isFrenzied(a.att) ? 1 : 0) + ((Number(attDef.effects.bleed)||0) > 0 && (perksOfSide(mySide)||{}).thornbite ? 1 : 0) : 0;
           if(bl > 0 && defCard.hp>0 && !isGhost(defCard)) defCard.bleed = (defCard.bleed||0) + bl; } // Ghosts don't bleed (2026-10-14)
+        // Bloodlust N (2026-10-15, user: "New Skill: Bloodlust - ability idk, but I assume when it draws blood, it gets stronger."):
+        // "draws blood" = its attack lands real damage on an enemy unit that is Bleeding (it already was, or this hit made it bleed).
+        // Each such attack: +N Attack for the rest of the fight, up to +3N in all. Its main swing only (not Sweep/Fork side hits).
+        if(attDef.effects && attDef.effects.bloodlust && dmg > 0 && (bleedBeforeHit > 0 || (defCard.bleed||0) > bleedBeforeHit)) bloodlustGain(a.att, attDef, mySide, events);
         // Perforate N (2026-10-11): the hit also strips N of the target's Armor for good.
         if(attDef.effects && attDef.effects.perforate > 0 && defCard.hp>0){ const d0 = CARD_DEFS[defCard.defId]; const base = (d0 && d0.effects && d0.effects.armor) || 0;
           if(base - (defCard.armorLoss||0) > 0){ defCard.armorLoss = Math.min(base, (defCard.armorLoss||0) + attDef.effects.perforate); if(recordEvents && events) events.push({type:'statusFx', kind:'armorShred', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.perforate}); } }
@@ -5364,9 +5425,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           defCard._corrodeJustSet = true;
           if(recordEvents && events) events.push({type:'statusFx', kind:'corrode', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:attDef.effects.corrode});
         }
-        // Expose: marks the target for bonus damage on the NEXT hit it takes (any source), then clears itself.
+        // Expose N (2026-10-15 rework, user: "It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit
+        // don't miss."): a landed attack leaves the target Exposed for its next N hits (+1 damage each, can't be missed).
         if(attDef.effects && attDef.effects.expose && defCard.hp>0){
-          defCard.exposed = (defCard.exposed||0) + attDef.effects.expose;
+          const xn = Number(attDef.effects.expose) || 1;
+          defCard.exposed = (defCard.exposed||0) + xn;
+          if(recordEvents && events) events.push({type:'statusFx', kind:'expose', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:xn, passive:true});
         }
         // Scar (permanent, stacking Expose — see computeHitDamage): applied the same way as
         // Expose/Poison/Bleed, but on a SURVIVING target only makes sense the same as those.
@@ -5529,7 +5593,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Blind and the dark roll once per prong.
       if(prongCols.length){
         prongCols.forEach(c=>{
-          const pMiss = (a.att.blind>0 && !keenSense && rnd() < 0.5) || (sMiss > 0 && (sMiss >= 1 || rnd() < sMiss));
+          const pT = liveEnemyCols[c], pExposed = !!(pT && pT.card && pT.card.exposed > 0); // Exposed (2026-10-15): a sure hit
+          const pMiss = !pExposed && ((a.att.blind>0 && !keenSense && rnd() < 0.5) || (sMiss > 0 && (sMiss >= 1 || rnd() < sMiss)));
           if(pMiss){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork', prong:prongSpec.kind}); return; }
           forkStrike(c, false, prongSpec.kind); swingLanded = true;
         });

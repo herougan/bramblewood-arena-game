@@ -839,6 +839,8 @@ M.pounceLeap = function(el, o){
   later(()=> dust(c.x, c.r.bottom - 6, c.w*1.4, 7), 300);
   return done(1350);
 };
+// 2026-10-15: what a fight plays now when it pounces: dust where it pushes off (the leap is the hit's own lunge at its target).
+M.pounceKick = function(el){ if(!G() || !el) return done(0); const c = centre(tileOf(el)); dust(c.x, c.r.bottom - 6, c.w*1.2, 6); return done(800); };
 // Swipe steals Lumber: logs hop out of the enemy castle one after another into the swiper's hands; a green hood glint.
 M.lumberSnatch = function(castle, swiper, o){
   o = o || {}; const g = G(); if(!g || !castle || !swiper) return done(0); const a = centre(tileOf(castle)), b = centre(tileOf(swiper)), n = Math.max(1, Math.min(4, o.n || 3));
@@ -1435,7 +1437,10 @@ M.onEvent = function(ev, env){
     case 'pierceHQ': { const F = S(), c = hq(ev.targetSide), u = env.match && env.match._lastHitOf && env.match._lastHitOf[ev.attUid], from = u != null ? el(u) : el(ev.attUid);
       if(F && F.pierce && c && from) F.pierce(from, c, null, {draw:0, flight:220}); break; } // SkillFX.pierce: the shot carries on out of the unit into the castle
     case 'friction': { const t = el(ev.targetUid); if(t) M.frictionSparks(el(ev.attUid), t); break; }
-    case 'pounce': { const a = el(ev.uid); if(a) M.pounceLeap(a, {up:ev.side === 'A' ? -1 : 1}); break; }
+    // 2026-10-15 (user: "I noticed pounce does a line of damage to the enemy"): pounceLeap's ghost trail rose straight up the
+    // column at the unit opposite, whoever was really hit, and read as a line of damage. In fights the pounce hit itself is now a
+    // leap at its real target (engine: pounce:true, not ranged), so this only kicks up the dust where it pushes off.
+    case 'pounce': { const a = el(ev.uid); if(a) M.pounceKick(a); break; }
     case 'swipeLumber': { const c = hq(ev.targetSide), a = el(ev.attUid); if(c && a){ hideProjectile('🪵', 400); M.lumberSnatch(c, a, {n:ev.amount}); } break; }
     case 'charge': if(ev.fired){ const a = el(ev.uid); if(a) M.chargeRelease(a, {cards:rowCards(a).filter(x=> x !== a)}); } break;
     case 'earthquake': if(ev.landslide && high){ const bf = env.battlefield; const cards = bf ? [...bf.querySelectorAll('.board-card')].filter(b=> b.querySelector('.card-tile') && b.getAttribute('data-uid') !== String(ev.uid)) : [];

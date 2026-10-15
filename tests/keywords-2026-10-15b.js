@@ -28,20 +28,20 @@ const ctx = {
 vm.createContext(ctx);
 vm.runInContext(block + '\n;this.R = {SKILL_REVEAL, SKILL_Q_TIP, hiddenSkillSet, skillHiddenNow, hiddenSkillsOf, maskHiddenSkills, noteMapEnteredForReveal, skillQChipHTML, reset: ()=>{ skillRevealMemo = null; }};', ctx);
 const R = ctx.R;
-ok(JSON.stringify(R.SKILL_REVEAL) === JSON.stringify({diurnal:1, nocturnal:1, crepuscular:1, tide:2, swimmer:2}), '1. the gates: Diurnal / Nocturnal / Crepuscular on Map 1, Tide / Swimmer on Map 2');
+ok(JSON.stringify(R.SKILL_REVEAL) === JSON.stringify({diurnal:1, nocturnal:1, crepuscular:1, tide:2}), '1. the gates: Diurnal / Nocturnal / Crepuscular on Map 1, Tide on Map 2 (Swimmer retired 2026-10-15)');
 const lark = {id:'lark', name:'Lark', effects:{diurnal:2, diurnalHp:1, flying:true}};
 const fish = {id:'fish', name:'Fish', effects:{tide:true, quick:true}};
 const swim = {id:'swim', name:'Swim', effects:{swimmer:'evade', swimmerGrant:{armor:1}}};
-ok(['diurnal', 'nocturnal', 'crepuscular', 'tide', 'swimmer'].every(k=> R.skillHiddenNow(k)), '1. a new player sees none of them');
+ok(['diurnal', 'nocturnal', 'crepuscular', 'tide'].every(k=> R.skillHiddenNow(k)), '1. a new player sees none of them'); // (Swimmer retired 2026-10-15)
 { const m = R.maskHiddenSkills(lark); ok(!('diurnal' in m.effects) && !('diurnalHp' in m.effects) && m.effects.flying === true && m._hiddenSkills === 1, '1. the display copy drops Diurnal and its second number, keeps Flying, counts one "?"');
   ok(lark.effects.diurnal === 2 && lark.effects.diurnalHp === 1, '1. ...and the real card (what the engine plays) is untouched'); }
-{ const m = R.maskHiddenSkills(swim); ok(!('swimmer' in m.effects) && !('swimmerGrant' in m.effects), '1. Swimmer hides with its Flow grant'); }
+{ const m = R.maskHiddenSkills({id:'tg', effects:{tide:true, tideGrant:{flood:{evasive:true}, ebb:{armor:2}}}}); ok(!('tide' in m.effects) && !('tideGrant' in m.effects), '1. Tide – {…}, {…} hides with its braces (2026-10-15)'); void swim; }
 ok(R.maskHiddenSkills({id:'p', effects:{quick:true}}).effects.quick === true && !R.maskHiddenSkills({id:'p', effects:{quick:true}})._hiddenSkills, '1. a card with nothing hidden is unchanged');
 ok(/class="skill-q"/.test(R.skillQChipHTML()) && /Something about this card you'll learn soon\./.test(R.skillQChipHTML()), '1. the "?" chip and its tip');
 // entering Map 1 reveals the day skills, not the tide
 R.noteMapEnteredForReveal('mf');
 ok(!R.skillHiddenNow('diurnal') && !R.skillHiddenNow('nocturnal') && !R.skillHiddenNow('crepuscular'), '1. entering Map 1 reveals Diurnal, Nocturnal and Crepuscular');
-ok(R.skillHiddenNow('tide') && R.skillHiddenNow('swimmer'), '1. ...Tide and Swimmer stay "?" until Map 2');
+ok(R.skillHiddenNow('tide'), '1. ...Tide stays "?" until Map 2');
 ok(R.maskHiddenSkills(lark) === lark, '1. the lark reads in full now');
 // a side map counts as its parent's number; going back to Map 0 never hides again
 R.noteMapEnteredForReveal('m1'); R.reset(); ok(!R.skillHiddenNow('diurnal'), '1. once revealed, never hidden again (back on Map 0)');
@@ -62,7 +62,7 @@ ok(/if\(hid\) return open \? `<span class="sbm-chip" title="\$\{escapeAttr\(SKIL
 ok(/Registry\.skills\(\)\.filter\(sd=> sd\.key !== 'leader' && !sd\.retired && !skillHiddenNow\(sd\.key\)\)/.test(src), '1. no coach tip for a hidden skill');
 ok(/if\(skillHiddenNow\(k\)\) continue; \/\/ 2026-10-15: a keyword still hidden/.test(src), '1. no teaching card for a hidden keyword');
 ok(/try\{ noteMapEnteredForReveal\(mapId\); \}catch\(e\)\{\}/.test(src), '1. starting a Conquest fight notes the map');
-ok(/function tideTipLines\(k\)\{ return \(skillHiddenNow\('tide'\) \? TIDE_TIPS_HIDDEN : TIDE_TIPS\)\[k\]/.test(src) && /if\(skillHiddenNow\('tide'\)\) return \{cls:'', text: ev\.tide==='high'/.test(src), '1. the tide pill and the battle log don\'t name Tide while it is hidden');
+ok(/function tideTipLines\(k\)\{ return \(skillHiddenNow\('tide'\) \? TIDE_TIPS_HIDDEN : TIDE_TIPS\)\[k\]/.test(src) && /ev\.tide==='flow' \? '🌊 Flood: the tide goes in\.' : '🐚 Ebb: the tide goes out\.'/.test(src), '1. the tide pill and the battle log don\'t name Tide while it is hidden'); // 2026-10-15: the log says only the state now
 ok(/phaseGrow: \(\(\)=>\{ const ph = ev\.phase, hid = /.test(src), '1. the battle log has a line for growing with the phase (it printed "phaseGrow" before), neutral while hidden');
 ok(/\.skill-q\{display:inline-grid;/.test(tpl), '1. the "?" chip is styled');
 // the engine still applies a hidden skill: a fish with Tide gets the Flow bonus

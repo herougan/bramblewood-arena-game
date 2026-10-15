@@ -1846,6 +1846,23 @@
   "batch": "A"
  },
  {
+  "id": "sk-bloodlust",
+  "area": "combat-skill",
+  "name": "Bloodlust grows",
+  "trigger": "statusFx bloodlust (its attack drew blood: +N Attack, up to +3N)",
+  "current": "SkillFX.bloodlustPulse (red heartbeat pulse and flush) + \"🩸 Bloodlust +N⚔\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 3,
+  "themeNotes": "Predators: wolves, sharks, weasels.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: bloodlustGain",
+   "bramblewood-skillfx.js: bloodlustPulse"
+  ],
+  "batch": "G"
+ },
+ {
   "id": "sk-coffee",
   "area": "combat-skill",
   "name": "Coffee rush",

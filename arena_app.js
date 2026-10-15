@@ -316,6 +316,8 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 // Electricity shares Shock's 🔌 (user: "electric skill - use the electric plug emoji"). 2026-10-14 (user: "Electric skill's icon: 🔌"):
 // just the plug now, no spark beside it, on the card chip, in the Codex, the effects library and the battle log. Keen Sense 👃.
 // 2026-10-15: the new arrows, the Bolts and Chilli.
+SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
+Object.assign(SKILL_ICON, {diurnalGrant:'☀️', nocturnalGrant:'🌙', tideGrant:'🌊', fullMoon:'🌕', fullMoonGrant:'🌕'}); // Zeitgeber advanced forms (2026-10-15)
 Object.assign(SKILL_ICON, {iceArrow:'🧊🏹', twinShot:'🏹🏹', volley:'🎯🏹', fireBolt:'🔥', acidBolt:'🧪', poisonBolt:'🐍', iceBolt:'❄️', shockBolt:'⚡', chilli:'🌶️'});
 Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌', keenSense:'👃'});
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
@@ -424,12 +426,17 @@ function swimmerBonusText(e, t){
   return parts.join(', ');
 }
 function swimmerLine(e){ return `Swimmer – On Tide, ${swimmerBonusText(e, 'flow')}. On Ebb, +1 Armor.`; }
-function grantText(g){ return Object.entries(g||{}).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', '); }
+function grantText(g){ g = g || {}; const st = (g.attack || g.health) ? [`+${Number(g.attack)||0}/+${Number(g.health)||0}`] : []; // +A/+H (2026-10-15)
+  return st.concat(Object.entries(g).filter(([k])=> k !== 'attack' && k !== 'health').map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; })).join(', '); }
+// The braces of a Zeitgeber's advanced form, plain words (2026-10-15): {+5/+5, Evasive, Thorns 1}.
+function grantBraceText(g){ g = g || {}; const st = (g.attack || g.health) ? [`+${Number(g.attack)||0}/+${Number(g.health)||0}`] : [];
+  return '{' + st.concat(Object.entries(g).filter(([k])=> k !== 'attack' && k !== 'health').map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${v === true ? '' : ' ' + v}`; })).join(', ') + '}'; }
 // "fastForward 1, armor 2, evasive" <-> {fastForward:1, armor:2, evasive:true}; skill names or labels both work.
 function parseGrantText(v){
   if(v && typeof v === 'object') return v;
   const out = {};
-  String(v||'').split(/[,;]+/).map(x=> x.trim()).filter(Boolean).forEach(part=>{
+  String(v||'').replace(/[{}]/g, '').split(/[,;]+/).map(x=> x.trim()).filter(Boolean).forEach(part=>{
+    const st = part.match(/^(?:gain\s+)?\+?(-?\d+)\s*\/\s*\+?(-?\d+)$/i); if(st){ out.attack = Number(st[1]); out.health = Number(st[2]); return; } // "+5/+5" (2026-10-15)
     const m = part.match(/^(.*?)(?:\s+(-?\d+(?:\.\d+)?))?$/); if(!m) return;
     const name = m[1].trim().toLowerCase().replace(/\s+/g, ' ');
     const pd = (typeof PASSIVE_DEFS !== 'undefined' ? PASSIVE_DEFS : []).find(p=> p.key.toLowerCase() === name.replace(/ /g, '') || String(p.label||'').toLowerCase() === name);
@@ -438,7 +445,7 @@ function parseGrantText(v){
   });
   return out;
 }
-function grantToText(g){ return Object.entries(g||{}).map(([k, v])=> v === true ? k : `${k} ${v}`).join(', '); }
+function grantToText(g){ g = g || {}; const st = (g.attack || g.health) ? [`+${Number(g.attack)||0}/+${Number(g.health)||0}`] : []; return st.concat(Object.entries(g).filter(([k])=> k !== 'attack' && k !== 'health').map(([k, v])=> v === true ? k : `${k} ${v}`)).join(', '); }
 function phaseVals(v){ return Array.isArray(v) ? [Number(v[0])||0, Number(v[1])||0] : [v===true ? 1 : (Number(v)||0), 0]; }
 const PASSIVE_DEFS = [
   {key:'poison', category:'passive', label:'Poison', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Poison.`},
@@ -502,11 +509,28 @@ const PASSIVE_DEFS = [
   {key:'sunshy', category:'passive', label:'Sun-shy', kind:'boolean', desc:()=>`Blind by day: misses 1 attack in 2 while the sun is up.`},
   {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (a Lantern on your side lights it).`},
   {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}.`; }, // 2026-10-15: night has no Darkness of its own any more
-    get:e=> (e.nocturnal || e.nocturnalHp) ? [e.nocturnal===true ? 1 : (e.nocturnal||0), e.nocturnalHp||0] : undefined,
+    get:e=> e.nocturnalGrant ? undefined : (e.nocturnal || e.nocturnalHp) ? [e.nocturnal===true ? 1 : (e.nocturnal||0), e.nocturnalHp||0] : undefined, // the advanced form has its own row (2026-10-15)
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.nocturnal = a; if(h>0) e.nocturnalHp = h; } }},
   {key:'diurnal', category:'passive', label:'Diurnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `By day: gain +${a}/+${h}.`; },
-    get:e=> (e.diurnal || e.diurnalHp) ? [e.diurnal===true ? 1 : (e.diurnal||0), e.diurnalHp||0] : undefined,
+    get:e=> e.diurnalGrant ? undefined : (e.diurnal || e.diurnalHp) ? [e.diurnal===true ? 1 : (e.diurnal||0), e.diurnalHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.diurnal = a; if(h>0) e.diurnalHp = h; } }},
+// Zeitgeber format (2026-10-15, user: "Diurnal - +1. At more advanced maps, Diurnal - {}. Day grants skills not +1 attack anymore.
+// ... just use this format for zeitgeber/diegetic stuff: At first, the basic is quite simple. The advanced use, much stronger. Like
+// Full Moon - {} vs Full Moon - Default: +3/+3 permanently from now on. Rename Tide and Ebb to Flood and Ebb ... Tide - {}, unique from
+// Diurnal - has two facets. So Tide - {Gain 5/5, Evade}, {2 Armour}. ... remove Swimmer for now"): every time-giver skill has a plain
+// form (Diurnal, Nocturnal, Tide, Full Moon) and an advanced one whose braces list what it gets instead: "Diurnal – {Evasive, Thorns 1}",
+// "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {Regen 2}". See the Zeitgeber note in bramblewood-engine.js for the rules.
+  {key:'diurnalGrant', category:'passive', label:'Diurnal – { }', kind:'grant', placeholder:'evasive, thorns 1', desc:v=>`By day (and in Twilight) it has ${grantText(parseGrantText(v)) || 'nothing'}, instead of a plain bonus.`,
+    get:e=> e.diurnalGrant ? grantToText(e.diurnalGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.diurnalGrant = g; if(!e.diurnal) e.diurnal = true; } }},
+  {key:'nocturnalGrant', category:'passive', label:'Nocturnal – { }', kind:'grant', placeholder:'shadow, regen 2', desc:v=>`At night (and in Twilight) it has ${grantText(parseGrantText(v)) || 'nothing'}, instead of a plain bonus.`,
+    get:e=> e.nocturnalGrant ? grantToText(e.nocturnalGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.nocturnalGrant = g; if(!e.nocturnal) e.nocturnal = true; } }},
+  {key:'tideGrant', category:'passive', label:'Tide – { }, { }', kind:'grant2', placeholders:['Flood', 'Ebb'], grantPlaceholders:['+5/+5, evasive', 'armor 2'],
+    desc:v=>{ const [a, b] = Array.isArray(v) ? v : ['', '']; return `On Flood it has ${grantText(parseGrantText(a)) || 'nothing'}; on Ebb, ${grantText(parseGrantText(b)) || 'nothing'}; at High Tide, both. (In place of Flood's +1 Attack and Ebb's +1 Armor.)`; },
+    get:e=> e.tideGrant ? [grantToText(e.tideGrant.flood), grantToText(e.tideGrant.ebb)] : undefined,
+    apply:(e, vals)=>{ const a = parseGrantText(vals && vals[0]), b = parseGrantText(vals && vals[1]); if(Object.keys(a).length || Object.keys(b).length){ e.tideGrant = {flood:a, ebb:b}; e.tide = true; } }},
+  {key:'fullMoon', category:'passive', label:'Full Moon', kind:'number', min:1, defaultValue:3, desc:v=>`The first time a full moon rises over it, it gains +${v||3}/+${v||3} for the rest of the fight.`},
+  {key:'fullMoonGrant', category:'passive', label:'Full Moon – { }', kind:'grant', placeholder:'regen 2, frenzy', desc:v=>`The first time a full moon rises over it, it gains ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`,
+    get:e=> e.fullMoonGrant ? grantToText(e.fullMoonGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length) e.fullMoonGrant = g; }},
   // Tide (2026-10-09; a keyword family, not an archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
@@ -566,7 +590,7 @@ const PASSIVE_DEFS = [
   {key:'sprout', category:'evergreen', label:'Sprout', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, ${v||1} Growth Sprout${(v||1) === 1 ? '' : 's'} (1/3 tokens that count for every Swarm) sprout${(v||1) === 1 ? 's' : ''} beside it.`},
   {key:'growth', category:'passive', label:'Growth', kind:'boolean', desc:()=>`A Growth token: it counts toward every ally's Swarm, whatever its type.`},
   // Moonpull (user: "There is a creature that has a cool sounding evergreen effect - its effect brings in the Tide!").
-  {key:'moonpull', category:'evergreen', label:'Moonpull', kind:'boolean', desc:()=>`When it arrives, the Tide comes in: it is Flow this round (an Ebb turns to Flow).`},
+  {key:'moonpull', category:'evergreen', label:'Moonpull', kind:'boolean', desc:()=>`When it arrives, the Tide comes in: it is Flood this round (an Ebb turns to Flood).`},
   // 2026-10-14 (third pass). Bloom (conditions) (user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): a conditional +A/+H.
   {key:'bloomWhen', category:'passive', label:'Bloom (conditions)', kind:'text', placeholder:'Tide & Night +2/+2  ·  Wind or Wet',
     desc:(v, n, e)=>{ const bw = (e && e.bloomWhen) || (typeof v === 'string' ? parseBloomText(v) : null) || {when:['tide','night']}; return `${bloomLabel(bw)}. While ${(bw.when||[]).map(k=> BLOOM_COND_NAMES[k] || k).join(bw.mode === 'or' ? ' or ' : ' and ')} hold${bw.mode === 'or' ? 's' : ''}, it is in bloom 🌸 and has the bonus. Conditions: Tide (in), Ebb, Night, Day, Twilight, Wind, Wet (rain, the Tide in, or a beach, river or sea map), Dark, Heat, Frost.`; },
@@ -595,7 +619,7 @@ const PASSIVE_DEFS = [
   {key:'charge', category:'evergreen', label:'Charge', kind:'text', placeholder:'2, damage 3 enemy random',
     desc:(v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. Once it is Ready, a yellow clock starts at ${cp.n} and counts down every upkeep; at 0 the effect happens and the clock starts again. Write it as "N, action amount who sub" (e.g. "2, damage 3 enemy random").`; },
     get:e=> e.charge ? chargeToText(e.charge) : undefined, apply:(e, v)=>{ const c = parseChargeText(v); if(c) e.charge = c; }},
-  {key:'supremeTide', category:'passive', label:'Supreme Tide', kind:'boolean', desc:()=>`A Tide unit whose Tide bonuses are doubled and always on, both at once: +2 Attack and +2 Armor every round, Flow or Ebb. Nothing that moves the tide can take them away.`},
+  {key:'supremeTide', category:'passive', label:'Supreme Tide', kind:'boolean', desc:()=>`A Tide unit whose Tide bonuses are doubled and always on, both at once: +2 Attack and +2 Armor every round, Flood or Ebb. Nothing that moves the tide can take them away.`},
   // Brood N (user: "Swarm units tend to like summoning more units of their type").
   {key:'brood', category:'evergreen', label:'Brood', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, ${v||1} brood token${(v||1) === 1 ? '' : 's'} of its own kind hatch${(v||1) === 1 ? 'es' : ''} beside it: a 1/1 "Brood" with Wait 1, the same types (it counts for Swarm), only Swarm, and Flying if this card flies.`},
   // 2026-10-12 skills (the 22:40 list).
@@ -606,13 +630,16 @@ const PASSIVE_DEFS = [
   // Swimmer (2026-10-12, 09:48: "Swimmer is too strong. Change it to be a If Tide -> { } is enabled ... {Extra Attack} or {Quick
   // Attack} or {Evade}"): one pick. A Swimmer saved before this keeps working as Extra Attack.
   // 2026-10-14 (user: "Swimmers = Tide"): a Swimmer is a Tide unit (Flow +1 Attack, Ebb +1 Armor) on top of its Flow pick.
-  {key:'swimmer', category:'passive', label:'Swimmer', kind:'select', desc:(v, n, e)=>`On Tide, ${swimmerBonusText(Object.assign({}, e || {}, {swimmer: v || true}), 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: Swimmer is its own skill on the card ("Swimmer - On tide, { ... }")
+  // 2026-10-15 (user: "Swimmer now means something else. Remove the Swimmer - {} ability ... Oh don't let cards have it at least"):
+  // retired like Hive Mind: off every card (they have plain Tide now), out of the editor and the lists; the engine still runs it.
+  // (Not built: "Maybe its evade to non swimmers WHEN in flood/ebb regardless" was a maybe.)
+  {key:'swimmer', category:'passive', hidden:true, retired:true, label:'Swimmer', kind:'select', desc:(v, n, e)=>`On Tide, ${swimmerBonusText(Object.assign({}, e || {}, {swimmer: v || true}), 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: Swimmer is its own skill on the card ("Swimmer - On tide, { ... }")
     selectOptions:()=> [{value:'extraAttack', label:'Extra Attack (+1 Attack)'}, {value:'quickAttack', label:'Quick Attack (extra turn)'}, {value:'evade', label:'Evasive'}], // 2026-10-15 (user: "Evade -> Evasive."): label only, the saved value stays 'evade'
     get:e=> e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : undefined, apply:(e,v)=>{ e.swimmer = ['extraAttack','quickAttack','evade'].includes(v) ? v : 'extraAttack'; }},
   // Swimmer's Flow list (2026-10-12, user: "I like Swimmer activating certain {} effects on tide. Maybe its not just fast
   // forward but... just { } effects that i can list"): the skills a Swimmer gets on Flow rounds, e.g. "fastForward 1, armor 2".
   // Without a list it keeps the old Fast Forward.
-  {key:'swimmerGrant', category:'passive', label:'Swimmer: on Flow', kind:'text', placeholder:'fastForward 1, armor 2', desc:v=>`On a Flow round it gains ${grantText(parseGrantText(v)) || 'nothing'}.`,
+  {key:'swimmerGrant', category:'passive', hidden:true, retired:true, label:'Swimmer: on Flood', kind:'text', placeholder:'fastForward 1, armor 2', desc:v=>`On a Flood round it gains ${grantText(parseGrantText(v)) || 'nothing'}.`,
     get:e=> e.swimmerGrant ? grantToText(e.swimmerGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.swimmerGrant = g; e.swimmer = true; } }},
   {key:'inspiring', category:'passive', label:'Inspiring', kind:'number', min:0, desc:v=>`As it attacks, the allies either side of it get +${v} Attack for their next swing.`},
   {key:'friction', category:'passive', label:'Friction', kind:'number', min:0, desc:v=>`A drawback: when it attacks, it deals ${v} damage to each ally beside it.`},
@@ -665,11 +692,12 @@ const PASSIVE_DEFS = [
   {key:'retribution', category:'passive', label:'Divine Retribution', kind:'number', min:0, desc:v=>`When one of your units perishes, strikes a random enemy unit for ${v}.`},
   {key:'satiety', category:'passive', label:'Satiety', kind:'number', min:0, desc:v=>`Well fed: at the start of each round at full health, gains +${v} max Health.`},
   {key:'desecrate', category:'passive', label:'Desecrate', kind:'number', min:0, desc:v=>`Every landed hit curses the ground its target stands on: ${v} more damage a round to whoever stands there. Stacks.`},
-  {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`Flow: +1 Attack. Ebb: +1 Armor. High Tide: +2 Attack, +2 Armor. (Every Swimmer is a Tide unit too.)`}, // 2026-10-14: "Swimmers = Tide" // 2026-10-12: "Use standard language like +1 Attack" (High tide's +2/+2 is left unsaid on purpose)
+  {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`Flood: +1 Attack. Ebb: +1 Armor. High Tide: +2 Attack, +2 Armor.`, get:e=> e.tideGrant ? undefined : e.tide}, // 2026-10-15: Flow → Flood; Tide – { } has its own row // 2026-10-14: "Swimmers = Tide" // 2026-10-12: "Use standard language like +1 Attack" (High tide's +2/+2 is left unsaid on purpose)
   // The active Exile zone (2026-10-09): every card sent to your Removal Zone gives 1 Echo 🕯️; Remember spends them.
   {key:'remember', category:'passive', label:'Remember', kind:'number', min:0, desc:v=>`While in your Removal Zone: at the start of a round, if you have ${v} Echo${v===1?'':'es'}, spend them and this card returns to the board with +${v}/+${v}.`},
   // Wash retired 2026-10-14 (user: "Remove the 'Wash' effect"): no card carries it and the tide no longer pushes anyone back.
-  {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack marks the target for ${v} bonus damage on its next hit taken.`},
+  // Expose N (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss."): a landed attack makes the target Exposed for its next N hits.
+  {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack leaves the target Exposed for its next ${v||1} hit${(v||1)===1 ? '' : 's'}: each of them deals +1 damage, and attacks at an Exposed unit can't miss.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Attacks before every non-Quick attacker this round (Swift units still go first).`},
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
@@ -844,6 +872,9 @@ const PASSIVE_DEFS = [
   {key:'psychic', category:'passive', label:'Psychic', kind:'number', min:1, defaultValue:1, desc:v=>`Each hit that lands also deals ${v||1} psychic damage straight to Health: Armor, Shield, Shell and a Ghost's body don't stop it. Elementals and Plants have no mind, so they don't take it.`},
   // Chilli N (2026-10-15, user: "New skill Chilli."): an animal's one-off food skill, like Coffee and Banana. See eatChilli in
   // bramblewood-engine.js.
+  // Bloodlust N (2026-10-15, user: "New Skill: Bloodlust - ability idk, but I assume when it draws blood, it gets stronger."): "draws blood" = its attack lands
+  // damage on an enemy unit that is Bleeding (already, or because this hit made it bleed). See bloodlustGain in the engine.
+  {key:'bloodlust', category:'evergreen', label:'Bloodlust', kind:'number', min:1, defaultValue:1, desc:v=>`When its attack draws blood (hits an enemy unit that is Bleeding, or makes it Bleed), it gains +${v||1} Attack for the rest of the fight (up to +${3*(v||1)} in all).`},
   {key:'chilli', category:'evergreen', label:'Chilli', kind:'number', min:1, defaultValue:2, desc:v=>`Eats a chilli when it first becomes Ready: for the rest of the fight its attacks deal fire damage and it has +${v||2} Attack, but it takes 1 damage at the start of every round (it's very hot).`},
   {key:'smokeBomb', category:'evergreen', label:'Smoke Bomb', kind:'boolean', desc:()=>`Every round, after everyone else has swung: a 1 in 2 chance it throws a smoke bomb at a random unit, ally or enemy (never itself). An ally is hidden in Smoke: attacks at it miss 1 in 2 until the end of the next round. An enemy is Blinded for a round.`},
 ];
@@ -1024,7 +1055,7 @@ const ACTION_DEFS = [
   {key:'debuff', label:'Debuff', fields:['who','sub','targets','amount','amount2'], desc:'Take away Attack/Health from a target: yourself, an ally, or an enemy (Health floored at 1 — this weakens, it never kills outright).'},
   {key:'poison', label:'Poison', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply poison stacks to a chosen target — self, an ally, or an enemy.'},
   {key:'bleed', label:'Bleed', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply bleed stacks to a chosen target — self, an ally, or an enemy.'},
-  {key:'expose', label:'Expose', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Mark a chosen target — self, an ally, or an enemy — for bonus damage on its next hit taken.'},
+  {key:'expose', label:'Expose', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Make a chosen target (self, an ally or an enemy) Exposed for its next N hits: +1 damage from each, and attacks at it can\'t miss.'}, // 2026-10-15: the Exposed status
   {key:'stun', label:'Stun', fields:['who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:"Stun a chosen target — self, an ally, or an enemy — no Wait tick, can't attack."},
   {key:'reduceWaitOfSpawned', label:'Reduce Wait', fields:['amount'], desc:'Pair with On Ally Spawn — lowers the Wait of the ally just played.'},
   // Missile (2026-09-30, new action, per explicit request: "Add an action called Missile. Missile
@@ -1070,7 +1101,7 @@ function CHAIN_BREAK_OPTIONS(){
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
     key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, oneOff:p.oneOff,
-    get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey,
+    get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, // (2026-10-15: + the grant pickers' hints, defaultValue)
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
   {
@@ -1570,7 +1601,7 @@ const KEYWORD_TERMS = [
   {name:'Upkeep', re:'upkeep', text:'the start of each round, before anyone attacks. Upkeep effects go in the same order units act.'},
   {name:'Adjacent', re:'adjacent', text:'the columns to its left, centre and right.'},
   {name:'Graveyard', re:'graveyard'}, {name:'Wait', re:'wait(?:ing)?', cs:true}, {name:'Ready', re:'ready', cs:true},
-  {name:'Leader', re:'leaders?', cs:true}, {name:'Removal Zone', re:'removal zone'}, {name:'Flow', re:'flow', cs:true}, {name:'Ebb', re:'ebb', cs:true},
+  {name:'Leader', re:'leaders?', cs:true}, {name:'Removal Zone', re:'removal zone'}, {name:'Flood', re:'flood', cs:true}, {name:'Ebb', re:'ebb', cs:true},
   {name:'Field', re:'field card', cs:false}, {name:'Dark Summon', re:'dark summons?'}, {name:'Structure', re:'structures?', cs:true},
 ];
 const KEYWORD_RESOURCES = [
@@ -1638,7 +1669,7 @@ const SKILL_TEXT = {
   packLeader: ()=> `Links every Pack unit of its type on your side into one chain, adjacent or not, and adds +2/+2 of its own and +2/+2 for the type.`,
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
   wave: v=> `Its hits push the unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : v === 'alternate' ? 'left, then right, in turn' : 'toward the side with more room'} (swapping with any unit there).`,
-  supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flow or Ebb. Tide effects can't take them away.`,
+  supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flood or Ebb. Tide effects can't take them away.`,
   crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right.`,
   meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
   nullify: ()=> `Its hits get no reaction from the unit hit. A unit it kills skips its death effects and goes to the ${EXILE_ZONE_NAME}.`,
@@ -1694,9 +1725,11 @@ const SKILL_TEXT = {
   retribution: v=> `When one of your units dies, deal ${v} damage to a random enemy unit.`,
   satiety: v=> `At full Health, gains +${v} max Health every upkeep.`,
   desecrate: v=> `Its hits curse the ground: whoever stands there takes ${v} damage every upkeep. Stacks.`,
-  tide: ()=> `Flow: +1 Attack. Ebb: +1 Armor.`, swimmer: v=> `On Tide, ${swimmerBonusText({swimmer: v || true}, 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: "Swimmer - On tide, { ... }"
+  tide: ()=> `Flood: +1 Attack. Ebb: +1 Armor.`, // 2026-10-15: Flow is Flood now
+  diurnalGrant: v=> `By day it has ${grantText(parseGrantText(v)) || 'nothing'} instead of a plain bonus.`, nocturnalGrant: v=> `At night it has ${grantText(parseGrantText(v)) || 'nothing'} instead of a plain bonus.`,
+  fullMoon: v=> `The first full moon over it: +${numOr(v, 3)}/+${numOr(v, 3)} for the rest of the fight.`, fullMoonGrant: v=> `The first full moon over it: ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`, swimmer: v=> `On Tide, ${swimmerBonusText({swimmer: v || true}, 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: "Swimmer - On tide, { ... }"
   remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
-  expose: v=> `Its hits mark the target: +${v} damage on the next hit it takes.`,
+  expose: v=> `Its hits leave the target Exposed for ${numOr(v, 1)} hit${numOr(v, 1)===1 ? '' : 's'}: +1 damage each, and they can't miss.`, // 2026-10-15
   guardian: ()=> `Takes the hits aimed at adjacent allies.`,
   quick: ()=> `Attacks before every unit without Quick.`,
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
@@ -1741,6 +1774,7 @@ const SKILL_TEXT = {
   poisonBolt: v=> `While Ready, spit venom at the enemy opposite for ${numOr(v, 2)} Poison every round.`,
   iceBolt: v=> `While Ready, spit ice at the enemy opposite for ${numOr(v, 2)} cold damage every round; 1 in 2 it freezes.`,
   shockBolt: v=> `While Ready, spit a spark at the enemy opposite for ${numOr(v, 2)} damage and Shock every round.`,
+  bloodlust: v=> `When its attack draws blood (an enemy that is Bleeding, or starts to): +${numOr(v, 1)} Attack for the fight, up to +${3*numOr(v, 1)}.`, // 2026-10-15
   chilli: v=> `When first Ready, eats a chilli: +${numOr(v, 2)} Attack and fire attacks, but 1 damage to itself every round.`,
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
 };
@@ -1780,9 +1814,9 @@ function skillText(p, v, e){ const f = SKILL_TEXT[p.key]; try{ return f ? f(v) :
    or cleared a fight on a map that far along (so a player whose progress came from another device is not set back). Once a skill
    is revealed it is remembered (SKILL_REVEAL_KEY) and never hides again. The engine still applies the skill as before, and
    Admin Mode shows everything. To hide another skill, add it here (and any companion effect keys to SKILL_REVEAL_PARTS). */
-const SKILL_REVEAL = {diurnal:1, nocturnal:1, crepuscular:1, tide:2, swimmer:2};
+const SKILL_REVEAL = {diurnal:1, nocturnal:1, crepuscular:1, tide:2}; // 2026-10-15: Swimmer is retired (on no card), so it is no longer revealed on Map 2
 // The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
-const SKILL_REVEAL_PARTS = {diurnal:['diurnalHp'], nocturnal:['nocturnalHp'], crepuscular:['crepuscularHp'], swimmer:['swimmerGrant']};
+const SKILL_REVEAL_PARTS = {diurnal:['diurnalHp', 'diurnalGrant'], nocturnal:['nocturnalHp', 'nocturnalGrant'], crepuscular:['crepuscularHp'], tide:['tideGrant'], swimmer:['swimmerGrant']}; // + the advanced forms' braces (2026-10-15)
 const SKILL_REVEAL_KEY = 'bramblewood_skill_revealed_v1';
 const SKILL_Q_TIP = "Something about this card you'll learn soon.";
 let skillRevealMemo = null;
@@ -1851,11 +1885,16 @@ function describeEffects(def, liveCard){
   PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; }
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
+    // Zeitgeber advanced forms (2026-10-15): "Diurnal – {Evasive, Thorns 1}", "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {…}".
+    if(p.key==='diurnalGrant' || p.key==='nocturnalGrant' || p.key==='fullMoonGrant'){ const g = e[p.key]; const nmZ = p.key==='diurnalGrant' ? 'Diurnal' : p.key==='nocturnalGrant' ? 'Nocturnal' : 'Full Moon';
+      lines.push(`${ic(p.key)}${nmZ} – ${escapeHtml(grantBraceText(g))} — ${p.key==='diurnalGrant' ? 'by day (and in Twilight) it has these' : p.key==='nocturnalGrant' ? 'at night (and in Twilight) it has these' : 'the first full moon over it gives it these for the rest of the fight'}.`); return; }
+    if(p.key==='tideGrant'){ const tg = e.tideGrant || {}, lt = liveCard ? liveTideState(e) : null;
+      lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('tide')}${lt.name} – ${lt.bonus}</span>` : `${ic('tide')}Tide – ${escapeHtml(grantBraceText(tg.flood))}, ${escapeHtml(grantBraceText(tg.ebb))} — the first on Flood, the second on Ebb, both at High Tide.`); return; }
     if(p.key==='tide' || p.key==='swimmer'){ if(p.key==='tide' && e.swimmer) return; // one line for a Tide Swimmer: the Swimmer one
       const lt = liveCard ? liveTideState(e) : null;
       // 2026-10-15 (user: "It should be Swimmer - On tide, { ... }"): a Swimmer reads as Swimmer, never as Tide.
       if(p.key==='swimmer'){ lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('swimmer')}Swimmer – ${lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide'}, ${lt.bonus}</span>` : `${ic('swimmer')}${swimmerLine(e)}`); return; }
-      lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('tide')}${lt.name} – ${lt.bonus}</span>` : `${ic('tide')}Tide`); return; }
+      lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('tide')}${lt.name} – ${lt.bonus}</span>` : `${ic('tide')}Tide — ${skillText(p, v, e)}`); return; }
     if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span> — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
     if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
@@ -5323,7 +5362,7 @@ function cardTileHTML(d, opts){
   if(live){
     return `<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
       ${live.waitHTML||''}${archMarkHTML(d, !!live.waitHTML, true)}
-      ${(d.token&&d.id!=='bee-swarmling')?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁</div>`:''}
+      ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): the 🔁 spawn-only corner pill is gone; a token still has its dashed frame outside fights and its popover line */}
       ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
       ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
       ${live.overlaysHTML||''}
@@ -5338,7 +5377,7 @@ function cardTileHTML(d, opts){
   return `<div class="card-tile ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
     ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}${hand && hasSacrificeTrigger(d) ? SAC_TEETH_HTML : ''}
     ${locked?'<div class="lockbadge">🔒</div>':''}
-    ${(d.token&&d.id!=='bee-swarmling'&&!hand)?`<div class="spawnbadge" title="${SPAWN_ONLY_TOOLTIP}">🔁 Spawn</div>`:''}
+    ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): no "🔁 Spawn" corner pill on tokens */}
     ${isCustom&&!hand?'<div class="editbadge" title="Edited from baseline">✎</div>':''}
     ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
     ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel} — cosmetic only, no stat change">${d.prestigeIcon}</div>`:''}
@@ -5530,7 +5569,7 @@ function abilityBadges(d, bopts){
   if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
   if(e.wave) out.push(`<span title="Wave: its hits push the unit one column ${e.wave === true ? 'toward more room' : e.wave === 'alternate' ? 'left, then right' : e.wave}">〰️</span>`);
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
-  if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flow or Ebb">${iconHTML('supreme-tide', '✨')}🌊</span>`);
+  if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb">${iconHTML('supreme-tide', '✨')}🌊</span>`);
   // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
   if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only">${iconHTML('crab-claws', '🦞')}</span>`);
   if(e.meiosis) out.push(`<span title="Meiosis ${e.meiosis === true ? 1 : e.meiosis}: splits in two when it dies">${iconHTML('meiosis', '🧫')}${n1(e.meiosis)}</span>`);
@@ -5646,6 +5685,7 @@ function abilityBadges(d, bopts){
   if(e.swift) out.push(`${iconHTML('swift', '💨')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
   if(e.pounce) out.push(`${iconHTML('pounce', '🐾')}${n1(e.pounce)}`); // Pounce (2026-10-12)
+  if(e.bloodlust) out.push(`${iconHTML('bloodlust', '🩸⚔️')}${n1(e.bloodlust)}`); // Bloodlust (2026-10-15)
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
   // any existing glyph on this card face.
   if(e.kingSlayer) out.push(`<span class="ab-pair">${iconHTML('king-slayer', '👑')}<i>⚔️</i></span>${n1(e.kingSlayer)}`);
@@ -7235,12 +7275,20 @@ function deriveSkillRows(c){
   }
   return c._skillRows;
 }
+// The skill-list picker for a Zeitgeber's braces (2026-10-15): "{ [evasive, thorns 1] [+ skill ▾] }". Picking a skill appends it.
+function grantPickerHTML(i, sk, v, ph){
+  const opts = PASSIVE_DEFS.filter(p=> !p.retired && !p.hidden && ['boolean', 'number'].includes(p.kind) && p.label).sort((a, b)=> a.label.localeCompare(b.label));
+  return `<span class="grant-box">{ <input type="text" class="w-160 grant-in" data-sk="${sk}" data-i="${i}" placeholder="${escapeAttr(ph || 'evasive, thorns 1')}" value="${escapeAttr(v || '')}" title="Skills, comma separated; +A/+H for stats (e.g. +5/+5, evasive)"> }<select class="grant-pick" aria-label="Add a skill to the braces" onchange="grantPickAdd(this)"><option value="">＋ skill</option><option value="+1/+1">+A/+H (stats)</option>${opts.map(p=> `<option value="${escapeAttr(p.label + (p.kind === 'number' ? ' 1' : ''))}">${escapeHtml((SKILL_ICON[p.key] ? SKILL_ICON[p.key] + ' ' : '') + p.label)}</option>`).join('')}</select></span>`;
+}
+function grantPickAdd(sel){ const box = sel.closest('.grant-box'), inp = box && box.querySelector('.grant-in'); if(!inp || !sel.value) return;
+  inp.value = inp.value.trim() ? inp.value.replace(/[,\s]+$/, '') + ', ' + sel.value : sel.value; sel.value = ''; inp.dispatchEvent(new Event('input', {bubbles:true})); inp.focus(); }
 function defaultSkillValue(key){
   const s = SKILL_DEFS.find(x=>x.key===key);
   if(!s) return true;
-  if(s.kind==='number') return 1;
+  if(s.kind==='number') return s.defaultValue != null ? s.defaultValue : 1; // Full Moon 3, Chilli 2 … (2026-10-15)
   if(s.kind==='twoNumber') return [1,1];
-  if(s.kind==='text') return '';
+  if(s.kind==='text' || s.kind==='grant') return '';
+  if(s.kind==='grant2') return ['', '']; // Tide – {Flood}, {Ebb} (2026-10-15)
   if(s.kind==='select') return s.selectOptions ? s.selectOptions()[0].value : resistOptionsList()[0];
   if(s.kind==='selectNumber'){ const opts = s.selectOptions ? s.selectOptions() : []; return [opts[0]?opts[0].value:'', 1]; }
   if(s.kind==='typeTwoNumber') return ['', 1, 1];
@@ -7272,6 +7320,10 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   let valueHtml = '';
   if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${row.value||1}">`;
   else if(s.kind==='text') valueHtml = `<input type="text" class="w-160" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder||'')}" value="${escapeAttr(typeof row.value === 'string' ? row.value : '')}">`;
+  // Zeitgeber advanced forms (2026-10-15): the braces are a skill list, typed or picked ("+ skill" appends one); Tide has two facets.
+  else if(s.kind==='grant') valueHtml = grantPickerHTML(i, 'val', typeof row.value === 'string' ? row.value : '', s.placeholder);
+  else if(s.kind==='grant2'){ const vals = Array.isArray(row.value) ? row.value : ['', ''], ph = s.placeholders || ['Flood', 'Ebb'], gp = s.grantPlaceholders || ['', ''];
+    valueHtml = `<span class="grant-facet"><b>${escapeHtml(ph[0])}</b>${grantPickerHTML(i, 'val0', vals[0] || '', gp[0])}</span><span class="grant-facet"><b>${escapeHtml(ph[1])}</b>${grantPickerHTML(i, 'val1', vals[1] || '', gp[1])}</span>`; }
   else if(s.kind==='twoNumber'){
     const vals = Array.isArray(row.value)?row.value:[1,1];
     const ph = s.placeholders || ['Timer','Damage'];
@@ -7494,7 +7546,7 @@ function triggerPreviewText(t){
     case 'buffHealth': doText = `gain +${amt} Health`; break;
     case 'poison': doText = `apply ${amt} poison to ${whoTarget}`; break;
     case 'bleed': doText = `apply ${amt} bleed to ${whoTarget}`; break;
-    case 'expose': doText = `expose ${whoTarget} for ${amt} bonus damage`; break;
+    case 'expose': doText = `make ${whoTarget} Exposed for ${amt} hit${amt==1 ? '' : 's'} (+1 damage each, can't miss)`; break; // 2026-10-15
     case 'stun': doText = `stun ${whoTarget}`; break;
     case 'reduceWaitOfSpawned': doText = `reduce the just-played ally's Wait by ${amt}`; break;
     case 'missile': doText = `deal ${amt} damage to a random enemy unit`; break;
@@ -7679,10 +7731,10 @@ function readEditorFormIntoCard(){
     const lvEl = row.querySelector('[data-sk="lv"]'), L = lvEl ? Number(lvEl.value) : 0;
     const fx = L > 0 ? (levelFx[L] = levelFx[L] || {}) : newEffects;
     if(sdef.kind==='typeTwoNumber'){ sdef.apply(fx, ['val0','val1','val2'].map(k=> (row.querySelector(`[data-sk="${k}"]`)||{}).value)); }
-    else if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount'){
+    else if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount' || sdef.kind==='grant2'){ // + Tide – {…}, {…} (2026-10-15)
       const v0 = row.querySelector('[data-sk="val0"]').value, v1 = row.querySelector('[data-sk="val1"]').value;
       sdef.apply(fx, [v0,v1]);
-    } else if(sdef.kind==='number' || sdef.kind==='select' || sdef.kind==='text'){
+    } else if(sdef.kind==='number' || sdef.kind==='select' || sdef.kind==='text' || sdef.kind==='grant'){ // + the Zeitgeber braces (2026-10-15)
       sdef.apply(fx, row.querySelector('[data-sk="val"]').value);
     } else if(sdef.kind==='types'){
       const el = row.querySelector('[data-sk="vals"]'), nEl = row.querySelector('[data-sk="valN"]'); sdef.apply(fx, el ? [...el.selectedOptions].map(o=> o.value) : [], nEl ? nEl.value : 1);
@@ -12033,9 +12085,9 @@ const DIALOGUES = {
   ]},
   cur_m7_shell: {lines:[
     {who:'traveller', text:'A great spiral shell. Hold it up and you hear the reef breathing.', options:[{label:'Listen.', goto:'go'}, {label:'Not now.', goto:'no'}]},
-    {label:'go', who:'traveller', text:'Flow… ebb… flow. The tide decides who hits harder. Watch the pill at the top of the field.', goto:'end'},
+    {label:'go', who:'traveller', text:'Flood… ebb… flood. The tide decides who hits harder. Watch the pill on the field.', goto:'end'}, // 2026-10-15: Flood
     {label:'no', who:'traveller', text:'The reef will still be breathing later.', goto:'end'},
-    {label:'end', who:'aurelia', text:'Swimmers ride the Flow. Keep that in mind.'},
+    {label:'end', who:'aurelia', text:'Tide units ride the Flood. Keep that in mind.'}, // 2026-10-15: Swimmer retired, Flow → Flood
   ]},
   cur_m7_wreck: {lines:[
     {who:'swiftpaw', text:'A wreck, furred with coral. Rivergate colours on the stern.'},
@@ -13270,7 +13322,7 @@ function fieldConditionRows(r){
   // 2026-10-15 (user: "It will be an explicit field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): the two dark levels.
   else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', 'No Darksight: miss 1 in 2');
   else if(r.dark) add('dark', '🌘', DARK_LEVEL_NAME.dark, DARK_LEVEL_TEXT.dark, '', 'No Darksight: miss 1 in 4');
-  if(r.misty){ add('misty', '🌫️', 'Misty', MISTY_TEXT, '', MISTY_SHORT); rows[rows.length - 1].qTip = MISTY_Q_TIP; } // 2026-10-14; real wording 2026-10-15; a neutral "?" tip (2026-10-15)
+  if(r.misty){ add('misty', '🌫️', 'Mist', MISTY_TEXT, '', MISTY_SHORT); rows[rows.length - 1].qTip = MISTY_Q_TIP; } // 2026-10-14; real wording 2026-10-15; a neutral "?" tip (2026-10-15)
   if(r.phase === 'night') add('night', '🌙', 'Night', 'Night all match: Nocturnal units get their bonus. Night-blind units miss 1 attack in 2.', '', 'Always night'); // 2026-10-15: night has no 1-in-4 miss any more
   if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', '', 'Day, night, then twilight');
   if(r.permaTide) add('permaTide', '🌊', 'Perma-tide', "The Tide is always in. Tide effects can't change it.", '', 'The Tide is always in'); // 2026-10-14: Flow every round from round 1
@@ -13298,8 +13350,11 @@ const MISTY_Q_TIP = "Something hangs in the air here. You'll learn more soon.";
 function fieldRowQTip(row){ return (row && row.qTip) || 'Shows what it does once it first happens'; }
 // Misty (2026-10-15, user: "The mist effect ? now says 'There is no day and night'"): what rules.misty really does. It turns the
 // day/night cycle off (fightRules: phase 'off'), so Diurnal and Nocturnal bonuses never apply, and the fog's tint drifts instead.
-const MISTY_TEXT = 'Mist hides the sun and moon: Diurnal and Nocturnal bonuses never apply.';
-const MISTY_SHORT = 'Sun and moon hidden';
+// 2026-10-15 (user: "In misty maps in later levels, they explicitly have a Mist pill in the battlefield AND a Mist effect card. And it
+// says, there is no Day/night cycle. Past maps that care about moon position ... the Mist also adds, the Moon is not visible."):
+const MISTY_TEXT = 'There is no day/night cycle.';
+const MISTY_MOON_TEXT = 'The Moon is not visible.';
+const MISTY_SHORT = 'No day/night cycle';
 function fieldRowsListHTML(rows){
   return rows.map(row=>{ const st = fieldRowState(row.key);
     if(st === 'unknown') return `<li class="fcr is-unknown" aria-label="${escapeAttr(row.name + ': not seen yet')}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}</span><span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span></li>`;
@@ -15437,15 +15492,28 @@ function ambushShouldTrigger(map, node){
   if(!map || !node || ambushState().triggered || !loadTutorialDone()) return false;
   const am = ambushMap(); return !!am && am.id === map.id && skirmishCode(map.id, node.key) === AMBUSH_AT;
 }
+// 2026-10-15 (user: "Upon losing a surprise challenge, the enemies run away with abit of your money. You lose 10-100 materia. Depends on
+// your level too. If you're low level, the max cap is lower, maybe 10-15. Each Map increases your loss cap by 5. And it happens WHEN you
+// click into the Skirmish. So what should happen on your screen is like, a quick surprise subwindow (like you have made), then straight
+// into a combat.")
+// The surprise challenge (the ambush): clicking the skirmish pops a quick "Ambush!" sub-window over the map while the scout shoves your
+// pawn aside, then the fight starts at once (no node panel, no Fight button). Losing it, the raiders run off with some Maple Leaves
+// (the game's money; Materia are crafting items, not a currency): a roll from 10 up to the cap, which is 15 on Map 0 and 5 more for
+// every map you've reached, at most 100 (ambushTheftRoll). Never more than you have.
+function ambushTheftCap(){ let n = 0; try{ n = Math.max(0, furthestMapReached()); }catch(e){} return Math.min(100, 15 + 5*n); }
+function ambushTheftRoll(){ const cap = ambushTheftCap(), lo = Math.min(10, cap); return lo + Math.floor(Math.random() * (cap - lo + 1)); }
+function ambushPopHTML(hb){ return `<div class="ambush-pop-card"><div class="ambush-pop-ico" aria-hidden="true">${hb ? '🐦' : '🦦'}⚔️</div><h3>Ambush!</h3><p>${hb ? 'A Dominion patrol drops out of the canopy.' : 'A Rivergate shield-line rises out of the shallows.'}</p><small>Lose, and they run off with some of your Maple Leaves.</small></div>`; }
+function showAmbushPop(hb){ document.querySelectorAll('.ambush-pop').forEach(x=> x.remove()); const el = document.createElement('div'); el.className = 'ambush-pop'; el.setAttribute('role', 'alertdialog'); el.setAttribute('aria-label', 'Ambush!'); el.innerHTML = ambushPopHTML(hb); document.body.appendChild(el); return el; }
 function runAmbush(map, nodeKey){
   const foe = ambushFoe(), hb = foe === 'hummingbirds', positions = mapNodePositions(map), i = map.nodes.findIndex(n=> n.key === nodeKey), at = positions[i] || {x:50, y:50};
   const pos = {x: Math.max(6, Math.min(94, at.x + 7)), y: Math.max(8, Math.min(92, at.y + 15))};
   const st = {triggered: Date.now(), foe, pos, deck: ambushDeck(foe), justPopped: true}; saveAmbushState(st);
   const panel = document.getElementById('conquestNodePanel'); if(panel) panel.hidden = true; document.body.classList.remove('cq-node-focus');
   const cv = document.getElementById('conquestCanvas'), pawn = cv && cv.querySelector('.map-pawn');
-  const go = ()=>{ applyAmbushNode(); conquestSelectedNodeKey = 'ambush'; try{ renderPlay(); }catch(e){}
-    setTimeout(()=>{ if(!matchState) startConquestMatch(map.id, 'ambush'); }, reducedMotion() ? 300 : 1700); };
-  if(!cv || !pawn || !hasGsap() || reducedMotion()){ showToast(hb ? '🐦 Ambush! A Dominion patrol blocks the way.' : '🦦 Ambush! A Rivergate shield-line blocks the way.', 'warn'); go(); return; }
+  const pop = showAmbushPop(hb); try{ SoundKit.ambushTone && SoundKit.ambushTone(); }catch(e){}
+  const go = ()=>{ applyAmbushNode(); conquestSelectedNodeKey = 'ambush';
+    setTimeout(()=>{ try{ if(!matchState) startConquestMatch(map.id, 'ambush'); if(!matchState) renderPlay(); /* no fight (no energy…): the Ambush waits on the map */ } finally { if(pop.isConnected){ pop.classList.add('is-out'); setTimeout(()=> pop.remove(), 300); } } }, reducedMotion() ? 600 : 250); };
+  if(!cv || !pawn || !hasGsap() || reducedMotion()){ setTimeout(go, reducedMotion() ? 900 : 1400); return; }
   const foeEl = document.createElement('div'); foeEl.className = 'map-pawn map-foe ' + (hb ? 'foe-humming' : 'foe-otter'); foeEl.setAttribute('aria-hidden', 'true');
   foeEl.innerHTML = `<span class="mp-body">${hb ? '🐦' : '🦦'}</span><span class="mp-shadow"></span>`;
   const fx = Math.max(4, Math.min(96, at.x + 22)), fy = Math.max(6, at.y - 18);
@@ -15461,7 +15529,6 @@ function runAmbush(map, nodeKey){
     .fromTo(pBody, {y:0, rotation:0}, {y:-14, rotation:-18, duration:.14, yoyo:true, repeat:3, ease:'power1.out'}, '<')
     .to(pBody, {rotation:0, duration:.15})
     .to(body, {scale:1.25, duration:.18, yoyo:true, repeat:1}, '+=0.05');
-  showToast(hb ? '🐦 Ambush! A Dominion patrol blocks the way.' : '🦦 Ambush! A Rivergate shield-line blocks the way.', 'warn');
 }
 function roadEnderKind(i){ if(i === 0) return 'skirmish'; if(i < 5) return 'elite'; if(i % 20 === 0) return 'worldboss'; if(i >= 50 && i % 10 === 0) return 'finalboss'; if(i % 5 === 0) return 'boss'; return 'miniboss'; }
 function applyRoadKinds(){
@@ -16737,7 +16804,7 @@ function cardRewardRankFor(mapId){ const n = mapNumberOf(mapId); if(n == null) r
 let pendingDeckSwap = null;
 // The cards that teach a keyword on Maps 0–1, in order: Flying, Swimmer, Diurnal (one each).
 const TEACH_KEYS = ['flying', 'swimmer', 'diurnal'];
-const TEACH_SAY = {flying:'It flies: ground units miss it half the time.', swimmer:'It swims: in the river\'s Flow rounds it gets stronger.', diurnal:'It loves the day: it gets stronger in sunlight.'};
+const TEACH_SAY = {flying:'It flies: ground units miss it half the time.', swimmer:'It swims: in the river\'s Flood rounds it gets stronger.', diurnal:'It loves the day: it gets stronger in sunlight.'};
 function teachingKeyOf(id){ const d = getCardDefs()[id] || {}; return TEACH_KEYS.find(k=> d.effects && d.effects[k] != null) || null; }
 function teachingCardPick(){
   const f = loadDialogueFlags(), defs = getCardDefs(), fac = loadFactionChoice(), arch = fac === 'hummingbirds' ? 'Hummingbird' : fac === 'otters' ? 'Otter' : null;
@@ -20599,7 +20666,8 @@ function fxlBaseDef(role){
   return Object.assign({id:FXL_IDS[role], cost:0, wait:0, rarity:'common', dmgType:'physical', effects:{}, archetypes:[mine ? FXL_MY_TYPE : FXL_FOE_TYPE], token:true, test:true, flavor:'A stand-in from the Effects library.'}, base);
 }
 // Field and fight conditions. rules go to the engine as an Arena ruleset would; units/steps/pre as in fxlScenario.
-const FXL_TIDE_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Swimmer', icon:'🏊', effects:{swimmer:true}}}, {role:'ally', slot:-1, def:{name:'Tide Runner', icon:'🌊', effects:{tide:true}}}, {role:'ally2', slot:1, def:{name:'Landlubber', icon:'🪨'}}],
+// 2026-10-15: the subject is a Tide – {Evasive}, {Armor 2} stand-in (Swimmer retired).
+const FXL_TIDE_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Tide Diver', icon:'🐟', effects:{tide:true, tideGrant:{flood:{evasive:true}, ebb:{armor:2}}}}}, {role:'ally', slot:-1, def:{name:'Tide Runner', icon:'🌊', effects:{tide:true}}}, {role:'ally2', slot:1, def:{name:'Landlubber', icon:'🪨'}}],
   foes:[{role:'foe', slot:0, def:{name:'Wave Rider', icon:'💦', effects:{tide:true}}}, {role:'foe2', slot:1}]};
 const FXL_PHASE_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Night Owl', icon:'🦉', effects:{nocturnal:2, nocturnalHp:2}}}, {role:'ally', slot:-1, def:{name:'Sun Lark', icon:'🐦', effects:{diurnal:2, diurnalHp:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]};
 const FXL_FLYER_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Hawk', icon:'🦅', effects:{flying:true}}}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}]};
@@ -20615,9 +20683,9 @@ const FXL_FIELDS = [
   {key:'dayToNight', icon:'🌗', name:'Day → Night', text:()=> 'Day and night alternate. Nocturnal units gain their bonus at night, Diurnal units by day.', rules:{phase:'cycle', phaseLen:1}, units:FXL_PHASE_UNITS, note:'The phase length is set to 1 round so night falls at once.'},
   {key:'nightToDay', icon:'🌅', name:'Night → Dawn', text:()=> 'At dawn (the first round of a new day) both sides draw a card.', rules:{phase:'nightFirst', phaseLen:1}, units:FXL_PHASE_UNITS, decks:true},
   {key:'twilight', icon:'🌆', name:'Twilight', text:()=> 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', rules:{phase:'cycle', phaseLen:1, twilight:true}, pre:3, units:{mine:[{role:'subject', slot:0, def:{name:'Dusk Moth', icon:'🦋', effects:{crepuscular:2, crepuscularHp:2}}}, {role:'ally', slot:-1, def:{name:'Night Owl', icon:'🦉', effects:{nocturnal:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Four day/night steps pass silently first, so this round brings the Twilight.'},
-  {key:'misty', icon:'🌫️', name:'Misty', text:()=> MISTY_TEXT, rules:{misty:true, phase:'off'}, visual:true, note:'Only the look changes: the mist drifts slowly, so give it a few seconds.'},
-  {key:'tideFlow', icon:'🌊', name:'Tide comes in (Flow)', text:()=> 'Once the Tide comes in (a field effect, Moonpull or a Tsunami brings it) the water flows and ebbs every round. On Flow, Tide units get +1 Attack.', rules:{}, startTide:true, units:FXL_TIDE_UNITS},
-  {key:'tideEbb', icon:'🐚', name:'Tide goes out (Ebb)', text:()=> 'On Ebb, Tide units get +1 Armor.', rules:{}, startTide:true, units:FXL_TIDE_UNITS, pre:1, note:'The Flow passes silently first, so this round brings the Ebb.'},
+  {key:'misty', icon:'🌫️', name:'Mist', text:()=> MISTY_TEXT, rules:{misty:true, phase:'off'}, visual:true, note:'Only the look changes: the mist drifts slowly, so give it a few seconds.'},
+  {key:'tideFlow', icon:'🌊', name:'Tide comes in (Flood)', text:()=> 'Once the Tide comes in (a field effect, Moonpull or a Tsunami brings it) it floods and ebbs every round. On Flood, Tide units get +1 Attack.', rules:{}, startTide:true, units:FXL_TIDE_UNITS},
+  {key:'tideEbb', icon:'🐚', name:'Tide goes out (Ebb)', text:()=> 'On Ebb, Tide units get +1 Armor.', rules:{}, startTide:true, units:FXL_TIDE_UNITS, pre:1, note:'The Flood passes silently first, so this round brings the Ebb.'},
   {key:'highTide', icon:'🌊', name:'High tide', text:()=> 'Periodic High Tides. At High Tide, Tide units get +2 Attack and +2 Armor.', rules:{highTide:true}, units:FXL_TIDE_UNITS, pre:3, note:'Three tide steps pass silently first, so this round brings the High tide.'},
   {key:'permaTide', icon:'🌊', name:'Perma-tide', text:()=> "The Tide is always in. Tide effects can't change it.", rules:{permaTide:true}, units:FXL_TIDE_UNITS},
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> "From round 2, a spout bursts in one random column each round. The Tide comes in, the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.", rules:{tideSpout:true}, units:FXL_TIDE_UNITS},
@@ -20653,11 +20721,16 @@ const FXL_SKILL_SETUPS = {
   pack: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{effects:{pack:2}}}, {role:'ally2', slot:1, def:{effects:{pack:2}}}], note:'Two Pack allies of the same type side by side.'},
   packLeader: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-2, def:{effects:{pack:2}}}, {role:'ally2', slot:2, def:{effects:{pack:2}}}], note:'Two Pack allies of its type, standing apart.'},
   hiveMind: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{effects:{swarm:true}}}], steps:[{kill:'subject'}], note:'A Swarm ally beside it; the Specimen is killed.'},
+  bloodlust: {status:{foe:{bleed:6}}, steps:['round', 'round', 'round', 'round'], note:'The dummy in front starts Bleeding, so every hit on it draws blood: +1 Attack a round, up to +3.'}, // Bloodlust (2026-10-15)
   reach: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}], note:'It faces a Flyer.'},
   boomerang: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}], note:'It faces Flyers.'},
   keenEye: {foes:[{role:'foe', slot:0, def:{name:'Mimic', icon:'🎭', effects:{changeling:true}}}, {role:'foe2', slot:1}], note:'It faces a Changeling.'},
   nocturnal: {rules:{phase:'night'}, note:'Fought at night.'}, nightblind: {rules:{phase:'night'}, note:'Fought at night.'},
   moonborn: {rules:{phase:'night', field:'moon'}, note:'Fought at night under a Full Moon.'},
+  // Zeitgeber advanced forms (2026-10-15)
+  diurnalGrant: {rules:{phase:'day'}, note:'Fought by day: it has the skills in its braces.'}, nocturnalGrant: {rules:{phase:'night'}, note:'Fought at night: it has the skills in its braces.'},
+  fullMoon: {rules:{phase:'night', field:'moon'}, note:'A Full Moon rises over it: +3/+3 for the rest of the fight.'}, fullMoonGrant: {rules:{phase:'night', field:'moon'}, note:'A Full Moon rises over it: the skills in its braces for good.'},
+  tideGrant: {startTide:true, steps:['round', 'round', 'round'], note:'The Tide is in: Flood, Ebb, Flood. Each facet in its turn.'},
   crepuscular: {rules:{phase:'cycle', phaseLen:1}, pre:3, note:'Four day/night steps pass silently first, so this round brings the Twilight.'},
   darksight: {rules:{dark:'pitch'}, note:'Fought in Pitch Black.'}, lantern: {rules:{dark:'pitch'}, note:'Fought in Pitch Black.'},
   frostbite: {rules:{field:'frozen', frostCount:3}, note:'Fought on Frigid ground.'},
@@ -20776,7 +20849,7 @@ function fxlEntries(){
 // The value a real card gives this skill (the commonest one), with the effect keys it writes; else null.
 function fxlRealSkillValue(sd){
   const defs = getCardDefs(), seen = {};
-  const probe = {}; try{ sd.apply(probe, sd.kind === 'boolean' ? true : sd.kind === 'twoNumber' ? [2, 2] : sd.kind === 'types' ? ['X'] : 2, 2); }catch(e){}
+  const probe = {}; try{ sd.apply(probe, sd.kind === 'boolean' ? true : sd.kind === 'twoNumber' ? [2, 2] : sd.kind === 'types' ? ['X'] : sd.kind === 'grant' ? 'evasive' : sd.kind === 'grant2' ? ['evasive', 'armor 2'] : 2, 2); }catch(e){}
   const keys = [...new Set([sd.key, ...Object.keys(probe), sd.numberKey].filter(Boolean))];
   Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || !d.effects || String(id).startsWith('__')) return; let v; try{ v = sd.get(d.effects); }catch(e){} if(v === undefined || v === false || v === 0) return;
     const raw = {}; keys.forEach(k=>{ if(d.effects[k] !== undefined) raw[k] = d.effects[k]; }); const sig = JSON.stringify(raw); seen[sig] = seen[sig] || {raw, n:0, from:d.name}; seen[sig].n++; });
@@ -20786,7 +20859,7 @@ function fxlRealSkillValue(sd){
 function fxlKnownTypes(){ if(fxLib && fxLib.types) return fxLib.types; const defs = getCardDefs(), s = new Set(); Object.values(defs).forEach(d=> (d && d.archetypes || []).forEach(t=> s.add(t))); if(fxLib) fxLib.types = s; return s; }
 function fxlRetype(v, to){ const T = fxlKnownTypes(); if(typeof v === 'string') return T.has(v) ? to : v; if(Array.isArray(v)) return v.map(x=> fxlRetype(x, to)); if(v && typeof v === 'object'){ const o = {}; Object.keys(v).forEach(k=> o[k] = fxlRetype(v[k], to)); return o; } return v; }
 // Skills whose stand-in value is their own default rather than 3 (2026-10-14: a Fireball 3 or a Meteor 3 shows little).
-const FXL_NUMBER_DEFAULTS = {fireball:15, meteor:20};
+const FXL_NUMBER_DEFAULTS = {fireball:15, meteor:20, bloodlust:1}; // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
 function fxlSkillEffects(sd){
   const e = {}; let from = null;
   const real = fxlRealSkillValue(sd);
@@ -20797,6 +20870,7 @@ function fxlSkillEffects(sd){
   else {
     const opts = (()=>{ try{ const o = typeof sd.selectOptions === 'function' ? sd.selectOptions() : sd.selectOptions; return Array.isArray(o) ? o : []; }catch(_){ return []; } })();
     const v = sd.kind === 'boolean' ? true : sd.kind === 'number' ? (chance ? 100 : (FXL_NUMBER_DEFAULTS[sd.key] || 3)) : sd.kind === 'twoNumber' ? [2, 2] : sd.kind === 'select' ? ((opts[0] && opts[0].value) || true)
+      : sd.kind === 'grant' ? (sd.key === 'diurnalGrant' ? 'evasive, thorns 1' : sd.key === 'nocturnalGrant' ? 'evasive, regen 2' : 'regen 2, thorns 2') : sd.kind === 'grant2' ? ['+2/+2, evasive', 'armor 2'] // 2026-10-15
       : sd.kind === 'selectNumber' ? [(opts[0] && opts[0].value) || 'damage', 3] : sd.kind === 'text' ? (()=>{ const pd = PASSIVE_DEFS.find(p=> p.key === sd.key); return pd && pd.placeholder ? String(pd.placeholder).split('·')[0].trim() : undefined; })() : sd.kind === 'types' ? [sd.key === 'defiance' ? FXL_FOE_TYPE : FXL_MY_TYPE] : sd.kind === 'cardCount' ? {defId: FXL_IDS.ally2, count: 1} : undefined;
     if(v === undefined) return {e, from, unsupported:`No card uses it yet and its value (${sd.kind}) can't be guessed.`};
     try{ sd.apply(e, v, 2); }catch(err){ return {e, from, unsupported:'Its value could not be applied.'}; }
@@ -21899,7 +21973,7 @@ const FIELD_EFFECTS = [
   {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there are pushed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', editorOnly:true}, // 2026-10-14
   {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:'Level 1: units without Darksight miss 1 attack in 4. A Lantern lights your side.', editorOnly:true}, // 2026-10-15
   {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:'Level 2: units without Darksight miss 1 attack in 2. A Lantern lights your side.', editorOnly:true}, // 2026-10-15
-  {id:'misty',     group:'misty', icon:'🌫️', name:'Misty',        weird:1, cost:1, rules:{misty:true}, text:'Mist hides the sun and moon: Diurnal and Nocturnal bonuses never apply.', editorOnly:true}, // 2026-10-14: no map has it yet
+  {id:'misty',     group:'misty', icon:'🌫️', name:'Mist',         weird:1, cost:1, rules:{misty:true}, text:'There is no day/night cycle.', editorOnly:true}, // 2026-10-15 wording // 2026-10-14: no map has it yet
   {id:'hightide',  group:'highTide', icon:'🌊', name:'High Tide',   weird:2, cost:1, rules:{highTide:true}, text:'Periodic High Tides (they move Tide units only).', editorOnly:true},
   {id:'double',    group:'actions', icon:'⚡', name:'Double Time',   weird:4, cost:2, rules:{actions:2}, text:'Each side plays 2 cards a turn.'},
   {id:'collapse',  group:'mode', icon:'🧱', name:'Collapse',        weird:4, cost:2, battleMode:'gravity', text:'When a card falls, the cards beside it slide toward the centre.', arenaOnly:true},
@@ -22819,6 +22893,7 @@ function renderMatchUI(){
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
+        ${m.raidersTook ? raidersTookHTML(m) : '' /* the surprise challenge lost (2026-10-15) */}
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
@@ -23786,7 +23861,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, staggered:rc.staggered||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0};
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, staggered:rc.staggered||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0};
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -23848,6 +23923,15 @@ function renderBoard(opts){
       if(c){ let h = boardCardHTML(c, defs, {dance, scatter, danceStyle:nextDanceStyle(), pid:pl.id, extraClass: (c.gladiatorLeader ? 'is-gladiator-leader' : '') + (cur ? ' is-cursed' : '')});
         if(mark){ const k = h.lastIndexOf('</div>'); if(k >= 0) h = h.slice(0, k) + mark + h.slice(k); }
         html += h; continue; }
+      // 2026-10-15 (user: "The middle slot should be visible again once you lose all your units."): open/gladiator rows
+      // drew an empty row as invisible gaps (and the "+" targets only show while a card is held), so a wiped-out row had
+      // no middle marker. With no unit left on the row, slot 0 is the old ✦ centre placeholder again (still the "+" drop
+      // target on your own turn; the enemy's is the card-shaped shadow).
+      if(sl===0 && bySlot.size===0){
+        const tgt = pl.id===viewerPid && legalForViewer.has(0);
+        html += `<div class="board-card center-slot-empty${tgt ? ' slot-target is-centre-target' : ''}${cur ? ' is-cursed' : ''}"${tgt ? ` data-slot="0" title="Play here${cur ? ` (cursed: ${cur} a round)` : ''}"` : ' aria-hidden="true"'}><div class="center-slot-inner">✦</div>${mark}</div>`;
+        continue;
+      }
       if(pl.id===viewerPid && legalForViewer.has(sl)) html += `<div class="board-card slot-target${cur ? ' is-cursed' : ''}" data-slot="${sl}" title="Play here${cur ? ` (cursed: ${cur} a round)` : ''}"><span class="slot-target-plus">＋</span>${mark}</div>`;
       else html += `<div class="board-card empty-slot${cur ? ' is-cursed' : ''}" aria-hidden="true">${mark}</div>`;
     }
@@ -23909,7 +23993,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -25367,7 +25451,7 @@ function boardCardHTML(c, defs, opts){
   // tinted blue, and the card details split it into base + bonus.
   // 2026-10-12 (user: "Crabs that benefit from the tide must show their modified attack"; Rage doubles): the board's Attack
   // includes Flow's +1, Inspired, and Rage's doubling.
-  const tideNow = (isTideDefApp(d) && matchState && matchState.engine && matchState.engine.getTide && matchHasTide(matchState)) ? matchState.engine.getTide() : null;
+  const tideNow = (isTideDefApp(d) && !((d.effects||{}).tideGrant && !(d.effects||{}).supremeTide) && matchState && matchState.engine && matchState.engine.getTide && matchHasTide(matchState)) ? matchState.engine.getTide() : null;
   let effAtk = c.atk + (c.rallyBonus||0) + (c.worshipBonus||0) + (c.phaseAtk||0) + (c.inspired||0) + (tideNow==='flow' ? 1 : tideNow==='high' ? 2 : 0) + (((d.effects||{}).swarm) ? liveSwarmBonus(c) : 0);
   if(raging) effAtk *= 2;
   const atkLabel = atkLabelHTML(effAtk, d.attack, d);
@@ -25378,6 +25462,7 @@ function boardCardHTML(c, defs, opts){
   if(c.poison>0) badges.push(`<span class="abadge poison">☠${c.poison}</span>`);
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
+  if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   // 2026-09-20 fix: blind/shocked/corrode badges existed in updateCardStatusDisplay's live-patch
@@ -26450,6 +26535,7 @@ function updateCardStatusDisplay(uid){
   if(c.poison>0) badges.push(`<span class="abadge poison">☠${c.poison}</span>`);
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
+  if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
@@ -27257,7 +27343,7 @@ async function resolveRound(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, staggered:c.staggered||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, staggered:c.staggered||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0};
       });
     });
   });
@@ -27637,6 +27723,10 @@ async function resolveRound(opts){
     }
     if(m.mode==='conquest' && m.fightSession) setTimeout(()=> handInFight(m), 0);
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ m.conquestRankEarned = lossRankFor(m); }catch(e){} } // F / FF / FFF (2026-10-11)
+    // The surprise challenge lost (2026-10-15): the raiders run off with some Maple Leaves (see ambushTheftRoll).
+    if(m.mode==='conquest' && m.winner===2 && m.conquestNode && !m.adminTest && !m.raidersTook){ try{ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId);
+      if(fn && fn.node && fn.node.ambush){ const want = ambushTheftRoll(), have = Math.max(0, Math.floor(myCurrencies.gold || 0)), n = Math.min(have, want);
+        if(n > 0){ myCurrencies.gold = have - n; saveCurrencies(); } m.raidersTook = {n, want}; } }catch(e){} }
     if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest){
       // Reward payouts (2026-09-20) — see CONQUEST_NODE_REWARDS' own comment. isFirstClear MUST
       // be read before completeConquestNode() below mutates progress.completed, or every clear
@@ -28057,14 +28147,10 @@ function matchHasDefWhere(m, key, test){
 // 2026-10-14: day and night now come from the map, so where the sun rises and sets (Dawn draws both sides a card) the board shows it
 // whether or not a deck cares; a fixed Day or Night still shows only when a card cares.
 function matchPhaseMatters(m){ try{ const pm = m && m.engine && m.engine.getPhaseMode ? m.engine.getPhaseMode() : null; if(pm === 'cycle' || pm === 'nightFirst') return true; }catch(e){} return matchHasPhaseCards(m); }
-function matchHasPhaseCards(m){ return matchHasDefWhere(m, '_hasPhase', e=> e.nocturnal || e.nocturnalHp || e.diurnal || e.diurnalHp || e.moonborn || e.lantern); }
-function matchHasMoonCards(m){ return matchHasDefWhere(m, '_hasMoon', e=> e.moonborn); }
+function matchHasPhaseCards(m){ return matchHasDefWhere(m, '_hasPhase', e=> e.nocturnal || e.nocturnalHp || e.diurnal || e.diurnalHp || e.diurnalGrant || e.nocturnalGrant || e.moonborn || e.fullMoon || e.fullMoonGrant || e.lantern); }
+function matchHasMoonCards(m){ return matchHasDefWhere(m, '_hasMoon', e=> e.moonborn || e.fullMoon || e.fullMoonGrant); } // + Full Moon (2026-10-15)
 const MOON_PHASES = [['🌑','New moon'],['🌒','Waxing crescent'],['🌓','First quarter'],['🌔','Waxing gibbous'],['🌕','Full moon'],['🌖','Waning gibbous'],['🌗','Last quarter'],['🌘','Waning crescent']];
-function moonPillHTML(m){
-  if(!m.engine || !m.engine.moonPhase || !matchHasMoonCards(m)) return '';
-  const [ico, name] = MOON_PHASES[m.engine.moonPhase()] || MOON_PHASES[0], full = Math.round((m.engine.moonFullness() || 0) * 100);
-  return bfPillHTML('moon-pill', ico, name, '', pillTipHTML(name, ['Moonborn units get ' + full + '% of their bonus at night.']), name); // 2026-10-14: one line
-}
+// (moonPillHTML went 2026-10-15: the moon's phase is the Night pill's icon now, see phasePillHTML.)
 // Night creeps in (2026-10-12, user: "When night happens, cause darkness to creep into the field. As fast as night enters,
 // when its day, the night leaves the other direction, mimicking the way the earth travels around the sun"): a dark veil
 // slides over the board from the right at nightfall and carries on out to the left at dawn. Only with phase cards in play.
@@ -28158,11 +28244,7 @@ function phaseTipLines(phase, m){
   return [skillHiddenNow('diurnal') ? 'The sun is up.' : 'Diurnal units get stronger in the Day.'];
 }
 // 2026-10-14 (user: "Remove the 'Wash' effect. Also, don't have to talk about the tide order"): only what Tide units get now.
-const TIDE_TIPS = {
-  high: ['Tide units get +2 Attack and +2 Armor.'],
-  flow: ['Tide units get +1 Attack.'],
-  ebb: ['Tide units get +1 Armor.'],
-};
+const TIDE_TIPS = {high: ['Tide goes in, Ebb goes out.'], flow: ['Tide goes in, Ebb goes out.'], ebb: ['Tide goes in, Ebb goes out.']}; // 2026-10-15: state only
 // 2026-10-15 (SKILL_REVEAL): while Tide is still "?" the pill only says what the water does.
 const TIDE_TIPS_HIDDEN = {high: ['The water is very high.'], flow: ['The water rises.'], ebb: ['The water falls back.']};
 function tideTipLines(k){ return (skillHiddenNow('tide') ? TIDE_TIPS_HIDDEN : TIDE_TIPS)[k] || []; }
@@ -28172,69 +28254,69 @@ function tideTipLines(k){ return (skillHiddenNow('tide') ? TIDE_TIPS_HIDDEN : TI
 function liveTideState(e){
   try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || !m.engine || !m.engine.getTide || !matchHasTide(m)) return null;
     const t = m.engine.getTide(); if(!t) return null;
+    if(e && e.tideGrant && typeof e.tideGrant === 'object' && !e.supremeTide){ const fl = grantBraceText(e.tideGrant.flood), eb = grantBraceText(e.tideGrant.ebb); // Tide – {…}, {…} (2026-10-15)
+      return t === 'ebb' ? {k:'ebb', name:'Ebb', bonus:eb} : t === 'high' ? {k:'high', name:'High Tide', bonus: fl + ', ' + eb} : {k:'flow', name:'Flood', bonus:fl}; }
     const sw = e && e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : null, up = t === 'high' ? 2 : 1;
     const rising = sw === 'extraAttack' ? [`+${up + 1} Attack`] : [`+${up} Attack`].concat(sw === 'quickAttack' ? ['Quick Attack'] : sw === 'evade' ? ['Evasive'] : []); // "Evade -> Evasive." (2026-10-15)
     if(sw && e.swimmerGrant && typeof e.swimmerGrant === 'object' && Object.keys(e.swimmerGrant).length) rising.push(grantText(e.swimmerGrant)); // 2026-10-15
     if(t === 'ebb') return {k:'ebb', name:'Ebb', bonus:'+1 Armor'};
     if(t === 'high') return {k:'high', name:'High Tide', bonus: rising.concat('+2 Armor').join(', ')};
-    return {k:'flow', name:'Tide', bonus: rising.join(', ')};
+    return {k:'flow', name:'Flood', bonus: rising.join(', ')}; // 2026-10-15: Flow is called Flood
   }catch(err){ return null; }
 }
+// 2026-10-15 (user: "The field effects are hidden to the left. My opinion, ONLY show the state. Don't need to show what's next. Say
+// Tide or Ebb - sufficient. Day or Night and X/3. Wind: Put a wind emoji, then a up or down emoji but stacked together. Ebb should say
+// nothing, just 'Tide goes in, Ebb goes out' ... So the max is Day/Night X/X pill + Wind x Direction pill + Flood/Ebb/HighTide pill
+// where HighTide is 2 waves. Others will be similar ... ALL of them require a field effect to occur EXCEPT Day/Night ... In Map 0 ...
+// there's no day/night, but there's a pill that says Mist. When you scroll over it, it says '?'. In misty maps in later levels, they
+// explicitly have a Mist pill in the battlefield AND a Mist effect card"): the board's pills say only the state, now. The "next round"
+// forecast pill is gone (the engine's forecast() stays for the AI and tests); the moon rides in the Night pill (its phase is the
+// Night pill's icon); the tide pill reads Flood / Ebb / 🌊🌊 with one line, "Tide goes in, Ebb goes out."; the wind is 💨 with its
+// arrow stacked on it. Only Day/Night needs no field effect: the tide pill shows while a tide runs (the field or a Moonpull brought
+// it), the wind pill only on windy maps, the Mist pill only on misty ones.
+const TIDE_PILL_TIP = 'Tide goes in, Ebb goes out.';
 function tidePillHTML(m){
   const t = dayNightOn(m) && m.engine.getTide && m.engine.getTide();
   if(!t || !matchHasTide(m)) return '';
-  const high = t==='high', flow = t==='flow' || high, k = high ? 'high' : flow ? 'flow' : 'ebb', name = high ? _t('High tide') : flow ? _t('Flow') : _t('Ebb');
-  return bfPillHTML('tide-' + t, high ? '🌊🌊' : flow ? '🌊' : '🐚', name, '', pillTipHTML(name, tideTipLines(k)), 'Tide: ' + (high ? 'High tide' : flow ? 'Flow' : 'Ebb'));
+  const high = t==='high', flow = t==='flow', name = high ? _t('High Tide') : flow ? _t('Flood') : _t('Ebb');
+  return bfPillHTML('tide-' + t, high ? '🌊🌊' : flow ? '🌊' : '', name, high ? '' : name, pillTipHTML(name, [TIDE_PILL_TIP]), 'Tide: ' + (high ? 'High Tide' : flow ? 'Flood' : 'Ebb'));
 }
-// The wind this round (from the last 'wind' event, kept on the match so a re-render keeps it).
+// The wind this round (from the last 'wind' event, kept on the match so a re-render keeps it): 💨 with a small ⬆ (at your back) or
+// ⬇ (in your face) stacked on it; a calm round between gusts is a faded 💨.
 function windPillHTML(m){
   const w = m && m._windNow; if(!w || m.over) return '';
-  const fr = matchFieldRules(m) || {};
-  // 2026-10-14: two short lines; the pill is 🌬️ with an arrow (⬆ at your back, ⬇ in your face)
-  if(!w.windy) return bfPillHTML('wind-pill is-calm', '🍂', 'Calm', '', pillTipHTML('Calm', ['No strong wind this round.']), 'Wind: calm');
-  const often = fr.wind === 'gale' ? 'A gale every round.' : 'Strong wind every other round.';
-  return bfPillHTML('wind-pill is-windy', '🌬️', w.mine ? 'Wind at your back' : 'Wind in your face', w.mine ? '⬆' : '⬇', pillTipHTML(w.mine ? 'Wind at your back' : 'Wind in your face', [(w.mine ? 'Your Flyers get a quick extra turn; theirs act twice. ' : 'Their Flyers get a quick extra turn; yours act twice. ') + often]), 'Wind ' + (w.mine ? 'at your back' : 'in your face'));
+  if(!w.windy) return bfPillHTML('wind-pill is-calm', '<span class="wind-ico">💨</span>', 'Calm', '', pillTipHTML('Calm', ['No strong wind this round.']), 'Wind: calm');
+  const head = w.mine ? 'Wind at your back' : 'Wind in your face';
+  return bfPillHTML('wind-pill is-windy', `<span class="wind-ico">💨<i class="wind-dir">${w.mine ? '⬆' : '⬇'}</i></span>`, head, '', pillTipHTML(head, [w.mine ? 'Your Flyers act first; theirs trigger twice.' : 'Their Flyers act first; yours trigger twice.']), 'Wind ' + (w.mine ? 'at your back' : 'in your face'));
 }
-// Fields that act every round wear the clock on their south border, like a unit's trigger badge (2026-10-12, user: "On the
-// frost effect card, also include that on its south border - let's start doing that to make the game consistent").
+// The Mist (2026-10-15): Map 0's mist is a pill whose hover says only "?"; a misty map further on says what it does (its Environment
+// card says the same).
+function mistPillHTML(m){
+  const fr = matchFieldRules(m) || {}; if(!fr.misty || !m || m.over) return '';
+  const lines = matchFieldUnrevealed(m) ? null : mistLines(m);
+  return bfPillHTML('mist-pill', '🌫️', 'Mist', 'Mist', lines ? pillTipHTML('Mist', lines) : '<b class="pt-h">?</b>', lines ? 'Mist: ' + lines.join(' ') : 'Mist');
+}
+function mistLines(m){ return [MISTY_TEXT].concat(mistHidesMoon(m) ? [MISTY_MOON_TEXT] : []); }
+function mistHidesMoon(m){ try{ return !!(m && matchHasMoonCards(m)); }catch(e){ return false; } }
+
 const FIELD_EVERY_ROUND = new Set(['frozen', 'heatwave', 'rain']);
-// Next round, said a round early (D80, 2026-10-13): nightfall and dawn, the tide's turn, the wind and the eruption.
-// 2026-10-14: a battlefield pill too; its tooltip says what each change will do.
-function forecastPillHTML(m){
-  try{ if(!m || m.over || m.mode === 'tutorial' || !m.engine || !m.engine.forecast) return '';
-    const f = m.engine.forecast(), bits = [], tips = [], mine = (m.mode === 'liveRanked' && m.liveMySeat === 2) ? 2 : 1, fr = matchFieldRules(m) || {};
-    const add = (b, t)=>{ bits.push(b); tips.push(b + ': ' + t); };
-    if(f.phaseChanges && matchPhaseMatters(m)) add(f.phase === 'night' ? '🌙 Night falls' : f.phase === 'twilight' ? '🌆 Twilight' : '☀️ Dawn (both draw)', phaseTipLines(f.phase === 'night' ? 'night' : f.phase === 'twilight' ? 'twilight' : 'dawn', m).join(' '));
-    const tNow = m.engine.getTide && m.engine.getTide(); if(f.tide && f.tide !== tNow && matchHasTide(m)) add(f.tide === 'high' ? '🌊🌊 High tide' : f.tide === 'flow' ? '🌊 Flow' : '🐚 Ebb', tideTipLines(f.tide === 'high' ? 'high' : f.tide === 'flow' ? 'flow' : 'ebb').join(' '));
-    if(f.wind) add(f.wind.from === mine ? '🌬️ Wind at your back' : '🌬️ Wind in your face', f.wind.from === mine ? 'your Flyers get a quick extra turn before combat; theirs use their skills and triggers twice.' : 'their Flyers get a quick extra turn before combat; yours use their skills and triggers twice.');
-    if(f.eruption) add(`🔥 ${SCORCHED_NAME} ${f.eruption}`, `the ground burns one random unit on each side for ${f.eruption} fire damage (units that resist fire are spared).`);
-    if(f.comets) add(`☄️ Comets (${f.comets} more)`, 'every unit on both sides takes 2–5 fire damage (fire-resistant units take half).'); // after an Eruption (2026-10-14)
-    if(f.tideSpout) add('⛲ Tide-spout', ((fieldConditionRows(fr).find(r=> r.key === 'tideSpout') || {}).text) || 'a spout bursts in one random column.'); // 2026-10-14
-    if(f.volcano) VOLCANO_HAZARDS.forEach(h=>{ const p = f.volcano[h.key]; if(p > 0) add(`${h.icon} ${h.name}: ${volcanoBand(p)}`, h.text(fr)); }); // 2026-10-14: the odds, as a band word
-    if(f.field && f.fieldLeft === 1) add('The field clears', "the field card's effect ends after this round.");
-    if(!bits.length) return '';
-    const part = b=>{ const m0 = /^(\S+)\s+(.*)$/.exec(b); return m0 && /[^\w]/.test(m0[1]) && !/^[A-Za-z]/.test(m0[1]) ? [m0[1], m0[2]] : ['🌐', b]; };
-    // 2026-10-14: ⏭ and the icons only; the words are in the tooltip
-    return `<button type="button" class="forecast-pill bf-pill" aria-expanded="false" aria-label="${escapeAttr('Next round: ' + bits.join(', '))}"><span class="fp-k" aria-hidden="true">⏭</span>${bits.map(b=>{ const [i, t] = part(b); return `<span class="fp-b"><i aria-hidden="true">${i}</i> <span class="fp-t">${escapeHtml(t)}</span></span>`; }).join('')}<span class="tp-tip" role="tooltip">${pillTipHTML('Next round', tips)}</span></button>`;
-  }catch(e){ return ''; }
-}
 function phasePillHTML(m){
   const phase = (dayNightOn(m) && matchPhaseMatters(m)) ? m.engine.getPhase() : null; if(!phase) return '';
   const PL = (m.engine && m.engine.getPhaseLen) ? m.engine.getPhaseLen() : 3;
   const zs = (m.engine && m.engine.getZeitStart) ? m.engine.getZeitStart() : null, rr0 = zs != null ? Math.max(0, (m.round||1) - zs) : Math.max(1, m.round||1) - 1;
   const roundInPhase = (rr0 % PL) + 1;
   const pmode = (m.engine && m.engine.getPhaseMode) ? m.engine.getPhaseMode() : 'cycle', cycling = pmode==='cycle' || pmode==='nightFirst';
-  const phIco = phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️', phName = phase==='night' ? _t('Night') : phase==='twilight' ? 'Twilight' : _t('Day');
-  // 2026-10-14 (user: "Just write Night and Day alternate every 3 days. Nocturnal units get stronger at night while Diurnal units, in
-  // the Day."): the cycle's real length is rules.phaseLen (3 unless a map changes it), so the number comes from the engine.
-  const both = (skillHiddenNow('nocturnal') || skillHiddenNow('diurnal')) ? '' : 'Nocturnal units get stronger at night, Diurnal units in the Day.'; // 2026-10-15: unnamed while still "?" (SKILL_REVEAL)
-  const lines = cycling ? [`Night and Day alternate every ${PL} days.`, both] : pmode === 'realtime' ? ['Night and Day follow your clock.', both] : phase === 'twilight' ? phaseTipLines('twilight', m) : [`${phName} all match.`, both];
-  return bfPillHTML('phase-' + phase, phIco, phName, cycling ? `${roundInPhase}/${PL}` : '', pillTipHTML(phName, lines), cycling ? `${phName}, round ${roundInPhase} of ${PL}` : phName);
+  const phName = phase==='night' ? _t('Night') : phase==='twilight' ? 'Twilight' : _t('Day');
+  // 2026-10-15: the moon (when a card cares about it) is the Night pill's icon: 🌒 1/3, its phase named in the tooltip.
+  const moon = phase === 'night' && m.engine.moonPhase && matchHasMoonCards(m) ? (MOON_PHASES[m.engine.moonPhase()] || MOON_PHASES[0]) : null;
+  const phIco = moon ? moon[0] : phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️';
+  const lines = [cycling ? `Night and Day alternate every ${PL} days.` : pmode === 'realtime' ? 'Night and Day follow your clock.' : `${phName} all match.`].concat(moon ? [moon[1] + '.'] : []);
+  return bfPillHTML('phase-' + phase, phIco, phName, cycling ? `${roundInPhase}/${PL}` : '', pillTipHTML(phName, lines), (cycling ? `${phName}, round ${roundInPhase} of ${PL}` : phName) + (moon ? ', ' + moon[1] : ''));
 }
 function bfPillsHTML(m){
   if(!m || !m.engine) return '';
   const rs = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? bfPillHTML('arena-rs-pill', m.arenaRuleset.icon, m.arenaRuleset.name, '', pillTipHTML(m.arenaRuleset.name, [m.arenaRuleset.text]), m.arenaRuleset.name) : '';
-  let inner = ''; try{ inner = phasePillHTML(m) + moonPillHTML(m) + tidePillHTML(m) + windPillHTML(m) + rs + forecastPillHTML(m); }catch(e){}
+  let inner = ''; try{ inner = phasePillHTML(m) + mistPillHTML(m) + windPillHTML(m) + tidePillHTML(m) + rs; }catch(e){} // 2026-10-15: state only (no forecast, the moon in the Night pill)
   return `<div class="bf-pills" id="bfPills">${inner}</div>`;
 }
 function refreshBfPills(m){ const el = document.getElementById('bfPills'); if(!el || !m) return; const t = document.createElement('div'); t.innerHTML = bfPillsHTML(m); const n = t.firstElementChild; if(n) el.innerHTML = n.innerHTML; }
@@ -28272,8 +28354,16 @@ function matchFieldTileHTML(def, cls, attrs, badges){
 // Each card says one short line; hover (or hold) shows that rule in full. The stack keeps the old #fieldCondCard id, so the
 // terrain banner still flies into it and a new row still lights it.
 function fieldEnvBiome(key){ return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
+// The field's rows in a fight (2026-10-15): Map 0's Mist is only a pill (its hover says "?"), not a card; a misty map that cares about
+// the moon adds "The Moon is not visible." to its Mist card.
+function matchFieldCondRows(m, fr){
+  let rows = fieldConditionRows(fr || {});
+  if(matchFieldUnrevealed(m)) rows = rows.filter(r=> r.key !== 'misty');
+  rows.forEach(r=>{ if(r.key === 'misty' && mistHidesMoon(m)){ r.text = MISTY_TEXT + ' ' + MISTY_MOON_TEXT; r.short = MISTY_SHORT + ', no moon'; } });
+  return rows;
+}
 function fieldCondCardHTML(m){
-  const fr = matchFieldRules(m), rows = fieldConditionRows(fr || {});
+  const fr = matchFieldRules(m), rows = matchFieldCondRows(m, fr);
   if(m && m.mode !== 'tutorial' && !matchFieldUnrevealed(m)) rows.forEach(row=>{ if(FIELD_ROWS_AT_START.has(row.key)) markFieldRow(row.key); }); // not on Map 0 (2026-10-15)
   const tr = terrainOfMatch(m);
   if(tr) maybeTerrainIntro(m);
@@ -28281,7 +28371,7 @@ function fieldCondCardHTML(m){
   const n = rows.length;
   const cards = rows.map((row, i)=>{
     const st = fieldRowState(row.key), unknown = st === 'unknown' && !(m && m.fxLib); // the Effects library always shows the line (Map 0 no longer does, 2026-10-15)
-    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title:'An environment card: a rule of this battlefield'}};
+    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: unknown ? '?' : row.text}}; // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'")
     const line = `<div class="env-line">${unknown ? '?' : escapeHtml(row.short)}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`;
     return matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}${st === 'new' ? ' has-new' : ''}`, `tabindex="0" data-fieldhover="cond:${escapeAttr(row.key)}" role="button" style="--i:${i}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (unknown ? fieldRowQTip(row) : row.text))}"`, line);
   }).join('');
@@ -28289,10 +28379,10 @@ function fieldCondCardHTML(m){
 }
 function fieldCondHoverHTML(key){
   const m = matchState; if(!m) return '';
-  const fr = matchFieldRules(m) || {}, rows = fieldConditionRows(fr).filter(r=> !key || r.key === key);
+  const fr = matchFieldRules(m) || {}, rows = matchFieldCondRows(m, fr).filter(r=> !key || r.key === key);
   if(!rows.length) return '';
   const head = rows.length === 1 ? `${rows[0].icon} ${rows[0].name}` : 'Environment';
-  return `<div class="field-hover env-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">🌿</span><b>${escapeHtml(head.trim())}</b></div><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul><p class="fh-left">Environment card: a rule of this battlefield.</p></div>`;
+  return `<div class="field-hover env-hover"><div class="fh-head"><span class="fh-ico" aria-hidden="true">🌿</span><b>${escapeHtml(head.trim())}</b></div><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul></div>`; // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'"): the footer line is gone
 }
 function fieldEffectCardHTML(m){
   const id = fieldEffectOf(m), f = id && m.engine.getField(); if(!f) return '';
@@ -29486,6 +29576,12 @@ function rewardsCheer(){
     }
   });
 }
+// "The raiders ran off with N Maple Leaves" on the defeat card, with a few leaves scattering out of it (2026-10-15).
+function raidersTookHTML(m){
+  const r = m.raidersTook || {}, n = r.n || 0, glyph = (CURRENCY_META.gold || {}).glyph || '🍁';
+  const coins = n > 0 ? Array.from({length:9}, (_, k)=>{ const a = (k / 9) * Math.PI * 2 + 0.4, d = 46 + (k % 3) * 14; return `<i style="--dx:${(Math.cos(a)*d).toFixed(0)}px; --dy:${(Math.sin(a)*d*0.6 - 10).toFixed(0)}px; --d:${(k*0.04).toFixed(2)}s">${glyph}</i>`; }).join('') : '';
+  return `<p class="wl-raiders">${n > 0 ? `🏃 The raiders ran off with <b>${n}</b> ${glyph} Maple Leaves.` : '🏃 The raiders found your purse empty and ran off.'}${coins ? `<span class="wl-raid-coins" aria-hidden="true">${coins}</span>` : ''}</p>`;
+}
 function matchStatsHTML(m){
   const totals = computeMatchStats(m);
   // 'dealt'/'biggestHit': higher is better (gold-highlighted). 'taken': LOWER is better, since
@@ -29683,7 +29779,9 @@ function lockShards(lock){
   });
 }
 // 2026-10-15: names for the statusEnd log line (the engine logs a status running out).
-const STATUS_END_NAMES = {poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Expose', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification'};
+// Exposed (2026-10-15) (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss.")
+function exposedTip(n){ return `Exposed: takes +1 damage from each of its next ${n} hit${n===1 ? '' : 's'}, and attacks at it can't miss.`; }
+const STATUS_END_NAMES = {poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification'};
 function logText(ev){
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
@@ -29714,8 +29812,9 @@ function logText(ev){
     case 'stunPlayer': return {cls:'poison', text:`🔔 ${nm(ev.attDefId)}: ${ev.side==='A' ? 'the enemy skips' : 'you skip'} ${ev.turns>1 ? ev.turns + ' turns' : 'a turn'}.`};
     case 'curse': return {cls:'poison', text:`🜏 The ground under ${nm(ev.targetDefId)} is desecrated: ${ev.total} damage a round to whoever stands there.`};
     case 'curseTick': return {cls:'poison', text:`🜏 ${nm(ev.defId)} burns on cursed ground (${ev.dmg}).`};
-    case 'tide': if(ev.moonpull) return {cls:'', text:`🌙🌊 ${nm(ev.defId)}'s Moonpull: the Tide comes in. Flow!`}; if(skillHiddenNow('tide')) return {cls:'', text: ev.tide==='high' ? '🌊🌊 High tide!' : ev.tide==='flow' ? '🌊 Flow: the water rises.' : '🐚 Ebb: the water falls back.'}; // Tide still "?" (SKILL_REVEAL, 2026-10-15)
-      return {cls:'', text: ev.tide==='high' ? '🌊🌊 High tide! Tide units get +2 Attack and +2 Armor.' : ev.tide==='flow' ? '🌊 Flow: Tide units +1 Attack.' : '🐚 Ebb: Tide units +1 Armor.'};
+    case 'tide': if(ev.moonpull) return {cls:'', text:`🌙🌊 ${nm(ev.defId)}'s Moonpull: the Tide comes in. Flood!`}; // 2026-10-15 (user: "Ebb should say nothing, just 'Tide goes in, Ebb goes out' since it's not a universal truth that Tide units get 1
+      // armor on Ebb"): the log says the state, like the pill; each card's own line says what it gets.
+      return {cls:'', text: ev.tide==='high' ? '🌊🌊 High Tide!' : ev.tide==='flow' ? '🌊 Flood: the tide goes in.' : '🐚 Ebb: the tide goes out.'};
     case 'wash': return ev.spout ? {cls:'', text:`⛲ The spout washes ${nm(ev.targetDefId)} back: +1 Wait${ev.dmg ? `, and ${ev.dmg} water damage` : ''}.`} : {cls:'', text:`🌊 ${nm(ev.defId)} washes ${nm(ev.targetDefId)} back: +1 Wait.`};
     // Irradiation tokens (2026-10-14): what each token took this upkeep.
     case 'irradiation': { const pts = (ev.points||[]).map(p=> p.kind==='hp' ? '−1 max Health' : p.kind==='atk' ? '−1 Attack' : p.what==='removed' ? `lost ${irrSkillName(p)}` : p.what==='weakened' ? `${irrSkillName(p)} weakened` : p.what==='narrowed' ? `${irrSkillName(p)} narrowed` : `${irrSkillName(p)} −1`);
@@ -29790,10 +29889,11 @@ function logText(ev){
           castleThorns: ()=> `🌿 The Thorn Cage cuts ${nm(ev.targetDefId)} (${ev.amount}).`, herbHeal: ()=> `⚗️ The Herb Refinery mends ${nm(ev.targetDefId)} (+${ev.amount}).`,
           herbBane: ()=> `⚗️ The Herb Refinery's bitter brew splashes ${nm(ev.targetDefId)} (${ev.amount}).`, castleSpawn: ()=> `🏰 ${ev.amount > 1 ? ev.amount + '× ' : ''}${nm(ev.targetDefId)} ${ev.amount > 1 ? 'pour' : 'slips'} out of the castle.`}[ev.kind];
         if(castleTxt) return {cls: ev.kind==='herbHeal' ? 'heal' : '', text: castleTxt()}; }
+      if(ev.kind === 'exposedHit') return {cls:'', text:`🎯 ${nm(ev.targetDefId)} is Exposed: +1 damage${ev.amount ? ` (${ev.amount} more hit${ev.amount===1 ? '' : 's'})` : ''}.`}; // 2026-10-15
       const kindText = {
         surge: `surges with the mountain's fire: +${ev.atk} Attack, +${ev.hp} Health 🌋`,
         poison: `poisoned ${nm(ev.targetDefId)} (+${ev.amount} ☠)`,
-        expose: `exposed ${nm(ev.targetDefId)} 🎯`,
+        expose: `exposed ${nm(ev.targetDefId)} 🎯 (+1 damage from its next ${ev.amount||1} hit${(ev.amount||1)===1 ? '' : 's'}, and they can't miss)`, // 2026-10-15
         stun: `stunned ${nm(ev.targetDefId)} 💫`,
         debuffAttack: `lowered ${nm(ev.targetDefId)}'s Attack by ${ev.amount}`,
         scar: `scarred ${nm(ev.targetDefId)} (+${ev.amount} 🗡)`,
@@ -29811,7 +29911,7 @@ function logText(ev){
         cower: ev.mode === 'flee' ? `was hit last turn and backs off${ev.amount ? ` (+${ev.amount} Health)` : ''} 🫣` : `was hit last turn and hides in its shell: attacks can't hurt it this turn 🫣`,
         ichor: `splashed ${nm(ev.targetDefId)} with corrosive blood: ${ev.amount} acid${ev.armor ? ', −1 Armor' : ''}, Bleed 1 🧪`,
         shellDown: `came out of its shell 🐚`,
-        swimmer: skillHiddenNow('swimmer') ? `strikes again, quick as a flash ❔` : `rode the Flow for a quick attack 🏊`, // 2026-10-15: unnamed while Swimmer is "?" (SKILL_REVEAL)
+        swimmer: skillHiddenNow('swimmer') ? `strikes again, quick as a flash ❔` : `rode the Flood for a quick attack 🏊`, // 2026-10-15: unnamed while Swimmer is "?" (SKILL_REVEAL)
         // Nocturnal / Diurnal / Crepuscular growing and fading with the phase (2026-10-15: these printed the bare event name before).
         // While the skill is still "?" (SKILL_REVEAL) the line doesn't say why.
         phaseGrow: (()=>{ const ph = ev.phase, hid = ph === 'night' ? skillHiddenNow('nocturnal') : ph === 'twilight' ? (skillHiddenNow('crepuscular') || skillHiddenNow('nocturnal') || skillHiddenNow('diurnal')) : skillHiddenNow('diurnal'), st = `+${ev.amount||0}⚔${ev.hp ? ' +' + ev.hp + '❤' : ''}`;
@@ -29848,6 +29948,7 @@ function logText(ev){
         stagger: `staggered ${nm(ev.targetDefId)} 💢 (-50% damage dealt)`,
         berserk: `flew into a berserk rage (+${ev.amount}⚔) 😡`,
         momentum: `surged with Momentum after the kill (+${ev.amount}⚔) 🔥`,
+        bloodlust: `drew blood and its Bloodlust grows (+${ev.amount}⚔${ev.total != null ? `, ${ev.total}/${ev.max} so far` : ''}) 🩸`, // 2026-10-15
         // bleed/esprit (2026-09-21 coverage audit): the VFX/SFX side of both was fixed in the
         // batch that found them completely silent — this battle-log map had the exact same gap
         // (both fell through to the raw `|| ev.kind` fallback, printing the bare word "bleed" or
@@ -31124,7 +31225,7 @@ function eighthPassVfx(ev){
     if(ev.attUid != null && ev.targetUid != null) (matchState._lastHitOf = matchState._lastHitOf || {})[ev.attUid] = ev.targetUid; // Sap drains the last unit it hit
     if(a && t && !ev.source && !ev.ranged && !ev.fork && !ev.sweep && !ev.counter && ae.flying && !ae.swarm && !ae.quick && skillFxOnce('swoop' + ev.attUid)) F.swoop(a, t, {flight: Math.min(450, hitMs)});
     if(a && t && ev.fork && skillFxOnce('fork' + ev.attUid + ':' + ev.targetUid)) at(hitMs - 140, ()=>{ const a2 = el(ev.attUid), t2 = el(ev.targetUid); if(t2) F.forkProngs(a2, [t2], {kind: ev.prong}); });
-    if(t && Number(ae.expose) > 0 && skillFxOnce('expose' + ev.targetUid)) at(hitMs + 60, ()=>{ const t2 = el(ev.targetUid); if(t2) F.targetMark(t2); }); // passive Expose marks what it hits
+    // (passive Expose: the engine sends a statusFx 'expose' now, 2026-10-15, and its targetMark plays from there)
     if(t && ev.rend) at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.pierceThrough(t2, {from: degFrom(el(ev.attUid), t2)}); });
     else if(t && (ev.armorBlocked || (Number(te.armor) > 0 && (ev.dmg||0) >= 0)) && (ev.armorBlocked || skillFxOnce('armor' + ev.targetUid)))
       at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.armorBlock(t2, {from: degFrom(el(ev.attUid), t2), partial: !ev.armorBlocked}); });
@@ -31197,6 +31298,11 @@ function ninthPassVfx(ev){
     if(ev.kind === 'chilliBurn'){ const rc = matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.hp = Math.max(0, (rc.hp||0) - (ev.amount||0)); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} }
     if(t && F && F.chilliHeat && !reducedMotion() && fxAtLeast('med')) F.chilliHeat(t, {burn: ev.kind === 'chilliBurn'});
   }
+  // Bloodlust (2026-10-15): a red heartbeat pulse on the card as it grows stronger (one deeper throb when it reaches its cap).
+  if(ev.type === 'statusFx' && ev.kind === 'bloodlust'){
+    const t = boardCardEl(ev.attUid);
+    if(t && F && F.bloodlustPulse && !reducedMotion() && fxAtLeast('low')) F.bloodlustPulse(t, {full: ev.total != null && ev.total >= ev.max});
+  }
 }
 // Two halves of a shell fly apart, with a few chips.
 function eggCrackVfx(x, y){
@@ -31259,7 +31365,7 @@ function renderVfxForEvent(ev){
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
-  if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum','chilli'].includes(ev.kind)){ // + Chilli (2026-10-15)
+  if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum','chilli','bloodlust'].includes(ev.kind)){ // + Chilli, Bloodlust (2026-10-15)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
     if(rc){ rc.atk = (rc.atk||0) + (ev.amount||0); if(ev.kind==='esprit' && ev.hp){ rc.hp += ev.hp; rc.maxHp += ev.hp; } if(ev.hiveMind){ rc.hp += 1; rc.maxHp += 1; } }
     try{ updateCardAtkDisplay(ev.attUid); }catch(e){}
@@ -31634,7 +31740,8 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='frostbite'){ if(el) floatText(el, `🥶 Frostbite +${ev.amount}/+${ev.amount}`, 'buff'); try{ SoundKit.freezeChime(); }catch(e){} }
     else if(ev.kind==='firstBlood'){ if(el) floatText(el, `🩸 First blood +${ev.amount}`, 'debuff'); try{ SoundKit.backstabSlice ? SoundKit.backstabSlice() : null; }catch(e){} }
     else if(ev.kind==='octolash'){ if(el) floatText(el, `🐙 Octolash ×${ev.amount}`, 'quick'); }
-    else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); }
+    else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); if(rc){ rc.exposed = (rc.exposed||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Exposed (2026-10-15)
+    else if(ev.kind==='exposedHit'){ if(rc){ rc.exposed = ev.amount||0; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // one Exposed hit used up (its "🎯 +1" chip is FX.B.exposeCash)
     else if(ev.kind==='stun'){ SoundKit.stunTone(); if(el){ shakeEl(el); floatText(el, '💫 Stunned!', 'debuff'); } if(rc) rc.stunned = true; }
     else if(ev.kind==='debuffAttack'){ SoundKit.curse(); statChangeVfx(ev.targetUid, -(ev.amount||0), -(ev.amount2||0)); }
     // addWait (2026-09-26, new basic action — the debuff-side counterpart to Reduce Wait):
@@ -31651,7 +31758,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='cower'){ if(el) floatText(el, ev.mode === 'flee' ? `🫣 Backs off${ev.amount ? ' +' + ev.amount : ''}` : '🫣 Hides', ev.mode === 'flee' && ev.amount ? 'heal' : 'debuff'); }
     else if(ev.kind==='armorShred'){ try{ SoundKit.rendTone(); }catch(e){} if(el) floatText(el, '−'+ev.amount+'🛡 for good', 'debuff'); if(rc) rc.armorLoss = (rc.armorLoss||0) + ev.amount; }
     else if(ev.kind==='scar'){ SoundKit.scarMark(); if(el) floatText(el, '+'+ev.amount+'🗡', 'debuff'); if(rc) rc.scar = (rc.scar||0) + ev.amount; }
-    else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.poison=0; rc.bleed=0; rc.stunned=false; rc.scar=0; } }
+    else if(ev.kind==='cleanse'){ SoundKit.cleanseTone(); if(el){ floatText(el, ev.amount ? `✨ Cleansed ${ev.amount}` : '✨ Cleansed', 'heal'); cleanseVfx(el); } if(rc && !ev.amount){ rc.poison=0; rc.bleed=0; rc.stunned=false; rc.scar=0; rc.exposed=0; } }
     else if(ev.kind==='stanch'){ try{ SoundKit.cleanseTone(); }catch(e){} if(el){ floatText(el, `🩹 -${ev.amount} 🩸`, 'heal'); cleanseVfx(el); } if(rc) rc.bleed = Math.max(0, (rc.bleed||0) - (ev.amount||0)); }
     else if(ev.kind==='grit'){ SoundKit.gritUp(); if(el) floatText(el, '+'+ev.amount+'⚔', 'gold'); }
     // Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid),
@@ -31675,6 +31782,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='stagger'){ SoundKit.staggerTone(); if(el){ shakeEl(el); floatText(el, '💢 Staggered', 'debuff'); } if(rc) rc.staggered = (rc.staggered||0) + 1; }
     else if(ev.kind==='berserk'){ const attEl = boardCardEl(ev.attUid); SoundKit.berserkTone(); if(attEl){ shakeEl(attEl); floatText(attEl, '😡 Berserk! +'+ev.amount+'⚔', 'gold'); } }
     else if(ev.kind==='momentum'){ const attEl = boardCardEl(ev.attUid); SoundKit.momentumTone(); if(attEl) floatText(attEl, '🔥 +'+ev.amount+'⚔', 'gold'); }
+    else if(ev.kind==='bloodlust'){ const attEl = boardCardEl(ev.attUid); try{ SoundKit.bleedTick(); }catch(e){} if(attEl) floatText(attEl, `🩸 Bloodlust +${ev.amount}⚔`, 'debuff'); } // 2026-10-15
     else if(ev.kind==='pack'){ setTimeout(()=>{ try{ statChangeVfx(ev.attUid, 0, ev.amount); const el = boardCardEl(ev.attUid); if(el) floatText(el, '🐺 Pack!', 'quick'); SoundKit.momentumTone && SoundKit.momentumTone(); }catch(e){} }, 420); }
     // Bleed (via the "Bleed opposite" custom-trigger action) and Esprit (2026-09-21, Skills/
     // VFX/SFX audit — see mechanics-guideline.md's "Process & meta" and style-guideline.md's

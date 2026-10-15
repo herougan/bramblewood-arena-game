@@ -1400,7 +1400,9 @@ M.onEvent = function(ev, env){
     if(ev.kind === 'poison' && t) M.poisonApply(t);
     else if(ev.kind === 'bleed' && t) M.bleedApply(t);
     else if(ev.kind === 'thaw' && t) M.thawDrip(t, {left:ev.left|0});
-    else if(ev.kind === 'expose') mo.exposed.add(ev.targetUid);
+    // 2026-10-15 (Exposed rework: +1 from each of its next N hits): the engine says when a hit uses one up ('exposedHit', sent just
+    // before that hit), so the crosshair snaps shut on every Exposed hit, not only the first.
+    else if(ev.kind === 'exposedHit') mo.exposed.add(ev.targetUid);
     else if(ev.kind === 'inspired') mo.inspired.add(ev.targetUid);
     else if(ev.kind === 'firstBlood'){ const a = el(ev.attUid); if(a) M.firstBlood(a); }
     else if(ev.kind === 'blind') env.at(700, ()=> M.sightSync(m, env)); // 2026-10-15: the Blind badge shows at once, not at the next render
@@ -1423,7 +1425,7 @@ M.onEvent = function(ev, env){
     // Hit modifiers the number alone doesn't explain.
     if(rcA.staggered > 0 && !ev.ranged) later2(t=> M.staggerWeakHit(t, {att:el(ev.attUid)}));
     if(rcT.shocked > 0 && ev.dmg > 0) later2(t=> M.shockSpark(t));
-    if(mo.exposed.has(ev.targetUid)){ mo.exposed.delete(ev.targetUid); later2(t=> M.exposeCash(t)); }
+    if(mo.exposed.has(ev.targetUid)){ mo.exposed.delete(ev.targetUid); later2(t=> M.exposeCash(t, {amount:1})); }
     if(ev.dmg > 0 && ev.dmgType !== 'magic' && te.shade && (dk || phaseOf(m) === 'night')) later2(t=> M.shadeNight(t));
     if(ae.supreme && (Number(te.armor) > 0 || rcT.shellArmor > 0 || rcT.tempHp > 0 || rcT.petrified || Number(te.scare) > 0 || rcT.shield > 0)) later2(t=> M.wardCrush(t));
     { const rl = [...(td.resist || []), ...(te.resist || []), ...(te.dry ? ['heat'] : [])], wl = [...(te.weakness || []), ...(te.rabid ? ['swimmer', 'water'] : [])];
