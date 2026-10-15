@@ -1072,7 +1072,7 @@ function armorBlock(target, o){
 function forkProngs(attacker, targets, o){
   o = o || {}; const list = (targets||[]).filter(Boolean); if(!list.length) return;
   if(!go()){ list.forEach((el, i)=> call(o.onEachImpact, el, i)); return; }
-  const g = G(), a = attacker ? centre(attacker) : null, ink = o.kind === 'octolash', n = o.kind === 'pitchfork' ? 4 : 3;
+  const g = G(), a = attacker ? centre(attacker) : null, ink = o.kind === 'octolash', n = o.kind === 'pitchfork' ? 4 : o.kind === 'fork' ? 2 : 3; // tines: Fork 2 (2026-10-15), Trident 3, Pitchfork 4
   list.forEach((el, i)=> later(()=>{
     const b = centre(el), ang = a ? angTo(a, b) : Math.PI/2, ux = Math.cos(ang), uy = Math.sin(ang), px = -uy, py = ux, L = b.h*.55, deg = ang*57.3;
     for(let k = 0; k < n; k++){ const p = layer('sfx-prong' + (ink ? ' is-ink' : '')), off = (k - (n - 1)/2)*b.w*.16;
@@ -1326,4 +1326,61 @@ function stealthSlip(attacker, castle, o){
 }
 Object.assign(root.SkillFX, {swoop, gust, splash, armorBlock, forkProngs, pierceThrough, stunStars, freezeEncase, sleepZzz, paralyzeSpark, acidCorrode, lifeDrain, bloomPollen,
   fearShiver, curseDrain, targetMark, blindInk, mirrorFlash, reviveRise, summonPortal, lootArc, prayerLight, espritAura, rageFlare, scarMark, clockTick, parry, crownCrack, stealthSlip});
+// ---- 2026-10-15 (ninth pass): the Bolts (user: "They just represents 'spits' of something at the enemy. Fire bolt, Acid bolt, Poison
+// bolt etc.") and Chilli (user: "New skill Chilli.").
+//   SkillFX.boltGlob(shooter, target, {element:'fire'|'acid'|'poison'|'ice'|'shock', flight, onImpact})
+//   SkillFX.chilliHeat(target, {burn})   (burn: the smaller round-start sting instead of the first big flush)
+// BOLT_LOOK is the element table on this side: a new element is one row here (its colours and the burst it leaves).
+const BOLT_LOOK = {
+  fire:   {core:'#fff2b0', mid:'#ff9a2a', edge:'#d8380e', glow:'255,120,30',  bit:'fire'},
+  acid:   {core:'#f6ffb0', mid:'#b6e830', edge:'#5f8a10', glow:'180,240,40',  bit:'poison'},
+  poison: {core:'#f0d8ff', mid:'#9a4fd8', edge:'#4a1d6e', glow:'170,80,255',  bit:'poison'},
+  ice:    {core:'#ffffff', mid:'#a8dcff', edge:'#3f8fd8', glow:'140,200,255', bit:'ice'},
+  shock:  {core:'#ffffff', mid:'#fff36a', edge:'#e0b000', glow:'255,230,60',  bit:'zap'},
+};
+const NINTH_CSS = `
+.sfx-glob{width:22px; height:22px; border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;}
+.sfx-glob-drop{width:7px; height:7px; border-radius:50%; filter:blur(.5px);}
+.sfx-glob-splat{border-radius:46% 54% 50% 50%; mix-blend-mode:screen;}
+.sfx-chilli{font-size:24px; line-height:1; filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));}
+.sfx-chilli-flush{border-radius:12px; background:radial-gradient(ellipse at 50% 60%, rgba(255,60,30,.6), rgba(255,40,20,.35) 55%, rgba(255,40,20,.12) 85%); box-shadow:0 0 18px 4px rgba(255,70,30,.55);}
+.sfx-chilli-steam{width:30px; height:30px; border-radius:50%; background:radial-gradient(circle, rgba(255,246,240,.95) 0, rgba(255,205,195,.55) 45%, rgba(255,205,195,0) 70%); filter:blur(1.5px);}
+`;
+function ninthCss(){ if(document.getElementById('sfx-ninth-css')) return; const st = document.createElement('style'); st.id = 'sfx-ninth-css'; st.textContent = NINTH_CSS; (document.head || document.body).appendChild(st); }
+// A Bolt: a coloured glob arcs from the shooter to the target (a short lob, wobbling as it flies, shedding droplets), then splats.
+function boltGlob(shooter, target, o){
+  o = o || {}; const fly = o.flight || 420;
+  if(!ready() || !shooter || !target){ later(o.onImpact, fly); return; } ninthCss();
+  const L = BOLT_LOOK[o.element] || BOLT_LOOK.fire, g = G(), a = centre(shooter), b = centre(target);
+  const m = {x:(a.x + b.x)/2, y:Math.min(a.y, b.y) - Math.max(50, Math.abs(b.x - a.x)*.25)}, st = {t:0};
+  const glob = layer('sfx-glob'); glob.style.background = `radial-gradient(circle at 38% 36%, ${L.core} 0, ${L.mid} 45%, ${L.edge} 100%)`; glob.style.boxShadow = `0 0 12px 4px rgba(${L.glow},.75)`;
+  g.set(glob, {x:a.x - 11, y:a.y - a.h*.15 - 11, scale:.4});
+  g.fromTo(tileOf(shooter), {scaleY:1}, {scaleY:.93, duration:.08, yoyo:true, repeat:1, transformOrigin:'50% 100%', clearProps:'transform'}); // the spit
+  let k = 0;
+  const drip = ()=>{ if(k++ % 3) return; const r = glob.getBoundingClientRect(), d = layer('sfx-glob-drop'); d.style.background = L.mid; g.set(d, {x:r.left + r.width/2 - 3, y:r.top + r.height/2 - 3, opacity:.9});
+    g.to(d, {y:'+=14', opacity:0, scale:.3, duration:.35, ease:'power1.in', onComplete:()=> d.remove()}); };
+  g.timeline({onComplete:()=> glob.remove()})
+    .to(st, {t:1, duration:fly/1000, ease:'power1.in', onUpdate:()=>{ const q = qpt({x:a.x, y:a.y - a.h*.15}, m, b, st.t); g.set(glob, {x:q.x - 11, y:q.y - 11, scale:.6 + .5*st.t, scaleX:1 + .25*Math.sin(st.t*18), rotation:st.t*240}); drip(); }})
+    .add(()=>{
+      glob.style.opacity = 0;
+      const sp = layer('sfx-glob-splat'); sp.style.background = `radial-gradient(circle, ${L.core} 0, rgba(${L.glow},.85) 35%, rgba(${L.glow},0) 72%)`;
+      g.set(sp, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, width:16, height:16, opacity:1});
+      g.to(sp, {width:b.w*.9, height:b.w*.75, opacity:0, duration:.42, ease:'power2.out', onComplete:()=> sp.remove()});
+      burst(b.x, b.y, -90, L.bit, 10); knock(target, a.y < b.y ? 90 : -90, .7); call(o.onImpact);
+    });
+}
+// Chilli: a chilli pops up and is gobbled, the card flushes red and puffs steam (the round-start sting: a red flash and a wisp).
+function chilliHeat(target, o){
+  o = o || {}; if(!ready() || !target){ call(o.onDone); return; } ninthCss();
+  const g = G(), c = centre(target);
+  if(!o.burn){ const f = layer('sfx-chilli', '🌶️'); g.set(f, {x:c.x, y:c.r.top + c.h*.22, xPercent:-50, yPercent:-50, scale:.4, opacity:0, rotation:-20});
+    g.timeline({onComplete:()=> f.remove()}).to(f, {scale:1.1, opacity:1, rotation:0, duration:.15, ease:'back.out(3)'})
+      .to(f, {scaleX:.8, duration:.07, yoyo:true, repeat:1}).to(f, {scale:.6, duration:.08}).to(f, {scale:.1, opacity:0, duration:.1}); }
+  const fl = layer('sfx-chilli-flush'); g.set(fl, {x:c.r.left, y:c.r.top, width:c.w, height:c.h, opacity:0});
+  g.timeline({delay:o.burn ? 0 : .35, onComplete:()=>{ fl.remove(); call(o.onDone); }}).to(fl, {opacity:1, duration:.12}).to(fl, {opacity:o.burn ? 0 : .5, duration:.25}).to(fl, {opacity:0, duration:.3});
+  for(let i = 0; i < (o.burn ? 3 : 7); i++){ const p = layer('sfx-chilli-steam'); g.set(p, {x:c.x - 15 + rnd(-c.w*.3, c.w*.3), y:c.r.top + c.h*.2, scale:.4, opacity:0});
+    g.to(p, {opacity:.9, duration:.1, delay:(o.burn ? 0 : .4) + i*.06}); g.to(p, {y:`-=${rnd(26, 48)}`, x:`+=${rnd(-10, 10)}`, scale:rnd(1.4, 2.2), opacity:0, duration:rnd(.6, .9), delay:(o.burn ? .1 : .5) + i*.06, ease:'power1.out', onComplete:()=> p.remove()}); }
+  g.fromTo(tileOf(target), {x:0}, {x:2, duration:.05, yoyo:true, repeat:o.burn ? 3 : 7, delay:o.burn ? 0 : .35, clearProps:'transform'});
+}
+Object.assign(root.SkillFX, {boltGlob, chilliHeat, BOLT_LOOK});
 })(typeof window !== 'undefined' ? window : globalThis);

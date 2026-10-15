@@ -41,7 +41,7 @@ function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so
   ok(!crabs.some(d=> d.effects && d.effects.crabClaws), 'no crab keeps Crab Claws');
   ['sulfur-vent-crab', 'open-ocean-hermit-crab'].forEach(id=> ok(base[id].effects.fork === true && !base[id].effects.crabClaws, `${id}: Fork instead of Crab Claws`)); }
 { const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
-  ok(/\{key:'crabClaws', category:'passive', hidden:true/.test(src), 'Crab Claws is hidden from "+ Add Skill" (its code stays)');
+  ok(/\{key:'crabClaws', category:'passive', label:'Crab Claws'/.test(src), 'Crab Claws is back in "+ Add Skill" (2026-10-15, user: "Crab claws can be, attack a random unit L or R")');
   ok(/const gateOk = x => row\.key===x\.key \|\| \(!x\.hidden/.test(src), 'the editor picker leaves hidden skills out');
   ok(/function skillIconFor\(k, d\)\{ return \(k === 'fork' && isCrabDef\(d\)\) \? '🦞'/.test(src), 'Fork on a crab: the crab claw icon');
   ok(/isCrabDef\(d\) \? `<span class="ab-fork ab-crab"[^`]*>🦞<\/span>` : `<span class="ab-fork"[^`]*>⇔<\/span>`/.test(src), 'the card chip: 🦞 on crabs, ⇔ elsewhere');

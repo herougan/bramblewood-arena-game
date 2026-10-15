@@ -255,7 +255,8 @@
     swoop(){ const t = pick(); S('featherFlutter'); SkillFX.swoop(shooter(), t, {flight:340, onImpact:()=>{ S('hitAt', 3, false); dmg(t, '-3'); }}); },
     gust(){ const t = mine()[0]; S('swipeTone'); SkillFX.gust(t, {dir:1}); },
     splash(){ const t = mine()[2]; S('splash'); SkillFX.splash(t); },
-    fork(){ const e = enemy(); S('swipeTone'); SkillFX.forkProngs(shooter(), [e[0], e[2]], {kind:'trident', onEachImpact:(t)=>{ S('hitAt', 2, false); dmg(t, '-2'); }}); },
+    // 2026-10-15 (user: "attack the nearest 2/3/4 enemies within 1/1/2 range"): Fork hits the one in front and one beside it.
+    fork(){ const e = enemy(); S('swipeTone'); SkillFX.forkProngs(shooter(), [e[1], e[Math.random() < .5 ? 0 : 2]], {kind:'fork', onEachImpact:(t)=>{ S('hitAt', 2, false); dmg(t, '-2'); }}); },
     octolash(){ const e = enemy(); S('swipeTone'); SkillFX.forkProngs(shooter(), e, {kind:'octolash', onEachImpact:(t)=>{ S('hitAt', 1, false); dmg(t, '-1'); }}); },
     piercethru(){ const t = pick(); S('pierceTone'); SkillFX.pierceThrough(t, {from:90, onImpact:()=> dmg(t, '-4')}); },
     scar(){ const t = pick(); S('scarMark'); SkillFX.scarMark(t, {fromLeft:Math.random() < .5}); setTimeout(()=> dmg(t, '+1🗡', 'debuff'), 160); },
@@ -291,6 +292,20 @@
     banana(){ const t = pick(); S('boomerangWhirr'); SkillFX.bananaThrow && SkillFX.bananaThrow(shooter(), t, {onImpact:()=> dmg(t, '-1')}); },
     munch(){ const t = shooter(); SkillFX.munch && SkillFX.munch(t, {glyph:'🍌'}); dmg(t, '+2', 'heal'); },
     smokebomb(){ const t = pick(); S('boomerangWhirr'); SkillFX.smokeBomb && SkillFX.smokeBomb(shooter(), t, {}); },
+    // 2026-10-15: Trident, Pitchfork, Crab Claws, Ice Arrow, Twin Shot, the Bolts and Chilli (all live in fights).
+    trident(){ const e = enemy(); S('swipeTone'); SkillFX.forkProngs(shooter(), e, {kind:'trident', onEachImpact:(t)=>{ S('hitAt', 2, false); dmg(t, '-2'); }}); },
+    pitchfork(){ const e = enemy(); S('swipeTone'); SkillFX.forkProngs(shooter(), e, {kind:'pitchfork', onEachImpact:(t)=>{ S('hitAt', 2, false); dmg(t, '-2'); }}); },
+    crabclaws(){ const e = enemy(), t = e[Math.random() < .5 ? 0 : 2]; S('swipeTone'); SkillFX.forkProngs(shooter(), [t], {kind:'fork', onEachImpact:()=>{ S('hitAt', 3, false); dmg(t, '-3'); }}); },
+    icearrow(){ const t = pick(); S('bowDraw', false, 240); SkillFX.bowShot(shooter(), t, {draw:240, flight:260, onRelease:()=> S('arrowLoose', false), onImpact:()=>{ S('arrowThunk', false); S('freezeChime'); dmg(t, '-2', 'cold'); SkillFX.freezeEncase(t); }}); },
+    twinshot(){ const e = enemy(), a = e[0], b = e[2]; S('bowDraw', false, 200);
+      [a, b].forEach((t, k)=> setTimeout(()=> SkillFX.bowShot(shooter(), t, {draw:k ? 120 : 200, flight:240, onRelease:()=> S('arrowLoose', false), onImpact:()=>{ S('arrowThunk', false); dmg(t, '-2'); }}), k*180)); },
+    firebolt(){ const t = pick(); S('launch'); SkillFX.boltGlob(shooter(), t, {element:'fire', onImpact:()=>{ S('burnAway'); dmg(t, '-2', 'heat'); }}); },
+    acidbolt(){ const t = pick(); S('launch'); SkillFX.boltGlob(shooter(), t, {element:'acid', onImpact:()=>{ S('corrodeTone'); dmg(t, '-2 🧪', 'debuff'); SkillFX.acidCorrode(t); }}); },
+    poisonbolt(){ const t = pick(); S('launch'); SkillFX.boltGlob(shooter(), t, {element:'poison', onImpact:()=>{ S('curse'); dmg(t, '+2 ☠', 'debuff'); }}); },
+    icebolt(){ const t = pick(); S('launch'); SkillFX.boltGlob(shooter(), t, {element:'ice', onImpact:()=>{ S('freezeChime'); dmg(t, '-2', 'cold'); SkillFX.freezeEncase(t); }}); },
+    shockbolt(){ const t = pick(); S('launch'); SkillFX.boltGlob(shooter(), t, {element:'shock', onImpact:()=>{ S('paralyzeBuzz'); dmg(t, '-2 ⚡', 'debuff'); SkillFX.paralyzeSpark(t); }}); },
+    chilli(){ const t = shooter(); S('burnAway2'); SkillFX.chilliHeat(t); setTimeout(()=> dmg(t, '+2⚔ 🔥', 'gold'), 400); },
+    chilliburn(){ const t = shooter(); SkillFX.chilliHeat(t, {burn:true}); dmg(t, '-1'); },
     psychic(){ const t = pick(); S('curse'); SkillFX.mindWave && SkillFX.mindWave(shooter(), t, {}); setTimeout(()=> dmg(t, '-3', 'debuff'), 420); },
   };
   $$('[data-skill]').forEach(b=> b.addEventListener('click', ()=>{ setSpeed(); run[b.dataset.skill] && run[b.dataset.skill](); }));

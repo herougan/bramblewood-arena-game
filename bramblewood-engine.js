@@ -1422,6 +1422,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // magic damage (a card's own dmgType still works for the other elements).
   function isGhost(c){ return !!effectsOf(c).ghost; }
   // Supreme (2026-10-14): a Supreme beast's attacks count as magic, whatever element it breathes.
+  // Fork / Trident / Pitchfork (2026-10-15, user: "attack the nearest 2/3/4 enemies within 1/1/2 range"): n = units hit in all
+  // (its normal swing included), range = how many columns away they may stand. One table, so the three read alike. An old
+  // `swipe: true` still means Fork. With several on one card, the widest wins.
+  const PRONG_SPECS = [{key:'pitchfork', n:4, range:2}, {key:'trident', n:3, range:1}, {key:'fork', n:2, range:1}];
+  function prongSpecOf(def){ const e = (def && def.effects) || {}; if(e.stealth) return null;
+    for(const p of PRONG_SPECS){ if(e[p.key] || (p.key === 'fork' && e.swipe === true)) return {kind:p.key, n:p.n, range:p.range}; }
+    return null; }
   function attackDmgType(attDef){ const e = (attDef && attDef.effects) || {}; return (e.magic || e.supreme) ? 'magic' : ((attDef && attDef.dmgType) || 'physical'); }
   // Night or darkness (2026-10-14, for Shade and Shadow): it is night, or the map is dark (caves, the grotto, the abyss).
   function darkNow(){ const ph = phaseActive() ? getPhase() : null; return ph === 'night' || !!rules.dark; }
@@ -2866,7 +2873,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // dodging is about the creature the skill was aimed at, not whoever ends up eating it.
       if(!dodgeCheck(target.card)){
         if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true});
-        return;
+        return null; // (2026-10-15) callers that add a status on a landed shot (Ice Arrow, the Bolts) read the result
       }
       const c = redirectToGuardian(enemy, target.card); // Guardian: an adjacent protector eats the hit instead, if one's alive
       const guardianRedirect = c.uid !== target.card.uid;
@@ -2887,6 +2894,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         bleedTick(sideOf, otherId(ownerId), c, stats, events, 'defend');
         runCustomTriggers(players, sideOf, otherId(ownerId), c, CARD_DEFS[c.defId], 'onAttacked', stats, events);
       }
+      return c; // the card actually hit (after a Guardian redirect)
     } else {
       const bulwarkBlocked = bulwarkReductionFor(enemy);
       const dmg = damageHQ(enemy, realAmount);
@@ -3244,6 +3252,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects.shield) grantShield(playerId, boardCard, boardCard, numN(def.effects.shield, 1), sideOf, events);
     if(def.effects.fireball && !(boardCard.wait > 0)) fireFireball(players, sideOf, playerId, boardCard, numN(def.effects.fireball, 15), stats, events);
     if(def.effects.meteor && !(boardCard.wait > 0)) fireMeteor(players, sideOf, playerId, boardCard, numN(def.effects.meteor, 20), stats, events);
+    if(def.effects.chilli && !(boardCard.wait > 0)) eatChilli(sideOf, playerId, boardCard, numN(def.effects.chilli, 2), events); // Chilli N (2026-10-15): Ready on arrival
     // Coffee N (2026-10-13, user: "oo new ability, coffee"): it comes in wired (Wait -N), and once the cup wears off (N rounds
     // later) it crashes and naps for a round (Stunned 1).
     if(def.effects.coffee){ const n = Number(def.effects.coffee === true ? 1 : def.effects.coffee) || 1;
@@ -3281,6 +3290,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const opp = opposingCardOf(players, ownerId, card); if(opp){ const eo = physicalRowOrder(enemy), j = eo.indexOf(opp.card); theirs = [eo[j-1], opp.card, eo[j+1]].filter(c=> c && c.hp > 0); } }
     if(recordEvents && events) events.push({type:'dynamite', side:sideOf(ownerId), defId:card.defId, uid:card.uid, amount:dmg, hits: mine.length + theirs.length});
     theirs.concat(mine).forEach(c=> fireDamageAction(players, sideOf, ownerId, card.defId, dmg, 'heat', {kind:'card', card:c}, stats, events, null, card.uid));
+  }
+  // Chilli N (2026-10-15, user: "New skill Chilli." - an animal's one-off food skill, like Coffee and Banana): when it first
+  // becomes Ready it eats a chilli. For the rest of the fight its attacks deal fire (heat) damage and it has +N Attack, but it
+  // takes 1 damage at the start of every round (it's very hot; applyPoisonTicks). Once a fight.
+  function eatChilli(sideOf, ownerId, card, n, events){
+    if(!card || card._chilliEaten || !(card.hp > 0) || !(n > 0)) return; card._chilliEaten = true;
+    card.chilli = n; card.atk += n; card.baseAtk = (card.baseAtk||0) + n;
+    if(recordEvents && events) events.push({type:'statusFx', kind:'chilli', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(ownerId), targetDefId:card.defId, targetUid:card.uid, amount:n});
   }
   function fireRocket(players, sideOf, ownerId, card, amount, stats, events){
     if(card._rocketFired) return; card._rocketFired = true;
@@ -3342,6 +3359,30 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Heat resistance/weakness apply and a kill burns. Stunned/Frozen/Asleep archers hold fire.
   // Both can sit on one card (it shoots twice). Goes through fireDamageAction, so Evasion,
   // Guardian redirects, Expose and King Slayer all work as for any ranged hit.
+  // The Bolt family (2026-10-15, user: "Fire bolt, Acid bolt, Poison bolt etc."): one implementation (fireArrowVolley's shots)
+  // and this table, so a new element is one line here plus its registry entry. dmgType: the damage it deals (resistance and
+  // weakness apply); noDamage: it deals none, only its status; status: what a landed spit leaves (applyShotStatus).
+  //   Fire Bolt N    N fire (heat) damage (there is no Burn status in the game yet, so nothing lingers)
+  //   Acid Bolt N    N acid damage + 1 Corrode
+  //   Poison Bolt N  no damage; N Poison (at the castle: N poison damage)
+  //   Ice Bolt N     N cold damage + a 1 in 2 chance of a Freeze counter (only on a unit with none)
+  //   Shock Bolt N   N damage + Shocked for a round (takes 50% more damage)
+  const BOLT_ELEMENTS = {
+    fireBolt:   {element:'fire',   dmgType:'heat'},
+    acidBolt:   {element:'acid',   dmgType:'acid',     status:'corrode'},
+    poisonBolt: {element:'poison', dmgType:'poison',   status:'poison', noDamage:true},
+    iceBolt:    {element:'ice',    dmgType:'cold',     status:'freezeCounter'},
+    shockBolt:  {element:'shock',  dmgType:'physical', status:'shock'},
+  };
+  // What a landed Ice Arrow or Bolt leaves on the unit it hit (2026-10-15).
+  function applyShotStatus(kind, n, c, src, side, tSide, events, aStat){
+    if(!c || !(c.hp > 0)) return;
+    const fx = (k, amount)=>{ if(recordEvents && events) events.push({type:'statusFx', kind:k, side, attDefId:src.defId, attUid:src.uid, targetSide:tSide, targetDefId:c.defId, targetUid:c.uid, amount}); };
+    if(kind === 'corrode'){ c.corrode = (c.corrode||0) + 1; c._corrodeJustSet = true; fx('corrode', 1); }
+    else if(kind === 'poison'){ if(resistFactor(c.defId, 'poison') === 0) return; c.poison = (c.poison||0) + n; if(aStat) aStat.poisonApplied = (aStat.poisonApplied||0) + n; fx('poison', n); }
+    else if(kind === 'freezeCounter'){ if(c.frozen > 0 || resistFactor(c.defId, 'cold') === 0 || rnd() >= 0.5) return; c.frozen = 1; fx('freeze', 1); } // melts at this round's end, like the frost's chill
+    else if(kind === 'shock'){ c.shocked = Math.max(c.shocked||0, 1); c._shockedJustSet = true; fx('shock', 1); }
+  }
   function fireArrowVolley(players, sideOf, stats, events){
     let fired = false;
     [1,2].forEach(pid=>{
@@ -3356,6 +3397,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
         if(fx.arrow > 0) shots.push({amount: fx.arrow + fletch, dmgType: 'physical', fire: false});
         if(fx.fireArrow > 0) shots.push({amount: fx.fireArrow, dmgType: 'heat', fire: true});
+        // Ice Arrow N, Twin Shot N, Volley N (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire
+        // Arrow, Ice Arrow etc. will be more normal."). Ice Arrow: N cold, and a 1 in 2 chance to lay a Freeze counter on a unit
+        // that has none (so it can't keep a unit locked every round). Twin Shot: two arrows of N at two different random enemy
+        // units (both at the one if there is only one). Volley: once every 2 rounds (its 1st, 3rd, 5th... Ready round), an arrow of
+        // N at every enemy unit.
+        if(Number(fx.iceArrow) > 0) shots.push({amount: Number(fx.iceArrow), dmgType: 'cold', ice: true, status: 'freezeCounter'});
+        if(Number(fx.twinShot) > 0){ const foes = liveFoesOf(enemy); const pool = foes.slice(), picks = [];
+          while(picks.length < 2 && pool.length) picks.push(pool.splice(Math.floor(rnd()*pool.length), 1)[0]);
+          if(picks.length === 1) picks.push(picks[0]);
+          for(let k = 0; k < 2; k++) shots.push({amount: Number(fx.twinShot), dmgType: 'physical', twin: true, at: picks[k] || 'hq'}); }
+        if(Number(fx.volley) > 0){ c.volleyClock = (c.volleyClock||0) + 1;
+          if(c.volleyClock % 2 === 1){ const foes = liveFoesOf(enemy);
+            (foes.length ? foes : ['hq']).forEach(t=> shots.push({amount: Number(fx.volley), dmgType: 'physical', volley: true, at: t})); } }
+        // The Bolts (2026-10-15, user: "We need bolts - these might be quite creature-specific. All elemental or status-y. They just
+        // represents 'spits' of something at the enemy."): every round while Ready, before melee, it spits at the enemy opposite
+        // (the nearest enemy unit if none is opposite; the castle if the board is empty). One shot per Bolt skill; what each
+        // element does is in BOLT_ELEMENTS.
+        Object.keys(BOLT_ELEMENTS).forEach(k=>{ const n = Number(fx[k]) || (fx[k] === true ? 1 : 0); if(!(n > 0)) return; const B = BOLT_ELEMENTS[k];
+          shots.push({amount: B.noDamage ? 0 : n, n, dmgType: B.dmgType, bolt: B.element, status: B.status, boltKey: k}); });
         // Snipe N (2026-10-13, user: "Snipe N: If there is no opposing unit, shoot a random enemy for N damage").
         if(fx.snipe){ const opp0 = opposingCardOf(players, pid, c); if(!(opp0 && opp0.card && opp0.card.hp>0)){ const foes = allBoardCards(enemy).filter(x=> x.hp>0 && !x.cageOf);
           if(foes.length){ const t = foes[Math.floor(rnd()*foes.length)]; const amt = Number(fx.snipe === true ? 1 : fx.snipe)||1;
@@ -3363,13 +3423,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, null, c.uid); } } } }
         if(headwindDouble(c, pid)) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice
         shots.forEach(shot=>{
-          const opp = opposingCardOf(players, pid, c);
-          const near = (opp && opp.card && opp.card.hp>0) ? opp.card : arrowTargetOf(players, pid, c);
-          const target = near ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'};
-          if(recordEvents && events) events.push({type:'arrow', fire: shot.fire, side: sideOf(pid), defId: c.defId, uid: c.uid,
-            targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: shot.amount});
+          if(!(c.hp > 0)) return;
+          let target;
+          if(shot.at === 'hq') target = {kind:'hq'};
+          else if(shot.at){ if(!(shot.at.hp > 0)) return; target = {kind:'card', card: shieldCall(enemy, shot.at) || shot.at}; }
+          else { const opp = opposingCardOf(players, pid, c);
+            const near = (opp && opp.card && opp.card.hp>0) ? opp.card : arrowTargetOf(players, pid, c);
+            target = near ? {kind:'card', card: shieldCall(enemy, near) || near} : {kind:'hq'}; }
+          const tEv = {side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: target.kind==='card' ? target.card.uid : null, targetDefId: target.kind==='card' ? target.card.defId : null, amount: shot.bolt ? shot.n : shot.amount};
+          if(recordEvents && events) events.push(shot.bolt ? Object.assign({type:'bolt', element: shot.bolt, key: shot.boltKey}, tEv)
+            : Object.assign({type:'arrow', fire: !!shot.fire, ice: shot.ice || undefined, twin: shot.twin || undefined, volley: shot.volley || undefined}, tEv));
           fired = true;
-          if(!helmetDeflects(target, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, shot.amount, shot.dmgType, target, stats, events, null, c.uid);
+          if(helmetDeflects(target, sideOf(otherId(pid)), events)) return;
+          let hitCard = null;
+          if(shot.amount > 0 || target.kind !== 'card') hitCard = fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, null, c.uid);
+          else { // a no-damage spit (Poison Bolt): it can still be dodged, and a Guardian still steps in
+            if(!dodgeCheck(target.card)){ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(otherId(pid)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true}); }
+            else hitCard = redirectToGuardian(enemy, target.card); }
+          if(hitCard && shot.status) applyShotStatus(shot.status, shot.n || 1, hitCard, c, sideOf(pid), sideOf(otherId(pid)), events, ensureStat(stats, sideOf(pid), c.defId));
         });
       });
     });
@@ -4058,7 +4129,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Curses tick alongside poison: every unit standing on a cursed cell takes the cell's total.
     const cursed = [];
     if(Object.keys(curses).length) [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ const k = cellKeyOf(players, pl.id, c); if(k && curses[k] > 0) cursed.push({pl, card:c, n:curses[k]}); })));
-    if(!poisoned.length && !cursed.length) return;
+    // Chilli (2026-10-15): a unit that ate one takes 1 damage at the start of every round ("it's very hot").
+    const hot = []; [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.chilli > 0 && c.hp > 0) hot.push({pl, card:c}); })));
+    for(const {pl,card} of hot){ if(card.hp<=0) continue; const dmg = damageCardFlat(card, 1, 'chilli'); ensureStat(stats, sideOf(pl.id), card.defId).taken += dmg;
+      if(recordEvents && events) events.push({type:'statusFx', kind:'chilliBurn', side:sideOf(pl.id), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(pl.id), targetDefId:card.defId, targetUid:card.uid, amount:dmg}); }
+    if(!poisoned.length && !cursed.length){ if(hot.length) removeDeadCards(players, sideOf, {}, stats, events); return; }
     for(const {pl,card} of poisoned){
       if(card.hp<=0) continue;
       const dmg = damageCardFlat(card, card.poison, 'poison');
@@ -4307,6 +4382,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(def.effects.rocket) fireRocket(players, sideOf, pl.id, card, Number(def.effects.rocket === true ? 1 : def.effects.rocket)||1, stats, events);
       if(def.effects.fireball && card.hp > 0) fireFireball(players, sideOf, pl.id, card, numN(def.effects.fireball, 15), stats, events); // Fireball N (2026-10-14)
       if(def.effects.meteor && card.hp > 0) fireMeteor(players, sideOf, pl.id, card, numN(def.effects.meteor, 20), stats, events); // Meteor N (2026-10-14)
+      if(def.effects.chilli && card.hp > 0) eatChilli(sideOf, pl.id, card, numN(def.effects.chilli, 2), events); // Chilli N (2026-10-15)
       runCustomTriggers(players, sideOf, pl.id, card, def, 'onReady', stats, events);
       if(def.effects.converge) convergeBoard(players, sideOf, pl.id, card, def.effects.converge === true ? 'enemy' : def.effects.converge, events);
       // On Ally/Enemy Ready (2026-09-27, per explicit request: "Then On Ally Ready, On Enemy
@@ -4991,7 +5067,6 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Octolash - hit 8 nearest opposing units in front of this unit"). Trident strikes the unit in front and both columns
       // beside it with its full Attack; an empty side column takes that prong to the castle. Pitchfork is a Trident whose
       // prongs ignore Armour. Octolash lashes the 8 enemy units nearest it (front first), full Attack each, never the castle.
-      const tridentAtk = !!(attDef.effects && attDef.effects.trident && !attDef.effects.stealth);
       const octoAtk = !!(attDef.effects && attDef.effects.octolash && !attDef.effects.stealth);
       // Backstab N (D21, 2026-10-10, user: "Backstab - when it hits an enemy not directly in front of it. It also always
       // attacks the nearest enemy, never the castle."): picks the nearest living enemy unit (the one in front if there is
@@ -5003,30 +5078,48 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         target = near ? near.entry : null;
         if(near && !near.direct) backstabBonus = Number(attDef.effects.backstab);
       }
-      // Crab claws (2026-10-14, user: "Crab claws: Attacks left or right only."): it never strikes the unit straight in front.
-      // Each swing goes to the enemy unit in the column to its left or right, alternating (left first, unless only the right
-      // has a unit). Neither side has a unit: with a unit in front the swing is wasted (a pinch at thin air); with nothing in
-      // front either, it walks through to the castle.
+      // Crab claws (2026-10-15 rework, user: "Crab claws can be, attack a random unit L or R. Very awkward for the crab, but very
+      // fitting."): each swing pinches one random enemy unit in the column to its left or right (a coin flip when both have one).
+      // Neither side has a unit: it attacks straight ahead as normal (the unit in front, or the castle). (Was: alternating
+      // left/right, and a wasted pinch with a unit in front.)
       if(attDef.effects && attDef.effects.crabClaws && !attDef.effects.stealth && !(Number(attDef.effects.backstab) > 0)){
         const lanesC = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
         const has = col=>{ const en = col != null ? liveEnemyCols[col] : null; return !!(en && en.kind==='card' && en.card && en.card.hp > 0); };
-        const pref = a.att.crabNext === 'right' ? ['right','left'] : ['left','right'];
-        const pick = pref.find(sd=> has(lanesC[sd]));
-        if(pick){ const col = lanesC[pick], en = liveEnemyCols[col]; en.col = col; target = en; a.att.crabNext = pick === 'left' ? 'right' : 'left';
+        const sides = ['left','right'].filter(sd=> has(lanesC[sd]));
+        const pick = sides.length ? sides[Math.floor(rnd()*sides.length)] : null;
+        if(pick){ const col = lanesC[pick], en = liveEnemyCols[col]; en.col = col; target = en;
           if(recordEvents && events) events.push({type:'crabClaw', side:sideOf(a.attId), attUid:a.att.uid, attDefId:a.att.defId, dir:pick, targetUid:en.card.uid}); }
-        else if(target && target.kind === 'card'){ if(recordEvents && events) events.push({type:'crabClaw', side:sideOf(a.attId), attUid:a.att.uid, attDefId:a.att.defId, whiff:true}); target = null; }
+      }
+      // Fork / Trident / Pitchfork (2026-10-15, user: "Decision, we can make the first 3 more similar - attack the nearest 2/3/4
+      // enemies within 1/1/2 range."): one rule for all three (PRONG_SPECS). It hits the N nearest enemy units no more than R
+      // columns away (measured from where it stands, as prongLanes does; ties at random), full Attack each. The first is its
+      // normal swing (the unit in front when there is one, with Evade, Guardian, Pierce and every on-hit effect); the rest are
+      // prongs (forkStrike: every on-hit effect, no Evade roll, never the castle), each rolling its own Blind/dark miss. With no
+      // enemy unit in range it just attacks straight ahead as normal (the castle when nothing is in front). (Was, for Fork:
+      // the two columns either side of the one in front, an empty side hitting the castle.)
+      const prongSpec = (target && !(attDef.effects && attDef.effects.crabClaws) && !(Number((attDef.effects||{}).backstab) > 0)) ? prongSpecOf(attDef) : null;
+      let prongCols = [];
+      if(prongSpec){
+        const lanesP = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
+        const inRange = Object.keys(liveEnemyCols).map(Number).filter(c=>{ const en = liveEnemyCols[c]; return en && en.kind === 'card' && en.card && en.card.hp > 0 && lanesP.dist(c) <= prongSpec.range + 0.5; })
+          .map(c=> [c, lanesP.dist(c) + rnd()*0.1]).sort((x, y)=> x[1] - y[1]).map(x=> x[0]);
+        if(inRange.length){
+          const tc = (target.kind === 'card' && target.col != null && inRange.includes(target.col)) ? target.col : inRange[0];
+          if(!(target.kind === 'card' && target.col === tc)){ const en = liveEnemyCols[tc]; en.col = tc; target = en; }
+          prongCols = inRange.filter(c=> c !== tc).slice(0, prongSpec.n - 1);
+        }
       }
       // Tipsy (2026-10-11, user: "Tipsy means attacks L, Centre or R, randomly"): the swing drifts one column left, stays,
       // or drifts right at random. A drift onto an empty column misses (the castle is never hit by a stumble).
       let tipsyMiss = false;
-      if(target && a.att.tipsy>0 && !(attDef.effects && (attDef.effects.stealth || attDef.effects.fork || attDef.effects.swipe === true))){ // a Fork's two prongs don't stumble (2026-10-12)
+      if(target && a.att.tipsy>0 && !prongSpec && !(attDef.effects && attDef.effects.stealth)){ // Fork / Trident / Pitchfork prongs don't stumble (2026-10-12; all three 2026-10-15)
         const d = [-1, 0, 1][Math.floor(rnd()*3)];
         if(d){ const baseCol = (target.kind==='card' && target.col!=null) ? target.col : liveSelf.col, col = baseCol + d, e = liveEnemyCols[col];
           if(e && e.kind==='card' && e.card.hp>0){ e.col = col; target = e; } else tipsyMiss = true;
           if(recordEvents && events) events.push({type:'tipsySwing', side:sideOf(a.attId), attDefId:a.att.defId, attUid:a.att.uid, drift:d, miss:tipsyMiss}); }
       }
       if(!target || tipsyMiss){ pending = pickNextAttacker(); continue; }
-      const dmgType = attackDmgType(attDef); // Magic (2026-10-14): effects.magic swings magic damage
+      const dmgType = (a.att.chilli > 0 && attackDmgType(attDef) !== 'magic') ? 'heat' : attackDmgType(attDef); // Magic (2026-10-14): effects.magic swings magic damage; Chilli (2026-10-15): fire
       const mySide = sideOf(a.attId);
       const aStat = ensureStat(stats, mySide, a.att.defId);
       // Grit (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Valor"/"Bravery"): a
@@ -5078,12 +5171,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(!killCredit[side.uid]) killCredit[side.uid] = new Set();
         killCredit[side.uid].add(statKey(mySide, a.att.defId));
       };
-      // Fork (2026-10-12, user: "Swipers do not attack straight anymore. Just left and right cols"): a Fork unit swings only
-      // at the two columns either side of the one in front of it (its own column when nothing faces it). A unit there takes
-      // the full hit with every on-hit effect; an empty column sends that swing to the castle.
-      const isFork = !!(attDef.effects && (attDef.effects.fork || attDef.effects.swipe === true));
-      const forkOnly = isFork && !(attDef.effects && attDef.effects.stealth);
-      const forkStrike = (flankCol, castleOk, prong)=>{ if(castleOk === undefined) castleOk = isFork;
+      // Prong strikes (Fork / Trident / Pitchfork / Octolash side hits): a unit there takes the full hit with every on-hit effect.
+      // castleOk: an empty column sends the swing to the castle (no skill does that since 2026-10-15; kept for old saves' swipe:true).
+      const forkStrike = (flankCol, castleOk, prong)=>{ if(castleOk === undefined) castleOk = false;
             const flankEntry = liveEnemyCols[flankCol];
             if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
               const c2raw = flankEntry.card;
@@ -5138,15 +5228,6 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const sMiss = (a.att.blind>0 || keenSense) ? 0 : sightMiss(a.att, otherId(a.enemyId)); const nightMiss = sMiss > 0 && (sMiss >= 1 || rnd() < sMiss);
       const blindNow = (a.att.blind>0 && !keenSense && rnd() < 0.5) || nightMiss;
       if(sweepN && !blindNow) sweepStrike(sweepCol - 1, 'left');
-      if(forkOnly){
-        // 2026-10-12 (user: "When the Fork unit misses, it should still continue to hit L and R"): a miss on one prong
-        // never cancels the other. Blind rolls once per prong, so a blind Fork can still land one side.
-        const lanes = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
-        [lanes.left, lanes.right].forEach((col, k)=>{
-          if(a.att.blind>0 && rnd() < 0.5){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork', forkCol:k ? 1 : -1}); return; }
-          forkStrike(col); swingLanded = true;
-        });
-      } else
       if(blindNow){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
         if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind, night: nightMiss || undefined});
       } else
@@ -5415,20 +5496,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(healedHq>0){ a.att.hp += healedHq; if(recordEvents && events) events.push({type:'sap', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, amount:healedHq}); }
         }
       }
-      // Trident (2026-10-14 rework, user: "Trident is hit nearest 3 enemies ... within 1 x units square away"): besides its normal
-      // swing, it strikes the next-nearest enemy units within 1 column, up to 3 units in all (ties at random). No castle prongs.
-      if(tridentAtk && !blindNow){ const tcT = target && target.kind === 'card' ? target.col : null;
-        const candT = Object.keys(liveEnemyCols).map(Number).filter(c=>{ const en = liveEnemyCols[c]; return c !== tcT && en && en.kind === 'card' && en.card.hp > 0 && Math.abs(c - liveSelf.col) <= 1; })
-          .map(c=> [c, Math.abs(c - liveSelf.col) + rnd()*0.1]).sort((x, y)=> x[1] - y[1]).map(x=> x[0]);
-        candT.slice(0, tcT != null ? 2 : 3).forEach(c=> forkStrike(c, false, 'trident')); }
       if(sweepN && !blindNow) sweepStrike(sweepCol + 1, 'right');
-      // Pitchfork (2026-10-13 rework, user: "Hits the nearest 4 opposing units. (Can't be more than 2 x-units away)"): besides its
-      // normal swing, it strikes the next-nearest enemy units within 2 columns, up to 4 units in all (ties at random).
-      if(attDef.effects && attDef.effects.pitchfork && !attDef.effects.stealth && !blindNow){
-        const tc = target && target.kind === 'card' ? target.col : null;
-        const cand = Object.keys(liveEnemyCols).map(Number).filter(c=>{ const e = liveEnemyCols[c]; return c !== tc && e && e.kind === 'card' && e.card.hp > 0 && Math.abs(c - liveSelf.col) <= 2; })
-          .map(c=> [c, Math.abs(c - liveSelf.col) + rnd()*0.1]).sort((x, y)=> x[1] - y[1]).map(x=> x[0]);
-        cand.slice(0, tc != null ? 3 : 4).forEach(c=> forkStrike(c, false, 'pitchfork')); }
+      // Fork / Trident / Pitchfork prongs (2026-10-15, see prongSpec above): the other nearest units in range. A miss or dodge on
+      // the main swing never cancels them (2026-10-12, user: "When the Fork unit misses, it should still continue to hit L and R");
+      // Blind and the dark roll once per prong.
+      if(prongCols.length){
+        prongCols.forEach(c=>{
+          const pMiss = (a.att.blind>0 && !keenSense && rnd() < 0.5) || (sMiss > 0 && (sMiss >= 1 || rnd() < sMiss));
+          if(pMiss){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork', prong:prongSpec.kind}); return; }
+          forkStrike(c, false, prongSpec.kind); swingLanded = true;
+        });
+      }
       if(isBoomerangDef(attDef) && !a.att._boomerangReturning && !blindNow){ // thrown: it flies on even if the thrower falls
         const pl = players[a.attId]; if(!Array.isArray(pl.boomerangs)) pl.boomerangs = [];
         pl.boomerangs.push({uid:a.att.uid, defId:a.att.defId, col:liveSelf.col, dmg:atkThisRound, dmgType, hitCastle:!!(target && target.kind === 'hq'), targetUid: target && target.kind === 'card' && target.card ? target.card.uid : null});
