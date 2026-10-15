@@ -1191,6 +1191,7 @@ M.rainTick = function(host, opts){
     t.fromTo(sh, {opacity:0}, {opacity:.6, duration:.4}).to(sh, {opacity:0, duration:.5}, 1.0);
     drops.forEach(({d, u}, i)=>{ t.fromTo(d, {y:0, opacity:0}, {y:u.height*.4, opacity:1, duration:.35, ease:'power2.in'}, .2 + i*.05).to(d, {opacity:0, duration:.05}, '>')
       .call(()=> ringAt(u.left + u.width/2, u.top + u.height*.42, {color:'#9ff0a0', glow:'#5fd06a', size:28, dur:450}), null, .55 + i*.05); });
+    t.to({}, {duration:.5}, .55 + drops.length*.05); // 2026-10-15: outlast the last ring
   });
 };
 // Thick Fog (fld-fog-active: only the tile was foggy) and Full Moon (fld-moon-active): a lasting layer on the board while
