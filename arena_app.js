@@ -15531,7 +15531,7 @@ function applyAmbushNode(){
 // Once revealed it stays (except a night-only one), pops onto the map with a sparkle and a toast the first time, and never blocks
 // the next map (a secret fight is optional, like a chance fight). The designer can move or retune them in Edit skirmish as usual.
 const HIDDEN_SKIRMISHES = [
-  {map:'m2', near:'4-5', dx:-16, dy:12, reveal:{curiosity:'cur_m2_lantern'}, hint:'The lantern in the Hollow is still burning…',
+  {map:'m2', near:'4-5', dx:-16, dy:-14, reveal:{curiosity:'cur_m2_lantern'}, hint:'The lantern in the Hollow is still burning…',
     node:{key:'4-H', code:'4-H', kind:'elite', name:"The Lamplighter's Return", icon:'🏮', hqHp:80, rules:{phase:'night'},
       flavor:'Somebody came home to the lantern you left lit, and brought the whole river with them.',
       deck:{'otter-lantern-bearer':3, 'beaver-builder':3, 'pond-trout':3, 'open-ocean-hermit-crab':3, 'humpback-elder':1}}},
@@ -15577,7 +15577,7 @@ function refreshHiddenSkirmishes(){
     const map = CONQUEST_MAPS.find(m=> m.id === h.map); if(!map) return;
     const i = map.nodes.findIndex(n=> n.key === h.node.key), show = hiddenSkirmishShown(h, progress, st);
     if(!show){ if(i >= 0 && map.nodes[i].secret) map.nodes.splice(i, 1); return; }
-    if(!st.found[h.node.key] && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled)){ st.found[h.node.key] = Date.now(); fresh.push(h); }
+    if(!st.found[h.node.key] && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) && isMapUnlocked(map, progress)){ st.found[h.node.key] = Date.now(); fresh.push(h); }
     if(i >= 0) return; // already there (an edit may have patched it)
     const plain = Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret)}), ps = mapNodePositions(plain), ri = plain.nodes.findIndex(n=> n.key === h.near), ref = ps[ri] || {x:50, y:50};
     const pos = {x: Math.max(6, Math.min(94, ref.x + (h.dx||0))), y: Math.max(8, Math.min(92, ref.y + (h.dy||0)))};
@@ -15588,6 +15588,7 @@ function refreshHiddenSkirmishes(){
   return fresh;
 }
 function hiddenJustRevealed(key){ const st = hiddenState(); return !!st.found[key] && !st.popped[key]; }
+const hiddenPopNow = new Set(); // the ones popping in on this render (the class lasts until the next one, 2026-10-15)
 function markHiddenPopped(keys){ if(!keys.length) return; const st = hiddenState(); keys.forEach(k=> st.popped[k] = Date.now()); saveHiddenState(st); }
 function ambushShouldTrigger(map, node){
   if(!map || !node || ambushState().triggered || !loadTutorialDone()) return false;
@@ -17060,8 +17061,10 @@ function renderConquestSubTab(body){
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
   // Hidden skirmishes (2026-10-15): reveal any whose condition is now met; the first sight of one pops it in with a toast.
   { try{ refreshHiddenSkirmishes(); }catch(e){}
-    const pops = HIDDEN_SKIRMISHES.filter(h=> h.map === conquestSelectedMap && hiddenJustRevealed(h.node.key) && (CONQUEST_MAPS.find(m=> m.id === h.map)||{nodes:[]}).nodes.some(n=> n.key === h.node.key));
-    if(pops.length) setTimeout(()=>{ markHiddenPopped(pops.map(h=> h.node.key)); pops.forEach((h, i)=> setTimeout(()=>{ try{ showToast(TX('toast.hidden-skirmish-found', {v1: h.node.icon, v2: h.node.name, v3: h.node.code}), 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 700 + i*600)); }, 0); }
+    const selMap = CONQUEST_MAPS.find(m=> m.id === conquestSelectedMap);
+    const pops = selMap && isMapUnlocked(selMap, progress) ? HIDDEN_SKIRMISHES.filter(h=> h.map === selMap.id && hiddenJustRevealed(h.node.key) && selMap.nodes.some(n=> n.key === h.node.key)) : [];
+    pops.forEach(h=> hiddenPopNow.add(h.node.key));
+    if(pops.length){ setTimeout(()=> hiddenPopNow.clear(), 2600); markHiddenPopped(pops.map(h=> h.node.key)); pops.forEach((h, i)=> setTimeout(()=>{ try{ showToast(TX('toast.hidden-skirmish-found', {v1: h.node.icon, v2: h.node.name, v3: h.node.code}), 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 700 + i*600)); } }
   const wrapEl = document.getElementById('appWrap');
   // 2026-10-03 (explicit: "Conquest and Arena margins are different... Set them to be the same.
   // Allow for a full-screen button in conquest"): Conquest now sits in the same content column as
@@ -17254,7 +17257,7 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenJustRevealed(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
           <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="Something glints here. An S rank might find it." aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
         </button>`;
       }).join('')}

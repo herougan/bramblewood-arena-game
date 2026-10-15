@@ -695,12 +695,13 @@ M.sightSync = function(m, env){
   let rules = null; try{ rules = typeof matchFieldRules === 'function' ? matchFieldRules(m) : null; }catch(e){}
   const dk = !m || m.over ? null : (rules && rules.dark) ? (rules.dark === 'absolute' || rules.dark === 'pitch' ? rules.dark : 'dark') : null;
   let ph = null; try{ if(m && !m.over && m.engine && m.engine.getPhase && (typeof dayNightOn !== 'function' || dayNightOn(m))) ph = m.engine.getPhase(); }catch(e){}
-  const defs = defsOf(env); const eff = c=> effOf(defs, c.dataset.defid);
+  // 2026-10-15 (rules batch): Illuminate is Lantern's new name and lights Absolute darkness too, so either key lights its side fully.
+  const defs = defsOf(env); const eff = c=>{ const e = effOf(defs, c.dataset.defid) || {}; return e.illuminate && !e.lantern ? Object.assign({}, e, {lantern:true}) : e; };
   const alive = c=> !c.classList.contains('is-dying') && !c.classList.contains('dead');
   const mineOf = c=> !!c.closest('#rowMine, .bottom-play-row');
   const lit = {true:false, false:false}; cards.forEach(c=>{ if(alive(c) && eff(c).lantern) lit[mineOf(c)] = true; });
   cards.forEach(c=>{ const e = eff(c), side = mineOf(c); let k = null;
-    if(dk){ if(e.darksight) k = 'eyes'; else if(e.lantern) k = 'lantern'; else if(e.keenSense) k = null; else if(lit[side] && dk !== 'absolute') k = 'lit'; else k = 'dark'; }
+    if(dk){ if(e.darksight) k = 'eyes'; else if(e.lantern) k = 'lantern'; else if(e.keenSense) k = null; else if(lit[side]) k = 'lit'; else k = 'dark'; }
     if(!k || k === 'lit'){ if(ph === 'day' && e.sunshy) k = 'sun'; else if(ph === 'night' && e.nightblind && !lit[side]) k = 'night'; }
     if(!dk && e.lantern && ph === 'night') k = k || 'lantern';
     if((!k || k === 'lit' || k === 'eyes') && c.classList.contains('is-blind') && !e.keenSense) k = 'blind'; // 2026-10-15: Blind status, while it lasts
@@ -1387,7 +1388,7 @@ const fieldOf = m=>{ try{ const f = m && m.engine && m.engine.getField ? m.engin
 const isMineSide = (m, side)=>{ try{ return side === (m && m.sideOf ? m.sideOf(1) : 'A'); }catch(e){ return side === 'A'; } };
 const rcOf = (env, uid)=> (env.match && env.match.replayCards && env.match.replayCards[uid]) || {};
 const castleOf = mine=> document.querySelector(mine ? '.bottom-play-row .match-castle-tile' : '.top-play-row .match-castle-tile');
-const litSide = (mineSide, defs)=> [...document.querySelectorAll((mineSide ? '#rowMine' : '#rowEnemy') + ' .board-card[data-defid]')].some(c=> effOf(defs, c.dataset.defid).lantern);
+const litSide = (mineSide, defs)=> [...document.querySelectorAll((mineSide ? '#rowMine' : '#rowEnemy') + ' .board-card[data-defid]')].some(c=> effOf(defs, c.dataset.defid).lantern || effOf(defs, c.dataset.defid).illuminate); // + Illuminate (2026-10-15)
 function matchesKey(k, dmgType, ad){ return (dmgType && dmgType !== 'physical' && k === dmgType) || !!(ad && Array.isArray(ad.archetypes) && ad.archetypes.includes(k)) || !!(ad && ad.effects && ad.effects[k]); }
 
 M.onEvent = function(ev, env){
