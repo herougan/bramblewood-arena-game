@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-15",
+ "generated": "2026-10-16",
  "speakers": [
   {
    "key": "shieldback",
@@ -1491,7 +1491,7 @@
   {
    "id": "forge_cobble_intro",
    "where": [
-    "renderForge()  · arena_app.js:32948"
+    "renderForge()  · arena_app.js:34282"
    ],
    "lines": [
     {
@@ -1505,7 +1505,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "renderForge()  · arena_app.js:32948"
+     "where": "renderForge()  · arena_app.js:34282"
     },
     {
      "id": "forge_cobble_intro",
@@ -1588,7 +1588,7 @@
   {
    "id": "lesson_leader_rule",
    "where": [
-    "First time you open the 👑 leader picker  · arena_app.js:9548"
+    "First time you open the 👑 leader picker  · arena_app.js:9747"
    ],
    "lines": [
     {
@@ -1602,7 +1602,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "First time you open the 👑 leader picker  · arena_app.js:9548"
+     "where": "First time you open the 👑 leader picker  · arena_app.js:9747"
     },
     {
      "id": "lesson_leader_rule",
@@ -1622,7 +1622,7 @@
   {
    "id": "lesson_leaders",
    "where": [
-    "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:9592"
+    "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:9791"
    ],
    "lines": [
     {
@@ -1636,7 +1636,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:9592"
+     "where": "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:9791"
     },
     {
      "id": "lesson_leaders",
@@ -1695,7 +1695,7 @@
   {
    "id": "outskirts_reveal",
    "where": [
-    "The first time the Conquest map opens  · arena_app.js:13011"
+    "The first time the Conquest map opens  · arena_app.js:13228"
    ],
    "lines": [
     {
@@ -1709,7 +1709,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "The first time the Conquest map opens  · arena_app.js:13011"
+     "where": "The first time the Conquest map opens  · arena_app.js:13228"
     },
     {
      "id": "outskirts_reveal",
@@ -1794,7 +1794,7 @@
   {
    "id": "pitch_lesson_h",
    "where": [
-    "In a fight, the first time a card needs Lumber  · arena_app.js:28754"
+    "In a fight, the first time a card needs Lumber  · arena_app.js:29824"
    ],
    "lines": [
     {
@@ -1808,14 +1808,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:28754"
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:29824"
     }
    ]
   },
   {
    "id": "pitch_lesson_o",
    "where": [
-    "In a fight, the first time a card needs Lumber  · arena_app.js:28754"
+    "In a fight, the first time a card needs Lumber  · arena_app.js:29824"
    ],
    "lines": [
     {
@@ -1829,14 +1829,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:28754"
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:29824"
     }
    ]
   },
   {
    "id": "pitch_spent_h",
    "where": [
-    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:26177"
+    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:27093"
    ],
    "lines": [
     {
@@ -1850,14 +1850,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:26177"
+     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:27093"
     }
    ]
   },
   {
    "id": "pitch_spent_o",
    "where": [
-    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:26177"
+    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:27093"
    ],
    "lines": [
     {
@@ -1871,7 +1871,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:26177"
+     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:27093"
     }
    ]
   },
@@ -1925,7 +1925,7 @@
   {
    "id": "tut_boomerang",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:28779"
+    "Tutorial fights: remarks from your side  · arena_app.js:29849"
    ],
    "lines": [
     {
@@ -1939,14 +1939,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:28779"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:29849"
     }
    ]
   },
   {
    "id": "tut_fly",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:28778"
+    "Tutorial fights: remarks from your side  · arena_app.js:29848"
    ],
    "lines": [
     {
@@ -1960,14 +1960,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:28778"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:29848"
     }
    ]
   },
   {
    "id": "tut_traveller_cheer",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:28774"
+    "Tutorial fights: remarks from your side  · arena_app.js:29844"
    ],
    "lines": [
     {
@@ -1981,7 +1981,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:28774"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:29844"
     }
    ]
   },
@@ -2492,7 +2492,7 @@
   {
    "id": "unlock_phyla",
    "where": [
-    "Opening the Codex once card families (phyla) unlock  · arena_app.js:4670"
+    "Opening the Codex once card families (phyla) unlock  · arena_app.js:4802"
    ],
    "lines": [
     {
@@ -2506,7 +2506,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Opening the Codex once card families (phyla) unlock  · arena_app.js:4670"
+     "where": "Opening the Codex once card families (phyla) unlock  · arena_app.js:4802"
     },
     {
      "id": "unlock_phyla",
@@ -3082,7 +3082,7 @@
   {
    "id": "well_m1",
    "where": [
-    "Tapping the old well on Map 0  · arena_app.js:12990"
+    "Tapping the old well on Map 0  · arena_app.js:13207"
    ],
    "lines": [
     {
@@ -3096,7 +3096,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tapping the old well on Map 0  · arena_app.js:12990"
+     "where": "Tapping the old well on Map 0  · arena_app.js:13207"
     },
     {
      "id": "well_m1",
