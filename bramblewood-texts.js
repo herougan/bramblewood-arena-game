@@ -477,7 +477,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.your-first-deck-is-waiting-part": "Your first deck is waiting. Part 2 (your leader) is on the map, on the 🎓 marker, whenever you are ready.",
   "results.nicely-done-that-was-a-replay": "Nicely done — that was a replay, so no rewards this time.",
   "results.that-s-everything-the-training-wheels": "That's everything. The training wheels are off now: from here, fights don't stop to explain.",
-  "toast.twilight-day-and-night-creatures-are": "🌆 Twilight: day and night creatures are both awake."
+  "toast.twilight-day-and-night-creatures-are": "🌆 Twilight: day and night creatures are both awake.",
+  "toast.no-dungeon-tickets-left-a-new": "🎟️ No Dungeon tickets left. A new one comes tomorrow, and a bonus one every Monday.",
+  "toast.dungeon-ticket-used-the-run-lasts": "🎟️ Dungeon ticket used: the run lasts until you lose a floor ({dungeonTicketsLeft} left)."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

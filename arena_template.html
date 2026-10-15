@@ -1361,6 +1361,16 @@
   .deck-savebar{position:fixed; right:22px; bottom:20px; z-index:70; display:flex; align-items:center; gap:8px; width:fit-content; padding:6px 8px 6px 14px; border-radius:999px; background:rgba(30,20,10,.55); color:#f3e6c8; font-size:13px; font-weight:700; backdrop-filter:blur(4px);}
   .deck-savebar.is-dirty{background:#f3d77e; color:#4a3205; box-shadow:0 4px 14px rgba(0,0,0,.3);}
   .deck-savebar .dsb-state::before{content:'✓ '; } .deck-savebar.is-dirty .dsb-state::before{content:'● ';}
+  /* 2026-10-15 (user: "the Save button should be on the same row as 'Ready to play'"): the save bar is part of the count row now,
+     right-aligned after "20/20 cards ✓ ready to play", not a pill floating in the window's corner. */
+  .deck-count-row{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:6px 12px; margin:0 0 6px;}
+  .deck-count-row .deck-count-line{margin:0;}
+  .deck-count-row .deck-savebar{position:static; right:auto; bottom:auto; z-index:auto; margin-left:auto; backdrop-filter:none; background:var(--surface-2); color:var(--ink); box-shadow:inset 0 0 0 1px var(--surface-border);}
+  .deck-count-row .deck-savebar.is-dirty{background:#f3d77e; color:#4a3205; box-shadow:0 2px 8px rgba(0,0,0,.2);}
+  /* 2026-10-15 (user: "Mini window should have hover for card detail BUT also hovering over the chosen leader should show the card
+     detail"): the leader tiles in the picker and the chosen leader on the deck banner take the pointer again, so the usual 1 s hover
+     (or a hold on a phone) opens the card's details; a click still lands on the button around them. */
+  .dt-slot[data-loadout="leader"] .dt-tile .card-tile, .loadout-picker .lp-item:not(.lp-none) .lp-tile .card-tile{pointer-events:auto;}
   .dc-warn{display:inline-grid; place-items:center; width:15px; height:15px; border-radius:50%; background:#c9822f; color:#fff; font-size:10px; font-weight:900; margin-left:2px;}
   .deck-main-tag{font:800 12.5px 'Baloo 2',system-ui,sans-serif; color:#5e3f05; background:#f3d77e; box-shadow:0 1px 3px rgba(0,0,0,.3); border-radius:999px; padding:4px 10px; align-self:center;}
   .deck-illegal-badge{font-size:10px; font-weight:800; color:#9a5418; background:rgba(181,101,29,.16); border-radius:6px; padding:2px 6px; flex-shrink:0;}
@@ -3110,6 +3120,17 @@
   .rp-bars{display:grid; grid-template-columns:repeat(auto-fit, minmax(14px, 1fr)); gap:3px;}
   .rp-bar{display:block; height:9px; border-radius:3px; background:rgba(0,0,0,.18); overflow:hidden;}
   .rp-bar > span{display:block; height:100%; background:linear-gradient(90deg, #c0392b, #e67e22);}
+  /* One bar per raid part (2026-10-15, user: "It should say health left like X/Y"): a taller single bar; its phases are faint marks
+     (.rp-tick), and the "X / Y HP left" line and the "Phase n of N" chip sit under it. */
+  .rp-bars.is-single{display:block;}
+  .rp-bars.is-single .rp-bar{position:relative; height:14px; border-radius:7px; background:rgba(0,0,0,.28); box-shadow:inset 0 1px 2px rgba(0,0,0,.35);}
+  .rp-bars.is-single .rp-bar > span{border-radius:7px 0 0 7px; transition:width .6s ease;}
+  .rp-bars.is-single .rp-tick{position:absolute; top:2px; bottom:2px; width:2px; margin-left:-1px; border-radius:1px; background:rgba(255,248,230,.55); box-shadow:0 0 0 1px rgba(0,0,0,.25); pointer-events:none;}
+  .rp-legend{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:4px 8px; font-size:12.5px; font-variant-numeric:tabular-nums;}
+  .rp-legend .rp-left b{font-size:14px;} .rp-legend .rp-left small{color:var(--ink-muted); font-size:11.5px;}
+  .rp-legend .rp-phase{font-size:11px; font-weight:800; padding:1px 8px; border-radius:999px; background:color-mix(in srgb, #e67e22 18%, transparent); color:var(--ink); border:1px solid color-mix(in srgb, #e67e22 45%, transparent); cursor:help;}
+  .raid2-panel .r2-total-line{display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 12px;} .raid2-panel .r2-total-line b{font-size:15px;}
+  .raid2-panel .r2-total-line small{color:var(--ink-muted);} .raid2-panel .r2-days{color:var(--ink-muted);}
   .raid-editor .re-errs{margin:6px 0 10px; padding:8px 12px; border-radius:10px; background:rgba(179,38,30,.12); border:1px solid #b3261e; font-size:13px; font-weight:700;}
   .raid-editor .re-parts{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; align-items:center;}
   .raid-editor .re-part-tab{display:flex; flex-direction:column; align-items:flex-start; padding:6px 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2); color:inherit; font:inherit; font-weight:700; cursor:pointer;}
@@ -3470,6 +3491,11 @@
   }
   /* Codex speed (2026-10-12): off-screen tiles skip layout and paint until scrolled near */
   #codexGrid .cx-tile-wrap{content-visibility:auto; contain-intrinsic-size:auto 248px; padding-bottom:16px;} /* 2026-10-13: room for the skill badges that hang below the card (they were clipped) */
+  /* 2026-10-15 (user: "The codex still cuts off the corner symbolage of the cards."): content-visibility:auto paints only inside the
+     wrap, so the cost and Wait badges that sit over the card's top corners were cut in half. The wrap reaches 8 px past the card on
+     the top and sides (negative margins keep the card the same size and place in the grid). */
+  #codexGrid .cx-tile-wrap{padding:8px 7px 16px; margin:-8px -7px 0;}
+  #codexGrid .cx-tile-wrap .cx-lock{top:14px; left:13px;} #codexGrid .cx-tile-wrap .cx-tag{left:11px; bottom:20px;} #codexGrid .cx-tile-wrap .cx-tag-event{left:auto; right:11px; top:12px; bottom:auto;}
   #codexGrid.full-art{width:105%; margin-left:-2.5%;} /* 2026-10-13 (user: "When in full art mode in codex, widen the gallery by 5%") */
   .shop-back{float:left; margin:0 12px 8px 0;}
   /* Reserve rows (2026-10-12, raids as a full game): smaller, dimmer rows behind each front row */
@@ -5671,6 +5697,35 @@
     .world-stop .world-card{left:44px;} .world-stop.label-left .world-card{right:44px;}
     .world-card{min-width:110px; max-width:140px; padding:6px 8px;} .wc-mini{height:34px;} .wc-name{font-size:12.5px;}
   }
+  /* Daily dungeons on the World map (2026-10-15, user: "murgle daily dungeon should be shown there as well. Using a consistent
+     iconography"): the same compass diamond, smaller, with a 🗝️ tag, on a dotted branch off its map; its card sits under it. */
+  .world-branch{position:absolute; left:0; width:100%; overflow:visible; pointer-events:none;}
+  .world-branch line{stroke:rgba(255,240,200,.45); stroke-width:2.5; stroke-dasharray:4 6; stroke-linecap:round; vector-effect:non-scaling-stroke;}
+  .world-stop.is-side .world-diamond{width:66px; height:66px; left:-33px; top:-33px;} .world-stop.is-side .wd-ico{font-size:24px;}
+  .world-stop.is-side .world-card{top:40px; left:50%; right:auto; transform:translateX(-50%); min-width:0; width:max-content; max-width:170px; text-align:center;}
+  .world-diamond .wd-tag{position:absolute; right:-2px; bottom:2px; font-size:15px; line-height:1; filter:drop-shadow(0 1px 2px rgba(0,0,0,.7));}
+  @media (max-width:560px){ .world-stop.is-side .world-diamond{width:52px; height:52px; left:-26px; top:-26px;} .world-stop.is-side .wd-ico{font-size:19px;} .world-stop.is-side .world-card{top:30px; max-width:120px;} }
+  /* The Dungeons tab in Play (2026-10-15, user: "Maybe, it's its own, just another tab in 'Play'."). */
+  .dungeons-panel{max-width:860px; margin:0 auto;}
+  .dungeons-panel .dg-head h2{margin:0 0 2px;}
+  .dungeons-panel .dg-tickets{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; margin:6px 0 14px; padding:8px 12px; border-radius:12px; background:var(--surface-2); border:1px solid var(--surface-border); font-size:13.5px;}
+  .dungeons-panel .dg-tix{display:inline-flex; gap:2px; font-size:18px;} .dungeons-panel .dg-tix i{font-style:normal; filter:grayscale(1) opacity(.35);} .dungeons-panel .dg-tix i.on{filter:none;}
+  .dungeons-panel .dg-list{display:flex; flex-direction:column; gap:10px;}
+  .dungeons-panel .dg-card{display:flex; gap:14px; align-items:center; padding:12px 14px; border-radius:14px; background:var(--surface-2); border:1px solid var(--surface-border);}
+  .dungeons-panel .dg-card.is-soon, .dungeons-panel .dg-card.is-locked{opacity:.7;}
+  .dungeons-panel .dg-diamond{position:relative; flex:0 0 auto; width:84px; height:84px; filter:drop-shadow(0 4px 8px rgba(0,0,0,.4));}
+  .dungeons-panel .dg-diamond .compass-diamond{width:100%; height:100%; display:block;}
+  .dungeons-panel .dg-diamond .wd-ico{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:30px;}
+  .dungeons-panel .dg-card.is-soon .wd-ico{filter:grayscale(1);}
+  .dungeons-panel .dg-body{flex:1; min-width:0; display:flex; flex-direction:column; gap:4px;}
+  .dungeons-panel .dg-name{font:800 17px 'Baloo 2',system-ui,sans-serif;} .dungeons-panel .dg-where{font-size:12px; color:var(--ink-muted);}
+  .dungeons-panel .dg-sub{margin:0; font-size:13px; color:var(--ink-muted);}
+  .dungeons-panel .dg-floor{display:flex; align-items:center; gap:10px; font-size:13px;} .dungeons-panel .dg-floor .wc-bar{flex:1; max-width:220px; height:8px; border-radius:4px; background:rgba(0,0,0,.2); overflow:hidden; display:block;}
+  .dungeons-panel .dg-floor .wc-bar > span{display:block; height:100%; background:linear-gradient(90deg, #5fae4a, #b9d65a);}
+  .dungeons-panel .dg-acts{display:flex; align-items:center; gap:10px; margin-top:2px;}
+  .dungeons-panel .dg-run{font-size:12px; font-weight:800; color:#2f7a2a; background:rgba(95,174,74,.16); border-radius:999px; padding:2px 9px;}
+  @media (max-width:560px){ .dungeons-panel .dg-card{flex-direction:column; align-items:flex-start;} .dungeons-panel .dg-diamond{width:64px; height:64px;} }
+  .conquest-headline .dungeon-ticket-line{margin:4px 0 0; font-size:12.5px; font-weight:700;} .conquest-headline .dungeon-ticket-line .dtl-run{color:#9be38a;}
   /* T7 shader layers (bramblewood-shaders.js) */
   .bw-shader{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; display:block;}
   .entrance-bg .bw-shader, .hs-back .bw-shader{image-rendering:pixelated;}
@@ -8926,6 +8981,14 @@ body.cq-opening .map-trail-svg{display:none !important;}
 @media (max-width:620px){ .shop-counter{grid-template-columns:auto 1fr;} .shop-counter .counter-act{grid-column:1 / -1;} .shop-counter .counter-act .btn{width:100%;} .shelf-row.is-stepped{grid-template-columns:1fr;} .shelf-step.is-high{transform:none;} }
 @media (prefers-reduced-motion: reduce){ .shelf-item, .booster::before{transition:none;} .shop-counter.is-new .counter-goods{animation:none;} }
 #conquestCanvas .map-node, #conquestCanvas .map-spot{scale:var(--icon-scale, 1);}
+/* 2026-10-15 (user: "The lines linking items on the conquest map are offset."): the `scale` property is applied around the box's centre
+   *after* the translate(-50%,-50%) that puts that centre on the map point, so every shrunk marker drifted (1 - scale) × half its size
+   down and right of its point: 6 px on Map 13 (scale .77), more on busier maps, and the trail dashes missed the skirmishes. The
+   `translate` property (applied before `scale`) cancels that drift, so a marker's centre sits exactly on its point at any scale. */
+#conquestCanvas .map-node, #conquestCanvas .map-spot{translate:calc((var(--icon-scale, 1) - 1) * 50%) calc((var(--icon-scale, 1) - 1) * 50%);}
+/* ... and a feature spot's name hangs below its icon instead of sharing its box, so the spot's point (where its dotted line ends) is
+   the icon's centre, not a point between the icon and its name (2026-10-15). */
+#conquestCanvas .map-spot .map-spot-name{position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:2px; pointer-events:none;}
 /* Skirmish panel v3 (2026-10-12, user: "The Skirmish detail UI is skuffed. Make the left and right elements on the same row ... The
    Cleared can be reduced to a tick on the top right corner ... Put the Battle Rating UI under the [name] UI cell"): one row,
    showcase | name, castle line and rating | first-clear rewards; Cleared is a tick in the corner. */
@@ -9167,6 +9230,39 @@ body.cave-screen .conquest-node-panel{filter:brightness(.8); transition:filter .
 body.cave-screen .conquest-node-panel:hover, body.cave-screen .conquest-node-panel:focus-within{filter:none;}
 body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .panel-sub{color:#efe6cf; text-shadow:0 1px 3px rgba(0,0,0,.8);}
 @media (prefers-reduced-motion: reduce){ .cave-screen-dark{background:radial-gradient(circle at var(--lx, 50vw) var(--ly, 50vh), rgba(4,6,12,0) 0, rgba(4,6,12,.6) 360px);} }
+/* Dark maps blot out (2026-10-15): with CSS masks the dark layers are one flat near-black, and the light is cut out of them by
+   mountCaveDark's mask (the lantern at the pointer, the pawn, the open fights, the lit fires). Cleared maps keep the 0.78 veil. */
+.cave-dark.is-masked, .cave-screen-dark.is-masked{background:rgba(2,3,8,.95); -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;}
+/* Fire pits in the dark (2026-10-15, user: "In caves, fireplaces (0-2) placed around, light up as you defeat skirmishes."): cold ones
+   sit under the dark (seen only in the lantern), lit ones above it with a flickering flame and a warm glow. */
+.cave-fire{position:absolute; width:22px; height:22px; transform:translate(-50%,-50%); z-index:5; pointer-events:none;}
+.cave-fire.is-lit{z-index:8;}
+.cave-fire i{position:absolute; display:block; font-style:normal;}
+.cave-fire .cf-stones{left:0; right:0; bottom:1px; height:8px; border-radius:50%; background:radial-gradient(ellipse at 50% 30%, #6e655a, #38322c 70%); box-shadow:0 2px 3px rgba(0,0,0,.6), inset 0 0 0 2px #26221d;}
+.cave-fire .cf-logs{left:5px; right:5px; bottom:4px; height:4px; border-radius:2px; background:#5a3a22; transform:rotate(-14deg); box-shadow:0 0 0 1px #2d1c10, 0 -1px 0 1px rgba(255,120,40,0) inset;}
+.cave-fire .cf-flame{left:50%; bottom:6px; width:11px; height:16px; margin-left:-6px; border-radius:50% 50% 45% 45% / 65% 65% 35% 35%; background:radial-gradient(ellipse at 50% 78%, #fff6c4 0, #ffd04a 28%, #ff7a1a 62%, rgba(255,80,20,0) 74%); transform-origin:50% 100%; opacity:0; transform:scale(.2);}
+.cave-fire .cf-f2{width:7px; height:11px; margin-left:0;}
+.cave-fire .cf-glow{left:50%; top:50%; width:96px; height:96px; margin:-48px; border-radius:50%; background:radial-gradient(circle, rgba(255,176,80,.5), rgba(255,120,40,.18) 42%, transparent 70%); opacity:0; mix-blend-mode:screen;}
+.cave-fire .cf-spark{left:50%; top:0; width:3px; height:3px; border-radius:50%; background:#ffd27a; box-shadow:0 0 5px 2px rgba(255,140,40,.8); opacity:0;}
+.cave-fire.is-lit .cf-flame{opacity:1; transform:none; animation:cfFlick .42s ease-in-out infinite alternate;}
+.cave-fire.is-lit .cf-f2{animation-duration:.31s; animation-delay:-.2s;}
+.cave-fire.is-lit .cf-glow{opacity:1; animation:cfGlow 1.7s ease-in-out infinite alternate;}
+.cave-fire.is-lit .cf-logs{background:#6b3a1c; box-shadow:0 0 0 1px #2d1c10, 0 0 6px 1px rgba(255,120,40,.7);}
+.cave-fire.is-lit .cf-spark{animation:cfSpark 2.4s ease-out infinite;}
+.cave-fire.is-igniting .cf-flame{animation:cfIgnite .7s cubic-bezier(.2,1.6,.4,1) both, cfFlick .42s .7s ease-in-out infinite alternate;}
+.cave-fire.is-igniting .cf-glow{animation:cfGlowIn 1s ease-out both, cfGlow 1.7s 1s ease-in-out infinite alternate;}
+.cave-fire.is-igniting::after{content:''; position:absolute; left:50%; top:50%; width:20px; height:20px; margin:-10px; border-radius:50%; border:2px solid rgba(255,200,110,.9); animation:cfRing .8s ease-out forwards;}
+@keyframes cfFlick{0%{transform:scale(1,1) skewX(0);} 50%{transform:scale(.9,1.14) skewX(5deg);} 100%{transform:scale(1.06,.9) skewX(-4deg);}}
+@keyframes cfGlow{from{opacity:.78; transform:scale(.93);} to{opacity:1; transform:scale(1.07);}}
+@keyframes cfIgnite{0%{opacity:0; transform:scale(.1);} 40%{opacity:1; transform:scale(1.5,1.8);} 100%{opacity:1; transform:none;}}
+@keyframes cfGlowIn{0%{opacity:0; transform:scale(.3);} 45%{opacity:1; transform:scale(1.35);} 100%{opacity:1; transform:none;}}
+@keyframes cfRing{from{transform:scale(.4); opacity:1;} to{transform:scale(4); opacity:0;}}
+@keyframes cfSpark{0%{opacity:0; transform:translate(0,0);} 15%{opacity:1;} 100%{opacity:0; transform:translate(5px,-26px);}}
+.cave-fire.is-glow .cf-logs{display:none;}
+.cave-fire.is-glow .cf-flame{border-radius:50%; height:11px; width:11px; bottom:5px; background:radial-gradient(circle at 45% 40%, #effffd 0, #8ff5e8 32%, #25b8cc 62%, rgba(30,160,200,0) 74%);}
+.cave-fire.is-glow .cf-f2{display:none;} .cave-fire.is-glow .cf-spark{background:#bff8f2; box-shadow:0 0 5px 2px rgba(60,220,220,.8);}
+.cave-fire.is-glow .cf-glow{background:radial-gradient(circle, rgba(90,232,222,.45), rgba(40,160,210,.16) 42%, transparent 70%);}
+@media (prefers-reduced-motion: reduce){ .cave-fire .cf-flame, .cave-fire .cf-glow, .cave-fire .cf-spark, .cave-fire::after{animation:none !important;} }
 /* Cave maps open on darkness: the light then spreads out from the centre (see caveLightSpread) */
 .map-veil.is-cave{background:#05070c; color:#e8e0cc;}
 .map-veil.is-cave .mv-card{color:#e8e0cc;} .map-veil.is-cave .mv-dots i{background:#e9c46a;}
@@ -9723,6 +9819,24 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .forge-hero .forge-embers{opacity:.6;}
   #view-forge.forge-scene > p, #view-forge.forge-scene > .panel-sub, #view-forge.forge-scene > small, #view-forge.forge-scene .sm-mats-hint{background:rgba(22,12,5,.88); color:#fbecd6; padding:4px 10px; border-radius:10px; text-shadow:none;}
   #view-forge.forge-scene .sm-mats{background:rgba(22,12,5,.88); color:#fbecd6; border-radius:12px;}
+  /* 2026-10-15 (user: "The blacksmith fonts are not contrasting against their backgrounds."): buttons don't inherit the page's ink,
+     so the recipe names, the needs and the fuse buttons read black on the dark theme's panels; everything here takes the theme ink,
+     and the small print is full strength (the muted ink, not a faded one). The Materia strip sits on its own solid dark bar. */
+  #view-forge .sm-recipe, #view-forge .sm-fuse-btn, #view-forge .sm-need{color:var(--ink);}
+  #view-forge .sm-recipe b{color:var(--ink);}
+  #view-forge .sm-recipe small, #view-forge .sm-fuse-btn small{opacity:1; color:var(--ink-muted);}
+  #view-forge .sm-recipe.on{background:color-mix(in srgb, #d08a3a 16%, var(--surface));}
+  #view-forge .sm-need.ok{color:color-mix(in srgb, #3f8f22 70%, var(--ink));} #view-forge .sm-need.short{color:color-mix(in srgb, #c0392b 60%, var(--ink));}
+  #view-forge .sm-mat{background:rgba(255,236,205,.1); border-color:rgba(255,196,130,.45); color:#fbecd6;}
+  #view-forge .sm-mat small{opacity:1; color:#f2dcbc;} #view-forge .sm-mat b{color:#ffd69a;}
+  #view-forge .sm-mats-hint{opacity:1;}
+  #view-forge .sm-fuse h3, #view-forge .sm-anvil .forge-name{color:var(--ink);} #view-forge .sm-fuse .panel-sub{opacity:1; color:var(--ink-muted);}
+  /* 2026-10-15 ("the sort is not consistent sizing"): every control on the Forge's search row is the same 34 px tall and type size. */
+  .forge-toolbar .forge-search, .forge-toolbar .forge-sort, .forge-toolbar > .btn, .forge-toolbar .forge-chip{box-sizing:border-box; height:34px; min-height:34px; font-size:13px; line-height:1;}
+  .forge-toolbar .forge-sort{padding:0 10px; border-radius:10px; font-family:'Nunito',system-ui,sans-serif; font-weight:700;}
+  .forge-toolbar .forge-search{padding:0 12px; border-radius:10px;}
+  .forge-toolbar > .btn{display:inline-flex; align-items:center; padding:0 12px; border-radius:10px;}
+  .forge-toolbar .forge-chip{display:inline-flex; align-items:center; padding:0 12px;}
   /* Deck card (compressed view): pictures, the rating, total Attack and Health; the count only when it's not 20. */
   .dmp-foot{grid-template-columns:1fr;}
   .dmp-meta .dmp-rating{background:rgba(70,40,110,.72);}

@@ -503,6 +503,34 @@ def m21(rng):  # The Quiet Summit (2026-10-13, Map 21): above the clouds after t
     return img
 
 
+# The Sunken Depths (2026-10-15, user: "The sunken depth background is too low-res. I think follow the same format you have done for
+# the other backgrounds."): it was the AI "Sunken Ferry" picture squeezed into 256x144, which smeared into mush when upscaled. Now it
+# is painted here like every other map: a dark sea floor with sand ridges, the wrecked ferry's hull and planks, kelp, coral, rocks,
+# drifting bubbles and the odd bioluminescent glint.
+HULL = ["....aaaaaaaaaaaaaaaaa.....", "..aabbbbbbbbbbbbbbbbbbaa..", ".abbcbbbbcbbbbcbbbbcbbbba.", "abbbcbbbbcbbbbcbbbbcbbbbba",
+        "abbbcbbbbcbbbbcbbbbcbbbbba", ".abbcbbbbcbbbbcbbbbcbbbba.", "..aabbbbbbbbbbbbbbbbbbaa..", "....aaaaaaaaaaaaaaaaa....."]
+PLANK = ["aaaaaab", "bbbbbbb"]
+KELP = [".a.", "a..", ".a.", "..a", ".a.", "a..", ".b."]
+BUBBLE = [".a.", "a.a", ".a."]
+
+
+def mj(rng):
+    img = dither_palette(fbm(rng, W, H), ['#04121c', '#071a27', '#0b2433', '#103041', '#173d4f'])
+    sand = fbm(rng, W, H, (64, 32), (0.7, 0.3))
+    blend_mask(img, np.clip((sand - 0.6) * 6, 0, 1), '#1f4a55')
+    blend_mask(img, np.clip((sand - 0.7) * 6, 0, 1), '#2c5e66')
+    for x, y in ((150, 14), (22, 104)):   # the wreck, off the middle band, in two pieces
+        shadow(img, x + 2, y + 7, 26, 3, 0.55)
+        stamp(img, HULL, x, y, {'a': '#2a1c14', 'b': '#4a3324', 'c': '#5e4430'})
+    scatter(img, rng, PLANK, {'a': '#5a3e2a', 'b': '#3a281c'}, 22, shadow_w=lambda w: w)
+    scatter(img, rng, KELP, {'a': '#2f8a5a', 'b': '#1c5a3a'}, 60, avoid_band=False)
+    scatter(img, rng, CORAL, {'a': '#d0607a', 'b': '#8a3450'}, 18)
+    scatter(img, rng, BOULDER, {'a': '#2a4450', 'b': '#0f222b'}, 34, shadow_w=lambda w: w)
+    scatter(img, rng, BUBBLE, {'a': '#7fc6d6'}, 26, avoid_band=False)
+    sparkle(img, rng, 70, '#7ff3e6'); sparkle(img, rng, 24, '#ffe38a')   # bioluminescence, an anglerfish's lure
+    return edge_vignette(img, 0.4)
+
+
 def mtut(rng):  # Tutorial (2026-10-13): a gentle training meadow, trampled practice rings, a brook
     img = mq(rng)
     ring = fbm(rng, W, H, (32, 16), (0.7, 0.3))
@@ -510,7 +538,7 @@ def mtut(rng):  # Tutorial (2026-10-13): a gentle training meadow, trampled prac
     return img
 
 
-PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz', 'me', 'mtut'))}
+PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz', 'me', 'mtut', 'mj'))}
 
 
 # 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds. I think the wetter one makes sense for the next map."):

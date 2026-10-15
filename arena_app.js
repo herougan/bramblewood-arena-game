@@ -3257,6 +3257,8 @@ const SoundKit = (()=>{
     // 2026-10-12 (11:39 list: "there is a light gadget sound. For forging, forge sounds"): a small mechanical click-whirr, and
     // three hammer strikes on the anvil with a quench hiss after.
     gadget(){ tone(1800,0.03,'square',0.035); tone(2600,0.04,'sine',0.03,0.04); noise(0.04,0.02); tone(900,0.08,'triangle',0.025,0.08); },
+    // One hammer blow of forgeStrike (2026-10-15), so each can land on its own hammer impact; i = 0, 1, 2 (the last adds the ring-out).
+    forgeHit(i, last){ i = i || 0; tone(1200 - i*90, 0.07, 'square', 0.09); tone(2400 - i*120, 0.25, 'sine', 0.03); noise(0.06, 0.08); tone(140, 0.12, 'sine', 0.08); if(last) setTimeout(()=> noise(0.6, 0.035), 100); },
     forgeStrike(){ [0, 320, 640].forEach((ms, i)=> setTimeout(()=>{ tone(1200 - i*90, 0.07, 'square', 0.09); tone(2400 - i*120, 0.25, 'sine', 0.03); noise(0.06, 0.08); tone(140, 0.12, 'sine', 0.08); }, ms)); setTimeout(()=> noise(0.6, 0.035), 1000); },
     // Hit-style cues (2026-10-08, "more sfx samples"): one per UnitFX hit style, plus fire breath.
     claw(){ for(let i = 0; i < 3; i++) fnoise(0.09, 0.07, {type:'highpass', freq:5200, freqEnd:1800, q:0.9, attack:0.004, delay:i*0.045}); tone(140, 0.07, 'triangle', 0.05, 0.02); },
@@ -3295,6 +3297,11 @@ const SoundKit = (()=>{
     burnAway(){
       fnoise(0.7, 0.07, {type:'lowpass', freq:500, freqEnd:200, attack:0.08});
       fnoise(0.6, 0.05, {type:'highpass', freq:2500, crackle:0.03, attack:0.05});
+    },
+    // A cave fire catches (2026-10-15): a soft whoosh up, then a little crackle.
+    fireIgnite(){
+      fnoise(0.45, 0.045, {type:'lowpass', freq:260, freqEnd:900, attack:0.06});
+      fnoise(0.7, 0.022, {type:'highpass', freq:2600, crackle:0.05, attack:0.12});
     },
     // Castle falls: a long rumble with stones settling.
     castleCollapse(){
@@ -4716,7 +4723,7 @@ function renderCodex(){
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
       ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
-      <select id="cxSort" aria-label="Sort cards"><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option>${phylaUnlocked() ? `<option value="phylum" ${codexFilter.sort==='phylum'?'selected':''}>Sort: Phylum</option>` : ''}<option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
+      <select id="cxSort" aria-label="Sort cards">${'' /* 2026-10-15: Cost, Wait, Attack, Health first, the same list the Forge sorts by */}<option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="wait" ${codexFilter.sort==='wait'?'selected':''}>Sort: Wait</option><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option>${phylaUnlocked() ? `<option value="phylum" ${codexFilter.sort==='phylum'?'selected':''}>Sort: Phylum</option>` : ''}<option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
       <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
       ${!adminModeEnabled ? (codexSeparateAllowed() ? `<button type="button" class="btn small ${codexSeparate ? 'primary' : ''}" id="cxSeparate" aria-pressed="${codexSeparate}" title="Split the Codex by where cards come from">${codexSeparate ? '🗂️ Separated' : '🗂️ All together'}</button>` : '') : ''}
       <select id="cxGroupBy" title="Split the Codex by where cards come from" ${adminModeEnabled ? '' : 'hidden'}>
@@ -4939,6 +4946,7 @@ function renderCodexGrid(keepPage){
     else if(codexFilter.sort==='advance') base = advancementKey(B).localeCompare(advancementKey(A)) || B.name.localeCompare(A.name); // desc = earliest first (flip for latest first)
     else if(codexFilter.sort==='attack') base = B.attack-A.attack;
     else if(codexFilter.sort==='health') base = B.health-A.health;
+    else if(codexFilter.sort==='wait') base = ((A.wait||0)-(B.wait||0)) || (A.cost-B.cost) || A.name.localeCompare(B.name); // like Cost: quickest first (2026-10-15)
     else if(codexFilter.sort==='rarity'){
       const ra = RARITY_TIER_BANDS.indexOf(A.rarity||'common'), rb = RARITY_TIER_BANDS.indexOf(B.rarity||'common');
       base = (rb-ra) || (RARITY_DEFS.findIndex(r=>r.key===(A.rarity||'common')) - RARITY_DEFS.findIndex(r=>r.key===(B.rarity||'common'))) || A.name.localeCompare(B.name);
@@ -10317,7 +10325,7 @@ function openLoadoutPicker(kind){
     ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> ({ch, open: castleUnlocked(ch) || (typeof adminModeEnabled!=='undefined' && adminModeEnabled)})).sort((a,b)=> (b.open - a.open)).map(({ch, open})=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''} ${open?'':'is-locked'}" ${open ? `data-pick="${escapeAttr(ch.id)}"` : 'disabled'} title="${open ? '' : escapeAttr(ch.drop ? 'Drops now and then from fights on Map ' + mapNumberOf(ch.drop.map) + ', or from a basic pack' : 'Beat the boss of Map ' + mapNumberOf(ch.unlockMap) + ' to unlock')}">
         <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${castleLevelOf(ch.id) >= CASTLE_MAX_LEVEL ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
       <p class="lp-temper">🔨 Temper your castles in the Forge (🏰 Castles).</p>`
-    : `<div class="lp-grid">${myLeaderId ? `<button type="button" class="lp-item lp-none" data-pick=""><span class="lp-tile lp-empty">✕</span><b>No leader</b><small>Clear the slot</small></button>` : ''}${leaderIds().slice(0, 120).map(id=> inDeck(id) ? `<button type="button" class="lp-item is-used" disabled aria-disabled="true" title="${escapeAttr(defs[id].name)} is in your deck. Take it out to make it your leader">
+    : `<div class="lp-grid">${'' /* 2026-10-15 (user: "There is no need for the 'Remove' pill on the chosen leader."): no "✕ No leader / Clear the slot" tile; the chosen leader is just marked */}${leaderIds().slice(0, 120).map(id=> inDeck(id) ? `<button type="button" class="lp-item is-used" disabled aria-disabled="true" title="${escapeAttr(defs[id].name)} is in your deck. Take it out to make it your leader">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b><small>In your deck</small></button>` : `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b></button>`).join('') || '<p class="panel-sub">No cards match.</p>'}</div>`;
   ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your castle' : 'Choose your leader'}">
@@ -11082,8 +11090,8 @@ function renderPlay(){
     // (switchTab('home')) either way, this was always a label/icon-only difference.
     root.innerHTML = `
       <div class="play-subtabs-row">
-        <div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
-          ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
+        <div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
+          ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
           <!-- 2026-09-20, per explicit request ("Home landing page contains the Play, Deck,
                Codex"): deck-building now lives in its own top-level Deck section (see
                renderDeckSection in Part 8), so the old "Player" sub-tab here — which showed that
@@ -11092,6 +11100,7 @@ function renderPlay(){
           ${tabOpen('arena') ? `<button class="tab-btn ${(playSubTab==='arena'||playSubTab==='autobattle')?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'||playSubTab==='autobattle'}"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
           ${'' /* 2026-10-11 (user: "Raid as a menu item, beside Arena. Autobattler will be in the Arena"): the Autobattler is a tile inside the Arena now, so Raid sits right beside Arena here */}
           ${tabOpen('raid') ? `<button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> ${escapeHtml(raidTabLabel())}</button>` : ''}
+          ${'' /* 2026-10-15 (user: "Maybe, it's its own, just another tab in 'Play'."): the daily dungeons */}${dungeonsTabOpen() ? `<button class="tab-btn ${playSubTab==='dungeons'?'active':''}" data-playtab="dungeons" role="tab" aria-selected="${playSubTab==='dungeons'}"><span class="tab-emoji">🗝️</span> Dungeons</button>` : ''}
           <!-- Sandbox (2026-09-22, Test Suite feature, tasks #309-314): Developer-Mode-only, same
                gate as the Codex's Test filter and the editor's Test-card checkbox — a normal
                player never sees this tab at all. -->
@@ -11163,9 +11172,11 @@ function renderPlay(){
     const body = document.getElementById('playSubBody');
     if(['arena','autobattle','raid'].includes(playSubTab) && !tabOpen(playSubTab)) playSubTab = 'conquest';
     if(playSubTab === 'sandbox' && !adminModeEnabled && !featureUnlocked('testlab')) playSubTab = 'conquest';
+    if(playSubTab === 'dungeons' && !dungeonsTabOpen()) playSubTab = 'conquest';
     // 2026-10-10 (user: "if the Arena mode follows the style of the conquest map, full screen with the tab buttons on
     // the bottom, centered, it'll look more consistent. Same for test lab."): the same full-window frame as Conquest.
-    if(playSubTab==='arena' || playSubTab==='sandbox' || playSubTab==='raid'){ document.body.classList.add('conquest-full', 'play-full'); }
+    if(playSubTab==='arena' || playSubTab==='sandbox' || playSubTab==='raid' || playSubTab==='dungeons'){ document.body.classList.add('conquest-full', 'play-full'); }
+    if(playSubTab==='dungeons'){ renderDungeonsSubTab(body); placePlayFullHud(); return; } // 2026-10-15
     if(playSubTab==='arena'){ renderArenaSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='raid'){ renderRaidSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='autobattle'){ renderAutobattleSubTab(body); return; }
@@ -11198,13 +11209,15 @@ function renderPlayerSubTab(body){
     <div class="panel deckbuilder-panel">
       ${deckHeroBannerHTML()}
       <h2>🃏 Your Loadout</h2><p class="panel-sub">Click a card to add a copy; <b>Shift+click</b> (or right-click, or its − corner) takes one out. Press 💾 Save deck to keep your changes.</p>
-      <h3 class="deck-section-h">🃏 Cards</h3>
+      ${'' /* 2026-10-15 (user: "Remove the 'Cards' pill - it's useless."): no "🃏 Cards" heading pill over the count line */}
       <!-- 2026-09-20, per explicit request ("the 20/20 cards label and warning should be just
            above the deck preview"): this used to sit up in the panel-sub line right under the
            "Build your deck" heading, separated from the actual deck-preview chips below by the
            whole Bramble-picker and leader-slot sections. Moved to sit immediately above
            #myDeckList instead, so the count/warning reads together with the thing it's counting. -->
-      <p class="panel-sub deck-count-line"><span id="myDeckSizeBadge">${deckSizeBadgeHTML(myDeckCounts)}</span></p>
+      ${'' /* 2026-10-15 (user: "the Save button should be on the same row as 'Ready to play'"): the save bar (state, Discard, 💾 Save deck)
+           sits at the end of the "20/20 cards ✓ ready to play" row instead of floating in the window's corner. */}
+      <div class="deck-count-row"><p class="panel-sub deck-count-line"><span id="myDeckSizeBadge">${deckSizeBadgeHTML(myDeckCounts)}</span></p>${deckDraftOn ? deckSaveBarHTML() : ''}</div>
       <div class="deck-list-mini" id="myDeckList"></div>
       <div class="codex-toolbar deck-toolbar">
         <input id="deckSearch" type="text" placeholder="🔍 Search card name…">
@@ -12608,10 +12621,14 @@ function mapSpotsHTML(map, positions, progress){
   // 2026-10-12 (user: "Secondary points like Armoury point on conquest maps should be darked out with ? tooltip until their
   // links are established"): a spot on an open map whose fight isn't cleared yet shows as a dark "?" with no line.
   const mapOpen = isMapUnlocked(map, progress);
+  // 2026-10-15: spots that share a skirmish and have no place of their own fan out side by side (Map 13's Raid Banner, Gilded
+  // Caravan and Wanderer's Camp all sat on one point, names over each other), each ~11% further from the map's edge.
+  const fanN = {}, fanned = (sp, idx, base, def)=>{ if(sp.pos) return def; const k = (fanN[idx] = (fanN[idx] || 0) + 1) - 1; if(!k) return def;
+    const dir = base.x > 50 ? -1 : 1; return {x: Math.max(4, Math.min(96, def.x + dir*11*k)), y: def.y}; };
   const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !spotAvailable(sp, progress)).map(sp=>{
     const after = spotAfter(sp), idx = after ? map.nodes.findIndex(n=> n.key===after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
-    const def = sp.pos || {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))}; // sp.pos: a spot's own default spot (2026-10-15)
+    const def = fanned(sp, idx + ':' + !!after, base, sp.pos || {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))}); // sp.pos: a spot's own default spot (2026-10-15)
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     const tip = decorEditing() ? sp.name + decorGateNote(map, '~spot:'+sp.key, sp.after) : '?';
     return `<button type="button" class="map-spot is-unknown" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(tip)}" aria-label="Something not found yet" aria-disabled="true"><span class="map-spot-ico" aria-hidden="true">?</span></button>`;
@@ -12620,7 +12637,7 @@ function mapSpotsHTML(map, positions, progress){
     const spAfter = spotAfter(sp);
     const idx = spAfter ? map.nodes.findIndex(n=> n.key===spAfter) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
-    const def = sp.pos || {x: Math.max(4, Math.min(96, base.x + (spAfter ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (spAfter ? -27 : 14)))};
+    const def = fanned(sp, idx + ':' + !!spAfter, base, sp.pos || {x: Math.max(4, Math.min(96, base.x + (spAfter ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (spAfter ? -27 : 14)))});
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     if(spAfter) links.push(`<line data-a="${escapeAttr(spAfter)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
     const open = featureUnlocked(sp.key);
@@ -16329,6 +16346,11 @@ function wireMapLayoutEditor(map, body){
     el.style.left = x+'%'; el.style.top = y+'%';
     canvas.querySelectorAll(`line[data-a="${key}"]`).forEach(l=>{ l.setAttribute('x1', x); l.setAttribute('y1', y); });
     canvas.querySelectorAll(`line[data-b="${key}"]`).forEach(l=>{ l.setAttribute('x2', x); l.setAttribute('y2', y); });
+    // 2026-10-15 ("The lines linking items on the conquest map are offset"): a link bowed into a curve follows the drag too (it
+    // stayed at the old spot until the map was drawn again).
+    canvas.querySelectorAll(`path[data-a="${key}"], path[data-b="${key}"]`).forEach(pa=>{ const m = (pa.getAttribute('d') || '').match(/M\s*([-\d.]+)\s+([-\d.]+)\s*Q\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)/); if(!m) return;
+      const a = pa.dataset.a === key ? [x, y] : [m[1], m[2]], b = pa.dataset.b === key ? [x, y] : [m[5], m[6]];
+      pa.setAttribute('d', `M ${a[0]} ${a[1]} Q ${m[3]} ${m[4]} ${b[0]} ${b[1]}`); });
   };
   canvas.querySelectorAll('[data-lkey]').forEach(el=>{
     const key = el.getAttribute('data-lkey');
@@ -16637,6 +16659,90 @@ function compassDiamondSVG(mapId, locked){
     <text x="50" y="9.5" text-anchor="middle" font-size="7" font-weight="700" fill="#2b1d08">N</text>
   </svg>`;
 }
+// ---- Daily dungeons (2026-10-15) ----
+// User: "Im not sure where to put all these daily dungeons in the future? In the Raids menu? Or it's its own? Maybe, it's its own,
+// just another tab in 'Play'." + "In the world map, murgle daily dungeon should be shown there as well. Using a consistent
+// iconography." The endless dungeons (Murgle Mayhem today) get their own 🗝️ Dungeons tab in Play, with room for three that open
+// over the first 40 maps, and a compass diamond of their own on the World map, branching off their map. Murgle stays reachable
+// from its entrance on Sable Swampmire as before.
+// Entry: a 🎟️ Dungeon ticket starts a run, and the run lasts until you lose a floor (floors stay cleared, as before; Energy is
+// still paid per floor). One ticket a day (they bank up to 3) and a bonus one each week (on Monday), so a run a day, and a spare.
+const DAILY_DUNGEONS = [
+  {mapId:'mm', mapNumber:6},
+  {slot:2, mapNumber:20, icon:'🕸️'},
+  {slot:3, mapNumber:40, icon:'🗿'},
+];
+const DUNGEON_TICKETS_KEY = 'bramblewood_dungeon_tickets_v1', DUNGEON_TICKETS_CAP = 3;
+function dungeonDayIndex(t){ const d = new Date(t || Date.now()); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); } // the local calendar day
+function dungeonWeekIndex(t){ return Math.floor((dungeonDayIndex(t) + 3) / 7); } // weeks turn on Monday (day 0, 1 Jan 1970, was a Thursday)
+function saveDungeonTickets(s){ try{ localStorage.setItem(DUNGEON_TICKETS_KEY, JSON.stringify(s)); }catch(e){} }
+function loadDungeonTickets(){
+  let s = null; try{ s = JSON.parse(localStorage.getItem(DUNGEON_TICKETS_KEY) || 'null'); }catch(e){}
+  const day = dungeonDayIndex(), wk = dungeonWeekIndex();
+  if(!s || typeof s.n !== 'number'){ s = {n: 2, day, week: wk, runs: {}}; saveDungeonTickets(s); return s; } // today's ticket and this week's bonus
+  let ch = false; if(!s.runs || typeof s.runs !== 'object'){ s.runs = {}; ch = true; }
+  if(s.day < day){ s.n = Math.max(s.n, Math.min(DUNGEON_TICKETS_CAP, s.n + (day - s.day))); s.day = day; ch = true; }
+  if(s.week < wk){ s.n = Math.min(DUNGEON_TICKETS_CAP + 1, s.n + 1); s.week = wk; ch = true; } // the weekly bonus may sit one over the cap
+  if(ch) saveDungeonTickets(s);
+  return s;
+}
+function dungeonTicketsLeft(){ return loadDungeonTickets().n; }
+function dungeonRunOpen(mapId){ return !!loadDungeonTickets().runs[mapId]; }
+function isDailyDungeonMap(map){ return !!(map && map.endless); }
+function dungeonNextTicketMs(){ const d = new Date(); d.setHours(24, 0, 0, 0); return d.getTime() - Date.now(); }
+// May this floor be fought? (a run is open, or a ticket is in hand)
+function dungeonGateOk(mapId){ const s = loadDungeonTickets(); return !!s.runs[mapId] || s.n > 0; }
+function dungeonStartRun(mapId){ const s = loadDungeonTickets(); if(s.runs[mapId] || s.n <= 0) return false; s.n -= 1; s.runs[mapId] = Date.now(); saveDungeonTickets(s); return true; }
+function dungeonRunLost(mapId){ const s = loadDungeonTickets(); if(s.runs[mapId]){ delete s.runs[mapId]; saveDungeonTickets(s); } }
+function dungeonFloorProgress(map, progress){
+  progress = progress || loadConquestProgress();
+  const done = map.nodes.filter(n=> progress.completed.includes(conquestNodeId(map.id, n.key))).length;
+  return {done, total: map.nodes.length};
+}
+function dungeonTicketLineHTML(map){
+  const s = loadDungeonTickets(), open = !!s.runs[map.id], h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
+  return `<p class="dungeon-ticket-line" title="One Dungeon ticket a day (up to ${DUNGEON_TICKETS_CAP} banked) and a bonus one each Monday. A ticket starts a run; the run lasts until you lose a floor.">🎟️ <b>${s.n}</b> Dungeon ticket${s.n === 1 ? '' : 's'} · ${open ? '<span class="dtl-run">Run open: keep climbing</span>' : 'a ticket starts a run'} · next ticket in ${h}h</p>`;
+}
+function dungeonsTabOpen(){ try{ const mm = CONQUEST_MAPS.find(m=> m.id === 'mm'); return !!(adminModeEnabled || devModeEnabled || (mm && isMapUnlocked(mm, loadConquestProgress()))); }catch(e){ return false; } }
+function renderDungeonsSubTab(body){
+  const progress = loadConquestProgress(), s = loadDungeonTickets(), h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
+  const cards = DAILY_DUNGEONS.map(dd=>{
+    const map = dd.mapId && CONQUEST_MAPS.find(m=> m.id === dd.mapId);
+    if(!map) return `<div class="dg-card is-soon"><div class="dg-diamond map-theme-mm">${compassDiamondSVG('dg' + dd.slot, true)}<span class="wd-ico">${dd.icon || '❔'}</span></div>
+      <div class="dg-body"><b class="dg-name">A new dungeon</b><p class="dg-sub">🔒 Opens around Map ${dd.mapNumber}</p></div></div>`;
+    const open = isMapUnlocked(map, progress), f = dungeonFloorProgress(map, progress), run = !!s.runs[map.id];
+    const parent = CONQUEST_MAPS.find(m=> m.id === map.parent);
+    return `<div class="dg-card ${open ? '' : 'is-locked'}"><div class="dg-diamond map-theme-${map.id}">${compassDiamondSVG('dg-' + map.id, !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
+      <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map ${dd.mapNumber}${parent ? ' · ' + escapeHtml(parent.name) : ''}</span>
+        <p class="dg-sub">${escapeHtml(map.blurb || '')}</p>
+        ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${f.total ? Math.round(100 * f.done / f.total) : 0}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total}${f.done ? ` · ${f.done} cleared` : ''}</span></div>
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${run ? '▶ Continue the run' : s.n > 0 ? '🎟️ Enter' : '🗺️ Look at the map'}</button>${run ? '<span class="dg-run">Run open</span>' : ''}</div>`
+        : `<p class="dg-sub">🔒 Clear ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
+  }).join('');
+  body.innerHTML = `<div class="panel dungeons-panel">
+    <div class="dg-head"><h2>🗝️ Dungeons</h2><p class="panel-sub">Endless climbs, a little harder every floor. A cleared floor stays cleared.</p></div>
+    <div class="dg-tickets" title="A ticket starts a run; the run lasts until you lose a floor. Each floor costs Energy, like any fight.">
+      <span class="dg-tix">${Array.from({length: Math.max(DUNGEON_TICKETS_CAP, s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🎟️</i>`).join('')}</span>
+      <span><b>${s.n}</b> Dungeon ticket${s.n === 1 ? '' : 's'} · one a day (up to ${DUNGEON_TICKETS_CAP}), next in ${h}h · a bonus one every Monday</span></div>
+    <div class="dg-list">${cards}</div>
+  </div>`;
+  body.querySelectorAll('[data-dungeon-go]').forEach(b=> b.addEventListener('click', ()=>{
+    conquestWorldView = false; conquestSelectedMap = b.dataset.dungeonGo; conquestSelectedNodeKey = null; playSubTab = 'conquest'; renderPlay(); }));
+}
+// The World map's dungeon stops (2026-10-15): a smaller compass diamond beside its map's own, joined to it by a dotted branch.
+function worldDungeonStopsHTML(maps, pts, narrow, progress, firstLocked){
+  return DAILY_DUNGEONS.filter(dd=> dd.mapId).map(dd=>{
+    const map = CONQUEST_MAPS.find(m=> m.id === dd.mapId); if(!map) return '';
+    const i = maps.findIndex(m=> m.id === map.parent); if(i < 0) return '';
+    const p = pts[i], x = narrow ? (p.x < 50 ? 80 : 20) : (p.x <= 50 ? p.x + 24 : p.x - 24), y = p.y + (narrow ? -44 : 0);
+    const open = isMapUnlocked(map, progress), fog = !open && i > firstLocked, f = dungeonFloorProgress(map, progress), here = map.id === conquestSelectedMap;
+    return `<svg class="world-branch" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="top:${Math.min(p.y, y)}px; height:${Math.max(2, Math.abs(p.y - y))}px"><line x1="${p.x}" y1="${p.y <= y ? 0 : 100}" x2="${x}" y2="${p.y <= y ? 100 : 0}"/></svg>
+      <div class="world-stop is-side map-theme-${map.id} ${open ? '' : 'is-locked'} ${fog ? 'is-fog' : ''} ${here ? 'is-here' : ''}" style="left:${x}%; top:${y}px">
+        <button type="button" class="world-diamond" ${open ? `data-world-map="${map.id}"` : 'disabled'} aria-label="${escapeAttr((open ? '' : 'Locked: ') + map.name + ' (daily dungeon)')}">${compassDiamondSVG(map.id, !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span><span class="wd-tag" aria-hidden="true">🗝️</span></button>
+        <div class="world-card">${fog ? '<div class="wc-name">Uncharted</div>' : `<div class="wc-name">${escapeHtml(map.name)}</div><div class="wc-sub">🗝️ Daily dungeon${open ? ` · floor ${Math.min(f.total, f.done + 1)}/${f.total}` : ' · 🔒'}</div>`}</div>
+      </div>`;
+  }).join('');
+}
 function renderConquestWorld(mainEl, body, progress){
   const maps = mainConquestMaps();
   const narrow = (mainEl.clientWidth || innerWidth) < 600;
@@ -16666,6 +16772,7 @@ function renderConquestWorld(mainEl, body, progress){
           <div class="world-card" data-lazy="${i}"></div>
         </div>`;
       }).join('')}
+      ${worldDungeonStopsHTML(maps, pts, narrow, progress, firstLocked)}
     </div>`;
   const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body);
   { const hb = document.getElementById('worldHomeBtn'); if(hb) hb.onclick = ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }; }
@@ -16930,8 +17037,10 @@ function maybeOfferDeckSwap(){
     { const say = ov.querySelector('.ds2-say'); if(say) say.innerHTML = '<b class="ds2-nice">Nice!</b>'; }
     setTimeout(()=>{ try{ showToast(TX('toast.is-in-your-deck-in-place', {name: d.name, name2: od.name}), 'ok'); }catch(e){} close(); }, reducedMotion() ? 200 : 650); };
 }
-// Arrow keys (2026-10-13, user: "Pressing Up or down arrows should go to the next or previous map"): ↑ the next map, ↓ the one
-// before (or out of a side map). Only on the open map, never while typing, in a fight or over a window.
+// Arrow keys (2026-10-13, user: "Pressing Up or down arrows should go to the next or previous map"). Flipped 2026-10-15 (user:
+// "Up arrow should go lower in map number, down arrow should go higher in map number!"): ↑ the map before (lower number, like the
+// map list above it; out of a side map, as its "↑ Way out"), ↓ the next one. Only on the open map, never while typing, in a fight
+// or over a window.
 let conquestKeyNav = null;
 document.addEventListener('keydown', e=>{
   if(e.key !== 'ArrowUp' && e.key !== 'ArrowDown') return;
@@ -16939,7 +17048,7 @@ document.addEventListener('keydown', e=>{
   if((typeof matchState !== 'undefined' && matchState && !matchState.over) || conquestLayoutEdit || conquestLinkEdit) return;
   const t = e.target; if(t && (t.closest && t.closest('input, textarea, select, [contenteditable="true"]'))) return;
   if(!document.getElementById('conquestCanvas') || document.querySelector('.modal-overlay:not([hidden]) .modal, .ds2-overlay, .lumber-lesson, .po2-stage, .winloss-overlay')) return;
-  const go = e.key === 'ArrowUp' ? k.next : k.prev; if(!go || !isMapUnlocked(go, loadConquestProgress())) return;
+  const go = e.key === 'ArrowUp' ? k.prev : k.next; if(!go || !isMapUnlocked(go, loadConquestProgress())) return; // 2026-10-15: ↑ lower, ↓ higher
   e.preventDefault();
   if(k.map.sub) leaveSubMap(k.map, k.body); else conquestPanTo(go.id, k.body, k.progress);
 });
@@ -17107,7 +17216,7 @@ function renderConquestSubTab(body){
   // information without repeating every node as a redundant text row.
   mainEl.className = 'conquest-main';
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
-  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
+  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' : ''}" id="conquestCanvas" style="${map.endless ? `min-height:${map.nodes.length * 86}px;` : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${zoomAt && (tutPhase || tutZoomOut) ? `--tut-x:${zoomAt.x}%; --tut-y:${zoomAt.y}%;` : ''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
@@ -17615,11 +17724,18 @@ function currentRaidStateFor(def, now){
   const cycle = RaidM.cycleOf(now);
   return RaidM.raidState(def, currentRaidAttempts(def, cycle), now, {cycle});
 }
+// One health bar per raid part (2026-10-15, user: "It's not clear what the 3 hp bars represent. Is it the 3 hp bars of the 3 entities
+// we can fight? or each has 3 hp bars. It should say health left like X/Y. So players feel the epic progress."): a part's health is
+// one bar with its "X / Y HP left" under it. Its phases (p.bars health bars of p.barHp each) are faint marks on that bar, and a
+// "Phase n of N" chip says which one you are cutting through (its tooltip explains the marks).
+function raidPhaseOf(ps){ const bars = Math.max(1, ps.def.bars|0); return ps.defeated ? bars : Math.max(1, Math.min(bars, bars - Math.ceil(ps.barsLeft - 1e-9) + 1)); }
 function raidBarsHTML(ps){
-  const p = ps.def, bars = Math.max(1, p.bars|0);
-  let html = '';
-  for(let i=0;i<bars;i++){ const fill = Math.max(0, Math.min(1, ps.barsLeft - (bars-1-i))); html += `<span class="rp-bar"><span style="width:${Math.round(fill*100)}%"></span></span>`; }
-  return `<div class="rp-bars" title="${bars} bars × ${(p.barHp||0).toLocaleString()} HP">${html}</div>`;
+  const p = ps.def, bars = Math.max(1, p.bars|0), total = ps.total || bars * (p.barHp||0), left = Math.max(0, Math.ceil(ps.remaining));
+  const frac = total ? Math.max(0, Math.min(1, ps.remaining / total)) : 0, phase = raidPhaseOf(ps);
+  const ticks = bars > 1 ? Array.from({length: bars - 1}, (_, i)=> `<i class="rp-tick" style="left:${((i + 1) / bars * 100).toFixed(3)}%"></i>`).join('') : '';
+  const tip = bars > 1 ? `${p.name} has ${bars} phases of ${(p.barHp||0).toLocaleString()} HP: the marks on its bar. Phase ${phase} of ${bars} now.` : '';
+  return `<div class="rp-bars is-single" role="meter" aria-label="${escapeAttr(p.name)} health" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${left}"${tip ? ` title="${escapeAttr(tip)}"` : ''}><span class="rp-bar"><span style="width:${(frac*100).toFixed(2)}%"></span>${ticks}</span></div>
+    <div class="rp-legend"><span class="rp-left">❤️ <b>${left.toLocaleString()}</b> / ${total.toLocaleString()} <small>HP left</small></span>${bars > 1 ? `<span class="rp-phase" title="${escapeAttr(tip)}">Phase ${phase} of ${bars}</span>` : ''}</div>`;
 }
 function raidClaimsFor(def){
   // a claim is possible for this cycle (if the raid fell) or the previous cycle (compensation)
@@ -17671,12 +17787,12 @@ function raidPanelHTML(){
       <p class="panel-sub">${escapeHtml(def.blurb||'')}</p></div>
       ${adminModeEnabled ? `<button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button>` : ''}</div>
     <div class="r2-total"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
-      <span><b>${st.remaining.toLocaleString()}</b> / ${st.total.toLocaleString()} · ${daysLeft} day${daysLeft===1?'':'s'} left</span></div>
+      <span class="r2-total-line">${'' /* 2026-10-15: "health left like X/Y" */}<span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${st.total ? Math.ceil(st.remaining / st.total * 100) : 0}%)</small></span><span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left</span></span></div>
     ${claims.map((c,i)=> `<div class="r2-claim">🎁 ${c.reward.kind==='kill' ? 'The raid fell — claim your reward!' : 'Last week’s raid survived — claim your compensation.'} <button type="button" class="btn small primary" data-raid-claim="${i}">Claim</button></div>`).join('')}
     <div class="r2-parts">${st.parts.map(ps=>{ const p = ps.def;
       const waits = (p.lockedUntil||[]).map(id=> (def.parts.find(x=> x.id===id)||{}).name || id).join(', ');
       return `<div class="r2-part ${ps.locked?'is-locked':''} ${ps.defeated?'is-down':''}">
-        <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${Math.ceil(ps.remaining).toLocaleString()}</span></div>
+        <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${ps.total ? Math.ceil(ps.remaining / ps.total * 100) : 0}%</span></div>
         ${raidBarsHTML(ps)}
         <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary" data-raid-part="${escapeAttr(p.id)}">⚔️ Fight (${cost.raidPoints||0}🎫 ${cost.energy||0}⚡)</button>`}
           <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString()} from other raiders` : ''}</span></div>
@@ -19494,6 +19610,9 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(!deckSizeOkOrWarn()) return false;
   const battleMode = (opts && opts.battleMode) || node.battleMode || CONQUEST_DEFAULT_MODE; // C2: set in Edit skirmish only
   if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
+  // Daily dungeons (2026-10-15): a floor needs an open run or a 🎟️ Dungeon ticket (see DAILY_DUNGEONS).
+  const dungeonEntry = !(opts && opts.skipEnergyCost) && isDailyDungeonMap(CONQUEST_MAPS.find(m=> m.id === mapId));
+  if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('toast.no-dungeon-tickets-left-a-new'), 'warn'); return false; }
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
   if(!(opts && opts.skipEnergyCost)){
@@ -19504,6 +19623,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     }
     bumpQuestCounter('energyConquest', cost);
   }
+  if(dungeonEntry && !dungeonRunOpen(mapId) && dungeonStartRun(mapId)) showToast(TX('toast.dungeon-ticket-used-the-run-lasts', {dungeonTicketsLeft: dungeonTicketsLeft()}), 'ok'); // 2026-10-15
   try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
@@ -27857,6 +27977,7 @@ async function resolveRound(opts){
     }
     if(m.mode==='conquest' && m.fightSession) setTimeout(()=> handInFight(m), 0);
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ m.conquestRankEarned = lossRankFor(m); }catch(e){} } // F / FF / FFF (2026-10-11)
+    if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ dungeonRunLost(m.conquestNode.mapId); }catch(e){} } // a lost floor ends the dungeon run (2026-10-15)
     // The surprise challenge lost (2026-10-15): the raiders run off with some Maple Leaves (see ambushTheftRoll).
     if(m.mode==='conquest' && m.winner===2 && m.conquestNode && !m.adminTest && !m.raidersTook){ try{ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId);
       if(fn && fn.node && fn.node.ambush){ const want = ambushTheftRoll(), have = Math.max(0, Math.floor(myCurrencies.gold || 0)), n = Math.min(have, want);
@@ -33024,7 +33145,21 @@ let forgeSelectedId = null;
 // short of, and the three Prestige medallions. Tempering plays a short smithing sequence:
 // the card heats up, three hammer strikes throw sparks, steam on the quench, then the card flips
 // to its new stats. Reduced motion skips straight to the result.
-let forgeFilter = 'all', forgeSearch = '', forgeSort = 'name', forgeBusy = false;
+let forgeFilter = 'all', forgeSearch = '', forgeSort = 'cost', forgeBusy = false;
+// The Forge sorts like the Codex (2026-10-15, user: "The Forge sort should have the codex sort like cost, wait, attack, hp. Also the
+// sort is not consistent sizing."): Cost, Wait, Attack, Health, then Rarity, Level and Name; the same "Sort: …" labels as the Codex.
+const FORGE_SORTS = [['cost','Cost'], ['wait','Wait'], ['attack','Attack'], ['health','Health'], ['rarity','Rarity'], ['level','Level'], ['name','Name']];
+function forgeSortCmp(defs, rIdx){ const nm = (a, b)=> defs[a].name.localeCompare(defs[b].name);
+  return (a, b)=>{ const A = defs[a], B = defs[b];
+    switch(forgeSort){
+      case 'level': return getCardLevel(b) - getCardLevel(a) || nm(a, b);
+      case 'rarity': return rIdx(b) - rIdx(a) || nm(a, b);
+      case 'cost': return (A.cost||0) - (B.cost||0) || nm(a, b);
+      case 'wait': return (A.wait||0) - (B.wait||0) || (A.cost||0) - (B.cost||0) || nm(a, b);
+      case 'attack': return (B.attack||0) - (A.attack||0) || nm(a, b);
+      case 'health': return (B.health||0) - (A.health||0) || nm(a, b);
+      default: return nm(a, b);
+    } }; }
 let forgeMode = 'upgrade'; // 'upgrade' (level + prestige) | 'refine' (foil finish) | 'enchant' (Materia socket)
 function forgeBaseDef(id){ return Object.assign({}, CARD_DEFS_BASELINE, liveCards)[id] || getCardDefs()[id]; }
 function forgeStatsAt(id, level){
@@ -33111,9 +33246,7 @@ function renderForge(){
   if(forgeFilter==='max') shown = shown.filter(id=> getCardLevel(id)>=10);
   if(forgeFilter==='leveled') shown = shown.filter(id=> getCardLevel(id)>0);
   const rIdx = id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common');
-  shown.sort((a,b)=> forgeSort==='level' ? (getCardLevel(b)-getCardLevel(a) || defs[a].name.localeCompare(defs[b].name))
-    : forgeSort==='rarity' ? (rIdx(b)-rIdx(a) || defs[a].name.localeCompare(defs[b].name))
-    : defs[a].name.localeCompare(defs[b].name));
+  shown.sort(forgeSortCmp(defs, rIdx)); // Codex-like sorts (2026-10-15)
   const sel = forgeSelectedId ? defs[forgeSelectedId] : null;
   const L = sel ? getCardLevel(forgeSelectedId) : 0;
   const maxed = L>=10;
@@ -33144,7 +33277,7 @@ function renderForge(){
             ${[['all','All'],['ready',`${FORGE_MODES[forgeMode].icon} Ready${readyCount?` (${readyCount})`:''}`]].concat(forgeMode==='upgrade' ? [['leveled','Levelled'],['max','Max']] : []).map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
           </div>
           ${forgeMode==='upgrade' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'disabled'} title="Feeds every copy beyond what a deck can hold into its own card's credit. Foil, shiny and skinned copies are kept.">🧩 Fuse all extras${n ? ` (${n})` : ''}</button>${(()=>{ const ds = disenchantSummary(); return `<button type="button" class="btn small" id="forgeDisBtn" ${ds.copies ? '' : 'disabled'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button>`; })()}`; })() : ''}
-          <select id="forgeSort" class="forge-sort" aria-label="Sort">${[['name','A–Z'],['level','Level'],['rarity','Rarity']].map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>${l}</option>`).join('')}</select>
+          <select id="forgeSort" class="forge-sort" aria-label="Sort cards">${FORGE_SORTS.map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>Sort: ${l}</option>`).join('')}</select>
         </div>
         <div class="pool-grid forge-pool show-levels ${forgeFilter==='ready'?'only-ready':''}" id="forgePool">${shown.length ? '' : `<p class="panel-sub forge-empty">${forgeFilter==='ready' ? 'Nothing you can afford right now — win a few fights for Dust and Maple Leaves.' : 'No cards match.'}</p>`}</div>
       </div>
@@ -33620,7 +33753,7 @@ function forgeSmithAnimation(beforeHTML, afterHTML, heavy){
 // about 2 s, as long as the old smithing sequence. Each hammer impact plays the anvil clang, the quench a hiss of drips
 // and the temper a chime; the existing LEVEL burst follows in forgeTemper. Falls back to forgeSmithAnimation without
 // ProcFX; skipped under reduced motion. Prestige, refine, limit break and promotion keep forgeSmithAnimation.
-const FORGE_TEMPER_SPEED = {heat:3.5, hammer:2, quench:3.2}; // ≈ 0.46 s + 0.95 s + 0.6 s
+const FORGE_TEMPER_SPEED = {heat:3.5, hammer:2, quench:3.2, temper:2.2}; // ≈ 0.46 s + 0.95 s + 0.6 s
 function forgeTemperAnimation(beforeHTML, afterHTML){
   return new Promise(resolve=>{
     const stage = document.getElementById('anvilStage'), mountEl = stage && stage.querySelector('.forge-preview-wrap');
@@ -33637,8 +33770,12 @@ function forgeTemperAnimation(beforeHTML, afterHTML){
     if(hammer) hammer.style.opacity = '0'; // ProcFX brings its own hammer onto the card
     stage.classList.add('is-hot');
     // Sounds ride the timeline, so they stay on the strikes at any speed: impacts land 0.15 s after each swing starts.
-    [1.9, 2.45, 3.0].forEach(at=> tl.call(()=>{ try{ SoundKit.clang(); }catch(e){} }, null, at + .15));
-    tl.call(()=>{ stage.classList.remove('is-hot'); stage.classList.add('is-quench'); try{ SoundKit.drip ? SoundKit.drip() : (SoundKit.coin && SoundKit.coin()); }catch(e){} }, null, 'quench');
+    // 2026-10-15 (user: "The forge sfx should play a little later, in time with the hammer vfx. Then RIGHT after it's done hammering,
+    // the card goes into its shining animation!"): the forge's three-blow sound used to start on the click, during the heat, a
+    // second ahead of the hammer; each blow now plays on its own impact. And the quench pause is gone: a beat after the last blow
+    // the timeline jumps straight to the temper shine.
+    [1.9, 2.45, 3.0].forEach((at, i)=> tl.call(()=>{ try{ SoundKit.forgeHit ? SoundKit.forgeHit(i, i === 2) : SoundKit.clang(); }catch(e){} }, null, at + .15));
+    tl.call(()=>{ stage.classList.remove('is-hot'); tl.timeScale(FORGE_TEMPER_SPEED.temper); tl.seek('temper', true); }, null, 3.0 + .4);
     tl.call(()=>{ try{ SoundKit.readyChime ? SoundKit.readyChime() : (SoundKit.coin && SoundKit.coin()); }catch(e){} }, null, 'temper+=0.15');
     let done = false;
     const finish = ()=>{ if(done) return; done = true;
@@ -33650,7 +33787,6 @@ function forgeTemperAnimation(beforeHTML, afterHTML){
     setTimeout(finish, 4000); // never hold the Forge hostage
     // Pace per stage: the heat and the cool-down move quickly, the hammer gets the most real time so each strike reads.
     tl.call(()=> tl.timeScale(FORGE_TEMPER_SPEED.hammer), null, 'hammer');
-    tl.call(()=> tl.timeScale(FORGE_TEMPER_SPEED.quench), null, 'quench');
     tl.seek('heat').timeScale(FORGE_TEMPER_SPEED.heat).play();
   });
 }
@@ -33668,7 +33804,7 @@ async function forgeTemper(btn){
   if(forgeBusy || !forgeSelectedId) return;
   const id = forgeSelectedId, L = getCardLevel(id);
   if(L>=10 || L < 1 || !canAffordLevelUp(L, id)){ denyShake(btn); if(L >= 1 && L < 10) cobbleWhyNot(L, id); return; } // Level 0 → 1 is the Nest's (2026-10-12)
-  forgeBusy = true; btn.disabled = true; try{ SoundKit.forgeStrike(); }catch(e){}
+  forgeBusy = true; btn.disabled = true; if(reducedMotion() || !hasGsap()) try{ SoundKit.forgeStrike(); }catch(e){} // with the animation, each blow sounds on its hammer impact (2026-10-15)
   const c = levelUpCost(L, id);
   const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
@@ -34176,6 +34312,7 @@ let deckEditingId = null; // non-null while a specific deck's builder is open
 var deckDraftOn = false, deckDirty = false;
 function deckDraftActive(){ return deckDraftOn; }
 function markDeckDirty(){ if(!deckDirty){ deckDirty = true; } refreshDeckSaveBar(); }
+function deckSaveBarHTML(){ return `<div class="deck-savebar ${deckDirty?'is-dirty':''}" id="deckSaveBar" role="status"><span class="dsb-state">${deckDirty?'Unsaved changes':'All changes saved'}</span><button type="button" class="btn small ghost" id="deckDiscardBtn" ${deckDirty?'':'disabled'}>Discard</button><button type="button" class="btn small primary" id="deckSaveBtn" ${deckDirty?'':'disabled'}>💾 Save deck</button></div>`; }
 function refreshDeckSaveBar(){
   const bar = document.getElementById('deckSaveBar'); if(!bar) return;
   bar.classList.toggle('is-dirty', deckDirty);
@@ -34309,9 +34446,9 @@ function renderDeckSectionInner(){
     // for a non-active deck switches to it first (see switchActiveDeck's own comment above).
     if(activeDeckId!==deckEditingId){ endDeckDraft(); switchActiveDeck(deckEditingId); }
     deckDraftOn = true;
-    // The save bar floats over the page (body-level, so the tab's transforms can't trap it).
+    // The save bar sits on the deck's "20/20 cards ✓ ready to play" row (2026-10-15; it floated over the page before): see
+    // renderPlayerSubTab and deckSaveBarHTML.
     document.getElementById('deckSaveBar')?.remove();
-    document.body.insertAdjacentHTML('beforeend', `<div class="deck-savebar ${deckDirty?'is-dirty':''}" id="deckSaveBar" role="status"><span class="dsb-state">${deckDirty?'Unsaved changes':'All changes saved'}</span><button type="button" class="btn small ghost" id="deckDiscardBtn" ${deckDirty?'':'disabled'}>Discard</button><button type="button" class="btn small primary" id="deckSaveBtn" ${deckDirty?'':'disabled'}>💾 Save deck</button></div>`);
     root.innerHTML = `<div class="play-subtabs-row deck-switch-row">
         <button type="button" class="btn small deck-back-btn" id="deckBackBtn" title="Back to your decks">‹ Back</button>
         <div class="deck-switcher" role="tablist" aria-label="Your decks">
@@ -34327,14 +34464,15 @@ function renderDeckSectionInner(){
     // Clicking the deck you're already in renames it (it's obvious which deck you mean).
     root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.switchdeck === deckEditingId){ startDeckRename(b, b.dataset.switchdeck); return; } deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = b.dataset.switchdeck; renderDeckSection(); }); }));
     document.getElementById('deckNewChip').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); }));
-    document.getElementById('deckSaveBtn').addEventListener('click', ()=>{ commitDeckDraft(); showToast(TX('toast.deck-saved'), 'ok'); renderDeckSection(); });
-    document.getElementById('deckDiscardBtn').addEventListener('click', ()=>{ discardDeckDraft(); renderDeckSection(); });
     const mm = document.getElementById('deckMakeMainBtn');
     if(mm) mm.addEventListener('click', ()=>{ if(deckDirty) commitDeckDraft(); setMainDeck(deckEditingId); SoundKit.codeImport && SoundKit.codeImport(); renderDeckSection(); });
     document.getElementById('deckManageBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; renderDeckSection(); }));
     document.getElementById('deckBackBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; deckHeroView = false; renderDeckSection(); }));
 
     renderPlayerSubTab(document.getElementById('deckBuilderBody'));
+    { const sv = document.getElementById('deckSaveBtn'), dc = document.getElementById('deckDiscardBtn'); // on the count row (2026-10-15)
+      if(sv) sv.addEventListener('click', ()=>{ commitDeckDraft(); showToast(TX('toast.deck-saved'), 'ok'); renderDeckSection(); });
+      if(dc) dc.addEventListener('click', ()=>{ discardDeckDraft(); renderDeckSection(); }); }
     return;
   }
   endDeckDraft();
@@ -37919,22 +38057,54 @@ function syncCaveScreen(){
 setInterval(()=>{ try{ if(document.body.classList.contains('cave-screen')) syncCaveScreen(); }catch(e){} }, 400);
 // 2026-10-12 (user: "After completing the cave levels, the torchlight gets a 30% larger diameter and the map 10% less dark").
 function caveMapCleared(map){ try{ const p = loadConquestProgress(); const f = map.nodes.filter(n=> n.kind!=='tutorial'); return f.length > 0 && f.every(n=> p.completed.includes(conquestNodeId(map.id, n.key))); }catch(e){ return false; } }
-function caveLampBaseR(){ const m = CONQUEST_MAPS.find(x=> x.id === conquestSelectedMap); return (m && isCaveMap(m) && caveMapCleared(m)) ? 195 : 150; }
+function caveLampBaseR(){ const m = CONQUEST_MAPS.find(x=> x.id === conquestSelectedMap); return (m && mapBlotsOut(m) && caveMapCleared(m)) ? 195 : 150; }
+// Dark maps blot out (2026-10-15, user: "The darkness should blot out the map. I think you are changing it back. Is there a reason?
+// AHH i see. When the map is uncleared - it's blot out. When the map is cleared, the blot out is partial."): every dark map gets the
+// darkness now, not only the two cave maps (Caves & Alcoves, Smugglers' Grotto): the Sunken Depths, the Mycelium Deep and the
+// Volcano Lair, the side maps fought in the dark, were left fully lit. Uncleared, the map is all but black: light only round the
+// lantern (the pointer), your pawn, the fights you can take now and the fires you have lit (see mountCaveFires). Cleared, the dark
+// lifts to a partial veil (0.78, as since 2026-10-14) and the lantern grows.
+function mapBlotsOut(map){ try{ return !!map && (isCaveMap(map) || subMapIsDark(map)); }catch(e){ return false; } }
+const CAVE_MASK_OK = (()=>{ try{ return !!(window.CSS && CSS.supports && (CSS.supports('mask-composite', 'intersect') || CSS.supports('-webkit-mask-composite', 'source-in'))); }catch(e){ return false; } })();
+// The light pools besides the lantern, in % of the map canvas: the pawn, the open fights and the lit fires.
+function caveLightPools(canvas, t){
+  const out = [], at = el=> ({x: parseFloat(el.style.left), y: parseFloat(el.style.top)}), ok = q=> isFinite(q.x) && isFinite(q.y);
+  const pawn = canvas.querySelector(':scope > .map-pawn:not(.map-foe)'); if(pawn){ const q = at(pawn); if(ok(q)) out.push({x:q.x, y:q.y, r:80}); }
+  canvas.querySelectorAll(':scope > .map-node:not(.done):not(.map-node-hidden):not(.kind-tutorial)').forEach(n=>{ const q = at(n); if(ok(q)) out.push({x:q.x, y:q.y, r:52}); });
+  canvas.querySelectorAll(':scope > .cave-fire.is-lit').forEach((f, i)=>{ const q = at(f); if(ok(q)) out.push({x:q.x, y:q.y, r: 66 + (t ? Math.sin(t/90 + i*1.7)*3 + Math.sin(t/37 + i)*2 : 0)}); });
+  return out;
+}
+// mask-image for a dark layer: the lantern's soft hole plus a tighter pool per light; `pos(xPct, yPct)` turns a canvas point into
+// the layer's own coordinates. Layers intersect, so the light is the union of the holes.
+function caveMaskImage(lamp, pools, pos){
+  const L = pos(lamp.x*100, lamp.y*100), r = lamp.r;
+  const parts = [`radial-gradient(circle at ${L}, transparent 0, transparent ${(r*.45).toFixed(1)}px, rgba(0,0,0,.58) ${(r*.9).toFixed(1)}px, rgba(0,0,0,.96) ${(r*1.6).toFixed(1)}px, #000 ${(r*2.6).toFixed(1)}px)`];
+  pools.forEach(q=> parts.push(`radial-gradient(circle at ${pos(q.x, q.y)}, transparent 0, transparent ${(q.r*.38).toFixed(1)}px, rgba(0,0,0,.62) ${(q.r*.85).toFixed(1)}px, #000 ${(q.r*1.35).toFixed(1)}px)`));
+  return parts.join(', ');
+}
+function setCaveMask(el, img){ el.classList.add('is-masked'); el.style.webkitMaskImage = el.style.maskImage = img; el.style.webkitMaskComposite = 'source-in'; el.style.maskComposite = 'intersect'; }
 function mountCaveDark(canvas, map){
-  if(!canvas || !map || !isCaveMap(map)){ caveScreenOff(); return null; }
+  if(!canvas || !map || !mapBlotsOut(map)){ caveScreenOff(); return null; }
   const lit = caveMapCleared(map); if(caveLamp.r === 150 || caveLamp.r === 195) caveLamp.r = lit ? 195 : 150; // (a spread in progress keeps its radius)
   canvas.querySelectorAll(':scope > .cave-dark').forEach(e=> e.remove());
   const el = document.createElement('div'); el.className = 'cave-dark'; el.setAttribute('aria-hidden', 'true'); canvas.appendChild(el);
+  try{ mountCaveFires(canvas, map); }catch(e){} // 2026-10-15
   let scr = document.getElementById('caveScreenDark');
   const host = document.getElementById('conquestLayout') || document.body;
   if(!scr){ scr = document.createElement('div'); scr.id = 'caveScreenDark'; scr.className = 'cave-screen-dark'; scr.setAttribute('aria-hidden', 'true'); }
   el.style.opacity = scr.style.opacity = lit ? '0.78' : ''; // cleared: the dark lifts (10% from 2026-10-12, about 20% since 2026-10-14)
+  el.classList.toggle('is-cleared', lit); scr.classList.toggle('is-cleared', lit);
   if(scr.parentNode !== host || host.firstChild !== scr) host.insertBefore(scr, host.firstChild); // first in the map's own layer: under the map list and the map, over the backdrop
   document.body.classList.add('cave-screen');
   const apply = ()=>{ el.style.setProperty('--lx', (caveLamp.x*100) + '%'); el.style.setProperty('--ly', (caveLamp.y*100) + '%'); el.style.setProperty('--lr', caveLamp.r + 'px');
     const r = canvas.getBoundingClientRect(), o = document.getElementById('caveScreenDark');
-    if(o){ if(!syncCaveScreen()) return; o.style.setProperty('--lx', (r.left + caveLamp.x*r.width) + 'px'); o.style.setProperty('--ly', (r.top + caveLamp.y*r.height) + 'px'); o.style.setProperty('--lr', caveLamp.r + 'px'); } };
+    const pools = CAVE_MASK_OK ? caveLightPools(canvas, reducedMotion() ? 0 : performance.now()) : null;
+    if(pools) setCaveMask(el, caveMaskImage(caveLamp, pools, (x, y)=> `${x.toFixed(2)}% ${y.toFixed(2)}%`));
+    if(o){ if(!syncCaveScreen()) return; o.style.setProperty('--lx', (r.left + caveLamp.x*r.width) + 'px'); o.style.setProperty('--ly', (r.top + caveLamp.y*r.height) + 'px'); o.style.setProperty('--lr', caveLamp.r + 'px');
+      if(pools) setCaveMask(o, caveMaskImage(caveLamp, pools, (x, y)=> `${(r.left + x/100*r.width).toFixed(1)}px ${(r.top + y/100*r.height).toFixed(1)}px`)); } };
   apply();
+  // The pools follow the pawn while it walks, the fires flicker, and a scroll or resize moves the screen layer's holes.
+  clearInterval(window.__bwCaveTick); window.__bwCaveTick = setInterval(()=>{ if(!el.isConnected){ clearInterval(window.__bwCaveTick); return; } if(!document.hidden) apply(); }, 120);
   const move = e=>{ const r = canvas.getBoundingClientRect(); if(!r.width) return; caveLamp.x = Math.max(0, Math.min(1, (e.clientX - r.left)/r.width)); caveLamp.y = Math.max(0, Math.min(1, (e.clientY - r.top)/r.height)); apply(); };
   canvas.addEventListener('pointermove', move, {passive:true}); canvas.addEventListener('pointerdown', move, {passive:true});
   // 2026-10-12 (user: "After clicking a skirmish, the torchlight sticks at the clicked position. It should keep following the
@@ -37958,11 +38128,46 @@ function caveLightSpread(canvas){
     .to(o, {r: caveLampBaseR(), duration: 1.4, ease: 'power2.inOut', delay: 0.5, onUpdate: ()=>{ caveLamp.r = o.r; el._apply && el._apply(); }})
     .add(()=>{ caveLamp.x = keep.x; caveLamp.y = keep.y; el._apply && el._apply(); });
 }
+// Fireplaces in the dark (2026-10-15, user: "In caves, fireplaces (0-2) placed around, light up as you defeat skirmishes."): beside
+// each fight on a dark map, 0 to 2 small fire pits (seeded by the map and fight, so they never move) wait cold in the dark. Clearing
+// the fight lights them: a flare, a crackle, then a flickering flame whose glow pushes the darkness back (a light pool in the mask).
+// Fires lit since you last looked at the map ignite in front of you; on the Sunken Depths they are glowing sea-lanterns instead.
+const caveFiresSeen = {};
+function caveSeeded(str){ let h = 2166136261 >>> 0; for(let i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return ()=>{ h = Math.imul(h ^ (h >>> 15), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); h ^= h >>> 16; return (h >>> 0) / 4294967296; }; }
+function caveFireSpots(mapId, nodes){
+  const out = [], taken = nodes.map(n=> ({x:n.x, y:n.y}));
+  nodes.forEach(n=>{ const rnd = caveSeeded(mapId + ':' + n.key + ':fire'), count = Math.floor(rnd() * 3); // 0, 1 or 2
+    for(let k = 0; k < count; k++) for(let t = 0; t < 10; t++){
+      const a = rnd() * Math.PI * 2, d = 6 + rnd() * 5, x = n.x + Math.cos(a) * d, y = n.y + Math.sin(a) * d * 1.4;
+      if(x < 4 || x > 96 || y < 7 || y > 93 || taken.some(q=> Math.hypot(q.x - x, (q.y - y) / 1.4) < 4.6)) continue;
+      out.push({x, y, key: n.key}); taken.push({x, y}); break; } });
+  return out;
+}
+function mountCaveFires(canvas, map){
+  canvas.querySelectorAll(':scope > .cave-fire').forEach(e=> e.remove());
+  if(!mapBlotsOut(map) || map.endless) return;
+  const progress = loadConquestProgress();
+  const nodes = [...canvas.querySelectorAll(':scope > .map-node[data-lkey]:not(.kind-tutorial)')].map(n=> ({key: n.dataset.lkey, x: parseFloat(n.style.left), y: parseFloat(n.style.top)})).filter(q=> isFinite(q.x) && isFinite(q.y));
+  const seen = caveFiresSeen[map.id], first = !seen, lit = new Set(seen || []), glow = map.id === 'mj', reduce = reducedMotion();
+  let k = 0;
+  caveFireSpots(map.id, nodes).forEach(sp=>{
+    const done = progress.completed.includes(conquestNodeId(map.id, sp.key)), fresh = done && !first && !lit.has(sp.key + '@' + sp.x.toFixed(1));
+    const f = document.createElement('span'); f.className = 'cave-fire' + (glow ? ' is-glow' : '') + (done && !fresh ? ' is-lit' : ''); f.setAttribute('aria-hidden', 'true');
+    f.dataset.fireNode = sp.key; f.style.left = sp.x.toFixed(2) + '%'; f.style.top = sp.y.toFixed(2) + '%';
+    f.innerHTML = '<i class="cf-glow"></i><i class="cf-stones"></i><i class="cf-logs"></i><i class="cf-flame"></i><i class="cf-flame cf-f2"></i><i class="cf-spark"></i>';
+    canvas.appendChild(f);
+    if(fresh){ const delay = (reduce ? 300 : 1500) + (k++) * 450; // after the map's name card lifts and the light spreads
+      setTimeout(()=>{ if(!f.isConnected) return; f.classList.add('is-lit', 'is-igniting'); try{ SoundKit.fireIgnite && SoundKit.fireIgnite(); }catch(e){} setTimeout(()=> f.classList.remove('is-igniting'), 1600); }, delay); }
+    if(done) lit.add(sp.key + '@' + sp.x.toFixed(1));
+  });
+  caveFiresSeen[map.id] = lit;
+}
 function showMapVeil(host, map, layer){
   if(!host || !map) return;
   host.querySelectorAll(':scope > .map-veil').forEach(v=> v.remove());
   const n = typeof mapNumberOf==='function' ? mapNumberOf(map.id) : null;
-  const cave = isCaveMap(map);
+  const cave = mapBlotsOut(map); // every dark map opens on darkness (2026-10-15)
   const v = document.createElement('div'); v.className = 'map-veil' + (cave ? ' is-cave' : ''); v.setAttribute('role', 'status');
   v.innerHTML = `<div class="mv-card"><span class="mv-ico" aria-hidden="true">${map.icon||'🗺️'}</span><b class="mv-name">${escapeHtml(map.name)}</b>${n!=null ? `<small class="mv-num">Map ${n}</small>` : ''}<span class="mv-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="sr-only">Loading the map…</span></div>`;
   host.appendChild(v); try{ SoundKit.mapUnroll(); }catch(e){}
