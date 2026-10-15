@@ -7,6 +7,9 @@ engine_src = open(SCRATCH + "bramblewood-engine.js", encoding="utf-8").read()
 # 2026-10-15: the six effect batches (bramblewood-fx-a.js … -f.js, window.FX.A…F) load right after unitfx; see
 # docs/effects-lab-contract.md. They only define functions, so the order among them doesn't matter.
 ghosts_src = open(SCRATCH + "bramblewood-ghosts.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-autobattle.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-raid.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-trench.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-integrity.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-shaders.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-skillfx.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-procfx.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-unitfx.js", encoding="utf-8").read() + "\n" + "".join(open(SCRATCH + "bramblewood-fx-%s.js" % _b, encoding="utf-8").read() + "\n" for _b in "abcdef") + open(SCRATCH + "bramblewood-splash.js", encoding="utf-8").read() + "\n" + open(SCRATCH + "bramblewood-i18n.js", encoding="utf-8").read()
+# Game texts (2026-10-15, user: "offload it into a excel so I can edit the text from there"): the TEXT table and TX(), after the
+# translation layer it hands its strings to. Edited through docs/game-texts.xlsx (tools/text/import_texts.py).
+ghosts_src += "\n" + open(SCRATCH + "bramblewood-texts.js", encoding="utf-8").read()
 raid_bosses_literal = json.dumps(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8")), ensure_ascii=False)
 app_src = open(SCRATCH + "arena_app.js", encoding="utf-8").read()
 # GSAP (2026-09-16, "GSAP-quality" animation pass): a page published via the Artifact tool is
