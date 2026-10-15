@@ -15579,6 +15579,7 @@ function towerDeckBR(deck, levels, defs){
   return Math.round(t * DECK_SIZE / n);
 }
 function towerFloorDeck(f, defs){
+  if(!defs && typeof CARD_DEFS_BASELINE === 'undefined') return {deck:{}, levels:{}, br:0, target: towerTargetBR(f)}; // the maps read on their own (tests)
   defs = defs || CARD_DEFS_BASELINE;
   const target = towerTargetBR(f), p = (f - 1) / (TOWER_FLOORS - 1), boss = f % 10 === 0, lvGoal = 11 + 9 * p;
   const used = new Set(), deck = {}, pick = tier=>{ const pool = (TOWER_POOLS[tier] || []).filter(id=> defs[id] && !used.has(id)); if(!pool.length) return null;
