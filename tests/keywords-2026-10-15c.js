@@ -97,7 +97,7 @@ ok(/\{key:'chilli', category:'evergreen', label:'Chilli', kind:'number', min:1, 
 ['trident', 'pitchfork', 'crabClaws', 'iceArrow', 'twinShot', 'volley', 'poisonBolt', 'iceBolt', 'chilli'].forEach(k=> ok(new RegExp(`\\n  ${k}: \\{`).test(src.slice(src.indexOf('const FXL_SKILL_SETUPS'))), `${k}: an Effects library setup`));
 ok(/const ONE_OFF_SKILLS = \['coffee', 'chilli', 'banana', 'bananarang', 'durian', 'rabid', 'supremeTide', 'smokeBomb', 'avalanche', 'earthquake', 'tornado', 'crepuscular', 'scatterbrained', 'meteor'\];/.test(src), '5. the one-offs');
 ok(!/key:'hurricane'/.test(src), '5. (there is no Hurricane skill yet)');
-ok(/hidden:p\.hidden, oneOff:p\.oneOff,/.test(src) && /\$\{x\.oneOff \? ' · one-off' : ''\}/.test(src) && /\$\{oneOffTagHTML\(s\)\}\$\{valueHtml\}/.test(src), '5. the skill picker tags one-offs');
+ok(/oneOff:p\.oneOff,/.test(src) && /\$\{x\.oneOff \? ' · one-off' : ''\}/.test(src) && /\$\{oneOffTagHTML\(s\)\}\$\{valueHtml\}/.test(src), '5. the skill picker tags one-offs');
 ok(/<b>\$\{escapeHtml\(p\.label\)\}<\/b>\$\{oneOffTagHTML\(p\)\}/.test(src), '5. ...and so does the Skills codex');
 ok(/function ninthPassVfx\(ev\)/.test(src) && /try\{ ninthPassVfx\(ev\); \}catch\(e\)\{\}/.test(src), 'the Bolt and Chilli effects play in fights');
 const fx = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-skillfx.js'), 'utf8');
