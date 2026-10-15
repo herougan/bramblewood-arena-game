@@ -153,3 +153,97 @@
   window.UnitFX = {guessHit, resolve, hitMark, attackFx, fireBreath, claw, bite, sting, peck, burn,
     SKINS, skinsFor, grantSkin, equipSkin, equippedSkin};
 })();
+
+/* ============================================================
+   Battle board pass P2 (2026-10-15): two board effects, DOM-only so the Effects Lab plays the same code.
+   ============================================================ */
+(function(){
+  const U = window.UnitFX; if(!U) return;
+  const reduced = ()=>{ try{ return window.matchMedia('(prefers-reduced-motion: reduce)').matches; }catch(e){ return false; } };
+  const spd = o=> Math.max(0.25, Number(o && o.speed) || 1);
+  // Guardian plates break on death (user: "should break on death"): the steel sheets braced out from behind a Guardian crack into
+  // jagged pieces that flash, spin outward and fall away. The plates themselves are hidden at once (.guard-plates.is-broken).
+  // el: the Guardian's .board-card. Returns a Promise.
+  const BANDS = [[0, 26], [26, 52], [52, 77], [77, 100]];
+  function guardBreak(el, opts){
+    opts = opts || {};
+    const gp = el && el.querySelector && el.querySelector('.guard-plates');
+    if(!gp || gp.classList.contains('is-broken')) return Promise.resolve();
+    const plates = [...gp.querySelectorAll('i')].map(p=>{ const r = p.getBoundingClientRect(), cs = getComputedStyle(p); return {r, bg: cs.backgroundImage, bc: cs.borderColor, left: p.classList.contains('gp-l')}; }).filter(p=> p.r.width > 2);
+    gp.classList.add('is-broken');
+    if(!plates.length || reduced() || !document.body.animate) return Promise.resolve();
+    const host = document.createElement('div'); host.className = 'ufx-guard-shards'; host.setAttribute('aria-hidden', 'true');
+    host.style.cssText = 'position:fixed; inset:0; pointer-events:none; z-index:10040; overflow:visible;';
+    document.body.appendChild(host);
+    const k = 1 / spd(opts); let longest = 0;
+    plates.forEach((p, pi)=>{
+      BANDS.forEach(([a, b], bi)=>{
+        // a jagged band: the cut wanders a few % left and right so the pieces read as torn steel, not neat slices
+        const j = v=> Math.max(0, Math.min(100, v + (Math.random()*8 - 4)));
+        const top = bi === 0 ? '0% 0%, 100% 0%' : `0% ${j(a)}%, 35% ${j(a)}%, 62% ${j(a)}%, 100% ${j(a)}%`;
+        const bot = bi === BANDS.length - 1 ? '100% 100%, 0% 100%' : `100% ${j(b)}%, 62% ${j(b)}%, 35% ${j(b)}%, 0% ${j(b)}%`;
+        const s = document.createElement('i');
+        s.style.cssText = `position:absolute; left:${p.r.left}px; top:${p.r.top}px; width:${p.r.width}px; height:${p.r.height}px; border-radius:4px;
+          background:${p.bg}; border:1.5px solid ${p.bc}; box-sizing:border-box; clip-path:polygon(${top}, ${bot}); will-change:transform, opacity;`;
+        host.appendChild(s);
+        const out = (p.left ? -1 : 1), dx = out * (18 + Math.random()*46), dy = 34 + Math.random()*70 + bi*10, rot = out * (25 + Math.random()*110) * (Math.random() < .25 ? -1 : 1);
+        const dur = (720 + Math.random()*260) * k, delay = (pi*40 + bi*35) * k; longest = Math.max(longest, dur + delay);
+        s.animate([
+          {transform:'translate(0,0) rotate(0deg)', filter:'brightness(1)', opacity:1},
+          {transform:`translate(${dx*0.12}px, ${-6 - Math.random()*6}px) rotate(${rot*0.1}deg)`, filter:'brightness(1.45)', opacity:1, offset:0.14},
+          {transform:`translate(${dx*0.6}px, ${dy*0.35}px) rotate(${rot*0.6}deg)`, filter:'brightness(1.1)', opacity:.95, offset:0.55},
+          {transform:`translate(${dx}px, ${dy}px) rotate(${rot}deg)`, filter:'brightness(.8)', opacity:0},
+        ], {duration:dur, delay, easing:'cubic-bezier(.25,.1,.55,1)', fill:'both'});
+      });
+      // a white crack-flash where the plate stood
+      const f = document.createElement('b');
+      f.style.cssText = `position:absolute; left:${p.r.left + p.r.width/2 - 14}px; top:${p.r.top + p.r.height*0.42 - 14}px; width:28px; height:28px; border-radius:50%;
+        background:radial-gradient(circle, rgba(255,255,255,.95), rgba(210,225,240,.45) 45%, transparent 70%);`;
+      host.appendChild(f);
+      f.animate([{transform:'scale(.3)', opacity:0}, {transform:'scale(1.4)', opacity:1, offset:.3}, {transform:'scale(2)', opacity:0}], {duration:380*k, easing:'ease-out', fill:'both'});
+    });
+    return new Promise(res=> setTimeout(()=>{ host.remove(); res(); }, longest + 60));
+  }
+  // The opponent pitches a card (user: "If they pitch, I should see a card fading in while being dumped into the ground. Then just as
+  // it hits the ground, their resource count goes up like how ours does - animation wise."): the card fades in above `ground` (a
+  // point in screen px: where it lands), tips and drops, and sinks into the ground in a ring of dust; opts.onLand runs as it hits.
+  // cardHTML: the card's face markup (cardTileHTML). opts: {w (card width, px), speed, onLand}. Returns a Promise.
+  function pitchDump(cardHTML, ground, opts){
+    opts = opts || {};
+    const land = ()=>{ try{ opts.onLand && opts.onLand(); }catch(e){} };
+    if(!ground || reduced() || !document.body.animate){ land(); return Promise.resolve(); }
+    const k = 1 / spd(opts), w = opts.w || 64, h = Math.round(w * 1.25), drop = opts.drop != null ? opts.drop : Math.round(h * 0.45);
+    const host = document.createElement('div'); host.className = 'ufx-pitch-dump'; host.setAttribute('aria-hidden', 'true');
+    // the clip box ends at the ground line, so whatever passes below it has gone "into the ground"; the card fades in at its top
+    // (its bottom `drop` px above the ground), falls, touches down and sinks out of sight
+    const boxH = h + drop + 6;
+    host.style.cssText = `position:fixed; left:${ground.x - w}px; top:${ground.y - boxH}px; width:${w*2}px; height:${boxH}px; pointer-events:none; z-index:10040; overflow:hidden;`;
+    const card = document.createElement('div');
+    card.style.cssText = `position:absolute; left:${w/2}px; top:6px; width:${w}px; height:${h}px; transform-origin:50% 100%; filter:drop-shadow(0 3px 4px rgba(0,0,0,.45));`;
+    card.innerHTML = cardHTML || '<div class="card-tile"></div>';
+    const tile = card.firstElementChild; if(tile){ tile.style.width = '100%'; tile.style.height = '100%'; tile.style.margin = '0'; tile.style.boxSizing = 'border-box'; }
+    host.appendChild(card); document.body.appendChild(host);
+    const a = card.animate([
+      {transform:'translateY(0) rotate(-5deg) scale(.86)', opacity:0, offset:0},
+      {transform:'translateY(-3px) rotate(-3deg) scale(1)', opacity:1, offset:.3},
+      {transform:`translateY(${drop}px) rotate(4deg) scale(1)`, opacity:1, offset:.58, easing:'ease-out'},
+      {transform:`translateY(${drop + 3}px) rotate(3deg) scaleY(.9) scaleX(1.06)`, opacity:1, offset:.64},
+      {transform:`translateY(${drop + h + 6}px) rotate(2deg) scale(.96)`, opacity:.8, offset:1},
+    ], {duration:1250*k, easing:'cubic-bezier(.45,0,.55,1)', fill:'both'});
+    // dust ring where it meets the ground, timed to the touch-down
+    const landAt = 1250*k*0.6;
+    setTimeout(()=>{
+      land();
+      for(let i = 0; i < 7; i++){
+        const d = document.createElement('i'), dx = (i - 3) * (w*0.16) + (Math.random()*6 - 3);
+        d.style.cssText = `position:fixed; left:${ground.x + dx - 5}px; top:${ground.y - 8}px; width:10px; height:10px; border-radius:50%; pointer-events:none; z-index:10041;
+          background:radial-gradient(circle, rgba(214,190,150,.9), rgba(150,120,80,.35) 60%, transparent 72%);`;
+        document.body.appendChild(d);
+        d.animate([{transform:'translate(0,0) scale(.5)', opacity:.9}, {transform:`translate(${dx*0.9}px, ${-10 - Math.random()*12}px) scale(${1.6 + Math.random()})`, opacity:0}],
+          {duration:560*k, easing:'ease-out', fill:'both'}).onfinish = ()=> d.remove();
+      }
+    }, landAt);
+    return new Promise(res=> a.onfinish = ()=>{ host.remove(); res(); });
+  }
+  Object.assign(U, {guardBreak, pitchDump});
+})();

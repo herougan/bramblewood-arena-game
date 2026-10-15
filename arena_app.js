@@ -5163,7 +5163,10 @@ function rarityTierClass(key){
 // specifically (not ✦/⭐/🌟) was picked as that resource's unit symbol.
 function pipsHTML(glyph, n, kind){
   n = Math.max(0, n|0);
-  if(n > 4) return `<span class="pips pips-${kind} is-num"><i>${glyph}</i><b>${n}</b></span>`;
+  // 2026-10-15 (user: "5 Resource cost and above e.g. 5 lumber or 5 stone, it's just a lumber symbol with a black number w/ white
+  // bg glow."): a resource cost of 5+ is one icon with its number set over it (black, white glow) — .pips.is-res-num in the CSS.
+  // The Wait clock keeps its plain "⏳ 5".
+  if(n > 4) return `<span class="pips pips-${kind} is-num${kind === 'wait' ? '' : ' is-res-num'}" data-n="${n}" aria-label="${n}"><i>${glyph}</i><b>${n}</b></span>`;
   return `<span class="pips pips-${kind}${n>=3 ? ' can-num' : ''}" data-n="${n}" aria-label="${n}">${Array.from({length:n}, ()=> `<i>${glyph}</i>`).join('')}</span>`; // can-num (2026-10-10): compact on phones
 }
 function costBadgeParts(d){
@@ -5725,7 +5728,11 @@ function abilityBadges(d, bopts){
     const keep = out.slice(0, Math.max(0, maxSlots - 1)), rest = out.slice(Math.max(0, maxSlots - 1));
     return `<div class="badges badge-slots has-cycle">${keep.map(b=> `<span class="abadge">${b}</span>`).join('')}<span class="abadge badge-cycle" title="${rest.length} skills, cycling">${rest.map((b, i)=> `<span class="bc-item${i===0 ? ' is-shown' : ''}">${b}</span>`).join('')}</span></div>`;
   }
-  if(true) return `<div class="badges badge-slots">${out.map(b=> `<span class="abadge">${b}</span>`).join('')}</div>`;
+  // 2026-10-15 (user: "Why do those enemy cards have that slim weird & grey rectangle where their ability context icons would be.
+  // Is that 'Bounty'?"): yes — on the board the opponent's Bounty shows as the Lumber bubble and its 🏆 slot is hidden, which left
+  // the strip's empty pill behind. A strip holding only the Bounty is marked so the CSS hides the whole strip with it.
+  const onlyBounty = out.every(b=> /class="ab-bounty"/.test(b));
+  if(true) return `<div class="badges badge-slots${onlyBounty ? ' only-bounty' : ''}">${out.map(b=> `<span class="abadge">${b}</span>`).join('')}</div>`;
   const pills = out.map(b=>`<span class="abadge">${b}</span>`);
   // 2026-09-29, per explicit request ("depending on how many symbols there are, they might have
   // to stack on each other. If > 8 symbols, they start stacking on two rows"): keep a single row
@@ -22534,8 +22541,11 @@ function hpRibbonHTML(m, side, label){
   return `<div class="bf-hp bf-hp-${side==='A'?'mine':'enemy'} ${pct<=30?'is-low':''}" data-hpribbon="${side}" role="img" aria-label="${escapeAttr((label||'Castle')+': '+hp+' of '+hq.maxHp+' health')}">
     <span class="bf-hp-label">🏰 ${escapeHtml(label||'Castle')}</span>
     <span class="bf-hp-track"><span class="bf-hp-fill" style="width:${pct.toFixed(1)}%"></span></span>
-    <span class="bf-hp-num">${hp}<small>/${hq.maxHp}</small></span></div>`;
+    <span class="bf-hp-num">${hp}<small>/${hq.maxHp}</small></span>${side === 'B' && m.over && m.mode !== 'sandbox' ? finalTurnPillHTML(m) : ''}</div>`;
 }
+// 2026-10-15 (user: "When the match is over, and I view the post-battlefield, I want to see the turn#. It shows up as a pill on the
+// opponent's HP bar in the centre."): the turn the fight ended on, centred on the top HP ribbon once it's over.
+function finalTurnPillHTML(m){ const n = Math.max(1, m.round || 1); return `<span class="bf-turn-pill" title="The fight ended on turn ${n}">Turn ${n}</span>`; }
 function updateHpRibbon(side, hp){
   const m = matchState; if(!m) return;
   const el = document.querySelector(`[data-hpribbon="${side}"]`); if(!el) return;
@@ -22747,6 +22757,7 @@ function renderMatchUI(){
   const showWinModal = m.over && !m.winModalDismissed;
   try{ if(showWinModal && (coachOpen || coachShield)) hideCoachTip(); }catch(e){} // 2026-10-12: a tutorial step left open used to sit over the results (its shield ate clicks)
   try{ document.body.classList.toggle('match-ended', !!m.over && m.mode!=='sandbox'); }catch(e){}
+  try{ requestAnimationFrame(()=> syncFightBackdrop(m)); closeGravePeek(); }catch(e){}
   const deckTotals = m.deckTotals || {1:p1.deck.length, 2:p2.deck.length};
   const holdingCard = m.selectedUid!=null;
   // 2026-09-26 (#4): from here on, "the top nav bar (of the battle mode)" is what this .hud div
@@ -22801,7 +22812,8 @@ function renderMatchUI(){
       ${matchCastleTileHTML(castleCharOf(m, 2), (m.resolving && m.displayHqHp && m.displayHqHp.B != null) ? m.displayHqHp.B : p2.hq.hp, p2.hq.maxHp, 'B', topLabel)}
       <div class="deck-widget hq-tile ${(p2.deck||[]).length ? '' : 'is-empty'}" id="deckWidgetTop" style="${deckPileStyle((p2.deck||[]).length)}">
         ${(p2.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
-        ${(p2.exile.length>0||p2.echoes>0)?`<div class="removal-badge" title="Removal Zone: ${p2.exile.length} card${p2.exile.length===1?'':'s'}. Echoes: ${p2.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p2.exile.length}${p2.echoes?` · 🕯️ ${p2.echoes}`:''}</div>`:''}
+        ${(p2.graveyard||[]).length ? `<button type="button" class="grave-peek-badge" data-grave-peek="2" title="Enemy Graveyard: ${p2.graveyard.length} card${p2.graveyard.length===1?'':'s'}. Tap to see them." aria-label="Enemy Graveyard, ${p2.graveyard.length} cards">💀 ${p2.graveyard.length}</button>` : '' /* 2026-10-15: the opponent's Graveyard, peekable */}
+        ${(p2.exile.length>0||p2.echoes>0)?`<div class="removal-badge" role="button" tabindex="0" data-grave-peek="2" title="Removal Zone: ${p2.exile.length} card${p2.exile.length===1?'':'s'}. Echoes: ${p2.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p2.exile.length}${p2.echoes?` · 🕯️ ${p2.echoes}`:''}</div>`:''}
       </div>
       ${fieldCondCardHTML(m)}${fieldEffectCardHTML(m)}
       <div class="top-right-stack">
@@ -22814,7 +22826,8 @@ function renderMatchUI(){
         ${FORFEIT_MODES.has(m.mode) && !m.over ? `<button class="btn small" id="forfeitMatchBtn" title="Give up this match — it counts as a loss" aria-label="Forfeit">🏳️<span class="trc-lbl"> Forfeit</span></button>` : ''}${adminModeEnabled && !m.over && m.mode!=='sandbox' ? `<button class="btn small admin-win-btn" id="adminWinBtn" title="Admin: win this battle now">👑 Auto-win</button>` : ''}${autoplayAllowed(m) && !m.over ? `<button class="btn small autoplay-btn${m.autoplay ? ' is-on' : ''}" id="autoplayBtn" aria-pressed="${!!m.autoplay}" title="${m.autoplay ? 'Stop auto-play and take over' : 'You have cleared this fight at rank S or better: let your side play itself'}">${m.autoplay ? '⏸ Auto-play on' : '🤖 Auto-play'}</button>` : ''}
         <button class="btn small" id="quitMatchBtn" aria-label="${isAsync?'Save & Exit':'Quit'}" ${isTutorial?'title="Leave the tutorial for now — continue it any time from Home"':`title="${isAsync?'Save & Exit':'Quit'}"`}><span class="trc-ico" aria-hidden="true">${isAsync?'💾':'🚪'}</span><span class="trc-lbl">${isAsync?'Save & Exit':'Quit'}</span></button>
       </div>
-      ${fieldResSideHTML(m, false) /* 2026-10-14 (user: "The opponent's lumber pill will be on the top right."): under the controls */}
+      ${'' /* 2026-10-15 (user: "On the opposite side of the field in the same position, I should see the enemy's currencies."): the
+             opponent's pills moved from under these controls onto the field, mirroring yours (see fieldResSideHTML in the battlefield) */}
       </div>
     </div>
     <div class="battlefield ${matchDarkLevel(m) === 'pitch' || matchDarkLevel(m) === 'absolute' ? 'bf-lantern bf-dark-' + matchDarkLevel(m) : ''} ${battlefieldMapClass(m)} ${(()=>{ const tr = terrainOfMatch(m); return tr ? `terrain-on terrain-${tr.t ? tr.t.biome : "ash"}${Number(tr.rules.eruption) > 0 ? " volcanic" : ""}` : ""; })()} ${matchIsRainy(m) ? 'is-raining' : ''} ${suddenDeathSky(m) ? 'sudden-death' : ''} ${isWetField(m) ? 'wet-field' : ''}" id="battlefieldEl">
@@ -22830,7 +22843,7 @@ function renderMatchUI(){
       <svg class="facing-svg" id="facingSvg" aria-hidden="true"></svg>
       ${fieldEffectOf(m)==='frozen' && fxAtLeast('low') ? `<div class="field-snow frost-lv${frostLevelOf(m)}" aria-hidden="true">${Array.from({length: Math.round((fxAtLeast('high') ? 28 : 14) * [1, 1, 1.6, 2.2][frostLevelOf(m)])}, (_, k)=> `<i style="left:${(k*37)%100}%; animation-delay:-${((k*0.73)%6).toFixed(2)}s; animation-duration:${(5 + (k*1.31)%4).toFixed(2)}s; --dx:${((k%5)-2)*14}px; font-size:${8 + (k*7)%9}px">❄</i>`).join('')}</div>` : ''}
       ${fieldOverlayHTML(fieldEffectOf(m))}
-      ${fieldResSideHTML(m, true)}
+      ${fieldResSideHTML(m, true)}${fieldResSideHTML(m, false)}
     </div>
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
@@ -23433,7 +23446,7 @@ function wireDropZones(){
       const uid = Number(e.dataTransfer.getData('text/plain'));
       if(uid) discardCardByUid(uid);
     });
-    discardZone.addEventListener('click', ()=>{ const m=matchState; if(m && m.selectedUid!=null) discardCardByUid(m.selectedUid); });
+    discardZone.addEventListener('click', ()=>{ const m=matchState; if(m && m.selectedUid!=null) discardCardByUid(m.selectedUid); else if(m) toggleGravePeek(viewerHandPid(m), discardZone); }); // 2026-10-15: a tap with no card held peeks at the Graveyard
     // 2026-09-26: covers the tap-arm-then-just-point-at-it case (no native drag at all) with the
     // same "only while actually hovering the pile" rule as the drag path above — anchored above
     // the zone itself since there's no dragged cursor to speak of here.
@@ -23770,6 +23783,52 @@ function spawnEntranceSettleMs(count, mult){
 }
 // Initiative coin (2026-10-12, user: "we need to use a small gold coin symbol on the left side, on the border, to represent
 // who's initiative it is"): sits on the battlefield's left edge, on the half of whoever strikes first on a tie this round.
+// 2026-10-15 (user: "The initiative coin should be placed at the highest layer, appearing above the darkness and battle boundary.
+// Though, the map status could affect a small shading of the coin, looking like it's reflecting the battle status - lava, night, day,
+// flood, ebb. etc."): the coin sits above every board layer (CSS z-index), and takes one mood from the field it lies on, strongest
+// first: lava (a volcano or a heatwave), the dark, the tide (flood / ebb), frost, rain, mist, then night / twilight / day.
+function initCoinMood(m){
+  if(!m || !m.engine) return null;
+  const fr = (()=>{ try{ return matchFieldRules(m) || {}; }catch(e){ return {}; } })(), fld = fieldEffectOf(m);
+  const tr = (()=>{ try{ return terrainOfMatch(m); }catch(e){ return null; } })();
+  if(fld === 'heatwave' || (tr && tr.rules && Number(tr.rules.eruption) > 0) || (typeof volcanoRulesOn === 'function' && volcanoRulesOn(fr))) return 'lava';
+  const dk = matchDarkLevel(m); if(dk === 'pitch' || dk === 'absolute' || dk === 'dark') return 'dark';
+  const tide = (()=>{ try{ return matchHasTide(m) && m.engine.getTide ? m.engine.getTide() : null; }catch(e){ return null; } })();
+  if(tide === 'flow' || tide === 'high') return 'flood'; if(tide === 'ebb') return 'ebb';
+  if(fld === 'frozen') return 'frost'; if(fld === 'rain') return 'rain'; if(fld === 'fog' || fr.misty) return 'mist';
+  const ph = dayNightOn(m) ? m.engine.getPhase() : null;
+  return ph === 'night' ? 'night' : ph === 'twilight' || ph === 'dawn' ? 'dusk' : ph === 'day' ? 'day' : null;
+}
+// The page behind a fight (2026-10-15, user: "The general background during combat should not be the battle background but match the
+// color scheme - with fade and gradient."): the page around the board takes two colours from the battlefield itself — sampled from
+// its painted floor art when the browser allows, else read off its CSS gradient — and body:has(#appWrap.in-match) paints them as a
+// dark radial fade behind the board over a top-to-bottom gradient (CSS in arena_template.html). Leaving the fight drops the rule.
+const _fightPal = new Map();
+function _rgbOf(s){ let x = /rgba?\(\s*([\d.]+)[ ,]+([\d.]+)[ ,]+([\d.]+)(?:\s*[,/]\s*([\d.]+))?/.exec(s); if(x) return [+x[1], +x[2], +x[3], x[4] != null ? +x[4] : 1];
+  x = /color\(srgb\s+([\d.]+)\s+([\d.]+)\s+([\d.]+)(?:\s*\/\s*([\d.]+))?/.exec(s); return x ? [x[1]*255, x[2]*255, x[3]*255, x[4] != null ? +x[4] : 1] : null; }
+const _rgbCss = c=> `rgb(${c.slice(0, 3).map(v=> Math.round(v)).join(',')})`;
+function fightPaletteFromCss(bf){
+  const cs = getComputedStyle(bf);
+  const cols = (String(cs.backgroundImage).match(/rgba?\([^)]*\)|color\(srgb[^)]*\)/g) || []).concat([cs.backgroundColor]).map(_rgbOf)
+    .filter(c=> c && c[3] > .5 && c[0] + c[1] + c[2] > 24);
+  return cols.length ? [cols[0], cols[cols.length - 1]] : null;
+}
+function fightPaletteFromArt(url){
+  return new Promise(res=>{
+    const img = new Image(); img.decoding = 'async';
+    img.onload = ()=>{ try{ const c = document.createElement('canvas'); c.width = c.height = 8; const g = c.getContext('2d'); g.drawImage(img, 0, 0, 8, 8);
+      const d = g.getImageData(0, 0, 8, 8).data, avg = (y0, y1)=>{ const s = [0, 0, 0]; let n = 0; for(let y = y0; y < y1; y++) for(let x = 0; x < 8; x++){ const i = (y*8 + x)*4; s[0] += d[i]; s[1] += d[i+1]; s[2] += d[i+2]; n++; } return s.map(v=> v/n).concat(1); };
+      res([avg(0, 4), avg(4, 8)]); }catch(e){ res(null); } }; // a tainted canvas (file://) falls back to the CSS colours
+    img.onerror = ()=> res(null); img.src = url; });
+}
+function syncFightBackdrop(m){
+  const bf = document.getElementById('battlefieldEl'); if(!bf || !m || matchState !== m) return;
+  const cs = getComputedStyle(bf), art = (/url\("?([^")]+)"?\)/.exec(cs.backgroundImage) || [])[1] || '', key = bf.className.replace(/\s+/g, ' ') + '|' + art;
+  const apply = pal=>{ if(!pal) return; document.body.style.setProperty('--fight-a', _rgbCss(pal[0])); document.body.style.setProperty('--fight-b', _rgbCss(pal[1])); document.body.classList.add('fight-bg'); };
+  if(_fightPal.has(key)){ apply(_fightPal.get(key)); return; }
+  const cssPal = fightPaletteFromCss(bf); _fightPal.set(key, cssPal); apply(cssPal);
+  if(art) fightPaletteFromArt(art).then(p=>{ if(p){ _fightPal.set(key, p); if(matchState === m) apply(p); } });
+}
 function initiativeSideOf(m){ if(!m) return null; return m.mode==='pvp' ? 'B' : (m.round%2===0 ? 'A' : 'B'); }
 function syncInitiativeCoin(){
   const m = matchState, bf = document.getElementById('battlefieldEl');
@@ -23779,6 +23838,7 @@ function syncInitiativeCoin(){
   const side = initiativeSideOf(m), mine = side === (viewerHandPid(m)===2 ? 'B' : 'A');
   if(!c){ c = document.createElement('div'); c.className = 'init-coin'; c.setAttribute('role', 'img'); bf.appendChild(c); }
   const was = c.dataset.side; c.dataset.side = mine ? 'mine' : 'theirs';
+  try{ const mood = initCoinMood(m); if(mood) c.dataset.mood = mood; else delete c.dataset.mood; }catch(e){}
   c.title = mine ? 'Initiative: you strike first when two units face off evenly this round' : 'Initiative: the enemy strikes first when two units face off evenly this round';
   c.setAttribute('aria-label', mine ? 'Initiative: yours' : 'Initiative: the enemy\'s');
   if(was && was !== c.dataset.side && c.animate && !reducedMotion()){
@@ -24801,10 +24861,29 @@ let battlefieldCameraFollowedThisRound = false;
 let battlefieldLeanX = 0;
 let battlefieldTilt = 0;
 let battlefieldPanLo = 0, battlefieldPanHi = 0;
+// 2026-10-15 (user: "Abit of the battlefield middle 'line' is poking past the battlefield border on the left."): the middle line lives
+// in the panned/leaned/zoomed .battlefield-inner, and the board lets content spill 90px past its edge (overflow-clip-margin, for
+// lunges), so a pan or lean carried the line's end over the border. Its ends are now kept inside the frame: for the transform
+// being applied (translateX then scale about the inner's middle) the line's left/right margins are solved so both ends land at
+// least 10px inside the board's padding box. Its pills ride its left end, so they stay on the board too.
+let _bfDivRaf = 0;
+function scheduleBfDividerFit(){ if(_bfDivRaf) return; _bfDivRaf = requestAnimationFrame(()=>{ _bfDivRaf = 0; try{ fitBfDivider(); }catch(e){} }); }
+function fitBfDivider(){
+  const bf = document.getElementById('battlefieldEl'), inner = document.getElementById('battlefieldInner'); if(!bf || !inner) return;
+  const dv = inner.querySelector(':scope > .battlefield-divider'); if(!dv) return;
+  // the camera's turn (rotateY, up to 3°) brings one end a few px nearer: a little more room per degree
+  const T = battlefieldLeanX + battlefieldPanX, S = Math.max(0.2, battlefieldScale || 1), W = inner.offsetWidth, L0 = inner.offsetLeft, BW = bf.clientWidth, pad = 10 + Math.ceil(Math.abs(battlefieldTilt || 0) * 5);
+  const xAt = sx=> W/2 + (sx - L0 - W/2 - T)/S; // a board-x (px from the board's left) back in the inner's own, untransformed px
+  // the line keeps its resting span on screen (10px in from the inner's sides) while the cards lean, never past the frame
+  const sxL = Math.max(pad, L0 + 10), sxR = Math.min(BW - pad, L0 + W - 10);
+  const ml = Math.ceil(xAt(sxL)), mr = Math.ceil(W - xAt(sxR));
+  dv.style.marginLeft = ml + 'px'; dv.style.marginRight = mr + 'px';
+}
 function battlefieldTransformCSS(){
   const lo = Math.min(battlefieldPanLo, -battlefieldPanMaxX), hi = Math.max(battlefieldPanHi, battlefieldPanMaxX);
   const total = Math.max(lo, Math.min(hi, battlefieldLeanX + battlefieldPanX));
   battlefieldPanX = total - battlefieldLeanX;
+  scheduleBfDividerFit();
   if(battlefieldScale>=0.995 && Math.abs(total)<0.5 && Math.abs(battlefieldTilt)<0.05 && Math.abs(battlefieldCenterY)<0.5) return '';
   // translateX/translateY come BEFORE scale so they read in real (unscaled) screen px; the turn sits between them.
   const turn = Math.abs(battlefieldTilt)>=0.05 ? ` perspective(1800px) rotateY(${battlefieldTilt.toFixed(2)}deg)` : '';
@@ -26383,10 +26462,48 @@ function sideResourcePillsHTML(m, p, mine){
 }
 function fieldResSideHTML(m, mine){
   if(!m || !m.players) return '';
-  const mePid = viewerHandPid(m), pid = mine ? mePid : (mePid === 1 ? 2 : 1), pills = sideResourcePillsHTML(m, m.players[pid], mine);
-  return mine ? `<div class="field-res mine" id="fieldResMine">${pills}</div>` : `<div class="field-res enemy" id="fieldResEnemy">${pills ? `<span class="field-res-tag">Enemy</span>${pills}` : ''}</div>`;
+  const mePid = viewerHandPid(m), pid = mine ? mePid : (mePid === 1 ? 2 : 1);
+  // 2026-10-15: a gain still on its way (the opponent's pitched card hasn't hit the ground yet, enemyPitchVfx) isn't counted yet.
+  const hold = m._resHold && m._resHold[pid], p0 = m.players[pid];
+  const p = hold ? Object.assign({}, p0, Object.fromEntries(Object.keys(hold).map(k=> [k, Math.max(0, (p0[k]||0) - hold[k])]))) : p0;
+  const pills = sideResourcePillsHTML(m, p, mine);
+  // 2026-10-15: the opponent's pills mirror yours on their half of the field (top-left), so they no longer need an "Enemy" tag.
+  return mine ? `<div class="field-res mine" id="fieldResMine">${pills}</div>` : `<div class="field-res enemy" id="fieldResEnemy">${pills}</div>`;
 }
 function fieldResourcesHTML(m){ return fieldResSideHTML(m, true) + fieldResSideHTML(m, false); }
+// Graveyard peek (2026-10-15, user: "Clicking the graveyard should show, in small, what cards went there."): tapping your Graveyard
+// (with no card held, a tap there still pitches) or the 💀 badge on the opponent's Deck opens a small popover of mini cards, newest
+// first, repeats stacked as ×N, with that side's Removal Zone under it. Each mini is a [data-defid], so hover / hold shows the card.
+function zonePeekMiniHTML(defId, n){
+  const d = getCardDefs()[defId] || {name: defId, icon:'🃏'}, [ra, rb] = rarityStops(d.rarity || 'common');
+  const art = d.art ? `<span class="gpk-art" style="background-image:url('${d.art}')"></span>` : `<span class="gpk-ico">${d.icon || '🃏'}</span>`;
+  return `<span class="gpk-mini" data-defid="${escapeAttr(defId)}" title="${escapeAttr(d.name || defId)}" style="--rarity-a:${ra}; --rarity-b:${rb}">${art}<span class="gpk-nm">${escapeHtml(d.name || defId)}</span>${n > 1 ? `<b class="gpk-n">×${n}</b>` : ''}</span>`;
+}
+function zonePeekGroup(list){ const order = [], cnt = new Map(); list.slice().reverse().forEach(e=>{ const id = e && (e.defId || e); if(!id) return; if(!cnt.has(id)){ cnt.set(id, 0); order.push(id); } cnt.set(id, cnt.get(id) + 1); }); return order.map(id=> zonePeekMiniHTML(id, cnt.get(id))).join(''); }
+function closeGravePeek(){ document.querySelectorAll('.grave-peek').forEach(e=> e.remove()); }
+function toggleGravePeek(pid, anchor){
+  const m = matchState; if(!m || !anchor) return;
+  const open = document.querySelector('.grave-peek');
+  if(open && open.dataset.pid === String(pid)){ closeGravePeek(); return; }
+  closeGravePeek();
+  const pl = m.players[pid]; if(!pl) return;
+  const mine = pid === viewerHandPid(m), grave = pl.graveyard || [], exile = pl.exile || [];
+  const el = document.createElement('div'); el.className = 'grave-peek' + (mine ? ' is-mine' : ' is-theirs'); el.dataset.pid = String(pid);
+  el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', (mine ? 'Your' : 'Enemy') + ' Graveyard');
+  el.innerHTML = `<div class="gpk-head"><b>💀 ${mine ? 'Your Graveyard' : 'Enemy Graveyard'}</b><span>${grave.length}</span><button type="button" class="gpk-x" aria-label="Close">✕</button></div>
+    <div class="gpk-grid">${grave.length ? zonePeekGroup(grave) : '<span class="gpk-empty">Nothing here yet.</span>'}</div>
+    ${exile.length ? `<div class="gpk-head gpk-sub"><b>🌫 Removal Zone</b><span>${exile.length}</span></div><div class="gpk-grid">${zonePeekGroup(exile)}</div>` : ''}`;
+  document.body.appendChild(el);
+  const r = anchor.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight, w = el.offsetWidth, h = el.offsetHeight;
+  const left = Math.max(8, Math.min(r.left + r.width/2 - w/2, vw - w - 8));
+  let top = mine ? r.top - h - 10 : r.bottom + 10; if(top < 8) top = Math.min(vh - h - 8, r.bottom + 10); if(top + h > vh - 8) top = Math.max(8, r.top - h - 10);
+  el.style.left = left + 'px'; el.style.top = top + 'px';
+  el.querySelector('.gpk-x').addEventListener('click', closeGravePeek);
+  if(!reducedMotion() && el.animate) el.animate([{opacity:0, transform:`translateY(${mine ? 6 : -6}px) scale(.96)`}, {opacity:1, transform:'none'}], {duration:160, easing:'ease-out'});
+}
+document.addEventListener('pointerdown', e=>{ const p = document.querySelector('.grave-peek'); if(p && !p.contains(e.target) && !(e.target.closest && e.target.closest('[data-grave-peek], #dropDiscard'))) closeGravePeek(); }, true);
+document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeGravePeek(); });
+document.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('[data-grave-peek]'); if(b && matchState){ e.stopPropagation(); toggleGravePeek(Number(b.dataset.gravePeek), b); } });
 function renderFieldResources(m){
   const a = document.getElementById('fieldResMine'), b = document.getElementById('fieldResEnemy');
   if(!a || !b){ const bf = document.getElementById('battlefieldEl'); if(bf){ bf.insertAdjacentHTML('beforeend', fieldResourcesHTML(m)); } return; }
@@ -27085,6 +27202,10 @@ function deathVfx(uid){
   try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   const el = boardCardEl(uid);
   if(!el) return;
+  // 2026-10-15 (user: "Guardian: ... should break on death"): a Guardian's steel plates shatter and fall away as it dies, whatever
+  // death look plays (UnitFX.guardBreak; at Effects "none" or reduced motion the plates just vanish). The engine already stops
+  // redirecting to a Guardian at 0 Health (redirectToGuardian checks hp > 0), so only the look outlived it.
+  try{ if(el.querySelector('.guard-plates')){ if(window.UnitFX && UnitFX.guardBreak && fxAtLeast('low')){ UnitFX.guardBreak(el, {speed:(matchState && matchState.speedMult) || 1}); SoundKit.clang(); } else el.querySelector('.guard-plates').classList.add('is-broken'); } }catch(e){}
   { const fxd = {uid, style:deathStyleFor(uid), handled:false}; fxHook('deathLook', el, fxd); if(fxd.handled) return; } // 2026-10-15: a death per cause (FX.C.hooks.deathLook)
   const skull = document.createElement('div');
   skull.className = 'death-skull';
@@ -30640,6 +30761,37 @@ function pitchCallout(gains, def){
   try{ SoundKit.pitchChime(); }catch(e){}
   gains.forEach(g=>{ const pill = document.getElementById(g.pillId); if(pill){ pill.classList.remove('pill-gain-pulse'); void pill.offsetWidth; pill.classList.add('pill-gain-pulse'); setTimeout(()=> pill.classList.remove('pill-gain-pulse'), 900); } });
 }
+// The opponent pitches (2026-10-15, user: "If they pitch, I should see a card fading in while being dumped into the ground. Then just as
+// it hits the ground, their resource count goes up like how ours does - animation wise."): the pitched card fades in under their
+// resource pills (top-left of the field), drops and sinks into the ground (UnitFX.pitchDump); the gain is held back from their pill
+// (m._resHold) until it lands, then the pill bings with a +N the way yours does.
+const PITCH_PILL_IDS = {lumber:'hudLumberPill', stone:'hudStonePill', metal:'hudMetalPill', grace:'hudGracePill', devilry:'hudDevilryPill'};
+function enemyPitchVfx(ev){
+  const m = matchState; if(!m || !ev || m.mode === 'pc') return;
+  const pid = ev.side === 'A' ? 1 : 2; if(pid === viewerHandPid(m)) return;
+  const res = PITCH_PILL_IDS[ev.resource] ? ev.resource : 'lumber', amt = Math.max(1, Number(ev.amount) || 1);
+  m._resHold = m._resHold || {}; const hold = m._resHold[pid] = m._resHold[pid] || {}; hold[res] = (hold[res] || 0) + amt;
+  try{ renderFieldResources(m); }catch(e){}
+  let done = false;
+  const land = ()=>{ if(done) return; done = true;
+    if(m._resHold && m._resHold[pid]){ m._resHold[pid][res] = Math.max(0, (m._resHold[pid][res] || 0) - amt); if(!m._resHold[pid][res]) delete m._resHold[pid][res]; }
+    if(matchState !== m) return;
+    try{ renderFieldResources(m); }catch(e){}
+    const pill = document.getElementById(PITCH_PILL_IDS[res] + 'Enemy');
+    if(pill){ pill.classList.remove('bing', 'pill-gain-pulse'); void pill.offsetWidth; pill.classList.add('bing', 'pill-gain-pulse');
+      setTimeout(()=>{ pill.classList.remove('bing'); }, 400); setTimeout(()=> pill.classList.remove('pill-gain-pulse'), 900);
+      try{ floatText(pill, `+${amt}`, 'quick'); }catch(e){} }
+    try{ SoundKit.gold(); }catch(e){}
+  };
+  setTimeout(land, 4000); // never leave the pill short if the look is cut off
+  const box = document.getElementById('fieldResEnemy'), bf = document.getElementById('battlefieldEl');
+  if(!box || !bf || !window.UnitFX || !UnitFX.pitchDump || !fxAtLeast('low') || reducedMotion()){ land(); return; }
+  const br = bf.getBoundingClientRect(), r = box.getBoundingClientRect(), phone = window.innerWidth < 700, w = phone ? 44 : 60, h = Math.round(w * 1.25), drop = Math.round(h * 0.45);
+  // it fades in just under their pills and lands a little lower, on their half of the field
+  const x0 = (r.width > 0 ? r.left : br.left + 12) + w * 0.6, y0 = (r.height > 0 ? r.bottom : br.top + 36) + 6 + h + drop;
+  const d = getCardDefs()[ev.defId] || {name: ev.defId};
+  UnitFX.pitchDump(cardTileHTML(d, {inPlay:true}), {x: x0, y: y0}, {w, drop, speed: m.speedMult || 1, onLand: land});
+}
 function resourceGainVfx(fromRect, gains){
   if(!fromRect || !gains || !gains.length) return;
   gains.forEach((g, i)=>{
@@ -32194,6 +32346,7 @@ function renderVfxForEvent(ev){
   // not just seen. The player's own play/discard already gets its own explicit SoundKit.play()
   // call at the click site, so only fire this for the enemy side to avoid a double-trigger.
   if((ev.type==='play'||ev.type==='discard') && ev.side==='B') SoundKit.play();
+  if(ev.type==='discard') try{ enemyPitchVfx(ev); }catch(e){} // 2026-10-15: the opponent's pitched card sinks into the ground, then their pill counts it
   // 2026-10-10 (user: "Enemy summoning their leader should mean something as well!"): the rival's leader gets its own,
   // ominous entrance on their half of the field.
   if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ noteMatchFx(380 + LEADER_THRONE_FX_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380); } // 2026-10-14: the round waits for it

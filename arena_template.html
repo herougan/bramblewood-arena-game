@@ -7997,6 +7997,105 @@
   .pips i + i{margin-left:-.28em;}
   .pips.is-num b{margin-left:1px; font-weight:800;}
   .card-tile .costbadge, .card-tile .waitbadge{min-width:0 !important;}
+  /* ==== Battle board pass P2 (2026-10-15) ==== */
+  /* Cost 5+ (user: "5 Resource cost and above e.g. 5 lumber or 5 stone, it's just a lumber symbol with a black number w/ white bg
+     glow."): one resource icon with its number set over its lower half, black with a white glow. Four pips overlap a little more so
+     they stay inside the badge on small tiles (the deck editor's pool overflowed at 4). */
+  .pips.is-res-num{position:relative; padding-right:.34em;}
+  .pips.is-res-num i{font-size:1.18em;}
+  .pips.is-res-num b{position:absolute; right:-.12em; bottom:-.2em; margin:0; color:#111; font:900 1.02em/1 'Baloo 2', system-ui, sans-serif; letter-spacing:-.04em;
+    text-shadow:0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px rgba(255,255,255,.9);}
+  .pips[data-n="4"] i + i{margin-left:-.42em;}
+  /* An enemy unit whose only skill is Bounty (its 🏆 slot hides behind the Lumber bubble) shows no empty grey strip (user: "Why do
+     those enemy cards have that slim weird & grey rectangle ... Is that 'Bounty'?"). */
+  .board-card:has(.bounty-bubble) .badges.badge-slots.only-bounty{display:none !important;}
+  /* Rarity on the field (user: "On the field, the border is not clearly showing its rarity. The leader card should have the border =
+     to its rarity. It still can have its 'greater' leader boundary."): a board card's frame is thicker and closer to the pure rarity
+     colour, and the leader's spinning ring now sits outside that frame with a hair of gap, so the card's own rarity border shows
+     inside it instead of being covered. */
+  .battlefield .board-card .card-tile{border-width:3px;}
+  .battlefield .board-card:not(.is-token):not(.ghost-preview) .card-tile{
+    border-color:color-mix(in srgb, var(--rarity-a, var(--surface-border)) 94%, #fff)
+                 color-mix(in srgb, var(--rarity-b, var(--rarity-a, var(--surface-border))) 88%, #1c1710)
+                 color-mix(in srgb, var(--rarity-b, var(--rarity-a, var(--surface-border))) 82%, #1c1710)
+                 color-mix(in srgb, var(--rarity-a, var(--surface-border)) 88%, #1c1710);}
+  .battlefield .board-card.is-leader::before{inset:-7px; padding:3px; border-radius:14px;}
+  /* Guardian plates behind the neighbours (user: "Guardian: ... The artwork should always appear behind other cards."): the plates
+     reach a quarter of a card out to each side; a Guardian card sits one layer below its row-mates, so the plates slide under the
+     cards beside it (left and right alike) instead of covering whichever neighbour came first in the row. A lunging or entering
+     card keeps its own higher layer. */
+  .board-row > .board-card:not(.is-attacking):not(.is-entering){z-index:1;}
+  .board-row > .board-card.has-guard:not(.is-attacking):not(.is-entering){z-index:0;}
+  .board-card .guard-plates.is-broken{visibility:hidden;}
+  /* Initiative coin on top (user: "The initiative coin should be placed at the highest layer, appearing above the darkness and battle
+     boundary. Though, the map status could affect a small shading of the coin, looking like it's reflecting the battle status - lava,
+     night, day, flood, ebb. etc."): above the dark veil, the lantern and the HP ribbons; data-mood (initCoinMood) lays a small
+     reflection over the gold — ::before is the tint, the ★ (::after) stays on top. */
+  #battlefieldEl > .init-coin{z-index:60; isolation:isolate;}
+  .init-coin::before{content:''; position:absolute; inset:0; border-radius:50%; pointer-events:none; opacity:0; transition:opacity .8s ease, background .8s ease;}
+  .init-coin[data-mood]::before{opacity:1;}
+  .init-coin[data-mood="lava"]{box-shadow:0 0 0 1.5px #7a2e0c, 0 2px 6px rgba(0,0,0,.45), 0 0 9px rgba(255,110,30,.75), inset 0 0 0 3px rgba(255,200,120,.3);}
+  .init-coin[data-mood="lava"]::before{background:linear-gradient(0deg, rgba(255,70,10,.75) 0%, rgba(255,140,40,.35) 45%, transparent 70%); mix-blend-mode:overlay;}
+  .init-coin[data-mood="dark"]::before{background:radial-gradient(circle at 70% 75%, rgba(8,8,20,.6), rgba(8,8,20,.25) 60%, rgba(255,214,140,.25) 100%); mix-blend-mode:multiply;}
+  .init-coin[data-mood="dark"]{box-shadow:0 0 0 1.5px #3e2a08, 0 2px 6px rgba(0,0,0,.5), 0 0 7px rgba(255,205,130,.55);}
+  .init-coin[data-mood="night"]::before{background:radial-gradient(circle at 30% 25%, rgba(215,225,255,.95), rgba(110,130,220,.95) 55%, rgba(60,70,160,.95) 100%); mix-blend-mode:multiply;}
+  .init-coin[data-mood="dusk"]::before{background:linear-gradient(160deg, rgba(255,190,150,.95), rgba(215,120,170,.95)); mix-blend-mode:multiply;}
+  .init-coin[data-mood="day"]::before{background:radial-gradient(circle at 30% 22%, rgba(255,255,255,.95) 0, rgba(255,250,210,.4) 30%, transparent 55%); mix-blend-mode:screen;}
+  .init-coin[data-mood="day"]{box-shadow:0 0 0 1.5px #7a4e0c, 0 2px 6px rgba(0,0,0,.4), 0 0 8px rgba(255,236,150,.6), inset 0 0 0 3px rgba(255,236,160,.35);}
+  .init-coin[data-mood="flood"]::before{background:linear-gradient(0deg, rgba(40,150,210,.75) 0%, rgba(90,200,240,.35) 40%, transparent 62%), repeating-linear-gradient(170deg, transparent 0 3px, rgba(220,245,255,.35) 3px 4px); mix-blend-mode:hard-light;}
+  .init-coin[data-mood="ebb"]::before{background:linear-gradient(0deg, rgba(170,120,70,.95) 0%, rgba(215,180,130,.7) 38%, rgba(255,255,255,0) 60%); mix-blend-mode:multiply;}
+  .init-coin[data-mood="frost"]::before{background:radial-gradient(circle at 35% 30%, rgba(255,255,255,.8), rgba(190,225,255,.55) 45%, rgba(120,170,230,.45) 100%); mix-blend-mode:color;}
+  .init-coin[data-mood="rain"]::before{background:repeating-linear-gradient(100deg, transparent 0 3px, rgba(200,225,255,.45) 3px 4px), linear-gradient(180deg, rgba(90,120,160,.35), rgba(60,80,110,.35)); mix-blend-mode:soft-light;}
+  .init-coin[data-mood="mist"]::before{background:radial-gradient(circle at 50% 60%, rgba(230,236,242,.6), rgba(200,210,220,.3) 70%); mix-blend-mode:screen;}
+  @media (prefers-reduced-motion: reduce){ .init-coin::before{transition:none;} }
+  @media (max-width:560px){ #battlefieldEl > .init-coin{left:-4px;} } /* fully on screen on a phone, where the board meets the edge */
+  /* One pill size on the board (user: "The item bag pill should be consistent with the same size as your resource pills AND the map
+     status pills (e.g. flood/ebb)."): the 🎒 bag, both sides' resource pills and the phase / tide / wind / mist pills share one
+     height, padding and type size; the bag also takes the resource pills' surface. */
+  #battlefieldEl .field-res .hud-pill, #battlefieldEl #bfPills .bf-pill, #view-play .hud #hudPackBtn{height:26px; min-height:0; box-sizing:border-box; padding:0 10px; font-size:12.5px; line-height:1;
+    display:inline-flex; align-items:center; gap:4px; border-radius:999px; border-width:1px;}
+  #view-play .hud #hudPackBtn{background:color-mix(in srgb, var(--surface) 82%, transparent); box-shadow:0 2px 6px rgba(0,0,0,.25); color:var(--ink, inherit); font-weight:800;}
+  @media (max-width:699px){ #battlefieldEl .field-res .hud-pill, #battlefieldEl #bfPills .bf-pill, #view-play .hud #hudPackBtn{height:22px; padding:0 7px; font-size:10.5px; gap:3px;} }
+  /* The opponent's resources mirror yours (user: "On the opposite side of the field in the same position, I should see the enemy's
+     currencies."): yours sit on the field's bottom-left, theirs on its top-left. */
+  #battlefieldEl > .field-res.enemy{left:12px; right:auto; top:12px; bottom:auto; justify-content:flex-start;}
+  @media (max-width:699px){ #battlefieldEl > .field-res.enemy{left:6px; top:8px;} }
+  /* Graveyard peek (user: "Clicking the graveyard should show, in small, what cards went there."): a small popover of mini cards. */
+  #dropDiscard{cursor:pointer;}
+  .grave-peek-badge{position:absolute; top:-8px; left:50%; transform:translateX(-50%); z-index:3; border:2px solid var(--surface); border-radius:999px; padding:1px 7px;
+    background:#3a3238; color:#f3ece4; font:800 10px/1.3 'Baloo 2', system-ui, sans-serif; white-space:nowrap; cursor:pointer;}
+  .grave-peek-badge:hover, .grave-peek-badge:focus-visible{background:#54474f;}
+  .removal-badge[data-grave-peek]{cursor:pointer;}
+  .grave-peek{position:fixed; z-index:10030; width:max-content; max-width:min(320px, calc(100vw - 16px)); max-height:min(340px, 60vh); overflow:auto; box-sizing:border-box;
+    padding:8px 9px 9px; border-radius:12px; background:rgba(24,19,16,.94); color:#f3ece4; border:1px solid rgba(255,255,255,.18); box-shadow:0 10px 26px rgba(0,0,0,.5);
+    font-family:'Baloo 2', system-ui, sans-serif;}
+  .grave-peek .gpk-head{display:flex; align-items:center; gap:6px; font-size:12.5px; margin:0 0 6px;}
+  .grave-peek .gpk-head span{opacity:.7; font-size:11.5px;}
+  .grave-peek .gpk-head.gpk-sub{margin-top:8px; padding-top:6px; border-top:1px solid rgba(255,255,255,.12);}
+  .grave-peek .gpk-x{margin-left:auto; border:0; background:none; color:inherit; opacity:.7; cursor:pointer; font-size:13px; padding:0 2px;}
+  .grave-peek .gpk-grid{display:grid; grid-template-columns:repeat(auto-fill, 46px); gap:5px; max-width:302px;}
+  .grave-peek .gpk-mini{position:relative; width:46px; height:58px; border-radius:6px; overflow:hidden; box-sizing:border-box; cursor:help;
+    border:2px solid var(--rarity-a, #8a8a8a); background:linear-gradient(180deg, color-mix(in srgb, var(--rarity-a, #8a6a45) 30%, #2e1f12), #1c1209); display:block;}
+  .grave-peek .gpk-art{position:absolute; inset:0 0 13px; background-size:cover; background-position:center; image-rendering:pixelated; filter:saturate(.85);}
+  .grave-peek .gpk-ico{position:absolute; inset:0 0 13px; display:flex; align-items:center; justify-content:center; font-size:22px;}
+  .grave-peek .gpk-nm{position:absolute; left:0; right:0; bottom:0; height:13px; padding:0 2px; font-size:8px; line-height:13px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:rgba(0,0,0,.55);}
+  .grave-peek .gpk-n{position:absolute; top:1px; right:1px; font-size:9.5px; line-height:1; padding:1px 3px; border-radius:6px; background:rgba(0,0,0,.7); color:#ffd56e;}
+  .grave-peek .gpk-empty{grid-column:1/-1; font-size:12px; opacity:.7; padding:2px 0;}
+  /* The turn the fight ended on (user: "...I want to see the turn#. It shows up as a pill on the opponent's HP bar in the centre."). */
+  .bf-hp .bf-turn-pill{position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); z-index:2; pointer-events:auto; white-space:nowrap;
+    height:22px; box-sizing:border-box; display:inline-flex; align-items:center; padding:0 11px; border-radius:999px;
+    background:linear-gradient(180deg, #fff6df, #efdcb4); color:#4a2f14; border:1.5px solid #b98a45; box-shadow:0 2px 6px rgba(0,0,0,.4);
+    font:800 12px/1 'Baloo 2', system-ui, sans-serif; letter-spacing:.02em; text-shadow:none; animation:bfTurnPillIn .45s cubic-bezier(.3,1.5,.5,1) both;}
+  @keyframes bfTurnPillIn{from{opacity:0; transform:translate(-50%, -50%) scale(.6);} to{opacity:1; transform:translate(-50%, -50%) scale(1);}}
+  @media (max-width:699px){ .bf-hp .bf-turn-pill{height:18px; font-size:10.5px; padding:0 8px;} }
+  @media (prefers-reduced-motion: reduce){ .bf-hp .bf-turn-pill{animation:none;} }
+  /* The page behind a fight (user: "The general background during combat should not be the battle background but match the color
+     scheme - with fade and gradient."): --fight-a / --fight-b come from the battlefield's own colours (syncFightBackdrop), darkened
+     so the castles, decks and hand still sit on a calm ground; a soft glow of the field's colour fades out around the board. */
+  body.fight-bg:has(#appWrap.in-match){background:
+      radial-gradient(ellipse 85% 60% at 50% 42%, color-mix(in srgb, var(--fight-a, var(--page-wood-2)) 58%, #100d0a) 0%, transparent 78%),
+      linear-gradient(180deg, color-mix(in srgb, var(--fight-a, var(--page-wood-2)) 40%, #110e0b) 0%, color-mix(in srgb, var(--fight-b, var(--page-wood)) 40%, #0c0a08) 55%, color-mix(in srgb, var(--fight-b, var(--page-wood)) 22%, #060504) 100%) !important;
+    background-repeat:no-repeat !important; background-attachment:fixed !important;}
   /* Names sit higher, leaving the middle of the art (eyes) clear. */
   /* 2026-10-08 (user: "the name label might need to be higher; if the name is just 1 row, make the
      scroll a little thicker"): closer to the top edge, and never thinner than a comfortable band;
