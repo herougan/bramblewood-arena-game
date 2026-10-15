@@ -112,7 +112,8 @@ function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so
   ['psychic', 'smokeBomb'].forEach(k=>{ ok(new RegExp(`\\n  ${k}: v=> `).test(src), `${k}: short text`); ok(src.includes(`if(e.${k}) out.push(`), `${k}: a chip`);
     ok(src.includes(`case '${k}': return`) && src.includes(`ev.type==='${k}'`), `${k}: a log line and a VFX handler`);
     ok(new RegExp(`\\n  ${k}: \\{`).test(src.slice(src.indexOf('const FXL_SKILL_SETUPS'))), `${k}: an Effects library setup`); });
-  ok(/smoke:\s*\{text:'Miss', icon:'🌫️'\}/.test(src) && /ev\.reason === 'smoke'/.test(src), 'a Smoke miss callout and log line');
+  // 2026-10-15 (user: "If they miss, it just says Evaded! no need for miss."): every dodge callout reads "Evaded!"
+  ok(/smoke:\s*\{text:'Evaded!', icon:'🌫️'\}/.test(src) && /ev\.reason === 'smoke'/.test(src), 'a Smoke miss callout and log line');
   ok(/smoke-overlay/.test(src) && /smoke:rc\.smoke\|\|0/.test(src) && /smoke:c\.smoke\|\|0/.test(src), 'the board shows Smoke (overlay, badge, replay)');
   ok(/onDeathKiller: \{t:\{on:'onDeath', do:'poison', amount:5, who:'killer'\}/.test(src), 'Effects library: On Death → the killer');
   ok(/whoOptions0\.concat\('killer'\)/.test(src) && /if\(t\.who==='killer'\) return 'the unit that killed it'/.test(src), 'the editor offers Killer for On Death'); }

@@ -38,6 +38,7 @@ run node tests/keywords-2026-10-15b.js
 run node tests/keywords-2026-10-15c.js
 run node tests/keywords-2026-10-15d.js
 run node tests/keywords-2026-10-15e.js
+run node tests/keywords-2026-10-15p1.js
 run node tests/regen-fullhp-2026-10-14.js
 run node tests/night-2026-10-12.js
 run node tests/phase-status.js
