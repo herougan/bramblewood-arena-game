@@ -352,9 +352,10 @@ function iconHTML(key, fallbackEmoji, opts){
 // game looks the same on every device. The library loads from jsDelivr only when chosen; if it can't load, the game
 // silently stays on System. A debounced MutationObserver re-parses whatever the game re-renders.
 var EMOJI_STYLE_KEY = 'bramblewood_emoji_style', TWEMOJI_SRC = 'https://cdn.jsdelivr.net/npm/@twemoji/api@15.1.0/dist/twemoji.min.js';
+var NOTO_EMOJI_BASE = 'https://cdn.jsdelivr.net/gh/googlefonts/noto-emoji@v2.042/svg/'; // Noto Emoji 2.042 (Unicode 15.1), pinned
 var EmojiStyle = (function(){
   let loading = null, observer = null, timer = 0, pending = new Set(), active = false;
-  const get = ()=>{ try{ return localStorage.getItem(EMOJI_STYLE_KEY) === 'twemoji' ? 'twemoji' : 'system'; }catch(e){ return 'system'; } };
+  const get = ()=>{ try{ const v = localStorage.getItem(EMOJI_STYLE_KEY); return v === 'twemoji' || v === 'noto' ? v : 'system'; }catch(e){ return 'system'; } };
   const load = ()=>{
     if(window.twemoji && window.twemoji.parse) return Promise.resolve(window.twemoji);
     if(loading) return loading;
@@ -366,7 +367,14 @@ var EmojiStyle = (function(){
     return loading;
   };
   const opts = {folder:'svg', ext:'.svg', className:'emoji tw-emoji'};
-  const parse = node=>{ try{ if(active && window.twemoji && node && node.isConnected !== false) window.twemoji.parse(node, opts); }catch(e){} };
+  // Noto Emoji (2026-10-15, user: "Noto: Emoji"): Google's set, drawn the same way. Twemoji's parser finds the emoji and asks us
+  // for each picture's address: Noto's files are emoji_u<codepoints>.svg (4+ hex digits, "_" between, no FE0F). Flags aren't in
+  // that folder, so they stay Twemoji; a picture Noto lacks turns back into the system emoji (the parser's own onerror).
+  const notoOpts = {className:'emoji tw-emoji noto-emoji', callback:(icon, o)=>{
+    const cps = String(icon).split('-').filter(c=> c !== 'fe0f');
+    if(cps.length === 2 && cps.every(c=> parseInt(c, 16) >= 0x1f1e6 && parseInt(c, 16) <= 0x1f1ff)) return ''.concat(o.base, 'svg/', icon, '.svg');
+    return NOTO_EMOJI_BASE + 'emoji_u' + cps.map(c=> c.padStart(4, '0')).join('_') + '.svg'; }};
+  const parse = node=>{ try{ if(active && window.twemoji && node && node.isConnected !== false) window.twemoji.parse(node, active === 'noto' ? notoOpts : opts); }catch(e){} };
   const flush = ()=>{ timer = 0; const nodes = [...pending]; pending.clear();
     // parse only the outermost changed nodes; a node inside another pending one is covered by it
     nodes.filter(n=> n.isConnected && !nodes.some(o=> o !== n && o.contains(n))).forEach(parse); };
@@ -385,17 +393,18 @@ var EmojiStyle = (function(){
   // Back to System: every Twemoji image turns back into its emoji text (alt holds the original).
   const restore = ()=>{ document.querySelectorAll('img.tw-emoji').forEach(img=> img.replaceWith(document.createTextNode(img.alt || ''))); };
   const apply = ()=>{
-    const want = get() === 'twemoji';
-    document.documentElement.dataset.emoji = want ? 'twemoji' : 'system';
+    const style = get(), want = style !== 'system';
+    document.documentElement.dataset.emoji = style;
+    if(active && active !== style){ restore(); } // switching sets: put the text back first, then draw it in the new set
     if(!want){ active = false; unwatch(); restore(); refreshCredits(); return Promise.resolve(false); }
-    return load().then(()=>{ if(get() !== 'twemoji') return false; active = true; parse(document.body); watch(); refreshCredits(); return true; })
+    return load().then(()=>{ if(get() !== style) return false; active = style; parse(document.body); watch(); refreshCredits(); return true; })
       .catch(()=>{ active = false; document.documentElement.dataset.emoji = 'system'; refreshCredits(); return false; }); // CDN unreachable: silently stay on System
   };
-  const set = v=>{ try{ localStorage.setItem(EMOJI_STYLE_KEY, v === 'twemoji' ? 'twemoji' : 'system'); }catch(e){} return apply(); };
-  const refreshCredits = ()=>{ document.querySelectorAll('.emoji-credit').forEach(el=>{ el.hidden = !active; }); };
+  const set = v=>{ try{ localStorage.setItem(EMOJI_STYLE_KEY, v === 'twemoji' || v === 'noto' ? v : 'system'); }catch(e){} return apply(); };
+  const refreshCredits = ()=>{ document.querySelectorAll('.emoji-credit').forEach(el=>{ el.hidden = !active; if(active) el.textContent = active === 'noto' ? 'Noto Emoji graphics Apache 2.0 (Google); flags Twemoji CC-BY 4.0.' : 'Twemoji graphics CC-BY 4.0 (Twitter, Inc. and contributors).'; }); };
   return {get, set, apply, isActive: ()=> active, refreshCredits};
 })();
-try{ if(EmojiStyle.get() === 'twemoji'){ const go = ()=> EmojiStyle.apply(); document.body ? setTimeout(go, 0) : document.addEventListener('DOMContentLoaded', go); } }catch(e){}
+try{ if(EmojiStyle.get() !== 'system'){ const go = ()=> EmojiStyle.apply(); document.body ? setTimeout(go, 0) : document.addEventListener('DOMContentLoaded', go); } }catch(e){}
 // Crabs fork (2026-10-14, user: "Ignore Crab claws. Crabs have fork - thematically. And the symbol can be a Crab claw."): on a crab
 // (species Crustacean or Crab, or "Crab" in its name) Fork shows a crab claw 🦞; everywhere else it stays ⇔.
 function isCrabDef(d){ return !!d && ((d.species||[]).some(s=> /^(Crustacean|Crab)$/i.test(s)) || /crab/i.test(d.name||'')); }
@@ -3439,6 +3448,11 @@ const SoundKit = (()=>{
     boomerangWhirr(){ for(let i = 0; i < 6; i++) fnoise(0.06, 0.045 - i*0.004, {type:'bandpass', freq:700 + i*260, q:3, attack:0.01, delay:i*0.07}); for(let i = 0; i < 5; i++) fnoise(0.06, 0.025 + i*0.004, {type:'bandpass', freq:1900 - i*240, q:3, attack:0.01, delay:0.5 + i*0.07}); },
     // Shop shelf: a tap on wood and a soft jar clink.
     shelfPick(){ noise(0.02, 0.05); tone(320, 0.05, 'sine', 0.06); tone(2100, 0.18, 'sine', 0.025, 0.03); tone(3150, 0.12, 'sine', 0.012, 0.035); },
+    // Test Lab (2026-10-15, user: "Going to the test lab should play a test tube shake sfx."): a rack of tubes rattled twice —
+    // four quick glassy clinks with slightly different pitches, a liquid slosh under them, and a last ringing tink.
+    testTubeShake(){ [0, 0.07, 0.15, 0.22].forEach((t, i)=>{ const f = [2960, 3520, 3140, 3890][i]; tone(f, 0.09, 'sine', 0.03, t); tone(f * 2.76, 0.05, 'sine', 0.008, t); });
+      fnoise(0.3, 0.02, {type:'bandpass', freq:700, freqEnd:1400, q:2.5, attack:0.03}); fnoise(0.18, 0.016, {type:'bandpass', freq:1200, freqEnd:600, q:2.5, attack:0.02, delay:0.14});
+      tone(4180, 0.5, 'sine', 0.02, 0.34); tone(4180 * 2.76, 0.25, 'sine', 0.005, 0.34); },
     // Paying at the counter: two coins and a small bell.
     coinRegister(){ tone(2500, 0.08, 'triangle', 0.05); tone(3100, 0.08, 'triangle', 0.045, 0.07); [1568, 2093].forEach((f, i)=> tone(f, 0.6, 'sine', 0.04, 0.16 + i*0.02)); },
     // Map veil: a scroll of parchment unrolling.
@@ -4697,7 +4711,7 @@ function renderCodex(){
   try{ if(Ambience.current()==='forge') Ambience.stop(); forgeEnteredAt = 0; }catch(e){}
   if(codexSubTab==='skills' && !tabOpen('skillcodex')) codexSubTab = 'browse';
   if(codexSubTab==='maps' && !tabOpen('mapcodex')) codexSubTab = 'browse';
-  if(codexSubTab==='skills'){ body.innerHTML = skillCodexHTML(); return; }
+  if(codexSubTab==='skills'){ body.innerHTML = skillCodexHTML(); wireSkillCodexFilter(body); return; }
   if(codexSubTab==='maps'){ body.innerHTML = mapCodexHTML(); return; }
   if(codexSubTab==='reference'){ body.innerHTML = referenceHTML(); return; }
   if(codexSubTab==='halloffame'){
@@ -5778,8 +5792,20 @@ function skillCodexHTML(){
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
   const rows = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
-    return `<div class="sk-row"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${oneOffTagHTML(p)}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
-  return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>${rows || '<p class="panel-sub">None yet. Skills show here as you meet them.</p>'}</div>`;
+    return `<div class="sk-row" data-sk-find="${escapeAttr((p.label + ' ' + p.key + ' ' + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase())}"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${oneOffTagHTML(p)}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
+  // 2026-10-15 (user: "Codex: Skill: Text Filter"): a search box over the list; it matches the name, the text and the answers.
+  return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>
+    ${rows ? `<div class="sk-filter"><input type="search" id="skFilterInput" placeholder="Filter skills…" aria-label="Filter skills" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>` : ''}
+    ${rows || '<p class="panel-sub">None yet. Skills show here as you meet them.</p>'}<p class="panel-sub sk-none" id="skFilterNone" hidden>No skill matches that.</p></div>`;
+}
+let skillCodexQuery = '';
+function wireSkillCodexFilter(root){
+  const inp = root.querySelector('#skFilterInput'); if(!inp) return;
+  const rows = [...root.querySelectorAll('.sk-row[data-sk-find]')], cnt = root.querySelector('#skFilterCount'), none = root.querySelector('#skFilterNone');
+  const run = ()=>{ skillCodexQuery = inp.value; const words = inp.value.trim().toLowerCase().split(/\s+/).filter(Boolean); let n = 0;
+    rows.forEach(r=>{ const hit = words.every(w=> r.dataset.skFind.includes(w)); r.hidden = !hit; if(hit) n++; });
+    if(cnt) cnt.textContent = words.length ? `${n} of ${rows.length}` : ''; if(none) none.hidden = n > 0; };
+  inp.addEventListener('input', run); run();
 }
 // Map Codex (2026-10-13, user: "2 maps after the skill codex, add the map codex + list of field effects learned from each map").
 function mapCodexHTML(){
@@ -8105,6 +8131,9 @@ const CURRENCY_META = {
   // takes a special resource called kibble"): trains a Level-0 card (a hatchling or a Base card) to Level 1 in the Nest.
   // From Conquest wins (first clears 1–5, repeats now and then) and grown babies. Local like Krooni for now.
   kibble: {glyph:'🦴', label:'Kibble'},
+  // Beer (2026-10-15, user: "The Tavern also lets you recruit cards (singles) permanently using resources + a beer (1-3 beer per
+  // week)"): 1 every week, +1 for each of the first two weekly quest tiers you finish; you can hold 3. Local like Kibble.
+  beer: {glyph:'🍺', label:'Beer'},
 };
 /* ============================================================
    Achievements / collection milestones (task #253, "simple retention hooks — 'own 50 cards,'
@@ -8566,7 +8595,9 @@ async function cloudPullState(){
         // Online Raid is already a signed-in, cloud-backed feature, so its own gating resource
         // should follow a player across devices the same way gold/gems/dust/metal already do.
         raidPoints: cur.raid_points!=null ? Number(cur.raid_points) : 3, raidPointsUpdatedAt: cur.raid_points_updated_at || null,
-        kroon: Number((myCurrencies && myCurrencies.kroon) || 0), laurels: Number((myCurrencies && myCurrencies.laurels) || 0)}; // local-only until the cloud table gets a column
+        kroon: Number((myCurrencies && myCurrencies.kroon) || 0), laurels: Number((myCurrencies && myCurrencies.laurels) || 0),
+        // 2026-10-15: Kibble, Food tokens and Beer are local too; a cloud load keeps them instead of dropping them
+        kibble: Number((myCurrencies && myCurrencies.kibble) || 0), food: Number((myCurrencies && myCurrencies.food) || 0), beer: Number((myCurrencies && myCurrencies.beer) || 0)}; // local-only until the cloud table gets a column
       settleRaidPoints();
       saveCurrencies(true);
     }
@@ -8919,7 +8950,7 @@ function loadCurrencies(){
         // entirely on an existing save (anyone who played before this field existed) defaults to
         // a full stock rather than 0, same "don't punish existing players for a new field
         // appearing" instinct as every other first-run seed on this function.
-        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0, laurels: Number(parsed.laurels)||0, food: Number(parsed.food)||0, kibble: parsed.kibble!=null ? Number(parsed.kibble)||0 : 4};
+        raidPoints: parsed.raidPoints!=null ? Number(parsed.raidPoints) : 5, raidPointsUpdatedAt: parsed.raidPointsUpdatedAt||null, kroon: Number(parsed.kroon)||0, laurels: Number(parsed.laurels)||0, food: Number(parsed.food)||0, kibble: parsed.kibble!=null ? Number(parsed.kibble)||0 : 4, beer: Number(parsed.beer)||0};
     }
   }catch(e){}
   // First-run seed: enough to try the Forge a few times immediately rather than a 0/0/0 wall
@@ -8949,39 +8980,60 @@ function grantCurrency(kind, amount){
 // time can be measured on every read — a plain running setInterval would reset to 0 elapsed every
 // reload and never credit the time the app was closed.
 const ENERGY_KEY = 'bramblewood_arena_energy_v1';
-const ENERGY_MAX_BASE = 20; // 2026-10-14 (user: "I think Energy starting at 20 maybe is okay. So go back to it. It's just cheap to upgrade
-// to 50 - in the Camp. For past that, maybe Forge to 60, then 70 is another mechanic in the future."): was 50 since 2026-10-13.
-// Camp: 6 cheap steps of +5 (20 → 50). Forge: 5 steps of +2 (50 → 60) once the Camp's are done. 70 waits for a later mechanic.
+const ENERGY_MAX_BASE = 20; // 2026-10-14 (user: "I think Energy starting at 20 maybe is okay. So go back to it."): was 50 since 2026-10-13.
+// Max Energy (2026-10-15, user: "Tavern's upgrades are not free. They cost advanced resources." + "(Same to upgrade from 20-30 in
+// Nest, then 30-50 in Forge, then 50-60 in Tavern. ...)"): three places, in order, each step paid in Magic Dust and Materia, no
+// Maple Leaves.
+//   Nest    20 → 30: 2 steps of +5   ✨120 + 1 Iron Shard, ✨240 + 2 Iron Shards
+//   Forge   30 → 50: 4 steps of +5   ✨300 + 2 Iron Shards, ✨450 + 2 Iron Shards + 1 River Pearl, ✨600 + 1 Tempering Stone,
+//                                    ✨800 + 2 Tempering Stones
+//   Tavern  50 → 60: 5 steps of +2   ✨600 / 800 / 1000 / 1200 / 1500, each with Tempering Stones (1, 1, 1, 2, 2) and a River Pearl
+//                                    on steps 3 and 5
+// (Replaced: the Camp's six cheap Maple-Leaf steps of +5 to 50, and the Forge's +2 steps to 60.)
+const STAMINA_PLACES = {
+  nest:   {key:'bramblewood_energy_nest_v2', each:5, from:20, to:30, label:'Nest', costs:[{dust:120, mats:{'iron-shard':1}}, {dust:240, mats:{'iron-shard':2}}]},
+  forge:  {key:'bramblewood_energy_forge_v2', each:5, from:30, to:50, label:'Forge', costs:[{dust:300, mats:{'iron-shard':2}}, {dust:450, mats:{'iron-shard':2, 'river-pearl':1}}, {dust:600, mats:{'tempering-stone':1}}, {dust:800, mats:{'tempering-stone':2}}]},
+  tavern: {key:'bramblewood_energy_tavern_v2', each:2, from:50, to:60, label:'Tavern', costs:[{dust:600, mats:{'tempering-stone':1}}, {dust:800, mats:{'tempering-stone':1}}, {dust:1000, mats:{'tempering-stone':1, 'river-pearl':1}}, {dust:1200, mats:{'tempering-stone':2}}, {dust:1500, mats:{'tempering-stone':2, 'river-pearl':1}}]},
+};
+const STAMINA_ORDER = ['nest', 'forge', 'tavern'];
+// The old Camp / Forge steps, read once to carry a save over.
 const CAMP_STAMINA_KEY = 'bramblewood_energy_camp_v1', FORGE_STAMINA_KEY = 'bramblewood_energy_forge_v1';
-const CAMP_STAMINA_STEPS = 6, CAMP_STAMINA_EACH = 5, FORGE_STAMINA_STEPS = 5, FORGE_STAMINA_EACH = 2;
-const CAMP_STAMINA_COST = [40, 80, 120, 160, 200, 240]; // Maple Leaves, cheap on purpose
-function forgeStaminaCost(k){ return {gold: 300 * (k + 1), dust: 20 * (k + 1)}; }
 function staminaSteps(key, max){ try{ return Math.max(0, Math.min(max, parseInt(localStorage.getItem(key)||'0', 10) || 0)); }catch(e){ return 0; } }
-function campStamina(){ return staminaSteps(CAMP_STAMINA_KEY, CAMP_STAMINA_STEPS); }
-function forgeStamina(){ return staminaSteps(FORGE_STAMINA_KEY, FORGE_STAMINA_STEPS); }
-// Returning players keep what they had: someone who played under the 50 base gets the Camp steps, and old Stamina marks (+1 each)
-// become Forge steps (+2 each, rounded up).
+function placeStamina(where){ const P = STAMINA_PLACES[where]; return P ? staminaSteps(P.key, P.costs.length) : 0; }
+// Returning players keep what they had (the 2026-10-14 migration first: a save from under the 50 base gets the old Camp steps,
+// old Stamina marks become old Forge steps).
 (function migrateStamina(){ try{
   if(localStorage.getItem(CAMP_STAMINA_KEY) != null) return;
   const old = parseInt(localStorage.getItem('bramblewood_energy_upgrades_v1')||'0', 10) || 0;
-  if(localStorage.getItem('bramblewood_arena_energy_v1') || old > 0){ localStorage.setItem(CAMP_STAMINA_KEY, String(CAMP_STAMINA_STEPS)); if(old > 0) localStorage.setItem(FORGE_STAMINA_KEY, String(Math.min(FORGE_STAMINA_STEPS, Math.ceil(old/2)))); }
+  if(localStorage.getItem('bramblewood_arena_energy_v1') || old > 0){ localStorage.setItem(CAMP_STAMINA_KEY, '6'); if(old > 0) localStorage.setItem(FORGE_STAMINA_KEY, String(Math.min(5, Math.ceil(old/2)))); }
   else localStorage.setItem(CAMP_STAMINA_KEY, '0');
 }catch(e){} })();
+// 2026-10-15: the old max (20 + 5 a Camp step + 2 a Forge step) becomes Nest, Forge and Tavern steps worth at least as much, so
+// nobody loses max Energy (50 → Nest 2 + Forge 4; 56 → that and Tavern 3).
+(function migrateStaminaV2(){ try{
+  if(localStorage.getItem(STAMINA_PLACES.nest.key) != null) return;
+  let rem = 5 * staminaSteps(CAMP_STAMINA_KEY, 6) + 2 * staminaSteps(FORGE_STAMINA_KEY, 5);
+  STAMINA_ORDER.forEach(w=>{ const P = STAMINA_PLACES[w], k = Math.max(0, Math.min(P.costs.length, Math.ceil(rem / P.each))); localStorage.setItem(P.key, String(k)); rem -= k * P.each; });
+}catch(e){} })();
+function staminaLockedBy(where){ const i = STAMINA_ORDER.indexOf(where); for(let j = 0; j < i; j++){ const w = STAMINA_ORDER[j]; if(placeStamina(w) < STAMINA_PLACES[w].costs.length) return w; } return null; }
+function staminaCost(where){ const P = STAMINA_PLACES[where], k = placeStamina(where); return P && P.costs[k] ? P.costs[k] : null; }
+function staminaAffordable(c){ return !!c && (myCurrencies.dust||0) >= (c.dust||0) && Object.entries(c.mats||{}).every(([id, n])=> ownedCount(id) >= n); }
 function buyStamina(where){
-  if(where === 'camp'){ const k = campStamina(); if(k >= CAMP_STAMINA_STEPS) return 'full'; const c = CAMP_STAMINA_COST[k]; if((myCurrencies.gold||0) < c) return 'cost';
-    myCurrencies.gold -= c; saveCurrencies(); try{ localStorage.setItem(CAMP_STAMINA_KEY, String(k + 1)); }catch(e){} return 'ok'; }
-  const k = forgeStamina(); if(k >= FORGE_STAMINA_STEPS) return 'full'; if(campStamina() < CAMP_STAMINA_STEPS) return 'camp';
-  const c = forgeStaminaCost(k); if((myCurrencies.gold||0) < c.gold || (myCurrencies.dust||0) < c.dust) return 'cost';
-  myCurrencies.gold -= c.gold; myCurrencies.dust -= c.dust; saveCurrencies(); try{ localStorage.setItem(FORGE_STAMINA_KEY, String(k + 1)); }catch(e){} return 'ok';
+  const P = STAMINA_PLACES[where]; if(!P) return 'none';
+  const k = placeStamina(where); if(k >= P.costs.length) return 'full'; if(staminaLockedBy(where)) return 'locked';
+  const c = P.costs[k]; if(!staminaAffordable(c)) return 'cost';
+  myCurrencies.dust -= (c.dust||0); saveCurrencies(); Object.entries(c.mats||{}).forEach(([id, n])=> spendCopies(id, n));
+  try{ localStorage.setItem(P.key, String(k + 1)); }catch(e){} return 'ok';
 }
 function staminaPanelHTML(where){
-  const camp = where === 'camp', k = camp ? campStamina() : forgeStamina(), steps = camp ? CAMP_STAMINA_STEPS : FORGE_STAMINA_STEPS, each = camp ? CAMP_STAMINA_EACH : FORGE_STAMINA_EACH;
-  const full = k >= steps, locked = !camp && campStamina() < CAMP_STAMINA_STEPS;
-  const cost = camp ? (full ? null : `${mapleLeafIconHTML()} ${CAMP_STAMINA_COST[k]}`) : (full ? null : (()=>{ const c = forgeStaminaCost(k); return `${mapleLeafIconHTML()} ${c.gold} · ✨ ${c.dust}`; })());
+  const P = STAMINA_PLACES[where]; if(!P) return '';
+  const k = placeStamina(where), steps = P.costs.length, full = k >= steps, lock = staminaLockedBy(where), c = staminaCost(where);
+  const blurb = {nest:'Rest in the down of the Nest: +5 max Energy a step, from 20 up to 30.', forge:'Temper your stamina at the Forge: +5 max Energy a step, from 30 up to 50.', tavern:'A hearty meal at the Tavern: +2 max Energy a step, from 50 up to 60.'}[where];
+  const done = {nest:'Done: 30 from the Nest. The Forge takes it to 50.', forge:'Done: 50 from the Forge. The Tavern takes it to 60.', tavern:'Done: 60. More will come from elsewhere.'}[where];
   return `<section class="stamina-panel" aria-label="Max Energy"><h3>⚡ Max Energy <b>${energyMax()}</b></h3>
-    <p>${camp ? 'Rest at camp to raise your max Energy by 5 a step, up to 50.' : 'Temper your stamina: +2 max Energy a step, from 50 up to 60.'}</p>
+    <p>${blurb}</p>
     <div class="wp-stam-row"><span class="wp-stam-pips" aria-label="${k} of ${steps}">${Array.from({length: steps}, (_, i)=> `<i class="${i < k ? 'on' : ''}"></i>`).join('')}</span>
-    ${full ? `<small>${camp ? 'Done: 50 from the Camp. The Forge takes it to 60.' : 'Done: 60. More will come from elsewhere.'}</small>` : locked ? '<small>Raise it to 50 in the Camp first.</small>' : `<button type="button" class="btn small primary" data-stamina-buy="${where}">Raise to ${energyMax() + each} · ${cost}</button>`}</div></section>`;
+    ${full ? `<small>${done}</small>` : lock ? `<small>Raise it to ${STAMINA_PLACES[lock].to} in the ${STAMINA_PLACES[lock].label} first.</small>` : `<button type="button" class="btn small primary" data-stamina-buy="${where}" ${staminaAffordable(c) ? '' : 'aria-disabled="true"'}>Raise to ${energyMax() + P.each}${btnCostHTML(c)}</button>`}</div></section>`;
 }
 function wireStamina(root, rerender){ root.querySelectorAll('[data-stamina-buy]').forEach(b=> b.onclick = ()=>{ const r = buyStamina(b.dataset.staminaBuy);
   if(r === 'ok'){ showToast(TX('toast.max-energy-is-now', {energyMax: energyMax()}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ refreshEnergyHud(); }catch(e){} rerender(); }
@@ -9003,9 +9055,9 @@ function buyEnergyUpgrade(){
   try{ localStorage.setItem(ENERGY_UPGRADES_KEY, String(energyUpgradesBought() + 1)); }catch(e){}
   return 'ok';
 }
-function energyMax(){ return ENERGY_MAX_BASE + CAMP_STAMINA_EACH * campStamina() + FORGE_STAMINA_EACH * forgeStamina(); }
-function energyNextStepText(){ if(campStamina() < CAMP_STAMINA_STEPS) return 'Raise max Energy cheaply in the Camp (up to 50).';
-  if(forgeStamina() < FORGE_STAMINA_STEPS) return 'The Forge raises max Energy from 50 to 60.'; return 'Max Energy 60: more will come later.'; } // cap: a full refill from empty takes 20 minutes at 1/min -- long enough
+function energyMax(){ return ENERGY_MAX_BASE + STAMINA_ORDER.reduce((s, w)=> s + STAMINA_PLACES[w].each * placeStamina(w), 0); }
+function energyNextStepText(){ const w = STAMINA_ORDER.find(x=> placeStamina(x) < STAMINA_PLACES[x].costs.length); if(!w) return 'Max Energy 60: more will come later.';
+  const P = STAMINA_PLACES[w]; return `The ${P.label} raises max Energy from ${P.from} to ${P.to}.`; } // cap: a full refill from empty takes 20 minutes at 1/min -- long enough
                         // to matter, short enough that a returning player is rarely capped out.
 const ENERGY_REGEN_MS = 5 * 60 * 1000; // 2026-10-10 (user: "Change the energy gain rate to 1/5minute"); was 1 per minute
 // Cost scales with a node's kind, same tiering CONQUEST_NODE_REWARDS already uses (a Skirmish is
@@ -10026,7 +10078,9 @@ function forgeUpgradeHTML(){
   const cur = forgeTierInfo(), next = FORGE_TIERS[cur.tier], c = canUpgradeForge();
   const rarName = k=> ((RARITY_DEFS.find(r=> r.key===k)||{}).label || k);
   return `<div class="forge-upgrade" role="group" aria-label="Forge upgrade">
-    <div class="fu-now"><b>🏭 ${escapeHtml(cur.name)}</b> <small>Tier ${cur.tier}/${FORGE_TIERS.length}: tempers to Lv ${cur.cap}, cards up to ${escapeHtml(rarName(cur.upTo))}</small></div>
+    ${/* 2026-10-15 (user: "Village Forge should just say its tier. No need for the extra text. e.g. <Forge> <Tier 1> is sufficient.
+       The Tier 1 can keep its current font."): what it tempers moved into the tooltip. */''}
+    <div class="fu-now" title="${escapeAttr(cur.name + ': tempers to Lv ' + cur.cap + ', cards up to ' + rarName(cur.upTo))}"><b>🏭 Forge</b> <small>Tier ${cur.tier}</small></div>
     ${next ? `<div class="fu-next"><span>Next: <b>${escapeHtml(next.name)}</b>, Lv ${next.cap} and up to ${escapeHtml(rarName(next.upTo))}</span>
       ${c.why === 'map' ? `<span class="fu-gate">🗺️ Opens at Map ${next.map}</span>` : ''}
       <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge${btnCostHTML(next.cost, next.strange ? [{icon:'🔮', need:next.strange, have:ownedCount('strange-materia'), label:'Strange Materia (the boss of Maps ' + Object.keys(STRANGE_MATERIA_DROPS).join(', ') + ' drops it on its first clear)'}] : [])}</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
@@ -11162,6 +11216,10 @@ function renderPlay(){
     if(playSubTab==='arena'){ renderArenaSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='raid'){ renderRaidSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='autobattle'){ renderAutobattleSubTab(body); return; }
+    // 2026-10-15 (user: "Going to the test lab should play a test tube shake sfx."): on the way in, not on every redraw.
+    { const fresh = playSubTab === 'sandbox' && (renderPlay._sub !== 'sandbox' || (typeof currentTabBeforeSwitch !== 'undefined' && currentTabBeforeSwitch !== 'play' && renderPlay._tabSeq !== tabSwitchSeq));
+      renderPlay._sub = playSubTab; renderPlay._tabSeq = tabSwitchSeq;
+      if(fresh) try{ SoundKit.testTubeShake && SoundKit.testTubeShake(); }catch(e){} }
     if(playSubTab==='sandbox'){ renderSandboxSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='conquest'){ renderConquestSubTab(body); return; }
     renderPlayerSubTab(body);
@@ -14024,8 +14082,25 @@ function loadQuestState(){
 }
 function saveQuestState(q){ try{ localStorage.setItem(QUESTS_KEY, JSON.stringify(q)); }catch(e){} }
 function loadLifetimeStats(){ try{ return JSON.parse(localStorage.getItem(STATS_KEY)||'{}') || {}; }catch(e){ return {}; } }
+// Quest done (2026-10-15, user: "After accomplishing a quest, should it also drop like an errand?"): the moment a daily or weekly
+// quest reaches its goal, the errand's pinned note flutters down (FX.F.errandOffer, the same effect) reading "Quest done!", once
+// per quest, pinned over the Quests note on Home or the middle of the screen elsewhere (after a fight, once the result is up).
+function questsDoneNow(){ try{ const q = loadQuestState(), out = new Set();
+  q.dailyList.forEach(x=>{ if(!q.claimedDaily.includes(x.id) && dailyNoticeProgress(q, x) >= x.goal) out.add('d:' + x.id); });
+  visibleQuestTiers('weekly', q).forEach(t=> t.quests.forEach(x=>{ if(!q.claimedWeekly.includes(x.id) && (q.weekly[x.counter]||0) >= x.goal) out.add('w:' + x.id); }));
+  return out; }catch(e){ return new Set(); } }
+let questDonePending = 0, questDoneTimer = 0;
+function questDoneDrop(n){
+  if(!(n > 0)) return;
+  questDonePending += n; clearTimeout(questDoneTimer); // a fight's several counters land as one note
+  const go = ()=>{ const k = questDonePending; questDonePending = 0; try{ const F = window.FX && window.FX.F; if(!F || !F.errandOffer || reducedMotion() || fxLevel() === 'none') return;
+    const b = document.getElementById('homeQuestsBtn'), on = b && b.offsetParent && currentTab === 'home';
+    F.errandOffer(on ? b : null, {text: k > 1 ? `${k} quests done!` : 'Quest done!'}); try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){} }catch(e){} };
+  questDoneTimer = setTimeout(go, (typeof matchState !== 'undefined' && matchState) ? 2200 : 300);
+}
 function bumpQuestCounter(counter, n){
   if(!(n>0)) return;
+  const doneBefore = questsDoneNow();
   const q = loadQuestState();
   q.daily[counter] = (q.daily[counter]||0) + n;
   q.weekly[counter] = (q.weekly[counter]||0) + n;
@@ -14034,6 +14109,7 @@ function bumpQuestCounter(counter, n){
   try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
   refreshQuestBadge(); soonCheckMilestones();
   try{ fxHook('questProgress', counter, n); }catch(e){} // 2026-10-15 batch F (only when the Quests button is on screen)
+  try{ const after = questsDoneNow(); let fresh = 0; after.forEach(k=>{ if(!doneBefore.has(k)) fresh++; }); questDoneDrop(fresh); }catch(e){}
 }
 // ---- Daily notices (2026-10-10, user: "You start with 3 quests at midnight, you get 1 top up quest at 6AM, 12[PM], and
 // 6PM" + "Put the rewards on the quest card itself. A harder quest has higher rewards. Tiers = D, C, B, A, S, SS, SSS ...
@@ -14135,7 +14211,8 @@ function claimQuest(kind, id){
   Object.entries(tier.reward).forEach(([k,v])=> grantCurrency(k, v));
   const tierIdx = QUEST_TIERS[kind].indexOf(tier);
   const xp = (kind==='daily' ? [100,60,30] : [400,250,120])[tierIdx] || 20; awardXp(xp, 'quest');
-  if(kind === 'weekly' && tier.quests.every(z=> claimed.includes(z.id))) grantKitItems(QUEST_KIT_ITEMS.weekly[tierIdx] || 0); // a finished weekly tier
+  if(kind === 'weekly' && tier.quests.every(z=> claimed.includes(z.id))){ grantKitItems(QUEST_KIT_ITEMS.weekly[tierIdx] || 0); // a finished weekly tier
+    if(tierIdx < 2) try{ grantBeer(1, 'quest'); }catch(e){} } // 2026-10-15: the first two weekly tiers pour a Beer each (1–3 a week)
   refreshQuestBadge();
   return {title: kind === 'weekly' ? 'Weekly quest complete!' : 'Quest complete!', reward: Object.assign({}, tier.reward), xp};
 }
@@ -14384,21 +14461,44 @@ function questsModalHTML(){
       ${hidden>0 ? `<div class="qn-more">🔒 ${hidden} more tier${hidden===1?'':'s'} pinned underneath, revealed when this one is done</div>` : ''}
     </section>`;
   };
-  const medals = STAT_MEDALS.map(m=>{ const v = st[m.counter]||0, t = medalTier(m.counter, v), next = m.steps[t+1];
+  return questsModalShellHTML(dailyBoard, section, nextMon, now);
+}
+// Medals (2026-10-15, user: "Medals should be in your profile, not the Notice board."): drawn on the Profile now (profileMedalsHTML).
+function medalsGridHTML(){
+  const st = loadLifetimeStats();
+  return STAT_MEDALS.map(m=>{ const v = st[m.counter]||0, t = medalTier(m.counter, v), next = m.steps[t+1];
     const pct = next!=null ? Math.round(Math.min(1, v/next)*100) : 100;
     return `<div class="qn-medal tier-${t}" title="${next!=null ? `Next: ${MEDAL_NAMES[t+1]} at ${next.toLocaleString()}` : 'Top medal reached'}">
       <span class="qn-medallion" style="--p:${pct}"><span>${t>=0 ? MEDAL_ICONS[t] : m.icon}</span></span>
       <span class="qn-medal-l">${escapeHtml(m.label)}</span><span class="qn-medal-v">${v.toLocaleString()}${next!=null ? `<small> / ${next.toLocaleString()}</small>` : ''}</span></div>`; }).join('');
+}
+function profileMedalsHTML(){ return `<div class="panel pf-medals"><h3>🏅 Medals <small>lifetime stats: for bragging, not power</small></h3><div class="qn-medals pf-medal-case">${medalsGridHTML()}</div></div>`; }
+// Quests on the Notice board (2026-10-15, user: "Can we show quests in the Notice board?"): a "Your quests" list heads the board,
+// one line per quest still going (today's notices, this week's tier, errands you took, the next step of each Journey) with its
+// progress; a tap scrolls to that quest's note. Finished ones say "Claim!".
+function noticeQuestListHTML(q){
+  const rows = [], bar = (v, g)=> `<span class="qn-bar"><span style="width:${Math.round(Math.min(1, v / Math.max(1, g))*100)}%"></span></span>`;
+  q.dailyList.slice().sort((a, b)=> a.slot - b.slot).forEach(x=>{ if(q.claimedDaily.includes(x.id)) return; const v = dailyNoticeProgress(q, x); rows.push({k:'Daily', ico: QUEST_ICON[x.counter] || '📜', label:x.label, v, g:x.goal, go:'.qn-daily'}); });
+  visibleQuestTiers('weekly', q).forEach(t=> t.quests.forEach(x=>{ if(q.claimedWeekly.includes(x.id)) return; rows.push({k:'Weekly', ico: QUEST_ICON[x.counter] || '📜', label:x.label, v:Math.min(x.goal, q.weekly[x.counter]||0), g:x.goal, go:'.qn-weekly'}); }));
+  try{ if(errandsOpen()) loadErrands().active.forEach(x=>{ const sp = DIALOGUE_SPEAKERS[x.who] || {}; rows.push({k:'Errand', ico: sp.icon || '📌', label:x.label, v:errandProgress(x), g:x.goal, go:'#qnErrands'}); }); }catch(e){}
+  try{ if(journeysOpen()){ const st = loadJourneys(); Object.keys(SUBFACTION_JOURNEYS).forEach(k=>{ const j = SUBFACTION_JOURNEYS[k], n = st[k]|0, next = j.steps[n]; if(next) rows.push({k:'Journey', ico:j.icon, label:`${j.name}: ${next[2]}`, v:n, g:j.steps.length, go:'.qn-journeys', journey:true}); }); } }catch(e){}
+  if(!rows.length) return `<section class="qn-quests"><div class="qn-sign"><b>Your quests</b><span>all done for now</span></div></section>`;
+  return `<section class="qn-quests"><div class="qn-sign"><b>Your quests</b><span>${rows.length} going</span></div>
+    <ul class="qn-qlist">${rows.map(r=>{ const done = !r.journey && r.v >= r.g; return `<li><button type="button" class="qn-qrow ${done ? 'is-done' : ''}" data-qn-go="${r.go}"><span class="qn-qk">${r.k}</span><span class="qn-qico" aria-hidden="true">${r.ico}</span><span class="qn-ql">${escapeHtml(r.label)}</span><span class="qn-prog">${bar(r.v, r.g)}<b>${done ? 'Claim!' : `${r.v}/${r.g}`}</b></span></button></li>`; }).join('')}</ul></section>`;
+}
+function questsModalShellHTML(dailyBoard, section, nextMon, now){
+  const q = loadQuestState();
   return `<div class="modal quests-modal qn-modal" role="dialog" aria-labelledby="qsTitle">
     <div class="modal-head-row qn-head"><h2 id="qsTitle">📌 Notices</h2><button class="modal-close-btn" id="qsClose" aria-label="Close">✕</button></div>
     <p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
+    ${noticeQuestListHTML(q)}
     <div class="qn-cork">
       ${dailyBoard()}
       ${section('weekly', 'Weekly', nextMon - now)}
       ${errandsBoardHTML()}
       ${journeysHTML()}
     </div>
-    <section class="qn-medals-wrap"><div class="qn-sign qn-sign-dark"><b>Medals</b><span>lifetime stats: for bragging, not power</span></div><div class="qn-medals">${medals}</div></section>
+    <p class="qn-medals-moved">🏅 Medals are on your <button type="button" class="btn small ghost" id="qnToProfile">Profile</button></p>
   </div>`;
 }
 let questsKeyHandler = null;
@@ -14424,6 +14524,10 @@ function openQuestsModal(focus){
   overlay.querySelectorAll('[data-errand-skip]').forEach(b=> b.addEventListener('click', ()=>{ dismissErrandOffer(b.dataset.errandSkip); openQuestsModal(); }));
   overlay.querySelectorAll('[data-errand-drop]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.armed){ abandonErrand(b.dataset.errandDrop); openQuestsModal(); } else { b.dataset.armed = '1'; b.textContent = 'Drop it?'; } }));
   if(focus === 'errands'){ const er = overlay.querySelector('#qnErrands'); if(er) setTimeout(()=>{ try{ er.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(_){} }, opening ? 600 : 0); }
+  // 2026-10-15: the quest list scrolls to its board (and the board's notes give a little wiggle); Medals point to the Profile.
+  overlay.querySelectorAll('[data-qn-go]').forEach(b=> b.addEventListener('click', ()=>{ const t = overlay.querySelector(b.dataset.qnGo); if(!t) return;
+    try{ t.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(_){} t.classList.remove('qn-flash'); void t.offsetWidth; t.classList.add('qn-flash'); }));
+  { const tp = overlay.querySelector('#qnToProfile'); if(tp) tp.onclick = ()=>{ close(); switchTab('profile'); }; }
 }
 // Quest board entrance (2026-10-10, user: "Clicking into the Quest board should show an animation bringing the board up,
 // with some papers flying around"): the board swings up from below with a bump, and loose notices flutter off it.
@@ -16490,29 +16594,77 @@ function placeMapPawn(canvas, map, positions, progress, visibleFlags){
   if(!live && (map.id !== placeMapPawn._lastMap) && hasGsap() && !reduce){ mapPawnDropIn(pawn); }
   placeMapPawn._lastMap = map.id;
   if(!live && fi === ti) return;
+  // Stop in its tracks (2026-10-15, user: "The little traveling icon on the conquest map that follows which skirmish you are going
+  // to. When you switch Skirmish, stop it in its tracks, and follow the Skirmish links to your newly selected position."): the old
+  // walk (and its step sounds) is cut off where the pawn stands, and the new one follows the trail links, never across the grass.
+  mapPawnStop();
   if(!hasGsap() || reduce){ pawn.style.left = to.x + '%'; pawn.style.top = to.y + '%'; mapPawnWalk = null; return; }
   const d = (a, b)=> Math.hypot(b.x - a.x, b.y - a.y);
-  // Waypoints: mid-leg, finish the leg or turn back, whichever is shorter overall.
-  const pts = [];
-  if(live && live.p > 0 && live.p < 1){
-    const ahead = live.leg.to, back = live.leg.from;
-    const via = (d(start, ahead) + d(ahead, to)) <= (d(start, back) + d(back, to)) ? ahead : back;
-    if(d(via, to) > 0.01 && d(start, via) > 0.01) pts.push(via);
+  const polyLen = (from, pts)=>{ let s = 0, c = from; pts.forEach(p=>{ s += d(c, p); c = p; }); return s; };
+  const graph = mapPawnGraph(map, positions), targetKey = map.nodes[ti].key;
+  // Where the walk can join the trails: mid-leg, either end of the link it is on (from where it stands); else its fight.
+  const joins = [];
+  if(live && live.leg && live.leg.edgePts){ const L = live.leg, P = L.edgePts, n = P.length;
+    joins.push({key: L.b, pts: P.slice(L.seg + 1), edgePts: P, seg: L.seg, a: L.a, b: L.b});
+    const R = P.slice().reverse(); joins.push({key: L.a, pts: R.slice(n - 1 - L.seg), edgePts: R, seg: n - 2 - L.seg, a: L.b, b: L.a}); }
+  else joins.push({key: map.nodes[fi].key, pts: []});
+  let best = null;
+  joins.forEach(j=>{ if(j.key == null) return; const r = mapPawnRoute(graph, positions, map, j.key, targetKey); if(!r) return; const cost = polyLen(start, j.pts) + r.len; if(!best || cost < best.cost) best = {cost, j, path: r.path}; });
+  // The legs, one per trail segment (a bowed link is a few short straight steps along its curve).
+  const segs = [];
+  if(best){
+    const j = best.j; if(j.edgePts){ for(let s = j.seg; s < j.edgePts.length - 1; s++) segs.push({from: s === j.seg ? start : j.edgePts[s], to: j.edgePts[s + 1], edgePts: j.edgePts, seg: s, a: j.a, b: j.b}); }
+    for(let k = 0; k < best.path.length - 1; k++){ const u = best.path[k], v = best.path[k + 1], P = (graph[u].find(e=> e.to === v) || {}).pts; if(!P) continue;
+      for(let s = 0; s < P.length - 1; s++) segs.push({from: P[s], to: P[s + 1], edgePts: P, seg: s, a: u, b: v}); }
   }
-  pts.push(to);
-  const legs = []; let t0 = performance.now(), cur = start;
-  pts.forEach(pt=>{ const dist = d(cur, pt); const hops = Math.max(1, Math.min(7, Math.round(dist / 6))), dur = Math.max(0.12, Math.min(1.6, 0.22 * hops)); legs.push({from:cur, to:pt, t0, dur, hops}); t0 += dur*1000; cur = pt; });
+  if(segs.length && d(segs[0].from, start) > 0.05) segs.unshift({from: start, to: segs[0].from, edgePts: null});
+  if(!segs.length || d(segs[segs.length - 1].to, to) > 0.5) segs.push({from: segs.length ? segs[segs.length - 1].to : start, to, edgePts: null}); // no trail there: straight on
+  const legs = []; let t0 = performance.now();
+  segs.forEach(S=>{ const dist = d(S.from, S.to); if(dist < 0.05) return; const hops = Math.max(1, Math.min(7, Math.round(dist / 6))), dur = Math.max(0.12, Math.min(1.6, 0.22 * hops)); legs.push(Object.assign(S, {t0, dur, hops})); t0 += dur*1000; });
+  if(!legs.length){ pawn.style.left = to.x + '%'; pawn.style.top = to.y + '%'; mapPawnWalk = null; return; }
   mapPawnWalk = {mapId: map.id, legs};
   fxHook('mapPawnWalk', pawn, legs); // footprints and dust on every hop (FX.E, 2026-10-15)
   const body = pawn.querySelector('.mp-body');
-  const tl = gsap.timeline();
+  const tl = gsap.timeline(); mapPawnTl = tl;
   legs.forEach(L=>{
     tl.add(()=> gsap.set(body, {scaleX: emojiFacing(body.textContent, L.to.x < L.from.x)}));
     tl.to(pawn, {left: L.to.x + '%', top: L.to.y + '%', duration: L.dur, ease: 'none'});
     tl.fromTo(body, {y:0}, {y:-9, duration: L.dur / L.hops / 2, ease:'power1.out', yoyo:true, repeat: L.hops*2 - 1}, '<');
-    try{ for(let k = 0; k < L.hops; k++) setTimeout(()=>{ try{ SoundKit.pawnStep && SoundKit.pawnStep(); }catch(e){} }, (L.t0 - performance.now()) + (L.dur / L.hops) * 1000 * (k + 1) - 40); }catch(e){}
+    try{ for(let k = 0; k < L.hops; k++) mapPawnTimers.push(setTimeout(()=>{ try{ SoundKit.pawnStep && SoundKit.pawnStep(); }catch(e){} }, (L.t0 - performance.now()) + (L.dur / L.hops) * 1000 * (k + 1) - 40)); }catch(e){}
   });
   tl.add(()=>{ if(mapPawnWalk && mapPawnWalk.legs === legs) mapPawnWalk = null; });
+}
+let mapPawnTl = null, mapPawnTimers = [];
+function mapPawnStop(){ try{ if(mapPawnTl) mapPawnTl.kill(); }catch(e){} mapPawnTl = null; mapPawnTimers.forEach(t=> clearTimeout(t)); mapPawnTimers = []; }
+// The trail links as the map draws them (renderConquestMapPane: a node's `requires`, else the node before it), both ways. A link
+// that would run behind another fight bows around it there; the pawn walks that bow as three points along the same curve.
+function mapPawnGraph(map, positions){
+  const idx = {}; map.nodes.forEach((n, i)=> idx[n.key] = i);
+  const adj = {}; const add = (a, b, pts)=> (adj[a] = adj[a] || []).push({to:b, pts});
+  map.nodes.forEach((n, i)=>{
+    const reqs = Array.isArray(n.requires) ? n.requires : (i > 0 ? [map.nodes[i-1].key] : []);
+    reqs.forEach(rk=>{ const j = idx[rk]; if(j === undefined || !positions[i] || !positions[j]) return;
+      const A = positions[j], B = positions[i], dx = B.x - A.x, dy = B.y - A.y, L = Math.hypot(dx, dy) || 1;
+      const blocked = positions.some((P, k)=>{ if(k===i || k===j || !P) return false; const t = ((P.x-A.x)*dx + (P.y-A.y)*dy) / (L*L); if(t < 0.08 || t > 0.92) return false; return Math.abs((P.x-A.x)*dy - (P.y-A.y)*dx) / L < 4.5; });
+      let pts = [A, B];
+      if(blocked){ const nx = -dy / L, ny = dx / L, bow = Math.min(18, 6 + L*0.18), cx = (A.x+B.x)/2 + nx*bow*(ny > 0 ? -1 : 1), cy = (A.y+B.y)/2 + ny*bow*(ny > 0 ? -1 : 1);
+        const q = t=> ({x:(1-t)*(1-t)*A.x + 2*t*(1-t)*cx + t*t*B.x, y:(1-t)*(1-t)*A.y + 2*t*(1-t)*cy + t*t*B.y}); pts = [A, q(.25), q(.5), q(.75), B]; }
+      add(rk, n.key, pts); add(n.key, rk, pts.slice().reverse()); });
+  });
+  return adj;
+}
+// Shortest walk along the links from one fight to another: {path:[keys], len} or null when they are not joined.
+function mapPawnRoute(graph, positions, map, fromKey, toKey){
+  if(fromKey === toKey) return {path:[fromKey], len:0};
+  const len = pts=>{ let s = 0; for(let i = 1; i < pts.length; i++) s += Math.hypot(pts[i].x - pts[i-1].x, pts[i].y - pts[i-1].y); return s; };
+  const dist = {[fromKey]:0}, prev = {}, done = new Set();
+  for(;;){
+    let u = null; Object.keys(dist).forEach(k=>{ if(!done.has(k) && (u === null || dist[k] < dist[u])) u = k; });
+    if(u === null) return null; if(u === toKey) break; done.add(u);
+    (graph[u] || []).forEach(e=>{ const nd = dist[u] + len(e.pts); if(dist[e.to] == null || nd < dist[e.to]){ dist[e.to] = nd; prev[e.to] = u; } });
+  }
+  const path = [toKey]; while(path[0] !== fromKey) path.unshift(prev[path[0]]);
+  return {path, len: dist[toKey]};
 }
 // Map change (2026-10-10, user: "When I change map, the icon isn't on the map - so may it lands on top of it, from
 // nowhere, like blowing up from a point, then jumping on top of the skirmish icon"): it grows out of a point above
@@ -16909,12 +17061,16 @@ function maybeOfferDeckSwap(){
         ${others.slice(2, 4).map((k, i)=> `<div class="ds2-side is-right" style="--k:${i}">${cardTileHTML(defs[k], {inPlay:true})}</div>`).join('')}</div>
     </div>
     <p class="ds2-say"><b>${item.teach ? 'New card!' : 'Better card!'}</b> Swap <b>${escapeHtml(od.name)}</b> for <b>${escapeHtml(d.name)}</b>?<br><span>${escapeHtml(why)}</span></p>
-    <div class="ds2-actions">${item.forced ? '' : '<button type="button" class="btn ghost small" id="dsKeep" aria-label="Keep my deck">Keep<span class="ds2-lbl-x"> my deck</span></button>'}<button type="button" class="btn primary big" id="dsSwap">🔁 Swap</button></div></div>`;
+    <div class="ds2-actions">${item.forced ? '<button type="button" class="btn ghost small" id="dsCancel">Cancel</button>' : '<button type="button" class="btn ghost small" id="dsKeep" aria-label="Keep my deck">Keep<span class="ds2-lbl-x"> my deck</span></button>'}<button type="button" class="btn primary big" id="dsSwap">🔁 Swap</button></div></div>`;
   document.body.appendChild(ov);
   const close = ()=>{ ov.classList.add('is-out'); if(item.forced) setDialogueFlag(SWAP_TUTORIAL_FLAG, true); setTimeout(()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); }, 160); }; // 2026-10-14: quicker fade (was 260 ms)
   const keep = ov.querySelector('#dsKeep'); if(keep) keep.onclick = ()=>{ try{ localStorage.setItem(SWAP_DECLINES_KEY, String((+localStorage.getItem(SWAP_DECLINES_KEY) || 0) + 1)); }catch(e){} close(); };
+  // 2026-10-15 (user: "The Swap dialogue (Map 0) should be an option w/ a Cancel button."): the teaching swap can be turned down too;
+  // the card stays in your collection (the Camp can still put it in), and it doesn't count as a "no thanks" to later offers.
+  const cancel = ov.querySelector('#dsCancel'); if(cancel) cancel.onclick = ()=>{ cancel.disabled = true; close(); };
+  ov.addEventListener('keydown', e=>{ if(e.key === 'Escape'){ e.stopPropagation(); (keep || cancel) && (keep || cancel).click(); } });
   const sw = ov.querySelector('#dsSwap'); setTimeout(()=>{ try{ sw.focus(); }catch(e){} }, 60);
-  sw.onclick = ()=>{ sw.disabled = true; if(keep) keep.disabled = true;
+  sw.onclick = ()=>{ sw.disabled = true; if(keep) keep.disabled = true; if(cancel) cancel.disabled = true;
     myDeckCounts[out] -= 1; if(myDeckCounts[out] <= 0) delete myDeckCounts[out]; myDeckCounts[id] = (myDeckCounts[id]||0) + 1; saveMyDeck();
     try{ SoundKit.draw && SoundKit.draw(); }catch(e){}
     ov.querySelector('.ds2-focus').classList.add('is-swapped');
@@ -17006,7 +17162,9 @@ function renderConquestSubTab(body){
     </div>`;
   }).join('') + (firstLocked ? `<div class="conquest-map-item locked next-locked" title="Clear the map before it to open this one"><div class="cmi-ico">🔒</div><div class="cmi-body"><div class="cmi-name">Next: ${escapeHtml(firstLocked.name)}</div><div class="cmi-sub">Locked</div></div></div>` : '');
   // D13 (2026-10-03): a 🧭 World chip opens the atlas — every map as a compass diamond.
-  listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item world-chip ${conquestWorldView?'selected':''}" id="conquestWorldChip" role="button" tabindex="0" title="See every map at once"><div class="cmi-ico">🧭</div><div class="cmi-body"><div class="cmi-name">World</div><div class="cmi-sub">All maps</div></div></div>`);
+  // 2026-10-15 (user: "The world - all maps design doesn't look like the other map tabs. It should also have the side shine thing,
+  // but maybe its blue"): the same banded tab as the maps, in a sky blue.
+  listEl.insertAdjacentHTML('afterbegin', `<div class="conquest-map-item world-chip ${conquestWorldView?'selected':''}" id="conquestWorldChip" role="button" tabindex="0" title="See every map at once" style="--band:#4f9fe0; --band-mix:30%;"><div class="cmi-ico">🧭</div><div class="cmi-body"><div class="cmi-name">World</div><div class="cmi-sub">All maps</div></div></div>`);
   // 2026-10-10 (user: "Remove the Home Map from the conquest page"): Home is the top-right mini icon, or the chestnut on the World map.
   { const wc = document.getElementById('conquestWorldChip'); const go = ()=> openConquestWorld(body);
     wc.addEventListener('click', go); wc.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } }); }
@@ -21500,6 +21658,8 @@ function renderAdmin(){
       <button type="button" class="btn small" id="adminFxLibBtn">🔬 Open the Effects library</button></div>
     <div class="panel admin-subpanel"><h3>👥 Players</h3><p class="panel-sub">Everyone who has signed in: level, tutorial progress, cards and matches. Your own tutorial progress on this device: <b>${escapeHtml(tutorialProgressText(loadTutorialProgress()))}</b>.</p>
       <button type="button" class="btn small" id="adminPlayersBtn">👥 Load players</button><div id="adminPlayers" class="admin-players"></div></div>
+    <div class="panel admin-subpanel"><h3>💬 Feedback</h3><p class="panel-sub">What players sent with the 💬 button by their name. Waiting on this device: <b>${Feedback.queued().length}</b>.</p>
+      <button type="button" class="btn small" id="adminFeedbackBtn">💬 Load feedback</button><div id="adminFeedback" class="fb-admin-list"></div></div>
     <div class="panel admin-subpanel"><h3>🗺️ Skirmish editor</h3><p class="panel-sub">Turns on Admin Mode and opens Conquest. Click any skirmish on the map, then <b>🛠️ Edit skirmish</b> in its panel. <b>➕ New skirmish</b> and <b>📐 Edit layout</b> sit above the map.</p>
       <button type="button" class="btn small" id="adminOpenSkirmishEditorBtn">🗺️ Open the skirmish editor</button></div>
     <div class="panel admin-subpanel"><h3>🔏 Card data fingerprint</h3><p class="panel-sub">SHA-256 of every card's gameplay fields (art and flavor excluded), including live overrides. The server will compute the same from its card table and reject transactions whose fingerprint differs (T3).</p>
@@ -21596,6 +21756,7 @@ function renderAdmin(){
   const cbOpen = document.getElementById('adminCardBenchBtn'); if(cbOpen) cbOpen.onclick = ()=> openCardWorkbench();
   const fxOpen = document.getElementById('adminFxLibBtn'); if(fxOpen) fxOpen.onclick = ()=> openEffectsLibrary();
   const plBtn = document.getElementById('adminPlayersBtn'); if(plBtn) plBtn.onclick = loadAdminPlayers;
+  const fbBtn = document.getElementById('adminFeedbackBtn'); if(fbBtn) fbBtn.onclick = ()=> Feedback.loadAdmin(document.getElementById('adminFeedback'));
   const seOpen = document.getElementById('adminOpenSkirmishEditorBtn');
   if(seOpen) seOpen.onclick = ()=>{ if(!adminModeEnabled) setAdminMode(true); conquestWorldView = false; playSubTab = 'conquest'; switchTab('play'); showToast('🛠️ Admin Mode on — click a skirmish, then “Edit skirmish”.', 'ok'); };
   wireRollTableAdmin();
@@ -25775,7 +25936,10 @@ function renderHand(){
 //  - Settings → Danger warnings: where the ladder starts, or Off.
 const DANGER_LADDER = ['uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient'];
 const DANGER_FROM_KEY = 'bramblewood_danger_from_v1', DANGER_STATE_KEY = 'bramblewood_danger_state_v2', BEATEN_KEY = 'bramblewood_beaten_v1';
-function dangerFrom(){ try{ return localStorage.getItem(DANGER_FROM_KEY) || 'uncommon'; }catch(e){ return 'uncommon'; } }
+// 2026-10-15 (user: "Danger warnings is not to be a setting in settings."): no longer a choice; always the default ladder (an old
+// saved 'off' or later start is ignored).
+function dangerFrom(){ return 'uncommon'; }
+(function(){ try{ const v = localStorage.getItem(DANGER_FROM_KEY); if(v != null){ localStorage.removeItem(DANGER_FROM_KEY); if(v !== 'uncommon') localStorage.removeItem(DANGER_STATE_KEY); } }catch(e){} })();
 function dangerQuota(step){ return step + 2; } // Uncommon 2, Rare 3, Very Rare 4, Super Rare 5 …
 function dangerState(){ let st = null; try{ st = JSON.parse(localStorage.getItem(DANGER_STATE_KEY) || 'null'); }catch(e){} return (st && typeof st === 'object') ? st : {step: Math.max(0, DANGER_LADDER.indexOf(dangerFrom())), used: 0}; }
 function saveDangerState(st){ try{ localStorage.setItem(DANGER_STATE_KEY, JSON.stringify(st)); }catch(e){} }
@@ -27683,6 +27847,8 @@ async function resolveRound(opts){
   if(over){
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
     m.winner = (m.forcedWinner!=null) ? m.forcedWinner : ((p1dead&&p2dead)?0:(p1dead?2:1));
+    // 2026-10-15 (user: "Earthquake and Player victory should be logs in the log."): the result is the log's last line.
+    try{ if(!m.resultLogged){ m.resultLogged = true; pushLog({type:'matchResult', winner:m.winner, reason:m.endReason || null, castle: m.forcedWinner==null && (p1dead || p2dead)}); } }catch(e){}
     if(m.winner===1 && p2dead && m.forcedWinner==null && m.mode!=='sandbox'){ try{ await castleCrumble(hqTileEl('B')); }catch(e){} }
     else if(m.winner===2 && p1dead && m.forcedWinner==null && m.mode!=='sandbox'){ const h = {wait:0}; fxHook('castleFallMine', hqTileEl('A'), h); if(h.wait) await sleep(h.wait); } // 2026-10-15: your own castle sinks (FX.C)
     if(m.mode!=='sandbox') await showEndSign(m);
@@ -30040,6 +30206,16 @@ function logText(ev){
     case 'smokeBomb': return {cls:'', text: ev.ally ? `💣💨 ${nm(ev.defId)} throws a smoke bomb: ${nm(ev.targetDefId)} hides in the smoke (attacks at it miss 1 in 2).` : ev.effect === 'blind' ? `💣💨 ${nm(ev.defId)} throws a smoke bomb in ${nm(ev.targetDefId)}'s face: Blinded!` : `💣💨 ${nm(ev.defId)} throws a smoke bomb at ${nm(ev.targetDefId)}, who sniffs its way through it.`};
     case 'electricity': return {cls:'', text:`🔌 ${nm(ev.attDefId)}'s hit ${ev.arcUid != null ? 'arcs to the unit beside it' : 'crackles'}${ev.wetTarget || ev.wetArc ? ' (wet: +1)' : ''}!`};
     case 'shieldSoak': return {cls:'', text:`💠 ${nm(ev.defId)}'s Shield soaks ${ev.soaked}${ev.left ? ` (${ev.left} left)` : ' and breaks'}.`};
+    // 2026-10-15 (user: "Earthquake and Player victory should be logs in the log."): Earthquake (and Landslide, which shares its
+    // event) printed the bare word "earthquake"; the result had no line at all.
+    case 'earthquake': return ev.landslide ? {cls:'', text:`⛰️ ${nm(ev.defId)} falls in a Landslide: ${ev.amount} damage to the enemy facing it and both its neighbours.`}
+      : {cls:'', text:`🌋 ${nm(ev.defId)}'s Earthquake shakes the field: ${ev.amount} damage to every other unit on the ground (Flyers are spared).`};
+    case 'matchResult': {
+      const pc = matchState && matchState.mode === 'pc', why = {surrender:' The enemy surrenders.', cap:' The round limit is reached.', stalled:' Neither side can break through.', raidTime:' The raid’s time is up.'}[ev.reason] || '';
+      if(ev.winner === 0) return {cls:'gold', text:`🤝 Draw.${why}`};
+      if(pc) return {cls:'gold', text:`🏆 ${ev.winner === 1 ? 'Player 1' : 'Player 2'} wins!${why}`};
+      return ev.winner === 1 ? {cls:'gold', text:`🏆 Victory! ${ev.castle ? 'The enemy castle falls.' : 'You win.'}${why}`} : {cls:'', text:`💀 Defeat. ${ev.castle ? 'Your castle falls.' : 'The enemy wins.'}${why}`};
+    }
     default: return {cls:'', text: ev.type};
   }
 }
@@ -33564,14 +33740,19 @@ function homeTileDetails(){
 }
 // Community page (2026-10-10, user: "Clicking community should jump you straight to a community page. Over there, then
 // you can switch between the different options."): Ranking, Friends and Guild share one switcher above whichever is open.
-const COMMUNITY_TABS = [['ranking','🏆 Ranking'], ['friends','👥 Friends'], ['guild','🛡️ Guild']];
+// 2026-10-15 (user, on a screenshot of the bar: "This bar does not look very good. Friends should be the default section."): Friends
+// comes first; the bar sits directly above the open section (it used to land under Friends), as wide as the section, with the
+// title and an even three-way tab strip centred together instead of a title far left and big buttons crammed to the right.
+const COMMUNITY_TABS = [['friends','👥', 'Friends'], ['ranking','🏆', 'Ranking'], ['guild','🛡️', 'Guild']];
 function syncCommunityTabs(tab){
+  if(tab !== 'friends') try{ npcSuggestRevealed = false; }catch(e){} // the next visit to Friends pauses 1 s again
   let bar = document.getElementById('communityTabs');
   const on = COMMUNITY_TABS.some(([t])=> t === tab), open = COMMUNITY_TABS.filter(([t])=> tabOpen(t));
   if(!on || open.length < 2){ if(bar) bar.hidden = true; return; }
-  const view = document.getElementById('view-' + COMMUNITY_TABS[0][0]); if(!view) return;
-  if(!bar){ bar = document.createElement('div'); bar.id = 'communityTabs'; bar.className = 'community-tabs tk-seg mk-tabs'; bar.setAttribute('role', 'tablist'); bar.setAttribute('aria-label', 'Community'); view.parentNode.insertBefore(bar, view); }
-  bar.innerHTML = `<h2 class="community-title">👥 Community</h2><div class="community-seg">${open.map(([t, l])=> `<button type="button" class="tk-speed-btn ${t===tab?'is-on':''}" role="tab" aria-selected="${t===tab}" data-commtab="${t}">${l}</button>`).join('')}</div>`;
+  const view = document.getElementById('view-' + tab); if(!view) return;
+  if(!bar){ bar = document.createElement('div'); bar.id = 'communityTabs'; bar.className = 'community-tabs'; }
+  if(bar.nextElementSibling !== view) view.parentNode.insertBefore(bar, view);
+  bar.innerHTML = `<h2 class="community-title"><span aria-hidden="true">👥</span> Community</h2><div class="community-seg" role="tablist" aria-label="Community">${open.map(([t, ic, l])=> `<button type="button" class="cm-tab ${t===tab?'is-on':''}" role="tab" aria-selected="${t===tab}" data-commtab="${t}"><span aria-hidden="true">${ic}</span> ${l}</button>`).join('')}</div>`;
   bar.hidden = false;
   bar.querySelectorAll('[data-commtab]').forEach(b=> b.onclick = ()=> switchTab(b.dataset.commtab));
 }
@@ -33585,7 +33766,7 @@ function renderHome(){
   // every tile carries one live detail line, and Quests / Community are notes pinned to the board.
   const sub = homeTileDetails();
   const big = (tab, ico, label)=> tabOpen(tab) ? `<button class="btn primary big home-menu-btn home-tile" data-hometab="${tab}"><span class="tab-emoji">${ico}</span><span>${label}</span>${sub[tab] ? `<small class="home-sub">${escapeHtml(sub[tab])}</small>` : ''}</button>` : '';
-  const community = ['ranking','friends','guild'].filter(t=> tabOpen(t));
+  const community = ['friends','ranking','guild'].filter(t=> tabOpen(t)); // 2026-10-15: Friends is the default Community section
   // 2026-10-10 (user: "Add an Arena button to the menu once its unlocked" + "Rename Deck to Armoury... which button can
   // we replace"): once the Arena is open it takes the Codex's tile; the Codex becomes a note pinned beside Quests.
   const arenaHome = tabOpen('arena') && featureUnlocked('arena');
@@ -33614,7 +33795,7 @@ function renderHome(){
           return `<button type="button" class="home-note note-achv" data-hometab="achievements" title="Achievements"><i class="pin" aria-hidden="true">📌</i><b>🏆 Achievements</b><small>${ready ? `${ready} ready to claim!` : `${got}/${ACHIEVEMENT_DEFS.length} claimed`}</small>${ready ? `<span class="home-badge">${ready}</span>` : ''}</button>`; }catch(e){ return ''; } })() : ''}
         ${tabOpen('inventory') ? `<button type="button" class="home-note note-inv" data-hometab="inventory" title="Inventory"><i class="pin" aria-hidden="true">📌</i><b>🎒 Inventory</b><small>Materia, eggs, packs</small></button>` : ''}
         ${wildpathsOpen() ? (()=>{ const av = wildpathAvailable(); return `<button type="button" class="home-note note-paths" data-hometab="paths" title="Wildpaths: Conquest passives"><i class="pin" aria-hidden="true">📌</i><b>${wildpathsLogoSVG(18)} Wildpaths</b><small>✦ ${av} Path point${av===1?'':'s'}</small></button>`; })() : ''}
-        ${featureUnlocked('tavern') ? (()=>{ const rd = energyUpgradesReady(); return `<button type="button" class="home-note note-tavern" data-hometab="tavern" title="The Tavern: raise your max Energy"><i class="pin" aria-hidden="true">📌</i><b>🍺 The Tavern</b><small>${rd ? `⚡ ${rd} Stamina ready` : 'Stamina'}</small>${rd ? `<span class="home-badge">${rd}</span>` : ''}</button>`; })() : ''}
+        ${featureUnlocked('tavern') ? (()=>{ try{ settleWeeklyBeer(); }catch(e){} const beer = myCurrencies.beer||0; return `<button type="button" class="home-note note-tavern" data-hometab="tavern" title="The Tavern: recruit cards, raise your max Energy"><i class="pin" aria-hidden="true">📌</i><b>🍺 The Tavern</b><small>${beer ? `${beer} Beer · Recruit` : 'Recruit · Stamina'}</small></button>`; })() : ''}
         ${tabOpen('codex') && featureUnlocked('codex') ? `<button type="button" class="home-note note-codex" id="homeCodexBtn" title="Codex"><i class="pin" aria-hidden="true">📌</i><b>📖 Codex</b><small>${escapeHtml(sub.codex || 'Every card')}</small></button>` : ''}
         ${community.length ? `<div class="home-community-wrap home-note-wrap"><button type="button" class="home-note note-community" id="homeCommunityBtn" aria-haspopup="true" aria-expanded="false"><i class="pin" aria-hidden="true">📌</i><b>👥 Community</b><small>${community.map(t=> ({ranking:'Ranking', friends:'Friends', guild:'Guild'})[t]).join(' · ')}</small></button>
           <div class="home-community-menu" id="homeCommunityMenu" hidden>${community.map(t=> `<button type="button" class="btn ghost small" data-hometab="${t}">${({ranking:'🏆 Ranking', friends:'👥 Friends', guild:'🛡️ Guild'})[t]}</button>`).join('')}</div></div>` : ''}
@@ -33768,7 +33949,7 @@ function renderInventory(){
   const root = document.getElementById('view-inventory'); if(!root) return;
   const invSeen = loadInvSeen(); let invSeenChanged = false;
   const shown = (items, sk)=>{ const r = invVisible(items.map(it=> Object.assign({}, it, {key: sk + ':' + it.key})), invSeen); if(r.changed) invSeenChanged = true; return r.list; };
-  const defs = getCardDefs(), n = nestState(), st = materiaStore(), found = scalesFound(); // unopened packs left the shelf 2026-10-14 (they open at once)
+  const defs = getCardDefs(), n = nestState(), st = materiaStore(); // unopened packs left the shelf 2026-10-14 (they open at once)
   const cell = (icon, count, label, sub)=> `<div class="inv-cell"><span class="inv-ico">${icon}</span><b class="inv-n">${count}</b><span class="inv-label">${escapeHtml(label)}</span>${sub ? `<small>${sub}</small>` : ''}</div>`;
   // Materia in square slots (2026-10-12, user: "Materia should use square slots. Then its the icon, with a x4 on the btm right.
   // Hovering over it gives you the name of the item").
@@ -33778,11 +33959,10 @@ function renderInventory(){
   const nestCells = Object.keys(NEST_TYPES).map(t=>{ const k = n.eggs.filter(e=> e.kind !== 'nurture' && nestItemType(e)===t).length; return k ? cell(NEST_TYPES[t].icon, k, NEST_TYPES[t].name, 'eggs &amp; babies') : ''; }).join('');
   const crystals = slots(shown(MATERIA_KINDS.map(k=> ({key:k.id, icon:k.icon, count:st[k.id]||0, name:k.name + ' crystal', sub:'for Enchanting'})), 'cry'), 'No crystals yet.');
   const wallet = Object.keys(CURRENCY_META).map(k=> cell(CURRENCY_META[k].glyph, myCurrencies[k]||0, CURRENCY_META[k].label, '')).join('');
-  const trail = found.length ? `<section class="panel inv-sec inv-scales"><h3>🐉 The Scale Trail <small>${found.length}/${DRAGON_SCALE_NODES.length}</small></h3>
-      <ol class="scale-trail">${DRAGON_SCALE_NODES.map((sn, i)=>{ const got = found.includes(sn); const map = CONQUEST_MAPS.find(m=> m.id===sn.map);
-        return `<li class="${got ? 'got' : ''}"><span class="st-ico">${got ? '🐉' : '❔'}</span><span>${got ? `<b>${escapeHtml(skirmishCode(sn.map, sn.key))} · ${escapeHtml(map ? map.name : '')}</b> ${escapeHtml(sn.line)}` : '<i>Somewhere on the road, something glints.</i>'}</span></li>`; }).join('')}</ol></section>` : '';
+  // 2026-10-15 (user: "The first 'explanation card' in inventory does not need to be included. Self explanatory." and "Don't show
+  // the 'Scale trail' in inventory."): the heading card is a screen-reader heading only, and the Scale Trail is off the shelf.
   root.innerHTML = `<div class="inv-page">
-    <div class="panel inv-head"><h2>🎒 Inventory</h2><p class="panel-sub">Everything you carry that isn't in a deck.</p></div>
+    <h2 class="sr-only">🎒 Inventory</h2>
     ${featureUnlockedSafe('fieldkit') ? (()=>{ const ic = loadItems().counts;
       // 2026-10-14 (user: "the field kit subtext 'in a fight against...' -> say skirmish instead, and leave some margin between it
       // and the item slots"): skirmish wording; the note sits under the slots with its own top margin (.inv-kit-note).
@@ -33792,7 +33972,6 @@ function renderInventory(){
       <p class="panel-sub inv-kit-note">In a skirmish, press 🎒 beside your Lumber to use one. One item a skirmish, and it doesn't use your play.</p></section>`; })() : ''}
     ${(()=>{ const cap = shown([{key:'capsule', icon:'🔋', count:energyCapsules(), name:'Energy capsule', sub:'+' + ENERGY_CAPSULE_AMOUNT + ' Energy'}], 'en'); return cap.length ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slots(cap, '')}</div></section>` : ''; })()}
     <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-slots">${mat}</div></section>
-    ${trail}
     <section class="panel inv-sec"><h3>🪺 In the Nest ${featureUnlockedSafe('nest') ? '<button type="button" class="btn small" data-inv-go="nest">Visit the Nest</button>' : `<small>🔒 the Nest opens on Map ${(FEATURE_SPOTS.find(x=> x.key === 'nest') || {mapNumber:4}).mapNumber}</small>`}</h3>${featureUnlockedSafe('nest') || !nestCells ? '' : `<p class="panel-sub">${escapeHtml(eggNeedsNestNote())}</p>`}<div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
     <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">Enchant</button></h3><div class="inv-slots">${crystals}</div></section>
     <section class="panel inv-sec"><h3>👛 Wallet</h3><div class="inv-grid">${wallet}</div></section>
@@ -33934,18 +34113,56 @@ function renderWildpaths(){
     g.addEventListener('click', pick); g.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } }); });
   if(!renderWildpaths.drawn){ renderWildpaths.drawn = true; root.classList.add('wp-draw'); setTimeout(()=> root.classList.remove('wp-draw'), 2600); }
 }
-function tavernStaminaHTML(){ return `<section class="wp-stamina" aria-label="Stamina"><h3>⚡ Stamina</h3><p>Max Energy is raised in the Camp (up to 50) and the Forge (up to 60).</p><div class="wp-stam-row"><b>Max Energy ${energyMax()}</b></div></section>`; }
-function tavernStaminaHTMLOld(){ return (()=>{ const ready = energyUpgradesReady(), bought = energyUpgradesBought(), cost = energyUpgradeCost(), full = bought >= ENERGY_UPGRADE_MAX;
-      return `<section class="wp-stamina" aria-label="Stamina"><h3>⚡ Stamina</h3>
-        <p>Every 20 different skirmishes you clear earns a Stamina mark. Spend one here to raise your max Energy by 1 (up to +${ENERGY_UPGRADE_MAX}).</p>
-        <div class="wp-stam-row"><span class="wp-stam-pips" aria-label="${bought} of ${ENERGY_UPGRADE_MAX} bought">${Array.from({length: ENERGY_UPGRADE_MAX}, (_, k)=> `<i class="${k < bought ? 'on' : k < bought + ready ? 'ready' : ''}"></i>`).join('')}</span>
-          <b>Max Energy ${energyMax()}</b>${full ? '<small>Fully grown.</small>' : `<button type="button" class="btn small primary" id="wpStaminaBuy" ${ready ? '' : 'disabled'}>Raise to ${energyMax() + 1} · ${mapleLeafIconHTML()} ${cost}</button><small>${ready ? `${ready} mark${ready === 1 ? '' : 's'} ready` : escapeHtml(energyNextStepText())}</small>`}</div></section>`; })(); }
+// ---- The Tavern (2026-10-15, user: "Tavern's upgrades are not free. They cost advanced resources." and "... then 50-60 in Tavern.
+// The Tavern also lets you recruit cards (singles) permanently using resources + a beer (1-3 beer per week)"). Three things here:
+// your Beer, a small recruit board, and the last max-Energy steps (50 → 60, see STAMINA_PLACES).
+// Beer: 1 poured every Monday, +1 for finishing each of the first two weekly quest tiers (so 1–3 a week); you hold at most 3.
+const BEER_CAP = 3, BEER_WEEK_KEY = 'bramblewood_beer_week_v1';
+function grantBeer(n){ const have = myCurrencies.beer||0, add = Math.max(0, Math.min(n, BEER_CAP - have)); if(add > 0){ myCurrencies.beer = have + add; saveCurrencies(); } return add; }
+function settleWeeklyBeer(){ try{ if(!featureUnlockedSafe('tavern')) return 0; const wk = weekKey(); if(localStorage.getItem(BEER_WEEK_KEY) === wk) return 0; localStorage.setItem(BEER_WEEK_KEY, wk); return grantBeer(1); }catch(e){ return 0; } }
+// Recruits: three singles a week, picked from cards you've met (seen in a fight, a reward or a pack) but don't own, Rare at most.
+const TAVERN_RECRUIT_RARITIES = ['common', 'uncommon', 'rare'];
+const TAVERN_RECRUIT_COST = {common:{dust:150, gold:150}, uncommon:{dust:300, gold:250}, rare:{dust:600, gold:300, mats:{'iron-shard':1}}};
+function tavernRecruitPool(){
+  const defs = getCardDefs(), seen = seenCardIds();
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || !seen.has(id) || (myCardCopies[id]||[]).length) return false;
+    if(d.token || d.hero || d.test || d.basic || d.cardType === 'materia' || d.cardType === 'item' || isHofVariant(d) || d.derivedFrom) return false;
+    try{ if(isUnattainable(d)) return false; }catch(e){}
+    return TAVERN_RECRUIT_RARITIES.includes(d.rarity || 'common'); });
+}
+function tavernOffers(){ const wk = weekKey(); return tavernRecruitPool().map(id=> [hashStr(wk + ':' + id), id]).sort((a, b)=> a[0] - b[0]).slice(0, 3).map(x=> x[1]); }
+function tavernRecruitCost(id){ const d = getCardDefs()[id] || {}; return TAVERN_RECRUIT_COST[d.rarity || 'common'] || TAVERN_RECRUIT_COST.common; }
+function tavernCanRecruit(id){ const c = tavernRecruitCost(id); return (myCurrencies.beer||0) >= 1 && canAffordCost(c) && Object.entries(c.mats||{}).every(([m, n])=> ownedCount(m) >= n); }
+function tavernRecruit(id){
+  if(!tavernOffers().includes(id)) return 'gone'; if((myCurrencies.beer||0) < 1) return 'beer'; if(!tavernCanRecruit(id)) return 'cost';
+  const c = tavernRecruitCost(id);
+  myCurrencies.beer -= 1; myCurrencies.dust -= (c.dust||0); myCurrencies.gold -= (c.gold||0); saveCurrencies();
+  Object.entries(c.mats||{}).forEach(([m, n])=> spendCopies(m, n));
+  unlockCardForPlayer(id, 'tavern');
+  return 'ok';
+}
+function tavernBeerHTML(){ const b = myCurrencies.beer||0;
+  return `<div class="tv-beer" aria-label="Beer: ${b} of ${BEER_CAP}">${Array.from({length: BEER_CAP}, (_, i)=> `<i class="${i < b ? 'on' : ''}" aria-hidden="true">🍺</i>`).join('')} <span>${b}/${BEER_CAP} Beer</span></div>
+    <p class="panel-sub" style="text-align:center; margin:0 0 4px;"><small>A Beer every Monday, and one for each of the first two weekly quest tiers you finish.</small></p>`; }
+function tavernRecruitHTML(){
+  const offers = tavernOffers(), defs = getCardDefs();
+  return `<section class="tavern-recruit" aria-label="Recruit"><h3>🤝 Recruit <small>a card of your own for a Beer and a few resources · new faces every Monday</small></h3>
+    ${offers.length ? `<div class="tr-offers">${offers.map(id=>{ const d = defs[id]; const c = tavernRecruitCost(id), ok = tavernCanRecruit(id);
+      return `<div class="tr-offer">${cardTileHTML(d, {inPlay:true})}<button type="button" class="btn small primary" data-tv-recruit="${escapeAttr(id)}" ${ok ? '' : 'aria-disabled="true"'}>Recruit${btnCostHTML(c, [{icon:'🍺', need:1, have:myCurrencies.beer||0, label:'Beer'}])}</button></div>`; }).join('')}</div>`
+      : '<p>No one at the bar today. Cards you meet on the road but don\'t own turn up here.</p>'}</section>`;
+}
 function openTavern(){
+  try{ settleWeeklyBeer(); }catch(e){}
   let ov = document.getElementById('tavernOverlay'); if(!ov){ ov = document.createElement('div'); ov.id = 'tavernOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
-  const draw = ()=>{ ov.innerHTML = `<div class="modal tavern-modal" role="dialog" aria-label="The Tavern"><div class="modal-head-row"><h2>🍺 The Tavern</h2><button class="modal-close-btn" id="tvClose" aria-label="Close">✕</button></div>${tavernStaminaHTML().replace(/Spend one here/, 'Spend one with the keeper')}</div>`;
-    ov.hidden = false; ov.querySelector('#tvClose').onclick = ()=>{ ov.hidden = true; ov.innerHTML = ''; if(currentTab === 'home') try{ renderHome(); }catch(e){} };
-    const sb = ov.querySelector('#wpStaminaBuy'); if(sb) sb.onclick = ()=>{ const r = buyEnergyUpgrade(); if(r === 'ok'){ showToast(TX('toast.max-energy-is-now', {energyMax: energyMax()}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ refreshEnergyHud(); }catch(e){} draw(); } else if(r === 'cost') showToast(TX('toast.not-enough-maple-leaves-yet'), 'warn'); }; };
-  draw(); ov.onclick = e=>{ if(e.target === ov){ ov.hidden = true; ov.innerHTML = ''; } };
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; if(currentTab === 'home') try{ renderHome(); }catch(e){} else if(currentTab === 'deck') try{ renderDeckSection(); }catch(e){} };
+  const draw = ()=>{ ov.innerHTML = `<div class="modal tavern-modal" role="dialog" aria-label="The Tavern"><div class="modal-head-row"><h2>🍺 The Tavern</h2><button class="modal-close-btn" id="tvClose" aria-label="Close">✕</button></div>
+      ${tavernBeerHTML()}${tavernRecruitHTML()}${staminaPanelHTML('tavern')}</div>`;
+    ov.hidden = false; ov.querySelector('#tvClose').onclick = close;
+    wireStamina(ov, draw);
+    ov.querySelectorAll('[data-tv-recruit]').forEach(b=> b.onclick = ()=>{ const id = b.dataset.tvRecruit, r = tavernRecruit(id);
+      if(r === 'ok'){ const d = getCardDefs()[id] || {}; showToast(TX('toast.joins-you', {v1: d.name || 'A new card'}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} draw(); }
+      else { denyShake(b); showToast(r === 'beer' ? TX('toast.you-need-a-beer-to-recruit') : r === 'gone' ? TX('toast.that-one-has-moved-on') : TX('toast.not-enough-to-recruit-yet'), 'warn'); } }); };
+  draw(); ov.onclick = e=>{ if(e.target === ov) close(); };
   fxHook('tavernOpen', ov.querySelector('.tavern-modal')); // the hearth glows, two mugs clink (FX.E, 2026-10-15)
 }
 function adminEntryVisible(){
@@ -34144,8 +34361,11 @@ function renderHeroHall(body){
 }
 function addTentPoles(root){ if(root && !root.querySelector(':scope > .tent-pole')) root.insertAdjacentHTML('afterbegin', '<span class="tent-pole left" aria-hidden="true"></span><span class="tent-pole right" aria-hidden="true"></span>'); }
 function renderDeckSection(){ renderDeckSectionInner();
-  // Max Energy steps live in the Camp (2026-10-14): cheap, 20 → 50.
-  try{ const root = document.getElementById('view-deck'); if(root && !deckEditingId){ root.insertAdjacentHTML('beforeend', staminaPanelHTML('camp')); wireStamina(root, renderDeckSection); } }catch(e){} }
+  // 2026-10-15 (user: "I should be able to go to the Tavern page from the Camp feature page(s)."): the Camp's foot has a door to
+  // the Tavern once it's open (max Energy moved out of the Camp the same day: Nest, Forge, then Tavern).
+  try{ const root = document.getElementById('view-deck'); if(root && !deckEditingId && featureUnlockedSafe('tavern')){
+    root.insertAdjacentHTML('beforeend', `<section class="camp-tavern-door" aria-label="The Tavern"><span class="ctd-ico" aria-hidden="true">🍺</span><span class="ctd-txt"><b>The Tavern</b><small>Recruit a card with Beer, raise max Energy to 60 · 🍺 ${myCurrencies.beer||0} Beer</small></span><button type="button" class="btn small primary" id="campTavernBtn">Go to the Tavern</button></section>`);
+    const b = root.querySelector('#campTavernBtn'); if(b) b.onclick = ()=> openTavern(); } }catch(e){} }
 function renderDeckSectionInner(){
   const root = document.getElementById('view-deck');
   setTimeout(()=> addTentPoles(root), 0);
@@ -34649,13 +34869,15 @@ const PAGE_SHORTCUTS = [
   {key:'nest', icon:'🪺', name:'Nest', open:()=> tabOpen('nest'), go:()=> switchTab('nest'), here:t=> t==='nest'},
   {key:'inventory', icon:'🎒', name:'Inventory', open:()=> tabOpen('inventory'), go:()=> switchTab('inventory'), here:t=> t==='inventory'},
 ];
+// 2026-10-15 (user: "the back button is not centered (in Nest etc.)"): a drawn return arrow, centred on its own 24×24 box.
+const PB_BACK_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 4.5 5 9l4.5 4.5"/><path d="M5 9h9.5a4.75 4.75 0 0 1 0 9.5H11"/></svg>';
 function refreshPageBar(tab){
   tab = tab || (typeof currentTab !== 'undefined' ? currentTab : 'home');
   const bar = document.getElementById('pageBackBar'); if(!bar) return;
   const FEATURE = !['home','play','admin'].includes(tab); bar.hidden = !FEATURE; if(!FEATURE){ bar.innerHTML = ''; return; }
   const c = pageCameFrom, back = c && c.tab === 'play' ? 'Back to the map' : c && c.tab !== 'home' && c.tab !== tab ? 'Back' : 'Home';
   const sc = PAGE_SHORTCUTS.filter(x=>{ try{ return x.open(); }catch(e){ return false; } });
-  bar.innerHTML = `${sc.length > 1 ? `<nav class="pb-shortcuts" aria-label="Places">${sc.map(x=> `<button type="button" class="pb-sc ${x.here(tab) ? 'is-here' : ''}" data-pbsc="${x.key}" title="${escapeAttr(x.name)}" aria-label="${escapeAttr(x.name)}" ${x.here(tab) ? 'aria-current="page"' : ''}><span aria-hidden="true">${x.icon}</span><b>${escapeHtml(x.name)}</b></button>`).join('')}</nav>` : ''}<button type="button" class="pb-back" id="pageBackBtn" title="${escapeAttr(back)}" aria-label="${escapeAttr(back)}">↩</button>`;
+  bar.innerHTML = `${sc.length > 1 ? `<nav class="pb-shortcuts" aria-label="Places">${sc.map(x=> `<button type="button" class="pb-sc ${x.here(tab) ? 'is-here' : ''}" data-pbsc="${x.key}" title="${escapeAttr(x.name)}" aria-label="${escapeAttr(x.name)}" ${x.here(tab) ? 'aria-current="page"' : ''}><span aria-hidden="true">${x.icon}</span><b>${escapeHtml(x.name)}</b></button>`).join('')}</nav>` : ''}<button type="button" class="pb-back" id="pageBackBtn" title="${escapeAttr(back)}" aria-label="${escapeAttr(back)}">${PB_BACK_SVG}</button>`;
   bar.querySelectorAll('[data-pbsc]').forEach(b=> b.onclick = ()=>{ const x = PAGE_SHORTCUTS.find(y=> y.key === b.dataset.pbsc); if(x && !x.here(tab)) x.go(); });
   bar.querySelector('#pageBackBtn').onclick = ()=>{ const c2 = pageCameFrom; pageCameFrom = null; if(c2 && c2.tab === 'play'){ if(c2.sub) playSubTab = c2.sub; if(c2.map) conquestSelectedMap = c2.map; } if(c2 && c2.forge) codexSubTab = 'forge'; switchTab(c2 && c2.tab !== tab ? c2.tab : 'home'); };
 }
@@ -34980,6 +35202,7 @@ function renderNest(){
       <p class="panel-sub">${ownedIds.length} card${ownedIds.length===1?'':'s'} owned · ${totalCopies} cop${totalCopies===1?'y':'ies'} total${foilCopies?` · ✨ ${foilCopies} foil`:''}</p>
       ${nestKeeperHTML()}
       <!-- 2026-10-12 (user: "The disenchant extras button shouldnt exist anywhere but the forge"): moved to the Forge. -->
+      ${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}
     </div>
     <div class="grid-view" id="nestGrid">${
       ownedIds.length ? ownedIds.map(id=> nestCardHTML(id, defs[id])).join('')
@@ -34987,6 +35210,7 @@ function renderNest(){
           <div class="nest-empty-actions"><button type="button" class="btn primary" data-nest-go="conquest">🗺️ Play Conquest</button><button type="button" class="btn" data-nest-go="shop">🛒 Open the Shop</button></div></div>`
     }</div>`;
   root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
+  wireStamina(root, renderNest);
   { const nb = root.querySelector('#nestNurseBtn'); if(nb) nb.onclick = openNursePicker; }
   root.querySelectorAll('[data-nest-empty]').forEach(b=> b.onclick = openNestPicker);
   root.querySelectorAll('[data-nurture]').forEach(b=> b.onclick = ()=>{ if(b.getAttribute('aria-disabled')==='true'){ denyShake(b); return; }
@@ -36546,8 +36770,9 @@ function renderProfile(){
     ${profileTilesHTML()}
     <div class="pf-grid">
       <div class="pf-col">
-        <div class="panel pf-wallet"><h3>👛 Wallet</h3><div class="pf-wallet-row">${['gold','gems','dust','metal'].map(k=> currencyPillHTML(k)).join('')}</div></div>
+        <div class="panel pf-wallet"><h3>👛 Wallet</h3><div class="pf-wallet-row">${['gold','gems','dust','metal'].concat(featureUnlockedSafe('tavern') || (myCurrencies.beer||0) > 0 ? ['beer'] : []).map(k=> currencyPillHTML(k)).join('')}</div></div>
         ${profileAchievementsCardHTML()}
+        ${profileMedalsHTML() /* 2026-10-15: Medals moved here from the Notices */}
         ${playerPreviewHTML()}
       </div>
       <div class="pf-col">
@@ -36739,15 +36964,73 @@ function searchResultsHTML(){
     return `<div class="fr-row"><div class="fr-avatar" aria-hidden="true">${escapeHtml((p.display_name||'?').charAt(0).toUpperCase())}</div><div class="fr-main"><div class="fr-name">${escapeHtml(p.display_name||'Player')}</div><div class="fr-sub">#${escapeHtml(p.friend_code||'')} · Rating ${Math.round(p.rating||1500)}</div></div><div class="fr-actions">${state}</div></div>`;
   }).join('');
 }
+// Friends page extras (2026-10-15, user: "Friends should be the default section. Will it show list of friends below? If no one,
+// after 1s, show some characters from the game to make friends with. Then a section with last played players."). Woodland
+// friends are local to this browser: befriend a character and they join your list and say hello when you wave.
+const NPC_FRIENDS_KEY = 'bramblewood_npc_friends_v1';
+const NPC_FRIEND_PICKS = [
+  {who:'traveller', blurb:'Always one step down the road', hi:['A friend on the road is worth two packs in the cart.', 'Still walking? Good. So am I.']},
+  {who:'golem', blurb:'Keeps the Forge fire', hi:['Cobble. Friend. I keep the fire warm for you.', 'Hm. You came to say hello. Cobble is glad.']},
+  {who:'swiftpaw', blurb:'Otter scout captain', hi:['Knew you had good taste. Race you to the next map!', 'Need a scout? I know every shortcut.']},
+  {who:'aurelia', blurb:'Matriarch of the Sunspire', hi:['The Sunspire remembers its friends. Fly well.', 'You honour us. Visit when the light is gold.']},
+  {who:'hedgehog', blurb:'Collects lost buttons', hi:['Oh! Nobody ever befriends the hedgehog. Thank you!', 'I found a blue button today. Want to see?']},
+  {who:'mouse', blurb:'Courier of the wood', hi:['A friend! Now I have someone to write to.', 'Any letters? I run fast, I promise.']},
+];
+let npcSuggestRevealed = false; // the "no one yet" pause happens once per visit
+function loadNpcFriends(){ try{ const a = JSON.parse(localStorage.getItem(NPC_FRIENDS_KEY) || '[]'); return Array.isArray(a) ? a.filter(k=> DIALOGUE_SPEAKERS[k]) : []; }catch(e){ return []; } }
+function saveNpcFriends(a){ try{ localStorage.setItem(NPC_FRIENDS_KEY, JSON.stringify(a)); }catch(e){} }
+function npcFriendRowHTML(k, isFriend){
+  const sp = DIALOGUE_SPEAKERS[k] || {}, pick = NPC_FRIEND_PICKS.find(p=> p.who === k) || {};
+  return `<div class="fr-row fr-npc" data-npc-row="${k}"><div class="fr-avatar fr-npc-av" aria-hidden="true">${speakerPortraitHTML(sp)}</div>
+    <div class="fr-main"><div class="fr-name">${escapeHtml(sp.name || k)}</div><div class="fr-sub">${isFriend ? '🌿 Woodland friend' : escapeHtml(pick.blurb || '')}</div></div>
+    <div class="fr-actions">${isFriend ? `<button type="button" class="btn small" data-npc-hi="${k}">👋 Say hi</button>` : `<button type="button" class="btn small primary" data-npc-add="${k}">＋ Befriend</button>`}</div></div>`;
+}
+function friendsExtrasHTML(realFriends){
+  const mine = loadNpcFriends(), offer = NPC_FRIEND_PICKS.filter(p=> !mine.includes(p.who));
+  const nobody = !realFriends && !mine.length;
+  const woodland = mine.length ? `<section class="fr-section"><h3>Woodland friends <span class="fr-count">${mine.length}</span></h3>${mine.map(k=> npcFriendRowHTML(k, true)).join('')}</section>` : '';
+  const suggest = offer.length && !realFriends ? `<section class="fr-section fr-suggest ${nobody && !npcSuggestRevealed ? 'is-waiting' : ''}" id="frSuggest" ${nobody && !npcSuggestRevealed ? 'hidden' : ''}>
+      <h3>${nobody ? 'No one yet? These folk would like a friend' : 'More folk to befriend'}</h3>${offer.slice(0, 4).map(p=> npcFriendRowHTML(p.who, false)).join('')}</section>` : '';
+  const seen = new Set(), recent = loadRecentOpponents().map((o, i)=> Object.assign({i}, o)).filter(o=>{ const n = (o.name || '').trim(); if(!n || seen.has(n)) return false; seen.add(n); return true; }).slice(0, 6);
+  const defs = getCardDefs();
+  const recentSec = `<section class="fr-section fr-recent"><h3>🕑 Recently played</h3>${recent.length ? recent.map(o=>{ const top = Object.keys(o.deck || {}).sort((a, b)=> o.deck[b] - o.deck[a]).slice(0, 4).map(id=> defs[id] ? defs[id].icon : '').join('');
+      return `<div class="fr-row"><div class="fr-avatar" aria-hidden="true">${escapeHtml((o.name || '?').trim().charAt(0).toUpperCase())}</div>
+        <div class="fr-main"><div class="fr-name">${escapeHtml(o.name || 'Opponent')}</div><div class="fr-sub"><span class="ro-res ${o.result || ''}">${o.result==='win' ? 'Won' : o.result==='loss' ? 'Lost' : 'Draw'}</span> · ${escapeHtml(RECENT_OPP_MODE_LABEL[o.mode] || o.mode || '')} · ${relTime(new Date(o.at || Date.now()).toISOString())} <span aria-hidden="true">${top}</span></div></div>
+        <div class="fr-actions"><button type="button" class="btn small ghost" data-fr-ro="${o.i}">🃏 Deck</button></div></div>`; }).join('')
+    : '<p class="fr-empty">Nobody yet. The players and decks you face show up here.</p>'}</section>`;
+  return woodland + suggest + recentSec;
+}
+function wireFriendsExtras(root){
+  const box = root.querySelector('#frExtras'); if(!box) return;
+  box.onclick = e=>{
+    const t = e.target.closest('button'); if(!t) return;
+    if(t.dataset.npcAdd){ const k = t.dataset.npcAdd, mine = loadNpcFriends(); if(!mine.includes(k)){ mine.push(k); saveNpcFriends(mine); }
+      const pick = NPC_FRIEND_PICKS.find(p=> p.who === k) || {hi:['Friends!']}, sp = DIALOGUE_SPEAKERS[k] || {};
+      try{ SoundKit.unlockChime ? SoundKit.unlockChime() : SoundKit.buffUp(); }catch(_){}
+      showToast(`${sp.icon || '🌿'} ${sp.name || k}: “${pick.hi[0]}”`, 'ok');
+      npcSuggestRevealed = true; renderFriends(); return; }
+    if(t.dataset.npcHi){ const k = t.dataset.npcHi, pick = NPC_FRIEND_PICKS.find(p=> p.who === k) || {hi:['Hello!']}, sp = DIALOGUE_SPEAKERS[k] || {};
+      const line = pick.hi[Math.floor(Math.random() * pick.hi.length)];
+      DIALOGUES['npcfriend:' + k] = {lines:[{who:k, text:line}]};
+      try{ playDialogue('npcfriend:' + k); }catch(_){ showToast(`${sp.icon || '🌿'} ${sp.name || k}: “${line}”`); }
+      return; }
+    if(t.dataset.frRo != null) openRecentOpponentDeck(+t.dataset.frRo);
+  };
+  const sug = box.querySelector('#frSuggest.is-waiting');
+  if(sug) setTimeout(()=>{ if(!sug.isConnected) return; npcSuggestRevealed = true; sug.hidden = false; sug.classList.remove('is-waiting'); sug.classList.add('is-in'); }, 1000);
+}
 function renderFriends(){
   const root = document.getElementById('view-friends'); if(!root) return;
   if(!isSignedIn()){
-    root.innerHTML = `<div class="panel"><h2>👥 Friends</h2><p class="panel-sub">Add friends, see who’s online, and invite them to private matches.</p><button type="button" class="btn primary" id="frSignInBtn">Sign in to use Friends</button></div>`;
+    root.innerHTML = `<div class="panel fr-panel"><h2>👥 Friends</h2><p class="panel-sub">Add friends, see who’s online, and invite them to private matches.</p><button type="button" class="btn primary" id="frSignInBtn">Sign in to use Friends</button>
+      <div id="frExtras">${friendsExtrasHTML(0)}</div></div>`;
     document.getElementById('frSignInBtn').onclick = ()=> requireSignIn('to use Friends', ()=>{ switchTab('friends'); });
+    wireFriendsExtras(root);
     return;
   }
   if(!Social.ready){
-    root.innerHTML = `<div class="panel"><h2>👥 Friends</h2><p class="panel-sub">${Social.checked ? 'Friends aren’t switched on yet — the database update still needs to be applied.' : 'Connecting…'}</p></div>`;
+    root.innerHTML = `<div class="panel fr-panel"><h2>👥 Friends</h2><p class="panel-sub">${Social.checked ? 'Friends aren’t switched on yet — the database update still needs to be applied.' : 'Connecting…'}</p><div id="frExtras">${friendsExtrasHTML(0)}</div></div>`;
+    wireFriendsExtras(root);
     if(!Social.checked) socialInit().then(()=>{ if(currentTab==='friends') renderFriends(); });
     return;
   }
@@ -36761,8 +37044,10 @@ function renderFriends(){
       <div id="frSearchResults">${searchResultsHTML()}</div>
       <div id="frLists">${friendsListHTML()}</div>
       ${Social.outgoingInvite ? `<div class="fr-waiting" id="frWaiting">⏳ Waiting for <b>${escapeHtml(((Registry.users._cache.get(Social.outgoingInvite.to_id)||{}).display_name)||'your friend')}</b> to accept… <button type="button" class="btn small ghost" id="frCancelInvite">Cancel invite</button></div>` : ''}
+      <div id="frExtras">${friendsExtrasHTML(socialBuckets().friends.length)}</div>
     </div>`;
   wireFriends();
+  wireFriendsExtras(root);
 }
 function renderFriendsListOnly(){ const el = document.getElementById('frLists'); if(el){ el.innerHTML = friendsListHTML(); } }
 function wireFriends(){
@@ -37135,7 +37420,9 @@ const PLACES = {
   market: {cls:'flea-scene', icon:'🧺', sign:'Flea Market', ambience:'cart', enter: ()=>{}},
   nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
 };
+var tabSwitchSeq = 0; // counts screen changes (renderPlay tells a fresh arrival from a redraw)
 function switchTab(tab){
+  tabSwitchSeq++;
   if(tab !== (typeof currentTab!=='undefined' ? currentTab : null)) forgeReadyUsed = false; // the Forge's one-shot "Show the N I can temper" comes back on a new visit
   if(tab !== 'play') try{ caveScreenOff(); }catch(e){}
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck' && deckDirty){ deckLeaveGuard(()=> switchTab(tab)); return; }
@@ -37289,6 +37576,67 @@ switchTab('home');
 initDb();
 initUserAuth();
 cloudInitPromise = initCloudSync();
+// Feedback (2026-10-15, user: "Hanging in the corner, on the right of your profile name, there is an opinion icon. Clicking it lets
+// them write a comment to us. (ease for play testers and general players)"): 💬 beside the profile pill opens a short form (what
+// kind, the words), and the screen it was sent from rides along (page, map, fight, build, window size). It goes to the `feedback`
+// table (supabase/migrations/20261015_feedback.sql, NOT applied yet). Until that table exists, or whenever an insert fails, the
+// note waits in this browser and is sent on a later try (on load and after each new note). Admins read them in Admin → Feedback.
+var Feedback = (function(){
+  const KEY = 'bramblewood_feedback_queue_v1', CATS = [['bug','🐞 Bug'], ['idea','💡 Idea'], ['balance','⚖️ Balance'], ['art','🎨 Look & sound'], ['other','💬 Other']];
+  let sending = false;
+  const queued = ()=>{ try{ const a = JSON.parse(localStorage.getItem(KEY) || '[]'); return Array.isArray(a) ? a : []; }catch(e){ return []; } };
+  const saveQ = a=>{ try{ localStorage.setItem(KEY, JSON.stringify(a.slice(-50))); }catch(e){} badge(); };
+  const badge = ()=>{ const b = document.getElementById('feedbackBtn'); if(b) b.classList.toggle('has-queue', queued().length > 0); };
+  const context = ()=>{ const c = {tab: typeof currentTab !== 'undefined' ? currentTab : null, at: new Date().toISOString(), w: innerWidth, h: innerHeight, build: (typeof BUILD_ID !== 'undefined' && !String(BUILD_ID).startsWith('__')) ? BUILD_ID : 'dev', ua: navigator.userAgent.slice(0, 160)};
+    try{ if(c.tab === 'play'){ c.sub = playSubTab; if(playSubTab === 'conquest'){ c.map = conquestSelectedMap; c.node = conquestSelectedNodeKey || null; } } }catch(e){}
+    try{ if(c.tab === 'codex') c.codex = codexSubTab; }catch(e){}
+    try{ if(matchState){ c.fight = {mode: matchState.mode, round: matchState.round, over: !!matchState.over, node: matchState.conquestNode ? matchState.conquestNode.mapId + ':' + matchState.conquestNode.nodeId : null}; } }catch(e){}
+    try{ const ov = [...document.querySelectorAll('.modal-overlay:not([hidden]) [role=dialog]')].map(d=> d.getAttribute('aria-label') || (d.querySelector('h2') || {}).textContent || '').filter(Boolean); if(ov.length) c.dialog = ov.slice(0, 3); }catch(e){}
+    try{ c.level = typeof playerLevel === 'function' ? playerLevel() : undefined; }catch(e){}
+    return c; };
+  // Sends what's waiting, oldest first; stops at the first failure (no table yet, offline) and keeps the rest.
+  const flush = async ()=>{
+    if(sending || typeof sbClient === 'undefined' || !sbClient) return; const q = queued(); if(!q.length) return;
+    sending = true; const left = q.slice();
+    try{ while(left.length){ const it = left[0]; const row = {name: it.name || null, category: it.category || null, text: it.text, context: it.context || {}};
+        if(typeof cloudUserId !== 'undefined' && cloudUserId) row.user_id = cloudUserId;
+        const { error } = await sbClient.from('feedback').insert(row); if(error) break; left.shift(); } }
+    catch(e){} finally{ sending = false; saveQ(left); }
+  };
+  const open = ()=>{
+    let ov = document.getElementById('feedbackOverlay'); if(!ov){ ov = document.createElement('div'); ov.id = 'feedbackOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
+    const ctx = context(), TABN = {deck:'Camp', play:'Play', codex:'Codex', nest:'Nest', shop:'Shop', market:'Flea Market', profile:'Profile', ranking:'Ranking', friends:'Friends', guild:'Guild', inventory:'Inventory', stomp:'Stomping Grounds', achievements:'Achievements', paths:'Wildpaths', admin:'Admin', home:'Home'};
+    const mapName = (()=>{ try{ const m = CONQUEST_MAPS.find(x=> x.id === ctx.map); return m ? m.name : ''; }catch(e){ return ''; } })();
+    const where = [TABN[ctx.tab] || ctx.tab, ctx.sub && ctx.sub !== 'conquest' ? ctx.sub : '', mapName, ctx.fight ? 'in a fight, round ' + ctx.fight.round : ''].filter(Boolean).join(' · ');
+    ov.innerHTML = `<div class="modal fb-modal" role="dialog" aria-modal="true" aria-labelledby="fbTitle"><div class="modal-head-row"><h2 id="fbTitle">💬 Tell us what you think</h2><button class="modal-close-btn" id="fbClose" aria-label="Close">✕</button></div>
+      <form id="fbForm"><fieldset class="fb-cats"><legend>What is it about? (optional)</legend>${CATS.map(([k, l])=> `<label><input type="radio" name="fbCat" value="${k}">${l}</label>`).join('')}</fieldset>
+        <textarea id="fbText" maxlength="4000" required placeholder="A bug, an idea, something that felt off… anything helps." aria-label="Your feedback"></textarea>
+        <p class="fb-ctx">Sent with it: where you are (${escapeHtml(where || 'Home')}), the game version and your screen size.${isSignedIn() ? ' And your player name.' : ''}</p>
+        <div class="fb-actions"><small id="fbNote" aria-live="polite"></small><button type="button" class="btn ghost" id="fbCancel">Cancel</button><button type="submit" class="btn primary" id="fbSend">Send</button></div></form></div>`;
+    ov.hidden = false;
+    const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey, true); };
+    const onKey = e=>{ if(e.key === 'Escape'){ e.stopImmediatePropagation(); close(); } };
+    document.addEventListener('keydown', onKey, true);
+    ov.onclick = e=>{ if(e.target === ov) close(); };
+    ov.querySelector('#fbClose').onclick = close; ov.querySelector('#fbCancel').onclick = close;
+    const ta = ov.querySelector('#fbText'); setTimeout(()=>{ try{ ta.focus(); }catch(e){} }, 50);
+    ov.querySelector('#fbForm').onsubmit = async e=>{ e.preventDefault(); const text = ta.value.trim(); if(!text){ denyShake(ta); return; }
+      const cat = (ov.querySelector('input[name=fbCat]:checked') || {}).value || null;
+      const q = queued(); q.push({text: text.slice(0, 4000), category: cat, name: isSignedIn() ? (cloudUserLabel || null) : null, context: ctx}); saveQ(q);
+      ov.querySelector('#fbSend').disabled = true; await flush();
+      close(); showToast(queued().length ? TX('toast.thanks-it-will-be-sent-as') : TX('toast.thanks-we-read-every-one'), 'ok'); };
+  };
+  // Admin → Feedback: newest first. If the table isn't there yet, say so.
+  const loadAdmin = async el=>{ if(!el) return; el.innerHTML = '<p class="panel-sub">Loading…</p>';
+    if(typeof sbClient === 'undefined' || !sbClient){ el.innerHTML = '<p class="panel-sub">Offline: no database here.</p>'; return; }
+    const { data, error } = await sbClient.from('feedback').select('*').order('created_at', {ascending:false}).limit(200);
+    if(error){ el.innerHTML = `<p class="panel-sub">The feedback table isn't there yet (supabase/migrations/20261015_feedback.sql needs applying), or you can't read it. ${escapeHtml(error.message || '')}</p>`; return; }
+    el.innerHTML = (data || []).length ? data.map(r=> `<article class="fb-admin-item"><header><b>${escapeHtml(r.name || 'Guest')}</b><span>${escapeHtml(r.category || '')}</span><span>${escapeHtml(new Date(r.created_at).toLocaleString())}</span><span>${escapeHtml(((r.context||{}).tab || '') + ((r.context||{}).map ? ' · ' + r.context.map : ''))}</span></header><p>${escapeHtml(r.text || '')}</p><details><summary>Context</summary><pre>${escapeHtml(JSON.stringify(r.context || {}, null, 1))}</pre></details></article>`).join('') : '<p class="panel-sub">No feedback yet.</p>';
+  };
+  const wire = ()=>{ const b = document.getElementById('feedbackBtn'); if(b && !b._fb){ b._fb = true; b.addEventListener('click', open); } badge(); setTimeout(flush, 6000); };
+  return {open, flush, queued, loadAdmin, wire, context};
+})();
+try{ Feedback.wire(); }catch(e){}
 (function wireAccountChip(){
   const chip = document.getElementById('accountChip');
   if(!chip) return;
@@ -38023,13 +38371,11 @@ function wireSettingsButton(idSuffix){
   // Emoji style (2026-10-14): System / Twemoji. Picking Twemoji falls back to System quietly if the library can't load.
   const emSel = document.getElementById('emojiStyleSelect'+idSuffix);
   if(emSel){
-    emSel.innerHTML = `<option value="system">System</option><option value="twemoji">Twemoji</option>`;
+    emSel.innerHTML = `<option value="system">System</option><option value="twemoji">Twemoji</option><option value="noto">Noto Emoji</option>`; // Noto: 2026-10-15
     emSel.value = EmojiStyle.get(); EmojiStyle.refreshCredits();
-    emSel.addEventListener('change', ()=>{ EmojiStyle.set(emSel.value).then(ok=>{ if(emSel.value === 'twemoji' && !ok){ try{ localStorage.setItem(EMOJI_STYLE_KEY, 'system'); }catch(e){} emSel.value = 'system'; } document.querySelectorAll('select[id^="emojiStyleSelect"]').forEach(x=>{ x.value = EmojiStyle.get(); }); }); });
+    emSel.addEventListener('change', ()=>{ EmojiStyle.set(emSel.value).then(ok=>{ if(emSel.value !== 'system' && !ok){ try{ localStorage.setItem(EMOJI_STYLE_KEY, 'system'); }catch(e){} emSel.value = 'system'; } document.querySelectorAll('select[id^="emojiStyleSelect"]').forEach(x=>{ x.value = EmojiStyle.get(); }); }); });
   }
-  { const dg = document.getElementById('dangerSelect'+idSuffix); if(dg){
-      dg.innerHTML = [['uncommon','From Uncommon (2), then Rare (3), Very Rare (4)…'],['rare','From Rare, then rarer'],['veryrare','From Very Rare, then rarer'],['epic','From Epic, then rarer'],['legendary','Legendary and up'],['off','Off']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
-      dg.value = dangerFrom(); dg.addEventListener('change', ()=>{ setDangerFrom(dg.value); showToast(dg.value === 'off' ? TX('toast.danger-warnings-off') : (TX('toast.danger-warnings') + ' ') + dg.options[dg.selectedIndex].text + '.'); }); } }
+  // (the ⚠️ Danger warnings select left Settings 2026-10-15)
   wireLanguageSelects();
   const atmo = document.getElementById('atmosphereSelect'+idSuffix);
   if(atmo){

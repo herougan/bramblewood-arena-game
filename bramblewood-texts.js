@@ -470,14 +470,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.that-opens-up-later-keep-pushing": "🗺️ That opens up later — keep pushing across the Conquest map.",
   "toast.welcome-back": "Welcome back, {name}! 🌰",
   "toast.effects": "Effects:",
-  "toast.danger-warnings-off": "Danger warnings off.",
-  "toast.danger-warnings": "Danger warnings:",
   "results.you-lost-this-one-nothing-is": "You lost this one{v1}. Nothing is lost: try again, and watch which of their cards hits hardest.",
   "results.nicely-done": "Nicely done.",
   "results.your-first-deck-is-waiting-part": "Your first deck is waiting. Part 2 (your leader) is on the map, on the 🎓 marker, whenever you are ready.",
   "results.nicely-done-that-was-a-replay": "Nicely done — that was a replay, so no rewards this time.",
   "results.that-s-everything-the-training-wheels": "That's everything. The training wheels are off now: from here, fights don't stop to explain.",
-  "toast.twilight-day-and-night-creatures-are": "🌆 Twilight: day and night creatures are both awake."
+  "toast.twilight-day-and-night-creatures-are": "🌆 Twilight: day and night creatures are both awake.",
+  "toast.joins-you": "🤝 {v1} joins you!",
+  "toast.you-need-a-beer-to-recruit": "You need a Beer to recruit. One comes every Monday.",
+  "toast.that-one-has-moved-on": "That one has moved on.",
+  "toast.not-enough-to-recruit-yet": "Not enough to recruit yet.",
+  "toast.thanks-it-will-be-sent-as": "💬 Thanks! It will be sent as soon as it can.",
+  "toast.thanks-we-read-every-one": "💬 Thanks! We read every one."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
