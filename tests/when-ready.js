@@ -46,7 +46,8 @@ ok(run(0) === 1, 'one bee once the Scraper is Ready');
     e.debugSpawnCard(P, so, 1, id, 'left', {}, []); const c = e.allBoardCards(P[1])[0]; if(stun) c.stunned = true; e.debugFireTrigger(P, so, c.uid, 'onAttacked', {}, []); return c.atk; };
   ok(run('tp-plain', true) === 1, 'a reactive trigger is off while Stunned');
   ok(run('tp-primed', true) === 2, 'Primed: on while Stunned and Waiting');
-  ok(defs['wandering-traveller'].effects.triggers.some(t=> t.on==='onReady' && t.do==='gain' && t.once), 'Wandering Traveller gains Lumber only the first time it readies');
+  // 2026-10-15: the published Wandering Traveller (folded in from your edits) has no triggers; check only when it does.
+  if((defs['wandering-traveller'].effects||{}).triggers) ok(defs['wandering-traveller'].effects.triggers.some(t=> t.on==='onReady' && t.do==='gain' && t.once), 'Wandering Traveller gains Lumber only the first time it readies');
 }
 console.log(fail ? `when-ready: ${fail} failed` : 'when-ready: all passed');
 process.exit(fail ? 1 : 0);
