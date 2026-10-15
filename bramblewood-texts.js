@@ -484,7 +484,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.that-one-has-moved-on": "That one has moved on.",
   "toast.not-enough-to-recruit-yet": "Not enough to recruit yet.",
   "toast.thanks-it-will-be-sent-as": "💬 Thanks! It will be sent as soon as it can.",
-  "toast.thanks-we-read-every-one": "💬 Thanks! We read every one."
+  "toast.thanks-we-read-every-one": "💬 Thanks! We read every one.",
+  "toast.jumps-you-on-the-road-beat": "{icon} {name} jumps you on the road! Beat it to go on."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

@@ -9465,6 +9465,19 @@ function statsAtLevel(d, L){
   const r = v=> v==null ? v : Math.max(v > 0 ? 1 : 0, Math.round(v * (1 + g)));
   return {attack: r(d.attack), health: r(d.health)};
 }
+// Past the top (2026-10-16, user: "Limit breaking to whatever lvl like 20. (Any stats undefined by us = assume a random +1 stat in att or
+// def)"): above a card's own top level (11 for the usual Lv 10 cards) each level adds +1 Attack or +1 Health, chosen by a seed of the
+// card and the level, so the same card at the same level always has the same stats. A level the designer gave its own stats
+// (def.levelStats) is used as is, and the +1s carry on from there. Only the Tower's enemies reach these levels.
+function statsBeyondLevel(d, L){
+  const cap = cardMaxLevel(d) === 10 ? 11 : cardMaxLevel(d); L = L|0;
+  if(L <= cap) return statsAtLevel(d, L);
+  let from = cap, st = statsAtLevel(d, cap);
+  for(let l = L; l > cap; l--){ const ov = d.levelStats && (d.levelStats[l] || d.levelStats[String(l)]); if(ov){ from = l; st = {attack: ov.attack != null ? ov.attack : st.attack, health: ov.health != null ? ov.health : st.health}; break; } }
+  st = Object.assign({}, st);
+  for(let l = from + 1; l <= L; l++){ const atk = st.attack != null && (st.health == null || hashStr(`${d.id}:lv${l}`) % 2 === 0); if(atk) st.attack += 1; else if(st.health != null) st.health += 1; }
+  return st;
+}
 function loadCardLevels(){
   try{ const raw = localStorage.getItem('bramblewood_arena_levels'); if(raw) return JSON.parse(raw)||{}; }catch(e){}
   return {};
@@ -10933,10 +10946,11 @@ function deckPreviewPillsHTML(d){
 // card's level 0); the leader counts double. A full deck of level-10 Ancients with an Ancient leader is ≈2,500.
 const RATING_WEIGHT = {starter:0.5, common:1, uncommon:2, rare:4, veryrare:6, superrare:8, epic:11, heroic:14, unique:17, legendary:21, mythic:25, ancient:30, divine:36, void:42, daemonic:48};
 function ratingWeightOf(d){ if(!d) return 0; const r = d.rarity || 'common', as = (RARITY_DEFS.find(x=> x.key===r) || {}).as; return RATING_WEIGHT[r] || RATING_WEIGHT[as] || 1; }
-function ratingLevelFactor(L){ L = Math.max(0, Math.min(11, Number(L)||0)); return L <= 0 ? 0.7 : 1 + (L - 1) * 0.31; }
-function deckLevelFrom(counts, levelOf, leaders){
+// cap (2026-10-16, the Tower): its enemies fight up to Level 20, and the same straight line carries on past 11 (Lv 20 = 6.89).
+function ratingLevelFactor(L, cap){ L = Math.max(0, Math.min(cap || 11, Number(L)||0)); return L <= 0 ? 0.7 : 1 + (L - 1) * 0.31; }
+function deckLevelFrom(counts, levelOf, leaders, cap){
   const defs = getCardDefs();
-  const one = id=>{ const k = String(id).split('~')[0], d = defs[k]; if(!d) return 0; return ratingWeightOf(d) * ratingLevelFactor(levelOf(k)); };
+  const one = id=>{ const k = String(id).split('~')[0], d = defs[k]; if(!d) return 0; return ratingWeightOf(d) * ratingLevelFactor(levelOf(k), cap); };
   let t = 0;
   Object.keys(counts||{}).forEach(id=>{ t += (counts[id]||0) * one(id); });
   (leaders||[]).filter(Boolean).forEach(id=>{ t += 2 * one(id); });
@@ -10959,7 +10973,8 @@ function enemyDeckLevel(node){
   // Enemy decks are smaller than a player's 20; scale to 20 cards so the two ratings compare like for like.
   const n = Object.values(node.deck).reduce((a, b)=> a + (b||0), 0) || 1;
   const leaders = (node.leaders || (node.leaderId ? [node.leaderId] : [])).filter(Boolean);
-  const body = deckLevelFrom(node.deck, lv, []) * (DECK_SIZE / n), lead = deckLevelFrom({}, lv, leaders);
+  const cap = node.levelCap || 11; // the Tower's floors fight up to Level 20 (2026-10-16)
+  const body = deckLevelFrom(node.deck, lv, [], cap) * (DECK_SIZE / n), lead = deckLevelFrom({}, lv, leaders, cap);
   return Math.round(body + lead);
 }
 function mainDeckLevel(counts, leaderId){
@@ -12917,7 +12932,8 @@ function subMapExitHTML(map, positions){
   if(map.id === 'mtut' && !loadTutorial2Done()) return ''; // the way out opens with Tutorial II
   const parent = CONQUEST_MAPS.find(m=> m.id === map.parent); if(!parent) return '';
   const idx = map.nodes.findIndex(n=> n.kind !== 'tutorial'), base = positions[Math.max(0, idx)] || {x:50, y:50};
-  const def = {x: Math.max(6, Math.min(94, base.x - 12)), y: Math.max(10, Math.min(90, base.y + 16))};
+  const def = map.axis === 'x' ? {x: Math.max(1, base.x - 2.6), y: Math.max(10, Math.min(90, base.y + 24))} // a left-to-right dungeon: just behind floor 1 (2026-10-16)
+    : {x: Math.max(6, Math.min(94, base.x - 12)), y: Math.max(10, Math.min(90, base.y + 16))};
   const p = decorPos(map.id, '~exit', def), key = map.nodes[Math.max(0, idx)] && map.nodes[Math.max(0, idx)].key;
   const tip = 'Way out — back to ' + parent.name;
   return `<svg class="map-spot-links map-exit-link" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><line ${key ? `data-a="${escapeAttr(key)}" data-b="~exit"` : ''} x1="${base.x}" y1="${base.y}" x2="${p.x}" y2="${p.y}"/></svg>
@@ -15619,15 +15635,100 @@ function endlessDungeon(cfg){
       icon: boss ? cfg.bossIcon : cfg.icon, deck, hqHp: Math.round((cfg.baseHq||40) + f*3 + (boss ? 20 : 0)), floor: f, code: `${cfg.mapNumber}-${cfg.code}-${f}`,
       flavor: boss ? cfg.bossFlavor : cfg.flavor, requires: f === 1 ? [] : [fk(f-1)],
       rewards:{first:{gold: 15 + f*3 + (boss ? 40 : 0), dust: 4 + f + (boss ? 20 : 0)}},
-      fixedPos:{x: [50, 66, 50, 34][f % 4], y: +(98 - (f - 1) * (96 / (n - 1))).toFixed(2)}}); // floor 1 at the bottom, climbing up
+      // axis 'x' (2026-10-16, user: "It's like Murgle, but left to right"): floor 1 on the left, running right
+      fixedPos: cfg.axis === 'x' ? {x: +(4 + (f - 1) * (94 / (n - 1))).toFixed(2), y: [50, 34, 50, 66][f % 4]}
+        : {x: [50, 66, 50, 34][f % 4], y: +(98 - (f - 1) * (96 / (n - 1))).toFixed(2)}}); // floor 1 at the bottom, climbing up
   }
-  return {id: cfg.id, sub: true, parent: cfg.parent, endless: true, entry: cfg.entry, name: cfg.name, icon: cfg.icon, blurb: cfg.blurb, sequential: true, nodes};
+  return {id: cfg.id, sub: true, parent: cfg.parent, endless: true, axis: cfg.axis === 'x' ? 'x' : 'y', entry: cfg.entry, name: cfg.name, icon: cfg.icon, blurb: cfg.blurb, sequential: true, nodes,
+    preview: !!cfg.preview};
 }
 CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8', entry:{x:88, y:16, after:'6-8', label:'Murgle Mayhem'},
   name:'Murgle Mayhem', icon:'🐸', bossName:'The Murgle King', bossIcon:'👑', floors:50, baseHq:40,
   blurb:'A sinkhole of bog water under the Swampmire that goes down further than anyone has counted. Something down there keeps sending the frogs back up.',
   flavor:'More frogs. Angrier frogs.', bossFlavor:'Every tenth floor something bigger is waiting in the reeds.',
   deck:{'meadow-frog':3, 'puddle-hopper':3, 'bog-leech':3, 'marsh-wisp':2, 'willow-o-wisp':2}, bossAdds:{'swamp-alligator':2, 'crocodile-ambusher':1}}));
+// The second dungeon series (2026-10-16, user: "Another submap dungeon series - place it in Map 22. Not used for now. It's like Murgle,
+// but left to right, with 50 difficulties for now."): built exactly like Murgle (one deck, each floor 4% stronger, a bigger fight every
+// tenth floor), laid out left to right. Map 22 is still a Reserved map, so players can't reach it; `preview` keeps it out of their
+// Dungeons tab and World map (it shows as a locked "new dungeon" slot) while admins can open it from the Dungeons tab.
+CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'r15', axis:'x', preview:true, entry:{x:50, y:50, label:'The Long Burrow'},
+  name:'The Long Burrow', icon:'🦡', bossName:'The Sett Lord', bossIcon:'👑', floors:50, baseHq:200,
+  blurb:'A badger run that tunnels sideways under the high country, sett after sett, further than any map has drawn it.',
+  flavor:'More diggers. Deeper setts.', bossFlavor:'Every tenth sett belongs to someone bigger, and they heard you coming.',
+  deck:{'badger-sapper':3, 'badger-trench-digger':3, 'quarry-mole':2, 'ore-smelter-mole':2, 'meerkat-burrower':2, 'honey-badger-fury':2}, bossAdds:{'badger-berserker':2, 'grindstone-boar':1}}));
+// ---- The Tower (2026-10-16, user: "Can you prepare like a tower of babylon like tower? The enemies there can scale past lvl 10. Limit
+// breaking to whatever lvl like 20. (Any stats undefined by us = assume a random +1 stat in att or def). It starts super difficult
+// already, at BR=555. Every skirmish jumps in 25 BR.") ----
+// 50 floors climbing from the Sundered Peak (opens once Map 20's last fight falls; admins can open it any time from the Dungeons tab).
+// Floor f's enemy deck is rated 555 + 25 × (f − 1) on the same battle rating the game shows everywhere (enemyDeckLevel: rarity weight ×
+// level factor, scaled to a 20-card deck). Each floor picks six pairs of strong cards (seeded, so a floor is always the same fight),
+// richer in rarity the higher it is (a legendary heads every tenth floor), then sets their levels (11 on floor 1, up to 20 at the top)
+// and nudges single cards up or down a level until the rating lands on the floor's target. Past a card's own top level (11, a limit
+// break) every extra level adds +1 Attack or +1 Health, picked by a seed per card and level (statsBeyondLevel), unless the card has
+// its own stats for that level. No Dungeon tickets: each floor costs Energy like an elite, and a cleared floor stays cleared.
+const TOWER_LEVEL_CAP = 20, TOWER_BR_START = 555, TOWER_BR_STEP = 25, TOWER_FLOORS = 50;
+const TOWER_POOLS = {
+  rare: ['malachite-golem', 'marching-elephant', 'ur-elk', 'siege-rhino', 'ironback-gorilla', 'octopus-tactician', 'shimmerwing-stag', 'vampire-squid', 'obsidian-lich', 'badger-berserker', 'woodland-brawler', 'lone-grey-wolf'],
+  epic: ['ironmaw-warwolf', 'marshal-of-rivergate', 'irradiated-couatl', 'ember-revenant', 'the-sixfold', 'iron-warden'],
+  heroic: ['yeti-chieftain', 'rivergate-tribune', 'sunspire-sky-sovereign', 'old-snapjaw', 'pride-queen', 'wolfsbane-alpha', 'drowned-matriarch', 'old-shell'],
+  unique: ['the-contradiction', 'triumvirate'],
+  legendary: ['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'caldera-wyrm', 'old-willow-of-the-ford'],
+};
+function towerTargetBR(f){ return TOWER_BR_START + TOWER_BR_STEP * (f - 1); }
+function seededUnit(key){ return hashStr(String(key)) / 4294967296; } // a stable 0..1 from a string
+// A deck's rating at the tower's levels (the same sum as enemyDeckLevel, levels up to 20).
+function towerDeckBR(deck, levels, defs){
+  defs = defs || CARD_DEFS_BASELINE; const n = Object.values(deck).reduce((a, b)=> a + b, 0) || 1;
+  let t = 0; Object.entries(deck).forEach(([id, k])=>{ const d = defs[id]; if(d) t += k * ratingWeightOf(d) * ratingLevelFactor(levels[id], TOWER_LEVEL_CAP); });
+  return Math.round(t * DECK_SIZE / n);
+}
+function towerFloorDeck(f, defs){
+  if(!defs && typeof CARD_DEFS_BASELINE === 'undefined') return {deck:{}, levels:{}, br:0, target: towerTargetBR(f)}; // the maps read on their own (tests)
+  defs = defs || CARD_DEFS_BASELINE;
+  const target = towerTargetBR(f), p = (f - 1) / (TOWER_FLOORS - 1), boss = f % 10 === 0, lvGoal = 11 + 9 * p;
+  const used = new Set(), deck = {}, pick = tier=>{ const pool = (TOWER_POOLS[tier] || []).filter(id=> defs[id] && !used.has(id)); if(!pool.length) return null;
+    const id = pool[Math.floor(seededUnit(`tower:${f}:${tier}:${used.size}`) * pool.length)]; used.add(id); return id; };
+  // the average rarity weight the deck needs so that, at about lvGoal, it rates `target`
+  const wantAvg = target / ratingLevelFactor(lvGoal, TOWER_LEVEL_CAP) / DECK_SIZE;
+  let count = 0, wsum = 0;
+  if(boss){ const id = pick('legendary'); if(id){ deck[id] = 1; count += 1; wsum += ratingWeightOf(defs[id]); } }
+  const tiers = ['rare', 'epic', 'heroic', 'unique'];
+  while(count < 12){
+    const k = Math.min(2, 12 - count);
+    let best = null, bestErr = Infinity; tiers.forEach(t=>{ if(!(TOWER_POOLS[t] || []).some(id=> defs[id] && !used.has(id))) return; const w = RATING_WEIGHT[t], err = Math.abs((wsum + k*w) / (count + k) - wantAvg); if(err < bestErr){ bestErr = err; best = t; } });
+    const id = best && pick(best); if(!id) break; deck[id] = k; count += k; wsum += k * ratingWeightOf(defs[id]);
+  }
+  // Levels only go up from 11, so the deck must not rate above the target at 11: trade a copy of its rarest card for a common-er one until it doesn't.
+  const at11 = ()=> towerDeckBR(deck, Object.fromEntries(Object.keys(deck).map(id=> [id, 11])), defs);
+  for(let guard = 0; guard < 12 && at11() > target; guard++){
+    const ids = Object.keys(deck).filter(id=> !TOWER_POOLS.legendary.includes(id)).sort((a, b)=> ratingWeightOf(defs[b]) - ratingWeightOf(defs[a])), hi = ids[0], lo = ids[ids.length - 1]; // the boss floor keeps its legendary
+    if(hi === lo || ratingWeightOf(defs[hi]) === ratingWeightOf(defs[lo])) break;
+    if(--deck[hi] <= 0) delete deck[hi]; deck[lo] += 1;
+  }
+  // levels: everyone at the goal level, then single cards nudged a level at a time towards the target
+  const levels = {}; Object.keys(deck).forEach(id=> levels[id] = Math.max(cardBaseLevel(defs[id]), Math.round(lvGoal)));
+  for(let guard = 0; guard < 200; guard++){
+    const cur = towerDeckBR(deck, levels, defs), diff = target - cur; if(diff === 0) break;
+    let best = null, bestAbs = Math.abs(diff);
+    Object.keys(deck).forEach(id=>{ [-1, 1].forEach(s=>{ const L = levels[id] + s; if(L < 11 || L > TOWER_LEVEL_CAP) return; levels[id] = L; const a = Math.abs(target - towerDeckBR(deck, levels, defs)); levels[id] -= s; if(a < bestAbs){ bestAbs = a; best = [id, s]; } }); });
+    if(!best) break; levels[best[0]] += best[1];
+  }
+  return {deck, levels, br: towerDeckBR(deck, levels, defs), target};
+}
+function buildTower(){
+  const nodes = [], fk = f=> `20-TW-${f}`;
+  for(let f = 1; f <= TOWER_FLOORS; f++){
+    const boss = f % 10 === 0, t = towerFloorDeck(f);
+    nodes.push({key:fk(f), kind: boss ? 'boss' : 'elite', name: boss ? `The Spire Keeper, floor ${f}` : `The Babel Spire, floor ${f}`, icon: boss ? '👑' : '🗼',
+      deck: t.deck, cardLevels: t.levels, levelCap: TOWER_LEVEL_CAP, tower: true, towerBR: t.target, hqHp: 260 + f*6 + (boss ? 40 : 0), floor: f, code: fk(f),
+      flavor: boss ? 'Every tenth floor, something that has never come down waits at the top of the stair.' : 'Each floor is a little higher, and everyone on it has been waiting a little longer.',
+      requires: f === 1 ? [] : [fk(f-1)], rewards:{first:{gold: 60 + f*6 + (boss ? 120 : 0), dust: 15 + f*2 + (boss ? 40 : 0)}},
+      fixedPos:{x: [50, 64, 50, 36][f % 4], y: +(98 - (f - 1) * (96 / (TOWER_FLOORS - 1))).toFixed(2)}});
+  }
+  return {id:'tw', sub:true, parent:'m11', endless:true, tower:true, axis:'y', entry:{x:16, y:22, after:'20-10', label:'The Babel Spire'}, name:'The Babel Spire', icon:'🗼',
+    blurb:'A tower older than the Peak, built by every creature that ever wanted to be the strongest. Each floor is stronger than the last, and nobody has seen the top.', sequential:true, nodes};
+}
+CONQUEST_MAPS.push(buildTower());
 const CONQUEST_MAPS_BASELINE = JSON.parse(JSON.stringify(CONQUEST_MAPS));
 const NODE_EDITS_KEY = 'bramblewood_node_edits_v1';
 let nodeEdits = {};
@@ -15646,6 +15747,7 @@ function applyNodeEdits(){
   try{ applyRoadKinds(); }catch(e){}
   try{ applyAmbushNode(); }catch(e){}
   try{ refreshHiddenSkirmishes(); }catch(e){} // hidden skirmishes (2026-10-15)
+  try{ applyJumperSkirmishes(); }catch(e){} // the jumpers ride on top of the rebuilt nodes (2026-10-16)
 }
 // The road's map enders (2026-10-13, user: "Map 0's final fight is a normal fight btw. Map 1's is a Elite at the end. Map 5's is a
 // boss. Map 6 onwards, the last Skirmish is always a miniboss. This will not change from Map 0-100. Every 5 maps the boss, every
@@ -15750,6 +15852,71 @@ function refreshHiddenSkirmishes(){
 function hiddenJustRevealed(key){ const st = hiddenState(); return !!st.found[key] && !st.popped[key]; }
 const hiddenPopNow = new Set(); // the ones popping in on this render (the class lasts until the next one, 2026-10-15)
 function markHiddenPopped(keys){ if(!keys.length) return; const st = hiddenState(); keys.forEach(k=> st.popped[k] = Date.now()); saveHiddenState(st); }
+// Hidden skirmishes, Type 2: the jumpers (2026-10-16, user: "This Skirmish is required to be completed before the next one is unlocked,
+// but is hidden at first. It looks like 23-2 unlocks 23-3 but, boom. It animates onto the field (meteor, splash, psychic fade, ghost fade
+// etc) - represents a strong enemy that wants to jump you."). Each entry sits between two fights on the trail: `after` (the fight that
+// seems to open the way) and `before` (the fight it opens). Until `after` is cleared the jumper isn't on the map at all. The moment it
+// is, the jumper lands on the trail with its `entrance` (meteor | splash | psychic | ghost; FX.E.jumperArrive), the trail runs through
+// it and `before` needs it beaten. A save that had already cleared `before` (from before the jumpers existed) gets it as an optional
+// fight instead, so nobody's next map closes again. Admins always see them. Codes are X-J. Retune them in Edit skirmish as usual.
+const JUMPER_SKIRMISHES = [
+  {map:'mw', after:'5-3', before:'5-4', entrance:'splash',
+    node:{key:'5-J', code:'5-J', kind:'elite', name:'The Log That Moved', icon:'🐊', hqHp:120,
+      flavor:'You were sure that was a log. So was everything else that walked across it.',
+      deck:{'crocodile-ambusher':2, 'swamp-alligator':2, 'snapper-hatchling':3, 'venomlord-serpent':2, 'constrictor-coil':2, 'mangrove-mudskipper':1}}},
+  {map:'mr', after:'13-4', before:'13-5', entrance:'ghost',
+    node:{key:'13-J', code:'13-J', kind:'elite', name:'The Pale Stag', icon:'👻', hqHp:150,
+      flavor:'The oldest stag in the Deep died a hundred winters ago. Nobody told it.',
+      deck:{'shimmerwing-stag':2, 'the-unremembered':2, 'willow-o-wisp':2, 'obsidian-lich':1, 'badger-berserker':2, 'boar-rampager':2, 'war-panther':1}}},
+  {map:'m3', after:'19-2', before:'19-3', entrance:'meteor',
+    node:{key:'19-J', code:'19-J', kind:'elite', name:'Cinder Fall', icon:'☄️', hqHp:200,
+      flavor:'It came down out of a clear sky, still burning, and it was not alone.',
+      deck:{'magma-titan':2, 'ember-revenant':1, 'magma-salamander':2, 'basalt-boar':2, 'ember-jackal':2, 'obsidian-lich':1, 'cinder-hornet':2}}},
+];
+const JUMPER_KEY = 'bramblewood_jumpers_v1';
+function jumperState(){ try{ const s = JSON.parse(localStorage.getItem(JUMPER_KEY) || '{}') || {}; s.arrived = s.arrived || {}; return s; }catch(e){ return {arrived:{}}; } }
+function saveJumperState(s){ try{ localStorage.setItem(JUMPER_KEY, JSON.stringify(s)); }catch(e){} }
+// Put the jumpers whose `after` is cleared on their maps and run the trail through them (idempotent: called on every map render).
+function applyJumperSkirmishes(){
+  const progress = loadConquestProgress(), admin = typeof adminModeEnabled !== 'undefined' && adminModeEnabled;
+  JUMPER_SKIRMISHES.forEach(j=>{
+    const map = CONQUEST_MAPS.find(m=> m.id === j.map); if(!map) return;
+    const done = k=> (progress.completed || []).includes(conquestNodeId(j.map, k));
+    const before = map.nodes.find(n=> n.key === j.before), i = map.nodes.findIndex(n=> n.key === j.node.key);
+    const restore = ()=>{ if(before && before._preJumpRequires){ before.requires = before._preJumpRequires; delete before._preJumpRequires; } };
+    const show = admin || done(j.after) || done(j.node.key);
+    if(!show){ if(i >= 0 && map.nodes[i].jumper) map.nodes.splice(i, 1); restore(); return; }
+    const optional = !admin && !!before && done(j.before) && !done(j.node.key); // an older save that already went past it
+    let node = i >= 0 ? map.nodes[i] : null;
+    if(!node){
+      const plain = Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret && !n.jumper)}), ps = mapNodePositions(plain);
+      const a = ps[plain.nodes.findIndex(n=> n.key === j.after)] || {x:45, y:50}, b = ps[plain.nodes.findIndex(n=> n.key === j.before)] || {x:55, y:50};
+      const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, off = j.offset == null ? 7 : j.offset; // just off the old line, so the old link can't hide behind it
+      const pos = {x: Math.max(6, Math.min(94, (a.x + b.x)/2 - dy/L*off)), y: Math.max(8, Math.min(92, (a.y + b.y)/2 + dx/L*off))};
+      const patch = ((nodeEdits[j.map]||{}).patches||{})[j.node.key];
+      node = Object.assign(JSON.parse(JSON.stringify(j.node)), {jumper:true, entrance: j.entrance, requires:[j.after], fixedPos: pos}, patch ? JSON.parse(JSON.stringify(patch)) : {});
+      map.nodes.splice(Math.max(0, map.nodes.indexOf(before)), 0, node); // just ahead of `before`, so lists read in trail order
+    }
+    node.secret = optional || undefined; if(!node.secret) delete node.secret;
+    if(before && !optional){ if(!before._preJumpRequires) before._preJumpRequires = (before.requires || []).slice();
+      const rq = before._preJumpRequires.map(k=> k === j.after ? j.node.key : k); before.requires = rq.includes(j.node.key) ? rq : rq.concat([j.node.key]); }
+    else restore();
+  });
+}
+// After the map is drawn: a jumper that just got on the map lands with its entrance (once per save).
+function jumperArrivals(map, canvas){
+  if(!map || !canvas || (typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || conquestLayoutEdit) return;
+  const st = jumperState(); let changed = false;
+  JUMPER_SKIRMISHES.filter(j=> j.map === map.id).forEach(j=>{
+    const node = map.nodes.find(n=> n.key === j.node.key); if(!node || node.secret || st.arrived[j.node.key]) return;
+    const done = (loadConquestProgress().completed || []).includes(conquestNodeId(map.id, j.node.key)); st.arrived[j.node.key] = Date.now(); changed = true; if(done) return;
+    const el = canvas.querySelector(`.map-node[data-lkey="${j.node.key}"]`); if(!el) return;
+    const ps = mapNodePositions(map), at = k=> ps[map.nodes.findIndex(n=> n.key === k)];
+    fxHook('mapJumperArrive', el, node.entrance || j.entrance || 'meteor', {canvas, from: at(j.after), to: at(j.before)});
+    setTimeout(()=>{ try{ showToast(TX('toast.jumps-you-on-the-road-beat', {icon: node.icon, name: node.name}), 'warn'); }catch(e){} }, 2600);
+  });
+  if(changed) saveJumperState(st);
+}
 function ambushShouldTrigger(map, node){
   if(!map || !node || ambushState().triggered || !loadTutorialDone()) return false;
   const am = ambushMap(); return !!am && am.id === map.id && skirmishCode(map.id, node.key) === AMBUSH_AT;
@@ -16610,8 +16777,8 @@ function wireMapLayoutEditor(map, body){
 }
 function mapNodePositions(map){
   // Hidden skirmishes (2026-10-15) stand where they were placed and don't reshuffle the rest of the trail.
-  const sec = map.nodes.some(n=> n.secret);
-  const auto = sec ? (()=>{ const pp = autoMapNodePositions(Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret)})); let k = 0; return map.nodes.map(n=> n.secret ? (n.fixedPos || {x:50, y:50}) : pp[k++]); })() : autoMapNodePositions(map);
+  const sec = map.nodes.some(n=> n.secret || n.jumper); // so do the jumpers (2026-10-16)
+  const auto = sec ? (()=>{ const pp = autoMapNodePositions(Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret && !n.jumper)})); let k = 0; return map.nodes.map(n=> (n.secret || n.jumper) ? (n.fixedPos || {x:50, y:50}) : pp[k++]); })() : autoMapNodePositions(map);
   const base = auto.map((p, i)=> (map.nodes[i] && map.nodes[i].fixedPos) ? map.nodes[i].fixedPos : p);
   const ov = mapLayoutOverrides[map.id];
   if(!ov) return base;
@@ -16947,9 +17114,11 @@ function compassDiamondSVG(mapId, locked){
 // still paid per floor). One ticket a day (they bank up to 3) and a bonus one each week (on Monday), so a run a day, and a spare.
 const DAILY_DUNGEONS = [
   {mapId:'mm', mapNumber:6},
-  {slot:2, mapNumber:20, icon:'🕸️'},
+  {mapId:'mlb', mapNumber:22, slot:2, icon:'🦡'}, // 2026-10-16: the Long Burrow, Map 22 (was an empty slot at Map 20); admin preview only for now
   {slot:3, mapNumber:40, icon:'🗿'},
 ];
+// A dungeon players can't see yet (map.preview, 2026-10-16): shown to them as a locked slot, to admins as the real thing.
+function dungeonHiddenFromPlayer(map){ return !!(map && map.preview) && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled); }
 const DUNGEON_TICKETS_KEY = 'bramblewood_dungeon_tickets_v1', DUNGEON_TICKETS_CAP = 3;
 function dungeonDayIndex(t){ const d = new Date(t || Date.now()); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); } // the local calendar day
 function dungeonWeekIndex(t){ return Math.floor((dungeonDayIndex(t) + 3) / 7); } // weeks turn on Monday (day 0, 1 Jan 1970, was a Thursday)
@@ -16966,7 +17135,7 @@ function loadDungeonTickets(){
 }
 function dungeonTicketsLeft(){ return loadDungeonTickets().n; }
 function dungeonRunOpen(mapId){ return !!loadDungeonTickets().runs[mapId]; }
-function isDailyDungeonMap(map){ return !!(map && map.endless); }
+function isDailyDungeonMap(map){ return !!(map && map.endless && !map.tower); } // the Tower takes no tickets (2026-10-16)
 function dungeonNextTicketMs(){ const d = new Date(); d.setHours(24, 0, 0, 0); return d.getTime() - Date.now(); }
 // May this floor be fought? (a run is open, or a ticket is in hand)
 function dungeonGateOk(mapId){ const s = loadDungeonTickets(); return !!s.runs[mapId] || s.n > 0; }
@@ -16986,15 +17155,15 @@ function renderDungeonsSubTab(body){
   const progress = loadConquestProgress(), s = loadDungeonTickets(), h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
   const cards = DAILY_DUNGEONS.map(dd=>{
     const map = dd.mapId && CONQUEST_MAPS.find(m=> m.id === dd.mapId);
-    if(!map) return `<div class="dg-card is-soon"><div class="dg-diamond map-theme-mm">${compassDiamondSVG('dg' + dd.slot, true)}<span class="wd-ico">${dd.icon || '❔'}</span></div>
+    if(!map || dungeonHiddenFromPlayer(map)) return `<div class="dg-card is-soon"><div class="dg-diamond map-theme-mm">${compassDiamondSVG('dg' + dd.slot, true)}<span class="wd-ico">${dd.icon || '❔'}</span></div>
       <div class="dg-body"><b class="dg-name">A new dungeon</b><p class="dg-sub">🔒 Opens around Map ${dd.mapNumber}</p></div></div>`;
-    const open = isMapUnlocked(map, progress), f = dungeonFloorProgress(map, progress), run = !!s.runs[map.id];
+    const preview = !!map.preview, open = preview || isMapUnlocked(map, progress), f = dungeonFloorProgress(map, progress), run = !!s.runs[map.id];
     const parent = CONQUEST_MAPS.find(m=> m.id === map.parent);
-    return `<div class="dg-card ${open ? '' : 'is-locked'}"><div class="dg-diamond map-theme-${map.id}">${compassDiamondSVG('dg-' + map.id, !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
+    return `<div class="dg-card ${open ? '' : 'is-locked'} ${preview ? 'is-preview' : ''}">${preview ? '<span class="dg-admin-tag" title="Players see a locked slot here (Map 22 is not charted yet)">🛠️ Admin preview</span>' : ''}<div class="dg-diamond map-theme-${map.id}">${compassDiamondSVG('dg-' + map.id, !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map ${dd.mapNumber}${parent ? ' · ' + escapeHtml(parent.name) : ''}</span>
         <p class="dg-sub">${escapeHtml(map.blurb || '')}</p>
         ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${f.total ? Math.round(100 * f.done / f.total) : 0}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total}${f.done ? ` · ${f.done} cleared` : ''}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${run ? '▶ Continue the run' : s.n > 0 ? '🎟️ Enter' : '🗺️ Look at the map'}</button>${run ? '<span class="dg-run">Run open</span>' : ''}</div>`
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : run ? '▶ Continue the run' : s.n > 0 ? '🎟️ Enter' : '🗺️ Look at the map'}</button>${run ? '<span class="dg-run">Run open</span>' : ''}</div>`
         : `<p class="dg-sub">🔒 Clear ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
   }).join('');
   body.innerHTML = `<div class="panel dungeons-panel">
@@ -17003,14 +17172,29 @@ function renderDungeonsSubTab(body){
       <span class="dg-tix">${Array.from({length: Math.max(DUNGEON_TICKETS_CAP, s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🎟️</i>`).join('')}</span>
       <span><b>${s.n}</b> Dungeon ticket${s.n === 1 ? '' : 's'} · one a day (up to ${DUNGEON_TICKETS_CAP}), next in ${h}h · a bonus one every Monday</span></div>
     <div class="dg-list">${cards}</div>
+    ${towerCardHTML(progress)}
   </div>`;
   body.querySelectorAll('[data-dungeon-go]').forEach(b=> b.addEventListener('click', ()=>{
     conquestWorldView = false; conquestSelectedMap = b.dataset.dungeonGo; conquestSelectedNodeKey = null; playSubTab = 'conquest'; renderPlay(); }));
 }
+// The Tower in the Dungeons tab (2026-10-16): its own card under the daily dungeons. Locked until Map 20's last fight falls; admins can
+// always open it. No tickets: every floor costs Energy like any elite.
+function towerCardHTML(progress){
+  const map = CONQUEST_MAPS.find(m=> m.id === 'tw'); if(!map) return '';
+  const admin = typeof adminModeEnabled !== 'undefined' && adminModeEnabled, unlocked = isMapUnlocked(map, progress), open = unlocked || admin, f = dungeonFloorProgress(map, progress);
+  const next = map.nodes[Math.min(map.nodes.length - 1, f.done)], br = next ? enemyDeckLevel(next) : 0;
+  return `<div class="dg-tower-head"><h3>🗼 The Tower</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p></div>
+    <div class="dg-list"><div class="dg-card dg-tower ${open ? '' : 'is-locked'}">${!unlocked && admin ? '<span class="dg-admin-tag" title="Players open it by clearing Map 20">🛠️ Admin preview</span>' : ''}<div class="dg-diamond map-theme-tw">${compassDiamondSVG('dg-tw', !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
+      <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map 20 · The Sundered Peak</span>
+        <p class="dg-sub">${escapeHtml(map.blurb)}</p>
+        ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${Math.round(100 * f.done / f.total)}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total} · ⚔ ${br}</span></div>
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button></div>`
+        : `<p class="dg-sub">🔒 Clear the Sundered Peak (Map 20) to open it.</p>`}</div></div></div>`;
+}
 // The World map's dungeon stops (2026-10-15): a smaller compass diamond beside its map's own, joined to it by a dotted branch.
 function worldDungeonStopsHTML(maps, pts, narrow, progress, firstLocked){
   return DAILY_DUNGEONS.filter(dd=> dd.mapId).map(dd=>{
-    const map = CONQUEST_MAPS.find(m=> m.id === dd.mapId); if(!map) return '';
+    const map = CONQUEST_MAPS.find(m=> m.id === dd.mapId); if(!map || map.preview) return ''; // not on the World map until it's in use (2026-10-16)
     const i = maps.findIndex(m=> m.id === map.parent); if(i < 0) return '';
     const p = pts[i], x = narrow ? (p.x < 50 ? 80 : 20) : (p.x <= 50 ? p.x + 24 : p.x - 24), y = p.y + (narrow ? -44 : 0);
     const open = isMapUnlocked(map, progress), fog = !open && i > firstLocked, f = dungeonFloorProgress(map, progress), here = map.id === conquestSelectedMap;
@@ -17364,7 +17548,7 @@ function renderConquestSubTab(body){
   document.querySelectorAll('.cnp-rw-zoom').forEach(z=> z.remove());
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
   // Hidden skirmishes (2026-10-15): reveal any whose condition is now met; the first sight of one pops it in with a toast.
-  { try{ refreshHiddenSkirmishes(); }catch(e){}
+  { try{ refreshHiddenSkirmishes(); }catch(e){} try{ applyJumperSkirmishes(); }catch(e){} // + the jumpers (2026-10-16)
     const selMap = CONQUEST_MAPS.find(m=> m.id === conquestSelectedMap);
     const pops = selMap && isMapUnlocked(selMap, progress) ? HIDDEN_SKIRMISHES.filter(h=> h.map === selMap.id && hiddenJustRevealed(h.node.key) && selMap.nodes.some(n=> n.key === h.node.key)) : [];
     pops.forEach(h=> hiddenPopNow.add(h.node.key));
@@ -17438,7 +17622,7 @@ function renderConquestSubTab(body){
   const layoutEl = document.getElementById('conquestLayout');
   if(layoutEl) layoutEl.className = `conquest-layout map-theme-${map.id}${MAP_ART_IDS.has(map.id) ? ' has-map-art' : ''}`;
   if(conquestWorldView){ if(layoutEl) layoutEl.className = 'conquest-layout is-world'; renderConquestWorld(mainEl, body, progress); return; }
-  if(!isMapUnlocked(map, progress)){
+  if(!isMapUnlocked(map, progress) && !(adminModeEnabled && map.endless)){ // admins may open a locked dungeon or the Tower (2026-10-16)
     mainEl.innerHTML = `<div class="empty-hint">This map is locked — clear the previous map's Skirmish/Elite/Boss nodes first.</div>`;
     return;
   }
@@ -17504,11 +17688,11 @@ function renderConquestSubTab(body){
   // Item #6: the old .conquest-skirmish-menu text list below the map is gone — the hover
   // tooltip (nodeTooltipHTML below) and the click-through node panel already cover the same
   // information without repeating every node as a redundant text row.
-  mainEl.className = 'conquest-main';
+  mainEl.className = 'conquest-main' + (map.endless && map.axis === 'x' ? ' endless-x-main' : ''); // a left-to-right dungeon scrolls sideways (2026-10-16)
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
   mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
-    <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' : ''}" id="conquestCanvas" style="${map.endless ? `min-height:${map.nodes.length * 86}px;` : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${zoomAt && (tutPhase || tutZoomOut) ? `--tut-x:${zoomAt.x}%; --tut-y:${zoomAt.y}%;` : ''}">
+    <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' + (map.axis === 'x' ? ' endless-x' : '') : ''}" id="conquestCanvas" style="${map.endless ? (map.axis === 'x' ? `width:${map.nodes.length * 96}px;` : `min-height:${map.nodes.length * 86}px;`) : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${zoomAt && (tutPhase || tutZoomOut) ? `--tut-x:${zoomAt.x}%; --tut-y:${zoomAt.y}%;` : ''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${tutPhase ? '' : mapSpotsHTML(map, positions, progress)}
@@ -17563,7 +17747,7 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
           <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="Something glints here. An S rank might find it." aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
         </button>`;
       }).join('')}
@@ -17572,7 +17756,8 @@ function renderConquestSubTab(body){
   if(map.endless){ // start the long climb at your next floor
     setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
       const el = cv.querySelector(`.map-node[data-lkey="${next.key}"]`), main = document.getElementById('conquestMain');
-      if(el && main){ const top = el.offsetTop - main.clientHeight / 2; main.scrollTo({top: Math.max(0, top), behavior: reducedMotion() ? 'auto' : 'smooth'}); } }, 1200); }
+      if(el && main){ if(map.axis === 'x'){ const left = el.offsetLeft - main.clientWidth / 2; main.scrollTo({left: Math.max(0, left), behavior: reducedMotion() ? 'auto' : 'smooth'}); return; } // left to right (2026-10-16)
+        const top = el.offsetTop - main.clientHeight / 2; main.scrollTo({top: Math.max(0, top), behavior: reducedMotion() ? 'auto' : 'smooth'}); } }, 1200); }
   { const ast = ambushState(); if(ast.justPopped && map.id === (ambushMap()||{}).id){ delete ast.justPopped; saveAmbushState(ast); } }
   if(tutPhase) tutBgZoom(1.25, false); else if(!tutZoomOut) tutBgZoom(1, false, true);
   if(tutZoomOut){ try{ localStorage.removeItem('bramblewood_tut_zoomout_v1'); }catch(e){}
@@ -17659,6 +17844,7 @@ function renderConquestSubTab(body){
   try{ if(!tutPhase && !conquestLayoutEdit) fxHook('mapTitle', document.getElementById('conquestLayout'), {id:map.id, name:map.name, icon:map.icon, biome:MAP_BIOME_OF[map.id] || MAP_BIOME_OF[map.parent], sub:map.sub ? 'Side map' : (mapNumberOf(map.id) != null ? 'Map ' + mapNumberOf(map.id) : ''), delay:(document.querySelector('.map-veil') || tutZoomOut) ? 2100 : 300}); }catch(e){}
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak), map.id); }catch(e){}
   fxHook('mapShown', conquestShaderHost(), map, document.getElementById('conquestCanvas'), progress); // map ambience, day/night, node states, coming-back moments (FX.E, 2026-10-15)
+  try{ jumperArrivals(map, document.getElementById('conquestCanvas')); }catch(e){} // a jumper landing on the trail (2026-10-16)
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(b, 1200)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ const first = !featureUnlocked(sp.key); fadeNewBang(b); b.classList.add('is-open'); if(first && sp.gift) try{ sp.gift(); }catch(e){} activateSpot(sp); if(sp.vanish) setTimeout(()=> b.remove(), 600); } }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitOldWell(w); }); }
@@ -19884,8 +20070,8 @@ function levelledEnemyDeck(node, deck){
   Object.entries(deck).forEach(([id, n])=>{
     const L = lv[id]; const b = base[id];
     if(L == null || L === '' || !b || (b.attack==null && b.health==null)){ out[id] = (out[id]||0) + n; return; }
-    const lvl = Math.max(0, Math.min(LIMIT_BREAK_LEVEL, Math.round(Number(L)||0))), did = id + '@lv' + lvl;
-    const st = statsAtLevel(b, Math.max(cardBaseLevel(b), lvl));
+    const lvl = Math.max(0, Math.min((node && node.levelCap) || LIMIT_BREAK_LEVEL, Math.round(Number(L)||0))), did = id + '@lv' + lvl;
+    const st = statsBeyondLevel(b, Math.max(cardBaseLevel(b), lvl)); // = statsAtLevel up to the card's own top level (the Tower goes past it, 2026-10-16)
     matchDefsOverlay[did] = Object.assign({}, b, {id: did, derivedFrom: id, attack: st.attack, health: st.health, level: lvl, baseLevel: cardBaseLevel(b), locked: false});
     out[did] = (out[did]||0) + n;
   });
@@ -19946,7 +20132,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   engine.draw(players[1], 3, 'A', stats, []);
   engine.draw(players[2], 3, 'B', stats, []);
   try{ if(wildpathsOpen()) applyWildpathPerks(engine, players[1], stats); }catch(e){}
-  if(node.floor > 1) players[2].perks = Object.assign({}, players[2].perks || {}, {floorPct: (node.floor - 1) * 0.04}); // endless dungeon floors
+  if(node.floor > 1 && !node.tower) players[2].perks = Object.assign({}, players[2].perks || {}, {floorPct: (node.floor - 1) * 0.04}); // endless dungeon floors (the Tower's strength is its levels instead, 2026-10-16)
   if(node.rules && node.rules.actions > 1 && engine.applySecondPlayerBonus) engine.applySecondPlayerBonus(players[2], 'B', stats, []); // Actions per turn (2026-10-11): the side playing second is compensated
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
@@ -28973,6 +29159,10 @@ function syncSkyFx(m, phase){
   // with the mirrored edge (CSS .sky-sweep), ~1.3 s, instead of the whole board's colour easing at once.
   { const sw = bf.querySelector(':scope > .sky-fx.sky-sweep:not(.is-old)'); if(sw){ if(sw.classList.contains('tone-' + tone)) return; sky = sw; } }
   const curTone = (sky.className.match(/tone-(\w+)/) || [])[1];
+  // 2026-10-16 (user: "The night->day animation: Bars on the left -> no-go. I think the whole map lighting up is sufficient."): night
+  // giving way is no longer swept in behind the ragged edge: the whole board's tint eases to the new one (the CSS transition on the
+  // layer), while syncNightVeil fades the veil and FX.E.nightRetreat drifts soft, uneven light across.
+  if(curTone === 'night' && tone !== 'night'){ bf.querySelectorAll(':scope > .sky-fx.sky-sweep').forEach(x=>{ if(x !== sky) x.remove(); }); sky.classList.remove('sky-sweep', 'is-old', 'is-go'); sky.className = 'sky-fx sky-ease tone-' + tone; skyToneLast = tone; return; }
   if(curTone && curTone !== tone && tone !== 'misty' && curTone !== 'misty' && !reducedMotion() && sky.isConnected){
     bf.querySelectorAll(':scope > .sky-fx.sky-sweep').forEach(x=>{ if(x !== sky) x.remove(); });
     const old = sky, nw = document.createElement('div'); nw.setAttribute('aria-hidden', 'true'); nw.className = 'sky-fx sky-sweep tone-' + tone;
@@ -28992,10 +29182,13 @@ function syncNightVeil(m, phase){
   // Night or a dark field: the leaders' and Light Aura units' glow shows (2026-10-15, .unit-light).
   try{ bf.classList.toggle('is-dark-scene', !!(m && !m.over && (want || matchDarkLevel(m)))); }catch(e){}
   if(!v){ if(!want) return; v = document.createElement('div'); v.className = 'night-veil'; v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); if(!phase){ v.classList.add('no-anim', 'is-on'); void v.offsetWidth; v.classList.remove('no-anim'); return; } void v.offsetWidth; }
-  if(want){ if(v.classList.contains('is-leaving')){ v.classList.add('no-anim'); v.classList.remove('is-leaving', 'is-gone', 'is-on'); void v.offsetWidth; v.classList.remove('no-anim'); void v.offsetWidth; } v.classList.add('is-on'); return; }
-  // 2026-10-15: leaving swaps to the mirrored ragged mask (still fully covering), then sweeps it off left to right (see the CSS)
-  if(v.classList.contains('is-on') && !v.classList.contains('is-leaving')){ v.classList.add('no-anim', 'is-leaving'); void v.offsetWidth; v.classList.remove('no-anim'); void v.offsetWidth; v.classList.add('is-gone');
-    setTimeout(()=>{ if(!v.isConnected || !v.classList.contains('is-gone')) return; v.classList.add('no-anim'); v.classList.remove('is-on', 'is-leaving', 'is-gone'); void v.offsetWidth; v.classList.remove('no-anim'); }, 1500); }
+  if(want){ if(v.classList.contains('is-leaving') || v.classList.contains('is-fading')){ v.classList.add('no-anim'); v.classList.remove('is-leaving', 'is-gone', 'is-on', 'is-fading'); void v.offsetWidth; v.classList.remove('no-anim'); void v.offsetWidth; } v.classList.add('is-on'); return; }
+  // 2026-10-16 (user: "The night->day animation: Bars on the left -> no-go. I think the whole map lighting up is sufficient. I was thinking
+  // of a night retreating effect - could you still do a gentle version of that ... softer and longer. And also not consistent"): the
+  // veil no longer leaves behind the ragged left-to-right edge. The whole board lights up (the veil fades, ~2.4 s) and soft, uneven
+  // streaks of morning light drift across it (FX.E.nightRetreat, via fxHook('fieldNightLifts')).
+  if(v.classList.contains('is-on') && !v.classList.contains('is-fading')){ v.classList.add('is-fading'); try{ fxHook('fieldNightLifts', bf); }catch(e){}
+    setTimeout(()=>{ if(!v.isConnected || !v.classList.contains('is-fading')) return; v.classList.add('no-anim'); v.classList.remove('is-on', 'is-fading'); void v.offsetWidth; v.classList.remove('no-anim'); }, 2600); }
 }
 // Battlefield pills with tooltips (2026-10-14, user: "Night, Tide/Ebb need tooltips when you hover." and "The Night, Ebb etc pills
 // will be on the battlefield instead"): Day/Night/Twilight, the moon, the tide, the wind, the Arena's portent and the "Next round"

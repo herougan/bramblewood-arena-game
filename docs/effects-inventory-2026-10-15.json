@@ -15481,5 +15481,38 @@
    "arena_template.html: .map-node.secret-pop"
   ],
   "batch": "R"
+ },
+ {
+  "id": "map-jumper-arrive",
+  "area": "map",
+  "name": "Jumper lands on the trail (hidden skirmish, Type 2)",
+  "trigger": "jumperArrivals (arena_app.js): a jumper's `after` fight is cleared → fxHook('mapJumperArrive', node, entrance, {canvas, from, to}), once per save",
+  "current": "FX.E.jumperArrive: the old link starts inking, the jumper lands across it (meteor / splash / psychic / ghost), the trail redraws through it",
+  "quality": "good",
+  "priority": 2,
+  "themeNotes": "A strong enemy jumping you: loud for the meteor and the gator, eerie for the psychic and the ghost.",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: JUMPER_SKIRMISHES, applyJumperSkirmishes, jumperArrivals",
+   "bramblewood-fx-e.js: jumperArrive"
+  ],
+  "batch": "W3"
+ },
+ {
+  "id": "map-night-retreat",
+  "area": "conquest-map",
+  "name": "Night gives way to day on the map",
+  "trigger": "FX.E.dayNight when the phase changes from night to dawn or day (the clock or the Atmosphere setting)",
+  "current": "FX.E.nightRetreat: the night tint fades from the whole map while soft, uneven light streaks drift across",
+  "quality": "good",
+  "priority": 3,
+  "themeNotes": "Gentle: long soft streaks, each a little brighter or dimmer and up to 0.5% off in hue.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-e.js: dayNight, nightRetreat, watchTod"
+  ],
+  "batch": "W3"
  }
 ]
