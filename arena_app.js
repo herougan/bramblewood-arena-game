@@ -5090,7 +5090,7 @@ function biomeClass(d){
 // all, so they fall through to '' and keep the plain var(--bg) frame -- deliberately NOT themed,
 // since those modes have no single map to theme against.
 const MAP_BATTLEFIELD_CLASS = {
-  m1:'map-m1',   // Bramblewood Outskirts -- forest green
+  m1:'map-m1',   // Bramblewood Outskirts -- sunny meadow (art swapped with Thistlewood, 2026-10-15)
   m2:'map-m2',   // Sunken Hollow -- flooded teal-blue
   m3:'map-m3',   // The Ashen Peak -- scorched ash/ember
   m4:'map-m4',   // Caves & Alcoves -- dark steel-grey
@@ -5103,7 +5103,7 @@ const MAP_BATTLEFIELD_CLASS = {
   m10:'map-m10', // Eyrie Heights -- pale alpine sky
   m11:'map-m11', // The Sundered Peak -- dramatic dusk crimson
   m21:'map-m21', // The Quiet Summit -- snow and dawn
-  mf:'map-mf',   // Thistle Fields -- sunny meadow (2026-10-09)
+  mf:'map-mf',   // Thistlewood -- wet forest, stream and pond (the Outskirts' old art since 2026-10-15)
   mb:'map-mb',   // Pebble Beach -- sand and shallows (2026-10-09)
   mg:'map-m4',   // Smugglers' Grotto (sub-map) -- borrows the cave look
   // 2026-10-12 (user: "Check that all the maps have backgrounds"): every map with painted art fights on it too.
@@ -5121,6 +5121,8 @@ const MAP_BATTLEFIELD_CLASS = {
   mt:'map-mt',
   md:'map-md',
   my:'map-my',
+  // 2026-10-15 ("Are there any submaps with no background? fill them in."): the side maps that had no fight floor.
+  mtut:'map-mtut', mo:'map-mo', mi:'map-mi', mn:'map-mn', ms:'map-ms', mv:'map-mv', mx:'map-mx', mm:'map-mm',
 };
 // Battlefield background picker (2026-09-30, queued backlog item: "player-selectable, independent
 // of which Conquest map you're on, plus a new 'extremely undistracting' calm background option").
@@ -12268,6 +12270,7 @@ const FEATURE_SPOTS = [
   // Map schedule (2026-10-12, user's per-map table: "Map 1 Armoury, 2 Nest, 3 Dungeon 3A, 4 Notices, 5 Boss (Pack A),
   // 7 Codex, 8 Arena (Pack B), 9 Quest board, 11 Forge, 13 Raid 1 + Wandering Trader A (Pack C), 16 Arena: Gauntlet,
   // 21 Test Lab"). Map numbers are play order (mainConquestMaps). Players who already opened a feature keep it.
+  // 2026-10-15: the Nest moved from Map 2 to Map 4 ("it makes more sense in the mountains").
   // 2026-10-13 (user: "Move it to Map 1. But everytime they win a card, show a special UI subwindow on the conquest map ... that lets
   // them switch out a basic card with the card gotten"): the Armoury opens on Map 1; on Map 0 each card won offers a swap.
   // 2026-10-13 (user: "The Armoury becomes available ASAP"): it opens on Map 0, once the tutorials are done.
@@ -12281,7 +12284,11 @@ const FEATURE_SPOTS = [
   {key:'backpack', icon:'🎒', name:'A note in your pack', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_backpack', tabs:['inventory'], vanish:true,
     gift:()=>{ myCurrencies.kibble = (myCurrencies.kibble||0) + 3; myCurrencies.dust = (myCurrencies.dust||0) + 40; saveCurrencies(); try{ showToast('🎒 In the pack: 🦴 3 Kibble and ✨ 40 Dust.', 'ok'); }catch(e){} },
     go:()=> switchTab('inventory')},
-  {key:'nest', icon:'🪺', name:'Nest', mapNumber:2, get map(){ return mapIdAt(2); }, after:null, dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
+  // 2026-10-15 (user: "Oh let's move Nest to map 4, it makes more sense in the mountains."): was Map 2 (Pebble Beach). A player
+  // who already opened it keeps it (the unlock is stored by key, not by map); eggs found earlier wait in the pack (grantEgg).
+  // On Map 4 it would land on the Notices' default spot, so it has its own: dry ground right of the big pond (an admin can still
+  // drag it; a published layout wins).
+  {key:'nest', icon:'🪺', name:'Nest', mapNumber:4, pos:{x:70, y:50}, get map(){ return mapIdAt(4); }, after:null, dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
   {key:'quests', icon:'📜', name:'Notices', mapNumber:4, get map(){ return mapIdAt(4); }, after:null, dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
   // Pack A (Hedgerow Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
@@ -12366,7 +12373,10 @@ function activateSpot(spot){
   spot.go();
 }
 // Maps that have a generated pixel-art background baked into the build (see assemble_arena.py).
-const MAP_ART_IDS = new Set(["mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","mtut","mj"]);
+// 2026-10-15 (user: "Are there any submaps with no background? fill them in."): the Old Bramble, Ice Hollow, Glimmer Depths,
+// Sunken Grove, Aerie Vault and Volcano Lair had art baked in but weren't listed here, so it never drew; Murgle Mayhem had none.
+// They now borrow a recoloured map (MAP_ART_DERIVED in assemble_arena.py), and the build fails if this list falls behind.
+const MAP_ART_IDS = new Set(["mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","mtut","mj","mo","mi","mn","ms","mv","mx","mm"]);
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -12420,7 +12430,7 @@ function mapSpotsHTML(map, positions, progress){
   const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !spotAvailable(sp, progress)).map(sp=>{
     const after = spotAfter(sp), idx = after ? map.nodes.findIndex(n=> n.key===after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
-    const def = {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))};
+    const def = sp.pos || {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))}; // sp.pos: a spot's own default spot (2026-10-15)
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     const tip = decorEditing() ? sp.name + decorGateNote(map, '~spot:'+sp.key, sp.after) : '?';
     return `<button type="button" class="map-spot is-unknown" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(tip)}" aria-label="Something not found yet" aria-disabled="true"><span class="map-spot-ico" aria-hidden="true">?</span></button>`;
@@ -12429,7 +12439,7 @@ function mapSpotsHTML(map, positions, progress){
     const spAfter = spotAfter(sp);
     const idx = spAfter ? map.nodes.findIndex(n=> n.key===spAfter) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
-    const def = {x: Math.max(4, Math.min(96, base.x + (spAfter ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (spAfter ? -27 : 14)))};
+    const def = sp.pos || {x: Math.max(4, Math.min(96, base.x + (spAfter ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (spAfter ? -27 : 14)))};
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     if(spAfter) links.push(`<line data-a="${escapeAttr(spAfter)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
     const open = featureUnlocked(sp.key);
@@ -14799,13 +14809,16 @@ const CONQUEST_MAPS = [
       { key:"0-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"trash-panda-trickster":4,"meadow-rabbit":3,"pond-trout":3,"raccoon-nightcrew":1}, hqHp:33, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["0-1","0-2"] },
       { key:"0-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"pond-duck":4,"otter-kit":1,"otter-royal-guard":1}, hqHp:64, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["0-3"] },
     ]},
+  // 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds. I think the wetter one makes sense for the next map."):
+  // Thistlewood now has the stream-and-pond art along its lower edge, and its auto-scattered trail put 1-4 and the boss in the
+  // water. The default trail (fixedPos) is now the published layout's, all above the stream; a published layout still wins.
   { id:"mf", unlockAfter:"m1", name:"Thistlewood", icon:"🌼", blurb:"Thistle and fern under the first big trees — hedgerows, burrows and a lot of small, busy things.", sequential:true,
     nodes: [
-      { key:"1-1", kind:"skirmish", name:"Hedgerow Scouts", icon:"🐇", deck:{"fox-kit":2,"cricket-drummer":3,"beetle-grunt":3,"dormouse":2}, hqHp:14, flavor:"Every hedge here has ears in it.", requires:[] },
-      { key:"1-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"cricket-drummer":4,"meadow-frog":3,"antler-skirmisher":3,"mouse-sapper":2}, hqHp:15, flavor:"The drumming stops the moment you step into the grass.", requires:["1-1"] },
-      { key:"1-3", kind:"skirmish", name:"Burrow Line", icon:"🕳️", deck:{"burrow-rabbit":4,"quarry-mole":4,"mouse-sapper":2,"badger-berserker":2}, hqHp:15, flavor:"The field looks flat. Underneath it is not.", requires:["1-1"] },
-      { key:"1-4", kind:"skirmish", name:"Sapper Hedge", icon:"🦔", deck:{"mouse-sapper":3,"burrow-rabbit":3,"badger-berserker":3,"hedgehog-scout":1,"beetle-battering-ram":1,"gatling-hog":1}, hqHp:14, flavor:"Someone has been digging trenches under the thistles.", requires:["1-2","1-3"] },
-      { key:"1-5", kind:"boss", name:"The Thistle Baron", icon:"🌼", deck:{"beetle-battering-ram":1,"beetle-grunt":4,"burrow-rabbit":2,"fox-kit":1,"mouse-sapper":3,"field-mouse":1}, hqHp:35, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["1-4"] },
+      { key:"1-1", kind:"skirmish", name:"Hedgerow Scouts", icon:"🐇", deck:{"fox-kit":2,"cricket-drummer":3,"beetle-grunt":3,"dormouse":2}, hqHp:14, flavor:"Every hedge here has ears in it.", requires:[], fixedPos:{x:15, y:45} },
+      { key:"1-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"cricket-drummer":4,"meadow-frog":3,"antler-skirmisher":3,"mouse-sapper":2}, hqHp:15, flavor:"The drumming stops the moment you step into the grass.", requires:["1-1"], fixedPos:{x:40, y:60} },
+      { key:"1-3", kind:"skirmish", name:"Burrow Line", icon:"🕳️", deck:{"burrow-rabbit":4,"quarry-mole":4,"mouse-sapper":2,"badger-berserker":2}, hqHp:15, flavor:"The field looks flat. Underneath it is not.", requires:["1-1"], fixedPos:{x:40, y:30} },
+      { key:"1-4", kind:"skirmish", name:"Sapper Hedge", icon:"🦔", deck:{"mouse-sapper":3,"burrow-rabbit":3,"badger-berserker":3,"hedgehog-scout":1,"beetle-battering-ram":1,"gatling-hog":1}, hqHp:14, flavor:"Someone has been digging trenches under the thistles.", requires:["1-2","1-3"], fixedPos:{x:65, y:45} },
+      { key:"1-5", kind:"boss", name:"The Thistle Baron", icon:"🌼", deck:{"beetle-battering-ram":1,"beetle-grunt":4,"burrow-rabbit":2,"fox-kit":1,"mouse-sapper":3,"field-mouse":1}, hqHp:35, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["1-4"], fixedPos:{x:85, y:45} },
     ]},
   { id:"mb", unlockAfter:"mf", name:"Pebble Beach", icon:"🏖️", blurb:"Where the fields run out into sand — rock pools, gulls and things in shells.", sequential:true,
     nodes: [
@@ -15504,7 +15517,8 @@ const MAP_BIOMES = {
   meadow:  {trees:['🌳','🌻','🌳'], small:['🌼','🌾','🌷','🌱','🍀','🌼','🪨'], mover:{emoji:'🐝', kind:'butterfly', n:4}},
   beach:   {trees:['🌴','🪨','🌴'], small:['🐚','🦀','🪸','🫧','🪨','⭐'], mover:{emoji:'🦀', kind:'fish', n:3}},
 };
-const MAP_BIOME_OF = {mj:'reef', mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'meadow', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'forest', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m21:'alpine', mtut:'meadow', m12:'forest', m13:'savanna', m14:'ash'};
+// 2026-10-15: m1 is 'meadow' and mf 'forest' now, following their swapped art ("I think the wetter one makes sense for the next map").
+const MAP_BIOME_OF = {mm:'swamp', mj:'reef', mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'forest', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'meadow', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m21:'alpine', mtut:'meadow', m12:'forest', m13:'savanna', m14:'ash'};
 function distToSeg(px,py, ax,ay, bx,by){ const dx=bx-ax, dy=by-ay; const L=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/L; t=Math.max(0,Math.min(1,t)); const x=ax+t*dx, y=ay+t*dy; return Math.hypot(px-x, py-y); }
 function generatedMapDecor(map, positions){
   const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;
@@ -27449,7 +27463,7 @@ async function resolveRound(opts){
         m.unlockedActivities = [
           {icon:'🗺️', label:'Conquest', tip:'The campaign map: fight your way across regions, earn cards and currency, and unlock new areas.'},
           {icon:'🃏', label:'Your starter deck', tip:'A 20-card deck built from your faction’s cards — tweak it any time in Deck.'},
-          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Camp (your deck), the Nest and Notices on the map. The Arena opens on the next region.'},
+          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Camp (your deck). The Nest and the Notices wait further down the road, on Map 4.'}, // 2026-10-15: the Nest moved to Map 4 (and the Notices and the Arena had already moved on)
         ];
       } else {
         m.unlockedFights = []; m.unlockedActivities = [];
@@ -27508,7 +27522,9 @@ async function resolveRound(opts){
       if(isFirstClear){
         // First egg (2026-10-08): the first skirmish you clear on the fourth map leaves an egg in your Nest.
         // First egg on the 4th map in play order (2026-10-09: with Thistle Fields + Pebble Beach inserted, that is Sunken Hollow).
-        if(CONQUEST_MAPS[3] && m.conquestNode.mapId===CONQUEST_MAPS[3].id && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('water', CONQUEST_MAPS[3].id); } // Map 4 is Sunken Hollow (old maps first again, 2026-10-11 16:20); was: Map 3 is Lilypad Reach now (2026-10-11): a duck's speckled egg
+        // 2026-10-15: CONQUEST_MAPS[3] had drifted to Gannet Cliffs (Map 3); it is Map 4 by play order again, the map the Nest
+        // now opens on ("let's move Nest to map 4"), so the first guaranteed egg turns up alongside it.
+        if(mapIdAt(4) && m.conquestNode.mapId===mapIdAt(4) && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('water', mapIdAt(4)); } // Map 4 is Sunken Hollow (old maps first again, 2026-10-11 16:20); was: Map 3 is Lilypad Reach now (2026-10-11): a duck's speckled egg
       }
       // Free Base copy (2026-10-12, user D59: "First boss of each map"): a map's boss, first clear only, gives a copy of the
       // Base card you own the fewest of.
@@ -29242,7 +29258,8 @@ function rewardsPanelHTML(m){
   // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
   if(m.conquestCastleSpare){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Spare castle</div><div class="rw-row"><span class="rw-act" data-tip="Fuse it in the Forge (Castles) to bank progress toward its next levels">🏰 ${escapeHtml(m.conquestCastleSpare)}</span></div></div>`); }
   if(m.conquestKibbleEarned){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Kibble</div><div class="rw-row"><span class="rw-act" data-tip="Trains a Level-0 card to Level 1 in the Nest">🦴 ${m.conquestKibbleEarned} Kibble</span></div></div>`); }
-  if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}; secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Found</div><div class="rw-row"><span class="rw-act" data-tip="It's in your pack: place it in a hay nest in the Nest">${ek.icon || '🥚'} ${escapeHtml(ek.name || 'An egg')}</span></div></div>`); }
+  if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">Found</div><div class="rw-row"><span class="rw-act" data-tip="${escapeAttr(noNest || "It's in your pack: place it in a hay nest in the Nest")}">${ek.icon || '🥚'} ${escapeHtml(ek.name || 'An egg')}</span></div>${noNest ? `<p class="panel-sub rw-egg-note">${escapeHtml(noNest)}</p>` : ''}</div>`); }
   // Tutorial Complete (2026-10-13, user): part 1 unlocks only "Tutorial Part 2", part 2 only "Conquest Map"; no fight list.
   if(m.mode==='tutorial' && m.winner===1){
     const t2 = (m.tutorialStage||1) >= 2;
@@ -30769,7 +30786,7 @@ function bigBlowShake(ev){
   if(hp > 20) battlefieldShake(shakeStrengthForArrival(hp));
 }
 // Egg cards (2026-10-14): the kind of card an egg hatches into, in words.
-const EGG_HATCH_LABEL = {woodland:'woodland', bird:'Bird', otter:'Otter', scaly:'Reptile or Amphibian', bug:'Insect or Arachnid', water:'Fish or sea', beast:'Beast'};
+const EGG_HATCH_LABEL = {woodland:'woodland', bird:'Bird', otter:'Otter', scaly:'Reptile or Amphibian', bug:'Insect or Arachnid', water:'Fish or sea', beast:'Mammal'}; // beast: any mammal (2026-10-15)
 function eggKindLabel(d){ if(!d) return ''; if(d.hatchInto && d.hatchInto.defId){ const into = getCardDefs()[d.hatchInto.defId]; return into ? into.name : 'dragon'; } if(d.eggKind && EGG_HATCH_LABEL[d.eggKind]) return EGG_HATCH_LABEL[d.eggKind]; const h = d.hatchInto || {}; return h.any ? 'woodland' : [...(h.archetypes||[]), ...(h.species||[])].slice(0, 2).join(' or ') || 'beast'; }
 // The Dragonic Spire (2026-10-14, user: "Dragonic Spire - (imagine elden ring) - Skills, Dragon Lightning (monster hunter), and Wither
 // (Minecraft) -> the map's signature abilities"): a map still on the drawing board. Not playable yet; the Map Codex can list it.
@@ -33317,7 +33334,7 @@ function renderInventory(){
     ${(()=>{ const cap = shown([{key:'capsule', icon:'🔋', count:energyCapsules(), name:'Energy capsule', sub:'+' + ENERGY_CAPSULE_AMOUNT + ' Energy'}], 'en'); return cap.length ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slots(cap, '')}</div></section>` : ''; })()}
     <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-slots">${mat}</div></section>
     ${trail}
-    <section class="panel inv-sec"><h3>🪺 In the Nest <button type="button" class="btn small" data-inv-go="nest">Visit the Nest</button></h3><div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
+    <section class="panel inv-sec"><h3>🪺 In the Nest ${featureUnlockedSafe('nest') ? '<button type="button" class="btn small" data-inv-go="nest">Visit the Nest</button>' : `<small>🔒 the Nest opens on Map ${(FEATURE_SPOTS.find(x=> x.key === 'nest') || {mapNumber:4}).mapNumber}</small>`}</h3>${featureUnlockedSafe('nest') || !nestCells ? '' : `<p class="panel-sub">${escapeHtml(eggNeedsNestNote())}</p>`}<div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
     <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">Enchant</button></h3><div class="inv-slots">${crystals}</div></section>
     <section class="panel inv-sec"><h3>👛 Wallet</h3><div class="inv-grid">${wallet}</div></section>
   </div>`;
@@ -34249,6 +34266,7 @@ function nurseEligible(id){ const d = getCardDefs()[id]; if(!d || d.token || d.t
 // hatch our little eggs or place babies we rescue. They will grow up to units - it's random what they grow into, but at the
 // very least, we know what type of unit we will get"). Each egg or baby has a known type; it grows into a random card of
 // that type (Common to Rare, never a Base card). Babies are rescued after fights and grow faster than eggs hatch.
+const MAMMAL_SPECIES = ['Canid','Felid','Ursid','Cervid','Suid','Rodent','Lagomorph','Equid','Bovine','Primate','Mammal','Megafauna','Feline','Procyonid','Mustelid','Erinaceid','Herpestid','Hyaenid','Xenarthran','Bat','Pinniped','Cetacean'];
 const NEST_TYPES = {
   woodland: {name:'Woodland', icon:'🍂', test: d=> true},
   bird:     {name:'Bird', icon:'🪶', test: d=> (d.species||[]).includes('Bird') || (d.archetypes||[]).some(a=> ['Bird','Hummingbird','Owl','Eagle','Duck','Raven'].includes(a))},
@@ -34256,7 +34274,9 @@ const NEST_TYPES = {
   scaly:    {name:'Scaly', icon:'🦎', test: d=> (d.species||[]).some(x=> ['Reptile','Amphibian'].includes(x)) || (d.archetypes||[]).some(a=> ['Reptile','Snake','Frog','Turtle'].includes(a))},
   bug:      {name:'Bug', icon:'🐞', test: d=> (d.species||[]).some(x=> ['Insect','Arachnid'].includes(x)) || (d.archetypes||[]).some(a=> ['Insect','Arachnid','Bee','Ants'].includes(a))},
   water:    {name:'Water', icon:'🐟', test: d=> (d.species||[]).some(x=> ['Fish','Cetacean','Mollusc','Crustacean'].includes(x)) || (d.archetypes||[]).some(a=> ['Fish','Cetacean','Cephalopod'].includes(a))},
-  beast:    {name:'Beast', icon:'🐾', test: d=> (d.species||[]).some(x=> ['Canid','Felid','Ursid','Cervid','Suid','Rodent','Lagomorph','Equid','Bovine','Primate'].includes(x))},
+  // 2026-10-15 (user: "We also can get baby beasts - can grow into any mammalian."): every mammal species in cards.json, the same
+  // list as the Den Bundle's hatchInto (egg-beast). Otters (Mustelid) and whales (Cetacean) count too, as do bats and seals.
+  beast:    {name:'Beast', icon:'🐾', test: d=> (d.species||[]).some(x=> MAMMAL_SPECIES.includes(x))},
 };
 const EGG_KINDS = {
   woodland: {name:'Woodland Egg', icon:'🥚', hatchHours:8, type:'woodland'},
@@ -34302,9 +34322,19 @@ function rollEggDrop(node, mapId, firstClear){
   const kind = Object.keys(tally).sort((a,b)=> tally[b]-tally[a])[0] || 'woodland';
   grantEgg(kind, (node && node.key) || 'raid'); return kind;
 }
+// Eggs before the Nest (2026-10-15, user: "I think its okay to find eggs before Map 4 (through normal drops) but leave a comment
+// that we need to find a nest first"): eggs drop from fights on any map, Nest or not. They wait in the pack (placed:false) and
+// only start to warm once set in a nest, which needs the Nest page, opened on Map 4. So finding is never gated, only hatching,
+// and a player who finds one first is told where the Nest is.
+function eggNeedsNestNote(){
+  try{ if(featureUnlocked('nest')) return ''; }catch(e){ return ''; }
+  const sp = FEATURE_SPOTS.find(x=> x.key === 'nest'), n = sp ? sp.mapNumber : 4, m = sp && CONQUEST_MAPS.find(x=> x.id === sp.map);
+  return `An egg! You'll need a Nest to hatch it — there's one on Map ${n}${m ? ` (${m.name})` : ''}. It waits safely in your pack until then.`;
+}
 function grantEgg(kind, from){ const n = nestState(); const k = EGG_KINDS[kind] ? kind : 'woodland'; const now = Date.now();
   n.eggs.push({id:'egg'+now.toString(36)+Math.floor(Math.random()*1e4), kind:k, laidAt:now, hatchAt:null, placed:false, from: from||''}); saveNestState(n);
-  try{ showToast(`${EGG_KINDS[k].icon} You found a ${EGG_KINDS[k].name} (${NEST_TYPES[EGG_KINDS[k].type].name})! Set it in a nest in the Nest to warm it.`, 'ok'); }catch(e){} }
+  const noNest = eggNeedsNestNote();
+  try{ showToast(noNest ? `${EGG_KINDS[k].icon} ${noNest}` : `${EGG_KINDS[k].icon} You found a ${EGG_KINDS[k].name} (${NEST_TYPES[EGG_KINDS[k].type].name})! Set it in a nest in the Nest to warm it.`, 'ok'); }catch(e){} }
 function nestPlaced(n){ return (n || nestState()).eggs.filter(e=> e.placed !== false); }
 function nestPackedEggs(n){ return (n || nestState()).eggs.filter(e=> e.placed === false); }
 function placeEggInNest(eggId){ const n = nestState(), e = n.eggs.find(x=> x.id === eggId); if(!e || e.placed !== false) return false; if(nestPlaced(n).length >= NEST_SLOTS) return false;

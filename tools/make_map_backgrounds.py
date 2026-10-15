@@ -513,9 +513,16 @@ def mtut(rng):  # Tutorial (2026-10-13): a gentle training meadow, trampled prac
 PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz', 'me', 'mtut'))}
 
 
+# 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds. I think the wetter one makes sense for the next map."):
+# the Outskirts (m1, Map 0) now get the dry meadow painted for Thistlewood, and Thistlewood (mf, Map 1) the stream-and-pond
+# forest painted for the Outskirts. Painter AND seed follow the art, so a re-run reproduces the swapped files exactly.
+ART_SOURCE = {'m1': 'mf', 'mf': 'm1'}
+
+
 def make(map_id):
-    rng = np.random.default_rng(abs(hash(map_id)) % (2 ** 32) if False else sum(map(ord, map_id)) * 7919)
-    img = PAINTERS[map_id](rng)
+    src = ART_SOURCE.get(map_id, map_id)
+    rng = np.random.default_rng(abs(hash(src)) % (2 ** 32) if False else sum(map(ord, src)) * 7919)
+    img = PAINTERS[src](rng)
     os.makedirs(OUT, exist_ok=True)
     path = os.path.join(OUT, map_id + '.png')
     Image.fromarray(img, 'RGB').quantize(colors=48, method=Image.Quantize.MEDIANCUT, dither=Image.Dither.NONE).save(path, optimize=True)

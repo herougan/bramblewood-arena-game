@@ -1677,9 +1677,10 @@
      battlefieldMapClass() (arena_app.js) picks the class from matchState.conquestNode.mapId; any
      non-Conquest match (Skirmish-from-Home, PvC, Raid, tutorial, Sandbox) has no conquestNode and
      falls through to the plain var(--bg) rule above, unchanged. */
-  .battlefield.map-m1{background:radial-gradient(ellipse at 50% 20%, #4f7a3a, transparent 65%), linear-gradient(180deg, #3c6b34 0%, #274a26 55%, #1a3320 100%);}
+  /* 2026-10-15: m1 and mf swapped with their art (Map 0 is the meadow now, Map 1 the wet forest). */
+  .battlefield.map-m1{background:radial-gradient(ellipse at 50% 20%, #a6c95c, transparent 65%), linear-gradient(180deg, #7fa83e 0%, #557d2a 55%, #33521c 100%);}
   .battlefield.map-m2{background:radial-gradient(ellipse at 50% 15%, #3f8f96, transparent 65%), linear-gradient(180deg, #1f5b6b 0%, #163f52 55%, #0e2838 100%);}
-  .battlefield.map-mf{background:radial-gradient(ellipse at 50% 20%, #a6c95c, transparent 65%), linear-gradient(180deg, #7fa83e 0%, #557d2a 55%, #33521c 100%);}
+  .battlefield.map-mf{background:radial-gradient(ellipse at 50% 20%, #4f7a3a, transparent 65%), linear-gradient(180deg, #3c6b34 0%, #274a26 55%, #1a3320 100%);}
   .battlefield.map-mb{background:radial-gradient(ellipse at 50% 15%, #f3e2b0, transparent 60%), linear-gradient(180deg, #3f9fb5 0%, #c9b07a 45%, #8f7a4f 100%);}
   .battlefield.map-m3{background:radial-gradient(ellipse at 50% 15%, #d9793f, transparent 60%), linear-gradient(180deg, #5c3524 0%, #3a2420 55%, #241715 100%);}
   .battlefield.map-m4{background:radial-gradient(ellipse at 50% 20%, #5b6672, transparent 65%), linear-gradient(180deg, #333c46 0%, #23282f 55%, #14171b 100%);}
@@ -4414,7 +4415,17 @@
   .conquest-map-canvas.layout-editing .map-spot, .conquest-map-canvas.layout-editing .map-well, .conquest-map-canvas.layout-editing .map-cave{cursor:grab; touch-action:none; outline:2px dashed rgba(255,240,200,.75); outline-offset:3px; border-radius:12px; opacity:1;}
   .conquest-map-canvas.layout-editing .map-spot:hover, .conquest-map-canvas.layout-editing .map-cave:hover{transform:translate(-50%,-50%);}
   .conquest-map-canvas.layout-editing .ml-dragging{cursor:grabbing; z-index:20; box-shadow:0 0 0 4px var(--gold), 0 8px 20px rgba(0,0,0,.5);}
-  .map-theme-m1{--mt-a:#4a7c3f; --mt-b:#2f5a2a; --mt-c:#1c3d1c;}
+  /* 2026-10-15 (user: "Are there any submaps with no background? fill them in."): Clovermead, the Sunken Depths, the Mycelium
+     Deep and the Eye of the Volcano had art but no --mt-a/b/c palette, and the map background below reads var(--mt-a): an
+     undefined var makes the WHOLE background declaration invalid, so the art never drew. Every map now has a fallback palette,
+     and those maps get their own. */
+  .conquest-layout{--mt-a:#4a7c3f; --mt-b:#2f5a2a; --mt-c:#1c3d1c;}
+  .map-theme-mq{--mt-a:#8fc85a; --mt-b:#5f9a3a; --mt-c:#2f5a22;} .map-theme-mj{--mt-a:#1f7e93; --mt-b:#14566b; --mt-c:#0b2f3e;}
+  .map-theme-mz{--mt-a:#7a5aa0; --mt-b:#3f2e4d; --mt-c:#1f1626;} .map-theme-me{--mt-a:#b0401f; --mt-b:#5e1a0c; --mt-c:#260a04;}
+  .map-theme-mm{--mt-a:#3f5a3a; --mt-b:#24361f; --mt-c:#111a0e;}
+  /* 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds. I think the wetter one makes sense for the next map."):
+     the Outskirts (m1) now wear Thistlewood's sunny-meadow art and tint, Thistlewood (mf) the Outskirts' stream-and-pond forest. */
+  .map-theme-m1{--mt-a:#9ec455; --mt-b:#6f9a36; --mt-c:#3f5f1f;}
   .map-theme-m2{--mt-a:#2f7ca0; --mt-b:#1d5578; --mt-c:#123a54;}
   .map-theme-m3{--mt-a:#c05a2e; --mt-b:#8a3a1e; --mt-c:#4d1f10;}
   .map-theme-m4{--mt-a:#5a4a7c; --mt-b:#392c54; --mt-c:#1c1530;}
@@ -4429,7 +4440,7 @@
   .map-theme-m8{--mt-a:#384a2e; --mt-b:#212e1a; --mt-c:#10160c;}
   .map-theme-m9{--mt-a:#d9481f; --mt-b:#8f2a10; --mt-c:#401407;}
   .map-theme-m10{--mt-a:#cdd6de; --mt-b:#8a97a3; --mt-c:#47515a;} .map-theme-m21{--mt-a:#f2f4f8; --mt-b:#a7aec0; --mt-c:#5b6276;} .map-theme-mtut{--mt-a:#90c95a; --mt-b:#5c9a3a; --mt-c:#2f5a22;}
-  .map-theme-mf{--mt-a:#9ec455; --mt-b:#6f9a36; --mt-c:#3f5f1f;}  /* Thistle Fields (2026-10-09) */
+  .map-theme-mf{--mt-a:#4a7c3f; --mt-b:#2f5a2a; --mt-c:#1c3d1c;}  /* Thistlewood: the Outskirts' old forest tint, with its art (2026-10-15 swap) */
   .map-theme-mb{--mt-a:#ecd9a4; --mt-b:#3f9fb5; --mt-c:#1e5f78;}  /* Pebble Beach (2026-10-09) */
   /* The 0–20 road (2026-10-11) */
   .map-theme-mu{--mt-a:#9a6ad0; --mt-b:#4f3b3d; --mt-c:#2a1d22;}

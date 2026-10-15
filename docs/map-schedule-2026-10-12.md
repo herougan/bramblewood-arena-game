@@ -76,7 +76,7 @@ This applies your per-map table to the game. "Ally" means your side's pack (Otte
 
 | Feature | Before | Now |
 |---|---|---|
-| Nest | Map 1 | Map 2 |
+| Nest | Map 1 | Map 2, then Map 4 (2026-10-15, user: "Oh let's move Nest to map 4, it makes more sense in the mountains.") |
 | Notices | Map 1 | Map 4 |
 | Codex | With the Armoury, Map 1 | Its own spot, Map 7 |
 | Arena | Map 2 | Map 8 |
