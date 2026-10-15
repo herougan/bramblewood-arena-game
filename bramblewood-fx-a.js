@@ -272,6 +272,15 @@ M.critSparks = function(el, o){
     g.to(s, {x:`+=${Math.cos(a*D2R)*d}`, y:`+=${Math.sin(a*D2R)*d}`, scaleY:1, duration:.22, ease:'power3.out'}); g.to(s, {opacity:0, scaleY:.2, duration:.2, delay:.2, onComplete:()=> kill(s)}); }
   return done(500);
 };
+// Heavy blow (8+), B: after the hit-stop a shockwave ring (SkillFX.shockwave, built 2026-10-14 and never called) rolls out of the
+// card and shoves its neighbours a little. High effects only; once a round per target. (2026-10-15)
+M.heavyShock = function(el, o){
+  o = o || {}; const g = G(); if(!g || !el) return done(0); const c = centre(tileOf(el)), F = S();
+  if(F && F.shockwave) F.shockwave(el, {size:Math.max(160, c.w*3.2), duration:560, cards:o.cards || []});
+  else { ring(c.x, c.y, {color:'#fff4d8', size:c.w*2.6, w:4, glow:12, dur:520}); ring(c.x, c.y, {color:'#ffd27a', size:c.w*1.8, w:2, dur:420, delay:70}); }
+  flash(el, 'brightness(1.5) contrast(1.15)', 80);
+  return done(700);
+};
 M.critSparks_B = (el, o)=> M.critSparks(el, Object.assign({faction:'Otter'}, o));
 M.critSparks_C = (el, o)=> M.critSparks(el, Object.assign({faction:'Hummingbird'}, o));
 
@@ -366,8 +375,11 @@ M.impactMagic_C = function(el){
 };
 // Water: A spray and a caustic ripple; B a wave curls over the card and slaps it; C a burst of drops and a puddle ripple under it.
 M.impactWater = function(el, o){
-  o = o || {}; const c = centre(tileOf(el));
-  spray(c.x, c.y, {n:12, cls:'fxa-drop', a0:200, a1:340, d0:c.w*.3, d1:c.w*.7, grav:30, dur:.6, s0:1, s1:.7, ease:'power1.out'});
+  o = o || {}; const c = centre(tileOf(el)), g = G();
+  // 2026-10-15: a white-blue splash crown first, so it reads at phone size
+  if(g){ const sp = P('fxa-soft', '', c.x, c.y, {width:c.w*1.1, height:c.w*1.1, scale:.2, opacity:1}); sp.style.background = 'radial-gradient(circle, rgba(255,255,255,.95) 0, rgba(150,220,255,.8) 35%, rgba(47,155,224,.35) 58%, rgba(47,155,224,0) 70%)';
+    g.timeline({onComplete:()=> kill(sp)}).to(sp, {scale:1, duration:.14, ease:'power3.out'}).to(sp, {opacity:0, scale:1.2, duration:.3}); }
+  spray(c.x, c.y, {n:14, cls:'fxa-drop', size:()=> rnd(7, 10), style:{height:'13px'}, a0:200, a1:340, d0:c.w*.35, d1:c.w*.8, grav:34, dur:.65, s0:1, s1:.7, ease:'power1.out'});
   ring(c.x, c.y, {color:'rgba(170,230,255,.95)', size:c.w*1.3, sy:.55, w:3, dur:520}); ring(c.x, c.y, {color:'rgba(120,200,255,.8)', size:c.w*.9, sy:.55, w:2, dur:480, delay:120});
   flash(el, 'brightness(1.15) saturate(1.3) hue-rotate(-15deg)', 110);
   return done(800);
@@ -415,12 +427,12 @@ M.IMPACT = {physical:M.impactPhysical, heat:M.impactHeat, cold:M.impactCold, aci
 // cold → SkillFX.frostBolt (an ice shard), poison → SkillFX.dart (a dripping green dart), acid → SkillFX.boltGlob acid spit; stone,
 // ember, spore, star, droplet and a white streak are drawn here. Each arcs, trails, and lands with its type's impact.
 css('missile', `
-.fxa-stone{width:12px; height:11px; border-radius:45% 55% 50% 50%; background:radial-gradient(circle at 35% 30%, #d8d0c4, #7d7468 60%, #4a443d); box-shadow:0 1px 2px rgba(0,0,0,.5);}
-.fxa-ember{width:14px; height:14px; border-radius:50%; background:radial-gradient(circle, #fff6c8 0, #ffb347 40%, #ff5a1f 75%); box-shadow:0 0 12px 4px rgba(255,120,30,.7);}
-.fxa-spore{width:14px; height:14px; border-radius:50%; background:radial-gradient(circle, #efe3ff 0, #a383d6 45%, #5a3e86 80%); box-shadow:0 0 10px 3px rgba(160,120,220,.6);}
-.fxa-starm{font-size:18px; color:#ffe28a; text-shadow:0 0 8px #a46bff, 0 0 3px #fff;}
-.fxa-dropm{width:11px; height:15px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:linear-gradient(#f0fdff, #2f9be0); box-shadow:0 0 8px rgba(80,180,255,.7);}
-.fxa-whitem{width:34px; height:3px; border-radius:3px; background:linear-gradient(90deg, rgba(255,255,255,0), #fff); box-shadow:0 0 8px #fff;}
+.fxa-stone{width:15px; height:14px; border-radius:45% 55% 50% 50%; background:radial-gradient(circle at 35% 30%, #f2ece2, #9a9184 55%, #4a443d); box-shadow:0 0 0 1.5px rgba(30,24,18,.75), 0 2px 4px rgba(0,0,0,.55);}
+.fxa-ember{width:16px; height:16px; border-radius:50%; background:radial-gradient(circle, #fff6c8 0, #ffb347 40%, #ff5a1f 75%); box-shadow:0 0 12px 4px rgba(255,120,30,.7);}
+.fxa-spore{width:16px; height:16px; border-radius:50%; background:radial-gradient(circle, #efe3ff 0, #a383d6 45%, #5a3e86 80%); box-shadow:0 0 10px 3px rgba(160,120,220,.6);}
+.fxa-starm{font-size:22px; color:#ffe28a; text-shadow:0 0 8px #a46bff, 0 0 3px #fff;}
+.fxa-dropm{width:13px; height:18px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:linear-gradient(#f0fdff, #2f9be0); box-shadow:0 0 8px rgba(80,180,255,.7);}
+.fxa-whitem{width:42px; height:4px; border-radius:3px; background:linear-gradient(90deg, rgba(255,255,255,0), #fff); box-shadow:0 0 8px #fff;}
 `);
 const MISSILE = {physical:{cls:'fxa-stone', arc:.35, trail:'rgba(200,180,150,.6)'}, heat:{cls:'fxa-ember', arc:.2, trail:'#ffb347'}, decay:{cls:'fxa-spore', arc:.25, trail:'rgba(200,170,240,.7)'},
   magic:{cls:'fxa-starm', html:'✦', arc:.15, trail:'#ffe28a', spin:true}, water:{cls:'fxa-dropm', arc:.3, trail:'rgba(180,230,255,.8)'}, true:{cls:'fxa-whitem', arc:0, trail:null, aim:true}};
@@ -436,7 +448,7 @@ M.missile = function(from, to, o){
   const p = P(L.cls, L.html || '', a.x, a.y); let k = 0, last = a;
   g.timeline({onComplete:()=>{ kill(p); land(); }}).to(st, {t:1, duration:flight/1000, ease:'power1.in', onUpdate:()=>{
     const q = qpt(a, m, aim, st.t); g.set(p, {x:q.x, y:q.y, rotation:L.aim ? angTo(last, q) : L.spin ? st.t*540 : 0});
-    if(L.trail && !(k++ % 2)){ const d = P('fxa-dot', '', q.x, q.y, {width:6, height:6, opacity:.85}); d.style.background = L.trail; g.to(d, {scale:.2, opacity:0, duration:.35, onComplete:()=> kill(d)}); }
+    if(L.trail && !(k++ % 2)){ const d = P('fxa-dot', '', q.x, q.y, {width:9, height:9, opacity:.9}); d.style.background = L.trail; d.style.boxShadow = '0 0 4px ' + L.trail; g.to(d, {scale:.2, opacity:0, duration:.4, onComplete:()=> kill(d)}); }
     last = q; }});
   return done(flight + 900);
 };
@@ -1082,10 +1094,12 @@ css('bell', `.fxa-bell{font-size:34px; filter:drop-shadow(0 3px 4px rgba(0,0,0,.
 // Player Stun: a bell tolls over the stunned side, its half of the field greys out and chains rattle across its castle.
 M.bellToll = function(castle, o){
   o = o || {}; const g = G(); if(!g || !castle) return done(0); const c = centre(tileOf(castle)), area = o.area ? o.area.getBoundingClientRect() : null;
-  const b = P('fxa-bell', '🔔', c.x, c.r.top - 10, {transformOrigin:'50% 0%', opacity:0, y:c.r.top - 40});
-  g.timeline({onComplete:()=> kill(b)}).to(b, {opacity:1, y:c.r.top - 10, duration:.2, ease:'back.out(2)'}).to(b, {rotation:28, duration:.14, ease:'sine.out'}).to(b, {rotation:-28, duration:.24, ease:'sine.inOut'})
+  // 2026-10-15: the bell hangs inside the window (the enemy castle sits on the top edge, so "above it" was clipped)
+  const by = Math.max(30, c.r.top + c.h*.1);
+  const b = P('fxa-bell', '🔔', c.x, by, {transformOrigin:'50% 10%', opacity:0, y:by - 26});
+  g.timeline({onComplete:()=> kill(b)}).to(b, {opacity:1, y:by, duration:.2, ease:'back.out(2)'}).to(b, {rotation:28, duration:.14, ease:'sine.out'}).to(b, {rotation:-28, duration:.24, ease:'sine.inOut'})
     .to(b, {rotation:20, duration:.22, ease:'sine.inOut'}).to(b, {rotation:-12, duration:.2}).to(b, {rotation:0, opacity:0, duration:.3});
-  [0, 1, 2].forEach(i=> ring(c.x, c.r.top + 6, {color:'rgba(255,230,160,.9)', size:c.w*(1.6 + i*.6), w:3, dur:700, delay:200 + i*260}));
+  [0, 1, 2].forEach(i=> ring(c.x, by, {color:'rgba(255,230,160,.9)', size:c.w*(1.6 + i*.6), w:3, dur:700, delay:200 + i*260}));
   if(area){ const gr = layer('fxa-grey'); g.set(gr, {x:area.left, y:area.top, width:area.width, height:area.height, opacity:0});
     g.timeline({onComplete:()=> kill(gr)}).to(gr, {opacity:1, duration:.25, delay:.2}).to(gr, {opacity:0, duration:.4, delay:.9}); }
   const ch = P('fxa-chain', '⛓⛓⛓⛓⛓', c.x, c.y, {rotation:-20, scaleX:0, opacity:0});
@@ -1316,7 +1330,36 @@ const rowCards = el=>{ const row = el && el.closest && el.closest('#rowEnemy, #r
 const sideRow = side=> document.getElementById(side === 'A' ? 'rowMine' : 'rowEnemy');
 // The game's battlefield point-light has no colour for magic, water or true damage (they fell back to physical); add them once.
 let lightsDone = false;
-function ensureLights(){ if(lightsDone) return; try{ if(typeof LIGHT_COLORS !== 'undefined'){ ['magic', 'water', 'true'].forEach(k=>{ if(!LIGHT_COLORS[k]) LIGHT_COLORS[k] = TYPE[k].light; }); lightsDone = true; } }catch(e){ lightsDone = true; } }
+function ensureLights(){ ensureDmgTypes(); if(lightsDone) return; try{ if(typeof LIGHT_COLORS !== 'undefined'){ ['magic', 'water', 'true'].forEach(k=>{ if(!LIGHT_COLORS[k]) LIGHT_COLORS[k] = TYPE[k].light; }); lightsDone = true; } }catch(e){ lightsDone = true; } }
+// 2026-10-15: every damage type gets its own number colour and hit-burst glyph. The game's DMG_ICON had no magic, water or
+// true entry (their numbers were plain white with no icon) and drew acid and decay in poison green; ELEMENTAL_BURST_GLYPH
+// had no magic or water. Both tables are extended in place once (arena_app.js is untouched); the colours come from TYPE.
+const DMG_TYPES = {acid:['🧪', 'acid'], decay:['🦠', 'decay'], magic:['🪄', 'magic'], water:['💧', 'water'], true:['✧', 'true']};
+M.DMG_TYPES = DMG_TYPES;
+css('dmgnum', `
+.dmg-float.acid{--g1:#fbffd6; --g2:#b6d81e; --edge:#1f2602;}
+.dmg-float.decay{--g1:#f1e6ff; --g2:#8e64c4; --edge:#1c0d30;}
+.dmg-float.magic{--g1:#fff4cc; --g2:#a46bff; --edge:#1d0a3a;}
+.dmg-float.water{--g1:#ecfbff; --g2:#2f9be0; --edge:#04203a;}
+.dmg-float.true{--g1:#ffffff; --g2:#d9dde2; --edge:#000000;}
+.dmg-float.true .df-ico{text-shadow:0 0 6px #fff, 0 2px 0 rgba(0,0,0,.6);}
+.fx-burst-magic{--elemental-glow: rgba(170,110,255,.9);}
+.fx-burst-water{--elemental-glow: rgba(70,170,240,.9);}
+.fx-burst-true{--elemental-glow: rgba(255,255,255,.95);}
+`);
+let dmgTypesDone = false;
+function ensureDmgTypes(){
+  if(dmgTypesDone) return;
+  try{
+    if(typeof DMG_ICON === 'undefined') return;
+    Object.keys(DMG_TYPES).forEach(k=>{ const cur = DMG_ICON[k]; if(!cur || cur[1] === 'poison') DMG_ICON[k] = DMG_TYPES[k].slice(); });
+    if(typeof ELEMENTAL_BURST_GLYPH !== 'undefined') ['magic', 'water', 'true'].forEach(k=>{ if(!ELEMENTAL_BURST_GLYPH[k]) ELEMENTAL_BURST_GLYPH[k] = DMG_TYPES[k][0]; });
+    dmgTypesDone = true;
+  }catch(e){ dmgTypesDone = true; }
+}
+M.ensureDmgTypes = ensureDmgTypes;
+if(document.readyState && document.readyState !== 'loading') later(ensureDmgTypes, 0);
+else if(document.addEventListener) document.addEventListener('DOMContentLoaded', ()=>{ ensureDmgTypes(); ensureLights(); });
 // Per-match notes (an Ice/Volley arrow in flight, a castle ballista bolt about to fire).
 let ST = null;
 const state = env=>{ if(!ST || ST.match !== env.match) ST = {match:env.match, arrow:{}, ballista:{}}; return ST; };
@@ -1354,6 +1397,7 @@ M.onEvent = function(ev, env){
     // Resist ½ / Weak ×2 / Immune: say why the number is small or big (readable, so Low effects and up)
     if(T === 'hit' && low){ const f = hitFactor(ev, defs);
       if(f !== 1) env.at((ev.quake ? 60 : hitMs) + 40, ()=>{ const t2 = el(ev.targetUid) || tgt; if(f === 0) M.immuneHit(t2); else if(f < 1) M.resistHit(t2); else M.weakHit(t2); }); }
+    if(T === 'hit' && (ev.dmg || 0) >= 8 && !ev.armorBlocked && high && env.once('heavyshock' + ev.targetUid)) env.at(hitMs + 80, ()=>{ const t2 = el(ev.targetUid); if(t2) M.heavyShock(t2, {cards:rowCards(t2).filter(x=> x !== t2)}); });
     if(ev.crit && !ev.ambush && med){ const fa = factionOf(defs[ev.attDefId]); if(fa) env.at(hitMs, ()=> M.critSparks(tgt, {colors:fa.sparks})); }
     if(T === 'hitHQ' && ev.fork && med) env.at(Math.max(0, hitMs - 140), ()=> M.prongCastle(att, castle, {kind:ev.prong, delay:140}));
     if(ev.ambush && att && med) M.ambushStrike(att, tgt);
@@ -1421,9 +1465,10 @@ M.onEvent = function(ev, env){
     case 'skipTurn': if(ev.reason === 'reload'){ const t = el(ev.uid); if(t && env.once('reloadwait' + ev.uid)) M.reloadDial(t, {part:true}); } break;
     case 'fieldTick':
       if(ev.field === 'irradiated' && ev.srcUid != null && env.once('radsrc' + ev.srcUid)){ const s = el(ev.srcUid); if(s) M.radPulse(s); }
-      if(ev.field === 'heat' && env.once('dryspared')){ const rcs = (env.match && env.match.replayCards) || {};
+      // 2026-10-15: the engine's Scorching field id is 'heatwave' (was matched as 'heat', so it never fired)
+      if((ev.field === 'heatwave' || ev.field === 'heat') && env.once('dryspared')){ const rcs = (env.match && env.match.replayCards) || {};
         Object.keys(rcs).forEach(u=>{ const rc = rcs[u], d = rc && defs[rc.defId]; if(!rc || !(rc.hp > 0) || !d) return; const e = d.effects || {};
-          if(e.dry || [...(d.resist || []), ...(e.resist || [])].some(r=> r === 'heat' || r === 'fire')){ const t = el(u); if(t) M.heatBend(t); } }); }
+          if(e.dry || hitFactor({targetDefId:rc.defId, dmgType:'heat'}, defs) < 1){ const t = el(u); if(t) M.heatBend(t); } }); }
       break;
     case 'play': if(fxOf(ev.defId).keenEye && !ev.reserve){ env.at(600, ()=>{ const k = el(ev.uid); if(!k) return; const myRow = k.closest('#rowEnemy, #rowMine'); const other = myRow && document.getElementById(myRow.id === 'rowMine' ? 'rowEnemy' : 'rowMine');
       const rcs = (env.match && env.match.replayCards) || {}; const ts = other ? [...other.querySelectorAll('.board-card[data-uid]')].filter(b=>{ const rc = rcs[b.getAttribute('data-uid')]; return rc && ((defs[rc.defId] || {}).effects || {}).changeling; }) : [];
@@ -1445,6 +1490,9 @@ M.onEvent = function(ev, env){
       else if(k === 'shed'){ const s = t || self; if(s) M.skinShed(s, {molt:!!ev.molt}); }
       else if(k === 'firstBlood' && t) M.firstBloodSplash(t);
       else if(k === 'bludgeon' && t) M.bludgeonBreak(t, {broke:ev.broke});
+      // 2026-10-15: Pack chains are live since 2026-10-14 (no statusFx pack any more): a pack unit whose chain grows howls instead.
+      else if(k === 'phaseGrow' && self && (fxOf(ev.attDefId).pack || fxOf(ev.attDefId).packLeader) && ((env.match && env.match.replayCards && env.match.replayCards[ev.attUid]) || {}).packChain > 1){
+        if(env.once('packhowl' + ev.attUid)) env.at(120, ()=>{ const s2 = el(ev.attUid); if(s2){ const rcs = env.match.replayCards || {}; M.packHowl(s2, rowCards(s2).filter(b=> ((rcs[b.getAttribute('data-uid')] || {}).packChain || 0) > 0)); } }); }
       else if((k === 'phaseGrow' || k === 'phaseFade') && self){ const e = fxOf(ev.attDefId), key = Object.keys(COND).find(c=> e[c] || (c === 'loyal' && e.loyalGrant) || (c === 'usurper' && e.usurperGrant) || (c === 'packChain' && (env.match && env.match.replayCards && (env.match.replayCards[ev.attUid] || {}).packChain)));
         if(key && env.once('cond' + k + ev.attUid)) M.condAura(self, {kind:key, grow:k === 'phaseGrow'}); }
       break; }

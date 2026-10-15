@@ -3,6 +3,9 @@
 // the board stage. Looks that live only inside arena_app.js (the lunge, flashDmg, the miss callout, CSS-class flourishes) are
 // replayed here with the same timings and the game's own CSS classes, so the "now" variant is what a fight shows.
 // Contract and checklist: docs/effects-lab-contract.md. Effect code: bramblewood-fx-a.js.
+// 2026-10-15: the lab's synced floatText reads the game's floatDetachDepth (arena_app.js), which sync_fx_src.py doesn't copy, so
+// every ctx.float threw (swallowed) and no damage number showed in any demo. A global 0 is the game's value outside upkeep.
+if(typeof window.floatDetachDepth === 'undefined') window.floatDetachDepth = 0;
 (function(){
 const R = FXLAB.register, X = ()=> window.FX.A, S = ()=> window.SkillFX, U = ()=> window.UnitFX;
 const T = {windup:390, strike:570, projectile:690, impactPad:180};               // animMs() at 1×
@@ -26,7 +29,7 @@ const lean = (a, b)=> Math.max(-16, Math.min(16, (C(b).x - C(a).x)*.12));
 // flashDmg + impactSquash: recoil, the typed number, a squash.
 const DMG_ICON = {poison:['☠️', 'poison'], acid:['🧪', 'poison'], heat:['🔥', 'heat'], cold:['❄️', 'cold'], decay:['🦠', 'poison']};
 function flashDmg(ctx, el, dmg, type, crit, blocked){
-  const di = DMG_ICON[type];
+  const di = (X() && X().DMG_TYPES && X().DMG_TYPES[type]) || DMG_ICON[type]; // 2026-10-15: every type has its own number colour (FX.A.DMG_TYPES)
   if(blocked) ctx.float(el, '🛡 0', 'blocked'); else if(crit) ctx.float(el, '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); else ctx.float(el, (di ? di[0] + ' ' : '') + '-' + dmg, di ? di[1] : '');
   try{ if(typeof recoilEl === 'function') recoilEl(el, crit ? 1.5 : .9); }catch(e){}
   const t = tileOf(el), G = g(); if(G && t) G.timeline().to(t, {scaleX:1.06, scaleY:.92, y:-5, duration:.06}).to(t, {scaleX:1, scaleY:1, y:0, duration:.38, ease:'elastic.out(1, 0.45)', clearProps:'transform'});
@@ -51,6 +54,14 @@ const P = (ctx, ms)=> ctx.wait(ms || 1200);
 const reg = (id, hook, variants, note)=> R({id, stage:'board', inGameHook:hook, note, variants:variants.map(([key, label, play, extra])=> Object.assign({key, label, play}, extra || {}))});
 const LIVE = 'onEvent (bramblewood-fx-a.js): ';
 
+// 2026-10-15: where the in-game hook lives for entries whose demo is in _existing.js
+[['atk-fire-arrow', 'renderVfxForEvent → ranged hit with matchState.pendingArrow {fire}: SkillFX.bowShot({fire})'],
+ ['atk-backstab', 'renderVfxForEvent → hit {backstab}: SkillFX.backstab (dagger flash from the side it came from)'],
+ ['atk-boomerang-throw', 'renderVfxForEvent → hit by a Boomerang / Bananarang / Anti-Air unit: SkillFX.boomerang'],
+ ['sk-shield-up', 'sixthPassVfx → statusFx unitShield: SkillFX.shieldUp'],
+ ['sk-shield-call', 'renderVfxForEvent → spawn {cause:shieldCall}: SkillFX.shieldDrop'],
+].forEach(([id, h])=>{ const r = FXLAB.get(id); if(r && !r.inGameHook) r.inGameHook = h; });
+
 // =================================================== attacks ===================================================
 reg('atk-melee-lunge', 'animateAttacker (A is the live lunge; B–D are faction takes to choose from)', [
   ['A', 'Now: lean back, lunge, settle', ctx=>{ const a = mine(ctx)[1], t = foe(ctx)[1]; lunge(a, true, {leanX:lean(a, t)}); return ctx.wait(T.windup).then(()=>{ flashDmg(ctx, t, 3); return P(ctx, 900); }); }],
@@ -66,8 +77,9 @@ reg('atk-impact', 'flashDmg + impactSquash (A); B–D: onEvent hit, from the car
   ['C', 'Weak ×2: red starburst and crack, "×2 Weak"', ctx=> melee(ctx, (a, t)=>{ ctx.sound('hitAt', 8, true); flashDmg(ctx, t, 8, 'cold'); X().weakHit(t); }).then(()=> P(ctx, 1000))],
   ['D', 'Immune: it bounces off a bubble', ctx=> melee(ctx, (a, t)=>{ ctx.sound('clang'); ctx.float(t, '0', 'blocked'); X().immuneHit(t); }).then(()=> P(ctx, 1000))],
 ], 'Resisted and weak hits were unexplained numbers; B–D say why (they play at every Effects level above None).');
-reg('atk-heavy-hitstop', 'hitStop(70) + battleLightAt big', [['A', 'Now: the blow freezes a beat, then lands', ctx=> melee(ctx, (a, t)=>{ ctx.sound('hitAt', 9, true); const G = g(), tt = tileOf(t);
-  G.timeline().to(tt, {scaleX:1.1, scaleY:.86, duration:.05}).to(tt, {duration:.07}).to(tt, {scaleX:1, scaleY:1, duration:.4, ease:'elastic.out(1, .4)', clearProps:'transform'}); flashDmg(ctx, t, 9); }).then(()=> P(ctx, 900))]]);
+reg('atk-heavy-hitstop', 'hitStop(70) + battleLightAt big (A); B: onEvent hit for 8+ (High effects): SkillFX.shockwave rolls out and shoves the neighbours', [['A', 'Now: the blow freezes a beat, then lands', ctx=> melee(ctx, (a, t)=>{ ctx.sound('hitAt', 9, true); const G = g(), tt = tileOf(t);
+  G.timeline().to(tt, {scaleX:1.1, scaleY:.86, duration:.05}).to(tt, {duration:.07}).to(tt, {scaleX:1, scaleY:1, duration:.4, ease:'elastic.out(1, .4)', clearProps:'transform'}); flashDmg(ctx, t, 9); }).then(()=> P(ctx, 900))],
+  ['B', 'Freeze, then a shockwave ring shoves the neighbours (SkillFX.shockwave)', ctx=> melee(ctx, (a, t)=>{ ctx.sound('hitAt', 9, true); X().heavyShock(t, {cards:foe(ctx).filter(x=> x !== t)}); flashDmg(ctx, t, 9); }).then(()=> P(ctx, 1000))]]);
 reg('atk-big-blow-shake', 'bigBlowShake → battlefieldShake', [['A', 'Now: the battlefield jitters (scaled to damage)', ctx=> melee(ctx, (a, t)=>{ ctx.sound('hitAt', 30, true); flashDmg(ctx, t, 30); const bf = W(ctx).el, G = g(), kf = [];
   for(let i = 0; i < 9; i++){ const k = 1 - i/9; kf.push({x:(Math.random()*2 - 1)*6*k, y:(Math.random()*2 - 1)*4*k, rotation:(Math.random()*2 - 1)*.5*k, duration:.045}); } G.to(bf, {keyframes:kf.concat([{x:0, y:0, rotation:0, duration:.05}]), clearProps:'transform'}); }).then(()=> P(ctx, 900))]]);
 reg('atk-crit', 'flashDmg crit (A); B/C: onEvent crit hit by an Otter / Hummingbird (also ants, bees, volcanic)', [
@@ -79,19 +91,19 @@ reg('atk-armor-block-full', 'SkillFX.armorBlock + clang', [['A', 'Now: steel pla
 reg('atk-armor-block-partial', 'SkillFX.armorBlock partial', [['A', 'Now: partial soak', ctx=> melee(ctx, (a, t)=>{ ctx.sound('hitAt', 2, false); S().armorBlock(t, {from:90, partial:true}); flashDmg(ctx, t, 2); }).then(()=> P(ctx, 900))]]);
 // damage types
 const typeNow = (type, glyph)=> ctx=>{ const a = mine(ctx)[1], t = foe(ctx)[1]; return ctx.wait(T.windup).then(()=>{ glyphShot(a, t, glyph); return ctx.wait(T.projectile); }).then(()=>{ ctx.sound('hitAt', 3, false); flashDmg(ctx, t, 3, type); return P(ctx, 900); }); };
-const typeNew = fn=> ctx=> melee(ctx, (a, t)=>{ ctx.sound('hitAt', 3, false); fn(t); }).then(()=> P(ctx, 1100));
-reg('atk-dmgtype-physical', 'battleLightAt + dmgGlyph (A); B is a proposal', [['A', 'Now: warm light, ➶ glyph', typeNow('physical', '➶')], ['B', 'Dust and splinters on impact', typeNew(t=> X().impactPhysical(t))]]);
-reg('atk-dmgtype-heat', 'battleLightAt + dmgGlyph (A); B is a proposal', [['A', 'Now: orange light, 🔥 glyph', typeNow('heat', '🔥')], ['B', 'Embers fly up on impact', typeNew(t=> X().impactHeat(t))]]);
-reg('atk-dmgtype-cold', 'battleLightAt + dmgGlyph (A); B is a proposal', [['A', 'Now: blue light, ❄ glyph', typeNow('cold', '❄')], ['B', 'Frost glints and breath vapour', typeNew(t=> X().impactCold(t))]]);
-reg('atk-dmgtype-acid', LIVE + 'hit with dmgType acid (Medium+)', [['A', 'It fizzes: bubbles and smoking pit marks', typeNew(t=> X().impactAcid(t))], ['B', 'Old: acid light, 🧪 glyph', typeNow('acid', '🧪')]]);
-reg('atk-dmgtype-poison', LIVE + 'hit with dmgType poison (Medium+)', [['A', 'Toxic green puff, dripping', typeNew(t=> X().impactPoison(t))], ['B', 'Old: green light, ☠ glyph', typeNow('poison', '☠')]]);
-reg('atk-dmgtype-decay', LIVE + 'hit with dmgType decay (Medium+)', [['A', 'Violet mould blooms, spores drift', typeNew(t=> X().impactDecay(t))], ['B', 'Old: violet light, 🦠 glyph', typeNow('decay', '🦠')]]);
+const typeNew = (fn, type)=> ctx=> melee(ctx, (a, t)=>{ ctx.sound('hitAt', 3, false); fn(t); if(type) flashDmg(ctx, t, 3, type); }).then(()=> P(ctx, 1100));
+reg('atk-dmgtype-physical', 'battleLightAt + dmgGlyph (A); B is a proposal', [['A', 'Now: warm light, ➶ glyph', typeNow('physical', '➶')], ['B', 'Dust and splinters on impact', typeNew(t=> X().impactPhysical(t), 'physical')]]);
+reg('atk-dmgtype-heat', 'battleLightAt + dmgGlyph (A); B is a proposal', [['A', 'Now: orange light, 🔥 glyph', typeNow('heat', '🔥')], ['B', 'Embers fly up on impact', typeNew(t=> X().impactHeat(t), 'heat')]]);
+reg('atk-dmgtype-cold', 'battleLightAt + dmgGlyph (A); B is a proposal', [['A', 'Now: blue light, ❄ glyph', typeNow('cold', '❄')], ['B', 'Frost glints and breath vapour', typeNew(t=> X().impactCold(t), 'cold')]]);
+reg('atk-dmgtype-acid', LIVE + 'hit with dmgType acid (Medium+)', [['A', 'It fizzes: bubbles and smoking pit marks', typeNew(t=> X().impactAcid(t), 'acid')], ['B', 'Old: acid light, 🧪 glyph', typeNow('acid', '🧪')]]);
+reg('atk-dmgtype-poison', LIVE + 'hit with dmgType poison (Medium+)', [['A', 'Toxic green puff, dripping', typeNew(t=> X().impactPoison(t), 'poison')], ['B', 'Old: green light, ☠ glyph', typeNow('poison', '☠')]]);
+reg('atk-dmgtype-decay', LIVE + 'hit with dmgType decay (Medium+)', [['A', 'Violet mould blooms, spores drift', typeNew(t=> X().impactDecay(t), 'decay')], ['B', 'Old: violet light, 🦠 glyph', typeNow('decay', '🦠')]]);
 reg('atk-dmgtype-magic', LIVE + 'hit with dmgType magic (A); the battle light gets a violet magic colour', [
-  ['A', 'Rune circle spins down and bursts', typeNew(t=> X().impactMagic(t))], ['B', 'Prism starburst', typeNew(t=> X().impactMagic_B(t))], ['C', 'Glyph motes orbit and collapse', typeNew(t=> X().impactMagic_C(t))]]);
+  ['A', 'Rune circle spins down and bursts', typeNew(t=> X().impactMagic(t), 'magic')], ['B', 'Prism starburst', typeNew(t=> X().impactMagic_B(t), 'magic')], ['C', 'Glyph motes orbit and collapse', typeNew(t=> X().impactMagic_C(t), 'magic')]]);
 reg('atk-dmgtype-water', LIVE + 'hit with dmgType water (A); the battle light gets a water colour', [
-  ['A', 'Spray and a caustic ripple', typeNew(t=> X().impactWater(t))], ['B', 'A wave curls over and slaps it', typeNew(t=> X().impactWater_B(t, {dir:1}))], ['C', 'Drop burst, puddle ripple below', typeNew(t=> X().impactWater_C(t))]]);
+  ['A', 'Spray and a caustic ripple', typeNew(t=> X().impactWater(t), 'water')], ['B', 'A wave curls over and slaps it', typeNew(t=> X().impactWater_B(t, {dir:1}), 'water')], ['C', 'Drop burst, puddle ripple below', typeNew(t=> X().impactWater_C(t), 'water')]]);
 reg('atk-dmgtype-true', LIVE + 'hit with dmgType true (A); white battle light', [
-  ['A', 'A white crack across the card', typeNew(t=> X().impactTrue(t))], ['B', 'Negative flash, hairline slash', typeNew(t=> X().impactTrue_B(t))], ['C', 'A white void ring folds in, then out', typeNew(t=> X().impactTrue_C(t))]]);
+  ['A', 'A white crack across the card', typeNew(t=> X().impactTrue(t), 'true')], ['B', 'Negative flash, hairline slash', typeNew(t=> X().impactTrue_B(t), 'true')], ['C', 'A white void ring folds in, then out', typeNew(t=> X().impactTrue_C(t), 'true')]]);
 reg('atk-ranged-projectile', LIVE + 'ranged hit with no arrow or bolt: a real missile per type (the emoji glyph is hidden)', [
   ['A', 'Stone (physical)', ctx=> shoot(ctx, 'physical')], ['B', 'Ember (heat)', ctx=> shoot(ctx, 'heat')], ['C', 'Ice shard (cold, SkillFX.frostBolt)', ctx=> shoot(ctx, 'cold')],
   ['D', 'Dart (poison, SkillFX.dart)', ctx=> shoot(ctx, 'poison')], ['E', 'Spore ball (decay) and star (magic)', ctx=> shoot(ctx, 'decay').then(()=> shoot(ctx, 'magic', {to:foe(ctx)[0]}))],
