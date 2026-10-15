@@ -41,6 +41,7 @@ run node tests/keywords-2026-10-15e.js
 run node tests/keywords-2026-10-15r.js   # 2026-10-15 evening: rules (Guardian, Illuminate, Bounty, sudden death 20/25, new field effects, Nursing, hidden skirmishes)
 run node tests/keywords-2026-10-15p1.js
 run node tests/keywords-2026-10-15w3.js   # 2026-10-16 content: the Tower (levels past the top, battle rating), the jumpers, Snapstick Turtle
+run node tests/keywords-2026-10-16a.js   # W2 (2026-10-16): the new skills, Bludgeon / Molting / Cleave, Taunt and the Sheep, Cloudy, the deck-out rule
 run node tests/regen-fullhp-2026-10-14.js
 run node tests/night-2026-10-12.js
 run node tests/phase-status.js

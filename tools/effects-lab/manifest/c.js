@@ -50,7 +50,7 @@ R({id:'st-cower-skip', stage:'board', inGameHook:"existing: statusFx cower → S
 // The game's own looks (live functions from the lab's copy of the game code).
 // (a flyer needs flyerFallVfx, which older lab copies lack: it then takes the plain topple)
 const fall = el=>{ if(!live('fallDeathVfx')) return; if(!live('flyerFallVfx')) el.classList.remove('is-flying'); W.fallDeathVfx(el, 620); };
-R({id:'death-fall', stage:'board', inGameHook:"deathVfx → fallDeathVfx (physical / unknown cause)", variants:[{key:'A', label:'Topple, leaves and dust (live)', play:ctx=>{ ctx.sound('death'); fall(foe(ctx)); return ctx.wait(1400); }}]});
+R({id:'death-fall', stage:'board', inGameHook:"deathVfx → fallDeathVfx (physical / unknown cause)", variants:[{key:'A', label:'Straight drop, leaves and dust (live; 2026-10-16, was a topple)', play:ctx=>{ ctx.sound('death'); fall(foe(ctx)); return ctx.wait(1400); }}]});
 R({id:'death-flyer-fall', stage:'board', inGameHook:"deathVfx → fallDeathVfx → flyerFallVfx (is-flying)", note:'Needs flyerFallVfx in the lab copy (sync_fx_src.py --add flyerFallVfx,biomePuff); without it the lab shows the feathers over a plain fall.', variants:[
   {key:'A', label:'Drops out of the sky, feathers burst (live)', play:ctx=>{ const el = mine(ctx, 1); ctx.sound('death');
     if(live('flyerFallVfx')) W.fallDeathVfx(el, 620); else { const f = foe(ctx); W.featherBurst && W.featherBurst(f); fall(f); } return ctx.wait(1400); }}]});

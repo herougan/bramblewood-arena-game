@@ -541,10 +541,10 @@ const STATUS_CSS = `
   .fxd-st i{position:absolute; display:block; left:var(--x); font-style:normal; pointer-events:none;}
   /* Poison: swamp-green ooze pools at the bottom and bubbles rise and pop */
   .fxd-st-poison{background:linear-gradient(0deg, rgba(90,200,60,.42), rgba(90,200,60,0) 40%);}
-  .fxd-st-poison::before{top:auto; bottom:13%; left:-10%; right:-10%; height:10%; background:radial-gradient(ellipse 11px 7px at 50% 100%, rgba(130,235,70,.85) 62%, transparent 66%) 0 0/20px 100% repeat-x; filter:drop-shadow(0 0 2px #6cff3a); animation:fxdOoze 2.6s linear infinite;}
+  .fxd-st-poison::before{top:auto; bottom:0; left:-10%; right:-10%; height:10%; /* 2026-10-16 (user: "Poisoned line effect should start from the south border."): was bottom:13% */ background:radial-gradient(ellipse 11px 7px at 50% 100%, rgba(130,235,70,.85) 62%, transparent 66%) 0 0/20px 100% repeat-x; filter:drop-shadow(0 0 2px #6cff3a); animation:fxdOoze 2.6s linear infinite;}
   @keyframes fxdOoze{to{background-position:20px 0;}}
-  .fxd-st-poison i{bottom:16%; width:6px; height:6px; margin-left:-3px; border-radius:50%; border:1px solid rgba(200,255,150,.95); background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.75), rgba(110,220,60,.35)); animation:fxdBubble var(--d) ease-in infinite; animation-delay:var(--dl);}
-  @keyframes fxdBubble{0%{transform:translateY(0) scale(.35); opacity:0;} 12%{opacity:1;} 78%{transform:translateY(-36cqh) scale(1); opacity:1;} 86%{transform:translateY(-38cqh) scale(1.6); opacity:0;} 100%{opacity:0;}}
+  .fxd-st-poison i{bottom:3%; width:6px; height:6px; margin-left:-3px; border-radius:50%; border:1px solid rgba(200,255,150,.95); background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.75), rgba(110,220,60,.35)); animation:fxdBubble var(--d) ease-in infinite; animation-delay:var(--dl);}
+  @keyframes fxdBubble{0%{transform:translateY(0) scale(.35); opacity:0;} 12%{opacity:1;} 78%{transform:translateY(-46cqh) scale(1); opacity:1;} 86%{transform:translateY(-48cqh) scale(1.6); opacity:0;} 100%{opacity:0;}}
   /* Bleed: blood runs from the top edge; the edges throb like a heartbeat */
   .fxd-st-bleed{animation:fxdHeartV 1.5s ease-in-out infinite;}
   @keyframes fxdHeartV{0%,100%{box-shadow:inset 0 0 8px rgba(160,0,10,.35);} 12%{box-shadow:inset 0 0 18px rgba(210,0,16,.8);} 24%{box-shadow:inset 0 0 10px rgba(160,0,10,.45);} 36%{box-shadow:inset 0 0 16px rgba(210,0,16,.7);}}
