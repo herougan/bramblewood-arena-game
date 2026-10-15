@@ -202,7 +202,7 @@ look('map-shader-new-crystal-cave', 'mn', 'crystal', 'crystalB');
 look('map-shader-new-misty-meadow', 'm1', 'mist', 'mistThick');
 look('map-shader-new-abyssal', 'mj', 'abyssal', 'abyssalB', true, 'Abyssal Plains (Map 29), lab concept.');
 look('map-shader-new-dragonic-spire', 'm11', 'spire', 'spireB', true, 'Dragonic Spire, lab concept: red lightning that never stops, wither smoke rolling down.');
-look('map-shader-new-floodplains', 'm2', 'flood', 'veggie', true, 'A: the Floodplains. B: the Wild Veggies lands (Maps 20+), a lab concept with no inventory row of its own. C: the roadmap\'s full Floodplains loop.');
+look('map-shader-new-floodplains', 'm2', 'flood', 'veggie', true, 'A: the Floodplains. B: the Flora lands (Maps 20+), a lab concept with no inventory row of its own. C: the roadmap\'s full Floodplains loop.');
 // 2026-10-15: the roadmap's full loop (world-roadmap-2026-10-13: Flooded → Receded → Parched → Flooded), one 9 s cycle
 R({id:'map-shader-new-floodplains', variants:[{key:'C', label:X().AMB.floodLoop.label, play:ctx=>{ theme(ctx, 'm5'); X().ambience(ctx.map.layout, 'floodLoop'); return hold(ctx, 9500); }}]});
 

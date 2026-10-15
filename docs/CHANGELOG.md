@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (07:30)
+- **Feedback:** every note now carries the player's id (their account, or their guest session), their player name, whether they're signed in, and the time. The table still waits for "apply it".
+- **Blacksmith:** a recipe stays hidden until you've held every card it uses (and its result, when the result can be found elsewhere). With none yet, the anvil says how recipes appear.
+- **Flora:** the Wild Veggies line (Maps 20+) is now called Flora: the card plan sheet, the map look and the notes.
+
 ## 2026-10-16 (06:30)
 - **Field art:** every Environment and weather card now has its own pixel-art scene (27 NightCafe images, about 20 credits):
   - Darkness, Pitch Black, Absolute darkness

@@ -1406,7 +1406,7 @@ M.twinPeel = function(src, twin, opts){
     tl.to({}, {duration:.4}, .55); tl.add(()=> snd('reflectTone'), 0);
   });
 };
-// Sprout: a mound of soil, a seed pops out and two leaves unfurl as the Growth Sprout appears (Wild Veggies).
+// Sprout: a mound of soil, a seed pops out and two leaves unfurl as the Growth Sprout appears (Flora).
 M.sproutPop = function(el, opts){
   const t = tileOf(el); if(!t || !t.isConnected) return Promise.resolve();
   return run(opts, (tl, mk)=>{

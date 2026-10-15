@@ -8,7 +8,7 @@ _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is buil
 
 | Item | What it does |
 |---|---|
-| Feedback table | `supabase/migrations/20261015_feedback.sql`. The 💬 button is in the game; reports have nowhere to go until this is applied |
+| Feedback table | `supabase/migrations/20261015_feedback.sql`. Each row holds the player's id (account or guest session), their player name, guest or signed in, the time sent, and where they were. The 💬 button is in the game; notes wait in the browser until this is applied |
 | D55 `world_events` | `supabase/migrations/20261013_world_events.sql`. The 3-minute check and the 📣 composer are built |
 | D76 `coop_rooms` | Needed before co-op rooms can be built (plan timer, shared castle, friends-only rooms are agreed) |
 | T3 / S1 / S2 | The parked security and schema items |
@@ -18,12 +18,10 @@ _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is buil
 | Item | Where |
 |---|---|
 | Card names | `docs/name-picker-2026-10-14.xlsx`: tick ✓ for 15 Base, 15 Otters, 15 Hummingbirds and 6 per biome |
-| Wild Veggies | The Wild Veggies sheet in the card plan workbook (12 plant cards for Maps 20+) |
+| Flora | The Flora sheet in the card plan workbook (12 plant cards for Maps 20+; renamed from Wild Veggies) |
 | Card placement | `docs/card-placement-proposal-2026-10-15.md` / `.xlsx` and the Recommended sheet in `docs/skills-by-map-2026-10-15.xlsx`. The new skills, field effects and cards are built but on no maps until you choose |
 | Skill N for the new skills | Fill "Your N" on the Skill N sheet for the 10-14 to 10-16 skills (Electricity, Keen Sense, Psychic, Bloodlust, the Bolts, Bulldoze and the rest) |
 | Difficulty | Map 0 got harder with the weaker starter deck (0-3 about 5%, the 0-4 boss about 7%), and the Map 10, 14 and 16 bosses spike. Say the word and I retune them (the last measurement predates the card fold, so I'd measure again first) |
-| Blacksmith equipment | Not gated by "held once", because it has no other source. Keep it that way? |
-| D71 | Mark the generic cards' Source in the card editor |
 
 **Fixes to make in the card editor** (your published edits override the files, so these have to be re-saved from the editor):
 - Trash Panda Trickster still says Worthy (it's merged into Bounty now).
@@ -68,8 +66,9 @@ Each line is in the changelog under the time shown.
 | 23:24 | Bulldoze (10-16 02:00) |
 | 04:58 | Proposals relinked as .xlsx and .md; Quick hits land with the dash; at most 3 cave fires; ribbon map titles replace the cinematic ones (10-16 05:30) |
 | Field art | 27 pixel scenes on the Environment and weather cards (10-16 06:30) |
+| 06:53 | Feedback rows carry the player's id, name and time; Wild Veggies is now Flora; the Blacksmith hides recipes until you've held their parts; D71 closed; the skill audit (10-16 skill audit) |
 
-**Calls closed:** D27, D39, D74, D75, D78 (your 10-14 09:00 answers), D70 (Murgle placed), D77 (Steam: revisit by December). Earlier: D20–D69 and P1/P2, as listed below.
+**Calls closed:** D27, D39, D74, D75, D78 (your 10-14 09:00 answers), D70 (Murgle placed), D77 (Steam: revisit by December), D71 (okay, 10-16), the Blacksmith question (10-16: recipes stay hidden until you've held their parts). Earlier: D20–D69 and P1/P2, as listed below.
 
 ## Done at 05:30 (your 22:59–23:47 notes)
 
@@ -152,7 +151,7 @@ All built (see the changelog's 23:30 entry). ✅ Toxin is a real skill since 10-
 | Ghost, Shade, Shadow, Supreme | Built; Supreme is on the five hidden dragons only |
 | Twin, Growth Sprout | Built; Twin on Puddle Changeling and the new Mirrorhide Mutant |
 | Art | Your images placed; Shallows Fry, Vampire Bat and Wandering Mage added (not on maps yet) |
-| Later | Wild Veggies, dragons from Map 50, Map 80 own effect, limit breaks every 100 maps, emoji/icon sets: in docs/design-2026-10-14-late-game.md |
+| Later | Flora, dragons from Map 50, Map 80 own effect, limit breaks every 100 maps, emoji/icon sets: in docs/design-2026-10-14-late-game.md |
 | Art redo | Done at 16:15: Owl Fletcher, Owl Nightwatch and Bee Drone (NightCafe Flux 2 Klein, 16-bit pixel prompt, 2.25 credits; about 199 left) |
 
 ## Done at 12:45 (your 10:18 list)

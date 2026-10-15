@@ -7657,7 +7657,7 @@
   "current": "SkillFX.summonPortal (generic rune circle)",
   "quality": "basic — a sprout should grow out of the soil, not a rune portal",
   "priority": 2,
-  "themeNotes": "Wild Veggies (Maps 20+): seed pops out of the soil, two leaves unfurl.",
+  "themeNotes": "Flora (Maps 20+): seed pops out of the soil, two leaves unfurl.",
   "variantsSuggested": false,
   "future": false,
   "sources": [
@@ -8484,7 +8484,7 @@
  {
   "id": "tr-future-veggies",
   "area": "card-treatment",
-  "name": "Wild Veggies frame (Maps 20+)",
+  "name": "Flora frame (Maps 20+)",
   "trigger": "planned",
   "current": "none",
   "quality": "missing — planned",

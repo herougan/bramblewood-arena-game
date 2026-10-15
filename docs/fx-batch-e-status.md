@@ -36,7 +36,7 @@ All gated by `fxHook` / `fxBatchVfx` (skipped under reduced motion or Effects "n
 ## Future lands (the roadmap by biome, lab concepts)
 
 Abyssal Plains (Map 29: pitch black, bioluminescence, a lure / jellyfish), the Dragonic Spire (red lightning, wither smoke / wyverns), the Floodplains (rise and recede; C: the
-roadmap's full Flooded → Receded → Parched loop), Wild Veggies (Maps 20+), Maps 40+ dinosaurs (fern steam, a far volcano, pterosaurs, footfalls ringing the puddles),
+roadmap's full Flooded → Receded → Parched loop), Flora (Maps 20+), Maps 40+ dinosaurs (fern steam, a far volcano, pterosaurs, footfalls ringing the puddles),
 Maps 45+ aliens (a saucer beam sweeping the fields), Maps 50+ magic (rune circles, arcane aurora) and Maps 50–60 Syzygy (an eclipse over a high tide). Plus ant
 acid-battery lampposts, otter roads and forts, hummingbird cliffs, the Arena as a real arena, the raid splash parallax, atmosphere packs (grain / CRT / rain on glass) and
 an ink-wash transition.
@@ -199,7 +199,7 @@ an ink-wash transition.
 | `map-shader-new-misty-meadow` | New map shader look: misty-meadow | variants | A: Misty meadow: mist banks and dew; B: Thick fog that thins and thickens | hooks.mapShown → FX.E.mapAmbience on m1 |
 | `map-shader-new-abyssal` | New map shader look: abyssal | future: lab concept (2 variants) | A: Abyss: pitch black, bioluminescence, a lure; B: Jellyfish drift up through the dark | future |
 | `map-shader-new-dragonic-spire` | New map shader look: dragonic-spire | future: lab concept (2 variants) | A: Dragonic Spire: red lightning, wither smoke; B: Wyverns circle the spires | future |
-| `map-shader-new-floodplains` | New map shader look: floodplains | future: lab concept (3 variants) | A: Floodplains: the water rises and recedes; B: Concept: Wild Veggies: soil steam, pollen, seeds popping; C: Floodplains loop: Flooded, Receded, Parched, Flooded | future |
+| `map-shader-new-floodplains` | New map shader look: floodplains | future: lab concept (3 variants) | A: Floodplains: the water rises and recedes; B: Concept: Flora: soil steam, pollen, seeds popping; C: Floodplains loop: Flooded, Receded, Parched, Flooded | future |
 | `amb-home-splash` | Splash / entrance | done-existing | A: The painted splash through the scene shader (sway, ripple, bloom, shafts, fireflies) | entrance: mountSceneShader |
 | `amb-home` | Home screen | done-existing | A: The scene shader with tonight's tint (clock) | Home: depth parallax + live clock tint + CalmMusic |
 | `amb-leaf-sweep` | In-world transition leaf sweep | done-existing | A: A gust of leaves sweeps across (game CSS) | tab change: .leaf-sweep |

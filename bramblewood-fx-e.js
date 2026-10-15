@@ -248,8 +248,8 @@ const AMB = {
   // Floodplains: the water rises and recedes over the fields.
   flood: {label:'Floodplains: the water rises and recedes', flood:{c:[70,140,190], a:.36, lo:.05, hi:.42, period:8},
     parts:[{kind:'leaf', n:6, c:[[120,150,60],[160,120,60]], s:[.014,.02], vx:[.01,.025], vy:[0,0], wob:.01, float:true}]},
-  // Wild Veggies (Maps 20+): a kitchen-garden wilderness; warm soil steam, pollen, seeds popping out of the rows.
-  veggie: {label:'Wild Veggies: soil steam, pollen, seeds popping', grade:{top:[255,230,170,.06], bottom:[90,60,30,.14]},
+  // Flora (Maps 20+): a kitchen-garden wilderness; warm soil steam, pollen, seeds popping out of the rows.
+  veggie: {label:'Flora: soil steam, pollen, seeds popping', grade:{top:[255,230,170,.06], bottom:[90,60,30,.14]},
     fog:{n:5, c:[230,214,190], a:.18, w:[.4,.7], h:[.06,.1], y:[.8,1.02], vx:[.003,.008]},
     parts:[{kind:'glow', n:18, c:[255,230,120], s:[.006,.012], vx:[-.008,.012], vy:[-.012,.002], wob:.015, a:.8}, {kind:'emoji', n:3, t:'🐛', s:[.032,.04], speed:.02, ground:true}],
     events:[{kind:'seed', every:[.6,1.4], c:[[120,200,70],[240,160,60],[200,80,60]]}]},

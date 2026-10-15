@@ -34482,6 +34482,16 @@ function craftNeedsHeld(id){
   return !myUnlockedCardIds.has(id);
 }
 function canCraftCard(id){ return !craftNeedsHeld(id); }
+// Hidden recipes (2026-10-16, user: "Blacksmith: what is \"gated by held once\" mean? If you dont have it, dont show up."): a recipe
+// shows in the Blacksmith only once you've held every card it uses (its Materia and its card, each at least once) and, when the
+// result can be found elsewhere, the result too. Equipment the anvil alone makes appears as soon as you've held its parts. Admin
+// mode shows every recipe.
+function smithRecipeVisible(r){
+  if(adminModeEnabled) return true;
+  if(!Object.keys(r.needs).every(id=> myUnlockedCardIds.has(id) || ownedCount(id) > 0)) return false;
+  return !craftNeedsHeld(r.out);
+}
+function visibleSmithIdx(){ return SMITH_RECIPES.map((r, i)=> smithRecipeVisible(r) ? i : -1).filter(i=> i >= 0); }
 function recipeReady(r){ return canCraftCard(r.out) && Object.entries(r.needs).every(([id, n])=> ownedCount(id) >= n) && canAffordCost(r.cost); }
 function fuseCandidates(){
   const defs = getCardDefs();
@@ -34491,10 +34501,11 @@ function fuseCandidates(){
 const FUSE_LADDER = ['common','uncommon','rare','veryrare','superrare','epic'];
 function fuseTargetRarity(r){ const i = FUSE_LADDER.indexOf(r || 'common'); return i >= 0 && i < FUSE_LADDER.length - 1 ? FUSE_LADDER[i + 1] : null; }
 function blacksmithHTML(){
-  const defs = getCardDefs(), r = SMITH_RECIPES[Math.min(smithSel, SMITH_RECIPES.length - 1)], out = defs[r.out];
+  const vis = visibleSmithIdx(); if(vis.length && !vis.includes(smithSel)) smithSel = vis[0];
+  const defs = getCardDefs(), r = SMITH_RECIPES[Math.min(smithSel, SMITH_RECIPES.length - 1)], out = vis.length ? defs[r.out] : null;
   const mat = ['iron-shard','river-pearl','tempering-stone','ember-core','dragon-scale'].map(id=> defs[id] ? `<span class="sm-mat" title="${escapeAttr(defs[id].name)}">${defs[id].icon} <b>${ownedCount(id)}</b><small>${escapeHtml(defs[id].name)}</small></span>` : '').join('');
-  const list = SMITH_RECIPES.map((x, i)=>{ const d = defs[x.out]; if(!d) return ''; const ok = recipeReady(x);
-    return `<button type="button" class="sm-recipe ${i===smithSel ? 'on' : ''} ${ok ? 'is-ready' : ''}" data-smith="${i}" aria-pressed="${i===smithSel}"><span class="sm-ico">${d.icon}</span><span><b>${escapeHtml(d.name)}</b><small>${escapeHtml(rarityDef(d.rarity||'common').label)} · ${ownedCount(x.out) ? `you have ${ownedCount(x.out)}` : 'not made yet'}</small></span>${ok ? '<i class="sm-dot" title="You can craft this">●</i>' : ''}</button>`; }).join('');
+  const list = vis.length ? SMITH_RECIPES.map((x, i)=>{ const d = defs[x.out]; if(!d || !vis.includes(i)) return ''; const ok = recipeReady(x);
+    return `<button type="button" class="sm-recipe ${i===smithSel ? 'on' : ''} ${ok ? 'is-ready' : ''}" data-smith="${i}" aria-pressed="${i===smithSel}"><span class="sm-ico">${d.icon}</span><span><b>${escapeHtml(d.name)}</b><small>${escapeHtml(rarityDef(d.rarity||'common').label)} · ${ownedCount(x.out) ? `you have ${ownedCount(x.out)}` : 'not made yet'}</small></span>${ok ? '<i class="sm-dot" title="You can craft this">●</i>' : ''}</button>`; }).join('') : '<p class="panel-sub">No recipes yet. Collect Materia and cards on the road, and recipes that use them appear here.</p>';
   const needs = out ? Object.entries(r.needs).map(([id, n])=>{ const d = defs[id] || {name:id, icon:'❔'}; const have = ownedCount(id);
     return `<span class="sm-need ${have >= n ? 'ok' : 'short'}" data-defid="${escapeAttr(id)}">${d.icon||''} ${escapeHtml(d.name)} <b>${Math.min(have, n)}/${n}</b></span>`; }).join('') : '';
   const fz = fuseCandidates();
@@ -34506,8 +34517,8 @@ function blacksmithHTML(){
         <div class="sm-stage"><div class="sm-sparks" aria-hidden="true"></div>${out ? `<div class="sm-card" id="smithCard">${cardTileHTML(out, {extraClass:'forge-preview', inPlay:true})}</div>` : ''}</div>
         <h3 class="forge-name">${out ? escapeHtml(out.name) : ''}</h3>
         <div class="sm-needs">${needs}</div>
-        <button type="button" class="btn primary forge-act" id="smithCraftBtn" ${recipeReady(r) ? '' : 'aria-disabled="true"'}${craftNeedsHeld(r.out) ? ` data-needs-held="1" title="${escapeAttr(CRAFT_NEEDS_HELD_TIP)}"` : ''}>⚒️ Craft ${out ? escapeHtml(out.name) : ''}${btnCostHTML(r.cost)}</button>
-        ${craftNeedsHeld(r.out) ? `<p class="forge-note forge-gate">🔒 ${escapeHtml(CRAFT_NEEDS_HELD_TIP)}</p>` : ''}
+        ${out ? `<button type="button" class="btn primary forge-act" id="smithCraftBtn" ${recipeReady(r) ? '' : 'aria-disabled="true"'}${craftNeedsHeld(r.out) ? ` data-needs-held="1" title="${escapeAttr(CRAFT_NEEDS_HELD_TIP)}"` : ''}>⚒️ Craft ${out ? escapeHtml(out.name) : ''}${btnCostHTML(r.cost)}</button>` : ''}
+        ${out && craftNeedsHeld(r.out) ? `<p class="forge-note forge-gate">🔒 ${escapeHtml(CRAFT_NEEDS_HELD_TIP)}</p>` : ''}
       </div>
     </div>
     <div class="panel sm-fuse"><h3>🔥 Fuse</h3><p class="panel-sub">Melt ${FUSE_COPIES} spare copies of a card into one random card a rarity higher (up to Epic). You always keep at least one copy.</p>
@@ -34523,7 +34534,7 @@ function wireBlacksmith(root){
   root.querySelectorAll('[data-smith]').forEach(b=> b.onclick = ()=>{ smithSel = +b.dataset.smith; renderForge(); });
   const craft = document.getElementById('smithCraftBtn');
   if(craft) craft.onclick = async ()=>{
-    const r = SMITH_RECIPES[smithSel]; if(!r || !recipeReady(r) || forgeBusy){ denyShake(craft); if(r && craftNeedsHeld(r.out)) showToast('🔒 ' + CRAFT_NEEDS_HELD_TIP, 'warn'); return; }
+    const r = SMITH_RECIPES[smithSel]; if(!r || !smithRecipeVisible(r) || !recipeReady(r) || forgeBusy){ denyShake(craft); if(r && craftNeedsHeld(r.out)) showToast('🔒 ' + CRAFT_NEEDS_HELD_TIP, 'warn'); return; }
     forgeBusy = true;
     Object.entries(r.needs).forEach(([id, n])=> spendCopies(id, n));
     myCurrencies.dust -= r.cost.dust||0; myCurrencies.gold -= r.cost.gold||0; myCurrencies.gems -= r.cost.gems||0; saveCurrencies();
@@ -38800,6 +38811,8 @@ cloudInitPromise = initCloudSync();
 // kind, the words), and the screen it was sent from rides along (page, map, fight, build, window size). It goes to the `feedback`
 // table (supabase/migrations/20261015_feedback.sql, NOT applied yet). Until that table exists, or whenever an insert fails, the
 // note waits in this browser and is sent on a later try (on load and after each new note). Admins read them in Admin → Feedback.
+// 2026-10-16 (user: "goes into table in db w player identification and time"): every row carries the player's id (user_id: the
+// account, or the guest's anonymous session), their player name, guest/signed-in, and created_at; the context keeps the send time too.
 var Feedback = (function(){
   const KEY = 'bramblewood_feedback_queue_v1', CATS = [['bug','🐞 Bug'], ['idea','💡 Idea'], ['balance','⚖️ Balance'], ['art','🎨 Look & sound'], ['other','💬 Other']];
   let sending = false;
@@ -38830,7 +38843,7 @@ var Feedback = (function(){
     ov.innerHTML = `<div class="modal fb-modal" role="dialog" aria-modal="true" aria-labelledby="fbTitle"><div class="modal-head-row"><h2 id="fbTitle">💬 Tell us what you think</h2><button class="modal-close-btn" id="fbClose" aria-label="Close">✕</button></div>
       <form id="fbForm"><fieldset class="fb-cats"><legend>What is it about? (optional)</legend>${CATS.map(([k, l])=> `<label><input type="radio" name="fbCat" value="${k}">${l}</label>`).join('')}</fieldset>
         <textarea id="fbText" maxlength="4000" required placeholder="A bug, an idea, something that felt off… anything helps." aria-label="Your feedback"></textarea>
-        <p class="fb-ctx">Sent with it: where you are (${escapeHtml(where || 'Home')}), the game version and your screen size.${isSignedIn() ? ' And your player name.' : ''}</p>
+        <p class="fb-ctx">Sent with it: where you are (${escapeHtml(where || 'Home')}), the game version, your screen size, your player name and the time.</p>
         <div class="fb-actions"><small id="fbNote" aria-live="polite"></small><button type="button" class="btn ghost" id="fbCancel">Cancel</button><button type="submit" class="btn primary" id="fbSend">Send</button></div></form></div>`;
     ov.hidden = false;
     const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; document.removeEventListener('keydown', onKey, true); };
@@ -38841,7 +38854,7 @@ var Feedback = (function(){
     const ta = ov.querySelector('#fbText'); setTimeout(()=>{ try{ ta.focus(); }catch(e){} }, 50);
     ov.querySelector('#fbForm').onsubmit = async e=>{ e.preventDefault(); const text = ta.value.trim(); if(!text){ denyShake(ta); return; }
       const cat = (ov.querySelector('input[name=fbCat]:checked') || {}).value || null;
-      const q = queued(); q.push({text: text.slice(0, 4000), category: cat, name: isSignedIn() ? (cloudUserLabel || null) : null, context: ctx}); saveQ(q);
+      const q = queued(); q.push({text: text.slice(0, 4000), category: cat, name: ((typeof myProfile !== 'undefined' && myProfile && myProfile.name) || (isSignedIn() ? cloudUserLabel : null) || null), context: Object.assign({}, ctx, {account: isSignedIn() ? 'signed-in' : 'guest'})}); saveQ(q);
       ov.querySelector('#fbSend').disabled = true; await flush();
       close(); showToast(queued().length ? TX('toast.thanks-it-will-be-sent-as') : TX('toast.thanks-we-read-every-one'), 'ok'); };
   };

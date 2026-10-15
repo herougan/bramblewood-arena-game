@@ -626,7 +626,7 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `tr-future-folktale` | Folktale / "Legends" style variant 🔮 🎨 | planned | none | missing — planned | 3 |
 | `tr-future-oriental` | Oriental painting theme set 🔮 🎨 | planned | none | missing — planned | 3 |
 | `tr-future-spy` | Spy theme set 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-veggies` | Wild Veggies frame (Maps 20+) 🔮 🎨 | planned | none | missing — planned | 3 |
+| `tr-future-veggies` | Flora frame (Maps 20+) 🔮 🎨 | planned | none | missing — planned | 3 |
 | `tr-future-breathing-art` | Breathing art (parallax layers) 🔮 🎨 | planned | none | missing — planned | 3 |
 | `tr-future-living-ink` | Living ink frame (SVG turbulence) 🔮 🎨 | planned | none | missing — planned | 3 |
 | `tr-future-hero-portraits` | Hero portrait changes at Lv 25/50/100 🔮 🎨 | planned | none | missing — planned | 3 |
@@ -1113,7 +1113,7 @@ Palette anchors from the lore bible: **Otters** bronze, oxblood red, river blue,
 - `death-ghost` **Ghost fades out** — Translucent wisp drifting up.
 - `sum-wandering-mage` **Wandering Mage joins (Map 51)** — Wizard-cat arrives in a puff of stars.
 
-### Wild Veggies (Maps 20+), slimes, sprouts
+### Flora (Maps 20+), slimes, sprouts
 
 - `death-slime-split` **Slime splits on death** — Gooey split into two blobs.
 - `sum-rooted-veggie` **Rooted Wild Veggie takes root** — Roots burrow into the felt.
@@ -1164,7 +1164,7 @@ Palette anchors from the lore bible: **Otters** bronze, oxblood red, river blue,
 - `tr-future-folktale` **Folktale / "Legends" style variant** — Painted storybook border
 - `tr-future-oriental` **Oriental painting theme set** — Ink-wash border, red seal stamp
 - `tr-future-spy` **Spy theme set** — Redacted bars, dossier paper, red TOP SECRET stamp
-- `tr-future-veggies` **Wild Veggies frame (Maps 20+)** — Vine-wrapped border, soil smudges
+- `tr-future-veggies` **Flora frame (Maps 20+)** — Vine-wrapped border, soil smudges
 - `tr-future-breathing-art` **Breathing art (parallax layers)** — Leaders / heroes / Legendary only
 - `tr-future-living-ink` **Living ink frame (SVG turbulence)** — Legendary/Epic borders that slowly writhe
 - `tr-future-hero-portraits` **Hero portrait changes at Lv 25/50/100** — planned

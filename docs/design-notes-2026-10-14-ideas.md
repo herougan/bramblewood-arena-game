@@ -4,7 +4,7 @@ Nothing here is built yet. It is a pool to draw from when we design new maps, fa
 
 ## Card ideas
 
-- **Killer veggies with flowers:** flower-killer veggies that usually can't attack. They work through auras, thorns and traps (fits the Wild Veggies line, Maps 20+).
+- **Killer veggies with flowers:** flower-killer veggies that usually can't attack. They work through auras, thorns and traps (fits the Flora line, Maps 20+).
 - **Bloom** for algae, fungal, coral and bacterial cards, not just flowers.
 - **The pitch-black fish:** a 0/2 fish with no skills. In pitch black it deals 5 to a random enemy every round. At Level 12 it is 0/20 and deals 11.
 - **Slimes:** one that splits when hit or on death, and one that eats (absorbs a weaker unit and grows).

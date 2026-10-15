@@ -33,7 +33,7 @@ Saves carry over: the old max (20 + 5 a Camp step + 2 a Forge step) is rebuilt a
 
 **The Tavern also recruits.** Spend 1 🍺 Beer and a few resources to add one card for good, from three offers a week (cards you've met but don't own, Rare at most): Common ✨150 + 🍁150, Uncommon ✨300 + 🍁250, Rare ✨600 + 🍁300 + 1 Iron Shard. Beer: 1 every Monday, +1 for each of the first two weekly quest tiers finished (1–3 a week); you hold at most 3. Beer shows in the Inventory wallet and on the Profile.
 
-## Wild Veggies (Maps 20+)
+## Flora (Maps 20+)
 
 Inspired by Duel Masters' Wild Veggies: fruits, vegetables and fungi come to life.
 - Some are rooted and never move or attack, like a Rafflesia (a stink aura) or a Venus Fly Trap (snaps whatever stands in front of it).
