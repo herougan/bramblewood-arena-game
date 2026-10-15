@@ -54,6 +54,9 @@ button:focus-visible{outline:3px solid var(--sky); outline-offset:2px;}
 footer{max-width:1080px; margin:0 auto; padding:0 16px 40px; color:var(--ink-dim); font-size:14px;}
 @media (prefers-reduced-motion: reduce){ .note-rm{display:block !important;} }
 .note-rm{display:none; color:var(--ember); font-size:14px;}
+__FONTS__
+.card .art.art-a{background-image:url(__ART_A__);} .card .art.art-b{background-image:url(__ART_B__);} .card .art.art-c{background-image:url(__ART_C__);} /* 2026-10-16: the new demo cards share one copy of each art */
+.btns select{background:var(--parch); color:#2c2418; border:0;}
 </style>
 </head>
 <body>
@@ -66,6 +69,7 @@ footer{max-width:1080px; margin:0 auto; padding:0 16px 40px; color:var(--ink-dim
   <button role="tab" aria-selected="true" data-tab="cards">Card treatments</button>
   <button role="tab" aria-selected="false" data-tab="skills">Skill effects</button>
   <button role="tab" aria-selected="false" data-tab="maps">Map effects</button>
+  <button role="tab" aria-selected="false" data-tab="screen">Screen moments</button>
 </nav>
 <main>
 <section class="group on" id="tab-cards">
@@ -106,6 +110,16 @@ footer{max-width:1080px; margin:0 auto; padding:0 16px 40px; color:var(--ink-dim
       <p class="use">A hand-inked rarity ring that wobbles like it's being redrawn. It's cheap enough to put on every Legendary on the board, and it's how a rarity could be shown on the border, as you asked, without a gradient.</p>
       <dl><dt>Tech</dt><dd>SVG feTurbulence + feDisplacementMap, GSAP tweens the noise seed</dd><dt>Cost</dt><dd>Very low; filters are GPU-composited</dd></dl>
       <div class="btns"><button data-act="inkBoil">Boil faster</button><button data-act="inkCalm">Calm</button></div>
+    </div>
+  </div>
+  <div class="demo">
+    <div class="stage" id="fgCards" style="gap:18px"><div class="card small"><div class="art art-a"></div><div class="nm">Otter Centurion</div><div class="st"><b>⚔ 2</b><b>❤ 8</b></div></div><div class="card small"><div class="art art-b"></div><div class="nm">Owl Fletcher</div><div class="st"><b>⚔ 4</b><b>❤ 4</b></div></div><div class="card small"><div class="art art-c"></div><div class="nm">Eagle Sharpshooter</div><div class="st"><b>⚔ 3</b><b>❤ 14</b></div></div></div>
+    <div>
+      <h2>More card moments <small style="font-size:13px; color:var(--ember)">new 2026-10-16</small></h2>
+      <p class="use">Twelve fun card effects, built for real in <code>bramblewood-fx-g.js</code> (FX.G) and in the Effects Lab under “Fun VFX”. Each plays on the middle card (the tornado takes all three).</p>
+      <dl><dt>Tech</dt><dd>GSAP timelines, SVG clip paths, a canvas for the pixels</dd><dt>Cost</dt><dd>DOM/SVG only, ≤ 40 particles each</dd></dl>
+      <div class="btns"><button data-fxg="fireworkReveal">🎆 Firework reveal</button><button data-fxg="fireworkReveal" data-arg="finale">🎇 Finale</button><button data-fxg="cardTornado">🌪️ Card tornado</button><button data-fxg="inkBrushReveal">🖌️ Ink-brush reveal</button><button data-fxg="classifiedStamp">🕵️ Classified</button><button data-fxg="classifiedStamp" data-arg="B">📁 Dossier</button>
+        <button data-fxg="stainedGlass">⛪ Stained glass</button><button data-fxg="origamiCrane">🕊️ Origami crane</button><button data-fxg="slotReveal">🎰 Slot machine</button><button data-fxg="pixelBeam">👾 Pixel beam</button><button data-fxg="hologram">📡 Hologram</button><button data-fxg="snowGlobe">🔮 Snow globe</button><button data-fxg="cometArrival">☄️ Comet arrival</button><button data-fxg="gildedFrame">🖼️ Gilded frame</button></div>
     </div>
   </div>
 </section>
@@ -165,6 +179,16 @@ footer{max-width:1080px; margin:0 auto; padding:0 16px 40px; color:var(--ink-dim
       <div class="btns"><button data-act="night">Night falls</button><button data-act="scramble">Shield Call!</button><button data-act="leader">Leader arrives</button></div>
     </div>
   </div>
+  <div class="demo">
+    <div class="stage" id="fgSkills" style="gap:22px; min-height:320px"><div class="card small"><div class="art art-a"></div><div class="nm">Otter</div><div class="st"><b>⚔ 2</b><b>❤ 8</b></div></div><div class="card small"><div class="art art-b"></div><div class="nm">Owl</div><div class="st"><b>⚔ 4</b><b>❤ 4</b></div></div><div class="card small"><div class="art art-c"></div><div class="nm">Eagle</div><div class="st"><b>⚔ 3</b><b>❤ 14</b></div></div></div>
+    <div>
+      <h2>More board moments <small style="font-size:13px; color:var(--ember)">new 2026-10-16</small></h2>
+      <p class="use">Links, summons and rewards: a rainbow bridge between allies, a rune circle that summons, portals that swap two cards, a thunder strike, a glowing tide, and the reward toys (confetti cannons, a coin fountain, a treasure chest, a gacha capsule, paper-plane mail, fireflies that spell a word).</p>
+      <dl><dt>Tech</dt><dd>SVG paths (getPointAtLength), textPath runes, conic gradients, simple physics</dd><dt>Cost</dt><dd>DOM/SVG only</dd></dl>
+      <div class="btns"><button data-fxg="rainbowBridge">🌈 Rainbow bridge</button><button data-fxg="magicCircle">🔯 Magic circle</button><button data-fxg="portalSwap">🌀 Portal swap</button><button data-fxg="thunderStrike">⚡ Thunder strike</button><button data-fxg="bioTide">🌊 Bioluminescent tide</button>
+        <button data-fxg="confettiCannons">🎉 Confetti cannons</button><button data-fxg="coinFountain">🪙 Coin fountain</button><button data-fxg="treasureChest">🧰 Treasure chest</button><button data-fxg="gachaCapsule">🥚 Gacha capsule</button><button data-fxg="paperPlane">✈️ Paper plane</button><button data-fxg="fireflyWord">✨ Fireflies: Victory</button></div>
+    </div>
+  </div>
 </section>
 
 <section class="group" id="tab-maps">
@@ -186,9 +210,39 @@ footer{max-width:1080px; margin:0 auto; padding:0 16px 40px; color:var(--ink-dim
       <div class="btns"><button data-act="respawn">Chaos returns</button><button data-act="respawnReset">Reset</button></div>
     </div>
   </div>
+  <div class="demo">
+    <div class="stage" style="padding:16px"><div class="mapwrap" id="fgMap"><img alt="" id="fgMapImg" src="__MAP_m1__"></div></div>
+    <div>
+      <h2>Map titles <small style="font-size:13px; color:var(--ember)">new 2026-10-16, in the game</small></h2>
+      <p class="use">The first time you open a map in a session, its name arrives with its place: falling leaves in the forest, waves on the beach, embers on the volcano, frost on the tundra, spores in the fungal hollow, sand in the dunes, mist in the drowned grove, stars and an aurora over the Quiet Summit. Under it, a grand flourish: god rays, birds crossing, distant silhouettes, parallax haze, a dragon’s shadow over the Volcano Lair. Three title styles to choose from.</p>
+      <dl><dt>Tech</dt><dd>GSAP timelines, procedural SVG silhouettes, CSS particles</dd><dt>Cost</dt><dd>About 4 s, ≤ 40 particles; Medium effects and up</dd></dl>
+      <div class="btns" style="align-items:center"><label class="slider">Map <select id="fgTheme" style="font:inherit; padding:6px 8px; border-radius:8px"><option value="forest">Bramblewood Outskirts</option><option value="meadow">Clovermead</option><option value="beach">Pebble Beach</option><option value="water">Lilypad Reach</option><option value="reef">Coral Current</option><option value="swamp">Gatorback Swamp</option><option value="mist">The Sunken Grove</option><option value="fungal">The Morel Hollow</option><option value="cave">Caves & Alcoves</option><option value="crystal">The Glimmer Depths</option><option value="alpine">Eyrie Heights</option><option value="tundra">Wolfsbane Tundra</option><option value="desert">The Glass Dunes</option><option value="savanna">Savanna Reaches</option><option value="volcano">The Sundered Peak</option><option value="forge">Basalt Foundry</option><option value="night">The Quiet Summit</option><option value="lair">Volcano Lair</option></select></label>
+        <button data-title="">▶ Its own style</button><button data-title="banner">A · Ribbon banner</button><button data-title="ink">B · Ink calligraphy</button><button data-title="cinema">C · Cinematic</button></div>
+    </div>
+  </div>
+  <div class="demo">
+    <div class="stage" style="padding:16px"><div class="mapwrap" id="fgGrand"><img alt="" id="fgGrandImg" src="__MAP_m1__"></div></div>
+    <div>
+      <h2>Map grandeur <small style="font-size:13px; color:var(--ember)">new 2026-10-16</small></h2>
+      <p class="use">The flourishes on their own, on the map picked above: each could also become a map’s ambient moment (a flock now and then, cloud shadows on open maps, an aurora on cold nights).</p>
+      <div class="btns"><button data-fxg="godRays">☀️ God rays</button><button data-fxg="birds">🐦 Birds</button><button data-fxg="gulls">🕊️ Gulls</button><button data-fxg="eagle">🦅 Eagle</button><button data-fxg="bats">🦇 Bats</button><button data-fxg="fish">🐟 Fish</button><button data-fxg="silhouettes">⛰️ Silhouettes</button><button data-fxg="haze">🌫️ Haze</button><button data-fxg="cloudShadows">☁️ Cloud shadows</button><button data-fxg="aurora">🌌 Aurora</button><button data-fxg="caustics">💧 Water light</button><button data-fxg="heatHaze">🔥 Heat haze</button><button data-fxg="glowPulse">✨ Glow pulse</button><button data-fxg="lanternBeam">🏮 Lantern beam</button><button data-fxg="prism">🌈 Prism</button><button data-fxg="sunGlints">🌅 Sun glints</button><button data-fxg="shootingStar">🌠 Shooting stars</button><button data-fxg="dragonShadow">🐉 Dragon shadow</button></div>
+    </div>
+  </div>
+</section>
+<section class="group" id="tab-screen">
+  <div class="demo">
+    <div class="stage" id="fgScreen" style="min-height:360px; background:url(__MAP_m1__) center/cover; image-rendering:pixelated"></div>
+    <div>
+      <h2>Screen moments <small style="font-size:13px; color:var(--ember)">new 2026-10-16</small></h2>
+      <p class="use">Whole-screen moments and transitions: a meteor shower (with a wish), the four seasons drifting past, a sandstorm wipe, a bubble-pop transition, a lantern festival, an ink-wash transition, a VHS rewind for replays, and a ghost parade for Halloween.</p>
+      <dl><dt>Tech</dt><dd>GSAP, CSS gradients and masks</dd><dt>Cost</dt><dd>DOM only, ≤ 40 particles</dd></dl>
+      <div class="btns"><button data-fxg="meteorShower">☄️ Meteor shower</button><button data-fxg="meteorShower" data-arg="wish">🌠 …with a wish</button><button data-fxg="seasonalDrift" data-arg="spring">🌸 Spring</button><button data-fxg="seasonalDrift" data-arg="summer">☀️ Summer</button><button data-fxg="seasonalDrift" data-arg="autumn">🍁 Autumn</button><button data-fxg="seasonalDrift" data-arg="winter">❄️ Winter</button>
+        <button data-fxg="sandstormWipe">🏜️ Sandstorm wipe</button><button data-fxg="bubblePop">🫧 Bubble pop</button><button data-fxg="lanternFestival">🏮 Lantern festival</button><button data-fxg="inkWash">🖋️ Ink wash</button><button data-fxg="vhsRewind">📼 VHS rewind</button><button data-fxg="ghostParade">👻 Ghost parade</button></div>
+    </div>
+  </div>
 </section>
 </main>
-<footer>Written 2026-10-10 alongside docs/vfx-exploration-2026-10-10.md. Nothing here ships in the game yet.</footer>
+<footer>Written 2026-10-10 alongside docs/vfx-exploration-2026-10-10.md. 2026-10-16: the new demos run the game’s own FX.G (bramblewood-fx-g.js); the map titles are in the game.</footer>
 __SCRIPTS__
 <script>
 (function(){
@@ -505,6 +559,38 @@ Object.assign(act, {
 });
 
 $$('[data-act]').forEach(b=> b.addEventListener('click', ()=> act[b.dataset.act] && act[b.dataset.act]()));
+})();
+</script>
+<script>__FXG__</script>
+<script>
+// 2026-10-16 (user: "Any other VFX playground items to add in each? Invent more for fun?"): the new demos call the game's FX.G.
+(function(){
+'use strict';
+const G = window.FX && window.FX.G; if(!G) return;
+const $ = (s, r)=> (r||document).querySelector(s), $$ = (s, r)=> [...(r||document).querySelectorAll(s)];
+const MAPS = __MAPS__, THEMES = __THEMES__;
+const cardsIn = id=> $$('#' + id + ' .card');
+const ui = {busy:new Set()};
+const run = (key, fn)=>{ if(ui.busy.has(key)) return; ui.busy.add(key); Promise.resolve().then(fn).catch(e=> console.warn(e)).then(()=> ui.busy.delete(key)); };
+const ACT = {
+  fireworkReveal:a=> G.fireworkReveal(cardsIn('fgCards')[1], {finale:a === 'finale'}), cardTornado:()=> G.cardTornado(cardsIn('fgCards')),
+  inkBrushReveal:()=> G.inkBrushReveal(cardsIn('fgCards')[1]), classifiedStamp:a=> G.classifiedStamp(cardsIn('fgCards')[1], {variant:a}), stainedGlass:()=> G.stainedGlass(cardsIn('fgCards')[1]),
+  origamiCrane:()=> G.origamiCrane(cardsIn('fgCards')[1]), slotReveal:()=> G.slotReveal(cardsIn('fgCards')[1]), pixelBeam:()=> G.pixelBeam(cardsIn('fgCards')[1]), hologram:()=> G.hologram(cardsIn('fgCards')[1]),
+  snowGlobe:()=> G.snowGlobe(cardsIn('fgCards')[1]), cometArrival:()=> G.cometArrival(cardsIn('fgCards')[1]), gildedFrame:()=> G.gildedFrame(cardsIn('fgCards')[1]),
+  rainbowBridge:()=> G.rainbowBridge(cardsIn('fgSkills')[0], cardsIn('fgSkills')[2]), magicCircle:()=> G.magicCircle(cardsIn('fgSkills')[1]), portalSwap:()=> G.portalSwap(cardsIn('fgSkills')[0], cardsIn('fgSkills')[2]),
+  thunderStrike:()=> G.thunderStrike(cardsIn('fgSkills')[1]), bioTide:()=> G.bioTide($('#fgSkills')), confettiCannons:()=> G.confettiCannons($('#fgSkills')), coinFountain:()=> G.coinFountain(cardsIn('fgSkills')[1]),
+  treasureChest:()=> G.treasureChest($('#fgSkills')), gachaCapsule:()=> G.gachaCapsule($('#fgSkills')), paperPlane:()=> G.paperPlane(cardsIn('fgSkills')[0], cardsIn('fgSkills')[2]), fireflyWord:()=> G.fireflyWord($('#fgSkills'), {text:'Victory'}),
+  meteorShower:a=> G.meteorShower($('#fgScreen'), a === 'wish' ? {wish:'Make a wish…'} : {}), seasonalDrift:a=> G.seasonalDrift($('#fgScreen'), {season:a}), sandstormWipe:()=> G.sandstormWipe($('#fgScreen')),
+  bubblePop:()=> G.bubblePop($('#fgScreen')), lanternFestival:()=> G.lanternFestival($('#fgScreen')), inkWash:()=> G.inkWash($('#fgScreen')), vhsRewind:()=> G.vhsRewind($('#fgScreen')), ghostParade:()=> G.ghostParade($('#fgScreen')),
+};
+const pickTheme = ()=>{ const k = $('#fgTheme').value; return THEMES.find(t=> t[0] === k) || THEMES[0]; };
+const setArt = ()=>{ const t = pickTheme(); $('#fgMapImg').src = MAPS[t[1]] || MAPS.m1; $('#fgGrandImg').src = MAPS[t[1]] || MAPS.m1; };
+$('#fgTheme').addEventListener('change', setArt);
+$$('[data-fxg]').forEach(b=> b.addEventListener('click', ()=>{ const k = b.dataset.fxg, a = b.dataset.arg;
+  if(ACT[k]) return run(k + (a || ''), ()=> ACT[k](a));
+  if(G.GRAND && G.GRAND[k]){ const t = pickTheme(); run('grand' + k, ()=> G[k]($('#fgGrand'), {theme:t[0] === 'lair' ? 'volcano' : t[0], ms:4200})); } }));
+$$('[data-title]').forEach(b=> b.addEventListener('click', ()=>{ const t = pickTheme(), lair = t[0] === 'lair';
+  run('title', ()=> G.mapTitle($('#fgMap'), {theme:lair ? 'volcano' : t[0], name:t[2], icon:t[3], sub:t[4], style:b.dataset.title || undefined, extra:lair ? ['dragonShadow'] : []})); }));
 })();
 </script>
 </body>

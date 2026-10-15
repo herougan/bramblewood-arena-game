@@ -17248,6 +17248,9 @@ function renderConquestSubTab(body){
       // time you ever open a map, not just the first map of a session.
       if(firstThisSession || firstEver){ mapVeilShownThisSession = true; try{ showMapVeil(vh, map, layer); }catch(e){} }
     } }
+  // 2026-10-16 (user: "I like having more map effects and title effects. Could be cool to give grandeur to a map."): a title card with the map's
+  // own particles and flourish, once per map per session (FX.G.hooks.mapTitle keeps the count), after the map veil / first zoom-out has lifted.
+  try{ if(!tutPhase && !conquestLayoutEdit) fxHook('mapTitle', document.getElementById('conquestLayout'), {id:map.id, name:map.name, icon:map.icon, biome:MAP_BIOME_OF[map.id] || MAP_BIOME_OF[map.parent], sub:map.sub ? 'Side map' : (mapNumberOf(map.id) != null ? 'Map ' + mapNumberOf(map.id) : ''), delay:(document.querySelector('.map-veil') || tutZoomOut) ? 2100 : 300}); }catch(e){}
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak), map.id); }catch(e){}
   fxHook('mapShown', conquestShaderHost(), map, document.getElementById('conquestCanvas'), progress); // map ambience, day/night, node states, coming-back moments (FX.E, 2026-10-15)
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
@@ -31344,7 +31347,7 @@ function witherSmokeVfx(el){
 //   FX.X.onEvent(ev, env)       every replayed battle event (from renderVfxForEvent, after the built-in passes)
 //   FX.X.hooks.name(...a, env)  a named non-battle moment: fxHook('mapNodeCleared', nodeEl) at the spot in this file
 // Both are skipped with reduced motion or Effects "none", never throw, and never hold up the replay (fire and forget).
-const FX_BATCHES = ['A', 'B', 'C', 'D', 'E', 'F'];
+const FX_BATCHES = ['A', 'B', 'C', 'D', 'E', 'F', 'G']; // + G (2026-10-16): map titles, map grandeur, the fun set (bramblewood-fx-g.js)
 function fxEnv(){
   return {
     el: uid=> uid == null ? null : boardCardEl(uid),                       // the .board-card wrapper of a unit
