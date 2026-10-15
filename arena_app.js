@@ -10311,7 +10311,7 @@ function openLoadoutPicker(kind){
     ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> ({ch, open: castleUnlocked(ch) || (typeof adminModeEnabled!=='undefined' && adminModeEnabled)})).sort((a,b)=> (b.open - a.open)).map(({ch, open})=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''} ${open?'':'is-locked'}" ${open ? `data-pick="${escapeAttr(ch.id)}"` : 'disabled'} title="${open ? '' : escapeAttr(ch.drop ? 'Drops now and then from fights on Map ' + mapNumberOf(ch.drop.map) + ', or from a basic pack' : 'Beat the boss of Map ' + mapNumberOf(ch.unlockMap) + ' to unlock')}">
         <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${castleLevelOf(ch.id) >= CASTLE_MAX_LEVEL ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
       <p class="lp-temper">🔨 Temper your castles in the Forge (🏰 Castles).</p>`
-    : `<div class="lp-grid">${myLeaderId ? `<button type="button" class="lp-item lp-none" data-pick=""><span class="lp-tile lp-empty">✕</span><b>No leader</b><small>Clear the slot</small></button>` : ''}${leaderIds().slice(0, 120).map(id=> inDeck(id) ? `<button type="button" class="lp-item is-used" disabled aria-disabled="true" title="${escapeAttr(defs[id].name)} is in your deck. Take it out to make it your leader">
+    : `<div class="lp-grid">${'' /* 2026-10-15 (user: "There is no need for the 'Remove' pill on the chosen leader."): no "✕ No leader / Clear the slot" tile; the chosen leader is just marked */}${leaderIds().slice(0, 120).map(id=> inDeck(id) ? `<button type="button" class="lp-item is-used" disabled aria-disabled="true" title="${escapeAttr(defs[id].name)} is in your deck. Take it out to make it your leader">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b><small>In your deck</small></button>` : `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b></button>`).join('') || '<p class="panel-sub">No cards match.</p>'}</div>`;
   ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your castle' : 'Choose your leader'}">
@@ -11192,13 +11192,15 @@ function renderPlayerSubTab(body){
     <div class="panel deckbuilder-panel">
       ${deckHeroBannerHTML()}
       <h2>🃏 Your Loadout</h2><p class="panel-sub">Click a card to add a copy; <b>Shift+click</b> (or right-click, or its − corner) takes one out. Press 💾 Save deck to keep your changes.</p>
-      <h3 class="deck-section-h">🃏 Cards</h3>
+      ${'' /* 2026-10-15 (user: "Remove the 'Cards' pill - it's useless."): no "🃏 Cards" heading pill over the count line */}
       <!-- 2026-09-20, per explicit request ("the 20/20 cards label and warning should be just
            above the deck preview"): this used to sit up in the panel-sub line right under the
            "Build your deck" heading, separated from the actual deck-preview chips below by the
            whole Bramble-picker and leader-slot sections. Moved to sit immediately above
            #myDeckList instead, so the count/warning reads together with the thing it's counting. -->
-      <p class="panel-sub deck-count-line"><span id="myDeckSizeBadge">${deckSizeBadgeHTML(myDeckCounts)}</span></p>
+      ${'' /* 2026-10-15 (user: "the Save button should be on the same row as 'Ready to play'"): the save bar (state, Discard, 💾 Save deck)
+           sits at the end of the "20/20 cards ✓ ready to play" row instead of floating in the window's corner. */}
+      <div class="deck-count-row"><p class="panel-sub deck-count-line"><span id="myDeckSizeBadge">${deckSizeBadgeHTML(myDeckCounts)}</span></p>${deckDraftOn ? deckSaveBarHTML() : ''}</div>
       <div class="deck-list-mini" id="myDeckList"></div>
       <div class="codex-toolbar deck-toolbar">
         <input id="deckSearch" type="text" placeholder="🔍 Search card name…">
@@ -34038,6 +34040,7 @@ let deckEditingId = null; // non-null while a specific deck's builder is open
 var deckDraftOn = false, deckDirty = false;
 function deckDraftActive(){ return deckDraftOn; }
 function markDeckDirty(){ if(!deckDirty){ deckDirty = true; } refreshDeckSaveBar(); }
+function deckSaveBarHTML(){ return `<div class="deck-savebar ${deckDirty?'is-dirty':''}" id="deckSaveBar" role="status"><span class="dsb-state">${deckDirty?'Unsaved changes':'All changes saved'}</span><button type="button" class="btn small ghost" id="deckDiscardBtn" ${deckDirty?'':'disabled'}>Discard</button><button type="button" class="btn small primary" id="deckSaveBtn" ${deckDirty?'':'disabled'}>💾 Save deck</button></div>`; }
 function refreshDeckSaveBar(){
   const bar = document.getElementById('deckSaveBar'); if(!bar) return;
   bar.classList.toggle('is-dirty', deckDirty);
@@ -34171,9 +34174,9 @@ function renderDeckSectionInner(){
     // for a non-active deck switches to it first (see switchActiveDeck's own comment above).
     if(activeDeckId!==deckEditingId){ endDeckDraft(); switchActiveDeck(deckEditingId); }
     deckDraftOn = true;
-    // The save bar floats over the page (body-level, so the tab's transforms can't trap it).
+    // The save bar sits on the deck's "20/20 cards ✓ ready to play" row (2026-10-15; it floated over the page before): see
+    // renderPlayerSubTab and deckSaveBarHTML.
     document.getElementById('deckSaveBar')?.remove();
-    document.body.insertAdjacentHTML('beforeend', `<div class="deck-savebar ${deckDirty?'is-dirty':''}" id="deckSaveBar" role="status"><span class="dsb-state">${deckDirty?'Unsaved changes':'All changes saved'}</span><button type="button" class="btn small ghost" id="deckDiscardBtn" ${deckDirty?'':'disabled'}>Discard</button><button type="button" class="btn small primary" id="deckSaveBtn" ${deckDirty?'':'disabled'}>💾 Save deck</button></div>`);
     root.innerHTML = `<div class="play-subtabs-row deck-switch-row">
         <button type="button" class="btn small deck-back-btn" id="deckBackBtn" title="Back to your decks">‹ Back</button>
         <div class="deck-switcher" role="tablist" aria-label="Your decks">
@@ -34189,14 +34192,15 @@ function renderDeckSectionInner(){
     // Clicking the deck you're already in renames it (it's obvious which deck you mean).
     root.querySelectorAll('[data-switchdeck]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.switchdeck === deckEditingId){ startDeckRename(b, b.dataset.switchdeck); return; } deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = b.dataset.switchdeck; renderDeckSection(); }); }));
     document.getElementById('deckNewChip').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); const d = createNewDeck(); deckEditingId = d.id; renderDeckSection(); }));
-    document.getElementById('deckSaveBtn').addEventListener('click', ()=>{ commitDeckDraft(); showToast(TX('toast.deck-saved'), 'ok'); renderDeckSection(); });
-    document.getElementById('deckDiscardBtn').addEventListener('click', ()=>{ discardDeckDraft(); renderDeckSection(); });
     const mm = document.getElementById('deckMakeMainBtn');
     if(mm) mm.addEventListener('click', ()=>{ if(deckDirty) commitDeckDraft(); setMainDeck(deckEditingId); SoundKit.codeImport && SoundKit.codeImport(); renderDeckSection(); });
     document.getElementById('deckManageBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; renderDeckSection(); }));
     document.getElementById('deckBackBtn').addEventListener('click', ()=> deckLeaveGuard(()=>{ endDeckDraft(); deckEditingId = null; deckShowList = true; deckHeroView = false; renderDeckSection(); }));
 
     renderPlayerSubTab(document.getElementById('deckBuilderBody'));
+    { const sv = document.getElementById('deckSaveBtn'), dc = document.getElementById('deckDiscardBtn'); // on the count row (2026-10-15)
+      if(sv) sv.addEventListener('click', ()=>{ commitDeckDraft(); showToast(TX('toast.deck-saved'), 'ok'); renderDeckSection(); });
+      if(dc) dc.addEventListener('click', ()=>{ discardDeckDraft(); renderDeckSection(); }); }
     return;
   }
   endDeckDraft();

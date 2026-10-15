@@ -1361,6 +1361,16 @@
   .deck-savebar{position:fixed; right:22px; bottom:20px; z-index:70; display:flex; align-items:center; gap:8px; width:fit-content; padding:6px 8px 6px 14px; border-radius:999px; background:rgba(30,20,10,.55); color:#f3e6c8; font-size:13px; font-weight:700; backdrop-filter:blur(4px);}
   .deck-savebar.is-dirty{background:#f3d77e; color:#4a3205; box-shadow:0 4px 14px rgba(0,0,0,.3);}
   .deck-savebar .dsb-state::before{content:'✓ '; } .deck-savebar.is-dirty .dsb-state::before{content:'● ';}
+  /* 2026-10-15 (user: "the Save button should be on the same row as 'Ready to play'"): the save bar is part of the count row now,
+     right-aligned after "20/20 cards ✓ ready to play", not a pill floating in the window's corner. */
+  .deck-count-row{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:6px 12px; margin:0 0 6px;}
+  .deck-count-row .deck-count-line{margin:0;}
+  .deck-count-row .deck-savebar{position:static; right:auto; bottom:auto; z-index:auto; margin-left:auto; backdrop-filter:none; background:var(--surface-2); color:var(--ink); box-shadow:inset 0 0 0 1px var(--surface-border);}
+  .deck-count-row .deck-savebar.is-dirty{background:#f3d77e; color:#4a3205; box-shadow:0 2px 8px rgba(0,0,0,.2);}
+  /* 2026-10-15 (user: "Mini window should have hover for card detail BUT also hovering over the chosen leader should show the card
+     detail"): the leader tiles in the picker and the chosen leader on the deck banner take the pointer again, so the usual 1 s hover
+     (or a hold on a phone) opens the card's details; a click still lands on the button around them. */
+  .dt-slot[data-loadout="leader"] .dt-tile .card-tile, .loadout-picker .lp-item:not(.lp-none) .lp-tile .card-tile{pointer-events:auto;}
   .dc-warn{display:inline-grid; place-items:center; width:15px; height:15px; border-radius:50%; background:#c9822f; color:#fff; font-size:10px; font-weight:900; margin-left:2px;}
   .deck-main-tag{font:800 12.5px 'Baloo 2',system-ui,sans-serif; color:#5e3f05; background:#f3d77e; box-shadow:0 1px 3px rgba(0,0,0,.3); border-radius:999px; padding:4px 10px; align-self:center;}
   .deck-illegal-badge{font-size:10px; font-weight:800; color:#9a5418; background:rgba(181,101,29,.16); border-radius:6px; padding:2px 6px; flex-shrink:0;}
