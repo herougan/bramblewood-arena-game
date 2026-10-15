@@ -315,6 +315,8 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 // Durian has no emoji: a drawn spiky green fruit, 🌰 in plain text. Shield (a unit's) is 💠 because Armor has 🛡 and Shield Call 🛡️.
 // Electricity shares Shock's 🔌 (user: "electric skill - use the electric plug emoji"). 2026-10-14 (user: "Electric skill's icon: 🔌"):
 // just the plug now, no spark beside it, on the card chip, in the Codex, the effects library and the battle log. Keen Sense 👃.
+// 2026-10-15: the new arrows, the Bolts and Chilli.
+Object.assign(SKILL_ICON, {iceArrow:'🧊🏹', twinShot:'🏹🏹', volley:'🎯🏹', fireBolt:'🔥', acidBolt:'🧪', poisonBolt:'🐍', iceBolt:'❄️', shockBolt:'⚡', chilli:'🌶️'});
 Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌', keenSense:'👃'});
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
 // because 💨 is Swift's, 🌫️ Shade's and 🫧 Poison's, with 💣💨 where only text fits.
@@ -458,7 +460,7 @@ const PASSIVE_DEFS = [
   // incidental flank redirect). So a lone defender with empty flanks eats the castle hit twice.
   // 2026-10-12 (user: "Swipe should be renamed to Fork, it does a bi-fork attack"): the old Swipe is Fork now (an old
   // swipe:true still reads as Fork). Swipe is a new number skill: it steals Lumber.
-  {key:'fork', category:'passive', label:'Fork', kind:'boolean', desc:()=>`Never strikes straight ahead: it hits the columns left and right of the one in front of it instead. An empty side sends that swing to the castle.`,
+  {key:'fork', category:'passive', label:'Fork', kind:'boolean', desc:()=>`Hits the 2 nearest enemy units, full Attack each (none more than 1 column away). With no enemy unit that near, it attacks straight ahead as normal.`,
     get:e=> (e.fork || e.swipe === true) ? true : undefined, apply:(e)=>{ e.fork = true; }},
   {key:'swipe', category:'passive', label:'Swipe', kind:'number', min:0, desc:v=>`Every swing that lands swipes ${v} Lumber from the opponent: they lose it, you gain it.`,
     get:e=> (typeof e.swipe === 'number' && e.swipe > 0) ? e.swipe : undefined},
@@ -526,8 +528,8 @@ const PASSIVE_DEFS = [
   {key:'boomerang', category:'evergreen', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
-  {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Hits the 3 nearest enemy units, full Attack each (none more than 1 column away).`},
-  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Hits the 4 nearest enemy units, full Attack each (none more than 2 columns away).`},
+  {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Hits the 3 nearest enemy units, full Attack each (none more than 1 column away). With no enemy unit that near, it attacks straight ahead as normal.`},
+  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Hits the 4 nearest enemy units, full Attack each (none more than 2 columns away). With no enemy unit that near, it attacks straight ahead as normal.`},
   {key:'octolash', category:'passive', label:'Octolash', kind:'boolean', desc:()=>`Lashes the 8 enemy units nearest it (the one in front first), full Attack each. It never lashes the castle; with no units, it just attacks normally.`},
   // 2026-10-14 skills (for the cards on the maps after Map 20; engine: bramblewood-engine.js, "2026-10-14 skills").
   // Speed (user: "Swing Order. So Speed +N means that: When combat begins, all creatures of the highest speed go in turn order.
@@ -577,7 +579,9 @@ const PASSIVE_DEFS = [
   // 2026-10-14 (fourth pass). Crab Claws (user: "Crab claws: Attacks left or right only.").
   // Crab Claws retired from the editor (2026-10-14, user: "Ignore Crab claws. Crabs have fork"): hidden:true keeps it working on any
   // card that still has it, but it is no longer offered in "+ Add Skill".
-  {key:'crabClaws', category:'passive', hidden:true, label:'Crab Claws', kind:'boolean', desc:()=>`Never strikes the unit in front: each swing pinches the enemy unit in the column to its left or right, taking turns (left first). With no unit either side, a unit in front means a wasted pinch; with nothing in front either, it goes for the castle.`},
+  // 2026-10-15 (user: "Crab claws can be, attack a random unit L or R. Very awkward for the crab, but very fitting."): back in
+  // "+ Add Skill" with the new rule; no card has it yet (the crabs still Fork).
+  {key:'crabClaws', category:'passive', label:'Crab Claws', kind:'boolean', desc:()=>`Never aims straight ahead: each swing pinches one random enemy unit in the column to its left or right. With no unit on either side, it attacks straight ahead as normal.`},
   // Meiosis N (user: "Simple units only - this Passive skill means that the creature breaks into 2 smaller parts when it dies, with
   // half the stats, and skill numbers. Their Meiosis count drops by 1.").
   {key:'meiosis', category:'passive', label:'Meiosis', kind:'number', min:1, defaultValue:1, desc:v=>{ const n = v === true ? 1 : (Number(v)||1); return `Simple units only. When it dies it splits into 2 halves beside each other: tokens with half its Attack and Health (rounded up), every skill number halved (rounded down; a skill at 0 is lost) and ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
@@ -794,6 +798,20 @@ const PASSIVE_DEFS = [
   // Arrow / Fire Arrow (2026-10-04): see fireArrowVolley in bramblewood-engine.js.
   {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots an arrow for ${v} damage at the nearest enemy (a random one if two are as near; the castle if the board is empty). Never misses Flying units.`},
   {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots a flaming arrow for ${v} Heat damage at the nearest enemy (Heat resistance and weakness apply). Never misses Flying units.`},
+  // Ice Arrow / Twin Shot / Volley (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire Arrow, Ice
+  // Arrow etc. will be more normal."): see fireArrowVolley in bramblewood-engine.js.
+  {key:'iceArrow', category:'evergreen', label:'Ice Arrow', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: shoots an icy arrow for ${v||2} Cold damage at the nearest enemy. A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter). Never misses Flying units.`},
+  {key:'twinShot', category:'evergreen', label:'Twin Shot', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: shoots two arrows for ${v||2} damage each, at two different random enemy units (both at one if there is only one; the castle if the board is empty). Never misses Flying units.`},
+  {key:'volley', category:'evergreen', label:'Volley', kind:'number', min:1, defaultValue:1, desc:v=>`Every other round while Ready (its first Ready round, then every 2nd), before melee: looses a volley, an arrow for ${v||1} damage at every enemy unit (the castle if the board is empty). Never misses Flying units.`},
+  // The Bolts (2026-10-15, user: "We need bolts - these might be quite creature-specific. All elemental or status-y. They just
+  // represents 'spits' of something at the enemy. Fire bolt, Acid bolt, Poison bolt etc."): one engine implementation with an
+  // element table (BOLT_ELEMENTS in bramblewood-engine.js). Each spits every round while Ready, before melee, at the enemy opposite
+  // (the nearest enemy unit if none is opposite; the castle if the board is empty).
+  {key:'fireBolt', category:'evergreen', label:'Fire Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits a glob of fire at the enemy opposite (the nearest one if none is) for ${v||2} fire damage.`},
+  {key:'acidBolt', category:'evergreen', label:'Acid Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits acid at the enemy opposite (the nearest one if none is) for ${v||2} acid damage, and 1 Corrode.`},
+  {key:'poisonBolt', category:'evergreen', label:'Poison Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits venom at the enemy opposite (the nearest one if none is): no damage, but ${v||2} Poison.`},
+  {key:'iceBolt', category:'evergreen', label:'Ice Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits a shard of ice at the enemy opposite (the nearest one if none is) for ${v||2} Cold damage. A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter).`},
+  {key:'shockBolt', category:'evergreen', label:'Shock Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits a crackling spark at the enemy opposite (the nearest one if none is) for ${v||2} damage, and Shocks it for a round (it takes 50% more damage).`},
   {key:'kingSlayer', category:'passive', label:'King Slayer', kind:'number', min:0, desc:v=>`Deals ${v} bonus damage on every landed hit against a target with the King type.`},
   // 2026-10-14 (fifth pass). Tornado, Avalanche, Tsunami (user: "All evergreen abilities"); Dragon Lightning and Wither, the
   // Dragonic Spire's signature skills (user: "Dragonic Spire - (imagine elden ring) - Skills, Dragon Lightning (monster hunter), and Wither (Minecraft)").
@@ -824,8 +842,18 @@ const PASSIVE_DEFS = [
   // This is an evergreen skill. It happens 50% of the time every turn. (The banana and bananarang and boomerang ones are all
   // Evergreen)") - so Banana, Bananarang and Boomerang above are Evergreen now too.
   {key:'psychic', category:'passive', label:'Psychic', kind:'number', min:1, defaultValue:1, desc:v=>`Each hit that lands also deals ${v||1} psychic damage straight to Health: Armor, Shield, Shell and a Ghost's body don't stop it. Elementals and Plants have no mind, so they don't take it.`},
+  // Chilli N (2026-10-15, user: "New skill Chilli."): an animal's one-off food skill, like Coffee and Banana. See eatChilli in
+  // bramblewood-engine.js.
+  {key:'chilli', category:'evergreen', label:'Chilli', kind:'number', min:1, defaultValue:2, desc:v=>`Eats a chilli when it first becomes Ready: for the rest of the fight its attacks deal fire damage and it has +${v||2} Attack, but it takes 1 damage at the start of every round (it's very hot).`},
   {key:'smokeBomb', category:'evergreen', label:'Smoke Bomb', kind:'boolean', desc:()=>`Every round, after everyone else has swung: a 1 in 2 chance it throws a smoke bomb at a random unit, ally or enemy (never itself). An ally is hidden in Smoke: attacks at it miss 1 in 2 until the end of the next round. An enemy is Blinded for a round.`},
 ];
+// One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
+// Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
+// Scatterbrained, Meteor, ..."): oneOff:true on those registry entries; the skill picker and the Skills codex tag them. Durian joins
+// Banana as the other fruit; there is no Hurricane skill yet.
+const ONE_OFF_SKILLS = ['coffee', 'chilli', 'banana', 'bananarang', 'durian', 'rabid', 'supremeTide', 'smokeBomb', 'avalanche', 'earthquake', 'tornado', 'crepuscular', 'scatterbrained', 'meteor'];
+PASSIVE_DEFS.forEach(p=>{ if(ONE_OFF_SKILLS.includes(p.key)) p.oneOff = true; });
+function oneOffTagHTML(p){ return p && p.oneOff ? `<span class="sk-oneoff" title="A one-off: specific to this animal, not to a map">one-off</span>` : ''; }
 const ACTIVE_PRESETS = [
   // Arrow N / Arrow (=Attack) used to live here as dedicated one-shot presets backed by their
   // own effects.missile field (see bramblewood-engine.js fireMissile). Removed 2026-09-20 per
@@ -1041,7 +1069,7 @@ function CHAIN_BREAK_OPTIONS(){
 // to write a chosen value back into a fresh `effects` object on save.
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
-    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired,
+    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, oneOff:p.oneOff,
     get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey,
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
@@ -1603,7 +1631,7 @@ const SKILL_TEXT = {
   counterattack: ()=> `Never attacks on its own. Strikes back at whoever hits it.`,
   spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,
   thorns: v=> `Melee attackers take ${v} damage.`,
-  fork: ()=> `Hits the two columns beside the one in front instead.`,
+  fork: ()=> `Hits the 2 nearest enemy units (within 1 column) with full Attack.`,
   swipe: v=> `Each hit steals ${v} Lumber.`,
   twinStrike: ()=> `Attacks twice.`,
   pack: v=> `Side by side with Pack units of its type: each gets +N/+N, N = the chain's Pack values added up (two Pack ${v||2}s: +${2*(v||2)}/+${2*(v||2)}).`,
@@ -1611,7 +1639,7 @@ const SKILL_TEXT = {
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
   wave: v=> `Its hits push the unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : v === 'alternate' ? 'left, then right, in turn' : 'toward the side with more room'} (swapping with any unit there).`,
   supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flow or Ebb. Tide effects can't take them away.`,
-  crabClaws: ()=> `Attacks left or right only: each swing hits the enemy beside the one in front, taking turns.`,
+  crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right.`,
   meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
   nullify: ()=> `Its hits get no reaction from the unit hit. A unit it kills skips its death effects and goes to the ${EXILE_ZONE_NAME}.`,
   restless: ()=> `Every upkeep it steps one column toward the nearest enemy.`,
@@ -1705,6 +1733,15 @@ const SKILL_TEXT = {
   skyfall: v=> `When played, deal ${v} damage to a random enemy unit, or the castle if there are no targets.`,
   arrow: v=> `While Ready, shoot the enemy facing it for ${v} damage every upkeep.`,
   fireArrow: v=> `While Ready, shoot the enemy facing it for ${v} fire damage every upkeep.`,
+  iceArrow: v=> `While Ready, shoot the nearest enemy for ${numOr(v, 2)} cold damage every round; 1 in 2 it freezes.`,
+  twinShot: v=> `While Ready, shoot two random enemy units for ${numOr(v, 2)} damage each every round.`,
+  volley: v=> `Every other round while Ready, shoot every enemy unit for ${numOr(v, 1)} damage.`,
+  fireBolt: v=> `While Ready, spit fire at the enemy opposite for ${numOr(v, 2)} fire damage every round.`,
+  acidBolt: v=> `While Ready, spit acid at the enemy opposite for ${numOr(v, 2)} acid damage and 1 Corrode every round.`,
+  poisonBolt: v=> `While Ready, spit venom at the enemy opposite for ${numOr(v, 2)} Poison every round.`,
+  iceBolt: v=> `While Ready, spit ice at the enemy opposite for ${numOr(v, 2)} cold damage every round; 1 in 2 it freezes.`,
+  shockBolt: v=> `While Ready, spit a spark at the enemy opposite for ${numOr(v, 2)} damage and Shock every round.`,
+  chilli: v=> `When first Ready, eats a chilli: +${numOr(v, 2)} Attack and fire attacks, but 1 damage to itself every round.`,
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
 };
 // 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami, Dragon Lightning, Wither.
@@ -5517,6 +5554,9 @@ function abilityBadges(d, bopts){
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
   // 2026-10-14 (seventh pass): Psychic, Smoke Bomb.
   if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">${iconHTML('psychic', '💭')}${n1(numOr(e.psychic, 1))}</span>`);
+  // 2026-10-15: Ice Arrow, Twin Shot, Volley, the Bolts and Chilli.
+  [['iceArrow', 'Ice Arrow', 2], ['twinShot', 'Twin Shot', 2], ['volley', 'Volley', 1], ['fireBolt', 'Fire Bolt', 2], ['acidBolt', 'Acid Bolt', 2], ['poisonBolt', 'Poison Bolt', 2], ['iceBolt', 'Ice Bolt', 2], ['shockBolt', 'Shock Bolt', 2], ['chilli', 'Chilli', 2]].forEach(([k, nm, dv])=>{
+    if(e[k]) out.push(`<span class="ab-${k.toLowerCase()}" title="${escapeAttr(nm + ' ' + numOr(e[k], dv) + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${n1(numOr(e[k], dv))}</span>`); });
   if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${iconHTML('smoke-bomb', '💣')}</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
   // 2026-10-15 (user: "The stone cost should be on the top left."): ore costs moved to costBadgeParts (the top-left cost badge).
@@ -5532,7 +5572,7 @@ function abilityBadges(d, bopts){
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
   // arrows) to read as "hits both sides" at a glance.
-  if(e.fork || e.swipe === true) out.push(isCrabDef(d) ? `<span class="ab-fork ab-crab" title="Fork: its claws hit left and right, never straight">🦞</span>` : `<span class="ab-fork" title="Fork: hits left and right, never straight">⇔</span>`); // a crab's Fork is a crab claw (2026-10-14) // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
+  if(e.fork || e.swipe === true) out.push(isCrabDef(d) ? `<span class="ab-fork ab-crab" title="Fork: its claws hit the 2 nearest enemy units, within 1 column">🦞</span>` : `<span class="ab-fork" title="Fork: hits the 2 nearest enemy units, within 1 column">⇔</span>`); // a crab's Fork is a crab claw (2026-10-14) // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
   if(typeof e.swipe === 'number' && e.swipe > 0) out.push(`🫳${n1(e.swipe)}`);
   if(e.twinStrike) out.push(`${iconHTML('twin-strike', '⚔')}⚔`);
   if(e.converge) out.push(`${iconHTML('converge', '🧲')}`);
@@ -5685,7 +5725,7 @@ function skillCodexHTML(){
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
   const rows = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
-    return `<div class="sk-row"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b></div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
+    return `<div class="sk-row"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${oneOffTagHTML(p)}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
   return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>${rows || '<p class="panel-sub">None yet. Skills show here as you meet them.</p>'}</div>`;
 }
 // Map Codex (2026-10-13, user: "2 maps after the skill codex, add the map codex + list of field effects learned from each map").
@@ -7283,8 +7323,8 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   // passing 'N' through for those would index into the string and show garbage.
   const descArg = s.kind==='number' ? (row.value||1) : s.kind==='types' ? row.value : s.kind==='select' ? (row.value||'') : s.kind==='cardCount' ? (Array.isArray(row.value)?row.value:defaultSkillValue(row.key)) : 'N';
   return `<div class="skill-row" title="${escapeAttr(s.desc(descArg, row.n))}">
-    <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
-    ${valueHtml}
+    <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${x.label}${x.oneOff ? ' · one-off' : ''}</option>`).join('')}</select>
+    ${oneOffTagHTML(s)}${valueHtml}
     ${liveReadout}
     ${'' /* 2026-10-13 (user: "In the future, i want to be able to add skills at different levels. To not clump up the UI, just have a + button per row"): a row can arrive at a level; ＋ adds a row for the same skill one level up */}
     ${row.lv ? `<label class="sk-lv" title="This skill arrives at this level">Lv <select data-sk="lv" data-i="${i}">${Array.from({length:11}, (_, k)=> k + 1).map(L=> `<option value="${L}" ${row.lv===L?'selected':''}>${L}</option>`).join('')}</select></label>` : ''}
@@ -20567,7 +20607,17 @@ const FXL_FIELDS = [
 // Hand-made skill setups (merged over the default scenario). steps: see fxlRunStep.
 const FXL_FOES3 = [{role:'foe', slot:0}, {role:'foe2', slot:-1}, {role:'foe3', slot:1}];
 const FXL_SKILL_SETUPS = {
-  fork: {foes:FXL_FOES3, note:'Enemies on both sides of the one in front, so both prongs land.'},
+  fork: {foes:FXL_FOES3, note:'Three dummies side by side: it hits the one in front and the nearer one beside it (2 in all).'}, // 2026-10-15 rework
+  // 2026-10-15: Trident / Pitchfork / Crab Claws (the new prong rules), the new arrows, the Bolts and Chilli.
+  trident: {foes:FXL_FOES3, note:'Three dummies side by side: all three are within 1 column, so all three are hit.'},
+  pitchfork: {foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}, {role:'foe3', slot:1}, {role:'foe2', slot:-2}, {role:'foe3', slot:2}], note:'Five dummies: it hits the 4 nearest (none more than 2 columns away).'},
+  crabClaws: {foes:FXL_FOES3, steps:['round', 'round'], note:'Dummies either side of the one in front: each round it pinches left or right at random.'},
+  iceArrow: {steps:['round', 'round'], note:'Two rounds of icy arrows (1 in 2 freezes the dummy).'},
+  twinShot: {foes:FXL_FOES3, note:'Three dummies: two arrows, at two different ones.'},
+  volley: {foes:FXL_FOES3, steps:['round', 'round', 'round'], note:'Three dummies, three rounds: a volley on the 1st and 3rd.'},
+  poisonBolt: {steps:['round', 'round'], note:'Two rounds, so the Poison ticks.'},
+  iceBolt: {steps:['round', 'round'], note:'Two rounds of ice bolts (1 in 2 freezes the dummy).'},
+  chilli: {steps:[{spawn:'subject'}, 'round', 'round'], note:'It arrives Ready and eats its chilli; two rounds, so you see its fire attacks and the heat sting.'},
   sweep: {foes:FXL_FOES3, note:'Enemies on both sides of the one in front, so the cleave lands.'},
   swarm: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1}, {role:'ally2', slot:1}], note:'Two allies of the same type stand with it.'},
   pack: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{effects:{pack:2}}}, {role:'ally2', slot:1, def:{effects:{pack:2}}}], note:'Two Pack allies of the same type side by side.'},
@@ -22430,9 +22480,14 @@ function showFacing(uid){
     // a bit thinner"): with one unit in front, two thinner lines go to the slots either side of it (empty or not).
     { const srcCard = [1,2].map(p=> allCardsOnBoard(m.players[p]).find(c=> String(c.uid)===String(uid))).find(Boolean);
       const se = srcCard && defsNow[srcCard.defId] && defsNow[srcCard.defId].effects || {};
-      const forkOnly = !!(se.fork || se.swipe === true);
-      if(forkOnly && f.foes.length===1){ html = ''; const t0 = boardCardEl(f.foes[0]); if(t0) t0.classList.remove('is-faced'); } // Fork never swings straight: only its two side lines show
-      if(f.foes.length===1 && (Number(se.sweep) > 0 || forkOnly)){
+      // Fork / Trident / Pitchfork (2026-10-15, user: "attack the nearest 2/3/4 enemies within 1/1/2 range"): the main line to the
+      // unit in front, and thinner red lines to every other enemy unit near enough to be one of the prongs.
+      const prong = se.pitchfork ? 2 : (se.trident || se.fork || se.swipe === true) ? 1 : 0;
+      if(prong && f.foes.length===1){ const foePid = f.pid===1 ? 2 : 1, order = boardOrderOf(m, foePid), me0 = order.find(x=> String(x.uid)===String(f.foes[0]));
+        if(me0) order.filter(x=> x !== me0 && Math.abs(x.p - me0.p) <= prong + 0.25).forEach(x=>{ const nbEl = boardCardEl(x.uid); if(!nbEl) return; const nr = nbEl.getBoundingClientRect(); nbEl.classList.add('is-faced');
+          html += `<line class="facing-fork" x1="${cx(sr).toFixed(1)}" y1="${cy(sr).toFixed(1)}" x2="${cx(nr).toFixed(1)}" y2="${cy(nr).toFixed(1)}"/>`; }); }
+      const forkOnly = false; // (Fork no longer skips the unit in front, 2026-10-15)
+      if(f.foes.length===1 && Number(se.sweep) > 0){
         const t = boardCardEl(f.foes[0]);
         if(t){ const tr = t.getBoundingClientRect(), gap = Math.max(8, tr.width*0.12), foePid = f.pid===1 ? 2 : 1;
           const order = boardOrderOf(m, foePid), me0 = order.find(x=> String(x.uid)===String(f.foes[0]));
@@ -29119,7 +29174,7 @@ function vfxKindOf(ev){
 }
 function delayForEvent(ev, prevKind){
   let base;
-  if(ev.type==='arrow') base = 40;
+  if(ev.type==='arrow' || ev.type==='bolt') base = 40; // + the Bolts (2026-10-15)
   else if(ev._arrowShot) base = 760; // set by renderVfxForEvent, which runs just before this
   else if(ev.quake) base = 100; // 2026-10-12 (user: "The earthquake should hit each unit faster (0.1s separation per hit anim)")
   else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
@@ -29653,7 +29708,8 @@ function logText(ev){
     case 'poisonTick': return {cls:'poison', text:`${nm(ev.defId)} took ${ev.dmg} poison damage. 🫧`};
     case 'decayTick': return {cls:'poison', text:`${nm(ev.defId)} decayed for ${ev.dmg} damage and -${ev.atk} Attack. 🦠`};
     case 'bleedTick': return {cls:'bleed', text:`${nm(ev.defId)} took ${ev.dmg} bleed damage. 🩸`};
-    case 'arrow': return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the castle'}`};
+    case 'arrow': return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the castle'}`};
+    case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'a poison bolt 🐍', ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the castle'}`}; // the Bolts (2026-10-15)
     case 'revive': return {cls:'gold', text:`${nm(ev.defId)} refused to die — revived at 1 HP! ✨`};
     case 'collapseIn': return {cls:'', text:`${nm(ev.defId)} falls into the center from the ${ev.fromSide}. ➡`};
     case 'death': return {cls:'', text:`${nm(ev.defId)} died.`};
@@ -29720,6 +29776,8 @@ function logText(ev){
         phaseFade: `loses that extra strength again`,
         tailwind: `caught the Tailwind for an extra turn 🪁`,
         coffee: `downed a coffee (Wait −${ev.amount}) ☕`,
+        chilli: `ate a chilli: +${ev.amount}⚔, and its attacks burn now 🌶️🔥`, // Chilli (2026-10-15)
+        chilliBurn: `is very hot from its chilli: ${ev.amount} damage 🌶️`,
         rocket: `launched a rocket 🚀`,
         shed: `shed its skin and came out stronger (+1/+1) 🐍`,
         wither: `withered ${nm(ev.targetDefId)} (−${ev.amount} max Health a round for 3 rounds, no healing) 💀`, // 2026-10-14
@@ -29800,7 +29858,7 @@ function logText(ev){
     case 'converge': return {cls:'', text:`${nm(ev.defId)} pulls ${ev.targetSide===ev.side ? 'its own' : 'the enemy'} line together! 🧲`};
     case 'roundStart': return {cls:'', text:`— Round ${ev.round} —`};
     case 'swapPositions': return {cls:'', text:`${nm(ev.attDefId)} scurries ${nm(ev.aDefId)} and ${nm(ev.bDefId)} out of position! 🔀`};
-    case 'crabClaw': return {cls:'', text: ev.whiff ? `🦞 ${nm(ev.attDefId)} pinches at thin air: nobody beside the unit in front.` : `🦞 ${nm(ev.attDefId)} pinches to the ${ev.dir}!`}; // Crab Claws (2026-10-14)
+    case 'crabClaw': return {cls:'', text: ev.whiff ? `🦞 ${nm(ev.attDefId)} pinches at thin air: nobody beside the unit in front.` : `🦞 ${nm(ev.attDefId)} pinches to the ${ev.dir}!`}; // (whiff: no longer happens since 2026-10-15; kept for old logs) // Crab Claws (2026-10-14)
     case 'charge': return {cls: ev.fired ? 'gold' : '', text: ev.start ? `⏲️ ${nm(ev.defId)} starts charging (${ev.left}).` : ev.fired ? `⏲️ ${nm(ev.defId)}'s charge goes off!` : `⏲️ ${nm(ev.defId)} charges… ${ev.left} to go.`}; // Charge N (2026-10-14)
     case 'restless': return {cls:'', text:`👣 ${nm(ev.defId)} can't keep still: it moves ${ev.to > ev.from ? 'right' : 'left'}${ev.swapUid != null ? ', swapping places' : ''}.`}; // Restless (2026-10-14)
     // 2026-10-14 (fifth pass)
@@ -31073,6 +31131,28 @@ function eighthPassVfx(ev){
     else if(k === 'berserk' && self) F.rageFlare(self);
   }
 }
+// 2026-10-15 (ninth pass): the Bolts (user: "They just represents 'spits' of something at the enemy") and Chilli (user: "New skill
+// Chilli."). A 'bolt' event lobs a coloured glob at once (its hit, if any, follows and skips its plain projectile: pendingBolt);
+// Chilli flushes the card red with a steam puff when it is eaten, and a smaller flash at each round-start sting. The Bolt glob
+// plays at every FX level above none (it is the only cue a Poison Bolt has); the chilli at Medium and up.
+function ninthPassVfx(ev){
+  if(!ev || !matchState) return; const F = window.SkillFX;
+  if(ev.type === 'bolt'){
+    const am = animMs(); matchState.pendingBolt = {uid: ev.uid};
+    const from = boardCardEl(ev.uid) || hqTileEl(ev.side), to = ev.targetUid != null ? boardCardEl(ev.targetUid) : hqTileEl(ev.targetSide);
+    try{ SoundKit.launch(); }catch(e){}
+    if(F && F.boltGlob && fxLevel() !== 'none') F.boltGlob(from, to, {element: ev.element, flight: am.windup + am.projectile});
+    else if(to) setTimeout(()=> spawnProjectile(from, to, '●'), am.windup);
+    if(ev.element === 'poison' && to) setTimeout(()=>{ try{ floatText(to, `🐍 +${ev.amount} ☠`, 'debuff'); }catch(e){} }, am.windup + am.projectile);
+    return;
+  }
+  if(ev.type === 'arrow') matchState.pendingBolt = null;
+  if(ev.type === 'statusFx' && (ev.kind === 'chilli' || ev.kind === 'chilliBurn')){
+    const t = boardCardEl(ev.targetUid);
+    if(ev.kind === 'chilliBurn'){ const rc = matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.hp = Math.max(0, (rc.hp||0) - (ev.amount||0)); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} }
+    if(t && F && F.chilliHeat && !reducedMotion() && fxAtLeast('med')) F.chilliHeat(t, {burn: ev.kind === 'chilliBurn'});
+  }
+}
 // Two halves of a shell fly apart, with a few chips.
 function eggCrackVfx(x, y){
   if(fxLevel() === 'none') return;
@@ -31098,9 +31178,10 @@ function renderVfxForEvent(ev){
   try{ fifthPassVfx(ev); }catch(e){} // Tornado, Avalanche, Tsunami, Dragon Lightning, Wither, egg hatch (2026-10-14)
   try{ sixthPassVfx(ev); }catch(e){} // Fireball, Meteor, Banana, Durian, Shield, Electricity (2026-10-14)
   try{ labSkillFx(ev); }catch(e){}
+  try{ ninthPassVfx(ev); }catch(e){} // the Bolts and Chilli (2026-10-15)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
-  if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum'].includes(ev.kind)){
+  if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum','chilli'].includes(ev.kind)){ // + Chilli (2026-10-15)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
     if(rc){ rc.atk = (rc.atk||0) + (ev.amount||0); if(ev.kind==='esprit' && ev.hp){ rc.hp += ev.hp; rc.maxHp += ev.hp; } if(ev.hiveMind){ rc.hp += 1; rc.maxHp += 1; } }
     try{ updateCardAtkDisplay(ev.attUid); }catch(e){}
@@ -31214,6 +31295,8 @@ function renderVfxForEvent(ev){
     const pa = matchState.pendingArrow;
     const arrowShot = !!(ev.ranged && pa && String(pa.uid)===String(ev.attUid));
     if(arrowShot){ matchState.pendingArrow = null; ev._arrowShot = true; }
+    const pb = matchState.pendingBolt, boltShot = !!(ev.ranged && !arrowShot && pb && String(pb.uid)===String(ev.attUid)); // a Bolt (2026-10-15)
+    if(boltShot) matchState.pendingBolt = null;
     const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
     const impactDelay = arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
@@ -31224,7 +31307,7 @@ function renderVfxForEvent(ev){
       setTimeout(()=>{ try{ UnitFX.attackFx(ufx.attack, atkEl, targetEl, windup + impactPad); if(SoundKit[ufx.attack]) SoundKit.at(atkEl, ()=> SoundKit[ufx.attack](windup + impactPad)); }catch(e){} }, Math.round(windup*0.5));
     }
     if(ev.ranged){
-      if(!arrowShot) SoundKit.launch();
+      if(!arrowShot && !boltShot) SoundKit.launch();
       // Item #14 (2026-09-18, "sometimes damage source or anim is not visible... looks like
       // they're taking a random 1 damage"): spawnProjectile silently no-ops when its origin
       // element isn't in the DOM (boardCardEl(ev.attUid) can miss if the source already left
@@ -31243,6 +31326,7 @@ function renderVfxForEvent(ev){
           light: (x, y, rgb, big)=>{ try{ const bfEl = document.getElementById('battlefieldEl'); if(battleWeather && battleWeather.flash && bfEl){ const b = bfEl.getBoundingClientRect(); battleWeather.flash((x - b.left)/b.width, (y - b.top)/b.height, rgb, big ? 0.9 : 0.55, big ? 0.5 : 0.3, big ? 800 : 500); } }catch(e){} }}); }
         else setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
       }
+      else if(boltShot){ /* the Bolt's glob is already in the air (ninthPassVfx, 2026-10-15) */ }
       else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
     }
     setTimeout(()=>{
@@ -31465,6 +31549,8 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='shed'){ if(el) floatText(el, '🐍 +1/+1', 'heal'); }
     else if(ev.kind==='rocket'){ if(el) floatText(el, '🚀 Rocket!', 'quick'); }
     else if(ev.kind==='coffee'){ if(el) floatText(el, `☕ −${ev.amount} ⏳`, 'quick'); }
+    else if(ev.kind==='chilli'){ if(el) floatText(el, `🌶️ +${ev.amount}⚔ 🔥`, 'buff'); } // Chilli (2026-10-15)
+    else if(ev.kind==='chilliBurn'){ if(el) floatText(el, `🌶️ −${ev.amount}`, 'dmg'); }
     else if(ev.kind==='coffeeCrash'){ if(el) floatText(el, '😴 Crash', 'stun'); }
     else if(ev.kind==='inspired'){ if(rc) rc.inspired = (rc.inspired||0) + (ev.amount||0); try{ SoundKit.rallyHorn ? SoundKit.rallyHorn() : SoundKit.curse(); }catch(e){} if(el) floatText(el, `📯 +${ev.amount}⚔ next swing`, 'buff'); }
     else if(ev.kind==='frostbite'){ if(el) floatText(el, `🥶 Frostbite +${ev.amount}/+${ev.amount}`, 'buff'); try{ SoundKit.freezeChime(); }catch(e){} }

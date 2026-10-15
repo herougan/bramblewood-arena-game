@@ -10085,7 +10085,7 @@
     "effects": {
       "fork": true
     },
-    "flavor": "Carries only Fork -- also hits both flanking columns -- and nothing else, for testing this one mechanic in isolation. Not for balance.",
+    "flavor": "Carries only Fork -- hits the 2 nearest enemy units within 1 column -- and nothing else, for testing this one mechanic in isolation. Not for balance.",
     "locked": true,
     "test": true,
     "archetypes": [],

@@ -41,19 +41,18 @@ const give = (P, pid, id)=>{ const h = {uid: 70000 + P[pid].hand.length + pid*10
 const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
 const css = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), 'utf8');
 
-// ---- 1. Crab claws (user: "Crab claws: Attacks left or right only.")
-{ const {e, P} = mk(); const F = put(e, P, 2, 'kd-wall', 0), L = put(e, P, 2, 'kd-wall', -1), R = put(e, P, 2, 'kd-wall', 1); const C = put(e, P, 1, 'kd-crab', 0);
-  const ev = []; e.debugAttack(P, so, C.uid, {}, ev);
-  ok(F.hp === 500 && L.hp === 497 && R.hp === 500, `the first pinch goes left, never ahead (${F.hp}, ${L.hp}, ${R.hp})`);
-  ok(ev.some(x=> x.type==='crabClaw' && x.dir==='left'), 'a crabClaw event is logged');
-  e.debugAttack(P, so, C.uid, {}, []); ok(R.hp === 497 && F.hp === 500, 'then right: it alternates');
-  e.debugAttack(P, so, C.uid, {}, []); ok(L.hp === 494, 'then left again'); }
+// ---- 1. Crab claws (2026-10-15 rework, user: "Crab claws can be, attack a random unit L or R."; was: alternating, a wasted pinch)
+{ let L0 = 0, R0 = 0, F0 = 0;
+  for(let seed = 1; seed <= 30; seed++){ const {e, P} = mk(null, seed); const F = put(e, P, 2, 'kd-wall', 0), L = put(e, P, 2, 'kd-wall', -1), R = put(e, P, 2, 'kd-wall', 1); const C = put(e, P, 1, 'kd-crab', 0);
+    const ev = []; e.debugAttack(P, so, C.uid, {}, ev); if(L.hp < 500) L0++; if(R.hp < 500) R0++; if(F.hp < 500) F0++;
+    if(seed === 1) ok(ev.some(x=> x.type==='crabClaw' && (x.dir==='left' || x.dir==='right')), 'a crabClaw event is logged'); }
+  ok(F0 === 0 && L0 > 0 && R0 > 0 && L0 + R0 === 30, `each pinch goes left or right at random, never ahead (L ${L0}, R ${R0}, front ${F0})`); }
 { const {e, P} = mk(); const F = put(e, P, 2, 'kd-wall', 0), R = put(e, P, 2, 'kd-wall', 1); const C = put(e, P, 1, 'kd-crab', 0);
   e.debugAttack(P, so, C.uid, {}, []); ok(R.hp === 497 && F.hp === 500, 'only a unit on the right: it pinches right');
   e.debugAttack(P, so, C.uid, {}, []); ok(R.hp === 494, 'and keeps to the side that has a unit'); }
 { const {e, P} = mk(); const F = put(e, P, 2, 'kd-wall', 0); const C = put(e, P, 1, 'kd-crab', 0); const hq = P[2].hq.hp;
   const ev = []; e.debugAttack(P, so, C.uid, {}, ev);
-  ok(F.hp === 500 && P[2].hq.hp === hq && ev.some(x=> x.type==='crabClaw' && x.whiff), 'a unit in front, none beside it: the pinch is wasted'); }
+  ok(F.hp === 497 && P[2].hq.hp === hq && !ev.some(x=> x.type==='crabClaw'), 'a unit in front, none beside it: it attacks straight ahead as normal'); }
 { const {e, P} = mk(); put(e, P, 2, 'kd-wall', 4); const C = put(e, P, 1, 'kd-crab', 0); const hq = P[2].hq.hp;
   e.debugAttack(P, so, C.uid, {}, []); ok(P[2].hq.hp === hq - 3, 'nothing in front or beside: it walks through to the castle'); }
 { const cl = Object.keys(base).filter(id=> base[id].effects && base[id].effects.crabClaws).sort();

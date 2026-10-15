@@ -67,7 +67,8 @@ function board(a, bs){ const e = E.makeSimEngine(defs, E.mulberry32(11), {record
   ok(JSON.stringify(kinds) === JSON.stringify(['side-left','centre','whiff-right']), `Sweep goes left, centre, right; an empty side whiffs (${kinds})`);
   ok(P[2].hq.hp === hq, 'Sweep never sends an empty side to the castle'); }
 { const {e, P, A} = board('kw-sweep', []); const hq = P[2].hq.hp; const ev = []; e.debugAttack(P, so, A.uid, {}, ev); ok(P[2].hq.hp === hq - 5 && !ev.some(x=> x.type==='sweepWhiff'), 'Sweep with nothing in front just hits the castle'); }
-{ const {e, P, A} = board('kw-fork', [['kw-dummy','center']]); const hq = P[2].hq.hp; e.debugAttack(P, so, A.uid, {}, []); ok(P[2].hq.hp === hq - 6, `Fork: empty flanks hit the castle (took ${hq - P[2].hq.hp})`); }
+// 2026-10-15 rework (user: "attack the nearest 2/3/4 enemies within 1/1/2 range"): Fork no longer sends an empty side to the castle.
+{ const {e, P, A} = board('kw-fork', [['kw-dummy','center']]); const hq = P[2].hq.hp; const d = e.allBoardCards(P[2])[0], h0 = d.hp; e.debugAttack(P, so, A.uid, {}, []); ok(P[2].hq.hp === hq && d.hp < h0, `Fork with one unit in range: it hits that unit, never the castle (castle took ${hq - P[2].hq.hp})`); }
 { const {e, P, A} = board('kw-swipe', []); P[2].lumber = 3; P[1].lumber = 0; e.debugAttack(P, so, A.uid, {}, []); ok(P[2].lumber === 1 && P[1].lumber === 2, 'Swipe 2 steals 2 Lumber on a landed swing'); }
 { const {e, P, A} = board('kw-twin', []); const hq = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1); ok(hq - P[2].hq.hp === 4, `Twin Strike swings twice (${hq - P[2].hq.hp})`); }
 { const {e, P, A} = board('kw-defy', [['kw-dummy','center'], ['kw-dummy','left']]); const B = e.allBoardCards(P[2]).find(c=> c.slot===0); const hp = B.hp; e.debugAttack(P, so, A.uid, {}, []); ok(hp - B.hp === 5, `Defiance (Beast) 2: +2 per enemy Beast (took ${hp - B.hp}, want 5)`); }

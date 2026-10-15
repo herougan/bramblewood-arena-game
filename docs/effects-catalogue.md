@@ -371,7 +371,7 @@ cards carry each skill (effects keys in `canonical/cards.json`): own effect 437 
 | 🏊 Swimmer splash | `splash(target)` | Blue rings at its foot, droplets thrown up and falling back, a bob | `tide` (flow): every Swimmer on the board; `statusFx` `swimmer` |
 | 🛡️ Armor block | `armorBlock(target, {from, partial, shatter})` | A steel plate flashes over the card with a glint; sparks off the struck edge; a 🛡️ on a full block | `hit` with `armorBlocked` (full), or on an Armored unit (partial, once a round) |
 | 🪓 Armor shred | `armorBlock(.., {shatter})` | The plate breaks into chips that fall away | `statusFx` `armorShred` (Perforate) |
-| 🔱 Fork prongs | `forkProngs(attacker, targets, {kind})` | Steel tines (4 for Pitchfork, purple tentacles for Octolash) thrust in and pull back | `hit` with `fork` (Fork, Trident, Pitchfork, Octolash) |
+| 🔱 Fork prongs | `forkProngs(attacker, targets, {kind})` | Steel tines (2 for Fork, 3 for Trident, 4 for Pitchfork, purple tentacles for Octolash) thrust in and pull back | `hit` with `fork` (Fork, Trident, Pitchfork, Octolash) |
 | ➹ Pierce through | `pierceThrough(target, {from})` | A lance of light punches through; chips fly from the exit | `hit` with `rend` (Pierce/Puncture through Armor); `pierceHQ` on the castle |
 | 💫 Stun stars | `stunStars(target, {glyph})` | Glyphs wheel round the card's head while it wobbles | `statusFx` `stun`, `stunOnHit` (★), `stagger` (✦), `confuse` (❓), `tipsy` (🫧) |
 | 🧊 Freeze | `freezeEncase(target)` | Ice grows up over the card, cracks spider across, it glazes away | `statusFx` `freeze` |
@@ -424,7 +424,7 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Cleave (`sweep`) | 18 | `SkillFX.cleave` | hit with ev.sweep |  |
 | Worthy (`worthy`) | 17 | `SkillFX.lootArc` | lumber (worthy / worthyDeath) | 🆕 |
 | Darksight (`darksight`) | 15 | `SkillFX.darksight` | play |  |
-| Fork (`fork`) | 14 | `SkillFX.forkProngs` | hit with ev.fork | 🆕 |
+| Fork (`fork`) | 14 | `SkillFX.forkProngs` (2 tines since 2026-10-15) | hit with ev.fork (each prong beyond the first) | 🆕 |
 | Thorns (`thorns`) | 14 | `SkillFX.thorns` | thorns |  |
 | Regeneration (`regen`) | 13 | `SkillFX.regen` | heal (self) |  |
 | Bleed (`bleed`) | 12 | `SkillFX.bleedDrip`, red tint pulse | bleedTick |  |
@@ -550,7 +550,7 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Confuse (`confuse`) | 0 | `SkillFX.stunStars` ❓ | statusFx confuse | 🆕 |
 | Converge (`converge`) | 0 | cards glide to new slots | converge |  |
 | Cower (`cower`) | 0 | `SkillFX.fearShiver` | statusFx cower | 🆕 |
-| Crab Claws (`crabClaws`) | 0 | `.crab-pinch` | crabClaw |  |
+| Crab Claws (`crabClaws`) | 0 | `.crab-pinch` + 🦞 ←/→ | crabClaw (random side since 2026-10-15) |  |
 | Crepuscular (`crepuscular`) | 0 | phase aura (`.phase-aura`) | statusFx phaseGrow |  |
 | Defiance (`defiance`) | 0 | none (a rule or stat with no moment of its own) |  |  |
 | Dragon Lightning (`dragonLightning`) | 0 | red `SkillFX.lightning` | dragonLightning |  |
@@ -594,3 +594,38 @@ resource passives like Timber, Rock-solid, Iron-will...).
 | Trident (`trident`) | 0 | `SkillFX.forkProngs` | hit with ev.fork, prong trident | 🆕 |
 | Tsunami (`tsunami`) | 0 | board sweep + push | tsunami |  |
 | Wither (`wither`) | 0 | black smoke + skull | statusFx wither / witherTick |  |
+
+## 2026-10-15 additions: arrows, bolts, prongs and Chilli
+
+User (2026-10-15): "New skill Chilli."; "Trident, Fork, Pitchfork ... we can make the first 3 more similar - attack the nearest
+2/3/4 enemies within 1/1/2 range. Crab claws can be, attack a random unit L or R."; "We need more creatures with 'Arrow'. Volley,
+Arrow, Twin Shot, Fire Arrow, Ice Arrow etc."; "We need bolts ... All elemental or status-y. They just represents 'spits' of
+something at the enemy." New `SkillFX` functions in `bramblewood-skillfx.js` (section "ninth pass", stylesheet
+`#sfx-ninth-css`), played in fights by `ninthPassVfx(ev)` in `arena_app.js`; each has a stage setup in the Admin → 🔬 Effects
+library (`FXL_SKILL_SETUPS`) and a button in the hub's Effects Lab (Skills tab → "Arrows, Bolts and prongs").
+
+| Skill | Function | Look | Plays on (replay event) |
+|---|---|---|---|
+| 🔥🧪🐍❄️⚡ Fire / Acid / Poison / Ice / Shock Bolt | `boltGlob(shooter, target, {element, flight, onImpact})` | The shooter squashes as it spits; a wobbling glob in the element's colours lobs over in an arc, shedding droplets, then splats in a coloured flash with a burst (fire embers, acid/poison drips, ice shards, sparks). One row per element in `BOLT_LOOK`, so a new element is one line. Plays at every FX level above None (it is the only cue a Poison Bolt has, which deals no damage); the hit that follows skips its plain projectile (`matchState.pendingBolt`). The status after it plays its own look: Corrode → `acidCorrode`, Freeze → `freezeEncase`, Shock → the shock glitch, Poison → a 🐍 +N ☠ number | `bolt`, then `hit` (ranged) and `statusFx` corrode / freeze / shock / poison |
+| 🌶️ Chilli | `chilliHeat(target, {burn})` | A chilli pops up over the card and is gobbled; the card flushes red, shakes and puffs steam. Each round-start sting: a smaller red flash and a wisp, and the Health drops in the replay | `statusFx` `chilli` (eaten) and `chilliBurn` (the sting); Medium FX and up |
+| 🧊🏹 Ice Arrow | `bowShot` | The bow shot; when it freezes (1 in 2), the ice block grows over the unit | `arrow` (ice) + `hit`; `statusFx` freeze |
+| 🏹🏹 Twin Shot · 🎯🏹 Volley | `bowShot` | One bow shot per arrow, in quick succession | `arrow` (twin / volley) + `hit` |
+| 🔱 Fork · Trident · Pitchfork | `forkProngs` | Steel tines (2 / 3 / 4) into each unit hit beyond the first. The attack-line preview now draws thin red lines to every enemy unit near enough to be a prong | `hit` with `fork`, `prong` fork / trident / pitchfork |
+| 🦞 Crab Claws | `.crab-pinch` + 🦞 ←/→ | As before; the side is now random | `crabClaw` |
+
+The rules as built (engine: `prongSpecOf`/`PRONG_SPECS`, `fireArrowVolley`, `BOLT_ELEMENTS`, `applyShotStatus`, `eatChilli`):
+
+- **Fork / Trident / Pitchfork**: hits the 2 / 3 / 4 nearest enemy units no more than 1 / 1 / 2 columns away (ties at random), full
+  Attack each. The first is its normal swing (the unit in front when there is one: Evade, Guardian, Pierce and every on-hit
+  effect); the others are prongs (every on-hit effect, no Evade roll, each rolls its own Blind/dark miss). **No enemy unit in
+  range: it attacks straight ahead as normal** (the castle when nothing is in front). Empty sides never go to the castle.
+- **Crab Claws**: each swing pinches one random enemy unit in the column to its left or right; neither side has one: straight
+  ahead as normal.
+- **Ice Arrow N**: N cold at the nearest enemy; 1 in 2 a Freeze counter on a unit that has none (it holds that round's attack and
+  melts at the round's end). **Twin Shot N**: two arrows of N at two different random enemy units (both at one if only one).
+  **Volley N**: on its 1st, 3rd, 5th... Ready round, an arrow of N at every enemy unit.
+- **Bolts** (every round while Ready, before melee; at the enemy opposite, else the nearest enemy unit, else the castle):
+  Fire Bolt N = N fire; Acid Bolt N = N acid + 1 Corrode; Poison Bolt N = no damage, N Poison; Ice Bolt N = N cold + 1 in 2 a
+  Freeze counter; Shock Bolt N = N damage + Shocked for a round. Helmet deflects them half the time.
+- **Chilli N** (default 2): when it first becomes Ready, +N Attack and fire attacks for the rest of the fight, 1 damage to itself
+  at the start of every round. Once a fight.

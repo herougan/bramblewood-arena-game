@@ -8,6 +8,11 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Evade → Evasive** (the Swimmer pick's label).
 - **Hive Mind retired** from the card editor, the Effects library, the reference and the Test Kit (the engine still runs it).
 - **Fish carry Tide:** Blind Cave Fish, Mangrove Mudskipper and Wrong-Way Salmon.
+## 2026-10-15 (11:45)
+- **Fork, Trident and Pitchfork now work alike:** each hits the 2 / 3 / 4 nearest enemy units no more than 1 / 1 / 2 columns away. With no enemy unit that near, it attacks straight ahead as normal. Fork no longer skips the unit in front or sends an empty side to the castle. 14 cards have Fork, 1 has Pitchfork, none has Trident.
+- **Crab Claws is back:** each swing pinches a random enemy unit to its left or right (straight ahead if neither has one). No card has it yet; the crabs still Fork.
+- **New skills, on no card yet:** Ice Arrow, Twin Shot and Volley; the Bolts (Fire, Acid, Poison, Ice and Shock Bolt: a spit at the enemy opposite every round); and Chilli N (when first Ready: +N Attack and fire attacks, but 1 damage to itself every round). Each has its own effect in fights, the 🔬 Effects library and the Effects Lab.
+- **One-off skills:** skills that belong to one animal (Coffee, Chilli, Banana, Durian, Rabid, Meteor...) carry a small "one-off" tag in the card editor and the Skills codex.
 
 ## 2026-10-15 (09:00)
 - **Master hub:**
