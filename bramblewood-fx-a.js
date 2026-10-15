@@ -820,7 +820,7 @@ M.reloadDial = function(el, o){
     .to(st, {p:o.part ? 45 : 100, duration:o.part ? .4 : .6, ease:'power1.inOut', onUpdate:()=> d.style.setProperty('--p', st.p.toFixed(1))})
     .add(()=>{ if(!o.part) ring(c.r.left + c.w*.8, c.r.top + c.h*.82, {color:'#ffe9a8', size:44, w:2, dur:260}); }).to(d, {opacity:0, duration:.2, delay:.25});
   nudge(el, [{r:0}, {r:-4, y:3, o:.3}, {r:-4, y:3, o:.8}, {r:0}], 900);
-  return done(1200);
+  return done(1450);
 };
 // Friction: grinding sparks where two allies rub and a gear spins between them.
 M.frictionSparks = function(att, ally){
@@ -1129,7 +1129,7 @@ M.exileWisp = function(anchor, o){
   g.timeline({onComplete:()=> kill(k)}).to(k, {opacity:.95, y:`-=${30}`, scale:1, duration:.25, ease:'power2.out'}).to(k, {rotation:8, duration:.2}).to(k, {opacity:0, scaleY:1.4, scaleX:.5, y:'-=30', filter:'blur(4px)', duration:.4});
   later(()=> spray(c.x, c.y - 40, {n:9, cls:'fxa-puff', color:'radial-gradient(circle, rgba(190,150,255,.75) 0, rgba(120,70,200,0) 70%)', a0:240, a1:300, d0:20, d1:60, dur:.9, s0:.5, s1:1.6}), 420);
   if(o.prayer) later(()=> spray(c.x, c.y - 50, {n:6, html:'✦', size:11, color:'#ffe08a', a0:250, a1:290, d0:30, d1:60, dur:.8}), 450);
-  return done(1300);
+  return done(1500);
 };
 // Remember (returns from Exile): a candle flame, smoke rising, and the card condensing out of the smoke.
 M.candleRise = function(el){
