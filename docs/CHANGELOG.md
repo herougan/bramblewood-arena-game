@@ -2,6 +2,63 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (02:00)
+- **Combat animations:**
+  - Cards no longer jump left or right between rounds or on victory.
+  - Misses play the attack, and Evade dodges right on the blow.
+  - Cleave is one arc across three slots, 0.2 s apart. Pounce leaps onto its target and hops back.
+  - Day/night sweeps in gently.
+  - Victory comes up over the crumbling castle, and castle damage numbers rise from the HP bar.
+  - Restored the old shuffle.
+  - Full Moon howl, new wind (soft or strong, north or south), wavy heat haze, armour glow, Bounty "+N" to Lumber.
+  - Poison is 40% less dark, and poison deaths use bubbles.
+  - Normal deaths drop straight down once.
+- **Battle board:**
+  - Guardian plates sit behind other cards and break on death. Clicking the graveyard shows its cards.
+  - Pills are one size. The initiative coin sits on top, tinted by the field.
+  - The fight backdrop takes the field's colours.
+  - Rarity borders on the field, with a ring on leaders.
+  - No empty grey strip. Costs of 5+ show as icon + number.
+  - The enemy's resources are mirrored on its side, with a pitch-into-ground animation.
+  - A turn # pill after the match.
+- **Rules:**
+  - Illuminate (Lantern's new name) and a faint leader light in the dark.
+  - Swift is off enemies. Pounce goes for the unit opposite first.
+  - Bounty and Worthy are merged.
+  - Cleave, Fork and Pitchfork side hits can miss.
+  - Sudden death: from round 20 every landed hit kills, and from round 25 any castle damage destroys the castle.
+  - Simpler Darksight text. Structures are immune to poison.
+  - Nursing skill and Nest mastery.
+  - Deck-out surrender only when the enemy is truly out.
+- **New skills (on no cards yet):**
+  - Wilting, Venomous, Toxin, Weaken, Bulldoze, Tangleweed, Strangle
+  - Invincible, Invisible, Sonar, Poison Gas, Spitfire
+  - Slash & Burn, Predator & Prey, Nova, Absolute Zero
+  - Mountain Climber, Crystallise, Cure, Trap, Taunt
+  - Molting reworked and Bludgeon fixed.
+  - New basic card: Sheep (Taunt).
+- **New field effects (on no maps yet):** Swamp Fever, Freezing, Sandstorm, River Rapids, Scorching II, Cloudy.
+- **Hidden skirmishes:** five revealed by clues (4-H, 8-H, 10-H, 14-H, 17-H), and three "jumpers" that land on the trail (5-J splash, 13-J ghost, 19-J meteor).
+- **Pages:**
+  - Dark maps are blotted out until cleared, and fire pits light as you win.
+  - Trail lines meet node centres. Map arrows go the right way.
+  - Murgle is on the World map, and there's a new **Dungeons** tab (tickets: 1 a day, plus 1 on Mondays). The Long Burrow (Map 22, admin preview) and the **Babel Spire** tower (from 20-10; BR 555 + 25 per floor; levels to 20) are there too.
+  - Raid parts show X / Y HP left.
+  - Forge sorts like the Codex, the hammer sound hits on the blows, and the Blacksmith text has contrast. Codex corners are no longer cut off.
+  - Sunken Depths art is redone.
+  - Deck editor: Save sits on the ready row.
+  - Community defaults to Friends, with woodland friends and recently played.
+  - Medals are on Profile, and quests are on the Notice board.
+  - Max Energy now goes Nest 20→30, Forge 30→50, Tavern 50→60, paid in Dust and materials.
+  - Tavern recruits with Beer (1–3 a week).
+  - A 💬 feedback button (the database table is waiting for "apply it").
+  - Noto emoji option. Skills Codex filter.
+  - Map titles: a title sequence per biome the first time you open a map each session.
+- **Effects Lab:**
+  - The stage stays visible while you scroll, and the variant buttons sit in a thin right column.
+  - 66 map-title and grandeur entries plus 31 new fun effects (fireworks, ink-brush reveal, CLASSIFIED stamp, stained glass, gacha capsule, lantern festival…).
+- **Art:** the armoured boar is now Tusked Vanguard. New card Snapstick Turtle.
+
 ## 2026-10-15 (22:30)
 - **The big effects sweep:**
   - The inventory lists 933 effect moments: every skill, status, darkness level, death, castle moment, card treatment, foil, pack reveal, map, menu, reward and future feature (`docs/effects-inventory-2026-10-15.md`).
