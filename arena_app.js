@@ -1793,7 +1793,7 @@ function furthestMapReached(){ let n = skillRevealState().maxMap; try{ (loadConq
 // Called when a Conquest fight starts: entering Map N reveals every skill gated at N or below.
 function noteMapEnteredForReveal(mapId){ let n = null; try{ n = mapNumberOf(mapId); }catch(e){} if(n == null) return;
   const st = skillRevealState(); if(n > st.maxMap) st.maxMap = n;
-  Object.keys(SKILL_REVEAL).forEach(k=>{ if(SKILL_REVEAL[k] <= n && !st.keys.includes(k)) st.keys.push(k); }); skillRevealSave(st); }
+  Object.keys(SKILL_REVEAL).forEach(k=>{ if(SKILL_REVEAL[k] <= n && !st.keys.includes(k)){ st.keys.push(k); try{ fxHook('skillReveal', k); }catch(e){} } }); skillRevealSave(st); } // fxHook: 2026-10-15 batch F
 function hiddenSkillSet(){
   if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return new Set();
   const now = Date.now(); if(skillRevealMemo && now - skillRevealMemo.at < 500) return skillRevealMemo.set;
@@ -2044,6 +2044,7 @@ function versionBanner(kind, text, btnLabel, onBtn){
   const go = b.querySelector('.btn.primary'); if(go) go.onclick = onBtn;
   b.querySelector('.vb-close').onclick = ()=> b.remove();
   document.body.appendChild(b);
+  try{ fxHook('banner', b); }catch(e){} // 2026-10-15 batch F
 }
 function cardDataIntact(){ return !BUILD_CARD_HASH || BUILD_CARD_HASH.startsWith('__') || !BASELINE_CARD_HASH || BASELINE_CARD_HASH === BUILD_CARD_HASH; }
 async function checkGameVersion(force){
@@ -4463,6 +4464,7 @@ function castleHoverHTML(hqSide){
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
       pop.hidden = false; popSrc = el;
       positionPop(el);
+      try{ fxHook('cardPop', pop, el); }catch(e){} // 2026-10-15 batch F
       TipWatch.track(pop, el, ()=>{ pop.hidden = true; popSrc = null; });
       { const lc = liveCardFromHoverEl(el); if(lc) lastPeekUid = lc.uid; }
   }
@@ -8283,6 +8285,7 @@ function setCloudPill(ok, label){
   pill.textContent = ok ? (isSignedIn() ? '☁️ Synced' : '☁️ Guest (local only)') : '☁️ Offline';
   pill.classList.toggle('ok', !!ok && isSignedIn());
   pill.title = label || '';
+  try{ fxHook('cloudSync', pill, !!ok); }catch(e){} // 2026-10-15 batch F (plays only when it changes)
   refreshAccountUI();
 }
 // One place that reflects the current account state everywhere outside the full Profile panel:
@@ -8339,6 +8342,7 @@ function showToast(message, kind){
   t.setAttribute('role', 'status');
   t.textContent = message;
   host.appendChild(t);
+  try{ fxHook('toast', t, message, kind); }catch(e){} // 2026-10-15 batch F: a glint, and the big moments that are still toasts get theirs
   requestAnimationFrame(()=> t.classList.add('show'));
   setTimeout(()=>{ t.classList.remove('show'); setTimeout(()=> t.remove(), 400); }, 4500);
 }
@@ -8790,6 +8794,7 @@ function showSignInBanner(){
     </span>`;
   document.body.appendChild(bar);
   requestAnimationFrame(()=> bar.classList.add('show'));
+  try{ fxHook('banner', bar); }catch(e){} // 2026-10-15 batch F
   document.getElementById('signInBannerLater').addEventListener('click', hideSignInBanner);
   document.getElementById('signInBannerGoogle').addEventListener('click', async ()=>{
     try{ await cloudSignInWithGoogle(); }
@@ -9006,6 +9011,7 @@ function openEnergyPanel(anchor){
   const done = msg=>{ refreshEnergyHud(); try{ refreshEnergyButtons(); }catch(e){} closeEnergyPanel(); showToast(msg, 'ok'); };
   const fb = pop.querySelector('#epFree'); if(fb) fb.onclick = ()=>{ if(freeEnergyClaimedToday()) return; const st = settleEnergy(); st.current += FREE_ENERGY_AMOUNT; saveEnergyState(st); try{ localStorage.setItem(FREE_ENERGY_KEY, todayKey()); }catch(e){} try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`⚡ +${FREE_ENERGY_AMOUNT} Energy. Come back tomorrow for more.`); };
   const cb = pop.querySelector('#epCapsule'); if(cb) cb.onclick = ()=>{ if(useEnergyCapsule()){ try{ SoundKit.gold && SoundKit.gold(); }catch(e){} done(`🔋 +${ENERGY_CAPSULE_AMOUNT} Energy from a capsule.`); } };
+  pop.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('#epFree:not([disabled]), #epCapsule'); if(b) try{ fxHook('energyRefill', b.id === 'epCapsule' ? ENERGY_CAPSULE_AMOUNT : FREE_ENERGY_AMOUNT, b.id, b.getBoundingClientRect()); }catch(_){} }, true); // 2026-10-15 batch F
   const rb = pop.querySelector('#epRefill'); if(rb) rb.onclick = ()=>{ const st = settleEnergy(); st.current = Math.max(st.current, energyMax()); saveEnergyState(st); done('⚡ Energy full.'); };
   // Admin Energy controls (2026-10-12, user: "My energy admin controls are not there yet"): step, empty, set, and an
   // instant refill tick. They show for an admin account even with Admin mode switched off.
@@ -9047,6 +9053,7 @@ function settleEnergy(){
     // check, and the on-screen countdown would keep resetting instead of counting down smoothly.
     s.lastRegenAt = s.current>=energyMax() ? Date.now() : s.lastRegenAt + ticks*ENERGY_REGEN_MS;
     saveEnergyState(s);
+    try{ fxHook('energyTick', s.current, energyMax()); }catch(e){} // 2026-10-15 batch F: the +1 every 5 minutes
   }
   return s;
 }
@@ -9062,6 +9069,7 @@ function spendEnergy(cost){
   s.current -= cost;
   saveEnergyState(s);
   refreshEnergyHud();
+  try{ fxHook('energySpend', cost); }catch(e){} // 2026-10-15 batch F
   return true;
 }
 function formatEnergyCountdown(ms){
@@ -11182,6 +11190,7 @@ function wireDeckListDrop(){
     // handler bypasses that function entirely, so it needs its own identical check.
     if(editionCapReached(myDeckCounts, defId, defs) || defId === myLeaderId){ // a leader can't also sit in the deck (2026-10-12)
       denyShake(listEl);
+      try{ fxHook('deckFull', listEl); }catch(e){} // 2026-10-15 batch F
       return;
     }
     myDeckCounts[defId] = (myDeckCounts[defId]||0) + 1;
@@ -11210,6 +11219,7 @@ function wireLeaderSlot(){
     wrap.innerHTML = leaderSlotHTML();
     wireLeaderSlot();
     refreshDeckHeroBanner();
+    try{ fxHook('deckHeroBanner', document.getElementById('deckHeroBanner')); }catch(e){} // 2026-10-15 batch F: a new leader takes the banner
   });
   const clearBtn = document.getElementById('leaderClearBtn');
   if(clearBtn) clearBtn.addEventListener('click', ()=>{
@@ -12144,6 +12154,7 @@ function afkLineFor(who){ let h = 0; String(who||'').split('').forEach(ch=> h = 
 // board, actually open that menu or navigate there"): a line or a reply can carry `act`, which runs when it's reached.
 function performDialogueAct(act){
   if(!act || (typeof matchState !== 'undefined' && matchState && !matchState.over)) return; // never yank you out of a fight
+  try{ fxHook('dialogueAct', act); }catch(e){} // 2026-10-15 batch F
   const [k, v] = String(act).split(':');
   try{
     if(k === 'tab') switchTab(v);
@@ -12293,6 +12304,7 @@ function playDialogue(id, opts){
       dock.appendChild(b);
       while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
       if(hasGsap()) gsap.from(b, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
+      try{ fxHook('dialogueLine', b, line, id); }catch(e){} // 2026-10-15 batch F: portrait mood, speaker change, faction warning
       let next = i+1;
       if(line.options){
         const choice = await new Promise(resolve=>{
@@ -12311,6 +12323,7 @@ function playDialogue(id, opts){
           const bye = document.createElement('div'); bye.className = 'dlg-line';
           bye.innerHTML = `${speakerPortraitHTML(sp)}<div class="dlg-body"><div class="dlg-name">${escapeHtml(sp.name)}</div><div class="dlg-text">${escapeHtml(afkLineFor(line.who))}</div></div>`;
           dock.appendChild(bye); if(hasGsap()) gsap.from(bye, {x: -40, opacity: 0, duration: .35, ease: 'power3.out'});
+          try{ fxHook('dialogueAfk', bye); }catch(e){} // 2026-10-15 batch F
           while(dock.children.length > dialogueMaxLines()) dock.firstElementChild.remove();
           if(opts.once) setDialogueFlag('seen:'+id, false);
           await sleep(2600);
@@ -12463,7 +12476,7 @@ function activateSpot(spot){
   const first = !featureUnlocked(spot.key);
   if(first) fxHook('mapSpotUnlock', document.querySelector(`[data-spot="${spot.key}"]`), spot.key); // each spot opens in its own way (FX.E, 2026-10-15)
   if(first){ unlockFeature(spot.key); try{ if(SoundKit.unlock) SoundKit.unlock(); }catch(e){} showToast(`${spot.icon} ${spot.name} — unlocked!`, 'ok');
-    if(spot.key === 'deck') setTimeout(()=>{ try{ releaseHeldPacks(); }catch(e){} }, 1200); // packs won before the Armoury (2026-10-15)
+    if(spot.key === 'deck') setTimeout(()=>{ try{ const n = releaseHeldPacks(); if(n) fxHook('heldPacks', n); }catch(e){} }, 1200); // fxHook: 2026-10-15 batch F // packs won before the Armoury (2026-10-15)
     const script = DIALOGUES[spot.dialogue];
     // A first visit whose conversation offers to take you there (a reply with an act) lets that reply do it (2026-10-12).
     if(script && script.lines.some(l=> l.act || (l.options||[]).some(o=> o.act))){ playDialogue(spot.dialogue, {once:true, expand:true}); return; }
@@ -12754,6 +12767,7 @@ function mapCuriositiesHTML(map){
 function visitCuriosity(key, el){
   const c = MAP_CURIOSITIES.find(x=> x.key === key); if(!c) return;
   if(!mapTapGate(el, 2600)) return;
+  if(loadDialogueFlags()['seen:' + c.dialogue]) try{ fxHook('curioBubble', el); }catch(e){} // 2026-10-15 batch F
   if(loadDialogueFlags()['seen:' + c.dialogue]){ showSpeechBubble(el, `${c.icon} ${CURIO_AFTER[Math.floor(Math.random()*CURIO_AFTER.length)]}`); return; }
   fadeNewBang(el);
   fxHook('mapCurioVisit', el, key); // the first look: a hop and a sparkle (FX.E, 2026-10-15)
@@ -12860,6 +12874,7 @@ function openWandererDeal(w){
   const buy = ov.querySelector('[data-wd-buy]');
   if(buy) buy.onclick = ()=>{ if(buy.getAttribute('aria-disabled') === 'true'){ denyShake(buy); return; } requireSignIn('to buy packs', ()=>{ close(); buyPack(p.id, null, 1, {wanderer:true}); }); };
   setTimeout(()=>{ try{ (buy || ov.querySelector('[data-wd-close]')).focus(); }catch(e){} }, 40);
+  try{ fxHook('wandererDeal', ov.querySelector('.npc-prompt')); }catch(e){} // 2026-10-15 batch F: the cart rattles in
 }
 function wanderingMerchantShopHTML(){
   const w = wanderingMerchantToday(); if(!w) return '';
@@ -13835,6 +13850,7 @@ function awardXp(n, reason){
   const x = loadXp(), before = levelFromXp(x.xp).level;
   x.xp += Math.round(n); saveXp(x);
   const after = levelFromXp(x.xp).level;
+  try{ fxHook('xpGain', Math.round(n), before, after); }catch(e){} // 2026-10-15 batch F: the level-up moment / XP into the badge
   if(after > before) setTimeout(()=> showToast(`⭐ Level ${after}!${reason ? ' — ' + reason : ''}`, 'ok'), 400);
   refreshLevelBadge();
 }
@@ -13951,6 +13967,7 @@ function bumpQuestCounter(counter, n){
   const st = loadLifetimeStats(); st[counter] = (st[counter]||0) + n;
   try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
   refreshQuestBadge(); soonCheckMilestones();
+  try{ fxHook('questProgress', counter, n); }catch(e){} // 2026-10-15 batch F (only when the Quests button is on screen)
 }
 // ---- Daily notices (2026-10-10, user: "You start with 3 quests at midnight, you get 1 top up quest at 6AM, 12[PM], and
 // 6PM" + "Put the rewards on the quest card itself. A harder quest has higher rewards. Tiers = D, C, B, A, S, SS, SSS ...
@@ -14229,6 +14246,7 @@ function maybeOfferErrand(force){
     {label:'no', who:t.who, text:'I’ll leave a note on the Quest Board, in case you change your mind.'},
   ]}; // 2026-10-12 (user: "NPCs always end with '...'"): no trailing "…" line any more
   const p = playDialogue('errand:' + t.id);
+  try{ fxHook('errandOffer', t.id); }catch(e){} // 2026-10-15 batch F
   p.then(r=>{ try{ if(r && r.replies && r.replies[0] === 'I’ll do it.'){ if(acceptErrand(t.id)) showToast(`📌 Errand taken: ${t.label}`, 'ok'); } }catch(_){} });
   return t.id;
 }
@@ -14334,6 +14352,7 @@ function openQuestsModal(focus){
   overlay.onclick = e=>{ if(e.target===overlay) close(); };
   overlay.querySelectorAll('[data-claim-id]').forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); const res = claimQuest(b.dataset.claimKind, b.dataset.claimId); openQuestsModal(); questRewardFlight(r, res); }));
   overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ if(swapDailyNotice(b.dataset.swapId)) openQuestsModal(); }));
+  overlay.querySelectorAll('[data-swap-id]').forEach(b=> b.addEventListener('click', ()=>{ const n = b.closest('.qn-note'); try{ fxHook('noticeSwap', n && n.getBoundingClientRect()); }catch(e){} }, true)); // 2026-10-15 batch F
   overlay.querySelectorAll('[data-errand-claim]').forEach(b=> b.addEventListener('click', ()=>{ const r = b.getBoundingClientRect(); const rw = claimErrand(b.dataset.errandClaim); if(rw){ openQuestsModal(); rewardRush(r, rw, {xp:20}); } else denyShake(b); }));
   overlay.querySelectorAll('[data-errand-take]').forEach(b=> b.addEventListener('click', ()=>{ if(acceptErrand(b.dataset.errandTake)) openQuestsModal(); else denyShake(b); }));
   overlay.querySelectorAll('[data-errand-skip]').forEach(b=> b.addEventListener('click', ()=>{ dismissErrandOffer(b.dataset.errandSkip); openQuestsModal(); }));
@@ -14588,6 +14607,7 @@ function openFightReplay(res, names){
         <span class="rp-count">Round ${st.round} / ${steps[steps.length-1].round}</span>
       </div></div>`;
     ov.hidden = false;
+    if(st.kind==='hit') try{ fxHook('replayHits', ov); }catch(e){} // 2026-10-15 batch F
     if(st.kind==='hit' && (st.layout.sides.flat().some(c=> st.hpOf(c) < c.hp) || st.hq.some((h,k)=> h < st.hqBefore[k]))) try{ SoundKit.hit && SoundKit.hit(); }catch(e){}
     const go = n=>{ i = Math.max(0, Math.min(steps.length-1, n)); draw(); };
     document.getElementById('rpClose').onclick = close;
@@ -17583,6 +17603,7 @@ function wireRaidPanel(){
   const claims = raidClaimsFor(def);
   document.querySelectorAll('[data-raid-claim]').forEach(b=> b.addEventListener('click', ()=>{ claimRaidReward(def, claims[+b.dataset.raidClaim]); renderRaidSubTab(document.getElementById('playSubBody')); }));
   const eb = document.getElementById('raidEditBtn'); if(eb) eb.addEventListener('click', ()=> openRaidEditor(def.id));
+  try{ fxHook('raidPanel', document.querySelector('.raid2-panel'), def); }catch(e){} // 2026-10-15 batch F: stage change, parts down, bars, claim
 }
 // Raid editor (Admin, Raid P1): parts (bars, bar HP, fight castle, lock order, enemy deck), stages,
 // scoring caps, stand-ins, cost and rewards. Validates with BramblewoodRaid.validateRaid, simulates
@@ -17950,6 +17971,7 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
           <div class="se-actions">${selected!=null && !opts.anim ? `<button type="button" class="btn small" id="tmDiscard">🗑 Discard (+1🪵)</button>` : ''}<span class="tm-hint">${opts.anim ? 'Resolving…' : v.played ? 'Card played — end your turn.' : selected!=null ? (T.canPlayMine(selected) ? 'Pick a lit slot in your row.' : 'Not enough 🪵 — discard something for lumber.') : 'Pick a card, then a lit slot.'}</span><span style="flex:1"></span><button type="button" class="btn primary" id="tmEnd" ${opts.anim?'disabled':''}>End turn ▶</button></div>`}
     </div>`;
     overlay.hidden = false;
+    try{ fxHook('trenchRender', overlay, v.round); }catch(e){} // 2026-10-15 batch F: the Core's stumps link their armour
     overlay.querySelector('#trClose').onclick = ()=>{ if(!T.over && !confirm('Leave the fight? The damage you have done so far still counts.')) return; settle(); close(); };
     const dn = overlay.querySelector('#trDone'); if(dn) dn.onclick = close;
     overlay.querySelectorAll('[data-hand]').forEach(b=> b.onclick = ()=>{ if(busy) return; const uid = +b.dataset.hand; selected = selected===uid ? null : uid; render(T.view()); });
@@ -21588,6 +21610,7 @@ function renderOnlineRaidFeed(){
   const rows = cloudRecentRaidAttempts;
   el.innerHTML = (rows===null) ? `<div class="empty-hint">Loading recent attempts…</div>`
     : (rows.length ? rows.map(raidAttemptRowHTML).join('') : `<div class="empty-hint">No attempts logged yet — be the first!</div>`);
+  if(rows && rows.length) try{ fxHook('raidFeed', el); }catch(e){} // 2026-10-15 batch F
 }
 function renderOnlineRaidPanel(body){
   const myRank = rankForRating(myRating);
@@ -22009,6 +22032,7 @@ function startMatchInner(mode, opts, standardDeck){
     if(!Ghosts) return;
     if(!usePvpTicket()){ showToast(`No PvP tickets left. One comes back every hour (up to ${PVP_TICKETS_PER_DAY}).`, 'warn'); return; }
     asyncStage = pvpStageForRating(myRating);
+    try{ fxHook('pvpTicketUsed'); }catch(e){} // 2026-10-15 batch F: the ticket tears
     asyncGhost = pickPvpStranger(currentMatchSeed).opponent;
     recordMyPvpDeck();
   }
@@ -22913,6 +22937,7 @@ function renderMatchUI(){
     if(!m.winCelebrated){
       m.winCelebrated = true;
       const worthCelebrating = m.winner!==0 && (isPc || m.winner===1);
+      try{ fxHook('resultsShown', document.querySelector('.winloss-card'), m); }catch(e){} // 2026-10-15 batch F: draw, rank lesson, scale, rating, egg...
       if(worthCelebrating && window.starFallVfx) starFallVfx.celebrate(null, 5);
       // Task #228 (Castle speech bubble presets, "on win/loss"): "mine" (side A, the bottom
       // castle) only has an unambiguous meaning outside PC hotseat — "You Win!"/"So Close!" are
@@ -30552,6 +30577,7 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
     if(def && editionCapReached(counts, id, getCardDefs())){
       const el = poolTileEl || chipEl;
       denyShake(el); if(el) floatText(el, _t('Max {n} per deck', {n:maxCopiesForRarity(def.rarity)}), 'debuff');
+      try{ fxHook('deckFull', el); }catch(e){} // 2026-10-15 batch F
       return;
     }
   }
@@ -30563,6 +30589,7 @@ function deckCardClick(e, id, counts, poolSel, deckListSel, onChange, enforceRar
     const defs = getCardDefs();
     flyBetweenRects(fromRect, toRectFallback, (defs[id]&&defs[id].icon)||'🌰');
   }
+  try{ fxHook('deckCardMoved', id, remove, poolSel, deckListSel); }catch(e){} // 2026-10-15 batch F: add / remove moment
 }
 // Arrow projectiles (2026-10-04, Arrow / Fire Arrow skills): a pixel-art arrow PNG, aimed at the
 // target, that crosses the board fast (accelerating), sticks in the target for a moment and fades.
@@ -33965,8 +33992,10 @@ function renderHeroHall(body){
     const k = b.dataset.hstat, dir = +b.dataset.dir;
     if(dir > 0 && heroPointsFree(myHero) < HERO_COSTS[k]) return;
     myHero.alloc[k] = Math.max(0, myHero.alloc[k] + dir); saveHero(); heroHallRerender();
+    try{ fxHook('heroStat', k, dir); }catch(e){} // 2026-10-15 batch F
   }));
   body.querySelectorAll('[data-hpick]').forEach(b=> b.addEventListener('click', ()=>{ myHero.picks[b.dataset.hpick] = b.dataset.skill; saveHero(); showToast(`🦸 Learned ${escapeHtml(heroSkillDef(b.dataset.skill).label)}.`, 'ok'); heroHallRerender(); }));
+  body.querySelectorAll('[data-hpick]').forEach(b=> b.addEventListener('click', ()=>{ try{ fxHook('heroSkillPick', b.dataset.hpick); }catch(e){} })); // 2026-10-15 batch F
   const rs = document.getElementById('heroRespecBtn'); if(rs) rs.addEventListener('click', ()=>{ myHero.alloc = {atk:0,hp:0,speed:0}; saveHero(); heroHallRerender(); });
   document.getElementById('heroDeckBtn').addEventListener('click', ()=>{
     if(inDeck){ delete myDeckCounts[HERO_ID]; }
@@ -34687,10 +34716,10 @@ function openNestPicker(){
   document.body.appendChild(ov); nestNurturePrefill = null;
   const close = ()=> ov.remove();
   const conf = ov.querySelector('.np-confirm');
-  const train = id=>{ const r = startNurture(id); if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} close(); renderNest(); showToast(`🌱 ${defs[id].name} is in training. Back in ${NURTURE_HOURS}h at Level 1.`, 'ok'); return true; } return false; };
+  const train = id=>{ const r = startNurture(id); if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} close(); renderNest(); try{ fxHook('nestTrain', id); }catch(_){} showToast(`🌱 ${defs[id].name} is in training. Back in ${NURTURE_HOURS}h at Level 1.`, 'ok'); return true; } return false; };
   ov.addEventListener('click', e=>{ if(e.target === ov || e.target.closest('[data-close]')) return close();
     const eg = e.target.closest('[data-np-egg]'), cd = e.target.closest('[data-np-card]'), go = e.target.closest('[data-np-train]'), no = e.target.closest('[data-np-cancel]');
-    if(eg){ if(placeEggInNest(eg.dataset.npEgg)){ try{ SoundKit.shelfPick(); }catch(_){} close(); renderNest(); } else denyShake(eg); }
+    if(eg){ if(placeEggInNest(eg.dataset.npEgg)){ try{ SoundKit.shelfPick(); }catch(_){} close(); renderNest(); try{ fxHook('nestEggPlaced', eg.dataset.npEgg); }catch(_){} } else denyShake(eg); }
     else if(go){ if(!train(go.dataset.npTrain)) denyShake(go); }
     else if(no){ conf.hidden = true; ov.querySelectorAll('.np-card.is-picked').forEach(x=> x.classList.remove('is-picked')); }
     else if(cd){ const id = cd.dataset.npCard;
@@ -35341,6 +35370,7 @@ function grantTrackCards(why, extraPool){
 // Map 20's boss, first clear: the faction's Epic and Heroic (the highest-numbered card of each rarity on your side).
 function grantMap20FactionCrown(){
   const defs = getCardDefs(), pool = factionTrackPool(), out = [];
+  try{ fxHook('factionCrown', loadFactionChoice()); }catch(e){} // 2026-10-15 batch F (nothing calls this function yet)
   ['epic', 'heroic'].forEach(r=>{ const c = pool.filter(id=> (defs[id].rarity||'') === r).sort((a,b)=> copiesOwned(a) - copiesOwned(b) || (defs[b].numericId||0) - (defs[a].numericId||0))[0]; if(!c) return; const before = copiesOwned(c); unlockCardForPlayer(c, 'map20Crown'); if(copiesOwned(c) > before) out.push(c); });
   return out;
 }
@@ -36718,7 +36748,7 @@ function showInviteBanner(){
   const inv = Social.incomingInvites[0];
   if(!inv || (matchState && !matchState.over)){ hideInviteBanner(); return; }
   let el = document.getElementById('inviteBanner');
-  if(!el){ el = document.createElement('div'); el.id = 'inviteBanner'; el.className = 'invite-banner'; el.setAttribute('role','alert'); document.body.appendChild(el); }
+  if(!el){ el = document.createElement('div'); el.id = 'inviteBanner'; el.className = 'invite-banner'; el.setAttribute('role','alert'); document.body.appendChild(el); try{ fxHook('banner', el); }catch(e){} } // fxHook: 2026-10-15 batch F
   const from = (Registry.users._cache.get(inv.from_id)||{}).display_name || 'A friend';
   const mode = Registry.battleMode((inv.settings||{}).battleMode) || Registry.battleMode(Registry.defaultBattleMode());
   el.innerHTML = `<span class="ib-text">⚔️ <b>${escapeHtml(from)}</b> invites you to a friendly match · ${mode?mode.icon+' '+escapeHtml(mode.label):''}${(inv.settings||{}).format==='standard'?' · 🃏 Standard':''}</span>
