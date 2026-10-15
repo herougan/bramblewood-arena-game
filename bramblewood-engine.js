@@ -4517,7 +4517,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       perishedTotal += 1; if((pl.devilry||0) < 10) pl.devilry = (pl.devilry||0) + 1;
       const credit = killCredit[card.uid];
       const bounty = (cdef.effects && cdef.effects.bounty) || 0;
-      if(recordEvents && events) events.push({type:'death', side:mySide, defId:card.defId, uid:card.uid});
+      const deathEv = {type:'death', side:mySide, defId:card.defId, uid:card.uid}; if(card.nullified) deathEv.nullified = true; // 2026-10-15: the replay shows a Nullify kill / exile its own way
+      if(recordEvents && events) events.push(deathEv);
       if(credit){
         const sidesCredited = new Set();
         credit.forEach(key=>{
@@ -4559,6 +4560,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // decision this card's own On-Death-exile would make, just triggered by someone else's turn.
       if(hasExileOnDeath || card.hasRemovalCounter || card.forceExileZone){
         pl.exile.push({defId:card.defId}); pl.echoes = (pl.echoes||0) + 1;
+        deathEv.exiled = true; // 2026-10-15 (log only): it goes to the Removal Zone, not the graveyard
         ensureStat(stats, mySide, card.defId).exiled++;
         if(recordEvents && events) events.push({type:'exile', side:mySide, defId:card.defId, zone:'board'});
       } else {

@@ -36,6 +36,7 @@ run node tests/keywords-2026-10-14g.js
 run node tests/keywords-2026-10-15.js
 run node tests/keywords-2026-10-15b.js
 run node tests/keywords-2026-10-15c.js
+run node tests/keywords-2026-10-15d.js
 run node tests/regen-fullhp-2026-10-14.js
 run node tests/night-2026-10-12.js
 run node tests/phase-status.js
@@ -58,7 +59,6 @@ run node tests/dynamite-helmet.js
 run node tests/ecclesia.js
 run node tests/integrity.js
 run node tests/node-ids-2026-10-14.js
-run node tests/status-end-2026-10-15.js
 if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; run python3 tests/e2e/ui_smoke.py; run python3 tests/e2e/flows.py; run python3 tests/e2e/snaps.py; run python3 tests/e2e/i18n.py; run python3 tests/e2e/hero.py; run python3 tests/e2e/rarity_limit_craft.py; fi
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

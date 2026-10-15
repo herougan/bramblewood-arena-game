@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// 2026-10-15 (effects pass, batch C): the engine now logs when a status runs out ({type:'statusEnd', status}) and when a sleeper is
+// 2026-10-15 (effects pass, batch C): death events carry nullified / exiled for the replay's death look; the engine now logs when a status runs out ({type:'statusEnd', status}) and when a sleeper is
 // woken by damage ({type:'statusEnd', status:'asleep', woke:true}), so the replay can show it. These are log-only events: the
 // rules don't change (the statuses still tick exactly as before, checked here too).
 'use strict';
@@ -10,6 +10,9 @@ const so = id=> id===1 ? 'A' : 'B';
 const defs = Object.assign({}, H.loadCardDefs(), {
   'se-a': {id:'se-a', name:'A', attack:2, health:500, wait:0, cost:0, effects:{}},
   'se-wall': {id:'se-wall', name:'W', attack:0, health:5000, wait:0, cost:0, effects:{}},
+  'se-null': {id:'se-null', name:'N', attack:50, health:500, wait:0, cost:0, effects:{nullify:true}},
+  'se-big': {id:'se-big', name:'B', attack:50, health:500, wait:0, cost:0, effects:{}},
+  'se-weak': {id:'se-weak', name:'K', attack:0, health:5, wait:0, cost:0, effects:{}},
 });
 function trial(seed, setup){ const e = E.makeSimEngine(defs, E.mulberry32(seed), {recordEvents:true, battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}; return setup(e, P); }
 const ends = (ev, k, uid)=> ev.filter(x=> x.type === 'statusEnd' && x.status === k && (uid == null || x.uid === uid));
@@ -35,7 +38,16 @@ trial(4, (e, P)=>{ e.debugSpawnCard(P, so, 1, 'se-wall', 'left', {}, []); const 
 // A unit that dies with a status on it doesn't get a wear-off
 trial(5, (e, P)=>{ e.debugSpawnCard(P, so, 1, 'se-a', 'left', {}, []); const c = e.allBoardCards(P[1])[0]; c.hp = 1; c.poison = 1;
   const ev = []; e.resolveCombat(P, so, {}, ev, 1); ok(ends(ev, 'poison', c.uid).length === 0, 'no wear-off for a unit that died of it'); });
+// Death events say how it died for the replay's death look (2026-10-15): a Nullify kill is flagged and goes to the Removal Zone
+trial(7, (e, P)=>{ e.debugSpawnCard(P, so, 1, 'se-null', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'se-weak', 'left', {}, []);
+  const n = e.allBoardCards(P[1])[0], k = e.allBoardCards(P[2])[0]; const ev = []; e.debugAttack(P, so, n.uid, {}, ev);
+  const d = ev.find(x=> x.type === 'death' && x.uid === k.uid); ok(!!d, 'the Nullify kill logs a death'); ok(d && d.nullified === true && d.exiled === true, 'flagged nullified and exiled');
+  ok(P[2].exile.some(x=> x.defId === 'se-weak') && !P[2].graveyard.some(x=> x.defId === 'se-weak'), 'it still goes to the Removal Zone'); });
+trial(8, (e, P)=>{ e.debugSpawnCard(P, so, 1, 'se-big', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'se-weak', 'left', {}, []);
+  const n = e.allBoardCards(P[1])[0], k = e.allBoardCards(P[2])[0]; const ev = []; e.debugAttack(P, so, n.uid, {}, ev);
+  const d = ev.find(x=> x.type === 'death' && x.uid === k.uid); ok(!!d && !d.nullified && !d.exiled, 'an ordinary kill carries no flags');
+  ok(P[2].graveyard.some(x=> x.defId === 'se-weak'), 'and goes to the graveyard'); });
 // Without recordEvents nothing is logged and nothing breaks
 { const e = E.makeSimEngine(defs, E.mulberry32(6), {battleMode:'open'}); const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}; e.debugSpawnCard(P, so, 1, 'se-wall', 'left', {}, null);
   const c = e.allBoardCards(P[1])[0]; c.poison = 1; let threw = false; try{ e.resolveCombat(P, so, {}, null, 1); }catch(err){ threw = true; } ok(!threw && c.poison === 0, 'runs without an event log'); }
-console.log(`status-end-2026-10-15: ${fail} failure(s)`); process.exit(fail ? 1 : 0);
+console.log(`keywords-2026-10-15d: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

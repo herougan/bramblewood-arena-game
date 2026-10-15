@@ -27547,6 +27547,7 @@ async function resolveRound(opts){
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
     m.winner = (m.forcedWinner!=null) ? m.forcedWinner : ((p1dead&&p2dead)?0:(p1dead?2:1));
     if(m.winner===1 && p2dead && m.forcedWinner==null && m.mode!=='sandbox'){ try{ await castleCrumble(hqTileEl('B')); }catch(e){} }
+    else if(m.winner===2 && p1dead && m.forcedWinner==null && m.mode!=='sandbox'){ const h = {wait:0}; fxHook('castleFallMine', hqTileEl('A'), h); if(h.wait) await sleep(h.wait); } // 2026-10-15: your own castle sinks (FX.C)
     if(m.mode!=='sandbox') await showEndSign(m);
     m.over = true;
     setTimeout(revealBoardCardsAtEnd, 60); setTimeout(revealBoardCardsAtEnd, 700);

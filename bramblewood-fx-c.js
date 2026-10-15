@@ -102,13 +102,16 @@ function run(opts, build){
 }
 // An overlay inside the card face (moves and clips with it); bagged so it goes when the effect ends.
 function inTile(t, bag, cls, html){ const d = document.createElement('div'); d.className = 'fxc-ov ' + (cls || ''); d.setAttribute('aria-hidden', 'true'); if(html) d.innerHTML = html; t.appendChild(d); bag.push(d); return d; }
+// Put a fixed layer at (x, y) by left/top, for layers that turn in 3D: a perspective() before a big x/y translate would view them
+// from the page corner and skew them (2026-10-15 review: castle doors, the foil sheet).
+const placeAt = (e, x, y)=>{ e.style.left = x + 'px'; e.style.top = y + 'px'; };
 // A fixed copy of the card face (for pieces that fly apart or outlive the card).
 function ghost(t, bag, extra){
   const r = t.getBoundingClientRect(), c = t.cloneNode(true); c.removeAttribute('id'); c.classList.remove('holo-active', 'holo-tilt'); c.classList.add('fxc-ghost'); c.setAttribute('aria-hidden', 'true');
-  ['position:fixed', 'left:0', 'top:0', 'margin:0', 'pointer-events:none', 'z-index:1250', 'animation:none', 'transition:none', `width:${r.width}px`, `height:${r.height}px`, 'box-sizing:border-box', 'transform:none']
+  ['position:fixed', `left:${r.left}px`, `top:${r.top}px`, 'margin:0', 'pointer-events:none', 'z-index:1250', 'animation:none', 'transition:none', `width:${r.width}px`, `height:${r.height}px`, 'box-sizing:border-box', 'transform:none']
     .forEach(rule=>{ const i = rule.indexOf(':'); c.style.setProperty(rule.slice(0, i), rule.slice(i + 1), 'important'); });
   if(extra) Object.assign(c.style, extra);
-  document.body.appendChild(c); bag.push(c); gsap.set(c, {x:r.left, y:r.top}); return c;
+  document.body.appendChild(c); bag.push(c); return c; // placed by left/top: x / y tweens on it are offsets
 }
 // Particles thrown out of (x, y): glyphs or coloured dots. o: n, glyphs | colors, size [a,b], angle (deg, 0 = right, -90 = up),
 // arc (spread in deg), dist [a,b], dur [a,b], gravity (px pulled down after the throw), spin, w/h (start box), stagger, cls, alpha.
@@ -163,8 +166,9 @@ function flashAt(tl, mk, at, x, y, w, h, col, dur){
 // A small coloured chip that rises off the card ("❄ thawed", "⚡ Tails!"): readable at phone size, gone in under a second.
 function chip(tl, mk, at, el, text, col, o){
   o = o || {}; const c = centre(el), p = mk('fxc-chip', text); p.style.background = col || 'rgba(30,30,40,.82)'; if(o.ink) p.style.color = o.ink;
-  const y0 = o.y != null ? o.y : c.r.top + c.h*.18;
-  tl.set(p, {x:c.x, y:y0, xPercent:-50, yPercent:-50, scale:.4, opacity:0}, at);
+  const y0 = o.y != null ? o.y : c.r.top + c.h*.18, vw = document.documentElement.clientWidth || innerWidth, pw = p.offsetWidth || 80;
+  const x0 = Math.max(pw/2 + 4, Math.min(vw - pw/2 - 4, c.x)); // 2026-10-15: never half off the screen edge
+  tl.set(p, {x:x0, y:y0, xPercent:-50, yPercent:-50, scale:.4, opacity:0}, at);
   tl.to(p, {scale:1, opacity:1, duration:.16, ease:'back.out(3)'}, at)
     .to(p, {y:y0 - (o.rise || 26), duration:.7, ease:'power1.out'}, at)
     .to(p, {opacity:0, duration:.22, ease:'power1.in'}, at + (o.hold || .55));
@@ -284,7 +288,7 @@ M.statusEnd = function(el, kind, opts){
       case 'fizz': {   // the acid fizzes off; a clean metal glint sweeps across
         spray(tl, mk, 0, x, y, {n:12, colors:['#d8f04a', '#b6d42c', '#f2ffb0'], size:[3, 6], angle:-90, arc:60, dist:[20, 45], dur:[.4, .6], w:w*.9, h:h*.8, stagger:.02, scale1:1.5});
         const gl = inTile(t, bag, ''); gl.style.background = 'linear-gradient(105deg, transparent 35%, rgba(255,255,255,.75) 50%, transparent 65%)';
-        tl.fromTo(gl, {xPercent:-120}, {xPercent:120, duration:.4, ease:'power1.inOut'}, .3); snd('cleanseTone'); break; }
+        gl.style.backgroundSize = '300% 100%'; tl.fromTo(gl, {backgroundPosition:'100% 0%'}, {backgroundPosition:'0% 0%', duration:.4, ease:'power1.inOut'}, .3); snd('cleanseTone'); break; }
       case 'crosshair': { // the target mark shrinks away
         const xh = mk('fxc-se-x'); xh.style.color = S.c2; xh.style.borderColor = S.c2; const s = Math.min(w, h)*.7;
         tl.set(xh, {x, y, xPercent:-50, yPercent:-50, width:s, height:s, opacity:.9, rotation:0}, 0).to(xh, {scale:.2, rotation:90, opacity:0, duration:.5, ease:'back.in(1.6)'}, .05);
@@ -370,11 +374,13 @@ M.coinFlip = function(el, opts){
   css('coin', `.fxc-coin{width:30px; height:30px; border-radius:50%; background:radial-gradient(circle at 35% 30%, #fff6c2, #f2c94c 45%, #b8861a 100%); border:2px solid #8a6312;
     box-shadow:0 2px 6px rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center; font:900 15px/1 system-ui; color:#6a4a08; transform-style:preserve-3d;}`);
   return run(opts, (tl, mk, bag)=>{
-    const c = centre(t), x = c.x, y0 = c.r.top + c.h*.32, coin = mk('fxc-coin', '★');
-    tl.set(coin, {x, y:y0, xPercent:-50, yPercent:-50, rotationX:0, transformPerspective:300, opacity:0}, 0).to(coin, {opacity:1, duration:.06}, 0)
-      .to(coin, {y:y0 - 46, duration:.28, ease:'power2.out'}, 0).to(coin, {y:y0, duration:.24, ease:'power2.in'}, .28)
-      .to(coin, {rotationX:1800, duration:.52, ease:'power1.out'}, 0)
-      .add(()=>{ coin.textContent = opts.heads ? '★' : '⚡'; coin.style.background = opts.heads ? '' : 'radial-gradient(circle at 35% 30%, #fffbe0, #ffe14d 45%, #c9a200 100%)'; }, .44)
+    // 2026-10-15 (review): a clean flat flip (scaleY follows the spin), so it never smears into a diagonal at phone size
+    const c = centre(t), x = c.x, y0 = c.r.top + c.h*.36, coin = mk('fxc-coin', '★'), sp = {a:0}, flips = 5;
+    const face = ()=>{ const k = Math.cos(sp.a*Math.PI); gsap.set(coin, {scaleY:Math.max(.08, Math.abs(k))}); coin.style.filter = k < 0 ? 'brightness(.78)' : ''; };
+    tl.set(coin, {x, y:y0, xPercent:-50, yPercent:-50, opacity:0}, 0).to(coin, {opacity:1, duration:.06}, 0)
+      .to(coin, {y:y0 - Math.min(40, c.h*.4), duration:.26, ease:'power2.out'}, 0).to(coin, {y:y0, duration:.24, ease:'power2.in'}, .26)
+      .to(sp, {a:flips*2, duration:.5, ease:'power1.out', onUpdate:face}, 0)
+      .add(()=>{ coin.textContent = opts.heads ? '★' : '⚡'; coin.style.background = opts.heads ? '' : 'radial-gradient(circle at 35% 30%, #fffbe0, #ffe14d 45%, #c9a200 100%)'; }, .42)
       .to(coin, {scale:1.25, duration:.08, yoyo:true, repeat:1}, .52).to(coin, {opacity:0, y:y0 - 10, duration:.2}, .9);
     if(!opts.heads){
       spray(tl, mk, .56, x, y0, {n:10, colors:['#ffe14d', '#fff7b0', '#ffffff'], size:[2, 5], dist:[16, 40], dur:[.3, .45]});
@@ -406,7 +412,7 @@ M.wakeJolt = function(el, opts){
 function dying(el){ const t = tileOf(el); if(!t || !t.isConnected) return null; if(G()) gsap.set(t, {filter:F('none')}); const c = centre(t); return {t, b:boardOf(el), c, x:c.x, y:c.y, w:c.w, h:c.h, top:c.r.top, bot:c.r.bottom, left:c.r.left, right:c.r.right}; }
 function svgOver(bag, x, y, w, h, z){ const sv = svgNode('svg', {class:'fxc-svg', width:Math.ceil(w), height:Math.ceil(h), viewBox:`0 0 ${Math.ceil(w)} ${Math.ceil(h)}`}); if(z) sv.style.zIndex = z; document.body.appendChild(sv); bag.push(sv); gsap.set(sv, {x, y}); return sv; }
 css('death', `
-.fxc-char{background:radial-gradient(ellipse at 50% 45%, rgba(20,12,6,.2) 0, rgba(30,18,8,.75) 55%, rgba(8,5,2,.92) 100%);}
+.fxc-char{background:radial-gradient(ellipse at 50% 45%, rgba(20,12,6,0) 0, rgba(40,22,8,.35) 50%, rgba(12,6,2,.8) 100%); box-shadow:inset 0 0 10px 2px rgba(255,140,40,.55);}
 .fxc-bolt polyline{fill:none; stroke-linejoin:round; stroke-linecap:round;}
 .fxc-mote{border-radius:50%; box-shadow:0 0 8px currentColor; background:currentColor;}
 .fxc-wave{border-radius:46% 54% 0 0 / 60% 60% 0 0; background:linear-gradient(180deg, rgba(240,252,255,.95) 0, rgba(120,200,240,.92) 14%, rgba(30,110,180,.92) 100%);}
@@ -423,11 +429,11 @@ css('death', `
 .fxc-ichor::after{content:''; position:absolute; left:50%; bottom:-4px; width:7px; height:7px; transform:translateX(-50%); border-radius:50%; background:#ffd34a;}
 .fxc-cell{border-radius:50%; background:radial-gradient(circle at 40% 35%, rgba(220,255,230,.55), rgba(120,220,170,.35) 60%, rgba(60,170,120,.15)); border:2px solid rgba(150,240,190,.8); box-sizing:border-box;}
 .fxc-title .fxc-t1{display:block; font:900 13px/1 'Baloo 2', system-ui, sans-serif; letter-spacing:.3em; color:#ffe9a8; text-transform:uppercase;}
-.fxc-title .fxc-t2{display:block; font:900 34px/1.05 'Baloo 2', system-ui, sans-serif; color:#fff; text-shadow:0 3px 0 #7a1d12, 0 0 18px rgba(255,140,60,.9);}
-.fxc-title{text-align:center; padding:10px 22px; border-radius:14px; background:linear-gradient(180deg, rgba(40,14,10,.86), rgba(20,8,6,.9)); border:2px solid #d9a441; box-shadow:0 6px 24px rgba(0,0,0,.5);}
+.fxc-title .fxc-t2{display:block; font:900 clamp(20px, 6.4vw, 34px)/1.05 'Baloo 2', system-ui, sans-serif; color:#fff; text-shadow:0 3px 0 #7a1d12, 0 0 18px rgba(255,140,60,.9);}
+.fxc-title{text-align:center; padding:10px 22px; max-width:calc(100vw - 16px); box-sizing:border-box; border-radius:14px; background:linear-gradient(180deg, rgba(40,14,10,.86), rgba(20,8,6,.9)); border:2px solid #d9a441; box-shadow:0 6px 24px rgba(0,0,0,.5);}
 .fxc-ko{font:900 30px/1 'Baloo 2', system-ui, sans-serif; color:#fff; text-shadow:0 0 0 #000, 0 3px 0 #8e1420, 0 0 10px rgba(255,60,60,.8); white-space:nowrap;}
-.fxc-foil{background:linear-gradient(115deg, rgba(255,120,200,.75), rgba(255,240,120,.75) 25%, rgba(120,255,200,.75) 50%, rgba(120,170,255,.75) 75%, rgba(220,130,255,.75));
-  border-radius:inherit; mix-blend-mode:screen; box-shadow:inset 0 0 0 2px rgba(255,255,255,.7);}
+.fxc-foil{background:linear-gradient(115deg, rgba(255,120,200,.6), rgba(255,240,120,.6) 25%, rgba(120,255,200,.6) 50%, rgba(120,170,255,.6) 75%, rgba(220,130,255,.6)),
+  linear-gradient(115deg, transparent 40%, rgba(255,255,255,.85) 50%, transparent 60%); border-radius:8px; box-shadow:inset 0 0 0 2px rgba(255,255,255,.85), 0 2px 8px rgba(0,0,0,.25);}
 `);
 
 // ---- Electrocuted (Electricity, Dragon Lightning, Shock bolts): charred and crackling ----
@@ -441,7 +447,7 @@ M.deathLightning = function(el, opts){
     tl.fromTo([glow, core], {opacity:0}, {opacity:1, duration:.03}, 0).to([glow, core], {opacity:0, duration:.05, yoyo:true, repeat:2}, .06).to(sv, {opacity:0, duration:.1}, .22);
     flashAt(tl, mk, 0, x, y, w*2.4, h*1.8, 'rgba(200,240,255,.95)', .3);
     tl.fromTo(t, {filter:F('brightness(1)')}, {filter:F('brightness(3) saturate(0)'), duration:.04}, .02)
-      .to(t, {filter:F('brightness(.42) sepia(.75) saturate(1.6) contrast(1.35)'), duration:.12}, .1);
+      .to(t, {filter:F('brightness(.62) sepia(.8) saturate(1.4) contrast(1.25)'), duration:.12}, .1);
     const ch = inTile(t, bag, 'fxc-char'); tl.fromTo(ch, {opacity:0}, {opacity:1, duration:.15}, .1);
     tl.fromTo(t, {x:0}, {x:2.5, duration:.03, yoyo:true, repeat:9, ease:'none'}, .05);
     // crackles: small arcs flicker on the charred face
@@ -559,9 +565,9 @@ M.deathPsychic_B = function(el, opts){
 M.deathWither = function(el, opts){
   const D = dying(el); if(!D) return Promise.resolve(); const {t, x, w, h, top, bot} = D;
   return run(opts, (tl, mk, bag)=>{
-    const blk = inTile(t, bag, ''); blk.style.background = 'linear-gradient(0deg, rgba(10,8,12,.95) 0, rgba(10,8,12,.85) 55%, rgba(10,8,12,0) 100%)';
+    const blk = inTile(t, bag, ''); blk.style.background = 'linear-gradient(0deg, rgba(14,10,18,.85) 0, rgba(24,18,30,.55) 50%, rgba(24,18,30,0) 100%)';
     tl.fromTo(blk, {clipPath:'inset(100% 0% 0% 0%)'}, {clipPath:'inset(0% 0% 0% 0%)', duration:.3, ease:'power1.in'}, 0);
-    tl.to(t, {filter:F('grayscale(1) brightness(.5)'), duration:.3}, 0);
+    tl.to(t, {filter:F('grayscale(1) brightness(.7) contrast(1.15)'), duration:.3}, 0);
     tl.fromTo(t, {clipPath:'inset(0% 0% 0% 0%)'}, {clipPath:'inset(100% 0% 0% 0%)', duration:.48, ease:'power1.in'}, .3);
     for(let k = 0; k < 6; k++) spray(tl, mk, .3 + k*.075, x, top + h*(k/6), {n:4, colors:['#0d0b0f', '#2b2730', '#4a4450'], size:[3, 6], angle:90, arc:90, dist:[14, 36], dur:[.5, .7], w:w, gravity:24, spin:200, shard:true});
     puffs(tl, mk, .25, x, top + h*.3, {n:4, color:'rgba(15,12,18,.7)', w:w*.6, rise:-40, size:[18, 28]});
@@ -590,7 +596,7 @@ M.deathIrradiation = function(el, opts){
     const g = inTile(t, bag, ''); g.style.background = 'radial-gradient(ellipse at center, rgba(180,255,140,.95) 0, rgba(90,255,70,.6) 55%, rgba(40,180,30,.3))'; g.style.mixBlendMode = 'screen';
     tl.fromTo(g, {opacity:0}, {opacity:1, duration:.25, ease:'power1.in'}, 0).to(g, {opacity:0, duration:.2}, .3);
     tl.to(t, {filter:F('brightness(1.8) saturate(1.6) hue-rotate(60deg)'), duration:.25}, 0)
-      .to(t, {filter:F('brightness(0) drop-shadow(0 0 6px #7dff5a) drop-shadow(0 0 2px #c6ff8f)'), duration:.22}, .3)
+      .to(t, {filter:F('brightness(.3) sepia(1) saturate(3) hue-rotate(50deg) drop-shadow(0 0 6px #7dff5a)'), duration:.22}, .3)
       .to(t, {opacity:0, scale:.96, duration:.3, ease:'power1.in'}, .55);
     spray(tl, mk, .05, x, y, {n:12, colors:['#7dff5a', '#c6ff8f', '#e8ffd0'], size:[2, 4], angle:-90, arc:100, dist:[30, 70], dur:[.6, .9], w:w*.8, h:h*.6, stagger:.03});
     const r = mk('fxc-g', '☢'); r.style.fontSize = '22px'; r.style.color = '#c6ff8f'; r.style.textShadow = '0 0 8px #7dff5a';
@@ -615,17 +621,28 @@ M.deathIrradiation_B = function(el, opts){
 // ---- Drowned / washed away (Tsunami, Tide-spout): bubbles ----
 // A: a wave rolls in from the side and carries the card off with it.
 M.deathWater = function(el, opts){
-  const D = dying(el); if(!D) return Promise.resolve(); const {t, x, y, w, h, left, top, bot} = D, s = Math.random() < .5 ? 1 : -1;
-  return run(opts, (tl, mk)=>{
-    const wv = mk('fxc-wave'), W = w*1.5, H = h*.85;
-    tl.set(wv, {x:s > 0 ? left - W*1.1 : left + w + W*.1, y:bot - H + 8, width:W, height:H, opacity:0, skewX:s*-12}, 0).to(wv, {opacity:.95, duration:.12}, 0)
-      .to(wv, {x:s > 0 ? left + w*.6 - W*.5 : left + w*.4 - W*.5, duration:.45, ease:'power2.in'}, 0).to(wv, {x:s > 0 ? left + w*1.6 : left - W*1.6, opacity:0, duration:.35, ease:'power1.out'}, .5);
-    tl.to(t, {x:s*70, y:-10, rotation:s*22, duration:.4, ease:'power2.in'}, .32).to(t, {x:s*110, y:30, rotation:s*40, opacity:0, duration:.3, ease:'power1.in'}, .72);
-    spray(tl, mk, .4, x, bot - h*.25, {n:10, colors:['rgba(230,250,255,.95)', 'rgba(150,215,245,.9)'], size:[3, 6], angle:-90 + s*30, arc:70, dist:[24, 60], dur:[.4, .6], gravity:30, w:w*.6});
-    spray(tl, mk, .5, x, y, {n:8, colors:['rgba(255,255,255,.05)'], size:[6, 11], angle:-90, arc:40, dist:[30, 60], dur:[.6, .8], w:w*.8, cls:'fxc-bubble', stagger:.03});
-    fadeSlot(tl, el, t, .5); tl.add(()=> snd('splash'), .3);
+  const D = dying(el); if(!D) return Promise.resolve(); const {t, x, y, w, h, left, bot} = D, s = Math.random() < .5 ? 1 : -1;
+  return run(opts, (tl, mk, bag)=>{
+    // 2026-10-15 (review): one curling wave with a white foam lip, sized to the card, rolls across it from just off one side
+    const W = w*1.7, H = h*1.15, sv = svgOver(bag, 0, 0, W, H, 1247), gid = 'fxcw' + (++WAVE_ID);
+    sv.setAttribute('viewBox', '0 0 100 100'); sv.setAttribute('preserveAspectRatio', 'none');
+    sv.innerHTML = `<defs><linearGradient id="${gid}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e9fbff"/><stop offset=".22" stop-color="#7fd0f0"/><stop offset=".6" stop-color="#2f8fc8"/><stop offset="1" stop-color="#1a5f9a"/></linearGradient></defs>
+      <path d="M0 100 L0 58 C10 42 26 22 50 13 C70 6 88 10 96 24 C100 33 93 42 84 36 C77 31 70 32 66 40 C60 54 62 78 72 100 Z" fill="url(#${gid})" opacity=".93"/>
+      <path d="M2 57 C12 41 27 22 50 14 C70 7 87 11 95 24 C99 32 93 40 85 35" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" vector-effect="non-scaling-stroke" opacity=".95"/>
+      <path d="M8 70 C20 60 30 52 42 50 M14 84 C26 76 36 72 48 72" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="2" stroke-linecap="round" vector-effect="non-scaling-stroke"/>`;
+    const x0 = s > 0 ? left - W*.95 : left + w - W*.05, x1 = x - W*.5 + s*w*.1, x2 = s > 0 ? left + w*1.2 : left - W - w*.2, y0 = bot - H + 6;
+    tl.set(sv, {x:x0, y:y0, scaleX:s, scaleY:.35, transformOrigin:'50% 100%', opacity:0}, 0).to(sv, {opacity:1, duration:.08}, 0)
+      .to(sv, {x:x1, scaleY:1, duration:.36, ease:'power2.in'}, 0)
+      .to(sv, {x:x2, scaleY:.25, opacity:0, duration:.42, ease:'power1.out'}, .4);
+    tl.to(t, {x:s*12, y:-14, rotation:s*10, duration:.14, ease:'power2.out'}, .3)
+      .to(t, {x:s*w*1.1, y:h*.15, rotation:s*38, opacity:0, duration:.4, ease:'power1.in'}, .44);
+    spray(tl, mk, .34, x + s*w*.2, y - h*.35, {n:12, colors:['rgba(255,255,255,.95)', 'rgba(190,235,255,.95)'], size:[3, 6], angle:-90 + s*35, arc:80, dist:[26, 64], dur:[.45, .65], gravity:46, w:w*.6});
+    spray(tl, mk, .5, x, y, {n:7, colors:['rgba(255,255,255,.05)'], size:[6, 11], angle:-90, arc:40, dist:[30, 60], dur:[.6, .8], w:w*.8, cls:'fxc-bubble', stagger:.03});
+    ringAt(tl, mk, .7, x, bot - 4, {from:w*.4, to:w*1.5, color:'rgba(170,225,255,.85)', width:2, squash:.25, dur:.45});
+    fadeSlot(tl, el, t, .45); tl.add(()=> snd('splash'), .3);
   });
 };
+let WAVE_ID = 0;
 // B: the water rises over it and it sinks; bubbles break at the surface.
 M.deathWater_B = function(el, opts){
   const D = dying(el); if(!D) return Promise.resolve(); const {t, x, w, h, bot} = D;
@@ -782,7 +799,7 @@ M.deathTrue_B = function(el, opts){
   return run(opts, (tl, mk, bag)=>{
     tl.to(t, {filter:F('sepia(1) saturate(4) hue-rotate(-12deg) brightness(1.1)'), duration:.2}, 0);
     const sh = inTile(t, bag, ''); sh.style.background = 'linear-gradient(110deg, transparent 35%, rgba(255,255,230,.9) 50%, transparent 65%)';
-    tl.fromTo(sh, {xPercent:-120}, {xPercent:120, duration:.3, ease:'power1.inOut'}, .12);
+    sh.style.backgroundSize = '300% 100%'; tl.fromTo(sh, {backgroundPosition:'100% 0%'}, {backgroundPosition:'0% 0%', duration:.3, ease:'power1.inOut'}, .12);
     tl.fromTo(t, {clipPath:'inset(0% 0% 0% 0%)'}, {clipPath:'inset(0% 0% 0% 100%)', duration:.45, ease:'power1.in'}, .4);
     for(let k = 0; k < 5; k++) spray(tl, mk, .4 + k*.08, left + w*(k + .5)/5, y, {n:5, colors:['#ffd34a', '#fff1a8', '#e8b021'], size:[2, 4], angle:-20, arc:50, dist:[30, 70], dur:[.5, .7], h:h, w:w*.15});
     tl.set(t, {opacity:0}, .86); fadeSlot(tl, el, t, .45); tl.add(()=> snd('pitchChime'), 0);
@@ -826,6 +843,71 @@ M.deathSacrificed = function(el, opts){
     tl.fromTo(t, {clipPath:'inset(0% 0% 0% 0%)'}, {clipPath:'inset(0% 0% 100% 0%)', duration:.5, ease:'power1.in'}, .25);
     for(let k = 0; k < 5; k++) spray(tl, mk, .25 + k*.09, x, bot - h*(k/5), {n:5, colors:['#9a8f88', '#c9c0b8', '#ff6a3a'], size:[2, 5], angle:-90, arc:60, dist:[24, 60], dur:[.5, .75], w:w, spin:160});
     fadeSlot(tl, el, t, .3); tl.set(t, {opacity:0}, .76); tl.add(()=>{ snd('devilryTone'); snd('burnAway'); }, 0);
+  });
+};
+// ---- Exiled / nullified (2026-10-15): a Nullify kill, a second death after Revive, or an On Death "exile itself". It doesn't go to
+// the graveyard but to the Removal Zone, so it doesn't fall: it is unmade. ----
+// A: the colour drains to flat grey, static flickers, and it folds shut like an old screen switching off (to a line, then a point).
+const exileCss = ()=> css('exile', `.fxc-static{background:repeating-linear-gradient(0deg, rgba(255,255,255,.18) 0 1px, transparent 1px 3px); mix-blend-mode:screen;}
+  .fxc-rift{border-radius:50%; background:radial-gradient(ellipse at center, #06040c 0 45%, #2a1a48 62%, rgba(150,120,220,.85) 72%, rgba(150,120,220,0) 80%); box-shadow:0 0 14px rgba(170,140,255,.8);}`);
+M.deathExile = function(el, opts){
+  const D = dying(el); if(!D) return Promise.resolve(); const {t, x, y, w, h} = D;
+  exileCss();
+  return run(opts, (tl, mk, bag)=>{
+    tl.to(t, {filter:F('grayscale(1) contrast(.7) brightness(1.15)'), duration:.22}, 0);
+    const st = inTile(t, bag, 'fxc-static'); tl.fromTo(st, {opacity:0, backgroundPositionY:'0px'}, {opacity:1, backgroundPositionY:'12px', duration:.3, ease:'steps(6)'}, .05);
+    tl.fromTo(t, {x:0}, {x:2, duration:.03, yoyo:true, repeat:5, ease:'none'}, .08);
+    tl.to(t, {scaleY:.03, scaleX:1.08, duration:.16, ease:'power3.in'}, .34).to(t, {scaleX:0, duration:.12, ease:'power2.in'}, .5).set(t, {opacity:0}, .62);
+    const dot = mk('fxc-p'); dot.style.background = '#fff'; dot.style.boxShadow = '0 0 10px 4px rgba(220,230,255,.9)';
+    tl.set(dot, {x, y, xPercent:-50, yPercent:-50, width:6, height:6, opacity:0}, .58).to(dot, {opacity:1, duration:.03}, .58).to(dot, {scale:.2, opacity:0, duration:.3, ease:'power2.in'}, .64);
+    puffs(tl, mk, .55, x, y, {n:4, color:'rgba(200,205,215,.55)', w:w*.6, rise:-26, drift:24, size:[16, 24]});
+    chip(tl, mk, .4, t, '🌫 Exiled', '#4b4f5c', {y:D.top + h*.1});
+    fadeSlot(tl, el, t, .35); tl.add(()=>{ snd('exile'); }, .05);
+  });
+};
+// B: a rift to the Removal Zone tears open over it and pulls it in, then seals with a pale flash.
+M.deathExile_B = function(el, opts){
+  const D = dying(el); if(!D) return Promise.resolve(); const {t, x, y, w, h} = D;
+  exileCss();
+  return run(opts, (tl, mk)=>{
+    const r = mk('fxc-rift'); tl.set(r, {x, y, xPercent:-50, yPercent:-50, width:6, height:h*1.15, opacity:0}, 0).to(r, {opacity:1, width:w*.55, duration:.2, ease:'back.out(2)'}, 0)
+      .to(r, {width:w*.7, duration:.3, ease:'sine.inOut'}, .2).to(r, {width:2, opacity:0, duration:.14, ease:'power3.in'}, .62);
+    tl.to(t, {filter:F('grayscale(.8) brightness(.8) hue-rotate(220deg)'), duration:.2}, .05)
+      .to(t, {scaleX:.08, scaleY:.7, skewY:6, opacity:.2, duration:.32, ease:'power3.in'}, .26).set(t, {opacity:0}, .6);
+    spray(tl, mk, .2, x, y, {n:10, colors:['#cfc4ff', '#8a7ad0', '#ffffff'], size:[2, 4], dist:[w*.5, w*.8], dur:[.35, .45], ease:'power2.in', scale0:1, scale1:.2, stagger:.02, angle:0, arc:360});
+    flashAt(tl, mk, .62, x, y, w*1.4, h*1.2, 'rgba(230,225,255,.9)', .3);
+    chip(tl, mk, .5, t, '🌫 Exiled', '#4b4f5c', {y:D.top + h*.1});
+    fadeSlot(tl, el, t, .3); tl.add(()=> snd('exile'), 0).add(()=> snd('reflectTone'), .6);
+  });
+};
+// ---- The King falls (2026-10-15, B for death-leader): the whole death, not an add-on. A gold flash, it sinks to its knees, the crown
+// lifts off and cracks in two, the royal banner behind it is lowered, and it fades to grey. About 1.2 s. ----
+M.kingFall = function(el, opts){
+  opts = opts || {}; const D = dying(el); if(!D) return Promise.resolve(); const {t, x, y, w, h, top, bot} = D, foe = isFoeEl(el);
+  css('kingFall', `.fxc-pennant{background:linear-gradient(180deg, var(--k1), var(--k2)); border:2px solid #e8c25a; border-top-width:4px; box-sizing:border-box;
+    clip-path:polygon(0 0, 100% 0, 100% 100%, 50% 84%, 0 100%); box-shadow:0 3px 8px rgba(0,0,0,.35);}
+    .fxc-pennant::after{content:'👑'; position:absolute; left:50%; top:22%; transform:translateX(-50%); font-size:13px; filter:grayscale(.2);}`);
+  return run(opts, (tl, mk, bag)=>{
+    const t0 = D.t, t = ghost(t0, bag); t0.style.visibility = 'hidden'; // 2026-10-15: a fixed copy outlives the slot
+    const P = mk('fxc-pennant'), pw = w*.46, ph = h*.7; P.style.setProperty('--k1', foe ? '#b22a2a' : '#2a62b2'); P.style.setProperty('--k2', foe ? '#6e1414' : '#163a6e');
+    tl.set(P, {x:x - pw/2, y:top - ph*.55, width:pw, height:ph, transformOrigin:'50% 0%', scaleY:0, opacity:1, zIndex:1199}, 0).to(P, {scaleY:1, duration:.2, ease:'back.out(1.6)'}, 0)
+      .to(P, {scaleY:.15, y:'+=' + ph*.3, rotation:foe ? 6 : -6, opacity:0, duration:.55, ease:'power2.in'}, .55);
+    flashAt(tl, mk, .02, x, y, w*2.4, w*2.4, 'rgba(255,225,140,.9)', .45);
+    ringAt(tl, mk, .05, x, y, {from:w*.5, to:w*2.2, color:'#ffd34a', glow:'rgba(255,200,60,.7)', width:3, dur:.6});
+    tl.to(t, {filter:F('brightness(1.25) sepia(.3) drop-shadow(0 0 8px #ffcf5a)'), duration:.12}, 0)
+      .to(t, {scaleY:.86, rotationX:24, transformPerspective:520, transformOrigin:'50% 100%', y:6, duration:.32, ease:'power2.in'}, .25)
+      .to(t, {filter:F('grayscale(.85) brightness(.75)'), duration:.4}, .35)
+      .to(t, {rotationX:80, y:12, opacity:0, duration:.42, ease:'expo.in'}, .7);
+    // the crown: lifts, hangs, cracks into two halves that fall away, gold glints
+    const cs = Math.round(Math.max(22, w*.38));
+    [-1, 1].forEach(k=>{ const c = mk('fxc-g', '👑'); c.style.fontSize = cs + 'px'; c.style.clipPath = k < 0 ? 'polygon(0 0, 52% 0, 44% 40%, 54% 70%, 46% 100%, 0 100%)' : 'polygon(52% 0, 100% 0, 100% 100%, 46% 100%, 54% 70%, 44% 40%)';
+      c.style.filter = 'drop-shadow(0 2px 3px rgba(0,0,0,.5))';
+      tl.set(c, {x, y:top + 4, xPercent:-50, yPercent:-50, opacity:1, rotation:0}, 0).to(c, {y:top - cs*.9, duration:.32, ease:'power2.out'}, .05)
+        .to(c, {x:'+=' + k*3, rotation:k*8, duration:.06}, .42)
+        .to(c, {x:'+=' + k*rnd(22, 34), y:bot - 6, rotation:k*rnd(90, 140), duration:.5, ease:'power2.in'}, .5).to(c, {opacity:0, duration:.25}, 1.0); });
+    spray(tl, mk, .42, x, top - cs*.9, {n:10, colors:['#ffd34a', '#fff1a8', '#e8b021'], size:[2, 5], dist:[16, 44], dur:[.4, .6], gravity:30});
+    chip(tl, mk, .55, t, '👑 The ' + (opts.title || 'King') + ' falls', foe ? '#8e1420' : '#1f4f8e', {y:top - 6, hold:.75});
+    fadeSlot(tl, el, t0, .3); tl.add(()=>{ snd('drum'); snd('horn'); }, 0).add(()=> snd('clang'), .42).add(()=> snd('knockOut'), 1.0);
   });
 };
 // ---- Egg destroyed before it hatched: the shell cracks along a zigzag, the halves fall apart, a sad little puff ----
@@ -889,9 +971,10 @@ M.leaderFall = function(el, opts){
 M.foilPeel = function(el, opts){
   const D = dying(el); if(!D) return Promise.resolve(); const {x, y, w, h, left, top} = D;
   return run(opts, (tl, mk)=>{
-    const f = mk('fxc-foil'); tl.set(f, {x:left, y:top, width:w, height:h, opacity:.9, transformOrigin:'0% 0%', rotation:0, transformPerspective:600}, 0)
-      .to(f, {rotationY:-55, rotationX:20, rotation:-12, duration:.3, ease:'power2.out'}, 0)
-      .to(f, {x:left - w*.5, y:top - h*.5, rotation:-60, scale:.4, opacity:0, duration:.5, ease:'power1.in'}, .3);
+    // 2026-10-15 (review): the sheet lifts off the face, tips back and flutters up and away, shrinking
+    const f = mk('fxc-foil'); placeAt(f, left, top); tl.set(f, {width:w, height:h, opacity:0, transformOrigin:'50% 100%', rotation:0, transformPerspective:500}, 0)
+      .to(f, {opacity:.95, duration:.08}, 0).to(f, {y:-8, rotationX:-28, duration:.22, ease:'power2.out'}, .05)
+      .to(f, {x:w*.35, y:-h*.75, rotation:18, rotationX:-65, scale:.4, opacity:0, duration:.5, ease:'power1.in'}, .27);
     spray(tl, mk, .1, x - w*.2, y - h*.2, {n:10, glyphs:['✦', '✧', '·'], size:[9, 15], dist:[20, 60], dur:[.45, .7], stagger:.02});
     tl.add(()=> snd('rareRise', false), 0);
   });
@@ -925,7 +1008,8 @@ M.lethalStamp_C = function(el, opts){
 M.bossDeath = function(el, opts){
   opts = opts || {}; const D = dying(el); if(!D) return Promise.resolve(); const {t, x, y, w, h} = D;
   const host = opts.host || document.getElementById('battlefieldEl') || null;
-  return run(opts, (tl, mk)=>{
+  return run(opts, (tl, mk, bag)=>{
+    const t0 = D.t, t = ghost(t0, bag); t0.style.visibility = 'hidden'; // 2026-10-15: a fixed copy, so the slot can go while it plays
     flashAt(tl, mk, 0, x, y, w*5, w*5, 'rgba(255,255,255,.95)', .5);
     tl.fromTo(t, {filter:F('brightness(1)')}, {filter:F('brightness(2.2) saturate(.3)'), duration:.06}, 0).to(t, {filter:F('brightness(1.3) saturate(1.4) drop-shadow(0 0 12px #ffcf5a)'), duration:.3}, .06);
     tl.fromTo(t, {x:0, rotation:0}, {keyframes:[{x:-4, rotation:-1.5}, {x:4, rotation:1.5}, {x:-3, rotation:-1}, {x:3, rotation:1}, {x:-2}, {x:2}, {x:0, rotation:0}], duration:.8, ease:'none'}, .05);
@@ -941,7 +1025,7 @@ M.bossDeath = function(el, opts){
     tl.set(title, {x:tx, y:ty, xPercent:-50, yPercent:-50, scale:2.4, opacity:0}, 1.0)
       .to(title, {scale:1, opacity:1, duration:.2, ease:'power4.in'}, 1.0).to(title, {scale:1.04, duration:.08, yoyo:true, repeat:1}, 1.2)
       .to(title, {opacity:0, y:'-=20', duration:.35, ease:'power1.in'}, 2.0);
-    fadeSlot(tl, el, t, .85);
+    fadeSlot(tl, el, t0, .2);
     tl.add(()=>{ snd('bossRumble'); }, 0).add(()=>{ snd('boom'); snd('castleCollapse'); }, .85).add(()=> snd('leaderFanfare'), 1.0);
   });
 };
@@ -1123,7 +1207,7 @@ M.castleGate = function(el, opts){
   return run(opts, (tl, mk)=>{
     const c = centre(t), W = c.w*.42, H = c.h*.42, gx = c.x, gy = c.r.bottom - H*.5 - c.h*.06;
     const gap = mk('fxc-gap'); tl.set(gap, {x:gx, y:gy, xPercent:-50, yPercent:-50, width:W, height:H, opacity:0}, 0).to(gap, {opacity:1, duration:.1}, 0).to(gap, {opacity:0, duration:.25}, .85);
-    [-1, 1].forEach(s=>{ const d = mk('fxc-door'); tl.set(d, {x:gx + (s < 0 ? -W/2 : 0), y:gy - H/2, width:W/2, height:H, transformOrigin:s < 0 ? '0% 50%' : '100% 50%', transformPerspective:300, rotationY:0, opacity:1}, 0)
+    [-1, 1].forEach(s=>{ const d = mk('fxc-door'); placeAt(d, gx + (s < 0 ? -W/2 : 0), gy - H/2); tl.set(d, {width:W/2, height:H, transformOrigin:s < 0 ? '0% 50%' : '100% 50%', transformPerspective:160, rotationY:0, opacity:1}, 0)
       .to(d, {rotationY:s*-75, duration:.35, ease:'back.out(1.4)'}, .05).to(d, {rotationY:0, duration:.25, ease:'power2.in'}, .7).to(d, {opacity:0, duration:.15}, .95); });
     puffs(tl, mk, .15, gx, gy + H*.45, {n:5, color:'rgba(180,150,110,.6)', w:W, rise:-10, drift:30, size:[12, 20], stagger:.03});
     tl.add(()=>{ snd('woodKnock'); snd('drum'); }, .05);
@@ -1313,10 +1397,10 @@ M.twinPeel = function(src, twin, opts){
   opts = opts || {}; const st = tileOf(src), tt = tileOf(twin); if(!st || !tt) return Promise.resolve();
   return run(opts, (tl, mk, bag)=>{
     const sh = inTile(st, bag, ''); sh.style.background = 'linear-gradient(105deg, transparent 30%, rgba(220,240,255,.9) 48%, rgba(255,255,255,.95) 50%, rgba(220,240,255,.9) 52%, transparent 70%)';
-    tl.fromTo(sh, {xPercent:-120}, {xPercent:120, duration:.3, ease:'power1.inOut'}, 0);
+    sh.style.backgroundSize = '300% 100%'; tl.fromTo(sh, {backgroundPosition:'100% 0%'}, {backgroundPosition:'0% 0%', duration:.3, ease:'power1.inOut'}, 0);
     const b = centre(tt), a = centre(st);
     tl.add(()=>{ const g = ghost(st, bag, {opacity:.7, filter:F('brightness(1.3) saturate(.6) hue-rotate(180deg)')});
-      gsap.to(g, {x:b.r.left, y:b.r.top, scaleX:-1, duration:.35, ease:'power2.inOut'}); gsap.to(g, {opacity:0, duration:.2, delay:.32}); }, .2);
+      gsap.to(g, {x:b.r.left - a.r.left, y:b.r.top - a.r.top, scaleX:-1, duration:.35, ease:'power2.inOut'}); /* ghost() places by left/top */ gsap.to(g, {opacity:0, duration:.2, delay:.32}); }, .2);
     tl.fromTo(tt, {opacity:0}, {opacity:1, duration:.2, clearProps:'opacity'}, .5);
     spray(tl, mk, .55, b.x, b.y, {n:6, glyphs:['✦', '✧'], size:[9, 13], dist:[16, 36], dur:[.35, .5]});
     tl.to({}, {duration:.4}, .55); tl.add(()=> snd('reflectTone'), 0);
@@ -1494,9 +1578,9 @@ M.dronesDrop = function(from, onto, opts){
 //    line in deathVfx); castle speech through hooks.castleSpeech (one line in maybeSpeakHQ). Nothing here waits or blocks.
 // ======================================================================================================================
 // What last hurt each unit, in the terms of the death looks above (the game's own lastHurtBy only knows damage types).
-const PETRI = new Set(), CAUSE = new Map(), LASTDMG = new Map(), WAKE = new Map(), CASTLE_SHOT = new Map(), LEADERS = new Map(), PLAYS = [], TAGS = [];
+const EXILED = new Set(), PETRI = new Set(), CAUSE = new Map(), LASTDMG = new Map(), WAKE = new Map(), CASTLE_SHOT = new Map(), LEADERS = new Map(), PLAYS = [], TAGS = [];
 let SEQ = 0, MATCH = null, BOSSLEFT = 0;
-function resetFor(m){ if(m === MATCH) return; MATCH = m; [CAUSE, LASTDMG, WAKE, CASTLE_SHOT, LEADERS, PETRI].forEach(x=> x.clear()); PLAYS.length = 0; TAGS.length = 0; SEQ = 0; }
+function resetFor(m){ if(m === MATCH) return; MATCH = m; [CAUSE, LASTDMG, WAKE, CASTLE_SHOT, LEADERS, PETRI, EXILED].forEach(x=> x.clear()); PLAYS.length = 0; TAGS.length = 0; SEQ = 0; }
 const setCause = (uid, cause, sub)=>{ if(uid != null) CAUSE.set(String(uid), {cause, sub:sub || null}); };
 const dropCause = uid=>{ if(uid != null) CAUSE.delete(String(uid)); };
 const speedOf = env=> Math.max(1, (env && env.match && env.match.speedMult) || 1);
@@ -1544,6 +1628,7 @@ function trackCause(ev){
       else if(ev.dmg > 0) dropCause(ev.uid);
       break;
     case 'sacrifice': setCause(ev.uid, 'sacrificed'); break;
+    case 'death': if(ev.nullified || ev.exiled) EXILED.add(String(ev.uid)); break; // 2026-10-15: unmade, not fallen (deathExile)
     case 'statusEnd': if(ev.status === 'petrified') PETRI.delete(String(ev.uid)); break;
     case 'statusFx': if(ev.kind === 'sacrificed' && !ev.fromHand) setCause(ev.targetUid, 'sacrificed'); break;
   }
@@ -1560,14 +1645,15 @@ M.deathPlan = function(el, uid, env){
   const boss = M.isBoss(uid, d, env);
   if(boss) plan.look = 'bossDeath';
   else if(!token){
-    if(d.hatchInto) plan.look = 'deathEgg';
+    if(EXILED.has(String(uid))) plan.look = 'deathExile';
+    else if(d.hatchInto) plan.look = 'deathEgg';
     else if((b && b.classList.contains('is-petrified')) || PETRI.has(String(uid))) plan.look = 'deathPetrified';
     else if(cz && DEATH_BY[cz.cause]) { plan.look = DEATH_BY[cz.cause]; plan.sub = cz.sub; if(cz.cause === 'crushed' && cz.sub === 'snow') plan.look = 'deathCrushed_B'; }
     else if(isStructureDef(d)) plan.look = 'deathStructure';
   }
   if(!boss){
     const leader = (b && b.classList.contains('is-leader')) || (m && String(m.leaderUid) === String(uid)) || LEADERS.has(String(uid)) || archOf(d).includes('King');
-    if(leader) plan.addons.push('leaderFall');
+    if(leader){ if(!plan.look && !token) plan.look = 'kingFall'; else plan.addons.push('leaderFall'); }
     const t = tileOf(el); if(t && (t.classList.contains('is-shiny') || t.classList.contains('is-holo'))) plan.addons.push('foilPeel');
     if(!token && LASTDMG.has(String(uid))) plan.addons.push('lethalStamp');
   }
@@ -1588,6 +1674,7 @@ M.hooks.deathLook = function(el, info, env){
     info.handled = true;
     if(plan.look === 'bossDeath'){ const m = env.match, n = m && m.conquestNode; try{ if(typeof noteMatchFx === 'function') noteMatchFx(2300); }catch(e){}
       M.bossDeath(el, Object.assign(o, {host:env.battlefield, name:(n && n.name) || (defOf(env, boardOf(el).getAttribute('data-defid')).name) || '', kicker:(n && /final/.test(n.kind || '')) ? 'Final boss' : 'Boss', speed:1})); }
+    else if(plan.look === 'kingFall'){ const d = defOf(env, boardOf(el).getAttribute('data-defid')); M.kingFall(el, Object.assign(o, {title:archOf(d).includes('King') ? 'King' : 'Leader'})); }
     else M[plan.look](el, o);
   }
   plan.addons.forEach(a=>{ if(a === 'lethalStamp') M.lethalStamp(el, Object.assign({}, o, {dmg:LASTDMG.get(String(info.uid))})); else if(typeof M[a] === 'function') M[a](el, o); });
@@ -1599,6 +1686,12 @@ M.ownsSpawn = function(ev){
   return !!(ev && ev.type === 'spawn' && (ev.kind === 'meiosis' || ev.kind === 'twin' || ev.kind === 'sprout'));
 };
 // maybeSpeakHQ: fxHook('castleSpeech', el, line, h) before its own bubble; setting h.handled replaces the units' bubble.
+// Defeat: your own castle shudders and sinks into the ground (SkillFX.castleCrumble 'sink', the lab's castle-crumble-variants B).
+// arena_app awaits info.wait before the end sign, like the enemy castle's crumble.
+M.hooks.castleFallMine = function(el, info, env){
+  if(!el || !info || !env.fxAtLeast('med') || !(root.SkillFX && SkillFX.castleCrumble)) return;
+  try{ SkillFX.castleCrumble(el, {variant:'sink', restore:false}); snd('castleCollapse'); info.wait = 1500; }catch(e){}
+};
 M.hooks.castleSpeech = function(el, text, info, env){ if(!env || !env.fxAtLeast('med') || !info) return; info.handled = true; M.castleSpeech(el, text); };
 const SKIP_OWN = new Set(['frozen', 'asleep', 'paralyzed', 'stunned', 'chained', 'petrified', 'shell', 'ritual', 'zeroAttack']);
 M.onEvent = function(ev, env){

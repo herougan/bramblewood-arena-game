@@ -97,8 +97,16 @@ R({id:'death-decay', stage:'board', inGameHook:"deathVfx → hooks.deathLook: la
 R({id:'death-sacrificed', stage:'board', inGameHook:"deathVfx → hooks.deathLook: sacrifice / statusFx sacrificed", note:'A is new; B is the jaws then the plain fall.', variants:[
   {key:'A', label:'Red sigil, burns to ash upward', play:deathOf('deathSacrificed')},
   {key:'B', label:'Before: jaws, then the topple', play:async ctx=>{ const el = foe(ctx); ctx.float(el, '🦷 Sacrifice', 'debuff'); el.classList.add('sac-chomp'); await ctx.wait(650); el.classList.remove('sac-chomp'); fall(el); await ctx.wait(1300); }}]});
-R({id:'death-leader', stage:'board', inGameHook:"deathVfx → hooks.deathLook add-on: the leader (is-leader / King) — plays over the normal death", variants:[
-  {key:'A', label:'Crown tumbles off, banner tears', play:ctx=>{ const el = foe(ctx); el.classList.add('is-leader'); ctx.sound('death'); fall(el); return X().leaderFall(el); }}]});
+R({id:'death-leader', stage:'board', inGameHook:"deathVfx → hooks.deathLook: the leader / King. B (its own whole death) plays in fights; when a cause look applies (lightning, water…) A's crown tumbles over that instead",
+  note:'B is used in the game: the most important unit gets its own fall. A is the add-on that rides on a cause death.', variants:[
+  {key:'A', label:'Add-on: crown tumbles off, banner tears', play:ctx=>{ const el = foe(ctx); el.classList.add('is-leader'); ctx.sound('death'); fall(el); return X().leaderFall(el); }},
+  {key:'B', label:'The King falls: gold flash, kneels, crown cracks, banner lowered', play:ctx=>{ const el = foe(ctx); el.classList.add('is-leader'); return X().kingFall(el); }},
+  {key:'C', label:'Your leader falls (blue banner)', play:ctx=>{ const el = mine(ctx, 1); el.classList.add('is-leader'); return X().kingFall(el, {title:'Leader'}); }}]});
+// Exile / Nullify deaths (2026-10-15, user: "exile/nullify" among the deaths): registered on Exile-from-board (batch A's entry) as G/H so
+// the keys can't collide with batch A's own A–F. In the game: a death event flagged nullified / exiled → hooks.deathLook → deathExile.
+R({id:'sk-exile-board', stage:'board', inGameHook:"batch C: death {nullified | exiled} → hooks.deathLook → FX.C.deathExile (G)", variants:[
+  {key:'G', label:'Batch C death: unmade, folds shut like an old screen', play:deathOf('deathExile')},
+  {key:'H', label:'Batch C death: pulled into a rift to the Removal Zone', play:deathOf('deathExile_B')}]});
 R({id:'death-boss', stage:'board', inGameHook:"deathVfx → hooks.deathLook: enemy leader of a boss node / boss def; the round waits (noteMatchFx)", note:'A big moment: about 2.3 s.', variants:[
   {key:'A', label:'Freeze-frame, gold shockwaves, shatter, "Defeated!"', play:ctx=> X().bossDeath(foe(ctx), {host:B(ctx).el, name:'Thornback Boar'})}]});
 R({id:'death-egg', stage:'board', inGameHook:"deathVfx → hooks.deathLook: a hatchInto card", variants:[{key:'A', label:'Shell cracks in two, a sad puff', play:deathOf('deathEgg')}]});
