@@ -12459,6 +12459,7 @@ function tabOpen(tab){ const sp = FEATURE_SPOTS.find(x=> x.tabs.includes(tab)); 
 function unlockFeature(key){ const u = loadUnlocks() || {unlocked:{}}; u.unlocked[key] = true; saveUnlocks(u); }
 function activateSpot(spot){
   const first = !featureUnlocked(spot.key);
+  if(first) fxHook('mapSpotUnlock', document.querySelector(`[data-spot="${spot.key}"]`), spot.key); // each spot opens in its own way (FX.E, 2026-10-15)
   if(first){ unlockFeature(spot.key); try{ if(SoundKit.unlock) SoundKit.unlock(); }catch(e){} showToast(`${spot.icon} ${spot.name} — unlocked!`, 'ok');
     if(spot.key === 'deck') setTimeout(()=>{ try{ releaseHeldPacks(); }catch(e){} }, 1200); // packs won before the Armoury (2026-10-15)
     const script = DIALOGUES[spot.dialogue];
@@ -12753,6 +12754,7 @@ function visitCuriosity(key, el){
   if(!mapTapGate(el, 2600)) return;
   if(loadDialogueFlags()['seen:' + c.dialogue]){ showSpeechBubble(el, `${c.icon} ${CURIO_AFTER[Math.floor(Math.random()*CURIO_AFTER.length)]}`); return; }
   fadeNewBang(el);
+  fxHook('mapCurioVisit', el, key); // the first look: a hop and a sparkle (FX.E, 2026-10-15)
   try{ SoundKit.unlock && SoundKit.unlock(); }catch(e){}
   playDialogue(c.dialogue, {once:true, expand:true, onAfk: ()=>{ if(el && el.isConnected){ el.classList.add('is-new'); } }});
 }
@@ -14320,6 +14322,7 @@ function openQuestsModal(focus){
   const opening = overlay.hidden || !overlay.querySelector('.quests-modal');
   overlay.innerHTML = questsModalHTML(); overlay.hidden = false;
   if(opening) questBoardEntrance(overlay.querySelector('.quests-modal'));
+  fxHook('questBoardOpen', overlay.querySelector('.quests-modal'), opening); // pinned papers lift in the draught (FX.E, 2026-10-15)
   overlay.querySelector('.quests-modal').scrollTop = prevScroll;
   const close = ()=>{ overlay.hidden = true; overlay.innerHTML = ''; if(questsKeyHandler){ document.removeEventListener('keydown', questsKeyHandler); questsKeyHandler = null; } };
   if(questsKeyHandler) document.removeEventListener('keydown', questsKeyHandler);
@@ -16400,6 +16403,7 @@ function placeMapPawn(canvas, map, positions, progress, visibleFlags){
   const legs = []; let t0 = performance.now(), cur = start;
   pts.forEach(pt=>{ const dist = d(cur, pt); const hops = Math.max(1, Math.min(7, Math.round(dist / 6))), dur = Math.max(0.12, Math.min(1.6, 0.22 * hops)); legs.push({from:cur, to:pt, t0, dur, hops}); t0 += dur*1000; cur = pt; });
   mapPawnWalk = {mapId: map.id, legs};
+  fxHook('mapPawnWalk', pawn, legs); // footprints and dust on every hop (FX.E, 2026-10-15)
   const body = pawn.querySelector('.mp-body');
   const tl = gsap.timeline();
   legs.forEach(L=>{
@@ -16589,6 +16593,7 @@ function renderConquestWorld(mainEl, body, progress){
   // Start with the map you're on in view.
   const here = mainEl.querySelector('.world-stop.is-here');
   if(here) requestAnimationFrame(()=>{ const sc = mainEl.scrollHeight > mainEl.clientHeight ? mainEl : null; const top = here.offsetTop - 160; if(sc) sc.scrollTop = Math.max(0, top); else here.scrollIntoView({block:'center'}); });
+  fxHook('mapWorldShown', mainEl); // fog peels off a newly reachable map (FX.E, 2026-10-15)
 }
 function conquestPanTo(mapId, body, progress){
   const target = CONQUEST_MAPS.find(m=> m.id===mapId);
@@ -17144,6 +17149,7 @@ function renderConquestSubTab(body){
       if(firstThisSession || firstEver){ mapVeilShownThisSession = true; try{ showMapVeil(vh, map, layer); }catch(e){} }
     } }
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak), map.id); }catch(e){}
+  fxHook('mapShown', conquestShaderHost(), map, document.getElementById('conquestCanvas'), progress); // map ambience, day/night, node states, coming-back moments (FX.E, 2026-10-15)
   if(adminModeEnabled) wireMapLayoutEditor(map, body);
   mainEl.querySelectorAll('[data-spot]').forEach(b=> b.addEventListener('click', ()=>{ if(conquestLayoutEdit || conquestLinkEdit) return; if(!mapTapGate(b, 1200)) return; const sp = FEATURE_SPOTS.find(x=> x.key===b.dataset.spot); if(sp){ const first = !featureUnlocked(sp.key); fadeNewBang(b); b.classList.add('is-open'); if(first && sp.gift) try{ sp.gift(); }catch(e){} activateSpot(sp); if(sp.vanish) setTimeout(()=> b.remove(), 600); } }));
   { const w = mainEl.querySelector('#mapWell'); if(w) w.addEventListener('click', e=>{ e.stopPropagation(); if(conquestLayoutEdit || conquestLinkEdit) return; visitOldWell(w); }); }
@@ -32905,6 +32911,7 @@ function rollDragonScale(mapId, key, rank){
   const n = scaleNodeAt(mapId, key); if(!n || !rankAtLeast(rank, 'S')) return null;
   if(loadDialogueFlags()[scaleFlagKey(n)]) return null;
   setDialogueFlag(scaleFlagKey(n), true); unlockCardForPlayer('dragon-scale', 'scale');
+  fxHook('dragonScaleFound', {index: DRAGON_SCALE_NODES.indexOf(n) + 1, total: DRAGON_SCALE_NODES.length}); // the scale flips up over the results (FX.E, 2026-10-15)
   return {index: DRAGON_SCALE_NODES.indexOf(n) + 1, total: DRAGON_SCALE_NODES.length, line: n.line};
 }
 // ---- Blacksmith (2026-10-11, user: "There is also a blacksmith portion for crafting weapons or combining cards. These
@@ -33757,6 +33764,7 @@ function openTavern(){
     ov.hidden = false; ov.querySelector('#tvClose').onclick = ()=>{ ov.hidden = true; ov.innerHTML = ''; if(currentTab === 'home') try{ renderHome(); }catch(e){} };
     const sb = ov.querySelector('#wpStaminaBuy'); if(sb) sb.onclick = ()=>{ const r = buyEnergyUpgrade(); if(r === 'ok'){ showToast(`⚡ Max Energy is now ${energyMax()}.`, 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ refreshEnergyHud(); }catch(e){} draw(); } else if(r === 'cost') showToast('Not enough Maple Leaves yet.', 'warn'); }; };
   draw(); ov.onclick = e=>{ if(e.target === ov){ ov.hidden = true; ov.innerHTML = ''; } };
+  fxHook('tavernOpen', ov.querySelector('.tavern-modal')); // the hearth glows, two mugs clink (FX.E, 2026-10-15)
 }
 function adminEntryVisible(){
   if(LAUNCH_BUILD && !isDevHost()) return false;

@@ -618,6 +618,8 @@ _sh.copy(f'{ROOT}/tools/effects-lab/effects-lab.js', f'{ROOT}/.fxcat/effects-lab
 # 2026-10-15: the catalogue's stages show the game's own art (card art, the castle, the map ground, the pack art), so every
 # asset the fixtures point at is copied from the game's assets/ beside the page (.fxcat/assets/ → the hub root).
 _need = set(re.findall(r'assets/((?:cards|castles|maps|fx|tex)/[\w.-]+?\.(?:png|webp|jpg|jpeg|gif|svg))', fixtures_js)) | {'maps/m1.png'}
+# 2026-10-15 (batch E): every map's art (≈350 KB), so the map stage can be dressed as any map (map-theme-<id>) without 404s.
+_need |= {'maps/' + f for f in os.listdir(f'{ROOT}/assets/maps') if f.endswith('.png')}
 _copied = 0
 for _rel in sorted(_need):
     _src, _dst = f'{ROOT}/assets/{_rel}', f'{ROOT}/.fxcat/assets/{_rel}'
