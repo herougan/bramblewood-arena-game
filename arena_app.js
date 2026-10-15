@@ -22789,6 +22789,7 @@ function renderMatchUI(){
     ${(()=>{ const n = m && m.engine && m.engine.actionsPerTurn ? m.engine.actionsPerTurn() : 1; if(n <= 1) return ''; const used = me.playedThisTurn ? n : (me.playsTurn === (m.round||1) - 1 ? (me.playsThisTurn||0) : 0); return `<span class="hud-pill plays-pill" title="Actions per turn: you may play ${n} cards a turn">▶ ${Math.max(0, n - used)}/${n} plays</span>`; })()}
   `;
   const tkKeep = testKitCaptureForRerender(m);
+  try{ repaintBoardRects = hasGsap() ? captureBoardCardRects() : null; }catch(e){ repaintBoardRects = null; } // 2026-10-15: no teleport across the repaint (renderBoard glides them)
   root.innerHTML = `
     <!-- 2026-09-29, per explicit request ("Put this top banner UI onto the top right corner of
          the same level as the Deck and enemy castle row."): the opponent tag + utility buttons
@@ -24208,6 +24209,7 @@ function renderBoard(opts){
       shovedEls.forEach(el=> shovedUids.delete(el.getAttribute('data-uid')));
     }
     flipState = Flip.getState(FLIP_SEL, {props:'opacity,rotation'});
+    repaintBoardRects = null; // Flip carries the cards this time (2026-10-15)
     if(enteringEls.length){
       // Also clear the newElRects position pin (see its own long bugfix comment, unchanged)
       // here — now AFTER flipState has already captured this element's live mid-drop look (see
@@ -24454,6 +24456,18 @@ function renderBoard(opts){
     // animation target, so nothing about the entrance visual changes.
     pinNewElRects();
   } else if(hasGsap()){
+    // 2026-10-15 (user: "Cards still sometime teleport to the left/right - when next round or on victory."): root cause, found
+    // with a per-frame, per-uid position probe: two renders rebuild the rows with no Flip at all. (1) renderMatchUI() wipes the
+    // whole play view (so the rows are empty here and Flip has nothing to diff), and (2) the victory round's final render skips
+    // Flip on purpose (m.ending / m.over). Whenever the row's layout differs from what was on screen (a card more or less re-
+    // centres the row by half a slot; past ~7 cards every card's CSS width shrinks with the count), every card jumped in one
+    // frame. Cards that existed before now glide from where they were (position and size), using this render's own rects or
+    // the ones renderMatchUI captured before its repaint.
+    const fresh = repaintBoardRects && performance.now() - (repaintBoardRects.at || 0) < 600;
+    const fromRects = new Map(fresh ? repaintBoardRects : []); if(prevRects) prevRects.forEach((r, u)=> fromRects.set(String(u), r));
+    repaintBoardRects = null;
+    if(fromRects.size && !reducedMotion()) [rowEnemy, rowMine].forEach(row=>{ if(!row) return;
+      row.querySelectorAll('.board-card[data-uid]').forEach(el=>{ const from = fromRects.get(String(el.getAttribute('data-uid'))); if(from) glideBoardCardFrom(el, from); }); });
     // GSAP itself is available, but there was nothing for Flip to diff against yet — most
     // commonly, the board was COMPLETELY empty before this render (the very first card of the
     // match, or the first card played after a full board wipe), so !!document.querySelector
@@ -27132,6 +27146,31 @@ function deathVfx(uid){
 // inline layout props cleared so it drops back into its real slot in the row.
 // Slide an element from where it visibly was (rect `from`) to wherever layout has put it now,
 // instead of letting it jump. Used wherever a pin or stray transform is released.
+// 2026-10-15: the board cards' rects before a full repaint (renderMatchUI), by uid, for renderBoard to glide them from.
+let repaintBoardRects = null;
+function captureBoardCardRects(){
+  const out = new Map();
+  document.querySelectorAll('#rowMine .board-card[data-uid], #rowEnemy .board-card[data-uid]').forEach(el=>{
+    if(el.matches('.falling, .burning, .bleeding, .is-entering')) return;
+    const r = el.getBoundingClientRect(); if(r.width > 4) out.set(String(el.getAttribute('data-uid')), {left:r.left, top:r.top, width:r.width, height:r.height});
+  });
+  out.at = performance.now();
+  return out;
+}
+// Like glideFromRect, but also eases a size change (a row's cards shrink with their count): offset by the centre, scale from
+// the old width. Skips jumps too big to be a reflow (a measurement taken mid-stack) and cards something else is animating.
+function glideBoardCardFrom(el, from){
+  if(!el || !from || !el.isConnected || !hasGsap() || gsap.isTweening(el) || el.classList.contains('is-entering')) return;
+  const to = el.getBoundingClientRect(); if(!to.width) return;
+  let dx = (from.left + from.width/2) - (to.left + to.width/2), dy = (from.top + from.height/2) - (to.top + to.height/2);
+  const s = from.width / to.width;
+  if(Math.abs(dx) < 3 && Math.abs(dy) < 3 && Math.abs(s - 1) < 0.02) return;
+  if(Math.abs(dx) > Math.max(240, to.width*4) || Math.abs(dy) > to.height*1.5) return;
+  const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1;
+  dx /= sc; dy /= sc;
+  const d = Math.min(.34, .16 + Math.hypot(dx, dy)/2000 + Math.abs(s - 1)*.4);
+  gsap.fromTo(el, {x:dx, y:dy, scale:Math.max(.6, Math.min(1.6, s))}, {x:0, y:0, scale:1, duration:sharpBoard() ? Math.min(.22, d) : d, ease:'power2.out', clearProps:'x,y,scale'});
+}
 function glideFromRect(el, from){
   if(!el || !from || !el.isConnected || !hasGsap()) return;
   const to = el.getBoundingClientRect();
@@ -27244,6 +27283,13 @@ function settleStrayBoardCards(waited){
   const rowBusy = row=> hasGsap() && [...row.children].some(c=> c.style.position==='absolute' && (gsap.isTweening(c) || c.classList.contains('is-entering')));
   document.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(el=>{
     if(hasGsap() && gsap.isTweening(el)) return;
+    // 2026-10-15 (user: "Cards still sometime teleport to the left/right - when next round"): root cause, from a per-uid frame
+    // probe plus a trace of every large x set on a board card: resolveRound called this in the same task as its final render.
+    // That render's Flip.from() had just pinned every card position:absolute, but GSAP doesn't count a timeline as tweening
+    // before its first tick, so this saw "pinned and idle" cards, measured them stacked at the row's left edge (Flip hadn't
+    // placed them yet), cleared the pin and glided each one in from there: the row swept in from the left. A live Flip target
+    // is busy, whatever isTweening says.
+    if(flippingEls.get(String(el.getAttribute('data-uid'))) === el){ if((waited||0) < 72) deferred = true; return; }
     if(el.parentNode && rowBusy(el.parentNode) && (waited||0) < 72){ deferred = true; return; }
     const pinned = el.style.position==='absolute' || el.style.left || el.style.top;
     const tf = el.style.transform;
@@ -27664,7 +27710,7 @@ async function resolveRound(opts){
   if(finalRender && finalRender.hadNewEntrants) await sleep(420);
   if(over) revealBoardCardsAtEnd();
   if(dungeonAdvanced){ try{ dungeonWaveVfx(m); }catch(e){} await sleep(900); }
-  settleStrayBoardCards(); setTimeout(settleStrayBoardCards, 900);
+  requestAnimationFrame(()=> settleStrayBoardCards()); setTimeout(settleStrayBoardCards, 900); // a frame later, once the final render's Flip has started (2026-10-15)
   // Auto-draw (2026-10-03): nobody has anything left to play and the board hasn't changed for
   // STALL_ROUNDS_FOR_DRAW rounds, or the match reached DRAW_ROUND_CAP. Skipped in the tutorial.
   // Spent enemy: surrender / offer a draw (see setupEnemyBehaviour).
@@ -27683,9 +27729,14 @@ async function resolveRound(opts){
   if(over){
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
     m.winner = (m.forcedWinner!=null) ? m.forcedWinner : ((p1dead&&p2dead)?0:(p1dead?2:1));
-    if(m.winner===1 && p2dead && m.forcedWinner==null && m.mode!=='sandbox'){ try{ await castleCrumble(hqTileEl('B')); }catch(e){} }
-    else if(m.winner===2 && p1dead && m.forcedWinner==null && m.mode!=='sandbox'){ const h = {wait:0}; fxHook('castleFallMine', hqTileEl('A'), h); if(h.wait) await sleep(h.wait); } // 2026-10-15: your own castle sinks (FX.C)
+    // 2026-10-15 (user: "As I described previously, don't wait for the crumble animation to finish before playing the Victory/Defeat
+    // screen."): the castle starts to fall, and a beat later the sign comes up over it while it keeps crumbling underneath; the
+    // results wait for whichever ends last.
+    let castleFall = null;
+    if(m.winner===1 && p2dead && m.forcedWinner==null && m.mode!=='sandbox'){ try{ castleFall = castleCrumble(hqTileEl('B')).catch(()=>{}); m._crumbling = 'B'; await sleep(380); }catch(e){} }
+    else if(m.winner===2 && p1dead && m.forcedWinner==null && m.mode!=='sandbox'){ const h = {wait:0}; fxHook('castleFallMine', hqTileEl('A'), h); if(h.wait){ castleFall = sleep(h.wait); m._crumbling = 'A'; await sleep(Math.min(h.wait, 380)); } } // 2026-10-15: your own castle sinks (FX.C)
     if(m.mode!=='sandbox') await showEndSign(m);
+    if(castleFall){ await castleFall; m._crumbling = null; }
     m.over = true;
     setTimeout(revealBoardCardsAtEnd, 60); setTimeout(revealBoardCardsAtEnd, 700);
     if(m.reopenSkirmishEditor) pendingSkirmishReopen = m.reopenSkirmishEditor;
@@ -29220,6 +29271,7 @@ async function showEndSign(m){
   // throws up dust and burns away under the Victory/Defeat sign.
   ['A','B'].forEach(side=>{
     const hq = m.players[side==='A' ? 1 : 2].hq; if(!hq || hq.hp > 0) return;
+    if(m._crumbling === side) return; // 2026-10-15: still crumbling under the sign (resolveRound), it has its own fall
     const tile = hqTileEl(side); if(!tile) return;
     shakeEl(tile);
     const r = tile.getBoundingClientRect(), br = battlefield.getBoundingClientRect();
@@ -29324,6 +29376,11 @@ function delayForEvent(ev, prevKind){
   else if(ev._arrowShot) base = 760; // set by renderVfxForEvent, which runs just before this
   else if(ev.quake) base = 100; // 2026-10-12 (user: "The earthquake should hit each unit faster (0.1s separation per hit anim)")
   else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
+  // 2026-10-15 (user: "The miss animation is skipping the attack animation - it shouldnt do that."): a blind/dark miss sat in the
+  // generic 150 ms bucket, so the next event (often the round's closing re-render) landed mid-lunge and wiped it. A miss is a
+  // full swing: same beat as a melee hit, so the lunge plays out and then the miss/whoosh.
+  else if(ev.type==='blindMiss') base = 900;
+  else if(ev.type==='tipsySwing' && ev.miss) base = 700;
   else if(ev.type==='sweepWhiff') base = 620;
   else if(ev.type==='fastForward') base = 520;
   else if(ev.type==='converge') base = 900;
@@ -30780,12 +30837,13 @@ function flashShield(el){
 // of evade, flying and swift, slightly differing fade-out animations. Evade: a small rising
 // oscillation. Flying: a flying, fading shake. Swift: a dash to the left then right, static, then
 // fade."). The engine tags every 'evaded' event with `reason` (see lastMissReason in the engine).
+// 2026-10-15 (user: "If they miss, it just says Evaded! no need for miss."): a dodge reads "Evaded!".
 const MISS_STYLES = { // 2026-10-03: every dodge simply reads "Miss" — the icon + motion tell you which passive did it
-  evasive: {text:'Miss', icon:'🌀'},
-  flying:  {text:'Miss', icon:'🪽'},
-  swift:   {text:'Miss', icon:'💨'},
+  evasive: {text:'Evaded!', icon:'🌀'},
+  flying:  {text:'Evaded!', icon:'🪽'},
+  swift:   {text:'Evaded!', icon:'💨'},
   whiff:   {text:'Whiff~', icon:'🪃'}, // a boomerang coming home through empty air (2026-10-12)
-  smoke:   {text:'Miss', icon:'🌫️'}, // a Smoke Bomb's cloud (2026-10-14)
+  smoke:   {text:'Evaded!', icon:'🌫️'}, // a Smoke Bomb's cloud (2026-10-14)
 };
 function missCallout(el, reason){
   const st = MISS_STYLES[reason] || MISS_STYLES.evasive;
@@ -30818,6 +30876,8 @@ function missCallout(el, reason){
 function flashDodge(el, reason){
   if(!el) return;
   SoundKit.dodge();
+  // 2026-10-15: SkillFX.evasiveDodge (labSkillFx) already plays the sidestep and its "Evaded!" for this one
+  if(el.dataset && el.dataset.sfxDodge){ delete el.dataset.sfxDodge; return; }
   el.classList.add('dodge');
   setTimeout(()=> el.classList.remove('dodge'), 400);
   missCallout(el, reason);
@@ -30829,6 +30889,7 @@ function impactSquash(el, dmg){
   if(!el || !hasGsap() || reducedMotion()) return;
   const uid = el.getAttribute && el.getAttribute('data-uid');
   if(uid && attackingUids.has(String(uid))) return;
+  if(el.classList.contains('sfx-evhit')) return; // 2026-10-15: caught mid-dodge (SkillFX.evasiveDodgeHit) has its own knock
   const tile = el.querySelector('.card-tile'); if(!tile) return;
   const bf = document.getElementById('battlefieldEl'); const r = el.getBoundingClientRect(), b = bf ? bf.getBoundingClientRect() : null;
   const away = b ? ((r.top + r.height/2) < (b.top + b.height/2) ? -1 : 1) : 1;
@@ -31024,6 +31085,8 @@ function triggerFiredVfx(ev){
 // The Effects Lab's skill effects in real fights (2026-10-14): each layers over the existing feedback (numbers, sounds, tints)
 // on Medium effects and up, at most once per unit per round for the ones that repeat, so a busy round doesn't turn to soup.
 const skillFxSeen = new Set();
+// When a hit/evade's blow lands on screen, ms after its event starts (mirrors renderVfxForEvent's impactDelay). 2026-10-15
+function evadeImpactMs(ev){ const A = animMs(), pa = matchState && matchState.pendingArrow; if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(A.windup*0.6) + arrowFlightMs(); return A.windup + (ev.ranged ? A.projectile : A.impactPad); }
 function skillFxOnce(key){ const m = matchState, k = (m ? m.round : 0) + ':' + key; if(skillFxSeen.has(k)) return false; if(skillFxSeen.size > 400) skillFxSeen.clear(); skillFxSeen.add(k); return true; }
 function labSkillFx(ev){
   const F = window.SkillFX; if(!F || !ev || reducedMotion() || !fxAtLeast('med')) return;
@@ -31046,8 +31109,17 @@ function labSkillFx(ev){
       else if(fx.darksight && F.darksight) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.darksight(t2); }, 500);
       else if((fx.guardian || fx.taunt) && F.guardian) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.guardian(t2); }, 500);
       break; }
-    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift') && F.evasiveDodge){ const t = el(ev.targetUid); if(t) F.evasiveDodge(t); } break;
+    // 2026-10-15 (user: "it starts delayed - right now, it looks like it's dodging in advance"): the sidestep starts a beat before
+    // the blow lands (evadeImpactMs), not when the attacker begins its wind-up; the game's own "Miss" hop/float is skipped for it.
+    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift') && F.evasiveDodge){ const t = el(ev.targetUid); if(t){ t.dataset.sfxDodge = '1';
+      const a = el(ev.attUid), fromLeft = a ? a.getBoundingClientRect().left < t.getBoundingClientRect().left : Math.random() < .5;
+      setTimeout(()=>{ const t2 = el(ev.targetUid) || t; F.evasiveDodge(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 90)); } } break;
     case 'hit': { const fx = fxOf(ev.attDefId), a = el(ev.attUid), t = el(ev.targetUid); if(!a || !t || ev.source) break;
+      // 2026-10-15 (user: "If it hits, the animation still plays, but they get hit out of the animation, then go back into position."):
+      // a blow that could have been evaded (an Evasive target, a single-target strike that isn't Fencing/Ambush) but landed.
+      if(F.evasiveDodgeHit && !ev.sweep && !ev.swipe && !ev.fork && !ev.quake && !ev.ambush && !ev.boomerang){ const tf = fxOf(ev.targetDefId);
+        if(tf.evasive && !fx.fencing){ const fromLeft = a.getBoundingClientRect().left < t.getBoundingClientRect().left;
+          setTimeout(()=>{ const t2 = el(ev.targetUid); if(t2) F.evasiveDodgeHit(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 100)); } }
       if(fx.swarm && F.swarm && liveSwarmBonus({uid: ev.attUid}) > 0 && skillFxOnce('swarm' + ev.attUid)) F.swarm(a, t);
       else if(ev.sweep && F.cleave && skillFxOnce('cleave' + ev.attUid)) F.cleave(a, [t]);
       else if(fx.quick && F.quickStrike && skillFxOnce('quick' + ev.attUid)) F.quickStrike(a, t);

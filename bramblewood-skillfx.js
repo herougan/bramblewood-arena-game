@@ -568,20 +568,42 @@ function quickStrike(attacker, target, o){
     .to(t, {x:0, y:0, skewX:0, duration:.26, ease:'power2.out', clearProps:'transform'}, '+=0.04');
 }
 // Evasive: the card sidesteps in a blink, leaving an afterimage; leaves flutter and a "Miss" pops up.
+// 2026-10-15 (user: "The evade animation is nice. Focus on the dodge part of the animation, then it ends earlier. 2ndly, it starts
+// delayed - right now, it looks like it's dodging in advance. ... If they miss, it just says Evaded! no need for miss."): the game
+// now starts this just before the blow lands (renderVfxForEvent's impact time), the sidestep is the whole beat (no long hold), and
+// the card is back in ~0.45 s. The label is "Evaded!".
 function evasiveDodge(target, o){
   o = o || {}; if(!ready() || !target){ call(o.onDone); return; }
   const g = G(), c = centre(target), t = tileOf(target), s = o.fromLeft ? 1 : -1;
   const gh = ghostOf(target, 'sfx-ghost is-blue');
-  g.timeline({onComplete:()=> gh.remove()}).to(gh, {opacity:.5, duration:.05}).to(gh, {opacity:0, x:`-=${s*8}`, duration:.45, ease:'power1.in'});
+  g.timeline({onComplete:()=> gh.remove()}).to(gh, {opacity:.5, duration:.04}).to(gh, {opacity:0, x:`-=${s*8}`, duration:.3, ease:'power1.in'});
   g.timeline({onComplete:()=> call(o.onDone)})
-    .to(t, {x:s*c.w*0.55, rotation:s*8, skewX:-s*10, duration:.1, ease:'power3.out'})
-    .to(t, {skewX:0, duration:.12})
-    .to(t, {x:0, rotation:0, duration:.35, ease:'back.out(1.6)', clearProps:'transform'}, '+=0.18');
+    .to(t, {x:s*c.w*0.55, rotation:s*8, skewX:-s*10, duration:.09, ease:'power3.out'})
+    .to(t, {skewX:0, duration:.08})
+    .to(t, {x:0, rotation:0, duration:.26, ease:'back.out(1.4)', clearProps:'transform'}, '+=0.04');
   for(let i = 0; i < 4; i++){ const l = layer('sfx-leaf', '🍃'); g.set(l, {x:c.x - 8 + rnd(-10, 10), y:c.y + rnd(-c.h*.3, c.h*.3), rotation:rnd(0, 360), opacity:0});
-    g.timeline({delay:.04 + i*0.04, onComplete:()=> l.remove()}).to(l, {opacity:1, duration:.06})
-      .to(l, {x:`-=${s*rnd(30, 60)}`, y:`+=${rnd(10, 40)}`, rotation:`+=${rnd(-260, 260)}`, duration:.8, ease:'sine.out'}, 0).to(l, {opacity:0, duration:.3}, .55); }
-  const m = layer('sfx-miss', o.label || 'Miss!'); g.set(m, {x:c.x, y:c.r.top + c.h*.2, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
-  g.timeline({onComplete:()=> m.remove()}).to(m, {scale:1.1, opacity:1, y:'-=14', duration:.18, ease:'back.out(3)'}).to(m, {scale:1, duration:.1}).to(m, {opacity:0, y:'-=16', duration:.35, delay:.35});
+    g.timeline({delay:.02 + i*0.03, onComplete:()=> l.remove()}).to(l, {opacity:1, duration:.05})
+      .to(l, {x:`-=${s*rnd(30, 60)}`, y:`+=${rnd(10, 40)}`, rotation:`+=${rnd(-260, 260)}`, duration:.55, ease:'sine.out'}, 0).to(l, {opacity:0, duration:.22}, .35); }
+  if(o.label === false) return;
+  const m = layer('sfx-miss', o.label || 'Evaded!'); g.set(m, {x:c.x, y:c.r.top + c.h*.2, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
+  g.timeline({onComplete:()=> m.remove()}).to(m, {scale:1.1, opacity:1, y:'-=14', duration:.16, ease:'back.out(3)'}).to(m, {scale:1, duration:.08}).to(m, {opacity:0, y:'-=16', duration:.3, delay:.3});
+}
+// 2026-10-15 (user: "If it hits, the animation still plays, but they get hit out of the animation, then go back into position."):
+// an Evasive unit whose dodge roll failed starts the same sidestep, the blow catches it part-way (o.impactMs after the call: a jolt
+// back against the dodge, a squash and a white flash) and it slides home. The game skips its own impact squash on this card.
+function evasiveDodgeHit(target, o){
+  o = o || {}; if(!ready() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), t = tileOf(target), s = o.fromLeft ? 1 : -1, lead = .1;
+  target.classList.add('sfx-evhit');
+  const gh = ghostOf(target, 'sfx-ghost is-blue');
+  g.timeline({onComplete:()=> gh.remove()}).to(gh, {opacity:.4, duration:.04}).to(gh, {opacity:0, duration:.22, ease:'power1.in'});
+  g.timeline({onComplete:()=>{ target.classList.remove('sfx-evhit'); call(o.onDone); }})
+    .to(t, {x:s*c.w*0.32, rotation:s*6, skewX:-s*8, duration:lead, ease:'power3.out'})
+    // caught: thrown back the other way, squashed
+    .to(t, {x:-s*c.w*0.08, y:c.h*0.05*(o.away || 1), rotation:-s*9, skewX:s*4, scaleX:1.06, scaleY:.9, duration:.07, ease:'power3.out'})
+    .add(()=>{ g.fromTo(t, {filter:'brightness(1.9) saturate(.6)'}, {filter:'brightness(1) saturate(1)', duration:.25, clearProps:'filter'});
+      burst(c.x - s*c.w*0.1, c.y, s > 0 ? 180 : 0, 'wood', 5); }, '<')
+    .to(t, {x:0, y:0, rotation:0, skewX:0, scaleX:1, scaleY:1, duration:.38, ease:'elastic.out(1, .55)', clearProps:'transform'});
 }
 // Cleave (Sweep): one wide glowing arc swept across the target row; each card is hit as the blade passes.
 function cleave(attacker, targets, o){
@@ -843,7 +865,7 @@ function skyDrop(cards, o){
 }
 function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || ''; }
 root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, boomerangThrow, boomerangCastle, boomerangReturn, shieldDrop, backstab, elementDeath, feathers};
-Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, cleave, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, lanternGlow,
+Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, evasiveDodgeHit, cleave, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, lanternGlow,
   shockwave, castleCrumble, levelUp, unlockSparkle, skyDrop});
 // ---- 2026-10-14 (sixth pass): Fireball, Meteor, Banana.
 //   SkillFX.fireball(caster, target, opts{sides, onImpact, light})   SkillFX.meteor(target, opts{sides, host, onImpact, light})
