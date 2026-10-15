@@ -12604,10 +12604,14 @@ function mapSpotsHTML(map, positions, progress){
   // 2026-10-12 (user: "Secondary points like Armoury point on conquest maps should be darked out with ? tooltip until their
   // links are established"): a spot on an open map whose fight isn't cleared yet shows as a dark "?" with no line.
   const mapOpen = isMapUnlocked(map, progress);
+  // 2026-10-15: spots that share a skirmish and have no place of their own fan out side by side (Map 13's Raid Banner, Gilded
+  // Caravan and Wanderer's Camp all sat on one point, names over each other), each ~11% further from the map's edge.
+  const fanN = {}, fanned = (sp, idx, base, def)=>{ if(sp.pos) return def; const k = (fanN[idx] = (fanN[idx] || 0) + 1) - 1; if(!k) return def;
+    const dir = base.x > 50 ? -1 : 1; return {x: Math.max(4, Math.min(96, def.x + dir*11*k)), y: def.y}; };
   const unknown = mapOpen ? FEATURE_SPOTS.filter(sp=> sp.map===map.id && !spotAvailable(sp, progress)).map(sp=>{
     const after = spotAfter(sp), idx = after ? map.nodes.findIndex(n=> n.key===after) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
-    const def = sp.pos || {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))}; // sp.pos: a spot's own default spot (2026-10-15)
+    const def = fanned(sp, idx + ':' + !!after, base, sp.pos || {x: Math.max(4, Math.min(96, base.x + (after ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (after ? -27 : 14)))}); // sp.pos: a spot's own default spot (2026-10-15)
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     const tip = decorEditing() ? sp.name + decorGateNote(map, '~spot:'+sp.key, sp.after) : '?';
     return `<button type="button" class="map-spot is-unknown" data-lkey="~spot:${sp.key}" style="left:${x}%; top:${y}%;" title="${escapeAttr(tip)}" aria-label="Something not found yet" aria-disabled="true"><span class="map-spot-ico" aria-hidden="true">?</span></button>`;
@@ -12616,7 +12620,7 @@ function mapSpotsHTML(map, positions, progress){
     const spAfter = spotAfter(sp);
     const idx = spAfter ? map.nodes.findIndex(n=> n.key===spAfter) : map.nodes.findIndex(n=> n.kind!=='tutorial');
     const base = positions[Math.max(0, idx)] || {x:50, y:50};
-    const def = sp.pos || {x: Math.max(4, Math.min(96, base.x + (spAfter ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (spAfter ? -27 : 14)))};
+    const def = fanned(sp, idx + ':' + !!spAfter, base, sp.pos || {x: Math.max(4, Math.min(96, base.x + (spAfter ? 5 : -6))), y: Math.max(8, Math.min(92, base.y + (spAfter ? -27 : 14)))});
     const {x, y} = decorPos(map.id, '~spot:'+sp.key, def);
     if(spAfter) links.push(`<line data-a="${escapeAttr(spAfter)}" data-b="~spot:${sp.key}" x1="${base.x}" y1="${base.y}" x2="${x}" y2="${y}"/>`);
     const open = featureUnlocked(sp.key);
@@ -16325,6 +16329,11 @@ function wireMapLayoutEditor(map, body){
     el.style.left = x+'%'; el.style.top = y+'%';
     canvas.querySelectorAll(`line[data-a="${key}"]`).forEach(l=>{ l.setAttribute('x1', x); l.setAttribute('y1', y); });
     canvas.querySelectorAll(`line[data-b="${key}"]`).forEach(l=>{ l.setAttribute('x2', x); l.setAttribute('y2', y); });
+    // 2026-10-15 ("The lines linking items on the conquest map are offset"): a link bowed into a curve follows the drag too (it
+    // stayed at the old spot until the map was drawn again).
+    canvas.querySelectorAll(`path[data-a="${key}"], path[data-b="${key}"]`).forEach(pa=>{ const m = (pa.getAttribute('d') || '').match(/M\s*([-\d.]+)\s+([-\d.]+)\s*Q\s*([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)\s+([-\d.]+)/); if(!m) return;
+      const a = pa.dataset.a === key ? [x, y] : [m[1], m[2]], b = pa.dataset.b === key ? [x, y] : [m[5], m[6]];
+      pa.setAttribute('d', `M ${a[0]} ${a[1]} Q ${m[3]} ${m[4]} ${b[0]} ${b[1]}`); });
   };
   canvas.querySelectorAll('[data-lkey]').forEach(el=>{
     const key = el.getAttribute('data-lkey');

@@ -8842,6 +8842,14 @@ body.cq-opening .map-trail-svg{display:none !important;}
 @media (max-width:620px){ .shop-counter{grid-template-columns:auto 1fr;} .shop-counter .counter-act{grid-column:1 / -1;} .shop-counter .counter-act .btn{width:100%;} .shelf-row.is-stepped{grid-template-columns:1fr;} .shelf-step.is-high{transform:none;} }
 @media (prefers-reduced-motion: reduce){ .shelf-item, .booster::before{transition:none;} .shop-counter.is-new .counter-goods{animation:none;} }
 #conquestCanvas .map-node, #conquestCanvas .map-spot{scale:var(--icon-scale, 1);}
+/* 2026-10-15 (user: "The lines linking items on the conquest map are offset."): the `scale` property is applied around the box's centre
+   *after* the translate(-50%,-50%) that puts that centre on the map point, so every shrunk marker drifted (1 - scale) × half its size
+   down and right of its point: 6 px on Map 13 (scale .77), more on busier maps, and the trail dashes missed the skirmishes. The
+   `translate` property (applied before `scale`) cancels that drift, so a marker's centre sits exactly on its point at any scale. */
+#conquestCanvas .map-node, #conquestCanvas .map-spot{translate:calc((var(--icon-scale, 1) - 1) * 50%) calc((var(--icon-scale, 1) - 1) * 50%);}
+/* ... and a feature spot's name hangs below its icon instead of sharing its box, so the spot's point (where its dotted line ends) is
+   the icon's centre, not a point between the icon and its name (2026-10-15). */
+#conquestCanvas .map-spot .map-spot-name{position:absolute; top:100%; left:50%; transform:translateX(-50%); margin-top:2px; pointer-events:none;}
 /* Skirmish panel v3 (2026-10-12, user: "The Skirmish detail UI is skuffed. Make the left and right elements on the same row ... The
    Cleared can be reduced to a tick on the top right corner ... Put the Battle Rating UI under the [name] UI cell"): one row,
    showcase | name, castle line and rating | first-clear rewards; Cleared is a tick in the corner. */
