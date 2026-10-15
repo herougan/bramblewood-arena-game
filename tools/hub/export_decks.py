@@ -26,6 +26,25 @@ JS = r"""(()=>{
   out.order.dialogues = ['tutorialLeaderJoin (part 2 start)','tut_traveller_cheer (part 1, enemy castle under 40%)','tut_fly / tut_boomerang (part 2, first flyer or boomerang of yours)','training_wheels_off (part 2 won)','both_peace (part 2 won, picked both)'];
   out.order.after = ['go-tutorial2: a pointer on the map at Tutorial II after part 1', 'leader-slot: the leader slot explained when it fades in (part 2)', 'g-peek: the first time an Uncommon (or rarer) enemy unit appears, rest on it to read it', 'rank lessons F, E, A, S, SS, SSS: first time each rank is earned', 'unlock_phyla: in the Codex once Map 12 is reached'];
   out.order.passive = (()=>{ const m0 = matchState; try{ matchState = {players:{1:{hand:[], row:{left:[],center:[],right:[]}}, 2:{row:{left:[],center:[],right:[]}}}, mode:'tutorial'}; return passiveTipCandidates().map(t=> ({id:t.id, text:(t.text||'').slice(0, 160)})); }catch(e){ return [{id:'error', text:String(e)}]; } finally{ matchState = m0; } })();
+  // 2026-10-15 (user: "improve the master hub"): the hub's 🎴 Cards tab, global search and Master stats read this
+  // (written to docs/balance/hub-cards.json, not decks.json). Labels and "where to get it" come from the game itself.
+  out.hub = (()=>{
+    const SK = (typeof Registry!=='undefined' && Registry.skills) ? Registry.skills() : SKILL_DEFS;
+    const skills = SK.filter(s=> !s.hidden).map(s=> ({key:s.key, label:s.label || s.key, icon: (SKILL_ICON||{})[s.key] || '', cat: s.category || ''}));
+    const lab = {}; skills.forEach(s=> lab[s.key] = s);
+    const maps = CONQUEST_MAPS.filter(m=> !m.reserved).map(m=> ({id:m.id, num: (()=>{ try{ return mapNumberOf(m.id); }catch(e){ return null; } })(), name:m.name, sub: !!m.sub, fights: (m.nodes||[]).filter(n=> n.kind!=='tutorial').length}));
+    const cards = Object.values(defs).filter(d=> d && d.id && !d.hidden).map(d=>{
+      let rows = []; try{ rows = deriveSkillRows(d); }catch(e){}
+      const sk = rows.filter(r=> lab[r.key]).map(r=> ({k:r.key, v: (typeof r.value==='number' ? r.value : (typeof r.n==='number' && r.n>1 ? r.n : null)), lv: r.lv || null}));
+      let src = {}; try{ src = cardSourceOf(d) || {}; }catch(e){}
+      let where = ''; try{ where = cardWhereToGetText(d); }catch(e){}
+      let un = false; try{ un = isUnattainable(d); }catch(e){}
+      return {id:d.id, name:d.name, icon:d.icon||'', r:d.rarity||'', c:d.cost||0, w:d.wait||0, a:d.attack, h:d.health, sk,
+        sp:(d.species||[]).join(', '), ar:(d.archetypes||[]), f:d.faction||'', src:src.kind||'', map: src.kind==='map' ? (src.id||'') : '', node: src.node||'',
+        where, un, tok: !!d.token, test: !!d.test, fl: d.flavor||''};
+    });
+    return {skills, maps, cards};
+  })();
   return out; })()"""
 async def run():
     async with async_playwright() as p:
@@ -35,7 +54,12 @@ async def run():
         await pg.goto('file://' + os.path.join(ROOT, 'index.html')); await pg.wait_for_timeout(2000)
         data = await pg.evaluate(JS)
         await b.close()
+    hub = data.pop('hub', None)
     path = os.path.join(ROOT, 'docs', 'balance', 'decks.json')
     with open(path, 'w', encoding='utf-8') as f: json.dump(data, f, ensure_ascii=False, separators=(',', ':'))
+    if hub:  # 2026-10-15: card index for the hub (Cards tab, search, stats)
+        hp = os.path.join(ROOT, 'docs', 'balance', 'hub-cards.json')
+        with open(hp, 'w', encoding='utf-8') as f: json.dump(hub, f, ensure_ascii=False, separators=(',', ':'))
+        print('hub cards:', len(hub['cards']), 'cards,', len(hub['skills']), 'skills,', len(hub['maps']), 'maps ->', hp)
     print('decks:', len(data['maps']), 'maps,', sum(len(m['nodes']) for m in data['maps']), 'fights,', len(data['raids']), 'raids ->', path)
 asyncio.run(run())

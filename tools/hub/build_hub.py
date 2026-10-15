@@ -38,7 +38,7 @@ raw = json.loads(re.search(r'const RAW = (\[.*?\]);\n', page, re.S).group(1))
 def dhash(p):
     im = Image.open(p).convert('L').resize((17, 16)); px = im.load()
     return sum(1 << (y*16+x) for y in range(16) for x in range(16) if px[x, y] > px[x+1, y])
-budget = MAX_FILES - len(lab_files) - 3
+budget = MAX_FILES - len(lab_files) - 3 - 1  # 2026-10-15: -1 for the card thumbnail sheet (cards-thumbs.webp)
 keepers = {'detail_before_desk', 'detail_after_desk'}
 for r in raw: r.append(dhash(os.path.join(VL, 'img', r[0] + '.webp')))
 order = sorted(raw, key=lambda r: (r[3], r[4]), reverse=True)
@@ -79,12 +79,43 @@ def md_html(md):
     body = body.replace('href="decisions.md"', 'href="#decisions" data-tab="decisions"')
     return re.sub(r'<a href="(https?://[^"]+)"', r'<a href="\1" target="_blank" rel="noopener"', body)
 rd = lambda *p: open(os.path.join(ROOT, *p), encoding='utf-8').read()
+# 2026-10-15 (user: "improve the master hub"): helpers for the dashboard, lazy panels and the global search.
+# _txt strips tags; anchor() gives every h1-h3 an id (prefix-hN) and returns (id, heading, text) sections that the
+# search index points at; split_h2() cuts a markdown file at its "## " headings.
+SEARCH = []  # [type, label, sub, haystack, jump]; jump = {tab, sub?, el?, dec?}
+def _txt(h): return re.sub(r'\s+', ' ', H.unescape(re.sub(r'<[^>]+>', ' ', h))).strip()
+def anchor(html, prefix):
+    k = [0]
+    def rep(m):
+        k[0] += 1; return f'<{m.group(1)} id="{prefix}-h{k[0]}"{m.group(2)}>'
+    html = re.sub(r'<(h[1-3])((?:\s[^>]*)?)>', rep, html)
+    secs = []
+    for p in re.split(r'(?=<h[1-3] id=")', html):
+        m = re.match(r'<h[1-3] id="([^"]+)"[^>]*>(.*?)</h[1-3]>', p, re.S)
+        if m: secs.append((m.group(1), _txt(m.group(2)), _txt(p[m.end():])))
+    return html, secs
+def split_h2(md):
+    parts = re.split(r'(?m)^## ', md)
+    return parts[0], [(p.partition('\n')[0].strip(), p.partition('\n')[2]) for p in parts[1:]]
+def lazy(html):  # 2026-10-15: heavy panels ship inside <template> and are stamped out the first time the tab opens
+    return '<template class="lazy">' + html + '</template>'
 # 2026-10-09 (user: "Summarise all the most important action items in the master artefact. Remove the
 # master md, don't use it"): the landing tab is the short Action items list; MASTER.md is retired from the hub.
-body = md_html(rd('docs', 'action-items.md')).replace('<span class="doc-ref" title="Project doc: claude/card-balance-2026-10-09.md">report</span>', '<a href="#balance" data-tab="balance">report</a>')
+# 2026-10-15: the landing tab is now the 🏠 Home dashboard; the full Action items doc has its own tab, cut into
+# one section per "## " heading (ids ai-N) so the dashboard and the search can point into it.
+_ai_fix = lambda h: h.replace('<span class="doc-ref" title="Project doc: claude/card-balance-2026-10-09.md">report</span>', '<a href="#balance" data-tab="balance">report</a>')
+_ai_intro, _ai_secs = split_h2(rd('docs', 'action-items.md'))
+AI = [(t, _ai_fix(md_html(b))) for t, b in _ai_secs]
+body = _ai_fix(md_html(_ai_intro)) + ''.join(f'<section class="ai-sec" id="ai-{k}"><h2>{H.escape(t)}</h2>{b}</section>' for k, (t, b) in enumerate(AI))
+for k, (t, b) in enumerate(AI): SEARCH.append(['Action items', t, '', _txt(b)[:6000], {'tab': 'actions', 'el': f'ai-{k}'}])
+_ai_updated = (re.search(r'_Updated ([^._]+)', _ai_intro) or [None, ''])[1]
 BAL = json.load(open(os.path.join(ROOT, 'docs', 'balance', 'card-balance.json'), encoding='utf-8'))
 bal_json = json.dumps({'games': BAL['games'], 'generated': BAL['generated'], 'rows': [{k: r.get(k) for k in ('id','name','rarity','cost','wait','attack','health','skills','winRate','band','verdict','source','suggest','suggestRarity')} for r in BAL['rows']]}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
-changelog = md_html(rd('docs', 'CHANGELOG.md'))
+# 2026-10-15: one collapsible block per changelog entry (newest three open) instead of one 80,000px page.
+_cl_intro, _cl_secs = split_h2(rd('docs', 'CHANGELOG.md'))
+CL = [(t, md_html(b)) for t, b in _cl_secs]
+changelog = md_html(_cl_intro) + '<p class="cl-tools"><button type="button" data-cl="open">Open all</button> <button type="button" data-cl="close">Close all</button></p>' + ''.join(f'<details class="cl" id="cl-{k}"{" open" if k < 3 else ""}><summary>{H.escape(t)}</summary><div class="cl-b">{b}</div></details>' for k, (t, b) in enumerate(CL))
+for k, (t, b) in enumerate(CL): SEARCH.append(['Changelog', t, '', _txt(b)[:8000], {'tab': 'changelog', 'el': f'cl-{k}'}])
 # 2026-10-11 (user: "fight against EVERY single Skirmish ... and publish the win rate in our artefact"): the 📈 Difficulty
 # tab is its own plain file (no f-string braces), filled with docs/balance/difficulty-curve.json.
 _curve_path = os.path.join(ROOT, 'docs', 'balance', 'difficulty-curve.json')
@@ -132,7 +163,9 @@ docs_html = ''
 for t, f, src in GUIDE:
     txt = doc_src(f, src)
     if txt is None: continue
-    docs_html += f'<div class="subpane" data-group="guide" id="doc-{f[:-3]}" hidden><h3>claude/{f} <small class="note">read before: {H.escape(t[0].lower() + t[1:])}</small></h3><div class="doc">{md_html(txt)}</div></div>'
+    _h, _secs = anchor(md_html(txt), f'doc-{f[:-3]}')  # 2026-10-15: searchable sections
+    for sid, st, sx in _secs: SEARCH.append(['Guide', st, f'claude/{f}', sx[:4000], {'tab': 'guide', 'sub': f'doc-{f[:-3]}', 'el': sid}])
+    docs_html += f'<div class="subpane" data-group="guide" id="doc-{f[:-3]}" hidden><h3>claude/{f} <small class="note">read before: {H.escape(t[0].lower() + t[1:])}</small></h3><div class="doc">{_h}</div></div>'
 skills_html = ''.join(skill_card(f) for f in SKILLS)
 # Design tab (2026-10-09, user: "In our master artefact, come up with skills and effects + audit what we
 # have"; "write down your ideas or my ideas in the master sheet in the design section"): the design
@@ -165,7 +198,9 @@ design_html = ('<div class="doc guide"><h1>Design</h1><p class="lede">Design she
   '<nav class="subtabs" data-group="design" aria-label="Design sheets">' + ''.join('<button type="button" data-show="design-' + f[:-3] + '" aria-pressed="' + ('true' if k == 0 else 'false') + '">' + H.escape(t) + '</button>' for k, (t, f) in enumerate(_dz)) + '</nav>')
 for k, (t, f) in enumerate(_dz):
     pth = os.path.join(ROOT, 'docs', f)
-    design_html += f'<div class="subpane" data-group="design" id="design-{f[:-3]}"{"" if k == 0 else " hidden"}><p class="note">claude/{f}</p><div class="doc">{md_html(open(pth, encoding="utf-8").read())}</div></div>'
+    _h, _secs = anchor(md_html(open(pth, encoding="utf-8").read()), f'design-{f[:-3]}')  # 2026-10-15: searchable sections
+    for sid, st, sx in _secs: SEARCH.append(['Design', st, t, sx[:4000], {'tab': 'design', 'sub': f'design-{f[:-3]}', 'el': sid}])
+    design_html += f'<div class="subpane" data-group="design" id="design-{f[:-3]}"{"" if k == 0 else " hidden"}><p class="note">claude/{f}</p><div class="doc">{_h}</div></div>'
 design_html += '</div>'
 rules_html = ''.join(f'<li>{r}</li>' for r in RULES)
 guide = ('<div class="doc guide"><h1>Claude\'s guide</h1>'
@@ -196,6 +231,9 @@ def _dec_md(d):
     return '\n'.join(out)
 open(os.path.join(ROOT, 'docs', 'decisions.md'), 'w', encoding='utf-8').write(_dec_md(DECISIONS))
 decisions_json = _json.dumps(DECISIONS, ensure_ascii=False).replace('</', '<\\/')
+for it in DECISIONS['items']:  # 2026-10-15: decisions in the global search
+    SEARCH.append(['Decision', f"{it['id']} · {it['title']}", ('⏳ yet' if it['status'] == 'YET' else '✅ done') + ' · ' + it.get('area', ''),
+                   ' '.join(str(it.get(k) or '') for k in ('body', 'default', 'outcome')) + ' ' + ' '.join(it.get('options') or []), {'tab': 'decisions', 'dec': it['id']}])
 
 # Decks tab (2026-10-12, user: "In our artefact list the ALL tuts and skirmish decks / raid decks. Then also list all tutorials
 # we have and in what order"): built from docs/balance/decks.json (tools/hub/export_decks.py).
@@ -224,15 +262,24 @@ def _decks_panel():
         for t in ps:
             parts.append(f"<details {'open' if pick=='otters' else ''}><summary>Part {t['part']} · picked {e(pick)} · highlight: {e(t.get('highlight') or 'none')}</summary><div class='dk-two'><div><h5>Your deck</h5>{deck(t['mine'], t['keep'])}</div><div><h5>Rival</h5>{deck(t['rival'], t['keep'])}</div></div></details>")
     parts.append('<h3>Skirmish decks</h3>')
+    # 2026-10-15: every fight gets an id (fight-<map>-<key>) so the search and the Cards tab's "used in" list can open it.
     for m in D['maps']:
-        inner = ''.join(f"<details><summary>{e(n['name'])} <small>{e(n['key'])} · {e(n['kind'])} · 🏰 {n.get('hq')} · ⚔ {n.get('rating')}</small></summary>{deck(n['deck'])}</details>" for n in m['nodes'])
+        inner = ''
+        for n in m['nodes']:
+            fid = re.sub(r'[^\w-]', '_', f"fight-{m['id']}-{n['key']}")
+            SEARCH.append(['Fight', f"{n['key']} {n['name']}", f"{m['name']} · {n['kind']}", ' '.join(c['name'] for c in n['deck']), {'tab': 'decks', 'el': fid}])
+            for c in n['deck']: USES.setdefault(c['id'], []).append([fid, f"{n['key']} {n['name']}"])
+            inner += f"<details id=\"{fid}\"><summary>{e(n['name'])} <small>{e(n['key'])} · {e(n['kind'])} · 🏰 {n.get('hq')} · ⚔ {n.get('rating')}</small></summary>{deck(n['deck'])}</details>"
         parts.append(f"<details class='dk-map'><summary><b>Map {m.get('num') if m.get('num') is not None else '·'}: {e(m['name'])}</b> <small>{len(m['nodes'])} fights</small></summary>{inner}</details>")
     parts.append('<h3>Raid decks</h3>')
     for r in D['raids']:
-        inner = ''.join(f"<details><summary>{e(p['name'])} <small>🏰 {p.get('castle')} · {p.get('rounds')} rounds</small></summary>{deck(p['deck'])}</details>" for p in r['parts'])
+        for k, p in enumerate(r['parts']):
+            for c in p['deck']: USES.setdefault(c['id'], []).append([f"raid-{r['id']}-{k}", f"Raid: {p['name']}"])
+        inner = ''.join(f"<details id=\"raid-{e(r['id'])}-{k}\"><summary>{e(p['name'])} <small>🏰 {p.get('castle')} · {p.get('rounds')} rounds</small></summary>{deck(p['deck'])}</details>" for k, p in enumerate(r['parts']))
         inner += ''.join(f"<details><summary>Allies: {e(a['name'])}</summary>{deck(a['deck'])}</details>" for a in r['allies'])
         parts.append(f"<details class='dk-map' open><summary><b>{e(r['name'])}</b></summary>{inner}</details>")
-    return '<section class="panel" id="p-decks" role="tabpanel" aria-labelledby="t-decks" hidden><div class="bal"><div class="dec-head"><h2>Decks &amp; tutorials</h2><p>Every deck in the game, exported from the build. Tap a row to open it.</p></div>' + ''.join(parts) + '</div></section>'
+    return '<section class="panel" id="p-decks" role="tabpanel" aria-labelledby="t-decks" hidden>' + lazy('<div class="bal"><div class="dec-head"><h2>Decks &amp; tutorials</h2><p>Every deck in the game, exported from the build. Tap a row to open it.</p></div>' + ''.join(parts) + '</div>') + '</section>'
+USES = {}  # 2026-10-15: card id -> [[element id, fight label]], filled while building the Decks tab
 decks_panel = _decks_panel()
 
 def _dialogues_panel():
@@ -241,17 +288,110 @@ def _dialogues_panel():
     if not os.path.exists(path): return '<section class="panel" id="p-dialogues" role="tabpanel" aria-labelledby="t-dialogues" hidden><p class="dec-empty">Run tools/dialogues/export_dialogues.py.</p></section>'
     d = json.load(open(path, encoding='utf-8')); e = lambda s: _h.escape(str(s or ''))
     parts = []
-    for s in d['scripts']:
+    for k, s in enumerate(d['scripts']):
         rows = ''.join(f"<tr><td>{e(l['name'])}<br><small>{e(l['who'])}</small></td><td>{e(l['text'])}{'<br><small>↳ ' + e(l['replies']) + '</small>' if l['replies'] else ''}</td></tr>" for l in s['lines'])
-        parts.append(f"<details><summary><b>{e(s['id'])}</b> · {len(s['lines'])} line{'s' if len(s['lines']) != 1 else ''} · <small>{e(' ; '.join(w.split('  · ')[0] for w in s['where']))}</small></summary><table class=\"dk-t\"><thead><tr><th>Speaker</th><th>Line</th></tr></thead><tbody>{rows}</tbody></table></details>")
-    return ('<section class="panel" id="p-dialogues" role="tabpanel" aria-labelledby="t-dialogues" hidden><div class="bal"><div class="dec-head"><h2>Dialogues</h2>'
+        # 2026-10-15: ids (dlg-N) and search entries
+        SEARCH.append(['Dialogue', s['id'], ' ; '.join(w.split('  · ')[0] for w in s['where'])[:120], ' '.join(f"{l['name']}: {l['text']}" for l in s['lines'])[:4000], {'tab': 'dialogues', 'el': f'dlg-{k}'}])
+        parts.append(f"<details id=\"dlg-{k}\"><summary><b>{e(s['id'])}</b> · {len(s['lines'])} line{'s' if len(s['lines']) != 1 else ''} · <small>{e(' ; '.join(w.split('  · ')[0] for w in s['where']))}</small></summary><table class=\"dk-t\"><thead><tr><th>Speaker</th><th>Line</th></tr></thead><tbody>{rows}</tbody></table></details>")
+    DLG_N[0] = len(d['scripts'])
+    return ('<section class="panel" id="p-dialogues" role="tabpanel" aria-labelledby="t-dialogues" hidden>' + lazy('<div class="bal"><div class="dec-head"><h2>Dialogues</h2>'
             f"<p>Every conversation in the game ({len(d['scripts'])}), who says each line and where it plays. Exported {e(d['generated'])}. "
             'The spreadsheet (docs/dialogues-*.xlsx) has an “Add your own” sheet: any card’s name works as a speaker, and that card speaks with its main card art.</p></div>'
-            + ''.join(parts) + '</div></section>')
+            + ''.join(parts) + '</div>') + '</section>')
+DLG_N = [0]
 dialogues_panel = _dialogues_panel()
+
+# 2026-10-15 (user: "improve the master hub"): 🎴 Cards tab, Home stats. docs/balance/hub-cards.json comes from
+# tools/hub/export_decks.py (the game's own labels and "where to get it"); art coverage reads canonical/cards.json.
+# Thumbnails: one 96px sprite sheet (cards-thumbs.webp, one file, so the hub stays under the artifact's file limit).
+import math, datetime
+_hc_path = os.path.join(ROOT, 'docs', 'balance', 'hub-cards.json')
+HC = json.load(open(_hc_path, encoding='utf-8')) if os.path.exists(_hc_path) else {'skills': [], 'maps': [], 'cards': []}
+CANON = json.load(open(os.path.join(ROOT, 'canonical', 'cards.json'), encoding='utf-8'))
+_canon_art = {c['id']: c.get('art') for c in CANON}
+_assets = {os.path.splitext(f)[0]: f for f in os.listdir(os.path.join(ROOT, 'assets', 'cards'))}
+THUMB = 96
+_thumb_ids = [c['id'] for c in HC['cards'] if c['id'] in _assets or (_canon_art.get(c['id']) or '').startswith('data:image')]
+if _thumb_ids:
+    import base64, io
+    cols = math.ceil(math.sqrt(len(_thumb_ids)))
+    sheet = Image.new('RGB', (cols * THUMB, math.ceil(len(_thumb_ids) / cols) * THUMB), (40, 34, 26))
+    for i, cid in enumerate(_thumb_ids):
+        src = os.path.join(ROOT, 'assets', 'cards', _assets[cid]) if cid in _assets else io.BytesIO(base64.b64decode(_canon_art[cid].split(',', 1)[1]))
+        im = Image.open(src).convert('RGBA').resize((THUMB, THUMB), Image.LANCZOS)
+        bg = Image.new('RGBA', im.size, (40, 34, 26, 255)); bg.alpha_composite(im)
+        sheet.paste(bg.convert('RGB'), ((i % cols) * THUMB, (i // cols) * THUMB))
+    sheet.save(os.path.join(OUT, 'cards-thumbs.webp'), 'WEBP', quality=72, method=4)
+else: cols = 1
+_tix = {cid: i for i, cid in enumerate(_thumb_ids)}
+_bal = {r['id']: r for r in BAL['rows']}
+for c in HC['cards']:
+    c['t'] = _tix.get(c['id'], -1)
+    b = _bal.get(c['id'])
+    if b: c['wr'] = [b['winRate'], round(b['band'][0]), round(b['band'][1]), b['verdict']]
+    if c['id'] in USES: c['use'] = USES[c['id']][:40]; c['nuse'] = len(USES[c['id']])
+CARDS_JSON = json.dumps({'cols': cols, 'skills': HC['skills'], 'maps': HC['maps'], 'cards': HC['cards']}, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+SEARCH_JSON = json.dumps(SEARCH, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+# Stats for the Home tab.
+_play = [c for c in HC['cards'] if not c['tok'] and not c['test']]
+_canon_play = [c for c in CANON if not c.get('token') and not c.get('test') and not c.get('hidden')]
+_art_n = sum(1 for c in _canon_play if c.get('art'))
+_main_maps = [m for m in HC['maps'] if not m['sub']]; _side_maps = [m for m in HC['maps'] if m['sub']]
+_sk_used = {s['k'] for c in _play for s in c['sk']}
+_open_dec = sorted([i for i in DECISIONS['items'] if i['status'] == 'YET'], key=lambda i: i.get('asked', ''), reverse=True)
+_bal_strong = sum(1 for r in BAL['rows'] if r.get('verdict') == 'strong'); _bal_weak = sum(1 for r in BAL['rows'] if r.get('verdict') == 'weak')
+def _tile(n, label, sub, tab):
+    return f'<a class="st" href="#{tab}" data-tab="{tab}"><b>{n}</b><span>{label}</span><small>{sub}</small></a>'
+STATS = ''.join([
+    _tile(len(_play), 'cards', f'{len(_play) - sum(1 for c in _play if c["un"])} obtainable · {sum(1 for c in HC["cards"] if c["tok"])} tokens', 'cards'),
+    _tile(f'{round(100 * _art_n / max(1, len(_canon_play)))}%', 'art coverage', f'{_art_n} of {len(_canon_play)} cards have art', 'cards'),
+    _tile(len(_main_maps), 'maps', f'+ {len(_side_maps)} side maps · {sum(m["fights"] for m in HC["maps"])} fights', 'decks'),
+    _tile(len(_sk_used), 'skills in use', f'{len(HC["skills"])} defined', 'cards'),
+    _tile(len(_open_dec), 'open decisions', f'{len(DECISIONS["items"]) - len(_open_dec)} decided', 'decisions'),
+    _tile(_bal_strong + _bal_weak, 'balance outliers', f'{_bal_strong} too strong · {_bal_weak} too weak', 'balance'),
+    _tile(DLG_N[0], 'dialogues', 'conversations in the game', 'dialogues'),
+    _tile(len(CL), 'changelog entries', f'latest {H.escape(CL[0][0]) if CL else "—"}', 'changelog'),
+])
+# Home: "Your calls" and "Planned" first (the user asked for those at the top), then open decisions, recent changes, links.
+_calls = [(k, t, b) for k, (t, b) in enumerate(AI) if re.search(r'your calls|^planned', t, re.I)]
+CALLS = ''.join(f'<section class="dash-card"><h2>{H.escape(re.sub(r"^[0-9]+[.] *", "", t))}</h2><div class="doc">{b}</div></section>' for k, t, b in _calls) or '<p class="dec-empty">No “Your calls” section in docs/action-items.md.</p>'
+_dec_rows = ''.join(f'<li><a href="#decisions" data-dec="{H.escape(i["id"])}"><span class="dec-id">{H.escape(i["id"])}</span> {H.escape(i["title"])}</a><small>{H.escape(i.get("area", ""))} · asked {H.escape(i.get("asked", ""))}</small></li>' for i in _open_dec[:8])
+RECENT = ''.join(f'<details class="cl"{" open" if k == 0 else ""}><summary>{H.escape(t)}</summary><div class="cl-b doc">{b}</div></details>' for k, (t, b) in enumerate(CL[:5]))
+LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newest first'), ('🎴', 'cards', 'Cards', 'Every card with art, stats, skills, where it drops'),
+  ('⚖️', 'balance', 'Balance', 'Win rate of each card in simulation'), ('📈', 'difficulty', 'Difficulty', 'How hard each fight is, map by map'),
+  ('🃏', 'decks', 'Decks', 'Tutorial, skirmish and raid decks'), ('💬', 'dialogues', 'Dialogues', 'Every conversation and who says it'),
+  ('🗳️', 'decisions', 'Decisions', 'Waiting on you, and decided'), ('📐', 'design', 'Design', 'Design sheets and audits'),
+  ('🗒️', 'changelog', 'Changelog', 'What changed, newest first'), ('✨', 'lab', 'Effects Lab', 'Skill effects on a live stage'),
+  ('🧪', 'playground', 'VFX Playground', 'GSAP and shader experiments'), ('🖼️', 'library', 'Visual Library', 'Screenshots taken while building'),
+  ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
+LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
+_built = datetime.date.today().isoformat()  # date only: the build machine's clock is UTC, the docs use your local time
+home_html = (f'<div class="dash"><div class="dash-hero"><div><h1>Bramblewood Arena</h1><p class="lede">Your home base. Hub built {_built}; action items updated {H.escape(_ai_updated)}.</p></div>'
+  '<div class="dash-cta"><a class="btn pri" href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 Play the live game ↗</a>'
+  '<a class="btn" href="#actions" data-tab="actions">🎯 All action items</a></div></div>'
+  f'<div class="stats">{STATS}</div>'
+  f'<div class="dash-grid"><div class="dash-col">{CALLS}</div>'
+  f'<div class="dash-col"><section class="dash-card"><h2>Open decisions <small>{len(_open_dec)}</small></h2><ul class="dash-dec">{_dec_rows}</ul>'
+  f'<p><a href="#decisions" data-tab="decisions">See all {len(_open_dec)} open decisions →</a></p></section>'
+  f'<section class="dash-card"><h2>Recently changed</h2>{RECENT}<p><a href="#changelog" data-tab="changelog">Full changelog ({len(CL)} entries) →</a></p></section></div></div>'
+  '<h2 class="dash-h">Everything in the hub</h2><div class="pg-grid">' + ''.join(f'<a class="pg" href="#{t}" data-tab="{t}"><span class="pg-i">{i}</span><span><b>{n}</b><small>{d}</small></span></a>' for i, t, n, d in LINKS) + '</div>'
+  '<p class="note dash-foot">Tip: press <kbd>/</kbd> to search cards, changelog, decisions, design docs and dialogues.</p></div>')
+cards_panel = ('<section class="panel" id="p-cards" role="tabpanel" aria-labelledby="t-cards" hidden><div class="cds">'
+  '<div class="dec-head"><h2>Cards</h2><p id="cdLead">Every card in the game, from the build. Tap one for its skills, where it drops and which decks use it.</p></div>'
+  '<div class="cd-bar"><input type="search" id="cdQ" placeholder="Name, id, skill, species…" aria-label="Search cards">'
+  '<select id="cdR" aria-label="Rarity"></select><select id="cdS" aria-label="Source"></select><select id="cdM" aria-label="Map"></select>'
+  '<select id="cdK" aria-label="Skill"></select><select id="cdA" aria-label="Type"></select><select id="cdO" aria-label="Sort"></select>'
+  '<label class="cd-chk"><input type="checkbox" id="cdX"> tokens and test cards</label></div>'
+  '<p class="cd-count" id="cdN" aria-live="polite"></p><div class="cd-grid" id="cdGrid"></div></div>'
+  '<div class="cd-sheet" id="cdSheet" hidden><div class="cd-scrim" data-close></div><div class="cd-card" role="dialog" aria-modal="true" aria-labelledby="cdTitle"><button class="cd-x" data-close aria-label="Close">✕</button><div id="cdBody"></div></div></div></section>')
+HUB_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'hub_app.css'), encoding='utf-8').read()
+HUB_JS = open(os.path.join(ROOT, 'tools', 'hub', 'hub_app.js'), encoding='utf-8').read()
+_fonts = os.path.exists(os.path.join(OUT, 'fonts', 'fonts.css'))  # self-hosted fonts shipped with the Effects Lab
+FONT_LINK = '<link rel="stylesheet" href="fonts/fonts.css">' if _fonts else '<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">'
 index = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Bramblewood Master Hub</title>
-<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+{FONT_LINK}
+<script>/* 2026-10-15: theme choice (auto/light/dark) applied before paint */ try{{ const t = localStorage.getItem('hub.theme'); if(t==='light'||t==='dark') document.documentElement.dataset.theme = t; }}catch(e){{}}</script>
 <style>
 :root{{--bg:#f4ecd8; --surface:#fffaf0; --surface-2:#efe3c8; --ink:#2b2216; --ink-muted:#6b5a43; --line:#dccaa5; --accent:#2f6b3a; --accent-ink:#fff; --link:#2f5f8a;}}
 @media (prefers-color-scheme: dark){{:root:not([data-theme="light"]){{--bg:#1c1812; --surface:#26211a; --surface-2:#312a20; --ink:#f1e6cf; --ink-muted:#b8a98c; --line:#4a3f2e; --accent:#7fc28a; --accent-ink:#13200f; --link:#8cc0ea;}}}}
@@ -348,10 +488,15 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 .dk-t{{border-collapse:collapse; font-size:13px; margin:6px 0 10px; width:100%;}} .dk-t th, .dk-t td{{text-align:left; padding:3px 8px; border-top:1px solid var(--line, rgba(127,127,127,.2));}} .dk-t th{{font-weight:800;}}
 .dk-t s{{opacity:.6;}} .dk-two{{display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:12px;}} .dk-two > div{{min-width:0; overflow-x:auto;}}
 .dk-order li{{margin:6px 0;}} #p-decks details{{margin:4px 0;}} #p-decks summary{{cursor:pointer; padding:4px 0;}} .dk-map > details{{margin-left:16px;}}
-</style></head><body>
-<header><h1>🌿 Bramblewood</h1><a class="play" href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 Play ↗</a>
-<nav role="tablist" aria-label="Pages">
-<button role="tab" id="t-master" aria-controls="p-master" data-tab="master">🎯 Action items</button>
+</style><style>{HUB_CSS}</style></head><body>
+<header><h1><a href="#master" data-tab="master">🌿 Bramblewood</a></h1>
+<div class="hs" role="search"><input type="search" id="hubQ" placeholder="Search cards, changes, decisions, docs…  ( / )" aria-label="Search the hub" autocomplete="off" aria-controls="hubRes" aria-expanded="false"><div class="hs-res" id="hubRes" role="listbox" hidden></div></div>
+<button type="button" class="thm" id="hubTheme" aria-label="Colour theme" title="Colour theme: auto / light / dark">🌓 Auto</button>
+<a class="play" href="https://bramblewood-arena.vercel.app" target="_blank" rel="noopener">🎮 <span>Play ↗</span></a></header>
+<nav role="tablist" aria-label="Pages" aria-orientation="vertical">
+<button role="tab" id="t-master" aria-controls="p-master" data-tab="master">🏠 Home</button>
+<button role="tab" id="t-actions" aria-controls="p-actions" data-tab="actions">🎯 Action items</button>
+<button role="tab" id="t-cards" aria-controls="p-cards" data-tab="cards">🎴 Cards</button>
 <button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
 <button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
@@ -363,9 +508,11 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-playground" aria-controls="p-playground" data-tab="playground">🧪 VFX Playground</button>
 <button role="tab" id="t-library" aria-controls="p-library" data-tab="library">🖼️ Visual Library</button>
 <button role="tab" id="t-guide" aria-controls="p-guide" data-tab="guide">🧠 Claude's guide</button>
-</nav></header>
+</nav>
 <main>
-<section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master"><article class="doc">{body}</article></section>
+<section class="panel" id="p-master" role="tabpanel" aria-labelledby="t-master">{home_html}</section>
+<section class="panel" id="p-actions" role="tabpanel" aria-labelledby="t-actions" hidden>{lazy('<article class="doc">' + body + '</article>')}</section>
+{cards_panel}
 <section class="panel" id="p-lab" role="tabpanel" aria-labelledby="t-lab" hidden><iframe title="Effects Lab" data-src="effects.html"></iframe></section>
 <section class="panel" id="p-playground" role="tabpanel" aria-labelledby="t-playground" hidden><iframe title="VFX Playground" data-src="playground.html"></iframe></section>
 <section class="panel" id="p-library" role="tabpanel" aria-labelledby="t-library" hidden><iframe title="Visual Library" data-src="library.html"></iframe></section>
@@ -376,7 +523,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <div class="dec-chips" id="decAreas" role="group" aria-label="Area"></div>
 <div class="dec-chips" id="decKinds" role="group" aria-label="Type"></div>
 <div id="decList" class="dec-list" aria-live="polite"></div></div></section>
-<section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden><article class="doc">{changelog}</article></section>
+<section class="panel" id="p-changelog" role="tabpanel" aria-labelledby="t-changelog" hidden>{lazy('<article class="doc cl-doc">' + changelog + '</article>')}</section>
 <section class="panel" id="p-balance" role="tabpanel" aria-labelledby="t-balance" hidden><div class="bal">
 <div class="dec-head"><h2>Card balance</h2><p>Each card's win rate in simulated matches (<span id="balN"></span>). About 50% means it adds nothing over the reference deck; the band is what its rarity should deliver. The method and findings are in the 📐 Design tab → Card balance report. Click a column to sort.</p></div>
 <div class="dec-bar"><div class="dec-seg" role="group" aria-label="Verdict" id="balSeg"><button data-v="" aria-pressed="true">All</button><button data-v="strong" aria-pressed="false">Too strong</button><button data-v="weak" aria-pressed="false">Too weak</button><button data-v="ok" aria-pressed="false">In band</button><button data-v="norar" aria-pressed="false">No rarity</button><button data-v="fix" aria-pressed="false">Has a fix</button></div>
@@ -385,8 +532,8 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 {curve_panel}
 {decks_panel}
 {dialogues_panel}
-<section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{design_html}</section>
-<section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{guide}</section>
+<section class="panel" id="p-design" role="tabpanel" aria-labelledby="t-design" hidden>{lazy(design_html)}</section>
+<section class="panel" id="p-guide" role="tabpanel" aria-labelledby="t-guide" hidden>{lazy(guide)}</section>
 </main>
 <script>
 const DEC = {decisions_json};
@@ -401,6 +548,11 @@ const DEC = {decisions_json};
   chips(document.getElementById('decKinds'), [...new Set(items.map(i=> i.kind))].sort(), ()=>kind, v=> kind = v);
   document.querySelectorAll('.dec-seg button').forEach(b=> b.onclick = ()=>{{ st = b.dataset.st; document.querySelectorAll('.dec-seg button').forEach(x=> x.setAttribute('aria-pressed', x===b)); render(); }});
   document.getElementById('decQ').oninput = e=>{{ q = e.target.value.trim().toLowerCase(); render(); }};
+  // 2026-10-15: the global search and the Home tab open one decision: All statuses, searched by its id.
+  window.hubFindDecision = id=>{{ st = 'ALL'; area = ''; kind = ''; document.querySelectorAll('.dec-seg button').forEach(x=> x.setAttribute('aria-pressed', x.dataset.st==='ALL'));
+    document.querySelectorAll('#decAreas button, #decKinds button').forEach(x=> x.setAttribute('aria-pressed', x.dataset.v===''));
+    const inp = document.getElementById('decQ'); inp.value = id; q = id.toLowerCase(); render();
+    const card = [...document.querySelectorAll('#decList .dec-card')].find(c=> c.querySelector('.dec-id').textContent.toLowerCase()===q); if(card){{ card.classList.add('flash'); card.scrollIntoView({{block:'start'}}); }} }};
   function render(){{
     const list = items.filter(i=> (st==='ALL' || i.status===st) && (!area || i.area===area) && (!kind || i.kind===kind) && (!q || JSON.stringify(i).toLowerCase().includes(q)));
     document.getElementById('decList').innerHTML = list.length ? list.map(i=> `<article class="dec-card ${{i.status==='DONE'?'done':''}}">
@@ -432,25 +584,38 @@ const DEC = {decisions_json};
   render();
 }})();
 const tabs = [...document.querySelectorAll('[role=tab]')];
-function show(id){{
+// 2026-10-15: lazy panels are stamped from their <template> on first show; the open tab is kept in #hash and
+// localStorage (the artifact frame may drop the hash); hub.onShow lets the Cards tab render on first open.
+const hub = window.hub = {{ onShow: {{}} }};
+function stamp(p){{ const t = p && p.querySelector(':scope > template.lazy'); if(t){{ t.replaceWith(t.content.cloneNode(true)); }} }}
+function show(id, keepScroll){{
   if(!document.getElementById('p-'+id)) id = 'master';
   tabs.forEach(t=>{{ const on = t.dataset.tab===id; t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1; document.getElementById('p-'+t.dataset.tab).hidden = !on; }});
+  const p = document.getElementById('p-'+id); stamp(p); if(hub.onShow[id]) hub.onShow[id]();
   const cur = tabs.find(t=> t.dataset.tab===id); if(cur) cur.scrollIntoView({{inline:'nearest', block:'nearest'}});
   const fr = document.querySelector('#p-'+id+' iframe'); if(fr && !fr.src) fr.src = fr.dataset.src;
   try{{ history.replaceState(null, '', '#'+id); }}catch(e){{}}
+  try{{ localStorage.setItem('hub.tab', id); }}catch(e){{}}
 }}
+hub.show = show; hub.showSub = (id)=> showSub(id);
 function showSub(id){{ const pane = document.getElementById(id); if(!pane) return; const g = pane.dataset.group;
   document.querySelectorAll('.subpane[data-group="'+g+'"]').forEach(p=> p.hidden = p !== pane);
   document.querySelectorAll('.subtabs[data-group="'+g+'"] button').forEach(b=> b.setAttribute('aria-pressed', String(b.dataset.show === id)));
   document.querySelectorAll('a.jump').forEach(a=> a.classList.toggle('is-on', a.getAttribute('href') === '#'+id)); }}
 document.addEventListener('click', e=>{{ const sb = e.target.closest('.subtabs button[data-show]'); if(sb){{ showSub(sb.dataset.show); return; }}
-  const j = e.target.closest('a.jump'); if(j){{ e.preventDefault(); showSub(j.getAttribute('href').slice(1)); const d = document.querySelector(j.getAttribute('href')); if(d) d.scrollIntoView({{behavior:'smooth', block:'nearest'}}); return; }} const t = e.target.closest('[data-tab]'); if(!t) return; e.preventDefault(); show(t.dataset.tab); }});
+  const j = e.target.closest('a.jump'); if(j){{ e.preventDefault(); showSub(j.getAttribute('href').slice(1)); const d = document.querySelector(j.getAttribute('href')); if(d) d.scrollIntoView({{behavior:'smooth', block:'nearest'}}); return; }}
+  const dj = e.target.closest('[data-dec]'); if(dj){{ e.preventDefault(); hub.go({{tab:'decisions', dec: dj.dataset.dec}}); return; }}
+  const t = e.target.closest('[data-tab]'); if(!t) return; e.preventDefault(); show(t.dataset.tab); }});
 document.querySelector('[role=tablist]').addEventListener('keydown', e=>{{
   const i = tabs.findIndex(t=> t.getAttribute('aria-selected')==='true'); let j = i;
-  if(e.key==='ArrowRight') j = (i+1)%tabs.length; else if(e.key==='ArrowLeft') j = (i-1+tabs.length)%tabs.length; else return;
-  show(tabs[j].dataset.tab); tabs[j].focus();
+  if(e.key==='ArrowRight'||e.key==='ArrowDown') j = (i+1)%tabs.length; else if(e.key==='ArrowLeft'||e.key==='ArrowUp') j = (i-1+tabs.length)%tabs.length; else return;
+  e.preventDefault(); show(tabs[j].dataset.tab); tabs[j].focus();
 }});
-show((location.hash||'#master').slice(1));
+</script>
+<script>const CARDS = {CARDS_JSON};
+const SEARCH = {SEARCH_JSON};
+{HUB_JS}
+show((location.hash.slice(1)) || (()=>{{ try{{ return localStorage.getItem('hub.tab'); }}catch(e){{ return ''; }} }})() || 'master');
 </script></body></html>'''
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(index)
 n = sum(len(fs) for _, _, fs in os.walk(OUT))
