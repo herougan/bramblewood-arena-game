@@ -427,6 +427,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "dialog.delete-this-deck-this-cannot-be": "Delete this deck? This cannot be undone.",
   "toast.you-bought-the-bread-it-smells": "🍞 You bought the bread. It smells wonderful. It does nothing.",
   "toast.you-found-a-set-it-in": "{v1} You found a {v2} ({v3})! Set it in a nest in the Nest to warm it.",
+  "toast.hidden-skirmish-found": "{v1} A hidden skirmish: {v2} ({v3}).",
   "toast.new-card-it-cracks-open-on": "🥚 New card: {v1}. It cracks open on the battlefield into a random {v2} card.",
   "toast.is-in-training-back-in-h": "🌱 {v1} is in training. Back in {NURTURE_HOURS}h at Level 1.",
   "toast.you-rescued-a-little-baby-it": "{v1} You rescued a little {v2} baby. It's safe in your Nest now.",

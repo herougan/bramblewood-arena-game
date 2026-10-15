@@ -610,7 +610,7 @@
     "attack": 2,
     "health": 6,
     "effects": {
-      "worthy": 1
+      "bounty": 1
     },
     "flavor": "Whiskers first, pockets second. Always comes back from the riverbank with something shiny.",
     "locked": true,
@@ -1336,8 +1336,7 @@
     "health": 48,
     "effects": {
       "onReadyGold": 1,
-      "bounty": 1,
-      "worthy": 2
+      "bounty": 2
     },
     "flavor": "Roots older than the castle it now leans protectively over, and just as slow to give anything up.",
     "locked": true,
@@ -1704,7 +1703,7 @@
     "health": 6,
     "effects": {
       "nocturnal": true,
-      "worthy": 1
+      "bounty": 1
     },
     "flavor": "Washes its loot in the moat before deciding whether to keep it.",
     "locked": true,
@@ -2156,7 +2155,7 @@
     "attack": 1,
     "health": 7,
     "effects": {
-      "worthy": 1
+      "bounty": 1
     },
     "flavor": "Cheeks packed with acorns it insists are for winter. The war chest disagrees.",
     "locked": true,
@@ -2464,8 +2463,7 @@
     "health": 40,
     "effects": {
       "onReadyGold": 1,
-      "bounty": 1,
-      "worthy": 2
+      "bounty": 2
     },
     "flavor": "The oldest set of antlers in the Bramblewood. Even the raccoons pay it tribute.",
     "locked": true,
@@ -2575,7 +2573,7 @@
     "attack": 1,
     "health": 8,
     "effects": {
-      "worthy": 1
+      "bounty": 1
     },
     "flavor": "Shows up already carrying a stick it clearly means to sell you back later.",
     "locked": true,
@@ -2665,8 +2663,7 @@
       "cold"
     ],
     "effects": {
-      "bounty": 1,
-      "worthy": 2
+      "bounty": 2
     },
     "flavor": "A fortress of logs and mud that has outlasted three winters and at least one siege.",
     "locked": true,
@@ -2930,7 +2927,7 @@
     "attack": 1,
     "health": 5,
     "effects": {
-      "worthy": 1
+      "bounty": 1
     },
     "flavor": "Slips through the pantry, the granary, and eventually the war budget.",
     "locked": true,
@@ -3259,7 +3256,7 @@
     "attack": 4,
     "health": 11,
     "effects": {
-      "worthy": 1
+      "bounty": 1
     },
     "flavor": "Carries a foot that isn't its own for luck. Doesn't ask where the previous owner went.",
     "locked": true,
@@ -4040,7 +4037,7 @@
     ],
     "effects": {
       "diurnal": true,
-      "worthy": 1
+      "bounty": 1
     },
     "flavor": "Trades gossip and acorns at a very favorable exchange rate.",
     "locked": true,
@@ -6074,8 +6071,7 @@
     ],
     "effects": {
       "quick": true,
-      "dry": true,
-      "swift": true
+      "dry": true
     },
     "flavor": "Crosses open sand faster than the heat has time to punish it for.",
     "dmgType": "physical",
@@ -6281,8 +6277,8 @@
     },
     "dmgType": "physical",
     "effects": {
-      "worthy": 1,
-      "nocturnal": 1
+      "nocturnal": 1,
+      "bounty": 1
     },
     "species": [
       "Procyonid"
@@ -7396,8 +7392,7 @@
     "health": 6,
     "effects": {
       "armor": 1,
-      "dry": true,
-      "swift": true
+      "dry": true
     },
     "archetypes": [
       "Desert",
@@ -12083,7 +12078,7 @@
     "effects": {
       "armor": 1,
       "nocturnal": true,
-      "worthy": 1
+      "bounty": 1
     },
     "source": {
       "kind": "secret",
@@ -12256,7 +12251,7 @@
       "Beaver"
     ],
     "effects": {
-      "worthy": 2
+      "bounty": 2
     },
     "flavor": "Two logs before breakfast, every single day.",
     "numericId": 363,
@@ -13445,7 +13440,7 @@
     "cost": 0,
     "wait": 0,
     "effects": {
-      "worthy": 1
+      "bounty": 1
     },
     "dmgType": "physical",
     "resist": [],
@@ -14751,7 +14746,7 @@
     "health": 6,
     "effects": {
       "flying": true,
-      "lantern": true
+      "illuminate": true
     },
     "dmgType": "physical",
     "resist": [],
@@ -14974,7 +14969,7 @@
     "attack": 2,
     "health": 5,
     "effects": {
-      "worthy": 1
+      "bounty": 1
     },
     "dmgType": "physical",
     "resist": [],
@@ -15548,7 +15543,7 @@
     "attack": 1,
     "health": 7,
     "effects": {
-      "worthy": 1
+      "bounty": 1
     },
     "flavor": "Keeps the forge-pits fed by crawling into them. Charges by the shovel.",
     "archetypes": [
@@ -15581,7 +15576,7 @@
     "attack": 1,
     "health": 10,
     "effects": {
-      "worthy": 1
+      "bounty": 1
     },
     "flavor": "Carries the cavalry’s firewood up the mountain, and its opinions down again.",
     "archetypes": [
@@ -17215,7 +17210,7 @@
       "Mustelid"
     ],
     "effects": {
-      "lantern": true
+      "illuminate": true
     },
     "source": {
       "kind": "pack",
@@ -17780,7 +17775,6 @@
       "Canid"
     ],
     "effects": {
-      "swift": true,
       "dry": true,
       "darksight": true
     },
@@ -17983,7 +17977,6 @@
     "health": 18,
     "effects": {
       "flying": true,
-      "swift": true,
       "esprit": 1,
       "espritHp": 1
     },
@@ -19687,7 +19680,7 @@
     ],
     "effects": {
       "flying": true,
-      "lantern": true
+      "illuminate": true
     },
     "flavor": "Carries its light the way other moths chase one.",
     "numericId": 567,

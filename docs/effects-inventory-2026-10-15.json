@@ -15447,5 +15447,39 @@
    "docs/raid-design.md:120"
   ],
   "batch": "F"
+ },
+ {
+  "id": "fld-unit-light",
+  "area": "darkness",
+  "name": "Leader and Light Aura glow (night and dark fields)",
+  "trigger": "render: .board-card .unit-light (leaders: ul-leader; Illuminate: ul-aura; Immolation: ul-fire) shown while .battlefield.is-dark-scene (night or rules.dark); Pitch Black / Absolute: a mask hole in the darkness overlay (syncUnitLightPools)",
+  "current": "CSS warm pools in arena_template.html + syncUnitLightPools in arena_app.js",
+  "quality": "good — faint for leaders, bright for Light Aura units",
+  "priority": 3,
+  "themeNotes": "Lanterns warm yellow, fire orange and flickering.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: unitLightKindOf, syncUnitLightPools",
+   "arena_template.html: .unit-light"
+  ],
+  "batch": "R"
+ },
+ {
+  "id": "map-hidden-skirmish-pop",
+  "area": "map",
+  "name": "Hidden skirmish appears",
+  "trigger": "renderConquestSubTab: a hidden skirmish shown for the first time (hiddenPopNow) -> .map-node.is-secret.secret-pop + toast",
+  "current": "CSS secretPop / secretBurst + gold ring and ✦",
+  "quality": "good",
+  "priority": 3,
+  "themeNotes": "A small discovery moment, gold like found treasure.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: HIDDEN_SKIRMISHES, refreshHiddenSkirmishes",
+   "arena_template.html: .map-node.secret-pop"
+  ],
+  "batch": "R"
  }
 ]

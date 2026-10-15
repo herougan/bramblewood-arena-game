@@ -8196,6 +8196,36 @@
   .battlefield.bf-lantern.bf-dark-absolute::after{background:radial-gradient(circle 150px at var(--lx) var(--ly), rgba(255,200,120,.08) 0, rgba(6,6,14,.62) 62%, rgba(2,2,8,.80) 100%);}
   @keyframes bfLanternFlicker{0%,100%{opacity:1;} 30%{opacity:.94;} 55%{opacity:.98;} 80%{opacity:.92;}}
   @media (prefers-reduced-motion: reduce){ .battlefield.bf-lantern::after{animation:none;} }
+  /* Unit light (2026-10-15, user: "Leader should have abit of light in darkness. (Night too) Just abit. Creatures with Light Aura shine
+     brighter"): a warm pool behind a leader (faint) or a Light Aura unit (Illuminate: bright; Immolation: orange, flickering), only at
+     night and in the dark. In Pitch Black / Absolute darkness the overlay also gets a soft hole over each one (syncUnitLightPools). */
+  .board-card .unit-light{position:absolute; left:50%; top:50%; width:170%; height:150%; transform:translate(-50%,-50%); z-index:-1; pointer-events:none; border-radius:50%;
+    opacity:0; transition:opacity 1.2s ease; background:radial-gradient(closest-side, rgba(255,214,140,.42), rgba(255,190,110,.16) 55%, rgba(255,180,90,0) 100%);}
+  .battlefield.is-dark-scene .board-card .unit-light{opacity:1;}
+  .board-card .unit-light.ul-leader{width:175%; height:145%; background:radial-gradient(closest-side, rgba(255,222,160,.42) 0, rgba(255,214,150,.30) 52%, rgba(255,200,120,.10) 78%, rgba(255,190,110,0) 100%);}
+  .board-card .unit-light.ul-aura{width:215%; height:180%; background:radial-gradient(closest-side, rgba(255,240,180,.75) 0, rgba(255,226,150,.55) 45%, rgba(255,205,120,.22) 75%, rgba(255,200,110,0) 100%); animation:ulBreathe 3.2s ease-in-out infinite;}
+  .board-card .unit-light.ul-fire{width:205%; height:175%; background:radial-gradient(closest-side, rgba(255,170,80,.7) 0, rgba(255,130,50,.5) 45%, rgba(255,100,30,.2) 75%, rgba(255,90,30,0) 100%); animation:ulFlicker 1.6s steps(5) infinite;}
+  .battlefield:not(.is-dark-scene) .board-card .unit-light{animation:none;}
+  @keyframes ulBreathe{0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-50%,-50%) scale(1.06);}}
+  @keyframes ulFlicker{0%,100%{opacity:1;} 30%{opacity:.82;} 55%{opacity:.95;} 80%{opacity:.78;}}
+  .battlefield.bf-lantern::after{-webkit-mask-image:var(--unit-lights, none); mask-image:var(--unit-lights, none); -webkit-mask-composite:source-in; mask-composite:intersect;}
+  @media (prefers-reduced-motion: reduce){ .board-card .unit-light{animation:none !important; transition:none;} }
+  /* Nursing mastery chip in the Nest (2026-10-15): 🍼 and the number, on the Nurse master and on every card in its picker */
+  .lp-tile{position:relative;}
+  .nurse-chip{position:absolute; right:-6px; top:-8px; z-index:4; display:inline-flex; align-items:center; gap:2px; padding:2px 7px 2px 5px; border-radius:999px;
+    background:#fff7e6; color:#5a3a12; border:1px solid rgba(140,90,30,.4); font:800 12px/1.1 'Baloo 2',system-ui,sans-serif; box-shadow:0 1px 3px rgba(0,0,0,.22); pointer-events:auto;}
+  .nurse-chip b{font-weight:800;}
+  .nurse-chip.is-high{background:linear-gradient(#fff3c8,#ffd77a); border-color:#c8902a;}
+  .nk-card .nurse-chip{position:static; margin-left:6px; vertical-align:middle;}
+  .nk-nurse .nk-speed{display:block; flex-basis:100%; width:100%; opacity:.8; margin-top:2px;}
+  /* Hidden skirmishes (2026-10-15): a gold ring and a little star mark a secret fight; the first sight of one pops it in with a burst */
+  .map-node.is-secret{box-shadow:0 0 0 3px rgba(255,214,110,.95), 0 0 18px 5px rgba(255,200,90,.55) !important;}
+  .map-node.is-secret::before{content:'✦'; position:absolute; right:-7px; top:-9px; font-size:15px; line-height:1; color:#ffd56e; text-shadow:0 0 4px rgba(120,70,0,.9), 0 1px 0 #6b4310; pointer-events:none; z-index:3;}
+  .map-node.secret-pop{animation:secretPop 1.5s cubic-bezier(.2,1.5,.4,1) .45s both;}
+  @keyframes secretPop{0%{transform:translate(-50%,-50%) scale(0) rotate(-40deg); opacity:0; filter:brightness(3);} 55%{transform:translate(-50%,-50%) scale(1.35) rotate(8deg); opacity:1; filter:brightness(1.8);} 80%{transform:translate(-50%,-50%) scale(.94) rotate(-2deg);} 100%{transform:translate(-50%,-50%) scale(1) rotate(0); filter:none;}}
+  .map-node.secret-pop::after{content:''; position:absolute; inset:-22px; border-radius:50%; pointer-events:none; background:radial-gradient(circle, rgba(255,236,170,.85) 0, rgba(255,214,110,.35) 40%, rgba(255,214,110,0) 70%); animation:secretBurst 1.6s ease-out .45s both;}
+  @keyframes secretBurst{0%{transform:scale(.2); opacity:1;} 100%{transform:scale(2.2); opacity:0;}}
+  @media (prefers-reduced-motion: reduce){ .map-node.secret-pop, .map-node.secret-pop::after{animation:none;} }
 </style>
 </head>
 <body>
