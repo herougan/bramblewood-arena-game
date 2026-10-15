@@ -5736,6 +5736,14 @@
   .dungeons-panel .dg-run{font-size:12px; font-weight:800; color:#2f7a2a; background:rgba(95,174,74,.16); border-radius:999px; padding:2px 9px;}
   @media (max-width:560px){ .dungeons-panel .dg-card{flex-direction:column; align-items:flex-start;} .dungeons-panel .dg-diamond{width:64px; height:64px;} }
   .conquest-headline .dungeon-ticket-line{margin:4px 0 0; font-size:12.5px; font-weight:700;} .conquest-headline .dungeon-ticket-line .dtl-run{color:#9be38a;}
+  /* 2026-10-16: the admin-only Long Burrow (Map 22) and the Tower card in the Dungeons tab */
+  .dungeons-panel .dg-card{position:relative;}
+  .dungeons-panel .dg-admin-tag{position:absolute; top:-9px; right:12px; font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:4px 8px; border-radius:999px; background:#7a3fb8; color:#fff; box-shadow:0 2px 6px rgba(0,0,0,.3);}
+  .dungeons-panel .dg-tower-head{margin:20px 0 8px;} .dungeons-panel .dg-tower-head h3{margin:0 0 2px;}
+  .dg-diamond.map-theme-tw{--mt-a:#d9c7a0; --mt-b:#8a7a5c; --mt-c:#3f3626;}
+  /* A left-to-right dungeon (2026-10-16, user: "like Murgle, but left to right"): the trail is as wide as its floors and the map scrolls sideways */
+  .conquest-main.endless-x-main, body.conquest-full .conquest-main.endless-x-main{overflow-x:auto !important;}
+  .conquest-map-canvas.endless-map.endless-x{max-width:none; background:linear-gradient(90deg, rgba(40,26,14,.3), rgba(16,10,6,.6));}
   /* T7 shader layers (bramblewood-shaders.js) */
   .bw-shader{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; display:block;}
   .entrance-bg .bw-shader, .hs-back .bw-shader{image-rendering:pixelated;}
@@ -8918,6 +8926,9 @@
   -webkit-mask-position:76% 0; mask-position:76% 0;}
 #battlefieldEl > .night-veil.is-leaving.is-gone{-webkit-mask-position:0 0; mask-position:0 0;}
 #battlefieldEl > .night-veil.no-anim{transition:none;}
+/* 2026-10-16 (user: "Bars on the left -> no-go. I think the whole map lighting up is sufficient."): night lifts as one gentle fade of the
+   whole veil (no ragged edge); FX.E.nightRetreat adds the soft, uneven light streaks over it. */
+#battlefieldEl > .night-veil.is-fading{-webkit-mask-image:none; mask-image:none; opacity:0; transition:opacity 2.4s ease;}
 #battlefieldEl > .sky-fx.sky-sweep{transition:-webkit-mask-position 1.35s cubic-bezier(.4,.1,.45,1), mask-position 1.35s cubic-bezier(.4,.1,.45,1) !important;}
 #battlefieldEl > .sky-fx.sky-sweep.is-go{-webkit-mask-position:0 0; mask-position:0 0;}
 @media (prefers-reduced-motion: reduce){ #battlefieldEl > .night-veil, #battlefieldEl > .sky-fx.sky-sweep{transition:none !important;} }

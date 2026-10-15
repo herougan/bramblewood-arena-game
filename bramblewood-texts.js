@@ -480,7 +480,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.that-s-everything-the-training-wheels": "That's everything. The training wheels are off now: from here, fights don't stop to explain.",
   "toast.twilight-day-and-night-creatures-are": "🌆 Twilight: day and night creatures are both awake.",
   "toast.no-dungeon-tickets-left-a-new": "🎟️ No Dungeon tickets left. A new one comes tomorrow, and a bonus one every Monday.",
-  "toast.dungeon-ticket-used-the-run-lasts": "🎟️ Dungeon ticket used: the run lasts until you lose a floor ({dungeonTicketsLeft} left)."
+  "toast.dungeon-ticket-used-the-run-lasts": "🎟️ Dungeon ticket used: the run lasts until you lose a floor ({dungeonTicketsLeft} left).",
+  "toast.jumps-you-on-the-road-beat": "{icon} {name} jumps you on the road! Beat it to go on."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

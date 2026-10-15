@@ -550,6 +550,8 @@ css('tod', `
 @keyframes fxeTodIn{from{opacity:0;}}
 @keyframes fxeStar{0%,100%{opacity:.25;} 50%{opacity:1;}}
 @keyframes fxeLant{0%,100%{transform:scale(1);} 50%{transform:scale(1.08);} 60%{transform:scale(.97);}}
+.conquest-layout > .fxe-tod.is-steady, .fxe-lant.is-steady{animation-name:none;} .fxe-lant.is-steady{animation:fxeLant 3.2s ease-in-out infinite;}
+.conquest-layout > .fxe-tod.is-leaving{animation:none; transition:opacity 2.6s ease; opacity:0;}
 `);
 // The phase the map should show: the Atmosphere setting wins (golden = dusk, moonlit = night, off = none), else the clock.
 M.todNow = function(){
@@ -558,24 +560,85 @@ M.todNow = function(){
   if(a === 'golden') return 'dusk'; if(a === 'moonlit') return 'night';
   try{ return typeof currentTimeOfDay === 'function' ? currentTimeOfDay() : (typeof timeOfDay === 'function' ? timeOfDay() : 'day'); }catch(e){ return 'day'; }
 };
+// 2026-10-16 (user: "When it becomes night on the conquest map, clicking anything or switching maps startles the lighting."): the map
+// re-renders its whole frame on every click and map switch, and this used to throw the tint away and fade a new one in from nothing
+// each time (the map flashed to full day and darkened again, the lanterns and stars restarted). The tint layer now lives on across
+// renders: the same phase is moved into the new frame as it is, with no fade (stars where they were, lanterns steady). It only
+// changes when the phase really changes (the clock or the Atmosphere setting): then the new tint fades in over the old one, and
+// night giving way to dawn or day plays M.nightRetreat. A dark map (tod null) puts the tint away and gets it back unchanged.
+let todCur = null; // {tod, el}: the phase on show and its layer (kept while a dark map or the World view has it put away)
+const STARS = Array.from({length:16}, (_, i)=>{ const r = k=> (Math.sin((i + 1)*(k*12.9898 + 78.233))*43758.5453) % 1, a = k=> Math.abs(r(k)); // fixed sky
+  return `<i style="left:${(2 + a(1)*96).toFixed(1)}%; top:${(2 + a(2)*32).toFixed(1)}%; animation-delay:${(-a(3)*3).toFixed(2)}s; animation-duration:${(2 + a(4)*2.5).toFixed(2)}s"></i>`; }).join('');
+function placeTod(host, v){ const after = host.querySelector(':scope > canvas.fxe-amb') || host.querySelector(':scope > canvas.bw-shader-map');
+  if(after && after.nextSibling) host.insertBefore(v, after.nextSibling); else host.insertBefore(v, host.firstChild); }
 M.dayNight = function(host, canvas, tod, opts){
   opts = opts || {};
   if(!host) return null;
-  host.querySelectorAll(':scope > .fxe-tod').forEach(e=> e.remove());
+  const prev = todCur, keep = prev && prev.tod === tod && prev.el && !opts.fresh ? prev.el : null;
+  host.querySelectorAll(':scope > .fxe-tod:not(.is-leaving)').forEach(e=>{ if(e !== keep) e.remove(); });
   if(canvas) canvas.querySelectorAll(':scope > .fxe-lant').forEach(e=> e.remove());
-  if(!tod || tod === 'day') return null;
-  const v = document.createElement('div'); v.className = 'fxe-tod tod-' + tod; v.setAttribute('aria-hidden', 'true');
-  if(opts.instant) v.style.animation = 'none';
-  if(tod === 'night'){ let h = ''; for(let i = 0; i < 16; i++) h += `<i style="left:${rnd(2, 98).toFixed(1)}%; top:${rnd(2, 34).toFixed(1)}%; animation-delay:${rnd(-3, 0).toFixed(2)}s; animation-duration:${rnd(2, 4.5).toFixed(2)}s"></i>`; v.innerHTML = h; }
-  const after = host.querySelector(':scope > canvas.fxe-amb') || host.querySelector(':scope > canvas.bw-shader-map');
-  if(after && after.nextSibling) host.insertBefore(v, after.nextSibling); else host.insertBefore(v, host.firstChild);
-  if(canvas && (tod === 'night' || tod === 'dusk')){
-    const first = canvas.firstChild;
-    canvas.querySelectorAll(':scope > .map-node:not(.map-node-hidden), :scope > .map-spot:not(.is-unknown), :scope > .map-curio, :scope > .map-well').forEach((n, i)=>{
-      if(!n.style.left) return; const l = document.createElement('i'); l.className = 'fxe-lant' + (tod === 'dusk' ? ' is-dusk' : ''); l.setAttribute('aria-hidden', 'true');
-      l.style.left = n.style.left; l.style.top = n.style.top; l.style.animationDelay = (-i*0.7) + 's, 0s'; canvas.insertBefore(l, first); });
+  if(!tod){ if(prev && prev.el) prev.el.remove(); return null; } // a dark map: put it away, unchanged
+  const changed = !!prev && prev.tod !== tod && !opts.instant && !opts.fresh;
+  if(changed && prev.el){ const old = prev.el; if(old.parentNode !== host) placeTod(host, old); old.style.animation = 'none'; old.classList.add('is-steady'); void old.offsetWidth; old.classList.add('is-leaving'); later(()=> old.remove(), 2800); }
+  if(changed && prev.tod === 'night' && tod !== 'dusk'){ try{ M.nightRetreat(host); }catch(e){} }
+  let v = keep;
+  if(v){ if(v.parentNode !== host){ v.style.animation = 'none'; placeTod(host, v); } }
+  else if(tod !== 'day'){
+    v = document.createElement('div'); v.className = 'fxe-tod tod-' + tod; v.setAttribute('aria-hidden', 'true');
+    if(opts.instant) v.style.animation = 'none'; else { if(changed) v.style.animationDuration = '2.6s'; later(()=>{ if(todCur && todCur.el === v){ v.style.animation = 'none'; v.classList.add('is-steady'); } }, changed ? 2700 : 1700); }
+    if(tod === 'night') v.innerHTML = STARS;
+    placeTod(host, v);
   }
-  return v;
+  todCur = {tod, el: v || null};
+  if(canvas && (tod === 'night' || tod === 'dusk')){
+    const first = canvas.firstChild, steady = !!keep || opts.instant; // lanterns only fade in with a new phase
+    canvas.querySelectorAll(':scope > .map-node:not(.map-node-hidden), :scope > .map-spot:not(.is-unknown), :scope > .map-curio, :scope > .map-well').forEach((n, i)=>{
+      if(!n.style.left) return; const l = document.createElement('i'); l.className = 'fxe-lant' + (tod === 'dusk' ? ' is-dusk' : '') + (steady ? ' is-steady' : ''); l.setAttribute('aria-hidden', 'true');
+      l.style.left = n.style.left; l.style.top = n.style.top; l.style.animationDelay = steady ? (-i*0.7) + 's' : (-i*0.7) + 's, 0s'; canvas.insertBefore(l, first); });
+  }
+  return v || null;
+};
+// The clock moving on while the map is open (the map doesn't re-render by itself): every 20 s, a changed phase is applied in place.
+let todWatch = 0;
+M.watchTod = function(dark){
+  M._todDark = !!dark; if(todWatch) return;
+  todWatch = setInterval(()=>{ try{
+    const host = document.getElementById('conquestLayout'), cv = document.getElementById('conquestCanvas');
+    if(!host || !cv || !host.contains(cv) || M._todDark || !todCur || document.hidden) return;
+    const now = M.todNow(); if(now !== todCur.tod) M.dayNight(host, cv, now);
+  }catch(e){} }, 20000);
+};
+// Night retreats (2026-10-16, user: "The night->day animation: Bars on the left -> no-go. I think the whole map lighting up is
+// sufficient. I was thinking of a night retreating effect - could you still do a gentle version of that, but the map changing lighting
+// overall is okay. Maybe if the bars were softer and longer. And also not consistent, some of them are brighter than the other and
+// very slightly (0.5%) different hue."): the whole scene lights up (the night layer itself fades, done by the caller), and over it a
+// handful of long, very soft streaks of morning light drift across from the left and thin out, as if pushing the night off the far
+// edge. Each streak has its own height, length, speed and brightness, and its hue is nudged up to 0.5% of the colour wheel (±1.8°)
+// off the warm base, so no two match. host: the map frame (.conquest-layout) or the battlefield.
+css('nightRetreat', `
+.fxe-retreat{position:absolute; inset:0; overflow:hidden; pointer-events:none; border-radius:inherit; z-index:0;}
+.fxe-retreat i{position:absolute; left:0; display:block; border-radius:50%; filter:blur(18px); mix-blend-mode:screen; will-change:transform, opacity;}
+`);
+M.nightRetreat = function(host, opts){
+  opts = opts || {}; const g = G(); if(!host || !g) return Promise.resolve();
+  const box = host.getBoundingClientRect(), W = Math.max(200, box.width), H = Math.max(120, box.height);
+  const wrap = document.createElement('div'); wrap.className = 'fxe-retreat'; wrap.setAttribute('aria-hidden', 'true');
+  if(getComputedStyle(host).position === 'static') host.style.position = 'relative';
+  const lays = host.querySelectorAll(':scope > .fxe-tod, :scope > .night-veil, :scope > .sky-fx'), anchor = lays[lays.length - 1]; // just above the night layer, under the cards and fights
+  if(anchor) anchor.after(wrap); else host.insertBefore(wrap, host.firstChild);
+  const n = opts.n || 8, base = opts.hue == null ? 40 : opts.hue, jobs = [];
+  for(let i = 0; i < n; i++){
+    const s = document.createElement('i'), h = H * rnd(.10, .24), w = W * rnd(.75, 1.25), hue = base + rnd(-1.8, 1.8), light = rnd(76, 88), peak = rnd(.26, .58); // some streaks clearly brighter than others
+    s.style.cssText = `top:${(H * (i + rnd(.1, .9)) / n - h/2).toFixed(0)}px; width:${w.toFixed(0)}px; height:${h.toFixed(0)}px;
+      background:radial-gradient(ellipse 50% 50% at 55% 50%, hsla(${hue.toFixed(2)}, 92%, ${light.toFixed(1)}%, 1), hsla(${hue.toFixed(2)}, 90%, ${(light - 6).toFixed(1)}%, .45) 45%, hsla(${hue.toFixed(2)}, 90%, 70%, 0) 72%);`;
+    wrap.appendChild(s);
+    const dur = rnd(2.8, 4.0) * (opts.speed || 1), delay = rnd(0, .9);
+    jobs.push(new Promise(res=> g.timeline({delay, onComplete:res})
+      .fromTo(s, {x:-w*.9, opacity:0, scaleY:rnd(.8, 1.1)}, {x:W*.85, duration:dur, ease:'sine.inOut'})
+      .to(s, {opacity:peak, duration:dur*.35, ease:'sine.out'}, 0)
+      .to(s, {opacity:0, duration:dur*.45, ease:'sine.in'}, dur*.55)));
+  }
+  return Promise.all(jobs).then(()=> wrap.remove());
 };
 M.dayNight_B = (host, canvas)=> M.dayNight(host, canvas, 'dusk');
 M.dayNight_C = (host, canvas)=> M.dayNight(host, canvas, 'night');
@@ -1304,7 +1367,7 @@ const DARK_MAPS_E = new Set(['m4', 'mg', 'm8', 'mt', 'mj', 'mz', 'mn', 'mi', 'mx
 function biomeOf(map){ try{ if(typeof MAP_BIOME_OF !== 'undefined') return MAP_BIOME_OF[map.id] || (map.parent && MAP_BIOME_OF[map.parent]) || null; }catch(e){} return null; }
 function snapshot(canvas, map){
   const done = new Set(), vis = new Set(), all = new Set(), scales = new Set(), subs = new Set();
-  canvas.querySelectorAll(':scope > .map-node').forEach(n=>{ const k = keyOf(n); if(!k || n.classList.contains('kind-tutorial')) return; all.add(k); if(n.classList.contains('done')) done.add(k); if(!n.classList.contains('map-node-hidden') && !n.classList.contains('is-ambush')) vis.add(k);
+  canvas.querySelectorAll(':scope > .map-node').forEach(n=>{ const k = keyOf(n); if(!k || n.classList.contains('kind-tutorial')) return; all.add(k); if(n.classList.contains('done')) done.add(k); if(!n.classList.contains('map-node-hidden') && !n.classList.contains('is-ambush') && !n.classList.contains('is-jumper')) vis.add(k);
     if(n.querySelector('.map-node-scale.is-found')) scales.add(k); });
   canvas.querySelectorAll('.map-subcave:not(.is-locked)').forEach(e=> subs.add(e.dataset.lkey));
   const edge = canvas.querySelector('.world-edge-right'), nextOpen = !!(edge && !edge.classList.contains('is-locked'));
@@ -1344,7 +1407,7 @@ M.hooks.mapShown = function(host, map, canvas, progress, env){
   const med = env.fxAtLeast('med'), high = env.fxAtLeast('high');
   if(med) M.mapAmbience(host, map.id); else M.stopMapAmbience();
   const dark = DARK_MAPS_E.has(map.id) || !!canvas.querySelector(':scope > .cave-dark');
-  M.dayNight(host, canvas, dark ? null : M.todNow());
+  M.dayNight(host, canvas, dark ? null : M.todNow()); M.watchTod(dark); // the tint persists across renders and follows the clock (2026-10-16)
   M.decorateNodes(canvas); M.decorateCurios(canvas);
   // a passing weather front: now and then (at most every 4 minutes), on maps with open sky
   const b = biomeOf(map), fk = b && FRONT_OF[b];
@@ -1359,7 +1422,7 @@ M.hooks.mapShown = function(host, map, canvas, progress, env){
 };
 const WORLD_KEY = 'bramblewood_fxe_world_v1';
 M.hooks.mapWorldShown = function(mainEl, env){
-  M.stopMapAmbience(); const lay = layoutOf(mainEl); if(lay) M.dayNight(lay, null, null);
+  M.stopMapAmbience(); const lay = layoutOf(mainEl); if(lay) M.dayNight(lay, null, null); M._todDark = true;
   if(!mainEl) return;
   const open = [...mainEl.querySelectorAll('.world-stop:not(.is-locked)')].map(s=> (s.className.match(/map-theme-(\w+)/) || [])[1]).filter(Boolean);
   let prev = null; try{ prev = JSON.parse(localStorage.getItem(WORLD_KEY) || 'null'); }catch(e){}
@@ -1374,5 +1437,138 @@ M.hooks.mapPawnWalk = function(pawn, legs, env){ if(env.fxAtLeast('med')) M.pawn
 M.hooks.dragonScaleFound = function(sc, env){ later(()=> M.scaleFound(sc || {}), 1500); };
 M.hooks.questBoardOpen = function(modal, opening, env){ M.questBoardIdle(modal, opening); };
 M.hooks.tavernOpen = function(modal, env){ M.tavernOpen(modal, {quiet: !env.fxAtLeast('med')}); };
+
+// ============================================================
+// Jumpers land (2026-10-16, user: "This Skirmish is required to be completed before the next one is unlocked, but is hidden at
+// first. It looks like 23-2 unlocks 23-3 but, boom. It animates onto the field (meteor, splash, psychic fade, ghost fade etc) -
+// represents a strong enemy that wants to jump you."): the fight you just won starts inking its link to the next one, and before it
+// gets there the jumper lands across it: a meteor strike, a gator bursting out of the water, a psychic fade-in or a ghost. The old
+// link breaks, and the trail redraws through the jumper. arena_app.js (jumperArrivals) calls it once per save through
+// fxHook('mapJumperArrive', node, kind, {canvas, from, to}); from/to are the two fights' map positions (percent).
+// ============================================================
+css('jumper', `
+.map-node.fxe-j-hold{opacity:0 !important;}
+.fxe-jtease{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; overflow:visible; z-index:1;}
+.fxe-jtease line{stroke:rgba(255,238,196,.95); stroke-width:4; stroke-linecap:round; vector-effect:non-scaling-stroke; filter:drop-shadow(0 0 4px rgba(255,220,140,.9));}
+.fxe-meteor{position:fixed; width:30px; height:30px; margin:-15px 0 0 -15px; border-radius:50%; z-index:1215;
+  background:radial-gradient(circle at 38% 38%, #fff8d8, #ffc35a 35%, #ee5a1e 62%, rgba(130,30,0,0) 72%); box-shadow:0 0 22px 8px rgba(255,140,40,.75);}
+.fxe-mtail{position:fixed; height:14px; margin-top:-7px; border-radius:8px; transform-origin:0 50%; z-index:1214;
+  background:linear-gradient(90deg, rgba(255,236,170,.95), rgba(255,130,40,.65) 35%, rgba(150,70,40,.25) 70%, rgba(90,60,50,0)); filter:blur(1.5px);}
+.fxe-flash{position:fixed; border-radius:50%; z-index:1213; background:radial-gradient(circle, rgba(255,252,230,.95), rgba(255,190,90,.55) 38%, rgba(255,120,40,0) 70%);}
+.fxe-scorch{position:absolute; width:96px; height:48px; margin:-14px 0 0 -48px; border-radius:50%; pointer-events:none; z-index:0;
+  background:radial-gradient(ellipse, rgba(28,12,4,.6), rgba(70,26,8,.3) 52%, rgba(70,26,8,0) 72%);}
+.fxe-drop{display:block; width:7px; height:10px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:linear-gradient(#f1fdff, #6cc6ef); box-shadow:0 0 5px rgba(150,220,255,.85);}
+.fxe-ripple{position:fixed; border:2px solid rgba(200,240,255,.95); border-radius:50%; box-sizing:border-box; z-index:1212; box-shadow:0 0 8px rgba(150,215,255,.6);}
+.fxe-column{position:fixed; width:46px; margin-left:-23px; border-radius:45% 45% 12% 12%; transform-origin:50% 100%; z-index:1213;
+  background:linear-gradient(180deg, rgba(236,252,255,.95), rgba(130,205,245,.75) 45%, rgba(70,150,215,0));}
+.fxe-psy{position:fixed; border:2px solid rgba(214,150,255,.95); border-radius:50%; box-sizing:border-box; z-index:1212;
+  box-shadow:0 0 16px rgba(190,110,255,.75), inset 0 0 12px rgba(190,110,255,.5);}
+.fxe-echo{position:fixed; z-index:1214; font-size:30px; line-height:1; transform:translate(-50%, -50%); mix-blend-mode:screen;}
+.fxe-mist{position:fixed; border-radius:50%; z-index:1212; filter:blur(5px); background:radial-gradient(ellipse, rgba(232,240,255,.6), rgba(200,214,240,.28) 45%, rgba(200,214,240,0) 70%);}
+.fxe-wisp{display:block; width:6px; height:6px; border-radius:50%; background:#eef4ff; box-shadow:0 0 8px 3px rgba(190,210,255,.8);}
+`);
+function jLines(canvas, key){ return canvas ? [...canvas.querySelectorAll(`.map-trail-svg [data-a="${key}"], .map-trail-svg [data-b="${key}"]`)] : []; }
+// The tease: the old link from `from` starts inking towards `to`, and stops where the jumper lands.
+function jTease(canvas, from, to, upto){
+  const g = G(); if(!canvas || !from || !to || !g) return {stop(){}, done: Promise.resolve()};
+  const ns = 'http://www.w3.org/2000/svg', svg = document.createElementNS(ns, 'svg'), ln = document.createElementNS(ns, 'line');
+  svg.setAttribute('class', 'fxe-jtease'); svg.setAttribute('viewBox', '0 0 100 100'); svg.setAttribute('preserveAspectRatio', 'none'); svg.setAttribute('aria-hidden', 'true');
+  ln.setAttribute('x1', from.x); ln.setAttribute('y1', from.y); ln.setAttribute('x2', from.x); ln.setAttribute('y2', from.y); svg.appendChild(ln);
+  const t = canvas.querySelector(':scope > .map-trail-svg'); if(t && t.nextSibling) canvas.insertBefore(svg, t.nextSibling); else canvas.appendChild(svg);
+  const o = {p:0}; sound('mapUnroll');
+  const done = new Promise(res=> g.to(o, {p: upto || .55, duration:.75, ease:'power1.inOut', onUpdate:()=>{ ln.setAttribute('x2', from.x + (to.x - from.x)*o.p); ln.setAttribute('y2', from.y + (to.y - from.y)*o.p); }, onComplete:res}));
+  return {done, stop(){ g.to(svg, {opacity:0, duration:.25, onComplete:()=> svg.remove()}); }};
+}
+// The four ways in. Each resolves at its impact; `node` is shown by then.
+const ENTRANCES = {
+  meteor(node, c, g, canvas){
+    const sx = c.x + Math.min(320, innerWidth*.35), sy = c.y - Math.min(340, innerHeight*.45), ang = Math.atan2(c.y - sy, c.x - sx), len = Math.hypot(c.x - sx, c.y - sy);
+    const m = layer('fxe-meteor'), tail = layer('fxe-mtail');
+    tail.style.transform = `rotate(${ang*57.2958 + 180}deg)`;
+    sound('boom');
+    return new Promise(res=> g.timeline({onComplete:res})
+      .fromTo(m, {left:sx, top:sy, scale:.6}, {left:c.x, top:c.y, scale:1.1, duration:.62, ease:'power2.in'})
+      .fromTo(tail, {left:sx, top:sy, width:20}, {left:c.x, top:c.y, width:Math.min(220, len*.7), duration:.62, ease:'power2.in'}, 0)
+      .add(()=>{
+        m.remove(); tail.remove(); sound('siegeTone');
+        const f = layer('fxe-flash'); Object.assign(f.style, {left:(c.x - 90) + 'px', top:(c.y - 90) + 'px', width:'180px', height:'180px'});
+        g.fromTo(f, {scale:.2, opacity:1}, {scale:1.4, opacity:0, duration:.55, ease:'power2.out', onComplete:()=> f.remove()});
+        ring(c.x, c.y, '#ffb05a', 150, .7); later(()=> ring(c.x, c.y, '#ffd99a', 230, .8), 90);
+        burst(c.x, c.y, ['🪨', '🔥', '✨', '🪨', '🔥'], {n:12, dist:80, dur:.8, lift:-18, fall:26});
+        if(canvas && !canvas.classList.contains('tut-zoom')) g.fromTo(canvas, {x:-5}, {x:0, duration:.45, ease:'elastic.out(1.4, .25)', clearProps:'transform'});
+        if(canvas){ const sc = document.createElement('i'); sc.className = 'fxe-scorch'; sc.setAttribute('aria-hidden', 'true'); sc.style.left = node.style.left; sc.style.top = node.style.top; canvas.insertBefore(sc, canvas.firstChild);
+          g.to(sc, {opacity:0, duration:1.4, delay:2.6, onComplete:()=> sc.remove()}); }
+        node.classList.remove('fxe-j-hold'); const ico = node.querySelector('.map-node-ico');
+        g.fromTo(node, {opacity:0}, {opacity:1, duration:.15}); if(ico) g.fromTo(ico, {scale:.2, y:-14}, {scale:1, y:0, duration:.55, ease:'back.out(2.6)', clearProps:'transform'});
+      }));
+  },
+  splash(node, c, g){
+    const ico = node.querySelector('.map-node-ico');
+    for(let i = 0; i < 3; i++) later(()=>{ const r = layer('fxe-ripple'); Object.assign(r.style, {left:(c.x - 40) + 'px', top:(c.y - 10) + 'px', width:'80px', height:'26px'});
+      g.fromTo(r, {scale:.2, opacity:1}, {scale:2.2 + i*.4, opacity:0, duration:1, ease:'power2.out', onComplete:()=> r.remove()}); }, i*160);
+    const col = layer('fxe-column'); Object.assign(col.style, {left:c.x + 'px', top:(c.y - 96) + 'px', height:'110px'});
+    sound('splash');
+    return new Promise(res=> g.timeline({onComplete:res})
+      .fromTo(col, {scaleY:0, opacity:.9}, {scaleY:1, duration:.32, ease:'power3.out'}, .15)
+      .add(()=>{
+        burst(c.x, c.y - 30, [{t:'\u200b', cls:'fxe-drop'}], {n:16, dist:70, dur:.75, lift:-30, fall:40, from:-Math.PI, spread:Math.PI});
+        node.classList.remove('fxe-j-hold'); g.fromTo(node, {opacity:0}, {opacity:1, duration:.2});
+        if(ico) g.fromTo(ico, {y:26, scale:.7}, {y:0, scale:1, duration:.6, ease:'back.out(2.2)', clearProps:'transform'});
+        sound('splash');
+      })
+      .to(col, {scaleY:0, opacity:0, duration:.45, ease:'power2.in', onComplete:()=> col.remove()}, '+=.08'));
+  },
+  psychic(node, c, g){
+    const ico = node.querySelector('.map-node-ico'), txt = ico ? ico.textContent : '❔';
+    sound('nightSwell');
+    for(let i = 0; i < 3; i++){ const r = layer('fxe-psy'); Object.assign(r.style, {left:(c.x - 60) + 'px', top:(c.y - 60) + 'px', width:'120px', height:'120px'});
+      g.fromTo(r, {scale:2.6, opacity:0}, {scale:.3, opacity:.95, duration:.8, delay:i*.18, ease:'power2.in', onComplete:()=> g.to(r, {opacity:0, duration:.18, onComplete:()=> r.remove()})}); }
+    const ech = [['#ff6bd6', -34], ['#6be8ff', 34]].map(([col, dx])=>{ const e = layer('fxe-echo', txt); Object.assign(e.style, {left:(c.x + dx) + 'px', top:c.y + 'px', color:col, textShadow:`0 0 10px ${col}`}); return {e, dx}; });
+    return new Promise(res=> g.timeline({onComplete:res})
+      .fromTo(ech.map(o=> o.e), {opacity:0}, {opacity:.75, duration:.35}, .1)
+      .to(ech.map(o=> o.e), {left:c.x, duration:.75, ease:'power2.inOut'}, .2)
+      .add(()=>{
+        ech.forEach(o=> o.e.remove()); node.classList.remove('fxe-j-hold');
+        g.fromTo(node, {opacity:0, filter:'blur(6px) hue-rotate(80deg) saturate(2)'}, {opacity:1, filter:'blur(0px) hue-rotate(0deg) saturate(1)', duration:.7, ease:'power2.out', clearProps:'filter'});
+        ring(c.x, c.y, '#d08cff', 130, .6); sound('unlockChime');
+      }, .95));
+  },
+  ghost(node, c, g){
+    sound('nightSwell');
+    for(let i = 0; i < 2; i++){ const m = layer('fxe-mist'); Object.assign(m.style, {left:(c.x - 70 + i*20) + 'px', top:(c.y - 30) + 'px', width:'120px', height:'64px'});
+      g.timeline({onComplete:()=> m.remove()}).fromTo(m, {scale:.4, opacity:0, x:-10}, {scale:1.2, opacity:1, x:10, duration:.9, ease:'sine.out', delay:i*.2}).to(m, {opacity:0, y:-24, duration:1, ease:'sine.in'}); }
+    burst(c.x, c.y, [{t:'\u200b', cls:'fxe-wisp'}], {n:8, dist:40, dur:1.4, lift:-36, fall:-10});
+    node.classList.remove('fxe-j-hold');
+    return new Promise(res=> g.timeline({onComplete:res})
+      .fromTo(node, {opacity:0, filter:'grayscale(1) brightness(1.6) blur(3px)'}, {opacity:.45, duration:.35})
+      .to(node, {opacity:.12, duration:.18}).to(node, {opacity:.7, duration:.25}).to(node, {opacity:.3, duration:.15})
+      .to(node, {opacity:1, filter:'grayscale(0) brightness(1) blur(0px)', duration:.6, ease:'sine.out', clearProps:'filter'}));
+  },
+};
+M.JUMPER_ENTRANCES = Object.keys(ENTRANCES);
+M.jumperArrive = async function(node, kind, opts){
+  opts = opts || {}; const g = G(); if(!node || !g) return;
+  const canvas = opts.canvas || canvasOf(node), key = keyOf(node), lines = jLines(canvas, key);
+  // whatever already stands on its spot (the pawn walking to the next open fight, a lantern pool) waits with it
+  const nx = parseFloat(node.style.left), ny = parseFloat(node.style.top), near = canvas ? [...canvas.children].filter(e=> e !== node && e.style && e.style.left && Math.abs(parseFloat(e.style.left) - nx) < 3 && Math.abs(parseFloat(e.style.top) - ny) < 4) : [];
+  node.classList.add('fxe-j-hold'); lines.forEach(l=> l.style.opacity = '0'); near.forEach(e=> e.style.visibility = 'hidden');
+  const unhold = ()=> near.forEach(e=>{ e.style.visibility = ''; if(g) g.fromTo(e, {opacity:0}, {opacity:1, duration:.5, clearProps:'opacity'}); });
+  const show = ()=>{ node.classList.remove('fxe-j-hold'); lines.forEach(l=> l.style.opacity = ''); unhold(); };
+  try{
+    await wait(opts.delay == null ? 900 : opts.delay);
+    if(!node.isConnected){ show(); return; }
+    const np = {x: parseFloat(node.style.left), y: parseFloat(node.style.top)}, from = opts.from, to = opts.to;
+    // the old link reaches about as far as where the jumper lands (its point on the old line)
+    let upto = .55; if(from && to && isFinite(np.x)){ const dx = to.x - from.x, dy = to.y - from.y, L2 = dx*dx + dy*dy || 1; upto = Math.max(.3, Math.min(.85, ((np.x - from.x)*dx + (np.y - from.y)*dy) / L2)); }
+    const tease = jTease(canvas, from, to, upto); await tease.done;
+    await (ENTRANCES[kind] || ENTRANCES.meteor)(node, centre(node), g, canvas);
+    tease.stop(); unhold();
+    await wait(250);
+    lines.forEach(l=>{ l.style.transition = 'opacity .5s ease'; l.style.opacity = '1'; later(()=>{ l.style.transition = ''; l.style.opacity = ''; }, 600); });
+  }catch(e){ show(); }
+};
+M.hooks.mapJumperArrive = function(node, kind, opts, env){ if(!env.fxAtLeast('low')) return; M.jumperArrive(node, kind, opts); };
+// Night lifting on the battlefield: the veil fades (arena_app.js syncNightVeil) and the morning light drifts across.
+M.hooks.fieldNightLifts = function(bf, env){ if(env.fxAtLeast('med')) M.nightRetreat(bf, {n:7}); };
 
 })(typeof window !== 'undefined' ? window : globalThis);
