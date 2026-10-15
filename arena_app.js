@@ -31172,6 +31172,38 @@ function witherSmokeVfx(el){
     if(!hasGsap() || reducedMotion()){ setTimeout(()=> p.remove(), 500); continue; }
     gsap.fromTo(p, {y:0, opacity:.85, scale:.6}, {y:-40 - Math.random()*30, x:(Math.random()*2 - 1)*14, opacity:0, scale:1.4, duration:.9 + Math.random()*.4, delay:i*0.08, ease:'power1.out', onComplete:()=> p.remove()}); }
 }
+// 2026-10-15 (Effects Lab framework): the six effect batches (bramblewood-fx-a.js … -f.js = window.FX.A … FX.F) hook into the
+// game through these two calls only, so six batches never edit the same lines. See docs/effects-lab-contract.md.
+//   FX.X.onEvent(ev, env)       every replayed battle event (from renderVfxForEvent, after the built-in passes)
+//   FX.X.hooks.name(...a, env)  a named non-battle moment: fxHook('mapNodeCleared', nodeEl) at the spot in this file
+// Both are skipped with reduced motion or Effects "none", never throw, and never hold up the replay (fire and forget).
+const FX_BATCHES = ['A', 'B', 'C', 'D', 'E', 'F'];
+function fxEnv(){
+  return {
+    el: uid=> uid == null ? null : boardCardEl(uid),                       // the .board-card wrapper of a unit
+    tile: uid=>{ const e = uid == null ? null : boardCardEl(uid); return e ? (e.querySelector('.card-tile') || e) : null; },
+    defs: getCardDefs(), fxOf: id=> ((getCardDefs()[id]||{}).effects)||{},
+    battlefield: document.getElementById('battlefieldEl'),
+    at: (ms, fn)=> setTimeout(()=>{ try{ fn(); }catch(e){} }, Math.max(0, ms|0)),
+    once: key=> skillFxOnce(key),                                          // true the first time per round
+    fxAtLeast, reduced: reducedMotion(), level: fxLevel(),
+    hitAtMs: ev=>{ try{ return eighthHitAtMs(ev); }catch(e){ return 300; } },  // when this hit's impact lands on screen
+    sound: (name, ...a)=>{ try{ if(typeof SoundKit !== 'undefined' && SoundKit[name]) SoundKit[name](...a); }catch(e){} },
+    match: matchState,
+  };
+}
+function fxBatchVfx(ev){
+  const FX = window.FX; if(!FX || !ev || reducedMotion() || fxLevel() === 'none') return;
+  let env = null;
+  FX_BATCHES.forEach(k=>{ const M = FX[k]; if(!M || typeof M.onEvent !== 'function') return;
+    try{ M.onEvent(ev, env || (env = fxEnv())); }catch(e){ if(window.__fxDebug) console.warn('FX.' + k + '.onEvent', e); } });
+}
+function fxHook(name, ...args){
+  const FX = window.FX; if(!FX || reducedMotion() || fxLevel() === 'none') return;
+  let env = null;
+  FX_BATCHES.forEach(k=>{ const h = FX[k] && FX[k].hooks && FX[k].hooks[name]; if(typeof h !== 'function') return;
+    try{ h(...args, env || (env = fxEnv())); }catch(e){ if(window.__fxDebug) console.warn('FX.' + k + '.hooks.' + name, e); } });
+}
 function renderVfxForEvent(ev){
   try{ noteFieldEvent(ev); }catch(e){}
   try{ bigBlowShake(ev); }catch(e){} // screen shake for big arrivals and heavy hits (2026-10-14)
@@ -31180,6 +31212,7 @@ function renderVfxForEvent(ev){
   try{ labSkillFx(ev); }catch(e){}
   try{ ninthPassVfx(ev); }catch(e){} // the Bolts and Chilli (2026-10-15)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
+  try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
   if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum','chilli'].includes(ev.kind)){ // + Chilli (2026-10-15)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];

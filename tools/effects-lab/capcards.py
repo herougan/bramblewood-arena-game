@@ -14,7 +14,7 @@ async def main():
           for(const [k,[id,rar]] of Object.entries(sel)){ if(!id) continue; const dd=Object.assign({}, d[id], rar?{rarity:rar}:{}); res[k]={id, name:dd.name, rarity:dd.rarity, plain: cardTileHTML(dd, {inPlay:true}), holo: cardTileHTML(dd, {inPlay:true, extraClass: holoClass(dd)})}; }
           const castle=Object.values(CHARACTER_DEFS)[0]; res.castle={plain: matchCastleTileHTML(castle, 30, 30, 'preview','')};
           return res; })()""")
-        json.dump(out, open('/home/claude/bramblewood-arena-game/.fxcat/cards.json','w'))
+        json.dump(out, open(__import__('os').path.join(__import__('os').path.dirname(__import__('os').path.abspath(__file__)), '..', '..', '.fxcat', 'cards.json'),'w'))  # 2026-10-15: this repo's .fxcat, not the main checkout's
         print({k:(v.get('id'),v.get('rarity')) for k,v in out.items()})
         await b.close()
 asyncio.run(main())

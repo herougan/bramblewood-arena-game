@@ -19,6 +19,23 @@ procfx=open(f'{ROOT}/bramblewood-procfx.js').read()
 # the crit stamp, feathers and the new damage-number bursts.
 gsap=open(f'{ROOT}/gsap.min.js').read().replace('</script','<\\/script')
 gsapflip=open(f'{ROOT}/Flip.min.js').read().replace('</script','<\\/script')
+# ---- 2026-10-15: the Effects catalogue (every inventory entry + FXLAB registrations; docs/effects-lab-contract.md) ----
+LAB = os.path.dirname(os.path.abspath(__file__))
+unitfx = open(f'{ROOT}/bramblewood-unitfx.js').read()
+# the six effect batches, exactly as the game bundles them (assemble_arena.py)
+fxbatches = '\n'.join(open(f'{ROOT}/bramblewood-fx-{b}.js', encoding='utf-8').read() for b in 'abcdef')
+_inv = json.load(open(f'{ROOT}/docs/effects-inventory-2026-10-15.json', encoding='utf-8'))
+_INV_KEYS = ['id', 'area', 'name', 'trigger', 'current', 'quality', 'priority', 'themeNotes', 'variantsSuggested', 'future', 'batch']
+inventory_js = json.dumps([{k: e.get(k) for k in _INV_KEYS} for e in _inv], ensure_ascii=False, separators=(',', ':'))
+fixtures_js = open(f'{LAB}/fixtures.json', encoding='utf-8').read()  # the game's own markup (capstages.py)
+fxcore = open(f'{LAB}/fxlab-core.js', encoding='utf-8').read()
+fxcatalogue = open(f'{LAB}/fxlab-catalogue.js', encoding='utf-8').read()
+# every manifest file, in name order (_existing.js first, then a.js … f.js)
+_mdir = f'{LAB}/manifest'
+_scr = lambda s: s.replace('</script', '<\\/script')
+# one <script> per manifest, so a syntax error in one batch's file can't take the others down
+manifests = '\n'.join(f'<script>// ---- manifest/{f} ----\n' + _scr(open(os.path.join(_mdir, f), encoding='utf-8').read()) + '\n</script>' for f in sorted(os.listdir(_mdir)) if f.endswith('.js'))
+inventory_js, fixtures_js, fxcore, fxcatalogue, fxbatches, unitfx = map(_scr, [inventory_js, fixtures_js, fxcore, fxcatalogue, fxbatches, unitfx])
 C=lambda k,v='plain': cards[k][v]
 page_css = r'''
 /* Effects Lab — the game's own stylesheet above, plus this page's layout. */
@@ -105,6 +122,105 @@ html body{background:var(--bg) !important; background-image:none !important;} bo
 .pfx-scrub{width:100%; accent-color:#e0a63a;}
 .pfx-scrubrow{display:flex; align-items:center; gap:8px; font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
 @media (max-width:560px){ .bf-lab{height:300px;} .bf-lab .bf-cards .card-tile{width:72px !important; height:90px !important;} }
+/* ---- Effects catalogue (2026-10-15): every inventory entry, the stage dock, filters, coverage ---- */
+html, body{overflow-x:hidden;}
+.lab nav.toc button[data-tab="catalogue"]{font-weight:800;}
+.fxl-cov{background:var(--surface); border:1px solid var(--surface-border); border-radius:14px; padding:10px 14px; margin:0 0 10px;}
+.fxl-covtop{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; font-size:14px; color:var(--ink);}
+.fxl-covtop b{font:800 20px 'Baloo 2',system-ui,sans-serif;} .fxl-pct{font-weight:800; color:var(--ink-muted);} .fxl-covnote{font-size:12.5px; color:var(--ink-muted);}
+.fxl-covbar{flex:1 1 160px; min-width:80px; height:8px; border-radius:99px; background:var(--surface-3, var(--surface-2)); overflow:hidden; display:block;}
+.fxl-covbar i{display:block; height:100%; background:linear-gradient(90deg,#2f7d3a,#6cbf4a); border-radius:inherit;}
+.fxl-covareas summary{cursor:pointer; font:700 12.5px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); margin-top:6px;}
+.fxl-covgrid{display:grid; grid-template-columns:repeat(auto-fill, minmax(230px,1fr)); gap:4px 14px; margin-top:6px;}
+.fxl-covarea{display:grid; grid-template-columns:minmax(0,1fr) 70px 52px; align-items:center; gap:8px; font-size:12px; text-align:left; background:none; border:0; padding:3px 4px; color:var(--ink); cursor:pointer; border-radius:6px;}
+.fxl-covarea:hover{background:var(--surface-2);} .fxl-covarea span:last-child{text-align:right; color:var(--ink-muted); font-variant-numeric:tabular-nums;}
+.fxl-problems{border:1px solid #b5651d; background:color-mix(in srgb, #b5651d 12%, var(--surface)); color:var(--ink); border-radius:12px; padding:8px 12px; font-size:12.5px; margin-bottom:10px;}
+.fxl-problems ul{margin:4px 0 0; padding-left:18px;}
+.fxl-views{display:flex; gap:6px; margin:4px 0 10px; flex-wrap:wrap;}
+.fxl-views button{cursor:pointer; font:700 13px 'Baloo 2',system-ui,sans-serif; padding:5px 12px; border-radius:999px; background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
+.fxl-views button[aria-selected=true]{background:var(--ink); color:var(--bg);} .fxl-n{opacity:.7; font-weight:600;}
+.fxl-layout{display:grid; grid-template-columns:minmax(0,1fr) minmax(340px,46%); gap:16px; align-items:start;}
+.fxl-left{min-width:0;}
+.fxl-tools{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-bottom:8px;}
+.fxl-tools input, .fxl-tools select{font:inherit; font-size:13px; padding:6px 9px; border-radius:9px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink); min-width:0;}
+.fxl-tools input{flex:1 1 220px;} .fxl-tools select{flex:0 1 auto; max-width:100%;}
+#fxlShown{font-size:12px; color:var(--ink-muted); margin-left:auto;}
+.fxl-area{border:1px solid var(--surface-border); border-radius:12px; background:var(--surface); margin-bottom:6px;}
+.fxl-area > summary{display:flex; align-items:center; gap:8px; padding:8px 10px; cursor:pointer; list-style:none; flex-wrap:wrap;}
+.fxl-area > summary::-webkit-details-marker{display:none;}
+.fxl-area > summary::before{content:'▸'; color:var(--ink-muted); width:10px;} .fxl-area[open] > summary::before{content:'▾';}
+.fxl-aname{font:800 15px 'Baloo 2',system-ui,sans-serif; color:var(--ink);} .fxl-acount{font-size:12px; color:var(--ink-muted); font-variant-numeric:tabular-nums;}
+.fxl-abar{width:70px; height:6px; border-radius:9px; background:var(--surface-2); overflow:hidden; display:inline-block;} .fxl-abar i{display:block; height:100%; background:#4f9a3a;}
+.fxl-abatch{font:800 10.5px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); border:1px solid var(--surface-border); border-radius:6px; padding:0 5px;}
+.fxl-all{margin-left:auto;} .fxl-all.is-running{background:#a33; color:#fff;}
+.fxl-rows{border-top:1px solid var(--surface-border);}
+.fxl-row{display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:4px 10px; align-items:center; padding:7px 10px; border-bottom:1px solid var(--surface-border);}
+.fxl-row:last-child{border-bottom:0;} .fxl-row[hidden]{display:none;}
+.fxl-main{min-width:0;}
+.fxl-name{all:unset; cursor:pointer; font-weight:700; font-size:13.5px; color:var(--ink);} .fxl-name:hover, .fxl-name:focus-visible{text-decoration:underline;}
+.fxl-id{font:600 10.5px ui-monospace,Menlo,monospace; color:var(--ink-muted); margin-left:6px; overflow-wrap:anywhere;}
+.fxl-trig{font-size:11.5px; color:var(--ink-muted); line-height:1.35; overflow-wrap:anywhere;}
+.fxl-meta{display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end;}
+.fxl-q, .fxl-tag{font:800 10px 'Baloo 2',system-ui,sans-serif; padding:1px 7px; border-radius:99px; white-space:nowrap; text-transform:uppercase; letter-spacing:.03em;}
+.q-good{background:#2f7d3a; color:#fff;} .q-basic{background:#b98a1d; color:#1d1606;} .q-missing{background:#a8432f; color:#fff;} .q-broken{background:#6d1fa8; color:#fff;} .q-future{background:#2d5d93; color:#fff;}
+.fxl-tag{background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
+.fxl-play{display:flex; gap:4px; justify-content:flex-end; min-width:92px;}
+.fxl-pb{cursor:pointer; font:800 12px 'Baloo 2',system-ui,sans-serif; padding:3px 9px; border-radius:8px; border:1px solid var(--accent-strong, #2f7d3a); background:var(--accent, #3e8f48); color:var(--accent-ink, #fff); white-space:nowrap;}
+.fxl-pb:hover{filter:brightness(1.1);} .fxl-pb.is-playing{outline:2px solid #ffd56e; outline-offset:1px;}
+.fxl-nb{font-size:11px; color:var(--ink-muted); font-style:italic; white-space:nowrap;}
+.fxl-more{grid-column:1 / -1; font-size:12px; color:var(--ink); background:var(--surface-2); border-radius:8px; padding:6px 9px; display:grid; gap:3px;}
+.fxl-more[hidden]{display:none;} .fxl-more b{color:var(--ink-muted); margin-right:4px;}
+.fxl-vgrid{display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:10px;}
+.fxl-vcard{background:var(--surface); border:1px solid var(--surface-border); border-radius:12px; padding:10px 12px; display:flex; flex-direction:column; gap:6px;}
+.fxl-vcard h3{margin:0; font:800 15px 'Baloo 2',system-ui,sans-serif; display:flex; gap:6px; align-items:center; justify-content:space-between;}
+.fxl-vcard p{margin:0; font-size:12.5px; color:var(--ink-muted);}
+.fxl-vbtns{display:flex; flex-direction:column; gap:5px;} .fxl-vb{text-align:left; white-space:normal;}
+.fxl-empty{color:var(--ink-muted);}
+.fxl-dock{position:sticky; top:var(--fxl-top, 58px); background:var(--surface); border:1px solid var(--surface-border); border-radius:14px; padding:8px; display:flex; flex-direction:column; gap:8px; max-height:calc(100vh - var(--fxl-top, 58px) - 12px); overflow:auto;}
+.fxl-dockbar{display:flex; align-items:flex-start; gap:8px;}
+.fxl-now{flex:1; font-size:13px; color:var(--ink); min-height:34px;} .fxl-now span{display:block; font:600 10.5px ui-monospace,Menlo,monospace; color:var(--ink-muted);}
+.fxl-x{display:none; cursor:pointer; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); border-radius:8px; width:32px; height:32px; font-size:15px;}
+.fxl-frame{position:relative; min-height:240px; border-radius:12px; overflow:hidden; background:#1f2a18; isolation:isolate;}
+.fxl-frame:empty::after{content:'The stage appears here'; position:absolute; inset:0; display:grid; place-items:center; color:#cfc6a8; font:700 13px 'Baloo 2',system-ui,sans-serif;}
+.fxl-speed{display:flex; gap:6px; align-items:center; flex-wrap:wrap; font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
+.fxl-speed button{cursor:pointer; font:800 12px 'Baloo 2',system-ui,sans-serif; padding:3px 10px; border-radius:99px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink);}
+.fxl-speed button[aria-pressed=true]{background:var(--ink); color:var(--bg);} #fxlReplay{margin-left:auto;}
+/* stages */
+.fxl-stage{position:relative; overflow:hidden;}
+.fxl-stage-cards{min-height:240px; display:flex; align-items:center; justify-content:center; padding:26px 8px; background:radial-gradient(ellipse at 50% 40%, #3a4d2c, #1f2a18);}
+.fxl-cardrow{display:flex; gap:8px; align-items:center; justify-content:center; flex-wrap:wrap; perspective:800px;}
+.fxl-cardrow .board-card{position:relative; width:90px; height:112px; flex:none;}
+.fxl-cardrow .card-tile{width:90px !important; height:112px !important; margin:0;}
+.fxl-stage-board, .fxl-stage-map, .fxl-stage-pack{background:#1b2314;}
+.fxl-app{padding:8px 0 !important; margin:0 !important; max-width:none !important;}
+.fxl-app .content-wrap{padding:0 !important; margin:0 !important; max-width:none !important;}
+.fxl-app #view-play{display:block !important; position:relative;}
+.fxl-maplayout{position:relative !important; inset:auto !important; left:auto !important; top:auto !important; z-index:0 !important; display:block !important; overflow:hidden; background-size:auto, auto, cover, auto;}
+.fxl-maplayout .conquest-main{position:relative; width:100%; height:100%; overflow:hidden !important; padding:0 !important; margin:0 !important;}
+.fxl-maplayout .conquest-map-canvas{position:absolute !important; inset:0 !important; width:100% !important; height:100% !important; min-height:0 !important; margin:0 !important;}
+.fxl-packwrap{position:relative; overflow:hidden;}
+.fxl-po{position:absolute !important; inset:0 !important; z-index:0 !important; padding:24px 12px 12px !important; overflow:hidden !important;}
+.fxl-po .po2-top{position:absolute !important;} .fxl-po .po2-pack{--pw:200px !important;} .fxl-po .po2-deck{--cw:230px !important;}
+.fxl-ui{display:flex; flex-direction:column; align-items:center; gap:14px; padding:14px 10px 70px; position:relative; min-height:300px; background:radial-gradient(ellipse at 50% 30%, #3a4d2c, #1f2a18);}
+.fxl-hud{display:flex; flex-wrap:wrap; gap:6px; justify-content:center;}
+.fxl-results{position:relative !important; width:min(100%, 320px) !important; margin:0 !important; transform:none !important; padding:16px 14px !important; overflow:hidden;}
+.fxl-toasts{position:absolute !important; left:50% !important; bottom:10px !important; top:auto !important; width:min(92%, 360px) !important;}
+.fxl-screen{height:300px; position:relative; background:linear-gradient(rgba(10,14,8,.35), rgba(10,14,8,.6)), url(assets/maps/m1.png) center/cover; image-rendering:pixelated;}
+.fxl-screen-cap{position:absolute; left:10px; top:8px; font:800 11px 'Baloo 2',system-ui,sans-serif; color:#e8dfc2; opacity:.7; text-transform:uppercase; letter-spacing:.08em;}
+.fxl-layer{position:absolute; inset:0; pointer-events:none; z-index:20;}
+@media (max-width:760px){
+  .fxl-layout{grid-template-columns:minmax(0,1fr);}
+  .fxl-dock{position:fixed; left:0; right:0; bottom:0; top:auto; z-index:900; border-radius:16px 16px 0 0; max-height:62vh; transform:translateY(105%); transition:transform .25s ease; box-shadow:0 -10px 30px rgba(0,0,0,.35); border-bottom:0;}
+  .fxl-dock.is-open{transform:none;}
+  .fxl-x{display:block;}
+  body.fxl-dock-open .lab{padding-bottom:64vh;}
+  .fxl-row{grid-template-columns:minmax(0,1fr) auto; }
+  .fxl-meta{grid-column:1; justify-content:flex-start;} .fxl-play{grid-column:2; grid-row:1 / span 2; flex-direction:column; min-width:0;}
+  .fxl-tools select{flex:1 1 140px;}
+  #fxlShown{margin-left:0;}
+  .fxl-cardrow{gap:6px;} .fxl-cardrow .board-card{width:62px; height:78px;} .fxl-cardrow .card-tile{width:62px !important; height:78px !important;}
+  .fxl-abar{display:none;}
+}
 '''
 TREATS = [('', 'No foil', 'The everyday print.', 'live'),
   ('holo-pearl', 'Pearl', 'A soft pastel sheen. Rare to Super Rare.', 'live'),
@@ -152,9 +268,37 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
   <p class="lede">Every animation, light, shader and sound in the game so far, live. Cards here use the game's own stylesheet and art. Hover the foil cards, press the buttons, and use headphones for the sound section. Status: <span class="st live">Live</span> in the game, <span class="st part">Partly</span> built, <span class="st idea">Idea</span> not built yet.</p>
 </header>
 <nav class="toc" role="tablist" aria-label="Effects">
-  <button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="procfx">Procedural FX</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
+  <button type="button" role="tab" data-tab="catalogue">📚 Catalogue</button><button type="button" role="tab" data-tab="skills">Skills</button><button type="button" role="tab" data-tab="procfx">Procedural FX</button><button type="button" role="tab" data-tab="music">Music</button><button type="button" role="tab" data-tab="cardnew">Card ideas</button><button type="button" role="tab" data-tab="displays">Card displays</button><button type="button" role="tab" data-tab="treatments">Foils</button><button type="button" role="tab" data-tab="numbers">Damage numbers</button><button type="button" role="tab" data-tab="cards">Cards</button><button type="button" role="tab" data-tab="combat">Combat</button><button type="button" role="tab" data-tab="battlefield">Battlefield</button><button type="button" role="tab" data-tab="screens">Screens &amp; atmosphere</button><button type="button" role="tab" data-tab="sound">Sound</button><button type="button" role="tab" data-tab="ambience">Ambience</button><button type="button" role="tab" data-tab="tbc">Coming next</button><button type="button" role="tab" data-tab="all">Full list</button>
 </nav>
 
+<section id="catalogue"><h2>Effects catalogue</h2>
+<p class="sec-sub">Every effect moment in the game, built or planned: the {len(_inv)} entries of the effects inventory, grouped by area. Press ▶ A, B or C to play a variant on its stage (cards, board, map, pack, UI or screen). Rows that say “not built yet” are waiting for their batch. The other tabs are the earlier showcase pages.</p>
+<div id="fxlCov" class="fxl-cov"></div>
+<div id="fxlProblems" class="fxl-problems" hidden></div>
+<div class="fxl-views" role="tablist" aria-label="Catalogue view"><button type="button" role="tab" data-view="list" aria-selected="true">All effects <span class="fxl-n">{len(_inv)}</span></button><button type="button" role="tab" data-view="variants" aria-selected="false">Variants to choose <span class="fxl-n">0</span></button></div>
+<div class="fxl-layout">
+  <div class="fxl-left">
+    <div id="fxlListView">
+      <div class="fxl-tools" role="search">
+        <input type="search" id="fxlQ" placeholder="Search name, id or trigger" aria-label="Search effects">
+        <select id="fxlArea" aria-label="Area"></select>
+        <select id="fxlQual" aria-label="Quality"><option value="">Any quality</option><option value="good">Good</option><option value="basic">Basic</option><option value="missing">Missing</option><option value="broken">Broken</option><option value="future">Future</option></select>
+        <select id="fxlVars" aria-label="Variants"><option value="">Variants: any</option><option value="suggested">Variants suggested</option><option value="registered">Has 2+ variants</option></select>
+        <select id="fxlBuilt" aria-label="Built"><option value="">Built or not</option><option value="built">Built in the lab</option><option value="todo">Not built yet</option></select>
+        <select id="fxlFut" aria-label="Future"><option value="">Now and future</option><option value="hide">Hide future</option><option value="only">Future only</option></select>
+        <button type="button" class="btn small ghost" id="fxlClear">Clear</button><span id="fxlShown"></span>
+      </div>
+      <div id="fxlList"></div>
+    </div>
+    <div id="fxlVariants" hidden></div>
+  </div>
+  <aside id="fxlDock" class="fxl-dock" aria-label="Stage">
+    <div class="fxl-dockbar"><div id="fxlNow" class="fxl-now" aria-live="polite">Press ▶ on any built effect.</div><button type="button" id="fxlDockClose" class="fxl-x" aria-label="Close the stage">✕</button></div>
+    <div id="fxlFrame" class="fxl-frame"></div>
+    <div class="fxl-speed">Speed <button type="button" data-speed="1" aria-pressed="true">1×</button><button type="button" data-speed="0.5" aria-pressed="false">0.5×</button><button type="button" data-speed="0.25" aria-pressed="false">0.25×</button><button type="button" id="fxlReplay">↻ Replay</button></div>
+  </aside>
+</div>
+</section>
 
 <section id="skills"><h2>Combat skills <span class="st idea" style="vertical-align:middle">new</span></h2><p class="sec-sub">Choreographed skill effects. Arrow and Fire Arrow are now live in the game with this exact animation: the archer draws (leans back while the arrow is pulled along the line of fire), releases with a snap-forward recoil and a bowstring ring, the arrow arcs and accelerates, then sticks and quivers as the target is knocked back. The rest are new prototypes for skills we have, ready to wire in.</p>
 <div class="skill-arena" id="skillArena">
@@ -440,6 +584,21 @@ const MATERIA_KINDS = [{{id:'ember', icon:'🔥', name:'Ember'}}, {{id:'tide', i
 </script>
 <script>window.TREAT_CARDS = {TREAT_JSON};</script>
 <script src="effects-lab.js"></script>
+<script>
+// 2026-10-15: Effects catalogue. The game's unit effects and the six effect batches (FX.A … FX.F), then the inventory,
+// the stage fixtures, the FXLAB core, every manifest (registrations) and the catalogue page.
+{unitfx}
+{fxbatches}
+window.FXLAB_INVENTORY = {inventory_js};
+window.FXLAB_FIXTURES = {fixtures_js};
+</script>
+<script>
+{fxcore}
+</script>
+{manifests}
+<script>
+{fxcatalogue}
+</script>
 '''
 rep={'{TREAT_OPTS}':TREAT_OPTS,'{TREAT_CARDS}':treat_cards('legendary'),'{TREAT_JSON}':TREAT_JSON,'{SK_T1}':C('common'),'{SK_T2}':C('bee'),'{SK_T3}':C('ant'),'{SK_ALLY1}':C('rare'),'{SK_SHOOTER}':C('epic'),'{SK_ALLY2}':C('fire'),
  '{C_SLAM}':C('bee'),'{C_WAIT}':C('common'),'{C_B1}':C('rare'),'{C_B2}':C('epic'),'{C_B3}':C('ant'),'{C_SHINE}':C('legendary'),'{C_READY}':C('fire'),'{C_CRIT}':C('ant'),'{C_LOW}':C('rare'),'{C_DRAG}':C('legendary'),'{C_THRONE}':C('epic'),'{C_DRAW}':C('fire'),'{C_P1}':"<div class='board-card' style='position:relative'>"+C('bee')+"</div>",'{C_P2}':"<div class='board-card' style='position:relative'>"+C('ant')+"</div>",'{C_P3}':"<div class='board-card' style='position:relative'>"+C('common')+"</div>",'{C_W1}':C('rare'),'{C_W2}':C('legendary'),'{C_W3}':C('bee'),'{C_CASTLE2}':C('castle'),'{C_LVL}':C('epic'),'{C_UNLOCK}':C('legendary'),'{C_D1}':C('common'),'{C_D2}':C('fire'),'{C_D3}':C('bee'),'{C_CASTLE}':C('castle').replace('">', '"><div class="castle-cracks" aria-hidden="true"></div>', 1)}
@@ -456,3 +615,13 @@ print(len(html))
 # 2026-10-10: the page loads effects-lab.js from beside it; copy the source so the hub never serves a stale one.
 import shutil as _sh
 _sh.copy(f'{ROOT}/tools/effects-lab/effects-lab.js', f'{ROOT}/.fxcat/effects-lab.js')
+# 2026-10-15: the catalogue's stages show the game's own art (card art, the castle, the map ground, the pack art), so every
+# asset the fixtures point at is copied from the game's assets/ beside the page (.fxcat/assets/ → the hub root).
+_need = set(re.findall(r'assets/((?:cards|castles|maps|fx|tex)/[\w.-]+?\.(?:png|webp|jpg|jpeg|gif|svg))', fixtures_js)) | {'maps/m1.png'}
+_copied = 0
+for _rel in sorted(_need):
+    _src, _dst = f'{ROOT}/assets/{_rel}', f'{ROOT}/.fxcat/assets/{_rel}'
+    if not os.path.exists(_src): continue
+    if os.path.exists(_dst) and os.path.getsize(_dst) == os.path.getsize(_src): continue
+    os.makedirs(os.path.dirname(_dst), exist_ok=True); _sh.copy(_src, _dst); _copied += 1
+print('catalogue:', len(_inv), 'entries;', _copied, 'assets copied;', sum(os.path.getsize(os.path.join(dp, f)) for dp, _, fs in os.walk(f'{ROOT}/.fxcat') for f in fs if not f.endswith(('effects-test.html', 'playground.html', 'cards.json', 'fx-src.js'))) // 1024, 'KB lab total')
