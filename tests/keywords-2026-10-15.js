@@ -56,7 +56,8 @@ ok(/function swimmerLine\(e\)\{ return `Swimmer – On Tide, /.test(src), '3. Sw
 ok(/if\(p\.key==='swimmer'\)\{ lines\.push\(/.test(src), '3. the card text gives a Swimmer its own line');
 ok(/const DARK_MAPS = new Map\(\[\['mg','pitch'\], \['m4','dark'\], \['mz','dark'\], \['mj','dark'\]\]\);/.test(src), '5. the caves and dark places carry Darkness / Pitch Black');
 ok(/DARK_LEVEL_NAME = \{dark:'Darkness', pitch:'Pitch Black'/.test(src) && !/'Pitchblack'/.test(src), '5. Pitchblack is now Pitch Black');
-ok(/function fieldPlainMap\(mapId\)\{ try\{ return mapId != null && mapNumberOf\(mapId\) === 0;/.test(src), '8. Map 0 shows its field effects plainly');
+// 2026-10-15 (later): reversed by the user ("The effect is 'Mist' -> Shows a '?'"); see keywords-2026-10-15b.js.
+ok(/function fieldUnrevealedMap\(mapId\)\{ try\{ return mapId != null && mapNumberOf\(mapId\) === 0;/.test(src), '8. Map 0 is still told apart (its field effects now stay "?")');
 ok(/const MISTY_TEXT = 'Mist hides the sun and moon/.test(src) && !/No day or night; the mist shifts/.test(src), '8. Misty says what it does');
 ok(/gsap\.globalTimeline\.timeScale\(1\); gsap\.ticker\.lagSmoothing\(m && m\.resolving \? 0 : 500, 33\)/.test(src), '4. the fight speed is applied once (no GSAP slow-down on top)');
 ok(/if\(ev\.type==='death' && ev\.uid!=null && m\._pendingImpacts && m\._pendingImpacts\[String\(ev\.uid\)\]\)/.test(src), '4. a death waits for its killing blow to land');

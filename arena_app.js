@@ -416,7 +416,7 @@ function valSuffix(v){ return (v === true || v === 1 || v === '1' || v == null) 
 // Tide unit in the engine (Flow +1 Attack, Ebb +1 Armor), so its own pick is added on top: +2 Attack in all for the plain Swimmer.
 function swimmerBonusText(e, t){
   e = e || {}; const sw = (e.swimmer === true || !e.swimmer) ? 'extraAttack' : e.swimmer, up = t === 'high' ? 2 : 1;
-  const parts = sw === 'extraAttack' ? [`+${up + 1} Attack`] : [`+${up} Attack`, sw === 'quickAttack' ? 'Quick Attack' : sw === 'evade' ? 'Evade' : '+1 Attack'];
+  const parts = sw === 'extraAttack' ? [`+${up + 1} Attack`] : [`+${up} Attack`, sw === 'quickAttack' ? 'Quick Attack' : sw === 'evade' ? 'Evasive' : '+1 Attack']; // 2026-10-15 (user: "Evade -> Evasive."): the key stays 'evade'
   if(e.swimmerGrant && typeof e.swimmerGrant === 'object' && Object.keys(e.swimmerGrant).length) parts.push(grantText(e.swimmerGrant));
   if(t === 'high') parts.push('+2 Armor');
   return parts.join(', ');
@@ -486,7 +486,10 @@ const PASSIVE_DEFS = [
   {key:'swarm', category:'passive', label:'Swarm', kind:'types', numberKey:'swarmN', desc:(v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it (e.g. every other Ant beside an Ant).`,
     get:e=> e.swarm ? (Array.isArray(e.swarm) && e.swarm.length ? e.swarm.slice() : true) : undefined,
     apply:(e,v,n)=>{ e.swarm = Array.isArray(v) && v.length ? v.slice() : true; const k = Number(n)||1; if(k > 1) e.swarmN = k; }},
-  {key:'hiveMind', category:'passive', label:'Hive Mind', kind:'boolean', desc:()=>`When this dies, your newest Swarm ally gains +1/+1.`},
+  // Hive Mind retired (2026-10-15, user: "I don't like Hive Mind as a skill."): hidden from "+ Add Skill" (hidden) and from every
+  // skill list players or the editor browse (retired: the Effects library, the reference panels, the Skills codex, the Test Kit,
+  // coach tips). The engine still runs it, so a card that still carries it keeps working.
+  {key:'hiveMind', category:'passive', hidden:true, retired:true, label:'Hive Mind', kind:'boolean', desc:()=>`When this dies, your newest Swarm ally gains +1/+1.`},
   // Day and night (2026-10-09): the battle alternates every 3 rounds; see roundStart in bramblewood-engine.js.
   // 2026-10-10 (user): "Nocturnal - Gain +2/+2". Two numbers like Esprit: Attack and Health gained while it's night
   // (day for Diurnal), lost when the phase turns. The old on/off form reads as +1/+0.
@@ -600,7 +603,7 @@ const PASSIVE_DEFS = [
   // Attack} or {Evade}"): one pick. A Swimmer saved before this keeps working as Extra Attack.
   // 2026-10-14 (user: "Swimmers = Tide"): a Swimmer is a Tide unit (Flow +1 Attack, Ebb +1 Armor) on top of its Flow pick.
   {key:'swimmer', category:'passive', label:'Swimmer', kind:'select', desc:(v, n, e)=>`On Tide, ${swimmerBonusText(Object.assign({}, e || {}, {swimmer: v || true}), 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: Swimmer is its own skill on the card ("Swimmer - On tide, { ... }")
-    selectOptions:()=> [{value:'extraAttack', label:'Extra Attack (+1 Attack)'}, {value:'quickAttack', label:'Quick Attack (extra turn)'}, {value:'evade', label:'Evade'}],
+    selectOptions:()=> [{value:'extraAttack', label:'Extra Attack (+1 Attack)'}, {value:'quickAttack', label:'Quick Attack (extra turn)'}, {value:'evade', label:'Evasive'}], // 2026-10-15 (user: "Evade -> Evasive."): label only, the saved value stays 'evade'
     get:e=> e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : undefined, apply:(e,v)=>{ e.swimmer = ['extraAttack','quickAttack','evade'].includes(v) ? v : 'extraAttack'; }},
   // Swimmer's Flow list (2026-10-12, user: "I like Swimmer activating certain {} effects on tide. Maybe its not just fast
   // forward but... just { } effects that i can list"): the skills a Swimmer gets on Flow rounds, e.g. "fastForward 1, armor 2".
@@ -1038,7 +1041,7 @@ function CHAIN_BREAK_OPTIONS(){
 // to write a chosen value back into a fresh `effects` object on save.
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
-    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden,
+    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired,
     get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey,
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
@@ -1304,7 +1307,7 @@ const RESIST_ABILITY_EXCLUDE = new Set([
 ]);
 function resistElementOptionsList(){
   const dmg = [...DMG_TYPES.filter(t=>t!=='physical'), 'radiation']; // radiation (2026-10-14): what Irradiated deals
-  const abilities = PASSIVE_DEFS.map(p=>p.key).filter(k=>!RESIST_ABILITY_EXCLUDE.has(k));
+  const abilities = PASSIVE_DEFS.filter(p=> !p.retired).map(p=>p.key).filter(k=>!RESIST_ABILITY_EXCLUDE.has(k)); // 2026-10-15: no retired skills (Hive Mind)
   return [...new Set([...dmg, ...abilities])].sort((a,b)=>resistOptionLabel(a).localeCompare(resistOptionLabel(b)));
 }
 function resistTypeOptionsList(){
@@ -1731,7 +1734,49 @@ Object.assign(SKILL_TEXT, {
 });
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 function skillText(p, v, e){ const f = SKILL_TEXT[p.key]; try{ return f ? f(v) : p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); }catch(_){ return p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); } }
+/* ---- Skill reveal (2026-10-15) [SKILL_REVEAL_BEGIN] ----
+   User: "I don't want to show diurnal and tide till Map 1 and 2 respectively. Is there a way we can Hide their skills as '?'
+   until they become relevant for the first time?" + "I actually want all the fish to have tide and some of the animals to have
+   Diurnal. But I need them as '?' first." A skill listed in SKILL_REVEAL shows as a plain "?" chip everywhere a player reads it
+   (the card's skill strip, its text lines, the Codex and card detail, hover cards in a fight, the deck editor, the Skills codex,
+   coach tips and battle-log lines) until the player has entered Map N: started a Conquest fight there (or anywhere further on),
+   or cleared a fight on a map that far along (so a player whose progress came from another device is not set back). Once a skill
+   is revealed it is remembered (SKILL_REVEAL_KEY) and never hides again. The engine still applies the skill as before, and
+   Admin Mode shows everything. To hide another skill, add it here (and any companion effect keys to SKILL_REVEAL_PARTS). */
+const SKILL_REVEAL = {diurnal:1, nocturnal:1, crepuscular:1, tide:2, swimmer:2};
+// The other effect keys that belong to a hidden skill (its second number, its Flow grant): hidden with it.
+const SKILL_REVEAL_PARTS = {diurnal:['diurnalHp'], nocturnal:['nocturnalHp'], crepuscular:['crepuscularHp'], swimmer:['swimmerGrant']};
+const SKILL_REVEAL_KEY = 'bramblewood_skill_revealed_v1';
+const SKILL_Q_TIP = "Something about this card you'll learn soon.";
+let skillRevealMemo = null;
+function skillRevealState(){ try{ const s = JSON.parse(localStorage.getItem(SKILL_REVEAL_KEY) || '{}') || {}; return {maxMap: Number.isFinite(Number(s.maxMap)) && s.maxMap != null ? Number(s.maxMap) : -1, keys: Array.isArray(s.keys) ? s.keys.slice() : []}; }catch(e){ return {maxMap:-1, keys:[]}; } }
+function skillRevealSave(st){ try{ localStorage.setItem(SKILL_REVEAL_KEY, JSON.stringify(st)); }catch(e){} skillRevealMemo = null; }
+// The furthest map the player has been on: the last one entered, or the furthest one with a cleared fight.
+function furthestMapReached(){ let n = skillRevealState().maxMap; try{ (loadConquestProgress().completed||[]).forEach(id=>{ const k = mapNumberOf(String(id).split(':')[0]); if(k != null && k > n) n = k; }); }catch(e){} return n; }
+// Called when a Conquest fight starts: entering Map N reveals every skill gated at N or below.
+function noteMapEnteredForReveal(mapId){ let n = null; try{ n = mapNumberOf(mapId); }catch(e){} if(n == null) return;
+  const st = skillRevealState(); if(n > st.maxMap) st.maxMap = n;
+  Object.keys(SKILL_REVEAL).forEach(k=>{ if(SKILL_REVEAL[k] <= n && !st.keys.includes(k)) st.keys.push(k); }); skillRevealSave(st); }
+function hiddenSkillSet(){
+  if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return new Set();
+  const now = Date.now(); if(skillRevealMemo && now - skillRevealMemo.at < 500) return skillRevealMemo.set;
+  const st = skillRevealState(), far = furthestMapReached(), set = new Set(); let grew = false;
+  Object.keys(SKILL_REVEAL).forEach(k=>{ if(st.keys.includes(k)) return; if(far >= SKILL_REVEAL[k]){ st.keys.push(k); grew = true; return; } set.add(k); });
+  if(grew) skillRevealSave(st);
+  skillRevealMemo = {at: now, set}; return set;
+}
+function skillHiddenNow(key){ return hiddenSkillSet().has(key); }
+const skillValOn = v=> v != null && v !== false && v !== 0 && v !== '';
+function hiddenSkillsOf(d){ const e = d && d.effects; if(!e) return []; const h = hiddenSkillSet(); if(!h.size) return [];
+  return [...h].filter(k=> skillValOn(e[k]) || (SKILL_REVEAL_PARTS[k]||[]).some(x=> skillValOn(e[x]))); }
+// A display copy of a card with its hidden skills taken off (the engine keeps the real card).
+function maskHiddenSkills(d){ const hid = hiddenSkillsOf(d); if(!hid.length) return d;
+  const e = Object.assign({}, d.effects); hid.forEach(k=>{ delete e[k]; (SKILL_REVEAL_PARTS[k]||[]).forEach(x=> delete e[x]); });
+  return Object.assign({}, d, {effects: e, _hiddenSkills: hid.length}); }
+function skillQChipHTML(){ return `<span class="skill-q" title="${escapeAttr(SKILL_Q_TIP)}" aria-label="${escapeAttr(SKILL_Q_TIP)}">?</span>`; }
+/* [SKILL_REVEAL_END] */
 function describeEffects(def, liveCard){
+  def = maskHiddenSkills(def); // 2026-10-15: skills not met yet read as "?" (SKILL_REVEAL)
   const lines = [];
   { const sl = speciesLine(def); if(sl) lines.push(sl); }
   const e = def.effects || {};
@@ -1851,6 +1896,7 @@ function describeEffects(def, liveCard){
   if(e.immune && e.immune.length) core.push(`<span class="core-line">✳️ Immune: ${e.immune.map(resistOptionLabel).join(', ')}</span>`);
   if(core.length){ const at = lines.length && /^🧬/.test(lines[0]) ? 1 : 0; lines.splice(at, 0, ...core); }
   // (The terrain's "Home ground" line went with the effect, 2026-10-14.)
+  if(def._hiddenSkills) lines.push(`<span class="skill-q-line">${skillQChipHTML()}</span>`); // 2026-10-15: one neutral "?" for the skills not met yet
   if(def.token) lines.push(`Token card — spawn-only, never appears in the draftable pool.`);
   if(def.test) lines.push(`🧪 Dev-only`); // 2026-10-10 (user): test cards just say Dev-only
   return lines;
@@ -3572,6 +3618,9 @@ const Ambience = (()=>{
   const CRICKET = {type:'bandpass', freq:4300, q:9, gain:0.013, am:24};
   function addTimeLayer(sc){
     if(!sc || !tod || sc.kind===3 || sc.kind===6) return; // not in caves or underwater
+    // 2026-10-15 (user: "Map 0 has no day/night system (only effects) - no howling."): no night crickets or dawn chorus on Map 0's
+    // world map or in its fights (sc.flavor is the map id; a fight on Map 0 is checked through matchState).
+    try{ const mid = sc.flavor || (typeof matchState !== 'undefined' && matchState && !matchState.over && matchState.conquestNode && matchState.conquestNode.mapId); if(mid && typeof MISTY_MAPS !== 'undefined' && MISTY_MAPS.has(mid)) return; }catch(e){}
     if(tod==='night'){ bed(sc, CRICKET); }
     if(tod==='dawn'){ const go = ()=>{ if(!sc.alive) return; if(!document.hidden && vol>0){ try{ bird(sc); }catch(e){} } sc.timers.push(setTimeout(go, rnd(0.8, 2.5)*1000)); }; sc.timers.push(setTimeout(go, 600)); }
   }
@@ -5375,6 +5424,7 @@ function triggerBadges(d, live){
   });
 }
 function abilityBadges(d, bopts){
+  d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
   // 2026-10-12 (23:12, user: "If its just Poison 1 or Bleed 1 or ETC, just omit the number. Just the logo is enough").
   const n1 = v=> (v === 1 || v === true || v === '1') ? '' : v;
@@ -5566,6 +5616,7 @@ function abilityBadges(d, bopts){
   // so a card like Bee Drone showed both 🐝 AND ⚡×1 for the exact same underlying ability. The
   // specific badges already condense that info; the generic count added nothing but clutter.
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
+  if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL)
   if(!out.length) return '';
   // 2026-10-12 (10:57, user: "Remove the pill completely (fade) together with the contents when theres nothing left inside"):
   // when everything left in the strip is a trigger that is fading out, the strip fades with it.
@@ -5602,7 +5653,7 @@ function escapeHtml(s){ return (s==null || s===false ? '' : String(s)).replace(/
 // them"): each skill sits under the first map whose enemy decks carry it, in road order. A skill you've met (its coach tip
 // has shown) reads in full; one you haven't shows as a ? on maps you've reached and stays hidden further on.
 function skillsByMapHTML(){
-  const defs = getCardDefs(), skills = Registry.skills(), seenMap = {}, order = [];
+  const defs = getCardDefs(), skills = Registry.skills().filter(sd=> !sd.retired), seenMap = {}, order = [];
   const progress = (()=>{ try{ return loadConquestProgress(); }catch(e){ return {completed:[]}; } })();
   CONQUEST_MAPS.filter(m=> !m.reserved).forEach(m=>{
     const here = [];
@@ -5613,7 +5664,9 @@ function skillsByMapHTML(){
   const rows = order.map(({m, here})=>{
     const num = mapNumberOf(m.id), open = (()=>{ try{ return isMapUnlocked(m, progress); }catch(e){ return true; } })();
     const chips = here.map(sd=>{
-      const met = coachSeen.has('skill-'+sd.key), icon = SKILL_ICON[sd.key] || '✨';
+      // 2026-10-15 (SKILL_REVEAL): a skill not revealed yet is a bare "?" here (no icon, no name), even if its tip once showed
+      const hid = skillHiddenNow(sd.key), met = coachSeen.has('skill-'+sd.key) && !hid, icon = SKILL_ICON[sd.key] || '✨';
+      if(hid) return open ? `<span class="sbm-chip" title="${escapeAttr(SKILL_Q_TIP)}">?</span>` : '';
       if(met){ const desc = (()=>{ try{ return sd.desc(1); }catch(e){ return ''; } })(); return `<span class="sbm-chip is-met" title="${escapeAttr(desc)}">${icon} ${escapeHtml(sd.label)}</span>`; }
       return open ? `<span class="sbm-chip" title="You haven't met this one yet">${icon} ?</span>` : '';
     }).join('');
@@ -5628,7 +5681,7 @@ function skillCodexHTML(){
   const defs = getCardDefs(), met = new Set();
   Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || d.test || d.token) return; if(!adminModeEnabled && (isCardHiddenForPlayer(d) || !codexRevealedForPlayer(id, d))) return;
     PASSIVE_DEFS.forEach(p=>{ try{ if(p.get ? p.get(d.effects||{}) !== undefined : (d.effects||{})[p.key] != null) met.add(p.key); }catch(e){} }); });
-  const list = PASSIVE_DEFS.filter(p=> met.has(p.key) && p.label).sort((a, b)=> a.label.localeCompare(b.label));
+  const list = PASSIVE_DEFS.filter(p=> met.has(p.key) && p.label && !p.retired && !skillHiddenNow(p.key)).sort((a, b)=> a.label.localeCompare(b.label)); // 2026-10-15: not retired (Hive Mind), not still hidden (SKILL_REVEAL)
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
   const rows = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
@@ -5642,8 +5695,10 @@ function mapCodexHTML(){
   const cards = maps.map(m=>{
     const rows = new Map(); m.nodes.forEach(n=>{ if(n.kind === 'tutorial') return; let r = null; try{ r = fightRules(m.id, n); }catch(e){} fieldConditionRows(r).forEach(row=>{ if(!rows.has(row.key)) rows.set(row.key, row); }); });
     const fights = m.nodes.filter(n=> n.kind !== 'tutorial'), done = fights.filter(n=> pr.completed.includes(conquestNodeId(m.id, n.key))).length;
-    const list = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldPlainMap(m.id) || fieldRowState(row.key) !== 'unknown'; // Map 0 shows plainly (2026-10-15)
-      return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text))}</small>` : '<span class="fcr-q">?</span>'}</li>`; }).join('');
+    // 2026-10-15 (user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): Map 0 no
+    // longer shows its field effects plainly; like every map, an effect reads "?" until it has been learned (on Map 1 onward).
+    const list = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldRowState(row.key) !== 'unknown';
+      return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text))}</small>` : `<span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span>`}</li>`; }).join('');
     const num = mapNumberOf(m.id);
     return `<div class="mc-card map-theme-${m.id}"><div class="mc-head"><span class="mc-ico">${m.icon}</span><div><b>${escapeHtml(m.name)}</b><small>${m.sub ? 'Side map' : 'Map ' + (num ?? '?')} · ${done}/${fights.length} cleared</small></div></div>
       <p class="mc-blurb">${escapeHtml(m.blurb || '')}</p>${list ? `<ul class="mc-fx">${list}</ul>` : '<p class="panel-sub">No field effects.</p>'}</div>`; }).join('');
@@ -5681,9 +5736,9 @@ function referenceHTML(){
     <div class="ref-card"><span class="kind">poison (element)</span><b>☠ Damage → Poison stacks</b><p>Unlike the other four, a Poison-element attack is automatic and deterministic, not a chance roll: its ENTIRE damage number converts into Poison stacks on the target instead of landing as HP loss that instant — the stacks tick for real damage at the start of the next round instead (see the Poison passive skill below for a card that stacks extra Poison on top of this). A hit that reaches the castle instead of a card always deals its normal, unconverted damage.</p></div>
     <div class="ref-card"><span class="kind">decay (element)</span><b>🦠 Damage + Attack drain</b><p>A Decay-element attack deals its normal HP damage AND reduces the target's own Attack by that same amount (floored at 0) — both happen on every landed hit, automatically. Like Poison, a hit that reaches the castle instead of a card deals normal, unconverted damage.</p></div>
   </div></div>
-  <div class="panel"><h3 class="ref-heading">Evergreen abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A bundled trigger + action shorthand — the same thing you could build by hand with Custom Triggers, just packaged as one named skill with fewer clicks.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category==='evergreen').map(p=>`<div class="ref-card"><span class="kind">Evergreen</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
+  <div class="panel"><h3 class="ref-heading">Evergreen abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A bundled trigger + action shorthand — the same thing you could build by hand with Custom Triggers, just packaged as one named skill with fewer clicks.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category==='evergreen' && !p.retired).map(p=>`<div class="ref-card"><span class="kind">Evergreen</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
   </div></div>
-  <div class="panel"><h3 class="ref-heading">Passive abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A modifier woven directly into core combat math — always active while the card is in play, with no generic Custom Trigger equivalent.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category!=='evergreen').map(p=>`<div class="ref-card"><span class="kind">Skill</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
+  <div class="panel"><h3 class="ref-heading">Passive abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A modifier woven directly into core combat math — always active while the card is in play, with no generic Custom Trigger equivalent.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category!=='evergreen' && !p.retired).map(p=>`<div class="ref-card"><span class="kind">Skill</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
     <div class="ref-card"><span class="kind">Passive</span><b>Lumber Given (Bounty)</b><p>Killing blow's owner gains this much lumber. Set on the main form.</p></div>
   </div></div>
   <div class="panel"><h3 class="ref-heading">Resistance &amp; Weaknesses</h3><p class="panel-sub">Its own dedicated area on the card form (2026-09-16) — a Resistance box and a Weakness box, side by side, separate from the "+ Add Skill" list. Each can hold any number of match-keys: a damage type, an archetype/type-tag the attacker belongs to, or another ability the attacker has.</p><div class="ref-grid">
@@ -6658,7 +6713,7 @@ function renderEditorInner(){
       <div class="field" title="Sets the color of the ring drawn around this card's tile — purely cosmetic, doesn't affect gameplay."><label>Rarity <span id="fRaritySwatch" style="display:inline-block; width:9px; height:9px; border-radius:50%; vertical-align:middle; background:linear-gradient(135deg, ${rarityStops(c.rarity||'common')[0]}, ${rarityStops(c.rarity||'common')[1]}); border:1px solid var(--surface-border);"></span></label><select id="fRarity">${RARITY_DEFS.map(r=>`<option value="${r.key}" ${((c.rarity||'common')===r.key)?'selected':''}>${r.label}</option>`).join('')}</select></div>
       <div class="field" title="Unit: takes a place on the field. Spell: resolves once and goes to the Graveyard (uses your play). Equipment: dragged onto one of your units."><label>Card kind</label><select id="fCardKind">${[['', 'Unit'], ['spell', 'Spell'], ['equipment', 'Equipment']].map(([v, l])=> `<option value="${v}" ${(c.cardType||'')===v?'selected':''}>${l}</option>`).join('')}</select></div>
       <div class="field" id="fSpellRow" ${c.cardType==='spell'?'':'hidden'} title="What the spell does when cast"><label>Spell</label><span style="display:flex; gap:6px;"><select id="fSpellDo">${[['hasten','Hasten: your units lose N Wait'],['tailwind','Tailwind: Hasten N, and your Flyers get an extra turn'],['mend','Mend: heal your units N'],['sap','Sap: enemy units lose N Attack']].map(([v, l])=> `<option value="${v}" ${((c.spell||{}).do||'hasten')===v?'selected':''}>${l}</option>`).join('')}</select><input id="fSpellAmt" type="number" min="0" max="20" style="width:64px" value="${(c.spell||{}).amount != null ? (c.spell||{}).amount : 1}" aria-label="Spell amount N"></span></div>
-      <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> p.kind==='boolean' || p.kind==='number').map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
+      <div class="field" id="fEquipRow" ${c.cardType==='equipment'?'':'hidden'} title="The skill the equipped unit gains, on top of this card's Attack and Health"><label>Equipment grants</label><span style="display:flex; gap:6px;"><select id="fEquipGrant"><option value="">Nothing</option>${PASSIVE_DEFS.filter(p=> (p.kind==='boolean' || p.kind==='number') && (!p.retired || Object.keys((c.equip||{}).grant||{})[0]===p.key)).map(p=> `<option value="${p.key}" ${Object.keys((c.equip||{}).grant||{})[0]===p.key?'selected':''}>${escapeHtml(p.label)}</option>`).join('')}</select><input id="fEquipVal" type="number" min="0" max="20" style="width:64px" value="${(()=>{ const g = (c.equip||{}).grant||{}, k = Object.keys(g)[0]; return k && typeof g[k]==='number' ? g[k] : 1; })()}" aria-label="Grant value"></span></div>
       <div class="field" title="Normal art sits in a frame with a solid plate under it. Extended art runs to the card's edges."><label>Art</label><select id="fArtStyle"><option value="">Normal</option><option value="extended" ${c.artExtended?'selected':''}>Extended</option></select></div>
       <div class="field" title="Every unit needs a species: an animal (Canid, Bird, Insect…) or Elemental. Two, comma-separated, make a hybrid."><label>Species</label><div class="species-field"><span class="species-ico" id="fSpeciesIco" aria-hidden="true">${(c.species||[]).map(speciesIcon).join('') || '🧬'}</span><input id="fSpecies" list="speciesList" value="${escapeAttr((c.species||[]).join(', '))}" placeholder="e.g. Bird, Insect" oninput="(function(el){ const v = el.value.split(/[,&]/).map(x=> x.trim()).filter(Boolean); document.getElementById('fSpeciesIco').textContent = v.map(speciesIcon).join('') || '🧬'; })(this)"></div><datalist id="speciesList">${allSpeciesNames().map(k=> `<option value="${escapeAttr(k)}" label="${speciesIcon(k)} ${escapeAttr(k)}${SPECIES_PHYLUM[k] && SPECIES_PHYLUM[k] !== k ? ' · ' + escapeAttr(SPECIES_PHYLUM[k]) : SPECIES_PHYLUM[k] ? '' : ' · new'}">`).join('')}</datalist></div>
       <!-- Splash Effect field REMOVED from this editor (2026-09-27, item 9, per explicit
@@ -12986,6 +13041,9 @@ const MAP_DAYNIGHT = {
 function mapDayNight(mid){ return MAP_DAYNIGHT[mid] || (mid ? 'cycle' : 'day'); } // every other map is out in the open: it cycles
 // Tide-spout (2026-10-14, user: "new effect on the beach map - Tide-spout!"): on by default in every Pebble Beach fight.
 const TIDESPOUT_MAPS = new Set(['mb']);
+// Map 0 is misty (2026-10-15): no day and night there at all (fightRules turns the cycle off in the mist), so no nightfall,
+// no howl and no night sounds on Map 0.
+const MISTY_MAPS = new Set(['m1', 'mo']); // Bramblewood Outskirts and its side map The Old Bramble
 // Perma-tide (2026-10-14, user: "River - effect: Perma-tide. (In codex only: Can't be affected by Tide affecting effects)"): on the
 // river maps (the Riverbank biome: Sunken Hollow and Lilypad Reach) the Tide is always in, and nothing can move it.
 const PERMATIDE_MAPS = new Set(['m2', 'mp']);
@@ -12993,6 +13051,7 @@ const PERMATIDE_MAPS = new Set(['m2', 'mp']);
 function wetMap(mid){ const b = MAP_BIOME_OF[mid] || (()=>{ const m = CONQUEST_MAPS.find(x=> x.id === mid); return m && m.parent ? MAP_BIOME_OF[m.parent] : null; })(); return b === 'beach' || b === 'water' || b === 'reef'; }
 function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(mp=> (mp.nodes||[]).includes(node)); return m ? m.id : null; }
 function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = mapDayNight(mid); // the map's own day and night (2026-10-14; Zeitgebers retired)
+  if(r.misty == null && MISTY_MAPS.has(mid) && node) r.misty = true; // Map 0 is misty (2026-10-15, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist'")
   if(r.misty) r.phase = 'off'; // Misty (2026-10-14): no day or night in the mist; the fog's tint drifts instead (syncSkyFx)
   if(r.tideSpout == null && TIDESPOUT_MAPS.has(mid) && node) r.tideSpout = true;
   if(r.permaTide == null && PERMATIDE_MAPS.has(mid) && node) r.permaTide = true; // the river's Perma-tide (2026-10-14)
@@ -13152,7 +13211,7 @@ function fieldConditionRows(r){
   // 2026-10-15 (user: "It will be an explicit field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): the two dark levels.
   else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', 'No Darksight: miss 1 in 2');
   else if(r.dark) add('dark', '🌘', DARK_LEVEL_NAME.dark, DARK_LEVEL_TEXT.dark, '', 'No Darksight: miss 1 in 4');
-  if(r.misty) add('misty', '🌫️', 'Misty', MISTY_TEXT, '', MISTY_SHORT); // 2026-10-14; real wording 2026-10-15
+  if(r.misty){ add('misty', '🌫️', 'Misty', MISTY_TEXT, '', MISTY_SHORT); rows[rows.length - 1].qTip = MISTY_Q_TIP; } // 2026-10-14; real wording 2026-10-15; a neutral "?" tip (2026-10-15)
   if(r.phase === 'night') add('night', '🌙', 'Night', 'Night all match: Nocturnal units get their bonus. Night-blind units miss 1 attack in 2.', '', 'Always night'); // 2026-10-15: night has no 1-in-4 miss any more
   if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', '', 'Day, night, then twilight');
   if(r.permaTide) add('permaTide', '🌊', 'Perma-tide', "The Tide is always in. Tide effects can't change it.", '', 'The Tide is always in'); // 2026-10-14: Flow every round from round 1
@@ -13170,28 +13229,32 @@ function fieldConditionRows(r){
   if(r.enemyOre) add('enemyOre', '⛏️', 'Deep mines', 'Their side digs the Stone and Metal it needs.', '', 'They dig Stone and Metal');
   return rows;
 }
-// 2026-10-15 (user: "Map 0-1 is Misty. But the field effect is '?'. Only in Map 1 then we start learning more."): on Map 0 (the
-// Outskirts and its Tutorial side map) every field effect shows plainly; the '?' you learn by seeing starts on Map 1.
-function fieldPlainMap(mapId){ try{ return mapId != null && mapNumberOf(mapId) === 0; }catch(e){ return false; } }
-function matchFieldPlain(m){ return !!(m && m.conquestNode && fieldPlainMap(m.conquestNode.mapId)); }
+// 2026-10-15 (later, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): the
+// opposite of this morning's "Map 0 shows its field effects plainly". On Map 0 (the Outskirts and its side maps) a field effect
+// stays "?" and is never marked as learned there; the '?' you learn by seeing starts on Map 1, as before.
+function fieldUnrevealedMap(mapId){ try{ return mapId != null && mapNumberOf(mapId) === 0; }catch(e){ return false; } }
+function matchFieldUnrevealed(m){ return !!(m && m.conquestNode && fieldUnrevealedMap(m.conquestNode.mapId)); }
+// What an unlearned "?" says on hover: never what the effect does (Mist used to say "There is no day and night").
+const MISTY_Q_TIP = "Something hangs in the air here. You'll learn more soon.";
+function fieldRowQTip(row){ return (row && row.qTip) || 'Shows what it does once it first happens'; }
 // Misty (2026-10-15, user: "The mist effect ? now says 'There is no day and night'"): what rules.misty really does. It turns the
 // day/night cycle off (fightRules: phase 'off'), so Diurnal and Nocturnal bonuses never apply, and the fog's tint drifts instead.
 const MISTY_TEXT = 'Mist hides the sun and moon: Diurnal and Nocturnal bonuses never apply.';
 const MISTY_SHORT = 'Sun and moon hidden';
-function fieldRowsListHTML(rows, plain){
-  if(plain === undefined) plain = matchFieldPlain(typeof matchState !== 'undefined' ? matchState : null);
-  return rows.map(row=>{ const st = plain && fieldRowState(row.key) === 'unknown' ? 'known' : fieldRowState(row.key);
-    if(st === 'unknown') return `<li class="fcr is-unknown" aria-label="${escapeAttr(row.name + ': not seen yet')}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}</span><span class="fcr-q" title="Shows what it does once it first happens">?</span></li>`;
+function fieldRowsListHTML(rows){
+  return rows.map(row=>{ const st = fieldRowState(row.key);
+    if(st === 'unknown') return `<li class="fcr is-unknown" aria-label="${escapeAttr(row.name + ': not seen yet')}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}</span><span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span></li>`;
     return `<li class="fcr ${st==='new' ? 'is-new' : ''}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}${st==='new' ? ' <b class="fcr-new">New!</b>' : ''}</span><span class="fcr-t">${keywordizeHTML(escapeHtml(row.text))}</span></li>`; }).join('');
 }
 function matchFieldRules(m){ try{ return m && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.arenaRuleset && m.arenaRuleset.rules) || null; }catch(e){ return null; } }
 function skirmishFieldHTML(mapId, node){
   if(!node || node.virtual) return ''; let r = null; try{ r = fightRules(mapId, node); }catch(e){ return ''; }
   const rows = fieldConditionRows(r); if(!rows.length) return '';
-  return `<div class="cnp-field" role="note"><b class="cnp-field-k">Field</b><ul class="fcr-list">${fieldRowsListHTML(rows, fieldPlainMap(mapId || mapIdOfNode(node)))}</ul></div>`;
+  return `<div class="cnp-field" role="note"><b class="cnp-field-k">Field</b><ul class="fcr-list">${fieldRowsListHTML(rows)}</ul></div>`;
 }
 function noteFieldEvent(ev){
   const m = matchState; if(!m || !ev) return;
+  if(matchFieldUnrevealed(m)) return; // Map 0 teaches no field effect (2026-10-15)
   const r = matchFieldRules(m) || {}; let hit = null;
   if(ev.type === 'fieldTick' && ev.field === 'frozen'){ hit = markFieldRow('frost'); }
   else if(ev.type === 'statusFx' && ev.kind === 'frostbite') hit = markFieldRow('frostbite');
@@ -15776,7 +15839,7 @@ function setUiFlag(k, v){ try{ const f = JSON.parse(localStorage.getItem(UI_FLAG
 function newSkillRibbonHTML(node){
   if(!node || !node.deck || !uiFlag('newSkillRibbon')) return '';
   const defs = getCardDefs(), seenSet = (typeof coachSeen !== 'undefined') ? coachSeen : new Set(), keys = new Set();
-  let skills = []; try{ skills = Registry.skills(); }catch(e){ return ''; }
+  let skills = []; try{ skills = Registry.skills().filter(sd=> !sd.retired && !skillHiddenNow(sd.key)); }catch(e){ return ''; } // 2026-10-15: no hidden (SKILL_REVEAL) or retired skills
   Object.keys(node.deck).forEach(id=>{ const e = (defs[id] && defs[id].effects) || {}; skills.forEach(sd=>{ try{ if(sd.get(e) !== undefined && !seenSet.has('skill-' + sd.key)) keys.add(sd.key); }catch(err){} }); });
   if(!keys.size) return '';
   const list = [...keys].slice(0, 4).map(k=>{ const sd = skills.find(x=> x.key===k); const d = (()=>{ try{ return sd.desc(1); }catch(e){ return ''; } })();
@@ -16613,6 +16676,7 @@ function teachingCardPick(){
   const f = loadDialogueFlags(), defs = getCardDefs(), fac = loadFactionChoice(), arch = fac === 'hummingbirds' ? 'Hummingbird' : fac === 'otters' ? 'Otter' : null;
   for(const k of TEACH_KEYS){
     if(f['teach:' + k]) continue;
+    if(skillHiddenNow(k)) continue; // 2026-10-15: a keyword still hidden as "?" (SKILL_REVEAL) is taught once it's revealed
     const ok = id=>{ const d = defs[id]; return d && d.effects && d.effects[k] != null && !d.token && !d.test && !d.hidden && !d.tutorial && !(d.cost > 0) && !isUnattainable(d) && ['common','starter','basic'].includes(d.rarity || 'common') && (d.attack||0) + (d.health||0) <= 9 && !(myDeckCounts[id] > 0); };
     const pool = Object.keys(defs).filter(ok); if(!pool.length) continue;
     const mine = arch ? pool.filter(id=> (defs[id].archetypes||[]).includes(arch)) : [];
@@ -19282,6 +19346,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     }
     bumpQuestCounter('energyConquest', cost);
   }
+  try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node)}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
@@ -19913,7 +19978,7 @@ function testKitSkillDefault(sd){
 }
 function testKitSelectOpts(sd){ const o = typeof sd.selectOptions==='function' ? sd.selectOptions() : sd.selectOptions; return Array.isArray(o) ? o : []; }
 const TESTKIT_SKILL_KINDS = new Set(['boolean','number','twoNumber','selectNumber']);
-function testKitSkillDefs(){ return Registry.skills().filter(sd=> TESTKIT_SKILL_KINDS.has(sd.kind)); }
+function testKitSkillDefs(){ return Registry.skills().filter(sd=> TESTKIT_SKILL_KINDS.has(sd.kind) && !sd.retired); } // 2026-10-15: no retired skills (Hive Mind)
 function testKitBuildDefs(){
   const e = JSON.parse(JSON.stringify(testKit.extraEffects||{}));
   testKitSkillDefs().forEach(sd=>{ if(testKit.skills[sd.key]!==undefined){ try{ sd.apply(e, testKit.skills[sd.key]); }catch(err){} } });
@@ -20620,7 +20685,7 @@ const FXL_CHANCE_TWO = new Set(['freeze', 'sleep', 'paralyze', 'blind', 'tipsy',
 function fxlEntries(){
   if(fxLib && fxLib.entries) return fxLib.entries;
   const out = [];
-  Registry.skills().forEach(sd=> out.push({id:'skill:' + sd.key, group: sd.category === 'evergreen' ? 'evergreen' : 'passive', icon: SKILL_ICON[sd.key] || '✨', iconHTML: SKILL_ICON_HTML[sd.key] || '', name: sd.label || sd.key, key: sd.key, sd}));
+  Registry.skills().filter(sd=> !sd.retired).forEach(sd=> out.push({id:'skill:' + sd.key, group: sd.category === 'evergreen' ? 'evergreen' : 'passive', icon: SKILL_ICON[sd.key] || '✨', iconHTML: SKILL_ICON_HTML[sd.key] || '', name: sd.label || sd.key, key: sd.key, sd}));
   TRIGGER_DEFS.forEach(t=> out.push({id:'on:' + t.key, group:'on', icon:'🎬', name:t.label, key:t.key, desc:t.desc}));
   out.push({id:'on:onDeathKiller', group:'on', icon:'🎬', name:'On Death → the killer', key:'onDeathKiller', desc:'An On Death action aimed at the unit whose hit killed it (Who: Killer). Nothing happens if it died some other way.'}); // 2026-10-14
   ACTION_DEFS.forEach(a=> out.push({id:'do:' + a.key, group:'do', icon:'⚙️', name:a.label, key:a.key, desc:a.desc}));
@@ -27991,10 +28056,11 @@ function pillTipHTML(head, lines){ return `<b class="pt-h">${escapeHtml(head)}</
 // 2026-10-14 (user: "Again, too much explanation. Just write Night and Day alternate every 3 days. Nocturnal units get stronger at
 // night while Diurnal units, in the Day."): one short line per phase (the miss chances stay on the Darksight / Night-blind skills).
 function phaseTipLines(phase, m){
-  if(phase === 'night') return ['Nocturnal units get stronger at night.'];
-  if(phase === 'twilight') return ['Nocturnal and Diurnal units are both strong.'];
+  // 2026-10-15 (SKILL_REVEAL): while Nocturnal / Diurnal are still "?" the tip doesn't name them.
+  if(phase === 'night') return [skillHiddenNow('nocturnal') ? 'Night falls over the field.' : 'Nocturnal units get stronger at night.'];
+  if(phase === 'twilight') return [skillHiddenNow('nocturnal') || skillHiddenNow('diurnal') ? 'Neither day nor night.' : 'Nocturnal and Diurnal units are both strong.'];
   if(phase === 'dawn') return ['Both sides draw a card.'];
-  return ['Diurnal units get stronger in the Day.'];
+  return [skillHiddenNow('diurnal') ? 'The sun is up.' : 'Diurnal units get stronger in the Day.'];
 }
 // 2026-10-14 (user: "Remove the 'Wash' effect. Also, don't have to talk about the tide order"): only what Tide units get now.
 const TIDE_TIPS = {
@@ -28002,6 +28068,9 @@ const TIDE_TIPS = {
   flow: ['Tide units get +1 Attack.'],
   ebb: ['Tide units get +1 Armor.'],
 };
+// 2026-10-15 (SKILL_REVEAL): while Tide is still "?" the pill only says what the water does.
+const TIDE_TIPS_HIDDEN = {high: ['The water is very high.'], flow: ['The water rises.'], ebb: ['The water falls back.']};
+function tideTipLines(k){ return (skillHiddenNow('tide') ? TIDE_TIPS_HIDDEN : TIDE_TIPS)[k] || []; }
 // The Tide skill, live (2026-10-14, user: "animals should just say 'Tide'. When in play, and there is a tide. That skill is blue -
 // meaning dynamic, morphing between Tide - ..., Ebb - ...., and High Tide - ....."): what this card's Tide gives right now, or null
 // when no tide is running (or we're not in a fight). Swimmers are Tide units; their own Flow extra joins the rising lines.
@@ -28009,7 +28078,7 @@ function liveTideState(e){
   try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || !m.engine || !m.engine.getTide || !matchHasTide(m)) return null;
     const t = m.engine.getTide(); if(!t) return null;
     const sw = e && e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : null, up = t === 'high' ? 2 : 1;
-    const rising = sw === 'extraAttack' ? [`+${up + 1} Attack`] : [`+${up} Attack`].concat(sw === 'quickAttack' ? ['Quick Attack'] : sw === 'evade' ? ['Evade'] : []);
+    const rising = sw === 'extraAttack' ? [`+${up + 1} Attack`] : [`+${up} Attack`].concat(sw === 'quickAttack' ? ['Quick Attack'] : sw === 'evade' ? ['Evasive'] : []); // "Evade -> Evasive." (2026-10-15)
     if(sw && e.swimmerGrant && typeof e.swimmerGrant === 'object' && Object.keys(e.swimmerGrant).length) rising.push(grantText(e.swimmerGrant)); // 2026-10-15
     if(t === 'ebb') return {k:'ebb', name:'Ebb', bonus:'+1 Armor'};
     if(t === 'high') return {k:'high', name:'High Tide', bonus: rising.concat('+2 Armor').join(', ')};
@@ -28020,7 +28089,7 @@ function tidePillHTML(m){
   const t = dayNightOn(m) && m.engine.getTide && m.engine.getTide();
   if(!t || !matchHasTide(m)) return '';
   const high = t==='high', flow = t==='flow' || high, k = high ? 'high' : flow ? 'flow' : 'ebb', name = high ? _t('High tide') : flow ? _t('Flow') : _t('Ebb');
-  return bfPillHTML('tide-' + t, high ? '🌊🌊' : flow ? '🌊' : '🐚', name, '', pillTipHTML(name, TIDE_TIPS[k]), 'Tide: ' + (high ? 'High tide' : flow ? 'Flow' : 'Ebb'));
+  return bfPillHTML('tide-' + t, high ? '🌊🌊' : flow ? '🌊' : '🐚', name, '', pillTipHTML(name, tideTipLines(k)), 'Tide: ' + (high ? 'High tide' : flow ? 'Flow' : 'Ebb'));
 }
 // The wind this round (from the last 'wind' event, kept on the match so a re-render keeps it).
 function windPillHTML(m){
@@ -28041,7 +28110,7 @@ function forecastPillHTML(m){
     const f = m.engine.forecast(), bits = [], tips = [], mine = (m.mode === 'liveRanked' && m.liveMySeat === 2) ? 2 : 1, fr = matchFieldRules(m) || {};
     const add = (b, t)=>{ bits.push(b); tips.push(b + ': ' + t); };
     if(f.phaseChanges && matchPhaseMatters(m)) add(f.phase === 'night' ? '🌙 Night falls' : f.phase === 'twilight' ? '🌆 Twilight' : '☀️ Dawn (both draw)', phaseTipLines(f.phase === 'night' ? 'night' : f.phase === 'twilight' ? 'twilight' : 'dawn', m).join(' '));
-    const tNow = m.engine.getTide && m.engine.getTide(); if(f.tide && f.tide !== tNow && matchHasTide(m)) add(f.tide === 'high' ? '🌊🌊 High tide' : f.tide === 'flow' ? '🌊 Flow' : '🐚 Ebb', TIDE_TIPS[f.tide === 'high' ? 'high' : f.tide === 'flow' ? 'flow' : 'ebb'].join(' '));
+    const tNow = m.engine.getTide && m.engine.getTide(); if(f.tide && f.tide !== tNow && matchHasTide(m)) add(f.tide === 'high' ? '🌊🌊 High tide' : f.tide === 'flow' ? '🌊 Flow' : '🐚 Ebb', tideTipLines(f.tide === 'high' ? 'high' : f.tide === 'flow' ? 'flow' : 'ebb').join(' '));
     if(f.wind) add(f.wind.from === mine ? '🌬️ Wind at your back' : '🌬️ Wind in your face', f.wind.from === mine ? 'your Flyers get a quick extra turn before combat; theirs use their skills and triggers twice.' : 'their Flyers get a quick extra turn before combat; yours use their skills and triggers twice.');
     if(f.eruption) add(`🔥 ${SCORCHED_NAME} ${f.eruption}`, `the ground burns one random unit on each side for ${f.eruption} fire damage (units that resist fire are spared).`);
     if(f.comets) add(`☄️ Comets (${f.comets} more)`, 'every unit on both sides takes 2–5 fire damage (fire-resistant units take half).'); // after an Eruption (2026-10-14)
@@ -28063,7 +28132,7 @@ function phasePillHTML(m){
   const phIco = phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️', phName = phase==='night' ? _t('Night') : phase==='twilight' ? 'Twilight' : _t('Day');
   // 2026-10-14 (user: "Just write Night and Day alternate every 3 days. Nocturnal units get stronger at night while Diurnal units, in
   // the Day."): the cycle's real length is rules.phaseLen (3 unless a map changes it), so the number comes from the engine.
-  const both = 'Nocturnal units get stronger at night, Diurnal units in the Day.';
+  const both = (skillHiddenNow('nocturnal') || skillHiddenNow('diurnal')) ? '' : 'Nocturnal units get stronger at night, Diurnal units in the Day.'; // 2026-10-15: unnamed while still "?" (SKILL_REVEAL)
   const lines = cycling ? [`Night and Day alternate every ${PL} days.`, both] : pmode === 'realtime' ? ['Night and Day follow your clock.', both] : phase === 'twilight' ? phaseTipLines('twilight', m) : [`${phName} all match.`, both];
   return bfPillHTML('phase-' + phase, phIco, phName, cycling ? `${roundInPhase}/${PL}` : '', pillTipHTML(phName, lines), cycling ? `${phName}, round ${roundInPhase} of ${PL}` : phName);
 }
@@ -28110,16 +28179,16 @@ function matchFieldTileHTML(def, cls, attrs, badges){
 function fieldEnvBiome(key){ return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
 function fieldCondCardHTML(m){
   const fr = matchFieldRules(m), rows = fieldConditionRows(fr || {});
-  if(m && m.mode !== 'tutorial') rows.forEach(row=>{ if(FIELD_ROWS_AT_START.has(row.key)) markFieldRow(row.key); });
+  if(m && m.mode !== 'tutorial' && !matchFieldUnrevealed(m)) rows.forEach(row=>{ if(FIELD_ROWS_AT_START.has(row.key)) markFieldRow(row.key); }); // not on Map 0 (2026-10-15)
   const tr = terrainOfMatch(m);
   if(tr) maybeTerrainIntro(m);
   if(!rows.length) return '';
   const n = rows.length;
   const cards = rows.map((row, i)=>{
-    const st = fieldRowState(row.key), unknown = st === 'unknown' && !(m && m.fxLib) && !matchFieldPlain(m); // the Effects library always shows the line; so does Map 0 (2026-10-15)
+    const st = fieldRowState(row.key), unknown = st === 'unknown' && !(m && m.fxLib); // the Effects library always shows the line (Map 0 no longer does, 2026-10-15)
     const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title:'An environment card: a rule of this battlefield'}};
     const line = `<div class="env-line">${unknown ? '?' : escapeHtml(row.short)}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`;
-    return matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}${st === 'new' ? ' has-new' : ''}`, `tabindex="0" data-fieldhover="cond:${escapeAttr(row.key)}" role="button" style="--i:${i}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (unknown ? 'Not seen yet.' : row.text))}"`, line);
+    return matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}${st === 'new' ? ' has-new' : ''}`, `tabindex="0" data-fieldhover="cond:${escapeAttr(row.key)}" role="button" style="--i:${i}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (unknown ? fieldRowQTip(row) : row.text))}"`, line);
   }).join('');
   return `<div class="env-stack${n > 1 ? ' is-fanned' : ''}" id="fieldCondCard" style="--n:${n}" role="group" aria-label="Environment cards">${cards}</div>`;
 }
@@ -28405,7 +28474,8 @@ function passiveTipCandidates(){
   out.push({id:'trig-on', text:'⚡ Lit up means ready: once its Wait runs out the trigger switches on and fires every time its moment comes. “When played” and “When it dies” triggers work even while Waiting, and a Primed card’s triggers are on from the start.', anchor:()=> coachSeen.has('trig-off') ? document.querySelector('#battlefieldEl .board-card .ab-trig:not(.is-off)') : null});
   // every skill/effect, the first time a card carrying it is on the field. Natural Leader gets no tip (2026-10-12, user:
   // "Natural Leader does not need a tutorial. this just might confuse the player").
-  Registry.skills().filter(sd=> sd.key !== 'leader').forEach(sd=>{
+  // 2026-10-15: a skill still hidden as "?" (SKILL_REVEAL) gets no tip yet; it comes once the skill is revealed. Retired skills none.
+  Registry.skills().filter(sd=> sd.key !== 'leader' && !sd.retired && !skillHiddenNow(sd.key)).forEach(sd=>{
     const desc = (()=>{ try{ const p = PASSIVE_DEFS.find(x=> x.key === sd.key); return p ? skillText(p, 1, {}) : sd.desc(1); }catch(e){ try{ return sd.desc(1); }catch(_){ return ''; } } })();
     out.push({id:'skill-'+sd.key, text:`✨ ${sd.label}: ${desc}`, anchor:()=> coachBoardEl(d=> d.effects && sd.get(d.effects)!==undefined)});
   });
@@ -29546,7 +29616,8 @@ function logText(ev){
     case 'stunPlayer': return {cls:'poison', text:`🔔 ${nm(ev.attDefId)}: ${ev.side==='A' ? 'the enemy skips' : 'you skip'} ${ev.turns>1 ? ev.turns + ' turns' : 'a turn'}.`};
     case 'curse': return {cls:'poison', text:`🜏 The ground under ${nm(ev.targetDefId)} is desecrated: ${ev.total} damage a round to whoever stands there.`};
     case 'curseTick': return {cls:'poison', text:`🜏 ${nm(ev.defId)} burns on cursed ground (${ev.dmg}).`};
-    case 'tide': if(ev.moonpull) return {cls:'', text:`🌙🌊 ${nm(ev.defId)}'s Moonpull: the Tide comes in. Flow!`}; return {cls:'', text: ev.tide==='high' ? '🌊🌊 High tide! Tide units get +2 Attack and +2 Armor.' : ev.tide==='flow' ? '🌊 Flow: Tide units +1 Attack.' : '🐚 Ebb: Tide units +1 Armor.'};
+    case 'tide': if(ev.moonpull) return {cls:'', text:`🌙🌊 ${nm(ev.defId)}'s Moonpull: the Tide comes in. Flow!`}; if(skillHiddenNow('tide')) return {cls:'', text: ev.tide==='high' ? '🌊🌊 High tide!' : ev.tide==='flow' ? '🌊 Flow: the water rises.' : '🐚 Ebb: the water falls back.'}; // Tide still "?" (SKILL_REVEAL, 2026-10-15)
+      return {cls:'', text: ev.tide==='high' ? '🌊🌊 High tide! Tide units get +2 Attack and +2 Armor.' : ev.tide==='flow' ? '🌊 Flow: Tide units +1 Attack.' : '🐚 Ebb: Tide units +1 Armor.'};
     case 'wash': return ev.spout ? {cls:'', text:`⛲ The spout washes ${nm(ev.targetDefId)} back: +1 Wait${ev.dmg ? `, and ${ev.dmg} water damage` : ''}.`} : {cls:'', text:`🌊 ${nm(ev.defId)} washes ${nm(ev.targetDefId)} back: +1 Wait.`};
     // Irradiation tokens (2026-10-14): what each token took this upkeep.
     case 'irradiation': { const pts = (ev.points||[]).map(p=> p.kind==='hp' ? '−1 max Health' : p.kind==='atk' ? '−1 Attack' : p.what==='removed' ? `lost ${irrSkillName(p)}` : p.what==='weakened' ? `${irrSkillName(p)} weakened` : p.what==='narrowed' ? `${irrSkillName(p)} narrowed` : `${irrSkillName(p)} −1`);
@@ -29641,7 +29712,12 @@ function logText(ev){
         cower: ev.mode === 'flee' ? `was hit last turn and backs off${ev.amount ? ` (+${ev.amount} Health)` : ''} 🫣` : `was hit last turn and hides in its shell: attacks can't hurt it this turn 🫣`,
         ichor: `splashed ${nm(ev.targetDefId)} with corrosive blood: ${ev.amount} acid${ev.armor ? ', −1 Armor' : ''}, Bleed 1 🧪`,
         shellDown: `came out of its shell 🐚`,
-        swimmer: `rode the Flow for a quick attack 🏊`,
+        swimmer: skillHiddenNow('swimmer') ? `strikes again, quick as a flash ❔` : `rode the Flow for a quick attack 🏊`, // 2026-10-15: unnamed while Swimmer is "?" (SKILL_REVEAL)
+        // Nocturnal / Diurnal / Crepuscular growing and fading with the phase (2026-10-15: these printed the bare event name before).
+        // While the skill is still "?" (SKILL_REVEAL) the line doesn't say why.
+        phaseGrow: (()=>{ const ph = ev.phase, hid = ph === 'night' ? skillHiddenNow('nocturnal') : ph === 'twilight' ? (skillHiddenNow('crepuscular') || skillHiddenNow('nocturnal') || skillHiddenNow('diurnal')) : skillHiddenNow('diurnal'), st = `+${ev.amount||0}⚔${ev.hp ? ' +' + ev.hp + '❤' : ''}`;
+          return hid ? `grows stronger (${st}) ❔` : `grows stronger ${ph === 'night' ? 'in the night' : ph === 'twilight' ? 'in the twilight' : 'in the sun'} (${st}) ${ph === 'night' ? '🌙' : ph === 'twilight' ? '🌆' : '☀️'}`; })(),
+        phaseFade: `loses that extra strength again`,
         tailwind: `caught the Tailwind for an extra turn 🪁`,
         coffee: `downed a coffee (Wait −${ev.amount}) ☕`,
         rocket: `launched a rocket 🚀`,

@@ -4910,7 +4910,8 @@
     ],
     "effects": {
       "evasive": true,
-      "darksight": true
+      "darksight": true,
+      "tide": true
     },
     "flavor": "Cannot see the attack coming. Dodges it anyway, out of habit.",
     "locked": true,
@@ -5553,7 +5554,8 @@
       "Mangrove"
     ],
     "effects": {
-      "quick": true
+      "quick": true,
+      "tide": true
     },
     "flavor": "Neither fully a land animal nor a water one. Fully unbothered by the distinction.",
     "locked": true,
@@ -13948,7 +13950,8 @@
       "Fish"
     ],
     "effects": {
-      "backstab": 2
+      "backstab": 2,
+      "tide": true
     },
     "flavor": "Swims downstream on purpose. Nobody ever sees it coming.",
     "numericId": 409,

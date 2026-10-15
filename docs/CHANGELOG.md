@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-15 (skill reveal)
+- **Skills you learn later show as "?":** Diurnal, Nocturnal and Crepuscular stay "?" until you enter Map 1; Tide and Swimmer until Map 2. The "?" sits on the card's skill strip and in its text ("Something about this card you'll learn soon."); the Skills codex, coach tips, teaching cards, phase and tide pills and battle-log lines don't name them either. The skill still works in fights, a reveal is remembered, and Admin Mode shows everything. The list is one small table (`SKILL_REVEAL`), so more skills can be added.
+- **Map 0 is misty:** no day and night (so no nightfall, howl or night sounds there). Its Mist shows "?" ("Something hangs in the air here. You'll learn more soon.") and Map 0 never marks a field effect as learned; learning by seeing starts on Map 1.
+- **Evade → Evasive** (the Swimmer pick's label).
+- **Hive Mind retired** from the card editor, the Effects library, the reference and the Test Kit (the engine still runs it).
+- **Fish carry Tide:** Blind Cave Fish, Mangrove Mudskipper and Wrong-Way Salmon.
+
 ## 2026-10-15 (09:00)
 - **Master hub:**
   - It opens on a dashboard: Your calls and Planned first, then the latest changes, stat tiles and links.

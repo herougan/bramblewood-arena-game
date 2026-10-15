@@ -1604,6 +1604,10 @@
   @keyframes cometSky{0%{opacity:0;} 15%{opacity:1;} 100%{opacity:0;}}
   @media (prefers-reduced-motion: reduce){ .board-card.wash-pushed .card-tile, .board-card.comet-hit .card-tile, .waitbadge.wait-bump{animation:none;} }
   /* The Tide skill, live (2026-10-14): blue while a tide runs, like any skill that changes with the fight. */
+  /* 2026-10-15 (user: "Hide their skills as '?' until they become relevant for the first time"): the neutral chip a skill not met yet
+     shows as (SKILL_REVEAL), on the card's skill strip and in its text. */
+  .skill-q{display:inline-grid; place-items:center; min-width:1.15em; height:1.15em; padding:0 .15em; border-radius:999px; background:rgba(120,100,60,.22); color:inherit; font-weight:800; font-size:.92em; line-height:1; box-shadow:inset 0 0 0 1px rgba(120,100,60,.45); cursor:help;}
+  .skill-q-line .skill-q{font-size:1em; min-width:1.4em; height:1.4em;}
   .ab-tide.tide-live{color:#2a7fc0; background:rgba(90,180,255,.28); border-radius:999px; box-shadow:0 0 0 1.5px rgba(108,200,255,.9), 0 0 8px rgba(108,200,255,.6); padding:0 2px;}
   .ab-tide.tide-live.tide-high{box-shadow:0 0 0 2px #6cc8ff, 0 0 12px #6cc8ff;}
   .granted-skill.tide-live{font-weight:800;}
