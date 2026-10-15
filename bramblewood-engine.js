@@ -942,7 +942,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(tideRising()){
       if(recordEvents && events) events.push({type:'tide', tide:getTide(), round});
     } else if(getTide() === 'ebb' && recordEvents && events) events.push({type:'tide', tide:'ebb', round});
-    volcanoTick(players, round, sideOf, stats, events);
+    { const stV = statusSnap(players); volcanoTick(players, round, sideOf, stats, events); pushStatusEnds(stV, players, sideOf, events); } // 2026-10-15: petrification wearing off
     if(!field) return;
     const f = field.id;
     if(f === 'frozen'){
@@ -1464,7 +1464,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function psychicHit(pid, att, c, sideOf, stats, events){
     const n = Number(effectsOf(att).psychic)||0; if(!(n > 0) || !c || !(c.hp > 0)) return 0;
     const tpid = otherId(pid), mindless = isMindless(c), dmg = mindless ? 0 : n;
-    if(dmg > 0){ c.hp = Math.max(0, c.hp - dmg); if(c.asleep > 0) c.asleep = 0; if(c.hp <= 0) c.killedBy = att.uid;
+    if(dmg > 0){ c.hp = Math.max(0, c.hp - dmg); if(c.asleep > 0){ c.asleep = 0; noteWoke(c); } if(c.hp <= 0) c.killedBy = att.uid;
       ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg; }
     if(recordEvents && events) events.push({type:'psychic', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:c.uid, targetDefId:c.defId, dmg, n, immune:mindless || undefined});
     return dmg;
@@ -1767,7 +1767,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     card.hp = Math.max(0, card.hp - dmg);
     if(hp0 > 0 && card.hp <= 0 && attCard) card.killedBy = attCard.uid; // who:'killer' (2026-10-14): the unit whose hit killed it
     if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
-    if(dmg>0 && card.asleep>0) card.asleep = 0; // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
+    if(dmg>0 && card.asleep>0){ card.asleep = 0; noteWoke(card); } // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
     if(!nul) shellUp(card);
     if(nul && card.hp <= 0) nullifyKill(card);
     return {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak};
@@ -1804,7 +1804,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     card.hp = Math.max(0, card.hp - dmg);
     if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
     if(attUid != null && hp0 > 0 && card.hp <= 0) card.killedBy = attUid; // who:'killer' (2026-10-14)
-    if(dmg>0 && card.asleep>0) card.asleep = 0; // Asleep breaks on any flat/ranged damage too
+    if(dmg>0 && card.asleep>0){ card.asleep = 0; noteWoke(card); } // Asleep breaks on any flat/ranged damage too
     shellUp(card); // Shell triggers on arrows and every other hit too (2026-10-12)
     return dmg;
   }
@@ -4252,6 +4252,29 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const others = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(c=>c.hp>0 && c.uid!==targetCard.uid);
     others.forEach(oc=> runCustomTriggers(players, sideOf, ownerId, oc, CARD_DEFS[oc.defId], 'onAllyHealed', stats, events, {healedCard:targetCard, healerCard, amount}));
   }
+  // Status wear-offs (2026-10-15, effects pass: "every status ending ... should have an effect"): the engine never said when a
+  // status ran out (its overlay just vanished at the next sync). These helpers only READ the units: statusSnap() notes every
+  // live unit's statuses before a step that can end them, pushStatusEnds() then logs one {type:'statusEnd', status} per status
+  // that went from on to off. noteWoke() logs a sleeper woken by damage (the line that wakes it calls it). No rule changes.
+  const STATUS_END_KEYS = ['poison','bleed','decay','frozen','asleep','paralyzed','stunned','staggered','blind','tipsy','confused','shocked','corrode','exposed','wither','irradiation','smoke','scar','petrified'];
+  const statusOn = (c, k)=> k === 'daunt' ? !!(c.daunts && c.daunts.length) : (c[k] === true || c[k] > 0);
+  function statusSnap(players){
+    if(!recordEvents) return null;
+    const snap = new Map();
+    [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return; allBoardCards(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0)) return;
+      const on = STATUS_END_KEYS.concat('daunt').filter(k=> statusOn(c, k)); if(on.length) snap.set(c, {pid, on}); }); });
+    return snap;
+  }
+  function pushStatusEnds(snap, players, sideOf, events){
+    if(!snap || !snap.size || !(recordEvents && events)) return;
+    const live = new Set(); [1,2].forEach(pid=>{ const pl = players[pid]; if(pl) allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0) live.add(c); }); });
+    snap.forEach(({pid, on}, c)=>{ if(!live.has(c)) return;
+      on.forEach(k=>{ if(!statusOn(c, k)) events.push({type:'statusEnd', status:k, side:sideOf(pid), uid:c.uid, defId:c.defId}); }); });
+  }
+  function noteWoke(card){
+    if(!(recordEvents && shieldEvents) || !card || !(card.hp > 0)) return;
+    const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusEnd', status:'asleep', woke:true, side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), uid:card.uid, defId:card.defId});
+  }
   function endOfRoundUpkeep(players, sideOf, stats, events){
     const p1=players[1], p2=players[2];
     // Shell: deactivate whatever was active THIS round (already applied above in resolveCombat/
@@ -4812,10 +4835,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // THEN does Renewal cure it going forward (see fireRoundStartTriggers' comment). This also
     // means a card that dies to its own poison this round never gets to act on its Per Turn/On
     // Round Start hooks below — removeDeadCards runs inside applyPoisonTicks itself.
+    const stBefore = statusSnap(players); // 2026-10-15: status wear-offs (pushStatusEnds after the ticks and after upkeep)
     applyPoisonTicks(players, sideOf, stats, events);
     applyDecayTicks(players, sideOf, stats, events);
     applyWitherTicks(players, sideOf, stats, events); // Wither (2026-10-14)
     if(!passOnlyUid) applyMeteorBurns(players, sideOf, stats, events); // a Meteor's burning crater (2026-10-14)
+    pushStatusEnds(stBefore, players, sideOf, events); const stRound = statusSnap(players);
     fireRoundStartTriggers(players, sideOf, stats, events);
     const p1 = players[1], p2 = players[2];
     // Rally N (item #14): recomputed fresh every round, AFTER poison ticks/deaths resolve, so
@@ -5571,6 +5596,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // action)"): after the whole swing order.
     if(!passOnlyUid && p1.hq.hp > 0 && p2.hq.hp > 0) snackTime(players, sideOf, stats, events, firstAttackerSide);
     endOfRoundUpkeep(players, sideOf, stats, events);
+    pushStatusEnds(stRound, players, sideOf, events); // 2026-10-15: whatever ran out this round (upkeep, cleanses, Expose used up)
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;
   }

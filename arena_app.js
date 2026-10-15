@@ -26948,6 +26948,7 @@ function deathVfx(uid){
   try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
   const el = boardCardEl(uid);
   if(!el) return;
+  { const fxd = {uid, style:deathStyleFor(uid), handled:false}; fxHook('deathLook', el, fxd); if(fxd.handled) return; } // 2026-10-15: a death per cause (FX.C.hooks.deathLook)
   const skull = document.createElement('div');
   skull.className = 'death-skull';
   skull.textContent = '💀';
@@ -29642,11 +29643,14 @@ function lockShards(lock){
       {x:`+=${Math.cos(ang)*d}`, y:`+=${Math.sin(ang)*d + 30}`, rotation:(Math.random()*2-1)*180, opacity:0, duration:.75, ease:'power2.out', onComplete:()=> p.remove()});
   });
 }
+// 2026-10-15: names for the statusEnd log line (the engine logs a status running out).
+const STATUS_END_NAMES = {poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Expose', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification'};
 function logText(ev){
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   switch(ev.type){
     case 'play': return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}.`};
+    case 'statusEnd': return {cls:'', text: ev.woke ? `${nm(ev.defId)} wakes up.` : `${nm(ev.defId)}: ${STATUS_END_NAMES[ev.status] || ev.status} wears off.`}; // 2026-10-15
     case 'discard': {
       const meta = PITCH_RESOURCE_META[ev.resource] || PITCH_RESOURCE_META.lumber;
       const amt = ev.amount!=null ? ev.amount : 1; // legacy replay events (pre-Stone) had no resource/amount fields — they were always +1 gold
@@ -31097,7 +31101,7 @@ function eighthPassVfx(ev){
   if(ev.type === 'frenzy' && skillFxOnce('frenzy' + ev.attUid)){ const t = el(ev.attUid); if(t) F.rageFlare(t); }
   if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
   if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
-  if(ev.type === 'spawn' && ev.cause !== 'shieldCall'){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
+  if(ev.type === 'spawn' && ev.cause !== 'shieldCall' && !(window.FX && FX.C && FX.C.ownsSpawn && FX.C.ownsSpawn(ev))){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
     at(140, ()=> uids.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) F.summonPortal(t); }))); }
   if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
     const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
@@ -38429,7 +38433,7 @@ function maybeSpeakHQ(side, bank, opts){
   const el = hqTileEl(side); if(!el) return;
   lastSpokeAt.set(key, now);
   const line = lines[Math.floor(Math.random()*lines.length)];
-  showSpeechBubble(el, line);
+  { const h = {handled:false}; fxHook('castleSpeech', el, line, h); if(!h.handled) showSpeechBubble(el, line); } // 2026-10-15: the castle's own bubble (FX.C)
   SoundKit.voiceTone(side==='A' ? 1000 : 2000); // seeds distinct from any real card uid range
 }
 
