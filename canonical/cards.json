@@ -19800,7 +19800,7 @@
   {
     "id": "sheep",
     "cost": 0,
-    "icon": "🐑",
+    "icon": "\ud83d\udc11",
     "name": "Sheep",
     "tags": [],
     "test": false,
@@ -19854,7 +19854,7 @@
     "exileCost": null,
     "graceCost": 0,
     "metalCost": 0,
-    "numericId": 916,
+    "numericId": 917,
     "stoneCost": 0,
     "archetypes": [
       "Sheep"
