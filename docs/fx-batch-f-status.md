@@ -46,7 +46,9 @@ unless the hook column names another.
   their own slide-in; it now waits for the slide and flaps with the independent `scale` property, so the slide is untouched.
 - Lab: `raid-part-down` plays on a real `.raid2-panel` part; the banner demo shows the real strip.
 - Tests on a loaded box: `tests/autobattle.js` fails only its speed check ("fights are too slow", 3–4/s against 9/s; load
-  average 11 with five other batches running); batch F does not touch the engine or autobattle.
+  average 11 with five other batches running); the main checkout fails it the same way (4.5/s). Batch F does not touch the
+  engine or autobattle. `tests/e2e/ui_smoke.py` timed out loading the page for its shader section (software WebGL takes
+  ~60 s on this box); with a longer navigation timeout it reports 0 failures.
 
 ## Entries
 
