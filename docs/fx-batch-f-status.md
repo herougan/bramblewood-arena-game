@@ -39,6 +39,14 @@ unless the hook column names another.
   `pvp-map60`, `world-event`) are concept implementations in the lab only.
 - Fixed while reviewing frames: the panel vignette (raid stage change, boss roar) was drawn as a box in the top-left corner
   (`inset:auto` was applied after `left/top`); it now covers its panel, rounded like it.
+- Tentacle smack, tail sweep and the dragon-scale shadow are clipped to the battlefield / panel they play on.
+- Labels over top-bar pills (energy, XP) sit lower and drift down near the top edge instead of leaving the screen.
+- Raid bars fill in once per session, not on every re-render of the raid panel (claims and live refreshes re-render it).
+- Banners (sign-in / invite / version): the old flap animated `transform`, which those banners use (with `!important`) for
+  their own slide-in; it now waits for the slide and flaps with the independent `scale` property, so the slide is untouched.
+- Lab: `raid-part-down` plays on a real `.raid2-panel` part; the banner demo shows the real strip.
+- Tests on a loaded box: `tests/autobattle.js` fails only its speed check ("fights are too slow", 3–4/s against 9/s; load
+  average 11 with five other batches running); batch F does not touch the engine or autobattle.
 
 ## Entries
 
@@ -187,7 +195,7 @@ unless the hook column names another.
 | `raid-tail-sweep` | raid-dungeon-pvp | new | A | onEvent: raidSmack (front row) |
 | `raid-stage-change` | raid-dungeon-pvp | new · variants | ABC | renderRaidSubTab → wireRaidPanel → fxHook(raidPanel) |
 | `raid-part-down` | raid-dungeon-pvp | new | A | raid panel: a part newly down → fxHook(raidPanel) |
-| `raid-bars` | raid-dungeon-pvp | new · variants | AB | raid panel → fxHook(raidPanel): fill-in on first view, drain since last view |
+| `raid-bars` | raid-dungeon-pvp | new · variants | AB | raid panel → fxHook(raidPanel): fill-in once per session, drain since last view |
 | `raid-feed` | raid-dungeon-pvp | new | A | renderOnlineRaidFeed → fxHook(raidFeed) |
 | `raid-claim` | raid-dungeon-pvp | new | A | raid panel Claim button → fxHook(raidPanel) listener |
 | `raid-core-stumps` | raid-dungeon-pvp | new | A | trench match render → fxHook(trenchRender) (round 1, then every 3 rounds) |

@@ -555,11 +555,18 @@ M.cloudSync = function(el, opts){
 };
 // Sign-in / invite / version banners: the strip flaps down into place and a light runs along it.
 M.bannerIn = function(el, opts){
-  opts = opts || {}; const g = G(); if(!g || !el) return Promise.resolve();
-  const c = pt(el);
-  g.fromTo(el, {scaleY:.4, transformOrigin:'50% 0%'}, {scaleY:1, duration:.5, ease:'elastic.out(1, .45)', clearProps:'transform'});
-  burst(c.x - c.w*.45, c.y, {n:5, colors:['#fff3c4', '#ffd56e'], dist:[8, 22], dur:.45, size:4, shape:'star', glow:true});
-  return wait(220).then(()=> sheen(el, {dur:.7})).then(()=> call(opts.onDone));
+  opts = opts || {}; if(!el) return Promise.resolve();
+  // 2026-10-15: the banners slide in with their own CSS transform (and transition), so this never touches `transform`: once
+  // the slide is done it flaps the strip with the independent `scale` property, pops a few sparkles and runs a light along it.
+  return wait(opts.delay != null ? opts.delay : 360).then(()=>{
+    if(!alive(el)) return;
+    const c = pt(el), o0 = el.style.transformOrigin; el.style.transformOrigin = '50% 0%';
+    try{ const a = el.animate([{scale:'1 .55'}, {scale:'1 1.06', offset:.55}, {scale:'1 .98', offset:.8}, {scale:'1 1'}], {duration:480, easing:'ease-out'});
+      a.onfinish = a.oncancel = ()=>{ el.style.transformOrigin = o0; }; }catch(e){ el.style.transformOrigin = o0; }
+    burst(c.x - c.w*.45, c.y, {n:6, colors:['#fff3c4', '#ffd56e'], dist:[8, 24], dur:.45, size:4, shape:'star', glow:true});
+    burst(c.x + c.w*.45, c.y, {n:6, colors:['#fff3c4', '#ffd56e'], dist:[8, 24], dur:.45, size:4, shape:'star', glow:true});
+    return wait(180).then(()=> sheen(el, {dur:.7}));
+  }).then(()=> call(opts.onDone));
 };
 // Future: emoji / icon set swap. The same icon flips through four looks (simulated with filters; the real sets are fonts).
 M.emojiSetSwap = function(host, opts){
@@ -1491,7 +1498,7 @@ H.skillReveal = (key, env)=>{ if(!medOK(env)) return; const now = Date.now(), at
   later(()=> M.skillReveal(null, {name, sub:'Skill revealed'}), at - now); };
 H.cardPop = (pop, src, env)=>{ if(pop && medOK(env)) M.cardPopIn(pop); };
 H.cloudSync = (pill, ok, env)=>{ if(!pill || !lowOK(env)) return; const st = ok ? 'ok' : 'off'; if(pill._fxfSync === st) return; const first = pill._fxfSync == null; pill._fxfSync = st; if(!first || ok) M.cloudSync(pill, {ok}); };
-H.banner = (el, env)=>{ if(el && lowOK(env)) later(()=> M.bannerIn(el), 30); };
+H.banner = (el, env)=>{ if(el && lowOK(env)) M.bannerIn(el); };
 // Dialogue: mood on every NPC line (and a ring when the speaker changes), the faction warning, the AFK goodbye, an act.
 let lastSpeaker = null;
 H.dialogueLine = (lineEl, line, id, env)=>{ if(!lineEl || !medOK(env)) return; line = line || {};
