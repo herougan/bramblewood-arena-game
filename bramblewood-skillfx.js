@@ -187,12 +187,12 @@ function lightning(shooter, targets, o){
   }, i*190));
   later(()=> svg.remove(), chain.length*190 + 220);
 }
-// Green rings and rising pluses; the card brightens for a beat.
+// Green rings and rising ➕ (2026-10-16, user: "The heal animation should include the + emoji."); the card brightens for a beat.
 function heal(target, o){
   o = o || {}; const g = G(); const c = centre(target);
   ring(c.x, c.y, 'sfx-heal', 110, 700); later(()=> ring(c.x, c.y, 'sfx-heal', 80, 600), 150);
   if(!g){ later(o.onDone, 600); return; }
-  for(let i = 0; i < 8; i++){ const p = layer('sfx-plus', '+'); g.set(p, {x:c.r.left + c.w*(0.15 + Math.random()*0.7), y:c.r.top + c.h*(0.5 + Math.random()*0.4), opacity:0, scale:.6});
+  for(let i = 0; i < 8; i++){ const p = layer('sfx-plus', '➕') /* the heal's ➕ (2026-10-16) */; g.set(p, {x:c.r.left + c.w*(0.15 + Math.random()*0.7), y:c.r.top + c.h*(0.5 + Math.random()*0.4), opacity:0, scale:.6});
     g.to(p, {y:'-=46', opacity:1, scale:1, duration:.35, delay:i*0.06, ease:'power1.out'}); g.to(p, {opacity:0, duration:.3, delay:i*0.06 + .45, onComplete:()=> p.remove()}); }
   const t = tileOf(target); g.fromTo(t, {filter:'brightness(1)'}, {filter:'brightness(1.35)', duration:.2, yoyo:true, repeat:1, clearProps:'filter', onComplete:o.onDone});
 }
@@ -1398,4 +1398,217 @@ function bloodlustPulse(target, o){
   const t = tileOf(target); for(let i = 0; i < beats; i++) g.fromTo(t, {scale:1}, {scale:1.06, duration:.08, yoyo:true, repeat:1, delay:i*.28, ease:'power2.out', clearProps:'transform'});
 }
 Object.assign(root.SkillFX, {boltGlob, chilliHeat, bloodlustPulse, BOLT_LOOK});
+// ---- W2 skills (2026-10-16): the looks for the designer's new skills, the Cloudy field and the heal's ➕ --------------------------
+// Each takes real board elements (a .board-card, the battlefield) and plays on fixed overlays it removes when done; the lasting
+// looks (Bound vines, Invisible, Invincible, Toxin, crystals, trap and burning-ground marks, cloud shadows) are CSS on classes the
+// game toggles, injected once here (w2Css) so the template stays untouched.
+//   SkillFX.venomBite(target)        SkillFX.toxinMark(target)        SkillFX.weakenDrain(target)      SkillFX.wilt(target)
+//   SkillFX.bulldozeShove(target, {fromAbove})                         SkillFX.vineBind(target, {strangle})  SkillFX.squeeze(target)
+//   SkillFX.invincibleBlock(target)  SkillFX.unveil(target)            SkillFX.gasCloud(targets)        SkillFX.absoluteZero(host, targets)
+//   SkillFX.trapSet(slotEl, {kind})  SkillFX.trapSnap(target, {kind})  SkillFX.nova(src, targets)       SkillFX.crystalForm(target)
+//   SkillFX.cure(target)             SkillFX.tauntCall(target, attacker)  SkillFX.cloudShadows(host, on)  SkillFX.healPlus(target)
+function w2Css(){
+  if(document.getElementById('sfx-w2-css')) return; const st = document.createElement('style'); st.id = 'sfx-w2-css';
+  st.textContent = `
+.sfx-w2-glyph{font:900 22px 'Baloo 2',system-ui,sans-serif; line-height:1; text-shadow:0 2px 0 rgba(0,0,0,.35);}
+.sfx-w2-fang{width:7px; height:16px; border-radius:0 0 50% 50%; background:linear-gradient(180deg,#f6f0ff,#b78bff 70%,#5b2a9a); box-shadow:0 0 6px rgba(160,90,255,.8);}
+.sfx-w2-drop{width:6px; height:8px; border-radius:50% 50% 50% 50%/60% 60% 40% 40%; background:radial-gradient(circle at 35% 35%,#e3c6ff,#8a3fd8 60%,#3e1170);}
+.sfx-w2-toxring{border-radius:50%; border:3px solid rgba(120,255,60,.9); box-shadow:0 0 14px rgba(80,220,40,.75), inset 0 0 10px rgba(20,60,10,.8);}
+.sfx-w2-vine{position:fixed; left:0; top:0; pointer-events:none; z-index:9991; overflow:visible;}
+.sfx-w2-gas{width:70px; height:46px; border-radius:50%; background:radial-gradient(ellipse at 50% 55%,rgba(150,220,70,.75),rgba(90,160,40,.45) 55%,rgba(60,120,30,0) 72%); filter:blur(3px);}
+.sfx-w2-frost{border-radius:12px; background:radial-gradient(ellipse at 50% 50%,rgba(255,255,255,.95),rgba(170,225,255,.75) 45%,rgba(90,170,255,.2) 75%,rgba(90,170,255,0)); mix-blend-mode:screen;}
+.sfx-w2-flake{color:#e6f6ff; font-size:16px; text-shadow:0 0 6px #7cc8ff;}
+.sfx-w2-nova{border-radius:50%; border:4px solid rgba(190,120,255,.95); box-shadow:0 0 30px 8px rgba(150,80,255,.7), inset 0 0 26px rgba(220,180,255,.7);}
+.sfx-w2-orb{width:14px; height:14px; border-radius:50%; background:radial-gradient(circle,#fff,#c79bff 45%,#6b2fd0 80%); box-shadow:0 0 10px #a46bff;}
+.sfx-w2-shard{width:10px; height:16px; clip-path:polygon(50% 0,100% 40%,50% 100%,0 40%); background:linear-gradient(160deg,#f2fbff,#8fd3ff 50%,#6a7cff);}
+.sfx-w2-pill{font-size:20px;}
+.sfx-w2-jaw{font-size:30px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.5));}
+.sfx-w2-ember{width:7px; height:7px; border-radius:50%; background:radial-gradient(circle,#fff6c0,#ff9a2a 55%,#d8380e);}
+.sfx-w2-shout{border-radius:50%; border:3px solid rgba(255,214,90,.95); box-shadow:0 0 12px rgba(255,190,60,.6);}
+.sfx-w2-plus{font-size:20px; filter:drop-shadow(0 0 6px rgba(90,220,120,.85));}
+/* the lasting looks */
+.board-card.is-bound .card-tile::after{content:''; position:absolute; inset:-4px; pointer-events:none; z-index:7; border-radius:inherit; background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 120' preserveAspectRatio='none'%3E%3Cg fill='none' stroke-linecap='round'%3E%3Cpath d='M-4 88 C 20 70, 34 96, 56 78 S 90 62, 104 74' stroke='%23173a0c' stroke-width='9'/%3E%3Cpath d='M-4 88 C 20 70, 34 96, 56 78 S 90 62, 104 74' stroke='%234e9a2a' stroke-width='5'/%3E%3Cpath d='M-4 40 C 18 56, 40 30, 60 46 S 92 58, 104 38' stroke='%23173a0c' stroke-width='8'/%3E%3Cpath d='M-4 40 C 18 56, 40 30, 60 46 S 92 58, 104 38' stroke='%235aa832' stroke-width='4.5'/%3E%3Cpath d='M18 124 C 30 96, 70 90, 74 60 S 66 14, 84 -4' stroke='%23173a0c' stroke-width='7'/%3E%3Cpath d='M18 124 C 30 96, 70 90, 74 60 S 66 14, 84 -4' stroke='%2367b83a' stroke-width='3.8'/%3E%3C/g%3E%3Cg fill='%237cc94a' stroke='%23173a0c' stroke-width='1.2'%3E%3Cellipse cx='30' cy='82' rx='6' ry='3' transform='rotate(-30 30 82)'/%3E%3Cellipse cx='70' cy='70' rx='6' ry='3' transform='rotate(25 70 70)'/%3E%3Cellipse cx='44' cy='40' rx='5.5' ry='2.8' transform='rotate(35 44 40)'/%3E%3Cellipse cx='72' cy='30' rx='5' ry='2.6' transform='rotate(-40 72 30)'/%3E%3C/g%3E%3C/svg%3E") center/100% 100% no-repeat; filter:drop-shadow(0 2px 2px rgba(0,0,0,.55));}
+.board-card.is-bound .card-tile{filter:saturate(.8);}
+.board-card.is-invisible .card-tile{opacity:.42; filter:saturate(.4) contrast(.9); animation:sfxW2Shimmer 2.4s ease-in-out infinite;}
+@keyframes sfxW2Shimmer{0%,100%{opacity:.36;} 50%{opacity:.52;}}
+.board-card.is-invincible .card-tile{box-shadow:0 0 0 2px rgba(255,226,120,.95), 0 0 16px 4px rgba(255,210,80,.65); animation:sfxW2Gold 1.6s ease-in-out infinite;}
+@keyframes sfxW2Gold{0%,100%{box-shadow:0 0 0 2px rgba(255,226,120,.95), 0 0 12px 3px rgba(255,210,80,.5);} 50%{box-shadow:0 0 0 2px rgba(255,240,170,1), 0 0 20px 6px rgba(255,220,100,.8);}}
+.board-card.is-toxic .card-tile{box-shadow:inset 0 0 14px rgba(70,200,30,.65);}
+.board-card.is-crystal .card-tile{filter:hue-rotate(170deg) saturate(.6) brightness(1.15); box-shadow:inset 0 0 18px rgba(170,220,255,.9), 0 0 10px rgba(120,190,255,.6);}
+.abadge.bound{background:#2e6b28; color:#eaffd8;} .abadge.toxin{background:#1f3a12; color:#b8ff6a;} .abadge.invisible{background:#4a4f63; color:#eef;} .abadge.invincible{background:#a07a10; color:#fff6d0;}
+.w2-hazard-mark{position:absolute; left:50%; bottom:8%; transform:translateX(-50%); z-index:6; font:800 13px 'Baloo 2',system-ui,sans-serif; padding:1px 6px; border-radius:999px; white-space:nowrap; pointer-events:auto;
+  background:rgba(40,28,18,.82); color:#ffe9c0; box-shadow:0 1px 3px rgba(0,0,0,.4);}
+.w2-hazard-mark.scorch{background:rgba(120,30,8,.85); color:#ffd9a0; animation:sfxW2Smoulder 1.4s ease-in-out infinite;}
+@keyframes sfxW2Smoulder{0%,100%{box-shadow:0 0 4px rgba(255,120,30,.5);} 50%{box-shadow:0 0 12px rgba(255,140,40,.95);}}
+.w2-clouds{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:1; border-radius:inherit;}
+.w2-clouds i{position:absolute; display:block; border-radius:50%; background:radial-gradient(ellipse at 50% 50%, rgba(20,24,40,.34), rgba(20,24,40,.2) 45%, rgba(20,24,40,0) 70%);
+  filter:blur(10px); animation:sfxW2Drift linear infinite; will-change:transform;}
+@keyframes sfxW2Drift{from{transform:translateX(-45vw);} to{transform:translateX(145vw);}}
+@media (prefers-reduced-motion: reduce){ .w2-clouds i{animation:none;} .board-card.is-invisible .card-tile, .board-card.is-invincible .card-tile, .w2-hazard-mark.scorch{animation:none;} }
+`;
+  (document.head || document.body).appendChild(st);
+}
+const w2ready = ()=>{ w2Css(); return !!G() && !reduce(); };
+function w2Float(x, y, txt, cls, rise){ const g = G(); const f = layer('sfx-w2-glyph ' + (cls||''), txt); if(!g){ later(()=> f.remove(), 700); return f; }
+  g.set(f, {x, y, xPercent:-50, yPercent:-50, opacity:0, scale:.6});
+  g.timeline({onComplete:()=> f.remove()}).to(f, {opacity:1, scale:1.1, duration:.14, ease:'back.out(3)'}).to(f, {y:`-=${rise == null ? 26 : rise}`, opacity:0, duration:.55, delay:.25, ease:'power1.in'});
+  return f; }
+// Venomous: two fangs stab down, purple venom drips run down the card.
+function venomBite(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
+  [-1, 1].forEach(s=>{ const f = layer('sfx-w2-fang'); g.set(f, {x:c.x + s*c.w*.12 - 3, y:c.r.top + c.h*.12, scaleY:.2, opacity:0, rotation:-s*10});
+    g.timeline({onComplete:()=> f.remove()}).to(f, {y:`+=${c.h*.18}`, scaleY:1, opacity:1, duration:.12, ease:'power4.in'}).to(f, {opacity:0, duration:.2, delay:.15}); });
+  for(let i = 0; i < 4; i++){ const d = layer('sfx-w2-drop'); g.set(d, {x:c.x + rnd(-c.w*.25, c.w*.25), y:c.r.top + c.h*.35, opacity:0});
+    g.timeline({delay:.18 + i*.07, onComplete:()=> d.remove()}).to(d, {opacity:1, duration:.06}).to(d, {y:`+=${rnd(c.h*.25, c.h*.45)}`, duration:.5, ease:'power2.in'}, '<').to(d, {opacity:0, duration:.15}); }
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.1) sepia(.5) hue-rotate(220deg)', duration:.1, yoyo:true, repeat:1, delay:.12, clearProps:'filter', onComplete:o.onDone});
+}
+// Toxin: a toxic-green ring closes in on the card and a ☣ glows over it.
+function toxinMark(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
+  const r = layer('sfx-w2-toxring'); g.set(r, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:c.w*1.5, height:c.w*1.5, opacity:0});
+  g.timeline({onComplete:()=> r.remove()}).to(r, {opacity:1, duration:.1}).to(r, {width:c.w*.5, height:c.w*.5, opacity:0, duration:.5, ease:'power2.in'});
+  later(()=> w2Float(c.x, c.y, '☣️', '', 18), 260);
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(.85) sepia(.6) hue-rotate(50deg) saturate(1.8)', duration:.16, yoyo:true, repeat:1, delay:.3, clearProps:'filter', onComplete:o.onDone});
+}
+// Weaken: a red ⚔ cracks and sinks out of the card; the card dims.
+function weakenDrain(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
+  const f = layer('sfx-w2-glyph', '⚔️'); g.set(f, {x:c.r.left + c.w*.18, y:c.r.bottom - c.h*.18, xPercent:-50, yPercent:-50, opacity:0, scale:1.3});
+  g.timeline({onComplete:()=> f.remove()}).to(f, {opacity:1, duration:.1}).to(f, {rotation:-25, duration:.12}).to(f, {y:'+=26', opacity:0, scale:.7, filter:'grayscale(1)', duration:.45, ease:'power2.in'});
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(.7) saturate(.6)', duration:.18, yoyo:true, repeat:1, clearProps:'filter', onComplete:o.onDone});
+}
+// Wilting: a few petals droop off and fall; the card sags a little.
+function wilt(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
+  for(let i = 0; i < 4; i++){ const p = layer('sfx-w2-glyph', i ? '·' : '🥀'); p.style.fontSize = i ? '22px' : '18px'; p.style.color = '#c35a6c';
+    g.set(p, {x:c.x + rnd(-c.w*.3, c.w*.3), y:c.r.top + c.h*.2, opacity:0, rotation:rnd(-30, 30)});
+    g.timeline({delay:i*.08, onComplete:()=> p.remove()}).to(p, {opacity:1, duration:.08}).to(p, {y:`+=${c.h*.6}`, x:`+=${rnd(-14, 14)}`, rotation:`+=${rnd(-90, 90)}`, duration:.8, ease:'power1.in'}, '<').to(p, {opacity:0, duration:.2}, '-=.2'); }
+  g.fromTo(tileOf(target), {scaleY:1, transformOrigin:'50% 100%'}, {scaleY:.95, duration:.18, yoyo:true, repeat:1, clearProps:'transform', onComplete:o.onDone});
+}
+// Bulldoze: the card is shoved back (away from the attacker's side), skids, dust kicks up, then settles.
+function bulldozeShove(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target), dir = o.fromAbove ? 1 : -1, t = tileOf(target);
+  g.timeline({onComplete:()=>{ g.set(t, {clearProps:'transform'}); call(o.onDone); }})
+    .to(t, {y:dir*18, rotation:dir*-2, duration:.12, ease:'power3.out'}).to(t, {y:dir*14, duration:.18}).to(t, {y:0, rotation:0, duration:.35, ease:'power2.inOut'});
+  for(let i = 0; i < 6; i++){ const d = layer('sfx-w2-glyph', '•'); d.style.color = 'rgba(150,120,90,.85)'; d.style.fontSize = '14px';
+    g.set(d, {x:c.x + rnd(-c.w*.4, c.w*.4), y:dir > 0 ? c.r.bottom + 4 : c.r.top - 4, opacity:.9});
+    g.to(d, {x:`+=${rnd(-20, 20)}`, y:`+=${dir*rnd(6, 18)}`, opacity:0, scale:1.6, duration:.5, delay:.08, ease:'power2.out', onComplete:()=> d.remove()}); }
+}
+// Tangleweed / Strangle: green vines whip around the card (drawn strokes); the lasting look is the .is-bound class.
+function vineBind(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
+  const svgNS = 'http://www.w3.org/2000/svg', svg = document.createElementNS(svgNS, 'svg'); svg.setAttribute('class', 'sfx-w2-vine'); svg.setAttribute('width', c.w + 20); svg.setAttribute('height', c.h + 20);
+  svg.style.transform = `translate(${c.r.left - 10}px, ${c.r.top - 10}px)`; svg.setAttribute('aria-hidden', 'true');
+  const W = c.w + 20, H = c.h + 20, paths = [`M2 ${H*.85} C ${W*.3} ${H*.6}, ${W*.7} ${H*.95}, ${W-2} ${H*.55}`, `M${W-2} ${H*.25} C ${W*.6} ${H*.45}, ${W*.35} ${H*.05}, 2 ${H*.35}`, `M${W*.2} ${H-2} C ${W*.15} ${H*.5}, ${W*.85} ${H*.5}, ${W*.8} 2`];
+  paths.forEach((d, i)=>{ const pth = document.createElementNS(svgNS, 'path'); pth.setAttribute('d', d); pth.setAttribute('fill', 'none'); pth.setAttribute('stroke', o.strangle ? '#3f7d1e' : '#4f9a2c'); pth.setAttribute('stroke-width', o.strangle ? '6' : '5'); pth.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(pth); const L = pth.getTotalLength ? pth.getTotalLength() : 300; pth.style.strokeDasharray = L; pth.style.strokeDashoffset = L;
+    g.to(pth.style, {strokeDashoffset:0, duration:.35, delay:i*.08, ease:'power2.out'}); });
+  document.body.appendChild(svg);
+  g.to(svg, {opacity:0, duration:.35, delay:.9, onComplete:()=>{ svg.remove(); call(o.onDone); }});
+  g.fromTo(tileOf(target), {scale:1}, {scale:.96, duration:.12, yoyo:true, repeat:1, delay:.3, clearProps:'transform'});
+}
+// Strangle's squeeze at round start: the card is crushed in from both sides twice.
+function squeeze(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), t = tileOf(target);
+  g.timeline({onComplete:()=>{ g.set(t, {clearProps:'transform'}); call(o.onDone); }}).to(t, {scaleX:.9, duration:.1}).to(t, {scaleX:1, duration:.1}).to(t, {scaleX:.9, duration:.1}).to(t, {scaleX:1, duration:.15});
+}
+// Invincible: the blow bounces off a gold flash.
+function invincibleBlock(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const c = centre(target);
+  ring(c.x, c.y, 'sfx-w2-shout', c.w*1.4, 420); w2Float(c.x, c.r.top + c.h*.3, '🌟', '', 20);
+  G().fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.6) sepia(.4)', duration:.08, yoyo:true, repeat:1, clearProps:'filter', onComplete:o.onDone});
+}
+// Invisible: fades back in with a ripple when it gives itself away.
+function unveil(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const c = centre(target);
+  ring(c.x, c.y, 'sfx-heal', c.w*1.2, 380);
+  G().fromTo(tileOf(target), {opacity:.3, filter:'blur(2px)'}, {opacity:1, filter:'blur(0px)', duration:.4, clearProps:'opacity,filter', onComplete:o.onDone});
+}
+// Poison Gas: green clouds roll over every enemy unit hit.
+function gasCloud(targets, o){
+  o = o || {}; const list = (targets||[]).filter(Boolean); if(!list.length || !w2ready()){ call(o.onDone); return; } const g = G();
+  list.forEach((el, k)=>{ const c = centre(el); for(let i = 0; i < 3; i++){ const p = layer('sfx-w2-gas'); g.set(p, {x:c.x - 35 + rnd(-c.w*.3, c.w*.3), y:c.r.top - 30, opacity:0, scale:.5});
+      g.timeline({delay:k*.08 + i*.1, onComplete:()=> p.remove()}).to(p, {opacity:1, scale:1.2, y:`+=${c.h*.45}`, duration:.5, ease:'power1.out'}).to(p, {opacity:0, scale:1.6, x:`+=${rnd(-20, 20)}`, duration:.6}); }
+    g.fromTo(tileOf(el), {filter:'brightness(1)'}, {filter:'brightness(.9) sepia(.5) hue-rotate(50deg)', duration:.2, yoyo:true, repeat:1, delay:.3 + k*.08, clearProps:'filter'}); });
+  later(o.onDone, 1100);
+}
+// Absolute Zero: a white-blue flash sweeps the field, and frost crystals bloom on every enemy unit.
+function absoluteZero(host, targets, o){
+  o = o || {}; if(!w2ready()){ call(o.onDone); return; } const g = G(), list = (targets||[]).filter(Boolean);
+  if(host){ const hc = centre(host), fl = layer('sfx-w2-frost'); g.set(fl, {x:hc.r.left, y:hc.r.top, width:hc.w, height:hc.h, opacity:0});
+    g.timeline({onComplete:()=> fl.remove()}).to(fl, {opacity:.85, duration:.12}).to(fl, {opacity:0, duration:.7}); }
+  list.forEach((el, k)=>{ const c = centre(el);
+    for(let i = 0; i < 6; i++){ const f = layer('sfx-w2-flake', '❄'); g.set(f, {x:c.x + rnd(-c.w*.4, c.w*.4), y:c.y + rnd(-c.h*.35, c.h*.35), scale:0, rotation:rnd(0, 90)});
+      g.timeline({delay:.15 + k*.05 + i*.03, onComplete:()=> f.remove()}).to(f, {scale:1.2, duration:.18, ease:'back.out(3)'}).to(f, {opacity:0, duration:.5, delay:.35}); }
+    g.fromTo(tileOf(el), {filter:'brightness(1)'}, {filter:'brightness(1.4) saturate(.3) hue-rotate(180deg)', duration:.2, yoyo:true, repeat:1, delay:.15 + k*.05, clearProps:'filter'}); });
+  later(o.onDone, 1100);
+}
+// A trap (🪤) or burning ground (🔥) settles on an empty slot.
+function trapSet(slotEl, o){
+  o = o || {}; if(!slotEl || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(slotEl), fire = o.kind === 'scorch';
+  const f = layer('sfx-w2-jaw', fire ? '🔥' : '🪤'); g.set(f, {x:c.x, y:c.y - 60, xPercent:-50, yPercent:-50, opacity:0, scale:.6});
+  g.timeline({onComplete:()=>{ f.remove(); call(o.onDone); }}).to(f, {y:c.y, opacity:1, scale:1, duration:.32, ease:'bounce.out'}).to(f, {opacity:0, duration:.3, delay:.35});
+  if(fire) for(let i = 0; i < 6; i++){ const e = layer('sfx-w2-ember'); g.set(e, {x:c.x + rnd(-c.w*.3, c.w*.3), y:c.y + c.h*.2, opacity:0});
+    g.timeline({delay:.25 + i*.05, onComplete:()=> e.remove()}).to(e, {opacity:1, duration:.05}).to(e, {y:`-=${rnd(30, 60)}`, opacity:0, duration:.6, ease:'power1.out'}); }
+}
+// The trap snaps (jaws clamp on the card) or the ground flares under it.
+function trapSnap(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target), fire = o.kind === 'scorch';
+  if(fire){ for(let i = 0; i < 9; i++){ const e = layer('sfx-w2-ember'); g.set(e, {x:c.x + rnd(-c.w*.45, c.w*.45), y:c.r.bottom - 6, opacity:0, scale:rnd(.8, 1.6)});
+      g.timeline({delay:i*.03, onComplete:()=> e.remove()}).to(e, {opacity:1, duration:.05}).to(e, {y:`-=${rnd(c.h*.4, c.h*.9)}`, opacity:0, duration:.55, ease:'power1.out'}); } }
+  else { [-1, 1].forEach(s=>{ const j = layer('sfx-w2-jaw', s < 0 ? '◢' : '◣'); j.style.color = '#8b8f98'; g.set(j, {x:c.x + s*c.w*.6, y:c.r.bottom - c.h*.25, xPercent:-50, yPercent:-50});
+      g.timeline({onComplete:()=> j.remove()}).to(j, {x:c.x + s*c.w*.12, duration:.1, ease:'power4.in'}).to(j, {opacity:0, duration:.25, delay:.3}); }); }
+  G().fromTo(tileOf(target), {x:0}, {x:3, duration:.04, yoyo:true, repeat:5, delay:.1, clearProps:'transform', onComplete:o.onDone});
+}
+// Nova: the dying unit bursts in a violet ring; orbs fly to every enemy unit.
+function nova(src, targets, o){
+  o = o || {}; if(!w2ready()){ call(o.onDone); return; } const g = G(), list = (targets||[]).filter(Boolean);
+  const c = src ? centre(src) : (list[0] ? centre(list[0]) : null); if(!c){ call(o.onDone); return; }
+  const r = layer('sfx-w2-nova'); g.set(r, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:20, height:20, opacity:1});
+  g.to(r, {width:Math.max(260, c.w*4), height:Math.max(260, c.w*4), opacity:0, duration:.7, ease:'power2.out', onComplete:()=> r.remove()});
+  list.forEach((el, k)=>{ const t = centre(el), b = layer('sfx-w2-orb'); g.set(b, {x:c.x - 7, y:c.y - 7});
+    g.to(b, {x:t.x - 7, y:t.y - 7, duration:.35, delay:.1 + k*.04, ease:'power2.in', onComplete:()=>{ b.remove(); ring(t.x, t.y, 'sfx-w2-nova', t.w*.9, 300); call(o.onEachImpact, el, k); }}); });
+  later(o.onDone, 700);
+}
+// Crystallise: shards gather and the crystal forms.
+function crystalForm(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
+  for(let i = 0; i < 8; i++){ const s = layer('sfx-w2-shard'), a = i/8*Math.PI*2, d = Math.max(c.w, c.h)*.8; g.set(s, {x:c.x + Math.cos(a)*d - 5, y:c.y + Math.sin(a)*d - 8, rotation:a*57.3 + 90, opacity:0});
+    g.timeline({delay:i*.03, onComplete:()=> s.remove()}).to(s, {opacity:1, duration:.08}).to(s, {x:c.x - 5, y:c.y - 8, duration:.35, ease:'power2.in'}, '<').to(s, {opacity:0, duration:.1}); }
+  later(()=> ring(c.x, c.y, 'sfx-heal', c.w*1.3, 420), 380);
+  g.fromTo(tileOf(target), {scale:.8, opacity:.4}, {scale:1, opacity:1, duration:.35, delay:.35, ease:'back.out(2)', clearProps:'transform,opacity', onComplete:o.onDone});
+}
+// Cure: a 💊 pops over the card, and green-white sparkles lift the sickness off.
+function cure(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
+  w2Float(c.x, c.r.top + c.h*.35, '💊', 'sfx-w2-pill', 22);
+  for(let i = 0; i < 7; i++){ const s = layer('sfx-twinkle'); g.set(s, {x:c.r.left + rnd(.15, .85)*c.w, y:c.r.top + rnd(.4, .8)*c.h, opacity:0});
+    g.timeline({delay:.12 + i*.05, onComplete:()=> s.remove()}).to(s, {opacity:1, duration:.08}).to(s, {y:`-=${rnd(30, 60)}`, duration:.55, ease:'power1.out'}, 0).to(s, {opacity:0, duration:.2}, .4); }
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.3) saturate(1.2)', duration:.2, yoyo:true, repeat:1, delay:.15, clearProps:'filter', onComplete:o.onDone});
+}
+// Taunt: the taunting unit calls out (gold rings) and an arc points from the attacker to it.
+function tauntCall(target, attacker, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const c = centre(target);
+  ring(c.x, c.y, 'sfx-w2-shout', c.w*1.3, 380); later(()=> ring(c.x, c.y, 'sfx-w2-shout', c.w*1.7, 420), 140);
+  w2Float(c.x, c.r.top + c.h*.2, '📢', '', 22);
+  if(attacker){ const a = centre(attacker); G().fromTo(tileOf(attacker), {rotation:0}, {rotation:(c.x > a.x ? 4 : -4), duration:.12, yoyo:true, repeat:1, clearProps:'transform'}); }
+  later(o.onDone, 600);
+}
+// Cloudy (field): soft cloud shadows drift across the battlefield, slow and seamless. on=false removes them.
+function cloudShadows(host, on){
+  if(!host) return; w2Css(); let lay = host.querySelector(':scope > .w2-clouds');
+  if(on === false){ if(lay) lay.remove(); return; } if(lay) return lay;
+  lay = document.createElement('div'); lay.className = 'w2-clouds'; lay.setAttribute('aria-hidden', 'true');
+  const C = [[-.05, .9, .62, 58], [.22, 1.15, .7, 74], [.48, .8, .5, 66], [.7, 1.3, .8, 86], [.05, .7, .45, 92]];
+  C.forEach(([top, w, h, dur], i)=>{ const b = document.createElement('i'); b.style.cssText = `top:${(top*100).toFixed(0)}%; left:0; width:${(w*36).toFixed(1)}vw; height:${(h*40).toFixed(1)}%; animation-duration:${dur}s; animation-delay:${-(dur*(i*.23 + .1)).toFixed(1)}s;`; lay.appendChild(b); });
+  host.insertBefore(lay, host.firstChild); return lay;
+}
+// Heal: a few ➕ rise from the card (the heal's own plus, 2026-10-16: "The heal animation should include the + emoji.").
+function healPlus(target, o){
+  o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
+  for(let i = 0; i < 4; i++){ const p = layer('sfx-w2-plus', '➕'); g.set(p, {x:c.r.left + c.w*rnd(.2, .8), y:c.r.top + c.h*rnd(.45, .8), xPercent:-50, yPercent:-50, opacity:0, scale:.5});
+    g.timeline({delay:i*.09, onComplete:()=> p.remove()}).to(p, {opacity:1, scale:1, duration:.14, ease:'back.out(3)'}).to(p, {y:`-=${rnd(30, 50)}`, opacity:0, duration:.55, ease:'power1.in'}); }
+  later(o.onDone, 700);
+}
+Object.assign(root.SkillFX, {w2Css, venomBite, toxinMark, weakenDrain, wilt, bulldozeShove, vineBind, squeeze, invincibleBlock, unveil, gasCloud, absoluteZero, trapSet, trapSnap, nova, crystalForm, cure, tauntCall, cloudShadows, healPlus});
 })(typeof window !== 'undefined' ? window : globalThis);
