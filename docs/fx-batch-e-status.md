@@ -45,6 +45,10 @@ an ink-wash transition.
 
 - Lab: all 168 ids registered, 0 catalogue problems; every variant played at 4× with 0 console errors and nothing left on `<body>` (one shader demo, `amb-battle-map-terrain`, runs to the lab's 12 s cap under software GL).
 - Frames watched at 1280 px and 390 px; representative frames in the session scratchpad `fx-e/`.
+- Game: `tests/card-matrix.js --update` 0 failures, 0 golden diffs. `tests/run-all.sh`: every suite passes except autobattle's speed floor
+  ("fights are too slow", 3–4.9 fights/s against 9) on a 2-core box at load average 11–16 with five other batches running; batch E does not touch the
+  engine or the autobattler. `tests/e2e/ui_smoke.py`: 0 failures once the page could load (its 30 s `goto` timed out under the same load; the main
+  checkout's page took as long, ~45–50 s with software WebGL).
 
 ## Every entry
 
