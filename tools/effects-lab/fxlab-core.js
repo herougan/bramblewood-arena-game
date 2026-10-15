@@ -250,7 +250,8 @@ async function play(id, key){
   if(token === playToken) emit('end', {id, key:v.key});
   return token === playToken;
 }
-function stop(){ playToken++; emit('end', {}); }
+// 2026-10-16: stopping also clears what the play left on <body> (the phone's mini stage hides the frame, so overlays would float over the list)
+function stop(){ playToken++; clearOverlays(); emit('end', {}); }
 
 window.FXLAB = {register, registerGroup, play, stop, setFrame, setSpeed, on, build,
   get speed(){ return speed; }, inventory:INV, byId:BY_ID, registry:REG, problems:PROBLEMS, stages:STAGES, areaStage:AREA_STAGE,

@@ -170,7 +170,7 @@ html{overflow-x:hidden;} body{overflow-x:clip !important; overflow-y:visible !im
 .q-good{background:#2f7d3a; color:#fff;} .q-basic{background:#b98a1d; color:#1d1606;} .q-missing{background:#a8432f; color:#fff;} .q-broken{background:#6d1fa8; color:#fff;} .q-future{background:#2d5d93; color:#fff;}
 .fxl-tag{background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
 .fxl-play{display:grid; grid-template-columns:1fr; gap:3px;} .fxl-play.is-many{grid-template-columns:1fr 1fr;}
-.fxl-play .fxl-pb{width:100%; padding:3px 0; text-align:center;} .fxl-play.is-many .fxl-pb{font-size:11px;}
+.fxl-play .fxl-pb{width:100%; padding:3px 0; text-align:center;} .fxl-play.is-many .fxl-pb{font-size:11px; padding:3px 0; letter-spacing:-.02em;}
 .fxl-pb{cursor:pointer; font:800 12px 'Baloo 2',system-ui,sans-serif; padding:3px 9px; border-radius:8px; border:1px solid var(--accent-strong, #2f7d3a); background:var(--accent, #3e8f48); color:var(--accent-ink, #fff); white-space:nowrap;}
 .fxl-pb:hover{filter:brightness(1.1);} .fxl-pb.is-playing{outline:2px solid #ffd56e; outline-offset:1px;}
 .fxl-nb{font-size:10.5px; line-height:1.2; color:var(--ink-muted); font-style:italic; text-align:center;}
