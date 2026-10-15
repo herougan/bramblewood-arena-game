@@ -1,40 +1,80 @@
 # Action items
 
-_Updated 2026-10-14, 10:45 am. Your calls and the planned ideas come first. One combined list. You said I can work through these myself, so items in my lane are done or decided; only the ones that need you (money, live database writes, play-testing) are left below._
+_Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is built. Only the items below are still open; each one waits on you (a word, a pick, money or a live database write). Older "Done" sections follow for reference._
 
-## 1. Your calls
+## 1. Still open
 
-**Your answers, 2026-10-14 09:00.** Say an ID to reopen one.
+**Waiting for "apply it"** (they write to the live Supabase):
 
-| ID | Status |
+| Item | What it does |
 |---|---|
-| D27 | **Confirmed:** Sweep = cleave, Trample = Stampede, Bleed no longer hurts when hit |
-| D39 | **Built:** 🍴 Pitchfork hits the 4 nearest enemy units within 2 columns (no Pierce any more). 🔱 Trident hits the 3 nearest enemy units within 1 column (never the castle) |
-| D74 | **Confirmed and built:** Ranked Live plays Standard (every card at Level 1); friendly invites keep their own format |
-| D75 | Answered in the economy doc: the bundle sizes and the 4.99 USD Bramble Pass stand as first prices; Krooni and Laurels buy cosmetics only |
-| D76 | **Confirmed:** a 30-second plan timer (60 in casual rooms), one shared castle, friends-only rooms first. Building it waits on the `coop_rooms` table (parked below) |
-| D77 | **Future.** Free-to-play on Steam with a cosmetic-leaning shop, revisit by December. *Can we ship it as an executable?* Yes. The game is one web page, so Electron (or the lighter Tauri) wraps it as a Windows/Mac/Linux app with no rewrite; plenty of Steam games ship this way. Steam overlay and achievements come through a small Steamworks binding (steamworks.js or greenworks). Two things to plan: saves and sign-in still go through Supabase, so it needs internet unless we add an offline mode; and the art and code should be bundled into the app rather than fetched |
-| D78 | **Confirmed:** the Camp opens on Map 0, and Maps 0–1 swap in teaching cards |
-| D55 | **Parked, explanation kept:** the 3-minute check already reads world events and GM messages, and Admin has a 📣 World call-out composer. The `world_events` table is written up in `supabase/migrations/20261013_world_events.sql` and is **not applied**: it waits for "apply it" |
+| Feedback table | `supabase/migrations/20261015_feedback.sql`. The 💬 button is in the game; reports have nowhere to go until this is applied |
+| D55 `world_events` | `supabase/migrations/20261013_world_events.sql`. The 3-minute check and the 📣 composer are built |
+| D76 `coop_rooms` | Needed before co-op rooms can be built (plan timer, shared castle, friends-only rooms are agreed) |
+| T3 / S1 / S2 | The parked security and schema items |
 
-**Parked, not open items:** D55 (`world_events`), T3 / S1 / S2 and the D76 `coop_rooms` table all write to the live Supabase, so they wait for you to say "apply it".
+**Your picks:**
 
-**Closed earlier:** D21/D22, D29, D30, D31, D33, D36, D37, D46, D52, D58, D59, D60, D61.
+| Item | Where |
+|---|---|
+| Card names | `docs/name-picker-2026-10-14.xlsx`: tick ✓ for 15 Base, 15 Otters, 15 Hummingbirds and 6 per biome |
+| Wild Veggies | The Wild Veggies sheet in the card plan workbook (12 plant cards for Maps 20+) |
+| Card placement | `docs/card-placement-proposal-2026-10-15.md` / `.xlsx` and the Recommended sheet in `docs/skills-by-map-2026-10-15.xlsx`. The new skills, field effects and cards are built but on no maps until you choose |
+| Skill N for the new skills | Fill "Your N" on the Skill N sheet for the 10-14 to 10-16 skills (Electricity, Keen Sense, Psychic, Bloodlust, the Bolts, Bulldoze and the rest) |
+| Difficulty | Map 0 got harder with the weaker starter deck (0-3 about 5%, the 0-4 boss about 7%), and the Map 10, 14 and 16 bosses spike. Say the word and I retune them (the last measurement predates the card fold, so I'd measure again first) |
+| Blacksmith equipment | Not gated by "held once", because it has no other source. Keep it that way? |
+| D71 | Mark the generic cards' Source in the card editor |
 
-## Planned, not built yet (your 08:28 note: "Dont add now")
+**Fixes to make in the card editor** (your published edits override the files, so these have to be re-saved from the editor):
+- Trash Panda Trickster still says Worthy (it's merged into Bounty now).
+- The 0-2 deck still lists the removed Bee Knight (classic).
+- Earthworm has lost its Regen.
+- Silver Minnow, Pond Trout and River Carp need Tide.
+- Meadow Frog should be Rainrunner.
+- The Wandering Traveller lost its Lumber trigger.
+
+**Art:** Otter Shieldback and Armored Mastiff full-size art. Their good PixelLab versions aren't in the gallery I can see; send them if you have them. Optional: Tidewall Fort's castle art has "HOME BASE" lettering (a redo costs 0.75 NightCafe credits).
+
+**Not checked:** the Noto emoji option loads from a CDN, and I haven't seen it on the live site.
+
+## 2. Ideas kept for later
 
 | Idea | Notes |
 |---|---|
-| **Electricity** (new skill) | For cave and water cards. Needs its rules: e.g. a shock that chains to the next unit, or stuns. New units to carry it |
-| **Keen Sense** (new skill) | For moles: senses non-flying enemies even when blind; unaffected by Blind. A second effect still to come |
-| **Hammerhead** (new card) | A shark for the Ocean fodder |
-| **A big animal with a sledgehammer** | There isn't one yet. The only Bludgeon card is the Frillneck Duelist (a lizard), and Siege Hammer is equipment. Candidates: a bison, rhino or gorilla smith carrying a sledgehammer, with Bludgeon |
-| **Stat budget v2** | N = 10 base; each Wait adds 5 to the budget; a skill that makes attacks miss half the time (or similar) multiplies the card's score by 1.5; max level gives N 20; rarity 10 gives N 30; each map adds 0.2 (Map 40: N 38). Worked example: a 2/5 scores 2×2+5 = 9 → ×1.5 = 13.5, and 2×5 = 10 → ×1.5 = 15 |
+| Card backings | Several thematic backings by card type or faction |
+| Evade to non-swimmers | Your idea; not built |
+| The rest | Pool of card and play ideas in `docs/design-notes-2026-10-14-ideas.md`; late game in `docs/design-2026-10-14-late-game.md` |
+
+## Done at 2026-10-16 07:00 (all your notes from 10-14 10:45 to 10-16 04:58)
+
+Each line is in the changelog under the time shown.
+
+| Your note | What's in the game now |
+|---|---|
+| 08:28 "Planned, not built yet" | **All built** (10-14 23:30): 🔌 Electricity (Voltaic Eel, Voltwing, Static, Arc Bat), 👃 Keen Sense (moles), Hammerhead Shark, Ironback Gorilla (the sledgehammer bruiser, Bludgeon), Stat budget v2 (now "Max(A, B) against N", 10-15 03:15). 💭 Psychic N is defined and built too |
+| 20:00 calls | Crab Claws is back and pinches a random side unit, straight ahead if neither (10-15 11:45). Toxin is a real skill (10-16 02:00). Every card has art (Rabid Jackal, Mirrorhide Mutant, Growth Sprout, Bog Leech, Rivergate Tribune included) |
+| 21:06, 21:31, 21:33, 21:49 | Ideas note, art rules, castle art in deck previews, Dragon Egg and Scraper of Skies art, Colossal Squid and the baby cards (10-15 02:00) |
+| 22:39, 22:40 | Regeneration without the zig-zag and none at full Health; the castle crumbles fully before Victory (10-15 02:45) |
+| 22:50 | Faction cards start at Level 1; budget line Max(A, B) (10-15 03:15) |
+| 22:59–23:52 | Fight ids, NPC lines, pills, field tooltips, speed, results panel, no Start screen, tutorial flow, packs, swaps, deck editor (10-15 05:30, details above) |
+| 08:00 | Master hub dashboard, 🎴 Cards tab, search, 29 new skill effects (10-15 09:00) |
+| 08:23, 08:58 | Balancing and map notes; eggs; Nest on Map 4; Energy path Nest 20→30, Forge 30→50, Tavern 50→60 |
+| 09:52, 09:54 | Skills shown as "?" until learned, Map 0 mist, Evasive, Hive Mind retired, fish carry Tide (10-15 skill reveal) |
+| 10:23, 10:36 | Baby cards and the skills-by-map list; Ice Arrow, Twin Shot, Volley, the Bolts, Chilli, one-off tags, Fork / Trident / Pitchfork alike (10-15 11:45) |
+| 12:29 | The big effects sweep: 958 effect moments in the Effects Lab, about 1,300 variants, 22 foil concepts, deaths by cause (10-15 22:30) |
+| 18:15 | Card placement proposal, nothing moved (your pick, above) |
+| 20:12 (15 items) | Wildpaths text, middle slot, Pounce, Exposed, spawn pill, Sandbox, home buttons, Codex 40 a page, tooltips, Bloodlust, time-givers, ambush losses, game texts in `docs/game-texts.xlsx`, Environment text, pills (10-15 fifth list and 22:30) |
+| 21:37 (56 items), 21:48, 21:56, 22:05, 23:19 | Combat animations, battle board, rules (Illuminate, sudden death, Bounty = Worthy), 21 new skills, 6 new field effects, hidden skirmishes and jumpers, Dungeons tab, Long Burrow, Babel Spire, Energy, Beer, 💬 feedback button, Noto emoji, map titles, Effects Lab layout, Snapstick Turtle, Sheep (10-16 02:00) |
+| 23:24 | Bulldoze (10-16 02:00) |
+| 04:58 | Proposals relinked as .xlsx and .md; Quick hits land with the dash; at most 3 cave fires; ribbon map titles replace the cinematic ones (10-16 05:30) |
+| Field art | 27 pixel scenes on the Environment and weather cards (10-16 06:30) |
+
+**Calls closed:** D27, D39, D74, D75, D78 (your 10-14 09:00 answers), D70 (Murgle placed), D77 (Steam: revisit by December). Earlier: D20–D69 and P1/P2, as listed below.
 
 ## Done at 05:30 (your 22:59–23:47 notes)
 
 Built (changelog 05:30). Choices to check:
-- **Starter deck:** 8 shown cards (your side's 3 + 5 shared) + 9 hidden baby cards (3 Honey Bee, 3 Silver Minnow, 3 Sparrow Chick). It's weaker than the old 17 basics; Map 0 wasn't retuned.
+- **Starter deck:** 8 shown cards (your side's 3 + 5 shared) + 9 hidden baby cards (3 Honey Bee, 3 Silver Minnow, 3 Sparrow Chick). It's weaker than the old 17 basics; Map 0 wasn't retuned (still open, section 1).
 - **0-2's card** (Chipmunk Cavalry) moved to 0-3, so 0-3 gives Owl Nightwatch and Chipmunk Cavalry.
 - **"Both sides" players** get a random faction pack at 0-2.
 - **Strictly better** means Cost and Wait no higher, Attack and Health no lower, at least one strictly better, and no fewer skills.
@@ -58,7 +98,7 @@ All built (changelog 02:00). Choices to check:
 
 ## Done at 23:30 (your 16:58, 17:03, 17:13 and 17:55 notes)
 
-All built (see the changelog's 23:30 entry). Open: Toxin is a placeholder only; Blacksmith equipment isn't gated by "held once" because it has no other source.
+All built (see the changelog's 23:30 entry). ✅ Toxin is a real skill since 10-16. Still open: Blacksmith equipment isn't gated by "held once" (section 1).
 
 ## Done at 20:00 (your 14:50 list)
 
@@ -75,8 +115,8 @@ All built (see the changelog's 23:30 entry). Open: Toxin is a placeholder only; 
 | Lumber lesson | Never asks you to pitch the card that needs the Lumber; with no other card it says you'll draw an extra one next turn |
 | Pages | Codex pager on top too; admin-only buttons checked; no "claim it on the board" line; costs inside Nest and Forge buttons; deck cards show pictures, rating, total Attack/Health; Forge contrast; swap offer is a sheet on phones; Nest costs show on tap ("Need 3 more Kibble"), Kibble rises per species |
 | Cards | Big Bee, Frog, Fly renamed; MissingNo past World 1 and unobtainable; new Rafflesia, Puffball Bombardier, Otter Angler, Honeyjoe Brewer (not placed) |
-| Art | 23 NightCafe images (list in the changelog). Waiting: Bog Leech (for PixelLab), Rivergate Tribune (logged), Otter Shieldback and Armored Mastiff (their good PixelLab versions aren't in the gallery I can see; send them if you have them) |
-| Your calls | Crab Claws as built wastes a pinch when nobody is beside the target (42 one-on-one results flipped); say if wasted pinches should hit the castle instead. Psychic damage is still undefined |
+| Art | 23 NightCafe images (list in the changelog). ✅ Bog Leech and Rivergate Tribune have art since 10-14. Still open: Otter Shieldback and Armored Mastiff (section 1) |
+| Your calls | ✅ Closed: Crab Claws now attacks straight ahead when no side unit is there (10-15), and Psychic N is defined (10-14) |
 | Effects library | Built at 21:00: Admin → 🔬 Effects library, every skill, trigger and field condition on a live stage with its effects, sounds and damage log |
 
 ## Done at 17:30 (continuing)
@@ -85,8 +125,8 @@ All built (see the changelog's 23:30 entry). Open: Toxin is a placeholder only; 
 |---|---|
 | Caves | No day or night in Caves & Alcoves, Smugglers' Grotto and The Sunken Depths (they had been left on Night) |
 | Dark fights | A lantern pool of light follows your pointer in pitch-black and absolute darkness |
-| Difficulty | Re-measured: Maps 1–9 are easy for a mid deck (90–99%); spikes at the Map 10, 14 and 16 bosses (35%, 43%, 8%). Say the word and I'll retune those three and tighten Maps 1–9 |
-| Art waiting | Rabid Jackal, Mirrorhide Mutant and Growth Sprout need art; your Chrome wasn't reachable, so NightCafe has to wait |
+| Difficulty | Re-measured: Maps 1–9 are easy for a mid deck (90–99%); spikes at the Map 10, 14 and 16 bosses (35%, 43%, 8%). Still open (section 1) |
+| Art | ✅ Rabid Jackal, Mirrorhide Mutant and Growth Sprout have art since 10-14 |
 
 ## Done at 16:15 (your 12:02 list)
 
@@ -250,7 +290,7 @@ New calls for you:
 
 | ID | What | (a) Pushback | (b) Recommendation |
 |---|---|---|---|
-| **D70** | **Endless dungeons: Murgle Mayhem (6-MM) is built** on my proposal (opens after Map 6, 50 floors, +4% a floor, a mini-boss every 10th, every floor a checkpoint) | You hadn't picked the placement, so this is my reading; it's easy to move | Play a few floors; then say where the next ones go (my plan: one every 5 maps) |
+| **D70** | **Endless dungeons: Murgle Mayhem (6-MM) is built** on my proposal (opens after Map 6, 50 floors, +4% a floor, a mini-boss every 10th, every floor a checkpoint) | ✅ Closed: Murgle is on the World map and in the Dungeons tab, with the Long Burrow (Map 22) and the Babel Spire after it (10-16) | |
 
 ## Done overnight (your 00:17 list)
 
@@ -275,17 +315,12 @@ New calls for you:
 | 19 | Coffee N (Buzzed Chipmunk). Your workbook was byte-for-byte the one I exported, so it had no Codex changes in it: send the Codex version and I'll pick up the new skills. |
 | 20 | Every NightCafe picture re-pixelated on a 64-pixel grid (chunkier); Mirror Moth, Elder Willow, Conch Herald, Tidewall Fort redrawn; art for the 9 new cards. Daily credits: a check-in is set for 08:20 your time. |
 
-New calls for you:
-
-| ID | What | (a) Pushback | (b) Recommendation |
-|---|---|---|---|
-
 ## Done at 23:55 (your 23:12 list, all ten)
 
 | ID | What I did |
 |---|---|
 | 23-1…10 | Lv 0 row in stats by level · source editable in the card editor, maps in First–Fourth seasons · Nature's Force N · every card hidden by default · Heal + Self/Ally/Opponent/Any, distance and target count on every targeted action · 🐜/🐝 swarm mark · no "1" after icons · extended art crops far less, no hard bottom edge · editing no longer revokes your copy · Esprit/Rally on the strip |
-| ART-T | Optional: Tidewall Fort's castle art has "HOME BASE" lettering in it; regenerate on request (0.75 credits). |
+| ART-T | Optional, still open: Tidewall Fort's castle art has "HOME BASE" lettering in it; regenerate on request (0.75 credits). |
 
 ## Done tonight (21:35–22:50)
 
@@ -302,44 +337,17 @@ New calls for you:
 | 22:04 | Your 16 items: map emblems, Sunken Ferry side map, Stamina in Wildpaths, centipede and millipede, node panel, 22 drop castles, editor card details, out-of-cards summons, cosmetic types removed, 🔌 Shock, pack names. |
 | 22:25 | Bare shaking map emblems, the pack note on Gatorback Swamp, real battle ratings, X/Y ⚡ MM:SS clocks, castle art (generating). |
 
-## 2. Where things stand
+## Where things stand
 
-- **Balancing:** the [card list](card-list-2026-10-10.md) has every Maps 1–5 reward and Pack 1, with my proposal (theme Pack 1 as Bramblewood & Village; move 3 overpowered and 18 biome cards out; add 14).
-- **VFX:** [where to take GSAP, textures and shaders](vfx-exploration-2026-10-10.md), with live sketches in the 🧪 VFX Playground tab.
+- **Effects:** 958 effect moments, all in the hub's Effects Lab with A/B/C variants; the game uses A. Pick a different variant anywhere and I'll switch it.
+- **Cards:** every card has art; the new cards and skills from 10-14 to 10-16 are built but sit on no map until you place them.
+- **Game text:** `docs/game-texts.xlsx` (6,858 rows). Edit the New text column and send it back.
+- **Balance:** stat budget Max(A, B) against N in the card editor and Test Lab; the card balance report is in the ⚖️ Balance tab.
+- **Difficulty:** Map 0 and the Map 10, 14 and 16 bosses need a retune (section 1).
 
-- **New tonight:** Caged Fight (Arena → Challenges), red top edges on opponent cards, the victory-shift fix, and the Codex reveal-as-you-go. Hearthstone ideas are in [their own note](inspo-hearthstone-2026-10-10.md).
-- **Starter decks:** you're reorganising them. Every Basic is in [the list](starter-decks-2026-10-10.md), with suggestions (shared leader, 2 shared cards, rival cards as map 1–2 rewards).
+## Things only you can do (outside chat)
 
-- **Card balance** (⚖️ Balance tab, [report](card-balance-2026-10-09.md)):
-  - every card has a rarity and is measured in simulated matches;
-  - two passes moved outliers half-way toward balance: 171 of 294 cards are now in band;
-  - still out of band: Rares that are only Rare because the rarity pass was capped at Rare, walls and Lumber makers (a win-rate test can't value them), and the 3+ cost cards.
-- **Big cards now come out:**
-  - you chose Lumber from cards, not free income (B4);
-  - 31 enemy decks with 3+ cost cards now carry their map's Lumber maker (Toucan Courier on the savanna, Coral Polyp Colony on the reef, Beaver Builders on the Tundra…);
-  - enemy big cards now get played about half the time they're drawn (before: almost never);
-  - players have Beaver Lumberjack (+2 Lumber) and Courier Pigeon (draw 1) from the start.
-- **Day and night and fields** ([design note](fields-and-day-night-2026-10-09.md)):
-  - Since 2026-10-11, day and night are off unless a fight turns them on (skirmish editor: cycle, night first, always day or night, switch every N rounds). With the cycle on, they alternate, and at dawn both sides draw. Nocturnal cards get their bonus at night, Diurnal cards by day.
-  - Five field cards: Blizzard, Heatwave, Spring Rain, Thick Fog and Full Moon. They're free, take no play and draw a card.
-  - Each field now has its own look on the board: rain, drifting fog, heat shimmer, moonlight.
-- **Difficulty:**
-  - every map was retuned for the new rules against a new player's likely deck;
-  - bosses keep their namesake card (the Glacial Ape-King fights with its Ape-King);
-  - the editor's tuning tools and the [tuning guide](skirmish-tuning-guide.md) are in place.
-- **Archetypes:**
-  - **Swarm** (ants and bees) is the first.
-  - **Tide** (reef and beach) is new tonight. 🌊 Flow and 🐚 Ebb alternate each round: Tide units hit +1 on Flow and take 1 less on Ebb, and Wash pushes the enemy opposite back once. The water fights were retuned for it.
-  - **The Exile zone and the Forgotten Ones** (new tonight): cards sent there give Echoes 🕯️; Remember cards come back once you have enough, +1/+1 per Echo. New cards: Echo Keeper, Marsh Wisp, Bog Revenant and The Unremembered.
-- **Fixed tonight:** ten fights that were far too hard, including Map 1's boss (~5% → ~43%), the Thistle Baron (~12% → ~32%) and the Condor Sovereign (10-9).
-  - **Devilry** (new): Dark Summons ⛧, Darkness ★ from perished units, Devour, Ritual, Pitchfork, Sacrifice, Offering, Beware, Scare and Desecrate, plus ten new cards (Cinder Imp, then the Basalt Foundry rewards).
-- **Arena rules** (new): a different rule set every day (always night, always day, night first, Lumber every 3 rounds, Frost, Fog), shown on the Arena tab.
-- **Draggable map tiles** are in the layout editor.
-
-## 3. Things only you can do (outside chat)
-
-- **The claude.ai project** is back under its limit (200 KB of 2 MB): I removed the old code copies and the archived handoff. If you want it leaner still, the game-design v30–v40 addenda can go (they're in the repo).
-- **Supabase:** leaked-password protection needs the Pro plan (the project is on Free), so it is off. Upgrading is your call.
-- **Art (PixelLab):** at its monthly limit; NightCafe covered every card instead. Buying PixelLab credits is your call; nothing is waiting on it.
-- **NightCafe:** 284 credits left after tonight's card and castle art.
-
+- **Supabase:** leaked-password protection needs the Pro plan (the project is on Free), so it's off. Upgrading is your call.
+- **PixelLab:** at its monthly limit. Buying credits is your call; nothing waits on it except the two art pieces above.
+- **NightCafe:** about 147 credits left after the field art.
+- **The claude.ai project** is well under its limit.
