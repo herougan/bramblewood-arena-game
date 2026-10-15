@@ -4895,12 +4895,15 @@
   .sandbox-panel{display:flex; flex-direction:column; gap:8px; margin-bottom:26px; position:relative; z-index:12; background:var(--surface); border:1px solid var(--surface-border); border-radius:12px; padding:10px 12px;}
   .sbx-target-row{display:flex; gap:6px; flex-wrap:wrap;}
   #sbxSearch{padding:9px 12px; border-radius:10px; border:1px solid var(--surface-border); background:var(--bg); color:var(--ink); font-size:13px;}
-  .sandbox-results{max-height:220px; overflow-y:auto; display:flex; flex-direction:column; gap:2px; border:1px solid var(--surface-border); border-radius:8px; padding:4px;}
-  .sbx-result-row{display:flex; align-items:center; gap:8px; padding:6px 8px; border-radius:6px; cursor:pointer; font-size:12.5px;}
-  .sbx-result-row:hover{background:var(--surface-2);}
-  .sbx-r-ico{font-size:16px; width:20px; text-align:center; flex-shrink:0;}
-  .sbx-r-name{flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
-  .sbx-r-stats{color:var(--ink-muted); flex-shrink:0; font-variant-numeric:tabular-nums;}
+  /* 2026-10-15 (user: "The sandbox battle's card chooser UI doesn't load the cards as cards - they should show up as Compressed
+     view"): a grid of real card tiles, sized like the deck editor's pool. */
+  .sandbox-results{max-height:340px; overflow-y:auto; display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:6px; align-content:start; border:1px solid var(--surface-border); border-radius:8px; padding:6px;}
+  .sbx-pick{position:relative; cursor:pointer; border-radius:10px; outline-offset:2px;}
+  .sbx-pick .card-tile{width:100%; padding:6px;}
+  .sbx-pick:hover .card-tile, .sbx-pick:focus-visible .card-tile{transform:translateY(-2px); box-shadow:0 0 0 2px var(--accent, #e0b04a);}
+  .sbx-flags{position:absolute; top:2px; left:4px; font-size:12px; pointer-events:none; filter:drop-shadow(0 1px 1px rgba(0,0,0,.6));}
+  .sandbox-results .sbx-more, .sandbox-results > .empty-hint{grid-column:1 / -1;}
+  @media (max-width:600px){ .sandbox-results{grid-template-columns:repeat(auto-fill,minmax(78px,1fr)); max-height:300px;} }
   .sandbox-actions{display:flex; gap:8px; justify-content:flex-end;}
   /* Codex "Test cards" filter toggle (2026-09-22, Developer-Mode-only) — matches the plain
      checkbox-in-a-pill look the toolbar's other controls don't use, but reads clearly as its own
@@ -9596,6 +9599,14 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .ds-meta .short{color:#b3261e;}
   /* Codex pager at the top too (2026-10-14). */
   .cx-pager.cx-pager-top{margin:4px 0 12px;}
+  /* 2026-10-15 (user: "The search bar, pagination, and the card group title can be squeezed closer together"): the search row,
+     the "N of N cards" line, the top pager and the first group title sit tight; the grid's 10px gap is cancelled under the pager. */
+  #view-codex .codex-toolbar{margin-bottom:6px;}
+  #view-codex #codexResultCount{margin-bottom:2px; line-height:1.3;}
+  #codexGrid .cx-pager.cx-pager-top{margin:0 0 -6px;}
+  /* 2026-10-15: the skirmish deck strip opens card details on a 0.5 s hold; keep the phone's own long-press menu out of it. */
+  .conquest-node-panel .cnp-sq-card{-webkit-touch-callout:none; -webkit-user-select:none; user-select:none;}
+  #codexGrid > .cx-section-head:first-child, #codexGrid .cx-pager-top + .cx-section-head, #codexGrid .cx-view-hint + .cx-section-head{margin-top:0; padding-top:2px;}
   /* Nest picker: no prices on the tiles; unaffordable ones greyed; the price shows in the Train button once you pick. */
   .np-card.is-short{filter:grayscale(.9); opacity:.55;}
   .np-card.is-short:hover{opacity:.7;}
