@@ -5697,6 +5697,35 @@
     .world-stop .world-card{left:44px;} .world-stop.label-left .world-card{right:44px;}
     .world-card{min-width:110px; max-width:140px; padding:6px 8px;} .wc-mini{height:34px;} .wc-name{font-size:12.5px;}
   }
+  /* Daily dungeons on the World map (2026-10-15, user: "murgle daily dungeon should be shown there as well. Using a consistent
+     iconography"): the same compass diamond, smaller, with a 🗝️ tag, on a dotted branch off its map; its card sits under it. */
+  .world-branch{position:absolute; left:0; width:100%; overflow:visible; pointer-events:none;}
+  .world-branch line{stroke:rgba(255,240,200,.45); stroke-width:2.5; stroke-dasharray:4 6; stroke-linecap:round; vector-effect:non-scaling-stroke;}
+  .world-stop.is-side .world-diamond{width:66px; height:66px; left:-33px; top:-33px;} .world-stop.is-side .wd-ico{font-size:24px;}
+  .world-stop.is-side .world-card{top:40px; left:50%; right:auto; transform:translateX(-50%); min-width:0; width:max-content; max-width:170px; text-align:center;}
+  .world-diamond .wd-tag{position:absolute; right:-2px; bottom:2px; font-size:15px; line-height:1; filter:drop-shadow(0 1px 2px rgba(0,0,0,.7));}
+  @media (max-width:560px){ .world-stop.is-side .world-diamond{width:52px; height:52px; left:-26px; top:-26px;} .world-stop.is-side .wd-ico{font-size:19px;} .world-stop.is-side .world-card{top:30px; max-width:120px;} }
+  /* The Dungeons tab in Play (2026-10-15, user: "Maybe, it's its own, just another tab in 'Play'."). */
+  .dungeons-panel{max-width:860px; margin:0 auto;}
+  .dungeons-panel .dg-head h2{margin:0 0 2px;}
+  .dungeons-panel .dg-tickets{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; margin:6px 0 14px; padding:8px 12px; border-radius:12px; background:var(--surface-2); border:1px solid var(--surface-border); font-size:13.5px;}
+  .dungeons-panel .dg-tix{display:inline-flex; gap:2px; font-size:18px;} .dungeons-panel .dg-tix i{font-style:normal; filter:grayscale(1) opacity(.35);} .dungeons-panel .dg-tix i.on{filter:none;}
+  .dungeons-panel .dg-list{display:flex; flex-direction:column; gap:10px;}
+  .dungeons-panel .dg-card{display:flex; gap:14px; align-items:center; padding:12px 14px; border-radius:14px; background:var(--surface-2); border:1px solid var(--surface-border);}
+  .dungeons-panel .dg-card.is-soon, .dungeons-panel .dg-card.is-locked{opacity:.7;}
+  .dungeons-panel .dg-diamond{position:relative; flex:0 0 auto; width:84px; height:84px; filter:drop-shadow(0 4px 8px rgba(0,0,0,.4));}
+  .dungeons-panel .dg-diamond .compass-diamond{width:100%; height:100%; display:block;}
+  .dungeons-panel .dg-diamond .wd-ico{position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:30px;}
+  .dungeons-panel .dg-card.is-soon .wd-ico{filter:grayscale(1);}
+  .dungeons-panel .dg-body{flex:1; min-width:0; display:flex; flex-direction:column; gap:4px;}
+  .dungeons-panel .dg-name{font:800 17px 'Baloo 2',system-ui,sans-serif;} .dungeons-panel .dg-where{font-size:12px; color:var(--ink-muted);}
+  .dungeons-panel .dg-sub{margin:0; font-size:13px; color:var(--ink-muted);}
+  .dungeons-panel .dg-floor{display:flex; align-items:center; gap:10px; font-size:13px;} .dungeons-panel .dg-floor .wc-bar{flex:1; max-width:220px; height:8px; border-radius:4px; background:rgba(0,0,0,.2); overflow:hidden; display:block;}
+  .dungeons-panel .dg-floor .wc-bar > span{display:block; height:100%; background:linear-gradient(90deg, #5fae4a, #b9d65a);}
+  .dungeons-panel .dg-acts{display:flex; align-items:center; gap:10px; margin-top:2px;}
+  .dungeons-panel .dg-run{font-size:12px; font-weight:800; color:#2f7a2a; background:rgba(95,174,74,.16); border-radius:999px; padding:2px 9px;}
+  @media (max-width:560px){ .dungeons-panel .dg-card{flex-direction:column; align-items:flex-start;} .dungeons-panel .dg-diamond{width:64px; height:64px;} }
+  .conquest-headline .dungeon-ticket-line{margin:4px 0 0; font-size:12.5px; font-weight:700;} .conquest-headline .dungeon-ticket-line .dtl-run{color:#9be38a;}
   /* T7 shader layers (bramblewood-shaders.js) */
   .bw-shader{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; display:block;}
   .entrance-bg .bw-shader, .hs-back .bw-shader{image-rendering:pixelated;}

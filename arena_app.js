@@ -11076,8 +11076,8 @@ function renderPlay(){
     // (switchTab('home')) either way, this was always a label/icon-only difference.
     root.innerHTML = `
       <div class="play-subtabs-row">
-        <div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
-          ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
+        <div class="play-subtabs" role="tablist" ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? '' : 'hidden'}>
+          ${(tabOpen('arena') || tabOpen('autobattle') || tabOpen('raid') || dungeonsTabOpen() || devModeEnabled || adminModeEnabled) ? `<button class="tab-btn ${playSubTab==='conquest'?'active':''}" data-playtab="conquest" role="tab" aria-selected="${playSubTab==='conquest'}"><span class="tab-emoji">🗺️</span> Conquest</button>` : ''}
           <!-- 2026-09-20, per explicit request ("Home landing page contains the Play, Deck,
                Codex"): deck-building now lives in its own top-level Deck section (see
                renderDeckSection in Part 8), so the old "Player" sub-tab here — which showed that
@@ -11086,6 +11086,7 @@ function renderPlay(){
           ${tabOpen('arena') ? `<button class="tab-btn ${(playSubTab==='arena'||playSubTab==='autobattle')?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'||playSubTab==='autobattle'}"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
           ${'' /* 2026-10-11 (user: "Raid as a menu item, beside Arena. Autobattler will be in the Arena"): the Autobattler is a tile inside the Arena now, so Raid sits right beside Arena here */}
           ${tabOpen('raid') ? `<button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> ${escapeHtml(raidTabLabel())}</button>` : ''}
+          ${'' /* 2026-10-15 (user: "Maybe, it's its own, just another tab in 'Play'."): the daily dungeons */}${dungeonsTabOpen() ? `<button class="tab-btn ${playSubTab==='dungeons'?'active':''}" data-playtab="dungeons" role="tab" aria-selected="${playSubTab==='dungeons'}"><span class="tab-emoji">🗝️</span> Dungeons</button>` : ''}
           <!-- Sandbox (2026-09-22, Test Suite feature, tasks #309-314): Developer-Mode-only, same
                gate as the Codex's Test filter and the editor's Test-card checkbox — a normal
                player never sees this tab at all. -->
@@ -11157,9 +11158,11 @@ function renderPlay(){
     const body = document.getElementById('playSubBody');
     if(['arena','autobattle','raid'].includes(playSubTab) && !tabOpen(playSubTab)) playSubTab = 'conquest';
     if(playSubTab === 'sandbox' && !adminModeEnabled && !featureUnlocked('testlab')) playSubTab = 'conquest';
+    if(playSubTab === 'dungeons' && !dungeonsTabOpen()) playSubTab = 'conquest';
     // 2026-10-10 (user: "if the Arena mode follows the style of the conquest map, full screen with the tab buttons on
     // the bottom, centered, it'll look more consistent. Same for test lab."): the same full-window frame as Conquest.
-    if(playSubTab==='arena' || playSubTab==='sandbox' || playSubTab==='raid'){ document.body.classList.add('conquest-full', 'play-full'); }
+    if(playSubTab==='arena' || playSubTab==='sandbox' || playSubTab==='raid' || playSubTab==='dungeons'){ document.body.classList.add('conquest-full', 'play-full'); }
+    if(playSubTab==='dungeons'){ renderDungeonsSubTab(body); placePlayFullHud(); return; } // 2026-10-15
     if(playSubTab==='arena'){ renderArenaSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='raid'){ renderRaidSubTab(body); placePlayFullHud(); return; }
     if(playSubTab==='autobattle'){ renderAutobattleSubTab(body); return; }
@@ -16642,6 +16645,90 @@ function compassDiamondSVG(mapId, locked){
     <text x="50" y="9.5" text-anchor="middle" font-size="7" font-weight="700" fill="#2b1d08">N</text>
   </svg>`;
 }
+// ---- Daily dungeons (2026-10-15) ----
+// User: "Im not sure where to put all these daily dungeons in the future? In the Raids menu? Or it's its own? Maybe, it's its own,
+// just another tab in 'Play'." + "In the world map, murgle daily dungeon should be shown there as well. Using a consistent
+// iconography." The endless dungeons (Murgle Mayhem today) get their own 🗝️ Dungeons tab in Play, with room for three that open
+// over the first 40 maps, and a compass diamond of their own on the World map, branching off their map. Murgle stays reachable
+// from its entrance on Sable Swampmire as before.
+// Entry: a 🎟️ Dungeon ticket starts a run, and the run lasts until you lose a floor (floors stay cleared, as before; Energy is
+// still paid per floor). One ticket a day (they bank up to 3) and a bonus one each week (on Monday), so a run a day, and a spare.
+const DAILY_DUNGEONS = [
+  {mapId:'mm', mapNumber:6},
+  {slot:2, mapNumber:20, icon:'🕸️'},
+  {slot:3, mapNumber:40, icon:'🗿'},
+];
+const DUNGEON_TICKETS_KEY = 'bramblewood_dungeon_tickets_v1', DUNGEON_TICKETS_CAP = 3;
+function dungeonDayIndex(t){ const d = new Date(t || Date.now()); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); } // the local calendar day
+function dungeonWeekIndex(t){ return Math.floor((dungeonDayIndex(t) + 3) / 7); } // weeks turn on Monday (day 0, 1 Jan 1970, was a Thursday)
+function saveDungeonTickets(s){ try{ localStorage.setItem(DUNGEON_TICKETS_KEY, JSON.stringify(s)); }catch(e){} }
+function loadDungeonTickets(){
+  let s = null; try{ s = JSON.parse(localStorage.getItem(DUNGEON_TICKETS_KEY) || 'null'); }catch(e){}
+  const day = dungeonDayIndex(), wk = dungeonWeekIndex();
+  if(!s || typeof s.n !== 'number'){ s = {n: 2, day, week: wk, runs: {}}; saveDungeonTickets(s); return s; } // today's ticket and this week's bonus
+  let ch = false; if(!s.runs || typeof s.runs !== 'object'){ s.runs = {}; ch = true; }
+  if(s.day < day){ s.n = Math.max(s.n, Math.min(DUNGEON_TICKETS_CAP, s.n + (day - s.day))); s.day = day; ch = true; }
+  if(s.week < wk){ s.n = Math.min(DUNGEON_TICKETS_CAP + 1, s.n + 1); s.week = wk; ch = true; } // the weekly bonus may sit one over the cap
+  if(ch) saveDungeonTickets(s);
+  return s;
+}
+function dungeonTicketsLeft(){ return loadDungeonTickets().n; }
+function dungeonRunOpen(mapId){ return !!loadDungeonTickets().runs[mapId]; }
+function isDailyDungeonMap(map){ return !!(map && map.endless); }
+function dungeonNextTicketMs(){ const d = new Date(); d.setHours(24, 0, 0, 0); return d.getTime() - Date.now(); }
+// May this floor be fought? (a run is open, or a ticket is in hand)
+function dungeonGateOk(mapId){ const s = loadDungeonTickets(); return !!s.runs[mapId] || s.n > 0; }
+function dungeonStartRun(mapId){ const s = loadDungeonTickets(); if(s.runs[mapId] || s.n <= 0) return false; s.n -= 1; s.runs[mapId] = Date.now(); saveDungeonTickets(s); return true; }
+function dungeonRunLost(mapId){ const s = loadDungeonTickets(); if(s.runs[mapId]){ delete s.runs[mapId]; saveDungeonTickets(s); } }
+function dungeonFloorProgress(map, progress){
+  progress = progress || loadConquestProgress();
+  const done = map.nodes.filter(n=> progress.completed.includes(conquestNodeId(map.id, n.key))).length;
+  return {done, total: map.nodes.length};
+}
+function dungeonTicketLineHTML(map){
+  const s = loadDungeonTickets(), open = !!s.runs[map.id], h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
+  return `<p class="dungeon-ticket-line" title="One Dungeon ticket a day (up to ${DUNGEON_TICKETS_CAP} banked) and a bonus one each Monday. A ticket starts a run; the run lasts until you lose a floor.">🎟️ <b>${s.n}</b> Dungeon ticket${s.n === 1 ? '' : 's'} · ${open ? '<span class="dtl-run">Run open: keep climbing</span>' : 'a ticket starts a run'} · next ticket in ${h}h</p>`;
+}
+function dungeonsTabOpen(){ try{ const mm = CONQUEST_MAPS.find(m=> m.id === 'mm'); return !!(adminModeEnabled || devModeEnabled || (mm && isMapUnlocked(mm, loadConquestProgress()))); }catch(e){ return false; } }
+function renderDungeonsSubTab(body){
+  const progress = loadConquestProgress(), s = loadDungeonTickets(), h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
+  const cards = DAILY_DUNGEONS.map(dd=>{
+    const map = dd.mapId && CONQUEST_MAPS.find(m=> m.id === dd.mapId);
+    if(!map) return `<div class="dg-card is-soon"><div class="dg-diamond map-theme-mm">${compassDiamondSVG('dg' + dd.slot, true)}<span class="wd-ico">${dd.icon || '❔'}</span></div>
+      <div class="dg-body"><b class="dg-name">A new dungeon</b><p class="dg-sub">🔒 Opens around Map ${dd.mapNumber}</p></div></div>`;
+    const open = isMapUnlocked(map, progress), f = dungeonFloorProgress(map, progress), run = !!s.runs[map.id];
+    const parent = CONQUEST_MAPS.find(m=> m.id === map.parent);
+    return `<div class="dg-card ${open ? '' : 'is-locked'}"><div class="dg-diamond map-theme-${map.id}">${compassDiamondSVG('dg-' + map.id, !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
+      <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map ${dd.mapNumber}${parent ? ' · ' + escapeHtml(parent.name) : ''}</span>
+        <p class="dg-sub">${escapeHtml(map.blurb || '')}</p>
+        ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${f.total ? Math.round(100 * f.done / f.total) : 0}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total}${f.done ? ` · ${f.done} cleared` : ''}</span></div>
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${run ? '▶ Continue the run' : s.n > 0 ? '🎟️ Enter' : '🗺️ Look at the map'}</button>${run ? '<span class="dg-run">Run open</span>' : ''}</div>`
+        : `<p class="dg-sub">🔒 Clear ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
+  }).join('');
+  body.innerHTML = `<div class="panel dungeons-panel">
+    <div class="dg-head"><h2>🗝️ Dungeons</h2><p class="panel-sub">Endless climbs, a little harder every floor. A cleared floor stays cleared.</p></div>
+    <div class="dg-tickets" title="A ticket starts a run; the run lasts until you lose a floor. Each floor costs Energy, like any fight.">
+      <span class="dg-tix">${Array.from({length: Math.max(DUNGEON_TICKETS_CAP, s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🎟️</i>`).join('')}</span>
+      <span><b>${s.n}</b> Dungeon ticket${s.n === 1 ? '' : 's'} · one a day (up to ${DUNGEON_TICKETS_CAP}), next in ${h}h · a bonus one every Monday</span></div>
+    <div class="dg-list">${cards}</div>
+  </div>`;
+  body.querySelectorAll('[data-dungeon-go]').forEach(b=> b.addEventListener('click', ()=>{
+    conquestWorldView = false; conquestSelectedMap = b.dataset.dungeonGo; conquestSelectedNodeKey = null; playSubTab = 'conquest'; renderPlay(); }));
+}
+// The World map's dungeon stops (2026-10-15): a smaller compass diamond beside its map's own, joined to it by a dotted branch.
+function worldDungeonStopsHTML(maps, pts, narrow, progress, firstLocked){
+  return DAILY_DUNGEONS.filter(dd=> dd.mapId).map(dd=>{
+    const map = CONQUEST_MAPS.find(m=> m.id === dd.mapId); if(!map) return '';
+    const i = maps.findIndex(m=> m.id === map.parent); if(i < 0) return '';
+    const p = pts[i], x = narrow ? (p.x < 50 ? 80 : 20) : (p.x <= 50 ? p.x + 24 : p.x - 24), y = p.y + (narrow ? -44 : 0);
+    const open = isMapUnlocked(map, progress), fog = !open && i > firstLocked, f = dungeonFloorProgress(map, progress), here = map.id === conquestSelectedMap;
+    return `<svg class="world-branch" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="top:${Math.min(p.y, y)}px; height:${Math.max(2, Math.abs(p.y - y))}px"><line x1="${p.x}" y1="${p.y <= y ? 0 : 100}" x2="${x}" y2="${p.y <= y ? 100 : 0}"/></svg>
+      <div class="world-stop is-side map-theme-${map.id} ${open ? '' : 'is-locked'} ${fog ? 'is-fog' : ''} ${here ? 'is-here' : ''}" style="left:${x}%; top:${y}px">
+        <button type="button" class="world-diamond" ${open ? `data-world-map="${map.id}"` : 'disabled'} aria-label="${escapeAttr((open ? '' : 'Locked: ') + map.name + ' (daily dungeon)')}">${compassDiamondSVG(map.id, !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span><span class="wd-tag" aria-hidden="true">🗝️</span></button>
+        <div class="world-card">${fog ? '<div class="wc-name">Uncharted</div>' : `<div class="wc-name">${escapeHtml(map.name)}</div><div class="wc-sub">🗝️ Daily dungeon${open ? ` · floor ${Math.min(f.total, f.done + 1)}/${f.total}` : ' · 🔒'}</div>`}</div>
+      </div>`;
+  }).join('');
+}
 function renderConquestWorld(mainEl, body, progress){
   const maps = mainConquestMaps();
   const narrow = (mainEl.clientWidth || innerWidth) < 600;
@@ -16671,6 +16758,7 @@ function renderConquestWorld(mainEl, body, progress){
           <div class="world-card" data-lazy="${i}"></div>
         </div>`;
       }).join('')}
+      ${worldDungeonStopsHTML(maps, pts, narrow, progress, firstLocked)}
     </div>`;
   const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body);
   { const hb = document.getElementById('worldHomeBtn'); if(hb) hb.onclick = ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }; }
@@ -17114,7 +17202,7 @@ function renderConquestSubTab(body){
   // information without repeating every node as a redundant text row.
   mainEl.className = 'conquest-main';
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
-  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p></div>
+  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' : ''}" id="conquestCanvas" style="${map.endless ? `min-height:${map.nodes.length * 86}px;` : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${zoomAt && (tutPhase || tutZoomOut) ? `--tut-x:${zoomAt.x}%; --tut-y:${zoomAt.y}%;` : ''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
@@ -19508,6 +19596,9 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(!deckSizeOkOrWarn()) return false;
   const battleMode = (opts && opts.battleMode) || node.battleMode || CONQUEST_DEFAULT_MODE; // C2: set in Edit skirmish only
   if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
+  // Daily dungeons (2026-10-15): a floor needs an open run or a 🎟️ Dungeon ticket (see DAILY_DUNGEONS).
+  const dungeonEntry = !(opts && opts.skipEnergyCost) && isDailyDungeonMap(CONQUEST_MAPS.find(m=> m.id === mapId));
+  if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast('🎟️ No Dungeon tickets left. A new one comes tomorrow, and a bonus one every Monday.', 'warn'); return false; }
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
   if(!(opts && opts.skipEnergyCost)){
@@ -19518,6 +19609,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     }
     bumpQuestCounter('energyConquest', cost);
   }
+  if(dungeonEntry && !dungeonRunOpen(mapId) && dungeonStartRun(mapId)) showToast(`🎟️ Dungeon ticket used: the run lasts until you lose a floor (${dungeonTicketsLeft()} left).`, 'ok'); // 2026-10-15
   try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
@@ -27757,6 +27849,7 @@ async function resolveRound(opts){
     }
     if(m.mode==='conquest' && m.fightSession) setTimeout(()=> handInFight(m), 0);
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ m.conquestRankEarned = lossRankFor(m); }catch(e){} } // F / FF / FFF (2026-10-11)
+    if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ dungeonRunLost(m.conquestNode.mapId); }catch(e){} } // a lost floor ends the dungeon run (2026-10-15)
     // The surprise challenge lost (2026-10-15): the raiders run off with some Maple Leaves (see ambushTheftRoll).
     if(m.mode==='conquest' && m.winner===2 && m.conquestNode && !m.adminTest && !m.raidersTook){ try{ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId);
       if(fn && fn.node && fn.node.ambush){ const want = ambushTheftRoll(), have = Math.max(0, Math.floor(myCurrencies.gold || 0)), n = Math.min(have, want);
