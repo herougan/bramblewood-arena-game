@@ -13195,7 +13195,7 @@ function maybeTerrainIntro(m){
     const t = tr.t, er = Number(tr.rules.eruption) || 0;
     const b = document.createElement('div'); b.className = 'terrain-banner biome-' + (t ? t.biome : 'ash'); b.setAttribute('role', 'status');
     b.innerHTML = `<b>${escapeHtml(t ? `${t.icon} ${t.name}` : '🔥 ' + SCORCHED_NAME)}</b><span>${keywordizeHTML(escapeHtml(t ? terrainSummary(t, tr.rules) : scorchedGroundText(er)))}</span>`;
-    bf.appendChild(b);
+    bf.appendChild(b); try{ fxHook('terrainBanner', b); }catch(e){} // FX batch B (2026-10-15)
     // 2026-10-14: it then shrinks into the field card on the enemy's side, where it stays.
     setTimeout(()=>{ const c = document.getElementById('fieldCondCard'); if(!c || reducedMotion()){ b.classList.add('is-out'); return; }
       const cr = c.getBoundingClientRect(), br = b.getBoundingClientRect(); const dx = (cr.left + cr.width/2) - (br.left + br.width/2), dy = (cr.top + cr.height/2) - (br.top + br.height/2);
@@ -13305,7 +13305,7 @@ function noteFieldEvent(ev){
   else if(ev.type === 'tide' && (ev.tide === 'high' || ev.to === 'high')) hit = markFieldRow('highTide');
   else if(ev.type === 'fieldTick' && ev.field === 'tideSpout') hit = markFieldRow('tideSpout');
   else if(ev.type === 'phase' && (ev.phase === 'twilight' || ev.to === 'twilight')) hit = markFieldRow('twilight');
-  if(hit){ const p = document.getElementById('fieldCondCard') || document.getElementById('terrainPill'); if(p) p.classList.add('has-new'); }
+  if(hit){ const p = document.getElementById('fieldCondCard') || document.getElementById('terrainPill'); if(p){ p.classList.add('has-new'); try{ fxHook('fieldReveal', p); }catch(e){} } }
 }
 // The terrain pill on the board became a field card on the enemy's side (2026-10-14): see fieldCondCardHTML.
 // Wind (2026-10-13, 09:56 list): 'windy' = strong wind every other round, 'gale' = every round. A fight can set rules.wind itself.
@@ -23031,6 +23031,7 @@ function renderMatchUI(){
     }
   }
   renderBoard();
+  try{ fxHook('matchUI', m); }catch(e){} // FX batch B (2026-10-15): darkness falls / lifts, field layers, dusk, perma-tide
   if(!showPassOverlay) renderHand();
   wireDropZones();
   if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox && !m.fxLib) wireSandboxPanel();
@@ -23663,6 +23664,7 @@ function syncInitiativeCoin(){
     // roll: one turn per circumference travelled, clockwise going down, back the other way going up
     const dist = bf.getBoundingClientRect().height * 0.5, turns = dist / (Math.PI * (c.offsetWidth || 20)), deg = Math.round(turns * 360) * (mine ? 1 : -1);
     c.animate([{transform:'translateY(-50%) rotate(0deg)'}, {transform:`translateY(-50%) rotate(${deg}deg)`}], {duration:900, easing:'cubic-bezier(.65,0,.35,1)'});
+    try{ fxHook('initCoin', c, side); }catch(e){} // FX batch B (2026-10-15)
   }
 }
 function renderBoard(opts){
@@ -24605,6 +24607,7 @@ function renderBoard(opts){
   }
   const hadNewEntrants = newBoardEls.length>0;
   fitBattlefieldZoom();
+  try{ fxHook('boardRendered', matchState); }catch(e){} // FX batch B (2026-10-15): who can't see in the dark, the forecast pill
   // Bugfix (2026-09-17, root cause of the residual small stuck-transform matrices test_v24
   // still caught after the scale-1.08/shove fixes above — e.g. a card left mid fall-in at
   // `matrix(0.68, -0.07, 0.07, 0.68, 0, -30)`): resolveRound()'s mid-round replay loop already
@@ -31806,7 +31809,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='blindMiss'){
     const el = boardCardEl(ev.attUid);
     animateAttacker(ev.attUid, ev.side==='A');
-    setTimeout(()=>{ SoundKit.blindTone(); if(el) floatText(el, ev.night ? '🌙 Miss!' : '👁 Miss!', 'debuff'); }, animMs().windup);
+    setTimeout(()=>{ SoundKit.blindTone(); if(el) floatText(el, (ev.night && window.FX && FX.B && FX.B.missText && FX.B.missText(ev, matchState)) || (ev.night ? '🌙 Miss!' : '👁 Miss!'), 'debuff'); }, animMs().windup); // per darkness level (FX batch B, 2026-10-15)
   }
   // Poison tick (item #1, 2026-09-16): a bubbling sound instead of the old flat drip, and a
   // bolder, emoji-led, distinctly-styled float ("🫧 5!") so a poison TICK (actual damage,
@@ -31947,8 +31950,9 @@ function renderVfxForEvent(ev){
   if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine};
       const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } }catch(e){} }
   if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
-  if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ showToast(ev.phase==='night' ? '🌙 Night falls.' : '☀️ Day breaks.', 'ok'); }catch(e){}
-    try{ if(ev.phase==='night'){ SoundKit.nightSwell(); SoundKit.wolfHowl(); } else SoundKit.roosterCrow(); }catch(e){} }
+  // 2026-10-15 (FX batch B): Twilight has its own toast (it used to be announced as "Day breaks").
+  if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ showToast(ev.phase==='night' ? '🌙 Night falls.' : ev.phase==='twilight' ? '🌆 Twilight: day and night creatures are both awake.' : '☀️ Day breaks.', 'ok'); }catch(e){}
+    try{ if(ev.phase==='night'){ SoundKit.nightSwell(); SoundKit.wolfHowl(); } else if(ev.phase==='twilight') SoundKit.nightSwell(); else SoundKit.roosterCrow(); }catch(e){} }
   // Phase growth (2026-10-10, user: "the weredog gains +5/+6 at night. You see a growth vfx/sfx on the card and green aura &
   // spice leaking out of the card for a while. A real aura moment."): the numbers pop, the card swells, and a green aura
   // with drifting spores clings to it while the bonus lasts (the .phase-aura class from boardCardHTML keeps it on).
@@ -37513,6 +37517,7 @@ function mountMapShader(host, mapId){
   if(!host || !shadersEnabled()) return null;
   const kind = ShaderM.MAP_KIND[mapId]; if(kind == null) return null;
   const rain = (typeof loadAtmosphere==='function' && loadAtmosphere()==='rain') || (worldRaining() && mapIsOutdoors(mapId));
+  try{ fxHook('mapRain', host, rain, mapId); }catch(e){} // FX batch B (2026-10-15): rain starting / stopping
   const key = mapId + ':' + (rain ? 11 : kind);
   if(conquestMapLayer && conquestMapLayer.key===key && ShaderM.reattach && ShaderM.reattach(conquestMapLayer.layer, host, true)){
     host.querySelectorAll(':scope > canvas.bw-shader-map').forEach(c=>{ if(c !== conquestMapLayer.layer.cv) c.remove(); });
