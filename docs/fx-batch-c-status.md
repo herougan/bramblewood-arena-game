@@ -175,4 +175,6 @@ Watched in Playwright (frames every ~40–150 ms at 0.25–0.35×, contact sheet
 - chips are clamped on screen (castles sit in the corners); the boss title scales down at phone width;
 - the boss and King deaths now animate a fixed copy, so the replay removing the slot (0.9 s) can't cut them short.
 - All 162 batch-C variants play with 0 console errors and leave nothing behind (checked at 2× and 1×).
+- In the built game (a real AI match, events replayed through `renderVfxForEvent`): the King fall, boss death, exile death, Avalanche crush, KO stamp, twin peel, castle bolt, castle shield, a status wear-off, the wake jolt and the defeat castle sink all fired, 0 page errors, 0 overlays left.
+- `tests/run-all.sh` ALL PASSED (autobattle's speed check flaked once at 7.6 fights/s under the parallel load, 17/s on rerun); `tests/e2e/ui_smoke.py` 0 failures.
 
