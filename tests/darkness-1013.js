@@ -17,7 +17,7 @@ ok(missOf({dark:'dark', phase:'day'}, 'd-plain') === 0.25, 'Darkness: 1 in 4');
 ok(missOf({dark:'pitch', phase:'day'}, 'd-plain') === 0.5, 'Pitchblack: 1 in 2');
 ok(missOf({dark:'absolute', phase:'day'}, 'd-plain') === 1, 'Absolute darkness: always misses');
 ok(missOf({dark:'absolute', phase:'day'}, 'd-see') === 0, 'Darksight sees in absolute darkness');
-ok(missOf({dark:'absolute', phase:'day'}, 'd-plain', 'd-lamp') === 0.5, 'a Lantern brings absolute down to 1 in 2');
+ok(missOf({dark:'absolute', phase:'day'}, 'd-plain', 'd-lamp') === 0, 'a Lantern (now Illuminate, 2026-10-15) lights even absolute darkness: no misses');
 ok(missOf({dark:'pitch', phase:'day'}, 'd-plain', 'd-lamp') === 0, 'a Lantern lights Pitchblack');
 ok(missOf({phase:'night'}, 'd-plain') === 0, 'night alone is no Darkness any more (2026-10-15, user: "Remove nightblindness causing 1/4 miss")');
 ok(missOf({phase:'night'}, 'd-noc') === 0, 'Nocturnal sees at night');

@@ -79,7 +79,7 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
 // Worthy 2 + Lumberjack: +2 (+1 Lumberjack) on arrival; its death gives the other side 1
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-jack', 'left', {}, []); const l0 = P[1].lumber; const w = give(P, 1, 'k2-worthy'); e.placeCard(P, so, 1, w.uid, 'right', {}, []);
   ok(P[1].lumber - l0 === 3, `Worthy 2 with a Lumberjack gives 3 (${P[1].lumber - l0})`);
-  const W = all(P[1]).find(c=> c.defId==='k2-worthy'); W.hp = 0; const f0 = P[2].lumber; e.removeDeadCards(P, so, {}, {}, []); ok(P[2].lumber - f0 === 1, 'its death gives the opponent 1 Lumber'); }
+  const W = all(P[1]).find(c=> c.defId==='k2-worthy'); W.hp = 0; const f0 = P[2].lumber; e.removeDeadCards(P, so, {}, {}, []); ok(P[2].lumber - f0 === 2, 'its death gives the opponent 2 Lumber (Worthy 2 reads as Bounty 2 since 2026-10-15)'); }
 // Heavy Metal + Iron-will / Rock-solid / Timber
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-metal', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-iron', 'right', {}, []); e.debugSpawnCard(P, so, 1, 'k2-rock', 'right', {}, []); e.debugSpawnCard(P, so, 1, 'k2-timber', 'right', {}, []);
   P[1].lumber = 2; P[1].stone = 1; P[1].metal = 1; e.resolveCombat(P, so, {}, [], 1);

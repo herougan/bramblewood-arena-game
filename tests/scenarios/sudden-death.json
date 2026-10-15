@@ -66,8 +66,8 @@
   ]
  },
  {
-  "name": "Sudden death II: from turn 30 a castle hit ends the game",
-  "rounds": 30,
+  "name": "Sudden death II: from turn 25 a castle hit ends the game (2026-10-15, was 30)",
+  "rounds": 25,
   "hqHp": {
    "A": 60,
    "B": 500
@@ -92,8 +92,8 @@
   ]
  },
  {
-  "name": "Sudden death I alone spares the castles (turns 20-29)",
-  "rounds": 29,
+  "name": "Sudden death I alone spares the castles (turns 20-24)",
+  "rounds": 24,
   "hqHp": {
    "A": 60,
    "B": 500

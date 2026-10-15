@@ -271,7 +271,7 @@ migrateLegacyNodeIds();
    ============================================================ */
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
 const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'🪖', crepuscular:'🌆', sunshy:'🕶️', nightblind:'🌑', bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🪓', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
-  kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
+  kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', illuminate:'🏮', nursing:'🍼', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐢', pitchfork:'🍴', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉',
@@ -507,7 +507,7 @@ const PASSIVE_DEFS = [
     get:e=> (e.crepuscular || e.crepuscularHp) ? [e.crepuscular===true ? 1 : (e.crepuscular||0), e.crepuscularHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.crepuscular = a; if(h>0) e.crepuscularHp = h; } }},
   {key:'sunshy', category:'passive', label:'Sun-shy', kind:'boolean', desc:()=>`Blind by day: misses 1 attack in 2 while the sun is up.`},
-  {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (a Lantern on your side lights it).`},
+  {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (an Illuminate unit on your side lights it).`},
   {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}.`; }, // 2026-10-15: night has no Darkness of its own any more
     get:e=> e.nocturnalGrant ? undefined : (e.nocturnal || e.nocturnalHp) ? [e.nocturnal===true ? 1 : (e.nocturnal||0), e.nocturnalHp||0] : undefined, // the advanced form has its own row (2026-10-15)
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.nocturnal = a; if(h>0) e.nocturnalHp = h; } }},
@@ -545,7 +545,11 @@ const PASSIVE_DEFS = [
   {key:'primed', category:'passive', label:'Primed', kind:'boolean', desc:()=>`Its triggers stay online while it is Waiting, Stunned, Frozen or Asleep.`},
   {key:'keenEye', category:'passive', label:'Keen Eye', kind:'boolean', desc:()=>`Sees through disguises: enemy Changelings show as what they really are while this is on your board, and it hits them for 2 more.`},
   {key:'demolisher', category:'passive', label:'Demolisher', kind:'number', min:0, desc:n=>`Deals ${n} more damage to Structures.`},
-  {key:'lantern', category:'passive', label:'Lantern', kind:'boolean', desc:()=>`While it's on your board, it lights your side: Darkness and Pitch Black stop making your units miss, Absolute darkness drops to 1 in 2, and at Night your Diurnal units keep their daytime bonus.`},
+  // Illuminate (2026-10-15, user: "Lantern Bearer should have 'Illuminate' - lights up in darkness. Removes darkness debuff for all
+  // allies."): Lantern's new name, and a little stronger: Absolute darkness is lit too. Lantern stays in the engine for old saves
+  // and published edits (it reads as Illuminate) but leaves the editor and the lists.
+  {key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean', desc:()=>`Lights up the dark. While it's on your board, none of your units miss because of Darkness, Pitch Black or Absolute darkness, and at Night your Diurnal units keep their daytime bonus.`},
+  {key:'lantern', category:'passive', hidden:true, retired:true, label:'Lantern', kind:'boolean', desc:()=>`Now called Illuminate: while it's on your board, your units don't miss because of the dark.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
@@ -643,7 +647,12 @@ const PASSIVE_DEFS = [
     get:e=> e.swimmerGrant ? grantToText(e.swimmerGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.swimmerGrant = g; e.swimmer = true; } }},
   {key:'inspiring', category:'passive', label:'Inspiring', kind:'number', min:0, desc:v=>`As it attacks, the allies either side of it get +${v} Attack for their next swing.`},
   {key:'friction', category:'passive', label:'Friction', kind:'number', min:0, desc:v=>`A drawback: when it attacks, it deals ${v} damage to each ally beside it.`},
-  {key:'worthy', category:'passive', label:'Worthy', kind:'number', min:0, desc:v=>`Brings ${v} Lumber when it arrives. When it dies, your opponent gains 1 Lumber.`},
+  // Worthy folded into Bounty (2026-10-15, user: "I think Bounty and Worthy should be fused. Just Bounty."): out of the editor and the
+  // lists; an old Worthy N on a saved or published card reads as Bounty N (the engine's bountyOf).
+  {key:'worthy', category:'passive', hidden:true, retired:true, label:'Worthy', kind:'number', min:0, desc:v=>`Now part of Bounty: when played, gain ${v} Lumber; when it dies, the opponent gains ${v}.`},
+  // Nursing N (2026-10-15, user: "Nursing skill has +5 ... On the battlefield: Nursing = Heal weakest ally every upkeep."): in the
+  // Nest it adds +5 to a Nurse master's mastery (nurseMasteryOf).
+  {key:'nursing', category:'passive', label:'Nursing', kind:'number', min:1, defaultValue:2, desc:v=>`Every upkeep it heals your weakest wounded unit (the lowest Health, not itself) for ${v||2}. As your Nest's Nurse master it adds +5 Nursing mastery.`},
   {key:'lumberjack', category:'passive', label:'Lumberjack', kind:'boolean', desc:()=>`Whenever you gain Lumber, gain 1 more.`},
   {key:'heavyMetal', category:'passive', label:'Heavy Metal', kind:'boolean', desc:()=>`Whenever you gain Stone or Metal, gain 1 more.`},
   {key:'timber', category:'passive', label:'Timber', kind:'boolean', desc:()=>`+1/+1 for every Lumber you hold.`},
@@ -684,7 +693,7 @@ const PASSIVE_DEFS = [
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0) e.sociable = [a, h]; }},
   {key:'coffee', category:'passive', label:'Coffee', kind:'number', min:1, defaultValue:1, desc:v=>`Comes in wired: Wait −${v||1}. ${v||1} round${(v||1)===1?'':'s'} later the cup wears off and it naps (Stunned for a round).`},
   {key:'dry', category:'passive', label:'Dry', kind:'boolean', desc:()=>`Built for the desert: takes half Heat damage, and Scorching days can't touch it.`},
-  {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`Sees in the dark. Without it, units miss 1 attack in 4 in Darkness, 1 in 2 in Pitch Black, and every attack in Absolute darkness, unless a Lantern lights their side.`}, // 2026-10-15: Darkness is a field effect (caves), not night
+  {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`It can see in darkness.`}, // 2026-10-15 (user: "Darksight explanation is TOO complicated. Just explain what it does - it can see in darkness.")
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
   {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v}, +1 for every 4 Prayer you have.`},
@@ -1698,7 +1707,10 @@ const SKILL_TEXT = {
   primed: ()=> `Its triggers work even while Waiting, Stunned, Frozen or Asleep.`,
   keenEye: ()=> `Sees through Changelings and hits them for 2 more.`,
   demolisher: v=> `Deals ${v} more damage to Structures.`,
-  lantern: ()=> `At night, your Diurnal units keep their day bonus.`,
+  lantern: ()=> `Lights up the dark: your units don't miss in darkness.`, // shown only on an old card that still has it (2026-10-15)
+  illuminate: ()=> `Lights up the dark: your units don't miss in darkness.`, // 2026-10-15
+  darksight: ()=> `It can see in darkness.`, // 2026-10-15
+  nursing: v=> `Heal your weakest wounded unit for ${numOr(v, 2)} every upkeep.`, // 2026-10-15
   backstab: v=> `Attacks the nearest enemy unit, never the castle. +${v} damage when that unit isn't the one in front.`,
   shieldCall: ()=> `Once a battle, the first enemy skill aimed at one of your units hits a 0/10 Guardian shield instead.`,
   boomerang: ()=> `Its throw comes back next round and hits the same target again. Catch it!`,
@@ -1711,7 +1723,7 @@ const SKILL_TEXT = {
   frostbite: v=> `Each time frost chills it, it gains +${v}/+${v} for good.`,
   inspiring: v=> `When it attacks, adjacent allies get +${v} Attack on their next attack.`,
   friction: v=> `When it attacks, deal ${v} damage to adjacent allies.`,
-  worthy: v=> `When played, gain ${v} Lumber. When it dies, the opponent gains 1 Lumber.`,
+  worthy: v=> `When played, gain ${v} Lumber. When it dies, the opponent gains ${v} Lumber.`, // = Bounty (2026-10-15)
   lumberjack: ()=> `Whenever you gain Lumber, gain 1 more.`,
   heavyMetal: ()=> `Whenever you gain Stone or Metal, gain 1 more.`,
   timber: ()=> `+1/+1 for each Lumber you hold.`, rockSolid: ()=> `+2/+2 for each Stone you hold.`, ironWill: ()=> `+3/+3 for each Metal you hold.`,
@@ -1874,7 +1886,7 @@ function describeEffects(def, liveCard){
   if(e.ritual){ const r = e.ritual; lines.push(`Ritual — no Wait, but it can't act until, after it arrives, ${r.perished||0} units have perished (either side), you've drawn ${r.drawn||0} cards and dealt ${r.castleDamage||0} castle damage.`); }
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
   if(def.wait) lines.push(`⏳ Wait ${def.wait} — Can't attack for ${def.wait} round${def.wait===1?'':'s'} after it's played.`);
-  if(e.bounty) lines.push(`🏆 Bounty ${e.bounty} — Whoever kills it gains ${e.bounty} Lumber.`);
+  { const bn = bountyN(e); if(bn) lines.push(`🏆 Bounty ${bn} — When played, gain ${bn} Lumber. When it dies, the opponent gains ${bn} Lumber.`); } // Worthy folded in (2026-10-15)
   if(e.explode) lines.push(`💣 Explode (Timer ${e.explode.time}, Damage ${e.explode.damage}) — a lit fuse, ticking down every round no matter what (even on Wait or Stunned). When it reaches 0 it detonates once, dealing ${e.explode.damage} damage to whatever's directly opposite, or straight through to the enemy HQ if that lane is empty.`);
   // Keyword first (2026-10-08, user: "the bleed description should start with Bleed 2 - ..."): every
   // passive line now opens with its name and value, like Wait and Bounty above, so a player scans
@@ -5550,11 +5562,13 @@ function abilityBadges(d, bopts){
   if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">${iconHTML('kinship', '🫶')}</span>`); if(e.rocket) out.push(`<span title="Rocket">${iconHTML('rocket', '🚀')}${n1(e.rocket)}</span>`);
   if(e.loneWolf) out.push(`<span title="Lone Wolf">${iconHTML('lone-wolf', '🐺')}</span>`); if(e.sociable) out.push(`<span title="Sociable">${iconHTML('sociable', '🫂')}</span>`);
   if(e.coffee) out.push(`<span title="Coffee">${iconHTML('coffee', '☕')}${n1(e.coffee)}</span>`); if(e.dry) out.push(`<span title="Dry">${iconHTML('dry', '🏜️')}</span>`);
-  if(e.darksight) out.push(`<span title="Darksight">${iconHTML('darksight', '👁️')}</span>`);
+  if(e.darksight) out.push(`<span title="Darksight: it can see in darkness">${iconHTML('darksight', '👁️')}</span>`);
+  if(e.illuminate || e.lantern) out.push(`<span title="Illuminate: lights up the dark">${iconHTML('illuminate', '🏮')}</span>`); // 2026-10-15
+  if(e.nursing) out.push(`<span title="Nursing: heals your weakest unit every upkeep">${iconHTML('nursing', '🍼')}${n1(e.nursing === true ? 2 : e.nursing)}</span>`); // 2026-10-15
   if(e.landslide) out.push(`<span title="Landslide">${iconHTML('landslide', '🪨')}${n1(e.landslide)}</span>`);
   if(e.inspiring) out.push(`${iconHTML('inspiring', '📯')}${n1(e.inspiring)}`);
   if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts the allies beside it when it attacks">${iconHTML('friction', '⚙️')}${n1(e.friction)}</span>`);
-  if(e.worthy) out.push(`${iconHTML('worthy', '🪵')}${n1(e.worthy)}`);
+  if(e.worthy && !e.bounty) out.push(`<span class="ab-bounty">${iconHTML('bounty', '🏆')}${n1(bountyN(e))}</span>`); // an old Worthy shows as Bounty (2026-10-15)
   if(e.lumberjack) out.push(`${iconHTML('lumberjack', '🪓')}`); if(e.heavyMetal) out.push(`${iconHTML('heavy-metal', '🤘')}`);
   if(e.timber) out.push(`${iconHTML('timber', '🌲')}`); if(e.rockSolid) out.push(`${iconHTML('rock-solid', '🪨')}`); if(e.ironWill) out.push(`${iconHTML('iron-will', '🔩')}`);
   if(e.loyal || e.loyalGrant) out.push(`${iconHTML('loyal', '🎖️')}`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">${iconHTML('usurper', '👑')}<i>🗡️</i></span>`);
@@ -5832,7 +5846,7 @@ function referenceHTML(){
   <div class="panel"><h3 class="ref-heading">Evergreen abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A bundled trigger + action shorthand — the same thing you could build by hand with Custom Triggers, just packaged as one named skill with fewer clicks.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category==='evergreen' && !p.retired).map(p=>`<div class="ref-card"><span class="kind">Evergreen</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
   </div></div>
   <div class="panel"><h3 class="ref-heading">Passive abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A modifier woven directly into core combat math — always active while the card is in play, with no generic Custom Trigger equivalent.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category!=='evergreen' && !p.retired).map(p=>`<div class="ref-card"><span class="kind">Skill</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
-    <div class="ref-card"><span class="kind">Passive</span><b>Lumber Given (Bounty)</b><p>Killing blow's owner gains this much lumber. Set on the main form.</p></div>
+    <div class="ref-card"><span class="kind">Passive</span><b>Lumber Given (Bounty)</b><p>Its owner gains this much Lumber when it is played, and the opponent gains the same when it dies (Worthy is part of it now). Set on the main form.</p></div>
   </div></div>
   <div class="panel"><h3 class="ref-heading">Resistance &amp; Weaknesses</h3><p class="panel-sub">Its own dedicated area on the card form (2026-09-16) — a Resistance box and a Weakness box, side by side, separate from the "+ Add Skill" list. Each can hold any number of match-keys: a damage type, an archetype/type-tag the attacker belongs to, or another ability the attacker has.</p><div class="ref-grid">
     <div class="ref-card"><span class="kind">Resistance</span><b>Resistance</b><p>Takes half damage (min 1) from anything matching an entry in this box.</p></div>
@@ -6897,7 +6911,7 @@ function renderEditorInner(){
           <input id="fCostMetal" type="number" min="0" value="${c.metalCost||0}" title="Metal"><span class="mr-glyph" title="Metal">🔩</span>
         </div>
       </div>
-      <div class="field field-wide" title="What the opponent's controller gains when their card kills this one (a.k.a. Bounty) — Lumber (the only one the match engine currently pays out), Stone, and Metal.">
+      <div class="field field-wide" title="Bounty: its owner gains this much Lumber when it is played, and the opponent gains the same when it dies (2026-10-15: Worthy is part of Bounty). Stone and Metal are stored but not paid out yet.">
         <label>Reward</label>
         <div class="multi-resource-row">
           <input id="fBounty" type="number" min="0" value="${c.effects.bounty||0}" title="Lumber"><span class="mr-glyph" title="Lumber">🪵</span>
@@ -13329,14 +13343,18 @@ function fieldConditionRows(r){
   else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(r.eruption), '', `Burns a unit a side for ${r.eruption}`);
   if(r.wind === 'gale') add('gale', '🌪️', 'Gale', 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', '', 'Strong wind every round');
   else if(r.wind) add('wind', '🌬️', 'Windy', 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', '', 'Strong wind every other round');
-  if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (1 in 2 with a Lantern on their side).', '', 'No Darksight: every attack misses');
+  if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (none with an Illuminate unit on their side).', '', 'No Darksight: every attack misses');
   // 2026-10-15 (user: "It will be an explicit field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): the two dark levels.
   else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', 'No Darksight: miss 1 in 2');
   else if(r.dark) add('dark', '🌘', DARK_LEVEL_NAME.dark, DARK_LEVEL_TEXT.dark, '', 'No Darksight: miss 1 in 4');
   if(r.misty){ add('misty', '🌫️', 'Mist', MISTY_TEXT, '', MISTY_SHORT); rows[rows.length - 1].qTip = MISTY_Q_TIP; } // 2026-10-14; real wording 2026-10-15; a neutral "?" tip (2026-10-15)
   if(r.phase === 'night') add('night', '🌙', 'Night', 'Night all match: Nocturnal units get their bonus. Night-blind units miss 1 attack in 2.', '', 'Always night'); // 2026-10-15: night has no 1-in-4 miss any more
   if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', '', 'Day, night, then twilight');
-  if(r.permaTide) add('permaTide', '🌊', 'Perma-tide', "The Tide is always in. Tide effects can't change it.", '', 'The Tide is always in'); // 2026-10-14: Flow every round from round 1
+  if(r.permaTide) add('permaTide', '🌊', r.rapids ? 'River Rapids' : 'Perma-tide', r.rapids ? 'Always Flood: the Tide is in all match, and nothing can turn it.' : "The Tide is always in. Tide effects can't change it.", '', r.rapids ? 'Always Flood' : 'The Tide is always in'); // 2026-10-14: Flow every round from round 1; River Rapids 2026-10-15
+  // New field effects (2026-10-15)
+  if(r.swampFever) add('swampFever', '🤢', 'Swamp Fever', `From round 2, every unit has a ${r.swampFever === true || Number(r.swampFever) === 50 ? '1 in 2' : (Number(r.swampFever)||50) + '%'} chance each round to gain 1 Poison. Structures never catch it.`, '', 'Units may catch Poison');
+  if(r.freezing) add('freezing', '🧊', 'Freezing', 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', '', 'Units arrive frozen');
+  if(r.sandstorm) add('sandstorm', '🏜️', 'Sandstorm', 'Attacks at units miss 1 in 4, except from Dry units.', '', 'Attacks miss 1 in 4');
   // 2026-10-14 (user: "Tideline II doesn't need to explain Tide & High Tide ... The effect of it just says, Periodic High Tides"):
   if(r.highTide && !r.permaTide) add('highTide', '🌊', 'High Tide', 'Periodic High Tides.', '', 'Periodic High Tides');
   if(r.tideSpout) add('tideSpout', '⛲', 'Tide-spout', 'Each round from round 2, a spout bursts in one random column: the Tide comes in, the units there are pushed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', '', 'A spout pushes a column back'); // 2026-10-14
@@ -13389,6 +13407,8 @@ function noteFieldEvent(ev){
   else if(ev.type === 'blindMiss' && r.dark) hit = markFieldRow('dark');
   else if(ev.type === 'tide' && (ev.tide === 'high' || ev.to === 'high')) hit = markFieldRow('highTide');
   else if(ev.type === 'fieldTick' && ev.field === 'tideSpout') hit = markFieldRow('tideSpout');
+  else if(ev.type === 'fieldTick' && (ev.field === 'swampFever' || ev.field === 'freezing')) hit = markFieldRow(ev.field); // 2026-10-15
+  else if(ev.type === 'evaded' && ev.reason === 'sandstorm') hit = markFieldRow('sandstorm'); // 2026-10-15
   else if(ev.type === 'phase' && (ev.phase === 'twilight' || ev.to === 'twilight')) hit = markFieldRow('twilight');
   if(hit){ const p = document.getElementById('fieldCondCard') || document.getElementById('terrainPill'); if(p){ p.classList.add('has-new'); try{ fxHook('fieldReveal', p); }catch(e){} } }
 }
@@ -13402,7 +13422,7 @@ function noteFieldEvent(ev){
 // shine, the Ice Hollow is blue ice and the Volcano Lair burns, so they stay lit.)
 const DARK_MAPS = new Map([['mg','pitch'], ['m4','dark'], ['mz','dark'], ['mj','dark']]);
 const DARK_LEVEL_NAME = {dark:'Darkness', pitch:'Pitch Black', absolute:'Absolute darkness'};
-const DARK_LEVEL_TEXT = {dark:'Level 1: units without Darksight miss 1 attack in 4. A Lantern lights your side.', pitch:'Level 2: units without Darksight miss 1 attack in 2. A Lantern lights your side.'};
+const DARK_LEVEL_TEXT = {dark:'Level 1: units without Darksight miss 1 attack in 4. An Illuminate unit lights your side.', pitch:'Level 2: units without Darksight miss 1 attack in 2. An Illuminate unit lights your side.'};
 const WINDY_MAPS = {mc:'windy', md:'windy', m3:'windy', m11:'windy', m10:'gale', mv:'gale'};
 const VOLCANO_MAPS = new Set(['m11', 'me', 'mx']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart
 function simulateSkirmishVsDeckSeeded(node, deckCounts, playerChar, seed){
@@ -13418,7 +13438,7 @@ function simulateSkirmishVsDeckSeeded(node, deckCounts, playerChar, seed){
     if(r > 1) engine.roundStart(P, r, sideOf, stats, null);
     engine.aiTakeTurn(P, sideOf, 1, stats, null); engine.aiTakeTurn(P, sideOf, 2, stats, null);
     over = engine.resolveCombat(P, sideOf, stats, null, r%2===0 ? 1 : 2); if(over) break;
-    const sig = boardSignature(P); stalled = (sig===lastSig && noActionsLeft(P)) ? stalled+1 : 0; lastSig = sig; if(stalled>=2) break;
+    const sig = boardSignature(P); stalled = (sig===lastSig && noActionsLeft(P)) ? stalled+1 : 0; lastSig = sig; if(stalled>=2 && r >= STALL_DRAW_FROM_ROUND) break; // 2026-10-15
     engine.draw(P[1], 1, 'A', stats, null); engine.draw(P[2], 1, 'B', stats, null);
   }
   const a = P[1].hq.hp<=0, b = P[2].hq.hp<=0;
@@ -13443,7 +13463,7 @@ function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
       engine.aiTakeTurn(P, sideOf, 1, stats, null); engine.aiTakeTurn(P, sideOf, 2, stats, null);
       over = engine.resolveCombat(P, sideOf, stats, null, r%2===0 ? 1 : 2);
       if(over) break;
-      const sig = boardSignature(P); stalled = (sig===lastSig && noActionsLeft(P)) ? stalled+1 : 0; lastSig = sig; if(stalled>=2) break;
+      const sig = boardSignature(P); stalled = (sig===lastSig && noActionsLeft(P)) ? stalled+1 : 0; lastSig = sig; if(stalled>=2 && r >= STALL_DRAW_FROM_ROUND) break; // 2026-10-15
       engine.draw(P[1], 1, 'A', stats, null); engine.draw(P[2], 1, 'B', stats, null);
     }
     const a = P[1].hq.hp<=0, b = P[2].hq.hp<=0;
@@ -15465,6 +15485,7 @@ function applyNodeEdits(){
   });
   try{ applyRoadKinds(); }catch(e){}
   try{ applyAmbushNode(); }catch(e){}
+  try{ refreshHiddenSkirmishes(); }catch(e){} // hidden skirmishes (2026-10-15)
 }
 // The road's map enders (2026-10-13, user: "Map 0's final fight is a normal fight btw. Map 1's is a Elite at the end. Map 5's is a
 // boss. Map 6 onwards, the last Skirmish is always a miniboss. This will not change from Map 0-100. Every 5 maps the boss, every
@@ -15499,6 +15520,75 @@ function applyAmbushNode(){
     flavor: hb ? 'A Dominion patrol drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
     rewardTokens:['factionGrowth'], requires:[], ambush:true, fixedPos: st.pos || null, faction: foe});
 }
+// Hidden skirmishes (2026-10-15, user: "You can also add HIDDEN skirmishes (max 5 across Map 1-20). Idk how they will be revealed."):
+// a fight that isn't on the map at all until something reveals it. Each entry: map, the node (flagged hidden:true and secret:true,
+// with its own code X-H), where it sits (next to `near`, dx/dy in map %), and `reveal`, the condition:
+//   {curiosity:'<dialogue id>'}   you've looked at that curiosity on the map (its first conversation played)
+//   {mapCleared:true}             every regular fight on the map is cleared
+//   {night:true, after:'<key>'}   only at night on your own clock (8 pm to 6 am), once <key> is cleared; it hides again by day
+//                                 until you beat it
+//   {rankS:'<key>'}               <key> was cleared with rank S
+// Once revealed it stays (except a night-only one), pops onto the map with a sparkle and a toast the first time, and never blocks
+// the next map (a secret fight is optional, like a chance fight). The designer can move or retune them in Edit skirmish as usual.
+const HIDDEN_SKIRMISHES = [
+  {map:'m2', near:'4-5', dx:-16, dy:12, reveal:{curiosity:'cur_m2_lantern'}, hint:'The lantern in the Hollow is still burning…',
+    node:{key:'4-H', code:'4-H', kind:'elite', name:"The Lamplighter's Return", icon:'🏮', hqHp:80, rules:{phase:'night'},
+      flavor:'Somebody came home to the lantern you left lit, and brought the whole river with them.',
+      deck:{'otter-lantern-bearer':3, 'beaver-builder':3, 'pond-trout':3, 'open-ocean-hermit-crab':3, 'humpback-elder':1}}},
+  {map:'m4', near:'8-6', dx:14, dy:-12, reveal:{curiosity:'cur_m4_glowpool'}, hint:'Something glows past the glowworm pool…',
+    node:{key:'8-H', code:'8-H', kind:'elite', name:'The Spark-fly Hollow', icon:'✨', hqHp:70, rules:{dark:'pitch'},
+      flavor:'Past the glowworm pool the cave goes pitch black, except where the spark-flies are.',
+      deck:{'lantern-spark-fly':3, 'glowworm-cluster':3, 'blind-cave-fish':3, 'cave-bat-swarm':2, 'echo-screecher':1}}},
+  {map:'m7', near:'10-9', dx:14, dy:10, reveal:{mapCleared:true}, hint:'With the reef quiet at last, the old wreck is easier to see.',
+    node:{key:'10-H', code:'10-H', kind:'elite', name:"The Wreck's Hold", icon:'⚓', hqHp:110,
+      flavor:'With the reef finally quiet, you can hear something knocking inside the wreck.',
+      deck:{'moray-ambusher':2, 'coral-reef-shark':2, 'riptide-eel':3, 'sea-turtle-elder':1, 'coral-polyp-colony':2, 'tide-pool-crab':2}}},
+  {map:'m5', near:'14-1', dx:-12, dy:-14, reveal:{night:true, after:'14-1'}, hint:'Only after dark.',
+    node:{key:'14-H', code:'14-H', kind:'elite', name:'Drums at Midnight', icon:'🥁', hqHp:70, rules:{phase:'night', firstBlood:1},
+      flavor:'You can only hear the drums after dark, and only if you are already listening.',
+      deck:{'dust-hyena':4, 'jaguar-stalker':3, 'war-drum-mandrill':2, 'howler-monkey':2}}},
+  {map:'m6', near:'17-8', dx:-14, dy:12, reveal:{rankS:'17-8'}, hint:'Beat the Glacial Ape-King flawlessly…',
+    node:{key:'17-H', code:'17-H', kind:'elite', name:'Under the Ice', icon:'🧊', hqHp:120, rules:{field:'frozen', frostCount:2, frostResist:['Tundra','Frost','Taiga'], frostbite:1},
+      flavor:'The Ape-King was guarding a hole in the ice. Something down there was guarding him.',
+      deck:{'permafrost-mammoth':1, 'ravenous-wolverine':2, 'ice-crevasse-wolf':2, 'arctic-fox-raider':3, 'glacial-ape-king':1, 'taiga-lynx':2}}},
+];
+const HIDDEN_KEY = 'bramblewood_hidden_skirmishes_v1';
+function hiddenState(){ try{ const s = JSON.parse(localStorage.getItem(HIDDEN_KEY) || '{}') || {}; s.found = s.found || {}; s.popped = s.popped || {}; return s; }catch(e){ return {found:{}, popped:{}}; } }
+function saveHiddenState(s){ try{ localStorage.setItem(HIDDEN_KEY, JSON.stringify(s)); }catch(e){} }
+function nightOnClock(d){ const h = (d || new Date()).getHours(); return h >= 20 || h < 6; }
+// Is a hidden skirmish on the map right now? (progress: loadConquestProgress())
+function hiddenSkirmishShown(h, progress, st){
+  const id = conquestNodeId(h.map, h.node.key), done = (progress.completed||[]).includes(id), r = h.reveal || {};
+  if(done) return true;
+  if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return true; // the designer sees them all
+  if(matchState && matchState.conquestNode && matchState.conquestNode.mapId === h.map && matchState.conquestNode.nodeId === h.node.key) return true; // mid-fight
+  const cleared = k=> (progress.completed||[]).includes(conquestNodeId(h.map, k));
+  if(r.night) return nightOnClock() && (!r.after || cleared(r.after));
+  if(st.found[h.node.key]) return true;
+  if(r.curiosity) return !!loadDialogueFlags()['seen:' + r.curiosity];
+  if(r.mapCleared) return conquestMapCleared(h.map);
+  if(r.rankS) return cleared(r.rankS) && (progress.ranks||{})[conquestNodeId(h.map, r.rankS)] === 'S';
+  return false;
+}
+// Put the revealed ones on their maps (and take the rest off). Returns the ones that just appeared for the first time.
+function refreshHiddenSkirmishes(){
+  const progress = loadConquestProgress(), st = hiddenState(), fresh = [];
+  HIDDEN_SKIRMISHES.forEach(h=>{
+    const map = CONQUEST_MAPS.find(m=> m.id === h.map); if(!map) return;
+    const i = map.nodes.findIndex(n=> n.key === h.node.key), show = hiddenSkirmishShown(h, progress, st);
+    if(!show){ if(i >= 0 && map.nodes[i].secret) map.nodes.splice(i, 1); return; }
+    if(!st.found[h.node.key] && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled)){ st.found[h.node.key] = Date.now(); fresh.push(h); }
+    if(i >= 0) return; // already there (an edit may have patched it)
+    const plain = Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret)}), ps = mapNodePositions(plain), ri = plain.nodes.findIndex(n=> n.key === h.near), ref = ps[ri] || {x:50, y:50};
+    const pos = {x: Math.max(6, Math.min(94, ref.x + (h.dx||0))), y: Math.max(8, Math.min(92, ref.y + (h.dy||0)))};
+    const patch = ((nodeEdits[h.map]||{}).patches||{})[h.node.key];
+    map.nodes.push(Object.assign(JSON.parse(JSON.stringify(h.node)), {hidden:true, secret:true, requires:[], fixedPos: pos, revealHint: h.hint || ''}, patch ? JSON.parse(JSON.stringify(patch)) : {}));
+  });
+  if(fresh.length) saveHiddenState(st);
+  return fresh;
+}
+function hiddenJustRevealed(key){ const st = hiddenState(); return !!st.found[key] && !st.popped[key]; }
+function markHiddenPopped(keys){ if(!keys.length) return; const st = hiddenState(); keys.forEach(k=> st.popped[k] = Date.now()); saveHiddenState(st); }
 function ambushShouldTrigger(map, node){
   if(!map || !node || ambushState().triggered || !loadTutorialDone()) return false;
   const am = ambushMap(); return !!am && am.id === map.id && skirmishCode(map.id, node.key) === AMBUSH_AT;
@@ -15906,7 +15996,7 @@ function isMapUnlocked(map, progress){
   // A map "clears" once every one of the PREVIOUS map's story nodes (everything except an
   // optional bonus Raid Boss) is beaten — Raid Bosses are a permanent bonus unlock, not a
   // progression gate.
-  return prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0)).every(n=> progress.completed.includes(conquestNodeId(prev.id, n.key)));
+  return prev.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret).every(n=> progress.completed.includes(conquestNodeId(prev.id, n.key))); // a hidden skirmish is optional (2026-10-15)
 }
 // Conquest reward payouts (2026-09-20, picking up the Conquest/PvE research notes' own
 // recommendation: "reward payouts on node clear (first-clear bonus + repeat-clear trickle) ...
@@ -16353,7 +16443,10 @@ function wireMapLayoutEditor(map, body){
   });
 }
 function mapNodePositions(map){
-  const base = autoMapNodePositions(map).map((p, i)=> (map.nodes[i] && map.nodes[i].fixedPos) ? map.nodes[i].fixedPos : p);
+  // Hidden skirmishes (2026-10-15) stand where they were placed and don't reshuffle the rest of the trail.
+  const sec = map.nodes.some(n=> n.secret);
+  const auto = sec ? (()=>{ const pp = autoMapNodePositions(Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret)})); let k = 0; return map.nodes.map(n=> n.secret ? (n.fixedPos || {x:50, y:50}) : pp[k++]); })() : autoMapNodePositions(map);
+  const base = auto.map((p, i)=> (map.nodes[i] && map.nodes[i].fixedPos) ? map.nodes[i].fixedPos : p);
   const ov = mapLayoutOverrides[map.id];
   if(!ov) return base;
   const opening = map.id === 'm1' && !loadTutorial2Done();
@@ -16965,6 +17058,10 @@ function renderConquestSubTab(body){
   if(!matchState) document.body.classList.add('conquest-full');
   document.querySelectorAll('.cnp-rw-zoom').forEach(z=> z.remove());
   const progress = ensureTutorialMarkersComplete(loadConquestProgress());
+  // Hidden skirmishes (2026-10-15): reveal any whose condition is now met; the first sight of one pops it in with a toast.
+  { try{ refreshHiddenSkirmishes(); }catch(e){}
+    const pops = HIDDEN_SKIRMISHES.filter(h=> h.map === conquestSelectedMap && hiddenJustRevealed(h.node.key) && (CONQUEST_MAPS.find(m=> m.id === h.map)||{nodes:[]}).nodes.some(n=> n.key === h.node.key));
+    if(pops.length) setTimeout(()=>{ markHiddenPopped(pops.map(h=> h.node.key)); pops.forEach((h, i)=> setTimeout(()=>{ try{ showToast(TX('toast.hidden-skirmish-found', {v1: h.node.icon, v2: h.node.name, v3: h.node.code}), 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 700 + i*600)); }, 0); }
   const wrapEl = document.getElementById('appWrap');
   // 2026-10-03 (explicit: "Conquest and Arena margins are different... Set them to be the same.
   // Allow for a full-screen button in conquest"): Conquest now sits in the same content column as
@@ -17157,7 +17254,7 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenJustRevealed(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
           <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="Something glints here. An S rank might find it." aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
         </button>`;
       }).join('')}
@@ -20684,7 +20781,7 @@ const FXL_TIDE_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Tide Diver', i
   foes:[{role:'foe', slot:0, def:{name:'Wave Rider', icon:'💦', effects:{tide:true}}}, {role:'foe2', slot:1}]};
 const FXL_PHASE_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Night Owl', icon:'🦉', effects:{nocturnal:2, nocturnalHp:2}}}, {role:'ally', slot:-1, def:{name:'Sun Lark', icon:'🐦', effects:{diurnal:2, diurnalHp:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]};
 const FXL_FLYER_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Hawk', icon:'🦅', effects:{flying:true}}}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}]};
-const FXL_DARK_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Mole', icon:'🐀', effects:{darksight:true}}}, {role:'ally', slot:-1, def:{name:'Lantern Bearer', icon:'🏮', effects:{lantern:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]};
+const FXL_DARK_UNITS = {mine:[{role:'subject', slot:0, def:{name:'Mole', icon:'🐀', effects:{darksight:true}}}, {role:'ally', slot:-1, def:{name:'Lantern Bearer', icon:'🏮', effects:{illuminate:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]};
 const FXL_FIELDS = [
   {key:'frozen', icon:'❄️', name:'Frigid (frost)', text:()=> FIELD_TEXT.frozen.text, rules:{field:'frozen', frostCount:2}, note:'One round, then the frost chills at the next round\'s start.'},
   {key:'frostbite', icon:'🥶', name:'Frost + Frostbite', text:()=> 'Frigid ground where an enemy unit the frost chills gains +2/+2.', rules:{field:'frozen', frostCount:2, frostbite:2}},
@@ -20701,12 +20798,18 @@ const FXL_FIELDS = [
   {key:'tideEbb', icon:'🐚', name:'Tide goes out (Ebb)', text:()=> 'On Ebb, Tide units get +1 Armor.', rules:{}, startTide:true, units:FXL_TIDE_UNITS, pre:1, note:'The Flood passes silently first, so this round brings the Ebb.'},
   {key:'highTide', icon:'🌊', name:'High tide', text:()=> 'Periodic High Tides. At High Tide, Tide units get +2 Attack and +2 Armor.', rules:{highTide:true}, units:FXL_TIDE_UNITS, pre:3, note:'Three tide steps pass silently first, so this round brings the High tide.'},
   {key:'permaTide', icon:'🌊', name:'Perma-tide', text:()=> "The Tide is always in. Tide effects can't change it.", rules:{permaTide:true}, units:FXL_TIDE_UNITS},
+  // New field effects (2026-10-15)
+  {key:'rapids', icon:'🌊', name:'River Rapids', text:()=> 'Always Flood: the Tide is in all match, and nothing can turn it.', rules:{permaTide:true, rapids:true}, units:FXL_TIDE_UNITS},
+  {key:'swampFever', icon:'🤢', name:'Swamp Fever', text:()=> 'From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.', rules:{swampFever:50}, steps:['round', 'round'], units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Palisade', icon:'🪵', archetypes:['Structure']}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Two rounds; the Palisade beside it is a Structure and never catches it.'},
+  {key:'freezing', icon:'🧊', name:'Freezing', text:()=> 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', rules:{freezing:true}, steps:[{spawn:'subject'}, 'round'], note:'The Specimen arrives frozen and sits out a round.'},
+  {key:'sandstorm', icon:'🏜️', name:'Sandstorm', text:()=> 'Attacks at units miss 1 in 4, except from Dry units.', rules:{sandstorm:true}, units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Fennec', icon:'🦊', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'The Fennec beside it is Dry and never misses in the sand.'},
+  {key:'scorching2', icon:'🔥', name:'Scorching II', text:()=> 'Scorching, level 2: each round 3 random units on each side take 2 fire damage. Heat-resistant units are spared.', rules:{field:'heatwave', heatLevel:2}},
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> "From round 2, a spout bursts in one random column each round. The Tide comes in, the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.", rules:{tideSpout:true}, units:FXL_TIDE_UNITS},
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds: the wind rises at the start of round 2.'},
   {key:'gale', icon:'🌪️', name:'Gale', text:()=> 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', rules:{wind:'gale'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds, so you see a round fought in the wind.'},
   {key:'dark', icon:'🌘', name:'Darkness', text:()=> DARK_LEVEL_TEXT.dark, rules:{dark:'dark'}, units:FXL_DARK_UNITS},
   {key:'pitch', icon:'🌑', name:'Pitch Black', text:()=> DARK_LEVEL_TEXT.pitch, rules:{dark:'pitch'}, units:FXL_DARK_UNITS},
-  {key:'absolute', icon:'⚫', name:'Absolute darkness', text:()=> 'Units without Darksight miss every attack (1 in 2 with a Lantern on their side).', rules:{dark:'absolute'}, units:FXL_DARK_UNITS},
+  {key:'absolute', icon:'⚫', name:'Absolute darkness', text:()=> 'Units without Darksight miss every attack (none with an Illuminate unit on their side).', rules:{dark:'absolute'}, units:FXL_DARK_UNITS},
   {key:'lavaTide', icon:'🌋', name:'Volcano: Lava Tide', text:()=> VOLCANO_HAZARDS[0].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:100, petrifyChance:0, eruptionChance:0}},
   {key:'petrify', icon:'🪨', name:'Volcano: Petrification', text:()=> VOLCANO_HAZARDS[1].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:100, eruptionChance:0}, steps:['round', 'round'], note:'Two rounds: the stone sets at the start of round 2, then you see it fight.'},
   {key:'eruptionChance', icon:'🌋', name:'Volcano: Eruption', text:()=> VOLCANO_HAZARDS[2].text({eruption:3}) + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:0, eruptionChance:100, eruption:3}},
@@ -20745,7 +20848,8 @@ const FXL_SKILL_SETUPS = {
   fullMoon: {rules:{phase:'night', field:'moon'}, note:'A Full Moon rises over it: +3/+3 for the rest of the fight.'}, fullMoonGrant: {rules:{phase:'night', field:'moon'}, note:'A Full Moon rises over it: the skills in its braces for good.'},
   tideGrant: {startTide:true, steps:['round', 'round', 'round'], note:'The Tide is in: Flood, Ebb, Flood. Each facet in its turn.'},
   crepuscular: {rules:{phase:'cycle', phaseLen:1}, pre:3, note:'Four day/night steps pass silently first, so this round brings the Twilight.'},
-  darksight: {rules:{dark:'pitch'}, note:'Fought in Pitch Black.'}, lantern: {rules:{dark:'pitch'}, note:'Fought in Pitch Black.'},
+  darksight: {rules:{dark:'pitch'}, note:'Fought in Pitch Black.'}, lantern: {rules:{dark:'pitch'}, note:'Fought in Pitch Black.'}, illuminate: {rules:{dark:'absolute'}, note:'Fought in Absolute darkness: with it on the board, its allies still land every swing.'}, // 2026-10-15
+  nursing: {status:{ally:{hp:4}}, steps:['round', 'round'], note:'The ally beside it starts badly hurt: every upkeep the nurse heals the weakest one.'}, // 2026-10-15
   frostbite: {rules:{field:'frozen', frostCount:3}, note:'Fought on Frigid ground.'},
   restless: {foes:[{role:'foe', slot:2}, {role:'foe2', slot:3}], note:'No enemy in front of it, so it walks toward one.'},
   converge: {foes:[{role:'foe', slot:-2}, {role:'foe2', slot:2}], note:'The enemy row has gaps to close.'},
@@ -21984,8 +22088,15 @@ const FIELD_EFFECTS = [
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
   {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, the ground burns one random unit on each side for 2 fire damage every round.'},
   {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there are pushed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', editorOnly:true}, // 2026-10-14
-  {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:'Level 1: units without Darksight miss 1 attack in 4. A Lantern lights your side.', editorOnly:true}, // 2026-10-15
-  {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:'Level 2: units without Darksight miss 1 attack in 2. A Lantern lights your side.', editorOnly:true}, // 2026-10-15
+  {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:'Level 1: units without Darksight miss 1 attack in 4. An Illuminate unit lights your side.', editorOnly:true}, // 2026-10-15
+  {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:'Level 2: units without Darksight miss 1 attack in 2. An Illuminate unit lights your side.', editorOnly:true}, // 2026-10-15
+  // New field effects (2026-10-15, user: "Propose field effects for each map, up till Map 22 ... Swamp can give swamp fever - all cards
+  // have a 50% to gain 1 poison."): built and offered here; no map carries them yet (docs/field-effects-and-map-gaps-2026-10-15.md).
+  {id:'scorching2',group:'field', icon:'🔥', name:'Scorching II', weird:3, cost:1, rules:{field:'heatwave', heatLevel:2}, text:'Scorching, level 2: each round 3 random units on each side take 2 fire damage. Heat-resistant units are spared.', editorOnly:true},
+  {id:'freezing',  group:'freezing', icon:'🧊', name:'Freezing', weird:2, cost:1, rules:{freezing:true}, text:'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', editorOnly:true},
+  {id:'swampfever',group:'swampFever', icon:'🤢', name:'Swamp Fever', weird:2, cost:1, rules:{swampFever:50}, text:'From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.', editorOnly:true},
+  {id:'sandstorm', group:'sandstorm', icon:'🏜️', name:'Sandstorm', weird:2, cost:1, rules:{sandstorm:true}, text:'Attacks at units miss 1 in 4, except from Dry units.', editorOnly:true},
+  {id:'rapids',    group:'rapids', icon:'🌊', name:'River Rapids', weird:2, cost:1, rules:{permaTide:true, rapids:true}, text:'Always Flood: the Tide is in all match, and nothing can turn it.', editorOnly:true},
   {id:'misty',     group:'misty', icon:'🌫️', name:'Mist',         weird:1, cost:1, rules:{misty:true}, text:'There is no day/night cycle.', editorOnly:true}, // 2026-10-15 wording // 2026-10-14: no map has it yet
   {id:'hightide',  group:'highTide', icon:'🌊', name:'High Tide',   weird:2, cost:1, rules:{highTide:true}, text:'Periodic High Tides (they move Tide units only).', editorOnly:true},
   {id:'double',    group:'actions', icon:'⚡', name:'Double Time',   weird:4, cost:2, rules:{actions:2}, text:'Each side plays 2 cards a turn.'},
@@ -24739,6 +24850,7 @@ function renderBoard(opts){
   const hadNewEntrants = newBoardEls.length>0;
   fitBattlefieldZoom();
   try{ fxHook('boardRendered', matchState); }catch(e){} // FX batch B (2026-10-15): who can't see in the dark, the forecast pill
+  try{ syncUnitLightPools(); }catch(e){} // unit light in the dark (2026-10-15)
   // Bugfix (2026-09-17, root cause of the residual small stuck-transform matrices test_v24
   // still caught after the scale-1.08/shove fixes above — e.g. a card left mid fall-in at
   // `matrix(0.68, -0.07, 0.07, 0.68, 0, -30)`): resolveRound()'s mid-round replay loop already
@@ -25534,9 +25646,15 @@ function boardCardHTML(c, defs, opts){
   // have angel wings effect on the card (after it enters the battlefield)"). The wings fold away once the revive is spent.
   const guards = !!((d.effects||{}).guardian), winged = !!((d.effects||{}).revive) && !c.revivedOnce;
   const guardHTML = guards ? '<span class="guard-plates" aria-hidden="true"><i class="gp-l"></i><i class="gp-r"></i></span>' : '';
+  // Unit light (2026-10-15, user: "Leader should have abit of light in darkness. (Night too) Just abit. Creatures with Light Aura shine
+  // brighter ... maybe immolation is one?"): a faint warm pool under a leader, a brighter one under a Light Aura unit (Illuminate or
+  // Immolation). It only shows at night and in the dark (.battlefield.is-dark-scene); in Pitch Black and Absolute darkness the same
+  // units also open a hole in the darkness overlay (syncUnitLightPools).
+  const lightKind = unitLightKindOf(c, d);
+  const lightHTML = lightKind ? `<span class="unit-light ul-${lightKind}" aria-hidden="true"></span>` : '';
   const wingHTML = winged ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>' : '';
   return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${winged?'has-wings':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
+    ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
@@ -25551,11 +25669,37 @@ function withOwnerEdgeInTile(html){ return html.replace(/(<div class="card-tile[
 // lumber... coloured so it looks like a reward... visible only when the player is holding a card.
 // It also first appears at the start of your turn, then fades after 3s"). Only on the opponent's
 // cards — the reward is yours to take. Visibility is pure CSS: body.bw-holding / body.bounty-peek.
+// Bounty N (2026-10-15): the card's Bounty, or an old Worthy N that reads as one (the engine's bountyOf).
+function bountyN(e){ e = e || {}; const b = Number(e.bounty)||0; if(b > 0) return b; return e.worthy === true ? 1 : Math.max(0, Number(e.worthy)||0); }
 function bountyBubbleHTML(c, d, pid){
-  const n = Number((d.effects||{}).bounty)||0;
+  const n = bountyN(d.effects);
   if(!n || !matchState || pid==null || pid===viewerHandPid(matchState)) return '';
   return `<div class="bounty-bubble" aria-hidden="true"><b>+${n} 🪵</b><small>Lumber</small></div>`;
 }
+// Which light a unit gives off (2026-10-15): 'aura' for a Light Aura unit (Illuminate, an old Lantern, or Immolation; Immolation burns
+// orange: 'fire'), 'leader' for a leader (a faint pool), or null.
+function unitLightKindOf(c, d){
+  const e = (d && d.effects) || {};
+  if(Number(e.immolation) > 0) return 'fire';
+  if(e.illuminate || e.lantern) return 'aura';
+  if(c && (c.isLeader || c.gladiatorLeader || (matchState && c.uid === matchState.leaderUid))) return 'leader';
+  return null;
+}
+// Light pools in Pitch Black and Absolute darkness (2026-10-15): the darkness overlay (.battlefield.bf-lantern::after) gets a mask
+// with a soft hole over every lit unit, so a leader shows faintly and a Light Aura unit clearly. Positions are read after each render.
+function syncUnitLightPools(){
+  const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  if(!bf.classList.contains('bf-lantern')){ bf.style.removeProperty('--unit-lights'); return; }
+  const r = bf.getBoundingClientRect(); if(!r.width) return;
+  const zoom = bf.offsetWidth ? r.width / bf.offsetWidth : 1;
+  const pools = [...bf.querySelectorAll('.board-card .unit-light')].map(sp=>{ const card = sp.closest('.board-card'); const t = card && (card.querySelector('.card-tile') || card); if(!t) return '';
+    const b = t.getBoundingClientRect(); if(!b.width) return '';
+    const x = ((b.left + b.width/2) - r.left) / zoom, y = ((b.top + b.height/2) - r.top) / zoom, k = sp.classList.contains('ul-leader') ? 'leader' : 'aura';
+    const rad = Math.round((k === 'leader' ? 0.85 : 1.35) * b.width / zoom), core = k === 'leader' ? 0.62 : 0.2;
+    return `radial-gradient(circle ${rad}px at ${x.toFixed(0)}px ${y.toFixed(0)}px, rgba(0,0,0,${core}) 0, rgba(0,0,0,${(core + 1) / 2}) 45%, #000 100%)`; }).filter(Boolean);
+  if(pools.length) bf.style.setProperty('--unit-lights', pools.join(', ')); else bf.style.removeProperty('--unit-lights');
+}
+if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ try{ syncUnitLightPools(); }catch(e){} }, {passive:true});
 function bountyHoldingNow(){
   const m = matchState; if(!m || m.over || m.resolving) return false;
   return m.selectedUid!=null || !!(bwPressedCard && bwPressedCard.isConnected) || !!document.querySelector('#handStrip .card-tile.dragging, #leaderWidget.dragging, .hand-drag-ghost');
@@ -27676,7 +27820,9 @@ async function resolveRound(opts){
     const sig = boardSignature(m.players);
     m.stallRounds = (sig===m.lastBoardSigForDraw && noActionsLeft(m.players)) ? (m.stallRounds||0)+1 : 0;
     m.lastBoardSigForDraw = sig;
-    if(m.stallRounds >= STALL_ROUNDS_FOR_DRAW || m.round >= DRAW_ROUND_CAP){ m.forcedWinner = 0; m.endReason = m.round >= DRAW_ROUND_CAP ? 'cap' : 'stalled'; over = true; }
+    // 2026-10-15 (sudden death at 20 / 25): a stalled board is only a draw once both stages of sudden death are in force
+    // (STALL_DRAW_FROM_ROUND = round 25); raids keep their own clock below.
+    if((m.stallRounds >= STALL_ROUNDS_FOR_DRAW && (m.round >= STALL_DRAW_FROM_ROUND || m.raidRoundCap)) || m.round >= DRAW_ROUND_CAP){ m.forcedWinner = 0; m.endReason = m.round >= DRAW_ROUND_CAP ? 'cap' : 'stalled'; over = true; }
     // Raid attempts run on a clock: the part retreats after its turn limit and you score what you dealt.
     if(!over && m.raidRoundCap && m.round >= m.raidRoundCap){ m.forcedWinner = 0; m.endReason = 'raidTime'; over = true; }
   }
@@ -28001,7 +28147,8 @@ async function resolveRound(opts){
     m.players[2].playedThisTurn=false; m.players[2].discardUsedThisTurn=false;
     if(m.mode==='pc' || m.mode==='liveRanked'){ m.turnDone = {1:false,2:false}; m.active = 1; }
     m.round += 1;
-    if((m.round === SUDDEN_DEATH_ROUND || m.round === SUDDEN_DEATH_CASTLE_ROUND) && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= m.round)) showSuddenDeathBanner(m, m.round >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
+    if((m.round === SUDDEN_DEATH_ROUND || m.round === SUDDEN_DEATH_CASTLE_ROUND) && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= m.round)){ const st = m.round >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1; showSuddenDeathBanner(m, st);
+      if(!(st >= 2 && (m.mode==='raidOnline' || m.mode==='raidOffline'))) try{ pushLog({type:'suddenDeath', stage:st, round:m.round}); }catch(e){} } // 2026-10-15: and a log line
     const drawEvents = [];
     fieldEffectOf(m);
     if(m.engine.roundStart && m.mode!=='tutorial' && m.mode!=='liveRanked') m.engine.roundStart(m.players, m.round, m.sideOf || (id=> id===1?'A':'B'), m.stats, drawEvents);
@@ -28160,7 +28307,7 @@ function matchHasDefWhere(m, key, test){
 // 2026-10-14: day and night now come from the map, so where the sun rises and sets (Dawn draws both sides a card) the board shows it
 // whether or not a deck cares; a fixed Day or Night still shows only when a card cares.
 function matchPhaseMatters(m){ try{ const pm = m && m.engine && m.engine.getPhaseMode ? m.engine.getPhaseMode() : null; if(pm === 'cycle' || pm === 'nightFirst') return true; }catch(e){} return matchHasPhaseCards(m); }
-function matchHasPhaseCards(m){ return matchHasDefWhere(m, '_hasPhase', e=> e.nocturnal || e.nocturnalHp || e.diurnal || e.diurnalHp || e.diurnalGrant || e.nocturnalGrant || e.moonborn || e.fullMoon || e.fullMoonGrant || e.lantern); }
+function matchHasPhaseCards(m){ return matchHasDefWhere(m, '_hasPhase', e=> e.nocturnal || e.nocturnalHp || e.diurnal || e.diurnalHp || e.diurnalGrant || e.nocturnalGrant || e.moonborn || e.fullMoon || e.fullMoonGrant || e.lantern || e.illuminate); }
 function matchHasMoonCards(m){ return matchHasDefWhere(m, '_hasMoon', e=> e.moonborn || e.fullMoon || e.fullMoonGrant); } // + Full Moon (2026-10-15)
 const MOON_PHASES = [['🌑','New moon'],['🌒','Waxing crescent'],['🌓','First quarter'],['🌔','Waxing gibbous'],['🌕','Full moon'],['🌖','Waning gibbous'],['🌗','Last quarter'],['🌘','Waning crescent']];
 // (moonPillHTML went 2026-10-15: the moon's phase is the Night pill's icon now, see phasePillHTML.)
@@ -28230,6 +28377,8 @@ function syncNightVeil(m, phase){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
   let v = bf.querySelector(':scope > .night-veil');
   const want = !!(m && !m.over && matchPhaseMatters(m) && (phase || (m.engine && m.engine.getPhase && m.engine.getPhase())) === 'night');
+  // Night or a dark field: the leaders' and Light Aura units' glow shows (2026-10-15, .unit-light).
+  try{ bf.classList.toggle('is-dark-scene', !!(m && !m.over && (want || matchDarkLevel(m)))); }catch(e){}
   if(!v){ if(!want) return; v = document.createElement('div'); v.className = 'night-veil'; v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); if(!phase){ v.classList.add('no-anim', 'is-on'); void v.offsetWidth; v.classList.remove('no-anim'); return; } void v.offsetWidth; }
   if(want){ v.classList.remove('is-leaving'); v.classList.add('is-on'); return; }
   if(v.classList.contains('is-on')){ v.classList.add('is-leaving'); setTimeout(()=>{ if(!v.isConnected) return; v.classList.add('no-anim'); v.classList.remove('is-on', 'is-leaving'); void v.offsetWidth; v.classList.remove('no-anim'); }, 2600); }
@@ -28329,8 +28478,16 @@ function phasePillHTML(m){
 function bfPillsHTML(m){
   if(!m || !m.engine) return '';
   const rs = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? bfPillHTML('arena-rs-pill', m.arenaRuleset.icon, m.arenaRuleset.name, '', pillTipHTML(m.arenaRuleset.name, [m.arenaRuleset.text]), m.arenaRuleset.name) : '';
-  let inner = ''; try{ inner = phasePillHTML(m) + mistPillHTML(m) + windPillHTML(m) + tidePillHTML(m) + rs; }catch(e){} // 2026-10-15: state only (no forecast, the moon in the Night pill)
+  let inner = ''; try{ inner = phasePillHTML(m) + mistPillHTML(m) + windPillHTML(m) + tidePillHTML(m) + rs + suddenDeathPillHTML(m); }catch(e){} // 2026-10-15: state only (no forecast, the moon in the Night pill)
   return `<div class="bf-pills" id="bfPills">${inner}</div>`;
+}
+// Sudden death pill (2026-10-15): ☠️ while sudden death is on (☠️☠️ in stage II), with what it does in the tooltip.
+function suddenDeathPillHTML(m){
+  if(!m || m.over || !suddenDeathSky(m)) return '';
+  const st = m.round >= SUDDEN_DEATH_CASTLE_ROUND && !(m.mode==='raidOnline' || m.mode==='raidOffline') ? 2 : 1;
+  const lines = [_t('Any hit on a unit kills it, even one Armor would stop.')].concat(st >= 2 ? [_t('Any damage to a castle destroys it.')] : [`From round ${SUDDEN_DEATH_CASTLE_ROUND}, any damage to a castle destroys it.`]);
+  const name = st >= 2 ? _t('Sudden death II') : _t('Sudden death');
+  return bfPillHTML('sd-pill sd-' + st, st >= 2 ? '☠️☠️' : '☠️', name, '', pillTipHTML(name, lines), name);
 }
 function refreshBfPills(m){ const el = document.getElementById('bfPills'); if(!el || !m) return; const t = document.createElement('div'); t.innerHTML = bfPillsHTML(m); const n = t.firstElementChild; if(n) el.innerHTML = n.innerHTML; }
 // The pill's tooltip floats over everything (the board clips what pokes out of it): one #bfPillTip on the page, placed under the
@@ -28449,8 +28606,9 @@ function showSuddenDeathBanner(m, stage){
   el.className = 'sudden-death-sign'; el.setAttribute('role','status');
   try{ SoundKit.suddenDeathSting(); Ambience.duck(0.3, 1400); }catch(e){}
   if(raid && stage >= 2) return;
-  el.innerHTML = stage >= 2 ? `<div class="sds-title">☠️ Sudden death II</div><div class="sds-sub">A hit on a castle now ends the game.</div>`
-    : `<div class="sds-title">☠️ Sudden death</div><div class="sds-sub">Any hit now kills a unit outright.${raid ? '' : ` From round ${SUDDEN_DEATH_CASTLE_ROUND}, a hit on a castle ends the game.`}</div>`;
+  // 2026-10-15 (user: "Sudden death: (20) - all units kill on hit (at least 1 dmg). Sudden death: (25) - any damage on the castle, destroys the castle.")
+  el.innerHTML = stage >= 2 ? `<div class="sds-title">☠️ Sudden death II</div><div class="sds-sub">Any damage to a castle now destroys it.</div>`
+    : `<div class="sds-title">☠️ Sudden death</div><div class="sds-sub">Any hit now kills a unit, even through Armor.${raid ? '' : ` From round ${SUDDEN_DEATH_CASTLE_ROUND}, any damage to a castle destroys it.`}</div>`;
   document.body.appendChild(el);
   setTimeout(()=> el.classList.add('out'), 2600); setTimeout(()=> el.remove(), 3200);
 }
@@ -28990,7 +29148,7 @@ const AVATAR_TITLES = [
 ];
 function conquestMapCleared(mapId){
   try{ const map = CONQUEST_MAPS.find(m=>m.id===mapId); if(!map) return false; const p = loadConquestProgress();
-    const fights = map.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0)); // world bosses and chance fights are optional (2026-10-12)
+    const fights = map.nodes.filter(n=> baseKind(n.kind||'')!=='raidboss' && n.kind!=='tutorial' && !(n.chance > 0) && !n.secret); // world bosses, chance fights and hidden skirmishes (2026-10-15) are optional
     return fights.length > 0 && fights.every(n=> p.completed.includes(conquestNodeId(map.id, n.key))); }catch(e){ return false; } // 2026-10-12: a map with no fights yet is not "cleared" (it gave a new player 2,100 XP)
 }
 Registry.avatarCharacters = ()=> AVATAR_CHARACTERS.map(c=> Object.assign({}, c, {isUnlocked: !c.unlocked || c.unlocked()}));
@@ -29839,7 +29997,7 @@ function logText(ev){
     case 'spell': return {cls:'gold', text:`${sideLabel(ev.side)} cast ${nm(ev.defId)}: ${spellText(getCardDefs()[ev.defId])}`};
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
-    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${ev.dmg}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (1).`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
+    case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${ev.dmg}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? ev.dmg : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Poison.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
@@ -29894,7 +30052,9 @@ function logText(ev){
     // fell through to the raw type-name default.
     case 'heal': return {cls:'heal', text:`${ev.source ? '🧪 ' + ev.source : nm(ev.attDefId)} healed ${nm(ev.targetDefId)} for ${ev.amount} HP. 💚`};
     case 'chainBreak': return {cls:'gold', text:`${nm(ev.defId)}'s chains snapped — free to act again! ⛓`};
-    case 'bounty': return {cls:'gold', text:`Bounty paid: +${ev.amount} 🪵 for slaying ${nm(ev.fromDefId)}.`}; // 2026-09-22: bounty pays Lumber now, not Gold
+    case 'bounty': return {cls:'gold', text:`Bounty: ${nm(ev.fromDefId)} fell, ${sideLabel(ev.side)} gains +${ev.amount} 🪵.`}; // 2026-10-15: Bounty pays the opponent on any death
+    case 'suddenDeath': return {cls:'', text: ev.stage >= 2 ? `☠️ Sudden death II (round ${ev.round}): any damage to a castle destroys it.` : `☠️ Sudden death (round ${ev.round}): any hit on a unit kills it, even one Armor would stop.`}; // 2026-10-15
+    case 'fullMoonRise': return {cls:'', text:'🌕 The full moon rises.'}; // 2026-10-15
     case 'sap': return {cls:'heal', text:`${nm(ev.attDefId)} drained ${ev.amount} HP from the hit. 🩹`};
     case 'exile': return {cls:'exile', text:`${nm(ev.defId)} was exiled from ${ev.zone}. 🌫`};
     case 'render': return {cls:'', text:`${nm(ev.attDefId)} lowered ${nm(ev.targetDefId)}'s Attack by ${ev.amount}. 📉`};
@@ -30786,6 +30946,7 @@ const MISS_STYLES = { // 2026-10-03: every dodge simply reads "Miss" — the ico
   swift:   {text:'Miss', icon:'💨'},
   whiff:   {text:'Whiff~', icon:'🪃'}, // a boomerang coming home through empty air (2026-10-12)
   smoke:   {text:'Miss', icon:'🌫️'}, // a Smoke Bomb's cloud (2026-10-14)
+  sandstorm: {text:'Miss', icon:'🏜️'}, // the Sandstorm field (2026-10-15)
 };
 function missCallout(el, reason){
   const st = MISS_STYLES[reason] || MISS_STYLES.evasive;
@@ -31039,10 +31200,13 @@ function labSkillFx(ev){
     case 'fieldTick':
       if(ev.field === 'frozen' && F.frostChill && skillFxOnce('frost' + ev.uid)){ const t = el(ev.uid); if(t) F.frostChill(t); }
       else if((ev.field === 'heat' || ev.field === 'immolation' || ev.field === 'lavaTide') && F.scorch && skillFxOnce('scorch' + ev.uid)){ const t = el(ev.uid); if(t) F.scorch(t); }
+      // New field effects (2026-10-15): Swamp Fever's sick-green cloud (the poison look), Freezing's chill as a unit lands
+      else if(ev.field === 'swampFever' && F.poisonCloud && skillFxOnce('fever' + ev.uid)){ const t = el(ev.uid); if(t) F.poisonCloud(t); }
+      else if(ev.field === 'freezing' && F.frostChill && skillFxOnce('freezing' + ev.uid)){ setTimeout(()=>{ const t = el(ev.uid); if(t) F.frostChill(t); }, 450); }
       break;
     case 'statusFx': if(ev.kind === 'frostbite' && F.frostChill){ const t = el(ev.targetUid || ev.uid || ev.attUid); if(t) F.frostChill(t); } break;
     case 'play': { const fx = fxOf(ev.defId), t = el(ev.uid); if(!t) break;
-      if(fx.lantern && F.lanternGlow) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.lanternGlow(t2); }, 500);
+      if((fx.lantern || fx.illuminate) && F.lanternGlow) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.lanternGlow(t2); }, 500); // + Illuminate (2026-10-15)
       else if(fx.darksight && F.darksight) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.darksight(t2); }, 500);
       else if((fx.guardian || fx.taunt) && F.guardian) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.guardian(t2); }, 500);
       break; }
@@ -31577,7 +31741,9 @@ function renderVfxForEvent(ev){
           rc.hp = Math.max(0, rc.hp - ev.dmg);
           if(rc.hp>0){
             const adf = (getCardDefs()[ev.attDefId]||{}).effects || {};
-            if(adf.poison) rc.poison = (rc.poison||0) + adf.poison;
+            // 2026-10-15: as the engine does: only a hit that got through poisons, never a Cleave side hit, never a Structure
+            const tdf = getCardDefs()[rc.defId || ev.targetDefId] || {};
+            if(adf.poison && (ev.dmg > 0 || ev.elementalAmount > 0) && !ev.sweep && !(tdf.archetypes||[]).includes('Structure')) rc.poison = (rc.poison||0) + adf.poison;
             if(adf.bleed) rc.bleed = (rc.bleed||0) + adf.bleed;
           }
         }
@@ -32092,7 +32258,12 @@ function renderVfxForEvent(ev){
   if(ev.type==='fieldTick' && ev.field==='cometRain') cometRainVfx(); // comets after an Eruption (2026-10-14)
   if(ev.type==='fieldTick' && ev.field==='comet') cometStrikeVfx(ev);
   if(ev.type==='fieldTick' && ev.field==='eruptionReset'){ try{ showToast(TX('toast.the-mountain-settles-and-comets-will'), 'warn'); }catch(e){} }
-  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset'].includes(ev.field)){ const el = boardCardEl(ev.uid);
+  // New field effects (2026-10-15): Swamp Fever adds a Poison stack; Freezing freezes a unit as it lands.
+  if(ev.type==='fieldTick' && (ev.field==='swampFever' || ev.field==='freezing')){ const el = boardCardEl(ev.uid), rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
+    if(ev.field==='swampFever'){ if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; if(el) try{ floatText(el, '🤢 +1☠', 'poison'); SoundKit.poisonApply(); }catch(e){} }
+    else { if(rc) rc.frozen = Math.max(rc.frozen||0, 1); if(el) try{ floatText(el, '🧊 Frozen', 'debuff'); SoundKit.freezeChime && SoundKit.freezeChime(); }catch(e){} }
+    try{ updateCardStatusDisplay(ev.uid); }catch(e){} }
+  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing'].includes(ev.field)){ const el = boardCardEl(ev.uid);
     // 2026-10-14: Petrification has no number (it turns the card to stone); Irradiated withers max Health; Lava Tide burns.
     const fieldGlyph = {eruption:'🌋', lavaTide:'🌋', irradiated:'☢️', scorched:'🔥'}[ev.field] || '🔥';
     if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : floatText(el, ev.dmg ? `${fieldGlyph}-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? 'dmg' : 'heal'); }catch(e){}
@@ -34725,6 +34896,27 @@ function renderShop(){
 const NEST_KEY = 'bramblewood_nest_v1';
 function nestState(){ try{ const n = JSON.parse(localStorage.getItem(NEST_KEY)||'{}'); return {nurse: n.nurse || null, eggs: Array.isArray(n.eggs) ? n.eggs : []}; }catch(e){ return {nurse:null, eggs:[]}; } }
 function saveNestState(n){ try{ localStorage.setItem(NEST_KEY, JSON.stringify(n)); }catch(e){} }
+// Nursing mastery (2026-10-15, user: "The Nest's nurse master: Should using a nursing icon and number to indicate the nursing mastery of
+// that card. The nursing mastery = Rarity + Level. Natural Leaders have a hidden +1, and Nursing skill has +5. (Hero levels count for
+// /10) ... If Nursing number is 10 and above, it gives another +3 nursing mastery."):
+//   mastery = rarity rank (Common 1, Uncommon 2, Rare 3 … Unique 8, Legendary 9; sbRarityRank) + the card's level (a hero's level / 10,
+//   rounded down) + 1 for a Natural Leader (not itemised anywhere: "hidden") + 5 for the Nursing skill; then, at 10 or more, +3 more
+//   (read as a one-time bonus for crossing 10, so 10 shows as 13; it doesn't repeat).
+// What it does: the Nurse master tends the nests, so every egg hatches, every rescued baby grows and every Level-0 card trains
+// faster: 2.5% less time per mastery point, at most half the time (mastery 20). No Nurse master: the normal times.
+const NURSE_ICON = '🍼', NURSE_SPEED_PER_POINT = 0.025, NURSE_SPEED_CAP = 0.5;
+function nurseMasteryParts(id){
+  const d = getCardDefs()[id]; if(!d) return null; const e = d.effects || {};
+  const rarity = sbRarityRank(d.rarity || 'common');
+  const level = d.hero ? Math.floor((Number(d.heroLevel)||1) / 10) : (typeof getCardLevel === 'function' ? getCardLevel(id) : 0);
+  const leader = e.leader ? 1 : 0, nursing = e.nursing ? 5 : 0, base = rarity + level + leader + nursing, bonus = base >= 10 ? 3 : 0;
+  return {rarity, level, leader, nursing, base, bonus, total: base + bonus};
+}
+function nurseMasteryOf(id){ const p = nurseMasteryParts(id); return p ? p.total : 0; }
+function nurseTimeFactor(){ const n = nestState().nurse; if(!n) return 1; return 1 - Math.min(NURSE_SPEED_CAP, nurseMasteryOf(n) * NURSE_SPEED_PER_POINT); }
+function nurseMasteryTip(id){ const p = nurseMasteryParts(id); if(!p) return '';
+  return `Nursing mastery ${p.total}: Rarity ${p.rarity} + Level ${p.level}${p.nursing ? ' + Nursing 5' : ''}${p.bonus ? ' + 3 for reaching 10' : ''}. As Nurse master it makes the Nest ${Math.round(Math.min(NURSE_SPEED_CAP, p.total * NURSE_SPEED_PER_POINT) * 100)}% faster.`; }
+function nurseChipHTML(id){ const v = nurseMasteryOf(id); return `<span class="nurse-chip${v >= 13 ? ' is-high' : ''}" title="${escapeAttr(nurseMasteryTip(id))}" aria-label="${escapeAttr('Nursing mastery ' + v)}">${NURSE_ICON}<b>${v}</b></span>`; }
 function nurseEligible(id){ const d = getCardDefs()[id]; if(!d || d.token || d.test) return false; return id === 'wandering-traveller' || RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= RARITY_TIER_BANDS.indexOf('unique'); }
 // Typed eggs and rescued babies (2026-10-11, user: "nestles of hay, little nests placed in a hexagonal pattern ... where we
 // hatch our little eggs or place babies we rescue. They will grow up to units - it's random what they grow into, but at the
@@ -34802,7 +34994,7 @@ function grantEgg(kind, from){ const n = nestState(); const k = EGG_KINDS[kind] 
 function nestPlaced(n){ return (n || nestState()).eggs.filter(e=> e.placed !== false); }
 function nestPackedEggs(n){ return (n || nestState()).eggs.filter(e=> e.placed === false); }
 function placeEggInNest(eggId){ const n = nestState(), e = n.eggs.find(x=> x.id === eggId); if(!e || e.placed !== false) return false; if(nestPlaced(n).length >= NEST_SLOTS) return false;
-  const now = Date.now(); e.placed = true; e.laidAt = now; e.hatchAt = now + (EGG_KINDS[e.kind] || EGG_KINDS.woodland).hatchHours*3600e3; saveNestState(n); if(e.kind !== 'baby') grantEggCardFor(e.kind); return true; }
+  const now = Date.now(); e.placed = true; e.laidAt = now; e.hatchAt = now + Math.round((EGG_KINDS[e.kind] || EGG_KINDS.woodland).hatchHours*3600e3*nurseTimeFactor()); saveNestState(n); /* the Nurse master's mastery speeds it (2026-10-15) */ if(e.kind !== 'baby') grantEggCardFor(e.kind); return true; }
 // Egg cards (2026-10-14, user: "Eggs are now cards ... you can even put them in the deck. But it would suck ... You still have the egg out
 // of game"): the first time you set an egg of a kind in a nest, its egg card (e.g. Speckled Egg) joins your collection.
 function grantEggCardFor(kind){ const id = 'egg-' + (EGG_KINDS[kind] ? kind : 'woodland'); try{ if(!getCardDefs()[id] || myUnlockedCardIds.has(id)) return false; unlockCardForPlayer(id, 'nest'); try{ showToast(TX('toast.new-card-it-cracks-open-on', {v1: getCardDefs()[id].name, v2: eggKindLabel(getCardDefs()[id])}), 'ok'); }catch(e){} return true; }catch(e){ return false; } }
@@ -34827,7 +35019,7 @@ function nurtureCandidates(){ const defs = getCardDefs(), busy = new Set(nestSta
 function startNurture(cardId){ const n = nestState(); if(nestPlaced(n).length >= NEST_SLOTS) return 'full';
   if(!canAffordNurture(cardId)) return 'cost';
   const cost = nurtureCostFor(cardId); Object.keys(cost).forEach(k=> myCurrencies[k] = (myCurrencies[k]||0) - cost[k]); saveCurrencies(); noteNestSpecies(cardId);
-  const now = Date.now(); n.eggs.push({id:'nur'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'nurture', cardId, laidAt:now, hatchAt: now + NURTURE_HOURS*3600e3, placed:true}); saveNestState(n); return 'ok'; }
+  const now = Date.now(); n.eggs.push({id:'nur'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'nurture', cardId, laidAt:now, hatchAt: now + Math.round(NURTURE_HOURS*3600e3*nurseTimeFactor()), placed:true}); saveNestState(n); return 'ok'; } // mastery speeds it (2026-10-15)
 function finishNurture(itemId){ const n = nestState(), e = n.eggs.find(x=> x.id === itemId); if(!e || e.kind !== 'nurture' || Date.now() < e.hatchAt) return null;
   n.eggs = n.eggs.filter(x=> x.id !== itemId); saveNestState(n); myCardLevels[e.cardId] = Math.max(1, myCardLevels[e.cardId]||0); saveCardLevels(); if(hatchlingIds().delete(e.cardId)) saveHatchlings(); return e.cardId; }
 let nestNurturePrefill = null;
@@ -34866,7 +35058,7 @@ function openNestPicker(){
       conf.hidden = false; try{ conf.querySelector('[data-np-train]').focus({preventScroll:true}); conf.scrollIntoView({block:'nearest'}); }catch(_){} } });
 }
 function rescueBaby(type, from){ const n = nestState(); const t = NEST_TYPES[type] ? type : 'woodland'; const now = Date.now();
-  n.eggs.push({id:'baby'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'baby', type:t, laidAt:now, hatchAt: now + BABY_GROW_HOURS*3600e3, from: from||''}); saveNestState(n);
+  n.eggs.push({id:'baby'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'baby', type:t, laidAt:now, hatchAt: now + Math.round(BABY_GROW_HOURS*3600e3*nurseTimeFactor()), from: from||''}); saveNestState(n); // mastery speeds it (2026-10-15)
   try{ showToast(TX('toast.you-rescued-a-little-baby-it', {v1: NEST_TYPES[t].icon, v2: NEST_TYPES[t].name.toLowerCase()}), 'ok'); }catch(e){} }
 function nestItemType(e){ return e.kind==='baby' ? (e.type || 'woodland') : ((EGG_KINDS[e.kind]||EGG_KINDS.woodland).type); }
 // Hatching (2026-10-12, user: "Hatching should have a small animation, with clues to their rarity, then showing the card in
@@ -34951,7 +35143,7 @@ function nestKeeperHTML(){
       <div class="hatch-sky" aria-hidden="true"><i class="wind w1"></i><i class="wind w2"></i><i class="wind w3"></i>${Array.from({length:7}, (_, k)=> `<i class="leaf" style="--d:${(7 + k*1.3).toFixed(1)}s; --delay:${(k*1.1).toFixed(1)}s; --y:${10 + (k*13)%70}%">${['🍂','🍃','🌾'][k%3]}</i>`).join('')}</div>
       <div class="hatch-nests">${nests}</div>
       <div class="hatch-side">
-        <div class="nk-nurse"><b>🧑‍🍼 Nurse master</b>${nurse ? `<span class="nk-card">${escapeHtml(nurse.icon||'')} ${escapeHtml(nurse.name)}</span><button type="button" class="btn small" id="nestNurseBtn">Swap</button>` : `<small>None yet: Unique cards and up (and the Wandering Traveller) can tend the nests.</small><button type="button" class="btn small" id="nestNurseBtn">Choose</button>`}</div>
+        <div class="nk-nurse"><b>🧑‍🍼 Nurse master</b>${nurse ? `<span class="nk-card">${escapeHtml(nurse.icon||'')} ${escapeHtml(nurse.name)} ${nurseChipHTML(n.nurse)}</span><button type="button" class="btn small" id="nestNurseBtn">Swap</button><small class="nk-speed">${NURSE_ICON} Nursing ${nurseMasteryOf(n.nurse)}: the nests work ${Math.round((1 - nurseTimeFactor()) * 100)}% faster.</small>` : `<small>None yet: Unique cards and up (and the Wandering Traveller) can tend the nests. Their ${NURSE_ICON} Nursing mastery makes eggs hatch and cards train faster.</small><button type="button" class="btn small" id="nestNurseBtn">Choose</button>`}</div>
         <p class="hatch-help">Every egg and baby shows its <b>type</b>. What it grows into is a surprise of that type, Common to Rare. Eggs come from the road; babies are rescued after fights.</p>
         ${waiting.length ? `<p class="hatch-wait">🧺 ${waiting.length} more waiting in the basket for a free nest.</p>` : ''}
         ${packed.length ? `<p class="hatch-wait">🎒 ${packed.length} egg${packed.length===1?'':'s'} in your pack. Tap an empty nest to set ${packed.length===1?'it':'one'} down.</p>` : ''}
@@ -34963,9 +35155,9 @@ function nestKeeperHTML(){
 function openNursePicker(){
   const defs = getCardDefs(), n = nestState();
   const ids = Object.keys(defs).filter(id=> nurseEligible(id) && ((myCardCopies[id]||[]).length || id==='wandering-traveller'));
-  const choice = ids.map(id=> ({id, label:`${defs[id].icon||''} ${defs[id].name}`}));
+  const choice = ids.map(id=> ({id, label:`${defs[id].icon||''} ${defs[id].name}`})).sort((a, b)=> nurseMasteryOf(b.id) - nurseMasteryOf(a.id)); // best nurse first (2026-10-15)
   if(!choice.length){ showToast(TX('toast.you-need-a-unique-card-or'), 'warn'); return; }
-  const ov = document.createElement('div'); ov.className = 'modal-overlay'; ov.innerHTML = `<div class="modal" role="dialog" aria-label="Choose your Nurse master" style="max-width:420px"><h3>🧑‍🍼 Choose your Nurse master</h3><p class="panel-sub">Once you have one, you can swap but never go back to none.</p><div class="lp-grid">${choice.map(c=> `<button type="button" class="lp-item ${c.id===n.nurse?'is-on':''}" data-nurse="${escapeAttr(c.id)}"><span class="lp-tile">${cardTileHTML(defs[c.id], {inPlay:true})}</span><b>${escapeHtml(defs[c.id].name)}</b></button>`).join('')}</div><div class="modal-actions"><button type="button" class="btn" data-close>Close</button></div></div>`;
+  const ov = document.createElement('div'); ov.className = 'modal-overlay'; ov.innerHTML = `<div class="modal" role="dialog" aria-label="Choose your Nurse master" style="max-width:420px"><h3>🧑‍🍼 Choose your Nurse master</h3><p class="panel-sub">Once you have one, you can swap but never go back to none. ${NURSE_ICON} is each card's Nursing mastery (Rarity + Level, +5 with Nursing, +3 once it reaches 10): the higher, the faster the nests work.</p><div class="lp-grid">${choice.map(c=> `<button type="button" class="lp-item ${c.id===n.nurse?'is-on':''}" data-nurse="${escapeAttr(c.id)}"><span class="lp-tile">${cardTileHTML(defs[c.id], {inPlay:true})}${nurseChipHTML(c.id)}</span><b>${escapeHtml(defs[c.id].name)}</b></button>`).join('')}</div><div class="modal-actions"><button type="button" class="btn" data-close>Close</button></div></div>`;
   document.body.appendChild(ov);
   ov.addEventListener('click', e=>{ const b = e.target.closest('[data-nurse]'); if(b){ const st = nestState(); st.nurse = b.dataset.nurse; saveNestState(st); ov.remove(); renderNest(); return; } if(e.target===ov || e.target.closest('[data-close]')) ov.remove(); });
 }
