@@ -262,7 +262,7 @@ def _with_path_art(items):
         if isinstance(it, dict) and isinstance(it.get("art"), str) and not it["art"].startswith("data:"): it["art"] = _path_art(it["art"])
     return items
 raid_bosses_literal = json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8"))), ensure_ascii=False)
-app_src = _re.sub(r"art:'(art/npc/[a-z0-9_-]+\.png)'", lambda m: "art:'%s'" % _path_art(m.group(1)), app_src)
+app_src = _re.sub(r"art:'(art/(?:npc|fields)/[a-z0-9_-]+\.png)'", lambda m: "art:'%s'" % _path_art(m.group(1)), app_src)
 app_src = sub_once(app_src, "__RAID_BOSSES__", raid_bosses_literal)
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))
 # insert GSAP + Flip, then the app script (which depends on both), right before </body> --

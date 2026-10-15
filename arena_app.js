@@ -29444,6 +29444,31 @@ function matchFieldCondRows(m, fr){
   rows.forEach(r=>{ if(r.key === 'misty' && mistHidesMoon(m)){ r.text = MISTY_TEXT + ' ' + MISTY_MOON_TEXT; r.short = MISTY_SHORT + ', no moon'; } });
   return rows;
 }
+// Field art (2026-10-16, user: "Generate art for the various field effects. Think of new ones such as Scorching, or Freezing.
+// River-rapids (Always Flood)"): a scene per Environment card and weather card (NightCafe, art/fields/<k>.png; the build turns these
+// paths into hashed assets). A card without its own picture keeps its icon.
+const FIELD_ART = {
+  darkness:{art:'art/fields/darkness.png'}, pitch:{art:'art/fields/pitch.png'}, absolute:{art:'art/fields/absolute.png'},
+  gale:{art:'art/fields/gale.png'}, wind:{art:'art/fields/wind.png'}, cloudy:{art:'art/fields/cloudy.png'}, misty:{art:'art/fields/misty.png'},
+  night:{art:'art/fields/night.png'}, twilight:{art:'art/fields/twilight.png'}, fullmoon:{art:'art/fields/fullmoon.png'},
+  rapids:{art:'art/fields/rapids.png'}, permatide:{art:'art/fields/permatide.png'}, hightide:{art:'art/fields/hightide.png'}, tidespout:{art:'art/fields/tidespout.png'},
+  swampfever:{art:'art/fields/swampfever.png'}, freezing:{art:'art/fields/freezing.png'}, frost:{art:'art/fields/frost.png'}, frostbite:{art:'art/fields/frostbite.png'},
+  sandstorm:{art:'art/fields/sandstorm.png'}, scorching:{art:'art/fields/scorching.png'}, scorched:{art:'art/fields/scorched.png'},
+  lavatide:{art:'art/fields/lavatide.png'}, petrify:{art:'art/fields/petrify.png'}, eruption:{art:'art/fields/eruption.png'},
+  surge:{art:'art/fields/surge.png'}, mines:{art:'art/fields/mines.png'}, rain:{art:'art/fields/rain.png'},
+};
+function fieldArtKeyOfRow(row, fr){
+  fr = fr || {}; const k = row && row.key;
+  if(k === 'dark') return fr.dark === 'absolute' ? 'absolute' : fr.dark === 'pitch' ? 'pitch' : 'darkness';
+  if(k === 'permaTide') return fr.rapids ? 'rapids' : 'permatide';
+  const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
+    swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
+    eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines'};
+  if(k === 'eruption'){ let v = false; try{ v = volcanoRulesOn(fr); }catch(e){} if(!v) return 'scorched'; } // the fixed Scorched Ground, not the volcano's Eruption
+  return map[k] || null;
+}
+function fieldArtOf(key){ const a = key && FIELD_ART[key]; return a && a.art && !/^art\//.test(a.art) ? a.art : ''; } // an unbuilt repo path (no picture yet) shows the icon
+const FIELD_EFFECT_ART_KEY = {frozen:'freezing', heatwave:'scorching', rain:'rain', fog:'misty', moon:'fullmoon'};
 function fieldCondCardHTML(m){
   const fr = matchFieldRules(m), rows = matchFieldCondRows(m, fr);
   if(m && m.mode !== 'tutorial' && !matchFieldUnrevealed(m)) rows.forEach(row=>{ if(FIELD_ROWS_AT_START.has(row.key)) markFieldRow(row.key); }); // not on Map 0 (2026-10-15)
@@ -29453,7 +29478,7 @@ function fieldCondCardHTML(m){
   const n = rows.length;
   const cards = rows.map((row, i)=>{
     const st = fieldRowState(row.key), unknown = st === 'unknown' && !(m && m.fxLib); // the Effects library always shows the line (Map 0 no longer does, 2026-10-15)
-    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: unknown ? '?' : row.text}}; // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'")
+    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, art: unknown ? '' : fieldArtOf(fieldArtKeyOfRow(row, fr)), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: unknown ? '?' : row.text}}; // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'")
     const line = `<div class="env-line">${unknown ? '?' : escapeHtml(row.short)}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`;
     return matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}${st === 'new' ? ' has-new' : ''}`, `tabindex="0" data-fieldhover="cond:${escapeAttr(row.key)}" role="button" style="--i:${i}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (unknown ? fieldRowQTip(row) : row.text))}"`, line);
   }).join('');
@@ -29469,7 +29494,7 @@ function fieldCondHoverHTML(key){
 function fieldEffectCardHTML(m){
   const id = fieldEffectOf(m), f = id && m.engine.getField(); if(!f) return '';
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
-  const def = {id:'__field', name: f.name, icon: f.icon, rarity:'common', field:{label: f.rounds != null ? `🌐 ${f.rounds} left` : '🌐 Field', title: f.text}};
+  const def = {id:'__field', name: f.name, icon: f.icon, art: fieldArtOf(FIELD_EFFECT_ART_KEY[id]), rarity:'common', field:{label: f.rounds != null ? `🌐 ${f.rounds} left` : '🌐 Field', title: f.text}};
   return matchFieldTileHTML(def, `field-weather env-card field-${id}`, `tabindex="0" data-fieldhover="1" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}"`,
     `<div class="env-ribbon" aria-hidden="true">Environment</div>` + (FIELD_EVERY_ROUND.has(id) ? `<div class="fc-trig" title="Every round" aria-label="Acts every round">🕐</div>` : ''));
 }

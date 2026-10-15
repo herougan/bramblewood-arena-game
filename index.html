@@ -34068,7 +34068,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '943a51ff30cd', BUILD_CARD_HASH = '74ccb855fe201745d5069a95ae867b8b59f54b1d84e7eeeee70ddd7301f87cab';
+const BUILD_ID = 'f840bc8ede9a', BUILD_CARD_HASH = '74ccb855fe201745d5069a95ae867b8b59f54b1d84e7eeeee70ddd7301f87cab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -61350,6 +61350,31 @@ function matchFieldCondRows(m, fr){
   rows.forEach(r=>{ if(r.key === 'misty' && mistHidesMoon(m)){ r.text = MISTY_TEXT + ' ' + MISTY_MOON_TEXT; r.short = MISTY_SHORT + ', no moon'; } });
   return rows;
 }
+// Field art (2026-10-16, user: "Generate art for the various field effects. Think of new ones such as Scorching, or Freezing.
+// River-rapids (Always Flood)"): a scene per Environment card and weather card (NightCafe, art/fields/<k>.png; the build turns these
+// paths into hashed assets). A card without its own picture keeps its icon.
+const FIELD_ART = {
+  darkness:{art:'assets/fields/darkness.png?v=8c2f61c840'}, pitch:{art:'assets/fields/pitch.png?v=7cb37b36e8'}, absolute:{art:'assets/fields/absolute.png?v=99bbfddcb1'},
+  gale:{art:'assets/fields/gale.png?v=459bcbdaef'}, wind:{art:'assets/fields/wind.png?v=b1f925816a'}, cloudy:{art:'assets/fields/cloudy.png?v=7b8add7e99'}, misty:{art:'assets/fields/misty.png?v=238712606c'},
+  night:{art:'assets/fields/night.png?v=e5a731f22f'}, twilight:{art:'assets/fields/twilight.png?v=60d886edbe'}, fullmoon:{art:'assets/fields/fullmoon.png?v=324a0b044b'},
+  rapids:{art:'assets/fields/rapids.png?v=fd4c9b3027'}, permatide:{art:'assets/fields/permatide.png?v=534c1c81a9'}, hightide:{art:'assets/fields/hightide.png?v=02ed2872e2'}, tidespout:{art:'assets/fields/tidespout.png?v=bec212bda8'},
+  swampfever:{art:'assets/fields/swampfever.png?v=ac34841c85'}, freezing:{art:'assets/fields/freezing.png?v=9b8ce1468d'}, frost:{art:'assets/fields/frost.png?v=79fad01121'}, frostbite:{art:'assets/fields/frostbite.png?v=8f3829558a'},
+  sandstorm:{art:'assets/fields/sandstorm.png?v=f9d6200fc8'}, scorching:{art:'assets/fields/scorching.png?v=087d94132d'}, scorched:{art:'assets/fields/scorched.png?v=8b446156d9'},
+  lavatide:{art:'assets/fields/lavatide.png?v=ca377356cc'}, petrify:{art:'assets/fields/petrify.png?v=0f0cd69b95'}, eruption:{art:'assets/fields/eruption.png?v=d4d62ef08e'},
+  surge:{art:'assets/fields/surge.png?v=a3a724ff03'}, mines:{art:'assets/fields/mines.png?v=c7be1c5030'}, rain:{art:'assets/fields/rain.png?v=3a6bd2899c'},
+};
+function fieldArtKeyOfRow(row, fr){
+  fr = fr || {}; const k = row && row.key;
+  if(k === 'dark') return fr.dark === 'absolute' ? 'absolute' : fr.dark === 'pitch' ? 'pitch' : 'darkness';
+  if(k === 'permaTide') return fr.rapids ? 'rapids' : 'permatide';
+  const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
+    swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
+    eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines'};
+  if(k === 'eruption'){ let v = false; try{ v = volcanoRulesOn(fr); }catch(e){} if(!v) return 'scorched'; } // the fixed Scorched Ground, not the volcano's Eruption
+  return map[k] || null;
+}
+function fieldArtOf(key){ const a = key && FIELD_ART[key]; return a && a.art && !/^art\//.test(a.art) ? a.art : ''; } // an unbuilt repo path (no picture yet) shows the icon
+const FIELD_EFFECT_ART_KEY = {frozen:'freezing', heatwave:'scorching', rain:'rain', fog:'misty', moon:'fullmoon'};
 function fieldCondCardHTML(m){
   const fr = matchFieldRules(m), rows = matchFieldCondRows(m, fr);
   if(m && m.mode !== 'tutorial' && !matchFieldUnrevealed(m)) rows.forEach(row=>{ if(FIELD_ROWS_AT_START.has(row.key)) markFieldRow(row.key); }); // not on Map 0 (2026-10-15)
@@ -61359,7 +61384,7 @@ function fieldCondCardHTML(m){
   const n = rows.length;
   const cards = rows.map((row, i)=>{
     const st = fieldRowState(row.key), unknown = st === 'unknown' && !(m && m.fxLib); // the Effects library always shows the line (Map 0 no longer does, 2026-10-15)
-    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: unknown ? '?' : row.text}}; // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'")
+    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, art: unknown ? '' : fieldArtOf(fieldArtKeyOfRow(row, fr)), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: unknown ? '?' : row.text}}; // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'")
     const line = `<div class="env-line">${unknown ? '?' : escapeHtml(row.short)}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`;
     return matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}${st === 'new' ? ' has-new' : ''}`, `tabindex="0" data-fieldhover="cond:${escapeAttr(row.key)}" role="button" style="--i:${i}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (unknown ? fieldRowQTip(row) : row.text))}"`, line);
   }).join('');
@@ -61375,7 +61400,7 @@ function fieldCondHoverHTML(key){
 function fieldEffectCardHTML(m){
   const id = fieldEffectOf(m), f = id && m.engine.getField(); if(!f) return '';
   const left = f.rounds != null ? ` · ${f.rounds} ${f.rounds===1 ? 'round' : 'rounds'} left` : '';
-  const def = {id:'__field', name: f.name, icon: f.icon, rarity:'common', field:{label: f.rounds != null ? `🌐 ${f.rounds} left` : '🌐 Field', title: f.text}};
+  const def = {id:'__field', name: f.name, icon: f.icon, art: fieldArtOf(FIELD_EFFECT_ART_KEY[id]), rarity:'common', field:{label: f.rounds != null ? `🌐 ${f.rounds} left` : '🌐 Field', title: f.text}};
   return matchFieldTileHTML(def, `field-weather env-card field-${id}`, `tabindex="0" data-fieldhover="1" aria-label="${escapeAttr('Field effect, ' + f.name + ': ' + f.text + left)}"`,
     `<div class="env-ribbon" aria-hidden="true">Environment</div>` + (FIELD_EVERY_ROUND.has(id) ? `<div class="fc-trig" title="Every round" aria-label="Acts every round">🕐</div>` : ''));
 }

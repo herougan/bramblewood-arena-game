@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (06:30)
+- **Field art:** every Environment and weather card now has its own pixel-art scene (27 NightCafe images, about 20 credits):
+  - Darkness, Pitch Black, Absolute darkness
+  - Gale, Windy, Cloudy, Mist, Night, Twilight, Full Moon
+  - River Rapids, Perma-tide, High Tide, Tide-spout
+  - Swamp Fever, Freezing, Frost, Frostbite, Sandstorm
+  - Scorching, Scorched Ground, Lava Tide, Petrification, Eruption
+  - Boss surge, Deep mines, Rain
+  - An unrevealed "?" card still hides its picture. The art is in `art/fields/`; `FIELD_ART` in arena_app.js says which card uses which.
+
 ## 2026-10-16 (05:30)
 - **Quick:** the hit now lands with the dash (about 0.15 s), together with the speed lines, instead of after the normal wind-up.
 - **Cave fire pits:** at most 3 per map, spread along the trail.
