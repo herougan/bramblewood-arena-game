@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (skill audit)
+- **Skill audit:** all 216 skills checked against the engine. The full table is in `docs/skills-audit-2026-10-16.md` (and `.xlsx`).
+- **Names:** Divine Retribution is now Retribution, Satiety is Well Fed, Revivificated is Revive (saved cards are unchanged).
+- **Card text:** every skill has a short line now. Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock, Stagger, Chained and Revive showed nothing on the card before. Pounce, Ice Arrow and Counterattack now say what they really hit.
+- **Amounts:** Rabid N (Poison, default 2), Durian N (Thorns, default 1) and Dynamite's blast damage (default 5) can be set in the editor. Existing cards play the same.
+- **Editor:** the status skills label their numbers Chance % / Rounds (they said Timer / Damage). Stun and Reflect start at 50%.
+- **Keywords:** Exposed, Bound, Toxin, Smoke, Scar, Irradiation and Shield are coloured with a short meaning; magic, water and psychic damage are highlighted; plural and "&" skill names match.
+- **Skills Codex:** lists the status skills, Explode, Render, Revive and Progeny too. Every skill line has an icon.
+
 ## 2026-10-16 (06:30)
 - **Field art:** every Environment and weather card now has its own pixel-art scene (27 NightCafe images, about 20 credits):
   - Darkness, Pitch Black, Absolute darkness

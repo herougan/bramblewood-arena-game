@@ -1503,7 +1503,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c.ichorBleed > c.bleed) c.ichorBleed = c.bleed; }
   // Rabid (2026-10-14, user: "Rabid Beasts: 2/3, Poison 2, Vulnerable to water"): its hits add 2 Poison (on top of any Poison of
   // its own), and it takes double damage from Swimmers and water.
-  function poisonOn(attDef){ const e = (attDef && attDef.effects) || {}; return (Number(e.poison)||0) + (e.rabid ? 2 : 0); }
+  // 2026-10-16 skill audit (user: "they have the right parameters for targeting and amount"): Rabid N, the Poison its hits add.
+  // An old Rabid (true) is still Rabid 2.
+  function poisonOn(attDef){ const e = (attDef && attDef.effects) || {}; return (Number(e.poison)||0) + (e.rabid ? (e.rabid === true ? 2 : Math.max(0, Number(e.rabid)||0)) : 0); }
   // Bounty N (2026-10-15, Worthy folded into Bounty): the card's Bounty, or an old Worthy N (true = 1) when it has none.
   // Illuminate (2026-10-15): the new name of Lantern; either key lights its side.
   function illuminates(def){ const e = (def && def.effects) || {}; return !!(e.illuminate || e.lantern); }
@@ -3300,7 +3302,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(recordEvents && events) events.push({type:'banana', action:'throw', side:sideOf(pid), uid:c.uid, defId:c.defId, attUid:c.uid, attDefId:c.defId, targetSide:sideOf(otherId(pid)), targetUid: t ? t.uid : null, targetDefId: t ? t.defId : null, castle:!t, n});
             fireDamageAction(players, sideOf, pid, c.defId, n, 'physical', t ? {kind:'card', card:t} : {kind:'hq'}, stats, events, null, c.uid);
             removeDeadCards(players, sideOf, {}, stats, events); } }
-        if(e.durian && c.hp > 0 && rnd() < 0.5){ c.thornsBonus = (c.thornsBonus||0) + 1;
+        // 2026-10-16 skill audit (user: "they have the right parameters for targeting and amount"): Durian N, Thorns +N per durian
+        // (an old Durian, true, is Durian 1).
+        if(e.durian && c.hp > 0 && rnd() < 0.5){ c.thornsBonus = (c.thornsBonus||0) + (e.durian === true ? 1 : Math.max(1, Number(e.durian)||1));
           if(recordEvents && events) events.push({type:'durian', side:sideOf(pid), uid:c.uid, defId:c.defId, thorns:(Number(e.thorns)||0) + c.thornsBonus, bonus:c.thornsBonus}); }
         if(e.smokeBomb && c.hp > 0 && rnd() < 0.5) throwSmokeBomb(players, sideOf, pid, c, events);
       }

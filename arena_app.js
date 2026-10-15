@@ -326,6 +326,12 @@ Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', ban
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
 // because 💨 is Swift's, 🌫️ Shade's and 🫧 Poison's, with 💣💨 where only text fits.
 Object.assign(SKILL_ICON, {psychic:'💭', smokeBomb:'💣💨'});
+// 2026-10-16 skill audit: every "+ Add Skill" skill opens its card line with a glyph now. The ones that already have a chip on the
+// card face reuse it (Explode 💣, Render 📉, Progeny 🐝, Daunt 😨, Recoil 💢, Inherent Darkness and Core Evil ★); the rest are new
+// and shared with no other skill (Stun uses 💫, the Stunned status's own mark; Arrow is ➶ because Reach has 🏹).
+Object.assign(SKILL_ICON, {decay:'🍂', sacrifice:'⚱️', prayer:'📿', desecrate:'🕳️', guardian:'🦺', reload:'🔄', stealth:'🥷', feeble:'🪶', mighty:'🦾', fragile:'🪟', sturdy:'🗿',
+  crit:'❗', fester:'🤢', rupture:'🫀', stunOnHit:'💫', gash:'🔪', ambush:'👀', siege:'🏰', corrode:'🫠', daunt:'😨', recoil:'💢', inherentDarkness:'★', coreEvil:'★', skyfall:'🌠',
+  arrow:'➶', fireArrow:'🔥🏹', explode:'💣', render:'📉', onDeathSpawn:'🐝', sleep:'💤', paralyze:'😵', blind:'🙈', stagger:'🥴', chained:'⛓️'});
 // Icons drawn in CSS where HTML is allowed (card chips, skill lines, the Effects library): a round orange core with a flame tail,
 // and a spiky green durian. SKILL_ICON keeps a text stand-in for tooltips and plain text.
 const SKILL_ICON_HTML = {fireball:'<i class="ico-fireball" aria-hidden="true"></i>', durian:'<i class="ico-durian" aria-hidden="true"></i>', smokeBomb:'<i class="ico-smokebomb" aria-hidden="true"></i>'};
@@ -577,7 +583,10 @@ const PASSIVE_DEFS = [
   {key:'speed', category:'passive', label:'Speed', kind:'number', desc:v=>`Speed ${v}: in combat, the fastest units swing first, then the next fastest, and so on. Same Speed: the usual turn order. Not extra attacks.`},
   {key:'haste', category:'passive', label:'Haste', kind:'boolean', desc:()=>`Speed +2 for itself and Speed +1 for the allies beside it, while it lives.`},
   // Rabid (user: "Rabid Beasts: 2/3, Poison 2, Vulnerable to water").
-  {key:'rabid', category:'passive', label:'Rabid', kind:'boolean', desc:()=>`Its hits add 2 Poison. Afraid of water: Swimmers and water hit it for double.`},
+  // 2026-10-16 skill audit (user: "they have the right parameters for targeting and amount"): Rabid N, the Poison its hits add
+  // (default 2; an old Rabid saved as true reads as Rabid 2).
+  {key:'rabid', category:'passive', label:'Rabid', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits add ${numOr(v, 2)} Poison. Afraid of water: Swimmers and water damage hit it for double.`,
+    get:e=> e.rabid ? numOr(e.rabid, 2) : undefined},
   // Cower (user: "Cower (and maybe another skill also about a Turtle going into a shell) - Do {} when hit previous turn").
   {key:'cower', category:'passive', label:'Cower', kind:'select', desc:v=>`The "hit last turn" trigger. If it took damage last round, this round it ${v === 'flee' ? 'backs off: no attack, and it heals 2' : 'hides in its shell: no attack, and attacks can\'t hurt it (Poison and the field still can)'}. Shell is different: it reacts to the first hit straight away.`,
     selectOptions:()=> [{value:'shell', label:'Shell (hide: no attack, attacks can\'t hurt it)'}, {value:'flee', label:'Flee (back off: no attack, heal 2)'}],
@@ -639,7 +648,7 @@ const PASSIVE_DEFS = [
   // Brood N (user: "Swarm units tend to like summoning more units of their type").
   {key:'brood', category:'evergreen', label:'Brood', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, ${v||1} brood token${(v||1) === 1 ? '' : 's'} of its own kind hatch${(v||1) === 1 ? 'es' : ''} beside it: a 1/1 "Brood" with Wait 1, the same types (it counts for Swarm), only Swarm, and Flying if this card flies.`},
   // 2026-10-12 skills (the 22:40 list).
-  {key:'rainmaker', category:'evergreen', label:'Rainmaker', kind:'number', min:0, desc:v=>`When it arrives, Spring Rain falls for ${v||3} rounds (every unit heals 2 each round).`},
+  {key:'rainmaker', category:'evergreen', label:'Rainmaker', kind:'number', min:1, defaultValue:3, desc:v=>`When it arrives, Spring Rain falls for ${v||3} rounds (every unit heals 2 each round).`},
   {key:'rainrunner', category:'passive', label:'Rainrunner', kind:'number', min:0, desc:v=>`While it rains: +${v}/+${v}, and it can't be blocked (it goes straight for the castle).`},
   {key:'moonborn', category:'passive', label:'Moonborn', kind:'number', min:0, desc:v=>`At night: up to +${v}/+${v}, as full as the moon is (new moon nothing, half moon half, full moon all of it). The moon moves one phase every night.`},
   {key:'frostbite', category:'passive', label:'Frostbite', kind:'number', min:0, desc:v=>`Each time the frost chills it, it gains +${v}/+${v} for good.`},
@@ -686,11 +695,15 @@ const PASSIVE_DEFS = [
   // name is mine: Kinship. Stored as effects.kinship = {type, atk, hp}.
   // Bludgeon (2026-10-13, user: "Destroys either armour, removes flying or swimming or burrow ... Keep a concise one in a long
   // description in the Codex of skills").
-  {key:'dynamite', category:'passive', label:'Dynamite', kind:'number', min:1, defaultValue:3, desc:v=>`No Wait: it comes in with a lit fuse of ${v||3}. The fuse burns down one a round; at 0 it explodes for 5 damage to the cards beside it and the three enemy cards facing it (a 3×3 around it). If it dies first, the fuse goes out.`},
+  // 2026-10-16 skill audit (user: "they have the right parameters for targeting and amount"): the blast's damage was a hidden
+  // effects.dynamiteDmg (5 when unset); it is the second number now, Fuse / Damage. A plain Dynamite N still reads as N / 5.
+  {key:'dynamite', category:'passive', label:'Dynamite', kind:'twoNumber', placeholders:['Fuse','Damage'], desc:v=>{ const f = Array.isArray(v) ? (Number(v[0])||3) : numOr(v, 3), d = Array.isArray(v) ? (Number(v[1])||5) : 5; return `It comes in with a lit fuse of ${f}. The fuse burns down one every upkeep; at 0 it explodes for ${d} fire damage to the units beside it and the three enemy units facing it (a 3×3 around it). If it dies first, the fuse goes out.`; },
+    get:e=> e.dynamite ? [numOr(e.dynamite, 3), Number(e.dynamiteDmg)||5] : undefined,
+    apply:(e, vals)=>{ const f = Math.max(0, Number(vals && vals[0])||0), d = Math.max(0, Number(vals && vals[1])||0); if(f > 0){ e.dynamite = f; if(d > 0 && d !== 5) e.dynamiteDmg = d; } }},
   {key:'helmet', category:'passive', label:'Helmet', kind:'boolean', desc:()=>`Half the time, an arrow, missile or single bolt aimed at it glances off the helmet.`},
   // 2026-10-16 (user: "Molting N - Every 2 turns, gain +1 wait. But +N/+N."): every 2 rounds, +N/+N for good and +1 Wait.
   {key:'molting', category:'passive', label:'Molting', kind:'number', min:1, defaultValue:1, desc:v=>`Every 2 rounds on the field it molts into a bigger shell: +${numOr(v, 1)}/+${numOr(v, 1)} for good, but +1 Wait while the new shell hardens.`},
-  {key:'shedding', category:'passive', label:'Shedding', kind:'number', min:1, defaultValue:3, desc:v=>`Every ${v||3} rounds on the field it sheds its skin: +1/+1 for good, and Poison, Bleed, Corrosion, Scar and Expose come off with it.`},
+  {key:'shedding', category:'passive', label:'Shedding', kind:'number', min:1, defaultValue:3, desc:v=>`Every ${v||3} rounds on the field it sheds its skin: +1/+1 for good, and Poison, Bleed, Corrode, Scar and Exposed come off with it.`}, // 2026-10-16 skill audit: the status names as the game writes them
   // 2026-10-16 (user: "Bludgeon also removes skills! remember. and attack."): -1 Attack, and the thing it breaks can be any skill.
   {key:'bludgeon', category:'passive', label:'Bludgeon', kind:'boolean', desc:()=>`Each hit takes 1 Attack for good and knocks out one of the target's skills.`,
     longDesc:`On every hit that lands, the target loses 1 Attack for good, and one of its skills is broken for the rest of the fight, picked at random: a defence (its Armor, Flying, Swimmer or Burrow) or any other skill it has (Thorns, Poison, a trigger...). Map traits such as Tide and the day and night skills are left alone.`},
@@ -710,10 +723,12 @@ const PASSIVE_DEFS = [
   {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`It can see in darkness.`}, // 2026-10-15 (user: "Darksight explanation is TOO complicated. Just explain what it does - it can see in darkness.")
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
-  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v}, +1 for every 4 Prayer you have.`},
+  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit (the castle if there are none) for ${v}, +1 for every 4 Prayer you have.`}, // 2026-10-16 skill audit: + the castle fallback
   {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
-  {key:'retribution', category:'passive', label:'Divine Retribution', kind:'number', min:0, desc:v=>`When one of your units perishes, strikes a random enemy unit for ${v}.`},
-  {key:'satiety', category:'passive', label:'Satiety', kind:'number', min:0, desc:v=>`Well fed: at the start of each round at full health, gains +${v} max Health.`},
+  // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): Divine Retribution → Retribution,
+  // Satiety → Well Fed. Labels only; the keys stay retribution and satiety.
+  {key:'retribution', category:'passive', label:'Retribution', kind:'number', min:0, desc:v=>`When one of your units perishes, strikes a random enemy unit for ${v} (nothing, if they have no units).`},
+  {key:'satiety', category:'passive', label:'Well Fed', kind:'number', min:0, desc:v=>`At the start of each round, if it is at full Health, it gains +${v} max Health.`},
   {key:'desecrate', category:'passive', label:'Desecrate', kind:'number', min:0, desc:v=>`Every landed hit curses the ground its target stands on: ${v} more damage a round to whoever stands there. Stacks.`},
   {key:'tide', category:'passive', label:'Tide', kind:'boolean', desc:()=>`Flood: +1 Attack. Ebb: +1 Armor. High Tide: +2 Attack, +2 Armor.`, get:e=> e.tideGrant ? undefined : e.tide}, // 2026-10-15: Flow → Flood; Tide – { } has its own row // 2026-10-14: "Swimmers = Tide" // 2026-10-12: "Use standard language like +1 Attack" (High tide's +2/+2 is left unsaid on purpose)
   // The active Exile zone (2026-10-09): every card sent to your Removal Zone gives 1 Echo 🕯️; Remember spends them.
@@ -758,7 +773,8 @@ const PASSIVE_DEFS = [
   // (unlike Freeze/Sleep/Paralyze just below, which need a chance+duration PAIR) they fit the
   // generic PASSIVE_DEFS -> SKILL_DEFS mapping as-is, no custom get/apply needed.
   {key:'regen', category:'evergreen', label:'Regeneration', kind:'number', min:0, desc:v=>`Heals ${v} HP at the start of every round this card is on the board, capped at its own max HP.`},
-  {key:'stunOnHit', category:'passive', label:'Stun', kind:'number', min:0, desc:v=>`Every landed attack has a ${v}% chance to Stun the target.`},
+  // 2026-10-16 skill audit: Stun and Reflect are percentages, so a new row starts at 50% (not 1%); saved cards keep their value.
+  {key:'stunOnHit', category:'passive', label:'Stun', kind:'number', min:0, defaultValue:50, desc:v=>`Every landed attack has a ${v}% chance to Stun the target.`},
   // Ten new skills (2026-09-17 batch) — nine plain PASSIVE_DEFS entries (Corrode, the tenth
   // stacking status effect, lives right after these; Blind/Shock, the other two new statuses,
   // are chance+duration pairs and live down in SKILL_DEFS alongside Freeze/Sleep/Paralyze).
@@ -769,7 +785,7 @@ const PASSIVE_DEFS = [
   {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy castle.`},
   {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 whenever ANY ally of yours dies.`},
   {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:0, desc:v=>`While on the field, your Castle takes ${v} less damage from every hit it takes.`},
-  {key:'reflect', category:'passive', label:'Reflect', kind:'number', min:0, desc:v=>`${v}% chance, on every melee hit taken, to throw the FULL damage of that hit straight back at the attacker.`},
+  {key:'reflect', category:'passive', label:'Reflect', kind:'number', min:0, defaultValue:50, desc:v=>`${v}% chance, on every melee hit taken, to throw the FULL damage of that hit straight back at the attacker.`},
   {key:'momentum', category:'evergreen', label:'Momentum', kind:'number', min:0, desc:v=>`Gains +${v}/+0 every time it lands a killing blow.`},
   {key:'bloom', category:'evergreen', label:'Bloom', kind:'number', min:0, desc:v=>`Heals ${v} HP to a random damaged ally at the start of every round this card is on the board.`},
   {key:'ambush', category:'passive', label:'Ambush', kind:'boolean', desc:()=>`This card's first attack after entering play always crits and cannot be evaded/dodged.`},
@@ -834,7 +850,9 @@ const PASSIVE_DEFS = [
   // second caller) to crash down on one random live enemy instead of hitting everyone. Also
   // exactly matches the new "Missile" custom-trigger action below, minus the trigger-picking —
   // Skyfall N is the fixed-shorthand equivalent of "On Spawn: Missile N."
-  {key:'pounce', category:'evergreen', label:'Pounce', kind:'number', min:0, desc:v=>`On Play: pounces on a random enemy unit for ${v} damage (the enemy castle, if no units are left). Fires the moment it lands, Waiting or not.`}, // 2026-10-12: the evergreen name for on-play damage
+  // 2026-10-16 skill audit: the engine has aimed at the unit opposite first since 2026-10-15 (user: "Pounce always prefers hitting the
+  // card directly opposing. Otherwise, next nearest."), so the text says so instead of "a random enemy unit".
+  {key:'pounce', category:'evergreen', label:'Pounce', kind:'number', min:0, desc:v=>`On Play: pounces on the enemy unit facing it (the nearest one if none is) for ${v} damage (the enemy castle, if no units are left). Fires the moment it lands, Waiting or not.`}, // 2026-10-12: the evergreen name for on-play damage
   {key:'skyfall', category:'evergreen', label:'Skyfall', kind:'number', min:0, desc:v=>`On Spawn: crashes down for ${v} damage on a random live enemy creature (the enemy castle, if none are left) — fires immediately, once.`},
   // King Slayer (2026-09-22, per explicit request: "New type: King. New card: King Maker -
   // Passive: King Slayer N - does N extra damage to Kings on hit."). Category 'passive', not
@@ -847,11 +865,12 @@ const PASSIVE_DEFS = [
   // bonus-damage check. Retroactively tagged the two existing cards whose names already say
   // "King" (Rodent King, Glacial Ape-King) so this has real targets from day one.
   // Arrow / Fire Arrow (2026-10-04): see fireArrowVolley in bramblewood-engine.js.
-  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots an arrow for ${v} damage at the nearest enemy (a random one if two are as near; the castle if the board is empty). Never misses Flying units.`},
-  {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots a flaming arrow for ${v} Heat damage at the nearest enemy (Heat resistance and weakness apply). Never misses Flying units.`},
+  // 2026-10-16 skill audit: the arrows aim at the enemy facing it first, then the nearest (fireArrowVolley / arrowTargetOf).
+  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots an arrow for ${v} damage at the enemy facing it (with none there, the nearest enemy, a random one if two are as near; the castle if the board is empty). Never misses Flying units.`},
+  {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots a flaming arrow for ${v} fire damage at the enemy facing it (or the nearest; fire resistance and weakness apply). Never misses Flying units.`},
   // Ice Arrow / Twin Shot / Volley (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire Arrow, Ice
   // Arrow etc. will be more normal."): see fireArrowVolley in bramblewood-engine.js.
-  {key:'iceArrow', category:'evergreen', label:'Ice Arrow', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: shoots an icy arrow for ${v||2} Cold damage at the nearest enemy. A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter). Never misses Flying units.`},
+  {key:'iceArrow', category:'evergreen', label:'Ice Arrow', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: shoots an icy arrow for ${v||2} cold damage at the enemy facing it (or the nearest). A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter). Never misses Flying units.`},
   {key:'twinShot', category:'evergreen', label:'Twin Shot', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: shoots two arrows for ${v||2} damage each, at two different random enemy units (both at one if there is only one; the castle if the board is empty). Never misses Flying units.`},
   {key:'volley', category:'evergreen', label:'Volley', kind:'number', min:1, defaultValue:1, desc:v=>`Every other round while Ready (its first Ready round, then every 2nd), before melee: looses a volley, an arrow for ${v||1} damage at every enemy unit (the castle if the board is empty). Never misses Flying units.`},
   // The Bolts (2026-10-15, user: "We need bolts - these might be quite creature-specific. All elemental or status-y. They just
@@ -884,7 +903,10 @@ const PASSIVE_DEFS = [
   {key:'meteor', category:'evergreen', label:'Meteor', kind:'number', min:1, defaultValue:20, desc:v=>`When it becomes Ready, a meteor crashes onto a random enemy column: the unit there takes ${v||20} damage (Armor doesn't stop it), the units beside it take ${Math.floor((v||20)/4)}, and the column burns: whoever stands there takes 2 fire at the start of the next 2 rounds.`},
   {key:'banana', category:'evergreen', label:'Banana', kind:'number', min:1, defaultValue:3, desc:v=>`Every round, after everyone else has swung (Speed -1): a coin flip. Heads, it eats the banana and heals ${v||3}. Tails, it throws it at a random enemy unit for ${v||3} damage. It never eats at full Health (then it always throws). Its normal attack still happens.`},
   {key:'bananarang', category:'evergreen', label:'Bananarang', kind:'number', min:1, defaultValue:3, desc:v=>`A Boomerang made of banana: it throws on attack, and next round it flies back and hits the same target again. Never misses Flying units. When it comes home, a 1 in 2 chance it eats it and heals ${v||3} (never at full Health).`},
-  {key:'durian', category:'passive', label:'Durian', kind:'boolean', desc:()=>`Every round, after everyone else has swung: a 1 in 2 chance it eats a durian and gains Thorns +1 for the rest of the fight. It stacks.`},
+  // 2026-10-16 skill audit (user: "they have the right parameters for targeting and amount"): Durian N, Thorns +N per durian
+  // (default 1, like Banana N; an old Durian saved as true is Durian 1).
+  {key:'durian', category:'passive', label:'Durian', kind:'number', min:1, defaultValue:1, desc:v=>`Every round, after everyone else has swung: a 1 in 2 chance it eats a durian and gains Thorns +${numOr(v, 1)} for the rest of the fight. It stacks.`,
+    get:e=> e.durian ? numOr(e.durian, 1) : undefined},
   {key:'shield', category:'passive', label:'Shield', kind:'number', min:1, defaultValue:1, desc:v=>`It arrives with ${v||1} Shield: temporary Health (the blue 💠) that soaks damage before its Health does. Unlike Armor it doesn't block, it just absorbs, and it never comes back once spent.`},
   {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit beside the target for ${v||1} lightning damage. Wet units (Swimmers and Tide units, anyone in the rain or while the Tide is in) take +1 from it, and a wet target takes +1 too.`},
   {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=>`It senses what it can't see: Darkness, Pitch Black and Blind don't make it miss a unit that isn't flying (or the castle), and nothing can Blind it. Its nose also finds grounded units through Thick Fog and Shadow.`},
@@ -953,11 +975,12 @@ const ACTIVE_PRESETS = [
   // to an equivalent effects.triggers entry (see canonical/cards.json migration, same date); the
   // engine still honors effects.missile for backward compatibility but nothing in the editor can
   // produce it anymore.
-  {key:'render', category:'evergreen', label:'Render', kind:'number', build:v=>({render:{trigger:'onSpawn', amount:Number(v)}}), desc:v=>`On Spawn: lowers the opposing creature's Attack by ${v}.`},
+  {key:'render', category:'evergreen', label:'Render', kind:'number', build:v=>({render:{trigger:'onSpawn', amount:Number(v)}}), desc:v=>`When played, the enemy facing it loses ${v} Attack.`}, // 2026-10-16 skill audit: plain words
   // Renamed 2026-09-21 per explicit request ("Rename Revive (Once) to Revivificated") — the
   // underlying effects.revive:true data shape and all engine logic are unchanged, this is a
   // display-label-only change.
-  {key:'revive', category:'passive', label:'Revivificated', kind:'none', build:()=>({revive:true}), desc:()=>`The first time it dies, it comes back with 1 Health and its statuses cleared. This only happens once.`},
+  // 2026-10-16 skill audit (user: "so the skills are as simply named ... as possible"): Revivificated → Revive (label only).
+  {key:'revive', category:'passive', label:'Revive', kind:'none', build:()=>({revive:true}), desc:()=>`The first time it dies, it comes back with 1 Health and its statuses cleared. This only happens once.`},
 ];
 const TRIGGER_DEFS = [
   {key:'onSpawn', label:'On Spawn', desc:'the moment this card is played'},
@@ -1161,7 +1184,8 @@ const SKILL_DEFS = [
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
   {
-    key:'explode', category:'evergreen', label:'Explode', kind:'twoNumber', desc:()=>'A lit fuse, ticking every round regardless of Wait/Stun. At 0, deals Damage to whatever is opposite (or the HQ if empty), once.',
+    // 2026-10-16 skill audit: plain words, and the labels for its two numbers.
+    key:'explode', category:'evergreen', label:'Explode', kind:'twoNumber', placeholders:['Timer','Damage'], desc:()=>'A lit fuse that ticks down every upkeep, even while Waiting or Stunned. At 0 it deals Damage once to the enemy facing it (the castle if there is none).',
     get:e=> e.explode ? [e.explode.time, e.explode.damage] : undefined,
     apply:(e,vals)=>{ const time=Number(vals&&vals[0])||0, damage=Number(vals&&vals[1])||0; if(time>0 && damage>0) e.explode = {time, damage}; },
   },
@@ -1178,19 +1202,19 @@ const SKILL_DEFS = [
     // chance/duration/timer/damage fields are still right there as labeled inputs once you add
     // the skill, and the full mechanical explanation is still in desc() below; the short label is
     // just the name now.
-    key:'freeze', category:'passive', label:'Freeze', kind:'twoNumber',
+    key:'freeze', category:'passive', label:'Freeze', kind:'twoNumber', placeholders:['Chance %','Rounds'], // 2026-10-16 skill audit: the editor showed "Timer"/"Damage" here
     desc:()=>'Every landed attack has a Chance% to Freeze the target for Duration round(s).',
     get:e=> e.freeze ? [e.freeze.chance, e.freeze.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.freeze = {chance, duration}; },
   },
   {
-    key:'sleep', category:'passive', label:'Sleep', kind:'twoNumber',
+    key:'sleep', category:'passive', label:'Sleep', kind:'twoNumber', placeholders:['Chance %','Rounds'], // 2026-10-16 skill audit: the editor showed "Timer"/"Damage" here
     desc:()=>"Every landed attack has a Chance% to put the target to Sleep for Duration round(s).",
     get:e=> e.sleep ? [e.sleep.chance, e.sleep.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.sleep = {chance, duration}; },
   },
   {
-    key:'paralyze', category:'evergreen', label:'Paralyze', kind:'twoNumber',
+    key:'paralyze', category:'evergreen', label:'Paralyze', kind:'twoNumber', placeholders:['Chance %','Rounds'], // 2026-10-16 skill audit: the editor showed "Timer"/"Damage" here
     desc:()=>'Every landed attack has a Chance% to Paralyze the target for Duration round(s).',
     get:e=> e.paralyze ? [e.paralyze.chance, e.paralyze.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.paralyze = {chance, duration}; },
@@ -1201,26 +1225,26 @@ const SKILL_DEFS = [
   // card take 50% more damage from everything. (Corrode, the third new status, is a plain
   // stacking number and lives up in PASSIVE_DEFS alongside Poison/Bleed.)
   {
-    key:'blind', category:'passive', label:'Blind', kind:'twoNumber',
+    key:'blind', category:'passive', label:'Blind', kind:'twoNumber', placeholders:['Chance %','Rounds'], // 2026-10-16 skill audit: the editor showed "Timer"/"Damage" here
     desc:()=>'Every landed attack has a Chance% to Blind the target for Duration round(s).',
     get:e=> e.blind ? [e.blind.chance, e.blind.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.blind = {chance, duration}; },
   },
   // Tipsy and Confused (2026-10-11, user's 16:56 list items 21-23), same chance+duration shape as Blind.
   {
-    key:'tipsy', category:'passive', label:'Make Tipsy', kind:'twoNumber',
+    key:'tipsy', category:'passive', label:'Make Tipsy', kind:'twoNumber', placeholders:['Chance %','Rounds'], // 2026-10-16 skill audit: the editor showed "Timer"/"Damage" here
     desc:()=>'Every landed attack has a Chance% to make the target Tipsy for Duration round(s).',
     get:e=> e.tipsy ? [e.tipsy.chance, e.tipsy.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.tipsy = {chance, duration}; },
   },
   {
-    key:'confuse', category:'passive', label:'Confuse', kind:'twoNumber',
+    key:'confuse', category:'passive', label:'Confuse', kind:'twoNumber', placeholders:['Chance %','Rounds'], // 2026-10-16 skill audit: the editor showed "Timer"/"Damage" here
     desc:()=>'Every landed attack has a Chance% to Confuse the target for Duration round(s).',
     get:e=> e.confuse ? [e.confuse.chance, e.confuse.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.confuse = {chance, duration}; },
   },
   {
-    key:'shock', category:'passive', label:'Shock', kind:'twoNumber',
+    key:'shock', category:'passive', label:'Shock', kind:'twoNumber', placeholders:['Chance %','Rounds'], // 2026-10-16 skill audit: the editor showed "Timer"/"Damage" here
     desc:()=>'Every landed attack has a Chance% to Shock the target for Duration round(s).',
     get:e=> e.shock ? [e.shock.chance, e.shock.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.shock = {chance, duration}; },
@@ -1231,7 +1255,7 @@ const SKILL_DEFS = [
   // damage-dealt mirror of Shock's damage-taken: same {chance,duration} shape, same on-hit proc
   // envelope, opposite direction. See effAtk/rollStatusOnHit in bramblewood-engine.js.
   {
-    key:'stagger', category:'passive', label:'Stagger', kind:'twoNumber',
+    key:'stagger', category:'passive', label:'Stagger', kind:'twoNumber', placeholders:['Chance %','Rounds'], // 2026-10-16 skill audit: the editor showed "Timer"/"Damage" here
     desc:()=>'Every landed attack has a Chance% to Stagger the target for Duration round(s).',
     get:e=> e.stagger ? [e.stagger.chance, e.stagger.duration] : undefined,
     apply:(e,vals)=>{ const chance=Number(vals&&vals[0])||0, duration=Number(vals&&vals[1])||0; if(chance>0 && duration>0) e.stagger = {chance, duration}; },
@@ -1247,7 +1271,7 @@ const SKILL_DEFS = [
   {
     key:'chained', category:'passive', label:'Chained', kind:'selectNumber',
     selectOptions: CHAIN_BREAK_OPTIONS,
-    desc:()=>'Chained: cannot attack (gatherAttackers skips it, same as Frozen/Asleep/Stunned) until its chain breaks — either from taking more than N damage in one hit, or the moment the opponent plays any new card, per the break condition chosen below.',
+    desc:()=>'Can\'t attack until its chain breaks: when one hit deals it more than N damage, or when the opponent plays a card (pick the condition).', // 2026-10-16 skill audit: no engine jargon
     get:e=> e.chained ? [e.chained.breakOn||'damage', e.chained.amount||1] : undefined,
     apply:(e,vals)=>{
       const breakOn = (Array.isArray(vals) && vals[0]) || 'damage';
@@ -1306,7 +1330,7 @@ const SKILL_DEFS = [
   // all engine behavior are unchanged — display-only rename.
   {
     key:'onDeathSpawn', category:'evergreen', label:'Progeny', kind:'cardCount',
-    desc:v=> `Bundled trigger + action shorthand: this card's own death spawns ${(v&&v[1])||1}× ${(v&&v[0])?cardName(v[0]):'(pick a card)'} onto its row.`,
+    desc:v=> `When it dies, ${(v&&v[1])||1}× ${(v&&v[0])?cardName(v[0]):'(pick a card)'} take its place.`, // 2026-10-16 skill audit: plain words
     get:e=> e.onDeathSpawn ? [e.onDeathSpawn.defId, e.onDeathSpawn.count||1] : undefined,
     apply:(e,vals)=>{ const defId=(vals&&vals[0])||''; const count=Math.max(1, Number(vals&&vals[1])||1); if(defId) e.onDeathSpawn = {defId, count}; },
   },
@@ -1638,7 +1662,7 @@ const STATUS_KEYWORDS = [
   {k:'bleed', re:/\b(bleed(?:ing|s)?|bled)\b/gi, name:'Bleed', c:'#d0344a', text:'takes damage equal to its stacks whenever it attacks or uses a skill, then loses 1 stack.'},
   {k:'decay', re:/\b(decay(?:ing|s)?)\b/gi, name:'Decay', c:'#8d8a2e', text:'at the start of each round, takes damage and loses Attack equal to its stacks.'},
   {k:'corrode', re:/\b(corrode[ds]?)\b/gi, name:'Corrode', c:'#b8732c', text:'deals that much less Attack; loses 1 stack each round.'},
-  {k:'freeze', re:/\b(freeze|frozen)\b/gi, name:'Frozen', c:'#3d9fd8', text:'can’t attack, and its Wait doesn’t tick down.'},
+  {k:'freeze', re:/\b(freez(?:e|es|ing)|frozen)\b/gi, /* + Freezes (2026-10-16 skill audit) */ name:'Frozen', c:'#3d9fd8', text:'can’t attack, and its Wait doesn’t tick down.'},
   {k:'sleep', re:/\b(sleep|asleep)\b/gi, name:'Asleep', c:'#8a78d0', text:'can’t act until it wakes; any damage wakes it.'},
   {k:'paralyze', re:/\b(paraly[sz]ed?)\b/gi, name:'Paralyzed', c:'#c9a417', text:'each round, a coin flip decides whether it can act.'},
   {k:'stun', re:/\b(stun(?:ned|s)?)\b/gi, name:'Stunned', c:'#d08a1c', text:'skips its next attack, and its Wait doesn’t tick that round.'},
@@ -1647,6 +1671,15 @@ const STATUS_KEYWORDS = [
   {k:'confuse', re:/\b(confuse[ds]?)\b/gi, name:'Confused', c:'#9b54c9', text:'half the time, its triggers and on-hit skills fizzle.'},
   {k:'shock', re:/\b(shock(?:ed|s)?)\b/gi, name:'Shocked', c:'#22a7b8', text:'takes 50% more damage from every hit.'},
   {k:'stagger', re:/\b(stagger(?:ed|s)?)\b/gi, name:'Staggered', c:'#a0664a', text:'deals 50% less damage with its attacks.'},
+  // 2026-10-16 skill audit (user: "keywords are highlighted"): the statuses the newer skills give had no colour or gloss.
+  // cs: only when written as the game word (capitalised), so "a Guardian shield" or "bound to" in plain prose stay plain.
+  {k:'exposed', re:/\b(expose[ds]?)\b/gi, name:'Exposed', c:'#e07b39', text:'takes +1 damage from each of its next hits, and attacks at it can’t miss.'},
+  {k:'bound', re:/\b(bind(?:s)?|bound)\b/gi, cs:true, name:'Bound', c:'#5f8a3c', text:'can’t attack; its Wait still counts down.'},
+  {k:'toxin', re:/\b(toxin)\b/gi, name:'Toxin', c:'#6b2fa0', text:'takes damage equal to its stacks every round. It never wears off and can’t be cured.'},
+  {k:'smoke', re:/\b(smoke)\b/gi, cs:true, name:'Smoke', c:'#8a929c', text:'attacks at it miss 1 in 2 until the end of next round.'},
+  {k:'scar', re:/\b(scar(?:red|s)?)\b/gi, cs:true, name:'Scar', c:'#b5546a', text:'takes that much more damage from every hit.'},
+  {k:'irradiation', re:/\b(irradiation)\b/gi, name:'Irradiation', c:'#7cb518', text:'each round every token takes 1 point (max Health, Attack or a skill’s number), then the tokens drop by 1.'},
+  {k:'shield', re:/\b(shield)\b/gi, cs:true, name:'Shield', c:'#3d8fd1', text:'temporary Health that soaks damage first and doesn’t come back.'},
 ];
 // Keywords everywhere (2026-10-12, user: "Highlight keywords like pitch etc. Also, if the keyword has colour, give it some
 // colour. Do this as a standard for all descriptions. If it's possible dont hardcode this ... (except in flavour text)").
@@ -1667,17 +1700,23 @@ const KEYWORD_RESOURCES = [
   {name:'Grace', re:'grace', c:'#c39a1e', cs:true}, {name:'Prayer', re:'prayer', c:'#b8892a', cs:true}, {name:'Darkness', re:'darkness|dark points?', c:'#8b3fbf'},
   {name:'Echoes', re:'echo(?:es)?', c:'#6b7fd1', cs:true}, {name:'Elemental Energy', re:'elemental energy', c:'#0e9fb8'}, {name:'Uranium', re:'uranium', c:'#5fa83a'},
   {name:'Fire', re:'fire(?= damage)', c:'#e2562b'}, {name:'Cold', re:'cold(?= damage)', c:'#3d9fd8'}, {name:'Acid', re:'acid(?= damage)', c:'#8fb82e'},
+  // 2026-10-16 skill audit: the other damage types the skill lines name. Named "… damage" so the Magic and Psychic skill names
+  // stay keywords of their own.
+  {name:'Magic damage', re:'magic(?= damage)', c:'#4f6ef0'}, {name:'Water damage', re:'water(?= damage)', c:'#2b8fcf'}, {name:'Psychic damage', re:'psychic(?= damage)', c:'#b04fd0'},
 ];
 let _kwReg = null;
 function keywordRegistry(){
   if(_kwReg) return _kwReg;
   const list = [];
-  STATUS_KEYWORDS.forEach(kw=> list.push({key:'st:' + kw.k, src: kw.re.source.replace(/^\\b\(|\)\\b$/g, ''), c: kw.c, gloss: {name: kw.name, c: kw.c, text: kw.text}}));
+  STATUS_KEYWORDS.forEach(kw=> list.push({key:'st:' + kw.k, src: kw.re.source.replace(/^\\b\(|\)\\b$/g, ''), c: kw.c, cs: kw.cs, gloss: {name: kw.name, c: kw.c, text: kw.text}})); // + cs (2026-10-16 skill audit)
   KEYWORD_RESOURCES.forEach(r=> list.push({key:'res:' + r.name, src: r.re, c: r.c, cs: r.cs}));
   KEYWORD_TERMS.forEach(t=> list.push({key:'term:' + t.name, src: t.re, cs: t.cs, gloss: t.text ? {name: t.name, text: t.text} : null}));
   const taken = new Set(list.map(x=> x.key.split(':')[1].toLowerCase()).concat(STATUS_KEYWORDS.map(k=> k.name.toLowerCase())));
-  (typeof PASSIVE_DEFS !== 'undefined' ? PASSIVE_DEFS : []).forEach(p=>{ const l = String(p.label || '').trim(); if(l.length < 4 || taken.has(l.toLowerCase())) return; taken.add(l.toLowerCase());
-    list.push({key:'skill:' + p.key, src: l.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '\\s'), cs: true}); });
+  // 2026-10-16 skill audit: SKILL_DEFS (PASSIVE_DEFS plus Explode, Chained, Render, Revive, Progeny, Make Tipsy …), so every "+ Add Skill" name is a keyword.
+  (typeof SKILL_DEFS !== 'undefined' ? SKILL_DEFS : typeof PASSIVE_DEFS !== 'undefined' ? PASSIVE_DEFS : []).forEach(p=>{ const l = String(p.label || '').trim(); if(l.length < 4 || taken.has(l.toLowerCase())) return; taken.add(l.toLowerCase());
+    // 2026-10-16 skill audit: a plural still matches ("Changelings", "Swimmers"), and so does a name with & or ' after the text is
+    // escaped for HTML ("Slash &amp; Burn", "Nature&#39;s Force").
+    list.push({key:'skill:' + p.key, src: l.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '\\s').replace(/&/g, '(?:&|&amp;)').replace(/'/g, "(?:'|&#39;|&#x27;|’)") + '(?:s)?', cs: true}); });
   list.sort((x, y)=> y.src.length - x.src.length);
   const re = new RegExp(list.map((x, i)=> `(?<k${i}>\\b(?:${x.src})\\b)`).join('|'), 'gi');
   return (_kwReg = {list, re});
@@ -1717,13 +1756,13 @@ function abilityListHTML(lines){
 const SKILL_TEXT = {
   poison: v=> `Its hits add ${v} Poison.`, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> `Its hits add ${v} Bleed.`, corrode: v=> `Its hits add ${v} Corrode.`,
   armor: v=> `Takes ${v} less damage from every hit.`,
-  counterattack: ()=> `Never attacks on its own. Strikes back at whoever hits it.`,
+  counterattack: ()=> `Never attacks on its own. Each time an enemy hits it, it strikes the enemy facing it.`, // 2026-10-16 skill audit: it hits the unit in front, not the attacker (counterStrike)
   spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,
   thorns: v=> `Melee attackers take ${v} damage.`,
   fork: ()=> `Hits the 2 nearest enemy units (within 1 column) with full Attack.`,
   swipe: v=> `Each hit steals ${v} Lumber.`,
   twinStrike: ()=> `Attacks twice.`,
-  pack: v=> `Side by side with Pack units of its type: each gets +N/+N, N = the chain's Pack values added up (two Pack ${v||2}s: +${2*(v||2)}/+${2*(v||2)}).`,
+  pack: v=> `Pack units of its type standing side by side each get +1/+1 for every Pack point in the chain (two Pack ${numOr(v, 2)}s: +${2*numOr(v, 2)}/+${2*numOr(v, 2)} each).`, // 2026-10-16 skill audit: plain words, no "N = …"
   packLeader: ()=> `Links every Pack unit of its type on your side into one chain, adjacent or not, and adds +2/+2 of its own and +2/+2 for the type.`,
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
   wave: v=> `Its hits push the unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : v === 'alternate' ? 'left, then right, in turn' : 'toward the side with more room'} (swapping with any unit there).`,
@@ -1737,14 +1776,14 @@ const SKILL_TEXT = {
   rage: ()=> `Below half Health: double Attack and takes half damage.`,
   immolation: v=> `Deal ${v} fire damage to all adjacent units every upkeep.`,
   speed: v=> `Speed ${v}: faster units swing first.`, haste: ()=> `Speed +2, and +1 to adjacent allies.`,
-  rabid: ()=> `Its hits add 2 Poison. Swimmers and water hit it for double.`,
+  rabid: v=> `Its hits add ${numOr(v, 2)} Poison. Swimmers and water damage hit it for double.`, // 2026-10-16 skill audit: Rabid N
   cower: v=> v === 'flee' ? `Hit last turn: it backs off this turn (no attack, heals 2).` : `Hit last turn: it hides in its shell this turn (no attack, attacks can't hurt it).`,
-  ghost: ()=> `Normal attacks pass through it; other elements deal half, magic full. It can't Bleed.`, magic: ()=> `Its attacks are magic damage.`,
+  ghost: ()=> `Normal attacks pass through it; other elements deal half, magic full. It can't Bleed.`, magic: ()=> `Its attacks deal magic damage.`,
   ichor: v=> `Whoever hits it takes ${v} acid damage, loses 1 Armor and Bleeds 1.`,
   irradiated: v=> `Every upkeep: gives ${v} Irradiation to adjacent units and the enemy facing it, and 1 to itself.`,
   shade: ()=> `At night or in darkness: half damage from non-magic attacks.`, shadow: ()=> `At night or in darkness: attacks at it miss 1 in 2 (not magic).`,
   supreme: ()=> `Its attacks are magic and crush Armor, shields and Ward. Takes half from non-magic damage.`,
-  twin: ()=> `When it arrives, a twin token of it appears beside it.`, sprout: v=> `When it arrives, ${v} Growth Sprout${Number(v) === 1 ? '' : 's'} (1/3) sprout beside it.`,
+  twin: ()=> `When it arrives, a twin token of it appears beside it.`, sprout: v=> numOr(v, 1) === 1 ? `When it arrives, a 1/3 Growth Sprout sprouts beside it.` : `When it arrives, ${numOr(v, 1)} 1/3 Growth Sprouts sprout beside it.`, /* 2026-10-16 skill audit */
   growth: ()=> `Counts toward every ally's Swarm.`, moonpull: ()=> `When it arrives, the Tide comes in.`,
   hiveMind: ()=> `When it dies, your newest Swarm ally gets +1/+1.`,
   reach: ()=> `Flying can't dodge its attacks.`,
@@ -1766,7 +1805,7 @@ const SKILL_TEXT = {
   trident: ()=> `Hits the 3 nearest enemy units (within 1 column) with full Attack.`,
   pitchfork: ()=> `Hits the 4 nearest enemy units (within 2 columns) with full Attack.`,
   octolash: ()=> `Hits the 8 nearest enemy units with full Attack.`,
-  rainmaker: v=> `When played, Spring Rain falls for ${v} rounds.`,
+  rainmaker: v=> `When played, Spring Rain falls for ${numOr(v, 3)} rounds (every unit heals 2 a round).`, // 2026-10-16 skill audit
   rainrunner: v=> `In rain: +${v}/+${v}, and it can't be blocked.`,
   moonborn: v=> `At night: up to +${v}/+${v}, depending on the moon's phase.`,
   frostbite: v=> `Each time frost chills it, it gains +${v}/+${v} for good.`,
@@ -1781,7 +1820,7 @@ const SKILL_TEXT = {
   prayer: v=> `Adds ${v} to your Prayer while it's on your board.`,
   worship: ()=> `+1 Attack for every 3 Prayer you have.`,
   healing: v=> `Heal your most wounded unit for ${v} every upkeep.`,
-  lightning: v=> `When played, deal ${v} damage to a random enemy unit, +1 for every 4 Prayer.`,
+  lightning: v=> `When played, deal ${v} damage to a random enemy unit (the castle if there are none), +1 for every 4 Prayer.`, // 2026-10-16 skill audit
   midas: v=> `When it kills a unit, gain ${v} Lumber.`,
   retribution: v=> `When one of your units dies, deal ${v} damage to a random enemy unit.`,
   satiety: v=> `At full Health, gains +${v} max Health every upkeep.`,
@@ -1823,20 +1862,20 @@ const SKILL_TEXT = {
   perforate: v=> `Its melee hits ignore and strip ${v} Armor, add ${v} Bleed and deal ${v} damage to the enemy castle.`,
   flying: ()=> `Dodges half of all attacks from units without Flying.`,
   earthquake: v=> `When played, deal ${v} damage to every other unit without Flying, yours included.`,
-  pounce: v=> `Deal ${v} damage to a random enemy unit, or the castle if there are no targets.`,
+  pounce: v=> `When played, deal ${v} damage to the enemy facing it (or the nearest), or the castle if there are no targets.`, // 2026-10-16 skill audit: the engine aims at the unit opposite first (2026-10-15)
   skyfall: v=> `When played, deal ${v} damage to a random enemy unit, or the castle if there are no targets.`,
-  arrow: v=> `While Ready, shoot the enemy facing it for ${v} damage every upkeep.`,
-  fireArrow: v=> `While Ready, shoot the enemy facing it for ${v} fire damage every upkeep.`,
-  iceArrow: v=> `While Ready, shoot the nearest enemy for ${numOr(v, 2)} cold damage every round; 1 in 2 it freezes.`,
-  twinShot: v=> `While Ready, shoot two random enemy units for ${numOr(v, 2)} damage each every round.`,
-  volley: v=> `Every other round while Ready, shoot every enemy unit for ${numOr(v, 1)} damage.`,
-  fireBolt: v=> `While Ready, spit fire at the enemy opposite for ${numOr(v, 2)} fire damage every round.`,
-  acidBolt: v=> `While Ready, spit acid at the enemy opposite for ${numOr(v, 2)} acid damage and 1 Corrode every round.`,
-  poisonBolt: v=> `While Ready, spit venom at the enemy opposite for ${numOr(v, 2)} Poison every round.`,
-  iceBolt: v=> `While Ready, spit ice at the enemy opposite for ${numOr(v, 2)} cold damage every round; 1 in 2 it freezes.`,
-  shockBolt: v=> `While Ready, spit a spark at the enemy opposite for ${numOr(v, 2)} damage and Shock every round.`,
+  arrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${v} damage every upkeep.`, // 2026-10-16 skill audit
+  fireArrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${v} fire damage every upkeep.`, // 2026-10-16 skill audit
+  iceArrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${numOr(v, 2)} cold damage every upkeep; 1 in 2 it Freezes.`, // 2026-10-16 skill audit: it aims like Arrow
+  twinShot: v=> `While Ready, shoot two random enemy units for ${numOr(v, 2)} damage each every upkeep.`,
+  volley: v=> `While Ready, every other upkeep, shoot every enemy unit for ${numOr(v, 1)} damage.`,
+  fireBolt: v=> `While Ready, spit fire at the enemy facing it (or the nearest) for ${numOr(v, 2)} fire damage every upkeep.`, // 2026-10-16 skill audit: the shooting skills all say "every upkeep" and "facing it"
+  acidBolt: v=> `While Ready, spit acid at the enemy facing it (or the nearest) for ${numOr(v, 2)} acid damage and 1 Corrode every upkeep.`,
+  poisonBolt: v=> `While Ready, spit venom at the enemy facing it (or the nearest): ${numOr(v, 2)} Poison every upkeep.`,
+  iceBolt: v=> `While Ready, spit ice at the enemy facing it (or the nearest) for ${numOr(v, 2)} cold damage every upkeep; 1 in 2 it Freezes.`,
+  shockBolt: v=> `While Ready, spit a spark at the enemy facing it (or the nearest) for ${numOr(v, 2)} damage; it is Shocked for a round. Every upkeep.`,
   bloodlust: v=> `When its attack draws blood (an enemy that is Bleeding, or starts to): +${numOr(v, 1)} Attack for the fight, up to +${3*numOr(v, 1)}.`, // 2026-10-15
-  chilli: v=> `When first Ready, eats a chilli: +${numOr(v, 2)} Attack and fire attacks, but 1 damage to itself every round.`,
+  chilli: v=> `When first Ready, eats a chilli: +${numOr(v, 2)} Attack and its attacks deal fire damage, but it takes 1 damage every upkeep.`, // 2026-10-16 skill audit
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
 };
 // 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami, Dragon Lightning, Wither.
@@ -1850,11 +1889,11 @@ Object.assign(SKILL_TEXT, {
 // 2026-10-14 (sixth pass): Fencing, Fireball, Meteor, Banana, Bananarang, Durian, Shield, Electricity, Keen Sense.
 Object.assign(SKILL_TEXT, {
   fencing: v=> `Its attacks can't be dodged by Evasive or Swift units.`,
-  fireball: v=> `When Ready: a fireball hits a random enemy unit and the units beside it for ${numOr(v, 15)} fire each.`,
+  fireball: v=> `When Ready: a fireball hits a random enemy unit and the units beside it for ${numOr(v, 15)} fire damage each.`, // 2026-10-16 skill audit
   meteor: v=> `When Ready: a meteor hits a random enemy column for ${numOr(v, 20)} (${Math.floor(numOr(v, 20)/4)} beside it); the crater burns for 2 rounds.`,
   banana: v=> `Every round, last: eats its banana (+${numOr(v, 3)} Health, only if hurt) or throws it at a random enemy (${numOr(v, 3)} damage).`,
   bananarang: v=> `A Boomerang that may be eaten when it comes home (+${numOr(v, 3)} Health, 1 in 2, only if hurt).`,
-  durian: v=> `Every round, last: 1 in 2 it eats a durian for Thorns +1 (stacks).`,
+  durian: v=> `Every round, last: 1 in 2 it eats a durian for Thorns +${numOr(v, 1)} (stacks).`, // 2026-10-16 skill audit: Durian N
   shield: v=> `Arrives with ${numOr(v, 1)} Shield: temporary Health that soaks damage first.`,
   electricity: v=> `Its hits arc to a unit beside the target for ${numOr(v, 1)}; wet units take +1.`,
   keenSense: v=> `Darkness and Blind don't make it miss grounded units; it can't be Blinded.`,
@@ -1873,9 +1912,9 @@ Object.assign(SKILL_TEXT, {
   sonar: ()=> `Never misses from Darkness, Blind, Smoke or Fog, and can't be Blinded.`,
   poisonGas: v=> `When played, every enemy unit gets ${numOr(v, 2)} Poison.`,
   absoluteZero: ()=> `When played, every enemy unit is Frozen for the round.`,
-  spitfire: v=> `While Ready, spit ${numOr(v, 2)} fire at a random enemy every round.`,
+  spitfire: v=> `While Ready, spit ${numOr(v, 2)} fire damage at a random enemy unit every upkeep; 1 in 2 it also burns one beside it for 1.`, // 2026-10-16 skill audit
   slashBurn: v=> `When it kills a unit, the next enemy card played there takes ${numOr(v, 3)} fire damage.`,
-  trap: v=> `When played, trap the empty enemy slot facing it: the next card played there takes ${numOr(v, 5)}.`,
+  trap: v=> `When played, trap the empty enemy slot facing it: the next card played there takes ${numOr(v, 5)} damage.`, // 2026-10-16 skill audit
   predator: v=> `Deals ${numOr(v, 1)} more damage to units with less Attack.`,
   prey: ()=> `Evasive while an enemy Predator is on the field.`,
   nova: v=> `When it dies, every enemy unit takes ${numOr(v, 3)} magic damage.`,
@@ -1891,8 +1930,52 @@ Object.assign(SKILL_TEXT, {
   psychic: v=> `Its hits also deal ${numOr(v, 1)} psychic damage, through Armor, Shield, Shell and Ghost. Elementals and Plants are immune.`,
   smokeBomb: v=> `Every round, last: 1 in 2 it throws a smoke bomb at a random unit. An ally hides in Smoke (attacks at it miss 1 in 2); an enemy is Blinded.`,
 });
+// 2026-10-16 skill audit (user: "Do skill audit - so the skills are as simply named and described as possible, keywords are
+// highlighted. And they have the right parameters for targeting and amount."): every skill in "+ Add Skill" has a short card
+// line now. These had none (the card fell back to the long editor help, or showed nothing at all). Same shared words as above.
+// A status skill (Freeze …) reads its [chance %, rounds]; the Codex passes `true`, which reads as "can".
+function procSkillText(verb){ return v=>{ const c = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Math.max(1, Number(v[1])||1) : 1, rs = `${d} round${d === 1 ? '' : 's'}`;
+  return !c ? `Its hits can ${verb}.` : c >= 100 ? `Its hits ${verb} for ${rs}.` : `Its hits have a ${c}% chance to ${verb} for ${rs}.`; }; }
+const SKILL_DEFS_ONLY_LINES = ['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger', 'chained', 'revive'];
+Object.assign(SKILL_TEXT, {
+  converge: v=> `When it becomes Ready, ${v === 'ally' ? 'your units close' : v === 'both' ? 'the units on both sides close' : "the enemy's units close"} their gaps toward the centre.`,
+  defiance: (v, n)=> `+${n||1} Attack for every enemy unit that is ${Array.isArray(v) && v.length ? v.join(' or ') : 'of its chosen type'}.`,
+  swarm: (v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it.`,
+  crepuscular: v=> { const [a, h] = phaseVals(v); return `At Twilight: +${a}/+${h}. With it in your deck, every fifth phase is Twilight.`; },
+  sunshy: ()=> `Blind by day.`,
+  nightblind: ()=> `Blind at night, unless an Illuminate unit lights your side.`,
+  nocturnal: v=> { const [a, h] = phaseVals(v); return `At night: +${a}/+${h}.`; },
+  diurnal: v=> { const [a, h] = phaseVals(v); return `By day: +${a}/+${h}.`; },
+  tideGrant: v=> { if(!Array.isArray(v)) return `On Flood and on Ebb it has the skills in its braces; at High Tide, both.`; const [f, b] = v; return `On Flood it has ${grantText(parseGrantText(f)) || 'nothing'}; on Ebb, ${grantText(parseGrantText(b)) || 'nothing'}; at High Tide, both.`; },
+  charge: v=> { const c = typeof v === 'string' ? parseChargeText(v) : (v && typeof v === 'object' ? v : null); const cp = chargeParts(c); return cp && cp.act ? `${chargeLabel(c)}: once it is Ready, this happens every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.` : `Once it is Ready, a clock counts down every upkeep; at 0 its effect happens and the clock starts again.`; },
+  dynamite: v=> { const f = Array.isArray(v) ? (Number(v[0])||3) : numOr(v, 3), d = Array.isArray(v) ? (Number(v[1])||5) : 5; return `A fuse of ${f} burns down every upkeep; at 0 it blows up for ${d} fire damage on the units beside it and the 3 enemy units facing it.`; },
+  helmet: ()=> `Half the arrows, missiles and bolts aimed at it glance off.`,
+  shedding: v=> `Every ${numOr(v, 3)} rounds: +1/+1 for good, and it sheds its Poison, Bleed, Corrode, Scar and Exposed.`,
+  snipe: v=> `While Ready, if nothing faces it, shoot a random enemy unit for ${numOr(v, 1)} every upkeep.`,
+  kinship: v=> { const k = Array.isArray(v) ? {type:v[0], atk:v[1], hp:v[2]} : (v && typeof v === 'object' ? v : {}); return k.type ? `All your ${k.type} units get +${Number(k.atk)||0}/+${Number(k.hp)||0} (itself too). Stacks.` : `All your units of its chosen type get +X/+Y (itself too). Stacks.`; },
+  rocket: v=> `Once, when Ready: a rocket hits the enemy unit with the most Attack for ${numOr(v, 1)} fire damage, and 1 to the units beside it (the castle if there are none).`,
+  loneWolf: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} for each empty slot within 2 of it, and +${a}/+${h} more when all 4 are empty.`; },
+  sociable: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} for each ally within 2 slots of it, and +${a}/+${h} more when all 4 are filled.`; },
+  coffee: v=> `When played, Wait −${numOr(v, 1)}. ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'} later it naps: Stunned for a round.`,
+  dry: ()=> `Takes half fire damage, and Scorching days can't touch it.`,
+  landslide: v=> `When it dies, deal ${numOr(v, 1)} damage to the enemy facing it and the enemies beside that one (not Flying).`,
+  natureForce: v=> `Your Elementals get +${numOr(v, 1)}/+${numOr(v, 1)}.`,
+  loyal: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.loyalGrant ? grantText(e.loyalGrant) : ''; return `While one of your leaders is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
+  usurper: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.usurperGrant ? grantText(e.usurperGrant) : ''; return `While the enemy leader is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
+  esprit: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} whenever another ally enters play.`; },
+  explode: v=> { const t = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Number(v[1])||0 : 0; return t || d ? `In ${t} upkeep${t === 1 ? '' : 's'} it explodes once: ${d} damage to the enemy facing it, or the castle if there is none.` : `After its timer runs down it explodes once, hitting the enemy facing it (or the castle).`; },
+  freeze: procSkillText('Freeze the target'), sleep: procSkillText('put the target to Sleep'), paralyze: procSkillText('Paralyze the target'),
+  blind: procSkillText('Blind the target'), tipsy: procSkillText('make the target Tipsy'), confuse: procSkillText('Confuse the target'),
+  shock: procSkillText('Shock the target'), stagger: procSkillText('Stagger the target'),
+  chained: v=> { const [on, n] = Array.isArray(v) ? v : ['damage', 1]; return on === 'enemySpawn' ? `Can't attack until the opponent plays a card.` : `Can't attack until one hit deals it more than ${Number(n)||1} damage.`; },
+  render: v=> `When played, the enemy facing it loses ${numOr(v, 1)} Attack.`,
+  revive: ()=> `The first time it dies, it comes back with 1 Health and no statuses.`,
+  onDeathSpawn: v=> Array.isArray(v) && v[0] ? `When it dies, ${Number(v[1])||1}× ${cardName(v[0])} take its place.` : `When it dies, new units take its place.`,
+});
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
-function skillText(p, v, e){ const f = SKILL_TEXT[p.key]; try{ return f ? f(v) : p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); }catch(_){ return p.desc(v, p.numberKey ? (e||{})[p.numberKey] : undefined, e); } }
+// 2026-10-16 skill audit: a short text gets (value, its second number, the card's effects), like desc does, so Swarm and Defiance
+// can say their "+N each".
+function skillText(p, v, e){ const f = SKILL_TEXT[p.key], n = p.numberKey ? (e||{})[p.numberKey] : undefined; try{ return f ? f(v, n, e) : p.desc(v, n, e); }catch(_){ return p.desc(v, n, e); } }
 /* ---- Skill reveal (2026-10-15) [SKILL_REVEAL_BEGIN] ----
    User: "I don't want to show diurnal and tide till Map 1 and 2 respectively. Is there a way we can Hide their skills as '?'
    until they become relevant for the first time?" + "I actually want all the fish to have tide and some of the animals to have
@@ -1963,14 +2046,16 @@ function describeEffects(def, liveCard){
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
   if(def.wait) lines.push(`⏳ Wait ${def.wait} — Can't attack for ${def.wait} round${def.wait===1?'':'s'} after it's played.`);
   { const bn = bountyN(e); if(bn) lines.push(`🏆 Bounty ${bn} — When played, gain ${bn} Lumber. When it dies, the opponent gains ${bn} Lumber.`); } // Worthy folded in (2026-10-15)
-  if(e.explode) lines.push(`💣 Explode (Timer ${e.explode.time}, Damage ${e.explode.damage}) — a lit fuse, ticking down every round no matter what (even on Wait or Stunned). When it reaches 0 it detonates once, dealing ${e.explode.damage} damage to whatever's directly opposite, or straight through to the enemy HQ if that lane is empty.`);
+  // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): no "(Timer, Damage)" in the
+  // name; the short line says it.
+  if(e.explode) lines.push(`💣 Explode ${e.explode.time} — ${SKILL_TEXT.explode([e.explode.time, e.explode.damage])}`);
   // Keyword first (2026-10-08, user: "the bleed description should start with Bleed 2 - ..."): every
   // passive line now opens with its name and value, like Wait and Bounty above, so a player scans
   // the keyword first and reads the rule after.
   // 2026-10-10 (user: "The effect descriptions should include the effect icon"): each line opens with the same glyph the
   // card face uses for it (SKILL_ICON). Fork on a crab shows the crab claw (2026-10-14).
   const ic = k=>{ const g = skillIconFor(k, def); return g ? g + ' ' : ''; };
-  PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${p.desc([e.esprit||0, e.espritHp||0])}`); return; }
+  PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${skillText(p, [e.esprit||0, e.espritHp||0], e)}`); return; } // 2026-10-16 skill audit: the short card text
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     // Zeitgeber advanced forms (2026-10-15): "Diurnal – {Evasive, Thorns 1}", "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {…}".
@@ -1989,10 +2074,15 @@ function describeEffects(def, liveCard){
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
       const head0 = p.key==='pack' ? `${p.label}${valSuffix(v === true ? 2 : v)}` : p.label; lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
-    const head = p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
+    const head = p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
     lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; }); // "Answered by" lives in the Skill Codex now (2026-10-13)
+  // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): the "+ Add Skill" skills that live
+  // only in SKILL_DEFS (Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock, Stagger, Chained, Revive) had no line on the
+  // card at all. Each gets its short text now, like every other skill.
+  SKILL_DEFS_ONLY_LINES.forEach(k=>{ const sd = SKILL_DEFS.find(s=> s.key === k); if(!sd || !SKILL_TEXT[k]) return; let v; try{ v = sd.get(e); }catch(_){ v = undefined; } if(v === undefined || v === false) return;
+    lines.push(`${ic(k)}${sd.label} — ${SKILL_TEXT[k](v)}`); });
   if(e.onSpawnGold) lines.push(`On Spawn: gain ${e.onSpawnGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
   if(e.onSpawnGrace) lines.push(`On Spawn: gain ${e.onSpawnGrace} grace.`);
   if(e.onReadyGold) lines.push(`On Ready (every round awake): gain ${e.onReadyGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
@@ -2001,7 +2091,7 @@ function describeEffects(def, liveCard){
   // for Devilry. "Dark Point" is this game's flavor name for a point of Devilry.
   if(e.onSpawnDevilry) lines.push(`On Spawn: gain ${e.onSpawnDevilry} Dark Point${e.onSpawnDevilry===1?'':'s'} (★ Devilry).`);
   if(e.onReadyDevilry) lines.push(`On Ready (every round awake): generate ${e.onReadyDevilry} Dark Point${e.onReadyDevilry===1?'':'s'} (★ Devilry).`);
-  if(e.onDeathSpawn) lines.push(`On Death: spawns ${e.onDeathSpawn.count||1}× ${cardName(e.onDeathSpawn.defId)}.`);
+  if(e.onDeathSpawn) lines.push(`${ic('onDeathSpawn')}Progeny — ${SKILL_TEXT.onDeathSpawn([e.onDeathSpawn.defId, e.onDeathSpawn.count||1])}`); // 2026-10-16 skill audit: named like every other skill
   // On Attacked: Spawn (legacy field only, 2026-09-21 consolidation): the editor can no longer
   // produce effects.onAttackedSpawn -- every card using this ability now carries an equivalent
   // effects.triggers entry (on:'onAttacked', do:'spawnCard') instead, which already gets its own
@@ -2014,7 +2104,7 @@ function describeEffects(def, liveCard){
     const amt = liveVal!=null ? `<span class="live-stat-val">${liveVal}</span>` : (e.missile.amount==='attack' ? "its own Attack stat" : e.missile.amount);
     lines.push(`${e.missile.trigger==='onReady'?'On Ready':'On Spawn'}: hits a random enemy for ${amt} damage.`);
   }
-  if(e.render) lines.push(`${e.render.trigger==='onReady'?'On Ready':'On Spawn'}: lowers the opposing creature's Attack by ${e.render.amount}.`);
+  if(e.render) lines.push(e.render.trigger==='onReady' ? `On Ready: lowers the opposing creature's Attack by ${e.render.amount}.` : `${ic('render')}Render${valSuffix(e.render.amount)} — ${SKILL_TEXT.render(e.render.amount)}`); // 2026-10-16 skill audit
   if(Array.isArray(e.triggers)) e.triggers.forEach(t=>{
     const tDef = TRIGGER_DEFS.find(x=>x.key===t.on), aDef = ACTION_DEFS.find(x=>x.key===t.do);
     if(!tDef||!aDef) return;
@@ -5680,7 +5770,7 @@ function abilityBadges(d, bopts){
   if(e.crepuscular || e.crepuscularHp) out.push(`<span title="Crepuscular">${iconHTML('crepuscular', '🌆')}</span>`); if(e.sunshy) out.push(`<span title="Sun-shy">${iconHTML('sunshy', '🕶️')}</span>`); if(e.nightblind) out.push(`<span title="Night-blind">${iconHTML('nightblind', '🌑')}</span>`);
   if(e.shedding) out.push(`<span title="Shedding">${iconHTML('shedding', '🐍')}${e.shedding===3||e.shedding===true?'':e.shedding}</span>`);
   if(e.molting) out.push(`<span title="Molting">${iconHTML('molting', '🦀')}${e.molting}</span>`);
-  if(e.dynamite) out.push(`<span class="ab-dyn" title="Dynamite: explodes ${e.dynamite} rounds after it lands">${iconHTML('dynamite', '🧨')}${e.dynamite}</span>`);
+  if(e.dynamite) out.push(`<span class="ab-dyn" title="Dynamite: explodes ${e.dynamite} rounds after it lands, for ${Number(e.dynamiteDmg)||5} fire damage">${iconHTML('dynamite', '🧨')}${e.dynamite}</span>`);
   if(e.helmet) out.push(`<span title="Helmet: half the shots aimed at it glance off"><svg class="ab-helm" viewBox="0 0 24 20" width="1em" height="0.85em" aria-hidden="true"><path d="M3 14 C3 6 8 2 12 2 C16 2 21 6 21 14 Z" fill="#8fa3b8" stroke="#3b4652" stroke-width="1.4"/><path d="M1 14 H23 V16.5 Q12 19 1 16.5 Z" fill="#6e8296" stroke="#3b4652" stroke-width="1.2"/><circle cx="8" cy="9" r="1" fill="#e9f1f8"/><circle cx="12" cy="6" r="1" fill="#e9f1f8"/><circle cx="16" cy="9" r="1" fill="#e9f1f8"/><path d="M6 8 Q8 5 11 4.5" stroke="#d8e6f2" stroke-width="1" fill="none" opacity=".7"/></svg></span>`); // a drawn helmet: the emoji set has none that's cute (2026-10-13)
   if(e.bludgeon) out.push(`<span title="Bludgeon">${iconHTML('bludgeon', '🔨')}</span>`); if(e.snipe) out.push(`<span title="Snipe">${iconHTML('snipe', '🎯')}${n1(e.snipe)}</span>`);
   if(e.kinship) out.push(`<span title="Kinship ${escapeAttr(e.kinship.type||'')}: +${e.kinship.atk||0}/+${e.kinship.hp||0}">${iconHTML('kinship', '🫶')}</span>`); if(e.rocket) out.push(`<span title="Rocket">${iconHTML('rocket', '🚀')}${n1(e.rocket)}</span>`);
@@ -5701,7 +5791,7 @@ function abilityBadges(d, bopts){
   { const lv = bopts && bopts.live && bopts.live.speed != null ? Number(bopts.live.speed)||0 : (Number(e.speed)||0) + (e.haste ? 2 : 0);
     if(lv) out.push(`<span class="ab-speed" title="Speed ${lv}: the fastest units swing first">🐇${lv}</span>`); }
   if(e.haste) out.push(`<span title="Haste: Speed +2, adjacent allies Speed +1">${iconHTML('haste', '🏃')}</span>`);
-  if(e.rabid) out.push(`<span title="Rabid: hits add 2 Poison; Swimmers and water hit it for double">${iconHTML('rabid', '🤬')}</span>`);
+  if(e.rabid) out.push(`<span title="Rabid ${numOr(e.rabid, 2)}: hits add ${numOr(e.rabid, 2)} Poison; Swimmers and water hit it for double">${iconHTML('rabid', '🤬')}${numOr(e.rabid, 2) === 2 ? '' : numOr(e.rabid, 2)}</span>`); // Rabid N (2026-10-16 skill audit)
   if(e.cower) out.push(`<span title="Cower (${e.cower === 'flee' ? 'Flee' : 'Shell'}): hit last turn, it ${e.cower === 'flee' ? 'backs off' : 'hides'} this turn">${iconHTML('cower', '🫣')}</span>`);
   if(e.ghost) out.push(`<span title="Ghost: normal attacks pass through it">${iconHTML('ghost', '👻')}</span>`);
   if(e.ichor) out.push(`<span title="Ichor ${e.ichor}: whoever hits it takes ${e.ichor} acid, loses 1 Armor, Bleeds 1">${iconHTML('ichor', '🧪')}${n1(e.ichor)}</span>`);
@@ -5738,7 +5828,7 @@ function abilityBadges(d, bopts){
   if(e.meteor) out.push(`<span title="Meteor ${numOr(e.meteor, 20)}: when Ready, a meteor crashes onto a random enemy column">${iconHTML('meteor', '☄️')}${n1(numOr(e.meteor, 20))}</span>`);
   if(e.banana) out.push(`<span title="Banana ${numOr(e.banana, 3)}: every round, last, it eats it (if hurt) or throws it">${iconHTML('banana', '🍌')}${n1(numOr(e.banana, 3))}</span>`);
   if(e.bananarang) out.push(`<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">${iconHTML('bananarang', '🍌')}<i>🪃</i></span>`);
-  if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian: 1 in 2 each round it eats one for Thorns +1${db ? ` (Thorns +${db} so far)` : ''}">${iconHTML('durian', '🌰')}${db ? '+' + db : ''}</span>`); }
+  if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian${numOr(e.durian, 1) > 1 ? ' ' + numOr(e.durian, 1) : ''}: 1 in 2 each round it eats one for Thorns +${numOr(e.durian, 1)}${db ? ` (Thorns +${db} so far)` : ''}">${iconHTML('durian', '🌰')}${db ? '+' + db : ''}</span>`); }
   if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
   if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit beside the target; wet units take +1">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`);
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
@@ -5921,8 +6011,10 @@ function skillsByMapHTML(){
 function skillCodexHTML(){
   const defs = getCardDefs(), met = new Set();
   Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || d.test || d.token) return; if(!adminModeEnabled && (isCardHiddenForPlayer(d) || !codexRevealedForPlayer(id, d))) return;
-    PASSIVE_DEFS.forEach(p=>{ try{ if(p.get ? p.get(d.effects||{}) !== undefined : (d.effects||{})[p.key] != null) met.add(p.key); }catch(e){} }); });
-  const list = PASSIVE_DEFS.filter(p=> met.has(p.key) && p.label && !p.retired && !skillHiddenNow(p.key)).sort((a, b)=> a.label.localeCompare(b.label)); // 2026-10-15: not retired (Hive Mind), not still hidden (SKILL_REVEAL)
+    SKILL_DEFS.forEach(p=>{ try{ if(p.get ? p.get(d.effects||{}) !== undefined : (d.effects||{})[p.key] != null) met.add(p.key); }catch(e){} }); }); // 2026-10-16 skill audit: SKILL_DEFS, so Freeze, Explode, Revive … count too
+  // 2026-10-16 skill audit: the skills that live only in SKILL_DEFS (Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock,
+  // Stagger, Chained, Explode, Render, Revive, Progeny) are in the Codex too.
+  const list = PASSIVE_DEFS.filter(p=> met.has(p.key) && p.label && !p.retired && !skillHiddenNow(p.key)).concat(SKILL_DEFS.filter(s=> met.has(s.key) && s.label && !s.retired && !PASSIVE_DEFS.some(p=> p.key === s.key))).sort((a, b)=> a.label.localeCompare(b.label)); // 2026-10-15: not retired (Hive Mind), not still hidden (SKILL_REVEAL)
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
   const rows = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
@@ -7457,7 +7549,7 @@ function defaultSkillValue(key){
   const s = SKILL_DEFS.find(x=>x.key===key);
   if(!s) return true;
   if(s.kind==='number') return s.defaultValue != null ? s.defaultValue : 1; // Full Moon 3, Chilli 2 … (2026-10-15)
-  if(s.kind==='twoNumber') return [1,1];
+  if(s.kind==='twoNumber') return s.key==='dynamite' ? [3, 5] : FXL_CHANCE_TWO.has(s.key) ? [50, 1] : [1,1]; // 2026-10-16 skill audit: Dynamite 3/5, a status 50% for 1 round
   if(s.kind==='text' || s.kind==='grant') return '';
   if(s.kind==='grant2') return ['', '']; // Tide – {Flood}, {Ebb} (2026-10-15)
   if(s.kind==='select') return s.selectOptions ? s.selectOptions()[0].value : resistOptionsList()[0];
@@ -7498,7 +7590,8 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   else if(s.kind==='twoNumber'){
     const vals = Array.isArray(row.value)?row.value:[1,1];
     const ph = s.placeholders || ['Timer','Damage'];
-    valueHtml = `<input type="number" min="0" class="w-60" placeholder="${ph[0]}" aria-label="${ph[0]}" data-sk="val0" data-i="${i}" value="${vals[0]}"><input type="number" min="0" class="w-60" placeholder="${ph[1]}" aria-label="${ph[1]}" data-sk="val1" data-i="${i}" value="${vals[1]}">`;
+    // 2026-10-16 skill audit: a hover title too, so "Chance %" / "Rounds" (Freeze …) or "Fuse" / "Damage" (Dynamite) show with a value in.
+    valueHtml = `<input type="number" min="0" class="w-60" placeholder="${ph[0]}" aria-label="${ph[0]}" title="${ph[0]}" data-sk="val0" data-i="${i}" value="${vals[0]}"><input type="number" min="0" class="w-60" placeholder="${ph[1]}" aria-label="${ph[1]}" title="${ph[1]}" data-sk="val1" data-i="${i}" value="${vals[1]}">`;
   } else if(s.kind==='select' && s.selectOptions){
     valueHtml = `<select data-sk="val" data-i="${i}">${s.selectOptions().map(o=>`<option value="${o.value}" ${row.value===o.value?'selected':''}>${escapeHtml(o.label)}</option>`).join('')}</select>`;
   } else if(s.kind==='select'){
@@ -20803,7 +20896,7 @@ function testKitSavePrefs(){
 function testKitSkillDefault(sd){
   if(sd.kind==='boolean') return true;
   if(sd.kind==='number') return ['stunOnHit','reflect'].includes(sd.key) ? 50 : 2;
-  if(sd.kind==='twoNumber') return sd.key==='explode' ? [2, 5] : [50, 1];
+  if(sd.kind==='twoNumber') return sd.key==='explode' ? [2, 5] : sd.key==='dynamite' ? [3, 5] : FXL_CHANCE_TWO.has(sd.key) ? [50, 1] : [2, 2]; // 2026-10-16 skill audit: Dynamite, and +A/+H skills (Nocturnal …) aren't 50/1
   if(sd.kind==='selectNumber'){ const o = testKitSelectOpts(sd); return [(o[0]&&o[0].value)||'damage', 3]; }
   return null;
 }
@@ -20950,7 +21043,7 @@ function testKitSkillRowHTML(sd){
   const on = testKit.skills[sd.key]!==undefined; const v = on ? testKit.skills[sd.key] : testKitSkillDefault(sd);
   let inputs = '';
   if(sd.kind==='number') inputs = `<input type="number" class="tk-num" min="0" data-tkskill="${sd.key}" data-idx="-1" value="${Number(v)||0}" ${on?'':'disabled'} aria-label="${escapeAttr(sd.label)} amount">`;
-  if(sd.kind==='twoNumber'){ const lbl = sd.key==='explode' ? ['Timer','Dmg'] : ['%','Rounds'];
+  if(sd.kind==='twoNumber'){ const lbl = sd.placeholders || (sd.key==='explode' ? ['Timer','Dmg'] : ['%','Rounds']); // 2026-10-16 skill audit: each skill's own labels (Attack/Health, Fuse/Damage …)
     inputs = [0,1].map(i=>`<input type="number" class="tk-num" min="0" data-tkskill="${sd.key}" data-idx="${i}" value="${Number(v[i])||0}" ${on?'':'disabled'} title="${lbl[i]}" aria-label="${escapeAttr(sd.label)} ${lbl[i]}">`).join(''); }
   if(sd.kind==='selectNumber') inputs = `<select class="tk-sel" data-tkskill="${sd.key}" data-idx="0" ${on?'':'disabled'}>${testKitSelectOpts(sd).map(o=>`<option value="${escapeAttr(o.value)}" ${o.value===v[0]?'selected':''}>${escapeHtml(o.label)}</option>`).join('')}</select><input type="number" class="tk-num" min="1" data-tkskill="${sd.key}" data-idx="1" value="${Number(v[1])||1}" ${on?'':'disabled'} aria-label="${escapeAttr(sd.label)} amount">`;
   const desc = (()=>{ try{ return sd.desc(v); }catch(e){ return ''; } })();
