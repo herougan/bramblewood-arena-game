@@ -1404,7 +1404,7 @@ M.onEvent = function(ev, env){
     if(ev.crit && !ev.ambush && med){ const fa = factionOf(defs[ev.attDefId]); if(fa) env.at(hitMs, ()=> M.critSparks(tgt, {colors:fa.sparks})); }
     if(T === 'hitHQ' && ev.fork && med) env.at(Math.max(0, hitMs - 140), ()=> M.prongCastle(att, castle, {kind:ev.prong, delay:140}));
     if(ev.ambush && att && med) M.ambushStrike(att, tgt);
-    if(af.swift && att && !ev.ranged && med && env.once('swift' + ev.attUid)) env.at(Math.round(A.windup*.7), ()=> M.swiftBlur(att, tgt));
+    if(af.swift && att && !ev.ranged && !ev.pounce && med && env.once('swift' + ev.attUid)) env.at(Math.round(A.windup*.7), ()=> M.swiftBlur(att, tgt)); // (not on a Pounce: it has its own leap, 2026-10-15)
     if(T === 'hit' && tf.scare && att && !ev.ranged && med && env.once('scared' + ev.attUid)) M.fearTell(att);
     if(ev.guardianRedirect && med) env.at(Math.max(0, hitMs - 220), ()=> M.guardPull(att, tgt));
     if(ev.boomerang && ev.friendly && med) env.at(hitMs, ()=> M.friendlyBonk(tgt));

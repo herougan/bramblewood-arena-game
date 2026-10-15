@@ -2323,6 +2323,16 @@
     background:var(--bleed-c); opacity:0; animation:bleedDrop calc(var(--bleed-ms,700ms) * .6) cubic-bezier(.5,0,.9,.6) forwards;}
   @keyframes bleedDrop{0%{opacity:0; transform:translateY(-6px) scaleY(.6);} 15%{opacity:.95;} 100%{opacity:0; transform:translateY(34px) scaleY(1.3);}}
   .board-card.bleed-cold .bleed-tint{mix-blend-mode:screen;}
+  /* 2026-10-15 (user: "The poison animation has a blackening effect. Lessen that effect by 40%."): the poison drain darkens 40%
+     less (brightness .55 → .73, the multiply tint at 60%), and its particles are the Poisoned look's rising bubbles. */
+  .board-card.bleed-poison{animation-name:poisonDrain;}
+  @keyframes poisonDrain{0%{filter:none;} 60%{filter:saturate(.6) brightness(.88);} 100%{filter:saturate(.45) brightness(.73);}}
+  .board-card.bleed-poison .bleed-tint{opacity:.6;}
+  .board-card.bleed-poison .bleed-wash{z-index:8;}
+  .bleed-wash .poison-bub{position:absolute; bottom:12%; width:7px; height:7px; margin-left:-3.5px; border-radius:50%; border:1px solid rgba(200,255,150,.95);
+    background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.75), rgba(110,220,60,.35)); box-shadow:0 0 4px rgba(120,230,70,.6); opacity:0;
+    animation:poisonBubRise calc(var(--bleed-ms,700ms) * .75) ease-in forwards;}
+  @keyframes poisonBubRise{0%{transform:translateY(0) scale(calc(var(--pb-s,1) * .35)); opacity:0;} 15%{opacity:1;} 80%{transform:translateY(-70px) scale(var(--pb-s,1)); opacity:1;} 100%{transform:translateY(-76px) scale(calc(var(--pb-s,1) * 1.6)); opacity:0;}}
   .bleed-wash{z-index:0;}
   /* Castle cracks (2026-10-06) — crackStage()/updateCastleCracks() in arena_app.js. Three hand-drawn
      crack layers that appear at ≤66%, ≤33% and ≤15% HP; a new crack lands with a little jolt. */
@@ -8164,6 +8174,13 @@
   .card-tile .badges .abadge{font-size:clamp(11px, 13cqw, 20px);}
   /* Flying wing 20% larger */
   .abadge .ab-wing{display:inline-block; font-size:1.2em; line-height:.9;}
+  /* 2026-10-15: a pouncing card flies over the other row (SkillFX.pounceOnto), so it and its row sit on top for the leap */
+  .board-row:has(> .board-card.is-pouncing){position:relative; z-index:40;}
+  .board-card.is-pouncing{z-index:41 !important;}
+  /* 2026-10-15 (user: "When a unit with armor gets hit, its armor context icon glows for 0.5s."): set by armorBadgeGlow */
+  .abadge.armor-glow{animation:armorGlow .5s ease-out;}
+  @keyframes armorGlow{0%{filter:drop-shadow(0 0 0 rgba(150,210,255,0)) brightness(1); transform:scale(1);} 25%{filter:drop-shadow(0 0 7px rgba(170,220,255,1)) drop-shadow(0 0 3px #fff) brightness(1.6); transform:scale(1.22);} 100%{filter:drop-shadow(1.5px 2.5px 0 rgba(0,0,0,.55)) brightness(1); transform:scale(1);}}
+  @media (prefers-reduced-motion: reduce){ .abadge.armor-glow{animation-duration:.01s;} }
 
   .leaf-puff{position:fixed; left:0; top:0; z-index:9990; pointer-events:none; font-size:15px; color:#cbb48a; filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));}
 
@@ -8713,7 +8730,8 @@
   /* Wind (2026-10-13): the round's weather pill, top-left of the field; Windy rounds get faint drifting streaks. */
   #battlefieldEl .wind-pill{position:absolute; top:6px; left:8px; z-index:30; padding:3px 9px; border-radius:999px; font-size:11.5px; font-weight:700; background:rgba(20,30,40,.55); color:#e8f2ff; pointer-events:none; opacity:.75; transition:opacity .3s;}
   #battlefieldEl .wind-pill.is-windy{opacity:1; background:rgba(40,90,130,.75);}
-  #battlefieldEl.is-windy::after{content:''; position:absolute; inset:0; pointer-events:none; z-index:2; background:repeating-linear-gradient(100deg, transparent 0 46px, rgba(255,255,255,.07) 46px 48px, transparent 48px 120px); background-size:300px 100%; animation:windDrift 2.4s linear infinite;}
+  /* 2026-10-15: superseded by the direction-aware wind layer (SkillFX.windField); kept off so the two don't stack */
+  #battlefieldEl.is-windy::after{content:none; position:absolute; inset:0; pointer-events:none; z-index:2; background:repeating-linear-gradient(100deg, transparent 0 46px, rgba(255,255,255,.07) 46px 48px, transparent 48px 120px); background-size:300px 100%; animation:windDrift 2.4s linear infinite;}
   @keyframes windDrift{to{background-position:300px 0;}}
   @media (prefers-reduced-motion: reduce){ #battlefieldEl.is-windy::after{animation:none;} }
   .cnp-journey{margin:6px 0; padding:6px 10px; border-radius:10px; background:rgba(255,236,190,.16); border:1px dashed rgba(255,220,150,.55); font-size:.92em; line-height:1.35;}
@@ -8882,10 +8900,27 @@
 .shelf-shop{display:block !important; max-width:980px; margin:14px auto 0;}
 .booster.is-advanced{box-shadow:0 0 0 2px #ffe08a, 0 0 14px rgba(255,214,110,.75);} .booster.is-advanced .booster-band{background:linear-gradient(90deg,#b8862b,#ffe9a8,#b8862b); color:#3a2608;}
 .field-hover{padding:12px 14px; max-width:300px;} .field-hover .fh-head{display:flex; align-items:center; gap:8px; font-size:17px; margin-bottom:6px;} .field-hover .fh-ico{font-size:28px;} .field-hover p{margin:4px 0; font-size:13.5px; line-height:1.4;} .field-hover .fh-left{font-weight:700;} .field-hover .fh-note{opacity:.75; font-size:12px;}
-#battlefieldEl > .night-veil{position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit; clip-path:inset(0 0 0 100%);
-  background:linear-gradient(90deg, rgba(12,16,46,.18) 0%, rgba(12,16,46,.42) 14%, rgba(8,10,34,.5) 100%); transition:clip-path 2.4s cubic-bezier(.45,.05,.4,1);}
-#battlefieldEl > .night-veil.is-on{clip-path:inset(0 0 0 0);} #battlefieldEl > .night-veil.is-leaving{clip-path:inset(0 100% 0 0);} #battlefieldEl > .night-veil.no-anim{transition:none;}
-@media (prefers-reduced-motion: reduce){ #battlefieldEl > .night-veil{transition:none;} }
+/* 2026-10-15 (user: "The transition from day to night should be gradual, and from left to right unevenly."): the night veil and the
+   sky's colour temperature no longer switch with a straight wipe or an even fade: a soft, ragged edge (an SVG mask, three board
+   widths wide: opaque | wavy blurred edge | clear) slides across the board left to right in ~1.3 s. Leaving uses the mirrored mask,
+   so the day comes back from the left the same way. */
+#battlefieldEl > .night-veil, #battlefieldEl > .sky-fx.sky-sweep{
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 100' preserveAspectRatio='none'%3E%3Cfilter id='b' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeGaussianBlur stdDeviation='6 3'/%3E%3C/filter%3E%3Cpath filter='url(%23b)' d='M-30,-20 H118 C132,4 106,10 121,19 C140,29 109,37 128,45 C141,51 112,58 119,66 C126,74 146,77 124,86 C110,92 133,98 127,120 H-30 Z'/%3E%3C/svg%3E");
+          mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 100' preserveAspectRatio='none'%3E%3Cfilter id='b' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeGaussianBlur stdDeviation='6 3'/%3E%3C/filter%3E%3Cpath filter='url(%23b)' d='M-30,-20 H118 C132,4 106,10 121,19 C140,29 109,37 128,45 C141,51 112,58 119,66 C126,74 146,77 124,86 C110,92 133,98 127,120 H-30 Z'/%3E%3C/svg%3E");
+  -webkit-mask-size:300% 100%; mask-size:300% 100%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
+  -webkit-mask-position:76% 0; mask-position:76% 0;}
+#battlefieldEl > .night-veil{position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(90deg, rgba(12,16,46,.18) 0%, rgba(12,16,46,.42) 14%, rgba(8,10,34,.5) 100%); transition:-webkit-mask-position 1.35s cubic-bezier(.4,.1,.45,1), mask-position 1.35s cubic-bezier(.4,.1,.45,1);}
+#battlefieldEl > .night-veil.is-on{-webkit-mask-position:0 0; mask-position:0 0;}
+#battlefieldEl > .night-veil.is-leaving, #battlefieldEl > .sky-fx.sky-sweep.is-old{
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 100' preserveAspectRatio='none'%3E%3Cfilter id='b' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeGaussianBlur stdDeviation='6 3'/%3E%3C/filter%3E%3Cpath filter='url(%23b)' d='M118,-20 C132,4 106,10 121,19 C140,29 109,37 128,45 C141,51 112,58 119,66 C126,74 146,77 124,86 C110,92 133,98 127,120 H330 V-20 Z'/%3E%3C/svg%3E");
+          mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 100' preserveAspectRatio='none'%3E%3Cfilter id='b' x='-20%25' y='-20%25' width='140%25' height='140%25'%3E%3CfeGaussianBlur stdDeviation='6 3'/%3E%3C/filter%3E%3Cpath filter='url(%23b)' d='M118,-20 C132,4 106,10 121,19 C140,29 109,37 128,45 C141,51 112,58 119,66 C126,74 146,77 124,86 C110,92 133,98 127,120 H330 V-20 Z'/%3E%3C/svg%3E");
+  -webkit-mask-position:76% 0; mask-position:76% 0;}
+#battlefieldEl > .night-veil.is-leaving.is-gone{-webkit-mask-position:0 0; mask-position:0 0;}
+#battlefieldEl > .night-veil.no-anim{transition:none;}
+#battlefieldEl > .sky-fx.sky-sweep{transition:-webkit-mask-position 1.35s cubic-bezier(.4,.1,.45,1), mask-position 1.35s cubic-bezier(.4,.1,.45,1) !important;}
+#battlefieldEl > .sky-fx.sky-sweep.is-go{-webkit-mask-position:0 0; mask-position:0 0;}
+@media (prefers-reduced-motion: reduce){ #battlefieldEl > .night-veil, #battlefieldEl > .sky-fx.sky-sweep{transition:none !important;} }
 /* The sky as colour temperature (2026-10-14, second pass, user: "Remove the sun and moon animation ... using temperature instead of
    brightness"): one tint layer behind the cards, no sun, rays, moon or stars. Dawn and dusk amber, day warm and bright, night cool
    blue and darker. The colour eases between tones (syncSkyFx sets .tone-*). Misty fights loop orange, blue and light instead. */

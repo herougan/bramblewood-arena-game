@@ -1438,7 +1438,9 @@ M.onEvent = function(ev, env){
   case 'evaded': if(ev.reason === 'shadow'){ const t = el(ev.targetUid); if(t) M.shadowNight(t); } break;
   case 'blindMiss': {
     const a = el(ev.attUid); if(!a || !ev.night) break; const dk = darkLvl(m), e = effOf(defs, ev.attDefId);
-    env.at(120, ()=>{ const a2 = el(ev.attUid) || a; if(dk && !e.darksight) M.darkMiss(a2, {level:dk}); else M.darkMiss(a2, {level:'dark'}); });
+    // 2026-10-15 (user: "The miss animation is skipping the attack animation"): the whoosh follows the lunge (at the strike), not before it
+    const wu = (typeof animMs === 'function' ? animMs().windup : 390);
+    env.at(Math.max(120, wu - 40), ()=>{ const a2 = el(ev.attUid) || a; if(dk && !e.darksight) M.darkMiss(a2, {level:dk}); else M.darkMiss(a2, {level:'dark'}); });
     break; }
   case 'death': {
     const e = effOf(defs, ev.defId); if(e.lantern && (darkLvl(m) || phaseOf(m) === 'night')){ const t = el(ev.uid); if(t && med) M.lanternOut(t); }

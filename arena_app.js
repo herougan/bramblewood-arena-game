@@ -3190,6 +3190,38 @@ const SoundKit = (()=>{
         bp.type = 'bandpass'; bp.frequency.value = 1500; bp.Q.value = 2.5;
         g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.07*sfxVolume, t0 + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur + 0.05);
         o.connect(bp); bp.connect(g); g.connect(outNode(c)); o.start(t0); o.stop(t0 + dur + 0.08); }); },
+    // Dawn (2026-10-15, user: "The turn to day sfx needs to be improved."): the rooster's sawtooth crow was harsh. Daybreak is now a
+    // soft rising chime (a slow-attack pentatonic arpeggio over a warm pad, each note with a faint echo) and two small birds waking.
+    dawnChime(){ const c = ac(); if(!c || sfxVolume<=0) return;
+      const soft = (f, at, dur, peak, type)=>{ const t0 = c.currentTime + at, o = c.createOscillator(), g = c.createGain(), lp = c.createBiquadFilter();
+        o.type = type || 'sine'; o.frequency.setValueAtTime(f, t0); lp.type = 'lowpass'; lp.frequency.value = 3200;
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(peak*sfxVolume, t0 + 0.06); g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
+        o.connect(lp); lp.connect(g); g.connect(outNode(c)); o.start(t0); o.stop(t0 + dur + 0.05); };
+      // a warm pad that swells in under it (G major, root and fifth)
+      [[196, 0.035], [294, 0.022]].forEach(([f, p])=>{ const t0 = c.currentTime, o = c.createOscillator(), g = c.createGain(); o.type = 'triangle'; o.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(p*sfxVolume, t0 + 0.6); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.2);
+        o.connect(g); g.connect(outNode(c)); o.start(t0); o.stop(t0 + 2.3); });
+      // the rising chime: G A B D E G, glassy (sine + a quiet octave), each with a soft echo
+      [392, 440, 494, 587, 659, 784].forEach((f, i)=>{ const at = 0.08 + i*0.13; soft(f, at, 1.1, 0.05); soft(f*2, at, 0.7, 0.012); soft(f, at + 0.22, 0.8, 0.016); });
+      // birds: quick upward chirps, the second bird answering
+      const chirp = (at, f0, f1, n)=>{ for(let k = 0; k < n; k++){ const t0 = c.currentTime + at + k*0.11, o = c.createOscillator(), g = c.createGain();
+        o.type = 'sine'; o.frequency.setValueAtTime(f0, t0); o.frequency.exponentialRampToValueAtTime(f1, t0 + 0.06); o.frequency.exponentialRampToValueAtTime(f0*1.1, t0 + 0.09);
+        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.022*sfxVolume, t0 + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.095);
+        o.connect(g); g.connect(outNode(c)); o.start(t0); o.stop(t0 + 0.11); } };
+      chirp(0.75, 2600, 3900, 3); chirp(1.25, 3100, 4400, 2); },
+    // Full Moon howl (2026-10-15, user: "Full moon - if a full moon card is on the field, it howls similarly to night (maybe a tad
+    // different to differentiate)"): one wolf, a little higher and longer than nightfall's pair, with a cold silver shimmer over it.
+    moonHowl(){ const c = ac(); if(!c || sfxVolume<=0) return;
+      const t0 = c.currentTime, o = c.createOscillator(), o2 = c.createOscillator(), g = c.createGain(), g2 = c.createGain(), v = c.createOscillator(), vg = c.createGain(), fm = c.createBiquadFilter(), lp = c.createBiquadFilter();
+      o.type = 'sawtooth'; o2.type = 'triangle';
+      [o, o2].forEach(osc=>{ const f = osc.frequency; f.setValueAtTime(360, t0); f.exponentialRampToValueAtTime(640, t0 + 0.45); f.linearRampToValueAtTime(680, t0 + 1.5); f.linearRampToValueAtTime(650, t0 + 2.1); f.exponentialRampToValueAtTime(420, t0 + 2.6); f.exponentialRampToValueAtTime(300, t0 + 2.85); });
+      v.frequency.value = 5.2; vg.gain.value = 4.5; v.connect(vg); vg.connect(o.frequency); vg.connect(o2.frequency);
+      fm.type = 'bandpass'; fm.Q.value = 3.6; fm.frequency.setValueAtTime(800, t0); fm.frequency.linearRampToValueAtTime(1250, t0 + 0.6); fm.frequency.linearRampToValueAtTime(1000, t0 + 2.0); fm.frequency.linearRampToValueAtTime(700, t0 + 2.8);
+      lp.type = 'lowpass'; lp.frequency.value = 2600; const peak = 0.095*sfxVolume;
+      g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(peak, t0 + 0.25); g.gain.setValueAtTime(peak, t0 + 2.0); g.gain.exponentialRampToValueAtTime(peak*0.4, t0 + 2.5); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 2.9);
+      g2.gain.value = 0.45; o.connect(fm); o2.connect(g2); g2.connect(fm); fm.connect(lp); lp.connect(g); g.connect(outNode(c));
+      o.start(t0); o2.start(t0); v.start(t0); o.stop(t0 + 2.95); o2.stop(t0 + 2.95); v.stop(t0 + 2.95);
+      [1568, 1976, 2349, 1976].forEach((f, i)=> tone(f, 0.9, 'sine', 0.012, 0.3 + i*0.22)); },
     neutralTick(){ tone(440, 0.09, 'sine', 0.05); tone(330, 0.12, 'sine', 0.045, 0.07); },
     growthSwell(){ [[262,0],[330,0.07],[392,0.14],[523,0.22]].forEach(([f, d])=> tone(f, 0.5, 'triangle', 0.06, d)); tone(131, 0.7, 'sine', 0.07, 0); },
     leaderFanfare(){ [[392,0],[494,0.09],[587,0.18],[784,0.3]].forEach(([f, d], i)=>{ tone(f, i===3 ? 0.5 : 0.16, 'sawtooth', 0.05, d); tone(f*2, i===3 ? 0.45 : 0.14, 'triangle', 0.025, d); }); },
@@ -22479,7 +22511,9 @@ async function afterPlayerAction(actingPid){
   // Actions per turn (2026-10-11): with plays left this turn, the turn goes on; the round resolves once they're used
   // (or with End turn / Skip as usual).
   { const pl = m.players[actingPid || 1]; if(pl && !pl.playedThisTurn && (pl.playsThisTurn||0) > 0 && m.engine.actionsPerTurn && m.engine.actionsPerTurn() > 1 && pl.hand.some(h=> m.engine.canPlay(pl, h.defId, h.uid))){
-    renderBoard(); renderHand(); updateControlsDisabled(); renderHUD(); return; } }
+    renderBoard(); renderHand(); updateControlsDisabled(); renderHUD();
+    if(m.playerArrivalEvents) waitForBoardEntrances(1400).then(()=>{ if(matchState===m) replayAiArrivalEvents(m); }); // a Pounce lands (2026-10-15)
+    return; } }
   if(m.mode!=='pc' && m.mode!=='liveRanked'){
     if(m.mode!=='pvp') aiActNow(); // PvP: the stranger already played at the start of the round
     renderBoard(); renderHand(); updateControlsDisabled(); renderHUD();
@@ -23034,6 +23068,7 @@ function renderMatchUI(){
     ${(()=>{ const n = m && m.engine && m.engine.actionsPerTurn ? m.engine.actionsPerTurn() : 1; if(n <= 1) return ''; const used = me.playedThisTurn ? n : (me.playsTurn === (m.round||1) - 1 ? (me.playsThisTurn||0) : 0); return `<span class="hud-pill plays-pill" title="Actions per turn: you may play ${n} cards a turn">▶ ${Math.max(0, n - used)}/${n} plays</span>`; })()}
   `;
   const tkKeep = testKitCaptureForRerender(m);
+  try{ repaintBoardRects = hasGsap() ? captureBoardCardRects() : null; }catch(e){ repaintBoardRects = null; } // 2026-10-15: no teleport across the repaint (renderBoard glides them)
   root.innerHTML = `
     <!-- 2026-09-29, per explicit request ("Put this top banner UI onto the top right corner of
          the same level as the Deck and enemy castle row."): the opponent tag + utility buttons
@@ -23399,6 +23434,7 @@ function renderMatchUI(){
     }
   }
   renderBoard();
+  syncWindField(m); // 2026-10-15: the wind layer survives the repaint
   try{ fxHook('matchUI', m); }catch(e){} // FX batch B (2026-10-15): darkness falls / lifts, field layers, dusk, perma-tide
   if(!showPassOverlay) renderHand();
   wireDropZones();
@@ -24502,6 +24538,7 @@ function renderBoard(opts){
       shovedEls.forEach(el=> shovedUids.delete(el.getAttribute('data-uid')));
     }
     flipState = Flip.getState(FLIP_SEL, {props:'opacity,rotation'});
+    repaintBoardRects = null; // Flip carries the cards this time (2026-10-15)
     if(enteringEls.length){
       // Also clear the newElRects position pin (see its own long bugfix comment, unchanged)
       // here — now AFTER flipState has already captured this element's live mid-drop look (see
@@ -24748,6 +24785,18 @@ function renderBoard(opts){
     // animation target, so nothing about the entrance visual changes.
     pinNewElRects();
   } else if(hasGsap()){
+    // 2026-10-15 (user: "Cards still sometime teleport to the left/right - when next round or on victory."): root cause, found
+    // with a per-frame, per-uid position probe: two renders rebuild the rows with no Flip at all. (1) renderMatchUI() wipes the
+    // whole play view (so the rows are empty here and Flip has nothing to diff), and (2) the victory round's final render skips
+    // Flip on purpose (m.ending / m.over). Whenever the row's layout differs from what was on screen (a card more or less re-
+    // centres the row by half a slot; past ~7 cards every card's CSS width shrinks with the count), every card jumped in one
+    // frame. Cards that existed before now glide from where they were (position and size), using this render's own rects or
+    // the ones renderMatchUI captured before its repaint.
+    const fresh = repaintBoardRects && performance.now() - (repaintBoardRects.at || 0) < 600;
+    const fromRects = new Map(fresh ? repaintBoardRects : []); if(prevRects) prevRects.forEach((r, u)=> fromRects.set(String(u), r));
+    repaintBoardRects = null;
+    if(fromRects.size && !reducedMotion()) [rowEnemy, rowMine].forEach(row=>{ if(!row) return;
+      row.querySelectorAll('.board-card[data-uid]').forEach(el=>{ const from = fromRects.get(String(el.getAttribute('data-uid'))); if(from) glideBoardCardFrom(el, from); }); });
     // GSAP itself is available, but there was nothing for Flip to diff against yet — most
     // commonly, the board was COMPLETELY empty before this render (the very first card of the
     // match, or the first card played after a full board wipe), so !!document.querySelector
@@ -26162,9 +26211,63 @@ function aiActNow(){
     events.filter(ev=> ev.type==='play' && ev.side==='B' && ev.uid!=null).forEach(ev=> pendingEntranceOrigins.set(String(ev.uid), {x: r.left + r.width/2, y: Math.max(-60, r.top - 150), rotate: 0, kind:'hand', enemyHand:true})); } }catch(e){}
   now.concat(later.filter(ev=> ARRIVAL_NOW.has(ev.type))).forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
   m.aiArrivalEvents = deferred;
+  // 2026-10-15 (user: "When the enemy has no cards to play, and did not pitch AND has no cards on their field, there is a puff of
+  // smoke on his middle field (very translucent). Just as a joke. Like dust flying off."): tumbleweed moment.
+  try{ const p2 = m.players[2], acted = events.some(ev=> ev.side==='B' && (ev.type==='play' || ev.type==='pitch' || ev.type==='discard'));
+    const empty = ['left','center','right'].every(l=> !(p2.row[l]||[]).some(c=> c && !c.gap && c.hp > 0));
+    if(!acted && empty && m.mode!=='pc' && m.mode!=='liveRanked') setTimeout(()=>{ if(matchState===m && !m.over) emptyFieldDustPuff(document.getElementById('rowEnemy')); }, 450); }catch(e){}
+}
+// Wind on the field (2026-10-15, user: "Is there a soft windy vfx we can do blowing south or north depending? Then Strong wind
+// version - when we need it."): a layer of air streaks and the odd leaf drifting along the board, north (up, the wind at your
+// back) or south (down, at theirs). 'soft': a few faint, slow, wavering streaks; 'strong': many long fast streaks, gusting, with
+// leaves tumbling through (SkillFX.windField, bramblewood-skillfx.js, shared with the Effects Lab). In a fight: a strong-wind round is 'strong' in its direction; the calm rounds of a Windy map
+// keep a 'soft' breeze the way the last gust blew.
+function syncWindField(m){
+  try{ const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+    const W = window.SkillFX; if(!W || !W.windField) return;
+    if(!m || m.over){ W.windFieldClear(bf); return; }
+    const w = m._windNow, rules = matchFieldRules(m) || {}, mode = rules.wind;
+    if(w && w.windy) W.windField(bf, 'strong', w.mine ? 'north' : 'south');
+    else if(mode === 'windy' && m._windLastMine != null) W.windField(bf, 'soft', m._windLastMine ? 'north' : 'south');
+    else W.windFieldClear(bf);
+  }catch(e){}
+}
+// Full Moon field (2026-10-15): is it up, and its howl's look: the field card's moon glows silver and a cold ring of light
+// rolls out across the top of the board.
+function fullMoonFieldUp(m){ try{ const f = m && m.engine && m.engine.getField && m.engine.getField(); return !!(f && f.id === 'moon'); }catch(e){ return false; } }
+function moonHowlVfx(){
+  if(!hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  const card = document.getElementById('fieldCondCard'), bf = document.getElementById('battlefieldEl');
+  if(card){ gsap.fromTo(card, {filter:'drop-shadow(0 0 0 rgba(220,232,255,0)) brightness(1)'}, {filter:'drop-shadow(0 0 14px rgba(220,232,255,.95)) brightness(1.25)', duration:.5, yoyo:true, repeat:3, ease:'sine.inOut', clearProps:'filter'}); }
+  if(!bf) return; const b = bf.getBoundingClientRect(), src = card ? card.getBoundingClientRect() : {left:b.left + b.width*0.5, top:b.top, width:0, height:0};
+  for(let i = 0; i < 2; i++){ const r = document.createElement('div'); r.setAttribute('aria-hidden', 'true');
+    r.style.cssText = 'position:fixed; left:0; top:0; width:40px; height:40px; border-radius:50%; pointer-events:none; z-index:55; border:2px solid rgba(225,235,255,.7); box-shadow:0 0 18px rgba(200,220,255,.6), inset 0 0 12px rgba(200,220,255,.35);';
+    document.body.appendChild(r); gsap.set(r, {x:src.left + src.width/2 - 20, y:src.top + src.height/2 - 20, scale:.3, opacity:0});
+    gsap.timeline({delay:.15 + i*.45, onComplete:()=> r.remove()}).to(r, {opacity:.85, duration:.15}).to(r, {scale:Math.max(4, b.width/60), opacity:0, duration:1.6, ease:'power2.out'}, '<'); }
+}
+// A very faint puff of dust drifting off the middle of an empty row (see aiActNow). 2026-10-15
+function emptyFieldDustPuff(row){
+  if(!row || !hasGsap() || reducedMotion() || !fxAtLeast('low')) return;
+  const r = row.getBoundingClientRect(); if(!r.width) return;
+  const cx = r.left + r.width/2, cy = r.top + r.height*0.62;
+  try{ SoundKit.whoosh ? SoundKit.whoosh() : null; }catch(e){}
+  for(let i = 0; i < 7; i++){
+    const p = document.createElement('div'); p.className = 'empty-dust'; p.setAttribute('aria-hidden', 'true');
+    const s = 34 + Math.random()*40;
+    p.style.cssText = `position:fixed; left:0; top:0; width:${s}px; height:${s}px; border-radius:50%; pointer-events:none; z-index:60; filter:blur(4px);
+      background:radial-gradient(circle, rgba(222,206,176,.55), rgba(222,206,176,.18) 45%, rgba(222,206,176,0) 70%);`;
+    document.body.appendChild(p);
+    const dx = (i - 3)*14 + (Math.random()*16 - 8), up = 16 + Math.random()*30;
+    gsap.set(p, {x:cx - s/2 + (i - 3)*6, y:cy - s/2, scale:.35, opacity:0});
+    gsap.timeline({delay:i*0.05, onComplete:()=> p.remove()})
+      .to(p, {opacity:.32, scale:.9, duration:.3, ease:'power2.out'})
+      .to(p, {x:`+=${dx*2.2}`, y:`-=${up}`, scale:1.7, duration:1.3, ease:'power1.out'}, 0)
+      .to(p, {opacity:0, duration:.7, ease:'power1.in'}, .55);
+  }
 }
 async function replayAiArrivalEvents(m){
-  const evs = (m && m.aiArrivalEvents) || []; if(!evs.length) return; m.aiArrivalEvents = null;
+  // your own Pounce goes first (you played first; see playCardByUid, 2026-10-15), then the enemy's arrivals
+  const evs = [...((m && m.playerArrivalEvents) || []), ...((m && m.aiArrivalEvents) || [])]; if(!evs.length) return; m.aiArrivalEvents = null; m.playerArrivalEvents = null;
   let last = null;
   for(const ev of evs){
     if(matchState !== m) return;
@@ -26278,6 +26381,17 @@ async function playCardByUid(uid, side, dropPoint, popts){
   // origin capture.
   const playEv = events.find(ev=>ev.type==='play');
   if(capturedHandOrigin && playEv) pendingEntranceOrigins.set(String(playEv.uid), capturedHandOrigin);
+  // 2026-10-15 (user: "Pounce doesnt have an animation i think. It should show this: After playing, the card just lands ON the enemy
+  // it would hit, then it jumps back."): the pounce and its hit were replayed in the same tick as the play, before the card was on
+  // the board, so there was nothing to leap and the number just appeared. Like the enemy's arrivals (aiActNow), they now wait until
+  // the card has landed (afterPlayerAction → replayAiArrivalEvents).
+  const pIdx = events.findIndex(ev=> ev.type==='pounce');
+  if(pIdx >= 0 && m.mode!=='pc' && m.mode!=='liveRanked' && !events.some(ev=> ev.type==='fieldSet')){
+    const keep = new Set(['play', 'lumber', 'pitch', 'draw', 'discard', 'converge']);
+    const later = events.slice(pIdx).filter(ev=> !keep.has(ev.type));
+    events.filter(ev=> !later.includes(ev)).forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
+    m.playerArrivalEvents = later;
+  } else
   events.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
   // A field card is a free extra action (2026-10-09): the turn goes on, so you can still play a unit.
   if(events.some(ev=> ev.type==='fieldSet')){ renderBoard(); renderHand(); updateControlsDisabled(); renderHUD(); try{ renderMatchUI(); }catch(e){} return; }
@@ -26846,6 +26960,16 @@ function updateCastleCracks(el, hp, maxHp){
 // 2026-10-12 (user: "won although the enemy still had shield... HP hit 0 but reset to full"): the replay
 // stepped the castle's Health down by every hit and ignored its Skirmish Armour, so the bar showed 0 while
 // the armour had soaked the hits. The replay now spends the armour first, the same way damageHQ does.
+// 2026-10-15: a zero-size spot just inside the field from a side's HP ribbon, for that castle's damage numbers.
+function hqRibbonFloatAnchor(side){
+  const rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${side}"]`), bf = rib && rib.closest('.battlefield');
+  if(!rib || !bf || !rib.getClientRects().length) return null;
+  const r = rib.getBoundingClientRect(), b = bf.getBoundingClientRect(), mine = side === 'A';
+  const a = document.createElement('div'); a.className = 'hq-float-anchor'; a.setAttribute('aria-hidden', 'true');
+  a.style.cssText = `position:absolute; width:0; height:0; z-index:40; pointer-events:none; left:${(r.left + r.width/2 - b.left).toFixed(1)}px; top:${(mine ? r.top - b.top - 26 : r.bottom - b.top + 58).toFixed(1)}px;`;
+  bf.appendChild(a); setTimeout(()=> a.remove(), 2200);
+  return a;
+}
 function displayHqDamage(mm, side, dmg){
   if(!mm || !mm.displayHqHp){ updateHqHpDisplay(side); return; }
   let left = Math.max(0, dmg||0);
@@ -27247,7 +27371,11 @@ function bleedOutVfx(el, ms, tone){
   el.style.setProperty('--bleed-ms', ms + 'ms');
   el.style.setProperty('--bleed-c', DEATH_TONES[tone] || DEATH_TONES.bleed);
   const w = document.createElement('span'); w.className = 'bleed-wash'; w.setAttribute('aria-hidden', 'true');
-  for(let i = 0; i < 4; i++){ const dr = document.createElement('i'); dr.style.left = (18 + i*21 + Math.random()*8) + '%'; dr.style.animationDelay = Math.round(ms*(0.25 + i*0.11)) + 'ms'; w.appendChild(dr); }
+  // 2026-10-15 (user: "The poison death animation should use the same particle as the poisoned effect."): a poison death lets
+  // the Poisoned look's bubbles (the ringed green bubbles of FX.D's .fxd-st-poison) rise off the card instead of falling drops.
+  if(tone === 'poison'){ for(let i = 0; i < 8; i++){ const b = document.createElement('b'); b.className = 'poison-bub'; b.style.left = (10 + i*11 + Math.random()*6) + '%';
+    b.style.setProperty('--pb-s', (0.7 + Math.random()*0.7).toFixed(2)); b.style.animationDelay = Math.round(ms*(0.05 + i*0.07) + Math.random()*60) + 'ms'; w.appendChild(b); } }
+  else for(let i = 0; i < 4; i++){ const dr = document.createElement('i'); dr.style.left = (18 + i*21 + Math.random()*8) + '%'; dr.style.animationDelay = Math.round(ms*(0.25 + i*0.11)) + 'ms'; w.appendChild(dr); }
   // 2026-10-11 (user: "the gradient overlay should appear with/under the card, not over it"): the colour wash lives
   // inside the card tile, clipped to its rounded frame and moving with it, instead of a box laid over the whole slot.
   // Only the falling drops stay on the slot, below the card's bottom edge.
@@ -27344,9 +27472,9 @@ function maybeDeckShuffle(m){
   if(!hasGsap() || reduce) return;
   // 2026-10-14: your own pile fans five backs out and riffles them with ProcFX.flipShuffle; the enemy's keeps the split riffle.
   // Fire-and-forget: nothing waits on it, and the first turn runs underneath.
-  const mine = document.getElementById('deckWidgetBottom');
-  if(deckRiffleFx(mine)) deckShuffleVfx([document.getElementById('deckWidgetTop')]);
-  else deckShuffleVfx(['deckWidgetTop', 'deckWidgetBottom'].map(id=> document.getElementById(id)));
+  // 2026-10-15 (user: "I liked the previous shuffle animation - doesn't have to be too showy."): both piles do the earlier split
+  // riffle again (deckShuffleVfx, toned down); the fanned five-card ProcFX riffle (deckRiffleFx) stays for the Effects Lab.
+  deckShuffleVfx(['deckWidgetTop', 'deckWidgetBottom'].map(id=> document.getElementById(id)), {quiet:true});
 }
 // Deck riffle (2026-10-14): five card backs fan out of the pile in a row, ProcFX.flipShuffle riffles the row (Flip
 // reorders them, the halves arc over and under each other), and they stack back into the pile. About 1.1 s, drawn in a
@@ -27384,21 +27512,22 @@ function deckRiffleFx(deck){
 // Deck shuffle (2026-10-12, user: "Improve the deck shuffling animation, Do not shorten the cards during shuffling"): a riffle.
 // Six full-size card backs split into two piles that slide out to the sides, then fall back in one at a time, alternating
 // left and right, and square up. Nothing is scaled or squashed: every card keeps the deck's own size the whole time.
-function deckShuffleVfx(decks){
-  let played = false;
+function deckShuffleVfx(decks, o){
+  o = o || {}; let played = false;
   decks.forEach((deck, n)=>{
     if(!deck || !hasGsap()) return;
-    const N = 6, cards = Array.from({length:N}, (_, i)=>{ const h = document.createElement('div'); h.className = 'shuffle-half'; h.setAttribute('aria-hidden','true'); h.style.zIndex = String(2 + i); deck.appendChild(h); return h; });
-    const w = deck.getBoundingClientRect().width || 80, out = Math.min(34, w * 0.42);
+    // o.quiet (2026-10-15, the fight-start shuffle "doesn't have to be too showy"): four backs, a shorter split, a gentler fan, one riffle sound
+    const N = o.quiet ? 4 : 6, cards = Array.from({length:N}, (_, i)=>{ const h = document.createElement('div'); h.className = 'shuffle-half'; h.setAttribute('aria-hidden','true'); h.style.zIndex = String(2 + i); deck.appendChild(h); return h; });
+    const w = deck.getBoundingClientRect().width || 80, out = o.quiet ? Math.min(22, w * 0.3) : Math.min(34, w * 0.42), fan = o.quiet ? 2 : 4;
     const side = i=> (i % 2 === 0 ? -1 : 1);
     const tl = gsap.timeline({delay:n*0.12, onComplete:()=> cards.forEach(h=> h.remove())});
     // split: the two halves slide apart, fanning a little within each pile
-    tl.to(cards, {x:(i)=> side(i) * (out + Math.floor(i/2) * 2), y:(i)=> -Math.floor(i/2) * 2, rotation:(i)=> side(i) * (4 + Math.floor(i/2)), duration:.26, ease:'power2.out'});
+    tl.to(cards, {x:(i)=> side(i) * (out + Math.floor(i/2) * 2), y:(i)=> -Math.floor(i/2) * 2, rotation:(i)=> side(i) * (fan + Math.floor(i/2)), duration:.26, ease:'power2.out'});
     // riffle: they drop back in alternately, top cards last
     tl.to(cards, {x:0, y:0, rotation:0, duration:.16, ease:'power2.in', stagger:{each:.07, from:'end'}}, '+=.05');
     // square up: a tiny tap, no scaling
     tl.to(deck, {y:-2, duration:.07, yoyo:true, repeat:1, ease:'power1.out', clearProps:'y'});
-    if(!played){ played = true; try{ SoundKit.riffle(); setTimeout(()=>{ try{ SoundKit.riffle(); }catch(e){} }, 300); }catch(e){} }
+    if(!played){ played = true; try{ SoundKit.riffle(); if(!o.quiet) setTimeout(()=>{ try{ SoundKit.riffle(); }catch(e){} }, 300); }catch(e){} }
   });
 }
 // Chromatic glitch on Shock (2026-10-06, effects "Coming next").
@@ -27493,12 +27622,17 @@ function deathVfx(uid){
   const burnt = iceShards ? true : isToken && style!=='burn' ? pixelShatterVfx(el, Math.round(death*1.1)) : style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
   try{ if(isToken && style!=='burn') SoundKit.pixelShatter(); else if(style==='burn') SoundKit.burnAway(); else if(style==='fall'){ if(!burnt) SoundKit.knockOut(); } else SoundKit.bleedOut(style); }catch(e){}
   if(burnt && (style==='fall' || isToken || iceShards) && style!=='burn') skull.style.display = 'none'; // the fall reads on its own; a floating skull on a different clock made it look stitched
+  // 2026-10-15 (user: "Bleed to death: The card, after being grey, drops dead like normal."): once the bleed-out has drained it grey,
+  // it topples over like an ordinary knock-out (fallDeathVfx: the fall, the leaves, the thump) instead of fading in place.
+  const bleedFall = burnt && !isToken && !iceShards && style==='bleed' && hasGsap();
+  if(bleedFall){ skull.style.display = 'none'; setTimeout(()=>{ if(el.isConnected) fallDeathVfx(el, Math.round(death*0.7)); }, Math.round(death*0.9)); } // grey by ~0.43 s, down by ~0.9 s (the death beat)
   try{ if(style==='burn') battleLightAt(el, 'heat', false); }catch(e){}
   // 2026-10-10: cold and poison deaths shed ice shards / drips (SkillFX.elementDeath, from the VFX Playground).
-  try{ if((style==='cold' || style==='poison') && window.SkillFX && SkillFX.elementDeath){ SkillFX.elementDeath(el, style, {particlesOnly:true}); if(style==='cold') SoundKit.iceShatter(); } }catch(e){}
+  // (2026-10-15: poison deaths now rise in the Poisoned look's bubbles instead, see bleedOutVfx)
+  try{ if(style==='cold' && window.SkillFX && SkillFX.elementDeath){ SkillFX.elementDeath(el, style, {particlesOnly:true}); SoundKit.iceShatter(); } }catch(e){}
   if(hasGsap() && !isFlipping){
     gsap.killTweensOf(el, 'opacity,scale,y');
-    if(burnt && (style==='fall' || isToken) && style!=='burn'){ /* fallDeathVfx / pixelShatterVfx animate the tile themselves */ }
+    if(burnt && (style==='fall' || isToken || bleedFall) && style!=='burn'){ /* fallDeathVfx / pixelShatterVfx animate the tile themselves */ }
     else if(burnt && style==='burn') gsap.to(el, {scale:.94, y:4, duration:death*1.25/1000, ease:'power1.in'});
     else if(burnt) gsap.to(el, {opacity:0, scale:.92, y:12, duration:death*0.55/1000, delay:death*0.85/1000, ease:'power1.in'});
     else gsap.to(el, {opacity:0, scale:.8, y:10, duration:death/1000, ease:'power1.in'});
@@ -27520,6 +27654,31 @@ function deathVfx(uid){
 // inline layout props cleared so it drops back into its real slot in the row.
 // Slide an element from where it visibly was (rect `from`) to wherever layout has put it now,
 // instead of letting it jump. Used wherever a pin or stray transform is released.
+// 2026-10-15: the board cards' rects before a full repaint (renderMatchUI), by uid, for renderBoard to glide them from.
+let repaintBoardRects = null;
+function captureBoardCardRects(){
+  const out = new Map();
+  document.querySelectorAll('#rowMine .board-card[data-uid], #rowEnemy .board-card[data-uid]').forEach(el=>{
+    if(el.matches('.falling, .burning, .bleeding, .is-entering')) return;
+    const r = el.getBoundingClientRect(); if(r.width > 4) out.set(String(el.getAttribute('data-uid')), {left:r.left, top:r.top, width:r.width, height:r.height});
+  });
+  out.at = performance.now();
+  return out;
+}
+// Like glideFromRect, but also eases a size change (a row's cards shrink with their count): offset by the centre, scale from
+// the old width. Skips jumps too big to be a reflow (a measurement taken mid-stack) and cards something else is animating.
+function glideBoardCardFrom(el, from){
+  if(!el || !from || !el.isConnected || !hasGsap() || gsap.isTweening(el) || el.classList.contains('is-entering')) return;
+  const to = el.getBoundingClientRect(); if(!to.width) return;
+  let dx = (from.left + from.width/2) - (to.left + to.width/2), dy = (from.top + from.height/2) - (to.top + to.height/2);
+  const s = from.width / to.width;
+  if(Math.abs(dx) < 3 && Math.abs(dy) < 3 && Math.abs(s - 1) < 0.02) return;
+  if(Math.abs(dx) > Math.max(240, to.width*4) || Math.abs(dy) > to.height*1.5) return;
+  const sc = (el.closest && el.closest('#battlefieldInner') && typeof battlefieldScale === 'number' && battlefieldScale > 0) ? battlefieldScale : 1;
+  dx /= sc; dy /= sc;
+  const d = Math.min(.34, .16 + Math.hypot(dx, dy)/2000 + Math.abs(s - 1)*.4);
+  gsap.fromTo(el, {x:dx, y:dy, scale:Math.max(.6, Math.min(1.6, s))}, {x:0, y:0, scale:1, duration:sharpBoard() ? Math.min(.22, d) : d, ease:'power2.out', clearProps:'x,y,scale'});
+}
 function glideFromRect(el, from){
   if(!el || !from || !el.isConnected || !hasGsap()) return;
   const to = el.getBoundingClientRect();
@@ -27632,6 +27791,13 @@ function settleStrayBoardCards(waited){
   const rowBusy = row=> hasGsap() && [...row.children].some(c=> c.style.position==='absolute' && (gsap.isTweening(c) || c.classList.contains('is-entering')));
   document.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(el=>{
     if(hasGsap() && gsap.isTweening(el)) return;
+    // 2026-10-15 (user: "Cards still sometime teleport to the left/right - when next round"): root cause, from a per-uid frame
+    // probe plus a trace of every large x set on a board card: resolveRound called this in the same task as its final render.
+    // That render's Flip.from() had just pinned every card position:absolute, but GSAP doesn't count a timeline as tweening
+    // before its first tick, so this saw "pinned and idle" cards, measured them stacked at the row's left edge (Flip hadn't
+    // placed them yet), cleared the pin and glided each one in from there: the row swept in from the left. A live Flip target
+    // is busy, whatever isTweening says.
+    if(flippingEls.get(String(el.getAttribute('data-uid'))) === el){ if((waited||0) < 72) deferred = true; return; }
     if(el.parentNode && rowBusy(el.parentNode) && (waited||0) < 72){ deferred = true; return; }
     const pinned = el.style.position==='absolute' || el.style.left || el.style.top;
     const tf = el.style.transform;
@@ -27798,6 +27964,7 @@ async function resolveRound(opts){
   // end-of-round cleanup below knows whether panCameraToShowUid ever actually moved the camera
   // this round (most rounds on a board that fits never do, and skip the recenter entirely).
   battlefieldCameraFollowedThisRound = false;
+  m._cl = null; // the Cleave group in play (2026-10-15)
   m.movedUids = new Set(); // who visibly attacked this round (end-of-match emotes favour the ones that never got to)
   for(let evIdx=0; evIdx<mainEvents.length; evIdx++){
     const ev = mainEvents[evIdx];
@@ -27819,11 +27986,24 @@ async function resolveRound(opts){
       if(!pr.landed){ await Promise.race([pr, sleep(1600)]); await sleep(Math.max(60, Math.round(220 / ((matchState && matchState.speedMult) || 1)))); }
       if(matchState !== m) return;
     }
+    // A Cleave plays as one swing (2026-10-15, see cleavePlan): the first side starts it, the strike and the other side follow
+    // 0.2 s apart on the blade's beat.
+    if(cleaveIsSide(ev) && !(m._cl && String(m._cl.att)===String(ev.attUid) && evIdx <= m._cl.ri)){
+      const pl = cleavePlan(mainEvents, evIdx);
+      if(pl){ const slots = cleaveSlots(ev, mainEvents[pl.mi], pl.ri >= 0 ? mainEvents[pl.ri] : null);
+        if(slots){ m._cl = {att:ev.attUid, t0:performance.now(), mi:pl.mi, ri:pl.ri, slots, step:Math.max(18, Math.round(200 / ((matchState && matchState.speedMult) || 1)))}; ev._cleave = 'L'; ev._cleaveSlots = slots; ev._cleaveSlot = slots[0]; } }
+    } else if(m._cl && (evIdx === m._cl.mi || evIdx === m._cl.ri)){
+      const k = evIdx === m._cl.mi ? 1 : 2; ev._cleave = k === 1 ? 'M' : 'R'; ev._cleaveSlot = m._cl.slots[k];
+      const wait = m._cl.t0 + k*m._cl.step - performance.now(); if(wait > 0) await sleep(wait);
+      if(matchState !== m) return;
+    }
     pushLog(ev); renderVfxForEvent(ev);
     // 2026-10-12 (11:39 list: "Sweep should use a different effect, where a sudden quick rapid hit of 3 units happens, separated
     // by 0.3s"): a Sweep's hits come 0.3 s apart instead of a full beat each.
-    { const nx = mainEvents[evIdx+1]; const rapid = nx && nx.sweep && (nx.type==='hit' || nx.type==='evaded') && nx.attUid === ev.attUid && (ev.type==='hit' || ev.type==='evaded');
+    if(ev._cleave === 'L' || (ev._cleave === 'M' && m._cl && m._cl.ri >= 0)){ /* the group's next beat waits for itself (above) */ }
+    else { const nx = mainEvents[evIdx+1]; const rapid = nx && nx.sweep && (nx.type==='hit' || nx.type==='evaded') && nx.attUid === ev.attUid && (ev.type==='hit' || ev.type==='evaded');
       await sleep(rapid ? Math.max(18, Math.round(300 / ((matchState && matchState.speedMult) || 1))) : delayForEvent(ev, lastVfxKind)); }
+    if(ev._cleave === 'R' || (ev._cleave === 'M' && m._cl && m._cl.ri < 0)) m._cl = null;
     lastVfxKind = vfxKindOf(ev);
     // 2026-10-03 ("When the enemy's castle reaches 0 health, pause the combat, and celebrate"):
     // the instant a castle visibly hits 0, stop replaying the rest of the round's animations (they
@@ -28052,7 +28232,7 @@ async function resolveRound(opts){
   if(finalRender && finalRender.hadNewEntrants) await sleep(420);
   if(over) revealBoardCardsAtEnd();
   if(dungeonAdvanced){ try{ dungeonWaveVfx(m); }catch(e){} await sleep(900); }
-  settleStrayBoardCards(); setTimeout(settleStrayBoardCards, 900);
+  requestAnimationFrame(()=> settleStrayBoardCards()); setTimeout(settleStrayBoardCards, 900); // a frame later, once the final render's Flip has started (2026-10-15)
   // Auto-draw (2026-10-03): nobody has anything left to play and the board hasn't changed for
   // STALL_ROUNDS_FOR_DRAW rounds, or the match reached DRAW_ROUND_CAP. Skipped in the tutorial.
   // Spent enemy: surrender / offer a draw (see setupEnemyBehaviour).
@@ -28073,9 +28253,14 @@ async function resolveRound(opts){
   if(over){
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
     m.winner = (m.forcedWinner!=null) ? m.forcedWinner : ((p1dead&&p2dead)?0:(p1dead?2:1));
-    if(m.winner===1 && p2dead && m.forcedWinner==null && m.mode!=='sandbox'){ try{ await castleCrumble(hqTileEl('B')); }catch(e){} }
-    else if(m.winner===2 && p1dead && m.forcedWinner==null && m.mode!=='sandbox'){ const h = {wait:0}; fxHook('castleFallMine', hqTileEl('A'), h); if(h.wait) await sleep(h.wait); } // 2026-10-15: your own castle sinks (FX.C)
+    // 2026-10-15 (user: "As I described previously, don't wait for the crumble animation to finish before playing the Victory/Defeat
+    // screen."): the castle starts to fall, and a beat later the sign comes up over it while it keeps crumbling underneath; the
+    // results wait for whichever ends last.
+    let castleFall = null;
+    if(m.winner===1 && p2dead && m.forcedWinner==null && m.mode!=='sandbox'){ try{ castleFall = castleCrumble(hqTileEl('B')).catch(()=>{}); m._crumbling = 'B'; await sleep(380); }catch(e){} }
+    else if(m.winner===2 && p1dead && m.forcedWinner==null && m.mode!=='sandbox'){ const h = {wait:0}; fxHook('castleFallMine', hqTileEl('A'), h); if(h.wait){ castleFall = sleep(h.wait); m._crumbling = 'A'; await sleep(Math.min(h.wait, 380)); } } // 2026-10-15: your own castle sinks (FX.C)
     if(m.mode!=='sandbox') await showEndSign(m);
+    if(castleFall){ await castleFall; m._crumbling = null; }
     m.over = true;
     setTimeout(revealBoardCardsAtEnd, 60); setTimeout(revealBoardCardsAtEnd, 700);
     if(m.reopenSkirmishEditor) pendingSkirmishReopen = m.reopenSkirmishEditor;
@@ -28614,6 +28799,19 @@ function syncSkyFx(m, phase){
   if(!sky){ sky = document.createElement('div'); sky.setAttribute('aria-hidden', 'true'); bf.insertBefore(sky, bf.firstChild);
     // a fresh board (every render rebuilds it) starts on the tone it last showed, so a change still eases in
     if(skyToneLast && skyToneLast !== tone){ sky.className = 'sky-fx tone-' + skyToneLast; void sky.offsetWidth; } }
+  // 2026-10-15 (user: "The transition from day to night should be gradual, and from left to right unevenly."): a change of tone on
+  // a board that is showing one is a new tint layer swept in from the left behind a ragged edge while the old one is swept off
+  // with the mirrored edge (CSS .sky-sweep), ~1.3 s, instead of the whole board's colour easing at once.
+  { const sw = bf.querySelector(':scope > .sky-fx.sky-sweep:not(.is-old)'); if(sw){ if(sw.classList.contains('tone-' + tone)) return; sky = sw; } }
+  const curTone = (sky.className.match(/tone-(\w+)/) || [])[1];
+  if(curTone && curTone !== tone && tone !== 'misty' && curTone !== 'misty' && !reducedMotion() && sky.isConnected){
+    bf.querySelectorAll(':scope > .sky-fx.sky-sweep').forEach(x=>{ if(x !== sky) x.remove(); });
+    const old = sky, nw = document.createElement('div'); nw.setAttribute('aria-hidden', 'true'); nw.className = 'sky-fx sky-sweep tone-' + tone;
+    old.after(nw); old.classList.add('sky-sweep', 'is-old'); void nw.offsetWidth;
+    nw.classList.add('is-go'); old.classList.add('is-go'); skyToneLast = tone;
+    setTimeout(()=>{ old.remove(); nw.classList.remove('sky-sweep', 'is-go'); }, 1450);
+    return;
+  }
   sky.className = 'sky-fx tone-' + tone; skyToneLast = tone;
   if(tone === 'misty') sky.style.animationDelay = (-((performance.now() / 1000) % 90)).toFixed(2) + 's'; // the loop carries on across re-renders
 }
@@ -28625,8 +28823,10 @@ function syncNightVeil(m, phase){
   // Night or a dark field: the leaders' and Light Aura units' glow shows (2026-10-15, .unit-light).
   try{ bf.classList.toggle('is-dark-scene', !!(m && !m.over && (want || matchDarkLevel(m)))); }catch(e){}
   if(!v){ if(!want) return; v = document.createElement('div'); v.className = 'night-veil'; v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); if(!phase){ v.classList.add('no-anim', 'is-on'); void v.offsetWidth; v.classList.remove('no-anim'); return; } void v.offsetWidth; }
-  if(want){ v.classList.remove('is-leaving'); v.classList.add('is-on'); return; }
-  if(v.classList.contains('is-on')){ v.classList.add('is-leaving'); setTimeout(()=>{ if(!v.isConnected) return; v.classList.add('no-anim'); v.classList.remove('is-on', 'is-leaving'); void v.offsetWidth; v.classList.remove('no-anim'); }, 2600); }
+  if(want){ if(v.classList.contains('is-leaving')){ v.classList.add('no-anim'); v.classList.remove('is-leaving', 'is-gone', 'is-on'); void v.offsetWidth; v.classList.remove('no-anim'); void v.offsetWidth; } v.classList.add('is-on'); return; }
+  // 2026-10-15: leaving swaps to the mirrored ragged mask (still fully covering), then sweeps it off left to right (see the CSS)
+  if(v.classList.contains('is-on') && !v.classList.contains('is-leaving')){ v.classList.add('no-anim', 'is-leaving'); void v.offsetWidth; v.classList.remove('no-anim'); void v.offsetWidth; v.classList.add('is-gone');
+    setTimeout(()=>{ if(!v.isConnected || !v.classList.contains('is-gone')) return; v.classList.add('no-anim'); v.classList.remove('is-on', 'is-leaving', 'is-gone'); void v.offsetWidth; v.classList.remove('no-anim'); }, 1500); }
 }
 // Battlefield pills with tooltips (2026-10-14, user: "Night, Tide/Ebb need tooltips when you hover." and "The Night, Ebb etc pills
 // will be on the battlefield instead"): Day/Night/Twilight, the moon, the tide, the wind, the Arena's portent and the "Next round"
@@ -29623,6 +29823,7 @@ async function showEndSign(m){
   // throws up dust and burns away under the Victory/Defeat sign.
   ['A','B'].forEach(side=>{
     const hq = m.players[side==='A' ? 1 : 2].hq; if(!hq || hq.hp > 0) return;
+    if(m._crumbling === side) return; // 2026-10-15: still crumbling under the sign (resolveRound), it has its own fall
     const tile = hqTileEl(side); if(!tile) return;
     shakeEl(tile);
     const r = tile.getBoundingClientRect(), br = battlefield.getBoundingClientRect();
@@ -29727,6 +29928,11 @@ function delayForEvent(ev, prevKind){
   else if(ev._arrowShot) base = 760; // set by renderVfxForEvent, which runs just before this
   else if(ev.quake) base = 100; // 2026-10-12 (user: "The earthquake should hit each unit faster (0.1s separation per hit anim)")
   else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
+  // 2026-10-15 (user: "The miss animation is skipping the attack animation - it shouldnt do that."): a blind/dark miss sat in the
+  // generic 150 ms bucket, so the next event (often the round's closing re-render) landed mid-lunge and wiped it. A miss is a
+  // full swing: same beat as a melee hit, so the lunge plays out and then the miss/whoosh.
+  else if(ev.type==='blindMiss') base = 900;
+  else if(ev.type==='tipsySwing' && ev.miss) base = 700;
   else if(ev.type==='sweepWhiff') base = 620;
   else if(ev.type==='fastForward') base = 520;
   else if(ev.type==='converge') base = 900;
@@ -31216,12 +31422,13 @@ function flashShield(el){
 // of evade, flying and swift, slightly differing fade-out animations. Evade: a small rising
 // oscillation. Flying: a flying, fading shake. Swift: a dash to the left then right, static, then
 // fade."). The engine tags every 'evaded' event with `reason` (see lastMissReason in the engine).
+// 2026-10-15 (user: "If they miss, it just says Evaded! no need for miss."): a dodge reads "Evaded!".
 const MISS_STYLES = { // 2026-10-03: every dodge simply reads "Miss" — the icon + motion tell you which passive did it
-  evasive: {text:'Miss', icon:'🌀'},
-  flying:  {text:'Miss', icon:'🪽'},
-  swift:   {text:'Miss', icon:'💨'},
+  evasive: {text:'Evaded!', icon:'🌀'},
+  flying:  {text:'Evaded!', icon:'🪽'},
+  swift:   {text:'Evaded!', icon:'💨'},
   whiff:   {text:'Whiff~', icon:'🪃'}, // a boomerang coming home through empty air (2026-10-12)
-  smoke:   {text:'Miss', icon:'🌫️'}, // a Smoke Bomb's cloud (2026-10-14)
+  smoke:   {text:'Evaded!', icon:'🌫️'}, // a Smoke Bomb's cloud (2026-10-14)
   sandstorm: {text:'Miss', icon:'🏜️'}, // the Sandstorm field (2026-10-15)
 };
 function missCallout(el, reason){
@@ -31255,6 +31462,8 @@ function missCallout(el, reason){
 function flashDodge(el, reason){
   if(!el) return;
   SoundKit.dodge();
+  // 2026-10-15: SkillFX.evasiveDodge (labSkillFx) already plays the sidestep and its "Evaded!" for this one
+  if(el.dataset && el.dataset.sfxDodge){ delete el.dataset.sfxDodge; return; }
   el.classList.add('dodge');
   setTimeout(()=> el.classList.remove('dodge'), 400);
   missCallout(el, reason);
@@ -31266,6 +31475,7 @@ function impactSquash(el, dmg){
   if(!el || !hasGsap() || reducedMotion()) return;
   const uid = el.getAttribute && el.getAttribute('data-uid');
   if(uid && attackingUids.has(String(uid))) return;
+  if(el.classList.contains('sfx-evhit')) return; // 2026-10-15: caught mid-dodge (SkillFX.evasiveDodgeHit) has its own knock
   const tile = el.querySelector('.card-tile'); if(!tile) return;
   const bf = document.getElementById('battlefieldEl'); const r = el.getBoundingClientRect(), b = bf ? bf.getBoundingClientRect() : null;
   const away = b ? ((r.top + r.height/2) < (b.top + b.height/2) ? -1 : 1) : 1;
@@ -31410,7 +31620,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // flash+clang via the main handler above, but until now nothing distinguished "this landed
   // because of Swipe/Sweep" from an ordinary simultaneous hit. Fires once per continuation hit,
   // same convention as Ambush/Siege/Rend just above.
-  if((ev.type==='hit' || ev.type==='hitHQ') && (ev.fork || ev.swipe || ev.sweep) && targetEl){
+  if((ev.type==='hit' || ev.type==='hitHQ') && (ev.fork || ev.swipe || ev.sweep) && targetEl && !ev._cleave){ // a Cleave swing labels itself once (2026-10-15)
     const label = ev.sweep ? '🪓 Cleave!' : ev.prong==='octolash' ? '🐙 Lash!' : ev.prong==='trident' ? '🔱 Trident!' : ev.prong==='pitchfork' ? '🔱 Pitchfork!' : '⇔ Fork!';
     // 2026-10-12 (user: "The Fork float label appears too early"): it now shows 0.1 s before the damage number lands.
     const am = animMs(), at = ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
@@ -31425,6 +31635,14 @@ const TRIGGER_GLYPH = {onDeath:'💀', onSpawn:'✨', onAttack:'⚔️', onAttac
 // Stat changes (2026-10-10, user: "The improvement of stats should be clear! like esprit. The deprovement of skills
 // also."): a big gold "+N⚔ +N❤" (or a cold violet "−N⚔") over the card, and the stat pill itself swells green or
 // shrinks red. The replay snapshot is kept in step so the number on the card doesn't jump back.
+// 2026-10-15 (user: "When a unit with armor gets hit, its armor context icon glows for 0.5s."): the 🛡 badge on the struck card.
+function armorBadgeGlow(el, ev){
+  if(!el || !ev) return;
+  const te = ((getCardDefs()[ev.targetDefId] || {}).effects) || {}, rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
+  if(!(Number(te.armor) > 0 || ev.armorBlocked || (rc && rc.shellArmor > 0))) return;
+  const b = [...el.querySelectorAll('.badges .abadge')].find(x=> x.querySelector('.ab-shields') || /🛡/.test(x.textContent)); if(!b) return;
+  b.classList.remove('armor-glow'); void b.offsetWidth; b.classList.add('armor-glow'); setTimeout(()=> b.classList.remove('armor-glow'), 520);
+}
 function statPillPulse(uid, dir, which){
   const el = boardCardEl(uid); if(!el) return;
   const pill = el.querySelector(which === 'hp' ? '.stats .hp' : '.stats .atk'); if(!pill) return;
@@ -31461,6 +31679,39 @@ function triggerFiredVfx(ev){
 // The Effects Lab's skill effects in real fights (2026-10-14): each layers over the existing feedback (numbers, sounds, tints)
 // on Medium effects and up, at most once per unit per round for the ones that repeat, so a busy round doesn't turn to soup.
 const skillFxSeen = new Set();
+// Cleave as one swing (2026-10-15, user: "The cleave effect should show a arc slash ... from the left to right. But do this straight
+// away, don't have to attack a empty slot before continuing with an arc slash. 2ndly, the unit cleaving should look like its not
+// just attacking straight ahead - but in a small mini arc. 3rdly, the damage timing of the L/M/R, whether whoosh, miss, or hit:
+// separated by 0.2s, in time with the arc slash time."). The engine logs a Cleave as left side (hit / evaded / sweepWhiff, flagged
+// sweep), then the primary strike, then the right side. resolveRound tags the three as one group (ev._cleave 'L' / 'M' / 'R'),
+// starts SkillFX.cleaveSwing on the first and plays the next two 0.2 s apart; each lands its outcome at the wind-up, when the blade
+// passes its slot.
+function cleaveSwingStart(ev, isMine){
+  const att = boardCardEl(ev.attUid), A = animMs(), step = (matchState && matchState._cl && matchState._cl.step) || Math.round(200 / ((matchState && matchState.speedMult) || 1));
+  if(att && window.SkillFX && SkillFX.cleaveSwing && hasGsap() && !reducedMotion() && fxAtLeast('low') && ev._cleaveSlots){
+    attackingUids.add(String(ev.attUid)); att.classList.add('is-attacking');
+    SkillFX.cleaveSwing(att, ev._cleaveSlots, {windup:A.windup, step});
+    setTimeout(()=>{ attackingUids.delete(String(ev.attUid)); att.classList.remove('is-attacking'); }, A.windup + step*2 + 450);
+  } else animateAttacker(ev.attUid, isMine, {sweep:true});
+  try{ if(att) setTimeout(()=> floatText(att, '🪓 Cleave!', 'quick'), Math.round(A.windup*0.4)); setTimeout(()=>{ try{ SoundKit.sweepTone(); }catch(e){} }, Math.max(0, A.windup - 80)); }catch(e){}
+}
+function cleaveIsSide(ev){ return !!ev && (ev.type==='sweepWhiff' || ((ev.type==='hit' || ev.type==='evaded') && !!ev.sweep)); }
+function cleavePlan(events, i){
+  const att = String(events[i].attUid); let mi = -1, ri = -1;
+  for(let j = i + 1; j < Math.min(events.length, i + 16); j++){ const e = events[j]; if(String(e.attUid) !== att) continue;
+    if(mi < 0 && (e.type==='hit' || e.type==='evaded') && !e.sweep && !e.ranged && e.targetUid!=null){ mi = j; continue; }
+    if(mi >= 0 && cleaveIsSide(e)){ ri = j; break; } }
+  return mi < 0 ? null : {mi, ri};
+}
+function cleaveSlots(evL, evM, evR){
+  const Mel = evM && boardCardEl(evM.targetUid); if(!Mel) return null;
+  const c = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width}; };
+  const mc = c(Mel), sib = d=>{ const e = d < 0 ? Mel.previousElementSibling : Mel.nextElementSibling; return e && e.classList.contains('board-card') ? e : null; };
+  const side = (ev, d)=>{ const el = (ev && ev.targetUid!=null && boardCardEl(ev.targetUid)) || sib(d); if(el){ const p = c(el); if(p.w > 4) return p; } return {x:mc.x + d*(mc.w + 12), y:mc.y, w:mc.w}; };
+  return [side(evL, -1), mc, side(evR, 1)];
+}
+// When a hit/evade's blow lands on screen, ms after its event starts (mirrors renderVfxForEvent's impactDelay). 2026-10-15
+function evadeImpactMs(ev){ const A = animMs(), pa = matchState && matchState.pendingArrow; if(ev._cleave) return A.windup; if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(A.windup*0.6) + arrowFlightMs(); return A.windup + (ev.ranged ? A.projectile : A.impactPad); }
 function skillFxOnce(key){ const m = matchState, k = (m ? m.round : 0) + ':' + key; if(skillFxSeen.has(k)) return false; if(skillFxSeen.size > 400) skillFxSeen.clear(); skillFxSeen.add(k); return true; }
 function labSkillFx(ev){
   const F = window.SkillFX; if(!F || !ev || reducedMotion() || !fxAtLeast('med')) return;
@@ -31486,10 +31737,19 @@ function labSkillFx(ev){
       else if(fx.darksight && F.darksight) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.darksight(t2); }, 500);
       else if((fx.guardian || fx.taunt) && F.guardian) setTimeout(()=>{ const t2 = el(ev.uid); if(t2) F.guardian(t2); }, 500);
       break; }
-    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift') && F.evasiveDodge){ const t = el(ev.targetUid); if(t) F.evasiveDodge(t); } break;
+    // 2026-10-15 (user: "it starts delayed - right now, it looks like it's dodging in advance"): the sidestep starts a beat before
+    // the blow lands (evadeImpactMs), not when the attacker begins its wind-up; the game's own "Miss" hop/float is skipped for it.
+    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift') && F.evasiveDodge){ const t = el(ev.targetUid); if(t){ t.dataset.sfxDodge = '1';
+      const a = el(ev.attUid), fromLeft = a ? a.getBoundingClientRect().left < t.getBoundingClientRect().left : Math.random() < .5;
+      setTimeout(()=>{ const t2 = el(ev.targetUid) || t; F.evasiveDodge(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 90)); } } break;
     case 'hit': { const fx = fxOf(ev.attDefId), a = el(ev.attUid), t = el(ev.targetUid); if(!a || !t || ev.source) break;
+      // 2026-10-15 (user: "If it hits, the animation still plays, but they get hit out of the animation, then go back into position."):
+      // a blow that could have been evaded (an Evasive target, a single-target strike that isn't Fencing/Ambush) but landed.
+      if(F.evasiveDodgeHit && !ev.sweep && !ev.swipe && !ev.fork && !ev.quake && !ev.ambush && !ev.boomerang){ const tf = fxOf(ev.targetDefId);
+        if(tf.evasive && !fx.fencing){ const fromLeft = a.getBoundingClientRect().left < t.getBoundingClientRect().left;
+          setTimeout(()=>{ const t2 = el(ev.targetUid); if(t2) F.evasiveDodgeHit(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 100)); } }
       if(fx.swarm && F.swarm && liveSwarmBonus({uid: ev.attUid}) > 0 && skillFxOnce('swarm' + ev.attUid)) F.swarm(a, t);
-      else if(ev.sweep && F.cleave && skillFxOnce('cleave' + ev.attUid)) F.cleave(a, [t]);
+      else if(ev.sweep && !ev._cleave && F.cleave && skillFxOnce('cleave' + ev.attUid)) F.cleave(a, [t]); // (a grouped Cleave has its own swing, 2026-10-15)
       else if(fx.quick && F.quickStrike && skillFxOnce('quick' + ev.attUid)) F.quickStrike(a, t);
       break; }
   }
@@ -31667,6 +31927,7 @@ function sixthPassVfx(ev){
 const STATUS_ORBIT = {stun:'★', stunOnHit:'★', stagger:'✦', confuse:'❓', tipsy:'🫧'};
 function eighthHitAtMs(ev){
   const am = animMs(), pa = matchState && matchState.pendingArrow;
+  if(ev._cleave) return am.windup; // a Cleave's slot lands as the blade passes (2026-10-15)
   if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(am.windup*0.6) + arrowFlightMs();
   return ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
 }
@@ -31679,7 +31940,7 @@ function eighthPassVfx(ev){
   if(ev.type === 'hit' && !ev.quake){
     const ae = fxOf(ev.attDefId), te = fxOf(ev.targetDefId), a = el(ev.attUid), t = el(ev.targetUid), hitMs = eighthHitAtMs(ev);
     if(ev.attUid != null && ev.targetUid != null) (matchState._lastHitOf = matchState._lastHitOf || {})[ev.attUid] = ev.targetUid; // Sap drains the last unit it hit
-    if(a && t && !ev.source && !ev.ranged && !ev.fork && !ev.sweep && !ev.counter && ae.flying && !ae.swarm && !ae.quick && skillFxOnce('swoop' + ev.attUid)) F.swoop(a, t, {flight: Math.min(450, hitMs)});
+    if(a && t && !ev.source && !ev.ranged && !ev.fork && !ev.sweep && !ev._cleave && !ev.pounce && !ev.counter && ae.flying && !ae.swarm && !ae.quick && skillFxOnce('swoop' + ev.attUid)) F.swoop(a, t, {flight: Math.min(450, hitMs)});
     if(a && t && ev.fork && skillFxOnce('fork' + ev.attUid + ':' + ev.targetUid)) at(hitMs - 140, ()=>{ const a2 = el(ev.attUid), t2 = el(ev.targetUid); if(t2) F.forkProngs(a2, [t2], {kind: ev.prong}); });
     // (passive Expose: the engine sends a statusFx 'expose' now, 2026-10-15, and its targetMark plays from there)
     if(t && ev.rend) at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.pierceThrough(t2, {from: degFrom(el(ev.attUid), t2)}); });
@@ -31929,7 +32190,15 @@ function renderVfxForEvent(ev){
     // acted" — that's enough; they no longer also lunge.
     // Scare (2026-10-10, user: "the attacking line is wobbly - to represent the fear"): an attack aimed at a Scare unit trembles.
     const scaredOf = (()=>{ try{ const td = ev.targetDefId && getCardDefs()[ev.targetDefId]; return !!(td && td.effects && td.effects.scare) && ev.type!=='hitHQ'; }catch(e){ return false; } })();
-    if(!ev.ranged) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf});
+    if(ev._cleave === 'L') cleaveSwingStart(ev, isMine); // one swing for the whole Cleave (2026-10-15)
+    // Pounce (2026-10-15, user: "After playing, the card just lands ON the enemy it would hit, then it jumps back."): the pounce
+    // hit is a leap onto its target (SkillFX.pounceOnto), landing as the damage lands, then a hop home.
+    else if(ev.pounce && !ev.ranged && attEl && targetEl && window.SkillFX && SkillFX.pounceOnto && hasGsap() && !reducedMotion() && fxAtLeast('low')){
+      const am0 = animMs(); attackingUids.add(String(ev.attUid)); attEl.classList.add('is-attacking', 'is-pouncing');
+      SkillFX.pounceOnto(attEl, targetEl, {impact: am0.windup + am0.impactPad, scale: attEl.closest('#battlefieldInner') && battlefieldScale > 0 ? battlefieldScale : 1});
+      setTimeout(()=>{ attackingUids.delete(String(ev.attUid)); attEl.classList.remove('is-attacking', 'is-pouncing'); }, am0.windup + am0.impactPad + 700);
+    }
+    else if(!ev.ranged && !ev._cleave) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf});
     const {windup, projectile, impactPad} = animMs();
     // An 'arrow' event just before this hit (Arrow / Fire Arrow skills) turns its projectile into a real arrow.
     const pa = matchState.pendingArrow;
@@ -31938,7 +32207,7 @@ function renderVfxForEvent(ev){
     const pb = matchState.pendingBolt, boltShot = !!(ev.ranged && !arrowShot && pb && String(pb.uid)===String(ev.attUid)); // a Bolt (2026-10-15)
     if(boltShot) matchState.pendingBolt = null;
     const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
-    const impactDelay = arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
+    const impactDelay = ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
     const ufx = (window.UnitFX && ev.attDefId && ev.type==='hit') ? UnitFX.resolve(getCardDefs()[ev.attDefId], isMine) : null;
@@ -31998,7 +32267,9 @@ function renderVfxForEvent(ev){
         // amplitude, an explosion burst, and a whole-battlefield rumble so it reads as a
         // heavier, more consequential impact.
         hqHitBigVfx(targetEl, ev.dmg);
-        floatText(targetEl, '-'+ev.dmg, 'hq-big');
+        // 2026-10-15 (user: "The damage numbers to your castle should come from the battlefield respective HP bar instead. Since the
+        // player's focus is in the centre."): the number rises from the middle of that side's HP ribbon on the field.
+        floatText(hqRibbonFloatAnchor(ev.targetSide) || targetEl, '-'+ev.dmg, 'hq-big');
         const mm = matchState;
         displayHqDamage(mm, ev.targetSide, ev.dmg);
         // Task #228 (Castle speech bubble presets): same intermittent-chatter treatment a
@@ -32007,6 +32278,7 @@ function renderVfxForEvent(ev){
       }
       else {
         flashDmg(ev.targetUid, ev.dmg, ev.armorBlocked, ev.dmgType, ev.crit && !ev.ambush);
+        armorBadgeGlow(targetEl, ev); // 2026-10-15
         // Mirror the engine's own per-hit mutations into the replay snapshot (items #8/#9):
         // subtract this hit's damage, then — same gate as the engine (defCard.hp>0) — if the
         // target survived, apply whatever passive Poison/Bleed the attacker's card carries.
@@ -32049,7 +32321,7 @@ function renderVfxForEvent(ev){
   // Pounce (2026-10-12): a quick crouch-and-spring on the card as it lands, then the hit plays as normal.
   if(ev.type==='pounce'){
     const el = boardCardEl(ev.uid);
-    if(el){ floatText(el, `🐾 Pounce ${ev.amount}`, 'gold'); if(typeof gsap!=='undefined'){ const tile = el; gsap.killTweensOf(tile, 'y,scale'); gsap.timeline().to(tile, {y:6, scale:0.94, duration:0.08}).to(tile, {y:-12, scale:1.06, duration:0.1, ease:'power2.out'}).to(tile, {y:0, scale:1, duration:0.16, ease:'power2.in'}); } }
+    if(el){ floatText(el, `🐾 Pounce ${ev.amount}`, 'gold'); } // 2026-10-15: the spring is now the hit's own leap onto its target (SkillFX.pounceOnto)
   }
   if(ev.type==='rally'){
     const el = boardCardEl(ev.uid);
@@ -32114,7 +32386,14 @@ function renderVfxForEvent(ev){
   // Sweep at an empty side (2026-10-12, user: "When the swipe hits an empty slot, it still looks like it hits forward. It
   // should look like it attacks that empty slot"): the attacker leans toward the empty slot beside its target and a slash
   // crescent cuts the air there.
-  if(ev.type==='sweepWhiff'){
+  if(ev.type==='sweepWhiff' && ev._cleave){
+    // 2026-10-15: part of a Cleave swing (cleaveSwingStart): no separate lunge at the empty slot, just its "whoosh" as the blade passes
+    if(ev._cleave === 'L') cleaveSwingStart(ev, ev.side==='A');
+    const p = ev._cleaveSlot;
+    if(p) setTimeout(()=>{ try{ const ft = document.createElement('div'); ft.className = 'sweep-whiff-label'; ft.textContent = 'whoosh';
+      ft.style.cssText = `left:${p.x}px; top:${p.y - (p.w || 90)*0.3}px;`; document.body.appendChild(ft); setTimeout(()=> ft.remove(), 900); }catch(e){} }, animMs().windup);
+  }
+  else if(ev.type==='sweepWhiff'){
     const near = boardCardEl(ev.nearUid), att = boardCardEl(ev.attUid);
     if(near){
       const r = near.getBoundingClientRect(), gap = Math.max(8, r.width * 0.12), sign = ev.dir === 'left' ? -1 : 1;
@@ -32561,11 +32840,15 @@ function renderVfxForEvent(ev){
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ syncNightVeil(matchState, ev.phase); }catch(e){} }
   // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
   if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine};
-      const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } }catch(e){} }
+      if(matchState && ev.windy) matchState._windLastMine = mine;
+      const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } syncWindField(matchState); }catch(e){} } // + the wind layer (2026-10-15)
   if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
   // 2026-10-15 (FX batch B): Twilight has its own toast (it used to be announced as "Day breaks").
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ showToast(ev.phase==='night' ? TX('toast.night-falls') : ev.phase==='twilight' ? TX('toast.twilight-day-and-night-creatures-are') : TX('toast.day-breaks'), 'ok'); }catch(e){}
-    try{ if(ev.phase==='night'){ SoundKit.nightSwell(); SoundKit.wolfHowl(); } else if(ev.phase==='twilight') SoundKit.nightSwell(); else SoundKit.roosterCrow(); }catch(e){} }
+    try{ if(ev.phase==='night'){ SoundKit.nightSwell(); if(fullMoonFieldUp(matchState)){ SoundKit.moonHowl(); moonHowlVfx(); } else SoundKit.wolfHowl(); } else if(ev.phase==='twilight') SoundKit.nightSwell(); else SoundKit.dawnChime(); }catch(e){} } // 2026-10-15: a softer dawn (was roosterCrow)
+  // 2026-10-15 (user: "Full moon - if a full moon card is on the field, it howls similarly to night (maybe a tad different to
+  // differentiate)"): the Full Moon field card arriving howls (one higher, longer wolf with a silver shimmer) and the moon glows.
+  if(ev.type==='fieldSet' && ev.field==='moon' && matchState){ setTimeout(()=>{ try{ SoundKit.moonHowl(); moonHowlVfx(); }catch(e){} }, 700); }
   // Phase growth (2026-10-10, user: "the weredog gains +5/+6 at night. You see a growth vfx/sfx on the card and green aura &
   // spice leaking out of the card for a while. A real aura moment."): the numbers pop, the card swells, and a green aura
   // with drifting spores clings to it while the bonus lasts (the .phase-aura class from boardCardHTML keeps it on).
@@ -32589,7 +32872,13 @@ function renderVfxForEvent(ev){
   // kill (gravity + side variation + a little rotation), sourced from the dying card's own
   // uid (added to the engine's bounty event). 2026-09-22: bounty now pays Lumber (see
   // bramblewood-engine.js), so the drop glyph is 🪵 to match instead of the retired 🪙.
-  if(ev.type==='bounty'){ if(ev.uid) itemDropVfx(ev.uid, '🪵'); else SoundKit.gold(); }
+  if(ev.type==='bounty'){ const src = ev.uid ? boardCardEl(ev.uid) : null; if(ev.uid) itemDropVfx(ev.uid, '🪵'); else SoundKit.gold();
+    // 2026-10-15 (user: "The bounty skill doesn't do the +2 animation thing to my lumber count like how pitching does."): the Lumber
+    // pill bings, a "+N" jumps off it and a log flies to it from the fallen card, as on a pitch.
+    if(ev.amount > 0){ const pillId = 'hudLumberPill' + (matchState && ev.side === matchState.sideOf(viewerHandPid(matchState)) ? '' : 'Enemy');
+      const from = src ? src.getBoundingClientRect() : null;
+      setTimeout(()=>{ if(document.getElementById(pillId)) resourceGainVfx(from || document.getElementById(pillId).getBoundingClientRect(), [{amount:ev.amount, glyph:'🪵', pillId}]);
+        else if(src && src.isConnected) floatText(src, `+${ev.amount} 🪵`, 'gold'); }, 380); } }
   if(ev.type==='exile') SoundKit.exile();
   if(ev.type==='draw') SoundKit.draw();
   if(ev.type==='overdraw'){ SoundKit.draw(); animateOverdraw(ev); }

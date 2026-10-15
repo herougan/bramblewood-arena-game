@@ -1084,7 +1084,12 @@ M.trenchHit = function(el, opts){
   burst(c.x, c.y, {n:7, colors:['#ff6a5a', '#ffd0c8', '#7a1a12'], dist:[12, 34], dur:.4, size:4, shape:'chip', gravity:14});
   sheen(el, {tint:'rgba(255,60,40,.5)', color:'rgba(255,200,190,.6)', dur:.3});
   const sl = [...h.children];
-  return new Promise(res=> g.timeline({onComplete:()=>{ h.remove(); finish(opts, res); }}).to(sl, {scaleX:1, duration:.12, ease:'power3.out', stagger:.04}).to(sl, {opacity:0, duration:.25}, '+=.1'));
+  // 2026-10-15 (user: "The twin slash vfx you've used, can you edit the fade out abit such that it fades out from the top of the slash
+  // to the bottom of the slash (but quickly, in <0.3s)"): each slash is wiped away from its upper end (the right, at -28°) down to
+  // its lower end behind a soft edge, 0.22 s, the second one a hair after the first.
+  sl.forEach(s=>{ s.style.setProperty('--keep', '118%'); s.style.webkitMaskImage = s.style.maskImage = 'linear-gradient(90deg, #000 calc(var(--keep) - 18%), transparent var(--keep))'; });
+  return new Promise(res=> g.timeline({onComplete:()=>{ h.remove(); finish(opts, res); }}).to(sl, {scaleX:1, duration:.12, ease:'power3.out', stagger:.04})
+    .to(sl, {'--keep':'0%', duration:.22, ease:'power1.in', stagger:.03}, '+=.1'));
 };
 // The raid boss roars at the start of the fight: deep-sea shock rings from the top, a dark tide vignette, bubbles, a shudder.
 M.bossRoar = function(host, opts){

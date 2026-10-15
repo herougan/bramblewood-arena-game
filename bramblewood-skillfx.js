@@ -384,9 +384,19 @@ const MORE_CSS = `
 .sfx-rime{border-radius:12px; box-shadow:inset 0 0 0 2px rgba(220,240,255,.9), inset 0 0 28px 6px rgba(200,232,255,.85);}
 .sfx-flame{width:14px; height:26px; transform-origin:50% 100%; border-radius:50% 50% 45% 45% / 65% 65% 35% 35%; background:radial-gradient(ellipse at 50% 80%, #fff2b0 0, #ffb62e 35%, #f0521c 65%, rgba(200,40,10,0) 80%); filter:blur(.5px); animation:sfxFlick .14s steps(2) infinite alternate;}
 @keyframes sfxFlick{to{transform:scale(1.15, .88) skewX(6deg);}}
-.sfx-haze{border-radius:12px; -webkit-backdrop-filter:blur(1.4px) brightness(1.12) saturate(1.3); backdrop-filter:blur(1.4px) brightness(1.12) saturate(1.3);
-  -webkit-mask-image:repeating-linear-gradient(0deg, #000 0 5px, transparent 5px 11px); mask-image:repeating-linear-gradient(0deg, #000 0 5px, transparent 5px 11px); -webkit-mask-size:100% 22px; mask-size:100% 22px; animation:sfxHaze .5s linear infinite;}
-@keyframes sfxHaze{to{-webkit-mask-position:0 -22px; mask-position:0 -22px;}}
+/* 2026-10-15 (user: "The heat haze effect is nice - but needs to be redone abit. Looks too much like fax lines... maybe it's too thick,
+   or too even, or each line is the same - and completely straight."): the shimmer mask is now two layers of soft wavy ribbons
+   (SVG: different thicknesses, irregular gaps, blurred, part-transparent) drifting up at two speeds and swaying a little, so
+   no two bands line up; the blur/brightness is gentler. */
+.sfx-haze{border-radius:12px; -webkit-backdrop-filter:blur(1.1px) brightness(1.08) saturate(1.2); backdrop-filter:blur(1.1px) brightness(1.08) saturate(1.2);
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60' preserveAspectRatio='none'%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3Cg filter='url(%23b)' fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath d='M-5 6 C15 3 25 9 45 6 S80 2 105 7' stroke-width='1.1' opacity='.9'/%3E%3Cpath d='M-5 17 C20 20 35 13 55 17 S85 21 105 15' stroke-width='2.4' opacity='.55'/%3E%3Cpath d='M-5 25 C10 23 30 28 50 24 S90 22 105 27' stroke-width='.7' opacity='.8'/%3E%3Cpath d='M-5 38 C25 34 40 41 60 37 S88 34 105 39' stroke-width='1.8' opacity='.7'/%3E%3Cpath d='M-5 51 C12 54 32 48 52 52 S82 55 105 50' stroke-width='1.3' opacity='.85'/%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='1.2'/%3E%3C/filter%3E%3Cg filter='url(%23b)' fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath d='M-5 10 C18 13 38 7 62 11 S90 14 105 9' stroke-width='1.6' opacity='.5'/%3E%3Cpath d='M-5 31 C22 28 44 34 66 30 S92 27 105 32' stroke-width='.9' opacity='.6'/%3E%3C/g%3E%3C/svg%3E");
+          mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 60' preserveAspectRatio='none'%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='.9'/%3E%3C/filter%3E%3Cg filter='url(%23b)' fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath d='M-5 6 C15 3 25 9 45 6 S80 2 105 7' stroke-width='1.1' opacity='.9'/%3E%3Cpath d='M-5 17 C20 20 35 13 55 17 S85 21 105 15' stroke-width='2.4' opacity='.55'/%3E%3Cpath d='M-5 25 C10 23 30 28 50 24 S90 22 105 27' stroke-width='.7' opacity='.8'/%3E%3Cpath d='M-5 38 C25 34 40 41 60 37 S88 34 105 39' stroke-width='1.8' opacity='.7'/%3E%3Cpath d='M-5 51 C12 54 32 48 52 52 S82 55 105 50' stroke-width='1.3' opacity='.85'/%3E%3C/g%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 44' preserveAspectRatio='none'%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='1.2'/%3E%3C/filter%3E%3Cg filter='url(%23b)' fill='none' stroke='%23000' stroke-linecap='round'%3E%3Cpath d='M-5 10 C18 13 38 7 62 11 S90 14 105 9' stroke-width='1.6' opacity='.5'/%3E%3Cpath d='M-5 31 C22 28 44 34 66 30 S92 27 105 32' stroke-width='.9' opacity='.6'/%3E%3C/g%3E%3C/svg%3E");
+  -webkit-mask-size:130% 64px, 150% 47px; mask-size:130% 64px, 150% 47px;
+  animation:sfxHaze 1.6s linear infinite;}
+@keyframes sfxHaze{0%{-webkit-mask-position:0 0, -8px 0; mask-position:0 0, -8px 0;} 50%{-webkit-mask-position:-6px -32px, -2px -47px; mask-position:-6px -32px, -2px -47px;}
+  100%{-webkit-mask-position:0 -64px, -8px -94px; mask-position:0 -64px, -8px -94px;}}
 .sfx-glowpool{border-radius:50%; background:radial-gradient(circle, rgba(255,226,140,.75), rgba(255,180,70,.35) 35%, rgba(255,160,60,0) 70%); mix-blend-mode:screen;}
 .sfx-lantern{font-size:24px; line-height:1; transform-origin:50% -14px; filter:drop-shadow(0 0 8px rgba(255,190,80,.95));}
 .sfx-moth{width:4px; height:3px; border-radius:50%; background:#fff3d6; box-shadow:0 0 4px rgba(255,240,200,.9);}
@@ -489,7 +499,8 @@ function poisonCloud(target, o){
   }
   for(let i = 0; i < 9; i++){ const bb = layer('sfx-bubble'); g.set(bb, {x:c.r.left + rnd(.15, .85)*c.w, y:c.r.bottom - 6, opacity:0, scale:rnd(.6, 1.3)});
     g.timeline({delay:.15 + i*0.08, onComplete:()=> bb.remove()}).to(bb, {opacity:1, duration:.08}).to(bb, {y:`-=${rnd(40, 90)}`, x:`+=${rnd(-8, 8)}`, duration:.7, ease:'sine.out'}, 0).to(bb, {scale:1.6, opacity:0, duration:.1}); }
-  g.fromTo(tileOf(target), {filter:'hue-rotate(0deg) saturate(1)'}, {filter:'hue-rotate(65deg) saturate(1.5) brightness(.9)', duration:.3, delay:.2, yoyo:true, repeat:1, repeatDelay:.35, clearProps:'filter'});
+  // 2026-10-15 (user: "The poison animation has a blackening effect. Lessen that effect by 40%."): the sickly dip darkens 40% less
+  g.fromTo(tileOf(target), {filter:'hue-rotate(0deg) saturate(1) brightness(1)'}, {filter:'hue-rotate(40deg) saturate(1.3) brightness(.94)', duration:.3, delay:.2, yoyo:true, repeat:1, repeatDelay:.35, clearProps:'filter'});
   later(()=>{ if(o.light) call(o.light, c.x, c.y, [.5, 1, .35], false); call(o.onImpact); }, 300);
 }
 // Bleed: a quick red cut, then drops swell on the card's lower edge and fall, splatting below.
@@ -568,20 +579,42 @@ function quickStrike(attacker, target, o){
     .to(t, {x:0, y:0, skewX:0, duration:.26, ease:'power2.out', clearProps:'transform'}, '+=0.04');
 }
 // Evasive: the card sidesteps in a blink, leaving an afterimage; leaves flutter and a "Miss" pops up.
+// 2026-10-15 (user: "The evade animation is nice. Focus on the dodge part of the animation, then it ends earlier. 2ndly, it starts
+// delayed - right now, it looks like it's dodging in advance. ... If they miss, it just says Evaded! no need for miss."): the game
+// now starts this just before the blow lands (renderVfxForEvent's impact time), the sidestep is the whole beat (no long hold), and
+// the card is back in ~0.45 s. The label is "Evaded!".
 function evasiveDodge(target, o){
   o = o || {}; if(!ready() || !target){ call(o.onDone); return; }
   const g = G(), c = centre(target), t = tileOf(target), s = o.fromLeft ? 1 : -1;
   const gh = ghostOf(target, 'sfx-ghost is-blue');
-  g.timeline({onComplete:()=> gh.remove()}).to(gh, {opacity:.5, duration:.05}).to(gh, {opacity:0, x:`-=${s*8}`, duration:.45, ease:'power1.in'});
+  g.timeline({onComplete:()=> gh.remove()}).to(gh, {opacity:.5, duration:.04}).to(gh, {opacity:0, x:`-=${s*8}`, duration:.3, ease:'power1.in'});
   g.timeline({onComplete:()=> call(o.onDone)})
-    .to(t, {x:s*c.w*0.55, rotation:s*8, skewX:-s*10, duration:.1, ease:'power3.out'})
-    .to(t, {skewX:0, duration:.12})
-    .to(t, {x:0, rotation:0, duration:.35, ease:'back.out(1.6)', clearProps:'transform'}, '+=0.18');
+    .to(t, {x:s*c.w*0.55, rotation:s*8, skewX:-s*10, duration:.09, ease:'power3.out'})
+    .to(t, {skewX:0, duration:.08})
+    .to(t, {x:0, rotation:0, duration:.26, ease:'back.out(1.4)', clearProps:'transform'}, '+=0.04');
   for(let i = 0; i < 4; i++){ const l = layer('sfx-leaf', '🍃'); g.set(l, {x:c.x - 8 + rnd(-10, 10), y:c.y + rnd(-c.h*.3, c.h*.3), rotation:rnd(0, 360), opacity:0});
-    g.timeline({delay:.04 + i*0.04, onComplete:()=> l.remove()}).to(l, {opacity:1, duration:.06})
-      .to(l, {x:`-=${s*rnd(30, 60)}`, y:`+=${rnd(10, 40)}`, rotation:`+=${rnd(-260, 260)}`, duration:.8, ease:'sine.out'}, 0).to(l, {opacity:0, duration:.3}, .55); }
-  const m = layer('sfx-miss', o.label || 'Miss!'); g.set(m, {x:c.x, y:c.r.top + c.h*.2, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
-  g.timeline({onComplete:()=> m.remove()}).to(m, {scale:1.1, opacity:1, y:'-=14', duration:.18, ease:'back.out(3)'}).to(m, {scale:1, duration:.1}).to(m, {opacity:0, y:'-=16', duration:.35, delay:.35});
+    g.timeline({delay:.02 + i*0.03, onComplete:()=> l.remove()}).to(l, {opacity:1, duration:.05})
+      .to(l, {x:`-=${s*rnd(30, 60)}`, y:`+=${rnd(10, 40)}`, rotation:`+=${rnd(-260, 260)}`, duration:.55, ease:'sine.out'}, 0).to(l, {opacity:0, duration:.22}, .35); }
+  if(o.label === false) return;
+  const m = layer('sfx-miss', o.label || 'Evaded!'); g.set(m, {x:c.x, y:c.r.top + c.h*.2, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
+  g.timeline({onComplete:()=> m.remove()}).to(m, {scale:1.1, opacity:1, y:'-=14', duration:.16, ease:'back.out(3)'}).to(m, {scale:1, duration:.08}).to(m, {opacity:0, y:'-=16', duration:.3, delay:.3});
+}
+// 2026-10-15 (user: "If it hits, the animation still plays, but they get hit out of the animation, then go back into position."):
+// an Evasive unit whose dodge roll failed starts the same sidestep, the blow catches it part-way (o.impactMs after the call: a jolt
+// back against the dodge, a squash and a white flash) and it slides home. The game skips its own impact squash on this card.
+function evasiveDodgeHit(target, o){
+  o = o || {}; if(!ready() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), t = tileOf(target), s = o.fromLeft ? 1 : -1, lead = .1;
+  target.classList.add('sfx-evhit');
+  const gh = ghostOf(target, 'sfx-ghost is-blue');
+  g.timeline({onComplete:()=> gh.remove()}).to(gh, {opacity:.4, duration:.04}).to(gh, {opacity:0, duration:.22, ease:'power1.in'});
+  g.timeline({onComplete:()=>{ target.classList.remove('sfx-evhit'); call(o.onDone); }})
+    .to(t, {x:s*c.w*0.32, rotation:s*6, skewX:-s*8, duration:lead, ease:'power3.out'})
+    // caught: thrown back the other way, squashed
+    .to(t, {x:-s*c.w*0.08, y:c.h*0.05*(o.away || 1), rotation:-s*9, skewX:s*4, scaleX:1.06, scaleY:.9, duration:.07, ease:'power3.out'})
+    .add(()=>{ g.fromTo(t, {filter:'brightness(1.9) saturate(.6)'}, {filter:'brightness(1) saturate(1)', duration:.25, clearProps:'filter'});
+      burst(c.x - s*c.w*0.1, c.y, s > 0 ? 180 : 0, 'wood', 5); }, '<')
+    .to(t, {x:0, y:0, rotation:0, skewX:0, scaleX:1, scaleY:1, duration:.38, ease:'elastic.out(1, .55)', clearProps:'transform'});
 }
 // Cleave (Sweep): one wide glowing arc swept across the target row; each card is hit as the blade passes.
 function cleave(attacker, targets, o){
@@ -602,6 +635,64 @@ function cleave(attacker, targets, o){
   // each card is struck when the blade's tip passes its x (solving for t along the arc is close enough linearly)
   items.forEach(({el, c}, i)=>{ const f = (c.x - P0.x)/(P2.x - P0.x || 1);
     later(()=>{ knock(el, f < .5 ? 160 : 20, 1); burst(c.x, c.y, f < .5 ? 0 : 180, 'wood', 6); if(o.light) call(o.light, c.x, c.y, [1, .9, .6], false); call(o.onEachImpact, el, i); }, (0.1 + sweep*Math.sqrt(Math.max(0, f)))*1000); });
+}
+// Cleave swing (2026-10-15, user: "The cleave effect should show a arc slash (like you have done) from the left to right. But do this
+// straight away, don't have to attack a empty slot before continuing with an arc slash. 2ndly, the unit cleaving should look like
+// its not just attacking straight ahead - but in a small mini arc. 3rdly, the damage timing of the L/M/R, whether whoosh, miss, or
+// hit: separated by 0.2s, in time with the arc slash time."): one swing for the whole Cleave. The attacker winds up leaning back
+// toward the first slot, then sweeps through a small arc (left, forward, right) while one glowing crescent is cut across the three
+// enemy slots, its tip passing slot 1 at o.windup, slot 2 one o.step later and slot 3 one more o.step later; the game lands each
+// slot's hit, miss or whoosh on those beats. pts: the three slot centres [{x, y}] in sweep order (empty slots included).
+function cleaveSwing(attacker, pts, o){
+  o = o || {}; const W = (o.windup || 390)/1000, S = (o.step || 200)/1000;
+  if(!ready() || !attacker || !pts || pts.length < 2) return;
+  const g = G(), a = centre(attacker), t = tileOf(attacker), P = pts.filter(Boolean);
+  const first = P[0], last = P[P.length - 1], mid = P[Math.floor(P.length/2)];
+  const away = Math.sign(mid.y - a.y) || -1;                    // toward the enemy row
+  const dirX = Math.sign(last.x - first.x) || 1;                 // the way the blade travels
+  const pitch = Math.abs(last.x - first.x) / Math.max(1, P.length - 1) || a.w;
+  // the crescent: from a little before slot 1 to a little past slot 3, bowing away from the attacker
+  const lead = pitch*0.42, P0 = {x:first.x - dirX*lead, y:first.y - away*a.h*0.08}, P2 = {x:last.x + dirX*lead, y:last.y - away*a.h*0.08};
+  const C = {x:(P0.x + P2.x)/2, y:mid.y + away*Math.max(34, Math.abs(P2.x - P0.x)*0.16)};
+  const sv = svgLayer('sfx-arc'), d = `M${P0.x},${P0.y} Q${C.x},${C.y} ${P2.x},${P2.y}`;
+  const gl = drawPath(sv, d, 'glow'), co = drawPath(sv, d, 'core');
+  const span = Math.abs(P2.x - P0.x) || 1, total = S*(P.length - 1)*span/(Math.abs(last.x - first.x) || pitch*(P.length - 1)); // tip speed: one pitch per step
+  const t0 = Math.max(0, W - total*(lead/span));                 // so the tip reaches slot 1 exactly at W
+  g.set(sv, {opacity:1});
+  g.timeline({onComplete:()=> sv.remove()})
+    .to([gl, co], {strokeDashoffset:0, duration:total, ease:'none'}, t0)
+    .to(sv, {opacity:0, duration:.22, ease:'power1.in'}, t0 + total + .04);
+  // the attacker: wind up leaning back toward slot 1, then a small arc through the swing (side, forward, other side), then home
+  const sw = Math.min(a.w*0.22, 22), fw = Math.min(a.h*0.12, 16);
+  g.killTweensOf(t, 'x,y,rotation,scale');
+  g.timeline()
+    .to(t, {x:-dirX*sw*0.7, y:-away*fw*0.5, rotation:-dirX*10, scale:.96, duration:Math.max(.08, t0 + total*(lead/span)*0.6), ease:'power2.in'})
+    .to(t, {keyframes:[{x:-dirX*sw*0.3, y:away*fw*0.7, rotation:-dirX*4, scale:1.04, duration:S*0.5},
+                       {x:0, y:away*fw, rotation:dirX*2, scale:1.06, duration:S*0.5},
+                       {x:dirX*sw*0.6, y:away*fw*0.6, rotation:dirX*9, scale:1.04, duration:S},
+                       {x:dirX*sw*0.8, y:0, rotation:dirX*12, scale:1, duration:S*0.5}], ease:'none'})
+    .to(t, {x:0, y:0, rotation:0, scale:1, duration:.3, ease:'elastic.out(1, .6)', clearProps:'transform'});
+}
+// Pounce (2026-10-15, user: "Pounce doesnt have an animation i think. It should show this: After playing, the card just lands ON the
+// enemy it would hit, then it jumps back."): a crouch, a high arc onto the target that lands right on top of it at o.impact ms
+// (squash, dust ring, the target pressed down), a beat, then a hop back along a lower arc into its own slot. o.scale: the board's
+// zoom (the tile moves in board pixels). Animates the attacker's .card-tile only.
+function pounceOnto(attacker, target, o){
+  o = o || {}; if(!ready() || !attacker || !target){ later(o.onImpact, o.impact || 400); return; }
+  const g = G(), t = tileOf(attacker), a = centre(attacker), b = centre(target), sc = o.scale || 1;
+  const dx = (b.x - a.x)/sc, dy = (b.y - a.y)/sc, imp = Math.max(.3, (o.impact || 570)/1000), crouch = .12, fly = imp - crouch;
+  const lift = Math.max(40, Math.abs(dy)*0.45 + 30)/sc;            // how high the arc rises above the straight line
+  const st = {p:0}, up = dy < 0 ? -1 : 1;
+  g.killTweensOf(t, 'x,y,rotation,scale,scaleX,scaleY');
+  const at = p=> ({x:dx*p, y:dy*p - lift*4*p*(1 - p)});
+  g.timeline()
+    .to(t, {y:-up*6/sc, scaleX:1.08, scaleY:.9, duration:crouch, ease:'power2.in'})
+    .to(st, {p:1, duration:fly, ease:'power1.in', onUpdate:()=>{ const q = at(st.p); g.set(t, {x:q.x, y:q.y, rotation:(dx > 0 ? 1 : -1)*Math.sin(st.p*Math.PI)*12, scaleX:1 + .1*Math.sin(st.p*Math.PI), scaleY:1 + .1*Math.sin(st.p*Math.PI)}); }})
+    .add(()=>{ ring(b.x, b.y, 'sfx-string', b.w*1.1, 380); burst(b.x, b.y + b.h*.3, up > 0 ? 90 : -90, 'wood', 6); g.fromTo(tileOf(target), {y:0, scaleY:1}, {y:up*5, scaleY:.94, duration:.08, yoyo:true, repeat:1, ease:'power2.out', clearProps:'transform'}); call(o.onImpact); })
+    .to(t, {scaleX:1.1, scaleY:.88, rotation:0, duration:.07, ease:'power2.out'})
+    .to(t, {scaleX:1, scaleY:1, duration:.1}, '+=.08')
+    .to(st, {p:0, duration:.34, ease:'power2.inOut', onUpdate:()=>{ const q = {x:dx*st.p, y:dy*st.p - lift*0.5*4*st.p*(1 - st.p)}; g.set(t, {x:q.x, y:q.y, rotation:-(dx > 0 ? 1 : -1)*Math.sin(st.p*Math.PI)*8}); }})
+    .to(t, {scaleX:1.06, scaleY:.94, duration:.06}).to(t, {x:0, y:0, rotation:0, scaleX:1, scaleY:1, duration:.18, ease:'back.out(2)', clearProps:'transform'});
 }
 // Guardian: a shimmering hex shield wall rises in front of the card and pulses twice as it draws attacks.
 function guardian(target, o){
@@ -688,9 +779,17 @@ function frostChill(target, o){
     g.timeline({delay:i*0.05, onComplete:()=> m.remove()}).to(m, {opacity:.85, duration:.15}).to(m, {x:`+=${s*c.w*2}`, scale:1.5, duration:.9, ease:'power1.out'}, 0).to(m, {opacity:0, duration:.4}, .55); }
   for(let i = 0; i < 10; i++){ const f = layer('sfx-flake', '❄'); g.set(f, {x:c.r.left + rnd(0, c.w), y:c.r.top - rnd(0, 20), opacity:0, rotation:rnd(0, 180)});
     g.timeline({delay:.15 + i*0.06, onComplete:()=> f.remove()}).to(f, {opacity:1, duration:.1}).to(f, {y:`+=${c.h*rnd(.5, .9)}`, x:`+=${rnd(-12, 12)}`, rotation:'+=120', duration:1, ease:'sine.in'}, 0).to(f, {opacity:0, duration:.25}, .8); }
-  const r = over(target, 'sfx-rime', 0); g.set(r, {opacity:0});
-  g.timeline({delay:.3, onComplete:()=> r.remove()}).to(r, {opacity:1, duration:.4}).to(r, {opacity:0, duration:.6, delay:.5});
+  // 2026-10-15 (user: "The freeze per turn effect's rectangle vfx sometimes doesnt appear on the card but offset or somewhere random on
+  // the field."): the rime frame was a fixed overlay measured once, at the call; the frost tick lands while the board re-renders,
+  // reflows or pans, so it was left where the card used to be (or at 0,0 for a card already replaced). It now lives inside the
+  // card's own tile, so it is wherever the card is.
   const t = tileOf(target);
+  const r = document.createElement('div'); r.className = 'sfx sfx-rime'; r.setAttribute('aria-hidden', 'true');
+  Object.assign(r.style, {position:'absolute', inset:'0', left:'0', top:'0', width:'100%', height:'100%', borderRadius:'inherit', pointerEvents:'none', zIndex:'30'});
+  if(t && getComputedStyle(t).position === 'static') t.style.position = 'relative';
+  (t || target).appendChild(r); g.set(r, {opacity:0});
+  g.timeline({delay:.3, onComplete:()=> r.remove()}).to(r, {opacity:1, duration:.4}).to(r, {opacity:0, duration:.6, delay:.5});
+  later(()=>{ if(r.isConnected) r.remove(); }, 2600);
   later(()=>{ t.classList.add('sfx-frosted'); ring(c.x, c.y, 'sfx-frost', c.w*1.3, 600); if(o.light) call(o.light, c.x, c.y, [.45, .75, 1], false); call(o.onImpact); }, 350);
   later(()=> t.classList.remove('sfx-frosted'), 1500);
 }
@@ -841,10 +940,47 @@ function skyDrop(cards, o){
       .to(sh, {opacity:.0, duration:.25}, '<');
   });
 }
+// Wind on the field (2026-10-15, user: "Is there a soft windy vfx we can do blowing south or north depending? Then Strong wind
+// version - when we need it."): air streaks and the odd leaf drifting along the board, north (up the screen) or south (down).
+// 'soft': a few faint, slow, wavering streaks and a leaf now and then; 'strong': many long fast streaks, gusting, leaves tumbling
+// through. Plain CSS animations in one layer inside the host (cheap: no script per frame); it stays until windFieldClear(host)
+// or a different strength/direction. The game keeps it on #battlefieldEl through the round (syncWindField in arena_app.js).
+const WIND_CSS = `
+.sfx-windfield{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:2; border-radius:inherit; opacity:0; transition:opacity .6s ease;}
+.sfx-windfield.is-in{opacity:1;} .sfx-windfield.is-out{opacity:0;}
+.sfx-windfield i{position:absolute; top:0; width:var(--w,1px); height:var(--len,40px); border-radius:2px; opacity:0;
+  background:linear-gradient(180deg, rgba(255,255,255,0), rgba(240,248,255,var(--a,.2)) 45%, rgba(255,255,255,0)); animation:sfxWindN 2s linear infinite;}
+.sfx-windfield b{position:absolute; top:0; font-size:15px; line-height:1; font-weight:normal; opacity:0; animation:sfxLeafN 3s linear infinite; filter:drop-shadow(0 1px 1px rgba(0,0,0,.35));}
+.sfx-windfield.is-soft b{font-size:12px;}
+.sfx-windfield.to-south i{animation-name:sfxWindS;} .sfx-windfield.to-south b{animation-name:sfxLeafS;}
+@keyframes sfxWindN{0%{transform:translate(0, 110cqh) rotate(var(--tilt,12deg)); opacity:0;} 15%{opacity:1;} 50%{transform:translate(var(--sway,0px), 45cqh) rotate(var(--tilt,12deg));} 85%{opacity:1;} 100%{transform:translate(0, -30cqh) rotate(var(--tilt,12deg)); opacity:0;}}
+@keyframes sfxWindS{0%{transform:translate(0, -30cqh) rotate(var(--tilt,12deg)); opacity:0;} 15%{opacity:1;} 50%{transform:translate(var(--sway,0px), 45cqh) rotate(var(--tilt,12deg));} 85%{opacity:1;} 100%{transform:translate(0, 110cqh) rotate(var(--tilt,12deg)); opacity:0;}}
+@keyframes sfxLeafN{0%{transform:translate(0, 105cqh) rotate(0); opacity:0;} 10%{opacity:.9;} 50%{transform:translate(var(--sway,0px), 50cqh) rotate(calc(var(--spin,240deg)*.5));} 90%{opacity:.9;} 100%{transform:translate(calc(var(--sway,0px)*-.4), -10cqh) rotate(var(--spin,240deg)); opacity:0;}}
+@keyframes sfxLeafS{0%{transform:translate(0, -10cqh) rotate(0); opacity:0;} 10%{opacity:.9;} 50%{transform:translate(var(--sway,0px), 50cqh) rotate(calc(var(--spin,240deg)*.5));} 90%{opacity:.9;} 100%{transform:translate(calc(var(--sway,0px)*-.4), 105cqh) rotate(var(--spin,240deg)); opacity:0;}}
+.sfx-windfield{container-type:size; --tilt:11deg;} .sfx-windfield.is-strong{--tilt:17deg;} /* a slant, so it reads as wind, not rain */
+@media (prefers-reduced-motion: reduce){ .sfx-windfield{display:none;} }`;
+function windField(host, strength, dir){
+  if(!host) return; const cur = host.querySelector(':scope > .sfx-windfield');
+  if(!strength || reduce()){ if(cur) windFieldClear(host); return; }
+  if(!document.getElementById('sfx-wind-css')){ const s = document.createElement('style'); s.id = 'sfx-wind-css'; s.textContent = WIND_CSS; (document.head || document.body).appendChild(s); }
+  const key = strength + ':' + dir; if(cur && cur.dataset.key === key && !cur.classList.contains('is-out')) return; if(cur) windFieldClear(host);
+  const strong = strength === 'strong', n = strong ? 24 : 9, f = document.createElement('div');
+  f.className = 'sfx-windfield is-' + (strong ? 'strong' : 'soft') + ' to-' + (dir === 'south' ? 'south' : 'north'); f.dataset.key = key; f.setAttribute('aria-hidden', 'true');
+  let html = '';
+  for(let i = 0; i < n; i++){ const len = strong ? 60 + rnd(0, 90) : 28 + rnd(0, 40), dur = strong ? .55 + rnd(0, .5) : 2.4 + rnd(0, 1.8);
+    html += `<i style="left:${rnd(0, 100).toFixed(1)}%; --len:${len.toFixed(0)}px; --w:${(strong ? 1.2 + rnd(0, 1.3) : .8 + rnd(0, .8)).toFixed(1)}px; --a:${(strong ? .35 + rnd(0, .35) : .12 + rnd(0, .14)).toFixed(2)}; --sway:${rnd(-1, 1)*(strong ? 22 : 14)}px; animation-duration:${dur.toFixed(2)}s; animation-delay:${(-rnd(0, dur*2)).toFixed(2)}s"></i>`; }
+  const leaves = strong ? 5 : 2;
+  for(let i = 0; i < leaves; i++){ const dur = strong ? 1.4 + rnd(0, .9) : 5 + rnd(0, 3);
+    html += `<b style="left:${rnd(8, 92).toFixed(1)}%; --sway:${rnd(-1, 1)*(strong ? 60 : 30)}px; --spin:${(Math.random() < .5 ? -1 : 1)*(strong ? 720 : 240)}deg; animation-duration:${dur.toFixed(2)}s; animation-delay:${(-rnd(0, dur)).toFixed(2)}s">${['🍃','🍂','🍃'][i % 3]}</b>`; }
+  f.innerHTML = html; if(getComputedStyle(host).position === 'static') host.style.position = 'relative';
+  host.appendChild(f); requestAnimationFrame(()=> f.classList.add('is-in'));
+  return f;
+}
+function windFieldClear(host){ if(!host) return; host.querySelectorAll(':scope > .sfx-windfield').forEach(cur=>{ cur.classList.remove('is-in'); cur.classList.add('is-out'); setTimeout(()=> cur.remove(), 700); }); }
 function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || ''; }
 root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, boomerangThrow, boomerangCastle, boomerangReturn, shieldDrop, backstab, elementDeath, feathers};
-Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, cleave, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, lanternGlow,
-  shockwave, castleCrumble, levelUp, unlockSparkle, skyDrop});
+Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, evasiveDodgeHit, cleave, cleaveSwing, pounceOnto, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, lanternGlow,
+  shockwave, castleCrumble, levelUp, unlockSparkle, skyDrop, windField, windFieldClear});
 // ---- 2026-10-14 (sixth pass): Fireball, Meteor, Banana.
 //   SkillFX.fireball(caster, target, opts{sides, onImpact, light})   SkillFX.meteor(target, opts{sides, host, onImpact, light})
 //   SkillFX.bananaThrow(thrower, target, opts{onImpact})             SkillFX.munch(target, opts{glyph})
