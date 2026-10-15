@@ -20,6 +20,19 @@ At 50+, Energy and play time run out at about the same point: 80 minutes is roug
 
 **Built now:** max Energy starts at **20**. The **Camp** raises it +5 a step to 50 (40, 80 … 240 Maple Leaves). The **Forge** takes it +2 a step from 50 to 60 (Maple Leaves and Dust). 70 is for a later mechanic. Regeneration stays 1 every 5 minutes, and free top-ups come through Alchemy at Map 65+ (not built). Players who already had 50 keep it, and old Stamina marks become Forge steps.
 
+**Changed 2026-10-15** (designer: "Tavern's upgrades are not free. They cost advanced resources." and "20-30 in Nest, then 30-50 in Forge, then 50-60 in Tavern"). Each step is paid in Magic Dust and Materia, no Maple Leaves, and each place opens once the one before is full:
+
+| Place | Range | Steps | Cost per step |
+|---|---|---|---|
+| Nest | 20 → 30 | 2 × +5 | ✨120 + 1 Iron Shard; ✨240 + 2 Iron Shards |
+| Forge | 30 → 50 | 4 × +5 | ✨300 + 2 Iron Shards; ✨450 + 2 Iron Shards + 1 River Pearl; ✨600 + 1 Tempering Stone; ✨800 + 2 Tempering Stones |
+| Tavern | 50 → 60 | 5 × +2 | ✨600 + 1 Tempering Stone; ✨800 + 1 TS; ✨1000 + 1 TS + 1 River Pearl; ✨1200 + 2 TS; ✨1500 + 2 TS + 1 River Pearl |
+
+Totals: Nest ✨360 + 3 Iron Shards; Forge ✨2150 + 4 Iron Shards, 1 River Pearl, 3 Tempering Stones; Tavern ✨5100 + 7 Tempering Stones, 2 River Pearls.
+Saves carry over: the old max (20 + 5 a Camp step + 2 a Forge step) is rebuilt as Nest, Forge and Tavern steps worth at least as much (50 becomes Nest 2 + Forge 4; 56 adds Tavern 3).
+
+**The Tavern also recruits.** Spend 1 🍺 Beer and a few resources to add one card for good, from three offers a week (cards you've met but don't own, Rare at most): Common ✨150 + 🍁150, Uncommon ✨300 + 🍁250, Rare ✨600 + 🍁300 + 1 Iron Shard. Beer: 1 every Monday, +1 for each of the first two weekly quest tiers finished (1–3 a week); you hold at most 3. Beer shows in the Inventory wallet and on the Profile.
+
 ## Wild Veggies (Maps 20+)
 
 Inspired by Duel Masters' Wild Veggies: fruits, vegetables and fungi come to life.

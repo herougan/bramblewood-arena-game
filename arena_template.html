@@ -408,6 +408,26 @@
      signed-in Google/email account. Clicking opens sign-in (guest) or Profile (signed in). */
   .account-chip{display:flex; align-items:center; gap:5px; font:inherit; font-size:11.5px; font-weight:800; padding:5px 10px; border-radius:999px; background:var(--surface-2); border:1px dashed var(--surface-border); color:var(--ink); cursor:pointer; max-width:200px;}
   .account-chip span:last-child{overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  /* Feedback (2026-10-15): a small speech bubble right of the profile pill, and its form */
+  .feedback-btn{flex:0 0 auto; width:30px; height:30px; border-radius:50%; display:grid; place-items:center; padding:0; font-size:15px; line-height:1; cursor:pointer; background:var(--surface-2); border:1px solid var(--surface-border); color:var(--ink); position:relative;}
+  .feedback-btn:hover{filter:brightness(1.08); transform:translateY(-1px);} .feedback-btn:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
+  .feedback-btn.has-queue::after{content:''; position:absolute; top:1px; right:1px; width:8px; height:8px; border-radius:50%; background:#e3a32b; box-shadow:0 0 0 2px var(--surface-2);}
+  @media (max-width:640px){ .topbar .feedback-btn{width:26px; height:26px; font-size:13px;} }
+  .fb-modal{max-width:min(440px, 94vw) !important; width:min(440px, 94vw);}
+  .fb-modal form{display:flex; flex-direction:column; gap:10px;}
+  .fb-modal .fb-cats{display:flex; flex-wrap:wrap; gap:6px; border:0; padding:0; margin:0;}
+  .fb-modal .fb-cats legend{font-size:12px; font-weight:800; margin-bottom:4px; opacity:.8;}
+  .fb-modal .fb-cats label{display:inline-flex; align-items:center; gap:4px; padding:5px 10px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2); cursor:pointer; font-size:13px; font-weight:700;}
+  .fb-modal .fb-cats input{position:absolute; opacity:0; pointer-events:none;}
+  .fb-modal .fb-cats label:has(input:checked){background:#7a4a1c; color:#fff8e6; border-color:#7a4a1c;}
+  .fb-modal .fb-cats label:has(input:focus-visible){outline:2px solid #ffd76a; outline-offset:2px;}
+  .fb-modal textarea{min-height:120px; resize:vertical; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.2); font:inherit; background:#fffdf7; color:#2b2117;}
+  .fb-modal .fb-ctx{font-size:12px; opacity:.75; margin:0;}
+  .fb-modal .fb-actions{display:flex; justify-content:flex-end; gap:8px; align-items:center;} .fb-modal .fb-actions small{margin-right:auto; font-size:12px; opacity:.75;}
+  .fb-admin-list{display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow:auto;}
+  .fb-admin-item{padding:8px 10px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border);}
+  .fb-admin-item header{display:flex; flex-wrap:wrap; gap:8px; font-size:12px; opacity:.8; margin-bottom:4px;} .fb-admin-item p{margin:0; white-space:pre-wrap; font-size:14px;}
+  .fb-admin-item details{font-size:11.5px; opacity:.8; margin-top:4px;}
   .account-chip.signed-in{border-style:solid; border-color:#4caf50;}
   .account-chip.signed-in .account-chip-ico::after{content:'';}
   .account-chip:hover{filter:brightness(1.08);}
@@ -3299,7 +3319,11 @@
   .page-back-bar .pb-back{width:40px; height:40px; border-radius:50%; border:0; cursor:pointer; display:grid; place-items:center; font-size:20px; font-weight:900; background:#fff8e6; color:#2b2117; box-shadow:0 0 0 2px #c9853a, 0 4px 10px rgba(0,0,0,.35);}
   .page-back-bar .pb-back:hover{background:#ffe9b8;}
   @media (max-width:900px){ .page-back-bar .pb-sc b{display:none;} .page-back-bar .pb-sc{padding:6px 8px;} }
-  body:has(#shopBackBtn) .page-back-bar .pb-back{display:none;}
+  /* 2026-10-15 (user: "the back button is not centered (in Nest etc.)"): the ↩ glyph came from whichever font had it, so it sat off
+     centre (and as a colour emoji on some systems); it is now a drawn arrow centred in the circle. The Shop's own back button only
+     hides ↩ while the Shop is showing (it used to hide it on every page after a Shop visit). */
+  .page-back-bar .pb-back svg{width:22px; height:22px; display:block;}
+  body:has(#view-shop:not([hidden]) #shopBackBtn) .page-back-bar .pb-back{display:none;}
   /* Castle crumble (2026-10-13) */
   .crumble-layer{position:fixed; z-index:1150; pointer-events:none; overflow:visible;}
   .crumble-layer .crumble-stone{position:absolute; border-radius:3px 5px 2px 4px; background:linear-gradient(160deg,#b9a68a,#7d6a52 60%,#55473a); box-shadow:inset -1px -2px 0 rgba(0,0,0,.3);
@@ -3340,6 +3364,16 @@
   .fr-on{color:#2f8f45; font-weight:700;} .fr-pending{font-size:12px; opacity:.7; margin-right:4px;}
   .fr-actions{display:flex; gap:6px; align-items:center;}
   .fr-empty{opacity:.7; font-size:13px; margin:6px 0;}
+  /* 2026-10-15 Friends extras: woodland friends to befriend (after a 1 s pause when you have none) and Recently played */
+  .fr-npc-av{background:#efe3c4;} .fr-npc-av .dlg-portrait{width:100%; height:100%; box-shadow:none; border-radius:50%;} .fr-npc-av .dlg-portrait-ico{font-size:20px; background:transparent;}
+  .fr-suggest.is-in .fr-row{animation:frNpcIn .45s cubic-bezier(.3,1.4,.5,1) both;}
+  .fr-suggest.is-in .fr-row:nth-of-type(2){animation-delay:.08s;} .fr-suggest.is-in .fr-row:nth-of-type(3){animation-delay:.16s;} .fr-suggest.is-in .fr-row:nth-of-type(4){animation-delay:.24s;}
+  @keyframes frNpcIn{from{opacity:0; transform:translateY(10px) scale(.96);}}
+  .fr-npc:hover .fr-npc-av{animation:frWave .6s ease;} @keyframes frWave{30%{transform:rotate(-8deg);} 60%{transform:rotate(6deg);}}
+  .fr-recent .ro-res{display:inline; width:auto; height:auto; padding:0; background:none; color:inherit; font-weight:800;}
+  .fr-recent .ro-res.win{color:#2f8f45;} .fr-recent .ro-res.loss{color:#b5473f;}
+  @media (prefers-reduced-motion: reduce){ .fr-suggest.is-in .fr-row, .fr-npc:hover .fr-npc-av{animation:none;} }
+  @media (max-width:520px){ .fr-row{grid-template-columns:36px 1fr; } .fr-row .fr-actions{grid-column:2; justify-self:start;} }
   .fr-waiting{margin-top:14px; padding:10px 12px; border-radius:10px; background:rgba(213,139,58,.15); display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
   .invite-modal{max-width:440px;}
   .inv-field{margin:12px 0;} .inv-label{font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:.06em; opacity:.75; margin-bottom:6px;}
@@ -3939,7 +3973,7 @@
   .splash-title .tl{display:inline-block; opacity:0; transform:translateY(-26px) rotate(-6deg); animation:titleDrop .55s cubic-bezier(.2,1.4,.4,1) forwards; animation-delay:calc(var(--i) * 45ms + 150ms);}
   .splash-title .tl.sp{width:.3em;}
   @keyframes titleDrop{to{opacity:1; transform:none;}}
-  .splash-title.is-wordmark{background:linear-gradient(100deg, #fff4d6 0%, #fff4d6 40%, #ffe27a 48%, #fffbe9 50%, #ffe27a 52%, #fff4d6 60%, #fff4d6 100%); background-size:300% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:titleSheen 6s linear 1.4s infinite; text-shadow:none; filter:drop-shadow(0 3px 0 rgba(0,0,0,.3)) drop-shadow(0 10px 22px rgba(0,0,0,.35));}
+  .splash-title.is-wordmark{background:linear-gradient(100deg, #fff4d6 0%, #fff4d6 40%, #ffe27a 48%, #fffbe9 50%, #ffe27a 52%, #fff4d6 60%, #fff4d6 100%); background-size:300% 100%; -webkit-background-clip:text; background-clip:text; color:transparent; animation:titleSheen 6s linear .2s infinite; text-shadow:none; /* 2026-10-15 (user: "The shine effect in the main menu should appear earlier"): was a 1.4 s wait */ filter:drop-shadow(0 3px 0 rgba(0,0,0,.3)) drop-shadow(0 10px 22px rgba(0,0,0,.35));}
   @keyframes titleSheen{from{background-position:100% 0;} to{background-position:-200% 0;}}
   .entrance-fan{display:none;}
   .entrance-tip{position:absolute; left:50%; bottom:14px; transform:translateX(-50%); z-index:2; max-width:min(680px, 92vw); text-align:center; font-size:13px; color:#f4f0dc; padding:6px 14px; border-radius:999px; background:rgba(10,14,8,.55); box-shadow:0 4px 14px rgba(0,0,0,.3); opacity:0; transition:opacity .6s ease; pointer-events:none;}
@@ -4128,9 +4162,13 @@
   .home-menu-btn.btn-dazzle, .home-menu-btn-small.btn-dazzle{
     animation:menuBtnClickPop .5s cubic-bezier(.5,1.75,.75,1.25);
   }
+  /* 2026-10-15 (user: "The shine effect in the main menu should appear earlier."): the band starts right at the left edge
+     (it used to start 140% out, so a third of the sweep, slowed further by ease-in, passed before anything showed). */
+  .home-menu-btn:hover::before, .home-menu-btn-small:hover::before{animation-duration:.75s; animation-timing-function:cubic-bezier(.25,.6,.4,1);}
+  .home-menu-btn.btn-dazzle::before, .home-menu-btn-small.btn-dazzle::before{animation-duration:.8s; animation-timing-function:cubic-bezier(.25,.6,.4,1);}
   @keyframes menuBtnDazzle{
-    0%{transform:translateX(-140%);}
-    100%{transform:translateX(140%);}
+    0%{transform:translateX(-58%);}
+    100%{transform:translateX(64%);}
   }
   @keyframes menuBtnClickPop{
     0%{transform:perspective(700px) rotateX(var(--tiltX)) rotateY(var(--tiltY)) scale(1,1);}
@@ -6112,6 +6150,21 @@
   .qn-medal.tier-2 .qn-medallion > span{background:radial-gradient(circle at 35% 30%, #fff1b0, #c9921d);} .qn-medal.tier-3 .qn-medallion > span{background:radial-gradient(circle at 35% 30%, #d9f6ff, #5aa8c9);}
   .qn-medal-l{font-weight:800; font-size:12.5px; color:#fbf1dc;} .qn-medal-v{font:800 14px 'Baloo 2',system-ui,sans-serif; color:#ffe2a6;} .qn-medal-v small{opacity:.6; font-size:11px;}
   @media (max-width:720px){ .qn-cork{grid-template-columns:1fr; padding:12px;} .qn-notes{grid-template-columns:repeat(2, minmax(0,1fr));} }
+  /* 2026-10-15: "Your quests" list at the head of the Notices; Medals moved to the Profile */
+  .qn-quests{display:flex; flex-direction:column; gap:8px; margin:0 0 14px;}
+  .qn-qlist{list-style:none; margin:0; padding:8px; display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 380px), 1fr)); gap:6px; border-radius:10px; background:rgba(0,0,0,.22); box-shadow:inset 0 1px 4px rgba(0,0,0,.35);}
+  .qn-qrow{width:100%; display:grid; grid-template-columns:auto auto 1fr 104px; align-items:center; gap:8px; padding:6px 10px; border:0; border-radius:8px; background:linear-gradient(180deg,#fff8e6,#f1e1bd); color:#3a2a18; cursor:pointer; text-align:left; font:inherit;}
+  .qn-qrow:hover{filter:brightness(1.04); transform:translateY(-1px);} .qn-qrow:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
+  .qn-qrow .qn-qk{font:800 10px/1 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.06em; padding:3px 6px; border-radius:999px; background:rgba(120,80,30,.15); color:#6a4a26;}
+  .qn-qrow .qn-qico{font-size:18px; line-height:1;} .qn-qrow .qn-ql{font-weight:800; font-size:13px; line-height:1.2; min-width:0; overflow:hidden; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;}
+  .qn-qrow .qn-prog b{min-width:34px; text-align:right;} .qn-qrow.is-done{box-shadow:0 0 0 2px #7bbf5a inset;} .qn-qrow.is-done .qn-prog b{color:#3f8a2a;}
+  @media (max-width:520px){ .qn-qlist{grid-template-columns:1fr;} .qn-qrow{grid-template-columns:auto 1fr 88px;} .qn-qrow .qn-qk{display:none;} }
+  .qn-flash{animation:qnFlash 1s ease;} @keyframes qnFlash{30%{filter:brightness(1.25) drop-shadow(0 0 10px rgba(255,220,140,.8));}}
+  .qn-medals-moved{margin:12px 0 0; font-size:12.5px; color:#e9d6b2; display:flex; align-items:center; gap:6px; justify-content:flex-end;}
+  .qn-medals-moved .btn{color:#fff1d0; border-color:rgba(255,241,208,.4);}
+  .pf-medals h3{display:flex; align-items:baseline; gap:8px; flex-wrap:wrap;} .pf-medals h3 small{font-weight:600; font-size:12px; opacity:.75;}
+  .pf-medals .pf-medal-case{padding:10px; border-radius:12px; background:linear-gradient(180deg,#5a3d22,#3f2a16); box-shadow:inset 0 0 0 2px #7a5530;}
+  @media (prefers-reduced-motion: reduce){ .qn-flash{animation:none;} }
   @media (prefers-reduced-motion:reduce){ .qn-note.is-ready .qn-claim{animation:none;} }
   /* Field effects (2026-10-08): the Field card beside the enemy deck, snowfall, and the ice pulse */
   .field-card{flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:6px 4px; position:relative; cursor:help;}
@@ -6328,7 +6381,7 @@
   /* Forge upgrade strip (2026-10-12) */
   .forge-upgrade{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:8px 16px; margin:10px 0; padding:10px 14px; border-radius:12px; background:rgba(40,20,8,.72); border:1px solid rgba(255,190,110,.45); color:#fbe8cf;}
   .forge-upgrade b{color:#ffd58a;}
-  .forge-upgrade .fu-now small{display:block; opacity:.85; font-size:12px;}
+  .forge-upgrade .fu-now small{display:inline; margin-left:6px; opacity:.85; font-size:12px;} /* 2026-10-15: "<Forge> <Tier 1>" on one line */
   .forge-upgrade .fu-next{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; font-size:13px;}
   .forge-upgrade .fu-gate{font-weight:700; opacity:.9;}
   /* Card workbench (2026-10-12) */
@@ -8205,6 +8258,24 @@
   .stamina-panel h3{margin:0 0 4px; font-size:16px; display:flex; gap:8px; align-items:baseline;} .stamina-panel h3 b{font-size:18px;}
   .stamina-panel .wp-stam-pips i:not(.on){background:rgba(120,80,30,.15); box-shadow:inset 0 0 0 1px rgba(120,80,30,.3);}
   .stamina-panel p{margin:0 0 8px; font-size:13px; opacity:.85;} .stamina-panel .wp-stam-row{display:flex; flex-wrap:wrap; gap:10px; align-items:center;}
+  /* 2026-10-15: the Camp's door to the Tavern */
+  .camp-tavern-door{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:14px auto 6px; max-width:560px; padding:10px 14px; border-radius:12px; background:linear-gradient(135deg, rgba(92,52,20,.92), rgba(60,32,12,.92)); color:#fbe8cf; border:1px solid rgba(255,190,110,.45); box-shadow:0 2px 8px rgba(0,0,0,.25);}
+  .camp-tavern-door .ctd-ico{font-size:30px; line-height:1; filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));}
+  .camp-tavern-door .ctd-txt{display:flex; flex-direction:column; flex:1 1 200px; min-width:0;} .camp-tavern-door .ctd-txt b{font:800 16px/1.2 'Baloo 2',system-ui,sans-serif; color:#ffd58a;} .camp-tavern-door .ctd-txt small{font-size:12.5px; opacity:.95;}
+  /* Tavern recruit (2026-10-15) */
+  .tavern-recruit{margin:14px auto 6px; max-width:560px; padding:12px 14px; border-radius:12px; background:rgba(255,248,230,.9); color:#3b2a14; border:1px solid rgba(120,80,30,.25);}
+  .tavern-recruit h3{margin:0 0 4px; font-size:16px; display:flex; gap:8px; align-items:baseline; flex-wrap:wrap;} .tavern-recruit h3 small{font-weight:600; font-size:12px; opacity:.8;}
+  .tavern-recruit p{margin:0 0 8px; font-size:13px; opacity:.85;}
+  .tavern-recruit .tr-offers{display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:10px;}
+  .tavern-recruit .tr-offer{display:flex; flex-direction:column; align-items:center; gap:6px; padding:8px; border-radius:10px; background:rgba(120,80,30,.08);}
+  .tavern-recruit .tr-offer .card-tile{width:120px; height:150px; margin:0; font-size:10px;}
+  .tavern-recruit .tr-offer .btn{width:100%; justify-content:center; flex-wrap:wrap; flex-direction:column; gap:3px; white-space:normal; height:auto;}
+  .tavern-recruit .tr-offer .btn .btn-cost{display:flex; flex-wrap:wrap; justify-content:center; gap:2px 6px; margin:0; white-space:nowrap;} .tavern-recruit .tr-offer .btn .bc-sep{display:none;}
+  @media (max-width:520px){ .tavern-recruit .tr-offers{grid-template-columns:repeat(3, minmax(0, 1fr)); gap:6px;} .tavern-recruit .tr-offer{padding:4px;}
+    .tavern-recruit .tr-offer .card-tile{width:92px; height:116px; font-size:8px;} .tavern-recruit .tr-offer .btn{font-size:11px; padding:4px 6px;} }
+  .tavern-modal .tv-beer{display:flex; align-items:center; gap:8px; justify-content:center; margin:2px 0 4px; font:800 15px/1 'Baloo 2',system-ui,sans-serif;}
+  .tavern-modal .tv-beer i{font-style:normal; font-size:22px; opacity:.25;} .tavern-modal .tv-beer i.on{opacity:1;}
+  .tavern-modal .tv-beer small{font:600 12px/1.3 system-ui,sans-serif; opacity:.8;}
   /* Lantern light in pitch-black and absolute-dark fights (2026-10-14) */
   .battlefield.bf-lantern{--lx:50%; --ly:45%;}
   .battlefield.bf-lantern::after{content:''; position:absolute; inset:0; pointer-events:none; z-index:6; border-radius:inherit;
@@ -8692,11 +8763,18 @@
   .home-note.note-codex{left:-128px; top:150px; rotate:4deg;}
   @media (max-width:860px){ .home-note.note-codex{position:static; rotate:0deg; grid-column:1 / -1;} }
   /* Community page switcher (2026-10-10) */
-  .community-tabs{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px; max-width:1100px; margin:8px auto 12px; padding:0 4px;}
+  /* 2026-10-15 (user: "This bar does not look very good"): title and an even tab strip centred over the section, the same
+     dark pill strip as the page shortcuts; no more title far left and tall buttons crammed to the right. */
+  .community-tabs{display:flex; flex-direction:column; align-items:center; gap:10px; max-width:760px; margin:0 auto 16px; padding:0;}
   .community-tabs[hidden]{display:none;}
-  .community-tabs .community-title{margin:0; font-family:'Baloo 2',system-ui,sans-serif;}
-  .community-tabs .community-seg{display:flex; gap:4px; padding:4px; border-radius:999px; background:var(--surface-2); border:1px solid var(--surface-border);}
-  .community-tabs .tk-speed-btn{border-radius:999px; padding:7px 16px;}
+  .community-tabs .community-title{margin:0; display:flex; align-items:center; gap:12px; font:800 24px/1.1 'Baloo 2',system-ui,sans-serif;}
+  .community-tabs .community-title::before, .community-tabs .community-title::after{content:''; width:48px; height:2px; border-radius:2px; background:linear-gradient(90deg, transparent, rgba(255,233,176,.7));}
+  .community-tabs .community-title::after{transform:scaleX(-1);}
+  .community-tabs .community-seg{display:grid; grid-auto-flow:column; grid-auto-columns:1fr; gap:4px; width:min(100%, 440px); padding:4px; border-radius:999px; background:rgba(20,14,8,.55); box-shadow:inset 0 0 0 1px rgba(255,236,190,.22), 0 4px 12px rgba(0,0,0,.25);}
+  .community-tabs .cm-tab{display:inline-flex; align-items:center; justify-content:center; gap:6px; border:0; cursor:pointer; padding:8px 10px; border-radius:999px; background:transparent; color:#fff8e6; font:800 15px/1 'Baloo 2',system-ui,sans-serif; white-space:nowrap;}
+  .community-tabs .cm-tab:hover{background:rgba(255,248,230,.14);}
+  .community-tabs .cm-tab.is-on{background:#fff8e6; color:#2b2117; box-shadow:0 2px 6px rgba(0,0,0,.3); cursor:default;}
+  .community-tabs .cm-tab:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
 
   /* VS screen deck levels (2026-10-10) */
   .vs-lvl{display:inline-flex; flex-direction:column; align-items:center; margin-top:10px; padding:6px 16px; border-radius:12px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.3); color:#fff; line-height:1;}
@@ -9449,6 +9527,11 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .sk-codex .sk-row{display:grid; grid-template-columns:minmax(140px, 200px) 1fr; gap:12px; padding:8px 0; border-top:1px solid rgba(120,90,50,.2);}
 .sk-codex .sk-row:first-of-type{border-top:0;} .sk-codex .sk-text .skill-counter{margin-top:4px; font-size:.9em; opacity:.85;}
 @media (max-width:560px){ .sk-codex .sk-row{grid-template-columns:1fr; gap:2px;} }
+/* 2026-10-15 Skill Codex filter */
+.sk-codex .sk-row[hidden]{display:none;}
+.sk-codex .sk-filter{display:flex; align-items:center; gap:10px; margin:4px 0 10px;}
+.sk-codex .sk-filter input{flex:1 1 auto; min-width:0; height:40px; padding:0 12px; border-radius:10px; border:1px solid rgba(0,0,0,.2); font:inherit; background:#fffdf7; color:#2b2117;}
+.sk-codex .sk-filter small{white-space:nowrap; opacity:.75;}
 /* One-off skills (2026-10-15, user: "We will designate some skills as 1-offs ... Just specific to the animal"): a small tag in the
    card editor's skill rows and the Skills codex. */
 .sk-oneoff{display:inline-block; margin-left:6px; padding:0 6px; border-radius:8px; font:700 10px/16px 'Baloo 2',system-ui,sans-serif; letter-spacing:.02em; text-transform:uppercase; vertical-align:middle; color:#7a4a12; background:#ffe6b8; border:1px solid #e8b46a;}
@@ -10191,11 +10274,8 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
               <select id="emojiStyleSelect" aria-label="Emoji style"></select>
               <div class="settings-row-note emoji-credit" hidden>Twemoji graphics CC-BY 4.0 (Twitter, Inc. and contributors).</div>
             </div>
-            <div class="settings-row">
-              <div class="settings-row-label"><span>⚠️ Danger warnings</span></div>
-              <select id="dangerSelect" aria-label="Danger warnings"></select>
-              <div class="settings-row-note">A warning when a dangerous enemy card you haven't beaten yet arrives. After a few warnings at one rarity it waits for the next rarity up.</div>
-            </div>
+            <!-- 2026-10-15 (user: "Danger warnings is not to be a setting in settings."): the ⚠️ Danger warnings row is gone; warnings
+                 always run at their default (the ladder from Uncommon). -->
             <div class="settings-row settings-links" id="settingsLinks"></div>
       </div>
     </div>
@@ -10208,6 +10288,8 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
       <span id="energyPillText">—</span>
     </div>
     <button type="button" class="account-chip" id="accountChip" hidden><span class="account-chip-ico">👤</span><span id="accountChipText">Guest · Sign in</span></button>
+    <!-- 2026-10-15 (user: "on the right of your profile name, there is an opinion icon. Clicking it lets them write a comment to us"): -->
+    <button type="button" class="feedback-btn" id="feedbackBtn" title="Tell us what you think" aria-label="Send feedback">💬</button>
     <div class="user-pill" id="userPill" hidden><span class="user-ico">👤</span><span id="userPillText"></span></div>
     <div class="db-pill" id="dbPill" style="display:none"><span class="dot"></span><span id="dbPillText"></span></div>
   </div>
