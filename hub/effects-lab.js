@@ -439,7 +439,7 @@ try{ decorateLabFoils(document); }catch(e){}
   const tabs = $$('nav.toc [data-tab]'), secs = tabs.map(t=> document.getElementById(t.dataset.tab)).filter(Boolean);
   const shown = new Set();
   function show(id){
-    if(!secs.some(s=> s.id === id)) id = 'skills';
+    if(!secs.some(s=> s.id === id)) id = secs.some(s=> s.id === 'catalogue') ? 'catalogue' : 'skills'; // 2026-10-15: the catalogue is the front page
     secs.forEach(s=> s.hidden = s.id !== id);
     tabs.forEach(t=> t.setAttribute('aria-selected', String(t.dataset.tab === id)));
     try{ history.replaceState(null, '', '#' + id); }catch(e){}
@@ -515,7 +515,7 @@ try{ decorateLabFoils(document); }catch(e){}
     Object.keys(EMOTE_BANKS).forEach(k=>{ const b = document.createElement('button'); b.type = 'button'; b.className = 'btn small'; b.textContent = EMOTE_BANKS[k][0] + ' ' + k.replace(/([A-Z])/g, ' $1').toLowerCase();
       b.onclick = ()=>{ const c = es.querySelector('.board-card'); try{ maybeEmote('lab-emote', k, {force:true, el:c}); SoundKit.voiceTone && SoundKit.voiceTone(3); }catch(e){} }; eb.appendChild(b); });
   }
-  show(location.hash.slice(1) || 'skills');
+  show(location.hash.slice(1) || 'catalogue'); // 2026-10-15: the catalogue is the front page
 })();
 
 // ===== Procedural damage & GSAP experiments (2026-10-14, ProcFX in bramblewood-procfx.js) =====
