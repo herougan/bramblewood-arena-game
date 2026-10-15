@@ -3257,6 +3257,8 @@ const SoundKit = (()=>{
     // 2026-10-12 (11:39 list: "there is a light gadget sound. For forging, forge sounds"): a small mechanical click-whirr, and
     // three hammer strikes on the anvil with a quench hiss after.
     gadget(){ tone(1800,0.03,'square',0.035); tone(2600,0.04,'sine',0.03,0.04); noise(0.04,0.02); tone(900,0.08,'triangle',0.025,0.08); },
+    // One hammer blow of forgeStrike (2026-10-15), so each can land on its own hammer impact; i = 0, 1, 2 (the last adds the ring-out).
+    forgeHit(i, last){ i = i || 0; tone(1200 - i*90, 0.07, 'square', 0.09); tone(2400 - i*120, 0.25, 'sine', 0.03); noise(0.06, 0.08); tone(140, 0.12, 'sine', 0.08); if(last) setTimeout(()=> noise(0.6, 0.035), 100); },
     forgeStrike(){ [0, 320, 640].forEach((ms, i)=> setTimeout(()=>{ tone(1200 - i*90, 0.07, 'square', 0.09); tone(2400 - i*120, 0.25, 'sine', 0.03); noise(0.06, 0.08); tone(140, 0.12, 'sine', 0.08); }, ms)); setTimeout(()=> noise(0.6, 0.035), 1000); },
     // Hit-style cues (2026-10-08, "more sfx samples"): one per UnitFX hit style, plus fire breath.
     claw(){ for(let i = 0; i < 3; i++) fnoise(0.09, 0.07, {type:'highpass', freq:5200, freqEnd:1800, q:0.9, attack:0.004, delay:i*0.045}); tone(140, 0.07, 'triangle', 0.05, 0.02); },
@@ -3295,6 +3297,11 @@ const SoundKit = (()=>{
     burnAway(){
       fnoise(0.7, 0.07, {type:'lowpass', freq:500, freqEnd:200, attack:0.08});
       fnoise(0.6, 0.05, {type:'highpass', freq:2500, crackle:0.03, attack:0.05});
+    },
+    // A cave fire catches (2026-10-15): a soft whoosh up, then a little crackle.
+    fireIgnite(){
+      fnoise(0.45, 0.045, {type:'lowpass', freq:260, freqEnd:900, attack:0.06});
+      fnoise(0.7, 0.022, {type:'highpass', freq:2600, crackle:0.05, attack:0.12});
     },
     // Castle falls: a long rumble with stones settling.
     castleCollapse(){
@@ -19598,7 +19605,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
   // Daily dungeons (2026-10-15): a floor needs an open run or a 🎟️ Dungeon ticket (see DAILY_DUNGEONS).
   const dungeonEntry = !(opts && opts.skipEnergyCost) && isDailyDungeonMap(CONQUEST_MAPS.find(m=> m.id === mapId));
-  if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast('🎟️ No Dungeon tickets left. A new one comes tomorrow, and a bonus one every Monday.', 'warn'); return false; }
+  if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('toast.no-dungeon-tickets-left-a-new'), 'warn'); return false; }
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
   if(!(opts && opts.skipEnergyCost)){
@@ -19609,7 +19616,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     }
     bumpQuestCounter('energyConquest', cost);
   }
-  if(dungeonEntry && !dungeonRunOpen(mapId) && dungeonStartRun(mapId)) showToast(`🎟️ Dungeon ticket used: the run lasts until you lose a floor (${dungeonTicketsLeft()} left).`, 'ok'); // 2026-10-15
+  if(dungeonEntry && !dungeonRunOpen(mapId) && dungeonStartRun(mapId)) showToast(TX('toast.dungeon-ticket-used-the-run-lasts', {dungeonTicketsLeft: dungeonTicketsLeft()}), 'ok'); // 2026-10-15
   try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
@@ -33593,7 +33600,7 @@ function forgeSmithAnimation(beforeHTML, afterHTML, heavy){
 // about 2 s, as long as the old smithing sequence. Each hammer impact plays the anvil clang, the quench a hiss of drips
 // and the temper a chime; the existing LEVEL burst follows in forgeTemper. Falls back to forgeSmithAnimation without
 // ProcFX; skipped under reduced motion. Prestige, refine, limit break and promotion keep forgeSmithAnimation.
-const FORGE_TEMPER_SPEED = {heat:3.5, hammer:2, quench:3.2}; // ≈ 0.46 s + 0.95 s + 0.6 s
+const FORGE_TEMPER_SPEED = {heat:3.5, hammer:2, quench:3.2, temper:2.2}; // ≈ 0.46 s + 0.95 s + 0.6 s
 function forgeTemperAnimation(beforeHTML, afterHTML){
   return new Promise(resolve=>{
     const stage = document.getElementById('anvilStage'), mountEl = stage && stage.querySelector('.forge-preview-wrap');
@@ -33610,8 +33617,12 @@ function forgeTemperAnimation(beforeHTML, afterHTML){
     if(hammer) hammer.style.opacity = '0'; // ProcFX brings its own hammer onto the card
     stage.classList.add('is-hot');
     // Sounds ride the timeline, so they stay on the strikes at any speed: impacts land 0.15 s after each swing starts.
-    [1.9, 2.45, 3.0].forEach(at=> tl.call(()=>{ try{ SoundKit.clang(); }catch(e){} }, null, at + .15));
-    tl.call(()=>{ stage.classList.remove('is-hot'); stage.classList.add('is-quench'); try{ SoundKit.drip ? SoundKit.drip() : (SoundKit.coin && SoundKit.coin()); }catch(e){} }, null, 'quench');
+    // 2026-10-15 (user: "The forge sfx should play a little later, in time with the hammer vfx. Then RIGHT after it's done hammering,
+    // the card goes into its shining animation!"): the forge's three-blow sound used to start on the click, during the heat, a
+    // second ahead of the hammer; each blow now plays on its own impact. And the quench pause is gone: a beat after the last blow
+    // the timeline jumps straight to the temper shine.
+    [1.9, 2.45, 3.0].forEach((at, i)=> tl.call(()=>{ try{ SoundKit.forgeHit ? SoundKit.forgeHit(i, i === 2) : SoundKit.clang(); }catch(e){} }, null, at + .15));
+    tl.call(()=>{ stage.classList.remove('is-hot'); tl.timeScale(FORGE_TEMPER_SPEED.temper); tl.seek('temper', true); }, null, 3.0 + .4);
     tl.call(()=>{ try{ SoundKit.readyChime ? SoundKit.readyChime() : (SoundKit.coin && SoundKit.coin()); }catch(e){} }, null, 'temper+=0.15');
     let done = false;
     const finish = ()=>{ if(done) return; done = true;
@@ -33623,7 +33634,6 @@ function forgeTemperAnimation(beforeHTML, afterHTML){
     setTimeout(finish, 4000); // never hold the Forge hostage
     // Pace per stage: the heat and the cool-down move quickly, the hammer gets the most real time so each strike reads.
     tl.call(()=> tl.timeScale(FORGE_TEMPER_SPEED.hammer), null, 'hammer');
-    tl.call(()=> tl.timeScale(FORGE_TEMPER_SPEED.quench), null, 'quench');
     tl.seek('heat').timeScale(FORGE_TEMPER_SPEED.heat).play();
   });
 }
@@ -33641,7 +33651,7 @@ async function forgeTemper(btn){
   if(forgeBusy || !forgeSelectedId) return;
   const id = forgeSelectedId, L = getCardLevel(id);
   if(L>=10 || L < 1 || !canAffordLevelUp(L, id)){ denyShake(btn); if(L >= 1 && L < 10) cobbleWhyNot(L, id); return; } // Level 0 → 1 is the Nest's (2026-10-12)
-  forgeBusy = true; btn.disabled = true; try{ SoundKit.forgeStrike(); }catch(e){}
+  forgeBusy = true; btn.disabled = true; if(reducedMotion() || !hasGsap()) try{ SoundKit.forgeStrike(); }catch(e){} // with the animation, each blow sounds on its hammer impact (2026-10-15)
   const c = levelUpCost(L, id);
   const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
@@ -37894,22 +37904,54 @@ function syncCaveScreen(){
 setInterval(()=>{ try{ if(document.body.classList.contains('cave-screen')) syncCaveScreen(); }catch(e){} }, 400);
 // 2026-10-12 (user: "After completing the cave levels, the torchlight gets a 30% larger diameter and the map 10% less dark").
 function caveMapCleared(map){ try{ const p = loadConquestProgress(); const f = map.nodes.filter(n=> n.kind!=='tutorial'); return f.length > 0 && f.every(n=> p.completed.includes(conquestNodeId(map.id, n.key))); }catch(e){ return false; } }
-function caveLampBaseR(){ const m = CONQUEST_MAPS.find(x=> x.id === conquestSelectedMap); return (m && isCaveMap(m) && caveMapCleared(m)) ? 195 : 150; }
+function caveLampBaseR(){ const m = CONQUEST_MAPS.find(x=> x.id === conquestSelectedMap); return (m && mapBlotsOut(m) && caveMapCleared(m)) ? 195 : 150; }
+// Dark maps blot out (2026-10-15, user: "The darkness should blot out the map. I think you are changing it back. Is there a reason?
+// AHH i see. When the map is uncleared - it's blot out. When the map is cleared, the blot out is partial."): every dark map gets the
+// darkness now, not only the two cave maps (Caves & Alcoves, Smugglers' Grotto): the Sunken Depths, the Mycelium Deep and the
+// Volcano Lair, the side maps fought in the dark, were left fully lit. Uncleared, the map is all but black: light only round the
+// lantern (the pointer), your pawn, the fights you can take now and the fires you have lit (see mountCaveFires). Cleared, the dark
+// lifts to a partial veil (0.78, as since 2026-10-14) and the lantern grows.
+function mapBlotsOut(map){ try{ return !!map && (isCaveMap(map) || subMapIsDark(map)); }catch(e){ return false; } }
+const CAVE_MASK_OK = (()=>{ try{ return !!(window.CSS && CSS.supports && (CSS.supports('mask-composite', 'intersect') || CSS.supports('-webkit-mask-composite', 'source-in'))); }catch(e){ return false; } })();
+// The light pools besides the lantern, in % of the map canvas: the pawn, the open fights and the lit fires.
+function caveLightPools(canvas, t){
+  const out = [], at = el=> ({x: parseFloat(el.style.left), y: parseFloat(el.style.top)}), ok = q=> isFinite(q.x) && isFinite(q.y);
+  const pawn = canvas.querySelector(':scope > .map-pawn:not(.map-foe)'); if(pawn){ const q = at(pawn); if(ok(q)) out.push({x:q.x, y:q.y, r:80}); }
+  canvas.querySelectorAll(':scope > .map-node:not(.done):not(.map-node-hidden):not(.kind-tutorial)').forEach(n=>{ const q = at(n); if(ok(q)) out.push({x:q.x, y:q.y, r:52}); });
+  canvas.querySelectorAll(':scope > .cave-fire.is-lit').forEach((f, i)=>{ const q = at(f); if(ok(q)) out.push({x:q.x, y:q.y, r: 66 + (t ? Math.sin(t/90 + i*1.7)*3 + Math.sin(t/37 + i)*2 : 0)}); });
+  return out;
+}
+// mask-image for a dark layer: the lantern's soft hole plus a tighter pool per light; `pos(xPct, yPct)` turns a canvas point into
+// the layer's own coordinates. Layers intersect, so the light is the union of the holes.
+function caveMaskImage(lamp, pools, pos){
+  const L = pos(lamp.x*100, lamp.y*100), r = lamp.r;
+  const parts = [`radial-gradient(circle at ${L}, transparent 0, transparent ${(r*.45).toFixed(1)}px, rgba(0,0,0,.58) ${(r*.9).toFixed(1)}px, rgba(0,0,0,.96) ${(r*1.6).toFixed(1)}px, #000 ${(r*2.6).toFixed(1)}px)`];
+  pools.forEach(q=> parts.push(`radial-gradient(circle at ${pos(q.x, q.y)}, transparent 0, transparent ${(q.r*.38).toFixed(1)}px, rgba(0,0,0,.62) ${(q.r*.85).toFixed(1)}px, #000 ${(q.r*1.35).toFixed(1)}px)`));
+  return parts.join(', ');
+}
+function setCaveMask(el, img){ el.classList.add('is-masked'); el.style.webkitMaskImage = el.style.maskImage = img; el.style.webkitMaskComposite = 'source-in'; el.style.maskComposite = 'intersect'; }
 function mountCaveDark(canvas, map){
-  if(!canvas || !map || !isCaveMap(map)){ caveScreenOff(); return null; }
+  if(!canvas || !map || !mapBlotsOut(map)){ caveScreenOff(); return null; }
   const lit = caveMapCleared(map); if(caveLamp.r === 150 || caveLamp.r === 195) caveLamp.r = lit ? 195 : 150; // (a spread in progress keeps its radius)
   canvas.querySelectorAll(':scope > .cave-dark').forEach(e=> e.remove());
   const el = document.createElement('div'); el.className = 'cave-dark'; el.setAttribute('aria-hidden', 'true'); canvas.appendChild(el);
+  try{ mountCaveFires(canvas, map); }catch(e){} // 2026-10-15
   let scr = document.getElementById('caveScreenDark');
   const host = document.getElementById('conquestLayout') || document.body;
   if(!scr){ scr = document.createElement('div'); scr.id = 'caveScreenDark'; scr.className = 'cave-screen-dark'; scr.setAttribute('aria-hidden', 'true'); }
   el.style.opacity = scr.style.opacity = lit ? '0.78' : ''; // cleared: the dark lifts (10% from 2026-10-12, about 20% since 2026-10-14)
+  el.classList.toggle('is-cleared', lit); scr.classList.toggle('is-cleared', lit);
   if(scr.parentNode !== host || host.firstChild !== scr) host.insertBefore(scr, host.firstChild); // first in the map's own layer: under the map list and the map, over the backdrop
   document.body.classList.add('cave-screen');
   const apply = ()=>{ el.style.setProperty('--lx', (caveLamp.x*100) + '%'); el.style.setProperty('--ly', (caveLamp.y*100) + '%'); el.style.setProperty('--lr', caveLamp.r + 'px');
     const r = canvas.getBoundingClientRect(), o = document.getElementById('caveScreenDark');
-    if(o){ if(!syncCaveScreen()) return; o.style.setProperty('--lx', (r.left + caveLamp.x*r.width) + 'px'); o.style.setProperty('--ly', (r.top + caveLamp.y*r.height) + 'px'); o.style.setProperty('--lr', caveLamp.r + 'px'); } };
+    const pools = CAVE_MASK_OK ? caveLightPools(canvas, reducedMotion() ? 0 : performance.now()) : null;
+    if(pools) setCaveMask(el, caveMaskImage(caveLamp, pools, (x, y)=> `${x.toFixed(2)}% ${y.toFixed(2)}%`));
+    if(o){ if(!syncCaveScreen()) return; o.style.setProperty('--lx', (r.left + caveLamp.x*r.width) + 'px'); o.style.setProperty('--ly', (r.top + caveLamp.y*r.height) + 'px'); o.style.setProperty('--lr', caveLamp.r + 'px');
+      if(pools) setCaveMask(o, caveMaskImage(caveLamp, pools, (x, y)=> `${(r.left + x/100*r.width).toFixed(1)}px ${(r.top + y/100*r.height).toFixed(1)}px`)); } };
   apply();
+  // The pools follow the pawn while it walks, the fires flicker, and a scroll or resize moves the screen layer's holes.
+  clearInterval(window.__bwCaveTick); window.__bwCaveTick = setInterval(()=>{ if(!el.isConnected){ clearInterval(window.__bwCaveTick); return; } if(!document.hidden) apply(); }, 120);
   const move = e=>{ const r = canvas.getBoundingClientRect(); if(!r.width) return; caveLamp.x = Math.max(0, Math.min(1, (e.clientX - r.left)/r.width)); caveLamp.y = Math.max(0, Math.min(1, (e.clientY - r.top)/r.height)); apply(); };
   canvas.addEventListener('pointermove', move, {passive:true}); canvas.addEventListener('pointerdown', move, {passive:true});
   // 2026-10-12 (user: "After clicking a skirmish, the torchlight sticks at the clicked position. It should keep following the
@@ -37933,11 +37975,46 @@ function caveLightSpread(canvas){
     .to(o, {r: caveLampBaseR(), duration: 1.4, ease: 'power2.inOut', delay: 0.5, onUpdate: ()=>{ caveLamp.r = o.r; el._apply && el._apply(); }})
     .add(()=>{ caveLamp.x = keep.x; caveLamp.y = keep.y; el._apply && el._apply(); });
 }
+// Fireplaces in the dark (2026-10-15, user: "In caves, fireplaces (0-2) placed around, light up as you defeat skirmishes."): beside
+// each fight on a dark map, 0 to 2 small fire pits (seeded by the map and fight, so they never move) wait cold in the dark. Clearing
+// the fight lights them: a flare, a crackle, then a flickering flame whose glow pushes the darkness back (a light pool in the mask).
+// Fires lit since you last looked at the map ignite in front of you; on the Sunken Depths they are glowing sea-lanterns instead.
+const caveFiresSeen = {};
+function caveSeeded(str){ let h = 2166136261 >>> 0; for(let i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
+  return ()=>{ h = Math.imul(h ^ (h >>> 15), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); h ^= h >>> 16; return (h >>> 0) / 4294967296; }; }
+function caveFireSpots(mapId, nodes){
+  const out = [], taken = nodes.map(n=> ({x:n.x, y:n.y}));
+  nodes.forEach(n=>{ const rnd = caveSeeded(mapId + ':' + n.key + ':fire'), count = Math.floor(rnd() * 3); // 0, 1 or 2
+    for(let k = 0; k < count; k++) for(let t = 0; t < 10; t++){
+      const a = rnd() * Math.PI * 2, d = 6 + rnd() * 5, x = n.x + Math.cos(a) * d, y = n.y + Math.sin(a) * d * 1.4;
+      if(x < 4 || x > 96 || y < 7 || y > 93 || taken.some(q=> Math.hypot(q.x - x, (q.y - y) / 1.4) < 4.6)) continue;
+      out.push({x, y, key: n.key}); taken.push({x, y}); break; } });
+  return out;
+}
+function mountCaveFires(canvas, map){
+  canvas.querySelectorAll(':scope > .cave-fire').forEach(e=> e.remove());
+  if(!mapBlotsOut(map) || map.endless) return;
+  const progress = loadConquestProgress();
+  const nodes = [...canvas.querySelectorAll(':scope > .map-node[data-lkey]:not(.kind-tutorial)')].map(n=> ({key: n.dataset.lkey, x: parseFloat(n.style.left), y: parseFloat(n.style.top)})).filter(q=> isFinite(q.x) && isFinite(q.y));
+  const seen = caveFiresSeen[map.id], first = !seen, lit = new Set(seen || []), glow = map.id === 'mj', reduce = reducedMotion();
+  let k = 0;
+  caveFireSpots(map.id, nodes).forEach(sp=>{
+    const done = progress.completed.includes(conquestNodeId(map.id, sp.key)), fresh = done && !first && !lit.has(sp.key + '@' + sp.x.toFixed(1));
+    const f = document.createElement('span'); f.className = 'cave-fire' + (glow ? ' is-glow' : '') + (done && !fresh ? ' is-lit' : ''); f.setAttribute('aria-hidden', 'true');
+    f.dataset.fireNode = sp.key; f.style.left = sp.x.toFixed(2) + '%'; f.style.top = sp.y.toFixed(2) + '%';
+    f.innerHTML = '<i class="cf-glow"></i><i class="cf-stones"></i><i class="cf-logs"></i><i class="cf-flame"></i><i class="cf-flame cf-f2"></i><i class="cf-spark"></i>';
+    canvas.appendChild(f);
+    if(fresh){ const delay = (reduce ? 300 : 1500) + (k++) * 450; // after the map's name card lifts and the light spreads
+      setTimeout(()=>{ if(!f.isConnected) return; f.classList.add('is-lit', 'is-igniting'); try{ SoundKit.fireIgnite && SoundKit.fireIgnite(); }catch(e){} setTimeout(()=> f.classList.remove('is-igniting'), 1600); }, delay); }
+    if(done) lit.add(sp.key + '@' + sp.x.toFixed(1));
+  });
+  caveFiresSeen[map.id] = lit;
+}
 function showMapVeil(host, map, layer){
   if(!host || !map) return;
   host.querySelectorAll(':scope > .map-veil').forEach(v=> v.remove());
   const n = typeof mapNumberOf==='function' ? mapNumberOf(map.id) : null;
-  const cave = isCaveMap(map);
+  const cave = mapBlotsOut(map); // every dark map opens on darkness (2026-10-15)
   const v = document.createElement('div'); v.className = 'map-veil' + (cave ? ' is-cave' : ''); v.setAttribute('role', 'status');
   v.innerHTML = `<div class="mv-card"><span class="mv-ico" aria-hidden="true">${map.icon||'🗺️'}</span><b class="mv-name">${escapeHtml(map.name)}</b>${n!=null ? `<small class="mv-num">Map ${n}</small>` : ''}<span class="mv-dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="sr-only">Loading the map…</span></div>`;
   host.appendChild(v); try{ SoundKit.mapUnroll(); }catch(e){}

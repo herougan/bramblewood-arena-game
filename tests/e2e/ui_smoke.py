@@ -147,7 +147,8 @@ async def main():
             check(await pg.evaluate("conquestSelectedMap") == 'mf', 'the edge should pan to the next map (Thistlewood, Map 1 since the 16:23 map list)')
         # 6b: D13 world atlas — compass diamonds, lazy cards, click zooms into a map
         await pg.click('#conquestWorldBtn'); await pg.wait_for_timeout(500)
-        check(await pg.evaluate("document.querySelectorAll('.world-diamond').length") == await pg.evaluate("mainConquestMaps().length"), 'the world view should show one diamond per main map (sub-maps hide)')
+        # 2026-10-15: the daily dungeons (Murgle) add their own side diamond (.world-stop.is-side); other sub-maps still hide
+        check(await pg.evaluate("document.querySelectorAll('.world-stop:not(.is-side) .world-diamond').length") == await pg.evaluate("mainConquestMaps().length"), 'the world view should show one diamond per main map (sub-maps hide)')
         check(await pg.evaluate("[...document.querySelectorAll('[data-lazy]')].some(e=> !e.dataset.filled)"), 'world cards far down should load lazily')
         await pg.click('[data-world-map="m1"]'); await pg.wait_for_timeout(600)
         check(await pg.evaluate("conquestSelectedMap==='m1' && !conquestWorldView && !!document.getElementById('conquestCanvas')"), 'a world diamond should zoom into its map')

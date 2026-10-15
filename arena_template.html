@@ -9131,6 +9131,39 @@ body.cave-screen .conquest-node-panel{filter:brightness(.8); transition:filter .
 body.cave-screen .conquest-node-panel:hover, body.cave-screen .conquest-node-panel:focus-within{filter:none;}
 body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .panel-sub{color:#efe6cf; text-shadow:0 1px 3px rgba(0,0,0,.8);}
 @media (prefers-reduced-motion: reduce){ .cave-screen-dark{background:radial-gradient(circle at var(--lx, 50vw) var(--ly, 50vh), rgba(4,6,12,0) 0, rgba(4,6,12,.6) 360px);} }
+/* Dark maps blot out (2026-10-15): with CSS masks the dark layers are one flat near-black, and the light is cut out of them by
+   mountCaveDark's mask (the lantern at the pointer, the pawn, the open fights, the lit fires). Cleared maps keep the 0.78 veil. */
+.cave-dark.is-masked, .cave-screen-dark.is-masked{background:rgba(2,3,8,.95); -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;}
+/* Fire pits in the dark (2026-10-15, user: "In caves, fireplaces (0-2) placed around, light up as you defeat skirmishes."): cold ones
+   sit under the dark (seen only in the lantern), lit ones above it with a flickering flame and a warm glow. */
+.cave-fire{position:absolute; width:22px; height:22px; transform:translate(-50%,-50%); z-index:5; pointer-events:none;}
+.cave-fire.is-lit{z-index:8;}
+.cave-fire i{position:absolute; display:block; font-style:normal;}
+.cave-fire .cf-stones{left:0; right:0; bottom:1px; height:8px; border-radius:50%; background:radial-gradient(ellipse at 50% 30%, #6e655a, #38322c 70%); box-shadow:0 2px 3px rgba(0,0,0,.6), inset 0 0 0 2px #26221d;}
+.cave-fire .cf-logs{left:5px; right:5px; bottom:4px; height:4px; border-radius:2px; background:#5a3a22; transform:rotate(-14deg); box-shadow:0 0 0 1px #2d1c10, 0 -1px 0 1px rgba(255,120,40,0) inset;}
+.cave-fire .cf-flame{left:50%; bottom:6px; width:11px; height:16px; margin-left:-6px; border-radius:50% 50% 45% 45% / 65% 65% 35% 35%; background:radial-gradient(ellipse at 50% 78%, #fff6c4 0, #ffd04a 28%, #ff7a1a 62%, rgba(255,80,20,0) 74%); transform-origin:50% 100%; opacity:0; transform:scale(.2);}
+.cave-fire .cf-f2{width:7px; height:11px; margin-left:0;}
+.cave-fire .cf-glow{left:50%; top:50%; width:96px; height:96px; margin:-48px; border-radius:50%; background:radial-gradient(circle, rgba(255,176,80,.5), rgba(255,120,40,.18) 42%, transparent 70%); opacity:0; mix-blend-mode:screen;}
+.cave-fire .cf-spark{left:50%; top:0; width:3px; height:3px; border-radius:50%; background:#ffd27a; box-shadow:0 0 5px 2px rgba(255,140,40,.8); opacity:0;}
+.cave-fire.is-lit .cf-flame{opacity:1; transform:none; animation:cfFlick .42s ease-in-out infinite alternate;}
+.cave-fire.is-lit .cf-f2{animation-duration:.31s; animation-delay:-.2s;}
+.cave-fire.is-lit .cf-glow{opacity:1; animation:cfGlow 1.7s ease-in-out infinite alternate;}
+.cave-fire.is-lit .cf-logs{background:#6b3a1c; box-shadow:0 0 0 1px #2d1c10, 0 0 6px 1px rgba(255,120,40,.7);}
+.cave-fire.is-lit .cf-spark{animation:cfSpark 2.4s ease-out infinite;}
+.cave-fire.is-igniting .cf-flame{animation:cfIgnite .7s cubic-bezier(.2,1.6,.4,1) both, cfFlick .42s .7s ease-in-out infinite alternate;}
+.cave-fire.is-igniting .cf-glow{animation:cfGlowIn 1s ease-out both, cfGlow 1.7s 1s ease-in-out infinite alternate;}
+.cave-fire.is-igniting::after{content:''; position:absolute; left:50%; top:50%; width:20px; height:20px; margin:-10px; border-radius:50%; border:2px solid rgba(255,200,110,.9); animation:cfRing .8s ease-out forwards;}
+@keyframes cfFlick{0%{transform:scale(1,1) skewX(0);} 50%{transform:scale(.9,1.14) skewX(5deg);} 100%{transform:scale(1.06,.9) skewX(-4deg);}}
+@keyframes cfGlow{from{opacity:.78; transform:scale(.93);} to{opacity:1; transform:scale(1.07);}}
+@keyframes cfIgnite{0%{opacity:0; transform:scale(.1);} 40%{opacity:1; transform:scale(1.5,1.8);} 100%{opacity:1; transform:none;}}
+@keyframes cfGlowIn{0%{opacity:0; transform:scale(.3);} 45%{opacity:1; transform:scale(1.35);} 100%{opacity:1; transform:none;}}
+@keyframes cfRing{from{transform:scale(.4); opacity:1;} to{transform:scale(4); opacity:0;}}
+@keyframes cfSpark{0%{opacity:0; transform:translate(0,0);} 15%{opacity:1;} 100%{opacity:0; transform:translate(5px,-26px);}}
+.cave-fire.is-glow .cf-logs{display:none;}
+.cave-fire.is-glow .cf-flame{border-radius:50%; height:11px; width:11px; bottom:5px; background:radial-gradient(circle at 45% 40%, #effffd 0, #8ff5e8 32%, #25b8cc 62%, rgba(30,160,200,0) 74%);}
+.cave-fire.is-glow .cf-f2{display:none;} .cave-fire.is-glow .cf-spark{background:#bff8f2; box-shadow:0 0 5px 2px rgba(60,220,220,.8);}
+.cave-fire.is-glow .cf-glow{background:radial-gradient(circle, rgba(90,232,222,.45), rgba(40,160,210,.16) 42%, transparent 70%);}
+@media (prefers-reduced-motion: reduce){ .cave-fire .cf-flame, .cave-fire .cf-glow, .cave-fire .cf-spark, .cave-fire::after{animation:none !important;} }
 /* Cave maps open on darkness: the light then spreads out from the centre (see caveLightSpread) */
 .map-veil.is-cave{background:#05070c; color:#e8e0cc;}
 .map-veil.is-cave .mv-card{color:#e8e0cc;} .map-veil.is-cave .mv-dots i{background:#e9c46a;}
