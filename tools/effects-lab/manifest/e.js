@@ -180,9 +180,13 @@ R({id:'map-water-shimmer', stage:'map', inGameHook:'water / coral / beach shader
 R({id:'map-fog-misty', stage:'map', inGameHook:'hooks.mapShown on m1 → mist ambience (the savanna shader is hidden there)', variants:[
   {key:'A', label:'Low mist banks drift between the fights, dew winks', play:ctx=>{ X().mapAmbience(ctx.map.layout, 'm1'); return hold(ctx); }},
   {key:'B', label:'Thick fog that breathes thick and thin', play:ctx=>{ X().mapAmbience(ctx.map.layout, 'm1', {variant:'B'}); return hold(ctx); }}]});
-R({id:'map-chaos-returns', stage:'map', inGameHook:'future', note:'Planned for Map 40+. B is the Map 50+ magic lands take: rune circles, an arcane aurora.', variants:[
+R({id:'map-chaos-returns', stage:'map', inGameHook:'future', note:'Planned for Map 40+. B is the Map 50+ magic lands take: rune circles, an arcane aurora. C–E: the roadmap\'s later lands by biome (Maps 40+ dinosaurs, 45+ aliens, 50–60 Syzygy).', variants:[
   {key:'A', label:'Map pulls back; advanced fights land with ripples', play:async ctx=>{ theme(ctx, 'm11'); await X().chaosReturns(ctx.map.el); }},
-  {key:'B', label:'Concept: Map 50+ magic lands, fights rise out of rune circles', play:async ctx=>{ theme(ctx, 'mv'); X().ambience(ctx.map.layout, 'magic'); await X().chaosReturns_B(ctx.map.el); }}]});
+  {key:'B', label:'Concept: Map 50+ magic lands, fights rise out of rune circles', play:async ctx=>{ theme(ctx, 'mv'); X().ambience(ctx.map.layout, 'magic'); await X().chaosReturns_B(ctx.map.el); }},
+  // 2026-10-15: the roadmap's later lands by biome (world-roadmap-2026-10-13), each as the ambience its maps would get
+  {key:'C', label:'Concept: ' + X().AMB.prehistoric.label, play:ctx=>{ theme(ctx, 'mr'); X().ambience(ctx.map.layout, 'prehistoric'); return hold(ctx, 5000); }},
+  {key:'D', label:'Concept: ' + X().AMB.alien.label, play:ctx=>{ theme(ctx, 'm5'); X().ambience(ctx.map.layout, 'alien'); return hold(ctx, 6200); }},
+  {key:'E', label:'Concept: ' + X().AMB.syzygy.label, play:ctx=>{ theme(ctx, 'mb'); X().ambience(ctx.map.layout, 'syzygy'); return hold(ctx, 5000); }}]});
 R({id:'map-headline-ghost', stage:'map', inGameHook:'GHOST_BANNERS pointer watcher (.is-away / .is-ghost)', variants:[{key:'A', label:'The title banner steps aside when touched', play:async ctx=>{ const m = main(ctx);
   const h = document.createElement('div'); h.className = 'conquest-scrim conquest-headline'; h.innerHTML = '<h3>🌾 Bramblewood Outskirts</h3><p class="panel-sub">Map 0 · misty fields</p>'; m.insertBefore(h, m.firstChild);
   await ctx.wait(900); h.classList.add('is-away'); await ctx.wait(1400); h.classList.remove('is-away'); await ctx.wait(900); }}]});
@@ -198,7 +202,9 @@ look('map-shader-new-crystal-cave', 'mn', 'crystal', 'crystalB');
 look('map-shader-new-misty-meadow', 'm1', 'mist', 'mistThick');
 look('map-shader-new-abyssal', 'mj', 'abyssal', 'abyssalB', true, 'Abyssal Plains (Map 29), lab concept.');
 look('map-shader-new-dragonic-spire', 'm11', 'spire', 'spireB', true, 'Dragonic Spire, lab concept: red lightning that never stops, wither smoke rolling down.');
-look('map-shader-new-floodplains', 'm2', 'flood', 'veggie', true, 'A: the Floodplains. B: the Wild Veggies lands (Maps 20+), a lab concept with no inventory row of its own.');
+look('map-shader-new-floodplains', 'm2', 'flood', 'veggie', true, 'A: the Floodplains. B: the Wild Veggies lands (Maps 20+), a lab concept with no inventory row of its own. C: the roadmap\'s full Floodplains loop.');
+// 2026-10-15: the roadmap's full loop (world-roadmap-2026-10-13: Flooded → Receded → Parched → Flooded), one 9 s cycle
+R({id:'map-shader-new-floodplains', variants:[{key:'C', label:X().AMB.floodLoop.label, play:ctx=>{ theme(ctx, 'm5'); X().ambience(ctx.map.layout, 'floodLoop'); return hold(ctx, 9500); }}]});
 
 // ---- world ambience ----
 const splash = ()=>{ const v = getComputedStyle(document.documentElement).getPropertyValue('--splash-art').trim(); const m = v.match(/^url\((['"]?)(.*)\1\)$/); return m ? m[2] : ''; };

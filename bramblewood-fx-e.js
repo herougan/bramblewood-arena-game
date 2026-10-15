@@ -261,6 +261,33 @@ const AMB = {
   ants: {label:'Ant roads: acid-battery lamps', grade:{top:[10,14,30,.3], bottom:[6,10,20,.32]},
     lamps:{c:[200,255,90], a:.42}, parts:[{kind:'ant', n:9, c:[30,20,10], s:[.012,.016], speed:.035}]},
 
+  // ---- the roadmap's later lands (2026-10-15, docs: world-roadmap-2026-10-13; lab concepts, no map yet) ----
+  // Floodplains, the full loop: Flooded → Receded → Parched (Scorching; heat haze and a baked-orange wash) → Flooded.
+  floodLoop: {label:'Floodplains loop: Flooded, Receded, Parched, Flooded', flood:{c:[70,140,190], a:.38, lo:-.04, hi:.4, period:9, parched:true},
+    parts:[{kind:'leaf', n:6, c:[[120,150,60],[160,120,60]], s:[.014,.02], vx:[.01,.025], vy:[0,0], wob:.01, float:true}]},
+  // Maps 40–45: the first dinosaurs. Steamy fern country, a smoking volcano far off, pterosaurs wheeling, and footfalls
+  // that ring the puddles (thud… thud) before anything is seen.
+  prehistoric: {label:'Maps 40+: fern steam, pterosaurs, footfalls ring the puddles', grade:{top:[60,80,30,.16], bottom:[30,50,20,.22]},
+    pools:[{x:.88, y:.04, r:.36, c:[255,120,50], a:.3, pulse:[.3, .08]}],
+    fog:{n:7, c:[226,238,214], a:.34, w:[.4,.8], h:[.1,.18], y:[.55,1.02], vx:[.003,.008]},
+    parts:[{kind:'ember', n:8, c:[255,140,60], s:[.006,.01], vx:[-.01,.01], vy:[-.05,-.02], wob:.015, from:{x:.88, y:.06}},
+      {kind:'gull', n:3, c:[70,46,30], s:[.05,.075], circle:true, wyvern:true},
+      {kind:'leaf', n:6, c:[[70,120,40],[90,140,50]], s:[.02,.03], vx:[.006,.02], vy:[.01,.03], wob:.03}],
+    events:[{kind:'stomp', every:[2.2,3.4], c:[230,240,255]}]},
+  // Maps 45–50: the first aliens. Night sky; a saucer's beam sweeps the fields, green lights blink, crop rings pulse.
+  alien: {label:'Maps 45+: a saucer beam sweeps the fields, green lights blink', grade:{top:[6,14,30,.5], bottom:[4,20,24,.36]},
+    beam:{c:[150,255,170], a:.34, every:6},
+    parts:[{kind:'star', n:16, c:[220,255,230], s:[.008,.014], y:[.02,.5], still:true, tw:[1,2.4]},
+      {kind:'glow', n:10, c:[120,255,150], s:[.01,.016], vx:[-.01,.01], vy:[-.006,.006], wob:.02, blink:true}],
+    events:[{kind:'pulse', every:[1.8,3], c:[120,255,160]}]},
+  // Maps 50–60: Syzygy, the end of the world. Sun and moon line up into an eclipse; the tide stands at High; the
+  // light goes bruise-violet and the corona breathes.
+  syzygy: {label:'Maps 50+: Syzygy, an eclipse over a high tide', grade:{top:[30,10,50,.5], bottom:[20,10,40,.34]},
+    eclipse:{x:.5, y:.17, r:.075, c:[255,222,160]},
+    flood:{c:[60,90,170], a:.34, lo:.12, hi:.2, period:6},
+    parts:[{kind:'star', n:20, c:[240,230,255], s:[.008,.014], y:[.02,.6], still:true, tw:[.8,2]}, {kind:'ember', n:10, c:[255,90,60], s:[.005,.008], vx:[-.01,.01], vy:[-.03,-.01], wob:.02}],
+    events:[{kind:'lightning', every:[3,5], c:[200,150,255]}]},
+
   // ---- weather fronts (2026-10-15, map-weather-fronts): a band of weather crosses the map and moves on ----
   rain: {label:'Rain front', front:{kind:'rain', c:[210,226,255], dur:16, w:.32}},
   snow: {label:'Snow front', front:{kind:'snow', c:[255,255,255], dur:20, w:.36}},
@@ -330,9 +357,23 @@ function draw(A, g, W, H, dt){
     g.beginPath(); g.moveTo(0, H); for(let x = 0; x <= W; x += 6) g.lineTo(x, top + Math.sin(x*.05 + t*1.6)*H*.008 + Math.sin(x*.013 - t)*H*.012); g.lineTo(W, H); g.closePath();
     const gr = g.createLinearGradient(0, top, 0, H); gr.addColorStop(0, rgba(F.c, F.a*K)); gr.addColorStop(1, rgba(F.c.map(v=> v*.6|0), F.a*1.2*K)); g.fillStyle = gr; g.fill();
     g.strokeStyle = rgba([235,248,255], .55*K); g.lineWidth = Math.max(1, H*.004); g.beginPath(); for(let x = 0; x <= W; x += 6){ const y = top + Math.sin(x*.05 + t*1.6)*H*.008 + Math.sin(x*.013 - t)*H*.012; x ? g.lineTo(x, y) : g.moveTo(x, y); } g.stroke();
-    A.waterTop = 1 - lv; }
+    A.waterTop = 1 - lv;
+    // 2026-10-15: Parched, the dry turn of the loop (water below the bottom edge): a baked-orange wash and heat haze
+    if(F.parched){ const dry = Math.max(0, Math.min(1, (F.lo + .06 - lv)/.1)); if(dry > 0){ g.globalAlpha = dry*K; g.fillStyle = 'rgba(214,150,70,.26)'; g.fillRect(0, 0, W, H);
+      g.strokeStyle = 'rgba(255,226,170,.35)'; g.lineWidth = Math.max(1, H*.012); for(let k = 0; k < 5; k++){ const y = H*(.2 + k*.17) + Math.sin(t*2 + k)*H*.01; g.beginPath(); for(let x = 0; x <= W; x += 10){ const yy = y + Math.sin(x*.03 + t*3 + k)*H*.006; x ? g.lineTo(x, yy) : g.moveTo(x, yy); } g.stroke(); }
+      g.globalAlpha = 1; } } }
   (R.pools || []).forEach(P=>{ let a = P.a; if(P.pulse) a *= 1 + Math.sin(t*P.pulse[0]*6.28)*P.pulse[1]/P.a*.9; if(P.flicker) a *= .82 + .18*Math.sin(t*13 + Math.sin(t*7)*2) * Math.sin(t*5.3);
     const x = P.x*W, y = P.y*H, rr = P.r*H, gr = g.createRadialGradient(x, y, 0, x, y, rr); gr.addColorStop(0, rgba(P.c, a*K)); gr.addColorStop(.5, rgba(P.c, a*.4*K)); gr.addColorStop(1, rgba(P.c, 0)); g.fillStyle = gr; g.fillRect(0, 0, W, H); });
+  if(R.eclipse){ const E = R.eclipse, x = E.x*W, y = E.y*H, r = E.r*H, br = 1 + .08*Math.sin(t*1.3);
+    const gr = g.createRadialGradient(x, y, r*.9, x, y, r*3.2*br); gr.addColorStop(0, rgba(E.c, 1*K)); gr.addColorStop(.18, rgba(E.c, .55*K)); gr.addColorStop(.45, rgba(E.c, .16*K)); gr.addColorStop(1, rgba(E.c, 0)); g.fillStyle = gr; g.fillRect(0, 0, W, H);
+    g.globalAlpha = K; g.fillStyle = '#120a1c'; g.beginPath(); g.arc(x, y, r, 0, 6.28); g.fill(); g.strokeStyle = rgba([255,240,210], .9*K); g.lineWidth = Math.max(1, H*.004); g.stroke();
+    const dg = (Math.sin(t*.8) + 1)/2; g.globalAlpha = K*dg; g.drawImage(sprite('glow', [255,250,235]), x + r*.6 - r*.7, y - r*.8 - r*.7, r*1.4, r*1.4); g.globalAlpha = 1; } // the diamond-ring glint
+  if(R.beam){ const B = R.beam, ph = (t % B.every)/B.every, sx = W*(.15 + .7*(.5 - .5*Math.cos(ph*6.283))), top = H*.08, bw = H*.07, foot = H*.32;
+    g.globalAlpha = K; const gr = g.createLinearGradient(0, top, 0, H*.95); gr.addColorStop(0, rgba(B.c, B.a)); gr.addColorStop(1, rgba(B.c, B.a*.2)); g.fillStyle = gr;
+    g.beginPath(); g.moveTo(sx - bw*.5, top); g.lineTo(sx + bw*.5, top); g.lineTo(sx + foot*.5, H*.95); g.lineTo(sx - foot*.5, H*.95); g.closePath(); g.fill();
+    g.fillStyle = rgba(B.c, B.a*.8); g.beginPath(); g.ellipse(sx, H*.95, foot*.5, H*.03, 0, 0, 6.28); g.fill();
+    g.fillStyle = '#9aa3ad'; g.beginPath(); g.ellipse(sx, top, H*.09, H*.022, 0, 0, 6.28); g.fill(); g.fillStyle = '#c9f7ff'; g.beginPath(); g.ellipse(sx, top - H*.014, H*.035, H*.02, 0, Math.PI, 0); g.fill();
+    for(let k = -2; k <= 2; k++){ g.fillStyle = (Math.floor(t*4) + k) % 2 ? '#7dff9a' : '#ffe27a'; g.beginPath(); g.arc(sx + k*H*.032, top + H*.006, Math.max(1, H*.005), 0, 6.28); g.fill(); } g.globalAlpha = 1; }
   if(R.aurora){ const Au = R.aurora; for(let b = 0; b < 3; b++){ g.beginPath(); for(let x = 0; x <= W; x += 8){ const y = H*(.12 + b*.07) + Math.sin(x*.012 + t*.4 + b)*H*.06 + Math.sin(x*.004 - t*.2)*H*.04; x ? g.lineTo(x, y) : g.moveTo(x, y); }
     g.strokeStyle = rgba(b % 2 ? Au.c2 : Au.c, Au.a*K*(.6 + .4*Math.sin(t*.7 + b))); g.lineWidth = H*.05; g.filter = 'blur(' + Math.round(H*.02) + 'px)'; g.stroke(); g.filter = 'none'; } }
   A.shafts.forEach(s=>{ const S = R.shafts, a = S.a*K*(.55 + .45*Math.sin(t*s.sp + s.ph)), x0 = s.x*W, w = s.w*W, c = S.prism ? hsl(s.hue + t*20, 80, 75) : S.c;
@@ -427,12 +468,14 @@ function spawnEvt(A, E){
   else if(E.kind === 'spray'){ const x = rnd(.1, .9); for(let i = 0; i < 16; i++) A.fx.push({kind:'drop', x, y:1.02, vx:rnd(-.14, .14), vy:rnd(-.75, -.4), c, t:0, s:rnd(.007, .014)}); }
   else if(E.kind === 'puff'){ const x = rnd(.1, .9), y = span(E.y, .6); for(let i = 0; i < 9; i++) A.fx.push({kind:'mote', x, y, vx:rnd(-.06, .06), vy:rnd(-.09, -.02), c, t:0, life:rnd(1.4, 2.2), s:rnd(.008, .016)}); }
   else if(E.kind === 'seed'){ const x = rnd(.08, .92), y = rnd(.55, .95); A.fx.push({kind:'seed', x, y, vx:rnd(-.08, .08), vy:-rnd(.25, .4), c, t:0, s:rnd(.008, .012), y0:y}); }
+  else if(E.kind === 'stomp'){ const x = rnd(.15, .85), y = rnd(.6, .92); // two footfalls a beat apart: the puddle rings twice
+    A.fx.push({kind:'ripple', x, y, c, t:0, life:1.1}); A.fx.push({kind:'ripple', x:x + .01, y, c, t:-.55, life:1.1}); A.fx.push({kind:'flash', c:[40,30,20], a:.1, t:0}); }
   else if(E.kind === 'pulse') A.fx.push({kind:'ripple', x:Math.random(), y:Math.random(), c, t:0, life:2.2, big:true});
 }
 function drawFx(A, f, g, W, H, dt, K){
   f.t += dt;
   if(f.kind === 'flash'){ const a = f.a*Math.max(0, 1 - f.t/.35); if(a <= 0) return false; g.globalAlpha = a*K; g.fillStyle = rgba(f.c, 1); g.fillRect(0, 0, W, H); return true; }
-  if(f.kind === 'ripple'){ const p = f.t/f.life; if(p >= 1) return false; g.globalAlpha = (1 - p)*.7*K; g.strokeStyle = rgba(f.c, 1); g.lineWidth = Math.max(1, H*(f.big ? .006 : .003));
+  if(f.kind === 'ripple'){ if(f.t < 0) return true; const p = f.t/f.life; if(p >= 1) return false; g.globalAlpha = (1 - p)*.7*K; g.strokeStyle = rgba(f.c, 1); g.lineWidth = Math.max(1, H*(f.big ? .006 : .003));
     const r = H*(f.big ? .25 : .05)*p; g.beginPath(); g.ellipse(f.x*W, f.y*H, r*1.6, r*(f.big ? 1.6 : .55), 0, 0, 6.28); g.stroke();
     if(!f.big && p > .2){ g.globalAlpha = (1 - p)*.4*K; g.beginPath(); g.ellipse(f.x*W, f.y*H, r*1.0, r*.34, 0, 0, 6.28); g.stroke(); } return true; }
   if(f.kind === 'drip'){ if(f.y < f.land){ f.v += 1.4*dt; f.y += f.v*dt; g.globalAlpha = .85*K; g.fillStyle = rgba(f.c, 1); g.beginPath(); g.ellipse(f.x*W, f.y*H, H*.004, H*.01, 0, 0, 6.28); g.fill(); return true; }
@@ -808,7 +851,7 @@ M.mapCleared = function(canvas, opts){
     tl.fromTo(glow, {opacity:0}, {opacity:1, duration:.35, ease:'power1.out'})
       .fromTo(rib, {clipPath:'inset(-30px 50% -30px 50%)', scaleY:.6}, {clipPath:'inset(-30px -60px -30px -60px)', scaleY:1, duration:.5, ease:'power3.out', clearProps:'clipPath'}, .1);
     if(sub) tl.fromTo(sub, {opacity:0, y:-8}, {opacity:1, y:0, duration:.3}, .45);
-    tl.add(()=>{ burst(cx, top, ['🌸','🍃','✨','🌼','🍂','✨','🌸','🍃','🌼','✨'], {dist:120, dur:1.1, size:16, lift:-30, fall:40}); sound('gold'); }, .45);
+    tl.add(()=>{ burst(cx, top, ['🌸','🍃','✨','🌼','🍂','✨','🌸','🍃','🌼','✨'], {dist:110, dur:1.1, size:16, lift:10, fall:40}); sound('gold'); }, .45);
     walkers.forEach(w=>{ const tx = cx + w.side*(28 + w.i*14), ty = rr.top + rr.height*.62;
       g.set(w.b, {xPercent:-50, yPercent:-50, scaleX:w.side > 0 ? 1 : -1});
       tl.to(w.b, {x:tx - (cx + w.side*(rr.width/2 + 20)), y:ty - parseFloat(w.b.style.top), duration:.9, ease:'power1.out'}, .3 + w.i*.06)
@@ -828,7 +871,8 @@ M.mapCleared_B = function(canvas, opts){
   return new Promise(res=> g.timeline({onComplete:()=>{ ban.remove(); lights.forEach(l=> l.remove()); res(); }})
     .fromTo(ban, {opacity:0, scale:.7}, {opacity:1, scale:1, duration:.4, ease:'back.out(2)'})
     .fromTo(lights, {xPercent:-50, yPercent:-50, scale:.2, opacity:0}, {scale:1, opacity:1, duration:.3, stagger:.07}, .1)
-    .to(lights, {y:-rr.height*.7, x:()=> rnd(-30, 30), opacity:0, duration:1.8, ease:'sine.in', stagger:.07}, .5)
+    // 2026-10-15: each lantern fades out before it reaches the map's top edge (it used to float over the header above)
+    .to(lights, {y:i=> -Math.max(30, Math.min(rr.height*.7, centre(nodes[i]).y - rr.top - 14)), x:()=> rnd(-30, 30), opacity:0, duration:1.8, ease:'sine.in', stagger:.07}, .5)
     .to(ban, {opacity:0, duration:.4}, 2.1));
 };
 css('lantern', `.fxe-lantern{filter:drop-shadow(0 0 10px rgba(255,170,80,.95));} .fxe-crit{filter:drop-shadow(0 2px 2px rgba(0,0,0,.45)); text-shadow:none;}`);
