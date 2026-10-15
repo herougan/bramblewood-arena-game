@@ -1598,6 +1598,10 @@
   @keyframes cometSky{0%{opacity:0;} 15%{opacity:1;} 100%{opacity:0;}}
   @media (prefers-reduced-motion: reduce){ .board-card.wash-pushed .card-tile, .board-card.comet-hit .card-tile, .waitbadge.wait-bump{animation:none;} }
   /* The Tide skill, live (2026-10-14): blue while a tide runs, like any skill that changes with the fight. */
+  /* 2026-10-15 (user: "Hide their skills as '?' until they become relevant for the first time"): the neutral chip a skill not met yet
+     shows as (SKILL_REVEAL), on the card's skill strip and in its text. */
+  .skill-q{display:inline-grid; place-items:center; min-width:1.15em; height:1.15em; padding:0 .15em; border-radius:999px; background:rgba(120,100,60,.22); color:inherit; font-weight:800; font-size:.92em; line-height:1; box-shadow:inset 0 0 0 1px rgba(120,100,60,.45); cursor:help;}
+  .skill-q-line .skill-q{font-size:1em; min-width:1.4em; height:1.4em;}
   .ab-tide.tide-live{color:#2a7fc0; background:rgba(90,180,255,.28); border-radius:999px; box-shadow:0 0 0 1.5px rgba(108,200,255,.9), 0 0 8px rgba(108,200,255,.6); padding:0 2px;}
   .ab-tide.tide-live.tide-high{box-shadow:0 0 0 2px #6cc8ff, 0 0 12px #6cc8ff;}
   .granted-skill.tide-live{font-weight:800;}
@@ -1671,9 +1675,10 @@
      battlefieldMapClass() (arena_app.js) picks the class from matchState.conquestNode.mapId; any
      non-Conquest match (Skirmish-from-Home, PvC, Raid, tutorial, Sandbox) has no conquestNode and
      falls through to the plain var(--bg) rule above, unchanged. */
-  .battlefield.map-m1{background:radial-gradient(ellipse at 50% 20%, #4f7a3a, transparent 65%), linear-gradient(180deg, #3c6b34 0%, #274a26 55%, #1a3320 100%);}
+  /* 2026-10-15: m1 and mf swapped with their art (Map 0 is the meadow now, Map 1 the wet forest). */
+  .battlefield.map-m1{background:radial-gradient(ellipse at 50% 20%, #a6c95c, transparent 65%), linear-gradient(180deg, #7fa83e 0%, #557d2a 55%, #33521c 100%);}
   .battlefield.map-m2{background:radial-gradient(ellipse at 50% 15%, #3f8f96, transparent 65%), linear-gradient(180deg, #1f5b6b 0%, #163f52 55%, #0e2838 100%);}
-  .battlefield.map-mf{background:radial-gradient(ellipse at 50% 20%, #a6c95c, transparent 65%), linear-gradient(180deg, #7fa83e 0%, #557d2a 55%, #33521c 100%);}
+  .battlefield.map-mf{background:radial-gradient(ellipse at 50% 20%, #4f7a3a, transparent 65%), linear-gradient(180deg, #3c6b34 0%, #274a26 55%, #1a3320 100%);}
   .battlefield.map-mb{background:radial-gradient(ellipse at 50% 15%, #f3e2b0, transparent 60%), linear-gradient(180deg, #3f9fb5 0%, #c9b07a 45%, #8f7a4f 100%);}
   .battlefield.map-m3{background:radial-gradient(ellipse at 50% 15%, #d9793f, transparent 60%), linear-gradient(180deg, #5c3524 0%, #3a2420 55%, #241715 100%);}
   .battlefield.map-m4{background:radial-gradient(ellipse at 50% 20%, #5b6672, transparent 65%), linear-gradient(180deg, #333c46 0%, #23282f 55%, #14171b 100%);}
@@ -4408,7 +4413,17 @@
   .conquest-map-canvas.layout-editing .map-spot, .conquest-map-canvas.layout-editing .map-well, .conquest-map-canvas.layout-editing .map-cave{cursor:grab; touch-action:none; outline:2px dashed rgba(255,240,200,.75); outline-offset:3px; border-radius:12px; opacity:1;}
   .conquest-map-canvas.layout-editing .map-spot:hover, .conquest-map-canvas.layout-editing .map-cave:hover{transform:translate(-50%,-50%);}
   .conquest-map-canvas.layout-editing .ml-dragging{cursor:grabbing; z-index:20; box-shadow:0 0 0 4px var(--gold), 0 8px 20px rgba(0,0,0,.5);}
-  .map-theme-m1{--mt-a:#4a7c3f; --mt-b:#2f5a2a; --mt-c:#1c3d1c;}
+  /* 2026-10-15 (user: "Are there any submaps with no background? fill them in."): Clovermead, the Sunken Depths, the Mycelium
+     Deep and the Eye of the Volcano had art but no --mt-a/b/c palette, and the map background below reads var(--mt-a): an
+     undefined var makes the WHOLE background declaration invalid, so the art never drew. Every map now has a fallback palette,
+     and those maps get their own. */
+  .conquest-layout{--mt-a:#4a7c3f; --mt-b:#2f5a2a; --mt-c:#1c3d1c;}
+  .map-theme-mq{--mt-a:#8fc85a; --mt-b:#5f9a3a; --mt-c:#2f5a22;} .map-theme-mj{--mt-a:#1f7e93; --mt-b:#14566b; --mt-c:#0b2f3e;}
+  .map-theme-mz{--mt-a:#7a5aa0; --mt-b:#3f2e4d; --mt-c:#1f1626;} .map-theme-me{--mt-a:#b0401f; --mt-b:#5e1a0c; --mt-c:#260a04;}
+  .map-theme-mm{--mt-a:#3f5a3a; --mt-b:#24361f; --mt-c:#111a0e;}
+  /* 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds. I think the wetter one makes sense for the next map."):
+     the Outskirts (m1) now wear Thistlewood's sunny-meadow art and tint, Thistlewood (mf) the Outskirts' stream-and-pond forest. */
+  .map-theme-m1{--mt-a:#9ec455; --mt-b:#6f9a36; --mt-c:#3f5f1f;}
   .map-theme-m2{--mt-a:#2f7ca0; --mt-b:#1d5578; --mt-c:#123a54;}
   .map-theme-m3{--mt-a:#c05a2e; --mt-b:#8a3a1e; --mt-c:#4d1f10;}
   .map-theme-m4{--mt-a:#5a4a7c; --mt-b:#392c54; --mt-c:#1c1530;}
@@ -4423,7 +4438,7 @@
   .map-theme-m8{--mt-a:#384a2e; --mt-b:#212e1a; --mt-c:#10160c;}
   .map-theme-m9{--mt-a:#d9481f; --mt-b:#8f2a10; --mt-c:#401407;}
   .map-theme-m10{--mt-a:#cdd6de; --mt-b:#8a97a3; --mt-c:#47515a;} .map-theme-m21{--mt-a:#f2f4f8; --mt-b:#a7aec0; --mt-c:#5b6276;} .map-theme-mtut{--mt-a:#90c95a; --mt-b:#5c9a3a; --mt-c:#2f5a22;}
-  .map-theme-mf{--mt-a:#9ec455; --mt-b:#6f9a36; --mt-c:#3f5f1f;}  /* Thistle Fields (2026-10-09) */
+  .map-theme-mf{--mt-a:#4a7c3f; --mt-b:#2f5a2a; --mt-c:#1c3d1c;}  /* Thistlewood: the Outskirts' old forest tint, with its art (2026-10-15 swap) */
   .map-theme-mb{--mt-a:#ecd9a4; --mt-b:#3f9fb5; --mt-c:#1e5f78;}  /* Pebble Beach (2026-10-09) */
   /* The 0–20 road (2026-10-11) */
   .map-theme-mu{--mt-a:#9a6ad0; --mt-b:#4f3b3d; --mt-c:#2a1d22;}
@@ -4464,7 +4479,7 @@
     radial-gradient(ellipse at 30% 20%, var(--mt-a) 0%, var(--mt-b) 48%, var(--mt-c) 100%);}
   /* Pixel-art terrain under the light/vignette layers when a map has one (2026-10-04,
      tools/make_map_backgrounds.py). The speckle/patch layers are dropped so the art reads. */
-  .map-theme-m1, .battlefield.map-m1{--map-art:url(assets/maps/m1.png?v=ff523494da);}
+  .map-theme-m1, .battlefield.map-m1{--map-art:url(assets/maps/m1.png?v=6d4ccccecf);}
 .map-theme-m2, .battlefield.map-m2{--map-art:url(assets/maps/m2.png?v=654cce10c5);}
 .map-theme-m3, .battlefield.map-m3{--map-art:url(assets/maps/m3.png?v=d778b4b4db);}
 .map-theme-m4, .battlefield.map-m4{--map-art:url(assets/maps/m4.png?v=1c887fa71a);}
@@ -4476,7 +4491,7 @@
 .map-theme-m10, .battlefield.map-m10{--map-art:url(assets/maps/m10.png?v=13dedadcb3);}
 .map-theme-m11, .battlefield.map-m11{--map-art:url(assets/maps/m11.png?v=8976e914e0);}
 .map-theme-m21, .battlefield.map-m21{--map-art:url(assets/maps/m21.png?v=b1aa6d659f);}
-.map-theme-mf, .battlefield.map-mf{--map-art:url(assets/maps/mf.png?v=6d4ccccecf);}
+.map-theme-mf, .battlefield.map-mf{--map-art:url(assets/maps/mf.png?v=ff523494da);}
 .map-theme-mb, .battlefield.map-mb{--map-art:url(assets/maps/mb.png?v=ffaf952976);}
 .map-theme-mg, .battlefield.map-mg{--map-art:url(assets/maps/mg.png?v=1420cfe30e);}
 .map-theme-mu, .battlefield.map-mu{--map-art:url(assets/maps/mu.png?v=0dba0fd9e6);}
@@ -4493,13 +4508,14 @@
 .map-theme-mq, .battlefield.map-mq{--map-art:url(assets/maps/mq.png?v=1bfa0a196d);}
 .map-theme-mz, .battlefield.map-mz{--map-art:url(assets/maps/mz.png?v=e77fcf0fb2);}
 .map-theme-me, .battlefield.map-me{--map-art:url(assets/maps/me.png?v=205aeaab5c);}
-.map-theme-mx, .battlefield.map-mx{--map-art:url(assets/maps/mx.png?v=8976e914e0);}
-.map-theme-ms, .battlefield.map-ms{--map-art:url(assets/maps/ms.png?v=13b48b43a4);}
-.map-theme-mn, .battlefield.map-mn{--map-art:url(assets/maps/mn.png?v=1c887fa71a);}
-.map-theme-mv, .battlefield.map-mv{--map-art:url(assets/maps/mv.png?v=13dedadcb3);}
-.map-theme-mi, .battlefield.map-mi{--map-art:url(assets/maps/mi.png?v=60532010a4);}
-.map-theme-mo, .battlefield.map-mo{--map-art:url(assets/maps/mo.png?v=ff523494da);}
+.map-theme-mx, .battlefield.map-mx{--map-art:url(assets/maps/mx.png?v=834c8dbb7f);}
+.map-theme-ms, .battlefield.map-ms{--map-art:url(assets/maps/ms.png?v=21089a70ba);}
+.map-theme-mn, .battlefield.map-mn{--map-art:url(assets/maps/mn.png?v=df49edb787);}
+.map-theme-mv, .battlefield.map-mv{--map-art:url(assets/maps/mv.png?v=d939c83bbe);}
+.map-theme-mi, .battlefield.map-mi{--map-art:url(assets/maps/mi.png?v=4d6289a795);}
+.map-theme-mo, .battlefield.map-mo{--map-art:url(assets/maps/mo.png?v=d9ef1402ad);}
 .map-theme-mj, .battlefield.map-mj{--map-art:url(assets/maps/mj.png?v=89944268f8);}
+.map-theme-mm, .battlefield.map-mm{--map-art:url(assets/maps/mm.png?v=5152d17075);}
 .map-theme-mtut, .battlefield.map-mtut{--map-art:url(assets/maps/mtut.png?v=6df3887fc3);}
 :root{--forge-art:url(assets/forge/bg.png?v=b8c089d162);--anvil-art:url(assets/forge/anvil.png?v=4135c912ea);}
   .conquest-layout[class*="map-theme-"]{image-rendering:pixelated;}
@@ -9162,6 +9178,9 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .sk-codex .sk-row{display:grid; grid-template-columns:minmax(140px, 200px) 1fr; gap:12px; padding:8px 0; border-top:1px solid rgba(120,90,50,.2);}
 .sk-codex .sk-row:first-of-type{border-top:0;} .sk-codex .sk-text .skill-counter{margin-top:4px; font-size:.9em; opacity:.85;}
 @media (max-width:560px){ .sk-codex .sk-row{grid-template-columns:1fr; gap:2px;} }
+/* One-off skills (2026-10-15, user: "We will designate some skills as 1-offs ... Just specific to the animal"): a small tag in the
+   card editor's skill rows and the Skills codex. */
+.sk-oneoff{display:inline-block; margin-left:6px; padding:0 6px; border-radius:8px; font:700 10px/16px 'Baloo 2',system-ui,sans-serif; letter-spacing:.02em; text-transform:uppercase; vertical-align:middle; color:#7a4a12; background:#ffe6b8; border:1px solid #e8b46a;}
 .mc-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:12px;}
 .mc-card{border-radius:14px; padding:12px; background:linear-gradient(160deg, color-mix(in srgb, var(--mt-a, #cfd8c0) 35%, var(--surface, #fff8e6)), var(--surface, #fff8e6)); box-shadow:inset 0 0 0 1px rgba(120,90,50,.25);}
 .mc-head{display:flex; gap:10px; align-items:center;} .mc-head .mc-ico{font-size:28px;} .mc-head small{display:block; opacity:.75;}
@@ -9874,6 +9893,12 @@ html body{background:var(--bg) !important; background-image:none !important;} bo
 <div class="btns sk-btns" style="margin-top:4px"><span class="sk-grp" style="font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); min-width:9em">Statuses</span><button class="btn" data-skill="stun">💫 Stun stars</button><button class="btn" data-skill="confuse">❓ Confused</button><button class="btn" data-skill="freeze">🧊 Freeze</button><button class="btn" data-skill="sleep">💤 Sleep</button><button class="btn" data-skill="paralyze">⚡ Paralyze</button><button class="btn" data-skill="corrode">🧪 Corrode</button><button class="btn" data-skill="blind">🖤 Blind ink</button><button class="btn" data-skill="fear">😨 Daunt</button><button class="btn" data-skill="curse">🜏 Weaken / curse</button><button class="btn" data-skill="expose">🎯 Expose</button><button class="btn" data-skill="addwait">⏳ +Wait</button><button class="btn" data-skill="coffee">☕ Coffee</button></div>
 <div class="btns sk-btns" style="margin-top:4px"><span class="sk-grp" style="font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); min-width:9em">Support</span><button class="btn" data-skill="sap">🩸 Sap drain</button><button class="btn" data-skill="bloom">🌸 Bloom pollen</button><button class="btn" data-skill="esprit">🤝 Esprit aura</button><button class="btn" data-skill="rage">😡 Berserk</button><button class="btn" data-skill="revive">✨ Revive</button><button class="btn" data-skill="summon">🥚 Summon</button><button class="btn" data-skill="loot">🪵 Lumber gain</button><button class="btn" data-skill="prayer">🕊️ Prayer</button></div>
 <div class="btns sk-btns" style="margin-top:4px"><span class="sk-grp" style="font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); min-width:9em">Earlier passes (2026-10-14)</span><button class="btn" data-skill="fireball">🟠 Fireball</button><button class="btn" data-skill="meteor">☄️ Meteor</button><button class="btn" data-skill="banana">🍌 Banana</button><button class="btn" data-skill="munch">😋 Munch</button><button class="btn" data-skill="smokebomb">🌫️ Smoke Bomb</button><button class="btn" data-skill="psychic">💭 Psychic</button></div>
+<h3 class="disp-h">Arrows, Bolts and prongs <span class="st live" style="vertical-align:middle">Live</span></h3>
+<p class="sec-sub" style="margin:2px 0 6px">2026-10-15: the new arrows, the Bolt family (one coloured glob per element), the reworked Fork / Trident / Pitchfork and Crab Claws, and Chilli.</p>
+<div class="btns sk-btns" style="margin-top:4px"><span class="sk-grp" style="font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); min-width:9em">Prongs</span><button class="btn" data-skill="fork">⇔ Fork (2 nearest)</button><button class="btn" data-skill="trident">🔱 Trident (3 nearest)</button><button class="btn" data-skill="pitchfork">🍴 Pitchfork (4 nearest)</button><button class="btn" data-skill="crabclaws">🦞 Crab Claws</button></div>
+<div class="btns sk-btns" style="margin-top:4px"><span class="sk-grp" style="font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); min-width:9em">Arrows</span><button class="btn" data-skill="icearrow">🧊🏹 Ice Arrow</button><button class="btn" data-skill="twinshot">🏹🏹 Twin Shot</button><button class="btn" data-skill="volley">🎯🏹 Volley</button></div>
+<div class="btns sk-btns" style="margin-top:4px"><span class="sk-grp" style="font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); min-width:9em">Bolts</span><button class="btn" data-skill="firebolt">🔥 Fire Bolt</button><button class="btn" data-skill="acidbolt">🧪 Acid Bolt</button><button class="btn" data-skill="poisonbolt">🐍 Poison Bolt</button><button class="btn" data-skill="icebolt">❄️ Ice Bolt</button><button class="btn" data-skill="shockbolt">⚡ Shock Bolt</button></div>
+<div class="btns sk-btns" style="margin-top:4px"><span class="sk-grp" style="font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); min-width:9em">One-offs</span><button class="btn" data-skill="chilli">🌶️ Chilli</button><button class="btn" data-skill="chilliburn">🌶️ Chilli sting</button></div>
 <div class="tbl" style="margin-top:12px"><table><thead><tr><th>Skill</th><th>Status</th><th>Beats</th></tr></thead><tbody>
 <tr><td>🏹 Arrow</td><td><span class="st live">Live</span></td><td>Draw (lean back, arrow pulled) → release, recoil, string ring → arcing, accelerating flight → stick, quiver, knock-back, splinters</td></tr>
 <tr><td>🔥 Fire Arrow</td><td><span class="st live">Live</span></td><td>As Arrow, plus a flame lit on the tip while drawing, an ember trail, a burst of flame, an ignite ring and a scorched edge on the target</td></tr>
@@ -9933,6 +9958,11 @@ html body{background:var(--bg) !important; background-image:none !important;} bo
 <tr><td>🥚 Summon</td><td><span class="st live">Live</span></td><td>A green rune circle spins open under the new card and it pops in <em style="color:var(--ink-muted)">(on: Any spawn (Brood, Twin, On Death spawns, Meiosis))</em></td></tr>
 <tr><td>🪵 Lumber gain</td><td><span class="st live">Live</span></td><td>Logs hop from the card to the Lumber pill (or the enemy castle) <em style="color:var(--ink-muted)">(on: On Ready / On Spawn Lumber, Worthy)</em></td></tr>
 <tr><td>🕊️ Prayer</td><td><span class="st live">Live</span></td><td>A beam of light falls on the card and a dove rises <em style="color:var(--ink-muted)">(on: Grace from Prayer and other Grace skills)</em></td></tr>
+<tr><td>🔱 Fork · Trident · Pitchfork</td><td><span class="st live">Live</span></td><td>Steel tines thrust into each unit hit beyond the first (2 / 3 / 4 nearest, within 1 / 1 / 2 columns) <em style="color:var(--ink-muted)">(on: each prong hit, 2026-10-15 rework)</em></td></tr>
+<tr><td>🧊🏹 Ice Arrow</td><td><span class="st live">Live</span></td><td>The bow shot; a block of ice grows over the unit when it freezes (1 in 2) <em style="color:var(--ink-muted)">(on: each Ice Arrow; its freeze)</em></td></tr>
+<tr><td>🏹🏹 Twin Shot · 🎯🏹 Volley</td><td><span class="st live">Live</span></td><td>One bow shot per arrow, in quick succession <em style="color:var(--ink-muted)">(on: each arrow)</em></td></tr>
+<tr><td>🔥🧪🐍❄️⚡ Bolts</td><td><span class="st live">Live</span></td><td>The shooter squashes as it spits; a wobbling glob in the element's colours lobs over, shedding droplets, and splats with a burst <em style="color:var(--ink-muted)">(on: each Bolt; the status effect plays after)</em></td></tr>
+<tr><td>🌶️ Chilli</td><td><span class="st live">Live</span></td><td>A chilli pops up and is gobbled; the card flushes red, shakes and puffs steam (a smaller flash and wisp at each round-start sting) <em style="color:var(--ink-muted)">(on: eating it; each sting)</em></td></tr>
 </tbody></table></div>
 </section>
 
@@ -11951,7 +11981,9 @@ void main(){
   gl_FragColor = outc;
 }`;
 
-const MAP_KIND = {mtut:4, m21:9, mj:6, mf:4, mb:12, mg:3, mu:0, mp:1, mc:12, mw:7, mk:6, mh:4, mr:0, ml:4, mt:5, md:4, my:0, m1:0, m2:1, m3:2, m4:3, m5:4, m6:5, m7:6, m8:7, m9:8, m10:9, m11:10, me:10, m12:3, m13:4, m14:10};
+// 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds"): the overlay follows the art, so the Outskirts (m1)
+// take the meadow look (4) and Thistlewood (mf) the wet forest (0).
+const MAP_KIND = {mtut:4, m21:9, mj:6, mf:0, mb:12, mg:3, mu:0, mp:1, mc:12, mw:7, mk:6, mh:4, mr:0, ml:4, mt:5, md:4, my:0, m1:4, m2:1, m3:2, m4:3, m5:4, m6:5, m7:6, m8:7, m9:8, m10:9, m11:10, me:10, m12:3, m13:4, m14:10};
 
 const layers = new Set();
 let raf = null, t0 = performance.now();
@@ -13228,7 +13260,7 @@ function armorBlock(target, o){
 function forkProngs(attacker, targets, o){
   o = o || {}; const list = (targets||[]).filter(Boolean); if(!list.length) return;
   if(!go()){ list.forEach((el, i)=> call(o.onEachImpact, el, i)); return; }
-  const g = G(), a = attacker ? centre(attacker) : null, ink = o.kind === 'octolash', n = o.kind === 'pitchfork' ? 4 : 3;
+  const g = G(), a = attacker ? centre(attacker) : null, ink = o.kind === 'octolash', n = o.kind === 'pitchfork' ? 4 : o.kind === 'fork' ? 2 : 3; // tines: Fork 2 (2026-10-15), Trident 3, Pitchfork 4
   list.forEach((el, i)=> later(()=>{
     const b = centre(el), ang = a ? angTo(a, b) : Math.PI/2, ux = Math.cos(ang), uy = Math.sin(ang), px = -uy, py = ux, L = b.h*.55, deg = ang*57.3;
     for(let k = 0; k < n; k++){ const p = layer('sfx-prong' + (ink ? ' is-ink' : '')), off = (k - (n - 1)/2)*b.w*.16;
@@ -13482,6 +13514,63 @@ function stealthSlip(attacker, castle, o){
 }
 Object.assign(root.SkillFX, {swoop, gust, splash, armorBlock, forkProngs, pierceThrough, stunStars, freezeEncase, sleepZzz, paralyzeSpark, acidCorrode, lifeDrain, bloomPollen,
   fearShiver, curseDrain, targetMark, blindInk, mirrorFlash, reviveRise, summonPortal, lootArc, prayerLight, espritAura, rageFlare, scarMark, clockTick, parry, crownCrack, stealthSlip});
+// ---- 2026-10-15 (ninth pass): the Bolts (user: "They just represents 'spits' of something at the enemy. Fire bolt, Acid bolt, Poison
+// bolt etc.") and Chilli (user: "New skill Chilli.").
+//   SkillFX.boltGlob(shooter, target, {element:'fire'|'acid'|'poison'|'ice'|'shock', flight, onImpact})
+//   SkillFX.chilliHeat(target, {burn})   (burn: the smaller round-start sting instead of the first big flush)
+// BOLT_LOOK is the element table on this side: a new element is one row here (its colours and the burst it leaves).
+const BOLT_LOOK = {
+  fire:   {core:'#fff2b0', mid:'#ff9a2a', edge:'#d8380e', glow:'255,120,30',  bit:'fire'},
+  acid:   {core:'#f6ffb0', mid:'#b6e830', edge:'#5f8a10', glow:'180,240,40',  bit:'poison'},
+  poison: {core:'#f0d8ff', mid:'#9a4fd8', edge:'#4a1d6e', glow:'170,80,255',  bit:'poison'},
+  ice:    {core:'#ffffff', mid:'#a8dcff', edge:'#3f8fd8', glow:'140,200,255', bit:'ice'},
+  shock:  {core:'#ffffff', mid:'#fff36a', edge:'#e0b000', glow:'255,230,60',  bit:'zap'},
+};
+const NINTH_CSS = `
+.sfx-glob{width:22px; height:22px; border-radius:50% 50% 50% 50% / 58% 58% 42% 42%;}
+.sfx-glob-drop{width:7px; height:7px; border-radius:50%; filter:blur(.5px);}
+.sfx-glob-splat{border-radius:46% 54% 50% 50%; mix-blend-mode:screen;}
+.sfx-chilli{font-size:24px; line-height:1; filter:drop-shadow(0 2px 3px rgba(0,0,0,.4));}
+.sfx-chilli-flush{border-radius:12px; background:radial-gradient(ellipse at 50% 60%, rgba(255,60,30,.6), rgba(255,40,20,.35) 55%, rgba(255,40,20,.12) 85%); box-shadow:0 0 18px 4px rgba(255,70,30,.55);}
+.sfx-chilli-steam{width:30px; height:30px; border-radius:50%; background:radial-gradient(circle, rgba(255,246,240,.95) 0, rgba(255,205,195,.55) 45%, rgba(255,205,195,0) 70%); filter:blur(1.5px);}
+`;
+function ninthCss(){ if(document.getElementById('sfx-ninth-css')) return; const st = document.createElement('style'); st.id = 'sfx-ninth-css'; st.textContent = NINTH_CSS; (document.head || document.body).appendChild(st); }
+// A Bolt: a coloured glob arcs from the shooter to the target (a short lob, wobbling as it flies, shedding droplets), then splats.
+function boltGlob(shooter, target, o){
+  o = o || {}; const fly = o.flight || 420;
+  if(!ready() || !shooter || !target){ later(o.onImpact, fly); return; } ninthCss();
+  const L = BOLT_LOOK[o.element] || BOLT_LOOK.fire, g = G(), a = centre(shooter), b = centre(target);
+  const m = {x:(a.x + b.x)/2, y:Math.min(a.y, b.y) - Math.max(50, Math.abs(b.x - a.x)*.25)}, st = {t:0};
+  const glob = layer('sfx-glob'); glob.style.background = `radial-gradient(circle at 38% 36%, ${L.core} 0, ${L.mid} 45%, ${L.edge} 100%)`; glob.style.boxShadow = `0 0 12px 4px rgba(${L.glow},.75)`;
+  g.set(glob, {x:a.x - 11, y:a.y - a.h*.15 - 11, scale:.4});
+  g.fromTo(tileOf(shooter), {scaleY:1}, {scaleY:.93, duration:.08, yoyo:true, repeat:1, transformOrigin:'50% 100%', clearProps:'transform'}); // the spit
+  let k = 0;
+  const drip = ()=>{ if(k++ % 3) return; const r = glob.getBoundingClientRect(), d = layer('sfx-glob-drop'); d.style.background = L.mid; g.set(d, {x:r.left + r.width/2 - 3, y:r.top + r.height/2 - 3, opacity:.9});
+    g.to(d, {y:'+=14', opacity:0, scale:.3, duration:.35, ease:'power1.in', onComplete:()=> d.remove()}); };
+  g.timeline({onComplete:()=> glob.remove()})
+    .to(st, {t:1, duration:fly/1000, ease:'power1.in', onUpdate:()=>{ const q = qpt({x:a.x, y:a.y - a.h*.15}, m, b, st.t); g.set(glob, {x:q.x - 11, y:q.y - 11, scale:.6 + .5*st.t, scaleX:1 + .25*Math.sin(st.t*18), rotation:st.t*240}); drip(); }})
+    .add(()=>{
+      glob.style.opacity = 0;
+      const sp = layer('sfx-glob-splat'); sp.style.background = `radial-gradient(circle, ${L.core} 0, rgba(${L.glow},.85) 35%, rgba(${L.glow},0) 72%)`;
+      g.set(sp, {x:b.x, y:b.y, xPercent:-50, yPercent:-50, width:16, height:16, opacity:1});
+      g.to(sp, {width:b.w*.9, height:b.w*.75, opacity:0, duration:.42, ease:'power2.out', onComplete:()=> sp.remove()});
+      burst(b.x, b.y, -90, L.bit, 10); knock(target, a.y < b.y ? 90 : -90, .7); call(o.onImpact);
+    });
+}
+// Chilli: a chilli pops up and is gobbled, the card flushes red and puffs steam (the round-start sting: a red flash and a wisp).
+function chilliHeat(target, o){
+  o = o || {}; if(!ready() || !target){ call(o.onDone); return; } ninthCss();
+  const g = G(), c = centre(target);
+  if(!o.burn){ const f = layer('sfx-chilli', '🌶️'); g.set(f, {x:c.x, y:c.r.top + c.h*.22, xPercent:-50, yPercent:-50, scale:.4, opacity:0, rotation:-20});
+    g.timeline({onComplete:()=> f.remove()}).to(f, {scale:1.1, opacity:1, rotation:0, duration:.15, ease:'back.out(3)'})
+      .to(f, {scaleX:.8, duration:.07, yoyo:true, repeat:1}).to(f, {scale:.6, duration:.08}).to(f, {scale:.1, opacity:0, duration:.1}); }
+  const fl = layer('sfx-chilli-flush'); g.set(fl, {x:c.r.left, y:c.r.top, width:c.w, height:c.h, opacity:0});
+  g.timeline({delay:o.burn ? 0 : .35, onComplete:()=>{ fl.remove(); call(o.onDone); }}).to(fl, {opacity:1, duration:.12}).to(fl, {opacity:o.burn ? 0 : .5, duration:.25}).to(fl, {opacity:0, duration:.3});
+  for(let i = 0; i < (o.burn ? 3 : 7); i++){ const p = layer('sfx-chilli-steam'); g.set(p, {x:c.x - 15 + rnd(-c.w*.3, c.w*.3), y:c.r.top + c.h*.2, scale:.4, opacity:0});
+    g.to(p, {opacity:.9, duration:.1, delay:(o.burn ? 0 : .4) + i*.06}); g.to(p, {y:`-=${rnd(26, 48)}`, x:`+=${rnd(-10, 10)}`, scale:rnd(1.4, 2.2), opacity:0, duration:rnd(.6, .9), delay:(o.burn ? .1 : .5) + i*.06, ease:'power1.out', onComplete:()=> p.remove()}); }
+  g.fromTo(tileOf(target), {x:0}, {x:2, duration:.05, yoyo:true, repeat:o.burn ? 3 : 7, delay:o.burn ? 0 : .35, clearProps:'transform'});
+}
+Object.assign(root.SkillFX, {boltGlob, chilliHeat, BOLT_LOOK});
 })(typeof window !== 'undefined' ? window : globalThis);
 
 // Procedural FX (2026-10-14, user: "More vfx, more gsap (advanced use cases - be exploratory), cellular automaton
@@ -15108,6 +15197,9 @@ const Ambience = (()=>{
   const CRICKET = {type:'bandpass', freq:4300, q:9, gain:0.013, am:24};
   function addTimeLayer(sc){
     if(!sc || !tod || sc.kind===3 || sc.kind===6) return; // not in caves or underwater
+    // 2026-10-15 (user: "Map 0 has no day/night system (only effects) - no howling."): no night crickets or dawn chorus on Map 0's
+    // world map or in its fights (sc.flavor is the map id; a fight on Map 0 is checked through matchState).
+    try{ const mid = sc.flavor || (typeof matchState !== 'undefined' && matchState && !matchState.over && matchState.conquestNode && matchState.conquestNode.mapId); if(mid && typeof MISTY_MAPS !== 'undefined' && MISTY_MAPS.has(mid)) return; }catch(e){}
     if(tod==='night'){ bed(sc, CRICKET); }
     if(tod==='dawn'){ const go = ()=>{ if(!sc.alive) return; if(!document.hidden && vol>0){ try{ bird(sc); }catch(e){} } sc.timers.push(setTimeout(go, rnd(0.8, 2.5)*1000)); }; sc.timers.push(setTimeout(go, 600)); }
   }
