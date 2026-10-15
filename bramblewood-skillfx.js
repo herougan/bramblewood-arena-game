@@ -1436,13 +1436,16 @@ function w2Css(){
 .board-card.is-toxic .card-tile{box-shadow:inset 0 0 14px rgba(70,200,30,.65);}
 .board-card.is-crystal .card-tile{filter:hue-rotate(170deg) saturate(.6) brightness(1.15); box-shadow:inset 0 0 18px rgba(170,220,255,.9), 0 0 10px rgba(120,190,255,.6);}
 .abadge.bound{background:#2e6b28; color:#eaffd8;} .abadge.toxin{background:#1f3a12; color:#b8ff6a;} .abadge.invisible{background:#4a4f63; color:#eef;} .abadge.invincible{background:#a07a10; color:#fff6d0;}
+.board-card.empty-slot.w2-hazard{visibility:visible; border-radius:14px; background:radial-gradient(ellipse at 50% 62%, rgba(60,40,24,.55), rgba(60,40,24,.15) 60%, transparent 75%); outline:2px dashed rgba(230,200,150,.45); outline-offset:-6px;}
+.board-card.empty-slot.w2-hazard.w2-scorch{background:radial-gradient(ellipse at 50% 70%, rgba(255,120,30,.5), rgba(160,40,10,.3) 55%, transparent 78%); outline-color:rgba(255,150,60,.55); animation:sfxW2Smoulder 1.4s ease-in-out infinite;}
+.board-card.empty-slot.w2-hazard .w2-hazard-mark{bottom:auto; top:50%; transform:translate(-50%,-50%); font-size:16px; padding:3px 9px;}
 .w2-hazard-mark{position:absolute; left:50%; bottom:8%; transform:translateX(-50%); z-index:6; font:800 13px 'Baloo 2',system-ui,sans-serif; padding:1px 6px; border-radius:999px; white-space:nowrap; pointer-events:auto;
   background:rgba(40,28,18,.82); color:#ffe9c0; box-shadow:0 1px 3px rgba(0,0,0,.4);}
 .w2-hazard-mark.scorch{background:rgba(120,30,8,.85); color:#ffd9a0; animation:sfxW2Smoulder 1.4s ease-in-out infinite;}
 @keyframes sfxW2Smoulder{0%,100%{box-shadow:0 0 4px rgba(255,120,30,.5);} 50%{box-shadow:0 0 12px rgba(255,140,40,.95);}}
-.w2-clouds{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:1; border-radius:inherit;}
-.w2-clouds i{position:absolute; display:block; border-radius:50%; background:radial-gradient(ellipse at 50% 50%, rgba(20,24,40,.34), rgba(20,24,40,.2) 45%, rgba(20,24,40,0) 70%);
-  filter:blur(10px); animation:sfxW2Drift linear infinite; will-change:transform;}
+.w2-clouds{position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:40; border-radius:inherit; mix-blend-mode:multiply;} /* above the cards: the shadows pass over them too */
+.w2-clouds i{position:absolute; display:block; border-radius:50%; background:radial-gradient(ellipse at 50% 50%, rgba(30,34,52,.42), rgba(30,34,52,.26) 45%, rgba(30,34,52,0) 70%);
+  filter:blur(12px); animation:sfxW2Drift linear infinite; will-change:transform;}
 @keyframes sfxW2Drift{from{transform:translateX(-45vw);} to{transform:translateX(145vw);}}
 @media (prefers-reduced-motion: reduce){ .w2-clouds i{animation:none;} .board-card.is-invisible .card-tile, .board-card.is-invincible .card-tile, .w2-hazard-mark.scorch{animation:none;} }
 `;

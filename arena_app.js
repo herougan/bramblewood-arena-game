@@ -24047,7 +24047,7 @@ function renderBoard(opts){
         continue;
       }
       if(pl.id===viewerPid && legalForViewer.has(sl)) html += `<div class="board-card slot-target${cur ? ' is-cursed' : ''}" data-w2cell="${pl.id}:s${sl}" data-slot="${sl}" title="Play here${cur ? ` (cursed: ${cur} a round)` : ''}"><span class="slot-target-plus">＋</span>${mark}</div>`;
-      else html += `<div class="board-card empty-slot${cur ? ' is-cursed' : ''}" data-w2cell="${pl.id}:s${sl}"${mark ? '' : ' aria-hidden="true"'}>${mark}</div>`;
+      else { const hz = hazardMap[pl.id + ':s' + sl]; html += `<div class="board-card empty-slot${cur ? ' is-cursed' : ''}${hz ? ' w2-hazard' + (hz.scorch > 0 ? ' w2-scorch' : '') : ''}" data-w2cell="${pl.id}:s${sl}"${mark ? '' : ' aria-hidden="true"'}>${mark}</div>`; } // a trap / burning ground shows on its empty slot (2026-10-16)
     }
     return html;
   }

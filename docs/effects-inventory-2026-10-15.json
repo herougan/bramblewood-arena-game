@@ -15447,5 +15447,364 @@
    "docs/raid-design.md:120"
   ],
   "batch": "F"
+ },
+ {
+  "id": "sk-venom",
+  "area": "combat-skill",
+  "name": "Venomous bite",
+  "trigger": "statusFx venom",
+  "current": "SkillFX.venomBite (fangs, venom drips) + \"🦂 +N☠\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Snakes, spiders, scorpions: venom gets through armour.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-toxin",
+  "area": "combat-skill",
+  "name": "Toxin applied",
+  "trigger": "statusFx toxin",
+  "current": "SkillFX.toxinMark (closing toxic ring, ☣️) + .is-toxic inner glow",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "A deadlier poison that never wears off.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "st-toxin-tick",
+  "area": "status",
+  "name": "Toxin: tick",
+  "trigger": "toxinTick",
+  "current": "green shake + \"☣️ -N\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Like the poison tick, darker.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-weaken",
+  "area": "combat-skill",
+  "name": "Weaken",
+  "trigger": "statusFx weaken",
+  "current": "SkillFX.weakenDrain (a ⚔ cracks and sinks) + \"💔 −N⚔\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Permanent Attack loss.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-wilting",
+  "area": "combat-skill",
+  "name": "Wilting",
+  "trigger": "statusFx wilting",
+  "current": "SkillFX.wilt (petals drop, the card sags) + \"🥀 −N⚔\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "A drawback: hit, it loses Attack.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-bulldoze",
+  "area": "combat-skill",
+  "name": "Bulldoze shove",
+  "trigger": "statusFx bulldoze",
+  "current": "SkillFX.bulldozeShove (shoved back, dust) + \"🚜 ⏪ +N Wait\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Big pushers: rhinos, boars, bulls.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-bind",
+  "area": "combat-skill",
+  "name": "Tangleweed / Strangle bind",
+  "trigger": "statusFx bound",
+  "current": "SkillFX.vineBind (vines whip round) + .is-bound vines while Bound",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Kelp, vines, constrictors.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "st-strangle-tick",
+  "area": "status",
+  "name": "Strangle: squeeze",
+  "trigger": "strangleTick",
+  "current": "SkillFX.squeeze + \"🪢 -N\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "The vines tighten.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-invincible",
+  "area": "combat-skill",
+  "name": "Invincible",
+  "trigger": "hit for 0 on an Invincible unit; .is-invincible",
+  "current": "gold aura (.is-invincible) + SkillFX.invincibleBlock",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "A golden, untouchable arrival.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-invisible",
+  "area": "combat-skill",
+  "name": "Invisible",
+  "trigger": ".is-invisible; statusEnd invisible {attacked}",
+  "current": "faint shimmer (.is-invisible) + SkillFX.unveil when it attacks",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Chameleons, ghosts of the grass.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-poison-gas",
+  "area": "combat-skill",
+  "name": "Poison Gas",
+  "trigger": "poisonGas (on arrival)",
+  "current": "SkillFX.gasCloud over every enemy unit + \"+N☠\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Skunks, bombardier beetles.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-absolute-zero",
+  "area": "combat-skill",
+  "name": "Absolute Zero",
+  "trigger": "absoluteZero (on arrival)",
+  "current": "SkillFX.absoluteZero: a field-wide frost flash, frost blooms; then the Frozen look",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "A powerful evergreen: the whole enemy line freezes.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-spitfire",
+  "area": "combat-skill",
+  "name": "Spitfire",
+  "trigger": "bolt {element fire, key spitfire}",
+  "current": "SkillFX.boltGlob fire at a random enemy (shared with Fire Bolt)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Fire-spitting lizards.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-trap-set",
+  "area": "combat-skill",
+  "name": "Trap / burning ground set",
+  "trigger": "hazardSet",
+  "current": "SkillFX.trapSet on the empty slot; the slot keeps a 🪤 / 🔥 mark",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Trap and Slash & Burn.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-trap-snap",
+  "area": "combat-skill",
+  "name": "Trap / burning ground sprung",
+  "trigger": "hazardSprung",
+  "current": "SkillFX.trapSnap (jaws / embers) + \"🪤 -N\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Trap and Slash & Burn.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-nova",
+  "area": "combat-skill",
+  "name": "Nova",
+  "trigger": "nova (on death)",
+  "current": "SkillFX.nova: a violet ring, orbs to every enemy unit",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Magic; a Map 50+ idea.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-crystallise",
+  "area": "combat-skill",
+  "name": "Crystallise",
+  "trigger": "spawn {kind crystal}",
+  "current": "SkillFX.crystalForm + the .is-crystal tint",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Crystal creatures leave a crystal behind.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-cure",
+  "area": "combat-skill",
+  "name": "Cure",
+  "trigger": "statusFx cure",
+  "current": "SkillFX.cure (💊 and sparkles) + \"💊 Cured N\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Healers and herbalists.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "sk-taunt",
+  "area": "combat-skill",
+  "name": "Taunt",
+  "trigger": "statusFx taunted",
+  "current": "SkillFX.tauntCall (gold calls, the attacker turns)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "The Sheep.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: the W2 block (2026-10-16)",
+   "bramblewood-skillfx.js: the W2 section",
+   "arena_app.js: w2SkillVfx"
+  ],
+  "batch": "W2"
+ },
+ {
+  "id": "field-cloudy",
+  "area": "weather",
+  "name": "Cloudy",
+  "trigger": "rules.cloudy",
+  "current": "SkillFX.cloudShadows: soft cloud shadows drift over the board",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Overcast days: the sun-lovers lose half their bonus.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: syncCloudFx",
+   "bramblewood-skillfx.js: cloudShadows"
+  ],
+  "batch": "W2"
  }
 ]
