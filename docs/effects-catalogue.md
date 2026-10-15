@@ -342,3 +342,255 @@ User: "on our effects lab, add more effects, more skill effects, more foil vfx."
 
 **Foils (8, Foils tab, marked Lab):** Aurora, Galaxy swirl, Molten gold, Frost crystal, Oil slick, Sakura, Glitter field, Holo scanlines. See the treatment table above.
 
+
+## 2026-10-15 additions: 29 more skill effects, wired into fights (eighth pass)
+
+User: "widen the effects list we have." An audit of every skill in the registry (182) and every replay event the engine
+pushes found that most skills on real cards still showed only a floating word. This pass adds 29 new `SkillFX` functions
+(`bramblewood-skillfx.js`, section "eighth pass", own stylesheet `#sfx-eighth-css`, classes `sfx-*`) and wires every one
+into the fight replay through `eighthPassVfx(ev)` in `arena_app.js` (called from `renderVfxForEvent`, next to `labSkillFx`).
+
+Rules they follow: each lasts about a second or less; they play on Medium effects and up, never with reduced motion; the
+ones that can repeat play at most once per unit per round (`skillFxOnce`); they are fire-and-forget and never hold up the
+replay. On-hit looks are timed to land with the damage number (`eighthHitAtMs`, the same windup/projectile/arrow timing the
+hit itself uses). The Admin → 🔬 Effects library shows them on its live stage (it runs the same replay); Prayer and Esprit
+got stage setups so their moment happens there. The hub's Effects Lab has a button for each (Skills tab → "Even more
+skills", grouped Air & water / Weapons / Defence / Statuses / Support), plus buttons for the 2026-10-14 sixth/seventh-pass
+effects that had none (Fireball, Meteor, Banana, Munch, Smoke Bomb, Psychic).
+
+**Coverage (skills in the registry, 182):** before, 61 had their own effect, 81 only a floating word or sound, 40 have no
+moment to show (a static rule or stat). After: **105** own effect, 37 floating word only, 40 none. Weighted by how many
+cards carry each skill (effects keys in `canonical/cards.json`): own effect 437 → **633**, word-only 251 → **55**.
+
+**The new effects:**
+
+| Effect | Function | Look | Plays on (replay event) |
+|---|---|---|---|
+| 🦅 Flying swoop | `swoop(attacker, target, {flight})` | A bright air-trail climbs over the field and dives onto the target; feathers fly | `hit`, melee, attacker has Flying (not Quick/Swarm, which have their own); once a round |
+| 🪁 Tailwind gust | `gust(target, {dir})` | Wind streaks across the card; it leans with them | `statusFx` `tailwind` |
+| 🏊 Swimmer splash | `splash(target)` | Blue rings at its foot, droplets thrown up and falling back, a bob | `tide` (flow): every Swimmer on the board; `statusFx` `swimmer` |
+| 🛡️ Armor block | `armorBlock(target, {from, partial, shatter})` | A steel plate flashes over the card with a glint; sparks off the struck edge; a 🛡️ on a full block | `hit` with `armorBlocked` (full), or on an Armored unit (partial, once a round) |
+| 🪓 Armor shred | `armorBlock(.., {shatter})` | The plate breaks into chips that fall away | `statusFx` `armorShred` (Perforate) |
+| 🔱 Fork prongs | `forkProngs(attacker, targets, {kind})` | Steel tines (4 for Pitchfork, purple tentacles for Octolash) thrust in and pull back | `hit` with `fork` (Fork, Trident, Pitchfork, Octolash) |
+| ➹ Pierce through | `pierceThrough(target, {from})` | A lance of light punches through; chips fly from the exit | `hit` with `rend` (Pierce/Puncture through Armor); `pierceHQ` on the castle |
+| 💫 Stun stars | `stunStars(target, {glyph})` | Glyphs wheel round the card's head while it wobbles | `statusFx` `stun`, `stunOnHit` (★), `stagger` (✦), `confuse` (❓), `tipsy` (🫧) |
+| 🧊 Freeze | `freezeEncase(target)` | Ice grows up over the card, cracks spider across, it glazes away | `statusFx` `freeze` |
+| 💤 Sleep | `sleepZzz(target)` | The card dims and sways; three Z's float up | `statusFx` `sleep`, `coffeeCrash` |
+| ⚡ Paralyze | `paralyzeSpark(target)` | Yellow sparks crackle round the edges, redrawn each flicker; it twitches | `statusFx` `paralyze` |
+| 🧪 Corrode | `acidCorrode(target)` | Acid runs down the card, fizzing, yellow-green tint | `statusFx` `corrode`, `ichor` |
+| 🖤 Blind | `blindInk(target)` | Ink splats across the card's eyes and drips away | `statusFx` `blind` |
+| 😨 Daunt | `fearShiver(target)` | A cold purple pall; it shivers; a bead of sweat flies off | `statusFx` `daunt`, `cower` |
+| 🜏 Weaken / curse | `curseDrain(target)` | Dark tendrils climb the card and wring the colour out | `statusFx` `debuffAttack`; `render`; `curseTick` |
+| 🎯 Expose | `targetMark(target)` | A red crosshair spins in, locks on, flashes | `statusFx` `expose`; `hit` by an Expose unit (once a round per target) |
+| ⏳ Wait clock | `clockTick(target, {dir})` | A clock pops up; the hands drag round (more Wait) or race (less) | `statusFx` `addWait` (slow), `coffee` (fast) |
+| ⚔️ Counter parry | `parry(defender, attacker)` | Blades cross with a ping; the riposte shoves the attacker | `statusFx` `counter` (Counterattack) |
+| 🪞 Reflect | `mirrorFlash(defender, attacker)` | A mirror sheen sweeps the defender; a beam snaps back | `reflect` |
+| 👑 King Slayer | `crownCrack(target)` | A crown pops over the King and cracks in two | `kingSlayer` |
+| 👻 Stealth slip | `stealthSlip(attacker, castle)` | It melts into shadow; a dark afterimage slips to the castle | `hitHQ` by a Stealth unit |
+| 🐾 Scar claws | `scarMark(target, {fromLeft})` | Three claw marks rake across and glow red | `statusFx` `scar` (once a round per target) |
+| 🩸 Sap drain | `lifeDrain(from, to)` | Red motes are pulled out of the unit it hit and stream into it | `sap` (from the last unit that attacker hit) |
+| 🌸 Bloom pollen | `bloomPollen(src, target)` | Petals and pollen drift from the flowering card to the healed ally | `heal` from a Bloom unit to another |
+| 🤝 Esprit aura | `espritAura(target)` | Golden chevrons rise up through the card in a gold ring | `statusFx` `esprit`, `grit`, `inspired`; `namedBuff` (Buff action) |
+| 😡 Berserk | `rageFlare(target)` | Red steam vents, an anger mark pops, the card shudders | `statusFx` `berserk` (Berserk, Hive Mind); `frenzy` (Frenzy, Twin Strike) |
+| ✨ Revive | `reviveRise(target)` | A pillar of light falls; the card lifts out of grey with sparkles | `revive` |
+| 🥚 Summon | `summonPortal(target)` | A green rune circle spins open under the new card and it pops in | `spawn` (Brood, Twin, Progeny/On Death spawns, Meiosis, Spawn action), not Shield Call |
+| 🪵 Lumber gain | `lootArc(from, to, {glyph, n})` | Logs hop from the card to your Lumber pill (or the enemy castle) | `lumber` with a source card (On Ready/Spawn Lumber, Worthy) |
+| 🕊️ Prayer | `prayerLight(target)` | A beam of light falls on the card and a dove rises | `play` of a Prayer card; `grace` from a card |
+
+Also wired (existing effects, newly used): Gash → `bleedDrip` on its opening cut (`gash`); Mind Control → `mindWave`
+(`mindControl`).
+
+**Still word-only (37), and why:** most are small number tweaks that already float a clear label at the right moment and
+have no physical action to animate (Momentum, Fester, Rupture, Siege, Bulwark, Overwhelm, Ambush, Swift, Reload, Remember,
+Growth, Satiety, Midas, Molting/Shedding, Healing, Worship, Lumberjack, Rocket, Fencing, Friction, Charge's clock badge), retired or unused
+keys with no card (Drunk, Purblind, Scatterbrained, Sunshy, Nightblind, Pack, Pack Leader, Recoil, Restless), and a few with
+one card each that are good candidates for a next pass (Explode, Bludgeon, Chained, Decay, Landslide, Lightning).
+The 40 "none" are static rules (Reach, Keen Eye, Demolisher, Changeling, the Mighty/Sturdy/Feeble/Fragile stat tags,
+resource passives like Timber, Rock-solid, Iron-will...).
+
+**Full skill list (182), by how many cards carry it.** 🆕 = new this pass; — = floating word or sound only.
+
+| Skill (key) | Cards | Effect | Trigger (replay event) | |
+|---|---:|---|---|---|
+| Flying (`flying`) | 112 | feather burst when hit; **new:** `SkillFX.swoop` on its own melee hits | hit | 🆕+ |
+| Swimmer (`swimmer`) | 38 | `SkillFX.splash` | tide flow / statusFx swimmer | 🆕 |
+| Nocturnal (`nocturnal`) | 36 | phase aura | statusFx phaseGrow |  |
+| Armor (`armor`) | 32 | `SkillFX.armorBlock` | hit on an Armored unit | 🆕 |
+| Evasive (`evasive`) | 25 | `SkillFX.evasiveDodge` | evaded |  |
+| Poison (`poison`) | 25 | `SkillFX.poisonCloud` + bubble burst, green tint | poisonTick |  |
+| Diurnal (`diurnal`) | 22 | phase aura | statusFx phaseGrow |  |
+| Tide (`tide`) | 19 | tide wave across the field | tide |  |
+| Quick (`quick`) | 18 | `SkillFX.quickStrike` | hit |  |
+| Cleave (`sweep`) | 18 | `SkillFX.cleave` | hit with ev.sweep |  |
+| Worthy (`worthy`) | 17 | `SkillFX.lootArc` | lumber (worthy / worthyDeath) | 🆕 |
+| Darksight (`darksight`) | 15 | `SkillFX.darksight` | play |  |
+| Fork (`fork`) | 14 | `SkillFX.forkProngs` | hit with ev.fork | 🆕 |
+| Thorns (`thorns`) | 14 | `SkillFX.thorns` | thorns |  |
+| Regeneration (`regen`) | 13 | `SkillFX.regen` | heal (self) |  |
+| Bleed (`bleed`) | 12 | `SkillFX.bleedDrip`, red tint pulse | bleedTick |  |
+| Dry (`dry`) | 12 | none (a rule or stat with no moment of its own) |  |  |
+| Swarm (`swarm`) | 12 | `SkillFX.swarm` | hit with a live Swarm bonus |  |
+| Guardian (`guardian`) | 11 | `SkillFX.guardian` | play |  |
+| Pounce (`pounce`) | 10 | crouch-and-spring | pounce |  |
+| Rage (`rage`) | 8 | `.raging` aura + growl | hit by a raging unit |  |
+| Arrow (`arrow`) | 7 | `SkillFX.bowShot` | arrow + hit |  |
+| Prayer (`prayer`) | 7 | `SkillFX.prayerLight` | play of a Prayer card, grace | 🆕 |
+| Stealth (`stealth`) | 7 | `SkillFX.stealthSlip` | hitHQ by a Stealth unit | 🆕 |
+| Esprit (`esprit`) | 6 | `SkillFX.espritAura` | statusFx esprit | 🆕 |
+| Inspiring (`inspiring`) | 6 | `SkillFX.espritAura` | statusFx inspired | 🆕 |
+| Progeny (`onDeathSpawn`) | 6 | `SkillFX.summonPortal` | spawn | 🆕 |
+| Pierce (`pierce`) | 6 | `SkillFX.pierceThrough` | hit with ev.rend, pierceHQ | 🆕 |
+| Fire Arrow (`fireArrow`) | 5 | `SkillFX.bowShot` (fire) | arrow + hit |  |
+| Shell (`shell`) | 5 | `.shell-sweep` | statusFx shellUp |  |
+| Supreme (`supreme`) | 5 | none (a rule or stat with no moment of its own) |  |  |
+| Ambush (`ambush`) | 4 | floating text / sound only |  | — |
+| Demolisher (`demolisher`) | 4 | none (a rule or stat with no moment of its own) |  |  |
+| Electricity (`electricity`) | 4 | `SkillFX.lightning` | electricity |  |
+| Gash (`gash`) | 4 | `SkillFX.bleedDrip` (reused) | gash | 🆕 |
+| Stampede (`overwhelm`) | 4 | floating text / sound only |  | — |
+| Remember (`remember`) | 4 | floating text / sound only |  | — |
+| Revivificated (`revive`) | 4 | `SkillFX.reviveRise` | revive | 🆕 |
+| Scare (`scare`) | 4 | attacker flinches (scared lunge) | hit on a Scare unit |  |
+| Swift (`swift`) | 4 | floating text / sound only |  | — |
+| Wave (`wave`) | 4 | geyser + slide | wave |  |
+| Backstab (`backstab`) | 3 | `SkillFX.backstab` | hit with ev.backstab |  |
+| Brood (`brood`) | 3 | `SkillFX.summonPortal` | spawn | 🆕 |
+| Changeling (`changeling`) | 3 | none (a rule or stat with no moment of its own) |  |  |
+| Corrode (`corrode`) | 3 | `SkillFX.acidCorrode` | statusFx corrode | 🆕 |
+| Daunt (`daunt`) | 3 | `SkillFX.fearShiver` | statusFx daunt | 🆕 |
+| Earthquake (`earthquake`) | 3 | `SkillFX.earthquake`, quake jolts | earthquake |  |
+| Explode (`explode`) | 3 | floating text / sound only |  | — |
+| Expose (`expose`) | 3 | `SkillFX.targetMark` | hit by an Expose unit, statusFx expose | 🆕 |
+| Freeze (`freeze`) | 3 | `SkillFX.freezeEncase` | statusFx freeze | 🆕 |
+| Hive Mind (`hiveMind`) | 3 | `SkillFX.rageFlare` | statusFx berserk (hiveMind) | 🆕 |
+| Keen Eye (`keenEye`) | 3 | none (a rule or stat with no moment of its own) |  |  |
+| Keen Sense (`keenSense`) | 3 | none (a rule or stat with no moment of its own) |  |  |
+| Lantern (`lantern`) | 3 | `SkillFX.lanternGlow` | play |  |
+| Molting (`molting`) | 3 | floating text / sound only |  | — |
+| Reload (`reload`) | 3 | floating text / sound only |  | — |
+| Render (`render`) | 3 | `SkillFX.curseDrain` | render | 🆕 |
+| Shock (`shock`) | 3 | glitch flicker | statusFx shock |  |
+| Siege (`siege`) | 3 | floating text / sound only |  | — |
+| Stun (`stunOnHit`) | 3 | `SkillFX.stunStars` | statusFx stunOnHit | 🆕 |
+| Bloom (`bloom`) | 2 | `SkillFX.bloomPollen` | heal from a Bloom unit | 🆕 |
+| Boomerang (`boomerang`) | 2 | `SkillFX.boomerang*` | hit / hitHQ by a boomerang unit |  |
+| Bulwark (`bulwark`) | 2 | floating text / sound only |  | — |
+| Coffee (`coffee`) | 2 | `SkillFX.clockTick` fast | statusFx coffee / coffeeCrash | 🆕 |
+| Crit (`crit`) | 2 | gold starburst number | hit with ev.crit |  |
+| Fester (`fester`) | 2 | floating text / sound only |  | — |
+| Frenzy (`frenzy`) | 2 | `SkillFX.rageFlare` | frenzy | 🆕 |
+| Frostbite (`frostbite`) | 2 | `SkillFX.frostChill` | statusFx frostbite |  |
+| Healing (`healing`) | 2 | floating text / sound only |  | — |
+| Immolation (`immolation`) | 2 | `SkillFX.scorch`, `.immolate-pulse` | fieldTick immolation |  |
+| King Slayer (`kingSlayer`) | 2 | `SkillFX.crownCrack` | kingSlayer | 🆕 |
+| Kinship (`kinship`) | 2 | none (a rule or stat with no moment of its own) |  |  |
+| Natural Leader (`leader`) | 2 | none (a rule or stat with no moment of its own) |  |  |
+| Lightning (`lightning`) | 2 | floating text / sound only |  | — |
+| Momentum (`momentum`) | 2 | floating text / sound only |  | — |
+| Moonborn (`moonborn`) | 2 | phase aura | statusFx phaseGrow |  |
+| Paralyze (`paralyze`) | 2 | `SkillFX.paralyzeSpark` | statusFx paralyze | 🆕 |
+| Puncture (`puncture`) | 2 | `SkillFX.pierceThrough` | hit with ev.rend | 🆕 |
+| Reach (`reach`) | 2 | none (a rule or stat with no moment of its own) |  |  |
+| Reflect (`reflect`) | 2 | `SkillFX.mirrorFlash` | reflect | 🆕 |
+| Rupture (`rupture`) | 2 | floating text / sound only |  | — |
+| Sacrifice (`sacrifice`) | 2 | `.sac-chomp` | statusFx sacrificed |  |
+| Shedding (`shedding`) | 2 | floating text / sound only |  | — |
+| Skyfall (`skyfall`) | 2 | sky drop | spawn |  |
+| Sleep (`sleep`) | 2 | `SkillFX.sleepZzz` | statusFx sleep | 🆕 |
+| Stagger (`stagger`) | 2 | `SkillFX.stunStars` ✦ | statusFx stagger | 🆕 |
+| Twin (`twin`) | 2 | `SkillFX.summonPortal` | spawn | 🆕 |
+| Worship (`worship`) | 2 | floating text / sound only |  | — |
+| Banana (`banana`) | 1 | `SkillFX.bananaThrow` / `munch` | banana |  |
+| Bananarang (`bananarang`) | 1 | `SkillFX.boomerang` / `munch` | banana, hit |  |
+| Berserk (`berserk`) | 1 | `SkillFX.rageFlare` | statusFx berserk | 🆕 |
+| Blind (`blind`) | 1 | `SkillFX.blindInk` | statusFx blind | 🆕 |
+| Bludgeon (`bludgeon`) | 1 | floating text / sound only |  | — |
+| Chained (`chained`) | 1 | floating text / sound only |  | — |
+| Core Evil (`coreEvil`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Counterattack (`counterattack`) | 1 | `SkillFX.parry` | statusFx counter | 🆕 |
+| Decay (`decay`) | 1 | floating text / sound only |  | — |
+| Desecrate (`desecrate`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Dictator (`dictator`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Durian (`durian`) | 1 | `SkillFX.munch` | durian |  |
+| Dynamite (`dynamite`) | 1 | `.dyn-blast` + board shake | dynamite |  |
+| Fencing (`fencing`) | 1 | floating text / sound only |  | — |
+| Friction (`friction`) | 1 | floating text / sound only |  | — |
+| Growth (`growth`) | 1 | floating text / sound only |  | — |
+| Heavy Metal (`heavyMetal`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Helmet (`helmet`) | 1 | `SkillFX.helmetDeflect` | deflect |  |
+| Inherent Darkness (`inherentDarkness`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Iron-will (`ironWill`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Landslide (`landslide`) | 1 | floating text / sound only |  | — |
+| Lone Wolf (`loneWolf`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Loyal (`loyal`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Lumberjack (`lumberjack`) | 1 | floating text / sound only |  | — |
+| Magic (`magic`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Midas Touch (`midas`) | 1 | floating text / sound only |  | — |
+| Moonpull (`moonpull`) | 1 | tide wave | tide (moonpull) |  |
+| Pitchfork (`pitchfork`) | 1 | `SkillFX.forkProngs` | prong pitchfork | 🆕 |
+| Rabid (`rabid`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Rainmaker (`rainmaker`) | 1 | rain weather | fieldSet |  |
+| Rainrunner (`rainrunner`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Divine Retribution (`retribution`) | 1 | projectile volley | hit (retribution) |  |
+| Rock-solid (`rockSolid`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Rocket (`rocket`) | 1 | floating text / sound only |  | — |
+| Satiety (`satiety`) | 1 | floating text / sound only |  | — |
+| Shield Call (`shieldCall`) | 1 | `SkillFX.shieldDrop` | spawn (shieldCall) |  |
+| Smoke Bomb (`smokeBomb`) | 1 | `SkillFX.smokeBomb` | smokeBomb |  |
+| Snipe (`snipe`) | 1 | `SkillFX.bowShot` | arrow (snipe) |  |
+| Sociable (`sociable`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Spiteful (`spiteful`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Supreme Tide (`supremeTide`) | 1 | tide wave | tide |  |
+| Timber (`timber`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Twin Strike (`twinStrike`) | 1 | `SkillFX.rageFlare` | frenzy (twin) | 🆕 |
+| Usurper (`usurper`) | 1 | none (a rule or stat with no moment of its own) |  |  |
+| Avalanche (`avalanche`) | 0 | board sweep + frost rings | avalanche |  |
+| Bloom (conditions) (`bloomWhen`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Charge (`charge`) | 0 | floating text / sound only |  | — |
+| Confuse (`confuse`) | 0 | `SkillFX.stunStars` ❓ | statusFx confuse | 🆕 |
+| Converge (`converge`) | 0 | cards glide to new slots | converge |  |
+| Cower (`cower`) | 0 | `SkillFX.fearShiver` | statusFx cower | 🆕 |
+| Crab Claws (`crabClaws`) | 0 | `.crab-pinch` | crabClaw |  |
+| Crepuscular (`crepuscular`) | 0 | phase aura (`.phase-aura`) | statusFx phaseGrow |  |
+| Defiance (`defiance`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Dragon Lightning (`dragonLightning`) | 0 | red `SkillFX.lightning` | dragonLightning |  |
+| Drunk (`drunk`) | 0 | floating text / sound only |  | — |
+| Fast Forward (`fastForward`) | 0 | `.ff-blur` afterimages | fastForward |  |
+| Feeble (`feeble`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Festering (`festering`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Fireball (`fireball`) | 0 | `SkillFX.fireball` | fireball |  |
+| Fragile (`fragile`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Ghost (`ghost`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Haste (`haste`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Ichor (`ichor`) | 0 | `SkillFX.acidCorrode` | statusFx ichor | 🆕 |
+| Irradiated (`irradiated`) | 0 | `.irradiate-pulse` | fieldTick irradiated / irradiation |  |
+| Meiosis (`meiosis`) | 0 | `SkillFX.summonPortal` | spawn | 🆕 |
+| Meteor (`meteor`) | 0 | `SkillFX.meteor` + crater | meteor / meteorBurn |  |
+| Mighty (`mighty`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Nature's Force (`natureForce`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Night-blind (`nightblind`) | 0 | floating text / sound only |  | — |
+| Nullify (`nullify`) | 0 | `.nullify-flash` | statusFx nullify |  |
+| Octolash (`octolash`) | 0 | `SkillFX.forkProngs` (ink) | prong octolash | 🆕 |
+| Pack (`pack`) | 0 | floating text / sound only |  | — |
+| Pack Leader (`packLeader`) | 0 | floating text / sound only |  | — |
+| Perforate (`perforate`) | 0 | `SkillFX.armorBlock` shatter | statusFx armorShred | 🆕 |
+| Primed (`primed`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Psychic (`psychic`) | 0 | `SkillFX.mindWave` | psychic |  |
+| Purblind (`purblind`) | 0 | floating text / sound only |  | — |
+| Recoil (`recoil`) | 0 | floating text / sound only |  | — |
+| Restless (`restless`) | 0 | floating text / sound only |  | — |
+| Scatterbrained (`scatterbrained`) | 0 | floating text / sound only |  | — |
+| Shade (`shade`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Shadow (`shadow`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Shield (`shield`) | 0 | `SkillFX.shieldUp` | statusFx unitShield |  |
+| Speed (`speed`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Sprout (`sprout`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Sturdy (`sturdy`) | 0 | none (a rule or stat with no moment of its own) |  |  |
+| Sun-shy (`sunshy`) | 0 | floating text / sound only |  | — |
+| Swimmer: on Flow (`swimmerGrant`) | 0 | `SkillFX.splash` | statusFx swimmer | 🆕 |
+| Swipe (`swipe`) | 0 | 🪵 projectile castle → swiper | swipeLumber |  |
+| Make Tipsy (`tipsy`) | 0 | `SkillFX.stunStars` 🫧 | statusFx tipsy | 🆕 |
+| Tornado (`tornado`) | 0 | board sweep + spins | tornado |  |
+| Trident (`trident`) | 0 | `SkillFX.forkProngs` | hit with ev.fork, prong trident | 🆕 |
+| Tsunami (`tsunami`) | 0 | board sweep + push | tsunami |  |
+| Wither (`wither`) | 0 | black smoke + skull | statusFx wither / witherTick |  |

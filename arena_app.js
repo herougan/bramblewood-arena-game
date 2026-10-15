@@ -20547,6 +20547,9 @@ const FXL_SKILL_SETUPS = {
   keenSense: {rules:{dark:'absolute'}, status:{subject:{blind:2}}, note:'Absolute darkness, and the Specimen starts Blind: it still hits the grounded dummy.'},
   // 2026-10-14 (seventh pass).
   psychic: {foeFx:{armor:3, ghost:true}, foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}], note:'The dummies wear Armor 3 and are Ghosts: the psychic damage goes through anyway.'},
+  // 2026-10-15 (eighth pass): Prayer only counts toward your Prayer value, so the stage brings it in to show its arrival light.
+  esprit: {steps:[{spawn:'ally'}, 'round'], note:'A second Sparring Partner arrives, so Esprit grows the Specimen.'},
+  prayer: {steps:[{spawn:'subject'}, 'round'], note:'It arrives (Prayer is a number your Prayer value counts; its light plays as it lands).'},
   smokeBomb: {steps:['round', 'round', 'round'], note:'Three rounds, so you see a bomb or two (1 in 2 a round), at an ally or an enemy.'},
 };
 // Trigger events: the Specimen deals 3 damage to a random enemy when the event fires.
@@ -30904,6 +30907,79 @@ function sixthPassVfx(ev){
     sfx('shockTone');
   }
 }
+// 2026-10-15 (eighth pass, user: "widen the effects list we have"): the skills that only had a floating word now get their
+// own short SkillFX look in real fights (the Effects library plays them too, since it runs the same replay). Each layers over
+// the existing number, sound and tint; Medium effects and up, never with reduced motion, and the ones that can repeat play at
+// most once per unit per round (skillFxOnce). Fire-and-forget: nothing here holds up the replay.
+const STATUS_ORBIT = {stun:'★', stunOnHit:'★', stagger:'✦', confuse:'❓', tipsy:'🫧'};
+function eighthHitAtMs(ev){
+  const am = animMs(), pa = matchState && matchState.pendingArrow;
+  if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(am.windup*0.6) + arrowFlightMs();
+  return ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
+}
+function eighthPassVfx(ev){
+  const F = window.SkillFX; if(!F || !F.swoop || !ev || !matchState || reducedMotion() || !fxAtLeast('med')) return;
+  const defs = getCardDefs(), el = uid=> uid == null ? null : boardCardEl(uid), fxOf = id=> ((defs[id]||{}).effects)||{};
+  const degFrom = (from, to)=>{ if(!from || !to) return -90; const a = from.getBoundingClientRect(), b = to.getBoundingClientRect(); return Math.atan2((a.top + a.height/2) - (b.top + b.height/2), (a.left + a.width/2) - (b.left + b.width/2))*57.3; };
+  const at = (ms, fn)=> setTimeout(()=>{ try{ fn(); }catch(e){} }, Math.max(0, ms|0));
+  const myPill = id=> document.getElementById(id) || document.getElementById('fieldResMine');
+  if(ev.type === 'hit' && !ev.quake){
+    const ae = fxOf(ev.attDefId), te = fxOf(ev.targetDefId), a = el(ev.attUid), t = el(ev.targetUid), hitMs = eighthHitAtMs(ev);
+    if(ev.attUid != null && ev.targetUid != null) (matchState._lastHitOf = matchState._lastHitOf || {})[ev.attUid] = ev.targetUid; // Sap drains the last unit it hit
+    if(a && t && !ev.source && !ev.ranged && !ev.fork && !ev.sweep && !ev.counter && ae.flying && !ae.swarm && !ae.quick && skillFxOnce('swoop' + ev.attUid)) F.swoop(a, t, {flight: Math.min(450, hitMs)});
+    if(a && t && ev.fork && skillFxOnce('fork' + ev.attUid + ':' + ev.targetUid)) at(hitMs - 140, ()=>{ const a2 = el(ev.attUid), t2 = el(ev.targetUid); if(t2) F.forkProngs(a2, [t2], {kind: ev.prong}); });
+    if(t && Number(ae.expose) > 0 && skillFxOnce('expose' + ev.targetUid)) at(hitMs + 60, ()=>{ const t2 = el(ev.targetUid); if(t2) F.targetMark(t2); }); // passive Expose marks what it hits
+    if(t && ev.rend) at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.pierceThrough(t2, {from: degFrom(el(ev.attUid), t2)}); });
+    else if(t && (ev.armorBlocked || (Number(te.armor) > 0 && (ev.dmg||0) >= 0)) && (ev.armorBlocked || skillFxOnce('armor' + ev.targetUid)))
+      at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.armorBlock(t2, {from: degFrom(el(ev.attUid), t2), partial: !ev.armorBlocked}); });
+  }
+  if(ev.type === 'hitHQ' && !ev.source){ const ae = fxOf(ev.attDefId);
+    if(ae.stealth && skillFxOnce('stealth' + ev.attUid)){ const a = el(ev.attUid), c = hqTileEl(ev.targetSide); if(a) F.stealthSlip(a, c); } }
+  if(ev.type === 'pierceHQ'){ const c = hqTileEl(ev.targetSide); if(c) F.pierceThrough(c, {from: ev.targetSide === 'B' ? 90 : -90}); }
+  if(ev.type === 'kingSlayer') at(150, ()=>{ const t = el(ev.targetUid); if(t) F.crownCrack(t); });
+  if(ev.type === 'reflect'){ const d = el(ev.fromUid), a = el(ev.targetUid); if(d) F.mirrorFlash(d, a); }
+  if(ev.type === 'sap' && skillFxOnce('sap' + ev.attUid)){ const to = el(ev.attUid), from = el(matchState._lastHitOf && matchState._lastHitOf[ev.attUid]); if(to && from) F.lifeDrain(from, to); }
+  if(ev.type === 'heal' && ev.attUid != null && ev.attUid !== ev.targetUid && fxOf(ev.attDefId).bloom && skillFxOnce('bloom' + ev.attUid)){ const t = el(ev.targetUid); if(t) F.bloomPollen(el(ev.attUid), t); }
+  if(ev.type === 'revive'){ const t = el(ev.uid); if(t) F.reviveRise(t); }
+  if(ev.type === 'render'){ const t = el(ev.targetUid); if(t) at(animMs().windup, ()=> F.curseDrain(t)); }
+  if(ev.type === 'curseTick' && skillFxOnce('curse' + ev.uid)){ const t = el(ev.uid); if(t) F.curseDrain(t); }
+  if(ev.type === 'frenzy' && skillFxOnce('frenzy' + ev.attUid)){ const t = el(ev.attUid); if(t) F.rageFlare(t); }
+  if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
+  if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
+  if(ev.type === 'spawn' && ev.cause !== 'shieldCall'){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
+    at(140, ()=> uids.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) F.summonPortal(t); }))); }
+  if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
+    const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
+    if(src && dest) F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); }
+  if(ev.type === 'play' && !ev.reserve && (Number(fxOf(ev.defId).prayer) > 0)) at(500, ()=>{ const t = el(ev.uid); if(t) F.prayerLight(t); }); // a Prayer card arrives
+  if(ev.type === 'tide' && ev.tide !== 'ebb' && !ev.moonpull && skillFxOnce('swimTide')){ // the Tide comes in: every Swimmer on the board splashes up
+    const sw = Object.keys(matchState.replayCards || {}).filter(u=>{ const rc = matchState.replayCards[u]; return rc && rc.hp > 0 && fxOf(rc.defId).swimmer; }).slice(0, 6);
+    sw.forEach((u, i)=> at(350 + i*70, ()=>{ const x = el(u); if(x) F.splash(x); })); }
+  if(ev.type === 'grace' && ev.uid != null && skillFxOnce('grace' + ev.uid)){ const t = el(ev.uid); if(t) F.prayerLight(t); }
+  if(ev.type === 'namedBuff' && (ev.amount||0) + (ev.amount2||0) > 0){ const t = el(ev.targetUid); if(t) F.espritAura(t); }
+  if(ev.type === 'statusFx'){
+    const t = el(ev.targetUid), self = el(ev.attUid), k = ev.kind;
+    if(STATUS_ORBIT[k] && t) F.stunStars(t, {glyph: STATUS_ORBIT[k]});
+    else if(k === 'freeze' && t) F.freezeEncase(t);
+    else if((k === 'sleep' || k === 'coffeeCrash') && t) F.sleepZzz(t);
+    else if(k === 'paralyze' && t) F.paralyzeSpark(t);
+    else if((k === 'corrode' || k === 'ichor') && t) F.acidCorrode(t);
+    else if(k === 'armorShred' && t) F.armorBlock(t, {shatter:true, partial:true});
+    else if((k === 'daunt' || k === 'cower') && t && skillFxOnce('fear' + ev.targetUid)) F.fearShiver(t);
+    else if(k === 'debuffAttack' && t) F.curseDrain(t);
+    else if(k === 'expose' && t) F.targetMark(t);
+    else if(k === 'blind' && t) F.blindInk(t);
+    else if(k === 'scar' && t && skillFxOnce('scar' + ev.targetUid)) F.scarMark(t, {fromLeft: self ? self.getBoundingClientRect().left < t.getBoundingClientRect().left : true});
+    else if(k === 'addWait' && t) F.clockTick(t, {dir:1});
+    else if(k === 'coffee' && t) F.clockTick(t, {dir:-1});
+    else if(k === 'counter' && self && t) F.parry(self, t);
+    else if(k === 'tailwind' && t) F.gust(t, {dir: ev.side === 'A' ? 1 : -1});
+    else if(k === 'swimmer' && t) F.splash(t);
+    else if((k === 'esprit' || k === 'grit') && self && skillFxOnce(k + ev.attUid)) F.espritAura(self);
+    else if(k === 'inspired' && t) F.espritAura(t);
+    else if(k === 'berserk' && self) F.rageFlare(self);
+  }
+}
 // Two halves of a shell fly apart, with a few chips.
 function eggCrackVfx(x, y){
   if(fxLevel() === 'none') return;
@@ -30929,6 +31005,7 @@ function renderVfxForEvent(ev){
   try{ fifthPassVfx(ev); }catch(e){} // Tornado, Avalanche, Tsunami, Dragon Lightning, Wither, egg hatch (2026-10-14)
   try{ sixthPassVfx(ev); }catch(e){} // Fireball, Meteor, Banana, Durian, Shield, Electricity (2026-10-14)
   try{ labSkillFx(ev); }catch(e){}
+  try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
   if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum'].includes(ev.kind)){
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
