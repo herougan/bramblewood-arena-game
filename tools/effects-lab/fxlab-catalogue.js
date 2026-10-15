@@ -10,7 +10,7 @@ const sec = $('#catalogue'); if(!sec) return;
 const AREAS = [['combat-attack', 'Combat: attacks', 'A'], ['combat-skill', 'Combat: skills', 'A'], ['status', 'Statuses', 'B C D'], ['field', 'Fields', 'B'],
   ['weather-time', 'Weather and time', 'B'], ['darkness-light', 'Darkness and light', 'B'], ['death', 'Deaths', 'C'], ['castle', 'Castle', 'C'],
   ['summon-spawn', 'Summons and spawns', 'C'], ['card-treatment', 'Card treatments', 'D'], ['foil', 'Foils', 'D'], ['pack-card-open', 'Packs and card opening', 'D'],
-  ['rewards-results', 'Rewards and results', 'F'], ['meta-progression', 'Progression', 'D F'], ['conquest-map', 'Conquest map', 'E'], ['world-ambience', 'World ambience', 'E'],
+  ['rewards-results', 'Rewards and results', 'F'], ['meta-progression', 'Progression', 'D F'], ['conquest-map', 'Conquest map', 'E'], ['world-ambience', 'World ambience', 'E'], ['map-grandeur', 'Map titles and grandeur', 'G'], ['fun', 'Fun VFX (new ideas)', 'G'],
   ['ui-feedback', 'UI feedback', 'F'], ['tutorial-dialogue', 'Tutorial and dialogue', 'F'], ['raid-dungeon-pvp', 'Raid, dungeon, PvP', 'F']];
 const known = new Set(AREAS.map(a=> a[0]));
 L.inventory.forEach(e=>{ if(!known.has(e.area)){ known.add(e.area); AREAS.push([e.area, e.area, e.batch]); } });
@@ -21,8 +21,10 @@ const nVar = e=>{ const r = L.get(e.id); return r ? r.variants.length : 0; };
 function playBtns(e){
   const r = L.get(e.id);
   if(!r) return '<span class="fxl-nb">not built yet</span>';
-  return r.variants.map(v=> `<button type="button" class="fxl-pb" data-id="${esc(e.id)}" data-k="${v.key}" title="${esc(v.label || 'Variant ' + v.key)}">▶ ${v.key}</button>`).join('');
+  return r.variants.map(v=> `<button type="button" class="fxl-pb" data-id="${esc(e.id)}" data-k="${v.key}" title="${esc(v.key + ': ' + (v.label || 'Variant ' + v.key))}" aria-label="Play ${esc(e.name)}, variant ${v.key}">▶ ${v.key}</button>`).join('');
 }
+// 2026-10-16 (user: "The A/B/C/D/E... and GOOD and A/B? should take up 1 thin column on the right. Otherwise the text is
+// super squeezed."): the badges and the play buttons share one narrow column (.fxl-side), stacked, so the name and trigger get the width.
 function rowHTML(e){
   const q = qual(e), r = L.get(e.id);
   const more = [['Now in the game', e.current], ['Quality', e.quality], ['Theme notes', e.themeNotes], ['Lab note', r && r.note],
@@ -30,8 +32,8 @@ function rowHTML(e){
     .filter(x=> x[1]).map(([k, v])=> `<div><b>${k}</b> ${esc(v)}</div>`).join('');
   return `<div class="fxl-row" data-id="${esc(e.id)}"><div class="fxl-main"><button type="button" class="fxl-name" aria-expanded="false">${esc(e.name)}</button>
     <span class="fxl-id">${esc(e.id)}</span><div class="fxl-trig">${esc(e.trigger)}</div></div>
-    <div class="fxl-meta"><span class="fxl-q q-${q}">${q}</span>${e.future ? '<span class="fxl-q q-future">future</span>' : ''}${e.priority === 1 ? '<span class="fxl-tag">P1</span>' : ''}${e.variantsSuggested ? '<span class="fxl-tag" title="The inventory suggests 2–3 variants to choose from">A/B?</span>' : ''}</div>
-    <div class="fxl-play">${playBtns(e)}</div><div class="fxl-more" hidden>${more}</div></div>`;
+    <div class="fxl-side"><div class="fxl-meta"><span class="fxl-q q-${q}">${q}</span>${e.isNew ? '<span class="fxl-q q-new">new</span>' : ''}${e.future ? '<span class="fxl-q q-future">future</span>' : ''}${e.priority === 1 ? '<span class="fxl-tag">P1</span>' : ''}${e.variantsSuggested ? '<span class="fxl-tag" title="The inventory suggests 2–3 variants to choose from">A/B?</span>' : ''}</div>
+    <div class="fxl-play${r && r.variants.length > 1 ? ' is-many' : ''}">${playBtns(e)}</div></div><div class="fxl-more" hidden>${more}</div></div>`;
 }
 const list = $('#fxlList');
 list.innerHTML = AREAS.map(([a, label, batch])=>{
@@ -81,6 +83,7 @@ function coverage(){
   if(L.problems.length) $('#fxlProblems').innerHTML = '<b>Registration problems</b><ul>' + L.problems.map(p=> `<li>${esc(p)}</li>`).join('') + '</ul>';
   $('#fxlProblems').hidden = !L.problems.length;
   $('[data-view="variants"] .fxl-n').textContent = vars;
+  $('[data-view="list"] .fxl-n').textContent = tot; // 2026-10-16: + the new map-title / map-grand / fun entries
 }
 
 // ---------- variants view ----------
@@ -103,7 +106,9 @@ L.on((type, d)=>{
   if(type === 'start'){ const e = d.rec.entry; now.innerHTML = `<b>${esc(e.name)}</b> · ${d.key}${d.v.label ? ' — ' + esc(d.v.label) : ''}<span>${esc(e.id)} · ${esc(d.v.stage || d.rec.stage)} stage</span>`;
     $$(`.fxl-pb[data-id="${CSS.escape(d.id)}"][data-k="${d.key}"]`).forEach(b=> b.classList.add('is-playing')); }
 });
-function openDock(){ dock.classList.add('is-open'); document.body.classList.add('fxl-dock-open'); }
+function openDock(){ dock.classList.add('is-open'); dock.classList.remove('is-mini'); document.body.classList.add('fxl-dock-open'); const m = $('#fxlDockMin'); if(m){ m.textContent = '▾'; m.setAttribute('aria-expanded', 'true'); } }
+// 2026-10-16: on a phone the stage can shrink to its title bar (▾) and grow back (▴); playing anything opens it again.
+{ const m = $('#fxlDockMin'); if(m) m.addEventListener('click', ()=>{ const mini = dock.classList.toggle('is-mini'); if(mini){ seqToken++; L.stop(); } m.textContent = mini ? '▴' : '▾'; m.setAttribute('aria-expanded', String(!mini)); m.setAttribute('aria-label', mini ? 'Show the stage' : 'Shrink the stage'); }); }
 $('#fxlDockClose').addEventListener('click', ()=>{ seqToken++; L.stop(); dock.classList.remove('is-open'); document.body.classList.remove('fxl-dock-open'); });
 $('#fxlReplay').addEventListener('click', ()=>{ const b = $('.fxl-pb.is-playing') || sec.dataset.last && $(`.fxl-pb[data-id="${CSS.escape(sec.dataset.last.split('|')[0])}"][data-k="${sec.dataset.last.split('|')[1]}"]`); if(b) b.click(); });
 function playOne(id, k){ openDock(); sec.dataset.last = id + '|' + k; return L.play(id, k); }

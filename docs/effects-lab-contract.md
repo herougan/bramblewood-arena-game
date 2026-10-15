@@ -14,6 +14,7 @@ build is `docs/effects-inventory-2026-10-15.json` (933 entries; `batch` says who
 | `tools/effects-lab/fxlab-catalogue.js`, `build.py` | the catalogue page (framework) | nobody in a batch |
 | `tools/effects-lab/fixtures.json` | the game's own markup for the stages (`capstages.py` re-captures it) | nobody in a batch |
 | `tools/effects-lab/manifest/_existing.js` | demos of effects that already exist (worked examples) | read it |
+| `bramblewood-fx-g.js`, `tools/effects-lab/manifest/w4.js` | 2026-10-16: `FX.G`, map titles (`fxHook('mapTitle')`), map grandeur and the fun set. Entries with ids `map-title-*`, `map-grand-*` and `fun-*` may be outside the inventory: they pass their own `name` / `trigger` to `register()` | W4 |
 
 Never put new CSS in `arena_template.html`. Never edit another batch's files.
 `assemble_arena.py` bundles the six modules after `procfx`/`unitfx`; `build.py` bundles the same six files, then every

@@ -23,7 +23,7 @@ gsapflip=open(f'{ROOT}/Flip.min.js').read().replace('</script','<\\/script')
 LAB = os.path.dirname(os.path.abspath(__file__))
 unitfx = open(f'{ROOT}/bramblewood-unitfx.js').read()
 # the six effect batches, exactly as the game bundles them (assemble_arena.py)
-fxbatches = '\n'.join(open(f'{ROOT}/bramblewood-fx-{b}.js', encoding='utf-8').read() for b in 'abcdef')
+fxbatches = '\n'.join(open(f'{ROOT}/bramblewood-fx-{b}.js', encoding='utf-8').read() for b in 'abcdefg')  # 2026-10-16: + G (map titles and grandeur, the fun set)
 _inv = json.load(open(f'{ROOT}/docs/effects-inventory-2026-10-15.json', encoding='utf-8'))
 _INV_KEYS = ['id', 'area', 'name', 'trigger', 'current', 'quality', 'priority', 'themeNotes', 'variantsSuggested', 'future', 'batch']
 inventory_js = json.dumps([{k: e.get(k) for k in _INV_KEYS} for e in _inv], ensure_ascii=False, separators=(',', ':'))
@@ -123,7 +123,10 @@ html body{background:var(--bg) !important; background-image:none !important;} bo
 .pfx-scrubrow{display:flex; align-items:center; gap:8px; font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
 @media (max-width:560px){ .bf-lab{height:300px;} .bf-lab .bf-cards .card-tile{width:72px !important; height:90px !important;} }
 /* ---- Effects catalogue (2026-10-15): every inventory entry, the stage dock, filters, coverage ---- */
-html, body{overflow-x:hidden;}
+/* 2026-10-16 (user: "The simulation window on the right is sticky on scroll. So I can see it when I scroll far down."): the
+   stage dock never stuck, because overflow-x:hidden on <body> made the body its own (non-scrolling) scroll container, which
+   sticky binds to. The viewport clips sideways now (html), and the body only clips, which makes no scroll container. */
+html{overflow-x:hidden;} body{overflow-x:clip !important; overflow-y:visible !important;}
 .lab nav.toc button[data-tab="catalogue"]{font-weight:800;}
 .fxl-cov{background:var(--surface); border:1px solid var(--surface-border); border-radius:14px; padding:10px 14px; margin:0 0 10px;}
 .fxl-covtop{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; font-size:14px; color:var(--ink);}
@@ -154,20 +157,24 @@ html, body{overflow-x:hidden;}
 .fxl-abatch{font:800 10.5px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); border:1px solid var(--surface-border); border-radius:6px; padding:0 5px;}
 .fxl-all{margin-left:auto;} .fxl-all.is-running{background:#a33; color:#fff;}
 .fxl-rows{border-top:1px solid var(--surface-border);}
-.fxl-row{display:grid; grid-template-columns:minmax(0,1fr) auto auto; gap:4px 10px; align-items:center; padding:7px 10px; border-bottom:1px solid var(--surface-border);}
+.fxl-row{display:grid; grid-template-columns:minmax(0,1fr) 62px; gap:4px 10px; align-items:start; padding:7px 10px; border-bottom:1px solid var(--surface-border);}
+/* 2026-10-16 (user: "The A/B/C/D/E... and GOOD and A/B? should take up 1 thin column on the right"): badges and play buttons stack in .fxl-side */
+.fxl-side{display:flex; flex-direction:column; gap:4px; min-width:0;}
 .fxl-row:last-child{border-bottom:0;} .fxl-row[hidden]{display:none;}
 .fxl-main{min-width:0;}
 .fxl-name{all:unset; cursor:pointer; font-weight:700; font-size:13.5px; color:var(--ink);} .fxl-name:hover, .fxl-name:focus-visible{text-decoration:underline;}
 .fxl-id{font:600 10.5px ui-monospace,Menlo,monospace; color:var(--ink-muted); margin-left:6px; overflow-wrap:anywhere;}
 .fxl-trig{font-size:11.5px; color:var(--ink-muted); line-height:1.35; overflow-wrap:anywhere;}
-.fxl-meta{display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end;}
+.fxl-meta{display:flex; flex-direction:column; gap:3px;} .fxl-meta > *{text-align:center; padding:1px 3px; font-size:9.5px;}
 .fxl-q, .fxl-tag{font:800 10px 'Baloo 2',system-ui,sans-serif; padding:1px 7px; border-radius:99px; white-space:nowrap; text-transform:uppercase; letter-spacing:.03em;}
 .q-good{background:#2f7d3a; color:#fff;} .q-basic{background:#b98a1d; color:#1d1606;} .q-missing{background:#a8432f; color:#fff;} .q-broken{background:#6d1fa8; color:#fff;} .q-future{background:#2d5d93; color:#fff;}
 .fxl-tag{background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
-.fxl-play{display:flex; gap:4px; justify-content:flex-end; min-width:92px;}
+.fxl-play{display:grid; grid-template-columns:1fr; gap:3px;} .fxl-play.is-many{grid-template-columns:1fr 1fr;}
+.fxl-play .fxl-pb{width:100%; padding:3px 0; text-align:center;} .fxl-play.is-many .fxl-pb{font-size:11px; padding:3px 0; letter-spacing:-.02em;}
 .fxl-pb{cursor:pointer; font:800 12px 'Baloo 2',system-ui,sans-serif; padding:3px 9px; border-radius:8px; border:1px solid var(--accent-strong, #2f7d3a); background:var(--accent, #3e8f48); color:var(--accent-ink, #fff); white-space:nowrap;}
 .fxl-pb:hover{filter:brightness(1.1);} .fxl-pb.is-playing{outline:2px solid #ffd56e; outline-offset:1px;}
-.fxl-nb{font-size:11px; color:var(--ink-muted); font-style:italic; white-space:nowrap;}
+.fxl-nb{font-size:10.5px; line-height:1.2; color:var(--ink-muted); font-style:italic; text-align:center;}
+.q-new{background:#7a3fb0; color:#fff;}
 .fxl-more{grid-column:1 / -1; font-size:12px; color:var(--ink); background:var(--surface-2); border-radius:8px; padding:6px 9px; display:grid; gap:3px;}
 .fxl-more[hidden]{display:none;} .fxl-more b{color:var(--ink-muted); margin-right:4px;}
 .fxl-vgrid{display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:10px;}
@@ -180,7 +187,8 @@ html, body{overflow-x:hidden;}
 .fxl-dockbar{display:flex; align-items:flex-start; gap:8px;}
 .fxl-now{flex:1; font-size:13px; color:var(--ink); min-height:34px;} .fxl-now span{display:block; font:600 10.5px ui-monospace,Menlo,monospace; color:var(--ink-muted);}
 .fxl-x{display:none; cursor:pointer; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); border-radius:8px; width:32px; height:32px; font-size:15px;}
-.fxl-frame{position:relative; min-height:240px; border-radius:12px; overflow:hidden; background:#1f2a18; isolation:isolate;}
+/* 2026-10-16: the frame never grows past the window, so the sticky dock stays whole; tall stages are zoomed to fit (fxlab-core fit) */
+.fxl-frame{max-height:calc(100vh - var(--fxl-top, 58px) - 130px); position:relative; min-height:240px; border-radius:12px; overflow:hidden; background:#1f2a18; isolation:isolate;}
 .fxl-frame:empty::after{content:'The stage appears here'; position:absolute; inset:0; display:grid; place-items:center; color:#cfc6a8; font:700 13px 'Baloo 2',system-ui,sans-serif;}
 .fxl-speed{display:flex; gap:6px; align-items:center; flex-wrap:wrap; font:700 12px 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
 .fxl-speed button{cursor:pointer; font:800 12px 'Baloo 2',system-ui,sans-serif; padding:3px 10px; border-radius:99px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink);}
@@ -210,12 +218,17 @@ html, body{overflow-x:hidden;}
 .fxl-layer{position:absolute; inset:0; pointer-events:none; z-index:20;}
 @media (max-width:760px){
   .fxl-layout{grid-template-columns:minmax(0,1fr);}
-  .fxl-dock{position:fixed; left:0; right:0; bottom:0; top:auto; z-index:900; border-radius:16px 16px 0 0; max-height:62vh; transform:translateY(105%); transition:transform .25s ease; box-shadow:0 -10px 30px rgba(0,0,0,.35); border-bottom:0;}
+  /* 2026-10-16 (user: sticky stage; on phone "keep it usable"): a docked mini stage at the bottom, about a third of the screen,
+     with ▾ to shrink it to its title bar; the tab bar is one row you swipe, so the list keeps most of the screen. */
+  .fxl-dock{position:fixed; left:0; right:0; bottom:0; top:auto; z-index:900; border-radius:16px 16px 0 0; max-height:none; transform:translateY(105%); transition:transform .25s ease; box-shadow:0 -10px 30px rgba(0,0,0,.35); border-bottom:0; padding:6px 8px calc(6px + env(safe-area-inset-bottom, 0px)); gap:6px;}
   .fxl-dock.is-open{transform:none;}
-  .fxl-x{display:block;}
-  body.fxl-dock-open .lab{padding-bottom:64vh;}
-  .fxl-row{grid-template-columns:minmax(0,1fr) auto; }
-  .fxl-meta{grid-column:1; justify-content:flex-start;} .fxl-play{grid-column:2; grid-row:1 / span 2; flex-direction:column; min-width:0;}
+  .fxl-frame{max-height:36vh; min-height:150px;}
+  .fxl-dock.is-mini .fxl-frame, .fxl-dock.is-mini .fxl-speed{display:none;}
+  .fxl-now{min-height:0; font-size:12.5px;}
+  .fxl-x{display:block; flex:none;}
+  body.fxl-dock-open .lab{padding-bottom:calc(36vh + 120px);}
+  .lab nav.toc{flex-wrap:nowrap; overflow-x:auto; scrollbar-width:none; padding:6px 0;} .lab nav.toc::-webkit-scrollbar{display:none;} .lab nav.toc button{flex:none;}
+  .fxl-row{grid-template-columns:minmax(0,1fr) 58px; padding:7px 8px;}
   .fxl-tools select{flex:1 1 140px;}
   #fxlShown{margin-left:0;}
   .fxl-cardrow{gap:6px;} .fxl-cardrow .board-card{width:62px; height:78px;} .fxl-cardrow .card-tile{width:62px !important; height:78px !important;}
@@ -257,7 +270,9 @@ TREAT_JSON = json.dumps({k: cards[k]['plain'] for k in TREAT_KEYS})
 TREAT_CARDS = treat_cards('legendary')
 def stage_card(k, holo=False, extra=''):
     return f'<div class="board-card" data-demo="{k}">{C(k, "holo" if holo else "plain")}</div>'
-html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
+# 2026-10-16: a doctype, as the hub serves it (tools/hub/build_hub.py doc()); without it the page ran in quirks mode locally.
+html = f'''<!doctype html>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bramblewood Effects Lab</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>{gamecss}</style>
 <style>{page_css}</style>
@@ -293,7 +308,7 @@ html = f'''<meta charset="utf-8"><title>Bramblewood Effects Lab</title>
     <div id="fxlVariants" hidden></div>
   </div>
   <aside id="fxlDock" class="fxl-dock" aria-label="Stage">
-    <div class="fxl-dockbar"><div id="fxlNow" class="fxl-now" aria-live="polite">Press ▶ on any built effect.</div><button type="button" id="fxlDockClose" class="fxl-x" aria-label="Close the stage">✕</button></div>
+    <div class="fxl-dockbar"><div id="fxlNow" class="fxl-now" aria-live="polite">Press ▶ on any built effect.</div><button type="button" id="fxlDockMin" class="fxl-x" aria-label="Shrink the stage" aria-expanded="true">▾</button><button type="button" id="fxlDockClose" class="fxl-x" aria-label="Close the stage">✕</button></div>
     <div id="fxlFrame" class="fxl-frame"></div>
     <div class="fxl-speed">Speed <button type="button" data-speed="1" aria-pressed="true">1×</button><button type="button" data-speed="0.5" aria-pressed="false">0.5×</button><button type="button" data-speed="0.25" aria-pressed="false">0.25×</button><button type="button" id="fxlReplay">↻ Replay</button></div>
   </aside>
@@ -621,6 +636,11 @@ _need = set(re.findall(r'assets/((?:cards|castles|maps|fx|tex)/[\w.-]+?\.(?:png|
 # 2026-10-15 (batch E): every map's art (≈350 KB), so the map stage can be dressed as any map (map-theme-<id>) without 404s.
 _need |= {'maps/' + f for f in os.listdir(f'{ROOT}/assets/maps') if f.endswith('.png')}
 _copied = 0
+# 2026-10-16: the game's fonts too (the map titles use Caveat, MedievalSharp and Lilita One; .fxcat/fonts was a stale hand copy).
+for _f in os.listdir(f'{ROOT}/fonts'):
+    _src, _dst = f'{ROOT}/fonts/{_f}', f'{ROOT}/.fxcat/fonts/{_f}'
+    if os.path.isfile(_src) and not (os.path.exists(_dst) and os.path.getsize(_dst) == os.path.getsize(_src)):
+        os.makedirs(os.path.dirname(_dst), exist_ok=True); _sh.copy(_src, _dst); _copied += 1
 for _rel in sorted(_need):
     _src, _dst = f'{ROOT}/assets/{_rel}', f'{ROOT}/.fxcat/assets/{_rel}'
     if not os.path.exists(_src): continue

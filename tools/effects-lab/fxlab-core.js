@@ -35,14 +35,21 @@ const STAGES = ['cards', 'board', 'map', 'pack', 'ui', 'screen'];
 // Default stage per inventory area (a registration or a variant can override it).
 const AREA_STAGE = {'combat-attack':'board', 'combat-skill':'board', 'status':'board', 'field':'board', 'weather-time':'board', 'darkness-light':'board',
   'death':'board', 'castle':'board', 'summon-spawn':'board', 'raid-dungeon-pvp':'board', 'card-treatment':'cards', 'foil':'cards', 'pack-card-open':'pack',
-  'conquest-map':'map', 'world-ambience':'map', 'rewards-results':'ui', 'meta-progression':'ui', 'ui-feedback':'ui', 'tutorial-dialogue':'ui'};
+  'conquest-map':'map', 'world-ambience':'map', 'map-grandeur':'map', 'fun':'screen', 'rewards-results':'ui', 'meta-progression':'ui', 'ui-feedback':'ui', 'tutorial-dialogue':'ui'};
 const G = ()=> (typeof gsap !== 'undefined' ? gsap : null);
 const problem = msg=>{ PROBLEMS.push(msg); console.warn('[FXLAB] ' + msg); };
 
 // ---------------- registration ----------------
 function register(spec){
   if(!spec || typeof spec !== 'object'){ problem('register() needs an object'); return null; }
-  const e = BY_ID.get(spec.id);
+  let e = BY_ID.get(spec.id);
+  // 2026-10-16: three families may add entries that are not in the inventory (map titles, map grandeur, the fun set;
+  // user: "I like having more map effects and title effects" / "Invent more for fun?"). They carry their own name/trigger.
+  if(!e && /^(map-title-|map-grand-|fun-)/.test(String(spec.id || ''))){
+    e = {id:spec.id, area:spec.area || (/^fun-/.test(spec.id) ? 'fun' : 'map-grandeur'), name:spec.name || spec.id, trigger:spec.trigger || '', current:spec.current || '',
+      quality:spec.quality || 'good', priority:spec.priority || 2, themeNotes:spec.themeNotes || '', variantsSuggested:false, future:!!spec.future, batch:'G', isNew:true};
+    INV.push(e); BY_ID.set(e.id, e);
+  }
   if(!e){ problem(`register: "${spec.id}" is not an inventory id (docs/effects-inventory-2026-10-15.json)`); return null; }
   let vs = spec.variants;
   if(!vs && typeof spec.play === 'function') vs = [{key:'A', label:spec.label || 'Play', play:spec.play}];
@@ -121,7 +128,10 @@ const vw = ()=> Math.max(document.documentElement.clientWidth || 0, window.inner
 // Fit a natural-size layout into the frame with CSS zoom (rects stay right for overlays positioned from getBoundingClientRect).
 function fit(el, W, H){
   el.style.width = W + 'px'; if(H) el.style.height = H + 'px';
-  const fw = frame.clientWidth || W, z = Math.min(1, fw / W);
+  const fw = frame.clientWidth || W; let z = Math.min(1, fw / W);
+  // 2026-10-16: and to the frame's height cap (the sticky dock on desktop, the mini stage on a phone), centred.
+  const mh = parseFloat(getComputedStyle(frame).maxHeight), nh = H || el.scrollHeight;
+  if(mh > 0 && nh*z > mh){ z = Math.max(.2, (mh - 4) / nh); el.style.marginLeft = el.style.marginRight = 'auto'; }
   el.style.zoom = z.toFixed(4);
   return z;
 }
@@ -240,7 +250,8 @@ async function play(id, key){
   if(token === playToken) emit('end', {id, key:v.key});
   return token === playToken;
 }
-function stop(){ playToken++; emit('end', {}); }
+// 2026-10-16: stopping also clears what the play left on <body> (the phone's mini stage hides the frame, so overlays would float over the list)
+function stop(){ playToken++; clearOverlays(); emit('end', {}); }
 
 window.FXLAB = {register, registerGroup, play, stop, setFrame, setSpeed, on, build,
   get speed(){ return speed; }, inventory:INV, byId:BY_ID, registry:REG, problems:PROBLEMS, stages:STAGES, areaStage:AREA_STAGE,
