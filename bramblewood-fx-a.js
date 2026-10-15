@@ -638,7 +638,8 @@ M.illusorySplit_C = function(el){
 // C it goes to a black silhouette with two eyes that blink, and comes back.
 M.shadowPass = function(el){
   const g = G(); if(!g || !el) return done(0); const c = centre(tileOf(el)), t = tileOf(el);
-  spray(c.x, c.y, {n:9, cls:'fxa-puff', color:'radial-gradient(circle, rgba(24,20,34,.92) 0, rgba(24,20,34,0) 70%)', d0:6, d1:c.w*.45, dur:.8, s0:.6, s1:2.2});
+  // 2026-10-15: lighter and smaller, so the game's "Miss" callout still reads through the smoke
+  spray(c.x, c.y + c.h*.1, {n:7, cls:'fxa-puff', color:'radial-gradient(circle, rgba(34,26,52,.78) 0, rgba(34,26,52,0) 70%)', d0:8, d1:c.w*.5, dur:.75, s0:.5, s1:1.7, op:.85});
   g.set(t, {filter:'brightness(1) saturate(1)'}); g.timeline().to(t, {filter:'brightness(.15) saturate(0)', opacity:.4, duration:.15}).to(t, {filter:'brightness(1) saturate(1)', opacity:1, duration:.4, delay:.35, clearProps:'filter,opacity'});
   return done(1000);
 };

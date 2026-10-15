@@ -81,6 +81,7 @@ prong on the castle), Octolash and Chilli all have lab demos; Ice Arrow, Volley 
 - New `FX.A.heavyShock` (atk-heavy-hitstop B) and its hook: hits of 8+ on High, once a round per target.
 - Player Stun bell was clipped above the top edge (the enemy castle sits on it); it now hangs inside the window and is centred on the castle.
 - Missiles were hard to see on the felt at phone width: bigger, outlined, fatter trail. Water A got a splash crown and bigger drops.
+- Shadow evade smoke was so dense it hid the game's "Miss" callout; lighter and smaller now.
 - Reload dial and the Prayer exile wisp resolved a little before their last particle faded; their durations match now.
 - Five entries demoed in `_existing.js` had no in-game hook note (fire arrow, backstab, boomerang throw, shield up, Shield Call); added.
 
