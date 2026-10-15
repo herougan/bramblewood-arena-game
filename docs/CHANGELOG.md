@@ -2,6 +2,44 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-15 (22:30)
+- **The big effects sweep:**
+  - The inventory lists 933 effect moments: every skill, status, darkness level, death, castle moment, card treatment, foil, pack reveal, map, menu, reward and future feature (`docs/effects-inventory-2026-10-15.md`).
+  - All of them are now in the **Effects Lab** with search, filters, a coverage meter and a "Variants to choose" view.
+  - About 1,300 variants in all. Where the look was uncertain there are A/B/C takes side by side; the game uses A.
+  - **Highlights:**
+    - Blind and dark units look blinded, and the lights go out when darkness starts.
+    - Each darkness level has its own miss.
+    - There is a death for each cause, plus a King's fall and a boss death.
+    - Status wear-offs and lost turns now show.
+    - Mythic, Ancient, Divine, Void and Daemonic each get their own pack reveal, and a foil pull gets a FOIL reveal.
+    - 22 new foil concepts.
+    - Every map and side map has its own ambience.
+    - A wax-seal stamp on cleared fights, trails that draw themselves, and a map-cleared celebration.
+    - The account level-up moment.
+    - Damage colours for magic, water and true damage.
+  - Per-batch notes are in `docs/fx-batch-a..f-status.md`.
+- **Fight rules and field pills:**
+  - **Exposed:** +1 damage per hit, and attacks on the unit can't miss.
+  - **New skills:** Bloodlust and Full Moon.
+  - **Plain and advanced forms:** Diurnal – {…}, Nocturnal – {…}, Full Moon – {…}, and two-facet Tide – {…}, {…}.
+  - Flow is now **Flood**. Swimmer is retired, and its 33 cards now have Tide.
+  - The field pills show only the current state: Day/Night X/3, Wind ⬆⬇ and Flood/Ebb/🌊🌊. They're no longer clipped, and the forecast pill is gone.
+  - Map 0 has a Mist pill showing "?".
+  - The empty middle slot comes back when a row is empty.
+  - The Pounce "line" was a visual bug and is fixed.
+  - The Spawn corner pill is gone.
+  - The ambush skips its extra steps. Losing it costs 10 to 15 + 5 per map Maple Leaves (max 100).
+- **Pages:**
+  - Home buttons go to their own pages.
+  - The Forge is out of the Codex tabs; Log, Deleted and Reference are admin-only.
+  - The Codex shows 40 cards a page without splitting groups.
+  - Wildpaths text is halved.
+  - The Sandbox picker shows compressed cards.
+  - Skirmish deck previews show tooltips on hover (1 s) or hold (0.5 s).
+- **Game text spreadsheet:** `docs/game-texts.xlsx` has 6,523 rows, 466 of them keyed. Edit the New text column and send it back; `tools/text/import_texts.py` applies it. The forfeit text is changed as you asked.
+- **Card placement proposal** (nothing moved): `docs/card-placement-proposal-2026-10-15.md` and `.xlsx`.
+
 ## 2026-10-15 (fifth list)
 - **Exposed:** Expose N makes the target Exposed for its next N hits: +1 damage from each, and attacks at it can't miss. A red 🎯N badge, a log line, the crosshair look on every Exposed hit.
 - **New skill Bloodlust N** (on no card yet): when its attack draws blood (hits a Bleeding enemy, or makes it Bleed), +N Attack for the fight, up to +3N. A red heartbeat pulse.
