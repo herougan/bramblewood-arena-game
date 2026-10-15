@@ -17622,11 +17622,18 @@ function currentRaidStateFor(def, now){
   const cycle = RaidM.cycleOf(now);
   return RaidM.raidState(def, currentRaidAttempts(def, cycle), now, {cycle});
 }
+// One health bar per raid part (2026-10-15, user: "It's not clear what the 3 hp bars represent. Is it the 3 hp bars of the 3 entities
+// we can fight? or each has 3 hp bars. It should say health left like X/Y. So players feel the epic progress."): a part's health is
+// one bar with its "X / Y HP left" under it. Its phases (p.bars health bars of p.barHp each) are faint marks on that bar, and a
+// "Phase n of N" chip says which one you are cutting through (its tooltip explains the marks).
+function raidPhaseOf(ps){ const bars = Math.max(1, ps.def.bars|0); return ps.defeated ? bars : Math.max(1, Math.min(bars, bars - Math.ceil(ps.barsLeft - 1e-9) + 1)); }
 function raidBarsHTML(ps){
-  const p = ps.def, bars = Math.max(1, p.bars|0);
-  let html = '';
-  for(let i=0;i<bars;i++){ const fill = Math.max(0, Math.min(1, ps.barsLeft - (bars-1-i))); html += `<span class="rp-bar"><span style="width:${Math.round(fill*100)}%"></span></span>`; }
-  return `<div class="rp-bars" title="${bars} bars × ${(p.barHp||0).toLocaleString()} HP">${html}</div>`;
+  const p = ps.def, bars = Math.max(1, p.bars|0), total = ps.total || bars * (p.barHp||0), left = Math.max(0, Math.ceil(ps.remaining));
+  const frac = total ? Math.max(0, Math.min(1, ps.remaining / total)) : 0, phase = raidPhaseOf(ps);
+  const ticks = bars > 1 ? Array.from({length: bars - 1}, (_, i)=> `<i class="rp-tick" style="left:${((i + 1) / bars * 100).toFixed(3)}%"></i>`).join('') : '';
+  const tip = bars > 1 ? `${p.name} has ${bars} phases of ${(p.barHp||0).toLocaleString()} HP: the marks on its bar. Phase ${phase} of ${bars} now.` : '';
+  return `<div class="rp-bars is-single" role="meter" aria-label="${escapeAttr(p.name)} health" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${left}"${tip ? ` title="${escapeAttr(tip)}"` : ''}><span class="rp-bar"><span style="width:${(frac*100).toFixed(2)}%"></span>${ticks}</span></div>
+    <div class="rp-legend"><span class="rp-left">❤️ <b>${left.toLocaleString()}</b> / ${total.toLocaleString()} <small>HP left</small></span>${bars > 1 ? `<span class="rp-phase" title="${escapeAttr(tip)}">Phase ${phase} of ${bars}</span>` : ''}</div>`;
 }
 function raidClaimsFor(def){
   // a claim is possible for this cycle (if the raid fell) or the previous cycle (compensation)
@@ -17678,12 +17685,12 @@ function raidPanelHTML(){
       <p class="panel-sub">${escapeHtml(def.blurb||'')}</p></div>
       ${adminModeEnabled ? `<button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button>` : ''}</div>
     <div class="r2-total"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
-      <span><b>${st.remaining.toLocaleString()}</b> / ${st.total.toLocaleString()} · ${daysLeft} day${daysLeft===1?'':'s'} left</span></div>
+      <span class="r2-total-line">${'' /* 2026-10-15: "health left like X/Y" */}<span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${st.total ? Math.ceil(st.remaining / st.total * 100) : 0}%)</small></span><span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left</span></span></div>
     ${claims.map((c,i)=> `<div class="r2-claim">🎁 ${c.reward.kind==='kill' ? 'The raid fell — claim your reward!' : 'Last week’s raid survived — claim your compensation.'} <button type="button" class="btn small primary" data-raid-claim="${i}">Claim</button></div>`).join('')}
     <div class="r2-parts">${st.parts.map(ps=>{ const p = ps.def;
       const waits = (p.lockedUntil||[]).map(id=> (def.parts.find(x=> x.id===id)||{}).name || id).join(', ');
       return `<div class="r2-part ${ps.locked?'is-locked':''} ${ps.defeated?'is-down':''}">
-        <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${Math.ceil(ps.remaining).toLocaleString()}</span></div>
+        <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${ps.total ? Math.ceil(ps.remaining / ps.total * 100) : 0}%</span></div>
         ${raidBarsHTML(ps)}
         <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary" data-raid-part="${escapeAttr(p.id)}">⚔️ Fight (${cost.raidPoints||0}🎫 ${cost.energy||0}⚡)</button>`}
           <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString()} from other raiders` : ''}</span></div>

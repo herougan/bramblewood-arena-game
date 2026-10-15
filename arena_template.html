@@ -3120,6 +3120,17 @@
   .rp-bars{display:grid; grid-template-columns:repeat(auto-fit, minmax(14px, 1fr)); gap:3px;}
   .rp-bar{display:block; height:9px; border-radius:3px; background:rgba(0,0,0,.18); overflow:hidden;}
   .rp-bar > span{display:block; height:100%; background:linear-gradient(90deg, #c0392b, #e67e22);}
+  /* One bar per raid part (2026-10-15, user: "It should say health left like X/Y"): a taller single bar; its phases are faint marks
+     (.rp-tick), and the "X / Y HP left" line and the "Phase n of N" chip sit under it. */
+  .rp-bars.is-single{display:block;}
+  .rp-bars.is-single .rp-bar{position:relative; height:14px; border-radius:7px; background:rgba(0,0,0,.28); box-shadow:inset 0 1px 2px rgba(0,0,0,.35);}
+  .rp-bars.is-single .rp-bar > span{border-radius:7px 0 0 7px; transition:width .6s ease;}
+  .rp-bars.is-single .rp-tick{position:absolute; top:2px; bottom:2px; width:2px; margin-left:-1px; border-radius:1px; background:rgba(255,248,230,.55); box-shadow:0 0 0 1px rgba(0,0,0,.25); pointer-events:none;}
+  .rp-legend{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:4px 8px; font-size:12.5px; font-variant-numeric:tabular-nums;}
+  .rp-legend .rp-left b{font-size:14px;} .rp-legend .rp-left small{color:var(--ink-muted); font-size:11.5px;}
+  .rp-legend .rp-phase{font-size:11px; font-weight:800; padding:1px 8px; border-radius:999px; background:color-mix(in srgb, #e67e22 18%, transparent); color:var(--ink); border:1px solid color-mix(in srgb, #e67e22 45%, transparent); cursor:help;}
+  .raid2-panel .r2-total-line{display:flex; flex-wrap:wrap; justify-content:space-between; gap:2px 12px;} .raid2-panel .r2-total-line b{font-size:15px;}
+  .raid2-panel .r2-total-line small{color:var(--ink-muted);} .raid2-panel .r2-days{color:var(--ink-muted);}
   .raid-editor .re-errs{margin:6px 0 10px; padding:8px 12px; border-radius:10px; background:rgba(179,38,30,.12); border:1px solid #b3261e; font-size:13px; font-weight:700;}
   .raid-editor .re-parts{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; align-items:center;}
   .raid-editor .re-part-tab{display:flex; flex-direction:column; align-items:flex-start; padding:6px 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2); color:inherit; font:inherit; font-weight:700; cursor:pointer;}
