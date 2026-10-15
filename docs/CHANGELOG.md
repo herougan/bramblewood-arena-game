@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-15 (09:00)
+- **Master hub:**
+  - It opens on a dashboard: Your calls and Planned first, then the latest changes, stat tiles and links.
+  - New **🎴 Cards** tab with every card's art, filters and details: stats, skills, source, win rate and which decks use it.
+  - **Search** across the whole hub (press /).
+  - The changelog is collapsible, tabs sit in a sidebar, there's a theme toggle, and nothing is cut off on phones.
+- **29 new skill effects:** Flying swoop, tide splash, armour block, fork prongs, pierce, stun stars, freeze, sleep, paralyse, acid, ink blind, fear, curse, mark, clock tick, parry, mirror, crown crack, stealth, scar, life drain, pollen, aura, rage, revive, summon portal, Lumber arc and prayer light.
+  - Skills with their own effect: 61 → 105 (of 182). Weighted by cards, 437 → 633.
+  - They show in fights, in the in-game 🔬 Effects library and in the hub's Effects Lab ("Even more skills"). The full list is in the effects catalogue.
+- **Difficulty with the new starter deck:** Map 0 win rates dropped. 0-1 is 52% (was 67%), 0-2 60% (70%), 0-3 5% (12%) and the 0-4 boss 7% (17%).
+
 ## 2026-10-15 (05:30)
 - **Fight ids match what you see:** Thistlewood's f-1 is now 1-1, the first map's fights are 0-1…0-4, side maps read like 1-A-1, and so on (226 fights, 36 maps, plus the endless dungeon). Old saves, map layouts and published skirmish edits are translated when they load; nothing in the database was rewritten.
 - **Tutorial and early maps:**

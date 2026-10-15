@@ -17975,6 +17975,378 @@ function mindWave(caster, target, o){
   if(!o.immune) g.fromTo(tileOf(target), {filter:'hue-rotate(0deg) saturate(1)'}, {filter:'hue-rotate(250deg) saturate(1.8)', duration:.12, yoyo:true, repeat:3, delay:.4, clearProps:'filter', onComplete:()=> call(o.onDone)});
 }
 Object.assign(root.SkillFX, {smokeBomb, smokePuff, mindWave});
+// ---- 2026-10-15 (eighth pass, user: "widen the effects list we have"): twenty-nine more skill effects, so the keywords
+// that real cards carry most (Flying, Armor, Swimmer, Fork, Pierce, the elemental statuses, Sap, Bloom...) each get their
+// own short look instead of only a floating word. Same rules as above: fixed overlays on <body> (class sfx-*, removed when
+// done), about a second or less, GSAP motion; with reduced motion or no GSAP they skip the motion and still call back.
+//   SkillFX.swoop(attacker, target, {flight, onImpact})      SkillFX.gust(target, {dir})          SkillFX.splash(target)
+//   SkillFX.armorBlock(target, {from, partial, shatter})     SkillFX.forkProngs(attacker, targets, {kind, onEachImpact})
+//   SkillFX.pierceThrough(target, {from})                    SkillFX.stunStars(target, {glyph, n})
+//   SkillFX.freezeEncase(target)  SkillFX.sleepZzz(target)  SkillFX.paralyzeSpark(target)  SkillFX.acidCorrode(target)
+//   SkillFX.lifeDrain(from, to, {onDone})  SkillFX.bloomPollen(src, target, {onDone})  SkillFX.fearShiver(target)
+//   SkillFX.curseDrain(target)  SkillFX.targetMark(target)  SkillFX.blindInk(target)  SkillFX.mirrorFlash(defender, attacker)
+//   SkillFX.reviveRise(target)  SkillFX.summonPortal(target)  SkillFX.lootArc(from, to, {glyph, n, onDone})
+//   SkillFX.prayerLight(target)  SkillFX.espritAura(target)  SkillFX.rageFlare(target)  SkillFX.scarMark(target, {fromLeft})
+//   SkillFX.clockTick(target, {dir})  SkillFX.parry(defender, attacker)  SkillFX.crownCrack(target)
+//   SkillFX.stealthSlip(attacker, castle)
+const EIGHTH_CSS = `
+.sfx-swoop{overflow:visible;} .sfx-swoop path{fill:none; stroke-linecap:round;}
+.sfx-swoop path.air{stroke:rgba(235,245,255,.7); stroke-width:9; filter:blur(2px);} .sfx-swoop path.core{stroke:#ffffff; stroke-width:2.2;}
+.sfx-gust{height:3px; border-radius:3px; background:linear-gradient(90deg, rgba(220,240,255,0), rgba(235,248,255,.95) 60%, rgba(220,240,255,0));}
+.sfx-droplet{width:7px; height:10px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:radial-gradient(circle at 40% 60%, #e8f8ff, #58b6f0 55%, #1f6fb8); box-shadow:0 0 4px rgba(90,180,255,.7);}
+.sfx-ring.sfx-water{border:3px solid rgba(120,200,255,.9); box-shadow:0 0 12px rgba(80,170,255,.6), inset 0 0 8px rgba(200,240,255,.7);}
+.sfx-ring.sfx-gold{border:3px solid rgba(255,214,90,.95); box-shadow:0 0 14px rgba(255,190,60,.75);}
+.sfx-ring.sfx-violet{border:3px solid rgba(190,120,255,.9); box-shadow:0 0 12px rgba(160,80,255,.7);}
+.sfx-ring.sfx-red{border:3px solid rgba(255,90,70,.95); box-shadow:0 0 12px rgba(255,60,40,.7);}
+.sfx-plate{border-radius:12px; border:3px solid rgba(225,232,244,.95); background:linear-gradient(125deg, rgba(255,255,255,.1) 20%, rgba(255,255,255,.75) 38%, rgba(190,202,220,.3) 46%, rgba(255,255,255,.08) 60%); background-size:260% 100%;
+  box-shadow:0 0 16px rgba(200,215,240,.8), inset 0 0 14px rgba(235,242,255,.6);}
+.sfx-prong{width:5px; border-radius:3px 3px 1px 1px; background:linear-gradient(#ffffff, #d6dfeb 30%, #7d8aa0); box-shadow:0 0 8px rgba(220,235,255,.9); clip-path:polygon(50% 0, 100% 16%, 100% 100%, 0 100%, 0 16%);}
+.sfx-prong.is-ink{width:8px; background:linear-gradient(#f0c8ff, #9b4fd0 40%, #4a1d6e); box-shadow:0 0 8px rgba(180,90,255,.8); border-radius:8px 8px 3px 3px; clip-path:none;}
+.sfx-lance{height:4px; border-radius:2px; background:linear-gradient(90deg, rgba(255,255,255,0), #fff2c8 55%, #ffffff); box-shadow:0 0 10px 2px rgba(255,236,170,.9);}
+.sfx-orbit{font-size:15px; line-height:1; color:#ffe27a; text-shadow:0 0 6px rgba(255,220,90,.95), 0 1px 0 rgba(0,0,0,.4);}
+.sfx-ice{border-radius:10px; transform-origin:50% 100%; background:linear-gradient(160deg, rgba(240,250,255,.8), rgba(170,215,255,.45) 45%, rgba(220,240,255,.7)); border:2px solid rgba(225,245,255,.95);
+  box-shadow:0 0 18px rgba(150,210,255,.85), inset 0 0 14px rgba(255,255,255,.85);}
+.sfx-crack{overflow:visible;} .sfx-crack path{fill:none; stroke:rgba(255,255,255,.95); stroke-width:1.6; stroke-linecap:round; filter:drop-shadow(0 0 2px rgba(120,190,255,.9));}
+.sfx-zzz{font:900 18px 'Baloo 2',system-ui,sans-serif; color:#dfe7ff; text-shadow:0 0 6px rgba(140,160,255,.95), 0 2px 0 rgba(0,0,0,.35);}
+.sfx-dim{border-radius:12px; background:radial-gradient(ellipse at 50% 40%, rgba(40,40,90,.15), rgba(30,30,80,.55));}
+.sfx-crackle{overflow:visible;} .sfx-crackle path{fill:none; stroke:#fff7a8; stroke-width:2; stroke-linejoin:round; stroke-linecap:round; filter:drop-shadow(0 0 4px rgba(255,220,60,.95));}
+.sfx-acid{width:8px; height:11px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:radial-gradient(circle at 40% 60%, #f6ffb0, #b6e830 55%, #5f8a10); box-shadow:0 0 6px rgba(190,240,40,.85);}
+.sfx-fizz{width:6px; height:6px; border-radius:50%; border:1.5px solid rgba(225,255,120,.95);}
+.sfx-mote.is-red{background:#ffd0c8; box-shadow:0 0 8px 3px rgba(230,50,50,.85);}
+.sfx-petal{width:10px; height:7px; border-radius:70% 0 70% 0; background:linear-gradient(135deg, #ffe7f1, #f59ac0); box-shadow:0 0 3px rgba(255,170,200,.8);}
+.sfx-pollen{width:4px; height:4px; border-radius:50%; background:#fff3a6; box-shadow:0 0 5px 2px rgba(255,220,90,.85);}
+.sfx-sweat{font-size:13px; line-height:1;}
+.sfx-shiver{border-radius:12px; box-shadow:inset 0 0 24px 7px rgba(120,70,190,.65);}
+.sfx-tendril{overflow:visible;} .sfx-tendril path{fill:none; stroke:rgba(60,18,80,.9); stroke-width:3.5; stroke-linecap:round; filter:drop-shadow(0 0 5px rgba(150,60,200,.85));}
+.sfx-reticle{border-radius:50%; border:2px solid rgba(255,90,70,.95); box-shadow:0 0 10px rgba(255,80,60,.8), inset 0 0 6px rgba(255,80,60,.5);}
+.sfx-reticle::before, .sfx-reticle::after{content:''; position:absolute; left:50%; top:-14%; width:2px; height:128%; margin-left:-1px; background:linear-gradient(rgba(255,90,70,.95) 0 26%, transparent 26% 74%, rgba(255,90,70,.95) 74%);}
+.sfx-reticle::after{transform:rotate(90deg);}
+.sfx-ink{width:34px; height:34px; border-radius:46% 54% 50% 50%; background:radial-gradient(circle at 45% 45%, rgba(18,12,26,.96), rgba(30,20,45,.88) 52%, rgba(30,20,45,0) 72%);}
+.sfx-mirror{border-radius:10px; border:2px solid rgba(225,242,255,.95); background:linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.9) 45%, rgba(200,230,255,.6) 50%, rgba(255,255,255,0) 64%); background-size:260% 100%; box-shadow:0 0 14px rgba(180,220,255,.8);}
+.sfx-pillar{background:linear-gradient(90deg, rgba(255,240,180,0), rgba(255,248,210,.8) 30%, #fffef4 50%, rgba(255,248,210,.8) 70%, rgba(255,240,180,0)); filter:blur(2px); transform-origin:50% 0;}
+.sfx-rune{border-radius:50%; border:2px dashed rgba(170,255,190,.95); box-shadow:0 0 14px rgba(100,240,140,.8), inset 0 0 12px rgba(120,255,160,.6);}
+.sfx-loot{font-size:17px; line-height:1; filter:drop-shadow(0 2px 2px rgba(0,0,0,.4));}
+.sfx-beam{background:linear-gradient(rgba(255,250,220,0), rgba(255,246,200,.7) 35%, rgba(255,240,170,.3)); filter:blur(3px); transform-origin:50% 0;}
+.sfx-chev{width:18px; height:10px; background:#ffd65a; clip-path:polygon(0 100%, 50% 0, 100% 100%, 80% 100%, 50% 38%, 20% 100%); filter:drop-shadow(0 0 4px rgba(255,200,60,.95));}
+.sfx-steam{width:22px; height:22px; border-radius:50%; background:radial-gradient(circle, rgba(255,130,110,.8), rgba(255,90,70,0) 70%); filter:blur(1.5px);}
+.sfx-vein{font-size:20px; line-height:1; filter:drop-shadow(0 0 4px rgba(255,40,40,.9));}
+.sfx-claw{overflow:visible;} .sfx-claw path{fill:none; stroke:#ff5a4a; stroke-width:3.5; stroke-linecap:round; filter:drop-shadow(0 0 4px rgba(255,40,40,.85));}
+.sfx-clock{width:44px; height:44px; border-radius:50%; background:radial-gradient(circle, #fffdf3 0 58%, #c9a24a 60% 67%, rgba(0,0,0,0) 68%); box-shadow:0 2px 6px rgba(0,0,0,.35);}
+.sfx-clock i{position:absolute; left:50%; top:calc(50% - 14px); width:2.5px; height:14px; margin-left:-1.25px; background:#3a2a10; border-radius:2px; transform-origin:50% 100%;}
+.sfx-clock i.min{top:calc(50% - 10px); height:10px; width:3px; background:#8a2414;}
+.sfx-clock.is-fast{background:radial-gradient(circle, #fffdf3 0 58%, #7a4a2a 60% 67%, rgba(0,0,0,0) 68%);}
+.sfx-blade{font-size:22px; line-height:1; filter:drop-shadow(0 0 6px rgba(255,250,220,.9));}
+.sfx-crown{font-size:26px; line-height:1; filter:drop-shadow(0 2px 3px rgba(0,0,0,.45));}
+.sfx-shade{border-radius:12px; background:radial-gradient(ellipse, rgba(20,10,35,.8), rgba(20,10,35,.4) 60%, rgba(20,10,35,.1) 85%);}
+`;
+function eighthCss(){ if(document.getElementById('sfx-eighth-css')) return; const s = document.createElement('style'); s.id = 'sfx-eighth-css'; s.textContent = EIGHTH_CSS; (document.head || document.body).appendChild(s); }
+const go = ()=>{ if(!ready()) return false; eighthCss(); return true; };
+const angTo = (a, b)=> Math.atan2(b.y - a.y, b.x - a.x);
+// Flying: the attacker's swoop: a bright air-trail climbs over the field and dives onto the target; feathers fly on impact.
+function swoop(attacker, target, o){
+  o = o || {}; if(!go() || !attacker || !target){ later(o.onImpact, o.flight || 300); return; }
+  const g = G(), a = centre(attacker), b = centre(target), up = Math.min(a.y, b.y) - Math.max(a.h, b.h)*0.8, fly = Math.min(.5, (o.flight || 320)/1000);
+  const sv = svgLayer('sfx-swoop'), d = `M${a.x},${a.y - a.h*.3} C${a.x + (b.x - a.x)*.1},${up} ${b.x - (b.x - a.x)*.1},${up} ${b.x},${b.y}`;
+  const air = drawPath(sv, d, 'air'), core = drawPath(sv, d, 'core');
+  g.timeline({onComplete:()=> sv.remove()}).to([air, core], {strokeDashoffset:0, duration:fly, ease:'power2.in'}).to(sv, {opacity:0, duration:.3});
+  later(()=>{ feathers(b.x, b.y - b.h*.15, 8); ring(b.x, b.y, 'sfx-string', b.w*1.3, 320); knock(target, a.y < b.y ? 90 : -90, .9); call(o.onImpact); }, fly*1000);
+}
+// Tailwind (Flying): a gust of wind streaks across the card and it leans with it.
+function gust(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), s = o.dir || 1, t = tileOf(target);
+  for(let i = 0; i < 6; i++){ const w = layer('sfx-gust'), len = rnd(50, 90);
+    g.set(w, {x:c.x - s*c.w*.9 - len/2, y:c.r.top + c.h*(0.15 + i*0.14), width:len, opacity:0, rotation:rnd(-6, 6)});
+    g.timeline({delay:i*0.04, onComplete:()=> w.remove()}).to(w, {opacity:.95, duration:.08}).to(w, {x:`+=${s*c.w*1.8}`, duration:.45, ease:'power1.inOut'}, 0).to(w, {opacity:0, duration:.15}, .32); }
+  g.timeline({onComplete:()=> call(o.onDone)}).to(t, {rotation:s*4, x:s*5, duration:.15, ease:'power2.out'}).to(t, {rotation:0, x:0, duration:.45, ease:'elastic.out(1, .5)', clearProps:'transform'});
+}
+// Swimmer: the card bobs up out of a splash: blue rings at its foot and droplets thrown up and falling back.
+function splash(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), y = c.r.bottom - 6;
+  ring(c.x, y, 'sfx-water', c.w*1.6, 520); later(()=> ring(c.x, y, 'sfx-water', c.w*1.1, 420), 120);
+  for(let i = 0; i < 12; i++){ const d = layer('sfx-droplet'), a = rnd(-150, -30)*Math.PI/180, v = rnd(30, 70);
+    g.set(d, {x:c.x - 3.5 + rnd(-c.w*.3, c.w*.3), y:y - 10, opacity:1});
+    g.to(d, {keyframes:[{x:`+=${Math.cos(a)*v*.6}`, y:`+=${Math.sin(a)*v}`, duration:.28, ease:'power2.out'}, {x:`+=${Math.cos(a)*v*.4}`, y:`+=${v*.9}`, opacity:0, duration:.32, ease:'power2.in'}], onComplete:()=> d.remove()}); }
+  g.timeline({onComplete:()=> call(o.onDone)}).to(tileOf(target), {y:-7, duration:.14, ease:'power2.out'}).to(tileOf(target), {y:0, duration:.45, ease:'elastic.out(1, .4)', clearProps:'transform'});
+}
+// Armor: a steel plate flashes over the card with a glint, sparks fly off the struck edge (fewer for a partial block).
+// shatter: the plate breaks into chips that fall away (Perforate's armour lost for good).
+function armorBlock(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onImpact); return; }
+  const g = G(), c = centre(target), from = o.from == null ? -90 : o.from, rad = from*Math.PI/180, k = o.partial ? .6 : 1;
+  const pl = over(target, 'sfx-plate', 3); g.set(pl, {opacity:0, scale:1.05, backgroundPosition:'100% 0'});
+  g.timeline({onComplete:()=> pl.remove()}).to(pl, {opacity:.95*k, scale:1, duration:.08, ease:'power3.out'}).to(pl, {backgroundPosition:'0% 0', duration:.3, ease:'power1.inOut'}, 0)
+    .to(pl, {opacity:0, duration:o.shatter ? .12 : .35, delay:o.shatter ? .05 : .1*k});
+  const px = c.x + Math.cos(rad)*c.w*.3, py = c.y + Math.sin(rad)*c.h*.4;
+  for(let i = 0; i < Math.round(9*k); i++){ const s = layer('sfx-spark'), a = (from + rnd(-70, 70))*Math.PI/180, d = rnd(18, 44);
+    g.set(s, {x:px - 2, y:py - 2}); g.to(s, {x:`+=${Math.cos(a)*d}`, y:`+=${Math.sin(a)*d}`, opacity:0, scale:.4, duration:rnd(.2, .35), ease:'power2.out', onComplete:()=> s.remove()}); }
+  if(o.shatter) for(let i = 0; i < 10; i++){ const ch = layer('sfx-chip'); g.set(ch, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.top + rnd(.1, .7)*c.h, rotation:rnd(0, 90)});
+    g.to(ch, {x:`+=${rnd(-30, 30)}`, y:`+=${rnd(40, 80)}`, rotation:'+=360', opacity:0, duration:rnd(.45, .7), ease:'power1.in', delay:.1, onComplete:()=> ch.remove()}); }
+  if(!o.partial && !o.shatter){ const h = layer('sfx-helmet', '🛡️'); g.set(h, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
+    g.timeline({onComplete:()=> h.remove()}).to(h, {scale:1.2, opacity:1, duration:.1, ease:'back.out(3)'}).to(h, {scale:1, duration:.1}).to(h, {opacity:0, y:'-=12', duration:.3, delay:.2}); }
+  ring(px, py, 'sfx-string', 36 + 24*k, 260); knock(target, from + 180, .35*k);
+  if(o.light) call(o.light, px, py, [1, 1, .9], false);
+  call(o.onImpact);
+}
+// Fork / Trident / Pitchfork / Octolash: steel tines (purple tentacles for Octolash) thrust into each struck card and pull back.
+function forkProngs(attacker, targets, o){
+  o = o || {}; const list = (targets||[]).filter(Boolean); if(!list.length) return;
+  if(!go()){ list.forEach((el, i)=> call(o.onEachImpact, el, i)); return; }
+  const g = G(), a = attacker ? centre(attacker) : null, ink = o.kind === 'octolash', n = o.kind === 'pitchfork' ? 4 : 3;
+  list.forEach((el, i)=> later(()=>{
+    const b = centre(el), ang = a ? angTo(a, b) : Math.PI/2, ux = Math.cos(ang), uy = Math.sin(ang), px = -uy, py = ux, L = b.h*.55, deg = ang*57.3;
+    for(let k = 0; k < n; k++){ const p = layer('sfx-prong' + (ink ? ' is-ink' : '')), off = (k - (n - 1)/2)*b.w*.16;
+      const bx = b.x + px*off, by = b.y + py*off;
+      g.set(p, {height:L, x:bx - ux*(L + b.h*.7) - 2.5, y:by - uy*(L + b.h*.7) - L, rotation:deg + 90, transformOrigin:'50% 100%', opacity:0});
+      g.timeline({delay:k*0.02, onComplete:()=> p.remove()}).to(p, {opacity:1, duration:.05})
+        .to(p, {x:bx - ux*L*.55 - 2.5, y:by - uy*L*.55 - L, duration:.12, ease:'power3.in'}, 0)
+        .to(p, {x:`-=${ux*30}`, y:`-=${uy*30}`, opacity:0, duration:.25, ease:'power2.in', delay:.12}); }
+    later(()=>{ knock(el, deg, .8); burst(b.x, b.y, deg, ink ? 'poison' : 'zap', 6); ring(b.x, b.y, ink ? 'sfx-violet' : 'sfx-string', b.w*1.1, 300); call(o.onEachImpact, el, i); }, 130);
+  }, i*70));
+}
+// Pierce: a lance of light punches straight through the card and out the far side, throwing chips from the exit.
+function pierceThrough(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onImpact); return; }
+  const g = G(), c = centre(target), from = (o.from == null ? -90 : o.from)*Math.PI/180, ux = -Math.cos(from), uy = -Math.sin(from), L = Math.max(c.w, c.h)*2.2;
+  const ln = layer('sfx-lance'); g.set(ln, {x:c.x - ux*L*.65, y:c.y - uy*L*.65 - 2, width:L*.6, rotation:Math.atan2(uy, ux)*57.3, transformOrigin:'0 50%', scaleX:.2, opacity:0});
+  g.timeline({onComplete:()=> ln.remove()}).to(ln, {opacity:1, scaleX:1, duration:.08}).to(ln, {x:`+=${ux*L*.9}`, y:`+=${uy*L*.9}`, duration:.18, ease:'power2.in'}, .02).to(ln, {opacity:0, duration:.15}, .18);
+  later(()=>{ ring(c.x, c.y, 'sfx-string', c.w*.7, 260); burst(c.x + ux*c.h*.45, c.y + uy*c.h*.45, Math.atan2(-uy, -ux)*57.3, 'zap', 8); knock(target, Math.atan2(uy, ux)*57.3, .9);
+    g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.6)', duration:.06, yoyo:true, repeat:1, clearProps:'filter'}); call(o.onImpact); }, 110);
+}
+// Stun (and Stagger/Confused/Tipsy with their own glyph): stars wheel round the card's head while it wobbles.
+function stunStars(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), n = o.n || 4, st = {a:0}, t = tileOf(target);
+  const els = []; for(let i = 0; i < n; i++){ const s = layer('sfx-orbit', o.glyph || '★'); g.set(s, {x:c.x, y:c.r.top, xPercent:-50, yPercent:-50, opacity:0}); els.push(s); }
+  const place = ()=> els.forEach((s, i)=>{ const a = st.a + i*6.283/n, z = Math.sin(a); g.set(s, {x:c.x + Math.cos(a)*c.w*.34, y:c.r.top + 6 + z*7, scale:.75 + .35*(z + 1)/2, zIndex:z > 0 ? 9992 : 9990}); });
+  g.timeline({onComplete:()=>{ els.forEach(s=> s.remove()); call(o.onDone); }}).to(els, {opacity:1, duration:.12}, 0).to(st, {a:6.283*1.3, duration:.95, ease:'sine.inOut', onUpdate:place}, 0).to(els, {opacity:0, duration:.2}, .78);
+  g.to(t, {keyframes:[{rotation:-5, duration:.1}, {rotation:4, duration:.12}, {rotation:-3, duration:.12}, {rotation:2, duration:.12}, {rotation:0, duration:.1}], clearProps:'transform'});
+}
+// Freeze: a block of ice grows up over the card from its foot, cracks spider across it, then it glazes away.
+function freezeEncase(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), ice = over(target, 'sfx-ice', 3); g.set(ice, {scaleY:0, opacity:.95});
+  const sv = svgLayer('sfx-crack'), x0 = c.x + rnd(-c.w*.15, c.w*.15), y0 = c.y + rnd(-c.h*.15, c.h*.1); const paths = [];
+  for(let k = 0; k < 5; k++){ const a = k/5*6.283 + rnd(-.3, .3); let d = `M${x0},${y0}`, x = x0, y = y0;
+    for(let s = 0; s < 3; s++){ x += Math.cos(a + rnd(-.5, .5))*c.w*.14; y += Math.sin(a + rnd(-.5, .5))*c.h*.12; d += ` L${x},${y}`; } paths.push(drawPath(sv, d)); }
+  g.timeline({onComplete:()=>{ ice.remove(); sv.remove(); call(o.onDone); }})
+    .to(ice, {scaleY:1, duration:.22, ease:'power2.out'})
+    .add(()=>{ ring(c.x, c.y, 'sfx-frost', c.w*1.3, 480); burst(c.x, c.r.top + 6, -90, 'ice', 8); })
+    .to(paths, {strokeDashoffset:0, duration:.16, ease:'power1.out'})
+    .to([ice, sv], {opacity:0, duration:.4, delay:.25});
+}
+// Sleep: the card dims and sways while three Z's float up and away.
+function sleepZzz(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), dm = over(target, 'sfx-dim', 0); g.set(dm, {opacity:0});
+  g.timeline({onComplete:()=> dm.remove()}).to(dm, {opacity:1, duration:.25}).to(dm, {opacity:0, duration:.35, delay:.4});
+  for(let i = 0; i < 3; i++){ const z = layer('sfx-zzz', 'z'); g.set(z, {x:c.x + c.w*.12, y:c.r.top + c.h*.25, xPercent:-50, yPercent:-50, scale:.5 + i*.25, opacity:0});
+    g.timeline({delay:i*.18, onComplete:()=> z.remove()}).to(z, {opacity:1, duration:.1}).to(z, {x:`+=${18 + i*8}`, y:`-=${34 + i*10}`, rotation:-14, duration:.6, ease:'sine.out'}, 0).to(z, {opacity:0, duration:.2}, .45); }
+  g.timeline({onComplete:()=> call(o.onDone)}).to(tileOf(target), {rotation:-3, y:3, duration:.3, ease:'sine.inOut'}).to(tileOf(target), {rotation:2, duration:.3, ease:'sine.inOut'}).to(tileOf(target), {rotation:0, y:0, duration:.25, clearProps:'transform'});
+}
+// Paralyze: yellow sparks crackle round the card's edges, redrawn each flicker, and it twitches.
+function paralyzeSpark(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), sv = svgLayer('sfx-crackle'), r = c.r;
+  const side = ()=>{ const e = Math.floor(rnd(0, 4)), t0 = rnd(0, .6), t1 = t0 + rnd(.25, .4);
+    const P = t=> e === 0 ? [r.left + r.width*t, r.top] : e === 1 ? [r.right, r.top + r.height*t] : e === 2 ? [r.left + r.width*t, r.bottom] : [r.left, r.top + r.height*t];
+    let d = ''; for(let k = 0; k <= 6; k++){ const [x, y] = P(t0 + (t1 - t0)*k/6); d += (k ? ' L' : 'M') + (x + rnd(-6, 6)) + ',' + (y + rnd(-6, 6)); } return d; };
+  let n = 0; const flick = ()=>{ while(sv.firstChild) sv.firstChild.remove(); if(n++ >= 6){ sv.remove(); call(o.onDone); return; }
+    for(let k = 0; k < 3; k++){ const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', side()); sv.appendChild(p); } later(flick, 75); };
+  flick();
+  g.to(tileOf(target), {keyframes:[{x:-2, duration:.04}, {x:2, duration:.04}, {x:-1.5, duration:.04}, {x:1.5, duration:.04}, {x:0, duration:.04}], repeat:1, clearProps:'transform'});
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.5) saturate(1.4)', duration:.07, yoyo:true, repeat:3, clearProps:'filter'});
+}
+// Corrode / Ichor: acid splashes on the card's top edge and runs down it, fizzing, with a sickly yellow-green tint.
+function acidCorrode(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target);
+  for(let i = 0; i < 5; i++){ const d = layer('sfx-acid'), x = c.r.left + c.w*(0.15 + i*0.17) + rnd(-4, 4); g.set(d, {x:x - 4, y:c.r.top - 14, opacity:0, scaleY:.6});
+    g.timeline({delay:i*0.06, onComplete:()=> d.remove()}).to(d, {opacity:1, y:c.r.top - 2, duration:.12, ease:'power2.in'}).to(d, {y:`+=${c.h*rnd(.45, .8)}`, scaleY:1.4, duration:.55, ease:'power1.in'}).to(d, {opacity:0, duration:.15}, '-=.15'); }
+  for(let i = 0; i < 8; i++){ const b = layer('sfx-fizz'); g.set(b, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.top + rnd(.1, .8)*c.h, scale:.3, opacity:0});
+    g.timeline({delay:.15 + i*0.06, onComplete:()=> b.remove()}).to(b, {opacity:1, scale:1, duration:.12}).to(b, {scale:1.6, opacity:0, y:'-=8', duration:.2}); }
+  g.fromTo(tileOf(target), {filter:'hue-rotate(0deg) saturate(1)'}, {filter:'hue-rotate(45deg) saturate(1.6) brightness(.9)', duration:.18, yoyo:true, repeat:1, repeatDelay:.25, clearProps:'filter', onComplete:()=> call(o.onDone)});
+}
+// Sap: red life-motes are pulled out of the victim and stream into the attacker, who glows.
+function lifeDrain(from, to, o){
+  o = o || {}; if(!go() || !from || !to){ call(o.onDone); return; }
+  const g = G(), a = centre(from), b = centre(to), n = 10;
+  for(let i = 0; i < n; i++){ const m = layer('sfx-mote is-red'), s = {t:0}, p0 = {x:a.x + rnd(-a.w*.3, a.w*.3), y:a.y + rnd(-a.h*.3, a.h*.3)}, mid = {x:(a.x + b.x)/2 + rnd(-50, 50), y:(a.y + b.y)/2 + rnd(-30, 30)};
+    g.set(m, {x:p0.x, y:p0.y, opacity:0});
+    g.timeline({delay:i*0.04, onComplete:()=> m.remove()}).to(m, {opacity:1, duration:.08}).to(s, {t:1, duration:.45, ease:'power2.in', onUpdate:()=>{ const q = qpt(p0, mid, b, s.t); g.set(m, {x:q.x, y:q.y}); }}, 0).to(m, {opacity:0, duration:.1}); }
+  g.fromTo(tileOf(from), {filter:'saturate(1)'}, {filter:'saturate(.4) brightness(.85)', duration:.2, yoyo:true, repeat:1, clearProps:'filter'});
+  later(()=>{ ring(b.x, b.y, 'sfx-red', b.w*1.2, 380); g.fromTo(tileOf(to), {filter:'brightness(1)'}, {filter:'brightness(1.35) sepia(.3) hue-rotate(-20deg)', duration:.15, yoyo:true, repeat:1, clearProps:'filter'}); call(o.onDone); }, 560);
+}
+// Bloom: petals and pollen drift from the flowering card to the ally it heals.
+function bloomPollen(src, target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), b = centre(target), a = src ? centre(src) : {x:b.x, y:b.y - 80, w:b.w, h:b.h};
+  for(let i = 0; i < 12; i++){ const p = layer(i % 3 ? 'sfx-petal' : 'sfx-pollen'), s = {t:0}, p0 = {x:a.x + rnd(-a.w*.3, a.w*.3), y:a.y + rnd(-a.h*.3, 0)}, mid = {x:(a.x + b.x)/2 + rnd(-30, 30), y:Math.min(a.y, b.y) - rnd(30, 70)}, end = {x:b.x + rnd(-b.w*.3, b.w*.3), y:b.y + rnd(-b.h*.3, b.h*.2)};
+    g.set(p, {x:p0.x, y:p0.y, rotation:rnd(0, 360), opacity:0});
+    g.timeline({delay:i*0.035, onComplete:()=> p.remove()}).to(p, {opacity:1, duration:.1}).to(s, {t:1, duration:.55, ease:'sine.inOut', onUpdate:()=>{ const q = qpt(p0, mid, end, s.t); g.set(p, {x:q.x, y:q.y}); }}, 0).to(p, {rotation:'+=240', duration:.55}, 0).to(p, {opacity:0, duration:.15}); }
+  later(()=>{ ring(b.x, b.y, 'sfx-heal', b.w*1.3, 480); call(o.onDone); }, 600);
+}
+// Daunt / Cower: the card shivers in a cold purple pall and a bead of sweat flies off.
+function fearShiver(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), sh = over(target, 'sfx-shiver', 0); g.set(sh, {opacity:0});
+  g.timeline({onComplete:()=> sh.remove()}).to(sh, {opacity:1, duration:.15}).to(sh, {opacity:.5, duration:.15, yoyo:true, repeat:1}).to(sh, {opacity:0, duration:.3});
+  const kf = []; for(let i = 0; i < 10; i++) kf.push({x:(i % 2 ? 1 : -1)*rnd(1.5, 3), duration:.035}); kf.push({x:0, duration:.05});
+  g.to(tileOf(target), {keyframes:kf, scale:.97, clearProps:'transform', onComplete:()=> call(o.onDone)});
+  const sw = layer('sfx-sweat', '💧'); g.set(sw, {x:c.x + c.w*.3, y:c.r.top + c.h*.15, opacity:0});
+  g.timeline({onComplete:()=> sw.remove()}).to(sw, {opacity:1, duration:.08}).to(sw, {x:'+=18', y:'+=26', rotation:40, duration:.45, ease:'power1.in'}, 0).to(sw, {opacity:0, duration:.15}, .35);
+}
+// Weaken / Render / Curse: dark tendrils climb the card from its foot and wring the colour out of it.
+function curseDrain(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), sv = svgLayer('sfx-tendril'), paths = [];
+  for(let k = 0; k < 3; k++){ const x = c.r.left + c.w*(.25 + k*.25); let d = `M${x},${c.r.bottom + 6}`;
+    for(let s = 1; s <= 4; s++) d += ` Q${x + (s % 2 ? 1 : -1)*c.w*.14},${c.r.bottom - c.h*(s - .5)*.18} ${x},${c.r.bottom - c.h*s*.18}`; paths.push(drawPath(sv, d)); }
+  g.timeline({onComplete:()=>{ sv.remove(); call(o.onDone); }}).to(paths, {strokeDashoffset:0, duration:.35, ease:'power2.out', stagger:.05}).to(sv, {opacity:0, duration:.35, delay:.2});
+  g.fromTo(tileOf(target), {filter:'saturate(1) brightness(1)'}, {filter:'saturate(.25) brightness(.75)', duration:.25, yoyo:true, repeat:1, repeatDelay:.2, clearProps:'filter'});
+  later(()=> ring(c.x, c.y, 'sfx-violet', c.w*1.1, 380), 250);
+}
+// Expose: a red crosshair spins in and locks onto the card, flashing twice.
+function targetMark(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), D = Math.min(c.w, c.h)*.8, r = layer('sfx-reticle');
+  g.set(r, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, width:D, height:D, scale:2.2, rotation:-90, opacity:0});
+  g.timeline({onComplete:()=>{ r.remove(); call(o.onDone); }}).to(r, {scale:1, rotation:0, opacity:1, duration:.3, ease:'power3.out'})
+    .to(r, {scale:.9, duration:.06, yoyo:true, repeat:3}).to(r, {opacity:0, scale:1.15, duration:.25, delay:.15});
+  later(()=> g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.3) sepia(.4) hue-rotate(-30deg)', duration:.08, yoyo:true, repeat:3, clearProps:'filter'}), 300);
+}
+// Blind: ink splats across the card's eyes, then drips and fades.
+function blindInk(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target);
+  for(let i = 0; i < 5; i++){ const k = layer('sfx-ink'); g.set(k, {x:c.r.left + c.w*rnd(.15, .85) - 17, y:c.r.top + c.h*rnd(.2, .45) - 17, scale:0, rotation:rnd(0, 360), opacity:.95});
+    g.timeline({delay:i*0.04, onComplete:()=> k.remove()}).to(k, {scale:rnd(.9, 1.5), duration:.1, ease:'back.out(3)'}).to(k, {y:'+=14', scaleY:'+=.3', duration:.5, ease:'power1.in'}).to(k, {opacity:0, duration:.3}, '-=.25'); }
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(.6)', duration:.15, yoyo:true, repeat:1, repeatDelay:.35, clearProps:'filter', onComplete:()=> call(o.onDone)});
+}
+// Reflect: a mirror sheen sweeps the defender, then a beam of light snaps back into the attacker.
+function mirrorFlash(defender, attacker, o){
+  o = o || {}; if(!go() || !defender){ call(o.onImpact); return; }
+  const g = G(), d = centre(defender), m = over(defender, 'sfx-mirror', 2); g.set(m, {opacity:0, backgroundPosition:'100% 0'});
+  g.timeline({onComplete:()=> m.remove()}).to(m, {opacity:1, duration:.08}).to(m, {backgroundPosition:'0% 0', duration:.3, ease:'power1.inOut'}, 0).to(m, {opacity:0, duration:.25});
+  if(!attacker){ later(o.onImpact, 250); return; }
+  const a = centre(attacker), ang = angTo(d, a), L = Math.hypot(a.x - d.x, a.y - d.y);
+  later(()=>{ const ln = layer('sfx-lance'); g.set(ln, {x:d.x, y:d.y - 2, width:L, rotation:ang*57.3, transformOrigin:'0 50%', scaleX:0, opacity:1});
+    g.timeline({onComplete:()=> ln.remove()}).to(ln, {scaleX:1, duration:.12, ease:'power3.in'}).to(ln, {opacity:0, duration:.2});
+    later(()=>{ knock(attacker, ang*57.3, .9); burst(a.x, a.y, ang*57.3, 'zap', 6); call(o.onImpact); }, 120); }, 200);
+}
+// Revive: a pillar of light falls on the card, which lifts back out of grey with sparkles rising.
+function reviveRise(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), t = tileOf(target), H = c.r.bottom, p = layer('sfx-pillar');
+  g.set(p, {x:c.x - c.w*.5, y:0, width:c.w, height:H, scaleY:0, opacity:.95});
+  g.timeline({onComplete:()=> p.remove()}).to(p, {scaleY:1, duration:.22, ease:'power2.in'}).to(p, {opacity:0, scaleX:.4, duration:.5, delay:.2});
+  g.fromTo(t, {filter:'grayscale(1) brightness(.6)'}, {filter:'grayscale(0) brightness(1.3)', duration:.45, delay:.18, clearProps:'filter'});
+  g.timeline({delay:.2, onComplete:()=> call(o.onDone)}).to(t, {y:-10, scale:1.05, duration:.25, ease:'power2.out'}).to(t, {y:0, scale:1, duration:.4, ease:'bounce.out', clearProps:'transform'});
+  later(()=> ring(c.x, c.y, 'sfx-heal', c.w*1.5, 520), 220);
+  for(let i = 0; i < 8; i++){ const s = layer('sfx-twinkle'); g.set(s, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.bottom - rnd(0, c.h*.3), opacity:0});
+    g.timeline({delay:.25 + i*.05, onComplete:()=> s.remove()}).to(s, {opacity:1, duration:.08}).to(s, {y:`-=${rnd(40, 80)}`, duration:.6, ease:'power1.out'}, 0).to(s, {opacity:0, duration:.2}, .45); }
+}
+// Spawn (Brood, Twin, On Death spawns, Meiosis): a green rune circle spins open under the new card and it pops into being.
+function summonPortal(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), D = Math.max(c.w, c.h)*1.1, r = layer('sfx-rune');
+  g.set(r, {x:c.x, y:c.y + c.h*.1, xPercent:-50, yPercent:-50, width:D, height:D*.45, scale:.2, rotation:0, opacity:0});
+  g.timeline({onComplete:()=> r.remove()}).to(r, {scale:1, opacity:1, duration:.2, ease:'back.out(2)'}).to(r, {rotation:180, duration:.6, ease:'none'}, 0).to(r, {opacity:0, scale:1.2, duration:.25}, .45);
+  g.fromTo(tileOf(target), {scale:.7, opacity:.3}, {scale:1, opacity:1, duration:.4, ease:'back.out(2)', delay:.08, clearProps:'transform,opacity', onComplete:()=> call(o.onDone)});
+  for(let i = 0; i < 8; i++){ const m = layer('sfx-mote'); g.set(m, {x:c.x + rnd(-D*.4, D*.4), y:c.y + c.h*.15, opacity:0});
+    g.timeline({delay:.05 + i*.04, onComplete:()=> m.remove()}).to(m, {opacity:1, duration:.08}).to(m, {y:`-=${rnd(40, 80)}`, duration:.55, ease:'power1.out'}, 0).to(m, {opacity:0, duration:.2}, .4); }
+}
+// Resource gain (Worthy, On Ready/Spawn Lumber, Bounty): a few logs (or coins) hop from the card to where they're banked.
+function lootArc(from, to, o){
+  o = o || {}; if(!go() || !from || !to){ call(o.onDone); return; }
+  const g = G(), a = centre(from), b = centre(to), n = Math.max(1, Math.min(5, o.n || 3));
+  for(let i = 0; i < n; i++){ const l = layer('sfx-loot', o.glyph || '🪵'), s = {t:0}, p0 = {x:a.x + rnd(-10, 10), y:a.y}, mid = {x:(a.x + b.x)/2 + rnd(-40, 40), y:Math.min(a.y, b.y) - rnd(60, 110)};
+    g.set(l, {x:p0.x, y:p0.y, xPercent:-50, yPercent:-50, scale:.4, opacity:0});
+    g.timeline({delay:i*0.08, onComplete:()=>{ l.remove(); if(i === n - 1){ g.fromTo(tileOf(to), {scale:1}, {scale:1.12, duration:.08, yoyo:true, repeat:1, clearProps:'transform'}); ring(b.x, b.y, 'sfx-gold', Math.max(30, b.w*.8), 320); call(o.onDone); } }})
+      .to(l, {opacity:1, scale:1, duration:.1}).to(s, {t:1, duration:.55, ease:'power1.inOut', onUpdate:()=>{ const q = qpt(p0, mid, b, s.t); g.set(l, {x:q.x, y:q.y}); }}, 0).to(l, {rotation:rnd(-200, 200), duration:.55}, 0).to(l, {scale:.5, duration:.1}); }
+}
+// Prayer / Grace: a soft beam of light falls on the card and a dove rises out of it.
+function prayerLight(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), bm = layer('sfx-beam'); g.set(bm, {x:c.x - c.w*.4, y:0, width:c.w*.8, height:c.r.bottom, scaleY:0, opacity:1});
+  g.timeline({onComplete:()=> bm.remove()}).to(bm, {scaleY:1, duration:.3, ease:'power2.out'}).to(bm, {opacity:0, duration:.45, delay:.2});
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.35) sepia(.2)', duration:.25, yoyo:true, repeat:1, delay:.15, clearProps:'filter'});
+  const dv = layer('sfx-loot', '🕊️'); g.set(dv, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, scale:.5, opacity:0});
+  g.timeline({delay:.2, onComplete:()=>{ dv.remove(); call(o.onDone); }}).to(dv, {opacity:1, scale:1, duration:.15}).to(dv, {y:`-=${c.h*.7}`, x:'+=12', duration:.6, ease:'power1.out'}, 0).to(dv, {opacity:0, duration:.2}, .45);
+}
+// Esprit / Inspiring / Buffs: golden chevrons rise up through the card inside a gold ring.
+function espritAura(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target);
+  ring(c.x, c.y, 'sfx-gold', c.w*1.4, 520);
+  for(let i = 0; i < 6; i++){ const v = layer('sfx-chev'); g.set(v, {x:c.x - 9 + (i % 3 - 1)*c.w*.22, y:c.r.bottom - 10, opacity:0, scale:.8});
+    g.timeline({delay:i*0.07, onComplete:()=> v.remove()}).to(v, {opacity:1, duration:.08}).to(v, {y:`-=${c.h*.85}`, duration:.55, ease:'power1.out'}, 0).to(v, {opacity:0, duration:.18}, .4); }
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.3) saturate(1.3)', duration:.2, yoyo:true, repeat:1, clearProps:'filter', onComplete:()=> call(o.onDone)});
+}
+// Berserk / Frenzy: red steam vents from the card, an anger mark pops, and it shudders with rage.
+function rageFlare(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target);
+  [-1, 1].forEach(s=>{ for(let i = 0; i < 3; i++){ const p = layer('sfx-steam'); g.set(p, {x:c.x + s*c.w*.42 - 11, y:c.r.top + 4, scale:.4, opacity:.9});
+    g.to(p, {x:`+=${s*rnd(14, 26)}`, y:`-=${rnd(20, 40)}`, scale:rnd(1.4, 2), opacity:0, duration:rnd(.5, .7), delay:i*.08, ease:'power1.out', onComplete:()=> p.remove()}); } });
+  const v = layer('sfx-vein', '💢'); g.set(v, {x:c.x + c.w*.28, y:c.r.top + c.h*.12, xPercent:-50, yPercent:-50, scale:.3, opacity:0});
+  g.timeline({onComplete:()=> v.remove()}).to(v, {scale:1.2, opacity:1, duration:.12, ease:'back.out(3)'}).to(v, {scale:.9, duration:.08, yoyo:true, repeat:3}).to(v, {opacity:0, duration:.2});
+  shakeEl(tileOf(target), 3, .35);
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.2) sepia(.6) saturate(3) hue-rotate(-30deg)', duration:.15, yoyo:true, repeat:1, clearProps:'filter', onComplete:()=> call(o.onDone)});
+}
+// Scar: three claw marks rake across the card and glow red as they close.
+function scarMark(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), s = o.fromLeft === false ? -1 : 1, sv = svgLayer('sfx-claw'), paths = [];
+  for(let k = 0; k < 3; k++){ const off = (k - 1)*c.w*.18, x0 = c.x - s*c.w*.3 + off, y0 = c.r.top + c.h*.2, x1 = c.x + s*c.w*.3 + off, y1 = c.r.top + c.h*.8;
+    paths.push(drawPath(sv, `M${x0},${y0} Q${(x0 + x1)/2 + s*8},${(y0 + y1)/2 - 6} ${x1},${y1}`)); }
+  g.timeline({onComplete:()=>{ sv.remove(); call(o.onDone); }}).to(paths, {strokeDashoffset:0, duration:.14, ease:'power3.in', stagger:.04}).to(sv, {opacity:0, duration:.45, delay:.25});
+  later(()=>{ knock(target, s > 0 ? 45 : 135, .6); g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.3) sepia(.5) hue-rotate(-40deg)', duration:.08, yoyo:true, repeat:1, clearProps:'filter'}); }, 150);
+}
+// Wait changes: a clock pops over the card; its hands drag round slowly (more Wait) or race round (less Wait, Coffee).
+function clockTick(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), fast = (o.dir || 1) < 0, ck = layer('sfx-clock' + (fast ? ' is-fast' : ''), '<i></i><i class="min"></i>');
+  g.set(ck, {x:c.x - 22, y:c.r.top + c.h*.3 - 22, scale:.3, opacity:0});
+  const hands = ck.querySelectorAll('i');
+  g.timeline({onComplete:()=>{ ck.remove(); call(o.onDone); }}).to(ck, {scale:1, opacity:1, duration:.15, ease:'back.out(2.5)'})
+    .to(hands[0], {rotation:fast ? 720 : -120, duration:.6, ease:fast ? 'power2.in' : 'steps(4)'}, .1).to(hands[1], {rotation:fast ? 120 : -20, duration:.6, ease:'none'}, .1)
+    .to(ck, {opacity:0, y:'-=14', duration:.22});
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:fast ? 'brightness(1.25) sepia(.4)' : 'brightness(.85) saturate(.6) hue-rotate(180deg)', duration:.2, yoyo:true, repeat:1, repeatDelay:.2, clearProps:'filter'});
+}
+// Counterattack: blades cross between the two cards with a bright ping, then the defender's riposte shoves the attacker.
+function parry(defender, attacker, o){
+  o = o || {}; if(!go() || !defender || !attacker){ later(o.onImpact, 250); return; }
+  const g = G(), d = centre(defender), a = centre(attacker), m = {x:(d.x + a.x)/2, y:(d.y + a.y)/2};
+  [[d, 1], [a, -1]].forEach(([p, s])=>{ const b = layer('sfx-blade', '🗡️'); g.set(b, {x:p.x, y:p.y, xPercent:-50, yPercent:-50, rotation:s*45, opacity:0});
+    g.timeline({onComplete:()=> b.remove()}).to(b, {opacity:1, duration:.05}).to(b, {x:m.x + s*6, y:m.y, rotation:s*-20, duration:.16, ease:'power3.in'}, 0).to(b, {x:`+=${s*14}`, rotation:s*-50, opacity:0, duration:.25, delay:.05}); });
+  later(()=>{ const p = layer('sfx-ping'); g.set(p, {x:m.x - 15, y:m.y - 15, scale:.2, opacity:1});
+    g.timeline({onComplete:()=> p.remove()}).to(p, {scale:1.8, rotation:45, duration:.1}).to(p, {scale:.5, opacity:0, rotation:90, duration:.2});
+    burst(m.x, m.y, -90, 'zap', 6); knock(attacker, angTo(d, a)*57.3, 1); call(o.onImpact); }, 170);
+}
+// King Slayer: a crown pops over the King and cracks in two, the halves falling away in a spray of gold.
+function crownCrack(target, o){
+  o = o || {}; if(!go() || !target){ call(o.onDone); return; }
+  const g = G(), c = centre(target), y = c.r.top + c.h*.12;
+  const halves = [0, 1].map(k=>{ const h = layer('sfx-crown', '👑'); h.style.clipPath = k ? 'inset(0 0 0 50%)' : 'inset(0 50% 0 0)'; g.set(h, {x:c.x, y, xPercent:-50, yPercent:-50, scale:.4, opacity:0}); return h; });
+  g.timeline({onComplete:()=>{ halves.forEach(h=> h.remove()); call(o.onDone); }}).to(halves, {scale:1.2, opacity:1, duration:.15, ease:'back.out(3)'})
+    .add(()=>{ burst(c.x, y, -90, 'fire', 8); ring(c.x, y, 'sfx-gold', 50, 300); }, '+=.15')
+    .to(halves[0], {x:'-=22', y:'+=40', rotation:-35, opacity:0, duration:.5, ease:'power1.in'}, '>').to(halves[1], {x:'+=22', y:'+=40', rotation:35, opacity:0, duration:.5, ease:'power1.in'}, '<');
+  later(()=> knock(target, 90, 1), 300);
+}
+// Stealth: the attacker melts into shadow and a dark afterimage slips across to the castle.
+function stealthSlip(attacker, castle, o){
+  o = o || {}; if(!go() || !attacker){ call(o.onDone); return; }
+  const g = G(), sh = over(attacker, 'sfx-shade', 4); g.set(sh, {opacity:0});
+  g.timeline({onComplete:()=> sh.remove()}).to(sh, {opacity:1, duration:.15}).to(sh, {opacity:0, duration:.35, delay:.35});
+  if(!castle){ later(o.onDone, 500); return; }
+  const a = centre(attacker), b = centre(castle), gh = ghostOf(attacker, 'sfx-ghost');
+  g.set(gh, {filter:'brightness(.2) saturate(0) blur(1px)', opacity:0});
+  g.timeline({delay:.1, onComplete:()=>{ gh.remove(); call(o.onDone); }}).to(gh, {opacity:.55, duration:.1}).to(gh, {x:`+=${b.x - a.x}`, y:`+=${b.y - a.y}`, scale:.6, duration:.35, ease:'power2.in'}, 0).to(gh, {opacity:0, duration:.15});
+}
+Object.assign(root.SkillFX, {swoop, gust, splash, armorBlock, forkProngs, pierceThrough, stunStars, freezeEncase, sleepZzz, paralyzeSpark, acidCorrode, lifeDrain, bloomPollen,
+  fearShiver, curseDrain, targetMark, blindInk, mirrorFlash, reviveRise, summonPortal, lootArc, prayerLight, espritAura, rageFlare, scarMark, clockTick, parry, crownCrack, stealthSlip});
 })(typeof window !== 'undefined' ? window : globalThis);
 
 // Procedural FX (2026-10-14, user: "More vfx, more gsap (advanced use cases - be exploratory), cellular automaton
@@ -21155,7 +21527,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '98cabdfe42ef', BUILD_CARD_HASH = '017f145de8b1cff9442ac07d5d2c0875fec0c5264585d3b26f2af87bd75a616e';
+const BUILD_ID = '8a85374247c0', BUILD_CARD_HASH = '017f145de8b1cff9442ac07d5d2c0875fec0c5264585d3b26f2af87bd75a616e';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -39750,6 +40122,9 @@ const FXL_SKILL_SETUPS = {
   keenSense: {rules:{dark:'absolute'}, status:{subject:{blind:2}}, note:'Absolute darkness, and the Specimen starts Blind: it still hits the grounded dummy.'},
   // 2026-10-14 (seventh pass).
   psychic: {foeFx:{armor:3, ghost:true}, foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}], note:'The dummies wear Armor 3 and are Ghosts: the psychic damage goes through anyway.'},
+  // 2026-10-15 (eighth pass): Prayer only counts toward your Prayer value, so the stage brings it in to show its arrival light.
+  esprit: {steps:[{spawn:'ally'}, 'round'], note:'A second Sparring Partner arrives, so Esprit grows the Specimen.'},
+  prayer: {steps:[{spawn:'subject'}, 'round'], note:'It arrives (Prayer is a number your Prayer value counts; its light plays as it lands).'},
   smokeBomb: {steps:['round', 'round', 'round'], note:'Three rounds, so you see a bomb or two (1 in 2 a round), at an ally or an enemy.'},
 };
 // Trigger events: the Specimen deals 3 damage to a random enemy when the event fires.
@@ -50107,6 +50482,79 @@ function sixthPassVfx(ev){
     sfx('shockTone');
   }
 }
+// 2026-10-15 (eighth pass, user: "widen the effects list we have"): the skills that only had a floating word now get their
+// own short SkillFX look in real fights (the Effects library plays them too, since it runs the same replay). Each layers over
+// the existing number, sound and tint; Medium effects and up, never with reduced motion, and the ones that can repeat play at
+// most once per unit per round (skillFxOnce). Fire-and-forget: nothing here holds up the replay.
+const STATUS_ORBIT = {stun:'★', stunOnHit:'★', stagger:'✦', confuse:'❓', tipsy:'🫧'};
+function eighthHitAtMs(ev){
+  const am = animMs(), pa = matchState && matchState.pendingArrow;
+  if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(am.windup*0.6) + arrowFlightMs();
+  return ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
+}
+function eighthPassVfx(ev){
+  const F = window.SkillFX; if(!F || !F.swoop || !ev || !matchState || reducedMotion() || !fxAtLeast('med')) return;
+  const defs = getCardDefs(), el = uid=> uid == null ? null : boardCardEl(uid), fxOf = id=> ((defs[id]||{}).effects)||{};
+  const degFrom = (from, to)=>{ if(!from || !to) return -90; const a = from.getBoundingClientRect(), b = to.getBoundingClientRect(); return Math.atan2((a.top + a.height/2) - (b.top + b.height/2), (a.left + a.width/2) - (b.left + b.width/2))*57.3; };
+  const at = (ms, fn)=> setTimeout(()=>{ try{ fn(); }catch(e){} }, Math.max(0, ms|0));
+  const myPill = id=> document.getElementById(id) || document.getElementById('fieldResMine');
+  if(ev.type === 'hit' && !ev.quake){
+    const ae = fxOf(ev.attDefId), te = fxOf(ev.targetDefId), a = el(ev.attUid), t = el(ev.targetUid), hitMs = eighthHitAtMs(ev);
+    if(ev.attUid != null && ev.targetUid != null) (matchState._lastHitOf = matchState._lastHitOf || {})[ev.attUid] = ev.targetUid; // Sap drains the last unit it hit
+    if(a && t && !ev.source && !ev.ranged && !ev.fork && !ev.sweep && !ev.counter && ae.flying && !ae.swarm && !ae.quick && skillFxOnce('swoop' + ev.attUid)) F.swoop(a, t, {flight: Math.min(450, hitMs)});
+    if(a && t && ev.fork && skillFxOnce('fork' + ev.attUid + ':' + ev.targetUid)) at(hitMs - 140, ()=>{ const a2 = el(ev.attUid), t2 = el(ev.targetUid); if(t2) F.forkProngs(a2, [t2], {kind: ev.prong}); });
+    if(t && Number(ae.expose) > 0 && skillFxOnce('expose' + ev.targetUid)) at(hitMs + 60, ()=>{ const t2 = el(ev.targetUid); if(t2) F.targetMark(t2); }); // passive Expose marks what it hits
+    if(t && ev.rend) at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.pierceThrough(t2, {from: degFrom(el(ev.attUid), t2)}); });
+    else if(t && (ev.armorBlocked || (Number(te.armor) > 0 && (ev.dmg||0) >= 0)) && (ev.armorBlocked || skillFxOnce('armor' + ev.targetUid)))
+      at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.armorBlock(t2, {from: degFrom(el(ev.attUid), t2), partial: !ev.armorBlocked}); });
+  }
+  if(ev.type === 'hitHQ' && !ev.source){ const ae = fxOf(ev.attDefId);
+    if(ae.stealth && skillFxOnce('stealth' + ev.attUid)){ const a = el(ev.attUid), c = hqTileEl(ev.targetSide); if(a) F.stealthSlip(a, c); } }
+  if(ev.type === 'pierceHQ'){ const c = hqTileEl(ev.targetSide); if(c) F.pierceThrough(c, {from: ev.targetSide === 'B' ? 90 : -90}); }
+  if(ev.type === 'kingSlayer') at(150, ()=>{ const t = el(ev.targetUid); if(t) F.crownCrack(t); });
+  if(ev.type === 'reflect'){ const d = el(ev.fromUid), a = el(ev.targetUid); if(d) F.mirrorFlash(d, a); }
+  if(ev.type === 'sap' && skillFxOnce('sap' + ev.attUid)){ const to = el(ev.attUid), from = el(matchState._lastHitOf && matchState._lastHitOf[ev.attUid]); if(to && from) F.lifeDrain(from, to); }
+  if(ev.type === 'heal' && ev.attUid != null && ev.attUid !== ev.targetUid && fxOf(ev.attDefId).bloom && skillFxOnce('bloom' + ev.attUid)){ const t = el(ev.targetUid); if(t) F.bloomPollen(el(ev.attUid), t); }
+  if(ev.type === 'revive'){ const t = el(ev.uid); if(t) F.reviveRise(t); }
+  if(ev.type === 'render'){ const t = el(ev.targetUid); if(t) at(animMs().windup, ()=> F.curseDrain(t)); }
+  if(ev.type === 'curseTick' && skillFxOnce('curse' + ev.uid)){ const t = el(ev.uid); if(t) F.curseDrain(t); }
+  if(ev.type === 'frenzy' && skillFxOnce('frenzy' + ev.attUid)){ const t = el(ev.attUid); if(t) F.rageFlare(t); }
+  if(ev.type === 'gash' && F.bleedDrip){ const t = el(ev.targetUid); if(t) F.bleedDrip(t); }           // reused: Gash's opening cut
+  if(ev.type === 'mindControl' && F.mindWave){ const t = el(ev.targetUid); if(t) F.mindWave(el(ev.attUid), t, {}); } // reused: Mind Control
+  if(ev.type === 'spawn' && ev.cause !== 'shieldCall'){ const uids = (ev.uids || (ev.placements||[]).map(p=> p.uid) || []).slice(0, 4);
+    at(140, ()=> uids.forEach((u, i)=> at(i*60, ()=>{ const t = el(u); if(t) F.summonPortal(t); }))); }
+  if(ev.type === 'lumber' && ev.uid != null && (ev.amount||0) > 0 && skillFxOnce('loot' + ev.uid)){
+    const src = el(ev.uid), dest = ev.side === 'A' ? myPill('hudLumberPill') : hqTileEl(ev.side);
+    if(src && dest) F.lootArc(src, dest, {glyph:'🪵', n: Math.min(4, ev.amount)}); }
+  if(ev.type === 'play' && !ev.reserve && (Number(fxOf(ev.defId).prayer) > 0)) at(500, ()=>{ const t = el(ev.uid); if(t) F.prayerLight(t); }); // a Prayer card arrives
+  if(ev.type === 'tide' && ev.tide !== 'ebb' && !ev.moonpull && skillFxOnce('swimTide')){ // the Tide comes in: every Swimmer on the board splashes up
+    const sw = Object.keys(matchState.replayCards || {}).filter(u=>{ const rc = matchState.replayCards[u]; return rc && rc.hp > 0 && fxOf(rc.defId).swimmer; }).slice(0, 6);
+    sw.forEach((u, i)=> at(350 + i*70, ()=>{ const x = el(u); if(x) F.splash(x); })); }
+  if(ev.type === 'grace' && ev.uid != null && skillFxOnce('grace' + ev.uid)){ const t = el(ev.uid); if(t) F.prayerLight(t); }
+  if(ev.type === 'namedBuff' && (ev.amount||0) + (ev.amount2||0) > 0){ const t = el(ev.targetUid); if(t) F.espritAura(t); }
+  if(ev.type === 'statusFx'){
+    const t = el(ev.targetUid), self = el(ev.attUid), k = ev.kind;
+    if(STATUS_ORBIT[k] && t) F.stunStars(t, {glyph: STATUS_ORBIT[k]});
+    else if(k === 'freeze' && t) F.freezeEncase(t);
+    else if((k === 'sleep' || k === 'coffeeCrash') && t) F.sleepZzz(t);
+    else if(k === 'paralyze' && t) F.paralyzeSpark(t);
+    else if((k === 'corrode' || k === 'ichor') && t) F.acidCorrode(t);
+    else if(k === 'armorShred' && t) F.armorBlock(t, {shatter:true, partial:true});
+    else if((k === 'daunt' || k === 'cower') && t && skillFxOnce('fear' + ev.targetUid)) F.fearShiver(t);
+    else if(k === 'debuffAttack' && t) F.curseDrain(t);
+    else if(k === 'expose' && t) F.targetMark(t);
+    else if(k === 'blind' && t) F.blindInk(t);
+    else if(k === 'scar' && t && skillFxOnce('scar' + ev.targetUid)) F.scarMark(t, {fromLeft: self ? self.getBoundingClientRect().left < t.getBoundingClientRect().left : true});
+    else if(k === 'addWait' && t) F.clockTick(t, {dir:1});
+    else if(k === 'coffee' && t) F.clockTick(t, {dir:-1});
+    else if(k === 'counter' && self && t) F.parry(self, t);
+    else if(k === 'tailwind' && t) F.gust(t, {dir: ev.side === 'A' ? 1 : -1});
+    else if(k === 'swimmer' && t) F.splash(t);
+    else if((k === 'esprit' || k === 'grit') && self && skillFxOnce(k + ev.attUid)) F.espritAura(self);
+    else if(k === 'inspired' && t) F.espritAura(t);
+    else if(k === 'berserk' && self) F.rageFlare(self);
+  }
+}
 // Two halves of a shell fly apart, with a few chips.
 function eggCrackVfx(x, y){
   if(fxLevel() === 'none') return;
@@ -50132,6 +50580,7 @@ function renderVfxForEvent(ev){
   try{ fifthPassVfx(ev); }catch(e){} // Tornado, Avalanche, Tsunami, Dragon Lightning, Wither, egg hatch (2026-10-14)
   try{ sixthPassVfx(ev); }catch(e){} // Fireball, Meteor, Banana, Durian, Shield, Electricity (2026-10-14)
   try{ labSkillFx(ev); }catch(e){}
+  try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
   if(ev && ev.type==='statusFx' && ['esprit','berserk','grit','momentum'].includes(ev.kind)){
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.attUid];
