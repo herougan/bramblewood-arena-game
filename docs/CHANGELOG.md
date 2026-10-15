@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (05:30)
+- **Quick:** the hit now lands with the dash (about 0.15 s), together with the speed lines, instead of after the normal wind-up.
+- **Cave fire pits:** at most 3 per map, spread along the trail.
+- **Map titles:** peaks, desert, volcano and night maps now use the Ice Hollow ribbon banner instead of the cinematic letterbox. Swamp, mist and fungal maps keep the ink style. The lab still shows all three.
+
 ## 2026-10-16 (02:00)
 - **Combat animations:**
   - Cards no longer jump left or right between rounds or on victory.

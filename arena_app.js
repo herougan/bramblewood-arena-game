@@ -32190,7 +32190,17 @@ function cleaveSlots(evL, evM, evR){
   return [side(evL, -1), mc, side(evR, 1)];
 }
 // When a hit/evade's blow lands on screen, ms after its event starts (mirrors renderVfxForEvent's impactDelay). 2026-10-15
-function evadeImpactMs(ev){ const A = animMs(), pa = matchState && matchState.pendingArrow; if(ev._cleave) return A.windup; if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(A.windup*0.6) + arrowFlightMs(); return A.windup + (ev.ranged ? A.projectile : A.impactPad); }
+// Quick lines up with its hit (2026-10-16, user: "The quick effect was just about lining up the vfx with the hit more ... it's not
+// speed up anim! then hit. It's a sped up hit together with those wind effects"): a Quick attacker's melee hit lands when its dash
+// connects (SkillFX.quickStrike's impact, ~0.15 s in) instead of after the normal wind-up, and the ordinary lunge is skipped (the
+// dash moves the card itself). Ranged shots, Cleave swings and Pounce keep their own timing.
+function quickImpactMs(ev){
+  try{ if(!ev || ev.type !== 'hit' || ev.ranged || ev._cleave || ev.sweep || ev.fork || ev.swipe || ev.pounce || ev.source) return null;
+    if(!window.SkillFX || !SkillFX.quickStrike || reducedMotion() || !fxAtLeast('med')) return null;
+    const d = getCardDefs()[ev.attDefId]; if(!d || !(d.effects||{}).quick) return null;
+    return 150; // quickStrike's GSAP dash: 0.05 s cock + 0.1 s dart
+  }catch(e){ return null; } }
+function evadeImpactMs(ev){ const A = animMs(), pa = matchState && matchState.pendingArrow; if(ev._cleave) return A.windup; { const q = quickImpactMs(ev); if(q != null) return q; } if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(A.windup*0.6) + arrowFlightMs(); return A.windup + (ev.ranged ? A.projectile : A.impactPad); }
 function skillFxOnce(key){ const m = matchState, k = (m ? m.round : 0) + ':' + key; if(skillFxSeen.has(k)) return false; if(skillFxSeen.size > 400) skillFxSeen.clear(); skillFxSeen.add(k); return true; }
 function labSkillFx(ev){
   const F = window.SkillFX; if(!F || !ev || reducedMotion() || !fxAtLeast('med')) return;
@@ -32407,6 +32417,7 @@ const STATUS_ORBIT = {stun:'★', stunOnHit:'★', stagger:'✦', confuse:'❓',
 function eighthHitAtMs(ev){
   const am = animMs(), pa = matchState && matchState.pendingArrow;
   if(ev._cleave) return am.windup; // a Cleave's slot lands as the blade passes (2026-10-15)
+  { const q = quickImpactMs(ev); if(q != null) return q; } // Quick (2026-10-16)
   if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(am.windup*0.6) + arrowFlightMs();
   return ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
 }
@@ -32781,7 +32792,7 @@ function renderVfxForEvent(ev){
       SkillFX.pounceOnto(attEl, targetEl, {impact: am0.windup + am0.impactPad, scale: attEl.closest('#battlefieldInner') && battlefieldScale > 0 ? battlefieldScale : 1});
       setTimeout(()=>{ attackingUids.delete(String(ev.attUid)); attEl.classList.remove('is-attacking', 'is-pouncing'); }, am0.windup + am0.impactPad + 700);
     }
-    else if(!ev.ranged && !ev._cleave) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf});
+    else if(!ev.ranged && !ev._cleave && quickImpactMs(ev) == null) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf}); // Quick dashes itself (2026-10-16)
     const {windup, projectile, impactPad} = animMs();
     // An 'arrow' event just before this hit (Arrow / Fire Arrow skills) turns its projectile into a real arrow.
     const pa = matchState.pendingArrow;
@@ -32790,7 +32801,8 @@ function renderVfxForEvent(ev){
     const pb = matchState.pendingBolt, boltShot = !!(ev.ranged && !arrowShot && pb && String(pb.uid)===String(ev.attUid)); // a Bolt (2026-10-15)
     if(boltShot) matchState.pendingBolt = null;
     const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
-    const impactDelay = ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
+    const quickAt = quickImpactMs(ev); // Quick: the hit lands with the dash (2026-10-16)
+    const impactDelay = quickAt != null ? quickAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
     const ufx = (window.UnitFX && ev.attDefId && ev.type==='hit') ? UnitFX.resolve(getCardDefs()[ev.attDefId], isMine) : null;
@@ -39374,6 +39386,8 @@ function caveLightSpread(canvas){
 const caveFiresSeen = {};
 function caveSeeded(str){ let h = 2166136261 >>> 0; for(let i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
   return ()=>{ h = Math.imul(h ^ (h >>> 15), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); h ^= h >>> 16; return (h >>> 0) / 4294967296; }; }
+// 2026-10-16 (user: "Less campfires, max 3 per cave."): at most 3 fire pits on a map, spread over its fights.
+const CAVE_FIRES_MAX = 3;
 function caveFireSpots(mapId, nodes){
   const out = [], taken = nodes.map(n=> ({x:n.x, y:n.y}));
   nodes.forEach(n=>{ const rnd = caveSeeded(mapId + ':' + n.key + ':fire'), count = Math.floor(rnd() * 3); // 0, 1 or 2
@@ -39381,7 +39395,8 @@ function caveFireSpots(mapId, nodes){
       const a = rnd() * Math.PI * 2, d = 6 + rnd() * 5, x = n.x + Math.cos(a) * d, y = n.y + Math.sin(a) * d * 1.4;
       if(x < 4 || x > 96 || y < 7 || y > 93 || taken.some(q=> Math.hypot(q.x - x, (q.y - y) / 1.4) < 4.6)) continue;
       out.push({x, y, key: n.key}); taken.push({x, y}); break; } });
-  return out;
+  if(out.length <= CAVE_FIRES_MAX) return out;
+  const step = out.length / CAVE_FIRES_MAX; return Array.from({length: CAVE_FIRES_MAX}, (_, k)=> out[Math.floor(k * step + step / 2)]); // spread along the trail
 }
 function mountCaveFires(canvas, map){
   canvas.querySelectorAll(':scope > .cave-fire').forEach(e=> e.remove());

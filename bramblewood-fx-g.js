@@ -88,13 +88,13 @@ const THEMES = {
   fungal:  {label:'Fungal',   ink:'#f5eaff', glow:'#9cf5ff', a:'#5b3f7a', b:'#2a1c40', trim:'#c9a2ff', ink2:'#160d24', p:'spores',   grand:['glowPulse', 'haze'],         sil:'shrooms',  style:'ink'},
   cave:    {label:'Cave',     ink:'#f1e8d8', glow:'#ffcf7a', a:'#4a4038', b:'#221c18', trim:'#c8a874', ink2:'#120e0b', p:'dust',     grand:['lanternBeam', 'bats'],       sil:'stalactites', style:'banner'},
   crystal: {label:'Crystal',  ink:'#f2f6ff', glow:'#b9a8ff', a:'#3d4a8a', b:'#1c2148', trim:'#c9e4ff', ink2:'#0d1030', p:'glints',   grand:['prism', 'glowPulse'],        sil:'crystals', style:'banner'},
-  alpine:  {label:'Peaks',    ink:'#ffffff', glow:'#cfe8ff', a:'#55708f', b:'#2b3d57', trim:'#e9eef5', ink2:'#121c2a', p:'clouds',   grand:['silhouettes', 'eagle'],      sil:'peaks',    style:'cinema'},
+  alpine:  {label:'Peaks',    ink:'#ffffff', glow:'#cfe8ff', a:'#55708f', b:'#2b3d57', trim:'#e9eef5', ink2:'#121c2a', p:'clouds',   grand:['silhouettes', 'eagle'],      sil:'peaks',    style:'banner'},
   tundra:  {label:'Tundra',   ink:'#f4fbff', glow:'#a8e8ff', a:'#4f7f9f', b:'#24435c', trim:'#dff4ff', ink2:'#0c1c28', p:'frost',    grand:['aurora', 'silhouettes'],     sil:'peaks',    style:'banner'},
-  desert:  {label:'Desert',   ink:'#fff4dc', glow:'#ffd27a', a:'#b9843a', b:'#7a4f1c', trim:'#ffe2a0', ink2:'#3a240c', p:'sand',     grand:['heatHaze', 'silhouettes'],   sil:'dunes',    style:'cinema'},
+  desert:  {label:'Desert',   ink:'#fff4dc', glow:'#ffd27a', a:'#b9843a', b:'#7a4f1c', trim:'#ffe2a0', ink2:'#3a240c', p:'sand',     grand:['heatHaze', 'silhouettes'],   sil:'dunes',    style:'banner'},
   savanna: {label:'Savanna',  ink:'#fff3d6', glow:'#ffcf6a', a:'#a7832f', b:'#6b4f16', trim:'#ffe08a', ink2:'#33240a', p:'grass',    grand:['godRays', 'silhouettes'],    sil:'acacia',   style:'banner'},
-  volcano: {label:'Volcano',  ink:'#fff0dc', glow:'#ff8a3a', a:'#7a2a16', b:'#3a120a', trim:'#ffb35a', ink2:'#1e0804', p:'embers',   grand:['heatHaze', 'silhouettes'],   sil:'volcano',  style:'cinema'},
+  volcano: {label:'Volcano',  ink:'#fff0dc', glow:'#ff8a3a', a:'#7a2a16', b:'#3a120a', trim:'#ffb35a', ink2:'#1e0804', p:'embers',   grand:['heatHaze', 'silhouettes'],   sil:'volcano',  style:'banner'},
   forge:   {label:'Forge',    ink:'#fff0dc', glow:'#ffb04a', a:'#5a4a40', b:'#2a201a', trim:'#ffc56a', ink2:'#140e0a', p:'sparks',   grand:['glowPulse', 'silhouettes'],  sil:'chimneys', style:'banner'},
-  night:   {label:'Starlit',  ink:'#f2f0ff', glow:'#b8c8ff', a:'#2c2f6a', b:'#12143a', trim:'#e6dcff', ink2:'#080a20', p:'stars',    grand:['aurora', 'shootingStar'],    sil:'peaks',    style:'cinema', veil:'rgba(8,12,40,.55)'},
+  night:   {label:'Starlit',  ink:'#f2f0ff', glow:'#b8c8ff', a:'#2c2f6a', b:'#12143a', trim:'#e6dcff', ink2:'#080a20', p:'stars',    grand:['aurora', 'shootingStar'],    sil:'peaks',    style:'banner', veil:'rgba(8,12,40,.55)'},
 };
 // Map → theme (a presentation choice, not game state). Anything missing falls back to its biome.
 const THEME_OF = {m1:'forest', mtut:'meadow', mf:'forest', mq:'meadow', mb:'beach', mp:'water', mg:'cave', mc:'alpine', m2:'water', mw:'swamp',
@@ -341,6 +341,7 @@ M.GRAND = GRAND;
 
 // =====================================================================================================================
 // 3. MAP TITLE CARDS (2026-10-16). Three styles; each theme has a default (THEMES[k].style), the lab plays all three.
+// 2026-10-16 (user: "I prefer the Ice Hollow kind. Can you change the 2nd mode to the same kind as Ice Hollow? Thick ribbon, clear royal looking font"): the cinematic letterbox is no longer any theme's default; peaks, desert, volcano and night maps use the ribbon banner too. The lab still plays all three.
 //    A: a ribbon banner with a medallion · B: ink-brush calligraphy with a seal · C: a cinematic letterbox.
 // =====================================================================================================================
 css('titles', `

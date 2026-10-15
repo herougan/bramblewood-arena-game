@@ -30208,13 +30208,13 @@ const THEMES = {
   fungal:  {label:'Fungal',   ink:'#f5eaff', glow:'#9cf5ff', a:'#5b3f7a', b:'#2a1c40', trim:'#c9a2ff', ink2:'#160d24', p:'spores',   grand:['glowPulse', 'haze'],         sil:'shrooms',  style:'ink'},
   cave:    {label:'Cave',     ink:'#f1e8d8', glow:'#ffcf7a', a:'#4a4038', b:'#221c18', trim:'#c8a874', ink2:'#120e0b', p:'dust',     grand:['lanternBeam', 'bats'],       sil:'stalactites', style:'banner'},
   crystal: {label:'Crystal',  ink:'#f2f6ff', glow:'#b9a8ff', a:'#3d4a8a', b:'#1c2148', trim:'#c9e4ff', ink2:'#0d1030', p:'glints',   grand:['prism', 'glowPulse'],        sil:'crystals', style:'banner'},
-  alpine:  {label:'Peaks',    ink:'#ffffff', glow:'#cfe8ff', a:'#55708f', b:'#2b3d57', trim:'#e9eef5', ink2:'#121c2a', p:'clouds',   grand:['silhouettes', 'eagle'],      sil:'peaks',    style:'cinema'},
+  alpine:  {label:'Peaks',    ink:'#ffffff', glow:'#cfe8ff', a:'#55708f', b:'#2b3d57', trim:'#e9eef5', ink2:'#121c2a', p:'clouds',   grand:['silhouettes', 'eagle'],      sil:'peaks',    style:'banner'},
   tundra:  {label:'Tundra',   ink:'#f4fbff', glow:'#a8e8ff', a:'#4f7f9f', b:'#24435c', trim:'#dff4ff', ink2:'#0c1c28', p:'frost',    grand:['aurora', 'silhouettes'],     sil:'peaks',    style:'banner'},
-  desert:  {label:'Desert',   ink:'#fff4dc', glow:'#ffd27a', a:'#b9843a', b:'#7a4f1c', trim:'#ffe2a0', ink2:'#3a240c', p:'sand',     grand:['heatHaze', 'silhouettes'],   sil:'dunes',    style:'cinema'},
+  desert:  {label:'Desert',   ink:'#fff4dc', glow:'#ffd27a', a:'#b9843a', b:'#7a4f1c', trim:'#ffe2a0', ink2:'#3a240c', p:'sand',     grand:['heatHaze', 'silhouettes'],   sil:'dunes',    style:'banner'},
   savanna: {label:'Savanna',  ink:'#fff3d6', glow:'#ffcf6a', a:'#a7832f', b:'#6b4f16', trim:'#ffe08a', ink2:'#33240a', p:'grass',    grand:['godRays', 'silhouettes'],    sil:'acacia',   style:'banner'},
-  volcano: {label:'Volcano',  ink:'#fff0dc', glow:'#ff8a3a', a:'#7a2a16', b:'#3a120a', trim:'#ffb35a', ink2:'#1e0804', p:'embers',   grand:['heatHaze', 'silhouettes'],   sil:'volcano',  style:'cinema'},
+  volcano: {label:'Volcano',  ink:'#fff0dc', glow:'#ff8a3a', a:'#7a2a16', b:'#3a120a', trim:'#ffb35a', ink2:'#1e0804', p:'embers',   grand:['heatHaze', 'silhouettes'],   sil:'volcano',  style:'banner'},
   forge:   {label:'Forge',    ink:'#fff0dc', glow:'#ffb04a', a:'#5a4a40', b:'#2a201a', trim:'#ffc56a', ink2:'#140e0a', p:'sparks',   grand:['glowPulse', 'silhouettes'],  sil:'chimneys', style:'banner'},
-  night:   {label:'Starlit',  ink:'#f2f0ff', glow:'#b8c8ff', a:'#2c2f6a', b:'#12143a', trim:'#e6dcff', ink2:'#080a20', p:'stars',    grand:['aurora', 'shootingStar'],    sil:'peaks',    style:'cinema', veil:'rgba(8,12,40,.55)'},
+  night:   {label:'Starlit',  ink:'#f2f0ff', glow:'#b8c8ff', a:'#2c2f6a', b:'#12143a', trim:'#e6dcff', ink2:'#080a20', p:'stars',    grand:['aurora', 'shootingStar'],    sil:'peaks',    style:'banner', veil:'rgba(8,12,40,.55)'},
 };
 // Map → theme (a presentation choice, not game state). Anything missing falls back to its biome.
 const THEME_OF = {m1:'forest', mtut:'meadow', mf:'forest', mq:'meadow', mb:'beach', mp:'water', mg:'cave', mc:'alpine', m2:'water', mw:'swamp',
@@ -30461,6 +30461,7 @@ M.GRAND = GRAND;
 
 // =====================================================================================================================
 // 3. MAP TITLE CARDS (2026-10-16). Three styles; each theme has a default (THEMES[k].style), the lab plays all three.
+// 2026-10-16 (user: "I prefer the Ice Hollow kind. Can you change the 2nd mode to the same kind as Ice Hollow? Thick ribbon, clear royal looking font"): the cinematic letterbox is no longer any theme's default; peaks, desert, volcano and night maps use the ribbon banner too. The lab still plays all three.
 //    A: a ribbon banner with a medallion · B: ink-brush calligraphy with a seal · C: a cinematic letterbox.
 // =====================================================================================================================
 css('titles', `
@@ -34067,7 +34068,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'e99b94ca859a', BUILD_CARD_HASH = '74ccb855fe201745d5069a95ae867b8b59f54b1d84e7eeeee70ddd7301f87cab';
+const BUILD_ID = '943a51ff30cd', BUILD_CARD_HASH = '74ccb855fe201745d5069a95ae867b8b59f54b1d84e7eeeee70ddd7301f87cab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -64095,7 +64096,17 @@ function cleaveSlots(evL, evM, evR){
   return [side(evL, -1), mc, side(evR, 1)];
 }
 // When a hit/evade's blow lands on screen, ms after its event starts (mirrors renderVfxForEvent's impactDelay). 2026-10-15
-function evadeImpactMs(ev){ const A = animMs(), pa = matchState && matchState.pendingArrow; if(ev._cleave) return A.windup; if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(A.windup*0.6) + arrowFlightMs(); return A.windup + (ev.ranged ? A.projectile : A.impactPad); }
+// Quick lines up with its hit (2026-10-16, user: "The quick effect was just about lining up the vfx with the hit more ... it's not
+// speed up anim! then hit. It's a sped up hit together with those wind effects"): a Quick attacker's melee hit lands when its dash
+// connects (SkillFX.quickStrike's impact, ~0.15 s in) instead of after the normal wind-up, and the ordinary lunge is skipped (the
+// dash moves the card itself). Ranged shots, Cleave swings and Pounce keep their own timing.
+function quickImpactMs(ev){
+  try{ if(!ev || ev.type !== 'hit' || ev.ranged || ev._cleave || ev.sweep || ev.fork || ev.swipe || ev.pounce || ev.source) return null;
+    if(!window.SkillFX || !SkillFX.quickStrike || reducedMotion() || !fxAtLeast('med')) return null;
+    const d = getCardDefs()[ev.attDefId]; if(!d || !(d.effects||{}).quick) return null;
+    return 150; // quickStrike's GSAP dash: 0.05 s cock + 0.1 s dart
+  }catch(e){ return null; } }
+function evadeImpactMs(ev){ const A = animMs(), pa = matchState && matchState.pendingArrow; if(ev._cleave) return A.windup; { const q = quickImpactMs(ev); if(q != null) return q; } if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(A.windup*0.6) + arrowFlightMs(); return A.windup + (ev.ranged ? A.projectile : A.impactPad); }
 function skillFxOnce(key){ const m = matchState, k = (m ? m.round : 0) + ':' + key; if(skillFxSeen.has(k)) return false; if(skillFxSeen.size > 400) skillFxSeen.clear(); skillFxSeen.add(k); return true; }
 function labSkillFx(ev){
   const F = window.SkillFX; if(!F || !ev || reducedMotion() || !fxAtLeast('med')) return;
@@ -64312,6 +64323,7 @@ const STATUS_ORBIT = {stun:'★', stunOnHit:'★', stagger:'✦', confuse:'❓',
 function eighthHitAtMs(ev){
   const am = animMs(), pa = matchState && matchState.pendingArrow;
   if(ev._cleave) return am.windup; // a Cleave's slot lands as the blade passes (2026-10-15)
+  { const q = quickImpactMs(ev); if(q != null) return q; } // Quick (2026-10-16)
   if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(am.windup*0.6) + arrowFlightMs();
   return ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
 }
@@ -64686,7 +64698,7 @@ function renderVfxForEvent(ev){
       SkillFX.pounceOnto(attEl, targetEl, {impact: am0.windup + am0.impactPad, scale: attEl.closest('#battlefieldInner') && battlefieldScale > 0 ? battlefieldScale : 1});
       setTimeout(()=>{ attackingUids.delete(String(ev.attUid)); attEl.classList.remove('is-attacking', 'is-pouncing'); }, am0.windup + am0.impactPad + 700);
     }
-    else if(!ev.ranged && !ev._cleave) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf});
+    else if(!ev.ranged && !ev._cleave && quickImpactMs(ev) == null) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf}); // Quick dashes itself (2026-10-16)
     const {windup, projectile, impactPad} = animMs();
     // An 'arrow' event just before this hit (Arrow / Fire Arrow skills) turns its projectile into a real arrow.
     const pa = matchState.pendingArrow;
@@ -64695,7 +64707,8 @@ function renderVfxForEvent(ev){
     const pb = matchState.pendingBolt, boltShot = !!(ev.ranged && !arrowShot && pb && String(pb.uid)===String(ev.attUid)); // a Bolt (2026-10-15)
     if(boltShot) matchState.pendingBolt = null;
     const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
-    const impactDelay = ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
+    const quickAt = quickImpactMs(ev); // Quick: the hit lands with the dash (2026-10-16)
+    const impactDelay = quickAt != null ? quickAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
     const ufx = (window.UnitFX && ev.attDefId && ev.type==='hit') ? UnitFX.resolve(getCardDefs()[ev.attDefId], isMine) : null;
@@ -71279,6 +71292,8 @@ function caveLightSpread(canvas){
 const caveFiresSeen = {};
 function caveSeeded(str){ let h = 2166136261 >>> 0; for(let i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); }
   return ()=>{ h = Math.imul(h ^ (h >>> 15), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909); h ^= h >>> 16; return (h >>> 0) / 4294967296; }; }
+// 2026-10-16 (user: "Less campfires, max 3 per cave."): at most 3 fire pits on a map, spread over its fights.
+const CAVE_FIRES_MAX = 3;
 function caveFireSpots(mapId, nodes){
   const out = [], taken = nodes.map(n=> ({x:n.x, y:n.y}));
   nodes.forEach(n=>{ const rnd = caveSeeded(mapId + ':' + n.key + ':fire'), count = Math.floor(rnd() * 3); // 0, 1 or 2
@@ -71286,7 +71301,8 @@ function caveFireSpots(mapId, nodes){
       const a = rnd() * Math.PI * 2, d = 6 + rnd() * 5, x = n.x + Math.cos(a) * d, y = n.y + Math.sin(a) * d * 1.4;
       if(x < 4 || x > 96 || y < 7 || y > 93 || taken.some(q=> Math.hypot(q.x - x, (q.y - y) / 1.4) < 4.6)) continue;
       out.push({x, y, key: n.key}); taken.push({x, y}); break; } });
-  return out;
+  if(out.length <= CAVE_FIRES_MAX) return out;
+  const step = out.length / CAVE_FIRES_MAX; return Array.from({length: CAVE_FIRES_MAX}, (_, k)=> out[Math.floor(k * step + step / 2)]); // spread along the trail
 }
 function mountCaveFires(canvas, map){
   canvas.querySelectorAll(':scope > .cave-fire').forEach(e=> e.remove());
