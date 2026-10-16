@@ -272,7 +272,7 @@ migrateLegacyNodeIds();
 // Skill glyphs (2026-10-10): the same symbol the card face shows for each skill, reused at the start of its description.
 const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'🪖', crepuscular:'🌆', sunshy:'🕶️', nightblind:'🌑', bludgeon:'🔨', snipe:'🎯', kinship:'🫶', rocket:'🚀', loneWolf:'🐺', sociable:'🫂', coffee:'☕', dry:'🏜️', darksight:'👁️', landslide:'🪨', natureForce:'🌪️', shock:'🔌', armor:'🛡', thorns:'🌵', counterattack:'↩️', spiteful:'😠', fork:'⇔', swipe:'🫳', twinStrike:'⚔⚔', converge:'🧲', defiance:'😤', pack:'🐺', fastForward:'⏩', sweep:'🪓', puncture:'🎯', pierce:'🗡', perforate:'🩸🎯', rage:'😡', flying:'🪽', quick:'👢', swift:'💨', earthquake:'🌎💥',
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', illuminate:'🏮', nursing:'🍼', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
-  rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
+  rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'⌰' /* 2026-10-16 (user: "Momentum emoji: ⌰.") */, bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
   evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', /* worthy: retired slot, no icon (2026-10-16) */ lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐢', pitchfork:'🍴', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉',
   // 2026-10-14 (the skills for the maps after Map 20). Speed is 🐇 (Swift has 💨); Ghost shares Scare's 👻.
@@ -526,7 +526,7 @@ const PASSIVE_DEFS = [
     get:e=> (e.crepuscular || e.crepuscularHp) ? [e.crepuscular===true ? 1 : (e.crepuscular||0), e.crepuscularHp||0] : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.crepuscular = a; if(h>0) e.crepuscularHp = h; } }},
   {key:'sunshy', category:'passive', label:'Sun-shy', kind:'boolean', desc:()=>`Blind by day: misses 1 attack in 2 while the sun is up.`},
-  {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (an Illuminate unit on your side lights it).`},
+  {key:'nightblind', category:'passive', label:'Night-blind', kind:'boolean', desc:()=>`Blind at night: misses 1 attack in 2 after dark (an Illuminate unit on your side lights it, and so does an enemy Illuminate unit directly facing it).`}, // + facing (2026-10-16)
   {key:'nocturnal', category:'passive', label:'Nocturnal', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `At night: gain +${a}/+${h}.`; }, // 2026-10-15: night has no Darkness of its own any more
     get:e=> e.nocturnalGrant ? undefined : (e.nocturnal || e.nocturnalHp) ? [e.nocturnal===true ? 1 : (e.nocturnal||0), e.nocturnalHp||0] : undefined, // the advanced form has its own row (2026-10-15)
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0){ e.nocturnal = a; if(h>0) e.nocturnalHp = h; } }},
@@ -567,7 +567,7 @@ const PASSIVE_DEFS = [
   // Illuminate (2026-10-15, user: "Lantern Bearer should have 'Illuminate' - lights up in darkness. Removes darkness debuff for all
   // allies."): Lantern's new name, and a little stronger: Absolute darkness is lit too. Lantern stays in the engine for old saves
   // and published edits (it reads as Illuminate) but leaves the editor and the lists.
-  {key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean', desc:()=>`Lights up the dark. While it's on your board, none of your units miss because of Darkness, Pitch Black or Absolute darkness, and at Night your Diurnal units keep their daytime bonus.`},
+  {key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean', desc:()=>`Lights up the dark. While it's on your board, none of your units miss because of Darkness, Pitch Black or Absolute darkness, and at Night your Diurnal units keep their daytime bonus. It also lights the enemy unit directly facing it, so a Night-blind foe there sees.`}, // 2026-10-16
   {key:'lantern', category:'passive', hidden:true, retired:true, label:'Lantern', kind:'boolean', desc:()=>`Now called Illuminate: while it's on your board, your units don't miss because of the dark.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
@@ -3574,6 +3574,9 @@ const SoundKit = (()=>{
     buzz(){ for(let i=0;i<3;i++) tone(220+i*30,0.09,'sawtooth',0.05,i*0.05); },
     drip(){ tone(700,0.05,'sine',0.09); tone(500,0.08,'sine',0.06,0.09); },
     clang(){ tone(1400,0.06,'square',0.1); noise(0.05,0.06); },
+    // 2026-10-16 (user: "There is a konk sound, to represent the attacker hit 'metal'."): Armor took some of a hit: a hollow metal
+    // "konk", a low knock with inharmonic overtones (x2.6, x4.3, like a struck plate) and a tiny tick of grit, quickly damped.
+    konk(){ tone(410,0.16,'triangle',0.12); tone(1066,0.11,'sine',0.055,0.004); tone(1763,0.07,'sine',0.03,0.006); tone(205,0.09,'sine',0.05); noise(0.025,0.035); },
     // 2026-10-12 (11:39 list: "there is a light gadget sound. For forging, forge sounds"): a small mechanical click-whirr, and
     // three hammer strikes on the anvil with a quench hiss after.
     gadget(){ tone(1800,0.03,'square',0.035); tone(2600,0.04,'sine',0.03,0.04); noise(0.04,0.02); tone(900,0.08,'triangle',0.025,0.08); },
@@ -31036,6 +31039,7 @@ function delayForEvent(ev, prevKind){
   if(ev.type==='arrow' || ev.type==='bolt') base = 40; // + the Bolts (2026-10-15)
   else if(ev._arrowShot) base = 760; // set by renderVfxForEvent, which runs just before this
   else if(ev.quake) base = 100; // 2026-10-12 (user: "The earthquake should hit each unit faster (0.1s separation per hit anim)")
+  else if((ev.type==='hit' || ev.type==='evaded') && ev.electricity) base = 640; // the bolt lands within ~0.25 s (2026-10-16)
   else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
   // 2026-10-15 (user: "The miss animation is skipping the attack animation - it shouldnt do that."): a blind/dark miss sat in the
   // generic 150 ms bucket, so the next event (often the round's closing re-render) landed mid-lunge and wiped it. A miss is a
@@ -31685,7 +31689,7 @@ function logText(ev){
         // Stagger (2026-09-24, task #109 — the physical elemental status, Shock's mirror).
         stagger: `staggered ${nm(ev.targetDefId)} 💢 (-50% damage dealt)`,
         berserk: `flew into a berserk rage (+${ev.amount}⚔) 😡`,
-        momentum: `surged with Momentum after the kill (+${ev.amount}⚔) 🔥`,
+        momentum: `surged with Momentum after the kill (+${ev.amount}⚔) ⌰`, // ⌰ (2026-10-16)
         bloodlust: `drew blood and its Bloodlust grows (+${ev.amount}⚔${ev.total != null ? `, ${ev.total}/${ev.max} so far` : ''}) 🩸`, // 2026-10-15
         // bleed/esprit (2026-09-21 coverage audit): the VFX/SFX side of both was fixed in the
         // batch that found them completely silent — this battle-log map had the exact same gap
@@ -31927,7 +31931,7 @@ function playHandSummonGlow(uid){
 // from Poison's skull, since a Decay hit still deals normal HP damage on top of the ATK drain
 // (Poison's conversion instead replaces the HP damage entirely) and the two should be tellable
 // apart at a glance during a fight.
-const ELEMENTAL_BURST_GLYPH = {cold:'❄', heat:'🔥', acid:'🧪', poison:'☠', decay:'🦠'};
+const ELEMENTAL_BURST_GLYPH = {cold:'❄', heat:'🔥', acid:'🧪', poison:'☠', decay:'🦠', shock:'⚡'}; // + shock (2026-10-16)
 function hitExplosionVfx(uid, dmgType){
   const el = boardCardEl(uid); if(!el) return;
   const burst = document.createElement('div');
@@ -32125,7 +32129,7 @@ function floatText(el, text, cls){
   const f = document.createElement('div');
   let raw = String(text);
   const classes = String(cls || '').split(/\s+/).filter(Boolean);
-  const pictoRe = /[\p{Extended_Pictographic}☀-➿️‍]+/gu;
+  const pictoRe = /[\p{Extended_Pictographic}☀-➿️‍⌰]+/gu; // + ⌰, Momentum's icon (2026-10-16), so it sits in the icon slot
   const isNumber = /^[+-]?\d+$/.test(raw.trim());
   if(isNumber && !pictoRe.test(raw)){ const k = classes.find(c=> FLOAT_ICON[c]); if(k) raw = FLOAT_ICON[k] + ' ' + raw; }
   pictoRe.lastIndex = 0;
@@ -32250,6 +32254,7 @@ function dmgGlyph(dmgType){
     case 'decay': return '🦠';
     case 'magic': return '🪄';
     case 'water': return '💧';
+    case 'shock': return '⚡'; // 2026-10-16
     default: return '➶';
   }
 }
@@ -32645,7 +32650,7 @@ const DangerPulse = (()=>{
 })();
 setTimeout(()=> DangerPulse.start(), 2000);
 // Damage-type icons beside the number (2026-10-06).
-const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','cold'], decay:['🦠','poison'], bleed:['🩸','bleed']};
+const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','cold'], decay:['🦠','poison'], bleed:['🩸','bleed'], shock:['⚡','shock']}; // + shock: lightning (Electricity's arc, Dragon Lightning) has its own ⚡ number, 2026-10-16
 // Hit recoil (2026-10-08, user: "instead of teleporting off, then teleporting back, it should be a
 // quick recoil and revert motion"): the old shake set an x transform on the Flip-owned card and
 // cleared it, which jumped. This adds a short push away from the attacker on the inner tile's
@@ -32763,10 +32768,14 @@ const TRIGGER_GLYPH = {onDeath:'💀', onSpawn:'✨', onAttack:'⚔️', onAttac
 // also."): a big gold "+N⚔ +N❤" (or a cold violet "−N⚔") over the card, and the stat pill itself swells green or
 // shrinks red. The replay snapshot is kept in step so the number on the card doesn't jump back.
 // 2026-10-15 (user: "When a unit with armor gets hit, its armor context icon glows for 0.5s."): the 🛡 badge on the struck card.
+// 2026-10-16 (user: "Armor icon in context labels lights up when the unit is hit and the enemy's damage is reduced. There is a konk
+// sound, to represent the attacker hit 'metal'."): only a hit that Armor actually cut down (the engine's armorSoaked > 0, or a full
+// block) lights the chip, and it konks. Replays recorded before armorSoaked existed keep the old test.
 function armorBadgeGlow(el, ev){
   if(!el || !ev) return;
   const te = ((getCardDefs()[ev.targetDefId] || {}).effects) || {}, rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
-  if(!(Number(te.armor) > 0 || ev.armorBlocked || (rc && rc.shellArmor > 0))) return;
+  if(ev.armorSoaked !== undefined ? !(ev.armorSoaked > 0 || ev.armorBlocked) : !(Number(te.armor) > 0 || ev.armorBlocked || (rc && rc.shellArmor > 0))) return;
+  try{ SoundKit.at ? SoundKit.at(el, ()=> SoundKit.konk()) : SoundKit.konk(); }catch(e){}
   const b = [...el.querySelectorAll('.badges .abadge')].find(x=> x.querySelector('.ab-shields') || /🛡/.test(x.textContent)); if(!b) return;
   b.classList.remove('armor-glow'); void b.offsetWidth; b.classList.add('armor-glow'); setTimeout(()=> b.classList.remove('armor-glow'), 520);
 }
@@ -33167,11 +33176,13 @@ function sixthPassVfx(ev){
     const rc = rcs[ev.uid]; if(rc) rc.shield = ev.left; try{ updateCardStatusDisplay(ev.uid); }catch(e){}
     const el = boardCardEl(ev.uid); if(el) try{ floatText(el, ev.left ? '💠 -' + ev.soaked : '💠 Shield breaks', 'debuff'); }catch(e){}
   }
+  // 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): the 'electricity' event only notes the chain (attacker, the struck unit); the bolt is drawn by the arc's own hit (and the
+  // wet target's zap), and that hit's number pops as its bolt lands (electricityImpactMs). With no hit to follow, a spark crackles.
   if(ev.type==='electricity'){
-    const a = boardCardEl(ev.attUid), ts = [ev.targetUid, ev.arcUid].filter(u=> u != null).map(boardCardEl).filter(Boolean);
-    if(F && F.lightning && a && ts.length > 1 && !reducedMotion()) F.lightning(a, ts, {});
-    if(ev.wetTarget || ev.wetArc) ts.forEach(el=>{ try{ floatText(el, '💧⚡', 'dmg'); }catch(e){} });
-    sfx('shockTone');
+    matchState.pendingElectric = {attUid: ev.attUid, targetUid: ev.targetUid};
+    const ts = [ev.targetUid, ev.arcUid].filter(u=> u != null).map(boardCardEl).filter(Boolean);
+    if(ev.wetTarget || ev.wetArc) ts.forEach(el=>{ try{ floatText(el, '💧', 'dmg'); }catch(e){} });
+    if(ev.arcUid == null && !ev.wetTarget) sfx('shockTone');
   }
 }
 // 2026-10-15 (eighth pass, user: "widen the effects list we have"): the skills that only had a floating word now get their
@@ -33179,7 +33190,16 @@ function sixthPassVfx(ev){
 // the existing number, sound and tint; Medium effects and up, never with reduced motion, and the ones that can repeat play at
 // most once per unit per round (skillFxOnce). Fire-and-forget: nothing here holds up the replay.
 const STATUS_ORBIT = {stun:'★', stunOnHit:'★', stagger:'✦', confuse:'❓', tipsy:'🫧'};
+// 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): an Electricity hit is drawn as its own bolt: the arc runs attacker -> struck unit -> this unit, the wet zap attacker -> this
+// unit. SkillFX.lightning lands jump i at i*152 + 60 ms, so the number pops as the last jump lands.
+function electricChain(ev){
+  const pe = matchState && matchState.pendingElectric, a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid);
+  const mid = ev.arc && pe && String(pe.attUid) === String(ev.attUid) && pe.targetUid != null && String(pe.targetUid) !== String(ev.targetUid) ? boardCardEl(pe.targetUid) : null;
+  return [a, mid, t].filter(Boolean);
+}
+function electricityImpactMs(ev){ const n = Math.max(1, electricChain(ev).length - 1); return (n - 1)*152 + 70; }
 function eighthHitAtMs(ev){
+  if(ev && ev.electricity) return electricityImpactMs(ev); // the bolt lands (2026-10-16)
   const am = animMs(), pa = matchState && matchState.pendingArrow;
   if(ev._cleave) return am.windup; // a Cleave's slot lands as the blade passes (2026-10-15)
   { const q = quickImpactMs(ev); if(q != null) return q; } // Quick (2026-10-16)
@@ -33614,7 +33634,7 @@ function renderVfxForEvent(ev){
     const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
     const quickAt = quickImpactMs(ev); // Quick: the hit lands with the dash (2026-10-16)
     const castleAt = castleShotMs(ev); // a castle's own throw (Herb Refinery's brew, a castle bolt) is quick (2026-10-16)
-    const impactDelay = quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
+    const impactDelay = quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : ev.electricity ? electricityImpactMs(ev) : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
     const ufx = (window.UnitFX && ev.attDefId && ev.type==='hit') ? UnitFX.resolve(getCardDefs()[ev.attDefId], isMine) : null;
@@ -33651,7 +33671,9 @@ function renderVfxForEvent(ev){
       // place?"): Electricity's arc (and a wet target's extra zap) reaches the engine as a ranged 'hit' with dmgType 'shock', which
       // fell through to the generic projectile: dmgGlyph('shock') has no glyph, so a grey "➶" flew from the eel to the unit beside its
       // target after every landed hit. The chain lightning (the 'electricity' event just before) is that hit's look; nothing is thrown.
-      else if(ev.electricity){ if(!ev.arc && targetEl && window.SkillFX && SkillFX.ring && !reducedMotion()){ try{ const r = targetEl.getBoundingClientRect(); SkillFX.ring(r.left + r.width/2, r.top + r.height/2, 'sfx-zap', 64, 280); }catch(e){} } }
+      // 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): the arc's bolt (eel -> struck unit -> the unit beside it) or the wet zap (eel -> target) is drawn here, by the hit itself;
+      // its number pops as that bolt lands (impactDelay = electricityImpactMs).
+      else if(ev.electricity){ try{ try{ SoundKit.shockTone && SoundKit.shockTone(); }catch(e){} const chain = electricChain(ev); if(window.SkillFX && SkillFX.lightning && chain.length > 1 && !reducedMotion()) SkillFX.lightning(chain[0], chain.slice(1), {}); }catch(e){} }
       else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
     }
     setTimeout(()=>{
@@ -33936,7 +33958,7 @@ function renderVfxForEvent(ev){
     // acid/poison/physical set — Shock's damage-dealt mirror, same duration-gated envelope.
     else if(ev.kind==='stagger'){ SoundKit.staggerTone(); if(el){ shakeEl(el); floatText(el, '💢 Staggered', 'debuff'); } if(rc) rc.staggered = (rc.staggered||0) + 1; }
     else if(ev.kind==='berserk'){ const attEl = boardCardEl(ev.attUid); SoundKit.berserkTone(); if(attEl){ shakeEl(attEl); floatText(attEl, '😡 Berserk! +'+ev.amount+'⚔', 'gold'); } }
-    else if(ev.kind==='momentum'){ const attEl = boardCardEl(ev.attUid); SoundKit.momentumTone(); if(attEl) floatText(attEl, '🔥 +'+ev.amount+'⚔', 'gold'); }
+    else if(ev.kind==='momentum'){ const attEl = boardCardEl(ev.attUid); SoundKit.momentumTone(); if(attEl) floatText(attEl, '⌰ +'+ev.amount+'⚔', 'gold'); } // Momentum's ⌰ (2026-10-16)
     else if(ev.kind==='bloodlust'){ const attEl = boardCardEl(ev.attUid); try{ SoundKit.bleedTick(); }catch(e){} if(attEl) floatText(attEl, `🩸 Bloodlust +${ev.amount}⚔`, 'debuff'); } // 2026-10-15
     else if(ev.kind==='pack'){ setTimeout(()=>{ try{ statChangeVfx(ev.attUid, 0, ev.amount); const el = boardCardEl(ev.attUid); if(el) floatText(el, '🐺 Pack!', 'quick'); SoundKit.momentumTone && SoundKit.momentumTone(); }catch(e){} }, 420); }
     // Bleed (via the "Bleed opposite" custom-trigger action) and Esprit (2026-09-21, Skills/
@@ -34130,9 +34152,12 @@ function renderVfxForEvent(ev){
   if(ev.type==='deflect'){ const el = boardCardEl(ev.uid); if(el) try{ floatText(el, '🪖 Deflect!', 'buff'); }catch(e){} }
   if(ev.type==='fuse'){ const el = boardCardEl(ev.uid); const fb = el && el.querySelector('.fuse-badge'); if(fb){ fb.textContent = '🧨' + ev.left; fb.classList.toggle('is-last', ev.left === 1); if(!ev.left) fb.remove(); } }
   if(ev.type==='blindMiss'){
-    const el = boardCardEl(ev.attUid);
+    // 2026-10-16 (user: "No need to say "Dark Miss" just say Miss! (on the opposing card, not on the attacking card)"): a sight miss
+    // floats "Miss!" on the unit it swung at (the engine now names it, targetUid; the castle when it swung at the castle); older
+    // replays without a target keep it on the attacker.
+    const el = boardCardEl(ev.attUid), tgt = ev.targetUid != null ? boardCardEl(ev.targetUid) : (ev.night && ev.targetKind === 'hq' ? hqTileEl(ev.side === 'A' ? 'B' : 'A') : null);
     animateAttacker(ev.attUid, ev.side==='A');
-    setTimeout(()=>{ SoundKit.blindTone(); if(el) floatText(el, (ev.night && window.FX && FX.B && FX.B.missText && FX.B.missText(ev, matchState)) || (ev.night ? '🌙 Miss!' : '👁 Miss!'), 'debuff'); }, animMs().windup); // per darkness level (FX batch B, 2026-10-15)
+    setTimeout(()=>{ SoundKit.blindTone(); const on = (ev.night && tgt && tgt.isConnected ? tgt : null) || el; if(on) floatText(on, (ev.night && window.FX && FX.B && FX.B.missText && FX.B.missText(ev, matchState)) || (ev.night ? 'Miss!' : '👁 Miss!'), 'debuff'); }, animMs().windup);
   }
   // Poison tick (item #1, 2026-09-16): a bubbling sound instead of the old flat drip, and a
   // bolder, emoji-led, distinctly-styled float ("🫧 5!") so a poison TICK (actual damage,
@@ -34257,7 +34282,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing'].includes(ev.field)){ const el = boardCardEl(ev.uid);
     // 2026-10-14: Petrification has no number (it turns the card to stone); Irradiated withers max Health; Lava Tide burns.
     const fieldGlyph = {eruption:'🌋', lavaTide:'🌋', irradiated:'☢️', scorched:'🔥'}[ev.field] || '🔥';
-    if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : floatText(el, ev.dmg ? `${fieldGlyph}-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? 'dmg' : 'heal'); }catch(e){}
+    if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : floatText(el, ev.dmg ? `${fieldGlyph}-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? (ev.field === 'immolation' ? 'heat' : 'dmg') : 'heal'); }catch(e){} // Immolation's burn is a fire number (2026-10-16)
     if(ev.field==='petrify' && el){ el.classList.add('is-petrified'); try{ SoundKit.thud ? SoundKit.thud() : null; }catch(e){} }
     if(ev.field==='lavaTide' && el){ el.classList.add('lava-tide-hit'); setTimeout(()=> el.classList.remove('lava-tide-hit'), 900); eruptionGeyserVfx(el); try{ SoundKit.boom ? SoundKit.boom() : null; }catch(e){} }
     if(ev.field==='irradiated'){ try{ SoundKit.geiger(ev.tokens||1); }catch(e){} } // 2026-10-14: the geiger counter goes off (throttled)
@@ -40413,7 +40438,7 @@ function mountBattleWeather(m){
 }
 // Impact light (2026-10-05): a short point light on the battlefield felt where a hit lands,
 // coloured by damage type. Castle hits flash bigger, at the board's edge nearest that castle.
-const LIGHT_COLORS = {heat:[1, 0.55, 0.18], cold:[0.45, 0.75, 1], poison:[0.5, 1, 0.35], acid:[0.75, 1, 0.3], decay:[0.6, 0.45, 0.8], physical:[1, 0.88, 0.62]};
+const LIGHT_COLORS = {shock:[0.75, 0.85, 1], /* lightning (2026-10-16) */ heat:[1, 0.55, 0.18], cold:[0.45, 0.75, 1], poison:[0.5, 1, 0.35], acid:[0.75, 1, 0.3], decay:[0.6, 0.45, 0.8], physical:[1, 0.88, 0.62]};
 function battleLightAt(el, dmgType, big){
   if(!battleWeather || !battleWeather.flash || !el) return;
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;

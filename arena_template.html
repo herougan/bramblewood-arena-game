@@ -7928,6 +7928,8 @@
   .dmg-float .df-num::after{color:transparent; background:linear-gradient(180deg,var(--g1) 0%,var(--g1) 36%,var(--g2) 64%,color-mix(in srgb,var(--g2) 65%,#000) 100%);
     -webkit-background-clip:text; background-clip:text;}
   .dmg-float .df-ico{color:#fff; -webkit-text-stroke:0; font-size:.78em; line-height:1; text-shadow:0 2px 0 rgba(0,0,0,.55), 0 0 6px rgba(0,0,0,.35); /* 2026-10-08: a drop-shadow filter on an emoji blanked it in some renderers */}
+  /* 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): lightning numbers: white-hot core, electric yellow, a deep-blue edge */
+  .fx-burst-shock{--elemental-glow: rgba(150,200,255,.95);}
   .dmg-float .df-ico.df-gplus{display:inline-flex; vertical-align:-.06em; filter:drop-shadow(0 2px 0 rgba(0,0,0,.45)) drop-shadow(0 0 5px rgba(90,220,120,.6));} /* the heal's green plus (2026-10-16) */
   /* Crit: a bigger, hotter number on a spinning gold starburst; a CRIT! stamp lands on the card. */
   .dmg-float.crit{font-size:50px !important; --g1:#fffbe6; --g2:#ff7a1a; --edge:#3a0a00;}
@@ -7940,6 +7942,7 @@
   .dmg-float:not(.crit) .df-burst{width:1.6em; height:1.6em; margin:-.8em 0 0 -.8em; background:radial-gradient(circle, var(--g1, #fff6c8) 0 18%, var(--g2, #ffcf3a) 40%, color-mix(in srgb, var(--g2, #ff8a1c) 0%, transparent) 72%);}
   .dmg-float.cold{--g1:#f0fbff; --g2:#7cc8ff; --edge:#06203a;}
   .dmg-float.heat{--g1:#fff2d8; --g2:#ff8a2a; --edge:#2a0c02;}
+  .dmg-float.shock{--g1:#fff3a0; --g2:#ffc414; --edge:#0c1a4a;} /* lightning: electric yellow on deep blue (2026-10-16) */
   .dmg-float.heavy{font-size:46px; --g2:#ff3d2e;}
   .dmg-float.hq-big{font-size:44px;}
   .dmg-float.blocked{--g1:#f2f6ff; --g2:#8fb0d8; --edge:#0e1a2c;}

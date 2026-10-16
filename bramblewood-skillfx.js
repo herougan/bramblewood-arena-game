@@ -706,14 +706,23 @@ function cleaveSwing(attacker, pts, o){
 function pounceOnto(attacker, target, o){
   o = o || {}; if(!ready() || !attacker || !target){ later(o.onImpact, o.impact || 400); return; }
   const g = G(), t = tileOf(attacker), a = centre(attacker), b = centre(target), sc = o.scale || 1;
-  const dx = (b.x - a.x)/sc, dy = (b.y - a.y)/sc, imp = Math.max(.3, (o.impact || 570)/1000), crouch = .12, fly = imp - crouch;
+  // 2026-10-16 (user: "Pounce has to look more aggressive. A slower windup, but from the peak of the jump onto the enemy card, this
+  // part is faster - like 40% faster."): the impact time is unchanged (the hit's number lands with it), but it is split differently:
+  // a longer, deeper crouch (0.24 s, was 0.12) leaning back from the target; a quick spring to the top of the arc; and the dive from
+  // the peak onto the card in 60% of the time it took before (about 0.08 s, was 0.13; ease in, so it slams), tipping forward as it falls.
+  const dx = (b.x - a.x)/sc, dy = (b.y - a.y)/sc, imp = Math.max(.3, (o.impact || 570)/1000), crouch = Math.min(.24, imp*.42), fly0 = Math.max(.2, imp - .12);
+  // (the old flight eased in over p, so it reached the peak, p = .5, at 71% of its time: the old dive was fly0*(1 - 1/sqrt 2))
+  const dive = Math.max(.06, fly0*(1 - Math.SQRT1_2)*.6), rise = Math.max(.08, imp - crouch - dive);
   const lift = Math.max(40, Math.abs(dy)*0.45 + 30)/sc;            // how high the arc rises above the straight line
-  const st = {p:0}, up = dy < 0 ? -1 : 1;
+  const st = {p:0}, up = dy < 0 ? -1 : 1, side = dx > 0 ? 1 : -1;
   g.killTweensOf(t, 'x,y,rotation,scale,scaleX,scaleY');
   const at = p=> ({x:dx*p, y:dy*p - lift*4*p*(1 - p)});
+  const put = ()=>{ const q = at(st.p), k = Math.sin(st.p*Math.PI), lean = st.p < .5 ? -4*(1 - st.p*2) + 10*st.p*2 : 10 + 8*(st.p - .5)*2;
+    g.set(t, {x:q.x, y:q.y, rotation:side*lean*(st.p < .97 ? 1 : 0), scaleX:1 + .1*k, scaleY:1 + .1*k}); };
   g.timeline()
-    .to(t, {y:-up*6/sc, scaleX:1.08, scaleY:.9, duration:crouch, ease:'power2.in'})
-    .to(st, {p:1, duration:fly, ease:'power1.in', onUpdate:()=>{ const q = at(st.p); g.set(t, {x:q.x, y:q.y, rotation:(dx > 0 ? 1 : -1)*Math.sin(st.p*Math.PI)*12, scaleX:1 + .1*Math.sin(st.p*Math.PI), scaleY:1 + .1*Math.sin(st.p*Math.PI)}); }})
+    .to(t, {y:-up*9/sc, x:-side*4/sc, rotation:-side*5, scaleX:1.12, scaleY:.84, duration:crouch, ease:'power1.inOut'})
+    .to(st, {p:.5, duration:rise, ease:'power2.out', onUpdate:put})
+    .to(st, {p:1, duration:dive, ease:'power2.in', onUpdate:put})
     .add(()=>{ ring(b.x, b.y, 'sfx-string', b.w*1.1, 380); burst(b.x, b.y + b.h*.3, up > 0 ? 90 : -90, 'wood', 6); g.fromTo(tileOf(target), {y:0, scaleY:1}, {y:up*5, scaleY:.94, duration:.08, yoyo:true, repeat:1, ease:'power2.out', clearProps:'transform'}); call(o.onImpact); })
     .to(t, {scaleX:1.1, scaleY:.88, rotation:0, duration:.07, ease:'power2.out'})
     .to(t, {scaleX:1, scaleY:1, duration:.1}, '+=.08')
@@ -785,7 +794,9 @@ function helmetDeflect(target, o){
 // Darksight: the card dims into darkness and two glowing eyes open, glance about, and mark hidden foes.
 function darksight(target, o){
   o = o || {}; if(!ready() || !target){ call(o.onDone); return; }
-  const g = G(), c = centre(target), dk = over(target, 'sfx-dark', 4);
+  // 2026-10-16 (user: "The dark sight vfx is not centered. its abit to the left."): centred on the card tile (a flyer's tile hovers
+  // to the right of its .board-card wrapper)
+  const g = G(), c = centre(tileOf(target)), dk = over(tileOf(target), 'sfx-dark', 4);
   const eyes = [-1, 1].map(s=>{ const e = layer('sfx-eye'); g.set(e, {x:c.x + s*c.w*0.15 - 7.5, y:c.r.top + c.h*.42 - 4.5, scaleY:0, opacity:1}); return e; });
   g.set(dk, {opacity:0});
   const tl = g.timeline({onComplete:()=>{ dk.remove(); eyes.forEach(e=> e.remove()); call(o.onDone); }});
@@ -858,7 +869,10 @@ function immolate(src, o){
   later(()=>{ box.remove(); call(o.onDone); }, 1900);
 }
 // A unit burned by an Immolation neighbour: its edge chars for a moment (on the tile itself, no flames of its own).
-function scorchMark(target){ const t = tileOf(target); if(!t) return; t.classList.add('sfx-scorch'); later(()=> t.classList.remove('sfx-scorch'), 900); }
+// 2026-10-16 (user: "Immolated units themselves have the fire effect on them. Other units nearby just light up and take fire damage."):
+// the neighbour lights up (a warm flash of brightness) and its edge glows orange for a moment; no flames of its own.
+function scorchMark(target){ const t = tileOf(target); if(!t) return; t.classList.add('sfx-scorch'); later(()=> t.classList.remove('sfx-scorch'), 900);
+  const g = G(); if(g && !reduce()) g.fromTo(t, {filter:'brightness(1) sepia(0)'}, {filter:'brightness(1.45) sepia(.35)', duration:.14, yoyo:true, repeat:1, repeatDelay:.12, ease:'power1.out', clearProps:'filter'}); }
 // Lantern: a lantern swings above the card and throws a warm, flickering pool of light; moths circle it.
 function lanternGlow(target, o){
   o = o || {}; if(!ready() || !target){ call(o.onDone); return; }
@@ -869,17 +883,16 @@ function lanternGlow(target, o){
   { const bf = target.closest && target.closest('#battlefieldEl, .battlefield'); if(bf){ const B = bf.getBoundingClientRect(), L = c.x - D/2, T = c.y - D/2;
     const it = Math.max(0, B.top - T), il = Math.max(0, B.left - L), ib = Math.max(0, T + D - B.bottom), ir = Math.max(0, L + D - B.right);
     if(it || il || ib || ir) pool.style.clipPath = `inset(${it.toFixed(0)}px ${ir.toFixed(0)}px ${ib.toFixed(0)}px ${il.toFixed(0)}px round 14px)`; } }
-  const lan = layer('sfx-lantern', '🏮'); g.set(lan, {x:c.x - 12, y:c.r.top - 34, opacity:0, rotation:-16});
-  g.timeline({onComplete:()=>{ pool.remove(); lan.remove(); call(o.onDone); }})
-    .to(pool, {scale:1, opacity:PK, duration:.4, ease:'power2.out'}, 0).to(lan, {opacity:1, y:'+=6', duration:.25}, 0)
-    .to(lan, {rotation:14, duration:.45, ease:'sine.inOut', yoyo:true, repeat:Math.max(1, Math.round(dur/.45) - 1)}, .1)
-    .to(pool, {keyframes:[{opacity:PK*.8, duration:.12}, {opacity:PK, duration:.2}, {opacity:PK*.85, duration:.1}, {opacity:PK, duration:.3}]}, .4)
-    .to([pool, lan], {opacity:0, duration:.4}, dur);
-  for(let i = 0; i < 3; i++){ const mo = layer('sfx-moth'), st = {a:i*2.1}; g.set(mo, {opacity:0});
-    g.timeline({delay:.3, onComplete:()=> mo.remove()}).to(mo, {opacity:1, duration:.2})
-      .to(st, {a:st.a + 6.28*1.5, duration:dur - .5, ease:'none', onUpdate:()=> g.set(mo, {x:c.x + Math.cos(st.a)*(18 + i*7), y:c.r.top - 18 + Math.sin(st.a*1.7)*(10 + i*4)})}, 0).to(mo, {opacity:0, duration:.2});
-  }
-  [target].concat((o.cards||[]).filter(Boolean)).forEach((el, i)=> g.fromTo(tileOf(el), {filter:'brightness(1)'}, {filter:`brightness(${i ? 1.12 : 1.22}) sepia(.25)`, duration:.4, yoyo:true, repeat:1, repeatDelay:dur - .8, clearProps:'filter'}));
+  // 2026-10-16 (user: "Lantern: dont need lantern emoji vfx on play. Just the shine slowly emanating from the unit then stabilising is
+  // enough."): no 🏮 and no moths. The light swells slowly out of the card (about 1.1 s, a touch past full), settles to a steady glow,
+  // holds, and fades as the unit's own lasting light (in the dark) takes over.
+  const hold = Math.max(1.6, dur + .6);
+  g.timeline({onComplete:()=>{ pool.remove(); call(o.onDone); }})
+    .to(pool, {scale:1.06, opacity:PK*1.08, duration:1.1, ease:'sine.out'}, 0)
+    .to(pool, {scale:1, opacity:PK, duration:.6, ease:'sine.inOut'}, 1.1)
+    .to(pool, {opacity:0, duration:.7, ease:'sine.in'}, hold);
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.16) sepia(.18)', duration:1.1, ease:'sine.out', yoyo:true, repeat:1, repeatDelay:Math.max(.2, hold - 1.4), clearProps:'filter'});
+  (o.cards||[]).filter(Boolean).forEach(el=> g.fromTo(tileOf(el), {filter:'brightness(1)'}, {filter:'brightness(1.08) sepia(.12)', duration:1.1, ease:'sine.out', yoyo:true, repeat:1, repeatDelay:Math.max(.2, hold - 1.4), clearProps:'filter'}));
   if(o.light) call(o.light, c.x, c.y, [1, .8, .45], false);
 }
 // ---- general effects ----
@@ -1181,6 +1194,8 @@ const EIGHTH_CSS = `
 .sfx-acid{width:8px; height:11px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:radial-gradient(circle at 40% 60%, #f6ffb0, #b6e830 55%, #5f8a10); box-shadow:0 0 6px rgba(190,240,40,.85);}
 .sfx-fizz{width:6px; height:6px; border-radius:50%; border:1.5px solid rgba(225,255,120,.95);}
 .sfx-mote.is-red{background:#ffd0c8; box-shadow:0 0 8px 3px rgba(230,50,50,.85);}
+/* 2026-10-16 (user: "Sap drain particles are 50% too big."): Sap's drops are half the mote's size, glow included */
+.sfx-mote.is-red.is-sap{width:3.5px; height:3.5px; box-shadow:0 0 4px 1.5px rgba(230,50,50,.85);}
 .sfx-petal{width:10px; height:7px; border-radius:70% 0 70% 0; background:linear-gradient(135deg, #ffe7f1, #f59ac0); box-shadow:0 0 3px rgba(255,170,200,.8);}
 .sfx-pollen{width:4px; height:4px; border-radius:50%; background:#fff3a6; box-shadow:0 0 5px 2px rgba(255,220,90,.85);}
 .sfx-sweat{font-size:13px; line-height:1;}
@@ -1355,7 +1370,7 @@ function acidCorrode(target, o){
 function lifeDrain(from, to, o){
   o = o || {}; if(!go() || !from || !to){ call(o.onDone); return; }
   const g = G(), a = centre(from), b = centre(to), n = 10;
-  for(let i = 0; i < n; i++){ const m = layer('sfx-mote is-red'), s = {t:0}, p0 = {x:a.x + rnd(-a.w*.3, a.w*.3), y:a.y + rnd(-a.h*.3, a.h*.3)}, mid = {x:(a.x + b.x)/2 + rnd(-50, 50), y:(a.y + b.y)/2 + rnd(-30, 30)};
+  for(let i = 0; i < n; i++){ const m = layer('sfx-mote is-red is-sap'), s = {t:0}, p0 = {x:a.x + rnd(-a.w*.3, a.w*.3), y:a.y + rnd(-a.h*.3, a.h*.3)}, mid = {x:(a.x + b.x)/2 + rnd(-50, 50), y:(a.y + b.y)/2 + rnd(-30, 30)};
     g.set(m, {x:p0.x, y:p0.y, opacity:0});
     g.timeline({delay:i*0.04, onComplete:()=> m.remove()}).to(m, {opacity:1, duration:.08}).to(s, {t:1, duration:.45, ease:'power2.in', onUpdate:()=>{ const q = qpt(p0, mid, b, s.t); g.set(m, {x:q.x, y:q.y}); }}, 0).to(m, {opacity:0, duration:.1}); }
   g.fromTo(tileOf(from), {filter:'saturate(1)'}, {filter:'saturate(.4) brightness(.85)', duration:.2, yoyo:true, repeat:1, clearProps:'filter'});

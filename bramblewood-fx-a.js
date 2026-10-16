@@ -976,7 +976,8 @@ M.momentumTrail = function(el){
 M.packHowl = function(el, mates){
   const g = G(); if(!g || !el) return done(0); const c = centre(tileOf(el));
   for(let i = 0; i < 3; i++) ring(c.x, c.r.top + c.h*.2, {color:'rgba(220,230,255,.85)', size:c.w*(1.2 + i*.5), sy:.6, w:3, dur:600, delay:i*120, dash:true});
-  const m = P('fxa-glyph', '🐺', c.x, c.r.top - 8, {scale:.3, opacity:0}); g.timeline({onComplete:()=> kill(m)}).to(m, {scale:1.1, opacity:1, y:'-=8', duration:.2, ease:'back.out(2)'}).to(m, {opacity:0, duration:.3, delay:.4});
+  // 2026-10-16 (user: "Pack bonus logo is 50% too big."): the 🐺 over the card is half the size it was (11 px, was the 22 px glyph)
+  const m = P('fxa-glyph', '🐺', c.x, c.r.top - 4, {scale:.3, opacity:0}); m.style.fontSize = '11px'; g.timeline({onComplete:()=> kill(m)}).to(m, {scale:1.1, opacity:1, y:'-=6', duration:.2, ease:'back.out(2)'}).to(m, {opacity:0, duration:.3, delay:.4});
   (mates || []).filter(x=> x && x !== el).slice(0, 4).forEach((x, j)=>{ const d = centre(tileOf(x));
     for(let k = 0; k < 3; k++){ const t = (k + 1)/4, p = P('fxa-p', '🐾', c.x + (d.x - c.x)*t, c.y + (d.y - c.y)*t, {opacity:0, scale:.7, rotation:angTo(c, d) + 90}); p.style.fontSize = '13px';
       g.timeline({delay:.15 + j*.1 + k*.08, onComplete:()=> kill(p)}).to(p, {opacity:.9, duration:.05}).to(p, {opacity:0, duration:.35, delay:.2}); }

@@ -119,7 +119,7 @@ R({id:'ui-deck-shuffle', stage:'board', inGameHook:'maybeDeckShuffle → deckShu
 // 49: the armour badge glows when an armoured unit is hit
 R({id:'atk-armor-block-partial', stage:'board', inGameHook:'hit impact → armorBadgeGlow (the 🛡 badge, .abadge.armor-glow, 0.5 s)',
   note:'2026-10-15 (user: "When a unit with armor gets hit, its armor context icon glows for 0.5s.").',
-  variants:[{key:'G', label:'The 🛡 badge glows as the hit lands', play:ctx=>{ const el = foe(ctx)[1]; num(ctx, el, 2); const b = el.querySelector('.badges .abadge') || el.querySelector('.abadge');
+  variants:[{key:'G', label:'2026-10-16: a hit Armor cut down: the 🛡 badge glows and konks (metal)', play:ctx=>{ const el = foe(ctx)[1]; num(ctx, el, 2); ctx.sound('konk'); const b = el.querySelector('.badges .abadge') || el.querySelector('.abadge');
     if(b){ b.classList.remove('armor-glow'); void b.offsetWidth; b.classList.add('armor-glow'); setTimeout(()=> b.classList.remove('armor-glow'), 520); } else ctx.float(el, '(no badge on this card)', 'debuff'); return ctx.wait(900); }}]});
 // 50: Bounty pays into the Lumber pill like a pitch
 R({id:'death-bounty', stage:'board', inGameHook:'bounty event → itemDropVfx + resourceGainVfx to the Lumber pill (as a pitch)',

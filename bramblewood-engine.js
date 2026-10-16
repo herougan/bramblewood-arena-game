@@ -897,7 +897,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // field does: Darkness (rules.dark 'dark', level 1: 1 in 4), Pitch Black (rules.dark 'pitch', level 2: 1 in 2), Absolute darkness.
     // (A Night-blind unit still misses 1 in 2 at night: that is its own trait, below.)
     if(ph === 'day' && e.sunshy) miss = Math.max(miss, 0.5);
-    if(ph === 'night' && e.nightblind && !lit()) miss = Math.max(miss, 0.5);
+    // 2026-10-16 (user: "Illuminate, paradoxically also helps nightblindness for the directly opposing creature."): an enemy
+    // Illuminate (or old Lantern) unit standing in the column directly facing a Night-blind unit lights it up as well.
+    const litByFoe = ()=>{ try{ const foe = curPlayers && curPlayers[otherId(ownerId)]; if(!pl || !foe) return false; const col = columnOfCard(pl, card.uid); if(col == null) return false;
+      const f = combatColumnsOf(foe)[col]; return !!(f && f.kind === 'card' && f.card && f.card.hp > 0 && illuminates(CARD_DEFS[f.card.defId])); }catch(err){ return false; } };
+    if(ph === 'night' && e.nightblind && !lit() && !litByFoe()) miss = Math.max(miss, 0.5);
     return miss;
   }
   function sightBlind(card, ownerId){ return sightMiss(card, ownerId) > 0; }
@@ -1819,10 +1823,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // whether there was anything worth flourishing (a Rend card swinging at an unarmored target
     // stays silent, same "only when it actually mattered" convention as Bulwark's own display gate).
     const rendBypass = rend && nominalArmor>0;
-    let armorBlocked = false;
+    let armorBlocked = false, armorSoaked = 0; // armorSoaked: how much Armor took off this hit (2026-10-16, for the 🛡 chip's glow and konk)
     if(armor>0){
       const before = amt;
       amt = Math.max(0, Math.floor(amt) - armor);
+      armorSoaked = Math.max(0, Math.floor(before) - amt);
       if(amt===0 && before>0) armorBlocked = true;
     } else {
       amt = Math.max(0, Math.floor(amt));
@@ -1857,7 +1862,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       elementalConvert = 'decay';
       elementalAmount = amt;
     }
-    return {dmg: amt, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit};
+    return {dmg: amt, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit};
   }
   // Nullify (2026-10-14, user: "an Evergreen effect like Shield Burn in Duel Masters. when this card hits the enemy, ignore all
   // triggers and effects that would result from that hit from that unit. E.g. if the unit has an on-death trigger, ignore that.
@@ -1886,7 +1891,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(dmg>0 && card.asleep>0){ card.asleep = 0; noteWoke(card); } // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
     if(!nul) shellUp(card);
     if(nul && card.hp <= 0) nullifyKill(card);
-    return {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak, exposedCrit};
+    return {dmg, armorBlocked, armorSoaked:r0.armorSoaked||0, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak, exposedCrit};
   }
   // Simple flat damage with no defense pipeline (used for missiles/onReadyDamage/thorns,
   // matching the pre-existing behavior — only melee combat runs the full pipeline).
@@ -2616,7 +2621,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const amt = effAtk(card); if(!(amt > 0)) return;
     const r = damageCard(opp.card, amt, cd.dmgType || 'physical', card);
     ensureStat(stats, sideOf(ownerId), card.defId).dealt += r.dmg; ensureStat(stats, sideOf(otherId(ownerId)), opp.card.defId).taken += r.dmg;
-    if(recordEvents && events){ events.push({type:'hit', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, dmg:r.dmg, dmgType:cd.dmgType || 'physical', armorBlocked:r.armorBlocked, counter:true});
+    if(recordEvents && events){ events.push({type:'hit', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, dmg:r.dmg, dmgType:cd.dmgType || 'physical', armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, counter:true});
       events.push({type:'statusFx', kind:'counter', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, amount:r.dmg}); }
     if(opp.card.hp <= 0 && killCredit){ killCredit[opp.card.uid] = killCredit[opp.card.uid] || new Set(); killCredit[opp.card.uid].add(statKey(sideOf(ownerId), card.defId)); }
   }
@@ -3668,7 +3673,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c === attCard || !grounded(c)) return;
       const r = damageCard(c, amount, 'physical', null);
       ensureStat(stats, sideOf(ownerId), c.defId).taken += r.dmg;
-      if(recordEvents && events) events.push({type:'hit', side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(ownerId), targetDefId:c.defId, targetUid:c.uid, dmg:r.dmg, dmgType:'physical', armorBlocked:r.armorBlocked, friendly:true, quake:true});
+      if(recordEvents && events) events.push({type:'hit', side:sideOf(ownerId), attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOf(ownerId), targetDefId:c.defId, targetUid:c.uid, dmg:r.dmg, dmgType:'physical', armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, friendly:true, quake:true});
     }));
   }
   // Arrow N / Fire Arrow N (2026-10-04, "new skills: Arrow and Fire Arrow — an arrow flies towards
@@ -5130,7 +5135,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(tgt){
           const r = damageCard(tgt, dmg, dmgType, null);
           ensureStat(stats, sideOf(foeId), tgt.defId).taken += r.dmg; ensureStat(stats, sideOf(pid), b.defId).dealt += r.dmg;
-          if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(foeId), targetDefId:tgt.defId, targetUid:tgt.uid, dmg:r.dmg, dmgType, armorBlocked:r.armorBlocked, boomerang:true});
+          if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(foeId), targetDefId:tgt.defId, targetUid:tgt.uid, dmg:r.dmg, dmgType, armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, boomerang:true});
         } else if(recordEvents && events) events.push({type:'boomerangWhiff', side:sideOf(pid), defId:b.defId, uid:b.uid});
       }
       removeDeadCards(players, sideOf, {}, stats, events);
@@ -5153,7 +5158,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           else {
             const r = damageCard(home, dmg, dmgType, null);
             ensureStat(stats, sideOf(pid), home.defId).taken += r.dmg;
-            if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(pid), targetDefId:home.defId, targetUid:home.uid, dmg:r.dmg, dmgType, armorBlocked:r.armorBlocked, boomerang:true, friendly:true});
+            if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:b.defId, attUid:b.uid, targetSide:sideOf(pid), targetDefId:home.defId, targetUid:home.uid, dmg:r.dmg, dmgType, armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, boomerang:true, friendly:true});
           }
         } else {
           const d = damageHQ(pl, dmg);
@@ -5568,7 +5573,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const r2 = damageCard(side, sweepN, dmgType, null);
         aStat.dealt += r2.dmg;
         ensureStat(stats, sideOf(a.enemyId), side.defId).taken += r2.dmg;
-        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, sweep:true, sweepDir:dir});
+        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:side.defId, targetUid:side.uid, dmg:r2.dmg, dmgType, armorBlocked:r2.armorBlocked, armorSoaked:r2.armorSoaked||0, sweep:true, sweepDir:dir});
         maybeBreakChain(players, sideOf, a.enemyId, side, stats, events, {kind:'damage', amount:r2.dmg});
         if(!killCredit[side.uid]) killCredit[side.uid] = new Set();
         killCredit[side.uid].add(statKey(mySide, a.att.defId));
@@ -5588,7 +5593,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               const r3 = damageCard(c2, atkThisRound, dmgType, a.att);
               aStat.dealt += r3.dmg;
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
-              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, fork:true, prong: prong || null, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
+              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
@@ -5636,7 +5641,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(a.att.blind > 0) return rnd() < 0.5; const sm = sightMiss(a.att, otherId(a.enemyId)); return sm > 0 && (sm >= 1 || rnd() < sm); };
       if(sweepN) sweepStrike(sweepCol - 1, 'left');
       if(blindNow){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
-        if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind, night: nightMiss || undefined});
+        if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind, targetUid: target.kind === 'card' && target.card ? target.card.uid : undefined, night: nightMiss || undefined}); // + targetUid: the "Miss!" shows on it (2026-10-16)
       } else
       // Evasive: the ORIGINAL target gets the dodge roll before any Guardian redirect — a
       // successful evade means the primary attack whiffs entirely (no damage, no Thorns/
@@ -5652,11 +5657,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const guardianRedirect = defCard.uid !== target.card.uid;
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         const bleedBeforeHit = defCard.bleed || 0; // Bloodlust (2026-10-15): was it already Bleeding?
-        const {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = damageCard(defCard, atkThisRound + backstabBonus, dmgType, a.att);
+        const {dmg, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = damageCard(defCard, atkThisRound + backstabBonus, dmgType, a.att);
         swingLanded = true;
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
-        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, guardianRedirect, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0});
+        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0});
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.

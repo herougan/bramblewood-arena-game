@@ -632,7 +632,12 @@ css('sight', `.board-card.fxb-cantsee{position:relative;}
 .fxb-shut{position:absolute; left:50%; top:40%; z-index:7; width:58%; aspect-ratio:2/1; transform:translate(-50%,-50%); pointer-events:none;
   color:#e7e1ff; filter:drop-shadow(0 0 3px rgba(8,6,20,.95)) drop-shadow(0 0 7px rgba(120,100,220,.55));}
 .fxb-shut svg{width:100%; height:100%; display:block; overflow:visible;}
-.fxb-shut .lid{transform-origin:50% 40%; animation:fxbStrain var(--blink, 5s) var(--bd, 0s) ease-in-out infinite;}
+.fxb-shut .lid{transform-origin:50% 40%;}
+/* 2026-10-16 (user: "Night blindness effect - the eye: It should only blink at the start. Then it remains closed throughout. It only
+   blinks with a VERY low chance, like 1% per minute."): one strain-and-blink when the eye first appears on a unit, then shut; the
+   rare later blink is .is-blink, set by the watcher below (about 1% a minute per eye). */
+.fxb-shut.is-blink .lid{animation:fxbBlinkOnce 1.2s ease-in-out .15s 1 both;}
+@keyframes fxbBlinkOnce{0%,100%{transform:scaleY(1);} 30%{transform:scaleY(-.35);} 46%{transform:scaleY(1);} 62%{transform:scaleY(-.2);} 76%{transform:scaleY(1);}}
 @keyframes fxbStrain{0%,70%,100%{transform:scaleY(1);} 78%{transform:scaleY(-.35);} 84%{transform:scaleY(1);} 88%{transform:scaleY(-.2);} 92%{transform:scaleY(1);}}
 .fxb-why-blind .fxb-shade{opacity:.6;} .fxb-why-blind .fxb-shut{color:#fff; filter:drop-shadow(0 0 2px #1a1426) drop-shadow(0 0 6px rgba(30,20,60,.9));}
 .fxb-eyebadge.why-sun{color:#ffe4a0; border-color:rgba(255,220,140,.6);} .fxb-eyebadge.why-night{color:#cfd8ff;}
@@ -671,22 +676,34 @@ const SHUT_SVG = '<svg viewBox="0 0 48 24"><g class="lid"><path d="M4 8 Q24 26 4
 const SIGHT_CLS = ['fxb-cantsee', 'fxb-look-A', 'fxb-look-B', 'fxb-look-C', 'fxb-why-dark', 'fxb-why-sun', 'fxb-why-night', 'fxb-why-blind', 'fxb-eyes-on', 'fxb-lit', 'fxb-lantern'];
 const SIGHT_SEL = '.fxb-eyebadge, .fxb-fold, .fxb-fogart, .fxb-glare, .fxb-mooncloud, .fxb-darkeyes, .fxb-pool, .fxb-shade, .fxb-shut';
 M.sightLook = 'A';
+// The shut eye's blinks (2026-10-16): it blinks once when it first shows on a unit (a board re-render doesn't count as new: the unit
+// is remembered by uid for 20 minutes), then stays shut; every 10 s each eye on screen has a 1-in-600 chance (about 1% a minute).
+const eyeSeen = new Map();
+function blinkEye(e){ e.classList.remove('is-blink'); void e.offsetWidth; e.classList.add('is-blink'); setTimeout(()=> e.classList.remove('is-blink'), 1500); }
+function eyeIntro(card, e){ const id = card && card.dataset && card.dataset.uid, now = Date.now();
+  if(id != null && eyeSeen.has(id) && now - eyeSeen.get(id) < 20*60*1000) return;
+  if(id != null){ eyeSeen.set(id, now); if(eyeSeen.size > 300) eyeSeen.clear(); }
+  blinkEye(e); }
+if(typeof setInterval === 'function') setInterval(()=>{ try{ if(document.hidden) return; document.querySelectorAll('.fxb-shut').forEach(e=>{ if(Math.random() < 1/600) blinkEye(e); }); }catch(err){} }, 10000);
 // mark(el, kind): kind 'dark' | 'sun' | 'night' (can't see) | 'eyes' (Darksight in the dark) | 'lantern' (the carrier's light pool) | 'lit' | null (clear)
 M.markSight = function(el, kind, o){
   o = o || {}; if(!el || !el.classList) return; const look = o.look || M.sightLook || 'A';
   const sig = kind ? kind + ':' + look : '';
   if((el.dataset.fxbSight || '') === sig) return; // nothing changed: leave the running animations alone
   el.classList.remove(...SIGHT_CLS); el.querySelectorAll(':scope > ' + SIGHT_SEL.split(', ').join(', :scope > ')).forEach(n=> n.remove());
+  { const tl = tileOf(el); if(tl && tl !== el) tl.querySelectorAll(':scope > .fxb-darkeyes').forEach(n=> n.remove()); }
   el.dataset.fxbSight = sig; if(!kind){ delete el.dataset.fxbSight; return; }
   const add = (cls, html)=>{ const i = document.createElement('i'); i.className = cls; i.setAttribute('aria-hidden', 'true'); if(html) i.innerHTML = html; el.appendChild(i); return i; };
-  if(kind === 'eyes'){ el.classList.add('fxb-eyes-on'); const e = add('fxb-darkeyes'); e.style.setProperty('--blink', rnd(4, 7).toFixed(1) + 's'); e.style.setProperty('--bd', (-rnd(0, 6)).toFixed(1) + 's'); return; }
+  // 2026-10-16 (user: "The dark sight vfx is not centered. its abit to the left."): the eyes sit in the card tile itself. On the
+  // .board-card they were centred on the wrapper, while a flyer's tile hovers a few px to the right of it (its flight offset).
+  if(kind === 'eyes'){ el.classList.add('fxb-eyes-on'); const e = add('fxb-darkeyes'); { const tl = tileOf(el); if(tl && tl !== el) tl.appendChild(e); } e.style.setProperty('--blink', rnd(4, 7).toFixed(1) + 's'); e.style.setProperty('--bd', (-rnd(0, 6)).toFixed(1) + 's'); return; }
   if(kind === 'lantern'){ el.classList.add('fxb-lantern', 'fxb-lit'); el.insertBefore(add('fxb-pool'), el.firstChild); return; } // first, so the card paints over its own light
   if(kind === 'lit'){ el.classList.add('fxb-lit'); return; }
   el.classList.add('fxb-cantsee', 'fxb-look-' + look, 'fxb-why-' + kind);
   const b = (look !== 'A' || kind === 'sun') ? add('fxb-eyebadge why-' + kind, EYE_SVG[kind] || EYE_SVG.dark) : {}; b.title = kind === 'sun' ? 'Sun-shy: dazzled by day' : kind === 'night' ? 'Night-blind: can\'t see at night' : kind === 'blind' ? 'Blind: misses half its swings' : 'Can\'t see in the dark';
   if(kind === 'sun') add('fxb-glare'); else if(kind === 'night') add('fxb-mooncloud');
   else if(look === 'B') add('fxb-fold'); else if(look === 'C') add('fxb-fogart');
-  if(look === 'A' && kind !== 'sun'){ if(kind !== 'night') add('fxb-shade'); const e = add('fxb-shut', SHUT_SVG); e.style.setProperty('--blink', rnd(4.5, 7.5).toFixed(1) + 's'); e.style.setProperty('--bd', (-rnd(0, 7)).toFixed(1) + 's'); }
+  if(look === 'A' && kind !== 'sun'){ if(kind !== 'night') add('fxb-shade'); const e = add('fxb-shut', SHUT_SVG); eyeIntro(el, e); }
 };
 // Work out who can see on the board from the DOM, the card defs, the field rules and the phase (mirrors the engine's
 // sightMiss: Darksight sees in the dark; a living Lantern lights its side (absolute darkness still dims it); Sun-shy is
@@ -704,7 +721,9 @@ M.sightSync = function(m, env){
   const lit = {true:false, false:false}; cards.forEach(c=>{ if(alive(c) && eff(c).lantern) lit[mineOf(c)] = true; });
   cards.forEach(c=>{ const e = eff(c), side = mineOf(c); let k = null;
     if(dk){ if(e.darksight) k = 'eyes'; else if(e.lantern) k = 'lantern'; else if(e.keenSense) k = null; else if(lit[side]) k = 'lit'; else k = 'dark'; }
-    if(!k || k === 'lit'){ if(ph === 'day' && e.sunshy) k = 'sun'; else if(ph === 'night' && e.nightblind && !lit[side]) k = 'night'; }
+    // 2026-10-16 (engine sightMiss): an enemy Illuminate unit directly facing a Night-blind one (same column) lights it too
+    const facingLit = ()=>{ const r = c.getBoundingClientRect(), cx = r.left + r.width/2; return cards.some(o=> o !== c && mineOf(o) !== side && alive(o) && eff(o).lantern && (()=>{ const q = o.getBoundingClientRect(); return Math.abs(q.left + q.width/2 - cx) < r.width*.5; })()); };
+    if(!k || k === 'lit'){ if(ph === 'day' && e.sunshy) k = 'sun'; else if(ph === 'night' && e.nightblind && !lit[side] && !facingLit()) k = 'night'; }
     if(!dk && e.lantern && ph === 'night') k = k || 'lantern';
     if((!k || k === 'lit' || k === 'eyes') && c.classList.contains('is-blind') && !e.keenSense) k = 'blind'; // 2026-10-15: Blind status, while it lasts
     M.markSight(c, k);
@@ -1500,13 +1519,11 @@ M.onEvent = function(ev, env){
 
 // 2026-10-15: the miss float per darkness level (dark-*-miss: every level used to say "🌙 Miss!"). arena_app.js's blindMiss
 // float asks for this text when the miss was a sight miss (ev.night); null keeps the old text.
-const MISS_TEXT = {dark:'🌑 Dark miss', pitch:'⬛ Pitch miss!', absolute:'🕳️ Void miss!'};
+// 2026-10-16 (user: "No need to say "Dark Miss" just say Miss! (on the opposing card, not on the attacking card)"): every sight miss
+// (the dark at any level, Sun-shy, Night-blind) reads just "Miss!"; arena_app.js floats it on the unit that was swung at.
+const MISS_TEXT = {dark:'Miss!', pitch:'Miss!', absolute:'Miss!'};
 M.missText = function(ev, m){
-  if(!ev || !ev.night) return null; const e = effOf(defsOf(null), ev.attDefId), dk = darkLvl(m), ph = phaseOf(m);
-  if(dk && !e.darksight) return MISS_TEXT[dk] || MISS_TEXT.dark;
-  if(ph === 'day' && e.sunshy) return '☀️ Dazzled!';
-  if(ph === 'night' && e.nightblind) return '🌙 Night-blind!';
-  return null;
+  if(!ev || !ev.night) return null; return 'Miss!';
 };
 
 // Non-battle moments (one fxHook line each in arena_app.js).

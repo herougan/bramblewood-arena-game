@@ -15,6 +15,19 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Quick on the castle:** a Quick unit hitting the castle dashes straight at that side's HP bar, and every Quick hit dashes (it was once a round).
 - **Battle log ✕:** the open log has a close button.
 - **Fight preload:** as a fight opens, the art of every card either side can field (decks, hands, leader, the tokens and spawns they bring), both castles, the field's cards, the card backs and the arrow sprites are fetched and decoded, the effect glyphs are painted once off screen, and the sound engine is woken.
+## 2026-10-16 (effects polish 2)
+- **Electricity's arc is lightning, drawn by itself:** the arc's bolt (and a wet target's extra zap) is drawn by the hit it deals, and the number pops as the bolt lands (about 0.07–0.22 s, not a second later). Its damage was already lightning ("shock") in the rules, and it still ignores Armor (only melee hits meet Armor), but it now looks like lightning too: a yellow ⚡ number, a ⚡ burst and a pale-blue flash.
+- **Momentum's icon is ⌰**, on the card, in the float and in the battle log.
+- **Immolation:** the immolating unit has the fire on it. Its neighbours flash with warm light, glow orange at the edge and show fire-coloured 🔥 damage numbers, with no flames of their own.
+- **Armor:** when Armor cuts down a hit, the 🛡 on the card's skill strip lights up and there's a metal "konk". Hits Armor didn't reduce stay silent. Hit events now record how much Armor took off (armorSoaked).
+- **Pack:** the 🐺 that pops over the card when the pack grows is half the size.
+- **Sap:** its red drain drops are half the size.
+- **Lantern / Illuminate on play:** no 🏮 or moths. The light swells slowly out of the unit, settles, and fades as its lasting glow takes over.
+- **Night-blind eye:** it blinks once when it first appears, then stays shut. After that it blinks only rarely (about 1% a minute). Every sight miss (darkness, Night-blind, Sun-shy) now just says "Miss!", shown on the unit that was swung at.
+- **Illuminate lights the unit facing it:** a Night-blind unit directly facing an enemy Illuminate (or Lantern) unit doesn't miss for night-blindness. Card texts say so. Test: tests/nightblind-illuminate-2026-10-16.js.
+- **Dark Sight eyes are centred:** on flyers they were about 3 px left, because they were centred on the card's wrapper rather than its hovering tile.
+- **Pounce is more aggressive:** a slower, deeper crouch (0.24 s, was 0.12), a quick spring to the top, then the dive onto the card in 60% of its old time. The hit lands when it always did.
+
 ## 2026-10-16 (effects polish)
 - **Heals take Poison off first:** every heal (Regeneration, Heal, Bloom, Nursing, Healing...) removes 1 Poison counter per point of healing before anything else, then Bleed as before, and only what's left restores Health. A poisoned unit with Regeneration uses it even at full Health. Each counter removed hops out of the card's Poison badge, and the badge counts down.
 - **Dusk:** no setting sun any more. The board gets the static shadow bars across it and a faint warm tint from the west.
