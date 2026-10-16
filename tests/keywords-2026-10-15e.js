@@ -55,11 +55,13 @@ for(const rules of [null, {wind:'gale'}]){
 { const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const X = put(e, P, 1, 'ke-expose', 0); const ev = [];
   e.debugAttack(P, so, X.uid, {}, ev); ok(W.hp === 497 && W.exposed === 2, `4. Expose 2: a landed hit leaves it Exposed for 2 hits (${W.hp}, ${W.exposed})`);
   ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'expose' && x.targetUid === W.uid && x.amount === 2), '4. ...and says so (statusFx expose)');
-  const ev2 = []; e.debugAttack(P, so, X.uid, {}, ev2); ok(W.hp === 493 && W.exposed === 3, `4. the next hit: +1 (3 + 1), one used, two more added (${W.hp}, ${W.exposed})`);
-  ok(ev2.some(x=> x.type === 'statusFx' && x.kind === 'exposedHit' && x.targetUid === W.uid && x.amount === 1), '4. a used Exposed hit is reported with what is left (1, before this hit adds 2)'); }
+  // 2026-10-16 (user: "Everytime it is hit again, that hit is guaranteed a crit, but the counters decrease by 1."): a crit, not +1
+  const ev2 = []; e.debugAttack(P, so, X.uid, {}, ev2); ok(W.hp === 491 && W.exposed === 3, `4. the next hit is a crit (3 × 2), one counter used, two more added (${W.hp}, ${W.exposed})`);
+  ok(ev2.some(x=> x.type === 'statusFx' && x.kind === 'exposedHit' && x.targetUid === W.uid && x.amount === 1 && x.crit === true), '4. a used counter is reported with what is left (1, before this hit adds 2), as a crit');
+  ok(ev2.some(x=> x.type === 'hit' && x.targetUid === W.uid && x.crit === true && x.exposedCrit === true), '4. the hit itself is flagged a crit'); }
 { let landed = 0; for(let s = 1; s <= 30; s++){ const {e, P} = mk(null, s); const V = put(e, P, 2, 'ke-evade', 0); V.exposed = 50; const A = put(e, P, 1, 'ke-hit', 0);
-    e.debugAttack(P, so, A.uid, {}, []); if(V.hp === 496) landed++; }
-  ok(landed === 30, `4. attacks at an Exposed Evasive unit never miss, +1 each (${landed}/30)`); }
+    e.debugAttack(P, so, A.uid, {}, []); if(V.hp === 494) landed++; }
+  ok(landed === 30, `4. attacks at an Exposed Evasive unit never miss, and crit (3 × 2) (${landed}/30)`); }
 { let dodged = 0; for(let s = 1; s <= 30; s++){ const {e, P} = mk(null, s); const V = put(e, P, 2, 'ke-evade', 0); const A = put(e, P, 1, 'ke-hit', 0);
     e.debugAttack(P, so, A.uid, {}, []); if(V.hp === 500) dodged++; }
   ok(dodged > 3 && dodged < 27, `4. (without Exposed it still dodges about half: ${dodged}/30)`); }

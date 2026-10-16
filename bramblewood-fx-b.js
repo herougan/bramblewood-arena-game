@@ -272,7 +272,7 @@ M.exposeCash = function(el, opts){
   opts = opts || {}; let cp = null; const r = rectOf(el); if(!r) return Promise.resolve();
   const box = over(r, ''); box.style.overflow = 'visible'; const ret = bits(box, 1, ()=> ({cls:'fxb-reticle'}))[0];
   const sh = bits(box, 8, ()=> ({cls:'fxb-shard'}));
-  cp = chip(el, opts.amount ? `🎯 +${opts.amount}` : '🎯 Exposed!', 'expose', {hold:600});
+  cp = chip(el, opts.crit ? '🎯 Crit!' : opts.amount ? `🎯 +${opts.amount}` : '🎯 Exposed!', 'expose', {hold:600}); // 2026-10-16: an Expose counter makes the hit a crit
   return Promise.all([cp, run([box], opts, (t)=>{
     t.fromTo(ret, {xPercent:-50, yPercent:-50, scale:1.7, rotation:-45, opacity:0}, {scale:.75, rotation:0, opacity:1, duration:.22, ease:'power3.in'}).call(()=> call(opts.onImpact))
       .to(ret, {scale:.55, opacity:0, duration:.12});
@@ -1431,7 +1431,7 @@ M.onEvent = function(ev, env){
     // Hit modifiers the number alone doesn't explain.
     if(rcA.staggered > 0 && !ev.ranged) later2(t=> M.staggerWeakHit(t, {att:el(ev.attUid)}));
     if(rcT.shocked > 0 && ev.dmg > 0) later2(t=> M.shockSpark(t));
-    if(mo.exposed.has(ev.targetUid)){ mo.exposed.delete(ev.targetUid); later2(t=> M.exposeCash(t, {amount:1})); }
+    if(mo.exposed.has(ev.targetUid)){ mo.exposed.delete(ev.targetUid); later2(t=> M.exposeCash(t, {crit:true})); } // 2026-10-16 (user: "that hit is guaranteed a crit")
     if(ev.dmg > 0 && ev.dmgType !== 'magic' && te.shade && (dk || phaseOf(m) === 'night')) later2(t=> M.shadeNight(t));
     if(ae.supreme && (Number(te.armor) > 0 || rcT.shellArmor > 0 || rcT.tempHp > 0 || rcT.petrified || Number(te.scare) > 0 || rcT.shield > 0)) later2(t=> M.wardCrush(t));
     { const rl = [...(td.resist || []), ...(te.resist || []), ...(te.dry ? ['heat'] : [])], wl = [...(te.weakness || []), ...(te.rabid ? ['swimmer', 'water'] : [])];
