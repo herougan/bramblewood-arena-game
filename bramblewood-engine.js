@@ -231,6 +231,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //  - pl.onHqHit(amount, attackerCard): if it returns a number, that replaces the castle hit
   //    (trench roll-through to the next row, or a boss castle shielded while its entities stand).
   let passUpkeepIds = null, passAttackerIds = null, currentAttacker = null;
+  let currentCritOn = false; // 2026-10-16: the current attacker's swing already rolled a Crit (an Exposed counter doesn't double it again)
   let curInitiative = 2;
   let passOnlyUid = null; // Test Kit's manual Attack: only this card acts in the pass
   function inUpkeep(pl){ return !passUpkeepIds || passUpkeepIds.includes(pl.id); }
@@ -508,7 +509,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // DEALS lands for 50% less while >0 — the deliberate mirror of Shock (50% more damage
       // TAKEN), ticks down every upkeep the same way.
       staggered:0, _staggeredJustSet:false,
-      ambushUsed:false};                    // Ambush (2026-09-17): consumed by this card's first attack after entering play
+      ambushUsed:false};                    // (Ambush's old first-attack flag; unused since the 2026-10-16 rework, see springAmbush)
     if(def.terrainNative && terrain){ const ta = Number(terrain.atk)||0, th = Number(terrain.hp)||0; board.atk += ta; board.baseAtk += ta; board.hp += th; board.maxHp += th; board.terrain = true; }
     // Explode: seed the fuse at creation time (mirrors how `wait` is seeded above), so it
     // starts counting down from the moment the card enters play, independent of readiness.
@@ -1766,9 +1767,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const supremeAtt = !!(attDef && attDef.effects && attDef.effects.supreme); // Supreme (2026-10-14): crushes Scare, Armor and shells
     { const tdS = CARD_DEFS[targetCard.defId]; const sc = tdS && tdS.effects && Number(tdS.effects.scare); if(attCard && sc > 0 && !supremeAtt) amt = Math.max(0, amt - sc); }
     // Exposed (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit
-    // don't miss."): c.exposed is how many more hits it stays Exposed for (Expose N gives N). Each hit it takes deals +1 and uses one
-    // up (before Armor, so Armor still mitigates it); dodgeCheck / combatHitLands / the Blind and dark rolls stop the misses.
-    if(targetCard.exposed>0) amt += useExposed(targetCard);
+    // don't miss."): c.exposed is how many Expose counters it has (Expose N gives N). Each hit it takes uses one up (before Armor,
+    // so Armor still mitigates it); dodgeCheck / combatHitLands / the Blind and dark rolls stop the misses.
+    // 2026-10-16 (user: "Expose - could be a skill to put Expose counters on the enemy. Everytime it is hit again, that hit is
+    // guaranteed a crit, but the counters decrease by 1."): each hit on an Exposed unit is a crit now (the Crit rule: double the
+    // hit's damage) and uses up 1 counter, instead of +1. A swing that already rolled its own Crit isn't doubled twice (the
+    // counter is still used). Attacks at it still can't miss, so every counter turns into a crit.
+    let exposedCrit = false;
+    if(targetCard.exposed>0){ const already = !!(currentCritOn && attCard && attCard === currentAttacker); useExposed(targetCard, !already); if(!already){ amt = amt * 2; exposedCrit = true; } }
     // Scar (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Mark"): unlike Expose, this
     // NEVER clears on its own -- every future hit this card takes gets the bonus, permanently
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
@@ -1851,7 +1857,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       elementalConvert = 'decay';
       elementalAmount = amt;
     }
-    return {dmg: amt, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount};
+    return {dmg: amt, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit};
   }
   // Nullify (2026-10-14, user: "an Evergreen effect like Shield Burn in Duel Masters. when this card hits the enemy, ignore all
   // triggers and effects that would result from that hit from that unit. E.g. if the unit has an on-death trigger, ignore that.
@@ -1863,7 +1869,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function isNullifier(att){ return !!(att && effectsOf(att).nullify); }
   function nullifyKill(card){ card.nullified = true; card.forceExileZone = true; }
   function damageCard(card, amount, dmgType, attCard){
-    const r0 = computeHitDamage(attCard, amount, dmgType, card); const {armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount} = r0;
+    const r0 = computeHitDamage(attCard, amount, dmgType, card); const {armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = r0;
     const crush = !!(attCard && effectsOf(attCard).supreme); // Supreme (2026-10-14): no shell, stone or temporary Health stops it
     if(shelledByCower(card) && !crush) r0.dmg = 0; // Cower 'shell' (2026-10-14): attacks can't hurt it this round
     if(card.invincible > 0) r0.dmg = 0; // Invincible N (2026-10-16): no damage of any kind for its first N rounds
@@ -1880,13 +1886,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(dmg>0 && card.asleep>0){ card.asleep = 0; noteWoke(card); } // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
     if(!nul) shellUp(card);
     if(nul && card.hp <= 0) nullifyKill(card);
-    return {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak};
+    return {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak, exposedCrit};
   }
   // Simple flat damage with no defense pipeline (used for missiles/onReadyDamage/thorns,
   // matching the pre-existing behavior — only melee combat runs the full pipeline).
   const EXPOSE_TICKS = new Set(['poison', 'bleed', 'decay', 'curse', 'chilli', 'recoil', 'strangle']); // + Strangle's squeeze (2026-10-16) // status ticks don't use up Exposed (2026-10-15)
   function damageCardFlat(card, amount, dmgType, attDefId, attUid){
-    if(card.exposed>0 && !EXPOSE_TICKS.has(dmgType)) amount += useExposed(card); // Exposed (2026-10-15): ranged/flat hits too, +1 and one hit used up (a Poison/Bleed tick isn't a hit)
+    if(card.exposed>0 && !EXPOSE_TICKS.has(dmgType)){ useExposed(card, true); amount = amount * 2; } // Exposed: ranged/flat hits too, one counter used up (a Poison/Bleed tick isn't a hit); 2026-10-16 (user: "that hit is guaranteed a crit"): a crit (double), not +1
     const attDef = attDefId ? CARD_DEFS[attDefId] : null;
     // King Slayer applies to ranged/flat hits too, same "applies everywhere, not just melee"
     // precedent Expose's own comment just above already sets. No dedicated VFX event fires from
@@ -2831,6 +2837,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.hp>0 && c.chained) maybeBreakChain(players, sideOf, otherId(playerId), c, stats, events, {kind:'enemySpawn'});
     }));
     springHazards(players, sideOf, playerId, boardCard, stats, events); // a Trap or Slash & Burn ground on that slot (2026-10-16): placeCard, debugSpawnCard, summonLeader
+    springAmbush(players, sideOf, playerId, boardCard, stats, events); // 2026-10-16 (user: "when opposing card played, deal N damage to it"): an enemy Ambush unit facing it strikes
     try{ syncPhaseStats(players, sideOf, events); }catch(e){} // Timber/Loyal/Usurper see the new board and the Lumber just spent
     return true;
   }
@@ -2863,6 +2870,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.hp>0 && c.chained) maybeBreakChain(players, sideOf, otherId(playerId), c, stats, events, {kind:'enemySpawn'});
     }));
     springHazards(players, sideOf, playerId, boardCard, stats, events); // a Trap or Slash & Burn ground on that slot (2026-10-16): placeCard, debugSpawnCard, summonLeader
+    springAmbush(players, sideOf, playerId, boardCard, stats, events); // 2026-10-16 (user: "when opposing card played, deal N damage to it"): an enemy Ambush unit facing it strikes
     try{ syncPhaseStats(players, sideOf, events); }catch(e){} // Timber/Loyal/Usurper see the new board and the Lumber just spent
     return true;
   }
@@ -2988,6 +2996,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(c.hp>0 && c.chained) maybeBreakChain(players, sideOf, otherId(playerId), c, stats, events, {kind:'enemySpawn'});
     }));
     springHazards(players, sideOf, playerId, boardCard, stats, events); // a Trap or Slash & Burn ground on that slot (2026-10-16): placeCard, debugSpawnCard, summonLeader
+    springAmbush(players, sideOf, playerId, boardCard, stats, events); // 2026-10-16 (user: "when opposing card played, deal N damage to it"): an enemy Ambush unit facing it strikes
     try{ syncPhaseStats(players, sideOf, events); }catch(e){} // Timber/Loyal/Usurper see the new board and the Lumber just spent
     return true;
   }
@@ -3086,6 +3095,52 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const dmg = damageCardFlat(card, h[kind], dt); ensureStat(stats, sideOf(pid), card.defId).taken += dmg;
       if(recordEvents && events) events.push({type:'hazardSprung', kind, side:sideOf(pid), pid, slot:card.slot, uid:card.uid, defId:card.defId, dmg}); });
     if(!(card.hp > 0)) removeDeadCards(players, sideOf, {}, stats, events);
+  }
+  // Ambush N (2026-10-16, user: "Ambush: I think the effect should be - when opposing card played, deal N damage to it. (instead of
+  // the Crit)"): when the enemy plays a card into the slot facing an Ambush unit (opposingCardOf: the unit in its column on open
+  // boards, the matching lane on row boards), the ambusher strikes it for N as it arrives (N = 3 for an old Ambush saved as true).
+  // Ready or Waiting; it can't be dodged and no Guardian steps in (it lands before anyone can react). An Invisible arrival is not
+  // seen. Called after a card lands: placeCard, debugSpawnCard, summonLeader (beside springHazards).
+  const AMBUSH_DEF = 3;
+  function springAmbush(players, sideOf, pid, card, stats, events){
+    if(!card || !(card.hp > 0) || isInvisible(card)) return;
+    const foeId = otherId(pid), foe = players[foeId]; if(!foe) return;
+    const ambushers = allBoardCards(foe).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf && effectsOf(c).ambush);
+    for(const a of ambushers){
+      if(!(card.hp > 0)) break;
+      let opp = null; try{ opp = opposingCardOf(players, foeId, a); }catch(e){ opp = null; }
+      if(!opp || opp.card !== card) continue;
+      const n = numN(effectsOf(a).ambush, AMBUSH_DEF); if(!(n > 0)) continue;
+      if(recordEvents && events) events.push({type:'ambush', side:sideOf(foeId), uid:a.uid, defId:a.defId, targetSide:sideOf(pid), targetUid:card.uid, targetDefId:card.defId, amount:n});
+      const dmg = damageCardFlat(card, n, 'physical', a.defId, a.uid);
+      ensureStat(stats, sideOf(foeId), a.defId).dealt += dmg; ensureStat(stats, sideOf(pid), card.defId).taken += dmg;
+      if(recordEvents && events) events.push({type:'hit', side:sideOf(foeId), attDefId:a.defId, attUid:a.uid, targetSide:sideOf(pid), targetDefId:card.defId, targetUid:card.uid, dmg, dmgType:'physical', ambush:true, ranged:false});
+      if(card.hp > 0){ bleedTick(sideOf, pid, card, stats, events, 'defend'); runCustomTriggers(players, sideOf, pid, card, CARD_DEFS[card.defId], 'onAttacked', stats, events); wiltOnHit(card, sideOf(pid), events); }
+    }
+    if(!(card.hp > 0)) removeDeadCards(players, sideOf, {}, stats, events);
+  }
+  // Penance N and Blood Tithe N (2026-10-16, Devilry; user: "Devilry 2 skills: hurting your own castle on play as payment. Also,
+  // hurting a random ally on play as payment. Not sure of the name. Penance?"). Payments, not hits: no Bulwark, Armor, Shield or
+  // Exposed counter takes part. Penance N: when played, your own castle loses N Health (never below 1: a payment can't lose you the
+  // fight). Blood Tithe N: when played, a random other ally of yours (not a caged one) takes N; with no ally there, your castle pays
+  // it instead, as Penance does. An ally the Tithe kills perishes as usual (Darkness, On Ally Die …).
+  const PAY_DEF = {penance:3, bloodTithe:2};
+  function payFromCastle(pl, n){
+    if(!pl || !(n > 0)) return 0;
+    if(isGladiator && pl.gladiatorLeaderUid != null){ const ld = gladiatorLeaderOf(pl); if(!ld) return 0; const t = Math.max(0, Math.min(n, (ld.hp||0) - 1)); ld.hp -= t; syncGladiatorHq(pl); return t; }
+    const t = Math.max(0, Math.min(n, (pl.hq.hp||0) - 1)); pl.hq.hp -= t; return t;
+  }
+  function devilryPayments(players, sideOf, pid, card, stats, events){
+    const e = effectsOf(card), pl = players[pid], side = sideOf(pid); if(!pl) return;
+    if(e.penance){ const n = numN(e.penance, PAY_DEF.penance), paid = payFromCastle(pl, n);
+      if(recordEvents && events) events.push({type:'penance', side, uid:card.uid, defId:card.defId, amount:n, dmg:paid}); }
+    if(e.bloodTithe){ const n = numN(e.bloodTithe, PAY_DEF.bloodTithe);
+      const pool = allBoardCards(pl).filter(c=> c && c !== card && !c.gap && c.hp > 0 && !c.cageOf);
+      if(!pool.length){ const paid = payFromCastle(pl, n); if(recordEvents && events) events.push({type:'bloodTithe', side, uid:card.uid, defId:card.defId, amount:n, castle:true, dmg:paid}); }
+      else { const t = pool[Math.floor(rnd() * pool.length)], dmg = damageCardFlat(t, n, 'curse');
+        ensureStat(stats, side, t.defId).taken += dmg;
+        if(recordEvents && events) events.push({type:'bloodTithe', side, uid:card.uid, defId:card.defId, amount:n, targetSide:side, targetUid:t.uid, targetDefId:t.defId, dmg});
+        if(!(t.hp > 0)) removeDeadCards(players, sideOf, {}, stats, events); } }
   }
   // Bound (Tangleweed / Strangle): can't attack while Bound; ticks down like Frozen (survives the upkeep of the round it was set).
   function bindUnit(att, t, rounds, dmg, side, tSide, events){
@@ -3384,6 +3439,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!def.effects) return;
     const pl = players[playerId];
     const mySide = sideOf(playerId);
+    if(def.effects.penance || def.effects.bloodTithe) devilryPayments(players, sideOf, playerId, boardCard, stats, events); // Penance N / Blood Tithe N (2026-10-16): the payment comes first
     // Lightning N (Ecclesia, 2026-10-10): on arrival a bolt strikes a random enemy unit (the castle if there are none)
     // for N, +1 for every 4 Prayer you have.
     if(def.effects.lightning){
@@ -4568,10 +4624,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'statusFx', kind:'bloodlust', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:g, total:card.bloodlust, max:3*n});
     return g;
   }
-  // Exposed (2026-10-15): one hit used up: +1 damage, and the board is told how many are left (0 = no longer Exposed).
-  function useExposed(card){
+  // Exposed (2026-10-15): one counter used up, and the board is told how many are left (0 = no longer Exposed).
+  // 2026-10-16 (user: "Everytime it is hit again, that hit is guaranteed a crit, but the counters decrease by 1."): the caller
+  // doubles the hit (the Crit rule); crit:true tells the board this counter made the crit (false: the swing had crit already).
+  function useExposed(card, crit){
     card.exposed = Math.max(0, (card.exposed||0) - 1);
-    if(recordEvents && shieldEvents && card){ const pid = ownerPidOfCard(card), sd = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'); shieldEvents.push({type:'statusFx', kind:'exposedHit', side:sd, targetSide:sd, targetUid:card.uid, targetDefId:card.defId, amount:card.exposed}); }
+    if(recordEvents && shieldEvents && card){ const pid = ownerPidOfCard(card), sd = shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'); shieldEvents.push({type:'statusFx', kind:'exposedHit', side:sd, targetSide:sd, targetUid:card.uid, targetDefId:card.defId, amount:card.exposed, crit: crit !== false}); }
     return 1;
   }
   function noteWoke(card){
@@ -5133,7 +5191,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     passOnlyUid = (pass && pass.onlyUid) || null;
     combatDepth++;
     try { return resolveCombatInner(players, sideOf, stats, events, firstAttackerSide); }
-    finally { combatDepth--; passUpkeepIds = null; passAttackerIds = null; passOnlyUid = null; currentAttacker = null; }
+    finally { combatDepth--; passUpkeepIds = null; passAttackerIds = null; passOnlyUid = null; currentAttacker = null; currentCritOn = false; }
   }
   function resolveCombatInner(players, sideOf, stats, events, firstAttackerSide){
     curInitiative = firstAttackerSide || 2; // On Turn Start's 'yours'/'opponent's' = who strikes first this round
@@ -5352,16 +5410,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         a.att.critUsed = a.att.critUsed || 0;
         if(a.att.critUsed < 1 && rnd() < 0.5){ a.att.critUsed = 1; critLanded = true; atkThisRound = atkThisRound * 2; }
       }
-      // Ambush (2026-09-17): this card's FIRST attack after entering play always crits and
-      // cannot be evaded/dodged — consumed the instant it's attempted (see ambushUsed below),
-      // whether it lands on a creature or falls through to the castle, so it never lingers for
-      // a later attack. Stacks with a normal Crit roll harmlessly (won't double-double — only
-      // applies its own doubling if Crit didn't already land).
-      const ambushForce = !!(attDef.effects && attDef.effects.ambush && !a.att.ambushUsed);
-      if(ambushForce){
-        a.att.ambushUsed = true;
-        if(!critLanded){ critLanded = true; atkThisRound = atkThisRound * 2; }
-      }
+      // (Ambush's old "first attack always crits and can't be dodged" is gone: since 2026-10-16 it strikes an enemy card as it is
+      // played into the slot facing it, see springAmbush.)
+      currentCritOn = critLanded; // Exposed (2026-10-16): a swing that already crit isn't doubled again by an Expose counter
       // Fester: bonus damage = this card's OWN current poison stacks. Rupture: same, but for
       // its own current bleed stacks. Both stack additively on top of Crit. festerBonus/
       // ruptureBonus (VFX/SFX coverage audit, 2026-09-21) are the exact same amounts, kept as
@@ -5486,7 +5537,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Blind (status, 2026-09-17): while active, THIS attacker's own attack auto-misses
       // entirely — no damage to a card OR the castle — but it still counts as having
       // attacked (onAttack already fired, bleed already ticked above). Checked before Evade/
-      // Ambush since a blind swing has nothing to do with whether the DEFENDER would dodge.
+      // Evade since a blind swing has nothing to do with whether the DEFENDER would dodge.
       // Sweep N (reworked 2026-10-12, user: "If there is nothing in front of it, it just hits the opposing Bramble. If there
       // is, it ... hits the Left, then Centre, then Right opposing units. If the Left or Right contains no units, it does not
       // mean it immediately attacks the centre!"): with a unit in front, the swing goes left, centre, right in that order.
@@ -5532,7 +5583,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               const r3 = damageCard(c2, atkThisRound, dmgType, a.att);
               aStat.dealt += r3.dmg;
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
-              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, fork:true, prong: prong || null, guardianRedirect:c2GuardianRedirect, crit:critLanded, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
+              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, fork:true, prong: prong || null, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
@@ -5585,9 +5636,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Evasive: the ORIGINAL target gets the dodge roll before any Guardian redirect — a
       // successful evade means the primary attack whiffs entirely (no damage, no Thorns/
       // Poison/Expose/Shell/onAttackedSpawn). Sweep/Swipe continuation and an HQ strike are
-      // unaffected by a dodged primary hit. Ambush overrides this gate entirely (see
-      // ambushForce above) — its first strike always connects.
-      if(target.kind==='card' && !ambushForce && !combatHitLands(a.att, target.card, true)){
+      // unaffected by a dodged primary hit.
+      if(target.kind==='card' && !combatHitLands(a.att, target.card, true)){
         if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:target.card.defId, targetUid:target.card.uid});
       } else if(target.kind==='card'){
         // Guardian: an adjacent protector (same row, one slot either way) takes the hit
@@ -5597,11 +5647,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const guardianRedirect = defCard.uid !== target.card.uid;
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         const bleedBeforeHit = defCard.bleed || 0; // Bloodlust (2026-10-15): was it already Bleeding?
-        const {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount} = damageCard(defCard, atkThisRound + backstabBonus, dmgType, a.att);
+        const {dmg, armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = damageCard(defCard, atkThisRound + backstabBonus, dmgType, a.att);
         swingLanded = true;
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
-        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, guardianRedirect, crit:critLanded, ambush:ambushForce, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0});
+        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, guardianRedirect, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0});
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
@@ -5694,6 +5744,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
         // Expose N (2026-10-15 rework, user: "It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit
         // don't miss."): a landed attack leaves the target Exposed for its next N hits (+1 damage each, can't be missed).
+        // 2026-10-16 (user: "put Expose counters on the enemy. Everytime it is hit again, that hit is guaranteed a crit, but the counters
+        // decrease by 1."): N counters, added after this hit (so this hit isn't one of them); each later hit crits and uses one.
         if(attDef.effects && attDef.effects.expose && defCard.hp>0){
           const xn = Number(attDef.effects.expose) || 1;
           defCard.exposed = (defCard.exposed||0) + xn;
@@ -5846,7 +5898,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const dmg = damageHQ(players[a.enemyId], castleSwingAmt(a.att, atkThisRound) + siegeBonus);
         swingLanded = true;
         aStat.dealt += dmg; aStat.faceDamage += dmg;
-        if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, ambush:ambushForce, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus});
+        if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus});
         { const th = players[a.enemyId].castleThorns; if(th > 0 && dmg > 0 && a.att.hp > 0){ const td = damageCardFlat(a.att, th, 'thorns'); aStat.taken = (aStat.taken||0) + td;
           if(recordEvents && events) events.push({type:'statusFx', kind:'castleThorns', side:sideOf(a.enemyId), targetSide:mySide, targetDefId:a.att.defId, targetUid:a.att.uid, amount:td}); } }
         if(attDef.effects && attDef.effects.sap && dmg>0){
@@ -5926,7 +5978,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // above pickNextAttacker's declaration) rather than pulling a fresh one from the pool —
       // everything else falls through to the normal live pick, which naturally picks up whatever
       // this turn's own kills/reflow/mid-attack spawns just made newly eligible.
-      currentAttacker = null;
+      currentAttacker = null; currentCritOn = false;
       // 2026-10-12 (user: "I win with the first 1-2 attacks. During the victory dance, the enemy's card disappears"): the
       // moment a castle falls, combat stops. Later attackers used to keep swinging, so a card the loser had just played
       // could die after the castle fell, unseen (the replay stops at the fall), and vanish when the board re-rendered.

@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (skills)
+- **Two Devilry payments (new, on no card yet):** **Penance N** — "When played, deal 3 damage to your own castle." **Blood Tithe N** — "When played, deal 2 damage to a random ally (your castle if there is none)." Payments, not hits: Armor, Bulwark and the castle's Shield don't stop them, and a castle never pays below 1 Health. Icons ⛧🏰 / ⛧🩸, a dark ⛧ pulse sinks into the castle or the ally that pays, a battle-log line, editor rows, Effects library stagings. The stat budget counts them as a discount (skill cost `-v`: minus their number).
+- **Ambush N (reworked):** "When the enemy plays a card into the slot facing it, deal 3 damage to that card." It strikes as the card arrives, Waiting or not; it can't be dodged and no Guardian steps in. The old "first attack always crits" is gone. Cards with Ambush (Venomlord Serpent, Subterraneaner, Trojan Raider) read as Ambush 3.
+- **Expose N (reworked):** its hits put N Expose counters on the target. Each later hit on that unit is a crit (double damage) and removes 1 counter (it was +1 damage). Attacks at an Exposed unit still can't miss, so every counter becomes a crit. A swing that rolled its own Crit isn't doubled twice. The hit chip says "🎯 Crit!".
+- **Perma-tide** now says "Always Flooded" (field card, pill and the Effects library).
+- **Statuses on a unit's details:** hovering a unit in play lists each status it has right now under its skills, with its count, in the status colour: "Poison 3: takes 3 damage at upkeep, then loses 1 stack."
+
 ## 2026-10-16 (11:00)
 - **Dungeons tab name:** with one daily dungeon open the Play tab reads its name (Murgle Mayhem); from the second on it reads Daily Dungeons, like Raids. Hidden until one is open, except in Admin Mode. The Babel Spire doesn't count (it takes no tickets).
 - **World map:** every daily dungeon you've opened is a diamond beside its map that takes you straight in. Locked ones aren't drawn; admins see them marked 🛠️.

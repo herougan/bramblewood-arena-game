@@ -321,6 +321,7 @@ SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢'});
 Object.assign(SKILL_ICON, {diurnalGrant:'☀️', nocturnalGrant:'🌙', tideGrant:'🌊', fullMoon:'🌕', fullMoonGrant:'🌕'}); // Zeitgeber advanced forms (2026-10-15)
+Object.assign(SKILL_ICON, {penance:'⛧🏰', bloodTithe:'⛧🩸'}); // Devilry payments (2026-10-16): the Dark Summon pentagram, into your castle / an ally
 Object.assign(SKILL_ICON, {iceArrow:'🧊🏹', twinShot:'🏹🏹', volley:'🎯🏹', fireBolt:'🔥', acidBolt:'🧪', poisonBolt:'🐍', iceBolt:'❄️', shockBolt:'⚡', chilli:'🌶️'});
 Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌', keenSense:'👃'});
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
@@ -739,8 +740,10 @@ const PASSIVE_DEFS = [
   // The active Exile zone (2026-10-09): every card sent to your Removal Zone gives 1 Echo 🕯️; Remember spends them.
   {key:'remember', category:'passive', label:'Remember', kind:'number', min:0, desc:v=>`While in your Removal Zone: at the start of a round, if you have ${v} Echo${v===1?'':'es'}, spend them and this card returns to the board with +${v}/+${v}.`},
   // Wash retired 2026-10-14 (user: "Remove the 'Wash' effect"): no card carries it and the tide no longer pushes anyone back.
-  // Expose N (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss."): a landed attack makes the target Exposed for its next N hits.
-  {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack leaves the target Exposed for its next ${v||1} hit${(v||1)===1 ? '' : 's'}: each of them deals +1 damage, and attacks at an Exposed unit can't miss.`},
+  // Expose N (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss."): a landed attack made the target Exposed for its next N hits.
+  // 2026-10-16 (user: "Expose - could be a skill to put Expose counters on the enemy. Everytime it is hit again, that hit is guaranteed
+  // a crit, but the counters decrease by 1."): N Expose counters; each later hit is a crit and uses one. Still can't miss.
+  {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack puts ${v||1} Expose counter${(v||1)===1 ? '' : 's'} on the target. Each later hit on it is a crit (double damage) and removes 1 counter, and attacks at an Exposed unit can't miss.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
   {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Attacks before every non-Quick attacker this round (Swift units still go first).`},
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
@@ -793,7 +796,10 @@ const PASSIVE_DEFS = [
   {key:'reflect', category:'passive', label:'Reflect', kind:'number', min:0, defaultValue:50, desc:v=>`${v}% chance, on every melee hit taken, to throw the FULL damage of that hit straight back at the attacker.`},
   {key:'momentum', category:'evergreen', label:'Momentum', kind:'number', min:0, desc:v=>`Gains +${v}/+0 every time it lands a killing blow.`},
   {key:'bloom', category:'evergreen', label:'Bloom', kind:'number', min:0, desc:v=>`Heals ${v} HP to a random damaged ally at the start of every round this card is on the board.`},
-  {key:'ambush', category:'passive', label:'Ambush', kind:'boolean', desc:()=>`This card's first attack after entering play always crits and cannot be evaded/dodged.`},
+  // 2026-10-16 (user: "Ambush: I think the effect should be - when opposing card played, deal N damage to it. (instead of the Crit)"):
+  // Ambush N (default 3; an old Ambush saved as true reads as Ambush 3). The engine's springAmbush.
+  {key:'ambush', category:'passive', label:'Ambush', kind:'number', min:1, defaultValue:3, desc:v=>`Whenever the enemy plays a card into the slot facing it, it strikes that card for ${numOr(v, 3)} damage as it arrives (Ready or Waiting; it can't be dodged, and no Guardian steps in).`,
+    get:e=> e.ambush ? numOr(e.ambush, 3) : undefined},
   {key:'siege', category:'passive', label:'Siege', kind:'number', min:0, desc:v=>`Deals ${v} bonus flat damage whenever its attack lands directly on the enemy castle.`},
   // Corrode (2026-09-17): the third of the three new status effects — a stacking debuff like
   // Poison/Bleed, but saps effective Attack instead of dealing damage, and decays 1 stack/round.
@@ -949,6 +955,13 @@ const PASSIVE_DEFS = [
   {key:'absoluteZero', category:'evergreen', label:'Absolute Zero', kind:'boolean', desc:()=>`When it arrives, every enemy unit is Frozen for the round (units immune to cold are spared).`},
   {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits ${numOr(v, 2)} fire at a random enemy unit (the castle if there are none). 1 in 2 the flames catch a unit beside it for 1. (Fire Bolt always aims at the enemy opposite.)`},
   {key:'slashBurn', category:'evergreen', label:'Slash & Burn', kind:'number', min:1, defaultValue:3, desc:v=>`When it kills a unit, the ground there burns: the next enemy card played into that slot takes ${numOr(v, 3)} fire damage.`},
+  // Devilry payments (2026-10-16, user: "Devilry 2 skills: hurting your own castle on play as payment. Also, hurting a random ally on
+  // play as payment. Not sure of the name. Penance?"): Penance N (your castle) and Blood Tithe N (a random ally; the castle if none).
+  // Costs, so the stat budget counts them as a discount (SB_DEFAULT_SKILLS: '-v').
+  {key:'penance', category:'evergreen', label:'Penance', kind:'number', min:1, defaultValue:3, desc:v=>`A payment: when it is played, your own castle loses ${numOr(v, 3)} Health (never below 1, so it can't lose you the fight). Bulwark and the castle's Shield don't stop it.`,
+    get:e=> e.penance ? numOr(e.penance, 3) : undefined},
+  {key:'bloodTithe', category:'evergreen', label:'Blood Tithe', kind:'number', min:1, defaultValue:2, desc:v=>`A payment: when it is played, a random other ally of yours takes ${numOr(v, 2)} damage (Armor doesn't stop it). With no ally on the field, your castle pays it instead (never below 1).`,
+    get:e=> e.bloodTithe ? numOr(e.bloodTithe, 2) : undefined},
   {key:'trap', category:'evergreen', label:'Trap', kind:'number', min:1, defaultValue:5, desc:v=>`When it arrives, if the enemy slot facing it is empty, it sets a trap there: the next enemy card played into that slot takes ${numOr(v, 5)} damage.`},
   {key:'predator', category:'passive', label:'Predator', kind:'number', min:1, defaultValue:1, desc:v=>`Deals ${numOr(v, 1)} more damage to units with less Attack than it.`},
   {key:'prey', category:'passive', label:'Prey', kind:'boolean', desc:()=>`Skittish: while an enemy Predator is on the field, it dodges half of all single-target attacks and skills, like Evasive.`},
@@ -1139,7 +1152,7 @@ const ACTION_DEFS = [
   {key:'debuff', label:'Debuff', fields:['who','sub','targets','amount','amount2'], desc:'Take away Attack/Health from a target: yourself, an ally, or an enemy (Health floored at 1 — this weakens, it never kills outright).'},
   {key:'poison', label:'Poison', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply poison stacks to a chosen target — self, an ally, or an enemy.'},
   {key:'bleed', label:'Bleed', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply bleed stacks to a chosen target — self, an ally, or an enemy.'},
-  {key:'expose', label:'Expose', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Make a chosen target (self, an ally or an enemy) Exposed for its next N hits: +1 damage from each, and attacks at it can\'t miss.'}, // 2026-10-15: the Exposed status
+  {key:'expose', label:'Expose', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Put N Expose counters on a chosen target (self, an ally or an enemy): each later hit on it is a crit and removes 1, and attacks at it can\'t miss.'}, // 2026-10-15: the Exposed status; 2026-10-16: counters, each hit a crit
   {key:'stun', label:'Stun', fields:['who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:"Stun a chosen target — self, an ally, or an enemy — no Wait tick, can't attack."},
   {key:'reduceWaitOfSpawned', label:'Reduce Wait', fields:['amount'], desc:'Pair with On Ally Spawn — lowers the Wait of the ally just played.'},
   // Missile (2026-09-30, new action, per explicit request: "Add an action called Missile. Missile
@@ -1708,7 +1721,7 @@ const STATUS_KEYWORDS = [
   {k:'stagger', re:/\b(stagger(?:ed|s)?)\b/gi, name:'Staggered', c:'#a0664a', text:'deals 50% less damage with its attacks.'},
   // 2026-10-16 skill audit (user: "keywords are highlighted"): the statuses the newer skills give had no colour or gloss.
   // cs: only when written as the game word (capitalised), so "a Guardian shield" or "bound to" in plain prose stay plain.
-  {k:'exposed', re:/\b(expose[ds]?)\b/gi, name:'Exposed', c:'#e07b39', text:'takes +1 damage from each of its next hits, and attacks at it can’t miss.'},
+  {k:'exposed', re:/\b(expose[ds]?)\b/gi, name:'Exposed', c:'#e07b39', text:'each hit on it is a crit (double damage) and removes 1 Expose counter; attacks at it can’t miss.'}, // 2026-10-16: counters
   {k:'bound', re:/\b(bind(?:s)?|bound)\b/gi, cs:true, name:'Bound', c:'#5f8a3c', text:'can’t attack; its Wait still counts down.'},
   {k:'toxin', re:/\b(toxin)\b/gi, name:'Toxin', c:'#6b2fa0', text:'takes damage equal to its stacks every round. It never wears off and can’t be cured.'},
   {k:'smoke', re:/\b(smoke)\b/gi, cs:true, name:'Smoke', c:'#8a929c', text:'attacks at it miss 1 in 2 until the end of next round.'},
@@ -1863,7 +1876,7 @@ const SKILL_TEXT = {
   diurnalGrant: v=> `By day it has ${grantText(parseGrantText(v)) || 'nothing'} instead of a plain bonus.`, nocturnalGrant: v=> `At night it has ${grantText(parseGrantText(v)) || 'nothing'} instead of a plain bonus.`,
   fullMoon: v=> `The first full moon over it: +${numOr(v, 3)}/+${numOr(v, 3)} for the rest of the fight.`, fullMoonGrant: v=> `The first full moon over it: ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`, swimmer: v=> `On Tide, ${swimmerBonusText({swimmer: v || true}, 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: "Swimmer - On tide, { ... }"
   remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
-  expose: v=> `Its hits leave the target Exposed for ${numOr(v, 1)} hit${numOr(v, 1)===1 ? '' : 's'}: +1 damage each, and they can't miss.`, // 2026-10-15
+  expose: v=> `Its hits put ${numOr(v, 1)} Expose counter${numOr(v, 1)===1 ? '' : 's'} on the target. Each later hit on it crits and removes 1.`, // 2026-10-16 (user: "that hit is guaranteed a crit, but the counters decrease by 1")
   guardian: ()=> `Takes the hits aimed at adjacent allies.`,
   quick: ()=> `Attacks before every unit without Quick.`,
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
@@ -1885,7 +1898,7 @@ const SKILL_TEXT = {
   reflect: v=> `${v}% chance to throw a melee hit's full damage back at the attacker.`,
   momentum: v=> `+${v} Attack every time it kills a unit.`,
   bloom: v=> `Heal a random wounded ally for ${v} every upkeep.`,
-  ambush: ()=> `Its first attack always crits and can't be dodged.`,
+  ambush: v=> `When the enemy plays a card into the slot facing it, deal ${numOr(v, 3)} damage to that card.`, // 2026-10-16 (user: "when opposing card played, deal N damage to it")
   siege: v=> `Deals ${v} more damage to the enemy castle.`,
   daunt: v=> `Its hits lower the target's Attack by ${v} until the end of next round. Stacks.`,
   recoil: v=> `Each attack also deals ${v} damage to itself.`,
@@ -1949,6 +1962,8 @@ Object.assign(SKILL_TEXT, {
   spitfire: v=> `While Ready, spit ${numOr(v, 2)} fire damage at a random enemy unit every upkeep; 1 in 2 it also burns one beside it for 1.`, // 2026-10-16 skill audit
   slashBurn: v=> `When it kills a unit, the next enemy card played there takes ${numOr(v, 3)} fire damage.`,
   trap: v=> `When played, trap the empty enemy slot facing it: the next card played there takes ${numOr(v, 5)} damage.`, // 2026-10-16 skill audit
+  penance: v=> `When played, deal ${numOr(v, 3)} damage to your own castle.`, // 2026-10-16 (user: "hurting your own castle on play as payment")
+  bloodTithe: v=> `When played, deal ${numOr(v, 2)} damage to a random ally (your castle if there is none).`, // 2026-10-16 (user: "hurting a random ally on play as payment")
   predator: v=> `Deals ${numOr(v, 1)} more damage to units with less Attack.`,
   prey: ()=> `Evasive while an enemy Predator is on the field.`,
   nova: v=> `When it dies, every enemy unit takes ${numOr(v, 3)} magic damage.`,
@@ -4530,6 +4545,53 @@ function ambienceKindForMatch(m){
 // shows (see boardCardHTML's atkLabel/c.hp). Hovering a hand card, a Codex tile, or anything
 // else with no live instance (liveCard omitted) keeps showing the def's base stats, correctly —
 // there IS no "actual" instance state to show yet.
+// Live statuses (2026-10-16, user: "A creature under a status effect should have status effect explanations below the card
+// description"): on a unit in play, every status it has right now, with its count, gets one line under its skills, in the status
+// colours and the kw-gloss look of the keyword glossary (STATUS_KEYWORDS). Nothing for a card in hand or the Codex, or a unit
+// with no statuses.
+const LIVE_STATUS_ROWS = [
+  // [field, STATUS_KEYWORDS k (colour) or null, name, text(n, c), shows its number]
+  ['poison', 'poison', 'Poison', n=> `takes ${n} damage at upkeep, then loses 1 stack.`, true],
+  ['toxin', 'toxin', 'Toxin', n=> `takes ${n} damage every round. It never wears off and can’t be cured.`, true],
+  ['bleed', 'bleed', 'Bleed', n=> `takes ${n} damage whenever it attacks or uses a skill, then loses 1 stack.`, true],
+  ['decay', 'decay', 'Decay', n=> `at upkeep, takes ${n} damage and loses ${n} Attack.`, true],
+  ['corrode', 'corrode', 'Corrode', n=> `deals ${n} less Attack; loses 1 stack each round.`, true],
+  ['wither', null, 'Wither', (n, c)=> `loses ${n} max Health at upkeep${c.witherLeft ? ` for ${c.witherLeft} more round${c.witherLeft === 1 ? '' : 's'}` : ''}, and can’t be healed.`, true],
+  ['exposed', 'exposed', 'Exposed', n=> `its next ${n} hit${n === 1 ? ' is a crit' : 's are crits'} (double damage), 1 Expose counter each; attacks at it can’t miss.`, true],
+  ['scar', 'scar', 'Scar', n=> `takes ${n} more damage from every hit.`, true],
+  ['shocked', 'shock', 'Shocked', ()=> STATUS_KEYWORDS.find(k=> k.k === 'shock').text, false],
+  ['staggered', 'stagger', 'Staggered', ()=> STATUS_KEYWORDS.find(k=> k.k === 'stagger').text, false],
+  ['frozen', 'freeze', 'Frozen', ()=> STATUS_KEYWORDS.find(k=> k.k === 'freeze').text, false],
+  ['asleep', 'sleep', 'Asleep', ()=> STATUS_KEYWORDS.find(k=> k.k === 'sleep').text, false],
+  ['paralyzed', 'paralyze', 'Paralyzed', ()=> STATUS_KEYWORDS.find(k=> k.k === 'paralyze').text, false],
+  ['stunned', 'stun', 'Stunned', ()=> STATUS_KEYWORDS.find(k=> k.k === 'stun').text, false],
+  ['bound', 'bound', 'Bound', ()=> STATUS_KEYWORDS.find(k=> k.k === 'bound').text, false],
+  ['blind', 'blind', 'Blind', ()=> STATUS_KEYWORDS.find(k=> k.k === 'blind').text, false],
+  ['tipsy', 'tipsy', 'Tipsy', ()=> STATUS_KEYWORDS.find(k=> k.k === 'tipsy').text, false],
+  ['confused', 'confuse', 'Confused', ()=> STATUS_KEYWORDS.find(k=> k.k === 'confuse').text, false],
+  ['smoke', 'smoke', 'Smoke', ()=> STATUS_KEYWORDS.find(k=> k.k === 'smoke').text, false],
+  ['petrified', null, 'Petrified', ()=> 'turned to stone for the round: it can’t attack, and takes half damage.', false],
+  ['irradiation', 'irradiation', 'Irradiation', ()=> STATUS_KEYWORDS.find(k=> k.k === 'irradiation').text, true],
+  ['shield', 'shield', 'Shield', n=> `${n} temporary Health that soaks damage first and doesn’t come back.`, true],
+  ['invincible', null, 'Invincible', n=> `takes no damage of any kind${n ? ` for ${n} more round${n === 1 ? '' : 's'}` : ''}.`, false],
+  ['invisible', null, 'Invisible', ()=> 'attacks and enemy skills can’t find it until it attacks.', false],
+];
+// Rounds left, for the statuses that count down in rounds (shown as "(2 rounds)" after the name).
+const LIVE_STATUS_ROUNDS = new Set(['shocked', 'staggered', 'frozen', 'asleep', 'paralyzed', 'bound', 'blind', 'tipsy', 'confused', 'smoke', 'invisible']);
+function liveStatusGlossHTML(c){
+  if(!c) return '';
+  const rows = [];
+  LIVE_STATUS_ROWS.forEach(([f, k, name, text, showN])=>{
+    const v = c[f]; if(!(v === true || Number(v) > 0)) return;
+    const n = v === true ? 0 : Number(v) || 0, kw = k ? STATUS_KEYWORDS.find(x=> x.k === k) : null;
+    const head = `${name}${showN && n ? ' ' + n : ''}`;
+    const rounds = !showN && n > 0 && LIVE_STATUS_ROUNDS.has(f) ? ` <small>(${n} round${n === 1 ? '' : 's'})</small>` : '';
+    let t = ''; try{ t = text(n, c); }catch(e){ t = kw ? kw.text : ''; }
+    rows.push(`<div>${kw && kw.c ? `<b class="kw" style="--kw:${kw.c}">${head}</b>` : `<b class="kw kw-term">${head}</b>`}${rounds}: ${escapeHtml(t)}</div>`);
+  });
+  { const dn = (c.daunts || []).reduce((t, x)=> t + (x.n || 0), 0); if(dn > 0) rows.push(`<div><b class="kw kw-term">Daunted ${dn}</b>: deals ${dn} less Attack until the end of next round.</div>`); }
+  return rows.length ? `<div class="kw-gloss live-status-gloss" role="note" aria-label="Its statuses right now">${rows.join('')}</div>` : '';
+}
 function fullCardHTML(defId, liveCard, opts){
   opts = opts || {};
   const d = getCardDefs()[defId];
@@ -4604,7 +4666,7 @@ function fullCardHTML(defId, liveCard, opts){
       const liveWait = liveCard ? liveCard.wait : d.wait;
       return `<div class="statrow">${statCostParts.length?`<span>${statCostParts.join('/')}</span>`:''}${liveWait>0?`<span>⏱${liveWait}</span>`:''}<span class="atk" style="color:var(--attack)">${atkDisplay}</span><span class="hp" style="color:var(--health)">${hpDisplay}</span></div>`;
     })()}
-    ${abilityHTML}${irrSkillsHTML}
+    ${abilityHTML}${liveStatusGlossHTML(liveC)}${irrSkillsHTML}
     ${pitchYieldHTML}
     ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
     ${liveCard?cardActionLogHTML(liveCard.uid):''}`;
@@ -5903,7 +5965,7 @@ function abilityBadges(d, bopts){
   [['venomous', 'Venomous', 2], ['toxin', 'Toxin', 1], ['weaken', 'Weaken', 1], ['wilting', 'Wilting', 1], ['bulldoze', 'Bulldoze', 1], ['tangle', 'Tangleweed', 1], ['strangle', 'Strangle', 2],
     ['invincible', 'Invincible', 1], ['invisible', 'Invisible', 2], ['sonar', 'Sonar', 0], ['poisonGas', 'Poison Gas', 2], ['absoluteZero', 'Absolute Zero', 0], ['spitfire', 'Spitfire', 2],
     ['slashBurn', 'Slash & Burn', 3], ['trap', 'Trap', 5], ['predator', 'Predator', 1], ['prey', 'Prey', 0], ['nova', 'Nova', 3], ['crystallise', 'Crystallise', 5], ['cure', 'Cure', 2],
-    ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0]].forEach(([k, nm, dv])=>{
+    ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
     if(e[k]) out.push(`<span class="ab-w2 ab-${k.toLowerCase()}" title="${escapeAttr(nm + (dv ? ' ' + numOr(e[k], dv) : '') + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${dv ? n1(numOr(e[k], dv)) : ''}</span>`); });
   if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${iconHTML('smoke-bomb', '💣')}</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
@@ -7877,7 +7939,7 @@ function triggerPreviewText(t){
     case 'buffHealth': doText = `gain +${amt} Health`; break;
     case 'poison': doText = `apply ${amt} poison to ${whoTarget}`; break;
     case 'bleed': doText = `apply ${amt} bleed to ${whoTarget}`; break;
-    case 'expose': doText = `make ${whoTarget} Exposed for ${amt} hit${amt==1 ? '' : 's'} (+1 damage each, can't miss)`; break; // 2026-10-15
+    case 'expose': doText = `put ${amt} Expose counter${amt==1 ? '' : 's'} on ${whoTarget} (each later hit crits and removes 1)`; break; // 2026-10-15; counters (2026-10-16)
     case 'stun': doText = `stun ${whoTarget}`; break;
     case 'reduceWaitOfSpawned': doText = `reduce the just-played ally's Wait by ${amt}`; break;
     case 'missile': doText = `deal ${amt} damage to a random enemy unit`; break;
@@ -13740,7 +13802,7 @@ function fieldConditionRows(r){
   if(r.misty){ add('misty', '🌫️', 'Mist', MISTY_TEXT, '', MISTY_SHORT); rows[rows.length - 1].qTip = MISTY_Q_TIP; } // 2026-10-14; real wording 2026-10-15; a neutral "?" tip (2026-10-15)
   if(r.phase === 'night') add('night', '🌙', 'Night', 'Night all match: Nocturnal units get their bonus. Night-blind units miss 1 attack in 2.', '', 'Always night'); // 2026-10-15: night has no 1-in-4 miss any more
   if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', '', 'Day, night, then twilight');
-  if(r.permaTide) add('permaTide', '🌊', r.rapids ? 'River Rapids' : 'Perma-tide', r.rapids ? 'Always Flood: the Tide is in all match, and nothing can turn it.' : "The Tide is always in. Tide effects can't change it.", '', r.rapids ? 'Always Flood' : 'The Tide is always in'); // 2026-10-14: Flow every round from round 1; River Rapids 2026-10-15
+  if(r.permaTide) add('permaTide', '🌊', r.rapids ? 'River Rapids' : 'Perma-tide', r.rapids ? 'Always Flood: the Tide is in all match, and nothing can turn it.' : "Always Flooded. Tide effects can't change it.", '', r.rapids ? 'Always Flood' : 'Always Flooded'); // 2026-10-16 (user: "Perma-tide's effect should say \"Always Flooded\"") // 2026-10-14: Flow every round from round 1; River Rapids 2026-10-15
   // New field effects (2026-10-15)
   if(r.swampFever) add('swampFever', '🤢', 'Swamp Fever', `From round 2, every unit has a ${r.swampFever === true || Number(r.swampFever) === 50 ? '1 in 2' : (Number(r.swampFever)||50) + '%'} chance each round to gain 1 Poison. Structures never catch it.`, '', 'Units may catch Poison');
   if(r.freezing) add('freezing', '🧊', 'Freezing', 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', '', 'Units arrive frozen');
@@ -20767,16 +20829,18 @@ function runCardCheck(host){
 //   the card miss about half the time (SB_HALF_MISS: Evasive, Swift, Flying vs ground, Shadow, Blind); those skills cost 0 themselves.
 //   Check (2026-10-14, 22:50): Max(added score, multiplied score) ≤ N. Bounty costs 0.
 const SB_KEY = 'bramblewood_stat_budget_v2';
-const SB_DEFAULT_SKILLS = {flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', bleed:'v', snipe:'v', arrows:'v'};
+// 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', bleed:'v', snipe:'v', arrows:'v'};
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
+const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 const SB_V2_DEFAULTS = {base:10, perWait:5, perLumber:4, perMap:0.2, levelTop:20, rarityTop:30, rarityTopRank:10, missMult:1.5, mode:'and'};
 function sbLoad(){ const def = Object.assign({}, SB_V2_DEFAULTS, {skills:SB_DEFAULT_SKILLS, halfMiss:SB_HALF_MISS});
   try{ return Object.assign(def, JSON.parse(localStorage.getItem(SB_KEY)||'{}')); }catch(e){ return def; } }
 function sbSave(c){ try{ localStorage.setItem(SB_KEY, JSON.stringify(c)); }catch(e){} }
 function sbSkillCost(effects, cfg){
   let t = 0; Object.entries(effects||{}).forEach(([k, v])=>{
-    const rule = cfg.skills[k], num = typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b||0), 0) : 0);
-    if(rule === 'v') t += Math.max(1, num); else if(typeof rule === 'number') t += rule; else t += 1 + (num > 1 ? Math.floor(num / 2) : 0); });
+    const rule = cfg.skills[k] !== undefined ? cfg.skills[k] : SB_DEFAULT_SKILLS[k], num = typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b||0), 0) : 0); // a skill new since the costs were saved: its default
+    if(rule === 'v') t += Math.max(1, num); else if(rule === '-v') t -= Math.max(1, v === true ? (SB_PAY_DEF[k] || 1) : num); /* a payment (2026-10-16) */ else if(typeof rule === 'number') t += rule; else t += 1 + (num > 1 ? Math.floor(num / 2) : 0); });
   return t;
 }
 // The ×1.5 per half-miss skill the card has (they stack in the engine, so they stack here).
@@ -20838,7 +20902,7 @@ function renderStatBudget(host){
       <button type="button" class="btn small ghost" id="sbResetV2" title="Back to the v2 numbers">Reset to v2</button>
       <label>Rules <select id="sbMode"><option value="and" ${cfg.mode==='and'?'selected':''}>Both must pass</option><option value="or" ${cfg.mode==='or'?'selected':''}>Either passes</option></select></label>
       <label>Up to Map <input type="number" id="sbUpTo" min="0" max="60" value="${sbState.upTo}" class="w-60"></label><label><input type="checkbox" id="sbOnlyFail" ${sbState.onlyFail?'checked':''}> Only over budget</label></div>
-    <details><summary>Skill costs (a number, or v = its value)</summary><textarea id="sbSkills" rows="4" style="width:100%; font-family:monospace">${escapeHtml(Object.entries(cfg.skills).map(([k, v])=> k + ': ' + v).join(', '))}</textarea><button type="button" class="btn small" id="sbSkillsSave">Save costs</button><span class="panel-sub"> Any other skill costs 1, plus half its number.</span></details>
+    <details><summary>Skill costs (a number; v = its value; -v = a payment, minus its value)</summary><textarea id="sbSkills" rows="4" style="width:100%; font-family:monospace">${escapeHtml(Object.entries(cfg.skills).map(([k, v])=> k + ': ' + v).join(', '))}</textarea><button type="button" class="btn small" id="sbSkillsSave">Save costs</button><span class="panel-sub"> Any other skill costs 1, plus half its number.</span></details>
     <p class="panel-sub">${fails.length} of ${rows.length} cards over budget.${fails.length ? ' <button type="button" class="btn small primary" id="sbFitAll">Fit all over budget</button>' : ''}</p>
     <div class="cc-table-wrap"><table class="cc-table"><thead><tr><th>Card</th><th>Rarity</th><th>A/H</th><th>Skills</th><th>N</th><th>(2A+H+S)×m</th><th>(A×H+S)×m</th><th>Fits as</th><th></th></tr></thead><tbody>
     ${shown.map(r=> `<tr class="${r.c.ok ? '' : 'cc-strong'}"><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.A}/${r.D}</td><td>${r.S}${r.M !== 1 ? ` <small title="Half-miss multiplier">×${Math.round(r.M*1000)/1000}</small>` : ''}</td><td>${r.N}</td><td>${r.c.x1} ${r.c.r1 ? '✓' : '✗'} &lt; ${Math.round((r.N + 2)*10)/10}</td><td>${r.c.x2} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
@@ -20849,7 +20913,7 @@ function renderStatBudget(host){
   host.querySelector('#sbMode').onchange = e=>{ const c = sbLoad(); c.mode = e.target.value; sbSave(c); re(); };
   host.querySelector('#sbUpTo').onchange = e=>{ sbState.upTo = Math.max(0, Number(e.target.value)||0); re(); };
   host.querySelector('#sbOnlyFail').onchange = e=>{ sbState.onlyFail = e.target.checked; re(); };
-  host.querySelector('#sbSkillsSave').onclick = ()=>{ const c = sbLoad(), out = {}; host.querySelector('#sbSkills').value.split(',').forEach(p=>{ const [k, v] = p.split(':').map(x=> (x||'').trim()); if(k) out[k] = v === 'v' ? 'v' : Number(v)||0; }); c.skills = out; sbSave(c); re(); };
+  host.querySelector('#sbSkillsSave').onclick = ()=>{ const c = sbLoad(), out = {}; host.querySelector('#sbSkills').value.split(',').forEach(p=>{ const [k, v] = p.split(':').map(x=> (x||'').trim()); if(k) out[k] = (v === 'v' || v === '-v') ? v : Number(v)||0; }); c.skills = out; sbSave(c); re(); };
   const apply = list=>{ let n = 0; list.forEach(r=>{ if(!r.fit) return; const base = liveCards[r.id] || CARD_DEFS_BASELINE[r.id]; if(!base) return;
       liveCards[r.id] = Object.assign({}, base, {attack:r.fit.A, health:r.fit.D}); n++;
       if(cloudCardAdmin){ try{ cloudWriteCardOverride(r.id, {data:liveCards[r.id], deleted:false, deleted_snapshot:null}); }catch(e){} } });
@@ -21680,7 +21744,7 @@ const FXL_FIELDS = [
   {key:'tideFlow', icon:'🌊', name:'Tide comes in (Flood)', text:()=> 'Once the Tide comes in (a field effect, Moonpull or a Tsunami brings it) it floods and ebbs every round. On Flood, Tide units get +1 Attack.', rules:{}, startTide:true, units:FXL_TIDE_UNITS},
   {key:'tideEbb', icon:'🐚', name:'Tide goes out (Ebb)', text:()=> 'On Ebb, Tide units get +1 Armor.', rules:{}, startTide:true, units:FXL_TIDE_UNITS, pre:1, note:'The Flood passes silently first, so this round brings the Ebb.'},
   {key:'highTide', icon:'🌊', name:'High tide', text:()=> 'Periodic High Tides. At High Tide, Tide units get +2 Attack and +2 Armor.', rules:{highTide:true}, units:FXL_TIDE_UNITS, pre:3, note:'Three tide steps pass silently first, so this round brings the High tide.'},
-  {key:'permaTide', icon:'🌊', name:'Perma-tide', text:()=> "The Tide is always in. Tide effects can't change it.", rules:{permaTide:true}, units:FXL_TIDE_UNITS},
+  {key:'permaTide', icon:'🌊', name:'Perma-tide', text:()=> "Always Flooded. Tide effects can't change it.", rules:{permaTide:true}, units:FXL_TIDE_UNITS}, // 2026-10-16 (user: "Perma-tide's effect should say \"Always Flooded\"")
   // New field effects (2026-10-15)
   {key:'rapids', icon:'🌊', name:'River Rapids', text:()=> 'Always Flood: the Tide is in all match, and nothing can turn it.', rules:{permaTide:true, rapids:true}, units:FXL_TIDE_UNITS},
   {key:'swampFever', icon:'🤢', name:'Swamp Fever', text:()=> 'From round 2, every unit has a 1 in 2 chance each round to gain 1 Poison. Structures never catch it.', rules:{swampFever:50}, steps:['round', 'round'], units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Palisade', icon:'🪵', archetypes:['Structure']}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Two rounds; the Palisade beside it is a Structure and never catches it.'},
@@ -21734,6 +21798,11 @@ const FXL_SKILL_SETUPS = {
   spitfire: {foes:FXL_FOES3, steps:['round', 'round'], note:'Three dummies: it spits fire at a random one each round.'},
   slashBurn: {foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}, {role:'foe3', slot:0}], withhold:'foe3', status:{foe:{hp:1}}, steps:['round', {spawn:'foe3'}], note:'Its kill sets the slot burning; then a new enemy is played there.'},
   trap: {foes:[{role:'foe2', slot:1}, {role:'foe', slot:0}], withhold:['subject', 'foe'], steps:[{spawn:'subject'}, {spawn:'foe'}], note:'It arrives facing an empty slot and sets a trap; then an enemy is played there.'},
+  // 2026-10-16: Ambush N (an enemy card played into the slot facing it), Expose's crits, and the two Devilry payments.
+  ambush: {withhold:'foe', steps:[{spawn:'foe'}, 'round'], note:'The slot facing it is empty; then an enemy is played there and it strikes as the card arrives.'},
+  expose: {steps:['round', 'round'], note:'Round 1 its hit puts the counters on the dummy; round 2 each hit on the dummy is a crit and takes one off.'},
+  penance: {withhold:'subject', steps:[{spawn:'subject'}], note:'It arrives and pays: your own castle loses the Health.'},
+  bloodTithe: {withhold:'subject', steps:[{spawn:'subject'}], note:'It arrives and pays: the Sparring Partner beside it (the only ally) takes the damage.'},
   predator: {foeDef:{attack:1}, note:'The dummy in front has less Attack: the Predator hits it harder.'},
   prey: {foeFx:{predator:1}, steps:['round', 'round', 'round'], note:'The dummies are Predators: it dodges half of their attacks.'},
   nova: {status:{subject:{hp:1}}, steps:['round'], note:'It falls to the first hit and bursts.'},
@@ -21882,7 +21951,7 @@ function fxlRealSkillValue(sd){
 function fxlKnownTypes(){ if(fxLib && fxLib.types) return fxLib.types; const defs = getCardDefs(), s = new Set(); Object.values(defs).forEach(d=> (d && d.archetypes || []).forEach(t=> s.add(t))); if(fxLib) fxLib.types = s; return s; }
 function fxlRetype(v, to){ const T = fxlKnownTypes(); if(typeof v === 'string') return T.has(v) ? to : v; if(Array.isArray(v)) return v.map(x=> fxlRetype(x, to)); if(v && typeof v === 'object'){ const o = {}; Object.keys(v).forEach(k=> o[k] = fxlRetype(v[k], to)); return o; } return v; }
 // Skills whose stand-in value is their own default rather than 3 (2026-10-14: a Fireball 3 or a Meteor 3 shows little).
-const FXL_NUMBER_DEFAULTS = {fireball:15, meteor:20, bloodlust:1, venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, predator:2, nova:3, crystallise:5, cure:2, molting:1, sweep:1}; // + the W2 skills' own defaults (2026-10-16) // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
+const FXL_NUMBER_DEFAULTS = {ambush:3, penance:3, bloodTithe:2, fireball:15, meteor:20, bloodlust:1, venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, predator:2, nova:3, crystallise:5, cure:2, molting:1, sweep:1}; // + the W2 skills' own defaults (2026-10-16) // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
 function fxlSkillEffects(sd){
   const e = {}; let from = null;
   const real = fxlRealSkillValue(sd);
@@ -27146,7 +27215,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   // it would hit, then it jumps back."): the pounce and its hit were replayed in the same tick as the play, before the card was on
   // the board, so there was nothing to leap and the number just appeared. Like the enemy's arrivals (aiActNow), they now wait until
   // the card has landed (afterPlayerAction → replayAiArrivalEvents).
-  const pIdx = events.findIndex(ev=> ev.type==='pounce');
+  const pIdx = events.findIndex(ev=> ev.type==='pounce' || ev.type==='ambush'); // + an enemy Ambush on the card just played (2026-10-16)
   if(pIdx >= 0 && m.mode!=='pc' && m.mode!=='liveRanked' && !events.some(ev=> ev.type==='fieldSet')){
     const keep = new Set(['play', 'lumber', 'pitch', 'draw', 'discard', 'converge']);
     const later = events.slice(pIdx).filter(ev=> !keep.has(ev.type));
@@ -31212,7 +31281,7 @@ function lockShards(lock){
 }
 // 2026-10-15: names for the statusEnd log line (the engine logs a status running out).
 // Exposed (2026-10-15) (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss.")
-function exposedTip(n){ return `Exposed: takes +1 damage from each of its next ${n} hit${n===1 ? '' : 's'}, and attacks at it can't miss.`; }
+function exposedTip(n){ return `Exposed ${n}: the next ${n} hit${n===1 ? '' : 's'} on it ${n===1 ? 'is a crit' : 'are crits'} (double damage), 1 counter each, and attacks at it can't miss.`; } // 2026-10-16: counters
 const STATUS_END_NAMES = {poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 function logText(ev){
   const defs = getCardDefs();
@@ -31324,7 +31393,7 @@ function logText(ev){
           castleThorns: ()=> `🌿 The Thorn Cage cuts ${nm(ev.targetDefId)} (${ev.amount}).`, herbHeal: ()=> `⚗️ The Herb Refinery mends ${nm(ev.targetDefId)} (+${ev.amount}).`,
           herbBane: ()=> `⚗️ The Herb Refinery's bitter brew splashes ${nm(ev.targetDefId)} (${ev.amount}).`, castleSpawn: ()=> `🏰 ${ev.amount > 1 ? ev.amount + '× ' : ''}${nm(ev.targetDefId)} ${ev.amount > 1 ? 'pour' : 'slips'} out of the castle.`}[ev.kind];
         if(castleTxt) return {cls: ev.kind==='herbHeal' ? 'heal' : '', text: castleTxt()}; }
-      if(ev.kind === 'exposedHit') return {cls:'', text:`🎯 ${nm(ev.targetDefId)} is Exposed: +1 damage${ev.amount ? ` (${ev.amount} more hit${ev.amount===1 ? '' : 's'})` : ''}.`}; // 2026-10-15
+      if(ev.kind === 'exposedHit') return {cls:'', text:`🎯 ${nm(ev.targetDefId)} is Exposed: ${ev.crit === false ? 'the swing had crit already' : 'a crit'}, 1 counter used${ev.amount ? ` (${ev.amount} left)` : ' (none left)'}.`}; // 2026-10-15; a crit per counter (2026-10-16)
       const kindText = {
         surge: `surges with the mountain's fire: +${ev.atk} Attack, +${ev.hp} Health 🌋`,
         poison: `poisoned ${nm(ev.targetDefId)} (+${ev.amount} ☠)`,
@@ -32870,6 +32939,7 @@ function w2HazardMark(h){
 const W2_BROKE_NAME = {armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow', trigger:'a trigger'};
 function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_NAME[k]; const pd = PASSIVE_DEFS.find(p=> p.key === k); return pd ? pd.label : k; }
 function w2LogText(ev, nm){
+  { const d = devilPayLogText(ev, nm); if(d) return d; } // Penance, Blood Tithe, Ambush (2026-10-16)
   if(ev.type === 'statusFx'){
     const t = nm(ev.targetDefId), a = nm(ev.attDefId);
     switch(ev.kind){
@@ -32904,7 +32974,7 @@ function w2LogText(ev, nm){
 function w2Later(ms, fn){ setTimeout(()=>{ try{ fn(); }catch(e){} }, ms); }
 function w2CellEl(pid, slot){ const bf = document.getElementById('battlefieldEl'); return bf ? bf.querySelector(`[data-w2cell="${pid}:s${slot}"]`) : null; }
 function w2SkillVfx(ev){
-  if(!ev || !matchState) return; const m = matchState, F = window.SkillFX;
+  if(!ev || !matchState) return; try{ devilPayVfx(ev); }catch(e){} /* Penance, Blood Tithe, Ambush (2026-10-16) */ const m = matchState, F = window.SkillFX;
   const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
   const fx = lvl=> !!F && !reducedMotion() && fxAtLeast(lvl || 'med');
   const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
@@ -32941,6 +33011,48 @@ function w2SkillVfx(ev){
         if(ev.status === 'invisible' && ev.attacked){ const el = boardCardEl(ev.uid); if(el && fx()) F.unveil(el); } } break;
     case 'hit': { const rc = rcOf(ev.targetUid); if(rc && rc.invincible > 0 && !(ev.dmg > 0)){ const el = boardCardEl(ev.targetUid); fl(el, '🌟 Invincible', 'quick'); if(el && fx()) F.invincibleBlock(el); } break; }
   }
+}
+// ==== Devilry payments and Ambush N (2026-10-16): battle-log lines and a simple look. Penance: a dark ⛧ pulse sinks into your own
+// castle; Blood Tithe: the same pulse into the ally that pays (or the castle); Ambush: the ambusher's "👀 Ambush" float (its strike
+// itself is the 'hit' event that follows, ambush:true, which plays the lunge and the old "🗡 Ambush!" cue).
+function devilPayLogText(ev, nm){
+  const yours = ev.side === 'A' ? 'your' : 'the enemy\'s', mode = matchState && matchState.mode === 'pc';
+  const who = mode ? (ev.side === 'A' ? "Player 1's" : "Player 2's") : yours;
+  if(ev.type === 'penance') return {cls:'', text:`⛧ Penance: ${nm(ev.defId)} is paid for with ${who} castle (−${ev.dmg}${ev.dmg < ev.amount ? ` of ${ev.amount}: a castle never pays below 1` : ''}).`};
+  if(ev.type === 'bloodTithe') return {cls:'', text: ev.castle ? `⛧ Blood Tithe: no ally to pay for ${nm(ev.defId)}, so ${who} castle pays (−${ev.dmg}).` : `⛧ Blood Tithe: ${nm(ev.targetDefId)} pays for ${nm(ev.defId)} in blood (−${ev.dmg}).`};
+  if(ev.type === 'ambush') return {cls:'', text:`👀 ${nm(ev.defId)} ambushes ${nm(ev.targetDefId)} as it arrives (${ev.amount}).`};
+  return null;
+}
+function devilPulse(el){
+  if(!el || typeof el.getBoundingClientRect !== 'function' || reducedMotion() || fxLevel() === 'none') return;
+  const r = el.getBoundingClientRect(); if(!(r.width > 0)) return;
+  const d = document.createElement('div'); d.className = 'devil-pay-pulse'; d.setAttribute('aria-hidden', 'true'); d.textContent = '⛧';
+  Object.assign(d.style, {position:'fixed', left:(r.left + r.width/2) + 'px', top:(r.top + r.height/2) + 'px', zIndex:9990, pointerEvents:'none', font:'900 46px/1 system-ui',
+    color:'#b04fd0', textShadow:'0 0 10px #6b1f8a, 0 0 22px #3a0a52', transform:'translate(-50%,-50%)'});
+  document.body.appendChild(d);
+  const ring = document.createElement('div'); ring.setAttribute('aria-hidden', 'true');
+  Object.assign(ring.style, {position:'fixed', left:(r.left + r.width/2) + 'px', top:(r.top + r.height/2) + 'px', width:Math.max(40, Math.min(r.width, 140)) + 'px', height:Math.max(40, Math.min(r.width, 140)) + 'px',
+    borderRadius:'50%', border:'3px solid #8b3fbf', boxShadow:'0 0 14px #6b1f8a, inset 0 0 12px #6b1f8a', zIndex:9989, pointerEvents:'none', transform:'translate(-50%,-50%)'});
+  document.body.appendChild(ring);
+  const done = ()=>{ d.remove(); ring.remove(); };
+  try{
+    d.animate([{opacity:0, transform:'translate(-50%,-140%) scale(1.6) rotate(-40deg)'}, {opacity:1, transform:'translate(-50%,-50%) scale(1) rotate(0deg)', offset:.45}, {opacity:0, transform:'translate(-50%,-50%) scale(.4) rotate(30deg)'}], {duration:900, easing:'ease-in'});
+    ring.animate([{opacity:0, transform:'translate(-50%,-50%) scale(1.5)'}, {opacity:.9, transform:'translate(-50%,-50%) scale(.9)', offset:.5}, {opacity:0, transform:'translate(-50%,-50%) scale(.3)'}], {duration:900, easing:'ease-in'});
+    setTimeout(done, 950);
+  }catch(e){ done(); }
+}
+function devilPayVfx(ev){
+  if(!ev || !matchState || (ev.type !== 'penance' && ev.type !== 'bloodTithe' && ev.type !== 'ambush')) return;
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  if(ev.type === 'ambush') return; // its look is the strike (the 'hit' with ambush:true): the lunge, the stab tone and "🗡 Ambush!"
+  // After a play the board is re-rendered: look the castle or the ally up a moment later (w2Later), with what it paid.
+  w2Later(ev.type === 'bloodTithe' && !ev.castle ? 520 : 480, ()=>{
+    const el = (ev.type === 'bloodTithe' && !ev.castle) ? boardCardEl(ev.targetUid) : hqTileEl(ev.side);
+    if(!el) return; snd('curse'); devilPulse(el);
+    try{ floatText(el, `⛧ -${ev.dmg}`, 'dmg'); }catch(e){}
+    if(ev.type === 'bloodTithe' && !ev.castle) try{ updateCardHpDisplay(ev.targetUid); }catch(e){}
+    else try{ updateHqHpDisplay(ev.side); }catch(e){}
+  });
 }
 // Cloudy (2026-10-16, user: "Cloudy - cloud shadows floating above the battlefield."): soft cloud shadows drift across the board in a
 // Cloudy fight (rules.cloudy), and by day the clouds halve the Diurnal bonus (the engine's phaseStatsOf).
