@@ -5190,6 +5190,26 @@
     box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--banner) 55%, var(--gold) 12%), 0 3px 0 rgba(0,0,0,.22);
   }
   .deck-widget.is-empty{background:transparent; border-style:dashed; box-shadow:none;}
+  /* 2026-10-16 (user: "Card backings -> 4 types for now, structures & units (similar) and castles. Then field effects."):
+     pixel-art card backs by card kind. `bw-back bk-<unit|structure|castle|field>` on any face-down card element paints
+     its image (art/backings/*.png, made by tools/make_card_backings.py; the URLs arrive as --bk-* on :root from
+     installCardBackings() in arena_app.js). The old acorn emoji crests are hidden wherever an image back shows. */
+  .bw-back{--bk-img:var(--bk-unit);}
+  .bw-back.bk-structure{--bk-img:var(--bk-structure);}
+  .bw-back.bk-castle{--bk-img:var(--bk-castle);}
+  .bw-back.bk-field{--bk-img:var(--bk-field);}
+  .bw-back{background:var(--bk-img) border-box center / 100% 100% no-repeat, #1b2a1c !important; image-rendering:pixelated; border-color:transparent !important;}
+  .deck-widget.bw-back{box-shadow:0 3px 0 rgba(0,0,0,.22); justify-content:flex-start;}
+  .deck-widget.bw-back .deck-back-mark{display:none;}
+  .deck-widget.bw-back .castle-label{opacity:1; color:#f6e7bf; background:rgba(12,8,4,.62); border-radius:4px; padding:0 4px; margin-top:auto; margin-bottom:2px;}
+  .deck-widget.bw-back .shuffle-half{background:var(--bk-img) center / 100% 100% no-repeat; image-rendering:pixelated; border-color:transparent;}
+  .deck-widget.bw-back .shuffle-half::after, .deck-riffle-card.bw-back::after, .card-tile > .draw-back.bw-back::after{content:none;}
+  .bw-back > .po2-back-crest, .bw-back > .fxd-crest, .po2-back.bw-back::before, .rr-back.bw-back > span, .ef-back.bw-back > span, .ci-back.bw-back > span, .overdraw-fly.bw-back > span{display:none;}
+  .po2-back.bw-back, .ci-back.bw-back{border:0 !important; box-shadow:0 14px 26px rgba(0,0,0,.5);}
+  .ci-back.bw-back{box-shadow:none;}
+  .rr-card .rr-back.bw-back{border:0 !important; box-shadow:0 18px 40px rgba(0,0,0,.6), 0 0 26px rgba(140,110,255,.25);}
+  .overdraw-fly.bw-back{border:0 !important;}
+  .cnp-rw-back.bw-back{border:0 !important; color:#fff; text-shadow:0 1px 2px #000, 0 0 6px #000;}
   .deck-widget .deck-empty-label{font:800 12px/1.25 'Nunito',system-ui,sans-serif; text-align:center; opacity:.7; text-transform:uppercase; letter-spacing:.04em;}
   .deck-widget .deck-back-mark{font-size:26px; opacity:.95; filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));}
   .removal-badge{position:absolute; bottom:-7px; left:50%; transform:translateX(-50%); background:var(--exile); color:var(--badge-ink); font-size:9.5px; font-weight:800; border-radius:999px; padding:1px 6px; border:2px solid var(--surface); white-space:nowrap;}
@@ -24971,7 +24991,8 @@ css('summon', `
 M.enemyCardFlip = function(el, opts){
   const t = tileOf(el); if(!t || !t.isConnected) return Promise.resolve();
   return run(opts, (tl, mk, bag)=>{
-    const back = inTile(t, bag, 'fxc-back'); back.style.overflow = 'visible';
+    // 2026-10-16 (user: "Card backings -> 4 types…"): the enemy's card shows its own kind's back (unit/structure/castle/field)
+    const back = inTile(t, bag, 'fxc-back' + (window.bwCardBackClass ? ' ' + window.bwCardBackClass(t.getAttribute('data-defid') || '') : '')); back.style.overflow = 'visible';
     tl.fromTo(back, {rotationY:0, opacity:1, transformPerspective:500}, {rotationY:90, duration:.22, ease:'power2.in'}, .08).set(back, {opacity:0}, .3);
     tl.fromTo(t, {rotationY:-90, transformPerspective:500}, {rotationY:0, duration:.22, ease:'power2.out', immediateRender:false, clearProps:'rotationY,transformPerspective'}, .3);
     tl.add(()=> snd('cardFlip'), .25);
@@ -26942,7 +26963,11 @@ M.hooks.packCardUp = function(card, r, d, env){
   clearReveal();
   const deck = card.parentNode;
   if(deck && !deck.__fxdBacks){ deck.__fxdBacks = true; const id = String(curPack && curPack.id || '').replace(/^fp-/, ''); const key = BACKS[id] ? id : 'acorn';
-    deck.querySelectorAll('.po2-back').forEach(b=> M.cardBack(b, key)); }
+    // 2026-10-16 (user: "Card backings -> 4 types…"): a back that already carries its card type's pixel-art backing
+    // (.bw-back.bk-*) keeps it; a faction pack's own back only re-dresses its unit cards.
+    deck.querySelectorAll('.po2-back').forEach(b=>{
+      if(b.classList.contains('bw-back')){ if(key === 'acorn' || !b.classList.contains('bk-unit')) return; b.classList.remove('bw-back', 'bk-unit'); }
+      M.cardBack(b, key); }); }
   const k = rarityKey(d); if(TOP.includes(k) && env.fxAtLeast('med') && !card.__fxdTease) M.packTease(card, k);
 };
 M.hooks.packCardRevealed = function(card, r, d, env){
@@ -33499,6 +33524,36 @@ function archetypesOf(d){
 // cards.json migration already ran, but a card created/edited before a rebuild picks this up
 // with no data loss).
 function isStructure(d){ return archetypesOf(d).includes('Structure') || d.type==='Structure'; }
+// 2026-10-16 (user: "Card backings -> 4 types for now, structures & units (similar) and castles. Then field effects."):
+// every face-down card shows the back of its own kind. Pixel-art images (tools/make_card_backings.py, 64x90 drawn at 4x):
+// unit is the base design (the acorn mark on a green weave), structure its timber-and-iron sibling, castle the regal one,
+// field the mossy elemental one. assemble_arena.py turns these art/backings paths into hashed assets/ URLs. A mixed pile
+// (the deck) shows the unit back, so the pile never tells you what's coming next.
+const CARD_BACKINGS = {
+  unit:{art:'assets/backings/unit.png?v=abeeea9914', label:'Unit'}, structure:{art:'assets/backings/structure.png?v=fa7bb7985a', label:'Structure'},
+  castle:{art:'assets/backings/castle.png?v=370f4756c0', label:'Castle'}, field:{art:'assets/backings/field.png?v=839bc42d48', label:'Field effect'},
+};
+function cardBackingKind(d){
+  if(typeof d === 'string'){ try{ d = getCardDefs()[d] || null; }catch(e){ d = null; } }
+  if(!d) return 'unit';
+  if(d.isCastle || (d.archetypes||[]).includes('Castle')) return 'castle';
+  if(d.field) return 'field';
+  try{ if(isStructure(d)) return 'structure'; }catch(e){}
+  return 'unit';
+}
+// The classes a card-back element takes: `bw-back bk-<kind>` (the CSS in arena_template.html paints the image).
+function cardBackClass(d){ return 'bw-back bk-' + (CARD_BACKINGS[d] ? d : cardBackingKind(d)); }
+window.bwCardBackClass = cardBackClass; // for the FX modules (bramblewood-fx-c's enemy flip, fx-d's pack backs)
+(function installCardBackings(){
+  try{
+    if(document.getElementById('bwCardBackings')) return;
+    const st = document.createElement('style'); st.id = 'bwCardBackings';
+    st.textContent = ':root{' + Object.keys(CARD_BACKINGS).map(k=> `--bk-${k}:url("${CARD_BACKINGS[k].art}");`).join('') + '}';
+    document.head.appendChild(st);
+    // warm the images so the first flip doesn't show an empty back
+    setTimeout(()=>{ Object.values(CARD_BACKINGS).forEach(b=>{ const i = new Image(); i.src = b.art; }); }, 1500);
+  }catch(e){}
+})();
 function rarityStops(key){ const r = rarityDef(key); return r.gradient || [r.color, r.color]; }
 
 // Live-value substitution for in-match ability text (2026-09-30, carried-forward backlog item:
@@ -34162,7 +34217,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'e7652af7f93a', BUILD_CARD_HASH = '74ccb855fe201745d5069a95ae867b8b59f54b1d84e7eeeee70ddd7301f87cab';
+const BUILD_ID = 'b800c780236f', BUILD_CARD_HASH = '74ccb855fe201745d5069a95ae867b8b59f54b1d84e7eeeee70ddd7301f87cab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -38473,7 +38528,7 @@ function openCardInspector(defId, opts){
   ov.innerHTML = `<button type="button" class="ci-x" aria-label="${'Close'}">✕</button>
     <div class="ci-stage"><div class="ci-shadow"></div><div class="ci-spin">
       <div class="ci-face ci-front"></div>
-      <div class="ci-face ci-back" aria-hidden="true"><span class="ci-back-crest">🌰</span><span class="ci-back-name">Bramblewood</span></div>
+      <div class="ci-face ci-back ${cardBackClass(d) /* 2026-10-16 (user: "Card backings -> 4 types…"): spin it to see its kind's back */}" aria-hidden="true"><span class="ci-back-crest">🌰</span><span class="ci-back-name">Bramblewood</span></div>
     </div></div>
     <div class="ci-bar">
       <b class="ci-name">${escapeHtml(d.name||'')}</b>
@@ -48504,7 +48559,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const tokenChips = ((node && node.rewardTokens) || []).map(t=> REWARD_TOKENS[t] ? `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" aria-label="${escapeAttr(REWARD_TOKENS[t].label)}" title="${escapeAttr(REWARD_TOKENS[t].label)}"><span class="cnp-rw-back">${REWARD_TOKENS[t].icon}</span></span>` : '').join('');
   const gotCards = done && cardRewardsClaimed().has(conquestNodeId(mapId, node.key)), needR = ids.length && !gotCards ? cardRewardRankFor(mapId) : null;
   const cards = (needR ? `<span class="cnp-rw-need" aria-label="Cards need rank ${needR} or better">${needR}+</span>` : '') + ids.map(id=> isCardHiddenForPlayer(defs[id])
-    ? `<span class="cnp-rw-card is-mystery ${gotCards?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back">❓</span></span>`
+    ? `<span class="cnp-rw-card is-mystery ${gotCards?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
     : `<span class="cnp-rw-card ${gotCards?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (gotCards ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}</span>`).join('');
   const cur = [];
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
@@ -55538,7 +55593,7 @@ function renderMatchUI(){
          claiming a whole separate one. -->
     <div class="top-play-row">
       ${matchCastleTileHTML(castleCharOf(m, 2), (m.resolving && m.displayHqHp && m.displayHqHp.B != null) ? m.displayHqHp.B : p2.hq.hp, p2.hq.maxHp, 'B', topLabel)}
-      <div class="deck-widget hq-tile ${(p2.deck||[]).length ? '' : 'is-empty'}" id="deckWidgetTop" style="${deckPileStyle((p2.deck||[]).length)}">
+      <div class="deck-widget hq-tile ${(p2.deck||[]).length ? 'bw-back bk-unit' /* 2026-10-16 (user: "Card backings -> 4 types…"): a mixed pile shows the unit back */ : 'is-empty'}" id="deckWidgetTop" style="${deckPileStyle((p2.deck||[]).length)}">
         ${(p2.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
         ${(p2.graveyard||[]).length ? `<button type="button" class="grave-peek-badge" data-grave-peek="2" title="Enemy Graveyard: ${p2.graveyard.length} card${p2.graveyard.length===1?'':'s'}. Tap to see them." aria-label="Enemy Graveyard, ${p2.graveyard.length} cards">💀 ${p2.graveyard.length}</button>` : '' /* 2026-10-15: the opponent's Graveyard, peekable */}
         ${(p2.exile.length>0||p2.echoes>0)?`<div class="removal-badge" role="button" tabindex="0" data-grave-peek="2" title="Removal Zone: ${p2.exile.length} card${p2.exile.length===1?'':'s'}. Echoes: ${p2.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p2.exile.length}${p2.echoes?` · 🕯️ ${p2.echoes}`:''}</div>`:''}
@@ -55576,7 +55631,7 @@ function renderMatchUI(){
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
       ${matchCastleTileHTML(castleCharOf(m, 1), (m.resolving && m.displayHqHp && m.displayHqHp.A != null) ? m.displayHqHp.A : p1.hq.hp, p1.hq.maxHp, 'A', bottomLabel)}
-      <div class="deck-widget hq-tile ${(p1.deck||[]).length ? '' : 'is-empty'}" id="deckWidgetBottom" style="${deckPileStyle((p1.deck||[]).length)}">
+      <div class="deck-widget hq-tile ${(p1.deck||[]).length ? 'bw-back bk-unit' : 'is-empty'}" id="deckWidgetBottom" style="${deckPileStyle((p1.deck||[]).length)}">
         ${(p1.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
         ${(p1.exile.length>0||p1.echoes>0)?`<div class="removal-badge is-mine" role="button" tabindex="0" data-open-exile="1" data-can-cast="${p1.exile.some(e=> m.engine.canCastFromExile && m.engine.canCastFromExile(p1, e.defId)) ? 1 : 0}" title="Removal Zone: ${p1.exile.length} card${p1.exile.length===1?'':'s'}. Echoes: ${p1.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p1.exile.length}${p1.echoes?` · 🕯️ ${p1.echoes}`:''}</div>`:''}
       </div>
@@ -58521,7 +58576,8 @@ function drawFlipVfx(cards, deck, baseDelay){
   const d = deck.getBoundingClientRect();
   cards.forEach((el, i)=>{
     const r = el.getBoundingClientRect(); if(!r.width) return;
-    const back = document.createElement('div'); back.className = 'draw-back'; back.setAttribute('aria-hidden','true'); el.appendChild(back);
+    // 2026-10-16 (user: "Card backings -> 4 types…"): the drawn card shows its own kind's back as it flips over
+    const back = document.createElement('div'); back.className = 'draw-back ' + cardBackClass(el.getAttribute('data-defid') || (el.querySelector('[data-defid]')||{getAttribute:()=>null}).getAttribute('data-defid')); back.setAttribute('aria-hidden','true'); el.appendChild(back);
     const delay = (baseDelay||0) + i*0.09;
     gsap.timeline({delay, onComplete:()=>{ back.remove(); }})
       .fromTo(el, {x:(d.left + d.width/2) - (r.left + r.width/2), y:(d.top + d.height/2) - (r.top + r.height/2), scaleX:1, scale:.8, rotation:-6},
@@ -59954,7 +60010,7 @@ function deckRiffleFx(deck){
   const N = 5, w = r.width, h = r.height, step = Math.min(30, w*0.42), rowW = w + step*(N - 1), cs = getComputedStyle(deck);
   const row = document.createElement('div'); row.className = 'deck-riffle'; row.setAttribute('aria-hidden', 'true');
   row.style.cssText = `left:${(r.left + r.width/2 - rowW/2).toFixed(1)}px; top:${r.top.toFixed(1)}px; width:${rowW.toFixed(1)}px; height:${h.toFixed(1)}px; --ov:${(step - w).toFixed(1)}px;`;
-  for(let i = 0; i < N; i++){ const c = document.createElement('div'); c.className = 'deck-riffle-card';
+  for(let i = 0; i < N; i++){ const c = document.createElement('div'); c.className = 'deck-riffle-card' + (deck.classList.contains('bw-back') ? ' bw-back bk-unit' : ''); // 2026-10-16: the pile's own backing
     c.style.cssText = `width:${w.toFixed(1)}px; height:${h.toFixed(1)}px; background:${cs.background}; border:${cs.border}; border-radius:${cs.borderRadius};`;
     row.appendChild(c); }
   document.body.appendChild(row);
@@ -61635,7 +61691,7 @@ function animateOverdraw(ev){
   const to = mine ? document.getElementById('dropDiscard') : null;
   const fr = from.getBoundingClientRect();
   const card = document.createElement('div');
-  card.className = 'overdraw-fly';
+  card.className = 'overdraw-fly ' + cardBackClass(ev.defId); // 2026-10-16 (user: "Card backings -> 4 types…"): the pitched card's own back
   card.innerHTML = '<span>🌰</span>';
   Object.assign(card.style, {left:(fr.left + fr.width/2 - 28)+'px', top:(fr.top + fr.height/2 - 38)+'px'});
   document.body.appendChild(card);
@@ -62272,7 +62328,7 @@ function playRewardReveal(m){
       later(()=>{
         stage.querySelectorAll('.rr-card').forEach(c=> gsap.to(c, {opacity:0, y:-30, scale:.9, duration:.2, onComplete:()=> c.remove()}));
         const c = document.createElement('div'); c.className = 'rr-card';
-        c.innerHTML = `<div class="rr-front">${cardTileHTML(defs[id], {inPlay:true})}<span class="rr-new">${escapeHtml(_t(TX('results.new')))}</span></div><div class="rr-back"><span>🌰</span></div><div class="rr-shine"></div>`;
+        c.innerHTML = `<div class="rr-front">${cardTileHTML(defs[id], {inPlay:true})}<span class="rr-new">${escapeHtml(_t(TX('results.new')))}</span></div><div class="rr-back ${cardBackClass(defs[id])}"><span>🌰</span></div><div class="rr-shine"></div>`; // 2026-10-16 (user: "Card backings -> 4 types…")
         stage.appendChild(c);
         const back = c.querySelector('.rr-back'), front = c.querySelector('.rr-front'), shine = c.querySelector('.rr-shine'), tag = c.querySelector('.rr-new');
         gsap.set(front, {opacity:0}); gsap.set(tag, {scale:0, rotation:-14});
@@ -69332,7 +69388,7 @@ function openPackAnimation(pack, opened, opts){
   const cardsHTML = o=> o.results.map((r, i)=>{
     const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
-      <span class="po2-flip"><span class="po2-back"><span class="po2-back-crest">🌰</span></span>
+      <span class="po2-flip"><span class="po2-back ${cardBackClass(d) /* 2026-10-16 (user: "Card backings -> 4 types…") */}"><span class="po2-back-crest">🌰</span></span>
       <span class="po2-front">${cardTileHTML(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
       ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
       <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
@@ -71154,7 +71210,8 @@ function dressEntrance(splash){
   const tile = id=> { const d = defs[id]; return cardTileHTML(d, {inPlay:true, extraClass: RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= 4 ? holoClass(d) : ''}); };
   // 2026-10-12 (user: "The first time you open the page fresh, the 3 cards there are face down, then they flip w sfx one by
   // one"): each card has a front and an acorn back; they deal in face down and turn over left, centre, right.
-  const faces = id=> `<div class="ef-flip"><div class="ef-front">${tile(id)}</div><div class="ef-back" aria-hidden="true"><span>🌰</span></div></div>`;
+  // 2026-10-16 (user: "Card backings -> 4 types…"): each card's back is its own kind's backing.
+  const faces = id=> `<div class="ef-flip"><div class="ef-front">${tile(id)}</div><div class="ef-back ${cardBackClass(defs[id])}" aria-hidden="true"><span>🌰</span></div></div>`;
   const reduceFan = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(fan && ids.every(Boolean)){
     fan.innerHTML = ids.map((id, k)=> `<div class="ef-card ${reduceFan ? '' : 'is-down'} ${SLOTS[k].outer ? 'is-outer' : ''}" style="--r:${SLOTS[k].r}; --x:${SLOTS[k].x}; --y:${SLOTS[k].y}; --d:${SLOTS[k].d}; z-index:${k===2?3:SLOTS[k].outer?0:1}">${faces(id)}</div>`).join('');

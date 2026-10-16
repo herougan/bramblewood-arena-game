@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (card backings)
+- **Card backings by card kind:** four pixel-art card backs. Units get the base design: the acorn mark in a gold medallion on a green weave. Structures get its timber-and-iron sibling: crossed mallets, plank boards, a stone frame. Castles get a regal back: crimson damask, a gold frame with rubies, a crowned keep. Field effects get a mossy back with vines and a day-and-night disc. Each face-down card shows its own kind's back: the pack opener before you flip, the draw flip into your hand, an enemy card flying in, a full-hand pitch, reward reveals, the home-screen card fan and the back of a card you spin in the viewer. The deck piles hold a mix, so they show the unit back (the pile never gives away your next draw). Images are in `art/backings/`, made by `tools/make_card_backings.py`.
+
 ## 2026-10-16 (09:15)
 - **Skill marks on the card face:** 51 skills that sat on real cards with no mark now show their icon on the card's skill strip, with the number when it's more than 1. Among them: Nocturnal, Diurnal, Bleed, Regen, Guardian, Swarm, Arrow, Stealth, Pierce, Crit, Freeze and Shock.
 - **Festering is now Lingering**, so it no longer reads like Fester. Lingering: Bleed and Poison don't wear off while it's on the field. Fester: extra damage equal to its own Poison.

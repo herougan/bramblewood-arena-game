@@ -5152,6 +5152,26 @@
     box-shadow: inset 0 0 0 3px color-mix(in srgb, var(--banner) 55%, var(--gold) 12%), 0 3px 0 rgba(0,0,0,.22);
   }
   .deck-widget.is-empty{background:transparent; border-style:dashed; box-shadow:none;}
+  /* 2026-10-16 (user: "Card backings -> 4 types for now, structures & units (similar) and castles. Then field effects."):
+     pixel-art card backs by card kind. `bw-back bk-<unit|structure|castle|field>` on any face-down card element paints
+     its image (art/backings/*.png, made by tools/make_card_backings.py; the URLs arrive as --bk-* on :root from
+     installCardBackings() in arena_app.js). The old acorn emoji crests are hidden wherever an image back shows. */
+  .bw-back{--bk-img:var(--bk-unit);}
+  .bw-back.bk-structure{--bk-img:var(--bk-structure);}
+  .bw-back.bk-castle{--bk-img:var(--bk-castle);}
+  .bw-back.bk-field{--bk-img:var(--bk-field);}
+  .bw-back{background:var(--bk-img) border-box center / 100% 100% no-repeat, #1b2a1c !important; image-rendering:pixelated; border-color:transparent !important;}
+  .deck-widget.bw-back{box-shadow:0 3px 0 rgba(0,0,0,.22); justify-content:flex-start;}
+  .deck-widget.bw-back .deck-back-mark{display:none;}
+  .deck-widget.bw-back .castle-label{opacity:1; color:#f6e7bf; background:rgba(12,8,4,.62); border-radius:4px; padding:0 4px; margin-top:auto; margin-bottom:2px;}
+  .deck-widget.bw-back .shuffle-half{background:var(--bk-img) center / 100% 100% no-repeat; image-rendering:pixelated; border-color:transparent;}
+  .deck-widget.bw-back .shuffle-half::after, .deck-riffle-card.bw-back::after, .card-tile > .draw-back.bw-back::after{content:none;}
+  .bw-back > .po2-back-crest, .bw-back > .fxd-crest, .po2-back.bw-back::before, .rr-back.bw-back > span, .ef-back.bw-back > span, .ci-back.bw-back > span, .overdraw-fly.bw-back > span{display:none;}
+  .po2-back.bw-back, .ci-back.bw-back{border:0 !important; box-shadow:0 14px 26px rgba(0,0,0,.5);}
+  .ci-back.bw-back{box-shadow:none;}
+  .rr-card .rr-back.bw-back{border:0 !important; box-shadow:0 18px 40px rgba(0,0,0,.6), 0 0 26px rgba(140,110,255,.25);}
+  .overdraw-fly.bw-back{border:0 !important;}
+  .cnp-rw-back.bw-back{border:0 !important; color:#fff; text-shadow:0 1px 2px #000, 0 0 6px #000;}
   .deck-widget .deck-empty-label{font:800 12px/1.25 'Nunito',system-ui,sans-serif; text-align:center; opacity:.7; text-transform:uppercase; letter-spacing:.04em;}
   .deck-widget .deck-back-mark{font-size:26px; opacity:.95; filter:drop-shadow(0 1px 1px rgba(0,0,0,.4));}
   .removal-badge{position:absolute; bottom:-7px; left:50%; transform:translateX(-50%); background:var(--exile); color:var(--badge-ink); font-size:9.5px; font-weight:800; border-radius:999px; padding:1px 6px; border:2px solid var(--surface); white-space:nowrap;}
