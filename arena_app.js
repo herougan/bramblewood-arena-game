@@ -1678,11 +1678,41 @@ function cardFrameKind(d, opts){
   return cardBackingKind(d);
 }
 const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i>';
+// Archetype frames (2026-10-16, user: "I think ecclesia, devilry, scrapper and archetypal cards having their own card frame is cool.
+// (then we can remove the top right hand corner context symbol for those. like the 5 point star for devilry and prayer)"): each
+// archetype (the CARD_ARCHETYPE_MARK keys) has its own frame, drawn by tools/make_card_frames.py. The call: a UNIT of an archetype
+// wears the archetype's frame outright (a-<key>); a STRUCTURE keeps its rickety boards, in the archetype's materials with its emblem
+// nailed to both posts (s-<key>), so it still reads as a structure first. Castles and field cards keep their kind's frame. The tile
+// takes `ar-<key>` (the CSS picks the image) and drops the top-right archetype corner mark (archMarkHTML).
+//   devilry dark iron, blood and pentagram studs · grace (Ecclesia) white marble, gold and a stained-glass plate · exile (Scrappers)
+//   riveted scrap plates and hazard stripes · evolution nacre shell ribs and cells · exiled ash, cracks and a dead thorn vine ·
+//   forgotten dust, cobwebs and candle wax · ancient weathered runestone with glowing runes · outer a violet starfield ·
+//   void black with an event-horizon rim and black holes on the corners
+const CARD_ARCH_FRAMES = {
+  devilry:{a:{art:'art/frames/a-devilry.png'}, s:{art:'art/frames/s-devilry.png'}},
+  grace:{a:{art:'art/frames/a-grace.png'}, s:{art:'art/frames/s-grace.png'}},
+  exile:{a:{art:'art/frames/a-exile.png'}, s:{art:'art/frames/s-exile.png'}},
+  evolution:{a:{art:'art/frames/a-evolution.png'}, s:{art:'art/frames/s-evolution.png'}},
+  exiled:{a:{art:'art/frames/a-exiled.png'}, s:{art:'art/frames/s-exiled.png'}},
+  forgotten:{a:{art:'art/frames/a-forgotten.png'}, s:{art:'art/frames/s-forgotten.png'}},
+  ancient:{a:{art:'art/frames/a-ancient.png'}, s:{art:'art/frames/s-ancient.png'}},
+  outer:{a:{art:'art/frames/a-outer.png'}, s:{art:'art/frames/s-outer.png'}},
+  void:{a:{art:'art/frames/a-void.png'}, s:{art:'art/frames/s-void.png'}},
+};
+// The archetype frame a card face wears (its CARD_ARCHETYPE_MARK key), or null. Only units and structures take one.
+function cardFrameArch(d, kind){
+  if(!d || (kind !== 'unit' && kind !== 'structure') || d.cardType === 'materia') return null;
+  let key = null; try{ key = cardArchetypeKey(d); }catch(e){}
+  return key && CARD_ARCH_FRAMES[key] ? key : null;
+}
+// fr-<kind>, plus ar-<archetype> when one applies: the classes that pick a card face's frame
+function cardFrameClasses(d, opts){ const kind = cardFrameKind(d, opts), ar = cardFrameArch(d, kind); return 'fr-' + kind + (ar ? ' ar-' + ar : ''); }
 (function installCardFrames(){
   try{
     if(document.getElementById('bwCardFrames')) return;
     const st = document.createElement('style'); st.id = 'bwCardFrames';
-    st.textContent = ':root{' + Object.keys(CARD_FRAMES).map(k=> `--fr-${k}:url("${CARD_FRAMES[k].art}");`).join('') + '}';
+    st.textContent = ':root{' + Object.keys(CARD_FRAMES).map(k=> `--fr-${k}:url("${CARD_FRAMES[k].art}");`).join('')
+      + Object.keys(CARD_ARCH_FRAMES).map(k=> `--fr-a-${k}:url("${CARD_ARCH_FRAMES[k].a.art}");--fr-s-${k}:url("${CARD_ARCH_FRAMES[k].s.art}");`).join('') + '}';
     document.head.appendChild(st);
   }catch(e){}
 })();
@@ -5808,6 +5838,9 @@ function cardArchetypeKey(d){
 function archMarkHTML(d, waitShown, live){
   if(!d || d.isCastle || d.field || d.cardType==='materia') return '';
   const key = cardArchetypeKey(d); if(!key) return '';
+  // 2026-10-16 (user: "...archetypal cards having their own card frame is cool. (then we can remove the top right hand corner context
+  // symbol for those...)"): a card whose frame already says its archetype shows no corner mark
+  if(cardFrameArch(d, cardBackingKind(d))) return '';
   let [t, icon] = CARD_ARCHETYPE_MARK[key];
   const ww = !waitShown ? 0 : live ? 24 : (Math.min(3, Math.max(1, d.wait|0)) * 11 + 14);
   return `<div class="archmark ${waitShown ? 'with-wait' : ''}" style="--ww:${ww}px" title="${escapeAttr(t + ' archetype')}" aria-hidden="true">${icon}</div>`;
@@ -5863,7 +5896,7 @@ function cardTileHTML(d, opts){
   // (opts.hand: playable state, why-not tag) are this same face with a few parts swapped.
   const live = opts.live || null, hand = opts.hand || null, inMatch = !!(live || hand);
   if(live){
-    return `<div class="card-tile fr-${cardFrameKind(d, opts) /* 2026-10-16 (user: "...I meant the front card frame. To have 4 types..."): the frame of its kind */} ${rarityTierClass(d.rarity)} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+    return `<div class="card-tile ${cardFrameClasses(d, opts) /* 2026-10-16: the frame of its kind (fr-*) and archetype (ar-*), see CARD_ARCH_FRAMES */} ${rarityTierClass(d.rarity)} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
       ${live.waitHTML||''}${archMarkHTML(d, !!live.waitHTML, true)}
       ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): the 🔁 spawn-only corner pill is gone; a token still has its dashed frame outside fights and its popover line */}
       ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
@@ -5877,7 +5910,7 @@ function cardTileHTML(d, opts){
       ${live.bottomHTML||''}
     </div>`;
   }
-  return `<div class="card-tile fr-${cardFrameKind(d, opts) /* 2026-10-16 (user: "...I meant the front card frame. To have 4 types..."): the frame of its kind */} ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+  return `<div class="card-tile ${cardFrameClasses(d, opts) /* 2026-10-16: the frame of its kind (fr-*) and archetype (ar-*), see CARD_ARCH_FRAMES */} ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
     ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}${hand && hasSacrificeTrigger(d) ? SAC_TEETH_HTML : ''}
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): no "🔁 Spawn" corner pill on tokens */}
@@ -5888,7 +5921,7 @@ function cardTileHTML(d, opts){
       ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Castle">${opts.sideLabel}</div>`:'')
       : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}${archMarkHTML(d, d.wait>0, false)}
-    ${d.darkSummon?`<div class="darkbadge" title="Dark Summon — uses your Dark Summon for the turn (1 a turn), not your normal play">⛧</div>`:''}`}
+    ${d.darkSummon && !cardFrameArch(d, cardBackingKind(d)) /* 2026-10-16 (user: "...remove the top right hand corner context symbol for those. like the 5 point star for devilry..."): the Devilry frame says it; the card text still says Dark Summon */?`<div class="darkbadge" title="Dark Summon — uses your Dark Summon for the turn (1 a turn), not your normal play">⛧</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
     <div class="rarity-band"></div>${CARD_FRAME_HTML}
     <div class="nm">${escapeHtml(d.name||'')}</div>

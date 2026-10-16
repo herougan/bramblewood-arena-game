@@ -293,7 +293,17 @@ def rope_wrap(cv, x0, y0, w, h, slant=1):
         cv.set(ex + (i // 2) * (1 if slant > 0 else -1), ey + i, ROPE[3 if i % 2 else 2])
 
 
-def structure():
+def structure(arch=None):
+    """arch (2026-10-16, archetype frames): an ARCH spec; the same rickety boards in the archetype's materials (planks, nails
+    and rope re-coloured) with its emblem nailed to both posts."""
+    global PLANK, IRON, ROPE
+    saved = (PLANK, IRON, ROPE)
+    if arch: PLANK, IRON, ROPE = arch['plank'], arch['nail'], arch['rope']
+    try: return _structure(arch)
+    finally: PLANK, IRON, ROPE = saved
+
+
+def _structure(arch):
     set_geom(10, 9)
     cv = Canvas(); rng = random.Random(31)
     # the two posts (the left one wider and straight, the right one thinner and leaning a pixel), behind everything else
@@ -328,6 +338,9 @@ def structure():
     # rope lashings on two corners (top-left over the joint, bottom-right where the plate meets the post)
     rope_wrap(cv, X0 + 1, Y0 + T - 1, 8, 9, 1)
     rope_wrap(cv, X1 - 8, WY1 - 4, 8, 9, -1)
+    if arch:
+        emblem(cv, arch, X0 + 1, WY0 + 18); emblem(cv, arch, X1 - 7, WY0 + 52)
+        if arch.get('struct_extra'): arch['struct_extra'](cv)
     set_geom(8, 7)
     return cv
 
@@ -422,6 +435,327 @@ def field():
     return cv
 
 
+# ======================================================================================================================
+# ARCHETYPE FRAMES (2026-10-16, user: "I think ecclesia, devilry, scrapper and archetypal cards having their own card frame is
+# cool. (then we can remove the top right hand corner context symbol for those. like the 5 point star for devilry and
+# prayer)"). One frame per archetype (the keys are arena_app.js's CARD_ARCHETYPE_MARK keys). A unit of an archetype wears
+# that archetype's frame outright (same layout as the unit frame: top 8, sides 7, plate 28); a structure keeps its rickety
+# boards, re-coloured in the archetype's materials with its emblem nailed to both posts (structure(arch) above).
+#   a-<key>.png  the archetype's unit frame        s-<key>.png  the archetype's structure frame
+# Each frame carries the archetype's emblem on both side bands, in place of the corner mark the card face used to show.
+# ======================================================================================================================
+def ramp(*cols): return [hx(c) for c in cols]
+
+
+# 7x7 emblems: '#' the main colour, 'o' the second, '.' nothing; outlined in the spec's outline colour
+EMBLEMS = {
+    'star':   ['...#...', '..###..', '#######', '.#####.', '..###..', '.##.##.', '.#...#.'],
+    'pattee': ['.#####.', '..###..', '#.###.#', '#######', '#.###.#', '..###..', '.#####.'],
+    'gear':   ['.#.#.#.', '#######', '.##o##.', '##ooo##', '.##o##.', '#######', '.#.#.#.'],
+    'spiral': ['.#####.', '#ooooo#', '#o###o#', '#o#o#o#', '#o#oo#.', '#oo###.', '.#.....'],
+    'rose':   ['..##...', '.#oo#..', '.#o##..', '..##...', '...#...', '..#....', '.#.....'],
+    'candle': ['...o...', '..ooo..', '...o...', '..###..', '..###..', '..###..', '.#####.'],
+    'rune':   ['...#...', '..#.#..', '.#...#.', '..#.#..', '...#...', '..#.#..', '.#...#.'],
+    'eye':    ['.......', '.#####.', '#..o..#', '#.ooo.#', '#..o..#', '.#####.', '.......'],
+    'hole':   ['..###..', '.#ooo#.', '#ooooo#', '#ooooo#', '#ooooo#', '.#ooo#.', '..###..'],
+}
+
+
+def emblem(cv, spec, x0, y0):
+    rows = EMBLEMS[spec['emblem']]; pts = set()
+    for j, row in enumerate(rows):
+        for i, ch in enumerate(row):
+            if ch == '#': cv.set(x0 + i, y0 + j, spec['em1']); pts.add((x0 + i, y0 + j))
+            elif ch == 'o': cv.set(x0 + i, y0 + j, spec['em2']); pts.add((x0 + i, y0 + j))
+    cv.outline(pts, spec.get('emo', OL))
+
+
+def smooth_noise(seed):
+    r = random.Random(seed); ph = [r.uniform(0, 6.28) for _ in range(6)]
+    return lambda x, y: (math.sin(x * .31 + ph[0] + math.sin(y * .17 + ph[1])) + math.sin(y * .23 + ph[2] + math.sin(x * .13 + ph[3]))
+                         + .5 * math.sin((x + y) * .41 + ph[4])) / 2.5
+
+
+def arch_frame(spec):
+    """An archetype's unit frame: the band in its material, an outer rim, the moulding round the art window, the plate,
+    emblems on both side bands, then the archetype's own extras."""
+    cv = Canvas(); band = band_mask(); rng = random.Random(spec['seed'])
+    nz = smooth_noise(spec['seed'])
+    mat = spec['band']
+    cv.paint(band, lambda x, y: mat(x, y, nz, rng))
+    if spec.get('plate'):
+        plate = {(x, y) for (x, y) in band if y > WY1 + 2}
+        cv.paint(plate, lambda x, y: spec['plate'](x, y, nz, rng))
+    rl, rd = spec['rim']
+    for (x, y) in band:
+        if not in_rrect(x, y, X0 + 1, Y0 + 1, X1 - 1, Y1 - 1, R_CARD - 1):
+            cv.set(x, y, rl if (y < H / 2 and x < W * .8) else rd)
+    tl, td = spec['trim']
+    for (x, y) in band:
+        if in_rrect(x, y, WX0 - 1, WY0 - 1, WX1 + 1, WY1 + 1, R_WIN + 1): cv.set(x, y, spec.get('recess', OL))
+        elif in_rrect(x, y, WX0 - 2, WY0 - 2, WX1 + 2, WY1 + 2, R_WIN + 2): cv.set(x, y, tl if (x < W / 2 and y < WY1) or y < WY0 + 2 else td)
+    if spec.get('plate_rule', True):
+        for x in range(X0 + 3, X1 - 2): cv.set(x, WY1 + 4, tl if x % 2 else td)
+    if spec.get('extra'): spec['extra'](cv, band, rng)
+    emblem(cv, spec, X0, WY0 + 30); emblem(cv, spec, X1 - 6, WY0 + 30)
+    return cv
+
+
+# ---- materials ----------------------------------------------------------------------------------------------------------
+def ramp_mat(rmp, base=.5, amp=.22, speck=0.0, speck_col=None):
+    def f(x, y, nz, rng):
+        if speck and rng.random() < speck: return speck_col
+        return pick(rmp, base + amp * nz(x, y), x, y)
+    return f
+
+
+DEV_IRON = ramp('#0c0909', '#171112', '#231a1b', '#302425', '#40302f', '#54403c')
+BLOOD = ramp('#3a0408', '#6a0a14', '#9c1222', '#c8243a', '#ee5a6a')
+MARBLE = ramp('#8c867c', '#aaa497', '#c6c0b2', '#ddd8cc', '#eeeae0', '#fbf9f3')
+GLASS = [ramp('#0e2a6a', '#1f4fb0', '#4a86e8'), ramp('#6a0f1a', '#b02030', '#e8506a'), ramp('#6a4a08', '#c09020', '#f6d46a'),
+         ramp('#0e4a2a', '#208a4a', '#5ad08a'), ramp('#3a1a6a', '#6a3ab0', '#a87ae8')]
+STEEL = ramp('#24272c', '#3a3f46', '#535960', '#6e757e', '#8d959e', '#b1b8c0')
+RUST = ramp('#3a1a0c', '#5e2c12', '#86401a', '#a85a28', '#c87a3e', '#e09a5c')
+COPPER = ramp('#3a2014', '#5e3420', '#86502e', '#a86c3c', '#c88c54', '#e8b07a')
+OLIVE = ramp('#23271c', '#373d2b', '#4c533c', '#62694e', '#7c8462', '#989f7a')
+NACRE = ramp('#5a3a44', '#82586a', '#a8808e', '#cba7ae', '#e6cfd0', '#f8ece8')
+CHITIN = ramp('#24120f', '#3e2018', '#5e3424', '#7e4a32', '#9e6644')
+ASH = ramp('#1b1918', '#2b2826', '#3e3a37', '#53504c', '#6b6762', '#85807a', '#a09a93')
+DUST = ramp('#4a453e', '#625c53', '#7b7469', '#958d81', '#ada599', '#c5beb2', '#dad4c9')
+RUNE = ramp('#1d2320', '#2e3632', '#414b45', '#566159', '#6e7a70', '#89958a', '#a6b0a5')
+NEB = ramp('#0a0618', '#140c2a', '#21123e', '#311a56', '#46246e', '#5e3088', '#7a42a6')
+VOIDR = ramp('#020204', '#06060c', '#0b0b16', '#121222', '#1a1a30')
+
+
+def m_devilry(x, y, nz, rng):
+    v = .45 + .25 * nz(x, y)
+    if (x * 13 + y * 7) % 23 == 0: v += .2           # hammer marks
+    return pick(DEV_IRON, v, x, y)
+
+
+def m_grace(x, y, nz, rng):
+    vein = abs(math.sin(x * .13 + y * .07 + 3 * nz(x, y)))
+    return pick(MARBLE, .78 + .15 * nz(x, y) - (.35 if vein < .06 else 0), x, y)
+
+
+def p_grace(x, y, nz, rng):
+    # stained glass: diamond panes in jewel tones, lead between them, lit from above
+    u, v = (x - X0) + (y - Y0) * .9, (x - X0) - (y - Y0) * .9
+    cu, cv_ = math.floor(u / 9), math.floor(v / 9)
+    if (u % 9) < 1 or (v % 9) < 1: return hx('#2a2420')
+    g = GLASS[int(cu * 3 + cv_ * 2) % len(GLASS)]
+    shine = .55 + .35 * nz(x * 1.5, y * 1.5) - (y - WY1) / 60
+    return pick(g, shine, x, y)
+
+
+def m_scrap(x, y, nz, rng):
+    # patchwork: each band is cut into plates of different metals; a seam between plates
+    side = side_of(x, y); along = x if side in 'tb' else y
+    cut = [0, 17, 31, 52, 66, 83, 101, 118, 140, 160]
+    k = max(i for i, c in enumerate(cut) if along >= c)
+    if along in cut: return hx('#141518')
+    mat = [STEEL, RUST, COPPER, OLIVE][(k + (2 if side in 'lr' else 0) + (1 if side == 'r' else 0)) % 4]
+    v = .5 + .2 * nz(x, y) + (.18 if along - cut[k] == 1 else 0)
+    return pick(mat, v, x, y)
+
+
+def m_evo(x, y, nz, rng):
+    side = side_of(x, y); along = x if side in 'tb' else y
+    r = along % 7
+    if r == 0: return CHITIN[1]
+    t = .55 + .25 * math.sin(along * .5 + y * .2) + .1 * nz(x, y)
+    if r == 1: t += .2
+    if r == 6: t -= .2
+    return pick(NACRE, t, x, y)
+
+
+def p_evo(x, y, nz, rng):
+    return pick(NACRE, .45 + .2 * nz(x, y), x, y)
+
+
+def m_exiled(x, y, nz, rng):
+    v = .45 + .25 * nz(x, y)
+    crack = abs(math.sin(x * .45 + 2.2 * nz(x * .7, y))) < .05
+    if crack: return ASH[0]
+    if rng.random() < .006: return hx('#e06a20')       # a dying ember
+    return pick(ASH, v, x, y)
+
+
+def m_forgot(x, y, nz, rng):
+    return pick(DUST, .5 + .22 * nz(x, y), x, y)
+
+
+def m_rune(x, y, nz, rng):
+    v = .5 + .22 * nz(x, y)
+    if rng.random() < .01: return hx('#a7b84a')        # lichen
+    return pick(RUNE, v, x, y)
+
+
+def m_outer(x, y, nz, rng):
+    v = .4 + .35 * nz(x, y)
+    if rng.random() < .025: return hx('#ffffff') if rng.random() < .5 else hx('#ffb8f0')
+    return pick(NEB, v, x, y)
+
+
+def m_void(x, y, nz, rng):
+    if rng.random() < .012: return hx('#c8d0ff') if rng.random() < .6 else hx('#5a5a7a')
+    return pick(VOIDR, .35 + .25 * nz(x, y), x, y)
+
+
+# ---- extras -------------------------------------------------------------------------------------------------------------
+def x_devilry(cv, band, rng):
+    # blood run down from the top band in a few long drips, a sigil line on the plate, pentagram studs on the corners
+    for x in (X0 + 9, X0 + 23, X0 + 52, X1 - 40, X1 - 15):
+        ln = rng.randint(4, 7)
+        for y in range(Y0 + 1, Y0 + 1 + ln):
+            if (x, y) in band and not in_window(x, y): cv.set(x, y, BLOOD[3] if y < Y0 + 3 else BLOOD[2])
+        cv.set(x, Y0 + ln, BLOOD[4])
+    for x in range(X0 + 6, X1 - 5):
+        cv.set(x, Y1 - 4, BLOOD[1] if (x // 3) % 2 else BLOOD[2])
+    for cx in (X0 + 20, X1 - 20):
+        for i in range(-2, 3): cv.set(cx + i, Y1 - 6 - (2 - abs(i)), BLOOD[3])   # little inverted chevrons
+    spec = ARCH['devilry']
+    for (x0, y0) in [(X0 + 1, Y0 + 1), (X1 - 7, Y0 + 1), (X0 + 1, Y1 - 7), (X1 - 7, Y1 - 7)]: emblem(cv, spec, x0, y0)
+
+
+def x_grace(cv, band, rng):
+    # gold leaf studs at the corners and a gold rule framing the glass
+    for (cx, cy) in [(X0 + 4.5, Y0 + 4.5), (X1 - 3.5, Y0 + 4.5), (X0 + 4.5, Y1 - 3.5), (X1 - 3.5, Y1 - 3.5)]:
+        gem(cv, cx, cy, 1.6, ramp('#4a2c0c', '#a8752a', '#f3d27a', '#fff1b8', '#ffffff'), OL)
+    for x in range(X0 + 2, X1 - 1): cv.set(x, Y1 - 2, GOLD[3])
+
+
+def x_scrap(cv, band, rng):
+    for (x, y) in list(band):
+        side = side_of(x, y); along = x if side in 'tb' else y
+        if along in (2, 15, 19, 29, 33, 50, 54, 64, 68, 81, 85, 99, 103, 116, 120, 138, 142, 158) and (x + y) % 5 == 0:
+            cv.set(x, y, STEEL[5]); cv.set(x + 1, y + 1, hx('#141518'))          # rivets near every seam
+    # hazard stripes on the plate's middle
+    for x in range(X0 + 46, X1 - 45):
+        for y in range(Y1 - 6, Y1 - 2):
+            cv.set(x, y, hx('#e8c020') if ((x + y) // 3) % 2 else hx('#1a1a1a'))
+
+
+def x_evo(cv, band, rng):
+    # cells in the plate: membranes with a nucleus
+    for (cx, cy, r) in [(X0 + 16, Y1 - 12, 4.5), (X0 + 30, Y1 - 7, 3.2), (X1 - 18, Y1 - 11, 4.8), (X1 - 33, Y1 - 6, 3), (X0 + 60, Y1 - 13, 3.6)]:
+        m = {p for p in disc(cx, cy, r) if p in band}
+        f = sphere(cx, cy, r)
+        cv.paint(m, lambda x, y: pick(ramp('#4a7a5a', '#6aa07a', '#9cc8a0', '#d0f0d0'), f(x, y), x, y))
+        cv.outline(m, CHITIN[1], clip=lambda x, y: (x, y) in band)
+        cv.set(int(cx), int(cy), hx('#3a5a8a'))
+
+
+def x_exiled(cv, band, rng):
+    # a dead thorn vine along the top band and down the left side
+    pts = [(X0 + 6 + i, Y0 + 3 + round(1.5 * math.sin(i * .3))) for i in range(0, 100)]
+    pts += [(X0 + 3 + round(1.2 * math.sin(i * .35)), Y0 + 8 + i) for i in range(0, 90)]
+    for (x, y) in pts:
+        if (x, y) in band: cv.set(x, y, hx('#1a0f0c'))
+    for i, (x, y) in enumerate(pts):
+        if i % 9 == 4 and (x, y - 1) in band: cv.set(x, y - 1, hx('#3a221a')); cv.set(x + 1, y - 2, hx('#3a221a'))
+    # a wilted rose on the plate
+    for (dx, dy, c) in [(0, 0, '#5a1420'), (1, 0, '#7a1c2a'), (0, 1, '#7a1c2a'), (1, 1, '#4a0f18'), (-1, 1, '#5a1420'), (2, 1, '#5a1420'), (0, 2, '#4a0f18'), (1, 2, '#3a0a12'),
+                        (1, 3, '#2a3a1a'), (2, 4, '#2a3a1a'), (2, 5, '#2a3a1a'), (3, 6, '#2a3a1a')]:
+        cv.set(X0 + 58 + dx, Y1 - 14 + dy, c)
+
+
+def x_forgot(cv, band, rng):
+    # cobwebs in the top corners and wax that ran down onto the plate
+    web = hx('#e8e4dc', 170)
+    for (cx, cy, sx) in [(X0 + 1, Y0 + 1, 1), (X1 - 1, Y0 + 1, -1)]:
+        for a in range(0, 5):
+            ang = a * math.pi / 8
+            for t in range(1, 11):
+                x, y = int(cx + sx * t * math.cos(ang)), int(cy + t * math.sin(ang))
+                if (x, y) in band: cv.set(x, y, web)
+        for rr in (4, 7, 10):
+            for a in range(0, 24):
+                ang = a * math.pi / 48
+                x, y = int(cx + sx * rr * math.cos(ang)), int(cy + rr * math.sin(ang))
+                if (x, y) in band and a % 3: cv.set(x, y, web)
+    wax = ramp('#b8ae98', '#d8ceb4', '#f0e8d2', '#fffaf0')
+    for x0 in (X0 + 14, X0 + 41, X1 - 30, X1 - 12):
+        ln = rng.randint(5, 12)
+        for y in range(WY1 + 2, WY1 + 2 + ln):
+            for dx in range(0, 3 if y < WY1 + ln else 2): cv.set(x0 + dx, y, wax[2 if dx == 0 else 1])
+        cv.set(x0, WY1 + 2 + ln, wax[1]); cv.set(x0 + 1, WY1 + 2 + ln, wax[1])
+
+
+GLYPHS = [['#.#', '##.', '#.#', '#..', '#..'], ['.#.', '#.#', '.#.', '#.#', '.#.'], ['#..', '##.', '#.#', '..#', '..#'], ['###', '.#.', '.#.', '.#.', '###'],
+          ['#.#', '#.#', '.#.', '#.#', '#.#'], ['.##', '#..', '.#.', '..#', '##.']]
+
+
+def x_rune(cv, band, rng):
+    glow, cut = hx('#7ff0d0'), hx('#141a17')
+    def glyph(x0, y0, g):
+        for j, row in enumerate(g):
+            for i, ch in enumerate(row):
+                if ch == '#':
+                    if (x0 + i + 1, y0 + j + 1) in band: cv.set(x0 + i + 1, y0 + j + 1, cut)
+                    cv.set(x0 + i, y0 + j, glow)
+    for k, y in enumerate(range(WY0 + 4, WY1 - 6, 13)):
+        if WY0 + 26 <= y <= WY0 + 40: continue          # the emblem sits there
+        glyph(X0 + 2, y, GLYPHS[k % 6]); glyph(X1 - 4, y + 6, GLYPHS[(k + 3) % 6])
+    for k, x in enumerate(range(X0 + 34, X1 - 34, 8)): glyph(x, Y1 - 10, GLYPHS[k % 6])
+
+
+def x_outer(cv, band, rng):
+    # a faint glow along the inner trim and a few bigger four-point stars
+    for (sx, sy) in [(X0 + 30, Y1 - 10), (X1 - 26, Y1 - 15), (X0 + 3, Y0 + 60), (X1 - 3, Y0 + 95), (X0 + 70, Y0 + 3)]:
+        cv.set(sx, sy, hx('#ffffff'))
+        for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]: cv.set(sx + dx, sy + dy, hx('#d6a8ff'))
+
+
+def x_void(cv, band, rng):
+    # the event horizon: a glowing rim round the art window
+    for (x, y) in band:
+        if in_rrect(x, y, WX0 - 3, WY0 - 3, WX1 + 3, WY1 + 3, R_WIN + 3) and not in_rrect(x, y, WX0 - 2, WY0 - 2, WX1 + 2, WY1 + 2, R_WIN + 2):
+            cv.set(x, y, hx('#3a1a6a'))
+    # black holes in the corners: a dark core in a bright accretion ring
+    for (cx, cy) in [(X0 + 4.5, Y0 + 4.5), (X1 - 3.5, Y0 + 4.5), (X0 + 4.5, Y1 - 3.5), (X1 - 3.5, Y1 - 3.5)]:
+        for (x, y) in disc(cx, cy, 3.4):
+            d = math.hypot(x + .5 - cx, y + .5 - cy)
+            cv.set(x, y, hx('#000000') if d < 1.8 else (hx('#ffb35a') if (x + y) % 2 else hx('#b86aff')))
+
+
+# one spec per archetype key (CARD_ARCHETYPE_MARK in arena_app.js)
+ARCH = {
+    'devilry':   dict(seed=61, band=m_devilry, rim=(hx('#5a1018'), hx('#2a0408')), trim=(BLOOD[3], BLOOD[1]), extra=x_devilry,
+                      emblem='star', em1=BLOOD[3], em2=BLOOD[4], emo=hx('#000000'),
+                      plank=ramp('#160a0a', '#2a1212', '#3e1a18', '#552420', '#6c2e28', '#863a30', '#a04a3a'), nail=ramp('#2a0608', '#5a0c14', '#8a1422', '#c02436', '#e8506a', '#ffa0aa'),
+                      rope=ramp('#1a0606', '#3a0a10', '#6a1420', '#9a2030', '#c8404a')),
+    'grace':     dict(seed=62, band=m_grace, plate=p_grace, rim=(GOLD[4], GOLD[2]), trim=(GOLD[4], GOLD[2]), extra=x_grace,
+                      emblem='pattee', em1=GOLD[4], em2=GOLD[5], emo=hx('#4a2c0c'),
+                      plank=ramp('#5a544a', '#7e776a', '#a39b8a', '#c4bca8', '#ddd6c4', '#efe9da', '#fbf8ef'), nail=GOLD, rope=ramp('#6a4a10', '#a8752a', '#d9a441', '#f3d27a', '#fff1b8')),
+    'exile':     dict(seed=63, band=m_scrap, rim=(hx('#8d959e'), hx('#24272c')), trim=(hx('#b1b8c0'), hx('#3a3f46')), extra=x_scrap,
+                      emblem='gear', em1=hx('#a8b0b8'), em2=hx('#c87a3e'), emo=hx('#141518'),
+                      plank=ramp('#24272c', '#3a3f46', '#535960', '#6e757e', '#8d959e', '#a8afb6', '#c4cad0'), nail=COPPER, rope=STEEL),
+    'evolution': dict(seed=64, band=m_evo, plate=p_evo, rim=(hx('#f8ece8'), hx('#5a3a44')), trim=(hx('#ff9ab0'), hx('#a85a70')), extra=x_evo,
+                      emblem='spiral', em1=hx('#f6e2da'), em2=hx('#c47a8a'), emo=CHITIN[0],
+                      plank=ramp('#3a2228', '#5a3640', '#7e505a', '#a26f76', '#c4979a', '#e0c0bc', '#f6e2da'), nail=ramp('#5a3a44', '#a8808e', '#cba7ae', '#e6cfd0', '#f8ece8', '#ffffff'),
+                      rope=ramp('#1e3a1e', '#2e5a2e', '#4a7a4a', '#6aa06a', '#9cc89c')),
+    'exiled':    dict(seed=65, band=m_exiled, rim=(hx('#6b6762'), hx('#1b1918')), trim=(hx('#a86a72'), hx('#5a3a3e')), extra=x_exiled,
+                      emblem='rose', em1=hx('#2a3a1a'), em2=hx('#8a2232'), emo=hx('#0e0c0b'),
+                      plank=ASH, nail=ramp('#3a1a0a', '#7a2a0a', '#c04a10', '#e06a20', '#ffa050', '#ffd0a0'), rope=ramp('#141210', '#24201c', '#3a3430', '#524a44', '#6a625a')),
+    'forgotten': dict(seed=66, band=m_forgot, rim=(hx('#c5beb2'), hx('#4a453e')), trim=(hx('#b89a62'), hx('#6a5634')), extra=x_forgot,
+                      emblem='candle', em1=hx('#f0e8d2'), em2=hx('#ffb040'), emo=hx('#3a352e'),
+                      plank=DUST, nail=ramp('#3a2a14', '#5a4420', '#7a6232', '#9a7e48', '#b89a62', '#d6bc88'), rope=ramp('#4a453e', '#7b7469', '#ada599', '#d2cbbe', '#ece6dc')),
+    'ancient':   dict(seed=67, band=m_rune, rim=(hx('#89958a'), hx('#1d2320')), trim=(hx('#7ff0d0'), hx('#2e7a68')), extra=x_rune,
+                      emblem='rune', em1=hx('#7ff0d0'), em2=hx('#c8fff0'), emo=hx('#101512'),
+                      plank=RUNE, nail=ramp('#0e3a30', '#1a6a58', '#2ea088', '#5ad0b8', '#7ff0d0', '#c8fff0'), rope=ramp('#1a2a12', '#2c4220', '#44602e', '#62803e', '#86a454')),
+    'outer':     dict(seed=68, band=m_outer, rim=(hx('#a86ae0'), hx('#140c2a')), trim=(hx('#ff8ae8'), hx('#8a3aa8')), extra=x_outer,
+                      emblem='eye', em1=hx('#f6f0ff'), em2=hx('#b04ae0'), emo=hx('#08040f'),
+                      plank=NEB, nail=ramp('#3a1a5a', '#6a3a9a', '#a06ad0', '#d6a8ff', '#ffd8ff', '#ffffff'), rope=ramp('#21123e', '#46246e', '#7a42a6', '#a86ae0', '#d6a8ff')),
+    'void':      dict(seed=69, band=m_void, rim=(hx('#2a2a40'), hx('#000000')), trim=(hx('#9a6aff'), hx('#3a8ac8')), extra=x_void, recess=hx('#000000'),
+                      emblem='hole', em1=hx('#b86aff'), em2=hx('#000000'), emo=hx('#ffb35a'),
+                      plank=ramp('#030305', '#08080e', '#101018', '#181824', '#222232', '#2e2e42', '#3c3c56'), nail=ramp('#0a1a3a', '#1a3a6a', '#3a6aa8', '#6aa0e0', '#a8d0ff', '#e0f0ff'),
+                      rope=ramp('#14081e', '#2a1040', '#4a1a6a', '#7a2ab0', '#a86ae0')),
+}
+
+
 if __name__ == '__main__':
     for name, fn in [('unit', unit), ('structure', structure), ('castle', castle), ('field', field)]:
         fn().save(name); print('wrote art/frames/%s.png' % name)
+    for k, spec in ARCH.items():
+        arch_frame(spec).save('a-' + k); structure(spec).save('s-' + k); print('wrote art/frames/a-%s.png, s-%s.png' % (k, k))

@@ -10262,6 +10262,19 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   /* the rickety one: corners not quite square, and the whole frame a hair off true */
   .card-tile.fr-structure{border-radius:9px 13px 10px 12px / 12px 9px 13px 10px;}
   .card-tile.fr-structure > .cframe{transform:rotate(-.6deg);}
+  /* Archetype frames (2026-10-16, user: "I think ecclesia, devilry, scrapper and archetypal cards having their own card frame is cool.
+     (then we can remove the top right hand corner context symbol for those...)"): .ar-<key> (cardFrameClasses) swaps in the
+     archetype's image. Units wear the archetype frame (same 8/7/28 slices as the unit frame); structures keep their board slices
+     and rickety shape, in the archetype's materials. */
+  .card-tile.fr-unit.ar-devilry > .cframe{border-image-source:var(--fr-a-devilry);} .card-tile.fr-structure.ar-devilry > .cframe{border-image-source:var(--fr-s-devilry);}
+  .card-tile.fr-unit.ar-grace > .cframe{border-image-source:var(--fr-a-grace);} .card-tile.fr-structure.ar-grace > .cframe{border-image-source:var(--fr-s-grace);}
+  .card-tile.fr-unit.ar-exile > .cframe{border-image-source:var(--fr-a-exile);} .card-tile.fr-structure.ar-exile > .cframe{border-image-source:var(--fr-s-exile);}
+  .card-tile.fr-unit.ar-evolution > .cframe{border-image-source:var(--fr-a-evolution);} .card-tile.fr-structure.ar-evolution > .cframe{border-image-source:var(--fr-s-evolution);}
+  .card-tile.fr-unit.ar-exiled > .cframe{border-image-source:var(--fr-a-exiled);} .card-tile.fr-structure.ar-exiled > .cframe{border-image-source:var(--fr-s-exiled);}
+  .card-tile.fr-unit.ar-forgotten > .cframe{border-image-source:var(--fr-a-forgotten);} .card-tile.fr-structure.ar-forgotten > .cframe{border-image-source:var(--fr-s-forgotten);}
+  .card-tile.fr-unit.ar-ancient > .cframe{border-image-source:var(--fr-a-ancient);} .card-tile.fr-structure.ar-ancient > .cframe{border-image-source:var(--fr-s-ancient);}
+  .card-tile.fr-unit.ar-outer > .cframe{border-image-source:var(--fr-a-outer);} .card-tile.fr-structure.ar-outer > .cframe{border-image-source:var(--fr-s-outer);}
+  .card-tile.fr-unit.ar-void > .cframe{border-image-source:var(--fr-a-void);} .card-tile.fr-structure.ar-void > .cframe{border-image-source:var(--fr-s-void);}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
