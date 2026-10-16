@@ -706,9 +706,16 @@ function sib(node, cls, html){
   d.style.left = node.style.left; d.style.top = node.style.top; node.parentNode.insertBefore(d, node); return d;
 }
 function kid(node, cls, n, style){ for(let i = 0; i < (n || 1); i++){ const k = document.createElement('i'); k.className = cls; k.setAttribute('aria-hidden', 'true'); if(style) k.setAttribute('style', style(i)); node.appendChild(k); } }
-const BRAMBLE_SVG = `<svg viewBox="-40 -40 80 80"><g fill="none" stroke="#6b4423" stroke-width="4.6" stroke-linecap="round"><path d="M-30 6 C-26 -22 6 -34 26 -16 C34 -6 30 14 16 26 C2 34 -22 30 -30 6"/><path d="M-24 -14 C-6 -30 22 -26 30 2" stroke="#8a5a2e" stroke-width="3"/><path d="M-30 6 C-26 -22 6 -34 26 -16" stroke="#b07a42" stroke-width="1.2"/></g>
-  <g fill="#3e2610">${[[-30,6],[-20,-20],[0,-31],[20,-22],[31,-4],[26,14],[10,28],[-12,29],[-27,18]].map(([x,y])=> `<path d="M${x} ${y} l${x>0?4:-4} ${y>0?3:-3} l${x>0?-1:1} ${y>0?-5:5}z"/>`).join('')}</g>
-  <g fill="#5d8a3a">${[[-28,-6],[12,-30],[30,8],[-6,31]].map(([x,y])=> `<ellipse cx="${x}" cy="${y}" rx="4" ry="2.2" transform="rotate(${x*3} ${x} ${y})"/>`).join('')}</g></svg>`;
+// 2026-10-16 (user: "Locked skirmishes: There is a bramble circle around them. Make it completely circular, now it looks abit lemon-y."):
+// the vine is a true circle now (r 29), a second strand winds round it on a slightly smaller circle, and the thorns and leaves sit on
+// the circle pointing outward.
+const BRAMBLE_SVG = (()=>{ const R = 29, P = (a, r)=> [Math.cos(a)*r, Math.sin(a)*r].map(v=> v.toFixed(2));
+  const thorns = Array.from({length:10}, (_, i)=>{ const a = i/10*Math.PI*2 + .2, [x, y] = P(a, R + 1), [tx, ty] = P(a, R + 6.5), [lx, ly] = P(a - .09, R + 1), [rx, ry] = P(a + .09, R + 1);
+    return `<path d="M${lx} ${ly} L${tx} ${ty} L${rx} ${ry}Z"/>`; }).join('');
+  const leaves = [.9, 2.5, 4.1, 5.6].map(a=>{ const [x, y] = P(a, R); return `<ellipse cx="${x}" cy="${y}" rx="4.2" ry="2.2" transform="rotate(${(a*57.3 + 90).toFixed(0)} ${x} ${y})"/>`; }).join('');
+  const [s0x, s0y] = P(-2.4, R - 3), [s1x, s1y] = P(.9, R - 3);
+  return `<svg viewBox="-40 -40 80 80"><g fill="none" stroke-linecap="round"><circle r="${R}" stroke="#6b4423" stroke-width="4.6"/><path d="M${s0x} ${s0y} A${R - 3} ${R - 3} 0 0 1 ${s1x} ${s1y}" stroke="#8a5a2e" stroke-width="3"/><path d="M${P(-2.6, R)[0]} ${P(-2.6, R)[1]} A${R} ${R} 0 0 1 ${P(-.7, R)[0]} ${P(-.7, R)[1]}" stroke="#b07a42" stroke-width="1.2"/></g>
+  <g fill="#3e2610">${thorns}</g><g fill="#5d8a3a">${leaves}</g></svg>`; })();
 const TENTACLE_SVG = `<svg viewBox="-60 -60 120 120"><g fill="#4a2466" stroke="#b07ad8" stroke-width="1.6">
   <path d="M-30 40 C-46 10 -40 -18 -24 -38 C-30 -14 -26 8 -18 40Z"/><path d="M30 40 C46 6 42 -22 22 -42 C30 -16 26 8 18 40Z"/><path d="M-6 44 C-14 18 -4 -8 6 -50 C10 -20 8 14 6 44Z"/></g>
   <g fill="#c58cff" opacity=".55">${[[-34,-6],[-30,14],[34,-10],[30,12],[2,-24],[4,4]].map(([x,y])=> `<circle cx="${x}" cy="${y}" r="2"/>`).join('')}</g></svg>`;

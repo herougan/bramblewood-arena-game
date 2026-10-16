@@ -2,6 +2,19 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (fight and rewards UI)
+- **Graveyard preview:** just the cards (the Removal Zone's under a thin 🌫 rule), no titles, counts or close text, in a speech bubble whose tail points at the pile.
+- **Battle log:** plays and attacks are the headline lines; every other line (status damage, effects, draws, readies) sits one step in. Penance and Blood Tithe now have log lines, a castle's own hit reads "Your castle hit …", and an event with no sentence that still hurt something says so.
+- **Results rewards:** the main currencies (Maple Leaves, Magic Dust …) are one row of same-size pills; materia, a rescued baby and Base growth sit on a row below. The "✨ N for Base growth" pill is gone: a Base card already at its top level shows greyed, its dust bursts into the Magic Dust pill and the pill counts on up.
+- **First Clear box:** centred, with no empty space on the right (it had a spare grid column). A won box whose label is wider than 80% of it shows just the ✓.
+- **Pass:** it now sits in the deck's row, centred in the room before the Graveyard (between the Deck and the Graveyard on a phone), says just "Pass", and is squarer.
+- **Bounty bubble:** "+🪵" (the number only above 1), no "Lumber" word.
+- **Toasts over "Tap to skip":** while the reward reveal or a VS screen is up, toasts sit above its bottom label and over it.
+- **Auto-Sweep results:** a sweep opens a results card (the fight, wins out of runs, Maple Leaves and Magic Dust counting up, Collect) instead of a toast.
+- **Tutorial map:** T-2, T-3 and T-4 stay hidden while the two tutorials are played, then appear as you reach Map 1, Map 8 and Map 18.
+- **Locked skirmishes:** the bramble ring is a true circle (it was lemon-shaped).
+- **Win screen:** the "+3 XP" bar with its glow that floated over nothing is gone; the reward coins find their pills as they fall instead of where they were mid-animation; an account level-up waits until the results close, then plays over the page.
+
 ## 2026-10-16 (fight flow)
 - **Stuck fights fixed:** a fight could freeze with a card played but no round coming: Pass turn, playing, pitching and Auto-play all did nothing. The card was on the board in the engine, but an error in one of the play's effects or log lines stopped the turn before its round, and every retry hit the same error (and gave the CPU another turn). Now one commit runs at a time, the CPU acts once a round, the play's effects can't stop the round, a round that breaks always hands the turn back, and a watchdog starts a played turn's round if it never began. A card you play or pitch while the turn is already committing just shakes.
 - **Map 0 lessons can't trap you:** outside the guided tutorial, a lesson gate (the pitching lesson, "That one looks tough") no longer blocks Pass turn, Auto-play, Forfeit, Quit, the speed button or the log, and a lesson lock whose bubble is gone lets go.

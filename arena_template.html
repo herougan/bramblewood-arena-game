@@ -456,6 +456,11 @@
   .signin-banner .btn.ghost{color:#f4efdc; border-color:rgba(255,255,255,.3); background:transparent;}
   .toast-host{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:1150; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; width:min(92vw,440px);}
   .toast-host.at-top{bottom:auto; top:calc(14px + env(safe-area-inset-top, 0px));}
+  /* 2026-10-16 (user: "The reward toasts on the btm and the label "Tap to skip" often overlap. The Tap to skip can happen at the lowest
+     layer. Reward toasts happen above it. Unless that 'tap to skip' is not there. (or any text there for that matter)"): while a screen
+     with a bottom label is up (the reward reveal's "Tap to skip", the VS screens'), the toasts sit above that label and over it. */
+  body:has(.rr-stage, .vs-screen, .vs-opener) .toast-host:not(.at-top){bottom:calc(64px + env(safe-area-inset-bottom, 0px)); z-index:1260;}
+  .rr-hint, .vs-skip{z-index:0;}
   .home-acct-badge{display:block; margin-top:2px; font-size:9.5px; font-weight:800; letter-spacing:.02em; opacity:.75; padding:1px 6px; border-radius:999px; border:1px dashed currentColor;}
   .home-acct-badge.signed-in{opacity:1; border-style:solid; color:#3f9a44; border-color:#4caf50; background:rgba(76,175,80,.12);}
   .toast{background:#20281b; color:#f4efdc; border:1px solid #4a3f2c; border-radius:12px; padding:10px 14px; font-size:13.5px; font-weight:700; box-shadow:0 6px 24px rgba(0,0,0,.35); opacity:0; transform:translateY(10px); transition:opacity .3s, transform .3s; text-align:center;}
@@ -2932,6 +2937,34 @@
   .rw-cards{display:flex; flex-wrap:wrap; gap:8px; justify-content:center;}
   .rw-card .card-tile{width:84px; height:105px; font-size:10px; margin:0;}
   .rw-cur{font-size:15px; padding:6px 12px;}
+  /* 2026-10-16 (user: "Move the pass turn button to the same row as the deck, centered, then simplify to just "Pass". Then make it
+     look more squarish - decrease the corner radius."): in the deck's row, centred in the room left before the Graveyard. */
+  .bottom-play-row .skipzone.compact.in-deck-row{position:static !important; inset:auto !important; align-self:center; margin:0 auto; order:0; flex:0 0 auto; width:auto; min-width:72px; min-height:44px; padding:8px 14px; border-radius:8px; font-size:14px; font-weight:800; justify-content:center; box-shadow:0 3px 10px rgba(0,0,0,.3); z-index:2;}
+  @media (max-width:640px){ .bottom-play-row .skipzone.compact.in-deck-row{order:3; margin:0 auto; min-height:40px; padding:6px 12px;} }
+  /* 2026-10-16 (user: "Reward items not same size ... they should be placed below the main currency pills"): the main currencies are
+     one row of equal pills; materia, a rescued baby and Base growth sit on a row under them. */
+  .rw-cur-row .rw-cur{min-width:150px; justify-content:center; box-sizing:border-box;}
+  .rw-cur-row + .rw-item-row{margin-top:8px;}
+  .rw-item-row:empty{display:none;}
+  /* 2026-10-16 (user: "Auto Sweep should bring up the reward screen. not just a toast"): showSweepResults */
+  .sweep-results{position:fixed; inset:0; z-index:1210; display:grid; place-items:center; padding:16px; background:rgba(10,7,3,.62);}
+  .sweep-results .sr-card{width:min(420px, 100%); box-sizing:border-box; padding:22px 20px 18px; border-radius:18px; text-align:center; color:#fff; background:radial-gradient(120% 90% at 50% 0%, #4a3a1c, #1f1910 70%); box-shadow:0 0 0 2px rgba(255,214,120,.55), 0 18px 40px rgba(0,0,0,.55); display:flex; flex-direction:column; align-items:center; gap:10px;}
+  .sweep-results .sr-card.is-loss{background:radial-gradient(120% 90% at 50% 0%, #3a3330, #1b1714 70%); box-shadow:0 0 0 2px rgba(200,190,180,.35), 0 18px 40px rgba(0,0,0,.55);}
+  .sweep-results .sr-ico{font-size:42px; line-height:1;}
+  .sweep-results .sr-title{margin:0; font:800 26px/1.1 'Baloo 2',system-ui,sans-serif; color:#ffe2a6;}
+  .sweep-results .sr-sub{font:700 14px 'Baloo 2',system-ui,sans-serif; opacity:.85;}
+  .sweep-results .sr-tally{display:flex; align-items:baseline; gap:6px; font:800 15px 'Baloo 2',system-ui,sans-serif;} .sweep-results .sr-tally b{font-size:34px; color:#ffd56e;}
+  .sweep-results .sr-rewards{width:100%; background:none !important; box-shadow:none !important;}
+  .sweep-results .rw-head{font:800 12px 'Baloo 2',system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#ffd98a; margin-bottom:6px;}
+  .sweep-results .rw-cur{background:rgba(255,255,255,.14); color:#fff; border:1px solid rgba(255,220,150,.35); font-size:17px;}
+  .sweep-results .sr-ok{margin-top:4px; min-width:160px;}
+  .rw-dust-cards{display:inline-flex; gap:6px; align-items:center;}
+  .rw-dust-card{width:44px; display:inline-block; position:relative; transition:filter .35s ease, opacity .35s ease;}
+  .rw-dust-card .card-tile{width:100% !important; pointer-events:none;}
+  .rw-dust-back{display:block; aspect-ratio:4/5; border-radius:6px; background-size:cover; background-position:center;}
+  .rw-dust-card.is-dusted{filter:grayscale(1) brightness(.75); opacity:.6;}
+  .rw-dust-mote{position:fixed; left:0; top:0; z-index:12000; pointer-events:none; font-size:14px; color:#e9d8ff; text-shadow:0 0 6px rgba(200,170,255,.95);}
+  @media (max-width:560px){ .rw-cur-row .rw-cur{min-width:118px;} }
   .rw-act{display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); font-weight:700; font-size:13.5px; cursor:help;}
   .rw-node{width:44px; height:44px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:21px; background:#f4ecd8; border:3px solid #c9a46a; box-shadow:0 3px 8px rgba(0,0,0,.3); cursor:help; position:relative;}
   .rw-node.kind-elite{border-color:#8e5bc9;} .rw-node.kind-boss{border-color:#c0392b;} .rw-node.kind-raidboss{border-color:#e3b23c;}
@@ -3629,6 +3662,10 @@
   .log-row.gold{color:var(--gold);} .log-row.grace{color:var(--grace);} .log-row.exile{color:var(--exile);} .log-row.devilry{color:var(--devilry-border);}
   .log-row.bleed{color:var(--bleed);}
   .log-row.heal{color:var(--heal);}
+  /* 2026-10-16 (user: "all log items will be slightly 'forward' like 1 tab nest in. So that we can easily see the "Attack" and "Plays""):
+     plays and attacks are flush and bold; every other line sits one step in. */
+  .log-row.log-head{font-weight:700;}
+  .log-row.log-sub{margin-left:18px; font-size:.94em; opacity:.92;}
 
   /* ==================== SIMULATOR ==================== */
   .deck-cols{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
@@ -8294,9 +8331,16 @@
     background:#3a3238; color:#f3ece4; font:800 10px/1.3 'Baloo 2', system-ui, sans-serif; white-space:nowrap; cursor:pointer;}
   .grave-peek-badge:hover, .grave-peek-badge:focus-visible{background:#54474f;}
   .removal-badge[data-grave-peek]{cursor:pointer;}
-  .grave-peek{position:fixed; z-index:10030; width:max-content; max-width:min(320px, calc(100vw - 16px)); max-height:min(340px, 60vh); overflow:auto; box-sizing:border-box;
+  .grave-peek{position:fixed; z-index:10030; width:max-content; max-width:min(320px, calc(100vw - 16px)); box-sizing:border-box;
     padding:8px 9px 9px; border-radius:12px; background:rgba(24,19,16,.94); color:#f3ece4; border:1px solid rgba(255,255,255,.18); box-shadow:0 10px 26px rgba(0,0,0,.5);
     font-family:'Baloo 2', system-ui, sans-serif;}
+  /* 2026-10-16 (user: "Like a speech bubble, the preview div has a pointer to the graveyard"): the cards scroll inside; the tail sits outside */
+  .grave-peek .gpk-body{max-height:min(320px, 58vh); overflow:auto;}
+  .grave-peek .gpk-body .gpk-grid{grid-template-columns:repeat(var(--gpk-cols, 6), 46px); justify-content:center;}
+  .grave-peek .gpk-tail{position:absolute; left:var(--tail-x, 50%); top:-8px; width:14px; height:14px; transform:translateX(-50%) rotate(45deg); background:rgba(24,19,16,.94); border-left:1px solid rgba(255,255,255,.18); border-top:1px solid rgba(255,255,255,.18); pointer-events:none;}
+  .grave-peek.tail-down .gpk-tail{top:auto; bottom:-8px; border:0; border-right:1px solid rgba(255,255,255,.18); border-bottom:1px solid rgba(255,255,255,.18);}
+  .grave-peek .gpk-sep{display:flex; align-items:center; gap:6px; margin:8px 0 6px; font-size:13px; opacity:.8;}
+  .grave-peek .gpk-sep::before, .grave-peek .gpk-sep::after{content:''; flex:1; height:1px; background:rgba(255,255,255,.14);}
   .grave-peek .gpk-head{display:flex; align-items:center; gap:6px; font-size:12.5px; margin:0 0 6px;}
   .grave-peek .gpk-head span{opacity:.7; font-size:11.5px;}
   .grave-peek .gpk-head.gpk-sub{margin-top:8px; padding-top:6px; border-top:1px solid rgba(255,255,255,.12);}
@@ -8308,7 +8352,7 @@
   .grave-peek .gpk-ico{position:absolute; inset:0 0 13px; display:flex; align-items:center; justify-content:center; font-size:22px;}
   .grave-peek .gpk-nm{position:absolute; left:0; right:0; bottom:0; height:13px; padding:0 2px; font-size:8px; line-height:13px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:rgba(0,0,0,.55);}
   .grave-peek .gpk-n{position:absolute; top:1px; right:1px; font-size:9.5px; line-height:1; padding:1px 3px; border-radius:6px; background:rgba(0,0,0,.7); color:#ffd56e;}
-  .grave-peek .gpk-empty{grid-column:1/-1; font-size:12px; opacity:.7; padding:2px 0;}
+  .grave-peek .gpk-empty{grid-column:1/-1; font-size:22px; opacity:.45; padding:2px 10px; text-align:center;}
   /* The turn the fight ended on (user: "...I want to see the turn#. It shows up as a pill on the opponent's HP bar in the centre."). */
   .bf-hp .bf-turn-pill{position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); z-index:2; pointer-events:auto; white-space:nowrap;
     height:22px; box-sizing:border-box; display:inline-flex; align-items:center; padding:0 11px; border-radius:999px;
@@ -9605,7 +9649,10 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 /* 2026-10-13 (user: "The first clear rewards section should wrap around its contents, not be left hanging"; "Move the 'B'
    beside the Lock"; the card didn't fit its locked deck): the reward box is as wide as what's in it, the locked slab is
    shorter with the rank right beside the lock, and the panel is allowed to be taller. */
-.conquest-node-panel .cnp-rw{display:inline-grid; grid-template-columns:repeat(2, auto); justify-content:center; align-items:center; width:auto; flex:0 0 auto;}
+.conquest-node-panel .cnp-rw{display:inline-grid; grid-template-columns:repeat(var(--rw-cols, 2), auto); justify-content:center; justify-items:center; align-items:center; width:auto; flex:0 0 auto;} /* 2026-10-16: one column per block (an empty 2nd column left a gap on the right) */
+/* 2026-10-16 (user: "The First clear label, if its larger than 80% of the rewards div, then just replaced it with a tick ONLY") */
+.cnp-rw.label-tick .cnp-rw-label .cnp-rw-word{display:none;}
+.cnp-rw.label-tick .cnp-rw-label .cnp-rw-ok{margin-left:0;}
 .conquest-node-panel .cnp-rw .cnp-rw-label{grid-column:1 / -1;}
 .conquest-node-panel .cnp-deck-locked{height:52px;}
 .conquest-node-panel .cnp-deck-locked .rank-hex{position:relative !important; inset:auto !important; transform:scale(.72) !important; margin:0 !important;}
