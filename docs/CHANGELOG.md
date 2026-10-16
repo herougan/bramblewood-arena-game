@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (errands)
+- **Errands tab on the Notices:** the board has two tabs now, Notices (daily and weekly, as before) and Errands, which lists only the errands folk asked of you on the road, never dailies or weeklies. Each errand is a big, straight parchment writ: title, who asked, their words, the task with a progress bar and count, the reward, and a wax-seal Claim.
+- **Errand progress toasts:** when an errand moves on, a toast says so wherever you are ("📜 Errand: Pests in the Reeds — 7/12", "📜 Errand complete: …"), one per errand, with a fight's changes gathered into one.
+- **Journeys hidden for now** (`JOURNEYS_HIDDEN` in arena_app.js): no board, no fight-step label, no toasts and no steps taken. Admin Mode still sees them, marked hidden.
+
 ## 2026-10-16 (09:15)
 - **Skill marks on the card face:** 51 skills that sat on real cards with no mark now show their icon on the card's skill strip, with the number when it's more than 1. Among them: Nocturnal, Diurnal, Bleed, Regen, Guardian, Swarm, Arrow, Stealth, Pierce, Crit, Freeze and Shock.
 - **Festering is now Lingering**, so it no longer reads like Fester. Lingering: Bleed and Poison don't wear off while it's on the field. Fester: extra damage equal to its own Poison.

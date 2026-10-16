@@ -3278,13 +3278,70 @@
   @keyframes cpRing{0%{transform:scale(.6); opacity:1;} 100%{transform:scale(1.6); opacity:0;}}
   @keyframes cpBob{0%,100%{transform:translateY(0);} 50%{transform:translateY(8px);}}
   @media (prefers-reduced-motion: reduce){ .coach-pointer .cp-ring, .coach-pointer .cp-hand{animation:none;} .coach-spotlight{transition:none;} }
-  /* Errands on the Notices (2026-10-12) */
-  .qn-errands .er-giver{position:absolute; top:8px; left:10px; font-size:22px;}
-  .qn-errands .er-note .qn-label{padding-left:26px;}
-  .qn-errands .er-offer{background:#f6efd9; border:2px dashed #b9975a;}
-  .qn-errands .er-from{display:block; margin-top:4px; font-style:italic; opacity:.75;}
-  .qn-errands .er-empty{grid-column:1/-1; margin:6px 4px; font-style:italic; opacity:.8;}
-  .qn-errands .er-wait{font-size:12px; opacity:.7;}
+  /* Errands on the Notices (2026-10-12). 2026-10-16 (user: "i think quests will be a subtab in notices ... The quests should
+     be bigger more official looking cards - straight not slanted"): an Errands sub-tab, and each errand is a big, square-set
+     parchment writ (header band, portrait, title in the old hand, the ask, a chunky progress bar, the reward, a wax-seal
+     Claim). Nothing on this tab is rotated. */
+  .qn-tabs{display:flex; gap:6px; margin:0 0 12px; padding:0 6px; border-bottom:3px solid #2e1d0e;}
+  .qn-tab{display:inline-flex; align-items:center; gap:7px; padding:7px 16px 6px; margin-bottom:-3px; border:3px solid #2e1d0e; border-bottom:0; border-radius:8px 8px 0 0;
+    background:linear-gradient(180deg,#6a4728,#4a3019); color:#e9d6b2; font:800 15px/1.2 'Baloo 2',system-ui,sans-serif; cursor:pointer;}
+  .qn-tab:hover{color:#fff1d0; filter:brightness(1.08);}
+  .qn-tab.is-on{background:linear-gradient(180deg,#d2a668,#c79a5b); color:#2e1d0e; padding-bottom:9px; cursor:default; filter:none;}
+  .qn-tab:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
+  .qn-tab-n{min-width:20px; height:20px; padding:0 6px; border-radius:999px; display:inline-grid; place-items:center; background:rgba(0,0,0,.28); color:#fff1d0; font:800 12px/1 'Nunito',system-ui,sans-serif;}
+  .qn-tab.is-on .qn-tab-n{background:rgba(46,29,14,.18); color:#2e1d0e;}
+  .qn-tab .qn-tab-n.is-ready{background:#c0392b; color:#fff; box-shadow:0 0 0 2px #ffe08a;}
+  .qn-cork.er-cork{grid-template-columns:1fr;}
+  .er-board .qn-sign{rotate:0deg;}
+  .er-writs{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap:18px; align-items:start;}
+  .er-sub{display:flex; align-items:center; gap:10px; margin:4px 0 -2px; font:800 11.5px 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.1em; color:#3f2812;}
+  .er-sub::after{content:""; flex:1; height:2px; background:rgba(63,40,18,.35);}
+  .er-writ{position:relative; display:flex; flex-direction:column; gap:10px; padding:0 16px 14px; color:#3a2410; border:3px solid #5b3c1f; border-radius:2px;
+    background:radial-gradient(ellipse at 50% 0%, rgba(255,255,255,.55), transparent 65%), linear-gradient(180deg,#fcf4de,#f0ddb2);
+    box-shadow:inset 0 0 0 3px #fcf4de, inset 0 0 0 5px rgba(122,85,48,.55), inset 0 -30px 40px rgba(160,110,50,.14), 0 4px 0 #2e1d0e, 0 10px 18px rgba(40,20,0,.35);}
+  /* square iron tacks in the four corners: a pixel touch */
+  .er-writ::before{content:""; position:absolute; inset:auto 7px 7px 7px; height:6px; pointer-events:none;
+    background:linear-gradient(#5b3c1f,#5b3c1f) left/6px 6px no-repeat, linear-gradient(#5b3c1f,#5b3c1f) right/6px 6px no-repeat;}
+  .er-band{display:flex; align-items:center; justify-content:space-between; gap:8px; margin:0 -16px; padding:6px 14px; background:linear-gradient(180deg,#6a4728,#4a3019); color:#fff1d0;
+    border-bottom:3px solid #2e1d0e; font:800 11.5px/1.2 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.12em;}
+  .er-status{padding:2px 8px; border-radius:2px; background:rgba(255,241,208,.16); letter-spacing:.06em; white-space:nowrap;}
+  .er-top{display:grid; grid-template-columns:64px minmax(0,1fr); gap:12px; align-items:center; margin-top:2px;}
+  .er-portrait{width:64px; height:64px; display:grid; place-items:center; overflow:hidden; border-radius:3px; background:linear-gradient(180deg,#e9d4a6,#d9bd83); border:3px solid #5b3c1f;
+    box-shadow:inset 0 0 0 2px #fcf4de, 0 2px 0 #2e1d0e; font-size:34px; line-height:1;}
+  .er-portrait img{width:100%; height:100%; object-fit:contain; image-rendering:pixelated;}
+  .er-title{margin:0; font:400 21px/1.15 'MedievalSharp','Baloo 2',serif; color:#3a2410; overflow-wrap:anywhere;}
+  .er-by{margin-top:3px; font-size:12.5px; color:#6a4a26;} .er-by b{color:#3a2410;}
+  .er-ask{margin:0; padding:6px 10px; border-left:3px solid #b9975a; background:rgba(185,151,90,.13); font:700 17px/1.25 'Caveat','Baloo 2',cursive; color:#4a3019;}
+  .er-task{display:flex; align-items:baseline; gap:10px;}
+  .er-k{flex:none; min-width:54px; font:800 10.5px/1.2 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.1em; color:#8a6a45;}
+  .er-task-l{font-weight:800; font-size:14.5px; line-height:1.3;}
+  .er-prog{display:flex; align-items:center; gap:10px;}
+  .er-bar{flex:1; height:14px; border:2px solid #5b3c1f; background:repeating-linear-gradient(90deg, rgba(122,85,48,.2) 0 6px, rgba(122,85,48,.08) 6px 12px); box-shadow:inset 0 2px 0 rgba(0,0,0,.12);}
+  .er-bar > span{display:block; height:100%; background:linear-gradient(180deg,#8fd16a,#4f9a3a); box-shadow:inset 0 -3px 0 rgba(0,0,0,.18), inset 0 2px 0 rgba(255,255,255,.35); transition:width .4s ease;}
+  .er-prog b{font:800 22px/1 'Baloo 2',system-ui,sans-serif; color:#3a2410; font-variant-numeric:tabular-nums; white-space:nowrap;} .er-prog b small{font-size:14px; opacity:.65;}
+  .er-reward{display:flex; align-items:center; gap:10px; padding-top:10px; border-top:2px dashed rgba(122,85,48,.4);}
+  .er-rw-chips{display:flex; flex-wrap:wrap; gap:6px;}
+  .er-rw-chip{padding:2px 8px; border-radius:2px; background:#fff8e6; border:2px solid rgba(91,60,31,.3); font:800 13px/1.3 'Nunito',system-ui,sans-serif; color:#3a2306; white-space:nowrap;}
+  .er-foot{display:flex; align-items:center; gap:8px; flex-wrap:wrap; min-height:34px;}
+  .er-meta{margin-right:auto; font-size:11.5px; font-style:italic; color:#8a6a45;}
+  .er-acts{margin-left:auto; display:flex; align-items:center; gap:8px;}
+  .er-seal{padding:8px 16px; border:0; border-radius:999px; color:#fff; font:800 14px/1.1 'Baloo 2',system-ui,sans-serif; cursor:pointer;
+    background:radial-gradient(circle at 35% 30%, #e0504a, #9e1f1a); box-shadow:0 3px 0 #5e100c, 0 4px 8px rgba(0,0,0,.3);}
+  .er-seal:hover{filter:brightness(1.08);} .er-seal:active{transform:translateY(2px); box-shadow:0 1px 0 #5e100c;}
+  .er-seal:disabled{cursor:not-allowed; filter:grayscale(.8); opacity:.6;}
+  .er-seal:focus-visible, .er-drop:focus-visible{outline:2px solid #3a2410; outline-offset:2px;}
+  .er-writ.is-ready .er-seal{animation:qnPulse 1.4s ease-in-out infinite;}
+  .er-drop{padding:5px 11px; border-radius:999px; border:1px solid rgba(90,60,30,.35); background:rgba(255,255,255,.4); color:#5a3a1a; font:800 12px 'Nunito',system-ui,sans-serif; cursor:pointer;}
+  .er-drop:hover{background:rgba(255,255,255,.7);}
+  .er-writ.is-ready{box-shadow:inset 0 0 0 3px #fcf4de, inset 0 0 0 5px rgba(122,85,48,.55), inset 0 -30px 40px rgba(160,110,50,.14), 0 4px 0 #2e1d0e, 0 0 0 3px #f2c14e, 0 0 26px rgba(242,193,78,.6);}
+  .er-writ.is-ready .er-status{background:#4f9a3a; color:#fff;}
+  .er-writ.is-offer{border-style:dashed; background:linear-gradient(180deg,#f7f0da,#eadab3);}
+  .er-writ.is-offer .er-band{background:linear-gradient(180deg,#8a6a45,#6a4f30);}
+  .er-empty{margin:6px 4px; padding:14px 16px; border:3px dashed rgba(63,40,18,.4); background:rgba(252,244,222,.6); color:#3f2812; font-style:italic;}
+  .qn-journeys.is-admin-hidden{outline:2px dashed #ff8a7a; outline-offset:4px; opacity:.85;}
+  @media (max-width:520px){ .qn-tab{padding:6px 12px 5px; font-size:14px;} .qn-tab.is-on{padding-bottom:8px;} .er-writ{padding:0 12px 12px;} .er-band{margin:0 -12px; padding:6px 10px;}
+    .er-top{grid-template-columns:52px minmax(0,1fr); gap:10px;} .er-portrait{width:52px; height:52px; font-size:28px;} .er-title{font-size:19px;} .er-ask{font-size:16px;} .er-k{min-width:0;} }
+  @media (prefers-reduced-motion:reduce){ .er-writ.is-ready .er-seal{animation:none;} .er-bar > span{transition:none;} }
   .coach-tip.is-blocking{box-shadow:0 10px 28px rgba(0,0,0,.45), 0 0 0 3px #ffd76a;}
   .coach-anchor{position:relative; z-index:1145 !important;}
   .coach-locked, .coach-locked *{pointer-events:none !important;}

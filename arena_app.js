@@ -14364,8 +14364,32 @@ function questDoneDrop(n){
     F.errandOffer(on ? b : null, {text: k > 1 ? `${k} quests done!` : 'Quest done!'}); try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){} }catch(e){} };
   questDoneTimer = setTimeout(go, (typeof matchState !== 'undefined' && matchState) ? 2200 : 300);
 }
+// Errand progress toasts (2026-10-16, user: "Then when you progress a quest, its should say so."): whenever a counter moves an
+// errand you took (a step or a count goes up), a toast says so wherever you are: "📜 Errand: <title> — 2/3", or "📜 Errand
+// complete: <title>" at the goal. Changes that land together (a fight's wins + units + clears) are gathered for a moment and
+// each errand gets one toast with its newest count. Dailies and weeklies don't toast here.
+let errandToastPending = {}, errandToastTimer = 0;
+function errandProgressSnapshot(counter){ const out = {}; try{ if(!errandsOpen()) return out; loadErrands().active.forEach(x=>{ if(x.counter === counter) out[x.id] = errandProgress(x); }); }catch(e){} return out; }
+function noteErrandProgress(before, counter){
+  try{ if(!errandsOpen()) return; let any = false;
+    loadErrands().active.forEach(x=>{ if(x.counter !== counter || !(x.id in before)) return; const v = errandProgress(x); if(v <= before[x.id]) return;
+      const t = ERRAND_TEMPLATES.find(z=> z.id === x.tid) || {};
+      errandToastPending[x.id] = {title: t.title || x.label, v, g: x.goal}; any = true; });
+    if(!any) return;
+    clearTimeout(errandToastTimer);
+    errandToastTimer = setTimeout(flushErrandToasts, (typeof matchState !== 'undefined' && matchState) ? 1800 : 350); // after a fight, once the result is up
+  }catch(e){}
+}
+function flushErrandToasts(){
+  const list = Object.values(errandToastPending); errandToastPending = {};
+  list.forEach((p, i)=> setTimeout(()=>{ try{
+    if(p.v >= p.g) showToast(TX('toast.errand-complete-claim-it-on-the', {title: p.title}), 'ok');
+    else showToast(TX('toast.errand', {title: p.title, v: p.v, g: p.g}));
+  }catch(e){} }, i * 450));
+}
 function bumpQuestCounter(counter, n){
   if(!(n>0)) return;
+  const errandsBefore = errandProgressSnapshot(counter); // 2026-10-16 (user: "when you progress a quest, its should say so")
   const doneBefore = questsDoneNow();
   const q = loadQuestState();
   q.daily[counter] = (q.daily[counter]||0) + n;
@@ -14373,6 +14397,7 @@ function bumpQuestCounter(counter, n){
   saveQuestState(q);
   const st = loadLifetimeStats(); st[counter] = (st[counter]||0) + n;
   try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
+  noteErrandProgress(errandsBefore, counter);
   refreshQuestBadge(); soonCheckMilestones();
   try{ fxHook('questProgress', counter, n); }catch(e){} // 2026-10-15 batch F (only when the Quests button is on screen)
   try{ const after = questsDoneNow(); let fresh = 0; after.forEach(k=>{ if(!doneBefore.has(k)) fresh++; }); questDoneDrop(fresh); }catch(e){}
@@ -14600,14 +14625,16 @@ const QUEST_ICON = {energyConquest:'⚡', pvpTickets:'🎟️', unitsDefeated:'�
 // day. Up to 3 at a time. Progress counts from the moment you take it on (lifetime counters), and an errand pays a small
 // share of a Materia Unit plus Maple Leaves, and sometimes an Iron Shard.
 const ERRANDS_KEY = 'bramblewood_errands_v1', ERRANDS_MAX = 3, ERRAND_OFFER_CHANCE = 0.3;
+// 2026-10-16 (user: "The quests should be bigger more official looking cards"): each errand has a short title for its writ
+// and for the "📜 Errand: …" toasts; the label stays the task line.
 const ERRAND_TEMPLATES = [
-  {id:'mole-ridge', who:'mole', ask:'My cousin is stuck past the next ridge. Could you clear the road for him?', counter:'conquestWins', goal:3, label:'Clear 3 Conquest fights for Pip’s cousin', mu:0.06, thanks:'He made it home! He says thank you. Well, he squeaked.'},
-  {id:'heron-pests', who:'heron', ask:'Pests in my reeds. Many, many small pests. Thin them out for an old bird?', counter:'unitsDefeated', goal:12, label:'Defeat 12 enemy units for Old Heron Wade', mu:0.05, thanks:'Quiet reeds at last. Here, for your trouble.'},
-  {id:'mouse-letter', who:'mouse', ask:'I’ve got letters for three camps and wolves on every path. Walk with me?', counter:'wins', goal:3, label:'Win 3 matches escorting Bramble’s letters', mu:0.06, thanks:'Every letter delivered. Not one bite mark!'},
-  {id:'beetle-packs', who:'beetle', ask:'The Hive trades in sealed packs. Open a couple and tell me what you find?', counter:'packsOpened', goal:2, label:'Open 2 card packs for Sister Carapace', mu:0.04, thanks:'Interesting. Very interesting. The Hive thanks you.'},
-  {id:'frog-march', who:'frog', ask:'The pond needs a strong patrol. Spend some time on the road for us?', counter:'energyConquest', goal:25, label:'Use 25 ⚡ Energy on Conquest fights for Croaker', mu:0.05, thanks:'The pond sleeps easy tonight. Croak.'},
-  {id:'hedgehog-bully', who:'hedgehog', ask:'There’s a big bully on this road. Beat a few of his friends so he backs off?', counter:'conquestWins', goal:2, label:'Clear 2 Conquest fights for Thimble', mu:0.04, thanks:'He backed off! I’m not scared of him anymore. Much.', shard:true},
-  {id:'heron-feast', who:'heron', ask:'I’m hosting a feast. I need a hundred-odd things caught. Well, twenty.', counter:'unitsDefeated', goal:20, label:'Defeat 20 enemy units for Old Heron Wade’s feast', mu:0.08, thanks:'A feast to remember. Take a plate. And this.', shard:true},
+  {id:'mole-ridge', title:'The Cousin Past the Ridge', who:'mole', ask:'My cousin is stuck past the next ridge. Could you clear the road for him?', counter:'conquestWins', goal:3, label:'Clear 3 Conquest fights for Pip’s cousin', mu:0.06, thanks:'He made it home! He says thank you. Well, he squeaked.'},
+  {id:'heron-pests', title:'Pests in the Reeds', who:'heron', ask:'Pests in my reeds. Many, many small pests. Thin them out for an old bird?', counter:'unitsDefeated', goal:12, label:'Defeat 12 enemy units for Old Heron Wade', mu:0.05, thanks:'Quiet reeds at last. Here, for your trouble.'},
+  {id:'mouse-letter', title:'Letters for Three Camps', who:'mouse', ask:'I’ve got letters for three camps and wolves on every path. Walk with me?', counter:'wins', goal:3, label:'Win 3 matches escorting Bramble’s letters', mu:0.06, thanks:'Every letter delivered. Not one bite mark!'},
+  {id:'beetle-packs', title:'Sealed Packs for the Hive', who:'beetle', ask:'The Hive trades in sealed packs. Open a couple and tell me what you find?', counter:'packsOpened', goal:2, label:'Open 2 card packs for Sister Carapace', mu:0.04, thanks:'Interesting. Very interesting. The Hive thanks you.'},
+  {id:'frog-march', title:'The Pond Patrol', who:'frog', ask:'The pond needs a strong patrol. Spend some time on the road for us?', counter:'energyConquest', goal:25, label:'Use 25 ⚡ Energy on Conquest fights for Croaker', mu:0.05, thanks:'The pond sleeps easy tonight. Croak.'},
+  {id:'hedgehog-bully', title:'The Bully on the Road', who:'hedgehog', ask:'There’s a big bully on this road. Beat a few of his friends so he backs off?', counter:'conquestWins', goal:2, label:'Clear 2 Conquest fights for Thimble', mu:0.04, thanks:'He backed off! I’m not scared of him anymore. Much.', shard:true},
+  {id:'heron-feast', title:'Wade’s Feast', who:'heron', ask:'I’m hosting a feast. I need a hundred-odd things caught. Well, twenty.', counter:'unitsDefeated', goal:20, label:'Defeat 20 enemy units for Old Heron Wade’s feast', mu:0.08, thanks:'A feast to remember. Take a plate. And this.', shard:true},
 ];
 function loadErrands(){
   let e = null; try{ e = JSON.parse(localStorage.getItem(ERRANDS_KEY)||'null'); }catch(_){}
@@ -14661,23 +14688,40 @@ function maybeOfferErrand(force){
 }
 function errandsBoardHTML(){
   if(!errandsOpen()) return '';
+  // Errand writs (2026-10-16, user: "The quests should be bigger more official looking cards - straight not slanted. And it
+  // doesn't list dailies or weeklies. It's actual quests you got from the game. It's errands i guess."): each errand is a big,
+  // square-set parchment writ on the Errands tab: a header band, the title, the giver's portrait and name, their words, the
+  // task with a progress bar and count, the reward, and a wax-seal Claim once it's done. Offers you let pass wait below.
   const e = loadErrands(), defs = getCardDefs();
-  const giver = who=> { const sp = DIALOGUE_SPEAKERS[who] || {}; return `<span class="er-giver" title="${escapeAttr(sp.name||who)}">${sp.icon||'📌'}</span>`; };
-  const rwChips = t=>{ const rw = errandReward(t); return `<span class="qn-rw">✨ ${rw.dust}</span><span class="qn-rw">${(CURRENCY_META.gold||{}).glyph||'🍁'} ${rw.gold}</span>${t.shard ? `<span class="qn-rw" title="Iron Shard">${(defs['iron-shard']||{}).icon||'🔩'}</span>` : ''}`; };
-  const act = e.active.map(x=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===x.tid) || {mu:0.05}, v = errandProgress(x), done = v >= x.goal;
-    return `<div class="qn-note er-note ${done?'is-ready':''}" style="--rot:${((x.at|0) % 5 - 2) * 0.6}deg"><span class="qn-pin" aria-hidden="true"></span>${giver(x.who)}
-      <div class="qn-label">${escapeHtml(x.label)}</div>
-      <div class="qn-prog"><span class="qn-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}/${x.goal}</b></div>
-      <div class="qn-note-rw">${rwChips(t)}</div>
-      <div class="qn-foot">${done ? `<button class="qn-claim" data-errand-claim="${x.id}">🎁 Claim</button>` : `<span class="er-wait">In progress</span><button type="button" class="qn-swap" data-errand-drop="${x.id}" title="Give up this errand">✕ Drop</button>`}</div></div>`; }).join('');
-  const offers = e.offers.map(o=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===o.tid); if(!t) return ''; const sp = DIALOGUE_SPEAKERS[t.who] || {};
-    return `<div class="qn-note er-note er-offer" style="--rot:1deg"><span class="qn-pin" aria-hidden="true"></span>${giver(t.who)}
-      <div class="qn-label">“${escapeHtml(t.ask)}”<small class="er-from">${escapeHtml(sp.name||'')}</small></div>
-      <div class="qn-note-rw">${rwChips(t)}</div>
-      <div class="qn-foot"><button class="qn-claim" data-errand-take="${t.id}" ${e.active.length >= ERRANDS_MAX ? 'disabled title="You already have 3 errands"' : ''}>📌 Take it</button><button type="button" class="qn-swap" data-errand-skip="${t.id}">Not now</button></div></div>`; }).join('');
-  return `<section class="qn-board qn-errands" id="qnErrands">
-    <div class="qn-sign"><b>Errands</b><span>${e.active.length}/${ERRANDS_MAX} taken · favours asked on the road${e.done ? ` · ${e.done} done` : ''}</span></div>
-    <div class="qn-notes">${act}${offers}${!act && !offers ? '<p class="er-empty">No errands yet. Folk on the road ask for favours after a fight now and then: say yes, and the note goes up here.</p>' : ''}</div>
+  const portrait = sp=> sp.art ? `<img src="${escapeAttr(sp.art)}" alt="" loading="lazy" decoding="async">` : `<span>${sp.icon||'📌'}</span>`;
+  const rwChips = t=>{ const rw = errandReward(t); return `<span class="er-rw-chip" title="Dust">✨ ${rw.dust}</span><span class="er-rw-chip" title="Maple Leaves">${(CURRENCY_META.gold||{}).glyph||'🍁'} ${rw.gold}</span><span class="er-rw-chip" title="Experience">⭐ 20</span>${t.shard ? `<span class="er-rw-chip" title="Iron Shard">${(defs['iron-shard']||{}).icon||'🔩'} Iron Shard</span>` : ''}`; };
+  const day = at=>{ try{ return new Date(at).toLocaleDateString(undefined, {day:'numeric', month:'short'}); }catch(_){ return ''; } };
+  const writ = (t, who, cls, status, inner, foot)=>{ const sp = DIALOGUE_SPEAKERS[who] || {};
+    return `<article class="er-writ ${cls}">
+      <header class="er-band"><span class="er-kind">📜 Errand</span><span class="er-status">${status}</span></header>
+      <div class="er-top"><span class="er-portrait" aria-hidden="true">${portrait(sp)}</span>
+        <div class="er-titles"><h3 class="er-title">${escapeHtml(t.title || t.label || '')}</h3><div class="er-by">Asked by <b>${escapeHtml(sp.name || who || '')}</b></div></div></div>
+      <blockquote class="er-ask">“${escapeHtml(t.ask || '')}”</blockquote>
+      ${inner}
+      <div class="er-reward"><span class="er-k">Reward</span><span class="er-rw-chips">${rwChips(t)}</span></div>
+      <footer class="er-foot">${foot}</footer>
+    </article>`; };
+  const act = e.active.map(x=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===x.tid) || {mu:0.05, label:x.label}, v = errandProgress(x), done = v >= x.goal;
+    const inner = `<div class="er-task"><span class="er-k">Task</span><span class="er-task-l">${escapeHtml(x.label)}</span></div>
+      <div class="er-prog" role="progressbar" aria-valuemin="0" aria-valuemax="${x.goal}" aria-valuenow="${v}" aria-label="${escapeAttr(x.label)}"><span class="er-bar"><span style="width:${Math.round(v/x.goal*100)}%"></span></span><b>${v}<small>/${x.goal}</small></b></div>`;
+    const foot = done ? `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-seal" data-errand-claim="${x.id}">🎁 Claim reward</button>`
+      : `<span class="er-meta">Taken ${escapeHtml(day(x.at))}</span><button type="button" class="er-drop" data-errand-drop="${x.id}" title="Give up this errand">✕ Drop</button>`;
+    return writ(t, x.who, done ? 'is-ready' : '', done ? 'Done: claim it' : 'In progress', inner, foot); }).join('');
+  const offers = e.offers.map(o=>{ const t = ERRAND_TEMPLATES.find(z=> z.id===o.tid); if(!t) return '';
+    const inner = `<div class="er-task"><span class="er-k">Task</span><span class="er-task-l">${escapeHtml(t.label)}</span></div>`;
+    const full = e.active.length >= ERRANDS_MAX;
+    const foot = `<span class="er-meta">${full ? `You have ${ERRANDS_MAX} errands already` : 'Open until midnight'}</span><span class="er-acts"><button type="button" class="er-drop" data-errand-skip="${t.id}">Not now</button><button type="button" class="er-seal is-take" data-errand-take="${t.id}" ${full ? 'disabled title="Finish or drop one first"' : ''}>📌 Take it</button></span>`;
+    return writ(t, t.who, 'is-offer', 'Offered', inner, foot); }).join('');
+  return `<section class="qn-board qn-errands er-board" id="qnErrands">
+    <div class="qn-sign"><b>Errands</b><span>${e.active.length}/${ERRANDS_MAX} taken${e.done ? ` · ${e.done} done` : ''}</span></div>
+    ${act ? `<div class="er-writs">${act}</div>` : ''}
+    ${offers ? `<div class="er-sub">Offered on the road</div><div class="er-writs">${offers}</div>` : ''}
+    ${!act && !offers ? '<p class="er-empty">No errands yet. Folk on the road ask for favours after a fight now and then: say yes, and their writ goes up here.</p>' : ''}
   </section>`;
 }
 function questsModalHTML(){
@@ -14746,25 +14790,44 @@ function noticeQuestListHTML(q){
   const rows = [], bar = (v, g)=> `<span class="qn-bar"><span style="width:${Math.round(Math.min(1, v / Math.max(1, g))*100)}%"></span></span>`;
   q.dailyList.slice().sort((a, b)=> a.slot - b.slot).forEach(x=>{ if(q.claimedDaily.includes(x.id)) return; const v = dailyNoticeProgress(q, x); rows.push({k:'Daily', ico: QUEST_ICON[x.counter] || '📜', label:x.label, v, g:x.goal, go:'.qn-daily'}); });
   visibleQuestTiers('weekly', q).forEach(t=> t.quests.forEach(x=>{ if(q.claimedWeekly.includes(x.id)) return; rows.push({k:'Weekly', ico: QUEST_ICON[x.counter] || '📜', label:x.label, v:Math.min(x.goal, q.weekly[x.counter]||0), g:x.goal, go:'.qn-weekly'}); }));
-  try{ if(errandsOpen()) loadErrands().active.forEach(x=>{ const sp = DIALOGUE_SPEAKERS[x.who] || {}; rows.push({k:'Errand', ico: sp.icon || '📌', label:x.label, v:errandProgress(x), g:x.goal, go:'#qnErrands'}); }); }catch(e){}
-  try{ if(journeysOpen()){ const st = loadJourneys(); Object.keys(SUBFACTION_JOURNEYS).forEach(k=>{ const j = SUBFACTION_JOURNEYS[k], n = st[k]|0, next = j.steps[n]; if(next) rows.push({k:'Journey', ico:j.icon, label:`${j.name}: ${next[2]}`, v:n, g:j.steps.length, go:'.qn-journeys', journey:true}); }); } }catch(e){}
+  // 2026-10-16 (user: "i think quests will be a subtab in notices"): errands have their own Errands tab now, so they're not listed here.
+  // 2026-10-16 (user: "I think Hide journies for now."): Journeys stay out of this list while hidden, even for Admin.
+  try{ if(journeysOpen() && !JOURNEYS_HIDDEN){ const st = loadJourneys(); Object.keys(SUBFACTION_JOURNEYS).forEach(k=>{ const j = SUBFACTION_JOURNEYS[k], n = st[k]|0, next = j.steps[n]; if(next) rows.push({k:'Journey', ico:j.icon, label:`${j.name}: ${next[2]}`, v:n, g:j.steps.length, go:'.qn-journeys', journey:true}); }); } }catch(e){}
   if(!rows.length) return `<section class="qn-quests"><div class="qn-sign"><b>Your quests</b><span>all done for now</span></div></section>`;
   return `<section class="qn-quests"><div class="qn-sign"><b>Your quests</b><span>${rows.length} going</span></div>
     <ul class="qn-qlist">${rows.map(r=>{ const done = !r.journey && r.v >= r.g; return `<li><button type="button" class="qn-qrow ${done ? 'is-done' : ''}" data-qn-go="${r.go}"><span class="qn-qk">${r.k}</span><span class="qn-qico" aria-hidden="true">${r.ico}</span><span class="qn-ql">${escapeHtml(r.label)}</span><span class="qn-prog">${bar(r.v, r.g)}<b>${done ? 'Claim!' : `${r.v}/${r.g}`}</b></span></button></li>`; }).join('')}</ul></section>`;
 }
+// Notices sub-tabs (2026-10-16, user: "i think quests will be a subtab in notices ... It's actual quests you got from the
+// game. It's errands i guess."): two tabs on the board. Notices keeps the daily and weekly notices; Errands lists only the
+// errands folk asked of you on the road (never dailies or weeklies), as big straight writs. The tab you picked is kept while
+// the page is open; openQuestsModal('errands') opens straight on Errands.
+let noticesSubTab = 'notices';
 function questsModalShellHTML(dailyBoard, section, nextMon, now){
-  const q = loadQuestState();
+  const q = loadQuestState(), erOpen = errandsOpen();
+  if(!erOpen) noticesSubTab = 'notices';
+  const onErr = noticesSubTab === 'errands';
+  let erBadge = '';
+  if(erOpen){ try{ const e = loadErrands(), ready = claimableErrandCount(), n = e.active.length + e.offers.length;
+    erBadge = ready ? `<span class="qn-tab-n is-ready" title="${ready} ready to claim">${ready}</span>` : n ? `<span class="qn-tab-n">${n}</span>` : ''; }catch(e){} }
+  const tabs = erOpen ? `<div class="qn-tabs" role="tablist" aria-label="Notices">
+      <button type="button" role="tab" class="qn-tab ${onErr ? '' : 'is-on'}" data-qn-tab="notices" aria-selected="${!onErr}">📌 Notices</button>
+      <button type="button" role="tab" class="qn-tab ${onErr ? 'is-on' : ''}" data-qn-tab="errands" aria-selected="${onErr}">📜 Errands${erBadge}</button>
+    </div>` : '';
+  const body = onErr
+    ? `<p class="qn-sub">Favours folk asked of you on the road. Do the work and claim the reward here.</p>
+       <div class="qn-cork er-cork">${errandsBoardHTML()}</div>`
+    : `<p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
+       ${noticeQuestListHTML(q)}
+       <div class="qn-cork">
+         ${dailyBoard()}
+         ${section('weekly', 'Weekly', nextMon - now)}
+         ${journeysHTML()}
+       </div>
+       <p class="qn-medals-moved">🏅 Medals are on your <button type="button" class="btn small ghost" id="qnToProfile">Profile</button></p>`;
   return `<div class="modal quests-modal qn-modal" role="dialog" aria-labelledby="qsTitle">
     <div class="modal-head-row qn-head"><h2 id="qsTitle">📌 Notices</h2><button class="modal-close-btn" id="qsClose" aria-label="Close">✕</button></div>
-    <p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
-    ${noticeQuestListHTML(q)}
-    <div class="qn-cork">
-      ${dailyBoard()}
-      ${section('weekly', 'Weekly', nextMon - now)}
-      ${errandsBoardHTML()}
-      ${journeysHTML()}
-    </div>
-    <p class="qn-medals-moved">🏅 Medals are on your <button type="button" class="btn small ghost" id="qnToProfile">Profile</button></p>
+    ${tabs}
+    ${body}
   </div>`;
 }
 let questsKeyHandler = null;
@@ -14772,6 +14835,7 @@ function openQuestsModal(focus){
   const overlay = document.getElementById('authGateOverlay'); if(!overlay) return;
   const prevScroll = overlay.querySelector('.quests-modal') ? overlay.querySelector('.quests-modal').scrollTop : 0;
   const opening = overlay.hidden || !overlay.querySelector('.quests-modal');
+  if(focus === 'errands' || focus === 'notices') noticesSubTab = focus; // 2026-10-16: the Errands sub-tab
   overlay.innerHTML = questsModalHTML(); overlay.hidden = false;
   if(opening) questBoardEntrance(overlay.querySelector('.quests-modal'));
   fxHook('questBoardOpen', overlay.querySelector('.quests-modal'), opening); // pinned papers lift in the draught (FX.E, 2026-10-15)
@@ -14789,7 +14853,9 @@ function openQuestsModal(focus){
   overlay.querySelectorAll('[data-errand-take]').forEach(b=> b.addEventListener('click', ()=>{ if(acceptErrand(b.dataset.errandTake)) openQuestsModal(); else denyShake(b); }));
   overlay.querySelectorAll('[data-errand-skip]').forEach(b=> b.addEventListener('click', ()=>{ dismissErrandOffer(b.dataset.errandSkip); openQuestsModal(); }));
   overlay.querySelectorAll('[data-errand-drop]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.armed){ abandonErrand(b.dataset.errandDrop); openQuestsModal(); } else { b.dataset.armed = '1'; b.textContent = 'Drop it?'; } }));
-  if(focus === 'errands'){ const er = overlay.querySelector('#qnErrands'); if(er) setTimeout(()=>{ try{ er.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(_){} }, opening ? 600 : 0); }
+  // 2026-10-16 (user: "i think quests will be a subtab in notices"): switching tabs redraws the board from the top.
+  overlay.querySelectorAll('[data-qn-tab]').forEach(b=> b.addEventListener('click', ()=>{ if(noticesSubTab === b.dataset.qnTab) return; noticesSubTab = b.dataset.qnTab; try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(_){}
+    openQuestsModal(); const m = overlay.querySelector('.quests-modal'); if(m) m.scrollTop = 0; const t = overlay.querySelector(`[data-qn-tab="${noticesSubTab}"]`); if(t) t.focus(); }));
   // 2026-10-15: the quest list scrolls to its board (and the board's notes give a little wiggle); Medals point to the Profile.
   overlay.querySelectorAll('[data-qn-go]').forEach(b=> b.addEventListener('click', ()=>{ const t = overlay.querySelector(b.dataset.qnGo); if(!t) return;
     try{ t.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(_){} t.classList.remove('qn-flash'); void t.offsetWidth; t.classList.add('qn-flash'); }));
@@ -18135,7 +18201,7 @@ function renderConquestSubTab(body){
       </div>
       ${newSkillRibbonHTML(selectedNode)}
       ${skirmishFieldHTML(map.id, selectedNode)}
-      ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
+      ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${journeysAdminOnly() ? '<small>🙈 Hidden from players (Admin only) · </small>' : ''}${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
         <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span><span class="rank-hex rank-${conquestDeckNeed(selectedNode)}" aria-hidden="true"><i></i><b>${conquestDeckNeed(selectedNode)}</b></span></div>`}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
@@ -28973,7 +29039,7 @@ async function resolveRound(opts){
       }catch(e){}
       try{ if(isFirstClear && /elite|champion/.test(m.conquestNode.kind||'') && (wildpathRanks().b3||0) > 0 && wildpathsOpen()){ unlockCardForPlayer('iron-shard', 'materia'); setTimeout(()=>{ try{ showToast(TX('toast.prospector-1-iron-shard'), 'ok'); }catch(e){} }, 2000); } }catch(e){}
       try{ if(mapNumberOf(m.conquestNode.mapId) === 2 && localStorage.getItem(MAP2_CAPSULE_KEY) !== '1'){ localStorage.setItem(MAP2_CAPSULE_KEY, '1'); addEnergyCapsules(1); setTimeout(()=>{ try{ showToast(TX('toast.you-found-an-energy-capsule-tap', {ENERGY_CAPSULE_AMOUNT}), 'ok'); }catch(e){} }, 1800); } }catch(e){}
-      try{ const jr = advanceJourney(m.conquestNode.mapId, m.conquestNode.nodeId); if(jr){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(jr.cards); m.conquestJourney = jr; const J = SUBFACTION_JOURNEYS[jr.journey]; setTimeout(()=>{ try{ showToast(TX('toast.step-of', {icon: J.icon, name: J.name, step: jr.step, length: J.steps.length, v5: jr.done ? (J.ends ? '. Journey complete!' : '. The trail goes on past the Peak.') : ''}), 'ok'); }catch(e){} }, 1400); } }catch(e){}
+      try{ const jr = advanceJourney(m.conquestNode.mapId, m.conquestNode.nodeId); if(jr){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(jr.cards); m.conquestJourney = jr; const J = SUBFACTION_JOURNEYS[jr.journey]; setTimeout(()=>{ try{ showToast((journeysAdminOnly() ? '🙈 [hidden] ' : '') + TX('toast.step-of', {icon: J.icon, name: J.name, step: jr.step, length: J.steps.length, v5: jr.done ? (J.ends ? '. Journey complete!' : '. The trail goes on past the Peak.') : ''}), 'ok'); }catch(e){} }, 1400); } }catch(e){}
       try{ const mi = mainConquestMaps().findIndex(mm=> mm.id === m.conquestNode.mapId); const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node;
         void mi; void bn; }catch(e){} // the Map 20 crown is retired (2026-10-13): Faction Growth hands out the Epic and Heroic last
       // A rare find (2026-10-10, user: "Very rarely, maybe once per map, getting an S rank on one of the harder maps gives
@@ -37136,7 +37202,12 @@ const SUBFACTION_JOURNEYS = {
 const JOURNEYS_KEY = 'bramblewood_journeys_v1';
 function loadJourneys(){ try{ const o = JSON.parse(localStorage.getItem(JOURNEYS_KEY) || '{}'); return (o && typeof o === 'object') ? o : {}; }catch(e){ return {}; } }
 function saveJourneys(o){ try{ localStorage.setItem(JOURNEYS_KEY, JSON.stringify(o)); }catch(e){} }
-function journeysOpen(){ const i = mainConquestMaps().findIndex(m=> m.id === 'ml'); try{ return i >= 0 && isMapUnlocked(mainConquestMaps()[i], loadConquestProgress()); }catch(e){ return false; } }
+// 2026-10-16 (user: "I think Hide journies for now."): Journeys are switched off for players while this is true: no Notices
+// board, no step on the fight panel, no toast, and no steps taken (so no cards turn up unexplained). The data and the logic
+// stay. Admin Mode still sees and plays them, marked "hidden". Set it to false to bring them back.
+const JOURNEYS_HIDDEN = true;
+function journeysAdminOnly(){ return JOURNEYS_HIDDEN && typeof adminModeEnabled !== 'undefined' && !!adminModeEnabled; }
+function journeysOpen(){ if(JOURNEYS_HIDDEN && !journeysAdminOnly()) return false; const i = mainConquestMaps().findIndex(m=> m.id === 'ml'); try{ return i >= 0 && isMapUnlocked(mainConquestMaps()[i], loadConquestProgress()); }catch(e){ return false; } }
 function journeyStepFor(mapId, nodeKey){ const st = loadJourneys(); return Object.keys(SUBFACTION_JOURNEYS).find(k=>{ const j = SUBFACTION_JOURNEYS[k], n = st[k]|0, step = j.steps[n]; return step && step[0] === mapId && step[1] === nodeKey; }) || null; }
 function subfactionTrackPool(id){ const fp = FACTION_PACKS[id]; return fp ? factionPackPool(fp, 'own') : []; }
 // Called on every conquest win. Returns {journey, step, done, cards} when a journey moved on.
@@ -37155,7 +37226,7 @@ function journeysHTML(){
     const where = next ? (()=>{ const f = findConquestNode(next[0], next[1]); return f ? conquestNodeLabel(next[0], next[1]) : next[0]; })() : '';
     const tail = next ? `<div class="jr-next"><b>Next:</b> ${escapeHtml(next[2])} <span class="jr-where">${escapeHtml(where)}</span></div>` : `<div class="jr-next">${j.ends ? `${(FACTION_PACKS[k]||{}).name ? 'The ' + escapeHtml(FACTION_PACKS[k].name.replace(/ Bundle$/, '')) + ' walk with you now.' : 'Finished.'}` : 'The trail goes on past the Sundered Peak.'}</div>`;
     return `<div class="jr-row ${next ? '' : 'is-done'}"><span class="jr-ico" aria-hidden="true">${j.icon}</span><div class="jr-body"><div class="jr-name">${escapeHtml(j.name)} <span class="jr-count">${n}/${j.steps.length}${j.ends ? '' : '+'}</span></div>${tail}</div></div>`; }).join('');
-  return `<section class="qn-board qn-journeys"><div class="qn-sign"><b>Journeys</b><span>each step wins you two cards</span></div>${rows}</section>`;
+  return `<section class="qn-board qn-journeys ${journeysAdminOnly() ? 'is-admin-hidden' : ''}"><div class="qn-sign"><b>Journeys</b><span>${journeysAdminOnly() ? '🙈 hidden from players (Admin only)' : 'each step wins you two cards'}</span></div>${rows}</section>`;
 }
 function rollConquestPackDrops(node, isFirstClear){
   const out = {pack:null, food:0, newSub:false};
