@@ -2,19 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
-## 2026-10-16 (daily dungeons)
+## 2026-10-16 (11:00)
 - **Dungeons tab name:** with one daily dungeon open the Play tab reads its name (Murgle Mayhem); from the second on it reads Daily Dungeons, like Raids. Hidden until one is open, except in Admin Mode. The Babel Spire doesn't count (it takes no tickets).
 - **World map:** every daily dungeon you've opened is a diamond beside its map that takes you straight in. Locked ones aren't drawn; admins see them marked 🛠️.
 - **🗝️ key:** a small key with your Dungeon ticket count sits beside Home and Arena at the top right of the Play screens, and beside Home on the other screens. It opens the dungeons.
-## 2026-10-16 (errands)
 - **Errands tab on the Notices:** the board has two tabs now, Notices (daily and weekly, as before) and Errands, which lists only the errands folk asked of you on the road, never dailies or weeklies. Each errand is a big, straight parchment writ: title, who asked, their words, the task with a progress bar and count, the reward, and a wax-seal Claim.
 - **Errand progress toasts:** when an errand moves on, a toast says so wherever you are ("📜 Errand: Pests in the Reeds — 7/12", "📜 Errand complete: …"), one per errand, with a fight's changes gathered into one.
 - **Journeys hidden for now** (`JOURNEYS_HIDDEN` in arena_app.js): no board, no fight-step label, no toasts and no steps taken. Admin Mode still sees them, marked hidden.
-## 2026-10-16 (Bounty, tide evade)
 - **Worthy is now Bounty everywhere:** every card that had Worthy N has Bounty N (with both, the larger). Published edits and cards saved in a browser that still say Worthy (Trash Panda Trickster, for one) change to Bounty as the game loads them, and so do skill grants and triggers. The engine no longer counts Worthy as Bounty.
 - **Worthy is free for later:** it's kept as an empty, hidden slot. It isn't on any card and doesn't appear in card text, the Codex, tooltips or the keyword list.
 - **Tide evade (test, off by default):** while the Tide is in (Flood, Ebb or High Tide), Tide units are Evasive against attacks from units without Tide, whatever their own skills, on both sides. To turn it on: Admin → 🧪 Rule tests, or the Test Lab panel (admins only, and only while Admin Mode is on). You can also add it to a skirmish in Edit skirmish ("Tide evade (test)"). Sims and tests use the `tideEvade` battle option or rule. While it's on, the Tide pill and the Tide chip mention it, and dodges play the normal Evasive effect.
-## 2026-10-16 (card backings)
+- **Live database (your "Apply it"):** the feedback table, world events, server fight seeds (T3), the admin player list (S1), anti-cheat tier 1 (S2) and the new co-op rooms table are applied. Player rating is now server-only, so the game no longer writes it.
 - **Card backings by card kind:** four pixel-art card backs. Units get the base design: the acorn mark in a gold medallion on a green weave. Structures get its timber-and-iron sibling: crossed mallets, plank boards, a stone frame. Castles get a regal back: crimson damask, a gold frame with rubies, a crowned keep. Field effects get a mossy back with vines and a day-and-night disc. Each face-down card shows its own kind's back: the pack opener before you flip, the draw flip into your hand, an enemy card flying in, a full-hand pitch, reward reveals, the home-screen card fan and the back of a card you spin in the viewer. The deck piles hold a mix, so they show the unit back (the pile never gives away your next draw). Images are in `art/backings/`, made by `tools/make_card_backings.py`.
 
 ## 2026-10-16 (09:15)

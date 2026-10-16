@@ -1,3 +1,4 @@
+-- APPLIED to the live project 2026-10-16 (user: "Still open -> Apply it").
 -- T3 step 1 (2026-10-03): server-issued, single-use fight seeds.
 -- "Start fight" asks the server for a seed; the server remembers it (with the deck and the card-data
 -- fingerprint). "Hand in" sends the transcript of the player's moves and the result, once. A second

@@ -1,3 +1,4 @@
+-- APPLIED to the live project 2026-10-16 (user: "Still open -> Apply it").
 -- Player feedback (2026-10-15, user: "Hanging in the corner, on the right of your profile name, there is an opinion icon. Clicking
 -- it lets them write a comment to us. (ease for play testers and general players)").
 -- NOT APPLIED YET: the game queues feedback in the browser until this table exists. Say "apply it" to create it.

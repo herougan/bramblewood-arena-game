@@ -1,3 +1,4 @@
+-- APPLIED to the live project 2026-10-16 (user: "Still open -> Apply it").
 -- PROPOSED, NOT APPLIED (2026-10-08). Apply only when the owner says so.
 -- Anti-cheat tier 1: stop a signed-in player editing the numbers other players can see.
 

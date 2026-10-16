@@ -1,3 +1,4 @@
+-- APPLIED to the live project 2026-10-16 (user: "Still open -> Apply it").
 -- PROPOSED, NOT APPLIED (2026-10-08). Applying it was blocked pending the owner's OK; say "apply it".
 -- 2026-10-08: admin player portal (user: "an admin portal so I can see which players have joined
 -- and their respective levels — basically their player card + some details").

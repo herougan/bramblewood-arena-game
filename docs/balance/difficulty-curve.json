@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-15",
+ "generated": "2026-10-16",
  "games": 40,
  "myCastleHp": 30,
  "decks": {
@@ -62,28 +62,28 @@
    "variant": "built",
    "cards": [
     {
-     "id": "cobalt-talon-skirmisher",
-     "name": "Cobalt Talon Skirmisher",
+     "id": "echo-screecher",
+     "name": "Echo Screecher",
      "n": 4
     },
     {
-     "id": "bee-drone",
-     "name": "Bee Drone",
+     "id": "eagle-diver",
+     "name": "Eagle Diver",
      "n": 4
     },
     {
-     "id": "bee-sentry",
-     "name": "Bee Sentry",
+     "id": "gull-thief",
+     "name": "Gull Thief",
      "n": 4
     },
     {
-     "id": "ant-scout",
-     "name": "Ant Scout",
+     "id": "nautilus-drifter",
+     "name": "Nautilus Drifter",
      "n": 4
     },
     {
-     "id": "honey-bee",
-     "name": "Honey Bee",
+     "id": "cave-centipede",
+     "name": "Cave Centipede",
      "n": 4
     }
    ]
@@ -92,28 +92,28 @@
    "variant": "built",
    "cards": [
     {
-     "id": "cobalt-talon-skirmisher",
-     "name": "Cobalt Talon Skirmisher",
-     "n": 4
-    },
-    {
-     "id": "bee-drone",
-     "name": "Bee Drone",
-     "n": 4
-    },
-    {
-     "id": "violet-vane-fletcher",
-     "name": "Violet Vane Fletcher",
-     "n": 4
-    },
-    {
-     "id": "hedge-changeling",
-     "name": "Hedge Changeling",
+     "id": "sulfur-vent-crab",
+     "name": "Sulfur Vent Crab",
      "n": 4
     },
     {
      "id": "puppeteer-imp",
      "name": "Puppeteer Imp",
+     "n": 4
+    },
+    {
+     "id": "owl-fletcher",
+     "name": "Owl Fletcher",
+     "n": 4
+    },
+    {
+     "id": "cave-bat-swarm",
+     "name": "Cave Bat Swarm",
+     "n": 4
+    },
+    {
+     "id": "inside-out-hedgehog",
+     "name": "Inside-Out Hedgehog",
      "n": 4
     }
    ]
@@ -132,22 +132,22 @@
    "hp": 57,
    "res": {
     "starter": {
-     "win": 52.5,
-     "rounds": 12,
-     "hpLost": 77.4
+     "win": 20,
+     "rounds": 13,
+     "hpLost": 89.2
     },
     "mid": {
-     "win": 100,
-     "rounds": 9,
-     "hpLost": 10.4
+     "win": 97.5,
+     "rounds": 8.7,
+     "hpLost": 18.9
     },
     "strong": {
      "win": 100,
-     "rounds": 8.1,
-     "hpLost": 8.2
+     "rounds": 10.7,
+     "hpLost": 16.8
     }
    },
-   "index": 13.9
+   "index": 24.8
   },
   {
    "map": "m1",
@@ -161,22 +161,22 @@
    "hp": 25,
    "res": {
     "starter": {
-     "win": 60,
-     "rounds": 8.3,
-     "hpLost": 65.3
+     "win": 72.5,
+     "rounds": 8.6,
+     "hpLost": 50.1
     },
     "mid": {
-     "win": 100,
+     "win": 97.5,
      "rounds": 6.8,
-     "hpLost": 14
+     "hpLost": 13
     },
     "strong": {
-     "win": 100,
-     "rounds": 6.3,
-     "hpLost": 10.3
+     "win": 95,
+     "rounds": 8,
+     "hpLost": 16.5
     }
    },
-   "index": 12.6
+   "index": 12.9
   },
   {
    "map": "m1",
@@ -191,21 +191,21 @@
    "res": {
     "starter": {
      "win": 5,
-     "rounds": 12,
-     "hpLost": 99.7
+     "rounds": 11,
+     "hpLost": 97.6
     },
     "mid": {
-     "win": 82.5,
-     "rounds": 7.7,
-     "hpLost": 60.5
+     "win": 70,
+     "rounds": 7.5,
+     "hpLost": 66.2
     },
     "strong": {
-     "win": 82.5,
-     "rounds": 7,
-     "hpLost": 57.6
+     "win": 65,
+     "rounds": 8.9,
+     "hpLost": 72.1
     }
    },
-   "index": 46.9
+   "index": 58
   },
   {
    "map": "m1",
@@ -219,22 +219,22 @@
    "hp": 64,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 12,
-     "hpLost": 98.7
+     "win": 32.5,
+     "rounds": 14.1,
+     "hpLost": 85.8
     },
     "mid": {
-     "win": 82.5,
-     "rounds": 10,
-     "hpLost": 47.2
+     "win": 100,
+     "rounds": 9.5,
+     "hpLost": 26.3
     },
     "strong": {
-     "win": 100,
-     "rounds": 9.3,
-     "hpLost": 13.5
+     "win": 92.5,
+     "rounds": 11.2,
+     "hpLost": 26.3
     }
    },
-   "index": 30.9
+   "index": 25.3
   },
   {
    "map": "mtut",
@@ -253,17 +253,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 82.5,
+     "win": 47.5,
      "rounds": 11.8,
-     "hpLost": 42.1
+     "hpLost": 73.2
     },
     "strong": {
-     "win": 90,
-     "rounds": 11.1,
-     "hpLost": 40.3
+     "win": 42.5,
+     "rounds": 15,
+     "hpLost": 77
     }
    },
-   "index": 42
+   "index": 71.8
   },
   {
    "map": "mtut",
@@ -277,22 +277,22 @@
    "hp": 60,
    "res": {
     "starter": {
-     "win": 60,
-     "rounds": 11.9,
-     "hpLost": 66.1
+     "win": 82.5,
+     "rounds": 13.5,
+     "hpLost": 55.1
     },
     "mid": {
      "win": 100,
-     "rounds": 8.7,
-     "hpLost": 7
+     "rounds": 8.5,
+     "hpLost": 11.6
     },
     "strong": {
      "win": 100,
-     "rounds": 8.1,
-     "hpLost": 10.7
+     "rounds": 10.6,
+     "hpLost": 1.9
     }
    },
-   "index": 12.7
+   "index": 4.9
   },
   {
    "map": "mtut",
@@ -306,22 +306,22 @@
    "hp": 220,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 23,
-     "hpLost": 99.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 82.5,
+     "win": 47.5,
      "rounds": 15.8,
-     "hpLost": 37.7
+     "hpLost": 67
     },
     "strong": {
      "win": 92.5,
-     "rounds": 14.7,
-     "hpLost": 29.1
+     "rounds": 18.4,
+     "hpLost": 18.8
     }
    },
-   "index": 37.9
+   "index": 44.7
   },
   {
    "map": "mo",
@@ -336,21 +336,21 @@
    "res": {
     "starter": {
      "win": 2.5,
-     "rounds": 13,
-     "hpLost": 99.9
+     "rounds": 10,
+     "hpLost": 98.2
     },
     "mid": {
-     "win": 62.5,
-     "rounds": 9.2,
-     "hpLost": 62.6
+     "win": 77.5,
+     "rounds": 9.1,
+     "hpLost": 50.2
     },
     "strong": {
-     "win": 90,
-     "rounds": 8.1,
-     "hpLost": 38.7
+     "win": 80,
+     "rounds": 10.4,
+     "hpLost": 40.3
     }
    },
-   "index": 45.9
+   "index": 45.1
   },
   {
    "map": "mo",
@@ -364,22 +364,22 @@
    "hp": 53,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 15,
-     "hpLost": 98.9
+     "win": 12.5,
+     "rounds": 14.8,
+     "hpLost": 95.9
     },
     "mid": {
-     "win": 82.5,
-     "rounds": 9.8,
-     "hpLost": 44.8
+     "win": 97.5,
+     "rounds": 8.6,
+     "hpLost": 21.5
     },
     "strong": {
      "win": 100,
-     "rounds": 8.9,
-     "hpLost": 21.3
+     "rounds": 10.9,
+     "hpLost": 11.8
     }
    },
-   "index": 34.1
+   "index": 25.5
   },
   {
    "map": "mo",
@@ -393,22 +393,22 @@
    "hp": 63,
    "res": {
     "starter": {
-     "win": 27.5,
+     "win": 85,
      "rounds": 13.1,
-     "hpLost": 86.8
+     "hpLost": 49.8
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 9.5,
-     "hpLost": 22.1
+     "win": 97.5,
+     "rounds": 8.5,
+     "hpLost": 17.7
     },
     "strong": {
      "win": 100,
-     "rounds": 8.9,
-     "hpLost": 16.1
+     "rounds": 10.3,
+     "hpLost": 5.5
     }
    },
-   "index": 24
+   "index": 5.8
   },
   {
    "map": "mo",
@@ -422,22 +422,22 @@
    "hp": 80,
    "res": {
     "starter": {
-     "win": 12.5,
-     "rounds": 15.2,
-     "hpLost": 94.2
+     "win": 37.5,
+     "rounds": 15.1,
+     "hpLost": 86
     },
     "mid": {
-     "win": 85,
-     "rounds": 10.5,
-     "hpLost": 29.7
+     "win": 100,
+     "rounds": 9.8,
+     "hpLost": 13.4
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 9.7,
-     "hpLost": 15.2
+     "win": 100,
+     "rounds": 12,
+     "hpLost": 12.7
     }
    },
-   "index": 30.1
+   "index": 18.8
   },
   {
    "map": "mf",
@@ -451,22 +451,22 @@
    "hp": 14,
    "res": {
     "starter": {
-     "win": 47.5,
-     "rounds": 7.2,
-     "hpLost": 73.7
+     "win": 12.5,
+     "rounds": 8.6,
+     "hpLost": 96.5
     },
     "mid": {
      "win": 100,
-     "rounds": 5.8,
-     "hpLost": 12.8
+     "rounds": 6.5,
+     "hpLost": 23.3
     },
     "strong": {
-     "win": 100,
-     "rounds": 5.3,
-     "hpLost": 7.4
+     "win": 95,
+     "rounds": 7.6,
+     "hpLost": 24.9
     }
    },
-   "index": 15
+   "index": 29.4
   },
   {
    "map": "mf",
@@ -480,22 +480,22 @@
    "hp": 15,
    "res": {
     "starter": {
-     "win": 60,
-     "rounds": 7.3,
-     "hpLost": 63.8
+     "win": 20,
+     "rounds": 7,
+     "hpLost": 89.5
     },
     "mid": {
      "win": 100,
-     "rounds": 5.9,
-     "hpLost": 16.8
+     "rounds": 6.2,
+     "hpLost": 22.8
     },
     "strong": {
      "win": 100,
-     "rounds": 5.4,
-     "hpLost": 12.3
+     "rounds": 7.9,
+     "hpLost": 34.2
     }
    },
-   "index": 13.1
+   "index": 28.6
   },
   {
    "map": "mf",
@@ -509,22 +509,22 @@
    "hp": 15,
    "res": {
     "starter": {
-     "win": 42.5,
-     "rounds": 7.5,
-     "hpLost": 78
+     "win": 25,
+     "rounds": 7.6,
+     "hpLost": 88
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 6,
-     "hpLost": 17.3
+     "win": 90,
+     "rounds": 6.9,
+     "hpLost": 29.2
     },
     "strong": {
-     "win": 100,
-     "rounds": 5.5,
-     "hpLost": 8.5
+     "win": 92.5,
+     "rounds": 8.7,
+     "hpLost": 37.1
     }
    },
-   "index": 17.1
+   "index": 32.4
   },
   {
    "map": "mf",
@@ -538,22 +538,22 @@
    "hp": 14,
    "res": {
     "starter": {
-     "win": 65,
-     "rounds": 6.5,
-     "hpLost": 52.7
+     "win": 12.5,
+     "rounds": 6,
+     "hpLost": 93.3
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 6,
-     "hpLost": 17.2
+     "win": 62.5,
+     "rounds": 6.5,
+     "hpLost": 55.1
     },
     "strong": {
-     "win": 100,
-     "rounds": 5.4,
-     "hpLost": 9.7
+     "win": 70,
+     "rounds": 8.4,
+     "hpLost": 59.1
     }
    },
-   "index": 11.8
+   "index": 53.5
   },
   {
    "map": "mf",
@@ -567,22 +567,22 @@
    "hp": 35,
    "res": {
     "starter": {
-     "win": 17.5,
-     "rounds": 11,
-     "hpLost": 94.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 90,
-     "rounds": 8.5,
-     "hpLost": 35.5
+     "win": 87.5,
+     "rounds": 8.8,
+     "hpLost": 42.1
     },
     "strong": {
-     "win": 95,
-     "rounds": 7.7,
-     "hpLost": 29
+     "win": 67.5,
+     "rounds": 11,
+     "hpLost": 58.3
     }
    },
-   "index": 31.6
+   "index": 50.8
   },
   {
    "map": "mq",
@@ -596,22 +596,22 @@
    "hp": 12,
    "res": {
     "starter": {
-     "win": 77.5,
-     "rounds": 6,
-     "hpLost": 42.7
+     "win": 87.5,
+     "rounds": 6.6,
+     "hpLost": 30.2
     },
     "mid": {
      "win": 100,
-     "rounds": 4.8,
-     "hpLost": 7
+     "rounds": 5.6,
+     "hpLost": 7.5
     },
     "strong": {
      "win": 100,
-     "rounds": 4.5,
-     "hpLost": 3.1
+     "rounds": 5.5,
+     "hpLost": 2.3
     }
    },
-   "index": 6.4
+   "index": 3.7
   },
   {
    "map": "mq",
@@ -625,22 +625,22 @@
    "hp": 13,
    "res": {
     "starter": {
-     "win": 50,
-     "rounds": 6.2,
-     "hpLost": 63.3
+     "win": 90,
+     "rounds": 8.1,
+     "hpLost": 28.4
     },
     "mid": {
-     "win": 90,
-     "rounds": 4.5,
-     "hpLost": 15.3
+     "win": 100,
+     "rounds": 5.8,
+     "hpLost": 3
     },
     "strong": {
      "win": 100,
-     "rounds": 4.7,
-     "hpLost": 4.3
+     "rounds": 6.5,
+     "hpLost": 2
     }
    },
-   "index": 16.1
+   "index": 3
   },
   {
    "map": "mq",
@@ -654,22 +654,22 @@
    "hp": 13,
    "res": {
     "starter": {
-     "win": 92.5,
-     "rounds": 7.4,
-     "hpLost": 48.2
+     "win": 52.5,
+     "rounds": 8.7,
+     "hpLost": 75.3
     },
     "mid": {
      "win": 100,
-     "rounds": 5,
-     "hpLost": 4.3
+     "rounds": 6,
+     "hpLost": 15.3
     },
     "strong": {
      "win": 100,
-     "rounds": 4.8,
-     "hpLost": 4.8
+     "rounds": 7.2,
+     "hpLost": 24.6
     }
    },
-   "index": 3.1
+   "index": 18
   },
   {
    "map": "mq",
@@ -683,22 +683,22 @@
    "hp": 15,
    "res": {
     "starter": {
-     "win": 100,
-     "rounds": 6.3,
-     "hpLost": 13.8
+     "win": 95,
+     "rounds": 8.1,
+     "hpLost": 26.3
     },
     "mid": {
      "win": 100,
-     "rounds": 5.1,
-     "hpLost": 3.3
+     "rounds": 6,
+     "hpLost": 9.9
     },
     "strong": {
      "win": 100,
-     "rounds": 4.9,
-     "hpLost": 3.3
+     "rounds": 6.7,
+     "hpLost": 11.2
     }
    },
-   "index": 0.8
+   "index": 4.1
   },
   {
    "map": "mq",
@@ -712,22 +712,22 @@
    "hp": 28,
    "res": {
     "starter": {
-     "win": 15,
-     "rounds": 8.7,
-     "hpLost": 96.7
+     "win": 12.5,
+     "rounds": 8.4,
+     "hpLost": 93.9
     },
     "mid": {
-     "win": 90,
-     "rounds": 7.8,
-     "hpLost": 32.7
+     "win": 87.5,
+     "rounds": 7.7,
+     "hpLost": 39.9
     },
     "strong": {
-     "win": 100,
-     "rounds": 7.3,
-     "hpLost": 21.8
+     "win": 72.5,
+     "rounds": 8.6,
+     "hpLost": 53.3
     }
    },
-   "index": 29.2
+   "index": 45.2
   },
   {
    "map": "mb",
@@ -741,22 +741,22 @@
    "hp": 31,
    "res": {
     "starter": {
-     "win": 35,
-     "rounds": 9.2,
-     "hpLost": 85.8
+     "win": 2.5,
+     "rounds": 9,
+     "hpLost": 99.2
     },
     "mid": {
      "win": 100,
-     "rounds": 6.9,
-     "hpLost": 9.7
+     "rounds": 7.7,
+     "hpLost": 9.5
     },
     "strong": {
-     "win": 100,
-     "rounds": 6.6,
-     "hpLost": 14
+     "win": 97.5,
+     "rounds": 10.4,
+     "hpLost": 27.9
     }
    },
-   "index": 19.8
+   "index": 32
   },
   {
    "map": "mb",
@@ -770,22 +770,22 @@
    "hp": 26,
    "res": {
     "starter": {
-     "win": 17.5,
-     "rounds": 9.7,
-     "hpLost": 96
+     "win": 5,
+     "rounds": 9.5,
+     "hpLost": 96.8
     },
     "mid": {
-     "win": 95,
-     "rounds": 7.2,
-     "hpLost": 31.7
+     "win": 100,
+     "rounds": 7.9,
+     "hpLost": 17.7
     },
     "strong": {
-     "win": 100,
-     "rounds": 6.4,
-     "hpLost": 16.4
+     "win": 97.5,
+     "rounds": 9.5,
+     "hpLost": 29.4
     }
    },
-   "index": 26
+   "index": 31.7
   },
   {
    "map": "mb",
@@ -804,17 +804,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 77.5,
-     "rounds": 8,
-     "hpLost": 52.7
+     "win": 97.5,
+     "rounds": 9.2,
+     "hpLost": 25.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 7.3,
-     "hpLost": 21.6
+     "win": 90,
+     "rounds": 12.3,
+     "hpLost": 41.1
     }
    },
-   "index": 36
+   "index": 38.4
   },
   {
    "map": "mb",
@@ -828,22 +828,22 @@
    "hp": 39,
    "res": {
     "starter": {
-     "win": 15,
-     "rounds": 9.2,
-     "hpLost": 93.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 85,
-     "rounds": 8.5,
-     "hpLost": 37.3
+     "win": 97.5,
+     "rounds": 9.5,
+     "hpLost": 32.5
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 7.6,
-     "hpLost": 24.7
+     "win": 95,
+     "rounds": 11.2,
+     "hpLost": 28.4
     }
    },
-   "index": 31.8
+   "index": 34
   },
   {
    "map": "mb",
@@ -857,22 +857,22 @@
    "hp": 167,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 17,
-     "hpLost": 98.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 87.5,
-     "rounds": 14.4,
-     "hpLost": 37.3
+     "win": 82.5,
+     "rounds": 14.7,
+     "hpLost": 39
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 13.2,
-     "hpLost": 24.3
+     "win": 95,
+     "rounds": 18.2,
+     "hpLost": 26.2
     }
    },
-   "index": 35.5
+   "index": 37.2
   },
   {
    "map": "mp",
@@ -886,22 +886,22 @@
    "hp": 19,
    "res": {
     "starter": {
-     "win": 20,
-     "rounds": 8.5,
-     "hpLost": 93.8
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 7.4,
-     "hpLost": 38.4
+     "win": 80,
+     "rounds": 8,
+     "hpLost": 58.2
     },
     "strong": {
-     "win": 100,
-     "rounds": 6.3,
-     "hpLost": 18.7
+     "win": 65,
+     "rounds": 9.2,
+     "hpLost": 71.1
     }
    },
-   "index": 25.3
+   "index": 56.5
   },
   {
    "map": "mp",
@@ -915,22 +915,22 @@
    "hp": 28,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 10,
-     "hpLost": 99.3
+     "win": 20,
+     "rounds": 10.3,
+     "hpLost": 90.7
     },
     "mid": {
-     "win": 87.5,
-     "rounds": 7.4,
-     "hpLost": 36.8
+     "win": 100,
+     "rounds": 7,
+     "hpLost": 14.7
     },
     "strong": {
      "win": 100,
-     "rounds": 6.6,
-     "hpLost": 14.1
+     "rounds": 8.4,
+     "hpLost": 16.9
     }
    },
-   "index": 31
+   "index": 24.2
   },
   {
    "map": "mp",
@@ -944,22 +944,22 @@
    "hp": 18,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 7.3,
-     "hpLost": 95.3
+     "win": 5,
+     "rounds": 7,
+     "hpLost": 95.7
     },
     "mid": {
-     "win": 80,
-     "rounds": 6.9,
-     "hpLost": 44.8
+     "win": 92.5,
+     "rounds": 7.6,
+     "hpLost": 41.5
     },
     "strong": {
-     "win": 100,
-     "rounds": 6.3,
-     "hpLost": 18.7
+     "win": 77.5,
+     "rounds": 9.2,
+     "hpLost": 51.6
     }
    },
-   "index": 32.8
+   "index": 44.2
   },
   {
    "map": "mp",
@@ -973,22 +973,22 @@
    "hp": 15,
    "res": {
     "starter": {
-     "win": 15,
-     "rounds": 7.2,
-     "hpLost": 94.5
+     "win": 7.5,
+     "rounds": 7.7,
+     "hpLost": 96.8
     },
     "mid": {
-     "win": 95,
+     "win": 92.5,
      "rounds": 6.3,
-     "hpLost": 24.5
+     "hpLost": 21.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 5.7,
-     "hpLost": 12
+     "win": 92.5,
+     "rounds": 8.3,
+     "hpLost": 42.8
     }
    },
-   "index": 25.5
+   "index": 37.6
   },
   {
    "map": "mp",
@@ -1002,22 +1002,22 @@
    "hp": 158,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 18,
-     "hpLost": 98
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 14,
-     "hpLost": 34.4
+     "win": 70,
+     "rounds": 14.5,
+     "hpLost": 54.7
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 13.1,
-     "hpLost": 26.8
+     "win": 90,
+     "rounds": 17,
+     "hpLost": 36
     }
    },
-   "index": 33
+   "index": 44
   },
   {
    "map": "mp",
@@ -1032,21 +1032,21 @@
    "res": {
     "starter": {
      "win": 2.5,
-     "rounds": 7,
-     "hpLost": 99.4
+     "rounds": 9,
+     "hpLost": 99.9
     },
     "mid": {
-     "win": 70,
-     "rounds": 7.9,
-     "hpLost": 55.4
+     "win": 87.5,
+     "rounds": 9,
+     "hpLost": 41.2
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 7.6,
-     "hpLost": 27.2
+     "win": 47.5,
+     "rounds": 10.3,
+     "hpLost": 82.8
     }
    },
-   "index": 39.3
+   "index": 61.3
   },
   {
    "map": "mp",
@@ -1060,22 +1060,22 @@
    "hp": 30,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 7.7,
-     "hpLost": 94.5
+     "win": 2.5,
+     "rounds": 11,
+     "hpLost": 99.8
     },
     "mid": {
-     "win": 55,
-     "rounds": 8.6,
-     "hpLost": 67.4
+     "win": 80,
+     "rounds": 8.4,
+     "hpLost": 46.2
     },
     "strong": {
-     "win": 100,
-     "rounds": 7.4,
-     "hpLost": 21.3
+     "win": 72.5,
+     "rounds": 11.4,
+     "hpLost": 62.8
     }
    },
-   "index": 39.7
+   "index": 52
   },
   {
    "map": "mg",
@@ -1089,22 +1089,22 @@
    "hp": 48,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 14,
-     "hpLost": 99.4
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 9.3,
-     "hpLost": 31.9
+     "win": 100,
+     "rounds": 10.1,
+     "hpLost": 16.4
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.4,
-     "hpLost": 16.6
+     "win": 92.5,
+     "rounds": 12.9,
+     "hpLost": 34.1
     }
    },
-   "index": 30.4
+   "index": 35.4
   },
   {
    "map": "mg",
@@ -1123,17 +1123,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 35,
-     "rounds": 11.6,
-     "hpLost": 80.5
+     "win": 55,
+     "rounds": 12.1,
+     "hpLost": 75.6
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 10.9,
-     "hpLost": 41.2
+     "win": 72.5,
+     "rounds": 14.1,
+     "hpLost": 61.3
     }
    },
-   "index": 53.4
+   "index": 58.5
   },
   {
    "map": "mg",
@@ -1147,22 +1147,22 @@
    "hp": 146,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 18,
-     "hpLost": 98.2
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
      "win": 82.5,
-     "rounds": 14.6,
-     "hpLost": 55
+     "rounds": 15.3,
+     "hpLost": 55.7
     },
     "strong": {
-     "win": 95,
-     "rounds": 12.6,
-     "hpLost": 35.7
+     "win": 90,
+     "rounds": 17.4,
+     "hpLost": 38.7
     }
    },
-   "index": 38.3
+   "index": 41.6
   },
   {
    "map": "mg",
@@ -1181,17 +1181,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 62.5,
-     "rounds": 10.2,
-     "hpLost": 66.2
+     "win": 60,
+     "rounds": 11.3,
+     "hpLost": 65.7
     },
     "strong": {
-     "win": 95,
-     "rounds": 8.7,
-     "hpLost": 33.8
+     "win": 77.5,
+     "rounds": 12.6,
+     "hpLost": 46.1
     }
    },
-   "index": 44.1
+   "index": 52.2
   },
   {
    "map": "mc",
@@ -1205,22 +1205,22 @@
    "hp": 21,
    "res": {
     "starter": {
-     "win": 20,
-     "rounds": 8.6,
-     "hpLost": 91.6
+     "win": 12.5,
+     "rounds": 9.8,
+     "hpLost": 95.3
     },
     "mid": {
-     "win": 90,
-     "rounds": 6.8,
-     "hpLost": 33.3
+     "win": 97.5,
+     "rounds": 7.8,
+     "hpLost": 21.6
     },
     "strong": {
      "win": 100,
-     "rounds": 6.4,
-     "hpLost": 14.8
+     "rounds": 9.3,
+     "hpLost": 25.6
     }
    },
-   "index": 26.2
+   "index": 28.9
   },
   {
    "map": "mc",
@@ -1234,22 +1234,22 @@
    "hp": 63,
    "res": {
     "starter": {
-     "win": 15,
-     "rounds": 12.2,
-     "hpLost": 92.2
+     "win": 7.5,
+     "rounds": 15,
+     "hpLost": 97.8
     },
     "mid": {
-     "win": 90,
-     "rounds": 9.6,
-     "hpLost": 30.4
+     "win": 97.5,
+     "rounds": 10.2,
+     "hpLost": 27.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.7,
-     "hpLost": 18.3
+     "win": 97.5,
+     "rounds": 11.8,
+     "hpLost": 15.9
     }
    },
-   "index": 28.3
+   "index": 28.4
   },
   {
    "map": "mc",
@@ -1263,22 +1263,22 @@
    "hp": 37,
    "res": {
     "starter": {
-     "win": 45,
-     "rounds": 11.4,
-     "hpLost": 84.3
+     "win": 7.5,
+     "rounds": 14,
+     "hpLost": 98.3
     },
     "mid": {
-     "win": 100,
-     "rounds": 8.1,
-     "hpLost": 16.7
+     "win": 95,
+     "rounds": 8.6,
+     "hpLost": 28.5
     },
     "strong": {
-     "win": 100,
-     "rounds": 7.4,
-     "hpLost": 7.5
+     "win": 92.5,
+     "rounds": 10.3,
+     "hpLost": 24.8
     }
    },
-   "index": 15.6
+   "index": 32.5
   },
   {
    "map": "mc",
@@ -1292,22 +1292,22 @@
    "hp": 66,
    "res": {
     "starter": {
-     "win": 42.5,
-     "rounds": 12.6,
-     "hpLost": 81.7
+     "win": 5,
+     "rounds": 15.5,
+     "hpLost": 99
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 10.2,
-     "hpLost": 15
+     "win": 100,
+     "rounds": 9.9,
+     "hpLost": 12.1
     },
     "strong": {
      "win": 100,
-     "rounds": 9.3,
-     "hpLost": 12.8
+     "rounds": 12.4,
+     "hpLost": 15.3
     }
    },
-   "index": 18.2
+   "index": 27.6
   },
   {
    "map": "mc",
@@ -1321,22 +1321,22 @@
    "hp": 69,
    "res": {
     "starter": {
-     "win": 77.5,
-     "rounds": 13.4,
-     "hpLost": 57.8
+     "win": 25,
+     "rounds": 15.6,
+     "hpLost": 91.2
     },
     "mid": {
      "win": 100,
-     "rounds": 10,
-     "hpLost": 7.4
+     "rounds": 9.7,
+     "hpLost": 2.2
     },
     "strong": {
      "win": 100,
-     "rounds": 9.2,
-     "hpLost": 4.6
+     "rounds": 12.2,
+     "hpLost": 6.8
     }
    },
-   "index": 6.8
+   "index": 20.5
   },
   {
    "map": "mc",
@@ -1350,22 +1350,22 @@
    "hp": 49,
    "res": {
     "starter": {
-     "win": 30,
-     "rounds": 13,
-     "hpLost": 89.3
+     "win": 7.5,
+     "rounds": 15,
+     "hpLost": 99.1
     },
     "mid": {
-     "win": 100,
-     "rounds": 8.9,
-     "hpLost": 19.7
+     "win": 92.5,
+     "rounds": 9.8,
+     "hpLost": 23.2
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.2,
-     "hpLost": 8.9
+     "win": 92.5,
+     "rounds": 11.2,
+     "hpLost": 25.6
     }
    },
-   "index": 19.7
+   "index": 33.3
   },
   {
    "map": "mc",
@@ -1379,22 +1379,22 @@
    "hp": 56,
    "res": {
     "starter": {
-     "win": 22.5,
-     "rounds": 12.3,
-     "hpLost": 89.7
+     "win": 2.5,
+     "rounds": 12,
+     "hpLost": 99.7
     },
     "mid": {
-     "win": 82.5,
+     "win": 97.5,
      "rounds": 9.7,
-     "hpLost": 39.7
+     "hpLost": 26
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.9,
-     "hpLost": 21.2
+     "win": 97.5,
+     "rounds": 12.1,
+     "hpLost": 35.8
     }
    },
-   "index": 29.1
+   "index": 34.6
   },
   {
    "map": "m2",
@@ -1408,22 +1408,22 @@
    "hp": 14,
    "res": {
     "starter": {
-     "win": 70,
-     "rounds": 7.4,
-     "hpLost": 66.5
+     "win": 37.5,
+     "rounds": 6.9,
+     "hpLost": 76.6
     },
     "mid": {
      "win": 100,
-     "rounds": 5.6,
-     "hpLost": 15.7
+     "rounds": 6.2,
+     "hpLost": 11.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 5.3,
-     "hpLost": 16.3
+     "win": 97.5,
+     "rounds": 7.7,
+     "hpLost": 18.4
     }
    },
-   "index": 11.6
+   "index": 20.9
   },
   {
    "map": "m2",
@@ -1437,22 +1437,22 @@
    "hp": 65,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 11.7,
-     "hpLost": 97.3
+     "win": 2.5,
+     "rounds": 22,
+     "hpLost": 99.1
     },
     "mid": {
-     "win": 80,
-     "rounds": 9.5,
-     "hpLost": 50.6
+     "win": 90,
+     "rounds": 10.3,
+     "hpLost": 32.9
     },
     "strong": {
-     "win": 95,
-     "rounds": 8.7,
-     "hpLost": 25.5
+     "win": 77.5,
+     "rounds": 11.6,
+     "hpLost": 43.6
     }
    },
-   "index": 35.8
+   "index": 43.4
   },
   {
    "map": "m2",
@@ -1466,22 +1466,22 @@
    "hp": 72,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 11.3,
-     "hpLost": 98.2
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 87.5,
-     "rounds": 9.9,
-     "hpLost": 49.8
+     "win": 82.5,
+     "rounds": 10.5,
+     "hpLost": 43.5
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 9.2,
-     "hpLost": 32.6
+     "win": 82.5,
+     "rounds": 12.3,
+     "hpLost": 43.5
     }
    },
-   "index": 36.3
+   "index": 44.6
   },
   {
    "map": "m2",
@@ -1495,22 +1495,22 @@
    "hp": 129,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 14,
-     "hpLost": 96.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 62.5,
-     "rounds": 12.5,
-     "hpLost": 55.2
+     "win": 70,
+     "rounds": 13.1,
+     "hpLost": 64.3
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 11.3,
-     "hpLost": 34.2
+     "win": 65,
+     "rounds": 14.7,
+     "hpLost": 48
     }
    },
-   "index": 43.6
+   "index": 53.3
   },
   {
    "map": "m2",
@@ -1524,22 +1524,22 @@
    "hp": 187,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 17,
-     "hpLost": 98.1
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 75,
-     "rounds": 15,
-     "hpLost": 49.7
+     "win": 50,
+     "rounds": 14.8,
+     "hpLost": 71.4
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 12.6,
-     "hpLost": 34
+     "win": 70,
+     "rounds": 17.1,
+     "hpLost": 57.8
     }
    },
-   "index": 42.3
+   "index": 59.5
   },
   {
    "map": "mw",
@@ -1553,22 +1553,22 @@
    "hp": 106,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 19,
-     "hpLost": 99.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 11.8,
-     "hpLost": 38.8
+     "win": 87.5,
+     "rounds": 11.7,
+     "hpLost": 37.4
     },
     "strong": {
-     "win": 95,
-     "rounds": 10.6,
-     "hpLost": 27.4
+     "win": 92.5,
+     "rounds": 15.1,
+     "hpLost": 39.4
     }
    },
-   "index": 33.7
+   "index": 39.9
   },
   {
    "map": "mw",
@@ -1582,22 +1582,22 @@
    "hp": 134,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 15,
-     "hpLost": 98.1
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 72.5,
-     "rounds": 13,
-     "hpLost": 50.8
+     "win": 50,
+     "rounds": 13.2,
+     "hpLost": 66.7
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 12.1,
-     "hpLost": 34.9
+     "win": 80,
+     "rounds": 15.9,
+     "hpLost": 47.5
     }
    },
-   "index": 43.1
+   "index": 54.4
   },
   {
    "map": "mw",
@@ -1611,22 +1611,22 @@
    "hp": 109,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 21,
-     "hpLost": 99.1
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 80,
-     "rounds": 12.1,
-     "hpLost": 45.9
+     "win": 55,
+     "rounds": 12.8,
+     "hpLost": 68.4
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 11,
-     "hpLost": 28.7
+     "win": 65,
+     "rounds": 14.8,
+     "hpLost": 58.5
     }
    },
-   "index": 38.4
+   "index": 59.6
   },
   {
    "map": "mw",
@@ -1640,22 +1640,22 @@
    "hp": 20,
    "res": {
     "starter": {
-     "win": 17.5,
-     "rounds": 6.3,
-     "hpLost": 94.3
+     "win": 5,
+     "rounds": 7.5,
+     "hpLost": 98.5
     },
     "mid": {
-     "win": 65,
-     "rounds": 7.3,
-     "hpLost": 61.5
+     "win": 87.5,
+     "rounds": 8.3,
+     "hpLost": 41.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 6.7,
-     "hpLost": 24.8
+     "win": 87.5,
+     "rounds": 10.3,
+     "hpLost": 60.4
     }
    },
-   "index": 35.6
+   "index": 45.1
   },
   {
    "map": "mw",
@@ -1674,17 +1674,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 45,
-     "rounds": 13.2,
-     "hpLost": 70.5
+     "win": 37.5,
+     "rounds": 14,
+     "hpLost": 81.8
     },
     "strong": {
-     "win": 85,
-     "rounds": 13,
-     "hpLost": 51
+     "win": 55,
+     "rounds": 16.2,
+     "hpLost": 70.1
     }
    },
-   "index": 55.3
+   "index": 69.4
   },
   {
    "map": "mw",
@@ -1698,22 +1698,22 @@
    "hp": 69,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 12,
-     "hpLost": 95.9
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 57.5,
-     "rounds": 10.7,
-     "hpLost": 63.4
+     "win": 65,
+     "rounds": 11.7,
+     "hpLost": 63.1
     },
     "strong": {
-     "win": 82.5,
-     "rounds": 9.7,
-     "hpLost": 41.1
+     "win": 67.5,
+     "rounds": 13.7,
+     "hpLost": 64.4
     }
    },
-   "index": 48.4
+   "index": 58
   },
   {
    "map": "mw",
@@ -1727,22 +1727,22 @@
    "hp": 87,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 14,
-     "hpLost": 98.8
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
      "win": 55,
-     "rounds": 11.3,
-     "hpLost": 67.9
+     "rounds": 12.5,
+     "hpLost": 71.9
     },
     "strong": {
-     "win": 90,
-     "rounds": 10.4,
-     "hpLost": 35.7
+     "win": 70,
+     "rounds": 15,
+     "hpLost": 60.3
     }
    },
-   "index": 47.1
+   "index": 58.8
   },
   {
    "map": "ms",
@@ -1756,22 +1756,22 @@
    "hp": 105,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 14.3,
-     "hpLost": 98.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 11.7,
-     "hpLost": 32.8
+     "win": 80,
+     "rounds": 12.2,
+     "hpLost": 53.6
     },
     "strong": {
-     "win": 90,
-     "rounds": 10.8,
-     "hpLost": 31.9
+     "win": 87.5,
+     "rounds": 15.2,
+     "hpLost": 37.5
     }
    },
-   "index": 35.5
+   "index": 42.5
   },
   {
    "map": "ms",
@@ -1785,22 +1785,22 @@
    "hp": 115,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 15.5,
-     "hpLost": 97.9
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 80,
-     "rounds": 12.7,
-     "hpLost": 45.5
+     "win": 77.5,
+     "rounds": 12.9,
+     "hpLost": 52.6
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 11.5,
-     "hpLost": 29.8
+     "win": 85,
+     "rounds": 15,
+     "hpLost": 41.9
     }
    },
-   "index": 36.8
+   "index": 44.9
   },
   {
    "map": "ms",
@@ -1814,22 +1814,22 @@
    "hp": 125,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 14.5,
-     "hpLost": 96.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 77.5,
-     "rounds": 13,
-     "hpLost": 46.8
+     "win": 32.5,
+     "rounds": 12.8,
+     "hpLost": 82.8
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 11.4,
-     "hpLost": 19
+     "win": 72.5,
+     "rounds": 15.2,
+     "hpLost": 59.5
     }
    },
-   "index": 33.5
+   "index": 63.6
   },
   {
    "map": "ms",
@@ -1848,17 +1848,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 10,
-     "rounds": 14,
-     "hpLost": 93.7
+     "win": 25,
+     "rounds": 12.8,
+     "hpLost": 85.5
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 11.6,
-     "hpLost": 29.8
+     "win": 62.5,
+     "rounds": 14.8,
+     "hpLost": 62.5
     }
    },
-   "index": 55.6
+   "index": 68.8
   },
   {
    "map": "m8",
@@ -1872,22 +1872,22 @@
    "hp": 95,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 14,
-     "hpLost": 96.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 85,
-     "rounds": 11.9,
-     "hpLost": 39.2
+     "win": 90,
+     "rounds": 12.3,
+     "hpLost": 45.8
     },
     "strong": {
-     "win": 95,
-     "rounds": 10.8,
-     "hpLost": 26.5
+     "win": 80,
+     "rounds": 14.5,
+     "hpLost": 53.7
     }
    },
-   "index": 35.4
+   "index": 45.9
   },
   {
    "map": "m8",
@@ -1901,22 +1901,22 @@
    "hp": 234,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 20,
-     "hpLost": 93.6
+     "win": 2.5,
+     "rounds": 25,
+     "hpLost": 99.7
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 15.9,
-     "hpLost": 26.4
+     "win": 90,
+     "rounds": 15.5,
+     "hpLost": 29.8
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 14.9,
-     "hpLost": 19.2
+     "win": 92.5,
+     "rounds": 18.6,
+     "hpLost": 33
     }
    },
-   "index": 29.8
+   "index": 37
   },
   {
    "map": "m8",
@@ -1935,17 +1935,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 45,
-     "rounds": 16.2,
-     "hpLost": 66.2
+     "win": 42.5,
+     "rounds": 16.3,
+     "hpLost": 79.2
     },
     "strong": {
-     "win": 77.5,
-     "rounds": 15.2,
-     "hpLost": 42.2
+     "win": 62.5,
+     "rounds": 18.9,
+     "hpLost": 60.3
     }
    },
-   "index": 54.9
+   "index": 63.8
   },
   {
    "map": "m8",
@@ -1959,22 +1959,22 @@
    "hp": 107,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 13,
-     "hpLost": 98.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 77.5,
-     "rounds": 12.3,
-     "hpLost": 49.3
+     "win": 30,
+     "rounds": 12.4,
+     "hpLost": 80.9
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 11.1,
-     "hpLost": 30.3
+     "win": 77.5,
+     "rounds": 14,
+     "hpLost": 58
     }
    },
-   "index": 38.2
+   "index": 62.6
   },
   {
    "map": "m8",
@@ -1988,22 +1988,22 @@
    "hp": 90,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 13.3,
-     "hpLost": 98
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 77.5,
-     "rounds": 11.5,
-     "hpLost": 49.6
+     "win": 47.5,
+     "rounds": 11.7,
+     "hpLost": 79.6
     },
     "strong": {
-     "win": 95,
-     "rounds": 10.3,
-     "hpLost": 22.7
+     "win": 65,
+     "rounds": 13.5,
+     "hpLost": 65.8
     }
    },
-   "index": 35.7
+   "index": 63.3
   },
   {
    "map": "m8",
@@ -2017,22 +2017,22 @@
    "hp": 46,
    "res": {
     "starter": {
-     "win": 27.5,
-     "rounds": 8.6,
-     "hpLost": 84.2
+     "win": 2.5,
+     "rounds": 10,
+     "hpLost": 99.2
     },
     "mid": {
-     "win": 77.5,
-     "rounds": 8.9,
-     "hpLost": 45.1
+     "win": 67.5,
+     "rounds": 9.4,
+     "hpLost": 49.4
     },
     "strong": {
-     "win": 100,
-     "rounds": 8,
-     "hpLost": 12.4
+     "win": 90,
+     "rounds": 11.9,
+     "hpLost": 40
     }
    },
-   "index": 26.9
+   "index": 45
   },
   {
    "map": "m8",
@@ -2046,22 +2046,22 @@
    "hp": 85,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 12,
-     "hpLost": 94.1
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 10.9,
-     "hpLost": 32.9
+     "win": 62.5,
+     "rounds": 11.4,
+     "hpLost": 68.5
     },
     "strong": {
-     "win": 100,
-     "rounds": 10,
-     "hpLost": 20.2
+     "win": 72.5,
+     "rounds": 13.1,
+     "hpLost": 60.3
     }
    },
-   "index": 28.8
+   "index": 56.3
   },
   {
    "map": "m8",
@@ -2075,22 +2075,22 @@
    "hp": 34,
    "res": {
     "starter": {
-     "win": 12.5,
-     "rounds": 8.2,
-     "hpLost": 94.4
+     "win": 2.5,
+     "rounds": 9,
+     "hpLost": 99.7
     },
     "mid": {
-     "win": 60,
-     "rounds": 9,
-     "hpLost": 63.6
+     "win": 85,
+     "rounds": 8.9,
+     "hpLost": 47.1
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 7.8,
-     "hpLost": 22.8
+     "win": 65,
+     "rounds": 10.6,
+     "hpLost": 67.8
     }
    },
-   "index": 38.2
+   "index": 53.8
   },
   {
    "map": "mu",
@@ -2104,22 +2104,22 @@
    "hp": 14,
    "res": {
     "starter": {
-     "win": 62.5,
-     "rounds": 6.5,
-     "hpLost": 70.8
+     "win": 25,
+     "rounds": 7,
+     "hpLost": 89.5
     },
     "mid": {
-     "win": 95,
-     "rounds": 5.7,
-     "hpLost": 30.2
+     "win": 75,
+     "rounds": 6.3,
+     "hpLost": 52.3
     },
     "strong": {
-     "win": 100,
-     "rounds": 5.5,
-     "hpLost": 21.9
+     "win": 67.5,
+     "rounds": 8.2,
+     "hpLost": 63.9
     }
    },
-   "index": 16.1
+   "index": 49.1
   },
   {
    "map": "mu",
@@ -2133,22 +2133,22 @@
    "hp": 25,
    "res": {
     "starter": {
-     "win": 37.5,
-     "rounds": 8.5,
-     "hpLost": 82.9
+     "win": 12.5,
+     "rounds": 9.8,
+     "hpLost": 93.9
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 7.5,
-     "hpLost": 27.7
+     "win": 82.5,
+     "rounds": 8.6,
+     "hpLost": 41.1
     },
     "strong": {
-     "win": 100,
-     "rounds": 6.9,
-     "hpLost": 13.8
+     "win": 72.5,
+     "rounds": 10.1,
+     "hpLost": 53.3
     }
    },
-   "index": 19.7
+   "index": 46.5
   },
   {
    "map": "mu",
@@ -2162,22 +2162,22 @@
    "hp": 14,
    "res": {
     "starter": {
-     "win": 47.5,
-     "rounds": 5.9,
-     "hpLost": 76.8
+     "win": 10,
+     "rounds": 7,
+     "hpLost": 98.3
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 5.6,
-     "hpLost": 46.6
+     "win": 75,
+     "rounds": 6.1,
+     "hpLost": 63.3
     },
     "strong": {
-     "win": 100,
-     "rounds": 5.4,
-     "hpLost": 36.7
+     "win": 52.5,
+     "rounds": 7.1,
+     "hpLost": 81.1
     }
    },
-   "index": 24.2
+   "index": 60.9
   },
   {
    "map": "mu",
@@ -2191,22 +2191,22 @@
    "hp": 95,
    "res": {
     "starter": {
-     "win": 17.5,
-     "rounds": 14,
-     "hpLost": 90.4
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 85,
-     "rounds": 11.9,
-     "hpLost": 42.5
+     "win": 77.5,
+     "rounds": 12.2,
+     "hpLost": 48.2
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 10.7,
-     "hpLost": 21.8
+     "win": 82.5,
+     "rounds": 14.8,
+     "hpLost": 57.1
     }
    },
-   "index": 31.7
+   "index": 49.3
   },
   {
    "map": "mu",
@@ -2220,22 +2220,22 @@
    "hp": 55,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 14,
-     "hpLost": 99.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 77.5,
-     "rounds": 10.4,
-     "hpLost": 56.3
+     "win": 80,
+     "rounds": 10.2,
+     "hpLost": 52.3
     },
     "strong": {
-     "win": 90,
-     "rounds": 9.2,
-     "hpLost": 36.5
+     "win": 70,
+     "rounds": 12.2,
+     "hpLost": 55.8
     }
    },
-   "index": 41.6
+   "index": 51.5
   },
   {
    "map": "mu",
@@ -2249,22 +2249,22 @@
    "hp": 43,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 10.5,
-     "hpLost": 98.6
+     "win": 2.5,
+     "rounds": 12,
+     "hpLost": 99.7
     },
     "mid": {
-     "win": 60,
-     "rounds": 8.7,
-     "hpLost": 61.7
+     "win": 37.5,
+     "rounds": 9.6,
+     "hpLost": 87.1
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 8.1,
-     "hpLost": 43
+     "win": 27.5,
+     "rounds": 10.8,
+     "hpLost": 91.6
     }
    },
-   "index": 47.6
+   "index": 81
   },
   {
    "map": "mz",
@@ -2278,22 +2278,22 @@
    "hp": 171,
    "res": {
     "starter": {
-     "win": 50,
-     "rounds": 17.7,
-     "hpLost": 73.9
+     "win": 82.5,
+     "rounds": 18.8,
+     "hpLost": 50.2
     },
     "mid": {
-     "win": 95,
-     "rounds": 13.8,
-     "hpLost": 23
-    },
-    "strong": {
      "win": 97.5,
      "rounds": 12.7,
-     "hpLost": 11.9
+     "hpLost": 10.8
+    },
+    "strong": {
+     "win": 100,
+     "rounds": 15.1,
+     "hpLost": 8.5
     }
    },
-   "index": 17.4
+   "index": 7.1
   },
   {
    "map": "mz",
@@ -2307,22 +2307,22 @@
    "hp": 220,
    "res": {
     "starter": {
-     "win": 27.5,
-     "rounds": 21.5,
-     "hpLost": 91.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 77.5,
-     "rounds": 15.6,
-     "hpLost": 34.5
+     "win": 50,
+     "rounds": 16.1,
+     "hpLost": 75.3
     },
     "strong": {
-     "win": 95,
-     "rounds": 14.5,
-     "hpLost": 16.3
+     "win": 80,
+     "rounds": 18.3,
+     "hpLost": 45.5
     }
    },
-   "index": 29.1
+   "index": 53.9
   },
   {
    "map": "mz",
@@ -2336,22 +2336,22 @@
    "hp": 52,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 13.5,
-     "hpLost": 99.4
+     "win": 2.5,
+     "rounds": 11,
+     "hpLost": 97.7
     },
     "mid": {
-     "win": 87.5,
-     "rounds": 9.2,
-     "hpLost": 29.9
+     "win": 85,
+     "rounds": 9.5,
+     "hpLost": 43.5
     },
     "strong": {
-     "win": 90,
-     "rounds": 8.6,
-     "hpLost": 31.2
+     "win": 72.5,
+     "rounds": 11.8,
+     "hpLost": 48.2
     }
    },
-   "index": 37.2
+   "index": 47.1
   },
   {
    "map": "mz",
@@ -2370,17 +2370,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 62.5,
-     "rounds": 16.8,
-     "hpLost": 59.2
+     "win": 25,
+     "rounds": 16.5,
+     "hpLost": 86.8
     },
     "strong": {
-     "win": 100,
-     "rounds": 14.9,
-     "hpLost": 24.2
+     "win": 80,
+     "rounds": 18.8,
+     "hpLost": 58.8
     }
    },
-   "index": 40.4
+   "index": 63.5
   },
   {
    "map": "mz",
@@ -2394,22 +2394,22 @@
    "hp": 217,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 20,
-     "hpLost": 95.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 80,
+     "win": 57.5,
      "rounds": 16.3,
-     "hpLost": 44.3
+     "hpLost": 66
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 14.6,
-     "hpLost": 22.1
+     "win": 87.5,
+     "rounds": 18.1,
+     "hpLost": 37.2
     }
    },
-   "index": 33.7
+   "index": 48.1
   },
   {
    "map": "m4",
@@ -2423,22 +2423,22 @@
    "hp": 26,
    "res": {
     "starter": {
-     "win": 15,
-     "rounds": 8.5,
-     "hpLost": 94.1
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 90,
-     "rounds": 7,
-     "hpLost": 32.4
+     "win": 87.5,
+     "rounds": 7.9,
+     "hpLost": 44.4
     },
     "strong": {
-     "win": 95,
-     "rounds": 6.7,
-     "hpLost": 25.9
+     "win": 85,
+     "rounds": 9.3,
+     "hpLost": 45.8
     }
    },
-   "index": 31.5
+   "index": 43.3
   },
   {
    "map": "m4",
@@ -2452,22 +2452,22 @@
    "hp": 48,
    "res": {
     "starter": {
-     "win": 30,
-     "rounds": 12,
-     "hpLost": 90.2
+     "win": 2.5,
+     "rounds": 13,
+     "hpLost": 99.3
     },
     "mid": {
-     "win": 90,
-     "rounds": 8.8,
-     "hpLost": 34.5
+     "win": 97.5,
+     "rounds": 10.2,
+     "hpLost": 33.7
     },
     "strong": {
-     "win": 95,
-     "rounds": 8.3,
-     "hpLost": 27.8
+     "win": 90,
+     "rounds": 12.2,
+     "hpLost": 40.8
     }
    },
-   "index": 28.2
+   "index": 37.7
   },
   {
    "map": "m4",
@@ -2481,22 +2481,22 @@
    "hp": 26,
    "res": {
     "starter": {
-     "win": 12.5,
-     "rounds": 8,
-     "hpLost": 95.3
+     "win": 2.5,
+     "rounds": 7,
+     "hpLost": 98.5
     },
     "mid": {
-     "win": 82.5,
-     "rounds": 7,
-     "hpLost": 32
+     "win": 97.5,
+     "rounds": 7.9,
+     "hpLost": 22.8
     },
     "strong": {
-     "win": 100,
-     "rounds": 6.4,
-     "hpLost": 13.9
+     "win": 97.5,
+     "rounds": 9.3,
+     "hpLost": 24.6
     }
    },
-   "index": 29.7
+   "index": 31.8
   },
   {
    "map": "m4",
@@ -2510,22 +2510,22 @@
    "hp": 73,
    "res": {
     "starter": {
-     "win": 17.5,
-     "rounds": 10.3,
-     "hpLost": 96.3
+     "win": 12.5,
+     "rounds": 11,
+     "hpLost": 96.5
     },
     "mid": {
-     "win": 95,
+     "win": 62.5,
      "rounds": 9.3,
-     "hpLost": 59.8
+     "hpLost": 76.8
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 8.8,
-     "hpLost": 60.4
+     "win": 67.5,
+     "rounds": 11.4,
+     "hpLost": 72.6
     }
    },
-   "index": 37.6
+   "index": 57.5
   },
   {
    "map": "m4",
@@ -2539,22 +2539,22 @@
    "hp": 36,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 10,
-     "hpLost": 95.7
+     "win": 2.5,
+     "rounds": 9,
+     "hpLost": 98.9
     },
     "mid": {
-     "win": 100,
-     "rounds": 7.9,
-     "hpLost": 20
+     "win": 95,
+     "rounds": 8.3,
+     "hpLost": 24.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 7.1,
-     "hpLost": 11.8
+     "win": 97.5,
+     "rounds": 10.3,
+     "hpLost": 20.3
     }
    },
-   "index": 25.5
+   "index": 31.3
   },
   {
    "map": "m4",
@@ -2568,22 +2568,22 @@
    "hp": 31,
    "res": {
     "starter": {
-     "win": 15,
-     "rounds": 9.2,
-     "hpLost": 94.8
+     "win": 5,
+     "rounds": 11,
+     "hpLost": 98.8
     },
     "mid": {
-     "win": 85,
-     "rounds": 8,
-     "hpLost": 36.9
+     "win": 97.5,
+     "rounds": 9.3,
+     "hpLost": 32
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 7.3,
-     "hpLost": 25.4
+     "win": 92.5,
+     "rounds": 10.9,
+     "hpLost": 38.4
     }
    },
-   "index": 32
+   "index": 35.9
   },
   {
    "map": "m4",
@@ -2597,22 +2597,22 @@
    "hp": 29,
    "res": {
     "starter": {
-     "win": 35,
-     "rounds": 7.4,
-     "hpLost": 88.6
+     "win": 7.5,
+     "rounds": 9.3,
+     "hpLost": 98.3
     },
     "mid": {
-     "win": 75,
-     "rounds": 7,
-     "hpLost": 59.4
+     "win": 65,
+     "rounds": 7.2,
+     "hpLost": 70.1
     },
     "strong": {
-     "win": 80,
-     "rounds": 6.6,
-     "hpLost": 55.3
+     "win": 35,
+     "rounds": 8.8,
+     "hpLost": 85.1
     }
    },
-   "index": 41.3
+   "index": 69.4
   },
   {
    "map": "m4",
@@ -2626,22 +2626,22 @@
    "hp": 81,
    "res": {
     "starter": {
-     "win": 25,
-     "rounds": 15,
-     "hpLost": 92.8
+     "win": 5,
+     "rounds": 16.5,
+     "hpLost": 98.1
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 11.1,
-     "hpLost": 28.2
+     "win": 90,
+     "rounds": 10.4,
+     "hpLost": 32.7
     },
     "strong": {
      "win": 100,
-     "rounds": 9.9,
-     "hpLost": 18
+     "rounds": 12.6,
+     "hpLost": 24.8
     }
    },
-   "index": 23.9
+   "index": 32.5
   },
   {
    "map": "mn",
@@ -2655,22 +2655,22 @@
    "hp": 46,
    "res": {
     "starter": {
-     "win": 25,
-     "rounds": 11.5,
-     "hpLost": 91.2
+     "win": 5,
+     "rounds": 10.5,
+     "hpLost": 99.3
     },
     "mid": {
-     "win": 95,
-     "rounds": 9.7,
-     "hpLost": 31.8
+     "win": 90,
+     "rounds": 9.1,
+     "hpLost": 32.8
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.3,
-     "hpLost": 16
+     "win": 92.5,
+     "rounds": 11.6,
+     "hpLost": 35.6
     }
    },
-   "index": 24
+   "index": 37
   },
   {
    "map": "mn",
@@ -2684,22 +2684,22 @@
    "hp": 56,
    "res": {
     "starter": {
-     "win": 27.5,
-     "rounds": 11.6,
-     "hpLost": 86.8
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 9,
-     "hpLost": 25.5
+     "win": 97.5,
+     "rounds": 9.7,
+     "hpLost": 22
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.3,
-     "hpLost": 12
+     "win": 92.5,
+     "rounds": 11.7,
+     "hpLost": 31.8
     }
    },
-   "index": 23
+   "index": 35.5
   },
   {
    "map": "mn",
@@ -2713,22 +2713,22 @@
    "hp": 66,
    "res": {
     "starter": {
-     "win": 20,
-     "rounds": 15.8,
-     "hpLost": 94.3
+     "win": 5,
+     "rounds": 18,
+     "hpLost": 99
     },
     "mid": {
-     "win": 95,
-     "rounds": 10.8,
-     "hpLost": 35.5
+     "win": 97.5,
+     "rounds": 10.7,
+     "hpLost": 31.2
     },
     "strong": {
-     "win": 100,
-     "rounds": 9.9,
-     "hpLost": 21
+     "win": 90,
+     "rounds": 13.1,
+     "hpLost": 30
     }
    },
-   "index": 26.5
+   "index": 34.4
   },
   {
    "map": "mn",
@@ -2742,22 +2742,22 @@
    "hp": 101,
    "res": {
     "starter": {
-     "win": 20,
-     "rounds": 15.4,
-     "hpLost": 90.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 70,
-     "rounds": 11.9,
-     "hpLost": 50.3
+     "win": 87.5,
+     "rounds": 12.5,
+     "hpLost": 42.6
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 11,
-     "hpLost": 33.5
+     "win": 85,
+     "rounds": 14.3,
+     "hpLost": 43.2
     }
    },
-   "index": 37.8
+   "index": 42.7
   },
   {
    "map": "mk",
@@ -2771,22 +2771,22 @@
    "hp": 110,
    "res": {
     "starter": {
-     "win": 25,
-     "rounds": 14.6,
-     "hpLost": 85.2
+     "win": 5,
+     "rounds": 17.5,
+     "hpLost": 98.9
     },
     "mid": {
      "win": 90,
-     "rounds": 11.3,
-     "hpLost": 18.9
+     "rounds": 11.9,
+     "hpLost": 33
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 11,
-     "hpLost": 22.7
+     "win": 95,
+     "rounds": 14,
+     "hpLost": 23.6
     }
    },
-   "index": 27.6
+   "index": 33.4
   },
   {
    "map": "mk",
@@ -2800,22 +2800,22 @@
    "hp": 68,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 11,
-     "hpLost": 98
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 87.5,
-     "rounds": 9.3,
-     "hpLost": 38.3
+     "win": 62.5,
+     "rounds": 9.4,
+     "hpLost": 61.9
     },
     "strong": {
-     "win": 95,
-     "rounds": 8.9,
-     "hpLost": 37.6
+     "win": 62.5,
+     "rounds": 11.7,
+     "hpLost": 68.3
     }
    },
-   "index": 36.9
+   "index": 60.8
   },
   {
    "map": "mk",
@@ -2829,22 +2829,22 @@
    "hp": 35,
    "res": {
     "starter": {
-     "win": 35,
-     "rounds": 8.9,
-     "hpLost": 79.7
+     "win": 5,
+     "rounds": 9.5,
+     "hpLost": 97.5
     },
     "mid": {
      "win": 95,
-     "rounds": 8,
-     "hpLost": 21.3
+     "rounds": 8.2,
+     "hpLost": 27
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 7.1,
-     "hpLost": 19.5
+     "win": 90,
+     "rounds": 9.8,
+     "hpLost": 31
     }
    },
-   "index": 23
+   "index": 35.3
   },
   {
    "map": "mk",
@@ -2858,22 +2858,22 @@
    "hp": 86,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 15.5,
-     "hpLost": 95.3
+     "win": 5,
+     "rounds": 16.5,
+     "hpLost": 99.3
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 10.6,
-     "hpLost": 22.2
+     "win": 85,
+     "rounds": 10.9,
+     "hpLost": 34.8
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 9.7,
-     "hpLost": 15.8
+     "win": 95,
+     "rounds": 13.1,
+     "hpLost": 27.3
     }
    },
-   "index": 27.7
+   "index": 35.6
   },
   {
    "map": "mk",
@@ -2887,22 +2887,22 @@
    "hp": 99,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 14.5,
-     "hpLost": 99.1
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 77.5,
-     "rounds": 11,
-     "hpLost": 42.3
+     "win": 30,
+     "rounds": 11.9,
+     "hpLost": 86.4
     },
     "strong": {
-     "win": 77.5,
-     "rounds": 10.4,
-     "hpLost": 44.9
+     "win": 32.5,
+     "rounds": 14.2,
+     "hpLost": 86.3
     }
    },
-   "index": 46.2
+   "index": 81
   },
   {
    "map": "mk",
@@ -2921,17 +2921,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 75,
-     "rounds": 11.2,
-     "hpLost": 40.8
+     "win": 32.5,
+     "rounds": 12.6,
+     "hpLost": 76.5
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 10.8,
-     "hpLost": 32.2
+     "win": 35,
+     "rounds": 14.8,
+     "hpLost": 80
     }
    },
-   "index": 42.4
+   "index": 78.1
   },
   {
    "map": "mk",
@@ -2950,17 +2950,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 55,
-     "rounds": 15.6,
-     "hpLost": 60.6
+     "win": 2.5,
+     "rounds": 16,
+     "hpLost": 99.2
     },
     "strong": {
-     "win": 75,
-     "rounds": 14.7,
-     "hpLost": 47.3
+     "win": 30,
+     "rounds": 19.3,
+     "hpLost": 88.9
     }
    },
-   "index": 54.3
+   "index": 89.1
   },
   {
    "map": "m7",
@@ -2974,22 +2974,22 @@
    "hp": 95,
    "res": {
     "starter": {
-     "win": 22.5,
-     "rounds": 13.8,
-     "hpLost": 86.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
      "win": 92.5,
-     "rounds": 11.1,
-     "hpLost": 25.2
+     "rounds": 11.5,
+     "hpLost": 32.7
     },
     "strong": {
      "win": 97.5,
-     "rounds": 10.5,
-     "hpLost": 17.9
+     "rounds": 14,
+     "hpLost": 29.9
     }
    },
-   "index": 26.4
+   "index": 35
   },
   {
    "map": "m7",
@@ -3003,22 +3003,22 @@
    "hp": 126,
    "res": {
     "starter": {
-     "win": 57.5,
-     "rounds": 14.6,
-     "hpLost": 59.7
+     "win": 27.5,
+     "rounds": 16.4,
+     "hpLost": 82.8
     },
     "mid": {
-     "win": 100,
-     "rounds": 11.6,
-     "hpLost": 8.1
+     "win": 97.5,
+     "rounds": 11.5,
+     "hpLost": 12.3
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 11.2,
-     "hpLost": 9.7
+     "win": 100,
+     "rounds": 13.9,
+     "hpLost": 14.5
     }
    },
-   "index": 13.7
+   "index": 22.4
   },
   {
    "map": "m7",
@@ -3032,22 +3032,22 @@
    "hp": 57,
    "res": {
     "starter": {
-     "win": 67.5,
-     "rounds": 13.1,
-     "hpLost": 68.1
+     "win": 22.5,
+     "rounds": 14.7,
+     "hpLost": 90.6
     },
     "mid": {
      "win": 95,
-     "rounds": 9.3,
-     "hpLost": 19.2
+     "rounds": 9.8,
+     "hpLost": 31.2
     },
     "strong": {
-     "win": 95,
-     "rounds": 8.9,
-     "hpLost": 23.7
+     "win": 97.5,
+     "rounds": 11.9,
+     "hpLost": 24.2
     }
    },
-   "index": 16.6
+   "index": 27.3
   },
   {
    "map": "m7",
@@ -3061,22 +3061,22 @@
    "hp": 95,
    "res": {
     "starter": {
-     "win": 42.5,
-     "rounds": 14.9,
-     "hpLost": 80.9
+     "win": 22.5,
+     "rounds": 16,
+     "hpLost": 90.3
     },
     "mid": {
      "win": 97.5,
-     "rounds": 10.6,
-     "hpLost": 13.4
+     "rounds": 10.8,
+     "hpLost": 22.3
     },
     "strong": {
-     "win": 100,
-     "rounds": 10.2,
-     "hpLost": 12.7
+     "win": 97.5,
+     "rounds": 12.9,
+     "hpLost": 24.6
     }
    },
-   "index": 18.2
+   "index": 26.8
   },
   {
    "map": "m7",
@@ -3090,22 +3090,22 @@
    "hp": 76,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 11,
-     "hpLost": 97.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 67.5,
-     "rounds": 10.5,
-     "hpLost": 49.7
+     "win": 45,
+     "rounds": 11.2,
+     "hpLost": 74.2
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 10.1,
-     "hpLost": 38.2
+     "win": 25,
+     "rounds": 13.3,
+     "hpLost": 85.8
     }
    },
-   "index": 45.2
+   "index": 79
   },
   {
    "map": "m7",
@@ -3120,21 +3120,21 @@
    "res": {
     "starter": {
      "win": 5,
-     "rounds": 10.5,
+     "rounds": 16,
      "hpLost": 98.6
     },
     "mid": {
-     "win": 60,
-     "rounds": 10,
-     "hpLost": 69.5
+     "win": 25,
+     "rounds": 9.9,
+     "hpLost": 86
     },
     "strong": {
-     "win": 80,
-     "rounds": 8.9,
-     "hpLost": 51.1
+     "win": 62.5,
+     "rounds": 10.7,
+     "hpLost": 64
     }
    },
-   "index": 51.5
+   "index": 67.9
   },
   {
    "map": "m7",
@@ -3149,21 +3149,21 @@
    "res": {
     "starter": {
      "win": 7.5,
-     "rounds": 11.3,
-     "hpLost": 96.5
+     "rounds": 13.3,
+     "hpLost": 97.7
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 10.3,
-     "hpLost": 31.8
+     "win": 57.5,
+     "rounds": 10.5,
+     "hpLost": 64.2
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 9.9,
-     "hpLost": 36.5
+     "win": 57.5,
+     "rounds": 12,
+     "hpLost": 71.9
     }
    },
-   "index": 34.8
+   "index": 62.4
   },
   {
    "map": "m7",
@@ -3177,22 +3177,22 @@
    "hp": 36,
    "res": {
     "starter": {
-     "win": 30,
-     "rounds": 9.5,
-     "hpLost": 80.6
+     "win": 12.5,
+     "rounds": 10,
+     "hpLost": 90.9
     },
     "mid": {
-     "win": 70,
-     "rounds": 8.1,
-     "hpLost": 40.9
+     "win": 42.5,
+     "rounds": 8.8,
+     "hpLost": 74
     },
     "strong": {
-     "win": 80,
-     "rounds": 7.8,
-     "hpLost": 36.5
+     "win": 60,
+     "rounds": 10.5,
+     "hpLost": 62.2
     }
    },
-   "index": 39.1
+   "index": 61.8
   },
   {
    "map": "m7",
@@ -3206,22 +3206,22 @@
    "hp": 57,
    "res": {
     "starter": {
-     "win": 50,
-     "rounds": 12.3,
-     "hpLost": 75.4
+     "win": 22.5,
+     "rounds": 15.3,
+     "hpLost": 91.1
     },
     "mid": {
-     "win": 87.5,
-     "rounds": 9.5,
-     "hpLost": 26.1
+     "win": 57.5,
+     "rounds": 10.4,
+     "hpLost": 62.5
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 9.3,
-     "hpLost": 31.2
+     "win": 70,
+     "rounds": 12,
+     "hpLost": 43.2
     }
    },
-   "index": 25.3
+   "index": 48.3
   },
   {
    "map": "mj",
@@ -3235,22 +3235,22 @@
    "hp": 110,
    "res": {
     "starter": {
-     "win": 40,
-     "rounds": 15.6,
-     "hpLost": 82.7
+     "win": 30,
+     "rounds": 18.1,
+     "hpLost": 91.3
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 14.7,
-     "hpLost": 29.3
+     "win": 97.5,
+     "rounds": 11.7,
+     "hpLost": 22.3
     },
     "strong": {
-     "win": 100,
-     "rounds": 12.7,
+     "win": 92.5,
+     "rounds": 12.9,
      "hpLost": 15.8
     }
    },
-   "index": 20.8
+   "index": 24
   },
   {
    "map": "mj",
@@ -3264,22 +3264,22 @@
    "hp": 120,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 14.3,
-     "hpLost": 96.3
+     "win": 15,
+     "rounds": 16.2,
+     "hpLost": 92.6
     },
     "mid": {
-     "win": 67.5,
-     "rounds": 13.7,
-     "hpLost": 60.7
+     "win": 65,
+     "rounds": 11.7,
+     "hpLost": 74.8
     },
     "strong": {
-     "win": 82.5,
-     "rounds": 12.5,
-     "hpLost": 51.1
+     "win": 77.5,
+     "rounds": 12.7,
+     "hpLost": 44.8
     }
    },
-   "index": 48.4
+   "index": 46.8
   },
   {
    "map": "mj",
@@ -3293,22 +3293,22 @@
    "hp": 130,
    "res": {
     "starter": {
-     "win": 25,
-     "rounds": 15.9,
-     "hpLost": 82
+     "win": 20,
+     "rounds": 18.6,
+     "hpLost": 88.3
     },
     "mid": {
-     "win": 95,
-     "rounds": 14.7,
-     "hpLost": 25.2
+     "win": 100,
+     "rounds": 12.1,
+     "hpLost": 15.3
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 13.3,
-     "hpLost": 19
+     "win": 100,
+     "rounds": 14,
+     "hpLost": 12.1
     }
    },
-   "index": 25.4
+   "index": 23
   },
   {
    "map": "mj",
@@ -3322,22 +3322,22 @@
    "hp": 150,
    "res": {
     "starter": {
-     "win": 37.5,
-     "rounds": 15.4,
-     "hpLost": 80.5
+     "win": 40,
+     "rounds": 17.8,
+     "hpLost": 79.1
     },
     "mid": {
-     "win": 90,
-     "rounds": 16.1,
-     "hpLost": 27.2
+     "win": 80,
+     "rounds": 12.5,
+     "hpLost": 30.5
     },
     "strong": {
-     "win": 100,
-     "rounds": 14.4,
-     "hpLost": 15.4
+     "win": 97.5,
+     "rounds": 13.2,
+     "hpLost": 3.4
     }
    },
-   "index": 22
+   "index": 21.5
   },
   {
    "map": "mj",
@@ -3351,22 +3351,22 @@
    "hp": 170,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 15,
-     "hpLost": 99.4
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 55,
-     "rounds": 17.4,
-     "hpLost": 74.9
+     "win": 25,
+     "rounds": 14.1,
+     "hpLost": 87.7
     },
     "strong": {
-     "win": 55,
-     "rounds": 14.3,
-     "hpLost": 67.7
+     "win": 82.5,
+     "rounds": 14.6,
+     "hpLost": 48.2
     }
    },
-   "index": 63.8
+   "index": 60.2
   },
   {
    "map": "m10",
@@ -3380,22 +3380,22 @@
    "hp": 21,
    "res": {
     "starter": {
-     "win": 45,
-     "rounds": 9.7,
-     "hpLost": 83.4
+     "win": 7.5,
+     "rounds": 8.7,
+     "hpLost": 97.9
     },
     "mid": {
      "win": 90,
-     "rounds": 6.9,
-     "hpLost": 23.4
+     "rounds": 7.3,
+     "hpLost": 31.9
     },
     "strong": {
-     "win": 100,
-     "rounds": 6.3,
-     "hpLost": 9
+     "win": 95,
+     "rounds": 9.4,
+     "hpLost": 47.3
     }
    },
-   "index": 18.5
+   "index": 38.7
   },
   {
    "map": "m10",
@@ -3409,22 +3409,22 @@
    "hp": 28,
    "res": {
     "starter": {
-     "win": 52.5,
-     "rounds": 8.5,
-     "hpLost": 67.7
+     "win": 15,
+     "rounds": 8.8,
+     "hpLost": 92.9
     },
     "mid": {
-     "win": 100,
-     "rounds": 7.2,
-     "hpLost": 12.2
+     "win": 97.5,
+     "rounds": 7.8,
+     "hpLost": 13.8
     },
     "strong": {
-     "win": 100,
-     "rounds": 7.1,
-     "hpLost": 8.9
+     "win": 90,
+     "rounds": 9.9,
+     "hpLost": 30.9
     }
    },
-   "index": 14.1
+   "index": 32.1
   },
   {
    "map": "m10",
@@ -3438,22 +3438,22 @@
    "hp": 27,
    "res": {
     "starter": {
-     "win": 45,
-     "rounds": 9.4,
-     "hpLost": 76.7
+     "win": 12.5,
+     "rounds": 9,
+     "hpLost": 95.6
     },
     "mid": {
-     "win": 100,
-     "rounds": 7.5,
-     "hpLost": 12.2
+     "win": 95,
+     "rounds": 7.9,
+     "hpLost": 18.3
     },
     "strong": {
-     "win": 100,
-     "rounds": 7.3,
-     "hpLost": 10.8
+     "win": 95,
+     "rounds": 10,
+     "hpLost": 35.1
     }
    },
-   "index": 16.5
+   "index": 33.2
   },
   {
    "map": "m10",
@@ -3467,22 +3467,22 @@
    "hp": 40,
    "res": {
     "starter": {
-     "win": 22.5,
+     "win": 2.5,
      "rounds": 11,
-     "hpLost": 88.9
+     "hpLost": 99.1
     },
     "mid": {
-     "win": 90,
+     "win": 95,
      "rounds": 9.1,
-     "hpLost": 33.6
+     "hpLost": 41.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 8,
-     "hpLost": 15.9
+     "win": 87.5,
+     "rounds": 11.3,
+     "hpLost": 49.1
     }
    },
-   "index": 25.9
+   "index": 41
   },
   {
    "map": "m10",
@@ -3496,22 +3496,22 @@
    "hp": 44,
    "res": {
     "starter": {
-     "win": 25,
-     "rounds": 11.8,
-     "hpLost": 87.7
+     "win": 5,
+     "rounds": 13,
+     "hpLost": 96.8
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 8.4,
-     "hpLost": 17.4
+     "win": 85,
+     "rounds": 9.4,
+     "hpLost": 44.3
     },
     "strong": {
-     "win": 100,
-     "rounds": 8,
-     "hpLost": 10.8
+     "win": 77.5,
+     "rounds": 11.3,
+     "hpLost": 53.6
     }
    },
-   "index": 22.1
+   "index": 46.5
   },
   {
    "map": "m10",
@@ -3525,22 +3525,22 @@
    "hp": 36,
    "res": {
     "starter": {
-     "win": 17.5,
-     "rounds": 9.4,
-     "hpLost": 91.9
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 95,
-     "rounds": 7.7,
-     "hpLost": 13.2
+     "win": 90,
+     "rounds": 8.7,
+     "hpLost": 23.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 7.5,
-     "hpLost": 17.8
+     "win": 82.5,
+     "rounds": 10.7,
+     "hpLost": 40.5
     }
    },
-   "index": 26.3
+   "index": 42
   },
   {
    "map": "m10",
@@ -3554,22 +3554,22 @@
    "hp": 60,
    "res": {
     "starter": {
-     "win": 15,
-     "rounds": 11.8,
-     "hpLost": 95.3
+     "win": 2.5,
+     "rounds": 21,
+     "hpLost": 98.6
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 9.2,
-     "hpLost": 25.1
+     "win": 60,
+     "rounds": 10.5,
+     "hpLost": 55.7
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.3,
-     "hpLost": 15.5
+     "win": 90,
+     "rounds": 11.8,
+     "hpLost": 34.3
     }
    },
-   "index": 25.8
+   "index": 45.5
   },
   {
    "map": "m10",
@@ -3583,22 +3583,22 @@
    "hp": 51,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 10.8,
-     "hpLost": 95
+     "win": 5,
+     "rounds": 11,
+     "hpLost": 98.4
     },
     "mid": {
-     "win": 85,
-     "rounds": 8.9,
-     "hpLost": 29.6
+     "win": 77.5,
+     "rounds": 9.5,
+     "hpLost": 44.5
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.4,
-     "hpLost": 23.9
+     "win": 82.5,
+     "rounds": 11.6,
+     "hpLost": 40.2
     }
    },
-   "index": 32.2
+   "index": 43.8
   },
   {
    "map": "m10",
@@ -3612,22 +3612,22 @@
    "hp": 45,
    "res": {
     "starter": {
-     "win": 20,
-     "rounds": 11.6,
-     "hpLost": 92.8
+     "win": 5,
+     "rounds": 12.5,
+     "hpLost": 99.1
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 8.9,
-     "hpLost": 26.7
+     "win": 92.5,
+     "rounds": 9.9,
+     "hpLost": 36.8
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.6,
-     "hpLost": 15.6
+     "win": 82.5,
+     "rounds": 11.7,
+     "hpLost": 49.8
     }
    },
-   "index": 24.5
+   "index": 42.5
   },
   {
    "map": "m10",
@@ -3641,22 +3641,22 @@
    "hp": 64,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 13.7,
-     "hpLost": 98.2
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 82.5,
-     "rounds": 9.6,
-     "hpLost": 34.9
+     "win": 77.5,
+     "rounds": 10.6,
+     "hpLost": 51.8
     },
     "strong": {
-     "win": 95,
-     "rounds": 9.3,
-     "hpLost": 24.9
+     "win": 72.5,
+     "rounds": 12.7,
+     "hpLost": 63.2
     }
    },
-   "index": 35
+   "index": 53.3
   },
   {
    "map": "mv",
@@ -3670,22 +3670,22 @@
    "hp": 40,
    "res": {
     "starter": {
-     "win": 60,
-     "rounds": 9.6,
-     "hpLost": 63.6
+     "win": 10,
+     "rounds": 10.3,
+     "hpLost": 95.9
     },
     "mid": {
-     "win": 100,
-     "rounds": 8,
-     "hpLost": 12.6
+     "win": 95,
+     "rounds": 8.4,
+     "hpLost": 14.5
     },
     "strong": {
      "win": 95,
-     "rounds": 7.6,
-     "hpLost": 10.6
+     "rounds": 10.7,
+     "hpLost": 22.4
     }
    },
-   "index": 13.9
+   "index": 30.6
   },
   {
    "map": "mv",
@@ -3699,22 +3699,22 @@
    "hp": 50,
    "res": {
     "starter": {
-     "win": 20,
-     "rounds": 11.3,
-     "hpLost": 92
+     "win": 2.5,
+     "rounds": 10,
+     "hpLost": 99.3
     },
     "mid": {
      "win": 100,
      "rounds": 8.2,
-     "hpLost": 13.8
+     "hpLost": 10.8
     },
     "strong": {
-     "win": 100,
-     "rounds": 7.5,
-     "hpLost": 4.6
+     "win": 97.5,
+     "rounds": 10.9,
+     "hpLost": 26.9
     }
    },
-   "index": 21.2
+   "index": 31.7
   },
   {
    "map": "mv",
@@ -3728,22 +3728,22 @@
    "hp": 60,
    "res": {
     "starter": {
-     "win": 20,
-     "rounds": 16.3,
-     "hpLost": 92.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 90,
-     "rounds": 10.2,
-     "hpLost": 25.3
+     "win": 87.5,
+     "rounds": 10.7,
+     "hpLost": 29.7
     },
     "strong": {
-     "win": 95,
-     "rounds": 9.7,
-     "hpLost": 19
+     "win": 80,
+     "rounds": 13.3,
+     "hpLost": 37.2
     }
    },
-   "index": 28.5
+   "index": 42.4
   },
   {
    "map": "mv",
@@ -3757,22 +3757,22 @@
    "hp": 80,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 14,
-     "hpLost": 99.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 80,
-     "rounds": 11.1,
-     "hpLost": 34.4
+     "win": 77.5,
+     "rounds": 12,
+     "hpLost": 51.3
     },
     "strong": {
-     "win": 95,
-     "rounds": 10.4,
-     "hpLost": 22.7
+     "win": 80,
+     "rounds": 13.8,
+     "hpLost": 52.8
     }
    },
-   "index": 36.3
+   "index": 48.8
   },
   {
    "map": "mh",
@@ -3786,22 +3786,22 @@
    "hp": 31,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 10,
-     "hpLost": 96.3
+     "win": 2.5,
+     "rounds": 8,
+     "hpLost": 99.5
     },
     "mid": {
      "win": 70,
-     "rounds": 8.1,
-     "hpLost": 48.2
+     "rounds": 9.1,
+     "hpLost": 57.8
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 8,
-     "hpLost": 25.7
+     "win": 60,
+     "rounds": 10.9,
+     "hpLost": 71.9
     }
    },
-   "index": 38.3
+   "index": 59.9
   },
   {
    "map": "mh",
@@ -3820,17 +3820,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 55,
-     "rounds": 11.9,
-     "hpLost": 69.2
+     "win": 50,
+     "rounds": 11.4,
+     "hpLost": 78.3
     },
     "strong": {
-     "win": 100,
-     "rounds": 9.8,
-     "hpLost": 30.2
+     "win": 37.5,
+     "rounds": 14.1,
+     "hpLost": 85.4
     }
    },
-   "index": 43.8
+   "index": 74.5
   },
   {
    "map": "mh",
@@ -3844,22 +3844,22 @@
    "hp": 82,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 14,
-     "hpLost": 99.4
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 70,
-     "rounds": 11.1,
-     "hpLost": 53.9
+     "win": 77.5,
+     "rounds": 11.6,
+     "hpLost": 48.4
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 10.5,
-     "hpLost": 33.5
+     "win": 82.5,
+     "rounds": 13.7,
+     "hpLost": 39
     }
    },
-   "index": 42.1
+   "index": 44.8
   },
   {
    "map": "mh",
@@ -3873,22 +3873,22 @@
    "hp": 43,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 10,
-     "hpLost": 99.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 82.5,
-     "rounds": 9.5,
-     "hpLost": 43.8
+     "win": 90,
+     "rounds": 9.3,
+     "hpLost": 42.1
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 8.5,
-     "hpLost": 18.8
+     "win": 82.5,
+     "rounds": 12.2,
+     "hpLost": 58.2
     }
    },
-   "index": 34.1
+   "index": 46.4
   },
   {
    "map": "mh",
@@ -3907,17 +3907,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 45,
-     "rounds": 9.8,
-     "hpLost": 71.7
+     "win": 40,
+     "rounds": 10.1,
+     "hpLost": 84.3
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 8.6,
-     "hpLost": 36.7
+     "win": 45,
+     "rounds": 12.2,
+     "hpLost": 81.3
     }
    },
-   "index": 51.1
+   "index": 74.1
   },
   {
    "map": "mh",
@@ -3936,17 +3936,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 40,
-     "rounds": 12.7,
-     "hpLost": 78.1
+     "win": 22.5,
+     "rounds": 12.2,
+     "hpLost": 87.4
     },
     "strong": {
-     "win": 90,
-     "rounds": 10.9,
-     "hpLost": 39.9
+     "win": 37.5,
+     "rounds": 15.4,
+     "hpLost": 85.3
     }
    },
-   "index": 52.5
+   "index": 81.3
   },
   {
    "map": "mh",
@@ -3965,17 +3965,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 45,
-     "rounds": 14.1,
-     "hpLost": 82
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "strong": {
-     "win": 77.5,
-     "rounds": 12.7,
-     "hpLost": 56.6
+     "win": 12.5,
+     "rounds": 16.8,
+     "hpLost": 96.4
     }
    },
-   "index": 58.5
+   "index": 96
   },
   {
    "map": "mr",
@@ -3994,17 +3994,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 87.5,
-     "rounds": 9.5,
-     "hpLost": 41.9
+     "win": 75,
+     "rounds": 9.6,
+     "hpLost": 52.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.2,
-     "hpLost": 22.9
+     "win": 70,
+     "rounds": 12,
+     "hpLost": 71.1
     }
    },
-   "index": 33.9
+   "index": 56.5
   },
   {
    "map": "mr",
@@ -4018,22 +4018,22 @@
    "hp": 59,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 11.5,
-     "hpLost": 96.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 85,
-     "rounds": 9.8,
-     "hpLost": 44.9
+     "win": 72.5,
+     "rounds": 10.4,
+     "hpLost": 61.7
     },
     "strong": {
-     "win": 95,
-     "rounds": 8.7,
-     "hpLost": 27.3
+     "win": 60,
+     "rounds": 12,
+     "hpLost": 69.5
     }
    },
-   "index": 34.3
+   "index": 59.3
   },
   {
    "map": "mr",
@@ -4052,17 +4052,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 72.5,
-     "rounds": 15.4,
-     "hpLost": 52.6
+     "win": 12.5,
+     "rounds": 16.2,
+     "hpLost": 95
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 14,
-     "hpLost": 19.8
+     "win": 45,
+     "rounds": 17.6,
+     "hpLost": 76.5
     }
    },
-   "index": 37.5
+   "index": 79.8
   },
   {
    "map": "mr",
@@ -4081,17 +4081,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 75,
-     "rounds": 11.4,
-     "hpLost": 44.4
+     "win": 20,
+     "rounds": 12.1,
+     "hpLost": 91.1
     },
     "strong": {
-     "win": 100,
-     "rounds": 10,
-     "hpLost": 14.6
+     "win": 37.5,
+     "rounds": 13.9,
+     "hpLost": 84.1
     }
    },
-   "index": 34.9
+   "index": 81.7
   },
   {
    "map": "mr",
@@ -4105,22 +4105,22 @@
    "hp": 87,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 15,
-     "hpLost": 99
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 62.5,
-     "rounds": 11.6,
-     "hpLost": 58.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 10.5,
-     "hpLost": 24.4
+     "win": 25,
+     "rounds": 14.4,
+     "hpLost": 87.7
     }
    },
-   "index": 41.7
+   "index": 90.7
   },
   {
    "map": "mr",
@@ -4139,17 +4139,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 50,
-     "rounds": 12,
-     "hpLost": 67.8
+     "win": 2.5,
+     "rounds": 13,
+     "hpLost": 98.9
     },
     "strong": {
-     "win": 90,
-     "rounds": 10.9,
-     "hpLost": 33.5
+     "win": 12.5,
+     "rounds": 14.8,
+     "hpLost": 97
     }
    },
-   "index": 48.4
+   "index": 95.5
   },
   {
    "map": "mr",
@@ -4168,17 +4168,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 42.5,
-     "rounds": 14.2,
-     "hpLost": 71.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "strong": {
-     "win": 82.5,
-     "rounds": 13.2,
-     "hpLost": 38.9
+     "win": 15,
+     "rounds": 16.8,
+     "hpLost": 93.2
     }
    },
-   "index": 53.5
+   "index": 94.6
   },
   {
    "map": "mr",
@@ -4197,17 +4197,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 32.5,
-     "rounds": 14.8,
-     "hpLost": 75.2
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "strong": {
-     "win": 72.5,
-     "rounds": 13.9,
-     "hpLost": 53.7
+     "win": 7.5,
+     "rounds": 19,
+     "hpLost": 98.9
     }
    },
-   "index": 62.2
+   "index": 97.9
   },
   {
    "map": "m5",
@@ -4221,22 +4221,22 @@
    "hp": 80,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 17,
-     "hpLost": 99.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 75,
-     "rounds": 12.8,
-     "hpLost": 54
+     "win": 85,
+     "rounds": 12.1,
+     "hpLost": 48.8
     },
     "strong": {
-     "win": 100,
-     "rounds": 10.8,
-     "hpLost": 26.7
+     "win": 67.5,
+     "rounds": 15.2,
+     "hpLost": 65.4
     }
    },
-   "index": 37.3
+   "index": 53.2
   },
   {
    "map": "m5",
@@ -4250,22 +4250,22 @@
    "hp": 58,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 12.3,
-     "hpLost": 97.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 62.5,
-     "rounds": 10,
-     "hpLost": 66.9
+     "win": 87.5,
+     "rounds": 9.7,
+     "hpLost": 44.3
     },
     "strong": {
-     "win": 82.5,
-     "rounds": 9.3,
-     "hpLost": 37.5
+     "win": 65,
+     "rounds": 12,
+     "hpLost": 60.9
     }
    },
-   "index": 46.3
+   "index": 52.1
   },
   {
    "map": "m5",
@@ -4279,22 +4279,22 @@
    "hp": 88,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 14,
-     "hpLost": 98.4
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 45,
-     "rounds": 12.1,
-     "hpLost": 76.1
+     "win": 92.5,
+     "rounds": 11.6,
+     "hpLost": 43.6
     },
     "strong": {
-     "win": 90,
-     "rounds": 10.5,
-     "hpLost": 36.8
+     "win": 70,
+     "rounds": 13.8,
+     "hpLost": 63.3
     }
    },
-   "index": 49.8
+   "index": 50.2
   },
   {
    "map": "m5",
@@ -4308,22 +4308,22 @@
    "hp": 23,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 8.7,
-     "hpLost": 98.8
+     "win": 2.5,
+     "rounds": 9,
+     "hpLost": 99.3
     },
     "mid": {
-     "win": 90,
-     "rounds": 7.9,
-     "hpLost": 43.8
+     "win": 97.5,
+     "rounds": 7.4,
+     "hpLost": 36.8
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 6.9,
-     "hpLost": 26.7
+     "win": 80,
+     "rounds": 9.8,
+     "hpLost": 60.9
     }
    },
-   "index": 32.9
+   "index": 45.2
   },
   {
    "map": "m5",
@@ -4337,22 +4337,22 @@
    "hp": 47,
    "res": {
     "starter": {
-     "win": 15,
-     "rounds": 10.3,
-     "hpLost": 90.3
+     "win": 2.5,
+     "rounds": 10,
+     "hpLost": 98.2
     },
     "mid": {
-     "win": 57.5,
-     "rounds": 9.3,
-     "hpLost": 65.8
+     "win": 60,
+     "rounds": 9,
+     "hpLost": 58.3
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 8.6,
-     "hpLost": 32.9
+     "win": 67.5,
+     "rounds": 11.6,
+     "hpLost": 63.8
     }
    },
-   "index": 43.2
+   "index": 58.5
   },
   {
    "map": "m5",
@@ -4366,22 +4366,22 @@
    "hp": 56,
    "res": {
     "starter": {
-     "win": 17.5,
-     "rounds": 9.6,
-     "hpLost": 87.4
+     "win": 2.5,
+     "rounds": 12,
+     "hpLost": 99.3
     },
     "mid": {
-     "win": 77.5,
-     "rounds": 9.1,
-     "hpLost": 36.6
+     "win": 97.5,
+     "rounds": 8.7,
+     "hpLost": 14.8
     },
     "strong": {
      "win": 100,
-     "rounds": 8.8,
-     "hpLost": 16.8
+     "rounds": 11.6,
+     "hpLost": 32.2
     }
    },
-   "index": 30.5
+   "index": 33.1
   },
   {
    "map": "m5",
@@ -4395,22 +4395,22 @@
    "hp": 46,
    "res": {
     "starter": {
-     "win": 22.5,
-     "rounds": 10,
-     "hpLost": 90.2
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 85,
-     "rounds": 9.2,
-     "hpLost": 37.2
+     "win": 95,
+     "rounds": 8.7,
+     "hpLost": 32.1
     },
     "strong": {
      "win": 95,
-     "rounds": 8.2,
-     "hpLost": 16.3
+     "rounds": 10.8,
+     "hpLost": 28.8
     }
    },
-   "index": 28.5
+   "index": 34.7
   },
   {
    "map": "m5",
@@ -4424,22 +4424,22 @@
    "hp": 64,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 12,
-     "hpLost": 99.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 22.5,
-     "rounds": 10.9,
-     "hpLost": 88.4
+     "win": 32.5,
+     "rounds": 11,
+     "hpLost": 87.3
     },
     "strong": {
-     "win": 85,
-     "rounds": 9.8,
-     "hpLost": 51.3
+     "win": 45,
+     "rounds": 12.6,
+     "hpLost": 80.8
     }
    },
-   "index": 60.3
+   "index": 75.8
   },
   {
    "map": "my",
@@ -4453,22 +4453,22 @@
    "hp": 54,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 15,
-     "hpLost": 99.4
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 70,
-     "rounds": 10.4,
-     "hpLost": 60.5
+     "win": 82.5,
+     "rounds": 10.3,
+     "hpLost": 48.5
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 9.3,
-     "hpLost": 32.6
+     "win": 52.5,
+     "rounds": 13,
+     "hpLost": 69.2
     }
    },
-   "index": 40.7
+   "index": 58.6
   },
   {
    "map": "my",
@@ -4482,22 +4482,22 @@
    "hp": 83,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 14,
-     "hpLost": 98.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 62.5,
-     "rounds": 11.4,
-     "hpLost": 59.5
+     "win": 85,
+     "rounds": 11.5,
+     "hpLost": 46.9
     },
     "strong": {
-     "win": 90,
-     "rounds": 10.9,
-     "hpLost": 39
+     "win": 75,
+     "rounds": 14.8,
+     "hpLost": 60.7
     }
    },
-   "index": 46
+   "index": 50.2
   },
   {
    "map": "my",
@@ -4516,17 +4516,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 75,
-     "rounds": 13.9,
-     "hpLost": 53.3
+     "win": 72.5,
+     "rounds": 13.4,
+     "hpLost": 53.7
     },
     "strong": {
-     "win": 95,
-     "rounds": 11.6,
-     "hpLost": 29.1
+     "win": 80,
+     "rounds": 15.8,
+     "hpLost": 55.2
     }
    },
-   "index": 39.8
+   "index": 50.7
   },
   {
    "map": "my",
@@ -4545,17 +4545,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 45,
-     "rounds": 17.3,
-     "hpLost": 76.7
+     "win": 62.5,
+     "rounds": 16,
+     "hpLost": 69
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 14.6,
-     "hpLost": 27.7
+     "win": 80,
+     "rounds": 18.4,
+     "hpLost": 57.5
     }
    },
-   "index": 46.3
+   "index": 53.8
   },
   {
    "map": "my",
@@ -4574,17 +4574,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 22.5,
-     "rounds": 15.8,
-     "hpLost": 87.2
+     "win": 57.5,
+     "rounds": 15.5,
+     "hpLost": 71.4
     },
     "strong": {
-     "win": 95,
-     "rounds": 12.9,
-     "hpLost": 37.9
+     "win": 50,
+     "rounds": 18.2,
+     "hpLost": 74.8
     }
    },
-   "index": 55.1
+   "index": 66.8
   },
   {
    "map": "ml",
@@ -4603,17 +4603,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 42.5,
-     "rounds": 11.2,
-     "hpLost": 74.7
+     "win": 27.5,
+     "rounds": 11.8,
+     "hpLost": 86
     },
     "strong": {
-     "win": 77.5,
-     "rounds": 10.5,
-     "hpLost": 44.2
+     "win": 27.5,
+     "rounds": 14,
+     "hpLost": 85.2
     }
    },
-   "index": 56.1
+   "index": 82.6
   },
   {
    "map": "ml",
@@ -4627,22 +4627,22 @@
    "hp": 28,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 7,
-     "hpLost": 99.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 70,
-     "rounds": 7.4,
-     "hpLost": 71.7
+     "win": 22.5,
+     "rounds": 8,
+     "hpLost": 93.4
     },
     "strong": {
-     "win": 72.5,
-     "rounds": 6.9,
-     "hpLost": 61.6
+     "win": 10,
+     "rounds": 10.3,
+     "hpLost": 98.5
     }
    },
-   "index": 53.5
+   "index": 91.5
   },
   {
    "map": "ml",
@@ -4656,22 +4656,22 @@
    "hp": 32,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 9.5,
-     "hpLost": 99.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 47.5,
-     "rounds": 7.7,
-     "hpLost": 78.4
+     "win": 22.5,
+     "rounds": 7.8,
+     "hpLost": 90
     },
     "strong": {
-     "win": 60,
-     "rounds": 7,
-     "hpLost": 71.3
+     "win": 7.5,
+     "rounds": 9.3,
+     "hpLost": 97.3
     }
    },
-   "index": 64.7
+   "index": 91.8
   },
   {
    "map": "ml",
@@ -4685,22 +4685,22 @@
    "hp": 104,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 14,
-     "hpLost": 98.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 47.5,
-     "rounds": 12.6,
-     "hpLost": 73.5
+     "win": 22.5,
+     "rounds": 12.8,
+     "hpLost": 83.3
     },
     "strong": {
-     "win": 85,
-     "rounds": 11.7,
-     "hpLost": 46.7
+     "win": 42.5,
+     "rounds": 15.1,
+     "hpLost": 75.5
     }
    },
-   "index": 52.9
+   "index": 77.6
   },
   {
    "map": "ml",
@@ -4719,17 +4719,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 40,
-     "rounds": 9.3,
-     "hpLost": 79.1
+     "win": 25,
+     "rounds": 9.9,
+     "hpLost": 94.3
     },
     "strong": {
-     "win": 57.5,
-     "rounds": 8.9,
-     "hpLost": 72
+     "win": 7.5,
+     "rounds": 12,
+     "hpLost": 98.6
     }
    },
-   "index": 68.6
+   "index": 91.5
   },
   {
    "map": "ml",
@@ -4748,17 +4748,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 52.5,
-     "rounds": 15,
-     "hpLost": 61.4
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "strong": {
-     "win": 80,
-     "rounds": 13.3,
-     "hpLost": 42.1
+     "win": 27.5,
+     "rounds": 17.1,
+     "hpLost": 86.3
     }
    },
-   "index": 52.4
+   "index": 89.7
   },
   {
    "map": "ml",
@@ -4777,17 +4777,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 37.5,
-     "rounds": 15.9,
-     "hpLost": 73.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "strong": {
-     "win": 65,
-     "rounds": 14.5,
-     "hpLost": 61.7
+     "win": 10,
+     "rounds": 19,
+     "hpLost": 95.2
     }
    },
-   "index": 64.8
+   "index": 96.3
   },
   {
    "map": "mt",
@@ -4801,22 +4801,22 @@
    "hp": 46,
    "res": {
     "starter": {
-     "win": 12.5,
-     "rounds": 10.4,
-     "hpLost": 96.8
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 95,
-     "rounds": 9.4,
-     "hpLost": 35.3
+     "win": 80,
+     "rounds": 9.8,
+     "hpLost": 55.3
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.3,
-     "hpLost": 15
+     "win": 77.5,
+     "rounds": 12.5,
+     "hpLost": 63.5
     }
    },
-   "index": 26.9
+   "index": 51.5
   },
   {
    "map": "mt",
@@ -4835,17 +4835,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 72.5,
-     "rounds": 11.8,
-     "hpLost": 50.9
+     "win": 65,
+     "rounds": 12.3,
+     "hpLost": 65.7
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 10.7,
-     "hpLost": 26.2
+     "win": 70,
+     "rounds": 14.5,
+     "hpLost": 61.7
     }
    },
-   "index": 39.1
+   "index": 56.7
   },
   {
    "map": "mt",
@@ -4859,22 +4859,22 @@
    "hp": 110,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 16,
-     "hpLost": 97.2
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 72.5,
-     "rounds": 12.6,
-     "hpLost": 49.6
+     "win": 27.5,
+     "rounds": 13.4,
+     "hpLost": 87.7
     },
     "strong": {
-     "win": 85,
-     "rounds": 11,
-     "hpLost": 37.2
+     "win": 40,
+     "rounds": 15,
+     "hpLost": 82.2
     }
    },
-   "index": 43.1
+   "index": 78.7
   },
   {
    "map": "mt",
@@ -4888,22 +4888,22 @@
    "hp": 239,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 22,
-     "hpLost": 99
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 77.5,
+     "win": 27.5,
      "rounds": 17.1,
-     "hpLost": 50.3
+     "hpLost": 89.2
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 15.3,
-     "hpLost": 25.6
+     "win": 72.5,
+     "rounds": 19.4,
+     "hpLost": 65.4
     }
    },
-   "index": 37
+   "index": 66.4
   },
   {
    "map": "mt",
@@ -4922,17 +4922,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 40,
-     "rounds": 16.9,
-     "hpLost": 76.8
+     "win": 5,
+     "rounds": 17,
+     "hpLost": 99.2
     },
     "strong": {
-     "win": 85,
-     "rounds": 14.3,
-     "hpLost": 40.4
+     "win": 15,
+     "rounds": 16.8,
+     "hpLost": 90
     }
    },
-   "index": 53.9
+   "index": 92.5
   },
   {
    "map": "mt",
@@ -4946,22 +4946,22 @@
    "hp": 68,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 11,
-     "hpLost": 99.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 47.5,
-     "rounds": 10.5,
-     "hpLost": 65.5
+     "win": 40,
+     "rounds": 11.4,
+     "hpLost": 79.9
     },
     "strong": {
-     "win": 95,
-     "rounds": 9.4,
-     "hpLost": 30.6
+     "win": 45,
+     "rounds": 12.7,
+     "hpLost": 74.2
     }
    },
-   "index": 46.4
+   "index": 72.3
   },
   {
    "map": "mt",
@@ -4980,17 +4980,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 40,
-     "rounds": 16.9,
-     "hpLost": 74.5
+     "win": 5,
+     "rounds": 16.5,
+     "hpLost": 97.3
     },
     "strong": {
-     "win": 75,
-     "rounds": 15.8,
-     "hpLost": 44.4
+     "win": 35,
+     "rounds": 19.8,
+     "hpLost": 78.7
     }
    },
-   "index": 57.4
+   "index": 84.7
   },
   {
    "map": "m6",
@@ -5004,22 +5004,22 @@
    "hp": 140,
    "res": {
     "starter": {
-     "win": 17.5,
-     "rounds": 21,
-     "hpLost": 95.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 87.5,
-     "rounds": 14.5,
-     "hpLost": 29.5
+     "win": 42.5,
+     "rounds": 15.3,
+     "hpLost": 74.8
     },
     "strong": {
-     "win": 100,
-     "rounds": 13.2,
-     "hpLost": 9.7
+     "win": 82.5,
+     "rounds": 17.7,
+     "hpLost": 60.3
     }
    },
-   "index": 26.2
+   "index": 58.8
   },
   {
    "map": "m6",
@@ -5033,22 +5033,22 @@
    "hp": 27,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 9.5,
-     "hpLost": 97.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 9.1,
-     "hpLost": 31.2
+     "win": 47.5,
+     "rounds": 9.2,
+     "hpLost": 71.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 7.7,
-     "hpLost": 14.9
+     "win": 70,
+     "rounds": 11.8,
+     "hpLost": 71.6
     }
    },
-   "index": 28.1
+   "index": 63.5
   },
   {
    "map": "m6",
@@ -5067,17 +5067,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 80,
-     "rounds": 10.1,
-     "hpLost": 52.9
+     "win": 27.5,
+     "rounds": 11.5,
+     "hpLost": 87.1
     },
     "strong": {
-     "win": 90,
-     "rounds": 8.8,
-     "hpLost": 38.7
+     "win": 42.5,
+     "rounds": 12.8,
+     "hpLost": 85.5
     }
    },
-   "index": 42.2
+   "index": 78.9
   },
   {
    "map": "m6",
@@ -5091,22 +5091,22 @@
    "hp": 56,
    "res": {
     "starter": {
-     "win": 17.5,
-     "rounds": 13,
-     "hpLost": 92
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 10.8,
-     "hpLost": 24.5
+     "win": 90,
+     "rounds": 11.4,
+     "hpLost": 43.1
     },
     "strong": {
-     "win": 100,
-     "rounds": 9.7,
-     "hpLost": 9.2
+     "win": 87.5,
+     "rounds": 13.7,
+     "hpLost": 46.1
     }
    },
-   "index": 24.8
+   "index": 42.2
   },
   {
    "map": "m6",
@@ -5120,22 +5120,22 @@
    "hp": 25,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 11.3,
-     "hpLost": 97.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 8.7,
-     "hpLost": 40.1
+     "win": 80,
+     "rounds": 9.4,
+     "hpLost": 51.6
     },
     "strong": {
-     "win": 100,
-     "rounds": 8,
-     "hpLost": 26.3
+     "win": 75,
+     "rounds": 11.3,
+     "hpLost": 65.7
     }
    },
-   "index": 30.3
+   "index": 52.7
   },
   {
    "map": "m6",
@@ -5149,22 +5149,22 @@
    "hp": 135,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 20,
-     "hpLost": 98.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 92.5,
-     "rounds": 14.2,
-     "hpLost": 38.5
+     "win": 65,
+     "rounds": 14,
+     "hpLost": 60.1
     },
     "strong": {
-     "win": 95,
-     "rounds": 13.1,
-     "hpLost": 20.2
+     "win": 70,
+     "rounds": 16.6,
+     "hpLost": 52.3
     }
    },
-   "index": 32.6
+   "index": 54.3
   },
   {
    "map": "m6",
@@ -5183,17 +5183,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 77.5,
-     "rounds": 13.1,
-     "hpLost": 53.3
+     "win": 52.5,
+     "rounds": 13.6,
+     "hpLost": 71.4
     },
     "strong": {
-     "win": 95,
-     "rounds": 11.5,
-     "hpLost": 27.2
+     "win": 57.5,
+     "rounds": 15.3,
+     "hpLost": 66.6
     }
    },
-   "index": 38.7
+   "index": 64.2
   },
   {
    "map": "m6",
@@ -5212,17 +5212,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 42.5,
-     "rounds": 9,
-     "hpLost": 70.7
+     "win": 7.5,
+     "rounds": 11,
+     "hpLost": 96.3
     },
     "strong": {
-     "win": 82.5,
-     "rounds": 9.3,
-     "hpLost": 49.3
+     "win": 40,
+     "rounds": 12.3,
+     "hpLost": 85.2
     }
    },
-   "index": 56.1
+   "index": 84.4
   },
   {
    "map": "mi",
@@ -5236,22 +5236,22 @@
    "hp": 73,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 15.5,
-     "hpLost": 98.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 100,
-     "rounds": 11.4,
-     "hpLost": 36.9
+     "win": 95,
+     "rounds": 11.3,
+     "hpLost": 31
     },
     "strong": {
-     "win": 100,
-     "rounds": 10.3,
-     "hpLost": 24
+     "win": 77.5,
+     "rounds": 14.2,
+     "hpLost": 49.3
     }
    },
-   "index": 29.8
+   "index": 44.2
   },
   {
    "map": "mi",
@@ -5265,22 +5265,22 @@
    "hp": 83,
    "res": {
     "starter": {
-     "win": 25,
-     "rounds": 15.1,
-     "hpLost": 91.1
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
      "win": 90,
-     "rounds": 11.1,
-     "hpLost": 26.2
+     "rounds": 11.9,
+     "hpLost": 46.7
     },
     "strong": {
-     "win": 95,
-     "rounds": 10.7,
-     "hpLost": 27.8
+     "win": 90,
+     "rounds": 14,
+     "hpLost": 39.5
     }
    },
-   "index": 29.5
+   "index": 39.9
   },
   {
    "map": "mi",
@@ -5299,17 +5299,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 52.5,
-     "rounds": 12.9,
-     "hpLost": 70.3
+     "win": 32.5,
+     "rounds": 13.6,
+     "hpLost": 87.9
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 11.4,
-     "hpLost": 37.9
+     "win": 55,
+     "rounds": 15.2,
+     "hpLost": 75.7
     }
    },
-   "index": 49.5
+   "index": 72.1
   },
   {
    "map": "mi",
@@ -5323,22 +5323,22 @@
    "hp": 80,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 16,
-     "hpLost": 98.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
      "win": 72.5,
-     "rounds": 11.4,
-     "hpLost": 53.1
+     "rounds": 11.5,
+     "hpLost": 55.7
     },
     "strong": {
-     "win": 100,
-     "rounds": 10.1,
-     "hpLost": 19.3
+     "win": 90,
+     "rounds": 13.6,
+     "hpLost": 47.4
     }
    },
-   "index": 36.1
+   "index": 46.2
   },
   {
    "map": "md",
@@ -5352,22 +5352,22 @@
    "hp": 229,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 20,
-     "hpLost": 96.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 80,
-     "rounds": 16.8,
-     "hpLost": 35.9
+     "win": 92.5,
+     "rounds": 15.5,
+     "hpLost": 29
     },
     "strong": {
      "win": 95,
-     "rounds": 15,
-     "hpLost": 22.7
+     "rounds": 18.7,
+     "hpLost": 33.6
     }
    },
-   "index": 35.7
+   "index": 36.5
   },
   {
    "map": "md",
@@ -5382,21 +5382,21 @@
    "res": {
     "starter": {
      "win": 2.5,
-     "rounds": 20,
+     "rounds": 25,
      "hpLost": 99.5
     },
     "mid": {
-     "win": 65,
-     "rounds": 17.2,
-     "hpLost": 56.4
+     "win": 55,
+     "rounds": 15.4,
+     "hpLost": 67.8
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 14.8,
-     "hpLost": 24.7
+     "win": 82.5,
+     "rounds": 17.8,
+     "hpLost": 44.5
     }
    },
-   "index": 39.9
+   "index": 51.1
   },
   {
    "map": "md",
@@ -5410,22 +5410,22 @@
    "hp": 124,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 20,
-     "hpLost": 99.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 57.5,
-     "rounds": 13.6,
-     "hpLost": 66.4
+     "win": 35,
+     "rounds": 12.9,
+     "hpLost": 86.1
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 12.1,
-     "hpLost": 49.4
+     "win": 62.5,
+     "rounds": 15.5,
+     "hpLost": 67.7
     }
    },
-   "index": 49.2
+   "index": 67.6
   },
   {
    "map": "md",
@@ -5439,22 +5439,22 @@
    "hp": 230,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 22,
-     "hpLost": 98.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 52.5,
-     "rounds": 17,
-     "hpLost": 64.2
+     "win": 32.5,
+     "rounds": 17.2,
+     "hpLost": 90.6
     },
     "strong": {
-     "win": 90,
-     "rounds": 15.1,
-     "hpLost": 37.5
+     "win": 47.5,
+     "rounds": 19.3,
+     "hpLost": 80.1
     }
    },
-   "index": 47.5
+   "index": 75
   },
   {
    "map": "md",
@@ -5473,17 +5473,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 60,
-     "rounds": 15.5,
-     "hpLost": 62.5
+     "win": 22.5,
+     "rounds": 15.2,
+     "hpLost": 90.4
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 14.1,
-     "hpLost": 32.4
+     "win": 67.5,
+     "rounds": 18.5,
+     "hpLost": 62.8
     }
    },
-   "index": 46.2
+   "index": 68.2
   },
   {
    "map": "md",
@@ -5497,22 +5497,22 @@
    "hp": 240,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 23,
-     "hpLost": 99.4
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 72.5,
-     "rounds": 17.3,
-     "hpLost": 52.3
+     "win": 35,
+     "rounds": 18,
+     "hpLost": 80.2
     },
     "strong": {
-     "win": 82.5,
-     "rounds": 15.3,
-     "hpLost": 38.2
+     "win": 57.5,
+     "rounds": 19.2,
+     "hpLost": 69.3
     }
    },
-   "index": 45.2
+   "index": 69.2
   },
   {
    "map": "md",
@@ -5531,17 +5531,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 60,
-     "rounds": 15,
-     "hpLost": 57
+     "win": 27.5,
+     "rounds": 15.7,
+     "hpLost": 87.3
     },
     "strong": {
-     "win": 80,
-     "rounds": 13.9,
-     "hpLost": 51.7
+     "win": 37.5,
+     "rounds": 18.3,
+     "hpLost": 83.4
     }
    },
-   "index": 52.9
+   "index": 79.6
   },
   {
    "map": "m3",
@@ -5560,17 +5560,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 57.5,
-     "rounds": 14.1,
-     "hpLost": 66.5
+     "win": 47.5,
+     "rounds": 14.4,
+     "hpLost": 81.7
     },
     "strong": {
-     "win": 95,
-     "rounds": 11.9,
-     "hpLost": 25.1
+     "win": 62.5,
+     "rounds": 15.6,
+     "hpLost": 65.5
     }
    },
-   "index": 43.2
+   "index": 63.9
   },
   {
    "map": "m3",
@@ -5589,17 +5589,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 57.5,
-     "rounds": 14.6,
-     "hpLost": 69.8
+     "win": 37.5,
+     "rounds": 14.9,
+     "hpLost": 82.2
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 12.9,
-     "hpLost": 35.4
+     "win": 55,
+     "rounds": 16.1,
+     "hpLost": 68.5
     }
    },
-   "index": 47.6
+   "index": 69
   },
   {
    "map": "m3",
@@ -5618,17 +5618,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 45,
-     "rounds": 15.8,
-     "hpLost": 74.7
+     "win": 22.5,
+     "rounds": 15.3,
+     "hpLost": 92.3
     },
     "strong": {
-     "win": 90,
-     "rounds": 13.6,
-     "hpLost": 38.7
+     "win": 55,
+     "rounds": 16.6,
+     "hpLost": 69.8
     }
    },
-   "index": 50.9
+   "index": 73.1
   },
   {
    "map": "m3",
@@ -5647,17 +5647,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 67.5,
-     "rounds": 14.1,
-     "hpLost": 65.5
+     "win": 35,
+     "rounds": 13.9,
+     "hpLost": 85.8
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 11.9,
-     "hpLost": 41.5
+     "win": 40,
+     "rounds": 15.4,
+     "hpLost": 81.8
     }
    },
-   "index": 46.6
+   "index": 76.7
   },
   {
    "map": "m3",
@@ -5676,17 +5676,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 67.5,
-     "rounds": 14.1,
-     "hpLost": 65.5
+     "win": 35,
+     "rounds": 13.9,
+     "hpLost": 85.8
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 11.9,
-     "hpLost": 41.5
+     "win": 40,
+     "rounds": 15.4,
+     "hpLost": 81.8
     }
    },
-   "index": 46.6
+   "index": 76.7
   },
   {
    "map": "m3",
@@ -5705,17 +5705,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 67.5,
-     "rounds": 16,
-     "hpLost": 61.5
+     "win": 12.5,
+     "rounds": 16.4,
+     "hpLost": 95.8
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 13.7,
-     "hpLost": 32.4
+     "win": 52.5,
+     "rounds": 17,
+     "hpLost": 71.5
     }
    },
-   "index": 43.1
+   "index": 76.6
   },
   {
    "map": "m9",
@@ -5729,22 +5729,22 @@
    "hp": 63,
    "res": {
     "starter": {
-     "win": 47.5,
-     "rounds": 11.9,
-     "hpLost": 73.4
+     "win": 12.5,
+     "rounds": 15.2,
+     "hpLost": 96
     },
     "mid": {
-     "win": 100,
-     "rounds": 9.4,
-     "hpLost": 15.4
+     "win": 97.5,
+     "rounds": 9.3,
+     "hpLost": 25.9
     },
     "strong": {
      "win": 100,
-     "rounds": 8.5,
-     "hpLost": 9.7
+     "rounds": 11.9,
+     "hpLost": 15.7
     }
    },
-   "index": 15.6
+   "index": 26.4
   },
   {
    "map": "m9",
@@ -5758,22 +5758,22 @@
    "hp": 60,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 12.5,
-     "hpLost": 98.8
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 80,
-     "rounds": 9.3,
-     "hpLost": 40.8
+     "win": 70,
+     "rounds": 10.1,
+     "hpLost": 50.2
     },
     "strong": {
-     "win": 100,
-     "rounds": 8.8,
-     "hpLost": 28.3
+     "win": 82.5,
+     "rounds": 12.4,
+     "hpLost": 51.8
     }
    },
-   "index": 35.8
+   "index": 49.8
   },
   {
    "map": "m9",
@@ -5787,22 +5787,22 @@
    "hp": 50,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 11,
-     "hpLost": 98.4
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 87.5,
-     "rounds": 9.3,
-     "hpLost": 37.5
+     "win": 80,
+     "rounds": 10.5,
+     "hpLost": 50.8
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 9,
-     "hpLost": 34.5
+     "win": 62.5,
+     "rounds": 12.5,
+     "hpLost": 66.5
     }
    },
-   "index": 37.4
+   "index": 56
   },
   {
    "map": "m9",
@@ -5816,22 +5816,22 @@
    "hp": 69,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 11,
-     "hpLost": 98.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 80,
-     "rounds": 10.5,
-     "hpLost": 51.8
+     "win": 62.5,
+     "rounds": 10.3,
+     "hpLost": 56.1
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 9.5,
-     "hpLost": 34.8
+     "win": 67.5,
+     "rounds": 13.6,
+     "hpLost": 57.7
     }
    },
-   "index": 40.6
+   "index": 56.9
   },
   {
    "map": "m9",
@@ -5845,22 +5845,22 @@
    "hp": 43,
    "res": {
     "starter": {
-     "win": 30,
-     "rounds": 10.7,
-     "hpLost": 87.3
+     "win": 7.5,
+     "rounds": 11.3,
+     "hpLost": 98.7
     },
     "mid": {
      "win": 97.5,
-     "rounds": 8.2,
-     "hpLost": 24
+     "rounds": 9.2,
+     "hpLost": 19.6
     },
     "strong": {
      "win": 100,
-     "rounds": 7.9,
-     "hpLost": 21.7
+     "rounds": 11.4,
+     "hpLost": 28.5
     }
    },
-   "index": 23.6
+   "index": 30.9
   },
   {
    "map": "m9",
@@ -5874,22 +5874,22 @@
    "hp": 90,
    "res": {
     "starter": {
-     "win": 7.5,
-     "rounds": 15.7,
-     "hpLost": 97.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 82.5,
+     "win": 97.5,
      "rounds": 11.4,
-     "hpLost": 43.3
+     "hpLost": 31.7
     },
     "strong": {
      "win": 97.5,
-     "rounds": 10.1,
-     "hpLost": 28.7
+     "rounds": 14.2,
+     "hpLost": 39.5
     }
    },
-   "index": 35.3
+   "index": 36.1
   },
   {
    "map": "m9",
@@ -5903,22 +5903,22 @@
    "hp": 176,
    "res": {
     "starter": {
-     "win": 15,
-     "rounds": 19,
-     "hpLost": 90.9
+     "win": 5,
+     "rounds": 24.5,
+     "hpLost": 97.8
     },
     "mid": {
-     "win": 87.5,
-     "rounds": 15.1,
-     "hpLost": 40.2
+     "win": 85,
+     "rounds": 15.3,
+     "hpLost": 51.5
     },
     "strong": {
-     "win": 92.5,
-     "rounds": 13.5,
-     "hpLost": 34.3
+     "win": 85,
+     "rounds": 17.1,
+     "hpLost": 43.9
     }
    },
-   "index": 34.8
+   "index": 42.2
   },
   {
    "map": "m9",
@@ -5932,22 +5932,22 @@
    "hp": 70,
    "res": {
     "starter": {
-     "win": 10,
-     "rounds": 11.8,
-     "hpLost": 98.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 85,
-     "rounds": 10.6,
-     "hpLost": 31
+     "win": 90,
+     "rounds": 11.5,
+     "hpLost": 36.3
     },
     "strong": {
-     "win": 95,
-     "rounds": 9.5,
-     "hpLost": 24.6
+     "win": 92.5,
+     "rounds": 14,
+     "hpLost": 43.8
     }
    },
-   "index": 33.7
+   "index": 40.3
   },
   {
    "map": "m9",
@@ -5966,17 +5966,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 50,
-     "rounds": 14.1,
-     "hpLost": 73.5
+     "win": 55,
+     "rounds": 14.4,
+     "hpLost": 73
     },
     "strong": {
-     "win": 95,
-     "rounds": 12.3,
-     "hpLost": 36.7
+     "win": 60,
+     "rounds": 16.7,
+     "hpLost": 70.9
     }
    },
-   "index": 47.9
+   "index": 64
   },
   {
    "map": "m9",
@@ -5995,17 +5995,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 30,
-     "rounds": 17.8,
-     "hpLost": 88.8
+     "win": 20,
+     "rounds": 17.3,
+     "hpLost": 93.1
     },
     "strong": {
-     "win": 65,
-     "rounds": 15.4,
-     "hpLost": 65.2
+     "win": 32.5,
+     "rounds": 19.9,
+     "hpLost": 89.5
     }
    },
-   "index": 67.6
+   "index": 84.3
   },
   {
    "map": "m11",
@@ -6024,17 +6024,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 32.5,
-     "rounds": 14,
-     "hpLost": 80.7
+     "win": 7.5,
+     "rounds": 15.3,
+     "hpLost": 97.7
     },
     "strong": {
-     "win": 65,
-     "rounds": 12.6,
-     "hpLost": 54.8
+     "win": 35,
+     "rounds": 15.4,
+     "hpLost": 84.7
     }
    },
-   "index": 64.3
+   "index": 85.6
   },
   {
    "map": "m11",
@@ -6053,17 +6053,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 40,
-     "rounds": 11.3,
-     "hpLost": 78.1
+     "win": 32.5,
+     "rounds": 12.2,
+     "hpLost": 86.9
     },
     "strong": {
-     "win": 77.5,
-     "rounds": 10.1,
-     "hpLost": 47.4
+     "win": 27.5,
+     "rounds": 13.5,
+     "hpLost": 90.1
     }
    },
-   "index": 57.5
+   "index": 82.5
   },
   {
    "map": "m11",
@@ -6077,22 +6077,22 @@
    "hp": 74,
    "res": {
     "starter": {
-     "win": 12.5,
-     "rounds": 13.4,
-     "hpLost": 94
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 82.5,
-     "rounds": 10.5,
-     "hpLost": 34.3
+     "win": 37.5,
+     "rounds": 11.1,
+     "hpLost": 74.3
     },
     "strong": {
-     "win": 95,
-     "rounds": 9.8,
-     "hpLost": 27.9
+     "win": 67.5,
+     "rounds": 13.5,
+     "hpLost": 63.2
     }
    },
-   "index": 34.5
+   "index": 64.6
   },
   {
    "map": "m11",
@@ -6106,22 +6106,22 @@
    "hp": 239,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 22,
-     "hpLost": 99.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 72.5,
-     "rounds": 17.1,
-     "hpLost": 60
+     "win": 35,
+     "rounds": 17.2,
+     "hpLost": 81.8
     },
     "strong": {
-     "win": 95,
-     "rounds": 15.5,
-     "hpLost": 36.6
+     "win": 67.5,
+     "rounds": 18.6,
+     "hpLost": 64.4
     }
    },
-   "index": 41.7
+   "index": 65.5
   },
   {
    "map": "m11",
@@ -6135,22 +6135,22 @@
    "hp": 212,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 19,
-     "hpLost": 98.8
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 47.5,
-     "rounds": 16.7,
-     "hpLost": 69.5
+     "win": 2.5,
+     "rounds": 16,
+     "hpLost": 98.5
     },
     "strong": {
-     "win": 95,
-     "rounds": 14.6,
-     "hpLost": 38.5
+     "win": 42.5,
+     "rounds": 17.2,
+     "hpLost": 72.9
     }
    },
-   "index": 48.4
+   "index": 82
   },
   {
    "map": "m11",
@@ -6169,17 +6169,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 40,
-     "rounds": 16,
-     "hpLost": 82
+     "win": 2.5,
+     "rounds": 17,
+     "hpLost": 98.7
     },
     "strong": {
-     "win": 77.5,
-     "rounds": 14.2,
-     "hpLost": 51.7
+     "win": 40,
+     "rounds": 17.3,
+     "hpLost": 73.9
     }
    },
-   "index": 58.6
+   "index": 82.9
   },
   {
    "map": "m11",
@@ -6198,17 +6198,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 47.5,
-     "rounds": 16.6,
-     "hpLost": 66.4
+     "win": 15,
+     "rounds": 17.5,
+     "hpLost": 94.8
     },
     "strong": {
-     "win": 75,
-     "rounds": 15.2,
-     "hpLost": 43.7
+     "win": 57.5,
+     "rounds": 18.7,
+     "hpLost": 68.7
     }
    },
-   "index": 55.3
+   "index": 74.1
   },
   {
    "map": "m11",
@@ -6227,17 +6227,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 50,
-     "rounds": 16.3,
-     "hpLost": 64.4
+     "win": 10,
+     "rounds": 17,
+     "hpLost": 97.4
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 15,
-     "hpLost": 40.1
+     "win": 75,
+     "rounds": 18.1,
+     "hpLost": 52.6
     }
    },
-   "index": 50.7
+   "index": 66.9
   },
   {
    "map": "m11",
@@ -6251,22 +6251,22 @@
    "hp": 239,
    "res": {
     "starter": {
-     "win": 30,
-     "rounds": 22.5,
-     "hpLost": 81.3
+     "win": 2.5,
+     "rounds": 25,
+     "hpLost": 98.5
     },
     "mid": {
      "win": 85,
-     "rounds": 18.1,
-     "hpLost": 33.3
+     "rounds": 18.5,
+     "hpLost": 33.6
     },
     "strong": {
-     "win": 90,
-     "rounds": 16.2,
-     "hpLost": 28.8
+     "win": 92.5,
+     "rounds": 19.2,
+     "hpLost": 20.9
     }
    },
-   "index": 31
+   "index": 35.2
   },
   {
    "map": "m11",
@@ -6285,17 +6285,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 42.5,
-     "rounds": 16.5,
-     "hpLost": 76.2
+     "win": 10,
+     "rounds": 16,
+     "hpLost": 95.3
     },
     "strong": {
-     "win": 67.5,
-     "rounds": 14.8,
-     "hpLost": 57
+     "win": 42.5,
+     "rounds": 18.5,
+     "hpLost": 82.2
     }
    },
-   "index": 61.8
+   "index": 82.4
   },
   {
    "map": "me",
@@ -6314,17 +6314,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 47.5,
-     "rounds": 15.6,
-     "hpLost": 73.8
+     "win": 45,
+     "rounds": 15.1,
+     "hpLost": 75
     },
     "strong": {
-     "win": 80,
-     "rounds": 14.1,
-     "hpLost": 47.7
+     "win": 60,
+     "rounds": 17.6,
+     "hpLost": 68.7
     }
    },
-   "index": 55.1
+   "index": 65.9
   },
   {
    "map": "me",
@@ -6338,22 +6338,22 @@
    "hp": 190,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 22,
-     "hpLost": 99.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 35,
-     "rounds": 16.9,
-     "hpLost": 82.5
+     "win": 47.5,
+     "rounds": 16.4,
+     "hpLost": 68.3
     },
     "strong": {
-     "win": 82.5,
-     "rounds": 14.8,
-     "hpLost": 50.3
+     "win": 75,
+     "rounds": 18.3,
+     "hpLost": 48.7
     }
    },
-   "index": 57.6
+   "index": 56.6
   },
   {
    "map": "me",
@@ -6372,17 +6372,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 25,
-     "rounds": 16.7,
-     "hpLost": 83.1
+     "win": 42.5,
+     "rounds": 17.7,
+     "hpLost": 77.6
     },
     "strong": {
      "win": 92.5,
-     "rounds": 15.2,
-     "hpLost": 37.1
+     "rounds": 18.9,
+     "hpLost": 41.3
     }
    },
-   "index": 54.9
+   "index": 51.6
   },
   {
    "map": "me",
@@ -6401,17 +6401,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 35,
-     "rounds": 18,
-     "hpLost": 74.8
+     "win": 47.5,
+     "rounds": 18.4,
+     "hpLost": 71
     },
     "strong": {
-     "win": 82.5,
-     "rounds": 16.6,
-     "hpLost": 43.4
+     "win": 67.5,
+     "rounds": 20.3,
+     "hpLost": 59.2
     }
    },
-   "index": 56.5
+   "index": 61.1
   },
   {
    "map": "me",
@@ -6425,22 +6425,22 @@
    "hp": 180,
    "res": {
     "starter": {
-     "win": 25,
-     "rounds": 18.3,
-     "hpLost": 86.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 97.5,
-     "rounds": 14.3,
+     "win": 100,
+     "rounds": 13.9,
      "hpLost": 22.2
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 13.3,
-     "hpLost": 17.7
+     "win": 95,
+     "rounds": 17.1,
+     "hpLost": 27.6
     }
    },
-   "index": 24.4
+   "index": 33.2
   },
   {
    "map": "me",
@@ -6459,17 +6459,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 37.5,
-     "rounds": 16.3,
-     "hpLost": 77.5
+     "win": 40,
+     "rounds": 16.8,
+     "hpLost": 79.3
     },
     "strong": {
-     "win": 77.5,
-     "rounds": 13.9,
+     "win": 72.5,
+     "rounds": 18.3,
      "hpLost": 55.3
     }
    },
-   "index": 60.1
+   "index": 60.7
   },
   {
    "map": "me",
@@ -6488,17 +6488,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 72.5,
-     "rounds": 16.8,
-     "hpLost": 63.3
+     "win": 67.5,
+     "rounds": 16.1,
+     "hpLost": 61.5
     },
     "strong": {
-     "win": 100,
-     "rounds": 14.7,
-     "hpLost": 18.3
+     "win": 97.5,
+     "rounds": 18.1,
+     "hpLost": 22.5
     }
    },
-   "index": 36.5
+   "index": 39.4
   },
   {
    "map": "mx",
@@ -6517,17 +6517,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 70,
-     "rounds": 14.9,
-     "hpLost": 49.9
+     "win": 87.5,
+     "rounds": 15,
+     "hpLost": 41.7
     },
     "strong": {
-     "win": 90,
-     "rounds": 13.7,
-     "hpLost": 38.6
+     "win": 92.5,
+     "rounds": 17.3,
+     "hpLost": 29.3
     }
    },
-   "index": 44.7
+   "index": 37.3
   },
   {
    "map": "mx",
@@ -6546,17 +6546,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 85,
+     "win": 62.5,
      "rounds": 17.1,
-     "hpLost": 48.7
+     "hpLost": 65.2
     },
     "strong": {
-     "win": 85,
-     "rounds": 15.3,
-     "hpLost": 39.3
+     "win": 87.5,
+     "rounds": 19.8,
+     "hpLost": 43
     }
    },
-   "index": 42.3
+   "index": 48.3
   },
   {
    "map": "mx",
@@ -6575,17 +6575,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 50,
-     "rounds": 17.4,
-     "hpLost": 68.6
+     "win": 37.5,
+     "rounds": 16.9,
+     "hpLost": 77.3
     },
     "strong": {
-     "win": 97.5,
-     "rounds": 15.1,
-     "hpLost": 23.9
+     "win": 95,
+     "rounds": 18.2,
+     "hpLost": 28.5
     }
    },
-   "index": 44.1
+   "index": 49
   },
   {
    "map": "mx",
@@ -6604,17 +6604,17 @@
      "hpLost": 100
     },
     "mid": {
-     "win": 52.5,
-     "rounds": 16.2,
-     "hpLost": 61.2
+     "win": 20,
+     "rounds": 16.4,
+     "hpLost": 84.9
     },
     "strong": {
-     "win": 82.5,
-     "rounds": 15.2,
-     "hpLost": 48.1
+     "win": 75,
+     "rounds": 19.3,
+     "hpLost": 64.1
     }
    },
-   "index": 53.3
+   "index": 67.3
   },
   {
    "map": "m21",
@@ -6634,16 +6634,16 @@
     },
     "mid": {
      "win": 77.5,
-     "rounds": 15.3,
-     "hpLost": 40.7
+     "rounds": 14.7,
+     "hpLost": 38.7
     },
     "strong": {
-     "win": 95,
-     "rounds": 13.9,
-     "hpLost": 21.6
+     "win": 87.5,
+     "rounds": 17.6,
+     "hpLost": 30.1
     }
    },
-   "index": 37.3
+   "index": 41.3
   },
   {
    "map": "m21",
@@ -6657,22 +6657,22 @@
    "hp": 200,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 20,
-     "hpLost": 99.5
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 82.5,
-     "rounds": 15.6,
-     "hpLost": 38.2
+     "win": 87.5,
+     "rounds": 15.3,
+     "hpLost": 29.2
     },
     "strong": {
-     "win": 100,
-     "rounds": 14.5,
-     "hpLost": 20
+     "win": 95,
+     "rounds": 18,
+     "hpLost": 23.6
     }
    },
-   "index": 33.8
+   "index": 35.3
   },
   {
    "map": "m21",
@@ -6686,22 +6686,22 @@
    "hp": 210,
    "res": {
     "starter": {
-     "win": 5,
-     "rounds": 22,
-     "hpLost": 98
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 82.5,
-     "rounds": 17.7,
-     "hpLost": 45.7
+     "win": 85,
+     "rounds": 15.7,
+     "hpLost": 34.4
     },
     "strong": {
-     "win": 95,
-     "rounds": 15.3,
-     "hpLost": 22.8
+     "win": 90,
+     "rounds": 18.9,
+     "hpLost": 28.3
     }
    },
-   "index": 35.1
+   "index": 38.3
   },
   {
    "map": "m21",
@@ -6715,22 +6715,22 @@
    "hp": 240,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 25,
-     "hpLost": 99.6
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 62.5,
-     "rounds": 16.7,
-     "hpLost": 56
+     "win": 37.5,
+     "rounds": 17.3,
+     "hpLost": 74.5
     },
     "strong": {
-     "win": 95,
-     "rounds": 14.8,
-     "hpLost": 27.3
+     "win": 97.5,
+     "rounds": 18.3,
+     "hpLost": 17.4
     }
    },
-   "index": 41.8
+   "index": 45.6
   },
   {
    "map": "m21",
@@ -6744,22 +6744,22 @@
    "hp": 230,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 25,
-     "hpLost": 99.7
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 70,
-     "rounds": 17.4,
-     "hpLost": 56.7
+     "win": 62.5,
+     "rounds": 16.7,
+     "hpLost": 60.7
     },
     "strong": {
-     "win": 100,
-     "rounds": 15.5,
-     "hpLost": 20.2
+     "win": 97.5,
+     "rounds": 19.4,
+     "hpLost": 27.7
     }
    },
-   "index": 36.9
+   "index": 41.9
   },
   {
    "map": "m21",
@@ -6773,22 +6773,22 @@
    "hp": 280,
    "res": {
     "starter": {
-     "win": 2.5,
-     "rounds": 23,
-     "hpLost": 99.3
+     "win": 0,
+     "rounds": null,
+     "hpLost": 100
     },
     "mid": {
-     "win": 50,
-     "rounds": 18.7,
-     "hpLost": 62.5
+     "win": 35,
+     "rounds": 18.4,
+     "hpLost": 73.4
     },
     "strong": {
-     "win": 87.5,
-     "rounds": 16.7,
-     "hpLost": 34.8
+     "win": 80,
+     "rounds": 20.3,
+     "hpLost": 50.7
     }
    },
-   "index": 48.7
+   "index": 58.9
   }
  ]
 }

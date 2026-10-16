@@ -8753,7 +8753,7 @@ async function applySessionIdentity(user){
     // than starting the server row at zero and clobbering real local progress already on this
     // device. Only actually pushes anything once isSignedIn() is true (see cloudPush* below) — a
     // brand-new ANONYMOUS session correctly seeds nothing yet, matching "data saved locally."
-    await sbClient.from('profiles').upsert({ id: cloudUserId, display_name: (myProfile && myProfile.name) || 'Woodland Warrior', rating: myRating });
+    await sbClient.from('profiles').upsert({ id: cloudUserId, display_name: (myProfile && myProfile.name) || 'Woodland Warrior' }); // 2026-10-16: no rating here: anti-cheat tier 1 (S2) makes rating server-only, and an upsert naming it would be refused whole
     if(isSignedIn()) await Promise.all([cloudPushCurrencies(), cloudPushCardLevels(), cloudPushDecks()]);
   } else {
     // Existing cloud account (returning session, an email/Google-linked account signed in fresh,

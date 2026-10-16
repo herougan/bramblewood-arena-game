@@ -1,3 +1,4 @@
+-- APPLIED to the live project 2026-10-16 (user: "Still open -> Apply it").
 -- D55 world call-outs (2026-10-13). NOT APPLIED: waits for the user's "apply it".
 -- Admins write events and GM messages; everyone reads. The client polls every 3 minutes.
 create table if not exists public.world_events (

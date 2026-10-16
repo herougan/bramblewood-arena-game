@@ -4,14 +4,9 @@ _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is buil
 
 ## 1. Still open
 
-**Waiting for "apply it"** (they write to the live Supabase):
+**Applied to the live database (10-16, your "Apply it"):** the feedback table, D55 `world_events`, T3 `fight_sessions` (server fight seeds), S1 `admin_list_players`, S2 anti-cheat tier 1 (rating is server-only; one write can add at most 2,000 Gold or Dust, 200 Gems, 50 Metal), and D76 `coop_rooms` (written today: friends-only rooms, join by code). The co-op game itself still has to be built on top of the table.
 
-| Item | What it does |
-|---|---|
-| Feedback table | `supabase/migrations/20261015_feedback.sql`. Each row holds the player's id (account or guest session), their player name, guest or signed in, the time sent, and where they were. The 💬 button is in the game; notes wait in the browser until this is applied |
-| D55 `world_events` | `supabase/migrations/20261013_world_events.sql`. The 3-minute check and the 📣 composer are built |
-| D76 `coop_rooms` | Needed before co-op rooms can be built (plan timer, shared castle, friends-only rooms are agreed) |
-| T3 / S1 / S2 | The parked security and schema items |
+**Worth knowing about S2:** a single honest write that adds more than 2,000 Dust (say, breaking down a high-level card) would be refused, and the next load would bring back the server's lower number. Say if you want higher caps, or those refunds moved to the server.
 
 **Your picks:**
 
@@ -21,10 +16,9 @@ _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is buil
 | Flora | The Flora sheet in the card plan workbook (12 plant cards for Maps 20+; renamed from Wild Veggies) |
 | Card placement | `docs/card-placement-proposal-2026-10-15.md` / `.xlsx` and the Recommended sheet in `docs/skills-by-map-2026-10-15.xlsx`. The new skills, field effects and cards are built but on no maps until you choose |
 | Skill N for the new skills | Fill "Your N" on the Skill N sheet for the 10-14 to 10-16 skills (Electricity, Keen Sense, Psychic, Bloodlust, the Bolts, Bulldoze and the rest) |
-| Difficulty | Map 0 got harder with the weaker starter deck (0-3 about 5%, the 0-4 boss about 7%), and the Map 10, 14 and 16 bosses spike. Say the word and I retune them (the last measurement predates the card fold, so I'd measure again first) |
+| Difficulty | Measured again 10-16 (40 games a fight): Maps 1–9 are fine for a mid deck; from Map 10 even the strong deck struggles (10-7 boss 30%, 14-8 boss 7.5%, 16-7 boss 10%; the Map 14 and 16 elites 7–27%). Map 0 got harder with the weaker starter deck. Say the word and I retune Map 0 and Maps 10–16 |
 
 **Fixes to make in the card editor** (your published edits override the files, so these have to be re-saved from the editor):
-- Trash Panda Trickster still says Worthy (it's merged into Bounty now).
 - The 0-2 deck still lists the removed Bee Knight (classic).
 - Earthworm has lost its Regen.
 - Silver Minnow, Pond Trout and River Carp need Tide.
@@ -40,7 +34,8 @@ _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is buil
 | Idea | Notes |
 |---|---|
 | Card backings | ✅ By card type (10-16): Unit, Structure, Castle and Field effect backs in `art/backings/`. Still open: faction backs as images (faction packs still use the CSS placeholders on their unit cards) |
-| Evade to non-swimmers | Your idea; not built |
+| Evade to non-swimmers | ✅ Built to test (10-16): Admin → 🧪 Rule tests → 🌊 Tide evade, also in the Test Lab and the skirmish editor. Off for players |
+| Journeys | Hidden for now (`JOURNEYS_HIDDEN`). While hidden nobody gets the subfaction cards, which only Journeys give |
 | The rest | Pool of card and play ideas in `docs/design-notes-2026-10-14-ideas.md`; late game in `docs/design-2026-10-14-late-game.md` |
 
 ## Done at 2026-10-16 07:00 (all your notes from 10-14 10:45 to 10-16 04:58)
@@ -66,6 +61,7 @@ Each line is in the changelog under the time shown.
 | 23:24 | Bulldoze (10-16 02:00) |
 | 04:58 | Proposals relinked as .xlsx and .md; Quick hits land with the dash; at most 3 cave fires; ribbon map titles replace the cinematic ones (10-16 05:30) |
 | Field art | 27 pixel scenes on the Environment and weather cards (10-16 06:30) |
+| 08:57 | Errands tab on the Notices; daily dungeons named like raids, on the World map, with a 🗝️ beside Home and Arena; Worthy → Bounty on every card; Tide evade to test; card backings for units, structures, castles and fields; the live database items applied |
 | 06:53 | Feedback rows carry the player's id, name and time; Wild Veggies is now Flora; the Blacksmith hides recipes until you've held their parts; D71 closed; the skill audit (10-16 skill audit) |
 
 **Calls closed:** D27, D39, D74, D75, D78 (your 10-14 09:00 answers), D70 (Murgle placed), D77 (Steam: revisit by December), D71 (okay, 10-16), the Blacksmith question (10-16: recipes stay hidden until you've held their parts). Earlier: D20–D69 and P1/P2, as listed below.
