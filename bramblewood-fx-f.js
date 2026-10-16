@@ -1444,7 +1444,8 @@ M.onEvent = function(ev, env){
   if(t === 'triggerFired' && ev.uid != null){
     const el = env.el(ev.uid); if(!el) return;
     if(ev.action === 'refine') M.refine(el);
-    else if(el.querySelector('.ab-trig') && env.once('fxfTrig:' + ev.uid)) M.autobattleTrigger(el);
+    // 2026-10-16 (user: "triggering of the a trigged effect: the lightning emoji glows only. no lightning vfx"): no bolt from the
+    // badge in a fight any more; arena_app.js's triggerFiredVfx glows the ⚡ badge itself. M.autobattleTrigger stays for the Lab.
   }
   if(t === 'exile' && ev.side){ // every card sent to the Removal Zone gives its owner one Echo
     const mine = mineSide(ev.side, env), w = document.getElementById(mine ? 'deckWidgetBottom' : 'deckWidgetTop') || (mine ? env.battlefield : null);

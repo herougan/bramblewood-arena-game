@@ -2,6 +2,20 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (fight flow)
+- **Stuck fights fixed:** a fight could freeze with a card played but no round coming: Pass turn, playing, pitching and Auto-play all did nothing. The card was on the board in the engine, but an error in one of the play's effects or log lines stopped the turn before its round, and every retry hit the same error (and gave the CPU another turn). Now one commit runs at a time, the CPU acts once a round, the play's effects can't stop the round, a round that breaks always hands the turn back, and a watchdog starts a played turn's round if it never began. A card you play or pitch while the turn is already committing just shakes.
+- **Map 0 lessons can't trap you:** outside the guided tutorial, a lesson gate (the pitching lesson, "That one looks tough") no longer blocks Pass turn, Auto-play, Forfeit, Quit, the speed button or the log, and a lesson lock whose bubble is gone lets go.
+- **Upkeep:** the round-start effects (a castle's own action, the field's ticks) play out before your turn opens. Your hand dims, an "⏳ Upkeep" chip shows on the field, and play, pitch and Pass wait until it ends.
+- **Herb Refinery:** its brew is a visible 🧪 thrown on a shallow arc that lands in 0.44 s (was over a second). The same quick throw for every castle shot.
+- **Castle damage numbers** pop on that side's HP bar, where its fill ends, not in the middle of the field.
+- **Normal hits are audible:** every hit now has a mid-range thwack. Before, only hits of 4+ had any sound laptop and phone speakers could play.
+- **Killing blows:** the "−N ✖" stamp is gone. When the killer has an On Kill trigger (or Momentum, Midas Touch, Slash & Burn), a ✖ pops on the target as the blow lands, darts into the killer, and the trigger plays as it arrives.
+- **Deaths start at once:** a killing blow no longer waits out the hit's beat; the death plays as the number lands.
+- **Triggers:** when a trigger fires, only the card's own ⚡ badge for it glows. No rune ring, card glow, aura or lightning bolt.
+- **Quick on the castle:** a Quick unit hitting the castle dashes straight at that side's HP bar, and every Quick hit dashes (it was once a round).
+- **Battle log ✕:** the open log has a close button.
+- **Fight preload:** as a fight opens, the art of every card either side can field (decks, hands, leader, the tokens and spawns they bring), both castles, the field's cards, the card backs and the arrow sprites are fetched and decoded, the effect glyphs are painted once off screen, and the sound engine is woken.
+
 ## 2026-10-16 (11:00)
 - **Dungeons tab name:** with one daily dungeon open the Play tab reads its name (Murgle Mayhem); from the second on it reads Daily Dungeons, like Raids. Hidden until one is open, except in Admin Mode. The Babel Spire doesn't count (it takes no tickets).
 - **World map:** every daily dungeon you've opened is a diamond beside its map that takes you straight in. Locked ones aren't drawn; admins see them marked 🛠️.

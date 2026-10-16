@@ -3328,10 +3328,16 @@ const SoundKit = (()=>{
     hit(){ tone(180,0.12,'square',0.1); },
     // Richer hits (2026-10-05): a felt-and-wood thwack with a little random pitch so a long
     // exchange doesn't sound like one sample on repeat; heavy blows add a low boom and a crack.
+    // 2026-10-16 (user: "The normal attack sounds - i dont hear the sound. Only big hits."): the normal hit was all below ~1.4 kHz (a
+    // lowpassed thud and a 210→120 Hz triangle), which laptop and phone speakers barely play and the ambience covers; only the
+    // ≥4-damage layer had anything up high (its 2.6 kHz crackle), so only big hits were heard. Every hit now also gets a short
+    // mid-range "thwack" (a 1.1-2.4 kHz band-passed snap and a quick 620→300 Hz knock), a little louder on bigger hits.
     hitAt(dmg, heavy){
       const j = 0.92 + Math.random()*0.16;
       fnoise(0.09, 0.14, {type:'lowpass', freq:1400*j, freqEnd:260, q:1.2, attack:0.002});
       sweep(210*j, 120*j, 0.08, 'triangle', 0.09);
+      fnoise(0.055, Math.min(0.2, 0.13 + Math.max(0, dmg||0)*0.006), {type:'bandpass', freq:2400*j, freqEnd:1100*j, q:1.4, attack:0.001});
+      sweep(620*j, 300*j, 0.05, 'triangle', 0.07);
       if(heavy || dmg >= 4){
         sweep(95*j, 42, 0.26, 'sine', 0.16, 0.01);
         fnoise(0.05, 0.10, {type:'highpass', freq:2600, attack:0.001, crackle:0.08, delay:0.005});
@@ -5389,6 +5395,51 @@ function warmCardArt(){
   (window.requestIdleCallback || (f=> setTimeout(()=> f(null), 800)))(step);
 }
 try{ if(typeof window!=='undefined') window.addEventListener('load', ()=> setTimeout(warmCardArt, 1500)); }catch(e){}
+// Fight preload (2026-10-16, user: "Preload effects before going into a battle - those that you know will be used."): when a fight
+// opens (its VS beat), everything this fight can show is fetched and decoded up front, so nothing stutters the first time it appears:
+//  - the art of every card either side can field: both decks, hands and boards, your leader, and what those cards bring in with them
+//    (Progeny and spawn tokens, triggered spawns, hatchlings, a castle's own spawns);
+//  - both castles' art, this field's environment cards and the field-effect cards, the card backs, the arrow sprites when an archer
+//    is in either deck;
+//  - the glyphs the effects draw (the cards' icons, their skills' icons, the common effect glyphs), painted once off screen so the
+//    emoji font is ready;
+//  - the sound engine, woken now (the player just clicked) instead of on the first hit.
+// The decoded images are held for the length of the fight.
+const fightPreloadHold = [];
+function fightDefIdsOf(m){
+  const defs = getCardDefs(), ids = new Set();
+  const add = id=>{
+    if(!id || typeof id !== 'string' || ids.has(id) || !defs[id]) return; ids.add(id);
+    const d = defs[id], e = d.effects || {};
+    const sp = v=> Array.isArray(v) ? v[0] : (v && typeof v === 'object' ? (v.defId || v.card) : (typeof v === 'string' ? v : null));
+    add(sp(e.onDeathSpawn)); add(sp(e.onAttackedSpawn)); add(sp(e.onSpawnSpawn)); add(d.hatchInto); add(d.derivedFrom);
+    (Array.isArray(e.triggers) ? e.triggers : []).forEach(t=>{ if(t){ add(t.defId); add(t.card); add(t.spawnDefId); } });
+  };
+  [1, 2].forEach(p=>{ const pl = m.players && m.players[p]; if(!pl) return;
+    const cards = [...(pl.deck||[]), ...(pl.hand||[]), ...(pl.graveyard||[]), ...['left','center','right'].flatMap(l=> (pl.row && pl.row[l]) || [])];
+    cards.forEach(x=> add(typeof x === 'string' ? x : x && x.defId));
+    if(pl.castleSpawn && pl.castleSpawn.defId) add(pl.castleSpawn.defId); });
+  if(m.leaderDefId) add(m.leaderDefId);
+  return ids;
+}
+function preloadFightAssets(m){
+  if(!m || m._preloaded || m.fxLib) return; m._preloaded = true;
+  fightPreloadHold.length = 0;
+  const defs = getCardDefs(), ids = fightDefIdsOf(m), urls = new Set(), glyphs = new Set(['✖', '🧪', '💀', '⚡', '🕐', '⏳', '✨', '🔥', '❄️', '☠️', '🩸', '💥', '🛡', '🍃', '🌿', '✚', '🪵', '👻', '🐾', '🪓', '⏩', '🪃']);
+  ids.forEach(id=>{ const d = defs[id]; if(d.art) urls.add(d.art); if(d.icon) glyphs.add(d.icon);
+    Object.keys(d.effects || {}).forEach(k=>{ if(typeof SKILL_ICON !== 'undefined' && SKILL_ICON[k]) glyphs.add(SKILL_ICON[k]); }); });
+  [1, 2].forEach(p=>{ const ch = m.players && m.players[p] && m.players[p].character; if(ch && ch.art) urls.add(ch.art); if(ch && ch.icon) glyphs.add(ch.icon); });
+  try{ const fr = matchFieldRules(m); matchFieldCondRows(m, fr).forEach(row=>{ const a = fieldArtOf(fieldArtKeyOfRow(row, fr)); if(a) urls.add(a); }); }catch(e){}
+  try{ Object.values(FIELD_EFFECT_ART_KEY).forEach(k=>{ const a = fieldArtOf(k); if(a) urls.add(a); }); }catch(e){}
+  try{ Object.values(CARD_BACKINGS).forEach(b=>{ if(b && b.art) urls.add(b.art); }); }catch(e){}
+  try{ if([...ids].some(id=>{ const e = defs[id].effects || {}; return e.arrow || e.fireArrow || e.iceArrow; })){ if(ARROW_PNG) urls.add(ARROW_PNG); if(FIRE_ARROW_PNG) urls.add(FIRE_ARROW_PNG); } }catch(e){}
+  urls.forEach(u=>{ if(!u || /^art\//.test(u)) return; try{ const img = new Image(); img.decoding = 'async'; img.src = u; if(img.decode) img.decode().catch(()=>{}); fightPreloadHold.push(img); }catch(e){} });
+  try{ const g = document.createElement('div'); g.setAttribute('aria-hidden', 'true');
+    g.style.cssText = 'position:fixed; left:-10000px; top:0; opacity:0; pointer-events:none; font-size:28px; white-space:nowrap; contain:strict; width:4000px; height:40px;';
+    g.textContent = [...glyphs].join(' '); document.body.appendChild(g); setTimeout(()=> g.remove(), 1500); }catch(e){}
+  try{ const c = SoundKit.audioContext && SoundKit.audioContext(); if(c){ if(c.state === 'suspended' && c.resume) c.resume().catch(()=>{});
+    const b = c.createBuffer(1, 1, c.sampleRate), s = c.createBufferSource(); s.buffer = b; s.connect(c.destination); s.start(); } }catch(e){}
+}
 function cardIcoHTML(d){
   if(d && d.art){
     const icon = escapeAttr((d && d.icon) || '❔');
@@ -5797,7 +5848,7 @@ function triggerBadges(d, live){
     // a trigger that fires every round leads with a clock instead of the bolt (2026-10-12, user: "Cards that have triggers
     // that depend on turns like every turn, should use the clock emoji instead")
     const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = clock ? '🕐' : t.on === 'onSacrifice' ? '🦷' : '⚡'; // Sacrifice - {} leads with teeth (2026-10-14)
-    return `<span class="ab-trig${off ? ' is-off' : ''}${clock ? ' is-clock' : ''}" title="${escapeAttr(tip)}"><i class="ab-bolt">${lead}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
+    return `<span class="ab-trig${off ? ' is-off' : ''}${clock ? ' is-clock' : ''}" data-hook="${escapeAttr(t.on || '')}" title="${escapeAttr(tip)}"><i class="ab-bolt">${lead}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
   });
 }
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger']; // 2026-10-16 (leader is left out: leaders have their own ring)
@@ -23259,20 +23310,41 @@ async function waitForBoardEntrances(max){
     await sleep(50);
   }
 }
+// 2026-10-16 (user: "Sometimes the battle gets stuck ... Then you can't pass turn, but you also can't play a card. Auto play also
+// doesnt work ... I played the card and pitched at the same time ... in the backend, I successfully played the card"): the card
+// was on the board in the engine, but a throw in one of the cosmetic steps between the play and the round (a log line, a VFX, a
+// render) ended this function before resolveRound, so "played this turn" stayed set with no round coming. Pass turn and Auto
+// both re-entered here, hit the same throw (and gave the CPU another turn each time), and nothing could move again. Now:
+//  - one commit at a time (m._committing), and the CPU acts once per round (m._aiActedRound), however often this is re-entered;
+//  - every cosmetic step is fenced (fightSafe), so the round always starts;
+//  - resolveRound always hands control back (see resolveRound's wrapper), and a fight watchdog resumes a played turn whose round
+//    never started (fightWatchdog).
+function fightSafe(fn, label){ try{ return fn(); }catch(e){ try{ console.error('[fight] ' + (label || 'step') + ' failed', e); }catch(_){} return undefined; } }
 async function afterPlayerAction(actingPid){
   const m = matchState; if(!m) return;
+  // a commit already in flight is the one that will resolve this round; a stale one (well past any real wait) is overridden
+  if(m._committing && performance.now() - (m._committingAt||0) < 20000) return;
+  const tok = {}; m._committing = tok; m._committingAt = performance.now();
+  try{ await afterPlayerActionCore(m, actingPid); }
+  catch(e){ try{ console.error('[fight] afterPlayerAction failed', e); }catch(_){} }
+  finally{ if(m._committing === tok) m._committing = null; }
+}
+async function afterPlayerActionCore(m, actingPid){
   // Actions per turn (2026-10-11): with plays left this turn, the turn goes on; the round resolves once they're used
   // (or with End turn / Skip as usual).
   { const pl = m.players[actingPid || 1]; if(pl && !pl.playedThisTurn && (pl.playsThisTurn||0) > 0 && m.engine.actionsPerTurn && m.engine.actionsPerTurn() > 1 && pl.hand.some(h=> m.engine.canPlay(pl, h.defId, h.uid))){
-    renderBoard(); renderHand(); updateControlsDisabled(); renderHUD();
+    m._needsCommit = false;
+    fightSafe(renderBoard, 'renderBoard'); fightSafe(renderHand, 'renderHand'); fightSafe(updateControlsDisabled); fightSafe(renderHUD, 'renderHUD');
     if(m.playerArrivalEvents) waitForBoardEntrances(1400).then(()=>{ if(matchState===m) replayAiArrivalEvents(m); }); // a Pounce lands (2026-10-15)
     return; } }
   if(m.mode!=='pc' && m.mode!=='liveRanked'){
-    if(m.mode!=='pvp') aiActNow(); // PvP: the stranger already played at the start of the round
-    renderBoard(); renderHand(); updateControlsDisabled(); renderHUD();
+    // PvP: the stranger already played at the start of the round. 2026-10-16: the CPU takes its turn once per round, even if
+    // this is re-entered (Pass pressed during the play's landing, Auto, the watchdog).
+    if(m.mode!=='pvp' && m._aiActedRound !== m.round){ m._aiActedRound = m.round; fightSafe(aiActNow, 'aiActNow'); }
+    fightSafe(renderBoard, 'renderBoard'); fightSafe(renderHand, 'renderHand'); fightSafe(updateControlsDisabled); fightSafe(renderHUD, 'renderHUD');
     // 2026-10-12 (user: "It should be a real summon, THEN the combat begins"): let the enemy's card finish landing first.
-    await waitForBoardEntrances(1400);
-    await replayAiArrivalEvents(m);
+    try{ await waitForBoardEntrances(1400); }catch(e){ console.error('[fight] waitForBoardEntrances failed', e); }
+    try{ await replayAiArrivalEvents(m); }catch(e){ console.error('[fight] replayAiArrivalEvents failed', e); }
     // 2026-09-17 follow-up ("there is a small lag between placing the unit and the unit
     // acting"): this pause is dead time between the play landing and combat actually starting —
     // distinct from the deliberate 2026-09-16 "slow down the game effects by 50%" pacing inside
@@ -23302,7 +23374,7 @@ async function afterPlayerAction(actingPid){
     return;
   }
   m.awaitingPass = false;
-  renderBoard(); renderHand(); updateControlsDisabled(); renderHUD();
+  fightSafe(renderBoard, 'renderBoard'); fightSafe(renderHand, 'renderHand'); fightSafe(updateControlsDisabled); fightSafe(renderHUD, 'renderHUD');
   await waitForBoardEntrances(1400); // 2026-10-14: the played cards land before the fight, as vs the AI
   await sleep(180); // see the vs-AI branch above for why this is 180ms, not 520ms
   await resolveRound();
@@ -23699,6 +23771,7 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
   });
 }
 function renderMatchUI(){
+  try{ if(matchState && !matchState._preloaded) preloadFightAssets(matchState); }catch(e){} // 2026-10-16: the fight's assets, up front
   try{ centreFieldInFs(); }catch(e){}
   try{ const mm = matchState; if(mm && !mm.over && dayNightOn(mm)) document.body.dataset.phase = mm.engine.getPhase(); else delete document.body.dataset.phase; }catch(e){}
   try{ window.snapGuardWake && window.snapGuardWake(); }catch(e){}
@@ -23922,7 +23995,7 @@ function renderMatchUI(){
          later shows this round's log intact rather than a wiped one. -->
     <div class="panel battle-log-panel ${battleLogOpen?'':'collapsed'}">
       <h2 class="battle-log-toggle" id="battleLogToggle" role="button" tabindex="0" style="font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:space-between; margin:0;">
-        <span>Battle Log</span><span class="battle-log-chevron">${battleLogOpen?'▾':'▸'}</span>
+        <span>Battle Log</span><button type="button" class="battle-log-x" id="battleLogClose" aria-label="Close the battle log" title="Close">✕</button><span class="battle-log-chevron">${battleLogOpen?'▾':'▸'}</span>
       </h2>
       <div class="battle-log" id="battleLog"></div>
     </div>
@@ -24506,6 +24579,13 @@ function wireDropZones(){
     const chevron = battleLogToggle.querySelector('.battle-log-chevron');
     if(chevron) chevron.textContent = battleLogOpen ? '▾' : '▸';
   });
+  // 2026-10-16 (user: "The log itself should have an "x" on it."): ✕ closes the open log (the 📜 button opens it again).
+  const battleLogClose = document.getElementById('battleLogClose');
+  if(battleLogClose) battleLogClose.addEventListener('click', e=>{
+    e.stopPropagation(); e.preventDefault();
+    if(battleLogOpen && battleLogToggle) battleLogToggle.click();
+  });
+  if(battleLogClose) battleLogClose.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' ') e.stopPropagation(); });
   // Direct-to-battlefield drop target (2026-09-17, per explicit request: "Dragging the card
   // Left right of the actual field or in the centre position should ALSO play the card") —
   // the active player's own board row now accepts a drop directly, not just the dedicated
@@ -26970,7 +27050,7 @@ function aiActNow(){
   // the top of their row, in the middle, so every enemy play flies in from there (not from wherever a default put it).
   try{ const re = document.getElementById('rowEnemy'); if(re){ const r = re.getBoundingClientRect();
     events.filter(ev=> ev.type==='play' && ev.side==='B' && ev.uid!=null).forEach(ev=> pendingEntranceOrigins.set(String(ev.uid), {x: r.left + r.width/2, y: Math.max(-60, r.top - 150), rotate: 0, kind:'hand', enemyHand:true})); } }catch(e){}
-  now.concat(later.filter(ev=> ARRIVAL_NOW.has(ev.type))).forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
+  now.concat(later.filter(ev=> ARRIVAL_NOW.has(ev.type))).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'ai event ' + ev.type)); // 2026-10-16: never stops the turn
   m.aiArrivalEvents = deferred;
   // 2026-10-15 (user: "When the enemy has no cards to play, and did not pitch AND has no cards on their field, there is a puff of
   // smoke on his middle field (very translucent). Just as a joke. Like dust flying off."): tumbleweed moment.
@@ -27032,10 +27112,10 @@ async function replayAiArrivalEvents(m){
   let last = null;
   for(const ev of evs){
     if(matchState !== m) return;
-    pushLog(ev); try{ renderVfxForEvent(ev); }catch(e){}
+    fightSafe(()=> pushLog(ev)); try{ renderVfxForEvent(ev); }catch(e){}
     await sleep(delayForEvent(ev, last)); last = vfxKindOf(ev);
   }
-  renderBoard(); renderHUD();
+  fightSafe(renderBoard, 'renderBoard'); fightSafe(renderHUD, 'renderHUD');
 }
 // Ecclesia offering (2026-10-10): playable now, or playable once you exile another hand card for +1 Prayer.
 function needsPrayerOffer(m, pl, hc){
@@ -27065,6 +27145,8 @@ async function playCardByUid(uid, side, dropPoint, popts){
       showPrayerOfferPicker(pl0, uid, off=> playCardByUid(uid, side, dropPoint, {prayerOffer: off})); return; } }
   const m = matchState; if(!m||m.resolving) return;
   if(m.awaitingPass) return; // hand is hidden behind the pass-the-device overlay right now
+  // 2026-10-16: nothing goes in while the turn is being committed (the cards landing before the round) or during the upkeep
+  if(m._committing || m._upkeep){ denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`)); return; }
   recordFightAction(m, {a:'play', uid, side: side||null});
   if(m.mode==='liveRanked'){
     if(m.liveRole==='peer'){
@@ -27126,21 +27208,30 @@ async function playCardByUid(uid, side, dropPoint, popts){
     // 2026-10-07 playtest: the shake alone read as "the game isn't responding". Say why.
     try{
       const pl = m.players[activePid], hc = (pl.hand||[]).find(c=> c.uid===uid), d = hc && getCardDefs()[hc.defId];
+      // 2026-10-16 (user: "Sometimes the battle gets stuck"): a card already went in this turn but its round never started (see
+      // afterPlayerAction): start it now instead of asking for a Pass that used to do nothing.
+      if(pl.playedThisTurn && m._needsCommit && !m._committing && !m.resolving && m.mode!=='liveRanked' && m.mode!=='pc'){ afterPlayerAction(activePid); return; }
       const why = pl.playedThisTurn ? 'One play per turn. Press Pass turn to fight.'
         : (d && (d.cost||0) > (pl.lumber||0)) ? `${d.name}: need ${d.cost - (pl.lumber||0)} more 🪵 Lumber. Drop a card on the Graveyard for +1.` : null;
       if(why && Date.now() - (m._denyToastAt||0) > 2500){ m._denyToastAt = Date.now(); showToast(why, 'warn'); }
     }catch(e){}
     return;
   }
-  SoundKit.play();
+  // 2026-10-16 (user: "Sometimes the battle gets stuck ..."): from here the card is on the board in the engine, so the turn must be
+  // committed whatever a log line or effect below does (fightSafe), or "played this turn" is left set with no round coming.
+  const isFieldPlay = events.some(ev=> ev.type==='fieldSet');
+  if(!isFieldPlay && m.players[activePid] && m.players[activePid].playedThisTurn){ m._needsCommit = true; m._needsCommitAt = performance.now(); }
+  fightSafe(()=> SoundKit.play());
   if(m.selectedUid===uid) m.selectedUid = null;
+  let playEv = null;
+  try{
   // placeCard() assigns the BOARD card its own fresh uid — it is NOT the same as the hand
   // tile's uid this function was called with. The 'play' event's own uid field is the one that
   // actually ends up in matchState.players[...].row and therefore the one boardCardEl() (and
   // renderBoard()'s new-element data-uid lookup) can find — confirmed by a real repro while
   // wiring up item 8's onSummon speech trigger below, and again just above for the entrance-fall
   // origin capture.
-  const playEv = events.find(ev=>ev.type==='play');
+  playEv = events.find(ev=>ev.type==='play');
   if(capturedHandOrigin && playEv) pendingEntranceOrigins.set(String(playEv.uid), capturedHandOrigin);
   // 2026-10-15 (user: "Pounce doesnt have an animation i think. It should show this: After playing, the card just lands ON the enemy
   // it would hit, then it jumps back."): the pounce and its hit were replayed in the same tick as the play, before the card was on
@@ -27150,15 +27241,16 @@ async function playCardByUid(uid, side, dropPoint, popts){
   if(pIdx >= 0 && m.mode!=='pc' && m.mode!=='liveRanked' && !events.some(ev=> ev.type==='fieldSet')){
     const keep = new Set(['play', 'lumber', 'pitch', 'draw', 'discard', 'converge']);
     const later = events.slice(pIdx).filter(ev=> !keep.has(ev.type));
-    events.filter(ev=> !later.includes(ev)).forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
+    events.filter(ev=> !later.includes(ev)).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'play event ' + ev.type));
     m.playerArrivalEvents = later;
   } else
-  events.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
+  events.forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'play event ' + ev.type));
+  }catch(e){ try{ console.error('[fight] play presentation failed', e); }catch(_){} }
   // A field card is a free extra action (2026-10-09): the turn goes on, so you can still play a unit.
-  if(events.some(ev=> ev.type==='fieldSet')){ renderBoard(); renderHand(); updateControlsDisabled(); renderHUD(); try{ renderMatchUI(); }catch(e){} return; }
+  if(isFieldPlay){ fightSafe(renderBoard); fightSafe(renderHand); fightSafe(updateControlsDisabled); fightSafe(renderHUD); fightSafe(renderMatchUI); return; }
   await afterPlayerAction(activePid);
-  if(playEv){ maybeEmote(playEv.uid, 'summon'); }
-  if(playEv) maybeSpeak(playEv.uid, 'onSummon'); // item 8's speech framework — board has rendered by now, see afterPlayerAction above
+  if(playEv) fightSafe(()=> maybeEmote(playEv.uid, 'summon'));
+  if(playEv) fightSafe(()=> maybeSpeak(playEv.uid, 'onSummon')); // item 8's speech framework — board has rendered by now, see afterPlayerAction above
 }
 // Pitch yield (2026-09-17, per explicit request: "For card creation, by default, all creatures
 // create 1 stone" + "the resources [pitching] would generate MUST come out" on graveyard hover):
@@ -27374,6 +27466,9 @@ async function discardCardByUid(uid){
   if(!pitchAllowedIn(m)) return; // 2026-10-12: before pitching opens, dropping on the Graveyard does nothing
   if(m.mode==='tutorial' && coachOpen && coachOpen.tip && coachOpen.tip.id==='g-play'){ denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`) || document.getElementById('dropDiscard')); try{ const b = coachOpen.el; b.classList.remove('nudge'); void b.offsetWidth; b.classList.add('nudge'); }catch(e){} return; }
   if(m.awaitingPass) return;
+  // 2026-10-16 (user: "I played the card and pitched at the same time" / "Don't let me be able to play or pitch cards during
+  // upkeep"): no pitch while the turn is being committed or during the upkeep.
+  if(m._committing || m._upkeep){ denyShake(document.querySelector(`.card-tile[data-handuid="${uid}"]`) || document.getElementById('dropDiscard')); return; }
   recordFightAction(m, {a:'discard', uid});
   if(m.mode==='liveRanked'){
     if(m.liveRole==='peer'){
@@ -27446,6 +27541,8 @@ async function discardCardByUid(uid){
   // stands in for "where the card was released" since that's true for both a real drag-drop
   // and a tap-to-discard. Reworked again 2026-09-17 to grant whatever pitchYieldOf(dc.defId)
   // actually says (Stone by default for a creature) instead of a hardcoded gold amount.
+  // 2026-10-16 (fight flow): the pitch has happened; its sound, effects and log line can never stop the turn going on.
+  fightSafe(()=>{
   SoundKit.gold();
   const discardZoneEl = document.getElementById('dropDiscard');
   const gainChips = [];
@@ -27456,6 +27553,7 @@ async function discardCardByUid(uid){
   if(gainChips.length) pitchCallout(gainChips, dcDef);
   pushLog({type:'discard', side:m.sideOf(activePid), defId:dc.defId, resource:yieldInfo.resource, amount:yieldInfo.amount});
   if(darkPointBonus>0) pushLog({type:'devilry', side:m.sideOf(activePid), defId:dc.defId, amount:darkPointBonus});
+  }, 'pitch presentation');
   // Discarding no longer auto-ends the turn (2026-09-14, per explicit request) — you can
   // still play a card (or manually Skip Turn) afterward. It only ends the turn on its own
   // when there's nothing left in hand to act with.
@@ -27465,7 +27563,7 @@ async function discardCardByUid(uid){
   if(handEmpty){
     await afterPlayerAction(activePid);
   } else {
-    renderHand(); renderBoard(); updateControlsDisabled(); renderHUD();
+    fightSafe(renderHand, 'renderHand'); fightSafe(renderBoard, 'renderBoard'); fightSafe(updateControlsDisabled); fightSafe(renderHUD, 'renderHUD');
     // Live 1v1 (2026-10-03 fix): a discard doesn't end the turn, so nothing broadcast it — the
     // peer's mirror kept the discarded card and "discard unused", re-sent the same discard forever,
     // and the match stalled (the flaky tests/e2e/live_two_player.py run). Sync after every discard.
@@ -27542,6 +27640,20 @@ async function autoplayStep(){
   }catch(e){} finally{ m._autoBusy = false; }
 }
 setInterval(()=>{ try{ autoplayStep(); }catch(e){} }, 900);
+// Fight watchdog (2026-10-16, user: "Sometimes the battle gets stuck ... you can't pass turn, but you also can't play a card. Auto
+// play also doesnt work"): a card went in this turn (m._needsCommit, set by playCardByUid) but its round never started and nothing
+// is in flight (no commit, no round, no tutorial pause, no lesson on screen). After 2.5 s the turn is committed again.
+function fightWatchdog(){
+  const m = matchState; if(!m || m.over || m.fxLib || m.testKit || m.mode==='pc' || m.mode==='liveRanked') return;
+  if(!m._needsCommit || m.resolving || m._committing || m._coachWait || m.awaitingPass || document.getElementById('lumberLesson')){ m._stuckSince = 0; return; }
+  const now = performance.now();
+  if(!m._stuckSince){ m._stuckSince = now; return; }
+  if(now - m._stuckSince < 2500) return;
+  m._stuckSince = 0;
+  try{ console.warn('[fight] a played turn never reached its round; starting the round'); }catch(e){}
+  afterPlayerAction(activePlayerId(m));
+}
+setInterval(()=>{ try{ fightWatchdog(); }catch(e){} }, 1000);
 // Full screen (2026-10-12, 10:57 list: "full-screen is not vertically centered"): the match sits in the middle of the screen.
 document.addEventListener('fullscreenchange', ()=>{ document.documentElement.classList.toggle('is-fs', !!document.fullscreenElement); });
 // 2026-10-12 (user: "On a full screen, try to capture the field in the centre of the screen (mobile and PC)"): in full screen
@@ -27722,13 +27834,19 @@ function updateCastleCracks(el, hp, maxHp){
 // stepped the castle's Health down by every hit and ignored its Skirmish Armour, so the bar showed 0 while
 // the armour had soaked the hits. The replay now spends the armour first, the same way damageHQ does.
 // 2026-10-15: a zero-size spot just inside the field from a side's HP ribbon, for that castle's damage numbers.
+// 2026-10-16 (user: "The damage number effect to the castle should happen at the Opposing or Ally HP Bar, not the centre of the
+// field."): the number now pops right on that side's HP bar, where its fill ends (the health it just lost), instead of the middle of
+// the ribbon pushed into the field. Fixed to the page, so the field's edge can't clip it as it rises.
 function hqRibbonFloatAnchor(side){
-  const rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${side}"]`), bf = rib && rib.closest('.battlefield');
-  if(!rib || !bf || !rib.getClientRects().length) return null;
-  const r = rib.getBoundingClientRect(), b = bf.getBoundingClientRect(), mine = side === 'A';
+  const rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${side}"]`);
+  if(!rib || !rib.getClientRects().length) return null;
+  const r = rib.getBoundingClientRect(); if(!r.width) return null;
+  const fill = rib.querySelector('.bf-hp-fill'), fr = fill && fill.getClientRects().length ? fill.getBoundingClientRect() : null;
+  const edge = fr && fr.width > 0 ? fr.right : r.left + r.width/2;
+  const x = Math.max(r.left + 34, Math.min(r.right - 34, edge)), y = r.top + r.height/2;
   const a = document.createElement('div'); a.className = 'hq-float-anchor'; a.setAttribute('aria-hidden', 'true');
-  a.style.cssText = `position:absolute; width:0; height:0; z-index:40; pointer-events:none; left:${(r.left + r.width/2 - b.left).toFixed(1)}px; top:${(mine ? r.top - b.top - 26 : r.bottom - b.top + 58).toFixed(1)}px;`;
-  bf.appendChild(a); setTimeout(()=> a.remove(), 2200);
+  a.style.cssText = `position:fixed; width:0; height:0; z-index:1100; pointer-events:none; left:${x.toFixed(1)}px; top:${y.toFixed(1)}px;`;
+  document.body.appendChild(a); setTimeout(()=> a.remove(), 2200);
   return a;
 }
 function displayHqDamage(mm, side, dmg){
@@ -28638,14 +28756,46 @@ async function castleCrumble(el){
   setTimeout(()=> layer.remove(), 900);
   await sleep(450); // a beat before the Victory sign (2026-10-14)
 }
+// 2026-10-16 (user: "Sometimes the battle gets stuck ... you can't pass turn, but you also can't play a card"): a throw anywhere in
+// the round's replay used to leave m.resolving set for good, which locks play, pitch, Pass and Auto. The round now always hands
+// control back: if the engine already fought the round but the replay broke before the next turn was set up, the next turn is set
+// up here (flags cleared, round advanced, the draw); if a castle fell, the match ends as usual.
 async function resolveRound(opts){
+  const m = matchState; const r0 = m ? m.round : 0;
+  try{ return await resolveRoundCore(opts); }
+  catch(e){
+    try{ console.error('[fight] resolveRound failed', e); }catch(_){}
+    if(!m || matchState !== m) return;
+    m.resolving = false; m._upkeep = false; m._coachWait = false; m.replayRows = null; m.ending = false;
+    try{ document.documentElement.classList.remove('bw-resolving', 'bw-upkeep', 'bw-coach-wait'); hideUpkeepChip(); syncFightTimeScale(m); }catch(_){}
+    if(!m._rrCombatDone) m._rrFails = (m._rrFails||0) + 1; // the next try skips the tutorial/effects waits (resolveRoundCore)
+    if(m.over || !m._rrCombatDone || m.round !== r0) { fightSafe(renderMatchUI, 'renderMatchUI'); return; }
+    const dead = [1, 2].filter(p=> m.players[p] && m.players[p].hq && m.players[p].hq.hp <= 0);
+    if(dead.length && m.forcedWinner == null && !m.dungeon){
+      m.forcedWinner = dead.length === 2 ? 0 : (dead[0] === 1 ? 2 : 1);
+      setTimeout(()=>{ if(matchState === m && !m.over) resolveRound({manual:true, run:()=> true}); }, 0);
+      return;
+    }
+    [1, 2].forEach(p=>{ m.players[p].playedThisTurn = false; m.players[p].discardUsedThisTurn = false; });
+    if(m.mode==='pc' || m.mode==='liveRanked'){ m.turnDone = {1:false, 2:false}; m.active = 1; }
+    m.round += 1;
+    const ev = [];
+    fightSafe(()=>{ if(m.engine.roundStart && m.mode!=='tutorial' && m.mode!=='liveRanked') m.engine.roundStart(m.players, m.round, m.sideOf || (id=> id===1?'A':'B'), m.stats, ev); }, 'roundStart');
+    fightSafe(()=>{ m.engine.draw(m.players[1], 1, 'A', m.stats, ev); m.engine.draw(m.players[2], 1, 'B', m.stats, ev); }, 'draw');
+    ev.forEach(x=> fightSafe(()=> pushLog(x)));
+    fightSafe(renderMatchUI, 'renderMatchUI');
+  }
+}
+async function resolveRoundCore(opts){
   const m = matchState; if(!m||m.over||m.resolving||m._coachWait) return;
+  m._rrCombatDone = false;
+  const retry = (m._rrFails||0) > 0; // 2026-10-16: a round that failed before its fight skips these waits on its next try
   // A blocking tip holds the round until you press Next (2026-10-13, user: "the 'This the enemy castle' tutorial should pause
   // the battle - and only continues after the player plays. Otherwise the player misses the first combat").
-  await waitForBlockingCoach(m);
+  if(!retry) await waitForBlockingCoach(m);
   // 2026-10-14 (user: "The battle animations need to wait for the play card animation ... Especially for the leader"): a summon
   // still playing (see noteMatchFx) finishes before the first attack; a forfeit doesn't wait.
-  if(m.forcedWinner == null) await waitForMatchFx(m);
+  if(m.forcedWinner == null && !retry) await waitForMatchFx(m);
   if(matchState !== m || m.over || m.resolving) return;
   m.resolving = true; document.documentElement.classList.add('bw-resolving'); syncFightTimeScale(m); updateControlsDisabled(); // m.speedMult is a persistent per-match setting -- not reset each round
   const events = [];
@@ -28687,6 +28837,7 @@ async function resolveRound(opts){
   // Forfeit (and anything else that ends the match without a combat round) sets m.forcedWinner
   // and calls resolveRound: skip combat, go straight to the normal end-of-match handling.
   let over = (m.forcedWinner!=null) ? true : (opts && opts.run) ? !!opts.run(events) : m.engine.resolveCombat(m.players, m.sideOf, m.stats, events, m.mode==='pvp' ? 2 : (m.round%2===0 ? 1 : 2));
+  m._rrCombatDone = true; m._needsCommit = false; m._rrFails = 0; // 2026-10-16: the round is fought (see resolveRound's recovery)
   // Wait-timer rework (2026-09-20, per explicit request: "decrement at start of turn (not end of
   // combat), with a pulsing zoom-in 'next turn' banner and sequential... decrement animation"):
   // the engine still generates waitTick/ready exactly where it always has (endOfRoundUpkeep, the
@@ -28728,8 +28879,13 @@ async function resolveRound(opts){
   battlefieldCameraFollowedThisRound = false;
   m._cl = null; // the Cleave group in play (2026-10-15)
   m.movedUids = new Set(); // who visibly attacked this round (end-of-match emotes favour the ones that never got to)
+  m._replayEvents = mainEvents; // read by pullKillTrigger (2026-10-16)
   for(let evIdx=0; evIdx<mainEvents.length; evIdx++){
     const ev = mainEvents[evIdx];
+    m._replayIdx = evIdx;
+    // 2026-10-16: a killer's On Kill trigger can play early, as its ✖ lands (pullKillTrigger); if its ✖ is still on the way, wait for it
+    if(ev.type==='triggerFired' && ev.hook==='onKill' && !ev._early && killMarks.has(String(ev.uid))){ await Promise.race([launchKillMark(ev.uid), sleep(600)]); if(matchState !== m) return; }
+    if(ev._early){ lastVfxKind = vfxKindOf(ev); continue; } // already shown
     if(ev.type==='hit' || ev.type==='hitHQ'){ panCameraToShowUid(ev.attUid); if(ev.attUid!=null) m.movedUids.add(String(ev.attUid)); }
     // a hit (or a Changeling acting) unmasks it: the card re-renders as itself with a puff and a "🎭 Changeling!" label
     if((ev.type==='hit' && ev.targetUid!=null && unmaskChangeling(m, ev.targetUid)) || (ev.type==='hit' && ev.attUid!=null && unmaskChangeling(m, ev.attUid))){
@@ -28764,7 +28920,12 @@ async function resolveRound(opts){
     // by 0.3s"): a Sweep's hits come 0.3 s apart instead of a full beat each.
     if(ev._cleave === 'L' || (ev._cleave === 'M' && m._cl && m._cl.ri >= 0)){ /* the group's next beat waits for itself (above) */ }
     else { const nx = mainEvents[evIdx+1]; const rapid = nx && nx.sweep && (nx.type==='hit' || nx.type==='evaded') && nx.attUid === ev.attUid && (ev.type==='hit' || ev.type==='evaded');
-      await sleep(rapid ? Math.max(18, Math.round(300 / ((matchState && matchState.speedMult) || 1))) : delayForEvent(ev, lastVfxKind)); }
+      // 2026-10-16 (user: "After a creature gets hit, the death animation should play immediately."): a killing blow no longer waits
+      // out the hit's full 0.9 s beat; the replay moves on the moment the blow lands, so the death starts right under the number.
+      const killNow = !rapid && !ev._cleave && ev.type==='hit' && ev.targetUid!=null && lethalDeathFollows(mainEvents, evIdx);
+      const pi = killNow && m._pendingImpacts && m._pendingImpacts[String(ev.targetUid)];
+      if(pi){ if(!pi.landed) await Promise.race([pi, sleep(1600)]); await sleep(Math.max(16, Math.round(40 / ((matchState && matchState.speedMult) || 1)))); }
+      else await sleep(rapid ? Math.max(18, Math.round(300 / ((matchState && matchState.speedMult) || 1))) : delayForEvent(ev, lastVfxKind)); }
     if(ev._cleave === 'R' || (ev._cleave === 'M' && m._cl && m._cl.ri < 0)) m._cl = null;
     lastVfxKind = vfxKindOf(ev);
     // 2026-10-03 ("When the enemy's castle reaches 0 health, pause the combat, and celebrate"):
@@ -28920,6 +29081,7 @@ async function resolveRound(opts){
       }
     }
   }
+  m._replayEvents = null;
   // Item 3, second half ("...Then centering once everything is done"): this round's combat is
   // fully replayed — if panCameraToShowUid ever actually nudged the camera to keep an attacker
   // on screen, drift it back to center now, starting during the next-turn banner/wait-tick beat
@@ -29353,6 +29515,13 @@ async function resolveRound(opts){
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
     floatDetachDepth++; try{ drawEvents.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); }); } finally { floatDetachDepth--; } // numbers survive the re-render below (2026-10-14)
+    // The upkeep (2026-10-16, user: "Don't let me be able to play or pitch cards during upkeep"): the round-start effects (the
+    // castles' own actions such as the Herb Refinery's brew, the field's ticks) play out before your turn opens. m.resolving stays
+    // set, so play, pitch and Pass wait, the hand dims and a small "Upkeep" chip shows. Always released (finally, and resolveRound's
+    // recovery).
+    { const upMs = upkeepHoldMs(drawEvents, m);
+      if(upMs > 0 && matchState === m){ m._upkeep = true; document.documentElement.classList.add('bw-upkeep'); showUpkeepChip();
+        try{ await sleep(upMs); } finally { m._upkeep = false; document.documentElement.classList.remove('bw-upkeep'); hideUpkeepChip(); } } }
     if(m.mode==='pvp'){ aiActNow(); setTimeout(()=>{ if(matchState===m && m.aiArrivalEvents) waitForBoardEntrances(1400).then(()=> replayAiArrivalEvents(m)); }, 0); } // "They always go first": the stranger plays before you plan
   }
   // Item #15: cut off any still-ringing cue from this round's replay (see SoundKit.stopAll's own
@@ -30328,7 +30497,12 @@ let tutorialLock = null;
 ['pointerdown','mousedown','click','dragstart','touchstart','keydown'].forEach(type=> document.addEventListener(type, e=>{
   if(!tutorialLock) return;
   if(!matchState || (matchState.mode!=='tutorial' && !tutorialLock.gate)){ tutorialLock = null; return; }
+  // 2026-10-16 (fight flow): a lock whose bubble is gone (closed, or never shown) can't lock the fight any more
+  if(!tutorialLock.tip || !tutorialLock.tip.isConnected || !coachOpen || matchState.over){ tutorialLock = null; return; }
   const t = e.target;
+  // ... and outside the guided tutorial a lesson gate (the pitching lesson, "That one looks tough") never takes Pass turn, Auto-play,
+  // Forfeit, speed or the log away (user: "Then you can't pass turn ... Auto play also doesnt work ... This always happens in 0-2")
+  if(tutorialLock.gate && matchState.mode!=='tutorial' && t && t.closest && t.closest('#skipZone, #autoplayBtn, #forfeitMatchBtn, #adminWinBtn, #quitMatchBtn, #ffBtn, #battleLogHudBtn, .battle-log-panel')) return;
   if(type==='keydown' && (e.key==='Tab' || e.key==='Shift')) return;
   if(t && t.closest && tutorialLock.allow.some(sel=> t.closest(sel))) return;
   e.stopPropagation(); e.preventDefault();
@@ -30728,6 +30902,14 @@ async function showNextTurnBanner(){
 // status VFX) -- hit/death/render combat beats keep their own, separately-tuned pacing untouched.
 function vfxKindOf(ev){
   return ev.type==='statusFx' ? ('statusFx:'+ev.kind) : ev.type;
+}
+// Is the hit at events[i] a killing blow whose death comes next (only quick, non-attack beats in between)? 2026-10-16
+function lethalDeathFollows(events, i){
+  const ev = events[i]; if(!ev || ev.targetUid == null) return false;
+  for(let j = i + 1; j < Math.min(events.length, i + 7); j++){ const e = events[j]; if(!e) continue;
+    if(e.type === 'death') { if(String(e.uid) === String(ev.targetUid)) return true; continue; }
+    if(e.type === 'hit' || e.type === 'hitHQ' || e.type === 'evaded' || e.type === 'sweepWhiff' || e.type === 'blindMiss' || e.type === 'spawn' || e.type === 'collapseIn' || e.type === 'tipsySwing' || e.type === 'arrow' || e.type === 'bolt') return false; }
+  return false;
 }
 function delayForEvent(ev, prevKind){
   let base;
@@ -32480,20 +32662,74 @@ function statChangeVfx(uid, dAtk, dHp){
   if(dAtk) statPillPulse(uid, dAtk > 0 ? 'up' : 'down', 'atk');
   if(dHp) statPillPulse(uid, dHp > 0 ? 'up' : 'down', 'hp');
 }
+// Killing blows (2026-10-16, user: "For killing blows, no need to put the additiona - N X. But the 'X' is useful if there's something
+// that triggers based on it. I think if the attacking unit has a trigger ... there is a cross animation on the target. Then the X moves
+// into the attacking card - as if it gained something. This happens quite fast, and early, so that the triggered event happens just as
+// the X hits the attacking card."): the "−N ✖" stamp is gone (bramblewood-fx-c.js). When the killer has an On Kill trigger (or a skill
+// that feeds on kills: Momentum, Midas Touch, Slash & Burn), a ✖ pops on the target the moment the blow lands, darts into the killer,
+// and its On Kill trigger (the ⚡ glow and what it does) is played right then (pullKillTrigger), instead of after the death's beat.
+function killFeedOf(defId){
+  const e = ((getCardDefs()[defId] || {}).effects) || {};
+  if(Array.isArray(e.triggers) && e.triggers.some(t=> t && t.on === 'onKill')) return 'trigger';
+  return (e.momentum || e.midas || e.slashBurn) ? 'skill' : null;
+}
+const killMarks = new Map();
+function killMarkVfx(targetEl, attUid){
+  if(!targetEl || attUid == null || reducedMotion() || !fxAtLeast('low')) return;
+  const r = targetEl.getBoundingClientRect(); if(!r.width) return;
+  const old = killMarks.get(String(attUid)); if(old){ try{ old.el.remove(); old.done(); }catch(e){} killMarks.delete(String(attUid)); }
+  const x = document.createElement('div'); x.className = 'kill-mark'; x.textContent = '✖'; x.setAttribute('aria-hidden', 'true');
+  const cx = r.left + r.width/2, cy = r.top + r.height*0.45, H = 17;
+  x.style.transform = `translate(${(cx - H).toFixed(1)}px, ${(cy - H).toFixed(1)}px)`; document.body.appendChild(x);
+  const rec = {el:x, x:cx, y:cy, launched:false, done:null}; rec.promise = new Promise(res=> rec.done = res);
+  killMarks.set(String(attUid), rec);
+  const pop = Math.max(60, Math.round(140 / ((matchState && matchState.speedMult) || 1)));
+  try{ x.animate([{transform:`translate(${(cx - H).toFixed(1)}px, ${(cy - H).toFixed(1)}px) scale(.2) rotate(-25deg)`, opacity:0}, {transform:`translate(${(cx - H).toFixed(1)}px, ${(cy - H).toFixed(1)}px) scale(1.3) rotate(4deg)`, opacity:1, offset:.6}, {transform:`translate(${(cx - H).toFixed(1)}px, ${(cy - H).toFixed(1)}px) scale(1)`, opacity:1}], {duration:pop, easing:'ease-out', fill:'forwards'}); }catch(e){}
+  setTimeout(()=> launchKillMark(attUid), pop + 20);
+  setTimeout(()=>{ if(killMarks.get(String(attUid)) === rec){ try{ x.remove(); }catch(e){} killMarks.delete(String(attUid)); rec.done(); } }, 2500); // never left behind
+}
+function launchKillMark(attUid){
+  const rec = killMarks.get(String(attUid)); if(!rec) return Promise.resolve(); if(rec.launched) return rec.promise;
+  rec.launched = true;
+  const att = boardCardEl(attUid), tr = att && att.isConnected ? att.getBoundingClientRect() : null, H = 17;
+  const finish = ()=>{ try{ rec.el.remove(); }catch(e){} if(killMarks.get(String(attUid)) === rec) killMarks.delete(String(attUid)); rec.done(); };
+  if(!tr || !tr.width){ try{ rec.el.animate([{opacity:1}, {opacity:0}], {duration:160, fill:'forwards'}); }catch(e){} setTimeout(finish, 170); return rec.promise; }
+  const fl = Math.max(90, Math.round(240 / ((matchState && matchState.speedMult) || 1)));
+  const tx = tr.left + tr.width/2, ty = tr.top + tr.height/2;
+  try{ rec.el.animate([{transform:`translate(${(rec.x - H).toFixed(1)}px, ${(rec.y - H).toFixed(1)}px) scale(1)`, opacity:1},
+    {transform:`translate(${(tx - H).toFixed(1)}px, ${(ty - H).toFixed(1)}px) scale(.45)`, opacity:.95}], {duration:fl, easing:'cubic-bezier(.55,0,.8,.55)', fill:'forwards'}); }catch(e){}
+  setTimeout(()=>{
+    finish();
+    const a2 = boardCardEl(attUid), t = a2 && a2.querySelector('.card-tile');
+    if(t){ t.classList.remove('kill-gain'); void t.offsetWidth; t.classList.add('kill-gain'); setTimeout(()=> t.classList.remove('kill-gain'), 600); }
+    fightSafe(()=> pullKillTrigger(attUid), 'pullKillTrigger');
+  }, fl);
+  return rec.promise;
+}
+// The killer's On Kill trigger plays as the ✖ lands: its triggerFired and the effects right after it (stat gains, resources, a
+// status) are shown now and marked _early, so the round's replay skips them when it reaches them. Anything that moves the board
+// (a spawn, a hit) stays where it is in the replay.
+const KILL_EARLY_OK = new Set(['triggerFired', 'namedBuff', 'lumber', 'stone', 'grace', 'devilry', 'statusFx', 'heal', 'elementalEnergy']);
+function pullKillTrigger(attUid){
+  const m = matchState, evs = m && m._replayEvents; if(!evs) return;
+  const from = (m._replayIdx|0) + 1; let found = -1;
+  for(let i = from; i < Math.min(evs.length, from + 14); i++){ const e = evs[i]; if(!e || e._early) continue;
+    if(e.type === 'triggerFired' && e.hook === 'onKill' && String(e.uid) === String(attUid)){ found = i; break; }
+    if(e.type === 'hit' || e.type === 'hitHQ' || e.type === 'evaded' || e.type === 'spawn' || e.type === 'blindMiss') return; }
+  if(found < 0) return;
+  for(let i = found; i < evs.length; i++){ const e = evs[i]; if(!e || e._early) continue;
+    if(i > found && (!KILL_EARLY_OK.has(e.type) || e.type === 'triggerFired')) break;
+    e._early = true; pushLog(e); try{ renderVfxForEvent(e); }catch(_){} }
+}
+// 2026-10-16 (user: "triggering of the a trigged effect: the lightning emoji glows only. no lightning vfx"): the rune ring, the card
+// glow, the electric aura behind the card (and FX.F's bolt from the badge, bramblewood-fx-f.js) are gone. Only the card's own ⚡ badge
+// for that trigger glows (the one whose data-hook matches; any of its badges if none does), with the trigger's chime.
 function triggerFiredVfx(ev){
   try{ SoundKit.trigger && SoundKit.trigger(); }catch(e){}
-  if(!fxAtLeast('low')) return;
   const el = boardCardEl(ev.uid); if(!el || !el.isConnected) return;
-  const r = el.getBoundingClientRect(); if(!r.width) return;
-  const ring = document.createElement('div'); ring.className = 'trigger-rune'; ring.setAttribute('aria-hidden','true');
-  ring.style.cssText = `left:${r.left + r.width/2}px; top:${r.top + r.height/2}px; --rs:${Math.round(Math.max(r.width, r.height)*1.05)}px;`;
-  ring.innerHTML = `<i></i><b>${TRIGGER_GLYPH[ev.hook] || '✦'}</b>`;
-  document.body.appendChild(ring);
-  setTimeout(()=> ring.remove(), 900);
-  const t = el.querySelector('.card-tile'); if(t){ t.classList.remove('trigger-glow'); void t.offsetWidth; t.classList.add('trigger-glow'); setTimeout(()=> t.classList.remove('trigger-glow'), 700); }
-  // 2026-10-10 (user: "an electric aura shine at the back of the card if an effect triggers"): crackling light
-  // behind the card, under the tile.
-  if(fxAtLeast('med')){ const a = document.createElement('span'); a.className = 'trigger-aura'; a.setAttribute('aria-hidden','true'); el.prepend(a); setTimeout(()=> a.remove(), 900); }
+  const all = [...el.querySelectorAll('.ab-trig')]; if(!all.length) return;
+  const mine = all.filter(b=> b.dataset.hook === ev.hook), list = mine.length ? mine : all;
+  list.forEach(b=>{ b.classList.remove('is-firing'); void b.offsetWidth; b.classList.add('is-firing'); setTimeout(()=> b.classList.remove('is-firing'), 900); });
 }
 // The Effects Lab's skill effects in real fights (2026-10-14): each layers over the existing feedback (numbers, sounds, tints)
 // on Medium effects and up, at most once per unit per round for the ones that repeat, so a busy round doesn't turn to soup.
@@ -32534,12 +32770,70 @@ function cleaveSlots(evL, evM, evR){
 // speed up anim! then hit. It's a sped up hit together with those wind effects"): a Quick attacker's melee hit lands when its dash
 // connects (SkillFX.quickStrike's impact, ~0.15 s in) instead of after the normal wind-up, and the ordinary lunge is skipped (the
 // dash moves the card itself). Ranged shots, Cleave swings and Pounce keep their own timing.
+// 2026-10-16 (user: "Quick animation: When it hits the castle, it doesn't show it. It should always show."): a Quick hit on the castle
+// (hitHQ) dashes too (labSkillFx → quickStrikeCastle), and the dash plays on every Quick hit, not once a round.
 function quickImpactMs(ev){
-  try{ if(!ev || ev.type !== 'hit' || ev.ranged || ev._cleave || ev.sweep || ev.fork || ev.swipe || ev.pounce || ev.source) return null;
+  try{ if(!ev || (ev.type !== 'hit' && ev.type !== 'hitHQ') || ev.ranged || ev._cleave || ev.sweep || ev.fork || ev.swipe || ev.pounce || ev.source) return null;
     if(!window.SkillFX || !SkillFX.quickStrike || reducedMotion() || !fxAtLeast('med')) return null;
     const d = getCardDefs()[ev.attDefId]; if(!d || !(d.effects||{}).quick) return null;
     return 150; // quickStrike's GSAP dash: 0.05 s cock + 0.1 s dart
   }catch(e){ return null; } }
+// A castle's own throw (2026-10-16, user: "The refinery should visibly throw a potion emoji at the enemy (very slight arc). Then it
+// gets poisoned at its upkeep. Make this happen faster."): a hit from the castle itself (Herb Refinery's brew, a castle bolt) used to
+// take a unit's full ranged beat (0.39 s wind-up + 0.69 s projectile) and its generic dot. It is now a quick throw that lands 0.44 s in,
+// drawn by FX.C (the 🧪 on a shallow arc) or, below Medium effects, by castleThrowVfx.
+const castleShotKinds = new Map();
+function noteCastleShot(ev){
+  if(castleShotKinds.size > 200) castleShotKinds.clear();
+  if(ev && ev.type === 'statusFx' && (ev.kind === 'herbBane' || ev.kind === 'castleBolt') && ev.targetUid != null) castleShotKinds.set(String(ev.targetUid), ev.kind === 'herbBane' ? 'bane' : 'bolt');
+}
+function castleShotKind(ev){ return (ev && ev.targetUid != null && castleShotKinds.get(String(ev.targetUid))) || null; }
+function castleShotMs(ev){
+  if(!ev || ev.type !== 'hit' || ev.attDefId !== 'castle' || !ev.ranged) return null;
+  return Math.max(60, Math.round(440 / ((matchState && matchState.speedMult) || 1)));
+}
+// How long the upkeep holds your turn (see resolveRoundCore): until its last blow lands and reads, or a short beat for any other
+// round-start effect; nothing for a plain draw. 1.6 s at most, scaled by the playback speed.
+function upkeepHoldMs(events, m){
+  let ms = 0;
+  (events || []).forEach(ev=>{ if(!ev || ev.type === 'draw') return;
+    ms = Math.max(ms, (ev.type === 'hit' || ev.type === 'hitHQ') ? (fightSafe(()=> eighthHitAtMs(ev)) || 600) + 360 : 650); });
+  const mult = (m && m.speedMult) || 1;
+  return ms ? Math.max(120, Math.round(Math.min(1600, ms) / mult)) : 0;
+}
+function showUpkeepChip(){
+  hideUpkeepChip();
+  const host = document.getElementById('battlefieldEl'); if(!host) return;
+  const c = document.createElement('div'); c.className = 'upkeep-chip'; c.id = 'upkeepChip'; c.setAttribute('role', 'status');
+  c.textContent = '⏳ Upkeep'; host.appendChild(c);
+}
+function hideUpkeepChip(){ document.querySelectorAll('#upkeepChip, .upkeep-chip').forEach(e=> e.remove()); }
+function castleThrowVfx(fromEl, toEl, glyph, landMs){
+  if(!fromEl || !toEl || reducedMotion()) return;
+  const a = fromEl.getBoundingClientRect(), b = toEl.getBoundingClientRect(); if(!a.width || !b.width) return;
+  const p0 = {x:a.left + a.width/2, y:a.top + a.height*0.3}, p1 = {x:b.left + b.width/2, y:b.top + b.height/2}, mid = {x:(p0.x + p1.x)/2, y:(p0.y + p1.y)/2 - 26};
+  const p = document.createElement('div'); p.className = 'projectile castle-throw'; p.textContent = glyph || '🧪'; p.setAttribute('aria-hidden', 'true');
+  p.style.cssText = 'font-size:28px; left:0; top:0; transition:none; opacity:0;'; document.body.appendChild(p);
+  const fl = Math.max(80, Math.min(landMs, Math.round(330 / ((matchState && matchState.speedMult) || 1)))), t0 = performance.now() + Math.max(0, landMs - fl);
+  const step = ()=>{ const k = Math.max(0, Math.min(1, (performance.now() - t0)/fl)), q = 1 - k;
+    p.style.transform = `translate(${(q*q*p0.x + 2*q*k*mid.x + k*k*p1.x - 14).toFixed(1)}px, ${(q*q*p0.y + 2*q*k*mid.y + k*k*p1.y - 14).toFixed(1)}px) rotate(${(k*160 - 20).toFixed(0)}deg)`;
+    p.style.opacity = performance.now() < t0 ? '0' : '1';
+    if(k < 1) requestAnimationFrame(step); else p.remove(); };
+  requestAnimationFrame(step); setTimeout(()=> p.remove(), landMs + 400);
+}
+// A Quick dash at the castle (2026-10-16): straight ahead, like any castle strike, to that side's HP bar on the field (a stand-in point
+// the dash aims at, since the castle tile sits off in its corner).
+function quickStrikeCastle(attEl, targetSide){
+  if(!attEl || !window.SkillFX || !SkillFX.quickStrike) return;
+  const a = attEl.getBoundingClientRect(), rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${targetSide}"]`);
+  const rr = rib && rib.getClientRects().length ? rib.getBoundingClientRect() : null;
+  const up = targetSide === 'B' ? -1 : 1, y = rr ? (up < 0 ? rr.bottom + 6 : rr.top - 6) : a.top + a.height/2 + up*a.height*1.6;
+  const dot = document.createElement('div'); dot.setAttribute('aria-hidden', 'true');
+  dot.style.cssText = `position:fixed; left:${(a.left + a.width/2 - 1).toFixed(1)}px; top:${(y - 1).toFixed(1)}px; width:2px; height:2px; pointer-events:none; opacity:0;`;
+  document.body.appendChild(dot);
+  try{ SkillFX.quickStrike(attEl, dot); }catch(e){}
+  setTimeout(()=> dot.remove(), 900);
+}
 function evadeImpactMs(ev){ const A = animMs(), pa = matchState && matchState.pendingArrow; if(ev._cleave) return A.windup; { const q = quickImpactMs(ev); if(q != null) return q; } if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(A.windup*0.6) + arrowFlightMs(); return A.windup + (ev.ranged ? A.projectile : A.impactPad); }
 function skillFxOnce(key){ const m = matchState, k = (m ? m.round : 0) + ':' + key; if(skillFxSeen.has(k)) return false; if(skillFxSeen.size > 400) skillFxSeen.clear(); skillFxSeen.add(k); return true; }
 function labSkillFx(ev){
@@ -32579,8 +32873,9 @@ function labSkillFx(ev){
           setTimeout(()=>{ const t2 = el(ev.targetUid); if(t2) F.evasiveDodgeHit(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 100)); } }
       if(fx.swarm && F.swarm && liveSwarmBonus({uid: ev.attUid}) > 0 && skillFxOnce('swarm' + ev.attUid)) F.swarm(a, t);
       else if(ev.sweep && !ev._cleave && F.cleave && skillFxOnce('cleave' + ev.attUid)) F.cleave(a, [t]); // (a grouped Cleave has its own swing, 2026-10-15)
-      else if(fx.quick && F.quickStrike && skillFxOnce('quick' + ev.attUid)) F.quickStrike(a, t);
+      else if(fx.quick && F.quickStrike && quickImpactMs(ev) != null) F.quickStrike(a, t); // every Quick hit dashes (2026-10-16: the lunge is skipped for it)
       break; }
+    case 'hitHQ': { const fx = fxOf(ev.attDefId); if(fx.quick && F.quickStrike && quickImpactMs(ev) != null) quickStrikeCastle(el(ev.attUid), ev.targetSide); break; } // 2026-10-16
   }
 }
 // Screen shake (2026-10-14, user: "when summoning >20hp monsters - gradual more and more increase up to 200HP max." and "damage >15
@@ -32758,6 +33053,7 @@ function eighthHitAtMs(ev){
   const am = animMs(), pa = matchState && matchState.pendingArrow;
   if(ev._cleave) return am.windup; // a Cleave's slot lands as the blade passes (2026-10-15)
   { const q = quickImpactMs(ev); if(q != null) return q; } // Quick (2026-10-16)
+  { const c = castleShotMs(ev); if(c != null) return c; } // a castle's quick throw (2026-10-16)
   if(ev.ranged && pa && String(pa.uid) === String(ev.attUid)) return Math.round(am.windup*0.6) + arrowFlightMs();
   return ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
 }
@@ -33006,6 +33302,7 @@ function fxHook(name, ...args){
     try{ h(...args, env || (env = fxEnv())); }catch(e){ if(window.__fxDebug) console.warn('FX.' + k + '.hooks.' + name, e); } });
 }
 function renderVfxForEvent(ev){
+  try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
   try{ bigBlowShake(ev); }catch(e){} // screen shake for big arrivals and heavy hits (2026-10-14)
   try{ fifthPassVfx(ev); }catch(e){} // Tornado, Avalanche, Tsunami, Dragon Lightning, Wither, egg hatch (2026-10-14)
@@ -33142,7 +33439,8 @@ function renderVfxForEvent(ev){
     if(boltShot) matchState.pendingBolt = null;
     const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
     const quickAt = quickImpactMs(ev); // Quick: the hit lands with the dash (2026-10-16)
-    const impactDelay = quickAt != null ? quickAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
+    const castleAt = castleShotMs(ev); // a castle's own throw (Herb Refinery's brew, a castle bolt) is quick (2026-10-16)
+    const impactDelay = quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
     const ufx = (window.UnitFX && ev.attDefId && ev.type==='hit') ? UnitFX.resolve(getCardDefs()[ev.attDefId], isMine) : null;
@@ -33171,6 +33469,10 @@ function renderVfxForEvent(ev){
         else setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
       }
       else if(boltShot){ /* the Bolt's glob is already in the air (ninthPassVfx, 2026-10-15) */ }
+      // 2026-10-16: a castle's throw is drawn by FX.C (the brew's 🧪, the bolt) on Medium effects and up; below that, a 🧪/glyph on a
+      // shallow arc, timed to the same quick impact.
+      else if(castleAt != null){ const bane = castleShotKind(ev) === 'bane';
+        if(!(fxAtLeast('med') && window.FX && FX.C && FX.C.castleHerbBane)) castleThrowVfx(hqTileEl(ev.side), targetEl, bane ? '🧪' : dmgGlyph(ev.dmgType), castleAt); }
       else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
     }
     setTimeout(()=>{
@@ -33229,6 +33531,8 @@ function renderVfxForEvent(ev){
             if(adf.poison && (ev.dmg > 0 || ev.elementalAmount > 0) && !ev.sweep && !(tdf.archetypes||[]).includes('Structure')) rc.poison = (rc.poison||0) + adf.poison;
             if(adf.bleed) rc.bleed = (rc.bleed||0) + adf.bleed;
           }
+          // 2026-10-16: a killing blow from a unit that feeds on kills: the ✖ (killMarkVfx)
+          else if(!ev.ranged && !ev.source && ev.attUid != null && killFeedOf(ev.attDefId)) fightSafe(()=> killMarkVfx(targetEl, ev.attUid), 'killMark');
         }
         updateCardHpDisplay(ev.targetUid); updateCardStatusDisplay(ev.targetUid);
       }

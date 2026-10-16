@@ -1189,12 +1189,15 @@ M.castleHerbHeal = function(castle, target, opts){
   });
 };
 // Herb Refinery's bitter brew: a flask is lobbed from the castle and splashes the enemy in purple-green.
+// 2026-10-16 (user: "The refinery should visibly throw a potion emoji at the enemy (very slight arc) ... Make this happen faster"):
+// a bigger 🧪 on a shallow arc (26 px above the straight line, was 80) with a lazy quarter-spin, in 0.33 s (was 0.42).
 M.castleHerbBane = function(castle, target, opts){
-  opts = opts || {}; const ct = castleTile(castle), tt = tileOf(target); if(!ct || !tt) return Promise.resolve();
+  opts = opts || {}; const ct = castleTile(castle), tt = tileOf(target); if(!ct || !tt || !ct.isConnected || !tt.isConnected) return Promise.resolve();
   return run(opts, (tl, mk)=>{
-    const a = centre(ct), b = centre(tt), f = mk('fxc-g fxc-flask', '🧪'), st = {k:0}, p0 = {x:a.x, y:a.r.top + a.h*.2}, mid = {x:(p0.x + b.x)/2, y:Math.min(p0.y, b.y) - 80}, fl = (opts.flight || 420)/1000;
-    tl.set(f, {x:p0.x, y:p0.y, xPercent:-50, yPercent:-50, opacity:1}, 0)
-      .to(st, {k:1, duration:fl, ease:'none', onUpdate:()=>{ const k = st.k, q = 1 - k; gsap.set(f, {x:q*q*p0.x + 2*q*k*mid.x + k*k*b.x, y:q*q*p0.y + 2*q*k*mid.y + k*k*b.y, rotation:k*540}); }}, 0).set(f, {opacity:0}, fl);
+    const a = centre(ct), b = centre(tt), f = mk('fxc-g fxc-flask', '🧪'), st = {k:0}, p0 = {x:a.x, y:a.r.top + a.h*.2}, mid = {x:(p0.x + b.x)/2, y:(p0.y + b.y)/2 - 26}, fl = (opts.flight || 330)/1000;
+    f.style.fontSize = '30px';
+    tl.set(f, {x:p0.x, y:p0.y, xPercent:-50, yPercent:-50, opacity:1, scale:.8}, 0)
+      .to(st, {k:1, duration:fl, ease:'none', onUpdate:()=>{ const k = st.k, q = 1 - k; gsap.set(f, {x:q*q*p0.x + 2*q*k*mid.x + k*k*b.x, y:q*q*p0.y + 2*q*k*mid.y + k*k*b.y, rotation:k*160 - 20, scale:.8 + k*.3}); }}, 0).set(f, {opacity:0}, fl);
     flashAt(tl, mk, fl, b.x, b.y, b.w*1.4, b.w*1.4, 'rgba(150,90,200,.85)', .3);
     spray(tl, mk, fl, b.x, b.y, {n:12, colors:['#9b5bd0', '#7dbb3a', '#c9a6ff'], size:[3, 7], dist:[20, 50], dur:[.35, .55], gravity:24});
     puffs(tl, mk, fl + .05, b.x, b.y, {n:3, color:'rgba(120,180,60,.55)', w:b.w*.5, rise:-24, size:[16, 22]});
@@ -1656,7 +1659,8 @@ M.deathPlan = function(el, uid, env){
     const leader = (b && b.classList.contains('is-leader')) || (m && String(m.leaderUid) === String(uid)) || LEADERS.has(String(uid)) || archOf(d).includes('King');
     if(leader){ if(!plan.look && !token) plan.look = 'kingFall'; else plan.addons.push('leaderFall'); }
     const t = tileOf(el); if(t && (t.classList.contains('is-shiny') || t.classList.contains('is-holo'))) plan.addons.push('foilPeel');
-    if(!token && LASTDMG.has(String(uid))) plan.addons.push('lethalStamp');
+    // 2026-10-16 (user: "For killing blows, no need to put the additiona - N X"): the "−N ✖" stamp is gone. A killer with an on-kill
+    // trigger gets its own ✖ that flies into it instead (arena_app.js, killMarkVfx). M.lethalStamp stays for the Effects Lab.
   }
   return plan;
 };
@@ -1709,8 +1713,9 @@ M.onEvent = function(ev, env){
       const u = ev.targetUid;
       if(u != null && WAKE.get(String(u))){ WAKE.delete(String(u)); at(env.hitAtMs(ev) + 40, ()=>{ const e = el(u); if(e) M.wakeJolt(e, o); }); }
       if(ev.attDefId === 'castle' && u != null && CASTLE_SHOT.has(String(u))){ const kind = CASTLE_SHOT.get(String(u)); CASTLE_SHOT.delete(String(u));
-        const c = hqEl(ev.side), t = el(u), land = env.hitAtMs(ev), fl = kind === 'bane' ? 420 : 260;
-        if(c && t) at(Math.max(0, land - fl), ()=>{ const t2 = el(u); if(!t2) return; kind === 'bane' ? M.castleHerbBane(c, t2, {flight:fl}) : M.castleBolt(c, t2, {flight:fl}); }); }
+        const land = env.hitAtMs(ev), fl = Math.min(land, kind === 'bane' ? 330 : 260); // 2026-10-16: the brew flies faster (was 420)
+        // the castle and the target are looked up when the throw starts, so a re-render in between can't strand it
+        if(hqEl(ev.side) && el(u)) at(Math.max(0, land - fl), ()=>{ const c2 = hqEl(ev.side), t2 = el(u); if(!t2 || !c2) return; kind === 'bane' ? M.castleHerbBane(c2, t2, {flight:fl}) : M.castleBolt(c2, t2, {flight:fl}); }); }
       break; }
     case 'hitHQ': {
       const c = hqEl(ev.targetSide); if(!c) break; const land = env.hitAtMs(ev);

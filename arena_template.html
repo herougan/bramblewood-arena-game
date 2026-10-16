@@ -8667,6 +8667,26 @@
   body.bw-holding .bounty-bubble, body.bounty-peek .bounty-bubble{opacity:1; transform:translate(-50%,0) scale(1); animation:bountyBob 2.4s ease-in-out .3s infinite;}
   body.bounty-peek:not(.bw-holding) .bounty-bubble{transition:opacity .5s ease, transform .3s cubic-bezier(.3,1.5,.5,1);}
   .bw-resolving .bounty-bubble{opacity:0 !important;}
+  /* 2026-10-16 (fight flow, user: "Don't let me be able to play or pitch cards during upkeep"): while the round-start effects play,
+     your hand dims and takes no input, and an "Upkeep" chip sits on the field (resolveRoundCore, showUpkeepChip). */
+  html.bw-upkeep #handStrip, html.bw-upkeep #dropDiscard, html.bw-upkeep #skipZone, html.bw-upkeep #leaderWidget{pointer-events:none;}
+  html.bw-upkeep #handStrip .card-tile{filter:grayscale(.55) brightness(.82); transition:filter .2s ease;}
+  .upkeep-chip{position:absolute; left:50%; bottom:24px; transform:translateX(-50%); z-index:8; pointer-events:none; padding:4px 12px; border-radius:999px; background:rgba(28,20,12,.84); color:#ffe9b8; font:800 13px/1.2 'Baloo 2',system-ui,sans-serif; white-space:nowrap; box-shadow:0 0 0 2px rgba(255,214,120,.55), 0 6px 14px rgba(0,0,0,.35); animation:upkeepChipIn .18s ease-out both;}
+  @keyframes upkeepChipIn{from{opacity:0; transform:translate(-50%,6px);} to{opacity:1; transform:translate(-50%,0);}}
+  /* 2026-10-16 (user: "triggering of the a trigged effect: the lightning emoji glows only. no lightning vfx"): triggerFiredVfx lights
+     the card's own ⚡ badge for that trigger, nothing else. */
+  .ab-trig .ab-bolt{display:inline-block;}
+  .ab-trig.is-firing .ab-bolt{animation:boltFire .85s ease-out;}
+  @keyframes boltFire{0%{transform:scale(1); filter:none;} 18%{transform:scale(1.9); filter:brightness(2.4) drop-shadow(0 0 6px #ffe27a) drop-shadow(0 0 12px rgba(255,200,60,.9));} 60%{transform:scale(1.25); filter:brightness(1.6) drop-shadow(0 0 5px #ffe27a);} 100%{transform:none; filter:none;}}
+  /* 2026-10-16 (user: "there is a cross animation on the target. Then the X moves into the attacking card"): killMarkVfx */
+  .kill-mark{position:fixed; left:0; top:0; z-index:560; pointer-events:none; font:900 34px/1 'Baloo 2',system-ui,sans-serif; color:#ff3b3b; -webkit-text-stroke:2px #fff2e8; paint-order:stroke fill; text-shadow:0 2px 0 #5a0d0d, 0 0 12px rgba(255,60,60,.85); will-change:transform,opacity;}
+  .card-tile.kill-gain{animation:killGain .5s ease-out;}
+  @keyframes killGain{0%{box-shadow:0 0 0 0 rgba(255,80,60,0);} 30%{box-shadow:0 0 0 3px rgba(255,90,70,.95), 0 0 18px rgba(255,80,60,.8);} 100%{box-shadow:0 0 0 0 rgba(255,80,60,0);}}
+  /* 2026-10-16 (user: "The log itself should have an "x" on it."): the battle log's close button */
+  .battle-log-toggle .battle-log-x{margin-left:auto; margin-right:6px; width:26px; height:26px; border-radius:50%; border:0; background:rgba(0,0,0,.08); color:inherit; font:800 14px/26px system-ui,sans-serif; text-align:center; padding:0; cursor:pointer;}
+  .battle-log-toggle .battle-log-x:hover, .battle-log-toggle .battle-log-x:focus-visible{background:rgba(0,0,0,.18);}
+  .battle-log-panel.collapsed .battle-log-x, .battle-log-panel.testkit-log .battle-log-x{display:none;}
+  @media (prefers-reduced-motion: reduce){ .ab-trig.is-firing .ab-bolt{animation:none; filter:brightness(1.8) drop-shadow(0 0 6px #ffe27a);} .upkeep-chip, .card-tile.kill-gain{animation:none;} }
   /* lift the board above the castle HP strip while bubbles show, so a bubble isn't cut by it */
   body.bw-holding .battlefield-inner:has(.bounty-bubble), body.bounty-peek .battlefield-inner:has(.bounty-bubble){position:relative; z-index:4;}
   @keyframes bountyBob{50%{transform:translate(-50%,-3px) scale(1);}}
