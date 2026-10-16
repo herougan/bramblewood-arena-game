@@ -8,6 +8,20 @@ _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is buil
 
 **Worth knowing about S2:** a single honest write that adds more than 2,000 Dust (say, breaking down a high-level card) would be refused, and the next load would bring back the server's lower number. Say if you want higher caps, or those refunds moved to the server.
 
+**Your calls from the 10-16 afternoon batch:**
+
+| Item | Question |
+|---|---|
+| Expose | Counters add up with every hit, so after its first hit every later hit on that unit crits (Narwhal Lancer 8 → 14 a swing). Keep, or cap at N? |
+| Wind | The engine flipped the wind on a fixed beat; it now rolls each round (Windy 1 in 3 back / face / calm, Gale 1 in 2). Keep the random roll, or text only? |
+| Swift, Crab Claws, Restless | No new card for these three, because you'd kept them off cards before. Want one each? |
+| Amore | Pairs only your own units (an enemy pair would buff them). OK? |
+| Enemy deck preview | Open on Maps 0–5, needs B from Map 6. Should it need A from Map 21 like card rewards? |
+| Packs | First-clear packs have no rank gate. Should they? |
+| Cataphract's On Ready 6 | Removed from the card file, and stripped as your published edit loads. To clean the stored row too, say "apply it" for `supabase/oneoff/2026-10-16_cataphract.sql` |
+| Rename | Cataphract Destrier → "Gilded Roadwarden"? And an optional "come back later" roadside fight (in the changelog notes) |
+| Dark Summon ⛧ badge | Removed from Devilry-framed cards with the archetype mark (the text still says it). Keep it off? |
+
 **Your picks:**
 
 | Item | Where |
