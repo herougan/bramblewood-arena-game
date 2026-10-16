@@ -637,6 +637,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // rules.permaTide. The Tide is always in: Flow every round from round 1, never Ebb or High tide, whether or not a Tide card was
   // played. Nothing that moves the tide (Moonpull, the Tide-spout's "tide comes in", the Ebb/High alternation) changes it.
   const permaTide = !!(rules.permaTide || rules.rapids); // River Rapids (2026-10-15): the field-effect name for it, always Flood
+  // 2026-10-16 (user: "Evade to non-swimmers for me to test."): the old maybe, "evade to non swimmers WHEN in flood/ebb regardless",
+  // as a TEST switch, off unless something turns it on. While the tide is in (Flood, Ebb or High Tide), a Tide unit (Swimmers count)
+  // is Evasive against attacks from non-Tide units, whatever its own skills: the same 1-in-2 single-target dodge as Evasive, and
+  // Fencing still cuts through it. Both sides get it. On with rules.tideEvade (a skirmish field rule), the battle option
+  // opts.tideEvade (sims and tests), or the page's test switch (globalThis.BramblewoodTestRules.tideEvade, the Admin / Test Lab
+  // toggle in arena_app.js), read live so flipping it mid-fight takes effect on the next hit.
+  function tideEvadeOn(){
+    if(rules.tideEvade || opts.tideEvade) return true;
+    try{ const g = (typeof globalThis !== 'undefined') ? globalThis.BramblewoodTestRules : null; return !!(g && g.tideEvade); }catch(e){ return false; }
+  }
   // Terrain (2026-10-12, user: "Do effects for each biome, highlighting that biome's strength"): rules.terrain =
   // {types:[...], atk, hp, grant:{skill:value}}. A card whose types include one of the biome's is native: on either side it
   // arrives with +atk/+hp and gains the granted skills (its own value wins if it already has that skill). Done on this
@@ -812,6 +822,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function tideAtk(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; } // Tide – {…}: its facets instead (2026-10-15)
   function tideArmor(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'ebb' ? 1 : 0; }
   function isTide(card){ return isTideDef(card && CARD_DEFS[card.defId]); } // Swimmers count (2026-10-14)
+  // 2026-10-16 (user: "Evade to non-swimmers for me to test."): does this Tide-evade test rule let defCard dodge a hit from attDef?
+  // Only a unit's attack counts (a spell or a field hazard is not a swimmer or a non-swimmer).
+  function tideEvades(defCard, attDef){
+    if(!defCard || !attDef || !tideEvadeOn() || getTide() === null || !isTide(defCard)) return false;
+    if(attDef.spell || attDef.cardType === 'spell' || attDef.cardType === 'equipment' || attDef.cardType === 'materia') return false;
+    return !isTideDef(attDef);
+  }
   // Wind (2026-10-13, 09:56 list: "On windy maps, every alternate turn, there is strong wind. On certain maps, there is always
   // strong wind. The wind flips direction between ally side -> opponent or opponent -> ally side ... tailwind on the allies side,
   // then headwind on the opponent's side. If tailwind - action twice, one at +1 speed, and one at normal speed. Then headwind -
@@ -1506,10 +1523,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-16 skill audit (user: "they have the right parameters for targeting and amount"): Rabid N, the Poison its hits add.
   // An old Rabid (true) is still Rabid 2.
   function poisonOn(attDef){ const e = (attDef && attDef.effects) || {}; return (Number(e.poison)||0) + (e.rabid ? (e.rabid === true ? 2 : Math.max(0, Number(e.rabid)||0)) : 0); }
-  // Bounty N (2026-10-15, Worthy folded into Bounty): the card's Bounty, or an old Worthy N (true = 1) when it has none.
   // Illuminate (2026-10-15): the new name of Lantern; either key lights its side.
   function illuminates(def){ const e = (def && def.effects) || {}; return !!(e.illuminate || e.lantern); }
-  function bountyOf(def){ const e = (def && def.effects) || {}; const b = Number(e.bounty)||0; if(b > 0) return b; const w = e.worthy; return w === true ? 1 : Math.max(0, Number(w)||0); }
+  // Bounty N (2026-10-15, Worthy folded into Bounty): the card's Bounty (true = 1).
+  // 2026-10-16 (user: "All Worthy cards become Bounty. Worthy will seem something else in the future."): `worthy` is no longer read
+  // as Bounty. Every card carries Bounty now, and the app migrates an old Worthy N on a saved or published card to Bounty N as it
+  // loads (migrateWorthyToBounty in arena_app.js). effects.worthy is a RETIRED, EMPTY slot: the engine does nothing with it, so a
+  // future Worthy can be defined there.
+  function bountyOf(def){ const e = (def && def.effects) || {}; return Math.max(0, Number(e.bounty)||0); }
   // Poison immunity (2026-10-15, user: "Units not ready can be poisoned. Structures are immune to poison."): a Structure, or a unit
   // Immune to poison, never takes Poison stacks. (A unit still under Wait can be poisoned like any other.)
   function isStructureCard(c){ const d = c && CARD_DEFS[c.defId]; return !!(d && Array.isArray(d.archetypes) && d.archetypes.includes('Structure')); }
@@ -1837,7 +1858,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // And when it dies, it goes straight to Exile zone."): a Nullify attacker's landed hit gets no reaction from the unit it hits:
   // no Thorns, Reflect, Spiteful, Counterattack, Ichor, Shell, Cower, defending Bleed tick, On Attacked triggers (or the legacy
   // On Attacked: Spawn). If the hit kills it, none of its own death effects happen (On Death triggers, On Death: Spawn,
-  // Revive, Meiosis, Landslide, Hive Mind, Worthy) and it goes to the Removal Zone, not the graveyard. Its allies still notice
+  // Revive, Meiosis, Landslide, Hive Mind, Bounty) and it goes to the Removal Zone, not the graveyard. Its allies still notice
   // (On Ally Die, Berserk, Divine Retribution), and the killer still collects a Bounty.
   function isNullifier(att){ return !!(att && effectsOf(att).nullify); }
   function nullifyKill(card){ card.nullified = true; card.forceExileZone = true; }
@@ -2158,11 +2179,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // lastMissReason (2026-10-03): which passive caused the most recent dodge — copied onto every
   // 'evaded' event so the front end can play a distinct miss animation for Evade / Swift / Flying.
   let lastMissReason = 'evasive';
-  function dodgeCheck(card){
+  // attDefId (2026-10-16, optional): who shot it, for the Tide-evade test rule (a unit's ranged shot at a Tide unit).
+  function dodgeCheck(card, attDefId){
     lastMissReason = 'evasive';
     if(isInvisible(card)){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): skills can't find it
     if(card && card.exposed > 0) return true; // Exposed (2026-10-15): attacks at it don't miss
     if(preyAlert(card) && rnd() < 0.5) return false; // Prey (2026-10-16): Evasive while an enemy Predator is on the field
+    // 2026-10-16 (user: "Evade to non-swimmers for me to test."): a Tide unit in the tide dodges a non-Tide unit's shot like Evasive
+    // (one roll: a card that is Evasive already doesn't get a second one).
+    if(attDefId != null && !(CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects && CARD_DEFS[card.defId].effects.evasive) && tideEvades(card, CARD_DEFS[attDefId])) return rnd() >= 0.5;
     return evasiveGate(card);
   }
   // Combat dodges (2026-10-02), each an independent 1-in-2 roll, so they stack multiplicatively:
@@ -2177,7 +2202,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(defCard.exposed > 0) return true; // Exposed (2026-10-15): no Evasive / Swift / Flying / Smoke / Fog / Shadow dodge
     // Fencing (2026-10-14, user: "fencing = cannot miss Evade creatures"): a precise blade isn't dodged: no Evade and no Swift roll.
     // A Flyer's dodge still applies (it is out of reach, not quick).
-    if(singleTarget && (dd.evasive || preyAlert(defCard)) && !ad.fencing && rnd() < 0.5){ lastMissReason = 'evasive'; return false; } // + Prey (2026-10-16)
+    // + Tide evade (2026-10-16, user: "Evade to non-swimmers for me to test."): the test rule makes a Tide unit in the tide Evasive
+    // against a non-Tide attacker (tideEvades); off unless switched on.
+    if(singleTarget && (dd.evasive || preyAlert(defCard) || tideEvades(defCard, CARD_DEFS[attCard.defId])) && !ad.fencing && rnd() < 0.5){ lastMissReason = 'evasive'; return false; } // + Prey (2026-10-16)
     if(dd.swift && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     if(dd.flying && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
     // Smoke (2026-10-14, Smoke Bomb): an ally hidden in smoke makes attacks at it miss 1 in 2 until the end of the next round.
@@ -2972,7 +2999,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(target.kind==='card'){
       // Evasion: the ORIGINAL target gets the dodge roll, before any Guardian redirect —
       // dodging is about the creature the skill was aimed at, not whoever ends up eating it.
-      if(!dodgeCheck(target.card)){
+      if(!dodgeCheck(target.card, attDefId)){ // attDefId: the Tide-evade test rule (2026-10-16)
         if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true});
         return null; // (2026-10-15) callers that add a status on a landed shot (Ice Arrow, the Bolts) read the result
       }
@@ -3366,8 +3393,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(recordEvents && events) events.push({type:'statusFx', kind:'lightning', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, amount:amt});
       fireDamageAction(players, sideOf, playerId, boardCard.defId, amt, 'physical', target, stats, events, {}, boardCard.uid);
     }
-    // Worthy N (2026-10-12, user: "Lumber-on-spawn creatures should give the opponent a lumber when they die. Make it a single
-    // passive"): it brings N Lumber when it arrives, and its death gives the other side 1.
+    // (Worthy N, 2026-10-12, became part of Bounty on 2026-10-15; since 2026-10-16 every card says Bounty and `worthy` is a retired slot.)
     // Rainmaker N (2026-10-12, user: "add a rainmaker evergreen that causes rain on summon"): Spring Rain for N rounds (3 by default).
     if(def.effects.poisonGas || def.effects.absoluteZero || def.effects.trap) w2OnArrive(players, sideOf, playerId, boardCard, stats, events); // Poison Gas, Absolute Zero, Trap (2026-10-16)
     if(def.effects.tornado) tornadoStrike(players, sideOf, playerId, boardCard, Math.min(8, numN(def.effects.tornado, 1)), stats, events); // Tornado N (2026-10-14)
@@ -3376,7 +3402,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.effects.rainmaker){ const rr = Math.max(1, Number(def.effects.rainmaker)||3); setField('rain', rr, mySide); if(recordEvents && events) events.push({type:'fieldSet', side:mySide, defId:boardCard.defId, field:'rain', rounds:rr, rainmaker:true}); }
     // Bounty N (2026-10-15, user: "I think Bounty and Worthy should be fused. Just Bounty. Bounty means - I give lumber to my owner on
     // play, but also to the enemy on kill."): on play its owner gains N Lumber; when it dies, the other side gains N (removeDeadCards).
-    // An old Worthy N (published edits may still carry it) reads as Bounty N (bountyOf).
+    // (An old Worthy N on a saved or published card is turned into Bounty N when the app loads it, 2026-10-16.)
     { const bn = bountyOf(def); if(bn > 0){ const got = addLumber(pl, bn);
       ensureStat(stats, mySide, boardCard.defId).lumberGenerated += got;
       if(recordEvents && events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:got, cause:'bounty'}); } }
@@ -3675,7 +3701,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           let hitCard = null;
           if(shot.amount > 0 || target.kind !== 'card') hitCard = fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, null, c.uid);
           else { // a no-damage spit (Poison Bolt): it can still be dodged, and a Guardian still steps in
-            if(!dodgeCheck(target.card)){ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(otherId(pid)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true}); }
+            if(!dodgeCheck(target.card, c.defId)){ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(otherId(pid)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true}); }
             else hitCard = redirectToGuardian(enemy, target.card); }
           if(hitCard && shot.status) applyShotStatus(shot.status, shot.n || 1, hitCard, c, sideOf(pid), sideOf(otherId(pid)), events, ensureStat(stats, sideOf(pid), c.defId));
           if(hitCard && shot.spitfire && rnd() < 0.5){ const by = besideOf(enemy, hitCard); if(by.length) skillAreaHit(players, sideOf, pid, c, by[Math.floor(rnd()*by.length)], 1, 'heat', stats, events, {spitfireSplash:true}); }
@@ -4798,7 +4824,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // make Darkness on purpose still go past it).
       perishedTotal += 1; if((pl.devilry||0) < 10) pl.devilry = (pl.devilry||0) + 1;
       const credit = killCredit[card.uid];
-      const bounty = bountyOf(cdef); // Bounty N (2026-10-15): Worthy folded in
+      const bounty = bountyOf(cdef); // Bounty N (2026-10-15)
       const deathEv = {type:'death', side:mySide, defId:card.defId, uid:card.uid}; if(card.nullified) deathEv.nullified = true; // 2026-10-15: the replay shows a Nullify kill / exile its own way
       if(recordEvents && events) events.push(deathEv);
       if(credit){
@@ -4818,7 +4844,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const nulled = !!card.nullified; // Nullify (2026-10-14): its own death effects don't happen
       // Bounty N (2026-10-15, Worthy folded in): when it dies, its owner's opponent gains N Lumber, once, whoever or whatever
       // landed the blow (a kill, a Poison tick, Sudden death). Was: the side(s) credited with the kill (Bounty) plus 1 to the
-      // opponent on any death (Worthy). A Nullified unit pays nothing.
+      // opponent on any death (the old Worthy). A Nullified unit pays nothing.
       if(bounty > 0 && !nulled){
         const foe = players[otherId(pl.id)], side2 = sideOf(foe.id);
         addLumber(foe, bounty); // 2026-09-22: bounty pays Lumber, not Gold
@@ -5957,7 +5983,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+  return { tideEvadeOn, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

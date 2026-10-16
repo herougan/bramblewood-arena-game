@@ -345,7 +345,7 @@
    "attack": 2,
    "health": 6,
    "skills": [
-    "worthy"
+    "bounty"
    ],
    "winRate": 50,
    "band": [
@@ -852,8 +852,7 @@
    "health": 48,
    "skills": [
     "onReadyGold",
-    "bounty",
-    "worthy"
+    "bounty"
    ],
    "winRate": 45,
    "band": [
@@ -1113,7 +1112,7 @@
    "health": 6,
    "skills": [
     "nocturnal",
-    "worthy"
+    "bounty"
    ],
    "winRate": 25,
    "band": [
@@ -1464,7 +1463,7 @@
    "attack": 1,
    "health": 7,
    "skills": [
-    "worthy"
+    "bounty"
    ],
    "winRate": 37.5,
    "band": [
@@ -1702,8 +1701,7 @@
    "health": 40,
    "skills": [
     "onReadyGold",
-    "bounty",
-    "worthy"
+    "bounty"
    ],
    "winRate": 47.5,
    "band": [
@@ -1787,7 +1785,7 @@
    "attack": 1,
    "health": 8,
    "skills": [
-    "worthy"
+    "bounty"
    ],
    "winRate": 30,
    "band": [
@@ -1851,8 +1849,7 @@
    "attack": 4,
    "health": 48,
    "skills": [
-    "bounty",
-    "worthy"
+    "bounty"
    ],
    "winRate": 45,
    "band": [
@@ -2028,7 +2025,7 @@
    "attack": 1,
    "health": 5,
    "skills": [
-    "worthy"
+    "bounty"
    ],
    "winRate": 22.5,
    "band": [
@@ -2262,7 +2259,7 @@
    "attack": 4,
    "health": 11,
    "skills": [
-    "worthy"
+    "bounty"
    ],
    "winRate": 92.5,
    "band": [
@@ -2826,7 +2823,7 @@
    "health": 4,
    "skills": [
     "diurnal",
-    "worthy"
+    "bounty"
    ],
    "winRate": 50,
    "band": [
@@ -4370,7 +4367,7 @@
    "health": 8,
    "skills": [
     "nocturnal",
-    "worthy"
+    "bounty"
    ],
    "winRate": 52.5,
    "band": [
@@ -6315,7 +6312,7 @@
    "skills": [
     "armor",
     "nocturnal",
-    "worthy"
+    "bounty"
    ],
    "winRate": 5,
    "band": [
@@ -6336,7 +6333,7 @@
    "attack": 3,
    "health": 4,
    "skills": [
-    "worthy"
+    "bounty"
    ],
    "winRate": 40,
    "band": [
@@ -7025,7 +7022,7 @@
    "attack": 2,
    "health": 4,
    "skills": [
-    "worthy"
+    "bounty"
    ],
    "winRate": 67.5,
    "band": [
@@ -7931,7 +7928,7 @@
    "attack": 2,
    "health": 5,
    "skills": [
-    "worthy"
+    "bounty"
    ],
    "winRate": 55,
    "band": [
@@ -8314,7 +8311,7 @@
    "attack": 1,
    "health": 7,
    "skills": [
-    "worthy"
+    "bounty"
    ],
    "winRate": 37.5,
    "band": [
@@ -8335,7 +8332,7 @@
    "attack": 1,
    "health": 10,
    "skills": [
-    "worthy"
+    "bounty"
    ],
    "winRate": 30,
    "band": [

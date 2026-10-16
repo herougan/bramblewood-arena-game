@@ -1372,7 +1372,7 @@ function summonPortal(target, o){
   for(let i = 0; i < 8; i++){ const m = layer('sfx-mote'); g.set(m, {x:c.x + rnd(-D*.4, D*.4), y:c.y + c.h*.15, opacity:0});
     g.timeline({delay:.05 + i*.04, onComplete:()=> m.remove()}).to(m, {opacity:1, duration:.08}).to(m, {y:`-=${rnd(40, 80)}`, duration:.55, ease:'power1.out'}, 0).to(m, {opacity:0, duration:.2}, .4); }
 }
-// Resource gain (Worthy, On Ready/Spawn Lumber, Bounty): a few logs (or coins) hop from the card to where they're banked.
+// Resource gain (On Ready/Spawn Lumber, Bounty; Worthy until 2026-10-16): a few logs (or coins) hop from the card to where they're banked.
 function lootArc(from, to, o){
   o = o || {}; if(!go() || !from || !to){ call(o.onDone); return; }
   const g = G(), a = centre(from), b = centre(to), n = Math.max(1, Math.min(5, o.n || 3));

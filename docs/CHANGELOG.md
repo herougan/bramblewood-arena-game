@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (Bounty, tide evade)
+- **Worthy is now Bounty everywhere:** every card that had Worthy N has Bounty N (with both, the larger). Published edits and cards saved in a browser that still say Worthy (Trash Panda Trickster, for one) change to Bounty as the game loads them, and so do skill grants and triggers. The engine no longer counts Worthy as Bounty.
+- **Worthy is free for later:** it's kept as an empty, hidden slot. It isn't on any card and doesn't appear in card text, the Codex, tooltips or the keyword list.
+- **Tide evade (test, off by default):** while the Tide is in (Flood, Ebb or High Tide), Tide units are Evasive against attacks from units without Tide, whatever their own skills, on both sides. To turn it on: Admin → 🧪 Rule tests, or the Test Lab panel (admins only, and only while Admin Mode is on). You can also add it to a skirmish in Edit skirmish ("Tide evade (test)"). Sims and tests use the `tideEvade` battle option or rule. While it's on, the Tide pill and the Tide chip mention it, and dodges play the normal Evasive effect.
+
 ## 2026-10-16 (09:15)
 - **Skill marks on the card face:** 51 skills that sat on real cards with no mark now show their icon on the card's skill strip, with the number when it's more than 1. Among them: Nocturnal, Diurnal, Bleed, Regen, Guardian, Swarm, Arrow, Stealth, Pierce, Crit, Freeze and Shock.
 - **Festering is now Lingering**, so it no longer reads like Fester. Lingering: Bleed and Poison don't wear off while it's on the field. Fester: extra damage equal to its own Poison.
