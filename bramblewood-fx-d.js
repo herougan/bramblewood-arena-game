@@ -1548,7 +1548,11 @@ M.hooks.packCardUp = function(card, r, d, env){
   clearReveal();
   const deck = card.parentNode;
   if(deck && !deck.__fxdBacks){ deck.__fxdBacks = true; const id = String(curPack && curPack.id || '').replace(/^fp-/, ''); const key = BACKS[id] ? id : 'acorn';
-    deck.querySelectorAll('.po2-back').forEach(b=> M.cardBack(b, key)); }
+    // 2026-10-16 (user: "Card backings -> 4 types…"): a back that already carries its card type's pixel-art backing
+    // (.bw-back.bk-*) keeps it; a faction pack's own back only re-dresses its unit cards.
+    deck.querySelectorAll('.po2-back').forEach(b=>{
+      if(b.classList.contains('bw-back')){ if(key === 'acorn' || !b.classList.contains('bk-unit')) return; b.classList.remove('bw-back', 'bk-unit'); }
+      M.cardBack(b, key); }); }
   const k = rarityKey(d); if(TOP.includes(k) && env.fxAtLeast('med') && !card.__fxdTease) M.packTease(card, k);
 };
 M.hooks.packCardRevealed = function(card, r, d, env){

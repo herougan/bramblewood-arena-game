@@ -1336,7 +1336,8 @@ css('summon', `
 M.enemyCardFlip = function(el, opts){
   const t = tileOf(el); if(!t || !t.isConnected) return Promise.resolve();
   return run(opts, (tl, mk, bag)=>{
-    const back = inTile(t, bag, 'fxc-back'); back.style.overflow = 'visible';
+    // 2026-10-16 (user: "Card backings -> 4 types…"): the enemy's card shows its own kind's back (unit/structure/castle/field)
+    const back = inTile(t, bag, 'fxc-back' + (window.bwCardBackClass ? ' ' + window.bwCardBackClass(t.getAttribute('data-defid') || '') : '')); back.style.overflow = 'visible';
     tl.fromTo(back, {rotationY:0, opacity:1, transformPerspective:500}, {rotationY:90, duration:.22, ease:'power2.in'}, .08).set(back, {opacity:0}, .3);
     tl.fromTo(t, {rotationY:-90, transformPerspective:500}, {rotationY:0, duration:.22, ease:'power2.out', immediateRender:false, clearProps:'rotationY,transformPerspective'}, .3);
     tl.add(()=> snd('cardFlip'), .25);

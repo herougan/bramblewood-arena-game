@@ -39,7 +39,7 @@ _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is buil
 
 | Idea | Notes |
 |---|---|
-| Card backings | Several thematic backings by card type or faction |
+| Card backings | ✅ By card type (10-16): Unit, Structure, Castle and Field effect backs in `art/backings/`. Still open: faction backs as images (faction packs still use the CSS placeholders on their unit cards) |
 | Evade to non-swimmers | Your idea; not built |
 | The rest | Pool of card and play ideas in `docs/design-notes-2026-10-14-ideas.md`; late game in `docs/design-2026-10-14-late-game.md` |
 

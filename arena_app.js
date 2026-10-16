@@ -1594,6 +1594,36 @@ function archetypesOf(d){
 // cards.json migration already ran, but a card created/edited before a rebuild picks this up
 // with no data loss).
 function isStructure(d){ return archetypesOf(d).includes('Structure') || d.type==='Structure'; }
+// 2026-10-16 (user: "Card backings -> 4 types for now, structures & units (similar) and castles. Then field effects."):
+// every face-down card shows the back of its own kind. Pixel-art images (tools/make_card_backings.py, 64x90 drawn at 4x):
+// unit is the base design (the acorn mark on a green weave), structure its timber-and-iron sibling, castle the regal one,
+// field the mossy elemental one. assemble_arena.py turns these art/backings paths into hashed assets/ URLs. A mixed pile
+// (the deck) shows the unit back, so the pile never tells you what's coming next.
+const CARD_BACKINGS = {
+  unit:{art:'art/backings/unit.png', label:'Unit'}, structure:{art:'art/backings/structure.png', label:'Structure'},
+  castle:{art:'art/backings/castle.png', label:'Castle'}, field:{art:'art/backings/field.png', label:'Field effect'},
+};
+function cardBackingKind(d){
+  if(typeof d === 'string'){ try{ d = getCardDefs()[d] || null; }catch(e){ d = null; } }
+  if(!d) return 'unit';
+  if(d.isCastle || (d.archetypes||[]).includes('Castle')) return 'castle';
+  if(d.field) return 'field';
+  try{ if(isStructure(d)) return 'structure'; }catch(e){}
+  return 'unit';
+}
+// The classes a card-back element takes: `bw-back bk-<kind>` (the CSS in arena_template.html paints the image).
+function cardBackClass(d){ return 'bw-back bk-' + (CARD_BACKINGS[d] ? d : cardBackingKind(d)); }
+window.bwCardBackClass = cardBackClass; // for the FX modules (bramblewood-fx-c's enemy flip, fx-d's pack backs)
+(function installCardBackings(){
+  try{
+    if(document.getElementById('bwCardBackings')) return;
+    const st = document.createElement('style'); st.id = 'bwCardBackings';
+    st.textContent = ':root{' + Object.keys(CARD_BACKINGS).map(k=> `--bk-${k}:url("${CARD_BACKINGS[k].art}");`).join('') + '}';
+    document.head.appendChild(st);
+    // warm the images so the first flip doesn't show an empty back
+    setTimeout(()=>{ Object.values(CARD_BACKINGS).forEach(b=>{ const i = new Image(); i.src = b.art; }); }, 1500);
+  }catch(e){}
+})();
 function rarityStops(key){ const r = rarityDef(key); return r.gradient || [r.color, r.color]; }
 
 // Live-value substitution for in-match ability text (2026-09-30, carried-forward backlog item:
@@ -6594,7 +6624,7 @@ function openCardInspector(defId, opts){
   ov.innerHTML = `<button type="button" class="ci-x" aria-label="${'Close'}">✕</button>
     <div class="ci-stage"><div class="ci-shadow"></div><div class="ci-spin">
       <div class="ci-face ci-front"></div>
-      <div class="ci-face ci-back" aria-hidden="true"><span class="ci-back-crest">🌰</span><span class="ci-back-name">Bramblewood</span></div>
+      <div class="ci-face ci-back ${cardBackClass(d) /* 2026-10-16 (user: "Card backings -> 4 types…"): spin it to see its kind's back */}" aria-hidden="true"><span class="ci-back-crest">🌰</span><span class="ci-back-name">Bramblewood</span></div>
     </div></div>
     <div class="ci-bar">
       <b class="ci-name">${escapeHtml(d.name||'')}</b>
@@ -16718,7 +16748,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const tokenChips = ((node && node.rewardTokens) || []).map(t=> REWARD_TOKENS[t] ? `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" aria-label="${escapeAttr(REWARD_TOKENS[t].label)}" title="${escapeAttr(REWARD_TOKENS[t].label)}"><span class="cnp-rw-back">${REWARD_TOKENS[t].icon}</span></span>` : '').join('');
   const gotCards = done && cardRewardsClaimed().has(conquestNodeId(mapId, node.key)), needR = ids.length && !gotCards ? cardRewardRankFor(mapId) : null;
   const cards = (needR ? `<span class="cnp-rw-need" aria-label="Cards need rank ${needR} or better">${needR}+</span>` : '') + ids.map(id=> isCardHiddenForPlayer(defs[id])
-    ? `<span class="cnp-rw-card is-mystery ${gotCards?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back">❓</span></span>`
+    ? `<span class="cnp-rw-card is-mystery ${gotCards?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
     : `<span class="cnp-rw-card ${gotCards?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (gotCards ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}</span>`).join('');
   const cur = [];
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
@@ -23802,7 +23832,7 @@ function renderMatchUI(){
          claiming a whole separate one. -->
     <div class="top-play-row">
       ${matchCastleTileHTML(castleCharOf(m, 2), (m.resolving && m.displayHqHp && m.displayHqHp.B != null) ? m.displayHqHp.B : p2.hq.hp, p2.hq.maxHp, 'B', topLabel)}
-      <div class="deck-widget hq-tile ${(p2.deck||[]).length ? '' : 'is-empty'}" id="deckWidgetTop" style="${deckPileStyle((p2.deck||[]).length)}">
+      <div class="deck-widget hq-tile ${(p2.deck||[]).length ? 'bw-back bk-unit' /* 2026-10-16 (user: "Card backings -> 4 types…"): a mixed pile shows the unit back */ : 'is-empty'}" id="deckWidgetTop" style="${deckPileStyle((p2.deck||[]).length)}">
         ${(p2.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
         ${(p2.graveyard||[]).length ? `<button type="button" class="grave-peek-badge" data-grave-peek="2" title="Enemy Graveyard: ${p2.graveyard.length} card${p2.graveyard.length===1?'':'s'}. Tap to see them." aria-label="Enemy Graveyard, ${p2.graveyard.length} cards">💀 ${p2.graveyard.length}</button>` : '' /* 2026-10-15: the opponent's Graveyard, peekable */}
         ${(p2.exile.length>0||p2.echoes>0)?`<div class="removal-badge" role="button" tabindex="0" data-grave-peek="2" title="Removal Zone: ${p2.exile.length} card${p2.exile.length===1?'':'s'}. Echoes: ${p2.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p2.exile.length}${p2.echoes?` · 🕯️ ${p2.echoes}`:''}</div>`:''}
@@ -23840,7 +23870,7 @@ function renderMatchUI(){
     <div class="hud">${resourcePillsHTML}</div>
     <div class="bottom-play-row">
       ${matchCastleTileHTML(castleCharOf(m, 1), (m.resolving && m.displayHqHp && m.displayHqHp.A != null) ? m.displayHqHp.A : p1.hq.hp, p1.hq.maxHp, 'A', bottomLabel)}
-      <div class="deck-widget hq-tile ${(p1.deck||[]).length ? '' : 'is-empty'}" id="deckWidgetBottom" style="${deckPileStyle((p1.deck||[]).length)}">
+      <div class="deck-widget hq-tile ${(p1.deck||[]).length ? 'bw-back bk-unit' : 'is-empty'}" id="deckWidgetBottom" style="${deckPileStyle((p1.deck||[]).length)}">
         ${(p1.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
         ${(p1.exile.length>0||p1.echoes>0)?`<div class="removal-badge is-mine" role="button" tabindex="0" data-open-exile="1" data-can-cast="${p1.exile.some(e=> m.engine.canCastFromExile && m.engine.canCastFromExile(p1, e.defId)) ? 1 : 0}" title="Removal Zone: ${p1.exile.length} card${p1.exile.length===1?'':'s'}. Echoes: ${p1.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p1.exile.length}${p1.echoes?` · 🕯️ ${p1.echoes}`:''}</div>`:''}
       </div>
@@ -26786,7 +26816,8 @@ function drawFlipVfx(cards, deck, baseDelay){
   const d = deck.getBoundingClientRect();
   cards.forEach((el, i)=>{
     const r = el.getBoundingClientRect(); if(!r.width) return;
-    const back = document.createElement('div'); back.className = 'draw-back'; back.setAttribute('aria-hidden','true'); el.appendChild(back);
+    // 2026-10-16 (user: "Card backings -> 4 types…"): the drawn card shows its own kind's back as it flips over
+    const back = document.createElement('div'); back.className = 'draw-back ' + cardBackClass(el.getAttribute('data-defid') || (el.querySelector('[data-defid]')||{getAttribute:()=>null}).getAttribute('data-defid')); back.setAttribute('aria-hidden','true'); el.appendChild(back);
     const delay = (baseDelay||0) + i*0.09;
     gsap.timeline({delay, onComplete:()=>{ back.remove(); }})
       .fromTo(el, {x:(d.left + d.width/2) - (r.left + r.width/2), y:(d.top + d.height/2) - (r.top + r.height/2), scaleX:1, scale:.8, rotation:-6},
@@ -28219,7 +28250,7 @@ function deckRiffleFx(deck){
   const N = 5, w = r.width, h = r.height, step = Math.min(30, w*0.42), rowW = w + step*(N - 1), cs = getComputedStyle(deck);
   const row = document.createElement('div'); row.className = 'deck-riffle'; row.setAttribute('aria-hidden', 'true');
   row.style.cssText = `left:${(r.left + r.width/2 - rowW/2).toFixed(1)}px; top:${r.top.toFixed(1)}px; width:${rowW.toFixed(1)}px; height:${h.toFixed(1)}px; --ov:${(step - w).toFixed(1)}px;`;
-  for(let i = 0; i < N; i++){ const c = document.createElement('div'); c.className = 'deck-riffle-card';
+  for(let i = 0; i < N; i++){ const c = document.createElement('div'); c.className = 'deck-riffle-card' + (deck.classList.contains('bw-back') ? ' bw-back bk-unit' : ''); // 2026-10-16: the pile's own backing
     c.style.cssText = `width:${w.toFixed(1)}px; height:${h.toFixed(1)}px; background:${cs.background}; border:${cs.border}; border-radius:${cs.borderRadius};`;
     row.appendChild(c); }
   document.body.appendChild(row);
@@ -29910,7 +29941,7 @@ function animateOverdraw(ev){
   const to = mine ? document.getElementById('dropDiscard') : null;
   const fr = from.getBoundingClientRect();
   const card = document.createElement('div');
-  card.className = 'overdraw-fly';
+  card.className = 'overdraw-fly ' + cardBackClass(ev.defId); // 2026-10-16 (user: "Card backings -> 4 types…"): the pitched card's own back
   card.innerHTML = '<span>🌰</span>';
   Object.assign(card.style, {left:(fr.left + fr.width/2 - 28)+'px', top:(fr.top + fr.height/2 - 38)+'px'});
   document.body.appendChild(card);
@@ -30547,7 +30578,7 @@ function playRewardReveal(m){
       later(()=>{
         stage.querySelectorAll('.rr-card').forEach(c=> gsap.to(c, {opacity:0, y:-30, scale:.9, duration:.2, onComplete:()=> c.remove()}));
         const c = document.createElement('div'); c.className = 'rr-card';
-        c.innerHTML = `<div class="rr-front">${cardTileHTML(defs[id], {inPlay:true})}<span class="rr-new">${escapeHtml(_t(TX('results.new')))}</span></div><div class="rr-back"><span>🌰</span></div><div class="rr-shine"></div>`;
+        c.innerHTML = `<div class="rr-front">${cardTileHTML(defs[id], {inPlay:true})}<span class="rr-new">${escapeHtml(_t(TX('results.new')))}</span></div><div class="rr-back ${cardBackClass(defs[id])}"><span>🌰</span></div><div class="rr-shine"></div>`; // 2026-10-16 (user: "Card backings -> 4 types…")
         stage.appendChild(c);
         const back = c.querySelector('.rr-back'), front = c.querySelector('.rr-front'), shine = c.querySelector('.rr-shine'), tag = c.querySelector('.rr-new');
         gsap.set(front, {opacity:0}); gsap.set(tag, {scale:0, rotation:-14});
@@ -37612,7 +37643,7 @@ function openPackAnimation(pack, opened, opts){
   const cardsHTML = o=> o.results.map((r, i)=>{
     const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
-      <span class="po2-flip"><span class="po2-back"><span class="po2-back-crest">🌰</span></span>
+      <span class="po2-flip"><span class="po2-back ${cardBackClass(d) /* 2026-10-16 (user: "Card backings -> 4 types…") */}"><span class="po2-back-crest">🌰</span></span>
       <span class="po2-front">${cardTileHTML(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
       ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
       <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
@@ -39435,7 +39466,8 @@ function dressEntrance(splash){
   const tile = id=> { const d = defs[id]; return cardTileHTML(d, {inPlay:true, extraClass: RARITY_TIER_BANDS.indexOf(d.rarity||'common') >= 4 ? holoClass(d) : ''}); };
   // 2026-10-12 (user: "The first time you open the page fresh, the 3 cards there are face down, then they flip w sfx one by
   // one"): each card has a front and an acorn back; they deal in face down and turn over left, centre, right.
-  const faces = id=> `<div class="ef-flip"><div class="ef-front">${tile(id)}</div><div class="ef-back" aria-hidden="true"><span>🌰</span></div></div>`;
+  // 2026-10-16 (user: "Card backings -> 4 types…"): each card's back is its own kind's backing.
+  const faces = id=> `<div class="ef-flip"><div class="ef-front">${tile(id)}</div><div class="ef-back ${cardBackClass(defs[id])}" aria-hidden="true"><span>🌰</span></div></div>`;
   const reduceFan = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(fan && ids.every(Boolean)){
     fan.innerHTML = ids.map((id, k)=> `<div class="ef-card ${reduceFan ? '' : 'is-down'} ${SLOTS[k].outer ? 'is-outer' : ''}" style="--r:${SLOTS[k].r}; --x:${SLOTS[k].x}; --y:${SLOTS[k].y}; --d:${SLOTS[k].d}; z-index:${k===2?3:SLOTS[k].outer?0:1}">${faces(id)}</div>`).join('');
