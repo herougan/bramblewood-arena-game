@@ -17,7 +17,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'k2-fly':   {id:'k2-fly', name:'Fly', attack:2, health:50, wait:0, cost:0, effects:{flying:true}},
   'k2-insp':  {id:'k2-insp', name:'Insp', attack:1, health:50, wait:0, cost:0, effects:{inspiring:2}},
   'k2-fric':  {id:'k2-fric', name:'Fric', attack:1, health:50, wait:0, cost:0, effects:{friction:2}},
-  'k2-worthy':{id:'k2-worthy', name:'Worthy', attack:1, health:5, wait:0, cost:0, effects:{worthy:2}},
+  'k2-worthy':{id:'k2-worthy', name:'Bounty', attack:1, health:5, wait:0, cost:0, effects:{bounty:2}}, // was Worthy 2; 2026-10-16 (user: "All Worthy cards become Bounty.")
   'k2-jack':  {id:'k2-jack', name:'Jack', attack:0, health:50, wait:0, cost:0, effects:{lumberjack:true}},
   'k2-metal': {id:'k2-metal', name:'Smith', attack:0, health:50, wait:0, cost:0, effects:{heavyMetal:true}},
   'k2-timber':{id:'k2-timber', name:'Timber', attack:1, health:10, wait:0, cost:0, effects:{timber:true}},
@@ -76,10 +76,10 @@ const give = (P, pid, id)=>{ const h = {uid: 90000 + Math.floor(Math.random()*99
 // Friction 2: hurts the allies beside it when it attacks
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-fric', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-wall', 'right', {}, []);
   const W = all(P[1]).find(c=> c.defId==='k2-wall'), hp = W.hp; e.debugAttack(P, so, all(P[1]).find(c=> c.defId==='k2-fric').uid, {}, []); ok(hp - W.hp === 2, `Friction 2 hurts the ally beside it (${hp - W.hp})`); }
-// Worthy 2 + Lumberjack: +2 (+1 Lumberjack) on arrival; its death gives the other side 1
+// Bounty 2 (was Worthy 2 until 2026-10-16) + Lumberjack: +2 (+1 Lumberjack) on arrival; its death gives the other side 2
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-jack', 'left', {}, []); const l0 = P[1].lumber; const w = give(P, 1, 'k2-worthy'); e.placeCard(P, so, 1, w.uid, 'right', {}, []);
-  ok(P[1].lumber - l0 === 3, `Worthy 2 with a Lumberjack gives 3 (${P[1].lumber - l0})`);
-  const W = all(P[1]).find(c=> c.defId==='k2-worthy'); W.hp = 0; const f0 = P[2].lumber; e.removeDeadCards(P, so, {}, {}, []); ok(P[2].lumber - f0 === 2, 'its death gives the opponent 2 Lumber (Worthy 2 reads as Bounty 2 since 2026-10-15)'); }
+  ok(P[1].lumber - l0 === 3, `Bounty 2 with a Lumberjack gives 3 (${P[1].lumber - l0})`);
+  const W = all(P[1]).find(c=> c.defId==='k2-worthy'); W.hp = 0; const f0 = P[2].lumber; e.removeDeadCards(P, so, {}, {}, []); ok(P[2].lumber - f0 === 2, 'its death gives the opponent 2 Lumber (Bounty 2)'); }
 // Heavy Metal + Iron-will / Rock-solid / Timber
 { const {e, P} = mk(); e.debugSpawnCard(P, so, 1, 'k2-metal', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'k2-iron', 'right', {}, []); e.debugSpawnCard(P, so, 1, 'k2-rock', 'right', {}, []); e.debugSpawnCard(P, so, 1, 'k2-timber', 'right', {}, []);
   P[1].lumber = 2; P[1].stone = 1; P[1].metal = 1; e.resolveCombat(P, so, {}, [], 1);

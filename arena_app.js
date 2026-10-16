@@ -274,7 +274,7 @@ const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'�
   kingSlayer:'👑⚔️', dictator:'📜', immolation:'🔥', pounce:'🐾', antiAir:'🪃', boomerang:'🪃', festering:'🦠', shieldCall:'🛡️', backstab:'🗡️', lantern:'🏮', illuminate:'🏮', nursing:'🍼', demolisher:'⛏️', changeling:'🎭', keenEye:'👁️', primed:'🔋', drunk:'🍺', purblind:'🕶️', scatterbrained:'🌀', tipsy:'🍺', confuse:'❓', leader:'👑', poison:'☠', bleed:'🩸', nocturnal:'🌙', diurnal:'☀️', esprit:'🤝', swarm:'🐜', hiveMind:'🧠', reach:'🏹', regen:'💚',
   rally:'🚩', bulwark:'🧱', reflect:'🪞', momentum:'🔥', bloom:'🌸', frenzy:'⚡', freeze:'❄', stun:'💫', scar:'🩹', expose:'🎯', lifesteal:'🩸', sap:'🧛',
   tide:'🌊', wash:'💦', overwhelm:'🐘', grit:'🪨', berserk:'😡', worship:'🙏', retribution:'⚖️', midas:'🪙', lightning:'⚡', healing:'💚', satiety:'🍯',
-  evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', worthy:'🪵', lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐢', pitchfork:'🍴', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉',
+  evasive:'🍃', revive:'↺', swimmer:'🏊', rainmaker:'🌧️', rainrunner:'🌦️', moonborn:'🌕', frostbite:'🥶', inspiring:'📯', friction:'⚙️', /* worthy: retired slot, no icon (2026-10-16) */ lumberjack:'🪓', heavyMetal:'🤘', timber:'🌲', rockSolid:'🪨', ironWill:'🔩', loyal:'🎖️', usurper:'🗡️👑', shell:'🐢', pitchfork:'🍴', trident:'🔱', octolash:'🐙', scare:'👻', remember:'🕯️', curse:'🕸️', render:'📉',
   // 2026-10-14 (the skills for the maps after Map 20). Speed is 🐇 (Swift has 💨); Ghost shares Scare's 👻.
   speed:'🐇', haste:'🏃', rabid:'🤬', cower:'🫣', ghost:'👻', magic:'🪄', ichor:'🧪', irradiated:'☢️',
   // 2026-10-14 (second pass): Moonpull, Twin, Sprout, Growth, Shade, Shadow and Supreme. Shadow is 👤 because Night-blind has 🌑.
@@ -657,7 +657,8 @@ const PASSIVE_DEFS = [
   // 2026-10-14 (user: "Swimmers = Tide"): a Swimmer is a Tide unit (Flow +1 Attack, Ebb +1 Armor) on top of its Flow pick.
   // 2026-10-15 (user: "Swimmer now means something else. Remove the Swimmer - {} ability ... Oh don't let cards have it at least"):
   // retired like Hive Mind: off every card (they have plain Tide now), out of the editor and the lists; the engine still runs it.
-  // (Not built: "Maybe its evade to non swimmers WHEN in flood/ebb regardless" was a maybe.)
+  // ("Maybe its evade to non swimmers WHEN in flood/ebb regardless" was a maybe. 2026-10-16 (user: "Evade to non-swimmers for me to
+  // test."): built as a rule test, off by default: TEST_RULE_DEFS 'tideEvade' below, the engine's tideEvades.)
   {key:'swimmer', category:'passive', hidden:true, retired:true, label:'Swimmer', kind:'select', desc:(v, n, e)=>`On Tide, ${swimmerBonusText(Object.assign({}, e || {}, {swimmer: v || true}), 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: Swimmer is its own skill on the card ("Swimmer - On tide, { ... }")
     selectOptions:()=> [{value:'extraAttack', label:'Extra Attack (+1 Attack)'}, {value:'quickAttack', label:'Quick Attack (extra turn)'}, {value:'evade', label:'Evasive'}], // 2026-10-15 (user: "Evade -> Evasive."): label only, the saved value stays 'evade'
     get:e=> e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : undefined, apply:(e,v)=>{ e.swimmer = ['extraAttack','quickAttack','evade'].includes(v) ? v : 'extraAttack'; }},
@@ -669,8 +670,12 @@ const PASSIVE_DEFS = [
   {key:'inspiring', category:'passive', label:'Inspiring', kind:'number', min:0, desc:v=>`As it attacks, the allies either side of it get +${v} Attack for their next swing.`},
   {key:'friction', category:'passive', label:'Friction', kind:'number', min:0, desc:v=>`A drawback: when it attacks, it deals ${v} damage to each ally beside it.`},
   // Worthy folded into Bounty (2026-10-15, user: "I think Bounty and Worthy should be fused. Just Bounty."): out of the editor and the
-  // lists; an old Worthy N on a saved or published card reads as Bounty N (the engine's bountyOf).
-  {key:'worthy', category:'passive', hidden:true, retired:true, label:'Worthy', kind:'number', min:0, desc:v=>`Now part of Bounty: when played, gain ${v} Lumber; when it dies, the opponent gains ${v}.`},
+  // lists.
+  // 2026-10-16 (user: "All Worthy cards become Bounty. Worthy will seem something else in the future."): RETIRED, EMPTY SLOT. No card
+  // carries it (an old Worthy N is moved to Bounty N as cards load, migrateWorthyToBounty), the engine does nothing with it, and
+  // `reserved` keeps it off the card text, the card face, the keyword list and every Codex / editor / library list. Define the
+  // future Worthy here (drop `hidden`, `retired` and `reserved`, give it a label, desc and engine rule).
+  {key:'worthy', category:'passive', hidden:true, retired:true, reserved:true, label:'', kind:'number', min:0, desc:()=> ''},
   // Nursing N (2026-10-15, user: "Nursing skill has +5 ... On the battlefield: Nursing = Heal weakest ally every upkeep."): in the
   // Nest it adds +5 to a Nurse master's mastery (nurseMasteryOf).
   {key:'nursing', category:'passive', label:'Nursing', kind:'number', min:1, defaultValue:2, desc:v=>`Every upkeep it heals your weakest wounded unit (the lowest Health, not itself) for ${v||2}. As your Nest's Nurse master it adds +5 Nursing mastery.`},
@@ -1179,7 +1184,7 @@ function CHAIN_BREAK_OPTIONS(){
 // to write a chosen value back into a fresh `effects` object on save.
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
-    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, oneOff:p.oneOff,
+    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, reserved:p.reserved, oneOff:p.oneOff,
     get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, // (2026-10-15: + the grant pickers' hints, defaultValue)
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
@@ -1713,7 +1718,7 @@ function keywordRegistry(){
   KEYWORD_TERMS.forEach(t=> list.push({key:'term:' + t.name, src: t.re, cs: t.cs, gloss: t.text ? {name: t.name, text: t.text} : null}));
   const taken = new Set(list.map(x=> x.key.split(':')[1].toLowerCase()).concat(STATUS_KEYWORDS.map(k=> k.name.toLowerCase())));
   // 2026-10-16 skill audit: SKILL_DEFS (PASSIVE_DEFS plus Explode, Chained, Render, Revive, Progeny, Make Tipsy …), so every "+ Add Skill" name is a keyword.
-  (typeof SKILL_DEFS !== 'undefined' ? SKILL_DEFS : typeof PASSIVE_DEFS !== 'undefined' ? PASSIVE_DEFS : []).forEach(p=>{ const l = String(p.label || '').trim(); if(l.length < 4 || taken.has(l.toLowerCase())) return; taken.add(l.toLowerCase());
+  (typeof SKILL_DEFS !== 'undefined' ? SKILL_DEFS : typeof PASSIVE_DEFS !== 'undefined' ? PASSIVE_DEFS : []).forEach(p=>{ const l = String(p.label || '').trim(); if(p.reserved || l.length < 4 || taken.has(l.toLowerCase())) return; /* reserved: Worthy's empty slot (2026-10-16) */ taken.add(l.toLowerCase());
     // 2026-10-16 skill audit: a plural still matches ("Changelings", "Swimmers"), and so does a name with & or ' after the text is
     // escaped for HTML ("Slash &amp; Burn", "Nature&#39;s Force").
     list.push({key:'skill:' + p.key, src: l.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/ /g, '\\s').replace(/&/g, '(?:&|&amp;)').replace(/'/g, "(?:'|&#39;|&#x27;|’)") + '(?:s)?', cs: true}); });
@@ -1811,7 +1816,6 @@ const SKILL_TEXT = {
   frostbite: v=> `Each time frost chills it, it gains +${v}/+${v} for good.`,
   inspiring: v=> `When it attacks, adjacent allies get +${v} Attack on their next attack.`,
   friction: v=> `When it attacks, deal ${v} damage to adjacent allies.`,
-  worthy: v=> `When played, gain ${v} Lumber. When it dies, the opponent gains ${v} Lumber.`, // = Bounty (2026-10-15)
   lumberjack: ()=> `Whenever you gain Lumber, gain 1 more.`,
   heavyMetal: ()=> `Whenever you gain Stone or Metal, gain 1 more.`,
   timber: ()=> `+1/+1 for each Lumber you hold.`, rockSolid: ()=> `+2/+2 for each Stone you hold.`, ironWill: ()=> `+3/+3 for each Metal you hold.`,
@@ -2045,7 +2049,7 @@ function describeEffects(def, liveCard){
   if(e.ritual){ const r = e.ritual; lines.push(`Ritual — no Wait, but it can't act until, after it arrives, ${r.perished||0} units have perished (either side), you've drawn ${r.drawn||0} cards and dealt ${r.castleDamage||0} castle damage.`); }
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
   if(def.wait) lines.push(`⏳ Wait ${def.wait} — Can't attack for ${def.wait} round${def.wait===1?'':'s'} after it's played.`);
-  { const bn = bountyN(e); if(bn) lines.push(`🏆 Bounty ${bn} — When played, gain ${bn} Lumber. When it dies, the opponent gains ${bn} Lumber.`); } // Worthy folded in (2026-10-15)
+  { const bn = bountyN(e); if(bn) lines.push(`🏆 Bounty ${bn} — When played, gain ${bn} Lumber. When it dies, the opponent gains ${bn} Lumber.`); } // 2026-10-15
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): no "(Timer, Damage)" in the
   // name; the short line says it.
   if(e.explode) lines.push(`💣 Explode ${e.explode.time} — ${SKILL_TEXT.explode([e.explode.time, e.explode.damage])}`);
@@ -2055,7 +2059,7 @@ function describeEffects(def, liveCard){
   // 2026-10-10 (user: "The effect descriptions should include the effect icon"): each line opens with the same glyph the
   // card face uses for it (SKILL_ICON). Fork on a crab shows the crab claw (2026-10-14).
   const ic = k=>{ const g = skillIconFor(k, def); return g ? g + ' ' : ''; };
-  PASSIVE_DEFS.forEach(p=>{ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${skillText(p, [e.esprit||0, e.espritHp||0], e)}`); return; } // 2026-10-16 skill audit: the short card text
+  PASSIVE_DEFS.forEach(p=>{ if(p.reserved) return; /* a retired, empty slot (Worthy, 2026-10-16) has no line */ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${skillText(p, [e.esprit||0, e.espritHp||0], e)}`); return; } // 2026-10-16 skill audit: the short card text
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     // Zeitgeber advanced forms (2026-10-15): "Diurnal – {Evasive, Thorns 1}", "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {…}".
@@ -2221,9 +2225,10 @@ function loadLocalCardOverlay(){
     const parsed = JSON.parse(raw);
     if(parsed && typeof parsed==='object'){
       liveCards = parsed.liveCards || {};
-      Object.keys(liveCards).forEach(id=>{ try{ liveCards[id] = dropStaleArtPath(id, liveCards[id]); }catch(e){} }); // stale built-asset paths (2026-10-14)
+      Object.keys(liveCards).forEach(id=>{ try{ liveCards[id] = migrateWorthyToBounty(dropStaleArtPath(id, liveCards[id])); }catch(e){} }); // stale built-asset paths (2026-10-14); Worthy -> Bounty (2026-10-16)
       liveDeletes = parsed.liveDeletes || {};
       liveTombstones = parsed.liveTombstones || {};
+      Object.keys(liveTombstones).forEach(id=>{ try{ liveTombstones[id] = migrateWorthyToBounty(liveTombstones[id]); }catch(e){} }); // 2026-10-16: a restore brings back Bounty
     }
   } catch(e){ /* corrupt/unreadable -- start from the clean baseline rather than throw */ }
 }
@@ -2385,6 +2390,8 @@ function buildCardDefs(){
   // An edit saved without art keeps the shipped art (2026-10-13, user: "Some cards don't have art yet": cloud edits of Shepherd,
   // Owl Nightwatch, Tomcat and Sergeant Bramblefox were saved before their art existed and hid it).
   Object.keys(liveCards).forEach(id=>{ const lc = liveCards[id], b = CARD_DEFS_BASELINE[id]; if(lc && b && !lc.art && b.art) lc.art = b.art; });
+  // 2026-10-16 (user: "All Worthy cards become Bounty."): the safety net for any way an old Worthy got into the overlay (a save, a restore).
+  Object.keys(liveCards).forEach(id=>{ const m = migrateWorthyToBounty(liveCards[id]); if(m !== liveCards[id]) liveCards[id] = m; });
   const out = Object.assign({}, CARD_DEFS_BASELINE, liveCards);
   try{ if(typeof myHero!=='undefined' && myHero){ const hd = heroDef(); if(hd) out[HERO_ID] = hd; } }catch(e){}
   Object.keys(liveDeletes).forEach(id=>{ delete out[id]; });
@@ -2824,7 +2831,7 @@ async function initDb(){
     setDbPill(true, ''); // 2026-09-16, per explicit request: drop the "edits sync to everyone" label text — the dot alone shows live status
     dbUnsub = dbHandle.collection('cards').onSnapshot(snap=>{
       snap.docs.forEach(doc=>{
-        const data = doc.data();
+        const data = migrateWorthyToBounty(doc.data()); // Worthy -> Bounty (2026-10-16)
         if(!data) return;
         if(data.__deleted){ liveDeletes[doc.id] = true; liveTombstones[doc.id] = data; delete liveCards[doc.id]; }
         else { liveCards[doc.id] = data; delete liveDeletes[doc.id]; delete liveTombstones[doc.id]; }
@@ -2916,6 +2923,30 @@ async function logTxn(entry){
 // 2026-10-12 saved the card's own built asset path (assets/cards/<id>.png?v=…) as its art. That pins old art, and when the
 // WebP build renamed a file to .webp the image vanished. An override whose art is just a path to the card's own built asset
 // now keeps the current built art instead. Real art changes (an uploaded image, another card's art) still apply.
+// 2026-10-16 (user: "All Worthy cards become Bounty. Worthy will seem something else in the future."): every card says Bounty now,
+// and the engine no longer reads `worthy` as Bounty, so a saved or published card that still says Worthy N (a card_overrides row,
+// this browser's overlay, the live db, a History restore) is moved over as it loads: effects.worthy -> effects.bounty (when it has
+// both, the larger), then `worthy` is dropped. Skill grants and trigger data inside effects / equip get the same (a {worthy: N}
+// grant becomes {bounty: N}; a skill reference 'worthy' becomes 'bounty'), and so does a `granted` list. That leaves the key free
+// for a future Worthy. Returns the same object when there is nothing to move.
+function wtbHasWorthy(v){ if(Array.isArray(v)) return v.some(wtbHasWorthy); if(v && typeof v === 'object') return Object.keys(v).some(k=> k === 'worthy' || wtbHasWorthy(v[k])); return v === 'worthy'; }
+function wtbFix(v){
+  if(Array.isArray(v)){ const a = v.map(wtbFix); return v.includes('worthy') && v.includes('bounty') ? a.filter((x, i)=> x !== 'bounty' || a.indexOf(x) === i) : a; } // ['worthy','bounty'] -> ['bounty']
+  if(v && typeof v === 'object'){
+    const o = {}; Object.keys(v).forEach(k=>{ if(k !== 'worthy') o[k] = wtbFix(v[k]); });
+    if('worthy' in v){ const n = x=> x === true ? 1 : Math.max(0, Number(x)||0); const w = n(v.worthy), b = n(o.bounty); if(w > 0 || b > 0) o.bounty = Math.max(w, b); }
+    return o;
+  }
+  return v === 'worthy' ? 'bounty' : v;
+}
+function migrateWorthyToBounty(d){
+  if(!d || typeof d !== 'object') return d;
+  const keys = ['effects', 'equip', 'granted'].filter(k=> d[k] && wtbHasWorthy(d[k]));
+  const snap = d.deletedSnapshot && typeof d.deletedSnapshot === 'object' ? migrateWorthyToBounty(d.deletedSnapshot) : d.deletedSnapshot;
+  if(!keys.length && snap === d.deletedSnapshot) return d;
+  const out = Object.assign({}, d); keys.forEach(k=>{ out[k] = wtbFix(d[k]); }); if(snap !== d.deletedSnapshot) out.deletedSnapshot = snap;
+  return out;
+}
 function dropStaleArtPath(id, d){
   if(!d || typeof d.art !== 'string') return d;
   const m = /^assets\/cards\/([^/?.]+)\.(png|webp|jpe?g)(\?|$)/.exec(d.art);
@@ -2926,13 +2957,14 @@ function dropStaleArtPath(id, d){
 // 2026-10-14 (user: "The internal Map IDs have not been edited to the current layout. (1-1 is still called f-1)."): a card row
 // published before the node rename names its fight by the old key (source {kind:'map', id:'m1', node:'1-4'}); read it as the new one.
 function cloudCardData(r){ const d = cloudCardData0(r); if(d && d.source && d.source.kind === 'map' && typeof d.source.node === 'string'){ const k = migrateNodeKey(d.source.id, d.source.node); if(k !== d.source.node) return Object.assign({}, d, {source: Object.assign({}, d.source, {node: k})}); } return d; }
+// 2026-10-16 (user: "All Worthy cards become Bounty."): a published row that still says Worthy N reads as Bounty N (migrateWorthyToBounty).
 function cloudCardData0(r){
-  const d0 = r && r.data; if(!d0 || !d0.__patch) return dropStaleArtPath(r && r.id, d0);
+  const d0 = r && r.data; if(!d0 || !d0.__patch) return migrateWorthyToBounty(dropStaleArtPath(r && r.id, d0));
   const d = d0;
   const base = CARD_DEFS_BASELINE[r.id]; if(!base) return null;
   const out = Object.assign({}, base);
   Object.keys(d).forEach(k=>{ if(k !== '__patch' && k !== '__ledger') out[k] = d[k]; });
-  return out;
+  return migrateWorthyToBounty(out);
 }
 let cloudCardAdmin = false;
 // Live updates (2026-10-08, user: "skirmish layout changes (from a different browser) did not reflect
@@ -5783,7 +5815,6 @@ function abilityBadges(d, bopts){
   if(e.landslide) out.push(`<span title="Landslide">${iconHTML('landslide', '🪨')}${n1(e.landslide)}</span>`);
   if(e.inspiring) out.push(`${iconHTML('inspiring', '📯')}${n1(e.inspiring)}`);
   if(e.friction) out.push(`<span class="ab-friction" title="Friction: hurts the allies beside it when it attacks">${iconHTML('friction', '⚙️')}${n1(e.friction)}</span>`);
-  if(e.worthy && !e.bounty) out.push(`<span class="ab-bounty">${iconHTML('bounty', '🏆')}${n1(bountyN(e))}</span>`); // an old Worthy shows as Bounty (2026-10-15)
   if(e.lumberjack) out.push(`${iconHTML('lumberjack', '🪓')}`); if(e.heavyMetal) out.push(`${iconHTML('heavy-metal', '🤘')}`);
   if(e.timber) out.push(`${iconHTML('timber', '🌲')}`); if(e.rockSolid) out.push(`${iconHTML('rock-solid', '🪨')}`); if(e.ironWill) out.push(`${iconHTML('iron-will', '🔩')}`);
   if(e.loyal || e.loyalGrant) out.push(`${iconHTML('loyal', '🎖️')}`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">${iconHTML('usurper', '👑')}<i>🗡️</i></span>`);
@@ -6090,7 +6121,7 @@ function referenceHTML(){
   <div class="panel"><h3 class="ref-heading">Evergreen abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A bundled trigger + action shorthand — the same thing you could build by hand with Custom Triggers, just packaged as one named skill with fewer clicks.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category==='evergreen' && !p.retired).map(p=>`<div class="ref-card"><span class="kind">Evergreen</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
   </div></div>
   <div class="panel"><h3 class="ref-heading">Passive abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A modifier woven directly into core combat math — always active while the card is in play, with no generic Custom Trigger equivalent.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category!=='evergreen' && !p.retired).map(p=>`<div class="ref-card"><span class="kind">Skill</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
-    <div class="ref-card"><span class="kind">Passive</span><b>Lumber Given (Bounty)</b><p>Its owner gains this much Lumber when it is played, and the opponent gains the same when it dies (Worthy is part of it now). Set on the main form.</p></div>
+    <div class="ref-card"><span class="kind">Passive</span><b>Lumber Given (Bounty)</b><p>Its owner gains this much Lumber when it is played, and the opponent gains the same when it dies. Set on the main form.</p></div>
   </div></div>
   <div class="panel"><h3 class="ref-heading">Resistance &amp; Weaknesses</h3><p class="panel-sub">Its own dedicated area on the card form (2026-09-16) — a Resistance box and a Weakness box, side by side, separate from the "+ Add Skill" list. Each can hold any number of match-keys: a damage type, an archetype/type-tag the attacker belongs to, or another ability the attacker has.</p><div class="ref-grid">
     <div class="ref-card"><span class="kind">Resistance</span><b>Resistance</b><p>Takes half damage (min 1) from anything matching an entry in this box.</p></div>
@@ -7155,7 +7186,7 @@ function renderEditorInner(){
           <input id="fCostMetal" type="number" min="0" value="${c.metalCost||0}" title="Metal"><span class="mr-glyph" title="Metal">🔩</span>
         </div>
       </div>
-      <div class="field field-wide" title="Bounty: its owner gains this much Lumber when it is played, and the opponent gains the same when it dies (2026-10-15: Worthy is part of Bounty). Stone and Metal are stored but not paid out yet.">
+      <div class="field field-wide" title="Bounty: its owner gains this much Lumber when it is played, and the opponent gains the same when it dies. Stone and Metal are stored but not paid out yet.">
         <label>Reward</label>
         <div class="multi-resource-row">
           <input id="fBounty" type="number" min="0" value="${c.effects.bounty||0}" title="Lumber"><span class="mr-glyph" title="Lumber">🪵</span>
@@ -10105,14 +10136,16 @@ try{ adminModeEnabled = isDevHost() && localStorage.getItem(ADMIN_MODE_KEY)==='1
 function syncAdminModeToAccount(){
   const was = adminModeEnabled;
   try{ adminModeEnabled = adminAllowed() && localStorage.getItem(ADMIN_MODE_KEY)==='1'; }catch(e){ adminModeEnabled = false; }
+  syncTestRules(); // 2026-10-16: the rule tests follow Admin Mode
   if(was !== adminModeEnabled){ try{ if(currentTab==='play' && !matchState) renderPlay(); }catch(e){}
     // 2026-10-14 (user: "Make sure admin functions in codex such as show hidden and get all only for admin"): the Codex redraws too.
     try{ if(!adminModeEnabled) codexShowUnseen = false; if(currentTab==='codex' && !matchState) switchTab('codex'); }catch(e){} }
 }
 function setAdminMode(on){
-  if(on && !adminAllowed()){ try{ showToast('Admin tools need an admin account.', 'warn'); }catch(e){} adminModeEnabled = false; return; }
+  if(on && !adminAllowed()){ try{ showToast('Admin tools need an admin account.', 'warn'); }catch(e){} adminModeEnabled = false; syncTestRules(); return; }
   const was = adminModeEnabled; adminModeEnabled = !!on;
   try{ localStorage.setItem(ADMIN_MODE_KEY, adminModeEnabled?'1':'0'); }catch(e){}
+  syncTestRules(); // 2026-10-16: the rule tests follow Admin Mode
   // 2026-10-12 (user: "When admin is turned off, remove the admin controls in the card"): redraw what's on screen so no
   // admin button (skirmish panel, card details, Codex) survives the switch.
   if(was !== adminModeEnabled){ try{ document.body.classList.toggle('is-admin', adminModeEnabled); }catch(e){}
@@ -10120,6 +10153,29 @@ function setAdminMode(on){
     try{ if(!adminModeEnabled) codexShowUnseen = false; }catch(e){}
     try{ if(!matchState && typeof switchTab === 'function' && currentTab) switchTab(currentTab); }catch(e){} }
 }
+// Rule tests (2026-10-16, user: "Evade to non-swimmers for me to test."): rules being tried out before they become real. Each is a
+// switch kept on this device (localStorage 'bramblewood_test_rules_v1'), and it only counts while Admin Mode is on, so players never
+// get one. The engine reads them live from globalThis.BramblewoodTestRules (bramblewood-engine.js, tideEvadeOn), in every fight:
+// both sides, the Test Lab, the Test Kit and the sims. The switches are on the Admin page (Rule tests) and in the Test Lab panel.
+//   tideEvade: while the tide is in (Flood, Ebb or High Tide), Tide units are Evasive against attacks from non-Tide units.
+// (A skirmish can also carry it as a field rule, rules.tideEvade, from Edit skirmish → "Tide evade (test)".)
+const TEST_RULE_DEFS = [
+  {key:'tideEvade', icon:'🌊', name:'Tide evade', text:'While the tide is in (Flood, Ebb or High Tide), Tide units are Evasive against attacks from units without Tide, whatever their own skills. Both sides.'},
+];
+function testRulesStored(){ try{ return JSON.parse(localStorage.getItem('bramblewood_test_rules_v1') || '{}') || {}; }catch(e){ return {}; } }
+function testRuleOn(k){ try{ return !!(adminModeEnabled && testRulesStored()[k]); }catch(e){ return false; } }
+function syncTestRules(){ try{ const o = {}; TEST_RULE_DEFS.forEach(r=>{ o[r.key] = testRuleOn(r.key); }); globalThis.BramblewoodTestRules = o; }catch(e){} }
+function setTestRule(k, on){
+  const s = testRulesStored(); s[k] = !!on; try{ localStorage.setItem('bramblewood_test_rules_v1', JSON.stringify(s)); }catch(e){}
+  syncTestRules();
+  try{ const r = TEST_RULE_DEFS.find(x=> x.key === k); showToast(`${r ? r.icon + ' ' + r.name : k} (test) ${testRuleOn(k) ? 'on' : 'off'}.`, 'ok'); }catch(e){}
+  try{ if(typeof matchState !== 'undefined' && matchState && typeof renderHUD === 'function') renderHUD(); }catch(e){}
+}
+function testRulesPanelHTML(){
+  return `<div class="panel admin-subpanel"><h3>🧪 Rule tests</h3><p class="panel-sub">Rules being tried out. Saved on this device, and on only while Admin Mode is on: every fight then plays with them, both sides (Test Lab and sims too). Players never get them. Default off.</p>
+    ${TEST_RULE_DEFS.map(r=> `<label class="admin-toggle-label" title="${escapeAttr(r.text)}"><input type="checkbox" id="admin${r.key[0].toUpperCase() + r.key.slice(1)}Chk" ${testRuleOn(r.key) ? 'checked' : ''}> ${r.icon} ${escapeHtml(r.name)} ${testRuleOn(r.key) ? '(ON)' : '(OFF)'}</label><p class="panel-sub">${escapeHtml(r.text)}</p>`).join('')}</div>`;
+}
+syncTestRules();
 // Level-up cost curve: rises with current level so 9→10 costs meaningfully more than 0→1. Dust
 // is the primary spend ("Magic Dust is specifically for crafting/improving cards", per the
 // roadmap), with a smaller Gold cost layered in so both new currencies actually matter here.
@@ -13906,6 +13962,7 @@ function skirmishFieldChips(mapId, draft){
   else if('eruption' in exp && Number(auto.eruption) > 0) add('eruption', false, '🔥', `${SCORCHED_NAME} (off)`, `The ground would burn for ${auto.eruption}.`);
   if(eff.highTide) add('highTide', true, '🌊', 'High Tide', 'Periodic High Tides.'); else if(exp.highTide === false && auto.highTide) add('highTide', false, '🌊', 'High Tide (off)', '');
   if(eff.tideSpout) add('tideSpout', true, '⛲', 'Tide-spout', 'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there get +1 Wait, and non-swimmers take 1 water damage.'); else if(exp.tideSpout === false && auto.tideSpout) add('tideSpout', false, '⛲', 'Tide-spout (off)', 'The beach would spout in this fight.'); // 2026-10-14
+  if(eff.tideEvade) add('tideEvade', true, '🌊', 'Tide evade (test)', 'While the tide is in, Tide units are Evasive against attacks from units without Tide. Both sides.'); // 2026-10-16
   if(eff.misty) add('misty', true, '🌫️', 'Misty', MISTY_TEXT); // 2026-10-14
   if(eff.cloudy) add('cloudy', true, '☁️', 'Cloudy', CLOUDY_TEXT); else if(exp.cloudy === false && auto.cloudy) add('cloudy', false, '☁️', 'Cloudy (off)', ''); // 2026-10-16
   if(eff.dark){ const k = eff.dark === 'pitch' ? 'pitch' : eff.dark === 'absolute' ? 'absolute' : 'dark'; add('dark', true, k === 'pitch' ? '🌑' : k === 'absolute' ? '⚫' : '🌘', DARK_LEVEL_NAME[k], DARK_LEVEL_TEXT[k] || 'Units without Darksight miss every attack.'); } // 2026-10-15
@@ -13927,7 +13984,7 @@ function skirmishFxAddOptionsHTML(){
   const erupt = [2, 3, 5].map(n=> ({id:'eruption@' + n, icon:'🔥', name:SCORCHED_NAME + ' ' + n}))
     .concat(Object.keys(VOLCANO_LEVELS).map(k=> ({id:'volcano@' + k, icon:'🌋', name:'Volcano hazards: ' + VOLCANO_LEVELS[k].label}))); // 2026-10-14: Lava Tide, Petrification, Eruption by odds
   const grounds = Object.keys(TERRAIN_BIOMES).filter(b=> b !== 'ash').flatMap(b=> [1, 2, 3].map(t=> groundEffect(b, t)));
-  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field', 'cloudy']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'tideSpout', 'misty', 'dark', 'actions']).concat(erupt))}${grounds.filter(Boolean).length ? grp('Home ground', grounds.filter(Boolean)) : ''}${grp('Leader gifts', by(['gift']))}`;
+  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field', 'cloudy']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'tideSpout', 'tideEvade', 'misty', 'dark', 'actions']).concat(erupt))}${grounds.filter(Boolean).length ? grp('Home ground', grounds.filter(Boolean)) : ''}${grp('Leader gifts', by(['gift']))}`;
 }
 function applySkirmishFx(draft, id){
   const m = /^eruption@(\d+)$/.exec(id || ''); const r = Object.assign({}, draft.rules || {});
@@ -20948,7 +21005,8 @@ function sandboxPanelHTML(m){
       <button class="btn" id="sbxClearBtn" type="button">🧹 Clear board</button>
       <button class="btn primary" id="sbxResolveBtn" type="button" ${m.resolving?'disabled':''}>${m.resolving?'Resolving…':'▶ Resolve Round'}</button>
     </div>
-  </div>`;
+    ${adminModeEnabled ? `<div class="sbx-rule-tests" role="group" aria-label="Rule tests">${TEST_RULE_DEFS.map(r=> `<label class="admin-toggle-label" title="${escapeAttr(r.text)}"><input type="checkbox" data-sbxrule="${escapeAttr(r.key)}" ${testRuleOn(r.key) ? 'checked' : ''}> 🧪 ${r.icon} ${escapeHtml(r.name)} (test)</label>`).join('')}</div>` : ''}
+  </div>`; // rule tests (2026-10-16, user: "Evade to non-swimmers for me to test."): admins only, the same switch as the Admin page's
 }
 function wireSandboxPanel(){
   const m = matchState; if(!m || m.mode!=='sandbox') return;
@@ -20965,6 +21023,7 @@ function wireSandboxPanel(){
   if(clearBtn) clearBtn.addEventListener('click', sandboxClearBoard);
   const resolveBtn = document.getElementById('sbxResolveBtn');
   if(resolveBtn) resolveBtn.addEventListener('click', sandboxResolveRound);
+  document.querySelectorAll('#sandboxPanel [data-sbxrule]').forEach(chk=> chk.addEventListener('change', ()=> setTestRule(chk.getAttribute('data-sbxrule'), chk.checked))); // 2026-10-16
 }
 /* ============================================================
    🧪 Test Kit (2026-10-02, per explicit request: "a testing kit… load a card from a dropdown x
@@ -22407,6 +22466,7 @@ function renderAdmin(){
         <button type="button" class="btn small" id="adminUnlockAllBtn">🔓 Unlock all features</button>
         <button type="button" class="btn small ghost" id="adminRelockBtn" title="Lock every map feature again and forget the onboarding dialogue, to replay it">↺ Replay onboarding</button></div>
     </div>
+    ${adminModeEnabled ? testRulesPanelHTML() : ''}
     ${adminModeEnabled ? adminManageCardsHTML() : ''}
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
     <div class="panel admin-subpanel"><h3>🎓 Tutorial</h3><p class="panel-sub">Castle HP, starting hand, decks, the rival's name and every guided-step message. Publishes live for new players.</p>
@@ -22513,6 +22573,8 @@ function renderAdmin(){
                     // below; the Codex's Create-a-Card button/card-click gate reads adminModeEnabled
                     // fresh the next time IT renders.
   });
+  const tideEvadeChk = document.getElementById('adminTideEvadeChk'); // 2026-10-16 (user: "Evade to non-swimmers for me to test.")
+  if(tideEvadeChk) tideEvadeChk.addEventListener('change', e=>{ setTestRule('tideEvade', e.target.checked); renderAdmin(); });
   const teOpen = document.getElementById('adminTutorialEditorBtn'); if(teOpen) teOpen.onclick = openTutorialEditor;
   const deOpen = document.getElementById('adminDialogueBtn'); if(deOpen) deOpen.onclick = ()=> openDialogueEditor();
   const scOpen = document.getElementById('adminShowcaseBtn'); if(scOpen) scOpen.onclick = ()=> openShowcasePicker(); // 2026-10-15
@@ -22920,6 +22982,8 @@ const FIELD_EFFECTS = [
   {id:'cloudy',    group:'cloudy', icon:'☁️', name:'Cloudy',       weird:1, cost:1, rules:{cloudy:true}, text:CLOUDY_TEXT, editorOnly:true}, // editorOnly: the daily Arena portents keep their rolls; 2026-10-16 (user: "Cloudy - cloud shadows floating above the battlefield.")
   {id:'misty',     group:'misty', icon:'🌫️', name:'Mist',         weird:1, cost:1, rules:{misty:true}, text:'There is no day/night cycle.', editorOnly:true}, // 2026-10-15 wording // 2026-10-14: no map has it yet
   {id:'hightide',  group:'highTide', icon:'🌊', name:'High Tide',   weird:2, cost:1, rules:{highTide:true}, text:'Periodic High Tides (they move Tide units only).', editorOnly:true},
+  // 2026-10-16 (user: "Evade to non-swimmers for me to test."): the Tide-evade rule test as a skirmish field rule (Edit skirmish only).
+  {id:'tideevade', group:'tideEvade', icon:'🌊', name:'Tide evade (test)', weird:3, cost:1, rules:{tideEvade:true}, text:'While the tide is in (Flood, Ebb or High Tide), Tide units are Evasive against attacks from units without Tide. Both sides.', editorOnly:true},
   {id:'double',    group:'actions', icon:'⚡', name:'Double Time',   weird:4, cost:2, rules:{actions:2}, text:'Each side plays 2 cards a turn.'},
   {id:'collapse',  group:'mode', icon:'🧱', name:'Collapse',        weird:4, cost:2, battleMode:'gravity', text:'When a card falls, the cards beside it slide toward the centre.', arenaOnly:true},
   {id:'gift-immolation', group:'gift', icon:'🔥', name:'Leader gift: Immolation 2', weird:3, cost:1, leaderGrant:{immolation:2}, text:'The enemy leaders deal 2 fire damage to adjacent units every upkeep.', editorOnly:true},
@@ -26582,8 +26646,9 @@ function withOwnerEdgeInTile(html){ return html.replace(/(<div class="card-tile[
 // lumber... coloured so it looks like a reward... visible only when the player is holding a card.
 // It also first appears at the start of your turn, then fades after 3s"). Only on the opponent's
 // cards — the reward is yours to take. Visibility is pure CSS: body.bw-holding / body.bounty-peek.
-// Bounty N (2026-10-15): the card's Bounty, or an old Worthy N that reads as one (the engine's bountyOf).
-function bountyN(e){ e = e || {}; const b = Number(e.bounty)||0; if(b > 0) return b; return e.worthy === true ? 1 : Math.max(0, Number(e.worthy)||0); }
+// Bounty N (2026-10-15): the card's Bounty (the engine's bountyOf).
+// 2026-10-16 (user: "All Worthy cards become Bounty."): `worthy` no longer counts; old cards are migrated as they load (migrateWorthyToBounty).
+function bountyN(e){ e = e || {}; return Math.max(0, Number(e.bounty)||0); }
 function bountyBubbleHTML(c, d, pid){
   const n = bountyN(d.effects);
   if(!n || !matchState || pid==null || pid===viewerHandPid(matchState)) return '';
@@ -29535,6 +29600,12 @@ function tideTipLines(k){ return (skillHiddenNow('tide') ? TIDE_TIPS_HIDDEN : TI
 // meaning dynamic, morphing between Tide - ..., Ebb - ...., and High Tide - ....."): what this card's Tide gives right now, or null
 // when no tide is running (or we're not in a fight). Swimmers are Tide units; their own Flow extra joins the rising lines.
 function liveTideState(e){
+  const s = liveTideState0(e); if(!s) return s;
+  // 2026-10-16 (user: "Evade to non-swimmers for me to test."): with the Tide-evade rule test on, the Tide chip says it too.
+  try{ if(tideEvadeLive(matchState) && !/Evasive/.test(s.bonus || '')) return Object.assign({}, s, {bonus: (s.bonus ? s.bonus + ', ' : '') + 'Evasive vs non-Tide (test)'}); }catch(err){}
+  return s;
+}
+function liveTideState0(e){
   try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || !m.engine || !m.engine.getTide || !matchHasTide(m)) return null;
     const t = m.engine.getTide(); if(!t) return null;
     if(e && e.tideGrant && typeof e.tideGrant === 'object' && !e.supremeTide){ const fl = grantBraceText(e.tideGrant.flood), eb = grantBraceText(e.tideGrant.ebb); // Tide – {…}, {…} (2026-10-15)
@@ -29562,8 +29633,12 @@ function tidePillHTML(m){
   const t = dayNightOn(m) && m.engine.getTide && m.engine.getTide();
   if(!t || !matchHasTide(m)) return '';
   const high = t==='high', flow = t==='flow', name = high ? _t('High Tide') : flow ? _t('Flood') : _t('Ebb');
-  return bfPillHTML('tide-' + t, high ? '🌊🌊' : flow ? '🌊' : '', name, high ? '' : name, pillTipHTML(name, [TIDE_PILL_TIP]), 'Tide: ' + (high ? 'High Tide' : flow ? 'Flood' : 'Ebb'));
+  // 2026-10-16 (user: "Evade to non-swimmers for me to test."): with the Tide-evade rule test on, the pill says so.
+  const te = tideEvadeLive(m);
+  return bfPillHTML('tide-' + t + (te ? ' tide-evade' : ''), high ? '🌊🌊' : flow ? '🌊' : '', name, high ? '' : name, pillTipHTML(name, te ? [TIDE_PILL_TIP, TIDE_EVADE_TIP] : [TIDE_PILL_TIP]), 'Tide: ' + (high ? 'High Tide' : flow ? 'Flood' : 'Ebb') + (te ? '. ' + TIDE_EVADE_TIP : ''));
 }
+const TIDE_EVADE_TIP = 'Tide evade (test): Tide units are Evasive against attacks from units without Tide.';
+function tideEvadeLive(m){ try{ return !!(m && m.engine && m.engine.tideEvadeOn && m.engine.tideEvadeOn()); }catch(e){ return false; } }
 // The wind this round (from the last 'wind' event, kept on the match so a re-render keeps it): 💨 with a small ⬆ (at your back) or
 // ⬇ (in your face) stacked on it; a calm round between gusts is a faded 💨.
 function windPillHTML(m){
@@ -31193,7 +31268,7 @@ function logText(ev){
     // "lumber", or "elementalEnergy" as its entire battle-log line instead of a real sentence.
     // Same icons floatResourceGain() already uses for these three (see renderVfxForEvent).
     case 'stone': return {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} 🪨.`};
-    case 'lumber': return ev.rule ? {cls:'gold', text:`🪵 Timber Fair: ${sideLabel(ev.side)} gains +${ev.amount} Lumber.`} : ev.cause==='worthyDeath' ? {cls:'gold', text:`${nm(ev.defId)} was Worthy: its fall gives ${sideLabel(ev.side)} +${ev.amount} 🪵.`} : {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} 🪵.`};
+    case 'lumber': return ev.rule ? {cls:'gold', text:`🪵 Timber Fair: ${sideLabel(ev.side)} gains +${ev.amount} Lumber.`} : ev.cause==='worthyDeath' ? {cls:'gold', text:`${nm(ev.defId)}'s fall gives ${sideLabel(ev.side)} +${ev.amount} 🪵.`} /* the old cause; no "Worthy" on screen (2026-10-16) */ : {cls:'gold', text:`${nm(ev.defId)} generated +${ev.amount} 🪵.`};
     case 'metal': return {cls:'gold', text:`${nm(ev.defId)} brought up +${ev.amount} 🔩 Metal.`};
     case 'uranium': return {cls:'gold', text:`${nm(ev.defId)} gave off +${ev.amount} ☢️ Uranium.`};
     case 'friction': return {cls:'', text:`${nm(ev.attDefId)} ground against ${nm(ev.targetDefId)} for ${ev.dmg} (Friction ⚙️).`};
@@ -33605,7 +33680,7 @@ function renderVfxForEvent(ev){
   function floatResourceGain(ev, glyph, pillId, sound){
     sound();
     const flavorCls = RESOURCE_FLOAT_CLASS[pillId] || 'lumber';
-    // a Worthy unit's death pays the OTHER side: float it on their Lumber pill, not over the falling card and its tooltip (2026-10-12)
+    // a death that pays the OTHER side (the old Worthy cause, 2026-10-12): float it on their Lumber pill, not over the falling card
     const cardEl = (ev.uid!=null && ev.cause !== 'worthyDeath') ? boardCardEl(ev.uid) : null;
     if(cardEl) floatText(cardEl, `+${ev.amount}${glyph}`, flavorCls);
     const pillEl = document.getElementById(pillId);

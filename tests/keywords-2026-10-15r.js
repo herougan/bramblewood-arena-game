@@ -82,8 +82,10 @@ for(let s = 1; s <= 8; s++){ const {e, P} = mk(null, s); const far = put(e, P, 2
 // ---- 26. Bounty (Worthy folded in)
 { const {e, P} = mk(); const l0 = P[1].lumber; const B = put(e, P, 1, 'kr-bounty', 0); ok(P[1].lumber - l0 === 2, `26. Bounty 2: its owner gains 2 Lumber on play (${P[1].lumber - l0})`);
   const f0 = P[2].lumber; B.hp = 0; e.removeDeadCards(P, so, {}, {}, []); ok(P[2].lumber - f0 === 2 && P[1].lumber - l0 === 2, `26. ...and the opponent gains 2 when it dies (${P[2].lumber - f0})`); }
-{ const {e, P} = mk(); const W = put(e, P, 1, 'kr-worthy', 0); const A = put(e, P, 2, 'kr-hit', 0); A.atk = 9; const f0 = P[2].lumber;
-  ok(P[1].lumber >= 3, '26. an old Worthy 3 reads as Bounty 3 on play'); e.debugAttack(P, so, A.uid, {}, []); e.removeDeadCards(P, so, {}, {}, []); ok(P[2].lumber - f0 === 3, `26. ...and on death, paid once (${P[2].lumber - f0})`); }
+// 2026-10-16 (user: "All Worthy cards become Bounty. Worthy will seem something else in the future."): the engine no longer reads
+// `worthy` as Bounty (the app migrates old saves as they load, tests/keywords-2026-10-16b.js); the key is an empty slot.
+{ const {e, P} = mk(); const l0 = P[1].lumber; const W = put(e, P, 1, 'kr-worthy', 0); const A = put(e, P, 2, 'kr-hit', 0); A.atk = 9; const f0 = P[2].lumber;
+  ok(P[1].lumber === l0, `26. a raw Worthy 3 pays nothing on play any more (${P[1].lumber - l0})`); e.debugAttack(P, so, A.uid, {}, []); e.removeDeadCards(P, so, {}, {}, []); ok(W.hp <= 0 && P[2].lumber === f0, `26. ...nor on death (${P[2].lumber - f0})`); }
 ok(!cards.some(c=> 'worthy' in (c.effects||{})), '26. no card carries Worthy');
 { const c = id=> cards.find(x=> x.id === id).effects.bounty; ok(c('elder-willow') === 2 && c('beaver-lumberjack') === 2 && c('field-mouse') === 1, '26. Worthy N moved to Bounty N (Worthy 2 + Bounty 1 = Bounty 2)'); }
 ok(/\{key:'worthy', category:'passive', hidden:true, retired:true,/.test(src), '26. Worthy is out of the editor and the lists');
