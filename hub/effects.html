@@ -449,6 +449,11 @@
   .signin-banner .btn.ghost{color:#f4efdc; border-color:rgba(255,255,255,.3); background:transparent;}
   .toast-host{position:fixed; left:50%; bottom:24px; transform:translateX(-50%); z-index:1150; display:flex; flex-direction:column; gap:8px; align-items:center; pointer-events:none; width:min(92vw,440px);}
   .toast-host.at-top{bottom:auto; top:calc(14px + env(safe-area-inset-top, 0px));}
+  /* 2026-10-16 (user: "The reward toasts on the btm and the label "Tap to skip" often overlap. The Tap to skip can happen at the lowest
+     layer. Reward toasts happen above it. Unless that 'tap to skip' is not there. (or any text there for that matter)"): while a screen
+     with a bottom label is up (the reward reveal's "Tap to skip", the VS screens'), the toasts sit above that label and over it. */
+  body:has(.rr-stage, .vs-screen, .vs-opener) .toast-host:not(.at-top){bottom:calc(64px + env(safe-area-inset-bottom, 0px)); z-index:1260;}
+  .rr-hint, .vs-skip{z-index:0;}
   .home-acct-badge{display:block; margin-top:2px; font-size:9.5px; font-weight:800; letter-spacing:.02em; opacity:.75; padding:1px 6px; border-radius:999px; border:1px dashed currentColor;}
   .home-acct-badge.signed-in{opacity:1; border-style:solid; color:#3f9a44; border-color:#4caf50; background:rgba(76,175,80,.12);}
   .toast{background:#20281b; color:#f4efdc; border:1px solid #4a3f2c; border-radius:12px; padding:10px 14px; font-size:13.5px; font-weight:700; box-shadow:0 6px 24px rgba(0,0,0,.35); opacity:0; transform:translateY(10px); transition:opacity .3s, transform .3s; text-align:center;}
@@ -2381,6 +2386,9 @@
   #appWrap.in-match .board-card.is-flying .fly-shadow{display:block; position:absolute; left:6%; right:14%; bottom:-14px; height:14px; border-radius:50%; z-index:0; pointer-events:none;
     background:radial-gradient(ellipse at center, rgba(0,0,0,.6), rgba(0,0,0,.28) 45%, transparent 72%); animation:flyShadow 3.4s ease-in-out infinite;}
   #appWrap.in-match .board-card.is-flying:nth-child(2n) .fly-shadow{animation-delay:-1.1s;}
+  /* 2026-10-16 (user: "using the shadows, make it look like it's descending for the attack"): SkillFX.flyDescend tweens these during a
+     flyer's lunge (the hover animation keeps the transform; translate / scale compose with it). */
+  #appWrap.in-match .board-card.is-flying .fly-shadow{translate:var(--fs-x, 0px) var(--fs-y, 0px); scale:var(--fs-s, 1);}
   @keyframes flySoar{0%,100%{translate:5px -9px; rotate:.6deg;} 22%{translate:7px -12px; rotate:1.3deg;} 50%{translate:5px -8px; rotate:.6deg;} 74%{translate:3px -12px; rotate:-.3deg;}}
   @keyframes flyShadow{0%,100%{transform:scaleX(1); opacity:1;} 22%,74%{transform:scaleX(.86); opacity:.75;} 50%{transform:scaleX(1.03); opacity:1;}}
   :where(.board-card.is-stunned, .board-card.is-frozen, .board-card.is-asleep, .board-card.ghost-preview) .card-tile{animation:none;}
@@ -2922,6 +2930,34 @@
   .rw-cards{display:flex; flex-wrap:wrap; gap:8px; justify-content:center;}
   .rw-card .card-tile{width:84px; height:105px; font-size:10px; margin:0;}
   .rw-cur{font-size:15px; padding:6px 12px;}
+  /* 2026-10-16 (user: "Move the pass turn button to the same row as the deck, centered, then simplify to just "Pass". Then make it
+     look more squarish - decrease the corner radius."): in the deck's row, centred in the room left before the Graveyard. */
+  .bottom-play-row .skipzone.compact.in-deck-row{position:static !important; inset:auto !important; align-self:center; margin:0 auto; order:0; flex:0 0 auto; width:auto; min-width:72px; min-height:44px; padding:8px 14px; border-radius:8px; font-size:14px; font-weight:800; justify-content:center; box-shadow:0 3px 10px rgba(0,0,0,.3); z-index:2;}
+  @media (max-width:640px){ .bottom-play-row .skipzone.compact.in-deck-row{order:3; margin:0 auto; min-height:40px; padding:6px 12px;} }
+  /* 2026-10-16 (user: "Reward items not same size ... they should be placed below the main currency pills"): the main currencies are
+     one row of equal pills; materia, a rescued baby and Base growth sit on a row under them. */
+  .rw-cur-row .rw-cur{min-width:150px; justify-content:center; box-sizing:border-box;}
+  .rw-cur-row + .rw-item-row{margin-top:8px;}
+  .rw-item-row:empty{display:none;}
+  /* 2026-10-16 (user: "Auto Sweep should bring up the reward screen. not just a toast"): showSweepResults */
+  .sweep-results{position:fixed; inset:0; z-index:1210; display:grid; place-items:center; padding:16px; background:rgba(10,7,3,.62);}
+  .sweep-results .sr-card{width:min(420px, 100%); box-sizing:border-box; padding:22px 20px 18px; border-radius:18px; text-align:center; color:#fff; background:radial-gradient(120% 90% at 50% 0%, #4a3a1c, #1f1910 70%); box-shadow:0 0 0 2px rgba(255,214,120,.55), 0 18px 40px rgba(0,0,0,.55); display:flex; flex-direction:column; align-items:center; gap:10px;}
+  .sweep-results .sr-card.is-loss{background:radial-gradient(120% 90% at 50% 0%, #3a3330, #1b1714 70%); box-shadow:0 0 0 2px rgba(200,190,180,.35), 0 18px 40px rgba(0,0,0,.55);}
+  .sweep-results .sr-ico{font-size:42px; line-height:1;}
+  .sweep-results .sr-title{margin:0; font:800 26px/1.1 'Baloo 2',system-ui,sans-serif; color:#ffe2a6;}
+  .sweep-results .sr-sub{font:700 14px 'Baloo 2',system-ui,sans-serif; opacity:.85;}
+  .sweep-results .sr-tally{display:flex; align-items:baseline; gap:6px; font:800 15px 'Baloo 2',system-ui,sans-serif;} .sweep-results .sr-tally b{font-size:34px; color:#ffd56e;}
+  .sweep-results .sr-rewards{width:100%; background:none !important; box-shadow:none !important;}
+  .sweep-results .rw-head{font:800 12px 'Baloo 2',system-ui,sans-serif; letter-spacing:.08em; text-transform:uppercase; color:#ffd98a; margin-bottom:6px;}
+  .sweep-results .rw-cur{background:rgba(255,255,255,.14); color:#fff; border:1px solid rgba(255,220,150,.35); font-size:17px;}
+  .sweep-results .sr-ok{margin-top:4px; min-width:160px;}
+  .rw-dust-cards{display:inline-flex; gap:6px; align-items:center;}
+  .rw-dust-card{width:44px; display:inline-block; position:relative; transition:filter .35s ease, opacity .35s ease;}
+  .rw-dust-card .card-tile{width:100% !important; pointer-events:none;}
+  .rw-dust-back{display:block; aspect-ratio:4/5; border-radius:6px; background-size:cover; background-position:center;}
+  .rw-dust-card.is-dusted{filter:grayscale(1) brightness(.75); opacity:.6;}
+  .rw-dust-mote{position:fixed; left:0; top:0; z-index:12000; pointer-events:none; font-size:14px; color:#e9d8ff; text-shadow:0 0 6px rgba(200,170,255,.95);}
+  @media (max-width:560px){ .rw-cur-row .rw-cur{min-width:118px;} }
   .rw-act{display:inline-flex; align-items:center; gap:6px; padding:6px 12px; border-radius:999px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); font-weight:700; font-size:13.5px; cursor:help;}
   .rw-node{width:44px; height:44px; border-radius:50%; display:inline-flex; align-items:center; justify-content:center; font-size:21px; background:#f4ecd8; border:3px solid #c9a46a; box-shadow:0 3px 8px rgba(0,0,0,.3); cursor:help; position:relative;}
   .rw-node.kind-elite{border-color:#8e5bc9;} .rw-node.kind-boss{border-color:#c0392b;} .rw-node.kind-raidboss{border-color:#e3b23c;}
@@ -3619,6 +3655,10 @@
   .log-row.gold{color:var(--gold);} .log-row.grace{color:var(--grace);} .log-row.exile{color:var(--exile);} .log-row.devilry{color:var(--devilry-border);}
   .log-row.bleed{color:var(--bleed);}
   .log-row.heal{color:var(--heal);}
+  /* 2026-10-16 (user: "all log items will be slightly 'forward' like 1 tab nest in. So that we can easily see the "Attack" and "Plays""):
+     plays and attacks are flush and bold; every other line sits one step in. */
+  .log-row.log-head{font-weight:700;}
+  .log-row.log-sub{margin-left:18px; font-size:.94em; opacity:.92;}
 
   /* ==================== SIMULATOR ==================== */
   .deck-cols{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
@@ -6403,6 +6443,15 @@
   .ufx-crunch{fill:rgba(255,250,235,.9); opacity:0; transform-box:fill-box; transform-origin:center; animation:ufxCrunchFlash .26s ease-out .09s forwards;}
   @keyframes ufxCrunchTop{0%{transform:translateY(-30px); opacity:0;} 28%{transform:translateY(5px); opacity:1;} 42%{transform:translateY(0); opacity:1;} 72%{transform:translateY(-13px); opacity:1;} 100%{transform:translateY(-15px); opacity:0;}}
   @keyframes ufxCrunchBot{0%{transform:translateY(30px); opacity:0;} 28%{transform:translateY(-5px); opacity:1;} 42%{transform:translateY(0); opacity:1;} 72%{transform:translateY(13px); opacity:1;} 100%{transform:translateY(15px); opacity:0;}}
+  /* 2026-10-16 (user: "Make the teeth close ... Just 1 row of teeth each"): one row per jaw that travels all the way in, the tips
+     meshing at the middle, holds the bite a beat, then eases a little open and fades (bramblewood-unitfx.js bite()). */
+  .ufx-jaw{opacity:0; filter:drop-shadow(0 1px 1.2px rgba(60,10,10,.35));} .ufx-jaw .ufx-tooth-band{stroke:none;}
+  .ufx-jaw .ufx-tooth-edge{fill:none; stroke:rgba(110,30,30,.5); stroke-width:.8; stroke-linejoin:round; stroke-linecap:round;}
+  .ufx-jaw-top{animation:ufxJawTop .5s cubic-bezier(.5,0,.6,1) forwards;}
+  .ufx-jaw-bot{animation:ufxJawBot .5s cubic-bezier(.5,0,.6,1) forwards;}
+  .ufx-bite .ufx-crunch{animation-delay:.14s;}
+  @keyframes ufxJawTop{0%{transform:translateY(-34px); opacity:0;} 12%{opacity:1;} 30%{transform:translateY(1.5px); opacity:1;} 38%,62%{transform:translateY(0); opacity:1;} 100%{transform:translateY(-9px); opacity:0;}}
+  @keyframes ufxJawBot{0%{transform:translateY(34px); opacity:0;} 12%{opacity:1;} 30%{transform:translateY(-1.5px); opacity:1;} 38%,62%{transform:translateY(0); opacity:1;} 100%{transform:translateY(9px); opacity:0;}}
   @keyframes ufxCrunchFlash{0%{opacity:0; transform:scale(.3,.2);} 25%{opacity:.85; transform:scale(1,.6);} 100%{opacity:0; transform:scale(1.3,.3);}}
   .ufx-star{stroke:#ffe66b; stroke-width:2; stroke-linecap:round; fill:none; transform-box:fill-box; transform-origin:center; animation:ufxPop .22s ease-out both, ufxFade .35s ease-in .22s forwards;}
   .ufx-dot{fill:#7a1d10; animation:ufxFade .4s ease-in .2s forwards;}
@@ -7652,11 +7701,12 @@
     .hero-top{flex-direction:column; align-items:center;} .hero-info{width:100%;}
   }
   /* Arrow projectiles (2026-10-04) */
-  .arrow-proj{position:fixed; left:0; top:0; width:76px; height:27px; z-index:9999; pointer-events:none; transform-origin:85% 50%;
+  /* 2026-10-16 (user: "Arrow effect(s) are to be 30% smaller."): the arrow art is 53 x 19 (was 76 x 27) */
+  .arrow-proj{position:fixed; left:0; top:0; width:53px; height:19px; z-index:9999; pointer-events:none; transform-origin:85% 50%;
     filter:drop-shadow(-10px 0 3px rgba(255,255,255,.35)) drop-shadow(0 2px 2px rgba(0,0,0,.4));}
   .arrow-proj img{width:100%; height:100%; image-rendering:pixelated; display:block;}
   .arrow-proj.is-fire{filter:drop-shadow(-12px 0 4px rgba(255,140,40,.75)) drop-shadow(0 0 6px rgba(255,190,60,.9));}
-  .arrow-fallback{font-size:20px;}
+  .arrow-fallback{font-size:14px;}
   .arrow-ember{position:fixed; left:0; top:0; width:6px; height:6px; border-radius:50%; z-index:9998; pointer-events:none; background:#ffd27a; box-shadow:0 0 6px 2px rgba(255,120,30,.85);}
   /* Versus opener (2026-10-05, immersion #3) */
   .vs-opener{position:fixed; inset:0; z-index:9000; display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:clamp(12px,3vw,48px); padding:0 clamp(16px,6vw,90px);
@@ -7946,6 +7996,9 @@
   .dmg-float .df-num::after{color:transparent; background:linear-gradient(180deg,var(--g1) 0%,var(--g1) 36%,var(--g2) 64%,color-mix(in srgb,var(--g2) 65%,#000) 100%);
     -webkit-background-clip:text; background-clip:text;}
   .dmg-float .df-ico{color:#fff; -webkit-text-stroke:0; font-size:.78em; line-height:1; text-shadow:0 2px 0 rgba(0,0,0,.55), 0 0 6px rgba(0,0,0,.35); /* 2026-10-08: a drop-shadow filter on an emoji blanked it in some renderers */}
+  /* 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): lightning numbers: white-hot core, electric yellow, a deep-blue edge */
+  .fx-burst-shock{--elemental-glow: rgba(150,200,255,.95);}
+  .dmg-float .df-ico.df-gplus{display:inline-flex; vertical-align:-.06em; filter:drop-shadow(0 2px 0 rgba(0,0,0,.45)) drop-shadow(0 0 5px rgba(90,220,120,.6));} /* the heal's green plus (2026-10-16) */
   /* Crit: a bigger, hotter number on a spinning gold starburst; a CRIT! stamp lands on the card. */
   .dmg-float.crit{font-size:50px !important; --g1:#fffbe6; --g2:#ff7a1a; --edge:#3a0a00;}
   .dmg-float .df-burst{position:absolute; left:50%; top:50%; width:1.9em; height:1.9em; margin:-.95em 0 0 -.95em; z-index:-1;
@@ -7957,6 +8010,7 @@
   .dmg-float:not(.crit) .df-burst{width:1.6em; height:1.6em; margin:-.8em 0 0 -.8em; background:radial-gradient(circle, var(--g1, #fff6c8) 0 18%, var(--g2, #ffcf3a) 40%, color-mix(in srgb, var(--g2, #ff8a1c) 0%, transparent) 72%);}
   .dmg-float.cold{--g1:#f0fbff; --g2:#7cc8ff; --edge:#06203a;}
   .dmg-float.heat{--g1:#fff2d8; --g2:#ff8a2a; --edge:#2a0c02;}
+  .dmg-float.shock{--g1:#fff3a0; --g2:#ffc414; --edge:#0c1a4a;} /* lightning: electric yellow on deep blue (2026-10-16) */
   .dmg-float.heavy{font-size:46px; --g2:#ff3d2e;}
   .dmg-float.hq-big{font-size:44px;}
   .dmg-float.blocked{--g1:#f2f6ff; --g2:#8fb0d8; --edge:#0e1a2c;}
@@ -8202,11 +8256,11 @@
 
   /* ===== Skill effects (bramblewood-skillfx.js, 2026-10-06) ===== */
   .sfx{position:fixed; left:0; top:0; pointer-events:none; z-index:9990;}
-  .sfx-arrow{width:76px; height:27px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.45));}
+  .sfx-arrow{width:53px; height:19px; filter:drop-shadow(0 2px 2px rgba(0,0,0,.45));} /* 2026-10-16 (user: "Arrow effect(s) are to be 30% smaller.") (was 76 x 27) */
   .sfx-arrow img{width:100%; height:100%; image-rendering:pixelated; display:block;}
-  .sfx-arrow-glyph{font-size:22px;}
+  .sfx-arrow-glyph{font-size:15px;}
   .sfx-arrow.is-fire{filter:drop-shadow(-12px 0 5px rgba(255,140,40,.8)) drop-shadow(0 0 7px rgba(255,190,60,.95));}
-  .sfx-tipflame{width:18px; height:18px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:radial-gradient(circle at 50% 65%, #fff6c2, #ffb43a 45%, rgba(255,90,20,.0) 72%);
+  .sfx-tipflame{width:13px; height:13px; /* 2026-10-16: 30% smaller with the arrow */ border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:radial-gradient(circle at 50% 65%, #fff6c2, #ffb43a 45%, rgba(255,90,20,.0) 72%);
     filter:blur(.4px) drop-shadow(0 0 6px rgba(255,140,40,.95)); animation:tipFlicker .12s steps(2) infinite;}
   @keyframes tipFlicker{50%{transform:scale(1.18, .9);}}
   .sfx-ember{width:6px; height:6px; border-radius:50%; background:#ffd27a; box-shadow:0 0 6px 2px rgba(255,120,30,.85);}
@@ -8311,9 +8365,16 @@
     background:#3a3238; color:#f3ece4; font:800 10px/1.3 'Baloo 2', system-ui, sans-serif; white-space:nowrap; cursor:pointer;}
   .grave-peek-badge:hover, .grave-peek-badge:focus-visible{background:#54474f;}
   .removal-badge[data-grave-peek]{cursor:pointer;}
-  .grave-peek{position:fixed; z-index:10030; width:max-content; max-width:min(320px, calc(100vw - 16px)); max-height:min(340px, 60vh); overflow:auto; box-sizing:border-box;
+  .grave-peek{position:fixed; z-index:10030; width:max-content; max-width:min(320px, calc(100vw - 16px)); box-sizing:border-box;
     padding:8px 9px 9px; border-radius:12px; background:rgba(24,19,16,.94); color:#f3ece4; border:1px solid rgba(255,255,255,.18); box-shadow:0 10px 26px rgba(0,0,0,.5);
     font-family:'Baloo 2', system-ui, sans-serif;}
+  /* 2026-10-16 (user: "Like a speech bubble, the preview div has a pointer to the graveyard"): the cards scroll inside; the tail sits outside */
+  .grave-peek .gpk-body{max-height:min(320px, 58vh); overflow:auto;}
+  .grave-peek .gpk-body .gpk-grid{grid-template-columns:repeat(var(--gpk-cols, 6), 46px); justify-content:center;}
+  .grave-peek .gpk-tail{position:absolute; left:var(--tail-x, 50%); top:-8px; width:14px; height:14px; transform:translateX(-50%) rotate(45deg); background:rgba(24,19,16,.94); border-left:1px solid rgba(255,255,255,.18); border-top:1px solid rgba(255,255,255,.18); pointer-events:none;}
+  .grave-peek.tail-down .gpk-tail{top:auto; bottom:-8px; border:0; border-right:1px solid rgba(255,255,255,.18); border-bottom:1px solid rgba(255,255,255,.18);}
+  .grave-peek .gpk-sep{display:flex; align-items:center; gap:6px; margin:8px 0 6px; font-size:13px; opacity:.8;}
+  .grave-peek .gpk-sep::before, .grave-peek .gpk-sep::after{content:''; flex:1; height:1px; background:rgba(255,255,255,.14);}
   .grave-peek .gpk-head{display:flex; align-items:center; gap:6px; font-size:12.5px; margin:0 0 6px;}
   .grave-peek .gpk-head span{opacity:.7; font-size:11.5px;}
   .grave-peek .gpk-head.gpk-sub{margin-top:8px; padding-top:6px; border-top:1px solid rgba(255,255,255,.12);}
@@ -8325,7 +8386,7 @@
   .grave-peek .gpk-ico{position:absolute; inset:0 0 13px; display:flex; align-items:center; justify-content:center; font-size:22px;}
   .grave-peek .gpk-nm{position:absolute; left:0; right:0; bottom:0; height:13px; padding:0 2px; font-size:8px; line-height:13px; text-align:center; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; background:rgba(0,0,0,.55);}
   .grave-peek .gpk-n{position:absolute; top:1px; right:1px; font-size:9.5px; line-height:1; padding:1px 3px; border-radius:6px; background:rgba(0,0,0,.7); color:#ffd56e;}
-  .grave-peek .gpk-empty{grid-column:1/-1; font-size:12px; opacity:.7; padding:2px 0;}
+  .grave-peek .gpk-empty{grid-column:1/-1; font-size:22px; opacity:.45; padding:2px 10px; text-align:center;}
   /* The turn the fight ended on (user: "...I want to see the turn#. It shows up as a pill on the opponent's HP bar in the centre."). */
   .bf-hp .bf-turn-pill{position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); z-index:2; pointer-events:auto; white-space:nowrap;
     height:22px; box-sizing:border-box; display:inline-flex; align-items:center; padding:0 11px; border-radius:999px;
@@ -8418,10 +8479,13 @@
     opacity:0; transition:opacity 1.2s ease; background:radial-gradient(closest-side, rgba(255,214,140,.42), rgba(255,190,110,.16) 55%, rgba(255,180,90,0) 100%);}
   .battlefield.is-dark-scene .board-card .unit-light{opacity:1;}
   .board-card .unit-light.ul-leader{width:175%; height:145%; background:radial-gradient(closest-side, rgba(255,222,160,.42) 0, rgba(255,214,150,.30) 52%, rgba(255,200,120,.10) 78%, rgba(255,190,110,0) 100%);}
-  .board-card .unit-light.ul-aura{width:215%; height:180%; background:radial-gradient(closest-side, rgba(255,240,180,.75) 0, rgba(255,226,150,.55) 45%, rgba(255,205,120,.22) 75%, rgba(255,200,110,0) 100%); animation:ulBreathe 3.2s ease-in-out infinite;}
+  /* 2026-10-16 (user: "Lantern glow is too bright. but it is also not 'wide' enough. And the brightness shouldnt cut past the battlefield
+     board"): the Light Aura pool is about half as bright and reaches much wider; it breathes in brightness only (no scale), and
+     clipLightsToBoard (arena_app.js) clips every light pool to the battlefield's own edge. */
+  .board-card .unit-light.ul-aura{width:330%; height:270%; background:radial-gradient(closest-side, rgba(255,238,178,.38) 0, rgba(255,226,150,.27) 35%, rgba(255,208,125,.12) 66%, rgba(255,200,110,.04) 86%, rgba(255,200,110,0) 100%); animation:ulBreathe 3.2s ease-in-out infinite;}
   .board-card .unit-light.ul-fire{width:205%; height:175%; background:radial-gradient(closest-side, rgba(255,170,80,.7) 0, rgba(255,130,50,.5) 45%, rgba(255,100,30,.2) 75%, rgba(255,90,30,0) 100%); animation:ulFlicker 1.6s steps(5) infinite;}
   .battlefield:not(.is-dark-scene) .board-card .unit-light{animation:none;}
-  @keyframes ulBreathe{0%,100%{transform:translate(-50%,-50%) scale(1);} 50%{transform:translate(-50%,-50%) scale(1.06);}}
+  @keyframes ulBreathe{0%,100%{opacity:.86;} 50%{opacity:1;}}
   @keyframes ulFlicker{0%,100%{opacity:1;} 30%{opacity:.82;} 55%{opacity:.95;} 80%{opacity:.78;}}
   .battlefield.bf-lantern::after{-webkit-mask-image:var(--unit-lights, none); mask-image:var(--unit-lights, none); -webkit-mask-composite:source-in; mask-composite:intersect;}
   @media (prefers-reduced-motion: reduce){ .board-card .unit-light{animation:none !important; transition:none;} }
@@ -8687,6 +8751,26 @@
   body.bw-holding .bounty-bubble, body.bounty-peek .bounty-bubble{opacity:1; transform:translate(-50%,0) scale(1); animation:bountyBob 2.4s ease-in-out .3s infinite;}
   body.bounty-peek:not(.bw-holding) .bounty-bubble{transition:opacity .5s ease, transform .3s cubic-bezier(.3,1.5,.5,1);}
   .bw-resolving .bounty-bubble{opacity:0 !important;}
+  /* 2026-10-16 (fight flow, user: "Don't let me be able to play or pitch cards during upkeep"): while the round-start effects play,
+     your hand dims and takes no input, and an "Upkeep" chip sits on the field (resolveRoundCore, showUpkeepChip). */
+  html.bw-upkeep #handStrip, html.bw-upkeep #dropDiscard, html.bw-upkeep #skipZone, html.bw-upkeep #leaderWidget{pointer-events:none;}
+  html.bw-upkeep #handStrip .card-tile{filter:grayscale(.55) brightness(.82); transition:filter .2s ease;}
+  .upkeep-chip{position:absolute; left:50%; bottom:24px; transform:translateX(-50%); z-index:8; pointer-events:none; padding:4px 12px; border-radius:999px; background:rgba(28,20,12,.84); color:#ffe9b8; font:800 13px/1.2 'Baloo 2',system-ui,sans-serif; white-space:nowrap; box-shadow:0 0 0 2px rgba(255,214,120,.55), 0 6px 14px rgba(0,0,0,.35); animation:upkeepChipIn .18s ease-out both;}
+  @keyframes upkeepChipIn{from{opacity:0; transform:translate(-50%,6px);} to{opacity:1; transform:translate(-50%,0);}}
+  /* 2026-10-16 (user: "triggering of the a trigged effect: the lightning emoji glows only. no lightning vfx"): triggerFiredVfx lights
+     the card's own ⚡ badge for that trigger, nothing else. */
+  .ab-trig .ab-bolt{display:inline-block;}
+  .ab-trig.is-firing .ab-bolt{animation:boltFire .85s ease-out;}
+  @keyframes boltFire{0%{transform:scale(1); filter:none;} 18%{transform:scale(1.9); filter:brightness(2.4) drop-shadow(0 0 6px #ffe27a) drop-shadow(0 0 12px rgba(255,200,60,.9));} 60%{transform:scale(1.25); filter:brightness(1.6) drop-shadow(0 0 5px #ffe27a);} 100%{transform:none; filter:none;}}
+  /* 2026-10-16 (user: "there is a cross animation on the target. Then the X moves into the attacking card"): killMarkVfx */
+  .kill-mark{position:fixed; left:0; top:0; z-index:560; pointer-events:none; font:900 34px/1 'Baloo 2',system-ui,sans-serif; color:#ff3b3b; -webkit-text-stroke:2px #fff2e8; paint-order:stroke fill; text-shadow:0 2px 0 #5a0d0d, 0 0 12px rgba(255,60,60,.85); will-change:transform,opacity;}
+  .card-tile.kill-gain{animation:killGain .5s ease-out;}
+  @keyframes killGain{0%{box-shadow:0 0 0 0 rgba(255,80,60,0);} 30%{box-shadow:0 0 0 3px rgba(255,90,70,.95), 0 0 18px rgba(255,80,60,.8);} 100%{box-shadow:0 0 0 0 rgba(255,80,60,0);}}
+  /* 2026-10-16 (user: "The log itself should have an "x" on it."): the battle log's close button */
+  .battle-log-toggle .battle-log-x{margin-left:auto; margin-right:6px; width:26px; height:26px; border-radius:50%; border:0; background:rgba(0,0,0,.08); color:inherit; font:800 14px/26px system-ui,sans-serif; text-align:center; padding:0; cursor:pointer;}
+  .battle-log-toggle .battle-log-x:hover, .battle-log-toggle .battle-log-x:focus-visible{background:rgba(0,0,0,.18);}
+  .battle-log-panel.collapsed .battle-log-x, .battle-log-panel.testkit-log .battle-log-x{display:none;}
+  @media (prefers-reduced-motion: reduce){ .ab-trig.is-firing .ab-bolt{animation:none; filter:brightness(1.8) drop-shadow(0 0 6px #ffe27a);} .upkeep-chip, .card-tile.kill-gain{animation:none;} }
   /* lift the board above the castle HP strip while bubbles show, so a bubble isn't cut by it */
   body.bw-holding .battlefield-inner:has(.bounty-bubble), body.bounty-peek .battlefield-inner:has(.bounty-bubble){position:relative; z-index:4;}
   @keyframes bountyBob{50%{transform:translate(-50%,-3px) scale(1);}}
@@ -9588,7 +9672,19 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 /* 2026-10-13 (user: "The first clear rewards section should wrap around its contents, not be left hanging"; "Move the 'B'
    beside the Lock"; the card didn't fit its locked deck): the reward box is as wide as what's in it, the locked slab is
    shorter with the rank right beside the lock, and the panel is allowed to be taller. */
-.conquest-node-panel .cnp-rw{display:inline-grid; grid-template-columns:repeat(2, auto); justify-content:center; align-items:center; width:auto; flex:0 0 auto;}
+.conquest-node-panel .cnp-rw{display:inline-grid; grid-template-columns:repeat(var(--rw-cols, 2), auto); justify-content:center; justify-items:center; align-items:center; width:auto; flex:0 0 auto;} /* 2026-10-16: one column per block (an empty 2nd column left a gap on the right) */
+/* 2026-10-16 (results and rewards): a card reward that needs a rank wears its emblem on its corner; a pack shows bare, its name and
+   "Faction rewards!" in a small hover card. */
+.cnp-rw .cnp-rw-card .rank-hex.cnp-rw-rank{position:absolute !important; top:-7px !important; right:-7px !important; left:auto !important; width:24px; height:27px; rotate:-8deg; margin:0 !important; z-index:3; pointer-events:none; transform:none !important;}
+.cnp-rw .cnp-rw-card .rank-hex.cnp-rw-rank b{font-size:14px !important;}
+.cnp-rw .cnp-rw-card.cnp-rw-pack.is-bare{width:auto; padding:2px; background:none; box-shadow:none; gap:0;}
+.cnp-rw .cnp-rw-pack.is-bare .booster{--bw:40px;}
+.cnp-rw-pack.is-bare:hover, .cnp-rw-pack.is-bare:focus-visible{outline:2px solid #ffd98a; outline-offset:2px; border-radius:6px;}
+.cnp-rw-zoom.cnp-rw-tip{width:auto; max-width:220px; padding:8px 12px; border-radius:10px; background:#2a2216; color:#fff3dc; border:1px solid rgba(255,214,120,.55); font-family:'Baloo 2',system-ui,sans-serif; display:flex; flex-direction:column; align-items:center; gap:1px; text-align:center;}
+.cnp-rw-zoom.cnp-rw-tip b{font-size:14px;} .cnp-rw-zoom.cnp-rw-tip small{font-size:12px; color:#ffd98a; font-weight:800;}
+/* 2026-10-16 (user: "The First clear label, if its larger than 80% of the rewards div, then just replaced it with a tick ONLY") */
+.cnp-rw.label-tick .cnp-rw-label .cnp-rw-word{display:none;}
+.cnp-rw.label-tick .cnp-rw-label .cnp-rw-ok{margin-left:0;}
 .conquest-node-panel .cnp-rw .cnp-rw-label{grid-column:1 / -1;}
 .conquest-node-panel .cnp-deck-locked{height:52px;}
 .conquest-node-panel .cnp-deck-locked .rank-hex{position:relative !important; inset:auto !important; transform:scale(.72) !important; margin:0 !important;}
@@ -10172,6 +10268,42 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
     .home-menu-title{margin:0 0 4px;}
     .home-menu .player-level{margin-top:-2px !important; margin-bottom:6px !important;}
   }
+  /* ===== Card front frames (2026-10-16, user: "When I talked about backing in the previous chat, I meant the front card frame. To
+     have 4 types. the structure and units should roughly look similar, but the structure looks rickety.") =====
+     Every card face gets a .cframe child (cardTileHTML) wearing the pixel-art frame of its kind (.fr-unit / .fr-structure /
+     .fr-castle / .fr-field, from cardFrameKind). The image (tools/make_card_frames.py) is a 126x156 grid at 3x: a 120x150 card
+     inside a 3px margin, top band 8, sides 7, stat plate 28. It is laid on as a 9-slice with border-image, so a card of another
+     shape keeps undistorted corners; the element reaches 2.5%/2% past the padding box so the margin lands on the rarity border
+     (only the structure's plank ends and rope use it). Layering: art (.ico, 0) < rarity band = frame (1) < name scroll (2) <
+     stat pills and badges (3) < the legendary gold rim (::before, 3) — so rarity borders, leader rings and the gold rim all stay
+     on top, and the name scroll, stats and skill strip keep their places. */
+  .card-tile > .cframe{position:absolute; z-index:1; left:-2.5%; right:-2.5%; top:-2%; bottom:-2%; display:block; pointer-events:none; box-sizing:border-box;
+    border:0 solid transparent; border-image-source:var(--fr-unit); border-image-slice:33 30 93 30; border-image-width:7.051% 7.937% 19.872% 7.937%;
+    border-image-repeat:stretch; image-rendering:pixelated;}
+  .card-tile.fr-structure > .cframe{border-image-source:var(--fr-structure); border-image-slice:39 36 93 36; border-image-width:8.333% 9.524% 19.872% 9.524%;} /* thicker boards: top 10, sides 9 */
+  .card-tile.fr-castle > .cframe{border-image-source:var(--fr-castle);}
+  .card-tile.fr-field > .cframe{border-image-source:var(--fr-field);}
+  /* full-bleed art keeps its art to the bottom edge: the plate slice shrinks to a plain band */
+  .card-tile.art-extended > .cframe{border-image-slice:33 30 33 30; border-image-width:7.051% 7.937% 7.051% 7.937%;}
+  .card-tile.fr-structure.art-extended > .cframe{border-image-slice:39 36 39 36; border-image-width:8.333% 9.524% 8.333% 9.524%;}
+  /* text that had no layer of its own would sit under the frame: lift it above */
+  .card-tile .stats.field-stats, .card-tile .stats.eq-stats{z-index:3;}
+  /* the rickety one: corners not quite square, and the whole frame a hair off true */
+  .card-tile.fr-structure{border-radius:9px 13px 10px 12px / 12px 9px 13px 10px;}
+  .card-tile.fr-structure > .cframe{transform:rotate(-.6deg);}
+  /* Archetype frames (2026-10-16, user: "I think ecclesia, devilry, scrapper and archetypal cards having their own card frame is cool.
+     (then we can remove the top right hand corner context symbol for those...)"): .ar-<key> (cardFrameClasses) swaps in the
+     archetype's image. Units wear the archetype frame (same 8/7/28 slices as the unit frame); structures keep their board slices
+     and rickety shape, in the archetype's materials. */
+  .card-tile.fr-unit.ar-devilry > .cframe{border-image-source:var(--fr-a-devilry);} .card-tile.fr-structure.ar-devilry > .cframe{border-image-source:var(--fr-s-devilry);}
+  .card-tile.fr-unit.ar-grace > .cframe{border-image-source:var(--fr-a-grace);} .card-tile.fr-structure.ar-grace > .cframe{border-image-source:var(--fr-s-grace);}
+  .card-tile.fr-unit.ar-exile > .cframe{border-image-source:var(--fr-a-exile);} .card-tile.fr-structure.ar-exile > .cframe{border-image-source:var(--fr-s-exile);}
+  .card-tile.fr-unit.ar-evolution > .cframe{border-image-source:var(--fr-a-evolution);} .card-tile.fr-structure.ar-evolution > .cframe{border-image-source:var(--fr-s-evolution);}
+  .card-tile.fr-unit.ar-exiled > .cframe{border-image-source:var(--fr-a-exiled);} .card-tile.fr-structure.ar-exiled > .cframe{border-image-source:var(--fr-s-exiled);}
+  .card-tile.fr-unit.ar-forgotten > .cframe{border-image-source:var(--fr-a-forgotten);} .card-tile.fr-structure.ar-forgotten > .cframe{border-image-source:var(--fr-s-forgotten);}
+  .card-tile.fr-unit.ar-ancient > .cframe{border-image-source:var(--fr-a-ancient);} .card-tile.fr-structure.ar-ancient > .cframe{border-image-source:var(--fr-s-ancient);}
+  .card-tile.fr-unit.ar-outer > .cframe{border-image-source:var(--fr-a-outer);} .card-tile.fr-structure.ar-outer > .cframe{border-image-source:var(--fr-s-outer);}
+  .card-tile.fr-unit.ar-void > .cframe{border-image-source:var(--fr-a-void);} .card-tile.fr-structure.ar-void > .cframe{border-image-source:var(--fr-s-void);}
 
 , each key added once), never into
      arena_template.html. Prefix classes and keyframes with fxa- so batches can't collide.
@@ -10641,7 +10773,8 @@ M.iceArrow = function(shooter, target, o){
   return done(draw + flight + 800);
 };
 // Volley: the archer looses three lofted arrows (SkillFX.volley) and a dark cloud of arrows arcs over and rains on the whole line.
-css('rain', `.fxa-rainarrow{width:2px; height:16px; background:linear-gradient(#3b2a1a, #1a120a); border-radius:1px;} .fxa-rainarrow::after{content:''; position:absolute; left:-3px; bottom:-3px; border:4px solid transparent; border-top:6px solid #c9c9c9;}`);
+// 2026-10-16 (user: "Arrow effect(s) are to be 30% smaller."): the rain arrows too (was 2 x 16 with a 4/6 px head)
+css('rain', `.fxa-rainarrow{width:1.5px; height:11px; background:linear-gradient(#3b2a1a, #1a120a); border-radius:1px;} .fxa-rainarrow::after{content:''; position:absolute; left:-2.25px; bottom:-2px; border:3px solid transparent; border-top:4px solid #c9c9c9;}`);
 M.arrowRain = function(shooter, targets, o){
   o = o || {}; const g = G(), F = S(), list = (targets || []).filter(Boolean); if(!g || !shooter || !list.length) return done(0);
   if(F && F.volley && o.lead !== false) F.volley(shooter, list.slice(0, 3), {draw:o.draw || 200, flight:o.flight || 320});
@@ -11140,7 +11273,8 @@ M.momentumTrail = function(el){
 M.packHowl = function(el, mates){
   const g = G(); if(!g || !el) return done(0); const c = centre(tileOf(el));
   for(let i = 0; i < 3; i++) ring(c.x, c.r.top + c.h*.2, {color:'rgba(220,230,255,.85)', size:c.w*(1.2 + i*.5), sy:.6, w:3, dur:600, delay:i*120, dash:true});
-  const m = P('fxa-glyph', '🐺', c.x, c.r.top - 8, {scale:.3, opacity:0}); g.timeline({onComplete:()=> kill(m)}).to(m, {scale:1.1, opacity:1, y:'-=8', duration:.2, ease:'back.out(2)'}).to(m, {opacity:0, duration:.3, delay:.4});
+  // 2026-10-16 (user: "Pack bonus logo is 50% too big."): the 🐺 over the card is half the size it was (11 px, was the 22 px glyph)
+  const m = P('fxa-glyph', '🐺', c.x, c.r.top - 4, {scale:.3, opacity:0}); m.style.fontSize = '11px'; g.timeline({onComplete:()=> kill(m)}).to(m, {scale:1.1, opacity:1, y:'-=6', duration:.2, ease:'back.out(2)'}).to(m, {opacity:0, duration:.3, delay:.4});
   (mates || []).filter(x=> x && x !== el).slice(0, 4).forEach((x, j)=>{ const d = centre(tileOf(x));
     for(let k = 0; k < 3; k++){ const t = (k + 1)/4, p = P('fxa-p', '🐾', c.x + (d.x - c.x)*t, c.y + (d.y - c.y)*t, {opacity:0, scale:.7, rotation:angTo(c, d) + 90}); p.style.fontSize = '13px';
       g.timeline({delay:.15 + j*.1 + k*.08, onComplete:()=> kill(p)}).to(p, {opacity:.9, duration:.05}).to(p, {opacity:0, duration:.35, delay:.2}); }
@@ -11947,7 +12081,7 @@ M.exposeCash = function(el, opts){
   opts = opts || {}; let cp = null; const r = rectOf(el); if(!r) return Promise.resolve();
   const box = over(r, ''); box.style.overflow = 'visible'; const ret = bits(box, 1, ()=> ({cls:'fxb-reticle'}))[0];
   const sh = bits(box, 8, ()=> ({cls:'fxb-shard'}));
-  cp = chip(el, opts.amount ? `🎯 +${opts.amount}` : '🎯 Exposed!', 'expose', {hold:600});
+  cp = chip(el, opts.crit ? '🎯 Crit!' : opts.amount ? `🎯 +${opts.amount}` : '🎯 Exposed!', 'expose', {hold:600}); // 2026-10-16: an Expose counter makes the hit a crit
   return Promise.all([cp, run([box], opts, (t)=>{
     t.fromTo(ret, {xPercent:-50, yPercent:-50, scale:1.7, rotation:-45, opacity:0}, {scale:.75, rotation:0, opacity:1, duration:.22, ease:'power3.in'}).call(()=> call(opts.onImpact))
       .to(ret, {scale:.55, opacity:0, duration:.12});
@@ -12307,7 +12441,12 @@ css('sight', `.board-card.fxb-cantsee{position:relative;}
 .fxb-shut{position:absolute; left:50%; top:40%; z-index:7; width:58%; aspect-ratio:2/1; transform:translate(-50%,-50%); pointer-events:none;
   color:#e7e1ff; filter:drop-shadow(0 0 3px rgba(8,6,20,.95)) drop-shadow(0 0 7px rgba(120,100,220,.55));}
 .fxb-shut svg{width:100%; height:100%; display:block; overflow:visible;}
-.fxb-shut .lid{transform-origin:50% 40%; animation:fxbStrain var(--blink, 5s) var(--bd, 0s) ease-in-out infinite;}
+.fxb-shut .lid{transform-origin:50% 40%;}
+/* 2026-10-16 (user: "Night blindness effect - the eye: It should only blink at the start. Then it remains closed throughout. It only
+   blinks with a VERY low chance, like 1% per minute."): one strain-and-blink when the eye first appears on a unit, then shut; the
+   rare later blink is .is-blink, set by the watcher below (about 1% a minute per eye). */
+.fxb-shut.is-blink .lid{animation:fxbBlinkOnce 1.2s ease-in-out .15s 1 both;}
+@keyframes fxbBlinkOnce{0%,100%{transform:scaleY(1);} 30%{transform:scaleY(-.35);} 46%{transform:scaleY(1);} 62%{transform:scaleY(-.2);} 76%{transform:scaleY(1);}}
 @keyframes fxbStrain{0%,70%,100%{transform:scaleY(1);} 78%{transform:scaleY(-.35);} 84%{transform:scaleY(1);} 88%{transform:scaleY(-.2);} 92%{transform:scaleY(1);}}
 .fxb-why-blind .fxb-shade{opacity:.6;} .fxb-why-blind .fxb-shut{color:#fff; filter:drop-shadow(0 0 2px #1a1426) drop-shadow(0 0 6px rgba(30,20,60,.9));}
 .fxb-eyebadge.why-sun{color:#ffe4a0; border-color:rgba(255,220,140,.6);} .fxb-eyebadge.why-night{color:#cfd8ff;}
@@ -12333,9 +12472,11 @@ css('sight', `.board-card.fxb-cantsee{position:relative;}
 .fxb-darkeyes::before{left:0;} .fxb-darkeyes::after{right:0;}
 @keyframes fxbBlink{0%,46%,54%,100%{transform:scaleY(1); opacity:1;} 50%{transform:scaleY(.08); opacity:.6;}}
 .board-card.fxb-eyes-on .card-tile .ico{filter:brightness(.8);}
-.fxb-pool{position:absolute; left:50%; top:50%; width:290%; height:210%; z-index:0; pointer-events:none; transform:translate(-50%,-50%); border-radius:50%;
-  background:radial-gradient(ellipse at 50% 50%, rgba(255,205,120,.42), rgba(255,170,70,.18) 38%, rgba(255,150,40,0) 66%); mix-blend-mode:screen; animation:fxbFlicker 2.4s ease-in-out infinite;}
-@keyframes fxbFlicker{0%,100%{opacity:.9; transform:translate(-50%,-50%) scale(1);} 30%{opacity:.75;} 55%{opacity:1; transform:translate(-50%,-50%) scale(1.03);} 70%{opacity:.82;}}
+/* 2026-10-16 (user: "Lantern glow is too bright. but it is also not 'wide' enough. And the brightness shouldnt cut past the battlefield
+   board"): the carrier's pool is about half as bright and wider; it flickers in brightness only, and the game clips it to the board. */
+.fxb-pool{position:absolute; left:50%; top:50%; width:400%; height:300%; z-index:0; pointer-events:none; transform:translate(-50%,-50%); border-radius:50%;
+  background:radial-gradient(ellipse at 50% 50%, rgba(255,205,120,.22), rgba(255,175,80,.11) 36%, rgba(255,160,60,.04) 58%, rgba(255,150,40,0) 70%); mix-blend-mode:screen; animation:fxbFlicker 2.4s ease-in-out infinite;}
+@keyframes fxbFlicker{0%,100%{opacity:.9;} 30%{opacity:.76;} 55%{opacity:1;} 70%{opacity:.84;}}
 .board-card.fxb-lit .card-tile{box-shadow:0 0 0 1px rgba(255,200,110,.35), 0 0 14px rgba(255,180,80,.28);}
 @media (prefers-reduced-motion: reduce){ .fxb-fogart, .fxb-glare::before, .fxb-mooncloud, .fxb-darkeyes::before, .fxb-darkeyes::after, .fxb-pool, .fxb-shut .lid{animation:none !important;} }`);
 // The shut eye of look A: a closed lid with lashes (the .lid group flips up a crack when it strains to see).
@@ -12344,22 +12485,34 @@ const SHUT_SVG = '<svg viewBox="0 0 48 24"><g class="lid"><path d="M4 8 Q24 26 4
 const SIGHT_CLS = ['fxb-cantsee', 'fxb-look-A', 'fxb-look-B', 'fxb-look-C', 'fxb-why-dark', 'fxb-why-sun', 'fxb-why-night', 'fxb-why-blind', 'fxb-eyes-on', 'fxb-lit', 'fxb-lantern'];
 const SIGHT_SEL = '.fxb-eyebadge, .fxb-fold, .fxb-fogart, .fxb-glare, .fxb-mooncloud, .fxb-darkeyes, .fxb-pool, .fxb-shade, .fxb-shut';
 M.sightLook = 'A';
+// The shut eye's blinks (2026-10-16): it blinks once when it first shows on a unit (a board re-render doesn't count as new: the unit
+// is remembered by uid for 20 minutes), then stays shut; every 10 s each eye on screen has a 1-in-600 chance (about 1% a minute).
+const eyeSeen = new Map();
+function blinkEye(e){ e.classList.remove('is-blink'); void e.offsetWidth; e.classList.add('is-blink'); setTimeout(()=> e.classList.remove('is-blink'), 1500); }
+function eyeIntro(card, e){ const id = card && card.dataset && card.dataset.uid, now = Date.now();
+  if(id != null && eyeSeen.has(id) && now - eyeSeen.get(id) < 20*60*1000) return;
+  if(id != null){ eyeSeen.set(id, now); if(eyeSeen.size > 300) eyeSeen.clear(); }
+  blinkEye(e); }
+if(typeof setInterval === 'function') setInterval(()=>{ try{ if(document.hidden) return; document.querySelectorAll('.fxb-shut').forEach(e=>{ if(Math.random() < 1/600) blinkEye(e); }); }catch(err){} }, 10000);
 // mark(el, kind): kind 'dark' | 'sun' | 'night' (can't see) | 'eyes' (Darksight in the dark) | 'lantern' (the carrier's light pool) | 'lit' | null (clear)
 M.markSight = function(el, kind, o){
   o = o || {}; if(!el || !el.classList) return; const look = o.look || M.sightLook || 'A';
   const sig = kind ? kind + ':' + look : '';
   if((el.dataset.fxbSight || '') === sig) return; // nothing changed: leave the running animations alone
   el.classList.remove(...SIGHT_CLS); el.querySelectorAll(':scope > ' + SIGHT_SEL.split(', ').join(', :scope > ')).forEach(n=> n.remove());
+  { const tl = tileOf(el); if(tl && tl !== el) tl.querySelectorAll(':scope > .fxb-darkeyes').forEach(n=> n.remove()); }
   el.dataset.fxbSight = sig; if(!kind){ delete el.dataset.fxbSight; return; }
   const add = (cls, html)=>{ const i = document.createElement('i'); i.className = cls; i.setAttribute('aria-hidden', 'true'); if(html) i.innerHTML = html; el.appendChild(i); return i; };
-  if(kind === 'eyes'){ el.classList.add('fxb-eyes-on'); const e = add('fxb-darkeyes'); e.style.setProperty('--blink', rnd(4, 7).toFixed(1) + 's'); e.style.setProperty('--bd', (-rnd(0, 6)).toFixed(1) + 's'); return; }
+  // 2026-10-16 (user: "The dark sight vfx is not centered. its abit to the left."): the eyes sit in the card tile itself. On the
+  // .board-card they were centred on the wrapper, while a flyer's tile hovers a few px to the right of it (its flight offset).
+  if(kind === 'eyes'){ el.classList.add('fxb-eyes-on'); const e = add('fxb-darkeyes'); { const tl = tileOf(el); if(tl && tl !== el) tl.appendChild(e); } e.style.setProperty('--blink', rnd(4, 7).toFixed(1) + 's'); e.style.setProperty('--bd', (-rnd(0, 6)).toFixed(1) + 's'); return; }
   if(kind === 'lantern'){ el.classList.add('fxb-lantern', 'fxb-lit'); el.insertBefore(add('fxb-pool'), el.firstChild); return; } // first, so the card paints over its own light
   if(kind === 'lit'){ el.classList.add('fxb-lit'); return; }
   el.classList.add('fxb-cantsee', 'fxb-look-' + look, 'fxb-why-' + kind);
   const b = (look !== 'A' || kind === 'sun') ? add('fxb-eyebadge why-' + kind, EYE_SVG[kind] || EYE_SVG.dark) : {}; b.title = kind === 'sun' ? 'Sun-shy: dazzled by day' : kind === 'night' ? 'Night-blind: can\'t see at night' : kind === 'blind' ? 'Blind: misses half its swings' : 'Can\'t see in the dark';
   if(kind === 'sun') add('fxb-glare'); else if(kind === 'night') add('fxb-mooncloud');
   else if(look === 'B') add('fxb-fold'); else if(look === 'C') add('fxb-fogart');
-  if(look === 'A' && kind !== 'sun'){ if(kind !== 'night') add('fxb-shade'); const e = add('fxb-shut', SHUT_SVG); e.style.setProperty('--blink', rnd(4.5, 7.5).toFixed(1) + 's'); e.style.setProperty('--bd', (-rnd(0, 7)).toFixed(1) + 's'); }
+  if(look === 'A' && kind !== 'sun'){ if(kind !== 'night') add('fxb-shade'); const e = add('fxb-shut', SHUT_SVG); eyeIntro(el, e); }
 };
 // Work out who can see on the board from the DOM, the card defs, the field rules and the phase (mirrors the engine's
 // sightMiss: Darksight sees in the dark; a living Lantern lights its side (absolute darkness still dims it); Sun-shy is
@@ -12377,7 +12530,9 @@ M.sightSync = function(m, env){
   const lit = {true:false, false:false}; cards.forEach(c=>{ if(alive(c) && eff(c).lantern) lit[mineOf(c)] = true; });
   cards.forEach(c=>{ const e = eff(c), side = mineOf(c); let k = null;
     if(dk){ if(e.darksight) k = 'eyes'; else if(e.lantern) k = 'lantern'; else if(e.keenSense) k = null; else if(lit[side]) k = 'lit'; else k = 'dark'; }
-    if(!k || k === 'lit'){ if(ph === 'day' && e.sunshy) k = 'sun'; else if(ph === 'night' && e.nightblind && !lit[side]) k = 'night'; }
+    // 2026-10-16 (engine sightMiss): an enemy Illuminate unit directly facing a Night-blind one (same column) lights it too
+    const facingLit = ()=>{ const r = c.getBoundingClientRect(), cx = r.left + r.width/2; return cards.some(o=> o !== c && mineOf(o) !== side && alive(o) && eff(o).lantern && (()=>{ const q = o.getBoundingClientRect(); return Math.abs(q.left + q.width/2 - cx) < r.width*.5; })()); };
+    if(!k || k === 'lit'){ if(ph === 'day' && e.sunshy) k = 'sun'; else if(ph === 'night' && e.nightblind && !lit[side] && !facingLit()) k = 'night'; }
     if(!dk && e.lantern && ph === 'night') k = k || 'lantern';
     if((!k || k === 'lit' || k === 'eyes') && c.classList.contains('is-blind') && !e.keenSense) k = 'blind'; // 2026-10-15: Blind status, while it lasts
     M.markSight(c, k);
@@ -12542,13 +12697,16 @@ M.dawnDraw = function(host, opts){
 // Dusk (wt-dusk, the tone only): the sun sinks in the west, long shadows stretch across the felt, warm turns violet.
 M.dusk = function(host, opts){
   opts = Object.assign({}, opts, host && host.nodeType ? {host} : {}); const {r, box} = skyBox(opts);
-  const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'inset:0; background:linear-gradient(90deg, rgba(255,140,60,.5), rgba(190,90,140,.25) 50%, rgba(80,60,140,.15));'}))[0];
-  const sun = bits(box, 1, ()=> ({cls:'fxb-disc', style:'left:5%; top:35%; background:radial-gradient(circle, #fff1c0, #ff9a3a 60%, #e0582a); box-shadow:0 0 26px 10px rgba(255,140,60,.5);'}))[0];
-  const sh = bits(box, 4, i=> ({cls:'fxb-bit', style:`left:0; top:${18 + i*20}%; width:100%; height:9%; background:linear-gradient(90deg, rgba(40,20,50,0), rgba(40,20,50,.35) 30%, rgba(40,20,50,0)); transform-origin:0 50%;`}));
+  // 2026-10-16 (user: "The sun thing - i think the static rectangle bars across the screen might look better than the setting sun
+  // right now. Otherwise make the setting sun MUCH softer and less obvious - it's not supposed to be seeable"): no sun disc any more.
+  // The long shadow bars stay, but static: they fade in where they lie (no stretching across) and fade out, over a faint warm tint
+  // from the west (the light's direction) that is much weaker than the old wash.
+  void r;
+  const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'inset:0; background:linear-gradient(90deg, rgba(255,150,70,.22), rgba(200,110,140,.08) 45%, rgba(80,60,140,0) 80%);'}))[0];
+  const sh = bits(box, 4, i=> ({cls:'fxb-bit', style:`left:0; top:${18 + i*20}%; width:100%; height:9%; background:linear-gradient(90deg, rgba(40,20,50,0), rgba(40,20,50,.35) 30%, rgba(40,20,50,0));`}));
   return run([box], opts, (t)=>{
-    t.fromTo(w, {opacity:0}, {opacity:1, duration:.5}).to(w, {opacity:0, duration:.6}, 1.2)
-      .fromTo(sun, {y:0, opacity:1}, {y:r.height*.45, opacity:0, duration:1.4, ease:'power1.in'}, 0)
-      .fromTo(sh, {scaleX:0, opacity:0}, {scaleX:1.1, opacity:1, duration:.8, stagger:.06, ease:'power2.out'}, .2).to(sh, {opacity:0, duration:.5}, 1.1);
+    t.fromTo(w, {opacity:0}, {opacity:1, duration:.6}).to(w, {opacity:0, duration:.7}, 1.3)
+      .fromTo(sh, {opacity:0}, {opacity:1, duration:.6, stagger:.05, ease:'sine.out'}, .15).to(sh, {opacity:0, duration:.6}, 1.2);
   });
 };
 // Twilight (wt-twilight, was announced as "Day breaks"): rose-violet wash; the sun and the moon cross paths overhead and
@@ -13101,7 +13259,7 @@ M.onEvent = function(ev, env){
     // Hit modifiers the number alone doesn't explain.
     if(rcA.staggered > 0 && !ev.ranged) later2(t=> M.staggerWeakHit(t, {att:el(ev.attUid)}));
     if(rcT.shocked > 0 && ev.dmg > 0) later2(t=> M.shockSpark(t));
-    if(mo.exposed.has(ev.targetUid)){ mo.exposed.delete(ev.targetUid); later2(t=> M.exposeCash(t, {amount:1})); }
+    if(mo.exposed.has(ev.targetUid)){ mo.exposed.delete(ev.targetUid); later2(t=> M.exposeCash(t, {crit:true})); } // 2026-10-16 (user: "that hit is guaranteed a crit")
     if(ev.dmg > 0 && ev.dmgType !== 'magic' && te.shade && (dk || phaseOf(m) === 'night')) later2(t=> M.shadeNight(t));
     if(ae.supreme && (Number(te.armor) > 0 || rcT.shellArmor > 0 || rcT.tempHp > 0 || rcT.petrified || Number(te.scare) > 0 || rcT.shield > 0)) later2(t=> M.wardCrush(t));
     { const rl = [...(td.resist || []), ...(te.resist || []), ...(te.dry ? ['heat'] : [])], wl = [...(te.weakness || []), ...(te.rabid ? ['swimmer', 'water'] : [])];
@@ -13170,13 +13328,11 @@ M.onEvent = function(ev, env){
 
 // 2026-10-15: the miss float per darkness level (dark-*-miss: every level used to say "🌙 Miss!"). arena_app.js's blindMiss
 // float asks for this text when the miss was a sight miss (ev.night); null keeps the old text.
-const MISS_TEXT = {dark:'🌑 Dark miss', pitch:'⬛ Pitch miss!', absolute:'🕳️ Void miss!'};
+// 2026-10-16 (user: "No need to say "Dark Miss" just say Miss! (on the opposing card, not on the attacking card)"): every sight miss
+// (the dark at any level, Sun-shy, Night-blind) reads just "Miss!"; arena_app.js floats it on the unit that was swung at.
+const MISS_TEXT = {dark:'Miss!', pitch:'Miss!', absolute:'Miss!'};
 M.missText = function(ev, m){
-  if(!ev || !ev.night) return null; const e = effOf(defsOf(null), ev.attDefId), dk = darkLvl(m), ph = phaseOf(m);
-  if(dk && !e.darksight) return MISS_TEXT[dk] || MISS_TEXT.dark;
-  if(ph === 'day' && e.sunshy) return '☀️ Dazzled!';
-  if(ph === 'night' && e.nightblind) return '🌙 Night-blind!';
-  return null;
+  if(!ev || !ev.night) return null; return 'Miss!';
 };
 
 // Non-battle moments (one fxHook line each in arena_app.js).
@@ -14409,12 +14565,15 @@ M.castleHerbHeal = function(castle, target, opts){
   });
 };
 // Herb Refinery's bitter brew: a flask is lobbed from the castle and splashes the enemy in purple-green.
+// 2026-10-16 (user: "The refinery should visibly throw a potion emoji at the enemy (very slight arc) ... Make this happen faster"):
+// a bigger 🧪 on a shallow arc (26 px above the straight line, was 80) with a lazy quarter-spin, in 0.33 s (was 0.42).
 M.castleHerbBane = function(castle, target, opts){
-  opts = opts || {}; const ct = castleTile(castle), tt = tileOf(target); if(!ct || !tt) return Promise.resolve();
+  opts = opts || {}; const ct = castleTile(castle), tt = tileOf(target); if(!ct || !tt || !ct.isConnected || !tt.isConnected) return Promise.resolve();
   return run(opts, (tl, mk)=>{
-    const a = centre(ct), b = centre(tt), f = mk('fxc-g fxc-flask', '🧪'), st = {k:0}, p0 = {x:a.x, y:a.r.top + a.h*.2}, mid = {x:(p0.x + b.x)/2, y:Math.min(p0.y, b.y) - 80}, fl = (opts.flight || 420)/1000;
-    tl.set(f, {x:p0.x, y:p0.y, xPercent:-50, yPercent:-50, opacity:1}, 0)
-      .to(st, {k:1, duration:fl, ease:'none', onUpdate:()=>{ const k = st.k, q = 1 - k; gsap.set(f, {x:q*q*p0.x + 2*q*k*mid.x + k*k*b.x, y:q*q*p0.y + 2*q*k*mid.y + k*k*b.y, rotation:k*540}); }}, 0).set(f, {opacity:0}, fl);
+    const a = centre(ct), b = centre(tt), f = mk('fxc-g fxc-flask', '🧪'), st = {k:0}, p0 = {x:a.x, y:a.r.top + a.h*.2}, mid = {x:(p0.x + b.x)/2, y:(p0.y + b.y)/2 - 26}, fl = (opts.flight || 330)/1000;
+    f.style.fontSize = '30px';
+    tl.set(f, {x:p0.x, y:p0.y, xPercent:-50, yPercent:-50, opacity:1, scale:.8}, 0)
+      .to(st, {k:1, duration:fl, ease:'none', onUpdate:()=>{ const k = st.k, q = 1 - k; gsap.set(f, {x:q*q*p0.x + 2*q*k*mid.x + k*k*b.x, y:q*q*p0.y + 2*q*k*mid.y + k*k*b.y, rotation:k*160 - 20, scale:.8 + k*.3}); }}, 0).set(f, {opacity:0}, fl);
     flashAt(tl, mk, fl, b.x, b.y, b.w*1.4, b.w*1.4, 'rgba(150,90,200,.85)', .3);
     spray(tl, mk, fl, b.x, b.y, {n:12, colors:['#9b5bd0', '#7dbb3a', '#c9a6ff'], size:[3, 7], dist:[20, 50], dur:[.35, .55], gravity:24});
     puffs(tl, mk, fl + .05, b.x, b.y, {n:3, color:'rgba(120,180,60,.55)', w:b.w*.5, rise:-24, size:[16, 22]});
@@ -14876,7 +15035,8 @@ M.deathPlan = function(el, uid, env){
     const leader = (b && b.classList.contains('is-leader')) || (m && String(m.leaderUid) === String(uid)) || LEADERS.has(String(uid)) || archOf(d).includes('King');
     if(leader){ if(!plan.look && !token) plan.look = 'kingFall'; else plan.addons.push('leaderFall'); }
     const t = tileOf(el); if(t && (t.classList.contains('is-shiny') || t.classList.contains('is-holo'))) plan.addons.push('foilPeel');
-    if(!token && LASTDMG.has(String(uid))) plan.addons.push('lethalStamp');
+    // 2026-10-16 (user: "For killing blows, no need to put the additiona - N X"): the "−N ✖" stamp is gone. A killer with an on-kill
+    // trigger gets its own ✖ that flies into it instead (arena_app.js, killMarkVfx). M.lethalStamp stays for the Effects Lab.
   }
   return plan;
 };
@@ -14929,8 +15089,9 @@ M.onEvent = function(ev, env){
       const u = ev.targetUid;
       if(u != null && WAKE.get(String(u))){ WAKE.delete(String(u)); at(env.hitAtMs(ev) + 40, ()=>{ const e = el(u); if(e) M.wakeJolt(e, o); }); }
       if(ev.attDefId === 'castle' && u != null && CASTLE_SHOT.has(String(u))){ const kind = CASTLE_SHOT.get(String(u)); CASTLE_SHOT.delete(String(u));
-        const c = hqEl(ev.side), t = el(u), land = env.hitAtMs(ev), fl = kind === 'bane' ? 420 : 260;
-        if(c && t) at(Math.max(0, land - fl), ()=>{ const t2 = el(u); if(!t2) return; kind === 'bane' ? M.castleHerbBane(c, t2, {flight:fl}) : M.castleBolt(c, t2, {flight:fl}); }); }
+        const land = env.hitAtMs(ev), fl = Math.min(land, kind === 'bane' ? 330 : 260); // 2026-10-16: the brew flies faster (was 420)
+        // the castle and the target are looked up when the throw starts, so a re-render in between can't strand it
+        if(hqEl(ev.side) && el(u)) at(Math.max(0, land - fl), ()=>{ const c2 = hqEl(ev.side), t2 = el(u); if(!t2 || !c2) return; kind === 'bane' ? M.castleHerbBane(c2, t2, {flight:fl}) : M.castleBolt(c2, t2, {flight:fl}); }); }
       break; }
     case 'hitHQ': {
       const c = hqEl(ev.targetSide); if(!c) break; const land = env.hitAtMs(ev);
@@ -17830,6 +17991,11 @@ const tileOf = el=> (el && el.querySelector && el.querySelector('.card-tile')) |
 const centre = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width, h:r.height, r}; };
 const layer = (cls, html)=>{ const e = document.createElement('div'); e.className = 'sfx ' + cls; e.setAttribute('aria-hidden', 'true'); if(html) e.innerHTML = html; document.body.appendChild(e); return e; };
 const IMG = {arrow:'', fire:''};
+// The heal's plus, drawn (2026-10-16, user: "Heal's plusses look greyed out in the Effect lab - they should be green."): the ➕ emoji
+// is a grey glyph in the emoji fonts, so the rising pluses (and the heal number's icon, floatText) use this green one instead.
+const GREEN_PLUS = '<svg class="sfx-gplus" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" style="display:block; overflow:visible">'
+  + '<path d="M9.3 2.6h5.4v6.7h6.7v5.4h-6.7v6.7H9.3v-6.7H2.6V9.3h6.7z" fill="#46d768" stroke="#1d7f37" stroke-width="1.5" stroke-linejoin="round"/>'
+  + '<path d="M10.6 4.2h1.6v6.4H5.4" fill="none" stroke="#c9ffd4" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/></svg>';
 // delayedCall follows GSAP's global time scale (slow motion in the Lab, hit-stop in the game)
 const later = (fn, ms)=>{ const run = ()=>{ try{ fn && fn(); }catch(e){} }; const g = G(); if(g) g.delayedCall(Math.max(0, ms|0)/1000, run); else setTimeout(run, Math.max(0, ms|0)); };
 
@@ -17880,7 +18046,7 @@ function bowShot(shooter, target, o){
   const s = centre(shooter), aim = aimPoint(target);
   const ang = Math.atan2(aim.y - s.y, aim.x - s.x) * 180/Math.PI, rad = ang*Math.PI/180;
   const ux = Math.cos(rad), uy = Math.sin(rad);
-  const W = 76, H = 27;
+  const W = 53, H = 19; // 2026-10-16 (user: "Arrow effect(s) are to be 30% smaller."): was 76 x 27 (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, Pierce all fly this arrow)
   const src = o.fire ? (IMG.fire || IMG.arrow) : IMG.arrow;
   const a = layer('sfx-arrow' + (o.fire ? ' is-fire' : ''), src ? `<img src="${src}" alt="">` : '<span class="sfx-arrow-glyph">➶</span>');
   const tile = tileOf(shooter);
@@ -17895,7 +18061,7 @@ function bowShot(shooter, target, o){
   if(o.fire){
     const flame = layer('sfx-tipflame');
     const tipX = ()=> (g.getProperty(a, 'x') + W/2 + ux*W*0.46), tipY = ()=> (g.getProperty(a, 'y') + H/2 + uy*W*0.46);
-    const follow = ()=>{ g.set(flame, {x:tipX() - 9, y:tipY() - 9}); };
+    const follow = ()=>{ g.set(flame, {x:tipX() - 6.5, y:tipY() - 6.5}); };
     g.ticker.add(follow);
     g.fromTo(flame, {scale:.3, opacity:0}, {scale:1, opacity:1, duration:draw/1000, ease:'power1.out'});
     later(()=>{ g.ticker.remove(follow); flame.remove(); }, draw + 20);
@@ -17989,20 +18155,26 @@ function lightning(shooter, targets, o){
   svg.setAttribute('width', innerWidth); svg.setAttribute('height', innerHeight); document.body.appendChild(svg);
   const jag = (a, b)=>{ let d = `M${a.x},${a.y}`; const n = 7; for(let i = 1; i < n; i++){ const t = i/n; const nx = -(b.y - a.y), ny = b.x - a.x, L = Math.hypot(nx, ny)||1;
     const off = (Math.random()*2 - 1) * 16; d += ` L${a.x + (b.x - a.x)*t + nx/L*off},${a.y + (b.y - a.y)*t + ny/L*off}`; } return d + ` L${b.x},${b.y}`; };
+  // 2026-10-16 (user: "The chain lightning's bolts should start fading out as soon as they appear. The bolts should happen closer
+  // together (20%) faster."): each jump is its own group that starts fading the moment it is drawn (still re-jagging twice as it goes),
+  // and the jumps come 20% closer together (190 -> 152 ms).
+  const GAP = 152, g = G();
   chain.slice(1).forEach((t, i)=> later(()=>{
     const A = centre(chain[i]), B = centre(t);
-    for(let k = 0; k < 3; k++) later(()=>{ svg.innerHTML = `<path d="${jag(A, B)}" class="glow"/><path d="${jag(A, B)}"/>`; }, k*55);
+    const grp = document.createElementNS('http://www.w3.org/2000/svg', 'g'); svg.appendChild(grp);
+    for(let k = 0; k < 3; k++) later(()=>{ grp.innerHTML = `<path d="${jag(A, B)}" class="glow"/><path d="${jag(A, B)}"/>`; }, k*55);
+    if(g) g.fromTo(grp, {opacity:1}, {opacity:0, duration:.34, ease:'power1.in', onComplete:()=> grp.remove()}); else later(()=> grp.remove(), 300);
     later(()=>{ knock(t, Math.atan2(B.y - A.y, B.x - A.x)*180/Math.PI, .7); ring(B.x, B.y, 'sfx-zap', 70, 300); burst(B.x, B.y, 0, 'zap', 8);
       if(o.light) o.light(B.x, B.y, [0.75, 0.85, 1], true); if(o.onEachImpact) o.onEachImpact(t, i); }, 60);
-  }, i*190));
-  later(()=> svg.remove(), chain.length*190 + 220);
+  }, i*GAP));
+  later(()=> svg.remove(), chain.length*GAP + 420);
 }
 // Green rings and rising ➕ (2026-10-16, user: "The heal animation should include the + emoji."); the card brightens for a beat.
 function heal(target, o){
   o = o || {}; const g = G(); const c = centre(target);
   ring(c.x, c.y, 'sfx-heal', 110, 700); later(()=> ring(c.x, c.y, 'sfx-heal', 80, 600), 150);
   if(!g){ later(o.onDone, 600); return; }
-  for(let i = 0; i < 8; i++){ const p = layer('sfx-plus', '➕') /* the heal's ➕ (2026-10-16) */; g.set(p, {x:c.r.left + c.w*(0.15 + Math.random()*0.7), y:c.r.top + c.h*(0.5 + Math.random()*0.4), opacity:0, scale:.6});
+  for(let i = 0; i < 8; i++){ const p = layer('sfx-plus', GREEN_PLUS) /* the heal's plus, green (2026-10-16) */; g.set(p, {x:c.r.left + c.w*(0.15 + Math.random()*0.7), y:c.r.top + c.h*(0.5 + Math.random()*0.4), opacity:0, scale:.6});
     g.to(p, {y:'-=46', opacity:1, scale:1, duration:.35, delay:i*0.06, ease:'power1.out'}); g.to(p, {opacity:0, duration:.3, delay:i*0.06 + .45, onComplete:()=> p.remove()}); }
   const t = tileOf(target); g.fromTo(t, {filter:'brightness(1)'}, {filter:'brightness(1.35)', duration:.2, yoyo:true, repeat:1, clearProps:'filter', onComplete:o.onDone});
 }
@@ -18192,6 +18364,11 @@ const MORE_CSS = `
 .sfx-mist{width:70px; height:34px; border-radius:50%; background:radial-gradient(ellipse, rgba(225,245,255,.85), rgba(170,215,255,.35) 50%, rgba(170,215,255,0) 72%); filter:blur(3px);}
 .sfx-flake{color:#eaf6ff; font-size:11px; line-height:1; text-shadow:0 0 5px rgba(150,210,255,.95);}
 .sfx-rime{border-radius:12px; box-shadow:inset 0 0 0 2px rgba(220,240,255,.9), inset 0 0 28px 6px rgba(200,232,255,.85);}
+.sfx-flamebox{width:14px; height:26px; transform-origin:50% 100%;} .sfx-flamebox > .sfx-flame{display:block;}
+.sfx-immo{position:absolute; inset:0; pointer-events:none; z-index:12; border-radius:inherit;}
+.sfx-immo-haze{position:absolute; inset:0; border-radius:inherit;}
+.sfx-immo-f{position:absolute; bottom:-2px; width:14px; height:26px; transform-origin:50% 100%; display:block;} .sfx-immo-f > .sfx-flame{display:block;}
+.sfx-immo-e{position:absolute; bottom:8px; width:5px; height:5px; border-radius:50%; background:#ffc35a; box-shadow:0 0 8px 2px rgba(255,140,40,.8); display:block;}
 .sfx-flame{width:14px; height:26px; transform-origin:50% 100%; border-radius:50% 50% 45% 45% / 65% 65% 35% 35%; background:radial-gradient(ellipse at 50% 80%, #fff2b0 0, #ffb62e 35%, #f0521c 65%, rgba(200,40,10,0) 80%); filter:blur(.5px); animation:sfxFlick .14s steps(2) infinite alternate;}
 @keyframes sfxFlick{to{transform:scale(1.15, .88) skewX(6deg);}}
 /* 2026-10-15 (user: "The heat haze effect is nice - but needs to be redone abit. Looks too much like fax lines... maybe it's too thick,
@@ -18275,25 +18452,35 @@ function swarm(attacker, target, o){
   later(()=>{ knock(target, rnd(-120, -60), .7); ring(b.x, b.y, 'sfx-poison', 70, 380); call(o.onImpact); if(o.light) call(o.light, b.x, b.y, [1, .85, .35], false); }, fly*1000 + 120);
   later(()=> knock(target, rnd(60, 120), .45), fly*1000 + 320);
 }
-// Regenerate: green motes spiral in from around the card, then a soft heal ring and glow.
+// Regenerate (2026-10-16, user: "Regeneration's orbs should be completely transparent until and slowly fade in as they go into the
+// centre. Then the same +s from heal come about. I think the orb positions should start from the card rectangular border too, than
+// they just spin slightly, but mainly they descend into the centre. They are at peak opaqueness halfway into the descent. They fade
+// out as they go towards the centre."): the motes start spread along the card's rectangular edge, fully transparent; each sinks
+// toward the centre while turning only a little (about 30 degrees), its opacity rising to a peak halfway in and falling to nothing at
+// the centre (sin of the progress); then the heal's green pluses rise (healPlus) with a soft glow. opts.onDone fires as they start.
 function regen(target, o){
   o = o || {}; if(!ready() || !target){ later(o.onDone, 500); return; }
-  const g = G(), c = centre(target), n = 12;
+  const g = G(), c = centre(target), n = 14, dur = .95, P = 2*(c.w + c.h);
   for(let i = 0; i < n; i++){
-    const m = layer('sfx-mote'), st = {a:i/n*Math.PI*2, r:Math.max(c.w, c.h)*0.85};
-    g.set(m, {x:c.x + Math.cos(st.a)*st.r - 3, y:c.y + Math.sin(st.a)*st.r - 3, opacity:0, scale:.5});
-    g.timeline({delay:i*0.03, onComplete:()=> m.remove()})
-      .to(m, {opacity:1, scale:1, duration:.12})
-      .to(st, {a:st.a + Math.PI*1.4, r:6, duration:.6, ease:'power2.in', onUpdate:()=> g.set(m, {x:c.x + Math.cos(st.a)*st.r*0.75 - 3, y:c.y + Math.sin(st.a)*st.r - 3})}, 0)
-      .to(m, {opacity:0, scale:.3, duration:.12});
+    // a point on the card's border, spaced evenly round the perimeter with a little jitter
+    let d = ((i + rnd(.15, .85))/n)*P, ex, ey;
+    if(d < c.w){ ex = c.r.left + d; ey = c.r.top; }
+    else if(d < c.w + c.h){ ex = c.r.right; ey = c.r.top + (d - c.w); }
+    else if(d < 2*c.w + c.h){ ex = c.r.right - (d - c.w - c.h); ey = c.r.bottom; }
+    else { ex = c.r.left; ey = c.r.bottom - (d - 2*c.w - c.h); }
+    const m = layer('sfx-mote'), dx = ex - c.x, dy = ey - c.y, spin = rnd(.35, .6)*(i % 2 ? 1 : -1), st = {t:0};
+    const put = ()=>{ const k = 1 - st.t, a = spin*st.t, cs = Math.cos(a), sn = Math.sin(a);
+      g.set(m, {x:c.x + (dx*cs - dy*sn)*k - 3.5, y:c.y + (dx*sn + dy*cs)*k - 3.5, opacity:Math.sin(Math.PI*st.t), scale:1 - .45*st.t}); };
+    put();
+    g.to(st, {t:1, duration:dur, delay:i*.035, ease:'sine.inOut', onUpdate:put, onComplete:()=> m.remove()});
   }
   later(()=>{
-    // (2026-10-14, user: "Remove the green Z effect at the end": the zig-zag stitch line is gone; motes, ring and glow stay.)
-    ring(c.x, c.y, 'sfx-heal', c.w*1.3, 600);
-    g.fromTo(tileOf(target), {filter:'brightness(1) saturate(1)'}, {filter:'brightness(1.3) saturate(1.3)', duration:.22, yoyo:true, repeat:1, clearProps:'filter'});
+    // (2026-10-14, user: "Remove the green Z effect at the end": no stitch line.) The pluses from Heal, and a soft glow.
+    healPlus(target);
+    g.fromTo(tileOf(target), {filter:'brightness(1) saturate(1)'}, {filter:'brightness(1.25) saturate(1.25)', duration:.22, yoyo:true, repeat:1, clearProps:'filter'});
     if(o.light) call(o.light, c.x, c.y, [.5, 1, .55], false);
     call(o.onDone);
-  }, 660);
+  }, Math.round((dur + n*.035)*1000) - 120);
 }
 // Poison cloud: green puffs billow up around the card, bubbles rise, the card sickens for a beat.
 function poisonCloud(target, o){
@@ -18490,14 +18677,23 @@ function cleaveSwing(attacker, pts, o){
 function pounceOnto(attacker, target, o){
   o = o || {}; if(!ready() || !attacker || !target){ later(o.onImpact, o.impact || 400); return; }
   const g = G(), t = tileOf(attacker), a = centre(attacker), b = centre(target), sc = o.scale || 1;
-  const dx = (b.x - a.x)/sc, dy = (b.y - a.y)/sc, imp = Math.max(.3, (o.impact || 570)/1000), crouch = .12, fly = imp - crouch;
+  // 2026-10-16 (user: "Pounce has to look more aggressive. A slower windup, but from the peak of the jump onto the enemy card, this
+  // part is faster - like 40% faster."): the impact time is unchanged (the hit's number lands with it), but it is split differently:
+  // a longer, deeper crouch (0.24 s, was 0.12) leaning back from the target; a quick spring to the top of the arc; and the dive from
+  // the peak onto the card in 60% of the time it took before (about 0.08 s, was 0.13; ease in, so it slams), tipping forward as it falls.
+  const dx = (b.x - a.x)/sc, dy = (b.y - a.y)/sc, imp = Math.max(.3, (o.impact || 570)/1000), crouch = Math.min(.24, imp*.42), fly0 = Math.max(.2, imp - .12);
+  // (the old flight eased in over p, so it reached the peak, p = .5, at 71% of its time: the old dive was fly0*(1 - 1/sqrt 2))
+  const dive = Math.max(.06, fly0*(1 - Math.SQRT1_2)*.6), rise = Math.max(.08, imp - crouch - dive);
   const lift = Math.max(40, Math.abs(dy)*0.45 + 30)/sc;            // how high the arc rises above the straight line
-  const st = {p:0}, up = dy < 0 ? -1 : 1;
+  const st = {p:0}, up = dy < 0 ? -1 : 1, side = dx > 0 ? 1 : -1;
   g.killTweensOf(t, 'x,y,rotation,scale,scaleX,scaleY');
   const at = p=> ({x:dx*p, y:dy*p - lift*4*p*(1 - p)});
+  const put = ()=>{ const q = at(st.p), k = Math.sin(st.p*Math.PI), lean = st.p < .5 ? -4*(1 - st.p*2) + 10*st.p*2 : 10 + 8*(st.p - .5)*2;
+    g.set(t, {x:q.x, y:q.y, rotation:side*lean*(st.p < .97 ? 1 : 0), scaleX:1 + .1*k, scaleY:1 + .1*k}); };
   g.timeline()
-    .to(t, {y:-up*6/sc, scaleX:1.08, scaleY:.9, duration:crouch, ease:'power2.in'})
-    .to(st, {p:1, duration:fly, ease:'power1.in', onUpdate:()=>{ const q = at(st.p); g.set(t, {x:q.x, y:q.y, rotation:(dx > 0 ? 1 : -1)*Math.sin(st.p*Math.PI)*12, scaleX:1 + .1*Math.sin(st.p*Math.PI), scaleY:1 + .1*Math.sin(st.p*Math.PI)}); }})
+    .to(t, {y:-up*9/sc, x:-side*4/sc, rotation:-side*5, scaleX:1.12, scaleY:.84, duration:crouch, ease:'power1.inOut'})
+    .to(st, {p:.5, duration:rise, ease:'power2.out', onUpdate:put})
+    .to(st, {p:1, duration:dive, ease:'power2.in', onUpdate:put})
     .add(()=>{ ring(b.x, b.y, 'sfx-string', b.w*1.1, 380); burst(b.x, b.y + b.h*.3, up > 0 ? 90 : -90, 'wood', 6); g.fromTo(tileOf(target), {y:0, scaleY:1}, {y:up*5, scaleY:.94, duration:.08, yoyo:true, repeat:1, ease:'power2.out', clearProps:'transform'}); call(o.onImpact); })
     .to(t, {scaleX:1.1, scaleY:.88, rotation:0, duration:.07, ease:'power2.out'})
     .to(t, {scaleX:1, scaleY:1, duration:.1}, '+=.08')
@@ -18569,7 +18765,9 @@ function helmetDeflect(target, o){
 // Darksight: the card dims into darkness and two glowing eyes open, glance about, and mark hidden foes.
 function darksight(target, o){
   o = o || {}; if(!ready() || !target){ call(o.onDone); return; }
-  const g = G(), c = centre(target), dk = over(target, 'sfx-dark', 4);
+  // 2026-10-16 (user: "The dark sight vfx is not centered. its abit to the left."): centred on the card tile (a flyer's tile hovers
+  // to the right of its .board-card wrapper)
+  const g = G(), c = centre(tileOf(target)), dk = over(tileOf(target), 'sfx-dark', 4);
   const eyes = [-1, 1].map(s=>{ const e = layer('sfx-eye'); g.set(e, {x:c.x + s*c.w*0.15 - 7.5, y:c.r.top + c.h*.42 - 4.5, scaleY:0, opacity:1}); return e; });
   g.set(dk, {opacity:0});
   const tl = g.timeline({onComplete:()=>{ dk.remove(); eyes.forEach(e=> e.remove()); call(o.onDone); }});
@@ -18612,7 +18810,9 @@ function scorch(target, o){
   try{ hz.style.borderRadius = getComputedStyle(tl).borderRadius || '10px'; }catch(e){}
   g.set(hz, {opacity:0}); g.timeline({onComplete:()=> hz.remove()}).to(hz, {opacity:1, duration:.2}).to(hz, {opacity:0, duration:.6, delay:.9, ease:'power1.in'});
   setTimeout(()=>{ if(hz.isConnected) hz.remove(); }, 2400);
-  for(let i = 0; i < 9; i++){ const f = layer('sfx-flame'), x = c.r.left + c.w*(i/8)*.9 + c.w*.05;
+  // 2026-10-16: the flicker (CSS sfxFlick, a transform keyframe) sits on an inner flame; on the placed layer itself it blended
+  // with GSAP's translate and threw the flames halfway across the screen on every flicker step.
+  for(let i = 0; i < 9; i++){ const f = layer('sfx-flamebox', '<i class="sfx-flame"></i>'), x = c.r.left + c.w*(i/8)*.9 + c.w*.05;
     g.set(f, {x:x - 7, y:c.r.bottom - 26 + rnd(-4, 6), scaleY:0, opacity:1});
     g.timeline({delay:i*0.03 + rnd(0, .08), onComplete:()=> f.remove()}).to(f, {scaleY:rnd(1, 1.8), duration:.25, ease:'power2.out'}).to(f, {scaleY:rnd(.8, 1.4), duration:.3, yoyo:true, repeat:1}).to(f, {scaleY:0, opacity:0, duration:.3}); }
   for(let i = 0; i < 10; i++){ const e = layer('sfx-bit sfx-bit-ember'); g.set(e, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.bottom - 10, opacity:0});
@@ -18621,22 +18821,49 @@ function scorch(target, o){
   later(()=>{ t.classList.add('sfx-scorch'); if(o.light) call(o.light, c.x, c.r.bottom, [1, .55, .18], false); call(o.onImpact); }, 250);
   later(()=> t.classList.remove('sfx-scorch'), 1400);
 }
+// Immolation (2026-10-16, user: "Immolation should stick on the card - not teleport everywhere."): the fire burns on the immolating
+// card itself, once a round: flames rise from its lower edge, a heat shimmer and embers, all inside its tile, so they ride along with
+// the card (lunges, re-flows) instead of being drawn on the screen where it stood. The units it burns only char (scorchMark).
+function immolate(src, o){
+  o = o || {}; const t = tileOf(src); if(!ready() || !t){ call(o.onDone); return; }
+  const g = G(), box = document.createElement('div'); box.className = 'sfx-immo'; box.setAttribute('aria-hidden', 'true'); t.appendChild(box);
+  const hz = document.createElement('div'); hz.className = 'sfx-haze sfx-immo-haze'; box.appendChild(hz); g.set(hz, {opacity:0});
+  g.timeline().to(hz, {opacity:1, duration:.2}).to(hz, {opacity:0, duration:.6, delay:.9, ease:'power1.in'});
+  for(let i = 0; i < 8; i++){ const f = document.createElement('i'); f.className = 'sfx-immo-f'; f.innerHTML = '<i class="sfx-flame"></i>';
+    f.style.left = (4 + i*(88/7)).toFixed(1) + '%'; box.appendChild(f); g.set(f, {scaleY:0, xPercent:-50});
+    g.timeline({delay:i*0.03 + rnd(0, .08)}).to(f, {scaleY:rnd(1.1, 1.9), duration:.25, ease:'power2.out'}).to(f, {scaleY:rnd(.8, 1.4), duration:.3, yoyo:true, repeat:1}).to(f, {scaleY:0, opacity:0, duration:.3}); }
+  for(let i = 0; i < 9; i++){ const e = document.createElement('i'); e.className = 'sfx-immo-e'; e.style.left = rnd(10, 90).toFixed(0) + '%'; box.appendChild(e); g.set(e, {opacity:0});
+    g.timeline({delay:.15 + i*0.07}).to(e, {opacity:1, duration:.05}).to(e, {y:-rnd(45, 90), x:rnd(-12, 12), opacity:0, duration:.9, ease:'power1.out'}); }
+  t.classList.add('sfx-scorch'); src.classList && src.classList.add('immolate-pulse');
+  later(()=>{ if(o.light){ const c = centre(t); call(o.light, c.x, c.r.bottom, [1, .55, .18], false); } }, 200);
+  later(()=>{ t.classList.remove('sfx-scorch'); src.classList && src.classList.remove('immolate-pulse'); }, 1300);
+  later(()=>{ box.remove(); call(o.onDone); }, 1900);
+}
+// A unit burned by an Immolation neighbour: its edge chars for a moment (on the tile itself, no flames of its own).
+// 2026-10-16 (user: "Immolated units themselves have the fire effect on them. Other units nearby just light up and take fire damage."):
+// the neighbour lights up (a warm flash of brightness) and its edge glows orange for a moment; no flames of its own.
+function scorchMark(target){ const t = tileOf(target); if(!t) return; t.classList.add('sfx-scorch'); later(()=> t.classList.remove('sfx-scorch'), 900);
+  const g = G(); if(g && !reduce()) g.fromTo(t, {filter:'brightness(1) sepia(0)'}, {filter:'brightness(1.45) sepia(.35)', duration:.14, yoyo:true, repeat:1, repeatDelay:.12, ease:'power1.out', clearProps:'filter'}); }
 // Lantern: a lantern swings above the card and throws a warm, flickering pool of light; moths circle it.
 function lanternGlow(target, o){
   o = o || {}; if(!ready() || !target){ call(o.onDone); return; }
-  const g = G(), c = centre(target), D = Math.max(c.w, c.h)*2.6, dur = (o.duration || 1800)/1000;
+  // 2026-10-16 (user: "Lantern glow is too bright. but it is also not 'wide' enough. And the brightness shouldnt cut past the battlefield
+  // board"): the pool is wider (3.6 cards) and dimmer (peak .6), and it is cut at the battlefield's edge when it sits on one.
+  const g = G(), c = centre(target), D = Math.max(c.w, c.h)*3.6, dur = (o.duration || 1800)/1000, PK = .6;
   const pool = layer('sfx-glowpool'); g.set(pool, {x:c.x - D/2, y:c.y - D/2, width:D, height:D, scale:.3, opacity:0});
-  const lan = layer('sfx-lantern', '🏮'); g.set(lan, {x:c.x - 12, y:c.r.top - 34, opacity:0, rotation:-16});
-  g.timeline({onComplete:()=>{ pool.remove(); lan.remove(); call(o.onDone); }})
-    .to(pool, {scale:1, opacity:1, duration:.4, ease:'power2.out'}, 0).to(lan, {opacity:1, y:'+=6', duration:.25}, 0)
-    .to(lan, {rotation:14, duration:.45, ease:'sine.inOut', yoyo:true, repeat:Math.max(1, Math.round(dur/.45) - 1)}, .1)
-    .to(pool, {keyframes:[{opacity:.8, duration:.12}, {opacity:1, duration:.2}, {opacity:.85, duration:.1}, {opacity:1, duration:.3}]}, .4)
-    .to([pool, lan], {opacity:0, duration:.4}, dur);
-  for(let i = 0; i < 3; i++){ const mo = layer('sfx-moth'), st = {a:i*2.1}; g.set(mo, {opacity:0});
-    g.timeline({delay:.3, onComplete:()=> mo.remove()}).to(mo, {opacity:1, duration:.2})
-      .to(st, {a:st.a + 6.28*1.5, duration:dur - .5, ease:'none', onUpdate:()=> g.set(mo, {x:c.x + Math.cos(st.a)*(18 + i*7), y:c.r.top - 18 + Math.sin(st.a*1.7)*(10 + i*4)})}, 0).to(mo, {opacity:0, duration:.2});
-  }
-  [target].concat((o.cards||[]).filter(Boolean)).forEach((el, i)=> g.fromTo(tileOf(el), {filter:'brightness(1)'}, {filter:`brightness(${i ? 1.12 : 1.22}) sepia(.25)`, duration:.4, yoyo:true, repeat:1, repeatDelay:dur - .8, clearProps:'filter'}));
+  { const bf = target.closest && target.closest('#battlefieldEl, .battlefield'); if(bf){ const B = bf.getBoundingClientRect(), L = c.x - D/2, T = c.y - D/2;
+    const it = Math.max(0, B.top - T), il = Math.max(0, B.left - L), ib = Math.max(0, T + D - B.bottom), ir = Math.max(0, L + D - B.right);
+    if(it || il || ib || ir) pool.style.clipPath = `inset(${it.toFixed(0)}px ${ir.toFixed(0)}px ${ib.toFixed(0)}px ${il.toFixed(0)}px round 14px)`; } }
+  // 2026-10-16 (user: "Lantern: dont need lantern emoji vfx on play. Just the shine slowly emanating from the unit then stabilising is
+  // enough."): no 🏮 and no moths. The light swells slowly out of the card (about 1.1 s, a touch past full), settles to a steady glow,
+  // holds, and fades as the unit's own lasting light (in the dark) takes over.
+  const hold = Math.max(1.6, dur + .6);
+  g.timeline({onComplete:()=>{ pool.remove(); call(o.onDone); }})
+    .to(pool, {scale:1.06, opacity:PK*1.08, duration:1.1, ease:'sine.out'}, 0)
+    .to(pool, {scale:1, opacity:PK, duration:.6, ease:'sine.inOut'}, 1.1)
+    .to(pool, {opacity:0, duration:.7, ease:'sine.in'}, hold);
+  g.fromTo(tileOf(target), {filter:'brightness(1)'}, {filter:'brightness(1.16) sepia(.18)', duration:1.1, ease:'sine.out', yoyo:true, repeat:1, repeatDelay:Math.max(.2, hold - 1.4), clearProps:'filter'});
+  (o.cards||[]).filter(Boolean).forEach(el=> g.fromTo(tileOf(el), {filter:'brightness(1)'}, {filter:'brightness(1.08) sepia(.12)', duration:1.1, ease:'sine.out', yoyo:true, repeat:1, repeatDelay:Math.max(.2, hold - 1.4), clearProps:'filter'}));
   if(o.light) call(o.light, c.x, c.y, [1, .8, .45], false);
 }
 // ---- general effects ----
@@ -18789,7 +19016,7 @@ function windField(host, strength, dir){
 function windFieldClear(host){ if(!host) return; host.querySelectorAll(':scope > .sfx-windfield').forEach(cur=>{ cur.classList.remove('is-in'); cur.classList.add('is-out'); setTimeout(()=> cur.remove(), 700); }); }
 function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || ''; }
 root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, boomerangThrow, boomerangCastle, boomerangReturn, shieldDrop, backstab, elementDeath, feathers};
-Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, evasiveDodgeHit, cleave, cleaveSwing, pounceOnto, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, lanternGlow,
+Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, evasiveDodgeHit, cleave, cleaveSwing, pounceOnto, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, immolate, scorchMark, lanternGlow,
   shockwave, castleCrumble, levelUp, unlockSparkle, skyDrop, windField, windFieldClear});
 // ---- 2026-10-14 (sixth pass): Fireball, Meteor, Banana.
 //   SkillFX.fireball(caster, target, opts{sides, onImpact, light})   SkillFX.meteor(target, opts{sides, host, onImpact, light})
@@ -18938,6 +19165,8 @@ const EIGHTH_CSS = `
 .sfx-acid{width:8px; height:11px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:radial-gradient(circle at 40% 60%, #f6ffb0, #b6e830 55%, #5f8a10); box-shadow:0 0 6px rgba(190,240,40,.85);}
 .sfx-fizz{width:6px; height:6px; border-radius:50%; border:1.5px solid rgba(225,255,120,.95);}
 .sfx-mote.is-red{background:#ffd0c8; box-shadow:0 0 8px 3px rgba(230,50,50,.85);}
+/* 2026-10-16 (user: "Sap drain particles are 50% too big."): Sap's drops are half the mote's size, glow included */
+.sfx-mote.is-red.is-sap{width:3.5px; height:3.5px; box-shadow:0 0 4px 1.5px rgba(230,50,50,.85);}
 .sfx-petal{width:10px; height:7px; border-radius:70% 0 70% 0; background:linear-gradient(135deg, #ffe7f1, #f59ac0); box-shadow:0 0 3px rgba(255,170,200,.8);}
 .sfx-pollen{width:4px; height:4px; border-radius:50%; background:#fff3a6; box-shadow:0 0 5px 2px rgba(255,220,90,.85);}
 .sfx-sweat{font-size:13px; line-height:1;}
@@ -18975,6 +19204,21 @@ function swoop(attacker, target, o){
   const air = drawPath(sv, d, 'air'), core = drawPath(sv, d, 'core');
   g.timeline({onComplete:()=> sv.remove()}).to([air, core], {strokeDashoffset:0, duration:fly, ease:'power2.in'}).to(sv, {opacity:0, duration:.3});
   later(()=>{ feathers(b.x, b.y - b.h*.15, 8); ring(b.x, b.y, 'sfx-string', b.w*1.3, 320); knock(target, a.y < b.y ? 90 : -90, .9); call(o.onImpact); }, fly*1000);
+}
+// Flying attack (2026-10-16, user: "Many flying cards throw a 'line' at the enemy to attack. Make them attack normally is okay.
+// Commensurately, using the shadows, make it look like it's descending for the attack. So normal anim. just the shadows draw closer
+// to the card."): the flyer lunges like any unit (animateAttacker); this moves its ground shadow in step with the lunge and pulls
+// it in under the card (closer, a little smaller), as if the flyer drops toward the ground to strike, then lets it drift back.
+// el: the .board-card (.is-flying, with its .fly-shadow). o: {dir (1 = your row, lunging up; -1 = the enemy row), leanX, windup, strike} (ms).
+// The shadow's own hover animation owns its transform, so this tweens CSS variables that feed its translate / scale properties.
+function flyDescend(el, o){
+  o = o || {}; const g = G(), sh = el && el.querySelector && el.querySelector(':scope > .fly-shadow'); if(!g || !sh || reduce()) return;
+  const dir = o.dir || 1, lx = o.leanX || 0, wu = (o.windup == null ? 390 : o.windup)/1000, st = (o.strike == null ? 570 : o.strike)/1000;
+  g.killTweensOf(sh); g.set(sh, {'--fs-x':'0px', '--fs-y':'0px', '--fs-s':1}); // start from rest (an unset variable tweens from 0)
+  g.timeline({onComplete:()=>{ ['--fs-x', '--fs-y', '--fs-s'].forEach(k=> sh.style.removeProperty(k)); }})
+    .to(sh, {'--fs-x':`${(lx*.35 + 2).toFixed(1)}px`, '--fs-y':`${(dir*9 - 5).toFixed(1)}px`, '--fs-s':.9, duration:wu, ease:'power2.in'})
+    .to(sh, {'--fs-x':`${(lx + 4).toFixed(1)}px`, '--fs-y':`${(dir*-15 - 11).toFixed(1)}px`, '--fs-s':.74, duration:st*.55, ease:'back.out(2)'})
+    .to(sh, {'--fs-x':'0px', '--fs-y':'0px', '--fs-s':1, duration:st*.45 + .15, ease:'power2.out'});
 }
 // Tailwind (Flying): a gust of wind streaks across the card and it leans with it.
 function gust(target, o){
@@ -19097,7 +19341,7 @@ function acidCorrode(target, o){
 function lifeDrain(from, to, o){
   o = o || {}; if(!go() || !from || !to){ call(o.onDone); return; }
   const g = G(), a = centre(from), b = centre(to), n = 10;
-  for(let i = 0; i < n; i++){ const m = layer('sfx-mote is-red'), s = {t:0}, p0 = {x:a.x + rnd(-a.w*.3, a.w*.3), y:a.y + rnd(-a.h*.3, a.h*.3)}, mid = {x:(a.x + b.x)/2 + rnd(-50, 50), y:(a.y + b.y)/2 + rnd(-30, 30)};
+  for(let i = 0; i < n; i++){ const m = layer('sfx-mote is-red is-sap'), s = {t:0}, p0 = {x:a.x + rnd(-a.w*.3, a.w*.3), y:a.y + rnd(-a.h*.3, a.h*.3)}, mid = {x:(a.x + b.x)/2 + rnd(-50, 50), y:(a.y + b.y)/2 + rnd(-30, 30)};
     g.set(m, {x:p0.x, y:p0.y, opacity:0});
     g.timeline({delay:i*0.04, onComplete:()=> m.remove()}).to(m, {opacity:1, duration:.08}).to(s, {t:1, duration:.45, ease:'power2.in', onUpdate:()=>{ const q = qpt(p0, mid, b, s.t); g.set(m, {x:q.x, y:q.y}); }}, 0).to(m, {opacity:0, duration:.1}); }
   g.fromTo(tileOf(from), {filter:'saturate(1)'}, {filter:'saturate(.4) brightness(.85)', duration:.2, yoyo:true, repeat:1, clearProps:'filter'});
@@ -19270,7 +19514,7 @@ function stealthSlip(attacker, castle, o){
   g.set(gh, {filter:'brightness(.2) saturate(0) blur(1px)', opacity:0});
   g.timeline({delay:.1, onComplete:()=>{ gh.remove(); call(o.onDone); }}).to(gh, {opacity:.55, duration:.1}).to(gh, {x:`+=${b.x - a.x}`, y:`+=${b.y - a.y}`, scale:.6, duration:.35, ease:'power2.in'}, 0).to(gh, {opacity:0, duration:.15});
 }
-Object.assign(root.SkillFX, {swoop, gust, splash, armorBlock, forkProngs, pierceThrough, stunStars, freezeEncase, sleepZzz, paralyzeSpark, acidCorrode, lifeDrain, bloomPollen,
+Object.assign(root.SkillFX, {swoop, flyDescend, gust, splash, armorBlock, forkProngs, pierceThrough, stunStars, freezeEncase, sleepZzz, paralyzeSpark, acidCorrode, lifeDrain, bloomPollen,
   fearShiver, curseDrain, targetMark, blindInk, mirrorFlash, reviveRise, summonPortal, lootArc, prayerLight, espritAura, rageFlare, scarMark, clockTick, parry, crownCrack, stealthSlip});
 // ---- 2026-10-15 (ninth pass): the Bolts (user: "They just represents 'spits' of something at the enemy. Fire bolt, Acid bolt, Poison
 // bolt etc.") and Chilli (user: "New skill Chilli.").
@@ -19555,10 +19799,38 @@ function cloudShadows(host, on){
 // Heal: a few ➕ rise from the card (the heal's own plus, 2026-10-16: "The heal animation should include the + emoji.").
 function healPlus(target, o){
   o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
-  for(let i = 0; i < 4; i++){ const p = layer('sfx-w2-plus', '➕'); g.set(p, {x:c.r.left + c.w*rnd(.2, .8), y:c.r.top + c.h*rnd(.45, .8), xPercent:-50, yPercent:-50, opacity:0, scale:.5});
+  for(let i = 0; i < 4; i++){ const p = layer('sfx-w2-plus', GREEN_PLUS) /* green, not the grey ➕ glyph (2026-10-16) */; g.set(p, {x:c.r.left + c.w*rnd(.2, .8), y:c.r.top + c.h*rnd(.45, .8), xPercent:-50, yPercent:-50, opacity:0, scale:.5});
     g.timeline({delay:i*.09, onComplete:()=> p.remove()}).to(p, {opacity:1, scale:1, duration:.14, ease:'back.out(3)'}).to(p, {y:`-=${rnd(30, 50)}`, opacity:0, duration:.55, ease:'power1.in'}); }
   later(o.onDone, 700);
 }
+root.SkillFX.GREEN_PLUS = GREEN_PLUS;
+// Heal against Poison (2026-10-16, user: "When regeneration of heal are used to reduce poison, a grey poison counter jumps out of the
+// creature's grey poison counters."): one small ☠ counter, dressed like the card's own Poison badge, hops out of that badge and fades
+// for every counter the heal takes off (up to 6 shown, 110 ms apart). o.onEach(i, last) fires as each one leaves, so the caller can
+// count the badge down in step.
+function poisonPop(target, n, o){
+  o = o || {}; n = Math.max(0, n|0); const g = G(), t = tileOf(target); const shown = Math.min(6, n);
+  const done = ()=>{ for(let i = 0; i < n; i++) call(o.onEach, i, i === n - 1); };
+  if(!g || !t || !n || reduce()){ done(); return; }
+  const b = t.querySelector('.abadge.poison'), br = (b || t).getBoundingClientRect();
+  let cs = null; try{ cs = b ? getComputedStyle(b) : null; }catch(e){}
+  const x0 = b ? br.left + br.width*.3 : br.left + br.width*.2, y0 = b ? br.top + br.height/2 : br.bottom - 14;
+  for(let i = 0; i < shown; i++) later(()=>{
+    const c = layer('sfx-poisonpop', '☠');
+    // sized from the badge as drawn (the board may be scaled), so the counter is the badge's own size
+    const bh = Math.max(10, Math.min(26, b ? br.height : 14));
+    c.style.cssText += `; display:flex; align-items:center; justify-content:center; line-height:1; font-weight:800; padding:0 2px; height:${bh.toFixed(1)}px; min-width:${bh.toFixed(1)}px; border-radius:${(bh*.32).toFixed(1)}px;
+      font-size:${(bh*.72).toFixed(1)}px; color:${cs ? cs.color : '#d8dde2'}; background:${cs && cs.backgroundColor !== 'rgba(0, 0, 0, 0)' ? cs.backgroundColor : 'rgba(120,128,136,.92)'};
+      box-shadow:0 1px 2px rgba(0,0,0,.45); z-index:9992;`;
+    const side = i % 2 ? 1 : -1, hx = side*rnd(10, 22), hy = -rnd(18, 30);
+    g.set(c, {x:x0, y:y0, xPercent:-50, yPercent:-50, scale:.9, opacity:1});
+    g.timeline({onComplete:()=> c.remove()})
+      .to(c, {x:x0 + hx*.6, y:y0 + hy, rotation:side*rnd(12, 30), scale:1.15, duration:.22, ease:'power2.out'})
+      .to(c, {x:x0 + hx, y:y0 + hy*.35, rotation:side*rnd(40, 70), scale:.8, opacity:0, duration:.38, ease:'power1.in'});
+    if(i === shown - 1){ for(let k = i; k < n; k++) call(o.onEach, k, k === n - 1); } else call(o.onEach, i, false);
+  }, i*110);
+}
+root.SkillFX.poisonPop = poisonPop;
 Object.assign(root.SkillFX, {w2Css, venomBite, toxinMark, weakenDrain, wilt, bulldozeShove, vineBind, squeeze, invincibleBlock, unveil, gasCloud, absoluteZero, trapSet, trapSnap, nova, crystalForm, cure, tauntCall, cloudShadows, healPlus});
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -20589,10 +20861,16 @@ const SoundKit = (()=>{
     hit(){ tone(180,0.12,'square',0.1); },
     // Richer hits (2026-10-05): a felt-and-wood thwack with a little random pitch so a long
     // exchange doesn't sound like one sample on repeat; heavy blows add a low boom and a crack.
+    // 2026-10-16 (user: "The normal attack sounds - i dont hear the sound. Only big hits."): the normal hit was all below ~1.4 kHz (a
+    // lowpassed thud and a 210→120 Hz triangle), which laptop and phone speakers barely play and the ambience covers; only the
+    // ≥4-damage layer had anything up high (its 2.6 kHz crackle), so only big hits were heard. Every hit now also gets a short
+    // mid-range "thwack" (a 1.1-2.4 kHz band-passed snap and a quick 620→300 Hz knock), a little louder on bigger hits.
     hitAt(dmg, heavy){
       const j = 0.92 + Math.random()*0.16;
       fnoise(0.09, 0.14, {type:'lowpass', freq:1400*j, freqEnd:260, q:1.2, attack:0.002});
       sweep(210*j, 120*j, 0.08, 'triangle', 0.09);
+      fnoise(0.055, Math.min(0.2, 0.13 + Math.max(0, dmg||0)*0.006), {type:'bandpass', freq:2400*j, freqEnd:1100*j, q:1.4, attack:0.001});
+      sweep(620*j, 300*j, 0.05, 'triangle', 0.07);
       if(heavy || dmg >= 4){
         sweep(95*j, 42, 0.26, 'sine', 0.16, 0.01);
         fnoise(0.05, 0.10, {type:'highpass', freq:2600, attack:0.001, crackle:0.08, delay:0.005});
@@ -20787,6 +21065,9 @@ const SoundKit = (()=>{
     buzz(){ for(let i=0;i<3;i++) tone(220+i*30,0.09,'sawtooth',0.05,i*0.05); },
     drip(){ tone(700,0.05,'sine',0.09); tone(500,0.08,'sine',0.06,0.09); },
     clang(){ tone(1400,0.06,'square',0.1); noise(0.05,0.06); },
+    // 2026-10-16 (user: "There is a konk sound, to represent the attacker hit 'metal'."): Armor took some of a hit: a hollow metal
+    // "konk", a low knock with inharmonic overtones (x2.6, x4.3, like a struck plate) and a tiny tick of grit, quickly damped.
+    konk(){ tone(410,0.16,'triangle',0.12); tone(1066,0.11,'sine',0.055,0.004); tone(1763,0.07,'sine',0.03,0.006); tone(205,0.09,'sine',0.05); noise(0.025,0.035); },
     // 2026-10-12 (11:39 list: "there is a light gadget sound. For forging, forge sounds"): a small mechanical click-whirr, and
     // three hammer strikes on the anvil with a quench hiss after.
     gadget(){ tone(1800,0.03,'square',0.035); tone(2600,0.04,'sine',0.03,0.04); noise(0.04,0.02); tone(900,0.08,'triangle',0.025,0.08); },
@@ -21516,7 +21797,7 @@ function floatText(el, text, cls){
   const f = document.createElement('div');
   let raw = String(text);
   const classes = String(cls || '').split(/\s+/).filter(Boolean);
-  const pictoRe = /[\p{Extended_Pictographic}☀-➿️‍]+/gu;
+  const pictoRe = /[\p{Extended_Pictographic}☀-➿️‍⌰]+/gu; // + ⌰, Momentum's icon (2026-10-16), so it sits in the icon slot
   const isNumber = /^[+-]?\d+$/.test(raw.trim());
   if(isNumber && !pictoRe.test(raw)){ const k = classes.find(c=> FLOAT_ICON[c]); if(k) raw = FLOAT_ICON[k] + ' ' + raw; }
   pictoRe.lastIndex = 0;
@@ -21528,7 +21809,10 @@ function floatText(el, text, cls){
   // 2026-10-08: every number (not just crits) bursts out on a starburst in its own colour; the burst fades fast.
   const calm = reducedMotion() || !fxAtLeast('low');
   const burst = !calm && /\d/.test(num) && num.length <= 4;
-  f.innerHTML = (burst ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico">${icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`;
+  // 2026-10-16 (user: "Heal's plusses look greyed out ... they should be green."): the ➕ glyph is grey in the emoji fonts; the heal's
+  // icon is SkillFX's green plus instead.
+  const gplus = icon === '➕' && window.SkillFX && SkillFX.GREEN_PLUS;
+  f.innerHTML = (burst ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico${gplus ? ' df-gplus' : ''}">${gplus ? SkillFX.GREEN_PLUS : icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`;
   f.dataset.t = raw;
   // Placement (2026-10-08, user: "The numbers should appear higher on the card (opposing field). For our side
   // ... greater x-variation (by 15%)"): enemy-row numbers start high on the card; ours keep their spot and fan
@@ -22198,6 +22482,19 @@ function flyBetweenRects(fromRect, toRect, glyph){
   setTimeout(()=> p.remove(), 400);
 }
 
+function clipLightsToBoard(bf){
+  bf = bf || document.getElementById('battlefieldEl'); if(!bf) return;
+  const pools = bf.querySelectorAll('.board-card .unit-light, .board-card .fxb-pool'); if(!pools.length) return;
+  const B = bf.getBoundingClientRect(); if(!B.width) return;
+  const rad = parseFloat(getComputedStyle(bf).borderTopLeftRadius) || 0;
+  pools.forEach(p=>{
+    const R = p.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight; if(!R.width || !w || !h) return;
+    const sx = R.width / w, sy = R.height / h;
+    const t = Math.max(0, (B.top - R.top) / sy), l = Math.max(0, (B.left - R.left) / sx), b = Math.max(0, (R.bottom - B.bottom) / sy), r = Math.max(0, (R.right - B.right) / sx);
+    const v = (t || l || b || r) ? `inset(${t.toFixed(1)}px ${r.toFixed(1)}px ${b.toFixed(1)}px ${l.toFixed(1)}px round ${(rad / sx).toFixed(1)}px)` : '';
+    if(p.style.clipPath !== v) p.style.clipPath = v; });
+}
+
 </script>
 <script>window.TREAT_CARDS = {"legendary": "<div class=\"card-tile rarity-tier-top         \" data-defid=\"dominion-nestguard\"  style=\"--rarity-a:#dc2626; --rarity-b:#dc2626\">\n    \n    \n    \n    \n    \n    <div class=\"costbadge\" title=\"Cost to play\"><span class=\"pips pips-lumber\" aria-label=\"1\"><i>\ud83e\udeb5</i></span></div>\n    <div class=\"waitbadge\" title=\"Wait \u2014 turns before it can act after being played\"><span class=\"pips pips-wait\" aria-label=\"1\"><i>\u23f3</i></span></div>\n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/dominion-nestguard.png?v=0199d09580\" alt=\"Dominion Nestguard\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83d\udc26</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Dominion Nestguard</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26944</span><span class=\"hp\">\u27649</span></div>\n    \n    <div class=\"badges\"><span class=\"abadge\"><span class=\"ab-wing\">\ud83e\udebd</span></span></div>\n    \n  </div>", "epic": "<div class=\"card-tile rarity-tier-high         \" data-defid=\"crimson-wing-recruit\"  style=\"--rarity-a:#9333ea; --rarity-b:#9333ea\">\n    \n    \n    \n    \n    \n    \n    \n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/crimson-wing-recruit.png?v=5e325fa992\" alt=\"Crimson Wing Recruit\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83d\udc26</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Crimson Wing Recruit</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26942</span><span class=\"hp\">\u27643</span></div>\n    \n    <div class=\"badges\"><span class=\"abadge\"><span class=\"ab-wing\">\ud83e\udebd</span></span></div>\n    \n  </div>", "rare": "<div class=\"card-tile rarity-tier-mid         \" data-defid=\"cobalt-talon-fledgling\"  style=\"--rarity-a:#3b82f6; --rarity-b:#3b82f6\">\n    \n    \n    \n    \n    \n    \n    \n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/cobalt-talon-fledgling.png?v=342eaf22f4\" alt=\"Cobalt Talon Fledgling\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83d\udc26</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Cobalt Talon Fledgling</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26941</span><span class=\"hp\">\u27642</span></div>\n    \n    <div class=\"badges\"><span class=\"abadge\"><span class=\"ab-wing\">\ud83e\udebd</span></span></div>\n    \n  </div>", "fire": "<div class=\"card-tile rarity-tier-low         \" data-defid=\"soldier-ant\"  style=\"--rarity-a:#726c60; --rarity-b:#726c60\">\n    \n    \n    \n    \n    \n    \n    <div class=\"waitbadge\" title=\"Wait \u2014 turns before it can act after being played\"><span class=\"pips pips-wait\" aria-label=\"1\"><i>\u23f3</i></span></div>\n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/soldier-ant.png?v=fc2713589a\" alt=\"Soldier Ant\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83d\udc1c</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Soldier Ant</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26943</span><span class=\"hp\">\u27648</span></div>\n    \n    \n    \n  </div>", "bee": "<div class=\"card-tile rarity-tier-low         \" data-defid=\"bee-knight\"  style=\"--rarity-a:#726c60; --rarity-b:#726c60\">\n    \n    \n    \n    \n    \n    \n    \n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/bee-knight.png?v=0e32ae8e85\" alt=\"Bee Knight\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83d\udc1d</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Bee Knight</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26942</span><span class=\"hp\">\u27643</span></div>\n    \n    <div class=\"badges\"><span class=\"abadge\"><span class=\"ab-wing\">\ud83e\udebd</span></span></div>\n    \n  </div>", "common": "<div class=\"card-tile rarity-tier-low       biome-river  \" data-defid=\"otter-centurion\"  style=\"--rarity-a:#726c60; --rarity-b:#726c60\">\n    \n    \n    \n    \n    \n    \n    <div class=\"waitbadge\" title=\"Wait \u2014 turns before it can act after being played\"><span class=\"pips pips-wait\" aria-label=\"1\"><i>\u23f3</i></span></div>\n    <div class=\"ico\"><img class=\"card-art-img\" src=\"assets/cards/otter-centurion.png?v=67fa548e64\" alt=\"Otter Centurion\" draggable=\"false\" decoding=\"sync\" loading=\"eager\" onerror=\"this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';\"><span class=\"ico-emoji-fallback\" style=\"display:none\">\ud83e\udda6</span></div>\n    <div class=\"rarity-band\"></div>\n    <div class=\"nm\">Otter Centurion</div>\n    \n    <div class=\"stats\"><span class=\"atk\">\u26943</span><span class=\"hp\">\u27649</span></div>\n    \n    \n    \n  </div>"};</script>
 <script src="effects-lab.js"></script>
@@ -22293,17 +22590,32 @@ function flyBetweenRects(fromRect, toRect, glyph){
   // Bite (2026-10-08, user: "the bite should really crunch down, the back teeth lagging 0.1s behind, then opening, then
   // fading out immediately. It has that punch"): front jaws snap shut past their mark (a crunch), the back row follows
   // 0.1 s later, a flash marks the crunch, then the jaws spring open and vanish.
+  // 2026-10-16 (user: "The teeth damage effect: 8a: Make the teeth close. 8b: Just 1 row of teeth each is okay. 8c: Make the teeth
+  // fade out slightly towards the roots. Make the roots very very slightly red. Like 255/238/238 kind."): one row per jaw (6 on top,
+  // 5 below, set half a tooth apart so they mesh), and the jaws travel all the way in: the tips pass each other and interlock at the
+  // card's middle (CSS ufxJawTop/ufxJawBot). Each tooth is white at the tip and fades toward a faintly red root (#FFEEEE).
+  // The fade is drawn as four bands per tooth (root to tip: #FFEEEE at .5, then .7, .88, white at 1), each band one path for the
+  // whole jaw; an SVG gradient fill (url(#id)) drew nothing on the board, so plain fills it is. A thin dark edge runs only along the
+  // outer 60% toward the tip, so the roots stay soft.
+  const TOOTH_BANDS = [[0, .3, '#ffeeee', .5], [.3, .55, '#fff3f3', .7], [.55, .8, '#fff9f9', .88], [.8, 1, '#ffffff', 1]];
   function bite(target){
-    const svg = overlay(target, 'ufx-bite', 560); if(!svg) return;
-    const teeth = (y, dir, x0, n, w, h)=>{ let d = ''; for(let i = 0; i < n; i++){ const x = x0 + i*w; d += `M${x} ${y} L${x + w/2} ${y + dir*h} L${x + w} ${y} `; } return d; };
-    path(svg, teeth(40, 1, 26, 5, 10, 11), 'ufx-teeth ufx-back ufx-top');
-    path(svg, teeth(90, -1, 26, 5, 10, 11), 'ufx-teeth ufx-back ufx-bot');
-    path(svg, teeth(36, 1, 18, 6, 11, 15), 'ufx-teeth ufx-top');
-    path(svg, teeth(94, -1, 18, 6, 11, 15), 'ufx-teeth ufx-bot');
-    const fl = document.createElementNS(NS, 'ellipse'); fl.setAttribute('cx', 50); fl.setAttribute('cy', 65); fl.setAttribute('rx', 34); fl.setAttribute('ry', 14); fl.setAttribute('class', 'ufx-crunch'); svg.appendChild(fl);
-    const tile = target && (target.querySelector('.card-tile') || target);
+    const svg = overlay(target, 'ufx-bite', 600); if(!svg) return;
+    // y: the gum line (roots), dir: +1 tips point down (top jaw), -1 up; x0: first root's left; n teeth w wide, h long
+    const jaw = (cls, y, dir, x0, n, w, h)=>{
+      const g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'ufx-jaw ' + cls); svg.appendChild(g);
+      const at = (x, f, side)=> [x + (side < 0 ? w/2*f : w - w/2*f), y + dir*h*f];
+      TOOTH_BANDS.forEach(([fa, fb, col, op])=>{ let d = '';
+        for(let i = 0; i < n; i++){ const x = x0 + i*w, a1 = at(x, fa, -1), a2 = at(x, fa, 1), b2 = at(x, fb, 1), b1 = at(x, fb, -1);
+          d += `M${a1[0].toFixed(2)} ${a1[1].toFixed(2)} L${a2[0].toFixed(2)} ${a2[1].toFixed(2)} L${b2[0].toFixed(2)} ${b2[1].toFixed(2)} L${b1[0].toFixed(2)} ${b1[1].toFixed(2)} Z `; }
+        const p = path(g, d, 'ufx-tooth-band'); p.style.fill = col; p.style.fillOpacity = op; });
+      let e = ''; for(let i = 0; i < n; i++){ const x = x0 + i*w, l = at(x, .4, -1), r = at(x, .4, 1), tip = [x + w/2, y + dir*h]; e += `M${l[0].toFixed(2)} ${l[1].toFixed(2)} L${tip[0]} ${tip[1]} L${r[0].toFixed(2)} ${r[1].toFixed(2)} `; }
+      path(g, e, 'ufx-tooth-edge');
+      return g;
+    };
+    // closed, the tips pass each other by ~8 units around the card's middle (y 61-69) and mesh, half a tooth apart
+    jaw('ufx-jaw-top', 52, 1, 17, 6, 11, 17); jaw('ufx-jaw-bot', 78, -1, 22.5, 5, 11, 17);
+    const fl = document.createElementNS(NS, 'ellipse'); fl.setAttribute('cx', 50); fl.setAttribute('cy', 65); fl.setAttribute('rx', 34); fl.setAttribute('ry', 10); fl.setAttribute('class', 'ufx-crunch'); svg.appendChild(fl);
     // (2026-10-12: no squash of its own any more; the hit's impactSquash already gives the one crunch, two read as a double bite)
-    void tile;
   }
   function sting(target){
     const svg = overlay(target, 'ufx-sting', 620); if(!svg) return;
@@ -22932,7 +23244,8 @@ M.iceArrow = function(shooter, target, o){
   return done(draw + flight + 800);
 };
 // Volley: the archer looses three lofted arrows (SkillFX.volley) and a dark cloud of arrows arcs over and rains on the whole line.
-css('rain', `.fxa-rainarrow{width:2px; height:16px; background:linear-gradient(#3b2a1a, #1a120a); border-radius:1px;} .fxa-rainarrow::after{content:''; position:absolute; left:-3px; bottom:-3px; border:4px solid transparent; border-top:6px solid #c9c9c9;}`);
+// 2026-10-16 (user: "Arrow effect(s) are to be 30% smaller."): the rain arrows too (was 2 x 16 with a 4/6 px head)
+css('rain', `.fxa-rainarrow{width:1.5px; height:11px; background:linear-gradient(#3b2a1a, #1a120a); border-radius:1px;} .fxa-rainarrow::after{content:''; position:absolute; left:-2.25px; bottom:-2px; border:3px solid transparent; border-top:4px solid #c9c9c9;}`);
 M.arrowRain = function(shooter, targets, o){
   o = o || {}; const g = G(), F = S(), list = (targets || []).filter(Boolean); if(!g || !shooter || !list.length) return done(0);
   if(F && F.volley && o.lead !== false) F.volley(shooter, list.slice(0, 3), {draw:o.draw || 200, flight:o.flight || 320});
@@ -23431,7 +23744,8 @@ M.momentumTrail = function(el){
 M.packHowl = function(el, mates){
   const g = G(); if(!g || !el) return done(0); const c = centre(tileOf(el));
   for(let i = 0; i < 3; i++) ring(c.x, c.r.top + c.h*.2, {color:'rgba(220,230,255,.85)', size:c.w*(1.2 + i*.5), sy:.6, w:3, dur:600, delay:i*120, dash:true});
-  const m = P('fxa-glyph', '🐺', c.x, c.r.top - 8, {scale:.3, opacity:0}); g.timeline({onComplete:()=> kill(m)}).to(m, {scale:1.1, opacity:1, y:'-=8', duration:.2, ease:'back.out(2)'}).to(m, {opacity:0, duration:.3, delay:.4});
+  // 2026-10-16 (user: "Pack bonus logo is 50% too big."): the 🐺 over the card is half the size it was (11 px, was the 22 px glyph)
+  const m = P('fxa-glyph', '🐺', c.x, c.r.top - 4, {scale:.3, opacity:0}); m.style.fontSize = '11px'; g.timeline({onComplete:()=> kill(m)}).to(m, {scale:1.1, opacity:1, y:'-=6', duration:.2, ease:'back.out(2)'}).to(m, {opacity:0, duration:.3, delay:.4});
   (mates || []).filter(x=> x && x !== el).slice(0, 4).forEach((x, j)=>{ const d = centre(tileOf(x));
     for(let k = 0; k < 3; k++){ const t = (k + 1)/4, p = P('fxa-p', '🐾', c.x + (d.x - c.x)*t, c.y + (d.y - c.y)*t, {opacity:0, scale:.7, rotation:angTo(c, d) + 90}); p.style.fontSize = '13px';
       g.timeline({delay:.15 + j*.1 + k*.08, onComplete:()=> kill(p)}).to(p, {opacity:.9, duration:.05}).to(p, {opacity:0, duration:.35, delay:.2}); }
@@ -24238,7 +24552,7 @@ M.exposeCash = function(el, opts){
   opts = opts || {}; let cp = null; const r = rectOf(el); if(!r) return Promise.resolve();
   const box = over(r, ''); box.style.overflow = 'visible'; const ret = bits(box, 1, ()=> ({cls:'fxb-reticle'}))[0];
   const sh = bits(box, 8, ()=> ({cls:'fxb-shard'}));
-  cp = chip(el, opts.amount ? `🎯 +${opts.amount}` : '🎯 Exposed!', 'expose', {hold:600});
+  cp = chip(el, opts.crit ? '🎯 Crit!' : opts.amount ? `🎯 +${opts.amount}` : '🎯 Exposed!', 'expose', {hold:600}); // 2026-10-16: an Expose counter makes the hit a crit
   return Promise.all([cp, run([box], opts, (t)=>{
     t.fromTo(ret, {xPercent:-50, yPercent:-50, scale:1.7, rotation:-45, opacity:0}, {scale:.75, rotation:0, opacity:1, duration:.22, ease:'power3.in'}).call(()=> call(opts.onImpact))
       .to(ret, {scale:.55, opacity:0, duration:.12});
@@ -24598,7 +24912,12 @@ css('sight', `.board-card.fxb-cantsee{position:relative;}
 .fxb-shut{position:absolute; left:50%; top:40%; z-index:7; width:58%; aspect-ratio:2/1; transform:translate(-50%,-50%); pointer-events:none;
   color:#e7e1ff; filter:drop-shadow(0 0 3px rgba(8,6,20,.95)) drop-shadow(0 0 7px rgba(120,100,220,.55));}
 .fxb-shut svg{width:100%; height:100%; display:block; overflow:visible;}
-.fxb-shut .lid{transform-origin:50% 40%; animation:fxbStrain var(--blink, 5s) var(--bd, 0s) ease-in-out infinite;}
+.fxb-shut .lid{transform-origin:50% 40%;}
+/* 2026-10-16 (user: "Night blindness effect - the eye: It should only blink at the start. Then it remains closed throughout. It only
+   blinks with a VERY low chance, like 1% per minute."): one strain-and-blink when the eye first appears on a unit, then shut; the
+   rare later blink is .is-blink, set by the watcher below (about 1% a minute per eye). */
+.fxb-shut.is-blink .lid{animation:fxbBlinkOnce 1.2s ease-in-out .15s 1 both;}
+@keyframes fxbBlinkOnce{0%,100%{transform:scaleY(1);} 30%{transform:scaleY(-.35);} 46%{transform:scaleY(1);} 62%{transform:scaleY(-.2);} 76%{transform:scaleY(1);}}
 @keyframes fxbStrain{0%,70%,100%{transform:scaleY(1);} 78%{transform:scaleY(-.35);} 84%{transform:scaleY(1);} 88%{transform:scaleY(-.2);} 92%{transform:scaleY(1);}}
 .fxb-why-blind .fxb-shade{opacity:.6;} .fxb-why-blind .fxb-shut{color:#fff; filter:drop-shadow(0 0 2px #1a1426) drop-shadow(0 0 6px rgba(30,20,60,.9));}
 .fxb-eyebadge.why-sun{color:#ffe4a0; border-color:rgba(255,220,140,.6);} .fxb-eyebadge.why-night{color:#cfd8ff;}
@@ -24624,9 +24943,11 @@ css('sight', `.board-card.fxb-cantsee{position:relative;}
 .fxb-darkeyes::before{left:0;} .fxb-darkeyes::after{right:0;}
 @keyframes fxbBlink{0%,46%,54%,100%{transform:scaleY(1); opacity:1;} 50%{transform:scaleY(.08); opacity:.6;}}
 .board-card.fxb-eyes-on .card-tile .ico{filter:brightness(.8);}
-.fxb-pool{position:absolute; left:50%; top:50%; width:290%; height:210%; z-index:0; pointer-events:none; transform:translate(-50%,-50%); border-radius:50%;
-  background:radial-gradient(ellipse at 50% 50%, rgba(255,205,120,.42), rgba(255,170,70,.18) 38%, rgba(255,150,40,0) 66%); mix-blend-mode:screen; animation:fxbFlicker 2.4s ease-in-out infinite;}
-@keyframes fxbFlicker{0%,100%{opacity:.9; transform:translate(-50%,-50%) scale(1);} 30%{opacity:.75;} 55%{opacity:1; transform:translate(-50%,-50%) scale(1.03);} 70%{opacity:.82;}}
+/* 2026-10-16 (user: "Lantern glow is too bright. but it is also not 'wide' enough. And the brightness shouldnt cut past the battlefield
+   board"): the carrier's pool is about half as bright and wider; it flickers in brightness only, and the game clips it to the board. */
+.fxb-pool{position:absolute; left:50%; top:50%; width:400%; height:300%; z-index:0; pointer-events:none; transform:translate(-50%,-50%); border-radius:50%;
+  background:radial-gradient(ellipse at 50% 50%, rgba(255,205,120,.22), rgba(255,175,80,.11) 36%, rgba(255,160,60,.04) 58%, rgba(255,150,40,0) 70%); mix-blend-mode:screen; animation:fxbFlicker 2.4s ease-in-out infinite;}
+@keyframes fxbFlicker{0%,100%{opacity:.9;} 30%{opacity:.76;} 55%{opacity:1;} 70%{opacity:.84;}}
 .board-card.fxb-lit .card-tile{box-shadow:0 0 0 1px rgba(255,200,110,.35), 0 0 14px rgba(255,180,80,.28);}
 @media (prefers-reduced-motion: reduce){ .fxb-fogart, .fxb-glare::before, .fxb-mooncloud, .fxb-darkeyes::before, .fxb-darkeyes::after, .fxb-pool, .fxb-shut .lid{animation:none !important;} }`);
 // The shut eye of look A: a closed lid with lashes (the .lid group flips up a crack when it strains to see).
@@ -24635,22 +24956,34 @@ const SHUT_SVG = '<svg viewBox="0 0 48 24"><g class="lid"><path d="M4 8 Q24 26 4
 const SIGHT_CLS = ['fxb-cantsee', 'fxb-look-A', 'fxb-look-B', 'fxb-look-C', 'fxb-why-dark', 'fxb-why-sun', 'fxb-why-night', 'fxb-why-blind', 'fxb-eyes-on', 'fxb-lit', 'fxb-lantern'];
 const SIGHT_SEL = '.fxb-eyebadge, .fxb-fold, .fxb-fogart, .fxb-glare, .fxb-mooncloud, .fxb-darkeyes, .fxb-pool, .fxb-shade, .fxb-shut';
 M.sightLook = 'A';
+// The shut eye's blinks (2026-10-16): it blinks once when it first shows on a unit (a board re-render doesn't count as new: the unit
+// is remembered by uid for 20 minutes), then stays shut; every 10 s each eye on screen has a 1-in-600 chance (about 1% a minute).
+const eyeSeen = new Map();
+function blinkEye(e){ e.classList.remove('is-blink'); void e.offsetWidth; e.classList.add('is-blink'); setTimeout(()=> e.classList.remove('is-blink'), 1500); }
+function eyeIntro(card, e){ const id = card && card.dataset && card.dataset.uid, now = Date.now();
+  if(id != null && eyeSeen.has(id) && now - eyeSeen.get(id) < 20*60*1000) return;
+  if(id != null){ eyeSeen.set(id, now); if(eyeSeen.size > 300) eyeSeen.clear(); }
+  blinkEye(e); }
+if(typeof setInterval === 'function') setInterval(()=>{ try{ if(document.hidden) return; document.querySelectorAll('.fxb-shut').forEach(e=>{ if(Math.random() < 1/600) blinkEye(e); }); }catch(err){} }, 10000);
 // mark(el, kind): kind 'dark' | 'sun' | 'night' (can't see) | 'eyes' (Darksight in the dark) | 'lantern' (the carrier's light pool) | 'lit' | null (clear)
 M.markSight = function(el, kind, o){
   o = o || {}; if(!el || !el.classList) return; const look = o.look || M.sightLook || 'A';
   const sig = kind ? kind + ':' + look : '';
   if((el.dataset.fxbSight || '') === sig) return; // nothing changed: leave the running animations alone
   el.classList.remove(...SIGHT_CLS); el.querySelectorAll(':scope > ' + SIGHT_SEL.split(', ').join(', :scope > ')).forEach(n=> n.remove());
+  { const tl = tileOf(el); if(tl && tl !== el) tl.querySelectorAll(':scope > .fxb-darkeyes').forEach(n=> n.remove()); }
   el.dataset.fxbSight = sig; if(!kind){ delete el.dataset.fxbSight; return; }
   const add = (cls, html)=>{ const i = document.createElement('i'); i.className = cls; i.setAttribute('aria-hidden', 'true'); if(html) i.innerHTML = html; el.appendChild(i); return i; };
-  if(kind === 'eyes'){ el.classList.add('fxb-eyes-on'); const e = add('fxb-darkeyes'); e.style.setProperty('--blink', rnd(4, 7).toFixed(1) + 's'); e.style.setProperty('--bd', (-rnd(0, 6)).toFixed(1) + 's'); return; }
+  // 2026-10-16 (user: "The dark sight vfx is not centered. its abit to the left."): the eyes sit in the card tile itself. On the
+  // .board-card they were centred on the wrapper, while a flyer's tile hovers a few px to the right of it (its flight offset).
+  if(kind === 'eyes'){ el.classList.add('fxb-eyes-on'); const e = add('fxb-darkeyes'); { const tl = tileOf(el); if(tl && tl !== el) tl.appendChild(e); } e.style.setProperty('--blink', rnd(4, 7).toFixed(1) + 's'); e.style.setProperty('--bd', (-rnd(0, 6)).toFixed(1) + 's'); return; }
   if(kind === 'lantern'){ el.classList.add('fxb-lantern', 'fxb-lit'); el.insertBefore(add('fxb-pool'), el.firstChild); return; } // first, so the card paints over its own light
   if(kind === 'lit'){ el.classList.add('fxb-lit'); return; }
   el.classList.add('fxb-cantsee', 'fxb-look-' + look, 'fxb-why-' + kind);
   const b = (look !== 'A' || kind === 'sun') ? add('fxb-eyebadge why-' + kind, EYE_SVG[kind] || EYE_SVG.dark) : {}; b.title = kind === 'sun' ? 'Sun-shy: dazzled by day' : kind === 'night' ? 'Night-blind: can\'t see at night' : kind === 'blind' ? 'Blind: misses half its swings' : 'Can\'t see in the dark';
   if(kind === 'sun') add('fxb-glare'); else if(kind === 'night') add('fxb-mooncloud');
   else if(look === 'B') add('fxb-fold'); else if(look === 'C') add('fxb-fogart');
-  if(look === 'A' && kind !== 'sun'){ if(kind !== 'night') add('fxb-shade'); const e = add('fxb-shut', SHUT_SVG); e.style.setProperty('--blink', rnd(4.5, 7.5).toFixed(1) + 's'); e.style.setProperty('--bd', (-rnd(0, 7)).toFixed(1) + 's'); }
+  if(look === 'A' && kind !== 'sun'){ if(kind !== 'night') add('fxb-shade'); const e = add('fxb-shut', SHUT_SVG); eyeIntro(el, e); }
 };
 // Work out who can see on the board from the DOM, the card defs, the field rules and the phase (mirrors the engine's
 // sightMiss: Darksight sees in the dark; a living Lantern lights its side (absolute darkness still dims it); Sun-shy is
@@ -24668,7 +25001,9 @@ M.sightSync = function(m, env){
   const lit = {true:false, false:false}; cards.forEach(c=>{ if(alive(c) && eff(c).lantern) lit[mineOf(c)] = true; });
   cards.forEach(c=>{ const e = eff(c), side = mineOf(c); let k = null;
     if(dk){ if(e.darksight) k = 'eyes'; else if(e.lantern) k = 'lantern'; else if(e.keenSense) k = null; else if(lit[side]) k = 'lit'; else k = 'dark'; }
-    if(!k || k === 'lit'){ if(ph === 'day' && e.sunshy) k = 'sun'; else if(ph === 'night' && e.nightblind && !lit[side]) k = 'night'; }
+    // 2026-10-16 (engine sightMiss): an enemy Illuminate unit directly facing a Night-blind one (same column) lights it too
+    const facingLit = ()=>{ const r = c.getBoundingClientRect(), cx = r.left + r.width/2; return cards.some(o=> o !== c && mineOf(o) !== side && alive(o) && eff(o).lantern && (()=>{ const q = o.getBoundingClientRect(); return Math.abs(q.left + q.width/2 - cx) < r.width*.5; })()); };
+    if(!k || k === 'lit'){ if(ph === 'day' && e.sunshy) k = 'sun'; else if(ph === 'night' && e.nightblind && !lit[side] && !facingLit()) k = 'night'; }
     if(!dk && e.lantern && ph === 'night') k = k || 'lantern';
     if((!k || k === 'lit' || k === 'eyes') && c.classList.contains('is-blind') && !e.keenSense) k = 'blind'; // 2026-10-15: Blind status, while it lasts
     M.markSight(c, k);
@@ -24833,13 +25168,16 @@ M.dawnDraw = function(host, opts){
 // Dusk (wt-dusk, the tone only): the sun sinks in the west, long shadows stretch across the felt, warm turns violet.
 M.dusk = function(host, opts){
   opts = Object.assign({}, opts, host && host.nodeType ? {host} : {}); const {r, box} = skyBox(opts);
-  const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'inset:0; background:linear-gradient(90deg, rgba(255,140,60,.5), rgba(190,90,140,.25) 50%, rgba(80,60,140,.15));'}))[0];
-  const sun = bits(box, 1, ()=> ({cls:'fxb-disc', style:'left:5%; top:35%; background:radial-gradient(circle, #fff1c0, #ff9a3a 60%, #e0582a); box-shadow:0 0 26px 10px rgba(255,140,60,.5);'}))[0];
-  const sh = bits(box, 4, i=> ({cls:'fxb-bit', style:`left:0; top:${18 + i*20}%; width:100%; height:9%; background:linear-gradient(90deg, rgba(40,20,50,0), rgba(40,20,50,.35) 30%, rgba(40,20,50,0)); transform-origin:0 50%;`}));
+  // 2026-10-16 (user: "The sun thing - i think the static rectangle bars across the screen might look better than the setting sun
+  // right now. Otherwise make the setting sun MUCH softer and less obvious - it's not supposed to be seeable"): no sun disc any more.
+  // The long shadow bars stay, but static: they fade in where they lie (no stretching across) and fade out, over a faint warm tint
+  // from the west (the light's direction) that is much weaker than the old wash.
+  void r;
+  const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'inset:0; background:linear-gradient(90deg, rgba(255,150,70,.22), rgba(200,110,140,.08) 45%, rgba(80,60,140,0) 80%);'}))[0];
+  const sh = bits(box, 4, i=> ({cls:'fxb-bit', style:`left:0; top:${18 + i*20}%; width:100%; height:9%; background:linear-gradient(90deg, rgba(40,20,50,0), rgba(40,20,50,.35) 30%, rgba(40,20,50,0));`}));
   return run([box], opts, (t)=>{
-    t.fromTo(w, {opacity:0}, {opacity:1, duration:.5}).to(w, {opacity:0, duration:.6}, 1.2)
-      .fromTo(sun, {y:0, opacity:1}, {y:r.height*.45, opacity:0, duration:1.4, ease:'power1.in'}, 0)
-      .fromTo(sh, {scaleX:0, opacity:0}, {scaleX:1.1, opacity:1, duration:.8, stagger:.06, ease:'power2.out'}, .2).to(sh, {opacity:0, duration:.5}, 1.1);
+    t.fromTo(w, {opacity:0}, {opacity:1, duration:.6}).to(w, {opacity:0, duration:.7}, 1.3)
+      .fromTo(sh, {opacity:0}, {opacity:1, duration:.6, stagger:.05, ease:'sine.out'}, .15).to(sh, {opacity:0, duration:.6}, 1.2);
   });
 };
 // Twilight (wt-twilight, was announced as "Day breaks"): rose-violet wash; the sun and the moon cross paths overhead and
@@ -25392,7 +25730,7 @@ M.onEvent = function(ev, env){
     // Hit modifiers the number alone doesn't explain.
     if(rcA.staggered > 0 && !ev.ranged) later2(t=> M.staggerWeakHit(t, {att:el(ev.attUid)}));
     if(rcT.shocked > 0 && ev.dmg > 0) later2(t=> M.shockSpark(t));
-    if(mo.exposed.has(ev.targetUid)){ mo.exposed.delete(ev.targetUid); later2(t=> M.exposeCash(t, {amount:1})); }
+    if(mo.exposed.has(ev.targetUid)){ mo.exposed.delete(ev.targetUid); later2(t=> M.exposeCash(t, {crit:true})); } // 2026-10-16 (user: "that hit is guaranteed a crit")
     if(ev.dmg > 0 && ev.dmgType !== 'magic' && te.shade && (dk || phaseOf(m) === 'night')) later2(t=> M.shadeNight(t));
     if(ae.supreme && (Number(te.armor) > 0 || rcT.shellArmor > 0 || rcT.tempHp > 0 || rcT.petrified || Number(te.scare) > 0 || rcT.shield > 0)) later2(t=> M.wardCrush(t));
     { const rl = [...(td.resist || []), ...(te.resist || []), ...(te.dry ? ['heat'] : [])], wl = [...(te.weakness || []), ...(te.rabid ? ['swimmer', 'water'] : [])];
@@ -25461,13 +25799,11 @@ M.onEvent = function(ev, env){
 
 // 2026-10-15: the miss float per darkness level (dark-*-miss: every level used to say "🌙 Miss!"). arena_app.js's blindMiss
 // float asks for this text when the miss was a sight miss (ev.night); null keeps the old text.
-const MISS_TEXT = {dark:'🌑 Dark miss', pitch:'⬛ Pitch miss!', absolute:'🕳️ Void miss!'};
+// 2026-10-16 (user: "No need to say "Dark Miss" just say Miss! (on the opposing card, not on the attacking card)"): every sight miss
+// (the dark at any level, Sun-shy, Night-blind) reads just "Miss!"; arena_app.js floats it on the unit that was swung at.
+const MISS_TEXT = {dark:'Miss!', pitch:'Miss!', absolute:'Miss!'};
 M.missText = function(ev, m){
-  if(!ev || !ev.night) return null; const e = effOf(defsOf(null), ev.attDefId), dk = darkLvl(m), ph = phaseOf(m);
-  if(dk && !e.darksight) return MISS_TEXT[dk] || MISS_TEXT.dark;
-  if(ph === 'day' && e.sunshy) return '☀️ Dazzled!';
-  if(ph === 'night' && e.nightblind) return '🌙 Night-blind!';
-  return null;
+  if(!ev || !ev.night) return null; return 'Miss!';
 };
 
 // Non-battle moments (one fxHook line each in arena_app.js).
@@ -26700,12 +27036,15 @@ M.castleHerbHeal = function(castle, target, opts){
   });
 };
 // Herb Refinery's bitter brew: a flask is lobbed from the castle and splashes the enemy in purple-green.
+// 2026-10-16 (user: "The refinery should visibly throw a potion emoji at the enemy (very slight arc) ... Make this happen faster"):
+// a bigger 🧪 on a shallow arc (26 px above the straight line, was 80) with a lazy quarter-spin, in 0.33 s (was 0.42).
 M.castleHerbBane = function(castle, target, opts){
-  opts = opts || {}; const ct = castleTile(castle), tt = tileOf(target); if(!ct || !tt) return Promise.resolve();
+  opts = opts || {}; const ct = castleTile(castle), tt = tileOf(target); if(!ct || !tt || !ct.isConnected || !tt.isConnected) return Promise.resolve();
   return run(opts, (tl, mk)=>{
-    const a = centre(ct), b = centre(tt), f = mk('fxc-g fxc-flask', '🧪'), st = {k:0}, p0 = {x:a.x, y:a.r.top + a.h*.2}, mid = {x:(p0.x + b.x)/2, y:Math.min(p0.y, b.y) - 80}, fl = (opts.flight || 420)/1000;
-    tl.set(f, {x:p0.x, y:p0.y, xPercent:-50, yPercent:-50, opacity:1}, 0)
-      .to(st, {k:1, duration:fl, ease:'none', onUpdate:()=>{ const k = st.k, q = 1 - k; gsap.set(f, {x:q*q*p0.x + 2*q*k*mid.x + k*k*b.x, y:q*q*p0.y + 2*q*k*mid.y + k*k*b.y, rotation:k*540}); }}, 0).set(f, {opacity:0}, fl);
+    const a = centre(ct), b = centre(tt), f = mk('fxc-g fxc-flask', '🧪'), st = {k:0}, p0 = {x:a.x, y:a.r.top + a.h*.2}, mid = {x:(p0.x + b.x)/2, y:(p0.y + b.y)/2 - 26}, fl = (opts.flight || 330)/1000;
+    f.style.fontSize = '30px';
+    tl.set(f, {x:p0.x, y:p0.y, xPercent:-50, yPercent:-50, opacity:1, scale:.8}, 0)
+      .to(st, {k:1, duration:fl, ease:'none', onUpdate:()=>{ const k = st.k, q = 1 - k; gsap.set(f, {x:q*q*p0.x + 2*q*k*mid.x + k*k*b.x, y:q*q*p0.y + 2*q*k*mid.y + k*k*b.y, rotation:k*160 - 20, scale:.8 + k*.3}); }}, 0).set(f, {opacity:0}, fl);
     flashAt(tl, mk, fl, b.x, b.y, b.w*1.4, b.w*1.4, 'rgba(150,90,200,.85)', .3);
     spray(tl, mk, fl, b.x, b.y, {n:12, colors:['#9b5bd0', '#7dbb3a', '#c9a6ff'], size:[3, 7], dist:[20, 50], dur:[.35, .55], gravity:24});
     puffs(tl, mk, fl + .05, b.x, b.y, {n:3, color:'rgba(120,180,60,.55)', w:b.w*.5, rise:-24, size:[16, 22]});
@@ -27167,7 +27506,8 @@ M.deathPlan = function(el, uid, env){
     const leader = (b && b.classList.contains('is-leader')) || (m && String(m.leaderUid) === String(uid)) || LEADERS.has(String(uid)) || archOf(d).includes('King');
     if(leader){ if(!plan.look && !token) plan.look = 'kingFall'; else plan.addons.push('leaderFall'); }
     const t = tileOf(el); if(t && (t.classList.contains('is-shiny') || t.classList.contains('is-holo'))) plan.addons.push('foilPeel');
-    if(!token && LASTDMG.has(String(uid))) plan.addons.push('lethalStamp');
+    // 2026-10-16 (user: "For killing blows, no need to put the additiona - N X"): the "−N ✖" stamp is gone. A killer with an on-kill
+    // trigger gets its own ✖ that flies into it instead (arena_app.js, killMarkVfx). M.lethalStamp stays for the Effects Lab.
   }
   return plan;
 };
@@ -27220,8 +27560,9 @@ M.onEvent = function(ev, env){
       const u = ev.targetUid;
       if(u != null && WAKE.get(String(u))){ WAKE.delete(String(u)); at(env.hitAtMs(ev) + 40, ()=>{ const e = el(u); if(e) M.wakeJolt(e, o); }); }
       if(ev.attDefId === 'castle' && u != null && CASTLE_SHOT.has(String(u))){ const kind = CASTLE_SHOT.get(String(u)); CASTLE_SHOT.delete(String(u));
-        const c = hqEl(ev.side), t = el(u), land = env.hitAtMs(ev), fl = kind === 'bane' ? 420 : 260;
-        if(c && t) at(Math.max(0, land - fl), ()=>{ const t2 = el(u); if(!t2) return; kind === 'bane' ? M.castleHerbBane(c, t2, {flight:fl}) : M.castleBolt(c, t2, {flight:fl}); }); }
+        const land = env.hitAtMs(ev), fl = Math.min(land, kind === 'bane' ? 330 : 260); // 2026-10-16: the brew flies faster (was 420)
+        // the castle and the target are looked up when the throw starts, so a re-render in between can't strand it
+        if(hqEl(ev.side) && el(u)) at(Math.max(0, land - fl), ()=>{ const c2 = hqEl(ev.side), t2 = el(u); if(!t2 || !c2) return; kind === 'bane' ? M.castleHerbBane(c2, t2, {flight:fl}) : M.castleBolt(c2, t2, {flight:fl}); }); }
       break; }
     case 'hitHQ': {
       const c = hqEl(ev.targetSide); if(!c) break; const land = env.hitAtMs(ev);
@@ -29568,9 +29909,16 @@ function sib(node, cls, html){
   d.style.left = node.style.left; d.style.top = node.style.top; node.parentNode.insertBefore(d, node); return d;
 }
 function kid(node, cls, n, style){ for(let i = 0; i < (n || 1); i++){ const k = document.createElement('i'); k.className = cls; k.setAttribute('aria-hidden', 'true'); if(style) k.setAttribute('style', style(i)); node.appendChild(k); } }
-const BRAMBLE_SVG = `<svg viewBox="-40 -40 80 80"><g fill="none" stroke="#6b4423" stroke-width="4.6" stroke-linecap="round"><path d="M-30 6 C-26 -22 6 -34 26 -16 C34 -6 30 14 16 26 C2 34 -22 30 -30 6"/><path d="M-24 -14 C-6 -30 22 -26 30 2" stroke="#8a5a2e" stroke-width="3"/><path d="M-30 6 C-26 -22 6 -34 26 -16" stroke="#b07a42" stroke-width="1.2"/></g>
-  <g fill="#3e2610">${[[-30,6],[-20,-20],[0,-31],[20,-22],[31,-4],[26,14],[10,28],[-12,29],[-27,18]].map(([x,y])=> `<path d="M${x} ${y} l${x>0?4:-4} ${y>0?3:-3} l${x>0?-1:1} ${y>0?-5:5}z"/>`).join('')}</g>
-  <g fill="#5d8a3a">${[[-28,-6],[12,-30],[30,8],[-6,31]].map(([x,y])=> `<ellipse cx="${x}" cy="${y}" rx="4" ry="2.2" transform="rotate(${x*3} ${x} ${y})"/>`).join('')}</g></svg>`;
+// 2026-10-16 (user: "Locked skirmishes: There is a bramble circle around them. Make it completely circular, now it looks abit lemon-y."):
+// the vine is a true circle now (r 29), a second strand winds round it on a slightly smaller circle, and the thorns and leaves sit on
+// the circle pointing outward.
+const BRAMBLE_SVG = (()=>{ const R = 29, P = (a, r)=> [Math.cos(a)*r, Math.sin(a)*r].map(v=> v.toFixed(2));
+  const thorns = Array.from({length:10}, (_, i)=>{ const a = i/10*Math.PI*2 + .2, [x, y] = P(a, R + 1), [tx, ty] = P(a, R + 6.5), [lx, ly] = P(a - .09, R + 1), [rx, ry] = P(a + .09, R + 1);
+    return `<path d="M${lx} ${ly} L${tx} ${ty} L${rx} ${ry}Z"/>`; }).join('');
+  const leaves = [.9, 2.5, 4.1, 5.6].map(a=>{ const [x, y] = P(a, R); return `<ellipse cx="${x}" cy="${y}" rx="4.2" ry="2.2" transform="rotate(${(a*57.3 + 90).toFixed(0)} ${x} ${y})"/>`; }).join('');
+  const [s0x, s0y] = P(-2.4, R - 3), [s1x, s1y] = P(.9, R - 3);
+  return `<svg viewBox="-40 -40 80 80"><g fill="none" stroke-linecap="round"><circle r="${R}" stroke="#6b4423" stroke-width="4.6"/><path d="M${s0x} ${s0y} A${R - 3} ${R - 3} 0 0 1 ${s1x} ${s1y}" stroke="#8a5a2e" stroke-width="3"/><path d="M${P(-2.6, R)[0]} ${P(-2.6, R)[1]} A${R} ${R} 0 0 1 ${P(-.7, R)[0]} ${P(-.7, R)[1]}" stroke="#b07a42" stroke-width="1.2"/></g>
+  <g fill="#3e2610">${thorns}</g><g fill="#5d8a3a">${leaves}</g></svg>`; })();
 const TENTACLE_SVG = `<svg viewBox="-60 -60 120 120"><g fill="#4a2466" stroke="#b07ad8" stroke-width="1.6">
   <path d="M-30 40 C-46 10 -40 -18 -24 -38 C-30 -14 -26 8 -18 40Z"/><path d="M30 40 C46 6 42 -22 22 -42 C30 -16 26 8 18 40Z"/><path d="M-6 44 C-14 18 -4 -8 6 -50 C10 -20 8 14 6 44Z"/></g>
   <g fill="#c58cff" opacity=".55">${[[-34,-6],[-30,14],[34,-10],[30,12],[2,-24],[4,4]].map(([x,y])=> `<circle cx="${x}" cy="${y}" r="2"/>`).join('')}</g></svg>`;
@@ -31881,7 +32229,8 @@ M.onEvent = function(ev, env){
   if(t === 'triggerFired' && ev.uid != null){
     const el = env.el(ev.uid); if(!el) return;
     if(ev.action === 'refine') M.refine(el);
-    else if(el.querySelector('.ab-trig') && env.once('fxfTrig:' + ev.uid)) M.autobattleTrigger(el);
+    // 2026-10-16 (user: "triggering of the a trigged effect: the lightning emoji glows only. no lightning vfx"): no bolt from the
+    // badge in a fight any more; arena_app.js's triggerFiredVfx glows the ⚡ badge itself. M.autobattleTrigger stays for the Lab.
   }
   if(t === 'exile' && ev.side){ // every card sent to the Removal Zone gives its owner one Echo
     const mine = mineSide(ev.side, env), w = document.getElementById(mine ? 'deckWidgetBottom' : 'deckWidgetTop') || (mine ? env.battlefield : null);
@@ -31916,11 +32265,17 @@ H.toast = (t, message, kind, env)=>{
   }, 320);
 };
 // XP and the account level (awardXp): the level-up gets the big ring-and-star moment; plain XP streams into the badge if it's on screen.
+// 2026-10-16 (user: "On win ... I see the exp bar level up, but the main ui is hidden by the reward UI. Only the bar is visible -
+// weird."): while a fight's results (or its reward reveal) are up, the level-up waits until they close, then plays over the page with
+// its badge; plain XP into a badge hidden behind the results is skipped.
+const resultsUp = ()=> !!document.querySelector('.winloss-card, .winloss-overlay, .rr-stage');
 H.xpGain = (n, before, after, env)=>{
   if(!medOK(env)) return;
-  const badge = document.getElementById('playerLevelBadge'), bar = badge && (badge.querySelector('.pl-bar') || badge);
-  if(after > before) later(()=> M.accountLevel(visible(badge) ? badge : null, {level:after, sound:()=> env.sound('unlockChime')}), 450);
-  else if(visible(bar)) M.xpGain(bar, {amount:n});
+  const play = ()=>{ const badge = document.getElementById('playerLevelBadge'), bar = badge && (badge.querySelector('.pl-bar') || badge);
+    if(after > before) M.accountLevel(visible(badge) ? badge : null, {level:after, sound:()=> env.sound('unlockChime')});
+    else if(visible(bar) && !resultsUp()) M.xpGain(bar, {amount:n}); };
+  if(after > before && resultsUp()){ let waited = 0; const wait = ()=>{ if(resultsUp() && waited < 600000){ waited += 400; later(wait, 400); } else later(play, 450); }; later(wait, 400); return; }
+  if(after > before) later(play, 450); else play();
 };
 H.energySpend = (cost, env)=>{ const p = energyPill(); if(p && medOK(env)) M.energySpend(p, {cost}); };
 H.energyTick = (cur, max, env)=>{ const p = energyPill(); if(p && medOK(env)) later(()=> M.energyTick(energyPill() || p, {full:cur >= max}), 80); };
@@ -31997,7 +32352,9 @@ H.resultsShown = (card, m, env)=>{
   add(c=> c.querySelector('.winloss-achv'), el=> M.achvUnlocked(el));
   const nb = m.nextBattle && m.nextBattle.node, fl = m.winner === 1 && nb && /floor (\d+)/i.exec(nb.name || '');
   add(()=> !!fl, ()=> M.dungeonFloor(null, {floor:fl[1]}));
-  add(c=> m.winner === 1 && !['tutorial', 'pc', 'sandbox'].includes(m.mode) && (c.querySelector('.wl-title') || true), el=> M.xpLine(el.classList && el.classList.contains('winloss-card') ? null : el, {amount:3}));
+  // 2026-10-16 (user: "On win, there is a golden glow effect - it is placed wrongly and highlighting nothing, randomly"): the "+3 XP"
+  // gold bar with its glowing burst floated over the results' title (or the middle of the card), pointing at nothing; it is gone.
+  // The account level-up waits for the results to close (H.xpGain).
   jobs.slice(0, 6).forEach((fn, i)=> later(fn, 900 + i*750));
 };
 
@@ -32100,12 +32457,18 @@ const THEMES = {
   volcano: {label:'Volcano',  ink:'#fff0dc', glow:'#ff8a3a', a:'#7a2a16', b:'#3a120a', trim:'#ffb35a', ink2:'#1e0804', p:'embers',   grand:['heatHaze', 'silhouettes'],   sil:'volcano',  style:'banner'},
   forge:   {label:'Forge',    ink:'#fff0dc', glow:'#ffb04a', a:'#5a4a40', b:'#2a201a', trim:'#ffc56a', ink2:'#140e0a', p:'sparks',   grand:['glowPulse', 'silhouettes'],  sil:'chimneys', style:'banner'},
   night:   {label:'Starlit',  ink:'#f2f0ff', glow:'#b8c8ff', a:'#2c2f6a', b:'#12143a', trim:'#e6dcff', ink2:'#080a20', p:'stars',    grand:['aurora', 'shootingStar'],    sil:'peaks',    style:'banner', veil:'rgba(8,12,40,.55)'},
+  // 2026-10-16 (user: "Ah the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make the background a
+  // little darker and castle-dungeony. with dripping swamp shit"): the daily dungeons' theme. The Ice Hollow ribbon banner in its 'dungeon'
+  // variant (TITLE_VARIANTS below): a darker veil, a dungeon wall behind, a stone ribbon with moss trim, and swamp slime dripping
+  // from the top of the screen and down over the ribbon. Any dungeon can take it (THEME_OF, or {theme:'dungeon'} / {variant:'dungeon'}).
+  dungeon: {label:'Dungeon',  ink:'#e8f4d2', glow:'#a8f25a', a:'#454a43', b:'#171a17', trim:'#86b93e', ink2:'#090c07', p:'slime',    grand:['silhouettes', 'bats'],       sil:'stalactites', style:'banner', variant:'dungeon', veil:'rgba(3,7,4,.66)'},
 };
 // Map → theme (a presentation choice, not game state). Anything missing falls back to its biome.
 const THEME_OF = {m1:'forest', mtut:'meadow', mf:'forest', mq:'meadow', mb:'beach', mp:'water', mg:'cave', mc:'alpine', m2:'water', mw:'swamp',
   m8:'mist', ms:'mist', mu:'fungal', mz:'fungal', m4:'cave', mn:'crystal', mk:'water', m7:'reef', mj:'reef', m10:'alpine', mv:'alpine', mh:'meadow',
   mr:'forest', m5:'savanna', my:'forest', ml:'meadow', mt:'tundra', m6:'tundra', mi:'tundra', md:'desert', m3:'volcano', m11:'volcano', m9:'forge',
-  me:'volcano', mx:'volcano', m21:'night', mo:'forest', mm:'swamp'};
+  me:'volcano', mx:'volcano', m21:'night', mo:'forest',
+  mm:'dungeon'}; // Murgle Mayhem, the first daily dungeon (2026-10-16, was 'swamp')
 const BIOME_THEME = {forest:'forest', meadow:'meadow', beach:'beach', water:'water', reef:'reef', swamp:'swamp', cave:'cave', alpine:'alpine',
   tundra:'tundra', savanna:'savanna', ash:'volcano', forge:'forge'};
 function themeOf(o){ o = o || {}; const k = o.theme || THEME_OF[o.id] || BIOME_THEME[o.biome] || 'forest'; return THEMES[k] ? k : 'forest'; }
@@ -32209,6 +32572,18 @@ const PARTICLES = {
     stream(L, n, ms, ()=>{ const d = part(L, 'width:2px; height:9px; border-radius:2px; background:linear-gradient(#fff6c0, #ff9a2a); box-shadow:0 0 6px #ffb04a;');
       const x = rnd(.1, .9)*L.W, vx = rnd(-120, 120), vy = rnd(-320, -200), o = {t:0};
       g.set(d, {x, y:L.H}); g.to(o, {t:1.4, duration:1.4, ease:'none', onUpdate:()=>{ const t = o.t; g.set(d, {x:x + vx*t, y:L.H + vy*t + 260*t*t, rotation:Math.atan2(vy + 520*t, vx)*57.3 + 90, opacity:1 - t/1.4}); }, onComplete:()=> d.remove()}); }); },
+  // swamp slime (2026-10-16, the dungeon theme): fat green drops let go of the ceiling, stretch as they fall and splat
+  slime(L, n, ms){ const g = G(), cols = ['#a8f25a', '#7fd03a', '#c6ff7a'];
+    stream(L, Math.round(n*.7), ms, ()=>{ const s = rnd(5, 10), c = pick(cols), d = part(L, `width:${s}px; height:${s*1.25}px; border-radius:50% 50% 50% 50% / 62% 62% 40% 40%; background:radial-gradient(circle at 35% 30%, #efffd0 0 16%, ${c} 40%, #3f7a14); box-shadow:0 0 8px ${hexA(c, .55)};`);
+      const x = rnd(.03, .97)*L.W, yEnd = rnd(.45, .98)*L.H, hang = rnd(.2, .7);
+      g.set(d, {x, y:-s, scaleY:.4, transformOrigin:'50% 0%'});
+      g.to(d, {y:rnd(2, 10), scaleY:1.3, duration:hang, ease:'sine.in'});
+      g.to(d, {y:yEnd, scaleY:1.6, duration:Math.sqrt(yEnd/L.H)*.9 + .2, delay:hang, ease:'power2.in', onComplete:()=>{
+        g.to(d, {scaleX:2.6, scaleY:.25, opacity:0, duration:.35, ease:'power2.out', onComplete:()=> d.remove()}); }}); });
+    // a few bubbles glooping up from below
+    stream(L, Math.round(n*.3), ms, ()=>{ const s = rnd(4, 9), d = part(L, `width:${s}px; height:${s}px; border-radius:50%; border:1.5px solid rgba(190,255,120,.75); background:radial-gradient(circle at 35% 30%, rgba(255,255,255,.7) 0 18%, rgba(150,230,80,.18) 45%, transparent 70%);`);
+      const x = rnd(0, L.W), dur = rnd(2.2, 3.4); g.set(d, {x, y:L.H + 8});
+      g.to(d, {y:L.H*rnd(.55, .8), duration:dur, ease:'sine.out', onComplete:()=> g.to(d, {scale:1.8, opacity:0, duration:.2, onComplete:()=> d.remove()})}); }); },
   stars(L, n, ms){ const g = G();
     stream(L, n, ms*.5, ()=>{ const s = rnd(1.5, 3.5), d = part(L, `width:${s}px; height:${s}px; border-radius:50%; background:#fff; box-shadow:0 0 ${s*2}px #cfd8ff;`);
       g.set(d, {x:rnd(0, L.W), y:rnd(0, .7)*L.H, opacity:0}); g.to(d, {opacity:1, duration:.6}); g.to(d, {opacity:.25, duration:rnd(.4, .9), repeat:5, yoyo:true, delay:.6, onComplete:()=> g.to(d, {opacity:0, duration:.5, onComplete:()=> d.remove()})}); }); },
@@ -32378,6 +32753,75 @@ css('titles', `
 .fxg-tc-sub{font:700 max(11px, calc(var(--fs)*.28))/1.2 'Baloo 2', system-ui, sans-serif; letter-spacing:.42em; text-transform:uppercase; color:var(--trim); text-shadow:0 2px 6px rgba(0,0,0,.9); white-space:nowrap;}
 .fxg-tc-ico{font-size:calc(var(--fs)*.6); margin-bottom:calc(var(--fs)*.1); filter:drop-shadow(0 0 10px var(--glow));}
 `);
+// ---- Title variants (2026-10-16): a named dressing laid over a title style (only the ribbon banner has one so far). A theme names
+// its variant (THEMES[k].variant) or a caller passes {variant}; TITLE_VARIANTS[v](L, T, o, box, tl, fs) decorates the banner the
+// style built and adds its own tweens to the same timeline, so the variant comes and goes with the title.
+// 'dungeon' (2026-10-16, user: "...the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make
+// the background a little darker and castle-dungeony. with dripping swamp shit"): the daily dungeons' banner.
+const DG_STONE = (w, h)=>{ // a running-bond stone wall as an SVG data URI (w x h blocks, two courses per tile)
+  const shades = ['#4c514a', '#454a42', '#525850', '#40443d', '#4a4e45', '#565b52'], m = 2, hw = w/2;
+  const r = (x, y, ww, i)=> `<rect x='${x + m/2}' y='${y + m/2}' width='${ww - m}' height='${h - m}' rx='1.5' fill='${shades[i % shades.length]}'/>`
+    + `<rect x='${x + m/2}' y='${y + m/2}' width='${ww - m}' height='2' fill='rgba(255,255,255,.08)'/>`;
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w*2}' height='${h*2}'><rect width='${w*2}' height='${h*2}' fill='#141613'/>`
+    + r(0, 0, w, 0) + r(w, 0, w, 2) + r(-hw, h, w, 3) + r(hw, h, w, 1) + r(w + hw, h, w, 4) + `</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`; };
+// A slime curtain: a gooey band along the top with drips hanging off it (each drip its own <g> so it can grow).
+function slimeSVG(w, h, n, opts){ opts = opts || {};
+  const id = 'fxgSl' + Math.floor(rnd(1, 1e9)), band = h*(opts.band || .26), seg = Math.max(3, Math.round(w/38));
+  let d = `M0 0 H${w.toFixed(1)} V${(band*rnd(.7, 1)).toFixed(1)}`;
+  for(let i = seg - 1; i >= 0; i--){ const x = w*i/seg, cx = w*(i + .5)/seg; d += ` Q${cx.toFixed(1)} ${(band*rnd(.8, 1.45)).toFixed(1)} ${x.toFixed(1)} ${(band*rnd(.75, 1.1)).toFixed(1)}`; }
+  d += ' Z';
+  const drips = [];
+  for(let i = 0; i < n; i++){ const x = w*(i + rnd(.15, .85))/n, dw = rnd(3, 7)*(opts.scale || 1), len = band + rnd(.25, 1)*(h - band - dw*1.6);
+    drips.push(`<g class="fxg-drip" style="transform-origin:${x.toFixed(1)}px 0px"><path d="M${(x - dw/2).toFixed(1)} 0 V${(len - dw).toFixed(1)} Q${x.toFixed(1)} ${(len + dw*.7).toFixed(1)} ${(x + dw/2).toFixed(1)} ${(len - dw).toFixed(1)} V0 Z" fill="url(#${id})"/>`
+      + `<ellipse cx="${x.toFixed(1)}" cy="${(len - dw*.35).toFixed(1)}" rx="${(dw*.78).toFixed(1)}" ry="${(dw*.95).toFixed(1)}" fill="url(#${id})"/>`
+      + `<ellipse cx="${(x - dw*.25).toFixed(1)}" cy="${(len - dw*.75).toFixed(1)}" rx="${(dw*.18).toFixed(1)}" ry="${(dw*.3).toFixed(1)}" fill="#f2ffd8" opacity=".75"/></g>`); }
+  return {html:`<svg viewBox="0 0 ${w.toFixed(1)} ${h.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" style="display:block; overflow:visible"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">`
+    + `<stop offset="0" stop-color="#3f7a14"/><stop offset=".35" stop-color="#78c832"/><stop offset=".8" stop-color="#a8ee58"/><stop offset="1" stop-color="#c8ff86"/></linearGradient></defs>`
+    + `<path d="${d}" fill="url(#${id})"/><path d="${d}" fill="none" stroke="#e6ffbf" stroke-opacity=".35" stroke-width="1.5" transform="translate(0 -2)"/>${drips.join('')}</svg>`, band}; }
+css('title-variants', `
+.fxg-dg-wall{position:absolute; inset:0; opacity:.46; background-size:auto; image-rendering:pixelated;
+  -webkit-mask:radial-gradient(ellipse 70% 62% at 50% 40%, #000 30%, rgba(0,0,0,.35) 70%, transparent 100%); mask:radial-gradient(ellipse 70% 62% at 50% 40%, #000 30%, rgba(0,0,0,.35) 70%, transparent 100%);}
+.fxg-dg-vig{position:absolute; inset:0; background:radial-gradient(ellipse at 50% 38%, transparent 30%, rgba(2,4,2,.78) 100%);}
+.fxg-dg-curtain{position:absolute; left:-2%; right:-2%; top:0; z-index:2; filter:drop-shadow(0 3px 2px rgba(0,0,0,.55));}
+.fxg-tv-dungeon .fxg-tb-rib{background:linear-gradient(180deg, rgba(255,255,255,.1), rgba(0,0,0,.35)), var(--stone) !important; background-size:auto, auto !important;}
+.fxg-tv-dungeon .fxg-tb-tail{background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55)), var(--stone); filter:none;}
+.fxg-tv-dungeon .fxg-tb-medal{z-index:5; background:radial-gradient(circle at 35% 30%, #d6ddcc, #74806a 50%, #22261f); box-shadow:0 0 0 3px #171a17, 0 0 0 5px var(--trim), 0 0 22px rgba(160,255,80,.4), 0 8px 16px rgba(0,0,0,.6);}
+.fxg-tv-dungeon .fxg-tb-name{text-shadow:0 2px 0 rgba(0,0,0,.7), 0 0 16px var(--glow), 0 0 3px rgba(0,0,0,.9);}
+.fxg-dg-ribslime{position:absolute; left:-6px; right:-6px; top:-5px; z-index:4; pointer-events:none; filter:drop-shadow(0 2px 1.5px rgba(0,0,0,.5));}
+.fxg-dg-drop{position:absolute; left:0; top:0; z-index:4; border-radius:50% 50% 50% 50% / 62% 62% 40% 40%; background:radial-gradient(circle at 35% 30%, #efffd0 0 18%, #8fe040 45%, #3f7a14);}
+`);
+const TITLE_VARIANTS = {
+  dungeon(L, T, o, box, tl, fs){ const g = G(), q = s=> box.querySelector(s), out = (o.hold || 2.2) + 1.1;
+    const tt = q('.fxg-tt'); if(!tt) return; tt.classList.add('fxg-tv-dungeon'); tt.style.setProperty('--stone', DG_STONE(Math.round(fs*.9), Math.round(fs*.42)));
+    // the dungeon wall and a heavy vignette behind everything (the theme's veil already darkened the map)
+    const wall = document.createElement('div'); wall.className = 'fxg-dg-wall'; wall.style.backgroundImage = DG_STONE(64, 30);
+    const vig = document.createElement('div'); vig.className = 'fxg-dg-vig';
+    // just above the veil, under the particles, the stalactites and the bats
+    const veil = L.querySelector(':scope > .fxg-veil'), at = veil ? veil.nextSibling : L.firstChild;
+    L.insertBefore(wall, at); L.insertBefore(vig, at);
+    // slime oozing from the top of the screen
+    const cH = Math.min(L.H*.34, 190), cur = slimeSVG(L.W*1.04, cH, Math.round(L.W/42), {band:.2, scale:1.3});
+    const curtain = document.createElement('div'); curtain.className = 'fxg-dg-curtain'; curtain.innerHTML = cur.html; box.appendChild(curtain);
+    tl.from([wall, vig], {opacity:0, duration:.8}, 0)
+      .from(curtain, {y:-cur.band*1.4, duration:.7, ease:'power2.out'}, 0);
+    curtain.querySelectorAll('.fxg-drip').forEach(dr=> tl.from(dr, {scaleY:0, transformOrigin:'50% 0%', duration:rnd(1.4, 2.6), ease:'power1.in'}, .15 + rnd(0, .6)));
+    // and over the ribbon: a gooey lip on its top edge, drips running down its face, a few drops letting go
+    const rib = q('.fxg-tb-rib'), wrap = q('.fxg-tb-ribwrap');
+    if(rib && wrap){ const rw = rib.offsetWidth || fs*8, rh = rib.offsetHeight || fs*1.4, sl = slimeSVG(rw + 12, rh*.92, Math.max(5, Math.round(rw/(fs*.55))), {band:.2, scale:fs/40});
+      const lip = document.createElement('div'); lip.className = 'fxg-dg-ribslime'; lip.innerHTML = sl.html; wrap.appendChild(lip);
+      tl.fromTo(lip, {clipPath:'inset(-10% 50% -10% 50%)'}, {clipPath:'inset(-10% -2% -10% -2%)', duration:.55, ease:'power2.out'}, .7);
+      lip.querySelectorAll('.fxg-drip').forEach(dr=> tl.from(dr, {scaleY:0, transformOrigin:'50% 0%', duration:rnd(1.2, 2.2), ease:'sine.in'}, .95 + rnd(0, .5)));
+      // drops: from the tips of three drips, falling past the ribbon to the floor
+      const tips = [...lip.querySelectorAll('.fxg-drip ellipse:nth-of-type(1)')].sort(()=> Math.random() - .5).slice(0, 3);
+      tips.forEach((e, i)=>{ const at = 2.1 + i*.45; tl.call(()=>{ if(!L.isConnected) return; const r = e.getBoundingClientRect(), Lr = L.getBoundingClientRect(), sc = Lr.width ? L.W/Lr.width : 1;
+        const s = Math.max(5, fs*.16), d = part(L, `width:${s}px; height:${s*1.3}px;`); d.className += ' fxg-dg-drop';
+        const x = (r.left + r.width/2 - Lr.left)*sc - s/2, y = (r.top + r.height/2 - Lr.top)*sc;
+        g.set(d, {x, y, scaleY:.6, transformOrigin:'50% 0%'});
+        g.to(d, {y:L.H*rnd(.78, .95), scaleY:1.5, duration:.7, ease:'power2.in', onComplete:()=> g.to(d, {scaleX:2.4, scaleY:.3, opacity:0, duration:.3, onComplete:()=> d.remove()})}); }, null, at); }); }
+    tl.to([wall, vig, curtain], {opacity:0, duration:.6}, out); },
+};
+M.TITLE_VARIANTS = TITLE_VARIANTS;
 const chars = s=> [...String(s)].map(c=> `<span class="fxg-ch">${esc(c)}</span>`).join('');
 const vars = (T, fs)=> `--fs:${fs.toFixed(1)}px; --ink:${T.ink}; --glow:${T.glow}; --a:${T.a}; --b:${T.b}; --trim:${T.trim}; --ink2:${T.ink2};`;
 function fsFor(L, name, perChar, cap){ const len = Math.max(6, [...String(name)].length); return Math.max(16, Math.min(cap || 62, L.W*.075, L.W*.8/(len*perChar))); }
@@ -32395,6 +32839,7 @@ const TITLES = {
       .fromTo(q('.fxg-tb-shine i'), {xPercent:0}, {xPercent:620, duration:.9, ease:'power2.inOut'}, 1.05);
     if(q('.fxg-sub')) tl.from(q('.fxg-sub'), {opacity:0, y:8, letterSpacing:'.8em', duration:.7, ease:'power2.out'}, .9);
     tl.to(q('.fxg-tt'), {y:-16, opacity:0, duration:.6, ease:'power2.in'}, (o.hold || 2.2) + 1.1).to(q('.fxg-scrim'), {opacity:0, duration:.6}, '<');
+    if(o.variant && TITLE_VARIANTS[o.variant]) call(()=> TITLE_VARIANTS[o.variant](L, T, o, box, tl, fs)); // e.g. 'dungeon' (2026-10-16)
     return {tl, box}; },
   ink(L, T, o){ const g = G(), fs = fsFor(L, o.name, .5, 54), box = part(L, 'left:0; top:0; width:100%; height:100%;');
     const ink = T.ink2, main = 'M26 96 C 120 58, 240 66, 320 80 S 500 104, 578 70';
@@ -32435,6 +32880,7 @@ const TITLES = {
 M.TITLE_STYLES = Object.keys(TITLES);
 // The title sequence: particles + the theme's flourish + the title card, about 4 s, then everything fades and is removed.
 // opts: name, sub, icon, id / biome / theme, style ('banner' | 'ink' | 'cinema'), lite (fewer particles), grand (false: none), delay (ms)
+//       variant ('dungeon' …, TITLE_VARIANTS; defaults to the theme's own, null for none) (2026-10-16)
 M.mapTitle = function(host, opts){ opts = opts || {}; const g = G(); if(!g) return Promise.resolve();
   const k = themeOf(opts), T = THEMES[k], style = TITLES[opts.style] ? opts.style : T.style;
   const go = ()=>{ // the game may have re-rendered the map meanwhile: follow the element by its id
@@ -32442,10 +32888,10 @@ M.mapTitle = function(host, opts){ opts = opts || {}; const g = G(); if(!g) retu
     if(host && host !== document.body && !host.isConnected) return Promise.resolve();
     const L = stage(host, 'fxg-title-stage fxg-theme-' + k, opts.z != null ? opts.z : 60);
     // night falls over the map for a night theme, so the stars and aurora read on light map art
-    if(T.veil){ const v = part(L, `left:0; top:0; width:100%; height:100%; background:${T.veil};`); g.fromTo(v, {opacity:0}, {opacity:1, duration:.8}); }
+    if(T.veil){ const v = part(L, `left:0; top:0; width:100%; height:100%; background:${T.veil};`); v.classList.add('fxg-veil'); g.fromTo(v, {opacity:0}, {opacity:1, duration:.8}); }
     (PARTICLES[T.p] || PARTICLES.leaves)(L, opts.lite ? 14 : 28, 2800);
     if(opts.grand !== false) (opts.extra || []).concat(T.grand).forEach(n=> GRAND[n] && call(()=> GRAND[n](L, T, {ms:4400, lite:!!opts.lite, delay:n === 'dragonShadow' ? 1200 : 0})));
-    const {tl} = TITLES[style](L, T, Object.assign({name:'Bramblewood'}, opts));
+    const {tl} = TITLES[style](L, T, Object.assign({name:'Bramblewood'}, opts, {variant: opts.variant !== undefined ? opts.variant : T.variant}));
     // a tap anywhere on the host hurries it along (the layer itself never takes the pointer)
     const hurry = ()=> tl.timeScale(3); try{ host && host.addEventListener && host.addEventListener('pointerdown', hurry, {once:true}); }catch(e){}
     return new Promise(res=>{ tl.eventCallback('onComplete', ()=>{ g.to(L, {opacity:0, duration:.6, onComplete:()=>{ try{ host.removeEventListener('pointerdown', hurry); }catch(e){} done(L); opts.onDone && call(opts.onDone); res(); }}); }); }); };
@@ -33410,12 +33856,21 @@ reg('atk-swift', LIVE + 'hit by a Swift unit (once a round)', [['A', 'Hummingbir
   ['B', 'Old: "💨 Swift!" float', ctx=> melee(ctx, (a, t)=>{ ctx.float(a, '💨 Swift!', 'quick'); flashDmg(ctx, t, 3); }).then(()=> P(ctx, 900))]]);
 reg('atk-frenzy', 'SkillFX.rageFlare + float', [['A', 'Now: rage flare, "🔥 Frenzy!"', ctx=>{ const a = mine(ctx)[1]; S().rageFlare(a); ctx.float(a, '🔥 Frenzy!', 'quick'); return P(ctx, 1200); }]]);
 reg('atk-swarm', 'labSkillFx → SkillFX.swarm', [['A', 'Now: a buzzing cloud converges', ctx=>{ S().swarm(mine(ctx)[0], foe(ctx)[1]); return P(ctx, 1500); }]]);
-reg('atk-flying-swoop', 'eighthPassVfx → SkillFX.swoop', [['A', 'Now: an air-trail dive', ctx=>{ const t = foe(ctx)[1]; S().swoop(mine(ctx)[2], t, {flight:420}); ctx.wait(420).then(()=> flashDmg(ctx, t, 3)); return P(ctx, 1300); }]]);
+// 2026-10-16 (user: "Many flying cards throw a 'line' at the enemy to attack. Make them attack normally ... just the shadows draw
+// closer to the card."): a flyer's attack is the normal lunge; its shadow draws in under it (SkillFX.flyDescend, from animateAttacker).
+const asFlyer = el=>{ if(!el || el.classList.contains('is-flying')) return el; el.classList.add('is-flying'); const t = tileOf(el); if(!t) return el;
+  const body = document.createElement('div'); body.className = 'fly-body'; t.parentNode.insertBefore(body, t); body.appendChild(t);
+  const sh = document.createElement('span'); sh.className = 'fly-shadow'; sh.setAttribute('aria-hidden', 'true'); el.insertBefore(sh, body); return el; };
+const flyerAttack = (ctx, slow)=>{ const a = asFlyer([...mine(ctx)].find(c=> c && c.classList.contains('is-flying')) || mine(ctx)[2]), t = foe(ctx)[1], k = slow || 1, lx = lean(a, t);
+  lunge(a, true, {leanX:lx}); S().flyDescend(a, {dir:1, leanX:lx, windup:T.windup, strike:T.strike});
+  return ctx.wait(T.windup + T.impactPad).then(()=>{ flashDmg(ctx, t, 3); return P(ctx, 1100*k); }); };
+reg('atk-flying-swoop', 'animateAttacker → SkillFX.flyDescend (the swoop trail is retired)', [['A', '2026-10-16: the normal lunge; the shadow draws in under the flyer as it dives', ctx=> flyerAttack(ctx)],
+  ['B', 'Old: an air-trail dive (SkillFX.swoop, no longer in fights)', ctx=>{ const t = foe(ctx)[1]; S().swoop(mine(ctx)[2], t, {flight:420}); ctx.wait(420).then(()=> flashDmg(ctx, t, 3)); return P(ctx, 1300); }]]);
 reg('atk-scared-lunge', LIVE + 'hit whose target has Scare (once a round)', [['A', 'Sweat, a wobbling "!", it shrinks back, then swings', ctx=>{ const a = mine(ctx)[1], t = foe(ctx)[1]; X().fearTell(a); lunge(a, true, {leanX:lean(a, t), scared:true}); return ctx.wait(T.windup*2 + T.impactPad).then(()=>{ flashDmg(ctx, t, 2); return P(ctx, 900); }); }],
   ['B', 'Old: a wobbly lunge and 😨', ctx=>{ const a = mine(ctx)[1], t = foe(ctx)[1]; ctx.float(a, '😨', 'debuff'); lunge(a, true, {leanX:lean(a, t), scared:true}); return P(ctx, 1500); }]]);
 const ufx = style=> ctx=> melee(ctx, (a, t)=>{ try{ U().hitMark(style, t); }catch(e){} try{ ctx.sound(style); }catch(e){} flashDmg(ctx, t, 3); }).then(()=> P(ctx, 1000));
 reg('atk-unitfx-claw', 'UnitFX.hitMark(claw)', [['A', 'Now: claw rake marks', ufx('claw')]]);
-reg('atk-unitfx-bite', 'UnitFX.hitMark(bite)', [['A', 'Now: jaw crunch', ufx('bite')]]);
+reg('atk-unitfx-bite', 'UnitFX.hitMark(bite)', [['A', '2026-10-16: one row per jaw, the jaws close and mesh; tips white, roots faintly red', ufx('bite')]]);
 reg('atk-unitfx-sting', 'UnitFX.hitMark(sting)', [['A', 'Now: stinger dot', ufx('sting')]]);
 reg('atk-unitfx-peck', 'UnitFX.hitMark(peck)', [['A', 'Now: beak dents', ufx('peck')]]);
 reg('atk-unitfx-burn', 'UnitFX.hitMark(burn)', [['A', 'Now: scorch star', ufx('burn')]]);
@@ -33507,7 +33962,8 @@ reg('sk-wave', LIVE + 'wave {dir} (the water geyser is hidden)', [['A', 'A rolli
   ['B', 'Old: the water geyser', ctx=>{ const t = foe(ctx)[1], r = t.getBoundingClientRect(), gz = document.createElement('div'); gz.className = 'lava-geyser is-water'; gz.style.left = (r.left + r.width/2) + 'px'; gz.style.top = (r.bottom - 6) + 'px'; gz.style.setProperty('--h', Math.round(r.height*1.25) + 'px');
     gz.innerHTML = '<i class="lg-col"></i>' + Array.from({length:12}, ()=> `<b style="--x:${Math.round((Math.random() - .5)*r.width*1.2)}px; --y:${-Math.round(r.height*(.6 + Math.random()*.8))}px; --d:${(Math.random()*.25).toFixed(2)}s"></b>`).join(''); document.body.appendChild(gz); setTimeout(()=> gz.remove(), 1300); ctx.float(t, '〰️ →', 'quick'); return P(ctx, 1300); }]]);
 reg('sk-dragon-lightning', 'fifthPassVfx → red SkillFX.lightning', [['A', 'Now: red lightning chains', ctx=>{ ctx.sound('shockTone'); S().lightning(mine(ctx)[1], foe(ctx), {}); const b = document.querySelectorAll('svg.sfx-bolt'); if(b.length) b[b.length - 1].classList.add('sfx-bolt-red'); foe(ctx).forEach(el=> cls(el, 'dragon-struck', 700)); return P(ctx, 1300); }]]);
-reg('sk-electricity', 'sixthPassVfx → SkillFX.lightning', [['A', 'Now: an arc jumps to the next unit', ctx=>{ ctx.sound('shockTone'); S().lightning(mine(ctx)[1], [foe(ctx)[1], foe(ctx)[2]], {onEachImpact:t=> flashDmg(ctx, t, 2)}); return P(ctx, 1200); }]]);
+reg('sk-electricity', 'electricity event → SkillFX.lightning (its arc hit throws nothing since 2026-10-16)', [['A', '2026-10-16: each bolt fades from the moment it appears; jumps 20% closer together', ctx=>{ ctx.sound('shockTone'); S().lightning(mine(ctx)[1], [foe(ctx)[1], foe(ctx)[2]], {onEachImpact:t=> flashDmg(ctx, t, 2)}); return P(ctx, 1200); }],
+  ['B', 'Old bug: the arc hit also threw a grey ➶ (generic projectile, dmgType shock)', ctx=>{ ctx.sound('shockTone'); S().lightning(mine(ctx)[1], [foe(ctx)[1], foe(ctx)[2]], {}); ctx.wait(T.windup).then(()=> glyphShot(mine(ctx)[1], foe(ctx)[2], '➶')); return P(ctx, 1600); }]], 'Voltaic Eel (Electricity 1): the arc to the unit beside the target is a ranged hit; it used to fall through to spawnProjectile.');
 reg('sk-lightning-passive', LIVE + 'statusFx lightning', [['A', 'A storm bolt strikes the card, sparks crawl over it', ctx=>{ ctx.sound('shockTone'); const el = mine(ctx)[1]; ctx.float(el, '⚡ +2', 'buff'); return X().stormBolt(el); }]]);
 reg('sk-fireball', 'sixthPassVfx → SkillFX.fireball', [['A', 'Now: a fireball and splash', ctx=>{ ctx.sound('burnAway'); S().fireball(mine(ctx)[1], foe(ctx)[1], {sides:[foe(ctx)[0], foe(ctx)[2]]}); return P(ctx, 1600); }]]);
 reg('sk-meteor', 'sixthPassVfx → SkillFX.meteor + crater', [['A', 'Now: a meteor and its crater', ctx=>{ ctx.sound('knockOut'); S().meteor(foe(ctx)[1], {sides:[foe(ctx)[0], foe(ctx)[2]]}); setTimeout(()=> foe(ctx)[1].classList.add('meteor-crater'), 600); return P(ctx, 1800); }]]);
@@ -33534,13 +33990,26 @@ const aura = (fn, txt, onSelf)=> ctx=>{ const el = mine(ctx)[1]; fn(el); ctx.flo
 reg('sk-inspired', 'eighthPassVfx → SkillFX.espritAura', [['A', 'Now: an aura, "📯 +N⚔ next swing"', aura(el=> S().espritAura(el), '📯 +1⚔ next swing')]]);
 reg('sk-esprit', 'eighthPassVfx → SkillFX.espritAura', [['A', 'Now: aura and "🤝"', aura(el=> S().espritAura(el), '🤝 +1⚔')]]);
 reg('sk-grit', 'eighthPassVfx → SkillFX.espritAura', [['A', 'Now: aura and grit', aura(el=> S().espritAura(el), '+1⚔')]]);
-reg('sk-momentum', LIVE + 'statusFx momentum (once a round)', [['A', 'Flame chevrons stream behind, dust kicks', ctx=>{ const el = mine(ctx)[1]; ctx.sound('momentumTone'); ctx.float(el, '🔥 +1⚔', 'gold'); return X().momentumTrail(el); }], ['B', 'Old: "🔥 +N⚔"', ctx=>{ ctx.float(mine(ctx)[1], '🔥 +1⚔', 'gold'); return P(ctx, 900); }]]);
+reg('sk-momentum', LIVE + 'statusFx momentum (once a round)', [['A', 'Flame chevrons stream behind, dust kicks', ctx=>{ const el = mine(ctx)[1]; ctx.sound('momentumTone'); ctx.float(el, '⌰ +1⚔', 'gold'); return X().momentumTrail(el); }], ['B', 'Old: "🔥 +N⚔"', ctx=>{ ctx.float(mine(ctx)[1], '⌰ +1⚔', 'gold'); return P(ctx, 900); }]]);
 reg('sk-berserk', 'eighthPassVfx → SkillFX.rageFlare', [['A', 'Now: rage flare, shake', aura(el=> S().rageFlare(el), '😡 Berserk! +2⚔')]]);
 reg('sk-hive-mind', 'rageFlare (retired 2026-10-15; still plays for old cards)', [['A', 'Now: rage flare', aura(el=> S().rageFlare(el), '😡 +1⚔')]]);
 reg('sk-pack', LIVE + 'statusFx phaseGrow of a Pack / Pack Leader unit whose chain grows (once a round; old replays: statusFx pack)', [['A', 'A howl rings out, paw prints run to the pack', ctx=>{ const el = mine(ctx)[1]; ctx.float(el, '🐺 Pack!', 'quick'); return X().packHowl(el, mine(ctx)); }], ['B', 'Old: "🐺 Pack!"', ctx=>{ ctx.float(mine(ctx)[1], '🐺 Pack!', 'quick'); return P(ctx, 900); }]]);
+// 2026-10-16 (user: "When regeneration of heal are used to reduce poison, a grey poison counter jumps out of the creature's grey poison
+// counters. Note: it takes heal values to remove poison counters - priority."): a heal takes Poison off first (engine applyHeal,
+// statusFx healPoison); one counter hops out of the Poison badge per counter removed (SkillFX.poisonPop), then the rest heals.
+const poisonBadge = (el, n)=>{ const t = tileOf(el); let row = t.querySelector('.badges-bottom'); if(!row){ row = document.createElement('div'); row.className = 'badges-bottom'; t.appendChild(row); }
+  let b = row.querySelector('.abadge.poison'); if(!b){ b = document.createElement('span'); b.className = 'abadge poison'; row.insertBefore(b, row.firstChild); } b.textContent = '☠' + n; el.classList.add('is-poisoned'); return b; };
+const healVsPoison = (ctx, el, poison, heal, regen)=>{ let left = poison; const b = poisonBadge(el, left), cut = Math.min(poison, heal), rest = heal - cut;
+  const pop = ()=>{ ctx.sound('cleanseTone'); S().poisonPop(el, cut, {onEach:()=>{ left -= 1; if(left > 0) b.textContent = '☠' + left; else { b.remove(); el.classList.remove('is-poisoned'); } }}); ctx.float(el, `-${cut} ☠`, 'heal'); };
+  if(regen) return until(ctx, 3200, fin=>{ S().regen(el, {onDone:()=>{ if(rest) ctx.float(el, '➕' + rest, 'heal'); ctx.wait(1000).then(fin); }}); ctx.wait(250).then(pop); });
+  pop(); return ctx.wait(cut*110 + 250).then(()=>{ if(rest){ ctx.sound('healTone'); ctx.float(el, '➕' + rest, 'heal'); S().healPlus(el); } return ctx.wait(1100); }); };
+R({id:'sk-heal-generic', stage:'board', variants:[
+  {key:'F', label:'2026-10-16: Heal 4 on Poison 3: three counters hop out of the badge, then ➕1', play:ctx=> healVsPoison(ctx, mine(ctx)[1], 3, 4)}]});
+R({id:'sk-regen', stage:'board', variants:[
+  {key:'B', label:'2026-10-16: Regeneration 5 on Poison 3: the counters hop out first, then ➕2', play:ctx=> healVsPoison(ctx, mine(ctx)[0], 3, 5, true)}]});
 R({id:'sk-heal-generic', stage:'board', inGameHook:LIVE + 'heal from another card (not Regen or Bloom): SkillFX.heal (B), once a round per unit', variants:[
   {key:'D', label:'Swamp medicine: herbal steam and leaves', play:ctx=>{ const t = mine(ctx)[0]; ctx.sound('healTone'); ctx.float(t, '+3❤', 'heal'); return X().herbalSteam(t); }}]});
-reg('sk-regen', 'labSkillFx → SkillFX.regen', [['A', 'Now: green motes knit it closed', ctx=> until(ctx, 2200, fin=> S().regen(mine(ctx)[0], {onDone:()=>{ ctx.float(mine(ctx)[0], '+2❤', 'heal'); ctx.wait(600).then(fin); }}))]]);
+reg('sk-regen', 'heal event (own Regeneration) → SkillFX.regen, then the number', [['A', '2026-10-16: motes sink in from the card edge (clear, peak halfway, gone at the centre), then the green pluses', ctx=> until(ctx, 2600, fin=> S().regen(mine(ctx)[0], {onDone:()=>{ ctx.float(mine(ctx)[0], '➕2', 'heal'); ctx.wait(900).then(fin); }}))]]);
 reg('sk-bloom', 'eighthPassVfx → SkillFX.bloomPollen (A); B–D are biome takes from the ideas doc', [['A', 'Now: pollen drifts to the ally', ctx=>{ ctx.sound('bloomTone'); S().bloomPollen(mine(ctx)[1], mine(ctx)[0]); ctx.wait(500).then(()=> ctx.float(mine(ctx)[0], '+2❤', 'heal')); return P(ctx, 1400); }],
   ['B', 'Algae bloom: teal bubbles', ctx=> X().bloomVariant(mine(ctx)[1], mine(ctx)[0], {kind:'algae'})], ['C', 'Fungal bloom: spores and caps', ctx=> X().bloomVariant(mine(ctx)[1], mine(ctx)[0], {kind:'fungal'})],
   ['D', 'Coral bloom: coral branches', ctx=> X().bloomVariant(mine(ctx)[1], mine(ctx)[0], {kind:'coral'})]]);
@@ -33584,7 +34053,8 @@ reg('sk-shed', LIVE + 'statusFx shed {molt}', [['A', 'A translucent skin peels o
 reg('sk-first-blood', LIVE + 'statusFx firstBlood', [['A', 'A red splash star, drops, a "1st" tag', ctx=>{ const el = foe(ctx)[1]; ctx.float(el, '🩸 First blood +2', 'debuff'); return X().firstBloodSplash(el); }], ['B', 'Old: "🩸 First blood +N"', ctx=>{ ctx.float(foe(ctx)[1], '🩸 First blood +2', 'debuff'); return P(ctx, 900); }]]);
 reg('sk-bludgeon', LIVE + 'statusFx bludgeon {broke}', [['A', 'A hammer slams; the trait icon cracks in two', ctx=>{ const el = foe(ctx)[0]; ctx.float(el, '🔨 Armor broken', 'debuff'); return X().bludgeonBreak(el, {broke:'armor'}); }],
   ['B', 'Flying broken', ctx=> X().bludgeonBreak(foe(ctx)[2], {broke:'flying'})], ['C', 'Old: "🔨 X broken"', ctx=>{ ctx.float(foe(ctx)[0], '🔨 Armor broken', 'debuff'); return P(ctx, 900); }]]);
-reg('sk-immolation-src', 'fieldTick immolation → .immolate-pulse + SkillFX.scorch', [['A', 'Now: the source pulses, victims scorch', ctx=>{ cls(mine(ctx)[1], 'immolate-pulse', 900); foe(ctx).forEach(el=> S().scorch(el, {})); return P(ctx, 1400); }]]);
+reg('sk-immolation-src', 'fieldTick immolation → SkillFX.immolate on the source (once a round) + SkillFX.scorchMark on the burned units', [['A', '2026-10-16: the fire stays on the immolating card (inside its tile); the units it burns char', ctx=>{ const s = mine(ctx)[1]; S().immolate(s); [mine(ctx)[0], mine(ctx)[2], foe(ctx)[1]].forEach(el=> el && S().scorchMark(el)); return P(ctx, 1900); }],
+  ['B', 'Old: the source pulses, every victim gets its own flames (SkillFX.scorch)', ctx=>{ cls(mine(ctx)[1], 'immolate-pulse', 900); foe(ctx).forEach(el=> S().scorch(el, {})); return P(ctx, 1400); }]]);
 reg('sk-irradiated-src', LIVE + 'fieldTick irradiated (srcUid, once a round)', [['A', 'Sickly green rings, a spinning ☢, geiger flicker', ctx=>{ ctx.sound('geiger', 3); return X().radPulse(foe(ctx)[1]); }], ['B', 'Old: .irradiate-pulse', ctx=>{ cls(foe(ctx)[1], 'irradiate-pulse', 900); return P(ctx, 1000); }]]);
 reg('sk-wither', 'fifthPassVfx → witherSmokeVfx', [['A', 'Now: black smoke and a skull', ctx=>{ const el = foe(ctx)[1], r = el.getBoundingClientRect(); ctx.float(el, '💀 Wither', 'debuff');
   for(let i = 0; i < 5; i++){ const p = document.createElement('div'); p.className = 'wither-smoke' + (i === 0 ? ' skull' : ''); p.textContent = i === 0 ? '💀' : ''; Object.assign(p.style, {left:(r.left + r.width*(.25 + Math.random()*.5)) + 'px', top:(r.top + r.height*.6) + 'px'}); document.body.appendChild(p);
@@ -33753,8 +34223,10 @@ R({id:'dark-sunshy-blind', stage:'board', inGameHook:'fxHook(\'boardRendered\') 
 R({id:'dark-nightblind', stage:'board', inGameHook:'fxHook(\'boardRendered\') + phase: Night-blind units at night (no Lantern)', variants:[{key:'A', label:'A moonlit cloud over the eyes, a cloudy-eye badge', play:ctx=>{ nightVeil(ctx, true); skyTone(ctx, 'night'); X().markSight(ctx.board.foe[1], 'night'); X().markSight(ctx.board.mine[0], 'night'); return ctx.wait(2600); }}]});
 R({id:'dark-keen-sense', stage:'board', inGameHook:'onEvent: hit by a Keen Sense unit in the dark (once a round)', variants:[{key:'A', label:'Whisker ripples as it smells out the target', play:ctx=>{ veil(ctx, 'dark'); return X().keenSense(ctx.board.mine[0], {label:'👃 Smells it out'}); }}]});
 R({id:'dark-lantern-lit', stage:'board', note:'A is the live look. B adds the light radius on a dark board: a warm pool round the carrier, its side lit, the other side blind.', inGameHook:'B: fxHook(\'boardRendered\') (sightSync) in dark fights', variants:[
-  {key:'A', label:'Lantern flicker and glow (live look)', play:ctx=>{ const bf = ctx.board.el; bf.classList.add('bf-lantern'); if(S().lanternGlow) S().lanternGlow(ctx.board.mine[1]); return ctx.wait(2000); }},
-  {key:'B', label:'Light radius: a warm pool round the carrier', play:ctx=>{ veil(ctx, 'pitch'); const m = ctx.board.mine; X().markSight(m[1], 'lantern'); X().markSight(m[0], 'lit'); X().markSight(m[2], 'lit'); ctx.board.foe.forEach(c=> X().markSight(c, 'dark')); if(S().lanternGlow) S().lanternGlow(m[1]); return ctx.wait(2600); }}]});
+  {key:'A', label:'2026-10-16: the shine swells slowly out of the unit and settles (no 🏮, no moths)', play:ctx=>{ const bf = ctx.board.el; bf.classList.add('bf-lantern'); if(S().lanternGlow) S().lanternGlow(ctx.board.mine[1]); return ctx.wait(3000); }},
+  {key:'B', label:'Light radius: a warm pool round the carrier (2026-10-16: dimmer, wider, cut at the board edge)', play:ctx=>{ veil(ctx, 'pitch'); const m = ctx.board.mine; X().markSight(m[1], 'lantern'); X().markSight(m[0], 'lit'); X().markSight(m[2], 'lit'); ctx.board.foe.forEach(c=> X().markSight(c, 'dark'));
+    try{ if(typeof clipLightsToBoard === 'function') clipLightsToBoard(ctx.board.el); }catch(e){} // the game's clip to the battlefield (arena_app.js)
+    if(S().lanternGlow) S().lanternGlow(m[1]); return ctx.wait(2600); }}]});
 R({id:'dark-lantern-out', stage:'board', inGameHook:'onEvent: death of a Lantern unit in the dark or at night', variants:[{key:'A', label:'The lantern gutters, smoke rises, the dark closes in', play:ctx=>{ veil(ctx, 'pitch'); const m = ctx.board.mine; X().markSight(m[1], 'lantern'); return X().lanternOut(m[1]); }}]});
 R({id:'dark-lantern-save', stage:'board', inGameHook:'onEvent: hit by a unit on a Lantern-lit side in Darkness / Pitch Black (once a round)', variants:[{key:'A', label:'An amber mote leads the swing', play:ctx=>{ veil(ctx, 'pitch'); return X().lanternSave(ctx.board.mine[0]); }}]});
 R({id:'dark-darksight-play', stage:'board', variants:[{key:'A', label:'Eyes open, foes marked (live look)', play:ctx=>{ veil(ctx, 'dark'); if(S().darksight) S().darksight(ctx.board.mine[1]); return ctx.wait(1900); }}]});
@@ -33784,8 +34256,8 @@ R({id:'wt-day-breaks', stage:'board', inGameHook:'onEvent: phase {phase:\'day\'}
 R({id:'wt-dawn-draw', stage:'board', inGameHook:'onEvent: dawn', variants:[
   {key:'A', label:'Rosy light rises, birds take off', play:ctx=>{ skyTone(ctx, 'dawn'); return X().dawnDraw(ctx.board.el); }},
   {key:'B', label:old + ': the rosy tone only', play:ctx=>{ skyTone(ctx, 'dawn'); return ctx.wait(1600); }}]});
-R({id:'wt-dusk', stage:'board', inGameHook:'fxHook(\'matchUI\'): the sky tone turns to dusk', variants:[
-  {key:'A', label:'The sun sinks, long shadows stretch', play:ctx=>{ skyTone(ctx, 'dusk'); return X().dusk(ctx.board.el); }},
+R({id:'wt-dusk', stage:'board', inGameHook:'fxHook(\'matchUI\'): the sky tone turns to dusk', note:'2026-10-16 (user: "the static rectangle bars across the screen might look better than the setting sun"): no sun disc; static shadow bars and a faint warm tint from the west.', variants:[
+  {key:'A', label:'Static shadow bars, a faint warm tint from the west (no sun)', play:ctx=>{ skyTone(ctx, 'dusk'); return X().dusk(ctx.board.el); }},
   {key:'B', label:old + ': the amber tone only', play:ctx=>{ skyTone(ctx, 'dusk'); return ctx.wait(1600); }}]});
 R({id:'wt-twilight', stage:'board', inGameHook:'onEvent: phase {phase:\'twilight\'}; the toast now says Twilight (arena_app.js)', variants:[
   {key:'A', label:'Sun and moon cross overhead, stars twinkle', play:ctx=>{ ctx.sound('nightSwell'); skyTone(ctx, 'dusk'); toast(ctx, '🌆 Twilight: day and night creatures are both awake.'); return X().twilight(ctx.board.el); }},
@@ -35149,7 +35621,7 @@ R({id:'ui-deck-shuffle', stage:'board', inGameHook:'maybeDeckShuffle → deckShu
 // 49: the armour badge glows when an armoured unit is hit
 R({id:'atk-armor-block-partial', stage:'board', inGameHook:'hit impact → armorBadgeGlow (the 🛡 badge, .abadge.armor-glow, 0.5 s)',
   note:'2026-10-15 (user: "When a unit with armor gets hit, its armor context icon glows for 0.5s.").',
-  variants:[{key:'G', label:'The 🛡 badge glows as the hit lands', play:ctx=>{ const el = foe(ctx)[1]; num(ctx, el, 2); const b = el.querySelector('.badges .abadge') || el.querySelector('.abadge');
+  variants:[{key:'G', label:'2026-10-16: a hit Armor cut down: the 🛡 badge glows and konks (metal)', play:ctx=>{ const el = foe(ctx)[1]; num(ctx, el, 2); ctx.sound('konk'); const b = el.querySelector('.badges .abadge') || el.querySelector('.abadge');
     if(b){ b.classList.remove('armor-glow'); void b.offsetWidth; b.classList.add('armor-glow'); setTimeout(()=> b.classList.remove('armor-glow'), 520); } else ctx.float(el, '(no badge on this card)', 'debuff'); return ctx.wait(900); }}]});
 // 50: Bounty pays into the Lumber pill like a pitch
 R({id:'death-bounty', stage:'board', inGameHook:'bounty event → itemDropVfx + resourceGainVfx to the Lumber pill (as a pitch)',
@@ -35387,13 +35859,16 @@ const MAPS = [
   ['mist', 'ms', 'The Sunken Grove', '🌳', 'Side map'], ['fungal', 'mu', 'The Morel Hollow', '🍄', 'Map 8'], ['cave', 'm4', 'Caves & Alcoves', '🦇', 'Map 9'],
   ['crystal', 'mn', 'The Glimmer Depths', '💎', 'Side map'], ['alpine', 'm10', 'Eyrie Heights', '🏔️', 'Map 12'], ['tundra', 'm6', 'Wolfsbane Tundra', '🐺', 'Map 18'],
   ['desert', 'md', 'The Glass Dunes', '🏜️', 'Map 19'], ['savanna', 'm5', 'Savanna Reaches', '🌾', 'Map 15'], ['volcano', 'm11', 'The Sundered Peak', '🌋', 'Map 21'],
-  ['forge', 'm9', 'Basalt Foundry', '🪨', 'Side map'], ['night', 'm21', 'The Quiet Summit', '🏔️', 'Map 22']];
+  ['forge', 'm9', 'Basalt Foundry', '🪨', 'Side map'], ['night', 'm21', 'The Quiet Summit', '🏔️', 'Map 22'],
+  // 2026-10-16 (user: "...the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make the background a
+  // little darker and castle-dungeony. with dripping swamp shit"): the daily dungeons' theme; its banner wears the 'dungeon' variant.
+  ['dungeon', 'mm', 'Murgle Mayhem', '🐸', 'Daily dungeon']];
 const STYLE_LABEL = {banner:'Ribbon banner with a medallion', ink:'Ink-brush calligraphy with a red seal', cinema:'Cinematic letterbox, the name spreads in'};
 MAPS.forEach(([k, id, name, icon, sub])=>{
   const T = (X() && X().THEMES[k]) || {label:k, style:'banner', p:'', grand:[]};
   const used = Object.keys(X() ? X().THEME_OF : {}).filter(m=> X().THEME_OF[m] === k).join(', ');
   R({id:'map-title-' + k, name:`Map title: ${T.label}`, stage:'map', trigger:`Entering a ${T.label.toLowerCase()} map for the first time in a session (${used || id})`, inGameHook:HOOK,
-    note:`Particles: ${T.p}. Flourish: ${T.grand.join(' + ')}. The game uses ${({banner:'A', ink:'B', cinema:'C'})[T.style]} (${T.style}) here; tap the map to hurry it.`,
+    note:`Particles: ${T.p}. Flourish: ${T.grand.join(' + ')}. The game uses ${({banner:'A', ink:'B', cinema:'C'})[T.style]} (${T.style}${T.variant ? `, '${T.variant}' variant` : ''}) here; tap the map to hurry it.`,
     variants:['banner', 'ink', 'cinema'].map((st, i)=> ({key:'ABC'[i], label:STYLE_LABEL[st] + (st === T.style ? ' (game default)' : ''),
       play:ctx=>{ theme(ctx, id); return X().mapTitle(ctx.map.layout, {theme:k, name, icon, sub, style:st}); }}))});
 });
