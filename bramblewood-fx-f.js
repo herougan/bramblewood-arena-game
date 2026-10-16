@@ -1480,11 +1480,17 @@ H.toast = (t, message, kind, env)=>{
   }, 320);
 };
 // XP and the account level (awardXp): the level-up gets the big ring-and-star moment; plain XP streams into the badge if it's on screen.
+// 2026-10-16 (user: "On win ... I see the exp bar level up, but the main ui is hidden by the reward UI. Only the bar is visible -
+// weird."): while a fight's results (or its reward reveal) are up, the level-up waits until they close, then plays over the page with
+// its badge; plain XP into a badge hidden behind the results is skipped.
+const resultsUp = ()=> !!document.querySelector('.winloss-card, .winloss-overlay, .rr-stage');
 H.xpGain = (n, before, after, env)=>{
   if(!medOK(env)) return;
-  const badge = document.getElementById('playerLevelBadge'), bar = badge && (badge.querySelector('.pl-bar') || badge);
-  if(after > before) later(()=> M.accountLevel(visible(badge) ? badge : null, {level:after, sound:()=> env.sound('unlockChime')}), 450);
-  else if(visible(bar)) M.xpGain(bar, {amount:n});
+  const play = ()=>{ const badge = document.getElementById('playerLevelBadge'), bar = badge && (badge.querySelector('.pl-bar') || badge);
+    if(after > before) M.accountLevel(visible(badge) ? badge : null, {level:after, sound:()=> env.sound('unlockChime')});
+    else if(visible(bar) && !resultsUp()) M.xpGain(bar, {amount:n}); };
+  if(after > before && resultsUp()){ let waited = 0; const wait = ()=>{ if(resultsUp() && waited < 600000){ waited += 400; later(wait, 400); } else later(play, 450); }; later(wait, 400); return; }
+  if(after > before) later(play, 450); else play();
 };
 H.energySpend = (cost, env)=>{ const p = energyPill(); if(p && medOK(env)) M.energySpend(p, {cost}); };
 H.energyTick = (cur, max, env)=>{ const p = energyPill(); if(p && medOK(env)) later(()=> M.energyTick(energyPill() || p, {full:cur >= max}), 80); };
@@ -1561,7 +1567,9 @@ H.resultsShown = (card, m, env)=>{
   add(c=> c.querySelector('.winloss-achv'), el=> M.achvUnlocked(el));
   const nb = m.nextBattle && m.nextBattle.node, fl = m.winner === 1 && nb && /floor (\d+)/i.exec(nb.name || '');
   add(()=> !!fl, ()=> M.dungeonFloor(null, {floor:fl[1]}));
-  add(c=> m.winner === 1 && !['tutorial', 'pc', 'sandbox'].includes(m.mode) && (c.querySelector('.wl-title') || true), el=> M.xpLine(el.classList && el.classList.contains('winloss-card') ? null : el, {amount:3}));
+  // 2026-10-16 (user: "On win, there is a golden glow effect - it is placed wrongly and highlighting nothing, randomly"): the "+3 XP"
+  // gold bar with its glowing burst floated over the results' title (or the middle of the card), pointing at nothing; it is gone.
+  // The account level-up waits for the results to close (H.xpGain).
   jobs.slice(0, 6).forEach((fn, i)=> later(fn, 900 + i*750));
 };
 

@@ -2734,6 +2734,17 @@ function mapBandColour(n){
   if(n <= 20){ const t = n/20, [r, g, b] = hslToRgb(38, 55 - t*10, 74 - t*50); return `rgb(${Math.min(255, Math.round(r + 25*t))} ${Math.round(g)} ${Math.round(b)})`; }
   const t = Math.min(1, (n - 21)/19); return `hsl(${Math.round(85 + t*195)} ${Math.round(60 - t*15)}% ${Math.round(58 - t*30)}%)`;
 }
+// The Tutorial side map's later fights (2026-10-16, user: "When doing T1 and T2, T3-T5 are hidden. T3 and T5 gradually unlock over Map
+// 1/8/18"): counting its five fights T1–T5 as the user does (shown T-0 … T-4), T-2, T-3 and T-4 stay off the map (no marker, no
+// trail) while the two tutorials are being played, then appear as you reach Map 1, Map 8 and Map 18 (that map open: the boss of the
+// map before it beaten). Visible in the layout editor.
+const TUT_SIDE_GATE = {'T-2':1, 'T-3':8, 'T-4':18};
+function tutSideNodeHidden(map, node){
+  try{ if(!map || map.id !== 'mtut' || !node || TUT_SIDE_GATE[node.key] == null || (typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)) return false;
+    if(!loadTutorialDone() || !loadTutorial2Done()) return true;
+    return (mapsPassed() + 1) < TUT_SIDE_GATE[node.key];
+  }catch(e){ return false; }
+}
 function mainConquestMaps(){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).filter(m=> !m.sub); }
 function mapIndexOf(mapId){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).findIndex(m=>m.id===mapId); }
 // A sortable section key + human label for a card's Codex group.
@@ -16906,7 +16917,20 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   // 'Won' will not be part of it, and instead a overlaid word ontop, on the top border, justify-center. It says 'First Clear'.
   // The card will not be greyed out."): the label is always "First Clear", sitting on the box's top border like a legend (CSS);
   // a won box keeps its colours, with only a small ✓ beside the label.
-  return `<div class="cnp-rw ${done?'is-done':''}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}"><span class="cnp-rw-label">First Clear${done ? ' <i class="cnp-rw-ok" aria-hidden="true">✓</i>' : ''}</span>${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cardsAll ? `<div class="cnp-rw-items">${cardsAll}</div>` : ''}${rankHTML}</div>`;
+  // 2026-10-16 (user: "First clear contained items not centered. There is additional margin on the right for some reason. The First
+  // clear label, if its larger than 80% of the rewards div, then just replaced it with a tick ONLY."): the box's grid had two columns
+  // even when only the currencies were in it, so an empty column (and its gap) sat on the right. It now has one column per block.
+  // A label wider than 80% of its box becomes just the ✓ once won (fitFirstClearLabels, measured after it's on screen).
+  const blocks = (cur.length ? 1 : 0) + (cardsAll ? 1 : 0) + (rankHTML ? 1 : 0);
+  setTimeout(fitFirstClearLabels, 0); requestAnimationFrame(()=> fitFirstClearLabels());
+  return `<div class="cnp-rw ${done?'is-done':''}" style="--rw-cols:${Math.max(1, blocks)}" aria-label="${done ? 'First clear rewards, already won' : 'First clear rewards'}"><span class="cnp-rw-label"><span class="cnp-rw-word">First Clear</span>${done ? ' <i class="cnp-rw-ok" aria-hidden="true">✓</i>' : ''}</span>${cur.length ? `<div class="cnp-rw-curs">${cur.join('')}</div>` : ''}${cardsAll ? `<div class="cnp-rw-items">${cardsAll}</div>` : ''}${rankHTML}</div>`;
+}
+function fitFirstClearLabels(){
+  document.querySelectorAll('.cnp-rw.is-done').forEach(box=>{
+    const lab = box.querySelector('.cnp-rw-label'); if(!lab || !box.offsetWidth) return;
+    box.classList.remove('label-tick');
+    if(lab.offsetWidth > box.offsetWidth * 0.8) box.classList.add('label-tick');
+  });
 }
 const S_FIND_CHANCE = 0.12, S_FIND_FROM_MAP = 5; // index in play order = map number (from 0): Map 5 and later
 function rollSRankFind(mapId, rank, rng){
@@ -18048,7 +18072,7 @@ function openSweepMenu(anchor, map, node, energyCost, body){
   const away = e=>{ if(!m.contains(e.target) && e.target !== anchor) close(); };
   setTimeout(()=> document.addEventListener('pointerdown', away, true), 0);
   m.querySelectorAll('[data-sweepn]').forEach(b=> b.onclick = ()=>{ const n = +b.dataset.sweepn; close(); anchor.disabled = true; anchor.textContent = 'Auto-sweeping…';
-    setTimeout(()=>{ const r2 = runSweep(map.id, node.key, n); if(r2) showToast(TX('toast.auto-swept-won-maple-leaves', {played: r2.played, wins: r2.wins, gold: r2.gold, v4: r2.dust ? ' · +' + r2.dust + ' Dust' : ''}), r2.wins ? 'ok' : 'warn'); renderConquestSubTab(body); }, 30); });
+    setTimeout(()=>{ const r2 = runSweep(map.id, node.key, n); renderConquestSubTab(body); if(r2) showSweepResults(r2, map.id, node.key); }, 30); }); // 2026-10-16: a results screen, not a toast
   const ib = m.querySelector('#smIdle'); if(ib) ib.onchange = ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, node.key); showToast(ib.checked ? TX('toast.keep-auto-sweeping-here-spare-energy') : TX('toast.stopped-auto-sweeping-here'), 'ok'); };
 }
 function renderConquestSubTab(body){
@@ -18166,6 +18190,7 @@ function renderConquestSubTab(body){
   map.nodes.forEach((n,i)=>{
     if(tutPhase && n.kind!=='tutorial') return;
     if(n.kind==='tutorial' && n.stage===2 && !loadTutorialDone()) return;
+    if(tutSideNodeHidden(map, n)) return; // 2026-10-16: no trail to a hidden T-2…T-4
     const reqs = Array.isArray(n.requires) ? n.requires : (i>0 ? [map.nodes[i-1].key] : []);
     reqs.forEach(reqKey=>{
       const j = nodeIndexByKey[reqKey];
@@ -18224,6 +18249,7 @@ function renderConquestSubTab(body){
         // already had to finish before they could ever see this map at all — not a fightable
         // node, so no deck/hqHp, no click-to-fight, always shown already-cleared.
         if(node.kind!=='tutorial' && tutPhase) return ''; // only the two tutorials until part 2 is won (admins too, outside the layout editor)
+        if(tutSideNodeHidden(map, node)) return ''; // T-2…T-4 wait for the tutorials, then Maps 1 / 8 / 18 (2026-10-16)
         if(node.kind==='tutorial'){
           // 2026-10-13 (user: "Replace the special tutorial nodes with two real skirmishes, T-0 and T-1" + "No exclamation mark
           // on the tutorial skirmish icon"): each part is an ordinary skirmish on the map, coded T-0 and T-1, cleared with a ✓.
@@ -18492,7 +18518,7 @@ function renderConquestSubTab(body){
     if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
     { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); openSweepMenu(so, map, selectedNode, energyCost, body); }); }
     { const sb = document.getElementById('cnpSweepBtn'); if(sb) sb.addEventListener('click', ()=>{ const n = Number((document.getElementById('cnpSweepN')||{}).value)||1; sb.disabled = true; sb.textContent = 'Auto-sweeping…';
-        setTimeout(()=>{ const r = runSweep(map.id, selectedNode.key, n); if(r) showToast(TX('toast.auto-swept-won-maple-leaves', {played: r.played, wins: r.wins, gold: r.gold, v4: r.dust ? ' · +' + r.dust + ' Dust' : ''}), r.wins ? 'ok' : 'warn'); renderConquestSubTab(body); }, 30); }); }
+        setTimeout(()=>{ const r = runSweep(map.id, selectedNode.key, n); renderConquestSubTab(body); if(r) showSweepResults(r, map.id, selectedNode.key); }, 30); }); } // 2026-10-16: a results screen, not a toast
     { const ib = document.getElementById('cnpIdleSweep'); if(ib) ib.addEventListener('change', ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, selectedNode.key); showToast(ib.checked ? TX('toast.keep-auto-sweeping-here-spare-energy') : TX('toast.stopped-auto-sweeping-here'), 'ok'); }); }
     const seBtn = document.getElementById('cnpEditSkirmish');
     if(seBtn) seBtn.addEventListener('click', ()=> openSkirmishEditor(map.id, selectedNode.key));
@@ -24051,6 +24077,10 @@ function renderMatchUI(){
       </div>
       <div id="leaderWidgetWrap">${leaderWidgetHTML(m)}</div>
       <div class="hand-strip" id="handStrip"></div>
+      ${!showPassOverlay && !isSandbox ? `<!-- 2026-10-16 (user: "Move the pass turn button to the same row as the deck, centered, then simplify to just "Pass". Then
+           make it look more squarish - decrease the corner radius."): it sits in the deck's row, centred in the room before the
+           Graveyard (on a phone, between the Deck and the Graveyard), and just says Pass. -->
+      <div class="skipzone compact in-deck-row" id="skipZone" title="Pass: end your turn without playing a card"><span class="dz-ico">⏭</span>${m.resolving?'…':'Pass'}</div>` : ''}
       <!-- 2026-10-06 (user: "the graveyard should become its own field on the right"): a card-sized
            pile at the end of your row, mirroring the Deck on the left. Drop or tap a card here to pitch it. -->
       <div class="discardzone graveyard-pile hq-tile ${holdingCard && pitchAllowedIn(m)?'is-holding':''}" id="dropDiscard" title="${escapeAttr(pitchAllowedIn(m) ? discardZoneTitle(holdingCard ? (me.hand.find(c=>c.uid===m.selectedUid)||{}).defId : null) : 'Your Graveyard: units that fall end up here.')}">${holdingCard && pitchAllowedIn(m) /* 2026-10-12 (user: "During the periods where I cannot Pitch for lumber, do not put the +1 lumber in the Graveyard and just call it graveyard") */
@@ -24078,10 +24108,7 @@ function renderMatchUI(){
            header comment) — is preserved by giving the battlefield row itself an equivalent click
            handler (see wireBattlefieldPan's ownRow 'click' listener) rather than dropped along
            with the buttons. -->
-      <!-- Skip Turn (2026-09-26, "skip turn can be a smaller button on the btm right instead"):
-           pulled out of the flex flow (see .skipzone.compact's position:absolute) and pinned to
-           the row's own bottom-right corner as a small pill instead of a third full-size box. -->
-      <div class="skipzone compact" id="skipZone" title="Pass: end your turn without playing a card"><span class="dz-ico">⏭</span>${m.resolving?'Resolving…':'Pass turn'}</div>
+      <!-- Skip Turn: moved into the deck's row (2026-10-16, see bottom-play-row above). -->
     </div>`}
     <!-- 2026-09-25 fix (explicit report: "things are not aligned... elements should feel like
          they were meant to be full screen... not things poking at the btm. The txn log can be
@@ -26864,7 +26891,9 @@ function bountyN(e){ e = e || {}; return Math.max(0, Number(e.bounty)||0); }
 function bountyBubbleHTML(c, d, pid){
   const n = bountyN(d.effects);
   if(!n || !matchState || pid==null || pid===viewerHandPid(matchState)) return '';
-  return `<div class="bounty-bubble" aria-hidden="true"><b>+${n} 🪵</b><small>Lumber</small></div>`;
+  // 2026-10-16 (user: "When hovering a card, all bounty's cards has a +1 Lumber tooltip apppear. Saying +<Lumber icon> is sufficient."):
+  // just "+🪵" (the number only when it's more than 1), no "Lumber" word.
+  return `<div class="bounty-bubble is-short" aria-hidden="true"><b>+${n > 1 ? n : ''}🪵</b></div>`;
 }
 // Which light a unit gives off (2026-10-15): 'aura' for a Light Aura unit (Illuminate, an old Lantern, or Immolation; Immolation burns
 // orange: 'fire'), 'leader' for a leader (a faint pool), or null.
@@ -27738,6 +27767,33 @@ function runSweep(mapId, nodeKey, count){
   if(gold > 0) grantCurrency('gold', gold); if(dust > 0) grantCurrency('dust', dust);
   return {played, wins, gold, dust};
 }
+// Sweep results (2026-10-16, user: "Auto Sweep should bring up the reward screen. not just a toast"): a results card like a fight's:
+// the fight, the runs and wins as a rank-style tally, the Maple Leaves and Magic Dust pills counting up from 0, and Collect.
+function showSweepResults(r, mapId, nodeKey){
+  if(!r) return;
+  document.querySelectorAll('.sweep-results').forEach(e=> e.remove());
+  const f = findConquestNode(mapId, nodeKey), node = f && f.node, label = (()=>{ try{ return conquestNodeLabel(mapId, nodeKey); }catch(e){ return node ? node.name : ''; } })();
+  const pill = (k, n)=>{ const meta = CURRENCY_META[k] || {}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${k}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; };
+  const pills = (r.gold > 0 ? pill('gold', r.gold) : '') + (r.dust > 0 ? pill('dust', r.dust) : '');
+  const ov = document.createElement('div'); ov.className = 'sweep-results'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-label', 'Auto-sweep results');
+  ov.innerHTML = `<div class="sr-card ${r.wins ? 'is-win' : 'is-loss'}">
+    <div class="sr-ico" aria-hidden="true">🧹</div>
+    <h2 class="sr-title">${r.wins ? 'Swept!' : 'No wins this time'}</h2>
+    <div class="sr-sub">${node ? `${escapeHtml(node.icon || '')} ${escapeHtml(label || node.name)}` : escapeHtml(label || '')}</div>
+    <div class="sr-tally"><b>${r.wins}</b><span>/ ${r.played} won</span></div>
+    ${pills ? `<div class="rw-sec rw-cheer winloss-conquest-rewards sr-rewards"><div class="rw-head">${escapeHtml(TX('results.rewards'))}</div><div class="rw-row rw-cur-row">${pills}</div></div>` : `<p class="panel-sub">${r.played ? 'A loss pays nothing.' : 'Not enough Energy for a run.'}</p>`}
+    <button type="button" class="btn primary big sr-ok">${r.wins ? 'Collect' : 'OK'}</button></div>`;
+  document.body.appendChild(ov);
+  const close = ()=>{ if(hasGsap() && !reducedMotion()) gsap.to(ov, {opacity:0, duration:.18, onComplete:()=> ov.remove()}); else ov.remove(); };
+  ov.querySelector('.sr-ok').onclick = close; ov.addEventListener('pointerdown', e=>{ if(e.target === ov) close(); });
+  setTimeout(()=>{ try{ ov.querySelector('.sr-ok').focus(); }catch(e){} }, 60);
+  try{ if(r.wins) (SoundKit.gold && SoundKit.gold()); }catch(e){}
+  if(hasGsap() && !reducedMotion()){
+    const card = ov.querySelector('.sr-card'); gsap.fromTo(card, {scale:.8, opacity:0, y:14}, {scale:1, opacity:1, y:0, duration:.42, ease:'back.out(2.2)'});
+    ov.querySelectorAll('.reward-count').forEach((el, i)=>{ const t = parseInt(el.dataset.target, 10) || 0, c = {n:0}; el.textContent = '+0';
+      gsap.to(c, {n:t, duration:Math.min(1.8, .8 + Math.log10(t + 1)*.4), delay:.45 + i*.18, ease:'power2.out', onUpdate:()=>{ el.textContent = '+' + Math.round(c.n); }, onComplete:()=>{ el.textContent = '+' + t; el.classList.add('is-counted'); }}); });
+  }
+}
 // Idle-Sweep (Map 70+): Energy that would spill past your maximum while you're away goes into the fight you picked.
 const IDLE_SWEEP_KEY = 'bramblewood_idle_sweep_v1';
 function idleSweepTarget(){ try{ return JSON.parse(localStorage.getItem(IDLE_SWEEP_KEY) || 'null'); }catch(e){ return null; } }
@@ -27867,15 +27923,20 @@ function toggleGravePeek(pid, anchor){
   const mine = pid === viewerHandPid(m), grave = pl.graveyard || [], exile = pl.exile || [];
   const el = document.createElement('div'); el.className = 'grave-peek' + (mine ? ' is-mine' : ' is-theirs'); el.dataset.pid = String(pid);
   el.setAttribute('role', 'dialog'); el.setAttribute('aria-label', (mine ? 'Your' : 'Enemy') + ' Graveyard');
-  el.innerHTML = `<div class="gpk-head"><b>💀 ${mine ? 'Your Graveyard' : 'Enemy Graveyard'}</b><span>${grave.length}</span><button type="button" class="gpk-x" aria-label="Close">✕</button></div>
-    <div class="gpk-grid">${grave.length ? zonePeekGroup(grave) : '<span class="gpk-empty">Nothing here yet.</span>'}</div>
-    ${exile.length ? `<div class="gpk-head gpk-sub"><b>🌫 Removal Zone</b><span>${exile.length}</span></div><div class="gpk-grid">${zonePeekGroup(exile)}</div>` : ''}`;
+  // 2026-10-16 (user: "Opening the graveyard opens the graveyard preview. No need to have text on that preview since its
+  // self-explanatory. Like a speech bubble, the preview div has a pointer to the graveyard"): just the cards (the Removal Zone's
+  // below a thin 🌫 rule), no titles, counts or close text; a speech-bubble tail points at the pile it came from.
+  el.innerHTML = `<div class="gpk-body">
+    <div class="gpk-grid">${grave.length ? zonePeekGroup(grave) : '<span class="gpk-empty" aria-label="Empty">💀</span>'}</div>
+    ${exile.length ? `<div class="gpk-sep" role="separator" aria-label="${escapeAttr(EXILE_ZONE_NAME || 'Removal Zone')}" title="${escapeAttr(EXILE_ZONE_NAME || 'Removal Zone')}"><span>🌫</span></div><div class="gpk-grid">${zonePeekGroup(exile)}</div>` : ''}</div><span class="gpk-tail" aria-hidden="true"></span>`;
+  { const most = Math.max(1, ...[...el.querySelectorAll('.gpk-grid')].map(g=> g.querySelectorAll('.gpk-mini').length)); el.style.setProperty('--gpk-cols', String(Math.min(6, most))); } // hugs its cards
   document.body.appendChild(el);
   const r = anchor.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight, w = el.offsetWidth, h = el.offsetHeight;
   const left = Math.max(8, Math.min(r.left + r.width/2 - w/2, vw - w - 8));
-  let top = mine ? r.top - h - 10 : r.bottom + 10; if(top < 8) top = Math.min(vh - h - 8, r.bottom + 10); if(top + h > vh - 8) top = Math.max(8, r.top - h - 10);
+  let top = mine ? r.top - h - 14 : r.bottom + 14; if(top < 8) top = Math.min(vh - h - 8, r.bottom + 14); if(top + h > vh - 8) top = Math.max(8, r.top - h - 14);
   el.style.left = left + 'px'; el.style.top = top + 'px';
-  el.querySelector('.gpk-x').addEventListener('click', closeGravePeek);
+  el.classList.toggle('tail-down', top + h <= r.top + 2); // the bubble sits above the pile: its tail points down
+  el.style.setProperty('--tail-x', Math.max(14, Math.min(w - 14, r.left + r.width/2 - left)) + 'px');
   if(!reducedMotion() && el.animate) el.animate([{opacity:0, transform:`translateY(${mine ? 6 : -6}px) scale(.96)`}, {opacity:1, transform:'none'}], {duration:160, easing:'ease-out'});
 }
 document.addEventListener('pointerdown', e=>{ const p = document.querySelector('.grave-peek'); if(p && !p.contains(e.target) && !(e.target.closest && e.target.closest('[data-grave-peek], #dropDiscard'))) closeGravePeek(); }, true);
@@ -31248,8 +31309,16 @@ function rewardsPanelHTML(m){
   if(reward && reward.dust>0) cur.push(['dust', reward.dust]);
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
   if(m.conquestFoodEarned) cur.push(['food', m.conquestFoodEarned]);
+  // 2026-10-16 (user: "Reward items not same size. What is "18 sparkle for base growth" - don't have text like 'for base growth'. And
+  // they share the same icon. If it was about converting the card rewards to dust, have the cards become grey and dust burst from them
+  // and go into the main reward. Secondly, the differently sized ones - i think okay, but they should be placed below the main currency
+  // pills."): the main currencies are one row of same-size pills; everything else (materia, a rescued baby, Base growth) sits on a row
+  // below. Base growth that came as Dust (a Base card already at its top level) is no longer a "✨ N for Base growth" pill: that card
+  // shows greyed, and its dust bursts into the Magic Dust pill, which counts on up (baseDustBurst).
+  const bg = m.conquestBaseGrowth, bgDust = (bg && bg.dust) || 0;
+  if(bgDust && !cur.some(c=> c[0]==='dust')) cur.push(['dust', 0]);
   if(cur.length){
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">${TX('results.rewards')}</div><div class="rw-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-spare-copy-of-a-base'))}">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join('') + (g.dust ? `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${TX('results.for-base-growth', {dust: g.dust})}</span>` : ''); })() : ''}</div></div>`);
+    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">${TX('results.rewards')}</div><div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div><div class="rw-row rw-item-row">${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-spare-copy-of-a-base'))}">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join(''); })() : ''}</div></div>`);
   }
   // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
   if(m.conquestCastleSpare){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">${TX('results.spare-castle')}</div><div class="rw-row"><span class="rw-act" data-tip="${escapeAttr(TX('results.fuse-it-in-the-forge-castles'))}">🏰 ${escapeHtml(m.conquestCastleSpare)}</span></div></div>`); }
@@ -31297,20 +31366,27 @@ function rewardsCheer(){
   // Coin shower (2026-10-07, effects list two): each currency's glyph rains into its pill one at a
   // time, the pill popping as each lands — the reward visibly arrives rather than just appearing.
   if(!fxAtLeast('med')) return;
+  // 2026-10-16 (user: "On win, there is a golden glow effect - it is placed wrongly and highlighting nothing, randomly"): the coins used
+  // to aim at where each pill was the instant the results opened, while the card and its pills were still springing in (scaled to
+  // half, shifted), so they rained onto empty space. Each coin now finds its pill when it starts falling, and skips a pill that has
+  // gone (a re-render) or isn't on screen.
   row.querySelectorAll('.rw-cur').forEach((pill, pi)=>{
-    const glyph = (pill.textContent.trim().match(/^\S+/) || ['🪙'])[0];
-    const pr = pill.getBoundingClientRect(); if(!pr.width) return;
+    const glyph = (pill.textContent.trim().match(/^\S+/) || ['🪙'])[0], cur = pill.getAttribute('data-cur');
+    const livePill = ()=>{ if(pill.isConnected) return pill; const p2 = cur && document.querySelector(`.winloss-conquest-rewards .rw-cur[data-cur="${cur}"]`); return p2 || null; };
     const n = 8;
     for(let i = 0; i < n; i++){
-      const c = document.createElement('span'); c.className = 'coin-drop'; c.textContent = glyph; c.setAttribute('aria-hidden','true');
-      document.body.appendChild(c);
-      const x = pr.left + pr.width*(0.2 + Math.random()*0.6), y = pr.top + pr.height/2;
-      const t0 = 0.35 + pi*0.25 + i*0.09;
-      gsap.fromTo(c, {x: x + (Math.random()*60 - 30), y: y - 140 - Math.random()*60, opacity:0, rotation: Math.random()*180 - 90, scale:.9},
-        {x, y, opacity:1, rotation:0, scale:.6, duration:.42, delay:t0, ease:'power2.in', onComplete:()=>{
-          c.remove(); gsap.fromTo(pill, {scale:1.12}, {scale:1, duration:.18, ease:'power2.out', clearProps:'scale'});
-          try{ if(i % 2 === 0 && SoundKit.coin) SoundKit.coin(); }catch(e){}
-        }});
+      const t0 = 0.75 + pi*0.25 + i*0.09;
+      gsap.delayedCall(t0, ()=>{
+        const p = livePill(); if(!p) return; const pr = p.getBoundingClientRect(); if(!pr.width || pr.bottom < 0 || pr.top > innerHeight) return;
+        const c = document.createElement('span'); c.className = 'coin-drop'; c.textContent = glyph; c.setAttribute('aria-hidden','true');
+        document.body.appendChild(c);
+        const x = pr.left + pr.width*(0.2 + Math.random()*0.6), y = pr.top + pr.height/2;
+        gsap.fromTo(c, {x: x + (Math.random()*60 - 30), y: y - 140 - Math.random()*60, opacity:0, rotation: Math.random()*180 - 90, scale:.9},
+          {x, y, opacity:1, rotation:0, scale:.6, duration:.42, ease:'power2.in', onComplete:()=>{
+            c.remove(); gsap.fromTo(p, {scale:1.12}, {scale:1, duration:.18, ease:'power2.out', clearProps:'scale'});
+            try{ if(i % 2 === 0 && SoundKit.coin) SoundKit.coin(); }catch(e){}
+          }});
+      });
     }
   });
 }
@@ -31462,9 +31538,34 @@ function wireWinLossRewardAnim(){
       onComplete: ()=>{ countEl.textContent = '+'+target; countEl.classList.remove('is-counting'); countEl.classList.add('is-counted'); }});
     countEl.classList.add('is-counting');
   });
-  { let waited = 0; const wait = ()=>{ if(document.querySelector('.rr-stage') && waited < 20000){ waited += 120; setTimeout(wait, 120); } else startCounts(); }; setTimeout(wait, 500); }
+  { let waited = 0; const wait = ()=>{ if(document.querySelector('.rr-stage') && waited < 20000){ waited += 120; setTimeout(wait, 120); } else { startCounts(); setTimeout(baseDustBurst, 2400 + counts.length*180); } }; setTimeout(wait, 500); }
   rewardsCheer();
   try{ rewardCardsReveal(); }catch(e){}
+}
+// Base growth as Dust (2026-10-16, see rewardsPanelHTML): each maxed Base card (or a card back) greys out, a puff of ✨ bursts from
+// it into the Magic Dust pill, and the pill counts on up by that card's share.
+function baseDustBurst(){
+  const countEl = document.querySelector('.winloss-conquest-rewards .reward-count[data-bonus]'); if(!countEl || countEl.dataset.bursted) return;
+  countEl.dataset.bursted = '1';
+  const base = parseInt(countEl.getAttribute('data-target'), 10) || 0, cards = [...document.querySelectorAll('.winloss-conquest-rewards .rw-dust-card')];
+  let total = base; const pill = countEl.closest('.rw-cur') || countEl;
+  const rich = hasGsap() && fxAtLeast('low') && !reducedMotion();
+  const add = n=>{ total += n; countEl.textContent = '+' + total; countEl.classList.add('is-counted'); if(rich){ gsap.fromTo(pill, {scale:1.14}, {scale:1, duration:.35, ease:'back.out(3)'}); } try{ SoundKit.waitTickTone && SoundKit.waitTickTone(); }catch(e){} };
+  if(!rich || !cards.length){ cards.forEach(c=> c.classList.add('is-dusted')); add(parseInt(countEl.dataset.bonus, 10) || 0); return; }
+  cards.forEach((card, i)=> setTimeout(()=>{
+    card.classList.add('is-dusted'); try{ SoundKit.gold && SoundKit.gold(); }catch(e){}
+    const a = card.getBoundingClientRect(), b = pill.getBoundingClientRect(), share = parseInt(card.dataset.dust, 10) || 0, N = 12;
+    let landed = 0;
+    for(let k = 0; k < N; k++){
+      const p = document.createElement('span'); p.className = 'rw-dust-mote'; p.textContent = k % 3 ? '✦' : '✨'; p.setAttribute('aria-hidden', 'true'); document.body.appendChild(p);
+      const sx = a.left + a.width*(0.2 + Math.random()*0.6), sy = a.top + a.height*(0.2 + Math.random()*0.6), ex = b.left + 18 + Math.random()*10, ey = b.top + b.height/2;
+      gsap.set(p, {x:sx, y:sy, opacity:0, scale:.6});
+      gsap.timeline({delay:k*0.03, onComplete:()=>{ p.remove(); if(++landed === N) add(share); }})
+        .to(p, {opacity:1, scale:1.2, x:sx + (Math.random()*40 - 20), y:sy - 12 - Math.random()*22, duration:.22, ease:'power2.out'})
+        .to(p, {x:ex, y:ey, scale:.5, duration:.45, ease:'power2.in'})
+        .to(p, {opacity:0, duration:.08});
+    }
+  }, i*420));
 }
 // Reward cards (2026-10-08, user): each unlocked card gets a "Card unlocked!" splash and its padlock
 // shakes and breaks open; then each newly seen card gets a splash, a shine across it, and a flash
@@ -31566,6 +31667,7 @@ function logText(ev){
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
+      if(ev.attDefId === 'castle') return {cls: ev.dmgType==='poison' ? 'poison' : '', text:`🏰 ${ev.side==='A' ? 'Your' : 'The enemy'} castle hit ${nm(ev.targetDefId)} for ${ev.dmg}${ev.dmgType && ev.dmgType!=='physical' ? ' ' + ev.dmgType + ' damage' : ''}.`}; // 2026-10-16 (it read "castle hit …")
       // Elemental conversion note (2026-09-29): Poison zeroes ev.dmg out entirely (the whole
       // amount became poison stacks instead), so without this the log would just read "hit for
       // 0" with no explanation. Decay still shows its real ev.dmg plus the extra ATK-drain note.
@@ -31587,6 +31689,9 @@ function logText(ev){
     case 'tipsySwing': return {cls:'', text: ev.miss ? `${nm(ev.attDefId)} stumbles ${ev.drift<0?'left':'right'} into thin air 🍺` : `${nm(ev.attDefId)} lurches ${ev.drift<0?'left':'right'} and swings there instead 🍺`};
     case 'confusedWhiff': return {cls:'', text:`${nm(ev.defId)} is Confused: its skill fizzles ❓`};
     case 'poisonTick': return {cls:'poison', text:`${nm(ev.defId)} took ${ev.dmg} poison damage. 🫧`};
+    // 2026-10-16 (user: "Status damage should be recorded in the log"): the Devilry payments had no line (they printed their raw type)
+    case 'penance': return {cls:'poison', text:`⛧ Penance for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} castle pays ${ev.dmg != null ? ev.dmg : ev.amount}.`};
+    case 'bloodTithe': return {cls:'bleed', text: ev.castle ? `⛧ Blood Tithe for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} castle pays ${ev.dmg != null ? ev.dmg : ev.amount}.` : `⛧ Blood Tithe for ${nm(ev.defId)}: ${nm(ev.targetDefId)} takes ${ev.dmg != null ? ev.dmg : ev.amount}.`};
     case 'decayTick': return {cls:'poison', text:`${nm(ev.defId)} decayed for ${ev.dmg} damage and -${ev.atk} Attack. 🦠`};
     case 'bleedTick': return {cls:'bleed', text:`${nm(ev.defId)} took ${ev.dmg} bleed damage. 🩸`};
     case 'arrow': return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the castle'}`};
@@ -31777,9 +31882,13 @@ function logText(ev){
       if(pc) return {cls:'gold', text:`🏆 ${ev.winner === 1 ? 'Player 1' : 'Player 2'} wins!${why}`};
       return ev.winner === 1 ? {cls:'gold', text:`🏆 Victory! ${ev.castle ? 'The enemy castle falls.' : 'You win.'}${why}`} : {cls:'', text:`💀 Defeat. ${ev.castle ? 'Your castle falls.' : 'The enemy wins.'}${why}`};
     }
-    default: return {cls:'', text: ev.type};
+    // 2026-10-16: an event with no sentence of its own that still hurt something says so, rather than printing its raw type
+    default: return (ev.dmg > 0 && (ev.defId || ev.targetDefId)) ? {cls:'', text:`${nm(ev.targetDefId || ev.defId)} took ${ev.dmg} damage.`} : {cls:'', text: ev.type};
   }
 }
+const LOG_PLAY_TYPES = new Set(['play', 'spell', 'fieldSet']);
+const LOG_ATTACK_TYPES = new Set(['hit', 'hitHQ', 'evaded', 'blindMiss', 'tipsySwing', 'sweepWhiff']);
+function logIsHeadline(ev){ return !!ev && (LOG_PLAY_TYPES.has(ev.type) || (LOG_ATTACK_TYPES.has(ev.type) && !ev.ranged && !ev.source)); }
 function renderLogLine(ev){
   const log = document.getElementById('battleLog'); if(!log) return;
   // 2026-09-21 ("battle log not perfected yet" audit): waitTick had no case in logText() either,
@@ -31795,9 +31904,13 @@ function renderLogLine(ev){
   // bottom in order now and follows the newest line (it used to stack newest-first but scroll to the oldest end).
   const atEnd = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
   if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); log.scrollTop = log.scrollHeight; return; }
-  const {cls,text} = logText(ev);
+  const lt = logText(ev); if(!lt || !lt.text) return; // 2026-10-16: an event with no line (a fuse tick) used to throw here
+  const {cls,text} = lt;
   const row = document.createElement('div');
-  row.className = 'log-row '+cls;
+  // 2026-10-16 (user: "Status damage should be recorded in the log. But all log items will be slightly 'forward' like 1 tab nest in. So
+  // that we can easily see the "Attack" and "Plays" more obviously."): the plays and the attacks are the headline lines; everything
+  // else (status damage, effects, draws, readies) sits one step in under them.
+  row.className = 'log-row '+cls+(logIsHeadline(ev) ? ' log-head' : ' log-sub');
   row.textContent = text;
   log.appendChild(row);
   if(atEnd || !log.dataset.userScrolled) log.scrollTop = log.scrollHeight;
@@ -38007,19 +38120,22 @@ function isBaseCardDef(d){ return !!(d && !d.token && !d.hero && cardBaseLevel(d
 function deckBaseCardIds(){ const defs = getCardDefs(); return Object.keys(myDeckCounts||{}).filter(id=> (myDeckCounts[id]|0) > 0 && isBaseCardDef(forgeBaseDef(id) || defs[id])); }
 function baseCardBossGrowth(node, isFirstClear){
   if(!isFirstClear || !node) return null;
-  const kind = baseKind(node.kind||'skirmish'), out = {levels:[], copies:[], dust:0};
+  // dustSlots (2026-10-16): each growth that came as Dust, with the maxed Base card it stands for (null: no Base card in the deck), so
+  // the results can show that card going grey and bursting into the Magic Dust total (rewardsPanelHTML, baseDustBurst).
+  const kind = baseKind(node.kind||'skirmish'), out = {levels:[], copies:[], dust:0, dustSlots:[]};
   if(['boss','finalboss','raidboss'].includes(kind)){
     const ids = deckBaseCardIds().filter(id=> getCardLevel(id) < 10).sort((a, b)=> getCardLevel(a) - getCardLevel(b));
+    const maxed = deckBaseCardIds().filter(id=> getCardLevel(id) >= 10);
     for(let i = 0; i < BASE_GROWTH_PER_BOSS; i++){
       const id = ids[i];
       if(id){ const L = getCardLevel(id); myCardLevels[id] = L + 1; out.levels.push({id, to:L + 1}); }
-      else { const c = levelUpCostRaw(5, 'otter-kit'); out.dust += Math.max(1, c.dust); }
+      else { const c = levelUpCostRaw(5, 'otter-kit'), d = Math.max(1, c.dust); out.dust += d; out.dustSlots.push({id: maxed[out.dustSlots.length % Math.max(1, maxed.length)] || null, dust:d}); }
     }
     if(out.levels.length) saveCardLevels();
   } else if(kind === 'elite'){
     const ids = deckBaseCardIds();
     if(ids.length){ const id = ids[Math.floor(Math.random()*ids.length)]; unlockCardForPlayer(id, 'baseGrowth'); out.copies.push(id); }
-    else out.dust += duplicateValue('otter-kit').dust || 20;
+    else { const d = duplicateValue('otter-kit').dust || 20; out.dust += d; out.dustSlots.push({id:null, dust:d}); }
   } else return null;
   if(out.dust) grantCurrency('dust', out.dust);
   return (out.levels.length || out.copies.length || out.dust) ? out : null;
