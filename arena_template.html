@@ -5753,6 +5753,17 @@
   .world-stop.is-side .world-card{top:40px; left:50%; right:auto; transform:translateX(-50%); min-width:0; width:max-content; max-width:170px; text-align:center;}
   .world-diamond .wd-tag{position:absolute; right:-2px; bottom:2px; font-size:15px; line-height:1; filter:drop-shadow(0 1px 2px rgba(0,0,0,.7));}
   @media (max-width:560px){ .world-stop.is-side .world-diamond{width:52px; height:52px; left:-26px; top:-26px;} .world-stop.is-side .wd-ico{font-size:19px;} .world-stop.is-side .world-card{top:30px; max-width:120px;} }
+  @media (max-width:560px){ .world-stop.is-side .world-card{max-width:92px; padding:5px 6px;} .world-stop.is-side .wc-name{font-size:11.5px;} .world-stop.is-side .wc-sub{font-size:10.5px;} } /* 2026-10-16: fits the edge column on phones */
+  /* 2026-10-16 (user: "Also they should be visible in World Map."): a dungeon players can't reach yet, drawn for admins only */
+  .world-stop.is-dungeon.is-admin-mark .world-diamond{opacity:.85; cursor:pointer;} .world-stop.is-dungeon.is-admin-mark .world-card{border-style:dashed; border-color:rgba(255,215,122,.6);}
+  /* 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top right hand corner of Conquest Map UI.
+     (same throughout)"): the 🗝️ key with today's Dungeon tickets on a small gold badge; the same round button as Home beside it. */
+  .dungeon-key-btn{position:relative;}
+  .dungeon-key-btn[hidden]{display:none !important;}
+  .dungeon-key-btn .dk-n{position:absolute; right:-4px; bottom:-4px; min-width:16px; height:16px; padding:0 4px; box-sizing:border-box; border-radius:8px; background:#e9c46a; color:#2b1d08; font:800 10.5px/16px 'Baloo 2', system-ui, sans-serif; text-align:center; box-shadow:0 1px 3px rgba(0,0,0,.45); pointer-events:none;}
+  .dungeon-key-btn.is-here{box-shadow:0 0 0 2px var(--accent);}
+  .topbar .dungeon-key-btn{padding:7px 10px;}
+  #appWrap.in-match .dungeon-key-btn{display:none !important;}
   /* The Dungeons tab in Play (2026-10-15, user: "Maybe, it's its own, just another tab in 'Play'."). */
   .dungeons-panel{max-width:860px; margin:0 auto;}
   .dungeons-panel .dg-head h2{margin:0 0 2px;}
@@ -10224,6 +10235,9 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
          strip is gone — this single Home button is the one persistent way back to that menu from
          anywhere else in the app. Hidden while already on Home (see switchTab()). -->
     <button class="home-nav-btn" id="homeNavBtn" type="button" title="Home" hidden><span class="tab-emoji">🏠</span> Home</button>
+    <!-- 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA ... (same throughout)"): the 🗝️ Dungeons key
+         beside Home on every other screen; refreshTopbarDungeonKey() in arena_app.js shows it once a daily dungeon is open. -->
+    <button class="home-nav-btn dungeon-key-btn" id="dungeonKeyBtnTop" type="button" title="Daily Dungeons" aria-label="Daily Dungeons" hidden><span class="tab-emoji">🗝️</span><span class="dk-n" aria-hidden="true">0</span></button>
     <!-- Task #124 (2026-09-17, "promote this to a website with login and google SSO. use OAuth
          if its free"): the Artifact platform's real, no-setup identity primitive is the `user`
          capability (see initUserAuth() in arena_app.js) — it recognizes whoever the CLAUDE.AI

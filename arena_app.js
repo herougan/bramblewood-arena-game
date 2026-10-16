@@ -11387,7 +11387,7 @@ function renderPlay(){
           ${tabOpen('arena') ? `<button class="tab-btn ${(playSubTab==='arena'||playSubTab==='autobattle')?'active':''}" data-playtab="arena" role="tab" aria-selected="${playSubTab==='arena'||playSubTab==='autobattle'}"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}
           ${'' /* 2026-10-11 (user: "Raid as a menu item, beside Arena. Autobattler will be in the Arena"): the Autobattler is a tile inside the Arena now, so Raid sits right beside Arena here */}
           ${tabOpen('raid') ? `<button class="tab-btn ${playSubTab==='raid'?'active':''}" data-playtab="raid" role="tab" aria-selected="${playSubTab==='raid'}"><span class="tab-emoji">🐲</span> ${escapeHtml(raidTabLabel())}</button>` : ''}
-          ${'' /* 2026-10-15 (user: "Maybe, it's its own, just another tab in 'Play'."): the daily dungeons */}${dungeonsTabOpen() ? `<button class="tab-btn ${playSubTab==='dungeons'?'active':''}" data-playtab="dungeons" role="tab" aria-selected="${playSubTab==='dungeons'}"><span class="tab-emoji">🗝️</span> Dungeons</button>` : ''}
+          ${'' /* 2026-10-15 (user: "Maybe, it's its own, just another tab in 'Play'."): the daily dungeons */}${dungeonsTabOpen() ? `<button class="tab-btn ${playSubTab==='dungeons'?'active':''}" data-playtab="dungeons" role="tab" aria-selected="${playSubTab==='dungeons'}"><span class="tab-emoji">🗝️</span> ${escapeHtml(dungeonTabLabel()) /* 2026-10-16 (user: "when you unlock the first daily dungeon, it just says the name aka Murgle. But once you unlock the 2nd, it just says Daily Dungeons") */}</button>` : ''}
           <!-- Sandbox (2026-09-22, Test Suite feature, tasks #309-314): Developer-Mode-only, same
                gate as the Codex's Test filter and the editor's Test-card checkbox — a normal
                player never sees this tab at all. -->
@@ -11406,6 +11406,7 @@ function renderPlay(){
                the topbar-hiding behavior that gave the map its room in the first place. -->
           <button class="home-nav-btn" id="homeNavBtnPlay" type="button" title="Home"><span class="tab-emoji">🏠</span> Home</button>
           ${tabOpen('arena') && playSubTab !== 'arena' && playSubTab !== 'autobattle' && playSubTab !== 'raid' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="The Arena"><span class="tab-emoji">🏟️</span> Arena</button>` : ''}${playSubTab === 'autobattle' ? `<button class="home-nav-btn" id="arenaNavBtnPlay" type="button" title="Back to the Arena">← Arena</button>` : ''}
+          ${'' /* 2026-10-16 (user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top right hand corner of Conquest Map UI. (same throughout)") */}${dungeonKeyBtnHTML('dungeonKeyBtnPlay')}
           <div class="settings-wrap">
             <button class="settings-btn" id="settingsBtnPlaySub" type="button" title="Settings" aria-label="Settings" aria-haspopup="true" aria-expanded="false">⚙️</button>
             <div class="settings-panel" id="settingsPanelPlaySub" hidden>
@@ -17324,7 +17325,41 @@ function dungeonTicketLineHTML(map){
   const s = loadDungeonTickets(), open = !!s.runs[map.id], h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
   return `<p class="dungeon-ticket-line" title="One Dungeon ticket a day (up to ${DUNGEON_TICKETS_CAP} banked) and a bonus one each Monday. A ticket starts a run; the run lasts until you lose a floor.">🎟️ <b>${s.n}</b> Dungeon ticket${s.n === 1 ? '' : 's'} · ${open ? '<span class="dtl-run">Run open: keep climbing</span>' : 'a ticket starts a run'} · next ticket in ${h}h</p>`;
 }
-function dungeonsTabOpen(){ try{ const mm = CONQUEST_MAPS.find(m=> m.id === 'mm'); return !!(adminModeEnabled || devModeEnabled || (mm && isMapUnlocked(mm, loadConquestProgress()))); }catch(e){ return false; } }
+// 2026-10-16 (user: "Similar to raids - when you unlock the first daily dungeon, it just says the name aka Murgle. But once you
+// unlock the 2nd, it just says Daily Dungeons."): like raidTabLabel(), the tab (and the panel's heading, and the key button's
+// tooltip) reads the one dungeon's own name while only one is open, and "Daily Dungeons" from the second on. Only the ticketed
+// dungeons count (isDailyDungeonMap: endless, not the Tower), and only ones a player can really reach (not `preview`, unlocked).
+// Admins and devs with none unlocked see the plural, since they can open every slot.
+function unlockedDailyDungeons(progress){
+  try{ progress = progress || loadConquestProgress();
+    return DAILY_DUNGEONS.map(dd=> dd.mapId && CONQUEST_MAPS.find(m=> m.id === dd.mapId)).filter(m=> m && isDailyDungeonMap(m) && !m.preview && isMapUnlocked(m, progress));
+  }catch(e){ return []; }
+}
+function dungeonsAdminView(){ return (typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || (typeof devModeEnabled !== 'undefined' && devModeEnabled); }
+function dungeonTabLabel(progress){ const u = unlockedDailyDungeons(progress); return u.length === 1 ? u[0].name : 'Daily Dungeons'; }
+function dungeonsTabOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyDungeons().length); }catch(e){ return false; } }
+// The 🗝️ key beside Home and Arena (2026-10-16, user: "the daily dungeon key logo visible in small beside HOME and ARENA at the top
+// right hand corner of Conquest Map UI. (same throughout)"): a small round button with today's ticket count, in the Play screens'
+// top-right group and in the topbar of the other screens. Only once a daily dungeon is open (or in Admin Mode); it opens the tab.
+function dungeonKeyBtnHTML(id){
+  if(!dungeonsTabOpen()) return '';
+  const n = dungeonTicketsLeft(), label = dungeonTabLabel(), tip = `${label}: ${n} Dungeon ticket${n === 1 ? '' : 's'}`;
+  return `<button class="home-nav-btn dungeon-key-btn ${typeof playSubTab !== 'undefined' && playSubTab === 'dungeons' && currentTab === 'play' ? 'is-here' : ''}" id="${id}" type="button" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"><span class="tab-emoji">🗝️</span><span class="dk-n" aria-hidden="true">${n}</span></button>`;
+}
+function refreshTopbarDungeonKey(tab){
+  const b = document.getElementById('dungeonKeyBtnTop'); if(!b) return;
+  const show = tab !== 'home' && tab !== 'play' && dungeonsTabOpen(); b.hidden = !show; if(!show) return;
+  const n = dungeonTicketsLeft(), tip = `${dungeonTabLabel()}: ${n} Dungeon ticket${n === 1 ? '' : 's'}`;
+  b.title = tip; b.setAttribute('aria-label', tip); const c = b.querySelector('.dk-n'); if(c) c.textContent = String(n);
+}
+function openDungeonsFromKey(){
+  if(typeof matchState !== 'undefined' && matchState && !matchState.over) return;
+  if(!dungeonsTabOpen()) return;
+  try{ SoundKit.woodKnock(); }catch(e){}
+  playSubTab = 'dungeons'; try{ playerStatsOpen = false; }catch(e){} try{ exitConquestImmersive(); }catch(e){}
+  if(currentTab !== 'play') switchTab('play'); else renderPlay();
+}
+document.addEventListener('click', e=>{ const b = e.target && e.target.closest && e.target.closest('.dungeon-key-btn'); if(b){ e.preventDefault(); openDungeonsFromKey(); } });
 function renderDungeonsSubTab(body){
   const progress = loadConquestProgress(), s = loadDungeonTickets(), h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
   const cards = DAILY_DUNGEONS.map(dd=>{
@@ -17341,7 +17376,7 @@ function renderDungeonsSubTab(body){
         : `<p class="dg-sub">🔒 Clear ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
   }).join('');
   body.innerHTML = `<div class="panel dungeons-panel">
-    <div class="dg-head"><h2>🗝️ Dungeons</h2><p class="panel-sub">Endless climbs, a little harder every floor. A cleared floor stays cleared.</p></div>
+    <div class="dg-head"><h2>🗝️ ${escapeHtml(dungeonTabLabel(progress)) /* 2026-10-16 (user: "...once you unlock the 2nd, it just says Daily Dungeons") */}</h2><p class="panel-sub">Endless climbs, a little harder every floor. A cleared floor stays cleared.</p></div>
     <div class="dg-tickets" title="A ticket starts a run; the run lasts until you lose a floor. Each floor costs Energy, like any fight.">
       <span class="dg-tix">${Array.from({length: Math.max(DUNGEON_TICKETS_CAP, s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🎟️</i>`).join('')}</span>
       <span><b>${s.n}</b> Dungeon ticket${s.n === 1 ? '' : 's'} · one a day (up to ${DUNGEON_TICKETS_CAP}), next in ${h}h · a bonus one every Monday</span></div>
@@ -17367,15 +17402,24 @@ function towerCardHTML(progress){
 }
 // The World map's dungeon stops (2026-10-15): a smaller compass diamond beside its map's own, joined to it by a dotted branch.
 function worldDungeonStopsHTML(maps, pts, narrow, progress, firstLocked){
+  // 2026-10-16 (user: "Also they should be visible in World Map."): every daily dungeon a player has unlocked is on the map, a
+  // compass diamond branching off its map that goes straight in; a locked or `preview` one isn't drawn for players at all. Admins
+  // see every slot, the ones players can't reach yet marked 🛠️, and can open them (renderConquestSubTab lets admins into a locked
+  // endless map).
+  const admin = typeof adminModeEnabled !== 'undefined' && adminModeEnabled;
   return DAILY_DUNGEONS.filter(dd=> dd.mapId).map(dd=>{
-    const map = CONQUEST_MAPS.find(m=> m.id === dd.mapId); if(!map || map.preview) return ''; // not on the World map until it's in use (2026-10-16)
+    const map = CONQUEST_MAPS.find(m=> m.id === dd.mapId); if(!map) return '';
+    const open = !map.preview && isMapUnlocked(map, progress);
+    if(!open && !admin) return '';
     const i = maps.findIndex(m=> m.id === map.parent); if(i < 0) return '';
-    const p = pts[i], x = narrow ? (p.x < 50 ? 80 : 20) : (p.x <= 50 ? p.x + 24 : p.x - 24), y = p.y + (narrow ? -44 : 0);
-    const open = isMapUnlocked(map, progress), fog = !open && i > firstLocked, f = dungeonFloorProgress(map, progress), here = map.id === conquestSelectedMap;
+    // narrow (2026-10-16): in the free column at the screen's edge, beside its map's diamond, so its card no longer covers that map's card
+    const p = pts[i], x = narrow ? (p.x < 50 ? 86 : 14) : (p.x <= 50 ? p.x + 24 : p.x - 24), y = p.y + (narrow ? -30 : 0);
+    const f = dungeonFloorProgress(map, progress), here = map.id === conquestSelectedMap, go = open || admin;
+    const note = open ? ` · floor ${Math.min(f.total, f.done + 1)}/${f.total}` : map.preview ? ' · 🛠️ admin preview' : ' · 🛠️ locked for players';
     return `<svg class="world-branch" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="top:${Math.min(p.y, y)}px; height:${Math.max(2, Math.abs(p.y - y))}px"><line x1="${p.x}" y1="${p.y <= y ? 0 : 100}" x2="${x}" y2="${p.y <= y ? 100 : 0}"/></svg>
-      <div class="world-stop is-side map-theme-${map.id} ${open ? '' : 'is-locked'} ${fog ? 'is-fog' : ''} ${here ? 'is-here' : ''}" style="left:${x}%; top:${y}px">
-        <button type="button" class="world-diamond" ${open ? `data-world-map="${map.id}"` : 'disabled'} aria-label="${escapeAttr((open ? '' : 'Locked: ') + map.name + ' (daily dungeon)')}">${compassDiamondSVG(map.id, !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span><span class="wd-tag" aria-hidden="true">🗝️</span></button>
-        <div class="world-card">${fog ? '<div class="wc-name">Uncharted</div>' : `<div class="wc-name">${escapeHtml(map.name)}</div><div class="wc-sub">🗝️ Daily dungeon${open ? ` · floor ${Math.min(f.total, f.done + 1)}/${f.total}` : ' · 🔒'}</div>`}</div>
+      <div class="world-stop is-side is-dungeon map-theme-${map.id} ${open ? '' : 'is-locked is-admin-mark'} ${here ? 'is-here' : ''}" style="left:${x}%; top:${y}px">
+        <button type="button" class="world-diamond" ${go ? `data-world-map="${map.id}"` : 'disabled'} title="${escapeAttr(map.name + ' (daily dungeon)')}" aria-label="${escapeAttr((open ? '' : 'Admin, locked for players: ') + map.name + ' (daily dungeon)')}">${compassDiamondSVG(map.id, !open)}<span class="wd-ico">${map.icon}</span><span class="wd-tag" aria-hidden="true">🗝️</span></button>
+        <div class="world-card"><div class="wc-name">${escapeHtml(map.name)}</div><div class="wc-sub">🗝️ Daily dungeon${note}</div></div>
       </div>`;
   }).join('');
 }
@@ -38860,6 +38904,7 @@ function switchTab(tab){
   // already there instead of doing nothing when clicked.
   const homeBtn = document.getElementById('homeNavBtn');
   if(homeBtn) homeBtn.hidden = (tab==='home');
+  try{ refreshTopbarDungeonKey(tab); }catch(e){} // 2026-10-16 (user: "the daily dungeon key logo ... beside HOME ... (same throughout)")
   // Item #275 (2026-09-20, "the header is unnecessary on the home page"... "Home button should
   // be renamed 'Back'... on the same line as the sub nav bar. Same for settings... the logo and
   // title name row can be left out of the header"): the Home page already has its own inline
