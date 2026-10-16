@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (09:15)
+- **Skill marks on the card face:** 51 skills that sat on real cards with no mark now show their icon on the card's skill strip, with the number when it's more than 1. Among them: Nocturnal, Diurnal, Bleed, Regen, Guardian, Swarm, Arrow, Stealth, Pierce, Crit, Freeze and Shock.
+- **Festering is now Lingering**, so it no longer reads like Fester. Lingering: Bleed and Poison don't wear off while it's on the field. Fester: extra damage equal to its own Poison.
+
 ## 2026-10-16 (07:30)
 - **Feedback:** every note now carries the player's id (their account, or their guest session), their player name, whether they're signed in, and the time. The table still waits for "apply it".
 - **Blacksmith:** a recipe stays hidden until you've held every card it uses (and its result, when the result can be found elsewhere). With none yet, the anvil says how recipes appear.

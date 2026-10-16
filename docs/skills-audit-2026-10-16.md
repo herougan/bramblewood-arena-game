@@ -99,7 +99,7 @@ Card text below is shown with each skill's default amount.
 - **"Diurnal – { }", "Nocturnal – { }", "Tide – { }, { }", "Full Moon – { }" and "Bloom (conditions)"** keep their braces / brackets: that is the format you set for the advanced forms (10-14, 10-15), and the card fills them in ("Diurnal – {Evasive}").
 - **Crepuscular, Diurnal, Nocturnal, Meiosis, Purblind, Scatterbrained, Esprit, Changeling** are your own names; left alone.
 - **Pounce and Skyfall** were the same skill on paper; they differ now that the text is true (Pounce: the unit facing it; Skyfall: random).
-- **Fester vs Festering** are easy to mix up (Fester: bonus damage equal to its own Poison; Festering: statuses don't wear off). Worth a rename if either goes on a card.
+- **Fester vs Festering:** Festering is now called **Lingering** (statuses don't wear off while it's on the field). Fester keeps its name, beside Rupture.
 - **Haste, Keen Eye, Shield Call, Pack Leader, Timber / Rock-solid / Iron-will** have fixed numbers in their rule; they read fine as one-word skills, so no amount was added.
 - **The "Test: Revivificated" card** keeps its name (a test card).
 

@@ -32462,7 +32462,7 @@ const PASSIVE_DEFS = [
   // Tide (2026-10-09; a keyword family, not an archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
   {key:'reach', category:'passive', label:'Reach', kind:'boolean', desc:()=>`Its attacks ignore Flying's dodge.`},
-  {key:'festering', category:'passive', label:'Festering', kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
+  {key:'festering', category:'passive', label:'Lingering', /* 2026-10-16: renamed from Festering, which read too close to Fester */ kind:'boolean', desc:()=>`While this is on the field, Bleed and Poison stacks on every unit (both sides) don't wear down.`},
   {key:'leader', category:'passive', label:'Natural Leader', kind:'boolean', desc:()=>`Can be your leader even though it isn't Heroic.`},
   // Dictator (2026-10-12, user: "A new skill: Dictator - this card can only be a leader"): it never goes in a deck.
   {key:'dictator', category:'passive', label:'Dictator', kind:'boolean', desc:()=>`Can only be a leader: it never goes in a deck.`},
@@ -34162,7 +34162,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'fddb1daa1ec9', BUILD_CARD_HASH = '74ccb855fe201745d5069a95ae867b8b59f54b1d84e7eeeee70ddd7301f87cab';
+const BUILD_ID = 'e7652af7f93a', BUILD_CARD_HASH = '74ccb855fe201745d5069a95ae867b8b59f54b1d84e7eeeee70ddd7301f87cab';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -37648,6 +37648,7 @@ function triggerBadges(d, live){
     return `<span class="ab-trig${off ? ' is-off' : ''}${clock ? ' is-clock' : ''}" title="${escapeAttr(tip)}"><i class="ab-bolt">${lead}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
   });
 }
+const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger']; // 2026-10-16 (leader is left out: leaders have their own ring)
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -37852,6 +37853,11 @@ function abilityBadges(d, bopts){
   // above for that same trigger data (🐝 for a spawn trigger, 🏹 for a damage trigger, etc) --
   // so a card like Bee Drone showed both 🐝 AND ⚡×1 for the exact same underlying ability. The
   // specific badges already condense that info; the generic count added nothing but clutter.
+  // 2026-10-16 skill audit follow-up (user: "keywords are highlighted"): 52 skills on real cards had no chip on the card face
+  // (Nocturnal, Bleed, Regen, Guardian, Stealth, Arrow, Crit…), so the card looked as if it had no skill. Each now gets its icon,
+  // plus its number when it is more than 1. Skills that carry two numbers (Freeze, Sleep…) show the icon alone.
+  CHIP_FALLBACK_SKILLS.forEach(k=>{ const v = e[k]; if(!v) return;
+    out.push(`<span class="ab-sk" data-sk="${k}">${iconHTML(k, SKILL_ICON[k] || '✦')}${typeof v === 'number' || /^\d+$/.test(String(v)) ? n1(v) : ''}</span>`); });
   out.push(...triggerBadges(d, bopts && bopts.live).filter(Boolean)); // a spent trigger that has faded is gone, not an empty slot
   if(d._hiddenSkills) out.push(skillQChipHTML()); // 2026-10-15 (SKILL_REVEAL)
   if(!out.length) return '';
