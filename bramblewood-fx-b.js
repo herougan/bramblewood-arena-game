@@ -658,9 +658,11 @@ css('sight', `.board-card.fxb-cantsee{position:relative;}
 .fxb-darkeyes::before{left:0;} .fxb-darkeyes::after{right:0;}
 @keyframes fxbBlink{0%,46%,54%,100%{transform:scaleY(1); opacity:1;} 50%{transform:scaleY(.08); opacity:.6;}}
 .board-card.fxb-eyes-on .card-tile .ico{filter:brightness(.8);}
-.fxb-pool{position:absolute; left:50%; top:50%; width:290%; height:210%; z-index:0; pointer-events:none; transform:translate(-50%,-50%); border-radius:50%;
-  background:radial-gradient(ellipse at 50% 50%, rgba(255,205,120,.42), rgba(255,170,70,.18) 38%, rgba(255,150,40,0) 66%); mix-blend-mode:screen; animation:fxbFlicker 2.4s ease-in-out infinite;}
-@keyframes fxbFlicker{0%,100%{opacity:.9; transform:translate(-50%,-50%) scale(1);} 30%{opacity:.75;} 55%{opacity:1; transform:translate(-50%,-50%) scale(1.03);} 70%{opacity:.82;}}
+/* 2026-10-16 (user: "Lantern glow is too bright. but it is also not 'wide' enough. And the brightness shouldnt cut past the battlefield
+   board"): the carrier's pool is about half as bright and wider; it flickers in brightness only, and the game clips it to the board. */
+.fxb-pool{position:absolute; left:50%; top:50%; width:400%; height:300%; z-index:0; pointer-events:none; transform:translate(-50%,-50%); border-radius:50%;
+  background:radial-gradient(ellipse at 50% 50%, rgba(255,205,120,.22), rgba(255,175,80,.11) 36%, rgba(255,160,60,.04) 58%, rgba(255,150,40,0) 70%); mix-blend-mode:screen; animation:fxbFlicker 2.4s ease-in-out infinite;}
+@keyframes fxbFlicker{0%,100%{opacity:.9;} 30%{opacity:.76;} 55%{opacity:1;} 70%{opacity:.84;}}
 .board-card.fxb-lit .card-tile{box-shadow:0 0 0 1px rgba(255,200,110,.35), 0 0 14px rgba(255,180,80,.28);}
 @media (prefers-reduced-motion: reduce){ .fxb-fogart, .fxb-glare::before, .fxb-mooncloud, .fxb-darkeyes::before, .fxb-darkeyes::after, .fxb-pool, .fxb-shut .lid{animation:none !important;} }`);
 // The shut eye of look A: a closed lid with lashes (the .lid group flips up a crack when it strains to see).
@@ -867,13 +869,16 @@ M.dawnDraw = function(host, opts){
 // Dusk (wt-dusk, the tone only): the sun sinks in the west, long shadows stretch across the felt, warm turns violet.
 M.dusk = function(host, opts){
   opts = Object.assign({}, opts, host && host.nodeType ? {host} : {}); const {r, box} = skyBox(opts);
-  const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'inset:0; background:linear-gradient(90deg, rgba(255,140,60,.5), rgba(190,90,140,.25) 50%, rgba(80,60,140,.15));'}))[0];
-  const sun = bits(box, 1, ()=> ({cls:'fxb-disc', style:'left:5%; top:35%; background:radial-gradient(circle, #fff1c0, #ff9a3a 60%, #e0582a); box-shadow:0 0 26px 10px rgba(255,140,60,.5);'}))[0];
-  const sh = bits(box, 4, i=> ({cls:'fxb-bit', style:`left:0; top:${18 + i*20}%; width:100%; height:9%; background:linear-gradient(90deg, rgba(40,20,50,0), rgba(40,20,50,.35) 30%, rgba(40,20,50,0)); transform-origin:0 50%;`}));
+  // 2026-10-16 (user: "The sun thing - i think the static rectangle bars across the screen might look better than the setting sun
+  // right now. Otherwise make the setting sun MUCH softer and less obvious - it's not supposed to be seeable"): no sun disc any more.
+  // The long shadow bars stay, but static: they fade in where they lie (no stretching across) and fade out, over a faint warm tint
+  // from the west (the light's direction) that is much weaker than the old wash.
+  void r;
+  const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'inset:0; background:linear-gradient(90deg, rgba(255,150,70,.22), rgba(200,110,140,.08) 45%, rgba(80,60,140,0) 80%);'}))[0];
+  const sh = bits(box, 4, i=> ({cls:'fxb-bit', style:`left:0; top:${18 + i*20}%; width:100%; height:9%; background:linear-gradient(90deg, rgba(40,20,50,0), rgba(40,20,50,.35) 30%, rgba(40,20,50,0));`}));
   return run([box], opts, (t)=>{
-    t.fromTo(w, {opacity:0}, {opacity:1, duration:.5}).to(w, {opacity:0, duration:.6}, 1.2)
-      .fromTo(sun, {y:0, opacity:1}, {y:r.height*.45, opacity:0, duration:1.4, ease:'power1.in'}, 0)
-      .fromTo(sh, {scaleX:0, opacity:0}, {scaleX:1.1, opacity:1, duration:.8, stagger:.06, ease:'power2.out'}, .2).to(sh, {opacity:0, duration:.5}, 1.1);
+    t.fromTo(w, {opacity:0}, {opacity:1, duration:.6}).to(w, {opacity:0, duration:.7}, 1.3)
+      .fromTo(sh, {opacity:0}, {opacity:1, duration:.6, stagger:.05, ease:'sine.out'}, .15).to(sh, {opacity:0, duration:.6}, 1.2);
   });
 };
 // Twilight (wt-twilight, was announced as "Day breaks"): rose-violet wash; the sun and the moon cross paths overhead and

@@ -87,17 +87,32 @@
   // Bite (2026-10-08, user: "the bite should really crunch down, the back teeth lagging 0.1s behind, then opening, then
   // fading out immediately. It has that punch"): front jaws snap shut past their mark (a crunch), the back row follows
   // 0.1 s later, a flash marks the crunch, then the jaws spring open and vanish.
+  // 2026-10-16 (user: "The teeth damage effect: 8a: Make the teeth close. 8b: Just 1 row of teeth each is okay. 8c: Make the teeth
+  // fade out slightly towards the roots. Make the roots very very slightly red. Like 255/238/238 kind."): one row per jaw (6 on top,
+  // 5 below, set half a tooth apart so they mesh), and the jaws travel all the way in: the tips pass each other and interlock at the
+  // card's middle (CSS ufxJawTop/ufxJawBot). Each tooth is white at the tip and fades toward a faintly red root (#FFEEEE).
+  // The fade is drawn as four bands per tooth (root to tip: #FFEEEE at .5, then .7, .88, white at 1), each band one path for the
+  // whole jaw; an SVG gradient fill (url(#id)) drew nothing on the board, so plain fills it is. A thin dark edge runs only along the
+  // outer 60% toward the tip, so the roots stay soft.
+  const TOOTH_BANDS = [[0, .3, '#ffeeee', .5], [.3, .55, '#fff3f3', .7], [.55, .8, '#fff9f9', .88], [.8, 1, '#ffffff', 1]];
   function bite(target){
-    const svg = overlay(target, 'ufx-bite', 560); if(!svg) return;
-    const teeth = (y, dir, x0, n, w, h)=>{ let d = ''; for(let i = 0; i < n; i++){ const x = x0 + i*w; d += `M${x} ${y} L${x + w/2} ${y + dir*h} L${x + w} ${y} `; } return d; };
-    path(svg, teeth(40, 1, 26, 5, 10, 11), 'ufx-teeth ufx-back ufx-top');
-    path(svg, teeth(90, -1, 26, 5, 10, 11), 'ufx-teeth ufx-back ufx-bot');
-    path(svg, teeth(36, 1, 18, 6, 11, 15), 'ufx-teeth ufx-top');
-    path(svg, teeth(94, -1, 18, 6, 11, 15), 'ufx-teeth ufx-bot');
-    const fl = document.createElementNS(NS, 'ellipse'); fl.setAttribute('cx', 50); fl.setAttribute('cy', 65); fl.setAttribute('rx', 34); fl.setAttribute('ry', 14); fl.setAttribute('class', 'ufx-crunch'); svg.appendChild(fl);
-    const tile = target && (target.querySelector('.card-tile') || target);
+    const svg = overlay(target, 'ufx-bite', 600); if(!svg) return;
+    // y: the gum line (roots), dir: +1 tips point down (top jaw), -1 up; x0: first root's left; n teeth w wide, h long
+    const jaw = (cls, y, dir, x0, n, w, h)=>{
+      const g = document.createElementNS(NS, 'g'); g.setAttribute('class', 'ufx-jaw ' + cls); svg.appendChild(g);
+      const at = (x, f, side)=> [x + (side < 0 ? w/2*f : w - w/2*f), y + dir*h*f];
+      TOOTH_BANDS.forEach(([fa, fb, col, op])=>{ let d = '';
+        for(let i = 0; i < n; i++){ const x = x0 + i*w, a1 = at(x, fa, -1), a2 = at(x, fa, 1), b2 = at(x, fb, 1), b1 = at(x, fb, -1);
+          d += `M${a1[0].toFixed(2)} ${a1[1].toFixed(2)} L${a2[0].toFixed(2)} ${a2[1].toFixed(2)} L${b2[0].toFixed(2)} ${b2[1].toFixed(2)} L${b1[0].toFixed(2)} ${b1[1].toFixed(2)} Z `; }
+        const p = path(g, d, 'ufx-tooth-band'); p.style.fill = col; p.style.fillOpacity = op; });
+      let e = ''; for(let i = 0; i < n; i++){ const x = x0 + i*w, l = at(x, .4, -1), r = at(x, .4, 1), tip = [x + w/2, y + dir*h]; e += `M${l[0].toFixed(2)} ${l[1].toFixed(2)} L${tip[0]} ${tip[1]} L${r[0].toFixed(2)} ${r[1].toFixed(2)} `; }
+      path(g, e, 'ufx-tooth-edge');
+      return g;
+    };
+    // closed, the tips pass each other by ~8 units around the card's middle (y 61-69) and mesh, half a tooth apart
+    jaw('ufx-jaw-top', 52, 1, 17, 6, 11, 17); jaw('ufx-jaw-bot', 78, -1, 22.5, 5, 11, 17);
+    const fl = document.createElementNS(NS, 'ellipse'); fl.setAttribute('cx', 50); fl.setAttribute('cy', 65); fl.setAttribute('rx', 34); fl.setAttribute('ry', 10); fl.setAttribute('class', 'ufx-crunch'); svg.appendChild(fl);
     // (2026-10-12: no squash of its own any more; the hit's impactSquash already gives the one crunch, two read as a double bite)
-    void tile;
   }
   function sting(target){
     const svg = overlay(target, 'ufx-sting', 620); if(!svg) return;
