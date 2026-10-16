@@ -9691,6 +9691,15 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
    beside the Lock"; the card didn't fit its locked deck): the reward box is as wide as what's in it, the locked slab is
    shorter with the rank right beside the lock, and the panel is allowed to be taller. */
 .conquest-node-panel .cnp-rw{display:inline-grid; grid-template-columns:repeat(var(--rw-cols, 2), auto); justify-content:center; justify-items:center; align-items:center; width:auto; flex:0 0 auto;} /* 2026-10-16: one column per block (an empty 2nd column left a gap on the right) */
+/* 2026-10-16 (results and rewards): a card reward that needs a rank wears its emblem on its corner; a pack shows bare, its name and
+   "Faction rewards!" in a small hover card. */
+.cnp-rw .cnp-rw-card .rank-hex.cnp-rw-rank{position:absolute !important; top:-7px !important; right:-7px !important; left:auto !important; width:24px; height:27px; rotate:-8deg; margin:0 !important; z-index:3; pointer-events:none; transform:none !important;}
+.cnp-rw .cnp-rw-card .rank-hex.cnp-rw-rank b{font-size:14px !important;}
+.cnp-rw .cnp-rw-card.cnp-rw-pack.is-bare{width:auto; padding:2px; background:none; box-shadow:none; gap:0;}
+.cnp-rw .cnp-rw-pack.is-bare .booster{--bw:40px;}
+.cnp-rw-pack.is-bare:hover, .cnp-rw-pack.is-bare:focus-visible{outline:2px solid #ffd98a; outline-offset:2px; border-radius:6px;}
+.cnp-rw-zoom.cnp-rw-tip{width:auto; max-width:220px; padding:8px 12px; border-radius:10px; background:#2a2216; color:#fff3dc; border:1px solid rgba(255,214,120,.55); font-family:'Baloo 2',system-ui,sans-serif; display:flex; flex-direction:column; align-items:center; gap:1px; text-align:center;}
+.cnp-rw-zoom.cnp-rw-tip b{font-size:14px;} .cnp-rw-zoom.cnp-rw-tip small{font-size:12px; color:#ffd98a; font-weight:800;}
 /* 2026-10-16 (user: "The First clear label, if its larger than 80% of the rewards div, then just replaced it with a tick ONLY") */
 .cnp-rw.label-tick .cnp-rw-label .cnp-rw-word{display:none;}
 .cnp-rw.label-tick .cnp-rw-label .cnp-rw-ok{margin-left:0;}
@@ -34958,7 +34967,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '141463aefa7c', BUILD_CARD_HASH = '270c6d1b18e6978cacddec6069d6d704a576a8c0de713139feda8084cf12db99';
+const BUILD_ID = 'ded89ac13348', BUILD_CARD_HASH = '270c6d1b18e6978cacddec6069d6d704a576a8c0de713139feda8084cf12db99';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -49262,7 +49271,15 @@ function deckLevelGapTip(cls){
     'lv-green':'About your battle rating or below', 'lv-ltgreen':'Your battle rating is twice theirs', 'lv-pink':'Your battle rating is 2.5× theirs', 'lv-ltpink':'Your battle rating is 3× theirs'})[cls] || '';
 }
 function conquestDeckNeed(node){ const r = node && node.revealDeck; return (r && r !== 'win' && rankAtLeast(r, 'B')) ? r : 'B'; }
+// 2026-10-16 (user: "For Map 0-5, don't even need B to see the enemy's deck. Just a lock symbol is enough, no need for a emblem. 6
+// onwards, B needed."): on Maps 0–5 the enemy's deck is open from the start, unless the fight itself asks for a better rank (an A or
+// S set in Edit skirmish); from Map 6 on it still needs a B clear (or the fight's own A/S).
+function conquestDeckFree(map, node){
+  const n = map ? mapNumberOf(map.id) : null, r = node && node.revealDeck;
+  return n != null && n <= 5 && !(r && r !== 'win' && rankAtLeast(r, 'A'));
+}
 function conquestDeckRevealed(map, node, progress){
+  if(conquestDeckFree(map, node)) return true;
   return rankAtLeast(progress.ranks[conquestNodeId(map.id, node.key)], conquestDeckNeed(node));
 }
 // Map decoration (2026-09-29, per explicit request: "Draw a pond emoji or something in this
@@ -49535,9 +49552,12 @@ function nodeRewardTier(node){
 function wireRewardZoom(root){
   if(!root) return;
   const show = el=>{
-    hide(); const d = getCardDefs()[el.dataset.zoom]; if(!d) return;
+    hide();
     const z = document.createElement('div'); z.className = 'cnp-rw-zoom'; z.setAttribute('aria-hidden', 'true');
-    z.innerHTML = cardTileHTML(d, {inPlay:true}); document.body.appendChild(z);
+    // 2026-10-16: a pack (or other non-card reward) shows a small name card instead (data-zoom-tip "Name|Line")
+    if(el.dataset.zoomTip){ const [t1, t2] = el.dataset.zoomTip.split('|'); z.classList.add('cnp-rw-tip'); z.innerHTML = `<b>${escapeHtml(t1||'')}</b>${t2 ? `<small>${escapeHtml(t2)}</small>` : ''}`; }
+    else { const d = getCardDefs()[el.dataset.zoom]; if(!d) return; z.innerHTML = cardTileHTML(d, {inPlay:true}); }
+    document.body.appendChild(z);
     const r = el.getBoundingClientRect(), zw = z.offsetWidth, zh = z.offsetHeight;
     const left = Math.max(8, Math.min(innerWidth - zw - 8, r.left + r.width/2 - zw/2));
     const top = r.top - zh - 10 >= 8 ? r.top - zh - 10 : Math.min(innerHeight - zh - 8, r.bottom + 10);
@@ -49545,7 +49565,7 @@ function wireRewardZoom(root){
     requestAnimationFrame(()=> z.classList.add('is-in'));
   };
   const hide = ()=> document.querySelectorAll('.cnp-rw-zoom').forEach(z=> z.remove());
-  root.querySelectorAll('[data-zoom]').forEach(el=>{
+  root.querySelectorAll('[data-zoom], [data-zoom-tip]').forEach(el=>{
     el.addEventListener('pointerenter', ()=> show(el)); el.addEventListener('pointerleave', hide);
     el.addEventListener('focus', ()=> show(el)); el.addEventListener('blur', hide);
   });
@@ -49579,17 +49599,24 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const tier = nodeRewardTier(node);
   const pay = tier ? tier.first : {gold:0, dust:0};
   const tokenChips = ((node && node.rewardTokens) || []).map(t=> REWARD_TOKENS[t] ? `<span class="cnp-rw-card cnp-rw-token ${done?'is-got':''}" role="img" aria-label="${escapeAttr(REWARD_TOKENS[t].label)}" title="${escapeAttr(REWARD_TOKENS[t].label)}"><span class="cnp-rw-back">${REWARD_TOKENS[t].icon}</span></span>` : '').join('');
-  const gotCards = done && cardRewardsClaimed().has(conquestNodeId(mapId, node.key)), needR = ids.length && !gotCards ? cardRewardRankFor(mapId) : null;
-  const cards = (needR ? `<span class="cnp-rw-need" aria-label="Cards need rank ${needR} or better">${needR}+</span>` : '') + ids.map(id=> isCardHiddenForPlayer(defs[id])
-    ? `<span class="cnp-rw-card is-mystery ${gotCards?'is-got':''}" role="img" aria-label="A mystery card"><span class="cnp-rw-back bw-back bk-unit">❓</span></span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
-    : `<span class="cnp-rw-card ${gotCards?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (gotCards ? ', already yours' : ''))}">${cardTileHTML(defs[id], {inPlay:true})}</span>`).join('');
+  const gotCards = done && cardRewardsClaimed().has(conquestNodeId(mapId, node.key)), needR = ids.length && !gotCards ? cardRewardRankFor(mapId, node) : null;
+  // 2026-10-16 (user: "Card rewards locked behind A, S etc. The card park or card has a emblem on it, representing the rank. Default is
+  // nothing - first clear is enough."): a card that needs a rank wears that rank's small hex emblem on its corner (was a separate "B+"
+  // pill before the cards); a card that only needs the first clear shows nothing extra.
+  const rankMark = needR ? `<span class="rank-hex rank-${needR} cnp-rw-rank" aria-hidden="true"><i></i><b>${needR}</b></span>` : '';
+  const needLbl = needR ? `, needs rank ${needR} or better` : '';
+  const cards = ids.map(id=> isCardHiddenForPlayer(defs[id])
+    ? `<span class="cnp-rw-card is-mystery ${gotCards?'is-got':''}" role="img" aria-label="A mystery card${needLbl}"><span class="cnp-rw-back bw-back bk-unit">❓</span>${rankMark}</span>` /* 2026-10-16 (user: "Card backings -> 4 types…") */
+    : `<span class="cnp-rw-card ${gotCards?'is-got':''}" role="img" tabindex="0" data-zoom="${escapeAttr(id)}" aria-label="${escapeAttr(defs[id].name + (gotCards ? ', already yours' : needLbl))}">${cardTileHTML(defs[id], {inPlay:true})}${rankMark}</span>`).join('');
   const cur = [];
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
   const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
   // 2026-10-15 (user: "0-2 will give a faction pack. (This has to be clearly seen in the first clear rewards section of the skirmish
   // review btw)"): a pack the first clear gives shows as a small pack with its name.
-  const packChips = nodeFirstClearPacks(mapId, node).map(rewardPackInfo).filter(Boolean).map(pi=> `<span class="cnp-rw-card cnp-rw-pack ${done?'is-got':''}" role="img" aria-label="${escapeAttr(pi.name + (done ? ', already won' : ''))}" title="${escapeAttr(pi.name + ': ' + pi.cards + ' cards')}">${rewardPackBoosterHTML(pi)}<b>${escapeHtml(pi.name)}</b></span>`).join('');
+  // 2026-10-16 (user: "Don't say "rivergate pack" in the first clear rewards preview. Just show a pack, then on hover, it says that and
+  // that it contains "Faction rewards!""): just the pack; hovering or focusing it opens a small card with its name and what's inside.
+  const packChips = nodeFirstClearPacks(mapId, node).map(rewardPackInfo).filter(Boolean).map(pi=> `<span class="cnp-rw-card cnp-rw-pack is-bare ${done?'is-got':''}" role="img" tabindex="0" data-zoom-tip="${escapeAttr(pi.name + '|' + (pi.kind === 'faction' ? 'Faction rewards!' : pi.cards + ' cards'))}" aria-label="${escapeAttr(pi.name + (pi.kind === 'faction' ? ': Faction rewards!' : '') + (done ? ', already won' : ''))}">${rewardPackBoosterHTML(pi)}</span>`).join('');
   const cardsAll = packChips + cards + tokenChips;
   if(!cardsAll && !cur.length && !rankHTML) return '';
   // 2026-10-14 (user: "Move the first time rewards section to the right. Decrease the height of the first reward section. The
@@ -50602,7 +50629,13 @@ function cardRewardsClaimed(){ try{ const raw = localStorage.getItem(CARD_REWARD
   // first run: every fight already cleared has had its cards (the old rule gave them on the first clear)
   const s0 = new Set((loadConquestProgress().completed||[])); try{ localStorage.setItem(CARD_REWARD_CLAIMED_KEY, JSON.stringify([...s0])); }catch(e){} return s0; }
 function markCardRewardsClaimed(nid){ const s0 = cardRewardsClaimed(); s0.add(nid); try{ localStorage.setItem(CARD_REWARD_CLAIMED_KEY, JSON.stringify([...s0])); }catch(e){} }
-function cardRewardRankFor(mapId){ const n = mapNumberOf(mapId); if(n == null) return null; return n >= 30 ? 'S' : n >= 15 ? 'A' : n >= 5 ? 'B' : null; }
+// 2026-10-16 (user: "Card rewards locked behind A, S etc. ... Default is nothing - first clear is enough. For Map 0-5 ... 6 onwards, B
+// needed. 21 onwards, A needed."): no rank on Maps 0–5, B from Map 6, A from Map 21 (was B from 5, A from 15, S from 30). A fight can
+// still ask for its own rank (node.cardRank: 'B' / 'A' / 'S'), which is the only way a card reward needs S now.
+function cardRewardRankFor(mapId, node){
+  if(node && node.cardRank && /^(B|A|S+)$/.test(node.cardRank)) return node.cardRank;
+  const n = mapNumberOf(mapId); if(n == null) return null; return n >= 21 ? 'A' : n >= 6 ? 'B' : null;
+}
 // The Map 0 swap window (2026-10-13): "everytime they win a card, show a special UI subwindow on the conquest map ... that lets
 // them switch out a basic card with the card gotten". One window per card won; pick a deck card to trade out, or keep the deck.
 let pendingDeckSwap = null;
@@ -51185,7 +51218,7 @@ function renderConquestSubTab(body){
       ${skirmishFieldHTML(map.id, selectedNode)}
       ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${journeysAdminOnly() ? '<small>🙈 Hidden from players (Admin only) · </small>' : ''}${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
-        <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span><span class="rank-hex rank-${conquestDeckNeed(selectedNode)}" aria-hidden="true"><i></i><b>${conquestDeckNeed(selectedNode)}</b></span></div>`}
+        <div class="cnp-deck is-open"><div class="cnp-squad">${squadChips}</div></div>` : `<div class="cnp-deck-locked" role="img" aria-label="${escapeAttr(_t('Deck hidden') + ': ' + reqText)}"><span class="cdl-lock" aria-hidden="true">🔒</span></div>`/* 2026-10-16 (user: "Just a lock symbol is enough, no need for a emblem") */}
       ${'' /* C2 (2026-10-10, user): the battle type is set only in Edit skirmish, so no picker here */}
       ${adminModeEnabled ? `<div class="cnp-admin-side" role="group" aria-label="Admin"><button type="button" class="btn small ghost" id="cnpEditSkirmish">🛠️ Edit skirmish</button><button type="button" class="btn small ghost" id="cnpEditRewards">✏️ Edit rewards</button><button type="button" class="btn small ghost" id="cnpAdminClear" title="Admin: count this skirmish as cleared (S rank), no fight">✅ Mark cleared</button></div>` : ''}
       `;
@@ -62145,7 +62178,7 @@ async function resolveRoundCore(opts){
       // Card rewards by rank (2026-10-13, user: "As games progress, card rewards are only guaranteed on B->A->S"): from Map 5 a
       // fight's reward cards need rank B, from Map 15 rank A, from Map 30 rank S. Below that they wait for a better win; the
       // fight's other first-clear rewards still pay out.
-      const needRank = cardRewardRankFor(m.conquestNode.mapId), claimedSet = cardRewardsClaimed();
+      const needRank = cardRewardRankFor(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node), claimedSet = cardRewardsClaimed(); // 2026-10-16: Maps 6/21, or the fight's own cardRank
       // Map 0's opening fights (2026-10-15, user: "0-1 will give a single card reward. The swap is for that. 0-2 will give a faction
       // pack"): on their first clear, 0-1 (node.firstOneCard) gives exactly one card and 0-2 (node.firstFactionPack) exactly one
       // faction pack; no extra drops, teaching cards or track cards ride along.
@@ -63938,6 +63971,11 @@ const RANK_LESSONS = {
   SSS:{t:TX('results.rank-sss'), d:TX('results.not-one-point-of-damage-and'), cheer:true},
 };
 function rankLessonHTML(m){
+  // 2026-10-16 (user: "Remove this. not needed at all since rank is already shown. We can explain rank in the wiki in the future."):
+  // the "🎉 Rank A! Well fought. Keep 90% of your castle…" box (and its E/S/SS/SSS siblings) is gone from the results; the rank hex
+  // beside First Clear says it. RANK_LESSONS is kept for a future wiki page.
+  return '';
+  // eslint-disable-next-line no-unreachable
   if(!m || m.mode !== 'conquest' || !m.conquestRankEarned || m.adminTest) return '';
   if(m._rankLesson === undefined){
     m._rankLesson = null;

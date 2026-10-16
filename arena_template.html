@@ -9653,6 +9653,15 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
    beside the Lock"; the card didn't fit its locked deck): the reward box is as wide as what's in it, the locked slab is
    shorter with the rank right beside the lock, and the panel is allowed to be taller. */
 .conquest-node-panel .cnp-rw{display:inline-grid; grid-template-columns:repeat(var(--rw-cols, 2), auto); justify-content:center; justify-items:center; align-items:center; width:auto; flex:0 0 auto;} /* 2026-10-16: one column per block (an empty 2nd column left a gap on the right) */
+/* 2026-10-16 (results and rewards): a card reward that needs a rank wears its emblem on its corner; a pack shows bare, its name and
+   "Faction rewards!" in a small hover card. */
+.cnp-rw .cnp-rw-card .rank-hex.cnp-rw-rank{position:absolute !important; top:-7px !important; right:-7px !important; left:auto !important; width:24px; height:27px; rotate:-8deg; margin:0 !important; z-index:3; pointer-events:none; transform:none !important;}
+.cnp-rw .cnp-rw-card .rank-hex.cnp-rw-rank b{font-size:14px !important;}
+.cnp-rw .cnp-rw-card.cnp-rw-pack.is-bare{width:auto; padding:2px; background:none; box-shadow:none; gap:0;}
+.cnp-rw .cnp-rw-pack.is-bare .booster{--bw:40px;}
+.cnp-rw-pack.is-bare:hover, .cnp-rw-pack.is-bare:focus-visible{outline:2px solid #ffd98a; outline-offset:2px; border-radius:6px;}
+.cnp-rw-zoom.cnp-rw-tip{width:auto; max-width:220px; padding:8px 12px; border-radius:10px; background:#2a2216; color:#fff3dc; border:1px solid rgba(255,214,120,.55); font-family:'Baloo 2',system-ui,sans-serif; display:flex; flex-direction:column; align-items:center; gap:1px; text-align:center;}
+.cnp-rw-zoom.cnp-rw-tip b{font-size:14px;} .cnp-rw-zoom.cnp-rw-tip small{font-size:12px; color:#ffd98a; font-weight:800;}
 /* 2026-10-16 (user: "The First clear label, if its larger than 80% of the rewards div, then just replaced it with a tick ONLY") */
 .cnp-rw.label-tick .cnp-rw-label .cnp-rw-word{display:none;}
 .cnp-rw.label-tick .cnp-rw-label .cnp-rw-ok{margin-left:0;}

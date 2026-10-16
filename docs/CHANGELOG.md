@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (results and rewards)
+- **No rank lesson box:** the results no longer show "🎉 Rank A! Well fought. Keep 90% of your castle…" (or its E/S/SS/SSS versions); the rank hex already says it.
+- **Packs in First Clear:** the skirmish preview shows just the pack, no name. Hovering or focusing it opens a small card with its name and "Faction rewards!" (a free pack says how many cards).
+- **Rank-locked card rewards:** a card reward that needs a rank wears that rank's small hex emblem on its corner instead of a separate "B+" pill; a card that only needs the first clear shows nothing extra.
+- **Card reward ranks:** none needed on Maps 0–5, B from Map 6, A from Map 21 (was B from 5, A from 15, S from 30). S only when a fight sets it itself (`cardRank` on the node).
+- **Enemy deck preview:** open from the start on Maps 0–5 (unless the fight asks for an A or S); from Map 6 it still needs a B clear. A locked deck shows just 🔒, without the rank emblem.
+
 ## 2026-10-16 (fight and rewards UI)
 - **Graveyard preview:** just the cards (the Removal Zone's under a thin 🌫 rule), no titles, counts or close text, in a speech bubble whose tail points at the pile.
 - **Battle log:** plays and attacks are the headline lines; every other line (status damage, effects, draws, readies) sits one step in. Penance and Blood Tithe now have log lines, a castle's own hit reads "Your castle hit …", and an event with no sentence that still hurt something says so.
