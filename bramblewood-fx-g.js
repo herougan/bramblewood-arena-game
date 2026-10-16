@@ -95,12 +95,18 @@ const THEMES = {
   volcano: {label:'Volcano',  ink:'#fff0dc', glow:'#ff8a3a', a:'#7a2a16', b:'#3a120a', trim:'#ffb35a', ink2:'#1e0804', p:'embers',   grand:['heatHaze', 'silhouettes'],   sil:'volcano',  style:'banner'},
   forge:   {label:'Forge',    ink:'#fff0dc', glow:'#ffb04a', a:'#5a4a40', b:'#2a201a', trim:'#ffc56a', ink2:'#140e0a', p:'sparks',   grand:['glowPulse', 'silhouettes'],  sil:'chimneys', style:'banner'},
   night:   {label:'Starlit',  ink:'#f2f0ff', glow:'#b8c8ff', a:'#2c2f6a', b:'#12143a', trim:'#e6dcff', ink2:'#080a20', p:'stars',    grand:['aurora', 'shootingStar'],    sil:'peaks',    style:'banner', veil:'rgba(8,12,40,.55)'},
+  // 2026-10-16 (user: "Ah the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make the background a
+  // little darker and castle-dungeony. with dripping swamp shit"): the daily dungeons' theme. The Ice Hollow ribbon banner in its 'dungeon'
+  // variant (TITLE_VARIANTS below): a darker veil, a dungeon wall behind, a stone ribbon with moss trim, and swamp slime dripping
+  // from the top of the screen and down over the ribbon. Any dungeon can take it (THEME_OF, or {theme:'dungeon'} / {variant:'dungeon'}).
+  dungeon: {label:'Dungeon',  ink:'#e8f4d2', glow:'#a8f25a', a:'#454a43', b:'#171a17', trim:'#86b93e', ink2:'#090c07', p:'slime',    grand:['silhouettes', 'bats'],       sil:'stalactites', style:'banner', variant:'dungeon', veil:'rgba(3,7,4,.66)'},
 };
 // Map → theme (a presentation choice, not game state). Anything missing falls back to its biome.
 const THEME_OF = {m1:'forest', mtut:'meadow', mf:'forest', mq:'meadow', mb:'beach', mp:'water', mg:'cave', mc:'alpine', m2:'water', mw:'swamp',
   m8:'mist', ms:'mist', mu:'fungal', mz:'fungal', m4:'cave', mn:'crystal', mk:'water', m7:'reef', mj:'reef', m10:'alpine', mv:'alpine', mh:'meadow',
   mr:'forest', m5:'savanna', my:'forest', ml:'meadow', mt:'tundra', m6:'tundra', mi:'tundra', md:'desert', m3:'volcano', m11:'volcano', m9:'forge',
-  me:'volcano', mx:'volcano', m21:'night', mo:'forest', mm:'swamp'};
+  me:'volcano', mx:'volcano', m21:'night', mo:'forest',
+  mm:'dungeon'}; // Murgle Mayhem, the first daily dungeon (2026-10-16, was 'swamp')
 const BIOME_THEME = {forest:'forest', meadow:'meadow', beach:'beach', water:'water', reef:'reef', swamp:'swamp', cave:'cave', alpine:'alpine',
   tundra:'tundra', savanna:'savanna', ash:'volcano', forge:'forge'};
 function themeOf(o){ o = o || {}; const k = o.theme || THEME_OF[o.id] || BIOME_THEME[o.biome] || 'forest'; return THEMES[k] ? k : 'forest'; }
@@ -204,6 +210,18 @@ const PARTICLES = {
     stream(L, n, ms, ()=>{ const d = part(L, 'width:2px; height:9px; border-radius:2px; background:linear-gradient(#fff6c0, #ff9a2a); box-shadow:0 0 6px #ffb04a;');
       const x = rnd(.1, .9)*L.W, vx = rnd(-120, 120), vy = rnd(-320, -200), o = {t:0};
       g.set(d, {x, y:L.H}); g.to(o, {t:1.4, duration:1.4, ease:'none', onUpdate:()=>{ const t = o.t; g.set(d, {x:x + vx*t, y:L.H + vy*t + 260*t*t, rotation:Math.atan2(vy + 520*t, vx)*57.3 + 90, opacity:1 - t/1.4}); }, onComplete:()=> d.remove()}); }); },
+  // swamp slime (2026-10-16, the dungeon theme): fat green drops let go of the ceiling, stretch as they fall and splat
+  slime(L, n, ms){ const g = G(), cols = ['#a8f25a', '#7fd03a', '#c6ff7a'];
+    stream(L, Math.round(n*.7), ms, ()=>{ const s = rnd(5, 10), c = pick(cols), d = part(L, `width:${s}px; height:${s*1.25}px; border-radius:50% 50% 50% 50% / 62% 62% 40% 40%; background:radial-gradient(circle at 35% 30%, #efffd0 0 16%, ${c} 40%, #3f7a14); box-shadow:0 0 8px ${hexA(c, .55)};`);
+      const x = rnd(.03, .97)*L.W, yEnd = rnd(.45, .98)*L.H, hang = rnd(.2, .7);
+      g.set(d, {x, y:-s, scaleY:.4, transformOrigin:'50% 0%'});
+      g.to(d, {y:rnd(2, 10), scaleY:1.3, duration:hang, ease:'sine.in'});
+      g.to(d, {y:yEnd, scaleY:1.6, duration:Math.sqrt(yEnd/L.H)*.9 + .2, delay:hang, ease:'power2.in', onComplete:()=>{
+        g.to(d, {scaleX:2.6, scaleY:.25, opacity:0, duration:.35, ease:'power2.out', onComplete:()=> d.remove()}); }}); });
+    // a few bubbles glooping up from below
+    stream(L, Math.round(n*.3), ms, ()=>{ const s = rnd(4, 9), d = part(L, `width:${s}px; height:${s}px; border-radius:50%; border:1.5px solid rgba(190,255,120,.75); background:radial-gradient(circle at 35% 30%, rgba(255,255,255,.7) 0 18%, rgba(150,230,80,.18) 45%, transparent 70%);`);
+      const x = rnd(0, L.W), dur = rnd(2.2, 3.4); g.set(d, {x, y:L.H + 8});
+      g.to(d, {y:L.H*rnd(.55, .8), duration:dur, ease:'sine.out', onComplete:()=> g.to(d, {scale:1.8, opacity:0, duration:.2, onComplete:()=> d.remove()})}); }); },
   stars(L, n, ms){ const g = G();
     stream(L, n, ms*.5, ()=>{ const s = rnd(1.5, 3.5), d = part(L, `width:${s}px; height:${s}px; border-radius:50%; background:#fff; box-shadow:0 0 ${s*2}px #cfd8ff;`);
       g.set(d, {x:rnd(0, L.W), y:rnd(0, .7)*L.H, opacity:0}); g.to(d, {opacity:1, duration:.6}); g.to(d, {opacity:.25, duration:rnd(.4, .9), repeat:5, yoyo:true, delay:.6, onComplete:()=> g.to(d, {opacity:0, duration:.5, onComplete:()=> d.remove()})}); }); },
@@ -373,6 +391,75 @@ css('titles', `
 .fxg-tc-sub{font:700 max(11px, calc(var(--fs)*.28))/1.2 'Baloo 2', system-ui, sans-serif; letter-spacing:.42em; text-transform:uppercase; color:var(--trim); text-shadow:0 2px 6px rgba(0,0,0,.9); white-space:nowrap;}
 .fxg-tc-ico{font-size:calc(var(--fs)*.6); margin-bottom:calc(var(--fs)*.1); filter:drop-shadow(0 0 10px var(--glow));}
 `);
+// ---- Title variants (2026-10-16): a named dressing laid over a title style (only the ribbon banner has one so far). A theme names
+// its variant (THEMES[k].variant) or a caller passes {variant}; TITLE_VARIANTS[v](L, T, o, box, tl, fs) decorates the banner the
+// style built and adds its own tweens to the same timeline, so the variant comes and goes with the title.
+// 'dungeon' (2026-10-16, user: "...the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make
+// the background a little darker and castle-dungeony. with dripping swamp shit"): the daily dungeons' banner.
+const DG_STONE = (w, h)=>{ // a running-bond stone wall as an SVG data URI (w x h blocks, two courses per tile)
+  const shades = ['#4c514a', '#454a42', '#525850', '#40443d', '#4a4e45', '#565b52'], m = 2, hw = w/2;
+  const r = (x, y, ww, i)=> `<rect x='${x + m/2}' y='${y + m/2}' width='${ww - m}' height='${h - m}' rx='1.5' fill='${shades[i % shades.length]}'/>`
+    + `<rect x='${x + m/2}' y='${y + m/2}' width='${ww - m}' height='2' fill='rgba(255,255,255,.08)'/>`;
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${w*2}' height='${h*2}'><rect width='${w*2}' height='${h*2}' fill='#141613'/>`
+    + r(0, 0, w, 0) + r(w, 0, w, 2) + r(-hw, h, w, 3) + r(hw, h, w, 1) + r(w + hw, h, w, 4) + `</svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}")`; };
+// A slime curtain: a gooey band along the top with drips hanging off it (each drip its own <g> so it can grow).
+function slimeSVG(w, h, n, opts){ opts = opts || {};
+  const id = 'fxgSl' + Math.floor(rnd(1, 1e9)), band = h*(opts.band || .26), seg = Math.max(3, Math.round(w/38));
+  let d = `M0 0 H${w.toFixed(1)} V${(band*rnd(.7, 1)).toFixed(1)}`;
+  for(let i = seg - 1; i >= 0; i--){ const x = w*i/seg, cx = w*(i + .5)/seg; d += ` Q${cx.toFixed(1)} ${(band*rnd(.8, 1.45)).toFixed(1)} ${x.toFixed(1)} ${(band*rnd(.75, 1.1)).toFixed(1)}`; }
+  d += ' Z';
+  const drips = [];
+  for(let i = 0; i < n; i++){ const x = w*(i + rnd(.15, .85))/n, dw = rnd(3, 7)*(opts.scale || 1), len = band + rnd(.25, 1)*(h - band - dw*1.6);
+    drips.push(`<g class="fxg-drip" style="transform-origin:${x.toFixed(1)}px 0px"><path d="M${(x - dw/2).toFixed(1)} 0 V${(len - dw).toFixed(1)} Q${x.toFixed(1)} ${(len + dw*.7).toFixed(1)} ${(x + dw/2).toFixed(1)} ${(len - dw).toFixed(1)} V0 Z" fill="url(#${id})"/>`
+      + `<ellipse cx="${x.toFixed(1)}" cy="${(len - dw*.35).toFixed(1)}" rx="${(dw*.78).toFixed(1)}" ry="${(dw*.95).toFixed(1)}" fill="url(#${id})"/>`
+      + `<ellipse cx="${(x - dw*.25).toFixed(1)}" cy="${(len - dw*.75).toFixed(1)}" rx="${(dw*.18).toFixed(1)}" ry="${(dw*.3).toFixed(1)}" fill="#f2ffd8" opacity=".75"/></g>`); }
+  return {html:`<svg viewBox="0 0 ${w.toFixed(1)} ${h.toFixed(1)}" width="${w.toFixed(1)}" height="${h.toFixed(1)}" style="display:block; overflow:visible"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1">`
+    + `<stop offset="0" stop-color="#3f7a14"/><stop offset=".35" stop-color="#78c832"/><stop offset=".8" stop-color="#a8ee58"/><stop offset="1" stop-color="#c8ff86"/></linearGradient></defs>`
+    + `<path d="${d}" fill="url(#${id})"/><path d="${d}" fill="none" stroke="#e6ffbf" stroke-opacity=".35" stroke-width="1.5" transform="translate(0 -2)"/>${drips.join('')}</svg>`, band}; }
+css('title-variants', `
+.fxg-dg-wall{position:absolute; inset:0; opacity:.46; background-size:auto; image-rendering:pixelated;
+  -webkit-mask:radial-gradient(ellipse 70% 62% at 50% 40%, #000 30%, rgba(0,0,0,.35) 70%, transparent 100%); mask:radial-gradient(ellipse 70% 62% at 50% 40%, #000 30%, rgba(0,0,0,.35) 70%, transparent 100%);}
+.fxg-dg-vig{position:absolute; inset:0; background:radial-gradient(ellipse at 50% 38%, transparent 30%, rgba(2,4,2,.78) 100%);}
+.fxg-dg-curtain{position:absolute; left:-2%; right:-2%; top:0; z-index:2; filter:drop-shadow(0 3px 2px rgba(0,0,0,.55));}
+.fxg-tv-dungeon .fxg-tb-rib{background:linear-gradient(180deg, rgba(255,255,255,.1), rgba(0,0,0,.35)), var(--stone) !important; background-size:auto, auto !important;}
+.fxg-tv-dungeon .fxg-tb-tail{background:linear-gradient(180deg, rgba(0,0,0,.25), rgba(0,0,0,.55)), var(--stone); filter:none;}
+.fxg-tv-dungeon .fxg-tb-medal{z-index:5; background:radial-gradient(circle at 35% 30%, #d6ddcc, #74806a 50%, #22261f); box-shadow:0 0 0 3px #171a17, 0 0 0 5px var(--trim), 0 0 22px rgba(160,255,80,.4), 0 8px 16px rgba(0,0,0,.6);}
+.fxg-tv-dungeon .fxg-tb-name{text-shadow:0 2px 0 rgba(0,0,0,.7), 0 0 16px var(--glow), 0 0 3px rgba(0,0,0,.9);}
+.fxg-dg-ribslime{position:absolute; left:-6px; right:-6px; top:-5px; z-index:4; pointer-events:none; filter:drop-shadow(0 2px 1.5px rgba(0,0,0,.5));}
+.fxg-dg-drop{position:absolute; left:0; top:0; z-index:4; border-radius:50% 50% 50% 50% / 62% 62% 40% 40%; background:radial-gradient(circle at 35% 30%, #efffd0 0 18%, #8fe040 45%, #3f7a14);}
+`);
+const TITLE_VARIANTS = {
+  dungeon(L, T, o, box, tl, fs){ const g = G(), q = s=> box.querySelector(s), out = (o.hold || 2.2) + 1.1;
+    const tt = q('.fxg-tt'); if(!tt) return; tt.classList.add('fxg-tv-dungeon'); tt.style.setProperty('--stone', DG_STONE(Math.round(fs*.9), Math.round(fs*.42)));
+    // the dungeon wall and a heavy vignette behind everything (the theme's veil already darkened the map)
+    const wall = document.createElement('div'); wall.className = 'fxg-dg-wall'; wall.style.backgroundImage = DG_STONE(64, 30);
+    const vig = document.createElement('div'); vig.className = 'fxg-dg-vig';
+    // just above the veil, under the particles, the stalactites and the bats
+    const veil = L.querySelector(':scope > .fxg-veil'), at = veil ? veil.nextSibling : L.firstChild;
+    L.insertBefore(wall, at); L.insertBefore(vig, at);
+    // slime oozing from the top of the screen
+    const cH = Math.min(L.H*.34, 190), cur = slimeSVG(L.W*1.04, cH, Math.round(L.W/42), {band:.2, scale:1.3});
+    const curtain = document.createElement('div'); curtain.className = 'fxg-dg-curtain'; curtain.innerHTML = cur.html; box.appendChild(curtain);
+    tl.from([wall, vig], {opacity:0, duration:.8}, 0)
+      .from(curtain, {y:-cur.band*1.4, duration:.7, ease:'power2.out'}, 0);
+    curtain.querySelectorAll('.fxg-drip').forEach(dr=> tl.from(dr, {scaleY:0, transformOrigin:'50% 0%', duration:rnd(1.4, 2.6), ease:'power1.in'}, .15 + rnd(0, .6)));
+    // and over the ribbon: a gooey lip on its top edge, drips running down its face, a few drops letting go
+    const rib = q('.fxg-tb-rib'), wrap = q('.fxg-tb-ribwrap');
+    if(rib && wrap){ const rw = rib.offsetWidth || fs*8, rh = rib.offsetHeight || fs*1.4, sl = slimeSVG(rw + 12, rh*.92, Math.max(5, Math.round(rw/(fs*.55))), {band:.2, scale:fs/40});
+      const lip = document.createElement('div'); lip.className = 'fxg-dg-ribslime'; lip.innerHTML = sl.html; wrap.appendChild(lip);
+      tl.fromTo(lip, {clipPath:'inset(-10% 50% -10% 50%)'}, {clipPath:'inset(-10% -2% -10% -2%)', duration:.55, ease:'power2.out'}, .7);
+      lip.querySelectorAll('.fxg-drip').forEach(dr=> tl.from(dr, {scaleY:0, transformOrigin:'50% 0%', duration:rnd(1.2, 2.2), ease:'sine.in'}, .95 + rnd(0, .5)));
+      // drops: from the tips of three drips, falling past the ribbon to the floor
+      const tips = [...lip.querySelectorAll('.fxg-drip ellipse:nth-of-type(1)')].sort(()=> Math.random() - .5).slice(0, 3);
+      tips.forEach((e, i)=>{ const at = 2.1 + i*.45; tl.call(()=>{ if(!L.isConnected) return; const r = e.getBoundingClientRect(), Lr = L.getBoundingClientRect(), sc = Lr.width ? L.W/Lr.width : 1;
+        const s = Math.max(5, fs*.16), d = part(L, `width:${s}px; height:${s*1.3}px;`); d.className += ' fxg-dg-drop';
+        const x = (r.left + r.width/2 - Lr.left)*sc - s/2, y = (r.top + r.height/2 - Lr.top)*sc;
+        g.set(d, {x, y, scaleY:.6, transformOrigin:'50% 0%'});
+        g.to(d, {y:L.H*rnd(.78, .95), scaleY:1.5, duration:.7, ease:'power2.in', onComplete:()=> g.to(d, {scaleX:2.4, scaleY:.3, opacity:0, duration:.3, onComplete:()=> d.remove()})}); }, null, at); }); }
+    tl.to([wall, vig, curtain], {opacity:0, duration:.6}, out); },
+};
+M.TITLE_VARIANTS = TITLE_VARIANTS;
 const chars = s=> [...String(s)].map(c=> `<span class="fxg-ch">${esc(c)}</span>`).join('');
 const vars = (T, fs)=> `--fs:${fs.toFixed(1)}px; --ink:${T.ink}; --glow:${T.glow}; --a:${T.a}; --b:${T.b}; --trim:${T.trim}; --ink2:${T.ink2};`;
 function fsFor(L, name, perChar, cap){ const len = Math.max(6, [...String(name)].length); return Math.max(16, Math.min(cap || 62, L.W*.075, L.W*.8/(len*perChar))); }
@@ -390,6 +477,7 @@ const TITLES = {
       .fromTo(q('.fxg-tb-shine i'), {xPercent:0}, {xPercent:620, duration:.9, ease:'power2.inOut'}, 1.05);
     if(q('.fxg-sub')) tl.from(q('.fxg-sub'), {opacity:0, y:8, letterSpacing:'.8em', duration:.7, ease:'power2.out'}, .9);
     tl.to(q('.fxg-tt'), {y:-16, opacity:0, duration:.6, ease:'power2.in'}, (o.hold || 2.2) + 1.1).to(q('.fxg-scrim'), {opacity:0, duration:.6}, '<');
+    if(o.variant && TITLE_VARIANTS[o.variant]) call(()=> TITLE_VARIANTS[o.variant](L, T, o, box, tl, fs)); // e.g. 'dungeon' (2026-10-16)
     return {tl, box}; },
   ink(L, T, o){ const g = G(), fs = fsFor(L, o.name, .5, 54), box = part(L, 'left:0; top:0; width:100%; height:100%;');
     const ink = T.ink2, main = 'M26 96 C 120 58, 240 66, 320 80 S 500 104, 578 70';
@@ -430,6 +518,7 @@ const TITLES = {
 M.TITLE_STYLES = Object.keys(TITLES);
 // The title sequence: particles + the theme's flourish + the title card, about 4 s, then everything fades and is removed.
 // opts: name, sub, icon, id / biome / theme, style ('banner' | 'ink' | 'cinema'), lite (fewer particles), grand (false: none), delay (ms)
+//       variant ('dungeon' …, TITLE_VARIANTS; defaults to the theme's own, null for none) (2026-10-16)
 M.mapTitle = function(host, opts){ opts = opts || {}; const g = G(); if(!g) return Promise.resolve();
   const k = themeOf(opts), T = THEMES[k], style = TITLES[opts.style] ? opts.style : T.style;
   const go = ()=>{ // the game may have re-rendered the map meanwhile: follow the element by its id
@@ -437,10 +526,10 @@ M.mapTitle = function(host, opts){ opts = opts || {}; const g = G(); if(!g) retu
     if(host && host !== document.body && !host.isConnected) return Promise.resolve();
     const L = stage(host, 'fxg-title-stage fxg-theme-' + k, opts.z != null ? opts.z : 60);
     // night falls over the map for a night theme, so the stars and aurora read on light map art
-    if(T.veil){ const v = part(L, `left:0; top:0; width:100%; height:100%; background:${T.veil};`); g.fromTo(v, {opacity:0}, {opacity:1, duration:.8}); }
+    if(T.veil){ const v = part(L, `left:0; top:0; width:100%; height:100%; background:${T.veil};`); v.classList.add('fxg-veil'); g.fromTo(v, {opacity:0}, {opacity:1, duration:.8}); }
     (PARTICLES[T.p] || PARTICLES.leaves)(L, opts.lite ? 14 : 28, 2800);
     if(opts.grand !== false) (opts.extra || []).concat(T.grand).forEach(n=> GRAND[n] && call(()=> GRAND[n](L, T, {ms:4400, lite:!!opts.lite, delay:n === 'dragonShadow' ? 1200 : 0})));
-    const {tl} = TITLES[style](L, T, Object.assign({name:'Bramblewood'}, opts));
+    const {tl} = TITLES[style](L, T, Object.assign({name:'Bramblewood'}, opts, {variant: opts.variant !== undefined ? opts.variant : T.variant}));
     // a tap anywhere on the host hurries it along (the layer itself never takes the pointer)
     const hurry = ()=> tl.timeScale(3); try{ host && host.addEventListener && host.addEventListener('pointerdown', hurry, {once:true}); }catch(e){}
     return new Promise(res=>{ tl.eventCallback('onComplete', ()=>{ g.to(L, {opacity:0, duration:.6, onComplete:()=>{ try{ host.removeEventListener('pointerdown', hurry); }catch(e){} done(L); opts.onDone && call(opts.onDone); res(); }}); }); }); };
