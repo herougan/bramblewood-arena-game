@@ -3126,10 +3126,6 @@
     "attack": 11,
     "health": 52,
     "effects": {
-      "onReadyDamage": {
-        "amount": 6,
-        "dmgType": "physical"
-      },
       "bounty": 1,
       "overwhelm": true
     },
@@ -7608,7 +7604,7 @@
     "attack": 4,
     "health": 6,
     "effects": {
-      "stunOnHit": 30,
+      "stunOnHit": 1,
       "flying": true
     },
     "dmgType": "heat",
@@ -10409,7 +10405,7 @@
     "attack": 3,
     "health": 8,
     "effects": {
-      "stunOnHit": 100
+      "stunOnHit": 1
     },
     "flavor": "Carries only Stun -- chance per landed attack to Stun the target -- and nothing else, for testing this one mechanic in isolation. Not for balance.",
     "locked": true,
@@ -11162,7 +11158,7 @@
     "effects": {
       "flying": true,
       "bounty": 1,
-      "stunOnHit": 50,
+      "stunOnHit": 1,
       "fireArrow": 4,
       "supreme": true
     },
@@ -19860,6 +19856,3443 @@
       "Sheep"
     ],
     "creatorNote": "2026-10-16: \"Add a sheep card (basic) - it has taunt.\" Art to come; not placed on any map.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "jay-pilferer",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Jay Pilferer",
+    "tags": [],
+    "test": false,
+    "uuid": "0809fd9b-73b2-537a-9494-2cf7b38193fc",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "It never steals much. It just never stops.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "swipe": 1
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 918,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Swipe, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 4).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "border-collie",
+    "cost": 1,
+    "icon": "\ud83d\udc15",
+    "name": "Border Collie",
+    "tags": [],
+    "test": false,
+    "uuid": "fed0c249-9b07-5284-9e5c-6f881c260129",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "One whistle and the whole field closes ranks, whether it meant to or not.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "converge": "enemy"
+    },
+    "species": [
+      "Canid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 919,
+    "stoneCost": 0,
+    "archetypes": [
+      "Dog",
+      "Village"
+    ],
+    "creatorNote": "2026-10-16: one card for Converge, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 6).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "mongoose-duelist",
+    "cost": 2,
+    "icon": "\ud83e\udda6",
+    "name": "Mongoose Duelist",
+    "tags": [],
+    "test": false,
+    "uuid": "4721754b-5cc7-57d1-a02b-758550c4102c",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "Every snake in the line makes it grin wider.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "defiance": [
+        "Snake"
+      ],
+      "defianceN": 1
+    },
+    "species": [
+      "Herpestid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 920,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mammal",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-16: one card for Defiance, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 12).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "dhole-runner",
+    "cost": 1,
+    "icon": "\ud83d\udc15",
+    "name": "Dhole Runner",
+    "tags": [],
+    "test": false,
+    "uuid": "b6f35a21-ee60-5b69-9fe9-39e99b9b62ae",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Alone it is a red dog. Three abreast, it is a red tide.",
+    "health": 6,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "pack": 2
+    },
+    "species": [
+      "Canid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 921,
+    "stoneCost": 0,
+    "archetypes": [
+      "Wolf",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Pack, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 9).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "dhole-matriarch",
+    "cost": 2,
+    "icon": "\ud83d\udc3a",
+    "name": "Dhole Matriarch",
+    "tags": [],
+    "test": false,
+    "uuid": "b681b984-e070-5068-b098-cb9ed7f733fd",
+    "wait": 2,
+    "attack": 5,
+    "flavor": "She whistles, and the pack spreads out like fingers of a hand.",
+    "health": 7,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "packLeader": true
+    },
+    "species": [
+      "Canid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 922,
+    "stoneCost": 0,
+    "archetypes": [
+      "Wolf",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Pack Leader, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 11).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "nightjar-drifter",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Nightjar Drifter",
+    "tags": [],
+    "test": false,
+    "uuid": "6037525b-a5c0-543a-9ab5-1986756b72c0",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "It wakes when the light turns amber and sings until it turns grey.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "crepuscular": 1,
+      "crepuscularHp": 1
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 923,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Field"
+    ],
+    "creatorNote": "2026-10-16: one card for Crepuscular, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 7).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "aye-aye-prowler",
+    "cost": 0,
+    "icon": "\ud83d\udc12",
+    "name": "Aye-aye Prowler",
+    "tags": [],
+    "test": false,
+    "uuid": "c61ae65c-b029-50e3-b894-6776f0ccc071",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "Daylight is a rumour it has chosen not to believe.",
+    "health": 6,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "sunshy": true
+    },
+    "species": [
+      "Primate"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 924,
+    "stoneCost": 0,
+    "archetypes": [
+      "Ape",
+      "Rainforest"
+    ],
+    "creatorNote": "2026-10-16: one card for Sun-shy, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 14).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "hoopoe-herald",
+    "cost": 0,
+    "icon": "\ud83d\udc26",
+    "name": "Hoopoe Herald",
+    "tags": [],
+    "test": false,
+    "uuid": "a44001db-cbe3-5075-b3e8-ea9d3c95f9c1",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "A crown of feathers, a voice like a bell, and no idea where the moon went.",
+    "health": 6,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "nightblind": true
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 925,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-16: one card for Night-blind, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 12).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "sunbittern-strider",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Sunbittern Strider",
+    "tags": [],
+    "test": false,
+    "uuid": "f8c035ee-a525-5697-8c17-b77b231cfb3b",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "In the sun its wings flash an eye on each side. Nobody aims well at an eye.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "diurnalGrant": {
+        "evasive": true,
+        "thorns": 1
+      },
+      "diurnal": true
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 926,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "River"
+    ],
+    "creatorNote": "2026-10-16: one card for Diurnal, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 8).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "kinkajou-lurker",
+    "cost": 1,
+    "icon": "\ud83d\udc12",
+    "name": "Kinkajou Lurker",
+    "tags": [],
+    "test": false,
+    "uuid": "e79d4ab3-9540-5d28-99f1-d4742cb8977f",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Honey bear by name, shadow by habit.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "nocturnalGrant": {
+        "evasive": true,
+        "regen": 2
+      },
+      "nocturnal": true
+    },
+    "species": [
+      "Procyonid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 927,
+    "stoneCost": 0,
+    "archetypes": [
+      "Raccoon",
+      "Rainforest"
+    ],
+    "creatorNote": "2026-10-16: one card for Nocturnal, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 14).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "mudflat-godwit",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Mudflat Godwit",
+    "tags": [],
+    "test": false,
+    "uuid": "931e9893-ed94-59d1-b827-b105ab5fe7cc",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It follows the waterline like a tailor follows a hem.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "tideGrant": {
+        "flood": {
+          "attack": 2,
+          "health": 2,
+          "evasive": true
+        },
+        "ebb": {
+          "armor": 2
+        }
+      },
+      "tide": true
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 928,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Coastal"
+    ],
+    "creatorNote": "2026-10-16: one card for Tide, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 9).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "moon-jerboa",
+    "cost": 1,
+    "icon": "\ud83d\udc2d",
+    "name": "Moon Jerboa",
+    "tags": [],
+    "test": false,
+    "uuid": "d3b88f5c-e88a-56b1-9649-e788ac90a485",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "On the full moon it hops higher than the dunes, and lands a little bigger.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "fullMoon": 3
+    },
+    "species": [
+      "Rodent"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 929,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mouse",
+      "Desert"
+    ],
+    "creatorNote": "2026-10-16: one card for Full Moon, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 10).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "werebadger",
+    "cost": 2,
+    "icon": "\ud83e\udda1",
+    "name": "Werebadger",
+    "tags": [],
+    "test": false,
+    "uuid": "541d2351-6aca-598f-b193-94aee623889d",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "Most nights it is a badger. Some nights it is more badger.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "fullMoonGrant": {
+        "regen": 2,
+        "thorns": 2
+      }
+    },
+    "species": [
+      "Mustelid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 930,
+    "stoneCost": 0,
+    "archetypes": [
+      "Badger",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Full Moon, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 24).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "carrion-beetle",
+    "cost": 1,
+    "icon": "\ud83e\udeb2",
+    "name": "Carrion Beetle",
+    "tags": [],
+    "test": false,
+    "uuid": "8b34fec6-dfbc-508e-8537-4e0a2f69156d",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Where it walks, wounds forget how to close.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "festering": true
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 931,
+    "stoneCost": 0,
+    "archetypes": [
+      "Beetle",
+      "Swamp"
+    ],
+    "creatorNote": "2026-10-16: one card for Lingering, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 13).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "marula-elephant",
+    "cost": 2,
+    "icon": "\ud83d\udc18",
+    "name": "Marula Elephant",
+    "tags": [],
+    "test": false,
+    "uuid": "bf35188c-0fcc-53cf-b069-78cff0fa64e3",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "The fruit was off. The elephant was on.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "drunk": true
+    },
+    "species": [
+      "Megafauna"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 932,
+    "stoneCost": 0,
+    "archetypes": [
+      "Elephant",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-16: one card for Drunk, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 12).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "star-nosed-mole",
+    "cost": 0,
+    "icon": "\ud83d\udc00",
+    "name": "Star-nosed Mole",
+    "tags": [],
+    "test": false,
+    "uuid": "dcfba2bc-7376-5b03-9a41-ed65d054451e",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "Twenty-two fingers on its face, and not one of them can see.",
+    "health": 6,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "purblind": true
+    },
+    "species": [
+      "Rodent"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 933,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mole",
+      "River"
+    ],
+    "creatorNote": "2026-10-16: one card for Purblind, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 5).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "pika-hoarder",
+    "cost": 0,
+    "icon": "\ud83d\udc39",
+    "name": "Pika Hoarder",
+    "tags": [],
+    "test": false,
+    "uuid": "9ada05d1-ae24-5ac1-9e41-8650cee626a5",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "It forgot where it left the hay. And the plan. And you.",
+    "health": 7,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "scatterbrained": true
+    },
+    "species": [
+      "Lagomorph"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 934,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mountain",
+      "Rabbit"
+    ],
+    "creatorNote": "2026-10-16: one card for Scatterbrained, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 16).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "tarantula-hawk",
+    "cost": 1,
+    "icon": "\ud83d\udc1d",
+    "name": "Tarantula Hawk",
+    "tags": [],
+    "test": false,
+    "uuid": "c4103c09-59c6-5489-924d-4d3d4f749ce2",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Always awake, always buzzing, always one sting from going off.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "primed": true
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 935,
+    "stoneCost": 0,
+    "archetypes": [
+      "Insect",
+      "Field"
+    ],
+    "creatorNote": "2026-10-16: one card for Primed, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 15).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "swordfish-spearman",
+    "cost": 2,
+    "icon": "\ud83d\udc1f",
+    "name": "Swordfish Spearman",
+    "tags": [],
+    "test": false,
+    "uuid": "11e3a66a-9c9f-5546-9a4d-2a5264d50b86",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "Three points, three targets, one very fast fish.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "trident": true
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 936,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "Ocean"
+    ],
+    "creatorNote": "2026-10-16: one card for Trident, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 18).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "blue-ringed-octopus",
+    "cost": 2,
+    "icon": "\ud83d\udc19",
+    "name": "Blue-ringed Octopus",
+    "tags": [],
+    "test": false,
+    "uuid": "f5b2da5d-8cfa-5018-9614-a4b1e9341909",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "It is the size of a teacup and the temper of a storm.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "octolash": true
+    },
+    "species": [
+      "Mollusc"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 937,
+    "stoneCost": 0,
+    "archetypes": [
+      "Cephalopod",
+      "Coral Reef"
+    ],
+    "creatorNote": "2026-10-16: one card for Octolash, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 21).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "pronghorn-racer",
+    "cost": 1,
+    "icon": "\ud83e\udd8c",
+    "name": "Pronghorn Racer",
+    "tags": [],
+    "test": false,
+    "uuid": "88e5d997-85a1-5924-bd80-b177207da6fd",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "It outran a cheetah that went extinct. It still runs as if it might come back.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "speed": 2
+    },
+    "species": [
+      "Cervid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 938,
+    "stoneCost": 0,
+    "archetypes": [
+      "Deer",
+      "Field"
+    ],
+    "creatorNote": "2026-10-16: one card for Speed, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 6).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "roadrunner-courier",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Roadrunner Courier",
+    "tags": [],
+    "test": false,
+    "uuid": "6b31941f-4050-59cb-93b0-0ffad4e503c3",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "Beep beep, and it is already gone.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "haste": true
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 939,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Desert"
+    ],
+    "creatorNote": "2026-10-16: one card for Haste, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 12).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "box-turtle",
+    "cost": 0,
+    "icon": "\ud83d\udc22",
+    "name": "Box Turtle",
+    "tags": [],
+    "test": false,
+    "uuid": "b7e82ee1-9cbc-58a0-b007-61dfa5d9d177",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "Knock all you like. Nobody is home.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "cower": "shell"
+    },
+    "species": [
+      "Reptile"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 940,
+    "stoneCost": 0,
+    "archetypes": [
+      "Turtle",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Cower, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 3).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "glasswing-butterfly",
+    "cost": 1,
+    "icon": "\ud83e\udd8b",
+    "name": "Glasswing Butterfly",
+    "tags": [],
+    "test": false,
+    "uuid": "ff1f94eb-6696-5e2e-aa4f-ecdb42e588cb",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "You see straight through it, and so do most swords.",
+    "health": 7,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "ghost": true
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 941,
+    "stoneCost": 0,
+    "archetypes": [
+      "Insect",
+      "Rainforest"
+    ],
+    "creatorNote": "2026-10-16: one card for Ghost, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 20).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "velvet-worm",
+    "cost": 1,
+    "icon": "\ud83e\udeb1",
+    "name": "Velvet Worm",
+    "tags": [],
+    "test": false,
+    "uuid": "cdde03a9-e6bb-5e62-8d52-c8d634fd4f15",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It sprays glue when it hunts, and something worse when it is hurt.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "ichor": 2
+    },
+    "species": [
+      "Annelid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 942,
+    "stoneCost": 0,
+    "archetypes": [
+      "Worm",
+      "Rainforest"
+    ],
+    "creatorNote": "2026-10-16: one card for Ichor, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 17).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "glowing-gecko",
+    "cost": 1,
+    "icon": "\ud83e\udd8e",
+    "name": "Glowing Gecko",
+    "tags": [],
+    "test": false,
+    "uuid": "2d538738-ee0c-50ec-a2b4-7cb5b01afa86",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It lives near the old mine and does not need a lantern.",
+    "health": 9,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "irradiated": 2
+    },
+    "species": [
+      "Reptile"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 943,
+    "stoneCost": 0,
+    "archetypes": [
+      "Reptile",
+      "Desert"
+    ],
+    "creatorNote": "2026-10-16: one card for Irradiated, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 33).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "gloom-gibbon",
+    "cost": 2,
+    "icon": "\ud83d\udc12",
+    "name": "Gloom Gibbon",
+    "tags": [],
+    "test": false,
+    "uuid": "efb189e1-403a-5d23-b5e9-e5d29ddf3c37",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "At dusk it is a voice in the canopy. At night it is barely a voice.",
+    "health": 8,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "shade": true
+    },
+    "species": [
+      "Primate"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 944,
+    "stoneCost": 0,
+    "archetypes": [
+      "Ape",
+      "Shadow"
+    ],
+    "creatorNote": "2026-10-16: one card for Shade, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 26).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "margay",
+    "cost": 2,
+    "icon": "\ud83d\udc08\u200d\u2b1b",
+    "name": "Margay",
+    "tags": [],
+    "test": false,
+    "uuid": "4856d221-b9bd-5499-987e-87cf25ef80c4",
+    "wait": 2,
+    "attack": 3,
+    "flavor": "Two eyes in the dark, and then not even those.",
+    "health": 8,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "shadow": true
+    },
+    "species": [
+      "Felid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 945,
+    "stoneCost": 0,
+    "archetypes": [
+      "Cat",
+      "Shadow"
+    ],
+    "creatorNote": "2026-10-16: one card for Shadow, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 22).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "seed-cache-squirrel",
+    "cost": 1,
+    "icon": "\ud83d\udc3f\ufe0f",
+    "name": "Seed-cache Squirrel",
+    "tags": [],
+    "test": false,
+    "uuid": "c1d347d5-da69-5f4d-8085-9dc9f7156d3f",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "Every acorn it forgets becomes somebody else's problem. Or ally.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "sprout": 1
+    },
+    "species": [
+      "Rodent"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 946,
+    "stoneCost": 0,
+    "archetypes": [
+      "Chipmunk",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Sprout, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 2).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "leafcutter-gardener",
+    "cost": 0,
+    "icon": "\ud83d\udc1c",
+    "name": "Leafcutter Gardener",
+    "tags": [],
+    "test": false,
+    "uuid": "8da1f50a-09a6-59c3-a7a7-bf40b6c891d4",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "It carries a leaf ten times its size, and a garden in its head.",
+    "health": 6,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "growth": true
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 947,
+    "stoneCost": 0,
+    "archetypes": [
+      "Ants",
+      "Rainforest"
+    ],
+    "creatorNote": "2026-10-16: one card for Growth, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 8).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "lotus-frog",
+    "cost": 1,
+    "icon": "\ud83d\udc38",
+    "name": "Lotus Frog",
+    "tags": [],
+    "test": false,
+    "uuid": "99a93318-7e77-516b-a51a-f908b2551d04",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "When the water rises under the moon, it opens like the flower it sits on.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "bloomWhen": {
+        "when": [
+          "tide",
+          "night"
+        ],
+        "mode": "and",
+        "atk": 2,
+        "hp": 2
+      }
+    },
+    "species": [
+      "Amphibian"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 948,
+    "stoneCost": 0,
+    "archetypes": [
+      "Frog",
+      "Pond"
+    ],
+    "creatorNote": "2026-10-16: one card for Bloom When, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 9).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "planarian-splitter",
+    "cost": 1,
+    "icon": "\ud83e\udeb1",
+    "name": "Planarian Splitter",
+    "tags": [],
+    "test": false,
+    "uuid": "3c8c7e90-4b6e-5166-bbfc-d2115f1653ab",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Cut it in half and you have done it a favour.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "meiosis": 1
+    },
+    "species": [
+      "Annelid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 950,
+    "stoneCost": 0,
+    "archetypes": [
+      "Worm",
+      "Pond"
+    ],
+    "creatorNote": "2026-10-16: one card for Meiosis, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 11).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "hagfish-silencer",
+    "cost": 2,
+    "icon": "\ud83d\udc1f",
+    "name": "Hagfish Silencer",
+    "tags": [],
+    "test": false,
+    "uuid": "b4d4752c-9e43-57de-a5ab-b26c7eb9b9e4",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "What it bites stays bitten. Nothing else happens.",
+    "health": 8,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "nullify": true
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 951,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "Ocean"
+    ],
+    "creatorNote": "2026-10-16: one card for Nullify, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 27).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "electric-ray",
+    "cost": 1,
+    "icon": "\u26a1",
+    "name": "Electric Ray",
+    "tags": [],
+    "test": false,
+    "uuid": "fb92ad94-86b7-53b5-917d-e21e5a81b252",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It hums quietly on the seabed, counting.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "charge": {
+        "n": 2,
+        "do": {
+          "do": "damage",
+          "amount": 3,
+          "who": "enemy",
+          "sub": "random"
+        }
+      }
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 953,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "Ocean"
+    ],
+    "creatorNote": "2026-10-16: one card for Charge, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 18).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "vampire-bat-nurse",
+    "cost": 1,
+    "icon": "\ud83e\udd87",
+    "name": "Vampire Bat Nurse",
+    "tags": [],
+    "test": false,
+    "uuid": "ff3ee8a3-090c-50e6-a68e-05c6c936b854",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Strange how gently it tends the ones that bleed.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "nursing": 2
+    },
+    "species": [
+      "Bat"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 954,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bat",
+      "Cave"
+    ],
+    "creatorNote": "2026-10-16: one card for Nursing, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 13).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "lichen-tortoise",
+    "cost": 2,
+    "icon": "\ud83d\udc22",
+    "name": "Lichen Tortoise",
+    "tags": [],
+    "test": false,
+    "uuid": "7b9997da-57d5-5181-9bb2-e9d9f5afc059",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "Moss on its shell, stone in its bones, and the old wild in its slow heart.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "natureForce": 1
+    },
+    "species": [
+      "Reptile"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 955,
+    "stoneCost": 0,
+    "archetypes": [
+      "Turtle",
+      "Elemental"
+    ],
+    "creatorNote": "2026-10-16: one card for Nature's Force, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 25).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "swift-fox",
+    "cost": 1,
+    "icon": "\ud83e\udd8a",
+    "name": "Swift Fox",
+    "tags": [],
+    "test": false,
+    "uuid": "405b4ee4-ae74-5bf0-85d0-56cf886f3660",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "It was named before anyone saw the other foxes.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "fastForward": 1
+    },
+    "species": [
+      "Canid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 956,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fox",
+      "Field"
+    ],
+    "creatorNote": "2026-10-16: one card for Fast Forward, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 6).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "slow-loris",
+    "cost": 0,
+    "icon": "\ud83d\udc12",
+    "name": "Slow Loris",
+    "tags": [],
+    "test": false,
+    "uuid": "2e265e8b-2aef-599a-aefc-2d5868336488",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "Its eyes are huge, its grip is soft, and its bite is something else.",
+    "health": 6,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "feeble": true
+    },
+    "species": [
+      "Primate"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 958,
+    "stoneCost": 0,
+    "archetypes": [
+      "Ape",
+      "Rainforest"
+    ],
+    "creatorNote": "2026-10-16: one card for Feeble, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 5).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "hercules-beetle",
+    "cost": 2,
+    "icon": "\ud83e\udeb2",
+    "name": "Hercules Beetle",
+    "tags": [],
+    "test": false,
+    "uuid": "dca844a7-bb77-5daf-9922-e1daf38b0a08",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "It lifts a hundred times its weight and assumes you are lighter.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "mighty": true
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 959,
+    "stoneCost": 0,
+    "archetypes": [
+      "Beetle",
+      "Rainforest"
+    ],
+    "creatorNote": "2026-10-16: one card for Mighty, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 20).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "mayfly-dancer",
+    "cost": 0,
+    "icon": "\ud83e\udd9f",
+    "name": "Mayfly Dancer",
+    "tags": [],
+    "test": false,
+    "uuid": "cfdf1bd2-6554-53bb-8b7b-7afd37618009",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "A single day, and it means to make it count.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "fragile": true
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 960,
+    "stoneCost": 0,
+    "archetypes": [
+      "Insect",
+      "River"
+    ],
+    "creatorNote": "2026-10-16: one card for Fragile, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 2).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "pangolin-roller",
+    "cost": 1,
+    "icon": "\ud83e\udd94",
+    "name": "Pangolin Roller",
+    "tags": [],
+    "test": false,
+    "uuid": "f3034ae3-9a46-54fe-a727-52928557f451",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Scales like a pinecone, and as hard to argue with.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "sturdy": true
+    },
+    "species": [
+      "Xenarthran"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 961,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mammal",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-16: one card for Sturdy, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 10).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "sawfish",
+    "cost": 1,
+    "icon": "\ud83d\udc1f",
+    "name": "Sawfish",
+    "tags": [],
+    "test": false,
+    "uuid": "822eafa9-48bf-5492-9ee8-6c6e11688358",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "A saw for a nose, and armour is just more wood.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "puncture": 2
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 962,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "Ocean"
+    ],
+    "creatorNote": "2026-10-16: one card for Puncture, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 16).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "tasmanian-devil",
+    "cost": 1,
+    "icon": "\ud83d\ude08",
+    "name": "Tasmanian Devil",
+    "tags": [],
+    "test": false,
+    "uuid": "2d7b2c70-b42b-59e7-8604-5354fd460d7f",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Lose a friend near it and watch it lose its mind.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "berserk": 2
+    },
+    "species": [
+      "Mammal"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 963,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mammal",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Berserk, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 15).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "mantis-shrimp",
+    "cost": 2,
+    "icon": "\ud83e\udd90",
+    "name": "Mantis Shrimp",
+    "tags": [],
+    "test": false,
+    "uuid": "223b009d-f61a-575b-a1a4-a0bba93db0f4",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It punches so hard the water boils. Sometimes so does its own shell.",
+    "health": 10,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "recoil": 2
+    },
+    "species": [
+      "Crustacean"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 964,
+    "stoneCost": 0,
+    "archetypes": [
+      "Coral Reef",
+      "Insect"
+    ],
+    "creatorNote": "2026-10-16: one card for Recoil, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 21).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "fruit-bat-familiar",
+    "cost": 1,
+    "icon": "\ud83e\udd87",
+    "name": "Fruit-bat Familiar",
+    "tags": [],
+    "test": false,
+    "uuid": "5893bc89-e67d-5778-917b-58a47177a0a7",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Wherever it hangs, the room gets a little darker.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "inherentDarkness": 1
+    },
+    "species": [
+      "Bat"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 965,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bat",
+      "Devil"
+    ],
+    "creatorNote": "2026-10-16: one card for Inherent Darkness, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 18).",
+    "devilryCost": 0,
+    "mechanicLine": "devilry",
+    "splashEffect": "none"
+  },
+  {
+    "id": "hellbender",
+    "cost": 0,
+    "icon": "\ud83e\udd8e",
+    "name": "Hellbender",
+    "tags": [],
+    "test": false,
+    "uuid": "91f8d06b-2527-5fe6-9b91-5a6c2a873cf1",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "Its name does most of the work. The rest is teeth.",
+    "health": 7,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "coreEvil": true
+    },
+    "species": [
+      "Amphibian"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 966,
+    "stoneCost": 0,
+    "archetypes": [
+      "Newt",
+      "Devil"
+    ],
+    "creatorNote": "2026-10-16: one card for Core Evil, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 17).",
+    "devilryCost": 0,
+    "mechanicLine": "devilry",
+    "splashEffect": "none"
+  },
+  {
+    "id": "woodpecker-sapper",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Woodpecker Sapper",
+    "tags": [],
+    "test": false,
+    "uuid": "99595f06-c63a-52c2-98e1-fe93027ee19a",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Bark, armour, shield: it is all just wood to a woodpecker.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "perforate": 2
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 967,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Perforate, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 11).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "snow-bunting-archer",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Snow Bunting Archer",
+    "tags": [],
+    "test": false,
+    "uuid": "6c29b876-26a3-53d2-af59-a3a299380887",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Each feather a frost, each arrow a winter.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "iceArrow": 2
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 968,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Tundra"
+    ],
+    "creatorNote": "2026-10-16: one card for Ice Arrow, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 16).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "spitting-cobra",
+    "cost": 2,
+    "icon": "\ud83d\udc0d",
+    "name": "Spitting Cobra",
+    "tags": [],
+    "test": false,
+    "uuid": "b8884b05-8a9a-5ddb-bcb6-2e6d0cf36155",
+    "wait": 2,
+    "attack": 5,
+    "flavor": "Two jets, two eyes, two problems.",
+    "health": 7,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "twinShot": 2
+    },
+    "species": [
+      "Reptile"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 969,
+    "stoneCost": 0,
+    "archetypes": [
+      "Snake",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-16: one card for Twin Shot, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 19).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "echidna-quillshot",
+    "cost": 2,
+    "icon": "\ud83e\udd94",
+    "name": "Echidna Quillshot",
+    "tags": [],
+    "test": false,
+    "uuid": "a5a78e78-7bf9-5302-a0e9-ecccf2f33773",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "One shake and the whole line is pinned.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "volley": 1
+    },
+    "species": [
+      "Mammal"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 970,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mammal",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Volley, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 18).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "firefly-swarm",
+    "cost": 1,
+    "icon": "\u2728",
+    "name": "Firefly Swarm",
+    "tags": [],
+    "test": false,
+    "uuid": "e6e275f9-dd2c-56cb-8c29-a4680e444b77",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Pretty lights, hot lights, hotter lights.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "fireBolt": 2
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 971,
+    "stoneCost": 0,
+    "archetypes": [
+      "Insect",
+      "Volcanic"
+    ],
+    "creatorNote": "2026-10-16: one card for Fire Bolt, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 20).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "archerfish",
+    "cost": 1,
+    "icon": "\ud83d\udc1f",
+    "name": "Archerfish",
+    "tags": [],
+    "test": false,
+    "uuid": "8b5a9a28-51ca-59ac-aa86-789e90218d1d",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It spits from under the water and never misses a fly. Or a face.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "acidBolt": 2
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 972,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "Mangrove"
+    ],
+    "creatorNote": "2026-10-16: one card for Acid Bolt, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 19).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "spitting-spider",
+    "cost": 1,
+    "icon": "\ud83d\udd77\ufe0f",
+    "name": "Spitting Spider",
+    "tags": [],
+    "test": false,
+    "uuid": "2c33bb57-bc3c-5f52-82a7-7752c7b09a81",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It does not weave a web. It throws one, wet.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "poisonBolt": 2
+    },
+    "species": [
+      "Arachnid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 973,
+    "stoneCost": 0,
+    "archetypes": [
+      "Arachnid",
+      "Cave"
+    ],
+    "creatorNote": "2026-10-16: one card for Poison Bolt, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 17).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "ice-petrel",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Ice Petrel",
+    "tags": [],
+    "test": false,
+    "uuid": "4f4363c2-2229-56a2-87cd-e9d88b5d4d4c",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It spits a sleet that freezes as it flies.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "iceBolt": 2
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 974,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Frost"
+    ],
+    "creatorNote": "2026-10-16: one card for Ice Bolt, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 23).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "electric-catfish",
+    "cost": 2,
+    "icon": "\u26a1",
+    "name": "Electric Catfish",
+    "tags": [],
+    "test": false,
+    "uuid": "c301bc21-172a-58d2-ab65-ae21131c9559",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "A spark, a crack, and the water remembers.",
+    "health": 10,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "shockBolt": 2
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 975,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "River"
+    ],
+    "creatorNote": "2026-10-16: one card for Shock Bolt, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 22).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "dust-devil-kestrel",
+    "cost": 2,
+    "icon": "\ud83e\udd85",
+    "name": "Dust-devil Kestrel",
+    "tags": [],
+    "test": false,
+    "uuid": "6df70546-0c95-5e13-b76d-7fd0c3039bae",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "It hovers, and the dust starts to spin with it.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "tornado": 1
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 976,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Desert"
+    ],
+    "creatorNote": "2026-10-16: one card for Tornado, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 28).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "ibex-rockcaller",
+    "cost": 2,
+    "icon": "\ud83d\udc10",
+    "name": "Ibex Rockcaller",
+    "tags": [],
+    "test": false,
+    "uuid": "597c24c3-dc31-537e-aed1-3266c8a08d1c",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "One bleat from the high ledge and the whole slope listens.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "avalanche": 1
+    },
+    "species": [
+      "Bovine"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 977,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mountain",
+      "Sheep"
+    ],
+    "creatorNote": "2026-10-16: one card for Avalanche, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 29).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "sperm-whale-elder",
+    "cost": 3,
+    "icon": "\ud83d\udc0b",
+    "name": "Sperm Whale Elder",
+    "tags": [],
+    "test": false,
+    "uuid": "c5344e23-19b8-5629-822f-47d6259d4629",
+    "wait": 3,
+    "attack": 5,
+    "flavor": "When it dives, the sea leans in after it.",
+    "health": 11,
+    "locked": true,
+    "rarity": "epic",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "tsunami": 1
+    },
+    "species": [
+      "Cetacean"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 978,
+    "stoneCost": 0,
+    "archetypes": [
+      "Cetacean",
+      "Ocean"
+    ],
+    "creatorNote": "2026-10-16: one card for Tsunami, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 38).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "thunder-lizard",
+    "cost": 3,
+    "icon": "\ud83e\udd8e",
+    "name": "Thunder Lizard",
+    "tags": [],
+    "test": false,
+    "uuid": "2c167eef-0815-58cf-84e7-bf665d3b9097",
+    "wait": 3,
+    "attack": 5,
+    "flavor": "Not a dragon. Do not tell it that.",
+    "health": 11,
+    "locked": true,
+    "rarity": "epic",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "dragonLightning": 1
+    },
+    "species": [
+      "Reptile"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 979,
+    "stoneCost": 0,
+    "archetypes": [
+      "Reptile",
+      "Dragon"
+    ],
+    "creatorNote": "2026-10-16: one card for Dragon Lightning, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 41).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "corpse-flower-beetle",
+    "cost": 2,
+    "icon": "\ud83e\udeb2",
+    "name": "Corpse-flower Beetle",
+    "tags": [],
+    "test": false,
+    "uuid": "a12b8558-e157-56cb-8b4a-3f07543d2343",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "Everything it touches remembers it is going to die.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "wither": 1
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 980,
+    "stoneCost": 0,
+    "archetypes": [
+      "Beetle",
+      "Shadow"
+    ],
+    "creatorNote": "2026-10-16: one card for Wither, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 31).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "salamander-pyromancer",
+    "cost": 3,
+    "icon": "\ud83e\udd8e",
+    "name": "Salamander Pyromancer",
+    "tags": [],
+    "test": false,
+    "uuid": "a179e28f-78fb-5707-90b2-c4648ee43cf2",
+    "wait": 3,
+    "attack": 4,
+    "flavor": "It breathes once on its hands, and the world goes orange.",
+    "health": 12,
+    "locked": true,
+    "rarity": "epic",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "fireball": 15
+    },
+    "species": [
+      "Amphibian"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 981,
+    "stoneCost": 0,
+    "archetypes": [
+      "Newt",
+      "Volcanic"
+    ],
+    "creatorNote": "2026-10-16: one card for Fireball, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 40).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "starfall-owl",
+    "cost": 4,
+    "icon": "\ud83e\udd89",
+    "name": "Starfall Owl",
+    "tags": [],
+    "test": false,
+    "uuid": "9e70ec11-8830-58f6-9bdd-de8dc7a9e5fc",
+    "wait": 4,
+    "attack": 5,
+    "flavor": "It looks up. So does everything else, too late.",
+    "health": 12,
+    "locked": true,
+    "rarity": "legendary",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "meteor": 20
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 982,
+    "stoneCost": 0,
+    "archetypes": [
+      "Owl",
+      "Mountain"
+    ],
+    "creatorNote": "2026-10-16: one card for Meteor, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 52).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "armadillo-guard",
+    "cost": 1,
+    "icon": "\ud83e\udd94",
+    "name": "Armadillo Guard",
+    "tags": [],
+    "test": false,
+    "uuid": "27a70222-1830-5d8c-9a09-de4ca3f338be",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "A coat of plates, a little spare, just in case.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "shield": 3
+    },
+    "species": [
+      "Xenarthran"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 983,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mammal",
+      "Desert"
+    ],
+    "creatorNote": "2026-10-16: one card for Shield, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 8).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "elephant-nose-fish",
+    "cost": 1,
+    "icon": "\ud83d\udc1f",
+    "name": "Elephant-nose Fish",
+    "tags": [],
+    "test": false,
+    "uuid": "dd73ba50-84c2-5425-a962-73d9accb0e43",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It reads the water with electricity, and you with something worse.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "psychic": 1
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 984,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "River"
+    ],
+    "creatorNote": "2026-10-16: one card for Psychic, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 23).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "piranha-shoal",
+    "cost": 1,
+    "icon": "\ud83d\udc1f",
+    "name": "Piranha Shoal",
+    "tags": [],
+    "test": false,
+    "uuid": "3869d5ee-4443-5980-a55a-c1342eb6ab6f",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "One drop and the whole shoal remembers it is hungry.",
+    "health": 6,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "bloodlust": 1
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 985,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "River"
+    ],
+    "creatorNote": "2026-10-16: one card for Bloodlust, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 14).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "chilli-parrot",
+    "cost": 1,
+    "icon": "\ud83e\udd9c",
+    "name": "Chilli Parrot",
+    "tags": [],
+    "test": false,
+    "uuid": "ed51502d-b233-54d6-acfe-7a376ea51675",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Birds do not feel the heat of a pepper. Everything near it does.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "chilli": 2
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 986,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Rainforest"
+    ],
+    "creatorNote": "2026-10-16: one card for Chilli, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 20).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "platypus-spur",
+    "cost": 1,
+    "icon": "\ud83e\udd86",
+    "name": "Platypus Spur",
+    "tags": [],
+    "test": false,
+    "uuid": "6e487733-01ae-56d2-894b-259925111994",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Duck bill, otter fur, and a spur nobody warned you about.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "venomous": 2
+    },
+    "species": [
+      "Mammal"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 987,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mammal",
+      "River"
+    ],
+    "creatorNote": "2026-10-16: one card for Venomous, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 13).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "cone-snail",
+    "cost": 1,
+    "icon": "\ud83d\udc0c",
+    "name": "Cone Snail",
+    "tags": [],
+    "test": false,
+    "uuid": "fa4ece77-b741-56ad-bb28-3eee5f83e3bd",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "A pretty shell, a slow crawl, and a harpoon full of something that never wears off.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "toxin": 1
+    },
+    "species": [
+      "Mollusc"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 988,
+    "stoneCost": 0,
+    "archetypes": [
+      "Snail",
+      "Coral Reef"
+    ],
+    "creatorNote": "2026-10-16: one card for Toxin, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 14).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "lamprey",
+    "cost": 1,
+    "icon": "\ud83d\udc1f",
+    "name": "Lamprey",
+    "tags": [],
+    "test": false,
+    "uuid": "5d409621-f90f-5bbe-bbe3-bcf805712c42",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "It does not take much. It just does not give it back.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "weaken": 1
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 989,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "River"
+    ],
+    "creatorNote": "2026-10-16: one card for Weaken, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 6).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "paper-wasp",
+    "cost": 0,
+    "icon": "\ud83d\udc1d",
+    "name": "Paper Wasp",
+    "tags": [],
+    "test": false,
+    "uuid": "54c841ee-7149-53df-8902-ec60b01b0cc0",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "Fierce at first. Then softer with every swat.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "wilting": 1
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 990,
+    "stoneCost": 0,
+    "archetypes": [
+      "Insect",
+      "Village"
+    ],
+    "creatorNote": "2026-10-16: one card for Wilting, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 4).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "bison-bulldozer",
+    "cost": 2,
+    "icon": "\ud83e\uddac",
+    "name": "Bison Bulldozer",
+    "tags": [],
+    "test": false,
+    "uuid": "b8cb8dee-cb45-5fc5-8c96-870c14ed9cc5",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "It lowers its head, and the line moves back a step.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "bulldoze": 1
+    },
+    "species": [
+      "Bovine"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 991,
+    "stoneCost": 0,
+    "archetypes": [
+      "Field",
+      "Mammal"
+    ],
+    "creatorNote": "2026-10-16: one card for Bulldoze, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 16).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "weaver-bird",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Weaver Bird",
+    "tags": [],
+    "test": false,
+    "uuid": "e96e95ab-a982-5254-9171-7a299a1b7cf7",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "It ties knots for a living, and ankles for fun.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "tangle": 1
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 992,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-16: one card for Tangleweed, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 11).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "anaconda-coil",
+    "cost": 2,
+    "icon": "\ud83d\udc0d",
+    "name": "Anaconda Coil",
+    "tags": [],
+    "test": false,
+    "uuid": "02f2d47e-ae61-5b41-be70-99191bdf33e2",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "It does not bite. It just holds on, and on, and on.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "strangle": 2
+    },
+    "species": [
+      "Reptile"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 993,
+    "stoneCost": 0,
+    "archetypes": [
+      "Snake",
+      "Swamp"
+    ],
+    "creatorNote": "2026-10-16: one card for Strangle, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 24).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "tardigrade",
+    "cost": 2,
+    "icon": "\ud83e\udda0",
+    "name": "Tardigrade",
+    "tags": [],
+    "test": false,
+    "uuid": "6a5ace0a-d0f8-572e-b3e4-aa373b10f562",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "Boil it, freeze it, crush it: it will simply wait.",
+    "health": 8,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "invincible": 1
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 994,
+    "stoneCost": 0,
+    "archetypes": [
+      "Insect",
+      "Pond"
+    ],
+    "creatorNote": "2026-10-16: one card for Invincible, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 30).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "leaf-chameleon",
+    "cost": 1,
+    "icon": "\ud83e\udd8e",
+    "name": "Leaf Chameleon",
+    "tags": [],
+    "test": false,
+    "uuid": "f17612ab-0f02-5516-b088-4e5c20c537f5",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "You walked past it twice. It counted.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "invisible": 2
+    },
+    "species": [
+      "Reptile"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 995,
+    "stoneCost": 0,
+    "archetypes": [
+      "Reptile",
+      "Rainforest"
+    ],
+    "creatorNote": "2026-10-16: one card for Invisible, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 15).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "oilbird",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Oilbird",
+    "tags": [],
+    "test": false,
+    "uuid": "fe72b65f-8ec2-5d06-b735-1cdcca3aa913",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It clicks through the dark and finds you anyway.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "sonar": true
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 996,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Cave"
+    ],
+    "creatorNote": "2026-10-16: one card for Sonar, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 17).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "skunk-gasser",
+    "cost": 1,
+    "icon": "\ud83e\udda8",
+    "name": "Skunk Gasser",
+    "tags": [],
+    "test": false,
+    "uuid": "450a8fb8-d26f-5625-9c5a-7d202c084888",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It lifts its tail, and the whole enemy line reconsiders.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "poisonGas": 2
+    },
+    "species": [
+      "Mustelid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 997,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mammal",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Poison Gas, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 10).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "ice-fish",
+    "cost": 3,
+    "icon": "\ud83d\udc1f",
+    "name": "Ice Fish",
+    "tags": [],
+    "test": false,
+    "uuid": "39126f4e-76d6-5d6f-b64e-b03e8bf43797",
+    "wait": 3,
+    "attack": 5,
+    "flavor": "Its blood never freezes. Everything else does.",
+    "health": 11,
+    "locked": true,
+    "rarity": "epic",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "absoluteZero": true
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 998,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "Frost"
+    ],
+    "creatorNote": "2026-10-16: one card for Absolute Zero, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 36).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "fire-salamander",
+    "cost": 1,
+    "icon": "\ud83e\udd8e",
+    "name": "Fire Salamander",
+    "tags": [],
+    "test": false,
+    "uuid": "17794f2e-0fd1-54d0-9f8e-ea5f249c16d7",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Old tales say it was born in a fire. It agrees.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "spitfire": 2
+    },
+    "species": [
+      "Amphibian"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 999,
+    "stoneCost": 0,
+    "archetypes": [
+      "Newt",
+      "Volcanic"
+    ],
+    "creatorNote": "2026-10-16: one card for Spitfire, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 20).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "fire-hawk",
+    "cost": 2,
+    "icon": "\ud83e\udd85",
+    "name": "Fire Hawk",
+    "tags": [],
+    "test": false,
+    "uuid": "93e4cde2-eaad-5187-9d17-c5a80fc7aae8",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "It drops a burning twig, and waits for whatever runs out.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "slashBurn": 3
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1000,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-16: one card for Slash & Burn, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 20).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "flagellant-vulture",
+    "cost": 1,
+    "icon": "\ud83e\udd85",
+    "name": "Flagellant Vulture",
+    "tags": [],
+    "test": false,
+    "uuid": "10d82d63-6121-5c75-a545-dd207b4ed821",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "It pays for every meal in its own feathers.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "penance": 3
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1001,
+    "stoneCost": 0,
+    "archetypes": [
+      "Vulture",
+      "Devil"
+    ],
+    "creatorNote": "2026-10-16: one card for Penance, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 18).",
+    "devilryCost": 0,
+    "mechanicLine": "devilry",
+    "splashEffect": "none"
+  },
+  {
+    "id": "vampire-finch",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Vampire Finch",
+    "tags": [],
+    "test": false,
+    "uuid": "d9197d41-6bc0-59c4-8bec-73d42d3b5b2f",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "A small bird with a small beak and a large appetite for its friends.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "bloodTithe": 2
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1002,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Devil"
+    ],
+    "creatorNote": "2026-10-16: one card for Blood Tithe, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 19).",
+    "devilryCost": 0,
+    "mechanicLine": "devilry",
+    "splashEffect": "none"
+  },
+  {
+    "id": "antlion-pit",
+    "cost": 1,
+    "icon": "\ud83d\udc1c",
+    "name": "Antlion Pit",
+    "tags": [],
+    "test": false,
+    "uuid": "ce787f83-13b6-5833-baf8-e9d71321d796",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Step lightly over the empty ground. It is not empty.",
+    "health": 7,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "trap": 5
+    },
+    "species": [
+      "Insect"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1003,
+    "stoneCost": 0,
+    "archetypes": [
+      "Insect",
+      "Desert"
+    ],
+    "creatorNote": "2026-10-16: one card for Trap, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 13).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "leopard-seal",
+    "cost": 2,
+    "icon": "\ud83e\uddad",
+    "name": "Leopard Seal",
+    "tags": [],
+    "test": false,
+    "uuid": "32821914-e91d-50b6-afb2-6d8621f1fc78",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "It smiles at the penguins. The penguins do not smile back.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "predator": 1
+    },
+    "species": [
+      "Pinniped"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1004,
+    "stoneCost": 0,
+    "archetypes": [
+      "Ocean",
+      "Mammal"
+    ],
+    "creatorNote": "2026-10-16: one card for Predator, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 25).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "springbok-pronker",
+    "cost": 1,
+    "icon": "\ud83e\udd8c",
+    "name": "Springbok Pronker",
+    "tags": [],
+    "test": false,
+    "uuid": "b3e0ec53-bb8b-5309-b745-5f8f4df25145",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "It bounces straight up when it sees a lion. It is very good at bouncing.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "prey": true
+    },
+    "species": [
+      "Cervid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1005,
+    "stoneCost": 0,
+    "archetypes": [
+      "Deer",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-16: one card for Prey, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 12).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "supernova-jelly",
+    "cost": 2,
+    "icon": "\ud83e\udebc",
+    "name": "Supernova Jelly",
+    "tags": [],
+    "test": false,
+    "uuid": "66be33bf-115f-5593-8243-07825bd8a14e",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "It glows brighter and brighter, and then everything else glows too.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "nova": 3
+    },
+    "species": [
+      "Cnidarian"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1006,
+    "stoneCost": 0,
+    "archetypes": [
+      "Ocean",
+      "Elemental"
+    ],
+    "creatorNote": "2026-10-16: one card for Nova, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 45).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "geode-scorpion",
+    "cost": 2,
+    "icon": "\ud83e\udd82",
+    "name": "Geode Scorpion",
+    "tags": [],
+    "test": false,
+    "uuid": "69827376-919a-5c3b-9517-6ed2790d9d68",
+    "wait": 2,
+    "attack": 4,
+    "flavor": "When it dies it does not rot. It sparkles.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "crystallise": 5
+    },
+    "species": [
+      "Arachnid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1007,
+    "stoneCost": 0,
+    "archetypes": [
+      "Arachnid",
+      "Cave"
+    ],
+    "creatorNote": "2026-10-16: one card for Crystallise, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 27).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "cleaner-wrasse",
+    "cost": 1,
+    "icon": "\ud83d\udc1f",
+    "name": "Cleaner Wrasse",
+    "tags": [],
+    "test": false,
+    "uuid": "8d6418a2-5e41-50b1-9015-e01bc26a47b7",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It picks the poison out of the big fish, and they let it.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "cure": 2
+    },
+    "species": [
+      "Fish"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1008,
+    "stoneCost": 0,
+    "archetypes": [
+      "Fish",
+      "Coral Reef"
+    ],
+    "creatorNote": "2026-10-16: one card for Cure, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 18).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "snow-leopard",
+    "cost": 2,
+    "icon": "\ud83d\udc06",
+    "name": "Snow Leopard",
+    "tags": [],
+    "test": false,
+    "uuid": "14299a74-4687-5b4e-b017-abb38228b980",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "Avalanches, cliffs, blizzards: it has walked through all of them, quietly.",
+    "health": 8,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "mountainClimber": true
+    },
+    "species": [
+      "Felid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1009,
+    "stoneCost": 0,
+    "archetypes": [
+      "Cat",
+      "Mountain"
+    ],
+    "creatorNote": "2026-10-16: one card for Mountain Climber, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 29).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "lovebird",
+    "cost": 1,
+    "icon": "\ud83e\udd9c",
+    "name": "Lovebird",
+    "tags": [],
+    "test": false,
+    "uuid": "1bd7fecd-f135-54f0-aeb3-356260f4104b",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "One is a bird. Two is a promise.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "amore": true
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1010,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-16: one card for Amore, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 10).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "horned-lizard",
+    "cost": 1,
+    "icon": "\ud83e\udd8e",
+    "name": "Horned Lizard",
+    "tags": [],
+    "test": false,
+    "uuid": "b33a2659-8e39-574d-8ae2-a729dbf4aa76",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Corner it and it squirts blood from its eyes into yours.",
+    "health": 5,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "blind": {
+        "chance": 50,
+        "duration": 2
+      }
+    },
+    "species": [
+      "Reptile"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1011,
+    "stoneCost": 0,
+    "archetypes": [
+      "Reptile",
+      "Desert"
+    ],
+    "creatorNote": "2026-10-16: one card for Blind, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 14).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "marula-monkey",
+    "cost": 1,
+    "icon": "\ud83d\udc12",
+    "name": "Marula Monkey",
+    "tags": [],
+    "test": false,
+    "uuid": "e7030fb3-3633-59af-a759-ba7ad8132178",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "It shares the fermented fruit generously. Mostly by throwing it.",
+    "health": 5,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "tipsy": {
+        "chance": 50,
+        "duration": 2
+      }
+    },
+    "species": [
+      "Primate"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1012,
+    "stoneCost": 0,
+    "archetypes": [
+      "Ape",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-16: one card for Make Tipsy, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 12).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "lyrebird-mimic",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Lyrebird Mimic",
+    "tags": [],
+    "test": false,
+    "uuid": "898fe8c4-54a9-59d7-a34d-91d24e917366",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It sounds like your captain. It sounds like your horn. It sounds like you.",
+    "health": 8,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "confuse": {
+        "chance": 50,
+        "duration": 2
+      }
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1013,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-16: one card for Confuse, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 15).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "chained-binturong",
+    "cost": 1,
+    "icon": "\ud83d\udc08",
+    "name": "Chained Binturong",
+    "tags": [],
+    "test": false,
+    "uuid": "1570422e-4b81-520e-bbe8-15c6536a78cd",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "Somebody chained it for a reason. Somebody will regret the lock.",
+    "health": 6,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "chained": {
+        "breakOn": "damage",
+        "amount": 4
+      }
+    },
+    "species": [
+      "Mammal"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1014,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mammal",
+      "Devil"
+    ],
+    "creatorNote": "2026-10-16: one card for Chained, a skill that was on no card (\"Add 1 card for all our no-card skills\"). Art to come; not placed on any map (suggested: Map 17).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none"

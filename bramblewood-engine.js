@@ -191,9 +191,12 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   'onAllyPlayed','onEnemyPlayed','onAllyReady','onEnemyReady','onMove',
   // Sacrifice - {} (2026-10-14, user: "The designer's toolkit: Sacrifice - {} aka On Sacrifice -> Do {}. But it's framed as
   // Sacrifice - { }"): fires when this card is consumed as Sacrifice fodder, eaten by Devour, or given up as a prayer offering.
-  'onSacrifice'];
+  'onSacrifice',
+  // On Pitch (2026-10-16, user: "A new skill: Whenever you pitch a card, this card does {}"): fires on every unit of yours on the
+  // field when you pitch a card (firePitchTriggers). Its card text reads "Scavenge - <effect>" (a placeholder name).
+  'onPitch'];
 const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // fire even while Waiting
-const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield'];
+const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit']; // + Fire on hit (2026-10-16)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -833,16 +836,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Wind (2026-10-13, 09:56 list: "On windy maps, every alternate turn, there is strong wind. On certain maps, there is always
   // strong wind. The wind flips direction between ally side -> opponent or opponent -> ally side ... tailwind on the allies side,
   // then headwind on the opponent's side. If tailwind - action twice, one at +1 speed, and one at normal speed. Then headwind -
-  // skills activate twice. (Triggers too!)"): rules.wind 'windy' = strong wind every other round (rounds 2, 4, 6…), 'gale' =
+  // skills activate twice. (Triggers too!)"): rules.wind 'windy' = strong wind every other round (rounds 2, 4, 6…; a random roll
+  // since 2026-10-16, see rollWind), 'gale' =
   // every round. Each strong wind blows the other way from the last one. It acts on Flying units: the side it blows FROM has a
   // Tailwind (its Flyers get a quick extra turn before combat, then their normal one); the side it blows INTO has a Headwind
   // (its Flyers' skills and triggers go off twice).
   let windNow = false, windFrom = 0, windGusts = 0, windRound = -1;
+  // 2026-10-16 (user: "Wind: The typical wind effect cards say that the wind change is random. Forward, Backward, No Wind, etc."):
+  // the wind is a roll each round now, no longer a fixed flip. Windy: 1 in 3 at Player 1's back, 1 in 3 in their
+  // face (at Player 2's back), 1 in 3 calm. Gale: always strong, 1 in 2 either way. The field texts (WIND_TEXT in arena_app.js) say these odds.
   function rollWind(players, sideOf, events){
     const mode = rules.wind; windNow = false; windFrom = 0;
     if(mode !== 'windy' && mode !== 'gale') return;
-    if(mode === 'windy' && turnNo % 2 === 1){ if(recordEvents && events && windRound !== turnNo){ windRound = turnNo; events.push({type:'wind', windy:false, round: turnNo}); } return; }
-    windNow = true; windGusts += 1; windFrom = (windGusts % 2 === 1) ? 1 : 2; // the first gust is at the player's back
+    const calm = mode === 'windy' && rnd() < 1/3;
+    if(calm){ if(recordEvents && events && windRound !== turnNo){ windRound = turnNo; events.push({type:'wind', windy:false, round: turnNo}); } return; }
+    windNow = true; windGusts += 1; windFrom = rnd() < 0.5 ? 1 : 2; // which way: a coin flip
     if(windRound !== turnNo){ windRound = turnNo; if(recordEvents && events) events.push({type:'wind', windy:true, from: sideOf ? sideOf(windFrom) : (windFrom===1?'A':'B'), round: turnNo}); }
   }
   // The forecast (D80, 2026-10-13): what next round's start will bring, worked out with the same rules roundStart uses, so the
@@ -858,7 +866,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     out.phase = ph; out.phaseChanges = !!(ph && ph !== getPhase());
     if(permaTide) out.tide = 'flow'; // Perma-tide (2026-10-14)
     else if(tideStart !== null && r > tideStart){ const d = r - tideStart; out.tide = rules.highTide ? ({0:'high', 2:'flow'}[d % 4] || 'ebb') : (d % 2 === 1 ? 'flow' : 'ebb'); }
-    const wm = rules.wind; if(wm === 'gale' || (wm === 'windy' && r % 2 === 0)) out.wind = {from: (windGusts + 1) % 2 === 1 ? 1 : 2};
+    const wm = rules.wind; if(wm === 'gale' || wm === 'windy') out.wind = {random:true, mode:wm}; // a roll each round (2026-10-16): which way stays hidden
     if(field){ out.field = field.id; out.fieldLeft = field.rounds; }
     const vc = r >= 2 ? volcanoChances(r) : null;
     if(rules.tideSpout && r >= 2) out.tideSpout = true; // a spout bursts somewhere next round (2026-10-14)
@@ -2362,16 +2370,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   - Stun (on hit): reuses the pre-existing single-round `card.stunned` flag/clear cycle
   //     verbatim — this just gives it a second, passive, chance-based on-hit source alongside
   //     its original custom-trigger-action source.
+  // Stun N's rounds. Before 2026-10-16 the number was a % chance (Stun 50 = 50%); a saved or published card that still holds one (any
+  // number above 5) reads as Stun 1, so an old Stun 30 / 50 / 100 becomes "1 in 3 for 1 round". true = 1.
+  function stunRoundsOf(v){ const n = v === true ? 1 : Number(v) || 0; return n > 5 ? 1 : Math.max(1, Math.round(n)); }
   function rollStatusOnHit(kind, cfg, defCard, mySide, attCard, sideOfFn, enemyId, events){
     if(!cfg || !defCard || defCard.hp<=0) return;
     if(attCard && attCard.confused>0 && rnd() < 0.5){ if(recordEvents && events) events.push({type:'confusedWhiff', side:mySide, defId:attCard.defId, uid:attCard.uid, what:kind}); return; } // Confused: on-hit skills fizzle half the time
-    const chance = (typeof cfg==='object') ? Number(cfg.chance)||0 : Number(cfg)||0;
-    const duration = (typeof cfg==='object') ? Math.max(1, Number(cfg.duration)||1) : 1;
+    let chance = (typeof cfg==='object') ? Number(cfg.chance)||0 : Number(cfg)||0;
+    let duration = (typeof cfg==='object') ? Math.max(1, Number(cfg.duration)||1) : 1;
+    // Stun N (2026-10-16, user: "Stun N: 1/3 chance to Stun a card for N turns - Default 1."): a 1 in 3 chance for N rounds.
+    if(kind==='stunOnHit'){ chance = 100/3; duration = stunRoundsOf(cfg); }
     if(chance<=0 || rnd()>=(chance/100)) return;
     if(kind==='freeze'){ defCard.frozen = Math.max(defCard.frozen||0, duration); defCard._frozenJustSet = true; }
     else if(kind==='sleep'){ defCard.asleep = Math.max(defCard.asleep||0, duration); defCard._asleepJustSet = true; }
     else if(kind==='paralyze'){ defCard.paralyzed = Math.max(defCard.paralyzed||0, duration); defCard._paralyzedJustSet = true; }
-    else if(kind==='stunOnHit'){ defCard.stunned = (defCard.stunned|0) + 1; defCard._stunnedJustSet = true; }
+    else if(kind==='stunOnHit'){ defCard.stunned = Math.max(defCard.stunned|0, duration); defCard._stunnedJustSet = true; } // N stun counters (2026-10-16)
     else if(kind==='blind'){ if(effectsOf(defCard).keenSense || effectsOf(defCard).sonar) return; defCard.blind = Math.max(defCard.blind||0, duration); defCard._blindJustSet = true; } // Keen Sense: never Blind
     else if(kind==='tipsy'){ defCard.tipsy = Math.max(defCard.tipsy||0, duration); defCard._tipsyJustSet = true; }
     else if(kind==='confuse'){ defCard.confused = Math.max(defCard.confused||0, duration); defCard._confusedJustSet = true; }
@@ -3124,6 +3137,55 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     if(!(card.hp > 0)) removeDeadCards(players, sideOf, {}, stats, events);
   }
+  // Amore (2026-10-16, user: "If you play a creature with Amore on the field and there is another creature with Amore on the field that
+  // shares a type, both creature's Amore skills we activate, giving them Regeneration 3 and +0/+3. This can only happen once. If the
+  // other creature dies, the Amore becomes brown, and they lose the Regeneration 3 bonus but keep the +0/+3. Any units on the field
+  // count for this effect. Amore is a 1-1 activation. No other units can be involved."):
+  //   when an Amore unit arrives (played or spawned), it pairs with ONE of its owner's units already on the field that has Amore, shares
+  //   a Type with it and has never been paired (the nearest such one; ties: the earlier). Both get +0/+3 for good and Regeneration 3
+  //   (c.amoreRegen, added to any Regeneration of their own). Each unit pairs once in its life: a pair is only ever those two. Enemy
+  //   units never pair with yours. When one of the two dies, the other's heart breaks (brown): it loses the Regeneration 3, keeps +0/+3.
+  const AMORE_REGEN = 3, AMORE_HP = 3;
+  function amoreTypes(c){ const d = c && CARD_DEFS[c.defId]; return ((d && d.archetypes) || []).filter(a=> a && a !== 'Misc'); }
+  function amoreStateOf(c){ return !c ? null : c.amoreBroken ? 'broken' : c.amoreWith != null ? 'love' : (effectsOf(c).amore ? 'single' : null); }
+  function amoreOnArrive(players, sideOf, pid, card, events){
+    if(!card || !(card.hp > 0) || card.amoreUsed || !effectsOf(card).amore) return;
+    const types = amoreTypes(card); if(!types.length) return;
+    const pl = players[pid]; if(!pl) return;
+    const pos = c=> Number.isInteger(c.slot) ? c.slot : 0;
+    const cands = allBoardCards(pl).filter(o=> o && o !== card && !o.gap && o.hp > 0 && !o.cageOf && !o.amoreUsed && effectsOf(o).amore && amoreTypes(o).some(t=> types.includes(t)))
+      .sort((a, b)=> Math.abs(pos(a) - pos(card)) - Math.abs(pos(b) - pos(card)) || a.uid - b.uid);
+    const mate = cands[0]; if(!mate) return;
+    [[card, mate], [mate, card]].forEach(([c, o])=>{ c.amoreUsed = true; c.amoreWith = o.uid; c.amoreRegen = AMORE_REGEN; c.maxHp += AMORE_HP; c.hp += AMORE_HP; });
+    const shared = amoreTypes(mate).filter(t=> types.includes(t));
+    if(recordEvents && events) events.push({type:'amore', side:sideOf(pid), uid:card.uid, defId:card.defId, mateUid:mate.uid, mateDefId:mate.defId, regen:AMORE_REGEN, hp:AMORE_HP, type2:shared[0] || null});
+  }
+  function amoreBreak(players, sideOf, dead, events){
+    if(!dead || dead.amoreWith == null) return;
+    for(const pid of [1, 2]){ const pl = players[pid]; if(!pl) continue;
+      const mate = allBoardCards(pl).find(o=> o && o.uid === dead.amoreWith && o.hp > 0 && o.amoreWith === dead.uid);
+      if(mate && !mate.amoreBroken){ mate.amoreBroken = true; mate.amoreRegen = 0;
+        if(recordEvents && events) events.push({type:'amoreBroken', side:sideOf(pid), uid:mate.uid, defId:mate.defId, deadUid:dead.uid, deadDefId:dead.defId}); } }
+  }
+  // Fire on hit N (2026-10-16, see the 'fireHit' action): the swing's extra fire damage, on the unit it hit (if it still stands) or on
+  // the castle. Spent here, once per swing.
+  function fireHitLands(att, target, side, tSide, foe, aStat, stats, events){
+    const n = att ? (att._fireHit||0) : 0; if(!(n > 0)) return; att._fireHit = 0;
+    if(target){ if(!(target.hp > 0)) return; const d = damageCardFlat(target, n, 'heat', att.defId, att.uid); if(aStat) aStat.dealt += d; ensureStat(stats, tSide, target.defId).taken += d;
+      if(recordEvents && events) events.push({type:'fireHit', side, attUid:att.uid, attDefId:att.defId, targetSide:tSide, targetUid:target.uid, targetDefId:target.defId, dmg:d, n}); return; }
+    if(!foe) return; const d = damageHQ(foe, n); if(aStat){ aStat.dealt += d; aStat.faceDamage += d; }
+    if(recordEvents && events) events.push({type:'fireHit', side, attUid:att.uid, attDefId:att.defId, targetSide:tSide, castle:true, dmg:d, n});
+  }
+  // On Pitch (2026-10-16, user: "A new skill: Whenever you pitch a card, this card does {}. I don't know what the name of the skill will
+  // be"): when a player pitches a card, every live unit of theirs on the field runs its On Pitch triggers (Waiting units only with
+  // "also while Waiting", like the other reactive triggers). Called by the app's pitch (discardCardByUid) and the AI's own pitch.
+  function firePitchTriggers(players, sideOf, pid, pitchedDefId, stats, events){
+    const pl = players && players[pid]; if(!pl) return;
+    curPlayers = curPlayers || players;
+    allBoardCards(pl).filter(c=> c && !c.gap && c.hp > 0 && !c.cageOf).forEach(c=>{ const d = CARD_DEFS[c.defId];
+      if(d && d.effects && Array.isArray(d.effects.triggers) && d.effects.triggers.some(t=> t && t.on === 'onPitch')) runCustomTriggers(players, sideOf, pid, c, d, 'onPitch', stats || {}, events, {pitchedDefId}); });
+    removeDeadCards(players, sideOf, {}, stats || {}, events);
+  }
   // Penance N and Blood Tithe N (2026-10-16, Devilry; user: "Devilry 2 skills: hurting your own castle on play as payment. Also,
   // hurting a random ally on play as payment. Not sure of the name. Penance?"). Payments, not hits: no Bulwark, Armor, Shield or
   // Exposed counter takes part. Penance N: when played, your own castle loses N Health (never below 1: a payment can't lose you the
@@ -3445,6 +3507,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const pl = players[playerId];
     const mySide = sideOf(playerId);
     if(def.effects.penance || def.effects.bloodTithe) devilryPayments(players, sideOf, playerId, boardCard, stats, events); // Penance N / Blood Tithe N (2026-10-16): the payment comes first
+    if(def.effects.amore) amoreOnArrive(players, sideOf, playerId, boardCard, events); // Amore (2026-10-16)
     // Lightning N (Ecclesia, 2026-10-10): on arrival a bolt strikes a random enemy unit (the castle if there are none)
     // for N, +1 for every 4 Prayer you have.
     if(def.effects.lightning){
@@ -3535,7 +3598,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // always dealt one hit to one random enemy; the "line" was the look (a column of ghost cards rising straight up at the unit
       // opposite, then a thrown stone). The event now names its target and the hit is tagged pounce:true, so the board plays
       // a leap at the unit actually hit (arena_app.js / bramblewood-fx-a.js).
-      const pev = {type:'pounce', side:sideOf(playerId), defId:boardCard.defId, uid:boardCard.uid, amount:def.effects.pounce, targetSide:sideOf(otherId(playerId))};
+      // 2026-10-16 (user: "Pounce <Att> or <Hp>: The Pounce value is dynamically calculated on play"): pounce:'attack' / 'health'
+      // pounces for the card's own Attack / Health as it lands; a number is a fixed N as before. boardCard.pounceN keeps the value.
+      const pScale = def.effects.pounce === 'attack' || def.effects.pounce === 'health' ? def.effects.pounce : null;
+      const pAmt = pScale === 'attack' ? Math.max(0, effAtk(boardCard)) : pScale === 'health' ? Math.max(0, boardCard.hp|0) : (Number(def.effects.pounce)||0);
+      boardCard.pounceN = pAmt;
+      const pev = {type:'pounce', side:sideOf(playerId), defId:boardCard.defId, uid:boardCard.uid, amount:pAmt, scale:pScale, targetSide:sideOf(otherId(playerId))};
       if(recordEvents && events) events.push(pev);
       const foes = allBoardCards(players[otherId(playerId)]).filter(c=> c.hp>0 && !c.cageOf);
       // 2026-10-15 (user: "Pounce always prefers hitting the card directly opposing. Otherwise, next nearest."): the unit directly
@@ -3548,7 +3616,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(target.kind==='card'){ pev.targetUid = target.card.uid; pev.targetDefId = target.card.defId; }
       bleedTick(sideOf, playerId, boardCard, stats, events, 'skill');
       const pn0 = events ? events.length : 0;
-      fireDamageAction(players, sideOf, playerId, boardCard.defId, Number(def.effects.pounce)||0, 'physical', target, stats, events, null, boardCard.uid);
+      fireDamageAction(players, sideOf, playerId, boardCard.defId, pAmt, 'physical', target, stats, events, null, boardCard.uid);
       if(events) for(let i = pn0; i < events.length; i++){ const t = events[i].type; if((t==='hit' || t==='hitHQ' || t==='evaded') && events[i].attUid===boardCard.uid){ events[i].pounce = true; events[i].ranged = false; break; } } // plays as a leap, not a shot
     }
     noteTideCard(def);
@@ -3846,6 +3914,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // 2026-10-11 (16:56 list, item 9): also off while Stunned, Frozen or Asleep. Primed cards keep every trigger online.
       if(boardCard && !ALWAYS_ON_HOOKS.has(hook) && !t.whileWaiting && !(def.effects && def.effects.primed) && (boardCard.wait>0 || boardCard.stunned || boardCard.frozen>0 || boardCard.asleep>0)) return;
       if(boardCard && boardCard.confused>0 && rnd() < 0.5){ if(recordEvents && events) events.push({type:'confusedWhiff', side:mySide, defId:boardCard.defId, uid:boardCard.uid, what:t.do}); return; } // Confused: the trigger fizzles
+      // A cost step (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. ... So the mid-action
+      // is Burn 1 Lumber, the after-action is Deal N extra fire damage. One (unused) is Burn 1 Lumber, Heal ally N"): t.cost
+      // 'burnLumber' = pay 1 Lumber first; with none, the trigger doesn't go off (and a "once" trigger isn't used up).
+      if(t.cost === 'burnLumber'){ if(t.once && boardCard && boardCard.firedOnce['once:'+hook+':'+i]) return; if(!pl || !((pl.lumber||0) >= 1)) return; pl.lumber -= 1;
+        if(recordEvents && events) events.push({type:'lumberBurn', side:mySide, defId:boardCard ? boardCard.defId : null, uid:boardCard ? boardCard.uid : null, amount:1, left:pl.lumber, action:t.do}); }
       if(t.once){
         const key = 'once:'+hook+':'+i;
         if(boardCard.firedOnce[key]) return;
@@ -3950,6 +4023,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // picker. Reuses the same fireMissile helper Skyfall (evergreen, see applyOnSpawnEffects
         // below) and the legacy Arrow N preset both call.
         case 'missile': fireMissile(players, sideOf, playerId, boardCard, {amount:t.amount||0, dmgType:'physical'}, stats, events); break;
+        // Fire on hit N (2026-10-16, "Deal N extra fire damage on hit", meant for Map 20, paired with On Attack and Burn 1 Lumber):
+        // this attack's hit also deals N fire damage to whatever it hits (resolveCombat reads boardCard._fireHit; spent on the swing).
+        case 'fireHit': if(boardCard && (Number(t.amount)||0) > 0){ boardCard._fireHit = (boardCard._fireHit||0) + (Number(t.amount)||0);
+          if(recordEvents && events) events.push({type:'statusFx', kind:'fireHitReady', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetSide:mySide, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:Number(t.amount)||0}); } break;
         // 2026-10-10 (user: "The improvement of stats should be clear! like esprit"): these two self-buffs now report
         // themselves (namedBuff, the same event Buff uses), so the board shows the gain.
         case 'buffAttack': boardCard.atk += (t.amount||0); if(recordEvents && events && t.amount) events.push({type:'namedBuff', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, targetDefId:boardCard.defId, targetUid:boardCard.uid, amount:t.amount||0, amount2:0}); break;
@@ -4363,6 +4440,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           ai.lumber += 1;
           ai.discardUsedThisTurn = true;
           if(recordEvents && events) events.push({type:'discard', side:sideOf(aiId), defId:worst.defId});
+          firePitchTriggers(players, sideOf, aiId, worst.defId, stats, events); // On Pitch (2026-10-16)
         }
       }
     }
@@ -4426,6 +4504,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       ai.lumber += 1; // 2026-09-22: this simple sim-AI discard income now matches the real Lumber-discard economy (was a stale hardcoded Gold grant)
       ai.discardUsedThisTurn = true;
       if(recordEvents && events) events.push({type:'discard', side:sideOf(aiId), defId:dc.defId});
+      firePitchTriggers(players, sideOf, aiId, dc.defId, stats, events); // On Pitch (2026-10-16)
     } else if(!ai.hand.length){
       // 2026-09-25 (explicit user request, "when he runs out of cards, he just plays Bee
       // Tanks"): a completely empty hand used to mean the AI did nothing at all that turn —
@@ -4533,8 +4612,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // the board, capped at its own max HP — feeds the new On Heal/On Healed/On Ally Healed
         // triggers (see fireHealTriggers) exactly like any other heal source.
         // 2026-10-14 (user: "Do not regenerate when the unit is at full health"): nothing at all at full health, not even a bleed stanch.
-        if(c.hp>0 && (c.hp < c.maxHp || c.poison > 0) && def.effects && def.effects.regen){ // + a poisoned unit: the heal takes the Poison off first (2026-10-16)
-          const healed = applyHeal(c, def.effects.regen, sideOf(pl.id), events);
+        const regenN = ((def.effects && def.effects.regen) ? (def.effects.regen === true ? 1 : Number(def.effects.regen)||0) : 0) + (c.amoreRegen||0); // + Amore's Regeneration 3 (2026-10-16)
+        if(c.hp>0 && (c.hp < c.maxHp || c.poison > 0) && regenN > 0){ // + a poisoned unit: the heal takes the Poison off first (2026-10-16)
+          const healed = applyHeal(c, regenN, sideOf(pl.id), events);
           if(healed>0){ fireHealTriggers(players, sideOf, pl.id, c, c, healed, stats, events); }
         }
         // Bloom (2026-09-17): Regeneration's support-flavored cousin — instead of healing
@@ -4890,6 +4970,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const bounty = bountyOf(cdef); // Bounty N (2026-10-15)
       const deathEv = {type:'death', side:mySide, defId:card.defId, uid:card.uid}; if(card.nullified) deathEv.nullified = true; // 2026-10-15: the replay shows a Nullify kill / exile its own way
       if(recordEvents && events) events.push(deathEv);
+      amoreBreak(players, sideOf, card, events); // Amore (2026-10-16): its partner's heart turns brown
       if(credit){
         const sidesCredited = new Set();
         credit.forEach(key=>{
@@ -5430,6 +5511,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // On Attack (custom trigger — e.g. Bloodlust N = onAttack->buffAttack N): fires once this
       // card commits to attacking this round, AFTER atkThisRound is already captured above, so
       // a permanent Attack buff it grants takes effect starting NEXT round, not retroactively.
+      a.att._fireHit = 0; // Fire on hit (2026-10-16): an On Attack trigger may load this swing with extra fire damage
       runCustomTriggers(players, sideOf, a.attId, a.att, attDef, 'onAttack', stats, events);
       // Bleed: attacking at all ticks this card's own bleed stacks, whether or not the attack
       // finds/lands on a target.
@@ -5661,6 +5743,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
         if(kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, amount:kingSlayerBonus});
+        fireHitLands(a.att, defCard, mySide, sideOf(a.enemyId), players[a.enemyId], aStat, stats, events); // Fire on hit (2026-10-16)
         psychicHit(otherId(a.enemyId), a.att, defCard, sideOf, stats, events); // Psychic N (2026-10-14)
         // Pierce (2026-09-17, per explicit request: "pierce... should also hit the castle"):
         // a flat, unconditional chunk of extra damage punches straight through to the enemy
@@ -5904,6 +5987,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         swingLanded = true;
         aStat.dealt += dmg; aStat.faceDamage += dmg;
         if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus});
+        fireHitLands(a.att, null, mySide, sideOf(a.enemyId), players[a.enemyId], aStat, stats, events); // Fire on hit, at the castle (2026-10-16)
         { const th = players[a.enemyId].castleThorns; if(th > 0 && dmg > 0 && a.att.hp > 0){ const td = damageCardFlat(a.att, th, 'thorns'); aStat.taken = (aStat.taken||0) + td;
           if(recordEvents && events) events.push({type:'statusFx', kind:'castleThorns', side:sideOf(a.enemyId), targetSide:mySide, targetDefId:a.att.defId, targetUid:a.att.uid, amount:td}); } }
         if(attDef.effects && attDef.effects.sap && dmg>0){
@@ -6040,7 +6124,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+  return { tideEvadeOn, firePitchTriggers, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
