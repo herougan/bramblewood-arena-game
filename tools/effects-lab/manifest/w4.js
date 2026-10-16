@@ -13,13 +13,16 @@ const MAPS = [
   ['mist', 'ms', 'The Sunken Grove', '🌳', 'Side map'], ['fungal', 'mu', 'The Morel Hollow', '🍄', 'Map 8'], ['cave', 'm4', 'Caves & Alcoves', '🦇', 'Map 9'],
   ['crystal', 'mn', 'The Glimmer Depths', '💎', 'Side map'], ['alpine', 'm10', 'Eyrie Heights', '🏔️', 'Map 12'], ['tundra', 'm6', 'Wolfsbane Tundra', '🐺', 'Map 18'],
   ['desert', 'md', 'The Glass Dunes', '🏜️', 'Map 19'], ['savanna', 'm5', 'Savanna Reaches', '🌾', 'Map 15'], ['volcano', 'm11', 'The Sundered Peak', '🌋', 'Map 21'],
-  ['forge', 'm9', 'Basalt Foundry', '🪨', 'Side map'], ['night', 'm21', 'The Quiet Summit', '🏔️', 'Map 22']];
+  ['forge', 'm9', 'Basalt Foundry', '🪨', 'Side map'], ['night', 'm21', 'The Quiet Summit', '🏔️', 'Map 22'],
+  // 2026-10-16 (user: "...the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make the background a
+  // little darker and castle-dungeony. with dripping swamp shit"): the daily dungeons' theme; its banner wears the 'dungeon' variant.
+  ['dungeon', 'mm', 'Murgle Mayhem', '🐸', 'Daily dungeon']];
 const STYLE_LABEL = {banner:'Ribbon banner with a medallion', ink:'Ink-brush calligraphy with a red seal', cinema:'Cinematic letterbox, the name spreads in'};
 MAPS.forEach(([k, id, name, icon, sub])=>{
   const T = (X() && X().THEMES[k]) || {label:k, style:'banner', p:'', grand:[]};
   const used = Object.keys(X() ? X().THEME_OF : {}).filter(m=> X().THEME_OF[m] === k).join(', ');
   R({id:'map-title-' + k, name:`Map title: ${T.label}`, stage:'map', trigger:`Entering a ${T.label.toLowerCase()} map for the first time in a session (${used || id})`, inGameHook:HOOK,
-    note:`Particles: ${T.p}. Flourish: ${T.grand.join(' + ')}. The game uses ${({banner:'A', ink:'B', cinema:'C'})[T.style]} (${T.style}) here; tap the map to hurry it.`,
+    note:`Particles: ${T.p}. Flourish: ${T.grand.join(' + ')}. The game uses ${({banner:'A', ink:'B', cinema:'C'})[T.style]} (${T.style}${T.variant ? `, '${T.variant}' variant` : ''}) here; tap the map to hurry it.`,
     variants:['banner', 'ink', 'cinema'].map((st, i)=> ({key:'ABC'[i], label:STYLE_LABEL[st] + (st === T.style ? ' (game default)' : ''),
       play:ctx=>{ theme(ctx, id); return X().mapTitle(ctx.map.layout, {theme:k, name, icon, sub, style:st}); }}))});
 });

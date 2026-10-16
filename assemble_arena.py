@@ -263,7 +263,8 @@ def _with_path_art(items):
     return items
 raid_bosses_literal = json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8"))), ensure_ascii=False)
 # 2026-10-16 (user: "Card backings -> 4 types for now…"): art/backings/<kind>.png (CARD_BACKINGS in arena_app.js) too.
-app_src = _re.sub(r"art:'(art/(?:npc|fields|backings)/[a-z0-9_-]+\.png)'", lambda m: "art:'%s'" % _path_art(m.group(1)), app_src)
+# 2026-10-16 (user: "...I meant the front card frame. To have 4 types..."): and art/frames/<kind>.png (CARD_FRAMES).
+app_src = _re.sub(r"art:'(art/(?:npc|fields|backings|frames)/[a-z0-9_-]+\.png)'", lambda m: "art:'%s'" % _path_art(m.group(1)), app_src)
 app_src = sub_once(app_src, "__RAID_BOSSES__", raid_bosses_literal)
 app_src = sub_once(app_src, "__RAIDS__", json.dumps(_with_path_art(json.load(open(SCRATCH + "canonical/raids.json", encoding="utf-8"))), ensure_ascii=False))
 # insert GSAP + Flip, then the app script (which depends on both), right before </body> --

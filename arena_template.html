@@ -10152,6 +10152,29 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
     .home-menu-title{margin:0 0 4px;}
     .home-menu .player-level{margin-top:-2px !important; margin-bottom:6px !important;}
   }
+  /* ===== Card front frames (2026-10-16, user: "When I talked about backing in the previous chat, I meant the front card frame. To
+     have 4 types. the structure and units should roughly look similar, but the structure looks rickety.") =====
+     Every card face gets a .cframe child (cardTileHTML) wearing the pixel-art frame of its kind (.fr-unit / .fr-structure /
+     .fr-castle / .fr-field, from cardFrameKind). The image (tools/make_card_frames.py) is a 126x156 grid at 3x: a 120x150 card
+     inside a 3px margin, top band 8, sides 7, stat plate 28. It is laid on as a 9-slice with border-image, so a card of another
+     shape keeps undistorted corners; the element reaches 2.5%/2% past the padding box so the margin lands on the rarity border
+     (only the structure's plank ends and rope use it). Layering: art (.ico, 0) < rarity band = frame (1) < name scroll (2) <
+     stat pills and badges (3) < the legendary gold rim (::before, 3) — so rarity borders, leader rings and the gold rim all stay
+     on top, and the name scroll, stats and skill strip keep their places. */
+  .card-tile > .cframe{position:absolute; z-index:1; left:-2.5%; right:-2.5%; top:-2%; bottom:-2%; display:block; pointer-events:none; box-sizing:border-box;
+    border:0 solid transparent; border-image-source:var(--fr-unit); border-image-slice:33 30 93 30; border-image-width:7.051% 7.937% 19.872% 7.937%;
+    border-image-repeat:stretch; image-rendering:pixelated;}
+  .card-tile.fr-structure > .cframe{border-image-source:var(--fr-structure); border-image-slice:39 36 93 36; border-image-width:8.333% 9.524% 19.872% 9.524%;} /* thicker boards: top 10, sides 9 */
+  .card-tile.fr-castle > .cframe{border-image-source:var(--fr-castle);}
+  .card-tile.fr-field > .cframe{border-image-source:var(--fr-field);}
+  /* full-bleed art keeps its art to the bottom edge: the plate slice shrinks to a plain band */
+  .card-tile.art-extended > .cframe{border-image-slice:33 30 33 30; border-image-width:7.051% 7.937% 7.051% 7.937%;}
+  .card-tile.fr-structure.art-extended > .cframe{border-image-slice:39 36 39 36; border-image-width:8.333% 9.524% 8.333% 9.524%;}
+  /* text that had no layer of its own would sit under the frame: lift it above */
+  .card-tile .stats.field-stats, .card-tile .stats.eq-stats{z-index:3;}
+  /* the rickety one: corners not quite square, and the whole frame a hair off true */
+  .card-tile.fr-structure{border-radius:9px 13px 10px 12px / 12px 9px 13px 10px;}
+  .card-tile.fr-structure > .cframe{transform:rotate(-.6deg);}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu

@@ -1624,6 +1624,33 @@ window.bwCardBackClass = cardBackClass; // for the FX modules (bramblewood-fx-c'
     setTimeout(()=>{ Object.values(CARD_BACKINGS).forEach(b=>{ const i = new Image(); i.src = b.art; }); }, 1500);
   }catch(e){}
 })();
+// Card FRONT frames (2026-10-16, user: "When I talked about backing in the previous chat, I meant the front card frame. To
+// have 4 types. the structure and units should roughly look similar, but the structure looks rickety."): every card face
+// wears the frame of its kind, the same four kinds as the backs (cardBackingKind). Pixel-art 9-slice images
+// (tools/make_card_frames.py, 126x156 drawn at 3x) laid on a .cframe child of the tile with border-image (see "Card front
+// frames" in arena_template.html): unit = the walnut look polished (a see-through overlay), structure = the same frame
+// knocked together from planks, rope and crooked nails, castle = dressed stone and gold, field = the Environment card's
+// mossy stone. The rarity border stays the outermost ring; name scroll, stat pills and skill strip sit above the frame.
+const CARD_FRAMES = {
+  unit:{art:'art/frames/unit.png'}, structure:{art:'art/frames/structure.png'},
+  castle:{art:'art/frames/castle.png'}, field:{art:'art/frames/field.png'},
+};
+function cardFrameKind(d, opts){
+  opts = opts || {};
+  if(opts.frameKind && CARD_FRAMES[opts.frameKind]) return opts.frameKind;
+  if(opts.isCastle) return 'castle';
+  if(/\b(env-card|match-field-tile)\b/.test(opts.extraClass||'')) return 'field';
+  return cardBackingKind(d);
+}
+const CARD_FRAME_HTML = '<i class="cframe" aria-hidden="true"></i>';
+(function installCardFrames(){
+  try{
+    if(document.getElementById('bwCardFrames')) return;
+    const st = document.createElement('style'); st.id = 'bwCardFrames';
+    st.textContent = ':root{' + Object.keys(CARD_FRAMES).map(k=> `--fr-${k}:url("${CARD_FRAMES[k].art}");`).join('') + '}';
+    document.head.appendChild(st);
+  }catch(e){}
+})();
 function rarityStops(key){ const r = rarityDef(key); return r.gradient || [r.color, r.color]; }
 
 // Live-value substitution for in-match ability text (2026-09-30, carried-forward backlog item:
@@ -5659,21 +5686,21 @@ function cardTileHTML(d, opts){
   // (opts.hand: playable state, why-not tag) are this same face with a few parts swapped.
   const live = opts.live || null, hand = opts.hand || null, inMatch = !!(live || hand);
   if(live){
-    return `<div class="card-tile ${rarityTierClass(d.rarity)} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+    return `<div class="card-tile fr-${cardFrameKind(d, opts) /* 2026-10-16 (user: "...I meant the front card frame. To have 4 types..."): the frame of its kind */} ${rarityTierClass(d.rarity)} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${biomeClass(d)} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
       ${live.waitHTML||''}${archMarkHTML(d, !!live.waitHTML, true)}
       ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): the 🔁 spawn-only corner pill is gone; a token still has its dashed frame outside fights and its popover line */}
       ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
       ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
       ${live.overlaysHTML||''}
       <div class="ico">${cardIcoHTML(d)}</div>
-      <div class="rarity-band"></div>
+      <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${isMagicDef(d) ? ' atk-magic' : ''}">${isMagicDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🪄</i>') : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
       ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus}})}
       ${live.bottomHTML||''}
     </div>`;
   }
-  return `<div class="card-tile ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
+  return `<div class="card-tile fr-${cardFrameKind(d, opts) /* 2026-10-16 (user: "...I meant the front card frame. To have 4 types..."): the frame of its kind */} ${d.field?'is-field':''} ${isDevilryDef(d)?'is-devilry':''} ${(d.effects||{}).supreme?'is-supreme':''} ${rarityTierClass(d.rarity)} ${locked?'locked':''} ${d.token && !inMatch?'is-token':''} ${d.art?(d.artExtended?'art-extended':'art-framed'):'no-art'} ${foilClass(d)} ${isCastle?'is-castle':''}${crackCls} ${magnetic?'card-tile-magnetic':''} ${biomeClass(d)} ${d.prestigeClass||''} ${opts.extraClass||''}" data-defid="${d.id}" ${opts.extraAttrs||''} style="--rarity-a:${rA}; --rarity-b:${rB}${/\bis-shiny\b/.test(opts.extraClass||'') ? `; --shiny-hue:${shinyHue(d.id)}deg` : ''}">
     ${hand && hand.whyNot?`<div class="whynot-tag">${escapeHtml(hand.whyNot)}</div>`:''}${hand && hasSacrificeTrigger(d) ? SAC_TEETH_HTML : ''}
     ${locked?'<div class="lockbadge">🔒</div>':''}
     ${'' /* 2026-10-15 (user: "Spawn shouldn't need that top right hand corner pill."): no "🔁 Spawn" corner pill on tokens */}
@@ -5686,7 +5713,7 @@ function cardTileHTML(d, opts){
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}${archMarkHTML(d, d.wait>0, false)}
     ${d.darkSummon?`<div class="darkbadge" title="Dark Summon — uses your Dark Summon for the turn (1 a turn), not your normal play">⛧</div>`:''}`}
     <div class="ico">${cardIcoHTML(d)}</div>
-    <div class="rarity-band"></div>
+    <div class="rarity-band"></div>${CARD_FRAME_HTML}
     <div class="nm">${escapeHtml(d.name||'')}</div>
     ${hasLiveHp?'<div class="castle-cracks" aria-hidden="true"></div>':''}${hpBarHTML}
     ${d.field ? `<div class="stats field-stats" title="${escapeAttr(d.field.title || `Field card: changes the whole battlefield for ${d.field.rounds||3} rounds`)}"><span class="fld">${d.field.label || `🌐 Field · ${d.field.rounds||3} rounds`}</span></div>` : d.cardType==='materia' ? `<div class="stats field-stats" title="Materia: a crafting material"><span class="fld">💠 Materia</span></div>` : d.cardType==='spell' ? `<div class="stats field-stats" title="${escapeAttr(spellText(d))}"><span class="fld">✨ Spell</span></div>` : d.cardType==='equipment' ? `<div class="stats eq-stats"><span class="atk">⚔+${d.attack||0}</span><span class="hp">❤+${d.health||0}</span></div>` : `<div class="stats">${isCastle?'':(isMagicDef(d) ? '<span class="atk atk-magic" title="Magic attack"><i class="sg">🪄</i>' : '<span class="atk"><i class="sg">⚔</i>')+d.attack+'</span>'}<span class="hp"><i class="sg">❤</i>${hpBadgeText}</span></div>`}
@@ -18212,7 +18239,10 @@ function renderConquestSubTab(body){
     } }
   // 2026-10-16 (user: "I like having more map effects and title effects. Could be cool to give grandeur to a map."): a title card with the map's
   // own particles and flourish, once per map per session (FX.G.hooks.mapTitle keeps the count), after the map veil / first zoom-out has lifted.
-  try{ if(!tutPhase && !conquestLayoutEdit) fxHook('mapTitle', document.getElementById('conquestLayout'), {id:map.id, name:map.name, icon:map.icon, biome:MAP_BIOME_OF[map.id] || MAP_BIOME_OF[map.parent], sub:map.sub ? 'Side map' : (mapNumberOf(map.id) != null ? 'Map ' + mapNumberOf(map.id) : ''), delay:(document.querySelector('.map-veil') || tutZoomOut) ? 2100 : 300}); }catch(e){}
+  try{ if(!tutPhase && !conquestLayoutEdit) fxHook('mapTitle', document.getElementById('conquestLayout'), {id:map.id, name:map.name, icon:map.icon, biome:MAP_BIOME_OF[map.id] || MAP_BIOME_OF[map.parent], sub:isDailyDungeonMap(map) ? 'Daily dungeon' : map.sub ? 'Side map' : (mapNumberOf(map.id) != null ? 'Map ' + mapNumberOf(map.id) : ''), delay:(document.querySelector('.map-veil') || tutZoomOut) ? 2100 : 300}); }catch(e){}
+  // 2026-10-16 (user: "Ah the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make the background a
+  // little darker and castle-dungeony. with dripping swamp shit"): Murgle Mayhem's theme is now FX.G's 'dungeon' (the ribbon banner in its
+  // slime-and-stone 'dungeon' variant), and a daily dungeon's subtitle says so.
   try{ const ak = BramblewoodShaders.MAP_KIND[map.id]; Ambience.play(worldRaining() && mapIsOutdoors(map.id) ? 11 : (ak == null ? 0 : ak), map.id); }catch(e){}
   fxHook('mapShown', conquestShaderHost(), map, document.getElementById('conquestCanvas'), progress); // map ambience, day/night, node states, coming-back moments (FX.E, 2026-10-15)
   try{ jumperArrivals(map, document.getElementById('conquestCanvas')); }catch(e){} // a jumper landing on the trail (2026-10-16)
