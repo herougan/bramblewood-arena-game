@@ -144,7 +144,9 @@ R({id:'dark-nightblind', stage:'board', inGameHook:'fxHook(\'boardRendered\') + 
 R({id:'dark-keen-sense', stage:'board', inGameHook:'onEvent: hit by a Keen Sense unit in the dark (once a round)', variants:[{key:'A', label:'Whisker ripples as it smells out the target', play:ctx=>{ veil(ctx, 'dark'); return X().keenSense(ctx.board.mine[0], {label:'👃 Smells it out'}); }}]});
 R({id:'dark-lantern-lit', stage:'board', note:'A is the live look. B adds the light radius on a dark board: a warm pool round the carrier, its side lit, the other side blind.', inGameHook:'B: fxHook(\'boardRendered\') (sightSync) in dark fights', variants:[
   {key:'A', label:'Lantern flicker and glow (live look)', play:ctx=>{ const bf = ctx.board.el; bf.classList.add('bf-lantern'); if(S().lanternGlow) S().lanternGlow(ctx.board.mine[1]); return ctx.wait(2000); }},
-  {key:'B', label:'Light radius: a warm pool round the carrier', play:ctx=>{ veil(ctx, 'pitch'); const m = ctx.board.mine; X().markSight(m[1], 'lantern'); X().markSight(m[0], 'lit'); X().markSight(m[2], 'lit'); ctx.board.foe.forEach(c=> X().markSight(c, 'dark')); if(S().lanternGlow) S().lanternGlow(m[1]); return ctx.wait(2600); }}]});
+  {key:'B', label:'Light radius: a warm pool round the carrier (2026-10-16: dimmer, wider, cut at the board edge)', play:ctx=>{ veil(ctx, 'pitch'); const m = ctx.board.mine; X().markSight(m[1], 'lantern'); X().markSight(m[0], 'lit'); X().markSight(m[2], 'lit'); ctx.board.foe.forEach(c=> X().markSight(c, 'dark'));
+    try{ if(typeof clipLightsToBoard === 'function') clipLightsToBoard(ctx.board.el); }catch(e){} // the game's clip to the battlefield (arena_app.js)
+    if(S().lanternGlow) S().lanternGlow(m[1]); return ctx.wait(2600); }}]});
 R({id:'dark-lantern-out', stage:'board', inGameHook:'onEvent: death of a Lantern unit in the dark or at night', variants:[{key:'A', label:'The lantern gutters, smoke rises, the dark closes in', play:ctx=>{ veil(ctx, 'pitch'); const m = ctx.board.mine; X().markSight(m[1], 'lantern'); return X().lanternOut(m[1]); }}]});
 R({id:'dark-lantern-save', stage:'board', inGameHook:'onEvent: hit by a unit on a Lantern-lit side in Darkness / Pitch Black (once a round)', variants:[{key:'A', label:'An amber mote leads the swing', play:ctx=>{ veil(ctx, 'pitch'); return X().lanternSave(ctx.board.mine[0]); }}]});
 R({id:'dark-darksight-play', stage:'board', variants:[{key:'A', label:'Eyes open, foes marked (live look)', play:ctx=>{ veil(ctx, 'dark'); if(S().darksight) S().darksight(ctx.board.mine[1]); return ctx.wait(1900); }}]});
@@ -174,8 +176,8 @@ R({id:'wt-day-breaks', stage:'board', inGameHook:'onEvent: phase {phase:\'day\'}
 R({id:'wt-dawn-draw', stage:'board', inGameHook:'onEvent: dawn', variants:[
   {key:'A', label:'Rosy light rises, birds take off', play:ctx=>{ skyTone(ctx, 'dawn'); return X().dawnDraw(ctx.board.el); }},
   {key:'B', label:old + ': the rosy tone only', play:ctx=>{ skyTone(ctx, 'dawn'); return ctx.wait(1600); }}]});
-R({id:'wt-dusk', stage:'board', inGameHook:'fxHook(\'matchUI\'): the sky tone turns to dusk', variants:[
-  {key:'A', label:'The sun sinks, long shadows stretch', play:ctx=>{ skyTone(ctx, 'dusk'); return X().dusk(ctx.board.el); }},
+R({id:'wt-dusk', stage:'board', inGameHook:'fxHook(\'matchUI\'): the sky tone turns to dusk', note:'2026-10-16 (user: "the static rectangle bars across the screen might look better than the setting sun"): no sun disc; static shadow bars and a faint warm tint from the west.', variants:[
+  {key:'A', label:'Static shadow bars, a faint warm tint from the west (no sun)', play:ctx=>{ skyTone(ctx, 'dusk'); return X().dusk(ctx.board.el); }},
   {key:'B', label:old + ': the amber tone only', play:ctx=>{ skyTone(ctx, 'dusk'); return ctx.wait(1600); }}]});
 R({id:'wt-twilight', stage:'board', inGameHook:'onEvent: phase {phase:\'twilight\'}; the toast now says Twilight (arena_app.js)', variants:[
   {key:'A', label:'Sun and moon cross overhead, stars twinkle', play:ctx=>{ ctx.sound('nightSwell'); skyTone(ctx, 'dusk'); toast(ctx, '🌆 Twilight: day and night creatures are both awake.'); return X().twilight(ctx.board.el); }},

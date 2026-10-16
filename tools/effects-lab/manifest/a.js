@@ -145,12 +145,21 @@ reg('atk-swift', LIVE + 'hit by a Swift unit (once a round)', [['A', 'Hummingbir
   ['B', 'Old: "💨 Swift!" float', ctx=> melee(ctx, (a, t)=>{ ctx.float(a, '💨 Swift!', 'quick'); flashDmg(ctx, t, 3); }).then(()=> P(ctx, 900))]]);
 reg('atk-frenzy', 'SkillFX.rageFlare + float', [['A', 'Now: rage flare, "🔥 Frenzy!"', ctx=>{ const a = mine(ctx)[1]; S().rageFlare(a); ctx.float(a, '🔥 Frenzy!', 'quick'); return P(ctx, 1200); }]]);
 reg('atk-swarm', 'labSkillFx → SkillFX.swarm', [['A', 'Now: a buzzing cloud converges', ctx=>{ S().swarm(mine(ctx)[0], foe(ctx)[1]); return P(ctx, 1500); }]]);
-reg('atk-flying-swoop', 'eighthPassVfx → SkillFX.swoop', [['A', 'Now: an air-trail dive', ctx=>{ const t = foe(ctx)[1]; S().swoop(mine(ctx)[2], t, {flight:420}); ctx.wait(420).then(()=> flashDmg(ctx, t, 3)); return P(ctx, 1300); }]]);
+// 2026-10-16 (user: "Many flying cards throw a 'line' at the enemy to attack. Make them attack normally ... just the shadows draw
+// closer to the card."): a flyer's attack is the normal lunge; its shadow draws in under it (SkillFX.flyDescend, from animateAttacker).
+const asFlyer = el=>{ if(!el || el.classList.contains('is-flying')) return el; el.classList.add('is-flying'); const t = tileOf(el); if(!t) return el;
+  const body = document.createElement('div'); body.className = 'fly-body'; t.parentNode.insertBefore(body, t); body.appendChild(t);
+  const sh = document.createElement('span'); sh.className = 'fly-shadow'; sh.setAttribute('aria-hidden', 'true'); el.insertBefore(sh, body); return el; };
+const flyerAttack = (ctx, slow)=>{ const a = asFlyer([...mine(ctx)].find(c=> c && c.classList.contains('is-flying')) || mine(ctx)[2]), t = foe(ctx)[1], k = slow || 1, lx = lean(a, t);
+  lunge(a, true, {leanX:lx}); S().flyDescend(a, {dir:1, leanX:lx, windup:T.windup, strike:T.strike});
+  return ctx.wait(T.windup + T.impactPad).then(()=>{ flashDmg(ctx, t, 3); return P(ctx, 1100*k); }); };
+reg('atk-flying-swoop', 'animateAttacker → SkillFX.flyDescend (the swoop trail is retired)', [['A', '2026-10-16: the normal lunge; the shadow draws in under the flyer as it dives', ctx=> flyerAttack(ctx)],
+  ['B', 'Old: an air-trail dive (SkillFX.swoop, no longer in fights)', ctx=>{ const t = foe(ctx)[1]; S().swoop(mine(ctx)[2], t, {flight:420}); ctx.wait(420).then(()=> flashDmg(ctx, t, 3)); return P(ctx, 1300); }]]);
 reg('atk-scared-lunge', LIVE + 'hit whose target has Scare (once a round)', [['A', 'Sweat, a wobbling "!", it shrinks back, then swings', ctx=>{ const a = mine(ctx)[1], t = foe(ctx)[1]; X().fearTell(a); lunge(a, true, {leanX:lean(a, t), scared:true}); return ctx.wait(T.windup*2 + T.impactPad).then(()=>{ flashDmg(ctx, t, 2); return P(ctx, 900); }); }],
   ['B', 'Old: a wobbly lunge and 😨', ctx=>{ const a = mine(ctx)[1], t = foe(ctx)[1]; ctx.float(a, '😨', 'debuff'); lunge(a, true, {leanX:lean(a, t), scared:true}); return P(ctx, 1500); }]]);
 const ufx = style=> ctx=> melee(ctx, (a, t)=>{ try{ U().hitMark(style, t); }catch(e){} try{ ctx.sound(style); }catch(e){} flashDmg(ctx, t, 3); }).then(()=> P(ctx, 1000));
 reg('atk-unitfx-claw', 'UnitFX.hitMark(claw)', [['A', 'Now: claw rake marks', ufx('claw')]]);
-reg('atk-unitfx-bite', 'UnitFX.hitMark(bite)', [['A', 'Now: jaw crunch', ufx('bite')]]);
+reg('atk-unitfx-bite', 'UnitFX.hitMark(bite)', [['A', '2026-10-16: one row per jaw, the jaws close and mesh; tips white, roots faintly red', ufx('bite')]]);
 reg('atk-unitfx-sting', 'UnitFX.hitMark(sting)', [['A', 'Now: stinger dot', ufx('sting')]]);
 reg('atk-unitfx-peck', 'UnitFX.hitMark(peck)', [['A', 'Now: beak dents', ufx('peck')]]);
 reg('atk-unitfx-burn', 'UnitFX.hitMark(burn)', [['A', 'Now: scorch star', ufx('burn')]]);
@@ -242,7 +251,8 @@ reg('sk-wave', LIVE + 'wave {dir} (the water geyser is hidden)', [['A', 'A rolli
   ['B', 'Old: the water geyser', ctx=>{ const t = foe(ctx)[1], r = t.getBoundingClientRect(), gz = document.createElement('div'); gz.className = 'lava-geyser is-water'; gz.style.left = (r.left + r.width/2) + 'px'; gz.style.top = (r.bottom - 6) + 'px'; gz.style.setProperty('--h', Math.round(r.height*1.25) + 'px');
     gz.innerHTML = '<i class="lg-col"></i>' + Array.from({length:12}, ()=> `<b style="--x:${Math.round((Math.random() - .5)*r.width*1.2)}px; --y:${-Math.round(r.height*(.6 + Math.random()*.8))}px; --d:${(Math.random()*.25).toFixed(2)}s"></b>`).join(''); document.body.appendChild(gz); setTimeout(()=> gz.remove(), 1300); ctx.float(t, '〰️ →', 'quick'); return P(ctx, 1300); }]]);
 reg('sk-dragon-lightning', 'fifthPassVfx → red SkillFX.lightning', [['A', 'Now: red lightning chains', ctx=>{ ctx.sound('shockTone'); S().lightning(mine(ctx)[1], foe(ctx), {}); const b = document.querySelectorAll('svg.sfx-bolt'); if(b.length) b[b.length - 1].classList.add('sfx-bolt-red'); foe(ctx).forEach(el=> cls(el, 'dragon-struck', 700)); return P(ctx, 1300); }]]);
-reg('sk-electricity', 'sixthPassVfx → SkillFX.lightning', [['A', 'Now: an arc jumps to the next unit', ctx=>{ ctx.sound('shockTone'); S().lightning(mine(ctx)[1], [foe(ctx)[1], foe(ctx)[2]], {onEachImpact:t=> flashDmg(ctx, t, 2)}); return P(ctx, 1200); }]]);
+reg('sk-electricity', 'electricity event → SkillFX.lightning (its arc hit throws nothing since 2026-10-16)', [['A', '2026-10-16: each bolt fades from the moment it appears; jumps 20% closer together', ctx=>{ ctx.sound('shockTone'); S().lightning(mine(ctx)[1], [foe(ctx)[1], foe(ctx)[2]], {onEachImpact:t=> flashDmg(ctx, t, 2)}); return P(ctx, 1200); }],
+  ['B', 'Old bug: the arc hit also threw a grey ➶ (generic projectile, dmgType shock)', ctx=>{ ctx.sound('shockTone'); S().lightning(mine(ctx)[1], [foe(ctx)[1], foe(ctx)[2]], {}); ctx.wait(T.windup).then(()=> glyphShot(mine(ctx)[1], foe(ctx)[2], '➶')); return P(ctx, 1600); }]], 'Voltaic Eel (Electricity 1): the arc to the unit beside the target is a ranged hit; it used to fall through to spawnProjectile.');
 reg('sk-lightning-passive', LIVE + 'statusFx lightning', [['A', 'A storm bolt strikes the card, sparks crawl over it', ctx=>{ ctx.sound('shockTone'); const el = mine(ctx)[1]; ctx.float(el, '⚡ +2', 'buff'); return X().stormBolt(el); }]]);
 reg('sk-fireball', 'sixthPassVfx → SkillFX.fireball', [['A', 'Now: a fireball and splash', ctx=>{ ctx.sound('burnAway'); S().fireball(mine(ctx)[1], foe(ctx)[1], {sides:[foe(ctx)[0], foe(ctx)[2]]}); return P(ctx, 1600); }]]);
 reg('sk-meteor', 'sixthPassVfx → SkillFX.meteor + crater', [['A', 'Now: a meteor and its crater', ctx=>{ ctx.sound('knockOut'); S().meteor(foe(ctx)[1], {sides:[foe(ctx)[0], foe(ctx)[2]]}); setTimeout(()=> foe(ctx)[1].classList.add('meteor-crater'), 600); return P(ctx, 1800); }]]);
@@ -273,9 +283,22 @@ reg('sk-momentum', LIVE + 'statusFx momentum (once a round)', [['A', 'Flame chev
 reg('sk-berserk', 'eighthPassVfx → SkillFX.rageFlare', [['A', 'Now: rage flare, shake', aura(el=> S().rageFlare(el), '😡 Berserk! +2⚔')]]);
 reg('sk-hive-mind', 'rageFlare (retired 2026-10-15; still plays for old cards)', [['A', 'Now: rage flare', aura(el=> S().rageFlare(el), '😡 +1⚔')]]);
 reg('sk-pack', LIVE + 'statusFx phaseGrow of a Pack / Pack Leader unit whose chain grows (once a round; old replays: statusFx pack)', [['A', 'A howl rings out, paw prints run to the pack', ctx=>{ const el = mine(ctx)[1]; ctx.float(el, '🐺 Pack!', 'quick'); return X().packHowl(el, mine(ctx)); }], ['B', 'Old: "🐺 Pack!"', ctx=>{ ctx.float(mine(ctx)[1], '🐺 Pack!', 'quick'); return P(ctx, 900); }]]);
+// 2026-10-16 (user: "When regeneration of heal are used to reduce poison, a grey poison counter jumps out of the creature's grey poison
+// counters. Note: it takes heal values to remove poison counters - priority."): a heal takes Poison off first (engine applyHeal,
+// statusFx healPoison); one counter hops out of the Poison badge per counter removed (SkillFX.poisonPop), then the rest heals.
+const poisonBadge = (el, n)=>{ const t = tileOf(el); let row = t.querySelector('.badges-bottom'); if(!row){ row = document.createElement('div'); row.className = 'badges-bottom'; t.appendChild(row); }
+  let b = row.querySelector('.abadge.poison'); if(!b){ b = document.createElement('span'); b.className = 'abadge poison'; row.insertBefore(b, row.firstChild); } b.textContent = '☠' + n; el.classList.add('is-poisoned'); return b; };
+const healVsPoison = (ctx, el, poison, heal, regen)=>{ let left = poison; const b = poisonBadge(el, left), cut = Math.min(poison, heal), rest = heal - cut;
+  const pop = ()=>{ ctx.sound('cleanseTone'); S().poisonPop(el, cut, {onEach:()=>{ left -= 1; if(left > 0) b.textContent = '☠' + left; else { b.remove(); el.classList.remove('is-poisoned'); } }}); ctx.float(el, `-${cut} ☠`, 'heal'); };
+  if(regen) return until(ctx, 3200, fin=>{ S().regen(el, {onDone:()=>{ if(rest) ctx.float(el, '➕' + rest, 'heal'); ctx.wait(1000).then(fin); }}); ctx.wait(250).then(pop); });
+  pop(); return ctx.wait(cut*110 + 250).then(()=>{ if(rest){ ctx.sound('healTone'); ctx.float(el, '➕' + rest, 'heal'); S().healPlus(el); } return ctx.wait(1100); }); };
+R({id:'sk-heal-generic', stage:'board', variants:[
+  {key:'F', label:'2026-10-16: Heal 4 on Poison 3: three counters hop out of the badge, then ➕1', play:ctx=> healVsPoison(ctx, mine(ctx)[1], 3, 4)}]});
+R({id:'sk-regen', stage:'board', variants:[
+  {key:'B', label:'2026-10-16: Regeneration 5 on Poison 3: the counters hop out first, then ➕2', play:ctx=> healVsPoison(ctx, mine(ctx)[0], 3, 5, true)}]});
 R({id:'sk-heal-generic', stage:'board', inGameHook:LIVE + 'heal from another card (not Regen or Bloom): SkillFX.heal (B), once a round per unit', variants:[
   {key:'D', label:'Swamp medicine: herbal steam and leaves', play:ctx=>{ const t = mine(ctx)[0]; ctx.sound('healTone'); ctx.float(t, '+3❤', 'heal'); return X().herbalSteam(t); }}]});
-reg('sk-regen', 'labSkillFx → SkillFX.regen', [['A', 'Now: green motes knit it closed', ctx=> until(ctx, 2200, fin=> S().regen(mine(ctx)[0], {onDone:()=>{ ctx.float(mine(ctx)[0], '+2❤', 'heal'); ctx.wait(600).then(fin); }}))]]);
+reg('sk-regen', 'heal event (own Regeneration) → SkillFX.regen, then the number', [['A', '2026-10-16: motes sink in from the card edge (clear, peak halfway, gone at the centre), then the green pluses', ctx=> until(ctx, 2600, fin=> S().regen(mine(ctx)[0], {onDone:()=>{ ctx.float(mine(ctx)[0], '➕2', 'heal'); ctx.wait(900).then(fin); }}))]]);
 reg('sk-bloom', 'eighthPassVfx → SkillFX.bloomPollen (A); B–D are biome takes from the ideas doc', [['A', 'Now: pollen drifts to the ally', ctx=>{ ctx.sound('bloomTone'); S().bloomPollen(mine(ctx)[1], mine(ctx)[0]); ctx.wait(500).then(()=> ctx.float(mine(ctx)[0], '+2❤', 'heal')); return P(ctx, 1400); }],
   ['B', 'Algae bloom: teal bubbles', ctx=> X().bloomVariant(mine(ctx)[1], mine(ctx)[0], {kind:'algae'})], ['C', 'Fungal bloom: spores and caps', ctx=> X().bloomVariant(mine(ctx)[1], mine(ctx)[0], {kind:'fungal'})],
   ['D', 'Coral bloom: coral branches', ctx=> X().bloomVariant(mine(ctx)[1], mine(ctx)[0], {kind:'coral'})]]);
@@ -319,7 +342,8 @@ reg('sk-shed', LIVE + 'statusFx shed {molt}', [['A', 'A translucent skin peels o
 reg('sk-first-blood', LIVE + 'statusFx firstBlood', [['A', 'A red splash star, drops, a "1st" tag', ctx=>{ const el = foe(ctx)[1]; ctx.float(el, '🩸 First blood +2', 'debuff'); return X().firstBloodSplash(el); }], ['B', 'Old: "🩸 First blood +N"', ctx=>{ ctx.float(foe(ctx)[1], '🩸 First blood +2', 'debuff'); return P(ctx, 900); }]]);
 reg('sk-bludgeon', LIVE + 'statusFx bludgeon {broke}', [['A', 'A hammer slams; the trait icon cracks in two', ctx=>{ const el = foe(ctx)[0]; ctx.float(el, '🔨 Armor broken', 'debuff'); return X().bludgeonBreak(el, {broke:'armor'}); }],
   ['B', 'Flying broken', ctx=> X().bludgeonBreak(foe(ctx)[2], {broke:'flying'})], ['C', 'Old: "🔨 X broken"', ctx=>{ ctx.float(foe(ctx)[0], '🔨 Armor broken', 'debuff'); return P(ctx, 900); }]]);
-reg('sk-immolation-src', 'fieldTick immolation → .immolate-pulse + SkillFX.scorch', [['A', 'Now: the source pulses, victims scorch', ctx=>{ cls(mine(ctx)[1], 'immolate-pulse', 900); foe(ctx).forEach(el=> S().scorch(el, {})); return P(ctx, 1400); }]]);
+reg('sk-immolation-src', 'fieldTick immolation → SkillFX.immolate on the source (once a round) + SkillFX.scorchMark on the burned units', [['A', '2026-10-16: the fire stays on the immolating card (inside its tile); the units it burns char', ctx=>{ const s = mine(ctx)[1]; S().immolate(s); [mine(ctx)[0], mine(ctx)[2], foe(ctx)[1]].forEach(el=> el && S().scorchMark(el)); return P(ctx, 1900); }],
+  ['B', 'Old: the source pulses, every victim gets its own flames (SkillFX.scorch)', ctx=>{ cls(mine(ctx)[1], 'immolate-pulse', 900); foe(ctx).forEach(el=> S().scorch(el, {})); return P(ctx, 1400); }]]);
 reg('sk-irradiated-src', LIVE + 'fieldTick irradiated (srcUid, once a round)', [['A', 'Sickly green rings, a spinning ☢, geiger flicker', ctx=>{ ctx.sound('geiger', 3); return X().radPulse(foe(ctx)[1]); }], ['B', 'Old: .irradiate-pulse', ctx=>{ cls(foe(ctx)[1], 'irradiate-pulse', 900); return P(ctx, 1000); }]]);
 reg('sk-wither', 'fifthPassVfx → witherSmokeVfx', [['A', 'Now: black smoke and a skull', ctx=>{ const el = foe(ctx)[1], r = el.getBoundingClientRect(); ctx.float(el, '💀 Wither', 'debuff');
   for(let i = 0; i < 5; i++){ const p = document.createElement('div'); p.className = 'wither-smoke' + (i === 0 ? ' skull' : ''); p.textContent = i === 0 ? '💀' : ''; Object.assign(p.style, {left:(r.left + r.width*(.25 + Math.random()*.5)) + 'px', top:(r.top + r.height*.6) + 'px'}); document.body.appendChild(p);

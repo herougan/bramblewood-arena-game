@@ -476,7 +476,8 @@ M.iceArrow = function(shooter, target, o){
   return done(draw + flight + 800);
 };
 // Volley: the archer looses three lofted arrows (SkillFX.volley) and a dark cloud of arrows arcs over and rains on the whole line.
-css('rain', `.fxa-rainarrow{width:2px; height:16px; background:linear-gradient(#3b2a1a, #1a120a); border-radius:1px;} .fxa-rainarrow::after{content:''; position:absolute; left:-3px; bottom:-3px; border:4px solid transparent; border-top:6px solid #c9c9c9;}`);
+// 2026-10-16 (user: "Arrow effect(s) are to be 30% smaller."): the rain arrows too (was 2 x 16 with a 4/6 px head)
+css('rain', `.fxa-rainarrow{width:1.5px; height:11px; background:linear-gradient(#3b2a1a, #1a120a); border-radius:1px;} .fxa-rainarrow::after{content:''; position:absolute; left:-2.25px; bottom:-2px; border:3px solid transparent; border-top:4px solid #c9c9c9;}`);
 M.arrowRain = function(shooter, targets, o){
   o = o || {}; const g = G(), F = S(), list = (targets || []).filter(Boolean); if(!g || !shooter || !list.length) return done(0);
   if(F && F.volley && o.lead !== false) F.volley(shooter, list.slice(0, 3), {draw:o.draw || 200, flight:o.flight || 320});

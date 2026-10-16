@@ -20,6 +20,11 @@ const tileOf = el=> (el && el.querySelector && el.querySelector('.card-tile')) |
 const centre = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2, w:r.width, h:r.height, r}; };
 const layer = (cls, html)=>{ const e = document.createElement('div'); e.className = 'sfx ' + cls; e.setAttribute('aria-hidden', 'true'); if(html) e.innerHTML = html; document.body.appendChild(e); return e; };
 const IMG = {arrow:'', fire:''};
+// The heal's plus, drawn (2026-10-16, user: "Heal's plusses look greyed out in the Effect lab - they should be green."): the ➕ emoji
+// is a grey glyph in the emoji fonts, so the rising pluses (and the heal number's icon, floatText) use this green one instead.
+const GREEN_PLUS = '<svg class="sfx-gplus" viewBox="0 0 24 24" width="1em" height="1em" aria-hidden="true" style="display:block; overflow:visible">'
+  + '<path d="M9.3 2.6h5.4v6.7h6.7v5.4h-6.7v6.7H9.3v-6.7H2.6V9.3h6.7z" fill="#46d768" stroke="#1d7f37" stroke-width="1.5" stroke-linejoin="round"/>'
+  + '<path d="M10.6 4.2h1.6v6.4H5.4" fill="none" stroke="#c9ffd4" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/></svg>';
 // delayedCall follows GSAP's global time scale (slow motion in the Lab, hit-stop in the game)
 const later = (fn, ms)=>{ const run = ()=>{ try{ fn && fn(); }catch(e){} }; const g = G(); if(g) g.delayedCall(Math.max(0, ms|0)/1000, run); else setTimeout(run, Math.max(0, ms|0)); };
 
@@ -70,7 +75,7 @@ function bowShot(shooter, target, o){
   const s = centre(shooter), aim = aimPoint(target);
   const ang = Math.atan2(aim.y - s.y, aim.x - s.x) * 180/Math.PI, rad = ang*Math.PI/180;
   const ux = Math.cos(rad), uy = Math.sin(rad);
-  const W = 76, H = 27;
+  const W = 53, H = 19; // 2026-10-16 (user: "Arrow effect(s) are to be 30% smaller."): was 76 x 27 (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, Pierce all fly this arrow)
   const src = o.fire ? (IMG.fire || IMG.arrow) : IMG.arrow;
   const a = layer('sfx-arrow' + (o.fire ? ' is-fire' : ''), src ? `<img src="${src}" alt="">` : '<span class="sfx-arrow-glyph">➶</span>');
   const tile = tileOf(shooter);
@@ -85,7 +90,7 @@ function bowShot(shooter, target, o){
   if(o.fire){
     const flame = layer('sfx-tipflame');
     const tipX = ()=> (g.getProperty(a, 'x') + W/2 + ux*W*0.46), tipY = ()=> (g.getProperty(a, 'y') + H/2 + uy*W*0.46);
-    const follow = ()=>{ g.set(flame, {x:tipX() - 9, y:tipY() - 9}); };
+    const follow = ()=>{ g.set(flame, {x:tipX() - 6.5, y:tipY() - 6.5}); };
     g.ticker.add(follow);
     g.fromTo(flame, {scale:.3, opacity:0}, {scale:1, opacity:1, duration:draw/1000, ease:'power1.out'});
     later(()=>{ g.ticker.remove(follow); flame.remove(); }, draw + 20);
@@ -179,20 +184,26 @@ function lightning(shooter, targets, o){
   svg.setAttribute('width', innerWidth); svg.setAttribute('height', innerHeight); document.body.appendChild(svg);
   const jag = (a, b)=>{ let d = `M${a.x},${a.y}`; const n = 7; for(let i = 1; i < n; i++){ const t = i/n; const nx = -(b.y - a.y), ny = b.x - a.x, L = Math.hypot(nx, ny)||1;
     const off = (Math.random()*2 - 1) * 16; d += ` L${a.x + (b.x - a.x)*t + nx/L*off},${a.y + (b.y - a.y)*t + ny/L*off}`; } return d + ` L${b.x},${b.y}`; };
+  // 2026-10-16 (user: "The chain lightning's bolts should start fading out as soon as they appear. The bolts should happen closer
+  // together (20%) faster."): each jump is its own group that starts fading the moment it is drawn (still re-jagging twice as it goes),
+  // and the jumps come 20% closer together (190 -> 152 ms).
+  const GAP = 152, g = G();
   chain.slice(1).forEach((t, i)=> later(()=>{
     const A = centre(chain[i]), B = centre(t);
-    for(let k = 0; k < 3; k++) later(()=>{ svg.innerHTML = `<path d="${jag(A, B)}" class="glow"/><path d="${jag(A, B)}"/>`; }, k*55);
+    const grp = document.createElementNS('http://www.w3.org/2000/svg', 'g'); svg.appendChild(grp);
+    for(let k = 0; k < 3; k++) later(()=>{ grp.innerHTML = `<path d="${jag(A, B)}" class="glow"/><path d="${jag(A, B)}"/>`; }, k*55);
+    if(g) g.fromTo(grp, {opacity:1}, {opacity:0, duration:.34, ease:'power1.in', onComplete:()=> grp.remove()}); else later(()=> grp.remove(), 300);
     later(()=>{ knock(t, Math.atan2(B.y - A.y, B.x - A.x)*180/Math.PI, .7); ring(B.x, B.y, 'sfx-zap', 70, 300); burst(B.x, B.y, 0, 'zap', 8);
       if(o.light) o.light(B.x, B.y, [0.75, 0.85, 1], true); if(o.onEachImpact) o.onEachImpact(t, i); }, 60);
-  }, i*190));
-  later(()=> svg.remove(), chain.length*190 + 220);
+  }, i*GAP));
+  later(()=> svg.remove(), chain.length*GAP + 420);
 }
 // Green rings and rising ➕ (2026-10-16, user: "The heal animation should include the + emoji."); the card brightens for a beat.
 function heal(target, o){
   o = o || {}; const g = G(); const c = centre(target);
   ring(c.x, c.y, 'sfx-heal', 110, 700); later(()=> ring(c.x, c.y, 'sfx-heal', 80, 600), 150);
   if(!g){ later(o.onDone, 600); return; }
-  for(let i = 0; i < 8; i++){ const p = layer('sfx-plus', '➕') /* the heal's ➕ (2026-10-16) */; g.set(p, {x:c.r.left + c.w*(0.15 + Math.random()*0.7), y:c.r.top + c.h*(0.5 + Math.random()*0.4), opacity:0, scale:.6});
+  for(let i = 0; i < 8; i++){ const p = layer('sfx-plus', GREEN_PLUS) /* the heal's plus, green (2026-10-16) */; g.set(p, {x:c.r.left + c.w*(0.15 + Math.random()*0.7), y:c.r.top + c.h*(0.5 + Math.random()*0.4), opacity:0, scale:.6});
     g.to(p, {y:'-=46', opacity:1, scale:1, duration:.35, delay:i*0.06, ease:'power1.out'}); g.to(p, {opacity:0, duration:.3, delay:i*0.06 + .45, onComplete:()=> p.remove()}); }
   const t = tileOf(target); g.fromTo(t, {filter:'brightness(1)'}, {filter:'brightness(1.35)', duration:.2, yoyo:true, repeat:1, clearProps:'filter', onComplete:o.onDone});
 }
@@ -382,6 +393,11 @@ const MORE_CSS = `
 .sfx-mist{width:70px; height:34px; border-radius:50%; background:radial-gradient(ellipse, rgba(225,245,255,.85), rgba(170,215,255,.35) 50%, rgba(170,215,255,0) 72%); filter:blur(3px);}
 .sfx-flake{color:#eaf6ff; font-size:11px; line-height:1; text-shadow:0 0 5px rgba(150,210,255,.95);}
 .sfx-rime{border-radius:12px; box-shadow:inset 0 0 0 2px rgba(220,240,255,.9), inset 0 0 28px 6px rgba(200,232,255,.85);}
+.sfx-flamebox{width:14px; height:26px; transform-origin:50% 100%;} .sfx-flamebox > .sfx-flame{display:block;}
+.sfx-immo{position:absolute; inset:0; pointer-events:none; z-index:12; border-radius:inherit;}
+.sfx-immo-haze{position:absolute; inset:0; border-radius:inherit;}
+.sfx-immo-f{position:absolute; bottom:-2px; width:14px; height:26px; transform-origin:50% 100%; display:block;} .sfx-immo-f > .sfx-flame{display:block;}
+.sfx-immo-e{position:absolute; bottom:8px; width:5px; height:5px; border-radius:50%; background:#ffc35a; box-shadow:0 0 8px 2px rgba(255,140,40,.8); display:block;}
 .sfx-flame{width:14px; height:26px; transform-origin:50% 100%; border-radius:50% 50% 45% 45% / 65% 65% 35% 35%; background:radial-gradient(ellipse at 50% 80%, #fff2b0 0, #ffb62e 35%, #f0521c 65%, rgba(200,40,10,0) 80%); filter:blur(.5px); animation:sfxFlick .14s steps(2) infinite alternate;}
 @keyframes sfxFlick{to{transform:scale(1.15, .88) skewX(6deg);}}
 /* 2026-10-15 (user: "The heat haze effect is nice - but needs to be redone abit. Looks too much like fax lines... maybe it's too thick,
@@ -465,25 +481,35 @@ function swarm(attacker, target, o){
   later(()=>{ knock(target, rnd(-120, -60), .7); ring(b.x, b.y, 'sfx-poison', 70, 380); call(o.onImpact); if(o.light) call(o.light, b.x, b.y, [1, .85, .35], false); }, fly*1000 + 120);
   later(()=> knock(target, rnd(60, 120), .45), fly*1000 + 320);
 }
-// Regenerate: green motes spiral in from around the card, then a soft heal ring and glow.
+// Regenerate (2026-10-16, user: "Regeneration's orbs should be completely transparent until and slowly fade in as they go into the
+// centre. Then the same +s from heal come about. I think the orb positions should start from the card rectangular border too, than
+// they just spin slightly, but mainly they descend into the centre. They are at peak opaqueness halfway into the descent. They fade
+// out as they go towards the centre."): the motes start spread along the card's rectangular edge, fully transparent; each sinks
+// toward the centre while turning only a little (about 30 degrees), its opacity rising to a peak halfway in and falling to nothing at
+// the centre (sin of the progress); then the heal's green pluses rise (healPlus) with a soft glow. opts.onDone fires as they start.
 function regen(target, o){
   o = o || {}; if(!ready() || !target){ later(o.onDone, 500); return; }
-  const g = G(), c = centre(target), n = 12;
+  const g = G(), c = centre(target), n = 14, dur = .95, P = 2*(c.w + c.h);
   for(let i = 0; i < n; i++){
-    const m = layer('sfx-mote'), st = {a:i/n*Math.PI*2, r:Math.max(c.w, c.h)*0.85};
-    g.set(m, {x:c.x + Math.cos(st.a)*st.r - 3, y:c.y + Math.sin(st.a)*st.r - 3, opacity:0, scale:.5});
-    g.timeline({delay:i*0.03, onComplete:()=> m.remove()})
-      .to(m, {opacity:1, scale:1, duration:.12})
-      .to(st, {a:st.a + Math.PI*1.4, r:6, duration:.6, ease:'power2.in', onUpdate:()=> g.set(m, {x:c.x + Math.cos(st.a)*st.r*0.75 - 3, y:c.y + Math.sin(st.a)*st.r - 3})}, 0)
-      .to(m, {opacity:0, scale:.3, duration:.12});
+    // a point on the card's border, spaced evenly round the perimeter with a little jitter
+    let d = ((i + rnd(.15, .85))/n)*P, ex, ey;
+    if(d < c.w){ ex = c.r.left + d; ey = c.r.top; }
+    else if(d < c.w + c.h){ ex = c.r.right; ey = c.r.top + (d - c.w); }
+    else if(d < 2*c.w + c.h){ ex = c.r.right - (d - c.w - c.h); ey = c.r.bottom; }
+    else { ex = c.r.left; ey = c.r.bottom - (d - 2*c.w - c.h); }
+    const m = layer('sfx-mote'), dx = ex - c.x, dy = ey - c.y, spin = rnd(.35, .6)*(i % 2 ? 1 : -1), st = {t:0};
+    const put = ()=>{ const k = 1 - st.t, a = spin*st.t, cs = Math.cos(a), sn = Math.sin(a);
+      g.set(m, {x:c.x + (dx*cs - dy*sn)*k - 3.5, y:c.y + (dx*sn + dy*cs)*k - 3.5, opacity:Math.sin(Math.PI*st.t), scale:1 - .45*st.t}); };
+    put();
+    g.to(st, {t:1, duration:dur, delay:i*.035, ease:'sine.inOut', onUpdate:put, onComplete:()=> m.remove()});
   }
   later(()=>{
-    // (2026-10-14, user: "Remove the green Z effect at the end": the zig-zag stitch line is gone; motes, ring and glow stay.)
-    ring(c.x, c.y, 'sfx-heal', c.w*1.3, 600);
-    g.fromTo(tileOf(target), {filter:'brightness(1) saturate(1)'}, {filter:'brightness(1.3) saturate(1.3)', duration:.22, yoyo:true, repeat:1, clearProps:'filter'});
+    // (2026-10-14, user: "Remove the green Z effect at the end": no stitch line.) The pluses from Heal, and a soft glow.
+    healPlus(target);
+    g.fromTo(tileOf(target), {filter:'brightness(1) saturate(1)'}, {filter:'brightness(1.25) saturate(1.25)', duration:.22, yoyo:true, repeat:1, clearProps:'filter'});
     if(o.light) call(o.light, c.x, c.y, [.5, 1, .55], false);
     call(o.onDone);
-  }, 660);
+  }, Math.round((dur + n*.035)*1000) - 120);
 }
 // Poison cloud: green puffs billow up around the card, bubbles rise, the card sickens for a beat.
 function poisonCloud(target, o){
@@ -802,7 +828,9 @@ function scorch(target, o){
   try{ hz.style.borderRadius = getComputedStyle(tl).borderRadius || '10px'; }catch(e){}
   g.set(hz, {opacity:0}); g.timeline({onComplete:()=> hz.remove()}).to(hz, {opacity:1, duration:.2}).to(hz, {opacity:0, duration:.6, delay:.9, ease:'power1.in'});
   setTimeout(()=>{ if(hz.isConnected) hz.remove(); }, 2400);
-  for(let i = 0; i < 9; i++){ const f = layer('sfx-flame'), x = c.r.left + c.w*(i/8)*.9 + c.w*.05;
+  // 2026-10-16: the flicker (CSS sfxFlick, a transform keyframe) sits on an inner flame; on the placed layer itself it blended
+  // with GSAP's translate and threw the flames halfway across the screen on every flicker step.
+  for(let i = 0; i < 9; i++){ const f = layer('sfx-flamebox', '<i class="sfx-flame"></i>'), x = c.r.left + c.w*(i/8)*.9 + c.w*.05;
     g.set(f, {x:x - 7, y:c.r.bottom - 26 + rnd(-4, 6), scaleY:0, opacity:1});
     g.timeline({delay:i*0.03 + rnd(0, .08), onComplete:()=> f.remove()}).to(f, {scaleY:rnd(1, 1.8), duration:.25, ease:'power2.out'}).to(f, {scaleY:rnd(.8, 1.4), duration:.3, yoyo:true, repeat:1}).to(f, {scaleY:0, opacity:0, duration:.3}); }
   for(let i = 0; i < 10; i++){ const e = layer('sfx-bit sfx-bit-ember'); g.set(e, {x:c.r.left + rnd(.1, .9)*c.w, y:c.r.bottom - 10, opacity:0});
@@ -811,16 +839,41 @@ function scorch(target, o){
   later(()=>{ t.classList.add('sfx-scorch'); if(o.light) call(o.light, c.x, c.r.bottom, [1, .55, .18], false); call(o.onImpact); }, 250);
   later(()=> t.classList.remove('sfx-scorch'), 1400);
 }
+// Immolation (2026-10-16, user: "Immolation should stick on the card - not teleport everywhere."): the fire burns on the immolating
+// card itself, once a round: flames rise from its lower edge, a heat shimmer and embers, all inside its tile, so they ride along with
+// the card (lunges, re-flows) instead of being drawn on the screen where it stood. The units it burns only char (scorchMark).
+function immolate(src, o){
+  o = o || {}; const t = tileOf(src); if(!ready() || !t){ call(o.onDone); return; }
+  const g = G(), box = document.createElement('div'); box.className = 'sfx-immo'; box.setAttribute('aria-hidden', 'true'); t.appendChild(box);
+  const hz = document.createElement('div'); hz.className = 'sfx-haze sfx-immo-haze'; box.appendChild(hz); g.set(hz, {opacity:0});
+  g.timeline().to(hz, {opacity:1, duration:.2}).to(hz, {opacity:0, duration:.6, delay:.9, ease:'power1.in'});
+  for(let i = 0; i < 8; i++){ const f = document.createElement('i'); f.className = 'sfx-immo-f'; f.innerHTML = '<i class="sfx-flame"></i>';
+    f.style.left = (4 + i*(88/7)).toFixed(1) + '%'; box.appendChild(f); g.set(f, {scaleY:0, xPercent:-50});
+    g.timeline({delay:i*0.03 + rnd(0, .08)}).to(f, {scaleY:rnd(1.1, 1.9), duration:.25, ease:'power2.out'}).to(f, {scaleY:rnd(.8, 1.4), duration:.3, yoyo:true, repeat:1}).to(f, {scaleY:0, opacity:0, duration:.3}); }
+  for(let i = 0; i < 9; i++){ const e = document.createElement('i'); e.className = 'sfx-immo-e'; e.style.left = rnd(10, 90).toFixed(0) + '%'; box.appendChild(e); g.set(e, {opacity:0});
+    g.timeline({delay:.15 + i*0.07}).to(e, {opacity:1, duration:.05}).to(e, {y:-rnd(45, 90), x:rnd(-12, 12), opacity:0, duration:.9, ease:'power1.out'}); }
+  t.classList.add('sfx-scorch'); src.classList && src.classList.add('immolate-pulse');
+  later(()=>{ if(o.light){ const c = centre(t); call(o.light, c.x, c.r.bottom, [1, .55, .18], false); } }, 200);
+  later(()=>{ t.classList.remove('sfx-scorch'); src.classList && src.classList.remove('immolate-pulse'); }, 1300);
+  later(()=>{ box.remove(); call(o.onDone); }, 1900);
+}
+// A unit burned by an Immolation neighbour: its edge chars for a moment (on the tile itself, no flames of its own).
+function scorchMark(target){ const t = tileOf(target); if(!t) return; t.classList.add('sfx-scorch'); later(()=> t.classList.remove('sfx-scorch'), 900); }
 // Lantern: a lantern swings above the card and throws a warm, flickering pool of light; moths circle it.
 function lanternGlow(target, o){
   o = o || {}; if(!ready() || !target){ call(o.onDone); return; }
-  const g = G(), c = centre(target), D = Math.max(c.w, c.h)*2.6, dur = (o.duration || 1800)/1000;
+  // 2026-10-16 (user: "Lantern glow is too bright. but it is also not 'wide' enough. And the brightness shouldnt cut past the battlefield
+  // board"): the pool is wider (3.6 cards) and dimmer (peak .6), and it is cut at the battlefield's edge when it sits on one.
+  const g = G(), c = centre(target), D = Math.max(c.w, c.h)*3.6, dur = (o.duration || 1800)/1000, PK = .6;
   const pool = layer('sfx-glowpool'); g.set(pool, {x:c.x - D/2, y:c.y - D/2, width:D, height:D, scale:.3, opacity:0});
+  { const bf = target.closest && target.closest('#battlefieldEl, .battlefield'); if(bf){ const B = bf.getBoundingClientRect(), L = c.x - D/2, T = c.y - D/2;
+    const it = Math.max(0, B.top - T), il = Math.max(0, B.left - L), ib = Math.max(0, T + D - B.bottom), ir = Math.max(0, L + D - B.right);
+    if(it || il || ib || ir) pool.style.clipPath = `inset(${it.toFixed(0)}px ${ir.toFixed(0)}px ${ib.toFixed(0)}px ${il.toFixed(0)}px round 14px)`; } }
   const lan = layer('sfx-lantern', '🏮'); g.set(lan, {x:c.x - 12, y:c.r.top - 34, opacity:0, rotation:-16});
   g.timeline({onComplete:()=>{ pool.remove(); lan.remove(); call(o.onDone); }})
-    .to(pool, {scale:1, opacity:1, duration:.4, ease:'power2.out'}, 0).to(lan, {opacity:1, y:'+=6', duration:.25}, 0)
+    .to(pool, {scale:1, opacity:PK, duration:.4, ease:'power2.out'}, 0).to(lan, {opacity:1, y:'+=6', duration:.25}, 0)
     .to(lan, {rotation:14, duration:.45, ease:'sine.inOut', yoyo:true, repeat:Math.max(1, Math.round(dur/.45) - 1)}, .1)
-    .to(pool, {keyframes:[{opacity:.8, duration:.12}, {opacity:1, duration:.2}, {opacity:.85, duration:.1}, {opacity:1, duration:.3}]}, .4)
+    .to(pool, {keyframes:[{opacity:PK*.8, duration:.12}, {opacity:PK, duration:.2}, {opacity:PK*.85, duration:.1}, {opacity:PK, duration:.3}]}, .4)
     .to([pool, lan], {opacity:0, duration:.4}, dur);
   for(let i = 0; i < 3; i++){ const mo = layer('sfx-moth'), st = {a:i*2.1}; g.set(mo, {opacity:0});
     g.timeline({delay:.3, onComplete:()=> mo.remove()}).to(mo, {opacity:1, duration:.2})
@@ -979,7 +1032,7 @@ function windField(host, strength, dir){
 function windFieldClear(host){ if(!host) return; host.querySelectorAll(':scope > .sfx-windfield').forEach(cur=>{ cur.classList.remove('is-in'); cur.classList.add('is-out'); setTimeout(()=> cur.remove(), 700); }); }
 function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || ''; }
 root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, boomerangThrow, boomerangCastle, boomerangReturn, shieldDrop, backstab, elementDeath, feathers};
-Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, evasiveDodgeHit, cleave, cleaveSwing, pounceOnto, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, lanternGlow,
+Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, evasiveDodgeHit, cleave, cleaveSwing, pounceOnto, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, immolate, scorchMark, lanternGlow,
   shockwave, castleCrumble, levelUp, unlockSparkle, skyDrop, windField, windFieldClear});
 // ---- 2026-10-14 (sixth pass): Fireball, Meteor, Banana.
 //   SkillFX.fireball(caster, target, opts{sides, onImpact, light})   SkillFX.meteor(target, opts{sides, host, onImpact, light})
@@ -1165,6 +1218,21 @@ function swoop(attacker, target, o){
   const air = drawPath(sv, d, 'air'), core = drawPath(sv, d, 'core');
   g.timeline({onComplete:()=> sv.remove()}).to([air, core], {strokeDashoffset:0, duration:fly, ease:'power2.in'}).to(sv, {opacity:0, duration:.3});
   later(()=>{ feathers(b.x, b.y - b.h*.15, 8); ring(b.x, b.y, 'sfx-string', b.w*1.3, 320); knock(target, a.y < b.y ? 90 : -90, .9); call(o.onImpact); }, fly*1000);
+}
+// Flying attack (2026-10-16, user: "Many flying cards throw a 'line' at the enemy to attack. Make them attack normally is okay.
+// Commensurately, using the shadows, make it look like it's descending for the attack. So normal anim. just the shadows draw closer
+// to the card."): the flyer lunges like any unit (animateAttacker); this moves its ground shadow in step with the lunge and pulls
+// it in under the card (closer, a little smaller), as if the flyer drops toward the ground to strike, then lets it drift back.
+// el: the .board-card (.is-flying, with its .fly-shadow). o: {dir (1 = your row, lunging up; -1 = the enemy row), leanX, windup, strike} (ms).
+// The shadow's own hover animation owns its transform, so this tweens CSS variables that feed its translate / scale properties.
+function flyDescend(el, o){
+  o = o || {}; const g = G(), sh = el && el.querySelector && el.querySelector(':scope > .fly-shadow'); if(!g || !sh || reduce()) return;
+  const dir = o.dir || 1, lx = o.leanX || 0, wu = (o.windup == null ? 390 : o.windup)/1000, st = (o.strike == null ? 570 : o.strike)/1000;
+  g.killTweensOf(sh); g.set(sh, {'--fs-x':'0px', '--fs-y':'0px', '--fs-s':1}); // start from rest (an unset variable tweens from 0)
+  g.timeline({onComplete:()=>{ ['--fs-x', '--fs-y', '--fs-s'].forEach(k=> sh.style.removeProperty(k)); }})
+    .to(sh, {'--fs-x':`${(lx*.35 + 2).toFixed(1)}px`, '--fs-y':`${(dir*9 - 5).toFixed(1)}px`, '--fs-s':.9, duration:wu, ease:'power2.in'})
+    .to(sh, {'--fs-x':`${(lx + 4).toFixed(1)}px`, '--fs-y':`${(dir*-15 - 11).toFixed(1)}px`, '--fs-s':.74, duration:st*.55, ease:'back.out(2)'})
+    .to(sh, {'--fs-x':'0px', '--fs-y':'0px', '--fs-s':1, duration:st*.45 + .15, ease:'power2.out'});
 }
 // Tailwind (Flying): a gust of wind streaks across the card and it leans with it.
 function gust(target, o){
@@ -1460,7 +1528,7 @@ function stealthSlip(attacker, castle, o){
   g.set(gh, {filter:'brightness(.2) saturate(0) blur(1px)', opacity:0});
   g.timeline({delay:.1, onComplete:()=>{ gh.remove(); call(o.onDone); }}).to(gh, {opacity:.55, duration:.1}).to(gh, {x:`+=${b.x - a.x}`, y:`+=${b.y - a.y}`, scale:.6, duration:.35, ease:'power2.in'}, 0).to(gh, {opacity:0, duration:.15});
 }
-Object.assign(root.SkillFX, {swoop, gust, splash, armorBlock, forkProngs, pierceThrough, stunStars, freezeEncase, sleepZzz, paralyzeSpark, acidCorrode, lifeDrain, bloomPollen,
+Object.assign(root.SkillFX, {swoop, flyDescend, gust, splash, armorBlock, forkProngs, pierceThrough, stunStars, freezeEncase, sleepZzz, paralyzeSpark, acidCorrode, lifeDrain, bloomPollen,
   fearShiver, curseDrain, targetMark, blindInk, mirrorFlash, reviveRise, summonPortal, lootArc, prayerLight, espritAura, rageFlare, scarMark, clockTick, parry, crownCrack, stealthSlip});
 // ---- 2026-10-15 (ninth pass): the Bolts (user: "They just represents 'spits' of something at the enemy. Fire bolt, Acid bolt, Poison
 // bolt etc.") and Chilli (user: "New skill Chilli.").
@@ -1745,9 +1813,37 @@ function cloudShadows(host, on){
 // Heal: a few ➕ rise from the card (the heal's own plus, 2026-10-16: "The heal animation should include the + emoji.").
 function healPlus(target, o){
   o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
-  for(let i = 0; i < 4; i++){ const p = layer('sfx-w2-plus', '➕'); g.set(p, {x:c.r.left + c.w*rnd(.2, .8), y:c.r.top + c.h*rnd(.45, .8), xPercent:-50, yPercent:-50, opacity:0, scale:.5});
+  for(let i = 0; i < 4; i++){ const p = layer('sfx-w2-plus', GREEN_PLUS) /* green, not the grey ➕ glyph (2026-10-16) */; g.set(p, {x:c.r.left + c.w*rnd(.2, .8), y:c.r.top + c.h*rnd(.45, .8), xPercent:-50, yPercent:-50, opacity:0, scale:.5});
     g.timeline({delay:i*.09, onComplete:()=> p.remove()}).to(p, {opacity:1, scale:1, duration:.14, ease:'back.out(3)'}).to(p, {y:`-=${rnd(30, 50)}`, opacity:0, duration:.55, ease:'power1.in'}); }
   later(o.onDone, 700);
 }
+root.SkillFX.GREEN_PLUS = GREEN_PLUS;
+// Heal against Poison (2026-10-16, user: "When regeneration of heal are used to reduce poison, a grey poison counter jumps out of the
+// creature's grey poison counters."): one small ☠ counter, dressed like the card's own Poison badge, hops out of that badge and fades
+// for every counter the heal takes off (up to 6 shown, 110 ms apart). o.onEach(i, last) fires as each one leaves, so the caller can
+// count the badge down in step.
+function poisonPop(target, n, o){
+  o = o || {}; n = Math.max(0, n|0); const g = G(), t = tileOf(target); const shown = Math.min(6, n);
+  const done = ()=>{ for(let i = 0; i < n; i++) call(o.onEach, i, i === n - 1); };
+  if(!g || !t || !n || reduce()){ done(); return; }
+  const b = t.querySelector('.abadge.poison'), br = (b || t).getBoundingClientRect();
+  let cs = null; try{ cs = b ? getComputedStyle(b) : null; }catch(e){}
+  const x0 = b ? br.left + br.width*.3 : br.left + br.width*.2, y0 = b ? br.top + br.height/2 : br.bottom - 14;
+  for(let i = 0; i < shown; i++) later(()=>{
+    const c = layer('sfx-poisonpop', '☠');
+    // sized from the badge as drawn (the board may be scaled), so the counter is the badge's own size
+    const bh = Math.max(10, Math.min(26, b ? br.height : 14));
+    c.style.cssText += `; display:flex; align-items:center; justify-content:center; line-height:1; font-weight:800; padding:0 2px; height:${bh.toFixed(1)}px; min-width:${bh.toFixed(1)}px; border-radius:${(bh*.32).toFixed(1)}px;
+      font-size:${(bh*.72).toFixed(1)}px; color:${cs ? cs.color : '#d8dde2'}; background:${cs && cs.backgroundColor !== 'rgba(0, 0, 0, 0)' ? cs.backgroundColor : 'rgba(120,128,136,.92)'};
+      box-shadow:0 1px 2px rgba(0,0,0,.45); z-index:9992;`;
+    const side = i % 2 ? 1 : -1, hx = side*rnd(10, 22), hy = -rnd(18, 30);
+    g.set(c, {x:x0, y:y0, xPercent:-50, yPercent:-50, scale:.9, opacity:1});
+    g.timeline({onComplete:()=> c.remove()})
+      .to(c, {x:x0 + hx*.6, y:y0 + hy, rotation:side*rnd(12, 30), scale:1.15, duration:.22, ease:'power2.out'})
+      .to(c, {x:x0 + hx, y:y0 + hy*.35, rotation:side*rnd(40, 70), scale:.8, opacity:0, duration:.38, ease:'power1.in'});
+    if(i === shown - 1){ for(let k = i; k < n; k++) call(o.onEach, k, k === n - 1); } else call(o.onEach, i, false);
+  }, i*110);
+}
+root.SkillFX.poisonPop = poisonPop;
 Object.assign(root.SkillFX, {w2Css, venomBite, toxinMark, weakenDrain, wilt, bulldozeShove, vineBind, squeeze, invincibleBlock, unveil, gasCloud, absoluteZero, trapSet, trapSnap, nova, crystalForm, cure, tauntCall, cloudShadows, healPlus});
 })(typeof window !== 'undefined' ? window : globalThis);

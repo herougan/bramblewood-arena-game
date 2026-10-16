@@ -2294,9 +2294,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Heal (2026-10-10, user: "Heal N heals for N health. But if they have bleed counters - it removes them instead (if
   // there's extra heal left over, it goes to health)"). Every explicit heal (the Heal action, Regeneration, Bloom,
   // Spring Rain) goes through here. Returns the HP actually restored.
+  // 2026-10-16 (user: "When regeneration of heal are used to reduce poison ... Note: it takes heal values to remove poison counters -
+  // priority. Only the remaining left over heals the unit."): Poison comes off first, 1 counter per 1 heal (a 'healPoison' statusFx
+  // reports how many and how many are left), then Bleed as before, and only what is left restores Health.
   function applyHeal(card, amount, side, events){
     let n = Math.max(0, amount|0); if(!card || card.hp<=0 || !n) return 0;
     if(card.wither > 0) return 0; // Wither (2026-10-14): nothing heals a withering unit
+    const cure = Math.min(n, card.poison|0);
+    if(cure > 0){ card.poison -= cure; n -= cure; if(recordEvents && events) events.push({type:'statusFx', kind:'healPoison', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:cure, left:card.poison}); }
     const stanch = Math.min(n, card.bleed|0);
     if(stanch > 0){ card.bleed -= stanch; n -= stanch; if(recordEvents && events) events.push({type:'statusFx', kind:'stanch', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:stanch}); }
     const healed = Math.min(card.maxHp - card.hp, n); if(healed > 0) card.hp += healed;
@@ -4472,7 +4477,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // the board, capped at its own max HP — feeds the new On Heal/On Healed/On Ally Healed
         // triggers (see fireHealTriggers) exactly like any other heal source.
         // 2026-10-14 (user: "Do not regenerate when the unit is at full health"): nothing at all at full health, not even a bleed stanch.
-        if(c.hp>0 && c.hp < c.maxHp && def.effects && def.effects.regen){
+        if(c.hp>0 && (c.hp < c.maxHp || c.poison > 0) && def.effects && def.effects.regen){ // + a poisoned unit: the heal takes the Poison off first (2026-10-16)
           const healed = applyHeal(c, def.effects.regen, sideOf(pl.id), events);
           if(healed>0){ fireHealTriggers(players, sideOf, pl.id, c, c, healed, stats, events); }
         }
@@ -4480,7 +4485,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // itself, it heals a random OTHER damaged ally on the same board, every round it's on
         // the field. No-op if every other ally is already at full HP (or there are none).
         if(c.hp>0 && def.effects && def.effects.bloom && !c.stunned){ // a stunned unit skips its upkeep actions
-          const others = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && (o.hp<o.maxHp || o.bleed>0));
+          const others = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && (o.hp<o.maxHp || o.bleed>0 || o.poison>0)); // + Poison (2026-10-16)
           if(others.length){
             const bloomTarget = others[Math.floor(rnd()*others.length)];
             const bloomHealed = applyHeal(bloomTarget, def.effects.bloom + ((pl.perks && pl.perks.pollen) || 0), sideOf(pl.id), events); // + Wildpath "Pollen Drift"
@@ -4491,14 +4496,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // weakest wounded ally (the lowest Health right now, not itself; ties at random) for N. A stunned nurse skips it.
         if(c.hp>0 && def.effects && def.effects.nursing && !c.stunned){
           const n = def.effects.nursing === true ? 2 : (Number(def.effects.nursing)||0);
-          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && !o.gap && (o.hp<o.maxHp || o.bleed>0));
+          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && !o.gap && (o.hp<o.maxHp || o.bleed>0 || o.poison>0)); // + Poison (2026-10-16)
           if(n > 0 && hurt.length){ const lo = Math.min(...hurt.map(o=> o.hp)), pool = hurt.filter(o=> o.hp === lo), tgt = pool[Math.floor(rnd()*pool.length)];
             const h = applyHeal(tgt, n, sideOf(pl.id), events);
             if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:tgt.uid, targetDefId:tgt.defId, amount:h, cause:'nursing'}); fireHealTriggers(players, sideOf, pl.id, c, tgt, h, stats, events); } }
         }
         // Healing N (Ecclesia, 2026-10-10): heals the most wounded ally (itself included) for N.
         if(c.hp>0 && def.effects && def.effects.healing && !c.stunned){
-          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && (o.hp<o.maxHp || o.bleed>0)).sort((a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp));
+          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && (o.hp<o.maxHp || o.bleed>0 || o.poison>0)).sort((a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp)); // + Poison (2026-10-16)
           if(hurt.length){ const h = applyHeal(hurt[0], def.effects.healing, sideOf(pl.id), events); if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:hurt[0].uid, targetDefId:hurt[0].defId, amount:h, cause:'healing'}); fireHealTriggers(players, sideOf, pl.id, c, hurt[0], h, stats, events); } }
         }
         // Cure N (2026-10-16, user: "Cure."): every upkeep it cures your most afflicted unit (itself included): up to N Poison, then

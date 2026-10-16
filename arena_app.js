@@ -1158,7 +1158,7 @@ const ACTION_DEFS = [
   // NOT, since this isn't damage, it's direct removal).
   {key:'exile', label:'Exile', fields:['who','sub','targets'], whoOptions:['self','ally','enemy','any'], desc:'Send a target to the Removal Zone instead of the graveyard. "Self" only works paired with On Death (redirects where this card\'s own death sends it); Ally/Enemy instantly removes a live target from the board right now.'},
   {key:'swapPositions', label:'Swap', fields:[], desc:'Swaps the board positions of two random live enemy creatures. No-op with fewer than 2. (The Scurry passive uses this same action under the hood.)'},
-  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Bleed counters are removed first, then any heal left over restores HP. Fires On Heal/On Healed/On Ally Healed."},
+  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Poison counters are removed first (1 per heal), then Bleed counters, then any heal left over restores HP. Fires On Heal/On Healed/On Ally Healed."}, // + Poison first (2026-10-16)
   {key:'mindControl', label:'Mind Control', fields:['sub'], subOptions:['random','adjacent','furthest'], desc:"Takes a unit from the opposing field and puts it on this side, if there's a free slot."},
   {key:'stunPlayer', label:'Player Stun', fields:['count'], desc:"The enemy player skips their turn: they can't play cards until the next round."},
   {key:'cleanse', label:'Cleanse', fields:['amount','who','sub','targets'], desc:"Cleanse N: remove up to N harmful counters from the chosen target (this card by default): a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
@@ -7885,7 +7885,7 @@ function triggerPreviewText(t){
     case 'exileSelf': doText = `exile itself instead of going to the graveyard`; break;
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
     case 'swapPositions': doText = `swap two random enemy units' positions`; break;
-    case 'heal': doText = `heal ${t.who && t.who!=='self' ? whoTarget : 'itself'} for ${amt} (Bleed first, capped at max HP)`; break;
+    case 'heal': doText = `heal ${t.who && t.who!=='self' ? whoTarget : 'itself'} for ${amt} (Poison, then Bleed first, capped at max HP)`; break; // 2026-10-16
     case 'shield': doText = `give ${t.who === 'ally' && t.sub === 'all' ? 'every ally' : t.who && t.who!=='self' ? whoTarget : 'itself'} ${amt} Shield (temporary Health)`; break; // 2026-10-14
     case 'mindControl': doText = `take control of a ${t.sub||'random'} enemy unit`; break;
     case 'stunPlayer': doText = `make the enemy player skip ${t.count>1 ? t.count + ' turns' : 'their turn'}`; break;
@@ -26697,17 +26697,38 @@ function unitLightKindOf(c, d){
 // with a soft hole over every lit unit, so a leader shows faintly and a Light Aura unit clearly. Positions are read after each render.
 function syncUnitLightPools(){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  try{ clipLightsToBoard(bf); }catch(e){}
   if(!bf.classList.contains('bf-lantern')){ bf.style.removeProperty('--unit-lights'); return; }
   const r = bf.getBoundingClientRect(); if(!r.width) return;
   const zoom = bf.offsetWidth ? r.width / bf.offsetWidth : 1;
   const pools = [...bf.querySelectorAll('.board-card .unit-light')].map(sp=>{ const card = sp.closest('.board-card'); const t = card && (card.querySelector('.card-tile') || card); if(!t) return '';
     const b = t.getBoundingClientRect(); if(!b.width) return '';
     const x = ((b.left + b.width/2) - r.left) / zoom, y = ((b.top + b.height/2) - r.top) / zoom, k = sp.classList.contains('ul-leader') ? 'leader' : 'aura';
-    const rad = Math.round((k === 'leader' ? 0.85 : 1.35) * b.width / zoom), core = k === 'leader' ? 0.62 : 0.2;
+    // 2026-10-16 (user: "Lantern glow is too bright. but it is also not 'wide' enough"): a Light Aura opens a wider, dimmer hole
+    const rad = Math.round((k === 'leader' ? 0.85 : 2.05) * b.width / zoom), core = k === 'leader' ? 0.62 : 0.36;
     return `radial-gradient(circle ${rad}px at ${x.toFixed(0)}px ${y.toFixed(0)}px, rgba(0,0,0,${core}) 0, rgba(0,0,0,${(core + 1) / 2}) 45%, #000 100%)`; }).filter(Boolean);
   if(pools.length) bf.style.setProperty('--unit-lights', pools.join(', ')); else bf.style.removeProperty('--unit-lights');
 }
 if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ try{ syncUnitLightPools(); }catch(e){} }, {passive:true});
+// Light stays on the board (2026-10-16, user: "the brightness shouldnt cut past the battlefield board, me thinks. - if this is
+// possible"): every unit's light pool (.unit-light, and the Lantern carrier's .fxb-pool) is wider than its card and used to spill
+// over the hand, the HUD and the page (the battlefield only clips 90 px out, for lunges). Each pool gets a clip-path that cuts it at
+// the battlefield's own edge (corners rounded like the board), worked out in the pool's own coordinates. Re-done after each render and
+// a few times a second while the scene is dark, so pools on cards that slide or lunge stay inside.
+function clipLightsToBoard(bf){
+  bf = bf || document.getElementById('battlefieldEl'); if(!bf) return;
+  const pools = bf.querySelectorAll('.board-card .unit-light, .board-card .fxb-pool'); if(!pools.length) return;
+  const B = bf.getBoundingClientRect(); if(!B.width) return;
+  const rad = parseFloat(getComputedStyle(bf).borderTopLeftRadius) || 0;
+  pools.forEach(p=>{
+    const R = p.getBoundingClientRect(), w = p.offsetWidth, h = p.offsetHeight; if(!R.width || !w || !h) return;
+    const sx = R.width / w, sy = R.height / h;
+    const t = Math.max(0, (B.top - R.top) / sy), l = Math.max(0, (B.left - R.left) / sx), b = Math.max(0, (R.bottom - B.bottom) / sy), r = Math.max(0, (R.right - B.right) / sx);
+    const v = (t || l || b || r) ? `inset(${t.toFixed(1)}px ${r.toFixed(1)}px ${b.toFixed(1)}px ${l.toFixed(1)}px round ${(rad / sx).toFixed(1)}px)` : '';
+    if(p.style.clipPath !== v) p.style.clipPath = v; });
+}
+if(typeof window !== 'undefined') setInterval(()=>{ try{ if(document.hidden) return; const bf = document.getElementById('battlefieldEl');
+  if(bf && (bf.classList.contains('is-dark-scene') || bf.classList.contains('bf-lantern'))) clipLightsToBoard(bf); }catch(e){} }, 250);
 function bountyHoldingNow(){
   const m = matchState; if(!m || m.over || m.resolving) return false;
   return m.selectedUid!=null || !!(bwPressedCard && bwPressedCard.isConnected) || !!document.querySelector('#handStrip .card-tile.dragging, #leaderWidget.dragging, .hand-drag-ghost');
@@ -31339,6 +31360,7 @@ function logText(ev){
         counter: `counterattacked ${nm(ev.targetDefId)} for ${ev.amount} ↩️`,
         cleanse: ev.amount ? `cleansed ${ev.amount} ailment${ev.amount===1?'':'s'} ✨` : `cleansed itself of all ailments ✨`,
         stanch: `stopped ${ev.amount} Bleed with its healing 🩹`,
+        healPoison: `healed away ${ev.amount} Poison${ev.left ? ` (${ev.left} left)` : ''} before any Health ☠`, // 2026-10-16
         shieldCall: `called a Guardian shield in front of ${nm(ev.targetDefId)} 🛡️`,
         grit: `toughened up from the fight (+${ev.amount}⚔) 💪`,
         shellUp: `went into its shell (+${ev.amount} Armor, +${ev.amount} temporary Health) 🐚`,
@@ -31834,7 +31856,10 @@ function floatText(el, text, cls){
   // 2026-10-08: every number (not just crits) bursts out on a starburst in its own colour; the burst fades fast.
   const calm = reducedMotion() || !fxAtLeast('low');
   const burst = !calm && /\d/.test(num) && num.length <= 4;
-  f.innerHTML = (burst ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico">${icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`;
+  // 2026-10-16 (user: "Heal's plusses look greyed out ... they should be green."): the ➕ glyph is grey in the emoji fonts; the heal's
+  // icon is SkillFX's green plus instead.
+  const gplus = icon === '➕' && window.SkillFX && SkillFX.GREEN_PLUS;
+  f.innerHTML = (burst ? '<span class="df-burst" aria-hidden="true"></span>' : '') + (icon ? `<span class="df-ico${gplus ? ' df-gplus' : ''}">${gplus ? SkillFX.GREEN_PLUS : icon}</span>` : '') + `<span class="df-num" data-t="${escapeAttr(num)}">${escapeHtml(num)}</span>`;
   f.dataset.t = raw;
   // Placement (2026-10-08, user: "The numbers should appear higher on the card (opposing field). For our side
   // ... greater x-variation (by 15%)"): enemy-row numbers start high on the card; ours keep their spot and fan
@@ -32022,6 +32047,8 @@ function animateAttacker(attUid, isMine, opts){
       const rot = opts.toCastle ? Math.max(-10, Math.min(10, leanX*0.18)) : 0;
       const tl = gsap.timeline({onComplete:()=> { attackingUids.delete(String(attUid)); el.classList.remove('is-attacking'); }});
       if(opts.scared){ try{ floatText(el, '😨', 'debuff'); }catch(e){} tl.to(tile, {keyframes:[{x:-4, rotation:-3},{x:4, rotation:3},{x:-3, rotation:-2},{x:3, rotation:2},{x:0, rotation:0}], duration:Math.max(.25, windup/1000), ease:'none'}); }
+      // 2026-10-16: a flyer's shadow draws in under it during the lunge, so the swing reads as a dive (SkillFX.flyDescend)
+      if(el.classList.contains('is-flying') && !opts.scared){ try{ if(window.SkillFX && SkillFX.flyDescend) SkillFX.flyDescend(el, {dir, leanX, windup, strike}); }catch(e){} }
       tl
         .to(tile, {y:dir*9, x:leanX*0.35, rotation:rot*0.4, scale:.95, duration:windup/1000, ease:'power2.in'})
         .to(tile, {y:dir*-15, x:leanX, rotation:rot, scale:opts.toCastle?1.1:1.06, duration:(strike*0.55)/1000, ease:'back.out(3)'})
@@ -32186,7 +32213,7 @@ function spawnArrowProjectile(fromEl, toEl, fire){
   const src = fire ? (FIRE_ARROW_PNG || ARROW_PNG) : ARROW_PNG;
   el.innerHTML = src ? `<img src="${src}" alt="">` : '<span class="arrow-fallback">➶</span>';
   document.body.appendChild(el);
-  const ms = arrowFlightMs(), W = 76, H = 27;
+  const ms = arrowFlightMs(), W = 53, H = 19; // 2026-10-16 (user: "Arrow effect(s) are to be 30% smaller."): was 76 x 27
   if(!hasGsap()){ setTimeout(()=> el.remove(), ms); return; }
   gsap.set(el, {x:sx - W/2, y:sy - H/2, rotation:ang, opacity:1, scaleX:.7});
   const tl = gsap.timeline({onComplete:()=> el.remove()});
@@ -32547,7 +32574,7 @@ function labSkillFx(ev){
   const defs = getCardDefs(), el = uid=> uid == null ? null : boardCardEl(uid), fxOf = id=> ((defs[id]||{}).effects)||{};
   const bf = document.getElementById('battlefieldEl');
   switch(ev.type){
-    case 'heal': if(ev.attUid != null && ev.attUid === ev.targetUid && (ev.amount||0) > 0 && F.regen && skillFxOnce('regen' + ev.targetUid)){ const t = el(ev.targetUid); if(t) F.regen(t); } break;
+    case 'heal': break; // Regeneration's motes play from the heal handler (renderVfxForEvent), so its number and pluses follow them (2026-10-16)
     case 'poisonTick': if(F.poisonCloud && skillFxOnce('poison' + ev.uid)){ const t = el(ev.uid); if(t) F.poisonCloud(t); } break;
     case 'bleedTick': if(F.bleedDrip && skillFxOnce('bleed' + ev.uid)){ const t = el(ev.uid); if(t) F.bleedDrip(t); } break;
     case 'thorns': if(F.thorns){ const d = el(ev.fromUid), a = el(ev.targetUid); if(d && a) F.thorns(d, a); } break;
@@ -32555,6 +32582,10 @@ function labSkillFx(ev){
     case 'earthquake': if(F.earthquake && bf){ const foe = [...bf.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].filter(x=> x.querySelector('.card-tile')).slice(0, 8); if(foe.length) F.earthquake(foe, {host: bf}); } break;
     case 'fieldTick':
       if(ev.field === 'frozen' && F.frostChill && skillFxOnce('frost' + ev.uid)){ const t = el(ev.uid); if(t) F.frostChill(t); }
+      // 2026-10-16 (user: "Immolation should stick on the card - not teleport everywhere."): Immolation's fire burns on the immolating
+      // card (SkillFX.immolate, once a round, inside its tile so it follows the card); the units it burns only char (scorchMark).
+      else if(ev.field === 'immolation' && F.immolate){ if(ev.srcUid != null && skillFxOnce('immolate' + ev.srcUid)){ const s = el(ev.srcUid); if(s) F.immolate(s); }
+        if(F.scorchMark && skillFxOnce('scorch' + ev.uid)){ const t = el(ev.uid); if(t) F.scorchMark(t); } }
       else if((ev.field === 'heat' || ev.field === 'immolation' || ev.field === 'lavaTide') && F.scorch && skillFxOnce('scorch' + ev.uid)){ const t = el(ev.uid); if(t) F.scorch(t); }
       // New field effects (2026-10-15): Swamp Fever's sick-green cloud (the poison look), Freezing's chill as a unit lands
       else if(ev.field === 'swampFever' && F.poisonCloud && skillFxOnce('fever' + ev.uid)){ const t = el(ev.uid); if(t) F.poisonCloud(t); }
@@ -32770,7 +32801,8 @@ function eighthPassVfx(ev){
   if(ev.type === 'hit' && !ev.quake){
     const ae = fxOf(ev.attDefId), te = fxOf(ev.targetDefId), a = el(ev.attUid), t = el(ev.targetUid), hitMs = eighthHitAtMs(ev);
     if(ev.attUid != null && ev.targetUid != null) (matchState._lastHitOf = matchState._lastHitOf || {})[ev.attUid] = ev.targetUid; // Sap drains the last unit it hit
-    if(a && t && !ev.source && !ev.ranged && !ev.fork && !ev.sweep && !ev._cleave && !ev.pounce && !ev.counter && ae.flying && !ae.swarm && !ae.quick && skillFxOnce('swoop' + ev.attUid)) F.swoop(a, t, {flight: Math.min(450, hitMs)});
+    // 2026-10-16 (user: "Many flying cards throw a 'line' at the enemy to attack. Make them attack normally is okay."): no swoop trail
+    // any more; a flyer lunges like everyone else and its shadow draws in under it (SkillFX.flyDescend, from animateAttacker).
     if(a && t && ev.fork && skillFxOnce('fork' + ev.attUid + ':' + ev.targetUid)) at(hitMs - 140, ()=>{ const a2 = el(ev.attUid), t2 = el(ev.targetUid); if(t2) F.forkProngs(a2, [t2], {kind: ev.prong}); });
     // (passive Expose: the engine sends a statusFx 'expose' now, 2026-10-15, and its targetMark plays from there)
     if(t && ev.rend) at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.pierceThrough(t2, {from: degFrom(el(ev.attUid), t2)}); });
@@ -33151,7 +33183,7 @@ function renderVfxForEvent(ev){
       setTimeout(()=>{ try{ UnitFX.attackFx(ufx.attack, atkEl, targetEl, windup + impactPad); if(SoundKit[ufx.attack]) SoundKit.at(atkEl, ()=> SoundKit[ufx.attack](windup + impactPad)); }catch(e){} }, Math.round(windup*0.5));
     }
     if(ev.ranged){
-      if(!arrowShot && !boltShot) SoundKit.launch();
+      if(!arrowShot && !boltShot && !ev.electricity) SoundKit.launch(); // (Electricity's arc has the shock tone, 2026-10-16)
       // Item #14 (2026-09-18, "sometimes damage source or anim is not visible... looks like
       // they're taking a random 1 damage"): spawnProjectile silently no-ops when its origin
       // element isn't in the DOM (boardCardEl(ev.attUid) can miss if the source already left
@@ -33171,6 +33203,11 @@ function renderVfxForEvent(ev){
         else setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
       }
       else if(boltShot){ /* the Bolt's glob is already in the air (ninthPassVfx, 2026-10-15) */ }
+      // 2026-10-16 (user: "I think Voltaic eel is throwing out a grey ball after attacking ... what's triggering this in the first
+      // place?"): Electricity's arc (and a wet target's extra zap) reaches the engine as a ranged 'hit' with dmgType 'shock', which
+      // fell through to the generic projectile: dmgGlyph('shock') has no glyph, so a grey "➶" flew from the eel to the unit beside its
+      // target after every landed hit. The chain lightning (the 'electricity' event just before) is that hit's look; nothing is thrown.
+      else if(ev.electricity){ if(!ev.arc && targetEl && window.SkillFX && SkillFX.ring && !reducedMotion()){ try{ const r = targetEl.getBoundingClientRect(); SkillFX.ring(r.left + r.width/2, r.top + r.height/2, 'sfx-zap', 64, 280); }catch(e){} } }
       else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
     }
     setTimeout(()=>{
@@ -33470,6 +33507,18 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='esprit'){ const attEl = boardCardEl(ev.attUid); SoundKit.espritTone(); if(attEl) floatText(attEl, '🤝 +'+(ev.amount||0)+'⚔'+(ev.hp ? ' +'+ev.hp+'❤' : ''), 'gold'); }
     if(ev.kind==='poison' || ev.kind==='stun' || ev.kind==='scar' || ev.kind==='cleanse' || ev.kind==='freeze' || ev.kind==='sleep' || ev.kind==='paralyze' || ev.kind==='stunOnHit' || ev.kind==='blind' || ev.kind==='shock' || ev.kind==='corrode' || ev.kind==='bleed' || ev.kind==='stagger') updateCardStatusDisplay(ev.targetUid);
   }
+  // Heal against Poison (2026-10-16, user: "When regeneration of heal are used to reduce poison, a grey poison counter jumps out of the
+  // creature's grey poison counters. Note: it takes heal values to remove poison counters - priority."): the engine's applyHeal takes
+  // Poison off first and reports it ('healPoison', amount, left). One counter hops out of the Poison badge per counter removed
+  // (SkillFX.poisonPop) and the badge counts down with them.
+  if(ev.type==='statusFx' && ev.kind==='healPoison'){
+    const el = boardCardEl(ev.targetUid), rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid], n = ev.amount|0, end = Math.max(0, ev.left|0);
+    const step = last=>{ if(rc) rc.poison = last ? end : Math.max(end, (rc.poison||0) - 1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} };
+    try{ SoundKit.cleanseTone(); }catch(e){}
+    if(el && n > 0 && window.SkillFX && SkillFX.poisonPop && fxAtLeast('low') && !reducedMotion()) SkillFX.poisonPop(el, n, {onEach:(i, last)=> step(last)});
+    else step(true);
+    if(el && n > 0) try{ floatText(el, `-${n} ☠`, 'heal'); }catch(e){}
+  }
   // heal (2026-09-16): Regeneration N and the 'heal' custom-trigger action both push this —
   // mirrors Sap's heal-float/replay-snapshot pattern above, just from a non-drain source.
   if(ev.type==='heal'){
@@ -33486,7 +33535,13 @@ function renderVfxForEvent(ev){
     } else {
       SoundKit.healTone();
     }
-    if(el){ floatText(el, '➕'+ev.amount, 'heal'); try{ if(window.SkillFX && SkillFX.healPlus && fxAtLeast('low') && !reducedMotion()) SkillFX.healPlus(el); }catch(e){} } // the heal's ➕ (2026-10-16)
+    // 2026-10-16 (user: "Regeneration's orbs ... slowly fade in as they go into the centre. Then the same +s from heal come about."): a
+    // unit's own Regeneration plays the motes first (SkillFX.regen, once a round); the heal number floats and the green pluses rise
+    // (inside regen) as the motes reach the centre. Every other heal shows the number and the pluses at once.
+    const regenSelf = !!(el && ev.attUid != null && String(ev.attUid) === String(ev.targetUid) && ((getCardDefs()[ev.attDefId]||{}).effects||{}).regen
+      && window.SkillFX && SkillFX.regen && fxAtLeast('med') && !reducedMotion() && skillFxOnce('regen' + ev.targetUid));
+    if(regenSelf){ const amt = ev.amount, uid = ev.targetUid; try{ SkillFX.regen(el, {onDone:()=>{ const e2 = boardCardEl(uid) || el; if(e2 && e2.isConnected) floatText(e2, '➕'+amt, 'heal'); }}); }catch(e){ floatText(el, '➕'+ev.amount, 'heal'); } }
+    else if(el){ floatText(el, '➕'+ev.amount, 'heal'); try{ if(window.SkillFX && SkillFX.healPlus && fxAtLeast('low') && !reducedMotion()) SkillFX.healPlus(el); }catch(e){} } // the heal's ➕ (2026-10-16)
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.targetUid];
     if(rc){ rc.hp = Math.min(rc.maxHp||(rc.hp+ev.amount), rc.hp + ev.amount); }
     updateCardHpDisplay(ev.targetUid);

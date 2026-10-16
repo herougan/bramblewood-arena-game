@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (effects polish)
+- **Heals take Poison off first:** every heal (Regeneration, Heal, Bloom, Nursing, Healing...) removes 1 Poison counter per point of healing before anything else, then Bleed as before, and only what's left restores Health. A poisoned unit with Regeneration uses it even at full Health. Each counter removed hops out of the card's Poison badge, and the badge counts down.
+- **Dusk:** no setting sun any more. The board gets the static shadow bars across it and a faint warm tint from the west.
+- **Bite:** one row of teeth on each jaw, and the jaws close all the way so the teeth mesh. Each tooth is white at the tip and fades toward a faintly red root.
+- **Flying attacks:** no more swoop line. A flyer attacks with the normal lunge while its shadow draws in under it, so it looks like it dives.
+- **Heal and Regeneration:** the heal's pluses are green (the ➕ emoji showed grey), including the one in the heal number. Regeneration's orbs start along the card's edge, invisible, and sink into the centre with a slight turn. They're brightest halfway in and fade out at the centre, then the heal's pluses rise.
+- **Immolation:** the fire stays on the immolating card and moves with it. The units it burns only char. The flicker no longer throws flames across the screen, and that fix also covers heat and lava scorches.
+- **Lantern light in the dark:** about half as bright and much wider. It stops at the battlefield's edge and no longer spills over the hand and HUD.
+- **Chain lightning:** each bolt starts fading as soon as it appears, and the jumps come 20% closer together. Voltaic Eel's grey ball is gone. It was Electricity's arc: the arc reaches the screen as a ranged hit with damage type "shock", which has no projectile look, so the default grey ➶ flew to the unit beside the target. That hit now throws nothing, because the lightning is its look.
+- **Arrows are 30% smaller:** Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley and Pierce, plus the Volley rain arrows. Boomerangs are the 🪃 emoji, not arrow art, so they're unchanged.
+- **Effects Lab:** the entries for all of the above show the new looks. Old looks are kept as B variants where it helps to compare (swoop, Immolation, the Eel's grey ball). There are new heal-vs-Poison variants on Heal and Regeneration.
+
 ## 2026-10-16 (11:00)
 - **Dungeons tab name:** with one daily dungeon open the Play tab reads its name (Murgle Mayhem); from the second on it reads Daily Dungeons, like Raids. Hidden until one is open, except in Admin Mode. The Babel Spire doesn't count (it takes no tickets).
 - **World map:** every daily dungeon you've opened is a diamond beside its map that takes you straight in. Locked ones aren't drawn; admins see them marked 🛠️.
