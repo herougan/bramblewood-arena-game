@@ -48,6 +48,10 @@ const mk = (opts)=>{ const e = E.makeSimEngine(defs, E.mulberry32(5), Object.ass
 { const D4 = Object.assign({}, defs, {'k-fly': U('k-fly', {flying:true}, {attack:1})});
   const e = E.makeSimEngine(D4, E.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{wind:'gale'}}); const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})};
   e.debugSpawnCard(P, so, 1, 'k-fly', 'left', {}, []); e.debugSpawnCard(P, so, 2, 'k-fly', 'left', {}, []);
-  const ev = []; e.roundStart(P, 2, so, {}, ev); const w1 = e.windSideOf(1); e.roundStart(P, 3, so, {}, ev); const w2 = e.windSideOf(1);
-  ok(e.isWindy() && w1 && w2 && w1 !== w2, `Gale: strong wind every round, flipping (${w1} then ${w2})`); }
+  // 2026-10-16 (user: "the wind change is random. Forward, Backward, No Wind"): a Gale is strong every round, its way a coin flip
+  const ev = [], seen = new Set(); let calm = 0; for(let r = 2; r < 40; r++){ e.roundStart(P, r, so, {}, ev); if(!e.isWindy()) calm++; seen.add(e.windSideOf(1)); }
+  ok(calm === 0 && seen.has('tail') && seen.has('head'), `Gale: strong wind every round, blowing either way (${[...seen]}, calm ${calm})`); }
+{ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEvents:true, battleMode:'open', rules:{wind:'windy'}}); const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})};
+  const n = {tail:0, head:0, calm:0}; for(let r = 1; r < 301; r++){ e.roundStart(P, r, so, {}, []); n[e.isWindy() ? e.windSideOf(1) : 'calm']++; }
+  ok(['tail', 'head', 'calm'].every(k=> n[k] > 70 && n[k] < 130), `Windy: at your back, in your face or calm, about 1 in 3 each (${JSON.stringify(n)})`); }
 console.log(`skills-1013: ${fail} failure(s)`); process.exit(fail ? 1 : 0);

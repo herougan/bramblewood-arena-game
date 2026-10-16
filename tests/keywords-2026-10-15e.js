@@ -113,8 +113,8 @@ ok(/\n  bloodlust: \{status:\{foe:\{bleed:6\}\}/.test(src), '10. the Effects lib
   ok(!sw.length, `11. no card carries Swimmer (${sw})`);
   ok(['dolphin-knight', 'reef-shark', 'colossal-squid', 'otter-angler'].every(id=>{ const c = cards.find(x=> x.id === id); return c && c.effects.tide === true; }), '11. the former Swimmers carry plain Tide'); }
 ok(/\{key:'swimmer', category:'passive', hidden:true, retired:true,/.test(src) && /\{key:'swimmerGrant', category:'passive', hidden:true, retired:true,/.test(src), '11. Swimmer is out of the editor and the lists (the engine keeps it)');
-['diurnalGrant', 'nocturnalGrant', 'fullMoonGrant'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'passive', label:'[^']+ – \\{ \\}', kind:'grant'`).test(src), `11. ${k}: an editor row with a skill picker`));
-ok(/\{key:'tideGrant', category:'passive', label:'Tide – \{ \}, \{ \}', kind:'grant2', placeholders:\['Flood', 'Ebb'\]/.test(src), '11. Tide – { }, { }: two facets in the editor');
+['diurnalGrant', 'nocturnalGrant', 'fullMoonGrant'].forEach(k=> ok(new RegExp(`\\{key:'${k}', category:'passive', label:'(Diurnal|Nocturnal|Full Moon)', kind:'grant'`).test(src), `11. ${k}: an editor row with a skill picker (a plain name since 2026-10-16)`));
+ok(/\{key:'tideGrant', category:'passive', label:'Tide', kind:'grant2', placeholders:\['Flood', 'Ebb'\]/.test(src), '11. Tide (Gives: Skills): two facets in the editor (plain name since 2026-10-16)');
 ok(/\{key:'fullMoon', category:'passive', label:'Full Moon', kind:'number', min:1, defaultValue:3,/.test(src), '11. plain Full Moon (default 3)');
 ok(/const SKILL_REVEAL_PARTS = \{diurnal:\['diurnalHp', 'diurnalGrant'\], nocturnal:\['nocturnalHp', 'nocturnalGrant'\], crepuscular:\['crepuscularHp'\], tide:\['tideGrant'\]/.test(src), '11. the braces hide with their skill while it is "?" (SKILL_REVEAL_PARTS)');
 // the brace text helpers, run on their own

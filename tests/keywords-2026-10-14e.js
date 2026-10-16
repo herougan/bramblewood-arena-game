@@ -127,7 +127,8 @@ function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so
   ok(mine.length === 5 && mine.every(i=> !mainIcons.includes(i)), `the new icons don't clash (${mine})`);
   ['tornado','avalanche','tsunami','dragonLightning','witherTick','hatch'].forEach(t=> ok(src.includes(`case '${t}':`) && src.includes(`ev.type==='${t}'`), `${t}: a log line and a VFX handler`));
   ok(/const FUTURE_MAPS = \[[\s\S]*?id:'dragonic-spire', name:'Dragonic Spire'[\s\S]*?signature:\['dragonLightning','wither'\][\s\S]*?blurb:/.test(src), 'FUTURE_MAPS lists the Dragonic Spire');
-  ok(!Object.values(base).some(d=> !d.hatchInto && d.effects && (d.effects.dragonLightning || d.effects.wither)), 'no existing card has the Spire skills yet');
+  // 2026-10-16 ("Add 1 card for all our no-card skills"): Thunder Lizard and Corpse-flower Beetle carry them, but on no map yet (no source).
+  ok(!Object.values(base).some(d=> !d.hatchInto && d.source && d.effects && (d.effects.dragonLightning || d.effects.wither)), 'no card you can get has the Spire skills yet');
   const fn = name=>{ const mm = src.match(new RegExp(`function ${name}\\([^)]*\\)\\{[^\\n]*\\}`)); return mm ? eval('(' + mm[0] + ')') : null; };
   const sa = fn('shakeStrengthForArrival'), sh = fn('shakeStrengthForHit');
   ok(sa && sa(20) === 0 && sa(21) > 0 && sa(21) < 0.01 && sa(110) > sa(60) && sa(200) === 1 && sa(500) === 1, 'arrival shake: none to 20 HP, tiny at 21, growing, full at 200');

@@ -321,7 +321,8 @@ SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢'});
 Object.assign(SKILL_ICON, {diurnalGrant:'☀️', nocturnalGrant:'🌙', tideGrant:'🌊', fullMoon:'🌕', fullMoonGrant:'🌕'}); // Zeitgeber advanced forms (2026-10-15)
-Object.assign(SKILL_ICON, {penance:'⛧🏰', bloodTithe:'⛧🩸'}); // Devilry payments (2026-10-16): the Dark Summon pentagram, into your castle / an ally
+Object.assign(SKILL_ICON, {penance:'⛧🏰', bloodTithe:'⛧🩸'});
+SKILL_ICON.amore = '💕'; // Amore (2026-10-16): 💕 waiting, ❤️ paired, 🤎 heartbroken (amoreChip) // Devilry payments (2026-10-16): the Dark Summon pentagram, into your castle / an ally
 Object.assign(SKILL_ICON, {iceArrow:'🧊🏹', twinShot:'🏹🏹', volley:'🎯🏹', fireBolt:'🔥', acidBolt:'🧪', poisonBolt:'🐍', iceBolt:'❄️', shockBolt:'⚡', chilli:'🌶️'});
 Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌', keenSense:'👃'});
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
@@ -539,16 +540,16 @@ const PASSIVE_DEFS = [
 // Diurnal - has two facets. So Tide - {Gain 5/5, Evade}, {2 Armour}. ... remove Swimmer for now"): every time-giver skill has a plain
 // form (Diurnal, Nocturnal, Tide, Full Moon) and an advanced one whose braces list what it gets instead: "Diurnal – {Evasive, Thorns 1}",
 // "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {Regen 2}". See the Zeitgeber note in bramblewood-engine.js for the rules.
-  {key:'diurnalGrant', category:'passive', label:'Diurnal – { }', kind:'grant', placeholder:'evasive, thorns 1', desc:v=>`By day (and in Twilight) it has ${grantText(parseGrantText(v)) || 'nothing'}, instead of a plain bonus.`,
+  {key:'diurnalGrant', category:'passive', label:'Diurnal', kind:'grant', placeholder:'evasive, thorns 1', desc:v=>`By day (and in Twilight) it has ${grantText(parseGrantText(v)) || 'nothing'}, instead of a plain bonus.`,
     get:e=> e.diurnalGrant ? grantToText(e.diurnalGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.diurnalGrant = g; if(!e.diurnal) e.diurnal = true; } }},
-  {key:'nocturnalGrant', category:'passive', label:'Nocturnal – { }', kind:'grant', placeholder:'shadow, regen 2', desc:v=>`At night (and in Twilight) it has ${grantText(parseGrantText(v)) || 'nothing'}, instead of a plain bonus.`,
+  {key:'nocturnalGrant', category:'passive', label:'Nocturnal', kind:'grant', placeholder:'shadow, regen 2', desc:v=>`At night (and in Twilight) it has ${grantText(parseGrantText(v)) || 'nothing'}, instead of a plain bonus.`,
     get:e=> e.nocturnalGrant ? grantToText(e.nocturnalGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.nocturnalGrant = g; if(!e.nocturnal) e.nocturnal = true; } }},
-  {key:'tideGrant', category:'passive', label:'Tide – { }, { }', kind:'grant2', placeholders:['Flood', 'Ebb'], grantPlaceholders:['+5/+5, evasive', 'armor 2'],
+  {key:'tideGrant', category:'passive', label:'Tide', kind:'grant2', placeholders:['Flood', 'Ebb'], grantPlaceholders:['+5/+5, evasive', 'armor 2'],
     desc:v=>{ const [a, b] = Array.isArray(v) ? v : ['', '']; return `On Flood it has ${grantText(parseGrantText(a)) || 'nothing'}; on Ebb, ${grantText(parseGrantText(b)) || 'nothing'}; at High Tide, both. (In place of Flood's +1 Attack and Ebb's +1 Armor.)`; },
     get:e=> e.tideGrant ? [grantToText(e.tideGrant.flood), grantToText(e.tideGrant.ebb)] : undefined,
     apply:(e, vals)=>{ const a = parseGrantText(vals && vals[0]), b = parseGrantText(vals && vals[1]); if(Object.keys(a).length || Object.keys(b).length){ e.tideGrant = {flood:a, ebb:b}; e.tide = true; } }},
   {key:'fullMoon', category:'passive', label:'Full Moon', kind:'number', min:1, defaultValue:3, desc:v=>`The first time a full moon rises over it, it gains +${v||3}/+${v||3} for the rest of the fight.`},
-  {key:'fullMoonGrant', category:'passive', label:'Full Moon – { }', kind:'grant', placeholder:'regen 2, frenzy', desc:v=>`The first time a full moon rises over it, it gains ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`,
+  {key:'fullMoonGrant', category:'passive', label:'Full Moon', kind:'grant', placeholder:'regen 2, frenzy', desc:v=>`The first time a full moon rises over it, it gains ${grantText(parseGrantText(v)) || 'nothing'} for the rest of the fight.`,
     get:e=> e.fullMoonGrant ? grantToText(e.fullMoonGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length) e.fullMoonGrant = g; }},
   // Tide (2026-10-09; a keyword family, not an archetype): the water flows and ebbs every round from round 2; see getTide in bramblewood-engine.js.
   // Reach (2026-10-09): a ground unit's attacks ignore the Flying dodge. The counter to all-flying decks (see decision B6).
@@ -590,7 +591,7 @@ const PASSIVE_DEFS = [
     get:e=> e.rabid ? numOr(e.rabid, 2) : undefined},
   // Cower (user: "Cower (and maybe another skill also about a Turtle going into a shell) - Do {} when hit previous turn").
   {key:'cower', category:'passive', label:'Cower', kind:'select', desc:v=>`The "hit last turn" trigger. If it took damage last round, this round it ${v === 'flee' ? 'backs off: no attack, and it heals 2' : 'hides in its shell: no attack, and attacks can\'t hurt it (Poison and the field still can)'}. Shell is different: it reacts to the first hit straight away.`,
-    selectOptions:()=> [{value:'shell', label:'Shell (hide: no attack, attacks can\'t hurt it)'}, {value:'flee', label:'Flee (back off: no attack, heal 2)'}],
+    selectOptions:()=> [{value:'shell', label:'Hide in its shell'}, {value:'flee', label:'Flee and heal 2'}],
     get:e=> e.cower ? (e.cower === 'flee' ? 'flee' : 'shell') : undefined, apply:(e,v)=>{ e.cower = v === 'flee' ? 'flee' : 'shell'; }},
   // Ghost and Magic (user: "Ghost - Can't be affected by Normal Damage. Introduce Magic damage - some units have a wand instead of a
   // sword symbol on their bottom left, blue in colour").
@@ -618,12 +619,12 @@ const PASSIVE_DEFS = [
   // Moonpull (user: "There is a creature that has a cool sounding evergreen effect - its effect brings in the Tide!").
   {key:'moonpull', category:'evergreen', label:'Moonpull', kind:'boolean', desc:()=>`When it arrives, the Tide comes in: it is Flood this round (an Ebb turns to Flood).`},
   // 2026-10-14 (third pass). Bloom (conditions) (user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): a conditional +A/+H.
-  {key:'bloomWhen', category:'passive', label:'Bloom (conditions)', kind:'text', placeholder:'Tide & Night +2/+2  ·  Wind or Wet',
+  {key:'bloomWhen', category:'passive', label:'Bloom When', kind:'text', placeholder:'Tide & Night +2/+2  ·  Wind or Wet',
     desc:(v, n, e)=>{ const bw = (e && e.bloomWhen) || (typeof v === 'string' ? parseBloomText(v) : null) || {when:['tide','night']}; return `${bloomLabel(bw)}. While ${(bw.when||[]).map(k=> BLOOM_COND_NAMES[k] || k).join(bw.mode === 'or' ? ' or ' : ' and ')} hold${bw.mode === 'or' ? 's' : ''}, it is in bloom 🌸 and has the bonus. Conditions: Tide (in), Ebb, Night, Day, Twilight, Wind, Wet (rain, the Tide in, or a beach, river or sea map), Dark, Heat, Frost.`; },
     get:e=> e.bloomWhen ? bloomToText(e.bloomWhen) : undefined, apply:(e, v)=>{ const b = parseBloomText(v); if(b) e.bloomWhen = b; }},
   // Wave (user: "Sea creatures might have more skills related to water. Such as pushing creatures left or right - waves.").
   {key:'wave', category:'passive', label:'Wave', kind:'select', desc:v=>`When its attack lands on a unit, it pushes that unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : v === 'alternate' ? 'left, then right on its next swing, and so on' : 'toward the side with more room'}. If a unit stands there, the two swap. Never past the edge of the board.`,
-    selectOptions:()=> [{value:'left', label:'Left'}, {value:'right', label:'Right'}, {value:'alternate', label:'Alternate (left, right, ...)'}, {value:'room', label:'Toward more room'}],
+    selectOptions:()=> [{value:'left', label:'Left'}, {value:'right', label:'Right'}, {value:'alternate', label:'Alternate'}, {value:'room', label:'Toward more room'}],
     get:e=> e.wave ? (e.wave === true ? 'room' : e.wave) : undefined, apply:(e, v)=>{ e.wave = ['left','right','alternate'].includes(v) ? v : true; }},
   // Supreme Tide (user: "Blue Dragon - Has Supreme Tide!").
   // 2026-10-14 (fourth pass). Crab Claws (user: "Crab claws: Attacks left or right only.").
@@ -661,12 +662,12 @@ const PASSIVE_DEFS = [
   // ("Maybe its evade to non swimmers WHEN in flood/ebb regardless" was a maybe. 2026-10-16 (user: "Evade to non-swimmers for me to
   // test."): built as a rule test, off by default: TEST_RULE_DEFS 'tideEvade' below, the engine's tideEvades.)
   {key:'swimmer', category:'passive', hidden:true, retired:true, label:'Swimmer', kind:'select', desc:(v, n, e)=>`On Tide, ${swimmerBonusText(Object.assign({}, e || {}, {swimmer: v || true}), 'flow')}. On Ebb, +1 Armor.`, // 2026-10-15: Swimmer is its own skill on the card ("Swimmer - On tide, { ... }")
-    selectOptions:()=> [{value:'extraAttack', label:'Extra Attack (+1 Attack)'}, {value:'quickAttack', label:'Quick Attack (extra turn)'}, {value:'evade', label:'Evasive'}], // 2026-10-15 (user: "Evade -> Evasive."): label only, the saved value stays 'evade'
+    selectOptions:()=> [{value:'extraAttack', label:'+1 Attack'}, {value:'quickAttack', label:'Extra turn'}, {value:'evade', label:'Evasive'}], // 2026-10-15 (user: "Evade -> Evasive."): label only, the saved value stays 'evade'
     get:e=> e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : undefined, apply:(e,v)=>{ e.swimmer = ['extraAttack','quickAttack','evade'].includes(v) ? v : 'extraAttack'; }},
   // Swimmer's Flow list (2026-10-12, user: "I like Swimmer activating certain {} effects on tide. Maybe its not just fast
   // forward but... just { } effects that i can list"): the skills a Swimmer gets on Flow rounds, e.g. "fastForward 1, armor 2".
   // Without a list it keeps the old Fast Forward.
-  {key:'swimmerGrant', category:'passive', hidden:true, retired:true, label:'Swimmer: on Flood', kind:'text', placeholder:'fastForward 1, armor 2', desc:v=>`On a Flood round it gains ${grantText(parseGrantText(v)) || 'nothing'}.`,
+  {key:'swimmerGrant', category:'passive', hidden:true, retired:true, label:'Swimmer Skills', kind:'text', placeholder:'fastForward 1, armor 2', desc:v=>`On a Flood round it gains ${grantText(parseGrantText(v)) || 'nothing'}.`,
     get:e=> e.swimmerGrant ? grantToText(e.swimmerGrant) : undefined, apply:(e, v)=>{ const g = parseGrantText(v); if(Object.keys(g).length){ e.swimmerGrant = g; e.swimmer = true; } }},
   {key:'inspiring', category:'passive', label:'Inspiring', kind:'number', min:0, desc:v=>`As it attacks, the allies either side of it get +${v} Attack for their next swing.`},
   {key:'friction', category:'passive', label:'Friction', kind:'number', min:0, desc:v=>`A drawback: when it attacks, it deals ${v} damage to each ally beside it.`},
@@ -782,7 +783,10 @@ const PASSIVE_DEFS = [
   // generic PASSIVE_DEFS -> SKILL_DEFS mapping as-is, no custom get/apply needed.
   {key:'regen', category:'evergreen', label:'Regeneration', kind:'number', min:0, desc:v=>`Heals ${v} HP at the start of every round this card is on the board, capped at its own max HP.`},
   // 2026-10-16 skill audit: Stun and Reflect are percentages, so a new row starts at 50% (not 1%); saved cards keep their value.
-  {key:'stunOnHit', category:'passive', label:'Stun', kind:'number', min:0, defaultValue:50, desc:v=>`Every landed attack has a ${v}% chance to Stun the target.`},
+  // 2026-10-16 (user: "Stun N: 1/3 chance to Stun a card for N turns - Default 1."): N is rounds now, the chance a fixed 1 in 3. An old
+  // value above 5 was a % and reads as Stun 1 (stunRounds, and the engine's stunRoundsOf).
+  {key:'stunOnHit', category:'passive', label:'Stun', kind:'number', min:1, defaultValue:1, desc:v=>`Every landed attack has a 1 in 3 chance to Stun the target for ${stunRounds(v)} round${stunRounds(v)===1 ? '' : 's'}.`,
+    get:e=> e.stunOnHit ? stunRounds(e.stunOnHit) : undefined},
   // Ten new skills (2026-09-17 batch) — nine plain PASSIVE_DEFS entries (Corrode, the tenth
   // stacking status effect, lives right after these; Blind/Shock, the other two new statuses,
   // are chance+duration pairs and live down in SKILL_DEFS alongside Freeze/Sleep/Paralyze).
@@ -863,7 +867,14 @@ const PASSIVE_DEFS = [
   // Skyfall N is the fixed-shorthand equivalent of "On Spawn: Missile N."
   // 2026-10-16 skill audit: the engine has aimed at the unit opposite first since 2026-10-15 (user: "Pounce always prefers hitting the
   // card directly opposing. Otherwise, next nearest."), so the text says so instead of "a random enemy unit".
-  {key:'pounce', category:'evergreen', label:'Pounce', kind:'number', min:0, desc:v=>`On Play: pounces on the enemy unit facing it (the nearest one if none is) for ${v} damage (the enemy castle, if no units are left). Fires the moment it lands, Waiting or not.`}, // 2026-10-12: the evergreen name for on-play damage
+  // 2026-10-16 (user: "Pounce <Att> or <Hp>: The Pounce value is dynamically calculated on play, and is 'blue'. In the hand, it just says
+  // Pounce - When played, it deals <Att> damage..."): Pounce N, or Pounce for the card's own Attack or Health, worked out as it lands.
+  // Stored as a number, or 'attack' / 'health'.
+  {key:'pounce', category:'evergreen', label:'Pounce', kind:'selectNumber', numberWhen:['n'], numberTitle:'How much damage',
+    selectOptions:()=> [{value:'n', label:'N damage'}, {value:'attack', label:'its Attack'}, {value:'health', label:'its Health'}],
+    desc:v=>`On Play: pounces on the enemy unit facing it (the nearest one if none is) for ${pounceWords(v)} damage (the enemy castle, if no units are left). Fires the moment it lands, Waiting or not.`,
+    get:e=> e.pounce ? (e.pounce === 'attack' || e.pounce === 'health' ? [e.pounce, 1] : ['n', numOr(e.pounce, 1)]) : undefined,
+    apply:(e, vals)=>{ const m = Array.isArray(vals) ? vals[0] : 'n'; if(m === 'attack' || m === 'health'){ e.pounce = m; return; } const n = Number(Array.isArray(vals) ? vals[1] : vals) || 0; if(n > 0) e.pounce = n; }},
   {key:'skyfall', category:'evergreen', label:'Skyfall', kind:'number', min:0, desc:v=>`On Spawn: crashes down for ${v} damage on a random live enemy creature (the enemy castle, if none are left) — fires immediately, once.`},
   // King Slayer (2026-09-22, per explicit request: "New type: King. New card: King Maker -
   // Passive: King Slayer N - does N extra damage to Kings on hit."). Category 'passive', not
@@ -973,6 +984,10 @@ const PASSIVE_DEFS = [
   // Taunt (user: "Add a sheep card (basic) - it has taunt."): not the same as Guardian. Guardian only takes the hits aimed at the units
   // beside it; Taunt pulls the attacks of the enemy units facing it or one column away, even ones that were going to the castle.
   {key:'taunt', category:'passive', label:'Taunt', kind:'boolean', desc:()=>`Enemy units facing it, or one column to either side, must attack it (even ones that would hit the castle). Stealth slips past.`},
+  // Amore (2026-10-16, user: "If you play a creature with Amore on the field and there is another creature with Amore on the field that
+  // shares a type, both creature's Amore skills we activate, giving them Regeneration 3 and +0/+3. This can only happen once. If the
+  // other creature dies, the Amore becomes brown ..."): the engine's amoreOnArrive / amoreBreak. Your own units only.
+  {key:'amore', category:'passive', label:'Amore', kind:'boolean', desc:()=>`When it arrives and one of your units already on the field has Amore and shares a Type with it, the two pair up (once in each one's life, only ever those two): +0/+3 and Regeneration 3 each. If one dies, the other's heart turns brown: it keeps the +0/+3 but loses the Regeneration 3. Enemy units never pair with yours.`},
 ];
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
@@ -1059,6 +1074,10 @@ const TRIGGER_DEFS = [
   {key:'onDiscard', label:'On Discard', desc:'the moment this card is discarded/pitched for its resource, instead of played (only Gain Lumber/Grace/Stone/Dark Points actions apply here — the card has no board presence)'},
   // Sacrifice - {} (2026-10-14, user: "Sacrifice - haven't designed a card around this. The designer's toolkit: Sacrifice - {} aka On
   // Sacrifice -> Do {}. But it's framed as Sacrifice - { }."): the card text reads "Sacrifice - <effect>".
+  // On Pitch (2026-10-16, user: "A new skill: Whenever you pitch a card, this card does {}. I don't know what the name of the skill
+  // will be"): on every unit of yours on the field when you pitch a card. Card text: "Scavenge - <effect>" (a placeholder; the other
+  // names on the table were Kindling and Salvage).
+  {key:'onPitch', label:'On Pitch', desc:'every time you pitch a card (discard it from your hand for its resource) while this unit is on the field. Its card text reads "Scavenge - <effect>"'},
   {key:'onSacrifice', label:'On Sacrifice', desc:'the moment this card is sacrificed: the fodder of a Sacrifice (Dark Summon), the card a Devour unit eats, or a card given up as an Offering or prayer offering. From the hand it has no unit on the board, so effects on "itself" do nothing. Its card text reads "Sacrifice - <effect>"'},
 ];
 // Trigger-picker UX redesign (2026-09-27, item 4a, per explicit request: "the first dropdown
@@ -1177,6 +1196,9 @@ const ACTION_DEFS = [
   {key:'cleanse', label:'Cleanse', fields:['amount','who','sub','targets'], desc:"Cleanse N: remove up to N harmful counters from the chosen target (this card by default): a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
   // Shield (2026-10-14, user: "As an action - On X, Shield N"): N Shield (temporary Health) on itself, an ally, or every ally (sub All).
   {key:'shield', label:'Shield', fields:['amount','who','sub','targets'], whoOptions:['self','ally'], subOptions:['adjacent','random','furthest','all'], desc:'Give Shield N: temporary Health that soaks damage before Health does and never comes back once spent (not Armor). This card by default; Ally + All shields every ally.'},
+  // Fire on hit (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. (Meant for Map 20)").
+  // The Burn 1 Lumber step is the trigger's "Pay" field (t.cost = 'burnLumber'), open to every action ("Burn 1 Lumber, Heal ally N").
+  {key:'fireHit', label:'Fire on hit', fields:['amount'], desc:"Pair with On Attack: this attack's hit also deals N fire damage to what it hits (a unit, or the castle)."},
   {key:'addWait', label:'Increase Wait', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
 ];
 // Chained (Devilry, 2026-09-17) break conditions — the one place to add a new one later (the
@@ -1370,7 +1392,7 @@ const DMG_TYPES = ['physical','cold','heat','acid','poison','decay','magic','wat
 const ELEMENTAL_STATUS_MAP = [
   {dmgType:'physical', icon:'💢', statusKey:'stagger', statusLabel:'Stagger', desc:'Landed hits have a chance to Stagger the target -- it deals 50% less damage with its own attacks for a few rounds.'},
   {dmgType:'cold', icon:'❄', statusKey:'freeze', statusLabel:'Frozen', desc:'Landed hits have a chance to Freeze the target -- it gets no Wait tick and cannot attack for a few rounds.'},
-  {dmgType:'heat', icon:'💫', statusKey:'stunOnHit', statusLabel:'Stunned', desc:'Landed hits have a chance to Stun the target for the rest of that round -- no Wait tick, cannot attack.'},
+  {dmgType:'heat', icon:'💫', statusKey:'stunOnHit', statusLabel:'Stunned', desc:'Landed hits have a 1 in 3 chance to Stun the target for N rounds -- no Wait tick, cannot attack.'},
   {dmgType:'acid', icon:'⚡', statusKey:'paralyze', statusLabel:'Paralyzed', desc:'Landed hits have a chance to Paralyze the target -- a fresh coin flip gates its action every round while active.'},
   {dmgType:'poison', icon:'💤', statusKey:'sleep', statusLabel:'Asleep', desc:'Landed hits have a chance to put the target to Sleep -- same lockout as Frozen, but breaks instantly on any damage taken.'},
 ];
@@ -1916,7 +1938,7 @@ const SKILL_TEXT = {
   crit: ()=> `Each round, a 1-in-2 chance to deal double damage.`,
   fester: ()=> `Deals extra damage equal to its own Poison.`, rupture: ()=> `Deals extra damage equal to its own Bleed.`,
   regen: v=> `Heals ${v} every upkeep.`,
-  stunOnHit: v=> `Its hits have a ${v}% chance to Stun.`,
+  stunOnHit: v=> `Its hits have a 1 in 3 chance to Stun the target for ${stunRounds(v)} round${stunRounds(v)===1 ? '' : 's'}.`, // 2026-10-16 (user: "Stun N: 1/3 chance to Stun a card for N turns")
   puncture: v=> `Each melee hit also deals ${v} damage to the enemy castle.`,
   gash: v=> `When played, add ${v} Bleed to the enemy facing it.`,
   overwhelm: ()=> `Damage left over from a kill carries on into the enemy castle.`,
@@ -1936,7 +1958,7 @@ const SKILL_TEXT = {
   perforate: v=> `Its melee hits ignore and strip ${v} Armor, add ${v} Bleed and deal ${v} damage to the enemy castle.`,
   flying: ()=> `Dodges half of all attacks from units without Flying.`,
   earthquake: v=> `When played, deal ${v} damage to every other unit without Flying, yours included.`,
-  pounce: v=> `When played, deal ${v} damage to the enemy facing it (or the nearest), or the castle if there are no targets.`, // 2026-10-16 skill audit: the engine aims at the unit opposite first (2026-10-15)
+  pounce: v=> `When played, deal ${pounceWords(v)} damage to the enemy facing it (or the nearest), or the castle if there are no targets.`, // 2026-10-16: N, <Att> or <Hp> // 2026-10-16 skill audit: the engine aims at the unit opposite first (2026-10-15)
   skyfall: v=> `When played, deal ${v} damage to a random enemy unit, or the castle if there are no targets.`,
   arrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${v} damage every upkeep.`, // 2026-10-16 skill audit
   fireArrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${v} fire damage every upkeep.`, // 2026-10-16 skill audit
@@ -1998,6 +2020,7 @@ Object.assign(SKILL_TEXT, {
   cure: v=> `Every upkeep, cure ${numOr(v, 2)} Poison or Bleed from your most afflicted unit.`,
   mountainClimber: ()=> `Field and terrain hazards pass it by.`,
   taunt: ()=> `Enemies facing it or beside that column must attack it.`,
+  amore: ()=> `When it arrives with one of your Amore units on the field that shares a Type, the two fall in love (once): +0/+3 and Regeneration 3 each. If one dies, the other keeps the +0/+3 but loses the Regeneration.`, // 2026-10-16
   molting: v=> `Every 2 rounds: +${numOr(v, 1)}/+${numOr(v, 1)} for good, but +1 Wait.`, // 2026-10-16
   bludgeon: ()=> `Its hits take 1 Attack and knock out one of the target's skills.`, // 2026-10-16
 });
@@ -2049,6 +2072,13 @@ Object.assign(SKILL_TEXT, {
   onDeathSpawn: v=> Array.isArray(v) && v[0] ? `When it dies, ${Number(v[1])||1}× ${cardName(v[0])} take its place.` : `When it dies, new units take its place.`,
 });
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
+// Pounce's amount in words (2026-10-16): "5", "<Att>" (its Attack) or "<Hp>" (its Health); an editor row value [mode, n] too.
+// Amore's state on a live unit (2026-10-16): 'love' (paired), 'broken' (partner gone) or 'single'.
+function amoreLiveState(c){ const lc = c ? (currentCardByUidSafe(c.uid) || c) : null; return !lc ? 'single' : lc.amoreBroken ? 'broken' : lc.amoreWith != null ? 'love' : 'single'; }
+function pounceMode(v){ v = Array.isArray(v) ? (v[0] === 'n' ? v[1] : v[0]) : v; return v === 'attack' || v === 'health' ? v : null; }
+function pounceWords(v){ const m = pounceMode(v); return m === 'attack' ? '&lt;Att&gt;' : m === 'health' ? '&lt;Hp&gt;' : String(numOr(Array.isArray(v) ? v[1] : v, 1)); }
+// Stun N's rounds (2026-10-16): an old % value (above 5) reads as 1 round, as in the engine (stunRoundsOf).
+function stunRounds(v){ const n = v === true ? 1 : Number(v) || 0; return n > 5 ? 1 : Math.max(1, Math.round(n)); }
 // 2026-10-16 skill audit: a short text gets (value, its second number, the card's effects), like desc does, so Swarm and Defiance
 // can say their "+N each".
 function skillText(p, v, e){ const f = SKILL_TEXT[p.key], n = p.numberKey ? (e||{})[p.numberKey] : undefined; try{ return f ? f(v, n, e) : p.desc(v, n, e); }catch(_){ return p.desc(v, n, e); } }
@@ -2136,14 +2166,20 @@ function describeEffects(def, liveCard){
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     // Zeitgeber advanced forms (2026-10-15): "Diurnal – {Evasive, Thorns 1}", "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {…}".
     if(p.key==='diurnalGrant' || p.key==='nocturnalGrant' || p.key==='fullMoonGrant'){ const g = e[p.key]; const nmZ = p.key==='diurnalGrant' ? 'Diurnal' : p.key==='nocturnalGrant' ? 'Nocturnal' : 'Full Moon';
-      lines.push(`${ic(p.key)}${nmZ} – ${escapeHtml(grantBraceText(g))} — ${p.key==='diurnalGrant' ? 'by day (and in Twilight) it has these' : p.key==='nocturnalGrant' ? 'at night (and in Twilight) it has these' : 'the first full moon over it gives it these for the rest of the fight'}.`); return; }
+      const gl = escapeHtml(grantText(g) || 'nothing'); // 2026-10-16 (user: "Don't put {} ... inside"): the picks read in the sentence
+      lines.push(`${ic(p.key)}${nmZ} — ${p.key==='diurnalGrant' ? `By day (and in Twilight) it has ${gl}` : p.key==='nocturnalGrant' ? `At night (and in Twilight) it has ${gl}` : `The first full moon over it gives it ${gl} for the rest of the fight`}.`); return; }
     if(p.key==='tideGrant'){ const tg = e.tideGrant || {}, lt = liveCard ? liveTideState(e) : null;
-      lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('tide')}${lt.name} – ${lt.bonus}</span>` : `${ic('tide')}Tide – ${escapeHtml(grantBraceText(tg.flood))}, ${escapeHtml(grantBraceText(tg.ebb))} — the first on Flood, the second on Ebb, both at High Tide.`); return; }
+      lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('tide')}${lt.name} – ${lt.bonus}</span>` : `${ic('tide')}Tide — On Flood it has ${escapeHtml(grantText(tg.flood) || 'nothing')}; on Ebb, ${escapeHtml(grantText(tg.ebb) || 'nothing')}; at High Tide, both.`); return; /* no braces (2026-10-16) */ }
     if(p.key==='tide' || p.key==='swimmer'){ if(p.key==='tide' && e.swimmer) return; // one line for a Tide Swimmer: the Swimmer one
       const lt = liveCard ? liveTideState(e) : null;
       // 2026-10-15 (user: "It should be Swimmer - On tide, { ... }"): a Swimmer reads as Swimmer, never as Tide.
       if(p.key==='swimmer'){ lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('swimmer')}Swimmer – ${lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide'}, ${lt.bonus}</span>` : `${ic('swimmer')}${swimmerLine(e)}`); return; }
       lines.push(lt ? `<span class="granted-skill tide-live tide-${lt.k}" title="The tide right now">${ic('tide')}${lt.name} – ${lt.bonus}</span>` : `${ic('tide')}Tide — ${skillText(p, v, e)}`); return; }
+    if(p.key==='pounce' && !pounceMode(e.pounce)){ lines.push(`${ic('pounce')}Pounce${valSuffix(numOr(e.pounce, 1))} — ${SKILL_TEXT.pounce(e.pounce)}`); return; }
+    if(p.key==='pounce'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; // 2026-10-16 (user: "Pounce <Att> or <Hp>")
+      const pm = pounceMode(e.pounce), now = lc ? (lc.pounceN != null ? lc.pounceN : pm === 'attack' ? (lc.atk||0) : (lc.hp||0)) : null;
+      const amt = now != null ? `<b class="atk-bonus" title="Worked out from its ${pm === 'attack' ? 'Attack' : 'Health'} as it landed">${now}</b>` : (pm === 'attack' ? '&lt;Att&gt;' : '&lt;Hp&gt;');
+      lines.push(`${ic('pounce')}Pounce ${amt} — When played, deal ${amt} damage to the enemy facing it (or the nearest), or the castle if there are no targets.`); return; }
     if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span> — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
     if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
@@ -2211,7 +2247,7 @@ function describeEffects(def, liveCard){
     }
     if(t.count!=null && t.do!=='spawnCard' && t.do!=='drawCard' && !/×\d/.test(detail)) detail = detail.replace(/\.$/, '') + ` ×${t.count}.`;
     if(t.nameMatch) detail = detail.replace(/\.$/, '') + ` — only when the triggering card is named "${t.nameMatch}" (${t.matchMode==='exact'?'exact match':'contains'}).`;
-    lines.push(t.on === 'onSacrifice' ? `🦷 Sacrifice - ${detail}` : `${tDef.label}: ${detail}`); // Sacrifice - {} (2026-10-14, user: "it's framed as Sacrifice - { }")
+    lines.push(t.on === 'onSacrifice' ? `🦷 Sacrifice - ${detail}` : t.on === 'onPitch' ? `♻️ Scavenge - ${detail}` : `${tDef.label}: ${detail}`); // + Scavenge - {} (On Pitch, 2026-10-16) // Sacrifice - {} (2026-10-14, user: "it's framed as Sacrifice - { }")
   });
   if(def.dmgType && def.dmgType!=='physical') lines.push(`Its attacks deal ${dmgWord(def.dmgType)}damage.`);
   // Resist can live in the legacy top-level array or the new effects.resist box (see
@@ -3041,7 +3077,20 @@ function dropStaleArtPath(id, d){
 // published before the node rename names its fight by the old key (source {kind:'map', id:'m1', node:'1-4'}); read it as the new one.
 function cloudCardData(r){ const d = cloudCardData0(r); if(d && d.source && d.source.kind === 'map' && typeof d.source.node === 'string'){ const k = migrateNodeKey(d.source.id, d.source.node); if(k !== d.source.node) return Object.assign({}, d, {source: Object.assign({}, d.source, {node: k})}); } return d; }
 // 2026-10-16 (user: "All Worthy cards become Bounty."): a published row that still says Worthy N reads as Bounty N (migrateWorthyToBounty).
-function cloudCardData0(r){
+// 2026-10-16 (user: "I noticed it also has this on ready deal 6 damage that i cant removed. remove that for me. i have added pounce
+// instead."): Cataphract Destrier's old On Ready 6 is gone from cards.json; a published row that still carries it (the editor could
+// not remove it, see openCardEditor) reads without it. Only that one key on that one card; Pounce and everything else stay.
+// The row itself: supabase/oneoff/2026-10-16_cataphract.sql.
+function dropCataphractOnReady(id, d){
+  if(id !== 'cataphract-destrier' || !d || !d.effects || typeof d.effects !== 'object') return d;
+  const e = d.effects, trs = Array.isArray(e.triggers) ? e.triggers : null;
+  const legacyTrig = t=> t && t.on === 'onReady' && (t.do === 'damage' || t.do === 'missile') && Number(t.amount) === 6;
+  if(!e.onReadyDamage && !(trs && trs.some(legacyTrig))) return d;
+  const fx = Object.assign({}, e); delete fx.onReadyDamage; if(trs) fx.triggers = trs.filter(t=> !legacyTrig(t));
+  return Object.assign({}, d, {effects: fx});
+}
+function cloudCardData0(r){ return dropCataphractOnReady(r && r.id, cloudCardData00(r)); }
+function cloudCardData00(r){
   const d0 = r && r.data; if(!d0 || !d0.__patch) return migrateWorthyToBounty(dropStaleArtPath(r && r.id, d0));
   const d = d0;
   const base = CARD_DEFS_BASELINE[r.id]; if(!base) return null;
@@ -4637,6 +4686,7 @@ function liveStatusGlossHTML(c){
     rows.push(`<div>${kw && kw.c ? `<b class="kw" style="--kw:${kw.c}">${head}</b>` : `<b class="kw kw-term">${head}</b>`}${rounds}: ${escapeHtml(t)}</div>`);
   });
   { const dn = (c.daunts || []).reduce((t, x)=> t + (x.n || 0), 0); if(dn > 0) rows.push(`<div><b class="kw kw-term">Daunted ${dn}</b>: deals ${dn} less Attack until the end of next round.</div>`); }
+  if(c.amoreWith != null) rows.push(c.amoreBroken ? `<div><b class="kw" style="--kw:#8a5a3b">Heartbroken</b>: its partner died. It keeps +0/+3; Regeneration 3 is gone.</div>` : `<div><b class="kw" style="--kw:#d6457a">In love</b>: +0/+3 and Regeneration 3 while its partner lives.</div>`); // Amore (2026-10-16)
   return rows.length ? `<div class="kw-gloss live-status-gloss" role="note" aria-label="Its statuses right now">${rows.join('')}</div>` : '';
 }
 function fullCardHTML(defId, liveCard, opts){
@@ -5950,7 +6000,7 @@ function triggerBadges(d, live){
     const tip = (()=>{ try{ return triggerPreviewText(t); }catch(e){ return ''; } })() + (off ? ' (off for now: it is Waiting, Stunned, Frozen or Asleep)' : '');
     // a trigger that fires every round leads with a clock instead of the bolt (2026-10-12, user: "Cards that have triggers
     // that depend on turns like every turn, should use the clock emoji instead")
-    const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = clock ? '🕐' : t.on === 'onSacrifice' ? '🦷' : '⚡'; // Sacrifice - {} leads with teeth (2026-10-14)
+    const clock = t.on === 'onRoundStart' || t.on === 'perTurn', lead = clock ? '🕐' : t.on === 'onSacrifice' ? '🦷' : t.on === 'onPitch' ? '♻️' : '⚡'; // Sacrifice - {} leads with teeth (2026-10-14)
     return `<span class="ab-trig${off ? ' is-off' : ''}${clock ? ' is-clock' : ''}" data-hook="${escapeAttr(t.on || '')}" title="${escapeAttr(tip)}"><i class="ab-bolt">${lead}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
   });
 }
@@ -6145,7 +6195,10 @@ function abilityBadges(d, bopts){
   if(e.quick) out.push(`${iconHTML('quick', '👢')}`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
   if(e.swift) out.push(`${iconHTML('swift', '💨')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
-  if(e.pounce) out.push(`${iconHTML('pounce', '🐾')}${n1(e.pounce)}`); // Pounce (2026-10-12)
+  if(e.amore){ const st = bopts && bopts.live ? amoreLiveState(bopts.live) : 'single'; // Amore (2026-10-16)
+    out.push(`<span class="ab-amore is-${st}" title="${escapeAttr(st === 'love' ? 'Amore: in love — +0/+3 and Regeneration 3 while its partner lives' : st === 'broken' ? 'Amore: heartbroken — its partner died; it kept +0/+3, lost Regeneration 3' : 'Amore: pairs with your next Amore unit of the same Type')}">${st === 'love' ? '❤️' : st === 'broken' ? '🤎' : '💕'}</span>`); }
+  if(e.pounce){ const pm = pounceMode(e.pounce), pl = bopts && bopts.live && bopts.live.pounceN != null ? bopts.live.pounceN : null; // Pounce (2026-10-12); <Att>/<Hp> (2026-10-16)
+    out.push(`<span title="Pounce ${pm ? (pm === 'attack' ? '(its Attack)' : '(its Health)') : numOr(e.pounce, 1)}">${iconHTML('pounce', '🐾')}${pm ? (pl != null ? `<b class="atk-bonus">${pl}</b>` : (pm === 'attack' ? '⚔' : '❤')) : n1(e.pounce)}</span>`); }
   if(e.bloodlust) out.push(`${iconHTML('bloodlust', '🩸⚔️')}${n1(e.bloodlust)}`); // Bloodlust (2026-10-15)
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
   // any existing glyph on this card face.
@@ -7079,6 +7132,15 @@ function openCardEditor(defId, versionDef){
   delete editingCard.level;
   if(!editingCard.effects) editingCard.effects = {};
   if(!Array.isArray(editingCard.effects.triggers)) editingCard.effects.triggers = [];
+  // 2026-10-16 (user: "I noticed it also has this on ready deal 6 damage that i cant removed"): the old `onReadyDamage` field (from
+  // before triggers existed) had no row in the editor, so the card text said "On Ready: deals 6 …" but there was nothing to delete,
+  // and a plain Save dropped it without a word. It opens as the trigger it really is (On Ready → Missile N: a random enemy unit, the
+  // castle if none, the same pick the engine makes), so it shows in the Triggers list and can be kept, changed or removed.
+  if(editingCard.effects.onReadyDamage && typeof editingCard.effects.onReadyDamage === 'object'){
+    const od = editingCard.effects.onReadyDamage, amt = od.amount === 'attack' ? (Number(editingCard.attack)||0) : (Number(od.amount)||0);
+    if(amt > 0) editingCard.effects.triggers.push({on:'onReady', do:'missile', amount:amt});
+    delete editingCard.effects.onReadyDamage;
+  }
   // Resist migration (2026-09-16): fold a legacy top-level `resist` array (the old bare
   // "Resist (comma list)" field, and later the old single-value "+ Add Skill" Resist row) into
   // `effects.resist` the first time this card is opened, so it shows up in the new Resistance
@@ -7637,7 +7699,7 @@ function renderEditorInner(){
   overlay.querySelectorAll('#skillRows [data-addskillrow], #evergreenRows [data-addskillrow]').forEach(b=> b.addEventListener('click', ()=>{ const r = c._skillRows[Number(b.getAttribute('data-addskillrow'))]; if(!r) return;
     const next = Math.min(11, Math.max(cardBaseLevel(c) + 1, ...c._skillRows.filter(x=> x.key === r.key).map(x=> (x.lv || cardBaseLevel(c)) + 1)));
     c._skillRows.push({key:r.key, value:defaultSkillValue(r.key), lv:next}); renderEditor(); })); // added at the end so the form keeps every other row's typing
-  overlay.querySelectorAll('#skillRows select[data-sk="key"], #evergreenRows select[data-sk="key"]').forEach(sel=> sel.addEventListener('change', ()=>{
+  overlay.querySelectorAll('#skillRows select[data-sk="key"], #evergreenRows select[data-sk="key"], #skillRows select[data-sk="twin"], #evergreenRows select[data-sk="twin"]').forEach(sel=> sel.addEventListener('change', ()=>{ // + the "Gives" field (2026-10-16)
     const i = Number(sel.getAttribute('data-i'));
     c._skillRows[i] = {key:sel.value, value:defaultSkillValue(sel.value)};
     renderEditor();
@@ -7782,6 +7844,9 @@ function defaultSkillValue(key){
   if(s.kind==='cardCount') return ['', 1];
   return true;
 }
+// A Zeitgeber's two forms (2026-10-16): the plain stat bonus and the skill list ("Diurnal" + Gives: Stat bonus / Skills).
+const ZEIT_TWIN = {diurnal:'diurnalGrant', nocturnal:'nocturnalGrant', fullMoon:'fullMoonGrant', tide:'tideGrant'};
+const ZEIT_TWIN_BACK = {diurnalGrant:'diurnal', nocturnalGrant:'nocturnal', fullMoonGrant:'fullMoon', tideGrant:'tide'};
 function skillRowHTML(row,i,categoryFilter,mechLine){
   const s = SKILL_DEFS.find(x=>x.key===row.key) || SKILL_DEFS[0];
   // categoryFilter (2026-09-27, "On Death [Spawn] is not a passive ability... clean up the
@@ -7798,9 +7863,12 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   // an existing card never has its already-set skill silently vanish out from under it just
   // because its Archetype doesn't match (or hasn't been picked yet).
   const gateOk = x => row.key===x.key || (!x.hidden && (!x.mechLineGate || x.mechLineGate===mechLine)); // hidden (2026-10-14): retired from "+ Add Skill" (Crab Claws)
+  // 2026-10-16 (user: "Clean up the skill & action names. Don't put {} or 'one-off' or random comments inside."): Diurnal and the
+  // old "Diurnal – { }" are one entry, "Diurnal"; the row's "Gives" field picks a stat bonus or a skill list (ZEIT_TWIN).
+  const twinOf = ZEIT_TWIN[row.key] || ZEIT_TWIN_BACK[row.key];
   const keyPickerPool = (categoryFilter==='evergreen' ? SKILL_DEFS.filter(x=>x.category==='evergreen')
     : categoryFilter==='passive' ? SKILL_DEFS.filter(x=>x.category!=='evergreen')
-    : SKILL_DEFS).filter(gateOk);
+    : SKILL_DEFS).filter(gateOk).filter(x=> x.key === row.key || !(ZEIT_TWIN_BACK[x.key] || (twinOf && x.key === twinOf)));
   let valueHtml = '';
   if(s.kind==='number') valueHtml = `<input type="number" min="0" class="w-70" data-sk="val" data-i="${i}" value="${row.value||1}">`;
   else if(s.kind==='text') valueHtml = `<input type="text" class="w-160" data-sk="val" data-i="${i}" placeholder="${escapeAttr(s.placeholder||'')}" value="${escapeAttr(typeof row.value === 'string' ? row.value : '')}">`;
@@ -7830,12 +7898,12 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     // break condition is selected.
     const opts = s.selectOptions ? s.selectOptions() : [];
     const vals = Array.isArray(row.value) ? row.value : defaultSkillValue(row.key);
-    const amountRelevant = vals[0]==='damage';
+    const amountRelevant = s.numberWhen ? s.numberWhen.includes(vals[0]) : vals[0]==='damage'; // + Pounce N / <Att> / <Hp> (2026-10-16)
     // Sorted alphabetically by label for display only (2026-09-17) — the default value picked
     // for a brand-new "Chained" row still comes from defaultSkillValue()'s own (unsorted)
     // opts[0], unaffected by this render-time reorder.
     valueHtml = `<select data-sk="val0" data-i="${i}">${[...opts].sort((a,b)=>a.label.localeCompare(b.label)).map(o=>`<option value="${o.value}" ${vals[0]===o.value?'selected':''}>${o.label}</option>`).join('')}</select>` +
-      `<input type="number" min="1" class="w-52" data-sk="val1" data-i="${i}" value="${vals[1]||1}" title="Damage threshold — only used by the 'Takes more than N damage' condition" ${amountRelevant?'':'hidden'}>`;
+      `<input type="number" min="1" class="w-52" data-sk="val1" data-i="${i}" value="${vals[1]||1}" title="${escapeAttr(s.numberTitle || "Damage threshold — only used by the 'Takes more than N damage' condition")}" ${amountRelevant?'':'hidden'}>`;
   } else if(s.kind==='types'){
     // Swarm types (2026-10-11): pick none for "any ally sharing a type", or one or more types to count only those.
     const sel = Array.isArray(row.value) ? row.value : [];
@@ -7862,7 +7930,9 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
   // passing 'N' through for those would index into the string and show garbage.
   const descArg = s.kind==='number' ? (row.value||1) : s.kind==='types' ? row.value : s.kind==='select' ? (row.value||'') : s.kind==='cardCount' ? (Array.isArray(row.value)?row.value:defaultSkillValue(row.key)) : 'N';
   return `<div class="skill-row" title="${escapeAttr(s.desc(descArg, row.n))}">
-    <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${x.label}${x.oneOff ? ' · one-off' : ''}</option>`).join('')}</select>
+    <select data-sk="key" data-i="${i}">${[...keyPickerPool].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" ${row.key===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
+    ${twinOf ? (()=>{ const plain = ZEIT_TWIN[row.key] ? row.key : twinOf, adv = ZEIT_TWIN[plain];
+      return `<label class="sk-twin">Gives <select data-sk="twin" data-i="${i}" aria-label="What it gives"><option value="${plain}" ${row.key===plain?'selected':''}>${plain === 'tide' ? 'Tide bonus' : 'Stat bonus'}</option><option value="${adv}" ${row.key===adv?'selected':''}>Skills</option></select></label>`; })() : ''}
     ${oneOffTagHTML(s)}${valueHtml}
     ${liveReadout}
     ${'' /* 2026-10-13 (user: "In the future, i want to be able to add skills at different levels. To not clump up the UI, just have a + button per row"): a row can arrive at a level; ＋ adds a row for the same skill one level up */}
@@ -7897,6 +7967,7 @@ function triggerRowHTML(t,i){
     <span>On</span>${onFamilyHtml}${onSubHtml}${turnOfHtml}
     ${filterHtml}
     ${!TRIGGER_ALWAYS_ON.has(t.on) ? `<label class="trig-ready" title="Triggers like this are off while the card is still Waiting. Tick to let this one fire while it Waits too."><input type="checkbox" data-t="whileWaiting" data-i="${i}" ${t.whileWaiting?'checked':''}> also while Waiting</label>` : ''}
+    <span>Pay</span><select data-t="cost" data-i="${i}" title="A cost paid first. With nothing to pay, the trigger doesn't go off."><option value="" ${!t.cost?'selected':''}>nothing</option><option value="burnLumber" ${t.cost==='burnLumber'?'selected':''}>Burn 1 Lumber</option></select>
     <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${actionFieldsHTML(t,i)}
     <button class="btn small danger rm" data-rm="${i}">✕</button>
@@ -7958,6 +8029,8 @@ function readTriggerRow(row){
   if(targetsEl && Number(targetsEl.value) > 1 && t.who !== 'self' && t.sub !== 'all') t.targets = Math.min(8, Math.floor(Number(targetsEl.value)));
   const defIdEl = row.querySelector('[data-t="defId"]');
   if(defIdEl && defIdEl.value.trim()) t.defId = defIdEl.value.trim();
+  const costEl = row.querySelector('[data-t="cost"]'); // Pay: Burn 1 Lumber (2026-10-16)
+  if(costEl && costEl.value) t.cost = costEl.value;
   return t;
 }
 // Item #51: "On Attacked, Spawn 1x «name»" style plain-English summary of a custom
@@ -8045,8 +8118,10 @@ function triggerPreviewText(t){
     case 'stunPlayer': doText = `make the enemy player skip ${t.count>1 ? t.count + ' turns' : 'their turn'}`; break;
     case 'cleanse': { const w = t.who && t.who!=='self' ? whoTarget : 'itself'; doText = t.amount ? `cleanse ${t.amount} ailment${t.amount===1?'':'s'} from ${w} (curses first)` : `cleanse ${w} of every ailment`; break; }
     case 'addWait': doText = `delay ${whoTarget} by ${amt} Wait`; break;
+    case 'fireHit': doText = `its hit also deals ${amt} fire damage`; break; // 2026-10-16
     default: doText = aDef.label.toLowerCase();
   }
+  if(t.cost === 'burnLumber') doText = `burn 1 Lumber (if you have it), then ${doText}`; // the cost step (2026-10-16)
   return `${trigLabel}, ${doText}.`;
 }
 function actionFieldsHTML(t,i){
@@ -13884,8 +13959,8 @@ function fieldConditionRows(r){
     const SH = {lavaTide:'Lava may flood a column', petrify:'A unit may turn to stone', eruption:'Eruptions, then comets'};
     VOLCANO_HAZARDS.forEach(h=>{ if(!(o[h.key] > 0)) return; const w = volcanoChanceWord(r, h.key); add(h.key, h.icon, `${h.name} · ${w}`, `${h.text(r)} Chance each round: ${w}.`, `Chance each round: ${w}`, `${SH[h.key]} (${w})`); }); }
   else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(r.eruption), '', `Burns a unit a side for ${r.eruption}`);
-  if(r.wind === 'gale') add('gale', '🌪️', 'Gale', 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', '', 'Strong wind every round');
-  else if(r.wind) add('wind', '🌬️', 'Windy', 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', '', 'Strong wind every other round');
+  if(r.wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale);
+  else if(r.wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy);
   if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (none with an Illuminate unit on their side).', '', 'No Darksight: every attack misses');
   // 2026-10-15 (user: "It will be an explicit field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): the two dark levels.
   else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', 'No Darksight: miss 1 in 2');
@@ -13958,6 +14033,14 @@ function noteFieldEvent(ev){
 }
 // The terrain pill on the board became a field card on the enemy's side (2026-10-14): see fieldCondCardHTML.
 // Wind (2026-10-13, 09:56 list): 'windy' = strong wind every other round, 'gale' = every round. A fight can set rules.wind itself.
+// 2026-10-16 (user: "Wind: The typical wind effect cards say that the wind change is random. Forward, Backward, No Wind, etc."): the
+// engine rolls the wind each round (rollWind). Windy: at your back, in your face or calm, 1 in 3 each. Gale: always strong, either
+// way 1 in 2. One text for the field card, its pill and the Effects library.
+const WIND_TEXT = {
+  windy: 'The wind is random each round: at your back, in your face, or calm (1 in 3 each). Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.',
+  gale: 'Strong wind every round, blowing a random way: at your back or in your face (1 in 2 each). Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.',
+};
+const WIND_SHORT = {windy:'Random wind each round', gale:'Strong wind, random way'};
 // Darkness levels (D67/D73, 2026-10-13): Smugglers' Grotto is Pitchblack (1 in 2 miss), Caves & Alcoves is Darkness (1 in 4).
 // The Abyssal Plains will be Absolute darkness. Darksight sees through all of it.
 // 2026-10-15 (user: "It should only be for dark environments only. It will be an explicit field effect called 'Darkness'. 'Pitch Black'
@@ -21274,7 +21357,7 @@ function testKitSavePrefs(){
 }
 function testKitSkillDefault(sd){
   if(sd.kind==='boolean') return true;
-  if(sd.kind==='number') return ['stunOnHit','reflect'].includes(sd.key) ? 50 : 2;
+  if(sd.kind==='number') return sd.key === 'reflect' ? 50 : sd.key === 'stunOnHit' ? 1 : 2; // Stun N is rounds since 2026-10-16
   if(sd.kind==='twoNumber') return sd.key==='explode' ? [2, 5] : sd.key==='dynamite' ? [3, 5] : FXL_CHANCE_TWO.has(sd.key) ? [50, 1] : [2, 2]; // 2026-10-16 skill audit: Dynamite, and +A/+H skills (Nocturnal …) aren't 50/1
   if(sd.kind==='selectNumber'){ const o = testKitSelectOpts(sd); return [(o[0]&&o[0].value)||'damage', 3]; }
   return null;
@@ -21819,8 +21902,8 @@ const FXL_PREFS_KEY = 'bramblewood_fxlib_prefs_v1';
 const FXL_GROUPS = [
   {key:'passive', icon:'⚔️', label:'Skills'},
   {key:'evergreen', icon:'🌿', label:'Evergreen skills'},
-  {key:'on', icon:'🎬', label:'Trigger events (On …)'},
-  {key:'do', icon:'⚙️', label:'Trigger actions (Do …)'},
+  {key:'on', icon:'🎬', label:'Trigger events'},
+  {key:'do', icon:'⚙️', label:'Trigger actions'},
   {key:'field', icon:'🌦️', label:'Field & fight conditions'},
 ];
 let fxLib = null;
@@ -21862,8 +21945,8 @@ const FXL_FIELDS = [
   {key:'sandstorm', icon:'🏜️', name:'Sandstorm', text:()=> 'Attacks at units miss 1 in 4, except from Dry units.', rules:{sandstorm:true}, units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Fennec', icon:'🦊', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'The Fennec beside it is Dry and never misses in the sand.'},
   {key:'scorching2', icon:'🔥', name:'Scorching II', text:()=> 'Scorching, level 2: each round 3 random units on each side take 2 fire damage. Heat-resistant units are spared.', rules:{field:'heatwave', heatLevel:2}},
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> "From round 2, a spout bursts in one random column each round. The Tide comes in, the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.", rules:{tideSpout:true}, units:FXL_TIDE_UNITS},
-  {key:'windy', icon:'🌬️', name:'Windy', text:()=> 'Strong wind every other round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds: the wind rises at the start of round 2.'},
-  {key:'gale', icon:'🌪️', name:'Gale', text:()=> 'Strong wind every round. Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.', rules:{wind:'gale'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds, so you see a round fought in the wind.'},
+  {key:'windy', icon:'🌬️', name:'Windy', text:()=> WIND_TEXT.windy, rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: each one rolls its own wind (at your back, in your face or calm).'},
+  {key:'gale', icon:'🌪️', name:'Gale', text:()=> WIND_TEXT.gale, rules:{wind:'gale'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds, each with strong wind blowing a random way.'},
   {key:'dark', icon:'🌘', name:'Darkness', text:()=> DARK_LEVEL_TEXT.dark, rules:{dark:'dark'}, units:FXL_DARK_UNITS},
   {key:'pitch', icon:'🌑', name:'Pitch Black', text:()=> DARK_LEVEL_TEXT.pitch, rules:{dark:'pitch'}, units:FXL_DARK_UNITS},
   {key:'absolute', icon:'⚫', name:'Absolute darkness', text:()=> 'Units without Darksight miss every attack (none with an Illuminate unit on their side).', rules:{dark:'absolute'}, units:FXL_DARK_UNITS},
@@ -21909,6 +21992,7 @@ const FXL_SKILL_SETUPS = {
   slashBurn: {foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}, {role:'foe3', slot:0}], withhold:'foe3', status:{foe:{hp:1}}, steps:['round', {spawn:'foe3'}], note:'Its kill sets the slot burning; then a new enemy is played there.'},
   trap: {foes:[{role:'foe2', slot:1}, {role:'foe', slot:0}], withhold:['subject', 'foe'], steps:[{spawn:'subject'}, {spawn:'foe'}], note:'It arrives facing an empty slot and sets a trap; then an enemy is played there.'},
   // 2026-10-16: Ambush N (an enemy card played into the slot facing it), Expose's crits, and the two Devilry payments.
+  amore: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{effects:{amore:true}}}], withhold:'subject', steps:[{spawn:'subject'}, {kill:'ally'}], note:'The Sparring Partner beside it (same Type) has Amore: they pair as the Specimen arrives, then the partner dies and the heart turns brown.'}, // 2026-10-16
   ambush: {withhold:'foe', steps:[{spawn:'foe'}, 'round'], note:'The slot facing it is empty; then an enemy is played there and it strikes as the card arrives.'},
   expose: {steps:['round', 'round'], note:'Round 1 its hit puts the counters on the dummy; round 2 each hit on the dummy is a crit and takes one off.'},
   penance: {withhold:'subject', steps:[{spawn:'subject'}], note:'It arrives and pays: your own castle loses the Health.'},
@@ -22009,6 +22093,7 @@ const FXL_TRIGGER_SETUPS = {
   onHealed: {steps:[{dmg:'subject', n:6}, {heal:'subject', n:3}]},
   onAllyHealed: {steps:[{dmg:'ally', n:6}, {heal:'ally', n:3}]},
   onDiscard: {fire:true, why:'It happens from the hand, when the card is pitched.'},
+  onPitch: {fire:true, why:'It happens when you pitch a card from your hand while the Specimen is on the field.'}, // 2026-10-16
   // 2026-10-14 (user: "On Death: Attacking unit gets 5 Poison. - it's as if it got ingested!"): the who:'killer' target.
   onDeathKiller: {t:{on:'onDeath', do:'poison', amount:5, who:'killer'}, status:{subject:{hp:3}}, steps:[{attack:'foe'}], note:'The Specimen has 3 Health; the dummy in front kills it and is poisoned for it.'},
   onSacrifice: {fire:true, why:'It needs a Sacrifice, Devour or Offering.'},
@@ -22035,6 +22120,7 @@ const FXL_ACTION_SETUPS = {
   cleanse: {t:{who:'ally', sub:'adjacent'}, status:{ally:{poison:3, bleed:2}}, note:'The Sparring Partner starts Poisoned and Bleeding.'},
   addWait: {t:{amount:2, who:'enemy', sub:'adjacent'}},
   shield: {t:{amount:4, who:'ally', sub:'all'}, steps:[{spawn:'subject'}, 'round'], note:'Every ally gets Shield 4, then a round of blows eats into it.'}, // 2026-10-14
+  fireHit: {on:'onAttack', t:{amount:3, cost:'burnLumber'}, lumber:2, steps:['round', 'round', 'round'], note:'On Attack, Burn 1 Lumber: its hit deals 3 extra fire damage. You hold 2 Lumber, so the third round has nothing to burn.'}, // 2026-10-16
 };
 const FXL_CHANCE_TWO = new Set(['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger']);
 function fxlEntries(){
@@ -27683,6 +27769,8 @@ async function discardCardByUid(uid){
   }
   if(me.perks && me.perks.secondPitch) me.perks.secondPitch = false; // Wildpath "Second Pitch": once a fight, a second pitch this turn
   else me.discardUsedThisTurn = true;
+  // On Pitch / Scavenge (2026-10-16, user: "Whenever you pitch a card, this card does {}"): your units on the field react.
+  const pitchEv = []; try{ if(m.engine && m.engine.firePitchTriggers) m.engine.firePitchTriggers(m.players, m.sideOf, activePid, dc.defId, m.stats, pitchEv); }catch(e){}
   if(m.selectedUid===uid) m.selectedUid = null;
   // Cashing in (2026-09-16, per explicit request): its own coin sound (was the generic
   // "play a card" tone) plus a "+1" that jumps out of the resource's own HUD pill, reusing the
@@ -27705,6 +27793,7 @@ async function discardCardByUid(uid){
   if(gainChips.length) pitchCallout(gainChips, dcDef);
   pushLog({type:'discard', side:m.sideOf(activePid), defId:dc.defId, resource:yieldInfo.resource, amount:yieldInfo.amount});
   if(darkPointBonus>0) pushLog({type:'devilry', side:m.sideOf(activePid), defId:dc.defId, amount:darkPointBonus});
+  pitchEv.forEach(ev=>{ try{ pushLog(ev); renderVfxForEvent(ev); }catch(e){} }); // On Pitch (2026-10-16)
   }, 'pitch presentation');
   // Discarding no longer auto-ends the turn (2026-09-14, per explicit request) — you can
   // still play a card (or manually Skip Turn) afterward. It only ends the turn on its own
@@ -29992,7 +30081,7 @@ function liveTideState(e){
 function liveTideState0(e){
   try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || !m.engine || !m.engine.getTide || !matchHasTide(m)) return null;
     const t = m.engine.getTide(); if(!t) return null;
-    if(e && e.tideGrant && typeof e.tideGrant === 'object' && !e.supremeTide){ const fl = grantBraceText(e.tideGrant.flood), eb = grantBraceText(e.tideGrant.ebb); // Tide – {…}, {…} (2026-10-15)
+    if(e && e.tideGrant && typeof e.tideGrant === 'object' && !e.supremeTide){ const fl = grantText(e.tideGrant.flood) || 'nothing', eb = grantText(e.tideGrant.ebb) || 'nothing'; // Tide's skill list (2026-10-15); no braces (2026-10-16)
       return t === 'ebb' ? {k:'ebb', name:'Ebb', bonus:eb} : t === 'high' ? {k:'high', name:'High Tide', bonus: fl + ', ' + eb} : {k:'flow', name:'Flood', bonus:fl}; }
     const sw = e && e.swimmer ? (e.swimmer === true ? 'extraAttack' : e.swimmer) : null, up = t === 'high' ? 2 : 1;
     const rising = sw === 'extraAttack' ? [`+${up + 1} Attack`] : [`+${up} Attack`].concat(sw === 'quickAttack' ? ['Quick Attack'] : sw === 'evade' ? ['Evasive'] : []); // "Evade -> Evasive." (2026-10-15)
@@ -32876,7 +32965,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
 // triggered ability triggers, like On Death or On Enemy Play"): a gold rune ring opens on the card
 // with the trigger's symbol above it, and a soft two-note chime.
 const TRIGGER_GLYPH = {onDeath:'💀', onSpawn:'✨', onAttack:'⚔️', onAttacked:'🛡️', onKill:'🗡️', onRoundStart:'🕐', perTurn:'🕐', /* 2026-10-12: turn-based triggers wear a clock */ onReady:'⚡', onExile:'🌀',
-  onEnemyPlayed:'👁️', onEnemySpawn:'👁️', onEnemyReady:'👁️', onAllyPlayed:'🤝', onAllySpawn:'🤝', onAllyReady:'🤝', onAllyDie:'🕯️', onColumnSpawn:'👁️', onHeal:'💚', onHealed:'💚', onAllyHealed:'💚', onDiscard:'🍂', onMove:'↔️', onSacrifice:'🦷', onCharge:'⏲️'}; // 2026-10-14: Sacrifice's teeth, Charge's clock
+  onEnemyPlayed:'👁️', onEnemySpawn:'👁️', onEnemyReady:'👁️', onAllyPlayed:'🤝', onAllySpawn:'🤝', onAllyReady:'🤝', onAllyDie:'🕯️', onColumnSpawn:'👁️', onHeal:'💚', onHealed:'💚', onAllyHealed:'💚', onDiscard:'🍂', onMove:'↔️', onSacrifice:'🦷', onCharge:'⏲️', onPitch:'♻️'}; // 2026-10-14: Sacrifice's teeth, Charge's clock
 // Stat changes (2026-10-10, user: "The improvement of stats should be clear! like esprit. The deprovement of skills
 // also."): a big gold "+N⚔ +N❤" (or a cold violet "−N⚔") over the card, and the stat pill itself swells green or
 // shrinks red. The replay snapshot is kept in step so the number on the card doesn't jump back.
@@ -33512,6 +33601,11 @@ function devilPayLogText(ev, nm){
   if(ev.type === 'penance') return {cls:'', text:`⛧ Penance: ${nm(ev.defId)} is paid for with ${who} castle (−${ev.dmg}${ev.dmg < ev.amount ? ` of ${ev.amount}: a castle never pays below 1` : ''}).`};
   if(ev.type === 'bloodTithe') return {cls:'', text: ev.castle ? `⛧ Blood Tithe: no ally to pay for ${nm(ev.defId)}, so ${who} castle pays (−${ev.dmg}).` : `⛧ Blood Tithe: ${nm(ev.targetDefId)} pays for ${nm(ev.defId)} in blood (−${ev.dmg}).`};
   if(ev.type === 'ambush') return {cls:'', text:`👀 ${nm(ev.defId)} ambushes ${nm(ev.targetDefId)} as it arrives (${ev.amount}).`};
+  // 2026-10-16 (skills 2): Amore, Fire on hit and its Burn 1 Lumber, On Pitch.
+  if(ev.type === 'amore') return {cls:'heal', text:`💕 ${nm(ev.defId)} and ${nm(ev.mateDefId)} fall in love: +0/+${ev.hp} and Regeneration ${ev.regen} each.`};
+  if(ev.type === 'amoreBroken') return {cls:'', text:`🤎 ${nm(ev.defId)} is heartbroken: ${nm(ev.deadDefId)} is gone. It keeps +0/+3, but loses Regeneration 3.`};
+  if(ev.type === 'lumberBurn') return {cls:'', text:`🔥 ${nm(ev.defId)} burns 1 Lumber (${ev.left} left).`};
+  if(ev.type === 'fireHit') return {cls:'', text: ev.castle ? `🔥 ${nm(ev.attDefId)}'s hit burns ${ev.targetSide === 'A' ? 'your' : "the enemy's"} castle for ${ev.dmg} more.` :`🔥 ${nm(ev.attDefId)}'s hit burns ${nm(ev.targetDefId)} for ${ev.dmg} more fire damage.`};
   return null;
 }
 function devilPulse(el){
@@ -33533,6 +33627,7 @@ function devilPulse(el){
   }catch(e){ done(); }
 }
 function devilPayVfx(ev){
+  if(ev && matchState && ['amore', 'amoreBroken', 'lumberBurn', 'fireHit'].includes(ev.type)) return skills2Vfx(ev); // 2026-10-16 (skills 2)
   if(!ev || !matchState || (ev.type !== 'penance' && ev.type !== 'bloodTithe' && ev.type !== 'ambush')) return;
   const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
   if(ev.type === 'ambush') return; // its look is the strike (the 'hit' with ambush:true): the lunge, the stab tone and "🗡 Ambush!"
@@ -33544,6 +33639,35 @@ function devilPayVfx(ev){
     if(ev.type === 'bloodTithe' && !ev.castle) try{ updateCardHpDisplay(ev.targetUid); }catch(e){}
     else try{ updateHqHpDisplay(ev.side); }catch(e){}
   });
+}
+// Skills 2 looks (2026-10-16): Amore's hearts drifting between the pair (a brown one cracking when the partner dies), Burn 1 Lumber's
+// ember leaving the Lumber pill, Fire on hit's flare on what it hit.
+function floatGlyphs(fromEl, toEl, glyphs, opts){
+  if(!fromEl || reducedMotion() || fxLevel() === 'none') return;
+  opts = opts || {}; const a = fromEl.getBoundingClientRect(), b = (toEl || fromEl).getBoundingClientRect(); if(!(a.width > 0)) return;
+  glyphs.forEach((g, i)=>{ const d = document.createElement('div'); d.textContent = g; d.setAttribute('aria-hidden', 'true');
+    const x0 = a.left + a.width/2, y0 = a.top + a.height*0.4, x1 = b.left + b.width/2, y1 = b.top + b.height*0.4, dx = (Math.random() - .5) * 30;
+    Object.assign(d.style, {position:'fixed', left:x0 + 'px', top:y0 + 'px', zIndex:9990, pointerEvents:'none', font:`${opts.size || 22}px/1 system-ui`, transform:'translate(-50%,-50%)', opacity:0});
+    document.body.appendChild(d);
+    try{ const an = d.animate([{opacity:0, transform:'translate(-50%,-50%) scale(.4)'}, {opacity:1, transform:`translate(calc(-50% + ${(x1 - x0)/2 + dx}px), calc(-50% + ${(y1 - y0)/2 - (opts.rise || 40)}px)) scale(1.1)`, offset:.5},
+        {opacity:0, transform:`translate(calc(-50% + ${x1 - x0}px), calc(-50% + ${y1 - y0 - (opts.rise2 || 10)}px)) scale(.8)`}], {duration:(opts.ms || 1100) + i*90, delay:i*110, easing:'ease-in-out', fill:'forwards'});
+      an.onfinish = ()=> d.remove(); setTimeout(()=> d.remove(), 2600); }catch(e){ d.remove(); } });
+}
+function skills2Vfx(ev){
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} }, fl = (el, t, c)=>{ if(el) try{ floatText(el, t, c); }catch(e){} };
+  const rc = u=> matchState && matchState.replayCards ? matchState.replayCards[u] : null;
+  if(ev.type === 'amore'){ w2Later(500, ()=>{ const a = boardCardEl(ev.uid), b = boardCardEl(ev.mateUid);
+      [ev.uid, ev.mateUid].forEach(u=>{ const r = rc(u); if(r){ r.maxHp += ev.hp; r.hp += ev.hp; r.amoreWith = u === ev.uid ? ev.mateUid : ev.uid; r.amoreRegen = ev.regen; } try{ updateCardHpDisplay(u); }catch(e){} });
+      snd('rallyTone'); floatGlyphs(a, b, ['💕', '❤️', '💕']); floatGlyphs(b, a, ['❤️', '💕']); fl(a, `💕 +0/+${ev.hp}`, 'buff'); fl(b, `💕 +0/+${ev.hp}`, 'buff'); }); return; }
+  if(ev.type === 'amoreBroken'){ const el = boardCardEl(ev.uid), r = rc(ev.uid); if(r){ r.amoreBroken = true; r.amoreRegen = 0; }
+    snd('curse'); fl(el, '🤎 Heartbroken', 'debuff'); floatGlyphs(el, el, ['🤎', '💔'], {rise:30, rise2:60, size:26}); return; }
+  if(ev.type === 'lumberBurn'){ const pill = document.getElementById(ev.side === 'A' ? 'hudLumberPill' : 'hudLumberPillB') || document.getElementById('hudLumberPill'), me = boardCardEl(ev.uid);
+    if(ev.side === 'A' && pill) fl(pill, '🔥 -1', 'dmg'); if(pill && me && ev.side === 'A') floatGlyphs(pill, me, ['🔥'], {size:18, rise:20}); else if(me) fl(me, '🔥 -1🪵', 'debuff'); snd('burnAway'); return; }
+  if(ev.type === 'fireHit'){ const at = Math.max(0, (animMs().windup||0) + (animMs().impactPad||0) + 60);
+    setTimeout(()=>{ const el = ev.castle ? hqTileEl(ev.targetSide) : boardCardEl(ev.targetUid); fl(el, `🔥 -${ev.dmg}`, 'dmg');
+      if(!ev.castle){ const r = rc(ev.targetUid); if(r) r.hp = Math.max(0, (r.hp||0) - (ev.dmg||0)); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} }
+      else try{ displayHqDamage(matchState, ev.targetSide, ev.dmg); }catch(e){}
+      if(el) floatGlyphs(el, el, ['🔥', '🔥'], {size:20, rise:26, rise2:44, ms:700}); }, at); return; }
 }
 // Cloudy (2026-10-16, user: "Cloudy - cloud shadows floating above the battlefield."): soft cloud shadows drift across the board in a
 // Cloudy fight (rules.cloudy), and by day the clouds halve the Diurnal bonus (the engine's phaseStatsOf).
