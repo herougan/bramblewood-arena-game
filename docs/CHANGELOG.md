@@ -2,6 +2,32 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (field effects 2)
+- **19 new field effects**, built and selectable in Edit skirmish (Hazards and rules), each with an Environment card, a battle-log line, a look and an Effects library entry. **No map carries them yet**; map placement is a separate pass. Engine: `fieldEffects2Tick` and the helper block near `rules` in bramblewood-engine.js; texts: `FIELD2` in arena_app.js; tests: `tests/field-effects-2026-10-16.js`.
+  - **Tide** (`tide`): the Flood/Ebb cycle as a field effect of its own, Flood from round 2.
+  - **Landslide** (`landslide`): each round a 1 in 4 chance of rocks: 5 damage to every unit that isn't flying (Mountain Climbers are spared too).
+  - **Consternation** (`consternation`): every card in each hand loses 1/1 each upkeep, and keeps the loss when played (0 Attack and 1 Health at the least). Hand cards show what they have left; a 😰 badge on the unit.
+  - **Crushing Depths** (`crushingDepths`): 5 water damage to every unit each round; Tide units and Swimmers take half, water Resist halves it again (a resistant Swimmer takes 1). No day or night under it.
+  - **Rook's Row** / **Bishop's Path** (`rookRow` / `bishopPath`, Map 12's lines): +2 for a hit on the unit square in front / on the slant (interlocked ranks, Fork prongs, Backstab, Crab Claws).
+  - **Mirage** (`mirage`): each round a random unit gets a 1/1 Illusion in a free slot right beside it (none if both are taken), copying only Flying, Tide, Swimmer, Haste and Speed.
+  - **High Canopy** (`canopy`, Map 13) and **Undergrowth** (`undergrowth`, Map 15, the same rule without the Flying and Bounty parts): Pounce +2, Swift (and Quick) units Evasive; High Canopy also takes away Flying's dodge and gives Bounty +1.
+  - **Tall Grass** (`tallGrass`, Map 15's add-on): Stealth units attack first; Backstab hits and Pounce deal double.
+  - **Slippery** (`slippery`, a %; 50 by default): every attack at a unit misses 1 in 2, and every trigger and on-hit skill fails 1 in 2. Very strong, so the number can soften it.
+  - **Glass-storm** (`glassStorm`, one-off): a Sandstorm (with its wind) whose glass buffets every unit for a random 1–3 each round.
+  - **Hail** (`hail`): 3 ice damage to every unit each upkeep.
+  - **Lava Spout** (`lavaSpout`): one random column bursts each round, 3 fire damage to the units there, both sides.
+  - **Scorching III**: the existing Scorching at level 3 (4 units a side, 3 fire), next to Scorching II.
+  - **Leylines I / II / III** (`leylines1/2/3`, independent): I strengthens the zeitgebers (a plain Diurnal / Nocturnal / Crepuscular is +3/+3, a numbered one +2/+2 more; Tide +3 Attack on Flood, Armor 3 on Ebb; Full Moon and Moonborn +2/+2 more). II: +1 Lumber a round for each side. III: +1 Lumber and +1 Stone a round, but every unit and both castles take 3 magic damage (a castle never drops below 1 from it).
+  - **Haunted** (`haunted`): each round one random unit on each side is **Frightened**: it doesn't attack that round (👻 badge). Ghosts and Atheists aren't scared.
+- **Atheist (new skill, on no card):** half damage from magic and from Devilry and Ecclesia attackers; the Leylines' burn doesn't touch it; never Frightened.
+- **Sandstorm brings Windy's random wind** (unless the fight sets its own wind); its field card stack shows the Windy card.
+- **Tide-spout is one-off:** it is on Pebble Beach's 2-4 only (was every Pebble Beach fight), and it no longer brings the Tide in. Flood and Ebb come only from the Tide, High Tide, Perma-tide / River Rapids, or a Moonpull / Tsunami card. The spout's column fades in and out about twice as fast.
+- **The tide pill shows whenever a tide runs**, also on maps with no day and night (it was hidden there).
+- **Flood and Ebb look clearer:** a light blue (Flood) or wet-sand (Ebb) tint washes over the board, each wave carries a foam line, High Tide's wave is bigger, and the water line at the board's foot keeps a drifting foam edge on Flood and glints on Ebb.
+- **Side maps in daylight** (Tutorial, Clovermead …): the map pushes in only a little (×1.3, was ×4.5) and the side map grows from 90% (was 35%).
+- **Edit skirmish:** the add list offers every hazard and rule (Swamp Fever, Freezing, Sandstorm and River Rapids were missing), every added effect has its chip, and one-off effects say "(one-off)".
+- **Leader light stays a look:** a leader's glow lights nothing in the rules (only Illuminate does); a test holds it.
+
 ## 2026-10-16 (results and rewards)
 - **No rank lesson box:** the results no longer show "🎉 Rank A! Well fought. Keep 90% of your castle…" (or its E/S/SS/SSS versions); the rank hex already says it.
 - **Packs in First Clear:** the skirmish preview shows just the pack, no name. Hovering or focusing it opens a small card with its name and "Faction rewards!" (a free pack says how many cards).
