@@ -176,7 +176,7 @@ ok(/grp\('Hazards and rules', FIELD_EFFECTS\.filter\(f=> !f\.arenaOnly && !\['fi
 ok(/Object\.keys\(FIELD2\)\.forEach\(k=>\{ if\(k === 'tide' \|\| !r\[k\]\) return;/.test(src), 'the Environment cards have a row for each');
 ok(/\]\.map\(\(\[k, rules, o\]\)=> Object\.assign\(\{key:k, icon:FIELD2\[k\]\.icon, name:FIELD2\[k\]\.name/.test(src) && F2.every(k=> new RegExp(`\\['${k}', \\{`).test(src)), 'the Effects library has an entry for each');
 ok(/\{key:'scorching3', icon:'🔥', name:'Scorching III'/.test(src), 'Scorching III in the Effects library');
-ok(F2.every(k=> true) && /crushingdepths:\{art:'art\/fields\/crushingdepths\.png'\}/.test(src) && /glassstorm:\{art:'art\/fields\/sandstorm\.png'\}/.test(src) && /if\(FIELD2\[k\]\) return FIELD2\[k\]\.editor;/.test(src), 'each new field card has an art key');
+ok(F2.every(k=> true) && /crushingdepths:\{art:'art\/fields\/crushingdepths\.png'\}/.test(src) && /glassstorm:\{art:'art\/fields\/glassstorm\.png'\}/.test(src) && /if\(FIELD2\[k\]\) return FIELD2\[k\]\.editor;/.test(src), 'each new field card has an art key');
 ok(/\{key:'atheist', category:'passive', label:'Atheist', kind:'boolean'/.test(src) && /atheist:'🚫✨'/.test(src) && /atheist: \(\)=> `Half damage from magic/.test(src), 'Atheist is a skill in the editor, with an icon and card text');
 ok(/const TIDESPOUT_NODES = \{mb:'2-4'\}/.test(src), 'the Tide-spout is one fight (2-4)');
 ok(/const wind = r\.wind \|\| \(\(r\.sandstorm \|\| r\.glassStorm\) \? 'windy' : null\);/.test(src), 'a Sandstorm shows the Windy card');
