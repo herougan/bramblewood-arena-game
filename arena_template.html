@@ -8615,6 +8615,10 @@
   .map-node.secret-pop::after{content:''; position:absolute; inset:-22px; border-radius:50%; pointer-events:none; background:radial-gradient(circle, rgba(255,236,170,.85) 0, rgba(255,214,110,.35) 40%, rgba(255,214,110,0) 70%); animation:secretBurst 1.6s ease-out .45s both;}
   @keyframes secretBurst{0%{transform:scale(.2); opacity:1;} 100%{transform:scale(2.2); opacity:0;}}
   @media (prefers-reduced-motion: reduce){ .map-node.secret-pop, .map-node.secret-pop::after{animation:none;} }
+  /* 2026-10-17 (user: "the links should be preserved"): a hidden skirmish lands with its trail, which fades in as it pops */
+  .map-trail-svg .trail-pop{animation:trailPopIn .9s ease-out 1.3s both;}
+  @keyframes trailPopIn{from{opacity:0;}}
+  @media (prefers-reduced-motion: reduce){ .map-trail-svg .trail-pop{animation:none;} }
 </style>
 </head>
 <body>
