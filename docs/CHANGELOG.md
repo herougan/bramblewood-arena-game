@@ -48,6 +48,7 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Stages re-captured** from today's game (`capstages.py`, a Map 1 fight under Spring Rain): every tile wears its card front frame and the deck piles their card backs (the frame and back pictures are inlined in the page). Fixed on the way: the draw flip, unit speech, emotes, the curiosity bubble and the rival babble had stopped playing in the lab (they call `cardBackClass` and the shared bubble loop since 10-16/17), and `map-cave-fires` was missing from the inventory. The catalogue marks entries new / updated / retired, filters by them, and the coverage line counts them.
 
 ## 2026-10-17 (21:45)
+- **Best hit** on the results screen is now everything one unit dealt in one round added up (its arrow, bolts, skill hits and swing), not only its biggest single blow.
 - **Home:** no "Start the tutorial" button (the game goes straight into it); a paused tutorial resumes from the 🎓 on the Outskirts map.
 - **Final check of the evening batches:** the full test suite was run once over everything merged today. Fixes from it: seven Map 22–24 fight decks now meet the Maps 21–40 rule (at least a quarter Rare or better), "Arrows (count)" is named Arrow Count, and the tests follow the Codex losing its one-off tag.
 

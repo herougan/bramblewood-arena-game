@@ -32424,7 +32424,7 @@ function delayForEvent(ev, prevKind){
   const mult = (matchState && matchState.speedMult) || 1;
   return Math.max(18, Math.round(base / mult));
 }
-function pushLog(ev){ if(typeof fxLib!=='undefined' && fxLib && fxLib.cap && matchState && matchState.fxLib) fxLib.cap.push(ev); /* 🔬 Effects library's Log box (2026-10-14) */ if(!matchState || ev.type==='triggerFired') return; matchState.log.push(ev); if(matchState.log.length>200) matchState.log.shift(); renderLogLine(ev); }
+function pushLog(ev){ if(typeof fxLib!=='undefined' && fxLib && fxLib.cap && matchState && matchState.fxLib) fxLib.cap.push(ev); /* 🔬 Effects library's Log box (2026-10-14) */ if(!matchState || ev.type==='triggerFired') return; if(ev && ev._round == null) ev._round = matchState.round || 0; /* 2026-10-17: round stamp for the Best hit total */ matchState.log.push(ev); if(matchState.log.length>200) matchState.log.shift(); renderLogLine(ev); }
 function sideLabel(side){
   const isPc = matchState && matchState.mode==='pc';
   if(isPc) return side==='A' ? 'Player 1' : 'Player 2';
@@ -32441,7 +32441,7 @@ function sideLabel(side){
 // grind (an early massive hit could in theory age out), but 200 events comfortably covers the
 // vast majority of matches, and `dealt`/`taken` would only undercount in that same rare case too.
 function computeMatchStats(m){
-  const totals = {A:{dealt:0, taken:0, biggestHit:0}, B:{dealt:0, taken:0, biggestHit:0}};
+  const totals = {A:{dealt:0, taken:0, biggestHit:0}, B:{dealt:0, taken:0, biggestHit:0}}, perUnitRound = {};
   (m.log||[]).forEach(ev=>{
     if(ev.type!=='hit' && ev.type!=='hitHQ') return;
     const side = ev.side, other = side==='A' ? 'B' : 'A';
@@ -32449,7 +32449,13 @@ function computeMatchStats(m){
     const dmg = ev.dmg||0;
     totals[side].dealt += dmg;
     totals[other].taken += dmg;
-    if(dmg > totals[side].biggestHit) totals[side].biggestHit = dmg;
+    // 2026-10-17 (user: "The best damage hit in the rewards breakdown should count all damage done by the unit, not just from the
+    // attack. If it arrowed for 4 damage, then dealt 16, the total is 20."): Best hit is the most one unit dealt in one round, every
+    // damaging hit it landed added up (arrows, bolts, skill hits and its swing), not its single biggest blow.
+    const who = ev.attUid != null ? ev.attUid : (ev.uid != null ? ev.uid : null);
+    const k = who != null ? side + ':' + who + ':' + (ev._round != null ? ev._round : '?') : null;
+    const tot = k ? (perUnitRound[k] = (perUnitRound[k] || 0) + dmg) : dmg;
+    if(tot > totals[side].biggestHit) totals[side].biggestHit = tot;
   });
   return totals;
 }
