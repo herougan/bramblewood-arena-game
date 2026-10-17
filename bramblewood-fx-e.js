@@ -1392,14 +1392,25 @@ function whenMapVisible(fn, tries){
 }
 async function playReturn(mapId, d, progress){
   const q = (cv, k)=> cv.querySelector(`:scope > .map-node[data-lkey="${(window.CSS && CSS.escape) ? CSS.escape(k) : k}"]`);
+  // 2026-10-17 (user: "when you clear a skirmish and it unlocks two (2) paths, one-by-one the paths light up. The dashed paths are
+  // invisible at first."): every new trail, and the fight it opens, is hidden as soon as the map is in view; then they ink in one
+  // after another, each fight fading in as its trail reaches it.
+  const pend = d.newVis.filter(k=> !d.chance.has(k));
+  const trailsTo = (cv, k)=> [...cv.querySelectorAll(`.map-trail-svg [data-b="${k}"]`)];
+  const hideNew = (cv, keys)=> keys.forEach(k=>{ trailsTo(cv, k).forEach(l=>{ l.style.opacity = '0'; }); const n = q(cv, k); if(n){ n.style.transition = 'none'; n.style.opacity = '0'; } });
+  const showNew = (cv, k)=>{ trailsTo(cv, k).forEach(l=>{ l.style.opacity = ''; }); const n = q(cv, k); if(n){ n.style.transition = 'opacity .3s ease-out'; n.style.opacity = ''; } };
   whenMapVisible(async cv=>{
     if(!cv.isConnected) return;
+    hideNew(cv, pend);
     for(const k of d.newDone){ const n = q(cv, k); if(!n) continue; const rank = progress && progress.ranks ? progress.ranks[conquestIdOf(mapId, k)] : null;
       await M.nodeCleared(n, {rank: rank || '✓'}); if(rank && n.isConnected) M.nodeRank(n, rank); }
-    for(const k of d.newVis){ const cur = document.getElementById('conquestCanvas'); if(!cur) return; const n = q(cur, k); if(!n) continue;
+    for(const k of d.newVis){ const cur = document.getElementById('conquestCanvas'); if(!cur) return; const n = q(cur, k); if(!n){ continue; }
       if(d.chance.has(k)){ await M.chanceNode(n); continue; }
-      const line = cur.querySelector(`.map-trail-svg [data-b="${k}"]`) || cur.querySelector(`.map-trail-svg [data-a="${k}"]`);
-      if(line) await M.trailDraw(cur, line, n); else popNode(n, G()); }
+      hideNew(cur, pend.slice(pend.indexOf(k))); // a re-render meanwhile drew them again
+      const line = trailsTo(cur, k)[0] || cur.querySelector(`.map-trail-svg [data-a="${k}"]`);
+      if(line){ const t = setTimeout(()=>{ if(n.isConnected){ n.style.transition = 'opacity .3s ease-out'; n.style.opacity = ''; } }, 700); line.style.opacity = '';
+        try{ await M.trailDraw(cur, line, n); }catch(e){} clearTimeout(t); showNew(cur, k); }
+      else { showNew(cur, k); popNode(n, G()); } }
     for(const k of d.newScales){ const cur = document.getElementById('conquestCanvas'), n = cur && q(cur, k); if(n){ const c = centre(n); ring(c.x, c.y, '#ff6a3a', 100, .7); burst(c.x, c.y, ['🐉','✨','✨'], {dist:34, dur:.6}); await wait(500); } }
     for(const k of d.newSubs){ const cur = document.getElementById('conquestCanvas'), e = cur && cur.querySelector(`[data-lkey="${k}"]`); if(e) await M.lateSideMap(e); }
     if(d.cleared){ const cur = document.getElementById('conquestCanvas'); if(cur){ const b = biomeOf({id:mapId}), mv = (typeof MAP_BIOMES !== 'undefined' && b && MAP_BIOMES[b]) ? MAP_BIOMES[b].mover.emoji : null;

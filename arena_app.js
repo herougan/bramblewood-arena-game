@@ -6329,7 +6329,7 @@ function skillCodexHTML(){
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
   const rows = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
-    return `<div class="sk-row" data-sk-find="${escapeAttr((p.label + ' ' + p.key + ' ' + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase())}"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${oneOffTagHTML(p)}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
+    return `<div class="sk-row" data-sk-find="${escapeAttr((p.label + ' ' + p.key + ' ' + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase())}"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${'' /* 2026-10-17 (user: "Remove the one-off tag in Codex"): the editor's skill picker still marks one-offs */}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
   // 2026-10-15 (user: "Codex: Skill: Text Filter"): a search box over the list; it matches the name, the text and the answers.
   return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>
     ${rows ? `<div class="sk-filter"><input type="search" id="skFilterInput" placeholder="Filter skills…" aria-label="Filter skills" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>` : ''}
@@ -6859,6 +6859,9 @@ function openCardInspector(defId, opts){
   // they own; only admins get the finish picker (it doubles as the treatment centre's in-game preview).
   const finishes = adminModeEnabled ? [''].concat(CI_FINISHES) : [];
   let finish = ownFoil;
+  // 2026-10-17: opened from a pack's results, it shows that copy's own finish and Shiny (opts.pull {foil, finish, shiny})
+  const pullShiny = !!(opts.pull && opts.pull.shiny);
+  if(opts.pull){ finish = opts.pull.foil ? ((copyFinishClass(d, {foil:true, finish: opts.pull.finish}).match(/holo-[a-z]+/) || [''])[0]) : ''; }
   // Skins (2026-10-08): try each skin here; owned ones equip, admins can grant themselves one to test.
   const skins = window.UnitFX ? UnitFX.skinsFor(defId) : [];
   let skin = window.UnitFX ? UnitFX.equippedSkin(defId) : null;
@@ -6882,7 +6885,7 @@ function openCardInspector(defId, opts){
   let tile = null;
   const renderFace = ()=>{
     const skinCls = skin && window.UnitFX && UnitFX.SKINS[skin] ? ' has-skin ' + (UnitFX.SKINS[skin].tileClass||'') : '';
-    front.innerHTML = cardTileHTML(d, {editable:false, extraClass:'ci-tile' + (finish ? ' is-holo ' + finish + (finish === 'holo-cosmos' ? ' holo-starlight' : '') : '') + skinCls}) + '<span class="ci-sheen" aria-hidden="true"></span>';
+    front.innerHTML = cardTileHTML(d, {editable:false, extraClass:'ci-tile' + (finish ? ' is-holo ' + finish + (finish === 'holo-cosmos' ? ' holo-starlight' : '') : '') + (pullShiny ? ' is-shiny' : '') + skinCls}) + '<span class="ci-sheen" aria-hidden="true"></span>';
     tile = front.querySelector('.card-tile');
     if(finish) decorateHolo(front);
   };
@@ -7057,9 +7060,12 @@ function wireCodexPlacement(defId){
 // and can never disagree. Rewards are granted on the player's FIRST clear of the node.
 // Node panel line: which cards a first clear grants (hidden, undiscovered ones show as a mystery),
 // plus the admin's Edit rewards button.
+// 2026-10-17 (user: "Remove equipment from the rewards list and pack lists"): equipment never comes from a fight's rewards, a drop,
+// a find, a reward track or a pack (nor shows in their lists and odds); the Blacksmith is where it comes from.
+function isEquipmentDef(d){ return !!(d && d.cardType === 'equipment'); }
 function nodeRewardCardIds(mapId, nodeKey){
   const defs = getCardDefs();
-  return Object.keys(defs).filter(id=>{ const s = cardSourceOf(defs[id]); return s.kind==='map' && s.id===mapId && s.node===nodeKey && !isUnattainable(defs[id]); });
+  return Object.keys(defs).filter(id=>{ const s = cardSourceOf(defs[id]); return s.kind==='map' && s.id===mapId && s.node===nodeKey && !isUnattainable(defs[id]) && !isEquipmentDef(defs[id]); });
 }
 // Unattainable cards (2026-10-12, user: "Help me make all cards unattainable, then we build them together"): a card with
 // `unattainable: true` can't come out of a pack, a reward, a find, a craft or a promotion. Base, starter and tutorial
@@ -7082,7 +7088,7 @@ function openNodeRewardsEditor(mapId, nodeKey){
     const defs = getCardDefs();
     const current = nodeRewardCardIds(mapId, nodeKey);
     const matches = q.trim().length < 2 ? [] : Object.keys(defs)
-      .filter(id=> !defs[id].test && !defs[id].token && !current.includes(id) && defs[id].name.toLowerCase().includes(q.trim().toLowerCase()))
+      .filter(id=> !defs[id].test && !defs[id].token && !isEquipmentDef(defs[id]) && !current.includes(id) && defs[id].name.toLowerCase().includes(q.trim().toLowerCase()))
       .slice(0, 24);
     const srcNote = id=>{ const s = cardSourceOf(defs[id]); return s.kind==='unsorted' ? 'unassigned' : s.kind==='map' ? (s.node ? 'another node' : 'map, no node') : s.kind; };
     overlay.innerHTML = `<div class="modal node-rewards-modal">
@@ -10301,7 +10307,8 @@ function grantCardCopy(id, opts){
   if(!id) return;
   if(!myCardCopies[id]) myCardCopies[id] = [];
   if(myCardCopies[id].length || myUnlockedCardIds.has(id)) myCardDupsLifetime[id] = lifetimeDuplicates(id) + 1; // a duplicate, for life (2026-10-14)
-  const shiny = Math.random() < SHINY_CHANCE;
+  const forcedShiny = !!(opts && typeof opts.shiny === 'boolean'); // 2026-10-17: a pack's bonus copy matches the card it copies
+  const shiny = forcedShiny ? opts.shiny : Math.random() < SHINY_CHANCE;
   lastGrantWasShiny = shiny;
   // A copy can be foil (with a finish rolled by the pack, see rollPackFoils) and/or Shiny.
   const copy = {foil: !!(opts && opts.foil)};
@@ -10309,7 +10316,7 @@ function grantCardCopy(id, opts){
   if(shiny) copy.shiny = true;
   myCardCopies[id].push(copy);
   saveCardCopies();
-  if(shiny) setTimeout(()=>{ try{ const d = getCardDefs()[id]; showToast(TX('toast.shiny-your-new-came-out-shiny', {v1: d ? d.name : 'card'}), 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 900);
+  if(shiny && !forcedShiny) setTimeout(()=>{ try{ const d = getCardDefs()[id]; showToast(TX('toast.shiny-your-new-came-out-shiny', {v1: d ? d.name : 'card'}), 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 900);
 }
 function ownsShiny(id){ return (myCardCopies[id]||[]).some(c=> c && c.shiny); }
 // The holo classes for one owned copy: its own finish when the pack gave it one, else the
@@ -11838,6 +11845,7 @@ function renderPlay(){
 // other sub-tab selection) rather than a full extra entry in playSubTab, since Back needs to
 // return to exactly the Player page, not wherever playSubTab last pointed.
 let playerStatsOpen = false;
+let deckPoolFilters = {q:'', arch:'', kind:'', lvl:'', sort:'cost'}; // 2026-10-17: the Armoury pool's toolbar, kept between visits
 // Battle Log collapse (2026-09-25, see renderMatchUI's own comment on the panel markup): same
 // toggle pattern as playerStatsOpen just above — a module-level flag so it survives the many
 // in-match re-renders a match goes through, defaulting closed so the log doesn't permanently
@@ -11876,6 +11884,13 @@ function renderPlayerSubTab(body){
     <div class="panel player-stats-cta" style="text-align:center;">
       <button class="btn primary" id="openPlayerStatsBtn">📊 Stats</button>
     </div>`;
+  // 2026-10-17 (user: "When going to stomping ground from outside, it resets. It doesn't keep the previous filter or card selection."):
+  // the pool's search, type, kind, level and sort come back as you left them (deckPoolFilters), instead of starting blank each visit.
+  // (The Stomping Grounds page itself has no filter or card list; this is the Armoury's card pool, the page that had both.)
+  try{ const F = deckPoolFilters, set = (id, v)=>{ const el = document.getElementById(id); if(el && v != null && v !== '' && (el.tagName !== 'SELECT' || [...el.options].some(o=> (o.value || o.textContent) === v))) el.value = v; };
+    set('deckSearch', F.q); set('playArchFilter', F.arch); set('deckKindFilter', F.kind); set('deckLevelFilter', F.lvl); set('deckSort', F.sort);
+    const keep = ()=>{ const v = id=> (document.getElementById(id) || {}).value || ''; deckPoolFilters = {q: v('deckSearch'), arch: v('playArchFilter'), kind: v('deckKindFilter'), lvl: v('deckLevelFilter'), sort: v('deckSort') || 'cost'}; };
+    ['deckSearch', 'playArchFilter', 'deckKindFilter', 'deckLevelFilter', 'deckSort'].forEach(id=>{ const el = document.getElementById(id); if(el){ el.addEventListener('input', keep); el.addEventListener('change', keep); } }); }catch(e){}
   renderMyDeckPanels();
   wireCardTileFlourish(body); // the Bramble/castle picker tiles above (myDeckPool's own pool tiles are already wired inside renderMyDeckPanels)
   body.querySelectorAll('.char-card').forEach(el=> el.addEventListener('click', ()=>{
@@ -17129,7 +17144,7 @@ function rollSRankFind(mapId, rank, rng){
   if((rng || Math.random)() >= S_FIND_CHANCE) return null;
   const defs = getCardDefs(), owned = id=> myUnlockedCardIds.has(id) || ((myCardCopies[id]||[]).length > 0);
   const pool = [...new Set([root, ...CONQUEST_MAPS.filter(x=> x.sub && x.parent === root.id)].flatMap(mp=> mp.nodes.flatMap(n=> Object.keys(n.deck||{}))))]
-    .filter(id=> defs[id] && !defs[id].token && !defs[id].test && !isUnattainable(defs[id]) && !owned(id));
+    .filter(id=> defs[id] && !defs[id].token && !defs[id].test && !isEquipmentDef(defs[id]) && !isUnattainable(defs[id]) && !owned(id));
   if(!pool.length) return null;
   setDialogueFlag(flag, true);
   return pool[Math.floor((rng || Math.random)()*pool.length)];
@@ -17259,14 +17274,34 @@ async function setDecorGate(map, lkey, fromKey){
   const n = map.nodes.find(x=> x.key === fromKey);
   showToast(o.after ? TX('toast.it-now-appears-after', {v1: n ? n.name : fromKey, v2: published ? ' · published' : ''}) : TX('toast.it-s-always-there-now', {v1: published ? ' · published' : ''}), 'ok');
 }
-function adminCompleteNodes(mapId, keys){
-  if(!adminModeEnabled) return; const p = loadConquestProgress(); let n = 0;
+function adminCompleteNodes(mapId, keys, opts){
+  if(!adminModeEnabled) return; try{ cardRewardsClaimed(); }catch(e){} const p = loadConquestProgress(); let n = 0;
+  const firstTime = new Set(keys.filter(k=> !p.completed.includes(conquestNodeId(mapId, k))));
   keys.forEach(k=>{ const id = conquestNodeId(mapId, k); if(!p.completed.includes(id)){ p.completed.push(id); n++; } if(!p.ranks[id]) p.ranks[id] = 'S'; });
   saveConquestProgress(p); try{ maybeOpenPitching(); }catch(e){}
   // Clearing by hand still pays the cards (2026-10-13, user: "everytime I clear the map, I should receive the card rewards from
   // the skirmishes from the map").
   let got = 0; keys.forEach(k=>{ const id = conquestNodeId(mapId, k); if(cardRewardsClaimed().has(id)) return; nodeRewardCardIds(mapId, k).forEach(cid=>{ try{ if(unlockCardForPlayer(cid, 'reward') !== false) got++; }catch(e){} }); markCardRewardsClaimed(id); });
-  showToast(n ? `✅ ${n} fight${n===1?'':'s'} marked cleared${got ? `, ${got} card${got===1?'':'s'} won` : ''}.` : 'Already cleared.', 'ok');
+  // 2026-10-17 (user: "Pressing clear map gives you all the first clear and normal clear rewards of the whole map."): Clear map
+  // (opts.allRewards) paid only the reward cards. It now also pays, for every fight it clears for the first time, that fight's
+  // first-clear Maple Leaves and Dust, its first-clear packs (its own pack, its faction pack, the map's free pack) and its
+  // first-clear placeholder / elite-and-boss cards; and for every fight on the map, the normal (clear-again) Leaves and Dust.
+  const pay = {gold:0, dust:0}; let packs = 0;
+  if(opts && opts.allRewards){
+    const map = CONQUEST_MAPS.find(mm=> mm.id === mapId);
+    keys.forEach(k=>{ const node = map && map.nodes.find(nn=> nn.key === k); if(!node || node.kind === 'tutorial') return;
+      const tier = nodeRewardTier(node), first = firstTime.has(k);
+      if(tier){ [first ? tier.first : null, tier.repeat].forEach(t=>{ if(!t) return; pay.gold += t.gold || 0; pay.dust += t.dust || 0; }); }
+      if(!first) return;
+      try{ if(node.firstFactionPack){ const fid = FACTION_PACKS[node.firstFactionPack] ? node.firstFactionPack : myFactionPackId(); if(fid && (grantFactionPack(fid, 1) || []).length) packs++; } }catch(e){}
+      try{ if(grantMapFreePack(mapId, k, true)) packs++; }catch(e){}
+      try{ const dr = rollConquestPackDrops(node, true); got += (dr.cards || []).length; }catch(e){}
+    });
+    if(pay.gold > 0) grantCurrency('gold', pay.gold);
+    if(pay.dust > 0) grantCurrency('dust', pay.dust);
+  }
+  const extra = [got ? `${got} card${got===1?'':'s'}` : '', pay.gold ? `${pay.gold} Maple Leaves` : '', pay.dust ? `${pay.dust} Dust` : '', packs ? `${packs} pack${packs===1?'':'s'}` : ''].filter(Boolean).join(', ');
+  showToast(n || extra ? `✅ ${n} fight${n===1?'':'s'} marked cleared${extra ? `, won ${extra}` : ''}.` : 'Already cleared.', 'ok');
 }
 // Admin: put a map back to not cleared (its fights, ranks and claimed card rewards; cards you own stay).
 function adminUnclearMap(mapId){
@@ -17362,7 +17397,7 @@ function wireMapLayoutEditor(map, body){
   const rerender = ()=> renderConquestSubTab(body);
   const on = (id, fn)=>{ const el = document.getElementById(id); if(el) el.addEventListener('click', fn); };
   on('mlNewSkirmish', ()=> addSkirmishToMap(map.id));
-  on('mlClearMap', ()=>{ adminCompleteNodes(map.id, map.nodes.filter(n=> n.kind!=='tutorial').map(n=> n.key)); rerender(); });
+  on('mlClearMap', ()=>{ adminCompleteNodes(map.id, map.nodes.filter(n=> n.kind!=='tutorial').map(n=> n.key), {allRewards:true}); rerender(); }); // 2026-10-17: every first-clear and clear-again reward
   on('mlUnclearMap', ()=>{ adminUnclearMap(map.id); rerender(); });
   on('mlEdits', ()=> openMapEditsList(map.id));
   on('mlLinks', ()=>{ conquestLinkEdit = true; conquestLinkFrom = null; rerender(); });
@@ -18129,7 +18164,7 @@ function teachingCardPick(){
   for(const k of TEACH_KEYS){
     if(f['teach:' + k]) continue;
     if(skillHiddenNow(k)) continue; // 2026-10-15: a keyword still hidden as "?" (SKILL_REVEAL) is taught once it's revealed
-    const ok = id=>{ const d = defs[id]; return d && d.effects && d.effects[k] != null && !d.token && !d.test && !d.hidden && !d.tutorial && !(d.cost > 0) && !isUnattainable(d) && ['common','starter','basic'].includes(d.rarity || 'common') && (d.attack||0) + (d.health||0) <= 9 && !(myDeckCounts[id] > 0); };
+    const ok = id=>{ const d = defs[id]; return d && d.effects && d.effects[k] != null && !d.token && !d.test && !isEquipmentDef(d) && !d.hidden && !d.tutorial && !(d.cost > 0) && !isUnattainable(d) && ['common','starter','basic'].includes(d.rarity || 'common') && (d.attack||0) + (d.health||0) <= 9 && !(myDeckCounts[id] > 0); };
     const pool = Object.keys(defs).filter(ok); if(!pool.length) continue;
     const mine = arch ? pool.filter(id=> (defs[id].archetypes||[]).includes(arch)) : [];
     const from = mine.length ? mine : pool; return from[Math.floor(Math.random() * from.length)];
@@ -18717,7 +18752,7 @@ function renderConquestSubTab(body){
     if(seBtn) seBtn.addEventListener('click', ()=> openSkirmishEditor(map.id, selectedNode.key));
     // Admin (2026-10-12, user: "Auto-complete skirmishes"): no fight, no rewards; just the progress.
     { const ac = document.getElementById('cnpAdminClear'); if(ac) ac.addEventListener('click', ()=>{ adminCompleteNodes(map.id, [selectedNode.key]); renderConquestSubTab(body); }); }
-    { const am = document.getElementById('cnpAdminClearMap'); if(am) am.addEventListener('click', ()=>{ adminCompleteNodes(map.id, map.nodes.filter(n=> n.kind!=='tutorial').map(n=> n.key)); renderConquestSubTab(body); }); }
+    { const am = document.getElementById('cnpAdminClearMap'); if(am) am.addEventListener('click', ()=>{ adminCompleteNodes(map.id, map.nodes.filter(n=> n.kind!=='tutorial').map(n=> n.key), {allRewards:true}); renderConquestSubTab(body); }); }
     const nrBtn = document.getElementById('cnpEditRewards');
     if(nrBtn) nrBtn.addEventListener('click', ()=> openNodeRewardsEditor(map.id, selectedNode.key));
     panelEl.querySelectorAll('[data-battlemode]').forEach(b=> b.addEventListener('click', ()=>{
@@ -24264,6 +24299,7 @@ function renderMatchUI(){
       ${matchCastleTileHTML(castleCharOf(m, 2), (m.resolving && m.displayHqHp && m.displayHqHp.B != null) ? m.displayHqHp.B : p2.hq.hp, p2.hq.maxHp, 'B', topLabel)}
       <div class="deck-widget hq-tile ${(p2.deck||[]).length ? 'bw-back bk-unit' /* 2026-10-16 (user: "Card backings -> 4 types…"): a mixed pile shows the unit back */ : 'is-empty'}" id="deckWidgetTop" style="${deckPileStyle((p2.deck||[]).length)}">
         ${(p2.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
+        ${enemyHandCountHTML(p2) /* 2026-10-17 (user: "There should be a counter above the enemy's deck that says "5 <Card Emoji>""): their hand size */}
         ${(p2.graveyard||[]).length ? `<button type="button" class="grave-peek-badge" data-grave-peek="2" title="Enemy Graveyard: ${p2.graveyard.length} card${p2.graveyard.length===1?'':'s'}. Tap to see them." aria-label="Enemy Graveyard, ${p2.graveyard.length} cards">💀 ${p2.graveyard.length}</button>` : '' /* 2026-10-15: the opponent's Graveyard, peekable */}
         ${(p2.exile.length>0||p2.echoes>0)?`<div class="removal-badge" role="button" tabindex="0" data-grave-peek="2" title="Removal Zone: ${p2.exile.length} card${p2.exile.length===1?'':'s'}. Echoes: ${p2.echoes||0} (every card sent here gives 1; Remember cards spend them to return)">🌫 ${p2.exile.length}${p2.echoes?` · 🕯️ ${p2.echoes}`:''}</div>`:''}
       </div>
@@ -24306,15 +24342,16 @@ function renderMatchUI(){
       </div>
       <div id="leaderWidgetWrap">${leaderWidgetHTML(m)}</div>
       <div class="hand-strip" id="handStrip"></div>
-      ${!showPassOverlay && !isSandbox ? `<!-- 2026-10-16 (user: "Move the pass turn button to the same row as the deck, centered, then simplify to just "Pass". Then
-           make it look more squarish - decrease the corner radius."): it sits in the deck's row, centred in the room before the
-           Graveyard (on a phone, between the Deck and the Graveyard), and just says Pass. -->
-      <div class="skipzone compact in-deck-row" id="skipZone" title="Pass: end your turn without playing a card"><span class="dz-ico">⏭</span>${m.resolving?'…':'Pass'}</div>` : ''}
       <!-- 2026-10-06 (user: "the graveyard should become its own field on the right"): a card-sized
            pile at the end of your row, mirroring the Deck on the left. Drop or tap a card here to pitch it. -->
       <div class="discardzone graveyard-pile hq-tile ${holdingCard && pitchAllowedIn(m)?'is-holding':''}" id="dropDiscard" title="${escapeAttr(pitchAllowedIn(m) ? discardZoneTitle(holdingCard ? (me.hand.find(c=>c.uid===m.selectedUid)||{}).defId : null) : 'Your Graveyard: units that fall end up here.')}">${holdingCard && pitchAllowedIn(m) /* 2026-10-12 (user: "During the periods where I cannot Pitch for lumber, do not put the +1 lumber in the Graveyard and just call it graveyard") */
         ? `<span class="dz-ico">🗑</span><span>Discard</span><span class="dz-sub">${(()=>{ const hc = me.hand.find(c=>c.uid===m.selectedUid); return hc ? pitchYieldPreviewHTML(hc.defId) : ''; })()}</span>`
         : `<span class="dz-ico">💀</span><span>Graveyard</span><span class="dz-sub">${me.graveyard.length}</span>`}</div>
+      ${!showPassOverlay && !isSandbox ? `<!-- 2026-10-17 (user: "Pass on the right of Discard."): now after the Graveyard/Discard pile, at the row's right end.
+           2026-10-16 (user: "Move the pass turn button to the same row as the deck, centered, then simplify to just "Pass". Then
+           make it look more squarish - decrease the corner radius."): it sits in the deck's row, centred in the room before the
+           Graveyard (on a phone, between the Deck and the Graveyard), and just says Pass. -->
+      <div class="skipzone compact in-deck-row" id="skipZone" title="Pass: end your turn without playing a card"><span class="dz-ico">⏭</span>${m.resolving?'…':'Pass'}</div>` : ''}
     </div>
     ${showPassOverlay ? `
     <div class="pass-overlay">
@@ -28177,6 +28214,7 @@ document.addEventListener('pointerdown', e=>{ const p = document.querySelector('
 document.addEventListener('keydown', e=>{ if(e.key === 'Escape') closeGravePeek(); });
 document.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('[data-grave-peek]'); if(b && matchState){ e.stopPropagation(); toggleGravePeek(Number(b.dataset.gravePeek), b); } });
 function renderFieldResources(m){
+  try{ updateEnemyHandCount(m); }catch(e){} // 2026-10-17: the hand counter over their deck follows along between full repaints
   const a = document.getElementById('fieldResMine'), b = document.getElementById('fieldResEnemy');
   if(!a || !b){ const bf = document.getElementById('battlefieldEl'); if(bf){ bf.insertAdjacentHTML('beforeend', fieldResourcesHTML(m)); } return; }
   const tmp = document.createElement('div'); tmp.innerHTML = fieldResourcesHTML(m);
@@ -28184,6 +28222,7 @@ function renderFieldResources(m){
 }
 function renderHUD(){
   const m = matchState; if(!m) return;
+  try{ updateEnemyHandCount(m); }catch(e){} // 2026-10-17
   const me = m.players[viewerHandPid(m)];
   const el = document.querySelector('#view-play .hud');
   // Castle HP now lives only on the castle widgets themselves (both HQs have their own
@@ -31175,7 +31214,17 @@ function playRewardReveal(m){
     stage.innerHTML = `<div class="rr-dim"></div><div class="rr-hint">${escapeHtml(_t(TX('results.tap-to-skip')))}</div>`;
     document.body.appendChild(stage);
     const later = (fn, ms)=> timers.push(setTimeout(()=>{ if(!done) fn(); }, ms));
-    const finish = ()=>{ if(done) return; done = true; timers.forEach(clearTimeout); document.removeEventListener('keydown', onKey, true);
+    // 2026-10-17 (user: "After completing a skirmish for the first time, you drop bars showing what you've unlocked. However, you
+    // darken the screen in prep for the victory screen too early. So make sure the darkening happens after, then the victory screen
+    // comes out."): the unlocks drop onto the bright board (the dim waits at 0); when they've all landed the dim comes up, and only
+    // then the results window opens under it as the stage fades away. A tap still skips straight through.
+    const dimEl = stage.querySelector('.rr-dim');
+    if(!cards.length) gsap.set(dimEl, {opacity:0});
+    const finish = natural=>{ if(done) return; done = true; timers.forEach(clearTimeout); document.removeEventListener('keydown', onKey, true);
+      if(natural === true && unlocks.length){
+        stage.querySelectorAll('.rr-token').forEach(tk=> gsap.to(tk, {opacity:0, scale:.92, duration:.3, ease:'power1.in'}));
+        gsap.to(dimEl, {opacity:1, duration:.45, ease:'power1.out', onComplete:()=>{ resolve(); setTimeout(()=> gsap.to(stage, {opacity:0, duration:.32, onComplete:()=> stage.remove()}), 60); }});
+        return; }
       gsap.to(stage, {opacity:0, duration:.18, onComplete:()=> stage.remove()}); setTimeout(resolve, 120); };
     const onKey = e=>{ if(e.key==='Tab') return; e.preventDefault(); finish(); };
     stage.addEventListener('pointerdown', finish); document.addEventListener('keydown', onKey, true);
@@ -31201,7 +31250,7 @@ function playRewardReveal(m){
     if(unlocks.length){
       later(()=>{
         stage.querySelectorAll('.rr-card').forEach(c=> gsap.to(c, {opacity:0, y:-30, duration:.2, onComplete:()=> c.remove()}));
-        gsap.to(stage.querySelector('.rr-dim'), {opacity:.25, duration:.3});
+        gsap.to(dimEl, {opacity:0, duration:.3}); // 2026-10-17: no darkening while the unlocks drop
         const bf = document.querySelector('.battlefield'), br = bf ? bf.getBoundingClientRect() : {left:0, top:0, width:innerWidth, height:innerHeight};
         unlocks.forEach((u, k)=>{
           later(()=>{
@@ -31224,7 +31273,7 @@ function playRewardReveal(m){
       }, t);
       t += unlocks.length*380 + 1500;
     }
-    later(finish, t + 200);
+    later(()=> finish(true), t + 200);
   });
 }
 async function showEndSign(m){
@@ -32754,6 +32803,59 @@ function pitchCallout(gains, def){
 // it hits the ground, their resource count goes up like how ours does - animation wise."): the pitched card fades in under their
 // resource pills (top-left of the field), drops and sinks into the ground (UnitFX.pitchDump); the gain is held back from their pill
 // (m._resHold) until it lands, then the pill bings with a +N the way yours does.
+// 2026-10-17 (user: "enemy hand size: There should be a counter above the enemy's deck that says "5 <Card Emoji>" - means there
+// are 5 cards in his hand."): a pill straddling the top edge of their Deck tile.
+function enemyHandCountHTML(p){
+  if(!p) return ''; const n = (p.hand || []).length;
+  return `<span class="enemy-hand-count${n ? '' : ' is-zero'}" id="enemyHandCount" title="Cards in the enemy's hand: ${n}" aria-label="Enemy hand: ${n} card${n===1?'':'s'}">${n} 🃏</span>`;
+}
+function updateEnemyHandCount(m){
+  const el = document.getElementById('enemyHandCount'); if(!el || !m || !m.players || !m.players[2]) return;
+  const n = (m.players[2].hand || []).length, txt = `${n} 🃏`; if(el.textContent === txt) return;
+  el.textContent = txt; el.classList.toggle('is-zero', !n); el.title = `Cards in the enemy's hand: ${n}`; el.setAttribute('aria-label', `Enemy hand: ${n} card${n===1?'':'s'}`);
+  el.classList.remove('ehc-bump'); void el.offsetWidth; el.classList.add('ehc-bump');
+}
+// 2026-10-17 (user: "Opposing pitch animation: the pitch animation looks like a card just drops into a pit on the top left, then the
+// card gets cut out. it should look like it landed in a slot, them, faded off then a clearer +1 lumber anim."): a card-shaped slot
+// opens under their pills, the card drops into it and settles (nothing clips it any more), glows, fades off with the slot, and only
+// then a big "+1 🪵 Lumber" rises out of the slot while their pill bings. opts: {w, speed, gain:{amount, glyph, name}, onLand}.
+function enemyPitchSlotFx(cardHTML, at, opts){
+  opts = opts || {};
+  let landed = false; const land = ()=>{ if(landed) return; landed = true; try{ opts.onLand && opts.onLand(); }catch(e){} };
+  if(!at || !document.body.animate){ land(); return; }
+  const k = 1 / Math.max(0.25, Number(opts.speed) || 1), w = opts.w || 60, h = Math.round(w * 1.25), lift = Math.round(h * 0.55);
+  const host = document.createElement('div'); host.className = 'enemy-pitch-slot-fx'; host.setAttribute('aria-hidden', 'true');
+  host.style.cssText = `position:fixed; left:${at.x - w/2}px; top:${at.y - h}px; width:${w}px; height:${h}px; pointer-events:none; z-index:10040;`;
+  const slot = document.createElement('div'); slot.className = 'eps-slot'; host.appendChild(slot);
+  const card = document.createElement('div'); card.className = 'eps-card';
+  card.innerHTML = cardHTML || '<div class="card-tile"></div>';
+  const tile = card.firstElementChild; if(tile){ tile.style.width = '100%'; tile.style.height = '100%'; tile.style.margin = '0'; tile.style.boxSizing = 'border-box'; }
+  host.appendChild(card); document.body.appendChild(host);
+  const T = 1500 * k;
+  slot.animate([{opacity:0, transform:'scale(.9)'}, {opacity:1, transform:'scale(1)', offset:.16}, {opacity:1, transform:'scale(1)', offset:.74}, {opacity:0, transform:'scale(1.04)'}], {duration:T, easing:'ease-out', fill:'both'});
+  card.animate([
+    {transform:`translateY(${-lift}px) rotate(-6deg) scale(1.06)`, opacity:0, filter:'brightness(1)', offset:0},
+    {transform:`translateY(${-lift}px) rotate(-4deg) scale(1.06)`, opacity:1, filter:'brightness(1)', offset:.2},
+    {transform:'translateY(0) rotate(0deg) scale(1)', opacity:1, filter:'brightness(1)', offset:.42, easing:'ease-out'},
+    {transform:'translateY(0) rotate(0deg) scale(1.04, .95)', opacity:1, filter:'brightness(1)', offset:.47},
+    {transform:'translateY(0) rotate(0deg) scale(1)', opacity:1, filter:'brightness(1)', offset:.54},
+    {transform:'translateY(0) rotate(0deg) scale(1)', opacity:1, filter:'brightness(1.35)', offset:.68},
+    {transform:'translateY(0) rotate(0deg) scale(.96)', opacity:0, filter:'brightness(1.6)', offset:.9},
+    {transform:'translateY(0) rotate(0deg) scale(.96)', opacity:0, filter:'brightness(1.6)', offset:1},
+  ], {duration:T, easing:'cubic-bezier(.45,0,.55,1)', fill:'both'});
+  // the slot catches it: a soft glow at the touch-down
+  setTimeout(()=>{ slot.classList.add('is-hit'); }, T * 0.44);
+  // faded off: now the gain
+  setTimeout(()=>{
+    land();
+    const g = opts.gain;
+    if(g){ const t = document.createElement('div'); t.className = 'eps-gain'; t.setAttribute('aria-hidden', 'true'); t.innerHTML = `+${g.amount} ${g.glyph}${g.name ? `<small>${escapeHtml(g.name)}</small>` : ''}`;
+      t.style.left = at.x + 'px'; t.style.top = (at.y - h/2) + 'px'; document.body.appendChild(t);
+      t.animate([{transform:'translate(-50%,-30%) scale(.5)', opacity:0}, {transform:'translate(-50%,-60%) scale(1.15)', opacity:1, offset:.22}, {transform:'translate(-50%,-80%) scale(1)', opacity:1, offset:.7}, {transform:'translate(-50%,-130%) scale(.95)', opacity:0}], {duration:1100 * k, easing:'ease-out', fill:'both'}).onfinish = ()=> t.remove();
+      setTimeout(()=> t.remove(), 1400 * k + 200); }
+  }, T * 0.88);
+  setTimeout(()=> host.remove(), T + 80);
+}
 const PITCH_PILL_IDS = {lumber:'hudLumberPill', stone:'hudStonePill', metal:'hudMetalPill', grace:'hudGracePill', devilry:'hudDevilryPill'};
 function enemyPitchVfx(ev){
   const m = matchState; if(!m || !ev || m.mode === 'pc') return;
@@ -32774,12 +32876,14 @@ function enemyPitchVfx(ev){
   };
   setTimeout(land, 4000); // never leave the pill short if the look is cut off
   const box = document.getElementById('fieldResEnemy'), bf = document.getElementById('battlefieldEl');
-  if(!box || !bf || !window.UnitFX || !UnitFX.pitchDump || !fxAtLeast('low') || reducedMotion()){ land(); return; }
-  const br = bf.getBoundingClientRect(), r = box.getBoundingClientRect(), phone = window.innerWidth < 700, w = phone ? 44 : 60, h = Math.round(w * 1.25), drop = Math.round(h * 0.45);
-  // it fades in just under their pills and lands a little lower, on their half of the field
-  const x0 = (r.width > 0 ? r.left : br.left + 12) + w * 0.6, y0 = (r.height > 0 ? r.bottom : br.top + 36) + 6 + h + drop;
+  if(!box || !bf || !fxAtLeast('low') || reducedMotion()){ land(); return; }
+  const br = bf.getBoundingClientRect(), r = box.getBoundingClientRect(), phone = window.innerWidth < 700, w = phone ? 44 : 60, h = Math.round(w * 1.25);
+  // 2026-10-17: the slot opens just under their pills, on their half of the field (x0, y0: its bottom-centre)
+  const x0 = (r.width > 0 ? r.left : br.left + 12) + w * 0.6, y0 = (r.height > 0 ? r.bottom : br.top + 36) + 10 + h;
   const d = getCardDefs()[ev.defId] || {name: ev.defId};
-  UnitFX.pitchDump(cardTileHTML(d, {inPlay:true}), {x: x0, y: y0}, {w, drop, speed: m.speedMult || 1, onLand: land});
+  const names = {lumber:'Lumber', stone:'Stone', metal:'Metal', grace:'Grace', devilry:'Dark Points'};
+  const glyph = ({lumber:'🪵', stone:'🪨', metal:'⚙️', grace:'🕊️', devilry:'★'})[res] || '🪵';
+  enemyPitchSlotFx(cardTileHTML(d, {inPlay:true}), {x: x0, y: y0}, {w, speed: m.speedMult || 1, gain:{amount: amt, glyph, name: names[res] || ''}, onLand: land});
 }
 function resourceGainVfx(fromRect, gains){
   if(!fromRect || !gains || !gains.length) return;
@@ -35897,7 +36001,7 @@ function rollCardDrop(node, mapId, opts){
   if(!node) return null; const kind = (opts && opts.kind) || node.kind || 'skirmish';
   const chance = CARD_DROP_CHANCE[kind] != null ? CARD_DROP_CHANCE[kind] : CARD_DROP_CHANCE[baseKind(kind)] || 0.10;
   if(Math.random() >= chance) return null;
-  const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !(d.archetypes||[]).includes('Castle'); };
+  const defs = getCardDefs(), ok = id=>{ const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !isEquipmentDef(d) && !(d.archetypes||[]).includes('Castle'); };
   const base = id=> String(id).replace(/~(raid|exposed|illusory)$/, '');
   const deckIds = [...new Set(Object.keys(node.deck||{}).map(base).filter(ok))];
   const map = CONQUEST_MAPS.find(m2=> m2.id === mapId); const mapIds = map ? [...new Set(map.nodes.flatMap(n=> Object.keys(n.deck||{})).map(base).filter(ok))] : [];
@@ -37945,7 +38049,7 @@ function packCardPool(defs, pool, exact){
   defs = defs || getCardDefs();
   const ok = (pool===1 && !exact) ? new Set(BASIC_PACK_POOLS) : null;
   const early = !pitchingUnlocked() && !adminModeEnabled; // no Lumber-cost cards before pitching opens (2026-10-12)
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell')) return false; if(early && (d.cost||0) > 0) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(d.token || d.test || isUnattainable(d) || hofBlocked(d, defs) || (SPELLS_SHELVED && d.cardType === 'spell') || isEquipmentDef(d)) return false; if(early && (d.cost||0) > 0) return false; const n = packPoolOf(d); return n && (!pool || (ok ? ok.has(n) : n === pool)); });
 }
 // 2026-10-12 (user: "I opened a 10 pack, but I got the same card... why??"): only one card of that pool was obtainable,
 // so every slot rolled it. A pack now needs at least as many different cards as it holds (Shop says "coming soon"
@@ -38066,6 +38170,22 @@ function rollPackGlow(results, defs){
   const g = Math.max(1, Math.min(RARITY_TIER_BANDS.length - 1, best + sh));
   return {tier:g, rarity:RARITY_TIER_BANDS[g]};
 }
+// Bonus copies (2026-10-17, user: "i havent thought of the mechanic to give >1 copy. But that's a good idea. But it should be rare, and
+// mostly for commons. The chances are 5% then drop by 1% per rarity. Once it hits 1%, the next drop is half everytime, 0.5, 0.25,
+// 0.125% etc."): each card out of a pack may come with an identical second copy, credited for real. Common 5%, Uncommon 4%, Rare 3%,
+// Very Rare 2%, Super Rare 1%, then Epic 0.5%, Heroic 0.25%, Unique 0.125% and halving on up.
+const BONUS_COPY_LADDER = ['common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
+const BONUS_COPY_ALIAS = {starter:'common', special:'common', quest:'uncommon', eventrare:'rare', questunique:'unique', devlegendary:'legendary', eventlegendary:'legendary', devancient:'ancient'};
+function bonusCopyChance(rarity){
+  let i = BONUS_COPY_LADDER.indexOf(BONUS_COPY_ALIAS[rarity] || rarity || 'common'); if(i < 0) i = BONUS_COPY_LADDER.indexOf('legendary');
+  return i <= 4 ? (5 - i) / 100 : 0.01 * Math.pow(0.5, i - 4);
+}
+// r: a pack result {id, foil, finish, shiny}; on a hit the same card, in the same finish, is credited again and r.bonusCopy is set.
+function rollBonusCopy(r, source){
+  const d = r && getCardDefs()[r.id]; if(!d || Math.random() >= bonusCopyChance(d.rarity)) return false;
+  try{ unlockCardForPlayer(r.id, source, {foil: !!r.foil, finish: r.finish || undefined, shiny: !!r.shiny}); }catch(e){ return false; }
+  r.bonusCopy = true; return true;
+}
 function purchasePackOnce(pack, prepaid){
   let pulls = rollPackCards(pack);
   if(!pulls.length) return null;
@@ -38081,6 +38201,7 @@ function purchasePackOnce(pack, prepaid){
   if(pack.kroon) grantCurrency('kroon', pack.kroon);
   const foils = rollPackFoils(pack, pulls.length);
   const results = pulls.map((id, i)=>{ const wasNew = !myUnlockedCardIds.has(id) && !(myCardCopies[id]||[]).length; const finish = foils[i]; unlockCardForPlayer(id, 'shopPack', finish ? {foil:true, finish} : null); return {id, isNew: wasNew, shiny: lastGrantWasShiny, foil: !!finish, finish}; });
+  results.forEach(r=> rollBonusCopy(r, 'shopPack')); // 2026-10-17
   let leveledId = null;
   if(Math.random() < (pack.levelChance||0)){
     const defs = getCardDefs();
@@ -38135,6 +38256,7 @@ function creditFactionPack(id){
   const pack = {id:'fp-' + id, name:fp.name, icon:fp.icon, cards:roll.pulls.length, coverPools: fp.own ? [fp.own] : [1], coverId:fp.cover, foilChance:0.04, foilFinishes:PACK_FOIL_FINISHES_DEFAULT};
   const foils = rollPackFoils(pack, roll.pulls.length);
   const results = roll.pulls.map((r, i)=>{ const wasNew = !myUnlockedCardIds.has(r.id) && !(myCardCopies[r.id]||[]).length; const finish = foils[i]; unlockCardForPlayer(r.id, 'factionPack', finish ? {foil:true, finish} : null); return {id:r.id, isNew:wasNew, shiny:lastGrantWasShiny, foil:!!finish, finish:finish||null}; });
+  results.forEach(r=> rollBonusCopy(r, 'factionPack')); // 2026-10-17
   try{ bumpQuestCounter('packsOpened', 1); }catch(e){}
   return {pack, o:{results, leveledId:null, glow: rollPackGlow(results, getCardDefs()), jackpot:false, bonus:false}};
 }
@@ -38213,7 +38335,7 @@ function factionPackPool(fp, which){
   if(fp.kind === 'faction'){ const want = fp.faction === 'hummingbirds' ? 'tribes' : ''; return packCardPool(defs, 11, true).filter(id=> ((cardSourceOf(defs[id]).side)||'') === want); }
   const ofPeople = id=>{ try{ const ps = peopleOfCard(defs[id]); return fp.people === 'folk' ? (ps.size === 0 || ps.has('folk')) : ps.has(fp.people); }catch(e){ return false; } }; // folk = everyone without another people (villagers, farm animals)
   let pool = packCardPool(defs, 1).filter(ofPeople);
-  if(pool.length < 6){ const extra = Object.keys(defs).filter(id=>{ const d = defs[id]; const src = cardSourceOf(d); return src.kind==='map' && !d.token && !d.test && ['common','uncommon'].includes(d.rarity||'common') && ofPeople(id); }); pool = [...new Set(pool.concat(extra))]; }
+  if(pool.length < 6){ const extra = Object.keys(defs).filter(id=>{ const d = defs[id]; const src = cardSourceOf(d); return src.kind==='map' && !d.token && !d.test && !isEquipmentDef(d) && ['common','uncommon'].includes(d.rarity||'common') && ofPeople(id); }); pool = [...new Set(pool.concat(extra))]; }
   return pool;
 }
 function rollFactionPackCards(fp, rnd){
@@ -38261,7 +38383,7 @@ function copiesOwned(id){ return ((myCardCopies && myCardCopies[id]) || []).leng
 function trackMapReached(){ try{ const prog = loadConquestProgress(); const mains = mainConquestMaps(); let hi = 0; mains.forEach((m, i)=>{ if((prog.completed||[]).some(cid=> cid.indexOf(m.id + ':') === 0)) hi = i; }); return hi; }catch(e){ return 0; } }
 function trackPick(pool, rnd){
   rnd = rnd || Math.random;
-  const defs = getCardDefs(); pool = pool.filter(id=> defs[id] && !defs[id].token && !defs[id].test);
+  const defs = getCardDefs(); pool = pool.filter(id=> defs[id] && !defs[id].token && !defs[id].test && !isEquipmentDef(defs[id]));
   const rar = id=> defs[id].rarity || 'common';
   const stages = TRACK_STAGES.concat(trackMapReached() >= TRACK_LATE_MAP ? TRACK_LATE : []);
   for(const r of stages){ const missing = pool.filter(id=> rar(id) === r && !copiesOwned(id)); if(missing.length) return missing[Math.floor(rnd()*missing.length)]; }
@@ -38315,7 +38437,7 @@ function rarityClass(r){ r = r || 'common'; return (r === 'common' || r === 'unc
 function grantOne(id, why){ const before = copiesOwned(id); unlockCardForPlayer(id, why); return copiesOwned(id) > before || (loadPitchHeld()||[]).some(h=> h.id === id); }
 function factionReward(rnd){
   rnd = rnd || Math.random; const st = loadFactionPool(), defs = getCardDefs();
-  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id]); if(!live.length) return null;
+  const live = Object.keys(st.left).filter(id=> st.left[id] > 0 && defs[id] && !isEquipmentDef(defs[id])); if(!live.length) return null;
   const odds = FACTION_TIER_ODDS[factionTier(st)], have = {}; live.forEach(id=> have[rarityClass(defs[id].rarity)] = true);
   let classes = Object.keys(odds).filter(k=> have[k]); if(!classes.length) classes = Object.keys(have);
   const tot = classes.reduce((t,k)=> t + (odds[k]||1), 0); let r = rnd()*tot, cls = classes[classes.length-1];
@@ -38648,20 +38770,24 @@ function openPackAnimation(pack, opened, opts){
     strip.focus({preventScroll:true});
   };
   // ---- 2. one card at a time ----
+  const poPullAttrs = r=> r ? `data-pofoil="${r.foil ? 1 : 0}" data-pofinish="${escapeAttr(r.finish || '')}" data-poshiny="${r.shiny ? 1 : 0}"` : '';
   const cardsHTML = o=> o.results.map((r, i)=>{
     const d = defs[r.id]; const [rA, rB] = rarityStops(d.rarity||'common');
     return `<button type="button" class="po2-card ${teaseOf(r.id)} ${r.isNew?'is-new':''}" data-i="${i}" style="--rarity-a:${rA}; --rarity-b:${rB}" aria-label="Card ${i+1} of ${o.results.length}, face down">
       <span class="po2-flip"><span class="po2-back ${cardBackClass(d) /* 2026-10-16 (user: "Card backings -> 4 types…") */}"><span class="po2-back-crest">🌰</span></span>
       <span class="po2-front">${cardTileHTML(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}${r.shiny ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}</span></span>
-      ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
+      ${r.isNew ? '<span class="po2-new" aria-hidden="true"><b>NEW!</b></span>' : ''}${r.count > 1 ? `<span class="po2-stackn" aria-label="${r.count} copies">×${r.count}</span>` : ''}${r.bonusCopy ? `<span class="po2-bonus-copy" aria-hidden="true">${cardTileHTML(Object.assign({}, d, {locked:false}), {editable:false, extraClass: pullClass(r, d)})}</span><span class="po2-bonus-tag" aria-hidden="true"><b>Bonus!</b><small>+1 copy</small></span>` : ''}${teaseOf(r.id)==='tease-legend' ? '<span class="po2-sparks" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>' : ''}
       <span class="po2-rar" aria-hidden="true">${escapeHtml(rarityLabelOf(d.rarity||'common'))}</span>
     </button>`; }).join('');
   let deckO = null;
+  // 2026-10-17 (user: "The number below the card openings e.g. "100 cards" should count down your cards."): the cards still to
+  // come (a grouped ×N counts N, a bonus copy counts too).
+  const pileLeft = (o, from)=> o.results.slice(from).reduce((n, r)=> n + (r.count || 1) + (r.bonusCopy && !(r.count > 1) ? 1 : 0), 0);
   const showReveal = pile=>{
     phase = 'reveal'; cur = 0;
     const o = deckO = pile || opened[packIdx];
     const slots = !o.isPile && o.results.length <= 12;
-    overlay.innerHTML = topBar() + `<div class="po2-stage po2-reveal" id="poStage"><div class="po2-deck" id="poDeck">${cardsHTML(o)}</div>${o.isPile ? `<div class="po2-pile-count">${o.results.length} cards</div>` : `<div class="po2-tally" id="poTally" aria-hidden="true"></div>`}</div>
+    overlay.innerHTML = topBar() + `<div class="po2-stage po2-reveal" id="poStage"><div class="po2-deck" id="poDeck">${cardsHTML(o)}</div>${o.isPile ? `<div class="po2-pile-count" id="poPileCount">${pileLeft(o, 0)} cards</div>` : `<div class="po2-tally" id="poTally" aria-hidden="true"></div>`}</div>
       <div class="po2-got" id="poGot" role="group" aria-label="Cards so far">${slots ? o.results.map(()=> '<span class="po2-slot"></span>').join('') : ''}</div>
       <div class="po2-hint" id="poHint" aria-live="polite">Tap the card — or swipe across it</div>`;
     wireTop();
@@ -38679,6 +38805,7 @@ function openPackAnimation(pack, opened, opts){
       const c = cards[cur]; if(!c) return;
       if(stage) stage.classList.remove('is-rays', 'is-rays-big');
       if(tally) tally.textContent = `${cur + 1} of ${cards.length}`;
+      { const pc = overlay.querySelector('#poPileCount'); if(pc){ const n = pileLeft(deckO, cur); pc.textContent = `${n} card${n===1?'':'s'}`; } }
       c.focus({preventScroll:true});
       autoNext(()=> reveal(c), deckO.isPile ? 1100 : 2600);
       fxHook('packCardUp', c, deckO.results[+c.dataset.i], defs[deckO.results[+c.dataset.i].id]); // batch D (2026-10-15, docs/effects-lab-contract.md)
@@ -38697,8 +38824,11 @@ function openPackAnimation(pack, opened, opts){
       const sp = sparkChance(d.rarity);
       if(Math.random() < sp/2){ c.classList.add('is-superspark'); burst(c, ['🌟','💎','✨','🌈','✨'], 46); sfx('rareRise', true); }
       else if(Math.random() < sp){ c.classList.add('is-spark'); burst(c, ['✨','⭐','✨'], 24); sfx('gold'); }
-      autoNext(()=> collect(c), deckO.isPile ? 1700 : 3000);
-      c.setAttribute('aria-label', `${d.name}${r.isNew ? ', new card' : ''}`);
+      autoNext(()=> collect(c), deckO.isPile ? 1700 : (r.bonusCopy ? 3800 : 3000));
+      c.setAttribute('aria-label', `${d.name}${r.isNew ? ', new card' : ''}${r.bonusCopy ? ', bonus: a second copy' : ''}`);
+      // 2026-10-17 (user: "the graphics it shows is two blank cards get slapped atop of the card i got - instead, it should be bonus! then a
+      // card that looks the same comes out from the back."): "Bonus!" pops, and the identical copy slides out from behind the card.
+      if(r.bonusCopy) later(()=>{ if(!c.isConnected) return; c.classList.add('is-bonus'); sfx('unlockChime'); burst(c, ['✨','➕','✨'], 14); }, r.isNew ? 1100 : 650);
       if(r.isNew){
         later(()=>{ c.classList.add('is-new-moment'); sfx('unlockChime'); burst(c, ['✨','🌟','🎉','🐾'], 22); overlay.classList.add('po2-flash'); }, 380);
         later(()=> overlay.classList.remove('po2-flash'), 900);
@@ -38713,7 +38843,7 @@ function openPackAnimation(pack, opened, opts){
       const got = overlay.querySelector('#poGot');
       const r = deckO.results[+c.dataset.i];
       const [ra] = rarityStops(defs[r.id].rarity||'common');
-      const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false}); { const slot = [...got.querySelectorAll('.po2-slot')].find(x=> !x.firstChild); (slot || got).appendChild(mini); } // never greyed in a reveal (2026-10-12); fills the next empty slot
+      const mini = document.createElement('span'); mini.className = 'po2-mini' + (r.isNew ? ' is-new' : ''); mini.style.setProperty('--rarity-a', ra); mini.innerHTML = cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false}) + (r.bonusCopy ? '<b class="po2-mini-x">×2</b>' : ''); { const slot = [...got.querySelectorAll('.po2-slot')].find(x=> !x.firstChild); (slot || got).appendChild(mini); } // never greyed in a reveal (2026-10-12); fills the next empty slot
       // 2026-10-10 (user: "the card opened moves to the bottom list, not just teleport there"): a copy of the card flies
       // from the deck down into its slot in the row, and the slot fills as it lands.
       if(!reduce && mini.animate){
@@ -38731,6 +38861,7 @@ function openPackAnimation(pack, opened, opts){
       }
       c.classList.add('is-collected'); c.tabIndex = -1;
       cur++;
+      { const pc = overlay.querySelector('#poPileCount'); if(pc){ const n = pileLeft(deckO, cur); pc.textContent = `${n} card${n===1?'':'s'}`; } }
       if(cur >= cards.length){ later(()=> (deckO.isPile ? showAll() : showSummary()), 380); return; }
       hint.textContent = '';
       enter();
@@ -38773,8 +38904,11 @@ function openPackAnimation(pack, opened, opts){
     const f = overlay.querySelector('#poNext') || overlay.querySelector('#poDone'); if(f) f.focus({preventScroll:true});
   };
   // Tap any card in a summary to see it large (the Codex card viewer, on top of the opener).
+  // 2026-10-17 (user: "When I click on a foil card and they show the big version, it should load the same treatment as the card. If I'm
+  // not admin, it should not let me change treatments to view."): the big view opens in the pulled copy's own finish (and Shiny);
+  // the finish picker stays admin-only (openCardInspector).
   const wireView = ()=> overlay.querySelectorAll('[data-poview]').forEach(c=>{
-    const go = ()=> openCardInspector(c.dataset.poview, {returnFocus: c});
+    const go = ()=> openCardInspector(c.dataset.poview, {returnFocus: c, pull: {foil: c.dataset.pofoil === '1', finish: c.dataset.pofinish || null, shiny: c.dataset.poshiny === '1'}});
     c.addEventListener('click', go); c.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); go(); } });
   });
   const showSummary = ()=>{
@@ -38782,7 +38916,7 @@ function openPackAnimation(pack, opened, opts){
     const o = opened[packIdx];
     const nNew = o.results.filter(r=> r.isNew).length;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary">
-      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}</div>`).join('')}</div>
+      <div class="po2-sum-grid is-balanced" style="--per:${(()=>{ const n = o.results.length, rows = Math.ceil(n / 5); return Math.ceil(n / Math.max(1, rows)); })()}">${o.results.map(r=> `<div class="po-card is-flipped po2-sum-card ${r.isNew?'is-new':''}" data-poview="${r.id}" ${poPullAttrs(r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[r.id].name||r.id)} large">${cardTileHTML(Object.assign({}, defs[r.id], {locked:false}), {editable:false, extraClass: pullClass(r, defs[r.id])})}${r.isNew?'<span class="po2-new-tag">NEW!</span>':''}${r.bonusCopy ? '<span class="po2-x" aria-label="2 copies: a bonus copy">×2</span>' : ''}</div>`).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${footBits(o).join(' · ')}</p>${footActions()}</div>
     </div>`;
     wireTop(); wireFoot(); wireView(); wireTilt();
@@ -38793,14 +38927,14 @@ function openPackAnimation(pack, opened, opts){
     const rest = opened.slice(packIdx);
     const tally = new Map(); let metal = 0, kroon = 0; const levels = [];
     rest.forEach(o=>{ metal += pack.metal||0; kroon += pack.kroon||0; if(o.leveledId) levels.push(o.leveledId);
-      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n++; t.isNew = t.isNew || r.isNew; tally.set(k, t); }); });
+      o.results.forEach(r=>{ const k = r.id + (r.foil ? '|' + (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const t = tally.get(k) || {n:0, isNew:false, id:r.id, r}; t.n += 1 + (r.bonusCopy ? 1 : 0); t.isNew = t.isNew || r.isNew; tally.set(k, t); }); }); // 2026-10-17: a bonus copy counts; a Shiny is its own stack
     const did = k=> tally.get(k).id;
     const ids = [...tally.keys()].sort((a,b)=> (tally.get(b).isNew - tally.get(a).isNew) || (tierOf(did(b)) - tierOf(did(a))) || (defs[did(a)].name||'').localeCompare(defs[did(b)].name||'') || (a < b ? -1 : 1));
     const nNew = new Set(ids.filter(k=> tally.get(k).isNew).map(did)).size;
     const bits = [`${rest.length} packs`]; if(metal) bits.push(`🔩 +${metal} Metal`); if(kroon) bits.push(`👑 +${kroon} Krooni`); if(levels.length) bits.push(`⭐ ${levels.length} free level-up${levels.length===1?'':'s'}`);
     packIdx = opened.length - 1;
     overlay.innerHTML = topBar() + `<div class="po2-stage po2-summary po2-all">
-      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}</div>`; }).join('')}</div>
+      <div class="po2-sum-grid is-dense">${ids.map(k=>{ const t = tally.get(k), id = t.id; return `<div class="po-card is-flipped po2-sum-card ${t.isNew?'is-new':''}" data-poview="${id}" ${poPullAttrs(t.r)} tabindex="0" role="button" aria-label="View ${escapeAttr(defs[id].name||id)} large">${cardTileHTML(defs[id], {editable:false, extraClass: [tierOf(id) >= 4 ? holoClass(defs[id]) : '', pullClass(t.r, defs[id])].filter(Boolean).join(' ')})}${t.isNew?'<span class="po2-new-tag">NEW!</span>':''}${t.n > 1 ? `<span class="po2-x">×${t.n}</span>` : ''}</div>`; }).join('')}</div>
       <div class="pack-open-foot" id="poFoot"><p>${nNew ? `<b>${nNew} new card${nNew===1?'':'s'}!</b> · ` : ''}${bits.join(' · ')}</p>${footActions()}</div>
     </div>`;
     wireFoot(); wireView(); wireTilt();
@@ -38827,7 +38961,7 @@ function openPackAnimation(pack, opened, opts){
     const tierOfR = r=> tierOf(r.id);
     all.sort(()=> Math.random() - .5); all.sort((a, b)=> tierOfR(a) - tierOfR(b)); // the rarest saved for last
     let pile = all;
-    if(all.length > 100){ const by = new Map(); all.forEach(r=>{ const k = r.id + '|' + (r.foil ? (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const g = by.get(k); if(g){ g.count++; g.isNew = g.isNew || r.isNew; } else by.set(k, Object.assign({}, r, {count:1})); }); pile = [...by.values()]; }
+    if(all.length > 100){ const by = new Map(); all.forEach(r=>{ const k = r.id + '|' + (r.foil ? (r.finish||'foil') : '') + (r.shiny ? '|s' : ''); const g = by.get(k), add = 1 + (r.bonusCopy ? 1 : 0); if(g){ g.count += add; g.isNew = g.isNew || r.isNew; } else by.set(k, Object.assign({}, r, {count:add, bonusCopy:false})); }); pile = [...by.values()]; } // 2026-10-17: bonus copies join their stack
     showReveal({results: markFirstNew(pile), isPile: true});
   };
   let tableFrom = 0;
