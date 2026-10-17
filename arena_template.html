@@ -6974,6 +6974,38 @@
     background:repeating-linear-gradient(45deg, rgba(0,0,0,.13) 0 6px, transparent 6px 13px), #2f5b3a; border:2px solid #d7b46a; color:#fff;}
   .ss-deckbox small{font-size:10px; text-transform:uppercase; letter-spacing:.06em;} .ss-deckbox b{font-size:12px;}
   .ss-deckbox.is-bump{animation:ssBump .18s ease-out;} @keyframes ssBump{50%{transform:scale(1.12);}}
+  /* The tutorials' card windows (2026-10-16, user: "The "more" cards reward windows at the end of the Tutorials should be improved.
+     Also, they should pop out after coming out of the skirmish"): the veil fades up, the panel springs out of the middle, the
+     cards are dealt in one by one; the "more cards" window is a gift: warm parchment, a slow sunburst, big cards on name ribbons. */
+  .tut-reward{align-items:center; background:radial-gradient(ellipse at 50% 45%, rgba(40,28,10,.66), rgba(8,6,3,.9));}
+  .tut-reward .starter-modal{position:relative; overflow:hidden; isolation:isolate;}
+  .tut-reward .starter-modal > *:not(.tr-rays){position:relative; z-index:1;}
+  .tut-reward .tr-kicker{margin:0 0 2px; font:800 12px/1.2 'Baloo 2', system-ui, sans-serif; letter-spacing:.14em; text-transform:uppercase; color:#b7791f;}
+  .tut-reward h2{margin:0 0 4px; font-family:'Baloo 2', system-ui, sans-serif;}
+  .tut-reward .tr-rays{position:absolute; left:50%; top:46%; width:150%; aspect-ratio:1; translate:-50% -50%; z-index:0; pointer-events:none; opacity:.35;
+    background:repeating-conic-gradient(from 0deg, rgba(255,214,120,.55) 0 7deg, transparent 7deg 18deg);
+    -webkit-mask:radial-gradient(circle, #000 0 18%, transparent 62%); mask:radial-gradient(circle, #000 0 18%, transparent 62%); animation:trSpin 40s linear infinite;}
+  @keyframes trSpin{to{rotate:360deg;}}
+  .tut-reward.is-popping{animation:trVeil .35s ease-out both;}
+  .tut-reward.is-popping .starter-modal{animation:trPop .55s cubic-bezier(.2,1.5,.4,1) .08s both;}
+  .tut-reward.is-popping .ss-card.is-dealt{animation:trDeal .42s cubic-bezier(.2,1.3,.4,1) both; animation-delay:calc(.42s + var(--i, 0) * 60ms);}
+  .tut-reward.is-topup.is-popping .ss-card.is-dealt{animation-delay:calc(.5s + var(--i, 0) * 220ms); animation-duration:.6s;}
+  @keyframes trVeil{from{background-color:transparent; opacity:0;} to{opacity:1;}}
+  @keyframes trPop{0%{opacity:0; transform:scale(.55) translateY(30px);} 60%{opacity:1;} 100%{opacity:1; transform:none;}}
+  @keyframes trDeal{0%{opacity:0; transform:translateY(-40px) rotateY(80deg) scale(.7);} 100%{opacity:1; transform:none;}}
+  .tut-reward.is-topup .starter-modal{width:min(520px, 94vw); max-width:min(520px, 94vw); padding:22px 22px 18px;
+    background:linear-gradient(180deg, #fff8e4, #f6e6bf); color:#3a2a14; border:2px solid #d7b46a; box-shadow:0 0 0 4px rgba(215,180,106,.25), 0 24px 60px rgba(0,0,0,.55);}
+  .tut-reward.is-topup .panel-sub{color:#6b5634;}
+  .tut-reward .tr-grid{gap:22px; overflow:visible; max-height:none; margin:16px 0 10px;}
+  .tut-reward .tr-item{margin:0; display:flex; flex-direction:column; align-items:center; gap:8px;}
+  .tut-reward.is-topup .ss-card{width:122px;}
+  .tut-reward .ss-glow{position:absolute; inset:-14px; z-index:-1; border-radius:22px; background:radial-gradient(closest-side, rgba(255,210,110,.75), transparent); animation:trGlow 2.4s ease-in-out infinite;}
+  @keyframes trGlow{50%{opacity:.55; transform:scale(.94);}}
+  .tut-reward .tr-name{font:800 14px/1.1 'Baloo 2', system-ui, sans-serif; padding:4px 12px; border-radius:999px; background:#7a4a1c; color:#fff3d6; box-shadow:0 2px 0 #4f2f10; transition:opacity .25s;}
+  .tut-reward.is-popping .tr-name{animation:trDeal .35s ease-out both; animation-delay:calc(.75s + var(--i, 0) * 220ms);}
+  .tut-reward .tr-name.is-gone{opacity:0;}
+  @media (max-width:520px){ .tut-reward.is-topup .ss-card{width:104px;} .tut-reward .tr-grid{gap:14px;} }
+  @media (prefers-reduced-motion: reduce){ .tut-reward .tr-rays, .tut-reward .ss-glow{animation:none;} }
   /* lightning on open ground + directional card light (2026-10-08) */
   .bf-bolt{position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; z-index:7; animation:boltFlicker .5s steps(1) forwards;}
   .bf-bolt polyline{fill:none; stroke-linejoin:round; stroke-linecap:round;}
@@ -9022,6 +9054,13 @@
   .name-prompt h2{margin:0; font-family:'Baloo 2', system-ui, sans-serif; font-size:26px; text-wrap:balance;} .name-prompt p{margin:0; font-size:14px; opacity:.8;} .np-ico{font-size:44px;}
   .name-prompt input{font-size:20px; padding:12px 14px; border-radius:12px; border:2px solid #d9a441; text-align:center;}
   .entrance-login-form input#loginNameInput{font-size:19px; text-align:center; border:2px solid #e8b23a; box-shadow:0 0 0 4px rgba(232,178,58,.25), 0 0 22px rgba(232,178,58,.35);}
+  /* 2026-10-16 (user: "Min name length ... min. 3 characters"): the line under the name box when it's too short */
+  .name-len-msg{margin:-2px 0 0; padding:6px 10px; border-radius:10px; background:rgba(120,30,20,.82); color:#ffe2d6; font-size:14px; font-weight:700; text-align:center; line-height:1.3;}
+  .name-prompt .name-len-msg{opacity:1; background:#fbe3dc; color:#8a2a17;}
+  input.name-too-short{border-color:#e0573a !important; box-shadow:0 0 0 4px rgba(224,87,58,.25) !important;}
+  input.name-shake{animation:nameShake .38s ease;}
+  @keyframes nameShake{0%,100%{transform:translateX(0)} 20%{transform:translateX(-7px)} 40%{transform:translateX(6px)} 60%{transform:translateX(-4px)} 80%{transform:translateX(3px)}}
+  @media (prefers-reduced-motion: reduce){ input.name-shake{animation:none;} }
   .entrance-name-label{display:block; margin-bottom:6px; font-weight:800; font-size:17px; color:#ffe9b0; text-align:center;}
   .arena-format{display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; margin:10px 0 4px;} .arena-format-k{font-weight:700;} .arena-format-sub{flex-basis:100%; font-size:12px; opacity:.8;}
   .std-deck-overlay{position:fixed; inset:0; z-index:9000; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.55); padding:16px;}
@@ -9763,6 +9802,12 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 #myDeckList .deck-stack{position:relative;}
 #myDeckList .dchip-minus{position:absolute; top:-6px; left:-6px; z-index:3; width:22px; height:22px; padding:0; border-radius:50%; border:1px solid rgba(0,0,0,.25); background:#fff6ea; color:#8a2a1e; font:900 15px/1 'Nunito',system-ui,sans-serif; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,.3); cursor:pointer; opacity:.8;}
 #myDeckList .dchip-minus:hover, #myDeckList .dchip-minus:focus-visible{opacity:1; background:#ffe1d6;}
+/* Per-copy looks in the Camp (2026-10-16, user: "...You have to take that shiny version and put it into your deck"): a Shiny or
+   alt-art copy is its own stack in the pool and its own chip in the deck, with a small label saying which look it is. */
+#myDeckPool .look-stack{position:relative; cursor:pointer;}
+#myDeckList .dchip.is-look{position:relative;}
+#myDeckPool .look-stack .look-tag{position:absolute; top:-8px; left:50%; translate:-50% 0; z-index:4; max-width:110%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; padding:1px 7px; border-radius:999px; font:800 10.5px/1.4 'Baloo 2',system-ui,sans-serif; background:linear-gradient(135deg,#fff6c9,#f2c4ff); color:#5a2f6b; box-shadow:0 1px 3px rgba(0,0,0,.35); pointer-events:none;}
+#myDeckList .dchip.is-look .look-tag{position:absolute; top:-7px; right:-5px; z-index:3; padding:1px 6px; border-radius:999px; font:800 11px/1.4 'Baloo 2',system-ui,sans-serif; background:linear-gradient(135deg,#fff6c9,#f2c4ff); color:#5a2f6b; box-shadow:0 1px 3px rgba(0,0,0,.35); pointer-events:none;}
 @media (hover:hover){ #myDeckList .dchip-minus{opacity:0;} #myDeckList .deck-stack:hover .dchip-minus, #myDeckList .dchip-minus:focus-visible{opacity:.9;} }
 .deck-stackfx-btn{white-space:nowrap;}
 
@@ -10054,6 +10099,18 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .hay-nest .nest-type{position:absolute; left:4%; top:-6%; font-size:14px; padding:1px 5px; border-radius:999px; background:rgba(255,250,235,.95); box-shadow:0 1px 3px rgba(0,0,0,.25);}
   .hay-nest .nest-time{position:absolute; bottom:-22%; font-weight:800; font-size:11px; padding:1px 7px; border-radius:999px; background:rgba(58,42,20,.85); color:#fff3d6; white-space:nowrap;}
   .hay-nest .nest-ring{position:absolute; inset:-6%; border-radius:50%; background:conic-gradient(rgba(233,180,76,.9) calc(var(--p) * 1%), transparent 0); -webkit-mask:radial-gradient(circle, transparent 62%, #000 64%); mask:radial-gradient(circle, transparent 62%, #000 64%); opacity:.85; pointer-events:none;}
+  /* 2026-10-16: nests not built yet (NEST_UNLOCKS): greyed hay with a lock; the next one shows its map, or a hammer and its price */
+  .hay-nest.is-locked .hay{filter:grayscale(.85) brightness(.8); opacity:.55;}
+  .hay-nest.is-locked .nest-lock{position:relative; font-size:clamp(16px, 3.6vw, 22px); margin-top:-10%; opacity:.75;}
+  .hay-nest.is-locked:not(.is-next):not(.is-buildable) .nest-lock{opacity:.4;}
+  .hay-nest.is-locked .nest-time{background:rgba(58,42,20,.7);}
+  button.hay-nest.is-buildable{cursor:pointer; font:inherit; color:inherit;}
+  .hay-nest.is-buildable .hay{filter:saturate(.6); opacity:.85;}
+  .hay-nest.is-buildable .nest-lock{opacity:1; animation:readyHop 1.4s ease-in-out infinite;}
+  .hay-nest.is-buildable .nest-cost{background:#e9b44c; color:#3a2a14; display:inline-flex; align-items:center; gap:3px;}
+  .hay-nest.is-buildable .nest-cost img, .hay-nest.is-buildable .nest-cost svg{width:12px; height:12px;}
+  .hay-nest.is-buildable.is-poor .nest-cost{background:rgba(58,42,20,.85); color:#f3d9a8;}
+  .hay-nest.is-buildable.is-poor .nest-lock{animation:none; opacity:.7;}
   .hay-nest.is-ready{cursor:pointer;} .hay-nest.is-ready .nest-thing{animation:readyHop 1.1s ease-in-out infinite;} .hay-nest.is-ready .nest-time{background:#e9b44c; color:#3a2a14;}
   @keyframes readyHop{0%,100%{transform:translateY(0);} 40%{transform:translateY(-8px) rotate(6deg);} 60%{transform:translateY(-6px) rotate(-6deg);}}
   .hay-nest:focus-visible{outline:3px solid #e9b44c; outline-offset:4px; border-radius:50%;}

@@ -5039,7 +5039,23 @@ let codexSubTab = 'browse';
 // game — and any way to flip direction (attack/health always sorted high-to-low, name/cost
 // always low-to-high/A-Z, no choice either way). `dir` adds that: 'desc' is each field's own
 // previous default, so existing behavior is unchanged until someone actually flips it.
-let codexFilter = {q:'', archetype:'', mechLine:'', sort:'advance', dir:'desc', showTest:false};
+// Sticky filters (2026-10-16, user: "Codex filters and other pages filters and search bars reset when you enter them"): every
+// page's filters, sort and search box are kept in localStorage (bramblewood_ui_filters_v1, one entry per page), so they are as
+// you left them when you come back, this session or the next. uiSticky(page) reads a page's saved state, uiStickySave(page, obj)
+// writes it, and stickyControls(page, ids) does both for a page whose filters live only in its controls (the Camp's card pool).
+const UI_FILTERS_KEY = 'bramblewood_ui_filters_v1';
+function uiStickyAll(){ try{ const o = JSON.parse(localStorage.getItem(UI_FILTERS_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; }catch(e){ return {}; } }
+function uiSticky(page){ const o = uiStickyAll()[page]; return o && typeof o === 'object' ? o : {}; }
+function uiStickySave(page, obj){ try{ const all = uiStickyAll(); all[page] = Object.assign({}, all[page] || {}, obj); localStorage.setItem(UI_FILTERS_KEY, JSON.stringify(all)); }catch(e){} }
+function stickyControls(page, ids){
+  const saved = uiSticky(page);
+  ids.forEach(id=>{ const el = document.getElementById(id); if(!el) return;
+    const v = saved[id];
+    if(v != null){ if(el.type === 'checkbox') el.checked = !!v; else if(el.tagName === 'SELECT'){ if([...el.options].some(o=> o.value === String(v))) el.value = String(v); } else el.value = String(v); }
+    const save = ()=> uiStickySave(page, {[id]: el.type === 'checkbox' ? el.checked : el.value});
+    el.addEventListener('input', save); el.addEventListener('change', save); });
+}
+let codexFilter = Object.assign({q:'', archetype:'', mechLine:'', sort:'advance', dir:'desc', showTest:false}, (()=>{ const o = uiSticky('codex'); delete o.showTest; return o; })());
 // Advancement order (2026-10-12, user: "sort by Advancement - as in, Base, Map 1, Map 2... then Pack A, Pack B... then
 // Mystery Pack A, B..., Event A, B, C..."): base cards, then map rewards by map number (side maps after their parent) and
 // fight order, then packs by pool, the faction pools, Mystery, events by name, and anything unsorted last.
@@ -5056,7 +5072,7 @@ function advancementKey(d){
 // display-density toggle for the Codex grid — 'compressed' is the existing small-tile grid,
 // 'full' shows the same tiles larger so the art itself reads as the point of browsing, not just
 // a small icon next to stats. Persisted so it survives switching sub-tabs/filters.
-let codexViewMode = 'compressed';
+let codexViewMode = uiSticky('codexView').mode === 'full' ? 'full' : 'compressed'; // 2026-10-16: kept between visits
 function codexShell(){
   // 2026-10-15 (user: "Forge is not a submenu of Codex"): the Forge is drawn in this view but is its own page (the Forge
   // shortcut in the top bar), so it gets no Codex sub-tab row at all.
@@ -5228,7 +5244,7 @@ function renderCodex(){
     renderCodexGrid();
   });
   document.getElementById('cxViewMode').addEventListener('change', e=>{
-    codexViewMode = e.target.value;
+    codexViewMode = e.target.value; uiStickySave('codexView', {mode: codexViewMode});
     document.getElementById('codexGrid').classList.toggle('full-art', codexViewMode==='full');
   });
   const cxShowTest = document.getElementById('cxShowTest');
@@ -5383,10 +5399,12 @@ function setCodexStatsChart(v){ codexStatsChart = v; refreshCodexStats(); }
 // group that doesn't fit starts the next page, and only a group bigger than 40 on its own is cut into pages of 40.
 const CODEX_PAGE_SIZE = 40;
 let codexPage = 0, codexShowUnseen = false;
+function saveCodexFilters(){ const o = Object.assign({}, codexFilter); delete o.showTest; uiStickySave('codex', o); } // 2026-10-16: kept (uiSticky)
 // 2026-10-14 (user: "have a button to not partition the cards anymore, and arrange by ascending ID. - display 50 by 50"): one flat list by card number.
 let codexFlatById = (()=>{ try{ return localStorage.getItem('bramblewood_codex_flat_v1') === '1'; }catch(e){ return false; } })();
 function renderCodexGrid(keepPage){
   if(keepPage !== true) codexPage = 0;
+  saveCodexFilters();
   const defs = getCardDefs();
   let ids = Object.keys(defs);
   // Test cards (2026-09-22, Test Suite feature): hidden from ordinary Codex browsing by default,
@@ -6331,11 +6349,11 @@ function skillCodexHTML(){
     ${rows ? `<div class="sk-filter"><input type="search" id="skFilterInput" placeholder="Filter skills…" aria-label="Filter skills" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>` : ''}
     ${rows || '<p class="panel-sub">None yet. Skills show here as you meet them.</p>'}<p class="panel-sub sk-none" id="skFilterNone" hidden>No skill matches that.</p></div>`;
 }
-let skillCodexQuery = '';
+let skillCodexQuery = String(uiSticky('skills').q || ''); // 2026-10-16: kept between visits
 function wireSkillCodexFilter(root){
   const inp = root.querySelector('#skFilterInput'); if(!inp) return;
   const rows = [...root.querySelectorAll('.sk-row[data-sk-find]')], cnt = root.querySelector('#skFilterCount'), none = root.querySelector('#skFilterNone');
-  const run = ()=>{ skillCodexQuery = inp.value; const words = inp.value.trim().toLowerCase().split(/\s+/).filter(Boolean); let n = 0;
+  const run = ()=>{ skillCodexQuery = inp.value; uiStickySave('skills', {q: inp.value}); const words = inp.value.trim().toLowerCase().split(/\s+/).filter(Boolean); let n = 0;
     rows.forEach(r=>{ const hit = words.every(w=> r.dataset.skFind.includes(w)); r.hidden = !hit; if(hit) n++; });
     if(cnt) cnt.textContent = words.length ? `${n} of ${rows.length}` : ''; if(none) none.hidden = n > 0; };
   inp.addEventListener('input', run); run();
@@ -6888,7 +6906,7 @@ function openCardInspector(defId, opts){
     const k = id && skins.find(x=> x.id===id);
     if(k && !k.owned && adminModeEnabled){ UnitFX.grantSkin(id); k.owned = true; b.textContent = b.textContent.replace(' 🔒',''); }
     skin = id; ov.querySelectorAll('.ci-skin').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
-    if(!k || k.owned){ UnitFX.equipSkin(defId, id); msg.textContent = id ? `Equipped: ${k.name}. Your copies wear it in battle.` : 'Default look equipped.'; }
+    if(!k || k.owned){ UnitFX.equipSkin(defId, id); msg.textContent = id ? `You own ${k.name}: it dresses one copy. Put that copy in your deck at the Camp.` : 'The default look.'; } // 2026-10-16: per copy
     else msg.textContent = `Preview only: you don't own ${k.name} yet.`;
   }));
   const fxb = ov.querySelector('.ci-fxbtn');
@@ -9033,6 +9051,19 @@ async function applySessionIdentity(user){
   // account that has never picked a name gets the name prompt in the middle of the screen.
   try{ if(isSignedIn() && !hasChosenName()) setTimeout(()=> openNamePrompt(), 600); }catch(e){}
 }
+// 2026-10-16 (user: "Min name length in joining the game as anon. Maybe min. 3 characters."): a name needs at least 3
+// characters after trimming, on the entrance form and in the name prompt. Too short (or empty) stays on the form with a line
+// under the box saying so; the line clears as soon as the name is long enough.
+const NAME_MIN_LEN = 3;
+function nameLongEnough(name){ return Array.from(String(name || '').trim()).length >= NAME_MIN_LEN; }
+function showNameLenMsg(input, msgEl, onSubmit){
+  if(!input || !msgEl) return;
+  const v = String(input.value || '').trim(), ok = nameLongEnough(v);
+  if(ok || (!onSubmit && msgEl.hidden)){ msgEl.hidden = true; input.removeAttribute('aria-invalid'); input.classList.remove('name-too-short'); return; }
+  msgEl.textContent = v ? `Names need at least ${NAME_MIN_LEN} characters (${Array.from(v).length} so far).` : `Pick a name of at least ${NAME_MIN_LEN} characters.`;
+  msgEl.hidden = false; input.setAttribute('aria-invalid', 'true'); input.classList.add('name-too-short');
+  if(onSubmit && !(input._bwShookAt && Date.now() - input._bwShookAt < 200)){ input._bwShookAt = Date.now(); input.classList.remove('name-shake'); void input.offsetWidth; input.classList.add('name-shake'); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} }
+}
 const NAME_CHOSEN_KEY = 'bramblewood_name_chosen_v1';
 function hasChosenName(){ try{ if(localStorage.getItem(NAME_CHOSEN_KEY) === '1') return true; }catch(e){} return !!(myProfile && myProfile.name && myProfile.name !== 'Woodland Warrior'); }
 function markNameChosen(){ try{ localStorage.setItem(NAME_CHOSEN_KEY, '1'); }catch(e){} }
@@ -9040,15 +9071,17 @@ function openNamePrompt(){
   if(document.getElementById('namePromptOverlay')) return;
   const guess = (myProfile && myProfile.name && myProfile.name !== 'Woodland Warrior') ? myProfile.name : (cloudUserLabel && cloudUserLabel !== cloudUserEmail ? cloudUserLabel.split(' ')[0] : '');
   const ov = document.createElement('div'); ov.id = 'namePromptOverlay'; ov.className = 'name-prompt-overlay';
-  ov.innerHTML = `<form class="name-prompt" role="dialog" aria-modal="true" aria-labelledby="npTitle" autocomplete="off">
+  ov.innerHTML = `<form class="name-prompt" role="dialog" aria-modal="true" aria-labelledby="npTitle" autocomplete="off" novalidate>
     <div class="np-ico" aria-hidden="true">🌰</div>
     <h2 id="npTitle">What should we call you?</h2>
     <p>This is the name other players see on raids, friend lists and the Arena.</p>
-    <input id="npInput" type="text" maxlength="24" placeholder="Your warband name" value="${escapeAttr(guess.slice(0,24))}" aria-label="Your name" required>
+    <input id="npInput" type="text" maxlength="24" minlength="${NAME_MIN_LEN}" placeholder="Your warband name" value="${escapeAttr(guess.slice(0,24))}" aria-label="Your name" aria-describedby="npNameMsg" required>
+    <p class="name-len-msg" id="npNameMsg" role="alert" aria-live="polite" hidden></p>
     <button type="submit" class="btn primary big">Save my name</button></form>`;
   document.body.appendChild(ov);
   const inp = ov.querySelector('#npInput'); setTimeout(()=>{ inp.focus(); inp.select(); }, 50);
-  ov.querySelector('form').addEventListener('submit', async e=>{ e.preventDefault(); const name = inp.value.trim().slice(0,24); if(!name){ inp.focus(); return; }
+  inp.addEventListener('input', ()=> showNameLenMsg(inp, ov.querySelector('#npNameMsg'), false));
+  ov.querySelector('form').addEventListener('submit', async e=>{ e.preventDefault(); const name = inp.value.trim().slice(0,24); if(!nameLongEnough(name)){ showNameLenMsg(inp, ov.querySelector('#npNameMsg'), true); inp.focus(); return; }
     saveMyProfile(Object.assign({}, myProfile||{}, {name})); markNameChosen(); ov.remove();
     try{ if(sbClient && cloudUserId) await sbClient.from('profiles').update({display_name: name}).eq('id', cloudUserId); }catch(err){}
     try{ renderEntranceAuth(); }catch(err){} showToast(TX('toast.welcome-to-the-grove', {name}), 'ok'); });
@@ -10106,39 +10139,19 @@ function unlockCardForPlayer(id, source, copyOpts){
   // queues the lesson; it waits for a fight where one is in your hand (lumberDrawNudges).
   return true;
 }
-// Lumber lesson (2026-10-13, user: "players don't read ... a first lumber tutorial as soon as a card that uses lumber is drawn or
-// obtained"): once, a picture rather than a paragraph: the card, its 🪵 cost, and a spare card going to the Graveyard for 🪵.
+// Lumber lesson: the big picture box (2026-10-13) is gone. 2026-10-16 (user: "No need for the big window lumber tutorial. The
+// default tutorial with darkening effects is sufficient."): the spotlighted Pitching lesson (PITCH_LESSON) teaches Lumber on its own.
+// The old flag is still set once that lesson is done, so the nudges below read it as before.
 const LUMBER_LESSON_FLAG = 'lesson:lumber';
-let pendingLumberLesson = null, lumberLessonTries = 0;
-function queueLumberLesson(id){ if(loadDialogueFlags()[LUMBER_LESSON_FLAG] || adminModeEnabled) return; pendingLumberLesson = id; lumberLessonTries = 0; setTimeout(maybeLumberLesson, 1800); }
-function maybeLumberLesson(inBattle){
-  if(!pendingLumberLesson || loadDialogueFlags()[LUMBER_LESSON_FLAG]) return;
-  if(!inBattle) return; // 2026-10-14: only in a fight, with the Lumber card in your hand (see lumberDrawNudges)
-  const busy = !inBattle && ((typeof matchState !== 'undefined' && matchState && !matchState.over) || document.querySelector('.po2-stage, .winloss-overlay, #lumberLesson, .modal-overlay:not([hidden]) .modal'));
-  if(busy){ if(++lumberLessonTries < 120) setTimeout(maybeLumberLesson, 2500); return; }
-  const d = getCardDefs()[pendingLumberLesson]; pendingLumberLesson = null; if(!d) return;
-  setDialogueFlag(LUMBER_LESSON_FLAG, true);
-  const ov = document.createElement('div'); ov.id = 'lumberLesson'; ov.className = 'lumber-lesson'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-label', TX('tutorial.lumber'));
-  ov.innerHTML = `<div class="ll-box">
-    <div class="ll-row"><div class="ll-card">${cardTileHTML(d, {inPlay:true})}<span class="ll-cost">🪵 ${d.cost}</span></div>
-      <div class="ll-say">${TX('tutorial.this-card-needs-lumber')}</div></div>
-    <div class="ll-row ll-how"><span class="ll-spare">🃏</span><span class="ll-arrow">➜</span><span class="ll-pile">🗑</span><span class="ll-eq">=</span><span class="ll-gain">+1 🪵</span></div>
-    <div class="ll-say">${TX('tutorial.give-up-a-spare-card-to')}</div>
-    <button type="button" class="btn primary ll-ok">${TX('tutorial.got-it')}</button></div>`;
-  document.body.appendChild(ov);
-  const close = ()=>{ ov.classList.add('is-out'); setTimeout(()=> ov.remove(), 300); if(inBattle && typeof inBattle === 'function') inBattle(); };
-  ov.querySelector('.ll-ok').onclick = close;
-  setTimeout(()=>{ try{ ov.querySelector('.ll-ok').focus(); }catch(e){} }, 50);
-}
-// In a fight: the first time a Lumber card is drawn the lesson plays (holding the round); after that, a small 🪵 tag pops on
-// newly drawn Lumber cards you can't afford yet, for your next few fights.
+// In a fight: once the Pitching lesson is done, a small 🪵 tag pops on newly drawn Lumber cards you can't afford yet, for your next
+// few fights (2026-10-16: no modal first; the spotlight lesson comes first instead).
 const LUMBER_NUDGE_KEY = 'bramblewood_lumber_nudges_v1';
 function lumberDrawNudges(m){
   if(!m || m.over || m.adminTest || m.mode==='sandbox' || !pitchAllowedIn(m) || m.players[1] == null) return;
   const me = m.players[viewerHandPid(m)] || m.players[1], defs = getCardDefs();
   const costly = me.hand.filter(h=> ((defs[h.defId]||{}).cost||0) > (me.lumber||0));
   if(!costly.length) return;
-  if(!loadDialogueFlags()[LUMBER_LESSON_FLAG] && !adminModeEnabled){ pendingLumberLesson = costly[0].defId; m._lumberPause = true; maybeLumberLesson(()=>{ m._lumberPause = false; }); return; }
+  if(!loadDialogueFlags()[LUMBER_LESSON_FLAG] && !adminModeEnabled){ if(!PITCH_LESSON.every(t=> coachSeen.has(t.id))) return; setDialogueFlag(LUMBER_LESSON_FLAG, true); }
   let n = 0; try{ n = +localStorage.getItem(LUMBER_NUDGE_KEY) || 0; }catch(e){}
   if(n >= 8) return;
   m._lumberNudged = m._lumberNudged || new Set();
@@ -11033,6 +11046,7 @@ function bramblesTabHTML(){
       </div>`).join('')}</div>
   </div>`;
 }
+var DECK_LOOKS_KEY = 'bramblewood_arena_deck_looks', myDeckLooks = null; // 2026-10-16: per-copy looks (see deckLooksAll)
 function loadMyDeck(){
   try{
     const raw = localStorage.getItem('bramblewood_arena_deck');
@@ -11040,7 +11054,7 @@ function loadMyDeck(){
   }catch(e){}
   return {'otter-centurion':4,'bee-knight':4,'bee-drone':3,'dolphin-knight':3,'caustic-scorpion':3,'ent':1,'yeti':1,'scraper-of-skies':1};
 }
-function saveMyDeck(){ if(deckDraftActive()) return markDeckDirty(); try{ localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
+function saveMyDeck(){ if(deckDraftActive()) return markDeckDirty(); try{ localStorage.setItem('bramblewood_arena_deck', JSON.stringify(myDeckCounts)); }catch(e){} try{ saveDeckLooks(); }catch(e){} /* 2026-10-16: which copies are Shiny / alt art */ if(typeof syncActiveDeckFromGlobals==='function') syncActiveDeckFromGlobals(); }
 function deckTotal(counts){ return Object.values(counts).reduce((a,b)=>a+b,0); }
 // Valid deck size (2026-09-16, per explicit request: "a valid deck is 20 cards. Do not allow
 // a deck with <20 or >20 cards."). Enforced at the point a deck is actually USED (starting a
@@ -11149,6 +11163,7 @@ function syncActiveDeckFromGlobals(){
   const d = getActiveDeck();
   if(!d) return;
   d.counts = Object.assign({}, myDeckCounts);
+  try{ d.looks = JSON.parse(JSON.stringify(deckLooksAll())); }catch(e){} // 2026-10-16: per-copy looks ride with the deck
   d.characterId = myCharacterId;
   d.leaderId = myLeaderId;
   saveMyDecks();
@@ -11157,7 +11172,7 @@ function switchActiveDeck(id){
   const d = myDecks.find(x=>x.id===id);
   if(!d) return;
   activeDeckId = id; saveActiveDeckId();
-  myDeckCounts = Object.assign({}, d.counts||{}); saveMyDeck();
+  myDeckCounts = Object.assign({}, d.counts||{}); myDeckLooks = d.looks ? JSON.parse(JSON.stringify(d.looks)) : legacyDeckLooks(myDeckCounts); saveMyDeck(); // 2026-10-16: the deck's own looks
   myCharacterId = d.characterId || 'castle'; saveMyCharacter();
   myLeaderId = d.leaderId || null; saveMyLeader();
 }
@@ -11872,6 +11887,7 @@ function renderPlayerSubTab(body){
     <div class="panel player-stats-cta" style="text-align:center;">
       <button class="btn primary" id="openPlayerStatsBtn">📊 Stats</button>
     </div>`;
+  stickyControls('camp', ['deckSearch', 'playArchFilter', 'deckKindFilter', 'deckLevelFilter', 'deckSort']); // 2026-10-16: the pool's filters are as you left them
   renderMyDeckPanels();
   wireCardTileFlourish(body); // the Bramble/castle picker tiles above (myDeckPool's own pool tiles are already wired inside renderMyDeckPanels)
   body.querySelectorAll('.char-card').forEach(el=> el.addEventListener('click', ()=>{
@@ -13121,7 +13137,9 @@ const FEATURE_SPOTS = [
   // who already opened it keeps it (the unlock is stored by key, not by map); eggs found earlier wait in the pack (grantEgg).
   // On Map 4 it would land on the Notices' default spot, so it has its own: dry ground right of the big pond (an admin can still
   // drag it; a published layout wins).
-  {key:'nest', icon:'🪺', name:'Nest', mapNumber:4, pos:{x:70, y:50}, get map(){ return mapIdAt(4); }, after:null, dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
+  // 2026-10-16 (user: "I think Nest should be moved to Map 3, where the cliffs are - makes thematic sense"): Map 3 (Gannet Cliffs),
+  // was Map 4. Map 3 has no other spot, so it sits beside the map's first fight (no fixed pos); an admin can still drag it.
+  {key:'nest', icon:'🪺', name:'Nest', mapNumber:3, get map(){ return mapIdAt(3); }, after:null, dialogue:'unlock_nest', tabs:['nest'], go:()=> switchTab('nest')},
   {key:'quests', icon:'📜', name:'Notices', mapNumber:4, get map(){ return mapIdAt(4); }, after:null, dialogue:'unlock_quests', tabs:['quests'], go:()=> openQuestsModal()},
   // Pack A (Hedgerow Pouches) from Map 5; Map 3's boss gives one free first (MAP_FREE_PACKS).
   {key:'shop', icon:'🛒', name:'Traveller’s Cart', mapNumber:5, get map(){ return mapIdAt(5); }, after:null, dialogue:'unlock_shop', tabs:['shop'], merchant:true, pack:'bronze', go:()=> switchTab('shop')},
@@ -15626,7 +15644,7 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard'];
+const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks'];
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -17739,8 +17757,16 @@ function compassDiamondSVG(mapId, locked){
 // iconography." The endless dungeons (Murgle Mayhem today) get their own 🗝️ Dungeons tab in Play, with room for three that open
 // over the first 40 maps, and a compass diamond of their own on the World map, branching off their map. Murgle stays reachable
 // from its entrance on Sable Swampmire as before.
-// Entry: a 🎟️ Dungeon ticket starts a run, and the run lasts until you lose a floor (floors stay cleared, as before; Energy is
-// still paid per floor). One ticket a day (they bank up to 3) and a bonus one each week (on Monday), so a run a day, and a spare.
+// Entry (was 2026-10-15: a 🎟️ ticket started a run that lasted until a lost floor, and cleared floors stayed cleared).
+// 2026-10-16 (user: "Daily dungeons - doesn't reset progress. It doesn't reward a key on victory. Doesn't take your key if you lose
+// or forfeit."): the rule now, one that fits all three:
+//   - a 🗝️ Dungeon key (the ticket, renamed to match the 🗝️ button) is needed to fight any floor of a daily dungeon;
+//   - going in puts the key in the lock (it's taken when the fight starts);
+//   - win the floor and the key comes back, shown as "+1 🗝️ Dungeon key" in the rewards, so a winning climb costs no keys;
+//   - lose or forfeit and the key is gone, and the climb starts again from floor 1 (that dungeon's cleared floors are wiped).
+//     The best floor ever reached is remembered, so a floor's first-clear payout is still paid once.
+// Keys still come one a day (banking up to 3) plus a bonus one each Monday; Energy is still paid per floor. Quitting mid-fight
+// (to resume later) keeps the key in the lock until that fight ends. The Tower (map.tower) takes no keys and never resets.
 const DAILY_DUNGEONS = [
   {mapId:'mm', mapNumber:6},
   {mapId:'mlb', mapNumber:22, slot:2, icon:'🦡'}, // 2026-10-16: the Long Burrow, Map 22 (was an empty slot at Map 20); admin preview only for now
@@ -17755,30 +17781,49 @@ function saveDungeonTickets(s){ try{ localStorage.setItem(DUNGEON_TICKETS_KEY, J
 function loadDungeonTickets(){
   let s = null; try{ s = JSON.parse(localStorage.getItem(DUNGEON_TICKETS_KEY) || 'null'); }catch(e){}
   const day = dungeonDayIndex(), wk = dungeonWeekIndex();
-  if(!s || typeof s.n !== 'number'){ s = {n: 2, day, week: wk, runs: {}}; saveDungeonTickets(s); return s; } // today's ticket and this week's bonus
-  let ch = false; if(!s.runs || typeof s.runs !== 'object'){ s.runs = {}; ch = true; }
+  if(!s || typeof s.n !== 'number'){ s = {n: 2, day, week: wk, best: {}}; saveDungeonTickets(s); return s; } // today's key and this week's bonus
+  let ch = false;
+  // 2026-10-16: runs are gone (a key is staked per fight now). A run still open under the old rule had its ticket spent up front,
+  // so that ticket comes back.
+  if(s.runs && typeof s.runs === 'object'){ s.n += Object.keys(s.runs).length; delete s.runs; ch = true; }
+  if(!s.best || typeof s.best !== 'object'){ s.best = {}; ch = true; }
   if(s.day < day){ s.n = Math.max(s.n, Math.min(DUNGEON_TICKETS_CAP, s.n + (day - s.day))); s.day = day; ch = true; }
   if(s.week < wk){ s.n = Math.min(DUNGEON_TICKETS_CAP + 1, s.n + 1); s.week = wk; ch = true; } // the weekly bonus may sit one over the cap
   if(ch) saveDungeonTickets(s);
   return s;
 }
 function dungeonTicketsLeft(){ return loadDungeonTickets().n; }
-function dungeonRunOpen(mapId){ return !!loadDungeonTickets().runs[mapId]; }
+function dungeonRunOpen(mapId){ return dungeonFloorProgress(CONQUEST_MAPS.find(m=> m.id === mapId) || {nodes:[]}).done > 0; } // a climb under way
 function isDailyDungeonMap(map){ return !!(map && map.endless && !map.tower); } // the Tower takes no tickets (2026-10-16)
 function dungeonNextTicketMs(){ const d = new Date(); d.setHours(24, 0, 0, 0); return d.getTime() - Date.now(); }
-// May this floor be fought? (a run is open, or a ticket is in hand)
-function dungeonGateOk(mapId){ const s = loadDungeonTickets(); return !!s.runs[mapId] || s.n > 0; }
-function dungeonStartRun(mapId){ const s = loadDungeonTickets(); if(s.runs[mapId] || s.n <= 0) return false; s.n -= 1; s.runs[mapId] = Date.now(); saveDungeonTickets(s); return true; }
-function dungeonRunLost(mapId){ const s = loadDungeonTickets(); if(s.runs[mapId]){ delete s.runs[mapId]; saveDungeonTickets(s); } }
+// May this floor be fought? (a key is in hand)
+function dungeonGateOk(mapId){ return loadDungeonTickets().n > 0; }
+// The fight starts: the key goes in the lock.
+function dungeonStakeKey(mapId){ const s = loadDungeonTickets(); if(s.n <= 0) return false; s.n -= 1; saveDungeonTickets(s); return true; }
+// The best floor ever cleared in a dungeon (first-clear payouts go by it, since a lost climb wipes the cleared floors).
+function dungeonBestFloor(mapId){ const s = loadDungeonTickets(), map = CONQUEST_MAPS.find(m=> m.id === mapId);
+  return Math.max((s.best && s.best[mapId]) | 0, map ? dungeonFloorProgress(map).done : 0); }
+// A floor won: the key comes back and the best floor moves up.
+function dungeonFloorWon(mapId, floor, staked){ const best = dungeonBestFloor(mapId), s = loadDungeonTickets(); s.best = s.best || {};
+  s.best[mapId] = Math.max(best, floor | 0); if(staked) s.n += 1; saveDungeonTickets(s); }
+// A floor lost or forfeited: the key stays gone and the climb starts again from floor 1. Returns how many floors were wiped.
+function dungeonRunLost(mapId){
+  const map = CONQUEST_MAPS.find(m=> m.id === mapId); if(!isDailyDungeonMap(map)) return 0;
+  const best = dungeonBestFloor(mapId), s = loadDungeonTickets(); s.best = s.best || {}; s.best[mapId] = best; saveDungeonTickets(s);
+  const p = loadConquestProgress(), ids = new Set(map.nodes.map(n=> conquestNodeId(map.id, n.key))), before = p.completed.length;
+  p.completed = p.completed.filter(id=> !ids.has(id)); const wiped = before - p.completed.length;
+  if(wiped) saveConquestProgress(p); return wiped;
+}
 function dungeonFloorProgress(map, progress){
   progress = progress || loadConquestProgress();
   const done = map.nodes.filter(n=> progress.completed.includes(conquestNodeId(map.id, n.key))).length;
   return {done, total: map.nodes.length};
 }
 function dungeonTicketLineHTML(map){
-  const s = loadDungeonTickets(), open = !!s.runs[map.id], h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
-  return `<p class="dungeon-ticket-line" title="One Dungeon ticket a day (up to ${DUNGEON_TICKETS_CAP} banked) and a bonus one each Monday. A ticket starts a run; the run lasts until you lose a floor.">🎟️ <b>${s.n}</b> Dungeon ticket${s.n === 1 ? '' : 's'} · ${open ? '<span class="dtl-run">Run open: keep climbing</span>' : 'a ticket starts a run'} · next ticket in ${h}h</p>`;
+  const s = loadDungeonTickets(), f = dungeonFloorProgress(map), best = dungeonBestFloor(map.id), h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
+  return `<p class="dungeon-ticket-line" title="${escapeAttr(DUNGEON_KEY_RULE)}">🗝️ <b>${s.n}</b> Dungeon key${s.n === 1 ? '' : 's'} · ${f.done ? `<span class="dtl-run">Floor ${f.done + 1}: keep climbing</span>` : 'win and the key comes back'}${best ? ` · best: floor ${best}` : ''} · next key in ${h}h</p>`;
 }
+const DUNGEON_KEY_RULE = `A floor takes a Dungeon key. Win and you get it back; lose or forfeit and it's gone, and the climb starts again from floor 1. One key a day (up to ${DUNGEON_TICKETS_CAP} banked) and a bonus one each Monday.`;
 // 2026-10-16 (user: "Similar to raids - when you unlock the first daily dungeon, it just says the name aka Murgle. But once you
 // unlock the 2nd, it just says Daily Dungeons."): like raidTabLabel(), the tab (and the panel's heading, and the key button's
 // tooltip) reads the one dungeon's own name while only one is open, and "Daily Dungeons" from the second on. Only the ticketed
@@ -17797,13 +17842,13 @@ function dungeonsTabOpen(){ try{ return !!(dungeonsAdminView() || unlockedDailyD
 // top-right group and in the topbar of the other screens. Only once a daily dungeon is open (or in Admin Mode); it opens the tab.
 function dungeonKeyBtnHTML(id){
   if(!dungeonsTabOpen()) return '';
-  const n = dungeonTicketsLeft(), label = dungeonTabLabel(), tip = `${label}: ${n} Dungeon ticket${n === 1 ? '' : 's'}`;
+  const n = dungeonTicketsLeft(), label = dungeonTabLabel(), tip = `${label}: ${n} Dungeon key${n === 1 ? '' : 's'}`;
   return `<button class="home-nav-btn dungeon-key-btn ${typeof playSubTab !== 'undefined' && playSubTab === 'dungeons' && currentTab === 'play' ? 'is-here' : ''}" id="${id}" type="button" title="${escapeAttr(tip)}" aria-label="${escapeAttr(tip)}"><span class="tab-emoji">🗝️</span><span class="dk-n" aria-hidden="true">${n}</span></button>`;
 }
 function refreshTopbarDungeonKey(tab){
   const b = document.getElementById('dungeonKeyBtnTop'); if(!b) return;
   const show = tab !== 'home' && tab !== 'play' && dungeonsTabOpen(); b.hidden = !show; if(!show) return;
-  const n = dungeonTicketsLeft(), tip = `${dungeonTabLabel()}: ${n} Dungeon ticket${n === 1 ? '' : 's'}`;
+  const n = dungeonTicketsLeft(), tip = `${dungeonTabLabel()}: ${n} Dungeon key${n === 1 ? '' : 's'}`;
   b.title = tip; b.setAttribute('aria-label', tip); const c = b.querySelector('.dk-n'); if(c) c.textContent = String(n);
 }
 function openDungeonsFromKey(){
@@ -17820,20 +17865,20 @@ function renderDungeonsSubTab(body){
     const map = dd.mapId && CONQUEST_MAPS.find(m=> m.id === dd.mapId);
     if(!map || dungeonHiddenFromPlayer(map)) return `<div class="dg-card is-soon"><div class="dg-diamond map-theme-mm">${compassDiamondSVG('dg' + dd.slot, true)}<span class="wd-ico">${dd.icon || '❔'}</span></div>
       <div class="dg-body"><b class="dg-name">A new dungeon</b><p class="dg-sub">🔒 Opens around Map ${dd.mapNumber}</p></div></div>`;
-    const preview = !!map.preview, open = preview || isMapUnlocked(map, progress), f = dungeonFloorProgress(map, progress), run = !!s.runs[map.id];
+    const preview = !!map.preview, open = preview || isMapUnlocked(map, progress), f = dungeonFloorProgress(map, progress), run = f.done > 0, best = dungeonBestFloor(map.id);
     const parent = CONQUEST_MAPS.find(m=> m.id === map.parent);
     return `<div class="dg-card ${open ? '' : 'is-locked'} ${preview ? 'is-preview' : ''}">${preview ? '<span class="dg-admin-tag" title="Players see a locked slot here (Map 22 is not charted yet)">🛠️ Admin preview</span>' : ''}<div class="dg-diamond map-theme-${map.id}">${compassDiamondSVG('dg-' + map.id, !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map ${dd.mapNumber}${parent ? ' · ' + escapeHtml(parent.name) : ''}</span>
         <p class="dg-sub">${escapeHtml(map.blurb || '')}</p>
-        ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${f.total ? Math.round(100 * f.done / f.total) : 0}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total}${f.done ? ` · ${f.done} cleared` : ''}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : run ? '▶ Continue the run' : s.n > 0 ? '🎟️ Enter' : '🗺️ Look at the map'}</button>${run ? '<span class="dg-run">Run open</span>' : ''}</div>`
+        ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${f.total ? Math.round(100 * f.done / f.total) : 0}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total}${best ? ` · best: floor ${best}` : ''}</span></div>
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : s.n > 0 ? (run ? '🗝️ Keep climbing' : '🗝️ Enter') : '🗺️ Look at the map'}</button>${run ? `<span class="dg-run">${f.done} cleared this climb</span>` : ''}</div>`
         : `<p class="dg-sub">🔒 Clear ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
   }).join('');
   body.innerHTML = `<div class="panel dungeons-panel">
-    <div class="dg-head"><h2>🗝️ ${escapeHtml(dungeonTabLabel(progress)) /* 2026-10-16 (user: "...once you unlock the 2nd, it just says Daily Dungeons") */}</h2><p class="panel-sub">Endless climbs, a little harder every floor. A cleared floor stays cleared.</p></div>
-    <div class="dg-tickets" title="A ticket starts a run; the run lasts until you lose a floor. Each floor costs Energy, like any fight.">
-      <span class="dg-tix">${Array.from({length: Math.max(DUNGEON_TICKETS_CAP, s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🎟️</i>`).join('')}</span>
-      <span><b>${s.n}</b> Dungeon ticket${s.n === 1 ? '' : 's'} · one a day (up to ${DUNGEON_TICKETS_CAP}), next in ${h}h · a bonus one every Monday</span></div>
+    <div class="dg-head"><h2>🗝️ ${escapeHtml(dungeonTabLabel(progress)) /* 2026-10-16 (user: "...once you unlock the 2nd, it just says Daily Dungeons") */}</h2><p class="panel-sub">Endless climbs, a little harder every floor. Each floor takes a key: win and it comes back; lose and it's gone, and the climb starts again from floor 1.</p></div>
+    <div class="dg-tickets" title="${escapeAttr(DUNGEON_KEY_RULE + ' Each floor costs Energy too, like any fight.')}">
+      <span class="dg-tix">${Array.from({length: Math.max(DUNGEON_TICKETS_CAP, s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🗝️</i>`).join('')}</span>
+      <span><b>${s.n}</b> Dungeon key${s.n === 1 ? '' : 's'} · one a day (up to ${DUNGEON_TICKETS_CAP}), next in ${h}h · a bonus one every Monday</span></div>
     <div class="dg-list">${cards}</div>
     ${towerCardHTML(progress)}
   </div>`;
@@ -18083,9 +18128,24 @@ function teachingCardPick(){
   }
   return null;
 }
-// The weakest card in the deck: a 1-Attack or 1-Health card first, then the smallest total.
+// What a swap may trade out (2026-10-16, user: "The swap thing shouldn't ask me to swap out a common for a rare. In fact, good cards
+// in the deck (non tutorial) shouldnt be swapped out."): only a weak card the game handed you, and never one rarer than the card
+// coming in. Weak = a card of the starter deck you were given (either side's lists and the baby filler), a baby (Attack + Health
+// <= 3), a Starter/Basic-rarity card, or a tutorial card. Leaders and heroes never. Cards you won or pulled since are left alone.
+function swapRarityIndex(r){ const i = RARITY_TIER_BANDS.indexOf(r === 'basic' ? 'starter' : (r || 'common')); return i < 0 ? 1 : i; }
+function starterDeckCardIds(){
+  const cfg = (typeof tutorialCfg !== 'undefined' && tutorialCfg) || STARTER_CFG_DEFAULT, out = new Set();
+  ['starterShared', 'starterOtters', 'starterHummingbirds', 'starterBoth', 'starterFiller'].forEach(k=> Object.keys(cfg[k] || STARTER_CFG_DEFAULT[k] || {}).forEach(id=> out.add(id)));
+  return out;
+}
+function swapOutAllowed(outId, newId){
+  const defs = getCardDefs(), o = defs[outId], d = defs[newId]; if(!o || !d || outId === newId || o.isLeader || o.hero) return false;
+  if(swapRarityIndex(o.rarity) > swapRarityIndex(d.rarity)) return false; // never a rarer card out for a commoner one
+  return starterDeckCardIds().has(outId) || (o.attack||0) + (o.health||0) <= 3 || o.rarity === 'starter' || o.rarity === 'basic' || !!o.tutorial;
+}
+// The weakest card in the deck: a 1-Attack or 1-Health card first, then the smallest total (only cards swapOutAllowed lets go).
 function weakestDeckCard(exceptId){
-  const defs = getCardDefs(), ids = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && k !== exceptId && !defs[k].isLeader);
+  const defs = getCardDefs(), ids = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && k !== exceptId && !defs[k].isLeader && (!exceptId || swapOutAllowed(k, exceptId)));
   const one = d=> (d.attack||0) <= 1 || (d.health||0) <= 1 ? 0 : 1;
   return ids.sort((a, b)=> one(defs[a]) - one(defs[b]) || ((defs[a].attack||0) + (defs[a].health||0)) - ((defs[b].attack||0) + (defs[b].health||0)) || (defs[a].cost||0) - (defs[b].cost||0))[0] || null;
 }
@@ -18113,7 +18173,7 @@ function swapEligibleDef(d){ return !!(d && !d.token && !d.test && !d.hero && !d
 // The weakest card in your main deck that `id` strictly dominates, or null.
 function dominatedDeckCard(id){
   const defs = getCardDefs(), d = defs[id]; if(!swapEligibleDef(d)) return null;
-  const ids = Object.keys(myDeckCounts || {}).filter(k=> myDeckCounts[k] > 0 && k !== id && swapEligibleDef(defs[k]) && strictlyDominates(d, defs[k]));
+  const ids = Object.keys(myDeckCounts || {}).filter(k=> myDeckCounts[k] > 0 && k !== id && swapEligibleDef(defs[k]) && swapOutAllowed(k, id) && strictlyDominates(d, defs[k]));
   const pw = x=> (x.attack||0) + (x.health||0);
   return ids.sort((a, b)=> pw(defs[a]) - pw(defs[b]) || (defs[b].cost||0) - (defs[a].cost||0) || a.localeCompare(b))[0] || null;
 }
@@ -18139,7 +18199,7 @@ function noteGainedForSwap(id, source){
 // right, focus on one weaker 1-attack or 1-defence card, a swap animation and a Swap button, with text recommending the switch").
 // A teaching card (Maps 0–1) must be swapped in; a later one can be turned down, and after three no-thanks they stop.
 function maybeOfferDeckSwap(){
-  if(!pendingDeckSwap || !pendingDeckSwap.length || (typeof matchState !== 'undefined' && matchState) || document.getElementById('deckSwapOverlay') || document.querySelector('.starter-step, #lumberLesson')) return;
+  if(!pendingDeckSwap || !pendingDeckSwap.length || (typeof matchState !== 'undefined' && matchState) || document.getElementById('deckSwapOverlay') || document.querySelector('.starter-step') || tutorialRewardPopPending) return;
   // not over a pack being opened, nor with one still waiting to be shown (2026-10-15); the opener calls back when it closes
   { const po = document.getElementById('packOpenOverlay'); if((po && !po.hidden) || (typeof packRevealQueue !== 'undefined' && packRevealQueue.length)) return; }
   const defs = getCardDefs(); let item = pendingDeckSwap.shift(); if(typeof item === 'string') item = {id:item};
@@ -18191,7 +18251,7 @@ document.addEventListener('keydown', e=>{
   const k = conquestKeyNav; if(!k || typeof currentTab === 'undefined' || currentTab !== 'play' || playSubTab !== 'conquest') return;
   if((typeof matchState !== 'undefined' && matchState && !matchState.over) || conquestLayoutEdit || conquestLinkEdit) return;
   const t = e.target; if(t && (t.closest && t.closest('input, textarea, select, [contenteditable="true"]'))) return;
-  if(!document.getElementById('conquestCanvas') || document.querySelector('.modal-overlay:not([hidden]) .modal, .ds2-overlay, .lumber-lesson, .po2-stage, .winloss-overlay')) return;
+  if(!document.getElementById('conquestCanvas') || document.querySelector('.modal-overlay:not([hidden]) .modal, .ds2-overlay, .po2-stage, .winloss-overlay')) return;
   const go = e.key === 'ArrowUp' ? k.prev : k.next; if(!go || !isMapUnlocked(go, loadConquestProgress())) return; // 2026-10-15: ↑ lower, ↓ higher
   e.preventDefault();
   if(k.map.sub) leaveSubMap(k.map, k.body); else conquestPanTo(go.id, k.body, k.progress);
@@ -20378,6 +20438,24 @@ function ssFlyTile(t, br, vars){
   gsap.to(fly, Object.assign({}, vars, {x: br.left + br.width/2 - (r.left + r.width/2), y: br.top + br.height/2 - (r.top + r.height/2),
     onComplete:()=>{ fly.remove(); done && done(); }}));
 }
+// The tutorials' card windows (2026-10-16, user: "The "more" cards reward windows at the end of the Tutorials should be improved.
+// Also, they should pop out after coming out of the skirmish, not just be there instantaneously."): leaving the results lands on
+// the map first; a beat later (once the results are gone) the window pops in: the dark veil fades up, the panel springs out of
+// the middle, and the cards are dealt into it one by one under a slow glow. Nothing else may open over the map in between.
+var tutorialRewardPopPending = false;
+function popTutorialRewardStep(open){
+  tutorialRewardPopPending = true;
+  const go = ()=>{ tutorialRewardPopPending = false; try{ open(); }catch(e){ console.error('[Bramblewood] tutorial reward window', e); } };
+  setTimeout(go, reducedMotion() ? 150 : 750);
+}
+function tutRewardOverlay(cls){
+  const ov = document.createElement('div'); ov.className = 'modal-overlay starter-step tut-reward ' + (cls || '');
+  if(!reducedMotion()) ov.classList.add('is-popping');
+  return ov;
+}
+function tutRewardCardHTML(d, i, extra){
+  return `<div class="ss-card is-dealt ${extra||''}" style="--i:${i}"><span class="ss-glow" aria-hidden="true"></span>${cardTileHTML(d, {inPlay:true})}</div>`;
+}
 function openStarterDeckStep(pick, onDone){
   // 2026-10-15: the 8 cards you are shown (starterDeckParts.shown) + Part I's reward; the rest of the 17 goes in quietly.
   const defs = getCardDefs(), counts = Object.assign({}, starterDeckParts(pick).shown);
@@ -20386,12 +20464,14 @@ function openStarterDeckStep(pick, onDone){
   // too!"): the tutorial's reward cards are in the grid and fly into the deck with the rest (claimTutorialWin adds them).
   rewards.forEach(id=> counts[id] = (counts[id]||0) + 1);
   const ids = Object.keys(counts).filter(id=> defs[id]).sort((a,b)=> (rewards.includes(b) - rewards.includes(a)) || (defs[a].cost||0)-(defs[b].cost||0) || defs[a].name.localeCompare(defs[b].name));
-  const ov = document.createElement('div'); ov.className = 'modal-overlay starter-step';
+  const ov = tutRewardOverlay('is-first-deck');
   ov.innerHTML = `<div class="modal starter-modal" role="dialog" aria-modal="true" aria-label="Your starter deck">
+    <div class="tr-rays" aria-hidden="true"></div>
+    <p class="tr-kicker">Tutorial complete</p>
     <h2>🃏 Your first deck</h2>
     <p class="panel-sub">You've earned these cards. Add them to your deck to take them onto the map.</p>
-    <div class="ss-grid">${ids.map(id=> `<div class="ss-card${rewards.includes(id) ? ' is-reward' : ''}">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1?`<b class="dm-x">×${counts[id]}</b>`:''}${rewards.includes(id) ? '<span class="ss-gift" title="Tutorial reward">🎁</span>' : ''}</div>`).join('')}</div>
-    ${rewards.length ? `<p class="ss-bonus">🎁 Your tutorial rewards (${rewards.map(id=> `<b>${escapeHtml(defs[id].name)}</b>`).join(', ')}) go in too.</p>` : ''}
+    <div class="ss-grid">${ids.map((id, i)=> `<div class="ss-card is-dealt${rewards.includes(id) ? ' is-reward' : ''}" style="--i:${i}">${cardTileHTML(defs[id], {inPlay:true})}${counts[id]>1?`<b class="dm-x">×${counts[id]}</b>`:''}${rewards.includes(id) ? '<span class="ss-gift" title="Tutorial reward">🎁</span>' : ''}</div>`).join('')}</div>
+    ${rewards.length ? `<p class="ss-bonus">🎁 Your tutorial reward${rewards.length === 1 ? '' : 's'} (${rewards.map(id=> `<b>${escapeHtml(defs[id].name)}</b>`).join(', ')}) ${rewards.length === 1 ? 'goes' : 'go'} in too.</p>` : ''}
     <div class="ss-foot"><div class="ss-deckbox" aria-hidden="true">🌰<small>Deck</small><b class="ss-count"></b></div>
       <button type="button" class="btn primary big" id="ssAdd">➕ Add to deck</button></div>
   </div>`;
@@ -20399,7 +20479,7 @@ function openStarterDeckStep(pick, onDone){
   const btn = ov.querySelector('#ssAdd'), box = ov.querySelector('.ss-deckbox'), countEl = ov.querySelector('.ss-count');
   setTimeout(()=> btn.focus(), 40);
   btn.onclick = ()=>{
-    btn.disabled = true;
+    btn.disabled = true; ov.classList.remove('is-popping'); // the deal-in animations end here, so the flying cards can fade their tiles
     const tiles = [...ov.querySelectorAll('.ss-card')], total = deckTotal(counts), br = box.getBoundingClientRect();
     let added = 0;
     // 2026-10-12 (10:57, user: "Dont reveal the deck size when you first 'add to deck'"): the box fills, but no count yet.
@@ -20420,20 +20500,26 @@ function openDeckTopUpStep(ids, onDone){
   if(!ids.length){ onDone && onDone(); return; }
   const before = deckTotal(myDeckCounts||{}), after = before + ids.length;
   // 2026-10-13 (user, SS#3: "too big and plain"): a small tutorial card over a darkened screen; only OK moves on.
-  const ov = document.createElement('div'); ov.className = 'modal-overlay starter-step is-compact';
+  // 2026-10-16 (user: "The "more" cards reward windows ... should be improved"): a reward, not a form: a gift heading over a slow
+  // sunburst, the cards dealt in big with their names on ribbons under them, and the deck box beside "Add to deck".
+  const ov = tutRewardOverlay('is-compact is-topup');
   ov.innerHTML = `<div class="modal starter-modal" role="dialog" aria-modal="true" aria-label="Cards for your deck">
-    <h2>🃏 ${ids.length === 1 ? 'One more card' : ids.length === 2 ? 'Two more cards' : ids.length + ' more cards'}</h2>
-    <div class="ss-grid">${ids.map(id=> `<div class="ss-card is-reward">${cardTileHTML(defs[id], {inPlay:true})}</div>`).join('')}</div>
+    <div class="tr-rays" aria-hidden="true"></div>
+    <p class="tr-kicker">🎁 Tutorial reward</p>
+    <h2>${ids.length === 1 ? 'One more card!' : ids.length === 2 ? 'Two more cards!' : ids.length + ' more cards!'}</h2>
+    <p class="panel-sub">${ids.length === 1 ? 'It joins' : 'They join'} your deck and your collection.</p>
+    <div class="ss-grid tr-grid">${ids.map((id, i)=> `<figure class="tr-item" style="--i:${i}">${tutRewardCardHTML(defs[id], i, 'is-reward')}<figcaption class="tr-name">${escapeHtml(defs[id].name)}</figcaption></figure>`).join('')}</div>
     <div class="ss-foot"><div class="ss-deckbox" aria-hidden="true">🌰<small>Deck</small><b class="ss-count">${before}/${Math.max(DECK_SIZE, after)}</b></div>
-      <button type="button" class="btn primary big" id="ssAdd">OK</button></div>
+      <button type="button" class="btn primary big" id="ssAdd">➕ Add to deck</button></div>
     <p class="ss-bonus ss-full" hidden>A deck holds ${DECK_SIZE} cards. Yours is full.</p>
   </div>`;
   document.body.appendChild(ov);
   const btn = ov.querySelector('#ssAdd'), box = ov.querySelector('.ss-deckbox'), countEl = ov.querySelector('.ss-count');
   setTimeout(()=> btn.focus(), 40);
-  btn.onclick = ()=>{ btn.disabled = true;
+  btn.onclick = ()=>{ btn.disabled = true; ov.classList.remove('is-popping');
     ids.forEach(id=>{ try{ unlockCardForPlayer(id, 'tutorialReward'); }catch(e){} myDeckCounts[id] = (myDeckCounts[id]||0) + 1; }); try{ saveMyDeck(); }catch(e){}
     let n = before; const tiles = [...ov.querySelectorAll('.ss-card')], br = box.getBoundingClientRect();
+    ov.querySelectorAll('.tr-name').forEach(el=> el.classList.add('is-gone'));
     const finish = ()=>{ countEl.textContent = `${after}/${Math.max(DECK_SIZE, after)}`; const f = ov.querySelector('.ss-full'); if(f && after >= DECK_SIZE) f.hidden = false; try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
       btn.textContent = '✓ Deck ready'; setTimeout(()=>{ ov.remove(); onDone && onDone(); }, 1500); };
     if(!hasGsap() || reducedMotion()){ finish(); return; }
@@ -20762,7 +20848,11 @@ function levelledEnemyDeck(node, deck){
   return out;
 }
 function startConquestMatch(mapId, nodeKey, opts){
-  const found = findConquestNode(mapId, nodeKey); if(!found) return false;
+  let found = findConquestNode(mapId, nodeKey); if(!found) return false;
+  // 2026-10-16: a daily dungeon's climb restarts after a loss, so "Play again" on floor 7 goes to the floor you're on now (floor 1)
+  { const dm = CONQUEST_MAPS.find(m=> m.id === mapId);
+    if(isDailyDungeonMap(dm) && found.node.floor && !(opts && opts.skipEnergyCost)){ const at = dungeonFloorProgress(dm).done + 1;
+      if(found.node.floor > at){ const nn = dm.nodes.find(n=> n.floor === at); if(nn){ nodeKey = nn.key; found = findConquestNode(mapId, nodeKey) || found; } } } }
   const {node} = found;
   { const amap = CONQUEST_MAPS.find(m=> m.id === mapId); // the ambush (see runAmbush) catches every way into 3-2
     if(!(opts && opts.noAmbush) && ambushShouldTrigger(amap, node)){ runAmbush(amap, nodeKey); return true; }
@@ -20772,7 +20862,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(!deckSizeOkOrWarn()) return false;
   const battleMode = (opts && opts.battleMode) || node.battleMode || CONQUEST_DEFAULT_MODE; // C2: set in Edit skirmish only
   if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
-  // Daily dungeons (2026-10-15): a floor needs an open run or a 🎟️ Dungeon ticket (see DAILY_DUNGEONS).
+  // Daily dungeons (2026-10-15; 2026-10-16: a key per floor, given back on a win): a floor needs a 🗝️ Dungeon key (see DAILY_DUNGEONS).
   const dungeonEntry = !(opts && opts.skipEnergyCost) && isDailyDungeonMap(CONQUEST_MAPS.find(m=> m.id === mapId));
   if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('toast.no-dungeon-tickets-left-a-new'), 'warn'); return false; }
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
@@ -20785,7 +20875,8 @@ function startConquestMatch(mapId, nodeKey, opts){
     }
     bumpQuestCounter('energyConquest', cost);
   }
-  if(dungeonEntry && !dungeonRunOpen(mapId) && dungeonStartRun(mapId)) showToast(TX('toast.dungeon-ticket-used-the-run-lasts', {dungeonTicketsLeft: dungeonTicketsLeft()}), 'ok'); // 2026-10-15
+  const dungeonKeyStaked = dungeonEntry && dungeonStakeKey(mapId); // 2026-10-16: the key goes in the lock; a win gives it back
+  if(dungeonKeyStaked){ showToast(TX('toast.dungeon-key-in-the-lock-win', {dungeonTicketsLeft: dungeonTicketsLeft()}), 'ok'); try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
   try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
@@ -20820,7 +20911,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     conquestNode:{mapId, nodeId:nodeKey, kind:node.kind, name:node.name},
-    fightSession, transcript: [],
+    fightSession, transcript: [], dungeonKeyStaked: !!dungeonKeyStaked,
     battleMode,
     gladiatorLeaderDefs: battleMode==='gladiator' ? {1: myGlad && myGlad.defId, 2: enemyGlad && enemyGlad.defId} : null,
     // Epic A (2026-09-18): the leader you've set in the deck editor rides along into Conquest
@@ -23155,6 +23246,73 @@ function ownedCopiesOf(id){
   if(cardSourceOf(d).kind === 'base') return Infinity;
   const n = (myCardCopies[id]||[]).length; return Math.max(n, (myUnlockedCardIds && myUnlockedCardIds.has(id)) ? 1 : 0);
 }
+// ---- Per-copy looks (2026-10-16, user: "Unlocking a shiny or an alt art doesnt mean ALL art is the same now. You have to take that
+// shiny version and put it into your deck and etc.") ----
+// A Shiny copy is one copy, and an alternate-art skin dresses one copy (each owned skin = one plain copy wearing it); neither
+// changes the card's other copies any more. The deck says which of its copies of a card wear which look:
+//   myDeckLooks = {defId: {shiny: n, 'skin:<skinId>': n}}   (the rest are plain; kept per deck in myDecks[].looks too)
+// The Camp shows each look as its own stack in the pool and in the deck; click one to put that copy in. In a fight, the first
+// copies of a card that turn up (drawn, played) take the deck's looks in turn (cardLookOf), so only those copies are Shiny or wear
+// the skin, in hand and on the board. Foil finishes stay a collection look (they were never shown in fights).
+// Before this a Shiny copy made every copy Shiny, and an equipped skin dressed every copy: the first time looks are read, the
+// active deck keeps that look on as many of its copies as you own (a shiny per Shiny copy, one copy for the equipped skin).
+// (DECK_LOOKS_KEY and myDeckLooks are declared up by loadMyDeck, before the decks load.)
+function skinsOwnedFor(id){ try{ return window.UnitFX ? UnitFX.skinsFor(id).filter(k=> k.owned) : []; }catch(e){ return []; } }
+function shinyCopiesOwned(id){ return (myCardCopies[id]||[]).filter(c=> c && c.shiny).length; }
+function deckLooksAll(){
+  if(myDeckLooks) return myDeckLooks;
+  let o = null; try{ o = JSON.parse(localStorage.getItem(DECK_LOOKS_KEY) || 'null'); }catch(e){}
+  if(!o || typeof o !== 'object'){ o = legacyDeckLooks(myDeckCounts); try{ localStorage.setItem(DECK_LOOKS_KEY, JSON.stringify(o)); }catch(e){} }
+  myDeckLooks = o; return o;
+}
+function legacyDeckLooks(counts){
+  const o = {};
+  Object.keys(counts || {}).forEach(id=>{ const n = counts[id] | 0; if(n <= 0) return; const l = {};
+    const sh = Math.min(n, shinyCopiesOwned(id)); if(sh) l.shiny = sh;
+    let sk = null; try{ sk = window.UnitFX && UnitFX.equippedSkin(id); }catch(e){} if(sk && n - sh > 0) l['skin:' + sk] = 1;
+    if(Object.keys(l).length) o[id] = l; });
+  return o;
+}
+function saveDeckLooks(){ try{ localStorage.setItem(DECK_LOOKS_KEY, JSON.stringify(deckLooksAll())); }catch(e){} }
+function lookLabel(id, key){ if(key === 'shiny') return '✦ Shiny'; const sk = key.slice(5), k = window.UnitFX && UnitFX.SKINS[sk]; return '🎨 ' + ((k && k.name) || 'Alt art'); }
+// What you own of each look: {plain, shiny, skins:{skinId:1}, total}. Skins dress plain copies.
+function lookStock(id){
+  const total = ownedCopiesOf(id), shiny = Math.min(shinyCopiesOwned(id), total === Infinity ? 99 : total), skins = {};
+  skinsOwnedFor(id).forEach(k=> skins[k.id] = 1);
+  return {total, shiny, skins, plain: total === Infinity ? Infinity : Math.max(0, total - shiny)};
+}
+// The deck's looks for one card, fitted to what you own and to how many copies are in the deck. A copy you can only have as a
+// look (your one copy is Shiny) counts as that look.
+function deckLooksFor(id, counts){
+  counts = counts || myDeckCounts || {};
+  const n = counts[id] | 0, st = lookStock(id), raw = deckLooksAll()[id] || {}, out = {};
+  if(n <= 0) return out;
+  let left = n;
+  const sh = Math.min(raw.shiny | 0, st.shiny, left); if(sh) out.shiny = sh; left -= sh;
+  let plainRoom = st.plain;
+  Object.keys(raw).filter(k=> k.startsWith('skin:')).forEach(k=>{ const skId = k.slice(5); if(!st.skins[skId] || left <= 0 || plainRoom <= 0) return; out[k] = 1; left--; plainRoom--; });
+  if(left > plainRoom && st.shiny > (out.shiny|0)){ const more = Math.min(left - plainRoom, st.shiny - (out.shiny|0)); out.shiny = (out.shiny|0) + more; left -= more; }
+  return out;
+}
+function deckLookCount(l){ return Object.values(l || {}).reduce((a, b)=> a + (b|0), 0); }
+function setDeckLook(id, key, delta){
+  const all = deckLooksAll(), l = Object.assign({}, deckLooksFor(id)); l[key] = Math.max(0, (l[key]|0) + delta); if(!l[key]) delete l[key];
+  if(Object.keys(l).length) all[id] = l; else delete all[id];
+}
+// The tile classes and style for a look (shiny hue shift, a skin's tile class).
+function lookTileClass(id, key){ if(key === 'shiny') return 'is-shiny'; if(key && key.startsWith('skin:')){ const k = window.UnitFX && UnitFX.SKINS[key.slice(5)]; return 'has-skin ' + ((k && k.tileClass) || ''); } return ''; }
+function lookStyle(id, key){ return key === 'shiny' ? `--shiny-hue:${shinyHue(id)}deg;` : ''; }
+// In a fight: the look of one of your cards, by its uid. The first copies of a card to be seen take the deck's looks in order.
+function lookModeOk(m){ return !!m && !m.fxLib && !['tutorial', 'sandbox', 'replay'].includes(m.mode); }
+function cardLookOf(m, uid, defId){
+  if(!m || uid == null || !defId || !lookModeOk(m)) return '';
+  m.cardLooks = m.cardLooks || {}; const k = String(uid), had = m.cardLooks[k];
+  if(had && had.d === defId) return had.l || '';
+  const used = {}; Object.values(m.cardLooks).forEach(x=>{ if(x && x.d === defId && x.l) used[x.l] = (used[x.l]||0) + 1; });
+  const l = deckLooksFor(defId, m.myDeckCountsAtStart || myDeckCounts); let look = '';
+  for(const key of Object.keys(l)){ if((used[key]||0) < l[key]){ look = key; break; } }
+  m.cardLooks[k] = {d: defId, l: look}; return look;
+}
 function copyGroupsOf(id){
   const copies = myCardCopies[id] || [], groups = new Map();
   copies.forEach(c=>{ const k = c && c.foil ? (c.finish || 'auto') : 'plain'; if(!groups.has(k)) groups.set(k, {key:k, copy:c, n:0}); groups.get(k).n++; });
@@ -23205,7 +23363,10 @@ function renderMyDeckPanels(){
   listEl.innerHTML = Object.keys(myDeckCounts).filter(id=> myDeckCounts[id]>0 && defs[id]).sort(deckSortFn(sortMode)).map(id=>{ const n = myDeckCounts[id];
     // 2026-10-15 (user: "In the main deck editor - click = +, shift click = -"): a deck card adds a copy on click and takes one out on
     // Shift+click (or right-click); the small − corner does it with a tap on touch screens.
-    return `<span class="dchip deck-stack" draggable="true" data-defid="${id}" title="${escapeAttr(defs[id].name)} ×${n}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), n, '×' + n)}<button type="button" class="dchip-minus" data-minus="${id}" aria-label="Take one ${escapeAttr(defs[id].name)} out" title="Take one out">−</button></span>`; }).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
+    // 2026-10-16: a card's Shiny / alt-art copies in the deck are their own chips (data-look), after its plain ones.
+    const looks = deckLooksFor(id), plainN = n - deckLookCount(looks);
+    const chip = (look, k)=> `<span class="dchip deck-stack ${look ? 'is-look' : ''}" draggable="true" data-defid="${id}" ${look ? `data-look="${escapeAttr(look)}" style="${lookStyle(id, look)}"` : ''} title="${escapeAttr(defs[id].name + (look ? ' (' + lookLabel(id, look) + ')' : ''))} ×${k}: click to add one, Shift+click to take one out">${stackHTML(cardTileHTML(defs[id], {inPlay:true, extraClass: lookTileClass(id, look)}), k, '×' + k)}${look ? `<span class="look-tag" aria-hidden="true">${look === 'shiny' ? '✦' : '🎨'}</span>` : ''}<button type="button" class="dchip-minus" data-minus="${id}" ${look ? `data-minus-look="${escapeAttr(look)}"` : ''} aria-label="Take one ${escapeAttr(defs[id].name)} out" title="Take one out">−</button></span>`;
+    return (plainN > 0 ? chip('', plainN) : '') + Object.keys(looks).map(k=> chip(k, looks[k])).join(''); }).join('') || '<span class="empty-hint">No cards yet — add some below.</span>';
   const baseSort = deckSortFn(sortMode);
   const sortFn = (a,b)=>{ if(lvlMode==='sort'){ const d = (myCardLevels[b]||0) - (myCardLevels[a]||0); if(d) return d; } return baseSort(a, b); };
   const allIds = (defs[HERO_ID] ? [HERO_ID] : []).concat(getDraftableIds())
@@ -23224,19 +23385,42 @@ function renderMyDeckPanels(){
       const owned = ownedCopiesOf(id), used = myDeckCounts[id]||0, left = owned === Infinity ? '∞' : Math.max(0, owned - used);
       const groups = (!deckStackTreatments && owned !== Infinity) ? copyGroupsOf(id) : null;
       if(groups && groups.length > 1) return groups.map(g=> stackHTML(cardTileHTML(defs[id], {magnetic:true, extraClass: copyFinishClass(defs[id], g.copy)}), g.n, `×${g.n}`, 'is-finish')).join('');
-      return stackHTML(cardTileHTML(defs[id], {magnetic:true}), owned === Infinity ? 3 : owned, owned === Infinity ? '' : `${left}/${owned}`, (owned !== Infinity && left <= 0) ? 'is-spent' : '');
+      // 2026-10-16 (user: "...You have to take that shiny version and put it into your deck"): the plain copies are one stack and
+      // each Shiny / alt-art look its own, so you pick which copy goes in. Only cards that have such a look get the extra stacks.
+      const st = lookStock(id), lk = deckLooksFor(id), lookKeys = (st.shiny ? ['shiny'] : []).concat(Object.keys(st.skins).map(k=> 'skin:' + k));
+      if(!lookKeys.length) return stackHTML(cardTileHTML(defs[id], {magnetic:true}), owned === Infinity ? 3 : owned, owned === Infinity ? '' : `${left}/${owned}`, (owned !== Infinity && left <= 0) ? 'is-spent' : '');
+      const usedSkins = Object.keys(lk).filter(k=> k.startsWith('skin:')).length, plainIn = used - deckLookCount(lk);
+      const plainOwned = st.plain, plainLeft = plainOwned === Infinity ? Infinity : Math.max(0, plainOwned - plainIn - usedSkins);
+      const plainStack = plainOwned > 0 ? stackHTML(cardTileHTML(defs[id], {magnetic:true}), plainOwned === Infinity ? 3 : plainOwned, plainOwned === Infinity ? '' : `${plainLeft}/${plainOwned}`, plainLeft <= 0 ? 'is-spent' : '') : '';
+      return plainStack + lookKeys.map(key=>{ const have = key === 'shiny' ? st.shiny : 1, inDeck = lk[key] | 0, leftK = Math.max(0, Math.min(have - inDeck, key === 'shiny' ? Infinity : plainLeft));
+        return `<div class="look-stack" data-look="${escapeAttr(key)}" data-lookid="${escapeAttr(id)}" style="${lookStyle(id, key)}" title="${escapeAttr(defs[id].name + ': ' + lookLabel(id, key) + (key === 'shiny' ? '' : ' (dresses one plain copy)'))}">${stackHTML(cardTileHTML(defs[id], {magnetic:true, extraClass: lookTileClass(id, key)}), have, `${leftK}/${have}`, leftK <= 0 ? 'is-spent' : '')}<span class="look-tag">${escapeHtml(lookLabel(id, key))}</span></div>`; }).join('');
     }).join('') || '<p class="empty-hint">No cards match. Win fights and open packs to collect more.</p>') + (lockedIds.length && false ? '' : '');
   { const after = ()=>{ saveMyDeck(); renderMyDeckPanels(); };
-    document.querySelectorAll('#myDeckList .dchip').forEach(el=>{ const id = el.getAttribute('data-defid');
-      el.addEventListener('click', e=>{ if(e.target.closest('.dchip-minus')){ e.stopPropagation(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); return; } deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); });
-      el.addEventListener('contextmenu', e=>{ e.preventDefault(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); }); });
+    // 2026-10-16: a click on a look (a Shiny / alt-art chip or pool stack) adds or takes out that copy; plain ones work as before.
+    const lookClick = (e, id, look)=>{
+      const remove = !!e.shiftKey, cur = deckLooksFor(id);
+      if(remove){ if(!(cur[look] > 0)) return; deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ setDeckLook(id, look, -1); after(); }, true); return; }
+      const st = lookStock(id), have = look === 'shiny' ? st.shiny : (st.skins[look.slice(5)] ? 1 : 0), used = myDeckCounts[id] | 0;
+      const plainRoom = st.plain === Infinity ? Infinity : st.plain - (used - deckLookCount(cur)) - Object.keys(cur).filter(k=> k.startsWith('skin:')).length;
+      if((cur[look] | 0) >= have || (look !== 'shiny' && plainRoom <= 0)){ const el = document.querySelector(`#myDeckPool .look-stack[data-look="${cssEsc(look)}"][data-lookid="${cssEsc(id)}"]`); denyShake(el); if(el) floatText(el, look === 'shiny' ? _t('All in your deck') : _t('No plain copy left to dress'), 'debuff'); return; }
+      deckCardClick({}, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ setDeckLook(id, look, +1); after(); }, true);
+    };
+    document.querySelectorAll('#myDeckList .dchip').forEach(el=>{ const id = el.getAttribute('data-defid'), look = el.getAttribute('data-look');
+      el.addEventListener('click', e=>{ if(e.target.closest('.dchip-minus')){ e.stopPropagation(); if(look) lookClick({shiftKey:true}, id, look); else deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); return; } if(look) lookClick(e, id, look); else deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); });
+      el.addEventListener('contextmenu', e=>{ e.preventDefault(); if(look) lookClick({shiftKey:true}, id, look); else deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); }); });
+    document.querySelectorAll('#myDeckPool .look-stack').forEach(el=>{ const id = el.dataset.lookid, look = el.dataset.look; const t = el.querySelector('.card-tile'); if(t) t.classList.add('is-look-tile');
+      el.addEventListener('click', e=>{ e.stopPropagation(); lookClick(e, id, look); }, true);
+      el.addEventListener('contextmenu', e=>{ e.preventDefault(); e.stopPropagation(); lookClick({shiftKey:true}, id, look); }, true); });
     document.querySelectorAll('#myDeckPool .card-tile:not(.locked)').forEach(el=>{ el.title = (el.title ? el.title + ' · ' : '') + 'Click: add one · Shift+click: take one out';
       el.addEventListener('contextmenu', e=>{ const id = el.getAttribute('data-defid'); if(!(myDeckCounts[id] > 0)) return; e.preventDefault(); deckCardClick({shiftKey:true}, id, myDeckCounts, '#myDeckPool', '#myDeckList', after, true); }); }); }
   // only unlocked tiles are clickable — locked ones sit there, grayed out, as a preview
   // `true` here (and on the chip handler above) turns on the real deck's rarity copy-limit
   // enforcement -- see deckCardClick's own comment. The Sandbox tool's identical-looking listeners
   // below (renderSimPools) deliberately omit this argument.
-  document.querySelectorAll('#myDeckPool .card-tile:not(.locked)').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid'); deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
+  document.querySelectorAll('#myDeckPool .card-tile:not(.locked):not(.is-look-tile)').forEach(el=> el.addEventListener('click', (e)=>{ const id=el.getAttribute('data-defid');
+    // 2026-10-16: a plain tile takes a plain copy. When every plain copy is in (only a Shiny / alt-art look is left), say so.
+    if(!e.shiftKey){ const st = lookStock(id); if(st.plain !== Infinity && (st.shiny || Object.keys(st.skins).length)){ const lk = deckLooksFor(id), plainUsed = (myDeckCounts[id]|0) - deckLookCount(lk) + Object.keys(lk).filter(k=> k.startsWith('skin:')).length; if(plainUsed >= st.plain){ denyShake(el); floatText(el, _t('Every plain copy is in'), 'debuff'); return; } } }
+    deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
   // Item #10: both the pool tiles and the deck-list chips can be dragged onto the leader slot
   // (see leaderSlotHTML/wireLeaderSlot) to set that card as the deck's leader — a locked pool
   // tile is deliberately excluded, matching the same "not usable yet" rule the click-to-add
@@ -24287,6 +24471,7 @@ function renderMatchUI(){
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
         ${m.raidersTook ? raidersTookHTML(m) : '' /* the surprise challenge lost (2026-10-15) */}
+        ${m.dungeonOutcome && m.dungeonOutcome.lost ? `<p class="wl-raiders wl-dkey-lost">${m.dungeonOutcome.keyLost ? TX('results.dungeon-key-lost-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best}) : TX('results.dungeon-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best})}</p>` : '' /* 2026-10-16: the key is gone, back to floor 1 */}
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
@@ -24455,7 +24640,9 @@ function renderMatchUI(){
           // 2026-10-08 (user: "after winning, he is forced to click 'Add to deck' in a tutorial, filling their deck")
           // 2026-10-12 (user: "Lessen the amount of toasts ... when I get out of the tutorial. Guide me to click and continue
           // with Tutorial 2"): no toast; a pointer on the map shows where part 2 is.
-          if(!loadTutorialDone()) openStarterDeckStep(pick, ()=>{ claimTutorialWin(pick); toMap(); guideToTutorial2(); });
+          // 2026-10-16 (user: "...they should pop out after coming out of the skirmish, not just be there instantaneously"): the
+          // rewards are claimed, the map comes up, and then the deck window pops in over it.
+          if(!loadTutorialDone()){ claimTutorialWin(pick); toMap(); popTutorialRewardStep(()=> openStarterDeckStep(pick, ()=>{ guideToTutorial2(); })); }
           else if(replay && loadTutorial2Done()) beginTutorialStage(2, {replay}); // the combined Tutorials slot plays both parts
           else { toMap(); if(!loadTutorial2Done()) guideToTutorial2(); }
           return;
@@ -24471,10 +24658,11 @@ function renderMatchUI(){
           if(first && pick === 'both'){ try{ const bonus = (tutorialCfg && tutorialCfg.bothBonus) || STARTER_CFG_DEFAULT.bothBonus, b = getCardDefs()[bonus];
             if(b){ unlockCardForPlayer(b.id, 'tutorialBonus'); setTimeout(()=> showToast(TX('toast.for-choosing-both-joins-your-collection', {name: b.name}), 'ok'), 2600); }
             setTimeout(()=>{ try{ playDialogue('both_peace'); }catch(e){} }, 4200); }catch(e){} }
-          toMap(null); // the training-wheels dialogue says it (2026-10-12: fewer toasts)
           if(first) setTimeout(()=>{ try{ playDialogue('training_wheels_off'); }catch(e){} }, 900);
         };
-        if(first) openDeckTopUpStep(tutorialRewards2(pick), after); else after();
+        toMap(null); // the training-wheels dialogue says it (2026-10-12: fewer toasts)
+        // 2026-10-16: out of the fight and onto the map first; the "two more cards" window pops in a moment later
+        if(first) popTutorialRewardStep(()=> openDeckTopUpStep(tutorialRewards2(pick), after)); else after();
         return;
       }
       if(mode==='dungeon'){
@@ -26836,7 +27024,7 @@ function isShinyUnit(m, c, pid){
   if(m.shinyUids && m.shinyUids.has(c.uid)) return true;
   if(pid == null || pid !== localPid(m)) return false;
   const d = getCardDefs()[c.defId];
-  return !!(d && !d.token && ownsShiny(c.defId));
+  return !!(d && !d.token && cardLookOf(m, c.uid, c.defId) === 'shiny'); // 2026-10-16: only the copy that is Shiny (was: any Shiny copy owned)
 }
 function noteShinySpawn(m, ev){
   if(!m) return;
@@ -27970,7 +28158,7 @@ setInterval(()=>{ try{ autoplayStep(); }catch(e){} }, 900);
 // is in flight (no commit, no round, no tutorial pause, no lesson on screen). After 2.5 s the turn is committed again.
 function fightWatchdog(){
   const m = matchState; if(!m || m.over || m.fxLib || m.testKit || m.mode==='pc' || m.mode==='liveRanked') return;
-  if(!m._needsCommit || m.resolving || m._committing || m._coachWait || m.awaitingPass || document.getElementById('lumberLesson')){ m._stuckSince = 0; return; }
+  if(!m._needsCommit || m.resolving || m._committing || m._coachWait || m.awaitingPass){ m._stuckSince = 0; return; }
   const now = performance.now();
   if(!m._stuckSince){ m._stuckSince = now; return; }
   if(now - m._stuckSince < 2500) return;
@@ -29556,7 +29744,7 @@ async function resolveRoundCore(opts){
         m.unlockedActivities = [
           {icon:'🗺️', label:'Conquest', tip:'The campaign map: fight your way across regions, earn cards and currency, and unlock new areas.'},
           {icon:'🃏', label:'Your starter deck', tip:'A 20-card deck built from your faction’s cards — tweak it any time in Deck.'},
-          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Camp (your deck). The Nest and the Notices wait further down the road, on Map 4.'}, // 2026-10-15: the Nest moved to Map 4 (and the Notices and the Arena had already moved on)
+          {icon:'⛺', label:'What comes next', tip:'Win on the Outskirts to find the Camp (your deck). The Nest waits further down the road on Map 3, the Notices on Map 4.'}, // 2026-10-15: the Nest moved to Map 4 (and the Notices and the Arena had already moved on)
         ];
       } else {
         m.unlockedFights = []; m.unlockedActivities = [];
@@ -29567,7 +29755,10 @@ async function resolveRoundCore(opts){
     }
     if(m.mode==='conquest' && m.fightSession) setTimeout(()=> handInFight(m), 0);
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ m.conquestRankEarned = lossRankFor(m); }catch(e){} } // F / FF / FFF (2026-10-11)
-    if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ dungeonRunLost(m.conquestNode.mapId); }catch(e){} } // a lost floor ends the dungeon run (2026-10-15)
+    // Daily dungeons (2026-10-16): a lost or forfeited floor keeps the key and sends the climb back to floor 1 (dungeonRunLost);
+    // a won floor hands the key back (dungeonFloorWon, below, after the first-clear check has read the best floor).
+    if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest && !m.dungeonOutcome){ try{ const dm = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId);
+      if(isDailyDungeonMap(dm)){ const reached = dungeonFloorProgress(dm).done + 1; dungeonRunLost(dm.id); m.dungeonOutcome = {lost:true, keyLost: !!m.dungeonKeyStaked, floor: reached, best: dungeonBestFloor(dm.id)}; try{ refreshTopbarDungeonKey(currentTab); }catch(e){} } }catch(e){} }
     // The surprise challenge lost (2026-10-15): the raiders run off with some Maple Leaves (see ambushTheftRoll).
     if(m.mode==='conquest' && m.winner===2 && m.conquestNode && !m.adminTest && !m.raidersTook){ try{ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId);
       if(fn && fn.node && fn.node.ambush){ const want = ambushTheftRoll(), have = Math.max(0, Math.floor(myCurrencies.gold || 0)), n = Math.min(have, want);
@@ -29578,7 +29769,10 @@ async function resolveRoundCore(opts){
       // would look like a repeat.
       const preProgress = loadConquestProgress();
       const preId = conquestNodeId(m.conquestNode.mapId, m.conquestNode.nodeId);
-      const isFirstClear = !preProgress.completed.includes(preId);
+      const dunMap = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId), dunNode = isDailyDungeonMap(dunMap) ? dunMap.nodes.find(n=> n.key === m.conquestNode.nodeId) : null;
+      // a daily dungeon floor (2026-10-16): first clear = higher than the best floor ever cleared, since lost climbs wipe the floors
+      const isFirstClear = dunNode ? (dunNode.floor || 0) > dungeonBestFloor(dunMap.id) : !preProgress.completed.includes(preId);
+      if(dunNode && !m.dungeonOutcome){ try{ dungeonFloorWon(dunMap.id, dunNode.floor, !!m.dungeonKeyStaked); m.dungeonOutcome = {won:true, keyBack: !!m.dungeonKeyStaked, floor: dunNode.floor}; refreshTopbarDungeonKey(currentTab); }catch(e){} }
       // 2026-10-15: start the card-reward ledger before this clear is recorded; on a brand-new save its first read seeds itself
       // from the cleared fights, which counted this fight's cards as already given (0-1's card was lost that way).
       try{ cardRewardsClaimed(); }catch(e){}
@@ -29622,7 +29816,8 @@ async function resolveRoundCore(opts){
         // First egg on the 4th map in play order (2026-10-09: with Thistle Fields + Pebble Beach inserted, that is Sunken Hollow).
         // 2026-10-15: CONQUEST_MAPS[3] had drifted to Gannet Cliffs (Map 3); it is Map 4 by play order again, the map the Nest
         // now opens on ("let's move Nest to map 4"), so the first guaranteed egg turns up alongside it.
-        if(mapIdAt(4) && m.conquestNode.mapId===mapIdAt(4) && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('water', mapIdAt(4)); } // Map 4 is Sunken Hollow (old maps first again, 2026-10-11 16:20); was: Map 3 is Lilypad Reach now (2026-10-11): a duck's speckled egg
+        // 2026-10-16: the Nest opens on Map 3 now, so the first egg comes there with it.
+        if(mapIdAt(3) && m.conquestNode.mapId===mapIdAt(3) && !loadDialogueFlags()['egg:first']){ setDialogueFlag('egg:first', true); grantEgg('water', mapIdAt(3)); } // Map 4 is Sunken Hollow (old maps first again, 2026-10-11 16:20); was: Map 3 is Lilypad Reach now (2026-10-11): a duck's speckled egg
       }
       // Free Base copy (2026-10-12, user D59: "First boss of each map"): a map's boss, first clear only, gives a copy of the
       // Base card you own the fewest of.
@@ -30727,7 +30922,6 @@ let coachPendingId = null;
 async function waitForBlockingCoach(m){
   if(!m || m.adminTest || !COACH_MODES.has(m.mode)) return;
   try{ maybeShowCoachTip(); }catch(e){}
-  if(m._lumberPause){ while(matchState === m && !m.over && m._lumberPause && document.getElementById('lumberLesson')) await sleep(150); m._lumberPause = false; }
   if(!(coachOpen && coachOpen.tip && (coachOpen.tip.block || coachOpen.tip.pause))) return;
   m._coachWait = true; document.documentElement.classList.add('bw-coach-wait');
   try{ while(matchState === m && !m.over && coachOpen && coachOpen.tip && (coachOpen.tip.block || coachOpen.tip.pause)) await sleep(150); }
@@ -31473,6 +31667,7 @@ function rewardsPanelHTML(m){
   }
   // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
   if(m.conquestCastleSpare){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">${TX('results.spare-castle')}</div><div class="rw-row"><span class="rw-act" data-tip="${escapeAttr(TX('results.fuse-it-in-the-forge-castles'))}">🏰 ${escapeHtml(m.conquestCastleSpare)}</span></div></div>`); }
+  if(m.dungeonOutcome && m.dungeonOutcome.keyBack){ secs.push(`<div class="rw-sec rw-cheer rw-dkey"><div class="rw-head">${TX('results.dungeon-key')}</div><div class="rw-row"><span class="rw-act" data-tip="${escapeAttr(TX('results.a-win-gives-your-key-back'))}">${TX('results.dungeon-key-back', {n: dungeonTicketsLeft()})}</span></div></div>`); } // 2026-10-16
   if(m.conquestKibbleEarned){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">${TX('results.kibble')}</div><div class="rw-row"><span class="rw-act" data-tip="${escapeAttr(TX('results.trains-a-level-0-card-to'))}">${TX('results.kibble-2', {conquestKibbleEarned: m.conquestKibbleEarned})}</span></div></div>`); }
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
     secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">${TX('results.found')}</div><div class="rw-row"><span class="rw-act" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(ek.name || TX('results.an-egg'))}</span></div>${noNest ? `<p class="panel-sub rw-egg-note">${escapeHtml(noNest)}</p>` : ''}</div>`); }
@@ -32939,11 +33134,13 @@ function recoilEl(el, power){
 function applySkinClasses(root){
   if(!window.UnitFX) return;
   // Shiny in hand: the cards you hold of which you own a Shiny copy (see isShinyUnit for the board).
+  // 2026-10-16: per copy. A hand card or board unit wears the look of its own copy (cardLookOf), not whatever you own of the card.
+  const m = matchState, uidOf = t=>{ const h = t.closest('[data-handuid]') || t; if(h.dataset && h.dataset.handuid != null) return h.dataset.handuid; const b = t.closest('.board-card[data-uid]'); return b ? b.dataset.uid : null; };
   (root || document).querySelectorAll('#handStrip .card-tile[data-defid]:not(.is-shiny)').forEach(t=>{
-    if(ownsShiny(t.dataset.defid)){ t.classList.add('is-shiny'); t.style.setProperty('--shiny-hue', shinyHue(t.dataset.defid) + 'deg'); }
+    if(cardLookOf(m, uidOf(t), t.dataset.defid) === 'shiny'){ t.classList.add('is-shiny'); t.style.setProperty('--shiny-hue', shinyHue(t.dataset.defid) + 'deg'); }
   });
   (root || document).querySelectorAll('#rowMine .card-tile[data-defid], #handStrip .card-tile[data-defid]').forEach(t=>{
-    const sk = UnitFX.equippedSkin(t.dataset.defid), cls = sk && UnitFX.SKINS[sk].tileClass;
+    const look = cardLookOf(m, uidOf(t), t.dataset.defid), sk = look && look.startsWith('skin:') ? look.slice(5) : null, cls = sk && UnitFX.SKINS[sk] && UnitFX.SKINS[sk].tileClass;
     if(cls && !t.classList.contains(cls)){ t.classList.add(cls, 'has-skin'); t.dataset.skin = sk; }
   });
 }
@@ -33936,7 +34133,9 @@ function renderVfxForEvent(ev){
     const impactDelay = quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : ev.electricity ? electricityImpactMs(ev) : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
-    const ufx = (window.UnitFX && ev.attDefId && ev.type==='hit') ? UnitFX.resolve(getCardDefs()[ev.attDefId], isMine) : null;
+    // 2026-10-16: a skin's attack belongs to the copy wearing it (cardLookOf), not to every copy of the card
+    const ufx = (window.UnitFX && ev.attDefId && ev.type==='hit') ? (()=>{ const o = UnitFX.resolve(getCardDefs()[ev.attDefId], false), look = isMine ? cardLookOf(matchState, ev.attUid, ev.attDefId) : '', sk = look && look.startsWith('skin:') ? UnitFX.SKINS[look.slice(5)] : null;
+      if(sk){ Object.assign(o, sk.fx || {}); o.skin = look.slice(5); } return o; })() : null;
     if(ufx && ufx.attack && !ev.ranged && fxAtLeast('med') && !reducedMotion()){
       const atkEl = attEl || boardCardEl(ev.attUid);
       setTimeout(()=>{ try{ UnitFX.attackFx(ufx.attack, atkEl, targetEl, windup + impactPad); if(SoundKit[ufx.attack]) SoundKit.at(atkEl, ()=> SoundKit[ufx.attack](windup + impactPad)); }catch(e){} }, Math.round(windup*0.5));
@@ -35369,6 +35568,7 @@ let forgeSelectedId = null;
 // the card heats up, three hammer strikes throw sparks, steam on the quench, then the card flips
 // to its new stats. Reduced motion skips straight to the result.
 let forgeFilter = 'all', forgeSearch = '', forgeSort = 'cost', forgeBusy = false;
+{ const f = uiSticky('forge'); if(typeof f.filter === 'string') forgeFilter = f.filter; if(typeof f.q === 'string') forgeSearch = f.q; if(typeof f.sort === 'string') forgeSort = f.sort; } // 2026-10-16: kept between visits
 // The Forge sorts like the Codex (2026-10-15, user: "The Forge sort should have the codex sort like cost, wait, attack, hp. Also the
 // sort is not consistent sizing."): Cost, Wait, Attack, Health, then Rarity, Level and Name; the same "Sort: …" labels as the Codex.
 const FORGE_SORTS = [['cost','Cost'], ['wait','Wait'], ['attack','Attack'], ['health','Health'], ['rarity','Rarity'], ['level','Level'], ['name','Name']];
@@ -35465,6 +35665,7 @@ function renderForge(){
   const readyCount = ids.filter(forgeReady).length;
   const q = forgeSearch.trim().toLowerCase();
   let shown = ids.filter(id=> !q || defs[id].name.toLowerCase().includes(q));
+  uiStickySave('forge', {filter: forgeFilter, q: forgeSearch, sort: forgeSort}); // 2026-10-16
   if(forgeFilter==='ready') shown = shown.filter(forgeReady);
   if(forgeFilter==='max') shown = shown.filter(id=> getCardLevel(id)>=10);
   if(forgeFilter==='leveled') shown = shown.filter(id=> getCardLevel(id)>0);
@@ -37294,7 +37495,7 @@ function renderShop(){
 // Eggs are stored now and shown on a shelf; they hatch after a real-time wait into a random card from their pool.
 // The Nurse master tends them (for now: shown as the egg-keeper; its bonus is a design decision still open).
 const NEST_KEY = 'bramblewood_nest_v1';
-function nestState(){ try{ const n = JSON.parse(localStorage.getItem(NEST_KEY)||'{}'); return {nurse: n.nurse || null, eggs: Array.isArray(n.eggs) ? n.eggs : []}; }catch(e){ return {nurse:null, eggs:[]}; } }
+function nestState(){ try{ const n = JSON.parse(localStorage.getItem(NEST_KEY)||'{}'); return {nurse: n.nurse || null, eggs: Array.isArray(n.eggs) ? n.eggs : [], built: Number.isFinite(n.built) ? n.built : undefined}; }catch(e){ return {nurse:null, eggs:[]}; } }
 function saveNestState(n){ try{ localStorage.setItem(NEST_KEY, JSON.stringify(n)); }catch(e){} }
 // Nursing mastery (2026-10-15, user: "The Nest's nurse master: Should using a nursing icon and number to indicate the nursing mastery of
 // that card. The nursing mastery = Rarity + Level. Natural Leaders have a hidden +1, and Nursing skill has +5. (Hero levels count for
@@ -37344,6 +37545,41 @@ const EGG_KINDS = {
   beast: {name:'Den Bundle', icon:'🧺', hatchHours:10, type:'beast'},
 };
 const BABY_GROW_HOURS = 4, NEST_SLOTS = 7;
+// Nest unlocks (2026-10-16, user: "The Nests have to be unlocked. Not just through currency, but also through progression. I think
+// every 5 maps unlocking 1 sounds correct. So Map 4, 5, 10, 15, 20... (I think Nest should be moved to Map 3, where the cliffs are -
+// makes thematic sense)"). Read as: the Nest opens on Map 3 with one nest; each further nest needs its map reached (5, 10, 15, 20,
+// 25, 30) AND is then built with Maple Leaves and Magic Dust. The seven hay spots stay; the locked ones show what opens them.
+// nestState().built counts the nests built after the first. A save from before this keeps enough built nests for what was in them.
+const NEST_UNLOCKS = [
+  {map:3, cost:null},
+  {map:5, cost:{gold:150, dust:40}},
+  {map:10, cost:{gold:500, dust:120}},
+  {map:15, cost:{gold:1000, dust:250}},
+  {map:20, cost:{gold:1800, dust:400}},
+  {map:25, cost:{gold:2800, dust:600}},
+  {map:30, cost:{gold:4000, dust:900}},
+];
+function nestMapReached(num){ try{ const m = CONQUEST_MAPS.find(x=> x.id === mapIdAt(num)); return !!(m && isMapUnlocked(m, loadConquestProgress())); }catch(e){ return false; } }
+function nestBuiltCount(n){
+  n = n || nestState();
+  if(n.built == null){ // carry an older save over: keep a nest for every egg already sitting in one, up to the maps reached
+    let reach = 0; for(let i = 1; i < NEST_UNLOCKS.length && nestMapReached(NEST_UNLOCKS[i].map); i++) reach = i;
+    n.built = Math.max(0, Math.min(reach, nestPlaced(n).length - 1)); saveNestState(n);
+  }
+  return Math.max(0, Math.min(NEST_UNLOCKS.length - 1, n.built | 0));
+}
+function nestSlotsOpen(n){ return Math.min(NEST_SLOTS, 1 + nestBuiltCount(n)); }
+// The next nest to build: {i, map, cost, reached, affordable}, or null when all seven stand.
+function nextNestUnlock(n){
+  const i = nestSlotsOpen(n); const u = NEST_UNLOCKS[i]; if(!u) return null;
+  const reached = nestMapReached(u.map), c = u.cost || {};
+  return {i, map:u.map, cost:c, reached, affordable: (myCurrencies.gold||0) >= (c.gold||0) && (myCurrencies.dust||0) >= (c.dust||0)};
+}
+function buildNextNest(){
+  const n = nestState(), nx = nextNestUnlock(n); if(!nx) return 'full'; if(!nx.reached) return 'locked'; if(!nx.affordable) return 'cost';
+  myCurrencies.gold = (myCurrencies.gold||0) - (nx.cost.gold||0); myCurrencies.dust = (myCurrencies.dust||0) - (nx.cost.dust||0); saveCurrencies();
+  n.built = nestBuiltCount(n) + 1; saveNestState(n); return 'ok';
+}
 function nestPoolFor(type){
   const t = NEST_TYPES[type] || NEST_TYPES.woodland, defs = getCardDefs();
   return Object.values(defs).filter(d=> d && !d.token && !d.test && !d.hero && !d.cardType && ['common','uncommon','rare'].includes(d.rarity || 'common') && ['map','pack'].includes(cardSourceOf(d).kind) && t.test(d));
@@ -37393,7 +37629,7 @@ function grantEgg(kind, from){ const n = nestState(); const k = EGG_KINDS[kind] 
   try{ showToast(noNest ? `${EGG_KINDS[k].icon} ${noNest}` : TX('toast.you-found-a-set-it-in', {v1: EGG_KINDS[k].icon, v2: EGG_KINDS[k].name, v3: NEST_TYPES[EGG_KINDS[k].type].name}), 'ok'); }catch(e){} }
 function nestPlaced(n){ return (n || nestState()).eggs.filter(e=> e.placed !== false); }
 function nestPackedEggs(n){ return (n || nestState()).eggs.filter(e=> e.placed === false); }
-function placeEggInNest(eggId){ const n = nestState(), e = n.eggs.find(x=> x.id === eggId); if(!e || e.placed !== false) return false; if(nestPlaced(n).length >= NEST_SLOTS) return false;
+function placeEggInNest(eggId){ const n = nestState(), e = n.eggs.find(x=> x.id === eggId); if(!e || e.placed !== false) return false; if(nestPlaced(n).length >= nestSlotsOpen(n)) return false;
   const now = Date.now(); e.placed = true; e.laidAt = now; e.hatchAt = now + Math.round((EGG_KINDS[e.kind] || EGG_KINDS.woodland).hatchHours*3600e3*nurseTimeFactor()); saveNestState(n); /* the Nurse master's mastery speeds it (2026-10-15) */ if(e.kind !== 'baby') grantEggCardFor(e.kind); return true; }
 // Egg cards (2026-10-14, user: "Eggs are now cards ... you can even put them in the deck. But it would suck ... You still have the egg out
 // of game"): the first time you set an egg of a kind in a nest, its egg card (e.g. Speckled Egg) joins your collection.
@@ -37416,7 +37652,7 @@ function canAffordNurture(id){ const c = nurtureCostFor(id); return Object.keys(
 const NURTURE_COST_TEXT = ()=> `🦴${NURTURE_COST.kibble} ✨${NURTURE_COST.dust} 🍁${NURTURE_COST.gold}`;
 function nurtureCandidates(){ const defs = getCardDefs(), busy = new Set(nestState().eggs.filter(e=> e.kind === 'nurture').map(e=> e.cardId));
   return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && defs[id].cardType !== 'materia' && (myCardCopies[id]||[]).length && getCardLevel(id) === 0 && !busy.has(id)); }
-function startNurture(cardId){ const n = nestState(); if(nestPlaced(n).length >= NEST_SLOTS) return 'full';
+function startNurture(cardId){ const n = nestState(); if(nestPlaced(n).length >= nestSlotsOpen(n)) return 'full';
   if(!canAffordNurture(cardId)) return 'cost';
   const cost = nurtureCostFor(cardId); Object.keys(cost).forEach(k=> myCurrencies[k] = (myCurrencies[k]||0) - cost[k]); saveCurrencies(); noteNestSpecies(cardId);
   const now = Date.now(); n.eggs.push({id:'nur'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'nurture', cardId, laidAt:now, hatchAt: now + Math.round(NURTURE_HOURS*3600e3*nurseTimeFactor()), placed:true}); saveNestState(n); return 'ok'; } // mastery speeds it (2026-10-15)
@@ -37452,7 +37688,7 @@ function openNestPicker(){
     else if(no){ conf.hidden = true; ov.querySelectorAll('.np-card.is-picked').forEach(x=> x.classList.remove('is-picked')); }
     else if(cd){ const id = cd.dataset.npCard;
       if(!canAffordNurture(id)){ denyShake(cd); nestNeedToast('Need ' + nurtureShortfall(id).join(' and ')); return; }
-      if(nestPlaced().length >= NEST_SLOTS){ denyShake(cd); nestNeedToast('Every nest is full'); return; }
+      if(nestPlaced().length >= nestSlotsOpen()){ denyShake(cd); nestNeedToast('Every nest is full'); return; }
       ov.querySelectorAll('.np-card.is-picked').forEach(x=> x.classList.remove('is-picked')); cd.classList.add('is-picked');
       conf.innerHTML = `<span class="np-conf-name">🌱 ${escapeHtml(defs[id].name)} <small>to Level 1 in ${NURTURE_HOURS}h</small></span><button type="button" class="btn ghost small" data-np-cancel>Cancel</button><button type="button" class="btn primary" data-np-train="${escapeAttr(id)}">🌱 Train${btnCostHTML(nurtureCostFor(id))}</button>`;
       conf.hidden = false; try{ conf.querySelector('[data-np-train]').focus({preventScroll:true}); conf.scrollIntoView({block:'nearest'}); }catch(_){} } });
@@ -37528,8 +37764,14 @@ function nestKeeperHTML(){
   const fmt = ms=>{ const t = Math.max(1, Math.ceil(ms/60e3)), h = Math.floor(t/60), m = t%60; return h ? `${h}h ${m}m` : `${m}m`; };
   // seven hay nests in a hexagon (one in the middle, six around it); eggs and babies take them in order, extras wait in the basket
   const HEX = [[50,50],[50,16],[80,33],[80,67],[50,84],[20,67],[20,33]];
-  const placed = nestPlaced(n), items = placed.slice(0, NEST_SLOTS), waiting = placed.slice(NEST_SLOTS), packed = nestPackedEggs(n);
+  const open = nestSlotsOpen(n), nx = nextNestUnlock(n);
+  const placed = nestPlaced(n), items = placed.slice(0, open), waiting = placed.slice(open), packed = nestPackedEggs(n);
   const nests = HEX.map(([x, y], i)=>{ const e = items[i];
+    if(i >= open){ // 2026-10-16: a nest not built yet. The next one shows its map, or its price once that map is reached; the rest wait.
+      const u = NEST_UNLOCKS[i], isNext = nx && nx.i === i, mapName = (CONQUEST_MAPS.find(m=> m.id === mapIdAt(u.map)) || {}).name || '';
+      if(isNext && nx.reached) return `<button type="button" class="hay-nest is-locked is-buildable ${nx.affordable ? '' : 'is-poor'}" style="--x:${x}%; --y:${y}%" data-nest-build="1" aria-label="${escapeAttr(`Build this nest: ${nx.cost.gold||0} Maple Leaves and ${nx.cost.dust||0} Magic Dust`)}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔨</span><small class="nest-time nest-cost">${mapleLeafIconHTML()}${nx.cost.gold||0} ✨${nx.cost.dust||0}</small></button>`;
+      return `<div class="hay-nest is-locked ${isNext ? 'is-next' : ''}" style="--x:${x}%; --y:${y}%" title="${escapeAttr(`Opens on Map ${u.map}${mapName ? ' (' + mapName + ')' : ''}, then it can be built`)}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔒</span>${isNext ? `<small class="nest-time">Map ${u.map}</small>` : ''}<span class="sr-only">A nest that opens on Map ${u.map}</span></div>`;
+    }
     if(!e) return `<button type="button" class="hay-nest is-empty" style="--x:${x}%; --y:${y}%" data-nest-empty="1" aria-label="An empty nest: set an egg or nurture a card"><span class="hay"></span><span class="nest-plus" aria-hidden="true">＋</span></button>`;
     if(e.kind === 'nurture'){ const cd = defs[e.cardId] || {}, left = e.hatchAt - Date.now(), pct = Math.max(0, Math.min(100, Math.round((Date.now() - e.laidAt) / Math.max(1, e.hatchAt - e.laidAt) * 100)));
       return `<button type="button" class="hay-nest is-nurture ${left<=0 ? 'is-ready' : ''}" style="--x:${x}%; --y:${y}%; --p:${pct}" data-nurture="${escapeAttr(e.id)}" ${left>0 ? 'aria-disabled="true"' : ''} aria-label="${escapeAttr((cd.name||'A card') + (left>0 ? ' is being nurtured' : ' is ready'))}">
@@ -37545,6 +37787,7 @@ function nestKeeperHTML(){
       <div class="hatch-side">
         <div class="nk-nurse"><b>🧑‍🍼 Nurse master</b>${nurse ? `<span class="nk-card">${escapeHtml(nurse.icon||'')} ${escapeHtml(nurse.name)} ${nurseChipHTML(n.nurse)}</span><button type="button" class="btn small" id="nestNurseBtn">Swap</button><small class="nk-speed">${NURSE_ICON} Nursing ${nurseMasteryOf(n.nurse)}: the nests work ${Math.round((1 - nurseTimeFactor()) * 100)}% faster.</small>` : `<small>None yet: Unique cards and up (and the Wandering Traveller) can tend the nests. Their ${NURSE_ICON} Nursing mastery makes eggs hatch and cards train faster.</small><button type="button" class="btn small" id="nestNurseBtn">Choose</button>`}</div>
         <p class="hatch-help">Every egg and baby shows its <b>type</b>. What it grows into is a surprise of that type, Common to Rare. Eggs come from the road; babies are rescued after fights.</p>
+        <p class="hatch-help nest-count">🪺 <b>${open}</b> of ${NEST_SLOTS} nests built.${nx ? (nx.reached ? ` The next one can be built now: ${mapleLeafIconHTML()}${nx.cost.gold||0} and ✨${nx.cost.dust||0}.` : ` The next one opens on Map ${nx.map}.`) : ''}</p>
         ${waiting.length ? `<p class="hatch-wait">🧺 ${waiting.length} more waiting in the basket for a free nest.</p>` : ''}
         ${packed.length ? `<p class="hatch-wait">🎒 ${packed.length} egg${packed.length===1?'':'s'} in your pack. Tap an empty nest to set ${packed.length===1?'it':'one'} down.</p>` : ''}
         <p class="hatch-help">🌱 Tap an empty nest to train a Level-0 card (a fresh hatchling or a Base card) up to Level 1 with 🦴 Kibble. You have <b>🦴${myCurrencies.kibble||0}</b>. Only the Nest can do that; the Forge takes it from there.</p>
@@ -37583,6 +37826,9 @@ function renderNest(){
   wireStamina(root, renderNest);
   { const nb = root.querySelector('#nestNurseBtn'); if(nb) nb.onclick = openNursePicker; }
   root.querySelectorAll('[data-nest-empty]').forEach(b=> b.onclick = openNestPicker);
+  root.querySelectorAll('[data-nest-build]').forEach(b=> b.onclick = ()=>{ const r = buildNextNest(); // 2026-10-16: nests are built one by one
+    if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderNest(); showToast(TX('toast.a-new-nest-is-built', {open: nestSlotsOpen()}), 'ok'); }
+    else { denyShake(b); showToast(TX('toast.not-enough-to-build-this-nest'), 'warn'); } });
   root.querySelectorAll('[data-nurture]').forEach(b=> b.onclick = ()=>{ if(b.getAttribute('aria-disabled')==='true'){ denyShake(b); return; }
     const id = finishNurture(b.dataset.nurture); if(!id) return; renderNest(); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
     const d = getCardDefs()[id] || {}; showToast(TX('toast.grew-to-level-1', {v1: d.name || 'Your card'}), 'ok');
@@ -39569,7 +39815,7 @@ function showInviteBanner(){
 function hideInviteBanner(){ const el = document.getElementById('inviteBanner'); if(el) el.hidden = true; }
 /* ---------- Public Market (Shop → Market tab) ---------- */
 const MARKET_FEE = 0.05; // 5% of each sale is burned as a fee
-const Market = {tab:'browse', q:'', rarity:'', sort:'cheap', listings:null, mine:null, loading:false, sellId:'', sellPrice:20, sellCurrency:'gold'};
+const Market = Object.assign({tab:'browse', q:'', rarity:'', sort:'cheap', listings:null, mine:null, loading:false, sellId:'', sellPrice:20, sellCurrency:'gold'}, (()=>{ const o = uiSticky('market'), out = {}; ['q', 'rarity', 'sort'].forEach(k=>{ if(typeof o[k] === 'string') out[k] = o[k]; }); return out; })()); // 2026-10-16: filters kept
 function marketCurrencies(){ return Object.keys(CURRENCY_META).filter(k=> k==='gold' || k==='gems').map(k=> Object.assign({id:k}, CURRENCY_META[k])); }
 function priceHTML(price, cur){ const c = CURRENCY_META[cur] || {}; return `<span class="mk-price" title="${escapeAttr(c.label||cur)}">${c.glyph||''} ${price}</span>`; }
 async function marketLoad(){
@@ -39694,9 +39940,9 @@ function renderMarketInto(body){
       }catch(err){ t.disabled = false; showToast(socialErrText(err), 'error'); }
     }
   };
-  const q = document.getElementById('mkQ'); if(q) q.oninput = ()=>{ Market.q = q.value; document.getElementById('mkBody').innerHTML = marketBrowseHTML(); };
-  const r = document.getElementById('mkRarity'); if(r) r.onchange = ()=>{ Market.rarity = r.value; document.getElementById('mkBody').innerHTML = marketBrowseHTML(); };
-  const so = document.getElementById('mkSort'); if(so) so.onchange = async ()=>{ Market.sort = so.value; await marketLoad(); renderMarketInto(body); };
+  const q = document.getElementById('mkQ'); if(q) q.oninput = ()=>{ Market.q = q.value; uiStickySave('market', {q: Market.q}); document.getElementById('mkBody').innerHTML = marketBrowseHTML(); };
+  const r = document.getElementById('mkRarity'); if(r) r.onchange = ()=>{ Market.rarity = r.value; uiStickySave('market', {rarity: Market.rarity}); document.getElementById('mkBody').innerHTML = marketBrowseHTML(); };
+  const so = document.getElementById('mkSort'); if(so) so.onchange = async ()=>{ Market.sort = so.value; uiStickySave('market', {sort: Market.sort}); await marketLoad(); renderMarketInto(body); };
   const card = document.getElementById('mkSellCard'); if(card) card.onchange = ()=>{ Market.sellId = card.value; renderMarketInto(body); };
   const price = document.getElementById('mkSellPrice'); if(price) price.oninput = ()=>{ Market.sellPrice = Math.max(1, Math.floor(Number(price.value)||1)); const n = document.getElementById('mkNet'); if(n) n.firstChild && (n.textContent = `You’ll receive ${Math.max(1, Math.floor(Market.sellPrice*(1-MARKET_FEE)))} after the ${Math.round(MARKET_FEE*100)}% market fee. The card leaves your collection while it’s listed; cancel any time to get it back.`); };
   const cur = document.getElementById('mkSellCur'); if(cur) cur.onchange = ()=>{ Market.sellCurrency = cur.value; };
@@ -40077,9 +40323,10 @@ function renderEntranceAuth(){
     const btn = document.getElementById('startBtn');
     if(btn) btn.addEventListener('click', triggerEntranceAnimation);
   } else {
-    el.innerHTML = `<form id="loginForm" class="entrance-login-form" autocomplete="off">
+    el.innerHTML = `<form id="loginForm" class="entrance-login-form" autocomplete="off" novalidate>
         <label class="entrance-name-label" for="loginNameInput">What should we call you?</label>
-        <input id="loginNameInput" type="text" maxlength="24" placeholder="Your warband name" autocomplete="off" autofocus>
+        <input id="loginNameInput" type="text" maxlength="24" minlength="${NAME_MIN_LEN}" placeholder="Your warband name" autocomplete="off" aria-describedby="loginNameMsg" autofocus>
+        <p class="name-len-msg" id="loginNameMsg" role="alert" aria-live="polite" hidden></p>
         <button type="submit" class="btn primary big splash-enter" id="loginSubmitBtn">🌿 Enter the Grove</button>
       </form>
       <button type="button" class="btn ghost small entrance-signin-btn" id="entranceSignInBtn">🔑 Sign in</button>
@@ -40095,7 +40342,8 @@ function renderEntranceAuth(){
       try{
         const input = document.getElementById('loginNameInput');
         const raw = (input && input.value || '').trim().slice(0,24);
-        saveMyProfile({name: raw || 'Woodland Warrior'}); if(raw) markNameChosen();
+        if(input && !nameLongEnough(raw)){ showNameLenMsg(input, document.getElementById('loginNameMsg'), true); input.focus(); return; } // 2026-10-16: 3 characters at least
+        saveMyProfile({name: raw}); markNameChosen();
         // 2026-10-12 (user: "When I press enter the grove as a new player, please dont ask me to press Start. skip straight to
         // the next page"): entering the grove plays the entrance straight away.
         renderEntranceAuth(); triggerEntranceAnimation();
@@ -40108,6 +40356,7 @@ function renderEntranceAuth(){
       }
     }
     if(form) form.addEventListener('submit', handleLoginSubmit);
+    { const ni = document.getElementById('loginNameInput'); if(ni) ni.addEventListener('input', ()=> showNameLenMsg(ni, document.getElementById('loginNameMsg'), false)); } // 2026-10-16: the line clears as you type
     // Belt-and-suspenders: a plain click listener on the button itself, in addition to the
     // form's submit event. type="submit" inside a <form> should always fire 'submit' on click,
     // but this costs nothing and guards against any edge case (odd embedding context, a browser

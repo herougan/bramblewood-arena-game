@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (gameplay fixes)
+- **Daily dungeon keys:** the 🎟️ Dungeon tickets are 🗝️ Dungeon keys now (still 1 a day, up to 3, plus 1 on Mondays). Every floor takes a key when the fight starts; win and you get it back ("+1 🗝️ Dungeon key" in the rewards), lose or forfeit and it's gone, and the climb starts again from floor 1. Your best floor is remembered, so a floor's first-clear payout is still paid only once, and "Play again" after a loss starts at floor 1. A run left open under the old rule gives its ticket back. The Babel Spire takes no keys and never resets.
+- **Name length:** a name on the entrance ("What should we call you?") and in the name prompt needs at least 3 characters after trimming; a shorter one stays on the form with a line saying so (empty names no longer slip in as "Woodland Warrior").
+- **Tutorial card windows:** after T-0 and T-1 the map comes up first and the window pops in a moment later (veil, spring, cards dealt in one by one). "Two more cards!" is a proper reward: a gift heading over a slow sunburst, big cards with their names on ribbons, and "➕ Add to deck".
+- **No Lumber lesson box:** the big picture window is gone; the spotlighted Pitching lesson teaches Lumber on its own.
+- **Swaps:** a swap only offers to trade out a weak card the game gave you (your starter deck's cards, babies with Attack + Health ≤ 3, Starter/Basic cards, tutorial cards), and never one rarer than the card coming in. Cards you won or pulled are never offered.
+- **Filters stay:** the Codex (search, filters, sort, view), Skills, Forge, Market and the Camp's card pool keep their search and filters when you leave and come back, and after a reload.
+- **Nest on Map 3, nests unlock:** the Nest opens on Map 3 (Gannet Cliffs), and so does the first egg. It starts with one nest; the next ones open on Maps 5, 10, 15, 20, 25 and 30 and are then built with Maple Leaves and Magic Dust (150 + 40, 500 + 120, 1,000 + 250, 1,800 + 400, 2,800 + 600, 4,000 + 900). A save with eggs in several nests keeps enough of them built.
+- **Shiny and alt art are per copy:** a Shiny copy (or an alternate-art skin, which dresses one plain copy) no longer changes every copy of the card. The Camp shows each look as its own stack; click it to put that copy in your deck. In a fight only that copy is Shiny or wears the skin, in hand and on the board. Decks from before keep the look on as many copies as you own.
+- **CPU slots:** the CPU still plays the moment you commit your turn, but no longer always takes the slot nearest the centre: with a win in reach it goes to the open column furthest out (far left or far right); otherwise it mostly goes across from one of your units it can kill or out-last, and else anywhere legal at random. The silent sims (tools/difficulty_curve.js) keep the old placement unless they pass `aiAim: true`.
+
 ## 2026-10-16 (results and rewards)
 - **No rank lesson box:** the results no longer show "🎉 Rank A! Well fought. Keep 90% of your castle…" (or its E/S/SS/SSS versions); the rank hex already says it.
 - **Packs in First Clear:** the skirmish preview shows just the pack, no name. Hovering or focusing it opens a small card with its name and "Faction rewards!" (a free pack says how many cards).
