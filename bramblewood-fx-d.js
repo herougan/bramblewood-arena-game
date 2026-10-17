@@ -1623,7 +1623,10 @@ M.hooks.packCardRevealed = function(card, r, d, env){
     else if(band === 'legendary'){ later(run(()=> M.revealLegendary(card)), 250); delay = 800; }
     if(r.foil) later(run(()=> M.revealFoil(card)), delay + 380);       // the foil pull gets its own beat, after any rarity reveal
     else if(r.shiny) later(run(()=> M.revealShiny(card)), delay + 380);
-    else if(!r.isNew && !delay) later(run(()=> M.revealDuplicate(card, {count:(r.count || 1) + 1})), 420);
+    // 2026-10-17 (user: "Sometimes they say I got 2 copies. I checked its just 1."): this used to fire on every card you already owned
+    // (not new) and stamp "×2" with two blank ghost cards. Now only a grouped pile entry that really holds several copies gets it,
+    // with its real count; a pack's bonus copy has its own moment in the opener (arena_app.js, .po2-card.is-bonus).
+    else if(r.count > 1 && !r.bonusCopy && !delay) later(run(()=> M.revealDuplicate(card, {count:r.count})), 420);
   });
 };
 // Forge.

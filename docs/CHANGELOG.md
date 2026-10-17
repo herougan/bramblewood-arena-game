@@ -77,6 +77,20 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - Maps 9–20 retuned with `tools/curve_tune.js` toward a curve rising from index 18 to 56 (castle Health, plus a few card trades inside the rarity caps). The strong reference deck now wins most Map 10–16 fights.
 - **Tools:** `curve_tune.js` keeps its card trades inside the rarity caps. `difficulty_curve.json` fights also carry the game's own map number and code (`gameMap`, `gameCode`).
 - **Proposal:** `docs/card-placement-proposal-2026-10-16.md` (+ `.xlsx`: Placement, Rarity economy, Field curriculum, Map gaps, Changes made).
+## 2026-10-17 (board and rewards)
+- **Pass** sits to the right of the Graveyard/Discard pile, and the pile keeps a card's shape (the Deck's size) on narrow screens.
+- **Opponent's pitch:** their card drops into a card-shaped slot under their pills, settles, fades off, and only then a big "+1 🪵 Lumber" rises while their pill counts it (nothing clips the card any more).
+- **Enemy hand size:** a "5 🃏" pill on top of the enemy's Deck; their 💀 Graveyard badge moves to the Deck's bottom edge.
+- **Skirmish panel fits the screen:** the Field list is compact, two columns wide, and scrolls inside itself; the deck row always stays in view.
+- **Ecclesia box** is deep purple with light text everywhere; the "Discard for" box under it is a lighter slate.
+- **Armoury pool filters** (search, type, kind, level, sort) are kept when you leave and come back.
+- **Codex:** no "one-off" tag on skills (the editor's skill picker keeps it).
+- **First clear:** the unlocks drop onto the bright board; the screen dims only after they have all landed, then the results open.
+- **New trails** stay hidden until they ink in, one after another, each fight fading in as its trail reaches it.
+- **Admin Clear map** now pays every first-clear reward (Leaves, Dust, cards, packs, elite/boss cards) of each fight it clears, plus every fight's clear-again Leaves and Dust.
+- **Pack opener:** the "N cards" count under a big pile counts down; the big view of a pulled card shows that copy's finish and Shiny (the finish picker stays admin-only).
+- **Bonus copies:** a pack card may come with an identical second copy, credited for real: Common 5%, Uncommon 4%, Rare 3%, Very Rare 2%, Super Rare 1%, then halving (Epic 0.5%, Heroic 0.25% …). It shows as "Bonus!" with the copy sliding out from behind the card. The old "×2" with two blank cards (fired on any card you already owned) is gone.
+- **Equipment** never comes from fight rewards, first clears, drops, finds, reward tracks or packs, and is gone from pack contents and odds; the Blacksmith remains its source.
 
 ## 2026-10-16 (field effects 2)
 - **19 new field effects**, built and selectable in Edit skirmish (Hazards and rules), each with an Environment card, a battle-log line, a look and an Effects library entry. **No map carries them yet**; map placement is a separate pass. Engine: `fieldEffects2Tick` and the helper block near `rules` in bramblewood-engine.js; texts: `FIELD2` in arena_app.js; tests: `tests/field-effects-2026-10-16.js`.

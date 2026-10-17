@@ -2946,6 +2946,50 @@
      look more squarish - decrease the corner radius."): in the deck's row, centred in the room left before the Graveyard. */
   .bottom-play-row .skipzone.compact.in-deck-row{position:static !important; inset:auto !important; align-self:center; margin:0 auto; order:0; flex:0 0 auto; width:auto; min-width:72px; min-height:44px; padding:8px 14px; border-radius:8px; font-size:14px; font-weight:800; justify-content:center; box-shadow:0 3px 10px rgba(0,0,0,.3); z-index:2;}
   @media (max-width:640px){ .bottom-play-row .skipzone.compact.in-deck-row{order:3; margin:0 auto; min-height:40px; padding:6px 12px;} }
+  /* 2026-10-17 (user: "Pass on the right of Discard. On tighter screens, the discard looks very thin. It should somewhat maintain
+     ratio."): Pass sits after the Graveyard/Discard pile at the row's right end, and the pile keeps a card's shape (the Deck's size,
+     4:5) instead of being squeezed by the hand. */
+  .bottom-play-row .skipzone.compact.in-deck-row{margin:0 0 0 10px !important;}
+  .bottom-play-row .graveyard-pile{flex:0 0 auto !important; width:var(--match-card-w) !important; min-width:var(--match-card-w) !important; height:var(--match-card-h) !important; min-height:0 !important; aspect-ratio:4 / 5; padding:6px 4px !important; overflow:hidden;}
+  .bottom-play-row .graveyard-pile > span{max-width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  @media (max-width:640px){ .bottom-play-row .skipzone.compact.in-deck-row{margin:0 0 0 6px !important; padding:6px 10px;} }
+  /* 2026-10-17 (user: "enemy hand size: There should be a counter above the enemy's deck that says "5 <Card Emoji>""): the pill
+     straddles the top edge of their Deck; the 💀 Graveyard badge that sat there moves to the bottom edge (the Removal badge just above it). */
+  .enemy-hand-count{position:absolute; top:-10px; left:50%; transform:translateX(-50%); z-index:4; border:2px solid var(--surface); border-radius:999px; padding:1px 8px;
+    background:#2c3a4a; color:#f2f6fb; font:800 11px/1.3 'Baloo 2', system-ui, sans-serif; white-space:nowrap; pointer-events:auto; box-shadow:0 2px 6px rgba(0,0,0,.35);}
+  .enemy-hand-count.is-zero{opacity:.65;}
+  .enemy-hand-count.ehc-bump{animation:ehcBump .35s ease-out;}
+  @keyframes ehcBump{0%{transform:translateX(-50%) scale(1);} 40%{transform:translateX(-50%) scale(1.25);} 100%{transform:translateX(-50%) scale(1);}}
+  #deckWidgetTop .grave-peek-badge{top:auto; bottom:-8px;}
+  #deckWidgetTop .grave-peek-badge ~ .removal-badge{bottom:14px;}
+  @media (max-width:640px){ .enemy-hand-count{font-size:9.5px; padding:0 6px; top:-9px;} }
+  /* 2026-10-17 (user: "Opposing pitch animation ... it should look like it landed in a slot, them, faded off then a clearer +1 lumber
+     anim."): enemyPitchSlotFx — a card-shaped recess, the card settling into it, then a big gain label rising out of it. */
+  .enemy-pitch-slot-fx .eps-slot{position:absolute; inset:-4px; border-radius:10px; border:2px dashed rgba(255,226,160,.7); background:rgba(20,14,8,.38);
+    box-shadow:inset 0 4px 12px rgba(0,0,0,.55); transition:box-shadow .25s ease-out, border-color .25s;}
+  .enemy-pitch-slot-fx .eps-slot.is-hit{border-style:solid; border-color:#ffd56e; box-shadow:inset 0 4px 12px rgba(0,0,0,.55), 0 0 16px rgba(255,213,110,.75);}
+  .enemy-pitch-slot-fx .eps-card{position:absolute; inset:0; transform-origin:50% 100%; filter:drop-shadow(0 3px 4px rgba(0,0,0,.45));}
+  .eps-gain{position:fixed; z-index:10042; pointer-events:none; display:flex; flex-direction:column; align-items:center; padding:4px 12px 5px; border-radius:14px;
+    background:linear-gradient(180deg,#4a3018,#24170a); border:2px solid #e9b44c; color:#ffd56e; font:800 22px/1 'Baloo 2', system-ui, sans-serif; white-space:nowrap;
+    text-shadow:0 2px 0 rgba(0,0,0,.5); box-shadow:0 8px 20px rgba(0,0,0,.45);}
+  .eps-gain small{font-size:11px; letter-spacing:.06em; text-transform:uppercase; color:#f7e3b4; margin-top:2px;}
+  @media (max-width:640px){ .eps-gain{font-size:17px; padding:3px 9px 4px;} }
+  /* 2026-10-17 (user: "it should be bonus! then a card that looks the same comes out from the back."): a pack's bonus copy waits hidden
+     behind the card; once the card is face up, "Bonus!" pops over it and the identical copy slides out from behind to its right. */
+  .po2-card{isolation:isolate;}
+  .po2-card .po2-bonus-copy{position:absolute; inset:0; z-index:-1; border-radius:6%; opacity:0; pointer-events:none; transform:translate(0,0) rotate(0deg);
+    transition:transform .65s cubic-bezier(.2,1.25,.4,1), opacity .18s ease-out; filter:drop-shadow(0 10px 16px rgba(0,0,0,.45));}
+  .po2-card .po2-bonus-copy > .card-tile{width:100% !important; height:100% !important; margin:0 !important;}
+  .po2-card.is-bonus:not(.is-collected) .po2-bonus-copy{opacity:1; transform:translate(36%, 3%) rotate(7deg);}
+  .po2-bonus-tag{position:absolute; left:50%; top:-16px; z-index:8; display:flex; flex-direction:column; align-items:center; padding:3px 12px 4px; border-radius:10px; pointer-events:none;
+    background:linear-gradient(180deg,#fff2a8,#ffc83d); color:#3a2200; box-shadow:0 2px 0 #a86a00, 0 0 14px rgba(255,210,80,.85); transform:translateX(-50%) scale(0) rotate(-6deg); opacity:0;}
+  .po2-bonus-tag b{font:900 17px/1 'Baloo 2', system-ui, sans-serif; letter-spacing:.04em;}
+  .po2-bonus-tag small{font:800 10px/1.2 'Baloo 2', system-ui, sans-serif; opacity:.8;}
+  .po2-card.is-bonus:not(.is-collected) .po2-bonus-tag{animation:po2BonusTag .5s cubic-bezier(.3,1.7,.5,1) forwards;}
+  @keyframes po2BonusTag{0%{transform:translateX(-50%) scale(0) rotate(-6deg); opacity:0;} 100%{transform:translateX(-50%) scale(1) rotate(-6deg); opacity:1;}}
+  .po2-mini{position:relative;}
+  .po2-mini .po2-mini-x{position:absolute; right:-5px; top:-7px; z-index:3; font:900 10px/1.2 'Baloo 2', system-ui, sans-serif; padding:0 5px; border-radius:999px; background:#ffd56e; color:#3a2200; box-shadow:0 1px 0 #a86a00;}
+  @media (prefers-reduced-motion: reduce){ .po2-card .po2-bonus-copy{transition:none;} .po2-card.is-bonus .po2-bonus-tag{animation-duration:.01s;} }
   /* 2026-10-16 (user: "Reward items not same size ... they should be placed below the main currency pills"): the main currencies are
      one row of equal pills; materia, a rescued baby and Base growth sit on a row under them. */
   .rw-cur-row .rw-cur{min-width:150px; justify-content:center; box-sizing:border-box;}
@@ -8795,6 +8839,14 @@
   #cardPop .card-txn-log li::before{display:none;}
   #cardPop .mech-wrap{border-radius:4px;}
   #cardPop .pitch-yield-preview{border-radius:4px;}
+  /* 2026-10-17 (user: "Ecclesia - nice. But in the purple section, the text needs to be light to have contrast. The discard section should
+     be abit lighter for this."): the Ecclesia box is always deep purple with light text (the parchment's dark ink sat on a dark purple
+     in the dark theme), and the Discard box under it is a light slate on the parchment instead of the dark theme's near-black. */
+  .mech-wrap.mech-grace{background:linear-gradient(180deg, #3d2d5c, #2c2340) !important; border:1px solid #9b74e6 !important; color:#f1eaff !important;}
+  .mech-wrap.mech-grace .mech-tag{color:#d6c0ff !important;}
+  .mech-wrap.mech-grace li, .mech-wrap.mech-grace li *, .mech-wrap.mech-grace .core-line{color:#f1eaff !important;}
+  .mech-wrap.mech-grace li::before{background:linear-gradient(135deg, #e6d4ff, #a884ee) !important;}
+  #cardPop .pitch-yield-preview{background:#e4e9ea !important; border:1px solid #8b989f !important; color:#3e4b52 !important;}
   /* Rank letter (2026-10-10, user: "The letter graphic in the rank looks wrong. It should be B, A or S"): the white fill with a
      translucent outline made Baloo's overlapping strokes look doubled and hollow. Now one solid letter, engraved into the
      medal: dark metal ink with a light bevel underneath. */
@@ -9790,6 +9842,18 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .conquest-node-panel .cnp-deck-locked{height:52px;}
 .conquest-node-panel .cnp-deck-locked .rank-hex{position:relative !important; inset:auto !important; transform:scale(.72) !important; margin:0 !important;}
 @media (min-width:821px){ .conquest-main > .conquest-node-panel{max-height:min(62%, 400px) !important;} }
+/* 2026-10-17 (user: "SS#1: Skirmish (last mission) is so big that it doesnt even fit."): the panel kept overflow:visible (for the Fight
+   pill and rank hex on its edges), so a long Field list pushed the deck row down behind the tab bar. The panel is now a column capped
+   at its max-height: the head and the deck row keep their size and the Field list alone gives way, two columns wide and scrolling
+   inside itself when it still doesn't fit. */
+.conquest-main > .conquest-node-panel:not([hidden]){display:flex; flex-direction:column; min-height:0;}
+.conquest-main > .conquest-node-panel:not([hidden]) > *{flex-shrink:0;}
+.conquest-main > .conquest-node-panel:not([hidden]) > .cnp-field{flex:0 1 auto; min-height:56px; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin;}
+.conquest-node-panel .cnp-field{margin:4px 0; padding:6px 10px; font-size:12px;}
+.conquest-node-panel .cnp-field .cnp-field-k{margin-bottom:3px;}
+.conquest-node-panel .cnp-field .fcr-list{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap:4px 16px;}
+.conquest-node-panel .cnp-field .fcr{line-height:1.3;}
+.conquest-node-panel .cnp-field .fcr-t{opacity:.9;}
 /* 2026-10-14 (user: "Move the first time rewards section to the right. Decrease the height of the first reward section. The
    'Won' will not be part of it, and instead a overlaid word ontop, on the top border, justify-center. It says 'First Clear'.
    The card will not be greyed out."; "Put some margin between the top boundary and the top row. Just abit, so that the words
