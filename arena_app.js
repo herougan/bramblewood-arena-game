@@ -3552,9 +3552,52 @@ const SoundKit = (()=>{
   // once, right as a round finishes and control returns to the player — see resolveRound) cuts
   // every one of them off immediately instead of letting their tails decay into the next turn.
   const activeNodes = new Set();
-  function track(node){
+  // 2026-10-17 (user: "When playing at 2x, the sound fx get cut out. Is this fixable?"). Cause: every cue drew its loudness curve
+  // (and its pitch / filter sweep) as automation at absolute AudioContext times starting at `c.currentTime`, and most cues last only
+  // 50-120 ms. A new node only reaches the audio thread when the page's main thread lets go, so when the code that played the cue
+  // kept the main thread busy (a board re-render, style recalculation, a burst of VFX), the node started late while its envelope had
+  // already run its course: it played at ~0.0001 gain, i.e. silence. Measured in Chromium: a hit cue followed by 80 ms or more of
+  // main-thread work peaked at ~0.02 instead of ~0.13 (inaudible). At 2× the fight replays twice as many events (and re-renders) per
+  // second, so far more cues landed just before such a stall and vanished. Fix: tone / sweep / fnoise now render the whole cue
+  // (waveform, pitch sweep, filter sweep, envelope) into a small buffer up front; a buffer that starts late still plays complete, just
+  // a moment late, and never comes out silent. stopAll() also lets the round's last short cues ring out (see stopAll).
+  // A voice cap that steals instead of dropping: past 96 live cues (3× and 5× can stack that many), the oldest one stops so the newest
+  // hit always plays.
+  const MAX_VOICES = 96;
+  function track(node, end){
+    node.__end = end || 0;
+    if(activeNodes.size >= MAX_VOICES){ const old = activeNodes.values().next().value; try{ old.stop(); }catch(e){} activeNodes.delete(old); }
     activeNodes.add(node);
     node.addEventListener('ended', ()=> activeNodes.delete(node));
+  }
+  const ENV_FLOOR = 0.0001;
+  // the old automation's shape: 0.0001 -> peak (exponential) over `att`, then -> 0.0001 (exponential) at `dur`, silent after
+  function envAt(t, att, dur, peak){
+    if(t < 0) return 0;
+    if(t < att) return ENV_FLOOR * Math.pow(peak / ENV_FLOOR, t / att);
+    if(t < dur) return peak * Math.pow(ENV_FLOOR / peak, (t - att) / Math.max(1e-4, dur - att));
+    return 0;
+  }
+  function waveAt(type, ph){ // ph in cycles, 0..1
+    if(type === 'square') return ph < 0.5 ? 0.8 : -0.8; // a touch under full scale, about as loud as the band-limited one was
+    if(type === 'sawtooth') return (2 * ph - 1) * 0.85;
+    if(type === 'triangle') return ph < 0.5 ? 4 * ph - 1 : 3 - 4 * ph;
+    return Math.sin(2 * Math.PI * ph);
+  }
+  // one cue rendered to a buffer, played through a static gain (fire and forget)
+  function playBaked(c, data, len, gain, delay){
+    const buf = c.createBuffer(1, len, c.sampleRate); buf.getChannelData(0).set(data);
+    const src = c.createBufferSource(); src.buffer = buf;
+    const g = c.createGain(); g.gain.value = gain;
+    src.connect(g); g.connect(outNode(c));
+    const t0 = c.currentTime + (delay || 0); src.start(t0); track(src, t0 + len / c.sampleRate);
+  }
+  function osc2buf(c, f0, f1, dur, type, att){
+    const sr = c.sampleRate, len = Math.max(1, Math.floor(sr * (dur + 0.02))), d = new Float32Array(len);
+    const r = f1 && f1 !== f0 ? Math.max(20, f1) / f0 : 1; let ph = 0;
+    for(let i = 0; i < len; i++){ const t = i / sr, f = r === 1 ? f0 : f0 * Math.pow(r, Math.min(1, t / dur));
+      d[i] = waveAt(type, ph) * envAt(t, att, dur, 1); ph += f / sr; ph -= Math.floor(ph); }
+    return {d, len};
   }
   function tone(freq, dur, type, gainPeak, delay, volOverride){
     // volOverride lets voiceTone() (below) reuse this exact same oscillator plumbing while
@@ -3563,16 +3606,8 @@ const SoundKit = (()=>{
     const vol = volOverride!=null ? volOverride : sfxVolume;
     if(vol<=0) return;
     const c = ac(); if(!c) return;
-    delay = delay||0;
-    const t0 = c.currentTime + delay;
-    const osc = c.createOscillator(); const g = c.createGain();
-    osc.type = type||'sine'; osc.frequency.setValueAtTime(freq, t0);
-    g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime((gainPeak||0.15)*vol, t0+0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, t0+dur);
-    osc.connect(g); g.connect(outNode(c));
-    osc.start(t0); osc.stop(t0+dur+0.02);
-    track(osc);
+    const b = osc2buf(c, freq, freq, dur, type || 'sine', 0.01);
+    playBaked(c, b.d, b.len, (gainPeak||0.15)*vol, delay||0);
   }
   function noise(dur, gainPeak){
     if(sfxVolume<=0) return;
@@ -3584,41 +3619,36 @@ const SoundKit = (()=>{
     const src = c.createBufferSource(); src.buffer = buf;
     const g = c.createGain(); g.gain.value = (gainPeak||0.12)*sfxVolume;
     src.connect(g); g.connect(outNode(c)); src.start();
-    track(src);
+    track(src, c.currentTime + dur);
   }
   // Richer primitives (2026-10-05 SFX pass): band-limited noise with its own envelope and a
   // sweeping filter (whooshes, crackles, rumbles, squelches), and a pitch-swept tone (twangs, drips).
+  // 2026-10-17: the filter runs here (the Web Audio BiquadFilter's own formulas, its cutoff swept every 32 samples), baked with the envelope.
   function fnoise(dur, gainPeak, o){
     o = o || {};
     if(sfxVolume<=0) return;
     const c = ac(); if(!c) return;
-    const t0 = c.currentTime + (o.delay||0);
-    const len = Math.max(1, Math.floor(c.sampleRate*dur));
-    const buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
-    const crackle = o.crackle || 0;
-    for(let i=0;i<len;i++){ let v = Math.random()*2-1; if(crackle && Math.random() < crackle) v *= 6; d[i] = v; }
-    const src = c.createBufferSource(); src.buffer = buf;
-    const f = c.createBiquadFilter(); f.type = o.type || 'bandpass'; f.Q.value = o.q || 1;
-    f.frequency.setValueAtTime(o.freq || 1200, t0);
-    if(o.freqEnd) f.frequency.exponentialRampToValueAtTime(o.freqEnd, t0 + dur);
-    const g = c.createGain(); const att = o.attack != null ? o.attack : 0.01;
-    g.gain.setValueAtTime(0.0001, t0);
-    g.gain.exponentialRampToValueAtTime(Math.max(0.0002, gainPeak*sfxVolume), t0 + att);
-    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    src.connect(f); f.connect(g); g.connect(outNode(c)); src.start(t0); src.stop(t0 + dur + 0.02);
-    track(src);
+    const sr = c.sampleRate, len = Math.max(1, Math.floor(sr*(dur + 0.02))), d = new Float32Array(len);
+    const crackle = o.crackle || 0, type = o.type || 'bandpass', Q = o.q || 1, fA = o.freq || 1200, fB = o.freqEnd || fA;
+    const att = o.attack != null ? Math.max(0.0005, o.attack) : 0.01;
+    let x1 = 0, x2 = 0, y1 = 0, y2 = 0, b0 = 1, b1 = 0, b2 = 0, a1 = 0, a2 = 0;
+    for(let i = 0; i < len; i++){
+      if((i & 31) === 0){ const t = i / sr, f = Math.min(sr * 0.49, Math.max(10, fA * Math.pow(fB / fA, Math.min(1, t / dur))));
+        const w = 2 * Math.PI * f / sr, cw = Math.cos(w), sw = Math.sin(w);
+        if(type === 'lowpass' || type === 'highpass'){ const al = sw / (2 * Math.pow(10, Q / 20)), a0 = 1 + al, lp = type === 'lowpass';
+          b0 = (lp ? (1 - cw) / 2 : (1 + cw) / 2) / a0; b1 = (lp ? 1 - cw : -(1 + cw)) / a0; b2 = b0; a1 = -2 * cw / a0; a2 = (1 - al) / a0; }
+        else { const al = sw / (2 * Math.max(1e-4, Q)), a0 = 1 + al; b0 = al / a0; b1 = 0; b2 = -al / a0; a1 = -2 * cw / a0; a2 = (1 - al) / a0; } }
+      let v = Math.random()*2-1; if(crackle && Math.random() < crackle) v *= 6;
+      const y = b0*v + b1*x1 + b2*x2 - a1*y1 - a2*y2; x2 = x1; x1 = v; y2 = y1; y1 = y;
+      d[i] = y * envAt(i / sr, att, dur, 1);
+    }
+    playBaked(c, d, len, Math.max(0.0002, gainPeak*sfxVolume), o.delay || 0);
   }
   function sweep(f0, f1, dur, type, gainPeak, delay){
     if(sfxVolume<=0) return;
     const c = ac(); if(!c) return;
-    const t0 = c.currentTime + (delay||0);
-    const osc = c.createOscillator(), g = c.createGain();
-    osc.type = type || 'sine';
-    osc.frequency.setValueAtTime(f0, t0); osc.frequency.exponentialRampToValueAtTime(Math.max(20, f1), t0 + dur);
-    g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime((gainPeak||0.12)*sfxVolume, t0 + 0.008);
-    g.gain.exponentialRampToValueAtTime(0.0001, t0 + dur);
-    osc.connect(g); g.connect(outNode(c)); osc.start(t0); osc.stop(t0 + dur + 0.02);
-    track(osc);
+    const b = osc2buf(c, f0, Math.max(20, f1), dur, type || 'sine', 0.008);
+    playBaked(c, b.d, b.len, (gainPeak||0.12)*sfxVolume, delay||0);
   }
   // Task list item 8's "voice from a set list" — a short, distinct blip standing in for a
   // character's spoken line (real voice recording is out of scope for a single-file artifact).
@@ -3707,9 +3737,11 @@ const SoundKit = (()=>{
     // See activeNodes' declaration comment above. Stopping an already-finished/already-stopped
     // node throws in some browsers — wrapped individually so one leftover reference never blocks
     // the rest of the cut-off.
-    stopAll(){
-      activeNodes.forEach(node=>{ try{ node.stop(); }catch(e){} });
-      activeNodes.clear();
+    // 2026-10-17: stopAll({graceMs}) lets a cue that ends within graceMs finish (a round's last hit at 2× was clipped mid-thwack);
+    // only the long tails are cut. Plain stopAll() still silences everything at once (leaving a fight, the volume at 0).
+    stopAll(opts){
+      const c = ctx, lim = opts && opts.graceMs && c ? c.currentTime + opts.graceMs / 1000 : null;
+      activeNodes.forEach(node=>{ if(lim != null && node.__end && node.__end <= lim) return; try{ node.stop(); }catch(e){} activeNodes.delete(node); });
     },
     hit(){ tone(180,0.12,'square',0.1); },
     // Richer hits (2026-10-05): a felt-and-wood thwack with a little random pitch so a long
@@ -11339,6 +11371,86 @@ function fuseCastleDuplicates(id){
 }
 function castleNetCost(L, id){ const c = castleLevelUpCost(L, id), cr = castleCreditOf(id); return Object.assign({}, c, {dust: Math.max(0, c.dust - cr.dust), gold: Math.max(0, c.gold - cr.gold), credit:{dust: Math.min(cr.dust, c.dust), gold: Math.min(cr.gold, c.gold)}}); }
 function spareDuplicatesTotal(){ let n = 0; Object.keys(myCardCopies||{}).forEach(id=>{ const d = getCardDefs()[id]; if(!d || d.token) return; const cap = maxCopiesForRarity(d.rarity); const plain = (myCardCopies[id]||[]).filter(c=> !(c && (c.foil || c.shiny || c.skin))).length, total = (myCardCopies[id]||[]).length; n += Math.max(0, Math.min(plain, total - Math.max(1, cap))); }); return n; }
+// What "Fuse all extras" would do, without doing it (the same rule as spareDuplicatesTotal / fuseAllDuplicates): per card, the plain
+// copies beyond what a deck can hold, each worth duplicateValue(id) of Forge credit.
+function fuseAllPlan(){
+  const defs = getCardDefs(), per = []; let copies = 0, dust = 0, gold = 0;
+  Object.keys(myCardCopies||{}).forEach(id=>{ const d = defs[id]; if(!d || d.token) return; const cap = Math.max(1, maxCopiesForRarity(d.rarity)), all = myCardCopies[id]||[];
+    const plain = all.filter(c=> !(c && (c.foil || c.shiny || c.skin))).length, n = Math.max(0, Math.min(plain, all.length - cap)); if(!n) return;
+    const v = duplicateValue(id); per.push({id, n, dust: v.dust*n, gold: v.gold*n}); copies += n; dust += v.dust*n; gold += v.gold*n; });
+  per.sort((a, b)=> b.n - a.n || b.dust - a.dust);
+  return {copies, dust, gold, per};
+}
+// The bulk sheet (2026-10-17, user: "Clicking Fuse all extras AND disenchant extras has no UI."): kind 'fuse' (spare copies become
+// Forge credit on their own card) or 'dis' (spare copies melt into Magic Dust). First a confirm: every card that loses copies (×n, and
+// what each gives), the totals, Cancel / go. Then, in the same sheet, the cards melt one after another into the total, which counts
+// up, a burst when it lands, the summary, a toast. Nothing to do: a toast that says why, no sheet.
+function openForgeBulk(kind, btn){
+  const fuse = kind === 'fuse', plan = fuse ? fuseAllPlan() : disenchantSummary(), defs = getCardDefs();
+  if(!plan.copies){ if(btn) denyShake(btn); try{ SoundKit.deny && SoundKit.deny(); }catch(e){}
+    showToast(fuse ? '🧩 Nothing to fuse: no card has more plain copies than a deck can hold. Foil, Shiny and skinned copies are always kept.'
+                   : '♻️ Nothing to disenchant: you have one copy of everything that can melt. Base and Quest cards, levelled cards, foils and Shinies are never touched.', 'warn'); return; }
+  const per = plan.per.slice().sort((a, b)=> b.n - a.n), SHOW = 24, more = per.length - SHOW;
+  const valHTML = (dust, gold)=> `${dust ? `<span>✨${dust}</span>` : ''}${gold ? ` <span>${mapleLeafIconHTML()}${gold}</span>` : ''}`;
+  const title = fuse ? '🧩 Fuse all extras' : '♻️ Disenchant extras';
+  const blurb = fuse ? `Every copy beyond what a deck can hold feeds its own card: it becomes Forge credit on that card, spent before your wallet the next time you temper it. Foil, Shiny and skinned copies are kept.`
+                     : `Extra plain copies melt into Magic Dust. One copy of every card stays, and Base, Quest and Event cards, levelled cards, foils and Shinies are never touched.`;
+  const ov = document.createElement('div'); ov.className = 'modal-overlay bw-centre-dialog fbulk-ov';
+  ov.innerHTML = `<div class="modal fbulk is-${kind}" role="dialog" aria-modal="true" aria-label="${escapeAttr(title.replace(/^\S+\s/, ''))}">
+    <div class="modal-head-row"><h2>${title}</h2><button type="button" class="modal-close-btn" data-x aria-label="Close">✕</button></div>
+    <p class="panel-sub fb-blurb">${blurb}</p>
+    <div class="fb-grid">${per.slice(0, SHOW).map(x=>{ const d = defs[x.id]; return d ? `<div class="fb-card" data-fbid="${escapeAttr(x.id)}"><span class="fb-tile">${cardTileHTML(d, {inPlay:true})}</span><b class="fb-n">×${x.n}</b><small class="fb-val">${fuse ? valHTML(x.dust, x.gold) : `✨${x.dust}`}</small></div>` : ''; }).join('')}${more > 0 ? `<div class="fb-more">+${more} more card${more === 1 ? '' : 's'}</div>` : ''}</div>
+    <div class="fb-total" aria-live="polite"><span class="fb-total-lbl">${plan.copies} cop${plan.copies === 1 ? 'y' : 'ies'} of ${per.length} card${per.length === 1 ? '' : 's'} →</span> <b class="fb-total-val">${fuse ? valHTML(plan.dust, plan.gold) + ' <small>of credit</small>' : `✨${plan.dust} <small>Magic Dust</small>`}</b></div>
+    <div class="modal-actions"><button type="button" class="btn ghost" data-x>Cancel</button><button type="button" class="btn primary" data-fbok>${fuse ? `🧩 Fuse ${plan.copies}` : `♻️ Disenchant ${plan.copies}`}</button></div></div>`;
+  document.body.appendChild(ov);
+  let closed = false, busy = false;
+  const close = ()=>{ if(closed || busy) return; closed = true; if(!reducedMotion()){ ov.classList.add('is-out'); setTimeout(()=> ov.remove(), 260); } else ov.remove(); };
+  ov.querySelectorAll('[data-x]').forEach(b=> b.onclick = close);
+  ov.onclick = e=>{ if(e.target === ov) close(); };
+  ov.onkeydown = e=>{ if(e.key === 'Escape'){ e.stopPropagation(); close(); } };
+  setTimeout(()=>{ const b = ov.querySelector('[data-fbok]'); if(b) b.focus(); }, 30);
+  ov.querySelector('[data-fbok]').onclick = ()=>{
+    if(busy) return; busy = true;
+    const r = fuse ? fuseAllDuplicates() : disenchantAllExtras();
+    const got = fuse ? {copies: r.count, cards: r.cards, dust: r.dust, gold: plan.gold} : {copies: r.copies, cards: (r.per||[]).length, dust: r.dust, gold: 0};
+    const modal = ov.querySelector('.fbulk'); modal.classList.add('is-running');
+    ov.querySelector('.modal-actions').innerHTML = '';
+    ov.querySelector('.fb-blurb').textContent = fuse ? 'Feeding the spare copies to the fire…' : 'Melting the spare copies down…';
+    try{ fuse ? (SoundKit.materiaForm && SoundKit.materiaForm()) : (SoundKit.burnAway && SoundKit.burnAway()); }catch(e){}
+    const cards = [...ov.querySelectorAll('.fb-card')], totalEl = ov.querySelector('.fb-total-val'), totalBox = ov.querySelector('.fb-total');
+    const rm = reducedMotion(), step = rm ? 0 : Math.max(45, Math.min(110, 1300 / Math.max(1, cards.length))), T = rm ? 0 : cards.length * step + 450;
+    const tr = totalBox.getBoundingClientRect();
+    cards.forEach((c, i)=> setTimeout(()=>{
+      c.classList.add('is-melting');
+      if(rm) return;
+      const cr = c.getBoundingClientRect();
+      for(let k = 0; k < 4; k++){ const p = document.createElement('i'); p.className = 'fb-mote'; p.textContent = '✨'; ov.appendChild(p);
+        const x0 = cr.left + cr.width*(.25 + Math.random()*.5), y0 = cr.top + cr.height*(.3 + Math.random()*.4), x1 = tr.left + tr.width/2 + (Math.random() - .5)*60, y1 = tr.top + tr.height/2;
+        p.animate([{transform:`translate(${x0}px, ${y0}px) scale(.6)`, opacity:0}, {transform:`translate(${x0 + (Math.random() - .5)*40}px, ${y0 - 30}px) scale(1)`, opacity:1, offset:.3}, {transform:`translate(${x1}px, ${y1}px) scale(.4)`, opacity:.2}],
+          {duration: 520 + k*60, easing:'cubic-bezier(.5,0,.7,1)', fill:'forwards'}).onfinish = ()=> p.remove(); }
+    }, i * step));
+    // the total counts up as the cards go in
+    const t0 = performance.now(), dur = Math.max(1, T);
+    const tick = ()=>{ if(!ov.isConnected) return; const k = rm ? 1 : Math.min(1, (performance.now() - t0) / dur), e = 1 - Math.pow(1 - k, 2);
+      totalEl.innerHTML = fuse ? `${valHTML(Math.round(got.dust*e), Math.round(got.gold*e))} <small>of credit</small>` : `✨${Math.round(got.dust*e)} <small>Magic Dust</small>`;
+      if(k < 1) requestAnimationFrame(tick); else finish(); };
+    let finished = false;
+    const finish = ()=>{ if(finished) return; finished = true; busy = false;
+      totalBox.classList.add('is-landed'); if(!rm){ const bst = document.createElement('i'); bst.className = 'fb-burst'; totalBox.appendChild(bst); setTimeout(()=> bst.remove(), 900); }
+      try{ SoundKit.gold && SoundKit.gold(); }catch(e){}
+      modal.classList.remove('is-running'); modal.classList.add('is-done');
+      ov.querySelector('h2').textContent = fuse ? '🧩 Fused' : '♻️ Disenchanted';
+      ov.querySelector('.fb-blurb').textContent = fuse ? `${got.copies} spare cop${got.copies === 1 ? 'y' : 'ies'} became Forge credit on ${got.cards} card${got.cards === 1 ? '' : 's'}. It comes off their next temper.`
+                                                       : `${got.copies} spare cop${got.copies === 1 ? 'y' : 'ies'} melted into ✨${got.dust} Magic Dust. You now have ✨${myCurrencies.dust||0}.`;
+      ov.querySelector('.modal-actions').innerHTML = '<button type="button" class="btn primary" data-x>Done</button>';
+      const done = ov.querySelector('.modal-actions [data-x]'); done.onclick = close; done.focus();
+      showToast(fuse ? TX('toast.fused-duplicate-into-card-of-credit', {count: got.copies, s: got.copies===1?'':'s', cards: got.cards, s2: got.cards===1?'':'s', dust: got.dust})
+                     : TX('toast.disenchanted-cop-for-magic-dust', {copies: got.copies, plural_ies: got.copies===1?'y':'ies', dust: got.dust}), 'ok');
+      try{ renderForge(); }catch(e){} };
+    requestAnimationFrame(tick);
+    setTimeout(finish, T + 1500); // never stuck, even if frames stop (a hidden tab)
+  };
+}
 function fuseAllDuplicates(){
   const out = {count:0, cards:0, dust:0};
   Object.keys(myCardCopies||{}).forEach(id=>{ const d = getCardDefs()[id]; if(!d || d.token) return; const cap = Math.max(1, maxCopiesForRarity(d.rarity)); let fed = 0;
@@ -12252,6 +12364,7 @@ function deckBreakdownHTML(deckIds, defs){
 }
 function renderPlay(){
   const root = document.getElementById('view-play');
+  if(matchState) noteMatchReturnSpot(); // 2026-10-17: where you were, before the fight takes over the page
   document.body.classList.remove('conquest-full', 'play-full');
   if(!matchState){
     const wrap = document.getElementById('appWrap');
@@ -19262,6 +19375,7 @@ function renderConquestSubTab(body){
   // pane, so remember where the map pane (and the page) were scrolled and put them back after.
   const prevMain = body.querySelector('.conquest-main');
   const keepScroll = prevMain ? prevMain.scrollTop : null, keepPage = window.scrollY;
+  const sameMapRerender = !!(prevMain && prevMain.dataset.mapId && prevMain.dataset.mapId === conquestSelectedMap); // 2026-10-17: a click on this map, not a new visit
   setTimeout(()=>{ const nm = body.querySelector('.conquest-main'); if(nm && keepScroll != null) nm.scrollTop = keepScroll; if(Math.abs(window.scrollY - keepPage) > 2) window.scrollTo(0, keepPage); }, 0);
   // Item #4 (2026-09-18): the old always-visible "Fight your way across a map..." explanation
   // panel is gone — that text now only shows as a >1s-hover tooltip on the Conquest tab button
@@ -19392,11 +19506,12 @@ function renderConquestSubTab(body){
   // Item #6: the old .conquest-skirmish-menu text list below the map is gone — the hover
   // tooltip (nodeTooltipHTML below) and the click-through node panel already cover the same
   // information without repeating every node as a redundant text row.
-  mainEl.className = 'conquest-main' + (map.endless && map.axis === 'x' ? ' endless-x-main' : ''); // a left-to-right dungeon scrolls sideways (2026-10-16)
+  mainEl.className = 'conquest-main' + (map.endless && map.axis === 'x' ? ' endless-x-main' : '') + (map.endless && map.axis !== 'x' ? ' endless-y-main' : ''); // a left-to-right dungeon scrolls sideways (2026-10-16)
+  mainEl.dataset.mapId = map.id;
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
   mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
-    <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' + (map.axis === 'x' ? ' endless-x' : '') : ''}" id="conquestCanvas" style="${map.endless ? (map.axis === 'x' ? `width:${map.nodes.length * 96}px;` : `min-height:${map.nodes.length * 86}px;`) : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${zoomAt && (tutPhase || tutZoomOut) ? `--tut-x:${zoomAt.x}%; --tut-y:${zoomAt.y}%;` : ''}">
+    <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' + (map.axis === 'x' ? ' endless-x' : '') : ''}" id="conquestCanvas" style="${map.endless ? (map.axis === 'x' ? `width:${map.nodes.length * 96}px;` : `min-height:${map.nodes.length * 86}px; --endless-h:${map.nodes.length * 86}px;`) : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${zoomAt && (tutPhase || tutZoomOut) ? `--tut-x:${zoomAt.x}%; --tut-y:${zoomAt.y}%;` : ''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
       ${mapDecorHTML(map.id)}
       ${tutPhase ? '' : mapSpotsHTML(map, positions, progress)}
@@ -19460,10 +19575,15 @@ function renderConquestSubTab(body){
       }).join('')}
     </div>
     <div class="conquest-node-panel conquest-scrim" id="conquestNodePanel" hidden></div>`;
-  if(map.endless){ // start the long climb at your next floor
+  // 2026-10-17 (user: "Why does clicking a tower of babel fight flash then close the skirmish menu!"): this ran on every re-render,
+  // so a click on a floor (which re-renders the pane) was followed 1.2 s later by a smooth scroll away to your next floor. Now it
+  // only runs on a fresh visit, and only if your next floor isn't already in view (coming back from a fight keeps your place).
+  if(map.endless && !sameMapRerender){ // start the long climb at your next floor
     setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
       const el = cv.querySelector(`.map-node[data-lkey="${next.key}"]`), main = document.getElementById('conquestMain');
-      if(el && main){ if(map.axis === 'x'){ const left = el.offsetLeft - main.clientWidth / 2; main.scrollTo({left: Math.max(0, left), behavior: reducedMotion() ? 'auto' : 'smooth'}); return; } // left to right (2026-10-16)
+      if(el && main){ const er = el.getBoundingClientRect(), mr = main.getBoundingClientRect();
+        if(er.top >= mr.top + 40 && er.bottom <= mr.bottom - 40 && er.left >= mr.left && er.right <= mr.right) return; // already in view
+        if(map.axis === 'x'){ const left = el.offsetLeft - main.clientWidth / 2; main.scrollTo({left: Math.max(0, left), behavior: reducedMotion() ? 'auto' : 'smooth'}); return; } // left to right (2026-10-16)
         const top = el.offsetTop - main.clientHeight / 2; main.scrollTo({top: Math.max(0, top), behavior: reducedMotion() ? 'auto' : 'smooth'}); } }, 1200); }
   { const ast = ambushState(); if(ast.justPopped && map.id === (ambushMap()||{}).id){ delete ast.justPopped; saveAmbushState(ast); } }
   if(tutPhase) tutBgZoom(1.25, false); else if(!tutZoomOut) tutBgZoom(1, false, true);
@@ -19623,9 +19743,11 @@ function renderConquestSubTab(body){
       if(conquestSelectedNodeKey === node.key){ startConquestMatch(map.id, node.key); return; }
       conquestSelectedNodeKey = node.key; prefetchFightTicket('conquest', map.id + ':' + node.key); renderConquestSubTab(body);
       // Phones (2026-10-10): the fight panel covers the lower part of the screen, so scroll the chosen fight above it.
-      if(innerWidth <= 820) requestAnimationFrame(()=>{ const main = document.querySelector('.conquest-main'), sel = document.querySelector('.map-node.selected'), panel = document.querySelector('.conquest-main > .conquest-node-panel');
+      // 2026-10-17: also on a tall map (the Babel Spire) on any screen, where the pinned panel covers the lower floors; after the
+      // re-render has put the pane's scroll back (a 0 ms timer), so that doesn't cancel this scroll.
+      if(innerWidth <= 820 || (map.endless && map.axis !== 'x')) setTimeout(()=> requestAnimationFrame(()=>{ const main = document.querySelector('.conquest-main'), sel = document.querySelector('.map-node.selected'), panel = document.querySelector('.conquest-main > .conquest-node-panel');
         if(!main || !sel || !panel) return; const nr = sel.getBoundingClientRect(), pr = panel.getBoundingClientRect();
-        if(nr.bottom > pr.top - 12) main.scrollBy({top: nr.bottom - (pr.top - 24), behavior: reducedMotion() ? 'auto' : 'smooth'}); });
+        if(nr.bottom > pr.top - 12) main.scrollBy({top: nr.bottom - (pr.top - 24), behavior: reducedMotion() ? 'auto' : 'smooth'}); }), 20);
     });
   });
   const selectedNode = conquestSelectedNodeKey ? map.nodes.find(n=>n.key===conquestSelectedNodeKey) : null;
@@ -25016,6 +25138,31 @@ function endMatch(opts){
   if(matchState && matchState.mode==='async') clearAsyncMatchState();
   if(matchState && matchState.mode==='liveRanked') leaveLiveMatch(); // sends an abandon notice (if the match wasn't already over) and tears down the Realtime channel either way
   matchState = null; renderPlay();
+  restoreMatchReturnSpot();
+}
+// Back where you left off (2026-10-17, user: "after the match concludes, dont leave me midway of the page. I should be at the bottom
+// or where i left off (scroll-wise)."): the page's scroll and the map pane's scroll are noted the moment a fight takes over the page
+// (renderPlay with a match, before the board replaces the page) and put back when the fight ends and you land on the same page. A
+// "Play again" / "Next fight" keeps the note for the fight after; landing on another page drops it. The Babel Spire's own "go to
+// your next floor" scroll (renderConquestSubTab) only moves if that floor isn't already in view, so it no longer pulls you away.
+var matchReturnSpot = null; // var: switchTab may run before this line does
+function noteMatchReturnSpot(){
+  try{ const wrap = document.getElementById('appWrap'); if(matchReturnSpot || (wrap && wrap.classList.contains('in-match'))) return;
+    const main = document.querySelector('#view-play .conquest-main'), sub = document.querySelector('#playSubBody');
+    matchReturnSpot = {tab: currentTab, sub: playSubTab, map: typeof conquestSelectedMap !== 'undefined' ? conquestSelectedMap : null, y: window.scrollY,
+      mainTop: main ? main.scrollTop : null, mainLeft: main ? main.scrollLeft : null, subTop: sub ? sub.scrollTop : null}; }catch(e){}
+}
+function restoreMatchReturnSpot(){
+  const s = matchReturnSpot; if(!s) return;
+  const apply = ()=>{ if(matchState) return; // a new fight already started: keep the note for when that one ends
+    matchReturnSpot = null;
+    if(currentTab !== s.tab || playSubTab !== s.sub || (s.map && conquestSelectedMap !== s.map)) return; // somewhere else now
+    const main = document.querySelector('#view-play .conquest-main'), sub = document.querySelector('#playSubBody');
+    if(main && s.mainTop != null){ main.scrollTop = s.mainTop; main.scrollLeft = s.mainLeft || 0; }
+    if(sub && s.subTop != null) sub.scrollTop = s.subTop;
+    window.scrollTo(0, s.y); };
+  // after the page's own scroll fix-ups (renderConquestSubTab puts its pane back on a 0 ms timer) and the layout settling
+  setTimeout(()=> requestAnimationFrame(apply), 30);
 }
 // Shared "a human just finished their planning turn" continuation for both match modes.
 // vs AI: the AI already acted instantly alongside the player (see aiActNow) — resolve at once.
@@ -31575,8 +31722,8 @@ async function resolveRoundCore(opts){
   }
   // Item #15: cut off any still-ringing cue from this round's replay (see SoundKit.stopAll's own
   // comment) right as control hands back to the player, instead of letting it bleed into their
-  // next turn.
-  SoundKit.stopAll();
+  // next turn. (2026-10-17: short cues that end within 0.45 s ring out; at 2× the round's last hit used to be clipped here.)
+  SoundKit.stopAll({graceMs: 450});
   // 2026-10-08 (user: "There must be a hurrah when receiving an award! ... Only after the hurrah is complete or
   // clicking through it then you get the menu"): cards won are revealed one at a time, then new fights and
   // features drop onto the board, before the results window opens.
@@ -35295,7 +35442,7 @@ function labSkillFx(ev){
     case 'bleedTick': if(F.bleedDrip && skillFxOnce('bleed' + ev.uid)){ const t = el(ev.uid); if(t) F.bleedDrip(t); } break;
     case 'thorns': if(F.thorns){ const d = el(ev.fromUid), a = el(ev.targetUid); if(d && a) F.thorns(d, a); } break;
     case 'deflect': if(F.helmetDeflect){ const t = el(ev.uid); if(t) F.helmetDeflect(t); } break;
-    case 'earthquake': if(F.earthquake && bf){ const foe = [...bf.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].filter(x=> x.querySelector('.card-tile')).slice(0, 8); if(foe.length) F.earthquake(foe, {host: bf}); } break;
+    case 'earthquake': if(F.earthquake && bf){ const foe = [...bf.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].filter(x=> x.querySelector('.card-tile')).slice(0, 8); if(foe.length) F.earthquake(foe, {host: bf, speed: (matchState && matchState.speedMult) || 1}); } break; // + speed (2026-10-17)
     case 'fieldTick':
       if(ev.field === 'frozen' && F.frostChill && skillFxOnce('frost' + ev.uid)){ const t = el(ev.uid); if(t) F.frostChill(t); }
       // 2026-10-16 (user: "Immolation should stick on the card - not teleport everywhere."): Immolation's fire burns on the immolating
@@ -36237,6 +36384,10 @@ function renderVfxForEvent(ev){
       const atkEl = attEl || boardCardEl(ev.attUid);
       setTimeout(()=>{ try{ UnitFX.attackFx(ufx.attack, atkEl, targetEl, windup + impactPad); if(SoundKit[ufx.attack]) SoundKit.at(atkEl, ()=> SoundKit[ufx.attack](windup + impactPad)); }catch(e){} }, Math.round(windup*0.5));
     }
+    // 2026-10-17 (2× sound): the attack's sound no longer depends on the effects level (auto-lower drops it when frames run slow,
+    // which happens most at 2×), only its picture does.
+    else if(ufx && ufx.attack && !ev.ranged && SoundKit[ufx.attack]){ const atkEl = attEl || boardCardEl(ev.attUid);
+      setTimeout(()=>{ try{ SoundKit.at(atkEl, ()=> SoundKit[ufx.attack](windup + impactPad)); }catch(e){} }, Math.round(windup*0.5)); }
     if(ev.ranged){
       if(!arrowShot && !boltShot && !bolt) SoundKit.launch(); // (Electricity's arc has the shock tone, 2026-10-16; every lightning hit, 2026-10-17)
       // Item #14 (2026-09-18, "sometimes damage source or anim is not visible... looks like
@@ -36276,8 +36427,8 @@ function renderVfxForEvent(ev){
       if(ev.type==='evaded'){ flashDodge(targetEl, ev.reason); maybeEmote(ev.targetUid, 'dodge'); return; }
       try{ battleLightAt(targetEl, ev.dmgType, ev.type==='hitHQ' || (ev.dmg||0) >= 8); }catch(e){}
       SoundKit.at(targetEl, ()=> SoundKit.hitAt(ev.dmg||0, ev.type==='hitHQ' || (ev.dmg||0) >= 8));
-      if(ufx && !ev.ranged && !ev.armorBlocked && ufx.hit && ufx.hit!=='blunt' && fxAtLeast('low')){
-        try{ if(!reducedMotion()) UnitFX.hitMark(ufx.hit, targetEl); if(SoundKit[ufx.hit]) SoundKit.at(targetEl, ()=> SoundKit[ufx.hit]()); }catch(e){}
+      if(ufx && !ev.ranged && !ev.armorBlocked && ufx.hit && ufx.hit!=='blunt'){ // the sound plays at any effects level (2026-10-17)
+        try{ if(!reducedMotion() && fxAtLeast('low')) UnitFX.hitMark(ufx.hit, targetEl); if(SoundKit[ufx.hit]) SoundKit.at(targetEl, ()=> SoundKit[ufx.hit]()); }catch(e){}
       }
       { const heavy = ev.type==='hitHQ' || (ev.dmg||0) >= 8;
         if(ev.type==='hit') impactSquash(targetEl, ev.dmg||0);
@@ -36378,7 +36529,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='earthquake'){
     const el = boardCardEl(ev.uid);
     SoundKit.earthquakeTone();
-    playEarthquake();
+    playEarthquake(4); // 2026-10-17 (user: "let the ground rumble abit more"): the big rumble (was the small one)
     if(el) floatText(el, '🌋 Earthquake!', 'debuff');
   }
   // King Slayer (2026-09-22, per explicit request: "New type: King. New card: King Maker -
@@ -37696,7 +37847,17 @@ let forgeFilter = 'all', forgeSearch = '', forgeSort = 'cost', forgeBusy = false
 // 2026-10-17 (user: "Forge: don't show all the cards. Have pagination"): FORGE_PAGE_SIZE cards a page, the Codex/Nest pager above and
 // below the grid; a new search, filter, sort or mode starts again at page 1 (forgePageKey), picking a card keeps the page.
 const FORGE_PAGE_SIZE = 60; let forgePage = 0, forgePageKey = '';
-{ const f = uiSticky('forge'); if(typeof f.filter === 'string') forgeFilter = f.filter; if(typeof f.q === 'string') forgeSearch = f.q; if(typeof f.sort === 'string') forgeSort = f.sort; } // 2026-10-16: kept between visits
+// Deck filter (2026-10-17, user: "Forge should let me filter by cards in my Main Deck or Decks so far"): All cards / In my main deck
+// (the deck you play with, its leader included) / In any of my decks. It stacks with the chips, the search and the sort, starts the
+// pages again at 1 when it changes, and is kept between visits like the rest.
+const FORGE_DECK_SCOPES = [['all', 'All cards'], ['main', 'In my main deck'], ['decks', 'In any of my decks']];
+let forgeDeckScope = 'all';
+{ const f = uiSticky('forge'); if(typeof f.filter === 'string') forgeFilter = f.filter; if(typeof f.q === 'string') forgeSearch = f.q; if(typeof f.sort === 'string') forgeSort = f.sort; if(FORGE_DECK_SCOPES.some(([k])=> k === f.deck)) forgeDeckScope = f.deck; } // 2026-10-16: kept between visits
+function forgeDeckIds(scope){
+  const set = new Set(), add = d=>{ if(!d) return; Object.entries(d.counts||{}).forEach(([id, n])=>{ if(n > 0) set.add(id); }); if(d.leaderId) set.add(d.leaderId); };
+  if(scope === 'main') add(myDecks.find(d=> d.id === mainDeckId) || getActiveDeck()); else (myDecks||[]).forEach(add);
+  return set;
+}
 // The Forge sorts like the Codex (2026-10-15, user: "The Forge sort should have the codex sort like cost, wait, attack, hp. Also the
 // sort is not consistent sizing."): Cost, Wait, Attack, Health, then Rarity, Level and Name; the same "Sort: …" labels as the Codex.
 const FORGE_SORTS = [['cost','Cost'], ['wait','Wait'], ['attack','Attack'], ['health','Health'], ['rarity','Rarity'], ['level','Level'], ['name','Name']];
@@ -37793,13 +37954,14 @@ function renderForge(){
   const readyCount = ids.filter(forgeReady).length;
   const q = forgeSearch.trim().toLowerCase();
   let shown = ids.filter(id=> !q || defs[id].name.toLowerCase().includes(q));
-  uiStickySave('forge', {filter: forgeFilter, q: forgeSearch, sort: forgeSort}); // 2026-10-16
+  uiStickySave('forge', {filter: forgeFilter, q: forgeSearch, sort: forgeSort, deck: forgeDeckScope}); // 2026-10-16 (+ deck, 2026-10-17)
+  if(forgeDeckScope !== 'all'){ const inDecks = forgeDeckIds(forgeDeckScope); shown = shown.filter(id=> inDecks.has(id)); }
   if(forgeFilter==='ready') shown = shown.filter(forgeReady);
   if(forgeFilter==='max') shown = shown.filter(id=> getCardLevel(id)>=10);
   if(forgeFilter==='leveled') shown = shown.filter(id=> getCardLevel(id)>0);
   const rIdx = id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common');
   shown.sort(forgeSortCmp(defs, rIdx)); // Codex-like sorts (2026-10-15)
-  { const pk = [forgeMode, forgeFilter, q, forgeSort].join('|'); if(pk !== forgePageKey){ forgePageKey = pk; forgePage = 0; } }
+  { const pk = [forgeMode, forgeFilter, q, forgeSort, forgeDeckScope].join('|'); if(pk !== forgePageKey){ forgePageKey = pk; forgePage = 0; } }
   const forgePages = Math.max(1, Math.ceil(shown.length / FORGE_PAGE_SIZE)); if(forgePage >= forgePages) forgePage = forgePages - 1; if(forgePage < 0) forgePage = 0;
   const forgePagerHTML = where=> forgePages > 1 ? `<div class="cx-pager cx-pager-${where} forge-pager" role="navigation" aria-label="Forge pages${where === 'top' ? ' (top)' : ''}"><button type="button" class="btn small" data-forgepage="${forgePage - 1}" ${forgePage === 0 ? 'disabled' : ''}>‹ Back</button>${Array.from({length: forgePages}, (_, i)=> `<button type="button" class="btn small ${i === forgePage ? 'primary' : 'ghost'}" data-forgepage="${i}" aria-current="${i === forgePage ? 'page' : 'false'}">${i + 1}</button>`).join('')}<button type="button" class="btn small" data-forgepage="${forgePage + 1}" ${forgePage >= forgePages - 1 ? 'disabled' : ''}>Next ›</button></div>` : '';
   const pageIds = shown.slice(forgePage * FORGE_PAGE_SIZE, (forgePage + 1) * FORGE_PAGE_SIZE);
@@ -37832,10 +37994,11 @@ function renderForge(){
           <div class="forge-chips" role="group" aria-label="Filter">
             ${[['all','All'],['ready',`${FORGE_MODES[forgeMode].icon} Ready${readyCount?` (${readyCount})`:''}`]].concat(forgeMode==='upgrade' ? [['leveled','Levelled'],['max','Max']] : []).map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
           </div>
-          ${forgeMode==='upgrade' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'disabled'} title="Feeds every copy beyond what a deck can hold into its own card's credit. Foil, shiny and skinned copies are kept.">🧩 Fuse all extras${n ? ` (${n})` : ''}</button>${(()=>{ const ds = disenchantSummary(); return `<button type="button" class="btn small" id="forgeDisBtn" ${ds.copies ? '' : 'disabled'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button>`; })()}`; })() : ''}
+          ${forgeMode==='upgrade' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'aria-disabled="true"'} title="Feeds every copy beyond what a deck can hold into its own card's credit. Foil, shiny and skinned copies are kept.">🧩 Fuse all extras${n ? ` (${n})` : ''}</button>${(()=>{ const ds = disenchantSummary(); return `<button type="button" class="btn small" id="forgeDisBtn" ${ds.copies ? '' : 'aria-disabled="true"'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button>`; })()}`; })() : ''}
+          <select id="forgeDeckScope" class="forge-sort forge-deck-scope ${forgeDeckScope !== 'all' ? 'is-on' : ''}" aria-label="Show cards from">${FORGE_DECK_SCOPES.map(([k, l])=> `<option value="${k}" ${forgeDeckScope===k?'selected':''}>${k === 'all' ? '🗂️' : k === 'main' ? '⭐' : '🃏'} ${l}</option>`).join('')}</select>
           <select id="forgeSort" class="forge-sort" aria-label="Sort cards">${FORGE_SORTS.map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>Sort: ${l}</option>`).join('')}</select>
         </div>
-        ${forgePagerHTML('top')}<div class="pool-grid forge-pool show-levels ${forgeFilter==='ready'?'only-ready':''}" id="forgePool">${shown.length ? '' : `<p class="panel-sub forge-empty">${forgeFilter==='ready' ? 'Nothing you can afford right now — win a few fights for Dust and Maple Leaves.' : 'No cards match.'}</p>`}</div>${forgePagerHTML('bottom')}
+        ${forgePagerHTML('top')}<div class="pool-grid forge-pool show-levels ${forgeFilter==='ready'?'only-ready':''}" id="forgePool">${shown.length ? '' : `<p class="panel-sub forge-empty">${forgeFilter==='ready' ? 'Nothing you can afford right now — win a few fights for Dust and Maple Leaves.' : forgeDeckScope !== 'all' ? `No cards ${forgeDeckScope === 'main' ? 'in your main deck' : 'in your decks'} match.` : 'No cards match.'}</p>`}</div>${forgePagerHTML('bottom')}
       </div>
       <div class="panel forge-anvil" id="forgeDetail">${sel ? (forgeMode==='refine' ? refineAnvilHTML(forgeSelectedId, sel) : forgeMode==='enchant' ? enchantAnvilHTML(forgeSelectedId, sel) : forgeAnvilHTML(forgeSelectedId, sel, L, maxed)) : `
         <div class="forge-anvil-empty">
@@ -37854,23 +38017,20 @@ function renderForge(){
   root.querySelectorAll('[data-forgefilter]').forEach(b=> b.addEventListener('click', ()=>{ forgeFilter = b.dataset.forgefilter; renderForge(); }));
   root.querySelectorAll('[data-forgepage]').forEach(b=> b.addEventListener('click', ()=>{ forgePage = +b.dataset.forgepage; renderForge(); const t = document.querySelector('#view-forge .forge-toolbar'); if(t) t.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }));
   document.getElementById('forgeSort').addEventListener('change', e=>{ forgeSort = e.target.value; renderForge(); });
+  { const ds = document.getElementById('forgeDeckScope'); if(ds) ds.addEventListener('change', e=>{ forgeDeckScope = e.target.value; forgePage = 0; renderForge(); }); }
   // 2026-10-12 (11:39 list: "'Show the X I can temper' is only visible once, per entering the forge - then the button fades out -
   // there is a light gadget sound"): one press a visit; it fades out and stays gone until you come back to the Forge.
   const pr = document.getElementById('forgePickReady'); if(pr) pr.onclick = ()=>{ try{ SoundKit.gadget(); }catch(e){} forgeReadyUsed = true; pr.classList.add('is-fading'); setTimeout(()=>{ forgeFilter = 'ready'; renderForge(); }, 380); };
   { const tn = document.getElementById('forgeToNestBtn'); if(tn) tn.onclick = ()=>{ nestNurturePrefill = forgeSelectedId; switchTab('nest'); }; }
   const lvlBtn = document.getElementById('forgeLevelUpBtn');
   if(lvlBtn) lvlBtn.addEventListener('click', ()=> forgeTemper(lvlBtn));
+  // 2026-10-17 (user: "Clicking Fuse all extras AND disenchant extras has no UI."): both open a sheet (openForgeBulk): what goes, how
+  // many, what you get; then the cards melt into the total with a burst, and a toast. With nothing to do they say so instead of
+  // sitting there disabled (a disabled button swallowed the click: that was the "nothing happens").
   const disBtn = document.getElementById('forgeDisBtn');
-  if(disBtn) disBtn.onclick = async ()=>{
-    const ds = disenchantSummary(); if(!ds.copies) return;
-    const ok = await bwConfirm({title:TX('dialog.disenchant-extras'), body:TX('dialog.melt-extra-cop-into-magic-dust', {copies: ds.copies, plural_ies: ds.copies===1?'y':'ies', dust: ds.dust}), okLabel:TX('dialog.disenchant')});
-    if(!ok) return;
-    const done = disenchantAllExtras();
-    showToast(TX('toast.disenchanted-cop-for-magic-dust', {copies: done.copies, plural_ies: done.copies===1?'y':'ies', dust: done.dust}), 'ok');
-    renderForge();
-  };
+  if(disBtn) disBtn.onclick = ()=> openForgeBulk('dis', disBtn);
   const faBtn = document.getElementById('forgeFuseAllBtn');
-  if(faBtn) faBtn.addEventListener('click', ()=>{ const r = fuseAllDuplicates(); if(!r.count){ denyShake(faBtn); return; } try{ SoundKit.materiaForm && SoundKit.materiaForm(); }catch(e){} renderForge(); showToast(TX('toast.fused-duplicate-into-card-of-credit', {count: r.count, s: r.count===1?'':'s', cards: r.cards, s2: r.cards===1?'':'s', dust: r.dust}), 'ok'); });
+  if(faBtn) faBtn.onclick = ()=> openForgeBulk('fuse', faBtn);
   root.querySelectorAll('[data-forge-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.forgeCastle; if(!temperCastle(id)){ denyShake(b); return; } try{ SoundKit.clang(); }catch(e){} renderForge(); showToast(TX('toast.tempered-to-lv-2', {v1: (CHARACTER_DEFS[id]||{}).name||'Castle', v2: castleLevelOf(id)}), 'ok'); try{ refreshDeckHeroBanner(); }catch(e){} }));
   root.querySelectorAll('[data-fuse-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.fuseCastle, v = fuseCastleDuplicates(id); if(!v){ denyShake(b); return; } renderForge(); showToast(TX('toast.fused-spare-castle-of-credit', {n: v.n, s: v.n===1?'':'s', dust: v.dust}), 'ok'); }));
   { const fe = document.getElementById('forgeTierEditBtn'); if(fe) fe.addEventListener('click', openForgeTierEditor); }
@@ -39590,6 +39750,22 @@ let shopSelected = null; // 'packId:qty'
 const SHOP_BREAD_KEY = 'bramblewood_shop_bread_v1';
 function shopBreadSold(){ try{ return localStorage.getItem(SHOP_BREAD_KEY) === '1'; }catch(e){ return false; } }
 function shopBundlesOpen(){ return adminModeEnabled || playerMapReach() >= 9; }
+// Field kit on the shelf (2026-10-17, user: "daily, there's a 30% chance to sell a field pack item (if you unlocked it)"): once the
+// traveller's kit is open (the 'fieldkit' spot, Map 12), each local day has a 30% chance that the cart stocks one field-kit item.
+// Which day and which item are seeded from the day number, so the offer is the same all day (and on every reload); one per day,
+// sold out once bought, and not while you already carry the most of it (ITEM_CAP). Priced between a Hedgerow Pouch (50 🍁) and a
+// Tidemire Chest (120 🍁 + 10 🍂): the plain helps (Lumber, a heal) are cheaper, the fight-changers (Fire Pot) dearer. Admins
+// always see the day's item (or the one it would be) so it can be checked.
+const SHOP_KIT_CHANCE = 0.3, SHOP_KIT_KEY = 'bramblewood_shop_kit_v1';
+const SHOP_KIT_PRICE = {draught:90, kindling:70, scoutmap:100, firepot:140, honeycake:90, whetstone:110, caltrops:100};
+function shopKitToday(){
+  if(!featureUnlockedSafe('fieldkit') && !adminModeEnabled) return null;
+  const day = itemDay(), on = seededUnit('shopkit:' + day) < SHOP_KIT_CHANCE; if(!on && !adminModeEnabled) return null;
+  const ids = Object.keys(ITEM_DEFS), id = ids[Math.floor(seededUnit('shopkit-item:' + day) * ids.length) % ids.length];
+  return {id, day, def: ITEM_DEFS[id], price: SHOP_KIT_PRICE[id] || 100, adminOnly: !on};
+}
+function shopKitSold(day){ try{ return localStorage.getItem(SHOP_KIT_KEY) === String(day); }catch(e){ return false; } }
+function shopKitFull(id){ return itemCount(id) >= ITEM_CAP; }
 // Pack quantities (2026-10-12, 11:26 list: "When buying the pack, it asks you how many - packs of 1, 10, 25, 50 or 100. The tiers
 // are only visible when you have enough for the previous tier, and only if you passed a certain map: 10/25/50/100/250 at map
 // 9/14/19/29/44"). With one pack on sale its bundles still sit on the shelves; from two packs on, the shelves show each pack
@@ -39607,7 +39783,7 @@ function shelfRows(){
   const chunk = (items, n, kinds)=>{ const out = []; for(let i = 0; i < items.length; i += n) out.push({kind:kinds[(i/n) % kinds.length], items:items.slice(i, i + n)}); return out; };
   const narrow = window.matchMedia && matchMedia('(max-width:620px)').matches;
   return [
-    ...chunk([...packs.map(p=> ({pack:p, qty:1})), {bread:true, qty:1}], narrow ? 2 : 5, ['straight', 'crooked-r']),
+    ...chunk([...packs.map(p=> ({pack:p, qty:1})), ...(shopKitToday() ? [{kit:shopKitToday(), qty:1}] : []), {bread:true, qty:1}], narrow ? 2 : 5, ['straight', 'crooked-r']),
     ...(onSale.length === 1 ? [
       ...chunk(onSale.flatMap(p=> [10, 25].filter(q=> packQtyOptions(p).includes(q) || adminModeEnabled).map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, ['crooked', 'straight']),
       ...chunk(onSale.flatMap(p=> [50, 100].filter(q=> packQtyOptions(p).includes(q) || adminModeEnabled).map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, narrow ? ['straight', 'crooked-r'] : ['stepped'])] : []),
@@ -39640,10 +39816,12 @@ function shelfDetailHTML(p, qty){
 }
 function renderShopShelves(grid, signedIn){
   const rows = shelfRows(), all = rows.flatMap(r=> r.items);
-  const keyOf = it=> it.bread ? 'bread:1' : it.pack.id + ':' + it.qty;
+  const keyOf = it=> it.bread ? 'bread:1' : it.kit ? 'kit:' + it.kit.id : it.pack.id + ':' + it.qty;
   if(!shopSelected || !all.some(it=> keyOf(it)===shopSelected)){ const first = all.find(it=> it.pack && packOnSale(it.pack)) || all[0]; shopSelected = first ? keyOf(first) : null; }
   let propN = 0; const prop = ()=> `<span class="shelf-prop" aria-hidden="true">${SHELF_PROPS[(propN++ * 5 + rows.length) % SHELF_PROPS.length]}</span>`;
   const itemHTML = (it, i)=>{
+    if(it.kit){ const K = it.kit, sold = shopKitSold(K.day), full = shopKitFull(K.id), k = 'kit:' + K.id, tilt = ((i*37) % 7) - 3; // field-kit stock (2026-10-17)
+      return `<button type="button" class="shelf-item is-kit ${sold||full?'is-off':''} ${k===shopSelected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===shopSelected}" aria-label="${escapeAttr(K.def.name + (sold ? ', sold out' : ''))}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${K.def.icon}</span><span class="sk-today">Today</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(K.def.name)}</span><span class="shelf-tag">${sold ? 'Sold out' : full ? 'Pack full' : shelfPriceHTML({gold:K.price, gems:0})}</span></button>`; }
     if(it.bread){ const sold = shopBreadSold(), k = 'bread:1', tilt = ((i*37) % 7) - 3;
       return `<button type="button" class="shelf-item is-bread ${sold?'is-off':''} ${k===shopSelected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===shopSelected}" aria-label="A loaf of bread"><span class="shelf-loaf" aria-hidden="true">🍞</span><span class="shelf-tape" style="--tilt:${tilt}deg">Bread</span><span class="shelf-tag">${sold ? 'Sold out' : shelfPriceHTML({gold:1, gems:0})}</span></button>`; }
     const st = shelfStatus(it.pack), k = keyOf(it), tilt = ((i*37) % 7) - 3;
@@ -39672,16 +39850,28 @@ function renderShopShelves(grid, signedIn){
   const breadHTML = ()=> `<b class="sd-name">Bread</b><span class="sd-line">A warm loaf from the baker next door. It does nothing at all.</span><span class="sd-price">${shelfPriceHTML({gold:1, gems:0})}</span>${shopBreadSold() ? '<span class="sd-why">Sold out. The baker only makes one.</span>' : ''}`;
   const showHover = btn=>{
     const it = find(btn.dataset.shelfitem); if(!it) return;
-    hover.innerHTML = it.bread ? breadHTML() : shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
+    hover.innerHTML = it.bread ? breadHTML() : it.kit ? kitHTML(it.kit) : shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
     const wr = wall.getBoundingClientRect(), br = btn.getBoundingClientRect();
     const x = Math.max(8, Math.min(wr.width - hover.offsetWidth - 8, br.left - wr.left + br.width/2 - hover.offsetWidth/2));
     const above = br.top - wr.top + wall.scrollTop - hover.offsetHeight - 10;
     hover.style.left = x + 'px'; hover.style.top = (above < wall.scrollTop + 4 ? br.bottom - wr.top + wall.scrollTop + 8 : above) + 'px';
   };
   const hideHover = ()=>{ hover.hidden = true; };
+  const kitHTML = K=> `<b class="sd-name">${K.def.icon} ${escapeHtml(K.def.name)}</b><span class="sd-line">🎒 Field kit item: ${escapeHtml(K.def.desc)} One item a fight, against the computer.</span><span class="sd-line">You carry ${itemCount(K.id)} of ${ITEM_CAP}.</span><span class="sd-price">${shelfPriceHTML({gold:K.price, gems:0})}</span>${shopKitSold(K.day) ? '<span class="sd-why">Sold out. The cart only brings one a day, and not every day.</span>' : shopKitFull(K.id) ? `<span class="sd-why">Your pack already holds ${ITEM_CAP}, the most it carries.</span>` : '<span class="sd-why">In stock today only.</span>'}${K.adminOnly ? '<span class="sd-why">🚨 Admin preview: not on sale to players today.</span>' : ''}`;
   const renderCounter = ()=>{
     const el = grid.querySelector('#shopCounter'), it = find(shopSelected);
     if(!el || !it) return;
+    if(it.kit){ const K = it.kit, sold = shopKitSold(K.day), full = shopKitFull(K.id), afford = (myCurrencies.gold||0) >= K.price;
+      el.innerHTML = `<div class="counter-goods"><span class="shelf-kit is-big" aria-hidden="true"><span class="sk-ico">${K.def.icon}</span></span></div><div class="counter-info">${kitHTML(K)}</div><div class="counter-act">${sold || full ? '' : `<button class="btn primary" id="shopBuyKit" ${afford?'':'aria-disabled="true"'}>${afford ? 'Buy' : `Need ${K.price - (myCurrencies.gold||0)} more 🍁`}</button>`}</div>`;
+      const kb = el.querySelector('#shopBuyKit'); if(kb) kb.onclick = ()=>{
+        if(shopKitSold(K.day) || shopKitFull(K.id) || (myCurrencies.gold||0) < K.price){ denyShake(kb); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} return; }
+        myCurrencies.gold -= K.price; saveCurrencies();
+        const o = loadItems(); o.counts[K.id] = Math.min(ITEM_CAP, (o.counts[K.id]||0) + 1); saveItems(o);
+        try{ localStorage.setItem(SHOP_KIT_KEY, String(K.day)); }catch(e){}
+        try{ SoundKit.shelfPick(); SoundKit.gold && SoundKit.gold(); }catch(e){}
+        showToast(`🎒 ${K.def.icon} ${K.def.name} packed. Use it from the 🎒 in a fight against the computer.`, 'ok');
+        renderShop(); };
+      return; }
     if(it.bread){ const sold = shopBreadSold(), afford = (myCurrencies.gold||0) >= 1;
       el.innerHTML = `<div class="counter-goods"><span class="shelf-loaf is-big" aria-hidden="true">🍞</span></div><div class="counter-info">${breadHTML()}</div><div class="counter-act">${sold ? '' : `<button class="btn primary" id="shopBuyBread" ${afford?'':'disabled'}>${afford ? 'Buy' : 'Need 1 🍁'}</button>`}</div>`;
       const bb = el.querySelector('#shopBuyBread'); if(bb) bb.onclick = ()=>{ if(shopBreadSold() || (myCurrencies.gold||0) < 1){ denyShake(bb); return; } myCurrencies.gold -= 1; saveCurrencies(); try{ localStorage.setItem(SHOP_BREAD_KEY, '1'); }catch(e){} try{ SoundKit.shelfPick(); }catch(e){} showToast(TX('toast.you-bought-the-bread-it-smells'), 'ok'); renderShop(); };
@@ -39740,14 +39930,99 @@ function shopBackHTML(){
   const lbl = c.tab === 'play' && c.sub === 'conquest' ? 'Back to the map' : c.tab === 'home' ? 'Back home' : 'Back';
   return `<button type="button" class="btn small shop-back" id="shopBackBtn">← ${lbl}</button>`;
 }
+// The market around the cart (2026-10-17, user: "Shop: Can we make it more fun by having some background doodads or doors n the
+// background"): two layers, both drawn in CSS (plus two NPC sprites), aria-hidden and click-through.
+//  - The street (#marketStreet, a fixed layer behind the page, shown only on the Shop): timber shopfronts with arched doors (one ajar
+//    with lamplight), lit windows that flicker, a striped stall, crates and barrels, cobbles, a string of lanterns swaying overhead,
+//    and two shopkeepers (Bramble the mouse at the stall, Thimble the hedgehog in a doorway) idly bobbing. On a wide screen it fills
+//    the space either side of the cart.
+//  - In the cart (.cart-doodads, first in #view-shop): two lanterns hanging from the awning by the sign, and along the bottom a plank
+//    floor with a crate, a barrel, a sack and the mouse peeking over them, so a phone (where the street is mostly hidden) gets it too.
+// The idle motion stops for reduced motion.
+// The shopkeepers are tiny pixel sprites drawn here (the NPC portraits are square paintings with their own backgrounds): a mouse in
+// a red apron and a hedgehog in a green one. One letter a pixel, '.' is clear.
+const SHOP_FOLK_PIX = {
+  mouse: {pal:{E:'#8d7f74', p:'#e8a5a5', F:'#b3a597', f:'#968779', K:'#1d140c', w:'#ffffff', n:'#e07a8a', A:'#a8432f', a:'#7a2f22', B:'#5a3a1e'}, rows:[
+    '..EE........EE..',
+    '.EppE......EppE.',
+    '.EppEE....EEppE.',
+    '..EEFFFFFFFFEE..',
+    '...FFFFFFFFFF...',
+    '...FFwKFFwKFF...',
+    '...FFKKFFKKFF...',
+    '...fFFFnnFFFf...',
+    '....fFFFFFFf....',
+    '.....FFFFFF.....',
+    '....AAAAAAAA....',
+    '...FAAAAAAAAF...',
+    '..FFAAAAAAAAFF..',
+    '..FFAAaaaAAAFF..',
+    '...fAAaaaAAAf...',
+    '....AAAAAAAA....',
+    '....FF....FF....',
+    '...BBB....BBB...']},
+  hedgehog: {pal:{S:'#5a3d24', s:'#8a6238', F:'#e8cfa0', f:'#c9ad7e', K:'#1d140c', w:'#ffffff', n:'#2a1a10', A:'#3d6a4a', a:'#2b4d35', B:'#5a3a1e'}, rows:[
+    '................',
+    '....SSSSSS......',
+    '..SSsSSsSSSS....',
+    '.SSSSsSSSsSSS...',
+    'SSsSSSSSsSSSSS..',
+    'SSSSSsSSSSSsSSS.',
+    'SSSSSSSSSSFFFF..',
+    'SSsSSSSSSFFFFFF.',
+    'SSSSSSSSFFwKFFFn',
+    'SSSSSsSSFFKKFFFn',
+    '.SSSSSSSfFFFFFf.',
+    '..SSSSSSSfFFFf..',
+    '...AAAAAAAAAA...',
+    '..fAAAAAAAAAAf..',
+    '...AAAaaaAAAA...',
+    '...AAAAAAAAAA...',
+    '....FF....FF....',
+    '...BBB...BBB....']},
+};
+function pixelSpriteSVG(kind){
+  const P = SHOP_FOLK_PIX[kind]; if(!P) return ''; let r = '';
+  P.rows.forEach((row, y)=>{ for(let x = 0; x < row.length;){ const ch = row[x]; let n = 1; while(x + n < row.length && row[x + n] === ch) n++;
+    if(ch !== '.' && P.pal[ch]) r += `<rect x="${x}" y="${y}" width="${n}" height="1" fill="${P.pal[ch]}"/>`; x += n; } });
+  return `<svg viewBox="0 0 16 ${P.rows.length}" width="100%" height="100%" shape-rendering="crispEdges" aria-hidden="true">${r}</svg>`;
+}
+function marketStreetHTML(){
+  const house = (x, w, h, wall, roof, o)=> `<div class="ms-house" style="left:${x}%; width:${w}px; height:${h}px; --wall:${wall}; --roof:${roof};">
+      <i class="ms-roof"></i>${o.chimney ? '<i class="ms-chimney"><b></b><b></b></i>' : ''}
+      ${(o.wins||[]).map(([l, t])=> `<i class="ms-win" style="left:${l}%; top:${t}%;"></i>`).join('')}
+      <i class="ms-door${o.ajar ? ' is-ajar' : ''}" style="left:${o.door}%"><b></b></i>${o.sign ? `<i class="ms-sign" style="left:${o.door + 30}%"><span>${o.sign}</span></i>` : ''}</div>`;
+  const lanterns = Array.from({length:14}, (_, k)=> `<i class="ms-lantern" style="left:${3 + k*7}%; --d:${(k*0.37 % 1.6).toFixed(2)}s; --h:${18 + (k*13 % 22)}px"></i>`).join('');
+  return `<div class="ms-sky"></div><div class="ms-row">
+      ${house(0, 150, 300, '#7a5a3c', '#4b3a5c', {door:30, wins:[[18, 22], [62, 22]], chimney:true, sign:'🧵'})}
+      ${house(9, 120, 250, '#8c6a46', '#5a3b2a', {door:24, wins:[[58, 30]], ajar:true})}
+      ${house(77, 140, 280, '#6e5236', '#37506a', {door:56, wins:[[16, 24], [16, 54]], chimney:true, sign:'🍄'})}
+      ${house(88, 160, 320, '#856345', '#5c2f2f', {door:28, wins:[[60, 20], [60, 50]]})}
+    </div>
+    <div class="ms-stall is-l"><i class="ms-awn"></i><i class="ms-counter"><span>🍎</span><span>🧀</span><span>🫐</span></i><span class="ms-folk is-mouse">${pixelSpriteSVG('mouse')}</span></div>
+    <div class="ms-stall is-r"><i class="ms-awn"></i><i class="ms-counter"><span>🕯️</span><span>🧶</span><span>🪶</span></i><span class="ms-folk is-hog">${pixelSpriteSVG('hedgehog')}</span></div>
+    <span class="ms-folk is-door">${pixelSpriteSVG('hedgehog')}</span>
+    <i class="ms-crate" style="left:2%"></i><i class="ms-barrel" style="left:7%"></i><i class="ms-crate is-small" style="right:3%"></i><i class="ms-barrel" style="right:8%"></i>
+    <div class="ms-string">${lanterns}</div><div class="ms-cobbles"></div>`;
+}
+function ensureMarketStreet(){
+  if(document.getElementById('marketStreet')) return;
+  const el = document.createElement('div'); el.id = 'marketStreet'; el.className = 'market-street'; el.setAttribute('aria-hidden', 'true');
+  el.innerHTML = marketStreetHTML(); document.body.appendChild(el);
+}
+function cartDoodadsHTML(){
+  return `<div class="cart-doodads" aria-hidden="true"><i class="cd-lantern is-l"></i><i class="cd-lantern is-r"></i>
+    <div class="cd-floor"><i class="cd-crate"></i><i class="cd-sack"></i><span class="cd-folk">${pixelSpriteSVG('mouse')}</span><i class="cd-barrel"></i><i class="cd-crate is-r"></i></div></div>`;
+}
 function renderShop(){
   const root = document.getElementById('view-shop');
+  try{ ensureMarketStreet(); }catch(e){}
   // The Market moved out to its own page, the Flea Market (2026-10-10); the Shop is packs only.
   const tabsHTML = '';
   shopTab = 'packs';
   const signedInShop = isSignedIn();
   const merchants = merchantsUnlocked();
-  root.innerHTML = `<div class="panel">${shopBackHTML()}<h2 class="sr-only">${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
+  root.innerHTML = `${cartDoodadsHTML()}<div class="panel">${shopBackHTML()}<h2 class="sr-only">${merchants.length >= 2 ? '🏮' : '🛒'} ${shopsTitle()}</h2>
       <p class="panel-sub">${merchants.length >= 2 ? `${merchants.map(sp=> sp.icon + ' ' + escapeHtml(sp.name)).join(' and ')} share a counter. ` : ''}Packs of cards from <b>Pack 1</b> (${packCardPool(null, 1).length} cards).</p>
       ${wanderingMerchantShopHTML()}
       ${signedInShop ? '' : `<div class="shop-guest-cta"><span>🔒 Sign in to open packs — it's free.</span><button type="button" class="btn primary" id="shopSignInBtn">Sign in</button></div>`}
@@ -42471,6 +42746,7 @@ function switchTab(tab){
   tabSwitchSeq++;
   if(tab !== (typeof currentTab!=='undefined' ? currentTab : null)) forgeReadyUsed = false; // the Forge's one-shot "Show the N I can temper" comes back on a new visit
   if(tab !== 'play') try{ caveScreenOff(); }catch(e){}
+  if(tab !== 'play' && !matchState) matchReturnSpot = null; // 2026-10-17: left the page, so there's no place to come back to
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck' && deckDirty){ deckLeaveGuard(()=> switchTab(tab)); return; }
   if(typeof currentTab!=='undefined' && currentTab==='deck' && tab!=='deck') endDeckDraft();
   currentTabBeforeSwitch = (typeof currentTab!=='undefined') ? currentTab : null;
