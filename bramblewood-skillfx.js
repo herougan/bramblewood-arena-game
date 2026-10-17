@@ -256,7 +256,7 @@ function boomerang(shooter, target, o){
 // Boomerang flights (2026-10-13, user: "Hits PAST the enemy, flying far ahead. If its castle, it flies towards the castle,
 // bounces, that goes north past the map. Then it comes from the top of the map on the next turn"). Throw: it curves into the
 // target, hits, and keeps going far past it, off the screen. Castle: it hits the castle, bounces up and flies out the top.
-// Return: next round it drops in from the top of the screen above the target, hits, and spins home to the thrower.
+// Return: next round it retraces the throw (2026-10-17, boomerangReturn below; it used to drop in from the top of the screen).
 function boomerangThrow(shooter, target, o){
   o = o || {}; const g = G(); const a = centre(shooter), b = centre(target);
   if(!g || reduce()){ o.onImpact && o.onImpact(); return; }
@@ -265,6 +265,7 @@ function boomerangThrow(shooter, target, o){
   const far = {x: b.x + dx/L * Math.max(W, H), y: b.y + dy/L * Math.max(W, H)};
   const m1 = {x:(a.x + b.x)/2 + dy*0.22, y:(a.y + b.y)/2 - dx*0.22};
   const s = {t:0}; g.set(bm, {x:a.x, y:a.y, xPercent:-50, yPercent:-50});
+  boomNote(o.key, {ux:dx/L, uy:dy/L, rx:dx, ry:dy, castle:false}); // 2026-10-17: the return retraces this flight
   const tl = g.timeline({onComplete:()=> bm.remove()});
   tl.to(s, {t:1, duration:out, ease:'power1.in', onUpdate:()=>{ const p = qpt(a, m1, b, s.t); g.set(bm, {x:p.x, y:p.y}); }})
     .to(bm, {rotation:`+=${360*5}`, duration:out + .7, ease:'none'}, 0)
@@ -277,6 +278,7 @@ function boomerangCastle(shooter, castle, o){
   const bm = layer('sfx-boomerang', '🪃'); const out = (o.flight || 520)/1000;
   const m1 = {x:(a.x + b.x)/2 + 40, y:(a.y + b.y)/2};
   const s = {t:0}; g.set(bm, {x:a.x, y:a.y, xPercent:-50, yPercent:-50});
+  boomNote(o.key, {rx:b.x - a.x, ry:b.y - a.y, castle:true}); // 2026-10-17: the return retraces this flight
   g.timeline({onComplete:()=> bm.remove()})
     .to(s, {t:1, duration:out, ease:'power1.in', onUpdate:()=>{ const p = qpt(a, m1, b, s.t); g.set(bm, {x:p.x, y:p.y}); }})
     .to(bm, {rotation:`+=${360*5}`, duration:out + .8, ease:'none'}, 0)
@@ -284,19 +286,45 @@ function boomerangCastle(shooter, castle, o){
     .to(bm, {x:b.x + 30, y:b.y + 26, duration:.12, ease:'power2.out'}, out)
     .to(bm, {x:b.x + 60, y:-120, duration:.65, ease:'power2.in'}, out + .12);
 }
+// 2026-10-17 (user: "If the boomerang ran straight forward, it comes back straight at the end. 2 boomerangs come back by the way - this
+// is wrong. Only 1 should come back."): the return retraces the throw. The throw curves into its target and flies straight on past it
+// and off the field (boomerangThrow), so the return comes straight back in along that same line, hits the target, and follows the
+// throw's own curve backwards into the thrower's hand, where it is caught (a ring and a little dip, as part of this one flight). A castle
+// throw bounced up and out of the top: it drops back in the way it left, strikes the castle and curves home. The throw is remembered by
+// o.key (the thrower's uid); without one the line is the straight one from thrower to target. o: {key, castle, whiff (no target: it flies
+// through where its target stood), flight, onImpact, catch (false: no catch at the end)}. boomerangInFlight(key) is true while one is
+// on its way home, so the game doesn't draw a second boomerang for the catch (FX.A.catchSnap) or the whiff (FX.A.whiffPast).
+const BOOM_THROWS = {}, BOOM_FLIGHTS = {};
+function boomNote(key, v){ if(key == null) return; BOOM_THROWS[String(key)] = Object.assign({at:Date.now()}, v); }
+function boomerangInFlight(key){ return key != null && (BOOM_FLIGHTS[String(key)] || 0) > Date.now(); }
 function boomerangReturn(thrower, target, o){
-  o = o || {}; const g = G(); const a = centre(thrower), b = centre(target);
-  if(!g || reduce()){ o.onImpact && o.onImpact(); return; }
-  const bm = layer('sfx-boomerang', '🪃'); const down = .45, home = (o.flight || 520)/1000 * 1.15;
-  g.set(bm, {x:b.x - 40, y:-80, xPercent:-50, yPercent:-50});
-  const m2 = {x:(a.x + b.x)/2 - (b.y - a.y)*0.2, y:(a.y + b.y)/2};
+  o = o || {}; const g = G(); const key = o.key != null ? String(o.key) : null, th = key ? BOOM_THROWS[key] : null;
+  if(!g || reduce() || !thrower){ o.onImpact && o.onImpact(); return; }
+  const a = centre(thrower), castle = !!(o.castle || (th && th.castle && !target));
+  let b = target ? centre(target) : null;
+  if(!b){ const rx = th ? th.rx : 0, ry = th ? th.ry : (a.y > innerHeight/2 ? -a.h*1.4 : a.h*1.4); b = {x:a.x + rx, y:a.y + ry}; } // a whiff: where its target stood
+  const out = (o.flight || 520)/1000, home = out*1.15, inT = castle ? .45 : .5;
+  const bm = layer('sfx-boomerang', '🪃'); g.set(bm, {xPercent:-50, yPercent:-50});
+  let m1;
+  const tl = g.timeline({onComplete:()=>{ bm.remove(); if(key) delete BOOM_FLIGHTS[key]; }});
+  if(castle){ m1 = {x:(a.x + b.x)/2 + 40, y:(a.y + b.y)/2};
+    // back in the way it left: down from above the top of the screen, past the bounce point, into the castle
+    g.set(bm, {x:b.x + 60, y:-120}); tl.to(bm, {x:b.x + 30, y:b.y + 26, duration:inT - .1, ease:'power2.out'}).to(bm, {x:b.x, y:b.y, duration:.1, ease:'power1.out'});
+  } else {
+    const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, ux = th && th.ux != null ? th.ux : dx/L, uy = th && th.uy != null ? th.uy : dy/L;
+    m1 = {x:(a.x + b.x)/2 + dy*0.22, y:(a.y + b.y)/2 - dx*0.22};
+    // straight back in along the line it flew out on (where it left the field)
+    const D = Math.max(innerWidth, innerHeight); g.set(bm, {x:b.x + ux*D, y:b.y + uy*D}); tl.to(bm, {x:b.x, y:b.y, duration:inT, ease:'power1.out'});
+  }
+  if(key) BOOM_FLIGHTS[key] = Date.now() + Math.round((inT + home + .6)*1000);
   const s = {t:0};
-  g.timeline({onComplete:()=> bm.remove()})
-    .to(bm, {x:b.x, y:b.y, duration:down, ease:'power2.in'})
-    .to(bm, {rotation:`+=${360*5}`, duration:down + home, ease:'none'}, 0)
-    .add(()=>{ feathers(b.x, b.y, 8); knock(target, -40, 0.9); o.onImpact && o.onImpact(); }, down)
-    .to(s, {t:1, duration:home, ease:'power2.out', onUpdate:()=>{ const p = qpt(b, m2, a, s.t); g.set(bm, {x:p.x, y:p.y}); }}, down)
-    .to(bm, {scale:.5, opacity:0, duration:.12}, down + home - .12);
+  tl.to(bm, {rotation:`+=${360*6}`, duration:inT + home, ease:'none'}, 0)
+    .add(()=>{ if(target && !o.whiff){ if(castle){ knock(target, -40, .8); ring(b.x, b.y, 'sfx-ring-dust', 60, 420); } else { feathers(b.x, b.y, 8); knock(target, -40, 0.9); } }
+      if(!o.whiff) o.onImpact && o.onImpact(); }, inT)
+    // home along the throw's own curve, backwards (target → m1 → thrower)
+    .to(s, {t:1, duration:home, ease:'power1.out', onUpdate:()=>{ const p = qpt(b, m1, a, s.t); g.set(bm, {x:p.x, y:p.y}); }}, inT);
+  if(o.catch !== false) tl.add(()=>{ ring(a.x, a.y - a.h*.08, 'sfx-ring-catch', 54, 320); knock(thrower, 90, .45); }, inT + home).to(bm, {scale:.55, opacity:0, duration:.16}, inT + home);
+  else tl.to(bm, {scale:.5, opacity:0, duration:.12}, inT + home - .12);
 }
 // Shield Call: a big round shield drops from above into a slot and lands with a dust ring.
 function shieldDrop(target, o){
@@ -1046,7 +1074,7 @@ function windField(host, strength, dir){
 }
 function windFieldClear(host){ if(!host) return; host.querySelectorAll(':scope > .sfx-windfield').forEach(cur=>{ cur.classList.remove('is-in'); cur.classList.add('is-out'); setTimeout(()=> cur.remove(), 700); }); }
 function setImages(arrow, fire){ IMG.arrow = arrow || ''; IMG.fire = fire || ''; }
-root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, boomerangThrow, boomerangCastle, boomerangReturn, shieldDrop, backstab, elementDeath, feathers};
+root.SkillFX = {bowShot, volley, pierce, dart, frostBolt, lightning, heal, shieldUp, rally, setImages, knock, burst, ring, boomerang, boomerangThrow, boomerangCastle, boomerangReturn, boomerangInFlight, shieldDrop, backstab, elementDeath, feathers};
 Object.assign(root.SkillFX, {swarm, regen, poisonCloud, bleedDrip, thorns, earthquake, quickStrike, evasiveDodge, evasiveDodgeHit, cleave, cleaveSwing, pounceOnto, guardian, dynamite, helmetDeflect, darksight, frostChill, scorch, immolate, scorchMark, lanternGlow,
   shockwave, castleCrumble, levelUp, unlockSparkle, skyDrop, windField, windFieldClear});
 // ---- 2026-10-14 (sixth pass): Fireball, Meteor, Banana.
@@ -1864,4 +1892,112 @@ function poisonPop(target, n, o){
 }
 root.SkillFX.poisonPop = poisonPop;
 Object.assign(root.SkillFX, {w2Css, venomBite, toxinMark, weakenDrain, wilt, bulldozeShove, vineBind, squeeze, invincibleBlock, unveil, gasCloud, absoluteZero, trapSet, trapSnap, nova, crystalForm, cure, tauntCall, cloudShadows, healPlus});
+// ---- 2026-10-17 (wave, tide, boomerang): the Wave / Awash push and the tide's sway --------------------------------------------
+//   SkillFX.waveRide(card, opts{from, dir, scale, speed, touch})   the pushed card rides a crest from its old slot (from: its old rect)
+//   SkillFX.waveBob(card, opts{dir, scale, speed, touch})          blocked both ways: it bobs as the crest rolls past and nudges `touch`
+//   SkillFX.tideSway(cards, opts{kind:'flow'|'ebb', high, speed})  Flood / Ebb: every card rocks a little as the water passes
+// 2026-10-17 (user: "Wave: Improve this vfx. I like the current direction. Just have to improve the execution. The card doesn't move also -
+// it teleports. Make it ride the wave and move to its new location."): the game re-renders the board first (the card is already in its new
+// slot, and the board's own glide is moving the .board-card there); waveRide moves the card's tile so that what you see travels from the
+// old slot to wherever the card really is, on a sine ease, lifted on the crest and leaning into the push, with the crest under it the
+// whole way; the crest then runs on and breaks in a spray as the card drops into its slot and bobs. It reads the card's live position
+// every frame, so it lands exactly where the card ends up whatever the board's own glide does.
+function w17Css(){
+  if(document.getElementById('sfx-w17-css')) return; const st = document.createElement('style'); st.id = 'sfx-w17-css';
+  st.textContent = `
+.sfx-ring.sfx-ring-catch{border:3px solid rgba(255,233,168,.95); box-shadow:0 0 10px rgba(255,214,120,.7);}
+.sfx-ring.sfx-water17{border:3px solid rgba(140,210,255,.85); box-shadow:0 0 10px rgba(80,170,255,.5), inset 0 0 6px rgba(210,240,255,.6); transform:scaleY(.38);}
+.sfx-crest17 svg{display:block; width:100%; height:100%; overflow:visible; filter:drop-shadow(0 2px 3px rgba(10,50,110,.35));}
+.sfx-foam17{width:7px; height:7px; border-radius:50%; background:radial-gradient(circle at 40% 40%, #fff, rgba(225,246,255,.85) 55%, rgba(200,236,255,0) 72%);}
+.sfx-drop17{width:6px; height:9px; border-radius:50% 50% 50% 50% / 62% 62% 38% 38%; background:radial-gradient(circle at 40% 60%, #f2fbff, #69c2f4 55%, #2273bf);}
+`;
+  (document.head || document.body).appendChild(st);
+}
+let CREST17 = 0;
+// a crest facing right (flip it with scaleX:-1): the back slope, the peak, a lip curling forward with foam along its top
+function crest17SVG(){ const id = 'sfxcr' + (++CREST17);
+  return `<svg viewBox="0 0 100 50" preserveAspectRatio="none"><defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ecfbff"/><stop offset=".18" stop-color="#93dcff"/><stop offset=".58" stop-color="#2e95da"/><stop offset="1" stop-color="#1d5ea6" stop-opacity=".15"/></linearGradient></defs>`
+    + `<path d="M0,50 C12,46 24,34 40,22 C54,12 68,5 80,7 C91,9 99,17 94,26 C90,20 82,19 77,25 C72,32 75,43 86,50 Z" fill="url(#${id})"/>`
+    + `<path d="M30,30 C44,18 60,8 78,7 C90,8 98,16 94,25" fill="none" stroke="#fff" stroke-width="3.2" stroke-linecap="round" opacity=".92"/>`
+    + `<path d="M12,44 C22,39 30,33 38,27" fill="none" stroke="#e2f7ff" stroke-width="1.6" stroke-linecap="round" opacity=".7"/></svg>`; }
+function foam17(x, y, dir){ const g = G(); if(!g) return; const f = layer('sfx-foam17'); const s = rnd(.6, 1.3);
+  g.set(f, {x:x + rnd(-4, 4), y:y + rnd(-3, 3), xPercent:-50, yPercent:-50, scale:s, opacity:.9});
+  g.to(f, {x:`+=${-dir*rnd(8, 18)}`, y:`+=${rnd(2, 8)}`, scale:s*.3, opacity:0, duration:rnd(.35, .6), ease:'power1.out', onComplete:()=> f.remove()}); }
+function spray17(x, y, dir, n){ const g = G(); if(!g) return;
+  for(let i = 0; i < (n || 9); i++){ const d = layer('sfx-drop17'), a = rnd(25, 80) * Math.PI/180, v = rnd(22, 52), vx = dir*Math.abs(Math.cos(a))*v*.8 + rnd(-6, 6);
+    g.set(d, {x, y, xPercent:-50, yPercent:-50, opacity:1, rotation:dir*rnd(10, 40)});
+    g.to(d, {keyframes:[{x:`+=${vx*.6}`, y:`+=${-Math.abs(Math.sin(a))*v}`, duration:.24, ease:'power2.out'}, {x:`+=${vx*.4}`, y:`+=${v*.9}`, opacity:0, duration:.3, ease:'power2.in'}], onComplete:()=> d.remove()}); } }
+// a small rock of a card's tile: up, a little lean, back down (a neighbour the water touches)
+function bob17(el, amp, dir, spd, sc){ const g = G(), t = tileOf(el); if(!g || !t || g.isTweening(t)) return; spd = spd || 1; sc = sc || 1;
+  g.timeline().to(t, {y:-amp/sc, rotation:dir*1.5, duration:.2/spd, ease:'sine.out'}).to(t, {y:0, rotation:0, duration:.42/spd, ease:'elastic.out(1, .55)', clearProps:'transform'}); }
+function waveRide(el, o){
+  o = o || {}; const g = G(), t = tileOf(el);
+  if(!g || !el || !t || !o.from || reduce()){ call(o.onDone); return; }
+  w17Css();
+  const sc = o.scale > 0 ? o.scale : 1, F = o.from, fc = {x:F.left + F.width/2, y:F.top + F.height/2}, W = F.width, H = F.height;
+  const spd = Math.max(.6, Math.min(3, o.speed || 1)), dur = .76/spd;
+  const live = ()=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2}; };
+  const L0 = live(), dir = o.dir === 'left' ? -1 : o.dir === 'right' ? 1 : (L0.x >= fc.x ? 1 : -1);
+  g.killTweensOf(t); g.set(t, {x:(fc.x - L0.x)/sc, y:(fc.y - L0.y)/sc, rotation:0});
+  const cr = layer('sfx-crest17', crest17SVG());
+  g.set(cr, {x:fc.x - dir*W*.32, y:fc.y + H*.5 + 4, width:W*1.45, height:H*.62, xPercent:-50, yPercent:-100, scaleX:dir, scaleY:.3, opacity:0, transformOrigin:'50% 100%'});
+  later(()=> cr.remove(), Math.round((dur + 1.2)*1000)); // in case the timeline is killed
+  ring(fc.x, fc.y + H*.48, 'sfx-water17', W*1.15, 420); // the water gathers under it
+  const ease = g.parseEase('sine.inOut'), s = {p:0}; let lastFoam = -1e9;
+  const pos = p=>{ const Lc = live(), e = ease(p); return {Lc, x:fc.x + (Lc.x - fc.x)*e, y:fc.y + (Lc.y - fc.y)*e}; };
+  const tl = g.timeline({onComplete:()=>{ g.set(t, {clearProps:'transform'}); call(o.onDone); }});
+  tl.to(cr, {opacity:1, scaleY:1, duration:.16/spd, ease:'power2.out'}, 0)
+    .to(s, {p:1, duration:dur, ease:'none', onUpdate:()=>{
+      const p = s.p, q = pos(p), lift = Math.sin(Math.PI*p)*H*.2;
+      g.set(t, {x:(q.x - q.Lc.x)/sc, y:(q.y - q.Lc.y - lift)/sc, rotation:dir*6*Math.sin(Math.PI*p)});
+      g.set(cr, {x:q.x - dir*W*(.32 - .27*p), y:q.y + H*.5 + 4 - lift*.25});
+      const ms = p*dur*1000; if(ms - lastFoam > 55 && p < .9){ lastFoam = ms; foam17(q.x - dir*W*.62, q.y + H*.44, dir); } }}, 0)
+    // the crest runs on past the new slot and breaks in a spray
+    .to(cr, {x:`+=${dir*W*.75}`, scaleY:.22, opacity:0, duration:.34/spd, ease:'power1.in'}, dur)
+    .add(()=>{ const q = live(); spray17(q.x + dir*W*.35, q.y + H*.32, dir); ring(q.x, q.y + H*.48, 'sfx-water17', W*1.3, 480); }, dur*.92)
+    // it drops into the slot and bobs back up
+    .to(t, {y:3/sc, rotation:-dir*1.2, duration:.12/spd, ease:'power2.out'}, dur)
+    .to(t, {y:0, rotation:0, duration:.38/spd, ease:'elastic.out(1, .5)'}, dur + .12/spd)
+    .add(()=> cr.remove(), dur + .42/spd);
+  (o.touch || []).forEach(n=>{ if(n && n !== el) later(()=> bob17(n, H*.05, -dir, spd, sc), dur*450); }); // a unit it swapped with rocks as the crest passes it
+}
+// 2026-10-17 (user: "If you're blocked on both sides, the unit just bobs up then down, while the wave rides past, touching and bobbing
+// (slightly) the other card."): the crest rolls in from behind, under the card and on past it; the card rises on it and settles back where
+// it was; each unit in `touch` (the ones beside it) bobs a little as the crest reaches it.
+function waveBob(el, o){
+  o = o || {}; const g = G(), t = tileOf(el);
+  if(!g || !el || !t || reduce()){ call(o.onDone); return; }
+  w17Css();
+  const sc = o.scale > 0 ? o.scale : 1, c = centre(el), W = c.w, H = c.h, spd = Math.max(.6, Math.min(3, o.speed || 1)), dur = .95/spd, dir = o.dir === 'left' ? -1 : 1;
+  const x0 = c.x - dir*W*1.35, x1 = c.x + dir*W*1.35, cr = layer('sfx-crest17', crest17SVG());
+  g.set(cr, {x:x0, y:c.r.bottom + 4, width:W*1.3, height:H*.5, xPercent:-50, yPercent:-100, scaleX:dir, scaleY:.35, opacity:0, transformOrigin:'50% 100%'});
+  later(()=> cr.remove(), Math.round((dur + 1)*1000));
+  g.timeline({onComplete:()=> cr.remove()})
+    .to(cr, {opacity:1, scaleY:1, duration:.15/spd, ease:'power2.out'}, 0)
+    .to(cr, {x:x1, duration:dur, ease:'none'}, 0)
+    .to(cr, {opacity:0, scaleY:.3, duration:.24/spd, ease:'power1.in'}, dur - .2/spd);
+  g.killTweensOf(t);
+  g.timeline({onComplete:()=> call(o.onDone)})
+    .to(t, {y:-H*.13/sc, rotation:dir*2.5, duration:dur*.4, ease:'sine.out'}, dur*.24)
+    .to(t, {y:2/sc, rotation:-dir, duration:dur*.3, ease:'sine.inOut'})
+    .to(t, {y:0, rotation:0, duration:.32/spd, ease:'elastic.out(1, .5)', clearProps:'transform'});
+  later(()=>{ spray17(c.x + dir*W*.2, c.r.bottom - H*.18, dir, 6); ring(c.x, c.r.bottom - 6, 'sfx-water17', W*1.1, 420); }, dur*480);
+  (o.touch || []).forEach(n=>{ if(!n || n === el) return; const k = Math.max(0, Math.min(1, (centre(n).x - x0) / (x1 - x0))); later(()=> bob17(n, H*.05, dir, spd, sc), k*dur*1000); });
+}
+// 2026-10-17 (user: "Improve the tide animations. It should impact all of the cards very slightly, BUT all the tide and swimmer cards float
+// up - half way like they are flying."): as the Flood comes in (from the foot of the board up) or the Ebb drains away (from the top down),
+// every card rocks a little as the water passes it: a pixel or two and under a degree; the Tide units and Swimmers (.is-floating, which
+// hover half as high as flyers) lift with it more; flyers, above the water, barely stir. A card that is already moving is left alone.
+function tideSway(cards, o){
+  o = o || {}; const g = G(), list = (cards || []).filter(Boolean); if(!g || !list.length || reduce()) return;
+  const ebb = o.kind === 'ebb', spd = Math.max(.6, Math.min(3, o.speed || 1)), big = o.high ? 1.35 : 1, ys = list.map(el=> centre(el).y);
+  const y0 = Math.min(...ys), span = Math.max(1, Math.max(...ys) - y0), sc = o.scale > 0 ? o.scale : 1;
+  list.forEach((el, i)=>{ const t = tileOf(el); if(!t || g.isTweening(t) || g.isTweening(el)) return;
+    const f = (ys[i] - y0)/span, delay = (ebb ? f : 1 - f)*.5/spd + rnd(0, .06);
+    const fl = el.classList.contains('is-floating'), fly = el.classList.contains('is-flying');
+    const amp = (fl ? 4 : fly ? .8 : 1.6)*big/sc, rot = (i % 2 ? 1 : -1)*(fl ? 1.3 : fly ? .3 : .7)*big, s = ebb ? -.6 : 1;
+    g.to(t, {keyframes:[{y:-amp*s, rotation:rot, x:rot*.8/sc, duration:.42/spd, ease:'sine.out'}, {y:amp*.35*s, rotation:-rot*.6, x:-rot*.5/sc, duration:.46/spd, ease:'sine.inOut'},
+      {y:0, rotation:0, x:0, duration:.5/spd, ease:'sine.inOut'}], delay, clearProps:'transform'}); });
+}
+Object.assign(root.SkillFX, {waveRide, waveBob, tideSway});
 })(typeof window !== 'undefined' ? window : globalThis);

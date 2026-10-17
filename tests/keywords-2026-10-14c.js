@@ -79,7 +79,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   e.debugAttack(P, so, W.uid, {}, []); const s1 = T.slot; W.slot = s1; e.syncSlots(P[1]); P[1].row.center = []; P[1].row.left = s1 < 0 ? [W] : []; P[1].row.right = s1 > 0 ? [W] : [];
   e.debugAttack(P, so, W.uid, {}, []); ok(s1 === -1 && T.slot === 0, `Wave alternate: left, then right (${s1}, ${T.slot})`); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'kc-wall', -1); put(e, P, 2, 'kc-wall', 3); const W = put(e, P, 1, 'kc-waveT', -1);
-  e.debugAttack(P, so, W.uid, {}, []); ok(T.slot === 0, `Wave (true): toward the side with more room (${T.slot})`); }
+  e.debugAttack(P, so, W.uid, {}, []); ok(T.slot === 0 || T.slot === -2, `Wave (true): one free column either way (${T.slot})`); } // 2026-10-17: a slight lean inward, not "toward more room" (tests/wave-tide-2026-10-17.js)
 { const {e, P} = mk({}, 3, 'gravity'); ['kc-wall','kc-hit','kc-hit'].forEach((id, i)=> e.debugSpawnCard(P, so, 2, id, i === 2 ? 'right' : 'left', {}, [])); e.debugSpawnCard(P, so, 1, 'kc-waveL', 'left', {}, []);
   const order = ()=> [...P[2].row.left].reverse().concat(P[2].row.center, P[2].row.right).map(c=> c.defId).join();
   const before = order(); const T = P[2].row.center[0]; const ev = []; e.debugAttack(P, so, byDef(P[1], 'kc-waveL').uid, {}, ev);

@@ -1203,6 +1203,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       pl.hand.forEach(h=>{ const d = CARD_DEFS[h.defId]; if(!d || d.field || ['spell', 'equipment', 'materia'].includes(d.cardType)) return; h.consterned = (h.consterned||0) + n; k++; });
       if(k) ev({type:'fieldTick', field:'consternation', side:sideOf(pid), count:k, amount:n}); }); }
     if(hurt) removeDeadCards(players, sideOf, {}, stats, events);
+    // Awash (2026-10-17, user: "New field effect: Awash 1-3 every turn to a random card."): rules.awash. Each round from round 2 the water
+    // takes one random unit (either side; not a pinned or Webbed one, not a cage) and washes it 1–3 columns (rolled each round; a number
+    // on the flag caps the roll), by washPush's rules for a push with no fixed way: a slight lean inward, the other way when that way is
+    // blocked, a bob in place when both are. Logs fieldTick {field:'awash', uid, n} (or {none}), then the wave event {awash:true}.
+    if(rules.awash){ const cap = Math.max(1, Math.min(3, Math.round(fxN(rules.awash, 3)))), pool = [1,2].flatMap(pid=> liveUnits(players[pid]).filter(c=> !stuckFast(c)).map(c=> [pid, c]));
+      if(pool.length){ const [pid, c] = pool[Math.floor(rnd()*pool.length)], n = 1 + Math.floor(rnd()*cap);
+        ev({type:'fieldTick', field:'awash', round, side:sideOf(pid), uid:c.uid, defId:c.defId, n});
+        washPush(players, sideOf, pid, c, n, 0, {type:'wave', awash:true, side:sideOf(pid), attUid:null, attDefId:null, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, moves:[], blocked:false, slotMode}, events, stats); }
+      else ev({type:'fieldTick', field:'awash', round, none:true}); }
     // Mirage: a random unit on the field (either side) gets a 1/1 Illusion beside it that copies only Flying, Tide / Swimmer, Haste and Speed.
     // It takes a free slot right beside the unit; with both taken (or on a packed row with no room) no illusion appears.
     if(rules.mirage){ const pool = [1,2].flatMap(pid=> liveUnits(players[pid]).filter(c=> !(CARD_DEFS[c.defId]||{}).illusionOf).map(c=> [pid, c]));
@@ -1403,8 +1412,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // Wave (2026-10-14, user: "Sea creatures might have more skills related to water. Such as pushing creatures left or right -
   // waves."): effects.wave 'left' | 'right' | 'alternate' | true. When its attack lands on a unit (and the unit lives), the unit is
-  // pushed one column that way: 'alternate' goes left on its first swing, then right, and so on; true goes toward the side with
-  // more room (a seeded coin flip on a tie). If a unit stands in that column, the two swap. Open boards: the board's edge is the
+  // pushed one column that way: 'alternate' goes left on its first swing, then right, and so on; true has no fixed way (since
+  // 2026-10-17 a slight lean inward and no swap, see washPush below). If a unit stands in that column, the two swap. Open boards: the board's edge is the
   // outermost column any unit on either side stands in, and a push never goes past it; a pinned unit or a cage can't be moved and
   // blocks the push. Slotless rows are always packed, so there the unit swaps with its neighbour, if it has one that way.
   function relayoutRow(pl){
@@ -1419,29 +1428,65 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     let dir = v === 'left' ? -1 : v === 'right' ? 1 : 0;
     if(v === 'alternate'){ att.waveFlip = !att.waveFlip; dir = att.waveFlip ? -1 : 1; }
     const ev = {type:'wave', side:sideOf(attPid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:t.uid, targetDefId:t.defId, moves:[], blocked:false, slotMode};
-    let other = null;
+    return washPush(players, sideOf, tpid, t, 1, dir, ev, events, stats);
+  }
+  // 2026-10-17 (user: "Oh for Awash skills, there's always a slight bias towards awashing inwards - very slight. If it's awash 1 and
+  // there's another unit in the way, push the other way instead. If you're blocked on both sides, the unit just bobs up then down,
+  // while the wave rides past, touching and bobbing (slightly) the other card."): the push shared by Wave and the Awash field.
+  //   A fixed way (Wave left / right / alternate) is unchanged: one column that way, swapping with a unit standing there; the board's
+  //   edge, or a pinned / Webbed unit or a cage there, blocks it.
+  //   No fixed way (Wave true, which used to go "toward the side with more room", and the Awash field): inward (toward the middle of
+  //   the board) 55 in 100, outward 45 (a coin flip from the middle column). On an open board it never swaps: the unit rides up to n
+  //   free columns that way and stops at the first unit or at the edge. If it can't move a single column that way, it goes the other
+  //   way instead (ev.bounced). Blocked both ways it stays put and bobs: ev.blocked and ev.bob, with ev.touchUids the units beside it
+  //   that the wave touches on its way past. A packed (slotless) row has no free columns, so there it still trades places, up to n
+  //   places along the row (ev.order: the row's uids after the move), with the same lean and the same fallback the other way.
+  const WASH_INWARD = 0.55;
+  function washDir(pos, mid){ if(pos === mid) return rnd() < .5 ? -1 : 1; const inward = pos > mid ? -1 : 1; return rnd() < WASH_INWARD ? inward : -inward; }
+  function washPush(players, sideOf, tpid, t, n, dir, ev, events, stats){
+    const pl = players[tpid]; n = Math.max(1, Math.round(Number(n) || 1));
+    let other = null; const shifted = [];
+    const blocks = c=> !!(c && c.hp > 0 && (stuckFast(c) || c.cageOf));
     if(slotMode){
       syncSlots(players[1]); syncSlots(players[2]);
       const edge = Math.max(1, ...[1,2].flatMap(pid=> players[pid] ? allBoardCards(players[pid]).filter(c=> c.hp > 0 && !c.gap).map(c=> Math.abs(c.slot)) : []));
       const s0 = t.slot;
-      if(!dir){ const roomL = s0 + edge, roomR = edge - s0; dir = roomL > roomR ? -1 : roomR > roomL ? 1 : (rnd() < .5 ? -1 : 1); }
-      const d = s0 + dir; ev.dir = dir < 0 ? 'left' : 'right';
-      other = allBoardCards(pl).find(c=> c !== t && c.slot === d) || null;
-      if(Math.abs(d) > edge || (other && other.hp > 0 && (stuckFast(other) || other.cageOf))){ ev.blocked = true; other = null; }
-      else { t.slot = d; ev.moves.push({uid:t.uid, from:s0, to:d}); if(other){ other.slot = s0; ev.moves.push({uid:other.uid, from:d, to:s0}); ev.swapUid = other.uid; } relayoutRow(pl); }
+      if(dir){
+        const d = s0 + dir; ev.dir = dir < 0 ? 'left' : 'right';
+        other = allBoardCards(pl).find(c=> c !== t && c.slot === d) || null;
+        if(Math.abs(d) > edge || blocks(other)){ ev.blocked = true; other = null; }
+        else { t.slot = d; ev.moves.push({uid:t.uid, from:s0, to:d}); if(other){ other.slot = s0; ev.moves.push({uid:other.uid, from:d, to:s0}); ev.swapUid = other.uid; } relayoutRow(pl); }
+      } else {
+        const occ = new Map(allBoardCards(pl).filter(c=> c !== t && c.hp > 0 && !c.gap).map(c=> [c.slot, c]));
+        const reach = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > edge || occ.has(d)) break; s = d; } return s; };
+        const first = washDir(s0, 0); let way = first, to = reach(way);
+        if(to === s0){ way = -first; to = reach(way); if(to !== s0) ev.bounced = true; }
+        ev.n = n;
+        if(to === s0){ ev.dir = first < 0 ? 'left' : 'right'; ev.blocked = true; ev.bob = true; ev.touchUids = [s0 - 1, s0 + 1].map(s=> occ.get(s)).filter(Boolean).map(c=> c.uid); }
+        else { ev.dir = way < 0 ? 'left' : 'right'; t.slot = to; ev.moves.push({uid:t.uid, from:s0, to}); ev.cols = Math.abs(to - s0); relayoutRow(pl); }
+      }
     } else {
-      const order = physicalRowOrder(pl), i = order.indexOf(t);
-      if(!dir){ const roomL = i, roomR = order.length - 1 - i; dir = roomL > roomR ? -1 : roomR > roomL ? 1 : (rnd() < .5 ? -1 : 1); }
-      const j = i + dir; ev.dir = dir < 0 ? 'left' : 'right'; other = order[j] || null;
-      if(i < 0 || !other || stuckFast(other) || other.cageOf){ ev.blocked = true; other = null; }
-      else { const L = pl.row.left.length, C = pl.row.center.length; order[i] = other; order[j] = t;
-        pl.row.left = order.slice(0, L).reverse(); pl.row.center = order.slice(L, L + C); pl.row.right = order.slice(L + C);
-        ev.swapUid = other.uid; ev.aUid = t.uid; ev.bUid = other.uid; }
+      const order = physicalRowOrder(pl), i = order.indexOf(t), L = pl.row.left.length, C = pl.row.center.length;
+      const relay = ()=>{ pl.row.left = order.slice(0, L).reverse(); pl.row.center = order.slice(L, L + C); pl.row.right = order.slice(L + C); };
+      if(dir){
+        const j = i + dir; ev.dir = dir < 0 ? 'left' : 'right'; other = order[j] || null;
+        if(i < 0 || !other || blocks(other)){ ev.blocked = true; other = null; }
+        else { order[i] = other; order[j] = t; relay(); ev.swapUid = other.uid; ev.aUid = t.uid; ev.bUid = other.uid; }
+      } else {
+        const reach = w=>{ let j = i; for(let k = 0; k < n; k++){ const nx = order[j + w]; if(!nx || blocks(nx)) break; j += w; } return j; };
+        const first = i < 0 ? 1 : washDir(i, (order.length - 1) / 2); let way = first, j = i < 0 ? i : reach(way);
+        if(i >= 0 && j === i){ way = -first; j = reach(way); if(j !== i) ev.bounced = true; }
+        ev.n = n; ev.dir = (j === i ? first : way) < 0 ? 'left' : 'right';
+        if(i < 0 || j === i){ ev.blocked = true; ev.bob = true; ev.touchUids = i < 0 ? [] : [order[i - 1], order[i + 1]].filter(c=> c && c.hp > 0).map(c=> c.uid); }
+        else { const lo = Math.min(i, j), hi = Math.max(i, j); for(let k = lo; k <= hi; k++) if(order[k] !== t) shifted.push(order[k]);
+          order.splice(i, 1); order.splice(j, 0, t); relay(); ev.moves.push({uid:t.uid, from:i, to:j}); ev.cols = Math.abs(j - i); ev.order = order.map(c=> c.uid);
+          if(shifted.length === 1){ other = shifted[0]; ev.swapUid = other.uid; ev.aUid = t.uid; ev.bUid = other.uid; } }
+      }
     }
     if(recordEvents && events) events.push(ev);
     if(!ev.blocked){ // a pushed unit has moved: its On Move triggers fire (as Scurry's do)
       runCustomTriggers(players, sideOf, tpid, t, CARD_DEFS[t.defId], 'onMove', stats || {}, events, {movedCard: other || t});
-      if(other && other.hp > 0) runCustomTriggers(players, sideOf, tpid, other, CARD_DEFS[other.defId], 'onMove', stats || {}, events, {movedCard: t}); }
+      (other ? [other] : shifted).forEach(o=>{ if(o && o.hp > 0) runCustomTriggers(players, sideOf, tpid, o, CARD_DEFS[o.defId], 'onMove', stats || {}, events, {movedCard: t}); }); }
     return ev;
   }
   function deriveDef(card, grant){
