@@ -33725,6 +33725,14 @@ const FONTS = {
   'ja': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans JP','Hiragino Sans','Yu Gothic',system-ui,sans-serif"},
   'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
 };
+// 2026-10-18 (roadmap P6): the desktop build ships these fonts (electron/fonts → fonts/script/<code>.css, subset to the
+// packs' characters) so they work offline. The website keeps Google Fonts, so it gains no bytes. If the local CSS is
+// missing (an unstaged dev copy), the link swaps to the Google URL.
+if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || '')){
+  for(const c in FONTS){ FONTS[c].web = FONTS[c].css; FONTS[c].css = 'fonts/script/' + c + '.css'; }
+  document.addEventListener('error', e=>{ const l = e.target, f = l && l.dataset && FONTS[l.dataset.langFont];
+    if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
+}
 const KEY = 'bramblewood_lang_v1';
 const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=97aa5107d7", "es": "assets/lang/es.js?v=8f8c474a42", "fr": "assets/lang/fr.js?v=9f12ac993c", "id": "assets/lang/id.js?v=29a2283330", "it": "assets/lang/it.js?v=36332fe47e", "ja": "assets/lang/ja.js?v=fb9353fe82", "ko": "assets/lang/ko.js?v=e2339bfda2", "pt": "assets/lang/pt.js?v=b4aff06a29", "ta": "assets/lang/ta.js?v=bc603b3b9c", "tl": "assets/lang/tl.js?v=dbc6921208", "zh-Hans": "assets/lang/zh-Hans.js?v=a74f7afe4c", "zh-Hant": "assets/lang/zh-Hant.js?v=2d1203cf28"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
@@ -36988,7 +36996,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '9d66f9fb8150', BUILD_CARD_HASH = 'adce97ad4d4027ff7e4d2d528a7bcc6c78b2f86cb2439eec365ce5fff1b40b94';
+const BUILD_ID = '0fd19cca501f', BUILD_CARD_HASH = 'adce97ad4d4027ff7e4d2d528a7bcc6c78b2f86cb2439eec365ce5fff1b40b94';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -66628,28 +66636,30 @@ const FIELD_ART = {
   sandstorm:{art:'assets/fields/sandstorm.png?v=f9d6200fc8'}, scorching:{art:'assets/fields/scorching.png?v=087d94132d'}, scorched:{art:'assets/fields/scorched.png?v=8b446156d9'},
   lavatide:{art:'assets/fields/lavatide.png?v=ca377356cc'}, petrify:{art:'assets/fields/petrify.png?v=0f0cd69b95'}, eruption:{art:'assets/fields/eruption.png?v=d4d62ef08e'},
   surge:{art:'assets/fields/surge.png?v=a3a724ff03'}, mines:{art:'assets/fields/mines.png?v=c7be1c5030'}, rain:{art:'assets/fields/rain.png?v=3a6bd2899c'},
-  // Field effects 2 (2026-10-16): a key per new card, each with its own scene since 2026-10-17 (Leylines I-III share one). A path whose
+  // Field effects 2 (2026-10-16): a key per new card, each with its own scene since 2026-10-17 (Leylines I-III each their own since 2026-10-18). A path whose
   // file doesn't exist shows the card's icon (the build only hashes files that exist).
   tide:{art:'assets/fields/tide.png?v=72afb122e0'}, landslide:{art:'assets/fields/landslide.png?v=349ad48245'}, consternation:{art:'assets/fields/consternation.png?v=95dee5c243'},
   crushingdepths:{art:'assets/fields/crushingdepths.png?v=2a205a0e5b'}, rookrow:{art:'assets/fields/rookrow.png?v=6627a011d0'}, bishoppath:{art:'assets/fields/bishoppath.png?v=722ccd4bb1'},
   mirage:{art:'assets/fields/mirage.png?v=c14404e913'}, canopy:{art:'assets/fields/canopy.png?v=b4046adf35'}, undergrowth:{art:'assets/fields/undergrowth.png?v=04f8fd0e5d'}, tallgrass:{art:'assets/fields/tallgrass.png?v=eede8aaa96'},
   slippery:{art:'assets/fields/slippery.png?v=d4743fc10d'}, glassstorm:{art:'assets/fields/glassstorm.png?v=0c2886e48b'}, hail:{art:'assets/fields/hail.png?v=09221a4cbb'}, lavaspout:{art:'assets/fields/lavaspout.png?v=bac620256e'},
-  leylines1:{art:'assets/fields/leylines.png?v=629b093377'}, leylines2:{art:'assets/fields/leylines.png?v=629b093377'}, leylines3:{art:'assets/fields/leylines.png?v=629b093377'}, haunted:{art:'assets/fields/haunted.png?v=9882d1fda0'},
+  leylines1:{art:'assets/fields/leylines1.png?v=04c8df4dc8'}, leylines2:{art:'assets/fields/leylines2.png?v=9c5ade7e11'}, leylines3:{art:'assets/fields/leylines3.png?v=e578f99cca'}, haunted:{art:'assets/fields/haunted.png?v=9882d1fda0'}, // Leylines I-III: one, two, three strands (2026-10-18)
   // Field effects 3 (2026-10-17).
   sulphurfumes:{art:'assets/fields/sulphurfumes.png?v=befe627180'}, ashrain:{art:'assets/fields/ashrain.png?v=2494f69837'}, ashy:{art:'assets/fields/ashy.png?v=c7d4d3b3e1'}, arrowslits:{art:'assets/fields/arrowslits.png?v=d0d6f71d2d'},
   // 2026-10-17 (art, the user's notes 21 and 26): every field effect has its own scene now (the borrowed ones above got theirs), plus
   // Awash (its card is being added separately; its art key is 'awash') and the volcano's Day/Night Glow pill (it borrowed Twilight).
   awash:{art:'assets/fields/awash.png?v=09ae338c67'}, volcanoglow:{art:'assets/fields/volcanoglow.png?v=5dd2dee481'},
-  // 2026-10-17: the raid's Psychic Dampener (tools/make_field_art_2026_10_17.py), and the Arena's day rules as Environment cards. Those
-  // borrow scenes for now: Lumber Rush / Timber Fair the Undergrowth's fallen logs, Midsummer the Tall Grass's sunny field, Dusk Start and
-  // Restless Sky the Twilight, First Blood the Boss surge, Double Time the Leylines, Collapse the Landslide.
-  psychicdampener:{art:'assets/fields/psychicdampener.png?v=23af523fe8'}, timber:{art:'assets/fields/undergrowth.png?v=04f8fd0e5d'}, midsummer:{art:'assets/fields/tallgrass.png?v=eede8aaa96'},
-  dusk:{art:'assets/fields/twilight.png?v=60d886edbe'}, restless:{art:'assets/fields/twilight.png?v=60d886edbe'}, firstblood:{art:'assets/fields/surge.png?v=a3a724ff03'}, doubletime:{art:'assets/fields/leylines.png?v=629b093377'}, collapse:{art:'assets/fields/landslide.png?v=349ad48245'},
+  // 2026-10-17: the raid's Psychic Dampener (tools/make_field_art_2026_10_17.py), and the Arena's day rules as Environment cards.
+  // 2026-10-18: those day rules no longer borrow other cards' scenes; each has its own (tools/make_field_art_2026_10_18.py): the sawmill
+  // (Lumber Rush), the fair's stalls and bunting (Timber Fair), the high sun (Midsummer), the violet sunset (Dusk), the wind-tossed night
+  // trees (Restless), the red banner at dawn (First Blood), the twin hourglasses (Double Time) and the crumbling cliff (Collapse).
+  psychicdampener:{art:'assets/fields/psychicdampener.png?v=23af523fe8'}, timber:{art:'assets/fields/timberfair.png?v=84c454280d'}, lumberrush:{art:'assets/fields/lumberrush.png?v=a9a9400fac'}, midsummer:{art:'assets/fields/midsummer.png?v=07626d6f7a'},
+  dusk:{art:'assets/fields/dusk.png?v=48bfd50758'}, restless:{art:'assets/fields/restless.png?v=6378c2f445'}, firstblood:{art:'assets/fields/firstblood.png?v=43524e7a53'}, doubletime:{art:'assets/fields/doubletime.png?v=3036516831'}, collapse:{art:'assets/fields/collapse.png?v=9926305627'},
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
   if(k === 'dark') return fr.dark === 'absolute' ? 'absolute' : fr.dark === 'pitch' ? 'pitch' : 'darkness';
   if(k === 'permaTide') return fr.rapids ? 'rapids' : 'permatide';
+  if(k === 'lumberEvery' && /every 2 rounds/.test(row.text || '')) return 'lumberrush'; // Lumber Rush's sawmill, not the Timber Fair (2026-10-18)
   const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
     swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
     eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines', ashyAfter:'ashy', volcanoGlow:'volcanoglow', awash:'awash',

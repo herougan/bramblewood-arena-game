@@ -8,6 +8,17 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Effects Lab: death-ghost / death-dragon / death-supreme / sum-dragon / sum-supreme are marked live; the dragon-scale demo reads 2/8 → 3/8 (there are 8 scales); res-faction-crown and FX.F.factionCrown are gone with grantMap20FactionCrown. sk-chain-lightning and sk-shock-bolt (x17) were dropped by the lab for want of an inventory row: they have one now.
 - **Effects inventory status:** new `tools/effects-lab/refresh_inventory.py` gives every row a status from the lab manifests (live / lab-only / future / missing / retired, plus `lab` and `inGameHook`) and regenerates the counts and entry tables of `docs/effects-inventory-2026-10-15.md`. Now 1035 rows: live 948, lab-only 56, future 22, missing 0, retired 9; the 140 rows rated "missing" on 10-15 are all built.
 
+## 2026-10-18 (desktop build P6: offline fonts, icon, Steam stub)
+- **Desktop only:** Chinese, Japanese, Korean and Tamil now work offline in the Electron build. Noto Sans JP/SC/TC/KR and Baloo Thambi 2 (OFL) ship in `electron/fonts/`, subset to the characters in the language packs (2.3 MB). The website still loads them from Google Fonts (no change in size).
+- **Desktop app icon:** an acorn on a round wooden shield with a bramble ring, drawn in code (`electron/build/make_icon.py`), as PNG, ICO and the Linux/icns sizes, wired into electron-builder.
+- **Steam stub:** `electron/steam.js` + `preload.js` give the page `window.bwDesktop.steam` (achievements, overlay). It's a no-op unless `BRAMBLE_STEAM=1` is set and `steamworks.js` is installed. Nothing calls it yet.
+- Google sign-in stays off in the desktop build (the OAuth redirect can't come back to `app://`). Remaining release work (Steam App ID, Mac notarisation, signing) is in `docs/platform-roadmap-2026-10-17.md`, section "2026-10-18".
+
+## 2026-10-18 (WP5: Arena field scenes)
+- **Every Arena day-rule Environment card has its own picture.** Before, they borrowed other cards' scenes. Now: Lumber Rush shows a sawmill and log pile, Timber Fair stalls and bunting in a clearing, Midsummer a high sun over a flowering meadow, Dusk a violet sunset over a lake, Restless wind-tossed trees at night, First Blood one red banner on a dawn field, Double Time twin hourglasses under a clock ring, and Collapse a cliff edge breaking away.
+- **Leylines I, II and III are drawn apart.** The same plain and standing stone has one, two and three glowing strands, brighter at each level; at III the sky lights up too.
+- The scenes are drawn in code (Pillow + numpy, no art credits) by `tools/make_field_art_2026_10_18.py`. Each is 256x256 and 4-6 KB. `art/fields/leylines.png` is no longer used.
+
 ## 2026-10-18 (great beasts: Leviathan, Dragon-Turtle, Fiend)
 - **Creature rank:** a new card field, `creatureRank`. 1 = the five Dragons, 2 = Leviathans and Dragon-Turtles, 3 = the volcano's fire fiends. It is a design rule (rank 2 sits under the Dragons and above an ordinary Legendary; rank 3 under rank 2); the engine doesn't read it. The Codex card detail shows one line under the chips, e.g. "Rank: Leviathan — second only to Dragons". The new type tags Dragon 🐉, Leviathan 🐋, Dragon-Turtle 🐢 and Fiend 👺 have icons. See `docs/creature-ranks-2026-10-18.md`.
 - **New card: Fathom Leviathan** 🌊 (Legendary, rank 2, Leviathan / Ocean, 9/40, Lumber 4, Wait 4): Supreme, Tide, Tsunami 2, Wave (alternate), Bounty 1. Drops from the Goliath raid, like the Goliath Broodmother.

@@ -22,6 +22,16 @@ Attribution line for Twemoji (CC-BY 4.0): *Twemoji graphics by Twitter, Inc. and
 Self-hosted from Fontsource, SIL Open Font License 1.1: Baloo 2 (Ek Type), Nunito (Vernon Adams et al.), Lilita One (Juan Montoreano),
 MedievalSharp (Wojciech Kalinowski), Caveat (Impallari Type). See `fonts/README.txt`.
 
+Desktop build only (2026-10-18, `electron/fonts/`): offline script fonts for the language packs. The website loads the same
+families from Google Fonts instead.
+
+| Font | Source | Licence | Notes |
+|---|---|---|---|
+| **Noto Sans JP / SC / TC / KR** (500, 700, 800) | © Adobe and Google (Noto Sans CJK / Source Han Sans), npm `@expo-google-fonts/noto-sans-jp`, `-sc`, `-tc`, `-kr` 0.4.4 | SIL OFL 1.1, [`licenses/noto-sans-cjk-OFL-1.1.txt`](licenses/noto-sans-cjk-OFL-1.1.txt) | Subset with fontTools to the characters in `lang/*.json` plus kana, punctuation and full-width forms (`electron/fonts/build_fonts.py`); otherwise unchanged |
+| **Baloo Thambi 2** (500, 700, 800, Tamil subset) | © The Baloo 2 Project Authors (Ek Type), npm `@fontsource/baloo-thambi-2` 5.3.0 | SIL OFL 1.1, [`licenses/baloo-thambi-2-OFL-1.1.txt`](licenses/baloo-thambi-2-OFL-1.1.txt) | Unchanged |
+
+The desktop app icon (`electron/build/`) is drawn in code by `electron/build/make_icon.py`; no third-party art.
+
 ## Code
 
 - **GSAP** 3.13.0 and its Flip plugin, © GreenSock, under the terms at https://gsap.com/standard-license (`gsap.min.js`, `Flip.min.js`).

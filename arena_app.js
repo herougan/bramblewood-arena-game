@@ -32226,28 +32226,30 @@ const FIELD_ART = {
   sandstorm:{art:'art/fields/sandstorm.png'}, scorching:{art:'art/fields/scorching.png'}, scorched:{art:'art/fields/scorched.png'},
   lavatide:{art:'art/fields/lavatide.png'}, petrify:{art:'art/fields/petrify.png'}, eruption:{art:'art/fields/eruption.png'},
   surge:{art:'art/fields/surge.png'}, mines:{art:'art/fields/mines.png'}, rain:{art:'art/fields/rain.png'},
-  // Field effects 2 (2026-10-16): a key per new card, each with its own scene since 2026-10-17 (Leylines I-III share one). A path whose
+  // Field effects 2 (2026-10-16): a key per new card, each with its own scene since 2026-10-17 (Leylines I-III each their own since 2026-10-18). A path whose
   // file doesn't exist shows the card's icon (the build only hashes files that exist).
   tide:{art:'art/fields/tide.png'}, landslide:{art:'art/fields/landslide.png'}, consternation:{art:'art/fields/consternation.png'},
   crushingdepths:{art:'art/fields/crushingdepths.png'}, rookrow:{art:'art/fields/rookrow.png'}, bishoppath:{art:'art/fields/bishoppath.png'},
   mirage:{art:'art/fields/mirage.png'}, canopy:{art:'art/fields/canopy.png'}, undergrowth:{art:'art/fields/undergrowth.png'}, tallgrass:{art:'art/fields/tallgrass.png'},
   slippery:{art:'art/fields/slippery.png'}, glassstorm:{art:'art/fields/glassstorm.png'}, hail:{art:'art/fields/hail.png'}, lavaspout:{art:'art/fields/lavaspout.png'},
-  leylines1:{art:'art/fields/leylines.png'}, leylines2:{art:'art/fields/leylines.png'}, leylines3:{art:'art/fields/leylines.png'}, haunted:{art:'art/fields/haunted.png'},
+  leylines1:{art:'art/fields/leylines1.png'}, leylines2:{art:'art/fields/leylines2.png'}, leylines3:{art:'art/fields/leylines3.png'}, haunted:{art:'art/fields/haunted.png'}, // Leylines I-III: one, two, three strands (2026-10-18)
   // Field effects 3 (2026-10-17).
   sulphurfumes:{art:'art/fields/sulphurfumes.png'}, ashrain:{art:'art/fields/ashrain.png'}, ashy:{art:'art/fields/ashy.png'}, arrowslits:{art:'art/fields/arrowslits.png'},
   // 2026-10-17 (art, the user's notes 21 and 26): every field effect has its own scene now (the borrowed ones above got theirs), plus
   // Awash (its card is being added separately; its art key is 'awash') and the volcano's Day/Night Glow pill (it borrowed Twilight).
   awash:{art:'art/fields/awash.png'}, volcanoglow:{art:'art/fields/volcanoglow.png'},
-  // 2026-10-17: the raid's Psychic Dampener (tools/make_field_art_2026_10_17.py), and the Arena's day rules as Environment cards. Those
-  // borrow scenes for now: Lumber Rush / Timber Fair the Undergrowth's fallen logs, Midsummer the Tall Grass's sunny field, Dusk Start and
-  // Restless Sky the Twilight, First Blood the Boss surge, Double Time the Leylines, Collapse the Landslide.
-  psychicdampener:{art:'art/fields/psychicdampener.png'}, timber:{art:'art/fields/undergrowth.png'}, midsummer:{art:'art/fields/tallgrass.png'},
-  dusk:{art:'art/fields/twilight.png'}, restless:{art:'art/fields/twilight.png'}, firstblood:{art:'art/fields/surge.png'}, doubletime:{art:'art/fields/leylines.png'}, collapse:{art:'art/fields/landslide.png'},
+  // 2026-10-17: the raid's Psychic Dampener (tools/make_field_art_2026_10_17.py), and the Arena's day rules as Environment cards.
+  // 2026-10-18: those day rules no longer borrow other cards' scenes; each has its own (tools/make_field_art_2026_10_18.py): the sawmill
+  // (Lumber Rush), the fair's stalls and bunting (Timber Fair), the high sun (Midsummer), the violet sunset (Dusk), the wind-tossed night
+  // trees (Restless), the red banner at dawn (First Blood), the twin hourglasses (Double Time) and the crumbling cliff (Collapse).
+  psychicdampener:{art:'art/fields/psychicdampener.png'}, timber:{art:'art/fields/timberfair.png'}, lumberrush:{art:'art/fields/lumberrush.png'}, midsummer:{art:'art/fields/midsummer.png'},
+  dusk:{art:'art/fields/dusk.png'}, restless:{art:'art/fields/restless.png'}, firstblood:{art:'art/fields/firstblood.png'}, doubletime:{art:'art/fields/doubletime.png'}, collapse:{art:'art/fields/collapse.png'},
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
   if(k === 'dark') return fr.dark === 'absolute' ? 'absolute' : fr.dark === 'pitch' ? 'pitch' : 'darkness';
   if(k === 'permaTide') return fr.rapids ? 'rapids' : 'permatide';
+  if(k === 'lumberEvery' && /every 2 rounds/.test(row.text || '')) return 'lumberrush'; // Lumber Rush's sawmill, not the Timber Fair (2026-10-18)
   const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
     swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
     eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines', ashyAfter:'ashy', volcanoGlow:'volcanoglow', awash:'awash',

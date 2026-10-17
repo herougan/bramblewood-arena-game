@@ -14,9 +14,15 @@
 //                                                         python3 assemble_arena.py && mv bramblewood-arena.html index.html)
 //                          npm run start:staged         → copies only what ships into ./game and runs that
 //                          npm run dist                 → unpacked app in ./dist (no installer, no signing)
-// Steam (optional, later): npm i steamworks.js, then STEAM_APP_ID=480 npm start (480 = Valve's Spacewar test app).
+// Steam (optional, later): npm i steamworks.js, then BRAMBLE_STEAM=1 npm start with the Steam client running (steam.js;
+// App ID from STEAM_APP_ID or steam_appid.txt, else 480 = Valve's Spacewar test app). Off by default (2026-10-18).
+//
+// Google sign-in stays OFF in this build (2026-10-18): Supabase's OAuth redirects back to location.href, and an app://
+// page can't receive that redirect (Google only returns to registered https:// URLs, and will-navigate below keeps the
+// window on app://). arena_app.js hides the button because isHostedOnline() is false off http(s). The fix is the system
+// browser + PKCE + a bramblewood:// deep link, or Steam ticket sign-in (roadmap §4 row 4, D5).
 'use strict';
-const { app, BrowserWindow, protocol, session, shell, Menu } = require('electron');
+const { app, BrowserWindow, protocol, session, shell, Menu, ipcMain } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -35,7 +41,8 @@ const ROOT = gameRoot();
 
 // Same policy as vercel.json, enforced here (not report-only). Inline scripts stay allowed because the game ships as one
 // self-contained HTML file. jsDelivr is deliberately NOT allowed: the Twemoji/Noto emoji option falls back to System
-// emoji until the emoji sets are bundled (roadmap §1). Google Fonts stays for the CJK/Tamil script fonts (roadmap §4).
+// emoji until the emoji sets are bundled (roadmap §1). Google Fonts stays allowed only as the fallback for the CJK/Tamil
+// script fonts: since 2026-10-18 they ship in fonts/script/ (electron/fonts) and load locally first (roadmap P6).
 const CSP = [
   "default-src 'self'",
   "script-src 'self' 'unsafe-inline' blob:",
@@ -65,15 +72,18 @@ protocol.registerSchemesAsPrivileged([{
 // Desktop games start their sound without a click first.
 app.commandLine.appendSwitch('autoplay-policy', 'no-user-gesture-required');
 
-// Optional Steam hook-up. Off unless STEAM_APP_ID is set and steamworks.js is installed.
-let steam = null;
-if(process.env.STEAM_APP_ID){
-  try{
-    const sw = require('steamworks.js');
-    steam = sw.init(Number(process.env.STEAM_APP_ID));
-    sw.electronEnableSteamOverlay(); // adds the GPU switches the overlay needs; must run before the app is ready
-    console.log('[steam] signed in as', steam.localplayer.getName());
-  }catch(e){ console.warn('[steam] not available:', e && e.message); }
+// Optional Steam hook-up (2026-10-18: moved to steam.js). A no-op unless BRAMBLE_STEAM=1 and steamworks.js is installed.
+// Must run before the app is ready: the overlay adds Chromium switches.
+const steam = require('./steam');
+steam.init();
+
+// Desktop-only script fonts (2026-10-18, roadmap P6). stage.js copies electron/fonts/ to <game>/fonts/script/; an unstaged
+// run (npm start against the repo root) serves them straight from electron/fonts/ instead. Only fonts and their CSS.
+const SCRIPT_FONTS = '/fonts/script/', SCRIPT_FONTS_DIR = path.join(__dirname, 'fonts');
+function scriptFontFallback(urlPath){
+  if(!urlPath.startsWith(SCRIPT_FONTS)) return null;
+  const name = urlPath.slice(SCRIPT_FONTS.length);
+  return /^[a-zA-Z0-9-]+\.(css|woff2)$/.test(name) ? path.join(SCRIPT_FONTS_DIR, name) : null;
 }
 
 function resolveSafe(urlPath){
@@ -88,10 +98,14 @@ function resolveSafe(urlPath){
 async function serve(request){
   const url = new URL(request.url);
   if(url.host !== HOST) return new Response('Not found', { status: 404 });
-  const file = resolveSafe(url.pathname);
+  let file = resolveSafe(url.pathname);
   if(!file) return new Response('Forbidden', { status: 403 });
-  let stat;
-  try{ stat = await fs.promises.stat(file); }catch(e){ return new Response('Not found', { status: 404 }); }
+  let stat, file2;
+  try{ stat = await fs.promises.stat(file); }
+  catch(e){
+    if(!(file2 = scriptFontFallback(url.pathname))) return new Response('Not found', { status: 404 });
+    try{ stat = await fs.promises.stat(file2); file = file2; }catch(e2){ return new Response('Not found', { status: 404 }); }
+  }
   if(!stat.isFile()) return new Response('Not found', { status: 404 });
   const headers = {
     'Content-Type': MIME[path.extname(file).toLowerCase()] || 'application/octet-stream',
@@ -117,14 +131,33 @@ async function serve(request){
   return new Response(body, { status: 200, headers: Object.assign(headers, { 'Content-Length': String(body.length) }) });
 }
 
+// Steam hooks for the page (2026-10-18). Only our own app:// pages may call them; every handler is a no-op when Steam
+// is off (steam.js). clear() is for testing and only answers in unpackaged runs.
+function registerSteamIpc(){
+  // protocol + host, not .origin: Node's URL gives custom schemes an opaque ("null") origin.
+  const ours = ev => { try{ const u = new URL(ev.senderFrame.url); return u.protocol === `${SCHEME}:` && u.host === HOST; }catch(e){ return false; } };
+  const on = (ch, fn) => ipcMain.handle(ch, (ev, ...a) => ours(ev) ? fn(...a) : false);
+  on('steam:status', () => steam.status());
+  on('steam:unlock', id => steam.unlock(id));
+  on('steam:isUnlocked', id => steam.isUnlocked(id));
+  on('steam:clear', id => !app.isPackaged && steam.clear(id));
+  on('steam:overlay', dialog => steam.openOverlay(dialog));
+  on('steam:store', () => steam.openStorePage());
+  on('steam:playerName', () => steam.playerName());
+}
+
 function createWindow(){
   const win = new BrowserWindow({
     width: 1440, height: 900, minWidth: 960, minHeight: 600,
     backgroundColor: '#2f4a2c', show: false, autoHideMenuBar: true,
     title: 'Bramblewood Arena',
+    // Window/taskbar icon for unpackaged runs and Linux (2026-10-18). Packaged Windows/Mac builds take theirs from the
+    // executable (build/icon.ico, build/icon.png → .icns via electron-builder).
+    icon: path.join(__dirname, 'build', 'icon.png'),
     webPreferences: {
       contextIsolation: true, sandbox: true, nodeIntegration: false, webSecurity: true, spellcheck: false,
-      // A preload with contextBridge (window.bwDesktop: Steam achievements, cloud saves, quit) comes with roadmap step D3.
+      // window.bwDesktop (2026-10-18): Steam hooks only for now; cloud saves and quit come with roadmap step D3.
+      preload: path.join(__dirname, 'preload.js'),
     },
   });
   win.once('ready-to-show', () => win.show());
@@ -154,6 +187,7 @@ else{
       console.error(`[bramblewood] no index.html in ${ROOT}. Build it first (python3 assemble_arena.py && mv bramblewood-arena.html index.html) or pass --root=<folder>.`);
     }
     protocol.handle(SCHEME, serve);
+    registerSteamIpc();
     // The game never needs the camera, microphone, location or notifications (same as the site's Permissions-Policy).
     session.defaultSession.setPermissionRequestHandler((_wc, perm, cb) => cb(perm === 'fullscreen' || perm === 'clipboard-sanitized-write'));
     if(process.platform !== 'darwin') Menu.setApplicationMenu(null);
