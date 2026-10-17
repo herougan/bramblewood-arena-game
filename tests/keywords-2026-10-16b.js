@@ -63,7 +63,7 @@ ok(/function tideEvadeOn\(\)\{/.test(eng) && /globalThis\.BramblewoodTestRules/.
 ok(/const TEST_RULE_DEFS = \[\n  \{key:'tideEvade',/.test(src) && /testRuleOn\(k\)\{ try\{ return !!\(adminModeEnabled && testRulesStored\(\)\[k\]\)/.test(src), 'B. the Admin rule test only counts while Admin Mode is on');
 ok(/\$\{adminModeEnabled \? testRulesPanelHTML\(\) : ''\}/.test(src) && /id="admin\$\{r\.key\[0\]\.toUpperCase\(\) \+ r\.key\.slice\(1\)\}Chk"/.test(src) && /getElementById\('adminTideEvadeChk'\)/.test(src), 'B. the Admin page has the switch');
 ok(/data-sbxrule=/.test(src) && /setTestRule\(chk\.getAttribute\('data-sbxrule'\), chk\.checked\)/.test(src), 'B. ...and so does the Test Lab panel (admins)');
-ok(/\{id:'tideevade', group:'tideEvade', icon:'🌊', name:'Tide evade \(test\)', [^\n]*rules:\{tideEvade:true\}[^\n]*editorOnly:true\}/.test(src) && /'tideSpout', 'tideEvade', 'misty'/.test(src), 'B. Edit skirmish can add it as a field rule');
+ok(/\{id:'tideevade', group:'tideEvade', icon:'🌊', name:'Tide evade \(test\)', [^\n]*rules:\{tideEvade:true\}[^\n]*editorOnly:true\}/.test(src) && /grp\('Hazards and rules', FIELD_EFFECTS\.filter\(f=> !f\.arenaOnly && !\['field', 'cloudy', 'lumber', 'gift', 'phase', 'mode'\]\.includes\(f\.group\)\)/.test(src), 'B. Edit skirmish can add it as a field rule (2026-10-16: the list takes every hazard group)');
 ok(/pillTipHTML\(name, te \? \[TIDE_PILL_TIP, TIDE_EVADE_TIP\]/.test(src) && /'Evasive vs non-Tide \(test\)'/.test(src), 'B. the Tide pill and the Tide chip say so while it is on');
 
 // ---- A. Worthy -> Bounty
@@ -86,7 +86,7 @@ ok(!cards.some(c=> JSON.stringify(c.effects || {}).includes('worthy') || JSON.st
 ok(/return migrateWorthyToBounty\(dropStaleArtPath\(r && r\.id, d0\)\);/.test(src) && /return migrateWorthyToBounty\(out\);/.test(src), 'A. published card_overrides rows (full and Ledger patches) are migrated as they load');
 ok(/liveCards\[id\] = migrateWorthyToBounty\(dropStaleArtPath\(id, liveCards\[id\]\)\)/.test(src) && /const data = migrateWorthyToBounty\(doc\.data\(\)\);/.test(src), "A. ...and this browser's overlay and the live db");
 ok(/const m = migrateWorthyToBounty\(liveCards\[id\]\); if\(m !== liveCards\[id\]\) liveCards\[id\] = m;/.test(src), 'A. ...with a safety net as the card list is built');
-ok(/function bountyOf\(def\)\{ const e = \(def && def\.effects\) \|\| \{\}; return Math\.max\(0, Number\(e\.bounty\)\|\|0\); \}/.test(eng), 'A. the engine reads Bounty only');
+ok(/function bountyOf\(def\)\{ const e = \(def && def\.effects\) \|\| \{\}; const n = Math\.max\(0, Number\(e\.bounty\)\|\|0\);/.test(eng) && !/function bountyOf[^\n]*worthy/.test(eng), 'A. the engine reads Bounty only (2026-10-16: + High Canopy\'s Bounty +1)');
 ok(/function bountyN\(e\)\{ e = e \|\| \{\}; return Math\.max\(0, Number\(e\.bounty\)\|\|0\); \}/.test(src), 'A. ...and so does the card text');
 ok(/\{key:'worthy', category:'passive', hidden:true, retired:true, reserved:true, label:'', kind:'number', min:0, desc:\(\)=> ''\}/.test(src), 'A. the worthy slot is kept, empty, hidden and reserved');
 ok(!/^\s*worthy: v=>/m.test(src) && !/worthy:'🪵'/.test(src), 'A. no card line or icon for it');

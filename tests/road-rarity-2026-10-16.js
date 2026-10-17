@@ -77,7 +77,9 @@ ok(/function legendaryHeldBack\(d\)/.test(src) && /!legendaryHeldBack\(defs\[id\
 
 // 4. the field curriculum
 ok(/const MISTY_MAPS = new Set\(\['m1', 'mo', 'mtut'\]\);/.test(src), '4. 0-T (the Tutorial) is misty');
-ok(/const TIDESPOUT_MAPS = new Set\(\[\]\);/.test(src), '4. no map spouts by default');
+ok(/const TIDESPOUT_NODES = \{mb:'2-4'\};/.test(src), '4. no map spouts by default: only 2-4');
+ok(MAPS.find(m=> m.id === 'mb').nodes.every(x=> x.rules && x.rules.tide), '4. Pebble Beach has the plain Tide (rules.tide) in every fight');
+ok(MAPS.find(m=> m.id === 'mj').nodes.every(x=> x.rules && x.rules.crushingDepths), '4. Crushing Depths in every Sunken Depths fight');
 const spouts = MAPS.flatMap(m=> (m.nodes || []).filter(x=> x.rules && x.rules.tideSpout).map(x=> x.key));
 ok(spouts.length === 1 && spouts[0] === '2-4', '4. the Tide-spout is a one-off (2-4): ' + spouts.join(','));
 ok(/const RAPIDS_MAPS = new Set\(\['m2'\]\);/.test(src) && /const PERMATIDE_MAPS = new Set\(\[\]\);/.test(src), '4. River Rapids on Sunken Hollow only; Lilypad Reach has the plain Tide');

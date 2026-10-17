@@ -319,7 +319,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
-  absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢'});
+  absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
 Object.assign(SKILL_ICON, {diurnalGrant:'☀️', nocturnalGrant:'🌙', tideGrant:'🌊', fullMoon:'🌕', fullMoonGrant:'🌕'}); // Zeitgeber advanced forms (2026-10-15)
 Object.assign(SKILL_ICON, {penance:'⛧🏰', bloodTithe:'⛧🩸'});
 SKILL_ICON.amore = '💕'; // Amore (2026-10-16): 💕 waiting, ❤️ paired, 🤎 heartbroken (amoreChip) // Devilry payments (2026-10-16): the Dark Summon pentagram, into your castle / an ally
@@ -981,6 +981,9 @@ const PASSIVE_DEFS = [
   {key:'crystallise', category:'evergreen', label:'Crystallise', kind:'number', min:1, defaultValue:5, desc:v=>`When it dies, it turns into a 0/${numOr(v, 5)} crystal that holds its slot.`},
   {key:'cure', category:'evergreen', label:'Cure', kind:'number', min:1, defaultValue:2, desc:v=>`Every upkeep, cures your most afflicted unit (itself too): up to ${numOr(v, 2)} Poison, then Bleed, come off. Toxin can't be cured.`},
   {key:'mountainClimber', category:'passive', label:'Mountain Climber', kind:'boolean', desc:()=>`Sure-footed: Frigid, Scorching, Scorched Ground, the volcano, Avalanche, Landslide and Earthquake pass it by.`},
+  // Atheist (2026-10-16, user: "Unless Atheist (1/2 damage from magic sources, dark (some devilry attacks) or holy (some ecclesia attacks) damage) -
+  // then take 0 damage from this [Leylines III]."): on no card yet.
+  {key:'atheist', category:'passive', label:'Atheist', kind:'boolean', desc:()=>`Takes half damage from magic and from Devilry and Ecclesia attackers. The Leylines' burn doesn't touch it, and it is never Frightened.`},
   // Taunt (user: "Add a sheep card (basic) - it has taunt."): not the same as Guardian. Guardian only takes the hits aimed at the units
   // beside it; Taunt pulls the attacks of the enemy units facing it or one column away, even ones that were going to the castle.
   {key:'taunt', category:'passive', label:'Taunt', kind:'boolean', desc:()=>`Enemy units facing it, or one column to either side, must attack it (even ones that would hit the castle). Stealth slips past.`},
@@ -2079,6 +2082,7 @@ Object.assign(SKILL_TEXT, {
   crystallise: v=> `When it dies, it becomes a 0/${numOr(v, 5)} crystal in its slot.`,
   cure: v=> `Every upkeep, cure ${numOr(v, 2)} Poison or Bleed from your most afflicted unit.`,
   mountainClimber: ()=> `Field and terrain hazards pass it by.`,
+  atheist: ()=> `Half damage from magic, Devilry and Ecclesia. Immune to the Leylines.`, // 2026-10-16
   taunt: ()=> `Enemies facing it or beside that column must attack it.`,
   amore: ()=> `When it arrives with one of your Amore units on the field that shares a Type, the two fall in love (once): +0/+3 and Regeneration 3 each. If one dies, the other keeps the +0/+3 but loses the Regeneration.`, // 2026-10-16
   molting: v=> `Every 2 rounds: +${numOr(v, 1)}/+${numOr(v, 1)} for good, but +1 Wait.`, // 2026-10-16
@@ -6170,7 +6174,7 @@ function abilityBadges(d, bopts){
   [['venomous', 'Venomous', 2], ['toxin', 'Toxin', 1], ['weaken', 'Weaken', 1], ['wilting', 'Wilting', 1], ['bulldoze', 'Bulldoze', 1], ['tangle', 'Tangleweed', 1], ['strangle', 'Strangle', 2],
     ['invincible', 'Invincible', 1], ['invisible', 'Invisible', 2], ['sonar', 'Sonar', 0], ['poisonGas', 'Poison Gas', 2], ['absoluteZero', 'Absolute Zero', 0], ['spitfire', 'Spitfire', 2],
     ['slashBurn', 'Slash & Burn', 3], ['trap', 'Trap', 5], ['predator', 'Predator', 1], ['prey', 'Prey', 0], ['nova', 'Nova', 3], ['crystallise', 'Crystallise', 5], ['cure', 'Cure', 2],
-    ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
+    ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2], ['atheist', 'Atheist', 0]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
     if(e[k]) out.push(`<span class="ab-w2 ab-${k.toLowerCase()}" title="${escapeAttr(nm + (dv ? ' ' + numOr(e[k], dv) : '') + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${dv ? n1(numOr(e[k], dv)) : ''}</span>`); });
   if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${iconHTML('smoke-bomb', '💣')}</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
@@ -13408,7 +13412,9 @@ function enterSubMap(id, el, body){
     const lay = document.getElementById('conquestLayout') || mainEl, lr = lay.getBoundingClientRect();
     try{ SoundKit && SoundKit.play && SoundKit.play('whoosh'); }catch(e){}
     document.documentElement.classList.add('submap-zooming');
-    const za = mapOnlyZoom(lay, 1, 4.5, r.left + r.width/2 - lr.left, r.top + r.height/2 - lr.top, 560, t=> t*t*t, true);
+    // 2026-10-16 (user: "When zooming in a submap like Tutorial, and clovermead, the map background doesnt need to zoom in that much, just a
+    // little bit."): a small push toward the entrance (×1.3, was ×4.5), and the side map grows from 90% (was 35%), below.
+    const za = mapOnlyZoom(lay, 1, SUBMAP_PUSH_ZOOM, r.left + r.width/2 - lr.left, r.top + r.height/2 - lr.top, 480, t=> t*t, true);
     za.onfinish = ()=>{ conquestVeiledMap = id; // the side map's loading card would darken the screen again
       conquestSelectedMap = id; conquestSelectedNodeKey = null; conquestSubZoom = 'grow'; renderConquestSubTab(body); try{ za.cancel(); }catch(e){} };
     setTimeout(()=> document.documentElement.classList.remove('submap-zooming'), 2200);
@@ -13440,6 +13446,7 @@ function enterSubMap(id, el, body){
 // Zoom the map but not the map list (2026-10-14): the art lives on #conquestLayout, which also holds the list, so the layout is
 // scaled about (ox, oy) and the list gets the exact inverse scale at every keyframe (its own origin placed on the same point),
 // which keeps it where it is. ease maps 0–1 progress to 0–1; the keyframes carry the easing, so they run linear.
+const SUBMAP_PUSH_ZOOM = 1.3, SUBMAP_GROW_FROM = .9; // daylight side maps: how far the map pushes in, and where the side map grows from (2026-10-16)
 function mapOnlyZoom(lay, from, to, ox, oy, ms, ease, hold){
   const list = lay.querySelector(':scope > .conquest-maps'), N = 18, ks = [], lk = [];
   const lo = list ? {x: list.offsetLeft, y: list.offsetTop} : null;
@@ -13857,9 +13864,9 @@ const MAP_DAYNIGHT = {
 };
 function mapDayNight(mid){ return MAP_DAYNIGHT[mid] || (mid ? 'cycle' : 'day'); } // every other map is out in the open: it cycles
 // Tide-spout (2026-10-14, user: "new effect on the beach map - Tide-spout!"): on by default in every Pebble Beach fight.
-// 2026-10-16 (placement and rarity; user: "2: Tide. Tide-spout should be one-off"): Pebble Beach has the plain Tide (its crabs and
-// turtles bring it in); the spout is one fight's own rule now (2-4 Pelican Point, rules.tideSpout). No map spouts by default.
-const TIDESPOUT_MAPS = new Set([]);
+// 2026-10-16 (user: "2: Tide. Tide-spout should be one-off."): one Pebble Beach fight only, 2-4 Pelican Point (map -> node key). The map's
+// own Tide (rules.tide) is for the map placement pass to set; until then the beach has no Flood or Ebb.
+const TIDESPOUT_NODES = {mb:'2-4'};
 // Map 0 is misty (2026-10-15): no day and night there at all (fightRules turns the cycle off in the mist), so no nightfall,
 // no howl and no night sounds on Map 0.
 // 2026-10-16 (placement and rarity; user: "0-T: Mist. 0-B (?)"): the Tutorial side map is misty too; The Old Bramble keeps its Mist
@@ -13877,7 +13884,8 @@ function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(
 function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = mapDayNight(mid); // the map's own day and night (2026-10-14; Zeitgebers retired)
   if(r.misty == null && MISTY_MAPS.has(mid) && node) r.misty = true; // Map 0 is misty (2026-10-15, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist'")
   if(r.misty) r.phase = 'off'; // Misty (2026-10-14): no day or night in the mist; the fog's tint drifts instead (syncSkyFx)
-  if(r.tideSpout == null && TIDESPOUT_MAPS.has(mid) && node) r.tideSpout = true;
+  if(r.crushingDepths) r.phase = 'off'; // 2026-10-16 (user: "First Blood and Night not needed - moon can't be seen. So no day/night."): none in the depths
+  if(r.tideSpout == null && node && TIDESPOUT_NODES[mid] === node.key) r.tideSpout = true; // one fight (2026-10-16)
   if(r.permaTide == null && PERMATIDE_MAPS.has(mid) && node) r.permaTide = true; // the river's Perma-tide (2026-10-14)
   if(r.permaTide == null && RAPIDS_MAPS.has(mid) && node){ r.permaTide = true; if(r.rapids == null) r.rapids = true; } // River Rapids (2026-10-16)
   if(r.wet == null && mid && wetMap(mid)) r.wet = true;
@@ -13967,8 +13975,9 @@ function eruptionGeyserVfx(el, water){
   const r = el.getBoundingClientRect(), g = document.createElement('div');
   g.className = 'lava-geyser' + (water ? ' is-water' : ''); g.setAttribute('aria-hidden', 'true');
   g.style.left = (r.left + r.width / 2) + 'px'; g.style.top = (r.bottom - 6) + 'px'; g.style.setProperty('--h', Math.round(r.height * 1.25) + 'px');
-  g.innerHTML = '<i class="lg-col"></i>' + Array.from({length: 12}, (_, k)=> `<b style="--x:${Math.round((Math.random() - .5) * r.width * 1.2)}px; --y:${-Math.round(r.height * (.6 + Math.random() * .8))}px; --d:${(k * 0.04).toFixed(2)}s"></b>`).join('');
-  document.body.appendChild(g); setTimeout(()=> g.remove(), 1300);
+  // 2026-10-16 (user: "Tide Spout - Make it fade in and fade out faster."): the water spout rises and drains in about half the time.
+  g.innerHTML = '<i class="lg-col"></i>' + Array.from({length: 12}, (_, k)=> `<b style="--x:${Math.round((Math.random() - .5) * r.width * 1.2)}px; --y:${-Math.round(r.height * (.6 + Math.random() * .8))}px; --d:${(k * (water ? 0.02 : 0.04)).toFixed(2)}s"></b>`).join('');
+  document.body.appendChild(g); setTimeout(()=> g.remove(), water ? 750 : 1300);
   if(water) return;
   const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.remove('erupt-flash'); void bf.offsetWidth; bf.classList.add('erupt-flash'); setTimeout(()=> bf.classList.remove('erupt-flash'), 800); }
 }
@@ -14000,7 +14009,7 @@ function fieldRowsSeen(){ try{ return JSON.parse(localStorage.getItem(FIELD_ROWS
 function markFieldRow(key){ if(matchState && matchState.fxLib) return false; /* 🔬 the Effects library never marks a field row seen (2026-10-14) */ const st = fieldRowsSeen(); if(st[key] != null) return false; st[key] = fightSerial(); try{ localStorage.setItem(FIELD_ROWS_KEY, JSON.stringify(st)); }catch(e){} return true; }
 function fieldRowState(key){ const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
 // Rows that are in force from the first round (no event to wait for) count as happening when the fight starts.
-const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty']);
+const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1']); // + field effects 2 that have no event of their own (2026-10-16)
 // Volcano hazards with odds (2026-10-14, user: "Volcano: Lava Tide, Petrification, Eruption - 1%, 2%, 3% (Hovering says 'Very Low'),
 // 10/12/14% (Low), 20/22/24% (Medium), 45/50/55 and increasing (1/2 chance), 60 and above, (High)"). rules.volcano is the level;
 // rules.lavaTideChance / petrifyChance / eruptionChance override one hazard (0–100). The engine rolls them (volcanoTick); the
@@ -14021,6 +14030,32 @@ const VOLCANO_HAZARDS = [
   {key:'eruption', icon:'🌋', name:'Eruption', text:r=> `From round 2, one random unit on each side may take ${Number(r.eruption) > 0 ? r.eruption : 2} fire damage. Then the odds reset, and for 3 rounds comets rain down: every unit takes 2–5 fire damage (fire-resistant units take half).`},
 ];
 function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return ''; return volcanoBand(o[key]) + (r.volcano === 'even' && r[key + 'Chance'] == null ? ', and rising' : ''); }
+// Field effects 2 (2026-10-16, the user's field-effect curriculum notes): one text per effect, shared by the Environment cards
+// (fieldConditionRows), Edit skirmish (FIELD_EFFECTS) and the Effects library (FXL_FIELDS). The rules live in bramblewood-engine.js
+// (fieldEffects2Tick and the helper block near `rules`). key = the rules flag; editor = the Edit skirmish id.
+const FIELD2 = {
+  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor.'},
+  landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:"Each round from round 2, a 1 in 4 chance that rocks come down: 5 damage to every unit that isn't flying, on both sides."},
+  consternation: {icon:'😰', name:'Consternation', editor:'consternation', short:'Hand cards lose 1/1 a round', text:'Each round from round 2, every card in each hand loses 1/1. The loss stays on the card when it is played (down to 0 Attack and 1 Health at most).'},
+  crushingDepths:{icon:'🫧', name:'Crushing Depths', editor:'crushingdepths', short:'5 water damage a round', text:'Each round from round 2, every unit takes 5 water damage. Tide units and Swimmers take half, and water Resist halves it again. No day or night reaches down here.'},
+  rookRow:       {icon:'♜', name:"Rook's Row", editor:'rookrow', short:'Straight hits +2', text:'A hit on the unit standing square in front of the attacker deals +2 damage.'},
+  bishopPath:    {icon:'♝', name:"Bishop's Path", editor:'bishoppath', short:'Slanted hits +2', text:'A hit on a unit on the slant (half a step or one column to the side, as with interlocked ranks, Fork prongs, Backstab and Crab Claws) deals +2 damage.'},
+  mirage:        {icon:'🪞', name:'Mirage', editor:'mirage', short:'An Illusion appears each round', text:'Each round from round 2, a random unit gets a 1/1 Illusion in a free slot right beside it (none if both are taken). The Illusion copies only Flying, Tide, Swimmer, Haste and Speed.'},
+  canopy:        {icon:'🌳', name:'High Canopy', editor:'canopy', short:'Pounce +2, Swift dodge, no Flying dodge', text:'Up in the treetops: Pounce deals +2 damage, Swift and Quick units are Evasive, Flying gives no dodge, and Bounty creatures have Bounty +1.'},
+  undergrowth:   {icon:'🌿', name:'Undergrowth', editor:'undergrowth', short:'Pounce +2, Swift dodge', text:'Thick cover: Pounce deals +2 damage, and Swift and Quick units are Evasive.'},
+  tallGrass:     {icon:'🌾', name:'Tall Grass', editor:'tallgrass', short:'Stealth first; Backstab, Pounce ×2', text:'Stealth units attack first. Backstab hits and Pounce deal double damage.'},
+  slippery:      {icon:'⛸️', name:'Slippery', editor:'slippery', short:'Swings and triggers fail 1 in 2', text:'Ice everywhere: every attack at a unit misses 1 in 2, and every trigger and on-hit effect fails 1 in 2.'},
+  glassStorm:    {icon:'💎', name:'Glass-storm', editor:'glassstorm', short:'Sandstorm, plus 1–3 glass a round', text:'A Sandstorm full of glass: attacks miss 1 in 4 (not from Dry units), the wind is random each round, and from round 2 every unit is buffeted for a random 1–3 damage each round.'},
+  hail:          {icon:'🌨️', name:'Hail', editor:'hail', short:'3 ice damage a round', text:'Each round from round 2, every unit takes 3 ice damage. Cold Resist halves it.'},
+  lavaSpout:     {icon:'♨️', name:'Lava Spout', editor:'lavaspout', short:'A column bursts: 3 fire', text:'Each round from round 2, lava bursts up in one random column: the units there, on both sides, take 3 fire damage. Fire Resist halves it.'},
+  leylines1:     {icon:'✴️', name:'Leylines I', editor:'leylines1', short:'Day, night, tide, moon stronger', text:'The old rhythms run strong: Diurnal, Nocturnal and Crepuscular bonuses are +2/+2 more (a plain one is +3/+3), the Tide gives +3 Attack on Flood and Armor 3 on Ebb, and Full Moon and Moonborn are +2/+2 more.'},
+  leylines2:     {icon:'✴️', name:'Leylines II', editor:'leylines2', short:'+1 Lumber a round', text:'Each round from round 2, both sides gain 1 Lumber.'},
+  leylines3:     {icon:'✴️', name:'Leylines III', editor:'leylines3', short:'+1 Lumber, +1 Stone; 3 damage to all', text:'Each round from round 2, both sides gain 1 Lumber and 1 Stone, but every unit takes 3 magic damage and both castles take 3 (never below 1). Atheist units take none.'},
+  haunted:       {icon:'👻', name:'Haunted', editor:'haunted', short:'A unit a side is Frightened', text:"Each round from round 2, one random unit on each side is Frightened: it doesn't attack that round. Ghosts and Atheists aren't scared."},
+};
+// 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the spout no longer brings the Tide in.
+const TIDESPOUT_TEXT = "Each round from round 2, a spout bursts in one random column: the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.";
+const FIELD2_SCORCHING3_TEXT ='Scorching, level 3: each round 4 random units on each side take 3 fire damage. Heat-resistant units are spared.';
 function fieldConditionRows(r){
   // 2026-10-14 (user: "For field effects with many multiple effects, split into multiple field cards"): every row also has a short
   // line (`short`) for its own Environment card on the board. The terrain row went with home ground (user: "Remove the Home ground
@@ -14030,8 +14065,10 @@ function fieldConditionRows(r){
     const SH = {lavaTide:'Lava may flood a column', petrify:'A unit may turn to stone', eruption:'Eruptions, then comets'};
     VOLCANO_HAZARDS.forEach(h=>{ if(!(o[h.key] > 0)) return; const w = volcanoChanceWord(r, h.key); add(h.key, h.icon, `${h.name} · ${w}`, `${h.text(r)} Chance each round: ${w}.`, `Chance each round: ${w}`, `${SH[h.key]} (${w})`); }); }
   else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(r.eruption), '', `Burns a unit a side for ${r.eruption}`);
-  if(r.wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale);
-  else if(r.wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy);
+  // 2026-10-16 (user: "Should sandstorm also have windy rules? I think so."): a Sandstorm or Glass-storm brings Windy's wind (unless the fight sets one).
+  const wind = r.wind || ((r.sandstorm || r.glassStorm) ? 'windy' : null);
+  if(wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale);
+  else if(wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy);
   if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (none with an Illuminate unit on their side).', '', 'No Darksight: every attack misses');
   // 2026-10-15 (user: "It will be an explicit field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): the two dark levels.
   else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', 'No Darksight: miss 1 in 2');
@@ -14047,7 +14084,8 @@ function fieldConditionRows(r){
   if(r.sandstorm) add('sandstorm', '🏜️', 'Sandstorm', 'Attacks at units miss 1 in 4, except from Dry units.', '', 'Attacks miss 1 in 4');
   // 2026-10-14 (user: "Tideline II doesn't need to explain Tide & High Tide ... The effect of it just says, Periodic High Tides"):
   if(r.highTide && !r.permaTide) add('highTide', '🌊', 'High Tide', 'Periodic High Tides.', '', 'Periodic High Tides');
-  if(r.tideSpout) add('tideSpout', '⛲', 'Tide-spout', 'Each round from round 2, a spout bursts in one random column: the Tide comes in, the units there are pushed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', '', 'A spout pushes a column back'); // 2026-10-14
+  if(r.tide && !r.permaTide && !r.highTide){ const f = FIELD2.tide; add('tide', f.icon, f.name, f.text, '', f.short); } // 2026-10-16
+  if(r.tideSpout) add('tideSpout', '⛲', 'Tide-spout', TIDESPOUT_TEXT, '', 'A spout pushes a column back'); // 2026-10-14
   if(r.frostWait || r.frostCount || r.frostbite || (r.frostResist||[]).length){
     const n = Math.max(1, Number(r.frostCount)||1, Number(r.frostWait)||1);
     add('frost', '❄️', 'Frost', `Each round ${n > 1 ? n + ' random units' : 'one random unit'} on each side ${n > 1 ? 'get' : 'gets'} +1 Wait. Units weak to cold also take 1 damage.`, '', `Chills ${n} a side each round`);
@@ -14055,6 +14093,8 @@ function fieldConditionRows(r){
     if((r.frostResist||[]).length){ const fr = rows[rows.length - 1]; fr.text += ` Their ${r.frostResist.join(', ')} units never feel it.`; }
     if(r.frostbite) add('frostbite', '🥶', 'Frostbite', `An enemy unit the frost chills gains +${r.frostbite}/+${r.frostbite}.`, '', `Chilled foes gain +${r.frostbite}/+${r.frostbite}`);
   }
+  // Field effects 2 (2026-10-16): one row each, in FIELD2's order (the Tide's row sits with the other tides above).
+  Object.keys(FIELD2).forEach(k=>{ if(k === 'tide' || !r[k]) return; if(k === 'undergrowth' && r.canopy) return; const f = FIELD2[k]; add(k, f.icon, f.name, f.text, '', f.short); });
   if(r.bossSurge) add('bossSurge', '💢', 'Boss surge', `Their boss surges +${r.bossSurge.atk}/+${r.bossSurge.hp} when it's cast.`, '', `Their boss arrives +${r.bossSurge.atk}/+${r.bossSurge.hp}`);
   if(r.enemyOre) add('enemyOre', '⛏️', 'Deep mines', 'Their side digs the Stone and Metal it needs.', '', 'They dig Stone and Metal');
   return rows;
@@ -14100,6 +14140,12 @@ function noteFieldEvent(ev){
   else if(ev.type === 'fieldTick' && (ev.field === 'swampFever' || ev.field === 'freezing')) hit = markFieldRow(ev.field); // 2026-10-15
   else if(ev.type === 'evaded' && ev.reason === 'sandstorm') hit = markFieldRow('sandstorm'); // 2026-10-15
   else if(ev.type === 'phase' && (ev.phase === 'twilight' || ev.to === 'twilight')) hit = markFieldRow('twilight');
+  // Field effects 2 (2026-10-16): each row is learned the first time it does something.
+  else if(ev.type === 'fieldTick' && ['landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'mirage', 'haunted'].includes(ev.field)) hit = markFieldRow(ev.field);
+  else if(ev.type === 'fieldTick' && ev.field === 'leylines') hit = markFieldRow('leylines3');
+  else if(ev.type === 'lumber' && ev.leylines && r.leylines2) hit = markFieldRow('leylines2');
+  else if(ev.type === 'tide' && r.tide) hit = markFieldRow('tide');
+  else if((ev.type === 'evaded' && ev.reason === 'slippery') || ev.type === 'slipFizzle') hit = markFieldRow('slippery');
   if(hit){ const p = document.getElementById('fieldCondCard') || document.getElementById('terrainPill'); if(p){ p.classList.add('has-new'); try{ fxHook('fieldReveal', p); }catch(e){} } }
 }
 // The terrain pill on the board became a field card on the enemy's side (2026-10-14): see fieldCondCardHTML.
@@ -14295,14 +14341,14 @@ function skirmishFieldChips(mapId, draft){
   const exp = draft.rules || {}, auto = skirmishFxAuto(mapId, draft), eff = Object.assign({}, auto, exp), out = [];
   const add = (key, on, icon, name, text)=> out.push({key, on, icon, name, text, src: key in exp ? 'set' : 'map', restore: (key in exp) && auto[key] != null && auto[key] !== false && auto[key] !== 0 && auto[key] !== 'none'});
   const ph = eff.phase || 'day'; if(ph !== 'day' || 'phase' in exp){ const L = SE_PHASE_LABEL[ph] || ['🌗', ph]; add('phase', true, L[0], L[1] + ((ph === 'cycle' || ph === 'nightFirst') ? `, every ${eff.phaseLen || 3} rounds` : ''), 'Day & night, in the battle box above.'); }
-  if(eff.field && eff.field !== 'none'){ const f = FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field); add('field', true, f ? f.icon : '🌦️', f ? f.name : eff.field, f ? f.text : ''); }
+  if(eff.field && eff.field !== 'none'){ const f = FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field && (Number(x.rules.heatLevel)||1) === (Number(eff.heatLevel)||1)) || FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field); add('field', true, f ? f.icon : '🌦️', f ? f.name : eff.field, f ? f.text : ''); } // + the Scorching level (2026-10-16)
   else if(eff.field === 'none' && auto.field) add('field', false, '❄️', 'Frigid (off)', 'The map would freeze this fight.');
   // (Terrain chips went with home ground, 2026-10-14: a terrain on its own does nothing to switch on or off.)
   if(volcanoRulesOn(eff)){ const lv = VOLCANO_LEVELS[eff.volcano]; add('volcano', true, '🌋', `Volcano: ${lv ? lv.label : 'custom odds'}`, VOLCANO_HAZARDS.map(h=> `${h.name}: ${volcanoChanceWord(eff, h.key)}`).join(' · ') + (Number(eff.eruption) > 0 ? ` (eruptions deal ${eff.eruption})` : '') + '.'); }
   else if(Number(eff.eruption) > 0) add('eruption', true, '🔥', `${SCORCHED_NAME} ${eff.eruption}`, scorchedGroundText(eff.eruption));
   else if('eruption' in exp && Number(auto.eruption) > 0) add('eruption', false, '🔥', `${SCORCHED_NAME} (off)`, `The ground would burn for ${auto.eruption}.`);
   if(eff.highTide) add('highTide', true, '🌊', 'High Tide', 'Periodic High Tides.'); else if(exp.highTide === false && auto.highTide) add('highTide', false, '🌊', 'High Tide (off)', '');
-  if(eff.tideSpout) add('tideSpout', true, '⛲', 'Tide-spout', 'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there get +1 Wait, and non-swimmers take 1 water damage.'); else if(exp.tideSpout === false && auto.tideSpout) add('tideSpout', false, '⛲', 'Tide-spout (off)', 'The beach would spout in this fight.'); // 2026-10-14
+  if(eff.tideSpout) add('tideSpout', true, '⛲', 'Tide-spout', TIDESPOUT_TEXT); else if(exp.tideSpout === false && auto.tideSpout) add('tideSpout', false, '⛲', 'Tide-spout (off)', 'The beach would spout in this fight.'); // 2026-10-14
   if(eff.tideEvade) add('tideEvade', true, '🌊', 'Tide evade (test)', 'While the tide is in, Tide units are Evasive against attacks from units without Tide. Both sides.'); // 2026-10-16
   if(eff.misty) add('misty', true, '🌫️', 'Misty', MISTY_TEXT); // 2026-10-14
   if(eff.cloudy) add('cloudy', true, '☁️', 'Cloudy', CLOUDY_TEXT); else if(exp.cloudy === false && auto.cloudy) add('cloudy', false, '☁️', 'Cloudy (off)', ''); // 2026-10-16
@@ -14313,19 +14359,23 @@ function skirmishFieldChips(mapId, draft){
   if(Number(eff.lumberEvery) > 0) add('lumberEvery', true, '🪵', `Lumber every ${eff.lumberEvery} rounds`, `Both sides gain 1 Lumber every ${eff.lumberEvery} rounds.`);
   if(Number(eff.firstBlood) > 0) add('firstBlood', true, '🩸', `First Blood +${eff.firstBlood}`, `The first Quick unit to attack each round hits +${eff.firstBlood}.`);
   if(Number(eff.actions) > 1) add('actions', true, '⚡', `${eff.actions} actions a turn`, 'Actions per turn, in the battle box above.');
+  // 2026-10-16: every other field effect in FIELD_EFFECTS (Swamp Fever, Freezing, Sandstorm, River Rapids and the field effects 2) gets its
+  // chip from its first rules key, so an effect added here shows and can be switched off (the 2026-10-15 ones had no chip).
+  FIELD_EFFECTS.forEach(f=>{ if(!f.rules || f.arenaOnly || f.group === 'field' || f.group === 'phase' || f.group === 'lumber') return; const k = Object.keys(f.rules)[0];
+    if(!k || !eff[k] || out.some(c=> c.key === k)) return; add(k, true, f.icon, f.name + (f.oneOff ? ' (one-off)' : ''), f.text); });
   if(eff.frostWait || eff.frostCount || eff.frostbite || (eff.frostResist||[]).length) add('frosttune', true, '🧊', 'Frost tuning', [(eff.frostWait || eff.frostCount) ? `level ${Math.max(Number(eff.frostWait)||1, Number(eff.frostCount)||1)} (${Math.max(Number(eff.frostWait)||1, Number(eff.frostCount)||1)} a side, +1 Wait)` : '', eff.frostbite ? `enemy Frostbite ${eff.frostbite}` : '', (eff.frostResist||[]).length ? `${eff.frostResist.join(', ')} resist` : ''].filter(Boolean).join(' · '));
   const g = draft.leaderGrant || exp.leaderGrant || {};
   Object.keys(g).forEach(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key === k); out.push({key:'gift:' + k, on:true, icon:'👑', name:`Leader gift: ${pd ? pd.label : k}${g[k] === true ? '' : ' ' + g[k]}`, text:'Light blue on the enemy leaders.', src:'set'}); });
   return out;
 }
 function skirmishFxAddOptionsHTML(){
-  const o = f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name)}</option>`;
+  const o = f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name + (f.oneOff ? ' (one-off)' : ''))}</option>`; // one-off: meant for one fight (2026-10-16)
   const grp = (label, list)=> `<optgroup label="${escapeAttr(label)}">${list.map(o).join('')}</optgroup>`;
   const by = g=> FIELD_EFFECTS.filter(f=> !f.arenaOnly && g.includes(f.group));
   const erupt = [2, 3, 5].map(n=> ({id:'eruption@' + n, icon:'🔥', name:SCORCHED_NAME + ' ' + n}))
     .concat(Object.keys(VOLCANO_LEVELS).map(k=> ({id:'volcano@' + k, icon:'🌋', name:'Volcano hazards: ' + VOLCANO_LEVELS[k].label}))); // 2026-10-14: Lava Tide, Petrification, Eruption by odds
   const grounds = Object.keys(TERRAIN_BIOMES).filter(b=> b !== 'ash').flatMap(b=> [1, 2, 3].map(t=> groundEffect(b, t)));
-  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field', 'cloudy']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'tideSpout', 'tideEvade', 'misty', 'dark', 'actions']).concat(erupt))}${grounds.filter(Boolean).length ? grp('Home ground', grounds.filter(Boolean)) : ''}${grp('Leader gifts', by(['gift']))}`;
+  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field', 'cloudy']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', FIELD_EFFECTS.filter(f=> !f.arenaOnly && !['field', 'cloudy', 'lumber', 'gift', 'phase', 'mode'].includes(f.group)).concat(erupt))}${grounds.filter(Boolean).length ? grp('Home ground', grounds.filter(Boolean)) : ''}${grp('Leader gifts', by(['gift']))}`;
 }
 function applySkirmishFx(draft, id){
   const m = /^eruption@(\d+)$/.exec(id || ''); const r = Object.assign({}, draft.rules || {});
@@ -14346,7 +14396,8 @@ function removeSkirmishFx(mapId, draft, key, restore){
   else if(key === 'volcano'){ ['volcano', 'lavaTideChance', 'petrifyChance', 'eruptionChance'].forEach(k=> delete r[k]); }
   else if(restore) delete r[key];
   else if(key in SE_FX_OFF && auto[key] && auto[key] !== 'none') r[key] = SE_FX_OFF[key];
-  else delete r[key];
+  else { delete r[key]; const f = FIELD_EFFECTS.find(x=> x.rules && Object.keys(x.rules)[0] === key); if(f) Object.keys(f.rules).forEach(k=>{ if(k !== 'field') delete r[k]; }); } // 2026-10-16: an effect's helper keys go with it (River Rapids' permaTide, the canopy pair)
+  if(key === 'field') delete r.heatLevel; // Scorching II / III's level goes with the field (2026-10-16)
   if(Object.keys(r).length) draft.rules = r; else delete draft.rules;
 }
 function openSkirmishEditor(mapId, nodeKey, draftOverride){
@@ -15814,11 +15865,11 @@ ${tabOpen('gauntlet') ? `        <button class="btn primary big arena-mode-btn g
 // used by the vs-AI DEFAULT_DECK) rather than inventing new ones, and escalate in power
 // tier by tier (plain Skirmish -> Elite -> Boss -> Raid Boss) via both stronger card mixes
 // and a higher enemy HQ HP.
-// 2026-10-16 (placement and rarity, docs/card-placement-proposal-2026-10-16.md): 71 of the 94 new cards and 64 unplaced or
+// 2026-10-16 (placement and rarity, docs/card-placement-proposal-2026-10-16.md): 71 of the 94 new cards and 63 unplaced or
 // never-fought cards joined these decks (most new ones as their fight's card reward too); every deck and reward fits the road's
-// rarity caps (ROAD_RARITY above); field effects follow the user's curriculum (one Tide-spout at 2-4, Swamp Fever on the swamps,
-// Scorching on the Savanna elites, Frigid on the Taiga boss, Freezing on the Tundra's elites and boss, Sandstorm on the Glass
-// Dunes, Scorching II in the Foundry); Map 0 retuned by hand and Maps 9-20 with tools/curve_tune.js (--to=56) toward a
+// rarity caps (ROAD_RARITY above); field effects follow the user's curriculum (the Tide on the beach, pond, mangroves and reef,
+// Swamp Fever on the swamps, Landslide in the caves, Crushing Depths, the Briar Maze's lines and Mirage, High Canopy, Undergrowth
+// and Tall Grass, Consternation, Hail, Slippery, Glass-storm, Lava Spout, Scorching I-III, Frigid, Freezing, Sandstorm); Map 0 retuned by hand and Maps 9-20 with tools/curve_tune.js (--to=56) toward a
 // smoothly rising curve (the world boss and the 20-A dungeon keep their castle Health).
 const CONQUEST_MAPS = [
 
@@ -15857,11 +15908,11 @@ const CONQUEST_MAPS = [
     ]},
   { id:"mb", unlockAfter:"mf", name:"Pebble Beach", icon:"🏖️", blurb:"Where the fields run out into sand — rock pools, gulls and things in shells.", sequential:true,
     nodes: [
-      { key:"2-1", kind:"skirmish", name:"Rock Pool Raiders", icon:"🦀", deck:{"tide-pool-crab":4,"open-ocean-hermit-crab":3,"gull-thief":3,"otter-riverguard":2}, hqHp:31, flavor:"Low tide leaves a lot of angry things behind.", requires:[] },
-      { key:"2-2", kind:"skirmish", name:"Gull Gang", icon:"🐦", deck:{"gull-thief":3,"fiddler-crab-swarm":2,"pelican-diver":3,"open-ocean-hermit-crab":2,"sea-turtle-elder":2}, hqHp:26, flavor:"They are not after you. They are after your lunch.", requires:["2-1"] },
-      { key:"2-3", kind:"skirmish", name:"Hermit Row", icon:"🐚", deck:{"open-ocean-hermit-crab":4,"tide-pool-crab":3,"sulfur-vent-crab":3,"pelican-diver":1}, hqHp:33, flavor:"A whole street of shells, and every one of them is occupied.", requires:["2-1"] },
-      { key:"2-4", kind:"skirmish", name:"Pelican Point", icon:"🪶", deck:{"pelican-diver":3,"gull-thief":2,"otter-riverguard":2,"open-ocean-hermit-crab":4}, hqHp:39, rules:{"tideSpout":true}, flavor:"Watch the sky. Then watch it again.", requires:["2-2","2-3"] },
-      { key:"2-5", kind:"boss", name:"The Old Shell", icon:"🐢", deck:{"sea-turtle-elder":2,"pelican-diver":3,"otter-riverguard":3,"open-ocean-hermit-crab":4}, hqHp:167, flavor:"It came up the beach before the castle was built, and it is in no hurry to leave.", requires:["2-4"] },
+      { key:"2-1", kind:"skirmish", name:"Rock Pool Raiders", icon:"🦀", deck:{"tide-pool-crab":4,"open-ocean-hermit-crab":3,"gull-thief":3,"otter-riverguard":2}, hqHp:31, rules:{"tide":true}, flavor:"Low tide leaves a lot of angry things behind.", requires:[] },
+      { key:"2-2", kind:"skirmish", name:"Gull Gang", icon:"🐦", deck:{"gull-thief":3,"fiddler-crab-swarm":2,"pelican-diver":3,"open-ocean-hermit-crab":2,"sea-turtle-elder":2}, hqHp:26, rules:{"tide":true}, flavor:"They are not after you. They are after your lunch.", requires:["2-1"] },
+      { key:"2-3", kind:"skirmish", name:"Hermit Row", icon:"🐚", deck:{"open-ocean-hermit-crab":4,"tide-pool-crab":3,"sulfur-vent-crab":3,"pelican-diver":1}, hqHp:33, rules:{"tide":true}, flavor:"A whole street of shells, and every one of them is occupied.", requires:["2-1"] },
+      { key:"2-4", kind:"skirmish", name:"Pelican Point", icon:"🪶", deck:{"pelican-diver":3,"gull-thief":2,"otter-riverguard":2,"open-ocean-hermit-crab":4}, hqHp:39, rules:{"tideSpout":true,"tide":true}, flavor:"Watch the sky. Then watch it again.", requires:["2-2","2-3"] },
+      { key:"2-5", kind:"boss", name:"The Old Shell", icon:"🐢", deck:{"sea-turtle-elder":2,"pelican-diver":3,"otter-riverguard":3,"open-ocean-hermit-crab":4}, hqHp:167, rules:{"tide":true}, flavor:"It came up the beach before the castle was built, and it is in no hurry to leave.", requires:["2-4"] },
     ]},
   // Gannet Cliffs (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mc", unlockAfter:"mb", name:"Gannet Cliffs", icon:"🦅", blurb:"Where the beach climbs into sheer white cliffs, and every ledge belongs to a bird.", sequential:true,
@@ -15918,33 +15969,33 @@ const CONQUEST_MAPS = [
     ]},
   { id:"m4", unlockAfter:"mu", name:"Caves & Alcoves", icon:"🦇", blurb:"Deep beneath the Peak, where sound carries further than light does.", sequential:true,
     nodes: [
-      { key:"8-1", kind:"skirmish", name:"Roost Flurry", icon:"🦇", deck:{"cave-flitter":4,"beetle-grunt":2,"vampire-roost":1,"cave-bat-swarm":2,"honey-bee":2,"beetle-battering-ram":1}, hqHp:26, flavor:"The first alcove is never empty. Something always roosts first.", requires:[] },
+      { key:"8-1", kind:"skirmish", name:"Roost Flurry", icon:"🦇", deck:{"cave-flitter":4,"beetle-grunt":2,"vampire-roost":1,"cave-bat-swarm":2,"honey-bee":2,"beetle-battering-ram":1}, hqHp:14, flavor:"The first alcove is never empty. Something always roosts first.", requires:[] },
       { key:"8-2", kind:"skirmish", name:"Glowworm Grotto", icon:"🪱", deck:{"glowworm-cluster":2,"blind-cave-fish":4,"cave-bat-swarm":2,"cave-flitter":2,"baby-bat":2}, hqHp:48, flavor:"Lit just brightly enough to see what finds you.", requires:["8-1"] },
       { key:"8-3", kind:"skirmish", name:"Cinder Vents", icon:"🔥", deck:{"sulfur-cinder-moth":4,"cave-bat-swarm":2,"barrow-leech-bat":2,"cave-flitter":2,"vampire-bat-nurse":2}, hqHp:26, flavor:"The heat down here comes from somewhere nobody has mapped.", requires:["8-2"] },
-      { key:"8-4", kind:"skirmish", name:"Echo Chamber", icon:"🦇", deck:{"echo-screecher":3,"vampire-roost":2,"stalactite-golem":2,"subterraneaner":2}, hqHp:73, flavor:"Every sound down here comes back changed.", requires:["8-3"] },
+      { key:"8-4", kind:"skirmish", name:"Echo Chamber", icon:"🦇", deck:{"echo-screecher":3,"vampire-roost":2,"stalactite-golem":2,"subterraneaner":2}, hqHp:73, rules:{"landslide":true}, flavor:"Every sound down here comes back changed.", requires:["8-3"] },
       { key:"8-5", kind:"skirmish", name:"Sulfur Vent Path", icon:"🔥", deck:{"sulfur-cinder-moth":4,"barrow-leech-bat":2,"cave-flitter":2,"bat-swarmling":2}, hqHp:36, flavor:"The left tunnel is hotter. That is the only warning you get.", requires:["8-4"] },
-      { key:"8-6", kind:"skirmish", name:"Glowworm Deep", icon:"🪱", deck:{"glowworm-cluster":2,"blind-cave-fish":4,"barrow-leech-bat":2,"cave-bat-swarm":2}, hqHp:31, flavor:"The right tunnel glows. That is not a comfort.", requires:["8-4"] },
-      { key:"8-7", kind:"elite", name:"The Roost Above", icon:"🧛", deck:{"echo-screecher":3,"stalactite-golem":2,"bat-swarmling":2,"subterraneaner":2}, hqHp:29, flavor:"Knock down the roost and the whole colony answers at once.", characterId:"collapsed-mine", requires:["8-5", "8-6"] },
+      { key:"8-6", kind:"skirmish", name:"Glowworm Deep", icon:"🪱", deck:{"glowworm-cluster":2,"blind-cave-fish":4,"barrow-leech-bat":2,"cave-bat-swarm":2}, hqHp:31, rules:{"landslide":true}, flavor:"The right tunnel glows. That is not a comfort.", requires:["8-4"] },
+      { key:"8-7", kind:"elite", name:"The Roost Above", icon:"🧛", deck:{"echo-screecher":3,"stalactite-golem":2,"bat-swarmling":2,"subterraneaner":2}, hqHp:29, rules:{"landslide":true}, flavor:"Knock down the roost and the whole colony answers at once.", characterId:"collapsed-mine", requires:["8-5","8-6"] },
       { key:"8-8", kind:"boss", name:"The Stalactite Warden", icon:"🗿", deck:{"echo-screecher":1,"barrow-leech-bat":2,"bat-swarmling":1,"beetle-grunt":2,"vampire-roost":2}, hqHp:81, flavor:"It has been falling and landing in the same spot for longer than the castle has stood.", requires:["8-7"] },
     ]},
   // The Kelp Mangroves (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mk", unlockAfter:"m4", name:"The Kelp Mangroves", icon:"🌿", blurb:"Salt water creeps into the swamp — mangrove roots, kelp curtains and smugglers' channels.", sequential:true,
     nodes: [
-      { key:"9-1", kind:"skirmish", name:"Mudflat Skippers", icon:"🐟", deck:{"mangrove-mudskipper":2,"tide-pool-crab":3,"gull-thief":2,"clownfish-scout":1,"riptide-eel":2,"narwhal-lancer":2,"mudflat-godwit":2}, hqHp:52, flavor:"Fish that walk. Crabs that wave. Nothing here is normal.", requires:[] },
-      { key:"9-2", kind:"skirmish", name:"Monitor Roots", icon:"🦎", deck:{"fiddler-crab-swarm":1,"gull-thief":2,"moray-ambusher":2,"reef-shark":2,"piranha-shoal":2,"silver-minnow":1,"swordfish-spearman":2,"shallows-fry":1}, hqHp:24, flavor:"Something long basks on every root.", requires:["9-1"] },
-      { key:"9-3", kind:"skirmish", name:"Kingfisher Dive", icon:"🐦", deck:{"gull-thief":3,"mangrove-mudskipper":3,"reef-shark":2,"coral-current-eel":2,"pike-lancer":2,"sunbittern-strider":2}, hqHp:32, flavor:"A flash of blue, and one fewer fish.", requires:["9-1"] },
-      { key:"9-4", kind:"skirmish", name:"Kelp Curtains", icon:"🌊", deck:{"gull-thief":2,"tide-pool-crab":2,"mangrove-mudskipper":1,"reef-shark":2,"narwhal-lancer":2,"coral-current-eel":2}, hqHp:48, flavor:"The kelp sways with the tide, and the tide has a spirit in it.", requires:["9-2","9-3"] },
+      { key:"9-1", kind:"skirmish", name:"Mudflat Skippers", icon:"🐟", deck:{"mangrove-mudskipper":2,"tide-pool-crab":3,"gull-thief":2,"clownfish-scout":1,"riptide-eel":2,"narwhal-lancer":2,"mudflat-godwit":2}, hqHp:22, rules:{"tide":true}, flavor:"Fish that walk. Crabs that wave. Nothing here is normal.", requires:[] },
+      { key:"9-2", kind:"skirmish", name:"Monitor Roots", icon:"🦎", deck:{"fiddler-crab-swarm":1,"gull-thief":2,"moray-ambusher":2,"reef-shark":2,"piranha-shoal":2,"silver-minnow":1,"swordfish-spearman":2,"shallows-fry":1}, hqHp:15, rules:{"tide":true}, flavor:"Something long basks on every root.", requires:["9-1"] },
+      { key:"9-3", kind:"skirmish", name:"Kingfisher Dive", icon:"🐦", deck:{"gull-thief":3,"mangrove-mudskipper":3,"reef-shark":2,"coral-current-eel":2,"pike-lancer":2,"sunbittern-strider":2}, hqHp:16, rules:{"tide":true}, flavor:"A flash of blue, and one fewer fish.", requires:["9-1"] },
+      { key:"9-4", kind:"skirmish", name:"Kelp Curtains", icon:"🌊", deck:{"gull-thief":2,"tide-pool-crab":2,"mangrove-mudskipper":1,"reef-shark":2,"narwhal-lancer":2,"coral-current-eel":2}, hqHp:48, rules:{"tide":true}, flavor:"The kelp sways with the tide, and the tide has a spirit in it.", requires:["9-2","9-3"] },
       { key:"9-5", kind:"elite", name:"Moray Den", icon:"🐍", deck:{"nautilus-drifter":1,"reef-shark":2,"coral-reef-shark":2,"silver-minnow":1,"sawfish":2,"electric-ray":2,"cleaner-wrasse":2}, hqHp:146, flavor:"Every hole in the roots has a pair of eyes in it.", requires:["9-4"] },
-      { key:"9-6", kind:"elite", name:"Drifting Shell", icon:"🐚", deck:{"fiddler-crab-swarm":2,"nautilus-drifter":2,"reef-shark":2,"coral-reef-shark":2,"archerfish":2,"silver-minnow":2,"swordfish-spearman":1,"shallows-fry":2}, hqHp:35, flavor:"An old shell drifts in on every tide and never leaves.", requires:["9-4"] },
-      { key:"9-7", kind:"boss", name:"The Kelp Witch", icon:"🧜", deck:{"nautilus-drifter":2,"mangrove-monitor":2,"gull-thief":1,"reef-shark":2,"coral-reef-shark":2,"narwhal-lancer":1,"mangrove-mudskipper":2,"tide-pool-crab":2}, hqHp:42, flavor:"She speaks for the tide, and the tide is not friendly today.", requires:["9-5","9-6"] },
+      { key:"9-6", kind:"elite", name:"Drifting Shell", icon:"🐚", deck:{"fiddler-crab-swarm":2,"nautilus-drifter":2,"reef-shark":2,"coral-reef-shark":2,"archerfish":2,"silver-minnow":2,"swordfish-spearman":1,"shallows-fry":2}, hqHp:26, flavor:"An old shell drifts in on every tide and never leaves.", requires:["9-4"] },
+      { key:"9-7", kind:"boss", name:"The Kelp Witch", icon:"🧜", deck:{"nautilus-drifter":2,"mangrove-monitor":2,"gull-thief":1,"reef-shark":2,"coral-reef-shark":2,"narwhal-lancer":1,"silver-minnow":2,"guppy":2}, hqHp:30, flavor:"She speaks for the tide, and the tide is not friendly today.", requires:["9-5","9-6"] },
     ]},
   { id:"m7", unlockAfter:"mk", name:"Coral Current", icon:"🐠", blurb:"Past the last cliffs, the open sea — deep water, fast currents and the teeth that live in them.", sequential:true,
     nodes: [
-      { key:"10-1", people:"deep", kind:"skirmish", name:"Clownfish Shoal", icon:"🐟", deck:{"clownfish-scout":1,"tide-pool-crab":2,"gull-thief":4,"coral-polyp-colony":1,"riptide-eel":2,"coral-current-eel":2,"cleaner-wrasse":2}, hqHp:43, flavor:"A shoal this dense usually means something bigger is herding it.", requires:[] },
-      { key:"10-2", kind:"skirmish", name:"Moray Ambush", icon:"🐍", deck:{"riptide-eel":4,"coral-current-eel":2,"clownfish-scout":2,"gull-thief":2,"electric-ray":2}, hqHp:142, flavor:"The current here is faster than it has any right to be.", requires:["10-1"] },
-      { key:"10-3", people:"deep", kind:"skirmish", name:"Tide Pool Line", icon:"🦀", deck:{"gull-thief":2,"riptide-eel":2,"coral-polyp-colony":2,"clownfish-scout":2,"coral-current-eel":2,"cone-snail":2}, hqHp:31, flavor:"Every pool along this stretch hides something with claws.", requires:["10-2"] },
-      { key:"10-4", kind:"skirmish", name:"Riptide Channel", icon:"🌊", deck:{"riptide-eel":2,"gull-thief":2,"clownfish-scout":2,"tide-pool-crab":2,"coral-current-eel":2,"sawfish":2}, hqHp:61, flavor:"The channel pulls harder than the current should allow.", requires:["10-3"] },
-      { key:"10-5", people:"deep", kind:"skirmish", name:"Current Split", icon:"🐠", deck:{"coral-polyp-colony":3,"clownfish-scout":3,"tide-pool-crab":1,"orca-vanguard":2,"dolphin-knight":1}, hqHp:32, flavor:"The reef forks here — two currents, two dangers.", requires:["10-4"] },
+      { key:"10-1", people:"deep", kind:"skirmish", name:"Clownfish Shoal", icon:"🐟", deck:{"clownfish-scout":1,"tide-pool-crab":2,"gull-thief":4,"coral-polyp-colony":1,"riptide-eel":2,"coral-current-eel":2,"cleaner-wrasse":2}, hqHp:43, rules:{"tide":true}, flavor:"A shoal this dense usually means something bigger is herding it.", requires:[] },
+      { key:"10-2", kind:"skirmish", name:"Moray Ambush", icon:"🐍", deck:{"riptide-eel":4,"coral-current-eel":2,"clownfish-scout":2,"gull-thief":2,"electric-ray":2}, hqHp:142, rules:{"tide":true}, flavor:"The current here is faster than it has any right to be.", requires:["10-1"] },
+      { key:"10-3", people:"deep", kind:"skirmish", name:"Tide Pool Line", icon:"🦀", deck:{"gull-thief":2,"riptide-eel":2,"coral-polyp-colony":2,"clownfish-scout":2,"coral-current-eel":2,"cone-snail":2}, hqHp:31, rules:{"tide":true}, flavor:"Every pool along this stretch hides something with claws.", requires:["10-2"] },
+      { key:"10-4", kind:"skirmish", name:"Riptide Channel", icon:"🌊", deck:{"riptide-eel":2,"gull-thief":2,"clownfish-scout":2,"tide-pool-crab":2,"coral-current-eel":2,"sawfish":2}, hqHp:61, rules:{"tide":true}, flavor:"The channel pulls harder than the current should allow.", requires:["10-3"] },
+      { key:"10-5", people:"deep", kind:"skirmish", name:"Current Split", icon:"🐠", deck:{"coral-polyp-colony":3,"clownfish-scout":3,"tide-pool-crab":1,"orca-vanguard":2,"dolphin-knight":1}, hqHp:22, rules:{"tide":true}, flavor:"The reef forks here — two currents, two dangers.", requires:["10-4"] },
       { key:"10-6", kind:"elite", name:"Reef Shark Pack", icon:"🦈", deck:{"coral-reef-shark":3,"orca-vanguard":2,"moray-ambusher":1,"coral-polyp-colony":1,"blue-ringed-octopus":2}, hqHp:26, flavor:"They circle twice before the first one ever commits.", characterId:"collapsed-mine", requires:["10-5"] },
       { key:"10-7", kind:"elite", name:"Eel Nest", icon:"🐍", deck:{"riptide-eel":3,"coral-current-eel":2,"moray-ambusher":2,"mantis-shrimp":1,"silver-minnow":1,"blue-ringed-octopus":2}, hqHp:130, flavor:"The other current is calmer. That is not the same as safer.", requires:["10-5"] },
       { key:"10-8", people:"deep", kind:"elite", name:"Sea Turtle Elder's Court", icon:"🐢", deck:{"sea-turtle-elder":1,"coral-polyp-colony":3,"coral-reef-shark":3,"lions-mane-jelly":1,"turtle-bastion":1,"silver-minnow":2}, hqHp:25, flavor:"Older than the reef itself, and it shows no interest in leaving.", requires:["10-6","10-7"] },
@@ -15968,24 +16019,24 @@ const CONQUEST_MAPS = [
   { id:"mh", unlockAfter:"m10", name:"The Briar Maze", icon:"🌹", blurb:"Hedges taller than a heron, thorns sharper than a quill — and every turn is a dead end for someone.", sequential:true,
     nodes: [
       { key:"12-1", kind:"skirmish", name:"Hedge Mice", icon:"🐭", deck:{"field-mouse":3,"chipmunk-stockpiler":3,"quillback-elder":2,"warren-scout":2,"porcupine-roller":1,"seed-cache-squirrel":2,"harvest-mouse":2}, hqHp:29, flavor:"A whole village lives inside the hedge walls.", requires:[] },
-      { key:"12-2", kind:"skirmish", name:"Quill Path", icon:"🦔", deck:{"quillguard":2,"hedgehog-scout":3,"porcupine-roller":1,"quillback-elder":2,"skunk-gasser":2,"bramble-hoglet":2,"harvest-mouse":2,"meadow-rabbit":2}, hqHp:21, flavor:"Walk carefully. Everything here is pointy.", requires:["12-1"] },
+      { key:"12-2", kind:"skirmish", name:"Quill Path", icon:"🦔", deck:{"quillguard":2,"hedgehog-scout":3,"porcupine-roller":1,"quillback-elder":2,"skunk-gasser":2,"bramble-hoglet":2,"harvest-mouse":2,"meadow-rabbit":2}, hqHp:21, rules:{"rookRow":true}, flavor:"Walk carefully. Everything here is pointy.", requires:["12-1"] },
       { key:"12-3", kind:"skirmish", name:"Warren Run", icon:"🐇", deck:{"warren-scout":3,"buck-brawler":2,"lucky-hopper":2,"rabbit-kit":3,"quillback-elder":2}, hqHp:29, flavor:"The rabbits know every gap in the hedge. You don't.", requires:["12-1"] },
-      { key:"12-4", kind:"skirmish", name:"Thornvine Arch", icon:"🌿", deck:{"thornvine-lasher":2,"bramble-sprout":3,"quill-thorn-boar":2,"hedgehog-scout":3,"quillback-elder":2,"puddle-changeling":2}, hqHp:15, flavor:"The arch closes behind you.", requires:["12-2","12-3"] },
+      { key:"12-4", kind:"skirmish", name:"Thornvine Arch", icon:"🌿", deck:{"thornvine-lasher":2,"bramble-sprout":3,"quill-thorn-boar":2,"hedgehog-scout":3,"quillback-elder":2,"puddle-changeling":2}, hqHp:15, rules:{"bishopPath":true}, flavor:"The arch closes behind you.", requires:["12-2","12-3"] },
       { key:"12-5", kind:"elite", name:"Quillback Hold", icon:"🦔", deck:{"quill-volley":2,"porcupine-roller":3,"rabbit-kit":2,"lucky-hopper":2,"quillback-elder":2,"badger-sapper":2,"lyrebird-mimic":2}, hqHp:26, flavor:"The oldest porcupines hold the centre of the maze.", requires:["12-4"] },
-      { key:"12-6", kind:"elite", name:"Rodent Court", icon:"🐀", deck:{"rodent-king":1,"pack-rat-looter":1,"field-mouse":2,"quill-volley":2,"porcupine-roller":1,"rabbit-kit":2,"lucky-hopper":2,"quillback-elder":2,"badger-sapper":2}, hqHp:30, flavor:"Court is in session. You are the accused.", requires:["12-4"] },
+      { key:"12-6", kind:"elite", name:"Rodent Court", icon:"🐀", deck:{"rodent-king":1,"pack-rat-looter":1,"field-mouse":2,"quill-volley":2,"porcupine-roller":1,"rabbit-kit":2,"lucky-hopper":2,"quillback-elder":2,"badger-sapper":2}, hqHp:30, rules:{"mirage":true}, flavor:"Court is in session. You are the accused.", requires:["12-4"] },
       { key:"12-7", kind:"boss", name:"The Briar Queen", icon:"👑", deck:{"quillguard":2,"porcupine-roller":1,"rabbit-kit":2,"lucky-hopper":2,"quillback-elder":2,"badger-sapper":2,"raccoon-warlord":2,"harvest-mouse":2}, hqHp:45, flavor:"She grew the maze herself, one thorn at a time.", requires:["12-5","12-6"] },
     ]},
   // The Redwood Deep (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mr", unlockAfter:"mh", name:"The Redwood Deep", icon:"🌲", blurb:"Trees as wide as castles and as old as the hills — bears, stags and boars rule the red shade.", sequential:true,
     nodes: [
-      { key:"13-1", kind:"skirmish", name:"Cub Clearing", icon:"🐻", deck:{"bear-cub":3,"fox-kit":3,"fawn-scout":1,"silverback-brawler":2,"firetail-trickster":2,"woodpecker-sapper":2,"shieldbearer-hound":2}, hqHp:15, flavor:"Where there are cubs, there is a mother somewhere.", requires:[] },
-      { key:"13-2", kind:"skirmish", name:"Fox Run", icon:"🦊", deck:{"firetail-trickster":2,"fox-warchief":1,"fox-kit":3,"silverback-brawler":2,"swift-fox":2,"shieldbearer-hound":2}, hqHp:21, flavor:"A blur of orange between the trunks.", requires:["13-1"] },
-      { key:"13-3", kind:"skirmish", name:"Antler Grove", icon:"🦌", deck:{"stag-knight":2,"bramblewood-lynx":1,"shimmerwing-stag":1,"shieldbearer-hound":2,"border-collie":1,"war-panther":2,"honey-badger-fury":2}, hqHp:155, flavor:"The stags hold the grove in rutting season. It is always rutting season.", requires:["13-1"] },
-      { key:"13-4", kind:"skirmish", name:"Boar Wallow", icon:"🐗", deck:{"boar-rampager":2,"berserker-boar":2,"tusked-vanguard":1,"firetail-trickster":2,"silverback-brawler":2,"tasmanian-devil":2,"feral-tuskboar":1,"shieldbearer-hound":2}, hqHp:28, flavor:"The mud is churned deep. Something heavy charges through here often.", requires:["13-2","13-3"] },
-      { key:"13-5", kind:"elite", name:"Badger Setts", icon:"🦡", deck:{"firetail-trickster":2,"boar-rampager":2,"silverback-brawler":2,"war-panther":2,"honey-badger-fury":2,"shieldbearer-hound":2,"border-collie":2}, hqHp:83, flavor:"The ground is riddled with tunnels, and the badgers do not like visitors.", requires:["13-4"] },
-      { key:"13-6", kind:"elite", name:"Grizzly Ridge", icon:"🐻", deck:{"woodland-brawler":2,"bear-cub":1,"firetail-trickster":2,"boar-rampager":2,"silverback-brawler":2,"shieldbearer-hound":2,"border-collie":2}, hqHp:28, flavor:"There's the mother.", requires:["13-4"] },
-      { key:"13-7", kind:"elite", name:"The King's Den", icon:"🦊", deck:{"firetail-trickster":2,"boar-rampager":2,"silverback-brawler":2,"war-panther":2,"shieldbearer-hound":2,"border-collie":2}, hqHp:77, flavor:"A fox who crowns kings, and unmakes them.", requires:["13-5","13-6"] },
-      { key:"13-8", kind:"boss", name:"The Stag-Lord", icon:"🦌", deck:{"boar-rampager":2,"firetail-trickster":1,"fox-kit":2,"bear-cub":2,"silverback-brawler":2,"border-collie":2,"swift-fox":2,"war-panther":2,"honey-badger-fury":1}, hqHp:88, flavor:"His antlers brush the lowest branches of the redwoods.", requires:["13-7"] },
+      { key:"13-1", kind:"skirmish", name:"Cub Clearing", icon:"🐻", deck:{"bear-cub":3,"fox-kit":3,"fawn-scout":1,"silverback-brawler":2,"firetail-trickster":2,"woodpecker-sapper":2,"shieldbearer-hound":2}, hqHp:14, rules:{"canopy":true}, flavor:"Where there are cubs, there is a mother somewhere.", requires:[] },
+      { key:"13-2", kind:"skirmish", name:"Fox Run", icon:"🦊", deck:{"firetail-trickster":2,"fox-warchief":1,"fox-kit":1,"silverback-brawler":2,"swift-fox":2,"shieldbearer-hound":2,"buzzed-chipmunk":2}, hqHp:14, rules:{"canopy":true}, flavor:"A blur of orange between the trunks.", requires:["13-1"] },
+      { key:"13-3", kind:"skirmish", name:"Antler Grove", icon:"🦌", deck:{"stag-knight":2,"shimmerwing-stag":1,"shieldbearer-hound":2,"border-collie":1,"war-panther":2,"honey-badger-fury":2,"buzzed-chipmunk":1}, hqHp:54, rules:{"canopy":true}, flavor:"The stags hold the grove in rutting season. It is always rutting season.", requires:["13-1"] },
+      { key:"13-4", kind:"skirmish", name:"Boar Wallow", icon:"🐗", deck:{"boar-rampager":2,"berserker-boar":2,"firetail-trickster":2,"silverback-brawler":2,"tasmanian-devil":2,"feral-tuskboar":1,"shieldbearer-hound":2,"buzzed-chipmunk":1}, hqHp:16, rules:{"canopy":true}, flavor:"The mud is churned deep. Something heavy charges through here often.", requires:["13-2","13-3"] },
+      { key:"13-5", kind:"elite", name:"Badger Setts", icon:"🦡", deck:{"boar-rampager":2,"war-panther":2,"honey-badger-fury":2,"shieldbearer-hound":2,"border-collie":2,"buzzed-chipmunk":2,"parish-sergeant":2}, hqHp:45, rules:{"canopy":true}, flavor:"The ground is riddled with tunnels, and the badgers do not like visitors.", requires:["13-4"] },
+      { key:"13-6", kind:"elite", name:"Grizzly Ridge", icon:"🐻", deck:{"firetail-trickster":2,"boar-rampager":2,"silverback-brawler":2,"shieldbearer-hound":2,"border-collie":2,"buzzed-chipmunk":2,"parish-sergeant":1}, hqHp:26, rules:{"canopy":true}, flavor:"There's the mother.", requires:["13-4"] },
+      { key:"13-7", kind:"elite", name:"The King's Den", icon:"🦊", deck:{"boar-rampager":2,"war-panther":2,"shieldbearer-hound":2,"border-collie":2,"buzzed-chipmunk":2,"parish-sergeant":2}, hqHp:59, rules:{"canopy":true}, flavor:"A fox who crowns kings, and unmakes them.", requires:["13-5","13-6"] },
+      { key:"13-8", kind:"boss", name:"The Stag-Lord", icon:"🦌", deck:{"boar-rampager":2,"firetail-trickster":1,"fox-kit":2,"bear-cub":2,"silverback-brawler":2,"border-collie":2,"swift-fox":2,"war-panther":2,"honey-badger-fury":1}, hqHp:32, rules:{"canopy":true}, flavor:"His antlers brush the lowest branches of the redwoods.", requires:["13-7"] },
     ]},
   { id:"m5", unlockAfter:"mr", name:"Savanna Reaches", icon:"🌾", blurb:"Open grassland past the Peak — nothing here hides for long.", sequential:true,
     nodes: [
@@ -16001,13 +16052,13 @@ const CONQUEST_MAPS = [
   // The Long Grass (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"ml", unlockAfter:"m5", name:"The Long Grass", icon:"🐎", blurb:"Rolling plains and farm country — horses, hounds and village militia on every road.", sequential:true,
     nodes: [
-      { key:"15-1", kind:"skirmish", name:"Colt Meadow", icon:"🐴", deck:{"stable-colt":3,"cottontail":1,"field-mouse":2,"trash-panda-trickster":2,"cataphract-destrier":1,"raccoon-bandit":2,"warhorse-charger":2,"pronghorn-racer":2}, hqHp:30, flavor:"Young horses running wild, and something chasing them.", requires:[] },
-      { key:"15-2", kind:"skirmish", name:"Squire Road", icon:"🛡️", deck:{"squires-mount":2,"stable-colt":3,"land-tiller":3,"warhorse-charger":2,"border-collie":2,"buzzed-chipmunk":2,"shieldbearer-hound":2}, hqHp:20, flavor:"The village sends its squires out to meet you.", requires:["15-1"] },
-      { key:"15-3", kind:"skirmish", name:"Stoat Ambush", icon:"🗡️", deck:{"trash-panda-trickster":1,"stable-colt":2,"cataphract-destrier":2,"squires-mount":2,"raccoon-nightcrew":2,"shieldbearer-hound":1,"buzzed-chipmunk":2,"bison-bulldozer":2}, hqHp:15, flavor:"The tall grass hides more than mice.", requires:["15-1"] },
-      { key:"15-4", kind:"skirmish", name:"Archer Hill", icon:"🏹", deck:{"talon-archer":2,"hawk-arrowkeeper":1,"squires-mount":2,"stable-colt":2,"warhorse-charger":2,"bison-bulldozer":2,"shieldbearer-hound":2}, hqHp:38, flavor:"Arrows from a hill you can't see the top of.", requires:["15-2","15-3"] },
-      { key:"15-5", kind:"elite", name:"Charge of the Warhorses", icon:"🐎", deck:{"stable-colt":3,"cataphract-destrier":2,"squires-mount":2,"raccoon-bandit":2,"parish-sergeant":1,"shieldbearer-hound":1,"buzzed-chipmunk":2,"bison-bulldozer":2}, hqHp:106, flavor:"You hear them before you see them.", requires:["15-4"] },
-      { key:"15-6", kind:"elite", name:"The Kennels", icon:"🐕", deck:{"cataphract-destrier":1,"raccoon-bandit":2,"warhorse-charger":4,"armored-mastiff":2,"terrier-pup":2,"war-hound":1,"shieldbearer-hound":2,"buzzed-chipmunk":2}, hqHp:57, flavor:"Every farm on the plain keeps dogs, and every dog is here.", requires:["15-4"] },
-      { key:"15-7", kind:"boss", name:"The Horse-Lord", icon:"👑", deck:{"cataphract-destrier":1,"raccoon-bandit":2,"warhorse-charger":4,"armored-mastiff":2,"great-horned-owl":2,"shieldbearer-hound":2,"buzzed-chipmunk":2}, hqHp:120, flavor:"Armoured from muzzle to tail, and the plains bow to him.", requires:["15-5","15-6"] },
+      { key:"15-1", kind:"skirmish", name:"Colt Meadow", icon:"🐴", deck:{"stable-colt":3,"cottontail":1,"field-mouse":2,"trash-panda-trickster":2,"cataphract-destrier":1,"raccoon-bandit":2,"warhorse-charger":2,"pronghorn-racer":2}, hqHp:30, rules:{"undergrowth":true}, flavor:"Young horses running wild, and something chasing them.", requires:[] },
+      { key:"15-2", kind:"skirmish", name:"Squire Road", icon:"🛡️", deck:{"squires-mount":2,"stable-colt":3,"land-tiller":3,"warhorse-charger":2,"border-collie":2,"buzzed-chipmunk":2,"shieldbearer-hound":2}, hqHp:20, rules:{"undergrowth":true}, flavor:"The village sends its squires out to meet you.", requires:["15-1"] },
+      { key:"15-3", kind:"skirmish", name:"Stoat Ambush", icon:"🗡️", deck:{"trash-panda-trickster":1,"stable-colt":2,"cataphract-destrier":2,"squires-mount":2,"raccoon-nightcrew":2,"shieldbearer-hound":1,"buzzed-chipmunk":2,"bison-bulldozer":2}, hqHp:15, rules:{"undergrowth":true,"tallGrass":true}, flavor:"The tall grass hides more than mice.", requires:["15-1"] },
+      { key:"15-4", kind:"skirmish", name:"Archer Hill", icon:"🏹", deck:{"talon-archer":2,"hawk-arrowkeeper":1,"squires-mount":2,"stable-colt":2,"warhorse-charger":2,"bison-bulldozer":2,"shieldbearer-hound":2}, hqHp:38, rules:{"undergrowth":true,"tallGrass":true}, flavor:"Arrows from a hill you can't see the top of.", requires:["15-2","15-3"] },
+      { key:"15-5", kind:"elite", name:"Charge of the Warhorses", icon:"🐎", deck:{"stable-colt":3,"cataphract-destrier":2,"squires-mount":2,"raccoon-bandit":2,"parish-sergeant":1,"shieldbearer-hound":1,"buzzed-chipmunk":2,"bison-bulldozer":2}, hqHp:106, rules:{"undergrowth":true}, flavor:"You hear them before you see them.", requires:["15-4"] },
+      { key:"15-6", kind:"elite", name:"The Kennels", icon:"🐕", deck:{"cataphract-destrier":1,"raccoon-bandit":2,"warhorse-charger":4,"armored-mastiff":2,"terrier-pup":2,"war-hound":1,"shieldbearer-hound":2,"buzzed-chipmunk":2}, hqHp:57, rules:{"undergrowth":true}, flavor:"Every farm on the plain keeps dogs, and every dog is here.", requires:["15-4"] },
+      { key:"15-7", kind:"boss", name:"The Horse-Lord", icon:"👑", deck:{"cataphract-destrier":1,"raccoon-bandit":2,"warhorse-charger":4,"armored-mastiff":2,"great-horned-owl":2,"shieldbearer-hound":2,"buzzed-chipmunk":2}, hqHp:120, rules:{"undergrowth":true}, flavor:"Armoured from muzzle to tail, and the plains bow to him.", requires:["15-5","15-6"] },
     ]},
   // The Pinewood Taiga (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mt", unlockAfter:"ml", name:"The Pinewood Taiga", icon:"🌲", blurb:"Endless dark pines on the edge of the snow — lynx, elk and the first of the wolf packs.", sequential:true,
@@ -16017,14 +16068,14 @@ const CONQUEST_MAPS = [
       { key:"16-3", kind:"skirmish", name:"Elk Crossing", icon:"🦌", deck:{"taiga-lynx":2,"frost-hare-sprinter":2,"alpha-howler":1,"wolf-pack-runner":2,"ravenous-wolverine":1,"timber-wolf-pack":2,"shieldbearer-hound":2}, hqHp:39, flavor:"The herd crosses here every winter. You are in the way.", requires:["16-1"] },
       { key:"16-4", kind:"skirmish", name:"Lynx Shadow", icon:"🐈", deck:{"taiga-lynx":2,"frost-hare-sprinter":2,"alpha-howler":2,"wolf-pack-runner":1,"shieldbearer-hound":1,"dhole-matriarch":1,"lone-grey-wolf":2}, hqHp:85, flavor:"Tufted ears in every shadow.", requires:["16-2","16-3"] },
       { key:"16-5", kind:"elite", name:"The Running Pack", icon:"🐺", deck:{"wolf-pack-runner":1,"taiga-lynx":2,"frost-hare-sprinter":1,"alpha-howler":2,"tundra-musk-ox":1,"ravenous-wolverine":2,"dhole-matriarch":1,"shieldbearer-hound":1,"lone-grey-wolf":2}, hqHp:85, flavor:"They run in a line, and the line never breaks.", requires:["16-4"] },
-      { key:"16-6", kind:"elite", name:"Reaver's Hollow", icon:"🐺", deck:{"frost-hare-sprinter":2,"alpha-howler":1,"taiga-lynx":2,"ravenous-wolverine":2,"firetail-trickster":2,"warren-scout":2,"weredog":1}, hqHp:25, flavor:"Bones in the snow, and fresh ones.", requires:["16-4"] },
+      { key:"16-6", kind:"elite", name:"Reaver's Hollow", icon:"🐺", deck:{"frost-hare-sprinter":2,"alpha-howler":1,"taiga-lynx":2,"ravenous-wolverine":2,"firetail-trickster":2,"warren-scout":2,"weredog":1}, hqHp:25, rules:{"consternation":true}, flavor:"Bones in the snow, and fresh ones.", requires:["16-4"] },
       { key:"16-7", kind:"boss", name:"The Howling Alpha", icon:"🐺", deck:{"alpha-howler":4,"wolf-pack-runner":2,"frost-hare-sprinter":1,"taiga-lynx":2,"tundra-musk-ox":2,"ravenous-wolverine":2,"arctic-fox-raider":2,"shieldbearer-hound":2}, hqHp:87, rules:{"field":"frozen","frostCount":1,"frostResist":["Tundra","Frost","Taiga"]}, flavor:"Every wolf in the taiga answers to one voice.", requires:["16-5","16-6"] },
     ]},
   { id:"m6", unlockAfter:"mt", name:"Wolfsbane Tundra", icon:"🐺", blurb:"Frozen ground north of the grassland — the packs here hunt in formation.", sequential:true,
     nodes: [
       { key:"17-1", kind:"skirmish", name:"Ice Fang Patrol", icon:"🦊", deck:{"ice-crevasse-wolf":2,"arctic-fox-raider":4,"golden-eagle-diver":2,"chipmunk-hoarder":2}, hqHp:51, flavor:"The snow keeps every track fresh, including the ones circling back.", requires:[] },
       { key:"17-2", kind:"skirmish", name:"Frostbitten Pack", icon:"🐺", deck:{"boreal-elk":1,"taiga-lynx":3,"golden-eagle-diver":2,"beaver-builder":2,"snow-ermine":2,"lone-grey-wolf":1,"harvest-mouse":2}, hqHp:14, flavor:"A pack this far south of the treeline means the treeline moved.", rules:{"frostResist":["Tundra","Frost","Taiga"]}, requires:["17-1"] },
-      { key:"17-3", people:"folk", kind:"skirmish", name:"Snowshoe Line", icon:"🐇", deck:{"snowshoe-hare":2,"arctic-fox-raider":4,"beaver-builder":2,"snow-bunting-archer":2,"harvest-mouse":2}, hqHp:14, flavor:"They scatter, regroup, and scatter again — always uphill of you.", rules:{"frostResist":["Tundra","Frost","Taiga"]}, requires:["17-2"] },
+      { key:"17-3", people:"folk", kind:"skirmish", name:"Snowshoe Line", icon:"🐇", deck:{"beaver-builder":2,"dynamite-packrat":2,"quill-volley":2,"star-nosed-mole":2,"glacial-ape-king":2,"permafrost-mammoth":2,"snow-bunting-archer":1}, hqHp:14, flavor:"They scatter, regroup, and scatter again — always uphill of you.", rules:{"frostResist":["Tundra","Frost","Taiga"],"hail":true}, requires:["17-2"] },
       { key:"17-4", kind:"skirmish", name:"Lynx Ambush", icon:"🐆", deck:{"glacial-ape-king":2,"beaver-builder":3,"golden-eagle-diver":2,"porcupine-roller":2,"alpha-howler":1,"harbor-seal":2}, hqHp:34, flavor:"You never see the lynx. You only see the elk break formation.", rules:{"frostResist":["Tundra","Frost","Taiga"]}, requires:["17-3"] },
       { key:"17-5", kind:"elite", name:"Musk Ox Bulwark", icon:"🐂", deck:{"beaver-builder":3,"porcupine-roller":2,"glacial-ape-king":1,"taiga-lynx":2,"chipmunk-hoarder":1}, hqHp:30, flavor:"A wall of horns that simply refuses to move.", characterId:"collapsed-mine", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"freezing":true}, requires:["17-4"] },
       { key:"17-6", kind:"elite", name:"Glacier Herd", icon:"🦬", deck:{"beaver-builder":3,"porcupine-roller":2,"glacial-ape-king":2,"frost-hare-sprinter":1,"chipmunk-hoarder":2}, hqHp:152, flavor:"The herd does not run from the cold. It carries it.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"freezing":true}, requires:["17-5"] },
@@ -16036,11 +16087,11 @@ const CONQUEST_MAPS = [
     blurb:"Heat so fierce the sand turns to glass — scorpions, jackals and things that wait under the dunes.", sequential:true,
     nodes: [
       { key:"18-1", kind:"skirmish", name:"Dune Jackals", icon:"🐕", deck:{"dune-jackal":1,"dust-hyena":1,"komodo-warlord":2,"snapper-hatchling":2,"trapdoor-spider":2,"roadrunner-courier":2,"rabid-jackal":1,"cinder-gecko":2}, hqHp:229, rules:{"sandstorm":true}, flavor:"They laugh at you from the next dune over.", requires:[] },
-      { key:"18-2", kind:"skirmish", name:"Scorpion Flats", icon:"🦂", deck:{"dust-hyena":3,"komodo-warlord":4,"trapdoor-spider":2,"snapper-hatchling":2,"moon-jerboa":1}, hqHp:97, rules:{"sandstorm":true}, flavor:"Every stone you turn has a tail under it.", requires:["18-1"] },
+      { key:"18-2", kind:"skirmish", name:"Scorpion Flats", icon:"🦂", deck:{"dust-hyena":3,"komodo-warlord":4,"trapdoor-spider":2,"snapper-hatchling":2,"grass-viper":1,"moon-jerboa":1}, hqHp:184, rules:{"sandstorm":true}, flavor:"Every stone you turn has a tail under it.", requires:["18-1"] },
       { key:"18-3", kind:"skirmish", name:"Widow's Web", icon:"🕷️", deck:{"caustic-scorpion":2,"dust-hyena":2,"komodo-warlord":3,"obsidian-scorpion":2,"tarantula-hawk":2}, hqHp:43, rules:{"sandstorm":true}, flavor:"Webs strung between the cacti, catching the wind and anything else.", requires:["18-1"] },
       { key:"18-4", kind:"skirmish", name:"Sandstorm", icon:"🌪️", deck:{"komodo-warlord":3,"caustic-scorpion":2,"obsidian-scorpion":2,"armadillo-guard":2,"horned-lizard":2}, hqHp:82, rules:{"sandstorm":true}, flavor:"The storm has wings.", requires:["18-2","18-3"] },
-      { key:"18-5", kind:"elite", name:"Obsidian Nest", icon:"🦂", deck:{"caustic-scorpion":2,"dust-hyena":2,"komodo-warlord":4,"obsidian-scorpion":2,"fennec-fox":2,"horned-lizard":2,"meerkat-burrower":2}, hqHp:89, rules:{"sandstorm":true}, flavor:"Black glass scorpions in a black glass nest.", requires:["18-4"] },
-      { key:"18-6", kind:"elite", name:"Komodo Wallow", icon:"🦎", deck:{"komodo-warlord":3,"caustic-scorpion":2,"obsidian-scorpion":1,"meerkat-sentry":2,"thorny-devil":2,"antlion-pit":2,"horned-lizard":2}, hqHp:92, rules:{"sandstorm":true}, flavor:"The biggest lizard you have ever seen, and it has seen you.", requires:["18-4"] },
+      { key:"18-5", kind:"elite", name:"Obsidian Nest", icon:"🦂", deck:{"caustic-scorpion":2,"dust-hyena":2,"komodo-warlord":4,"obsidian-scorpion":2,"fennec-fox":2,"horned-lizard":2,"meerkat-burrower":2}, hqHp:89, rules:{"glassStorm":true}, flavor:"Black glass scorpions in a black glass nest.", requires:["18-4"] },
+      { key:"18-6", kind:"elite", name:"Komodo Wallow", icon:"🦎", deck:{"komodo-warlord":3,"caustic-scorpion":2,"obsidian-scorpion":1,"meerkat-sentry":2,"thorny-devil":2,"antlion-pit":2,"snapper-hatchling":2}, hqHp:131, rules:{"sandstorm":true}, flavor:"The biggest lizard you have ever seen, and it has seen you.", requires:["18-4"] },
       { key:"18-7", kind:"boss", name:"The Sand Widow Queen", icon:"👑", deck:{"obsidian-scorpion":2,"komodo-warlord":3,"caustic-scorpion":2,"fennec-fox":2,"meerkat-sentry":2,"sand-widow":1,"horned-lizard":2,"thorny-devil":2}, hqHp:65, rules:{"sandstorm":true,"field":"heatwave","heatLevel":2}, flavor:"The dunes are her web.", requires:["18-5","18-6"] },
     ]},
   // 2026-10-11 (16:20, user: old maps first, new maps after): the Ashen Peak is a main map again, Map 5.
@@ -16060,12 +16111,12 @@ const CONQUEST_MAPS = [
       { key:"20-2", kind:"skirmish", name:"Grizzly Frontier", icon:"🐻", deck:{"woodland-brawler":4,"bear-cub":2,"pack-mule":2,"fire-hawk":1,"bramblewood-bonebreaker":2,"ash-moth":2}, hqHp:25, flavor:"Even the cubs here have already learned to hold ground.", requires:["20-1"] },
       { key:"20-3", kind:"skirmish", name:"Panther Ledge", icon:"🐆", deck:{"bramblewood-lynx":1,"jaguar-stalker":2,"cave-warlord":2,"pack-mule":2,"warhorse-charger":2,"blessed-avatar":1,"stable-colt":2}, hqHp:38, flavor:"Three cats, one ledge, and no agreement about who owns it.", requires:["20-1"] },
       { key:"20-4", kind:"skirmish", name:"Shrine Steps", icon:"🛕", deck:{"stable-colt":1,"cave-warlord":2,"cataphract-destrier":1,"woodland-brawler":2,"bear-cub":2,"pack-mule":2,"ash-moth":2,"shrine-acolyte":2,"shrine-bell-ringer":1}, hqHp:92, flavor:"Every step is a prayer. Every prayer is answered with a shove.", requires:["20-2"] },
-      { key:"20-5", kind:"elite", name:"Cave Warlord's Guard", icon:"🛡️", deck:{"cave-warlord":2,"cataphract-destrier":1,"woodland-brawler":2,"grizzly-vanguard":2,"blessed-avatar":1}, hqHp:74, flavor:"Nobody guards a warlord who cannot already win alone.", characterId:"collapsed-mine", requires:["20-2"] },
-      { key:"20-6", kind:"elite", name:"The Constrictor Sovereign", icon:"🐍", deck:{"cataphract-destrier":1,"woodland-brawler":2,"bear-cub":1,"silverback-brawler":2,"cave-warlord":1,"fire-hawk":1,"firefly-swarm":2}, hqHp:94, flavor:"The canopy floor below the Peak is, in a sense, one very patient animal.", requires:["20-5"] },
-      { key:"20-7", kind:"elite", name:"The Blessed Avatar", icon:"😇", deck:{"stable-colt":2,"cave-warlord":2,"cataphract-destrier":2,"woodland-brawler":1,"bear-cub":2,"warhorse-charger":1,"pack-mule":2}, hqHp:84, flavor:"It answers every prayer at once, including the ones nobody meant to make.", requires:["20-6"] },
-      { key:"20-8", kind:"elite", name:"The Iron Cataphract", icon:"🛡️", deck:{"cataphract-destrier":4,"stable-colt":2,"cave-warlord":2,"woodland-brawler":1,"pack-mule":2,"silverback-brawler":1}, hqHp:124, flavor:"Fully armored, front to back — there is no soft angle to try.", requires:["20-7"] },
-      { key:"20-9", kind:"boss", name:"The Ancient Sloth Titan", icon:"🦥", deck:{"ancient-sloth-titan":1,"cave-warlord":2,"blessed-avatar":2,"beaver-lumberjack":1,"pack-mule":2}, hqHp:239, flavor:"It has not hurried in centuries. It has never needed to.", requires:["20-8"] },
-      { key:"20-10", kind:"finalboss", rating:400, name:"The Cave Warlord", icon:"👑", deck:{"grizzly-vanguard":1,"cave-warlord":1,"stable-colt":2,"cataphract-destrier":2,"woodland-brawler":2,"bear-cub":2,"pack-mule":2,"blessed-avatar":2}, hqHp:70, flavor:"Everything on the Sundered Peak, in the end, answers to him.", revealDeck:"win", requires:["20-9"] },
+      { key:"20-5", kind:"elite", name:"Cave Warlord's Guard", icon:"🛡️", deck:{"cave-warlord":2,"cataphract-destrier":1,"woodland-brawler":2,"grizzly-vanguard":2,"blessed-avatar":1}, hqHp:74, rules:{"field":"heatwave","heatLevel":3}, flavor:"Nobody guards a warlord who cannot already win alone.", characterId:"collapsed-mine", requires:["20-2"] },
+      { key:"20-6", kind:"elite", name:"The Constrictor Sovereign", icon:"🐍", deck:{"cataphract-destrier":1,"woodland-brawler":2,"bear-cub":1,"silverback-brawler":2,"cave-warlord":1,"fire-hawk":1,"firefly-swarm":2}, hqHp:94, rules:{"field":"heatwave","heatLevel":3}, flavor:"The canopy floor below the Peak is, in a sense, one very patient animal.", requires:["20-5"] },
+      { key:"20-7", kind:"elite", name:"The Blessed Avatar", icon:"😇", deck:{"stable-colt":2,"cave-warlord":2,"cataphract-destrier":2,"woodland-brawler":1,"bear-cub":2,"warhorse-charger":1,"pack-mule":2}, hqHp:84, rules:{"field":"heatwave","heatLevel":3}, flavor:"It answers every prayer at once, including the ones nobody meant to make.", requires:["20-6"] },
+      { key:"20-8", kind:"elite", name:"The Iron Cataphract", icon:"🛡️", deck:{"cataphract-destrier":4,"stable-colt":2,"cave-warlord":2,"woodland-brawler":1,"pack-mule":2,"silverback-brawler":1}, hqHp:124, rules:{"field":"heatwave","heatLevel":3}, flavor:"Fully armored, front to back — there is no soft angle to try.", requires:["20-7"] },
+      { key:"20-9", kind:"boss", name:"The Ancient Sloth Titan", icon:"🦥", deck:{"ancient-sloth-titan":1,"cave-warlord":2,"blessed-avatar":2,"beaver-lumberjack":1,"pack-mule":2}, hqHp:239, rules:{"field":"heatwave","heatLevel":3}, flavor:"It has not hurried in centuries. It has never needed to.", requires:["20-8"] },
+      { key:"20-10", kind:"finalboss", rating:400, name:"The Cave Warlord", icon:"👑", deck:{"grizzly-vanguard":1,"cave-warlord":1,"stable-colt":2,"cataphract-destrier":2,"woodland-brawler":2,"bear-cub":2,"pack-mule":2,"fire-hawk":2}, hqHp:30, rules:{"field":"heatwave","heatLevel":3}, flavor:"Everything on the Sundered Peak, in the end, answers to him.", revealDeck:"win", requires:["20-9"] },
       { key:"20-R", kind:"raidboss", name:"The Deep Troll King", icon:"👹", deck:{"deep-cave-troll":6,"stalactite-golem":2,"vampire-roost":1}, hqHp:150, flavor:"Every tunnel in the dark eventually leads back to him.", requires:["20-10"] },
       // The world boss (2026-10-12, 10:23 list): the Caldera Wyrm leads (2 Stone + 1 Metal, which its side digs each round),
       // lands for 5, surges +2/+4, burns everything next to it (Immolation 2) and hits whatever faces it for 5 when it dies.
@@ -16123,13 +16174,13 @@ const CONQUEST_MAPS = [
   // Lilypad Reach (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mp", sub:true, parent:"mb", entry:{x:30, y:20, after:"2-1", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
     nodes: [
-      { key:"2-A-1", kind:"skirmish", name:"Lily Hop", icon:"🐸", deck:{"puddle-hopper":3,"minnow-skitter":3,"guppy":3,"quill-volley":2,"lotus-frog":2,"shallows-fry":2}, hqHp:19, flavor:"Every lily pad has a frog on it, and every frog has an opinion.", requires:[] },
-      { key:"2-A-2", kind:"skirmish", name:"Duck Row", icon:"🦆", deck:{"duckling":1,"pond-duck":3,"pond-paddler":2,"minnow-skitter":2,"silver-minnow":2}, hqHp:28, flavor:"They paddle in a line, and they all turn at once.", requires:["2-A-1"] },
-      { key:"2-A-3", kind:"skirmish", name:"Beaver Dam", icon:"🦫", deck:{"beaver-builder":2,"river-carp":1,"puddle-hopper":2,"pond-duck":2,"riverworks-bastion":2,"quill-volley":2,"beaver-lumberjack":1}, hqHp:18, flavor:"The dam goes up a little higher every night.", requires:["2-A-1"] },
-      { key:"2-A-4", kind:"skirmish", name:"Pike Shallows", icon:"🐟", deck:{"pike-lancer":2,"river-carp":3,"minnow-skitter":3,"ford-kingfisher":2,"mayfly-dancer":2}, hqHp:15, flavor:"Something long and quick waits in the reeds.", requires:["2-A-2","2-A-3"] },
-      { key:"2-A-5", kind:"elite", name:"Croaker Chorus", icon:"🐸", deck:{"poison-dart-croaker":3,"puddle-hopper":3,"camouflage-frog":2,"guppy":2,"newt-doctor":2}, hqHp:158, flavor:"Pretty colours. Don't lick anything.", requires:["2-A-4"] },
-      { key:"2-A-6", kind:"elite", name:"The Lodge", icon:"🪵", deck:{"lodge-engineer":2,"beaver-builder":3,"river-carp":3,"pike-lancer":2,"riverstone-slinger":2,"quill-volley":2,"dam-wall":1}, hqHp:27, flavor:"The biggest lodge on the pond, and the engineers are home.", requires:["2-A-4"] },
-      { key:"2-A-7", kind:"boss", name:"The Lodge Matriarch", icon:"🦫", deck:{"riverworks-bastion":1,"lodge-engineer":2,"mallard-marauder":2,"pike-lancer":2,"beaver-builder":2,"silver-minnow":2,"elder-tortoise":1}, hqHp:30, flavor:"She built half the pond. She would like it back.", requires:["2-A-5","2-A-6"] },
+      { key:"2-A-1", kind:"skirmish", name:"Lily Hop", icon:"🐸", deck:{"puddle-hopper":3,"minnow-skitter":3,"guppy":3,"quill-volley":2,"lotus-frog":2,"shallows-fry":2}, hqHp:19, rules:{"tide":true}, flavor:"Every lily pad has a frog on it, and every frog has an opinion.", requires:[] },
+      { key:"2-A-2", kind:"skirmish", name:"Duck Row", icon:"🦆", deck:{"duckling":1,"pond-duck":3,"pond-paddler":2,"minnow-skitter":2,"silver-minnow":2}, hqHp:28, rules:{"tide":true}, flavor:"They paddle in a line, and they all turn at once.", requires:["2-A-1"] },
+      { key:"2-A-3", kind:"skirmish", name:"Beaver Dam", icon:"🦫", deck:{"beaver-builder":2,"river-carp":1,"puddle-hopper":2,"pond-duck":2,"riverworks-bastion":2,"quill-volley":2,"beaver-lumberjack":1}, hqHp:18, rules:{"tide":true}, flavor:"The dam goes up a little higher every night.", requires:["2-A-1"] },
+      { key:"2-A-4", kind:"skirmish", name:"Pike Shallows", icon:"🐟", deck:{"pike-lancer":2,"river-carp":3,"minnow-skitter":3,"ford-kingfisher":2,"mayfly-dancer":2}, hqHp:15, rules:{"tide":true}, flavor:"Something long and quick waits in the reeds.", requires:["2-A-2","2-A-3"] },
+      { key:"2-A-5", kind:"elite", name:"Croaker Chorus", icon:"🐸", deck:{"poison-dart-croaker":3,"puddle-hopper":3,"camouflage-frog":2,"guppy":2,"newt-doctor":2}, hqHp:158, rules:{"tide":true}, flavor:"Pretty colours. Don't lick anything.", requires:["2-A-4"] },
+      { key:"2-A-6", kind:"elite", name:"The Lodge", icon:"🪵", deck:{"lodge-engineer":2,"beaver-builder":3,"river-carp":3,"pike-lancer":2,"riverstone-slinger":2,"quill-volley":2,"dam-wall":1}, hqHp:27, rules:{"tide":true}, flavor:"The biggest lodge on the pond, and the engineers are home.", requires:["2-A-4"] },
+      { key:"2-A-7", kind:"boss", name:"The Lodge Matriarch", icon:"🦫", deck:{"riverworks-bastion":1,"lodge-engineer":2,"mallard-marauder":2,"pike-lancer":2,"beaver-builder":2,"silver-minnow":2,"elder-tortoise":1}, hqHp:30, rules:{"tide":true}, flavor:"She built half the pond. She would like it back.", requires:["2-A-5","2-A-6"] },
     ]},
   // Fused in as a side map (2026-10-12, user's map list: "Fuse m9 in").
   { id:"m9", sub:true, parent:"m3", entry:{x:60, y:16, after:"19-1", label:"The foundry gate"}, name:"Basalt Foundry", icon:"🪨", blurb:"A furnace of cracked black stone — everything here glows from the inside.", sequential:true,
@@ -16142,10 +16193,10 @@ const CONQUEST_MAPS = [
       { key:"19-A-4", kind:"skirmish", name:"Vent Skitter", icon:"🦂", deck:{"obsidian-scorpion":2,"pyroclast-wyrm":2,"beaver-lumberjack":3,"phoenix-fledgling":1,"chained-binturong":2,"sulfur-vent-crab":2}, hqHp:93, flavor:"The rock ticks and clicks long before anything crawls out of it.", requires:["19-A-2"] },
       { key:"19-A-5", kind:"skirmish", name:"Ashfall Line", icon:"🦅", deck:{"ember-jackal":3,"obsidian-scorpion":2,"sulfur-vent-crab":1,"magma-titan":2,"flagellant-vulture":2,"beetle-battering-ram":2}, hqHp:71, flavor:"The ash never really settles here. Neither does anything else.", requires:["19-A-4"] },
       { key:"19-A-6", kind:"skirmish", name:"Furnace Mouth", icon:"🦎", deck:{"magma-salamander":1,"obsidian-scorpion":2,"magma-titan":1,"basalt-boar":2,"ember-jackal":2,"fruit-bat-familiar":2,"beetle-battering-ram":2}, hqHp:81, flavor:"The hottest door in the Foundry, and someone keeps it open.", requires:["19-A-5"] },
-      { key:"19-A-7", kind:"elite", name:"Basalt Vanguard", icon:"🐗", deck:{"basalt-boar":2,"magma-titan":2,"obsidian-scorpion":1,"cinder-stoker":2,"tide-spirit":1,"beetle-battering-ram":2,"hercules-beetle":2,"vampire-finch":1}, hqHp:176, rules:{"field":"heatwave","heatLevel":2}, flavor:"Stone this hot should not be able to charge, and yet.", characterId:"plains-terrace", requires:["19-A-5"] },
-      { key:"19-A-8", kind:"elite", name:"Titan's Shadow", icon:"🔥", deck:{"basalt-boar":1,"ember-jackal":3,"magma-titan":2,"sulfur-vent-crab":2,"obsidian-scorpion":2,"beetle-battering-ram":1}, hqHp:111, rules:{"field":"heatwave","heatLevel":2}, flavor:"The heat reaches you a full second before the shadow does.", requires:["19-A-7"] },
-      { key:"19-A-9", kind:"elite", name:"The Pyroclast Wyrm", icon:"🐉", deck:{"beetle-battering-ram":1,"echo-keeper":2,"cinder-gecko":1,"hellbender":2,"ashbone-ghoul":2,"hercules-beetle":2}, hqHp:42, rules:{"field":"heatwave","heatLevel":2}, flavor:"It surfaces once, does what it came to do, and sinks back into the rock.", requires:["19-A-8"] },
-      { key:"19-A-10", kind:"boss", name:"The Phoenix Ember King", icon:"👑", deck:{"obsidian-scorpion":1,"sulfur-vent-crab":2,"echo-keeper":1,"cinder-stoker":2,"trapdoor-spider":1,"beetle-battering-ram":2,"ashbone-ghoul":1}, hqHp:228, rules:{"field":"heatwave","heatLevel":2}, flavor:"Kill it and the Foundry only gets brighter.", requires:["19-A-9"] },
+      { key:"19-A-7", kind:"elite", name:"Basalt Vanguard", icon:"🐗", deck:{"basalt-boar":2,"magma-titan":2,"obsidian-scorpion":1,"cinder-stoker":2,"tide-spirit":1,"beetle-battering-ram":2,"hercules-beetle":2,"vampire-finch":1}, hqHp:176, rules:{"lavaSpout":true}, flavor:"Stone this hot should not be able to charge, and yet.", characterId:"plains-terrace", requires:["19-A-5"] },
+      { key:"19-A-8", kind:"elite", name:"Titan's Shadow", icon:"🔥", deck:{"basalt-boar":1,"ember-jackal":3,"magma-titan":2,"sulfur-vent-crab":2,"obsidian-scorpion":2,"beetle-battering-ram":1}, hqHp:111, rules:{"lavaSpout":true}, flavor:"The heat reaches you a full second before the shadow does.", requires:["19-A-7"] },
+      { key:"19-A-9", kind:"elite", name:"The Pyroclast Wyrm", icon:"🐉", deck:{"beetle-battering-ram":1,"echo-keeper":2,"cinder-gecko":1,"hellbender":2,"ashbone-ghoul":2,"hercules-beetle":2}, hqHp:42, rules:{"lavaSpout":true}, flavor:"It surfaces once, does what it came to do, and sinks back into the rock.", requires:["19-A-8"] },
+      { key:"19-A-10", kind:"boss", name:"The Phoenix Ember King", icon:"👑", deck:{"obsidian-scorpion":1,"sulfur-vent-crab":2,"echo-keeper":1,"cinder-stoker":2,"trapdoor-spider":1,"beetle-battering-ram":2,"ashbone-ghoul":1}, hqHp:84, rules:{"lavaSpout":true}, flavor:"Kill it and the Foundry only gets brighter.", requires:["19-A-9"] },
     ]},
   // Sub-maps (2026-10-09, user: "I want a little Cave map when I click into another cave icon on the
   // map… only accessible from that map. Then it boom, transition-zooms into the cave… a whole map
@@ -16160,11 +16211,11 @@ const CONQUEST_MAPS = [
   // each round hits +2). Electric eels and the Goliath's brood live in the wreck.
   { id:"mj", sub:true, parent:"m7", entry:{x:78, y:74, after:"10-9", label:"A mast below the reef"}, name:"The Sunken Depths", icon:"⚓", blurb:"An otter ferry went down past the reef wall years ago. The current through its hull is faster than anything above.", sequential:true,
     nodes: [
-      { key:"10-A-1", people:"deep", kind:"skirmish", name:"Bubble Trail", icon:"🫧", deck:{"inkcloud-squid":3,"riptide-eel":3,"clownfish-scout":2,"tide-pool-crab":2}, hqHp:129, flavor:"Follow the bubbles down. Something below is still breathing.", requires:[] },
-      { key:"10-A-2", people:"deep", kind:"skirmish", name:"The Drowned Deck", icon:"⚓", deck:{"voltaic-eel":2,"inkcloud-squid":2,"coral-current-eel":2,"sawfish":2,"tide-pool-crab":2}, hqHp:141, flavor:"The ferry's bell still swings. Nobody rings it.", requires:["10-A-1"] },
-      { key:"10-A-3", people:"deep", kind:"skirmish", name:"Cargo Hold", icon:"📦", deck:{"open-ocean-hermit-crab":3,"kraken-spawnling":1,"riptide-eel":1,"inkcloud-squid":2,"tide-pool-crab":1,"blind-cave-fish":2}, hqHp:143, flavor:"Crates of otter cargo, and every one of them has a new tenant.", requires:["10-A-2"] },
-      { key:"10-A-4", people:"deep", kind:"elite", name:"The Undertow", icon:"🌀", deck:{"voltaic-eel":3,"coral-reef-shark":2,"abyss-lantern-squid":2,"riptide-eel":3,"moray-ambusher":1,"swordfish-spearman":1}, hqHp:169, rules:{"highTide":true}, flavor:"The current through the hull pulls at everything, and lightning crawls along the eels.", requires:["10-A-3"] },
-      { key:"10-A-5", people:"deep", kind:"boss", name:"The Ferry's Last Passenger", icon:"🐙", deck:{"glass-octopus":2,"vampire-squid":2,"voltaic-eel":2,"kraken-spawnling":1,"coral-reef-shark":2,"inkcloud-squid":2,"blue-ringed-octopus":1,"colossal-squid":1}, hqHp:82, rules:{"highTide":true}, flavor:"Something rode the ferry all the way down, and it has been waiting for the next stop.", requires:["10-A-4"] },
+      { key:"10-A-1", people:"deep", kind:"skirmish", name:"Bubble Trail", icon:"🫧", deck:{"clownfish-scout":2,"tide-pool-crab":2,"mangrove-mudskipper":2,"orca-vanguard":1,"kraken-spawnling":2,"moray-ambusher":1}, hqHp:129, rules:{"crushingDepths":true}, flavor:"Follow the bubbles down. Something below is still breathing.", requires:[] },
+      { key:"10-A-2", people:"deep", kind:"skirmish", name:"The Drowned Deck", icon:"⚓", deck:{"inkcloud-squid":2,"tide-pool-crab":2,"orca-vanguard":2,"kraken-spawnling":2,"minnow-skitter":2}, hqHp:141, rules:{"crushingDepths":true}, flavor:"The ferry's bell still swings. Nobody rings it.", requires:["10-A-1"] },
+      { key:"10-A-3", people:"deep", kind:"skirmish", name:"Cargo Hold", icon:"📦", deck:{"open-ocean-hermit-crab":1,"kraken-spawnling":1,"blind-cave-fish":2,"orca-vanguard":1,"moray-ambusher":2,"silver-minnow":1,"blue-ringed-octopus":2}, hqHp:143, rules:{"crushingDepths":true}, flavor:"Crates of otter cargo, and every one of them has a new tenant.", requires:["10-A-2"] },
+      { key:"10-A-4", people:"deep", kind:"elite", name:"The Undertow", icon:"🌀", deck:{"voltaic-eel":3,"coral-reef-shark":2,"abyss-lantern-squid":2,"riptide-eel":3,"swordfish-spearman":1,"pufferfish-bulwark":1}, hqHp:169, rules:{"highTide":true,"crushingDepths":true}, flavor:"The current through the hull pulls at everything, and lightning crawls along the eels.", requires:["10-A-3"] },
+      { key:"10-A-5", people:"deep", kind:"boss", name:"The Ferry's Last Passenger", icon:"🐙", deck:{"glass-octopus":2,"vampire-squid":2,"kraken-spawnling":1,"coral-reef-shark":2,"inkcloud-squid":2,"tide-pool-crab":1,"blind-cave-fish":1,"orca-vanguard":2,"blue-ringed-octopus":1}, hqHp:156, rules:{"highTide":true,"crushingDepths":true}, flavor:"Something rode the ferry all the way down, and it has been waiting for the next stop.", requires:["10-A-4"] },
     ]},
   { id:"mg", sub:true, parent:"mb", entry:{x:86, y:24, after:"2-2", label:"A sea cave"}, name:"Smugglers' Grotto", icon:"🕳️", blurb:"A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in.", sequential:true,
     nodes: [
@@ -16247,7 +16298,7 @@ const CONQUEST_MAPS = [
   { id:"mi", sub:true, parent:"m6", entry:{x:20, y:74, after:"17-8", label:"The Ice Hollow"}, name:"The Ice Hollow", icon:"🧊", blurb:"A cave of blue ice under the tundra. The cold in here has teeth.", sequential:true,
     nodes: [
       { key:"17-A-1", kind:"skirmish", name:"Frost Tunnel", icon:"🧊", deck:{"chipmunk-hoarder":4,"porcupine-roller":3,"glacial-ape-king":3,"taiga-lynx":2}, hqHp:93, rewards:{first:{gold:80, dust:10}}, requires:[] },
-      { key:"17-A-2", kind:"skirmish", name:"Glacier Gut", icon:"🧊", deck:{"beaver-builder":4,"glacial-ape-king":3,"arctic-fox-raider":3,"chipmunk-hoarder":2}, hqHp:164, rewards:{first:{gold:100, dust:13}}, requires:["17-A-1"] },
+      { key:"17-A-2", kind:"skirmish", name:"Glacier Gut", icon:"🧊", deck:{"beaver-builder":4,"glacial-ape-king":3,"arctic-fox-raider":3,"chipmunk-hoarder":2}, hqHp:164, rewards:{"first":{"gold":100,"dust":13}}, requires:["17-A-1"], rules:{"slippery":30} },
       { key:"17-A-3", kind:"skirmish", name:"The Rime Hall", icon:"🧊", deck:{"taiga-lynx":4,"chipmunk-hoarder":3,"golden-eagle-diver":3,"spitting-spider":2,"harvest-mouse":2}, hqHp:34, rewards:{"first":{"gold":120,"dust":16}}, requires:["17-A-2"] },
       { key:"17-A-4", kind:"boss", name:"The Hollow King", icon:"👑", deck:{"porcupine-roller":2,"arctic-fox-raider":2,"glacial-ape-king":2,"dynamite-packrat":2,"quill-volley":2}, hqHp:128, rewards:{first:{gold:200, dust:30}}, requires:["17-A-3"] },
     ]},
@@ -18590,8 +18641,8 @@ function renderConquestSubTab(body){
     // shrinks it away; this is the same move the other way round). The map list holds still.
     const lay = document.getElementById('conquestLayout') || mainEl, lr = lay.getBoundingClientRect(), mr = mainEl.getBoundingClientRect();
     const ox = mr.left + mr.width/2 - lr.left, oy = mr.top + mr.height/2 - lr.top;
-    if(lay.animate){ const zo = mapOnlyZoom(lay, .35, 1, ox, oy, 640, t=> 1 - Math.pow(1 - t, 3), false);
-      mainEl.animate([{opacity:0}, {opacity:1, offset:.35}, {opacity:1}], {duration:640, easing:'ease-out'});
+    if(lay.animate){ const zo = mapOnlyZoom(lay, SUBMAP_GROW_FROM, 1, ox, oy, 520, t=> 1 - Math.pow(1 - t, 3), false); // a little (2026-10-16), was .35
+      mainEl.animate([{opacity:0}, {opacity:1, offset:.45}, {opacity:1}], {duration:520, easing:'ease-out'});
       zo.onfinish = zo.oncancel = ()=> document.documentElement.classList.remove('submap-zooming'); }
     else document.documentElement.classList.remove('submap-zooming');
   }
@@ -22048,7 +22099,29 @@ const FXL_FIELDS = [
   {key:'freezing', icon:'🧊', name:'Freezing', text:()=> 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', rules:{freezing:true}, steps:[{spawn:'subject'}, 'round'], note:'The Specimen arrives frozen and sits out a round.'},
   {key:'sandstorm', icon:'🏜️', name:'Sandstorm', text:()=> 'Attacks at units miss 1 in 4, except from Dry units.', rules:{sandstorm:true}, units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Fennec', icon:'🦊', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'The Fennec beside it is Dry and never misses in the sand.'},
   {key:'scorching2', icon:'🔥', name:'Scorching II', text:()=> 'Scorching, level 2: each round 3 random units on each side take 2 fire damage. Heat-resistant units are spared.', rules:{field:'heatwave', heatLevel:2}},
-  {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> "From round 2, a spout bursts in one random column each round. The Tide comes in, the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.", rules:{tideSpout:true}, units:FXL_TIDE_UNITS},
+  // Field effects 2 (2026-10-16): texts in FIELD2; each entry stages what makes its rule visible.
+  {key:'scorching3', icon:'🔥', name:'Scorching III', text:()=> FIELD2_SCORCHING3_TEXT, rules:{field:'heatwave', heatLevel:3}},
+  ...[
+    ['tide', {tide:true}, {units:FXL_TIDE_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: Flood, Ebb, Flood. The Landlubber is not a Tide unit.'}],
+    ['landslide', {landslide:100}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Hawk', icon:'🦅', effects:{flying:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Forced to 100% here (1 in 4 in a fight). The Hawk flies above the rocks.'}],
+    ['consternation', {consternation:true}, {drawHand:3, steps:['round', 'round'], note:'Three cards in your hand: watch them lose 1/1 each round.'}],
+    ['crushingDepths', {crushingDepths:true}, {units:FXL_TIDE_UNITS, steps:['round', 'round'], note:'The Tide units take half; the Landlubber takes it all.'}],
+    ['rookRow', {rookRow:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:1, def:{name:'Fork Crab', icon:'🦀', effects:{fork:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Straight hits get +2 (the Fork\'s second prong, on the slant, does not).'}],
+    ['bishopPath', {bishopPath:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Fork Crab', icon:'🦀', effects:{fork:true}}}, {role:'ally', slot:1, def:{name:'Backstabber', icon:'🗡️', effects:{backstab:1}}}], foes:[{role:'foe', slot:-1}, {role:'foe2', slot:0}]}, note:'The Fork\'s prong and the Backstab land on the slant: +2 each.'}],
+    ['mirage', {mirage:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Hawk', icon:'🦅', effects:{flying:true, armor:2}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'An Illusion appears beside a random unit: 1/1, Flying copied, Armor not.'}],
+    ['canopy', {canopy:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Lynx', icon:'🐈', effects:{pounce:2}}}, {role:'ally', slot:-1, def:{name:'Hawk', icon:'🦅', effects:{flying:true, bounty:1}}}], foes:[{role:'foe', slot:0, def:{name:'Quick Marten', icon:'🦦', effects:{quick:true}}}, {role:'foe2', slot:-1}]}, withhold:'subject', steps:[{spawn:'subject'}, 'round', 'round'], note:'The Lynx pounces for 2+2; the Marten is Evasive; the Hawk gets no Flying dodge.'}],
+    ['undergrowth', {undergrowth:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Lynx', icon:'🐈', effects:{pounce:2}}}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0, def:{name:'Quick Marten', icon:'🦦', effects:{quick:true}}}, {role:'foe2', slot:-1}]}, withhold:'subject', steps:[{spawn:'subject'}, 'round', 'round'], note:'Like High Canopy, without the Flying and Bounty parts.'}],
+    ['tallGrass', {tallGrass:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Stoat', icon:'🦡', effects:{stealth:true}}}, {role:'ally', slot:-1, def:{name:'Backstabber', icon:'🗡️', effects:{backstab:2}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'The Stoat (Stealth) strikes first; the Backstab hit lands double.'}],
+    ['slippery', {slippery:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round', 'round'], note:'Every swing at a unit is a coin flip; so is every trigger.'}],
+    ['glassStorm', {glassStorm:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Fennec', icon:'🦊', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'Glass buffets everyone; the wind rolls each round; the Dry Fennec sees through the sand.'}],
+    ['hail', {hail:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Snow Hare', icon:'🐇', resist:['cold']}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'The Snow Hare resists cold: half.'}],
+    ['lavaSpout', {lavaSpout:true}, {steps:['round', 'round', 'round'], note:'Three rounds, three bursts in random columns.'}],
+    ['leylines1', {leylines1:true, phase:'day'}, {units:FXL_PHASE_UNITS, note:'By day the Sun Lark\'s Diurnal 2/2 is +4/+4.'}],
+    ['leylines2', {leylines2:true}, {steps:['round', 'round'], note:'Watch the Lumber.'}],
+    ['leylines3', {leylines3:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Doubting Badger', icon:'🦡', effects:{atheist:true}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'Every unit and castle burns for 3; the Atheist badger doesn\'t.'}],
+    ['haunted', {haunted:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Wisp', icon:'👻', effects:{ghost:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'A unit on each side is Frightened and skips its attack; the Ghost is never scared.'}],
+  ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
+  {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> WIND_TEXT.windy, rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: each one rolls its own wind (at your back, in your face or calm).'},
   {key:'gale', icon:'🌪️', name:'Gale', text:()=> WIND_TEXT.gale, rules:{wind:'gale'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds, each with strong wind blowing a random way.'},
   {key:'dark', icon:'🌘', name:'Darkness', text:()=> DARK_LEVEL_TEXT.dark, rules:{dark:'dark'}, units:FXL_DARK_UNITS},
@@ -22107,6 +22180,7 @@ const FXL_SKILL_SETUPS = {
   crystallise: {status:{subject:{hp:1}}, steps:['round', 'round'], note:'It falls to the first hit and leaves a crystal in its slot.'},
   cure: {status:{ally:{poison:4, bleed:2}}, steps:['round'], note:'The ally beside it is Poisoned and Bleeding.'},
   mountainClimber: {rules:{field:'heatwave', heatLevel:3}, steps:['round', 'round'], note:'Scorching: the heat burns every unit but the climber.'},
+  atheist: {rules:{leylines3:true}, steps:['round', 'round'], note:'Leylines III: every unit burns for 3 a round, but not the Atheist.'}, // 2026-10-16
   taunt: {mine:[{role:'subject', slot:1}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0}], steps:['round'], note:'The dummy faces an empty column; the Taunt beside it pulls the swing.'},
   molting: {steps:['round', 'round', 'round'], note:'Round 2: it molts (+N/+N, +1 Wait); round 3 it sits out while the shell hardens.'},
   bludgeon: {foeFx:{thorns:1, armor:1, flying:true}, steps:['round', 'round'], note:'The dummy has Armor, Thorns and Flying: each hit takes 1 Attack and breaks one of them.'},
@@ -22310,6 +22384,8 @@ function fxlScenario(entry){
     if(f.unsupported){ sc.unsupported = f.unsupported; return sc; }
     sc.rules = JSON.parse(JSON.stringify(f.rules || {}));
     useUnits(f.units); if(f.pre) sc.pre = f.pre; sc.steps = (f.steps || ['round']).slice(); sc.rainy = !!f.rainy; if(f.decks) sc.decks = true; if(f.startTide) sc.startTide = true;
+    if(f.drawHand){ sc.decks = true; sc.drawHand = f.drawHand; } // a few cards in your hand to start (Consternation, 2026-10-16)
+    if(f.withhold) sc.withhold = f.withhold; // a unit that arrives as a step (High Canopy's pouncing Lynx, 2026-10-16)
     if(f.myTypes){ ['subject', 'ally', 'ally2'].forEach(r=> setRoleDef(r, {archetypes: f.myTypes.slice()})); }
     if(f.note) sc.notes.push(f.note);
   }
@@ -22356,6 +22432,7 @@ function fxlNewEngine(sc, defs, rng){
   if(sc.startTide && E.startTide) E.startTide(); // 2026-10-15: a Tide card no longer starts the tide, so the tide entries start it here
   const deck = sc.decks ? {[FXL_IDS.ally2]: 6} : {}, foeDeck = sc.decks ? {[FXL_IDS.foe3]: 6} : {};
   const P = {1: E.newPlayer(1, deck, TESTKIT_WALL), 2: E.newPlayer(2, foeDeck, TESTKIT_WALL)};
+  if(sc.drawHand) try{ E.draw(P[1], sc.drawHand, 'A', {}, null); }catch(e){} // 2026-10-16
   return {E, P, all};
 }
 // Runs one step on an engine with no screen. Returns the round number after it.
@@ -23368,7 +23445,8 @@ const FIELD_EFFECTS = [
   {id:'lumberrush',group:'lumber', icon:'🪓', name:'Lumber Rush',   weird:2, cost:1, rules:{lumberEvery:2}, text:'Both sides gain 1 Lumber every 2 rounds.'},
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
   {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, the ground burns one random unit on each side for 2 fire damage every round.'},
-  {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there are pushed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', editorOnly:true}, // 2026-10-14
+  // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): one fight's hazard, and it no longer brings the tide.
+  {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:TIDESPOUT_TEXT, editorOnly:true, oneOff:true}, // 2026-10-14
   {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:'Level 1: units without Darksight miss 1 attack in 4. An Illuminate unit lights your side.', editorOnly:true}, // 2026-10-15
   {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:'Level 2: units without Darksight miss 1 attack in 2. An Illuminate unit lights your side.', editorOnly:true}, // 2026-10-15
   // New field effects (2026-10-15, user: "Propose field effects for each map, up till Map 22 ... Swamp can give swamp fever - all cards
@@ -23383,6 +23461,12 @@ const FIELD_EFFECTS = [
   {id:'hightide',  group:'highTide', icon:'🌊', name:'High Tide',   weird:2, cost:1, rules:{highTide:true}, text:'Periodic High Tides (they move Tide units only).', editorOnly:true},
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): the Tide-evade rule test as a skirmish field rule (Edit skirmish only).
   {id:'tideevade', group:'tideEvade', icon:'🌊', name:'Tide evade (test)', weird:3, cost:1, rules:{tideEvade:true}, text:'While the tide is in (Flood, Ebb or High Tide), Tide units are Evasive against attacks from units without Tide. Both sides.', editorOnly:true},
+  // Field effects 2 (2026-10-16, the user's field-effect curriculum notes): built and offered here; no map carries them yet (map placement
+  // is a separate job). Texts in FIELD2. oneOff: meant for a single fight (the user: "18: One-off, glass-storm").
+  {id:'scorching3',group:'field', icon:'🔥', name:'Scorching III', weird:3, cost:1, rules:{field:'heatwave', heatLevel:3}, text:FIELD2_SCORCHING3_TEXT, editorOnly:true},
+  ...Object.keys(FIELD2).map(k=>{ const f = FIELD2[k], rules = {}; rules[k] = true;
+    if(k === 'undergrowth') rules.canopy = false; if(k === 'canopy') rules.undergrowth = false; // the two canopy strengths replace each other
+    return {id:f.editor, group:k, icon:f.icon, name:f.name, weird: /^(slippery|consternation|mirage|leylines3)$/.test(k) ? 4 : 3, cost:1, rules, text:f.text, editorOnly:true, oneOff: k === 'glassStorm' || undefined}; }),
   {id:'double',    group:'actions', icon:'⚡', name:'Double Time',   weird:4, cost:2, rules:{actions:2}, text:'Each side plays 2 cards a turn.'},
   {id:'collapse',  group:'mode', icon:'🧱', name:'Collapse',        weird:4, cost:2, battleMode:'gravity', text:'When a card falls, the cards beside it slide toward the centre.', arenaOnly:true},
   {id:'gift-immolation', group:'gift', icon:'🔥', name:'Leader gift: Immolation 2', weird:3, cost:1, leaderGrant:{immolation:2}, text:'The enemy leaders deal 2 fire damage to adjacent units every upkeep.', editorOnly:true},
@@ -27271,7 +27355,9 @@ function renderHand(){
     else if(m._tutHlUid == null){ const first = me.hand.find(isHlCard); if(first) m._tutHlUid = first.uid; }
   }
   strip.innerHTML = me.hand.map(hc=>{
-    const d = defs[hc.defId]; if(!d) return '';
+    let d = defs[hc.defId]; if(!d) return '';
+    // Consternation (2026-10-16, user: "cards in the hand lose 1/1 every upkeep"): the hand card shows what it has left.
+    if(hc.consterned > 0) d = Object.assign({}, d, {attack: Math.max(0, (d.attack|0) - hc.consterned), health: Math.max(1, (d.health|0) - hc.consterned)});
     const can = canPlayWithOffer(m, me, hc);
     const canDiscard = !me.discardUsedThisTurn;
     const canDrag = (can || canDiscard || (d.cardType==='equipment' && !me.playedThisTurn)) && !m.resolving;
@@ -30027,7 +30113,7 @@ function matchHasTide(m){
   // 2026-10-15 (user: "Tide shouldn't occur even if you play a card with Tide."): a Tide card no longer brings the tide, so the
   // pill shows only when something can: the field (Tide-spout, Perma-tide, High Tide) or a Moonpull/Tsunami card in either deck.
   const DEFS = getCardDefs(); const isT = id=>{ const e = (DEFS[id && (id.defId || id)] || {}).effects; return !!(e && (e.moonpull || e.tsunami)); };
-  let yes = false; try{ const fr = matchFieldRules(m); if(fr && (fr.tideSpout || fr.permaTide || fr.highTide)) yes = true; }catch(e){} // a Tide-spout brings the tide in itself (2026-10-14)
+  let yes = false; try{ const fr = matchFieldRules(m); if(fr && (fr.tide || fr.permaTide || fr.highTide)) yes = true; }catch(e){} // the Tide field (2026-10-16; the Tide-spout no longer brings it)
   try{ [1,2].forEach(p=>{ const pl = m.players[p]; if(!pl) return;
     if((pl.deck||[]).some(isT) || (pl.hand||[]).some(isT) || (pl.graveyard||[]).some(isT) || ['left','center','right'].some(l=> (pl.row[l]||[]).some(c=> c && isT(c)))) yes = true; }); }catch(e){}
   return (m._hasTide = yes);
@@ -30207,7 +30293,9 @@ function liveTideState0(e){
 // it), the wind pill only on windy maps, the Mist pill only on misty ones.
 const TIDE_PILL_TIP = 'Tide goes in, Ebb goes out.';
 function tidePillHTML(m){
-  const t = dayNightOn(m) && m.engine.getTide && m.engine.getTide();
+  // 2026-10-16 (user: "Without Tide, there won't be flood or ebb."): the pill shows whenever a tide runs, day/night or not (it used to need
+  // the day/night cycle, so a tide in a cave, the mist or the Crushing Depths had no pill).
+  const t = m && m.engine && m.engine.getTide && m.mode !== 'tutorial' && m.mode !== 'liveRanked' && m.engine.getTide();
   if(!t || !matchHasTide(m)) return '';
   const high = t==='high', flow = t==='flow', name = high ? _t('High Tide') : flow ? _t('Flood') : _t('Ebb');
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): with the Tide-evade rule test on, the pill says so.
@@ -30296,7 +30384,8 @@ function matchFieldTileHTML(def, cls, attrs, badges){
 // lasting field rule (the High Tide, the Tide-spout, the darkness, the wind…), fanned in a little stack beside the enemy's Deck.
 // Each card says one short line; hover (or hold) shows that rule in full. The stack keeps the old #fieldCondCard id, so the
 // terrain banner still flies into it and a new row still lights it.
-function fieldEnvBiome(key){ return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
+const FIELD2_BIOME = {lavaSpout:'ash', crushingDepths:'water', hail:'tundra', slippery:'tundra', canopy:'forest', undergrowth:'forest', tallGrass:'forest', glassStorm:'desert', haunted:'cave', landslide:'alpine'}; // 2026-10-16
+function fieldEnvBiome(key){ if(FIELD2_BIOME[key]) return FIELD2_BIOME[key]; return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
 // The field's rows in a fight (2026-10-15): Map 0's Mist is only a pill (its hover says "?"), not a card; a misty map that cares about
 // the moon adds "The Moon is not visible." to its Mist card.
 function matchFieldCondRows(m, fr){
@@ -30317,6 +30406,14 @@ const FIELD_ART = {
   sandstorm:{art:'art/fields/sandstorm.png'}, scorching:{art:'art/fields/scorching.png'}, scorched:{art:'art/fields/scorched.png'},
   lavatide:{art:'art/fields/lavatide.png'}, petrify:{art:'art/fields/petrify.png'}, eruption:{art:'art/fields/eruption.png'},
   surge:{art:'art/fields/surge.png'}, mines:{art:'art/fields/mines.png'}, rain:{art:'art/fields/rain.png'},
+  // Field effects 2 (2026-10-16): a key per new card. Where an existing scene fits it is reused (Glass-storm the sandstorm, Lava Spout the
+  // lava tide, Hail the frost, Slippery the freezing ice, Haunted the mist); the others name their own picture, which doesn't exist yet,
+  // so the card shows its icon until art/fields/<key>.png is added (the build only hashes files that exist).
+  tide:{art:'art/fields/tide.png'}, landslide:{art:'art/fields/landslide.png'}, consternation:{art:'art/fields/consternation.png'},
+  crushingdepths:{art:'art/fields/crushingdepths.png'}, rookrow:{art:'art/fields/rookrow.png'}, bishoppath:{art:'art/fields/bishoppath.png'},
+  mirage:{art:'art/fields/mirage.png'}, canopy:{art:'art/fields/canopy.png'}, undergrowth:{art:'art/fields/undergrowth.png'}, tallgrass:{art:'art/fields/tallgrass.png'},
+  slippery:{art:'art/fields/freezing.png'}, glassstorm:{art:'art/fields/sandstorm.png'}, hail:{art:'art/fields/frost.png'}, lavaspout:{art:'art/fields/lavatide.png'},
+  leylines1:{art:'art/fields/leylines.png'}, leylines2:{art:'art/fields/leylines.png'}, leylines3:{art:'art/fields/leylines.png'}, haunted:{art:'art/fields/misty.png'},
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
@@ -30325,6 +30422,7 @@ function fieldArtKeyOfRow(row, fr){
   const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
     swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
     eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines'};
+  if(FIELD2[k]) return FIELD2[k].editor; // field effects 2 (2026-10-16): the art key is the editor id
   if(k === 'eruption'){ let v = false; try{ v = volcanoRulesOn(fr); }catch(e){} if(!v) return 'scorched'; } // the fixed Scorched Ground, not the volcano's Eruption
   return map[k] || null;
 }
@@ -30374,13 +30472,15 @@ function coldWaveVfx(m){
 }
 function tideWaveVfx(kind){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
-  if(kind === 'high') kind = 'flow'; // the high tide rides the flow's wave, bigger in the log and the pill
+  const high = kind === 'high'; if(high) kind = 'flow'; // the high tide rides the flow's wave, bigger (2026-10-16: is-high)
   bf.classList.toggle('tide-is-flow', kind === 'flow'); bf.classList.toggle('tide-is-ebb', kind === 'ebb');
   let line = bf.querySelector(':scope > .tide-line'); if(!line){ line = document.createElement('div'); line.className = 'tide-line'; line.setAttribute('aria-hidden', 'true'); bf.appendChild(line); }
   if(reducedMotion() || !fxAtLeast('low')) return;
-  const w = document.createElement('div'); w.className = 'tide-wave is-' + kind; w.setAttribute('aria-hidden', 'true');
+  // 2026-10-16 (user: "Flood Ebb effects need to be improved."): a light tint washes over the board, the water rises (Flood) or drains
+  // away (Ebb) with a foam line on its edge, and the lasting water line at the board's foot has its own foam (Flood) or wet-sand glints (Ebb).
+  const w = document.createElement('div'); w.className = 'tide-wave is-' + kind + (high ? ' is-high' : ''); w.setAttribute('aria-hidden', 'true');
   w.innerHTML = '<span></span><span></span>';
-  bf.appendChild(w); setTimeout(()=> w.remove(), 1500);
+  bf.appendChild(w); setTimeout(()=> w.remove(), 1600);
   try{ if(kind === 'flow' && SoundKit.splash) SoundKit.splash(); else if(SoundKit.swipeTone) SoundKit.swipeTone(); }catch(e){}
 }
 function icePulseVfx(uid){
@@ -31823,6 +31923,7 @@ function logText(ev){
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
+  { const f2 = field2LogText(ev, nm); if(f2) return f2; } // field effects 2 (2026-10-16)
   switch(ev.type){
     case 'play': return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}.`};
     case 'statusEnd': return {cls:'', text: ev.woke ? `${nm(ev.defId)} wakes up.` : `${nm(ev.defId)}: ${STATUS_END_NAMES[ev.status] || ev.status} wears off.`}; // 2026-10-15
@@ -33312,7 +33413,7 @@ function labSkillFx(ev){
       break; }
     // 2026-10-15 (user: "it starts delayed - right now, it looks like it's dodging in advance"): the sidestep starts a beat before
     // the blow lands (evadeImpactMs), not when the attacker begins its wind-up; the game's own "Miss" hop/float is skipped for it.
-    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift') && F.evasiveDodge){ const t = el(ev.targetUid); if(t){ t.dataset.sfxDodge = '1';
+    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift' || ev.reason === 'canopy' /* + High Canopy's dodge (2026-10-16) */) && F.evasiveDodge){ const t = el(ev.targetUid); if(t){ t.dataset.sfxDodge = '1';
       const a = el(ev.attUid), fromLeft = a ? a.getBoundingClientRect().left < t.getBoundingClientRect().left : Math.random() < .5;
       setTimeout(()=>{ const t2 = el(ev.targetUid) || t; F.evasiveDodge(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 90)); } } break;
     case 'hit': { const fx = fxOf(ev.attDefId), a = el(ev.attUid), t = el(ev.targetUid); if(!a || !t || ev.source) break;
@@ -33617,6 +33718,9 @@ function w2StatusBadges(c, badges){
   if(c.toxin>0) badges.push(`<span class="abadge toxin" title="Toxin: ${c.toxin} damage every round; it never wears off and can't be cured">☣️${c.toxin}</span>`);
   if(c.invisible>0) badges.push(`<span class="abadge invisible" title="Invisible: attacks and enemy skills can't find it until it attacks">🫥</span>`);
   if(c.invincible>0) badges.push(`<span class="abadge invincible" title="Invincible: takes no damage this round">🌟</span>`);
+  // Field effects 2 (2026-10-16): Haunted's Frightened (this round only) and what Consternation took off a card in the hand.
+  try{ const tn = matchState && matchState.engine && matchState.engine.turnNo ? matchState.engine.turnNo() : null; if(c.frightRound != null && c.frightRound === tn) badges.push(`<span class="abadge frightened" title="Frightened: it won't attack this round (Haunted)">👻</span>`); }catch(e){}
+  if(c.consterned > 0) badges.push(`<span class="abadge consterned" title="Consternation: it lost ${c.consterned}/${c.consterned} in the hand, for good">😰</span>`);
 }
 function w2HazardMark(h){
   if(!h) return '';
@@ -33627,6 +33731,79 @@ function w2HazardMark(h){
 }
 const W2_BROKE_NAME = {armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow', trigger:'a trigger'};
 function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_NAME[k]; const pd = PASSIVE_DEFS.find(p=> p.key === k); return pd ? pd.label : k; }
+// ==== Field effects 2 (2026-10-16): battle-log lines and looks for the new field effects (rules in bramblewood-engine.js,
+// fieldEffects2Tick). Hazards log one header line, then one line per unit they hurt.
+const FIELD2_OWN_TICKS = new Set(['landslide', 'landslideHit', 'crushingDepths', 'crushingHit', 'hail', 'hailHit', 'glassStorm', 'glassHit', 'lavaSpout', 'lavaSpoutHit', 'leylines', 'leylinesHit', 'leylinesCastle', 'consternation', 'mirage', 'haunted']);
+const FIELD2_HIT = {landslideHit:['🪨', 'rocks'], crushingHit:['🫧', 'the crushing depths'], hailHit:['🌨️', 'the hail'], glassHit:['💎', 'flying glass'], lavaSpoutHit:['♨️', 'the lava spout'], leylinesHit:['✴️', 'the ley lines']};
+function field2LogText(ev, nm){
+  const who = s=> s === 'A' ? 'your' : "the enemy's";
+  if(ev.type === 'fieldTick'){
+    const h = FIELD2_HIT[ev.field];
+    if(h) return ev.atheist ? {cls:'', text:`✴️ ${nm(ev.defId)} doesn't believe in ley lines: no damage.`} : {cls:'', text:`${h[0]} ${nm(ev.defId)} takes ${ev.dmg} from ${h[1]}${ev.roll ? ` (${ev.roll})` : ''}${ev.swimmer ? ' (it swims: half)' : ''}.`};
+    switch(ev.field){
+      case 'landslide': return {cls:'', text:`🪨 Landslide! Rocks come down: ${ev.amount} damage to every unit that isn't flying.`};
+      case 'crushingDepths': return {cls:'', text:`🫧 The depths press down: ${ev.amount} water damage to every unit (Swimmers take half).`};
+      case 'hail': return {cls:'', text:`🌨️ Hail: ${ev.amount} ice damage to every unit.`};
+      case 'glassStorm': return {cls:'', text:'💎 The glass-storm buffets every unit (1–3 each).'};
+      case 'lavaSpout': return {cls:'', text:`♨️ Lava bursts up through a column (${ev.amount} fire damage).`};
+      case 'leylines': return {cls:'', text:'✴️ The ley lines burn: 3 magic damage to every unit and to both castles.'};
+      case 'leylinesCastle': return {cls:'', text:`✴️ The ley lines burn ${who(ev.side)} castle: −${ev.dmg}.`};
+      case 'consternation': return {cls:'', text:`😰 Consternation: ${ev.count} card${ev.count === 1 ? '' : 's'} in ${who(ev.side)} hand lose ${ev.amount}/${ev.amount}.`};
+      case 'mirage': return {cls:'', text: ev.none ? `🪞 A mirage flickers by ${nm(ev.defId)}, but there's no room for it.` : `🪞 A mirage: an Illusion of ${nm(ev.defId)} appears beside it (1/1).`};
+      case 'haunted': return {cls:'', text:'👻 Something stirs in the haunted air…'};
+    }
+    return null;
+  }
+  if((ev.type === 'lumber' || ev.type === 'stone') && ev.leylines) return {cls:'gold', text:`✴️ The ley lines: ${ev.side === 'A' ? 'you gain' : 'the enemy gains'} ${ev.amount} ${ev.type === 'stone' ? 'Stone 🪨' : 'Lumber 🪵'}.`};
+  if(ev.type === 'statusFx' && ev.kind === 'frightened') return {cls:'', text:`👻 ${nm(ev.targetDefId)} is Frightened: it won't attack this round.`};
+  if(ev.type === 'slipFizzle') return {cls:'', text:`⛸️ ${nm(ev.defId)} slips: its skill fails.`};
+  if(ev.type === 'evaded' && ev.reason === 'slippery') return {cls:'', text:`⛸️ ${nm(ev.attDefId)} slips on the ice and misses ${nm(ev.targetDefId)}.`};
+  if(ev.type === 'evaded' && ev.reason === 'canopy') return {cls:'', text:`🌳 ${nm(ev.targetDefId)} darts through the branches: ${nm(ev.attDefId)} misses.`};
+  if(ev.type === 'skipTurn' && ev.reason === 'frightened') return {cls:'', text:`${nm(ev.defId)} is too frightened to attack. 👻`};
+  if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
+  if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
+  return null;
+}
+function field2Vfx(ev){
+  if(!ev || !matchState) return; const m = matchState, F = window.SkillFX, bf = document.getElementById('battlefieldEl');
+  const fx = lvl=> !reducedMotion() && fxAtLeast(lvl || 'low');
+  const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
+  const at = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2}; };
+  if(ev.type === 'fieldTick'){
+    const h = FIELD2_HIT[ev.field];
+    if(h){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){}
+      if(!el) return; if(ev.atheist){ fl(el, '✴️ Atheist', 'quick'); return; }
+      fl(el, `${h[0]}-${ev.dmg}`, ev.field === 'lavaSpoutHit' ? 'heat' : 'dmg'); try{ shakeEl(el); }catch(e){}
+      if(!F || !fx()) return; const c = at(el);
+      if(ev.field === 'hailHit' && F.burst) F.burst(c.x, c.y - 20, 270, 'ice', 6);
+      else if(ev.field === 'glassHit' && F.burst) F.burst(c.x, c.y, Math.random()*360, 'zap', 5);
+      else if(ev.field === 'landslideHit' && F.burst) F.burst(c.x, c.y - 24, 270, 'wood', 7);
+      else if(ev.field === 'crushingHit' && F.ring) F.ring(c.x, c.y, 'sfx-water', 110, 520);
+      else if(ev.field === 'lavaSpoutHit'){ try{ eruptionGeyserVfx(el); }catch(e){} }
+      else if(ev.field === 'leylinesHit' && F.ring) F.ring(c.x, c.y, 'sfx-violet', 90, 480);
+      return; }
+    switch(ev.field){
+      case 'landslide': snd('boom'); if(bf && fx()){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); boardSweepVfx('landslide', 'A'); } break;
+      case 'crushingDepths': snd('splash'); if(bf && fx()){ bf.classList.remove('crush-press'); void bf.offsetWidth; bf.classList.add('crush-press'); setTimeout(()=> bf.classList.remove('crush-press'), 900); } break;
+      case 'hail': snd('freezeChime'); if(fx()) boardSweepVfx('hail', 'A'); break;
+      case 'glassStorm': snd('swipeTone'); if(fx()) boardSweepVfx('glass', Math.random() < .5 ? 'A' : 'B'); break;
+      case 'leylines': snd('curse'); if(fx()) boardSweepVfx('leylines', 'A'); break;
+      case 'lavaSpout': snd('boom'); break;
+      case 'consternation': if(ev.side === 'A'){ const hs = document.getElementById('handStrip'); fl(hs, `😰 −${ev.amount}/−${ev.amount}`, 'debuff'); try{ renderHand(); }catch(e){} } break;
+      case 'mirage': if(ev.illusionUid != null) setTimeout(()=>{ const el = boardCardEl(ev.illusionUid); if(!el) return; el.classList.add('mirage-shimmer'); fl(el, '🪞 Illusion', 'quick'); setTimeout(()=> el.classList.remove('mirage-shimmer'), 1200); }, 420); break;
+    }
+    return;
+  }
+  if(ev.type === 'statusFx' && ev.kind === 'frightened'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.frightRound = (m.engine && m.engine.turnNo) ? m.engine.turnNo() : rc.frightRound;
+    fl(el, '👻 Frightened', 'debuff'); if(el && F && F.fearShiver && fx()) F.fearShiver(el); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} return; }
+  if(ev.type === 'slipFizzle'){ fl(boardCardEl(ev.uid), '⛸️ Slipped', 'quick'); return; }
+  if(ev.type === 'evaded' && ev.reason === 'slippery'){ fl(boardCardEl(ev.attUid), '⛸️ Slip!', 'quick'); return; }
+  if(ev.type === 'hit' && (ev.laneBonus > 0 || ev.tallGrass)){ const el = boardCardEl(ev.targetUid); const fr = matchFieldRules(m) || {};
+    const t = ev.tallGrass ? '🌾 ×2' : ''; const ln = ev.laneBonus > 0 ? `${ev.lane === 'bishop' ? '♝' : ev.lane === 'rook' ? '♜' : (fr.bishopPath ? '♝' : '♜')} +${ev.laneBonus}` : '';
+    setTimeout(()=> fl(el, [ln, t].filter(Boolean).join(' '), 'quick'), 160); return; }
+}
 function w2LogText(ev, nm){
   { const d = devilPayLogText(ev, nm); if(d) return d; } // Penance, Blood Tithe, Ambush (2026-10-16)
   if(ev.type === 'statusFx'){
@@ -33850,6 +34027,7 @@ function renderVfxForEvent(ev){
   try{ labSkillFx(ev); }catch(e){}
   try{ ninthPassVfx(ev); }catch(e){} // the Bolts and Chilli (2026-10-15)
   try{ w2SkillVfx(ev); }catch(e){} // W2 skills (2026-10-16)
+  try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
@@ -34625,7 +34803,7 @@ function renderVfxForEvent(ev){
     if(ev.field==='swampFever'){ if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; if(el) try{ floatText(el, '🤢 +1☠', 'poison'); SoundKit.poisonApply(); }catch(e){} }
     else { if(rc) rc.frozen = Math.max(rc.frozen||0, 1); if(el) try{ floatText(el, '🧊 Frozen', 'debuff'); SoundKit.freezeChime && SoundKit.freezeChime(); }catch(e){} }
     try{ updateCardStatusDisplay(ev.uid); }catch(e){} }
-  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing'].includes(ev.field)){ const el = boardCardEl(ev.uid);
+  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing'].includes(ev.field) && !FIELD2_OWN_TICKS.has(ev.field)){ const el = boardCardEl(ev.uid); // field effects 2 play in field2Vfx (2026-10-16)
     // 2026-10-14: Petrification has no number (it turns the card to stone); Irradiated withers max Health; Lava Tide burns.
     const fieldGlyph = {eruption:'🌋', lavaTide:'🌋', irradiated:'☢️', scorched:'🔥'}[ev.field] || '🔥';
     if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : floatText(el, ev.dmg ? `${fieldGlyph}-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? (ev.field === 'immolation' ? 'heat' : 'dmg') : 'heal'); }catch(e){} // Immolation's burn is a fire number (2026-10-16)

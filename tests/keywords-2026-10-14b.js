@@ -66,8 +66,9 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   let ev = []; e.roundStart(P, 1, so, {}, ev); ok(!ev.some(x=> x.field==='tideSpout') && e.getTide() === null, 'no spout in round 1');
   ok(e.forecast().tideSpout === true, 'the forecast warns of the spout');
   ev = []; e.roundStart(P, 2, so, {}, ev);
-  const sp = ev.find(x=> x.type==='fieldTick' && x.field==='tideSpout'); ok(sp && sp.col === 0 && sp.tideIn, 'round 2: a spout bursts in the only column and brings the tide in');
-  ok(e.getTide() === 'flow', `the tide is in: Flow at once (${e.getTide()})`);
+  const sp = ev.find(x=> x.type==='fieldTick' && x.field==='tideSpout'); // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the spout no longer brings the tide in.
+  ok(sp && sp.col === 0 && !sp.tideIn, 'round 2: a spout bursts in the only column (and no longer brings the tide in, 2026-10-16)');
+  ok(e.getTide() === null, `no Tide field: no Flood or Ebb (${e.getTide()})`);
   ok(A.wait === 1 && B.wait === 1, `both units there are washed back +1 Wait (${A.wait}, ${B.wait})`);
   ok(A.hp === 499 && B.hp === 499, `non-swimmers take 1 water damage (${A.hp}, ${B.hp})`);
   ok(ev.filter(x=> x.type==='wash' && x.spout).length === 2, 'two spout washes logged');
@@ -86,8 +87,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   const m = src.match(/const MAP_DAYNIGHT = (\{[\s\S]*?\n\});/); ok(!!m, 'MAP_DAYNIGHT is in the app');
   const table = m ? eval('(' + m[1] + ')') : {};
   ok(table.mtut === 'day' && table.m4 === 'off' && table.mg === 'off' && table.mj === 'off' && table.m8 === 'night' && table.mn === 'off' && table.mi === 'off' && !table.m1 && !table.mb, 'caves and the deep have no cycle, the tutorial stays Day, the open maps cycle');
-  // 2026-10-16 (placement and rarity, user: "Tide-spout should be one-off"): no map spouts by default; Pebble Beach's 2-4 has it as its own rule
-  ok(/const TIDESPOUT_MAPS = new Set\(\[\]\)/.test(src) && /key:"2-4"[^\n]*rules:\{"tideSpout":true\}/.test(src), 'Pebble Beach spouts once (2-4)');
+  ok(/const TIDESPOUT_NODES = \{mb:'2-4'\}/.test(src), 'Pebble Beach spouts (2026-10-16: in one fight only, "Tide-spout should be one-off")');
   ok(!/r\.zeitgeber = true/.test(src), 'fightRules no longer lets a card start the cycle'); }
 
 // ---- 3. Irradiation tokens

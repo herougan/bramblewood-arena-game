@@ -31,7 +31,7 @@ for(const id of ['k5-tide', 'k5-swim']){ const {e, P} = mk(); e.roundStart(P, 1,
 { const {e, P} = mk({highTide:true}); const seen = []; for(let r = 2; r <= 5; r++){ e.roundStart(P, r, so, {}, []); seen.push(e.getTide()); }
   ok(seen.join(',') === 'ebb,flow,ebb,high', `High Tide (a field effect) runs its cycle on its own (${seen.join(',')})`); }
 { const {e, P} = mk({permaTide:true}); e.roundStart(P, 2, so, {}, []); ok(e.getTide() === 'flow', 'Perma-tide is always in'); }
-{ const {e, P} = mk({tideSpout:true}); e.debugSpawnCard(P, so, 1, 'k5-plain', 'left', {}, []); e.roundStart(P, 2, so, {}, []); ok(e.getTide() !== null, 'the Tide-spout brings the tide'); }
+{ const {e, P} = mk({tideSpout:true}); e.debugSpawnCard(P, so, 1, 'k5-plain', 'left', {}, []); e.roundStart(P, 2, so, {}, []); ok(e.getTide() === null, 'the Tide-spout no longer brings the tide (2026-10-16: "Without Tide, there won\'t be flood or ebb")'); }
 // a Swimmer still gets its bonus once the field brings the tide
 { const {e, P} = mk({permaTide:true}); e.debugSpawnCard(P, so, 1, 'k5-swim', 'left', {}, []); e.roundStart(P, 2, so, {}, []); ok(e.isTide(all(P[1])[0]), 'a Swimmer is still a Tide unit for the tide\'s bonuses'); }
 
