@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (WP5: Arena field scenes)
+- **Every Arena day-rule Environment card has its own picture.** Before, they borrowed other cards' scenes. Now: Lumber Rush shows a sawmill and log pile, Timber Fair stalls and bunting in a clearing, Midsummer a high sun over a flowering meadow, Dusk a violet sunset over a lake, Restless wind-tossed trees at night, First Blood one red banner on a dawn field, Double Time twin hourglasses under a clock ring, and Collapse a cliff edge breaking away.
+- **Leylines I, II and III are drawn apart.** The same plain and standing stone has one, two and three glowing strands, brighter at each level; at III the sky lights up too.
+- The scenes are drawn in code (Pillow + numpy, no art credits) by `tools/make_field_art_2026_10_18.py`. Each is 256x256 and 4-6 KB. `art/fields/leylines.png` is no longer used.
+
 ## 2026-10-18 (great beasts: Leviathan, Dragon-Turtle, Fiend)
 - **Creature rank:** a new card field, `creatureRank`. 1 = the five Dragons, 2 = Leviathans and Dragon-Turtles, 3 = the volcano's fire fiends. It is a design rule (rank 2 sits under the Dragons and above an ordinary Legendary; rank 3 under rank 2); the engine doesn't read it. The Codex card detail shows one line under the chips, e.g. "Rank: Leviathan — second only to Dragons". The new type tags Dragon 🐉, Leviathan 🐋, Dragon-Turtle 🐢 and Fiend 👺 have icons. See `docs/creature-ranks-2026-10-18.md`.
 - **New card: Fathom Leviathan** 🌊 (Legendary, rank 2, Leviathan / Ocean, 9/40, Lumber 4, Wait 4): Supreme, Tide, Tsunami 2, Wave (alternate), Bounty 1. Drops from the Goliath raid, like the Goliath Broodmother.
