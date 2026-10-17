@@ -86,7 +86,8 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   const m = src.match(/const MAP_DAYNIGHT = (\{[\s\S]*?\n\});/); ok(!!m, 'MAP_DAYNIGHT is in the app');
   const table = m ? eval('(' + m[1] + ')') : {};
   ok(table.mtut === 'day' && table.m4 === 'off' && table.mg === 'off' && table.mj === 'off' && table.m8 === 'night' && table.mn === 'off' && table.mi === 'off' && !table.m1 && !table.mb, 'caves and the deep have no cycle, the tutorial stays Day, the open maps cycle');
-  ok(/const TIDESPOUT_MAPS = new Set\(\['mb'\]\)/.test(src), 'Pebble Beach spouts');
+  // 2026-10-16 (placement and rarity, user: "Tide-spout should be one-off"): no map spouts by default; Pebble Beach's 2-4 has it as its own rule
+  ok(/const TIDESPOUT_MAPS = new Set\(\[\]\)/.test(src) && /key:"2-4"[^\n]*rules:\{"tideSpout":true\}/.test(src), 'Pebble Beach spouts once (2-4)');
   ok(!/r\.zeitgeber = true/.test(src), 'fightRules no longer lets a card start the cycle'); }
 
 // ---- 3. Irradiation tokens

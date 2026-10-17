@@ -54,7 +54,7 @@ ok(/if\(d\.stoneCost>0\) parts\.push\(pipsHTML\('🪨', d\.stoneCost, 'stone'\)\
 ok(/if\(bopts && bopts\.oreCostBadges\)\{ if\(d\.stoneCost\)/.test(src), '1. ...and no longer among the skill badges');
 ok(/function swimmerLine\(e\)\{ return `Swimmer – On Tide, /.test(src), '3. Swimmer reads "Swimmer – On Tide, ..."');
 ok(/if\(p\.key==='swimmer'\)\{ lines\.push\(/.test(src), '3. the card text gives a Swimmer its own line');
-ok(/const DARK_MAPS = new Map\(\[\['mg','pitch'\], \['m4','dark'\], \['mz','dark'\], \['mj','dark'\]\]\);/.test(src), '5. the caves and dark places carry Darkness / Pitch Black');
+ok(/const DARK_MAPS = new Map\(\[\['mg','dark'\], \['m4','dark'\], \['mz','dark'\], \['mj','pitch'\]\]\);/.test(src), '5. the caves and dark places carry Darkness / Pitch Black (2026-10-16: Pitch Black is the Sunken Depths now)');
 ok(/DARK_LEVEL_NAME = \{dark:'Darkness', pitch:'Pitch Black'/.test(src) && !/'Pitchblack'/.test(src), '5. Pitchblack is now Pitch Black');
 // 2026-10-15 (later): reversed by the user ("The effect is 'Mist' -> Shows a '?'"); see keywords-2026-10-15b.js.
 ok(/function fieldUnrevealedMap\(mapId\)\{ try\{ return mapId != null && mapNumberOf\(mapId\) === 0;/.test(src), '8. Map 0 is still told apart (its field effects now stay "?")');

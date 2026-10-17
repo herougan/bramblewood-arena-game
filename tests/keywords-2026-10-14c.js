@@ -98,7 +98,8 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
 { const {e, P} = mk({permaTide:true}); e.roundStart(P, 1, so, {}, []); const T = put(e, P, 1, 'kc-tide', 0); const W = put(e, P, 2, 'kc-wall', 0);
   ok(dealt(e, P, T.uid, W) === 2, 'a Tide unit hits with Flow\'s +1 on round 1'); }
 { const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
-  ok(/const PERMATIDE_MAPS = new Set\(\['m2', 'mp'\]\)/.test(src), 'the Riverbank maps (Sunken Hollow, Lilypad Reach) have Perma-tide');
+  // 2026-10-16 (placement and rarity, user: "I like river rapids (thematic name). keep it on one of the maps"): Sunken Hollow only, as River Rapids
+  ok(/const PERMATIDE_MAPS = new Set\(\[\]\)/.test(src) && /const RAPIDS_MAPS = new Set\(\['m2'\]\)/.test(src), 'Sunken Hollow keeps the always-in river (River Rapids); Lilypad Reach has the plain Tide');
   ok(/Perma-tide/.test(src) && /Always Flooded\. Tide effects can't change it\./.test(src), 'the Codex and fight conditions say so ("Always Flooded", 2026-10-16)'); }
 
 // ---- 5. Supreme Tide

@@ -27,6 +27,9 @@ const N = +(process.argv.find(a=> /^\d+$/.test(a)) || 24), APPLY = process.argv.
 const FROM = +arg('from', 18), TO = +arg('to', 62);
 const ONLY = arg('only', '').split(',').filter(Boolean), KEEP = new Set(arg('keep', '').split(',').filter(Boolean));
 const RARE_UP = new Set(['epic','heroic','unique','questunique','legendary','mythic','ancient','devlegendary','devancient','eventlegendary']);
+// 2026-10-16 (placement and rarity): trades stay inside the road's rarity caps (ROAD_RARITY in arena_app.js), so a tune never
+// puts a Very Rare in a Map 14 skirmish.
+const RR = (()=>{ const a = src.indexOf('// ROAD_RARITY:BEGIN'), b = src.indexOf('// ROAD_RARITY:END'); return eval(src.slice(a, b) + ';({roadRarityOk})'); })();
 const MY_HP = 30;
 const CURVE = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/difficulty-curve.json'), 'utf8'));
 const DECKS = Object.fromEntries(Object.entries(CURVE.decks).map(([k, v])=> [k, Object.fromEntries(v.cards.map(c=> [c.id, c.n]))]));
@@ -104,7 +107,8 @@ for(const m of order){
         if(!ids.length) break;
         const harder = t.idx < tgt;
         const outId = harder ? ids[ids.length-1] : ids[0];
-        const cand = harder ? pool.find(id=> !tried.has(id) && !deck[id] && score(id) > score(outId)) : pool.slice().reverse().find(id=> !tried.has(id) && !deck[id] && score(id) < score(outId));
+        const fits = id=> RR.roadRarityOk(defs[id].rarity, mapIdx(m), n.kind); // 2026-10-16
+        const cand = harder ? pool.find(id=> !tried.has(id) && !deck[id] && fits(id) && score(id) > score(outId)) : pool.slice().reverse().find(id=> !tried.has(id) && !deck[id] && fits(id) && score(id) < score(outId));
         if(!cand) break; tried.add(cand);
         const trial = Object.assign({}, deck); const k = Math.min(2, trial[outId]); trial[outId] -= k; if(!trial[outId]) delete trial[outId]; trial[cand] = (trial[cand]||0) + k;
         const t2 = tuneHp(m, n, trial, n.hqHp, tgt);

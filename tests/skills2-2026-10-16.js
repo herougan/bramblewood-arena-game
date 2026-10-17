@@ -110,8 +110,9 @@ ok(/\{key:'pounce', category:'evergreen', label:'Pounce', kind:'selectNumber', n
   const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8')), byName = {}; cards.forEach(c=> byName[c.name] = c);
   const names = [...doc.matchAll(/^\| \d+ \| \S+ ([^|]+?) \|/gm)].map(m=> m[1].trim());
   ok(names.length >= 90, `the list names the new cards (${names.length})`);
-  const bad = names.filter(n=> { const c = byName[n]; return !c || c.source || c.art || c.test || !(c.species && c.species.length) || !Object.keys(c.effects || {}).length || !c.locked; });
-  ok(!bad.length, `each is in cards.json: locked, no source (unobtainable), no art yet, a species and its skill (${bad.slice(0, 5)})`);
+  // 2026-10-16 (placement and rarity): most are now placed on the road, so a source is a map reward or nothing
+  const bad = names.filter(n=> { const c = byName[n]; return !c || (c.source && c.source.kind !== 'map') || c.art || c.test || !(c.species && c.species.length) || !Object.keys(c.effects || {}).length || !c.locked; });
+  ok(!bad.length, `each is in cards.json: locked, no source or a map reward, no art yet, a species and its skill (${bad.slice(0, 5)})`);
   const lc = names.map(n=> n.toLowerCase()); ok(new Set(lc).size === lc.length, 'no two share a name');
 }
 // ---- 4. clean names: no braces, no "one-off", no notes in brackets in the skill / trigger / action names

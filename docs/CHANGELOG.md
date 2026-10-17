@@ -2,6 +2,39 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (placement and rarity)
+- **Rarity on the road is a rule now** (`ROAD_RARITY` in arena_app.js, checked by `tests/road-rarity-2026-10-16.js`):
+  - Normal skirmishes: Rare up to Map 15, Very Rare from 16, Super Rare from 21, Epic from 36, Heroic from 41, Unique from 51.
+  - Elites: one step above a skirmish from Map 10.
+  - Bosses: no Heroic on Maps 1–19.
+  - The dragon lair's boss (the Caldera Wyrm, 20-B-4) is the only Legendary in Maps 0–20.
+  - Maps 21–40: a quarter or more of every skirmish deck is Rare or better.
+  - Card rewards follow the same caps (the map leaders a boss pays are outside them).
+- **Fewer commons pack by pack:** Pack 1 (Hedgerow Pouch) 50% commons, Pack 2 (Tidemire Chest) 46%, Pack 3 (Highcrest Case) 42%, Packs 4–6 40/38/36%, Pack 7 on 35% down to a 30% floor (they were about 75%). A numbered pack rolls the rarity first, then the card. The Mystery Booster keeps its own odds.
+- **No Legendary before Map 21 from packs:** Packs 1–3 have no Legendary and no jackpot. Faction packs, Faction Rewards and Faction Growth hold Legendaries back until Map 21.
+- **The Cathedral Eagle** is now the reward of its own boss (21-6), not Map 11's. Map 11's boss pays the new Ibex Rockcaller.
+- **The Final Exam (T-4) and 20-B-3** no longer field a Legendary or an Epic.
+- **Rarity relabels:**
+  - Rare → Uncommon (12 babies and small animals): Fox Kit, Bear Cub, Fawn Scout, Stable Colt, Plains Zebra, Dust Hyena, Mountain Goat Climber, Bog Leech, Cave Flitter, Grass Viper, Rockslide Ram, Warren Scout.
+  - Ür-Elk and Lone Grey Wolf are Very Rare; Snow Owl Sentinel is the first Super Rare.
+- **71 of the 94 new cards are on the road**, each in one fight and as that fight's card reward (no art yet: they show their emoji). The other 23 wait for maps past 21.
+- **64 more cards** that no enemy had played now fight somewhere: the Ent (and the Elder Willow) in the Old Bramble, babies, turtles, shrine acolytes, the Scraper of Skies at the Sky Scraper Sentinel, and pack cards nobody had met yet.
+- **Field effects by the curriculum:**
+  - The Tutorial is misty.
+  - Pebble Beach has the plain Tide, and only 2-4 Pelican Point has the Tide-spout.
+  - River Rapids is on Sunken Hollow only; Lilypad Reach has the plain Tide.
+  - Smugglers' Grotto is Darkness (it was Pitch Black). Pitch Black moves to the Sunken Depths, which lose their night and First Blood.
+  - Swamp Fever on Gatorback Swamp (25% in the Sunken Grove) and on the Sable Swampmire elites.
+  - Scorching I on the Savanna elites; Frigid on the Taiga boss.
+  - Freezing on the Tundra elites and boss.
+  - Sandstorm on the Glass Dunes (Scorching II on its boss); Scorching II on the Foundry's elites and boss.
+  - The new effects other work is building (Landslide, Crushing Depths, Canopy …) are named per map in the proposal, not placed.
+- **Difficulty:**
+  - Map 0 retuned: 0-1 is a gentle first fight now (castle 20, no glacier wolves) and the Raccoon Heist lost its 7/12 Nightcrew.
+  - Maps 9–20 retuned with `tools/curve_tune.js` toward a curve rising from index 18 to 56 (castle Health, plus a few card trades inside the rarity caps). The strong reference deck now wins most Map 10–16 fights.
+- **Tools:** `curve_tune.js` keeps its card trades inside the rarity caps. `difficulty_curve.json` fights also carry the game's own map number and code (`gameMap`, `gameCode`).
+- **Proposal:** `docs/card-placement-proposal-2026-10-16.md` (+ `.xlsx`: Placement, Rarity economy, Field curriculum, Map gaps, Changes made).
+
 ## 2026-10-16 (results and rewards)
 - **No rank lesson box:** the results no longer show "🎉 Rank A! Well fought. Keep 90% of your castle…" (or its E/S/SS/SSS versions); the rank hex already says it.
 - **Packs in First Clear:** the skirmish preview shows just the pack, no name. Hovering or focusing it opens a small card with its name and "Faction rewards!" (a free pack says how many cards).
