@@ -1101,34 +1101,96 @@ M.bossRoar = function(host, opts){
   if(host) shake(host, {amp:5, n:8, y:2, step:.05});
   return label(hp.x, top + 30, opts.text || 'The deep stirs…', 'good', {size:16, rise:10, hold:1, delay:.3}).then(()=> call(opts.onDone));
 };
-// Tentacle Smack (a whole column): a tentacle slams down the column from the top, then drags back up.
-// 2026-10-15: a thick, tapering arm that curls at the tip, with a pale underside and a row of suckers.
-const TENTACLE_SVG = (id)=> `<svg viewBox="0 0 100 300" preserveAspectRatio="none" width="100%" height="100%"><defs><linearGradient id="${id}" x1="0" x2="1"><stop offset="0" stop-color="#3a1f4d"/><stop offset=".4" stop-color="#8a5aa8"/><stop offset=".7" stop-color="#6b3f8a"/><stop offset="1" stop-color="#2e1840"/></linearGradient></defs>
-  <path d="M8,0 C4,90 22,170 28,230 C31,268 46,294 66,292 C84,290 90,268 78,258 C68,250 58,258 61,268 C50,258 54,238 56,224 C62,168 92,90 92,0 Z" fill="url(#${id})" stroke="#24112f" stroke-width="2"/>
-  <path d="M52,0 C50,80 58,160 52,224 C50,238 48,252 56,262" fill="none" stroke="#e9b8d8" stroke-width="9" stroke-linecap="round" opacity=".55"/>
-  ${[40, 80, 120, 160, 196, 226].map((y, i)=> `<ellipse cx="${55 - i*.4}" cy="${y}" rx="${8.5 - i*.9}" ry="${6 - i*.5}" fill="#f6d2ea" stroke="#7a4a92" stroke-width="1.6"/>`).join('')}</svg>`;
 // 2026-10-15: clip a fixed overlay to a host's box (the battlefield), so arms and tails don't spill over the page around it.
 function clipTo(h, hr){ if(!h || !hr || !hr.width) return; Object.assign(h.style, {width:VW() + 'px', height:VH() + 'px',
   clipPath:`inset(${Math.max(0, hr.top)}px ${Math.max(0, VW() - hr.right)}px ${Math.max(0, VH() - hr.bottom)}px ${Math.max(0, hr.left)}px)`}); }
+// Tentacle Smack (a whole column), redrawn (2026-10-17, user: "the raid's tentacles look like grass haha. make it look more tentaclely and
+// last longer on screen. It also lags alot"). The old arm was one SVG stretched (preserveAspectRatio none) into a thin column, under a CSS
+// drop-shadow filter, with the whole battlefield shaken: a purple blade of grass that came and went in 1.25 s and repainted the board
+// every frame. Now: ONE canvas the size of the column strip, measured once, drawn each frame from a spine of 30 segments (a thick tapered
+// limb, dark purple-red with a pale underside and a row of suckers, curling at the tip). It rises from the back of the board (the boss's
+// edge), sways and coils back, slams down the column, holds there writhing, then sinks back out smoothly: about 3.4 s, 2.7x as long.
+// No filters, no layout reads per frame, and only the struck cards shake (a transform), not the board.
+const TENT_MS = {rise:600, coil:450, slam:170, hold:1350, back:850};
+function tentacleDraw(ctx, W, H, o){
+  // o: {x0 (base x), y0 (base y), len, w (base width), t (s), curl (0..1 how tightly the tip curls), sway (amplitude, radians), dir (+1/-1)}
+  const N = 30, seg = o.len / N, pts = [], ang = [];
+  let x = o.x0, y = o.y0;
+  for(let i = 0; i <= N; i++){
+    const s = i / N;
+    const a = Math.PI / 2 + o.sway * Math.sin(s * 3.2 - o.t * 2.6) * (0.25 + s) + o.dir * o.curl * Math.pow(Math.max(0, s - 0.62) / 0.38, 1.6) * 2.9;
+    pts.push([x, y]); ang.push(a); x += Math.cos(a) * seg; y += Math.sin(a) * seg;
+  }
+  const wid = s=> Math.max(1.2, o.w * (1 - 0.88 * s) * (s < 0.05 ? 0.92 + s * 1.6 : 1));
+  const L = [], R = [];
+  for(let i = 0; i <= N; i++){ const s = i / N, a = ang[i], w = wid(s) / 2, nx = -Math.sin(a), ny = Math.cos(a); L.push([pts[i][0] + nx * w, pts[i][1] + ny * w]); R.push([pts[i][0] - nx * w, pts[i][1] - ny * w]); }
+  // body: dark purple-red, shaded across its width
+  const g = ctx.createLinearGradient(o.x0 - o.w, 0, o.x0 + o.w, 0);
+  g.addColorStop(0, '#2a0a1e'); g.addColorStop(0.35, '#6e1f45'); g.addColorStop(0.6, '#8a2e52'); g.addColorStop(1, '#3a0f27');
+  ctx.beginPath(); ctx.moveTo(L[0][0], L[0][1]);
+  for(let i = 1; i <= N; i++) ctx.lineTo(L[i][0], L[i][1]);
+  for(let i = N; i >= 0; i--) ctx.lineTo(R[i][0], R[i][1]);
+  ctx.closePath(); ctx.fillStyle = g; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = '#1a0512'; ctx.stroke();
+  // the pale underside: a band along the inner (curling) side
+  const side = o.dir > 0 ? R : L;
+  ctx.beginPath();
+  for(let i = 2; i <= N; i++){ const s = i / N, k = 0.45; const px = pts[i][0] + (side[i][0] - pts[i][0]) * k, py = pts[i][1] + (side[i][1] - pts[i][1]) * k; if(i === 2) ctx.moveTo(px, py); else ctx.lineTo(px, py); }
+  ctx.lineWidth = Math.max(2, o.w * 0.22); ctx.lineCap = 'round'; ctx.strokeStyle = 'rgba(236,170,186,.55)'; ctx.stroke();
+  // suckers along the underside, smaller toward the tip
+  for(let i = 4; i < N - 1; i += 2){ const s = i / N, r = Math.max(1.4, wid(s) * 0.17), k = 0.55;
+    const px = pts[i][0] + (side[i][0] - pts[i][0]) * k, py = pts[i][1] + (side[i][1] - pts[i][1]) * k;
+    ctx.beginPath(); ctx.ellipse(px, py, r * 1.15, r, ang[i], 0, Math.PI * 2); ctx.fillStyle = '#f4cdd6'; ctx.fill(); ctx.lineWidth = 1.2; ctx.strokeStyle = '#8a3352'; ctx.stroke();
+    ctx.beginPath(); ctx.arc(px, py, r * 0.42, 0, Math.PI * 2); ctx.fillStyle = '#b8586f'; ctx.fill(); }
+  // a sheen along the top side
+  const top = o.dir > 0 ? L : R; ctx.beginPath();
+  for(let i = 1; i < N * 0.8; i++){ const px = pts[i][0] + (top[i][0] - pts[i][0]) * 0.55, py = pts[i][1] + (top[i][1] - pts[i][1]) * 0.55; if(i === 1) ctx.moveTo(px, py); else ctx.lineTo(px, py); }
+  ctx.lineWidth = Math.max(1.5, o.w * 0.08); ctx.strokeStyle = 'rgba(255,190,220,.22)'; ctx.stroke();
+}
 M.tentacleSmack = function(cells, opts){
-  opts = opts || {}; const g = G(); if(!g) return Promise.resolve();
+  opts = opts || {};
   cells = (Array.isArray(cells) ? cells : [cells]).filter(Boolean);
+  // every rect measured once, here; nothing is read from the layout while it plays
   const rs = cells.map(e=> e.getBoundingClientRect ? e.getBoundingClientRect() : e), ref = rs[0] || {left:VW()/2 - 40, width:80, top:VH()/2, bottom:VH()/2 + 100};
-  // 2026-10-15: with a host (the battlefield) the arm comes down from the host's top edge and is clipped to it.
-  const hr = opts.host && opts.host.getBoundingClientRect ? opts.host.getBoundingClientRect() : null, top0 = hr ? Math.max(0, hr.top) : 0;
-  const bottom = Math.max(...rs.map(r=> r.bottom)), w = Math.max(70, ref.width*1.5), x = ref.left + ref.width/2, H = bottom + 10 - top0;
-  const h = lay('fxf-tent', `<i class="sh"></i><div class="tn">${TENTACLE_SVG('fxfT' + Math.floor(Math.random()*1e6))}</div>`, 4000), sh = h.children[0], tn = h.children[1];
-  clipTo(h, hr);
-  Object.assign(sh.style, {position:'absolute', left:(x - w*.6) + 'px', top:(bottom - 24) + 'px', width:(w*1.2) + 'px', height:'30px', borderRadius:'50%', background:'radial-gradient(ellipse, rgba(20,0,30,.55), transparent 70%)'});
-  Object.assign(tn.style, {position:'absolute', left:(x - w/2) + 'px', top:top0 + 'px', width:w + 'px', height:H + 'px', transformOrigin:'50% 0%', filter:'drop-shadow(0 6px 10px rgba(0,0,0,.5))'});
-  g.set(sh, {scale:.3, opacity:0}); g.set(tn, {y:-H, scaleY:.7});
-  return new Promise(res=> g.timeline({onComplete:()=>{ h.remove(); finish(opts, res); }})
-    .to(sh, {scale:1, opacity:1, duration:.3, ease:'power1.in'})
-    .to(tn, {y:0, scaleY:1, duration:.2, ease:'power4.in'}, .22)
-    .add(()=>{ ring(x, bottom - 20, {color:'#9fd6f5', size:w*2.2, width:5, dur:.5}); burst(x, bottom - 20, {n:16, colors:['#9fd6f5', '#d9f2ff', '#5aa9d6'], dist:[30, 90], spread:Math.PI*1.2, angle:-Math.PI/2, dur:.6, size:6, gravity:30});
-      cells.forEach(e=>{ if(e.getBoundingClientRect && alive(e)) shake(e, {amp:4, n:4, y:3}); }); if(opts.host) shake(opts.host, {amp:4, n:5}); call(opts.onImpact); }, .42)
-    .to(tn, {scaleY:.94, duration:.08, yoyo:true, repeat:1}, .42)
-    .to(tn, {y:-H, duration:.4, ease:'power2.in'}, .85).to(sh, {opacity:0, duration:.3}, .85));
+  const hr = opts.host && opts.host.getBoundingClientRect ? opts.host.getBoundingClientRect() : null;
+  const top0 = hr ? Math.max(0, hr.top) : 0, botLim = hr ? Math.min(VH(), hr.bottom) : VH();
+  const bottom = Math.min(botLim - 4, Math.max(...rs.map(r=> r.bottom))), cx = ref.left + ref.width / 2;
+  const w = Math.max(58, Math.min(124, ref.width * 1.05)), stripW = Math.round(w * 4.2), H = Math.max(80, Math.round(botLim - top0));
+  const left = Math.round(cx - stripW / 2), dpr = Math.min(2, root.devicePixelRatio || 1);
+  const h = lay('fxf-tent', '<i class="sh"></i><canvas class="tc"></canvas>', 8000), sh = h.children[0], cv = h.children[1];
+  if(hr) clipTo(h, hr);
+  Object.assign(sh.style, {position:'absolute', left:(cx - w*1.1) + 'px', top:(bottom - 22) + 'px', width:(w*2.2) + 'px', height:'28px', borderRadius:'50%', background:'radial-gradient(ellipse, rgba(25,0,20,.55), transparent 70%)', opacity:'0', transform:'scale(.3)', willChange:'transform, opacity'});
+  Object.assign(cv.style, {position:'absolute', left:left + 'px', top:top0 + 'px', width:stripW + 'px', height:H + 'px'});
+  cv.width = Math.round(stripW * dpr); cv.height = Math.round(H * dpr);
+  const ctx = cv.getContext('2d'); if(!ctx){ h.remove(); return Promise.resolve(); }
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const dir = Math.random() < 0.5 ? 1 : -1, reach = bottom - top0 + 6, x0 = stripW / 2 - dir * w * 0.35;
+  const T = TENT_MS, t1 = T.rise, t2 = t1 + T.coil, t3 = t2 + T.slam, t4 = t3 + T.hold, t5 = t4 + T.back;
+  const ease = u=> u < 0 ? 0 : u > 1 ? 1 : u * u * (3 - 2 * u), easeIn = u=> Math.min(1, Math.max(0, u)) ** 3;
+  let impacted = false, raf = 0, t0 = 0;
+  return new Promise(res=>{
+    const done = ()=>{ cancelAnimationFrame(raf); if(h.isConnected) h.remove(); finish(opts, res); };
+    const frame = now=>{
+      if(!h.isConnected){ finish(opts, res); return; }
+      if(!t0) t0 = now; const t = now - t0;
+      let len, curl, sway, baseY = -10;
+      if(t < t1){ const u = ease(t / t1); len = reach * (0.18 + 0.32 * u); curl = 0.9; sway = 0.32; baseY = -10 - (1 - u) * reach * 0.5; }
+      else if(t < t2){ const u = ease((t - t1) / T.coil); len = reach * (0.5 - 0.12 * u); curl = 0.9 + 0.35 * u; sway = 0.32 + 0.1 * u; }
+      else if(t < t3){ const u = easeIn((t - t2) / T.slam); len = reach * (0.38 + 0.62 * u); curl = 1.25 * (1 - u) + 0.1; sway = 0.42 * (1 - u) + 0.05; }
+      else if(t < t4){ const u = (t - t3) / T.hold; len = reach * (1 - 0.04 * Math.sin(u * Math.PI)); curl = 0.1 + 0.55 * ease(u * 1.4); sway = 0.05 + 0.07 * Math.sin(u * Math.PI); }
+      else if(t < t5){ const u = ease((t - t4) / T.back); len = reach * (0.96 - 0.5 * u); curl = 0.65 + 0.5 * u; sway = 0.12 + 0.2 * u; baseY = -10 - u * reach * 0.85; }
+      else { done(); return; }
+      if(!impacted && t >= t3){ impacted = true;
+        ring(cx, bottom - 18, {color:'#e7a3c0', size:w * 2.4, width:4, dur:.55, glow:false});
+        burst(cx, bottom - 18, {n:10, colors:['#9fd6f5', '#d9f2ff', '#e7a3c0'], dist:[30, 90], spread:Math.PI * 1.2, angle:-Math.PI / 2, dur:.6, size:6, gravity:30});
+        cells.forEach(e=>{ if(e.getBoundingClientRect && e.isConnected) shake(e, {amp:4, n:4, y:3}); }); call(opts.onImpact); }
+      const shU = t < t3 ? ease(t / t3) : t < t4 ? 1 : 1 - ease((t - t4) / T.back);
+      sh.style.opacity = String(0.95 * shU); sh.style.transform = `scale(${0.3 + 0.7 * shU})`;
+      ctx.clearRect(0, 0, stripW, H);
+      tentacleDraw(ctx, stripW, H, {x0, y0: baseY, len, w, t: t / 1000, curl, sway, dir});
+      raf = requestAnimationFrame(frame);
+    };
+    raf = requestAnimationFrame(frame);
+  });
 };
 // Tail Sweep (every front-row card): a scaly tail sweeps across the row; each card is knocked as it passes.
 css('tail', `.fxf .fxf-tail{position:absolute; left:0; top:0; height:42px; border-radius:46px 10px 10px 46px; border:2px solid #22311c;

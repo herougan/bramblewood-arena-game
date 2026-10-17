@@ -214,7 +214,7 @@ def _derived_map_png(src, dh, ds, dv):
     out = Image.fromarray(hsv.astype(_np.uint8), "HSV").convert("RGB")
     buf = _io.BytesIO(); out.save(buf, format="PNG", optimize=True); return buf.getvalue()
 _art_ids = []
-for _mid in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j", "m", "tut"]:   # m1..m29 plus the 2026-10-09 field/beach maps
+for _mid in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j", "m", "tut", "arena", "abyss"]:   # + the Arena's tourney ground and the raids' deep sea (2026-10-17)   # m1..m29 plus the 2026-10-09 field/beach maps
     _fp = SCRATCH + "art/maps/m%s.png" % _mid
     if ("m" + _mid) in MAP_ART_DERIVED:
         _data = _derived_map_png(*MAP_ART_DERIVED["m" + _mid])

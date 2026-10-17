@@ -10681,6 +10681,128 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .card-tile.fr-unit.ar-ancient > .cframe{border-image-source:var(--fr-a-ancient);} .card-tile.fr-structure.ar-ancient > .cframe{border-image-source:var(--fr-s-ancient);}
   .card-tile.fr-unit.ar-outer > .cframe{border-image-source:var(--fr-a-outer);} .card-tile.fr-structure.ar-outer > .cframe{border-image-source:var(--fr-s-outer);}
   .card-tile.fr-unit.ar-void > .cframe{border-image-source:var(--fr-a-void);} .card-tile.fr-structure.ar-void > .cframe{border-image-source:var(--fr-s-void);}
+/* ==== Arena and raid, 2026-10-17 (the user's notes, 23:25) ==== */
+/* The scene's own layers (syncSceneFx): the Abyss's light shafts from far above, marine snow and a murk below; the Arena's bunting.
+   Transform / opacity animations only, on a handful of elements. */
+#battlefieldEl > .scene-fx{position:absolute; inset:0; z-index:0; pointer-events:none; border-radius:inherit; overflow:hidden;}
+/* 2026-10-17: the light shafts are part of the floor's own background (painted once, nothing moves), so they cost nothing per frame;
+   the first try (four big animated, clip-pathed layers plus two full-board snow layers) dropped an idle raid fight to ~1 fps in
+   software rendering. The snow is now 16 tiny dots, each its own small transform animation. */
+.battlefield.map-mabyss.has-floor-art{background:radial-gradient(ellipse 120% 90% at 50% 40%, rgba(0,10,30,.05) 0%, rgba(0,4,14,.5) 100%), var(--map-art) center / cover no-repeat, #020a14;} /* the shafts are painted into the art (tools/make_map_backgrounds.py mabyss) */
+.scene-abyss .ab-dot{position:absolute; top:-8px; width:3px; height:3px; border-radius:50%; background:rgba(200,230,255,.7); animation:abDot linear infinite; will-change:transform;}
+@keyframes abDot{from{transform:translate3d(0, 0, 0);} to{transform:translate3d(-24px, var(--fall, 600px), 0);}}
+.scene-abyss .ab-murk{position:absolute; left:0; right:0; bottom:0; height:38%; background:linear-gradient(180deg, transparent, rgba(0,6,18,.5));}
+.scene-arena .ar-bunting{position:absolute; left:1.5%; right:1.5%; top:0; height:20px; opacity:.92;
+  background:linear-gradient(180deg, rgba(60,40,20,.9) 0 2px, transparent 2px),
+    conic-gradient(from 150deg at 50% 0, #c0392b 0 60deg, transparent 0) 0 2px / 112px 18px repeat-x,
+    conic-gradient(from 150deg at 50% 0, #e8c46a 0 60deg, transparent 0) 28px 2px / 112px 18px repeat-x,
+    conic-gradient(from 150deg at 50% 0, #2e86c1 0 60deg, transparent 0) 56px 2px / 112px 18px repeat-x,
+    conic-gradient(from 150deg at 50% 0, #1e8449 0 60deg, transparent 0) 84px 2px / 112px 18px repeat-x;}
+@media (prefers-reduced-motion: reduce){ #battlefieldEl > .scene-fx *{animation:none !important;} }
+
+/* The Arena tab: a tourney-ground banner, today's rules as Environment cards, the modes with what a win pays. */
+.arena2{--match-card-w:104px; --match-card-h:130px; display:flex; flex-direction:column; gap:14px; text-align:left;}
+.ar2-hero{position:relative; overflow:hidden; border-radius:18px; padding:30px 22px 18px; color:#fbf3df; border:2px solid #4a2e16;
+  background:linear-gradient(180deg, rgba(30,18,8,.05), rgba(20,12,6,.55)), var(--map-art, linear-gradient(#b58e58, #8a6a3e)) center 12% / cover no-repeat, #6b4423;
+  image-rendering:pixelated; box-shadow:0 10px 26px rgba(40,20,5,.35), inset 0 0 0 2px rgba(255,220,150,.18);}
+.ar2-hero *{image-rendering:auto;}
+.ar2-bunting{position:absolute; left:0; right:0; top:0; height:22px; pointer-events:none;
+  background:linear-gradient(180deg, #3a2410 0 3px, transparent 3px),
+    conic-gradient(from 150deg at 50% 0, #c0392b 0 60deg, transparent 0) 0 3px / 128px 19px repeat-x,
+    conic-gradient(from 150deg at 50% 0, #e8c46a 0 60deg, transparent 0) 32px 3px / 128px 19px repeat-x,
+    conic-gradient(from 150deg at 50% 0, #2e86c1 0 60deg, transparent 0) 64px 3px / 128px 19px repeat-x,
+    conic-gradient(from 150deg at 50% 0, #1e8449 0 60deg, transparent 0) 96px 3px / 128px 19px repeat-x;
+  filter:drop-shadow(0 2px 1px rgba(0,0,0,.4));}
+.ar2-hero-row{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px 18px;}
+.ar2-title{display:flex; align-items:center; gap:12px; min-width:0;}
+.ar2-crest{font-size:46px; line-height:1; filter:drop-shadow(0 3px 0 rgba(0,0,0,.35));}
+.ar2-title h2{margin:0; font:800 30px/1.05 'Baloo 2', system-ui, sans-serif; letter-spacing:.01em; text-shadow:0 2px 0 rgba(0,0,0,.45);}
+.ar2-title p{margin:2px 0 0; font-size:13.5px; opacity:.9;}
+.ar2-stats{display:flex; flex-wrap:wrap; gap:8px;}
+.ar2-stat{display:flex; flex-direction:column; align-items:center; justify-content:center; min-width:84px; padding:6px 12px; border-radius:12px; background:rgba(20,12,6,.55); border:1px solid rgba(255,220,150,.3); line-height:1.15;}
+.ar2-stat b{font:800 16px 'Baloo 2', system-ui, sans-serif;} .ar2-stat small{font-size:11px; opacity:.8;}
+.ar2-stat.ar2-rank{border-color:#e8c46a; background:rgba(60,40,10,.7);}
+.ar2-stat .deck-size-badge, .ar2-deckstat > :first-child{font-size:12px;}
+.ar2-today{border-radius:16px; padding:14px 16px; background:var(--surface-2); border:1px solid var(--surface-border); box-shadow:0 2px 8px var(--shadow);}
+.ar2-today-head{display:flex; flex-wrap:wrap; align-items:baseline; gap:4px 12px; margin-bottom:10px;}
+.ar2-today-head h3{margin:0; font:800 18px 'Baloo 2', system-ui, sans-serif;}
+.ar2-today-sub{font-size:12.5px; color:var(--ink-muted);}
+.ar2-fields{display:grid; grid-template-columns:repeat(auto-fill, minmax(250px, 1fr)); gap:12px;}
+.ar2-rule{margin:0; display:flex; gap:12px; align-items:center; padding:8px; border-radius:14px; background:var(--surface); border:1px solid var(--surface-border); min-width:0;}
+.ar2-rule .match-field-tile{position:relative; cursor:default;}
+.ar2-rule figcaption{display:flex; flex-direction:column; gap:3px; min-width:0; font-size:13px; line-height:1.35;}
+.ar2-rule figcaption b{font:800 15px 'Baloo 2', system-ui, sans-serif;}
+.ar2-rule figcaption span{color:var(--ink-soft, var(--ink-muted));}
+.arena2 .arena-format{justify-content:flex-start;}
+.arena2 .arena-mode-btn{text-align:center;}
+.amb-win{display:inline-flex; gap:5px; align-items:center; justify-content:center; flex-wrap:wrap; margin-top:6px; padding:3px 10px; border-radius:999px; font-size:11.5px; font-weight:700; line-height:1.3;
+  background:rgba(232,196,106,.18); border:1px solid rgba(232,196,106,.55); color:inherit;}
+.arena-mode-btn.arena-hero .amb-win{background:rgba(255,230,160,.18); border-color:rgba(255,230,160,.5);}
+.amb-win .maple-leaf-icon, .amb-win img{width:1em; height:1em; vertical-align:-2px;}
+@media (max-width:600px){
+  .arena2{--match-card-w:78px; --match-card-h:98px;}
+  .ar2-hero{padding:28px 12px 12px;} .ar2-title h2{font-size:24px;} .ar2-crest{font-size:36px;}
+  .ar2-stats{width:100%;} .ar2-stat{flex:1 1 0; min-width:0; padding:5px 6px;}
+  .ar2-fields{grid-template-columns:1fr;}
+}
+
+/* The raid menu: the boss as a card, your week at a glance, the parts, how the rows work, the field, the rewards. */
+.raid3{position:relative; overflow:hidden;}
+.raid3::before{content:''; position:absolute; inset:0 0 auto 0; height:210px; pointer-events:none; z-index:0; image-rendering:pixelated; opacity:.9;
+  background:linear-gradient(180deg, rgba(2,10,20,.15), var(--surface) 100%), var(--map-art, none) center 30% / cover no-repeat;}
+.raid3 > *{position:relative; z-index:1;}
+.r3-hero{display:flex; gap:18px; align-items:center; flex-wrap:wrap; padding:6px 0 4px;}
+.r3-boss-card{position:relative; flex:0 0 auto; width:132px; height:132px; border-radius:18px; overflow:hidden; display:grid; place-items:center; font-size:72px;
+  background:radial-gradient(circle at 50% 40%, #1b3d63, #06121f 75%); border:3px solid #c9a24a; box-shadow:0 0 0 3px rgba(0,0,0,.35), 0 10px 24px rgba(0,0,0,.45);}
+.r3-boss-card .raid-boss-art{width:100%; height:100%; border-radius:0; box-shadow:none; object-fit:cover;}
+.r3-boss-glow{position:absolute; inset:0; box-shadow:inset 0 0 24px rgba(120,200,255,.35); pointer-events:none;}
+.r3-boss-info{flex:1 1 320px; min-width:0; color:var(--ink);}
+.r3-boss-info h2{margin:0; display:flex; align-items:center; gap:8px; flex-wrap:wrap; font:800 26px 'Baloo 2', system-ui, sans-serif; text-shadow:0 1px 0 var(--surface);}
+.r3-blurb{margin:4px 0 8px; font-size:13.5px; color:var(--ink-muted);}
+.raid3 .r3-hp{height:16px; border-radius:9px;}
+.raid3 .r3-hp .raid-boss-hp-bar-fill{background:linear-gradient(90deg, #8e1b1b, #d8432c 60%, #f08a4b);}
+.r3-me{display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 4px;}
+.r3-chip{display:flex; flex-direction:column; padding:6px 12px; border-radius:12px; background:var(--surface-2); border:1px solid var(--surface-border); line-height:1.2; min-width:96px;}
+.r3-chip small{font-size:11px; color:var(--ink-muted);} .r3-chip b{font:800 16px 'Baloo 2', system-ui, sans-serif;}
+.r3-hint{margin:2px 0 0; font-size:12.5px; color:var(--ink-muted);}
+.r3-h{margin:14px 0 8px; font:800 16px 'Baloo 2', system-ui, sans-serif;}
+.r3-atk{font-size:12px;}
+.r3-info{display:grid; grid-template-columns:repeat(auto-fit, minmax(290px, 1fr)); gap:12px; margin-top:16px;}
+.r3-info > section{border-radius:14px; padding:12px 14px; background:var(--surface-2); border:1px solid var(--surface-border);}
+.r3-info h3{margin:0 0 8px; font:800 15px 'Baloo 2', system-ui, sans-serif;}
+.r3-rows{list-style:none; margin:0 0 8px; padding:0; display:flex; flex-direction:column; gap:6px;}
+.r3-rows li{display:flex; flex-direction:column; padding:7px 10px; border-radius:10px; background:var(--surface); border-left:4px solid #6a8fb5; font-size:12.5px; line-height:1.35;}
+.r3-rows li.is-you{border-left-color:var(--accent, #c9a24a);}
+.r3-rows li b{font-size:13px;}
+.r3-note{margin:6px 0 0; font-size:12.5px; color:var(--ink-muted); line-height:1.4;}
+.raid3{--match-card-w:84px; --match-card-h:105px;}
+.r3-fields{grid-template-columns:1fr;}
+.r3-rw{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; font-size:13px;}
+.r3-rw li{display:flex; justify-content:space-between; gap:10px; padding:6px 10px; border-radius:10px; background:var(--surface);}
+.r3-rw li span{text-align:right;}
+@media (max-width:600px){ .r3-boss-card{width:96px; height:96px; font-size:52px;} .r3-boss-info h2{font-size:21px;} .r3-chip{flex:1 1 40%;} .r3-info{grid-template-columns:1fr;} }
+
+/* The raid's VS screen: your allies stand with you, each with the row it holds. */
+.vs-row-tag{font-size:12px; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:2px 10px; border-radius:999px; background:rgba(255,255,255,.14);}
+.vs-allies2{display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-top:4px;}
+.vs-allies2 > small{flex-basis:100%; font-size:12px; opacity:.8;}
+.vs-ally2{display:flex; align-items:center; gap:8px; padding:6px 10px 6px 6px; border-radius:14px; background:rgba(0,0,0,.28); border:1px solid rgba(255,255,255,.18); text-align:left; max-width:240px;}
+.vs-ally-txt{display:flex; flex-direction:column; min-width:0; line-height:1.25;}
+.vs-ally-txt b{font-size:14px;} .vs-ally-txt small{font-size:11.5px; opacity:.85; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.vs-ally-row{color:#ffe08a; font-weight:700; opacity:1 !important;}
+.vs-boss-art{width:120px; height:120px; border-radius:18px; image-rendering:pixelated; border:3px solid #c9a24a; box-shadow:0 8px 20px rgba(0,0,0,.45); object-fit:cover;}
+@media (max-width:600px){ .vs-ally2{max-width:46vw;} .vs-boss-art{width:84px; height:84px;} }
+
+/* The raid's back-row volley: the striker bobs forward */
+.board-card.volley-lunge{animation:volleyLunge .45s ease-out;}
+@keyframes volleyLunge{40%{transform:translateY(-12px) scale(1.05);} 100%{transform:none;}}
+@media (prefers-reduced-motion: reduce){ .board-card.volley-lunge{animation:none;} }
+.r3-admin{display:flex; flex-wrap:wrap; gap:6px; align-self:flex-start;}
+/* The raid editor's field effects */
+.raid-editor .re-fx{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin-bottom:8px;}
+.raid-editor .re-fx .se-fx-chip{display:flex; align-items:center; gap:6px; padding:5px 6px 5px 10px; border-radius:12px; background:rgba(120,170,220,.12); border:1px solid rgba(140,190,240,.35); font-size:13px;}
+.raid-editor .re-fx .se-fx-x{border:0; background:transparent; color:inherit; cursor:pointer; font-size:13px;}
+.raid-editor .re-pool input{width:100%; box-sizing:border-box;}
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
