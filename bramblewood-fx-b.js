@@ -866,10 +866,18 @@ M.dayBreaks = function(host, opts){
   const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'background:linear-gradient(270deg, rgba(255,214,120,.0), rgba(255,214,120,.55) 45%, rgba(255,240,190,.75) 55%, rgba(255,214,120,0));'}))[0];
   const rays = bits(box, 1, ()=> ({cls:'fxb-rays'}))[0];
   const sun = bits(box, 1, ()=> ({cls:'fxb-disc', style:'right:6%; top:50%; background:radial-gradient(circle, #fffbe0, #ffd24a 60%, #ffae2a); box-shadow:0 0 30px 12px rgba(255,210,90,.55);'}))[0];
+  // 2026-10-16 (user, 20:19: "Day animation is too 'hard'. Soften the day's sun animation by 50% (make it 85% more transparent); also the
+  // sun should keep moving, and fade off while moving." and "the light creeping up needs to be 60% less strong as well."): the sun and
+  // its rays peak at 15% of their old strength, and the sun climbs and drifts the whole time, fading out on the way instead of
+  // stopping to fade; the golden wash creeps in from the left (like the board's own dawn creep) at 40% of its old strength, slower.
+  const SUN = .15, WASH = .4, D = 3.6;
+  w.style.background = 'linear-gradient(90deg, rgba(255,214,120,.0), rgba(255,214,120,.55) 45%, rgba(255,240,190,.75) 55%, rgba(255,214,120,0))';
   return run([box], opts, (t)=>{
-    t.fromTo(w, {xPercent:60, opacity:0}, {xPercent:-60, opacity:1, duration:1.3, ease:'power1.inOut'}).to(w, {opacity:0, duration:.35}, 1.0)
-      .fromTo(sun, {y:r.height*.35, opacity:0}, {y:-r.height*.3, opacity:1, duration:1, ease:'power2.out'}, 0).to(sun, {opacity:0, duration:.4}, 1.1)
-      .fromTo(rays, {opacity:0, rotation:-6}, {opacity:1, rotation:4, duration:.8, ease:'sine.out'}, .2).to(rays, {opacity:0, duration:.5}, 1.0);
+    t.fromTo(w, {xPercent:-60, opacity:0}, {xPercent:60, duration:D*.75, ease:'sine.inOut'}, 0)
+      .to(w, {opacity:WASH, duration:D*.25, ease:'sine.out'}, 0).to(w, {opacity:0, duration:D*.4, ease:'sine.in'}, D*.35)
+      .fromTo(sun, {x:0, y:r.height*.35}, {x:-r.width*.12, y:-r.height*.42, duration:D, ease:'none'}, 0)
+      .fromTo(sun, {opacity:0}, {opacity:SUN, duration:D*.3, ease:'sine.out'}, 0).to(sun, {opacity:0, duration:D*.6, ease:'sine.in'}, D*.4)
+      .fromTo(rays, {opacity:0, rotation:-6}, {opacity:SUN, rotation:2, duration:D*.4, ease:'sine.out'}, .2).to(rays, {opacity:0, rotation:9, duration:D*.5, ease:'sine.in'}, D*.45);
   });
 };
 // Dawn: both sides draw (wt-dawn-draw): rosy light rises from the horizon and a few birds take off (the dawn chorus).

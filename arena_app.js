@@ -3626,7 +3626,10 @@ const SoundKit = (()=>{
         o.type = 'sine'; o.frequency.setValueAtTime(f0, t0); o.frequency.exponentialRampToValueAtTime(f1, t0 + 0.06); o.frequency.exponentialRampToValueAtTime(f0*1.1, t0 + 0.09);
         g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.022*sfxVolume, t0 + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.095);
         o.connect(g); g.connect(outNode(c)); o.start(t0); o.stop(t0 + 0.11); } };
-      chirp(0.75, 2600, 3900, 3); chirp(1.25, 3100, 4400, 2); },
+      // 2026-10-16 (user, 20:19: "Sometimes, there is bird tweets when it transitions to day 1."): the birds join in about 1 in 3
+      // daybreaks (they used to sing every time), with a different little exchange each time: one to three birds, two to four notes.
+      if(Math.random() < 1/3){ const birds = 1 + Math.floor(Math.random()*3);
+        for(let b = 0; b < birds; b++){ const f0 = 2400 + Math.random()*900; chirp(0.7 + b*0.45 + Math.random()*0.15, f0, f0*(1.35 + Math.random()*0.25), 2 + Math.floor(Math.random()*3)); } } },
     // Full Moon howl (2026-10-15, user: "Full moon - if a full moon card is on the field, it howls similarly to night (maybe a tad
     // different to differentiate)"): one wolf, a little higher and longer than nightfall's pair, with a cold silver shimmer over it.
     moonHowl(){ const c = ac(); if(!c || sfxVolume<=0) return;
@@ -30244,8 +30247,8 @@ function syncSkyFx(m, phase){
   const misty = !!(m && !m.over && (matchFieldRules(m) || {}).misty);
   const ph = phase || (m && m.engine && m.engine.getPhase && m.engine.getPhase());
   const tone = misty ? 'misty' : (m && !m.over && ph && dayNightOn(m) && matchPhaseMatters(m)) ? skyToneOf(m, ph) : null;
-  let sky = bf.querySelector(':scope > .sky-fx');
-  if(!tone){ if(sky) sky.remove(); skyToneLast = null; skyShadeLast = null; skyStepEase = null; return; }
+  let sky = bf.querySelector(':scope > .sky-fx:not(.sky-out):not(.sky-creep)');
+  if(!tone){ bf.querySelectorAll(':scope > .sky-fx').forEach(x=> x.remove()); skyToneLast = null; skyShadeLast = null; skyStepEase = null; skyPhaseEase = null; return; }
   // 2026-10-16 (user: "The transition between 1->2->3 in day AND also night should be very slow, over 10s."): the steps inside one
   // phase (day: dawn → day → dusk; night: early → deep → late night, the .nstep-N shades) are no longer swept in behind the ragged
   // edge: the tint itself eases to the next step over SKY_STEP_MS (10 s). A board re-render mid-ease rebuilds this layer, so the
@@ -30253,35 +30256,56 @@ function syncSkyFx(m, phase){
   // The change of phase (dusk → night, night → dawn) keeps its own look.
   const shade = skyShadeOf(m, ph, tone);
   if(!sky){ sky = document.createElement('div'); sky.setAttribute('aria-hidden', 'true'); bf.insertBefore(sky, bf.firstChild);
+    { const pe = skyPhaseEase, gone = pe ? performance.now() - pe.t0 : 1e9;
+      if(pe && gone < SKY_PHASE_MS && pe.to === skyClassFor(tone, shade) && !reducedMotion()){ skyPhaseLayers(bf, sky, pe, gone); skyToneLast = tone; skyShadeLast = shade; return; } }
     const se = skyStepEase, left = se ? SKY_STEP_MS - (performance.now() - se.t0) : 0;
     if(se && left > 0 && se.to === skyClassFor(tone, shade)){ sky.className = se.from; void sky.offsetWidth; skyStepApply(sky, se.to, SKY_STEP_MS - left); skyToneLast = tone; skyShadeLast = shade; return; }
     // a fresh board (every render rebuilds it) starts on the tone it last showed, so a change still eases in
     if(skyToneLast && (skyToneLast !== tone || skyShadeLast !== shade)){ sky.className = skyClassFor(skyToneLast, skyShadeLast); void sky.offsetWidth; } }
   { const cur = (sky.className.match(/tone-(\w+)/) || [])[1], curShade = (sky.className.match(/nstep-(\d)/) || [])[1] || '';
+    if(skyPhaseEase && performance.now() - skyPhaseEase.t0 < SKY_PHASE_MS && skyPhaseEase.to === skyClassFor(tone, shade) && sky.className.indexOf(skyPhaseEase.to) === 0){ skyToneLast = tone; skyShadeLast = shade; return; }
     if(cur && !sky.classList.contains('sky-sweep') && skyStepFamily(cur) && skyStepFamily(cur) === skyStepFamily(tone) && (cur !== tone || curShade !== shade) && !reducedMotion()){
       const from = skyClassFor(cur, curShade), to = skyClassFor(tone, shade);
       skyStepEase = {from, to, t0: performance.now()}; skyStepApply(sky, to, 0); skyToneLast = tone; skyShadeLast = shade; return; }
     if(cur === tone && curShade === shade && !sky.classList.contains('sky-sweep')){ skyToneLast = tone; skyShadeLast = shade; return; } }
-  // 2026-10-15 (user: "The transition from day to night should be gradual, and from left to right unevenly."): a change of tone on
-  // a board that is showing one is a new tint layer swept in from the left behind a ragged edge while the old one is swept off
-  // with the mirrored edge (CSS .sky-sweep), ~1.3 s, instead of the whole board's colour easing at once.
-  { const sw = bf.querySelector(':scope > .sky-fx.sky-sweep:not(.is-old)'); if(sw){ if(sw.classList.contains('tone-' + tone)) return; sky = sw; } }
-  const curTone = (sky.className.match(/tone-(\w+)/) || [])[1];
-  // 2026-10-16 (user: "The night->day animation: Bars on the left -> no-go. I think the whole map lighting up is sufficient."): night
-  // giving way is no longer swept in behind the ragged edge: the whole board's tint eases to the new one (the CSS transition on the
-  // layer), while syncNightVeil fades the veil and FX.E.nightRetreat drifts soft, uneven light across.
-  if(curTone === 'night' && tone !== 'night'){ bf.querySelectorAll(':scope > .sky-fx.sky-sweep').forEach(x=>{ if(x !== sky) x.remove(); }); sky.classList.remove('sky-sweep', 'is-old', 'is-go'); sky.className = skyClassFor(tone, shade) + ' sky-ease'; skyToneLast = tone; skyShadeLast = shade; skyStepEase = null; return; }
+  // A change of phase (2026-10-16, user, 20:19: "For the night one & day one, the day creeps up from left to right, but the whole map
+  // also lights up in general - the combination of two effects. the light creeping up needs to be 60% less strong as well."; this
+  // replaces the 10-15 ragged sweep at full strength and the 10-16 plain ease for night → day): dusk → night and night → dawn are
+  // both (1) the whole board's tint cross-fading to the new one over SKY_PHASE_MS (10 s; the night veil does the same in
+  // syncNightVeil) and (2) a 40% copy of the new tint creeping in from the left behind the ragged edge (.sky-creep), which then
+  // melts into the rest. Both run on the Web Animations API from skyPhaseEase's start time, so a board redraw picks them up mid-way.
+  const curTone = (sky.className.match(/tone-(\w+)/) || [])[1], curShade = (sky.className.match(/nstep-(\d)/) || [])[1] || '';
   if(curTone && curTone !== tone && tone !== 'misty' && curTone !== 'misty' && !reducedMotion() && sky.isConnected){
-    bf.querySelectorAll(':scope > .sky-fx.sky-sweep').forEach(x=>{ if(x !== sky) x.remove(); });
-    const old = sky, nw = document.createElement('div'); nw.setAttribute('aria-hidden', 'true'); nw.className = skyClassFor(tone, shade) + ' sky-sweep'; skyStepEase = null;
-    old.after(nw); old.classList.add('sky-sweep', 'is-old'); void nw.offsetWidth;
-    nw.classList.add('is-go'); old.classList.add('is-go'); skyToneLast = tone; skyShadeLast = shade;
-    setTimeout(()=>{ old.remove(); nw.classList.remove('sky-sweep', 'is-go'); }, 1450);
-    return;
+    skyStepEase = null; skyPhaseEase = {from: skyClassFor(curTone, curShade), to: skyClassFor(tone, shade), t0: performance.now()};
+    skyPhaseLayers(bf, sky, skyPhaseEase, 0); skyToneLast = tone; skyShadeLast = shade; return;
   }
   sky.className = skyClassFor(tone, shade); skyToneLast = tone; skyShadeLast = shade;
   if(tone === 'misty') sky.style.animationDelay = (-((performance.now() / 1000) % 90)).toFixed(2) + 's'; // the loop carries on across re-renders
 }
+const SKY_PHASE_MS = 10000, SKY_CREEP_MS = 4200, SKY_CREEP_PEAK = .4; // the creep: 40% of the old full-strength sweep
+let skyPhaseEase = null; // {from, to, t0} while a change of phase is easing
+// Lay out a change of phase on `sky` (the layer showing `pe.from`), `elapsed` ms into it: `sky` fades out, a new layer with `pe.to`
+// fades in, and (while it has time left) the creep slides across. Returns the new main layer.
+function skyPhaseLayers(bf, sky, pe, elapsed){
+  const ease = 'cubic-bezier(.45,.05,.55,.95)', anim = (el, kf, o)=>{ try{ return el.animate(kf, Object.assign({fill:'forwards', easing:ease}, o)); }catch(e){ return null; } };
+  bf.querySelectorAll(':scope > .sky-fx.sky-out, :scope > .sky-fx.sky-creep, :scope > .sky-fx.sky-sweep').forEach(x=>{ if(x !== sky) x.remove(); });
+  sky.className = pe.from + ' sky-out'; sky.style.transition = 'none';
+  const a0 = anim(sky, [{opacity:1}, {opacity:0}], {duration:SKY_PHASE_MS, delay:-elapsed}); if(a0) a0.onfinish = ()=> sky.remove(); else sky.remove();
+  const nw = document.createElement('div'); nw.setAttribute('aria-hidden', 'true'); nw.className = pe.to; nw.style.transition = 'none'; sky.after(nw);
+  const a1 = anim(nw, [{opacity:0}, {opacity:1}], {duration:SKY_PHASE_MS, delay:-elapsed}); if(a1) a1.onfinish = ()=>{ try{ nw.style.opacity = '1'; a1.cancel(); }catch(e){} nw.style.transition = ''; };
+  if(elapsed < SKY_CREEP_MS + 2600){
+    const cr = document.createElement('div'); cr.setAttribute('aria-hidden', 'true'); cr.className = pe.to + ' sky-creep'; nw.after(cr);
+    const total = SKY_CREEP_MS + 2600, f = SKY_CREEP_MS / total;
+    anim(cr, [{maskPosition:'76% 0', webkitMaskPosition:'76% 0'}, {maskPosition:'0% 0', webkitMaskPosition:'0% 0'}], {duration:SKY_CREEP_MS, delay:-elapsed, easing:'cubic-bezier(.35,.1,.45,1)'});
+    const a2 = anim(cr, [{opacity:0, offset:0}, {opacity:SKY_CREEP_PEAK, offset:.12}, {opacity:SKY_CREEP_PEAK, offset:f}, {opacity:0, offset:1}], {duration:total, delay:-elapsed, easing:'linear'});
+    if(a2) a2.onfinish = ()=> cr.remove(); else cr.remove();
+  }
+  return nw;
+}
+// The night veil (2026-10-16, user, 20:19, see syncSkyFx's change of phase): night falling and lifting is one 10 s fade of the whole
+// veil (.is-flat: no ragged edge), alongside the sky's creep; the morning streaks (FX.E.nightRetreat) still drift across as it lifts.
+// A board redraw mid-fade picks the fade up where it was (veilEase).
+let veilEase = null; // {want, m, t0}
 function syncNightVeil(m, phase){
   try{ syncSkyFx(m, phase); }catch(e){}
   try{ window.SkillFX && SkillFX.w2Css && SkillFX.w2Css(); syncCloudFx(m); }catch(e){} // Cloudy (2026-10-16), and the W2 status looks' stylesheet
@@ -30290,14 +30314,20 @@ function syncNightVeil(m, phase){
   const want = !!(m && !m.over && matchPhaseMatters(m) && (phase || (m.engine && m.engine.getPhase && m.engine.getPhase())) === 'night');
   // Night or a dark field: the leaders' and Light Aura units' glow shows (2026-10-15, .unit-light).
   try{ bf.classList.toggle('is-dark-scene', !!(m && !m.over && (want || matchDarkLevel(m)))); }catch(e){}
-  if(!v){ if(!want) return; v = document.createElement('div'); v.className = 'night-veil'; v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); if(!phase){ v.classList.add('no-anim', 'is-on'); void v.offsetWidth; v.classList.remove('no-anim'); return; } void v.offsetWidth; }
-  if(want){ if(v.classList.contains('is-leaving') || v.classList.contains('is-fading')){ v.classList.add('no-anim'); v.classList.remove('is-leaving', 'is-gone', 'is-on', 'is-fading'); void v.offsetWidth; v.classList.remove('no-anim'); void v.offsetWidth; } v.classList.add('is-on'); return; }
-  // 2026-10-16 (user: "The night->day animation: Bars on the left -> no-go. I think the whole map lighting up is sufficient. I was thinking
-  // of a night retreating effect - could you still do a gentle version of that ... softer and longer. And also not consistent"): the
-  // veil no longer leaves behind the ragged left-to-right edge. The whole board lights up (the veil fades, ~2.4 s) and soft, uneven
-  // streaks of morning light drift across it (FX.E.nightRetreat, via fxHook('fieldNightLifts')).
-  if(v.classList.contains('is-on') && !v.classList.contains('is-fading')){ v.classList.add('is-fading'); try{ fxHook('fieldNightLifts', bf); }catch(e){}
-    setTimeout(()=>{ if(!v.isConnected || !v.classList.contains('is-fading')) return; v.classList.add('no-anim'); v.classList.remove('is-on', 'is-fading'); void v.offsetWidth; v.classList.remove('no-anim'); }, 2600); }
+  const now = performance.now();
+  if(!veilEase || veilEase.want !== want){
+    const animate = !reducedMotion() && !!veilEase && veilEase.m === m; // a change seen as it happens in this fight (not its first look)
+    veilEase = {want, m, t0: animate ? now : -1e9};
+    if(animate && !want) try{ fxHook('fieldNightLifts', bf); }catch(e){}
+  }
+  const el = now - veilEase.t0, easing = el < SKY_PHASE_MS;
+  if(!want && !easing){ if(v) v.remove(); return; }
+  if(!v){ v = document.createElement('div'); v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); }
+  v.className = 'night-veil is-on is-flat';
+  if(easing){ if(v._easeT0 !== veilEase.t0){ v._easeT0 = veilEase.t0; try{ v.getAnimations().forEach(a=> a.cancel()); }catch(e){}
+      try{ const a = v.animate([{opacity: want ? 0 : 1}, {opacity: want ? 1 : 0}], {duration:SKY_PHASE_MS, delay:-el, easing:'cubic-bezier(.45,.05,.55,.95)', fill:'forwards'});
+        if(!want) a.onfinish = ()=>{ if(veilEase && !veilEase.want) v.remove(); }; }catch(e){ if(!want) v.remove(); } } }
+  else { try{ v.getAnimations().forEach(a=> a.cancel()); }catch(e){} v._easeT0 = null; }
 }
 // Battlefield pills with tooltips (2026-10-14, user: "Night, Tide/Ebb need tooltips when you hover." and "The Night, Ebb etc pills
 // will be on the battlefield instead"): Day/Night/Twilight, the moon, the tide, the wind, the Arena's portent and the "Next round"
@@ -30400,7 +30430,8 @@ function phasePillHTML(m){
   // 2026-10-15: the moon (when a card cares about it) is the Night pill's icon: 🌒 1/3, its phase named in the tooltip.
   const moon = phase === 'night' && m.engine.moonPhase && matchHasMoonCards(m) ? (MOON_PHASES[m.engine.moonPhase()] || MOON_PHASES[0]) : null;
   const phIco = moon ? moon[0] : phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️';
-  const lines = [cycling ? `Night and Day alternate every ${PL} days.` : pmode === 'realtime' ? 'Night and Day follow your clock.' : `${phName} all match.`].concat(moon ? [moon[1] + '.'] : []);
+  const lines = [cycling ? `Night and Day alternate every ${PL} days.` : pmode === 'realtime' ? 'Night and Day follow your clock.' : `${phName} all match.`].concat(moon ? [moon[1] + '.'] : [])
+    .concat(phase === 'day' && cycling ? ['Draw +1 on Day.'] : []); // 2026-10-16 (user: "Day's tooltip should say, draw +1 on Day."): both sides draw when Day comes after Night
   return bfPillHTML('phase-' + phase, phIco, phName, cycling ? `${roundInPhase}/${PL}` : '', pillTipHTML(phName, lines), (cycling ? `${phName}, round ${roundInPhase} of ${PL}` : phName) + (moon ? ', ' + moon[1] : ''));
 }
 function bfPillsHTML(m){

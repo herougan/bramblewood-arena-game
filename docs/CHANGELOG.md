@@ -8,7 +8,13 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Babble:** each bark is read out as a short Animal-Crossing-style babble in the species' voice (a mouse high and quick, a bear low and slow, a dragon a deep rumble, a fish bubbly), made in code. It follows the Voice and Sound sliders, is silent when either is 0, lasts under a second, and never plays more than about once a second.
 - **Voice lines setting:** On / Leaders only (default) / Off, next to Effects (and next to Voice in the fight's settings). The old generic chatter ("Let's go!") only plays with On, and never over a bark.
 - **Normal death:** the earlier topple is back (the card tips over on its bottom edge, greying), as one smooth motion that starts slow and speeds up, fading as it lands, with the leaves and thump on the landing. It was a near-still lean and a snap, then a separate fade.
-- **Day and night steps:** within a phase, ☀️ 1/3 → 2/3 → 3/3 (dawn, day, dusk) and the night's three steps (early, deep, late night: new shades) now ease the board's light over 10 s instead of sweeping in. A board redraw mid-way carries on from where it was.
+- **Day and night steps:** within a phase, ☀️ 1/3 → 2/3 → 3/3 and the night's three steps now ease the board's light over 10 s instead of sweeping in. A board redraw mid-way carries on from where it was.
+- **Softer day colours:** Day 1 (daybreak) is now close to the normal day colour, Day 2 is exactly the normal day colour, Day 3 is the old dusk amber moved 10% towards it. Night 1 and 3 are the plain night; Night 2 is 5% darker.
+- **Nightfall and daybreak:** both are now two effects together: the whole board darkens or lights up over 10 s (tint and night veil), and the new light creeps in from left to right behind the ragged edge at 40% of its old strength, then melts into the rest. The morning light streaks are at 40% too, and slower.
+- **Day's sun:** the sun and its rays are 85% more transparent; the sun keeps climbing and drifting while it fades out (it used to stop, then fade). The golden wash creeps in from the left at 40% strength.
+- **Birdsong at daybreak:** the birds now sing only about 1 in 3 daybreaks, one to three birds with a different little exchange each time.
+- **Day tooltip:** the Day pill's tooltip adds "Draw +1 on Day." (both sides draw when Day comes after Night).
+- **Swamp, mist and fungal map titles:** the first-visit title (e.g. The Morel Hollow, Map 7) is now the normal ribbon banner like every other map instead of the ink-brush calligraphy, and keeps the ink look's soft dark shadow along the bottom of the screen. Murgle's dungeon title is unchanged.
 - **Rain coming in:** the start-of-rain effect (on the map, and a Spring Rain field arriving) is 90% more transparent. Rain stopping is unchanged.
 
 ## 2026-10-16 (field effects 2)
