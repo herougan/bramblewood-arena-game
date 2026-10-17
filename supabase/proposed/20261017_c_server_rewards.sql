@@ -1,3 +1,4 @@
+-- SUPERSEDED 2026-10-17: the final version is supabase/migrations/20261017_server_fight_rewards.sql (adjusted per the owner's 22:48 decision). Kept for the record; do not apply this file.
 -- PROPOSED, NOT APPLIED (2026-10-17, docs/platform-roadmap-2026-10-17.md §3, tier 2). Apply only on "apply it".
 -- Needs 20261017_a_rate_limits_and_currency_insert.sql first (public.is_server_grant).
 --

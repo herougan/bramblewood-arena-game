@@ -1,3 +1,4 @@
+-- SUPERSEDED 2026-10-17: the final version is supabase/migrations/20261017_small_hardening.sql (adjusted per the owner's 22:48 decision). Kept for the record; do not apply this file.
 -- PROPOSED, NOT APPLIED (2026-10-17, docs/platform-roadmap-2026-10-17.md §3). Apply only on "apply it".
 -- Small fixes found reading the live policies and functions (read-only, 2026-10-17). Each block stands alone.
 

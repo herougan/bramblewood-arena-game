@@ -9395,9 +9395,21 @@ async function cloudPullState(){
 // in general" is one of the three things this batch explicitly gates behind a real sign-in, so a
 // guest's progress now stays local-only rather than quietly riding along on the anonymous
 // identity the way it would have before this batch.
+// 2026-10-17 (security, server-settled market and rewards): one write in flight at a time, and a burst of saves (a match end
+// grants Leaves, Dust and Metal one after another) becomes one more write that sends the numbers as they are when it goes
+// out. Before, every save sent its own upsert at once, so they could land out of order and briefly put an older balance
+// back; with the server now adding and taking amounts itself (market, fight rewards) the order matters.
+let cloudCurPushInFlight = null, cloudCurPushQueued = null;
 function cloudPushCurrencies(){
   if(!sbClient || !isSignedIn()) return;
-  return sbClient.from('player_currencies').upsert({ profile_id: cloudUserId, gold: myCurrencies.gold, gems: myCurrencies.gems, dust: myCurrencies.dust, metal: myCurrencies.metal||0, raid_points: myCurrencies.raidPoints||0, raid_points_updated_at: myCurrencies.raidPointsUpdatedAt||new Date().toISOString() }).then(()=>{}, ()=>{});
+  if(cloudCurPushQueued) return cloudCurPushQueued;
+  const send = ()=>{ cloudCurPushQueued = null; if(!sbClient || !isSignedIn()) return Promise.resolve();
+    return sbClient.from('player_currencies').upsert({ profile_id: cloudUserId, gold: myCurrencies.gold, gems: myCurrencies.gems, dust: myCurrencies.dust, metal: myCurrencies.metal||0, raid_points: myCurrencies.raidPoints||0, raid_points_updated_at: myCurrencies.raidPointsUpdatedAt||new Date().toISOString() }).then(()=>{}, ()=>{}); };
+  const p = (cloudCurPushInFlight || Promise.resolve()).then(send);
+  cloudCurPushQueued = p;
+  const tail = p.then(()=>{ if(cloudCurPushInFlight === tail) cloudCurPushInFlight = null; });
+  cloudCurPushInFlight = tail;
+  return p;
 }
 function cloudPushCardLevels(){
   if(!sbClient || !isSignedIn()) return;
@@ -21193,10 +21205,58 @@ async function handInFight(m){
   if(!m || !m.fightSession || m.fightHandedIn) return;
   m.fightHandedIn = true;
   try{
-    const result = {v:1, winner: m.winner, round: m.round, hp: {1: m.players[1].hq.hp, 2: m.players[2].hq.hp}, rank: m.conquestRankEarned || null, cardsHash: currentCardDataHash(), seed: currentMatchSeed};
+    const result = {v:1, winner: m.winner, round: m.round, hp: {1: m.players[1].hq.hp, 2: m.players[2].hq.hp}, rank: m.conquestRankEarned || null, firstClear: !!m.fightFirstClear, cardsHash: currentCardDataHash(), seed: currentMatchSeed};
     const { data, error } = await sbClient.rpc('submit_fight', {p_session: m.fightSession, p_transcript: {v:1, actions: m.transcript || []}, p_result: result});
     m.fightHandIn = error ? 'error' : data;
   }catch(e){ m.fightHandIn = 'error'; }
+  if(m.fightReward && !m.fightReward.settled){
+    if(m.fightHandIn === 'accepted') await settleFightReward(m); else fightRewardPayLocal(m);
+  }
+}
+// ---- Server-paid fight rewards (2026-10-17, security; 20261017_server_fight_rewards.sql) ----
+// A Conquest win with a fight session collects its currency reward (Maple Leaves, Gold Leaves, Dust, Metal) in m.fightReward
+// instead of adding it at once. After the hand-in, claim_fight_reward is asked: when the server has DECIDED (a reward rule
+// exists and the fight is trusted), the browser adds exactly what the server paid, since the server already added it to the
+// saved balance; otherwise (function not there yet, no rule, not signed in, an error, or no answer within 10 s) the browser
+// adds its own reward as it always did. Never both: m.fightReward.settled guards it.
+let fightRewardServerMissing = false;
+function fightRewardBegin(m, isFirstClear){
+  m.fightFirstClear = !!isFirstClear;
+  if(!m.fightSession || !sbClient || !isSignedIn() || fightRewardServerMissing){ m.fightReward = null; return; }
+  m.fightReward = {local:{}, settled:false};
+  setTimeout(()=>{ try{ fightRewardPayLocal(m); }catch(e){} }, 10000); // safety net: never leave a win unpaid
+}
+function fightGrant(m, kind, amount){
+  if(!(amount > 0)) return;
+  if(m && m.fightReward && !m.fightReward.settled){ m.fightReward.local[kind] = (m.fightReward.local[kind]||0) + amount; return; }
+  grantCurrency(kind, amount);
+}
+function fightRewardPayLocal(m){
+  const fr = m && m.fightReward; if(!fr || fr.settled) return;
+  fr.settled = true; fr.by = 'browser';
+  Object.entries(fr.local).forEach(([k, v])=> grantCurrency(k, v));
+}
+async function settleFightReward(m){
+  const fr = m.fightReward; if(!fr || fr.settled) return;
+  let res = null;
+  try{
+    const { data, error } = await sbClient.rpc('claim_fight_reward', {p_session: m.fightSession});
+    if(error){ if(rpcMissing(error)) fightRewardServerMissing = true; }
+    else res = data;
+  }catch(e){}
+  if(fr.settled) return; // the 10 s safety net already paid it
+  if(!res || !res.decided){ fightRewardPayLocal(m); return; }
+  fr.settled = true; fr.by = 'server'; fr.server = res;
+  const paid = {gold: res.paid ? Number(res.gold)||0 : 0, gems: res.paid ? Number(res.gems)||0 : 0, dust: res.paid ? Number(res.dust)||0 : 0, metal: res.paid ? Number(res.metal)||0 : 0};
+  Object.entries(paid).forEach(([k, v])=>{ if(v > 0) grantCurrency(k, v); });
+  // The results screen showed the browser's numbers; if the server paid something else, say so and keep the record straight.
+  const loc = fr.local, differs = ['gold','gems','dust','metal'].some(k=> (loc[k]||0) !== paid[k]);
+  if(differs){
+    if(m.conquestRewardEarned){ m.conquestRewardEarned.gold = paid.gold; m.conquestRewardEarned.dust = paid.dust; }
+    m.conquestGemsEarned = paid.gems || 0; m.conquestMetalEarned = paid.metal || 0;
+    const parts = ['gold','gems','dust','metal'].filter(k=> paid[k] > 0).map(k=> `${(CURRENCY_META[k]||{}).glyph||''} ${paid[k]}`);
+    try{ showToast(parts.length ? `Reward paid: ${parts.join(' · ')}` : 'No currency reward for this win.', 'ok'); }catch(e){}
+  }
 }
 // ---- Dungeons (2026-10-10, user: "Big change to Dungeon") ----
 // A Dungeon fight is several castles in a row. Round 1 is a normal fight. When a castle falls (or a round runs past its
@@ -30424,7 +30484,10 @@ async function resolveRoundCore(opts){
       const dunMap = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId), dunNode = isDailyDungeonMap(dunMap) ? dunMap.nodes.find(n=> n.key === m.conquestNode.nodeId) : null;
       // a daily dungeon floor (2026-10-16): first clear = higher than the best floor ever cleared, since lost climbs wipe the floors
       const isFirstClear = dunNode ? (dunNode.floor || 0) > dungeonBestFloor(dunMap.id) : !preProgress.completed.includes(preId);
-      if(dunNode && !m.dungeonOutcome){ try{ const gl = dungeonGoldLeavesFor(dunMap.id, dunNode.floor, isFirstClear); if(gl > 0){ grantCurrency('gems', gl); saveCurrencies(); m.conquestGemsEarned = gl; } }catch(e){} } // 🍂 Gold Leaves (2026-10-16)
+      // Server-paid rewards (2026-10-17, security): with a fight session, this win's Leaves / Gold Leaves / Dust / Metal wait for
+      // claim_fight_reward (settleFightReward, after the hand-in); everything else (cards, packs, eggs...) is given here as before.
+      fightRewardBegin(m, isFirstClear);
+      if(dunNode && !m.dungeonOutcome){ try{ const gl = dungeonGoldLeavesFor(dunMap.id, dunNode.floor, isFirstClear); if(gl > 0){ fightGrant(m, 'gems', gl); m.conquestGemsEarned = gl; } }catch(e){} } // 🍂 Gold Leaves (2026-10-16)
       if(dunNode && !m.dungeonOutcome){ try{ dungeonFloorWon(dunMap.id, dunNode.floor, !!m.dungeonKeyStaked); m.dungeonOutcome = {won:true, keyBack: !!m.dungeonKeyStaked, floor: dunNode.floor}; refreshTopbarDungeonKey(currentTab); }catch(e){} }
       // 2026-10-15: start the card-reward ledger before this clear is recorded; on a brand-new save its first read seeds itself
       // from the cleared fights, which counted this fight's cards as already given (0-1's card was lost that way).
@@ -30441,8 +30504,8 @@ async function resolveRoundCore(opts){
         const base = isFirstClear ? rewardTier.first : rewardTier.repeat;
         const bm = isFirstClear ? 0 : ((RANK_MULT[rank] || 1) - 1), bonus = {gold: Math.round((base.gold||0)*bm), dust: Math.round((base.dust||0)*bm)}; // first clears are never changed by rank
         const payout = {gold: (base.gold||0) + bonus.gold, dust: (base.dust||0) + bonus.dust};
-        if(payout.gold>0) grantCurrency('gold', payout.gold);
-        if(payout.dust>0) grantCurrency('dust', payout.dust);
+        if(payout.gold>0) fightGrant(m, 'gold', payout.gold);
+        if(payout.dust>0) fightGrant(m, 'dust', payout.dust);
         m.conquestRewardEarned = {gold:payout.gold, dust:payout.dust, isFirstClear, rankBonus: (bonus.gold || bonus.dust) ? Object.assign({rank}, bonus) : null}; // read once by the post-match screen below
         // 2026-10-03 ("First time rewards are displayed below the rewards, greyed out. To teach what
         // you have earned from this in the past"): on a repeat clear, remember the one-off bonus.
@@ -30541,7 +30604,7 @@ async function resolveRoundCore(opts){
       // resource — see CURRENCY_META's own comment for the full reasoning.
       if(['boss','raidboss','finalboss'].includes(baseKind(m.conquestNode.kind))){
         const metalAmt = m.conquestNode.kind==='finalboss' ? 3 : 1;
-        grantCurrency('metal', metalAmt);
+        fightGrant(m, 'metal', metalAmt);
         m.conquestMetalEarned = metalAmt;
       }
     } else if(m.mode==='raidOnline' && m.raidBoss){
@@ -40907,10 +40970,35 @@ async function marketLoad(){
   }catch(err){ Market.listings = []; Market.error = socialErrText(err); }
   Market.loading = false;
 }
+// The seller's share after the fee, in whole Leaves: floor(price × 95 / 100), at least 1. Integer maths, so it is exactly the
+// number claim_market_proceeds credits on the server (20261017_market_server_settlement.sql).
+function marketNet(price){ return Math.max(1, Math.floor((Math.floor(Number(price)||0) * Math.round((1-MARKET_FEE)*100)) / 100)); }
+// 2026-10-17 (security): the market settles on the server (buy_listing_v2 takes the price, claim_market_proceeds credits the
+// seller). Until that migration is applied the v2 functions don't exist, so each call falls back to the old one.
+const marketV2Missing = {};
+function rpcMissing(err){ const code = String((err && err.code) || ''), msg = String((err && (err.message || err.details)) || ''); return code === 'PGRST202' || code === '42883' || /could not find the function/i.test(msg); }
+async function rpcV2(name, args){
+  if(!marketV2Missing[name]){
+    const r = await sbClient.rpc(name + '_v2', args);
+    if(!r.error || !rpcMissing(r.error)) return r;
+    marketV2Missing[name] = true;
+  }
+  return sbClient.rpc(name, args);
+}
+function marketErrText(err){
+  const raw = String((err && (err.message || err.details)) || '');
+  if(/you do not own this card/i.test(raw)) return 'The market can’t see this card in your saved collection yet. Wait a moment for it to sync, then try again.';
+  if(/not enough leaves/i.test(raw)) return 'The market says you don’t have enough Leaves saved. Wait a moment for your balance to sync, then try again.';
+  if(/price out of range/i.test(raw)) return 'Pick a price from 1 to 100,000.';
+  if(/sign in required|not authenticated/i.test(raw)) return 'Sign in to use the Flea Market.';
+  return socialErrText(err);
+}
 async function marketClaimProceeds(){
   try{
+    // After the migration the server credits the seller inside this same call; the browser adds the same amount, so the two
+    // balances stay equal (and the next save sends no gain at all).
     const { data, error } = await sbClient.rpc('claim_market_proceeds'); if(error) throw error;
-    (data||[]).forEach(l=>{ const net = Math.max(1, Math.floor(l.price*(1-MARKET_FEE))); grantCurrency(l.currency, net); const d = Registry.card(l.card_id); showToast(TX('toast.sold-for', {v1: d?d.name:'a card', net, v3: (CURRENCY_META[l.currency]||{}).label||l.currency}), 'ok'); });
+    (data||[]).forEach(l=>{ const net = marketNet(l.price); grantCurrency(l.currency, net); const d = Registry.card(l.card_id); showToast(TX('toast.sold-for', {v1: d?d.name:'a card', net, v3: (CURRENCY_META[l.currency]||{}).label||l.currency}), 'ok'); });
   }catch(e){}
 }
 function marketBrowseHTML(){
@@ -40946,7 +41034,7 @@ function marketSellHTML(){
       <label>Price <input type="number" id="mkSellPrice" min="1" max="100000" value="${Market.sellPrice}"></label>
       <label>Currency <select id="mkSellCur">${marketCurrencies().map(c=>`<option value="${c.id}" ${c.id===Market.sellCurrency?'selected':''}>${escapeHtml(c.label)}</option>`).join('')}</select></label>
     </div>
-    <p class="tk-hint" id="mkNet">You’ll receive ${Math.max(1, Math.floor(Market.sellPrice*(1-MARKET_FEE)))} after the ${Math.round(MARKET_FEE*100)}% market fee. The card leaves your collection while it’s listed; cancel any time to get it back.</p>
+    <p class="tk-hint" id="mkNet">You’ll receive ${marketNet(Market.sellPrice)} after the ${Math.round(MARKET_FEE*100)}% market fee. The card leaves your collection while it’s listed; cancel any time to get it back.</p>
     <button type="submit" class="btn primary">List for sale</button>
   </form>`;
 }
@@ -40992,13 +41080,17 @@ function renderMarketInto(body){
       if(!confirm(TX('dialog.buy-for', {v1: d?d.name:'this card', price: l.price, v3: (CURRENCY_META[l.currency]||{}).label||''}))) return;
       t.disabled = true;
       try{
-        const { error } = await sbClient.rpc('buy_listing', {p_id: l.id}); if(error) throw error;
+        // buy_listing_v2 takes the price on the server; the browser takes the same price here, so both balances agree.
+        // "Not enough Leaves" from the server usually means this browser's last save hasn't landed yet: save, then try once more.
+        let { error } = await rpcV2('buy_listing', {p_id: l.id});
+        if(error && /not enough leaves/i.test(String(error.message||''))){ await cloudPushCurrencies(); ({ error } = await rpcV2('buy_listing', {p_id: l.id})); }
+        if(error) throw error;
         myCurrencies[l.currency] = (myCurrencies[l.currency]||0) - l.price; saveCurrencies();
         unlockCardForPlayer(l.card_id, 'market');
         if(l.foil){ const c = myCardCopies[l.card_id]; if(c && c.length){ c[c.length-1].foil = true; saveCardCopies(); } }
         showToast(TX('toast.bought-it-s-in-your-nest', {v1: d?d.name:'a card'}), 'ok');
         await marketLoad(); renderMarketInto(body); { const row = document.getElementById('shopCurrencyRow'); if(row) row.innerHTML = shopCurrencyRowInnerHTML(); }
-      }catch(err){ t.disabled = false; showToast(socialErrText(err), 'error'); await marketLoad(); renderMarketInto(body); }
+      }catch(err){ t.disabled = false; showToast(marketErrText(err), 'error'); await marketLoad(); renderMarketInto(body); }
       return;
     }
     if(t.dataset.mkCancel){
@@ -41016,7 +41108,7 @@ function renderMarketInto(body){
   const r = document.getElementById('mkRarity'); if(r) r.onchange = ()=>{ Market.rarity = r.value; uiStickySave('market', {rarity: Market.rarity}); document.getElementById('mkBody').innerHTML = marketBrowseHTML(); };
   const so = document.getElementById('mkSort'); if(so) so.onchange = async ()=>{ Market.sort = so.value; uiStickySave('market', {sort: Market.sort}); await marketLoad(); renderMarketInto(body); };
   const card = document.getElementById('mkSellCard'); if(card) card.onchange = ()=>{ Market.sellId = card.value; renderMarketInto(body); };
-  const price = document.getElementById('mkSellPrice'); if(price) price.oninput = ()=>{ Market.sellPrice = Math.max(1, Math.floor(Number(price.value)||1)); const n = document.getElementById('mkNet'); if(n) n.firstChild && (n.textContent = `You’ll receive ${Math.max(1, Math.floor(Market.sellPrice*(1-MARKET_FEE)))} after the ${Math.round(MARKET_FEE*100)}% market fee. The card leaves your collection while it’s listed; cancel any time to get it back.`); };
+  const price = document.getElementById('mkSellPrice'); if(price) price.oninput = ()=>{ Market.sellPrice = Math.max(1, Math.floor(Number(price.value)||1)); const n = document.getElementById('mkNet'); if(n) n.firstChild && (n.textContent = `You’ll receive ${marketNet(Market.sellPrice)} after the ${Math.round(MARKET_FEE*100)}% market fee. The card leaves your collection while it’s listed; cancel any time to get it back.`); };
   const cur = document.getElementById('mkSellCur'); if(cur) cur.onchange = ()=>{ Market.sellCurrency = cur.value; };
   const form = document.getElementById('mkSellForm');
   if(form) form.onsubmit = async e=>{
@@ -41026,11 +41118,17 @@ function renderMarketInto(body){
     // Sell a non-foil copy when there is one; foils only when that's all you have.
     let idx = copies.findIndex(c=>!c.foil); if(idx<0) idx = 0;
     try{
-      const { error } = await sbClient.rpc('create_listing', {p_card: id, p_foil: !!copies[idx].foil, p_price: Market.sellPrice, p_currency: Market.sellCurrency}); if(error) throw error;
+      // create_listing_v2 checks the card is in the saved collection (player_card_unlocks). If this browser's unlocks haven't
+      // been saved yet, save them and try once more. Listing still takes the copy out of the collection here (cancel gives
+      // it back), as before; the server only checks ownership.
+      const args = {p_card: id, p_foil: !!copies[idx].foil, p_price: Market.sellPrice, p_currency: Market.sellCurrency};
+      let { error } = await rpcV2('create_listing', args);
+      if(error && /you do not own this card/i.test(String(error.message||''))){ await cloudPushCardLevels(); ({ error } = await rpcV2('create_listing', args)); }
+      if(error) throw error;
       copies.splice(idx, 1); saveCardCopies();
       showToast(TX('toast.listed-for', {v1: Registry.card(id).name, sellPrice: Market.sellPrice}), 'ok');
       Market.tab = 'mine'; await marketLoad(); renderMarketInto(body);
-    }catch(err){ btn.disabled = false; showToast(socialErrText(err), 'error'); }
+    }catch(err){ btn.disabled = false; showToast(marketErrText(err), 'error'); }
   };
 }
 
