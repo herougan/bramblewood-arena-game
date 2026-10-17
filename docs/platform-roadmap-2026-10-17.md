@@ -434,6 +434,27 @@ Music
 - **Google sign-in stays off in Electron.** Supabase OAuth returns to `location.href`, and Google only returns to registered https:// URLs. An `app://bramblewood/` page can't receive the redirect, and `main.js` keeps the window on `app://` anyway (`will-navigate`). The game already hides the button because `isHostedOnline()` is false off http(s). Email + password sign-in works online. The fix is unchanged (code-table row 4): system browser + PKCE + a `bramblewood://auth` deep link, or Steam ticket sign-in (D5).
 - Checked here: `node --check` on all the JS, `stage.js` (1,440 files, 61.6 MB), and `main.js` with a stubbed Electron: the script fonts are served with the right types, `.py`, `manifest.json` and `../` are refused, the Steam IPC answers our page and refuses others, and every call is a safe no-op with Steam off. Electron itself wasn't run (no display), and the icon hasn't been seen in a real taskbar or Dock yet.
 
+### Steam achievements (package C, later on 10-18)
+`STEAM_ACHIEVEMENTS` in `arena_app.js` (just after `loadLifetimeStats`) is the list. Create these in the Steamworks partner site with the **same API names**; the names and descriptions are suggestions. `steamUnlock(id)` calls `window.bwDesktop.steam.unlock(id)` only on the desktop build, never twice for an id Steam took (saved in `bramblewood_steam_ach_v1`), and swallows every error. `steamCheckProgress()` re-checks the milestones a save shows after a won node, after a win, and 5 s after start-up, so progress made on the website or before Steam was on unlocks on the next desktop start. `tests/steam-ach-2026-10-18.js` checks that every id passes `steam.js`'s `[A-Za-z0-9_]{1,64}`, is unlocked somewhere and is in this table.
+
+| API name | Name | Description | Unlocked by |
+|---|---|---|---|
+| `FIRST_WIN` | First Victory | Win a battle. | `bumpQuestCounter('wins')` (lifetime wins ≥ 1) |
+| `FIRST_MAP_CLEARED` | Trailblazer | Clear a map. | `completeConquestNode` (any map cleared) |
+| `MAP_5_CLEARED` | Into the Swamp | Clear Map 5. | `completeConquestNode` (`conquestMapCleared(mapIdAt(5))`) |
+| `MAP_10_CLEARED` | Deep in the Wilds | Clear Map 10. | `completeConquestNode` |
+| `MAP_20_CLEARED` | The Long Road | Clear Map 20. | `completeConquestNode` |
+| `FIRST_LEGENDARY` | Legend in the Pack | Pull a Legendary card (or rarer) from a pack. | `openPackAnimation` (any pull at Legendary tier or above) |
+| `SCALE_TRAIL_COMPLETE` | The Scale Trail | Find all eight Dragon Scales. | `claimScaleTrailFinale`, and `scaleTrailComplete()` at start-up |
+| `RED_DRAGON_HATCHED` | Hatchling of Fire | Hatch the Red Dragon Egg in battle. | a round's `hatch` event from `egg-red-dragon` on your side (modes that count for quests) |
+| `FIRST_RAID_HIT` | First Strike | Deal damage to a raid boss. | `bumpQuestCounter('raidDamage')` |
+| `SPIRE_FLOOR_10` | Spire Climber | Clear floor 10 of the Babel Spire. | `completeConquestNode` (Spire floors cleared ≥ 10) |
+| `SPIRE_FLOOR_25` | Above the Clouds | Clear floor 25 of the Babel Spire. | `completeConquestNode` |
+| `SPIRE_FLOOR_50` | Top of the Spire | Clear floor 50 of the Babel Spire. | `completeConquestNode` |
+| `WINS_100` | Seasoned | Win 100 battles. | `bumpQuestCounter('wins')` (lifetime wins ≥ 100) |
+
+Wins count wherever quests count them (quick battles, Conquest, sweeps, Gauntlet, PvP, the Autobattler...), not hot-seat, Sandbox or the tutorial. Admin tools that mark progress (jump to a node, clear a map) also unlock the matching achievements on a desktop build with Steam on; `bwDesktop.steam.clear(id)` resets one in an unpackaged run.
+
 ### Still needed for a real release
 | | Item | Notes |
 |---|---|---|
@@ -441,7 +462,7 @@ Music
 | ❓💰 | **Mac signing + notarisation** | Apple Developer Program 99 USD/year. A Developer ID Application certificate, the hardened runtime, and the entitlements Electron needs (`com.apple.security.cs.allow-jit`, `allow-unsigned-executable-memory`). Then `notarytool` via electron-builder's `mac.notarize` (an app-specific password or an API key in CI env vars, never in the repo). `steamworks.js`'s native `.node` and `libsteam_api.dylib` must be signed too. Without it, Gatekeeper blocks the download outside Steam (Steam itself doesn't require notarisation, but macOS still quarantines unsigned apps) |
 | ❓💰 | **Windows signing** | Not required by Steam. Only for downloads outside Steam (SmartScreen). See the cost table in §4 |
 | | **Installers** | `package.json` builds `dir` targets only. For Steam that's enough (SteamPipe uploads the folder). Outside Steam: `nsis` (Windows), `dmg` (Mac), `AppImage` (Linux) |
-| | **Wire the hooks** | Call `window.bwDesktop?.steam.unlock(id)` where in-game achievements unlock (arena_app.js; not in this package). Optionally add an "Open Steam overlay" button in Settings |
+| ✅ | **Wire the hooks** | Done later on 10-18 (package C): the achievement list below, unlocked from arena_app.js. Still optional: an "Open Steam overlay" button in Settings |
 | | **Rest of D3** | Preload: quit, a save-file bridge for Steam Auto-Cloud (a JSON in `app.getPath('userData')`, not Chromium's LevelDB) |
 | | **D5 Steam sign-in, D6 Steam purchases** | Unchanged from the step plan |
 | | **Website deploy** | `electron/` (2.3 MB of fonts, about 1 MB of icons) is in the repo, so Vercel uploads it, but the page never loads it. It's covered by the "stop serving docs/, tools/… at launch" question in "What needs you" (add `electron/` to that list) |

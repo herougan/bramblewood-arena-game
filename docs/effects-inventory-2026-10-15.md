@@ -12,7 +12,7 @@ Every visual-effect moment in Bramblewood Arena, built and planned, in one check
 
 Every row now has a `status`, filled by `tools/effects-lab/refresh_inventory.py` from the lab manifests (`tools/effects-lab/manifest/*.js`; the batch docs `docs/fx-batch-*-status.md` as a second source): **live** the game plays it · **lab-only** built in the Effects Lab, not wired in the game · **future** planned, not built · **missing** nothing on screen and nothing in the lab · **retired** kept from before. Each row also carries `lab` (the manifest that registers it) and `inGameHook`. Rerun the script after a lab change; it rewrites this section, the counts and the entry tables.
 
-**Now:** 1035 entries · live 948 · lab-only 56 · future 22 · missing 0 · retired 9. Of the 142 rows the 10-15 sweep rated "missing", 140 are built now (140 live, 0 lab-only).
+**Now:** 1035 entries · live 946 · lab-only 56 · future 22 · missing 0 · retired 11. Of the 142 rows the 10-15 sweep rated "missing", 140 are built now (140 live, 0 lab-only).
 
 ## 2026-10-17: the Effects Lab catches up (batch L17)
 
@@ -147,11 +147,11 @@ Quality is the inventory's rating of the look (the 10-15 sweep, kept); status is
 | meta-progression | D | 17 | 20 | 17 | 0 | 45 | 9 | 0 | 0 | 0 | 54 | 4 |
 | conquest-map | E | 74 | 52 | 25 | 0 | 147 | 4 | 0 | 0 | 0 | 151 | 4 |
 | world-ambience | E | 13 | 4 | 5 | 0 | 15 | 7 | 0 | 0 | 0 | 22 | 0 |
-| ui-feedback | F | 36 | 8 | 4 | 0 | 47 | 1 | 0 | 0 | 0 | 48 | 4 |
+| ui-feedback | F | 36 | 8 | 4 | 0 | 45 | 1 | 0 | 0 | 2 | 48 | 4 |
 | tutorial-dialogue | F | 12 | 4 | 1 | 0 | 16 | 0 | 0 | 0 | 1 | 17 | 1 |
 | raid-dungeon-pvp | F | 6 | 12 | 11 | 0 | 21 | 8 | 0 | 0 | 0 | 29 | 1 |
 | map-grandeur | L17 | 3 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
-| **all** | | **517** | **287** | **230** | **1** | **948** | **56** | **22** | **0** | **9** | **1035** | **55** |
+| **all** | | **517** | **287** | **230** | **1** | **946** | **56** | **22** | **0** | **11** | **1035** | **55** |
 
 Areas `future` items live in their natural area with `future: true` (so a planned dragon death sits under **death**); "Future effects by theme" below gathers them.
 
@@ -1240,12 +1240,12 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `ui-deck-remove` | Card removed from a deck | deck editor remove | none | missing — nothing on screen | live (f.js) | 2 |
 | `ui-deck-full` | Deck full / copy limit reached | editionCapReached / 20-card limit | toast | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
 | `ui-deck-swap` | Deck swap prompt (new card to swap in) | pendingDeckSwap → ds2 overlay | .ds2-overlay ds2In + "Nice!" ds2Nice + ssBump | good — has its own look that plays at the right moment | live (f.js) | 2 |
-| `ui-deck-hero-banner` | Deck hero banner / showcase | deck tab | deck showcase tile | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `ui-deck-hero-banner` | Deck hero banner / showcase | deck tab | retired 2026-10-18: the deck banner no longer plays it (refreshDeckHeroBanner only redraws the banner); the look stays in the Effects Lab | basic — a generic or reused look that does not say what happened | retired | 3 |
 | `ui-codex-new` | Codex: newly seen card | codex grid | new marker | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
 | `ui-skill-reveal` | Skill "?" lifts (first time a skill is shown) | skillRevealState / noteMapEnteredForReveal | text swap | missing — a skill name reveal has no moment | live (f.js) | 2 |
 | `ui-rank-hex` | Rank hex S/SS/SSS | rank badges | rankFoil + sssPulse | good — has its own look that plays at the right moment | live (f.js) | 3 |
 | `ui-avatar-unlock` | Avatar / title unlocked | diffUnlocks after a match | listed on results | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
-| `ui-cloud-sync` | Cloud sync pill | setCloudPill | text pill | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `ui-cloud-sync` | Cloud sync pill | setCloudPill | retired 2026-10-18: the cloud sync pill (#cloudSyncPill) is gone and the account chip shows the account state; the look stays in the Effects Lab | basic — a generic or reused look that does not say what happened | retired | 3 |
 | `ui-banners` | Sign-in / invite / version banners | showSignInBanner / showInviteBanner / versionBanner | plain banners | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
 | `ui-fx-level` | Effects level + reduced motion | fxLevel / reducedMotion | data-fx attribute gates; reduced motion skips motion | good — every new effect must respect both | live (f.js) | 2 |
 | `ui-emoji-set` | Emoji / icon set swap (Twemoji, OpenMoji, Noto, Fluent) via icon(key) 🔮 | planned | system emoji + iconHTML | missing — planned | lab-only (f.js) | 3 |
