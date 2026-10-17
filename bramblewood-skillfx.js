@@ -180,7 +180,9 @@ function frostBolt(shooter, target, o){
 // A forked bolt that jumps from card to card.
 function lightning(shooter, targets, o){
   o = o || {}; const chain = [shooter].concat((targets||[]).filter(Boolean)); if(chain.length < 2) return;
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('class', 'sfx sfx-bolt'); svg.setAttribute('aria-hidden', 'true');
+  // o.cls (2026-10-17): a colour class on the bolt (sfx-bolt-electric for Electricity, a touch more cyan; sfx-bolt-red for Dragon
+  // Lightning), so a caller no longer has to find the newest svg.sfx-bolt and tag it after the fact. Plain = chain lightning.
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('class', 'sfx sfx-bolt' + (o.cls ? ' ' + o.cls : '')); svg.setAttribute('aria-hidden', 'true');
   svg.setAttribute('width', innerWidth); svg.setAttribute('height', innerHeight); document.body.appendChild(svg);
   const jag = (a, b)=>{ let d = `M${a.x},${a.y}`; const n = 7; for(let i = 1; i < n; i++){ const t = i/n; const nx = -(b.y - a.y), ny = b.x - a.x, L = Math.hypot(nx, ny)||1;
     const off = (Math.random()*2 - 1) * 16; d += ` L${a.x + (b.x - a.x)*t + nx/L*off},${a.y + (b.y - a.y)*t + ny/L*off}`; } return d + ` L${b.x},${b.y}`; };

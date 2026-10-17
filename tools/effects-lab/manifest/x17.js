@@ -258,4 +258,30 @@ R({id:'map-trails-one-by-one', stage:'map', inGameHook:'FX.E playReturn (bramble
 R({id:'map-hidden-skirmish-pop', stage:'map', inGameHook:'renderConquestSubTab (arena_app.js): hiddenPopNow → .map-node.is-secret.secret-pop, and its trail line .trail-pop',
   variants:[{key:'B', label:'2026-10-17: it pops in with its trail from the fight beside it fading in', play:ctx=>{ const n = ctx.map.nodes.available; if(!n) return ctx.wait(300); const l = ctx.map.trailLines[1];
     if(l) l.classList.add('trail-pop'); n.classList.add('is-secret', 'secret-pop'); ctx.sound('unlockChime'); return ctx.wait(2400); }}]});
+
+// ============================== lightning (2026-10-17) ==============================
+// User (23:25): "Voltaic Eel should have chain lighting as well. Anyway, all its lighting attacks should not throw a generic ball at the
+// enemy. When the lightning arcs, the enemies take the lightning damage straight away. Elemental damage has the respective elemental
+// emoji attached. For the skill "Electricity", I think maybe the effect can look a little more cyan (10%) than chain lighting to
+// differentiate them." In the game every lightning hit draws its own bolt (lightningBoltOf / drawLightningBolt in arena_app.js); the
+// number pops as the bolt reaches its unit (SkillFX.lightning lands jump i at i*152 + 60 ms). Nothing is ever thrown.
+const zapNum = (ctx, t, n, ico, c)=>{ if(!ctx.alive() || !t) return; try{ floatText(t, (ico || '⚡') + ' -' + n, c || 'shock'); }catch(e){} G.fire(()=> hitExplosionVfx(U(t), c === 'magic' ? 'magic' : 'shock')); };
+R({id:'sk-chain-lightning', stage:'board', inGameHook:'chainLightning event (notes the strike) → each jump\'s hit {chainLightning, jump, viaUid} draws its jump (lightningBoltOf → SkillFX.lightning, plain) and "⚡ -N" pops as it lands',
+  note:'Chain Lightning N (Voltaic Eel: 2): its hits jump from the target to an enemy beside it, then on to one more, never the same unit twice; N lightning damage each (+1 per Wet counter).',
+  variants:[{key:'A', label:'2026-10-17: the plain bolt runs eel → target → its neighbour → the next; each number pops as its jump lands', play:ctx=>{ ctx.sound('shockTone'); const a = mine(ctx)[1], f = foe(ctx);
+    if(S().lightning) S().lightning(a, [f[1], f[2]], {onEachImpact:(t, i)=>{ if(i) zapNum(ctx, t, 2); }});
+    later(ctx, 2*152, ()=>{ if(S().lightning) S().lightning(f[2], [f[0]], {onEachImpact:t=> zapNum(ctx, t, 2)}); }); return ctx.wait(1500); }}]});
+R({id:'sk-electricity', stage:'board', inGameHook:'electricity event → its arc hit {electricity, viaUid} draws the bolt (lightningBoltOf, cls sfx-bolt-electric) → "⚡ -N" as it lands',
+  variants:[{key:'D', label:'2026-10-17: 10% more cyan than chain lightning (sfx-bolt-electric); no 💧 floats, Wet adds to the number', play:ctx=>{ ctx.sound('shockTone'); const a = mine(ctx)[1];
+    if(S().lightning) S().lightning(a, [foe(ctx)[1], foe(ctx)[2]], {cls:'sfx-bolt-electric', onEachImpact:(t, i)=>{ if(i) zapNum(ctx, t, 2); }}); return ctx.wait(1300); }}]});
+R({id:'sk-dragon-lightning', stage:'board', inGameHook:'dragonLightning event (notes the strike) → each strike\'s hit {dragonLightning, jump, viaUid} draws its red jump; "🪄 -N" (magic) as it lands; no ✦ missile',
+  variants:[{key:'B', label:'2026-10-17: the red bolt is the hit: attacker → target, then target → the unit beside it', play:ctx=>{ ctx.sound('shockTone'); const a = mine(ctx)[1], f = foe(ctx);
+    if(S().lightning) S().lightning(a, [f[1]], {cls:'sfx-bolt-red', onEachImpact:t=>{ zapNum(ctx, t, 3, '🪄', 'magic'); cls(t, 'dragon-struck', 700); }});
+    later(ctx, 100, ()=>{ if(S().lightning) S().lightning(f[1], [f[2]], {cls:'sfx-bolt-red', onEachImpact:t=>{ zapNum(ctx, t, 3, '🪄', 'magic'); cls(t, 'dragon-struck', 700); }}); }); return ctx.wait(1400); }}]});
+R({id:'sk-lightning-passive', stage:'board', inGameHook:'statusFx lightning {targetUid} → the hit {skyBolt, dmgType shock} → FX.A.stormBolt on the struck unit, "⚡ -N" at once',
+  variants:[{key:'B', label:'2026-10-17: the bolt comes down on the unit it strikes (it struck the caster), lightning damage', play:ctx=>{ ctx.sound('shockTone'); const t = foe(ctx)[1];
+    if(FXA().stormBolt) FXA().stormBolt(t, {}); later(ctx, 70, ()=> zapNum(ctx, t, 2)); return ctx.wait(1100); }}]});
+R({id:'sk-shock-bolt', stage:'board', inGameHook:'bolt {element:shock} → no glob; its hit draws a straight bolt shooter → target (lightningBoltOf) and "⚡ -N" as it lands',
+  variants:[{key:'A', label:'2026-10-17: a bolt of lightning, not a spit', play:ctx=>{ ctx.sound('shockTone'); const a = mine(ctx)[1], t = foe(ctx)[1];
+    if(S().lightning) S().lightning(a, [t], {onEachImpact:()=> zapNum(ctx, t, 2)}); return ctx.wait(1100); }}]});
 })();

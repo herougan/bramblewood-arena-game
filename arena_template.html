@@ -10328,6 +10328,12 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .bw-sweep-tsunami .bw-sweep-band{background:linear-gradient(90deg, transparent, rgba(40,120,200,.35) 30%, rgba(80,170,240,.7) 46%, rgba(230,248,255,.9) 50%, rgba(60,140,220,.45) 58%, transparent 80%);}
   .sfx-bolt.sfx-bolt-red path{stroke:#ffe0d8;}
   .sfx-bolt.sfx-bolt-red path.glow{stroke:rgba(235,40,30,.85); stroke-width:11;}
+  /* 2026-10-17 (user: "For the skill Electricity, I think maybe the effect can look a little more cyan (10%) than chain lighting to
+     differentiate them"): Electricity's bolt = the plain (chain lightning) bolt mixed 10% toward cyan #00ffff: core #f2f6ff -> #daf7ff,
+     glow rgb(150,180,255) -> rgb(135,188,255). */
+  .sfx-bolt.sfx-bolt-electric path{stroke:#daf7ff;}
+  .sfx-bolt.sfx-bolt-electric path.glow{stroke:rgba(135,188,255,.65);}
+  .dmg-float.psychic{--g1:#fbeaff; --g2:#b04fd0; --edge:#24082e;} /* psychic's 💭 number (2026-10-17, DMG_ICON) */
   .board-card.dragon-struck .card-tile{box-shadow:0 0 0 2px rgba(255,70,50,.9), 0 0 22px rgba(230,30,20,.75);}
   .wither-smoke{position:fixed; width:18px; height:18px; margin:-9px 0 0 -9px; border-radius:50%; background:radial-gradient(circle, rgba(20,16,22,.85), rgba(20,16,22,0) 70%); pointer-events:none; z-index:9986;}
   .wither-smoke.skull{background:none; width:auto; height:auto; font-size:18px; filter:drop-shadow(0 0 4px rgba(0,0,0,.9)) grayscale(1);}

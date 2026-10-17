@@ -326,6 +326,7 @@ Object.assign(SKILL_ICON, {penance:'⛧🏰', bloodTithe:'⛧🩸'});
 SKILL_ICON.amore = '💕'; // Amore (2026-10-16): 💕 waiting, ❤️ paired, 🤎 heartbroken (amoreChip) // Devilry payments (2026-10-16): the Dark Summon pentagram, into your castle / an ally
 Object.assign(SKILL_ICON, {iceArrow:'🧊🏹', twinShot:'🏹🏹', volley:'🎯🏹', fireBolt:'🔥', acidBolt:'🧪', poisonBolt:'🐍', iceBolt:'❄️', shockBolt:'⚡', chilli:'🌶️'});
 Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌', keenSense:'👃'});
+Object.assign(SKILL_ICON, {chainLightning:'🌩️'}); // 2026-10-17: Chain Lightning
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
 // because 💨 is Swift's, 🌫️ Shade's and 🫧 Poison's, with 💣💨 where only text fits.
 Object.assign(SKILL_ICON, {psychic:'💭', smokeBomb:'💣💨'});
@@ -734,7 +735,7 @@ const PASSIVE_DEFS = [
   {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`It can see in darkness.`}, // 2026-10-15 (user: "Darksight explanation is TOO complicated. Just explain what it does - it can see in darkness.")
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
-  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit (the castle if there are none) for ${v}, +1 for every 4 Prayer you have.`}, // 2026-10-16 skill audit: + the castle fallback
+  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit (the castle if there are none) for ${v} lightning damage, +1 for every 4 Prayer you have.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex
   {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): Divine Retribution → Retribution,
   // Satiety → Well Fed. Labels only; the keys stay retribution and satiety.
@@ -913,7 +914,7 @@ const PASSIVE_DEFS = [
   {key:'acidBolt', category:'evergreen', label:'Acid Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits acid at the enemy opposite (the nearest one if none is) for ${v||2} acid damage, and 1 Corrode.`},
   {key:'poisonBolt', category:'evergreen', label:'Poison Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits venom at the enemy opposite (the nearest one if none is): no damage, but ${v||2} Poison.`},
   {key:'iceBolt', category:'evergreen', label:'Ice Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a shard of ice at the enemy opposite (the nearest one if none is) for ${v||2} Cold damage. A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter).`},
-  {key:'shockBolt', category:'evergreen', label:'Shock Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a crackling spark at the enemy opposite (the nearest one if none is) for ${v||2} damage, and Shocks it for a round (it takes 50% more damage).`},
+  {key:'shockBolt', category:'evergreen', label:'Shock Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a crackling spark at the enemy opposite (the nearest one if none is) for ${v||2} lightning damage, and Shocks it for a round (it takes 50% more damage).`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-17: lightning damage (was physical); the Wet note in the Codex
   {key:'kingSlayer', category:'passive', label:'King Slayer', kind:'number', min:0, desc:v=>`Deals ${v} bonus damage on every landed hit against a target with the King type.`},
   // 2026-10-14 (fifth pass). Tornado, Avalanche, Tsunami (user: "All evergreen abilities"); Dragon Lightning and Wither, the
   // Dragonic Spire's signature skills (user: "Dragonic Spire - (imagine elden ring) - Skills, Dragon Lightning (monster hunter), and Wither (Minecraft)").
@@ -940,7 +941,11 @@ const PASSIVE_DEFS = [
   {key:'durian', category:'passive', label:'Durian', kind:'number', min:1, defaultValue:1, desc:v=>`Every round, after everyone else has swung: a 1 in 2 chance it eats a durian and gains Thorns +${numOr(v, 1)} for the rest of the fight. It stacks.`,
     get:e=> e.durian ? numOr(e.durian, 1) : undefined},
   {key:'shield', category:'passive', label:'Shield', kind:'number', min:1, defaultValue:1, desc:v=>`It arrives with ${v||1} Shield: temporary Health (the blue 💠) that soaks damage before its Health does. Unlike Armor it doesn't block, it just absorbs, and it never comes back once spent.`},
-  {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit beside the target for ${v||1} lightning damage. Wet units (Swimmers and Tide units, anyone in the rain or while the Tide is in) take +1 from it, and a wet target takes +1 too.`},
+  // 2026-10-17 (user: "Remove the wet unit description from electricity. Wet units just take +N damage by default, for every wet counter.
+  // Can see this in codex instead."): the wet sentence is gone from the card line; Wet is a general rule now (the Wet keyword, and the
+  // codexNote the Skills Codex adds). Chain Lightning (user: "Voltaic Eel should have chain lighting as well"): Electricity's longer cousin.
+  {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit beside the target for ${v||1} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
+  {key:'chainLightning', category:'passive', label:'Chain Lightning', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits loose chain lightning: the bolt jumps from the target to an enemy unit beside it, then on to one more, never the same unit twice. Each unit it jumps to takes ${numOr(v, 2)} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
   {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=>`It senses what it can't see: Darkness, Pitch Black and Blind don't make it miss a unit that isn't flying (or the castle), and nothing can Blind it. Its nose also finds grounded units through Thick Fog and Shadow.`},
   // 2026-10-14 (seventh pass). Psychic (user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."); Smoke Bomb
   // (user: "Throws a smoke bomb at an ally or enemy (random). If ally, then the ally has smoke-evade. If enemy, the enemy has blind.
@@ -1870,6 +1875,9 @@ const STATUS_KEYWORDS = [
   {k:'scar', re:/\b(scar(?:red|s)?)\b/gi, cs:true, name:'Scar', c:'#b5546a', text:'takes that much more damage from every hit.'},
   {k:'irradiation', re:/\b(irradiation)\b/gi, name:'Irradiation', c:'#7cb518', text:'each round every token takes 1 point (max Health, Attack or a skill’s number), then the tokens drop by 1.'},
   {k:'shield', re:/\b(shield)\b/gi, cs:true, name:'Shield', c:'#3d8fd1', text:'temporary Health that soaks damage first and doesn’t come back.'},
+  // 2026-10-17 (user: "Wet units just take +N damage by default, for every wet counter. Can see this in codex instead."): the general Wet
+  // rule (the engine's wetCountOf / wetShockBonus). cs: the game word only, so "wet ground" in plain prose stays plain.
+  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:'takes 1 more lightning damage from every lightning hit for each Wet counter it has. A unit has one counter for each of these: it is a Swimmer or Tide unit; it is raining (the Rain field); the Tide is in (Flood or High Tide).'},
 ];
 // Keywords everywhere (2026-10-12, user: "Highlight keywords like pitch etc. Also, if the keyword has colour, give it some
 // colour. Do this as a standard for all descriptions. If it's possible dont hardcode this ... (except in flavour text)").
@@ -2010,7 +2018,7 @@ const SKILL_TEXT = {
   prayer: v=> `Adds ${v} to your Prayer while it's on your board.`,
   worship: ()=> `+1 Attack for every 3 Prayer you have.`,
   healing: v=> `Heal your most wounded unit for ${v} every upkeep.`,
-  lightning: v=> `When played, deal ${v} damage to a random enemy unit (the castle if there are none), +1 for every 4 Prayer.`, // 2026-10-16 skill audit
+  lightning: v=> `When played, deal ${v} lightning damage to a random enemy unit (the castle if there are none), +1 for every 4 Prayer.`, // 2026-10-16 skill audit; 2026-10-17: lightning damage
   midas: v=> `When it kills a unit, gain ${v} Lumber.`,
   retribution: v=> `When one of your units dies, deal ${v} damage to a random enemy unit.`,
   satiety: v=> `At full Health, gains +${v} max Health every upkeep.`,
@@ -2063,7 +2071,7 @@ const SKILL_TEXT = {
   acidBolt: v=> `While Ready, spit acid at the enemy facing it (or the nearest) for ${numOr(v, 2)} acid damage and 1 Corrode every upkeep.`,
   poisonBolt: v=> `While Ready, spit venom at the enemy facing it (or the nearest): ${numOr(v, 2)} Poison every upkeep.`,
   iceBolt: v=> `While Ready, spit ice at the enemy facing it (or the nearest) for ${numOr(v, 2)} cold damage every upkeep; 1 in 2 it Freezes.`,
-  shockBolt: v=> `While Ready, spit a spark at the enemy facing it (or the nearest) for ${numOr(v, 2)} damage; it is Shocked for a round. Every upkeep.`,
+  shockBolt: v=> `While Ready, spit a spark at the enemy facing it (or the nearest) for ${numOr(v, 2)} lightning damage; it is Shocked for a round. Every upkeep.`, // 2026-10-17: lightning damage
   bloodlust: ()=> `When it kills the unit facing it, it leaps to face the nearest enemy creature. Half damage to Structures and castles.`, // 2026-10-17 rework (the Codex adds one more sentence: codexNote)
   chilli: v=> `When first Ready, eats a chilli: +${numOr(v, 2)} Attack and its attacks deal fire damage, but it takes 1 damage every upkeep.`, // 2026-10-16 skill audit
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
@@ -2085,7 +2093,8 @@ Object.assign(SKILL_TEXT, {
   bananarang: v=> `A Boomerang that may be eaten when it comes home (+${numOr(v, 3)} Health, 1 in 2, only if hurt).`,
   durian: v=> `Every round, last: 1 in 2 it eats a durian for Thorns +${numOr(v, 1)} (stacks).`, // 2026-10-16 skill audit: Durian N
   shield: v=> `Arrives with ${numOr(v, 1)} Shield: temporary Health that soaks damage first.`,
-  electricity: v=> `Its hits arc to a unit beside the target for ${numOr(v, 1)}; wet units take +1.`,
+  electricity: v=> `Its hits arc to a unit beside the target for ${numOr(v, 1)} lightning damage.`, // 2026-10-17: no wet note (Wet is a general rule)
+  chainLightning: v=> `Its hits chain lightning on through 2 more enemy units beside the target, ${numOr(v, 2)} lightning damage each.`, // 2026-10-17
   keenSense: v=> `Darkness and Blind don't make it miss grounded units; it can't be Blinded.`,
 });
 // W2 skills (2026-10-16): the one-line card text. Defaults as in PASSIVE_DEFS (W2_DEF in the engine).
@@ -6331,7 +6340,8 @@ function abilityBadges(d, bopts){
   if(e.bananarang) out.push(`<span class="ab-pair" title="Bananarang ${numOr(e.bananarang, 3)}: a boomerang it may eat when it comes home">${iconHTML('bananarang', '🍌')}<i>🪃</i></span>`);
   if(e.durian){ const db = bopts && bopts.live ? (Number(bopts.live.thornsBonus)||0) : 0; out.push(`<span class="ab-durian" title="Durian${numOr(e.durian, 1) > 1 ? ' ' + numOr(e.durian, 1) : ''}: 1 in 2 each round it eats one for Thorns +${numOr(e.durian, 1)}${db ? ` (Thorns +${db} so far)` : ''}">${iconHTML('durian', '🌰')}${db ? '+' + db : ''}</span>`); }
   if(e.shield) out.push(`<span class="ab-unit-shield" title="Shield ${numOr(e.shield, 1)}: arrives with temporary Health that soaks damage first">${iconHTML('shield', '💠')}${n1(numOr(e.shield, 1))}</span>`);
-  if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit beside the target; wet units take +1">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`);
+  if(e.electricity) out.push(`<span title="Electricity ${numOr(e.electricity, 1)}: its hits arc to a unit beside the target">${iconHTML('electricity', '🔌')}${n1(numOr(e.electricity, 1))}</span>`); // 2026-10-17: no wet note
+  if(e.chainLightning) out.push(`<span class="ab-chain-lightning" title="Chain Lightning ${numOr(e.chainLightning, 2)}: its hits chain lightning on through 2 more enemy units beside the target">${iconHTML('chain-lightning', '🌩️')}${n1(numOr(e.chainLightning, 2))}</span>`); // 2026-10-17
   if(e.keenSense) out.push(`<span title="Keen Sense: Darkness and Blind don't make it miss grounded units">${iconHTML('keen-sense', '👃')}</span>`);
   // 2026-10-14 (seventh pass): Psychic, Smoke Bomb.
   if(e.psychic) out.push(`<span class="ab-psychic" title="Psychic ${numOr(e.psychic, 1)}: its hits also deal ${numOr(e.psychic, 1)} psychic damage through Armor, Shield, Shell and Ghost">${iconHTML('psychic', '💭')}${n1(numOr(e.psychic, 1))}</span>`);
@@ -22878,7 +22888,8 @@ const FXL_SKILL_SETUPS = {
   bananarang: {status:{subject:{hp:9}}, foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}], steps:['round', 'round'], note:'Wounded, facing a Flyer; the second round brings it home.'},
   durian: {steps:['round', 'round', 'round'], note:'Three rounds, so it gets the chance to eat.'},
   shield: {steps:[{spawn:'subject'}, 'round'], note:'It arrives Shielded, then the dummy in front hits it.'},
-  electricity: {foes:FXL_FOES3, rules:{field:'rain'}, rainy:true, note:'In the rain (everyone is wet) with dummies on both sides of the one in front.'},
+  electricity: {foes:FXL_FOES3, rules:{field:'rain'}, rainy:true, note:'In the rain (every unit has a Wet counter: +1 lightning damage) with dummies on both sides of the one in front.'},
+  chainLightning: {foes:FXL_FOES3, note:'Three dummies side by side: the bolt jumps from the one in front to both of its neighbours.'}, // 2026-10-17
   keenSense: {rules:{dark:'absolute'}, status:{subject:{blind:2}}, note:'Absolute darkness, and the Specimen starts Blind: it still hits the grounded dummy.'},
   // 2026-10-14 (seventh pass).
   psychic: {foeFx:{armor:3, ghost:true}, foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}], note:'The dummies wear Armor 3 and are Ghosts: the psychic damage goes through anyway.'},
@@ -22964,7 +22975,7 @@ function fxlRealSkillValue(sd){
 function fxlKnownTypes(){ if(fxLib && fxLib.types) return fxLib.types; const defs = getCardDefs(), s = new Set(); Object.values(defs).forEach(d=> (d && d.archetypes || []).forEach(t=> s.add(t))); if(fxLib) fxLib.types = s; return s; }
 function fxlRetype(v, to){ const T = fxlKnownTypes(); if(typeof v === 'string') return T.has(v) ? to : v; if(Array.isArray(v)) return v.map(x=> fxlRetype(x, to)); if(v && typeof v === 'object'){ const o = {}; Object.keys(v).forEach(k=> o[k] = fxlRetype(v[k], to)); return o; } return v; }
 // Skills whose stand-in value is their own default rather than 3 (2026-10-14: a Fireball 3 or a Meteor 3 shows little).
-const FXL_NUMBER_DEFAULTS = {vanguard:1, web:2, carrion:2, hoard:2, venomMaster:1, fletcher:1, herbalist:1, shatter:2, ambush:3, penance:3, bloodTithe:2, fireball:15, meteor:20, bloodlust:1, venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, predator:2, nova:3, crystallise:5, cure:2, molting:1, sweep:1}; // + the W2 skills' own defaults (2026-10-16) // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
+const FXL_NUMBER_DEFAULTS = {chainLightning:2, /* 2026-10-17 */ vanguard:1, web:2, carrion:2, hoard:2, venomMaster:1, fletcher:1, herbalist:1, shatter:2, ambush:3, penance:3, bloodTithe:2, fireball:15, meteor:20, bloodlust:1, venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, predator:2, nova:3, crystallise:5, cure:2, molting:1, sweep:1}; // + the W2 skills' own defaults (2026-10-16) // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
 function fxlSkillEffects(sd){
   const e = {}; let from = null;
   const real = fxlRealSkillValue(sd);
@@ -32448,7 +32459,9 @@ function delayForEvent(ev, prevKind){
   if(ev.type==='arrow' || ev.type==='bolt') base = 40; // + the Bolts (2026-10-15)
   else if(ev._arrowShot) base = 760; // set by renderVfxForEvent, which runs just before this
   else if(ev.quake) base = 100; // 2026-10-12 (user: "The earthquake should hit each unit faster (0.1s separation per hit anim)")
-  else if((ev.type==='hit' || ev.type==='evaded') && ev.electricity) base = 640; // the bolt lands within ~0.25 s (2026-10-16)
+  // the bolt lands within ~0.25 s (2026-10-16); 2026-10-17: every lightning hit, and a jump whose chain goes on hands straight over
+  // to the next jump (its bolt has landed by then), so a chain plays as one run of jumps
+  else if((ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') && ev._bolt) base = ev._bolt.more ? ev._bolt.ms + 30 : 640;
   else if(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') base = ev.ranged ? 1260 : 900;
   // 2026-10-15 (user: "The miss animation is skipping the attack animation - it shouldnt do that."): a blind/dark miss sat in the
   // generic 150 ms bucket, so the next event (often the round's closing re-render) landed mid-lunge and wiped it. A miss is a
@@ -33036,16 +33049,18 @@ function logText(ev){
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
-      if(ev.attDefId === 'castle') return {cls: ev.dmgType==='poison' ? 'poison' : '', text:`🏰 ${ev.side==='A' ? 'Your' : 'The enemy'} castle hit ${nm(ev.targetDefId)} for ${ev.dmg}${ev.dmgType && ev.dmgType!=='physical' ? ' ' + ev.dmgType + ' damage' : ''}.`}; // 2026-10-16 (it read "castle hit …")
+      if(ev.attDefId === 'castle') return {cls: ev.dmgType==='poison' ? 'poison' : '', text:`🏰 ${ev.side==='A' ? 'Your' : 'The enemy'} castle hit ${nm(ev.targetDefId)} for ${DMG_NAME[ev.dmgType] ? dmgLogText(ev.dmg, ev.dmgType) : ev.dmg + (ev.dmgType && ev.dmgType!=='physical' ? ' ' + ev.dmgType + ' damage' : '')}.`}; // 2026-10-16 (it read "castle hit …"); 2026-10-17: + the element's emoji
       // Elemental conversion note (2026-09-29): Poison zeroes ev.dmg out entirely (the whole
       // amount became poison stacks instead), so without this the log would just read "hit for
       // 0" with no explanation. Decay still shows its real ev.dmg plus the extra ATK-drain note.
       let elemNote = '';
       if(ev.elementalConvert==='poison') elemNote = ` — converted to ${ev.elementalAmount} Poison ☠ instead of direct damage`;
       else if(ev.elementalConvert==='decay') elemNote = ` (also -${ev.elementalAmount} Attack, Decay 🦠)`;
-      return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${ev.dmg}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.rend?' (Pierce — Armor bypassed) 🗡':''}${ev.crit?' 💥 Crit!':''}${ev.backstab?` 🗡️ Backstab +${ev.backstab}`:''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
+      // 2026-10-17 (user: "Elemental damage has the respective elemental emoji attached."): "for 3 ⚡ lightning damage", and a Wet
+      // unit's lightning hit says how many Wet counters added to it.
+      return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${dmgLogText(ev.dmg, ev.dmgType)}${ev.wet ? ` (Wet ${ev.wet}: +${ev.wet} 💧)` : ''}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.rend?' (Pierce — Armor bypassed) 🗡':''}${ev.crit?' 💥 Crit!':''}${ev.backstab?` 🗡️ Backstab +${ev.backstab}`:''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
     }
-    case 'hitHQ': return {cls:'', text:`${nm(ev.attDefId)} struck ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ for ${ev.dmg}${ev.swipe?' (swipe)':''}.`};
+    case 'hitHQ': return {cls:'', text:`${nm(ev.attDefId)} struck ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ for ${dmgLogText(ev.dmg, ev.dmgType)}${ev.swipe?' (swipe)':''}.`}; // 2026-10-17: + the element's emoji (a castle hit that carries a dmgType)
     case 'thorns': return {cls:'', text:`${nm(ev.fromDefId)}'s Thorns reflected ${ev.dmg} onto ${nm(ev.targetDefId)}. 🌵`};
     case 'reflect': return {cls:'', text:`${nm(ev.fromDefId)}'s Reflect threw ${ev.dmg} damage back at ${nm(ev.targetDefId)}. 🪞`};
     case 'pierceHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Puncture went through for ${ev.dmg} bonus damage to ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 🗡`};
@@ -33242,7 +33257,8 @@ function logText(ev){
     // 2026-10-14 (seventh pass)
     case 'psychic': return {cls:'', text: ev.immune ? `💭 ${nm(ev.attDefId)}'s psychic blast finds no mind in ${nm(ev.targetDefId)}.` : `💭 ${nm(ev.attDefId)}'s mind lashes ${nm(ev.targetDefId)} for ${ev.dmg} psychic damage.`};
     case 'smokeBomb': return {cls:'', text: ev.ally ? `💣💨 ${nm(ev.defId)} throws a smoke bomb: ${nm(ev.targetDefId)} hides in the smoke (attacks at it miss 1 in 2).` : ev.effect === 'blind' ? `💣💨 ${nm(ev.defId)} throws a smoke bomb in ${nm(ev.targetDefId)}'s face: Blinded!` : `💣💨 ${nm(ev.defId)} throws a smoke bomb at ${nm(ev.targetDefId)}, who sniffs its way through it.`};
-    case 'electricity': return {cls:'', text:`🔌 ${nm(ev.attDefId)}'s hit ${ev.arcUid != null ? 'arcs to the unit beside it' : 'crackles'}${ev.wetTarget || ev.wetArc ? ' (wet: +1)' : ''}!`};
+    case 'electricity': return {cls:'', text:`🔌 ${nm(ev.attDefId)}'s hit ${ev.arcUid != null ? 'arcs to the unit beside it' : 'crackles'}!`}; // 2026-10-17: the Wet note moved to the hit's own line
+    case 'chainLightning': return {cls:'', text:`🌩️ Chain lightning from ${nm(ev.attDefId)}'s hit ${(ev.uids||[]).length ? `jumps to ${(ev.uids||[]).length} more unit${(ev.uids||[]).length===1?'':'s'}` : 'finds nobody beside it'}!`}; // 2026-10-17
     case 'shieldSoak': return {cls:'', text:`💠 ${nm(ev.defId)}'s Shield soaks ${ev.soaked}${ev.left ? ` (${ev.left} left)` : ' and breaks'}.`};
     // 2026-10-15 (user: "Earthquake and Player victory should be logs in the log."): Earthquake (and Landslide, which shares its
     // event) printed the bare word "earthquake"; the result had no line at all.
@@ -34241,6 +34257,13 @@ const DangerPulse = (()=>{
 setTimeout(()=> DangerPulse.start(), 2000);
 // Damage-type icons beside the number (2026-10-06).
 const DMG_ICON = {poison:['☠️','poison'], acid:['🧪','poison'], heat:['🔥','heat'], cold:['❄️','cold'], decay:['🦠','poison'], bleed:['🩸','bleed'], shock:['⚡','shock']}; // + shock: lightning (Electricity's arc, Dragon Lightning) has its own ⚡ number, 2026-10-16
+// 2026-10-17 (user: "Elemental damage has the respective elemental emoji attached."): every element has its emoji here, not only once
+// FX.A has run (it added magic 🪄 / water 💧 / acid / decay colours): the same icons, so the numbers and the battle log agree. Psychic
+// keeps the 💭 its own number already had. DMG_NAME: the word the battle log uses after the number.
+Object.assign(DMG_ICON, {magic:['🪄','magic'], water:['💧','water'], psychic:['💭','psychic']});
+const DMG_NAME = {poison:'poison', acid:'acid', heat:'fire', cold:'cold', decay:'decay', bleed:'bleed', shock:'lightning', magic:'magic', water:'water', psychic:'psychic'};
+// "for 3 ⚡ lightning damage" (an elemental hit) or "for 3" (physical), for the battle log (2026-10-17).
+function dmgLogText(dmg, dmgType){ const di = DMG_ICON[dmgType], w = DMG_NAME[dmgType]; return di && w ? `${dmg} ${di[0]} ${w} damage` : String(dmg); }
 // Hit recoil (2026-10-08, user: "instead of teleporting off, then teleporting back, it should be a
 // quick recoil and revert motion"): the old shake set an x transform on the Flip-owned card and
 // cleared it, which jumped. This adds a short push away from the attacker on the inner tile's
@@ -34282,7 +34305,7 @@ function flashDmg(uid, dmg, blocked, dmgType, crit){
   recoilEl(el, blocked ? 0.6 : crit ? 1.5 : 0.8 + Math.min(0.6, (dmg||1)/10));
   const di = DMG_ICON[dmgType];
   if(blocked) floatText(el, '🛡 0', 'blocked');
-  else if(crit) floatText(el, '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); // 👊 added by floatText; no CRIT! stamp (2026-10-08)
+  else if(crit) floatText(el, (di ? '👊' + di[0] + ' ' : '') + '-' + dmg, 'crit' + (di ? ' ' + di[1] : '')); // 👊 added by floatText; no CRIT! stamp (2026-10-08); 2026-10-17: an elemental crit keeps its element's emoji beside the 👊
   else floatText(el, (di ? di[0] + ' ' : '') + '-' + dmg, di ? di[1] : '');
   hitExplosionVfx(uid, dmgType);
   try{ const c = currentCardByUid(uid), d = c && getCardDefs()[c.defId]; if(d && d.effects && d.effects.flying && !blocked){ featherBurst(el); SoundKit.featherFlutter(); } }catch(e){}
@@ -34703,11 +34726,17 @@ function fifthPassVfx(ev){
     (ev.pushed||[]).forEach(u=>{ const el = boardCardEl(u); if(el && hasGsap() && !reducedMotion()) gsap.fromTo(el, {y: ev.side==='A' ? -14 : 14}, {y:0, duration:.5, ease:'elastic.out(1, .5)', clearProps:'transform'}); });
   }
   if(ev.type==='wash' && ev.tsunami){ const rc = matchState.replayCards && matchState.replayCards[ev.targetUid]; if(rc) rc.wait = (rc.wait||0) + 1; }
+  // 2026-10-17 (user: "all its lighting attacks should not throw a generic ball at the enemy. When the lightning arcs, the enemies take
+  // the lightning damage straight away"): the red bolt used to flash here, and then each strike's hit threw a ✦ star (the generic
+  // magic missile) a second later. Now this event only notes the strike; each hit draws its own jump of the red bolt and its number
+  // pops as that jump lands (lightningBoltOf). With nobody to strike, it just crackles.
   if(ev.type==='dragonLightning'){
-    const att = boardCardEl(ev.attUid), ts = (ev.uids||[]).map(u=> boardCardEl(u)).filter(Boolean);
-    if(F && F.lightning && att && ts.length && !reducedMotion()){ F.lightning(att, ts, {}); const bolts = document.querySelectorAll('svg.sfx-bolt'); const b = bolts[bolts.length - 1]; if(b) b.classList.add('sfx-bolt-red'); }
-    ts.forEach(el=>{ el.classList.add('dragon-struck'); setTimeout(()=> el.classList.remove('dragon-struck'), 700); });
-    sfx('shockTone');
+    matchState.pendingStrike = {kind:'dragonLightning', attUid: ev.attUid, n: (ev.uids||[]).length};
+    if(!(ev.uids||[]).length) sfx('shockTone');
+  }
+  if(ev.type==='chainLightning'){ // Chain Lightning (2026-10-17): the same; its jumps are drawn by their hits
+    matchState.pendingStrike = {kind:'chainLightning', attUid: ev.attUid, n: (ev.uids||[]).length};
+    if(!(ev.uids||[]).length) sfx('shockTone');
   }
   if(ev.type==='statusFx' && ev.kind==='wither'){ const el = boardCardEl(ev.targetUid); if(el){ try{ floatText(el, '💀 Wither', 'debuff'); }catch(e){} witherSmokeVfx(el); } }
   if(ev.type==='witherTick'){ const rc = matchState.replayCards && matchState.replayCards[ev.uid]; if(rc){ rc.maxHp = Math.max(0, (rc.maxHp||0) - ev.n); rc.hp = Math.max(0, Math.min(rc.maxHp, (rc.hp||0) - ev.n)); }
@@ -34778,12 +34807,57 @@ function sixthPassVfx(ev){
   }
   // 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): the 'electricity' event only notes the chain (attacker, the struck unit); the bolt is drawn by the arc's own hit (and the
   // wet target's zap), and that hit's number pops as its bolt lands (electricityImpactMs). With no hit to follow, a spark crackles.
+  // 2026-10-17: no 💧 floats any more (Wet is a general rule; the arc's hit carries it in its number and its log line).
   if(ev.type==='electricity'){
     matchState.pendingElectric = {attUid: ev.attUid, targetUid: ev.targetUid};
-    const ts = [ev.targetUid, ev.arcUid].filter(u=> u != null).map(boardCardEl).filter(Boolean);
-    if(ev.wetTarget || ev.wetArc) ts.forEach(el=>{ try{ floatText(el, '💧', 'dmg'); }catch(e){} });
-    if(ev.arcUid == null && !ev.wetTarget) sfx('shockTone');
+    if(ev.arcUid == null) sfx('shockTone');
   }
+}
+// Lightning hits (2026-10-17, user: "Voltaic Eel should have chain lighting as well. Anyway, all its lighting attacks should not throw a
+// generic ball at the enemy. When the lightning arcs, the enemies take the lightning damage straight away."): every lightning delivery
+// is its own bolt and nothing is ever thrown: Electricity's arc, Chain Lightning's jumps, Dragon Lightning's strikes, the Shock Bolt,
+// Lightning's sky bolt (Ecclesia), and any other ranged hit with damage type 'shock'. lightningBoltOf(ev) works out, once per hit,
+// the bolt's path and when its number pops (ev._bolt, read by the hit's impactDelay, eighthHitAtMs / FX env.hitAtMs, delayForEvent
+// and FX.A, which skips its missile); drawLightningBolt draws it when the hit plays. SkillFX.lightning lands jump i at i*152 + 60 ms,
+// so ms = (jumps - 1)*152 + 70: the number pops the moment the last jump reaches its unit. A jump whose chain goes on (more) hands
+// over to the next jump's hit at once, so the chain plays as one run of jumps.
+//   path   Electricity: attacker -> struck unit -> the arc   Chain Lightning: attacker -> target -> 1st jump, then 1st -> 2nd
+//          Dragon Lightning: attacker -> target, then target -> the unit beside it   Shock Bolt / a shock hit: shooter -> target
+//          Lightning (sky): straight down onto the unit (FX.A.stormBolt)
+//   look   plain (chain lightning, Shock Bolt, a shock hit), sfx-bolt-electric (Electricity, 10% more cyan), sfx-bolt-red (Dragon)
+function lightningBoltOf(ev){
+  if(!ev || !matchState) return null;
+  if(ev._bolt !== undefined) return ev._bolt;
+  if(!(ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded') || !ev.ranged || ev.quake){ ev._bolt = null; return null; }
+  const el = u=> u == null ? null : boardCardEl(u);
+  const tgt = ev.type==='hitHQ' ? hqTileEl(ev.targetSide) : el(ev.targetUid);
+  const src = el(ev.attUid) || hqTileEl(ev.side);
+  const pb = matchState.pendingBolt, ps = matchState.pendingStrike;
+  const strikeMore = kind=> !!(ps && ps.kind === kind && String(ps.attUid) === String(ev.attUid) && (ev.jump||0) < (ps.n||0) - 1);
+  let chain, cls = '', sky = false, more = false, kind;
+  if(ev.electricity){ kind = 'electricity'; cls = 'sfx-bolt-electric';
+    chain = ev.viaUid != null && String(ev.viaUid) !== String(ev.targetUid) ? [src, el(ev.viaUid), tgt] : electricChain(ev); }
+  else if(ev.chainLightning){ kind = 'chainLightning'; chain = ev.jump ? [el(ev.viaUid), tgt] : [src, el(ev.viaUid), tgt]; more = strikeMore('chainLightning'); }
+  else if(ev.dragonLightning){ kind = 'dragonLightning'; cls = 'sfx-bolt-red'; chain = ev.jump ? [el(ev.viaUid), tgt] : [src, tgt]; more = strikeMore('dragonLightning'); }
+  else if(ev.skyBolt){ kind = 'sky'; sky = true; chain = [tgt]; }
+  else if(pb && pb.element === 'shock' && String(pb.uid) === String(ev.attUid)){ kind = 'shockBolt'; chain = [src, tgt]; }
+  else if(ev.dmgType === 'shock'){ kind = 'shock'; chain = [src, tgt]; }
+  else { ev._bolt = null; return null; }
+  chain = chain.filter(Boolean);
+  const jumps = sky ? 1 : Math.max(1, chain.length - 1);
+  ev._bolt = {kind, chain, cls, sky, more, ms: (jumps - 1)*152 + 70};
+  return ev._bolt;
+}
+function drawLightningBolt(ev){
+  const b = ev && ev._bolt; if(!b) return;
+  try{ SoundKit.shockTone && SoundKit.shockTone(); }catch(e){}
+  const t = b.chain[b.chain.length - 1];
+  if(b.kind === 'dragonLightning' && t && t.classList){ setTimeout(()=>{ t.classList.add('dragon-struck'); setTimeout(()=> t.classList.remove('dragon-struck'), 700); }, b.ms); }
+  if(reducedMotion()) return;
+  try{
+    if(b.sky){ if(t && window.FX && FX.A && FX.A.stormBolt) FX.A.stormBolt(t, {}); else if(t && window.SkillFX && SkillFX.lightning) SkillFX.lightning(hqTileEl(ev.side) || t, [t], {}); }
+    else if(window.SkillFX && SkillFX.lightning && b.chain.length > 1) SkillFX.lightning(b.chain[0], b.chain.slice(1), {cls: b.cls});
+  }catch(e){}
 }
 // 2026-10-15 (eighth pass, user: "widen the effects list we have"): the skills that only had a floating word now get their
 // own short SkillFX look in real fights (the Effects library plays them too, since it runs the same replay). Each layers over
@@ -34799,7 +34873,7 @@ function electricChain(ev){
 }
 function electricityImpactMs(ev){ const n = Math.max(1, electricChain(ev).length - 1); return (n - 1)*152 + 70; }
 function eighthHitAtMs(ev){
-  if(ev && ev.electricity) return electricityImpactMs(ev); // the bolt lands (2026-10-16)
+  { const lb = lightningBoltOf(ev); if(lb) return lb.ms; } // a lightning hit: its bolt lands (Electricity 2026-10-16; every lightning hit 2026-10-17)
   const am = animMs(), pa = matchState && matchState.pendingArrow;
   if(ev._cleave) return am.windup; // a Cleave's slot lands as the blade passes (2026-10-15)
   { const q = quickImpactMs(ev); if(q != null) return q; } // Quick (2026-10-16)
@@ -34878,7 +34952,10 @@ function eighthPassVfx(ev){
 function ninthPassVfx(ev){
   if(!ev || !matchState) return; const F = window.SkillFX;
   if(ev.type === 'bolt'){
-    const am = animMs(); matchState.pendingBolt = {uid: ev.uid};
+    const am = animMs(); matchState.pendingBolt = {uid: ev.uid, element: ev.element};
+    // 2026-10-17: a Shock Bolt is a bolt of lightning, not a spit: no glob is lobbed; its hit draws the bolt (lightningBoltOf) and the
+    // number pops as it lands.
+    if(ev.element === 'shock') return;
     const from = boardCardEl(ev.uid) || hqTileEl(ev.side), to = ev.targetUid != null ? boardCardEl(ev.targetUid) : hqTileEl(ev.targetSide);
     try{ SoundKit.launch(); }catch(e){}
     if(F && F.boltGlob && fxLevel() !== 'none') F.boltGlob(from, to, {element: ev.element, flight: am.windup + am.projectile});
@@ -35267,6 +35344,7 @@ function fxHook(name, ...args){
     try{ h(...args, env || (env = fxEnv())); }catch(e){ if(window.__fxDebug) console.warn('FX.' + k + '.hooks.' + name, e); } });
 }
 function renderVfxForEvent(ev){
+  try{ lightningBoltOf(ev); }catch(e){} // 2026-10-17: a lightning hit's bolt (ev._bolt), before any pass reads it
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
   try{ bigBlowShake(ev); }catch(e){} // screen shake for big arrivals and heavy hits (2026-10-14)
@@ -35407,7 +35485,8 @@ function renderVfxForEvent(ev){
     const arrowWind = Math.round(windup*0.6); // long enough to read the bow being drawn
     const quickAt = quickImpactMs(ev); // Quick: the hit lands with the dash (2026-10-16)
     const castleAt = castleShotMs(ev); // a castle's own throw (Herb Refinery's brew, a castle bolt) is quick (2026-10-16)
-    const impactDelay = quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : ev.electricity ? electricityImpactMs(ev) : windup + (ev.ranged ? projectile : impactPad);
+    const bolt = lightningBoltOf(ev); // a lightning hit (2026-10-17): its bolt is the delivery, and its number pops as the bolt lands
+    const impactDelay = quickAt != null ? quickAt : castleAt != null ? castleAt : ev._cleave ? windup : arrowShot ? arrowWind + arrowFlightMs() : bolt ? bolt.ms : windup + (ev.ranged ? projectile : impactPad);
     if(ev.attDefId) keywordCuesForHit(ev, attEl, targetEl);
     // Unit FX (2026-10-08): hit style / special attack / skin, see bramblewood-unitfx.js.
     // 2026-10-16: a skin's attack belongs to the copy wearing it (cardLookOf), not to every copy of the card
@@ -35418,7 +35497,7 @@ function renderVfxForEvent(ev){
       setTimeout(()=>{ try{ UnitFX.attackFx(ufx.attack, atkEl, targetEl, windup + impactPad); if(SoundKit[ufx.attack]) SoundKit.at(atkEl, ()=> SoundKit[ufx.attack](windup + impactPad)); }catch(e){} }, Math.round(windup*0.5));
     }
     if(ev.ranged){
-      if(!arrowShot && !boltShot && !ev.electricity) SoundKit.launch(); // (Electricity's arc has the shock tone, 2026-10-16)
+      if(!arrowShot && !boltShot && !bolt) SoundKit.launch(); // (Electricity's arc has the shock tone, 2026-10-16; every lightning hit, 2026-10-17)
       // Item #14 (2026-09-18, "sometimes damage source or anim is not visible... looks like
       // they're taking a random 1 damage"): spawnProjectile silently no-ops when its origin
       // element isn't in the DOM (boardCardEl(ev.attUid) can miss if the source already left
@@ -35437,6 +35516,7 @@ function renderVfxForEvent(ev){
           light: (x, y, rgb, big)=>{ try{ const bfEl = document.getElementById('battlefieldEl'); if(battleWeather && battleWeather.flash && bfEl){ const b = bfEl.getBoundingClientRect(); battleWeather.flash((x - b.left)/b.width, (y - b.top)/b.height, rgb, big ? 0.9 : 0.55, big ? 0.5 : 0.3, big ? 800 : 500); } }catch(e){} }}); }
         else setTimeout(()=> spawnArrowProjectile(shooter || hqTileEl(ev.side), targetEl, pa.fire), arrowWind);
       }
+      else if(bolt) drawLightningBolt(ev); // every lightning hit draws its own bolt; nothing is thrown (2026-10-17)
       else if(boltShot){ /* the Bolt's glob is already in the air (ninthPassVfx, 2026-10-15) */ }
       // 2026-10-16: a castle's throw is drawn by FX.C (the brew's 🧪, the bolt) on Medium effects and up; below that, a 🧪/glyph on a
       // shallow arc, timed to the same quick impact.
@@ -35448,7 +35528,7 @@ function renderVfxForEvent(ev){
       // target after every landed hit. The chain lightning (the 'electricity' event just before) is that hit's look; nothing is thrown.
       // 2026-10-16 (user: "The chain lightning & electricity arced damage should come from that itself! And the damage should be lightning damage, not physical damage."): the arc's bolt (eel -> struck unit -> the unit beside it) or the wet zap (eel -> target) is drawn here, by the hit itself;
       // its number pops as that bolt lands (impactDelay = electricityImpactMs).
-      else if(ev.electricity){ try{ try{ SoundKit.shockTone && SoundKit.shockTone(); }catch(e){} const chain = electricChain(ev); if(window.SkillFX && SkillFX.lightning && chain.length > 1 && !reducedMotion()) SkillFX.lightning(chain[0], chain.slice(1), {}); }catch(e){} }
+      // (2026-10-17: the Electricity branch that was here is the `bolt` branch above, for every lightning hit.)
       else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);
     }
     setTimeout(()=>{
@@ -35482,7 +35562,7 @@ function renderVfxForEvent(ev){
         hqHitBigVfx(targetEl, ev.dmg);
         // 2026-10-15 (user: "The damage numbers to your castle should come from the battlefield respective HP bar instead. Since the
         // player's focus is in the centre."): the number rises from the middle of that side's HP ribbon on the field.
-        floatText(hqRibbonFloatAnchor(ev.targetSide) || targetEl, '-'+ev.dmg, 'hq-big');
+        floatText(hqRibbonFloatAnchor(ev.targetSide) || targetEl, (DMG_ICON[ev.dmgType] ? DMG_ICON[ev.dmgType][0] + ' ' : '') + '-'+ev.dmg, 'hq-big'); // 2026-10-17: + the element's emoji
         const mm = matchState;
         displayHqDamage(mm, ev.targetSide, ev.dmg);
         // Task #228 (Castle speech bubble presets): same intermittent-chatter treatment a

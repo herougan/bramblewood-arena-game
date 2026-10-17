@@ -53,6 +53,7 @@ run node tests/combat-order-2026-10-17.js   # 2026-10-17: one Speed order (Quick
 run node tests/field-effects-2026-10-16.js   # 2026-10-16 (field effects 2): Landslide, Consternation, Crushing Depths, the lines, Mirage, the canopy, Slippery, Glass-storm, Hail, Lava Spout, Leylines, Atheist, Haunted, the Tide
 run node tests/wave-tide-2026-10-17.js   # 2026-10-17 (wave, tide, boomerang): Wave's lean inward / bounce / bob, the Awash field, the ride, one boomerang home, the tide's sway, hover heights
 run node tests/skills-2026-10-17.js   # 2026-10-17 (skills): Reflect (shots bounce), Vanguard, Web, Bloodlust leap, Ambush on any entry, Sentry, Crab Claws, Carrion, Leech, Hoard, Venom Master, Fletcher, Herbalist, Shatter
+run node tests/lightning-2026-10-17.js   # 2026-10-17 (lightning): the Wet rule (+1 per Wet counter on lightning hits), Chain Lightning, Voltaic Eel, every lightning hit its own bolt, element emoji
 run node tests/night-2026-10-12.js
 run node tests/phase-status.js
 run node tests/tide.js
