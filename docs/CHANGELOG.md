@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (WP4: progression gates and dead code)
+- **No more locks you can never meet.** A lock that names a map that isn't charted yet (it doesn't exist, or is a Reserved map with no fights) now reads "Unlocks beyond the charted maps" instead of the map number. That covers nests 6 and 7 (Maps 25 and 30), Forge tiers 4 and 5 (Maps 26 and 31), card Levels 9 and 10 (Maps 26 and 31), limit breaks (Map 50), the Strange Materia tooltip (Maps 25 and 30) and dungeon slot 3 (Map 40). The gates themselves are unchanged: when those maps are built, the locks show their numbers again. One helper, `mapIsCharted(n)` (with `mapLockText` and `UNCHARTED_LOCK`).
+- **The Long Burrow** (on Map 22, a real map now) is still held back, but its slot in the Dungeons tab says "🚧 Coming soon" instead of a lock. Releasing it is one switch: `const LONG_BURROW_RELEASED = false;` in arena_app.js, just above the Long Burrow's `endlessDungeon(...)`. A released dungeon with no `after` fight says "Reach <map> to open it" (it opens when its map does).
+- Removed `grantMap20FactionCrown` (never called; the crown was retired on 2026-10-13).
+- Removed handler code for elements that are never drawn: #cloudSyncPill, #homeProfileBtn (and `homeProfileBtnInner`), #leaderSlotWrap (`wireLeaderSlot`, `leaderSlotHTML` and the text key `toast.leaders-must-be-heroic-or-above`), #terrainPill, #startAsyncBtn, #cnpSweepN / #cnpSweepBtn / #cnpIdleSweep, #cnpAdminClearMap, #homeContinueTutorialBtn (`continueTutorialFromHome`), #deckToCodexBtn, #deckHeroBtn, #dropLeft / #dropRight. #adminTideEvadeChk stays: `testRulesPanelHTML` builds that id.
+- `tests/gates-2026-10-18.js` (in `tests/run-all.sh`).
+
 ## 2026-10-18 (great beasts: Leviathan, Dragon-Turtle, Fiend)
 - **Creature rank:** a new card field, `creatureRank`. 1 = the five Dragons, 2 = Leviathans and Dragon-Turtles, 3 = the volcano's fire fiends. It is a design rule (rank 2 sits under the Dragons and above an ordinary Legendary; rank 3 under rank 2); the engine doesn't read it. The Codex card detail shows one line under the chips, e.g. "Rank: Leviathan — second only to Dragons". The new type tags Dragon 🐉, Leviathan 🐋, Dragon-Turtle 🐢 and Fiend 👺 have icons. See `docs/creature-ranks-2026-10-18.md`.
 - **New card: Fathom Leviathan** 🌊 (Legendary, rank 2, Leviathan / Ocean, 9/40, Lumber 4, Wait 4): Supreme, Tide, Tsunami 2, Wave (alternate), Bounty 1. Drops from the Goliath raid, like the Goliath Broodmother.

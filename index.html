@@ -33882,7 +33882,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.reached-level-deck-hero": "🦸 {name} reached Level {after}!{v3}{v4} — Deck → 🦸 Hero",
   "toast.hero-xp": "🦸 +{n} Hero XP — {why}",
   "toast.need-magic-dust-to-craft-materia": "Need {MATERIA_DUST_COST} ✨ Magic Dust to craft Materia.",
-  "toast.leaders-must-be-heroic-or-above": "👑 Leaders must be Heroic or above (or have the Leader passive).",
   "toast.your-main-deck-has-cards-it": "Your main deck has {v1} cards. It needs exactly {DECK_SIZE} to enter the Dungeon. Head to the Deck tab to adjust it.",
   "toast.your-main-deck-has-cards-it-2": "Your main deck has {v1} cards. It needs exactly {DECK_SIZE} before queueing. Open Deck from Home to adjust it.",
   "dialog.your-opponent-left-the-match": "Your opponent left the match.",
@@ -36976,7 +36975,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'e9382a3dc27d', BUILD_CARD_HASH = 'adce97ad4d4027ff7e4d2d528a7bcc6c78b2f86cb2439eec365ce5fff1b40b94';
+const BUILD_ID = 'd123432ae607', BUILD_CARD_HASH = 'adce97ad4d4027ff7e4d2d528a7bcc6c78b2f86cb2439eec365ce5fff1b40b94';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -43905,15 +43904,9 @@ function isSignedIn(){ return !!cloudUserId && !cloudIsAnonymous; }
 // a local file:// copy of this page (no available tool can host this build, and Supabase's OAuth
 // redirect config has to point at a real reachable URL either way). Gates the Google button.
 function isHostedOnline(){ try{ return /^https?:$/.test(location.protocol); }catch(e){ return false; } }
-function setCloudPill(ok, label){
-  const pill = document.getElementById('cloudSyncPill');
-  if(!pill){ refreshAccountUI(); return; }
-  pill.textContent = ok ? (isSignedIn() ? '☁️ Synced' : '☁️ Guest (local only)') : '☁️ Offline';
-  pill.classList.toggle('ok', !!ok && isSignedIn());
-  pill.title = label || '';
-  try{ fxHook('cloudSync', pill, !!ok); }catch(e){} // 2026-10-15 batch F (plays only when it changes)
-  refreshAccountUI();
-}
+// 2026-10-18 (WP4): the ☁️ sync pill (#cloudSyncPill) is no longer on the page, so its branch (and the cloudSync FX it fed) went;
+// the account chip shows the account state. The callers keep their (ok, label) for when a status line comes back.
+function setCloudPill(ok, label){ refreshAccountUI(); }
 // One place that reflects the current account state everywhere outside the full Profile panel:
 // the topbar account chip (always visible — the "tellback" that sign-in actually worked) and the
 // entrance screen's account line / Sign-in button.
@@ -43927,12 +43920,6 @@ function refreshAccountUI(){
     const txt = document.getElementById('accountChipText');
     if(txt){ if(signedIn) txt.textContent = cloudUserLabel || 'Signed in'; else txt.innerHTML = '<span class="acc-long">Guest · </span>Sign in'; }
     chip.title = signedIn ? `Signed in${cloudUserEmail ? ' as '+cloudUserEmail : ''} — progress syncs across devices. Open Profile to manage.` : 'Playing as a guest — progress is saved on this device only. Click to sign in.';
-  }
-  const profBtn = document.getElementById('homeProfileBtn');
-  if(profBtn){
-    profBtn.classList.toggle('is-guest', !signedIn);
-    profBtn.innerHTML = homeProfileBtnInner();
-    profBtn.title = signedIn ? `Signed in${cloudUserEmail ? ' as '+cloudUserEmail : ''}` : 'Not signed in — progress is saved on this device only';
   }
   const line = document.getElementById('entranceAccountLine');
   if(line){
@@ -43948,16 +43935,8 @@ function refreshAccountUI(){
     nameInput.value = cloudUserLabel.split(' ')[0].slice(0,24);
   }
 }
-// Home's Profile tile: your Google photo (or 👤) and first name when signed in; plain, dimmed
-// "Profile" for a guest (the dimming itself is the .is-guest class).
-function homeProfileBtnInner(){
-  if(!isSignedIn()) return `<span class="tab-emoji">👤</span> Profile<span class="home-profile-sub">Guest</span>`;
-  const name = (cloudUserLabel && cloudUserLabel!==cloudUserEmail) ? cloudUserLabel.split(' ')[0] : ((cloudUserEmail||'Profile').split('@')[0]);
-  const icon = cloudUserAvatar
-    ? `<img class="home-profile-avatar" src="${escapeAttr(cloudUserAvatar)}" alt="" referrerpolicy="no-referrer" onerror="this.replaceWith(Object.assign(document.createElement('span'),{className:'tab-emoji',textContent:'👤'}))">`
-    : `<span class="tab-emoji">👤</span>`;
-  return `${icon}<span class="home-profile-name">${escapeHtml(name)}</span>`;
-}
+// 2026-10-18 (WP4): Home's Profile tile (#homeProfileBtn) is no longer drawn, so refreshAccountUI's branch for it and
+// homeProfileBtnInner() went.
 function showToast(message, kind){
   let host = document.getElementById('toastHost');
   if(!host){ host = document.createElement('div'); host.id = 'toastHost'; host.className = 'toast-host'; document.body.appendChild(host); }
@@ -45585,6 +45564,14 @@ const FORGE_TIERS = [
 // defeating a certain map's boss. we can tweak this as we go"): each Forge tier also needs Strange Materia 🔮 (1, 1, 2, 3).
 // The boss of the map before each tier's map drops them on its first clear (Maps 12, 15, 25 and 30: one, one, two, three).
 const STRANGE_MATERIA_DROPS = {12:1, 15:1, 25:2, 30:3};
+// Where it comes from, for the Forge button's tooltip (2026-10-18, WP4): only the charted maps by number (Map 25 is Reserved and
+// Map 30 doesn't exist yet), the rest as bosses beyond the charted maps.
+function strangeMateriaSourceText(){
+  const nums = Object.keys(STRANGE_MATERIA_DROPS), known = nums.filter(n=> mapIsCharted(+n)), more = known.length < nums.length;
+  const many = known.length > 1 || more, list = known.length > 1 ? known.slice(0, -1).join(', ') + ' and ' + known[known.length - 1] : known.join('');
+  const who = [known.length ? `the boss${known.length > 1 ? 'es' : ''} of Map${known.length > 1 ? 's' : ''} ${list}` : '', more ? 'bosses beyond the charted maps' : ''].filter(Boolean).join(', and ');
+  return `Strange Materia (${who} drop${many ? '' : 's'} it on the first clear)`;
+}
 // A save that beat those bosses before Strange Materia existed gets what they would have dropped, once.
 setTimeout(()=>{ try{ if(loadDialogueFlags()['mig:strange']) return; setDialogueFlag('mig:strange', true); const p = loadConquestProgress(), mains = mainConquestMaps();
   Object.entries(STRANGE_MATERIA_DROPS).forEach(([num, n])=>{ const m = mains[+num]; const key = m && mapRewardNodeKey(m); if(key && p.completed.includes(conquestNodeId(m.id, key))) for(let i = 0; i < n; i++) unlockCardForPlayer('strange-materia', 'materia'); }); }catch(e){} }, 4000);
@@ -45662,8 +45649,8 @@ function forgeUpgradeHTML(){
        The Tier 1 can keep its current font."): what it tempers moved into the tooltip. */''}
     <div class="fu-now" title="${escapeAttr(cur.name + ': tempers to Lv ' + cur.cap + ', cards up to ' + rarName(cur.upTo))}"><b>🏭 Forge</b> <small>Tier ${cur.tier}</small></div>
     ${next ? `<div class="fu-next"><span>Next: <b>${escapeHtml(next.name)}</b>, Lv ${next.cap} and up to ${escapeHtml(rarName(next.upTo))}</span>
-      ${c.why === 'map' ? `<span class="fu-gate">🗺️ Opens at Map ${next.map}</span>` : ''}
-      <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge${btnCostHTML(next.cost, next.strange ? [{icon:'🔮', need:next.strange, have:ownedCount('strange-materia'), label:'Strange Materia (the boss of Maps ' + Object.keys(STRANGE_MATERIA_DROPS).join(', ') + ' drops it on its first clear)'}] : [])}</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
+      ${c.why === 'map' ? `<span class="fu-gate">🗺️ ${mapLockText(next.map, `Opens at Map ${next.map}`) /* 2026-10-18: Maps 26 and 31 aren't charted yet */}</span>` : ''}
+      <button type="button" class="btn small primary" id="forgeUpgradeBtn" ${c.ok ? '' : 'aria-disabled="true"'}>⬆️ Upgrade the Forge${btnCostHTML(next.cost, next.strange ? [{icon:'🔮', need:next.strange, have:ownedCount('strange-materia'), label:strangeMateriaSourceText()}] : [])}</button></div>` : `<div class="fu-next"><span>Fully upgraded. 🔥</span></div>`}
     ${adminModeEnabled ? `<button type="button" class="btn small ghost" id="forgeTierEditBtn">✏️ Edit tier prices</button>` : ''}
   </div>`;
 }
@@ -45881,21 +45868,6 @@ function temperCastle(id){
   myCastleLevels[id] = L + 1; try{ localStorage.setItem(CASTLE_LEVELS_KEY, JSON.stringify(myCastleLevels)); }catch(e){}
   fxHook('castleTempered', id, L + 1); // batch D (2026-10-15, docs/effects-lab-contract.md)
   return true;
-}
-function leaderSlotHTML(){
-  const defs = getCardDefs();
-  const d = myLeaderId && defs[myLeaderId];
-  if(d){
-    return `<div class="leader-slot filled" id="leaderSlot">
-      <div class="ls-ico">${cardIcoHTML(d)}</div>
-      <div class="ls-body"><div class="ls-tag">👑 Leader</div><div class="ls-name">${d.name}</div>${canLeadDef(d) ? '' : '<div class="ls-warn">Must be Heroic or above to lead</div>'}</div>
-      <button class="btn small ghost ls-clear" id="leaderClearBtn" title="Remove leader">×</button>
-    </div>`;
-  }
-  return `<div class="leader-slot empty" id="leaderSlot">
-    <div class="ls-ico">👑</div>
-    <div class="ls-body"><div class="ls-tag">Leader</div><div class="ls-placeholder">Missing Leader</div></div>
-  </div>`;
 }
 // Deck-builder hero banner (2026-09-29, per explicit request: "Improve the deck view UI. It's
 // abit 'technical' looking and not very inviting... Maybe the Deck's background can be a slashed
@@ -46964,7 +46936,7 @@ function renderPlayerSubTab(body){
   document.getElementById('deckSort').addEventListener('change', renderMyDeckPanels);
   { const sb = document.getElementById('deckStackFx'); if(sb) sb.addEventListener('click', ()=>{ deckStackTreatments = !deckStackTreatments; try{ localStorage.setItem('bramblewood_deck_stackfx', deckStackTreatments ? 'stacked' : 'apart'); }catch(e){} sb.textContent = deckStackTreatments ? '🗂 Finishes stacked' : '🗂 Finishes apart'; sb.setAttribute('aria-pressed', deckStackTreatments); renderMyDeckPanels(); }); }
   document.getElementById('openPlayerStatsBtn').addEventListener('click', ()=>{ playerStatsOpen = true; renderPlay(); });
-  wireLeaderSlot(); wireDeckTop();
+  wireDeckTop();
   wireDeckListDrop();
 }
 // Item #11 (2026-09-18): "The drag and drop works also by dragging a card into the deck list
@@ -46996,37 +46968,8 @@ function wireDeckListDrop(){
     renderMyDeckPanels();
   });
 }
-// Item #10: wires the leader slot's dragover/drop + clear button. Called once from
-// renderPlayerSubTab (the slot itself lives in its own #leaderSlotWrap, outside the
-// #myDeckList/#myDeckPool nodes that renderMyDeckPanels regenerates on every add/remove/filter
-// click, so it doesn't need re-wiring on every one of those refreshes).
-function wireLeaderSlot(){
-  const wrap = document.getElementById('leaderSlotWrap');
-  if(!wrap) return;
-  const slot = document.getElementById('leaderSlot');
-  if(!slot) return;
-  slot.addEventListener('dragover', e=>{ e.preventDefault(); slot.classList.add('dragover'); });
-  slot.addEventListener('dragleave', ()=> slot.classList.remove('dragover'));
-  slot.addEventListener('drop', e=>{
-    e.preventDefault(); slot.classList.remove('dragover');
-    const defId = e.dataTransfer.getData('text/plain');
-    const defs = getCardDefs();
-    if(!defId || !defs[defId]) return;
-    if(!canLeadDef(defs[defId])){ showToast(TX('toast.leaders-must-be-heroic-or-above'), 'error'); try{ denyShake(slot); }catch(_){} return; }
-    myLeaderId = defId; saveMyLeader();
-    wrap.innerHTML = leaderSlotHTML();
-    wireLeaderSlot();
-    refreshDeckHeroBanner();
-    try{ fxHook('deckHeroBanner', document.getElementById('deckHeroBanner')); }catch(e){} // 2026-10-15 batch F: a new leader takes the banner
-  });
-  const clearBtn = document.getElementById('leaderClearBtn');
-  if(clearBtn) clearBtn.addEventListener('click', ()=>{
-    myLeaderId = null; saveMyLeader();
-    wrap.innerHTML = leaderSlotHTML();
-    wireLeaderSlot();
-    refreshDeckHeroBanner();
-  });
-}
+// 2026-10-18 (WP4): wireLeaderSlot() and leaderSlotHTML() (Item #10's drag-a-leader slot) are gone: the slot's #leaderSlotWrap
+// hasn't been on the deck screen for a while, so the wiring returned at once. The leader is picked in openLoadoutPicker('leader').
 // The fleshed-out stats subpage itself. Beyond the original played/wins/losses/draws/win-rate,
 // this adds: current streak (win or loss) + best win streak, a Conquest campaign progress
 // readout (nodes cleared / total, maps fully cleared), how many Raid Bosses have been
@@ -48243,10 +48186,18 @@ const FEATURE_SPOTS = [
   {key:'stomp', icon:'🐾', name:'Stomping Grounds', mapNumber:21, get map(){ return mapIdAt(21); }, get after(){ return nthFightKey(this.map, 3); }, dialogue:'unlock_stomp', tabs:['stomp'], go:()=> switchTab('stomp')},
   {key:'testlab', icon:'🧪', name:'Test Lab', mapNumber:21, get map(){ return mapIdAt(21); }, after:null, dialogue:'unlock_testlab', tabs:['sandbox'], go:()=>{ playSubTab = 'sandbox'; switchTab('play'); }},
   // Flea Market (2026-10-10, user: "The Market becomes its own page, renamed Flea Market. Unlocked at Map 30"): player
-  // trading moves out of the Shop into its own place. It sits on Map 30, which doesn't exist yet, so for now it opens
-  // only through Admin → unlocks. `map` resolves to whatever map is 30th once the campaign gets that far.
+  // trading moves out of the Shop into its own place. It sits on Map 31 (Map 30 under the numbering of the day), which doesn't
+  // exist yet, so for now it opens only through Admin → unlocks. `map` resolves to Map 31 once the campaign gets that far.
+  // 2026-10-18 (WP4): no lock names it to players meanwhile (mapIsCharted(31) is false; nothing shows a Flea Market lock).
   {key:'market', icon:'🧺', name:'Flea Market', mapNumber:31, get map(){ const m = mainConquestMaps()[31]; return m ? m.id : '~map31'; }, after:null, dialogue:'unlock_market', tabs:['market'], go:()=> switchTab('market')},
 ];
+// Charted maps (2026-10-18, WP4: locks named maps a player can never reach, e.g. "Opens on Map 30" for the 7th nest, when the road
+// ends at Map 24): Map n is charted when it exists, isn't a Reserved placeholder and has fights. Every player-facing lock that names
+// a map number goes through mapLockText(), which shows UNCHARTED_LOCK instead of the number for a map that isn't charted yet.
+// The gates themselves are unchanged: when those maps are built, the locks name them again on their own.
+const UNCHARTED_LOCK = 'Unlocks beyond the charted maps';
+function mapIsCharted(n){ try{ const m = mainConquestMaps()[n]; return !!(m && !m.reserved && m.nodes && m.nodes.length); }catch(e){ return false; } }
+function mapLockText(n, chartedText){ return mapIsCharted(n) ? chartedText : UNCHARTED_LOCK; }
 // Spots added on 2026-10-12 that cover something a player may already have opened under the old schedule (the Codex
 // came with the Armoury, the Forge with the Codex, the Gauntlet with the Arena): an existing save keeps them open.
 function migrateSchedule20261012(u){
@@ -49099,7 +49050,7 @@ function maybeTerrainIntro(m){
       setTimeout(()=>{ const c2 = document.getElementById('fieldCondCard'); if(c2){ c2.classList.remove('is-landing'); void c2.offsetWidth; c2.classList.add('is-landing'); setTimeout(()=> c2.classList.remove('is-landing'), 700); } }, 600); }, 5200);
     setTimeout(()=> b.remove(), 6000); }, 900);
 }
-document.addEventListener('click', e=>{ const p = e.target.closest && e.target.closest('#terrainPill'); document.querySelectorAll('.terrain-pill.open').forEach(x=>{ if(x !== p){ x.classList.remove('open'); x.setAttribute('aria-expanded', 'false'); } }); if(p){ const on = !p.classList.contains('open'); p.classList.toggle('open', on); p.setAttribute('aria-expanded', String(on)); } });
+// 2026-10-18 (WP4): the click toggle for the old #terrainPill went; that pill became the field card (fieldCondCardHTML) on 2026-10-14.
 const TIER_NUMERAL = ['', 'I', 'II', 'III'];
 // Field conditions, row by row (D53, 2026-10-13, user: "Full pass so field effects are clearly mentioned. Multi-line field
 // effects show '?' per row until that row happens once, then 'New!', then plain text in later skirmishes").
@@ -49280,7 +49231,7 @@ function noteFieldEvent(ev){
   else if(ev.type === 'evaded' && ev.reason === 'ashy') hit = markFieldRow(r.ashy ? 'ashy' : 'ashyAfter');
   else if((ev.type === 'psychic' && ev.dampened) || ev.type === 'dampened') hit = markFieldRow('psychicDampener'); // 2026-10-17
   else if(ev.type === 'lumber' && ev.rule && r.lumberEvery) hit = markFieldRow('lumberEvery'); // the Arena's Lumber Rush / Timber Fair (2026-10-17)
-  if(hit){ const p = document.getElementById('fieldCondCard') || document.getElementById('terrainPill'); if(p){ p.classList.add('has-new'); try{ fxHook('fieldReveal', p); }catch(e){} } }
+  if(hit){ const p = document.getElementById('fieldCondCard'); if(p){ p.classList.add('has-new'); try{ fxHook('fieldReveal', p); }catch(e){} } }
 }
 // The terrain pill on the board became a field card on the enemy's side (2026-10-14): see fieldCondCardHTML.
 // Wind (2026-10-13, 09:56 list): 'windy' = strong wind every other round, 'gale' = every round. A fight can set rules.wind itself.
@@ -51020,7 +50971,6 @@ ${tabOpen('gauntlet') ? `        <button class="btn primary big arena-mode-btn g
   document.getElementById('startVsAiBtn').addEventListener('click', ()=> startMatch('ai'));
   const abBtn = document.getElementById('openAutobattleBtn'); if(abBtn) abBtn.addEventListener('click', ()=>{ playSubTab = 'autobattle'; renderPlay(); });
   document.getElementById('startVsPcBtn').addEventListener('click', ()=> startMatch('pc'));
-  const asyncBtn = document.getElementById('startAsyncBtn'); if(asyncBtn) asyncBtn.addEventListener('click', ()=> { clearAsyncMatchState(); startMatch('async'); });
   const pvpBtn = document.getElementById('startPvpBtn'); if(pvpBtn) pvpBtn.addEventListener('click', ()=> startMatch('pvp'));
   { const gb = document.getElementById('startGauntletBtn'); if(gb) gb.addEventListener('click', ()=> startMatch('gauntlet')); }
   { const a = document.getElementById('startCagedAiBtn'); if(a) a.addEventListener('click', ()=> startMatch('ai', {caged:true}));
@@ -51575,10 +51525,14 @@ CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8',
   deck:{'meadow-frog':3, 'puddle-hopper':3, 'bog-leech':3, 'marsh-wisp':2, 'willow-o-wisp':2}, bossAdds:{'swamp-alligator':2, 'crocodile-ambusher':1}}));
 // The second dungeon series (2026-10-16, user: "Another submap dungeon series - place it in Map 22. Not used for now. It's like Murgle,
 // but left to right, with 50 difficulties for now."): built exactly like Murgle (one deck, each floor 4% stronger, a bigger fight every
-// tenth floor), laid out left to right. Map 22 is still a Reserved map, so players can't reach it; `preview` keeps it out of their
-// Dungeons tab and World map (it shows as a locked "new dungeon" slot) while admins can open it from the Dungeons tab.
+// tenth floor), laid out left to right. `preview` keeps it out of the players' Dungeons tab and World map while admins can open
+// it from the Dungeons tab.
 // 2026-10-17: Map 22 is the Rimefire Caldera now (id m22, was the Reserved r15); the Long Burrow stays attached to it.
-CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'m22', axis:'x', preview:true, entry:{x:50, y:50, label:'The Long Burrow'},
+// 2026-10-18 (WP4): Map 22 is a real map, so the only thing holding the Long Burrow back is the owner's go-ahead. Until then players
+// see its slot as "Coming soon" (not a lock they could meet). Releasing it is this one switch: set LONG_BURROW_RELEASED to true and
+// it opens for players once they reach the Rimefire Caldera (Dungeons tab, World map and the key button all follow `preview`).
+const LONG_BURROW_RELEASED = false;
+CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'m22', axis:'x', preview:!LONG_BURROW_RELEASED, entry:{x:50, y:50, label:'The Long Burrow'},
   name:'The Long Burrow', icon:'🦡', bossName:'The Sett Lord', bossIcon:'👑', floors:50, baseHq:200,
   blurb:'A badger run that tunnels sideways under the high country, sett after sett, further than any map has drawn it.',
   flavor:'More diggers. Deeper setts.', bossFlavor:'Every tenth sett belongs to someone bigger, and they heard you coming.',
@@ -53201,7 +53155,7 @@ function compassDiamondSVG(mapId, locked){
 const DAILY_DUNGEONS = [
   {mapId:'mm', mapNumber:6},
   {mapId:'mlb', mapNumber:22, slot:2, icon:'🦡', goldLeavesEveryClear:true}, // 2026-10-16: 🍂 20 + N Gold Leaves on every clear of floor N // 2026-10-16: the Long Burrow, Map 22 (was an empty slot at Map 20); admin preview only for now
-  {slot:3, mapNumber:40, icon:'🗿'},
+  {slot:3, mapNumber:40, icon:'🗿'}, // 2026-10-18: no dungeon and no Map 40 yet; the slot reads "Unlocks beyond the charted maps" (mapIsCharted)
 ];
 // A dungeon players can't see yet (map.preview, 2026-10-16): shown to them as a locked slot, to admins as the real thing.
 function dungeonHiddenFromPlayer(map){ return !!(map && map.preview) && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled); }
@@ -53310,16 +53264,18 @@ function renderDungeonsSubTab(body){
   const progress = loadConquestProgress(), s = loadDungeonTickets(), h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
   const cards = DAILY_DUNGEONS.map(dd=>{
     const map = dd.mapId && CONQUEST_MAPS.find(m=> m.id === dd.mapId);
+    // 2026-10-18 (WP4): a slot a player can't open reads honestly. A built dungeon held back for release (`preview`) is "Coming soon";
+    // a slot on a map not charted yet (Map 40 today) opens beyond the charted maps; only a slot on a real map names that map.
     if(!map || dungeonHiddenFromPlayer(map)) return `<div class="dg-card is-soon"><div class="dg-diamond map-theme-mm">${compassDiamondSVG('dg' + dd.slot, true)}<span class="wd-ico">${dd.icon || '❔'}</span></div>
-      <div class="dg-body"><b class="dg-name">A new dungeon</b><p class="dg-sub">🔒 Opens around Map ${dd.mapNumber}</p></div></div>`;
+      <div class="dg-body"><b class="dg-name">A new dungeon</b><p class="dg-sub">${map ? '🚧 Coming soon. Something is still digging down there.' : mapIsCharted(dd.mapNumber) ? `🔒 Opens around Map ${dd.mapNumber}` : `🧭 ${UNCHARTED_LOCK}`}</p></div></div>`;
     const preview = !!map.preview, open = preview || isMapUnlocked(map, progress), f = dungeonFloorProgress(map, progress), run = f.done > 0, best = dungeonBestFloor(map.id);
     const parent = CONQUEST_MAPS.find(m=> m.id === map.parent);
-    return `<div class="dg-card ${open ? '' : 'is-locked'} ${preview ? 'is-preview' : ''}">${preview ? '<span class="dg-admin-tag" title="Players see a locked slot here (Map 22 is not charted yet)">🛠️ Admin preview</span>' : ''}<div class="dg-diamond map-theme-${map.id}">${compassDiamondSVG('dg-' + map.id, !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
+    return `<div class="dg-card ${open ? '' : 'is-locked'} ${preview ? 'is-preview' : ''}">${preview ? '<span class="dg-admin-tag" title="Players see a &quot;Coming soon&quot; slot here until it is released">🛠️ Admin preview</span>' : ''}<div class="dg-diamond map-theme-${map.id}">${compassDiamondSVG('dg-' + map.id, !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map ${dd.mapNumber}${parent ? ' · ' + escapeHtml(parent.name) : ''}</span>
         <p class="dg-sub">${escapeHtml(map.blurb || '')}</p>
         ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${f.total ? Math.round(100 * f.done / f.total) : 0}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total}${best ? ` · best: floor ${best}` : ''}</span></div>
           <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : s.n > 0 ? (run ? '🗝️ Keep climbing' : '🗝️ Enter') : '🗺️ Look at the map'}</button>${run ? `<span class="dg-run">${f.done} cleared this climb</span>` : ''}</div>`
-        : `<p class="dg-sub">🔒 Clear ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
+        : `<p class="dg-sub">🔒 ${map.entry && map.entry.after ? 'Clear' : 'Reach' /* 2026-10-18: an entrance with no `after` opens as soon as its map does */} ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
   }).join('');
   body.innerHTML = `<div class="panel dungeons-panel">
     <div class="dg-head"><h2>🗝️ ${escapeHtml(dungeonTabLabel(progress)) /* 2026-10-16 (user: "...once you unlock the 2nd, it just says Daily Dungeons") */}</h2><p class="panel-sub">Endless climbs, a little harder every floor. Each floor takes a key: win and it comes back; lose and it's gone, and the climb starts again from floor 1.</p></div>
@@ -54215,14 +54171,13 @@ function renderConquestSubTab(body){
     const fb = document.getElementById('cnpFightBtn');
     if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
     { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); openSweepMenu(so, map, selectedNode, energyCost, body); }); }
-    { const sb = document.getElementById('cnpSweepBtn'); if(sb) sb.addEventListener('click', ()=>{ const n = Number((document.getElementById('cnpSweepN')||{}).value)||1; sb.disabled = true; sb.textContent = 'Auto-sweeping…';
-        setTimeout(()=>{ const r = runSweep(map.id, selectedNode.key, n); renderConquestSubTab(body); if(r) showSweepResults(r, map.id, selectedNode.key); }, 30); }); } // 2026-10-16: a results screen, not a toast
-    { const ib = document.getElementById('cnpIdleSweep'); if(ib) ib.addEventListener('change', ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, selectedNode.key); showToast(ib.checked ? TX('toast.keep-auto-sweeping-here-spare-energy') : TX('toast.stopped-auto-sweeping-here'), 'ok'); }); }
+    // 2026-10-18 (WP4): the panel's own sweep count, Sweep button and idle checkbox (#cnpSweepN/#cnpSweepBtn/#cnpIdleSweep) went; the
+    // ⚡ menu (openSweepMenu) has done all three since it replaced them.
     const seBtn = document.getElementById('cnpEditSkirmish');
     if(seBtn) seBtn.addEventListener('click', ()=> openSkirmishEditor(map.id, selectedNode.key));
     // Admin (2026-10-12, user: "Auto-complete skirmishes"): no fight, no rewards; just the progress.
     { const ac = document.getElementById('cnpAdminClear'); if(ac) ac.addEventListener('click', ()=>{ adminCompleteNodes(map.id, [selectedNode.key]); renderConquestSubTab(body); }); }
-    { const am = document.getElementById('cnpAdminClearMap'); if(am) am.addEventListener('click', ()=>{ adminCompleteNodes(map.id, map.nodes.filter(n=> n.kind!=='tutorial').map(n=> n.key), {allRewards:true}); renderConquestSubTab(body); }); }
+    // (2026-10-18: #cnpAdminClearMap's handler went; "clear the whole map" is the map layout bar's mlClearMap.)
     const nrBtn = document.getElementById('cnpEditRewards');
     if(nrBtn) nrBtn.addEventListener('click', ()=> openNodeRewardsEditor(map.id, selectedNode.key));
     panelEl.querySelectorAll('[data-battlemode]').forEach(b=> b.addEventListener('click', ()=>{
@@ -55667,17 +55622,8 @@ function quitTutorialToHome(){
   switchTab('home');
   showToast(TX('toast.tutorial-paused-tap-start-the-tutorial'));
 }
-function continueTutorialFromHome(){
-  // 2026-10-13 (user: "when you click start the tutorial, it should reset"): a fresh start — the guides show again, from part 1,
-  // and the side is picked again — instead of resuming with every tip already marked seen on this device.
-  if(!loadTutorialDone()){
-    GUIDED_STEPS.forEach(st=> coachSeen.delete(st.id)); ['go-tutorial2','go-tutorial2b','leader','wait','lumber','handLimit','g-peek'].forEach(id=> coachSeen.delete(id));
-    try{ localStorage.setItem(COACH_SEEN_KEY, JSON.stringify([...coachSeen])); localStorage.removeItem('bramblewood_arena_faction'); }catch(e){}
-    saveTutorialStage(1); showFactionScreen(); return;
-  }
-  if(!loadFactionChoice()){ showFactionScreen(); return; }
-  beginTutorialStage(loadTutorialStage());
-}
+// 2026-10-18 (WP4): continueTutorialFromHome() went with Home's "Start the tutorial" button (removed 2026-10-17); a paused tutorial
+// resumes from the 🎓 on the Outskirts map.
 function beginTutorialStage(stage, opts){
   saveTutorialStage(stage);
   startTutorialMatch(stage, null, opts);
@@ -58756,6 +58702,7 @@ function renderAdmin(){
                     // below; the Codex's Create-a-Card button/card-click gate reads adminModeEnabled
                     // fresh the next time IT renders.
   });
+  // 2026-10-18 (WP4 check): not dead. testRulesPanelHTML() builds this id from TEST_RULE_DEFS ('admin' + 'TideEvade' + 'Chk').
   const tideEvadeChk = document.getElementById('adminTideEvadeChk'); // 2026-10-16 (user: "Evade to non-swimmers for me to test.")
   if(tideEvadeChk) tideEvadeChk.addEventListener('change', e=>{ setTestRule('tideEvade', e.target.checked); renderAdmin(); });
   const teOpen = document.getElementById('adminTutorialEditorBtn'); if(teOpen) teOpen.onclick = openTutorialEditor;
@@ -59186,8 +59133,8 @@ function renderMyDeckPanels(){
     // 2026-10-16: a plain tile takes a plain copy. When every plain copy is in (only a Shiny / alt-art look is left), say so.
     if(!e.shiftKey){ const st = lookStock(id); if(st.plain !== Infinity && (st.shiny || Object.keys(st.skins).length)){ const lk = deckLooksFor(id), plainUsed = (myDeckCounts[id]|0) - deckLookCount(lk) + Object.keys(lk).filter(k=> k.startsWith('skin:')).length; if(plainUsed >= st.plain){ denyShake(el); floatText(el, _t('Every plain copy is in'), 'debuff'); return; } } }
     deckCardClick(e, id, myDeckCounts, '#myDeckPool', '#myDeckList', ()=>{ saveMyDeck(); renderMyDeckPanels(); }, true); }));
-  // Item #10: both the pool tiles and the deck-list chips can be dragged onto the leader slot
-  // (see leaderSlotHTML/wireLeaderSlot) to set that card as the deck's leader — a locked pool
+  // Item #10: both the pool tiles and the deck-list chips can be dragged (2026-10-18: onto #myDeckList; the leader slot they were
+  // also dropped on is gone, the leader is picked in openLoadoutPicker) — a locked pool
   // tile is deliberately excluded, matching the same "not usable yet" rule the click-to-add
   // handlers above already apply.
   document.querySelectorAll('#myDeckList .dchip, #myDeckPool .card-tile:not(.locked)').forEach(el=>{
@@ -61060,17 +61007,9 @@ function wireLiveHoverSelfHeal(){
     // A real drag (native HTML5 drag-and-drop) suppresses ordinary mousemove delivery in
     // every mainstream browser, so this never fights the dedicated dragover/dragleave
     // handling elsewhere in wireDropZones() — this purely covers the plain-hover case.
-    const dropLeft = document.getElementById('dropLeft'), dropRight = document.getElementById('dropRight');
-    const inZone = (el)=> !!el && !el.classList.contains('disabled') && (()=>{
-      const r = el.getBoundingClientRect();
-      return e.clientX>=r.left && e.clientX<=r.right && e.clientY>=r.top && e.clientY<=r.bottom;
-    })();
-    const overLeft = inZone(dropLeft), overRight = inZone(dropRight);
-    const centerEmpty = ownRowCenterEmpty(m);
-    ownRow.classList.toggle('row-dragover', overLeft || overRight);
-    ownRow.classList.toggle('drag-center', (overLeft || overRight) && centerEmpty);
-    ownRow.classList.toggle('drag-side-left', overLeft && !centerEmpty);
-    ownRow.classList.toggle('drag-side-right', overRight && !centerEmpty);
+    // 2026-10-18 (WP4): the Left/Right drop buttons (#dropLeft/#dropRight) it measured are no longer drawn, so the cursor is never
+    // over one: what's left is the self-heal itself, clearing a highlight a plain mouse move shouldn't leave on (same as before).
+    ownRow.classList.remove('row-dragover', 'drag-center', 'drag-side-left', 'drag-side-right');
   });
 }
 let placementPreview = null; // {row, ghostEl} while a preview is currently showing, else null
@@ -61145,12 +61084,11 @@ function updateControlsDisabled(){
   // per-button on; the opponent's-turn banner (renderMatchUI) already explains why nothing's
   // clickable, same idea as the 'pc' pass overlay hiding controls during the other seat's turn.
   if(m.mode==='liveRanked' && m.active!==m.liveMySeat){
-    ['dropLeft','dropRight','dropDiscard','skipZone'].forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.add('disabled'); });
+    ['dropDiscard','skipZone'].forEach(id=>{ const el=document.getElementById(id); if(el) el.classList.add('disabled'); });
     return;
   }
   const me = m.players[viewerHandPid(m)];
-  const leftEl = document.getElementById('dropLeft'), rightEl = document.getElementById('dropRight');
-  [leftEl, rightEl].forEach(el=>{ if(el) el.classList.toggle('disabled', me.playedThisTurn || m.resolving); });
+  // (2026-10-18, WP4: the Left/Right drop buttons #dropLeft/#dropRight are no longer drawn; their toggle went.)
   const discardEl = document.getElementById('dropDiscard'); if(discardEl){ discardEl.classList.toggle('disabled', me.discardUsedThisTurn || m.resolving || !pitchAllowedIn(m)); if(!pitchAllowedIn(m)) discardEl.removeAttribute('title'); }
   document.body.classList.toggle('pitch-locked', !pitchAllowedIn(m));
   const skipEl = document.getElementById('skipZone'); if(skipEl) skipEl.classList.toggle('disabled', m.resolving);
@@ -72753,7 +72691,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
     <div class="forge-stats">${delta(now.attack, next.attack, 'atk', '⚔')}${delta(now.health, next.health, 'hp', '❤')}</div>
     ${noGain ? `<p class="forge-note">Small stats round to the same number this level; the gain shows up at a later level.</p>` : ''}
     ${!maxed ? `
-      ${levelGateNeed(L+1) ? `<p class="forge-note forge-gate">🗺️ Level ${L+1} opens once you reach Map ${levelGateNeed(L+1)}.</p>` : forgeTierFor(id, L+1) ? `<p class="forge-note forge-gate">🏭 ${!forgeRarityOK(id) ? `Your ${escapeHtml(forgeTierInfo().name)} can't work ${escapeHtml(((RARITY_DEFS.find(r=> r.key===(sel.rarity||'common'))||{}).label) || sel.rarity)} cards yet` : `Your ${escapeHtml(forgeTierInfo().name)} tempers up to Lv ${forgeTierInfo().cap}`}: upgrade the Forge (${escapeHtml(forgeTierInfo(forgeTierFor(id, L+1)).name)}) to go on.</p>` : ''}
+      ${levelGateNeed(L+1) ? `<p class="forge-note forge-gate">🗺️ ${mapIsCharted(levelGateNeed(L+1)) ? `Level ${L+1} opens once you reach Map ${levelGateNeed(L+1)}.` : `Level ${L+1} ${UNCHARTED_LOCK.toLowerCase()}.` /* 2026-10-18: Lv 9 and 10 wait for Maps 26 and 31, not charted yet */}</p>` : forgeTierFor(id, L+1) ? `<p class="forge-note forge-gate">🏭 ${!forgeRarityOK(id) ? `Your ${escapeHtml(forgeTierInfo().name)} can't work ${escapeHtml(((RARITY_DEFS.find(r=> r.key===(sel.rarity||'common'))||{}).label) || sel.rarity)} cards yet` : `Your ${escapeHtml(forgeTierInfo().name)} tempers up to Lv ${forgeTierInfo().cap}`}: upgrade the Forge (${escapeHtml(forgeTierInfo(forgeTierFor(id, L+1)).name)}) to go on.</p>` : ''}
       ${L === 0 ? `<p class="forge-note forge-gate">🪺 The Forge tempers from Level 1. A Level-0 card is trained to Level 1 in the Nest, with Kibble.</p><button type="button" class="btn primary forge-act" id="forgeToNestBtn">🪺 Nurture it in the Nest</button>` : `<button type="button" class="btn primary forge-act" id="forgeLevelUpBtn" ${afford?'':'aria-disabled="true"'}>🔨 ${escapeHtml(_t('Temper to Lv {n}', {n:L+1}))}${btnCostHTML(cost)}</button>`}
       ${afford ? '' : `<p class="forge-note">${Object.keys(cost.mats||{}).some(mid=> ownedCount(mid) < cost.mats[mid]) ? (cost.mats['dragon-scale'] && ownedCount('dragon-scale') < 1 ? 'The last level of a Mythic card needs a Dragon Scale.' : 'The last levels of an Epic or rarer card need a Tempering Stone: bosses drop them, and the Blacksmith smelts them.') : 'Win fights or open packs for more Dust and Maple Leaves.'}</p>`}
     ` : `${lb && lb.why !== 'done' ? forgeLimitBreakHTML(id, lb) : ''}
@@ -72769,7 +72707,7 @@ function forgeLimitBreakHTML(id, lb){
   const d = forgeBaseDef(id), c = lb.cost || limitBreakCost(id), next = forgeStatsAt(id, LIMIT_BREAK_LEVEL), now = forgeStatsAt(id, 10);
   const board = limitBreakDupBoardHTML(id, lb), short = Math.max(0, lb.dupsNeed - lb.dups);
   const gain = [now.attack!=null && next.attack>now.attack ? `⚔ ${now.attack} → ${next.attack}` : '', now.health!=null && next.health>now.health ? `❤ ${now.health} → ${next.health}` : ''].filter(Boolean).join(' · ');
-  if(lb.why==='map') return `<div class="forge-limit is-locked"><div class="fl-head">💥 Limit break to Lv ${LIMIT_BREAK_LEVEL}</div>${board}<p class="forge-note">🗺️ Limit breaks open once you reach Map ${lb.need}, deep in the wilds.</p></div>`;
+  if(lb.why==='map') return `<div class="forge-limit is-locked"><div class="fl-head">💥 Limit break to Lv ${LIMIT_BREAK_LEVEL}</div>${board}<p class="forge-note">🗺️ ${mapIsCharted(lb.need) ? `Limit breaks open once you reach Map ${lb.need}, deep in the wilds.` : 'Limit breaks unlock beyond the charted maps, deep in the wilds.' /* 2026-10-18: Map 50 isn't charted yet */}</p></div>`;
   return `<div class="forge-limit ${lb.why==='dups'?'is-locked':''}">
     <div class="fl-head">💥 Limit break to Lv ${LIMIT_BREAK_LEVEL}</div>
     ${board}
@@ -73064,7 +73002,6 @@ function renderHome(){
     </div>`;
   root.querySelectorAll('[data-hometab]').forEach(b=> b.addEventListener('click', ()=>{ const t = b.getAttribute('data-hometab'); if(t === 'tavern') openTavern(); else homeGo(t); }));
   const rj = document.getElementById('homeRejoinBtn'); if(rj) rj.addEventListener('click', ()=>{ if(!resumeAbandonedMatchNow()) renderHome(); });
-  const contTut = document.getElementById('homeContinueTutorialBtn'); if(contTut) contTut.addEventListener('click', continueTutorialFromHome);
   const questsBtn = document.getElementById('homeQuestsBtn'); if(questsBtn){ questsBtn.addEventListener('click', openQuestsModal); refreshQuestBadge(); }
   const cb = document.getElementById('homeCommunityBtn');
   if(cb) cb.addEventListener('click', e=>{ e.stopPropagation(); const t = community[0]; if(t) switchTab(t); });
@@ -73843,10 +73780,8 @@ function renderDeckSectionInner(){
     </div>
     <div id="deckSubBody"></div>`;
   root.querySelectorAll('[data-decktab]').forEach(b=> b.addEventListener('click', ()=>{ deckSubTab = b.getAttribute('data-decktab'); renderDeckSection(); }));
-  const codexBtn = document.getElementById('deckToCodexBtn');
-  if(codexBtn) codexBtn.addEventListener('click', ()=> switchTab('codex'));
-  const heroBtn = document.getElementById('deckHeroBtn'); // the Hero Hall is reachable from the deck list too (2026-10-08)
-  if(heroBtn) heroBtn.addEventListener('click', ()=>{ deckHeroView = true; deckShowList = false; deckEditingId = activeDeckId; renderDeckSection(); });
+  // 2026-10-18 (WP4): the handlers for #deckToCodexBtn and #deckHeroBtn went; neither button is drawn any more (the Hero trains in
+  // the Stomping Grounds).
   const body = document.getElementById('deckSubBody');
   if(deckSubTab==='sim' && !adminEntryVisible()) deckSubTab = 'list'; // D4 (2026-10-03): the Simulator is an admin tool now
   if(deckSubTab==='sim'){ body.innerHTML = '<div id="view-sim"></div>'; renderSim(); return; }
@@ -74548,6 +74483,8 @@ const BABY_GROW_HOURS = 4, NEST_SLOTS = 7;
 // makes thematic sense)"). Read as: the Nest opens on Map 3 with one nest; each further nest needs its map reached (5, 10, 15, 20,
 // 25, 30) AND is then built with Maple Leaves and Magic Dust. The seven hay spots stay; the locked ones show what opens them.
 // nestState().built counts the nests built after the first. A save from before this keeps enough built nests for what was in them.
+// 2026-10-18 (WP4): Map 25 is still Reserved (no fights) and Map 30 doesn't exist, so nests 6 and 7 can't be built yet; their spots
+// read "Unlocks beyond the charted maps" (mapIsCharted) until those maps are built. Which maps they wait for is the owner's call.
 const NEST_UNLOCKS = [
   {map:3, cost:null},
   {map:5, cost:{gold:150, dust:40}},
@@ -74768,6 +74705,8 @@ function nestKeeperHTML(){
     if(i >= open){ // 2026-10-16: a nest not built yet. The next one shows its map, or its price once that map is reached; the rest wait.
       const u = NEST_UNLOCKS[i], isNext = nx && nx.i === i, mapName = (CONQUEST_MAPS.find(m=> m.id === mapIdAt(u.map)) || {}).name || '';
       if(isNext && nx.reached) return `<button type="button" class="hay-nest is-locked is-buildable ${nx.affordable ? '' : 'is-poor'}" style="--x:${x}%; --y:${y}%" data-nest-build="1" aria-label="${escapeAttr(`Build this nest: ${nx.cost.gold||0} Maple Leaves and ${nx.cost.dust||0} Magic Dust`)}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔨</span><small class="nest-time nest-cost">${mapleLeafIconHTML()}${nx.cost.gold||0} ✨${nx.cost.dust||0}</small></button>`;
+      // 2026-10-18 (WP4): nests 6 and 7 wait for Maps 25 (Reserved, no fights) and 30 (not built): no map number for those.
+      if(!mapIsCharted(u.map)) return `<div class="hay-nest is-locked ${isNext ? 'is-next' : ''}" style="--x:${x}%; --y:${y}%" title="${escapeAttr(`${UNCHARTED_LOCK}, then it can be built`)}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔒</span>${isNext ? '<small class="nest-time">🧭</small>' : ''}<span class="sr-only">A nest that ${UNCHARTED_LOCK.toLowerCase()}</span></div>`;
       return `<div class="hay-nest is-locked ${isNext ? 'is-next' : ''}" style="--x:${x}%; --y:${y}%" title="${escapeAttr(`Opens on Map ${u.map}${mapName ? ' (' + mapName + ')' : ''}, then it can be built`)}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔒</span>${isNext ? `<small class="nest-time">Map ${u.map}</small>` : ''}<span class="sr-only">A nest that opens on Map ${u.map}</span></div>`;
     }
     if(!e) return `<button type="button" class="hay-nest is-empty" style="--x:${x}%; --y:${y}%" data-nest-empty="1" aria-label="An empty nest: set an egg or nurture a card"><span class="hay"></span><span class="nest-plus" aria-hidden="true">＋</span></button>`;
@@ -74785,7 +74724,7 @@ function nestKeeperHTML(){
       <div class="hatch-side">
         <div class="nk-nurse"><b>🧑‍🍼 Nurse master</b>${nurse ? `<span class="nk-card">${escapeHtml(nurse.icon||'')} ${escapeHtml(nurse.name)} ${nurseChipHTML(n.nurse)}</span><button type="button" class="btn small" id="nestNurseBtn">Swap</button><small class="nk-speed">${NURSE_ICON} Nursing ${nurseMasteryOf(n.nurse)}: the nests work ${Math.round((1 - nurseTimeFactor()) * 100)}% faster.</small>` : `<small>None yet: Unique cards and up (and the Wandering Traveller) can tend the nests. Their ${NURSE_ICON} Nursing mastery makes eggs hatch and cards train faster.</small><button type="button" class="btn small" id="nestNurseBtn">Choose</button>`}</div>
         <p class="hatch-help">Every egg and baby shows its <b>type</b>. What it grows into is a surprise of that type, Common to Rare. Eggs come from the road; babies are rescued after fights.</p>
-        <p class="hatch-help nest-count">🪺 <b>${open}</b> of ${NEST_SLOTS} nests built.${nx ? (nx.reached ? ` The next one can be built now: ${mapleLeafIconHTML()}${nx.cost.gold||0} and ✨${nx.cost.dust||0}.` : ` The next one opens on Map ${nx.map}.`) : ''}</p>
+        <p class="hatch-help nest-count">🪺 <b>${open}</b> of ${NEST_SLOTS} nests built.${nx ? (nx.reached ? ` The next one can be built now: ${mapleLeafIconHTML()}${nx.cost.gold||0} and ✨${nx.cost.dust||0}.` : mapIsCharted(nx.map) ? ` The next one opens on Map ${nx.map}.` : ` The next one ${UNCHARTED_LOCK.toLowerCase()}.`) : ''}</p>
         ${waiting.length ? `<p class="hatch-wait">🧺 ${waiting.length} more waiting in the basket for a free nest.</p>` : ''}
         ${packed.length ? `<p class="hatch-wait">🎒 ${packed.length} egg${packed.length===1?'':'s'} in your pack. Tap an empty nest to set ${packed.length===1?'it':'one'} down.</p>` : ''}
         <p class="hatch-help">🌱 Tap an empty nest to train a Level-0 card (a fresh hatchling or a Base card) up to Level 1 with 🦴 Kibble. You have <b>🦴${myCurrencies.kibble||0}</b>. Only the Nest can do that; the Forge takes it from there.</p>
@@ -75411,13 +75350,8 @@ function grantTrackCards(why, extraPool){
   [extraPool || factionTrackPool(), baseTrackPool()].forEach(pool=>{ const id = trackPick(pool); if(!id) return; const before = copiesOwned(id); unlockCardForPlayer(id, why || 'progressTrack'); if(copiesOwned(id) > before) out.push(id); });
   return out;
 }
-// Map 20's boss, first clear: the faction's Epic and Heroic (the highest-numbered card of each rarity on your side).
-function grantMap20FactionCrown(){
-  const defs = getCardDefs(), pool = factionTrackPool(), out = [];
-  try{ fxHook('factionCrown', loadFactionChoice()); }catch(e){} // 2026-10-15 batch F (nothing calls this function yet)
-  ['epic', 'heroic'].forEach(r=>{ const c = pool.filter(id=> (defs[id].rarity||'') === r).sort((a,b)=> copiesOwned(a) - copiesOwned(b) || (defs[b].numericId||0) - (defs[a].numericId||0))[0]; if(!c) return; const before = copiesOwned(c); unlockCardForPlayer(c, 'map20Crown'); if(copiesOwned(c) > before) out.push(c); });
-  return out;
-}
+// 2026-10-18 (WP4): grantMap20FactionCrown (Map 20's boss giving the faction's Epic and Heroic) is gone. Nothing ever called it, and
+// the crown was retired on 2026-10-13.
 /* Faction Reward and Faction Growth (2026-10-13, 10:57 list):
    "16 Otter and Hummingbird faction cards ... and 8 generic cards - 40. The faction pool = 5 of each common card, 4 of each
    uncommon, 3 of each rare... etc. min 1. When you gain a 1x faction reward, you gain a random card of Faction tier. Your faction
