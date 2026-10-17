@@ -34682,6 +34682,23 @@ var EmojiStyle = (function(){
     re.lastIndex = 0;
     return s.replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`);
   };
+  // 2026-10-17 (user: "Playing a card and when a card dies consistently lags the game by 0.1s"): a whole block of HTML the game
+  // is about to insert (the board rows) gets its emoji as <img> in the string, so the browser builds the pictures while parsing
+  // instead of the observer walking the new rows and swapping each emoji node by node (about as costly as the row render itself).
+  // Only text between tags is touched (never attributes), and nothing inside <svg>, <script>, <style>, <textarea>, <select>,
+  // <option>, <title> or <noscript>, the same places the observer skips.
+  const SKIP_TAGS = /^(svg|script|style|textarea|select|option|title|noscript)$/i;
+  const htmlBlock = s=>{
+    s = s == null ? '' : String(s);
+    if(!active || !s || !pre.test(s)) return s;
+    const parts = s.split(/(<[^>]*>)/); let skip = 0;
+    for(let i = 0; i < parts.length; i++){
+      const p = parts[i]; if(!p) continue;
+      if(p.charCodeAt(0) === 60){ const m = /^<(\/?)([a-zA-Z0-9-]+)/.exec(p); if(m && SKIP_TAGS.test(m[2]) && !/\/>$/.test(p)) skip += m[1] ? -1 : 1; if(skip < 0) skip = 0; continue; }
+      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = p.replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`); }
+    }
+    return parts.join('');
+  };
   // The text of an element with its emoji pictures read back as emoji (textContent skips an <img>'s alt).
   const textOf = el=>{
     if(!el) return '';
@@ -34689,7 +34706,7 @@ var EmojiStyle = (function(){
     let out = ''; const walk = n=>{ for(const c of n.childNodes){ if(c.nodeType === 3) out += c.data; else if(c.nodeType === 1) c.nodeName === 'IMG' && c.classList.contains('tw-emoji') ? out += (c.alt || '') : walk(c); } };
     walk(el); return out;
   };
-  return {get, set, apply, isActive: ()=> !!active, active: ()=> active || 'system', sets: ()=> SETS.slice(), refreshCredits, html, textOf};
+  return {get, set, apply, isActive: ()=> !!active, active: ()=> active || 'system', sets: ()=> SETS.slice(), refreshCredits, html, htmlBlock, textOf};
 })();
 try{ if(EmojiStyle.get() !== 'system'){ const go = ()=> EmojiStyle.apply(); document.body ? setTimeout(go, 0) : document.addEventListener('DOMContentLoaded', go); } }catch(e){}
 // Crabs fork (2026-10-14, user: "Ignore Crab claws. Crabs have fork - thematically. And the symbol can be a Crab claw."): on a crab
@@ -36779,7 +36796,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '7eb6a0e27228', BUILD_CARD_HASH = '0c29854f14e6b5386235913ac1a1b157e970825b4d1d5fb3be77ef9ae45902ce';
+const BUILD_ID = '5bb3fd4aed50', BUILD_CARD_HASH = '0c29854f14e6b5386235913ac1a1b157e970825b4d1d5fb3be77ef9ae45902ce';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -59617,7 +59634,10 @@ function updateHpRibbon(side, hp){
   const f = el.querySelector('.bf-hp-fill'); if(f) f.style.width = pct.toFixed(1)+'%';
   const n = el.querySelector('.bf-hp-num'); if(n) n.innerHTML = `${hp}<small>/${hq.maxHp}</small>`;
   el.classList.toggle('is-low', pct<=30);
-  el.classList.remove('is-hit'); void el.offsetWidth; el.classList.add('is-hit');
+  // 2026-10-17 (user: "Playing a card and when a card dies consistently lags the game by 0.1s"): the hit flash restarted (with a
+  // forced page layout) on every HUD redraw, both castles, even with no damage; it now replays only when the castle lost Health.
+  m._ribbonHp = m._ribbonHp || {}; const prevHp = m._ribbonHp[side]; m._ribbonHp[side] = hp;
+  if(prevHp != null && hp < prevHp){ el.classList.remove('is-hit'); void el.offsetWidth; el.classList.add('is-hit'); }
 }
 // Who faces whom (2026-10-03, explicit: "Your position is either in integers or in half integers,
 // comparing your integer index, you can see who you are facing"). Same rule as the engine's
@@ -61220,6 +61240,22 @@ function renderBoard(opts){
   // across the board from its old spot. After the end, cards simply sit where they are.
   const gsapFlip = hasGsap() && typeof Flip !== 'undefined' && !m.over && !m.ending && !!document.querySelector(FLIP_SEL);
   let flipState = null, prevRects = null, flipTargetCount = 0;
+  // 2026-10-17 (user: "Playing a card and when a card dies consistently lags the game by 0.1s"): GSAP Flip measured every card
+  // before and after the rebuild one card at a time, and each card's measuring (a helper element added and removed, the transform
+  // re-read) made the browser redo the page's style and layout: about 4 forced style + layout passes per card, 80-120 ms for a
+  // dozen cards, on every play and every death. On fixed-slot boards (Open, Gladiator: the normal fights) the cards never leave
+  // their cells, so the move is a plain slide: those renders skip Flip (skipFlip) and glide the cards that moved from where they
+  // were, reading every rect in one pass and then writing (glideBoardCardsBatch: two layouts in all). When no card changes cell and
+  // the column range is the same (a death, most plays) nothing is measured at all. Classic rows (Collapse) keep Flip.
+  let skipFlip = false, flipNoMove = false, flipSlotFast = false;
+  if(slotView && rowIds.every(id=> id === 'rowEnemy' || id === 'rowMine')){
+    flipSlotFast = true;
+    const cells = new Map();
+    [[p1Rows, 1], [p2Rows, 2]].forEach(([rows, pid])=> [...rows.left, ...rows.center, ...rows.right].forEach(c=> cells.set(String(c.uid), pid + ':' + c.slot)));
+    const prevCells = m._flipCells;
+    if(prevCells && m._flipRange === slotRange){ flipNoMove = true; for(const [u, cell] of cells){ if(prevCells.has(u) && prevCells.get(u) !== cell){ flipNoMove = false; break; } } }
+    m._flipCells = cells; m._flipRange = slotRange;
+  } else { m._flipCells = null; m._flipRange = null; }
   // Bugfix (2026-09-17, found while wiring up tasks #125/#126): GSAP's Flip.from()/onEnter
   // never actually distinguishes "a brand new uid with no prior recorded state" from an
   // ordinary move for THIS minified Flip build — a genuinely new element just silently appears
@@ -61361,7 +61397,10 @@ function renderBoard(opts){
       gsap.set(shovedEls, {clearProps:'x'});
       shovedEls.forEach(el=> shovedUids.delete(el.getAttribute('data-uid')));
     }
-    flipState = Flip.getState(FLIP_SEL, {props:'opacity,rotation'});
+    if(flipSlotFast){ // 2026-10-17: see skipFlip. A card still dropping in is glided the rest of the way from where it is now.
+      skipFlip = true;
+      if(!flipNoMove || enteringEls.length){ prevRects = new Map(); document.querySelectorAll(FLIP_SEL).forEach(el=> prevRects.set(el.getAttribute('data-uid'), el.getBoundingClientRect())); }
+    } else flipState = Flip.getState(FLIP_SEL, {props:'opacity,rotation'});
     repaintBoardRects = null; // Flip carries the cards this time (2026-10-15)
     if(enteringEls.length){
       // Also clear the newElRects position pin (see its own long bugfix comment, unchanged)
@@ -61386,8 +61425,9 @@ function renderBoard(opts){
   const rowEnemy = document.getElementById('rowEnemy'), rowMine = document.getElementById('rowMine');
   // Only the row(s) flagged by needEnemy/needMine above actually get rebuilt — an untouched
   // side's DOM (and therefore its on-screen position) is left byte-for-byte alone.
-  if(needEnemy && rowEnemy) rowEnemy.innerHTML = rowHTML(m.players[2], p2Rows);
-  if(needMine && rowMine) rowMine.innerHTML = rowHTML(m.players[1], p1Rows);
+  const emojiRows = h=>{ try{ return EmojiStyle.htmlBlock(h); }catch(e){ return h; } }; // 2026-10-17: emoji as pictures in the string (see EmojiStyle.htmlBlock)
+  if(needEnemy && rowEnemy) rowEnemy.innerHTML = emojiRows(rowHTML(m.players[2], p2Rows));
+  if(needMine && rowMine) rowMine.innerHTML = emojiRows(rowHTML(m.players[1], p1Rows));
   if(needEnemy || needMine) fxHook('boardRowsBuilt', document.getElementById('battlefieldEl')); // batch D (2026-10-15, docs/effects-lab-contract.md): status looks back on rebuilt rows
   // Reserve rows (2026-10-12, raids as a full game): the same columns as the front rows, so a reserve sits right behind its unit.
   if(reserveRowsOf(m)){
@@ -61449,7 +61489,7 @@ function renderBoard(opts){
   // entrance tween AND Flip's own tween have finished (see the settle delayedCall further
   // below), so no card is ever left "alone in flow" while a sibling is still absent from it.
   let newElRects = null, entranceTotalDur = 0;
-  if(gsapFlip){
+  if(gsapFlip && !skipFlip){ // (no Flip, no pins: the cards stay in flow, see skipFlip)
     if(newBoardEls.length){
       // MEASURE ONLY here — do NOT write position:absolute yet. See the Cause E bugfix comment
       // right above the actual pin-writing code (further below, right after Flip.from() is
@@ -61538,7 +61578,9 @@ function renderBoard(opts){
     newElRects = null;
   }
   if(window.__DEBUG_RENDER__) console.log('[enteringUids before force-reset]', JSON.stringify([...enteringUids]), 'attackingUids=', JSON.stringify([...attackingUids]));
-  if(gsapFlip){
+  if(gsapFlip && skipFlip){
+    if(prevRects && prevRects.size && !reducedMotion()) glideBoardCardsBatch(rowIds, prevRects); // 2026-10-17: see skipFlip
+  } else if(gsapFlip){
     // Only hand Flip elements that already existed before this render — see the prevUidSet
     // bugfix note above. A brand new uid is deliberately excluded from Flip's own targets so
     // Flip can't silently "claim" it (its internal entering-item handling turns out to be a
@@ -61897,7 +61939,7 @@ function renderBoard(opts){
       // that merely agree on paper. Only when there's no concurrent Flip.from() to hook into
       // (gsapFlip false — nothing else is fighting for this row's flow right now) does a plain
       // delayedCall at `dur` handle it on its own.
-      if(!gsapFlip){
+      if(!gsapFlip || skipFlip){
         gsap.delayedCall(dur, releaseNewElRects);
       }
     }
@@ -64731,9 +64773,21 @@ function captureBoardCardRects(){
 }
 // Like glideFromRect, but also eases a size change (a row's cards shrink with their count): offset by the centre, scale from
 // the old width. Skips jumps too big to be a reflow (a measurement taken mid-stack) and cards something else is animating.
-function glideBoardCardFrom(el, from){
+// 2026-10-17: every card's new rect is read first, then GSAP reads each card's transform, then the glides are written, so the
+// browser lays the page out once instead of once per card (see skipFlip in renderBoard).
+function glideBoardCardsBatch(rowIds, fromRects){
+  if(!hasGsap()) return;
+  const els = [];
+  rowIds.forEach(id=>{ const row = document.getElementById(id); if(!row) return;
+    row.querySelectorAll('.board-card[data-uid]').forEach(el=>{ const f = fromRects.get(el.getAttribute('data-uid')); if(f && !el.classList.contains('is-entering')) els.push([el, f]); }); });
+  if(!els.length) return;
+  const tos = els.map(([el])=> el.getBoundingClientRect());
+  els.forEach(([el])=>{ try{ gsap.getProperty(el, 'x'); }catch(e){} });
+  els.forEach(([el, from], i)=> glideBoardCardFrom(el, from, tos[i]));
+}
+function glideBoardCardFrom(el, from, toRect){
   if(!el || !from || !el.isConnected || !hasGsap() || gsap.isTweening(el) || el.classList.contains('is-entering')) return;
-  const to = el.getBoundingClientRect(); if(!to.width) return;
+  const to = toRect || el.getBoundingClientRect(); if(!to.width) return;
   let dx = (from.left + from.width/2) - (to.left + to.width/2), dy = (from.top + from.height/2) - (to.top + to.height/2);
   const s = from.width / to.width;
   if(Math.abs(dx) < 3 && Math.abs(dy) < 3 && Math.abs(s - 1) < 0.02) return;
