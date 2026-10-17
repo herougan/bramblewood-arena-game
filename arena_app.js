@@ -893,6 +893,9 @@ const PASSIVE_DEFS = [
   // Ice Arrow / Twin Shot / Volley (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire Arrow, Ice
   // Arrow etc. will be more normal."): see fireArrowVolley in bramblewood-engine.js.
   {key:'iceArrow', category:'evergreen', label:'Ice Arrow', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: shoots an icy arrow for ${v||2} cold damage at the enemy facing it (or the nearest). A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter). Never misses Flying units.`},
+  // 2026-10-17 (user: "First creature to have 2x Arrow 2."): how many Arrow shots the card looses (a skill can't be on a card twice).
+  // No line of its own: the Arrow line repeats (War Elephant reads "Arrow 2" twice). Set in the card editor as a number.
+  {key:'arrowCount', category:'evergreen', hidden:true, label:'Arrows (count)', kind:'number', min:1, defaultValue:2, desc:v=>`Its Arrow fires ${v||2} times a round, each arrow aimed on its own.`},
   {key:'twinShot', category:'evergreen', label:'Twin Shot', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: shoots two arrows for ${v||2} damage each, at two different random enemy units (both at one if there is only one; the castle if the board is empty). Never misses Flying units.`},
   {key:'volley', category:'evergreen', label:'Volley', kind:'number', min:1, defaultValue:1, desc:v=>`Every other round while Ready (its first Ready round, then every 2nd), before melee: looses a volley, an arrow for ${v||1} damage at every enemy unit (the castle if the board is empty). Never misses Flying units.`},
   // The Bolts (2026-10-15, user: "We need bolts - these might be quite creature-specific. All elemental or status-y. They just
@@ -2228,6 +2231,8 @@ function describeEffects(def, liveCard){
   PASSIVE_DEFS.forEach(p=>{ if(p.reserved) return; /* a retired, empty slot (Worthy, 2026-10-16) has no line */ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${skillText(p, [e.esprit||0, e.espritHp||0], e)}`); return; } // 2026-10-16 skill audit: the short card text
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
+    if(p.key==='arrowCount') return; // 2026-10-17: read on the Arrow line, which repeats
+    if(p.key==='arrow' && Number(e.arrowCount) > 1){ const nA = Math.min(4, Math.round(Number(e.arrowCount))); for(let k = 0; k < nA; k++) lines.push(`${ic('arrow')}${p.label}${valSuffix(v)} — ${k ? 'A second bow on the same back: another arrow, aimed on its own.' : skillText(p, v, e)}`); return; } // "2x Arrow 2" (2026-10-17)
     // Zeitgeber advanced forms (2026-10-15): "Diurnal – {Evasive, Thorns 1}", "Tide – {+5/+5, Evasive}, {Armor 2}", "Full Moon – {…}".
     if(p.key==='diurnalGrant' || p.key==='nocturnalGrant' || p.key==='fullMoonGrant'){ const g = e[p.key]; const nmZ = p.key==='diurnalGrant' ? 'Diurnal' : p.key==='nocturnalGrant' ? 'Nocturnal' : 'Full Moon';
       const gl = escapeHtml(grantText(g) || 'nothing'); // 2026-10-16 (user: "Don't put {} ... inside"): the picks read in the sentence
@@ -4128,6 +4133,10 @@ const Ambience = (()=>{
     m9:{arrive:[clank], events:[]},
     m10:{arrive:[sc=> blip(sc, 2400, 1500, 0.7, 'sine', 0.03)], events:[[steps('stone'), 70, 110]]},
     m11:{arrive:[sc=> thunder(sc, 0.2)], events:[]},
+    // 2026-10-17: the ice volcano rumbles under the snow; the siege fields beat the war drums; the keep clanks with armour.
+    m22:{arrive:[rumble], events:[[steps('snow'), 55, 90]]},
+    m23:{arrive:[drumFar], events:[[drumFar, 30, 60], [steps('grass'), 60, 95]]},
+    m24:{arrive:[clank], events:[[steps('stone'), 70, 110]]},
     mu:{arrive:[sc=>{ for(let i=0;i<5;i++) puff(sc, 0.05, 0.02, 'bandpass', 1400 + i*200, 3, i*0.12); }], events:[[chime, 12, 25]]},
     mp:{arrive:[sc=>{ plop(sc); frog(sc); }], events:[[whirr, 15, 30], [plop, 12, 26]]},
     mc:{arrive:[sc=>{ waveCrash(sc); gulls(sc); }], events:[[splash, 20, 40], [gulls, 14, 28]]},
@@ -4550,7 +4559,7 @@ const SONGBOOK = {
 const MAP_MUSIC = {
   m1:'conquest', mq:'conquest', mf:'conquest', ml:'conquest', mh:'conquest', mo:'conquest', ms:'map_swamp', mn:'map_cave', mv:'map_sky', mi:'map_snow',
   m2:'map_water', mj:'map_water', mp:'map_water', mb:'map_water', mc:'map_water', m7:'map_water', mk:'map_water',
-  m3:'map_fire', m9:'map_fire', m11:'map_fire', me:'map_fire', mx:'map_fire',
+  m3:'map_fire', m9:'map_fire', m11:'map_fire', me:'map_fire', mx:'map_fire', m22:'map_snow', m23:'map_sand', m24:'conquest', // 2026-10-17: the ice volcano, the siege fields, the keep
   m4:'map_cave', mg:'map_cave', mu:'map_cave', mz:'map_cave',
   m5:'map_sand', md:'map_sand',
   m6:'map_snow', mt:'map_snow',
@@ -5870,6 +5879,7 @@ const MAP_BATTLEFIELD_CLASS = {
   m10:'map-m10', // Eyrie Heights -- pale alpine sky
   m11:'map-m11', // The Sundered Peak -- dramatic dusk crimson
   m21:'map-m21', // The Quiet Summit -- snow and dawn
+  m22:'map-m22', m23:'map-m23', m24:'map-m24', // 2026-10-17: the Rimefire Caldera (snow over a glowing crater), the Goldfeather Siege, Goldfeather Keep
   mf:'map-mf',   // Thistlewood -- wet forest, stream and pond (the Outskirts' old art since 2026-10-15)
   mb:'map-mb',   // Pebble Beach -- sand and shallows (2026-10-09)
   mg:'map-m4',   // Smugglers' Grotto (sub-map) -- borrows the cave look
@@ -13342,7 +13352,7 @@ function activateSpot(spot){
 // 2026-10-15 (user: "Are there any submaps with no background? fill them in."): the Old Bramble, Ice Hollow, Glimmer Depths,
 // Sunken Grove, Aerie Vault and Volcano Lair had art baked in but weren't listed here, so it never drew; Murgle Mayhem had none.
 // They now borrow a recoloured map (MAP_ART_DERIVED in assemble_arena.py), and the build fails if this list falls behind.
-const MAP_ART_IDS = new Set(["mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","mtut","mj","mo","mi","mn","ms","mv","mx","mm"]);
+const MAP_ART_IDS = new Set(["mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm"]);
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -13997,7 +14007,10 @@ function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rule
   if(VOLCANO_MAPS.has(mid) && node){ const k = node.kind || '';
     if(r.eruption == null) r.eruption = k === 'worldboss' ? 5 : /boss/.test(k) ? 3 : /elite|champion|dungeon/.test(k) ? 2 : 0;
     if(r.bossSurge == null && /^(finalboss|boss|worldboss)$/.test(k)) r.bossSurge = {atk:2, hp:4};
-    if(r.enemyOre == null && k === 'worldboss') r.enemyOre = {stone:1, metal:1, metalEvery:2}; }
+    if(r.enemyOre == null && k === 'worldboss') r.enemyOre = {stone:1, metal:1, metalEvery:2};
+    // 2026-10-17: the glow's uneven Day/Night, and Ashy ground after the volcano's Eruption (where a fight gives the volcano odds).
+    if((r.phase === 'cycle' || r.phase === 'nightFirst') && r.phaseDay == null && r.phaseNight == null && !r.phaseLen){ r.phaseDay = VOLCANO_GLOW.day; r.phaseNight = VOLCANO_GLOW.night; }
+    if(r.ashyAfterEruption == null) r.ashyAfterEruption = true; }
   if(r.terrain == null && node && mid){ const t = terrainFor(mid, node); if(t) r.terrain = t; }
   return r; }
 // Terrain (2026-10-12, user: "The fire effects of the volcano are not visible on the field. Let the player read what it does.
@@ -14131,7 +14144,7 @@ function fieldRowsSeen(){ try{ return JSON.parse(localStorage.getItem(FIELD_ROWS
 function markFieldRow(key){ if(matchState && matchState.fxLib) return false; /* 🔬 the Effects library never marks a field row seen (2026-10-14) */ const st = fieldRowsSeen(); if(st[key] != null) return false; st[key] = fightSerial(); try{ localStorage.setItem(FIELD_ROWS_KEY, JSON.stringify(st)); }catch(e){} return true; }
 function fieldRowState(key){ const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
 // Rows that are in force from the first round (no event to wait for) count as happening when the fight starts.
-const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1']); // + field effects 2 that have no event of their own (2026-10-16)
+const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1', 'ashy', 'volcanoGlow']); // + field effects 2 that have no event of their own (2026-10-16); Ashy all fight and the Volcano Glow (2026-10-17)
 // Volcano hazards with odds (2026-10-14, user: "Volcano: Lava Tide, Petrification, Eruption - 1%, 2%, 3% (Hovering says 'Very Low'),
 // 10/12/14% (Low), 20/22/24% (Medium), 45/50/55 and increasing (1/2 chance), 60 and above, (High)"). rules.volcano is the level;
 // rules.lavaTideChance / petrifyChance / eruptionChance override one hazard (0–100). The engine rolls them (volcanoTick); the
@@ -14174,7 +14187,18 @@ const FIELD2 = {
   leylines2:     {icon:'✴️', name:'Leylines II', editor:'leylines2', short:'+1 Lumber a round', text:'Each round from round 2, both sides gain 1 Lumber.'},
   leylines3:     {icon:'✴️', name:'Leylines III', editor:'leylines3', short:'+1 Lumber, +1 Stone; 3 damage to all', text:'Each round from round 2, both sides gain 1 Lumber and 1 Stone, but every unit takes 3 magic damage and both castles take 3 (never below 1). Atheist units take none.'},
   haunted:       {icon:'👻', name:'Haunted', editor:'haunted', short:'A unit a side is Frightened', text:"Each round from round 2, one random unit on each side is Frightened: it doesn't attack that round. Ghosts and Atheists aren't scared."},
+  // Field effects 3 (2026-10-17, the user's notes 17 and 24): Sulphur Fumes by the vents (user: "'Hazardous Gas' ... Since poison is already
+  // used, think of something else"), Ash Rain and Ashy from the volcano (user: "new ones like Ash Rain and Ashy (volcano explosion)"), and
+  // Arrow Slits on the castle maps (user: "Fortified Castle map"). Rules in bramblewood-engine.js (fieldEffects2Tick, chokeOf, ashyNow).
+  sulphurFumes:  {icon:'💨', name:'Sulphur Fumes', editor:'sulphurfumes', short:'Units choke: −1 Attack', text:"Each round from round 2, the vents breathe out: every unit that doesn't resist fire, isn't Dry and isn't Flying is Choking that round: −1 Attack on everything it deals. No damage, no poison."},
+  ashRain:       {icon:'🌋', name:'Ash Rain', editor:'ashrain', short:'Castles −1; the sun dims', text:'Each round from round 2, ash falls: both castles take 1 damage (never below 1), and the ash dims the sun: day bonuses are halved, as under Cloudy.'},
+  ashy:          {icon:'🌫️', name:'Ashy', editor:'ashy', short:'Flyers grounded; misses 1 in 5', text:'Thick ash on the ground and in the air: Flying units are grounded (Flying gives no dodge, and no Tailwind or Headwind), and every attack at a unit misses 1 in 5. Darksight, Keen Sense and Sonar see through it.'},
+  arrowSlits:    {icon:'🏹', name:'Arrow Slits', editor:'arrowslits', short:'The walls shoot 2 a round', text:"Each round from round 2, the defenders' walls loose an arrow at a random unit on the attackers' side: 2 damage. A Helmet can turn it."},
 };
+// 2026-10-17 (user: "Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow of the volcanoes"): the row the volcano
+// maps' uneven cycle shows, and the "after an Eruption" form of Ashy.
+const VOLCANO_GLOW_TEXT = (d, n)=> `No true night here: the volcano's glow keeps it Day for ${d} rounds, then Night for ${n}, and round again.`;
+const ASHY_AFTER_TEXT = 'After an Eruption the ground is Ashy for 4 rounds: Flying units are grounded (no Flying dodge, no Tailwind or Headwind), and every attack at a unit misses 1 in 5. Darksight, Keen Sense and Sonar see through it.';
 // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the spout no longer brings the Tide in.
 const TIDESPOUT_TEXT = "Each round from round 2, a spout bursts in one random column: the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.";
 const FIELD2_SCORCHING3_TEXT ='Scorching, level 3: each round 4 random units on each side take 3 fire damage. Heat-resistant units are spared.';
@@ -14217,6 +14241,10 @@ function fieldConditionRows(r){
   }
   // Field effects 2 (2026-10-16): one row each, in FIELD2's order (the Tide's row sits with the other tides above).
   Object.keys(FIELD2).forEach(k=>{ if(k === 'tide' || !r[k]) return; if(k === 'undergrowth' && r.canopy) return; const f = FIELD2[k]; add(k, f.icon, f.name, f.text, '', f.short); });
+  // 2026-10-17: Ashy after an Eruption (only where the volcano can erupt), and the volcano maps' uneven Day/Night.
+  if(!r.ashy && r.ashyAfterEruption && volcanoRulesOn(r)) add('ashyAfter', FIELD2.ashy.icon, 'Ashy (after an Eruption)', ASHY_AFTER_TEXT, '', 'An Eruption leaves the ground Ashy');
+  if((r.phase === 'cycle' || r.phase === 'nightFirst') && (Number(r.phaseDay) > 0 || Number(r.phaseNight) > 0)){ const PL = Number(r.phaseLen) || 3, d = Number(r.phaseDay) || PL, n = Number(r.phaseNight) || PL;
+    if(d !== n) add('volcanoGlow', '🌋', 'Volcano Glow', VOLCANO_GLOW_TEXT(d, n), '', `Day ${d} rounds, Night ${n}`); }
   if(r.bossSurge) add('bossSurge', '💢', 'Boss surge', `Their boss surges +${r.bossSurge.atk}/+${r.bossSurge.hp} when it's cast.`, '', `Their boss arrives +${r.bossSurge.atk}/+${r.bossSurge.hp}`);
   if(r.enemyOre) add('enemyOre', '⛏️', 'Deep mines', 'Their side digs the Stone and Metal it needs.', '', 'They dig Stone and Metal');
   return rows;
@@ -14268,6 +14296,10 @@ function noteFieldEvent(ev){
   else if(ev.type === 'lumber' && ev.leylines && r.leylines2) hit = markFieldRow('leylines2');
   else if(ev.type === 'tide' && r.tide) hit = markFieldRow('tide');
   else if((ev.type === 'evaded' && ev.reason === 'slippery') || ev.type === 'slipFizzle') hit = markFieldRow('slippery');
+  // Field effects 3 (2026-10-17)
+  else if(ev.type === 'fieldTick' && ['sulphurFumes', 'ashRain', 'arrowSlits'].includes(ev.field)) hit = markFieldRow(ev.field);
+  else if(ev.type === 'fieldTick' && ev.field === 'ashy') hit = markFieldRow('ashyAfter');
+  else if(ev.type === 'evaded' && ev.reason === 'ashy') hit = markFieldRow(r.ashy ? 'ashy' : 'ashyAfter');
   if(hit){ const p = document.getElementById('fieldCondCard') || document.getElementById('terrainPill'); if(p){ p.classList.add('has-new'); try{ fxHook('fieldReveal', p); }catch(e){} } }
 }
 // The terrain pill on the board became a field card on the enemy's side (2026-10-14): see fieldCondCardHTML.
@@ -14293,7 +14325,11 @@ const DARK_MAPS = new Map([['mg','dark'], ['m4','dark'], ['mz','dark'], ['mj','p
 const DARK_LEVEL_NAME = {dark:'Darkness', pitch:'Pitch Black', absolute:'Absolute darkness'};
 const DARK_LEVEL_TEXT = {dark:'Level 1: units without Darksight miss 1 attack in 4. An Illuminate unit lights your side.', pitch:'Level 2: units without Darksight miss 1 attack in 2. An Illuminate unit lights your side.'};
 const WINDY_MAPS = {mc:'windy', md:'windy', m3:'windy', m11:'windy', m10:'gale', mv:'gale'};
-const VOLCANO_MAPS = new Set(['m11', 'me', 'mx']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart
+const VOLCANO_MAPS = new Set(['m11', 'me', 'mx', 'm22']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart; + the Rimefire Caldera, Map 22 (2026-10-17)
+// 2026-10-17 (user: "I think there is no true night on the volcano. Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow
+// of the volcanoes."): on the volcano maps that have day and night (the Volcano Lair, inside the mountain, has none) the cycle is Day 4 rounds,
+// Night 2 (rules.phaseDay / phaseNight, bramblewood-engine.js phaseLens). A fight's own phaseDay / phaseNight wins.
+const VOLCANO_GLOW = {day:4, night:2};
 function simulateSkirmishVsDeckSeeded(node, deckCounts, playerChar, seed){
   const defs = getCardDefs(), engine = makeSimEngine(defs, seededRng(seed), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: fightRules(null, node)});
   const sideOf = id=> id===1?'A':'B', stats = {};
@@ -14569,6 +14605,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label>Battle type<select id="seMode">${opt('', draft.battleMode, 'Default (' + ((BATTLE_MODES[CONQUEST_DEFAULT_MODE]||{}).label || CONQUEST_DEFAULT_MODE) + ')')}${Object.keys(BATTLE_MODES).map(k=> opt(k, draft.battleMode, BATTLE_MODES[k].label || k)).join('')}</select></label>
           <label title="Day all match unless the map is a night map (2026-10-12). Real time: the player's clock decides (7 PM to 7 AM is day), with a doubled twilight on the minute at 7">Day &amp; night<select id="sePhase">${(()=>{ const ph = (draft.rules||{}).phase || ''; return opt('', ph, 'Map default (day; night on night maps)') + opt('off', ph, 'Off') + opt('cycle', ph, 'Cycle, day first') + opt('nightFirst', ph, 'Cycle, night first') + opt('day', ph, 'Always day') + opt('night', ph, 'Always night') + opt('realtime', ph, 'Real time (7 PM–7 AM day)'); })()}</select></label>
           <label title="Rounds of day before night falls (and back again)">Switch every<input id="sePhaseLen" type="number" min="1" max="9" placeholder="3" value="${(draft.rules||{}).phaseLen != null ? escapeAttr((draft.rules||{}).phaseLen) : ''}"> rounds</label>
+          <label title="An uneven cycle (2026-10-17, the volcano's glow: Day 4, Night 2). Blank: the map's own (the volcano maps 4 and 2), else Switch every">Day / Night<input id="sePhaseDay" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseDay != null ? escapeAttr((draft.rules||{}).phaseDay) : ''}"> / <input id="sePhaseNight" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseNight != null ? escapeAttr((draft.rules||{}).phaseNight) : ''}"> rounds</label>
           <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 castle Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never gives up')}</select></label>
           <label title="What this fight keeps putting out once it has no cards left">Out of cards, summons<select id="seLoop">${Object.entries(LOOP_PRESETS).map(([k, p])=> opt(k === '-' ? '' : k, draft.loopUnits || '', p.label)).join('')}</select></label>
@@ -14642,6 +14679,9 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue','seLoop'][i]); if(val) draft[k] = val; else delete draft[k]; });
       { const ph = v('sePhase'), pl = v('sePhaseLen'); const r = Object.assign({}, draft.rules||{}); delete r.phase; delete r.phaseLen;
         if(ph){ r.phase = ph; if(pl !== '' && pl != null && (ph==='cycle' || ph==='nightFirst')) r.phaseLen = Math.max(1, Math.min(9, Math.round(Number(pl)||3))); }
+        { delete r.phaseDay; delete r.phaseNight; const pd = v('sePhaseDay'), pn = v('sePhaseNight'); // uneven Day/Night (2026-10-17)
+          if(pd !== '' && pd != null && Number(pd) > 0) r.phaseDay = Math.max(1, Math.min(9, Math.round(Number(pd))));
+          if(pn !== '' && pn != null && Number(pn) > 0) r.phaseNight = Math.max(1, Math.min(9, Math.round(Number(pn)))); }
         { const ac = v('seActions'); delete r.actions; if(ac !== '' && ac != null && Number(ac) > 1) r.actions = Math.max(1, Math.min(5, Math.round(Number(ac)))); }
         if(Object.keys(r).length) draft.rules = r; else delete draft.rules; }
       delete draft.rating; // the rating is computed from the deck now (2026-10-12)
@@ -16266,10 +16306,51 @@ const CONQUEST_MAPS = [
       { key:"21-5", kind:"elite", name:"Snow Owl Parliament", icon:"🦉", deck:{"snow-owl-sentinel":3,"hawk-arrowkeeper":2,"eagle-sharpshooter":2,"golden-eagle-diver":2,"snowshoe-hare":2,"shrine-high-priest":1}, hqHp:230, flavor:"They have been debating your arrival since dawn. They have reached no decision, only a verdict.", requires:["21-3"] },
       { key:"21-6", kind:"boss", name:"The Cathedral Eagle", icon:"🦅", deck:{"cathedral-eagle":1,"eagle-diver":2,"peak-condor":2,"golden-eagle-diver":2,"snow-owl-sentinel":2,"alpine-avalanche":1,"eagle-sharpshooter":2}, hqHp:280, flavor:"It nests on the very top of the world, and it saw you coming three maps ago.", requires:["21-4","21-5"] },
     ]},
-  { id:"r15", unlockAfter:"m21", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
-  { id:"r16", unlockAfter:"r15", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
-  { id:"r17", unlockAfter:"r16", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
-  { id:"r18", unlockAfter:"r17", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
+  // Map 22, the Rimefire Caldera (2026-10-17, user: "Ice volcano stage, in 22 or 23. Story is, you're still very high up, traveling around"):
+  // past the Quiet Summit the road crosses a snow-capped crater that never went cold. Frozen lava, steam vents, blue ice on black glass.
+  // Cold and heat at once: Hail with a Lava Spout, Frigid ground with Scorching, the vents' Sulphur Fumes, and Ash Rain off the crater.
+  // It is a volcano map (VOLCANO_MAPS): the glow's Day 4 / Night 2 cycle, Scorched Ground in the big fights, the volcano's odds on the
+  // elites and the boss, and Ashy ground after an Eruption. The Long Burrow (22-LB, the daily dungeon) still opens from here.
+  { id:"m22", unlockAfter:"m21", name:"The Rimefire Caldera", icon:"🌨️", blurb:"Still above the clouds, the road crosses a crater that never went cold: snow on black glass, steam from every crack, and things that learned to live in both.", sequential:true,
+    nodes: [
+      { key:"22-1", kind:"skirmish", name:"Snowmelt Switchbacks", icon:"🐐", deck:{"mountain-goat-climber":3,"scree-goat":3,"glacier-yak":2,"snowshoe-hare":2,"alpine-marmot":2}, hqHp:260, flavor:"The snow here melts from underneath. The goats don't seem to mind.", requires:[], fixedPos:{x:10, y:78} },
+      { key:"22-2", kind:"skirmish", name:"Steam Vents", icon:"♨️", deck:{"fire-salamander":2,"magma-salamander":2,"cinder-gecko":3,"ember-centipede":3,"ice-petrel":2}, hqHp:270, rules:{sulphurFumes:true}, flavor:"Yellow steam, warm stones, and a smell like a thousand bad eggs. The geckos love it.", requires:["22-1"], fixedPos:{x:24, y:50} },
+      { key:"22-3", kind:"skirmish", name:"Frozen Lava Flow", icon:"🧊", deck:{"basalt-boar":3,"tundra-musk-ox":2,"obsidian-scorpion":2,"snow-ermine":3,"frostbitten-wolverine":2}, hqHp:280, rules:{slippery:25}, flavor:"Black glass under a skin of ice. Every step is a guess.", requires:["22-1"], fixedPos:{x:30, y:84} },
+      { key:"22-4", kind:"skirmish", name:"Hailstone Ridge", icon:"🌨️", deck:{"snow-owl-sentinel":2,"snow-bunting-archer":3,"ice-petrel":3,"glacier-yak":2,"frost-hare-sprinter":2}, hqHp:285, rules:{hail:2}, flavor:"The storm up here doesn't snow. It throws.", requires:["22-2"], fixedPos:{x:38, y:24} },
+      { key:"22-5", kind:"skirmish", name:"The Geyser Field", icon:"⛲", deck:{"permafrost-mammoth":1,"fire-drake-hatchling":2,"magma-salamander":2,"ice-crevasse-wolf":3,"ash-moth":2,"rimefire-salamander":2}, hqHp:295, rules:{field:"frozen", lavaSpout:2}, flavor:"The ground freezes, the geysers thaw it, the ground freezes again. Twice a minute.", requires:["22-3"], fixedPos:{x:58, y:80} },
+      { key:"22-6", kind:"elite", name:"Ashfall Cornice", icon:"🌋", deck:{"ash-cloud-condor":2,"phoenix-fledgling":2,"cinder-hornet":2,"peak-condor":2,"ashwing-ptarmigan":2,"stonedrop-vulture":2}, hqHp:305, rules:{ashRain:true, volcano:"low"}, flavor:"Grey snow falls on white snow. The birds ride the heat until the crater coughs.", requires:["22-4"], fixedPos:{x:62, y:20} },
+      { key:"22-7", kind:"elite", name:"The Steam Wall", icon:"🌫️", deck:{"ur-elk":2,"permafrost-mammoth":2,"magma-titan":2,"fumarole-ibex":2,"glacier-wolf-pack":2,"tundra-musk-ox":2}, hqHp:315, rules:{field:"heatwave", hail:2}, flavor:"Where the lava meets the glacier, a wall of steam a mile high. Big shapes walk inside it.", requires:["22-5"], fixedPos:{x:78, y:62} },
+      { key:"22-8", kind:"boss", name:"The Rimeheart Colossus", icon:"👑", deck:{"rimeheart-colossus":1,"magma-titan":2,"glacial-ape-king":1,"yeti":2,"rimefire-salamander":2,"fumarole-ibex":2,"caldera-snow-leopard":1,"snow-owl-sentinel":2}, hqHp:340, rules:{volcano:"low", hail:2, lavaSpout:2}, flavor:"Half glacier, half magma, all of it angry. It is the reason the crater never cooled.", requires:["22-6","22-7"], fixedPos:{x:90, y:36} },
+    ]},
+  // Maps 23 and 24, the Fortified Castle (2026-10-17, user: "Interesting map and their units (Map 23, 24) e.g. Fortified Castle map,- breach the
+  // gates to fight a magnate duck, and the warfield partially outside, with war units like war elephants with arrow animals inside shooting.
+  // First creature to have 2x Arrow 2."). Down from the heights, the road reaches Goldfeather Keep, the Magnate Duck's fortress.
+  // Map 23 is the warfield outside the walls (the Magnate's hired army: war elephants with archers in their howdahs, siege engines, trenches);
+  // its last fights are under the walls, where Arrow Slits shoot down at your side. Map 24 is inside: breach the gate, cross the bailey,
+  // the counting house, the courtyard and the battlements, and climb the keep to the Magnate Duck.
+  { id:"m23", unlockAfter:"m22", name:"The Goldfeather Siege", icon:"⚔️", blurb:"Down from the heights at last, onto churned fields below a golden wall. The Magnate's hired army is camped outside it, and it has elephants.", sequential:true,
+    nodes: [
+      { key:"23-1", kind:"skirmish", name:"The Picket Line", icon:"🐴", deck:{"warhorse-charger":2,"stable-colt":3,"pack-mule":2,"mouse-sapper":3,"badger-trench-digger":2}, hqHp:300, flavor:"Sellswords on ponies. They are paid by the day, so they are in no hurry to finish you.", requires:[], fixedPos:{x:8, y:50} },
+      { key:"23-2", kind:"skirmish", name:"Trench Works", icon:"🪏", deck:{"badger-sapper":2,"badger-trench-digger":2,"mouse-sapper":3,"testudo-tortoise":2,"chipmunk-hoarder":2}, hqHp:310, flavor:"Every trench leads somewhere. Most of them lead to more trench.", requires:["23-1"], fixedPos:{x:22, y:26} },
+      { key:"23-3", kind:"skirmish", name:"Elephant Road", icon:"🐘", deck:{"war-elephant":1,"howdah-archers":3,"marching-elephant":2,"pack-mule":2,"stable-colt":2}, hqHp:320, flavor:"The ground shakes before you see it. Then you see the bows.", requires:["23-1"], fixedPos:{x:24, y:76} },
+      { key:"23-4", kind:"skirmish", name:"Siege Camp", icon:"⛺", deck:{"trebuchet-crew":2,"testudo-tortoise":2,"beetle-battering-ram":2,"siege-rhino":1,"mouse-sapper":3}, hqHp:330, flavor:"Tents, cook-fires and a trebuchet with a name painted on it.", requires:["23-2","23-3"], fixedPos:{x:42, y:46} },
+      { key:"23-5", kind:"skirmish", name:"Under the Walls", icon:"🏹", deck:{"howdah-archers":2,"balloon-archer":2,"talon-archer":2,"badger-trench-digger":2,"testudo-tortoise":2}, hqHp:335, rules:{arrowSlits:true}, flavor:"From here the arrow slits can see you. Shields up.", requires:["23-4"], fixedPos:{x:58, y:22} },
+      { key:"23-6", kind:"elite", name:"The Elephant Line", icon:"🐘", deck:{"war-elephant":2,"howdah-archers":3,"marching-elephant":2,"cataphract-destrier":2,"warhorse-charger":2}, hqHp:350, rules:{arrowSlits:true}, flavor:"Six elephants abreast, and every howdah bristling.", requires:["23-4"], fixedPos:{x:60, y:74} },
+      { key:"23-7", kind:"elite", name:"The Barbican", icon:"🏯", deck:{"great-gate":1,"goose-sentry":3,"battlement-heron":2,"mallard-halberdier":2,"trebuchet-crew":2}, hqHp:360, rules:{arrowSlits:3}, flavor:"The gate's own little fortress. The geese have been told nobody gets in. They took it personally.", requires:["23-5","23-6"], fixedPos:{x:76, y:46} },
+      { key:"23-8", kind:"boss", name:"Marshal Tuskwell", icon:"👑", deck:{"marshal-tuskwell":1,"war-elephant":2,"howdah-archers":3,"siege-rhino":1,"trebuchet-crew":2,"testudo-tortoise":2}, hqHp:380, rules:{arrowSlits:true}, flavor:"The Magnate's marshal has never lost a siege. He has never been on the outside of one before.", requires:["23-7"], fixedPos:{x:90, y:50} },
+    ]},
+  { id:"m24", unlockAfter:"m23", name:"Goldfeather Keep", icon:"🏰", blurb:"Through the gate at last. Inside the walls everything is gilded, guarded and counted, and the Magnate Duck is waiting at the top of the keep.", sequential:true,
+    nodes: [
+      { key:"24-1", kind:"skirmish", name:"Breach the Gate", icon:"🚪", deck:{"great-gate":1,"goose-sentry":3,"battlement-heron":2,"mallard-halberdier":2,"pond-paddler":2}, hqHp:340, rules:{arrowSlits:true}, flavor:"Break the gate and the keep is open. The geese behind it disagree.", requires:[], fixedPos:{x:8, y:56} },
+      { key:"24-2", kind:"skirmish", name:"The Bailey", icon:"🦆", deck:{"mallard-halberdier":3,"goose-sentry":2,"mallard-marauder":2,"migration-leader":2,"duckling-squadron":3}, hqHp:350, flavor:"The whole garrison drills here. They are very good at drilling.", requires:["24-1"], fixedPos:{x:24, y:34} },
+      { key:"24-3", kind:"skirmish", name:"The Counting House", icon:"💰", deck:{"tax-collector-teal":3,"golden-magpie":2,"rodent-king":1,"chipmunk-hoarder":2,"lodge-engineer":2}, hqHp:350, flavor:"Every coin in the valley comes through this room, and every one is counted twice.", requires:["24-1"], fixedPos:{x:26, y:80} },
+      { key:"24-4", kind:"skirmish", name:"The Courtyard Fountain", icon:"⛲", deck:{"gilded-swan-knight":1,"mallard-halberdier":2,"pond-paddler":3,"truce-heron":2,"migration-leader":2}, hqHp:360, flavor:"A fountain of real gold coins. Don't drink from it.", requires:["24-2","24-3"], fixedPos:{x:44, y:56} },
+      { key:"24-5", kind:"skirmish", name:"The Battlements", icon:"🏹", deck:{"battlement-heron":3,"howdah-archers":2,"balloon-archer":2,"goose-sentry":2,"owl-fletcher":2}, hqHp:360, rules:{arrowSlits:2}, flavor:"Up on the wall walk, everyone has a bow and a better view than you.", requires:["24-4"], fixedPos:{x:58, y:22} },
+      { key:"24-6", kind:"elite", name:"The Gilded Guard", icon:"🦢", deck:{"gilded-swan-knight":2,"goose-sentry":3,"mallard-halberdier":3,"iron-warden":1,"truce-heron":2}, hqHp:380, flavor:"Swans in gold plate. Beautiful, loyal, and very, very bad-tempered.", requires:["24-4"], fixedPos:{x:64, y:80} },
+      { key:"24-7", kind:"elite", name:"The Treasury", icon:"🪙", deck:{"tax-collector-teal":3,"golden-magpie":2,"rodent-king":2,"elderhorn-monarch":1,"goose-sentry":2,"gilded-swan-knight":1}, hqHp:390, flavor:"The vault door is open. That should worry you more than it does.", requires:["24-6"], fixedPos:{x:80, y:58} },
+      { key:"24-8", kind:"boss", name:"The Magnate Duck", icon:"👑", deck:{"magnate-duck":1,"gilded-swan-knight":2,"goose-sentry":3,"mallard-halberdier":2,"tax-collector-teal":2,"battlement-heron":2}, hqHp:420, rules:{arrowSlits:2}, flavor:"He owns the keep, the valley, the road you came in on, and he would like to discuss your bill.", requires:["24-5","24-7"], fixedPos:{x:90, y:26} },
+    ]},
+  { id:"r18", unlockAfter:"m24", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
   { id:"r19", unlockAfter:"r18", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
   { id:"r20", unlockAfter:"r19", name:"Reserved", icon:"🔒", blurb:"Not charted yet.", sequential:true, reserved:true, nodes: [] },
   // Fused in as a side map (2026-10-12, user's map list: "Fuse mq in").
@@ -16381,13 +16462,13 @@ const CONQUEST_MAPS = [
   { id:"me", sub:true, parent:"m11", entry:{x:50, y:18, after:"20-10", label:"The crater's edge"}, name:"Eye of the Volcano", icon:"🌋", blurb:"Down inside the crater, where the dead keep the fire company and the living learned not to need much.", sequential:true,
     nodes: [
       { key:"20-A-1", rating:400, kind:"elite", name:"The Ash Ossuary", icon:"🦴", deck:{"ashbone-ghoul":4,"cinder-skeleton":3,"cinder-imp":2,"blessed-avatar":1}, hqHp:170, flavor:"Bones stacked like firewood. Some of them are still deciding.", rewards:{first:{gold:200, dust:30}}, requires:[] },
-      { key:"20-A-2", rating:420, kind:"elite", name:"The Wraith Vents", icon:"👻", deck:{"ashbone-ghoul":3,"cinder-skeleton":3,"pit-glutton":1,"sulfur-vent-crab":2,"cinder-gecko":1}, hqHp:219, flavor:"Every vent breathes out something that used to breathe in.", rewards:{first:{gold:210, dust:32}}, requires:["20-A-1"] },
+      { key:"20-A-2", rating:420, kind:"elite", name:"The Wraith Vents", icon:"👻", deck:{"ashbone-ghoul":3,"cinder-skeleton":3,"pit-glutton":1,"sulfur-vent-crab":2,"cinder-gecko":1}, hqHp:219, rules:{sulphurFumes:true} /* 2026-10-17: a vent-side fight, Sulphur Fumes */, flavor:"Every vent breathes out something that used to breathe in.", rewards:{first:{gold:210, dust:32}}, requires:["20-A-1"] },
       { key:"20-A-3", rating:435, kind:"elite", name:"The Lich's Kiln", icon:"🧙", deck:{"cinder-skeleton":3,"ashbone-ghoul":2,"blessed-avatar":2,"echo-keeper":1,"cinder-stoker":2}, hqHp:157, flavor:"It fires its servants like pottery. They come out harder every time.", rewards:{first:{gold:220, dust:35}}, requires:["20-A-2"] },
       { key:"20-A-4", rating:450, kind:"dungeon", name:"Heart of the Mountain", icon:"🗝️", deck:{"cinder-skeleton":4,"ashbone-ghoul":4,"magma-wraith":2}, hqHp:260, flavor:"Four doors down to where the fire began. The Contradiction is waiting at the bottom, and it is not dead.",
         dungeon:{rounds:4, tier:'boss', waveDecks:[null, {"magma-wraith":4,"obsidian-lich":2,"cinder-skeleton":4}, {"obsidian-lich":3,"ember-revenant":2,"magma-wraith":3,"ashbone-ghoul":2}, {"ember-revenant":3,"obsidian-lich":3,"magma-titan":2,"pyroclast-wyrm":2}]},
         rewards:{first:{gold:320, dust:50}}, requires:["20-A-3"] },
       { key:"20-A-5", rating:410, kind:"elite", name:"Scorched Boars", icon:"🐗", chance:0.35, deck:{"basalt-boar":2,"cinder-stoker":2,"sulfur-vent-crab":2,"echo-keeper":2,"ashbone-ghoul":2}, hqHp:229, flavor:"They root for beetles in ground that would cook an egg.", rewards:{first:{gold:180, dust:28}}, requires:["20-A-1"] },
-      { key:"20-A-6", rating:425, kind:"elite", name:"The Vent Crabs", icon:"🦀", chance:0.35, deck:{"sulfur-vent-crab":4,"obsidian-scorpion":1,"magma-salamander":3,"blessed-avatar":2}, hqHp:190, flavor:"The shells are black glass now. The tempers were always like that.", rewards:{first:{gold:190, dust:30}}, requires:["20-A-2"] },
+      { key:"20-A-6", rating:425, kind:"elite", name:"The Vent Crabs", icon:"🦀", chance:0.35, deck:{"sulfur-vent-crab":4,"obsidian-scorpion":1,"magma-salamander":3,"blessed-avatar":2}, hqHp:190, rules:{sulphurFumes:true} /* 2026-10-17: a vent-side fight, Sulphur Fumes */, flavor:"The shells are black glass now. The tempers were always like that.", rewards:{first:{gold:190, dust:30}}, requires:["20-A-2"] },
       { key:"20-A-7", rating:440, kind:"elite", name:"Ash Condor Roost", icon:"🦅", chance:0.35, deck:{"ash-cloud-condor":4,"blessed-avatar":2,"sulfur-vent-crab":1,"cinder-gecko":2,"fungal-colossus":1}, hqHp:200, flavor:"They ride the heat off the lava and never seem to land.", rewards:{first:{gold:200, dust:30}}, requires:["20-A-3"] },
     ]},
   // The Caldera Heart (2026-10-12, user D60: "The boss caps at 400 exactly. Defeating the boss unlocks the World boss submap and
@@ -16477,7 +16558,8 @@ CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8',
 // but left to right, with 50 difficulties for now."): built exactly like Murgle (one deck, each floor 4% stronger, a bigger fight every
 // tenth floor), laid out left to right. Map 22 is still a Reserved map, so players can't reach it; `preview` keeps it out of their
 // Dungeons tab and World map (it shows as a locked "new dungeon" slot) while admins can open it from the Dungeons tab.
-CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'r15', axis:'x', preview:true, entry:{x:50, y:50, label:'The Long Burrow'},
+// 2026-10-17: Map 22 is the Rimefire Caldera now (id m22, was the Reserved r15); the Long Burrow stays attached to it.
+CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'m22', axis:'x', preview:true, entry:{x:50, y:50, label:'The Long Burrow'},
   name:'The Long Burrow', icon:'🦡', bossName:'The Sett Lord', bossIcon:'👑', floors:50, baseHq:200,
   blurb:'A badger run that tunnels sideways under the high country, sett after sett, further than any map has drawn it.',
   flavor:'More diggers. Deeper setts.', bossFlavor:'Every tenth sett belongs to someone bigger, and they heard you coming.',
@@ -17043,9 +17125,13 @@ const MAP_BIOMES = {
   alpine:  {trees:['🌲','🏔️','🌲'], small:['🪨','🌿','🪶','❄️','🌼'], mover:{emoji:'🦅', kind:'bird', n:2}},
   meadow:  {trees:['🌳','🌻','🌳'], small:['🌼','🌾','🌷','🌱','🍀','🌼','🪨'], mover:{emoji:'🐝', kind:'butterfly', n:4}},
   beach:   {trees:['🌴','🪨','🌴'], small:['🐚','🦀','🪸','🫧','🪨','⭐'], mover:{emoji:'🦀', kind:'fish', n:3}},
+  // 2026-10-17: Map 22 (the ice volcano: snow, frozen lava, steam) and Maps 23-24 (the siege fields outside the walls, the keep inside).
+  frostfire:{trees:['🏔️','🌋','🏔️'], small:['❄️','🧊','♨️','🪨','💨','🌨️'], mover:{emoji:'🔥', kind:'firefly', n:3}},
+  warfield:{trees:['⛺','🌳','🪵'], small:['🪨','🏹','🛡️','🌾','🪓','🚩'], mover:{emoji:'🐦‍⬛', kind:'bird', n:3}},
+  castle:  {trees:['🏰','🗼','🏰'], small:['🪨','🛡️','⚔️','🪙','🌿','🚩'], mover:{emoji:'🕊️', kind:'bird', n:2}},
 };
 // 2026-10-15: m1 is 'meadow' and mf 'forest' now, following their swapped art ("I think the wetter one makes sense for the next map").
-const MAP_BIOME_OF = {mm:'swamp', mj:'reef', mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'forest', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'meadow', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m21:'alpine', mtut:'meadow', m12:'forest', m13:'savanna', m14:'ash'};
+const MAP_BIOME_OF = {mm:'swamp', mj:'reef', mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'forest', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'meadow', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m21:'alpine', m22:'frostfire', m23:'warfield', m24:'castle', mtut:'meadow', m12:'forest', m13:'savanna', m14:'ash'};
 function distToSeg(px,py, ax,ay, bx,by){ const dx=bx-ax, dy=by-ay; const L=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/L; t=Math.max(0,Math.min(1,t)); const x=ax+t*dx, y=ay+t*dy; return Math.hypot(px-x, py-y); }
 function generatedMapDecor(map, positions){
   const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;
@@ -22434,6 +22520,11 @@ const FXL_FIELDS = [
     ['leylines2', {leylines2:true}, {steps:['round', 'round'], note:'Watch the Lumber.'}],
     ['leylines3', {leylines3:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Doubting Badger', icon:'🦡', effects:{atheist:true}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'Every unit and castle burns for 3; the Atheist badger doesn\'t.'}],
     ['haunted', {haunted:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Wisp', icon:'👻', effects:{ghost:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'A unit on each side is Frightened and skips its attack; the Ghost is never scared.'}],
+    // Field effects 3 (2026-10-17)
+    ['sulphurFumes', {sulphurFumes:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Cinder Gecko', icon:'🦎', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}]}, steps:['round', 'round'], note:'The Specimen chokes (−1 Attack); the Dry gecko and the flying Crow breathe easy.'}],
+    ['ashRain', {ashRain:true, phase:'day'}, {units:FXL_PHASE_UNITS, steps:['round', 'round'], note:'Watch both castles lose 1 a round; the Sun Lark\'s Diurnal 2/2 is halved to 1/1.'}],
+    ['ashy', {ashy:true}, {units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'The Hawk and the Crow get no Flying dodge, and 1 swing in 5 is lost in the ash.'}],
+    ['arrowSlits', {arrowSlits:true}, {steps:['round', 'round', 'round'], note:'The enemy castle shoots one of your units for 2 each round.'}],
   ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> WIND_TEXT.windy, rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: each one rolls its own wind (at your back, in your face or calm).'},
@@ -30632,8 +30723,10 @@ function skyToneOf(m, ph){
   if(ph !== 'day') return null;
   try{ const pm = m.engine.getPhaseMode ? m.engine.getPhaseMode() : 'cycle'; if(pm !== 'cycle' && pm !== 'nightFirst') return 'day';
     const PL = m.engine.getPhaseLen ? m.engine.getPhaseLen() : 3; if(PL < 2) return 'day';
-    const zs = m.engine.getZeitStart ? m.engine.getZeitStart() : null, rr0 = zs != null ? Math.max(0, (m.round||1) - zs) : Math.max(1, m.round||1) - 1, rip = (rr0 % PL) + 1;
-    return rip === 1 && (m.round||1) > 1 ? 'dawn' : rip === PL ? 'dusk' : 'day'; }catch(e){ return 'day'; }
+    const zs = m.engine.getZeitStart ? m.engine.getZeitStart() : null, rr0 = zs != null ? Math.max(0, (m.round||1) - zs) : Math.max(1, m.round||1) - 1;
+    const si = m.engine.phaseStepInfo ? m.engine.phaseStepInfo(m.round||1) : null; // uneven Day/Night on the volcano (2026-10-17)
+    const rip = si ? si.idx : (rr0 % PL) + 1, len = si ? si.len : PL;
+    return rip === 1 && (m.round||1) > 1 ? 'dawn' : rip === len ? 'dusk' : 'day'; }catch(e){ return 'day'; }
 }
 // The steps inside a phase (2026-10-16, user: "The transition between 1->2->3 in day AND also night should be very slow, over 10s."):
 // a day's steps are its tones (dawn, day, dusk); a night's are shades of the night tone (.nstep-1 early, -2 deep, -3 the late,
@@ -30839,15 +30932,17 @@ function phasePillHTML(m){
   const phase = (dayNightOn(m) && matchPhaseMatters(m)) ? m.engine.getPhase() : null; if(!phase) return '';
   const PL = (m.engine && m.engine.getPhaseLen) ? m.engine.getPhaseLen() : 3;
   const zs = (m.engine && m.engine.getZeitStart) ? m.engine.getZeitStart() : null, rr0 = zs != null ? Math.max(0, (m.round||1) - zs) : Math.max(1, m.round||1) - 1;
-  const roundInPhase = (rr0 % PL) + 1;
+  // 2026-10-17: the volcano's uneven cycle (Day 4, Night 2) counts each half on its own length.
+  const si = (m.engine && m.engine.phaseStepInfo && phase !== 'twilight') ? m.engine.phaseStepInfo(m.round||1) : null;
+  const roundInPhase = si ? si.idx : (rr0 % PL) + 1, phaseRounds = si ? si.len : PL;
   const pmode = (m.engine && m.engine.getPhaseMode) ? m.engine.getPhaseMode() : 'cycle', cycling = pmode==='cycle' || pmode==='nightFirst';
   const phName = phase==='night' ? _t('Night') : phase==='twilight' ? 'Twilight' : _t('Day');
   // 2026-10-15: the moon (when a card cares about it) is the Night pill's icon: 🌒 1/3, its phase named in the tooltip.
   const moon = phase === 'night' && m.engine.moonPhase && matchHasMoonCards(m) ? (MOON_PHASES[m.engine.moonPhase()] || MOON_PHASES[0]) : null;
   const phIco = moon ? moon[0] : phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️';
-  const lines = [cycling ? `Night and Day alternate every ${PL} days.` : pmode === 'realtime' ? 'Night and Day follow your clock.' : `${phName} all match.`].concat(moon ? [moon[1] + '.'] : [])
-    .concat(phase === 'day' && cycling ? ['Draw +1 on Day.'] : []); // 2026-10-16 (user: "Day's tooltip should say, draw +1 on Day."): both sides draw when Day comes after Night
-  return bfPillHTML('phase-' + phase, phIco, phName, cycling ? `${roundInPhase}/${PL}` : '', pillTipHTML(phName, lines), (cycling ? `${phName}, round ${roundInPhase} of ${PL}` : phName) + (moon ? ', ' + moon[1] : ''));
+  const lines = [cycling ? (si && si.uneven ? VOLCANO_GLOW_TEXT(si.day, si.night) : `Night and Day alternate every ${PL} days.`) : pmode === 'realtime' ? 'Night and Day follow your clock.' : `${phName} all match.`].concat(moon ? [moon[1] + '.'] : [])
+    .concat(phase === 'day' && cycling ? ['Draw +1 on Day.'] : []); // 2026-10-16 (user: "Day's tooltip should say, draw +1 on Day.")
+  return bfPillHTML('phase-' + phase, phIco, phName, cycling ? `${roundInPhase}/${phaseRounds}` : '', pillTipHTML(phName, lines), (cycling ? `${phName}, round ${roundInPhase} of ${phaseRounds}` : phName) + (moon ? ', ' + moon[1] : ''));
 }
 function bfPillsHTML(m){
   if(!m || !m.engine) return '';
@@ -30927,6 +31022,8 @@ const FIELD_ART = {
   mirage:{art:'art/fields/mirage.png'}, canopy:{art:'art/fields/canopy.png'}, undergrowth:{art:'art/fields/undergrowth.png'}, tallgrass:{art:'art/fields/tallgrass.png'},
   slippery:{art:'art/fields/freezing.png'}, glassstorm:{art:'art/fields/sandstorm.png'}, hail:{art:'art/fields/frost.png'}, lavaspout:{art:'art/fields/lavatide.png'},
   leylines1:{art:'art/fields/leylines.png'}, leylines2:{art:'art/fields/leylines.png'}, leylines3:{art:'art/fields/leylines.png'}, haunted:{art:'art/fields/misty.png'},
+  // Field effects 3 (2026-10-17): borrowed pictures until their own exist (fumes the misty air, ash the eruption, the walls' arrows the gale).
+  sulphurfumes:{art:'art/fields/misty.png'}, ashrain:{art:'art/fields/eruption.png'}, ashy:{art:'art/fields/eruption.png'}, arrowslits:{art:'art/fields/gale.png'},
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
@@ -30934,7 +31031,7 @@ function fieldArtKeyOfRow(row, fr){
   if(k === 'permaTide') return fr.rapids ? 'rapids' : 'permatide';
   const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
     swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
-    eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines'};
+    eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines', ashyAfter:'ashy', volcanoGlow:'twilight'}; // + 2026-10-17
   if(FIELD2[k]) return FIELD2[k].editor; // field effects 2 (2026-10-16): the art key is the editor id
   if(k === 'eruption'){ let v = false; try{ v = volcanoRulesOn(fr); }catch(e){} if(!v) return 'scorched'; } // the fixed Scorched Ground, not the volcano's Eruption
   return map[k] || null;
@@ -34323,8 +34420,9 @@ const W2_BROKE_NAME = {armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow
 function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_NAME[k]; const pd = PASSIVE_DEFS.find(p=> p.key === k); return pd ? pd.label : k; }
 // ==== Field effects 2 (2026-10-16): battle-log lines and looks for the new field effects (rules in bramblewood-engine.js,
 // fieldEffects2Tick). Hazards log one header line, then one line per unit they hurt.
-const FIELD2_OWN_TICKS = new Set(['landslide', 'landslideHit', 'crushingDepths', 'crushingHit', 'hail', 'hailHit', 'glassStorm', 'glassHit', 'lavaSpout', 'lavaSpoutHit', 'leylines', 'leylinesHit', 'leylinesCastle', 'consternation', 'mirage', 'haunted']);
-const FIELD2_HIT = {landslideHit:['🪨', 'rocks'], crushingHit:['🫧', 'the crushing depths'], hailHit:['🌨️', 'the hail'], glassHit:['💎', 'flying glass'], lavaSpoutHit:['♨️', 'the lava spout'], leylinesHit:['✴️', 'the ley lines']};
+const FIELD2_OWN_TICKS = new Set(['landslide', 'landslideHit', 'crushingDepths', 'crushingHit', 'hail', 'hailHit', 'glassStorm', 'glassHit', 'lavaSpout', 'lavaSpoutHit', 'leylines', 'leylinesHit', 'leylinesCastle', 'consternation', 'mirage', 'haunted',
+  'sulphurFumes', 'ashRain', 'ashRainCastle', 'ashy', 'arrowSlits', 'arrowSlitHit']); // + field effects 3 (2026-10-17)
+const FIELD2_HIT = {landslideHit:['🪨', 'rocks'], crushingHit:['🫧', 'the crushing depths'], hailHit:['🌨️', 'the hail'], glassHit:['💎', 'flying glass'], lavaSpoutHit:['♨️', 'the lava spout'], leylinesHit:['✴️', 'the ley lines'], arrowSlitHit:['🏹', 'an arrow from the walls']};
 function field2LogText(ev, nm){
   const who = s=> s === 'A' ? 'your' : "the enemy's";
   if(ev.type === 'fieldTick'){
@@ -34341,9 +34439,17 @@ function field2LogText(ev, nm){
       case 'consternation': return {cls:'', text:`😰 Consternation: ${ev.count} card${ev.count === 1 ? '' : 's'} in ${who(ev.side)} hand lose ${ev.amount}/${ev.amount}.`};
       case 'mirage': return {cls:'', text: ev.none ? `🪞 A mirage flickers by ${nm(ev.defId)}, but there's no room for it.` : `🪞 A mirage: an Illusion of ${nm(ev.defId)} appears beside it (1/1).`};
       case 'haunted': return {cls:'', text:'👻 Something stirs in the haunted air…'};
+      // Field effects 3 (2026-10-17)
+      case 'sulphurFumes': return {cls:'', text: ev.count ? `💨 Sulphur fumes roll off the vents: ${ev.count} unit${ev.count === 1 ? '' : 's'} choke (−${ev.amount} Attack this round).` : '💨 Sulphur fumes roll off the vents, but nobody breathes them in.'};
+      case 'ashRain': return {cls:'', text:`🌋 Ash rains down: both castles take ${ev.amount}, and the sun dims.`};
+      case 'ashRainCastle': return {cls:'', text:`🌋 Ash settles on ${who(ev.side)} castle: −${ev.dmg}.`};
+      case 'ashy': return {cls:'', text:'🌫️ The eruption leaves the ground Ashy: flyers are grounded and the air is thick (4 rounds).'};
+      case 'arrowSlits': return {cls:'', text: ev.none ? '🏹 An arrow from the walls thuds into empty ground.' : `🏹 The walls loose an arrow at ${nm(ev.defId)}.`};
     }
     return null;
   }
+  if(ev.type === 'statusFx' && ev.kind === 'choking') return {cls:'', text:`💨 ${nm(ev.targetDefId)} is Choking: −${ev.amount} Attack this round.`}; // 2026-10-17
+  if(ev.type === 'evaded' && ev.reason === 'ashy') return {cls:'', text:`🌫️ ${nm(ev.attDefId)} loses ${nm(ev.targetDefId)} in the ash and misses.`}; // 2026-10-17
   if((ev.type === 'lumber' || ev.type === 'stone') && ev.leylines) return {cls:'gold', text:`✴️ The ley lines: ${ev.side === 'A' ? 'you gain' : 'the enemy gains'} ${ev.amount} ${ev.type === 'stone' ? 'Stone 🪨' : 'Lumber 🪵'}.`};
   if(ev.type === 'statusFx' && ev.kind === 'frightened') return {cls:'', text:`👻 ${nm(ev.targetDefId)} is Frightened: it won't attack this round.`};
   if(ev.type === 'slipFizzle') return {cls:'', text:`⛸️ ${nm(ev.defId)} slips: its skill fails.`};
@@ -34382,6 +34488,11 @@ function field2Vfx(ev){
       case 'leylines': snd('curse'); if(fx()) boardSweepVfx('leylines', 'A'); break;
       case 'lavaSpout': snd('boom'); break;
       case 'consternation': if(ev.side === 'A'){ const hs = document.getElementById('handStrip'); fl(hs, `😰 −${ev.amount}/−${ev.amount}`, 'debuff'); try{ renderHand(); }catch(e){} } break;
+      // Field effects 3 (2026-10-17): fumes a soft yellow sweep, ash the hail's sweep in grey, the walls' arrow a float on the target.
+      case 'sulphurFumes': snd('swipeTone'); if(fx()) boardSweepVfx('glass', 'B'); break;
+      case 'ashRain': snd('boom'); if(fx()) boardSweepVfx('hail', 'A'); break;
+      case 'ashy': snd('boom'); if(bf && fx()){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } break;
+      case 'arrowSlits': if(!ev.none) snd('swipeTone'); break;
       case 'mirage': if(ev.illusionUid != null) setTimeout(()=>{ const el = boardCardEl(ev.illusionUid); if(!el) return; el.classList.add('mirage-shimmer'); fl(el, '🪞 Illusion', 'quick'); setTimeout(()=> el.classList.remove('mirage-shimmer'), 1200); }, 420); break;
     }
     return;
@@ -34389,6 +34500,8 @@ function field2Vfx(ev){
   if(ev.type === 'statusFx' && ev.kind === 'frightened'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.frightRound = (m.engine && m.engine.turnNo) ? m.engine.turnNo() : rc.frightRound;
     fl(el, '👻 Frightened', 'debuff'); if(el && F && F.fearShiver && fx()) F.fearShiver(el); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} return; }
   if(ev.type === 'slipFizzle'){ fl(boardCardEl(ev.uid), '⛸️ Slipped', 'quick'); return; }
+  if(ev.type === 'statusFx' && ev.kind === 'choking'){ fl(boardCardEl(ev.targetUid), `💨 −${ev.amount}`, 'debuff'); return; } // Sulphur Fumes (2026-10-17)
+  if(ev.type === 'evaded' && ev.reason === 'ashy'){ fl(boardCardEl(ev.attUid), '🌫️ Lost in ash', 'quick'); return; } // Ashy (2026-10-17)
   if(ev.type === 'evaded' && ev.reason === 'slippery'){ fl(boardCardEl(ev.attUid), '⛸️ Slip!', 'quick'); return; }
   if(ev.type === 'hit' && (ev.laneBonus > 0 || ev.tallGrass)){ const el = boardCardEl(ev.targetUid); const fr = matchFieldRules(m) || {};
     const t = ev.tallGrass ? '🌾 ×2' : ''; const ln = ev.laneBonus > 0 ? `${ev.lane === 'bishop' ? '♝' : ev.lane === 'rook' ? '♜' : (fr.bishopPath ? '♝' : '♜')} +${ev.laneBonus}` : '';

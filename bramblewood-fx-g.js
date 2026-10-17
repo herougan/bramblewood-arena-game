@@ -93,6 +93,9 @@ const THEMES = {
   desert:  {label:'Desert',   ink:'#fff4dc', glow:'#ffd27a', a:'#b9843a', b:'#7a4f1c', trim:'#ffe2a0', ink2:'#3a240c', p:'sand',     grand:['heatHaze', 'silhouettes'],   sil:'dunes',    style:'banner'},
   savanna: {label:'Savanna',  ink:'#fff3d6', glow:'#ffcf6a', a:'#a7832f', b:'#6b4f16', trim:'#ffe08a', ink2:'#33240a', p:'grass',    grand:['godRays', 'silhouettes'],    sil:'acacia',   style:'banner'},
   volcano: {label:'Volcano',  ink:'#fff0dc', glow:'#ff8a3a', a:'#7a2a16', b:'#3a120a', trim:'#ffb35a', ink2:'#1e0804', p:'embers',   grand:['heatHaze', 'silhouettes'],   sil:'volcano',  style:'banner'},
+  // 2026-10-17: Map 22, the ice volcano (snow on the crater, a fire glow under it), and Maps 23-24, the Fortified Castle.
+  frostfire:{label:'Frostfire', ink:'#f4fbff', glow:'#ff9a5a', a:'#4f6f8f', b:'#3a1a14', trim:'#dff4ff', ink2:'#0c1420', p:'frost', grand:['heatHaze', 'silhouettes'], sil:'volcano', style:'banner'},
+  castle:  {label:'Fortress', ink:'#fff4dc', glow:'#ffd27a', a:'#6a5a48', b:'#2e261e', trim:'#e8c46a', ink2:'#16100a', p:'dust',     grand:['godRays', 'silhouettes'],    sil:'battlements', style:'banner'},
   forge:   {label:'Forge',    ink:'#fff0dc', glow:'#ffb04a', a:'#5a4a40', b:'#2a201a', trim:'#ffc56a', ink2:'#140e0a', p:'sparks',   grand:['glowPulse', 'silhouettes'],  sil:'chimneys', style:'banner'},
   night:   {label:'Starlit',  ink:'#f2f0ff', glow:'#b8c8ff', a:'#2c2f6a', b:'#12143a', trim:'#e6dcff', ink2:'#080a20', p:'stars',    grand:['aurora', 'shootingStar'],    sil:'peaks',    style:'banner', veil:'rgba(8,12,40,.55)'},
   // 2026-10-16 (user: "Ah the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make the background a
@@ -106,6 +109,7 @@ const THEME_OF = {m1:'forest', mtut:'meadow', mf:'forest', mq:'meadow', mb:'beac
   m8:'mist', ms:'mist', mu:'fungal', mz:'fungal', m4:'cave', mn:'crystal', mk:'water', m7:'reef', mj:'reef', m10:'alpine', mv:'alpine', mh:'meadow',
   mr:'forest', m5:'savanna', my:'forest', ml:'meadow', mt:'tundra', m6:'tundra', mi:'tundra', md:'desert', m3:'volcano', m11:'volcano', m9:'forge',
   me:'volcano', mx:'volcano', m21:'night', mo:'forest',
+  m22:'frostfire', m23:'castle', m24:'castle', // 2026-10-17: the Rimefire Caldera, the Goldfeather Siege, Goldfeather Keep
   mm:'dungeon'}; // Murgle Mayhem, the first daily dungeon (2026-10-16, was 'swamp')
 const BIOME_THEME = {forest:'forest', meadow:'meadow', beach:'beach', water:'water', reef:'reef', swamp:'swamp', cave:'cave', alpine:'alpine',
   tundra:'tundra', savanna:'savanna', ash:'volcano', forge:'forge'};
@@ -256,6 +260,11 @@ function silPath(kind, seed, far){
     else if(kind === 'deadtrees'){ const t = x + 10; d += ` M${t} ${base + 4} L${t + 3} ${base - hgt} L${t - 14} ${base - hgt - 18} L${t + 4} ${base - hgt + 4} L${t + 18} ${base - hgt - 22} L${t + 7} ${base - hgt + 6} L${t + 9} ${base + 4} Z`; x += 50 + r()*90; }
     else if(kind === 'reeds'){ d += ` M${x} ${base + 4} Q ${x + 4} ${base - hgt*.6} ${x + 2 + r()*8} ${base - hgt} L${x + 5} ${base + 4} Z`; x += 6 + r()*16; }
     else if(kind === 'shrooms'){ const w = 26 + r()*40, sh = hgt*.8; d += ` M${x + w*.42} ${base + 4} L${x + w*.45} ${base - sh} Q ${x - 4} ${base - sh} ${x + w/2} ${base - sh - w*.5} Q ${x + w + 4} ${base - sh} ${x + w*.55} ${base - sh} L${x + w*.58} ${base + 4} Z`; x += w + 20 + r()*70; }
+    // 2026-10-17 (the Fortified Castle, Maps 23-24): a crenellated curtain wall with the odd taller tower.
+    else if(kind === 'battlements'){ const w = 70 + r()*90, tall = r() < .35, top = base - (tall ? hgt*1.25 : hgt*.55);
+      d += ` M${x.toFixed(0)} ${base + 4} L${x.toFixed(0)} ${top.toFixed(0)}`;
+      for(let mx = x; mx + 12 <= x + w; mx += 12) d += ` L${mx.toFixed(0)} ${(top - 8).toFixed(0)} L${(mx + 6).toFixed(0)} ${(top - 8).toFixed(0)} L${(mx + 6).toFixed(0)} ${top.toFixed(0)} L${(mx + 12).toFixed(0)} ${top.toFixed(0)}`;
+      d += ` L${(x + w).toFixed(0)} ${top.toFixed(0)} L${(x + w).toFixed(0)} ${base + 4} Z`; x += w + 4 + r()*24; }
     else if(kind === 'chimneys'){ const w = 16 + r()*14; d += ` M${x} ${base + 4} L${x} ${base - hgt} L${x + w} ${base - hgt} L${x + w} ${base + 4} Z`; x += w + 30 + r()*80; }
     else if(kind === 'coral'){ const t = x + 12; d += ` M${t} ${base + 4} Q ${t - 16} ${base - hgt*.5} ${t - 8} ${base - hgt} Q ${t} ${base - hgt*.6} ${t + 4} ${base - hgt*.9} Q ${t + 8} ${base - hgt*.5} ${t + 22} ${base - hgt*.8} Q ${t + 16} ${base - hgt*.3} ${t + 10} ${base + 4} Z`; x += 40 + r()*60; }
     else if(kind === 'crystals'){ const w = 14 + r()*16; d += ` M${x} ${base + 4} L${x + w*.2} ${base - hgt*.7} L${x + w*.5} ${base - hgt} L${x + w*.8} ${base - hgt*.7} L${x + w} ${base + 4} Z`; x += w + 8 + r()*50; }
