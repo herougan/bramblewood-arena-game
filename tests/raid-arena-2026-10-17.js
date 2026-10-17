@@ -43,7 +43,7 @@ const raids = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical',
 ok(/function arenaExtraRows\(rs\)/.test(src) && /'Lumber Rush'/.test(src) && /add\('lumberEvery'/.test(src), 'the Arena: Lumber Rush is an Environment row (arenaExtraRows)');
 ok(/rows = rows\.concat\(arenaExtraRows\(m\.arenaRuleset\)\)/.test(src), 'the Arena: its rows join the fight\'s Environment stack');
 ok(/const rs = '';/.test(src) && !/bfPillHTML\('arena-rs-pill'/.test(src), 'the Arena: the ruleset pill is gone');
-ok(/lumberEvery:'timber'/.test(src) && /timber:\{art:'art\/fields\/undergrowth\.png'\}/.test(src), 'Lumber Rush has a scene (the Undergrowth\'s, borrowed)');
+ok(/lumberEvery:'timber'/.test(src) && /lumberrush:\{art:'art\/fields\/lumberrush\.png'\}/.test(src) && /return 'lumberrush'/.test(src), 'Lumber Rush has its own scene (2026-10-18)');
 
 // ---- Allies play only into their own rows
 { const {e, P} = mk(null, {reserveRows:2}); const pl = P[1];

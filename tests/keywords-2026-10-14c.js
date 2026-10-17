@@ -85,7 +85,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   const before = order(); const T = P[2].row.center[0]; const ev = []; e.debugAttack(P, so, byDef(P[1], 'kc-waveL').uid, {}, ev);
   const w = ev.find(x=> x.type==='wave'); ok(w && (w.blocked || order() !== before), `gravity rows: it swaps with its neighbour that way (${before} -> ${order()})`); }
 { const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8'));
-  const w = cards.filter(c=> c.effects && c.effects.wave).map(c=> c.id).sort(); ok(w.join() === 'dolphin-knight,moray-ambusher,reef-manta-glider,tide-pool-crab', `Wave is on four sea cards (${w})`); }
+  const w = cards.filter(c=> c.effects && c.effects.wave).map(c=> c.id).sort(); ok(w.join() === 'dolphin-knight,fathom-leviathan,moray-ambusher,reef-manta-glider,tide-pool-crab', `Wave is on five sea cards (+ the Fathom Leviathan, 2026-10-18) (${w})`); }
 
 // ---- 4. Perma-tide
 { const {e, P} = mk({permaTide:true}); e.roundStart(P, 1, so, {}, []); ok(e.getTide() === 'flow', 'Perma-tide: Flow from round 1, with no Tide card played');

@@ -153,7 +153,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
     const hq = P[2].hq.hp; e.debugAttack(P, so, byDef(P[1], id).uid, {}, []); return hq - P[2].hq.hp; };
   ok(castle('kb-hit') === 2, `Bulwark 3 softens a 5 on the castle to 2 (${castle('kb-hit')})`); ok(castle('kb-sup') === 10, `Supreme crushes Bulwark (${castle('kb-sup')})`); }
 { const sup = Object.keys(base).filter(id=> base[id].effects && base[id].effects.supreme).sort();
-  ok(sup.join() === 'black-dragon,blue-dragon,green-dragon,red-dragon,white-dragon', `only the dragons are Supreme (${sup})`); }
+  ok(sup.join() === 'black-dragon,blue-dragon,fathom-leviathan,green-dragon,red-dragon,white-dragon', `only the dragons and the Leviathan (rank 2, 2026-10-18) are Supreme (${sup})`); }
 
 // ---- 6. Twin, Sprout and Growth
 { const {e, P} = mk(); const ev = []; e.debugSpawnCard(P, so, 1, 'kb-twin', 'left', {}, ev); const u = all(P[1]);
