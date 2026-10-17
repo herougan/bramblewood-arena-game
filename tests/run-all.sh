@@ -49,6 +49,7 @@ run node tests/regen-fullhp-2026-10-14.js
 run node tests/heal-poison-2026-10-16.js   # 2026-10-16: a heal takes Poison off first (1 per heal), only the rest heals Health
 run node tests/nightblind-illuminate-2026-10-16.js   # 2026-10-16: an enemy Illuminate unit facing a Night-blind one lights it
 run node tests/field-effects-2026-10-16.js   # 2026-10-16 (field effects 2): Landslide, Consternation, Crushing Depths, the lines, Mirage, the canopy, Slippery, Glass-storm, Hail, Lava Spout, Leylines, Atheist, Haunted, the Tide
+run node tests/skills-2026-10-17.js   # 2026-10-17 (skills): Reflect (shots bounce), Vanguard, Web, Bloodlust leap, Ambush on any entry, Sentry, Crab Claws, Carrion, Leech, Hoard, Venom Master, Fletcher, Herbalist, Shatter
 run node tests/night-2026-10-12.js
 run node tests/phase-status.js
 run node tests/tide.js

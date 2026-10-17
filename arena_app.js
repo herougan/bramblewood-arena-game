@@ -317,6 +317,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 // just the plug now, no spark beside it, on the card chip, in the Codex, the effects library and the battle log. Keen Sense 👃.
 // 2026-10-15: the new arrows, the Bolts and Chilli.
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
+Object.assign(SKILL_ICON, {vanguard:'🎖️', web:'🕸️', webbed:'🕸️', sentry:'🗼', carrion:'🦴', hoard:'🐿️', venomMaster:'⚗️', fletcher:'🪶', herbalist:'🌿', shatter:'💥'}); // 2026-10-17 skills (Leech keeps sap's 🧛, Reflect its 🪞)
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
   absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
@@ -632,7 +633,7 @@ const PASSIVE_DEFS = [
   // card that still has it, but it is no longer offered in "+ Add Skill".
   // 2026-10-15 (user: "Crab claws can be, attack a random unit L or R. Very awkward for the crab, but very fitting."): back in
   // "+ Add Skill" with the new rule; no card has it yet (the crabs still Fork).
-  {key:'crabClaws', category:'passive', label:'Crab Claws', kind:'boolean', desc:()=>`Never aims straight ahead: each swing pinches one random enemy unit in the column to its left or right. With no unit on either side, it attacks straight ahead as normal.`},
+  {key:'crabClaws', category:'passive', label:'Crab Claws', kind:'boolean', desc:()=>`Never attacks straight ahead: each swing pinches one random enemy unit in the column to its left or right (a coin flip when both have one). With no unit on either side, its claws reach past into the castle.`}, // 2026-10-17 (user: "Claws 🦀. Can only attack Left and Right. If both, hit randomly")
   // Meiosis N (user: "Simple units only - this Passive skill means that the creature breaks into 2 smaller parts when it dies, with
   // half the stats, and skill numbers. Their Meiosis count drops by 1.").
   {key:'meiosis', category:'passive', label:'Meiosis', kind:'number', min:1, defaultValue:1, desc:v=>{ const n = v === true ? 1 : (Number(v)||1); return `Simple units only. When it dies it splits into 2 halves beside each other: tokens with half its Attack and Health (rounded up), every skill number halved (rounded down; a skill at 0 is lost) and ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
@@ -797,12 +798,15 @@ const PASSIVE_DEFS = [
   {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy castle.`},
   {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 whenever ANY ally of yours dies.`},
   {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:0, desc:v=>`While on the field, your Castle takes ${v} less damage from every hit it takes.`},
-  {key:'reflect', category:'passive', label:'Reflect', kind:'number', min:0, defaultValue:50, desc:v=>`${v}% chance, on every melee hit taken, to throw the FULL damage of that hit straight back at the attacker.`},
+  // 2026-10-17 (user: "Add a new skill Reflect: that reflects ranged skills back at a random enemy unit."): the engine's reflectShotOf.
+  // A flag now (was Reflect N%: a melee hit's full damage thrown back); an old stored number reads as that % chance to bounce a shot.
+  {key:'reflect', category:'passive', label:'Reflect', kind:'boolean', desc:v=>`${typeof v === 'number' && v < 100 ? `${v}% of the time, a` : 'A'} shot aimed at it bounces off and hits a random enemy unit instead (their castle if they have none). Shots: Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire, Snipe, Fireball (the whole burst), Rocket, a thrown Banana, Missile and On Ready damage, a Damage trigger at a random enemy, and the castle's bolt. Melee, Pounce and what falls from the sky or bursts over an area (Skyfall, Meteor, Lightning, Earthquake…) aren't shots. A bounced shot can be dodged, but never bounces again.`},
   {key:'momentum', category:'evergreen', label:'Momentum', kind:'number', min:0, desc:v=>`Gains +${v}/+0 every time it lands a killing blow.`},
   {key:'bloom', category:'evergreen', label:'Bloom', kind:'number', min:0, desc:v=>`Heals ${v} HP to a random damaged ally at the start of every round this card is on the board.`},
   // 2026-10-16 (user: "Ambush: I think the effect should be - when opposing card played, deal N damage to it. (instead of the Crit)"):
   // Ambush N (default 3; an old Ambush saved as true reads as Ambush 3). The engine's springAmbush.
-  {key:'ambush', category:'passive', label:'Ambush', kind:'number', min:1, defaultValue:3, desc:v=>`Whenever the enemy plays a card into the slot facing it, it strikes that card for ${numOr(v, 3)} damage as it arrives (Ready or Waiting; it can't be dodged, and no Guardian steps in).`,
+  // 2026-10-17 (user: "Ambush N - whenever a unit enters this unit's opposing side, deal N damage"): played, spawned or moved in (watchScan).
+  {key:'ambush', category:'passive', label:'Ambush', kind:'number', min:1, defaultValue:3, desc:v=>`Whenever an enemy unit enters the slot facing it (played, spawned, or moved in by a push, a swap or a Bloodlust leap), it strikes that unit for ${numOr(v, 3)} damage (Ready or Waiting; it can't be dodged, and no Guardian steps in).`,
     get:e=> e.ambush ? numOr(e.ambush, 3) : undefined},
   {key:'siege', category:'passive', label:'Siege', kind:'number', min:0, desc:v=>`Deals ${v} bonus flat damage whenever its attack lands directly on the enemy castle.`},
   // Corrode (2026-09-17): the third of the three new status effects — a stacking debuff like
@@ -941,7 +945,12 @@ const PASSIVE_DEFS = [
   // bramblewood-engine.js.
   // Bloodlust N (2026-10-15, user: "New Skill: Bloodlust - ability idk, but I assume when it draws blood, it gets stronger."): "draws blood" = its attack lands
   // damage on an enemy unit that is Bleeding (already, or because this hit made it bleed). See bloodlustGain in the engine.
-  {key:'bloodlust', category:'evergreen', label:'Bloodlust', kind:'number', min:1, defaultValue:1, desc:v=>`When its attack draws blood (hits an enemy unit that is Bleeding, or makes it Bleed), it gains +${v||1} Attack for the rest of the fight (up to +${3*(v||1)} in all).`},
+  // 2026-10-17 rework (user: "Bloodlust: when this unit kills an opposing unit, it jumps to oppose next available creature* unit if possible.
+  // However, it deals 1/2 damage to structures and brambles. Bloodlust has the specific extra feat that it counts in triggering Ambush.
+  // This description text part only is visible in the codex."): a flag now (was Bloodlust N, +N Attack for drawing blood); the engine's
+  // bloodlustLeap. codexNote: the Skills Codex adds it after the card line.
+  {key:'bloodlust', category:'evergreen', label:'Bloodlust', kind:'boolean', desc:()=>`When it kills the unit facing it, it leaps to face the nearest enemy creature (not a Structure) that has a free slot in front of it (open boards). It deals half damage (rounded up) to Structures and castles.`,
+    codexNote:'Its leap counts as entering: an enemy Ambush or Sentry facing its new slot strikes it.'},
   {key:'chilli', category:'evergreen', label:'Chilli', kind:'number', min:1, defaultValue:2, desc:v=>`Eats a chilli when it first becomes Ready: for the rest of the fight its attacks deal fire damage and it has +${v||2} Attack, but it takes 1 damage at the start of every round (it's very hot).`},
   {key:'smokeBomb', category:'evergreen', label:'Smoke Bomb', kind:'boolean', desc:()=>`Every round, after everyone else has swung: a 1 in 2 chance it throws a smoke bomb at a random unit, ally or enemy (never itself). An ally is hidden in Smoke: attacks at it miss 1 in 2 until the end of the next round. An enemy is Blinded for a round.`},
   // ---- W2 skills (2026-10-16). The user: "Add: Toxin, and Venomous skills; Add a skill that permanently weakens the enemy's attack by 1.
@@ -991,6 +1000,20 @@ const PASSIVE_DEFS = [
   // shares a type, both creature's Amore skills we activate, giving them Regeneration 3 and +0/+3. This can only happen once. If the
   // other creature dies, the Amore becomes brown ..."): the engine's amoreOnArrive / amoreBreak. Your own units only.
   {key:'amore', category:'passive', label:'Amore', kind:'boolean', desc:()=>`When it arrives and one of your units already on the field has Amore and shares a Type with it, the two pair up (once in each one's life, only ever those two): +0/+3 and Regeneration 3 each. If one dies, the other's heart turns brown: it keeps the +0/+3 but loses the Regeneration 3. Enemy units never pair with yours.`},
+  // ==== 2026-10-17 skills (user's notes, 20:19, and the skill-combo planning list). See the 2026-10-17 block in bramblewood-engine.js.
+  // Leech (user: "Heal on hit = Leech"): the engine's old `sap` key (Barrow Leech, Vampire Bat), which had no "+ Add Skill" entry.
+  {key:'sap', category:'passive', label:'Leech', kind:'boolean', desc:()=>`Each of its hits heals it for the damage it dealt (castle hits too), up to its max Health.`},
+  {key:'vanguard', category:'passive', label:'Vanguard', kind:'number', min:1, defaultValue:1, desc:v=>`At the start of the game it moves from your deck into your opening hand, and a random other card from that hand is discarded. Only once a game: with two Vanguards in the deck only one comes, and none if one is already in your hand. If it is the first card you play this game: +${numOr(v, 1)}/+${numOr(v, 1)}.`,
+    get:e=> e.vanguard ? numOr(e.vanguard, 1) : undefined},
+  {key:'web', category:'passive', label:'Web', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits Web the target for ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'}: a Webbed unit can't dodge (no Evasive, Swift, Flying, Prey or Tide dodge) and can't move or be moved.`,
+    get:e=> e.web ? numOr(e.web, 1) : undefined},
+  {key:'sentry', category:'passive', label:'Sentry', kind:'boolean', desc:()=>`Once a round, while Ready: when an enemy unit enters one of the 3 slots facing it (played, spawned or moved in), it attacks that unit with its Attack (Armor counts).`},
+  {key:'carrion', category:'passive', label:'Carrion', kind:'number', min:1, defaultValue:2, desc:v=>`Whenever another unit dies (either side), it heals ${numOr(v, 2)}.`, get:e=> e.carrion ? numOr(e.carrion, 2) : undefined},
+  {key:'hoard', category:'passive', label:'Hoard', kind:'number', min:1, defaultValue:2, desc:v=>`+1 Attack for every ${numOr(v, 2)} Lumber you hold (it changes as your Lumber does).`, get:e=> e.hoard ? numOr(e.hoard, 2) : undefined},
+  {key:'venomMaster', category:'passive', label:'Venom Master', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, your units' hits that add Poison or Bleed add ${numOr(v, 1)} more (its own too; the Poison Bolt counts).`, get:e=> e.venomMaster ? numOr(e.venomMaster, 1) : undefined},
+  {key:'fletcher', category:'passive', label:'Fletcher', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, your units' arrows (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley) deal ${numOr(v, 1)} more damage (its own too).`, get:e=> e.fletcher ? numOr(e.fletcher, 1) : undefined},
+  {key:'herbalist', category:'passive', label:'Herbalist', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, every heal on your units heals ${numOr(v, 1)} more (Healing, Regeneration, Bloom, Nursing, a Heal trigger...).`, get:e=> e.herbalist ? numOr(e.herbalist, 1) : undefined},
+  {key:'shatter', category:'passive', label:'Shatter', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits and shots deal ${numOr(v, 2)} more damage to a Frozen unit.`, get:e=> e.shatter ? numOr(e.shatter, 2) : undefined},
 ];
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
@@ -1223,7 +1246,7 @@ function CHAIN_BREAK_OPTIONS(){
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
     key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, reserved:p.reserved, oneOff:p.oneOff,
-    get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, // (2026-10-15: + the grant pickers' hints, defaultValue)
+    get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, codexNote:p.codexNote, // (2026-10-15: + the grant pickers' hints, defaultValue; 2026-10-17: + codexNote, a Codex-only sentence)
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
   {
@@ -1805,6 +1828,7 @@ const STATUS_KEYWORDS = [
   // cs: only when written as the game word (capitalised), so "a Guardian shield" or "bound to" in plain prose stay plain.
   {k:'exposed', re:/\b(expose[ds]?)\b/gi, name:'Exposed', c:'#e07b39', text:'each hit on it is a crit (double damage) and removes 1 Expose counter; attacks at it can’t miss.'}, // 2026-10-16: counters
   {k:'bound', re:/\b(bind(?:s)?|bound)\b/gi, cs:true, name:'Bound', c:'#5f8a3c', text:'can’t attack; its Wait still counts down.'},
+  {k:'webbed', re:/\b(web(?:bed|s)?)\b/gi, cs:true, name:'Webbed', c:'#8f8aa8', text:'stuck in a web: it can’t dodge, and it can’t move or be moved.'}, // 2026-10-17 (Web N)
   {k:'toxin', re:/\b(toxin)\b/gi, name:'Toxin', c:'#6b2fa0', text:'takes damage equal to its stacks every round. It never wears off and can’t be cured.'},
   {k:'smoke', re:/\b(smoke)\b/gi, cs:true, name:'Smoke', c:'#8a929c', text:'attacks at it miss 1 in 2 until the end of next round.'},
   {k:'scar', re:/\b(scar(?:red|s)?)\b/gi, cs:true, name:'Scar', c:'#b5546a', text:'takes that much more damage from every hit.'},
@@ -1897,7 +1921,7 @@ const SKILL_TEXT = {
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
   wave: v=> `Its hits push the unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : v === 'alternate' ? 'left, then right, in turn' : 'toward the side with more room'} (swapping with any unit there).`,
   supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flood or Ebb. Tide effects can't take them away.`,
-  crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right.`,
+  crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right, never the one in front. With none there, it hits the castle.`, // 2026-10-17
   meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
   nullify: ()=> `Its hits get no reaction from the unit hit. A unit it kills skips its death effects and goes to the ${EXILE_ZONE_NAME}.`,
   restless: ()=> `Every upkeep it steps one column toward the nearest enemy.`,
@@ -1977,10 +2001,10 @@ const SKILL_TEXT = {
   overwhelm: ()=> `Damage left over from a kill carries on into the enemy castle.`,
   berserk: v=> `+${v} Attack whenever one of your units dies.`,
   bulwark: v=> `Your castle takes ${v} less damage from every hit.`,
-  reflect: v=> `${v}% chance to throw a melee hit's full damage back at the attacker.`,
+  reflect: v=> `${typeof v === 'number' && v < 100 ? `${v}% of the time, a shot` : 'Shots'} aimed at it (arrows, bolts, missiles, fireballs) bounce${typeof v === 'number' && v < 100 ? 's' : ''} off and hit${typeof v === 'number' && v < 100 ? 's' : ''} a random enemy unit.`, // 2026-10-17 (user: "reflects ranged skills back at a random enemy unit")
   momentum: v=> `+${v} Attack every time it kills a unit.`,
   bloom: v=> `Heal a random wounded ally for ${v} every upkeep.`,
-  ambush: v=> `When the enemy plays a card into the slot facing it, deal ${numOr(v, 3)} damage to that card.`, // 2026-10-16 (user: "when opposing card played, deal N damage to it")
+  ambush: v=> `When an enemy unit enters the slot facing it (played, spawned or moved in), deal ${numOr(v, 3)} damage to it.`, // 2026-10-17 (user: "whenever a unit enters this unit's opposing side, deal N damage")
   siege: v=> `Deals ${v} more damage to the enemy castle.`,
   daunt: v=> `Its hits lower the target's Attack by ${v} until the end of next round. Stacks.`,
   recoil: v=> `Each attack also deals ${v} damage to itself.`,
@@ -2003,7 +2027,7 @@ const SKILL_TEXT = {
   poisonBolt: v=> `While Ready, spit venom at the enemy facing it (or the nearest): ${numOr(v, 2)} Poison every upkeep.`,
   iceBolt: v=> `While Ready, spit ice at the enemy facing it (or the nearest) for ${numOr(v, 2)} cold damage every upkeep; 1 in 2 it Freezes.`,
   shockBolt: v=> `While Ready, spit a spark at the enemy facing it (or the nearest) for ${numOr(v, 2)} damage; it is Shocked for a round. Every upkeep.`,
-  bloodlust: v=> `When its attack draws blood (an enemy that is Bleeding, or starts to): +${numOr(v, 1)} Attack for the fight, up to +${3*numOr(v, 1)}.`, // 2026-10-15
+  bloodlust: ()=> `When it kills the unit facing it, it leaps to face the nearest enemy creature. Half damage to Structures and castles.`, // 2026-10-17 rework (the Codex adds one more sentence: codexNote)
   chilli: v=> `When first Ready, eats a chilli: +${numOr(v, 2)} Attack and its attacks deal fire damage, but it takes 1 damage every upkeep.`, // 2026-10-16 skill audit
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
 };
@@ -2104,6 +2128,19 @@ Object.assign(SKILL_TEXT, {
   render: v=> `When played, the enemy facing it loses ${numOr(v, 1)} Attack.`,
   revive: ()=> `The first time it dies, it comes back with 1 Health and no statuses.`,
   onDeathSpawn: v=> Array.isArray(v) && v[0] ? `When it dies, ${Number(v[1])||1}× ${cardName(v[0])} take its place.` : `When it dies, new units take its place.`,
+});
+// 2026-10-17 skills (user's notes, 20:19): the short card lines.
+Object.assign(SKILL_TEXT, {
+  sap: ()=> `Heals for the damage its hits deal.`, // Leech
+  vanguard: v=> `Starts in your opening hand (a random card is discarded for it). As your first card this game: +${numOr(v, 1)}/+${numOr(v, 1)}.`,
+  web: v=> `Its hits Web the target for ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'}.`,
+  sentry: ()=> `Once a round, it attacks an enemy unit that enters one of the 3 slots facing it.`,
+  carrion: v=> `Whenever another unit dies, heal ${numOr(v, 2)}.`,
+  hoard: v=> `+1 Attack for every ${numOr(v, 2)} Lumber you hold.`,
+  venomMaster: v=> `Your units' Poison and Bleed hits add ${numOr(v, 1)} more.`,
+  fletcher: v=> `Your units' arrows deal ${numOr(v, 1)} more damage.`,
+  herbalist: v=> `Every heal on your units heals ${numOr(v, 1)} more.`,
+  shatter: v=> `Its hits deal ${numOr(v, 2)} more damage to Frozen units.`,
 });
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 // Pounce's amount in words (2026-10-16): "5", "<Att>" (its Attack) or "<Hp>" (its Health); an editor row value [mode, n] too.
@@ -4696,6 +4733,7 @@ const LIVE_STATUS_ROWS = [
   ['paralyzed', 'paralyze', 'Paralyzed', ()=> STATUS_KEYWORDS.find(k=> k.k === 'paralyze').text, false],
   ['stunned', 'stun', 'Stunned', ()=> STATUS_KEYWORDS.find(k=> k.k === 'stun').text, false],
   ['bound', 'bound', 'Bound', ()=> STATUS_KEYWORDS.find(k=> k.k === 'bound').text, false],
+  ['webbed', 'webbed', 'Webbed', ()=> STATUS_KEYWORDS.find(k=> k.k === 'webbed').text, false], // Web N (2026-10-17)
   ['blind', 'blind', 'Blind', ()=> STATUS_KEYWORDS.find(k=> k.k === 'blind').text, false],
   ['tipsy', 'tipsy', 'Tipsy', ()=> STATUS_KEYWORDS.find(k=> k.k === 'tipsy').text, false],
   ['confused', 'confuse', 'Confused', ()=> STATUS_KEYWORDS.find(k=> k.k === 'confuse').text, false],
@@ -4707,7 +4745,7 @@ const LIVE_STATUS_ROWS = [
   ['invisible', null, 'Invisible', ()=> 'attacks and enemy skills can’t find it until it attacks.', false],
 ];
 // Rounds left, for the statuses that count down in rounds (shown as "(2 rounds)" after the name).
-const LIVE_STATUS_ROUNDS = new Set(['shocked', 'staggered', 'frozen', 'asleep', 'paralyzed', 'bound', 'blind', 'tipsy', 'confused', 'smoke', 'invisible']);
+const LIVE_STATUS_ROUNDS = new Set(['shocked', 'staggered', 'frozen', 'asleep', 'paralyzed', 'bound', 'webbed', 'blind', 'tipsy', 'confused', 'smoke', 'invisible']);
 function liveStatusGlossHTML(c){
   if(!c) return '';
   const rows = [];
@@ -6041,7 +6079,8 @@ function triggerBadges(d, live){
     return `<span class="ab-trig${off ? ' is-off' : ''}${clock ? ' is-clock' : ''}" data-hook="${escapeAttr(t.on || '')}" title="${escapeAttr(tip)}"><i class="ab-bolt">${lead}</i><i class="ab-arrow">→</i>${triggerActionEmoji(t)}</span>`;
   });
 }
-const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger']; // 2026-10-16 (leader is left out: leaders have their own ring)
+const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
+  'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'shatter']; // + the 2026-10-17 skills (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -6113,7 +6152,7 @@ function abilityBadges(d, bopts){
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
   if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb">${iconHTML('supreme-tide', '✨')}🌊</span>`);
   // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
-  if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only">${iconHTML('crab-claws', '🦞')}</span>`);
+  if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only (the castle when neither has a unit)">${iconHTML('crab-claws', '🦞')}</span>`);
   if(e.meiosis) out.push(`<span title="Meiosis ${e.meiosis === true ? 1 : e.meiosis}: splits in two when it dies">${iconHTML('meiosis', '🧫')}${n1(e.meiosis)}</span>`);
   if(e.nullify) out.push(`<span class="ab-nullify" title="Nullify: its hits get no reaction; what it kills goes to the ${EXILE_ZONE_NAME}">${iconHTML('nullify', '🚫')}</span>`);
   if(e.restless) out.push(`<span title="Restless: steps toward the nearest enemy every round">${iconHTML('restless', '👣')}</span>`);
@@ -6236,7 +6275,7 @@ function abilityBadges(d, bopts){
     out.push(`<span class="ab-amore is-${st}" title="${escapeAttr(st === 'love' ? 'Amore: in love — +0/+3 and Regeneration 3 while its partner lives' : st === 'broken' ? 'Amore: heartbroken — its partner died; it kept +0/+3, lost Regeneration 3' : 'Amore: pairs with your next Amore unit of the same Type')}">${st === 'love' ? '❤️' : st === 'broken' ? '🤎' : '💕'}</span>`); }
   if(e.pounce){ const pm = pounceMode(e.pounce), pl = bopts && bopts.live && bopts.live.pounceN != null ? bopts.live.pounceN : null; // Pounce (2026-10-12); <Att>/<Hp> (2026-10-16)
     out.push(`<span title="Pounce ${pm ? (pm === 'attack' ? '(its Attack)' : '(its Health)') : numOr(e.pounce, 1)}">${iconHTML('pounce', '🐾')}${pm ? (pl != null ? `<b class="atk-bonus">${pl}</b>` : (pm === 'attack' ? '⚔' : '❤')) : n1(e.pounce)}</span>`); }
-  if(e.bloodlust) out.push(`${iconHTML('bloodlust', '🩸⚔️')}${n1(e.bloodlust)}`); // Bloodlust (2026-10-15)
+  if(e.bloodlust) out.push(`<span title="Bloodlust: when it kills the unit facing it, it leaps to the next creature">${iconHTML('bloodlust', '🩸⚔️')}</span>`); // Bloodlust (2026-10-15; no number since the 2026-10-17 rework)
   // King Slayer (2026-09-22): crown + crossed-swords reads as "hunts royalty" without reusing
   // any existing glyph on this card face.
   if(e.kingSlayer) out.push(`<span class="ab-pair">${iconHTML('king-slayer', '👑')}<i>⚔️</i></span>${n1(e.kingSlayer)}`);
@@ -6329,6 +6368,7 @@ function skillCodexHTML(){
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
   const rows = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
+    if(p.codexNote) txt += ' ' + p.codexNote; // 2026-10-17: a sentence only the Codex shows (Bloodlust's Ambush note)
     return `<div class="sk-row" data-sk-find="${escapeAttr((p.label + ' ' + p.key + ' ' + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase())}"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${oneOffTagHTML(p)}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
   // 2026-10-15 (user: "Codex: Skill: Text Filter"): a search box over the list; it matches the name, the text and the answers.
   return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>
@@ -22097,7 +22137,7 @@ const FXL_SKILL_SETUPS = {
   // 2026-10-15: Trident / Pitchfork / Crab Claws (the new prong rules), the new arrows, the Bolts and Chilli.
   trident: {foes:FXL_FOES3, note:'Three dummies side by side: all three are within 1 column, so all three are hit.'},
   pitchfork: {foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}, {role:'foe3', slot:1}, {role:'foe2', slot:-2}, {role:'foe3', slot:2}], note:'Five dummies: it hits the 4 nearest (none more than 2 columns away).'},
-  crabClaws: {foes:FXL_FOES3, steps:['round', 'round'], note:'Dummies either side of the one in front: each round it pinches left or right at random.'},
+  crabClaws: {foes:FXL_FOES3, steps:['round', 'round'], note:'Dummies either side of the one in front: each round it pinches left or right at random (never the one in front; with nobody beside it, the castle).'},
   iceArrow: {steps:['round', 'round'], note:'Two rounds of icy arrows (1 in 2 freezes the dummy).'},
   twinShot: {foes:FXL_FOES3, note:'Three dummies: two arrows, at two different ones.'},
   volley: {foes:FXL_FOES3, steps:['round', 'round', 'round'], note:'Three dummies, three rounds: a volley on the 1st and 3rd.'},
@@ -22139,7 +22179,18 @@ const FXL_SKILL_SETUPS = {
   taunt: {mine:[{role:'subject', slot:1}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0}], steps:['round'], note:'The dummy faces an empty column; the Taunt beside it pulls the swing.'},
   molting: {steps:['round', 'round', 'round'], note:'Round 2: it molts (+N/+N, +1 Wait); round 3 it sits out while the shell hardens.'},
   bludgeon: {foeFx:{thorns:1, armor:1, flying:true}, steps:['round', 'round'], note:'The dummy has Armor, Thorns and Flying: each hit takes 1 Attack and breaks one of them.'},
-  bloodlust: {status:{foe:{bleed:6}}, steps:['round', 'round', 'round', 'round'], note:'The dummy in front starts Bleeding, so every hit on it draws blood: +1 Attack a round, up to +3.'}, // Bloodlust (2026-10-15)
+  // 2026-10-17: Bloodlust's leap (and the Ambush it walks into), Reflect, Sentry, Web, Carrion, the auras, Shatter, Vanguard.
+  bloodlust: {foes:[{role:'foe', slot:0}, {role:'foe2', slot:1, def:{name:'Lurker', icon:'👀', effects:{ambush:3}}}], status:{foe:{hp:1}}, steps:['round', 'round'], note:'It kills the dummy in front, leaps to face the Lurker, and the Lurker\'s Ambush strikes it as it lands.'},
+  reflect: {foes:[{role:'foe', slot:0, def:{name:'Archer', icon:'🏹', effects:{arrow:3}}}, {role:'foe2', slot:1}], steps:['round', 'round'], note:'The Archer shoots it; the arrow bounces off and hits a random enemy unit.'},
+  sentry: {foes:[{role:'foe', slot:1}], withhold:'foe', steps:[{spawn:'foe'}, 'round'], note:'An enemy is played into the slot beside the one facing it: the Sentry attacks it.'},
+  web: {foeFx:{evasive:true}, steps:['round', 'round', 'round'], note:'The dummies are Evasive; once Webbed they can\'t dodge.'},
+  carrion: {status:{subject:{hp:1}, foe:{hp:1}}, steps:['round'], note:'It starts hurt; the dummy in front falls and it feeds.'},
+  hoard: {lumber:8, note:'You hold 8 Lumber: +4 Attack at Hoard 2.'},
+  venomMaster: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Adder', icon:'🐍', effects:{poison:1}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}], steps:['round', 'round'], note:'The Adder beside it poisons for 1; with Venom Master it adds more.'},
+  fletcher: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Archer', icon:'🏹', effects:{arrow:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}], steps:['round'], note:'The Archer beside it shoots for 2; with Fletcher its arrows hit harder.'},
+  herbalist: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Mender', icon:'💚', effects:{regen:2}}}], status:{ally:{hp:1}}, steps:['round', 'round'], note:'The Mender beside it regenerates 2 a round; with Herbalist every heal is bigger.'},
+  shatter: {status:{foe:{frozen:3}}, steps:['round'], note:'The dummy in front is Frozen: its hit shatters for more.'},
+  vanguard: {unsupported:'It acts on the opening hand and the first card you play, which a staged board can\'t show. See it in a real fight.'},
   reach: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}], note:'It faces a Flyer.'},
   boomerang: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}], note:'It faces Flyers.'},
   keenEye: {foes:[{role:'foe', slot:0, def:{name:'Mimic', icon:'🎭', effects:{changeling:true}}}, {role:'foe2', slot:1}], note:'It faces a Changeling.'},
@@ -22280,7 +22331,7 @@ function fxlRealSkillValue(sd){
 function fxlKnownTypes(){ if(fxLib && fxLib.types) return fxLib.types; const defs = getCardDefs(), s = new Set(); Object.values(defs).forEach(d=> (d && d.archetypes || []).forEach(t=> s.add(t))); if(fxLib) fxLib.types = s; return s; }
 function fxlRetype(v, to){ const T = fxlKnownTypes(); if(typeof v === 'string') return T.has(v) ? to : v; if(Array.isArray(v)) return v.map(x=> fxlRetype(x, to)); if(v && typeof v === 'object'){ const o = {}; Object.keys(v).forEach(k=> o[k] = fxlRetype(v[k], to)); return o; } return v; }
 // Skills whose stand-in value is their own default rather than 3 (2026-10-14: a Fireball 3 or a Meteor 3 shows little).
-const FXL_NUMBER_DEFAULTS = {ambush:3, penance:3, bloodTithe:2, fireball:15, meteor:20, bloodlust:1, venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, predator:2, nova:3, crystallise:5, cure:2, molting:1, sweep:1}; // + the W2 skills' own defaults (2026-10-16) // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
+const FXL_NUMBER_DEFAULTS = {vanguard:1, web:2, carrion:2, hoard:2, venomMaster:1, fletcher:1, herbalist:1, shatter:2, ambush:3, penance:3, bloodTithe:2, fireball:15, meteor:20, bloodlust:1, venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, predator:2, nova:3, crystallise:5, cure:2, molting:1, sweep:1}; // + the W2 skills' own defaults (2026-10-16) // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
 function fxlSkillEffects(sd){
   const e = {}; let from = null;
   const real = fxlRealSkillValue(sd);
@@ -22308,7 +22359,8 @@ function fxlScenario(entry){
     const sk = fxlSkillEffects(entry.sd); if(sk.unsupported){ sc.unsupported = sk.unsupported; return sc; }
     sc.subjectFx = sk.e; if(sk.from) sc.notes.push(`Its value is taken from ${sk.from}.`);
     const hm = FXL_SKILL_SETUPS[entry.key];
-    if(hm){ sc.hand = true; if(hm.foeFx) ['foe', 'foe2', 'foe3'].forEach(r=> setRoleDef(r, {effects: hm.foeFx})); if(hm.foeDef) setRoleDef('foe', hm.foeDef); if(hm.status) sc.status = JSON.parse(JSON.stringify(hm.status)); if(hm.foeLumber) sc.foeLumber = hm.foeLumber; if(hm.res) sc.res = Object.assign({}, hm.res); if(hm.helperFx) sc.helperFx = Object.assign({}, hm.helperFx); if(hm.rainy) sc.rainy = true; if(hm.mine) useUnits({mine:hm.mine}); if(hm.foes) useUnits({foes:hm.foes}); if(hm.rules) sc.rules = Object.assign({}, hm.rules); if(hm.pre) sc.pre = hm.pre; if(hm.steps) sc.steps = hm.steps.slice(); if(hm.startTide) sc.startTide = true; if(hm.withhold) sc.withhold = hm.withhold; if(hm.wait) sc.wait = Object.assign({}, hm.wait); if(hm.note) sc.notes.push(hm.note); } // + withhold / wait (2026-10-16)
+    if(hm && hm.unsupported){ sc.unsupported = hm.unsupported; return sc; } // 2026-10-17: a skill a staged board can't show (Vanguard)
+    if(hm){ sc.hand = true; if(hm.lumber) sc.lumber = hm.lumber; /* 2026-10-17: Hoard */ if(hm.foeFx) ['foe', 'foe2', 'foe3'].forEach(r=> setRoleDef(r, {effects: hm.foeFx})); if(hm.foeDef) setRoleDef('foe', hm.foeDef); if(hm.status) sc.status = JSON.parse(JSON.stringify(hm.status)); if(hm.foeLumber) sc.foeLumber = hm.foeLumber; if(hm.res) sc.res = Object.assign({}, hm.res); if(hm.helperFx) sc.helperFx = Object.assign({}, hm.helperFx); if(hm.rainy) sc.rainy = true; if(hm.mine) useUnits({mine:hm.mine}); if(hm.foes) useUnits({foes:hm.foes}); if(hm.rules) sc.rules = Object.assign({}, hm.rules); if(hm.pre) sc.pre = hm.pre; if(hm.steps) sc.steps = hm.steps.slice(); if(hm.startTide) sc.startTide = true; if(hm.withhold) sc.withhold = hm.withhold; if(hm.wait) sc.wait = Object.assign({}, hm.wait); if(hm.note) sc.notes.push(hm.note); } // + withhold / wait (2026-10-16)
     if(!sc.steps){ const how = fxlProbeTiming(sc); sc.steps = how.steps; if(how.note) sc.notes.push(how.note); }
   } else if(entry.group === 'on'){
     const hm = FXL_TRIGGER_SETUPS[entry.key] || {}; sc.hand = true;
@@ -25395,7 +25447,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, staggered:rc.staggered||0, bound:rc.bound||0, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0};
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0};
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -29240,7 +29292,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, staggered:c.staggered||0, bound:c.bound||0, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0};
       });
     });
   });
@@ -31873,11 +31925,12 @@ function lockShards(lock){
 // 2026-10-15: names for the statusEnd log line (the engine logs a status running out).
 // Exposed (2026-10-15) (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss.")
 function exposedTip(n){ return `Exposed ${n}: the next ${n} hit${n===1 ? '' : 's'} on it ${n===1 ? 'is a crit' : 'are crits'} (double damage), 1 counter each, and attacks at it can't miss.`; } // 2026-10-16: counters
-const STATUS_END_NAMES = {poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
+const STATUS_END_NAMES = {webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 function logText(ev){
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
+  { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
   { const f2 = field2LogText(ev, nm); if(f2) return f2; } // field effects 2 (2026-10-16)
   switch(ev.type){
     case 'play': return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}.`};
@@ -32104,7 +32157,7 @@ function logText(ev){
     case 'converge': return {cls:'', text:`${nm(ev.defId)} pulls ${ev.targetSide===ev.side ? 'its own' : 'the enemy'} line together! 🧲`};
     case 'roundStart': return {cls:'', text:`— Round ${ev.round} —`};
     case 'swapPositions': return {cls:'', text:`${nm(ev.attDefId)} scurries ${nm(ev.aDefId)} and ${nm(ev.bDefId)} out of position! 🔀`};
-    case 'crabClaw': return {cls:'', text: ev.whiff ? `🦞 ${nm(ev.attDefId)} pinches at thin air: nobody beside the unit in front.` : `🦞 ${nm(ev.attDefId)} pinches to the ${ev.dir}!`}; // (whiff: no longer happens since 2026-10-15; kept for old logs) // Crab Claws (2026-10-14)
+    case 'crabClaw': return {cls:'', text: ev.whiff ? `🦞 ${nm(ev.attDefId)} pinches at thin air: nobody beside the unit in front.` : ev.dir === 'castle' ? `🦞 ${nm(ev.attDefId)} has nobody to either side: its claws reach past into the castle!` : `🦞 ${nm(ev.attDefId)} pinches to the ${ev.dir}!`}; // + the castle (2026-10-17) // (whiff: no longer happens since 2026-10-15; kept for old logs) // Crab Claws (2026-10-14)
     case 'charge': return {cls: ev.fired ? 'gold' : '', text: ev.start ? `⏲️ ${nm(ev.defId)} starts charging (${ev.left}).` : ev.fired ? `⏲️ ${nm(ev.defId)}'s charge goes off!` : `⏲️ ${nm(ev.defId)} charges… ${ev.left} to go.`}; // Charge N (2026-10-14)
     case 'restless': return {cls:'', text:`👣 ${nm(ev.defId)} can't keep still: it moves ${ev.to > ev.from ? 'right' : 'left'}${ev.swapUid != null ? ', swapping places' : ''}.`}; // Restless (2026-10-14)
     // 2026-10-14 (fifth pass)
@@ -33670,6 +33723,7 @@ function ninthPassVfx(ev){
 // Cloudy field's drifting cloud shadows. ----
 function w2StatusBadges(c, badges){
   if(c.bound>0) badges.push(`<span class="abadge bound" title="Bound: can't attack for ${c.bound} more round${c.bound === 1 ? '' : 's'}">🪢${c.bound}</span>`);
+  if(c.webbed>0) badges.push(`<span class="abadge webbed" title="Webbed: can't dodge or move for ${c.webbed} more round${c.webbed === 1 ? '' : 's'}">🕸️${c.webbed}</span>`); // Web N (2026-10-17)
   if(c.toxin>0) badges.push(`<span class="abadge toxin" title="Toxin: ${c.toxin} damage every round; it never wears off and can't be cured">☣️${c.toxin}</span>`);
   if(c.invisible>0) badges.push(`<span class="abadge invisible" title="Invisible: attacks and enemy skills can't find it until it attacks">🫥</span>`);
   if(c.invincible>0) badges.push(`<span class="abadge invincible" title="Invincible: takes no damage this round">🌟</span>`);
@@ -33833,6 +33887,47 @@ function w2SkillVfx(ev){
     case 'hit': { const rc = rcOf(ev.targetUid); if(rc && rc.invincible > 0 && !(ev.dmg > 0)){ const el = boardCardEl(ev.targetUid); fl(el, '🌟 Invincible', 'quick'); if(el && fx()) F.invincibleBlock(el); } break; }
   }
 }
+// ==== 2026-10-17 skills: battle-log lines and looks for Reflect (a bounced shot), the Bloodlust leap, Sentry, Vanguard, Web, Carrion.
+function s17LogText(ev, nm){
+  if(ev.type === 'reflectShot') return {cls:'', text: ev.fireball ? `🪞 ${nm(ev.defId)} reflects the fireball back!` : ev.castle ? `🪞 ${nm(ev.defId)} reflects the shot into the castle!` : `🪞 ${nm(ev.defId)} reflects the shot at ${nm(ev.targetDefId)}!`};
+  if(ev.type === 'bloodlustLeap') return {cls:'', text:`🩸 ${nm(ev.defId)} smells blood and leaps ${ev.to > ev.from ? 'right' : 'left'} to face ${nm(ev.targetDefId)}!`};
+  if(ev.type === 'sentry') return {cls:'', text:`🗼 ${nm(ev.defId)} is on watch: it strikes ${nm(ev.targetDefId)} as it comes in.`};
+  if(ev.type === 'vanguard') return {cls:'', text:`🎖️ Vanguard: ${nm(ev.defId)} moves to the front of ${ev.side === 'A' ? 'your' : "the enemy's"} hand${ev.discardDefId ? ` (${nm(ev.discardDefId)} is discarded)` : ''}.`};
+  if(ev.type === 'statusFx'){
+    if(ev.kind === 'webbed') return {cls:'', text:`🕸️ ${nm(ev.attDefId)} webs ${nm(ev.targetDefId)}: it can't dodge or move for ${ev.amount} round${ev.amount === 1 ? '' : 's'}.`};
+    if(ev.kind === 'carrion') return {cls:'heal', text:`🦴 ${nm(ev.attDefId)} feeds on the fallen: +${ev.amount}.`};
+    if(ev.kind === 'vanguard') return {cls:'', text:`🎖️ ${nm(ev.attDefId)} leads the way as the first card played: +${ev.amount}/+${ev.amount}.`};
+  }
+  if(ev.type === 'statusEnd' && ev.status === 'webbed') return {cls:'', text:`🕸️ ${nm(ev.defId)} breaks free of the web.`};
+  return null;
+}
+function s17SkillVfx(ev){
+  if(!ev || !matchState) return; const m = matchState, F = window.SkillFX;
+  const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
+  const fx = lvl=> !!F && !reducedMotion() && fxAtLeast(lvl || 'med');
+  const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  const refresh = u=>{ try{ updateCardStatusDisplay(u); }catch(e){} };
+  if(ev.type === 'reflectShot'){ const d = boardCardEl(ev.uid), a = ev.targetUid != null ? boardCardEl(ev.targetUid) : (()=>{ try{ return hqTileEl(ev.targetSide); }catch(e){ return null; } })();
+    snd('reflectTone'); fl(d, '🪞 Reflect!', 'quick'); if(d && F && F.mirrorFlash && fx('low')) try{ F.mirrorFlash(d, a); }catch(e){} return; }
+  // Bloodlust's leap: the unit slides to its new slot (like a Restless step), with a red lunge.
+  if(ev.type === 'bloodlustLeap'){ const pid = ev.side === 'A' ? 1 : 2, rr = m.replayRows && m.replayRows[pid];
+    if(m.replayCards && m.replayCards[ev.uid]) m.replayCards[ev.uid].slot = ev.to;
+    if(rr){ const all = ['left','center','right'].flatMap(ln=> rr[ln]); const slotOf = u=>{ if(String(u) === String(ev.uid)) return ev.to; const rc = m.replayCards && m.replayCards[u]; return rc && rc.slot != null ? rc.slot : 0; };
+      rr.center = all.filter(u=> slotOf(u) === 0); rr.left = all.filter(u=> slotOf(u) < 0).sort((a, b)=> Math.abs(slotOf(a)) - Math.abs(slotOf(b))); rr.right = all.filter(u=> slotOf(u) > 0).sort((a, b)=> slotOf(a) - slotOf(b)); }
+    try{ renderBoard({collapseLandingUids:[]}); }catch(e){}
+    snd('swipeTone'); const el = boardCardEl(ev.uid);
+    if(el){ fl(el, '🩸 Leap!', 'debuff'); const dir = ev.to > ev.from ? 1 : -1; el.style.setProperty('--wave-dx', (dir * 14) + 'px'); el.style.setProperty('--wave-rot', (dir * 4) + 'deg'); el.classList.remove('wave-pushed'); void el.offsetWidth; el.classList.add('wave-pushed'); setTimeout(()=> el.classList.remove('wave-pushed'), 600);
+      if(F && F.bloodlustPulse && fx('low')) try{ F.bloodlustPulse(el, {full:true}); }catch(e){} }
+    return; }
+  if(ev.type === 'sentry'){ fl(boardCardEl(ev.uid), '🗼 Sentry!', 'quick'); snd('ambushTone'); return; }
+  if(ev.type === 'statusFx'){
+    if(ev.kind === 'webbed'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.webbed = Math.max(rc.webbed||0, ev.amount||1); snd('curse'); fl(el, '🕸️ Webbed', 'debuff'); if(el && F && F.vineBind && fx()) try{ F.vineBind(el, {}); }catch(e){} refresh(ev.targetUid); return; }
+    if(ev.kind === 'carrion'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.hp = Math.min(rc.maxHp || rc.hp + ev.amount, (rc.hp||0) + (ev.amount||0)); fl(el, `🦴 +${ev.amount}`, 'heal'); try{ updateCardHpDisplay(ev.targetUid); }catch(e){} return; }
+    if(ev.kind === 'vanguard'){ w2Later(380, ()=> fl(boardCardEl(ev.targetUid), `🎖️ +${ev.amount}/+${ev.amount}`, 'heal')); return; }
+  }
+  if(ev.type === 'statusEnd' && ev.status === 'webbed'){ const rc = rcOf(ev.uid); if(rc) rc.webbed = 0; refresh(ev.uid); }
+}
 // ==== Devilry payments and Ambush N (2026-10-16): battle-log lines and a simple look. Penance: a dark ⛧ pulse sinks into your own
 // castle; Blood Tithe: the same pulse into the ally that pays (or the castle); Ambush: the ambusher's "👀 Ambush" float (its strike
 // itself is the 'hit' event that follows, ambush:true, which plays the lunge and the old "🗡 Ambush!" cue).
@@ -33841,7 +33936,7 @@ function devilPayLogText(ev, nm){
   const who = mode ? (ev.side === 'A' ? "Player 1's" : "Player 2's") : yours;
   if(ev.type === 'penance') return {cls:'', text:`⛧ Penance: ${nm(ev.defId)} is paid for with ${who} castle (−${ev.dmg}${ev.dmg < ev.amount ? ` of ${ev.amount}: a castle never pays below 1` : ''}).`};
   if(ev.type === 'bloodTithe') return {cls:'', text: ev.castle ? `⛧ Blood Tithe: no ally to pay for ${nm(ev.defId)}, so ${who} castle pays (−${ev.dmg}).` : `⛧ Blood Tithe: ${nm(ev.targetDefId)} pays for ${nm(ev.defId)} in blood (−${ev.dmg}).`};
-  if(ev.type === 'ambush') return {cls:'', text:`👀 ${nm(ev.defId)} ambushes ${nm(ev.targetDefId)} as it arrives (${ev.amount}).`};
+  if(ev.type === 'ambush') return {cls:'', text:`👀 ${nm(ev.defId)} ambushes ${nm(ev.targetDefId)} as it ${ev.moved ? 'moves in' : 'arrives'} (${ev.amount}).`}; // + moved in (2026-10-17)
   // 2026-10-16 (skills 2): Amore, Fire on hit and its Burn 1 Lumber, On Pitch.
   if(ev.type === 'amore') return {cls:'heal', text:`💕 ${nm(ev.defId)} and ${nm(ev.mateDefId)} fall in love: +0/+${ev.hp} and Regeneration ${ev.regen} each.`};
   if(ev.type === 'amoreBroken') return {cls:'', text:`🤎 ${nm(ev.defId)} is heartbroken: ${nm(ev.deadDefId)} is gone. It keeps +0/+3, but loses Regeneration 3.`};
@@ -33982,6 +34077,7 @@ function renderVfxForEvent(ev){
   try{ labSkillFx(ev); }catch(e){}
   try{ ninthPassVfx(ev); }catch(e){} // the Bolts and Chilli (2026-10-15)
   try{ w2SkillVfx(ev); }catch(e){} // W2 skills (2026-10-16)
+  try{ s17SkillVfx(ev); }catch(e){} // 2026-10-17 skills
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
@@ -34577,7 +34673,7 @@ function renderVfxForEvent(ev){
       [ev.targetUid, ev.swapUid].forEach(u=>{ const e2 = u != null && boardCardEl(u); if(e2){ e2.style.setProperty('--wave-dx', ev.dir === 'left' ? '-10px' : '10px'); e2.style.setProperty('--wave-rot', ev.dir === 'left' ? '-3deg' : '3deg'); e2.classList.add('wave-pushed'); setTimeout(()=> e2.classList.remove('wave-pushed'), 600); } }); }
   }
   // Crab Claws (2026-10-14): a sideways pinch, or a snap at thin air.
-  if(ev.type==='crabClaw'){ const el = boardCardEl(ev.attUid); if(el){ floatText(el, ev.whiff ? '🦞 Whiff' : (ev.dir === 'left' ? '🦞 ←' : '🦞 →'), 'quick'); el.style.setProperty('--crab-dx', ev.dir === 'right' ? '8px' : '-8px'); el.classList.remove('crab-pinch'); void el.offsetWidth; el.classList.add('crab-pinch'); setTimeout(()=> el.classList.remove('crab-pinch'), 500); } }
+  if(ev.type==='crabClaw'){ const el = boardCardEl(ev.attUid); if(el){ floatText(el, ev.whiff ? '🦞 Whiff' : ev.dir === 'castle' ? '🦞 🏰' : (ev.dir === 'left' ? '🦞 ←' : '🦞 →'), 'quick'); el.style.setProperty('--crab-dx', ev.dir === 'right' ? '8px' : '-8px'); el.classList.remove('crab-pinch'); void el.offsetWidth; el.classList.add('crab-pinch'); setTimeout(()=> el.classList.remove('crab-pinch'), 500); } }
   // Charge N (2026-10-14): the yellow clock ticks; at 0 it flashes and the effect's own events follow.
   if(ev.type==='charge'){ updateChargeBadge(ev.uid, ev.left, !!ev.fired); if(ev.fired){ const el = boardCardEl(ev.uid); if(el) floatText(el, '⏲️ Charge!', 'gold'); try{ SoundKit.gritUp(); }catch(e){} } }
   // Restless (2026-10-14): it slides one column over (swapping with an ally there), like a Wave push.

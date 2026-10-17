@@ -102,7 +102,7 @@ ok(/penance: \{withhold:'subject'/.test(src) && /bloodTithe: \{withhold:'subject
 ok(/SB_DEFAULT_SKILLS = \{penance:'-v', bloodTithe:'-v',/.test(src) && /rule === '-v'\) t -= /.test(src), 'the stat budget counts the payments as a discount');
 ok(/function devilPayVfx\(ev\)/.test(src) && /function devilPulse\(el\)/.test(src) && /devilPayLogText\(ev, nm\)/.test(src), 'their log lines and the ⛧ pulse');
 ok(/\{key:'ambush', category:'passive', label:'Ambush', kind:'number', min:1, defaultValue:3,/.test(src) && /get:e=> e\.ambush \? numOr\(e\.ambush, 3\) : undefined/.test(src), 'Ambush N: an old Ambush (true) reads as Ambush 3');
-ok(/ambush: v=> `When the enemy plays a card into the slot facing it, deal \$\{numOr\(v, 3\)\} damage to that card\.`/.test(src), 'Ambush card text');
+ok(/ambush: v=> `When an enemy unit enters the slot facing it \(played, spawned or moved in\), deal \$\{numOr\(v, 3\)\} damage to it\.`/.test(src), 'Ambush card text (2026-10-17: any enemy unit entering, not only a card played)');
 ok(!/Its first attack always crits/.test(src), 'the old Ambush text is gone');
 ok(/expose: v=> `Its hits put \$\{numOr\(v, 1\)\} Expose counter/.test(src) && /name:'Exposed', c:'#e07b39', text:'each hit on it is a crit/.test(src), 'Expose card text and the Exposed gloss');
 ok(/opts\.crit \? '🎯 Crit!'/.test(fxb) && /M\.exposeCash\(t, \{crit:true\}\)/.test(fxb), 'the Exposed hit chip says Crit!');

@@ -2,6 +2,18 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-17 (skills)
+- **Reflect (reworked, 🪞):** a shot aimed at it bounces off and hits a random unit on the shooter's side (their castle if they have none), as the Reflect unit's own shot (it can be dodged; it never bounces again). Shots: Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, the five Bolts, Spitfire, Snipe, Fireball (the whole burst bounces), Rocket, a thrown Banana, Missile / On Ready damage, a Damage trigger at a random enemy, the castle's bolt. Not shots: melee, Pounce, Skyfall, Meteor, Lightning, Earthquake and the other area hits. The old melee "Reflect N%" is gone; an old number is now that % chance to bounce. Mirror Moth (was 30) and the Reflect test card (was 100) are plain Reflect now.
+- **Vanguard N (new, 🎖️):** at the start of the game the next Vanguard card in your deck moves into your opening hand and a random other card from it is discarded (once a game; skipped if one is already in hand). As your first card of the game: +N/+N (default 1).
+- **Web N (new, 🕸️):** its hits Web the target for N rounds (default 1). Webbed (a status with its own colour and gloss): it can't dodge (no Evasive, Swift, Flying, Prey or Tide dodge) and can't move or be moved (Wave, Tornado, Restless, a Bloodlust leap).
+- **Bloodlust (reworked):** no number now. When it kills the unit facing it, it leaps to face the nearest enemy creature (not a Structure) with a free slot of its own side in front of it (open boards; packed rows close up by themselves). It deals half damage (rounded up) to Structures and castles. The Skills Codex adds: its leap counts as entering, so an enemy Ambush or Sentry facing the new slot strikes it. Was: Bloodlust N, +N Attack for drawing blood, up to +3N. Piranha Shoal (was 1) is plain Bloodlust.
+- **Ambush N:** strikes any enemy unit that enters the slot facing it: played, spawned (tokens, hatches, reserves stepping up) or, on open boards, moved in (Wave, Tornado, Restless, Converge, a Bloodlust leap). Was: only a card played there. Engine: `watchScan`, run after every card lands, before melee and after every attacker's turn.
+- **Sentry (new, 🗼):** once a round, while Ready, it attacks an enemy unit that enters one of the 3 slots facing it.
+- **Crab Claws:** never attacks the unit in front; with nobody to either side its claws reach the castle (was: it attacked straight ahead).
+- **Leech:** the engine's old `sap` (heal on hit by the damage dealt) is in "+ Add Skill" as Leech, with a card line and a chip.
+- **New skills on no card yet:** Carrion N (heal N whenever another unit dies), Hoard N (+1 Attack per N Lumber you hold), Venom Master N (your units' Poison / Bleed hits add N more), Fletcher N (your units' arrows +N), Herbalist N (every heal on your units +N), Shatter N (+N damage to Frozen units). Fester (damage from its own Poison) and Electricity (+1 on wet units) already existed; fire-on-fire waits for a Burning status.
+- Tests: `tests/skills-2026-10-17.js`.
+
 ## 2026-10-16 (field effects 2)
 - **19 new field effects**, built and selectable in Edit skirmish (Hazards and rules), each with an Environment card, a battle-log line, a look and an Effects library entry. **No map carries them yet**; map placement is a separate pass. Engine: `fieldEffects2Tick` and the helper block near `rules` in bramblewood-engine.js; texts: `FIELD2` in arena_app.js; tests: `tests/field-effects-2026-10-16.js`.
   - **Tide** (`tide`): the Flood/Ebb cycle as a field effect of its own, Flood from round 2.
