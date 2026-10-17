@@ -6,7 +6,118 @@ Every visual-effect moment in Bramblewood Arena, built and planned, in one check
 
 **Quality key.** `good` = a real look that reads well. `basic` = a floating word, a sound, a static CSS class or a reused look that doesn't say what happened. `missing` = nothing on screen (often only a battle-log line). `broken` = the visual says the wrong thing. **Priority** 1 = seen every session / big moment, 3 = rare. **future** = planned, not built. **variantsSuggested** = the right look is uncertain, so build 2–3 variants for the designer to pick.
 
-**Totals:** 933 entries · good 416 · basic 279 · missing 237 · broken 1 · of which future (planned) 96.
+**Totals (2026-10-15):** 933 entries · good 416 · basic 279 · missing 237 · broken 1 · of which future (planned) 96.
+
+## 2026-10-17: the Effects Lab catches up (batch L17)
+
+Everything visual or audible the game gained on 2026-10-16 and 2026-10-17 (docs/CHANGELOG.md from "2026-10-16 (02:00)" up), checked against the lab. **56 entries added** (batch `L17`, `status: built`, `added: 2026-10-17`), **28 updated** (`updated: 2026-10-17`: the new look, or the game's own function now plays it), **8 retired** (`status: retired` with the reason; their old demos stay playable). The inventory now holds **1029 entries** (good 503 · basic 290 · missing 235 · broken 1); with the lab's own map-title, grandeur and fun entries every one of them is built. The lab entries live in `tools/effects-lab/manifest/x17.js` and `fe2.js` (map titles in `w4.js`); `manifest/_game.js` stands in for the fight around the stage so the lab plays the game's functions (`field2Vfx`, `s17SkillVfx`, `devilPayVfx`, `skills2Vfx`, `killMarkVfx`, `triggerFiredVfx`, `enemyPitchSlotFx`, `skyStepApply`, `skyPhaseLayers` …, listed in `tools/effects-lab/fx-src-extra.txt`). The JSON also renormalised three stray areas (`weather` → `weather-time`, `map` → `conquest-map`, `darkness` → `darkness-light`).
+
+### Added
+
+| id | Moment | Trigger | Now in the game | Quality | P |
+|---|---|---|---|---|---|
+| `fld2-canopy` | High Canopy / Undergrowth | a fight with rules.canopy (Map 13) or rules.undergrowth (Map 15): a Swift / Quick unit dodges (evaded {reason:canopy}); Pounce +2 | the Environment card; the ordinary Evasive dodge (SkillFX.evasiveDodge); Pounce's bigger number | basic — the Environment card and the numbers; no look of its own | 2 |
+| `fld2-tall-grass` | Tall Grass | hit {tallGrass} (Backstab hits and Pounce deal double); Stealth attacks first | field2Vfx: "🌾 ×2" over the target | good — has its own look that plays at the right moment | 2 |
+| `fld2-leylines-1` | Leylines I (zeitgebers stronger) | rules.leylines1: Diurnal / Nocturnal / Crepuscular / Tide / Full Moon bonuses grow | the Environment card; the phase bonus number | basic — the Environment card and the numbers; no look of its own | 2 |
+| `fld2-leylines-2` | Leylines II (+1 Lumber a round) | lumber {leylines} for each side from round 2 | resourceGainVfx into each side's Lumber pill | good — has its own look that plays at the right moment | 2 |
+| `fld3-sulphur-fumes` | Sulphur Fumes (Choking) | fieldTick sulphurFumes; statusFx choking on each unit that breathes them in (not fire-resistant, Dry or Flying) | field2Vfx: a soft yellow sweep (boardSweepVfx glass, from the right) + "💨 −1" on each choking unit | good — has its own look that plays at the right moment | 2 |
+| `fld3-ash-rain` | Ash Rain | fieldTick ashRain (both castles −1, day bonuses halved); ashRainCastle | field2Vfx: the grey hail band and a boom; the castle loss has no number of its own | basic — the sweep; the castle loss only ticks the HP bars | 2 |
+| `fld3-ashy` | Ashy (and Ashy after an Eruption) | fieldTick ashy (an Eruption on a volcano map leaves it Ashy for 4 rounds); evaded {reason:ashy} | field2Vfx: the board rumbles (erupt-rumble) + boom; a miss in the ash floats "🌫️ Lost in ash" on the attacker | good — has its own look that plays at the right moment | 2 |
+| `fld3-arrow-slits` | Arrow Slits | fieldTick arrowSlits then arrowSlitHit on a random unit of yours (2; a Helmet can turn it) | field2Vfx: a twang, then "🏹 -2" and a shake on the unit hit | good — has its own look that plays at the right moment | 2 |
+| `wt-volcano-glow` | Volcano Glow: Day 4, Night 2 | a volcano map with day and night (20, 20-A, 22) or phaseDay / phaseNight on the fight | phasePillHTML counts "2/4" by day and "1/2" by night (engine.phaseStepInfo); the Environment card's Volcano Glow row | basic — the pill and the card row | 2 |
+| `sk-penance` | Penance (Devilry payment) | penance {side, dmg} when the card is played | devilPayVfx → devilPulse: a dark ⛧ sinks into your own castle + "⛧ -N" | good — has its own look that plays at the right moment | 2 |
+| `sk-blood-tithe` | Blood Tithe (Devilry payment) | bloodTithe {targetUid \| castle, dmg} when the card is played | devilPayVfx → devilPulse on the ally that pays (your castle with none) + "⛧ -N" | good — has its own look that plays at the right moment | 2 |
+| `sk-amore` | Amore: a pair falls in love | amore {uid, mateUid, hp, regen}: two Amore units of yours sharing a Type | skills2Vfx: hearts drift both ways (floatGlyphs) + "💕 +0/+3" on each | good — has its own look that plays at the right moment | 2 |
+| `sk-amore-broken` | Amore: heartbroken | amoreBroken {uid} when its partner dies | skills2Vfx: "🤎 Heartbroken" + a brown heart and a broken one rise | good — has its own look that plays at the right moment | 2 |
+| `sk-scavenge` | On Pitch trigger ("Scavenge") | triggerFired {hook:onPitch} on each of your On Pitch units when you pitch a card | triggerFiredVfx: the unit's ♻️ badge glows, then the action | good — has its own look that plays at the right moment | 2 |
+| `sk-lumber-burn` | Burn 1 Lumber (a trigger's cost) | lumberBurn {side, uid} | skills2Vfx: "🔥 -1" on your Lumber pill and an ember flies to the unit | good — has its own look that plays at the right moment | 2 |
+| `sk-fire-on-hit` | Fire on hit (trigger action) | fireHit {targetUid \| castle, dmg} with the attack's hit | skills2Vfx: "🔥 -N" and two flames on what it hit, at the impact | good — has its own look that plays at the right moment | 2 |
+| `sk-pounce-stat` | Pounce <Att> / <Hp> | a Pounce whose amount is the card's Attack or Health | the Pounce leap (SkillFX.pounceOnto) with that number; the card text's live number is blue | good — has its own look that plays at the right moment | 2 |
+| `sk-vanguard` | Vanguard | statusFx vanguard (first card of the game: +N/+N); vanguard (opening hand) is a log line | s17SkillVfx: "🎖️ +N/+N" 0.38 s after the play | basic — the buff float; the opening-hand move is only a battle-log line | 2 |
+| `sk-web` | Web (Webbed status) | statusFx webbed on the unit its hit lands on; statusEnd webbed | s17SkillVfx: "🕸️ Webbed" + SkillFX.vineBind; the 🕸️N status badge (w2StatusBadges) | good — has its own look that plays at the right moment | 2 |
+| `sk-bloodlust-leap` | Bloodlust leap | bloodlustLeap {uid, from, to} after it kills the unit facing it | s17SkillVfx: the unit moves to its new slot, "🩸 Leap!", a red push (.wave-pushed) and SkillFX.bloodlustPulse({full}) | good — has its own look that plays at the right moment | 2 |
+| `sk-sentry` | Sentry | sentry {uid, targetUid} when an enemy enters one of the 3 slots facing it (once a round, while Ready) | s17SkillVfx: "🗼 Sentry!" + ambushTone, then its strike | good — has its own look that plays at the right moment | 2 |
+| `sk-carrion` | Carrion | statusFx carrion when another unit dies | s17SkillVfx: "🦴 +N" (heal) | good — has its own look that plays at the right moment | 2 |
+| `sk-hoard` | Hoard (passive) | Hoard N: +1 Attack per N Lumber you hold (no event of its own) | its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number | basic — the chip and the number; no look of its own | 3 |
+| `sk-venom-master` | Venom Master (passive) | Venom Master N: your units' Poison and Bleed hits add N more (no event of its own) | its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number | basic — the chip and the number; no look of its own | 3 |
+| `sk-fletcher` | Fletcher (passive) | Fletcher N: your units' arrows deal N more (no event of its own) | its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number | basic — the chip and the number; no look of its own | 3 |
+| `sk-herbalist` | Herbalist (passive) | Herbalist N: every heal on your units heals N more (no event of its own) | its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number | basic — the chip and the number; no look of its own | 3 |
+| `sk-shatter` | Shatter (passive) | Shatter N: +N damage to Frozen units (no event of its own) | its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number | basic — the chip and the number; no look of its own | 3 |
+| `sk-atheist` | Atheist | leylinesHit {atheist} (the Leylines' burn skips it); half damage from magic, Devilry and Ecclesia | field2Vfx: "✴️ Atheist" instead of a number; its 🚫✨ chip | good — has its own look that plays at the right moment | 3 |
+| `atk-arrow-count` | Arrow ×N (War Elephant's two arrows) | the shots at Speed 1: one Arrow shot per arrowCount | SkillFX.bowShot per arrow, one after the other; its card shows two Arrow 2 lines | good — has its own look that plays at the right moment | 2 |
+| `death-kill-mark` | Killing blow ✖ into the killer | a killing blow from a unit with an On Kill trigger (or Momentum, Midas Touch, Slash & Burn) | killMarkVfx: a ✖ pops on the target and darts into the killer (.kill-gain); its On Kill trigger plays as it lands (pullKillTrigger) | good — has its own look that plays at the right moment | 2 |
+| `st-revive-mark` | Revive mark: phoenix, Angel wings, used | a unit with Revive on the board (!revivedOnce); revive event | .revive-mark (ember ring + flame feather) or .angel-wings (isAngelDef); "↺ Revive" chip; used: is-spending + the chip struck in red | good — has its own look that plays at the right moment | 2 |
+| `ui-enemy-pitch` | Opponent pitches a card | discard by the opponent → enemyPitchVfx | enemyPitchSlotFx: the card drops into a slot under their pills, settles, fades; "+1 🪵 Lumber" rises; their pill bings | good — has its own look that plays at the right moment | 1 |
+| `ui-enemy-hand-count` | Enemy hand counter | the opponent's hand size changes | "N 🃏" pill on their Deck, .ehc-bump on change, .is-zero at 0 | good — a small, clear counter | 1 |
+| `ui-upkeep-chip` | Upkeep lock | the round-start effects play before your turn opens | html.bw-upkeep (hand dims, play / pitch / Pass wait) + "⏳ Upkeep" chip (showUpkeepChip) | good — has its own look that plays at the right moment | 1 |
+| `ui-voice-bark` | Voice bark and babble | maybeBark on play / kill / death / skill (leaders and bosses always) | showSpeechBubble(.is-bark, 1.6 s) + SoundKit.barkBabble in the species' voice (barkVoiceFor) | good — has its own look that plays at the right moment | 1 |
+| `wt-sky-step` | Day / night steps (10 s) | the step inside a phase changes (Day 1→2→3, Night 1→2→3) | skyStepApply: the sky tint eases over SKY_STEP_MS (10 s); a redraw carries on | good — has its own look that plays at the right moment | 2 |
+| `wt-night-cursor` | Night pointer light | Night in any fight (not Pitch Black, which has its lantern) | .battlefield.bf-night-cursor + .night-cursor-light under the pointer (wireNightCursorLight) | good — has its own look that plays at the right moment | 2 |
+| `tr-frame-kinds` | Card front frames by kind (unit, structure, castle, field) | every card face (board, hand, Codex, deck editor, big views) | cardFrameClasses → fr-<kind> + .cframe (art/frames/*.png) | good — has its own look that plays at the right moment | 1 |
+| `tr-frame-arch-devilry` | Archetype frame: Devilry | a unit or structure of the Devilry archetype | ar-devilry: art/frames/a-devilry.png (unit) / s-devilry.png (structure) | good — has its own look that plays at the right moment | 2 |
+| `tr-frame-arch-grace` | Archetype frame: Ecclesia | a unit or structure of the Ecclesia archetype | ar-grace: art/frames/a-grace.png (unit) / s-grace.png (structure) | good — has its own look that plays at the right moment | 2 |
+| `tr-frame-arch-exile` | Archetype frame: Scrappers | a unit or structure of the Scrappers archetype | ar-exile: art/frames/a-exile.png (unit) / s-exile.png (structure) | good — has its own look that plays at the right moment | 2 |
+| `tr-frame-arch-evolution` | Archetype frame: Evolution | a unit or structure of the Evolution archetype | ar-evolution: art/frames/a-evolution.png (unit) / s-evolution.png (structure) | good — has its own look that plays at the right moment | 3 |
+| `tr-frame-arch-exiled` | Archetype frame: Exiled Ones | a unit or structure of the Exiled Ones archetype | ar-exiled: art/frames/a-exiled.png (unit) / s-exiled.png (structure) | good — has its own look that plays at the right moment | 3 |
+| `tr-frame-arch-forgotten` | Archetype frame: Forgotten Ones | a unit or structure of the Forgotten Ones archetype | ar-forgotten: art/frames/a-forgotten.png (unit) / s-forgotten.png (structure) | good — has its own look that plays at the right moment | 3 |
+| `tr-frame-arch-ancient` | Archetype frame: Ancient Ones | a unit or structure of the Ancient Ones archetype | ar-ancient: art/frames/a-ancient.png (unit) / s-ancient.png (structure) | good — has its own look that plays at the right moment | 3 |
+| `tr-frame-arch-outer` | Archetype frame: Outer Ones | a unit or structure of the Outer Ones archetype | ar-outer: art/frames/a-outer.png (unit) / s-outer.png (structure) | good — has its own look that plays at the right moment | 3 |
+| `tr-frame-arch-void` | Archetype frame: Void | a unit or structure of the Void archetype | ar-void: art/frames/a-void.png (unit) / s-void.png (structure) | good — has its own look that plays at the right moment | 3 |
+| `tr-card-backing` | Card backs by kind | every face-down card (pack opener, draw flip, enemy card, pitch, reward reveals, home fan, deck piles) | cardBackClass → .bw-back.bk-<unit\|structure\|castle\|field> (art/backings/*.png) | good — has its own look that plays at the right moment | 1 |
+| `tr-rarity-zoom` | Top rarity frame on a zoomed card | the card detail / inspector of a Mythic (or Ancient, Divine, Void, Daemonic) card | FX.D FRAMES_CSS rSel matches "--rarity-a:#…" and "--rarity-a: #…", so the big card wears the same frame | good — has its own look that plays at the right moment | 2 |
+| `pack-bonus-copy` | Bonus copy ("Bonus!") | a pack card that rolls a bonus copy (Common 5% … halving from Epic) | .po2-bonus-copy slides out from behind the card, "Bonus! +1 copy" tag, unlockChime and a burst | good — has its own look that plays at the right moment | 2 |
+| `pack-count-down` | Pile count counts down | opening a big pile of packs | #poPileCount "N cards" counts down as each card is revealed | basic — the number counts down | 2 |
+| `map-trails-one-by-one` | New trails ink in one by one | coming back to the map after a clear that opens new fights | FX.E playReturn: the new trails and fights are hidden, then each trail inks in (trailDraw) and its fight fades in | good — has its own look that plays at the right moment | 1 |
+| `map-title-frostfire` | Map title: Frostfire (Map 22) | entering the Rimefire Caldera (m22) for the first time in a session | FX.G.mapTitle, theme frostfire (ribbon banner) | good — has its own look that plays at the right moment | 2 |
+| `map-title-castle` | Map title: Fortress (Maps 23-24) | entering the Goldfeather Siege (m23) or Goldfeather Keep (m24) for the first time in a session | FX.G.mapTitle, theme castle (ribbon banner) | good — has its own look that plays at the right moment | 2 |
+| `map-grand-silhouettes-2` | Distant silhouettes (II): battlements, the ice volcano | the Frostfire and Fortress titles | FX.G.silhouettes {sil:battlements} / the frostfire volcano | good — has its own look that plays at the right moment | 2 |
+| `map-cave-fires` | Cave fire pits light up | a cave map: fire pits along the trail (at most 3) light as you win | .cave-fire.is-igniting / .is-lit | good — has its own look that plays at the right moment | 2 |
+
+### Updated
+
+| id | Moment | Now in the game |
+|---|---|---|
+| `fld2-landslide` | Landslide | field2Vfx (the game's own function now plays in the lab): the rumble, a band of rocks across the board, chips off each grounded unit |
+| `fld2-crushing` | Crushing Depths | field2Vfx: the press (crush-press) and water rings, "🫧 -N" (Swimmers half) |
+| `fld2-hail` | Hail | field2Vfx: the hail band across the board, ice chips, "🌨️ -3" |
+| `fld2-glass-storm` | Glass-storm | field2Vfx: the glass band (either way), "💎 -1…3" with zaps |
+| `fld2-lava-spout` | Lava Spout | field2Vfx: lavaSpoutHit → eruptionGeyserVfx in the column, "♨️ -3" |
+| `fld2-leylines` | Leylines III burn | field2Vfx: the violet band, "✴️ -3" and violet rings; an Atheist shows "✴️ Atheist" |
+| `fld2-mirage` | Mirage | field2Vfx: the Illusion shimmers in (.mirage-shimmer) with "🪞 Illusion" |
+| `fld2-haunted` | Haunted: Frightened | field2Vfx: "👻 Frightened" + SkillFX.fearShiver; the 👻 badge |
+| `fld2-slippery` | Slippery | field2Vfx: "⛸️ Slip!" on the attacker; "⛸️ Slipped" on a failed skill |
+| `fld2-lanes` | Rook's Row / Bishop's Path | field2Vfx: "♜ +2" / "♝ +2" over the target |
+| `fld2-consternation` | Consternation | field2Vfx: "😰 −1/−1" over the hand; a played card keeps the 😰 badge |
+| `atk-reflect` | Reflect (a shot bounces back) | 2026-10-17 rework: a shot bounces off (s17SkillVfx reflectShot: "🪞 Reflect!" + mirrorFlash) and hits a unit on the shooter's side, or their castle; the melee "Reflect N%" is gone |
+| `sk-electricity` | Electricity arc (the bolt is the hit) | SkillFX.lightning; 2026-10-16: the bolt is the hit: a yellow ⚡ number as it lands, a ⚡ burst and a pale-blue flash |
+| `atk-quick` | Quick strike | SkillFX.quickStrike: the dash lands the hit (~0.15 s); 2026-10-16 on every Quick hit and at the castle (quickStrikeCastle), 2026-10-17 on misses too |
+| `sk-trigger-fired` | Custom trigger fires | 2026-10-16: only the trigger's own ⚡ badge glows (triggerFiredVfx, .ab-trig.is-firing); no rune ring, card glow, aura or bolt |
+| `castle-hp-number` | Castle HP number tick | 2026-10-16: floatText(hqRibbonFloatAnchor(side), "-N", "hq-big") on the HP bar where its fill ends |
+| `castle-herb-bane` | Herb Refinery bitter brew | 2026-10-16: castleThrowVfx: a 🧪 on a shallow arc that lands in 0.44 s (every castle shot) |
+| `dark-night-veil-in` | Night falls on the battlefield | 2026-10-16: the whole board darkens over 10 s (skyPhaseLayers + the veil) while the night creeps in from the left at 40% |
+| `dark-night-veil-out` | Night lifts | 2026-10-16/17: the board lights up over 10 s, the light creeps in from the left at 40%, soft streaks (FX.E.nightRetreat), a barely-there sun (FX.B.dayBreaks) |
+| `map-hidden-skirmish-pop` | Hidden skirmish appears | 2026-10-17: the hidden skirmish pops in with its trail from the fight beside it (.trail-pop); it opens once that fight is cleared |
+| `death-fall` | Normal death (smooth topple) | 2026-10-16 (voices and feel): the topple is back as one smooth motion that starts slow and speeds up, fading as it lands (fallDeathVfx) |
+| `wt-day-breaks` | Day breaks | 2026-10-17: FX.B.dayBreaks: no hard disc, a soft blurred glow 60% fainter, rays a third fainter; birds sing on about 1 in 3 daybreaks (SoundKit.dawnChime) |
+| `sk-regen` | Regeneration | 2026-10-17: SkillFX.regen about 40% faster (motes, stagger, pluses, glow) |
+| `st-stun-apply` | Stun: applied | 2026-10-16: Stun N: each landed hit has a 1 in 3 chance to Stun for N rounds (the old % values read as Stun 1); same look |
+| `sk-sap` | Leech (Sap) drain | 2026-10-17: the engine's Sap is the Leech skill ("+ Add Skill", a card line, the 🧛 chip); SkillFX.lifeDrain with half-size drops (10-16) |
+| `wt-rain-start-stop` | Rain starts / stops while you look at the map | 2026-10-16: rain coming in (on the map and a Spring Rain field arriving) is 90% more transparent (RAIN_ONSET_OPACITY); rain stopping unchanged |
+| `atk-ambush` | Ambush strike | 2026-10-16/17: Ambush N strikes any enemy entering the slot facing it (played, spawned, moved in); FX.A.ambushStrike |
+| `st-strangle-tick` | Strangle: squeeze | SkillFX.squeeze + "🪢 -N" |
+
+### Retired
+
+| id | Moment | Why |
+|---|---|---|
+| `death-shiny-foil` | Shiny / foil unit dies | 2026-10-17: shiny and foil units die like anyone else; the sheen is the Prism death (death-prism) |
+| `pack-duplicate` | Duplicate (×N) pull | 2026-10-17: the "×2" with two blank cards (fired on any card you already owned) is gone; a real bonus copy is pack-bonus-copy |
+| `death-lethal-number` | Killing blow number | 2026-10-16: the "−N ✖" killing-blow stamp is gone; a killer that feeds on kills gets the ✖ (death-kill-mark) |
+| `sk-bloodlust` | Bloodlust grows | 2026-10-17: Bloodlust no longer grows (no statusFx bloodlust); it leaps on a kill (sk-bloodlust-leap) |
+| `sk-worthy` | Worthy loot | 2026-10-16: Worthy is Bounty everywhere (an empty, hidden slot); its loot is Bounty's +🪵 |
+| `res-rank-lesson` | Rank lesson | 2026-10-16: the results no longer show the rank lesson box; the rank hex says it |
+| `res-xp-line` | XP and level on results | 2026-10-16: the "+3 XP" gold bar with its glow over the results is gone; an account level-up plays after the results close |
+| `tut-lumber-lesson` | Lumber lesson | 2026-10-16: the big Lumber lesson window is gone; the spotlighted Pitching lesson teaches Lumber |
 
 ## Counts by area and quality
 
@@ -233,7 +344,7 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `sk-sacrifice` | Dark Summon sacrifice | sacrifice + statusFx sacrificed | .sac-chomp jaws (+ "🦷 Sacrifice") | basic — sacrifice event itself is log-only | 2 |
 | `sk-fast-forward` | Fast Forward extra turn | fastForward {n} | .ff-blur afterimages + "⏩ ×N" | good — has its own look that plays at the right moment | 3 |
 | `sk-midas` | Midas Touch | lumber {cause:'midas'} on kill | floatResourceGain | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-worthy` | Worthy loot | lumber {cause:'worthy'\|'worthyDeath'} | SkillFX.lootArc logs | good — has its own look that plays at the right moment | 3 |
+| `sk-worthy` | Worthy loot **(retired 2026-10-16)** | lumber {cause:'worthy'\|'worthyDeath'} | SkillFX.lootArc logs | good — has its own look that plays at the right moment | 3 |
 | `sk-resource-passive` | Resource passives (Lumberjack, Timber, Heavy Metal, Rock-solid, Iron-will) | pitch/gain rules with no event | none | missing — no moment shown when the bonus applies | 3 |
 | `sk-satiety` | Satiety | statusFx satiety | none (log only) | missing — nothing on screen | 3 |
 | `sk-shed` | Shedding / Molting | statusFx shed {molt} | "🐍 +1/+1" float | basic — no skin peeling; statuses drop silently | 2 |
@@ -503,14 +614,14 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `death-boss` | Boss unit dies | death of a boss-node enemy unit / world boss | normal death | missing — nothing on screen | 1 |
 | `death-egg` | Egg card destroyed before hatching | death of a hatchInto card | normal death | missing — nothing on screen | 3 |
 | `death-structure` | Structure destroyed | death of a Structure card | normal death | missing — buildings topple like animals | 2 |
-| `death-shiny-foil` | Shiny / foil unit dies | death of a shiny or foil unit | normal death; finish just disappears | missing — nothing on screen | 3 |
+| `death-shiny-foil` | Shiny / foil unit dies **(retired 2026-10-17)** | death of a shiny or foil unit | normal death; finish just disappears | missing — nothing on screen | 3 |
 | `death-skull` | Skull float on death | every death | .death-skull deathSkullFloat (hidden for falls/tokens/ice) | good — has its own look that plays at the right moment | 3 |
 | `death-kill-emote` | Killer emote | death of a unit last hit this round | maybeEmote(killer, 'kill') | good — has its own look that plays at the right moment | 3 |
 | `death-speech` | Death line | death | maybeSpeak(uid, 'onDeath') bubble | good — has its own look that plays at the right moment | 3 |
 | `death-bounty` | Bounty drop | bounty {fromDefId, uid} | itemDropVfx 🪵 bounce + itemDrop | good — has its own look that plays at the right moment | 3 |
 | `death-collapse-in` | Row closes the gap | collapseIn {fromSide} | SoundKit.shift + Flip glide + .collapse-landed squash | good — has its own look that plays at the right moment | 3 |
 | `death-revive-save` | Revive saves it from death | revive (instead of death) | SkillFX.reviveRise | good — has its own look that plays at the right moment | 3 |
-| `death-lethal-number` | Killing blow number | hit that drops hp to 0 | normal damage number | missing — no "KO" emphasis on the final blow | 2 |
+| `death-lethal-number` | Killing blow number **(retired 2026-10-16)** | hit that drops hp to 0 | normal damage number | missing — no "KO" emphasis on the final blow | 2 |
 | `death-ghost` | Ghost fades out 🔮 | planned: Ghost units (Map 50+) | none | missing — planned | 3 |
 | `death-dragon` | Dragon falls 🔮 | planned: Map 50 dragons | none | missing — planned | 2 |
 | `death-supreme` | Supreme beast defeated 🔮 | planned: super-boss fights | none | missing — planned | 2 |
@@ -706,7 +817,7 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `pack-reveal-foil` | Foil pull reveal 🎨 | reveal() of a card with a foil finish (pullClass) | finish shows on the face, nothing more | missing — a foil is a big moment with no moment | 1 |
 | `pack-reveal-shiny` | Shiny pull reveal | reveal() of r.shiny | .shiny-mark ✦ | basic — a generic or reused look that does not say what happened | 2 |
 | `pack-new-card` | NEW! card | reveal() of r.isNew | is-new-moment po2NewBorder + po2Stamp NEW! + unlockChime + burst + po2-flash | good — has its own look that plays at the right moment | 1 |
-| `pack-duplicate` | Duplicate (×N) pull | r.count>1 | .po2-stackn ×N | basic — no dust/level progress cue | 3 |
+| `pack-duplicate` | Duplicate (×N) pull **(retired 2026-10-17)** | r.count>1 | .po2-stackn ×N | basic — no dust/level progress cue | 3 |
 | `pack-collect` | Card flies to the row | collect() | po2-fly ghost arc + mini pop | good — has its own look that plays at the right moment | 3 |
 | `pack-sweep-reveal` | Sweep across to reveal | pointer sweep >60% of the card | reveal() | good — has its own look that plays at the right moment | 3 |
 | `pack-summary` | Pack summary | showSummary | summary grid + ProcFX.ripple wave + pointer lean | good — has its own look that plays at the right moment | 3 |
@@ -733,7 +844,7 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `res-loss-scatter` | Units scatter on loss/draw | opts.scatter | .is-scattering cardScatter | good — has its own look that plays at the right moment | 3 |
 | `res-first-clear` | First clear | first clear of a node | .wl-firstclear::after wlShine | good — has its own look that plays at the right moment | 2 |
 | `res-rank-stamp` | Rank earned (B/A/S/SS/SSS) | m.conquestRankEarned | .rank-hex.wl-rank + rankFoil/sssPulse | good — has its own look that plays at the right moment | 2 |
-| `res-rank-lesson` | Rank lesson | first ranks | .wl-rank-lesson (npcIn) | basic — a generic or reused look that does not say what happened | 3 |
+| `res-rank-lesson` | Rank lesson **(retired 2026-10-16)** | first ranks | .wl-rank-lesson (npcIn) | basic — a generic or reused look that does not say what happened | 3 |
 | `res-reward-reveal` | Reward reveal (cards / unlock tokens) | playRewardReveal | dark card back, shine builds, flash, NEW!; tokens drop with a slight shake | good — has its own look that plays at the right moment | 1 |
 | `res-reward-cards` | Reward cards unlocked | rewardCardsReveal | "Card unlocked!" splash + padlock break + shine + NEW! | good — has its own look that plays at the right moment | 1 |
 | `res-coin-shower` | Currency lands | rewardsCheer | glyphs rain into pills, pills pop | good — has its own look that plays at the right moment | 2 |
@@ -747,7 +858,7 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `res-faction-crown` | Map 20 faction crown (Epic + Heroic) | grantMap20FactionCrown | listed | basic — a generic or reused look that does not say what happened | 2 |
 | `res-materia-drop` | Materia / ore drops | rollMateriaDrops | chips | basic — a generic or reused look that does not say what happened | 3 |
 | `res-card-drop` | Card drop from a fight | rollCardDrop | reward reveal | good — has its own look that plays at the right moment | 3 |
-| `res-xp-line` | XP and level on results | results | text | basic — a generic or reused look that does not say what happened | 3 |
+| `res-xp-line` | XP and level on results **(retired 2026-10-16)** | results | text | basic — a generic or reused look that does not say what happened | 3 |
 | `res-tutorial-result` | Tutorial win/loss | tutorialWinLossTitle | result card | basic — a generic or reused look that does not say what happened | 3 |
 | `res-castle-falls` | Castle falls under the sign | castleCrumble at match end | shudder, dust, burn | good — has its own look that plays at the right moment | 2 |
 
@@ -1046,7 +1157,7 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `tut-coach-pointer` | Coach pointer (ring + hand) | coach pointer | .coach-pointer cpRing/cpBob/cpTargetIn/cpTargetPulse | good — has its own look that plays at the right moment | 2 |
 | `tut-coach-phantom` | Phantom card drag demo | syncCoachPhantom | looping phantom drag | good — has its own look that plays at the right moment | 3 |
 | `tut-highlight` | Tutorial highlight | tut-highlight | tutGlow | good — has its own look that plays at the right moment | 3 |
-| `tut-lumber-lesson` | Lumber lesson | first pitch lesson | .lumber-lesson llIn/llPop/llPulse/llToss | good — has its own look that plays at the right moment | 3 |
+| `tut-lumber-lesson` | Lumber lesson **(retired 2026-10-16)** | first pitch lesson | .lumber-lesson llIn/llPop/llPulse/llToss | good — has its own look that plays at the right moment | 3 |
 | `tut-faction-pick` | Faction pick → first fight | factionToBattleFx | cards arc to the deck, zoom, battlefield fades in | good — has its own look that plays at the right moment | 2 |
 | `tut-faction-showcase` | Faction showcase | faction picker | .faction-showcase fsBob + .faction-btn.fs-appear | good — has its own look that plays at the right moment | 3 |
 | `tut-leader-join` | Leader joins (Tutorial II) | tutorialLeaderJoin | leader slot in (leaderSlotIn) | good — has its own look that plays at the right moment | 3 |

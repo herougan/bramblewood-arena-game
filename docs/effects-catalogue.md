@@ -651,3 +651,69 @@ The rules as built (engine: `bloodlustGain`, `useExposed`, `dodgeCheck` / `comba
   Poison, Bleed, Decay, curse and Chilli ticks aren't hits.
 - **Pounce N**: unchanged in the engine: one hit of N on one random enemy unit (the castle with none). Windy / Gale never doubled it
   (Headwind doubles a Flyer's triggers and shots, and Pounce is neither).
+
+## 2026-10-17 additions: the Effects Lab catches up with 10-16 and 10-17
+
+User (2026-10-17, 21:47): "continue, build out the effects lab too." Everything visual or audible from the 10-16 and 10-17
+changelog is now in the Effects Lab catalogue (hub tab "🧪 Effects Lab"): 56 entries added, 28 updated, 8 retired. Where the game has
+a function for the look, the lab plays that function with the event a fight sends (`manifest/_game.js` stands in for the fight; the
+functions are copied from `arena_app.js` by `sync_fx_src.py`, listed in `tools/effects-lab/fx-src-extra.txt`). The stages were
+re-captured from today's game, so every tile wears its card front frame and every face-down card its card back.
+
+**Field effects** (`manifest/fe2.js`, all through the game's `field2Vfx`):
+
+| Effect | What you see | Lab id |
+|---|---|---|
+| 💨 Sulphur Fumes | a soft yellow band from the right; "💨 −1" on each unit that chokes | `fld3-sulphur-fumes` |
+| 🌋 Ash Rain | the grey hail band and a dull boom (the castles' −1 only ticks their HP bars) | `fld3-ash-rain` |
+| 🌫️ Ashy / after an Eruption | the board rumbles; a miss in the ash floats "🌫️ Lost in ash" on the attacker | `fld3-ashy` (A, B) |
+| 🏹 Arrow Slits | a twang, then "🏹 -2" and a shake on one of your units | `fld3-arrow-slits` |
+| 🌋 Volcano Glow | the phase pill counts Day 1/4 … 4/4, Night 1/2, 2/2 | `wt-volcano-glow` |
+| 🌳 High Canopy / 🌿 Undergrowth | the ordinary Evasive dodge for Swift / Quick units; Pounce's +2 in its number | `fld2-canopy` |
+| 🌾 Tall Grass | "🌾 ×2" over a Pounce or Backstab target | `fld2-tall-grass` |
+| ✴️ Leylines I / II / III | I: a bigger day / night bonus; II: +1 🪵 into each side's pill; III: the violet burn, "✴️ Atheist" on an Atheist | `fld2-leylines-1`, `-2`, `fld2-leylines` |
+| Landslide, Crushing Depths, Hail, Glass-storm, Lava Spout, Mirage, Haunted, Slippery, Rook's Row / Bishop's Path, Consternation | as before, now the game's own function (the hail and landslide bands run across the board, not down it) | `fld2-*` |
+
+**Skills** (`manifest/x17.js`):
+
+| Skill | What you see | Function | Lab id |
+|---|---|---|---|
+| ⛧🏰 Penance / ⛧🩸 Blood Tithe | a dark ⛧ sinks into your castle / the ally that pays, "⛧ -N" | `devilPayVfx`, `devilPulse` | `sk-penance`, `sk-blood-tithe` |
+| 💕 Amore | hearts drift between the pair, "💕 +0/+3"; heartbroken: "🤎", a brown and a broken heart | `skills2Vfx`, `floatGlyphs` | `sk-amore`, `sk-amore-broken` |
+| ♻️ On Pitch ("Scavenge") | each unit's ♻️ badge glows as you pitch | `triggerFiredVfx` | `sk-scavenge` |
+| 🔥 Burn 1 Lumber / Fire on hit | an ember leaves the Lumber pill; "🔥 -N" and two flames at the hit | `skills2Vfx` | `sk-lumber-burn`, `sk-fire-on-hit` |
+| 🐾 Pounce <Att> / <Hp> | the leap deals the card's Attack or Health | `SkillFX.pounceOnto` | `sk-pounce-stat` |
+| 👀 Ambush N | also strikes a unit that moves in | `FX.A.ambushStrike` | `atk-ambush` C |
+| 🪞 Reflect | the shot bounces off ("🪞 Reflect!") to a unit on the shooter's side, or their castle | `s17SkillVfx` | `atk-reflect` G, H |
+| 🎖️ Vanguard | "🎖️ +1/+1" on the first card (the opening-hand move is only a log line; B sketches it) | `s17SkillVfx` | `sk-vanguard` |
+| 🕸️ Web | "🕸️ Webbed", the threads bind it, the 🕸️N badge | `s17SkillVfx`, `SkillFX.vineBind` | `sk-web` |
+| 🩸 Bloodlust | the kill, then the leap to its new slot with a red push and throb | `s17SkillVfx` | `sk-bloodlust-leap` |
+| 🗼 Sentry / 🦴 Carrion | "🗼 Sentry!" and its strike / "🦴 +N" when a unit dies | `s17SkillVfx` | `sk-sentry`, `sk-carrion` |
+| 🐿️ Hoard, ⚗️ Venom Master, 🪶 Fletcher, 🌿 Herbalist, 💥 Shatter, 🚫✨ Atheist | no look of their own: the chip and the bigger number | | `sk-hoard` … `sk-atheist` |
+| 🏹 Arrow ×2 | the War Elephant's two arrows, one after the other | `SkillFX.bowShot` | `atk-arrow-count` |
+| ⚡ Electricity | the bolt is the hit: a yellow ⚡ number, a ⚡ burst | `hitExplosionVfx` | `sk-electricity` C |
+| ⚡ Quick | the dash on a miss, and at the castle's HP bar | `quickStrikeCastle` | `atk-quick` B, C |
+| ⚡ Triggers | only the trigger's own badge glows | `triggerFiredVfx` | `sk-trigger-fired` B |
+| ✖ Killing blow | the ✖ darts into a killer that feeds on kills; its On Kill badge fires | `killMarkVfx` | `death-kill-mark` |
+| 🪢 Strangle | the squeeze at round start | `w2SkillVfx` | `st-strangle-tick` |
+
+**Deaths and marks:** the phoenix Revive mark, the Angel's wings and the used state (`st-revive-mark` A–D); the smooth topple
+(`death-fall`); the Prism death was already in (`death-prism`).
+
+**Board and UI:** the opponent's pitch into a slot and "+1 🪵 Lumber" (`ui-enemy-pitch`, `enemyPitchSlotFx`), the enemy hand
+counter (`ui-enemy-hand-count`), castle numbers on the HP bar (`castle-hp-number` H, `hqRibbonFloatAnchor`), the upkeep lock
+(`ui-upkeep-chip`), the Refinery's 🧪 throw (`castle-herb-bane` H, `castleThrowVfx`), voice barks with their babble
+(`ui-voice-bark` A–D: an otter, a bear, a hummingbird, a *hiss*), the 10 s sky steps (`wt-sky-step`), nightfall and daybreak with the
+whole-board fade, the left-to-right creep, the streaks and the faint sun (`dark-night-veil-in` B, `dark-night-veil-out` B,
+`skyPhaseLayers`), and the night pointer light (`wt-night-cursor`).
+
+**Cards:** the four front frames (`tr-frame-kinds` A–D, E the frameless tile before), the nine archetype frames
+(`tr-frame-arch-*`, A unit and B structure each), the four card backs (`tr-card-backing`), the top rarity frames on a zoomed card
+(`tr-rarity-zoom`), the bonus copy (`pack-bonus-copy`) and the pile count counting down (`pack-count-down`).
+
+**Maps:** the Frostfire (Map 22) and Fortress (Maps 23-24) titles and the battlements silhouette (`map-title-frostfire`,
+`map-title-castle`, `map-grand-silhouettes-2`; the swamp, mist and fungal titles now say they carry the ink shade), new trails inking
+in one by one (`map-trails-one-by-one`), and a hidden skirmish popping in with its trail (`map-hidden-skirmish-pop` B).
+
+**Retired** (kept playable, marked in the catalogue): the shiny / foil death sheen, the "×2" duplicate, the "−N ✖" stamp, Bloodlust
+growing, Worthy's loot, the rank lesson box, the "+3 XP" line and the Lumber lesson window.

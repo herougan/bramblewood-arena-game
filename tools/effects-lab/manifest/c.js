@@ -50,7 +50,7 @@ R({id:'st-cower-skip', stage:'board', inGameHook:"existing: statusFx cower → S
 // The game's own looks (live functions from the lab's copy of the game code).
 // (a flyer needs flyerFallVfx, which older lab copies lack: it then takes the plain topple)
 const fall = el=>{ if(!live('fallDeathVfx')) return; if(!live('flyerFallVfx')) el.classList.remove('is-flying'); W.fallDeathVfx(el, 620); };
-R({id:'death-fall', stage:'board', inGameHook:"deathVfx → fallDeathVfx (physical / unknown cause)", variants:[{key:'A', label:'Straight drop, leaves and dust (live; 2026-10-16, was a topple)', play:ctx=>{ ctx.sound('death'); fall(foe(ctx)); return ctx.wait(1400); }}]});
+R({id:'death-fall', stage:'board', inGameHook:"deathVfx → fallDeathVfx (physical / unknown cause)", variants:[{key:'A', label:'Live (2026-10-16 evening): the topple, one smooth motion that starts slow and speeds up, fading as it lands; leaves and a thump on the landing', play:ctx=>{ ctx.sound('death'); fall(foe(ctx)); return ctx.wait(1400); }}]});
 R({id:'death-flyer-fall', stage:'board', inGameHook:"deathVfx → fallDeathVfx → flyerFallVfx (is-flying)", note:'Needs flyerFallVfx in the lab copy (sync_fx_src.py --add flyerFallVfx,biomePuff); without it the lab shows the feathers over a plain fall.', variants:[
   {key:'A', label:'Drops out of the sky, feathers burst (live)', play:ctx=>{ const el = mine(ctx, 1); ctx.sound('death');
     if(live('flyerFallVfx')) W.fallDeathVfx(el, 620); else { const f = foe(ctx); W.featherBurst && W.featherBurst(f); fall(f); } return ctx.wait(1400); }}]});
@@ -120,7 +120,7 @@ R({id:'death-shiny-foil', stage:'board', inGameHook:"retired 2026-10-17: shiny /
 R({id:'death-prism', stage:'board', inGameHook:"deathVfx → hooks.deathLook add-on: the unit has a light / rainbow skill (FX.C.PRISM_SKILLS: Illuminate, Lantern, Reflect; reserved: Prism, Rainbow, Radiant, Dazzle, Refract)", variants:[
   {key:'A', label:'Prism death: a rainbow sheet lifts off and flutters away in sparkles', play:ctx=>{ const el = foe(ctx); ctx.sound('death'); fall(el); return X().deathPrism(el); }}]});
 R({id:'death-lethal-number', stage:'board', inGameHook:"deathVfx → hooks.deathLook add-on: the last blow's number (A)", variants:[
-  {key:'A', label:'Number slammed with ✖', play:ctx=>{ const el = foe(ctx); ctx.float(el, '-7'); ctx.wait(250).then(()=> fall(el)); return ctx.wait(250).then(()=> X().lethalStamp(el, {dmg:7})); }},
+  {key:'A', label:'Retired 10-16: number slammed with ✖ (death-kill-mark replaced it)', play:ctx=>{ const el = foe(ctx); ctx.float(el, '-7'); ctx.wait(250).then(()=> fall(el)); return ctx.wait(250).then(()=> X().lethalStamp(el, {dmg:7})); }},
   {key:'B', label:'"KO!" burst', play:ctx=>{ const el = foe(ctx); ctx.float(el, '-7'); ctx.wait(250).then(()=> fall(el)); return ctx.wait(250).then(()=> X().lethalStamp_B(el)); }},
   {key:'C', label:'A red ✖ alone', play:ctx=>{ const el = foe(ctx); ctx.float(el, '-7'); ctx.wait(250).then(()=> fall(el)); return ctx.wait(250).then(()=> X().lethalStamp_C(el)); }}]});
 R({id:'death-ghost', stage:'board', inGameHook:'future', variants:[{key:'A', label:'Turns see-through and drifts up', play:deathOf('deathGhost')}]});

@@ -664,7 +664,7 @@
   "area": "combat-attack",
   "name": "Ambush strike",
   "trigger": "hit/hitHQ with ev.ambush",
-  "current": "\"🗡 Ambush!\" float + ambushTone",
+  "current": "2026-10-16/17: Ambush N strikes any enemy entering the slot facing it (played, spawned, moved in); FX.A.ambushStrike",
   "quality": "basic — float text only",
   "priority": 2,
   "themeNotes": "Cave Deep Dark: a unit springs out of shadow.",
@@ -673,14 +673,16 @@
   "sources": [
    "arena_app.js:30776"
   ],
-  "batch": "A"
+  "batch": "A",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "atk-quick",
   "area": "combat-attack",
   "name": "Quick strike",
   "trigger": "hit by a Quick unit",
-  "current": "SkillFX.quickStrike (speed lines, afterimages) + float",
+  "current": "SkillFX.quickStrike: the dash lands the hit (~0.15 s); 2026-10-16 on every Quick hit and at the castle (quickStrikeCastle), 2026-10-17 on misses too",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "",
@@ -689,7 +691,9 @@
   "sources": [
    "arena_app.js:30891"
   ],
-  "batch": "A"
+  "batch": "A",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "atk-swift",
@@ -928,9 +932,9 @@
  {
   "id": "atk-reflect",
   "area": "combat-attack",
-  "name": "Reflect",
-  "trigger": "reflect {dmg}",
-  "current": "SkillFX.mirrorFlash + \"🪞 -N\"",
+  "name": "Reflect (a shot bounces back)",
+  "trigger": "reflectShot {uid, targetUid | castle}: a shot aimed at a Reflect unit",
+  "current": "2026-10-17 rework: a shot bounces off (s17SkillVfx reflectShot: \"🪞 Reflect!\" + mirrorFlash) and hits a unit on the shooter's side, or their castle; the melee \"Reflect N%\" is gone",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "",
@@ -940,7 +944,9 @@
    "bramblewood-engine.js:5300",
    "arena_app.js:31091"
   ],
-  "batch": "A"
+  "batch": "A",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "atk-recoil",
@@ -1532,7 +1538,7 @@
   "area": "combat-skill",
   "name": "Custom trigger fires",
   "trigger": "triggerFired {hook, action}",
-  "current": "triggerFiredVfx: .trigger-rune glyph ring + .trigger-aura electric back glow",
+  "current": "2026-10-16: only the trigger's own ⚡ badge glows (triggerFiredVfx, .ab-trig.is-firing); no rune ring, card glow, aura or bolt",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "",
@@ -1542,7 +1548,9 @@
    "bramblewood-engine.js:3542",
    "arena_app.js:30847"
   ],
-  "batch": "A"
+  "batch": "A",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "sk-earthquake",
@@ -1664,9 +1672,9 @@
  {
   "id": "sk-electricity",
   "area": "combat-skill",
-  "name": "Electricity arc",
+  "name": "Electricity arc (the bolt is the hit)",
   "trigger": "electricity {targetUid, arcUid, wetTarget}",
-  "current": "SkillFX.lightning chain + shockTone; \"💧⚡\" on wet",
+  "current": "SkillFX.lightning; 2026-10-16: the bolt is the hit: a yellow ⚡ number as it lands, a ⚡ burst and a pale-blue flash",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "Electric cave bats.",
@@ -1676,7 +1684,9 @@
    "bramblewood-engine.js:3133",
    "arena_app.js:31054"
   ],
-  "batch": "A"
+  "batch": "A",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "sk-lightning-passive",
@@ -1850,7 +1860,7 @@
   "area": "combat-skill",
   "name": "Bloodlust grows",
   "trigger": "statusFx bloodlust (its attack drew blood: +N Attack, up to +3N)",
-  "current": "SkillFX.bloodlustPulse (red heartbeat pulse and flush) + \"🩸 Bloodlust +N⚔\"",
+  "current": "retired 2026-10-17: Bloodlust no longer grows (no statusFx bloodlust); it leaps on a kill (sk-bloodlust-leap)",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "Predators: wolves, sharks, weasels.",
@@ -1860,7 +1870,9 @@
    "bramblewood-engine.js: bloodlustGain",
    "bramblewood-skillfx.js: bloodlustPulse"
   ],
-  "batch": "G"
+  "batch": "G",
+  "status": "retired",
+  "retired": "2026-10-17: Bloodlust no longer grows (no statusFx bloodlust); it leaps on a kill (sk-bloodlust-leap)"
  },
  {
   "id": "sk-coffee",
@@ -2099,7 +2111,7 @@
   "area": "combat-skill",
   "name": "Regeneration",
   "trigger": "heal where attUid===targetUid",
-  "current": "SkillFX.regen (green motes knit)",
+  "current": "2026-10-17: SkillFX.regen about 40% faster (motes, stagger, pluses, glow)",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "",
@@ -2108,7 +2120,9 @@
   "sources": [
    "arena_app.js:30871"
   ],
-  "batch": "A"
+  "batch": "A",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "sk-bloom",
@@ -2129,9 +2143,9 @@
  {
   "id": "sk-sap",
   "area": "combat-skill",
-  "name": "Sap drain",
+  "name": "Leech (Sap) drain",
   "trigger": "sap {amount}",
-  "current": "SkillFX.lifeDrain + sapDrain",
+  "current": "2026-10-17: the engine's Sap is the Leech skill (\"+ Add Skill\", a card line, the 🧛 chip); SkillFX.lifeDrain with half-size drops (10-16)",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "Vampire Bat.",
@@ -2141,7 +2155,9 @@
    "bramblewood-engine.js:5204",
    "arena_app.js:31092"
   ],
-  "batch": "A"
+  "batch": "A",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "sk-render",
@@ -2702,7 +2718,7 @@
   "area": "combat-skill",
   "name": "Worthy loot",
   "trigger": "lumber {cause:'worthy'|'worthyDeath'}",
-  "current": "SkillFX.lootArc logs",
+  "current": "retired 2026-10-16: Worthy is Bounty everywhere (an empty, hidden slot); its loot is Bounty's +🪵",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "",
@@ -2711,7 +2727,9 @@
   "sources": [
    "bramblewood-engine.js:3163"
   ],
-  "batch": "F"
+  "batch": "F",
+  "status": "retired",
+  "retired": "2026-10-16: Worthy is Bounty everywhere (an empty, hidden slot); its loot is Bounty's +🪵"
  },
  {
   "id": "sk-resource-passive",
@@ -3516,8 +3534,8 @@
   "id": "st-stun-apply",
   "area": "status",
   "name": "Stun: applied",
-  "trigger": "statusFx stun (Stun action) / stunOnHit (heat on-hit)",
-  "current": "SkillFX.stunStars ★ + shake + \"💫 Stunned!\"",
+  "trigger": "statusFx stun: a landed hit of a Stun N unit (1 in 3)",
+  "current": "2026-10-16: Stun N: each landed hit has a 1 in 3 chance to Stun for N rounds (the old % values read as Stun 1); same look",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "",
@@ -3527,7 +3545,9 @@
    "bramblewood-engine.js:3736",
    "arena_app.js:31560"
   ],
-  "batch": "B"
+  "batch": "B",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "st-stun-active",
@@ -4986,7 +5006,7 @@
   "area": "darkness-light",
   "name": "Night falls on the battlefield",
   "trigger": "phase {phase:'night'} → syncNightVeil .night-veil.is-on",
-  "current": ".night-veil + nightSwell + wolfHowl + toast",
+  "current": "2026-10-16: the whole board darkens over 10 s (skyPhaseLayers + the veil) while the night creeps in from the left at 40%",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 1,
   "themeNotes": "",
@@ -4996,14 +5016,16 @@
    "arena_app.js:28089",
    "arena_app.js:31918"
   ],
-  "batch": "B"
+  "batch": "B",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "dark-night-veil-out",
   "area": "darkness-light",
   "name": "Night lifts",
   "trigger": "phase {phase:'day'} → .night-veil.is-leaving",
-  "current": "veil fades (2.6 s) + roosterCrow",
+  "current": "2026-10-16/17: the board lights up over 10 s, the light creeps in from the left at 40%, soft streaks (FX.E.nightRetreat), a barely-there sun (FX.B.dayBreaks)",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "",
@@ -5012,7 +5034,9 @@
   "sources": [
    "arena_app.js:28096"
   ],
-  "batch": "B"
+  "batch": "B",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "dark-shade-night",
@@ -5864,7 +5888,7 @@
   "area": "weather-time",
   "name": "Day breaks",
   "trigger": "phase {phase:'day'} (cycle maps)",
-  "current": "toast \"☀️ Day breaks.\" + roosterCrow + sky tone day",
+  "current": "2026-10-17: FX.B.dayBreaks: no hard disc, a soft blurred glow 60% fainter, rays a third fainter; birds sing on about 1 in 3 daybreaks (SoundKit.dawnChime)",
   "quality": "basic — a generic or reused look that does not say what happened",
   "priority": 2,
   "themeNotes": "Golden wash from the east.",
@@ -5874,7 +5898,9 @@
    "bramblewood-engine.js:915",
    "arena_app.js:29660"
   ],
-  "batch": "B"
+  "batch": "B",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "wt-dawn-draw",
@@ -6191,8 +6217,8 @@
   "area": "weather-time",
   "name": "Rain starts / stops while you look at the map",
   "trigger": "hour rolls over while the map is open",
-  "current": "none (only on re-render)",
-  "quality": "missing — nothing on screen",
+  "current": "2026-10-16: rain coming in (on the map and a Spring Rain field arriving) is 90% more transparent (RAIN_ONSET_OPACITY); rain stopping unchanged",
+  "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "First drops, then a downpour.",
   "variantsSuggested": false,
@@ -6200,7 +6226,9 @@
   "sources": [
    "arena_app.js:37616"
   ],
-  "batch": "B"
+  "batch": "B",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "wt-live-clock",
@@ -6318,9 +6346,9 @@
  {
   "id": "death-fall",
   "area": "death",
-  "name": "Normal death (topple)",
+  "name": "Normal death (smooth topple)",
   "trigger": "death → deathVfx → deathStyleFor 'fall' (physical / unknown cause)",
-  "current": "fallDeathVfx (rotateX topple, grey) + biomePuff + impactDust + knockOut + 💀 float",
+  "current": "2026-10-16 (voices and feel): the topple is back as one smooth motion that starts slow and speeds up, fading as it lands (fallDeathVfx)",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 1,
   "themeNotes": "Leaves and dust per biome.",
@@ -6331,7 +6359,9 @@
    "arena_app.js:26947",
    "arena_app.js:26643"
   ],
-  "batch": "C"
+  "batch": "C",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "death-flyer-fall",
@@ -6734,7 +6764,9 @@
   "sources": [
    "arena_app.js:25231"
   ],
-  "batch": "C"
+  "batch": "C",
+  "status": "retired",
+  "retired": "2026-10-17: shiny and foil units die like anyone else; the sheen is the Prism death (death-prism)"
  },
  {
   "id": "death-skull",
@@ -6839,7 +6871,7 @@
   "area": "death",
   "name": "Killing blow number",
   "trigger": "hit that drops hp to 0",
-  "current": "normal damage number",
+  "current": "retired 2026-10-16: the \"−N ✖\" killing-blow stamp is gone; a killer that feeds on kills gets the ✖ (death-kill-mark)",
   "quality": "missing — no \"KO\" emphasis on the final blow",
   "priority": 2,
   "themeNotes": "A bigger, slammed number with a ✖.",
@@ -6848,7 +6880,9 @@
   "sources": [
    "arena_app.js:30746"
   ],
-  "batch": "C"
+  "batch": "C",
+  "status": "retired",
+  "retired": "2026-10-16: the \"−N ✖\" killing-blow stamp is gone; a killer that feeds on kills gets the ✖ (death-kill-mark)"
  },
  {
   "id": "death-ghost",
@@ -6936,7 +6970,7 @@
   "area": "castle",
   "name": "Castle HP number tick",
   "trigger": "displayHqDamage",
-  "current": ".bf-hp.is-hit (bfHpHit)",
+  "current": "2026-10-16: floatText(hqRibbonFloatAnchor(side), \"-N\", \"hq-big\") on the HP bar where its fill ends",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "",
@@ -6945,7 +6979,9 @@
   "sources": [
    "arena_template.html:5669"
   ],
-  "batch": "C"
+  "batch": "C",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "castle-crack-1",
@@ -7136,8 +7172,8 @@
   "area": "castle",
   "name": "Herb Refinery bitter brew",
   "trigger": "statusFx herbBane (+ poison hit)",
-  "current": "log line only",
-  "quality": "missing — nothing on screen",
+  "current": "2026-10-16: castleThrowVfx: a 🧪 on a shallow arc that lands in 0.44 s (every castle shot)",
+  "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "",
   "variantsSuggested": false,
@@ -7145,7 +7181,9 @@
   "sources": [
    "bramblewood-engine.js:878"
   ],
-  "batch": "C"
+  "batch": "C",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "castle-spawn",
@@ -9653,7 +9691,7 @@
   "area": "pack-card-open",
   "name": "Duplicate (×N) pull",
   "trigger": "r.count>1",
-  "current": ".po2-stackn ×N",
+  "current": "retired 2026-10-17: the \"×2\" with two blank cards (fired on any card you already owned) is gone; a real bonus copy is pack-bonus-copy",
   "quality": "basic — no dust/level progress cue",
   "priority": 3,
   "themeNotes": "Copies stack with a thunk; level bar ticks.",
@@ -9662,7 +9700,9 @@
   "sources": [
    "arena_app.js:35646"
   ],
-  "batch": "D"
+  "batch": "D",
+  "status": "retired",
+  "retired": "2026-10-17: the \"×2\" with two blank cards (fired on any card you already owned) is gone; a real bonus copy is pack-bonus-copy"
  },
  {
   "id": "pack-collect",
@@ -14458,7 +14498,7 @@
   "area": "rewards-results",
   "name": "Rank lesson",
   "trigger": "first ranks",
-  "current": ".wl-rank-lesson (npcIn)",
+  "current": "retired 2026-10-16: the results no longer show the rank lesson box; the rank hex says it",
   "quality": "basic — a generic or reused look that does not say what happened",
   "priority": 3,
   "themeNotes": "",
@@ -14467,7 +14507,9 @@
   "sources": [
    "arena_app.js:29341"
   ],
-  "batch": "F"
+  "batch": "F",
+  "status": "retired",
+  "retired": "2026-10-16: the results no longer show the rank lesson box; the rank hex says it"
  },
  {
   "id": "res-reward-reveal",
@@ -14683,7 +14725,7 @@
   "area": "rewards-results",
   "name": "XP and level on results",
   "trigger": "results",
-  "current": "text",
+  "current": "retired 2026-10-16: the \"+3 XP\" gold bar with its glow over the results is gone; an account level-up plays after the results close",
   "quality": "basic — a generic or reused look that does not say what happened",
   "priority": 3,
   "themeNotes": "",
@@ -14692,7 +14734,9 @@
   "sources": [
    "arena_app.js:13874"
   ],
-  "batch": "F"
+  "batch": "F",
+  "status": "retired",
+  "retired": "2026-10-16: the \"+3 XP\" gold bar with its glow over the results is gone; an account level-up plays after the results close"
  },
  {
   "id": "res-tutorial-result",
@@ -14795,7 +14839,7 @@
   "area": "tutorial-dialogue",
   "name": "Lumber lesson",
   "trigger": "first pitch lesson",
-  "current": ".lumber-lesson llIn/llPop/llPulse/llToss",
+  "current": "retired 2026-10-16: the big Lumber lesson window is gone; the spotlighted Pitching lesson teaches Lumber",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 3,
   "themeNotes": "",
@@ -14804,7 +14848,9 @@
   "sources": [
    "arena_template.html:3244"
   ],
-  "batch": "F"
+  "batch": "F",
+  "status": "retired",
+  "retired": "2026-10-16: the big Lumber lesson window is gone; the spotlighted Pitching lesson teaches Lumber"
  },
  {
   "id": "tut-faction-pick",
@@ -15450,7 +15496,7 @@
  },
  {
   "id": "fld-unit-light",
-  "area": "darkness",
+  "area": "darkness-light",
   "name": "Leader and Light Aura glow (night and dark fields)",
   "trigger": "render: .board-card .unit-light (leaders: ul-leader; Illuminate: ul-aura; Immolation: ul-fire) shown while .battlefield.is-dark-scene (night or rules.dark); Pitch Black / Absolute: a mask hole in the darkness overlay (syncUnitLightPools)",
   "current": "CSS warm pools in arena_template.html + syncUnitLightPools in arena_app.js",
@@ -15467,10 +15513,10 @@
  },
  {
   "id": "map-hidden-skirmish-pop",
-  "area": "map",
+  "area": "conquest-map",
   "name": "Hidden skirmish appears",
   "trigger": "renderConquestSubTab: a hidden skirmish shown for the first time (hiddenPopNow) -> .map-node.is-secret.secret-pop + toast",
-  "current": "CSS secretPop / secretBurst + gold ring and ✦",
+  "current": "2026-10-17: the hidden skirmish pops in with its trail from the fight beside it (.trail-pop); it opens once that fight is cleared",
   "quality": "good",
   "priority": 3,
   "themeNotes": "A small discovery moment, gold like found treasure.",
@@ -15480,11 +15526,13 @@
    "arena_app.js: HIDDEN_SKIRMISHES, refreshHiddenSkirmishes",
    "arena_template.html: .map-node.secret-pop"
   ],
-  "batch": "R"
+  "batch": "R",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "map-jumper-arrive",
-  "area": "map",
+  "area": "conquest-map",
   "name": "Jumper lands on the trail (hidden skirmish, Type 2)",
   "trigger": "jumperArrivals (arena_app.js): a jumper's `after` fight is cleared → fxHook('mapJumperArrive', node, entrance, {canvas, from, to}), once per save",
   "current": "FX.E.jumperArrive: the old link starts inking, the jumper lands across it (meteor / splash / psychic / ghost), the trail redraws through it",
@@ -15657,7 +15705,9 @@
    "bramblewood-skillfx.js: the W2 section",
    "arena_app.js: w2SkillVfx"
   ],
-  "batch": "W2"
+  "batch": "W2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "sk-invincible",
@@ -15859,7 +15909,7 @@
  },
  {
   "id": "field-cloudy",
-  "area": "weather",
+  "area": "weather-time",
   "name": "Cloudy",
   "trigger": "rules.cloudy",
   "current": "SkillFX.cloudShadows: soft cloud shadows drift over the board",
@@ -15879,7 +15929,7 @@
   "area": "field",
   "name": "Landslide",
   "trigger": "fieldTick {field:'landslide'} + landslideHit per unit",
-  "current": "the board rumbles, a brown band of rocks sweeps down, chips fly off each grounded unit",
+  "current": "field2Vfx (the game's own function now plays in the lab): the rumble, a band of rocks across the board, chips off each grounded unit",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "2026-10-16 field effect: 1 in 4, 5 to every unit that isn't flying.",
@@ -15889,14 +15939,16 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "fld2-crushing",
   "area": "field",
   "name": "Crushing Depths",
   "trigger": "fieldTick {field:'crushingDepths'} + crushingHit",
-  "current": "a dark-blue weight presses in from the board's edges; a water ring on each unit",
+  "current": "field2Vfx: the press (crush-press) and water rings, \"🫧 -N\" (Swimmers half)",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "The deep: 5 water a round, Swimmers half.",
@@ -15906,14 +15958,16 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "fld2-hail",
-  "area": "weather",
+  "area": "weather-time",
   "name": "Hail",
   "trigger": "fieldTick {field:'hail'} + hailHit",
-  "current": "a slanted band of hailstones sweeps down the board; ice chips on each unit",
+  "current": "field2Vfx: the hail band across the board, ice chips, \"🌨️ -3\"",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "3 ice damage a round.",
@@ -15923,14 +15977,16 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "fld2-glass-storm",
-  "area": "weather",
+  "area": "weather-time",
   "name": "Glass-storm",
   "trigger": "fieldTick {field:'glassStorm'} + glassHit (roll 1–3)",
-  "current": "a sand band full of glass glints sweeps across; sparks on each unit",
+  "current": "field2Vfx: the glass band (either way), \"💎 -1…3\" with zaps",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "A Sandstorm full of glass, one fight on the Glass Dunes.",
@@ -15940,14 +15996,16 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "fld2-lava-spout",
   "area": "field",
   "name": "Lava Spout",
   "trigger": "fieldTick {field:'lavaSpout', col} + lavaSpoutHit",
-  "current": "a lava geyser at each unit in the column; a boom",
+  "current": "field2Vfx: lavaSpoutHit → eruptionGeyserVfx in the column, \"♨️ -3\"",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "The Tide-spout's fiery cousin.",
@@ -15957,14 +16015,16 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "fld2-leylines",
   "area": "field",
   "name": "Leylines III burn",
   "trigger": "fieldTick {field:'leylines'} + leylinesHit / leylinesCastle",
-  "current": "a violet line runs across the board; a violet ring on each unit; Atheists show \"Atheist\"",
+  "current": "field2Vfx: the violet band, \"✴️ -3\" and violet rings; an Atheist shows \"✴️ Atheist\"",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "The ley lines feed you Lumber and Stone and burn everything else.",
@@ -15974,14 +16034,16 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "fld2-mirage",
   "area": "field",
   "name": "Mirage",
   "trigger": "fieldTick {field:'mirage', illusionUid} + spawn {kind:'mirage'}",
-  "current": "the Illusion shimmers into being (hue-shifted blur), \"🪞 Illusion\"",
+  "current": "field2Vfx: the Illusion shimmers in (.mirage-shimmer) with \"🪞 Illusion\"",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "A 1/1 clone that copies only how it moves.",
@@ -15991,14 +16053,16 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "fld2-haunted",
   "area": "status",
   "name": "Haunted: Frightened",
   "trigger": "statusFx {kind:'frightened'}",
-  "current": "SkillFX.fearShiver and \"👻 Frightened\"; a 👻 badge while it lasts",
+  "current": "field2Vfx: \"👻 Frightened\" + SkillFX.fearShiver; the 👻 badge",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "One unit a side won't attack this round.",
@@ -16008,14 +16072,16 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "fld2-slippery",
   "area": "field",
   "name": "Slippery",
   "trigger": "evaded {reason:'slippery'} / slipFizzle",
-  "current": "\"⛸️ Slip!\" on the attacker, \"⛸️ Slipped\" on a failed skill",
+  "current": "field2Vfx: \"⛸️ Slip!\" on the attacker; \"⛸️ Slipped\" on a failed skill",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "The Ice Hollow's ice: every swing and trigger a coin flip.",
@@ -16025,14 +16091,16 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "fld2-lanes",
   "area": "field",
   "name": "Rook's Row / Bishop's Path",
   "trigger": "hit {laneBonus, lane}",
-  "current": "\"♜ +2\" / \"♝ +2\" over the target",
+  "current": "field2Vfx: \"♜ +2\" / \"♝ +2\" over the target",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "Map 12, the Briar Maze: straights and diagonals.",
@@ -16042,14 +16110,16 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "fld2-consternation",
   "area": "field",
   "name": "Consternation",
   "trigger": "fieldTick {field:'consternation'}",
-  "current": "\"😰 −1/−1\" over your hand; the hand cards show what they have left",
+  "current": "field2Vfx: \"😰 −1/−1\" over the hand; a played card keeps the 😰 badge",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 2,
   "themeNotes": "Hand cards wilt every upkeep.",
@@ -16059,7 +16129,9 @@
    "arena_app.js: field2Vfx",
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
-  "batch": "FE2"
+  "batch": "FE2",
+  "status": "built",
+  "updated": "2026-10-17"
  },
  {
   "id": "st-expose-crit",
@@ -16125,5 +16197,1016 @@
    "bramblewood-fx-c.js: deathPlan, PRISM_SKILLS"
   ],
   "batch": "C"
+ },
+ {
+  "id": "fld2-canopy",
+  "area": "field",
+  "name": "High Canopy / Undergrowth",
+  "trigger": "a fight with rules.canopy (Map 13) or rules.undergrowth (Map 15): a Swift / Quick unit dodges (evaded {reason:canopy}); Pounce +2",
+  "current": "the Environment card; the ordinary Evasive dodge (SkillFX.evasiveDodge); Pounce's bigger number",
+  "quality": "basic — the Environment card and the numbers; no look of its own",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "arena_app.js: FIELD2.canopy / undergrowth"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "fld2-tall-grass",
+  "area": "field",
+  "name": "Tall Grass",
+  "trigger": "hit {tallGrass} (Backstab hits and Pounce deal double); Stealth attacks first",
+  "current": "field2Vfx: \"🌾 ×2\" over the target",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "fld2-leylines-1",
+  "area": "field",
+  "name": "Leylines I (zeitgebers stronger)",
+  "trigger": "rules.leylines1: Diurnal / Nocturnal / Crepuscular / Tide / Full Moon bonuses grow",
+  "current": "the Environment card; the phase bonus number",
+  "quality": "basic — the Environment card and the numbers; no look of its own",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: FIELD2.leylines1"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "fld2-leylines-2",
+  "area": "field",
+  "name": "Leylines II (+1 Lumber a round)",
+  "trigger": "lumber {leylines} for each side from round 2",
+  "current": "resourceGainVfx into each side's Lumber pill",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2LogText (lumber leylines)"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "fld3-sulphur-fumes",
+  "area": "field",
+  "name": "Sulphur Fumes (Choking)",
+  "trigger": "fieldTick sulphurFumes; statusFx choking on each unit that breathes them in (not fire-resistant, Dry or Flying)",
+  "current": "field2Vfx: a soft yellow sweep (boardSweepVfx glass, from the right) + \"💨 −1\" on each choking unit",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: chokeOf"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "fld3-ash-rain",
+  "area": "field",
+  "name": "Ash Rain",
+  "trigger": "fieldTick ashRain (both castles −1, day bonuses halved); ashRainCastle",
+  "current": "field2Vfx: the grey hail band and a boom; the castle loss has no number of its own",
+  "quality": "basic — the sweep; the castle loss only ticks the HP bars",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "fld3-ashy",
+  "area": "field",
+  "name": "Ashy (and Ashy after an Eruption)",
+  "trigger": "fieldTick ashy (an Eruption on a volcano map leaves it Ashy for 4 rounds); evaded {reason:ashy}",
+  "current": "field2Vfx: the board rumbles (erupt-rumble) + boom; a miss in the ash floats \"🌫️ Lost in ash\" on the attacker",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "arena_app.js: ASHY_AFTER_TEXT"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "fld3-arrow-slits",
+  "area": "field",
+  "name": "Arrow Slits",
+  "trigger": "fieldTick arrowSlits then arrowSlitHit on a random unit of yours (2; a Helmet can turn it)",
+  "current": "field2Vfx: a twang, then \"🏹 -2\" and a shake on the unit hit",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "wt-volcano-glow",
+  "area": "weather-time",
+  "name": "Volcano Glow: Day 4, Night 2",
+  "trigger": "a volcano map with day and night (20, 20-A, 22) or phaseDay / phaseNight on the fight",
+  "current": "phasePillHTML counts \"2/4\" by day and \"1/2\" by night (engine.phaseStepInfo); the Environment card's Volcano Glow row",
+  "quality": "basic — the pill and the card row",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: phasePillHTML, VOLCANO_GLOW"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-penance",
+  "area": "combat-skill",
+  "name": "Penance (Devilry payment)",
+  "trigger": "penance {side, dmg} when the card is played",
+  "current": "devilPayVfx → devilPulse: a dark ⛧ sinks into your own castle + \"⛧ -N\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: devilPayVfx, devilPulse"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-blood-tithe",
+  "area": "combat-skill",
+  "name": "Blood Tithe (Devilry payment)",
+  "trigger": "bloodTithe {targetUid | castle, dmg} when the card is played",
+  "current": "devilPayVfx → devilPulse on the ally that pays (your castle with none) + \"⛧ -N\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: devilPayVfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-amore",
+  "area": "combat-skill",
+  "name": "Amore: a pair falls in love",
+  "trigger": "amore {uid, mateUid, hp, regen}: two Amore units of yours sharing a Type",
+  "current": "skills2Vfx: hearts drift both ways (floatGlyphs) + \"💕 +0/+3\" on each",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: skills2Vfx, floatGlyphs"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-amore-broken",
+  "area": "combat-skill",
+  "name": "Amore: heartbroken",
+  "trigger": "amoreBroken {uid} when its partner dies",
+  "current": "skills2Vfx: \"🤎 Heartbroken\" + a brown heart and a broken one rise",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: skills2Vfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-scavenge",
+  "area": "combat-skill",
+  "name": "On Pitch trigger (\"Scavenge\")",
+  "trigger": "triggerFired {hook:onPitch} on each of your On Pitch units when you pitch a card",
+  "current": "triggerFiredVfx: the unit's ♻️ badge glows, then the action",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: triggerFiredVfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-lumber-burn",
+  "area": "combat-skill",
+  "name": "Burn 1 Lumber (a trigger's cost)",
+  "trigger": "lumberBurn {side, uid}",
+  "current": "skills2Vfx: \"🔥 -1\" on your Lumber pill and an ember flies to the unit",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: skills2Vfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-fire-on-hit",
+  "area": "combat-skill",
+  "name": "Fire on hit (trigger action)",
+  "trigger": "fireHit {targetUid | castle, dmg} with the attack's hit",
+  "current": "skills2Vfx: \"🔥 -N\" and two flames on what it hit, at the impact",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: skills2Vfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-pounce-stat",
+  "area": "combat-skill",
+  "name": "Pounce <Att> / <Hp>",
+  "trigger": "a Pounce whose amount is the card's Attack or Health",
+  "current": "the Pounce leap (SkillFX.pounceOnto) with that number; the card text's live number is blue",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: pounceMode, pounceWords"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-vanguard",
+  "area": "combat-skill",
+  "name": "Vanguard",
+  "trigger": "statusFx vanguard (first card of the game: +N/+N); vanguard (opening hand) is a log line",
+  "current": "s17SkillVfx: \"🎖️ +N/+N\" 0.38 s after the play",
+  "quality": "basic — the buff float; the opening-hand move is only a battle-log line",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: s17SkillVfx, s17LogText"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-web",
+  "area": "combat-skill",
+  "name": "Web (Webbed status)",
+  "trigger": "statusFx webbed on the unit its hit lands on; statusEnd webbed",
+  "current": "s17SkillVfx: \"🕸️ Webbed\" + SkillFX.vineBind; the 🕸️N status badge (w2StatusBadges)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: s17SkillVfx, w2StatusBadges"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-bloodlust-leap",
+  "area": "combat-skill",
+  "name": "Bloodlust leap",
+  "trigger": "bloodlustLeap {uid, from, to} after it kills the unit facing it",
+  "current": "s17SkillVfx: the unit moves to its new slot, \"🩸 Leap!\", a red push (.wave-pushed) and SkillFX.bloodlustPulse({full})",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: s17SkillVfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-sentry",
+  "area": "combat-skill",
+  "name": "Sentry",
+  "trigger": "sentry {uid, targetUid} when an enemy enters one of the 3 slots facing it (once a round, while Ready)",
+  "current": "s17SkillVfx: \"🗼 Sentry!\" + ambushTone, then its strike",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: s17SkillVfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-carrion",
+  "area": "combat-skill",
+  "name": "Carrion",
+  "trigger": "statusFx carrion when another unit dies",
+  "current": "s17SkillVfx: \"🦴 +N\" (heal)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: s17SkillVfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-hoard",
+  "area": "combat-skill",
+  "name": "Hoard (passive)",
+  "trigger": "Hoard N: +1 Attack per N Lumber you hold (no event of its own)",
+  "current": "its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number",
+  "quality": "basic — the chip and the number; no look of its own",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: CHIP_FALLBACK_SKILLS, SKILL_ICON"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-venom-master",
+  "area": "combat-skill",
+  "name": "Venom Master (passive)",
+  "trigger": "Venom Master N: your units' Poison and Bleed hits add N more (no event of its own)",
+  "current": "its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number",
+  "quality": "basic — the chip and the number; no look of its own",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: CHIP_FALLBACK_SKILLS, SKILL_ICON"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-fletcher",
+  "area": "combat-skill",
+  "name": "Fletcher (passive)",
+  "trigger": "Fletcher N: your units' arrows deal N more (no event of its own)",
+  "current": "its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number",
+  "quality": "basic — the chip and the number; no look of its own",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: CHIP_FALLBACK_SKILLS, SKILL_ICON"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-herbalist",
+  "area": "combat-skill",
+  "name": "Herbalist (passive)",
+  "trigger": "Herbalist N: every heal on your units heals N more (no event of its own)",
+  "current": "its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number",
+  "quality": "basic — the chip and the number; no look of its own",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: CHIP_FALLBACK_SKILLS, SKILL_ICON"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-shatter",
+  "area": "combat-skill",
+  "name": "Shatter (passive)",
+  "trigger": "Shatter N: +N damage to Frozen units (no event of its own)",
+  "current": "its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number",
+  "quality": "basic — the chip and the number; no look of its own",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: CHIP_FALLBACK_SKILLS, SKILL_ICON"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "sk-atheist",
+  "area": "combat-skill",
+  "name": "Atheist",
+  "trigger": "leylinesHit {atheist} (the Leylines' burn skips it); half damage from magic, Devilry and Ecclesia",
+  "current": "field2Vfx: \"✴️ Atheist\" instead of a number; its 🚫✨ chip",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "atk-arrow-count",
+  "area": "combat-attack",
+  "name": "Arrow ×N (War Elephant's two arrows)",
+  "trigger": "the shots at Speed 1: one Arrow shot per arrowCount",
+  "current": "SkillFX.bowShot per arrow, one after the other; its card shows two Arrow 2 lines",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: arrowCount"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "death-kill-mark",
+  "area": "death",
+  "name": "Killing blow ✖ into the killer",
+  "trigger": "a killing blow from a unit with an On Kill trigger (or Momentum, Midas Touch, Slash & Burn)",
+  "current": "killMarkVfx: a ✖ pops on the target and darts into the killer (.kill-gain); its On Kill trigger plays as it lands (pullKillTrigger)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: killMarkVfx, launchKillMark"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "st-revive-mark",
+  "area": "status",
+  "name": "Revive mark: phoenix, Angel wings, used",
+  "trigger": "a unit with Revive on the board (!revivedOnce); revive event",
+  "current": ".revive-mark (ember ring + flame feather) or .angel-wings (isAngelDef); \"↺ Revive\" chip; used: is-spending + the chip struck in red",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: boardCardHTML, isAngelDef, REVIVE_FEATHER_SVG"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "ui-enemy-pitch",
+  "area": "ui-feedback",
+  "name": "Opponent pitches a card",
+  "trigger": "discard by the opponent → enemyPitchVfx",
+  "current": "enemyPitchSlotFx: the card drops into a slot under their pills, settles, fades; \"+1 🪵 Lumber\" rises; their pill bings",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 1,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: enemyPitchVfx, enemyPitchSlotFx"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "ui-enemy-hand-count",
+  "area": "ui-feedback",
+  "name": "Enemy hand counter",
+  "trigger": "the opponent's hand size changes",
+  "current": "\"N 🃏\" pill on their Deck, .ehc-bump on change, .is-zero at 0",
+  "quality": "good — a small, clear counter",
+  "priority": 1,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: enemyHandCountHTML, updateEnemyHandCount"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "ui-upkeep-chip",
+  "area": "ui-feedback",
+  "name": "Upkeep lock",
+  "trigger": "the round-start effects play before your turn opens",
+  "current": "html.bw-upkeep (hand dims, play / pitch / Pass wait) + \"⏳ Upkeep\" chip (showUpkeepChip)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 1,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: showUpkeepChip, upkeepHoldMs"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "ui-voice-bark",
+  "area": "tutorial-dialogue",
+  "name": "Voice bark and babble",
+  "trigger": "maybeBark on play / kill / death / skill (leaders and bosses always)",
+  "current": "showSpeechBubble(.is-bark, 1.6 s) + SoundKit.barkBabble in the species' voice (barkVoiceFor)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 1,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: maybeBark, barkShow, barkVoiceFor"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "wt-sky-step",
+  "area": "weather-time",
+  "name": "Day / night steps (10 s)",
+  "trigger": "the step inside a phase changes (Day 1→2→3, Night 1→2→3)",
+  "current": "skyStepApply: the sky tint eases over SKY_STEP_MS (10 s); a redraw carries on",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: syncSkyFx, skyStepApply"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "wt-night-cursor",
+  "area": "darkness-light",
+  "name": "Night pointer light",
+  "trigger": "Night in any fight (not Pitch Black, which has its lantern)",
+  "current": ".battlefield.bf-night-cursor + .night-cursor-light under the pointer (wireNightCursorLight)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: wireNightCursorLight, syncNightVeil"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-frame-kinds",
+  "area": "card-treatment",
+  "name": "Card front frames by kind (unit, structure, castle, field)",
+  "trigger": "every card face (board, hand, Codex, deck editor, big views)",
+  "current": "cardFrameClasses → fr-<kind> + .cframe (art/frames/*.png)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 1,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_FRAMES, cardFrameKind"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-frame-arch-devilry",
+  "area": "card-treatment",
+  "name": "Archetype frame: Devilry",
+  "trigger": "a unit or structure of the Devilry archetype",
+  "current": "ar-devilry: art/frames/a-devilry.png (unit) / s-devilry.png (structure)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_ARCH_FRAMES, cardFrameArch"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-frame-arch-grace",
+  "area": "card-treatment",
+  "name": "Archetype frame: Ecclesia",
+  "trigger": "a unit or structure of the Ecclesia archetype",
+  "current": "ar-grace: art/frames/a-grace.png (unit) / s-grace.png (structure)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_ARCH_FRAMES, cardFrameArch"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-frame-arch-exile",
+  "area": "card-treatment",
+  "name": "Archetype frame: Scrappers",
+  "trigger": "a unit or structure of the Scrappers archetype",
+  "current": "ar-exile: art/frames/a-exile.png (unit) / s-exile.png (structure)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_ARCH_FRAMES, cardFrameArch"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-frame-arch-evolution",
+  "area": "card-treatment",
+  "name": "Archetype frame: Evolution",
+  "trigger": "a unit or structure of the Evolution archetype",
+  "current": "ar-evolution: art/frames/a-evolution.png (unit) / s-evolution.png (structure)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_ARCH_FRAMES, cardFrameArch"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-frame-arch-exiled",
+  "area": "card-treatment",
+  "name": "Archetype frame: Exiled Ones",
+  "trigger": "a unit or structure of the Exiled Ones archetype",
+  "current": "ar-exiled: art/frames/a-exiled.png (unit) / s-exiled.png (structure)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_ARCH_FRAMES, cardFrameArch"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-frame-arch-forgotten",
+  "area": "card-treatment",
+  "name": "Archetype frame: Forgotten Ones",
+  "trigger": "a unit or structure of the Forgotten Ones archetype",
+  "current": "ar-forgotten: art/frames/a-forgotten.png (unit) / s-forgotten.png (structure)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_ARCH_FRAMES, cardFrameArch"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-frame-arch-ancient",
+  "area": "card-treatment",
+  "name": "Archetype frame: Ancient Ones",
+  "trigger": "a unit or structure of the Ancient Ones archetype",
+  "current": "ar-ancient: art/frames/a-ancient.png (unit) / s-ancient.png (structure)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_ARCH_FRAMES, cardFrameArch"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-frame-arch-outer",
+  "area": "card-treatment",
+  "name": "Archetype frame: Outer Ones",
+  "trigger": "a unit or structure of the Outer Ones archetype",
+  "current": "ar-outer: art/frames/a-outer.png (unit) / s-outer.png (structure)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_ARCH_FRAMES, cardFrameArch"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-frame-arch-void",
+  "area": "card-treatment",
+  "name": "Archetype frame: Void",
+  "trigger": "a unit or structure of the Void archetype",
+  "current": "ar-void: art/frames/a-void.png (unit) / s-void.png (structure)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 3,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_ARCH_FRAMES, cardFrameArch"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-card-backing",
+  "area": "card-treatment",
+  "name": "Card backs by kind",
+  "trigger": "every face-down card (pack opener, draw flip, enemy card, pitch, reward reveals, home fan, deck piles)",
+  "current": "cardBackClass → .bw-back.bk-<unit|structure|castle|field> (art/backings/*.png)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 1,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "arena_app.js: CARD_BACKINGS, cardBackClass"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "tr-rarity-zoom",
+  "area": "card-treatment",
+  "name": "Top rarity frame on a zoomed card",
+  "trigger": "the card detail / inspector of a Mythic (or Ancient, Divine, Void, Daemonic) card",
+  "current": "FX.D FRAMES_CSS rSel matches \"--rarity-a:#…\" and \"--rarity-a: #…\", so the big card wears the same frame",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": true,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-d.js: rSel"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "pack-bonus-copy",
+  "area": "pack-card-open",
+  "name": "Bonus copy (\"Bonus!\")",
+  "trigger": "a pack card that rolls a bonus copy (Common 5% … halving from Epic)",
+  "current": ".po2-bonus-copy slides out from behind the card, \"Bonus! +1 copy\" tag, unlockChime and a burst",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: bonusCopyChance, openPackAnimation"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "pack-count-down",
+  "area": "pack-card-open",
+  "name": "Pile count counts down",
+  "trigger": "opening a big pile of packs",
+  "current": "#poPileCount \"N cards\" counts down as each card is revealed",
+  "quality": "basic — the number counts down",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: openPackAnimation (pileLeft)"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "map-trails-one-by-one",
+  "area": "conquest-map",
+  "name": "New trails ink in one by one",
+  "trigger": "coming back to the map after a clear that opens new fights",
+  "current": "FX.E playReturn: the new trails and fights are hidden, then each trail inks in (trailDraw) and its fight fades in",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 1,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-e.js: playReturn"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "map-title-frostfire",
+  "area": "map-grandeur",
+  "name": "Map title: Frostfire (Map 22)",
+  "trigger": "entering the Rimefire Caldera (m22) for the first time in a session",
+  "current": "FX.G.mapTitle, theme frostfire (ribbon banner)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-g.js: THEMES.frostfire"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "map-title-castle",
+  "area": "map-grandeur",
+  "name": "Map title: Fortress (Maps 23-24)",
+  "trigger": "entering the Goldfeather Siege (m23) or Goldfeather Keep (m24) for the first time in a session",
+  "current": "FX.G.mapTitle, theme castle (ribbon banner)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-g.js: THEMES.castle"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "map-grand-silhouettes-2",
+  "area": "map-grandeur",
+  "name": "Distant silhouettes (II): battlements, the ice volcano",
+  "trigger": "the Frostfire and Fortress titles",
+  "current": "FX.G.silhouettes {sil:battlements} / the frostfire volcano",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-g.js: silhouettes"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
+ },
+ {
+  "id": "map-cave-fires",
+  "area": "conquest-map",
+  "name": "Cave fire pits light up",
+  "trigger": "a cave map: fire pits along the trail (at most 3) light as you win",
+  "current": ".cave-fire.is-igniting / .is-lit",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Registered in the lab since 2026-10-16 but missing from the inventory (the catalogue listed it as a problem).",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: caveFireSpots, CAVE_FIRES_MAX"
+  ],
+  "batch": "L17",
+  "status": "built",
+  "added": "2026-10-17"
  }
 ]

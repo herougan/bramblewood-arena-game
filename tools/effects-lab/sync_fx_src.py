@@ -6,7 +6,9 @@ matching (strings, template literals and comments are skipped). Prints what chan
 import re, os, sys
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..'))
 app = open(os.path.join(ROOT, 'arena_app.js'), encoding='utf-8').read()
-fxp = os.path.join(ROOT, '.fxcat', 'fx-src.js'); fx = open(fxp, encoding='utf-8').read()
+fxp = os.path.join(ROOT, '.fxcat', 'fx-src.js')
+# 2026-10-17: a fresh checkout has no .fxcat yet; start empty (the --add list fills it)
+os.makedirs(os.path.dirname(fxp), exist_ok=True); fx = open(fxp, encoding='utf-8').read() if os.path.exists(fxp) else ''
 
 def block_end(src, i):
     """Index just past the declaration starting at i: its first '{' matched, plus a trailing

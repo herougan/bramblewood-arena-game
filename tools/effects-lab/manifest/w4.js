@@ -16,14 +16,17 @@ const MAPS = [
   ['forge', 'm9', 'Basalt Foundry', '🪨', 'Side map'], ['night', 'm21', 'The Quiet Summit', '🏔️', 'Map 22'],
   // 2026-10-16 (user: "...the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make the background a
   // little darker and castle-dungeony. with dripping swamp shit"): the daily dungeons' theme; its banner wears the 'dungeon' variant.
-  ['dungeon', 'mm', 'Murgle Mayhem', '🐸', 'Daily dungeon']];
+  ['dungeon', 'mm', 'Murgle Mayhem', '🐸', 'Daily dungeon'],
+  // 2026-10-17: Map 22, the Rimefire Caldera (an ice volcano: Frostfire), and Maps 23-24, the Goldfeather Siege and Keep (Fortress).
+  ['frostfire', 'm22', 'The Rimefire Caldera', '🌨️', 'Map 22'], ['castle', 'm23', 'The Goldfeather Siege', '⚔️', 'Map 23']];
 const STYLE_LABEL = {banner:'Ribbon banner with a medallion', ink:'Ink-brush calligraphy with a red seal', cinema:'Cinematic letterbox, the name spreads in'};
 MAPS.forEach(([k, id, name, icon, sub])=>{
   const T = (X() && X().THEMES[k]) || {label:k, style:'banner', p:'', grand:[]};
   const used = Object.keys(X() ? X().THEME_OF : {}).filter(m=> X().THEME_OF[m] === k).join(', ');
   R({id:'map-title-' + k, name:`Map title: ${T.label}`, stage:'map', trigger:`Entering a ${T.label.toLowerCase()} map for the first time in a session (${used || id})`, inGameHook:HOOK,
     note:`Particles: ${T.p}. Flourish: ${T.grand.join(' + ')}. The game uses ${({banner:'A', ink:'B', cinema:'C'})[T.style]} (${T.style}${T.variant ? `, '${T.variant}' variant` : ''}) here; tap the map to hurry it.`,
-    variants:['banner', 'ink', 'cinema'].map((st, i)=> ({key:'ABC'[i], label:STYLE_LABEL[st] + (st === T.style ? ' (game default)' : ''),
+    // 2026-10-17: the game default names its dressing (the swamp, mist and fungal maps' ink shade along the bottom, the dungeon's slime)
+    variants:['banner', 'ink', 'cinema'].map((st, i)=> ({key:'ABC'[i], label:STYLE_LABEL[st] + (st === T.style ? ` (game default${T.variant ? ', ' + ({inkShade:'with the ink look\'s soft shadow along the bottom', dungeon:'dungeon dressing: stone ribbon, slime dripping'}[T.variant] || T.variant) : ''})` : ''),
       play:ctx=>{ theme(ctx, id); return X().mapTitle(ctx.map.layout, {theme:k, name, icon, sub, style:st}); }}))});
 });
 // The Volcano Lair: a dragon's shadow passes under the title.
@@ -39,6 +42,9 @@ GR('birds', 'Birds crossing', 'Forest, meadow, lake titles; gulls on the beach, 
   ['C', 'One eagle gliding', 'm10', {theme:'alpine', fn:'eagle'}], ['D', 'Bats pour out', 'm4', {theme:'cave', fn:'bats'}], ['E', 'A school of fish', 'm7', {theme:'reef', fn:'fish'}]]);
 GR('silhouettes', 'Distant silhouettes', 'Swamp, mist, alpine, tundra, desert, savanna, volcano and forge titles', [['A', 'Pines', 'm1', {theme:'forest', sil:'pines'}], ['B', 'Mountain peaks', 'm10', {theme:'alpine'}], ['C', 'Dunes', 'md', {theme:'desert'}],
   ['D', 'Dead trees in mist', 'ms', {theme:'mist'}], ['E', 'Acacias', 'm5', {theme:'savanna'}], ['F', 'The volcano', 'm11', {theme:'volcano'}], ['G', 'Giant mushrooms', 'mu', {theme:'fungal', sil:'shrooms'}], ['H', 'Stalactites (from the top)', 'm4', {theme:'cave', sil:'stalactites'}]]);
+// 2026-10-17: the silhouettes of the new maps (Frostfire's crater, the Fortress's crenellated curtain wall with the odd tower)
+GR('silhouettes-2', 'Distant silhouettes (II)', 'Frostfire (Map 22) and Fortress (Maps 23-24) titles', [['A', 'Battlements: a curtain wall with the odd taller tower', 'm23', {theme:'castle', sil:'battlements', fn:'silhouettes'}],
+  ['B', 'The ice volcano behind Frostfire', 'm22', {theme:'frostfire', fn:'silhouettes'}], ['C', 'Goldfeather Keep (Map 24)', 'm24', {theme:'castle', sil:'battlements', fn:'silhouettes'}]]);
 GR('haze', 'Parallax haze', 'Swamp, mist and fungal titles', [['A', 'Mist banks drifting at three speeds', 'ms', {theme:'mist'}], ['B', 'Violet spore haze', 'mu', {theme:'fungal'}]]);
 GR('cloudShadows', 'Cloud shadows', 'An idea for open maps: soft cloud shadows slide over the ground', [['A', 'Three shadows pass', 'm5', {theme:'savanna'}]]);
 GR('aurora', 'Aurora sky', 'Tundra and night titles', [['A', 'Green and violet curtains', 'm6', {theme:'tundra'}], ['B', 'Over the Quiet Summit', 'm21', {theme:'night'}]]);

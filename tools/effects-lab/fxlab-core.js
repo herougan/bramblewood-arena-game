@@ -91,6 +91,8 @@ function wrapTile(html, kind){
 const BOARD_HTML = (()=>{ if(!FIX.board) return ''; const f = tpl(FIX.board.html);
   f.querySelectorAll('#settingsPanelHud, .battle-log-panel, .coach, .coach-tip, .tut-hand, #dropRow, .wl-reopen').forEach(e=> e.remove());
   f.querySelectorAll('.board-card .seen-new').forEach(e=> e.remove()); // the "first time seen" pill from the capture
+  // 2026-10-17: two hand cards (the 10-17 capture holds four, which wrapped the hand into a column beside the Pass button)
+  [...f.querySelectorAll('#handStrip > .card-tile')].slice(2).forEach(e=> e.remove());
   return htmlOf(f); })();
 // The map: keep the trail, the camp spot, the trees and the nodes; lay the nodes out as a little route ending at a boss.
 const MAP_ROUTE = [{x:12, y:72}, {x:31, y:52}, {x:52, y:64}, {x:71, y:44}, {x:88, y:24}];
@@ -154,11 +156,11 @@ function build(stage){
     const app = document.createElement('div'); app.id = 'appWrap'; app.className = 'wrap in-match fxl-app';
     app.innerHTML = `<div class="content-wrap"><div id="view-play" class="fxl-view">${BOARD_HTML}</div></div>`;
     root.appendChild(app);
-    fit(app, vw() >= 760 ? 880 : 400);
+    fit(app, vw() >= 760 ? 940 : 400); // 2026-10-17: 940 (was 880): the re-captured bottom row (castle, Deck, leader, hand, Graveyard, Pass) needs the room
     const q = s=> app.querySelector(s), qa = s=> [...app.querySelectorAll(s)];
     const units = sel=> qa(sel + ' .board-card').filter(b=> b.querySelector('.card-tile'));
     parts.board = {el:q('#battlefieldEl'), rowMine:q('#rowMine'), rowFoe:q('#rowEnemy'), mine:units('#rowMine'), foe:units('#rowEnemy'),
-      castleMine:q('.bottom-play-row .match-castle-tile'), castleFoe:q('.top-play-row .match-castle-tile'), field:q('#fieldCondCard'), hud:q('.top-right-stack') || q('.hud'),
+      castleMine:q('.bottom-play-row .match-castle-tile'), castleFoe:q('.top-play-row .match-castle-tile'), field:q('#fieldCondCard') || q('.match-field-tile'), /* 2026-10-17: the re-captured board's field is a weather card (Spring Rain) */ hud:q('.top-right-stack') || q('.hud'),
       leader:q('#leaderWidget .card-tile') || q('#leaderWidgetWrap .card-tile'), hand:qa('#handStrip .card-tile'), hpMine:q('.bf-hp-mine'), hpFoe:q('.bf-hp-enemy'),
       pillsMine:q('#fieldResMine'), pillsFoe:q('#fieldResEnemy'), app};
     parts.cards = parts.board.mine.concat(parts.board.foe).map(b=> b.querySelector('.card-tile'));

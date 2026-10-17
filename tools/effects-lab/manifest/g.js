@@ -8,7 +8,7 @@ const mine = ctx=> ctx.board.mine, foe = ctx=> ctx.board.foe;
 // (bramblewood-skillfx.js), played by ninthPassVfx in arena_app.js on statusFx 'bloodlust'.
 R({id:'sk-bloodlust', stage:'board', inGameHook:'ninthPassVfx (arena_app.js): statusFx bloodlust → SkillFX.bloodlustPulse', note:'Low effects and up: it is the only cue that the Attack went up.',
   variants:[
-    {key:'A', label:'A red heartbeat: two pulses and a red flush', play:ctx=>{ const a = mine(ctx)[1], t = foe(ctx)[1]; ctx.float(t, '-3', ''); return ctx.wait(250).then(()=>{ ctx.float(a, '🩸 Bloodlust +1⚔', 'debuff'); ctx.sound('bleedTick'); S().bloodlustPulse(a); return ctx.wait(1200); }); }},
+    {key:'A', label:'Retired 10-17 (Bloodlust leaps now): a red heartbeat, two pulses and a red flush', play:ctx=>{ const a = mine(ctx)[1], t = foe(ctx)[1]; ctx.float(t, '-3', ''); return ctx.wait(250).then(()=>{ ctx.float(a, '🩸 Bloodlust +1⚔', 'debuff'); ctx.sound('bleedTick'); S().bloodlustPulse(a); return ctx.wait(1200); }); }},
     {key:'B', label:'At its cap (+3N): one deeper throb', play:ctx=>{ const a = mine(ctx)[1]; ctx.float(a, '🩸 Bloodlust +1⚔', 'debuff'); ctx.sound('bleedTick'); S().bloodlustPulse(a, {full:true}); return ctx.wait(1100); }},
   ]});
 })();

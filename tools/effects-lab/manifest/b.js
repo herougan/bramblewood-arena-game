@@ -171,7 +171,7 @@ R({id:'dark-eclipse', stage:'board', inGameHook:'future', note:'Planned Map 35+.
 /* ============================== WEATHER & TIME ============================== */
 const toast = (ctx, msg)=>{ const s = fn('showToast'); if(s) s(msg, 'ok'); };
 R({id:'wt-day-breaks', stage:'board', inGameHook:'onEvent: phase {phase:\'day\'}', variants:[
-  {key:'A', label:'A golden wash sweeps in from the east', play:ctx=>{ ctx.sound('roosterCrow'); skyTone(ctx, 'day'); return X().dayBreaks(ctx.board.el); }},
+  {key:'A', label:'2026-10-17: a golden wash creeps in from the left; a barely-there sun (a soft glow 60% fainter, rays a third fainter)', play:ctx=>{ ctx.sound('roosterCrow'); skyTone(ctx, 'day'); return X().dayBreaks(ctx.board.el); }},
   {key:'B', label:old + ': toast and the sky tone', play:ctx=>{ ctx.sound('roosterCrow'); skyTone(ctx, 'day'); toast(ctx, '☀️ Day breaks.'); return ctx.wait(1600); }}]});
 R({id:'wt-dawn-draw', stage:'board', inGameHook:'onEvent: dawn', variants:[
   {key:'A', label:'Rosy light rises, birds take off', play:ctx=>{ skyTone(ctx, 'dawn'); return X().dawnDraw(ctx.board.el); }},
@@ -220,7 +220,7 @@ R({id:'wt-lightning-strike', stage:'board', variants:[{key:'A', label:'A bolt st
   return ctx.wait(1300); }}]});
 R({id:'wt-world-rain', stage:'map', note:'The map\'s rain is the shader layer (stand-in here: the batch\'s CSS rain sheet at full strength).', variants:[{key:'A', label:'Rain over the map (stand-in)', play:ctx=> X().rainStartStop(ctx.map.el, {start:true})}]});
 R({id:'wt-rain-start-stop', stage:'map', inGameHook:'fxHook(\'mapRain\') from mountMapShader when the rain state changed since this map was last drawn', variants:[
-  {key:'A', label:'Rain starts: first drops, then the downpour', play:ctx=> X().rainStartStop(ctx.map.el, {start:true})},
+  {key:'A', label:'Rain starts: first drops, then the downpour (90% more transparent since 10-16)', play:ctx=> X().rainStartStop(ctx.map.el, {start:true})},
   {key:'B', label:'Rain stops: it thins, the last drops fall', play:ctx=> X().rainStartStop(ctx.map.el, {start:false})}]});
 R({id:'wt-live-clock', stage:'screen', note:'Stand-in: the Home atmosphere\'s four tints (multiply-blend cast) cycled quickly.', variants:[{key:'A', label:'Dawn, day, dusk, night tints (stand-in)', play:ctx=>{ const l = ctx.layer(); l.style.cssText = 'position:absolute; inset:0; mix-blend-mode:multiply; pointer-events:none;';
   return new Promise(res=> ctx.gsap.timeline({onComplete:res}).fromTo(l, {backgroundColor:'rgba(255,190,140,.45)'}, {backgroundColor:'rgba(255,250,235,.1)', duration:.7}).to(l, {backgroundColor:'rgba(240,140,70,.5)', duration:.7}).to(l, {backgroundColor:'rgba(40,60,130,.6)', duration:.7}).to({}, {duration:.4})); }}]});
