@@ -348,6 +348,32 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     });
   }
+  // The back rows strike too (2026-10-17, user, on the 3-row raid: "all 3 rows are active at hitting the enemy"): a volley from one side's
+  // reserve rows (the raid's two ally rows). Each reserve unit still under Wait counts 1 down (it readies behind the line); a ready one
+  // strikes its own column for half its Attack (rounded up): the enemy's front unit in that column, or, with that column empty, the enemy
+  // castle (onHqHit, the boss's shield while its stumps stand, still applies). Armor and the rest of the defence pipeline apply
+  // (damageCard). The rows are struck front to back, centre outward. Events: fieldTick volley / volleyHit / volleyCastle.
+  function reserveVolley(players, sideOf, pid, stats, events){
+    const pl = players[pid], foe = players[otherId(pid)]; if(!pl || !pl.reserve || !foe) return 0;
+    const ev = o=>{ if(recordEvents && events) events.push(o); }; let shots = 0, total = 0;
+    for(let r = 0; r < pl.reserve.length; r++){
+      Object.keys(pl.reserve[r]).map(Number).sort((a, b)=> Math.abs(a) - Math.abs(b) || a - b).forEach(sl=>{
+        const c = pl.reserve[r][sl]; if(!c || !(c.hp > 0) || c.stunned || c.frozen > 0 || c.asleep > 0) return;
+        if(c.wait > 0){ c.wait -= 1; return; }
+        const atk = Math.max(0, Number(c.atk) || 0), n = Math.ceil(atk / 2); if(!(n > 0)) return;
+        if(!shots) ev({type:'fieldTick', field:'volley', side:sideOf(pid)});
+        shots++;
+        const t = frontCardAt(foe, sl);
+        if(t && !t.cageOf){ const res = damageCard(t, n, 'physical', c); const dmg = res ? res.dmg : 0; total += dmg;
+          ensureStat(stats, sideOf(pid), c.defId).dealt += dmg; ensureStat(stats, sideOf(otherId(pid)), t.defId).taken += dmg;
+          ev({type:'fieldTick', field:'volleyHit', side:sideOf(otherId(pid)), uid:t.uid, defId:t.defId, dmg, fromUid:c.uid, fromDefId:c.defId, row:r + 1, slot:sl}); }
+        else if(foe.hq && foe.hq.hp > 0){ let d = n; const ov = foe.onHqHit ? foe.onHqHit(d, c) : undefined; if(typeof ov === 'number') d = ov;
+          d = Math.max(0, Math.min(d, foe.hq.hp)); foe.hq.hp -= d; total += d; ensureStat(stats, sideOf(pid), c.defId).dealt += d;
+          ev({type:'fieldTick', field:'volleyCastle', side:sideOf(otherId(pid)), dmg:d, fromUid:c.uid, fromDefId:c.defId, row:r + 1, slot:sl, shielded: d < n || undefined}); }
+      });
+    }
+    return total;
+  }
   function putInSlot(pl, card, slot){
     card.slot = slot;
     const side = slot===0 ? 'center' : (slot<0 ? 'left' : 'right');
@@ -1786,10 +1812,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return sp.includes('Elemental') || sp.includes('Plant') || ar.includes('Elemental') || ar.includes('Flora'); }
   function psychicHit(pid, att, c, sideOf, stats, events){
     const n = Number(effectsOf(att).psychic)||0; if(!(n > 0) || !c || !(c.hp > 0)) return 0;
-    const tpid = otherId(pid), mindless = isMindless(c), dmg = (mindless || c.invincible > 0) ? 0 : n; // + Invincible (2026-10-16)
+    // Psychic Dampener (2026-10-17, raid field effect, rules.psychicDampener): psychic damage is halved, rounded down (Psychic 1 does nothing).
+    const damp = !!rules.psychicDampener, n2 = damp ? Math.floor(n / 2) : n;
+    const tpid = otherId(pid), mindless = isMindless(c), dmg = (mindless || c.invincible > 0) ? 0 : n2; // + Invincible (2026-10-16)
     if(dmg > 0){ c.hp = Math.max(0, c.hp - dmg); if(c.asleep > 0){ c.asleep = 0; noteWoke(c); } if(c.hp <= 0) c.killedBy = att.uid;
       ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg; }
-    if(recordEvents && events) events.push({type:'psychic', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:c.uid, targetDefId:c.defId, dmg, n, immune:mindless || undefined});
+    if(recordEvents && events) events.push({type:'psychic', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:c.uid, targetDefId:c.defId, dmg, n, immune:mindless || undefined, dampened: (damp && n2 < n) || undefined});
     return dmg;
   }
   // Ichor N (2026-10-14, user: "Corrosive blood: When hit, the attacker takes N acid damage and loses 1 Armor" + "but also add
@@ -2634,7 +2662,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     else if(kind==='stunOnHit'){ defCard.stunned = Math.max(defCard.stunned|0, duration); defCard._stunnedJustSet = true; } // N stun counters (2026-10-16)
     else if(kind==='blind'){ if(effectsOf(defCard).keenSense || effectsOf(defCard).sonar) return; defCard.blind = Math.max(defCard.blind||0, duration); defCard._blindJustSet = true; } // Keen Sense: never Blind
     else if(kind==='tipsy'){ defCard.tipsy = Math.max(defCard.tipsy||0, duration); defCard._tipsyJustSet = true; }
-    else if(kind==='confuse'){ defCard.confused = Math.max(defCard.confused||0, duration); defCard._confusedJustSet = true; }
+    else if(kind==='confuse'){
+      // Psychic Dampener (2026-10-17): a Confuse lands for 1 round less, so a 1-round Confuse doesn't land at all.
+      if(rules.psychicDampener){ duration -= 1; if(recordEvents && events) events.push({type:'dampened', side:mySide, defId:attCard && attCard.defId, uid:attCard && attCard.uid, targetUid:defCard.uid, what:'confuse', left:duration}); if(duration <= 0) return; }
+      defCard.confused = Math.max(defCard.confused||0, duration); defCard._confusedJustSet = true; }
     else if(kind==='shock'){ defCard.shocked = Math.max(defCard.shocked||0, duration); defCard._shockedJustSet = true; }
     else if(kind==='stagger'){ defCard.staggered = Math.max(defCard.staggered||0, duration); defCard._staggeredJustSet = true; }
     else return;
@@ -6620,7 +6651,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+  return { tideEvadeOn, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

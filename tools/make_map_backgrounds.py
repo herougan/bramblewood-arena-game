@@ -590,7 +590,90 @@ def mtut(rng):  # Tutorial (2026-10-13): a gentle training meadow, trampled prac
     return img
 
 
-PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz', 'me', 'mtut', 'mj'))}
+# The Arena (2026-10-17, user: "Improve the Arena UI UX and look and feel. Is there a thematic background and other elements we can
+# also use."): a tourney ground seen from above. Raked sand in an oval, a timber barrier round it, stone tiers packed with a crowd
+# (a pixel each), and pennant poles on the wall. The middle band, where the cards fight, is plain sand.
+PENNANT = ["c....", "caaab", "caaa.", "caa..", "ca...", "c....", "c....", "c...."]
+
+
+def marena(rng):
+    ys, xs = np.mgrid[0:H, 0:W]
+    e = np.sqrt(((xs - W / 2) / (W * 0.47)) ** 2 + ((ys - H / 2) / (H * 0.44)) ** 2)   # the oval: <1 sand, >1 stands
+    sand = dither_palette(fbm(rng, W, H, (32, 16, 8), (0.5, 0.3, 0.2)), ['#a7814f', '#b58e58', '#c29a62', '#cfa86e', '#d8b47a'], 0.8)
+    img = sand.copy()
+    rake = (np.sin((ys + 0.6 * np.sin(xs / 23.0) * 4) / 2.2) > 0.86) & (e < 0.9) & (np.abs(ys - H / 2) > H * 0.17)
+    img[rake] = (img[rake] * 0.9).astype(np.uint8)   # rake lines, off the middle band
+    scuff = fbm(rng, W, H, (24, 12), (0.6, 0.4))
+    blend_mask(img, np.clip((scuff - 0.7) * 5, 0, 1) * (e < 0.85), '#9a774a')   # scuffed where fighters stood
+    # the stands: stone tiers in rings, each ring a little darker, packed with a crowd
+    tiers = ['#7a7266', '#6c6458', '#5e574c', '#504a41', '#433e36']
+    for k, c in enumerate(tiers):
+        m = (e >= 1.06 + k * 0.09) & (e < 1.06 + (k + 1) * 0.09)
+        img[m] = hexrgb(c)
+        joint = m & ((xs + k * 3) % 9 == 0)
+        img[joint] = (img[joint] * 0.8).astype(np.uint8)
+    img[e >= 1.06 + len(tiers) * 0.09] = hexrgb('#38332c')
+    crowd = (e >= 1.08) & (rng.random((H, W)) < 0.3) & ((ys + (xs // 3)) % 3 != 0)
+    cols = np.array([hexrgb(c) for c in ['#c0392b', '#2e86c1', '#e8c46a', '#f0e6d2', '#6c3483', '#1e8449', '#d35400', '#a0522d']], dtype=np.uint8)
+    img[crowd] = cols[rng.integers(0, len(cols), crowd.sum())]
+    # the timber barrier round the sand, with its shadow on the sand
+    img[(e >= 1.0) & (e < 1.06)] = hexrgb('#6b4423')
+    img[(e >= 1.0) & (e < 1.02)] = hexrgb('#8a5a2e')
+    img[(e >= 0.965) & (e < 1.0)] = (img[(e >= 0.965) & (e < 1.0)] * 0.72).astype(np.uint8)
+    post = (e >= 1.0) & (e < 1.06) & ((np.degrees(np.arctan2(ys - H / 2, xs - W / 2)) + 360) % 15 < 2.2)
+    img[post] = hexrgb('#4a2e16')
+    # pennant poles on the wall, in the house colours
+    for i in range(18):
+        a = i / 18 * 2 * math.pi + 0.09
+        x, y = int(W / 2 + math.cos(a) * W * 0.47 * 1.03) - 1, int(H / 2 + math.sin(a) * H * 0.44 * 1.03) - 8
+        c = ['#c0392b', '#2e86c1', '#e8c46a', '#1e8449'][i % 4]
+        stamp(img, PENNANT, x, y, {'a': c, 'b': '#f6f0e0', 'c': '#3a2a1a'})
+    # gates at the two ends of the oval
+    for gx in (int(W * 0.03), int(W * 0.97) - 6):
+        img[H // 2 - 7:H // 2 + 7, gx:gx + 6] = hexrgb('#2a1c10')
+        img[H // 2 - 7:H // 2 + 7:3, gx:gx + 6] = hexrgb('#5a3a1e')
+    sparkle(img, rng, 30, '#e9d9b0')   # glints in the sand
+    return edge_vignette(img, 0.35)
+
+
+# The Abyss (2026-10-17, user: "The raid background is wrong too. it should be deep in the sea."): the floor of a deep trench, far below
+# the light. Dark blue silt in long ridges, a rift down one side, black rocks, tube-worm clumps, the ribs of an old whale fall, and the
+# odd bioluminescent glint. The light shafts and the drifting marine snow are CSS layers on top (.battlefield.map-mabyss).
+RIB = ["a.......a", "a.......a", ".a.....a.", "..a...a..", "...aaa..."]
+WORM = ["a.a.a", "b.b.b", "bbbbb"]
+ANGLER = ["..c", ".a.", "aaa"]
+
+
+def mabyss(rng):
+    ys, xs = np.mgrid[0:H, 0:W]
+    base = fbm(rng, W, H, (48, 24, 12), (0.55, 0.3, 0.15))
+    base = np.clip(base * 0.85 + (1 - ys / H) * 0.15, 0, 1)   # a touch lighter toward the top, where the light falls from
+    img = dither_palette(base, ['#020a14', '#04101e', '#061628', '#0a1e34', '#0f2742'], 0.9)
+    ridges = np.sin((xs * 0.08 + ys * 0.35) + fbm(rng, W, H, (32, 16), (0.7, 0.3)) * 6)
+    blend_mask(img, np.clip((ridges - 0.82) * 6, 0, 1) * (np.abs(ys - H / 2) > H * 0.16), '#123050')
+    # the rift: a black crack along the bottom-left
+    cx = W * (0.18 + 0.05 * np.sin(ys / 9.0))
+    rift = np.abs(xs - cx - (ys - H) * 0.5) < (2 + value_noise(rng, W, H, 6) * 3)
+    img[rift & (ys > H * 0.62)] = hexrgb('#00040a')
+    scatter(img, rng, BOULDER, {'a': '#16304a', 'b': '#050e18'}, 26, shadow_w=lambda w: w)
+    scatter(img, rng, ROCK, {'a': '#1a3654', 'b': '#07121e'}, 30)
+    scatter(img, rng, WORM, {'a': '#e8505a', 'b': '#d8d0c0'}, 10)
+    for x, y in ((186, 16), (40, 22), (206, 112)):   # an old whale fall, off the middle band
+        stamp(img, RIB, x, y, {'a': '#9fb4c0'})
+        stamp(img, RIB, x + 10, y + 1, {'a': '#8aa0ad'})
+    scatter(img, rng, ANGLER, {'a': '#0a1a2a', 'c': '#ffe38a'}, 4)
+    sparkle(img, rng, 90, '#3fd8e8'); sparkle(img, rng, 26, '#9a7cff'); sparkle(img, rng, 10, '#ffe38a')   # bioluminescence
+    img = edge_vignette(img, 0.5)
+    # light shafts from far above, painted in (a dithered lift in slanted bands that fades with depth), so the board pays nothing for them
+    for x0, slope, w, a in ((0.10, 0.22, 0.05, 0.30), (0.36, 0.12, 0.03, 0.22), (0.60, -0.08, 0.06, 0.32), (0.83, -0.2, 0.03, 0.2)):
+        cx = W * x0 + (ys - 0) * slope
+        band = np.clip(1 - np.abs(xs - cx) / (W * w), 0, 1) * np.clip(1 - ys / (H * 1.1), 0, 1) * a
+        lift = (band + BAYER[ys % 4, xs % 4] * 0.08) > 0.06
+        img[lift] = np.clip(img[lift].astype(np.int32) + (band[lift][:, None] * np.array([120, 170, 210])).astype(np.int32), 0, 255).astype(np.uint8)
+    return img
+
+
+PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz', 'me', 'mtut', 'mj', 'marena', 'mabyss'))}
 
 
 # 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds. I think the wetter one makes sense for the next map."):

@@ -119,7 +119,51 @@ function validateRaid(def, defs){
   return errs;
 }
 
-const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, contributionFor, raidState, contributionTier, claimableReward, fightFor, validateRaid};
+// ---- The full raid board (2026-10-17, user: "for 3 lane raids, the CPU allies can only place on their own rows! For the enemy, can you
+// enhance it by letting them playing commons on the back 2 rows every turn as well?"). Pure helpers over the engine's reserve rows
+// (E.legalReserveSlots / E.fillReserve), so tests/raid-arena-2026-10-17.js can check them without a page.
+const BOARD_COLS = [-3, -2, -1, 0, 1, 2, 3];
+const byCentre = (a, b)=> Math.abs(a) - Math.abs(b) || a - b;
+// Where a CPU ally plays: ONLY its own row (reserve row `row`: 1 = middle, 2 = back), never your front row or the other ally's row.
+// A free slot with a card right in front of it first (it waits there), centre-most; else any free slot of its row, centre-most (a
+// card there steps up when the column ahead is empty, as every reserve does). null when its row is full: the ally keeps the card.
+function allySlot(E, pl, row, cols){
+  if(!pl || !pl.reserve || !pl.reserve[row - 1]) return null;
+  const legal = E.legalReserveSlots(pl, row).slice().sort(byCentre); if(legal.length) return legal[0];
+  const r = pl.reserve[row - 1], free = (cols || BOARD_COLS).filter(sl=> !r[sl]).sort(byCentre);
+  return free.length ? free[0] : null;
+}
+// The commons a raid boss calls in: the raid part's or the raid's `commonPool` (card ids), else every Common that shares a species or
+// archetype with the part's deck and costs 2 or less. Tokens, test cards and Basics never come.
+function raidCommonPool(def, part, defs){
+  const ok = id=>{ const d = defs && defs[id]; return !!(d && !/~/.test(id) && (d.rarity || 'common') === 'common' && !d.token && !d.test && !d.basic); }; // never a fight-only copy (~raid, ~boss)
+  const own = ((part && part.commonPool) || (def && def.commonPool) || []).filter(ok);
+  if(own.length) return own;
+  const tags = new Set(); Object.keys(((part || {}).fight || {}).deck || {}).forEach(id=>{ const d = defs[id]; if(d) (d.species || []).concat(d.archetypes || []).forEach(t=>{ if(t !== 'Structure') tags.add(t); }); });
+  return Object.keys(defs || {}).filter(id=> ok(id) && (Number(defs[id].cost) || 0) <= 2 && (defs[id].species || []).concat(defs[id].archetypes || []).some(t=> tags.has(t))).sort();
+}
+// The boss's reinforcements, every round from round 2 (on top of its normal play): up to `perRow` (1) Common into each of its back two
+// rows (middle first, then back), each into an EMPTY slot with a card right in front of it (so it waits there, it never jumps the
+// queue), centre-most; at most `max` (2) a round, and none while its two back rows already hold `cap` (6) cards. `toId` maps a pool id
+// to the id that goes on the board (the raid's scaled copy). Returns [{row, slot, defId, card}].
+const REINFORCE = {perRow:1, max:2, cap:6, from:2};
+function bossReinforce(E, pl, pool, rnd, opts){
+  opts = Object.assign({}, REINFORCE, opts || {}); const out = [];
+  if(!pl || !pl.reserve || !(pool || []).length || (opts.round != null && opts.round < opts.from)) return out;
+  const held = ()=> pl.reserve.reduce((t, r)=> t + Object.keys(r).length, 0);
+  for(let row = 1; row <= Math.min(2, pl.reserve.length); row++){
+    for(let k = 0; k < opts.perRow; k++){
+      if(out.length >= opts.max || held() >= opts.cap) return out;
+      const slots = E.legalReserveSlots(pl, row).slice().sort(byCentre); if(!slots.length) break;
+      const pick = pool[Math.floor((rnd ? rnd() : Math.random()) * pool.length)], id = opts.toId ? opts.toId(pick) : pick;
+      const card = E.fillReserve(pl, row, slots[0], id); if(!card) break;
+      out.push({row, slot:slots[0], defId:id, card});
+    }
+  }
+  return out;
+}
+
+const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, contributionFor, raidState, contributionTier, claimableReward, fightFor, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));

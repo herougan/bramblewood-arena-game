@@ -5979,7 +5979,34 @@ const MAP_BATTLEFIELD_CLASS = {
   my:'map-my',
   // 2026-10-15 ("Are there any submaps with no background? fill them in."): the side maps that had no fight floor.
   mtut:'map-mtut', mo:'map-mo', mi:'map-mi', mn:'map-mn', ms:'map-ms', mv:'map-mv', mx:'map-mx', mm:'map-mm',
+  // 2026-10-17: the Arena's tourney ground and the raids' deep sea (tools/make_map_backgrounds.py marena / mabyss); no Conquest map uses them.
+  marena:'map-marena', mabyss:'map-mabyss',
 };
+const ARENA_FIGHT_MODES = new Set(['ai', 'pc', 'gauntlet', 'pvp', 'async', 'liveRanked']);
+// A raid's ground (2026-10-17): the raid's own `ground` (a MAP_BATTLEFIELD_CLASS id), else by its boss: the sea bosses fight in the Abyss,
+// the others on the map that fits them (the frost kings on the Tundra, the troll and the warlord in the Caves, ...).
+const RAID_GROUND = {goliath:'mabyss', 'the-drowned-colossus':'mabyss', 'the-orca-vanguard-king':'mabyss', 'the-frost-yeti-king':'m6', 'the-glacial-ape-king':'mi',
+  'the-avalanche-colossus':'m10', 'the-deep-troll-king':'m4', 'the-cave-warlord':'mn', 'the-savanna-warlord':'m5', 'wound-reavers-domain':'m8', 'the-phoenix-ember-king':'m11',
+  'the-rootworm-hive-mind':'mo', 'the-hollow-oath':'m21', 'the-warhorse-sovereign':'m23'};
+function raidGroundOf(m){
+  const def = m && (m.raidDef || m.raidBoss) || {}; if(def.ground && MAP_BATTLEFIELD_CLASS[def.ground]) return def.ground;
+  const id = String(def.id || '').split(':')[0]; if(RAID_GROUND[id]) return RAID_GROUND[id];
+  const t = (id + ' ' + (def.name || '')).toLowerCase();
+  return /sea|ocean|drown|orca|kraken|deep|tide|reef|whale/.test(t) ? 'mabyss' : /frost|ice|glaci|snow/.test(t) ? 'm6' : /cave|troll/.test(t) ? 'm4' : /fire|ember|magma|phoenix/.test(t) ? 'm11' : 'mabyss';
+}
+// The scene's own moving layers (2026-10-17): the Abyss's light shafts from far above and its drifting marine snow, and the Arena's
+// bunting. Transform/opacity-only CSS animations on a few elements (no per-frame script), still under reduced motion.
+function syncSceneFx(bf){
+  if(!bf) return; const want = bf.classList.contains('map-mabyss') ? 'abyss' : bf.classList.contains('map-marena') ? 'arena' : null;
+  let el = bf.querySelector(':scope > .scene-fx'); if(el && el.dataset.k !== want){ el.remove(); el = null; }
+  if(!want || el) return;
+  el = document.createElement('div'); el.className = 'scene-fx scene-' + want; el.dataset.k = want; el.setAttribute('aria-hidden', 'true');
+  // marine snow: 16 tiny dots, each falling the board's height on its own slow clock (a seeded spread, so a redraw looks the same)
+  const fall = Math.round((bf.clientHeight || 600) + 16);
+  el.innerHTML = want === 'abyss' ? '<i class="ab-murk"></i>' + Array.from({length:16}, (_, k)=> `<i class="ab-dot" style="left:${(k * 37 + 11) % 100}%; --fall:${fall}px; animation-duration:${14 + (k * 7) % 13}s; animation-delay:-${(k * 3.7) % 20}s; opacity:${(.35 + ((k * 13) % 6) / 10).toFixed(2)}"></i>`).join('')
+    : '<i class="ar-bunting"></i>';
+  bf.insertBefore(el, bf.firstChild);
+}
 // Battlefield background picker (2026-09-30, queued backlog item: "player-selectable, independent
 // of which Conquest map you're on, plus a new 'extremely undistracting' calm background option").
 // Previously the theme was ENTIRELY derived from matchState.conquestNode.mapId (see
@@ -6001,8 +6028,12 @@ function battlefieldMapClass(m){
     return oc && MAP_ART_IDS.has(override) ? oc + ' has-floor-art' : oc;
   }
   let mapId = m && m.conquestNode && m.conquestNode.mapId;
+  // 2026-10-17 (user: "Is there a thematic background ... for the Arena" / "The raid background is wrong too. it should be deep in the
+  // sea."): the Arena's fights stand on the tourney ground, a raid's on its own ground (raidGroundOf: the Abyss for the Goliath).
+  if(!mapId && m && m.mode !== 'tutorial'){ const own = (m.raidDef || m.raidBoss) ? raidGroundOf(m) : ARENA_FIGHT_MODES.has(m.mode) && !m.testKit && !m.fxLib ? 'marena' : null;
+    if(own && MAP_BATTLEFIELD_CLASS[own]) return MAP_BATTLEFIELD_CLASS[own] + (MAP_ART_IDS.has(own) ? ' has-floor-art' : ''); }
   // 2026-10-13 (UI audit: the Arena's board was a flat grey box): fights off the map borrow a map's ground, picked once per match.
-  if(!mapId && m && m.mode !== 'tutorial'){ if(!m.bfMapId){ const ids = Object.keys(MAP_BATTLEFIELD_CLASS).filter(id=> MAP_ART_IDS.has(id)); m.bfMapId = ids.length ? ids[Math.floor(Math.random()*ids.length)] : null; } mapId = m.bfMapId; }
+  if(!mapId && m && m.mode !== 'tutorial'){ if(!m.bfMapId){ const ids = Object.keys(MAP_BATTLEFIELD_CLASS).filter(id=> MAP_ART_IDS.has(id) && id !== 'marena' && id !== 'mabyss'); m.bfMapId = ids.length ? ids[Math.floor(Math.random()*ids.length)] : null; } mapId = m.bfMapId; }
   const cls = (mapId && MAP_BATTLEFIELD_CLASS[mapId]) || '';
   return cls && MAP_ART_IDS.has(mapId) ? cls + ' has-floor-art' : cls;
 }
@@ -12346,7 +12377,10 @@ function startDungeonFight(){
     leaderDefId: matchLeaderId(), leaderUid: null};
   lastBoardSig = {1:null, 2:null};
   knownBoardUids = new Set();
-  renderPlay();
+  // 2026-10-17 (user: "It should show your BR in the pre-battle screen"): the Dungeon gets the VS screen too, your run's deck rated.
+  let lv = null; try{ lv = mainDeckLevel(run.deckCounts, myLeaderId); }catch(e){}
+  showVsScreen({name: (myProfile && myProfile.name) || 'You', deck: `Dungeon run · fight ${run.stage}/${DUNGEON_STAGE_COUNT}`, avatar: loadAvatar(), level: lv},
+    {name: enemyCharacter.name, deck: `🗝️ castle ${hqHp}`, avatar: randomOpponentAvatar(seededRng(run.stage * 977))}).then(()=> renderPlay());
 }
 // ============================================================================================
 // Ranked 1v1 Live (#277, 2026-09-25) — real-time two-device PvP, matched by rating.
@@ -13454,7 +13488,7 @@ function activateSpot(spot){
 // 2026-10-15 (user: "Are there any submaps with no background? fill them in."): the Old Bramble, Ice Hollow, Glimmer Depths,
 // Sunken Grove, Aerie Vault and Volcano Lair had art baked in but weren't listed here, so it never drew; Murgle Mayhem had none.
 // They now borrow a recoloured map (MAP_ART_DERIVED in assemble_arena.py), and the build fails if this list falls behind.
-const MAP_ART_IDS = new Set(["mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm"]);
+const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm"]);
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -14244,9 +14278,12 @@ function fightSerial(){ try{ return Number(localStorage.getItem(FIGHT_SERIAL_KEY
 function bumpFightSerial(){ try{ localStorage.setItem(FIGHT_SERIAL_KEY, String(fightSerial() + 1)); }catch(e){} }
 function fieldRowsSeen(){ try{ return JSON.parse(localStorage.getItem(FIELD_ROWS_KEY) || '{}') || {}; }catch(e){ return {}; } }
 function markFieldRow(key){ if(matchState && matchState.fxLib) return false; /* 🔬 the Effects library never marks a field row seen (2026-10-14) */ const st = fieldRowsSeen(); if(st[key] != null) return false; st[key] = fightSerial(); try{ localStorage.setItem(FIELD_ROWS_KEY, JSON.stringify(st)); }catch(e){} return true; }
+// 2026-10-17 (raids: "make sure raid fields still use it correctly (and that admins see them)"): a row still "?" to the player shows its
+// words to an admin, as hidden skills do (hiddenSkillSet).
+function fieldRowHidden(key){ return fieldRowState(key) === 'unknown' && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled); }
 function fieldRowState(key){ const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
 // Rows that are in force from the first round (no event to wait for) count as happening when the fight starts.
-const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1', 'ashy', 'volcanoGlow']); // + field effects 2 that have no event of their own (2026-10-16); Ashy all fight and the Volcano Glow (2026-10-17)
+const FIELD_ROWS_AT_START = new Set(['lumberEvery', 'midsummer', 'dusk', 'restless', 'firstBlood', 'actions', 'collapse', 'terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1', 'ashy', 'volcanoGlow']); // + field effects 2 that have no event of their own (2026-10-16); Ashy all fight and the Volcano Glow (2026-10-17)
 // Volcano hazards with odds (2026-10-14, user: "Volcano: Lava Tide, Petrification, Eruption - 1%, 2%, 3% (Hovering says 'Very Low'),
 // 10/12/14% (Low), 20/22/24% (Medium), 45/50/55 and increasing (1/2 chance), 60 and above, (High)"). rules.volcano is the level;
 // rules.lavaTideChance / petrifyChance / eruptionChance override one hazard (0–100). The engine rolls them (volcanoTick); the
@@ -14297,6 +14334,9 @@ const FIELD2 = {
   ashy:          {icon:'🌫️', name:'Ashy', editor:'ashy', short:'Flyers grounded; misses 1 in 5', text:'Thick ash on the ground and in the air: Flying units are grounded (Flying gives no dodge, and no Tailwind or Headwind), and every attack at a unit misses 1 in 5. Darksight, Keen Sense and Sonar see through it.'},
   arrowSlits:    {icon:'🏹', name:'Arrow Slits', editor:'arrowslits', short:'The walls shoot 2 a round', text:"Each round from round 2, the defenders' walls loose an arrow at a random unit on the attackers' side: 2 damage. A Helmet can turn it."},
   // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card."): rules.awash; the push is Wave's (washPush in the engine).
+  // 2026-10-17 (user, on the raid: "There should be all the related field effects but also some kind of psychic dampener"): rules.psychicDampener,
+  // in the engine's psychicHit (half, rounded down) and rollStatusOnHit's Confuse (1 round less). The Goliath raid fights under it.
+  psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', short:'Psychic halved; Confuse 1 round less', text:"The deep presses on every mind: Psychic damage is halved (rounded down), and a Confuse lasts 1 round less, so a 1-round Confuse doesn't land. Both sides."},
   awash:         {icon:'〰️', name:'Awash', editor:'awash', short:'A unit is washed 1–3 columns', text:'Each round from round 2, the water washes one random unit 1–3 columns along its row, leaning slightly toward the middle. A unit in the way turns it back the other way; boxed in on both sides, it just bobs where it is. Pinned and Webbed units hold fast.'},
 };
 // 2026-10-17 (user: "Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow of the volcanoes"): the row the volcano
@@ -14344,7 +14384,11 @@ function fieldConditionRows(r){
     if(r.frostbite) add('frostbite', '🥶', 'Frostbite', `An enemy unit the frost chills gains +${r.frostbite}/+${r.frostbite}.`, '', `Chilled foes gain +${r.frostbite}/+${r.frostbite}`);
   }
   // Field effects 2 (2026-10-16): one row each, in FIELD2's order (the Tide's row sits with the other tides above).
-  Object.keys(FIELD2).forEach(k=>{ if(k === 'tide' || !r[k]) return; if(k === 'undergrowth' && r.canopy) return; const f = FIELD2[k]; add(k, f.icon, f.name, f.text, '', f.short); });
+  Object.keys(FIELD2).forEach(k=>{ if(k === 'tide' || !r[k]) return; if(k === 'undergrowth' && r.canopy) return; const f = FIELD2[k];
+    // 2026-10-17: a number on Crushing Depths or Hail is its damage (the raid's Crushing Depths is 2), so the card says that number.
+    const n = Number(r[k]), dflt = {crushingDepths:5, hail:3}[k];
+    if(dflt && n > 0 && n !== dflt){ add(k, f.icon, f.name, f.text.replace(dflt + ' water damage', n + ' water damage').replace(dflt + ' ice damage', n + ' ice damage'), '', f.short.replace(String(dflt), String(n))); return; }
+    add(k, f.icon, f.name, f.text, '', f.short); });
   // 2026-10-17: Ashy after an Eruption (only where the volcano can erupt), and the volcano maps' uneven Day/Night.
   if(!r.ashy && r.ashyAfterEruption && volcanoRulesOn(r)) add('ashyAfter', FIELD2.ashy.icon, 'Ashy (after an Eruption)', ASHY_AFTER_TEXT, '', 'An Eruption leaves the ground Ashy');
   if((r.phase === 'cycle' || r.phase === 'nightFirst') && (Number(r.phaseDay) > 0 || Number(r.phaseNight) > 0)){ const PL = Number(r.phaseLen) || 3, d = Number(r.phaseDay) || PL, n = Number(r.phaseNight) || PL;
@@ -14370,10 +14414,10 @@ const MISTY_MOON_TEXT = 'The Moon is not visible.';
 const MISTY_SHORT = 'No day/night cycle';
 function fieldRowsListHTML(rows){
   return rows.map(row=>{ const st = fieldRowState(row.key);
-    if(st === 'unknown') return `<li class="fcr is-unknown" aria-label="${escapeAttr(row.name + ': not seen yet')}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}</span><span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span></li>`;
+    if(fieldRowHidden(row.key)) return `<li class="fcr is-unknown" aria-label="${escapeAttr(row.name + ': not seen yet')}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}</span><span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span></li>`;
     return `<li class="fcr ${st==='new' ? 'is-new' : ''}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}${st==='new' ? ' <b class="fcr-new">New!</b>' : ''}</span><span class="fcr-t">${keywordizeHTML(escapeHtml(row.text))}</span></li>`; }).join('');
 }
-function matchFieldRules(m){ try{ return m && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.arenaRuleset && m.arenaRuleset.rules) || null; }catch(e){ return null; } }
+function matchFieldRules(m){ try{ return m && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.raidFieldRules) || (m && m.arenaRuleset && m.arenaRuleset.rules) || null; }catch(e){ return null; } } // + the raid's field (2026-10-17)
 function skirmishFieldHTML(mapId, node){
   if(!node || node.virtual) return ''; let r = null; try{ r = fightRules(mapId, node); }catch(e){ return ''; }
   const rows = fieldConditionRows(r); if(!rows.length) return '';
@@ -14404,6 +14448,8 @@ function noteFieldEvent(ev){
   else if(ev.type === 'fieldTick' && ['sulphurFumes', 'ashRain', 'arrowSlits', 'awash'].includes(ev.field)) hit = markFieldRow(ev.field); // + Awash (2026-10-17)
   else if(ev.type === 'fieldTick' && ev.field === 'ashy') hit = markFieldRow('ashyAfter');
   else if(ev.type === 'evaded' && ev.reason === 'ashy') hit = markFieldRow(r.ashy ? 'ashy' : 'ashyAfter');
+  else if((ev.type === 'psychic' && ev.dampened) || ev.type === 'dampened') hit = markFieldRow('psychicDampener'); // 2026-10-17
+  else if(ev.type === 'lumber' && ev.rule && r.lumberEvery) hit = markFieldRow('lumberEvery'); // the Arena's Lumber Rush / Timber Fair (2026-10-17)
   if(hit){ const p = document.getElementById('fieldCondCard') || document.getElementById('terrainPill'); if(p){ p.classList.add('has-new'); try{ fxHook('fieldReveal', p); }catch(e){} } }
 }
 // The terrain pill on the board became a field card on the enemy's side (2026-10-14): see fieldCondCardHTML.
@@ -16036,48 +16082,61 @@ function renderArenaSubTab(body){
     return `<span class="dungeon-node ${cls}">${n}</span>${connector}`;
   }).join('');
   const dungeonStatusHTML = dungeonRun ? `<div class="dungeon-status-line">Stage ${dungeonRun.stage}/${DUNGEON_STAGE_COUNT} · Castle: ${dungeonRun.castleHp!=null?Math.max(0,dungeonRun.castleHp):'Full'} HP · ${dungeonDeckCount(dungeonRun)} cards left in deck</div>` : '';
+  // The Arena, redrawn (2026-10-17, user: "Improve the Arena UI UX and look and feel. Is there a thematic background and other elements we
+  // can also use."): a tourney-ground banner (the same pixel ground the Arena's fights stand on, bunting and pennants) with your rank,
+  // rating, Laurels and deck; today's rules as Environment cards (arenaRuleCardsHTML); the format switch; then every mode as a tile
+  // that says what it is and what a win pays (ARENA_WIN_LINES). Element ids are unchanged, so the wiring below and the tests still fit.
+  const rs = todaysArenaRuleset(), rk = rankForRating(myRating), G = CURRENCY_META.gold.glyph;
+  const msDay = 86400000 - ((Date.now() - new Date().getTimezoneOffset()*60000) % 86400000), hrsLeft = Math.max(1, Math.round(msDay / 3600000));
+  let tomorrow = null; try{ tomorrow = dailyPortent(arenaDayNumber() + 1); }catch(e){}
+  const streak = loadGauntletStreak(), win = (txt)=> `<span class="amb-win"><span aria-hidden="true">🏆</span> ${txt}</span>`;
   body.innerHTML = `
-    <div class="panel" style="text-align:center;">
-      <p class="panel-sub">${deckSizeBadgeHTML(myDeckCounts)} · ${(CHARACTER_DEFS[myCharacterId]||{}).name||'—'}</p>
-      <div class="arena-today"><span class="arena-today-k">Today's Arena</span>${arenaRulesetPillHTML(todaysArenaRuleset())}<span class="arena-today-sub">Changes every day. Ranked Live always plays the classic arena.</span></div>
-      <!-- 2026-09-26 (user report, screenshot: "the cards are all over the place. make them
-           consistently sized") — these used to be five separate .arena-mode-row flex containers,
-           one per mode-group, each centering and sizing its own 1-3 buttons independently with a
-           DIFFERENT min-width per variant (210/230/230/230px) and a different .amb-sub max-width
-           per variant (180/210/230/210px). That's what actually produced the "all over the place"
-           look: Test Battle/vs PC/Async Arena could only ever size themselves relative to each
-           other inside their own shared row, while Gauntlet/Dungeon/Ranked each lived alone in
-           their own separate row at a different width, with no shared sizing rule tying any of
-           them together. Replaced with ONE .arena-mode-grid (CSS grid, equal-width columns that
-           genuinely stretch every cell to match) so every mode tile — plain button or the more
-           complex Dungeon panel alike — is really the same size, however many end up sharing a
-           row at a given screen width. -->
-      ${resumable?`<div class="arena-group"><div class="arena-mode-grid"><button class="btn primary big arena-mode-btn" id="continueAsyncBtn">
-          <span class="amb-ico">▶️</span><span class="amb-lbl">Continue</span><span class="amb-sub">Your saved match</span></button></div></div>`:''}
+    <div class="panel arena2 map-theme-marena">
+      <header class="ar2-hero">
+        <i class="ar2-bunting" aria-hidden="true"></i>
+        <div class="ar2-hero-row">
+          <div class="ar2-title"><span class="ar2-crest" aria-hidden="true">🏟️</span><div><h2>The Arena</h2><p>Bramblewood's tourney ground. New rules every day.</p></div></div>
+          <div class="ar2-stats">
+            <span class="ar2-stat ar2-rank" title="Your Arena rank (from your PvP rating)"><span aria-hidden="true">🏅</span><b>${escapeHtml(rk.label)}</b><small>rating ${Math.round(myRating)}</small></span>
+            <span class="ar2-stat" title="${escapeAttr(CURRENCY_META.laurels.label + ': the Arena’s own reward')}"><span aria-hidden="true">${CURRENCY_META.laurels.glyph}</span><b>${Number((myCurrencies && myCurrencies.laurels) || 0)}</b><small>Laurels</small></span>
+            <span class="ar2-stat ar2-deckstat">${deckSizeBadgeHTML(myDeckCounts)}<small>${escapeHtml((CHARACTER_DEFS[myCharacterId]||{}).name||'')}</small></span>
+          </div>
+        </div>
+      </header>
+      ${resumable ? `<div class="arena-group"><div class="arena-mode-grid"><button class="btn primary big arena-mode-btn" id="continueAsyncBtn">
+          <span class="amb-ico">▶️</span><span class="amb-lbl">Continue</span><span class="amb-sub">Your saved match</span></button></div></div>` : ''}
+      <section class="ar2-today" aria-label="Today's Arena rules">
+        <div class="ar2-today-head"><h3>${rs.portent && rs.portent.holiday ? escapeHtml(rs.portent.holidayIcon + ' ' + rs.portent.holiday) : rs.portent && rs.portent.strange ? '✷ A strange day' : "Today's rules"}</h3>
+          <span class="ar2-today-sub">Every Arena fight today plays under these. New rules in ${hrsLeft}h${tomorrow ? ` <span class="ar2-next" title="${escapeAttr('Tomorrow: ' + tomorrow.effects.map(f=> f.name).join(', '))}">· next ${tomorrow.effects.map(f=> f.icon).join('')}</span>` : ''} · Ranked Live plays Standard.</span></div>
+        <div class="ar2-fields">${arenaRuleCardsHTML(rs)}</div>
+      </section>
       <div class="arena-format" role="radiogroup" aria-label="Deck format"><span class="arena-format-k">Format</span>
         <button type="button" class="tk-speed-btn ${standardFormatOn()?'':'is-on'}" role="radio" aria-checked="${!standardFormatOn()}" data-arena-format="collection">📚 Collection</button>
         <button type="button" class="tk-speed-btn ${standardFormatOn()?'is-on':''}" role="radio" aria-checked="${standardFormatOn()}" data-arena-format="standard">🃏 Standard</button>
         ${standardFormatOn() ? `<button type="button" class="btn small" id="stdDeckBtn">Edit Standard deck (${deckTotal(loadStandardDeck())}/${DECK_SIZE})</button>` : ''}
         <span class="arena-format-sub">${standardFormatOn() ? 'Every card at Level 1, no foils. Applies to Quick Battle, Pass &amp; Play, Gauntlet and friend invites.' : 'Your own cards, levels and foils.'}</span></div>
       <div class="arena-group"><h3 class="arena-group-h">Practice</h3><div class="arena-mode-grid arena-practice-grid">
-        <button class="btn primary big arena-mode-btn arena-hero" id="startVsAiBtn"><span class="amb-ico">🤖</span><span class="amb-lbl">Quick Battle</span><span class="amb-sub">You vs the computer · costs no Energy</span></button>
-        <button class="btn primary big arena-mode-btn" id="startVsPcBtn"><span class="amb-ico">👥</span><span class="amb-lbl">Pass &amp; Play</span><span class="amb-sub">Two players, one device</span></button>
+        <button class="btn primary big arena-mode-btn arena-hero" id="startVsAiBtn"><span class="amb-ico">🤖</span><span class="amb-lbl">Quick Battle</span><span class="amb-sub">You vs the computer, under today's rules · costs no Energy</span>${win('Practice: no prizes, but quests count')}</button>
+        <button class="btn primary big arena-mode-btn" id="startVsPcBtn"><span class="amb-ico">👥</span><span class="amb-lbl">Pass &amp; Play</span><span class="amb-sub">Two players, one device</span>${win('Bragging rights')}</button>
       </div></div>
       <div class="arena-group"><h3 class="arena-group-h">Challenges</h3><div class="arena-mode-grid">
 ${tabOpen('gauntlet') ? `        <button class="btn primary big arena-mode-btn gauntlet-mode-btn" id="startGauntletBtn">
-          <span class="amb-ico">🏅</span><span class="amb-lbl">Gauntlet</span><span class="amb-sub">Win ${GAUNTLET_GOAL} in a row</span>
-          <span class="gauntlet-streak-line">🔥 ${loadGauntletStreak()} / ${GAUNTLET_GOAL} · best ${loadGauntletBest()}</span>
+          <span class="amb-ico">🏅</span><span class="amb-lbl">Gauntlet</span><span class="amb-sub">Win ${GAUNTLET_GOAL} in a row; one loss starts you over</span>
+          <span class="gauntlet-streak-line">🔥 ${streak} / ${GAUNTLET_GOAL} · best ${loadGauntletBest()}</span>
+          ${win(`Next win ${15 + (streak + 1)*5} ${G} ${3 + streak + 1} ✨ · ${GAUNTLET_GOAL} in a row +100 ${G} 2 🔩`)}
         </button>` : ''}
         <div class="arena-mode-btn caged-panel" id="cagedPanel">
           <span class="amb-ico">⛓️</span><span class="amb-lbl">Caged Fight</span>
           <span class="amb-sub">Your leader is caged on the enemy board, 4 slots to the right. Break the cage to free it.</span>
+          ${win('Practice: quests count')}
           <div class="dungeon-panel-actions"><button class="btn primary" id="startCagedAiBtn">vs Computer</button><button class="btn ghost" id="startCagedPcBtn" title="Both leaders caged">Pass &amp; Play</button></div>
         </div>
         <div class="arena-mode-btn dungeon-panel" id="dungeonPanel">
           <span class="amb-ico">🗝️</span><span class="amb-lbl">Dungeon</span>
-          <span class="amb-sub">3 fights; losses carry over</span>
+          <span class="amb-sub">3 fights; your losses carry over</span>
           <div class="dungeon-node-row">${dungeonNodesHTML}</div>
           ${dungeonStatusHTML}
+          ${win(`Clear all 3: 150 ${G} 30 ✨ 2 🔩`)}
           <div class="dungeon-panel-actions">
             <button class="btn primary" id="startDungeonBtn">${dungeonRun?'Continue Run':'Enter Dungeon'}</button>
             ${dungeonRun?`<button class="btn ghost" id="abandonDungeonBtn">Abandon Run</button>`:''}
@@ -16096,7 +16155,7 @@ ${tabOpen('gauntlet') ? `        <button class="btn primary big arena-mode-btn g
           <button class="btn ghost" id="cancelLiveQueueBtn" style="margin-top:8px;">Cancel</button>
         </div>` : `
         <button class="btn primary big arena-mode-btn live-ranked-mode-btn" id="startLiveRankedBtn">
-          <span class="amb-ico">⚡</span><span class="amb-lbl">Ranked Live</span><span class="amb-sub">Real players, real time</span>
+          <span class="amb-ico">⚡</span><span class="amb-lbl">Ranked Live</span><span class="amb-sub">Real players, real time · classic rules</span>${win('Rating: climb from Sprout to Starwood')}
         </button>`}
       </div></div>
       ${recentOpponentsPlayerHTML()}
@@ -19437,7 +19496,10 @@ const RAID_CLAIMS_KEY = 'bramblewood_raid_claims_v1';
 const RaidM = (typeof BramblewoodRaid!=='undefined') ? BramblewoodRaid : null;
 let raidDefEdits = {};
 try{ raidDefEdits = JSON.parse(localStorage.getItem(RAID_DEFS_KEY)||'{}') || {}; }catch(e){ raidDefEdits = {}; }
-function allRaidDefs(){ const base = RAID_DEFS_BASE.map(d=> raidDefEdits[d.id] || d); Object.keys(raidDefEdits).forEach(id=>{ if(!RAID_DEFS_BASE.some(d=> d.id===id)) base.push(raidDefEdits[id]); }); return base; }
+// 2026-10-17: an edit saved before a raid had field effects, Commons or its own ground still gets the shipped ones (an edit that clears
+// them keeps an empty fieldRules / commonPool, so it stays cleared).
+const RAID_NEW_KEYS = ['fieldRules', 'commonPool', 'ground'];
+function allRaidDefs(){ const base = RAID_DEFS_BASE.map(d=>{ const e = raidDefEdits[d.id]; if(!e) return d; const add = RAID_NEW_KEYS.filter(k=> !(k in e) && (k in d)); return add.length ? Object.assign({}, e, Object.fromEntries(add.map(k=> [k, d[k]]))) : e; }); Object.keys(raidDefEdits).forEach(id=>{ if(!RAID_DEFS_BASE.some(d=> d.id===id)) base.push(raidDefEdits[id]); }); return base; }
 // 2026-10-10 (user: "like the shop, its title is the first raid's title until you unlock the 2nd, then it's just called
 // 'Raids' and hosts all the raids you've unlocked"): with two or more live raids a row of raid buttons picks which one
 // the tab shows.
@@ -19568,6 +19630,18 @@ function claimRaidReward(def, claim){
   awardXp(claim.reward.kind==='kill' ? 500 : 150, 'raid reward');
   showToast(`🐙 ${claim.reward.kind==='kill' ? TX('toast.raid-felled') : TX('toast.raid-compensation')}: ${Object.entries(all).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}${claim.reward.extra && claim.reward.extra.title ? ` · title “${claim.reward.extra.title}”` : ''}`, 'ok');
 }
+// The raid menu, redrawn (2026-10-17, user: "Anything we can improve raid menu and raid fights?"): the boss as a card with its art, stage
+// and one big health bar; your week at a glance (damage, standing, your attempts, Raid Points, the cost of a fight); the parts to fight;
+// then three panels: how a raid fight's rows work (you in front, an ally in each row behind, the boss calling in Commons), the raid's
+// field as Environment cards (the "?" reveal as in a fight; admins see every line), and what a fall pays.
+function raidFieldCardsHTML(rules){
+  const rows = fieldConditionRows(rules || {}); if(!rows.length) return '<p class="panel-sub">No field effects.</p>';
+  return rows.map((row, i)=>{ const hidden = fieldRowHidden(row.key);
+    const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, art: hidden ? '' : fieldArtOf(fieldArtKeyOfRow(row, rules)), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: hidden ? '?' : row.text}};
+    const card = matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}`, `tabindex="0" role="img" style="--i:${i}" title="${escapeAttr(row.name + ': ' + (hidden ? fieldRowQTip(row) : row.text))}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (hidden ? fieldRowQTip(row) : row.text))}"`,
+      `<div class="env-line">${hidden ? '?' : escapeHtml(row.short || '')}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`);
+    return `<figure class="ar2-rule">${card}<figcaption><b>${row.icon} ${escapeHtml(row.name)}</b><span>${hidden ? '<i>? You learn what it does the first time it happens in a fight.</i>' : keywordizeHTML(escapeHtml(row.text))}</span></figcaption></figure>`; }).join('');
+}
 function raidPanelHTML(){
   if(!RaidM) return '';
   const def = activeRaidDef(); if(!def) return '';
@@ -19576,26 +19650,92 @@ function raidPanelHTML(){
   const daysLeft = Math.max(1, Math.ceil(((st.cycle+1)*RaidM.CYCLE_MS - Date.now()) / (24*3600*1000)));
   const me = myGhostOwnerId(), mine = st.contributors[me] || 0, tier = RaidM.contributionTier(st, me);
   const tierLabel = {top1:'Top 1%', top10:'Top 10%', top50:'Top 50%', participant:'Participant'}[tier] || '';
+  const myTries = currentRaidAttempts(def, st.cycle).filter(a=> a.owner === me).length;
   const claims = raidClaimsFor(def);
-  const cost = def.cost || {};
-  return `<div class="panel raid2-panel">
-    <div class="r2-head"><span class="r2-ico">${raidBossIconHTML(def, '🐙')}</span><div><h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
-      <p class="panel-sub">${escapeHtml(def.blurb||'')}</p></div>
-      ${adminModeEnabled ? `<button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button>` : ''}</div>
-    <div class="r2-total"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
-      <span class="r2-total-line">${'' /* 2026-10-15: "health left like X/Y" */}<span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${st.total ? Math.ceil(st.remaining / st.total * 100) : 0}%)</small></span><span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left</span></span></div>
+  const cost = def.cost || {}, sc = def.scoring || {}, rw = def.rewards || {}, G = CURRENCY_META.gold.glyph;
+  const pct = st.total ? Math.ceil(st.remaining / st.total * 100) : 0, ground = raidGroundOf({raidDef: def});
+  const kill = Object.entries(rw.kill || {}).filter(([k, v])=> typeof v === 'number' && v > 0).map(([k, v])=> `${v} ${(CURRENCY_META[k] || {}).glyph || k}`).join(' ');
+  const tierTxt = t=> Object.entries((rw.tiers || {})[t] || {}).map(([k, v])=> k === 'title' ? `title “${escapeHtml(v)}”` : `+${v} ${(CURRENCY_META[k] || {}).glyph || k}`).join(' ');
+  const allyNames = (def.allyDecks || []).map(a=> a.name).filter(Boolean);
+  return `<div class="panel raid2-panel raid3 map-theme-${escapeAttr(ground)}">
+    <div class="r3-hero">
+      <div class="r3-boss-card" aria-hidden="true">${raidBossIconHTML(def, '🐙')}<span class="r3-boss-glow"></span></div>
+      <div class="r3-boss-info">
+        <h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
+        <p class="r3-blurb">${escapeHtml(def.blurb||'')}</p>
+        <div class="r2-total"><div class="raid-boss-hp-bar r3-hp"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
+          <span class="r2-total-line"><span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${pct}%)</small></span><span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left this week</span></span></div>
+      </div>
+      ${adminModeEnabled ? `<div class="r3-admin"><button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button><button type="button" class="btn small" data-raid-admin-dmg="0.1" title="Admin: take 10% of the boss's total Health off its open parts">💥 Deal 10%</button><button type="button" class="btn small" data-raid-admin-dmg="0.5" title="Admin: take 50% of the boss's total Health off its open parts">💥 Deal 50%</button></div>` : ''}
+    </div>
     ${claims.map((c,i)=> `<div class="r2-claim">🎁 ${c.reward.kind==='kill' ? 'The raid fell — claim your reward!' : 'Last week’s raid survived — claim your compensation.'} <button type="button" class="btn small primary" data-raid-claim="${i}">Claim</button></div>`).join('')}
+    <div class="r3-me" role="group" aria-label="Your raid this week">
+      <span class="r3-chip"><small>Your damage</small><b>${mine.toLocaleString()}</b></span>
+      <span class="r3-chip"><small>Standing</small><b>${tierLabel || '—'}</b></span>
+      <span class="r3-chip"><small>Your attempts</small><b>${myTries}</b></span>
+      <span class="r3-chip"><small>Raid Points</small><b>${currentRaidPoints()}/${RAID_POINTS_MAX} 🎫</b></span>
+      <span class="r3-chip"><small>A fight costs</small><b>${cost.raidPoints||0} 🎫 ${cost.energy||0} ⚡</b></span>
+    </div>
+    ${tierLabel ? '' : '<p class="r3-hint">Fight any open part to join this week’s raid.</p>'}
+    <h3 class="r3-h">Pick a part to fight</h3>
     <div class="r2-parts">${st.parts.map(ps=>{ const p = ps.def;
       const waits = (p.lockedUntil||[]).map(id=> (def.parts.find(x=> x.id===id)||{}).name || id).join(', ');
+      const atk = ((p.trench || {}).attacks || []).map(a=> `${a.pattern === 'frontRow' ? '🌊' : '💥'} ${escapeHtml(a.name || 'Attack')} every ${a.every || 1}`).join(' · ');
       return `<div class="r2-part ${ps.locked?'is-locked':''} ${ps.defeated?'is-down':''}">
         <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${ps.total ? Math.ceil(ps.remaining / ps.total * 100) : 0}%</span></div>
         ${raidBarsHTML(ps)}
+        ${atk ? `<span class="r2-note r3-atk" title="Its telegraphed attacks: a column glows red the round before it is smacked">${atk}</span>` : ''}
         <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary" data-raid-part="${escapeAttr(p.id)}">⚔️ Fight (${cost.raidPoints||0}🎫 ${cost.energy||0}⚡)</button>`}
           <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString()} from other raiders` : ''}</span></div>
       </div>`; }).join('')}</div>
-    <p class="r2-me">Your damage this week: <b>${mine.toLocaleString()}</b>${tierLabel ? ` · ${tierLabel}` : ' — fight any open part to join'} · Raid Points: ${currentRaidPoints()}/${RAID_POINTS_MAX}</p>
-    <p class="r2-rules">${def.trench ? `Fights happen in the <b>trenches</b>: you and two other raiders hold three rows, and the battle plays itself. ` : ''}Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${((def.scoring||{}).cap||5000).toLocaleString()}</b> damage — destroy the part's castle (an <b>overwhelm</b>) for <b>${((def.scoring||{}).overwhelmCap||10000).toLocaleString()}</b>. If it falls, everyone who fought wins; if it survives the week, everyone gets ${((def.rewards||{}).compensationPct!=null ? def.rewards.compensationPct : 40)}% as compensation.</p>
+    <div class="r3-info">
+      <section class="r3-lanes"><h3>Three rows a side</h3>
+        <ol class="r3-rows" aria-label="Your side of a raid fight, front to back">
+          <li class="is-you"><b>Front row · You</b><span>Your deck and your leader. You play here, and your units fight the boss's front.</span></li>
+          <li><b>Middle row · Ally 1</b><span>A CPU ally. It plays only into its own row, one card on its turn; a card steps up when the column ahead is clear.</span></li>
+          <li><b>Back row · Ally 2</b><span>The other CPU ally, the same way, in its own row.</span></li>
+        </ol>
+        <p class="r3-note">Your three castles are one: their Health added up, their skills merged. Allies are this week's raiders' decks${allyNames.length ? `, or stand-ins (${allyNames.map(escapeHtml).join(', ')})` : ''}.</p>
+        <p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${RaidM.REINFORCE ? RaidM.REINFORCE.max : 2} at most, only into a free slot with a card in front).</p>
+        <p class="r3-note">Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's castle (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
+      </section>
+      <section class="r3-field"><h3>${ground === 'mabyss' ? 'Down in the deep' : 'The field'}</h3>
+        <div class="ar2-fields r3-fields">${raidFieldCardsHTML(raidFieldRulesOf(def, null))}</div></section>
+      <section class="r3-rewards"><h3>If it falls</h3>
+        <ul class="r3-rw">
+          <li><b>Everyone who fought</b><span>${kill || '—'}${raidCardIds(def).length ? ' and one of its own cards' : ''}</span></li>
+          ${['top1', 'top10', 'top50'].filter(t=> tierTxt(t)).map(t=> `<li><b>${({top1:'Top 1%', top10:'Top 10%', top50:'Top 50%'})[t]}</b><span>${tierTxt(t)}${t !== 'top50' && raidCardIds(def).length ? ' and a second card' : ''}</span></li>`).join('')}
+          <li><b>If it survives the week</b><span>${rw.compensationPct != null ? rw.compensationPct : 40}% of the kill reward</span></li>
+        </ul></section>
+    </div>
   </div>`;
+}
+// Admin raid damage (2026-10-17, user: "Then let an admin do damage to a raid (10%, 50% damage)"): `frac` of the raid's total Health comes
+// off its parts in order, each open part to empty before the next (so a locked part opens when the parts it waits on fall). Signed in as
+// an app admin it goes through admin_raid_damage (supabase/proposed/20261017_e_admin_raid_damage.sql: rows of at most 10,000, the
+// table's own cap, written as 'Admin'); until that function is applied, or offline, it is a local attempt in this browser (owner
+// 'admin', so it never counts as your own damage).
+async function adminRaidDamage(def, frac){
+  const now = Date.now(), cycle = RaidM.cycleOf(now), plan = [], fake = [];
+  let st = currentRaidStateFor(def), left = Math.round(st.total * Math.max(0, Math.min(1, frac)));
+  for(let guard = 0; left > 0 && guard < 20; guard++){
+    const ps = st.parts.find(x=> !x.locked && !x.defeated); if(!ps) break;
+    const n = Math.min(left, Math.ceil(ps.remaining)); if(!(n > 0)) break;
+    plan.push({part: ps.id, n}); left -= n;
+    fake.push({raidId: def.id, part: ps.id, cycle, owner:'admin', contribution: n, at: now});
+    st = RaidM.raidState(def, currentRaidAttempts(def, cycle).concat(fake), now, {cycle});
+  }
+  let live = false, dealt = 0;
+  for(const step of plan){
+    let ok = false;
+    if(typeof sbClient !== 'undefined' && sbClient && cloudCardAdmin){
+      try{ const { error } = await sbClient.rpc('admin_raid_damage', {p_boss_id: def.id + ':' + step.part, p_cycle: cycle, p_amount: step.n}); ok = !error; }catch(e){ ok = false; } }
+    if(ok){ live = true; delete liveRaidParts[def.id + ':' + cycle]; }
+    else { const l = loadRaidPartAttempts(); l.push({raidId: def.id, part: step.part, cycle, owner:'admin', name:'Admin', contribution: step.n, dealt: 0, overwhelmed: false, at: Date.now(), admin: true}); saveRaidPartAttempts(l); }
+    dealt += step.n;
+  }
+  if(live) try{ await liveRefreshRaidParts(def.id, cycle); }catch(e){}
+  return {dealt, live, steps: plan.length};
 }
 function wireRaidPanel(){
   const def = activeRaidDef(); if(!def) return;
@@ -19603,6 +19743,9 @@ function wireRaidPanel(){
   const claims = raidClaimsFor(def);
   document.querySelectorAll('[data-raid-claim]').forEach(b=> b.addEventListener('click', ()=>{ claimRaidReward(def, claims[+b.dataset.raidClaim]); renderRaidSubTab(document.getElementById('playSubBody')); }));
   const eb = document.getElementById('raidEditBtn'); if(eb) eb.addEventListener('click', ()=> openRaidEditor(def.id));
+  document.querySelectorAll('[data-raid-admin-dmg]').forEach(b=> b.addEventListener('click', async ()=>{ if(!adminModeEnabled) return; b.disabled = true;
+    try{ const r = await adminRaidDamage(def, Number(b.dataset.raidAdminDmg)); showToast(`💥 Admin: ${r.dealt.toLocaleString()} raid damage dealt${r.live ? ' (live)' : ' (this browser only)'}.`, 'ok'); }catch(e){ showToast('Admin damage failed: ' + ((e && e.message) || e), 'error'); }
+    renderRaidSubTab(document.getElementById('playSubBody')); }));
   try{ fxHook('raidPanel', document.querySelector('.raid2-panel'), def); }catch(e){} // 2026-10-15 batch F: stage change, parts down, bars, claim
 }
 // Raid editor (Admin, Raid P1): parts (bars, bar HP, fight castle, lock order, enemy deck), stages,
@@ -19681,6 +19824,13 @@ function openRaidEditor(raidId){
         <label class="se-wide">Blurb<input id="reBlurb" value="${escapeAttr(draft.blurb||'')}"></label>
         <label class="se-chk"><input type="checkbox" id="reLive" ${draft.live!==false?'checked':''}> Live this week</label>
       </div>
+      ${(()=>{ // Field effects and the boss's Commons (2026-10-17): the whole raid's fieldRules as chips (✕ takes one off), an "add" list from
+        // FIELD_EFFECTS (Psychic Dampener among them), and the Commons the boss calls in each round (blank = picked from its decks' types).
+        const rows = fieldConditionRows(draft.fieldRules || {}), pool = (draft.commonPool || []).join(', ');
+        return `<h3 class="se-h">Field effects <small>every part fights under these; they show as Environment cards</small></h3>
+        <div class="se-fx-list re-fx">${rows.map(r=> `<span class="se-fx-chip"><span aria-hidden="true">${r.icon}</span> <b>${escapeHtml(r.name)}</b> <small>${escapeHtml(r.short||'')}</small><button type="button" class="se-fx-x" data-rfx-del="${escapeAttr(r.key)}" aria-label="Remove ${escapeAttr(r.name)}">✕</button></span>`).join('') || '<i class="panel-sub">None</i>'}
+          <select id="reFxAdd" aria-label="Add a field effect"><option value="">＋ Add a field effect…</option>${FIELD_EFFECTS.filter(f=> f.rules && !f.arenaOnly && f.group !== 'gift').map(f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></div>
+        <label class="se-wide re-pool">Commons the boss calls in (card ids, comma-separated; blank = from its decks' types)<input id="reCommonPool" value="${escapeAttr(pool)}" placeholder="${escapeAttr((RaidM.raidCommonPool ? RaidM.raidCommonPool(Object.assign({}, draft, {commonPool:null}), draft.parts[0], getCardDefs()) : []).slice(0, 6).join(', '))}"></label>`; })()}
       <h3 class="se-h">Parts · ${st.total.toLocaleString()} HP in all</h3>
       <div class="re-parts">${draft.parts.map(p=> `<button type="button" class="re-part-tab ${p.id===openPart?'on':''}" data-open-part="${escapeAttr(p.id)}">${escapeHtml(p.icon||'🎯')} ${escapeHtml(p.name||p.id)}<small>${p.bars}×${(p.barHp||0).toLocaleString()}${(p.lockedUntil||[]).length?' 🔒':''}</small></button>`).join('')}<button type="button" class="btn small" id="reAddPart">＋ Part</button></div>
       ${P ? `<div class="se-grid re-part">
@@ -19742,6 +19892,7 @@ function openRaidEditor(raidId){
     if(draft.trench && overlay.querySelector('#reWall')) draft.trench.wallHp = Math.max(5, num(v('reWall'), 45));
     draft.cost.raidPoints = Math.max(0, num(v('reCostRp'), 1)); draft.cost.energy = Math.max(0, num(v('reCostEn'), 4));
     const live = overlay.querySelector('#reLive'); if(live) draft.live = live.checked;
+    const cp = overlay.querySelector('#reCommonPool'); if(cp){ const ids = cp.value.split(/[\s,]+/).map(x=> x.trim()).filter(Boolean); draft.commonPool = ids; } // 2026-10-17 (an empty list = picked from its decks' types)
     draft.scoring.perInFightHp = Math.max(1, num(v('reRate'), 50)); draft.scoring.cap = Math.max(1, num(v('reCap'), 5000)); draft.scoring.overwhelmCap = Math.max(1, num(v('reOver'), 10000));
     draft.standIns.perDayPct = Math.max(0, Math.min(50, num(v('reStand'), 0)));
     const rw = draft.rewards;
@@ -19785,6 +19936,12 @@ function openRaidEditor(raidId){
       const sv = $('reSave'); if(sv) sv.disabled = !!errs.length; };
     overlay.querySelectorAll('input,select').forEach(el=>{ if(el.id==='reSearch') return; el.addEventListener('change', ()=>{ dirty = true; read(); if(el.type==='checkbox') render(); else refreshErrs(); }); });
     $('reClose').onclick = ()=>{ if(dirty && !confirm('Close without saving your changes?')) return; close(); };
+    // Field effects (2026-10-17): add one from the list, or ✕ one off (its helper keys go with it, as in Edit skirmish).
+    { const fa = $('reFxAdd'); if(fa) fa.onchange = ()=>{ const f = fieldEffectById(fa.value); if(!f || !f.rules) return; read(); draft.fieldRules = Object.assign({}, draft.fieldRules || {}, f.rules); dirty = true; render(); }; }
+    overlay.querySelectorAll('[data-rfx-del]').forEach(b=> b.onclick = ()=>{ read(); const k = b.dataset.rfxDel, r = Object.assign({}, draft.fieldRules || {});
+      const f = FIELD_EFFECTS.find(x=> x.rules && Object.keys(x.rules)[0] === k); delete r[k]; if(k === 'permaTide') delete r.rapids; if(f) Object.keys(f.rules).forEach(x=> delete r[x]);
+      if(k === 'frost'){ ['frostWait', 'frostCount', 'frostbite', 'frostResist'].forEach(x=> delete r[x]); }
+      draft.fieldRules = r; dirty = true; render(); }); // an empty {} stays, so the shipped field doesn't come back (allRaidDefs)
     overlay.querySelectorAll('[data-open-part]').forEach(b=> b.onclick = ()=>{ read(); openPart = b.dataset.openPart; q = ''; render(); });
     $('reAddPart').onclick = ()=>{ read(); let i = draft.parts.length+1; while(draft.parts.some(p=> p.id==='part'+i)) i++; draft.parts.push({id:'part'+i, name:'New part', icon:'🎯', bars:3, barHp:80000, fight:{castleHp:200, deck:{}}}); openPart = 'part'+i; dirty = true; render(); };
     const P = draft.parts.find(p=> p.id===openPart);
@@ -20047,8 +20204,24 @@ function startRaidFullBattle(def, partId, f, st){
   const entIds = cfg.entities.map((e, i)=>{ const id = 'raid-ent-' + (e.id || i); const fx = {armor: e.armor || 0}; if(illusory) fx.illusory = illusory;
     defs[id] = {id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}; return id; });
   // the run-only copies must be visible to the board and tooltips too (they read getCardDefs, which folds in the overlay)
-  matchDefsOverlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory)$/.test(id) || id.startsWith('raid-ent-')) matchDefsOverlay[id] = defs[id]; });
-  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, suddenDeathCastles:false});
+  // The boss's Commons (2026-10-17, user: "For the enemy, can you enhance it by letting them playing commons on the back 2 rows every turn
+  // as well?"): the raid's common pool (RaidM.raidCommonPool), scaled like its deck, called in by raidBossCommons each round.
+  const commonPool = (RaidM.raidCommonPool ? RaidM.raidCommonPool(def, f.part, defs) : []).map(id=>{ const nid = id + '~raid', src = defs[id];
+    if(!defs[nid]) defs[nid] = Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : (src.effects || {})});
+    return nid; });
+  // The boss unit (2026-10-17, user: "I also noticed the raid has 2 variations of the same card. Then name them differently. Also the 100+
+  // HP difference is too much."): it used to be the part's biggest card under its own name with its Health ×(2 + 10·r²) (a 24-Health
+  // Kraken Spawnling came in at 150+ beside its 24-Health twin). Now it is its own card with its own name (RAID_BOSS_UNIT_NAMES), made
+  // once here: Health ×(1.5 + 1.5·r) and +1 Attack, r = the share of the part's Health still standing this week (×3 fresh, ×1.5 nearly
+  // down).
+  let bossUnitId = null; { const ids = Object.keys(bossDeck).filter(id=> defs[id]).sort((a, b)=> ((defs[b].attack||0) + (defs[b].health||0)) - ((defs[a].attack||0) + (defs[a].health||0)));
+    if(ids.length){ const src = defs[ids[0]], base = String(ids[0]).replace(/~\w+$/, ''); let r = 1; try{ const ps = st.byId[String(partId)]; if(ps && ps.total) r = Math.max(0, Math.min(1, ps.remaining / ps.total)); }catch(e){}
+      bossUnitId = base + '~boss'; defs[bossUnitId] = Object.assign({}, src, {id: bossUnitId, name: raidBossUnitName(base, src.name), attack: (src.attack||0) + 1, health: Math.max(1, Math.round((src.health||1) * (1.5 + 1.5 * r))), bossUnitOf: base, rarity: 'epic'}); } }
+  matchDefsOverlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss)$/.test(id) || id.startsWith('raid-ent-')) matchDefsOverlay[id] = defs[id]; });
+  // The raid's field (2026-10-17, user: "There should be all the related field effects but also some kind of psychic dampener"): the
+  // raid's (and the part's) fieldRules run in the engine and show as Environment cards (matchFieldRules reads m.raidFieldRules).
+  const raidRules = raidFieldRulesOf(def, f.part);
+  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, suddenDeathCastles:false, rules: raidRules});
   const sideOf = id=> id===1?'A':'B';
   // Allies (2026-10-12, user: "Where are my allies? On the pre-screen it should show my allies and their levels, then during
   // the fight, my allies play first, and you can see their cards go down. The castle will be the combined health of 3 of us,
@@ -20076,7 +20249,8 @@ function startRaidFullBattle(def, partId, f, st){
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, raidFull:true,
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
     raidCastleStart: cfg.castleHp, raidRoundCap: cfg.rounds || f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
-    raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your castle'].concat(allies.map(a=> a.castle.name))};
+    raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your castle'].concat(allies.map(a=> a.castle.name)),
+    raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId};
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
   // 2026-10-12 (11:26 list: "During the raid, all 3 players' leaders come onto the battlefield, 1 on each of the centre 3
   // columns. Of course taking their own respective rows"): your leader opens in the front row's centre, the allies' leaders in
@@ -20087,7 +20261,7 @@ function startRaidFullBattle(def, partId, f, st){
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
   const m0 = matchState;
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
@@ -20115,18 +20289,34 @@ function raidAllyLeaderOf(a){
 const RAID_BOSS_UNIT_ROUNDS = new Set([3, 7, 11]);
 function raidBossUnit(m, events){
   if(!m || !m.raidFull || m.over || !RAID_BOSS_UNIT_ROUNDS.has(m.round)) return;
-  const E = m.engine, P2 = m.players[2], defs = getCardDefs();
-  const ids = Object.keys((m.raidBoss||{}).deck||{}).map(id=> defs[id + '~raid'] ? id + '~raid' : id).filter(id=> defs[id]);
-  if(!ids.length) return;
-  const id = ids.sort((a, b)=> ((defs[b].attack||0) + (defs[b].health||0)) - ((defs[a].attack||0) + (defs[a].health||0)))[0];
-  let r = 1; try{ const st = currentRaidStateFor(m.raidDef), ps = st.byId[String(m.raidPart)]; if(ps && ps.total) r = Math.max(0, Math.min(1, ps.remaining / ps.total)); }catch(e){}
-  const mult = 2 + 10 * r * r;
+  const E = m.engine, P2 = m.players[2], defs = getCardDefs(), id = m.raidBossUnitId; // made at the start of the fight (startRaidFullBattle, 2026-10-17)
+  if(!id || !defs[id]) return;
   const free = [0, -1, 1, -2, 2, -3, 3].find(sl=> !E.allBoardCards(P2).some(c=> c.slot === sl && c.hp > 0));
   if(free == null) return;
   const ev = []; E.debugSpawnCard(m.players, m.sideOf, 2, id, free, m.stats, ev);
   const c = E.allBoardCards(P2).filter(x=> x.defId === id).sort((a, b)=> b.uid - a.uid)[0]; if(!c) return;
-  c.hp = c.maxHp = Math.round(c.maxHp * mult); c.bossUnit = true;
-  (events || []).push(...ev, {type:'raidBossUnit', defId:id, uid:c.uid, hp:c.hp, mult: Math.round(mult*10)/10});
+  c.bossUnit = true;
+  (events || []).push(...ev, {type:'raidBossUnit', defId:id, uid:c.uid, hp:c.hp});
+}
+// The boss units' own names (2026-10-17): the raid's big card, grown, under a name of its own.
+const RAID_BOSS_UNIT_NAMES = {'kraken-spawnling':'Kraken Brute', 'goliath-tentacle':'Crushing Tentacle', 'humpback-elder':'Leviathan Elder', 'orca-vanguard':'Orca Warlord',
+  'goliath-broodmother':'Broodmother Ascendant', 'vampire-squid':'Vampyre Matriarch', 'coral-reef-shark':'Reef Tyrant', 'glass-octopus':'Mirror Octopus', 'abyss-lantern-squid':'Abyssal Beacon'};
+function raidBossUnitName(base, name){ return RAID_BOSS_UNIT_NAMES[base] || ('Great ' + String(name || base).replace(/^(The|A) /, '')); }
+// The boss calls in Commons (2026-10-17): every round from round 2, on top of its normal play, up to 1 Common into its middle row
+// and 1 into its back row (2 at most), each into an empty slot with a card right in front of it, and none while its back rows
+// already hold 6. The rule itself is RaidM.bossReinforce (bramblewood-raid.js); the pool is the raid's commonPool.
+function raidBossCommons(m, events){
+  if(!m || !m.raidFull || m.over || !(m.raidCommonPool||[]).length || !RaidM || !RaidM.bossReinforce) return;
+  const got = RaidM.bossReinforce(m.engine, m.players[2], m.raidCommonPool, Math.random, {round: m.round});
+  if(!got.length) return;
+  got.forEach(g=>{ g.card.bossCommon = true; });
+  (events || []).push({type:'raidCommons', side:'B', defIds: got.map(g=> g.defId), rows: got.map(g=> g.row), uids: got.map(g=> g.card.uid)});
+}
+// The raid's field effects (2026-10-17): def.fieldRules, then the part's own fieldRules on top (false switches one off).
+function raidFieldRulesOf(def, part){
+  const r = Object.assign({}, (def && def.fieldRules) || {}, (part && part.fieldRules) || {});
+  Object.keys(r).forEach(k=>{ if(r[k] === false || r[k] == null) delete r[k]; });
+  return r;
 }
 function mergeRaidCastles(list){
   const out = {id:'raid-castles', name:'Three castles', icon:'🏰', health:0, effects:{}};
@@ -20141,13 +20331,15 @@ function raidAlliesTurn(m, events, first){
   const pl = m.players[1], E = m.engine, defs = getCardDefs();
   const a = m.raidAllies[(m.round - 1) % m.raidAllies.length]; if(!a || a.played >= a.deck.length) return;
   const id = a.deck[a.played]; if(!defs[id]) { a.played++; return; }
-  let placed = null, where = '';
-  const slots = E.legalReserveSlots(pl, a.row); if(slots.length){ placed = E.fillReserve(pl, a.row, slots[Math.floor(slots.length/2)], id); where = a.row === 1 ? 'middle row' : 'back row'; }
-  if(!placed && a.row === 2){ const s1 = E.legalReserveSlots(pl, 1); if(s1.length){ placed = E.fillReserve(pl, 1, s1[0], id); where = 'middle row'; } }
-  if(!placed){ const ev = []; E.debugSpawnCard(m.players, m.sideOf, 1, id, a.row === 1 ? 'left' : 'right', m.stats, ev); placed = E.allBoardCards(pl).slice(-1)[0]; where = 'front row'; (events || []).push(...ev); }
+  // 2026-10-17 (user: "for 3 lane raids, the CPU allies can only place on their own rows!"): an ally plays ONLY into its own row
+  // (RaidM.allySlot). It used to fall back to the other ally's middle row and then to your front row; now, with its row full, it
+  // keeps the card for its next turn.
+  const sl = RaidM.allySlot ? RaidM.allySlot(E, pl, a.row) : null;
+  const placed = sl == null ? null : E.fillReserve(pl, a.row, sl, id), where = a.row === 1 ? 'middle row' : 'back row';
+  if(!placed) return;
   a.played++;
-  if(placed){ placed.allyOf = a.name; m.raidAllyNew = placed.uid; }
-  const ev = {type:'raidAlly', name:a.name, defId:id, where};
+  placed.allyOf = a.name; placed.allyRow = a.row; m.raidAllyNew = placed.uid;
+  const ev = {type:'raidAlly', name:a.name, defId:id, where, row:a.row, slot:sl};
   if(events) events.push(ev); else { pushLog(ev); renderBoard(); }
 }
 // Raid specials in the full game (2026-10-12): the trench's telegraphed boss attacks. A column attack is marked a round
@@ -21672,6 +21864,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-portrait">${avatarHTML(loadAvatar(), 84)}</div>
       <div class="vs-name">${escapeHtml(myProfile ? myProfile.name : 'You')}</div>
       <div class="vs-sub">🏰 ${escapeHtml(myChar && myChar.name || 'Castle')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
+      ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${mainDeckLevel(myDeckCounts, myLeaderId)}</b></div>`; }catch(e){ return ''; } })()}
     </div>
     <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind">${map ? escapeHtml(map.icon||'') + ' ' : ''}${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</span></div>
     <div class="vs-side vs-them">
@@ -21679,7 +21872,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-name">${escapeHtml(node.name)}</div>
       <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
       <div class="vs-sub">${castleLineText(node)}</div>
-      ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Battle rating</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
+      ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
     <div class="vs-skip">Tap to skip</div>`;
@@ -22747,6 +22940,8 @@ const FXL_FIELDS = [
     ['ashy', {ashy:true}, {units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'The Hawk and the Crow get no Flying dodge, and 1 swing in 5 is lost in the ash.'}],
     ['arrowSlits', {arrowSlits:true}, {steps:['round', 'round', 'round'], note:'The enemy castle shoots one of your units for 2 each round.'}],
     // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card.")
+    // 2026-10-17: the raid's Psychic Dampener: a Psychic 3 hit lands for 1, and its 1-round Confuse never lands.
+    ['psychicDampener', {psychicDampener:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Mind Eel', icon:'🧠', effects:{psychic:3, confuse:{chance:100, duration:1}}}}], foes:[{role:'foe', slot:0}]}, steps:['round'], note:"The Mind Eel's Psychic 3 lands for 1, and its sure 1-round Confuse fizzles."}],
     ['awash', {awash:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-2}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, steps:['round', 'round', 'round'], note:'Each round one unit rides the water 1–3 columns (stopping at a unit or the edge); a boxed-in unit bobs.'}],
   ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
@@ -24306,6 +24501,41 @@ function todaysArenaRuleset(d){
   try{ const forced = localStorage.getItem('bramblewood_arena_ruleset'); const f = ARENA_RULESETS.find(r=> r.id===forced); if(f) return Object.assign({battleMode:'open'}, f); }catch(e){}
   return arenaThemeFor(day);
 }
+// The Arena's day rules as Environment cards (2026-10-17, user: "I played Arena, and there was an effect to gain lumber every 2 rounds. That
+// should be a field effect. not a pill that just says that."): the rules fieldConditionRows doesn't already turn into rows (Night and the
+// field's own rows) and the weather (its Field card comes from the engine) each get a row here, so in a fight every rule is a card in the
+// Environment stack, and the Arena tab shows the same cards. Keys are FIELD_ROWS_AT_START (the Arena tab already said what they do).
+function arenaExtraRows(rs){
+  const r = (rs && rs.rules) || {}, out = [], add = (key, icon, name, text, short)=> out.push({key, icon, name, text, tip:'', short});
+  if(Number(r.lumberEvery) > 0){ const n = Number(r.lumberEvery); add('lumberEvery', n === 2 ? '🪓' : '🪵', n === 2 ? 'Lumber Rush' : n === 3 ? 'Timber Fair' : 'Timber Drop', `Both sides gain 1 Lumber every ${n} rounds (the first on round ${n + 1}), on top of what cards give.`, `+1 Lumber every ${n} rounds`); }
+  if(r.phase === 'day') add('midsummer', '☀️', 'Midsummer', 'Day all match: Diurnal units have their bonus all fight, and night never falls.', 'Always day');
+  if(r.phase === 'nightFirst') add('dusk', '🌆', 'Dusk Start', `The match starts at night; day comes after round ${Number(r.phaseLen) || 3}, then they alternate.`, 'Starts at night');
+  if((r.phase === 'cycle' || r.phase === 'nightFirst') && Number(r.phaseLen) === 1) add('restless', '🌀', 'Restless Sky', 'Day and night flip every round.', 'Day and night flip each round');
+  if(Number(r.firstBlood) > 0) add('firstBlood', '🩸', 'First Blood', `The first Quick unit to attack each round, on either side, hits +${r.firstBlood}.`, `First Quick hit +${r.firstBlood}`);
+  if(Number(r.actions) > 1) add('actions', '⚡', 'Double Time', `Each side plays ${r.actions} cards a turn.`, `${r.actions} cards a turn`);
+  if(rs && rs.battleMode === 'gravity') add('collapse', '🧱', 'Collapse', 'When a card falls, the cards beside it slide toward the centre.', 'Cards slide to the centre');
+  return out;
+}
+// Every rule of a day as rows, for the Arena tab: the weather first (its Field card's words), then the plain day-and-night cycle (only
+// named when the day's rules name it), then the rows a fight shows.
+function arenaAllRows(rs){
+  const r = (rs && rs.rules) || {}, rows = [];
+  if(r.field && r.field !== 'none'){ const f = FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === r.field) || {}; const ft = (typeof FIELD_TEXT !== 'undefined' && FIELD_TEXT[r.field]) || {};
+    rows.push({key:'field:' + r.field, icon: f.icon || ft.icon || '🌦️', name: (ft.name || f.name || r.field), text: ft.text || f.text || '', short: ({frozen:'A card a side gets +1 Wait', fog:'Attacks miss 1 in 3', rain:'Units heal 2 a round', heatwave:'Units take 1 a round', moon:'Full Moon all fight'})[r.field] || '', art: FIELD_EFFECT_ART_KEY[r.field]}); }
+  const named = rs && rs.portent ? rs.portent.effects.some(f=> f.id === 'daynight') : rs && rs.id === 'standard';
+  if(named && r.phase === 'cycle' && !(Number(r.phaseLen) === 1)) rows.push({key:'daynight', icon:'🌗', name:'Day and Night', text:`Day and night trade places every ${Number(r.phaseLen) || 3} rounds. Draw +1 on each new Day.`, short:'They trade every 3 rounds', art:'twilight'});
+  return rows.concat(fieldConditionRows(r), arenaExtraRows(rs));
+}
+// One Environment card, its line always shown (the Arena tab, before any fight).
+function envCardHTML(row, i, artKey){
+  const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, art: fieldArtOf(artKey), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: row.text}};
+  return matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(String(row.key).replace(/^field:/, ''))}`, `tabindex="0" role="img" style="--i:${i}" title="${escapeAttr(row.name + ': ' + row.text)}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + row.text)}"`,
+    `<div class="env-line">${escapeHtml(row.short || '')}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`);
+}
+function arenaRuleCardsHTML(rs){
+  const rows = arenaAllRows(rs); if(!rows.length) return '<p class="panel-sub">Classic rules today.</p>';
+  return rows.map((row, i)=> `<figure class="ar2-rule">${envCardHTML(row, i, row.art || fieldArtKeyOfRow(row, (rs && rs.rules) || {}))}<figcaption><b>${row.icon} ${escapeHtml(row.name)}</b><span>${keywordizeHTML(escapeHtml(row.text))}</span></figcaption></figure>`).join('');
+}
 function arenaRulesetPillHTML(rs){
   if(!rs) return '';
   return `<div class="arena-rules-pill" title="${escapeAttr(rs.name + ': ' + rs.text)}"><span aria-hidden="true">${rs.icon}</span><b>${escapeHtml(rs.name)}</b><small>${escapeHtml(rs.text)}</small></div>`;
@@ -24399,6 +24629,7 @@ function startMatchInner(mode, opts, standardDeck){
   if(mode==='async' || mode==='pc' || mode==='ai' || mode==='gauntlet' || mode==='pvp'){
     const r = seededRng(currentMatchSeed ^ 0x5eed);
     const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
+    if(standardDeck) try{ me.level = deckLevelFrom(standardDeck, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || getCardDefs()[id]), []); me.deck = 'Standard deck'; }catch(e){} // 2026-10-17: your BR at Level 1
     const oppDeckCounts = Object.fromEntries(matchState.players[2].deck.concat(matchState.players[2].hand).map(c=> typeof c==='string' ? c : c.defId).reduce((mm,id)=> mm.set(id,(mm.get(id)||0)+1), new Map()));
     const opp = mode==='pc'
       ? {name:'Player 2', deck: deckNameFromCounts(DEFAULT_DECK, r), avatar: randomOpponentAvatar(r)}
@@ -25244,6 +25475,7 @@ function renderMatchUI(){
   wireLeaderWidget();
   try{ castleShieldSync('A'); castleShieldSync('B'); }catch(e){}
   try{ syncNightVeil(m); }catch(e){}
+  try{ syncSceneFx(document.getElementById('battlefieldEl')); }catch(e){} // 2026-10-17: the Abyss / the Arena's own layers
   try{ syncDarkVeil(m); }catch(e){}
   wireHudChrome();
   // Deck hover reveal (2026-09-30, queued backlog item): tier 1 (plain hover) replaces the old
@@ -30915,8 +31147,11 @@ async function resolveRoundCore(opts){
     fieldEffectOf(m);
     if(m.engine.roundStart && m.mode!=='tutorial' && m.mode!=='liveRanked') m.engine.roundStart(m.players, m.round, m.sideOf || (id=> id===1?'A':'B'), m.stats, drawEvents);
     if(m.raidFull) try{ raidSpecials(m, drawEvents); }catch(e){}
+    // 2026-10-17 (user: "all 3 rows are active at hitting the enemy"): your two ally rows strike their columns (engine reserveVolley).
+    if(m.raidFull && m.engine.reserveVolley) try{ m.engine.reserveVolley(m.players, m.sideOf, 1, m.stats, drawEvents); m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, drawEvents); }catch(e){}
   if(m.raidFull) try{ raidAlliesTurn(m, drawEvents); }catch(e){}
   if(m.raidFull) try{ raidBossUnit(m, drawEvents); }catch(e){}
+  if(m.raidFull) try{ raidBossCommons(m, drawEvents); }catch(e){} // 2026-10-17
     { const chilled = drawEvents.filter(ev=> ev.type==='fieldTick' && ev.field==='frozen').map(ev=> ev.uid); if(chilled.length){ m._fieldChilled = chilled; try{ SoundKit.freezeChime(); }catch(e){} } }
     m.engine.draw(m.players[1], 1, 'A', m.stats, drawEvents);
     m.engine.draw(m.players[2], 1, 'B', m.stats, drawEvents);
@@ -31350,7 +31585,9 @@ function phasePillHTML(m){
 }
 function bfPillsHTML(m){
   if(!m || !m.engine) return '';
-  const rs = m.arenaRuleset && m.arenaRuleset.id!=='standard' ? bfPillHTML('arena-rs-pill', m.arenaRuleset.icon, m.arenaRuleset.name, '', pillTipHTML(m.arenaRuleset.name, [m.arenaRuleset.text]), m.arenaRuleset.name) : '';
+  // 2026-10-17 (user: "That should be a field effect. not a pill that just says that."): the Arena's day rules are Environment cards now
+  // (arenaExtraRows), so the ruleset pill is gone.
+  const rs = '';
   let inner = ''; try{ inner = phasePillHTML(m) + mistPillHTML(m) + windPillHTML(m) + tidePillHTML(m) + rs + suddenDeathPillHTML(m); }catch(e){} // 2026-10-15: state only (no forecast, the moon in the Night pill)
   return `<div class="bf-pills" id="bfPills">${inner}</div>`;
 }
@@ -31396,12 +31633,13 @@ function matchFieldTileHTML(def, cls, attrs, badges){
 // lasting field rule (the High Tide, the Tide-spout, the darkness, the wind…), fanned in a little stack beside the enemy's Deck.
 // Each card says one short line; hover (or hold) shows that rule in full. The stack keeps the old #fieldCondCard id, so the
 // terrain banner still flies into it and a new row still lights it.
-const FIELD2_BIOME = {awash:'water', lavaSpout:'ash', crushingDepths:'water', hail:'tundra', slippery:'tundra', canopy:'forest', undergrowth:'forest', tallGrass:'forest', glassStorm:'desert', haunted:'cave', landslide:'alpine'}; // 2026-10-16
+const FIELD2_BIOME = {psychicDampener:'cave', lumberEvery:'forest', firstBlood:'ash', actions:'alpine', collapse:'alpine', midsummer:'desert', dusk:'cave', restless:'cave', awash:'water', lavaSpout:'ash', crushingDepths:'water', hail:'tundra', slippery:'tundra', canopy:'forest', undergrowth:'forest', tallGrass:'forest', glassStorm:'desert', haunted:'cave', landslide:'alpine'}; // 2026-10-16
 function fieldEnvBiome(key){ if(FIELD2_BIOME[key]) return FIELD2_BIOME[key]; return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
 // The field's rows in a fight (2026-10-15): Map 0's Mist is only a pill (its hover says "?"), not a card; a misty map that cares about
 // the moon adds "The Moon is not visible." to its Mist card.
 function matchFieldCondRows(m, fr){
   let rows = fieldConditionRows(fr || {});
+  if(m && m.arenaRuleset && !m.conquestNode && !m.raidFieldRules) rows = rows.concat(arenaExtraRows(m.arenaRuleset)); // the Arena's rules (2026-10-17)
   if(matchFieldUnrevealed(m)) rows = rows.filter(r=> r.key !== 'misty');
   rows.forEach(r=>{ if(r.key === 'misty' && mistHidesMoon(m)){ r.text = MISTY_TEXT + ' ' + MISTY_MOON_TEXT; r.short = MISTY_SHORT + ', no moon'; } });
   return rows;
@@ -31430,6 +31668,11 @@ const FIELD_ART = {
   // 2026-10-17 (art, the user's notes 21 and 26): every field effect has its own scene now (the borrowed ones above got theirs), plus
   // Awash (its card is being added separately; its art key is 'awash') and the volcano's Day/Night Glow pill (it borrowed Twilight).
   awash:{art:'art/fields/awash.png'}, volcanoglow:{art:'art/fields/volcanoglow.png'},
+  // 2026-10-17: the raid's Psychic Dampener (tools/make_field_art_2026_10_17.py), and the Arena's day rules as Environment cards. Those
+  // borrow scenes for now: Lumber Rush / Timber Fair the Undergrowth's fallen logs, Midsummer the Tall Grass's sunny field, Dusk Start and
+  // Restless Sky the Twilight, First Blood the Boss surge, Double Time the Leylines, Collapse the Landslide.
+  psychicdampener:{art:'art/fields/psychicdampener.png'}, timber:{art:'art/fields/undergrowth.png'}, midsummer:{art:'art/fields/tallgrass.png'},
+  dusk:{art:'art/fields/twilight.png'}, restless:{art:'art/fields/twilight.png'}, firstblood:{art:'art/fields/surge.png'}, doubletime:{art:'art/fields/leylines.png'}, collapse:{art:'art/fields/landslide.png'},
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
@@ -31437,7 +31680,8 @@ function fieldArtKeyOfRow(row, fr){
   if(k === 'permaTide') return fr.rapids ? 'rapids' : 'permatide';
   const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
     swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
-    eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines', ashyAfter:'ashy', volcanoGlow:'volcanoglow', awash:'awash'}; // + 2026-10-17
+    eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines', ashyAfter:'ashy', volcanoGlow:'volcanoglow', awash:'awash',
+    lumberEvery:'timber', midsummer:'midsummer', dusk:'dusk', restless:'restless', firstBlood:'firstblood', actions:'doubletime', collapse:'collapse'}; // + 2026-10-17 (+ the Arena's rules)
   if(FIELD2[k]) return FIELD2[k].editor; // field effects 2 (2026-10-16): the art key is the editor id
   if(k === 'eruption'){ let v = false; try{ v = volcanoRulesOn(fr); }catch(e){} if(!v) return 'scorched'; } // the fixed Scorched Ground, not the volcano's Eruption
   return map[k] || null;
@@ -31452,7 +31696,7 @@ function fieldCondCardHTML(m){
   if(!rows.length) return '';
   const n = rows.length;
   const cards = rows.map((row, i)=>{
-    const st = fieldRowState(row.key), unknown = st === 'unknown' && !(m && m.fxLib); // the Effects library always shows the line (Map 0 no longer does, 2026-10-15)
+    const st = fieldRowState(row.key), unknown = fieldRowHidden(row.key) && !(m && m.fxLib); // admins see the line (2026-10-17) // the Effects library always shows the line (Map 0 no longer does, 2026-10-15)
     const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, art: unknown ? '' : fieldArtOf(fieldArtKeyOfRow(row, fr)), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: unknown ? '?' : row.text}}; // 2026-10-15 (user: "Remove 'Environment Card: a rule of this battlefield'")
     const line = `<div class="env-line">${unknown ? '?' : escapeHtml(row.short)}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`;
     return matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}${st === 'new' ? ' has-new' : ''}`, `tabindex="0" data-fieldhover="cond:${escapeAttr(row.key)}" role="button" style="--i:${i}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (unknown ? fieldRowQTip(row) : row.text))}"`, line);
@@ -32136,7 +32380,12 @@ function showVsScreen(left, right){
   return new Promise(resolve=>{
     const el = document.createElement('div');
     el.className = 'vs-screen'; el.setAttribute('role','dialog'); el.setAttribute('aria-label', `${left.name} versus ${right.name}`);
-    const side = (p, cls)=> `<div class="vs-side ${cls}">${p.art ? `<img class="vs-boss-art" src="${escapeAttr(p.art)}" alt="">` : avatarHTML(p.avatar, 110)}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${(p.allies||[]).length ? `<div class="vs-allies"><small>With your allies</small>${p.allies.map(a=> `<span class="vs-ally">🤝 <b>${escapeHtml(a.name)}</b> · ⚔ ${a.level} · 🏰 ${escapeHtml(a.castle.name)}</span>`).join('')}</div>` : ''}</div>`;
+    // 2026-10-17 (user: "In the pre-battle against a raid, I get to see my allies on the left side!"): a raid's two CPU allies stand on
+    // your side, each with a portrait, the row it holds, its battle rating, its leader and its best cards; you hold the front row.
+    const allyHTML = a=>{ const defs = getCardDefs(), ld = a.leaderId && defs[a.leaderId], av = randomOpponentAvatar(seededRng(hashStr('ally:' + (a.name || ''))));
+      const top = [...new Set(a.deck || [])].filter(id=> defs[id]).sort((x, y)=> ((defs[y].attack||0) + (defs[y].health||0)) - ((defs[x].attack||0) + (defs[x].health||0))).slice(0, 3);
+      return `<div class="vs-ally2"><span class="vs-ally-av">${avatarHTML(av, 46)}</span><span class="vs-ally-txt"><b>${escapeHtml(a.name)}</b><small class="vs-ally-row">${a.row === 2 ? 'Back row' : 'Middle row'} · ⚔ ${a.level || '?'}</small><small>${ld ? `👑 ${escapeHtml(ld.name)}` : ''}${ld && top.length ? ' · ' : ''}${top.map(id=> defs[id].icon || '').join('')}</small><small>🏰 ${escapeHtml((a.castle || {}).name || '')}</small></span></div>`; };
+    const side = (p, cls)=> `<div class="vs-side ${cls}">${p.art ? `<img class="vs-boss-art" src="${escapeAttr(p.art)}" alt="">` : avatarHTML(p.avatar, 110)}<div class="vs-name">${escapeHtml(p.name)}</div>${p.avatar && p.avatar.title && !p.art ? `<div class="avatar-title-chip">${escapeHtml(avatarTitleLabel(p.avatar))}</div>`:''}<div class="vs-deck">🃏 ${escapeHtml(p.deck)}</div>${(p.allies||[]).length ? `<div class="vs-row-tag">Front row · you</div><div class="vs-allies2"><small>Your allies</small>${p.allies.map(allyHTML).join('')}</div>` : ''}</div>`;
     el.innerHTML = `${side(left,'vs-left')}<div class="vs-mid"><span class="vs-word">VS</span></div>${side(right,'vs-right')}<div class="vs-skip">Tap to start</div>`;
     // Deck levels (2026-10-10, user: "Show your deck level during the pre-combat screen of A vs B"): both sides, theirs
     // coloured by the same gap scale as the skirmish card.
@@ -32145,9 +32394,10 @@ function showVsScreen(left, right){
       const mine = left.level != null ? left.level : mainDeckLevel(myDeckCounts, myLeaderId);
       let theirs = right.level;
       if(theirs == null && m && m.players && m.players[2]){ const p2 = m.players[2], counts = {}; (p2.deck||[]).concat(p2.hand||[]).forEach(c=>{ const id = typeof c === 'string' ? c : c && c.defId; if(id) counts[id] = (counts[id]||0) + 1; }); theirs = deckLevelFrom(counts, id=> cardBaseLevel(CARD_DEFS_BASELINE[id] || defs[id]), []); }
-      const chip = (n, cls)=> `<div class="vs-lvl ${cls}"><small>Battle rating</small><b>⚔ ${n}</b></div>`;
-      if(mine) el.querySelector('.vs-left').insertAdjacentHTML('beforeend', chip(mine, 'is-mine'));
-      if(theirs) el.querySelector('.vs-right').insertAdjacentHTML('beforeend', chip(theirs, deckLevelGapClass(theirs, mine)));
+      // 2026-10-17 (user: "It should show your BR in the pre-battle screen"): your battle rating always sits on your side, theirs on theirs.
+      const chip = (n, cls, who)=> `<div class="vs-lvl ${cls}" title="${who} battle rating"><small>${who} BR</small><b>⚔ ${n}</b></div>`;
+      el.querySelector('.vs-left .vs-deck').insertAdjacentHTML('afterend', chip(mine || '?', 'is-mine', 'Your'));
+      if(theirs) el.querySelector('.vs-right').insertAdjacentHTML('beforeend', chip(theirs, deckLevelGapClass(theirs, mine), 'Their'));
     }catch(e){}
     document.body.appendChild(el);
     let done = false;
@@ -33208,7 +33458,8 @@ function logText(ev){
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
     }
     case 'raidAlly': return {cls:'gold', text:`🤝 ${ev.name} plays ${nm(ev.defId)} into your ${ev.where}.`};
-    case 'raidBossUnit': return {cls:'', text:`👑 The boss sends in ${nm(ev.defId)}: ${ev.hp} Health (×${ev.mult}, less the more the raid has pounded it).`};
+    case 'raidBossUnit': return {cls:'', text:`👑 The boss sends in ${nm(ev.defId)}: ${ev.hp} Health (less the more the raid has pounded it).`};
+    case 'raidCommons': return {cls:'', text:`🐙 The boss calls in ${(ev.defIds||[]).map(nm).join(' and ')} behind its lines.`}; // 2026-10-17
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
     case 'raidSmack': return {cls:'', text: ev.front ? `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.` : ev.hits ? `💥 ${ev.name} smashes the column, ${ev.dmg} to each of your ${ev.hits} unit${ev.hits===1?'':'s'} there.` : `💥 ${ev.name} hits an empty column: ${ev.dmg} to your castle.`};
     case 'advance': return {cls:'', text:`⬆ ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.defId)} steps up to the ${ev.to === 0 ? 'front' : 'middle'} row.`};
@@ -34923,7 +35174,7 @@ function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_
 // ==== Field effects 2 (2026-10-16): battle-log lines and looks for the new field effects (rules in bramblewood-engine.js,
 // fieldEffects2Tick). Hazards log one header line, then one line per unit they hurt.
 const FIELD2_OWN_TICKS = new Set(['landslide', 'landslideHit', 'crushingDepths', 'crushingHit', 'hail', 'hailHit', 'glassStorm', 'glassHit', 'lavaSpout', 'lavaSpoutHit', 'leylines', 'leylinesHit', 'leylinesCastle', 'consternation', 'mirage', 'haunted',
-  'sulphurFumes', 'ashRain', 'ashRainCastle', 'ashy', 'arrowSlits', 'arrowSlitHit', 'awash']); // + field effects 3 (2026-10-17), + Awash (2026-10-17)
+  'sulphurFumes', 'ashRain', 'ashRainCastle', 'ashy', 'arrowSlits', 'arrowSlitHit', 'awash', 'volley', 'volleyHit', 'volleyCastle']); // + the raid's back-row volley (2026-10-17) // + field effects 3 (2026-10-17), + Awash (2026-10-17)
 const FIELD2_HIT = {landslideHit:['🪨', 'rocks'], crushingHit:['🫧', 'the crushing depths'], hailHit:['🌨️', 'the hail'], glassHit:['💎', 'flying glass'], lavaSpoutHit:['♨️', 'the lava spout'], leylinesHit:['✴️', 'the ley lines'], arrowSlitHit:['🏹', 'an arrow from the walls']};
 function field2LogText(ev, nm){
   const who = s=> s === 'A' ? 'your' : "the enemy's";
@@ -34948,6 +35199,10 @@ function field2LogText(ev, nm){
       case 'ashy': return {cls:'', text:'🌫️ The eruption leaves the ground Ashy: flyers are grounded and the air is thick (4 rounds).'};
       case 'arrowSlits': return {cls:'', text: ev.none ? '🏹 An arrow from the walls thuds into empty ground.' : `🏹 The walls loose an arrow at ${nm(ev.defId)}.`};
       case 'awash': return {cls:'', text: ev.none ? '〰️ The water swirls over an empty field.' : `〰️ Awash ${ev.n}: the water takes ${nm(ev.defId)}.`}; // 2026-10-17
+      // The raid's back rows (2026-10-17)
+      case 'volley': return {cls:'gold', text: ev.side === 'A' ? '🏹 Your allies\u2019 rows strike from behind the line.' : '🏹 The enemy\u2019s back rows strike.'};
+      case 'volleyHit': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${nm(ev.defId)} for ${ev.dmg}.`};
+      case 'volleyCastle': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${ev.side === 'B' ? 'the enemy' : 'your'} castle for ${ev.dmg}${ev.shielded ? ' (shielded)' : ''}.`};
     }
     return null;
   }
@@ -34997,6 +35252,11 @@ function field2Vfx(ev){
       case 'ashy': snd('boom'); if(bf && fx()){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } break;
       case 'arrowSlits': if(!ev.none) snd('swipeTone'); break;
       case 'awash': if(!ev.none){ const el = boardCardEl(ev.uid); fl(el, `〰️ Awash ${ev.n}`, 'quick'); } break; // 2026-10-17: the ride itself is the wave event that follows
+      // The raid's back-row volley (2026-10-17): the striker bobs forward, the struck card (or castle) shows the number.
+      case 'volleyHit': case 'volleyCastle': { const from = boardCardEl(ev.fromUid); if(from && fx()){ from.classList.remove('volley-lunge'); void from.offsetWidth; from.classList.add('volley-lunge'); setTimeout(()=> from.classList.remove('volley-lunge'), 500); }
+        if(ev.field === 'volleyHit'){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){} if(el){ fl(el, `🏹-${ev.dmg}`, 'dmg'); try{ shakeEl(el); }catch(e){} } }
+        else { let el = null; try{ el = hqTileEl(ev.side); }catch(e){} if(el) fl(el, `🏹-${ev.dmg}`, 'dmg'); }
+        snd('swipeTone'); break; }
       case 'mirage': if(ev.illusionUid != null) setTimeout(()=>{ const el = boardCardEl(ev.illusionUid); if(!el) return; el.classList.add('mirage-shimmer'); fl(el, '🪞 Illusion', 'quick'); setTimeout(()=> el.classList.remove('mirage-shimmer'), 1200); }, 420); break;
     }
     return;
