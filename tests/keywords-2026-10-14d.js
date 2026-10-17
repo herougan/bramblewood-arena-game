@@ -52,7 +52,8 @@ const css = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), '
   e.debugAttack(P, so, C.uid, {}, []); ok(R.hp === 494, 'and keeps to the side that has a unit'); }
 { const {e, P} = mk(); const F = put(e, P, 2, 'kd-wall', 0); const C = put(e, P, 1, 'kd-crab', 0); const hq = P[2].hq.hp;
   const ev = []; e.debugAttack(P, so, C.uid, {}, ev);
-  ok(F.hp === 497 && P[2].hq.hp === hq && !ev.some(x=> x.type==='crabClaw'), 'a unit in front, none beside it: it attacks straight ahead as normal'); }
+  // 2026-10-17 (user: "Claws 🦀. Can only attack Left and Right."): it never attacks the unit in front; was: straight ahead as normal.
+  ok(F.hp === 500 && P[2].hq.hp === hq - 3 && ev.some(x=> x.type==='crabClaw' && x.dir==='castle'), 'a unit in front, none beside it: it never hits ahead, its claws reach the castle'); }
 { const {e, P} = mk(); put(e, P, 2, 'kd-wall', 4); const C = put(e, P, 1, 'kd-crab', 0); const hq = P[2].hq.hp;
   e.debugAttack(P, so, C.uid, {}, []); ok(P[2].hq.hp === hq - 3, 'nothing in front or beside: it walks through to the castle'); }
 { const cl = Object.keys(base).filter(id=> base[id].effects && base[id].effects.crabClaws).sort();

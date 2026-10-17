@@ -83,19 +83,10 @@ ok(/kind==='exposeFade'/.test(src), '4b. the board fades the crosshair on expose
 ok(/function exposedTip\(n\)/.test(src) && /abadge exposed/.test(src) && /\.abadge\.exposed\{/.test(tpl), '4. an Exposed badge with its tooltip');
 ok(/exposedHit/.test(fs.readFileSync(path.join(__dirname, '..', 'bramblewood-fx-b.js'), 'utf8')), '4. FX.B.exposeCash plays on every Exposed hit');
 
-// ---- 10. Bloodlust
-{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const B = put(e, P, 1, 'ke-blood', 0); const ev = [];
-  for(let i = 0; i < 5; i++) e.debugAttack(P, so, B.uid, {}, ev);
-  const g = ev.filter(x=> x.type === 'statusFx' && x.kind === 'bloodlust');
-  ok(B.atk === 6 && B.bloodlust === 3 && g.length === 3, `10. Bloodlust 1 + Bleed: each blood-drawing hit +1 Attack, capped at +3 (atk ${B.atk}, ${g.length} gains)`);
-  ok(g[0].amount === 1 && g[2].total === 3 && g[2].max === 3, '10. the gain event carries the amount and the running total'); }
-{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const B = put(e, P, 1, 'ke-blood2', 0); e.debugAttack(P, so, B.uid, {}, []);
-  ok(B.atk === 3, `10. no blood (the target isn't bleeding and it doesn't cause Bleed): no gain (${B.atk})`);
-  W.bleed = 5; e.debugAttack(P, so, B.uid, {}, []); ok(B.atk === 5, `10. a hit on a Bleeding unit draws blood: +2 for Bloodlust 2 (${B.atk})`); }
-ok(/\{key:'bloodlust', category:'evergreen', label:'Bloodlust', kind:'number', min:1, defaultValue:1,/.test(src) && /bloodlust: v=> `When its attack draws blood/.test(src), '10. Bloodlust N in the skill list (default 1), with card text');
+// ---- 10. Bloodlust: reworked on 2026-10-17 (it leaps to the next creature on a kill; was +N Attack for drawing blood). Its tests
+//      are in tests/skills-2026-10-17.js.
 ok(/bloodlustPulse/.test(fs.readFileSync(path.join(__dirname, '..', 'bramblewood-skillfx.js'), 'utf8')) && /F\.bloodlustPulse\(t/.test(src), '10. its red pulse plays in fights');
 ok(fs.existsSync(path.join(__dirname, '..', 'tools', 'effects-lab', 'manifest', 'g.js')) && /id:'sk-bloodlust'/.test(fs.readFileSync(path.join(__dirname, '..', 'tools', 'effects-lab', 'manifest', 'g.js'), 'utf8')), '10. registered in the Effects Lab (manifest/g.js)');
-ok(/\n  bloodlust: \{status:\{foe:\{bleed:6\}\}/.test(src), '10. the Effects library stages it against a Bleeding dummy');
 
 // ---- 11. Zeitgebers: plain and advanced forms
 { const {e, P} = mk({phase:'day'}); const D = put(e, P, 1, 'ke-day', 0), Dp = put(e, P, 1, 'ke-dayplain', 1); e.syncPhaseStats(P, so, []);
@@ -160,5 +151,5 @@ ok(/function ambushTheftCap\(\)\{ let n = 0; try\{ n = Math\.max\(0, furthestMap
 ok(/fn\.node\.ambush\)\{ const want = ambushTheftRoll\(\), have = Math\.max\(0, Math\.floor\(myCurrencies\.gold \|\| 0\)\), n = Math\.min\(have, want\);/.test(src) && /raidersTookHTML\(m\)/.test(src), '12. losing an ambush takes Maple Leaves (never more than you have) and the defeat card says so');
 ok(/const pop = showAmbushPop\(hb\);/.test(src) && /startConquestMatch\(map\.id, 'ambush'\)/.test(src), '12. the quick "Ambush!" sub-window, then straight into the fight');
 // ---- the engine notes
-ok(/Zeitgeber format \(2026-10-15/.test(eng) && /function bloodlustGain\(/.test(eng) && /function useExposed\(/.test(eng), 'engine: the dated notes and helpers are there');
+ok(/Zeitgeber format \(2026-10-15/.test(eng) && /function useExposed\(/.test(eng), 'engine: the dated notes and helpers are there');
 console.log(`keywords-2026-10-15e: ${fail ? fail + ' failure(s)' : 'all passed'}`); process.exit(fail ? 1 : 0);

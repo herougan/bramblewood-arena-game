@@ -10612,7 +10612,7 @@
     "attack": 3,
     "health": 8,
     "effects": {
-      "reflect": 100
+      "reflect": true
     },
     "flavor": "Carries only Reflect -- chance to throw the full damage of a melee hit back at the attacker -- and nothing else, for testing this one mechanic in isolation. Not for balance.",
     "locked": true,
@@ -14169,7 +14169,7 @@
     "effects": {
       "flying": true,
       "evasive": true,
-      "reflect": 30
+      "reflect": true
     },
     "flavor": "You swing at it, and somehow you're the one who gets hit.",
     "numericId": 406,
@@ -23460,7 +23460,7 @@
     "resist": [],
     "dmgType": "physical",
     "effects": {
-      "bloodlust": 1
+      "bloodlust": true
     },
     "species": [
       "Fish"
