@@ -358,63 +358,126 @@ function iconHTML(key, fallbackEmoji, opts){
     if(typeof art === 'string') return `<img class="${cls} ico-art" data-ik="${k}" src="${escapeAttr(art)}" alt="${escapeAttr(opts.alt != null ? opts.alt : fb)}" draggable="false"${tip}>`;
     if(art.html) return art.html;
   }
-  return `<span class="${cls}" data-ik="${k}"${tip}>${fb}</span>`;
+  return `<span class="${cls}" data-ik="${k}"${tip}>${typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(fb) : fb}</span>`; // 2026-10-17: in the chosen emoji set
 }
-// Emoji style (2026-10-14): Settings → "Emoji style: System / Twemoji". Twemoji swaps emoji for the Twemoji images, so the
-// game looks the same on every device. The library loads from jsDelivr only when chosen; if it can't load, the game
-// silently stays on System. A debounced MutationObserver re-parses whatever the game re-renders.
-var EMOJI_STYLE_KEY = 'bramblewood_emoji_style', TWEMOJI_SRC = 'https://cdn.jsdelivr.net/npm/@twemoji/api@15.1.0/dist/twemoji.min.js';
-var NOTO_EMOJI_BASE = 'https://cdn.jsdelivr.net/gh/googlefonts/noto-emoji@v2.042/svg/'; // Noto Emoji 2.042 (Unicode 15.1), pinned
+// Emoji style (2026-10-14; bundled 2026-10-17): Settings → "Emoji style: Fluent / Twemoji / Noto Emoji / System".
+// 2026-10-17 (user: "For Emoji - use the best and free one. If you prefer fluent flat, lets do that."): the sets ship with the
+// game, so they work offline, in the Steam build and under the CSP; nothing loads from jsDelivr any more. Microsoft's Fluent
+// Emoji Flat (MIT) is the default. Each set is one file, assets/emoji/<set>.js, holding only the ~540 emoji the game uses
+// (tools/emoji/scan_emoji.js finds them, tools/emoji/build_sets.py fetches and optimises them; assemble_arena.py fills
+// EMOJI_SET_URLS), and it loads only when that set is in use.
+// One path draws every emoji: text the game puts on screen is swapped for <img class="emoji tw-emoji"> by a MutationObserver
+// that runs before the browser paints (no flicker), and iconHTML() writes the <img> straight away. Never inside inputs,
+// textareas, selects, <svg>/<canvas>, contenteditable or .no-emoji. An emoji the set doesn't have stays the system one. Tooltips,
+// title= and SKILL_ICON text stay plain emoji (screen readers need text); the <img>'s alt holds the emoji, so restore() and
+// EmojiStyle.textOf(el) give the text back.
+var EMOJI_STYLE_KEY = 'bramblewood_emoji_style';
+var EMOJI_SET_URLS = __EMOJI_SET_URLS__;
+var EMOJI_SET_NAMES = {fluent:'Fluent', twemoji:'Twemoji', noto:'Noto Emoji', system:'System'};
+var EMOJI_CREDITS = {
+  fluent: 'Fluent Emoji graphics © Microsoft, MIT licence; flags Twemoji CC-BY 4.0.',
+  twemoji: 'Twemoji graphics © Twitter, Inc. and contributors, CC-BY 4.0.',
+  noto: 'Noto Emoji graphics © Google, Apache 2.0; flags Twemoji CC-BY 4.0.',
+};
 var EmojiStyle = (function(){
-  let loading = null, observer = null, timer = 0, pending = new Set(), active = false;
-  const get = ()=>{ try{ const v = localStorage.getItem(EMOJI_STYLE_KEY); return v === 'twemoji' || v === 'noto' ? v : 'system'; }catch(e){ return 'system'; } };
-  const load = ()=>{
-    if(window.twemoji && window.twemoji.parse) return Promise.resolve(window.twemoji);
-    if(loading) return loading;
-    loading = new Promise((res, rej)=>{ const s = document.createElement('script'); s.src = TWEMOJI_SRC; s.async = true; s.crossOrigin = 'anonymous';
-      const t = setTimeout(()=> rej(new Error('timeout')), 8000);
-      s.onload = ()=>{ clearTimeout(t); window.twemoji && window.twemoji.parse ? res(window.twemoji) : rej(new Error('no twemoji')); };
+  const SETS = Object.keys(EMOJI_SET_NAMES).filter(k=> k !== 'system' && EMOJI_SET_URLS && EMOJI_SET_URLS[k]);
+  const SKIP = 'script,style,textarea,input,select,option,title,noscript,svg,canvas,[contenteditable=""],[contenteditable="true"],.no-emoji';
+  let pre = /(?!)/u;   // cheap first test, set by compile(): any first code point of an emoji the set has
+  const XHTML = 'http://www.w3.org/1999/xhtml';
+  let active = false, data = null, re = null, urls = {}, observer = null, loading = {};
+  const get = ()=>{ try{ const v = localStorage.getItem(EMOJI_STYLE_KEY); return v === 'system' || SETS.includes(v) ? v : (SETS[0] || 'system'); }catch(e){ return SETS[0] || 'system'; } };
+  const load = set=>{
+    const have = window.BW_EMOJI_SETS && window.BW_EMOJI_SETS[set];
+    if(have) return Promise.resolve(have);
+    if(loading[set]) return loading[set];
+    return (loading[set] = new Promise((res, rej)=>{
+      const s = document.createElement('script'); s.src = EMOJI_SET_URLS[set]; s.async = true;
+      const t = setTimeout(()=> rej(new Error('timeout')), 15000);
+      s.onload = ()=>{ clearTimeout(t); const d = window.BW_EMOJI_SETS && window.BW_EMOJI_SETS[set]; d ? res(d) : rej(new Error('empty')); };
       s.onerror = ()=>{ clearTimeout(t); rej(new Error('load failed')); };
-      document.head.appendChild(s); }).catch(e=>{ loading = null; throw e; });
-    return loading;
+      document.head.appendChild(s);
+    }).catch(e=>{ loading[set] = null; throw e; }));
   };
-  const opts = {folder:'svg', ext:'.svg', className:'emoji tw-emoji'};
-  // Noto Emoji (2026-10-15, user: "Noto: Emoji"): Google's set, drawn the same way. Twemoji's parser finds the emoji and asks us
-  // for each picture's address: Noto's files are emoji_u<codepoints>.svg (4+ hex digits, "_" between, no FE0F). Flags aren't in
-  // that folder, so they stay Twemoji; a picture Noto lacks turns back into the system emoji (the parser's own onerror).
-  const notoOpts = {className:'emoji tw-emoji noto-emoji', callback:(icon, o)=>{
-    const cps = String(icon).split('-').filter(c=> c !== 'fe0f');
-    if(cps.length === 2 && cps.every(c=> parseInt(c, 16) >= 0x1f1e6 && parseInt(c, 16) <= 0x1f1ff)) return ''.concat(o.base, 'svg/', icon, '.svg');
-    return NOTO_EMOJI_BASE + 'emoji_u' + cps.map(c=> c.padStart(4, '0')).join('_') + '.svg'; }};
-  const parse = node=>{ try{ if(active && window.twemoji && node && node.isConnected !== false) window.twemoji.parse(node, active === 'noto' ? notoOpts : opts); }catch(e){} };
-  const flush = ()=>{ timer = 0; const nodes = [...pending]; pending.clear();
-    // parse only the outermost changed nodes; a node inside another pending one is covered by it
-    nodes.filter(n=> n.isConnected && !nodes.some(o=> o !== n && o.contains(n))).forEach(parse); };
+  // One regex for the set: longest sequences first (ZWJ, keycaps, flags), FE0F optional after each code point, except on the
+  // text-style symbols (↔ ▶ ⬆ …) that are only a picture when FE0F follows them (same rule as scan_emoji.js).
+  const compile = d=>{
+    const vs = new Set(d.vs || []), cp = c=> '\\u{' + c + '}';
+    const keys = Object.keys(d.emoji).sort((a, b)=> b.split('-').length - a.split('-').length);
+    const firsts = new Set(keys.map(k=>{ const c = k.split('-')[0]; return parseInt(c, 16) < 0x80 ? '20e3' : c; })); // keycaps: test the U+20E3, not every digit
+    pre = new RegExp('[' + [...firsts].map(cp).join('') + ']', 'u');
+    return new RegExp(keys.map(k=> k.indexOf('-') < 0 && vs.has(k) ? cp(k) + '\\u{fe0f}' : k.split('-').map(c=> cp(c) + (c === '200d' ? '' : '\\u{fe0f}?')).join('')).join('|'), 'gu');
+  };
+  const keyOf = m=>{ const out = []; for(const ch of m){ const c = ch.codePointAt(0).toString(16); if(c !== 'fe0f') out.push(c); } return out.join('-'); };
+  const srcOf = k=>{
+    if(urls[k]) return urls[k];
+    const svg = data.emoji[k];
+    try{ return (urls[k] = URL.createObjectURL(new Blob([svg], {type:'image/svg+xml'}))); }catch(e){ return (urls[k] = 'data:image/svg+xml,' + encodeURIComponent(svg)); }
+  };
+  const imgFor = m=>{ const img = document.createElement('img'); img.className = 'emoji tw-emoji emoji-' + active; img.alt = m; img.draggable = false; img.decoding = 'sync'; img.src = srcOf(keyOf(m)); return img; };
+  const swapText = t=>{
+    const s = t.data; if(!s || !pre.test(s)) return;
+    re.lastIndex = 0; if(!re.test(s)) return;
+    const p = t.parentNode; if(!p || p.nodeType !== 1 || p.namespaceURI !== XHTML || p.closest(SKIP)) return;
+    const frag = document.createDocumentFragment(); let last = 0; re.lastIndex = 0;
+    for(const m of s.matchAll(re)){ if(m.index > last) frag.appendChild(document.createTextNode(s.slice(last, m.index))); frag.appendChild(imgFor(m[0])); last = m.index + m[0].length; }
+    if(last < s.length) frag.appendChild(document.createTextNode(s.slice(last)));
+    p.replaceChild(frag, t);
+  };
+  const swapIn = node=>{
+    if(!active || !node) return;
+    if(node.nodeType === 3){ if(node.isConnected) swapText(node); return; }
+    if(node.nodeType !== 1 || node.nodeName === 'IMG' || !node.isConnected) return;
+    if(node.namespaceURI !== XHTML || node.closest(SKIP)) return;
+    const tw = document.createTreeWalker(node, NodeFilter.SHOW_TEXT), hits = [];
+    let n; while((n = tw.nextNode())) if(pre.test(n.data)) hits.push(n);
+    hits.forEach(swapText);
+  };
   const watch = ()=>{
     if(observer || typeof MutationObserver === 'undefined') return;
     observer = new MutationObserver(list=>{
-      for(const r of list){ const n = r.type === 'characterData' ? r.target.parentNode : r.target;
-        if(!n || n.nodeType !== 1 || /^(SCRIPT|STYLE|TEXTAREA|INPUT|SELECT|OPTION)$/.test(n.nodeName)) continue;
-        if(r.type === 'childList' && [...r.addedNodes].every(a=> a.nodeName === 'IMG' && a.classList && a.classList.contains('tw-emoji'))) continue; // our own swaps
-        pending.add(n); }
-      if(pending.size && !timer) timer = setTimeout(flush, 120);
+      if(!active) return;
+      for(const r of list){
+        if(r.type === 'characterData') swapIn(r.target);
+        else for(const n of r.addedNodes) swapIn(n);
+      }
+      observer.takeRecords(); // our own swaps
     });
     observer.observe(document.body, {childList:true, subtree:true, characterData:true});
   };
-  const unwatch = ()=>{ if(observer){ observer.disconnect(); observer = null; } if(timer){ clearTimeout(timer); timer = 0; } pending.clear(); };
-  // Back to System: every Twemoji image turns back into its emoji text (alt holds the original).
+  const unwatch = ()=>{ if(observer){ observer.disconnect(); observer = null; } };
+  // Back to text (System, or before drawing in another set): every picture turns back into its emoji.
   const restore = ()=>{ document.querySelectorAll('img.tw-emoji').forEach(img=> img.replaceWith(document.createTextNode(img.alt || ''))); };
+  const drop = ()=>{ Object.values(urls).forEach(u=>{ if(u.startsWith('blob:')) try{ URL.revokeObjectURL(u); }catch(e){} }); urls = {}; };
   const apply = ()=>{
-    const style = get(), want = style !== 'system';
+    const style = get();
     document.documentElement.dataset.emoji = style;
-    if(active && active !== style){ restore(); } // switching sets: put the text back first, then draw it in the new set
-    if(!want){ active = false; unwatch(); restore(); refreshCredits(); return Promise.resolve(false); }
-    return load().then(()=>{ if(get() !== style) return false; active = style; parse(document.body); watch(); refreshCredits(); return true; })
-      .catch(()=>{ active = false; document.documentElement.dataset.emoji = 'system'; refreshCredits(); return false; }); // CDN unreachable: silently stay on System
+    if(active && active !== style){ unwatch(); restore(); active = false; drop(); }
+    if(style === 'system'){ unwatch(); restore(); active = false; data = null; re = null; drop(); refreshCredits(); return Promise.resolve(false); }
+    if(active === style) return Promise.resolve(true);
+    return load(style).then(d=>{
+      if(get() !== style) return false;
+      data = d; re = compile(d); active = style;
+      if(document.body){ swapIn(document.body); watch(); }
+      refreshCredits(); return true;
+    }).catch(()=>{ active = false; document.documentElement.dataset.emoji = 'system'; refreshCredits(); return false; }); // file missing: stay on System
   };
-  const set = v=>{ try{ localStorage.setItem(EMOJI_STYLE_KEY, v === 'twemoji' || v === 'noto' ? v : 'system'); }catch(e){} return apply(); };
-  const refreshCredits = ()=>{ document.querySelectorAll('.emoji-credit').forEach(el=>{ el.hidden = !active; if(active) el.textContent = active === 'noto' ? 'Noto Emoji graphics Apache 2.0 (Google); flags Twemoji CC-BY 4.0.' : 'Twemoji graphics CC-BY 4.0 (Twitter, Inc. and contributors).'; }); };
-  return {get, set, apply, isActive: ()=> active, refreshCredits};
+  const set = v=>{ try{ localStorage.setItem(EMOJI_STYLE_KEY, v === 'system' || SETS.includes(v) ? v : 'system'); }catch(e){} return apply(); };
+  const refreshCredits = ()=>{ document.querySelectorAll('.emoji-credit').forEach(el=>{ el.hidden = !active; if(active) el.textContent = EMOJI_CREDITS[active] || ''; }); };
+  // For HTML the game builds itself (iconHTML): the emoji as <img> right away, so nothing has to be swapped after it lands.
+  const html = s=>{
+    s = s == null ? '' : String(s);
+    if(!active || !s || s.indexOf('<') >= 0 || !pre.test(s)) return s;
+    re.lastIndex = 0;
+    return s.replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`);
+  };
+  // The text of an element with its emoji pictures read back as emoji (textContent skips an <img>'s alt).
+  const textOf = el=>{
+    if(!el) return '';
+    if(!active || !el.querySelector || !el.querySelector('img.tw-emoji')) return el.textContent;
+    let out = ''; const walk = n=>{ for(const c of n.childNodes){ if(c.nodeType === 3) out += c.data; else if(c.nodeType === 1) c.nodeName === 'IMG' && c.classList.contains('tw-emoji') ? out += (c.alt || '') : walk(c); } };
+    walk(el); return out;
+  };
+  return {get, set, apply, isActive: ()=> !!active, active: ()=> active || 'system', sets: ()=> SETS.slice(), refreshCredits, html, textOf};
 })();
 try{ if(EmojiStyle.get() !== 'system'){ const go = ()=> EmojiStyle.apply(); document.body ? setTimeout(go, 0) : document.addEventListener('DOMContentLoaded', go); } }catch(e){}
 // Crabs fork (2026-10-14, user: "Ignore Crab claws. Crabs have fork - thematically. And the symbol can be a Crab claw."): on a crab
@@ -5244,13 +5307,16 @@ function codexShell(){
 // Default: High; Medium on a low-power device; Low with reduced motion. Shaders keep their own
 // switch (and low-power default) unless you pick Low or None here, which turns them off too.
 var FX_KEY = 'bramblewood_fx_level', FX_ORDER = ['none','low','med','high'];
-function fxLevel(){
+// fxLevelSetting() is the level the player picked (or the device default); fxLevel() is what effects obey: the same, except that
+// Effects style "Minimal" caps it at Low (2026-10-17).
+function fxLevelSetting(){
   let v = null; try{ v = localStorage.getItem(FX_KEY); }catch(e){}
   if(FX_ORDER.includes(v)) return v;
   const lowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.connection && navigator.connection.saveData);
   const reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
   return reduce ? 'low' : lowPower ? 'med' : 'high';
 }
+function fxLevel(){ const v = fxLevelSetting(); return (fxStyle() === 'minimal' && FX_ORDER.indexOf(v) > 1) ? 'low' : v; }
 function fxExplicit(){ try{ return FX_ORDER.includes(localStorage.getItem(FX_KEY)); }catch(e){ return false; } }
 function fxAtLeast(l){ return FX_ORDER.indexOf(fxLevel()) >= FX_ORDER.indexOf(l); }
 function applyFxLevel(){ try{ document.documentElement.dataset.fx = fxLevel(); }catch(e){} }
@@ -5260,7 +5326,106 @@ function setFxLevel(l){
   try{ if(typeof battleWeather !== 'undefined' && battleWeather && !shadersEnabled()){ battleWeather.destroy(); battleWeather = null; } }catch(e){}
   try{ if(typeof ShaderM !== 'undefined' && ShaderM && !shadersEnabled() && ShaderM.destroyAll) ShaderM.destroyAll(); }catch(e){}
 }
-applyFxLevel();
+// Effects style (2026-10-17, docs/platform-roadmap-2026-10-17.md §2): Settings → "Effects style", next to the level. The level
+// says how much; the style says what it looks like.
+//   Classic — the effects as they are (the A looks, plus the B/C picks already wired by hand).
+//   Pixel   — the Effects Lab variants with a pixel / arcade feel where one exists (FX_STYLE_PICKS.pixel), the token's pixel
+//             shatter for ordinary knock-outs, and hard-edged damage numbers and particles (FX_PIXEL_CSS, on the page only while
+//             Pixel is on). Everything else stays Classic.
+//   Minimal — readability first: the level is capped at Low (so no particles, flourishes or screen shake: the existing Low
+//             paths), no hit-stop, and deaths take 60% of the time.
+var FX_STYLE_KEY = 'bramblewood_fx_style', FX_STYLES = ['classic','pixel','minimal'];
+let fxStyleCache = null;
+function fxStyle(){
+  if(fxStyleCache) return fxStyleCache;
+  let v = null; try{ v = localStorage.getItem(FX_STYLE_KEY); }catch(e){}
+  return (fxStyleCache = FX_STYLES.includes(v) ? v : 'classic');
+}
+function setFxStyle(v){
+  try{ localStorage.setItem(FX_STYLE_KEY, FX_STYLES.includes(v) ? v : 'classic'); }catch(e){}
+  fxStyleCache = null; applyFxLevel(); applyFxStyle();
+  try{ if(typeof battleWeather !== 'undefined' && battleWeather && !shadersEnabled()){ battleWeather.destroy(); battleWeather = null; } }catch(e){}
+}
+// The style registry: 'Batch.effect' → the variant that style plays ('B' → FX.<Batch>.<effect>_B). installFxStylePicks() wraps
+// each listed FX.<Batch>.<effect> once, so whoever calls it (onEvent, hooks, lookup tables like FX.A.IMPACT) gets the variant of
+// the current style, and the Classic look when the style lists none. Add a line here to give an effect a Pixel/Minimal look.
+var FX_STYLE_PICKS = {
+  pixel: {
+    'A.impactTrue': 'B',          // true damage: a one-frame negative flash and a hairline slash
+    'A.shadowPass': 'C',          // Shadow dodge: a black silhouette with two blinking ● ● eyes
+    'C.deathIrradiation': 'B',    // irradiated death: flickers between itself and a green negative, the ☢ sigil blinks
+    'C.deathExplode': 'B',        // explode death: a cartoon 💥 kaboom
+  },
+  minimal: {},
+};
+function installFxStylePicks(){
+  const FX = window.FX; if(!FX) return;
+  const ids = new Set(); Object.values(FX_STYLE_PICKS).forEach(t=> Object.keys(t).forEach(k=> ids.add(k)));
+  ids.forEach(id=>{
+    const [b, name] = id.split('.'), M = FX[b]; if(!M || typeof M[name] !== 'function' || M[name].fxStyled) return;
+    const base = M[name];
+    const styled = function(){ const v = (FX_STYLE_PICKS[fxStyle()] || {})[id], f = v && M[name + '_' + v]; return (typeof f === 'function' ? f : base).apply(this, arguments); };
+    Object.assign(styled, base); styled.fxStyled = true; styled.classic = base; M[name] = styled;
+    Object.keys(M).forEach(k=>{ const t = M[k]; if(t && typeof t === 'object' && !Array.isArray(t)) Object.keys(t).forEach(j=>{ if(t[j] === base) t[j] = styled; }); });
+  });
+}
+const FX_PIXEL_CSS = `
+html[data-fx-style="pixel"] .dmg-float .df-num::before{-webkit-text-stroke:0 !important; text-shadow:3px 0 0 var(--edge), -3px 0 0 var(--edge), 0 3px 0 var(--edge), 0 -3px 0 var(--edge), 3px 3px 0 var(--edge), -3px 3px 0 var(--edge), 3px -3px 0 var(--edge), -3px -3px 0 var(--edge), 0 6px 0 var(--edge) !important;}
+html[data-fx-style="pixel"] .dmg-float .df-num::after{background:linear-gradient(180deg, var(--g1) 0 50%, var(--g2) 50% 100%) !important; -webkit-background-clip:text !important; background-clip:text !important;}
+html[data-fx-style="pixel"] .dmg-float .df-burst{border-radius:0 !important; filter:none !important; background:var(--g2, #ffcf3a) !important; opacity:.85; clip-path:polygon(50% 0, 60% 40%, 100% 50%, 60% 60%, 50% 100%, 40% 60%, 0 50%, 40% 40%) !important;}
+html[data-fx-style="pixel"] :is(.fxa-dot, .fxa-soft, .fxa-puff, .fxc-p:not(.fxc-g), .fxe-burst, .fxf-burst > *, .pfx-spark, .shatter-bit, .drag-spark, .ff-spark, .rw-spark, .firework-particle){border-radius:0 !important; filter:none !important; box-shadow:none !important;}
+html[data-fx-style="pixel"] .shatter-bit{image-rendering:pixelated;}
+`;
+function applyFxStyle(){
+  const st = fxStyle();
+  try{ document.documentElement.dataset.fxStyle = st; }catch(e){}
+  try{
+    let tag = document.getElementById('fxStylePixelCss');
+    if(st === 'pixel' && !tag){ tag = document.createElement('style'); tag.id = 'fxStylePixelCss'; tag.textContent = FX_PIXEL_CSS; document.head.appendChild(tag); }
+    else if(st !== 'pixel' && tag) tag.remove();
+  }catch(e){}
+}
+applyFxLevel(); applyFxStyle();
+try{ installFxStylePicks(); }catch(e){}
+// Auto-lower effects (2026-10-17): while a fight plays (renderVfxForEvent pokes FxAutoLower), frame times are sampled in 2 s
+// windows. If a window averages over 33 ms a frame (under 30 fps), the effects level steps down one notch (High → Medium →
+// Low, never to None) and a toast says so. At most once per session; Settings → "Auto-lower effects: Off" turns it off.
+var FX_AUTO_KEY = 'bramblewood_fx_auto';
+function fxAutoEnabled(){ try{ return localStorage.getItem(FX_AUTO_KEY) !== 'off'; }catch(e){ return true; } }
+var FxAutoLower = (function(){
+  const WINDOW_MS = 2000, LIMIT_MS = 33, IDLE_MS = 1500;
+  let raf = 0, lastPoke = 0, t0 = 0, prev = 0, frames = 0, sum = 0, done = false;
+  const stop = ()=>{ if(raf) cancelAnimationFrame(raf); raf = 0; frames = 0; sum = 0; prev = 0; };
+  const step = now=>{
+    raf = 0;
+    if(done || document.hidden || now - lastPoke > IDLE_MS){ stop(); return; }
+    if(prev){ sum += Math.min(250, now - prev); frames++; }   // one long stall can't decide a window on its own
+    prev = now;
+    if(now - t0 >= WINDOW_MS){
+      const avg = frames ? sum / frames : 0;
+      if(frames >= 10 && avg > LIMIT_MS) lower(avg);
+      t0 = now; frames = 0; sum = 0;
+    }
+    if(!done) raf = requestAnimationFrame(step);
+  };
+  const lower = avg=>{
+    const lv = fxLevelSetting(), i = FX_ORDER.indexOf(lv);
+    done = true; stop();
+    if(i <= 1) return;                                         // already Low (or None): nothing left to lower
+    setFxLevel(FX_ORDER[i - 1]);
+    try{ document.querySelectorAll('select[id^="fxSelect"]').forEach(x=>{ x.value = fxLevelSetting(); }); }catch(e){}
+    try{ showToast(TX('toast.effectsLowered')); }catch(e){}
+    try{ if(window.__fxDebug) console.info('FxAutoLower: ' + lv + ' -> ' + FX_ORDER[i - 1] + ', avg ' + avg.toFixed(1) + ' ms'); }catch(e){}
+  };
+  return {
+    poke(){
+      if(done || !fxAutoEnabled() || typeof requestAnimationFrame === 'undefined') return;
+      lastPoke = performance.now();
+      if(!raf){ t0 = lastPoke; prev = 0; frames = 0; sum = 0; raf = requestAnimationFrame(step); }
+    },
+    state: ()=> ({running: !!raf, done, frames, avg: frames ? sum / frames : 0}),
+  };
+})();
 // Page turn (2026-10-07, effects "Coming next"): switching Codex sections turns the page like a
 // book — the new section swings in from the right edge (forward) or the left (back), with a soft
 // shadow sweeping across it. Transform and opacity only, so it stays on the compositor.
@@ -7067,7 +7232,7 @@ function openCardInspector(defId, opts){
   ov.querySelectorAll('.ci-skin').forEach(b=> b.addEventListener('click', ()=>{
     const id = b.dataset.skin || null, msg = ov.querySelector('.ci-skin-msg');
     const k = id && skins.find(x=> x.id===id);
-    if(k && !k.owned && adminModeEnabled){ UnitFX.grantSkin(id); k.owned = true; b.textContent = b.textContent.replace(' 🔒',''); }
+    if(k && !k.owned && adminModeEnabled){ UnitFX.grantSkin(id); k.owned = true; b.textContent = EmojiStyle.textOf(b).replace(/ 🔒\uFE0F?/u,''); }
     skin = id; ov.querySelectorAll('.ci-skin').forEach(x=> x.classList.toggle('is-on', x===b)); renderFace();
     if(!k || k.owned){ UnitFX.equipSkin(defId, id); msg.textContent = id ? `You own ${k.name}: it dresses one copy. Put that copy in your deck at the Camp.` : 'The default look.'; } // 2026-10-16: per copy
     else msg.textContent = `Preview only: you don't own ${k.name} yet.`;
@@ -11975,9 +12140,11 @@ function renderPlay(){
             <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>✨ Atmosphere</span></div><select id="atmosphereSelectPlaySub" aria-label="Atmosphere"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🎆 Effects</span></div><select id="fxSelectPlaySub" aria-label="Effects quality"></select></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🎨 Effects style</span></div><select id="fxStyleSelectPlaySub" aria-label="Effects style"></select></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🐢 Auto-lower effects</span></div><select id="fxAutoSelectPlaySub" aria-label="Auto-lower effects"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🗨️ Voice lines</span></div><select id="voiceLinesSelectPlaySub" aria-label="Voice lines"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🌊 Shader effects</span></div><select id="shaderSelectPlaySub" aria-label="Shader effects"></select></div>
-            <div class="settings-row"><div class="settings-row-label"><span>😀 Emoji style</span></div><select id="emojiStyleSelectPlaySub" aria-label="Emoji style"></select><div class="settings-row-note emoji-credit" ${EmojiStyle.isActive() ? '' : 'hidden'}>Twemoji graphics CC-BY 4.0 (Twitter, Inc. and contributors).</div></div>
+            <div class="settings-row"><div class="settings-row-label"><span>😀 Emoji style</span></div><select id="emojiStyleSelectPlaySub" aria-label="Emoji style"></select><div class="settings-row-note emoji-credit" ${EmojiStyle.isActive() ? '' : 'hidden'}>${EMOJI_CREDITS[EmojiStyle.active()] || ''}</div></div>
             </div>
           </div>
           <div class="energy-pill" id="energyPillPlay" title="Energy — spent starting Conquest fights and Raid attempts, refills 1 every 5 minutes">
@@ -29641,9 +29808,11 @@ function deathVfx(uid){
   const isToken = !!(rcD && (getCardDefs()[rcD.defId]||{}).token);
   // Frozen deaths shatter like ice (2026-10-14): ProcFX's Voronoi shards fly from the card; the ice particles below still fall.
   const iceShards = !isToken && style==='cold' && !!(window.ProcFX && ProcFX.shatter && fxAtLeast('med') && !reducedMotion()) && (()=>{ try{ ProcFX.shatter(el.querySelector('.card-tile') || el, {seed:String(uid), power:.75, gravity:1.2}); return true; }catch(e){ return false; } })();
-  const burnt = iceShards ? true : isToken && style!=='burn' ? pixelShatterVfx(el, Math.round(death*1.1)) : style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
-  try{ if(isToken && style!=='burn') SoundKit.pixelShatter(); else if(style==='burn') SoundKit.burnAway(); else if(style==='fall'){ if(!burnt) SoundKit.knockOut(); } else SoundKit.bleedOut(style); }catch(e){}
-  if(burnt && (style==='fall' || isToken || iceShards) && style!=='burn') skull.style.display = 'none'; // the fall reads on its own; a floating skull on a different clock made it look stitched
+  // 2026-10-17: under Effects style "Pixel" an ordinary knock-out breaks up in the token's pixel shatter too.
+  const pixDeath = isToken || (style==='fall' && !iceShards && typeof fxStyle === 'function' && fxStyle()==='pixel');
+  const burnt = iceShards ? true : pixDeath && style!=='burn' ? pixelShatterVfx(el, Math.round(death*1.1)) : style==='burn' ? burnAwayVfx(el, Math.round(death*1.25)) : style==='fall' ? fallDeathVfx(el, Math.round(death*1.3)) : bleedOutVfx(el, Math.round(death*1.4), style);
+  try{ if(pixDeath && style!=='burn' && (isToken || burnt)) SoundKit.pixelShatter(); else if(style==='burn') SoundKit.burnAway(); else if(style==='fall'){ if(!burnt) SoundKit.knockOut(); } else SoundKit.bleedOut(style); }catch(e){}
+  if(burnt && (style==='fall' || pixDeath || iceShards) && style!=='burn') skull.style.display = 'none'; // the fall reads on its own; a floating skull on a different clock made it look stitched
   // 2026-10-15 (user: "Bleed to death: The card, after being grey, drops dead like normal."): once the bleed-out has drained it grey,
   // it topples over like an ordinary knock-out (fallDeathVfx: the fall, the leaves, the thump) instead of fading in place.
   const bleedFall = burnt && !isToken && !iceShards && style==='bleed' && hasGsap();
@@ -32462,7 +32631,7 @@ function rewardsCheer(){
   // half, shifted), so they rained onto empty space. Each coin now finds its pill when it starts falling, and skips a pill that has
   // gone (a re-render) or isn't on screen.
   row.querySelectorAll('.rw-cur').forEach((pill, pi)=>{
-    const glyph = (pill.textContent.trim().match(/^\S+/) || ['🪙'])[0], cur = pill.getAttribute('data-cur');
+    const glyph = (EmojiStyle.textOf(pill).trim().match(/^\S+/) || ['🪙'])[0], cur = pill.getAttribute('data-cur');
     const livePill = ()=>{ if(pill.isConnected) return pill; const p2 = cur && document.querySelector(`.winloss-conquest-rewards .rw-cur[data-cur="${cur}"]`); return p2 || null; };
     const n = 8;
     for(let i = 0; i < n; i++){
@@ -33031,7 +33200,7 @@ function sharpBoard(){ return !!(typeof matchState!=='undefined' && matchState &
 function animMs(){
   const mult = (matchState && matchState.speedMult) || 1;
   const sd = (ms, floor)=> Math.max(floor||40, Math.round(ms/mult));
-  return { windup: sd(390,50), strike: sd(570,70), projectile: sd(690,70), impactPad: sd(180,30), death: sd(sharpBoard() ? 320 : 480,120) };
+  return { windup: sd(390,50), strike: sd(570,70), projectile: sd(690,70), impactPad: sd(180,30), death: sd(Math.round((sharpBoard() ? 320 : 480) * (typeof fxStyle === 'function' && fxStyle() === 'minimal' ? 0.6 : 1)),120) }; // Minimal style: shorter deaths (2026-10-17)
 }
 function boardCardEl(uid){ return document.querySelector(`.board-card[data-uid="${uid}"]`); }
 // Task #125 (2026-09-17, "it should land there with some measurable impact! Then push the
@@ -33602,7 +33771,7 @@ function enemyHandCountHTML(p){
 }
 function updateEnemyHandCount(m){
   const el = document.getElementById('enemyHandCount'); if(!el || !m || !m.players || !m.players[2]) return;
-  const n = (m.players[2].hand || []).length, txt = `${n} 🃏`; if(el.textContent === txt) return;
+  const n = (m.players[2].hand || []).length, txt = `${n} 🃏`; if(EmojiStyle.textOf(el) === txt) return;
   el.textContent = txt; el.classList.toggle('is-zero', !n); el.title = `Cards in the enemy's hand: ${n}`; el.setAttribute('aria-label', `Enemy hand: ${n} card${n===1?'':'s'}`);
   el.classList.remove('ehc-bump'); void el.offsetWidth; el.classList.add('ehc-bump');
 }
@@ -33885,6 +34054,7 @@ let hitStopUntil = 0;
 function hitStop(ms){
   if(!hasGsap() || reducedMotion()) return;
   if(matchState && (matchState.speedMult||1) > 1.5) return;   // fast-forward: no freezes
+  if(typeof fxStyle === 'function' && fxStyle() === 'minimal') return; // Effects style Minimal: no hit-stop (2026-10-17)
   const now = performance.now(); if(now < hitStopUntil) return;
   hitStopUntil = now + ms + 120;
   gsap.globalTimeline.timeScale(0.06);
@@ -34939,6 +35109,7 @@ function fxHook(name, ...args){
 function renderVfxForEvent(ev){
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
+  try{ if(typeof FxAutoLower !== 'undefined') FxAutoLower.poke(); }catch(e){} // 2026-10-17: a fight is playing; watch the frame rate (auto-lower effects)
   try{ bigBlowShake(ev); }catch(e){} // screen shake for big arrivals and heavy hits (2026-10-14)
   try{ fifthPassVfx(ev); }catch(e){} // Tornado, Avalanche, Tsunami, Dragon Lightning, Wither, egg hatch (2026-10-14)
   try{ sixthPassVfx(ev); }catch(e){} // Fireball, Meteor, Banana, Durian, Shield, Electricity (2026-10-14)
@@ -41709,7 +41880,7 @@ const ShaderM = (typeof window!=='undefined' && window.BramblewoodShaders && win
 function shadersEnabled(){
   if(!ShaderM || !ShaderM.isSupported()) return false;
   if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return false;
-  if(fxExplicit() && !fxAtLeast('med')) return false;
+  if(fxExplicit() && FX_ORDER.indexOf(fxLevelSetting()) < 2) return false; // the picked level, not Minimal's cap (2026-10-17)
   let v = null; try{ v = localStorage.getItem(SHADER_KEY); }catch(e){}
   if(v) return v === 'on';
   const lowPower = (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2) || (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.connection && navigator.connection.saveData);
@@ -42109,8 +42280,21 @@ function wireSettingsButton(idSuffix){
   const fxSel = document.getElementById('fxSelect'+idSuffix);
   if(fxSel){
     fxSel.innerHTML = [['high','High — everything'],['med','Medium'],['low','Low — fastest with effects'],['none','None']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
-    fxSel.value = fxLevel();
-    fxSel.addEventListener('change', ()=>{ setFxLevel(fxSel.value); if(shSel) shSel.value = shadersEnabled() ? 'on' : 'off'; showToast((TX('toast.effects') + ' ') + fxSel.options[fxSel.selectedIndex].text.split(' —')[0]); });
+    fxSel.value = fxLevelSetting();
+    fxSel.addEventListener('change', ()=>{ setFxLevel(fxSel.value); if(shSel) shSel.value = shadersEnabled() ? 'on' : 'off'; document.querySelectorAll('select[id^="fxSelect"]').forEach(x=>{ x.value = fxLevelSetting(); }); showToast((TX('toast.effects') + ' ') + fxSel.options[fxSel.selectedIndex].text.split(' —')[0]); });
+  }
+  // Effects style (2026-10-17): Classic / Pixel / Minimal, and the auto-lower switch. Every open copy follows the change.
+  const fxStSel = document.getElementById('fxStyleSelect'+idSuffix);
+  if(fxStSel){
+    fxStSel.innerHTML = [['classic','Classic'],['pixel','Pixel'],['minimal','Minimal']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
+    fxStSel.value = fxStyle();
+    fxStSel.addEventListener('change', ()=>{ setFxStyle(fxStSel.value); document.querySelectorAll('select[id^="fxStyleSelect"]').forEach(x=>{ x.value = fxStyle(); }); showToast(TX('toast.effectsStyle') + ' ' + fxStSel.options[fxStSel.selectedIndex].text); });
+  }
+  const fxAutoSel = document.getElementById('fxAutoSelect'+idSuffix);
+  if(fxAutoSel){
+    fxAutoSel.innerHTML = `<option value="on">On</option><option value="off">Off</option>`;
+    fxAutoSel.value = fxAutoEnabled() ? 'on' : 'off';
+    fxAutoSel.addEventListener('change', ()=>{ try{ localStorage.setItem(FX_AUTO_KEY, fxAutoSel.value); }catch(e){} document.querySelectorAll('select[id^="fxAutoSelect"]').forEach(x=>{ x.value = fxAutoEnabled() ? 'on' : 'off'; }); });
   }
   // Voice lines (2026-10-16, voice barks): On / Leaders only (default) / Off. Every open copy of the setting follows the change.
   const vlSel = document.getElementById('voiceLinesSelect'+idSuffix);
@@ -42119,10 +42303,11 @@ function wireSettingsButton(idSuffix){
     vlSel.value = voiceLinesMode();
     vlSel.addEventListener('change', ()=>{ setVoiceLinesMode(vlSel.value); document.querySelectorAll('select[id^="voiceLinesSelect"]').forEach(x=>{ x.value = voiceLinesMode(); }); showToast('Voice lines: ' + vlSel.options[vlSel.selectedIndex].text); });
   }
-  // Emoji style (2026-10-14): System / Twemoji. Picking Twemoji falls back to System quietly if the library can't load.
+  // Emoji style (2026-10-14): 2026-10-17: Fluent (default) / Twemoji / Noto Emoji / System, all bundled. A set whose file can't
+  // load falls back to System quietly.
   const emSel = document.getElementById('emojiStyleSelect'+idSuffix);
   if(emSel){
-    emSel.innerHTML = `<option value="system">System</option><option value="twemoji">Twemoji</option><option value="noto">Noto Emoji</option>`; // Noto: 2026-10-15
+    emSel.innerHTML = EmojiStyle.sets().concat('system').map(v=> `<option value="${v}">${EMOJI_SET_NAMES[v] || v}</option>`).join('');
     emSel.value = EmojiStyle.get(); EmojiStyle.refreshCredits();
     emSel.addEventListener('change', ()=>{ EmojiStyle.set(emSel.value).then(ok=>{ if(emSel.value !== 'system' && !ok){ try{ localStorage.setItem(EMOJI_STYLE_KEY, 'system'); }catch(e){} emSel.value = 'system'; } document.querySelectorAll('select[id^="emojiStyleSelect"]').forEach(x=>{ x.value = EmojiStyle.get(); }); }); });
   }

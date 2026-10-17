@@ -470,6 +470,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.that-opens-up-later-keep-pushing": "🗺️ That opens up later — keep pushing across the Conquest map.",
   "toast.welcome-back": "Welcome back, {name}! 🌰",
   "toast.effects": "Effects:",
+  "toast.effectsLowered": "🎆 Effects lowered for smoother play",
+  "toast.effectsStyle": "Effects style:",
   "results.you-lost-this-one-nothing-is": "You lost this one{v1}. Nothing is lost: try again, and watch which of their cards hits hardest.",
   "results.nicely-done": "Nicely done.",
   "results.your-first-deck-is-waiting-part": "Your first deck is waiting. Part 2 (your leader) is on the map, on the 🎓 marker, whenever you are ready.",
