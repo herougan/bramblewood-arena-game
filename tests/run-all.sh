@@ -45,6 +45,7 @@ run node tests/keywords-2026-10-16a.js   # W2 (2026-10-16): the new skills, Blud
 run node tests/keywords-2026-10-16b.js   # 2026-10-16: Worthy -> Bounty (load migration, empty slot), the Tide-evade rule test
 run node tests/skills2-2026-10-16.js   # 2026-10-16 (skills 2): random wind, Amore, On Pitch, Stun N, Pounce <Att>/<Hp>, Burn 1 Lumber, Cataphract, new cards, clean names
 run node tests/skills-2026-10-16-devilry.js   # 2026-10-16 (skills): Penance / Blood Tithe, Ambush N, Expose crits, Perma-tide text, live status lines
+run node tests/road-rarity-2026-10-16.js   # 2026-10-16 (placement and rarity): rarity caps on the road, pack commons by number, field curriculum
 run node tests/regen-fullhp-2026-10-14.js
 run node tests/heal-poison-2026-10-16.js   # 2026-10-16: a heal takes Poison off first (1 per heal), only the rest heals Health
 run node tests/nightblind-illuminate-2026-10-16.js   # 2026-10-16: an enemy Illuminate unit facing a Night-blind one lights it

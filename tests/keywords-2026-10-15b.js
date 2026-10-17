@@ -72,7 +72,7 @@ ok(/\.skill-q\{display:inline-grid;/.test(tpl), '1. the "?" chip is styled');
   const c = [...P[1].row.left, ...P[1].row.center, ...P[1].row.right][0]; ok(c && e.isTide(c), '1/5. the engine plays the (hidden) Tide on a fish'); }
 
 // ---- 2. Map 0: misty, no day and night, its effects stay "?", the "?" is neutral
-ok(/const MISTY_MAPS = new Set\(\['m1', 'mo'\]\);/.test(src) && /if\(r\.misty == null && MISTY_MAPS\.has\(mid\) && node\) r\.misty = true;/.test(src), '2. Map 0 (the Outskirts and the Old Bramble) is misty');
+ok(/const MISTY_MAPS = new Set\(\['m1', 'mo', 'mtut'\]\);/.test(src) /* 2026-10-16: and the Tutorial (0-T) */ && /if\(r\.misty == null && MISTY_MAPS\.has\(mid\) && node\) r\.misty = true;/.test(src), '2. Map 0 (the Outskirts and the Old Bramble) is misty');
 ok(/if\(r\.misty\) r\.phase = 'off';/.test(src), '2. ...and the mist turns day and night off');
 { const e = E.makeSimEngine(H.loadCardDefs(), E.mulberry32(5), {recordEvents:true, battleMode:'open', rules:{misty:true, phase:'off'}});
   const P = {1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}, so = id=> id===1 ? 'A' : 'B', ev = [];

@@ -47,6 +47,11 @@ const order = []; mains.forEach(m=>{ order.push(m); MAPS.filter(s=> s.sub && s.p
 const mapIdx = m=> mains.indexOf(m.sub ? MAPS.find(x=> x.id===m.parent) : m);
 const mapLabel = m=> m.sub ? `${mapIdx(m)+1}-A` : String(mapIdx(m)+1); // Map N as on the world screen (from 1)
 const fightCode = (m, n)=>{ const fights = m.nodes.filter(x=> x.kind!=='tutorial' && x.kind!=='raidboss'); const k = fights.indexOf(n) + 1; return m.sub ? `${mapIdx(m)+1}-A-${k}` : `${mapIdx(m)+1}-${k}`; };
+// 2026-10-16: the labels above count maps from 1 and call every side map "A" (older runs read that way). The game counts from
+// Map 0 and letters side maps in order (mapNumberOf / skirmishCode in arena_app.js), so each fight also carries gameMap and
+// gameCode (e.g. 13-5, 14-A-2): "Map 13" in the game is mapNo "14" here.
+const gameMap = m=>{ if(!m.sub) return String(mapIdx(m)); const sibs = MAPS.filter(x=> x.sub && x.parent===m.parent); return `${mapIdx(m)}-${String.fromCharCode(65 + sibs.indexOf(m))}`; };
+const gameCode = (m, n)=> n.code || n.key;
 const fights = [];
 order.forEach(m=> m.nodes.forEach(n=>{ if(n.deck && n.kind!=='tutorial' && n.kind!=='raidboss') fights.push({m, n}); }));
 
@@ -115,7 +120,7 @@ const out = [];
 for(const f of fights){
   const res = {}; for(const name of Object.keys(decks)) res[name] = measure(decks[name].deck, f, N);
   const index = Math.round(((100-res.starter.win) + (100-res.mid.win) + (100-res.strong.win) + res.strong.hpLost)/4*10)/10;
-  out.push({map: f.m.id, mapNo: mapLabel(f.m), mapName: f.m.name, side: !!f.m.sub, key: fightCode(f.m, f.n), nodeKey: f.n.key, kind: f.n.kind, name: f.n.name || f.n.key, hp: f.n.hqHp, res, index});
+  out.push({map: f.m.id, mapNo: mapLabel(f.m), gameMap: gameMap(f.m), gameCode: gameCode(f.m, f.n), mapName: f.m.name, side: !!f.m.sub, key: fightCode(f.m, f.n), nodeKey: f.n.key, kind: f.n.kind, name: f.n.name || f.n.key, hp: f.n.hqHp, res, index});
   console.log(`${mapLabel(f.m).padEnd(5)} ${fightCode(f.m, f.n).padEnd(7)} ${f.n.kind.padEnd(9)} S ${String(res.starter.win).padStart(5)}  M ${String(res.mid.win).padStart(5)}  X ${String(res.strong.win).padStart(5)} (${res.strong.rounds ?? '-'} rds, ${res.strong.hpLost}% lost)  index ${index}`);
 }
 const deckList = Object.fromEntries(Object.entries(decks).map(([k, v])=> [k, {variant: v.variant, cards: Object.entries(v.deck).map(([id, n])=> ({id, name: defs[id].name, n}))}]));
