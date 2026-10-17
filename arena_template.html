@@ -3484,6 +3484,31 @@
   @media (max-width:520px){ .qn-tab{padding:6px 12px 5px; font-size:14px;} .qn-tab.is-on{padding-bottom:8px;} .er-writ{padding:0 12px 12px;} .er-band{margin:0 -12px; padding:6px 10px;}
     .er-top{grid-template-columns:52px minmax(0,1fr); gap:10px;} .er-portrait{width:52px; height:52px; font-size:28px;} .er-title{font-size:19px;} .er-ask{font-size:16px;} .er-k{min-width:0;} }
   @media (prefers-reduced-motion:reduce){ .er-writ.is-ready .er-seal{animation:none;} .er-bar > span{transition:none;} }
+  /* 2026-10-18 (Scale Trail package): the trail's journal on the Notices (a writ with its eight scales listed) and its reward screen */
+  .st-writ .er-portrait{background:radial-gradient(circle at 50% 40%, #ffcf6a, #c2411c 70%, #6a0a00); color:#fff;}
+  .st-writ.is-done .er-status{background:#7a2a12; color:#fff1d0;}
+  .st-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .st-entry{display:grid; grid-template-columns:28px minmax(0,1fr); gap:8px; align-items:start; padding:6px 8px; border:2px dashed rgba(122,85,48,.35); background:rgba(255,255,255,.25);}
+  .st-entry.is-found{border-style:solid; border-color:rgba(160,60,20,.45); background:linear-gradient(90deg, rgba(255,180,90,.22), rgba(255,255,255,.3));}
+  .st-ico{font-size:20px; line-height:1.2; text-align:center;}
+  .st-entry:not(.is-found) .st-ico{opacity:.6;}
+  .st-where{display:block; font:800 13.5px/1.25 'Nunito',system-ui,sans-serif; color:#3a2410; overflow-wrap:anywhere;}
+  .st-entry:not(.is-found) .st-where{color:#8a6a45;}
+  .st-line, .st-hint{margin:2px 0 0; font:700 15.5px/1.25 'Caveat','Baloo 2',cursive; color:#4a3019;}
+  .st-hint{font-style:italic; color:#6a4a26;}
+  .st-reward-overlay{z-index:10050; align-items:center;}
+  .st-reward{position:relative; text-align:center; width:min(420px,100%); color:#3a2410; border:3px solid #5b3c1f; border-radius:4px; padding:0 18px 18px;
+    background:radial-gradient(ellipse at 50% 30%, rgba(255,170,90,.35), transparent 65%), linear-gradient(180deg,#fcf4de,#f0ddb2); box-shadow:0 4px 0 #2e1d0e, 0 18px 40px rgba(40,10,0,.5);}
+  .st-reward-band{margin:0 -18px 12px; padding:7px 14px; background:linear-gradient(180deg,#8a2a12,#5a1708); color:#fff1d0; border-bottom:3px solid #2e1d0e; font:800 12px/1.2 'Nunito',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.12em;}
+  .st-reward h2{margin:0 0 10px; font:400 24px/1.15 'MedievalSharp','Baloo 2',serif; color:#3a2410;}
+  .st-reward-stage{display:grid; place-items:center; min-height:200px; margin:6px 0;}
+  .st-reward-card .card-tile{filter:drop-shadow(0 0 18px rgba(255,90,30,.65));}
+  .st-reward-name{margin:6px 0 2px; font-size:16px;} .st-reward-name small{display:block; color:#8a6a45; font-size:12.5px;}
+  .st-reward-extra{justify-content:center; margin:6px 0;}
+  .st-reward-sub{margin:8px 0 14px; font:700 17px/1.25 'Caveat','Baloo 2',cursive; color:#4a3019;}
+  .st-reward-foot{display:flex; justify-content:center;}
+  @media (max-width:420px){ .st-tab-long{display:none;} .qn-tabs{gap:4px; padding:0 2px;} .qn-tab{padding-left:9px; padding-right:9px;} }
+  @media (max-width:520px){ .st-reward{padding:0 12px 14px;} .st-reward-band{margin:0 -12px 10px;} .st-line, .st-hint{font-size:14.5px;} }
   .coach-tip.is-blocking{box-shadow:0 10px 28px rgba(0,0,0,.45), 0 0 0 3px #ffd76a;}
   .coach-anchor{position:relative; z-index:1145 !important;}
   .coach-locked, .coach-locked *{pointer-events:none !important;}

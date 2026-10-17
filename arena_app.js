@@ -2933,6 +2933,12 @@ function cardObtainableFrom(d){
   if(src.kind==='base') return 'base';
   if(src.kind==='raid') return 'raid'; // a raid's own cards (2026-10-12): they drop when that raid falls
   if(src.kind==='nest') return 'nest'; // egg cards (2026-10-14): the Nest gives one when you set that kind of egg in a nest
+  // 2026-10-18 (Scale Trail package): the anvil's equipment (source 'smith'), the Map 2 cave's secret card (source 'secret') and a
+  // hidden quest's reward (source 'quest', e.g. the Scale Trail's Red Dragon Egg) all have a real giver, but none was listed here,
+  // so isUnattainable() said yes and unlockCardForPlayer() refused them: a Blacksmith craft spent its Materia and gave nothing.
+  if(src.kind==='smith') return 'smith';
+  if(src.kind==='secret') return 'secret';
+  if(src.kind==='quest') return 'quest';
   return null; // unsorted, or an event (no event system live yet)
 }
 // Creature rank (2026-10-18, user: "Add a legendary leviathan to the game. These 'leviathan' types are second in rank as Dragons. Add
@@ -2956,6 +2962,9 @@ function cardWhereToGetText(d){
   if(src.kind==='pack') return Number(src.tier)===99 ? 'The Mystery Booster (from the wandering trader)' : (Number(src.tier) >= 11 ? 'Any basic pack (Factions pool): Hedgerow Pouch, Tidemire Chest or Highcrest Case' : 'A Hedgerow Pouch, Tidemire Chest or Highcrest Case');
   if(src.kind==='nest') return `The Nest: set ${({woodland:'a Woodland Egg', bird:'a Speckled Egg', otter:'a River Bundle', scaly:'a Leathery Egg', bug:'a Cocoon', water:'a Roe Pearl', beast:'a Den Bundle'})[src.egg] || 'an egg of this kind'} in a nest to get this egg card`; // 2026-10-14
   if(src.kind==='event') return `Event: ${(src.name||src.theme||'coming soon')}`;
+  if(src.kind==='smith') return 'The Blacksmith: craft it at the Forge'; // 2026-10-18: smith / secret / quest are obtainable now (cardObtainableFrom)
+  if(src.kind==='secret') return 'A secret somewhere on the road';
+  if(src.kind==='quest') return src.id === 'scale-trail' ? 'A hidden trail: follow the Dragon Scales' : 'A hidden quest on the road';
   if(src.kind==='raid'){ const r = (typeof allRaidDefs === 'function' ? allRaidDefs() : []).find(x=> x.id === src.id); return `Raid only: ${r ? r.name : 'a raid'} drops its cards when it falls (more for the top raiders)`; }
   return 'Not obtainable yet';
 }
@@ -13189,6 +13198,15 @@ const DIALOGUES = {
     {label:'rumour', who:'traveller', text:'Only that the Crown didn\'t fly away on its own. But you didn\'t hear it from me.', goto:'go'},
     {label:'go', who:'traveller', text:'Leaves on the counter, please.'},
   ]},
+  // The Scale Trail's finale (2026-10-18, audit R1): plays once all eight Dragon Scales are found (scaleTrailFinaleSoon), then the
+  // reward (SCALE_TRAIL_FINALE_REWARD). It picks up the Traveller's rumour above. Lore: the dragons sleep, they are not gone.
+  scale_trail_finale: {lines:[
+    {who:'traveller', text:'Eight scales. Lay them side by side and look: one hide, one dragon.'},
+    {who:'traveller', text:'And still warm. Something a hundred years dead doesn\'t stay warm.'},
+    {who:'traveller', text:'Remember the rumour? The Crown didn\'t fly away on its own. Something with wings carried it north.'},
+    {who:'traveller', text:'The dragons never left. They sleep under the mountains, and the Bramblewood forgot them. Sleepers wake.'},
+    {who:'traveller', text:'I found this where the last scale pointed. Too warm for me to carry any further. Keep it close.'},
+  ]},
   unlock_shop2: {lines:[
     {who:'peddler', text:'Mind the cinders. The Foundry\'s fire is right behind me, and it\'s still warm. So are the prices.'},
     {who:'peddler', text:'Tidemire Chests. Five cards, one you\'ve never held. The Cart can\'t carry them this far up.', options:[{label:'Show me.', goto:'go'}, {label:'Who are you?', goto:'who'}], silent:'go'},
@@ -15987,15 +16005,20 @@ function questsModalShellHTML(dailyBoard, section, nextMon, now){
   // called Quests now since it holds both. The two tabs show from the start (before the Quest Board opens on Map 8 the Quests tab
   // has just the list). Tab 1 keeps the posted notices. The tab id stays 'errands' (openQuestsModal('errands') still lands there).
   const q = loadQuestState(), erOpen = errandsOpen();
+  // 2026-10-18 (Scale Trail package): a third tab, the Scale Trail's journal, once the first Dragon Scale is found
+  const stShown = scaleTrailTabShown();
+  if(noticesSubTab === 'scales' && !stShown) noticesSubTab = 'notices';
+  const onSt = noticesSubTab === 'scales';
   const onErr = noticesSubTab === 'errands';
   let erBadge = '';
   if(erOpen){ try{ const e = loadErrands(), ready = claimableErrandCount(), n = e.active.length + e.offers.length;
     erBadge = ready ? `<span class="qn-tab-n is-ready" title="${ready} ready to claim">${ready}</span>` : n ? `<span class="qn-tab-n">${n}</span>` : ''; }catch(e){} }
   const tabs = `<div class="qn-tabs" role="tablist" aria-label="Notices">
-      <button type="button" role="tab" class="qn-tab ${onErr ? '' : 'is-on'}" data-qn-tab="notices" aria-selected="${!onErr}">📌 Notices</button>
+      <button type="button" role="tab" class="qn-tab ${onErr || onSt ? '' : 'is-on'}" data-qn-tab="notices" aria-selected="${!onErr && !onSt}">📌 Notices</button>
       <button type="button" role="tab" class="qn-tab ${onErr ? 'is-on' : ''}" data-qn-tab="errands" aria-selected="${onErr}">📜 Quests${erBadge}</button>
+      ${stShown ? `<button type="button" role="tab" class="qn-tab ${onSt ? 'is-on' : ''}" data-qn-tab="scales" aria-selected="${onSt}" aria-label="Scale Trail">🐉 <span class="st-tab-long">Scale </span>Trail${scaleTrailTabBadge()}</button>` : ''}
     </div>`;
-  const body = onErr
+  const body = onSt ? scaleTrailJournalHTML() : onErr
     ? `<p class="qn-sub">The quests you're on${erOpen ? ', and the favours folk asked of you on the road' : ''}. Tap one to see its notice; claim the reward when it's done.</p>
        ${noticeQuestListHTML(q)}
        ${erOpen ? `<div class="qn-cork er-cork">${errandsBoardHTML()}</div>` : ''}`
@@ -16017,7 +16040,7 @@ function openQuestsModal(focus){
   const overlay = document.getElementById('authGateOverlay'); if(!overlay) return;
   const prevScroll = overlay.querySelector('.quests-modal') ? overlay.querySelector('.quests-modal').scrollTop : 0;
   const opening = overlay.hidden || !overlay.querySelector('.quests-modal');
-  if(focus === 'errands' || focus === 'notices') noticesSubTab = focus; // 2026-10-16: the Errands sub-tab
+  if(focus === 'errands' || focus === 'notices' || focus === 'scales') noticesSubTab = focus; // 2026-10-16: the Errands sub-tab (2026-10-18: and the Scale Trail)
   overlay.innerHTML = questsModalHTML(); overlay.hidden = false;
   if(opening) questBoardEntrance(overlay.querySelector('.quests-modal'));
   fxHook('questBoardOpen', overlay.querySelector('.quests-modal'), opening); // pinned papers lift in the draught (FX.E, 2026-10-15)
@@ -16035,6 +16058,8 @@ function openQuestsModal(focus){
   overlay.querySelectorAll('[data-errand-take]').forEach(b=> b.addEventListener('click', ()=>{ if(acceptErrand(b.dataset.errandTake)) openQuestsModal(); else denyShake(b); }));
   overlay.querySelectorAll('[data-errand-skip]').forEach(b=> b.addEventListener('click', ()=>{ dismissErrandOffer(b.dataset.errandSkip); openQuestsModal(); }));
   overlay.querySelectorAll('[data-errand-drop]').forEach(b=> b.addEventListener('click', ()=>{ if(b.dataset.armed){ abandonErrand(b.dataset.errandDrop); openQuestsModal(); } else { b.dataset.armed = '1'; b.textContent = 'Drop it?'; } }));
+  // 2026-10-18: the Scale Trail's Claim (a save that found all eight before the finale played, or skipped it)
+  overlay.querySelectorAll('[data-scale-claim]').forEach(b=> b.addEventListener('click', ()=>{ const res = claimScaleTrailFinale(); if(!res){ denyShake(b); return; } openQuestsModal(); showScaleTrailReward(res); }));
   // 2026-10-16 (user: "i think quests will be a subtab in notices"): switching tabs redraws the board from the top.
   overlay.querySelectorAll('[data-qn-tab]').forEach(b=> b.addEventListener('click', ()=>{ if(noticesSubTab === b.dataset.qnTab) return; noticesSubTab = b.dataset.qnTab; try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(_){}
     openQuestsModal(); const m = overlay.querySelector('.quests-modal'); if(m) m.scrollTop = 0; const t = overlay.querySelector(`[data-qn-tab="${noticesSubTab}"]`); if(t) t.focus(); }));
@@ -38031,16 +38056,31 @@ function renderForge(){
 // ---- The Scale Trail (2026-10-11, user: "There is a hidden substory, of dragon scales. If you challenge the optional
 // harder Elites or get S on certain Skirmishes"). Eight fights hide a Dragon Scale; an S rank or better there finds it,
 // once. Nothing announces the trail until the first scale turns up; after that, the other seven fights glint on the map
-// and the Inventory keeps a journal. Scales are also Materia: the Blacksmith's Dragonscale Mail needs one.
+// and the Notices keep its journal (the Scale Trail tab, scaleTrailJournalHTML). All eight found ends the trail: the
+// Wandering Traveller's finale and its reward (SCALE_TRAIL_FINALE_REWARD). Scales are also Materia (the Blacksmith's
+// Dragonscale Mail, a Mythic card's level 10, a castle's level 25 use them up); the trail counts scales FOUND (the
+// 'scale:<map>:<node>' flags), never the scales you still hold, so spending them never undoes it.
+// 2026-10-18 (Scale Trail package): the Inventory shelf that held the journal went on 10-15, so the old comment was stale.
+// SCALE_TRAIL:BEGIN (tests/scale-trail-2026-10-18.js evaluates this block)
 const DRAGON_SCALE_NODES = [
-  {map:'mg', key:'2-B-4', line:'A scale, warm as a hearthstone, wedged in the grotto rock behind the Keeper. Something huge squeezed through here once.'},
-  {map:'m8', key:'6-7', line:'Another, half sunk in the Mire. The Heron Hag says the sky went dark the night the Crown vanished.'},
-  {map:'m4', key:'8-7', line:'Under the Roost. The bats will not sleep anywhere near it.'},
-  {map:'mr', key:'13-7', line:'The King-Maker kept one in his hoard. He says a dragon paid him with it, for directions.'},
-  {map:'m3', key:'19-5', line:'High on the Ashen Peak, a scale fused to the stone, pointing north.'},
-  {map:'my', key:'14-A-4', line:'In the Canopy the mandrills drum around one like a holy thing.'},
-  {map:'m9', key:'19-A-9', line:'In the Foundry slag: a scale the furnace could not melt.'},
-  {map:'m11', key:'20-8', line:'The last one, on the Sundered Peak, beside claw marks gouged around a crown-shaped hollow. Whoever took the Crown had wings.'},
+  // `hint` is what the journal shows before that scale is found: where to look, not which fight (2026-10-18)
+  {map:'mg', key:'2-B-4', line:'A scale, warm as a hearthstone, wedged in the grotto rock behind the Keeper. Something huge squeezed through here once.',
+    hint:'Smugglers\' Grotto. Whoever keeps the deepest cave keeps something warm behind it.'},
+  {map:'m8', key:'6-7', line:'Another, half sunk in the Mire. The Heron Hag says the sky went dark the night the Crown vanished.',
+    hint:'Sable Swampmire. Run the gauntlet of fangs and look where the mud steams.'},
+  {map:'m4', key:'8-7', line:'Under the Roost. The bats will not sleep anywhere near it.',
+    hint:'Caves & Alcoves. Look up: whatever the bats are afraid of hangs above them.'},
+  {map:'mr', key:'13-7', line:'The King-Maker kept one in his hoard. He says a dragon paid him with it, for directions.',
+    hint:'The Redwood Deep. A fox who calls himself a king sits on a hoard. Beat him well and he may show it.'},
+  // 2026-10-18 (R2): Map 19 is the Ashen Spurn now (renamed from the Ashen Peak)
+  {map:'m3', key:'19-5', line:'High on the Ashen Spurn, a scale fused to the stone, pointing north.',
+    hint:'Ashen Spurn. The sentinel on the high ground guards more than the road.'},
+  {map:'my', key:'14-A-4', line:'In the Canopy the mandrills drum around one like a holy thing.',
+    hint:'The Canopy. Follow the drumming.'},
+  {map:'m9', key:'19-A-9', line:'In the Foundry slag: a scale the furnace could not melt.',
+    hint:'Basalt Foundry. Something in the fire would not melt. Ask the thing that lives in it.'},
+  {map:'m11', key:'20-8', line:'The last one, on the Sundered Peak, beside claw marks gouged around a crown-shaped hollow. Whoever took the Crown had wings.',
+    hint:'The Sundered Peak. It waits behind the heaviest armour on the mountain.'},
 ];
 function scaleFlagKey(n){ return 'scale:' + n.map + ':' + n.key; }
 function scalesFound(){ const f = loadDialogueFlags(); return DRAGON_SCALE_NODES.filter(n=> f[scaleFlagKey(n)]); }
@@ -38049,9 +38089,133 @@ function rollDragonScale(mapId, key, rank){
   const n = scaleNodeAt(mapId, key); if(!n || !rankAtLeast(rank, 'S')) return null;
   if(loadDialogueFlags()[scaleFlagKey(n)]) return null;
   setDialogueFlag(scaleFlagKey(n), true); unlockCardForPlayer('dragon-scale', 'scale');
-  fxHook('dragonScaleFound', {index: DRAGON_SCALE_NODES.indexOf(n) + 1, total: DRAGON_SCALE_NODES.length}); // the scale flips up over the results (FX.E, 2026-10-15)
-  return {index: DRAGON_SCALE_NODES.indexOf(n) + 1, total: DRAGON_SCALE_NODES.length, line: n.line};
+  // 2026-10-18: the count is how many you have found (it was the scale's place in the list, so a first find could say "5/8")
+  const found = scalesFound().length, total = DRAGON_SCALE_NODES.length;
+  fxHook('dragonScaleFound', {index: found, total}); // the scale flips up over the results (FX.E, 2026-10-15)
+  if(found >= total) scaleTrailFinaleSoon(); // 2026-10-18: the eighth scale ends the trail (once the results close)
+  return {index: found, total, line: n.line, complete: found >= total};
 }
+// The finale (2026-10-18, audit R1: "collecting all 8 Dragon Scales triggers nothing"). The reward sits behind this constant so
+// the owner can change it: {card:'<card id>'} gives one copy of that card (it needs an obtainable source in cards.json; the egg's
+// is {kind:'quest', id:'scale-trail'}); currency keys (dust, gold, gems...) next to it are granted too. It is given once: the
+// flag below is saved with the dialogue flags, so a reload, a second claim or a second finale give nothing more.
+const SCALE_TRAIL_FINALE_REWARD = {card:'egg-red-dragon'};
+const SCALE_TRAIL_DONE_FLAG = 'scaleTrail:rewarded';
+function scaleTrailComplete(){ return scalesFound().length >= DRAGON_SCALE_NODES.length; }
+function scaleTrailRewarded(){ return !!loadDialogueFlags()[SCALE_TRAIL_DONE_FLAG]; }
+function scaleTrailClaimable(){ return scaleTrailComplete() && !scaleTrailRewarded(); }
+// Gives the reward. Returns {card, currencies} the first time, null after that (or before all eight are found). If the card
+// can't be given (no obtainable source) nothing is marked, so the journal's Claim stays up once the source is fixed.
+function claimScaleTrailFinale(){
+  if(!scaleTrailClaimable()) return null;
+  const r = SCALE_TRAIL_FINALE_REWARD || {}, out = {card:null, currencies:{}};
+  if(r.card){ const before = copiesOwned(r.card); unlockCardForPlayer(r.card, 'scaleTrail');
+    if(copiesOwned(r.card) <= before){ try{ console.warn('Scale Trail: could not give ' + r.card + ' (is it obtainable?)'); }catch(e){} return null; }
+    out.card = r.card; }
+  setDialogueFlag(SCALE_TRAIL_DONE_FLAG, Date.now());
+  Object.keys(r).forEach(k=>{ if(k !== 'card' && (r[k]|0) > 0 && typeof CURRENCY_META !== 'undefined' && CURRENCY_META[k]){ grantCurrency(k, r[k]|0); out.currencies[k] = r[k]|0; } });
+  try{ refreshQuestBadge(); }catch(e){}
+  return out;
+}
+// Plays the finale once nothing is in the way (no fight, no results, no pack opening, no sign-in screen): the Traveller's
+// lines (DIALOGUES.scale_trail_finale), then the reward and its screen. Also run a few seconds after load, for a save that found
+// the eighth scale before the finale existed, or closed the game before it played.
+let scaleTrailFinaleTimer = null;
+function scaleTrailScreenFree(){
+  try{
+    if(typeof matchState !== 'undefined' && matchState) return false;
+    if(document.querySelector('.winloss-overlay')) return false;
+    const po = document.getElementById('packOpenOverlay'); if(po && !po.hidden) return false;
+    const ag = document.getElementById('authGateOverlay'); if(ag && !ag.hidden) return false;
+    return true;
+  }catch(e){ return false; }
+}
+function scaleTrailFinaleSoon(){
+  if(scaleTrailFinaleTimer || typeof document === 'undefined') return;
+  const tick = ()=>{ scaleTrailFinaleTimer = null; if(!scaleTrailClaimable()) return;
+    if(!scaleTrailScreenFree()){ scaleTrailFinaleTimer = setTimeout(tick, 1000); return; }
+    playDialogue('scale_trail_finale', {expand:true, force:true, onDone: ()=>{ const res = claimScaleTrailFinale(); if(res) showScaleTrailReward(res); }}); };
+  scaleTrailFinaleTimer = setTimeout(tick, 2500);
+}
+if(typeof document !== 'undefined') setTimeout(()=>{ try{ if(scaleTrailClaimable()) scaleTrailFinaleSoon(); }catch(e){} }, 6000);
+// The reward screen: the eight scales orbit and fuse in a red glow (the Effects Lab's meta-dragon-egg-craft look, built on FX.F's
+// helpers), the egg card pops out of it, then the quest ribbon and a toast, as a claimed quest does.
+function scaleTrailEggFx(el){
+  const F = (typeof window !== 'undefined' && window.FX) ? window.FX.F : null, g = typeof gsap !== 'undefined' ? gsap : null;
+  if(!F || !g || !el || !F.layer || !F.pt || reducedMotion() || fxLevel() === 'none') return Promise.resolve();
+  const c = F.pt(el), h = F.layer('fxf-degg', ''), s = {a:0, r:120}, n = DRAGON_SCALE_NODES.length; h.style.zIndex = 10070;
+  const sc = Array.from({length:n}, ()=>{ const e = document.createElement('i'); e.className = 'fxf-scale'; h.appendChild(e); return e; });
+  return new Promise(res=> g.timeline({onComplete:()=>{ h.remove(); res(); }})
+    .to(s, {a:Math.PI*3, r:6, duration:1.3, ease:'power2.in', onUpdate:()=> sc.forEach((e, i)=>{ const a = s.a + i/n*Math.PI*2; g.set(e, {x:c.x - 17 + Math.cos(a)*s.r, y:c.y - 21 + Math.sin(a)*s.r, scale:.6}); })})
+    .add(()=>{ try{ if(F.vignette) F.vignette('rgba(160,20,0,.6)', {peak:.7}); if(F.ring) F.ring(c.x, c.y, {color:'#ff3b1a', size:160}); if(F.burst) F.burst(c.x, c.y, {n:16, colors:['#ff6a2a', '#ffcf6a'], dist:[40, 110], glow:true, size:5}); }catch(e){} }, 1.3)
+    .to(sc, {opacity:0, duration:.1}, 1.3));
+}
+function showScaleTrailReward(res){
+  if(!res || typeof document === 'undefined') return;
+  const defs = getCardDefs(), d = res.card ? defs[res.card] : null, into = d && d.hatchInto && d.hatchInto.defId ? defs[d.hatchInto.defId] : null;
+  document.querySelectorAll('.st-reward-overlay').forEach(x=> x.remove());
+  const ov = document.createElement('div'); ov.className = 'modal-overlay st-reward-overlay'; ov.setAttribute('role', 'dialog'); ov.setAttribute('aria-modal', 'true'); ov.setAttribute('aria-labelledby', 'stRewardTitle');
+  const extra = Object.entries(res.currencies || {}).map(([k, v])=> `<span class="er-rw-chip">${(CURRENCY_META[k]||{}).glyph||''} ${v}</span>`).join('');
+  ov.innerHTML = `<div class="modal st-reward">
+    <div class="st-reward-band">🐉 The Scale Trail · ${DRAGON_SCALE_NODES.length}/${DRAGON_SCALE_NODES.length}</div>
+    <h2 id="stRewardTitle">All eight scales found</h2>
+    <div class="st-reward-stage">${d ? `<div class="st-reward-card" id="stRewardCard">${cardTileHTML(d, {inPlay:true})}</div>` : ''}</div>
+    ${d ? `<p class="st-reward-name"><b>${escapeHtml(d.name)}</b>${into ? ` <small>hatches into the ${escapeHtml(into.name)}</small>` : ''}</p>` : ''}
+    ${extra ? `<div class="er-rw-chips st-reward-extra">${extra}</div>` : ''}
+    <p class="st-reward-sub">${into ? 'It\'s in your collection. Put it in a deck and keep it warm: when its Wait runs out, it hatches.' : 'It\'s yours. The dragons are only sleeping.'}</p>
+    <div class="st-reward-foot"><button type="button" class="er-seal" id="stRewardOk">Keep it warm</button></div>
+  </div>`;
+  document.body.appendChild(ov);
+  const card = ov.querySelector('#stRewardCard'), ok = ov.querySelector('#stRewardOk');
+  const onKey = e=>{ if(e.key === 'Escape') close(); };
+  const close = ()=>{ ov.remove(); document.removeEventListener('keydown', onKey); };
+  document.addEventListener('keydown', onKey); ok.onclick = close; ov.onclick = e=>{ if(e.target === ov) close(); };
+  try{ ok.focus(); }catch(e){}
+  const land = ()=>{
+    if(card && hasGsap() && !reducedMotion()) gsap.fromTo(card, {scale:.2, opacity:0, rotation:-8}, {scale:1, opacity:1, rotation:0, duration:.55, ease:'back.out(2)'});
+    else if(card) card.style.opacity = '';
+    try{ const r = (card || ok).getBoundingClientRect(); questRewardFlight(r, {title:'Scale Trail complete!', reward: res.currencies || {}, xp:0}); }catch(e){}
+    const rwName = d ? d.name : 'reward';
+    showToast(TX('toast.the-scale-trail-is-complete-the', {rwName}), 'ok');
+  };
+  if(card && hasGsap() && !reducedMotion() && fxLevel() !== 'none') card.style.opacity = '0';
+  scaleTrailEggFx(card || ok).then(land, land);
+}
+// The journal (2026-10-18, audit R1: no journal since the Inventory shelf went on 10-15): a sub-tab of the Notices, drawn as
+// one errand-style writ. Found scales say where and what (the fight, and the scale's line); the rest give a hint. The tab only
+// shows once a scale is found (the trail stays secret until then); Admin Mode always sees it.
+function scaleTrailTabShown(){ try{ return scalesFound().length > 0 || (typeof adminModeEnabled !== 'undefined' && !!adminModeEnabled); }catch(e){ return false; } }
+function scaleTrailJournalHTML(){
+  const f = loadDialogueFlags(), defs = getCardDefs(), total = DRAGON_SCALE_NODES.length;
+  const found = DRAGON_SCALE_NODES.filter(n=> f[scaleFlagKey(n)]).length, done = found >= total, rewarded = !!f[SCALE_TRAIL_DONE_FLAG];
+  const rw = SCALE_TRAIL_FINALE_REWARD || {}, rd = rw.card ? defs[rw.card] : null;
+  const mapName = id=>{ const m = (typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : []).find(x=> x.id === id); return m ? m.name : ''; };
+  const rows = DRAGON_SCALE_NODES.map((n, i)=>{
+    if(f[scaleFlagKey(n)]){ let where = mapName(n.map); try{ const fn = findConquestNode(n.map, n.key); if(fn) where = `${skirmishCode(n.map, n.key)} ${fn.node.name} · ${fn.map.name}`; }catch(e){}
+      return `<li class="st-entry is-found"><span class="st-ico" aria-hidden="true">🐉</span><div class="st-body"><b class="st-where">${escapeHtml(where)}</b><p class="st-line">${escapeHtml(n.line)}</p></div></li>`; }
+    return `<li class="st-entry"><span class="st-ico" aria-hidden="true">❔</span><div class="st-body"><b class="st-where">Scale ${i + 1}: not found yet</b><p class="st-hint">${escapeHtml(n.hint || mapName(n.map))}</p></div></li>`;
+  }).join('');
+  const chip = !done ? '<span class="er-rw-chip" title="Find all eight to learn what it is">❔ Something old and warm</span>'
+    : `<span class="er-rw-chip">${rd ? `${rd.icon || '🎁'} ${escapeHtml(rd.name)}` : '🎁 A reward'}</span>`;
+  const when = rewarded ? (()=>{ try{ return new Date(f[SCALE_TRAIL_DONE_FLAG]).toLocaleDateString(undefined, {day:'numeric', month:'short'}); }catch(e){ return ''; } })() : '';
+  const foot = rewarded ? `<span class="er-meta">Finished${when ? ' ' + escapeHtml(when) : ''}. The dragons are only sleeping.</span>`
+    : done ? '<span class="er-meta">All eight found</span><button type="button" class="er-seal" data-scale-claim="1">🎁 Claim reward</button>'
+    : '<span class="er-meta">An S rank or better in the right fight finds a scale, once.</span>';
+  return `<p class="qn-sub">A trail of Dragon Scales runs along the road. Each one waits in a single fight for an S rank or better.</p>
+    <div class="qn-cork er-cork"><section class="qn-board er-board st-board">
+      <article class="er-writ st-writ ${done && !rewarded ? 'is-ready' : ''} ${rewarded ? 'is-done' : ''}">
+        <header class="er-band"><span class="er-kind">🐉 Hidden trail</span><span class="er-status">${rewarded ? 'Complete' : done ? 'Done: claim it' : 'In progress'}</span></header>
+        <div class="er-top"><span class="er-portrait" aria-hidden="true"><span>🐉</span></span>
+          <div class="er-titles"><h3 class="er-title">The Scale Trail</h3><div class="er-by">Eight scales, one dragon</div></div></div>
+        <div class="er-prog" role="progressbar" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${found}" aria-label="Dragon Scales found"><span class="er-bar"><span style="width:${Math.round(found/total*100)}%"></span></span><b>${found}<small>/${total}</small></b></div>
+        <ol class="st-list">${rows}</ol>
+        <div class="er-reward"><span class="er-k">Reward</span><span class="er-rw-chips">${chip}</span></div>
+        <footer class="er-foot">${foot}</footer>
+      </article>
+    </section></div>`;
+}
+function scaleTrailTabBadge(){ try{ if(scaleTrailClaimable()) return '<span class="qn-tab-n is-ready" title="Ready to claim">!</span>'; const n = scalesFound().length; return n ? `<span class="qn-tab-n">${n}/${DRAGON_SCALE_NODES.length}</span>` : ''; }catch(e){ return ''; } }
+// SCALE_TRAIL:END
 // ---- Blacksmith (2026-10-11, user: "There is also a blacksmith portion for crafting weapons or combining cards. These
 // weapons are just cards. Some cards are just materia ... we need this to look good, nice effects, with a system that sticks
 // and doesn't complete super fast"). Recipes turn Materia cards (Iron Shard, River Pearl, Ember Core, Dragon Scale) plus a

@@ -20829,6 +20829,12 @@
       "defId": "red-dragon"
     },
     "eggKind": "dragon-red",
+    "source": {
+      "kind": "quest",
+      "id": "scale-trail",
+      "name": "The Scale Trail"
+    },
+    "creatorNote": "2026-10-18: the Scale Trail's finale reward (all eight Dragon Scales found; SCALE_TRAIL_FINALE_REWARD in arena_app.js).",
     "numericId": 915,
     "uuid": "4ac6c4ea-0c50-4dbe-9bb2-18aadde23a4c",
     "unattainable": true,
