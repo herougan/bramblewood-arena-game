@@ -30242,7 +30242,7 @@ M.nextMapUnlocked = function(edge, fromEl){
 M.scaleFound = function(opts){
   opts = opts || {}; const g = G(); if(!g) return Promise.resolve();
   const host = opts.host, r = host ? host.getBoundingClientRect() : {left:0, top:0, width:innerWidth, height:innerHeight};
-  const idx = opts.index || 1, tot = opts.total || 10;
+  const idx = opts.index || 1, tot = opts.total || 8; // 2026-10-18: the Scale Trail has 8 scales
   const o = layer('fxe-at fxe-scale', `<div class="fs-s"></div><div class="fs-n">${idx - 1}/${tot}</div><div class="fs-l">Dragon Scale</div>`);
   Object.assign(o.style, {left:(r.left + r.width/2 - 80) + 'px', top:(r.top + r.height*.42 - 90) + 'px', width:'160px', height:'180px'});
   const s = o.querySelector('.fs-s'), num = o.querySelector('.fs-n'); sound('roar');
@@ -36996,7 +36996,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '0fd19cca501f', BUILD_CARD_HASH = 'adce97ad4d4027ff7e4d2d528a7bcc6c78b2f86cb2439eec365ce5fff1b40b94';
+const BUILD_ID = '0d8f66064beb', BUILD_CARD_HASH = 'adce97ad4d4027ff7e4d2d528a7bcc6c78b2f86cb2439eec365ce5fff1b40b94';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
