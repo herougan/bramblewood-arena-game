@@ -873,7 +873,9 @@ M.dayBreaks = function(host, opts){
   // sun should keep moving, and fade off while moving." and "the light creeping up needs to be 60% less strong as well."): the sun and
   // its rays peak at 15% of their old strength, and the sun climbs and drifts the whole time, fading out on the way instead of
   // stopping to fade; the golden wash creeps in from the left (like the board's own dawn creep) at 40% of its old strength, slower.
-  const SUN = .06, RAYS = .1, WASH = .4, D = 3.6; // SUN was .15 (2026-10-17), RAYS was SUN
+  // 2026-10-17 (user: "Day/Night: Lower the transparency of the effect by another 50%. It's mainly for the slow transition of the lighting."):
+  // the golden wash that creeps in from the left is half as strong again (WASH was .4).
+  const SUN = .06, RAYS = .1, WASH = .2, D = 3.6; // SUN was .15 (2026-10-17), RAYS was SUN
   w.style.background = 'linear-gradient(90deg, rgba(255,214,120,.0), rgba(255,214,120,.55) 45%, rgba(255,240,190,.75) 55%, rgba(255,214,120,0))';
   return run([box], opts, (t)=>{
     t.fromTo(w, {xPercent:-60, opacity:0}, {xPercent:60, duration:D*.75, ease:'sine.inOut'}, 0)

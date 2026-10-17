@@ -1589,6 +1589,7 @@ M.hooks.mapJumperArrive = function(node, kind, opts, env){ if(!env.fxAtLeast('lo
 // Night lifting on the battlefield: the veil fades (arena_app.js syncNightVeil) and the morning light drifts across.
 // 2026-10-16 (user, 20:19: "the light creeping up needs to be 60% less strong as well"): in a fight the morning streaks are at 40% and
 // slower, alongside the board's 10 s light-up and its left-to-right creep (syncSkyFx / syncNightVeil in arena_app.js).
-M.hooks.fieldNightLifts = function(bf, env){ if(env.fxAtLeast('med')) M.nightRetreat(bf, {n:7, strength:.4, speed:1.6}); };
+// 2026-10-17 (user: "Day/Night: Lower the transparency of the effect by another 50%"): the streaks at 20% (were 40%).
+M.hooks.fieldNightLifts = function(bf, env){ if(env.fxAtLeast('med')) M.nightRetreat(bf, {n:7, strength:.2, speed:1.6}); };
 
 })(typeof window !== 'undefined' ? window : globalThis);

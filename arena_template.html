@@ -1883,6 +1883,10 @@
   @media (min-width: 701px) and (max-width: 1199px){
     #appWrap.in-match{--match-card-h: clamp(92px, min(calc((100dvh - 214px) / 4.55), calc((100vw - 110px) / 8.4 / 0.8)), 149px);}
     #appWrap.in-match .hand-strip{flex-wrap:nowrap;}
+    /* 2026-10-17 (user: "In Mobile and iPad, the field can be 15% more zoomed in."): the battlefield's own cards are 15% bigger than
+       the hand's (the same size rule x 1.15). A row still never runs wider than the field: .board-row > .board-card shrinks a crowded
+       row to fit, and fitBattlefieldZoom() zooms out past that. */
+    #appWrap.in-match .battlefield{--match-card-h: calc(clamp(92px, min(calc((100dvh - 214px) / 4.55), calc((100vw - 110px) / 8.4 / 0.8)), 149px) * 1.15); --match-card-w: calc(var(--match-card-h) * 0.8);}
   }
   /* RWD large pass (2026-10-12, 10:57 list: "Put Responsive web design (RWD) large pass"): on big screens the match grows into
      the space instead of sitting small in the middle (cards up to 1.6x), and the menu pages scale up as a whole. */
@@ -2138,6 +2142,11 @@
      the play-controls row above the leaf "mid" layer (z-index:11) but the battlefield above
      stays at 10, below mid — see #autumnWeatherLayerMid's own comment for the full layer order. */
   .bottom-play-row, .top-play-row{display:flex; align-items:center; gap:12px; margin-bottom:12px; position:relative; z-index:12;}
+  /* 2026-10-17 (user: "When you've played your turn, your hand area (the btm part of the screen) darkens by a hint. Just very slightly,
+     like 5%."): set by syncTurnPlayedDim (arena_app.js) from your play or Pass until your next turn starts; fades both ways. */
+  .bottom-play-row{transition:filter .6s ease;}
+  .bottom-play-row.is-turn-played{filter:brightness(.95);}
+  @media (prefers-reduced-motion: reduce){ .bottom-play-row{transition:none;} }
   /* Standardised card sizing (2026-09-18): previously height:auto + a much smaller 88px floor
      here quietly overrode .hq-tile's own fixed height, so the castle widget never actually
      matched a real card's size even on desktop, whatever .hq-tile itself said. Now it keeps
@@ -2192,7 +2201,7 @@
   /* Changeling unmasked (2026-10-11): a violet label and a quick shimmer as the disguise falls away */
   .dmg-float.ft-reveal{color:#c9a7ff; font-size:17px; white-space:nowrap;}
   .board-card.changeling-unmask{animation:clUnmask .85s ease-out;}
-  @keyframes clUnmask{0%{filter:brightness(1.9) saturate(.2) hue-rotate(60deg); transform:scale(.94);} 45%{filter:brightness(1.3) hue-rotate(20deg); transform:scale(1.04);} 100%{filter:none; transform:none;}}
+  @keyframes clUnmask{0%{filter:brightness(1.9) saturate(.2) hue-rotate(60deg); scale:.94;} 45%{filter:brightness(1.3) hue-rotate(20deg); scale:1.04;} 100%{filter:none; scale:1;}} /* scale, not transform (2026-10-17, see readyPulseAnim) */
   @media (prefers-reduced-motion: reduce){ .board-card.changeling-unmask{animation:none;} }
   .dmg-float.debuff{color:var(--wait);}
   .dmg-float.evaded{color:var(--ink-muted); font-size:12px;}
@@ -2326,14 +2335,19 @@
      separately, on top of it, from playReadyFlourish's own caller. */
   .board-card.ready-pulse{animation:readyPulseAnim 460ms cubic-bezier(.34,1.56,.64,1);}
   @keyframes readyPulseAnim{
-    0%{transform:scale(1) translateY(0); box-shadow:0 0 0 0 rgba(250,204,21,0), 0 0 0 0 rgba(250,204,21,0);}
-    30%{transform:scale(1.08) translateY(-4px); box-shadow:0 0 14px 4px rgba(250,204,21,.85), 0 0 0 3px rgba(250,204,21,.7);}
-    55%{transform:scale(.98) translateY(1px); box-shadow:0 0 10px 2px rgba(250,204,21,.5), 0 0 0 2px rgba(250,204,21,.4);}
-    100%{transform:scale(1) translateY(0); box-shadow:0 0 0 0 rgba(250,204,21,0), 0 0 0 0 rgba(250,204,21,0);}
+    0%{scale:1; translate:0 0; box-shadow:0 0 0 0 rgba(250,204,21,0), 0 0 0 0 rgba(250,204,21,0);}
+    30%{scale:1.08; translate:0 -4px; box-shadow:0 0 14px 4px rgba(250,204,21,.85), 0 0 0 3px rgba(250,204,21,.7);}
+    55%{scale:.98; translate:0 1px; box-shadow:0 0 10px 2px rgba(250,204,21,.5), 0 0 0 2px rgba(250,204,21,.4);}
+    100%{scale:1; translate:0 0; box-shadow:0 0 0 0 rgba(250,204,21,0), 0 0 0 0 rgba(250,204,21,0);}
   }
+  /* 2026-10-17 (user: "Sometimes, after a card ends its actions, it appears on the left area."): the outer .board-card is the element
+     GSAP Flip glides (position:absolute + an inline transform that holds it in its slot while the row reflows). A CSS animation or
+     rule that sets `transform` on it REPLACES that inline transform for its whole run, so the card showed at the row's left edge
+     until it ended: the Ready pulse, Wave / Restless / Bloodlust's push (wavePush), the Changeling unmask and the dying fade all did.
+     They now use the separate scale / translate / rotate properties, which add to GSAP's transform (as the dodge hop already does). */
   /* Death VFX (2026-09-14): a dying card phases out slowly in place, with a small skull
      floating above it, instead of just vanishing at the next full board repaint. */
-  .board-card.dying{transition:opacity 650ms ease, transform 650ms ease; opacity:0; transform:scale(.82) translateY(8px);}
+  .board-card.dying{transition:opacity 650ms ease, scale 650ms ease, translate 650ms ease; opacity:0; scale:.82; translate:0 8px;} /* not transform (2026-10-17, see readyPulseAnim) */
   /* Burn-away death (2026-10-04) — see burnAwayVfx(). The mask image is 2.2× the card's height (edge at its middle);
      sliding it from top to bottom moves the ragged edge up through the card. */
   .board-card.burning, .card-tile.burning{-webkit-mask-image:var(--burn-mask); mask-image:var(--burn-mask); -webkit-mask-size:100% 220%; mask-size:100% 220%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
@@ -5387,6 +5401,11 @@
     padding:2px 9px; border-radius:20px; white-space:nowrap; box-shadow:0 2px 4px rgba(0,0,0,.35);
   }
 
+  /* 2026-10-17 (user: "On leader death, there's a ribbon leader, then it fades. Instead that ribbon could come out at the start as well."):
+     the "👑 Leader" ribbon that used to mark a leader's fall now comes out under the card as it lands (leaderThroneVfx). */
+  .leader-arrive-ribbon{position:fixed; left:0; top:0; z-index:1250; pointer-events:none; white-space:nowrap; font:800 11px/1.2 'Baloo 2', system-ui, sans-serif;
+    color:#fff; background:#1f4f8e; border:1.5px solid #e8c25a; border-radius:20px; padding:2px 10px; box-shadow:0 3px 8px rgba(0,0,0,.4); text-shadow:0 1px 1px rgba(0,0,0,.4);}
+  .leader-arrive-ribbon.is-enemy{background:#8e1420;}
   /* .lr-group (the old grouped Left/Right dropzone buttons) removed 2026-09-26 — see the
      drop-row's own HTML comment in arena_app.js for why. */
 
@@ -5692,6 +5711,16 @@
     .drop-row{margin-bottom:3px;}
     .dropzone, .discardzone, .skipzone{min-height:60px;}
     .battle-log-panel{padding:6px 12px 5px;}
+  }
+  /* 2026-10-17 (user: "In Mobile and iPad, the field can be 15% more zoomed in."): on a phone the battlefield's cards are 15% bigger
+     than the hand's (65x81 -> 75x93; 54x68 -> 62x78 on a short phone) and the rows grow with them. A crowded row still shrinks its
+     cards to the field's width (.board-row > .board-card), and fitBattlefieldZoom() zooms out past that, so nothing runs off the side. */
+  @media (max-width:700px){
+    #appWrap .battlefield{--match-card-w:75px; --match-card-h:93px;}
+    #appWrap .battlefield .board-row{min-height:calc(var(--match-card-h) + 40px);}
+  }
+  @media (max-height:700px) and (max-width:700px){
+    #appWrap .battlefield{--match-card-w:62px; --match-card-h:78px;}
   }
   /* ===== Card sizes that scale (2026-10-03, explicit: "There should be several card sizes, and they
      need to scale sensibly... text just needs to stay legible at all sizes"). Every .card-tile is its
@@ -8877,7 +8906,12 @@
   .card-tile .badges, .card-tile .badges-2row .badges-row{gap:0 !important;}
   .card-tile .badges .abadge{padding:1px 1px;}
   .ab-shields i + i{margin-left:-.66em !important;}
-  .ab-pair{display:inline-flex; align-items:center;} .ab-pair i{font-style:normal; margin-left:-.42em; font-size:.82em; position:relative; top:.18em;}
+  /* 2026-10-17 (user: "Effects tied together context symbols should stack on top of each other. For the ebb x armour symbol - make them
+     closer. make this consistent for all."): one stack for every combined symbol (skill chips' .ab-pair, the board's Flood / Ebb /
+     High Tide chip and the High Tide pill's .sym-stack): each next glyph sits over the one before, lower-right, by the same amount. */
+  .ab-pair, .sym-stack{display:inline-flex; align-items:center; line-height:1; white-space:nowrap;}
+  .ab-pair > i, .sym-stack > i{font-style:normal; margin-left:-.52em; font-size:.8em; position:relative; top:.22em; filter:drop-shadow(0 1px 1px rgba(0,0,0,.45));}
+  .sym-stack > i + i{margin-left:-.38em;}
   /* Bounty bubble: the opponent's bounty card offers you Lumber. Shown while you hold a card, and for 3s as your turn starts. */
   .board-card:has(.bounty-bubble) .abadge:has(.ab-bounty){display:none;}
   .bounty-bubble{position:absolute; left:50%; bottom:calc(100% + 12px); z-index:30; pointer-events:none; display:flex; flex-direction:column; align-items:center;
@@ -9402,7 +9436,7 @@
 @keyframes bloomPulse{0%,100%{transform:scale(1);} 50%{transform:scale(1.14);}}
 .ab-pack.is-on, .ab-pair.is-on{filter:drop-shadow(0 0 4px rgba(120,190,255,.95)); font-weight:700;}
 .board-card.wave-pushed{animation:wavePush .55s ease-out;}
-@keyframes wavePush{0%{transform:translateX(0);} 30%{transform:translateX(var(--wave-dx, 10px)) rotate(var(--wave-rot, 3deg));} 100%{transform:translateX(0);}}
+@keyframes wavePush{0%{translate:0 0; rotate:0deg;} 30%{translate:var(--wave-dx, 10px) 0; rotate:var(--wave-rot, 3deg);} 100%{translate:0 0; rotate:0deg;}} /* translate / rotate, not transform: it rode over Flip's slot hold (2026-10-17, see readyPulseAnim) */
 @media (prefers-reduced-motion: reduce){ .ab-bloom.is-on, .board-card.wave-pushed{animation:none;} }
 /* Irradiation tokens (2026-10-14) and the card details' green "taken by Irradiation" number. */
 .abadge.irradiation{background:rgba(40,70,20,.88); color:#c8ff6a; box-shadow:0 0 6px rgba(160,255,60,.6);}

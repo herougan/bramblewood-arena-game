@@ -967,6 +967,22 @@ M.leaderFall = function(el, opts){
     tl.add(()=>{ snd('drum'); snd('leaderFanfare'); }, .05);
   });
 };
+// 2026-10-17 (user: "On death, well, he just dies. Then the border bounces outwards slightly and fades."): the leader's rainbow rim
+// (.board-card.is-leader::before) is copied to a fixed ring that holds while the card dies, then bounces out a little and fades.
+M.leaderRim = function(el, opts){
+  opts = opts || {}; const b = boardOf(el) || el; if(!b || !b.isConnected) return Promise.resolve();
+  const r = b.getBoundingClientRect(); if(!r.width) return Promise.resolve();
+  css('leaderRim', `.fxc-rim{border-radius:14px; padding:3px; box-sizing:border-box; background:conic-gradient(from 40deg, #ffd75e, #ff9f4a, #ff5ea8, #b46bff, #5ec8ff, #ffd75e);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; filter:drop-shadow(0 0 5px rgba(255,180,80,.65));}
+    .board-card.fxc-rim-out::before{opacity:0 !important; animation:none !important;}`);
+  const inset = b.closest && b.closest('.battlefield') ? 7 : 3;
+  return run(opts, (tl, mk)=>{
+    const R = mk('fxc-rim'); b.classList.add('fxc-rim-out');
+    tl.set(R, {x:r.left - inset, y:r.top - inset, width:r.width + inset*2, height:r.height + inset*2, opacity:1, scale:1, transformOrigin:'50% 50%'}, 0)
+      .to(R, {scale:1.08, duration:.34, ease:'back.out(2.4)'}, .62)
+      .to(R, {opacity:0, duration:.42, ease:'power1.in'}, .72);
+  });
+};
 // The Prism death's sheen (was the shiny / foil death until 2026-10-17; now M.deathPrism, see PRISM_SKILLS below): one rainbow sheet
 // lifts off the card and flutters away in sparkles.
 M.foilPeel = function(el, opts){
@@ -1666,8 +1682,13 @@ M.deathPlan = function(el, uid, env){
     else if(isStructureDef(d)) plan.look = 'deathStructure';
   }
   if(!boss){
-    const leader = (b && b.classList.contains('is-leader')) || (m && String(m.leaderUid) === String(uid)) || LEADERS.has(String(uid)) || archOf(d).includes('King');
-    if(leader){ if(!plan.look && !token) plan.look = 'kingFall'; else plan.addons.push('leaderFall'); }
+    // 2026-10-17 (user: "On leader death, there's a ribbon leader, then it fades. Instead that ribbon could come out at the start as
+    // well. On death, well, he just dies. Then the border bounces outwards slightly and fades."): a fight's leader dies its normal
+    // death (no King-fall chip or banner); its rim then bounces outward and fades (M.leaderRim). The "👑 Leader" ribbon is shown on
+    // arrival instead (arena_app.js, leaderThroneVfx). A King-type unit that isn't the leader keeps the King fall.
+    const isLeader = (b && b.classList.contains('is-leader')) || (m && String(m.leaderUid) === String(uid)) || LEADERS.has(String(uid));
+    if(isLeader) plan.addons.push('leaderRim');
+    else if(archOf(d).includes('King')){ if(!plan.look && !token) plan.look = 'kingFall'; else plan.addons.push('leaderFall'); }
     // 2026-10-17 (user: "Foil treatment of shiny death: There is a sheen that spawns out then fades out on death. I think don't do this for
     // shinies. Idk if you do this for foils - but i think is not needed also. But this effect is nice for like - prism related deaths
     // (skills relating to light or rainbows. add that btw - and save this effect)"): shiny and foil units die like anyone else now; the

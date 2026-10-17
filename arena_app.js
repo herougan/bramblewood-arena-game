@@ -6279,12 +6279,14 @@ function abilityBadges(d, bopts){
   if(e.twin) out.push(`<span title="Twin: a token twin arrives with it">${iconHTML('twin', '👯')}</span>`);
   if(e.sprout) out.push(`<span title="Sprout: Growth Sprouts arrive with it">${iconHTML('sprout', '🌱')}${n1(e.sprout)}</span>`);
   if(e.growth) out.push(`<span title="Growth: counts toward every Swarm">${iconHTML('growth', '🌿')}</span>`);
-  if(e.moonpull) out.push(`<span title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}🌊</span>`);
+  // 2026-10-17 (user: "Effects tied together context symbols should stack on top of each other ... make this consistent for all"):
+  // every two-glyph chip is one .ab-pair (the second glyph tucked over the first), Moonpull, Supreme Tide and Twin Strike included.
+  if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
   if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
   if(e.wave) out.push(`<span title="Wave: its hits push the unit one column ${e.wave === true ? 'toward more room' : e.wave === 'alternate' ? 'left, then right' : e.wave}">〰️</span>`);
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
-  if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb">${iconHTML('supreme-tide', '✨')}🌊</span>`);
+  if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb"><span class="ab-pair">${iconHTML('supreme-tide', '✨')}<i>🌊</i></span></span>`); // stacked (2026-10-17)
   // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
   if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only (the castle when neither has a unit)">${iconHTML('crab-claws', '🦞')}</span>`);
   if(e.meiosis) out.push(`<span title="Meiosis ${e.meiosis === true ? 1 : e.meiosis}: splits in two when it dies">${iconHTML('meiosis', '🧫')}${n1(e.meiosis)}</span>`);
@@ -6336,7 +6338,7 @@ function abilityBadges(d, bopts){
   // arrows) to read as "hits both sides" at a glance.
   if(e.fork || e.swipe === true) out.push(isCrabDef(d) ? `<span class="ab-fork ab-crab" title="Fork: its claws hit the 2 nearest enemy units, within 1 column">🦞</span>` : `<span class="ab-fork" title="Fork: hits the 2 nearest enemy units, within 1 column">⇔</span>`); // a crab's Fork is a crab claw (2026-10-14) // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
   if(typeof e.swipe === 'number' && e.swipe > 0) out.push(`🫳${n1(e.swipe)}`);
-  if(e.twinStrike) out.push(`${iconHTML('twin-strike', '⚔')}⚔`);
+  if(e.twinStrike) out.push(`<span class="ab-pair">${iconHTML('twin-strike', '⚔')}<i>⚔</i></span>`); // stacked (2026-10-17)
   if(e.converge) out.push(`${iconHTML('converge', '🧲')}`);
   if(e.defiance) out.push(`${iconHTML('defiance', '😤')}${(Number(e.defianceN)||1) > 1 ? e.defianceN : ''}`);
   // Pack (reworked 2026-10-14): on the board it shows the live chain, 🐺×n (n units in its chain).
@@ -24275,7 +24277,7 @@ async function waitForBoardEntrances(max){
   await sleep(60);
   while(performance.now() - t0 < (max||1400)){
     // 2026-10-14: a card whose tile is still mid-drop (the leader's throne drop tweens the tile, not the card) counts too.
-    const busy = [...document.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].some(el=> el.classList.contains('is-entering') || el.classList.contains('landing-impact') || (hasGsap() && el.style.position==='absolute' && gsap.isTweening(el)) || (hasGsap() && el.querySelector('.card-tile') && gsap.isTweening(el.querySelector('.card-tile'))));
+    const busy = !!document.querySelector('.hand-flight-proxy') || [...document.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].some(el=> el.classList.contains('is-entering') || el.classList.contains('landing-impact') || (hasGsap() && el.style.position==='absolute' && gsap.isTweening(el)) || (hasGsap() && el.querySelector('.card-tile') && gsap.isTweening(el.querySelector('.card-tile'))));
     if(!busy) return;
     await sleep(50);
   }
@@ -24494,16 +24496,27 @@ async function attemptSummonLeader(preferredLane){
     lane = openLanes[Math.floor(Math.random()*openLanes.length)];
   }
   const events = [];
+  // 2026-10-17 (user: "When playing a card, make it look like it came from my hand. Leader as well ... You can launch it from my hand"):
+  // where the leader leaves from: the dragged card's centre on a drop, else the leader slot (read before the slot empties below).
+  let leaderOrigin = null;
+  try{ const ld = window.__bwLastDrop, gc = window.__bwDropCenter || (ld && performance.now() - ld.t < 60 && (ld.x || ld.y) ? ld : null), face = widgetEl && (widgetEl.querySelector('.card-tile') || widgetEl), fr = face && face.getBoundingClientRect();
+    if(gc) leaderOrigin = {x:gc.x, y:gc.y, kind:'hand', leader:true, rotate: window.__bwDropTilt != null ? window.__bwDropTilt : undefined, w: window.__bwDropW || (fr && fr.width) || null};
+    else if(fr && fr.width) leaderOrigin = {x:fr.left + fr.width/2, y:fr.top + fr.height/2, kind:'hand', leader:true, fromTile:true, w:fr.width}; }catch(e){}
   const ok = m.engine.summonLeader(m.players, m.sideOf, activePid, m.leaderDefId, lane, m.stats, events);
   if(!ok){ denyShake(widgetEl); return; }
   const playEv = events.find(ev=>ev.type==='play' && ev.leader);
   if(playEv) m.leaderUid = playEv.uid;
+  if(playEv && leaderOrigin) pendingEntranceOrigins.set(String(playEv.uid), leaderOrigin);
   SoundKit.play();
   events.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
   const wrap = document.getElementById('leaderWidgetWrap');
   if(wrap){ wrap.innerHTML = leaderWidgetHTML(m); wireLeaderWidget(); }
-  if(m.leaderUid != null){ const lu = m.leaderUid; noteMatchFx(Math.round(animMs().strike || 380) + LEADER_THRONE_FX_MS, m); // 2026-10-14: the round waits for it
-    setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId}), Math.round(animMs().strike || 380)); }
+  if(m.leaderUid != null){ const lu = m.leaderUid;
+    // 2026-10-17: flying in from your hand, the throne moment (ring, flash, crown, "👑 Leader" ribbon) starts as it lands, and its own
+    // drop from above is skipped (fromHand); without the flight (reduced motion, no GSAP) it plays as before.
+    const fromHand = !!leaderOrigin && hasGsap() && !reducedMotion(), at = fromHand ? Math.round(handFlightSec(true)*1000) : Math.round(animMs().strike || 380);
+    noteMatchFx(at + LEADER_THRONE_FX_MS, m); // 2026-10-14: the round waits for it
+    setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId, fromHand}), at); }
   setTimeout(()=> settleStrayBoardCards(), 1600); setTimeout(()=> settleStrayBoardCards(), 3000); // the leader always ends its landing at full height
   await afterPlayerAction(activePid);
 }
@@ -24513,6 +24526,8 @@ async function attemptSummonLeader(preferredLane){
 // this payload safely on its own; the drop handlers below just need to actively check for it
 // FIRST and route to attemptSummonLeader(lane) instead of falling through to playCardByUid).
 const LEADER_DRAG_PAYLOAD = 'LEADER';
+// 2026-10-17: where the last drop let go (page px), read by attemptSummonLeader so a dragged leader flies on from where you released it.
+try{ document.addEventListener('drop', e=>{ window.__bwLastDrop = {x:e.clientX, y:e.clientY, t:performance.now()}; }, true); }catch(e){}
 // Bugfix (2026-09-22, explicit report: "Sometimes the drag and drop doesnt work for the
 // leader."): dragstart/dragend used to be bound directly to the specific #leaderWidget element
 // wireLeaderWidget() saw at the moment it ran, re-attached only by wireLeaderWidget()'s own call
@@ -24938,7 +24953,7 @@ function renderMatchUI(){
       ${fieldResSideHTML(m, true)}${fieldResSideHTML(m, false)}
     </div>
     <div class="hud">${resourcePillsHTML}</div>
-    <div class="bottom-play-row">
+    <div class="bottom-play-row${document.querySelector('.bottom-play-row.is-turn-played') ? ' is-turn-played' : ''}">
       ${matchCastleTileHTML(castleCharOf(m, 1), (m.resolving && m.displayHqHp && m.displayHqHp.A != null) ? m.displayHqHp.A : p1.hq.hp, p1.hq.maxHp, 'A', bottomLabel)}
       <div class="deck-widget hq-tile ${(p1.deck||[]).length ? 'bw-back bk-unit' : 'is-empty'}" id="deckWidgetBottom" style="${deckPileStyle((p1.deck||[]).length)}">
         ${(p1.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
@@ -25791,8 +25806,17 @@ function showPlacementPreview(row, side){
   placementPreview = {row, ghostEl:ghost, side};
   if(doFlip) Flip.from(flipState, {duration:.22, ease:'power2.out'});
 }
+// 2026-10-17 (user: "When you've played your turn, your hand area (the btm part of the screen) darkens by a hint. Just very slightly, like
+// 5%."): from your play (or Pass) until your next turn starts, the bottom row (castle, deck, hand, graveyard) is 5% darker. It fades
+// both ways (CSS transition); a rebuilt row starts in the state the old one showed (renderMatchUI), so the fade back still plays.
+function syncTurnPlayedDim(m){
+  try{ const el = document.querySelector('.bottom-play-row'); if(!el) return;
+    const pid = m && m.players ? viewerHandPid(m) : null, me = pid != null && !m.over ? m.players[pid] : null;
+    const want = !!(me && (me.playedThisTurn || m.resolving || m._committing));
+    if(el.classList.contains('is-turn-played') !== want){ void el.offsetWidth; el.classList.toggle('is-turn-played', want); } }catch(e){}
+}
 function updateControlsDisabled(){
-  const m = matchState; if(!m||m.over) return;
+  const m = matchState; syncTurnPlayedDim(m); if(!m||m.over) return;
   // Live Ranked (#277): not my turn — lock every drop zone. No "playedThisTurn" state to gate
   // per-button on; the opponent's-turn banner (renderMatchUI) already explains why nothing's
   // clickable, same idea as the 'pc' pass overlay hiding controls during the other seat's turn.
@@ -26333,7 +26357,7 @@ function renderBoard(opts){
           tl.kill();
           enteringTimelines.delete(uid);
           const isSpawn = spawnUidsForKilledEntrants.includes(String(uid));
-          setTimeout(()=>{ if(isSpawn) playBeeSpawnLanding(uid); else playLandingImpact(uid); }, 0);
+          if(!handFlightsLive.has(String(uid))) setTimeout(()=>{ if(isSpawn) playBeeSpawnLanding(uid); else playLandingImpact(uid); }, 0); // a hand flight lands its own (2026-10-17)
         }
       });
       gsap.killTweensOf(enteringEls);
@@ -26764,15 +26788,22 @@ function renderBoard(opts){
         // instead of the generic fixed fall-from-above offset. Consumed (deleted) once so it can
         // never leak onto some later, unrelated card reusing the same uid space.
         let fromVars = {opacity:0, scale:.4, y:-52, rotate:-10};
-        let isHandPlay = false;
+        let isHandPlay = false, handFlight = null; // handFlight: your own play flies in as a page-level copy (2026-10-17, see handFlightProxy)
         // Set below only for a genuine spawn-origin entrance (born from a spawner structure/
         // drone) — see the jump-arc timeline branch further down for what this drives.
         let spawnPeakVars = null;
         const origin = pendingEntranceOrigins.get(String(uid));
         if(origin){
           const fr = el.getBoundingClientRect();
-          const dx = origin.x - (fr.left + fr.width/2);
-          const dy = origin.y - (fr.top + fr.height/2);
+          // 2026-10-17 (user: "When playing a card, make it look like it came from my hand ... (When playing the 3rd card from the centre,
+          // it seems to work, though w a 0.1s lag)"): the offset to the origin is measured in screen px, but the card's x/y live inside
+          // #battlefieldInner, which the camera zooms (battlefieldScale < 1 on any board wider than the column) and leans. The tween
+          // used the screen px as board px, so a card started dx*scale from its slot instead of at the origin: only the hand card
+          // straight under its slot (dx about 0) looked right. The offset is now divided by the card's on-screen scale.
+          const bsc = el.offsetWidth > 0 && fr.width > 0 ? fr.width / el.offsetWidth : 1;
+          const dx = (origin.x - (fr.left + fr.width/2)) / bsc;
+          const dy = (origin.y - (fr.top + fr.height/2)) / bsc;
+          if(origin.kind==='hand' && !origin.enemyHand) handFlight = origin;
           if(origin.kind==='hand'){
             // 2026-09-21 ("it should also fly from where you let go of the card. not randomly
             // from the ether" + "should look sexier"): origin is now the REAL cursor release
@@ -26821,8 +26852,11 @@ function renderBoard(opts){
           pendingEntranceOrigins.delete(String(uid));
         }
         const sharp = sharpBoard();
+        // 2026-10-17: your own play never waits on the stagger (the enemy's card rendered first in this pass pushed yours 0.05 s
+        // back, sat still at the hand: the "0.1 s lag").
+        const flightOk = !!(handFlight && handFlightProxy(el, uid, handFlight));
         const entranceTl = gsap.timeline({
-          delay: i*(sharp ? 0.03 : 0.05),
+          delay: (isHandPlay && !(origin && origin.enemyHand)) ? 0 : i*(sharp ? 0.03 : 0.05),
           onComplete: ()=>{
             enteringUids.delete(uid);
             el.classList.remove('is-entering');
@@ -26839,10 +26873,18 @@ function renderBoard(opts){
             // is done — would let it compute a static flow position as if Flip's still-absolute
             // targets don't exist yet, which is exactly the desync this whole scheme prevents.
             if(spawnUids.includes(String(uid))) playBeeSpawnLanding(uid);
-            else { playLandingImpact(uid); if(isHandPlay) playHandSummonGlow(uid); }
+            else if(!flightOk){ playLandingImpact(uid); if(isHandPlay) playHandSummonGlow(uid); } // a flight lands its own thud (handFlightProxy)
           },
         });
-        if(spawnPeakVars){
+        if(flightOk){
+          // 2026-10-17 (user: "Placing a card: It looks like it moves from your hand into play." / "When playing a card, make it look
+          // like it came from my hand. Leader as well ... launch it from my hand, then using reverse ease to seem like it made more of
+          // an impact"): a page-level copy of the card flies from the hand (or the dragged card, or the leader slot) to this slot
+          // (handFlightProxy), drawn above the battlefield's clip and its camera zoom. The real card waits hidden (visibility, which
+          // Flip leaves alone) at its slot and takes over the moment the copy arrives, its face squashing into place (the leader
+          // harder, a stomp). This timeline only holds the card's "entering" state for that long.
+          entranceTl.set(el, {opacity:1, x:0, y:0, rotate:0, scale:1}, 0).to({}, {duration: handFlightSec(!!handFlight.leader) + .25});
+        } else if(spawnPeakVars){
           // Jump-arc: launch (fast start, decelerating as it nears the peak — like leaving the
           // ground) then fall-and-land (accelerating back down — like gravity), instead of one
           // flat straight-line lerp. Total duration matches the single-tween case exactly (same
@@ -27719,7 +27761,7 @@ function boardCardHTML(c, defs, opts){
   if(c.shield > 0) badges.push(`<span class="abadge unit-shield" title="Shield: ${c.shield} temporary Health, spent before its Health">💠${c.shield}</span>`);
   if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
-  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${tideNow ? `<div class="tide-chip tide-${tideNow}" title="${tideNow==='flow' ? 'Flow: +1 Attack' : tideNow==='high' ? 'High tide: +2 Attack, +2 Armor' : 'Ebb: +1 Armor'}">${tideNow==='flow' ? '🌊⚔' : tideNow==='high' ? '🌊⚔🛡' : '🐚🛡'}</div>` : ''}
+  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${tideNow ? `<div class="tide-chip tide-${tideNow}" title="${tideNow==='flow' ? 'Flow: +1 Attack' : tideNow==='high' ? 'High tide: +2 Attack, +2 Armor' : 'Ebb: +1 Armor'}"><span class="sym-stack">${tideNow==='flow' ? '🌊<i>⚔</i>' : tideNow==='high' ? '🌊<i>⚔</i><i>🛡</i>' : '🐚<i>🛡</i>'}</span></div>` : ''}
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${c.chained?`<div class="status-overlay chain-overlay">⛓</div>`:''}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
@@ -29445,7 +29487,20 @@ function leaderThroneVfx(uid, opts){
   if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
   // the drop: the card falls onto its spot from above, a touch too big, and settles
-  { const t0 = el.querySelector('.card-tile'); if(t0) gsap.fromTo(t0, {y: enemy ? -90 : -70, scale:1.25, opacity:.2}, {y:0, scale:1, opacity:1, duration:.42, ease:'power3.in', clearProps:'transform,opacity'}); }
+  // 2026-10-17: a leader that flew in from your hand (opts.fromHand, handFlightProxy) has already landed: no second drop, the ring at once.
+  if(!opts.fromHand){ const t0 = el.querySelector('.card-tile'); if(t0) gsap.fromTo(t0, {y: enemy ? -90 : -70, scale:1.25, opacity:.2}, {y:0, scale:1, opacity:1, duration:.42, ease:'power3.in', clearProps:'transform,opacity'}); }
+  // 2026-10-17 (user: "On leader death, there's a ribbon leader, then it fades. Instead that ribbon could come out at the start as well."):
+  // the "👑 Leader" ribbon now comes out as the leader lands (and no longer on its death, see FX.C deathPlan): it pops out under the card,
+  // holds, and fades, following the card.
+  setTimeout(()=>{ try{ const cur = boardCardEl(uidKey0) || el; if(!cur || !cur.isConnected) return; const q0 = cur.getBoundingClientRect(); if(!q0.width) return;
+    document.querySelectorAll('.leader-arrive-ribbon').forEach(x=>{ if(x.dataset.uid === String(uidKey0)) x.remove(); });
+    const rb = document.createElement('div'); rb.className = 'leader-arrive-ribbon' + (enemy ? ' is-enemy' : ''); rb.dataset.uid = String(uidKey0); rb.setAttribute('aria-hidden', 'true'); rb.textContent = '👑 Leader';
+    document.body.appendChild(rb);
+    const at = ()=>{ const c2 = boardCardEl(uidKey0); if(!c2 || !c2.isConnected) return; const q = c2.getBoundingClientRect(); if(!q.width) return; rb.style.left = (q.left + q.width/2) + 'px'; rb.style.top = (q.bottom - 4) + 'px'; };
+    at(); gsap.ticker.add(at);
+    gsap.timeline({onComplete:()=>{ gsap.ticker.remove(at); rb.remove(); }})
+      .fromTo(rb, {xPercent:-50, yPercent:-50, scale:.3, opacity:0}, {scale:1, opacity:1, duration:.26, ease:'back.out(2.6)'})
+      .to(rb, {opacity:0, y:8, duration:.45, ease:'power1.in'}, '+=1.15'); }catch(e){} }, opts.fromHand ? 60 : 420);
   setTimeout(()=>{ const cur = boardCardEl(uidKey0) || el; if(!cur || !cur.isConnected) return; const q = cur.getBoundingClientRect(); if(!q.width) return;
     // the shockwave and the flash, as it lands
     const ring = document.createElement('div'); ring.className = 'leader-ring' + (enemy ? ' is-enemy' : ''); ring.setAttribute('aria-hidden', 'true');
@@ -29455,8 +29510,8 @@ function leaderThroneVfx(uid, opts){
     flash.style.cssText = `left:${q.left + q.width/2}px; top:${q.top + q.height/2}px; width:${q.width*1.8}px; height:${q.height*1.5}px;`;
     document.body.append(flash, ring, ring2); setTimeout(()=>{ ring.remove(); ring2.remove(); flash.remove(); }, 1300);
     try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){}
-    if(big) battlefieldShake(Math.max(0.35, shakeStrengthForArrival(hp)));
-  }, 420);
+    if(big || opts.fromHand) battlefieldShake(Math.max(big ? 0.35 : 0.22, shakeStrengthForArrival(hp))); // 2026-10-17: a stomp from the hand always jolts the field a little
+  }, opts.fromHand ? 0 : 420);
   // The field's middle line: halfway between the two rows (or the battlefield's own middle).
   const rm = document.getElementById('rowMine'), re = document.getElementById('rowEnemy'), bfr = (document.querySelector('.battlefield')||el).getBoundingClientRect();
   const midY = (rm && re) ? (re.getBoundingClientRect().bottom + rm.getBoundingClientRect().top)/2 : bfr.top + bfr.height/2;
@@ -30936,7 +30991,9 @@ function syncSkyFx(m, phase){
   sky.className = skyClassFor(tone, shade); skyToneLast = tone; skyShadeLast = shade;
   if(tone === 'misty') sky.style.animationDelay = (-((performance.now() / 1000) % 90)).toFixed(2) + 's'; // the loop carries on across re-renders
 }
-const SKY_PHASE_MS = 10000, SKY_CREEP_MS = 4200, SKY_CREEP_PEAK = .4; // the creep: 40% of the old full-strength sweep
+// 2026-10-17 (user: "Day/Night: Lower the transparency of the effect by another 50%. It's mainly for the slow transition of the lighting."):
+// the creep is half as strong again (20% of the old full sweep, was 40%); the 10 s timing is unchanged.
+const SKY_PHASE_MS = 10000, SKY_CREEP_MS = 4200, SKY_CREEP_PEAK = .2; // the creep: 20% of the old full-strength sweep (was .4)
 let skyPhaseEase = null; // {from, to, t0} while a change of phase is easing
 // Lay out a change of phase on `sky` (the layer showing `pe.from`), `elapsed` ms into it: `sky` fades out, a new layer with `pe.to`
 // fades in, and (while it has time left) the creep slides across. Returns the new main layer.
@@ -31052,7 +31109,7 @@ function tidePillHTML(m){
   const high = t==='high', flow = t==='flow', name = high ? _t('High Tide') : flow ? _t('Flood') : _t('Ebb');
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): with the Tide-evade rule test on, the pill says so.
   const te = tideEvadeLive(m);
-  return bfPillHTML('tide-' + t + (te ? ' tide-evade' : ''), high ? '🌊🌊' : flow ? '🌊' : '', name, high ? '' : name, pillTipHTML(name, te ? [TIDE_PILL_TIP, TIDE_EVADE_TIP] : [TIDE_PILL_TIP]), 'Tide: ' + (high ? 'High Tide' : flow ? 'Flood' : 'Ebb') + (te ? '. ' + TIDE_EVADE_TIP : ''));
+  return bfPillHTML('tide-' + t + (te ? ' tide-evade' : ''), high ? '<span class="sym-stack">🌊<i>🌊</i></span>' : flow ? '🌊' : '', name, high ? '' : name, pillTipHTML(name, te ? [TIDE_PILL_TIP, TIDE_EVADE_TIP] : [TIDE_PILL_TIP]), 'Tide: ' + (high ? 'High Tide' : flow ? 'Flood' : 'Ebb') + (te ? '. ' + TIDE_EVADE_TIP : ''));
 }
 const TIDE_EVADE_TIP = 'Tide evade (test): Tide units are Evasive against attacks from units without Tide.';
 function tideEvadeLive(m){ try{ return !!(m && m.engine && m.engine.tideEvadeOn && m.engine.tideEvadeOn()); }catch(e){ return false; } }
@@ -33092,6 +33149,53 @@ function playLandingImpact(uid){
 // a card the PLAYER just dragged in from hand (isHandPlay in renderBoard's entrance tween) — kept
 // off onAttackedSpawn/onDeathSpawn/triggerSpawn tokens, which already have their own distinct
 // bee-landing/generic-impact flourishes and don't need a third competing effect layered on.
+// The flight from your hand (2026-10-17, user: "When playing a card, make it look like it came from my hand. Leader as well. I know it has a
+// special stomping animation. You can launch it from my hand, then using reverse ease to seem like it made more of an impact."): a copy
+// of the board card's face, fixed to the page (so the battlefield's clip and camera zoom can't cut or shift it), flies from `origin`
+// (the hand card's centre, the dragged card's centre, or the leader slot) onto the real card's slot. It re-reads the slot every frame,
+// so a camera move mid-flight still lands it. A card flies in an accelerating curve; the leader winds back first and slams in
+// (back.in, the "reverse ease"). Returns false (and the old in-board tween plays) when it can't run.
+const handFlightsLive = new Set(); // uids whose hand flight is still in the air
+function handFlightSec(leader){
+  const mult = (matchState && matchState.speedMult) || 1, hd = Math.max(0.12, entranceCardTweenDur(mult)*0.62);
+  return leader ? Math.max(.3, hd*1.25) : Math.max(.12, hd*.82);
+}
+function handFlightProxy(el, uid, origin){
+  if(!el || !origin || !hasGsap() || reducedMotion()) return false;
+  const tile = el.querySelector('.card-tile'); if(!tile) return false;
+  const w0 = tile.offsetWidth, h0 = tile.offsetHeight; if(!w0 || !h0) return false;
+  const leader = !!origin.leader, fl = handFlightSec(leader);
+  const p = tile.cloneNode(true); p.removeAttribute('id'); p.querySelectorAll('[id]').forEach(n=> n.removeAttribute('id'));
+  p.classList.remove('holo-active', 'holo-tilt'); p.classList.add('hand-flight-proxy'); p.setAttribute('aria-hidden', 'true');
+  [['position','fixed'], ['left','0'], ['top','0'], ['margin','0'], ['width', w0 + 'px'], ['height', h0 + 'px'], ['box-sizing','border-box'], ['pointer-events','none'], ['z-index','1300'], ['transition','none'], ['animation','none']]
+    .forEach(([k, v])=> p.style.setProperty(k, v, 'important'));
+  document.body.appendChild(p);
+  const s0 = origin.w ? Math.max(.4, Math.min(1.6, origin.w / w0)) : .7, r0 = origin.rotate != null ? origin.rotate : (Math.random()*14 - 7);
+  const key = String(uid), land = leader ? 1.16 : 1.08;
+  let last = tile.getBoundingClientRect(), cur = el;
+  handFlightsLive.add(key);
+  const st = {k:0};
+  // the card itself stays hidden at its slot; a re-render in the same moment (the turn's own renders) replaces the element, so the
+  // live one is looked up every frame. Hidden with visibility, which neither Flip nor the entrance tweens touch.
+  const hide = c=>{ if(c && c.style.visibility !== 'hidden') c.style.visibility = 'hidden'; };
+  const place = ()=>{
+    const c = boardCardEl(uid); if(c && c !== cur){ if(cur) cur.style.visibility = ''; cur = c; } hide(cur);
+    const ct = cur && cur.isConnected && cur.querySelector('.card-tile'); if(ct){ const q = ct.getBoundingClientRect(); if(q.width) last = {left:q.left + q.width/2 - q.width*land/2, top:q.top + q.height/2 - q.height*land/2, width:q.width*land, height:q.height*land}; }
+    const k = st.k, tx = last.left + last.width/2, ty = last.top + last.height/2, s1 = last.width / w0;
+    const x = origin.x + (tx - origin.x)*k, y = origin.y + (ty - origin.y)*k - (leader ? Math.sin(Math.max(0, Math.min(1, k))*Math.PI)*28 : 0);
+    gsap.set(p, {x: x - w0/2, y: y - h0/2, scale: s0 + (s1 - s0)*k, rotation: r0*(1 - Math.max(0, Math.min(1, k))), transformOrigin:'50% 50%'});
+  };
+  let done = false; const gone = landed=>{ if(done) return; done = true; try{ gsap.killTweensOf(st); }catch(e){} p.remove(); handFlightsLive.delete(key);
+    const c = boardCardEl(uid) || cur; if(!c) return; c.style.visibility = '';
+    if(!landed || !c.isConnected) return;
+    // the landing: the face lands a touch big and squashes into place (the leader harder: its stomp), then the usual thud and glow
+    const t = c.querySelector('.card-tile'); if(t) gsap.fromTo(t, {scale:land}, {scale:1, duration: leader ? .32 : .2, ease: leader ? 'back.out(5)' : 'back.out(4)', clearProps:'scale'});
+    try{ playLandingImpact(uid); playHandSummonGlow(uid); if(leader) pushNeighborCards(c, {distance:16, durationMs:300}); }catch(e){} };
+  place();
+  gsap.to(st, {k:1, duration:fl, ease: leader ? 'back.in(1.6)' : (sharpBoard() ? 'power3.in' : 'power2.in'), onUpdate:place, onComplete:()=>{ place(); gone(true); }});
+  setTimeout(()=> gone(false), fl*1000 + 800); // never left behind
+  return true;
+}
 function playHandSummonGlow(uid){
   const el = boardCardEl(uid); if(!el) return;
   const ring = document.createElement('div');
