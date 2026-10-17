@@ -1295,9 +1295,11 @@ M.tideSpout = function(host, opts){
   const col = bits(box, 1, ()=> ({cls:'fxb-col', style:`left:${x}px;`}))[0]; const sp = bits(box, 24, ()=> ({cls:'fxb-spray', style:`left:${x}px; top:${rnd(10, 90)}%;`}));
   const rings = [.25, .75].map(fy=> bits(box, 1, ()=> ({cls:'fxb-splash', style:`left:${x - 30}px; top:${fy*100}%; width:60px; height:18px;`}))[0]);
   return run([box], opts, (t)=>{
-    t.fromTo(col, {scaleY:0, opacity:1}, {scaleY:1, duration:.32, ease:'power3.out'}).call(()=> call(opts.onImpact)).to(col, {scaleY:0, opacity:.3, transformOrigin:'50% 0', duration:.4, ease:'power2.in'}, '+=.2');
-    sp.forEach((s, i)=> t.fromTo(s, {x:0, opacity:0}, {x:rnd(-60, 60), y:rnd(-20, 20), opacity:1, duration:.3, ease:'power2.out'}, .15 + i*.01).to(s, {opacity:0, y:'+=20', duration:.3}, '>'));
-    rings.forEach((g, i)=> t.fromTo(g, {scale:.2, opacity:1}, {scale:1.6, opacity:0, duration:.5}, .2 + i*.05));
+    // 2026-10-16 (user: "Tide Spout - Make it fade in and fade out faster."): it fades in as it shoots up (0.18 s, was 0.32 with no fade),
+    // holds 0.1 s (was 0.2) and fades right out as it drops (0.22 s, was 0.4 to 30%); the spray and rings are quicker too.
+    t.fromTo(col, {scaleY:0, opacity:0}, {scaleY:1, opacity:1, duration:.18, ease:'power3.out'}).call(()=> call(opts.onImpact)).to(col, {scaleY:0, opacity:0, transformOrigin:'50% 0', duration:.22, ease:'power2.in'}, '+=.1');
+    sp.forEach((s, i)=> t.fromTo(s, {x:0, opacity:0}, {x:rnd(-60, 60), y:rnd(-20, 20), opacity:1, duration:.18, ease:'power2.out'}, .08 + i*.006).to(s, {opacity:0, y:'+=20', duration:.18}, '>'));
+    rings.forEach((g, i)=> t.fromTo(g, {scale:.2, opacity:1}, {scale:1.6, opacity:0, duration:.3}, .12 + i*.04));
   });
 };
 // Deep Mines: the enemy digs ore (fld-deep-mines, the generic float): a pickaxe strikes at their castle, sparks fly and
