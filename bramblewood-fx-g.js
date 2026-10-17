@@ -83,9 +83,9 @@ const THEMES = {
   beach:   {label:'Beach',    ink:'#fffaf0', glow:'#9be4ff', a:'#2f8fb3', b:'#1b5d80', trim:'#f5deb0', ink2:'#123446', p:'waves',    grand:['sunGlints', 'gulls'],        sil:'cliffs',   style:'banner'},
   water:   {label:'Lake',     ink:'#effbff', glow:'#8fd6ff', a:'#2c6f8f', b:'#173f5c', trim:'#bfe6f0', ink2:'#0e2a3a', p:'ripples',  grand:['caustics', 'birds'],         sil:'reeds',    style:'banner'},
   reef:    {label:'Reef',     ink:'#effbff', glow:'#7ff0e0', a:'#1f7f8c', b:'#0f3f5c', trim:'#ffb38a', ink2:'#062430', p:'bubbles',  grand:['caustics', 'fish'],          sil:'coral',    style:'banner'},
-  swamp:   {label:'Swamp',    ink:'#eef5d8', glow:'#d8ff6a', a:'#4a5f2a', b:'#232f14', trim:'#b9c46a', ink2:'#141a0a', p:'fireflies', grand:['haze', 'silhouettes'],     sil:'deadtrees', style:'ink'},
-  mist:    {label:'Mist',     ink:'#eef2f0', glow:'#cfe6e0', a:'#5d6b68', b:'#2c3533', trim:'#c9d4cf', ink2:'#141a19', p:'mist',     grand:['haze', 'silhouettes'],       sil:'deadtrees', style:'ink'},
-  fungal:  {label:'Fungal',   ink:'#f5eaff', glow:'#9cf5ff', a:'#5b3f7a', b:'#2a1c40', trim:'#c9a2ff', ink2:'#160d24', p:'spores',   grand:['glowPulse', 'haze'],         sil:'shrooms',  style:'ink'},
+  swamp:   {label:'Swamp',    ink:'#eef5d8', glow:'#d8ff6a', a:'#4a5f2a', b:'#232f14', trim:'#b9c46a', ink2:'#141a0a', p:'fireflies', grand:['haze', 'silhouettes'],     sil:'deadtrees', style:'banner', variant:'inkShade'},
+  mist:    {label:'Mist',     ink:'#eef2f0', glow:'#cfe6e0', a:'#5d6b68', b:'#2c3533', trim:'#c9d4cf', ink2:'#141a19', p:'mist',     grand:['haze', 'silhouettes'],       sil:'deadtrees', style:'banner', variant:'inkShade'},
+  fungal:  {label:'Fungal',   ink:'#f5eaff', glow:'#9cf5ff', a:'#5b3f7a', b:'#2a1c40', trim:'#c9a2ff', ink2:'#160d24', p:'spores',   grand:['glowPulse', 'haze'],         sil:'shrooms',  style:'banner', variant:'inkShade'},
   cave:    {label:'Cave',     ink:'#f1e8d8', glow:'#ffcf7a', a:'#4a4038', b:'#221c18', trim:'#c8a874', ink2:'#120e0b', p:'dust',     grand:['lanternBeam', 'bats'],       sil:'stalactites', style:'banner'},
   crystal: {label:'Crystal',  ink:'#f2f6ff', glow:'#b9a8ff', a:'#3d4a8a', b:'#1c2148', trim:'#c9e4ff', ink2:'#0d1030', p:'glints',   grand:['prism', 'glowPulse'],        sil:'crystals', style:'banner'},
   alpine:  {label:'Peaks',    ink:'#ffffff', glow:'#cfe8ff', a:'#55708f', b:'#2b3d57', trim:'#e9eef5', ink2:'#121c2a', p:'clouds',   grand:['silhouettes', 'eagle'],      sil:'peaks',    style:'banner'},
@@ -418,6 +418,7 @@ function slimeSVG(w, h, n, opts){ opts = opts || {};
     + `<stop offset="0" stop-color="#3f7a14"/><stop offset=".35" stop-color="#78c832"/><stop offset=".8" stop-color="#a8ee58"/><stop offset="1" stop-color="#c8ff86"/></linearGradient></defs>`
     + `<path d="${d}" fill="url(#${id})"/><path d="${d}" fill="none" stroke="#e6ffbf" stroke-opacity=".35" stroke-width="1.5" transform="translate(0 -2)"/>${drips.join('')}</svg>`, band}; }
 css('title-variants', `
+.fxg-inkshade{position:absolute; left:0; right:0; bottom:0; height:46%; pointer-events:none; filter:blur(6px);}
 .fxg-dg-wall{position:absolute; inset:0; opacity:.46; background-size:auto; image-rendering:pixelated;
   -webkit-mask:radial-gradient(ellipse 70% 62% at 50% 40%, #000 30%, rgba(0,0,0,.35) 70%, transparent 100%); mask:radial-gradient(ellipse 70% 62% at 50% 40%, #000 30%, rgba(0,0,0,.35) 70%, transparent 100%);}
 .fxg-dg-vig{position:absolute; inset:0; background:radial-gradient(ellipse at 50% 38%, transparent 30%, rgba(2,4,2,.78) 100%);}
@@ -430,6 +431,14 @@ css('title-variants', `
 .fxg-dg-drop{position:absolute; left:0; top:0; z-index:4; border-radius:50% 50% 50% 50% / 62% 62% 40% 40%; background:radial-gradient(circle at 35% 30%, #efffd0 0 18%, #8fe040 45%, #3f7a14);}
 `);
 const TITLE_VARIANTS = {
+  // 'inkShade' (2026-10-16, user, of the Morel Hollow's ink-brush title: "for this, stick to the normal title-ling. But I like the
+  // background shadows on the bottom - you can keep that."): the swamp, mist and fungal maps use the ribbon banner like every other
+  // map, and keep the ink look's soft, dark shadow pooled along the bottom of the screen (the theme's darkest ink), which comes and
+  // goes with the title. (The dead-tree silhouettes of the swamp and mist themes are their own flourish and stay as they were.)
+  inkShade(L, T, o, box, tl, fs){ const out = (o.hold || 2.2) + 1.1;
+    const sh = document.createElement('div'); sh.className = 'fxg-inkshade'; sh.style.background = `linear-gradient(0deg, ${hexA(T.ink2, .78)}, ${hexA(T.ink2, .5)} 30%, ${hexA(T.ink2, .16)} 62%, transparent)`;
+    const veil = L.querySelector(':scope > .fxg-veil'), at = veil ? veil.nextSibling : L.firstChild; L.insertBefore(sh, at);
+    tl.fromTo(sh, {opacity:0, yPercent:18}, {opacity:1, yPercent:0, duration:1.1, ease:'power2.out'}, 0).to(sh, {opacity:0, duration:.8}, out); },
   dungeon(L, T, o, box, tl, fs){ const g = G(), q = s=> box.querySelector(s), out = (o.hold || 2.2) + 1.1;
     const tt = q('.fxg-tt'); if(!tt) return; tt.classList.add('fxg-tv-dungeon'); tt.style.setProperty('--stone', DG_STONE(Math.round(fs*.9), Math.round(fs*.42)));
     // the dungeon wall and a heavy vignette behind everything (the theme's veil already darkened the map)

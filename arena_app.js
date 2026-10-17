@@ -3427,6 +3427,53 @@ const SoundKit = (()=>{
     tone(freq, 0.07, 'sine', 0.16, 0, voiceVolume);
     tone(freq*1.5, 0.06, 'sine', 0.1, 0.055, voiceVolume);
   }
+  // Bark babble (2026-10-16, user: "I like the animal crossing style babble."; the rivals' taunts have had one since 10-05, see
+  // babble(people, text) below): a bark's bubble is "read out" as a quick run of pitched
+  // syllables, one per letter pair, so every creature has a voice without any recordings. `v` is the species' voice (barkVoiceFor):
+  // base pitch (Hz), syllables per second, waveform, pitch spread, how far the "vowels" swing (formant) and a gain. Each syllable is
+  // a short oscillator through a band-pass "mouth" whose centre follows the letter's vowel, with a tiny pitch drop at its end. A
+  // sound-text bark ("*hiss*") is a few softer syllables. Loudness is the Voice slider times the Sound slider; silent when either is 0.
+  // At most ~1 s long, and never more often than every BABBLE_GAP_MS (the caller also keeps one bark on the board at a time).
+  const BABBLE_GAP_MS = 900, VOWEL_FORMANT = {a:1.0, e:1.35, i:1.7, o:.78, u:.62, y:1.5};
+  let lastBabbleAt = 0;
+  function barkBabble(text, v){
+    if(sfxVolume <= 0 || voiceVolume <= 0 || !text) return false;
+    if(document.hidden) return false;
+    const now = Date.now(); if(now - lastBabbleAt < BABBLE_GAP_MS) return false;
+    const c = ac(); if(!c) return false;
+    v = v || {};
+    const wild = /^\s*\*/.test(text);
+    const letters = String(text).toLowerCase().replace(/[^a-z]/g, '');
+    if(!letters.length) return false;
+    lastBabbleAt = now;
+    const rate = v.rate || 12, maxSyl = Math.max(2, Math.min(wild ? 4 : 14, Math.round(rate * (wild ? .35 : .95))));
+    const n = Math.max(2, Math.min(maxSyl, Math.ceil(letters.length / 2))), step = 1 / rate;
+    const base = v.base || 320, spread = v.spread != null ? v.spread : .18, form = v.formant || 2.4;
+    const t0 = c.currentTime + .02, out = outNode(c);
+    // the voice's "mouth": a peaking filter whose centre jumps to each syllable's vowel (the voice itself still comes through, so
+    // a low voice is as easy to hear as a high one), then a soft lowpass so square and saw voices don't buzz
+    const mouth = c.createBiquadFilter(); mouth.type = 'peaking'; mouth.Q.value = v.q || 2.2; mouth.gain.value = 9;
+    const soft = c.createBiquadFilter(); soft.type = 'lowpass'; soft.frequency.value = Math.min(9000, base * form * 2.6); soft.Q.value = .7;
+    // levelled so every voice peaks about as loud as a soft hit at the default sliders (buzzier waves a little lower)
+    const WAVE_GAIN = {sine:1, triangle:1, square:.75, sawtooth:.8};
+    const bus = c.createGain(); bus.gain.value = Math.min(.3, .05 * voiceVolume * sfxVolume * (.75 + .25 * (v.gain || 1)) * (WAVE_GAIN[v.wave || 'triangle'] || .9) * (wild ? .85 : 1));
+    mouth.connect(soft); soft.connect(bus); bus.connect(out);
+    for(let i = 0; i < n; i++){
+      const ch = letters[(i * 2) % letters.length], code = ch.charCodeAt(0) - 97;
+      const vowelCh = letters.slice(i * 2, i * 2 + 3).split('').find(x=> VOWEL_FORMANT[x]) || 'a';
+      // pitch: a hop per letter (deterministic), a gentle fall over the line, a lift on the last syllable of a question
+      const hop = ((code * 7) % 9) / 8 - .5, fall = 1 - .12 * (i / Math.max(1, n - 1));
+      const f = base * (1 + hop * spread) * fall * (i === n - 1 && /\?\s*$/.test(text) ? 1.25 : 1);
+      const ts = t0 + i * step * (.9 + ((code * 13) % 5) * .05), dur = step * (wild ? 1.1 : .78);
+      const o = c.createOscillator(); o.type = v.wave || 'triangle';
+      o.frequency.setValueAtTime(f, ts); o.frequency.exponentialRampToValueAtTime(Math.max(40, f * (v.drop || .86)), ts + dur);
+      if(v.vibrato){ const lfo = c.createOscillator(), lg = c.createGain(); lfo.frequency.value = v.vibrato; lg.gain.value = f * .04; lfo.connect(lg); lg.connect(o.frequency); lfo.start(ts); lfo.stop(ts + dur + .02); track(lfo); }
+      const g = c.createGain(); g.gain.setValueAtTime(.0001, ts); g.gain.exponentialRampToValueAtTime(1, ts + Math.min(.012, dur * .2)); g.gain.exponentialRampToValueAtTime(.0001, ts + dur);
+      mouth.frequency.setValueAtTime(Math.min(5200, base * form * VOWEL_FORMANT[vowelCh]), ts);
+      o.connect(g); g.connect(mouth); o.start(ts); o.stop(ts + dur + .02); track(o);
+    }
+    return true;
+  }
   return {
     // Back-compat shims — nothing in this codebase calls these anymore (the settings panel
     // talks to get/setSfxVolume directly), kept only in case an external caller still does.
@@ -3454,6 +3501,7 @@ const SoundKit = (()=>{
       try{ if(typeof Ambience!=='undefined') Ambience.setVolume(musicVolume); }catch(e){}
     },
     voiceTone,
+    barkBabble,
     // See activeNodes' declaration comment above. Stopping an already-finished/already-stopped
     // node throws in some browsers — wrapped individually so one leftover reference never blocks
     // the rest of the cut-off.
@@ -3578,7 +3626,10 @@ const SoundKit = (()=>{
         o.type = 'sine'; o.frequency.setValueAtTime(f0, t0); o.frequency.exponentialRampToValueAtTime(f1, t0 + 0.06); o.frequency.exponentialRampToValueAtTime(f0*1.1, t0 + 0.09);
         g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.022*sfxVolume, t0 + 0.012); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.095);
         o.connect(g); g.connect(outNode(c)); o.start(t0); o.stop(t0 + 0.11); } };
-      chirp(0.75, 2600, 3900, 3); chirp(1.25, 3100, 4400, 2); },
+      // 2026-10-16 (user, 20:19: "Sometimes, there is bird tweets when it transitions to day 1."): the birds join in about 1 in 3
+      // daybreaks (they used to sing every time), with a different little exchange each time: one to three birds, two to four notes.
+      if(Math.random() < 1/3){ const birds = 1 + Math.floor(Math.random()*3);
+        for(let b = 0; b < birds; b++){ const f0 = 2400 + Math.random()*900; chirp(0.7 + b*0.45 + Math.random()*0.15, f0, f0*(1.35 + Math.random()*0.25), 2 + Math.floor(Math.random()*3)); } } },
     // Full Moon howl (2026-10-15, user: "Full moon - if a full moon card is on the field, it howls similarly to night (maybe a tad
     // different to differentiate)"): one wolf, a little higher and longer than nightfall's pair, with a cold silver shimmer over it.
     moonHowl(){ const c = ac(); if(!c || sfxVolume<=0) return;
@@ -4987,6 +5038,7 @@ function castleHoverHTML(hqSide){
       pop.hidden = false; popSrc = el;
       positionPop(el);
       try{ fxHook('cardPop', pop, el); }catch(e){} // 2026-10-15 batch F
+      try{ if(!matchState) barkIdleHover(el); }catch(e){} // 2026-10-16: an idle voice bark in the Codex / deck pool
       TipWatch.track(pop, el, ()=>{ pop.hidden = true; popSrc = null; });
       { const lc = liveCardFromHoverEl(el); if(lc) lastPeekUid = lc.uid; }
   }
@@ -7255,11 +7307,11 @@ function renderEditor(){
   // Speech lines and the Creator's Note are rarely edited: tucked into one collapsed "More" box
   // (open if either already has content, and kept open across re-renders once you open it).
   if(first) editorMoreOpen = false;
-  const secs = ['fCreatorNote', 'fSpeechTrigger'].map(id=> { const el = document.getElementById(id); return el && el.closest('.section-divider'); }).filter(Boolean);
+  const secs = ['fCreatorNote', 'fSpeechTrigger', 'fBark_play'].map(id=> { const el = document.getElementById(id); return el && el.closest('.section-divider'); }).filter(Boolean);
   if(secs.length){
-    const hasContent = ((document.getElementById('fCreatorNote')||{}).value||'').trim() || Object.values(editingCard.speeches||{}).some(a=> (a||[]).some(l=> l && l.trim()));
+    const hasContent = ((document.getElementById('fCreatorNote')||{}).value||'').trim() || Object.values(editingCard.speeches||{}).some(a=> (a||[]).some(l=> l && l.trim())) || Object.values(editingCard.barks||{}).some(a=> (a||[]).length);
     const det = document.createElement('details'); det.className = 'ce-more'; det.open = editorMoreOpen || !!hasContent;
-    det.innerHTML = '<summary>More: Creator’s note and battlefield speech</summary>';
+    det.innerHTML = '<summary>More: Creator’s note, battlefield speech and voice lines</summary>';
     secs[0].before(det); secs.forEach(sec=> det.appendChild(sec));
     det.addEventListener('toggle', ()=>{ editorMoreOpen = det.open; });
   }
@@ -7652,6 +7704,13 @@ function renderEditorInner(){
       })()}</div>
     </div>
 
+    <!-- Voice lines / barks (2026-10-16, user: "Okay to samples. Add more samples to our heroic and above cards."): one box per
+         moment, one line per row (at most 6 words reads best). Empty boxes stay silent. Saved as c.barks; see maybeBark. -->
+    <div class="section-divider full-bleed"><span class="st-label">Voice lines</span><span class="st-sub">Short barks over the card in a fight, read out in its animal's babble. One line per row; keep them under 6 words. Empty boxes stay silent.</span>
+      <div class="bark-edit-grid">${BARK_KINDS.map(k=> `<div class="field" title="${escapeAttr(k.hint)}"><label for="fBark_${k.key}">${k.label}</label>
+        <textarea id="fBark_${k.key}" data-bark="${k.key}" rows="2" placeholder="${escapeAttr(k.hint)}">${escapeHtml(((c.barks||{})[k.key]||[]).join('\n'))}</textarea></div>`).join('')}</div>
+    </div>
+
     <div class="modal-actions">
       ${!isNew?`<button class="btn danger" id="btnDelete">Delete card</button>`:''}
       <button class="btn ghost" id="btnCancel">Cancel</button>
@@ -7730,6 +7789,12 @@ function renderEditorInner(){
     c.speeches[trig][slot] = speechTextEl.value;
   });
   if(speechTextEl) speechTextEl.addEventListener('change', renderEditor);
+  // Voice lines (2026-10-16): each box writes straight into c.barks as you type (a re-render would otherwise lose it).
+  overlay.querySelectorAll('textarea[data-bark]').forEach(ta=> ta.addEventListener('input', ()=>{
+    const lines = ta.value.split('\n').map(x=> x.trim()).filter(Boolean).map(x=> x.slice(0, BARK_MAX_LEN));
+    const b = Object.assign({}, c.barks || {}); if(lines.length) b[ta.dataset.bark] = lines; else delete b[ta.dataset.bark];
+    if(Object.keys(b).length) c.barks = b; else delete c.barks;
+  }));
   // mechLineGate (2026-09-27, item 5, "Design Lock"): a fresh "+ Add skill/evergreen" click
   // should never default onto a gated skill (Inherent Darkness/Core Evil) unless the card's own
   // Archetype already matches — same rule skillRowHTML's own keyPickerPool enforces for the
@@ -11799,6 +11864,7 @@ function renderPlay(){
             <div class="settings-row"><div class="settings-row-label"><span>🌐 Language</span></div><select class="lang-select" aria-label="Language"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>✨ Atmosphere</span></div><select id="atmosphereSelectPlaySub" aria-label="Atmosphere"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🎆 Effects</span></div><select id="fxSelectPlaySub" aria-label="Effects quality"></select></div>
+            <div class="settings-row"><div class="settings-row-label"><span>🗨️ Voice lines</span></div><select id="voiceLinesSelectPlaySub" aria-label="Voice lines"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🌊 Shader effects</span></div><select id="shaderSelectPlaySub" aria-label="Shader effects"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>😀 Emoji style</span></div><select id="emojiStyleSelectPlaySub" aria-label="Emoji style"></select><div class="settings-row-note emoji-credit" ${EmojiStyle.isActive() ? '' : 'hidden'}>Twemoji graphics CC-BY 4.0 (Twitter, Inc. and contributors).</div></div>
             </div>
@@ -24158,6 +24224,7 @@ function hudSettingsWidgetHTML(){
         <div class="settings-row-label"><span>💬 Voice</span><span class="settings-row-val" id="voiceVolumeValHud">80%</span></div>
         <input type="range" id="voiceVolumeSliderHud" min="0" max="100" step="1" aria-label="Voice volume">
       </div>
+      <div class="settings-row"><div class="settings-row-label"><span>🗨️ Voice lines</span></div><select id="voiceLinesSelectHud" aria-label="Voice lines"></select></div>
       <div class="settings-row">
         <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
         <select id="battlefieldBgSelectHud" aria-label="Battlefield background"></select>
@@ -28814,12 +28881,26 @@ function fallDeathVfx(el, ms){
   // edge drop together in ONE tween: straight down, gaining speed, greying and fading as they go; the ground's leaves and dust kick
   // up as it lands. (The tile and the edge move as one target list, so they can't drift apart; the board card itself isn't tweened
   // because deathVfx kills tweens on it.)
+  // 2026-10-16 (user: "Did I mention, I like the previous death animation. I only asked you to change it because as it looks like it
+  // is falling backwards - it looks like it's split into two animations when it should be one smooth one, albeit starting slow than
+  // getting faster."): the 10-12 topple is back (the card tips over on its bottom edge, greying), but as ONE motion: the tile and its
+  // owner edge are a single target list hinged on the same line (the tile's bottom), the grey rides in the topple's own tween, and
+  // the fade starts with it and ends on the landing, so nothing starts or stops on its own clock. The old look had an expo-in topple
+  // (almost still, then a snap that read as played backwards), the owner edge on its own tween, and a separate fade after the
+  // landing; now it is a plain power2-in (a steady, gravity-like speed-up from a slow start) that lands faded out, with the leaves
+  // and the thump on that landing frame.
   if(hasGsap()){
-    const fall = ms*1.1/1000, oe = el.querySelector(':scope > .owner-edge'), drop = Math.max(36, Math.round((t.offsetHeight || 150) * .32));
+    const fall = ms*1.25/1000, oe0 = el.querySelector(':scope > .owner-edge'), oe = oe0 && oe0.getClientRects().length ? oe0 : null; // (the owner edge
+    // normally lives inside the tile and tips with it; a stray one directly on the board card is only moved when it is shown)
+    // each target hinges on the tile's bottom edge: the tile at 50% 100%; the owner edge at the same line in its own coordinates
+    const hinge = (i, target)=>{ if(target === t) return '50% 100%'; const tr = t.getBoundingClientRect(), r = target.getBoundingClientRect(), k = (target.offsetHeight && r.height) ? r.height / target.offsetHeight : 1;
+      return `50% ${Math.round((tr.bottom - r.top) / (k || 1))}px`; };
     gsap.timeline()
-      .fromTo([t, oe].filter(Boolean), {y:0, opacity:1}, {y:drop, opacity:0, duration:fall, ease:'power2.in'})
-      .fromTo(t, {filter:'grayscale(0) brightness(1)'}, {filter:'grayscale(.8) brightness(.75)', duration:fall*.8, ease:'power1.in'}, 0)
-      .add(()=>{ biomePuff(el); impactDust(el); try{ SoundKit.knockOut(); }catch(e){} }, fall*.8);
+      .fromTo([t, oe].filter(Boolean), {rotationX:0, y:0, filter:'grayscale(0) brightness(1)'},
+        {rotationX:86, y:10, filter:'grayscale(.8) brightness(.75)', transformPerspective:560, transformOrigin:hinge, duration:fall, ease:'power2.in'})
+      // the fade runs on the same clock, start to landing, but stays mostly solid until the last third so the topple reads
+      .fromTo([t, oe].filter(Boolean), {opacity:1}, {opacity:0, duration:fall, ease:'power4.in'}, 0)
+      .add(()=>{ biomePuff(el); impactDust(el); try{ SoundKit.knockOut(); }catch(e){} }, fall*.94);
   }
   return true;
 }
@@ -30359,36 +30440,91 @@ function skyToneOf(m, ph){
     const zs = m.engine.getZeitStart ? m.engine.getZeitStart() : null, rr0 = zs != null ? Math.max(0, (m.round||1) - zs) : Math.max(1, m.round||1) - 1, rip = (rr0 % PL) + 1;
     return rip === 1 && (m.round||1) > 1 ? 'dawn' : rip === PL ? 'dusk' : 'day'; }catch(e){ return 'day'; }
 }
+// The steps inside a phase (2026-10-16, user: "The transition between 1->2->3 in day AND also night should be very slow, over 10s."):
+// a day's steps are its tones (dawn, day, dusk); a night's are shades of the night tone (.nstep-1 early, -2 deep, -3 the late,
+// greying night before dawn). A step eases over SKY_STEP_MS.
+const SKY_STEP_MS = 10000;
+let skyShadeLast = null, skyStepEase = null; // skyStepEase: {from, to, t0} while a step is easing (survives a board re-render)
+function skyShadeOf(m, ph, tone){
+  if(tone !== 'night') return '';
+  try{ const pm = m.engine.getPhaseMode ? m.engine.getPhaseMode() : 'cycle'; if(pm !== 'cycle' && pm !== 'nightFirst') return '';
+    const PL = m.engine.getPhaseLen ? m.engine.getPhaseLen() : 3; if(PL < 2) return '';
+    const zs = m.engine.getZeitStart ? m.engine.getZeitStart() : null, rr0 = zs != null ? Math.max(0, (m.round||1) - zs) : Math.max(1, m.round||1) - 1, rip = (rr0 % PL) + 1;
+    return rip === 1 ? '1' : rip === PL ? '3' : '2'; }catch(e){ return ''; }
+}
+function skyClassFor(tone, shade){ return 'sky-fx tone-' + tone + (shade ? ' nstep-' + shade : ''); }
+function skyStepFamily(t){ return (t === 'dawn' || t === 'day' || t === 'dusk') ? 'day' : t === 'night' ? 'night' : null; }
+// Ease the layer to `cls` over SKY_STEP_MS, `elapsed` ms of it already gone (a rebuilt layer picking up a step mid-way).
+function skyStepApply(sky, cls, elapsed){
+  const d = SKY_STEP_MS + 'ms cubic-bezier(.45,.05,.55,.95)';
+  sky.style.transition = `background-color ${d}, box-shadow ${d}`; sky.style.transitionDelay = elapsed > 0 ? `-${Math.round(elapsed)}ms` : '0ms';
+  sky.className = cls;
+  setTimeout(()=>{ if(sky.className === cls){ sky.style.transition = ''; sky.style.transitionDelay = ''; } if(skyStepEase && skyStepEase.to === cls && performance.now() - skyStepEase.t0 >= SKY_STEP_MS) skyStepEase = null; }, Math.max(0, SKY_STEP_MS - (elapsed||0)) + 120);
+}
 function syncSkyFx(m, phase){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
   const misty = !!(m && !m.over && (matchFieldRules(m) || {}).misty);
   const ph = phase || (m && m.engine && m.engine.getPhase && m.engine.getPhase());
   const tone = misty ? 'misty' : (m && !m.over && ph && dayNightOn(m) && matchPhaseMatters(m)) ? skyToneOf(m, ph) : null;
-  let sky = bf.querySelector(':scope > .sky-fx');
-  if(!tone){ if(sky) sky.remove(); skyToneLast = null; return; }
+  let sky = bf.querySelector(':scope > .sky-fx:not(.sky-out):not(.sky-creep)');
+  if(!tone){ bf.querySelectorAll(':scope > .sky-fx').forEach(x=> x.remove()); skyToneLast = null; skyShadeLast = null; skyStepEase = null; skyPhaseEase = null; return; }
+  // 2026-10-16 (user: "The transition between 1->2->3 in day AND also night should be very slow, over 10s."): the steps inside one
+  // phase (day: dawn → day → dusk; night: early → deep → late night, the .nstep-N shades) are no longer swept in behind the ragged
+  // edge: the tint itself eases to the next step over SKY_STEP_MS (10 s). A board re-render mid-ease rebuilds this layer, so the
+  // ease is kept on skyStepEase and a fresh layer picks it up where it was (a negative transition-delay), not from the start.
+  // The change of phase (dusk → night, night → dawn) keeps its own look.
+  const shade = skyShadeOf(m, ph, tone);
   if(!sky){ sky = document.createElement('div'); sky.setAttribute('aria-hidden', 'true'); bf.insertBefore(sky, bf.firstChild);
+    { const pe = skyPhaseEase, gone = pe ? performance.now() - pe.t0 : 1e9;
+      if(pe && gone < SKY_PHASE_MS && pe.to === skyClassFor(tone, shade) && !reducedMotion()){ skyPhaseLayers(bf, sky, pe, gone); skyToneLast = tone; skyShadeLast = shade; return; } }
+    const se = skyStepEase, left = se ? SKY_STEP_MS - (performance.now() - se.t0) : 0;
+    if(se && left > 0 && se.to === skyClassFor(tone, shade)){ sky.className = se.from; void sky.offsetWidth; skyStepApply(sky, se.to, SKY_STEP_MS - left); skyToneLast = tone; skyShadeLast = shade; return; }
     // a fresh board (every render rebuilds it) starts on the tone it last showed, so a change still eases in
-    if(skyToneLast && skyToneLast !== tone){ sky.className = 'sky-fx tone-' + skyToneLast; void sky.offsetWidth; } }
-  // 2026-10-15 (user: "The transition from day to night should be gradual, and from left to right unevenly."): a change of tone on
-  // a board that is showing one is a new tint layer swept in from the left behind a ragged edge while the old one is swept off
-  // with the mirrored edge (CSS .sky-sweep), ~1.3 s, instead of the whole board's colour easing at once.
-  { const sw = bf.querySelector(':scope > .sky-fx.sky-sweep:not(.is-old)'); if(sw){ if(sw.classList.contains('tone-' + tone)) return; sky = sw; } }
-  const curTone = (sky.className.match(/tone-(\w+)/) || [])[1];
-  // 2026-10-16 (user: "The night->day animation: Bars on the left -> no-go. I think the whole map lighting up is sufficient."): night
-  // giving way is no longer swept in behind the ragged edge: the whole board's tint eases to the new one (the CSS transition on the
-  // layer), while syncNightVeil fades the veil and FX.E.nightRetreat drifts soft, uneven light across.
-  if(curTone === 'night' && tone !== 'night'){ bf.querySelectorAll(':scope > .sky-fx.sky-sweep').forEach(x=>{ if(x !== sky) x.remove(); }); sky.classList.remove('sky-sweep', 'is-old', 'is-go'); sky.className = 'sky-fx sky-ease tone-' + tone; skyToneLast = tone; return; }
+    if(skyToneLast && (skyToneLast !== tone || skyShadeLast !== shade)){ sky.className = skyClassFor(skyToneLast, skyShadeLast); void sky.offsetWidth; } }
+  { const cur = (sky.className.match(/tone-(\w+)/) || [])[1], curShade = (sky.className.match(/nstep-(\d)/) || [])[1] || '';
+    if(skyPhaseEase && performance.now() - skyPhaseEase.t0 < SKY_PHASE_MS && skyPhaseEase.to === skyClassFor(tone, shade) && sky.className.indexOf(skyPhaseEase.to) === 0){ skyToneLast = tone; skyShadeLast = shade; return; }
+    if(cur && !sky.classList.contains('sky-sweep') && skyStepFamily(cur) && skyStepFamily(cur) === skyStepFamily(tone) && (cur !== tone || curShade !== shade) && !reducedMotion()){
+      const from = skyClassFor(cur, curShade), to = skyClassFor(tone, shade);
+      skyStepEase = {from, to, t0: performance.now()}; skyStepApply(sky, to, 0); skyToneLast = tone; skyShadeLast = shade; return; }
+    if(cur === tone && curShade === shade && !sky.classList.contains('sky-sweep')){ skyToneLast = tone; skyShadeLast = shade; return; } }
+  // A change of phase (2026-10-16, user, 20:19: "For the night one & day one, the day creeps up from left to right, but the whole map
+  // also lights up in general - the combination of two effects. the light creeping up needs to be 60% less strong as well."; this
+  // replaces the 10-15 ragged sweep at full strength and the 10-16 plain ease for night → day): dusk → night and night → dawn are
+  // both (1) the whole board's tint cross-fading to the new one over SKY_PHASE_MS (10 s; the night veil does the same in
+  // syncNightVeil) and (2) a 40% copy of the new tint creeping in from the left behind the ragged edge (.sky-creep), which then
+  // melts into the rest. Both run on the Web Animations API from skyPhaseEase's start time, so a board redraw picks them up mid-way.
+  const curTone = (sky.className.match(/tone-(\w+)/) || [])[1], curShade = (sky.className.match(/nstep-(\d)/) || [])[1] || '';
   if(curTone && curTone !== tone && tone !== 'misty' && curTone !== 'misty' && !reducedMotion() && sky.isConnected){
-    bf.querySelectorAll(':scope > .sky-fx.sky-sweep').forEach(x=>{ if(x !== sky) x.remove(); });
-    const old = sky, nw = document.createElement('div'); nw.setAttribute('aria-hidden', 'true'); nw.className = 'sky-fx sky-sweep tone-' + tone;
-    old.after(nw); old.classList.add('sky-sweep', 'is-old'); void nw.offsetWidth;
-    nw.classList.add('is-go'); old.classList.add('is-go'); skyToneLast = tone;
-    setTimeout(()=>{ old.remove(); nw.classList.remove('sky-sweep', 'is-go'); }, 1450);
-    return;
+    skyStepEase = null; skyPhaseEase = {from: skyClassFor(curTone, curShade), to: skyClassFor(tone, shade), t0: performance.now()};
+    skyPhaseLayers(bf, sky, skyPhaseEase, 0); skyToneLast = tone; skyShadeLast = shade; return;
   }
-  sky.className = 'sky-fx tone-' + tone; skyToneLast = tone;
+  sky.className = skyClassFor(tone, shade); skyToneLast = tone; skyShadeLast = shade;
   if(tone === 'misty') sky.style.animationDelay = (-((performance.now() / 1000) % 90)).toFixed(2) + 's'; // the loop carries on across re-renders
 }
+const SKY_PHASE_MS = 10000, SKY_CREEP_MS = 4200, SKY_CREEP_PEAK = .4; // the creep: 40% of the old full-strength sweep
+let skyPhaseEase = null; // {from, to, t0} while a change of phase is easing
+// Lay out a change of phase on `sky` (the layer showing `pe.from`), `elapsed` ms into it: `sky` fades out, a new layer with `pe.to`
+// fades in, and (while it has time left) the creep slides across. Returns the new main layer.
+function skyPhaseLayers(bf, sky, pe, elapsed){
+  const ease = 'cubic-bezier(.45,.05,.55,.95)', anim = (el, kf, o)=>{ try{ return el.animate(kf, Object.assign({fill:'forwards', easing:ease}, o)); }catch(e){ return null; } };
+  bf.querySelectorAll(':scope > .sky-fx.sky-out, :scope > .sky-fx.sky-creep, :scope > .sky-fx.sky-sweep').forEach(x=>{ if(x !== sky) x.remove(); });
+  sky.className = pe.from + ' sky-out'; sky.style.transition = 'none';
+  const a0 = anim(sky, [{opacity:1}, {opacity:0}], {duration:SKY_PHASE_MS, delay:-elapsed}); if(a0) a0.onfinish = ()=> sky.remove(); else sky.remove();
+  const nw = document.createElement('div'); nw.setAttribute('aria-hidden', 'true'); nw.className = pe.to; nw.style.transition = 'none'; sky.after(nw);
+  const a1 = anim(nw, [{opacity:0}, {opacity:1}], {duration:SKY_PHASE_MS, delay:-elapsed}); if(a1) a1.onfinish = ()=>{ try{ nw.style.opacity = '1'; a1.cancel(); }catch(e){} nw.style.transition = ''; };
+  if(elapsed < SKY_CREEP_MS + 2600){
+    const cr = document.createElement('div'); cr.setAttribute('aria-hidden', 'true'); cr.className = pe.to + ' sky-creep'; nw.after(cr);
+    const total = SKY_CREEP_MS + 2600, f = SKY_CREEP_MS / total;
+    anim(cr, [{maskPosition:'76% 0', webkitMaskPosition:'76% 0'}, {maskPosition:'0% 0', webkitMaskPosition:'0% 0'}], {duration:SKY_CREEP_MS, delay:-elapsed, easing:'cubic-bezier(.35,.1,.45,1)'});
+    const a2 = anim(cr, [{opacity:0, offset:0}, {opacity:SKY_CREEP_PEAK, offset:.12}, {opacity:SKY_CREEP_PEAK, offset:f}, {opacity:0, offset:1}], {duration:total, delay:-elapsed, easing:'linear'});
+    if(a2) a2.onfinish = ()=> cr.remove(); else cr.remove();
+  }
+  return nw;
+}
+// The night veil (2026-10-16, user, 20:19, see syncSkyFx's change of phase): night falling and lifting is one 10 s fade of the whole
+// veil (.is-flat: no ragged edge), alongside the sky's creep; the morning streaks (FX.E.nightRetreat) still drift across as it lifts.
+// A board redraw mid-fade picks the fade up where it was (veilEase).
+let veilEase = null; // {want, m, t0}
 function syncNightVeil(m, phase){
   try{ syncSkyFx(m, phase); }catch(e){}
   try{ window.SkillFX && SkillFX.w2Css && SkillFX.w2Css(); syncCloudFx(m); }catch(e){} // Cloudy (2026-10-16), and the W2 status looks' stylesheet
@@ -30397,14 +30533,20 @@ function syncNightVeil(m, phase){
   const want = !!(m && !m.over && matchPhaseMatters(m) && (phase || (m.engine && m.engine.getPhase && m.engine.getPhase())) === 'night');
   // Night or a dark field: the leaders' and Light Aura units' glow shows (2026-10-15, .unit-light).
   try{ bf.classList.toggle('is-dark-scene', !!(m && !m.over && (want || matchDarkLevel(m)))); }catch(e){}
-  if(!v){ if(!want) return; v = document.createElement('div'); v.className = 'night-veil'; v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); if(!phase){ v.classList.add('no-anim', 'is-on'); void v.offsetWidth; v.classList.remove('no-anim'); return; } void v.offsetWidth; }
-  if(want){ if(v.classList.contains('is-leaving') || v.classList.contains('is-fading')){ v.classList.add('no-anim'); v.classList.remove('is-leaving', 'is-gone', 'is-on', 'is-fading'); void v.offsetWidth; v.classList.remove('no-anim'); void v.offsetWidth; } v.classList.add('is-on'); return; }
-  // 2026-10-16 (user: "The night->day animation: Bars on the left -> no-go. I think the whole map lighting up is sufficient. I was thinking
-  // of a night retreating effect - could you still do a gentle version of that ... softer and longer. And also not consistent"): the
-  // veil no longer leaves behind the ragged left-to-right edge. The whole board lights up (the veil fades, ~2.4 s) and soft, uneven
-  // streaks of morning light drift across it (FX.E.nightRetreat, via fxHook('fieldNightLifts')).
-  if(v.classList.contains('is-on') && !v.classList.contains('is-fading')){ v.classList.add('is-fading'); try{ fxHook('fieldNightLifts', bf); }catch(e){}
-    setTimeout(()=>{ if(!v.isConnected || !v.classList.contains('is-fading')) return; v.classList.add('no-anim'); v.classList.remove('is-on', 'is-fading'); void v.offsetWidth; v.classList.remove('no-anim'); }, 2600); }
+  const now = performance.now();
+  if(!veilEase || veilEase.want !== want){
+    const animate = !reducedMotion() && !!veilEase && veilEase.m === m; // a change seen as it happens in this fight (not its first look)
+    veilEase = {want, m, t0: animate ? now : -1e9};
+    if(animate && !want) try{ fxHook('fieldNightLifts', bf); }catch(e){}
+  }
+  const el = now - veilEase.t0, easing = el < SKY_PHASE_MS;
+  if(!want && !easing){ if(v) v.remove(); return; }
+  if(!v){ v = document.createElement('div'); v.setAttribute('aria-hidden', 'true'); bf.insertBefore(v, bf.firstChild); }
+  v.className = 'night-veil is-on is-flat';
+  if(easing){ if(v._easeT0 !== veilEase.t0){ v._easeT0 = veilEase.t0; try{ v.getAnimations().forEach(a=> a.cancel()); }catch(e){}
+      try{ const a = v.animate([{opacity: want ? 0 : 1}, {opacity: want ? 1 : 0}], {duration:SKY_PHASE_MS, delay:-el, easing:'cubic-bezier(.45,.05,.55,.95)', fill:'forwards'});
+        if(!want) a.onfinish = ()=>{ if(veilEase && !veilEase.want) v.remove(); }; }catch(e){ if(!want) v.remove(); } } }
+  else { try{ v.getAnimations().forEach(a=> a.cancel()); }catch(e){} v._easeT0 = null; }
 }
 // Battlefield pills with tooltips (2026-10-14, user: "Night, Tide/Ebb need tooltips when you hover." and "The Night, Ebb etc pills
 // will be on the battlefield instead"): Day/Night/Twilight, the moon, the tide, the wind, the Arena's portent and the "Next round"
@@ -30507,7 +30649,8 @@ function phasePillHTML(m){
   // 2026-10-15: the moon (when a card cares about it) is the Night pill's icon: 🌒 1/3, its phase named in the tooltip.
   const moon = phase === 'night' && m.engine.moonPhase && matchHasMoonCards(m) ? (MOON_PHASES[m.engine.moonPhase()] || MOON_PHASES[0]) : null;
   const phIco = moon ? moon[0] : phase==='night' ? '🌙' : phase==='twilight' ? '🌆' : '☀️';
-  const lines = [cycling ? `Night and Day alternate every ${PL} days.` : pmode === 'realtime' ? 'Night and Day follow your clock.' : `${phName} all match.`].concat(moon ? [moon[1] + '.'] : []);
+  const lines = [cycling ? `Night and Day alternate every ${PL} days.` : pmode === 'realtime' ? 'Night and Day follow your clock.' : `${phName} all match.`].concat(moon ? [moon[1] + '.'] : [])
+    .concat(phase === 'day' && cycling ? ['Draw +1 on Day.'] : []); // 2026-10-16 (user: "Day's tooltip should say, draw +1 on Day."): both sides draw when Day comes after Night
   return bfPillHTML('phase-' + phase, phIco, phName, cycling ? `${roundInPhase}/${PL}` : '', pillTipHTML(phName, lines), (cycling ? `${phName}, round ${roundInPhase} of ${PL}` : phName) + (moon ? ', ' + moon[1] : ''));
 }
 function bfPillsHTML(m){
@@ -34588,6 +34731,7 @@ function renderVfxForEvent(ev){
     // buffs included, so one hook here covers On Skill for essentially every skill in the game
     // without needing a call at each of their many separate action sites. Custom-only (bank:null)
     // — silent unless this specific card actually wrote an On Skill line.
+    try{ maybeBark(ev.attUid, 'trigger'); }catch(e){} // 2026-10-16 voice barks: leaders and bosses only
     maybeSpeak(ev.attUid, null, 'onSkill');
     // 2026-10-08 emotes: the card on the receiving end of a status reacts; self-buffs pump up.
     { const ON_TARGET = {poison:'poisoned', freeze:'frozen', bleed:'hurt', expose:'hurt', stun:'dazed', stunOnHit:'dazed', stagger:'dazed', paralyze:'dazed', sleep:'sleepy', blind:'blinded', tipsy:'dazed', confuse:'dazed', shock:'shocked', cleanse:'healed', addWait:'sleepy'};
@@ -34911,10 +35055,11 @@ function renderVfxForEvent(ev){
     if(el) floatText(el, '✨ Revived!', 'gold');
     updateCardHpDisplay(ev.uid); updateCardStatusDisplay(ev.uid);
   }
-  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death');
+  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); try{ maybeBark(ev.uid, 'death'); }catch(e){} maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death');
     { const k = EMOTE_LAST_HIT.get(String(ev.uid)); EMOTE_LAST_HIT.delete(String(ev.uid));
       // only a hit this same round counts as the kill (a poison tick rounds later isn't the attacker's)
-      if(k && k.by!=null && k.round === ((matchState && matchState.round) || 0)) setTimeout(()=> maybeEmote(k.by, 'kill'), 350); } }
+      // 2026-10-16: the killer may bark (voice barks); its emote only shows when it said nothing
+      if(k && k.by!=null && k.round === ((matchState && matchState.round) || 0)) setTimeout(()=>{ let said = false; try{ said = maybeBark(k.by, 'kill'); }catch(e){} if(!said) maybeEmote(k.by, 'kill'); }, 350); } }
   // Center collapse-in (item #4, 2026-09-16): the actual slide into place is free — the
   // full renderBoard() at the end of the round's own FLIP logic already animates any card
   // that changed slot, including this one — so this just needs its own light cue.
@@ -35098,6 +35243,8 @@ function renderVfxForEvent(ev){
   // 2026-10-10 (user: "Enemy summoning their leader should mean something as well!"): the rival's leader gets its own,
   // ominous entrance on their half of the field.
   if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ noteMatchFx(380 + LEADER_THRONE_FX_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380); } // 2026-10-14: the round waits for it
+  // Voice barks (2026-10-16): a card that arrives may speak once it has landed (a leader after its throne entrance).
+  if(ev.type==='play' && !ev.reserve && ev.uid != null){ const u = ev.uid, dId = ev.defId, lead = !!ev.leader; setTimeout(()=>{ try{ maybeBark(u, 'play', {defId:dId, leader:lead}); }catch(e){} }, lead ? 380 + LEADER_THRONE_FX_MS + 200 : 650); }
 }
 
 overlayDelegateChanges();
@@ -41274,6 +41421,13 @@ function wireSettingsButton(idSuffix){
     fxSel.value = fxLevel();
     fxSel.addEventListener('change', ()=>{ setFxLevel(fxSel.value); if(shSel) shSel.value = shadersEnabled() ? 'on' : 'off'; showToast((TX('toast.effects') + ' ') + fxSel.options[fxSel.selectedIndex].text.split(' —')[0]); });
   }
+  // Voice lines (2026-10-16, voice barks): On / Leaders only (default) / Off. Every open copy of the setting follows the change.
+  const vlSel = document.getElementById('voiceLinesSelect'+idSuffix);
+  if(vlSel){
+    vlSel.innerHTML = [['on','On'],['leaders','Leaders only'],['off','Off']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
+    vlSel.value = voiceLinesMode();
+    vlSel.addEventListener('change', ()=>{ setVoiceLinesMode(vlSel.value); document.querySelectorAll('select[id^="voiceLinesSelect"]').forEach(x=>{ x.value = voiceLinesMode(); }); showToast('Voice lines: ' + vlSel.options[vlSel.selectedIndex].text); });
+  }
   // Emoji style (2026-10-14): System / Twemoji. Picking Twemoji falls back to System quietly if the library can't load.
   const emSel = document.getElementById('emojiStyleSelect'+idSuffix);
   if(emSel){
@@ -41727,8 +41881,9 @@ const SPEECH_CHANCE = 0.28;
 // doesn't stack two bubbles on top of each other mid-animation.
 const SPEECH_COOLDOWN_MS = 2600;
 const lastSpokeAt = new Map(); // uid -> timestamp, module-scoped so it survives across renders
-function showSpeechBubble(el, text, extraClass){
+function showSpeechBubble(el, text, extraClass, opts){
   if(!el) return;
+  const holdS = opts && opts.hold != null ? opts.hold : 1.4; // 2026-10-16: a voice bark holds ~1.1 s (about 1.6 s on screen in all)
   // One bubble per thing at a time (2026-10-12, user: "the tooltips are slightly off ... shouldn't be spammable").
   if(el._bubble && el._bubble.isConnected) el._bubble.remove();
   const b = document.createElement('div'); el._bubble = b;
@@ -41754,7 +41909,7 @@ function showSpeechBubble(el, text, extraClass){
     if(!anchor.isConnected) return;
     const cardRect = anchor.getBoundingClientRect();
     b.style.left = (cardRect.left + cardRect.width/2 - bubbleRect.width/2) + 'px';
-    b.style.top = (cardRect.top - bubbleRect.height - 6) + 'px';
+    b.style.top = Math.max(4, cardRect.top - bubbleRect.height - 6) + 'px'; // 2026-10-16: never off the top of the screen
   };
   place();
   const follow = ()=>{ if(!b.isConnected) return; place(); requestAnimationFrame(follow); };
@@ -41762,12 +41917,12 @@ function showSpeechBubble(el, text, extraClass){
   if(hasGsap()){
     gsap.timeline({onComplete:()=> b.remove()})
       .to(b, {opacity:1, scale:1, y:0, duration:.22, ease:'back.out(2.2)'})
-      .to(b, {opacity:1, duration:1.4}) // hold, readable
+      .to(b, {opacity:1, duration:holdS}) // hold, readable
       .to(b, {opacity:0, y:-8, duration:.3, ease:'power1.in'});
   } else {
     b.style.opacity = '1'; b.style.transform = 'translateY(0) scale(1)';
-    setTimeout(()=>{ b.style.opacity='0'; }, 1700);
-    setTimeout(()=> b.remove(), 2050);
+    setTimeout(()=>{ b.style.opacity='0'; }, 300 + holdS*1000);
+    setTimeout(()=> b.remove(), 650 + holdS*1000);
   }
 }
 // Bank name -> custom-speech trigger key (2026-09-29): the generic scaffold above predates the
@@ -41847,7 +42002,11 @@ function maybeSpeak(uid, bank, customTriggerKey){
   const now = Date.now();
   const last = lastSpokeAt.get(String(uid))||0;
   if(now - last < SPEECH_COOLDOWN_MS) return;
+  // 2026-10-16 (voice barks): the older chatter (the generic banks and the per-card `speeches` slots) only talks with Voice lines
+  // set to On, never over a bark (one bubble on the board at a time), and not for a moment a card has its own barks for.
+  if(voiceLinesMode() !== 'on' || now < barkBusyUntil) return;
   const c = typeof currentCardByUid==='function' ? currentCardByUid(uid) : null;
+  { const bk = SPEECH_TO_BARK_KIND[trigKey]; if(bk && c && barkLinesOf(getCardDefs()[c.defId], bk).length) return; }
   // Custom line takes priority over the generic scaffold whenever this card actually wrote one
   // for this trigger — a player who took the time to author a line for their card wants to hear
   // it, not the generic placeholder chatter.
@@ -41860,7 +42019,7 @@ function maybeSpeak(uid, bank, customTriggerKey){
     line = lines[Math.floor(Math.random()*lines.length)];
   }
   const el = boardCardEl(uid); if(!el) return;
-  lastSpokeAt.set(String(uid), now);
+  lastSpokeAt.set(String(uid), now); barkBusyUntil = now + 1900;
   showSpeechBubble(el, line);
   SoundKit.voiceTone(Number(uid)||0);
 }
@@ -41876,6 +42035,7 @@ function maybeSpeakHQ(side, bank, opts){
   const key = 'hq-'+side;
   const now = Date.now();
   if(!force){
+    if(voiceLinesMode() === 'off') return; // 2026-10-16: Voice lines Off quiets the castles' chatter too (the win/loss line stays)
     const last = lastSpokeAt.get(key)||0;
     if(now - last < SPEECH_COOLDOWN_MS) return;
     if(Math.random() > SPEECH_CHANCE) return;
@@ -41885,6 +42045,143 @@ function maybeSpeakHQ(side, bank, opts){
   const line = lines[Math.floor(Math.random()*lines.length)];
   { const h = {handled:false}; fxHook('castleSpeech', el, line, h); if(!h.handled) showSpeechBubble(el, line); } // 2026-10-15: the castle's own bubble (FX.C)
   SoundKit.voiceTone(side==='A' ? 1000 : 2000); // seeds distinct from any real card uid range
+}
+
+/* ---- Voice barks (2026-10-16, user: "Okay to samples. Add more samples to our heroic and above cards." and "I like the animal
+   crossing style babble."; the proposal in docs/field-effects-and-map-gaps-2026-10-15.md §5) ----
+   A card's own short lines, kept on its data as `barks: {play:[…], kill:[…], death:[…], trigger:[…], idle:[…]}` (any kind may be
+   missing or empty: an empty kind stays silent) and edited in the card editor's "Voice lines" box. All lines are in
+   docs/barks-2026-10-16.md.
+   - When: on play about 1 in 3; the killer on a kill about 1 in 2; on death about 1 in 3; on a skill only for leaders and bosses
+     (about 1 in 2); idle only in the Codex / deck pool when you hover a card (about 1 in 2).
+   - Leaders and bosses (a leader on the board, a Leader or King card, a boss def) always speak on arrival, on their first kill
+     and on their death.
+   - One bark bubble on the board at a time (a leader's or boss's sure line can cut in on an ordinary one, or waits its turn),
+     at most one bark per card per round, ~1.6 s on screen, above the card (never over its numbers).
+   - Setting: Voice lines On / Leaders only (default) / Off, beside the Effects level.
+   - Each bark is read out by SoundKit.barkBabble in the species' voice (BARK_VOICES): small animals high and quick, big ones low
+     and slow. */
+var VOICE_LINES_KEY = 'bramblewood_voice_lines', barkBusyUntil = 0;
+function voiceLinesMode(){ let v = null; try{ v = localStorage.getItem(VOICE_LINES_KEY); }catch(e){} return (v === 'on' || v === 'leaders' || v === 'off') ? v : 'leaders'; }
+function setVoiceLinesMode(v){ try{ localStorage.setItem(VOICE_LINES_KEY, v); }catch(e){} }
+const BARK_KINDS = [
+  {key:'play', label:'On play', hint:'About 1 in 3 plays (a leader or boss always speaks on arrival).'},
+  {key:'kill', label:'On a kill', hint:'The killer, about 1 in 2 (a leader or boss always on its first kill).'},
+  {key:'death', label:'On death', hint:'About 1 in 3 (a leader or boss always).'},
+  {key:'trigger', label:'On a skill', hint:'Leaders and bosses only, about 1 in 2.'},
+  {key:'idle', label:'Idle', hint:'In the Codex or deck pool when the card is hovered.'},
+];
+const BARK_CHANCE = {play:1/3, kill:1/2, death:1/3, trigger:1/2, idle:1/2};
+const BARK_MAX_LEN = 48, BARK_HOLD_S = 1.08, BARK_SHOW_MS = 1650;
+// the older speech triggers' names → the bark kind that replaces them on a card that has barks
+const SPEECH_TO_BARK_KIND = {onSpawn:'play', onDeath:'death', onSkill:'trigger', idle:'idle'};
+function barkLinesOf(d, kind){ const a = d && d.barks && d.barks[kind]; return Array.isArray(a) ? a.map(x=> String(x == null ? '' : x).trim()).filter(Boolean) : []; }
+function barkIsVip(c, d){
+  d = d || {}; const m = matchState;
+  if(c && (c.isLeader || c.gladiatorLeader || (m && m.leaderUid != null && String(c.uid) === String(m.leaderUid)))) return true;
+  if(d.boss || d.worldBoss || d.supreme || (d.effects && d.effects.leader)) return true;
+  const a = d.archetypes || []; return a.includes('Leader') || a.includes('King');
+}
+// Voices by species (and a few archetypes): base pitch, syllables a second, waveform, pitch spread, vowel reach, gain.
+const BARK_VOICES = {
+  Rodent:{base:800, rate:17, wave:'square', spread:.22, formant:2.1, gain:.55, drop:.92}, Lagomorph:{base:720, rate:15, wave:'triangle', spread:.22, formant:2.2},
+  Erinaceid:{base:680, rate:15, wave:'triangle', spread:.2, formant:2.2}, Bird:{base:880, rate:16, wave:'sine', spread:.32, formant:2.0, drop:1.05},
+  Bat:{base:1150, rate:18, wave:'square', spread:.2, formant:1.8, gain:.45}, Insect:{base:1250, rate:20, wave:'sawtooth', spread:.1, formant:1.6, gain:.38},
+  Arachnid:{base:980, rate:17, wave:'sawtooth', spread:.12, formant:1.7, gain:.4}, Myriapod:{base:900, rate:18, wave:'sawtooth', spread:.1, formant:1.7, gain:.4},
+  Mustelid:{base:480, rate:13, wave:'triangle', spread:.2, formant:2.4}, Procyonid:{base:520, rate:14, wave:'triangle', spread:.26, formant:2.3},
+  Herpestid:{base:560, rate:15, wave:'triangle', spread:.22, formant:2.3}, Canid:{base:330, rate:11, wave:'sawtooth', spread:.2, formant:2.6, gain:.5},
+  Hyaenid:{base:360, rate:12, wave:'sawtooth', spread:.34, formant:2.5, gain:.5}, Felid:{base:410, rate:11, wave:'triangle', spread:.28, formant:2.3},
+  Feline:{base:410, rate:11, wave:'triangle', spread:.28, formant:2.3}, Primate:{base:210, rate:9, wave:'sawtooth', spread:.22, formant:3.0, gain:.55},
+  Ursid:{base:150, rate:7, wave:'sawtooth', spread:.14, formant:3.4, gain:.6, drop:.8}, Bovine:{base:145, rate:7, wave:'sawtooth', spread:.15, formant:3.2, gain:.55},
+  Cervid:{base:300, rate:10, wave:'triangle', spread:.2, formant:2.6}, Equid:{base:260, rate:10, wave:'sawtooth', spread:.24, formant:2.8, gain:.5},
+  Suid:{base:230, rate:10, wave:'square', spread:.2, formant:2.8, gain:.45}, Megafauna:{base:110, rate:6, wave:'sawtooth', spread:.12, formant:3.6, gain:.6, drop:.8},
+  Xenarthran:{base:230, rate:6, wave:'triangle', spread:.14, formant:2.8, drop:.9}, Pinniped:{base:300, rate:10, wave:'sine', spread:.3, formant:2.6, vibrato:5},
+  Reptile:{base:200, rate:8, wave:'triangle', spread:.12, formant:3.2, drop:.8}, Amphibian:{base:280, rate:10, wave:'square', spread:.18, formant:2.4, gain:.45},
+  Dragon:{base:100, rate:6, wave:'sawtooth', spread:.12, formant:4.2, gain:.65, drop:.75}, Fish:{base:620, rate:12, wave:'sine', spread:.25, formant:2.0, vibrato:9},
+  Mollusc:{base:240, rate:9, wave:'sine', spread:.2, formant:2.8, vibrato:6}, Crustacean:{base:520, rate:15, wave:'square', spread:.15, formant:2.0, gain:.4},
+  Cnidarian:{base:700, rate:10, wave:'sine', spread:.3, formant:1.9, vibrato:7}, Cetacean:{base:150, rate:6, wave:'sine', spread:.32, formant:3.0, vibrato:4, drop:1.12},
+  Annelid:{base:420, rate:9, wave:'sine', spread:.16, formant:2.2, vibrato:5}, Plant:{base:165, rate:6, wave:'sine', spread:.16, formant:3.2, drop:.92},
+  Elemental:{base:240, rate:10, wave:'square', spread:.05, formant:2.6, gain:.45}, Undead:{base:170, rate:8, wave:'sawtooth', spread:.1, formant:2.2, vibrato:5, gain:.5},
+  Mammal:{base:380, rate:12, wave:'triangle', spread:.2, formant:2.4},
+};
+const BARK_VOICE_BY_ARCH = {Hummingbird:{base:1150, rate:21, wave:'sine', spread:.34, formant:1.9, drop:1.08}, Owl:{base:430, rate:9, wave:'sine', spread:.2, formant:2.6},
+  Eagle:{base:700, rate:13, wave:'sine', spread:.28, formant:2.1}, Mouse:BARK_VOICES.Rodent, Bear:BARK_VOICES.Ursid, Elephant:BARK_VOICES.Megafauna, Structure:{base:200, rate:9, wave:'square', spread:.04, formant:2.6, gain:.4}};
+function barkVoiceFor(d){
+  d = d || {}; const arch = d.archetypes || [], sp = d.species || [];
+  let v = null; for(const a of arch){ if(BARK_VOICE_BY_ARCH[a]){ v = BARK_VOICE_BY_ARCH[a]; break; } }
+  if(!v) for(const s of sp){ if(BARK_VOICES[s]){ v = BARK_VOICES[s]; break; } }
+  v = Object.assign({base:360, rate:12, wave:'triangle', spread:.2, formant:2.4}, v || {});
+  // the same card always sounds the same; two cards of one species differ a little (±7%)
+  let h = 0; const id = String(d.id || d.name || ''); for(let i = 0; i < id.length; i++) h = (h*31 + id.charCodeAt(i)) >>> 0;
+  v.base = v.base * (0.93 + (h % 15) / 100);
+  return v;
+}
+const barkState = {match:null, roundBy:new Map(), arrived:new Set(), killed:new Set()};
+let barkCurrent = null; const barkQueue = [];
+function maybeBark(uid, kind, opts){
+  opts = opts || {};
+  const mode = voiceLinesMode(); if(mode === 'off' || uid == null) return false;
+  const m = matchState; if(!m) return false;
+  if(barkState.match !== m){ barkState.match = m; barkState.roundBy = new Map(); barkState.arrived = new Set(); barkState.killed = new Set(); barkQueue.length = 0; }
+  const key = String(uid), c = currentCardByUidSafe(uid), rc = m.replayCards && m.replayCards[uid];
+  const defId = (c && c.defId) || (rc && rc.defId) || opts.defId, d = defId != null ? getCardDefs()[defId] : null; if(!d) return false;
+  const lines = barkLinesOf(d, kind); if(!lines.length) return false;
+  const vip = !!opts.leader || barkIsVip(c || (rc ? Object.assign({uid}, rc) : null), d);
+  if((mode === 'leaders' || kind === 'trigger') && !vip) return false;
+  let forced = false;
+  if(vip && kind === 'play' && !barkState.arrived.has(key)) forced = true;
+  if(vip && kind === 'kill' && !barkState.killed.has(key)) forced = true;
+  if(vip && kind === 'death') forced = true;
+  if(kind === 'play') barkState.arrived.add(key);
+  if(kind === 'kill') barkState.killed.add(key);
+  const round = m.round || 0;
+  if(!forced){
+    if(barkState.roundBy.get(key) === round) return false; // one per card per round
+    if(Math.random() > (BARK_CHANCE[kind] || .3)) return false;
+    if(Date.now() < barkBusyUntil) return false; // one bubble on the board at a time
+  }
+  barkState.roundBy.set(key, round);
+  const text = lines[Math.floor(Math.random()*lines.length)].slice(0, BARK_MAX_LEN);
+  return barkShow({uid:key, text, voice:barkVoiceFor(d), forced, kind, at:Date.now(), tries:0});
+}
+function barkShow(item){
+  const now = Date.now();
+  if(now < barkBusyUntil && !(item.forced && !(barkCurrent && barkCurrent.forced))){
+    if(!item.forced) return false;
+    if(barkQueue.length < 3) barkQueue.push(item); // a sure line waits its turn behind another sure line
+    setTimeout(barkDrain, barkBusyUntil - now + 60); return true;
+  }
+  // a leader's arrival waits for its throne entrance's crown (which sits where the bubble goes) to lift
+  if(item.kind === 'play' && (item.waits = (item.waits || 0) + 1) <= 24 && document.querySelector('.throne-crown')){ setTimeout(()=> barkShow(item), 160); return true; }
+  const el = boardCardEl(item.uid);
+  if(!el || !el.isConnected){
+    // a card that was just played may not be on the board yet: look again a few times
+    if(item.kind === 'play' && item.tries < 8){ item.tries++; setTimeout(()=> barkShow(item), 160); return true; }
+    return false;
+  }
+  if(barkCurrent && barkCurrent.bubble && barkCurrent.bubble.isConnected) barkCurrent.bubble.remove();
+  showSpeechBubble(el, item.text, 'is-bark' + (/^\s*\*/.test(item.text) ? ' is-sound' : ''), {hold:BARK_HOLD_S});
+  item.bubble = el._bubble; barkCurrent = item; barkBusyUntil = now + BARK_SHOW_MS; lastSpokeAt.set(item.uid, now);
+  try{ SoundKit.at(el, ()=> SoundKit.barkBabble(item.text, item.voice)); }catch(e){}
+  return true;
+}
+function barkDrain(){
+  if(Date.now() < barkBusyUntil || !barkQueue.length) return;
+  const item = barkQueue.shift(); if(Date.now() - item.at > 4000) return barkDrain();
+  barkShow(item);
+}
+// Idle barks: hovering a card in the Codex or a deck pool (outside a fight) may get a line from it.
+function barkIdleHover(el){
+  if(!el || matchState || !el.closest || !el.closest('#codexGrid, #myDeckPool, #dbpPool')) return false;
+  const mode = voiceLinesMode(); if(mode === 'off') return false;
+  const d = getCardDefs()[el.getAttribute('data-defid')]; const lines = barkLinesOf(d, 'idle'); if(!lines.length) return false;
+  if(mode === 'leaders' && !barkIsVip(null, d)) return false;
+  const now = Date.now(); if(now < barkBusyUntil || Math.random() > BARK_CHANCE.idle) return false;
+  const text = lines[Math.floor(Math.random()*lines.length)].slice(0, BARK_MAX_LEN);
+  showSpeechBubble(el, text, 'is-bark' + (/^\s*\*/.test(text) ? ' is-sound' : ''), {hold:BARK_HOLD_S});
+  barkBusyUntil = now + BARK_SHOW_MS;
+  try{ SoundKit.barkBabble(text, barkVoiceFor(d)); }catch(e){}
+  return true;
 }
 
 /* ---- Touch drag-and-drop shim (2026-09-18, Epic C — main-arena mobile pass, per the roadmap's
