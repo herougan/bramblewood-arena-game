@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (I1: translations for texts with placeholders)
+- **The 159 game texts with a {placeholder} now translate** in all 12 languages ("📜 Errand: The Old Bramble — 2/5" → "📜 おつかい：古いいばら — 2/5"): toasts, results-screen pills, dialogs, tutorial lines. `TX()` still returns English, so code that compares its result is unaffected.
+- **How:** `bramblewood-i18n.js` compiles every pack key with a {placeholder} into a template (once per pack load: ~2 ms). When the exact lookup misses, a text is tried only against the templates whose rarest literal word it contains, and a match fills the translation with the captured values; each value is looked up too, so a map, card or item name inside the sentence translates, as do English tails such as " · published" or ". Journey complete!". Counts only match digits, plural endings a few letters, ranks a capital letter. ~3 µs a string on first sight, cached after.
+- **Packs:** `tools/i18n_2026_10_18d.py` and `…e.py` add the 159 templates (plus the pieces that HTML texts reach the page as, the ring colours and other English values the code fills in) to `lang/*.json`. English plural endings ({s}, {plural_*}) are dropped where the language has no use for them. `tools/i18n_refresh.py` now counts them toward coverage (159/159 in every pack) and checks placeholders (none lost, none added, side-by-side ones kept together); it exits 1 on a problem.
+- `tests/i18n-templates-2026-10-18.js` (in `tests/run-all.sh`): compile, match, fill and placeholder integrity for every pack, plus a timing run.
+
 <<<<<<< HEAD
 ## 2026-10-18 (texts, dialogue and translations)
 - **Avatar hints:** the Hedgehog now says "Clear Ashen Spurn" (it still named The Ashen Peak, renamed on 10-12), and the Dragon says "Clear The Sundered Peak": it unlocks on Map 20, while the campaign now runs on to Goldfeather Keep, so "Win the whole campaign" was no longer true. The Effects Lab's volcano background is labelled Ashen Spurn too.

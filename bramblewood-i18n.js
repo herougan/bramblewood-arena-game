@@ -15,9 +15,133 @@
 // stay English; window.BramblewoodI18n.misses() lists what was seen but not translated.
 (function(root){
 'use strict';
+// Translate a visible string: exact match first, then with leading emoji/symbols and trailing
+// spaces/colons peeled off and put back.
+const LEAD = /^[\s \p{Extended_Pictographic}\p{So}\p{Sk}️‍↻→←▸▾•·★☆✓✕✗⚡]*/u;
+
+// Templates (2026-10-18, package I1: the 159 game texts with a {placeholder} stayed English in every language. TX() fills
+// them in English before they reach the page, and "Errand: Fox Hunt — 2/5" never matches the pack key "Errand: {title} — {v}/{g}").
+// Every pack key with a {placeholder} is compiled once per pack into an anchored regex: the literal text escaped, each {x} a
+// lazy capture (digits only for counts, a few letters for English plural endings, a capital-letter grade for ranks; a repeated
+// {x} is a back-reference). A text the exact lookup misses is tried against only the templates whose rarest literal word it
+// contains (a Map lookup per word, so it stays cheap on the MutationObserver), first on its core (leading emoji peeled, as the
+// packs' keys are), then whole. A match fills the translated template with the captured values, and each value is looked up on
+// its own as well, so a card, map or item name inside the sentence translates too. Results are cached per string.
+// Plain functions, no DOM, so tests/i18n-templates-2026-10-18.js runs the same code in node.
+const PH = /\{(\w+)\}/g;
+const NUM_PH = new Set(('n max count copies cards index total step length floor best dust gold gems cap open played wins losses e v g of nth ' +
+  'after to price net sellPrice dealt taken biggestHit rounds energyMax mvpDamage raidPoints currentRaidPoints currentEnergy hqHp ' +
+  'pvpTicketsLeft raidRemainingAfter raidInk raidMinDamage raidRatingDelta pvpRatingDelta liveRatingDelta gauntletBestAfter ' +
+  'gauntletStreakAfter dungeonStageReached dungeonStageAfter dungeonDeckLeft dungeonTicketsLeft conquestKibbleEarned ' +
+  'conquestFoodEarned toLocaleString').split(' '));
+function phKind(k){
+  if(/^s\d?$|^plural_/.test(k)) return 'plural';                  // English plural endings: s, ies, them, were
+  if(/Rank/.test(k)) return 'rank';                                 // S, A, B, F, FF...
+  return NUM_PH.has(k) || /^[A-Z][A-Z0-9_]+$/.test(k) ? 'num' : 'any';  // counts and the game's constants (DECK_SIZE...)
+}
+const PH_PAT = {num:'([+\\-−]?\\d(?:[\\d,.\'\\u00a0\\u202f]*\\d)?)', plural:'(\\p{L}{0,4})', rank:'([A-Z][A-Z+]{0,3})', any:'([^]*?)'};
+const WORD = /\p{L}+/gu;
+const reEsc = s=> s.replace(/[.*+?^${}()|[\]\\\/]/g, '\\$&');
+function compileTemplate(key, value){
+  const parts = key.split(/(\{\w+\})/);   // even: literal text, odd: {placeholder}
+  const names = [], group = Object.create(null);   // (not {}: a placeholder can be called {toLocaleString})
+  let src = '^', lit = 0, anchor = '', glued = '';
+  for(let i = 0; i < parts.length; i++){
+    const p = parts[i];
+    if(i % 2){
+      const k = p.slice(1, -1);
+      if(group[k]) src += '\\' + group[k];
+      else { names.push(k); group[k] = names.length; src += '\u0000' + phKind(k) + '\u0001'; }
+      continue;
+    }
+    if(!p) continue;
+    const prevPh = i > 0, nextPh = i < parts.length - 1;
+    // spaces: any run of whitespace; next to a placeholder optional, since the value may be empty ("{v1} You found...")
+    src += p.split(/(\s+)/).map((t, j, a)=> j % 2 ? (((j === 1 && !a[0] && prevPh) || (j === a.length - 2 && !a[a.length - 1] && nextPh)) ? '\\s*' : '\\s+') : reEsc(t)).join('');
+    lit += p.replace(/\s+/g, '').length;
+    // the anchor: the longest literal word not glued to a placeholder ("card{s}" is no anchor: on screen it reads "cards").
+    // A template with only glued words ("{rounds} rounds{v2}{v3}") takes one anyway: its values start with a space or are empty.
+    let m; WORD.lastIndex = 0;
+    while((m = WORD.exec(p))){
+      const g = (m.index === 0 && prevPh) || (m.index + m[0].length === p.length && nextPh);
+      if(g){ if(m[0].length > glued.length) glued = m[0]; }
+      else if(m[0].length > anchor.length) anchor = m[0];
+    }
+  }
+  anchor = anchor || glued;
+  if(!anchor || !names.length) return null;
+  // a template with little text of its own ("vs {liveOpponentName}") takes only a name-sized value, not any sentence starting "vs "
+  src = src.replace(/\u0000(\w+)\u0001/g, (m, kind)=> kind === 'any' && lit < 6 ? '([^]{0,32}?)' : PH_PAT[kind]);
+  try{ return {key, value, names, re: new RegExp(src + '$', 'u'), anchor, lit}; }catch(e){ return null; }
+}
+function createTranslator(pack, onMiss){
+  const index = new Map(), cache = new Map();
+  let count = 0;
+  for(const key in pack){
+    if(key.indexOf('{') < 0 || typeof pack[key] !== 'string') continue;
+    const t = compileTemplate(key, pack[key]); if(!t) continue;
+    let arr = index.get(t.anchor); if(!arr) index.set(t.anchor, arr = []);
+    arr.push(t); count++;
+  }
+  const get = k=>{ const v = pack[k]; return typeof v === 'string' ? v : null; };   // (pack is a plain object: no "constructor")
+  // a captured value: a card, map or item name, or an English tail such as " · published" or ". Journey complete!"
+  function piece(v, deep){
+    if(!v || !/\p{L}/u.test(v)) return v;
+    if(get(v)) return get(v);
+    const lead = v.match(/^[\s \p{Extended_Pictographic}\p{So}\p{Sk}️‍·•—–,.:;+]*/u)[0];
+    const core = v.slice(lead.length).replace(/\s+$/, '');
+    if(core && get(core)) return lead + get(core) + v.slice(lead.length + core.length);
+    // one level down: a value that is itself a filled game text ("{rounds} rounds{v2}" holds " · MVP 🦊 Fox (30 damage)")
+    const t = deep && core ? viaTemplates(core, false) : null;
+    return t != null ? lead + t + v.slice(lead.length + core.length) : null;
+  }
+  // two placeholders side by side ("after {v1}{v2}") can't be told apart, so the last one may hold "Fox · published":
+  // a value that isn't a key as a whole is tried piece by piece between separators
+  function value(v, deep){
+    const w = piece(v, deep); if(w != null) return w;
+    const bits = v.split(/(\s[·—–]\s|[.!?,;:]\s)/);
+    return bits.length > 1 ? bits.map((b, i)=> i % 2 ? b : (piece(b, deep) || b)).join('') : v;
+  }
+  function viaTemplates(str, deep){
+    if(!count || str.length > 400) return null;
+    const words = str.match(WORD); if(!words) return null;
+    let best = null, bestM = null; const seen = new Set();
+    for(const w of words){
+      const arr = index.get(w); if(!arr) continue;
+      for(const t of arr){
+        if(seen.has(t)) continue; seen.add(t);
+        if(best && (t.lit < best.lit || (t.lit === best.lit && t.names.length >= best.names.length))) continue;
+        const m = t.re.exec(str); if(m){ best = t; bestM = m; }
+      }
+    }
+    if(!best) return null;
+    const vals = Object.create(null); best.names.forEach((k, i)=>{ vals[k] = bestM[i + 1]; });
+    return best.value.replace(PH, (m, k)=> k in vals ? (phKind(k) === 'plural' ? vals[k] : value(vals[k], deep)) : m).replace(/ {2,}/g, ' ').trim();
+  }
+  return function translate(s){
+    if(!s) return null;
+    const trimmed = s.trim(); if(!trimmed) return null;
+    if(get(trimmed)) return s.replace(trimmed, get(trimmed));
+    const lead = (trimmed.match(LEAD) || [''])[0];
+    const core = trimmed.slice(lead.length).replace(/[\s:]+$/, '');
+    if(core && get(core)) return s.replace(core, get(core));
+    if(!core) return null;
+    let out = cache.get(s);
+    if(out === undefined){
+      let t = viaTemplates(core, true), part = core;
+      if(t == null && core !== trimmed){ t = viaTemplates(trimmed, true); part = trimmed; }
+      out = t == null ? null : s.replace(part, ()=> t);
+      if(cache.size > 5000) cache.clear();
+      cache.set(s, out);
+    }
+    if(out == null && onMiss && /\p{L}{2}/u.test(core) && core.length < 120) onMiss(core);
+    return out;
+  };
+}
+
 if(typeof window === 'undefined' || typeof document === 'undefined'){
   const passthrough = (s, v)=> v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s;
-  if(typeof module !== 'undefined' && module.exports) module.exports = {i18: passthrough};
+  if(typeof module !== 'undefined' && module.exports) module.exports = {i18: passthrough, createTranslator, compileTemplate, phKind};
   return;
 }
 
@@ -73,18 +197,12 @@ function i18(english, vars){
   }
   return fill(english, vars);
 }
-// Translate a visible string: exact match first, then with leading emoji/symbols and trailing
-// spaces/colons peeled off and put back.
-const LEAD = /^[\s \p{Extended_Pictographic}\p{So}\p{Sk}️‍↻→←▸▾•·★☆✓✕✗⚡]*/u;
+// The lookups (exact, core, templates) live in createTranslator() above; one translator per loaded pack (2026-10-18, I1).
+let tr = null, trPack = null;
 function translateText(s){
   if(!pack || !s) return null;
-  const trimmed = s.trim(); if(!trimmed) return null;
-  if(pack[trimmed]) return s.replace(trimmed, pack[trimmed]);
-  const lead = (trimmed.match(LEAD) || [''])[0];
-  const core = trimmed.slice(lead.length).replace(/[\s:]+$/, '');
-  if(core && pack[core]) return s.replace(core, pack[core]);
-  if(core && /\p{L}{2}/u.test(core) && core.length < 120) misses.add(core);
-  return null;
+  if(trPack !== pack){ trPack = pack; tr = createTranslator(pack, c=> misses.add(c)); }
+  return tr(s);
 }
 const ATTRS = ['title', 'aria-label', 'placeholder', 'data-tip'];
 function skip(el){ return !el || el.closest && el.closest('[translate="no"], input, textarea, script, style, .no-i18n'); }
