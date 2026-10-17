@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-17 (fork family and lights)
+- **Fork, Trident and Pitchfork are one attack along 2 / 3 / 4 lines** (were: the 2 / 3 / 4 nearest units, full damage each). **Fork** strikes the units to its left and right when both are there, otherwise only the one in front (drawn as one prong taking it, the other going into the empty side), otherwise the one unit beside it, otherwise the castle; full damage on each line, never C with a side. **Trident** always aims ahead: full in front (the castle when nobody is there), half to the left and right. **Pitchfork** aims left or right at random: LL/L/C/R or L/C/R/RR, half on every prong (the middle one at the castle when nobody is in front). Half = rounded down, at least 1. One swing: Recoil, Inspiring and the onAttack triggers happen once; each line rolls its own miss and dodge and carries the on-hit effects. A Taunt unit that draws a Fork is always one of its lines.
+- **One swing on screen:** the attacker lunges once and every tine thrusts together (struck ones knock their card, half ones are thinner, empty ones go into thin air), the lines' damage numbers land together, and the log says "swings once, N prongs". Editor, card and Codex texts updated; the Effects library notes too.
+- **Crabs have Crab Claws instead of Fork** (Sulfur Vent Crab, Fiddler Crab Swarm, Open-Ocean Hermit Crab). Crab Claws has no number and costs 0 in the stat budget; its swing goes left or right on a coin flip (the other side if that one is empty, the castle if both are).
+- **Illuminate lights the enemy facing it too** (its "minor bad thing"): that unit doesn't miss for Darkness, Pitch Black, Absolute darkness or Night-blindness, on both sides, and gets a soft pool of the lamp's light.
+- **The pointer's light follows the pointer** (the Night light and the darkness lantern): eased toward it every frame with a slight lag, put back after every board redraw (a redraw used to drop it until the next move, and the lantern snapped to the middle), no wandering off while a mouse rests on the board, touch still fades from the touch point. The battle's cave lamp (shader) now reads the pointer against the board, not the whole window. The Night light is a little brighter.
+- **Castle bars curve with the board:** they were 8 px tall with 15 px corners, which CSS shrinks to about 8 px; they are now masked with the board's own curve (15 px, 11 px on phones).
+- **Heat haze is 5% wavy:** the shimmer on fire creatures (heat damage or the Volcanic type) rises in soft waves instead of straight bands.
+- **Landslide (field) hits three neighbouring columns only:** a random occupied column and the one either side of it, both sides, not Flying or Mountain Climbers; the rocks fall only on those cards.
+
 ## 2026-10-17 (art)
 - **Field art for every field effect** (NightCafe, Flux 2 Klein 9B Fast, 16-bit pixel scenes like the rest of `art/fields/`):
   - New: Tide (Flood/Ebb), Landslide, Consternation, Crushing Depths, Rook's Row, Bishop's Path, Mirage, High Canopy, Undergrowth, Tall Grass, Leylines (I–III share it).

@@ -1721,7 +1721,7 @@
   .bw-sel-opt[aria-disabled="true"]{opacity:.45; cursor:default;}
   .bw-sel-tick{width:14px; text-align:center; font-weight:900;}
   .bw-sel-group{padding:6px 10px 2px; font-size:11px; font-weight:800; letter-spacing:.04em; opacity:.65;}
-  .battlefield{background:var(--bg); border:1px solid var(--surface-border); border-radius:16px; padding:16px; margin-bottom:6px; position:relative; z-index:10; overflow:clip; overflow-clip-margin:90px;}
+  .battlefield{--bf-inner-r:15px; /* its radius less its border: the castle bars' corners (2026-10-17) */ background:var(--bg); border:1px solid var(--surface-border); border-radius:16px; padding:16px; margin-bottom:6px; position:relative; z-index:10; overflow:clip; overflow-clip-margin:90px;}
   /* Per-map battlefield gradient (2026-09-25, explicit request: "use a gradient faded background
      for the battlefield, depending on the map"). Deliberately NOT theme-adaptive (light/dark) --
      same convention as the biome card textures a few sections down: this is environment art, not
@@ -2527,6 +2527,11 @@
     background:repeating-linear-gradient(0deg, rgba(255,170,90,0) 0 8px, rgba(255,214,160,.32) 10.5px, rgba(255,170,90,0) 13px 20px);
     animation:heatRise 2.6s linear infinite;}
   .board-card .heat-haze i + i{animation-duration:3.4s; animation-delay:-1.3s; opacity:.7; transform:scaleX(-1);}
+  /* 2026-10-17 (user: "Many cards have the 'haze' treatment. What's that supposed to represent? Could you make the effect 5% wavy?"): the haze
+     is hot air shimmering off fire creatures (isFieryDef: heat damage or the Volcanic type). Its bands were straight lines; now each band is
+     a soft wave that rises and falls by 5% of the card's width (about 5.5 px on a board card; two waves across the band, one band every 20 px), drawn once as an SVG
+     stretched across the band, so it still only moves by transform. The second layer runs mirrored, so the two waves cross and shimmer. */
+  .board-card .heat-haze i{background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' preserveAspectRatio='none'%3E%3Cpath d='M0 10 C12.5 2.7 12.5 2.7 25 10 S37.5 17.3 50 10 S62.5 2.7 75 10 S87.5 17.3 100 10' fill='none' stroke='rgba(255,214,160,.16)' stroke-width='5' vector-effect='non-scaling-stroke'/%3E%3Cpath d='M0 10 C12.5 2.7 12.5 2.7 25 10 S37.5 17.3 50 10 S62.5 2.7 75 10 S87.5 17.3 100 10' fill='none' stroke='rgba(255,224,176,.34)' stroke-width='2' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E") 0 0 / 100% 20px repeat-y;}
   @keyframes heatRise{0%{transform:translateY(0) skewX(0deg); opacity:0;} 20%{opacity:1;} 50%{transform:translateY(-22%) skewX(4deg);} 80%{opacity:.8;} 100%{transform:translateY(-44%) skewX(-3deg); opacity:0;}}
   @media (prefers-reduced-motion: reduce){ .board-card .heat-haze{display:none;} }
   /* Walking map pawn (2026-10-07): see placeMapPawn(). Sits just above the node it's on. */
@@ -5576,7 +5581,7 @@
     .topbar{gap:8px;} .brand .word{font-size:15px;}
     .tabs{width:100%; justify-content:space-between;}
     .tab-btn{flex:1; padding:8px 6px; font-size:12.5px;}
-    .battlefield{padding:8px; border-radius:12px; margin-bottom:10px;}
+    .battlefield{padding:8px; border-radius:12px; margin-bottom:10px; --bf-inner-r:11px;} /* the castle bars follow this curve (2026-10-17) */
     .battlefield-divider{margin:3px 4px;}
     /* min-height matches this breakpoint's own --match-card-h + 18px top/bottom padding —
        same reasoning as the desktop .board-row fix above: it must never be shorter than a card
@@ -8223,6 +8228,25 @@
   .battlefield > .bf-hp{height:8px !important;}
   .battlefield > .bf-hp .bf-hp-num{font-size:11px !important; top:calc(100% + 1px) !important; transform:none !important;}
   .battlefield > .bf-hp-mine .bf-hp-num{top:auto !important; bottom:calc(100% + 1px) !important;}
+  /* 2026-10-17 (user: "The HP (SS#1) bar and the battleground board have different curving edge radii. I like the board's better."): the bars
+     are 8px tall but asked for 15px corners, and CSS shrinks a corner that doesn't fit its box, so they curved at about 8px while the board
+     curves at 15 (its 16px radius inside its 1px border). Now each bar keeps square corners and is masked with the board's own curve: a
+     quarter circle of the board's inner radius (--bf-inner-r) in each outer corner, of which the 8px bar shows the top (or bottom) slice. */
+  .battlefield > .bf-hp .bf-hp-track{border-radius:0 !important; --r:var(--bf-inner-r);}
+  .battlefield > .bf-hp-enemy .bf-hp-track{
+    -webkit-mask:radial-gradient(circle at 100% 100%, #000 calc(var(--r) - .5px), transparent var(--r)) left top / var(--r) var(--r) no-repeat,
+      radial-gradient(circle at 0 100%, #000 calc(var(--r) - .5px), transparent var(--r)) right top / var(--r) var(--r) no-repeat,
+      linear-gradient(#000, #000) center / calc(100% - 2 * var(--r)) 100% no-repeat;
+            mask:radial-gradient(circle at 100% 100%, #000 calc(var(--r) - .5px), transparent var(--r)) left top / var(--r) var(--r) no-repeat,
+      radial-gradient(circle at 0 100%, #000 calc(var(--r) - .5px), transparent var(--r)) right top / var(--r) var(--r) no-repeat,
+      linear-gradient(#000, #000) center / calc(100% - 2 * var(--r)) 100% no-repeat;}
+  .battlefield > .bf-hp-mine .bf-hp-track{
+    -webkit-mask:radial-gradient(circle at 100% 0, #000 calc(var(--r) - .5px), transparent var(--r)) left bottom / var(--r) var(--r) no-repeat,
+      radial-gradient(circle at 0 0, #000 calc(var(--r) - .5px), transparent var(--r)) right bottom / var(--r) var(--r) no-repeat,
+      linear-gradient(#000, #000) center / calc(100% - 2 * var(--r)) 100% no-repeat;
+            mask:radial-gradient(circle at 100% 0, #000 calc(var(--r) - .5px), transparent var(--r)) left bottom / var(--r) var(--r) no-repeat,
+      radial-gradient(circle at 0 0, #000 calc(var(--r) - .5px), transparent var(--r)) right bottom / var(--r) var(--r) no-repeat,
+      linear-gradient(#000, #000) center / calc(100% - 2 * var(--r)) 100% no-repeat;}
   .battlefield > .bf-hp .bf-hp-num small{font-size:9px !important;}
 
   /* Results window fits a laptop screen (2026-10-05, user: "make the reward window fit within the
@@ -8584,8 +8608,8 @@
   /* The pointer's night light (2026-10-17, user: "During Night, there should be a light effect on your mouse"): a soft, faint warm pool
      under the pointer at night, fainter than the darkness lantern above, inside the board only (inset 0, the board's own corners). */
   .battlefield .night-cursor-light{position:absolute; inset:0; z-index:6; pointer-events:none; border-radius:inherit; overflow:hidden; --nx:50%; --ny:50%;
-    background:radial-gradient(circle 150px at var(--nx) var(--ny), rgba(255,232,180,.13) 0, rgba(255,220,160,.06) 40%, rgba(255,220,160,0) 100%); mix-blend-mode:screen;
-    opacity:0; transition:opacity .6s ease;}
+    background:radial-gradient(circle 165px at var(--nx) var(--ny), rgba(255,232,180,.2) 0, rgba(255,220,160,.09) 40%, rgba(255,220,160,0) 100%); mix-blend-mode:screen;
+    opacity:0; transition:opacity .6s ease;} /* 2026-10-17: a little brighter and wider, so it reads as the pointer's light; wirePointerLights eases it after the pointer */
   .battlefield.bf-night-cursor .night-cursor-light.is-on{opacity:1; transition:opacity .25s ease;}
   .battlefield:not(.bf-night-cursor) .night-cursor-light{display:none;}
   /* Unit light (2026-10-15, user: "Leader should have abit of light in darkness. (Night too) Just abit. Creatures with Light Aura shine
@@ -8601,6 +8625,10 @@
   .board-card .unit-light.ul-aura{width:330%; height:270%; background:radial-gradient(closest-side, rgba(255,238,178,.38) 0, rgba(255,226,150,.27) 35%, rgba(255,208,125,.12) 66%, rgba(255,200,110,.04) 86%, rgba(255,200,110,0) 100%); animation:ulBreathe 3.2s ease-in-out infinite;}
   .board-card .unit-light.ul-fire{width:205%; height:175%; background:radial-gradient(closest-side, rgba(255,170,80,.7) 0, rgba(255,130,50,.5) 45%, rgba(255,100,30,.2) 75%, rgba(255,90,30,0) 100%); animation:ulFlicker 1.6s steps(5) infinite;}
   .battlefield:not(.is-dark-scene) .board-card .unit-light{animation:none;}
+  /* 2026-10-17 (user: "Illuminate should also illuminate the opposing unit"): the enemy unit facing an Illuminate unit, in its light (markLitFoes) */
+  .board-card .unit-light.ul-foelit{width:175%; height:150%; background:radial-gradient(closest-side at 50% 50%, rgba(255,232,170,.34) 0, rgba(255,220,150,.20) 50%, rgba(255,210,130,.06) 80%, rgba(255,200,120,0) 100%);}
+  .board-card .unit-light.ul-foelit.from-below{background:radial-gradient(closest-side at 50% 68%, rgba(255,232,170,.36) 0, rgba(255,220,150,.20) 50%, rgba(255,210,130,.06) 80%, rgba(255,200,120,0) 100%);}
+  .board-card .unit-light.ul-foelit.from-above{background:radial-gradient(closest-side at 50% 32%, rgba(255,232,170,.36) 0, rgba(255,220,150,.20) 50%, rgba(255,210,130,.06) 80%, rgba(255,200,120,0) 100%);}
   @keyframes ulBreathe{0%,100%{opacity:.86;} 50%{opacity:1;}}
   @keyframes ulFlicker{0%,100%{opacity:1;} 30%{opacity:.82;} 55%{opacity:.95;} 80%{opacity:.78;}}
   .battlefield.bf-lantern::after{-webkit-mask-image:var(--unit-lights, none); mask-image:var(--unit-lights, none); -webkit-mask-composite:source-in; mask-composite:intersect;}

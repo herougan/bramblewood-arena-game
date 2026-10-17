@@ -37,6 +37,17 @@ const eng = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-engine.js'),
   e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
   ok(a.hp === 495 && b.hp === 495, `Landslide: 5 to the grounded units (${a.hp}, ${b.hp})`); ok(f.hp === 500 && c.hp === 500, `...not the flyer or the climber (${f.hp}, ${c.hp})`);
   ok(ev.some(x=> x.type === 'fieldTick' && x.field === 'landslide') && ev.filter(x=> x.field === 'landslideHit').length === 2, 'Landslide: one header and one line per unit hit'); }
+// 2026-10-17 (user: "Landslide's effect is too much. it should only affect the L/C/R cards, and the vfx should only land on those."): only
+// the three neighbouring columns round a random one take the rocks, on both sides; the header names those columns and the units it hits.
+{ let bad = 0, sides = 0; for(let s = 1; s <= 30; s++){ const {e, P} = mk({landslide:100}, s); const us = [-4, 0, 4].map(x=> put(e, P, 1, 'fe-wall', x)), them = [-4, 0, 4].map(x=> put(e, P, 2, 'fe-wall', x));
+    e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev); const h = ev.find(x=> x.type === 'fieldTick' && x.field === 'landslide');
+    const hurt = [...us, ...them].filter(c=> c.hp < 500), col = h && h.col;
+    if(!h || hurt.length !== 2 || hurt.some(c=> c.slot !== col) || h.cols.join() !== [col - 1, col, col + 1].join() || h.uids.length !== 2 || !hurt.every(c=> h.uids.includes(c.uid))) bad++;
+    if(us.some(c=> c.hp < 500) && them.some(c=> c.hp < 500)) sides++; }
+  ok(!bad, `Landslide: only the struck column and its two neighbours, both sides (${bad} bad of 30)`); ok(sides === 30, 'Landslide: both sides of those columns'); }
+{ const {e, P} = mk({landslide:100}); const a = put(e, P, 1, 'fe-wall', 0), b = put(e, P, 1, 'fe-wall', 1), c = put(e, P, 2, 'fe-wall', -1); e.roundStart(P, 1, so, {}, []); e.roundStart(P, 2, so, {}, []);
+  ok([a, b, c].filter(x=> x.hp === 495).length >= 2, `Landslide: neighbouring columns share the rocks (${[a, b, c].map(x=> x.hp)})`); }
+ok(/rocks come down on three neighbouring columns/.test(src), 'Landslide: the field card text names the three columns');
 { let hits = 0; for(let s = 1; s <= 400; s++){ const {e, P} = mk({landslide:true}, s); put(e, P, 1, 'fe-wall', 0); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev); if(ev.some(x=> x.field === 'landslide')) hits++; }
   ok(hits > 70 && hits < 130, `Landslide: about 1 in 4 rounds by default (${hits}/400)`); }
 { const {e, P} = mk({landslide:100}); const a = put(e, P, 1, 'fe-wall', 0); const ev = []; e.roundStart(P, 1, so, {}, ev); ok(a.hp === 500 && !ev.some(x=> x.field === 'landslide'), 'Landslide: not in round 1'); }
@@ -62,8 +73,10 @@ const eng = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-engine.js'),
 { const run = (rules, id, foeSlots, atkSlot)=>{ const {e, P} = mk(rules); const fs2 = foeSlots.map(s=> put(e, P, 2, 'fe-wall', s)); const A = put(e, P, 1, id, atkSlot || 0); const ev = []; e.debugAttack(P, so, A.uid, {}, ev); return {hp: fs2.map(c=> c.hp), ev}; };
   ok(run({rookRow:true}, 'fe-hit', [0]).hp[0] === 495, "Rook's Row: a straight hit +2");
   ok(run({bishopPath:true}, 'fe-hit', [0]).hp[0] === 497, "Bishop's Path: a straight hit gets nothing");
-  { const r = run({bishopPath:true}, 'fe-fork', [0, 1]); ok(r.hp[0] === 497 && r.hp[1] === 495, `Bishop's Path: the Fork's slanted prong +2 (${r.hp})`); ok(r.ev.some(x=> x.type === 'hit' && x.lane === 'bishop' && x.laneBonus === 2), 'the hit event names the lane'); }
-  { const r = run({rookRow:true}, 'fe-fork', [0, 1]); ok(r.hp[0] === 495 && r.hp[1] === 497, `Rook's Row: the straight hit +2, the prong not (${r.hp})`); }
+  // 2026-10-17 (Fork hits L and R, or only C): a Fork facing units on both sides strikes both slants; facing only the one in front, it strikes C
+  { const r = run({bishopPath:true}, 'fe-fork', [-1, 1]); ok(r.hp[0] === 495 && r.hp[1] === 495, `Bishop's Path: both of the Fork's slanted prongs +2 (${r.hp})`); ok(r.ev.some(x=> x.type === 'hit' && x.lane === 'bishop' && x.laneBonus === 2), 'the hit event names the lane'); }
+  { const r = run({rookRow:true}, 'fe-fork', [-1, 1]); ok(r.hp[0] === 497 && r.hp[1] === 497, `Rook's Row: the Fork's slanted prongs get nothing (${r.hp})`); }
+  { const r = run({rookRow:true}, 'fe-fork', [0, 1]); ok(r.hp[0] === 495 && r.hp[1] === 500, `Rook's Row: a Fork with only one side filled strikes C alone, straight +2 (${r.hp})`); }
   ok(run({bishopPath:true}, 'fe-stab', [1]).hp[0] === 494, 'Bishop\'s Path: a Backstab on the slant 3+1+2'); }
 
 // ---- Mirage: a 1/1 Illusion beside a random unit, copying only movement skills

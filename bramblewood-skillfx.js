@@ -1184,6 +1184,7 @@ const EIGHTH_CSS = `
 .sfx-plate{border-radius:12px; border:3px solid rgba(225,232,244,.95); background:linear-gradient(125deg, rgba(255,255,255,.1) 20%, rgba(255,255,255,.75) 38%, rgba(190,202,220,.3) 46%, rgba(255,255,255,.08) 60%); background-size:260% 100%;
   box-shadow:0 0 16px rgba(200,215,240,.8), inset 0 0 14px rgba(235,242,255,.6);}
 .sfx-prong{width:5px; border-radius:3px 3px 1px 1px; background:linear-gradient(#ffffff, #d6dfeb 30%, #7d8aa0); box-shadow:0 0 8px rgba(220,235,255,.9); clip-path:polygon(50% 0, 100% 16%, 100% 100%, 0 100%, 0 16%);}
+.sfx-prong.is-half{width:3.5px; opacity:.9;} .sfx-prong.is-air{filter:saturate(.4) brightness(.85);} /* one swing's half and empty lines (2026-10-17) */
 .sfx-prong.is-ink{width:8px; background:linear-gradient(#f0c8ff, #9b4fd0 40%, #4a1d6e); box-shadow:0 0 8px rgba(180,90,255,.8); border-radius:8px 8px 3px 3px; clip-path:none;}
 .sfx-lance{height:4px; border-radius:2px; background:linear-gradient(90deg, rgba(255,255,255,0), #fff2c8 55%, #ffffff); box-shadow:0 0 10px 2px rgba(255,236,170,.9);}
 .sfx-orbit{font-size:15px; line-height:1; color:#ffe27a; text-shadow:0 0 6px rgba(255,220,90,.95), 0 1px 0 rgba(0,0,0,.4);}
@@ -1304,6 +1305,24 @@ function forkProngs(attacker, targets, o){
         .to(p, {x:`-=${ux*30}`, y:`-=${uy*30}`, opacity:0, duration:.25, ease:'power2.in', delay:.12}); }
     later(()=>{ knock(el, deg, .8); burst(b.x, b.y, deg, ink ? 'poison' : 'zap', 6); ring(b.x, b.y, ink ? 'sfx-violet' : 'sfx-string', b.w*1.1, 300); call(o.onEachImpact, el, i); }, 130);
   }, i*70));
+}
+// One Fork / Trident / Pitchfork swing (2026-10-17, user: "It's a single attack. 2, 3, or 4 attack lines."): every tine thrusts at
+// once, one per line, each to its own point (a struck card's centre, or the empty column / the castle it swings through). A struck
+// tine knocks its card; a half tine is thinner; an empty one goes into thin air, fainter. points: [{x, y, el, struck, half}].
+function forkSwing(attacker, points, o){
+  o = o || {}; const list = (points||[]).filter(p=> p && isFinite(p.x) && isFinite(p.y)); if(!list.length) return;
+  if(!go()){ list.forEach((p, i)=>{ if(p.struck && p.el) call(o.onEachImpact, p.el, i); }); return; }
+  const g = G(), a = attacker ? centre(attacker) : null;
+  later(()=>{ list.forEach((p, k)=>{
+    const ang = a ? Math.atan2(p.y - a.y, p.x - a.x) : Math.PI/2, ux = Math.cos(ang), uy = Math.sin(ang), deg = ang*57.3;
+    const L = (p.el ? centre(p.el).h : (a ? a.h : 90))*.55, el = layer('sfx-prong' + (p.half ? ' is-half' : '') + (p.struck ? '' : ' is-air'));
+    g.set(el, {height:L, x:p.x - ux*(L + L*1.25) - 2.5, y:p.y - uy*(L + L*1.25) - L, rotation:deg + 90, transformOrigin:'50% 100%', opacity:0});
+    g.timeline({delay:k*0.015, onComplete:()=> el.remove()}).to(el, {opacity: p.struck ? 1 : .55, duration:.05})
+      .to(el, {x:p.x - ux*L*.55 - 2.5, y:p.y - uy*L*.55 - L, duration:.12, ease:'power3.in'}, 0)
+      .to(el, {x:`-=${ux*30}`, y:`-=${uy*30}`, opacity:0, duration:.25, ease:'power2.in', delay:.12});
+    later(()=>{ if(p.struck && p.el){ knock(p.el, deg, p.half ? .5 : .8); burst(p.x, p.y, deg, 'zap', p.half ? 4 : 6); ring(p.x, p.y, 'sfx-string', (p.el ? centre(p.el).w : 60)*(p.half ? .8 : 1.1), 300); call(o.onEachImpact, p.el, k); }
+      else ring(p.x, p.y, 'sfx-string', 26, 220); }, 130 + k*15);
+  }); }, Math.max(0, o.delay|0));
 }
 // Pierce: a lance of light punches straight through the card and out the far side, throwing chips from the exit.
 function pierceThrough(target, o){
@@ -1545,7 +1564,7 @@ function stealthSlip(attacker, castle, o){
   g.set(gh, {filter:'brightness(.2) saturate(0) blur(1px)', opacity:0});
   g.timeline({delay:.1, onComplete:()=>{ gh.remove(); call(o.onDone); }}).to(gh, {opacity:.55, duration:.1}).to(gh, {x:`+=${b.x - a.x}`, y:`+=${b.y - a.y}`, scale:.6, duration:.35, ease:'power2.in'}, 0).to(gh, {opacity:0, duration:.15});
 }
-Object.assign(root.SkillFX, {swoop, flyDescend, gust, splash, armorBlock, forkProngs, pierceThrough, stunStars, freezeEncase, sleepZzz, paralyzeSpark, acidCorrode, lifeDrain, bloomPollen,
+Object.assign(root.SkillFX, {swoop, flyDescend, gust, splash, armorBlock, forkProngs, forkSwing, pierceThrough, stunStars, freezeEncase, sleepZzz, paralyzeSpark, acidCorrode, lifeDrain, bloomPollen,
   fearShiver, curseDrain, targetMark, blindInk, mirrorFlash, reviveRise, summonPortal, lootArc, prayerLight, espritAura, rageFlare, scarMark, clockTick, parry, crownCrack, stealthSlip});
 // ---- 2026-10-15 (ninth pass): the Bolts (user: "They just represents 'spits' of something at the enemy. Fire bolt, Acid bolt, Poison
 // bolt etc.") and Chilli (user: "New skill Chilli.").

@@ -723,6 +723,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // round"): rules.arrowSlits N (default 2): from round 2, the defenders' walls (the enemy castle, player 2) loose one arrow a round at a
   // random unit on the attackers' side (player 1) for N damage. With no unit to aim at, the arrow is wasted. A Helmet can deflect it.
   let lastLaneKind = null; // 'rook' | 'bishop': which of the two gave the last bonus (for the hit event)
+  let forkSwingSeq = 0; // 2026-10-17: numbers each Fork / Trident / Pitchfork swing, so its lines' events can be told apart (ev.forkSwing)
   function laneBonusOf(myCols, enemyCols, myCol, targetCol){
     lastLaneKind = null;
     if(!(rules.rookRow || rules.bishopPath) || targetCol == null) return 0;
@@ -999,7 +1000,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const lit = ()=> !!(pl && allBoardCards(pl).some(c=> c.hp > 0 && illuminates(CARD_DEFS[c.defId])));
     let miss = 0; const dk = rules.dark;
     const ph = phaseActive() ? getPhase() : null;
-    if(dk && !e.darksight){ miss = lit() ? 0 : dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25; }
+    // 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate."): the enemy unit
+    // facing an Illuminate unit stands in its light too (litByFoe, below), so it doesn't miss for the dark either: Darkness, Pitch Black,
+    // Absolute darkness and Night-blind alike. Both sides, the same rule.
+    if(dk && !e.darksight){ miss = (lit() || litByFoe()) ? 0 : dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25; }
     // 2026-10-15 (user: "Remove nightblindness causing 1/4 miss. It should only be for dark environments only. It will be an explicit
     // field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): night alone no longer makes anyone miss. Only the
     // field does: Darkness (rules.dark 'dark', level 1: 1 in 4), Pitch Black (rules.dark 'pitch', level 2: 1 in 2), Absolute darkness.
@@ -1007,8 +1011,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(ph === 'day' && e.sunshy) miss = Math.max(miss, 0.5);
     // 2026-10-16 (user: "Illuminate, paradoxically also helps nightblindness for the directly opposing creature."): an enemy
     // Illuminate (or old Lantern) unit standing in the column directly facing a Night-blind unit lights it up as well.
-    const litByFoe = ()=>{ try{ const foe = curPlayers && curPlayers[otherId(ownerId)]; if(!pl || !foe) return false; const col = columnOfCard(pl, card.uid); if(col == null) return false;
-      const f = combatColumnsOf(foe)[col]; return !!(f && f.kind === 'card' && f.card && f.card.hp > 0 && illuminates(CARD_DEFS[f.card.defId])); }catch(err){ return false; } };
+    function litByFoe(){ try{ const foe = curPlayers && curPlayers[otherId(ownerId)]; if(!pl || !foe) return false; const col = columnOfCard(pl, card.uid); if(col == null) return false;
+      const f = combatColumnsOf(foe)[col]; return !!(f && f.kind === 'card' && f.card && f.card.hp > 0 && illuminates(CARD_DEFS[f.card.defId])); }catch(err){ return false; } }
     if(ph === 'night' && e.nightblind && !lit() && !litByFoe()) miss = Math.max(miss, 0.5);
     return miss;
   }
@@ -1185,9 +1189,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(pool.length){ const c = pool[Math.floor(rnd()*pool.length)]; ev({type:'fieldTick', field:'arrowSlits', round, amount:n, side:sideOf(1), uid:c.uid, defId:c.defId});
         if(!helmetDeflects({kind:'card', card:c}, sideOf(1), events)) hit(1, c, n, 'physical', 'arrowSlitHit'); }
       else ev({type:'fieldTick', field:'arrowSlits', round, amount:n, none:true}); }
-    // Landslide: 1 in 4 (rules.landslide %) a round, rocks come down: 5 (rules.landslideDmg) damage to every unit that isn't flying, both sides.
-    if(rules.landslide && rnd() < landslideOdds()){ const n = Number(rules.landslideDmg) > 0 ? Number(rules.landslideDmg) : 5; ev({type:'fieldTick', field:'landslide', round, amount:n});
-      [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ if(effectsOf(c).flying || climbs(c)) return; hit(pid, c, n, 'physical', 'landslideHit'); })); }
+    // Landslide: 1 in 4 (rules.landslide %) a round, rocks come down: 5 (rules.landslideDmg) damage to every unit that isn't flying in three
+    // neighbouring columns, both sides (was every unit on the board, until 2026-10-17).
+    // 2026-10-17 (user: "Landslide's effect is too much. it should only affect the L/C/R cards, and the vfx should only land on those."): the rocks
+    // come down on one random column that holds a unit (columnBurst) and the column on each side of it: only the units in those three
+    // columns, on both sides, take the damage (not Flying, not Mountain Climbers). The header event names the columns and the units it hits.
+    if(rules.landslide && rnd() < landslideOdds()){ const n = Number(rules.landslideDmg) > 0 ? Number(rules.landslideDmg) : 5; const cb = columnBurst(players);
+      if(cb){ const cs = [cb.col - 1, cb.col, cb.col + 1], victims = [];
+        [1,2].forEach(pid=> cs.forEach(col=>{ const en = cb.cols[pid][col]; if(!en || en.kind !== 'card' || !en.card || !(en.card.hp > 0) || en.card.cageOf) return; const c = en.card; if(effectsOf(c).flying || climbs(c)) return; victims.push([pid, c]); }));
+        ev({type:'fieldTick', field:'landslide', round, amount:n, col:cb.col, cols:cs, uids:victims.map(v=> v[1].uid)});
+        victims.forEach(([pid, c])=> hit(pid, c, n, 'physical', 'landslideHit')); } }
     // Crushing Depths: N (5) water damage to every unit; Tide units and Swimmers take half (rounded down); water Resist halves it again.
     if(rules.crushingDepths){ const n = crushingN(); ev({type:'fieldTick', field:'crushingDepths', round, amount:n});
       [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=> hit(pid, c, isTide(c) ? Math.max(1, Math.floor(n / 2)) : n, 'water', 'crushingHit', {swimmer: isTide(c) || undefined}))); }
@@ -1688,6 +1699,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Fork / Trident / Pitchfork (2026-10-15, user: "attack the nearest 2/3/4 enemies within 1/1/2 range"): n = units hit in all
   // (its normal swing included), range = how many columns away they may stand. One table, so the three read alike. An old
   // `swipe: true` still means Fork. With several on one card, the widest wins.
+  // 2026-10-17 (user: "It's too overpowered at the moment ... it's not that it hits twice, thrice, or four times. It's a single attack. 2, 3,
+  // or 4 attack lines."): n is now the number of lines (prongs) of one swing, and range is unused; see forkPlan in resolveCombat.
   const PRONG_SPECS = [{key:'pitchfork', n:4, range:2}, {key:'trident', n:3, range:1}, {key:'fork', n:2, range:1}];
   function prongSpecOf(def){ const e = (def && def.effects) || {}; if(e.stealth) return null;
     for(const p of PRONG_SPECS){ if(e[p.key] || (p.key === 'fork' && e.swipe === true)) return {kind:p.key, n:p.n, range:p.range}; }
@@ -2713,15 +2726,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // two enemies (ranks interlocked after a collapse), the prongs are those two, never the one beyond. Each lane is an enemy
   // column value, or null for an empty lane (off the end of the row).
   function prongLanes(myCols, enemyCols, myCol){
-    if(slotMode) return {integer:true, left:myCol - 1, right:myCol + 1, near:[myCol - 1, myCol + 1], dist:c=> Math.abs(c - myCol)};
+    // at(o): the enemy column o steps from straight ahead (a face-off only; null off the row). shift(c, o): the column o steps from c.
+    // (2026-10-17, for the Fork / Trident / Pitchfork lines.)
+    if(slotMode) return {integer:true, left:myCol - 1, right:myCol + 1, near:[myCol - 1, myCol + 1], dist:c=> Math.abs(c - myCol), at:o=> myCol + o, shift:(c, o)=> c + o};
     const myKeys = Object.keys(myCols).map(Number).sort((a,b)=>a-b);
     const enemyKeys = Object.keys(enemyCols).map(Number).sort((a,b)=>a-b);
     const i = myKeys.indexOf(myCol) + 1, nS = myKeys.length, nE = enemyKeys.length;
     const jf = i + (nE - nS) / 2;
     const colAt = j=> (j >= 1 && j <= nE) ? enemyKeys[j-1] : null;
     const dist = c=> { const j = enemyKeys.indexOf(c) + 1; return j > 0 ? Math.abs(j - jf) : 99; };
-    if(Number.isInteger(jf)) return {integer:true, left:colAt(jf - 1), right:colAt(jf + 1), near:[colAt(jf - 1), colAt(jf + 1)], dist};
-    return {integer:false, left:colAt(Math.floor(jf)), right:colAt(Math.ceil(jf)), near:[colAt(Math.floor(jf)), colAt(Math.ceil(jf))], dist};
+    const shift = (c, o)=>{ const j = enemyKeys.indexOf(c) + 1; return j > 0 ? colAt(j + o) : null; };
+    if(Number.isInteger(jf)) return {integer:true, left:colAt(jf - 1), right:colAt(jf + 1), near:[colAt(jf - 1), colAt(jf + 1)], dist, at:o=> colAt(jf + o), shift};
+    return {integer:false, left:colAt(Math.floor(jf)), right:colAt(Math.ceil(jf)), near:[colAt(Math.floor(jf)), colAt(Math.ceil(jf))], dist, at:()=> null, shift};
   }
   // Live combat reflow (2026-09-17, per explicit request: "collapse should happen immediately
   // as the fight goes on... will cause attacks to maybe not hit their intended targets"):
@@ -6007,8 +6023,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(attDef.effects && attDef.effects.crabClaws && !attDef.effects.stealth && !(Number(attDef.effects.backstab) > 0)){
         const lanesC = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
         const has = col=>{ const en = col != null ? liveEnemyCols[col] : null; return !!(en && en.kind==='card' && en.card && en.card.hp > 0); };
+        // 2026-10-17 (user: "Crab claws effect is: normal attacks always attack L or R, 50%, random."): a coin flip picks the side; if that side
+        // has no unit the claws take the other side, and with no unit on either side, the castle (the same odds as before, said plainly).
         const sides = ['left','right'].filter(sd=> has(lanesC[sd]));
-        const pick = sides.length ? sides[Math.floor(rnd()*sides.length)] : null;
+        const flip = sides.length ? (rnd() < 0.5 ? 'left' : 'right') : null;
+        const pick = flip ? (has(lanesC[flip]) ? flip : (flip === 'left' ? 'right' : 'left')) : null;
         if(pick){ const col = lanesC[pick], en = liveEnemyCols[col]; en.col = col; target = en;
           if(recordEvents && events) events.push({type:'crabClaw', side:sideOf(a.attId), attUid:a.att.uid, attDefId:a.att.defId, dir:pick, targetUid:en.card.uid}); }
         // 2026-10-17 (user: "Claws 🦀. Can only attack Left and Right. If both, hit randomly"): it never attacks straight ahead. With no
@@ -6017,9 +6036,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
       // Taunt (2026-10-16, user: "Add a sheep card (basic) - it has taunt."): an enemy Taunt unit facing it or one column beside it
       // draws the swing, even one that was going to the castle. Stealth slips past it; Octolash lashes its usual 8.
+      let tauntDrew = null; // the Taunt unit that drew this swing (Fork keeps it among its lines, 2026-10-17)
       if(target && !(attDef.effects && attDef.effects.stealth) && !octoAtk){
         const tt = tauntTargetOf(liveOwnCols, liveEnemyCols, liveSelf.col);
-        if(tt && !(target.kind === 'card' && target.card && target.card.uid === tt.card.uid)){ target = tt;
+        if(tt && !(target.kind === 'card' && target.card && target.card.uid === tt.card.uid)){ target = tt; tauntDrew = tt;
           if(recordEvents && events) events.push({type:'statusFx', kind:'taunted', side:sideOf(a.enemyId), attDefId:tt.card.defId, attUid:tt.card.uid, targetSide:sideOf(a.attId), targetDefId:a.att.defId, targetUid:a.att.uid}); }
       }
       // Fork / Trident / Pitchfork (2026-10-15, user: "Decision, we can make the first 3 more similar - attack the nearest 2/3/4
@@ -6029,18 +6049,52 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // prongs (forkStrike: every on-hit effect, no Evade roll, never the castle), each rolling its own Blind/dark miss. With no
       // enemy unit in range it just attacks straight ahead as normal (the castle when nothing is in front). (Was, for Fork:
       // the two columns either side of the one in front, an empty side hitting the castle.)
+      // 2026-10-17 (user: "What I think of Fork, Trident and Pitchfork. It's too overpowered at the moment. Fork cannot hit C and L at the
+      // same time. It's either L/R or just C. ... Trident's L and R hits for 1/2 damage. Pitch fork's all 4 prongs hit for 1/2. Trident always
+      // aims forward. As Pitchfork is even, it either aims left or right. If left, it hits LL/L/C/R, L/C/R/RR otherwise. ... It's a single
+      // attack. 2, 3, or 4 attack lines."): one swing along 2 / 3 / 4 lines (C = the column straight ahead, L / R beside it, LL / RR two out):
+      //   Fork (2 prongs): L and R when both hold a unit; otherwise only C (one prong takes it: the spare prong goes into the empty side, a
+      //     coin flip when both sides are empty); otherwise the one side that holds a unit; otherwise the castle. Full damage on each line.
+      //     A Taunt unit that drew the swing is always one of its lines (alone, when the pattern above would have missed it).
+      //   Trident (3): always aims forward: C at full damage (the castle when C is empty), L and R at half.
+      //   Pitchfork (4): aims left or right at random each swing: LL / L / C / R or L / C / R / RR, every prong at half (C, or the castle).
+      // Half = half the swing's Attack, rounded down, at least 1. It is ONE attack: the onAttack triggers, Recoil, Inspiring and the like
+      // happen once; each line that strikes a unit rolls its own Blind / dark miss and dodge and carries the on-hit effects to that unit.
+      // The line through C (Fork: its first line) is the swing proper (Evade, Guardian, Puncture, Thorns, the castle); the other lines are
+      // prongs (forkStrike), never the castle. Interlocked ranks (Collapse mode): Fork's L / R are the two enemies it stands between;
+      // Trident / Pitchfork count their lines from the unit its swing picks. (Was 2026-10-15: the 2 / 3 / 4 nearest units within 1 / 1 / 2
+      // columns, every one at full damage.) An empty line is a thrust at thin air. The forkSwing event lists every line for the picture.
       const prongSpec = (target && !(attDef.effects && attDef.effects.crabClaws) && !(Number((attDef.effects||{}).backstab) > 0)) ? prongSpecOf(attDef) : null;
-      let prongCols = [];
+      let prongCols = [], forkPlan = null;
+      const halfAtk = n=> n > 0 ? Math.max(1, Math.floor(n / 2)) : 0;
       if(prongSpec){
         const lanesP = prongLanes(liveOwnCols, liveEnemyCols, liveSelf.col);
-        const inRange = Object.keys(liveEnemyCols).map(Number).filter(c=>{ const en = liveEnemyCols[c]; return en && en.kind === 'card' && en.card && en.card.hp > 0 && lanesP.dist(c) <= prongSpec.range + 0.5; })
-          .map(c=> [c, lanesP.dist(c) + rnd()*0.1]).sort((x, y)=> x[1] - y[1]).map(x=> x[0]);
-        if(inRange.length){
-          const tc = (target.kind === 'card' && target.col != null && inRange.includes(target.col)) ? target.col : inRange[0];
-          if(!(target.kind === 'card' && target.col === tc)){ const en = liveEnemyCols[tc]; en.col = tc; target = en; }
-          prongCols = inRange.filter(c=> c !== tc).slice(0, prongSpec.n - 1);
+        const liveAt = c=>{ const en = c != null ? liveEnemyCols[c] : null; return !!(en && en.kind === 'card' && en.card && en.card.hp > 0); };
+        const anchor = (!lanesP.integer && target.kind === 'card' && target.col != null) ? target.col : null;
+        const lineCol = o=> lanesP.integer ? lanesP.at(o) : (anchor == null ? null : lanesP.shift(anchor, o));
+        const lines = []; let aim = null, visProng = null;
+        if(prongSpec.kind === 'fork'){
+          const Lc = lanesP.integer ? lineCol(-1) : lanesP.left, Rc = lanesP.integer ? lineCol(1) : lanesP.right, Cc = lanesP.integer ? lineCol(0) : null;
+          let pick = (liveAt(Lc) && liveAt(Rc)) ? [[-1, Lc], [1, Rc]] : liveAt(Cc) ? [[0, Cc]] : liveAt(Lc) ? [[-1, Lc]] : liveAt(Rc) ? [[1, Rc]] : [[0, Cc]];
+          const tc = tauntDrew ? tauntDrew.col : null;
+          if(tc != null && !pick.some(p=> p[1] === tc)) pick = [[tc === Lc ? -1 : tc === Rc ? 1 : 0, tc]];
+          pick.forEach(([o, c])=> lines.push({off:o, col:c, half:false}));
+          if(pick.length === 1 && pick[0][0] === 0){ const lE = !liveAt(Lc), rE = !liveAt(Rc); visProng = (lE && !rE) ? 'right' : (rE && !lE) ? 'left' : (rnd() < 0.5 ? 'left' : 'right'); }
+        } else {
+          const offs = prongSpec.kind === 'trident' ? [-1, 0, 1] : ((aim = rnd() < 0.5 ? 'left' : 'right') === 'left' ? [-2, -1, 0, 1] : [-1, 0, 1, 2]);
+          offs.forEach(o=> lines.push({off:o, col:lineCol(o), half: prongSpec.kind === 'pitchfork' || o !== 0}));
         }
+        const mainLine = prongSpec.kind === 'fork' ? lines[0] : lines.find(l=> l.off === 0);
+        if(liveAt(mainLine.col)){ if(!(target.kind === 'card' && target.col === mainLine.col)){ const en = liveEnemyCols[mainLine.col]; en.col = mainLine.col; target = en; } }
+        else target = {kind:'hq'};
+        prongCols = lines.filter(l=> l !== mainLine && liveAt(l.col));
+        forkPlan = {kind:prongSpec.kind, aim, lines, main:mainLine, id: ++forkSwingSeq};
+        if(recordEvents && events) events.push({type:'forkSwing', side:sideOf(a.attId), attUid:a.att.uid, attDefId:a.att.defId, kind:prongSpec.kind, swing:forkPlan.id, aim, prong:visProng,
+          lines: lines.map(l=> ({off:l.off, targetUid: liveAt(l.col) ? liveEnemyCols[l.col].card.uid : null, castle: l === mainLine && !liveAt(l.col), half:l.half, main: l === mainLine}))});
       }
+      // The swing proper's share (2026-10-17): half on a Trident's side line or any Pitchfork line; the tags its events carry.
+      const mainHalf = !!(forkPlan && forkPlan.main.half);
+      const fkTag = o=> forkPlan ? Object.assign(o, {fork:true, prong:forkPlan.kind, forkSwing:forkPlan.id, forkLine:forkPlan.main.off, half: mainHalf || undefined}) : o;
       // Tipsy (2026-10-11, user: "Tipsy means attacks L, Centre or R, randomly"): the swing drifts one column left, stays,
       // or drifts right at random. A drift onto an empty column misses (the castle is never hit by a stumble).
       let tipsyMiss = false;
@@ -6109,21 +6163,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       };
       // Prong strikes (Fork / Trident / Pitchfork / Octolash side hits): a unit there takes the full hit with every on-hit effect.
       // castleOk: an empty column sends the swing to the castle (no skill does that since 2026-10-15; kept for old saves' swipe:true).
-      const forkStrike = (flankCol, castleOk, prong)=>{ if(castleOk === undefined) castleOk = false;
+      // line (2026-10-17): a Fork / Trident / Pitchfork line {off, half}: a half line strikes for half the Attack; its events name the swing.
+      const forkStrike = (flankCol, castleOk, prong, line)=>{ if(castleOk === undefined) castleOk = false;
+            const lineTag = o=> (line && forkPlan) ? Object.assign(o, {forkSwing:forkPlan.id, forkLine:line.off, half: line.half || undefined}) : o;
+            const strikeAtk = (line && line.half) ? halfAtk(atkThisRound) : atkThisRound;
             const flankEntry = liveEnemyCols[flankCol];
             if(flankEntry && flankEntry.kind==='card' && flankEntry.card.hp>0){
               const c2raw = flankEntry.card;
               if(!combatHitLands(a.att, c2raw, true)){ // every prong / lash rolls its own Evasive dodge too (2026-10-15: "if something can miss, it can miss when ... forking")
-                if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2raw.defId, targetUid:c2raw.uid, fork:true});
+                if(recordEvents && events) events.push(lineTag({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2raw.defId, targetUid:c2raw.uid, fork:true, prong: prong || null}));
                 return;
               }
               const c2 = redirectToGuardian(players[a.enemyId], c2raw);
               const c2GuardianRedirect = c2.uid !== c2raw.uid;
-              const r3 = damageCard(c2, atkThisRound + laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), dmgType, a.att); // + Rook's Row / Bishop's Path (2026-10-16)
+              const r3 = damageCard(c2, strikeAtk + laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), dmgType, a.att); // + Rook's Row / Bishop's Path (2026-10-16)
               aStat.dealt += r3.dmg;
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
               const lb3 = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), lk3 = lastLaneKind; // for the hit event (2026-10-16)
-              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
+              if(recordEvents && events) events.push(lineTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount}));
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
@@ -6172,14 +6229,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(a.att.blind > 0) return rnd() < 0.5; const sm = sightMiss(a.att, otherId(a.enemyId)); return sm > 0 && (sm >= 1 || rnd() < sm); };
       if(sweepN) sweepStrike(sweepCol - 1, 'left');
       if(blindNow){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
-        if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind, targetUid: target.kind === 'card' && target.card ? target.card.uid : undefined, night: nightMiss || undefined}); // + targetUid: the "Miss!" shows on it (2026-10-16)
+        if(recordEvents && events) events.push(fkTag({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:target.kind, targetUid: target.kind === 'card' && target.card ? target.card.uid : undefined, night: nightMiss || undefined})); // + targetUid: the "Miss!" shows on it (2026-10-16)
       } else
       // Evasive: the ORIGINAL target gets the dodge roll before any Guardian redirect — a
       // successful evade means the primary attack whiffs entirely (no damage, no Thorns/
       // Poison/Expose/Shell/onAttackedSpawn). Sweep/Swipe continuation and an HQ strike are
       // unaffected by a dodged primary hit.
       if(target.kind==='card' && !combatHitLands(a.att, target.card, true)){
-        if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:target.card.defId, targetUid:target.card.uid});
+        if(recordEvents && events) events.push(fkTag({type:'evaded', reason:lastMissReason, side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:target.card.defId, targetUid:target.card.uid}));
       } else if(target.kind==='card'){
         // Guardian: an adjacent protector (same row, one slot either way) takes the hit
         // instead, if alive. Sweep/Swipe continuation still uses target.col (the ORIGINAL
@@ -6189,13 +6246,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         // Rook's Row / Bishop's Path (2026-10-16): +N for a hit straight ahead / on the slant (laneBonusOf). Tall Grass doubles a Backstab.
         const laneBonus = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, target.col);
-        const swingAmt0 = (atkThisRound + backstabBonus + laneBonus) * (tallGrassStab ? 2 : 1);
+        const swingAmt0 = ((mainHalf ? halfAtk(atkThisRound) : atkThisRound) + backstabBonus + laneBonus) * (tallGrassStab ? 2 : 1); // a half line (2026-10-17)
         const swingAmt = bloodlustHalves(a.att, defCard) ? Math.ceil(swingAmt0 / 2) : swingAmt0; // Bloodlust (2026-10-17): half on Structures
         const {dmg, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = damageCard(defCard, swingAmt, dmgType, a.att);
         swingLanded = true;
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
-        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined});
+        if(recordEvents && events) events.push(fkTag({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined}));
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
@@ -6427,11 +6484,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // on top of whatever Bulwark the defender has standing in the way.
         const siegeBonus = (attDef.effects && attDef.effects.siege) || 0;
         const bulwarkBlocked = bulwarkReductionFor(players[a.enemyId]);
-        const castleAmt0 = castleSwingAmt(a.att, atkThisRound) + siegeBonus;
+        const castleAmt0 = (mainHalf ? halfAtk(castleSwingAmt(a.att, atkThisRound)) : castleSwingAmt(a.att, atkThisRound)) + siegeBonus; // Pitchfork's C line at the castle: half (2026-10-17)
         const dmg = damageHQ(players[a.enemyId], bloodlustHalves(a.att, null) ? Math.ceil(castleAmt0 / 2) : castleAmt0); // Bloodlust (2026-10-17): half on castles
         swingLanded = true;
         aStat.dealt += dmg; aStat.faceDamage += dmg;
-        if(recordEvents && events) events.push({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus});
+        if(recordEvents && events) events.push(fkTag({type:'hitHQ', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), dmg, crit:critLanded, siege:siegeBonus>0, bulwark:Math.min(bulwarkBlocked, atkThisRound+siegeBonus), festerBonus, ruptureBonus}));
         fireHitLands(a.att, null, mySide, sideOf(a.enemyId), players[a.enemyId], aStat, stats, events); // Fire on hit, at the castle (2026-10-16)
         { const th = players[a.enemyId].castleThorns; if(th > 0 && dmg > 0 && a.att.hp > 0){ const td = damageCardFlat(a.att, th, 'thorns'); aStat.taken = (aStat.taken||0) + td;
           if(recordEvents && events) events.push({type:'statusFx', kind:'castleThorns', side:sideOf(a.enemyId), targetSide:mySide, targetDefId:a.att.defId, targetUid:a.att.uid, amount:td}); } }
@@ -6450,12 +6507,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Fork / Trident / Pitchfork prongs (2026-10-15, see prongSpec above): the other nearest units in range. A miss or dodge on
       // the main swing never cancels them (2026-10-12, user: "When the Fork unit misses, it should still continue to hit L and R");
       // Blind and the dark roll once per prong.
+      // 2026-10-17: the other lines of the same swing (prongCols holds those lines that reach a unit), half or full as the line says.
       if(prongCols.length){
-        prongCols.forEach(c=>{
+        prongCols.forEach(ln=>{ const c = ln.col;
           const pT = liveEnemyCols[c];
           const pMiss = extraHitBlind(pT && pT.card); // Exposed: a sure hit; Keen Sense: per target (2026-10-15)
-          if(pMiss){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork', prong:prongSpec.kind}); return; }
-          forkStrike(c, false, prongSpec.kind); swingLanded = true;
+          if(pMiss){ if(recordEvents && events) events.push({type:'blindMiss', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetKind:'fork', prong:prongSpec.kind, targetUid: pT && pT.card ? pT.card.uid : null, fork:true, forkSwing:forkPlan.id, forkLine:ln.off}); return; }
+          forkStrike(c, false, prongSpec.kind, ln); swingLanded = true;
         });
       }
       if(isBoomerangDef(attDef) && !a.att._boomerangReturning && !blindNow){ // thrown: it flies on even if the thrower falls

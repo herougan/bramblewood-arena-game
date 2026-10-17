@@ -25,4 +25,21 @@ ok(missOf([{id:'ni-nb', side:'left'}], [{id:'ni-lamp', side:'left'}]) === 0, 'an
 ok(missOf([{id:'ni-nb', side:'left'}], [{id:'ni-oldlamp', side:'left'}]) === 0, 'an old Lantern facing it does the same');
 ok(missOf([{id:'ni-nb', side:'left'}], [{id:'ni-plain', side:'left'}, {id:'ni-lamp', side:'right'}]) === 0.5, 'an enemy Illuminate unit that is not facing it does not help');
 ok(missOf([{id:'ni-nb', side:'left'}, {id:'ni-lamp', side:'right'}], []) === 0, 'its own side\'s Illuminate still lights it, as before');
+// 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate."): the enemy unit facing an
+// Illuminate unit doesn't miss for the dark either (Darkness, Pitch Black, Absolute), on both sides; units elsewhere still do.
+function darkMiss(dark, mine, foes, who){
+  const e = E.makeSimEngine(defs, E.mulberry32(3), {recordEvents:true, battleMode:'open', rules:{dark}});
+  const P = {1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})};
+  mine.forEach(x=> e.debugSpawnCard(P, so, 1, x.id, x.side, {}, []));
+  foes.forEach(x=> e.debugSpawnCard(P, so, 2, x.id, x.side, {}, []));
+  e.roundStart(P, 2, so, {}, []);
+  const pid = who.pid, c = all(P[pid]).filter(c=> c.defId === who.id)[who.n || 0];
+  return e.sightMiss(c, pid);
+}
+ok(darkMiss('pitch', [{id:'ni-plain', side:'left'}], [{id:'ni-lamp', side:'left'}], {pid:1, id:'ni-plain'}) === 0, 'Pitch Black: the unit facing an enemy Illuminate unit sees');
+ok(darkMiss('absolute', [{id:'ni-plain', side:'left'}], [{id:'ni-oldlamp', side:'left'}], {pid:1, id:'ni-plain'}) === 0, 'Absolute darkness: an old Lantern facing it lights it too');
+ok(darkMiss('dark', [{id:'ni-plain', side:'left'}], [{id:'ni-lamp', side:'left'}], {pid:1, id:'ni-plain'}) === 0, 'Darkness: the same');
+ok(darkMiss('pitch', [{id:'ni-plain', side:'left'}, {id:'ni-plain', side:'right'}], [{id:'ni-lamp', side:'left'}], {pid:1, id:'ni-plain', n:1}) === 0.5, 'Pitch Black: a unit not facing the enemy lamp still misses 1 in 2');
+ok(darkMiss('pitch', [{id:'ni-lamp', side:'left'}], [{id:'ni-plain', side:'left'}], {pid:2, id:'ni-plain'}) === 0, 'both sides: the enemy facing my lamp sees too');
+ok(darkMiss('pitch', [], [{id:'ni-plain', side:'left'}], {pid:2, id:'ni-plain'}) === 0.5, 'with no lamp anywhere, Pitch Black misses 1 in 2');
 console.log(fail ? `nightblind-illuminate: ${fail} failure(s)` : 'nightblind-illuminate: all passed'); process.exit(fail ? 1 : 0);

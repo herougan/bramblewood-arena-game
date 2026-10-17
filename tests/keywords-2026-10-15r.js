@@ -94,7 +94,7 @@ ok(/\{key:'worthy', category:'passive', hidden:true, retired:true,/.test(src), '
 { let dodged = 0, landed = 0; for(let s = 1; s <= 40; s++){ const {e, P} = mk(null, s); put(e, P, 2, 'kr-wall', 0); const L = put(e, P, 2, 'kr-evade', -1); const A = put(e, P, 1, 'kr-cleave', 0);
     e.debugAttack(P, so, A.uid, {}, []); if(L.hp === 500) dodged++; else landed++; }
   ok(dodged > 5 && landed > 5, `43. a Cleave side hit on an Evasive unit is dodged about half the time (${dodged}/40)`); }
-{ let dodged = 0; for(let s = 1; s <= 40; s++){ const {e, P} = mk(null, s); put(e, P, 2, 'kr-wall', 0); const L = put(e, P, 2, 'kr-evade', -1); const A = put(e, P, 1, 'kr-fork', 0);
+{ let dodged = 0; for(let s = 1; s <= 40; s++){ const {e, P} = mk(null, s); put(e, P, 2, 'kr-wall', 1); const L = put(e, P, 2, 'kr-evade', -1); const A = put(e, P, 1, 'kr-fork', 0); // 2026-10-17: L and R (a Fork with a unit in front and one side only strikes C)
     e.debugAttack(P, so, A.uid, {}, []); if(L.hp === 500) dodged++; }
   ok(dodged > 5 && dodged < 35, `43. a Fork prong at an Evasive unit can be dodged (${dodged}/40)`); }
 { let miss = 0, hit = 0; for(let s = 1; s <= 40; s++){ const {e, P} = mk({dark:'pitch'}, s); put(e, P, 2, 'kr-wall', 0); const L = put(e, P, 2, 'kr-wall', -1); const A = put(e, P, 1, 'kr-cleave', 0);
