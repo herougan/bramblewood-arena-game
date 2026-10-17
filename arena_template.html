@@ -10422,34 +10422,73 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   /* The deck-swap offer (maybeOfferDeckSwap) had no styles at all, so it fell into the page flow at the bottom of every page. It is
      a modal now: a centred card on wide screens, a compact bottom sheet on phones (old → new side by side, the text, Keep and Swap). */
   .ds2-overlay{position:fixed; inset:0; z-index:9000; display:flex; align-items:center; justify-content:center; padding:16px; background:rgba(10,7,4,.62); animation:ds2In .25s ease both;}
-  .ds2-overlay.is-out{opacity:0; transition:opacity .15s ease;} /* 2026-10-14 (user: "When you click Swap, it says 'Nice!' then the window fades abit faster than now."): .25s → .15s */
+  /* 2026-10-17 (user: "The Swap menu fade blows up and fade shrinks down (transition). Clicking Swap changes the fade shrink down
+     transition to a bounce then fade shrink down! like its happy."): in, the window fades in growing from 70%; out, it fades while it
+     shrinks back; after a Swap (.is-happy) it bounces first. */
+  .ds2-overlay.is-out{opacity:0; transition:opacity .22s ease .02s;}
+  .ds2-overlay .ds2{animation:ds2Grow .34s cubic-bezier(.3,1.35,.5,1) both;}
+  .ds2-overlay.is-happy .ds2{animation:ds2Happy .5s cubic-bezier(.3,1.4,.5,1) both;}
+  .ds2-overlay.is-out .ds2{animation:ds2Shrink .24s ease-in both;}
+  @keyframes ds2Grow{from{opacity:0; transform:scale(.7);} to{opacity:1; transform:none;}}
+  @keyframes ds2Shrink{from{opacity:1; transform:none;} to{opacity:0; transform:scale(.72);}}
+  @keyframes ds2Happy{0%{transform:none;} 25%{transform:scale(1.07) rotate(-1.2deg);} 50%{transform:scale(.97) rotate(.8deg);} 75%{transform:scale(1.03);} 100%{transform:none;}}
   .ds2-say .ds2-nice{display:inline-block; font:900 26px 'Baloo 2',system-ui,sans-serif; color:#3a8f4b; animation:ds2Nice .35s cubic-bezier(.3,1.5,.5,1) both;}
   @keyframes ds2Nice{from{opacity:0; transform:scale(.6);} to{opacity:1; transform:none;}}
   @keyframes ds2In{from{opacity:0;} to{opacity:1;}}
-  .ds2{width:min(560px, 100%); max-height:calc(100vh - 32px); overflow:auto; overflow-x:hidden; box-sizing:border-box; background:#f6ecd6; color:#2b1d10; border:2px solid #c9a25a; border-radius:18px; padding:16px 18px 14px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.55);}
-  .ds2-stage{display:flex; justify-content:center;}
-  .ds2-strip{display:flex; justify-content:center; align-items:center; gap:8px;}
-  .ds2-side{opacity:.45; transform:scale(.82); filter:saturate(.7);} .ds2-side .card-tile{width:56px !important;} .ds2-side{margin:0 -3px;}
-  .ds2-focus{position:relative; display:flex; align-items:center; gap:30px; padding:0 4px;}
+  .ds2{width:min(600px, 100%); max-height:calc(100vh - 32px); overflow:auto; overflow-x:hidden; box-sizing:border-box; background:#f6ecd6; color:#2b1d10; border:2px solid #c9a25a; border-radius:18px; padding:16px 18px 14px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.55); transform-origin:50% 55%;}
+  /* 2026-10-17 (user: "Left is your deck, Right is cards not in your deck"): two columns, each its pick, ‹ › and the other candidates. */
+  .ds2-stage{position:relative; display:flex; justify-content:center; align-items:flex-start; gap:34px;}
+  .ds2-col{display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0;}
+  .ds2-col-h{font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; color:#7a5a30;}
+  .ds2-pick{display:flex; align-items:center; gap:4px;}
+  .ds2-nav{width:28px; height:44px; border:0; border-radius:10px; background:rgba(138,90,32,.14); color:#6b4418; font:900 22px/1 system-ui,sans-serif; cursor:pointer; padding:0;}
+  .ds2-nav:hover, .ds2-nav:focus-visible{background:rgba(138,90,32,.28);}
+  .ds2-thumbs{display:flex; gap:6px; justify-content:center;}
+  .ds2-thumb{position:relative; padding:0; border:2px solid transparent; border-radius:9px; background:none; cursor:pointer; opacity:.55; filter:saturate(.7); transition:opacity .15s, transform .15s;}
+  .ds2-thumb .card-tile{width:46px !important; pointer-events:none;}
+  .ds2-thumb.is-on{opacity:1; filter:none; border-color:#c9a25a; transform:translateY(-2px);}
+  .ds2-thumb:hover{opacity:.9;}
+  .ds2-rec{position:absolute; top:-7px; right:-6px; font-style:normal; font-size:11px; line-height:1; padding:2px 3px; border-radius:999px; background:#e9b949; color:#4a2c08; box-shadow:0 1px 3px rgba(0,0,0,.3);}
   .ds2-old .card-tile, .ds2-new .card-tile{width:112px !important;}
   .ds2-old, .ds2-new{transition:transform .6s cubic-bezier(.3,1.3,.5,1), opacity .5s ease, filter .5s ease;}
   .ds2-new{filter:drop-shadow(0 0 10px rgba(255,214,110,.8));}
-  .ds2-arrows{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(90deg); font-size:22px; font-weight:800; color:#8a5a20;}
-  .ds2-focus.is-swapped .ds2-old{opacity:.25; transform:translateY(12px) scale(.88); filter:grayscale(1);}
-  .ds2-focus.is-swapped .ds2-new{transform:scale(1.08);}
+  .ds2-arrows{position:absolute; left:50%; top:96px; transform:translateX(-50%); font-size:22px; font-weight:800; color:#8a5a20;}
+  .ds2-stage.is-swapped .ds2-old{opacity:.25; transform:translateY(12px) scale(.88); filter:grayscale(1);}
+  .ds2-stage.is-swapped .ds2-new{transform:scale(1.08);}
+  .ds2-stage.is-swapped .ds2-thumbs, .ds2-stage.is-swapped .ds2-nav{opacity:0; pointer-events:none; transition:opacity .2s;}
   .ds2-say{margin:12px 0 10px; font-size:15px; line-height:1.4; color:#2b1d10;} .ds2-say span{font-size:13px; color:#5a4630;}
   .ds2-actions{display:flex; gap:10px; justify-content:center; align-items:center;}
   @media (max-width:560px){
     .ds2-overlay{align-items:flex-end; padding:0;}
-    .ds2{width:100%; max-height:70vh; border-radius:18px 18px 0 0; border-width:2px 0 0; padding:12px 14px calc(12px + env(safe-area-inset-bottom));}
-    .ds2-side, .ds2-lbl-x{display:none;}
-    .ds2-focus{gap:26px;}
+    .ds2{width:100%; max-height:78vh; border-radius:18px 18px 0 0; border-width:2px 0 0; padding:12px 10px calc(12px + env(safe-area-inset-bottom)); transform-origin:50% 100%;}
+    .ds2-lbl-x{display:none;}
+    .ds2-stage{gap:18px;}
+    .ds2-nav{width:22px; height:38px; font-size:18px;}
+    .ds2-thumb .card-tile{width:36px !important;}
+    .ds2-arrows{top:76px; font-size:18px;}
     .ds2-old .card-tile, .ds2-new .card-tile{width:84px !important;}
     .ds2-say{font-size:14px; margin:8px 0;}
     .ds2-actions .btn{flex:1; min-height:42px;}
     .ds2-actions .btn.big{font-size:16px; padding:8px 12px;}
   }
-  @media (prefers-reduced-motion: reduce){ .ds2-overlay{animation:none;} .ds2-old, .ds2-new{transition:none;} }
+  @media (prefers-reduced-motion: reduce){ .ds2-overlay, .ds2-overlay .ds2, .ds2-overlay.is-happy .ds2, .ds2-overlay.is-out .ds2{animation:none;} .ds2-old, .ds2-new{transition:none;} }
+  /* 2026-10-17 (menus): the Tutorial map's later fights say which fight opens them */
+  .map-node-hidden.is-gated{pointer-events:auto; cursor:help;}
+  .map-node-hidden.is-gated .map-node-code{position:absolute; left:50%; bottom:-9px; transform:translateX(-50%); font:800 10px/1 'Baloo 2',system-ui,sans-serif; padding:2px 5px; border-radius:999px; background:rgba(58,43,30,.86); color:#f3e7cc; white-space:nowrap; pointer-events:none;}
+  .map-node-gate{position:absolute; left:50%; top:calc(100% + 12px); transform:translateX(-50%); width:max-content; max-width:120px; white-space:normal; text-align:center; font:700 11px/1.2 'Baloo 2',system-ui,sans-serif; padding:3px 7px; border-radius:8px; background:rgba(20,14,8,.78); color:#fbefd2; pointer-events:none;}
+  @media (max-width:560px){ .map-node-gate{font-size:10px; max-width:96px; padding:2px 5px;} }
+  /* 2026-10-17 (menus): results, one Rewards block (packs and chips inside), New cards seen with what opened */
+  .rw-rewards .rw-pack-row{margin-top:10px;}
+  .rw-rewards .rw-item-row{flex-wrap:wrap; justify-content:center; gap:8px;}
+  .rw-seen .rw-open-row, .rw-seen .rw-fight-row{margin-top:8px; flex-wrap:wrap; justify-content:center; gap:8px;}
+  .rw-card.is-unlock .rw-new{z-index:7;}
+  /* 2026-10-17 (menus): Wildpaths hover tooltips */
+  .wp-tip{position:fixed; z-index:9500; max-width:min(280px, calc(100vw - 16px)); box-sizing:border-box; padding:9px 11px; border-radius:10px; background:#fff8e6; color:#2b2117; box-shadow:0 8px 22px rgba(0,0,0,.4); font-size:13px; line-height:1.4; pointer-events:none; display:flex; flex-direction:column; gap:3px; text-align:left;}
+  .wp-tip[hidden]{display:none;}
+  .wp-tip b{font-size:14px;} .wp-tip small{color:#6a5640; font-size:12px;}
+  .wp-points[data-wptip]{cursor:help;}
+  /* 2026-10-17 (menus): the Tavern's empty bar */
+  .tavern-recruit .tr-empty{text-align:center; margin:10px 0 4px;} .tavern-recruit .tr-empty small{opacity:.8;}
   /* Phone header and Home (user: "In mobile, the logo, the icons are too separated from each other"): the logo and the header
      icons sit together as one centred cluster, and Home's chestnut, title and level badge close up. */
   @media (max-width:560px){
@@ -10715,6 +10754,12 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
               <div class="settings-row-label"><span>🗨️ Voice lines</span></div>
               <select id="voiceLinesSelect" aria-label="Voice lines"></select>
               <div class="settings-row-note">Short lines over the cards, read out in each animal's babble.</div>
+            </div>
+            <!-- 2026-10-17 (user: "Have a setting for NPC dialogue speed. The current is Medium. There is slow and fast."). See dialogueSpeed in arena_app.js. -->
+            <div class="settings-row">
+              <div class="settings-row-label"><span>💬 NPC dialogue speed</span></div>
+              <select id="dialogueSpeedSelect" aria-label="NPC dialogue speed"></select>
+              <div class="settings-row-note">How long the travellers' lines stay up, and how soon the next one comes.</div>
             </div>
             <div class="settings-row">
               <div class="settings-row-label"><span>🌊 Shader effects</span></div>

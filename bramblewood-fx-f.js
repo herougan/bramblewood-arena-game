@@ -1560,8 +1560,9 @@ H.resultsShown = (card, m, env)=>{
   add(c=> m.mode === 'gauntlet' && [...c.querySelectorAll('.conquest-rank-badge')].find(x=> /🔥/.test(x.textContent)), el=> M.gauntletStreak(el, {streak:m.gauntletStreakAfter}));
   add(c=> c.querySelector('.rw-scale'), el=> M.dragonScale(el));
   add(c=> c.querySelector('.rw-materia'), el=> M.materiaDrop(el));
-  add(c=>{ const s = sec(c, 'Found'); return s && s.querySelector('.rw-act'); }, el=> M.nestEggDrop(el, {icon:el.textContent.trim().split(' ')[0] || '🥚'}));
-  add(c=>{ const s = sec(c, 'Spare castle'); return s && s.querySelector('.rw-act'); }, el=> M.castleDrop(el, {text:/New castle/.test(el.textContent) ? 'New castle!' : 'Spare castle'}));
+  // 2026-10-17: the egg and the castle are chips in the one Rewards block now (rewardsPanelHTML), found by their own class.
+  add(c=> c.querySelector('.rw-act.rw-egg') || (()=>{ const s = sec(c, 'Found'); return s && s.querySelector('.rw-act'); })(), el=> M.nestEggDrop(el, {icon:el.textContent.trim().split(' ')[0] || '🥚'}));
+  add(c=> c.querySelector('.rw-act.rw-castle') || (()=>{ const s = sec(c, 'Spare castle'); return s && s.querySelector('.rw-act'); })(), el=> M.castleDrop(el, {text:/New castle/.test(el.textContent) ? 'New castle!' : 'Spare castle'}));
   add(c=> [...c.querySelectorAll('.rw-act')].find(x=> /Your character/.test(x.getAttribute('data-tip') || '')), el=> M.avatarUnlock(el));
   add(c=> c.querySelector('.rw-card.is-seen'), (_, c)=> [...c.querySelectorAll('.rw-card.is-seen')].slice(0, 3).forEach((s, i)=> later(()=> M.codexNew(s), i*180)));
   add(c=> c.querySelector('.winloss-achv'), el=> M.achvUnlocked(el));
