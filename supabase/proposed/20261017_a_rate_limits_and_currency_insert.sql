@@ -1,3 +1,4 @@
+-- SUPERSEDED 2026-10-17: the final version is supabase/migrations/20261017_currency_insert_cap_and_gain_budgets.sql (adjusted per the owner's 22:48 decision). Kept for the record; do not apply this file.
 -- PROPOSED, NOT APPLIED (2026-10-17, docs/platform-roadmap-2026-10-17.md §3). Apply only when the owner says "apply it".
 -- Security tier 1.5: close the gaps left by anti-cheat tier 1 (20261008_anticheat_tier1.sql).
 --
