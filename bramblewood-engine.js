@@ -1653,6 +1653,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(v || c.speed) c.speed = v; });
     });
   }
+  // 2026-10-17 (user: "Arrows etc, and all these kind of skills happen at Speed = 1. Quick happens at Speed = 2."): one rule for
+  // the whole main order. A unit's swing goes at its Speed (c.speed above: its own Speed, Haste, a Haste ally beside it) on top
+  // of a base: Quick 2, a Boomerang throw 1, everyone else 0. Every shooter's Arrows / Bolts / Snipe etc. are a separate action
+  // at Speed 1 (SHOT_SPEED). c.speed (the board's badge) leaves the base out; Quick shows as its own boots icon.
+  const SHOT_SPEED = 1;
+  function swingSpeedOf(c){ const e = effectsOf(c); return (Number(c && c.speed)||0) + (e.quick ? 2 : isBoomerangDef(CARD_DEFS[c.defId]) ? 1 : 0); }
   // Cower (2026-10-14, user: "Cower (and maybe another skill also about a Turtle going into a shell) - Do {} when hit previous
   // turn"): the "when hit last turn" trigger. A unit that took damage in the previous round does its cower action this round:
   //   'shell' (the default) pulls into its shell: no attack this round, and attacks can't hurt it this round (Poison, Bleed,
@@ -3061,6 +3067,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }));
     springHazards(players, sideOf, playerId, boardCard, stats, events); // a Trap or Slash & Burn ground on that slot (2026-10-16): placeCard, debugSpawnCard, summonLeader
     springAmbush(players, sideOf, playerId, boardCard, stats, events); // 2026-10-16 (user: "when opposing card played, deal N damage to it"): an enemy Ambush unit facing it strikes
+    settleArrivalDeaths(players, sideOf, stats, events); // 2026-10-17: a unit a Pounce / Ambush / trap / on-play skill just killed dies now
     try{ syncPhaseStats(players, sideOf, events); }catch(e){} // Timber/Loyal/Usurper see the new board and the Lumber just spent
     return true;
   }
@@ -3094,6 +3101,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }));
     springHazards(players, sideOf, playerId, boardCard, stats, events); // a Trap or Slash & Burn ground on that slot (2026-10-16): placeCard, debugSpawnCard, summonLeader
     springAmbush(players, sideOf, playerId, boardCard, stats, events); // 2026-10-16 (user: "when opposing card played, deal N damage to it"): an enemy Ambush unit facing it strikes
+    settleArrivalDeaths(players, sideOf, stats, events); // 2026-10-17: a unit a Pounce / Ambush / trap / on-play skill just killed dies now
     try{ syncPhaseStats(players, sideOf, events); }catch(e){} // Timber/Loyal/Usurper see the new board and the Lumber just spent
     return true;
   }
@@ -3220,6 +3228,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }));
     springHazards(players, sideOf, playerId, boardCard, stats, events); // a Trap or Slash & Burn ground on that slot (2026-10-16): placeCard, debugSpawnCard, summonLeader
     springAmbush(players, sideOf, playerId, boardCard, stats, events); // 2026-10-16 (user: "when opposing card played, deal N damage to it"): an enemy Ambush unit facing it strikes
+    settleArrivalDeaths(players, sideOf, stats, events); // 2026-10-17: a unit a Pounce / Ambush / trap / on-play skill just killed dies now
     try{ syncPhaseStats(players, sideOf, events); }catch(e){} // Timber/Loyal/Usurper see the new board and the Lumber just spent
     return true;
   }
@@ -3328,6 +3337,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Ready or Waiting; it can't be dodged and no Guardian steps in (it lands before anyone can react). An Invisible arrival is not
   // seen. Called after a card lands: placeCard, debugSpawnCard, summonLeader (beside springHazards).
   const AMBUSH_DEF = 3;
+  // 2026-10-17 (user: "Settle death effects after a skill or attack finishes. I realise pounce, quick, and arrow happen first, before
+  // finally the die animation plays."): a unit killed by something a card does as it arrives (Pounce, an Ambush, a trap, Skyfall, an
+  // Earthquake...) used to stay on the board at 0 Health until the next round's first clean-up, so its death played only after that
+  // round's Quick swings and Arrows. Now the dead are cleared (death effects and all) as soon as the arrival has finished.
+  function settleArrivalDeaths(players, sideOf, stats, events){
+    if([1,2].some(pid=> players[pid] && allBoardCards(players[pid]).some(c=> c && !c.gap && c.hp <= 0))) removeDeadCards(players, sideOf, {}, stats || {}, events);
+  }
   // 2026-10-17 (user: "Ambush N - whenever a unit enters this unit's opposing side, deal N damage." + "Sentry - Attack when L/C/R
   // opposing unit enters/moves in"): Ambush (and the new Sentry) now watch for any enemy unit ENTERING: played, spawned (a token,
   // a hatch into a new unit, a reserve stepping up) or, on open boards, moved in (Wave, Tornado, Restless, Converge, a Bloodlust
@@ -4121,16 +4137,30 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     else if(kind === 'freezeCounter'){ if(c.frozen > 0 || resistFactor(c.defId, 'cold') === 0 || rnd() >= 0.5) return; c.frozen = 1; fx('freeze', 1); } // melts at this round's end, like the frost's chill
     else if(kind === 'shock'){ c.shocked = Math.max(c.shocked||0, 1); c._shockedJustSet = true; fx('shock', 1); }
   }
-  function fireArrowVolley(players, sideOf, stats, events){
+  // 2026-10-17 (user: "Arrows etc, and all these kind of skills happen at Speed = 1. Quick happens at Speed = 2."): the shots no
+  // longer all go off in one volley before anyone swings. Each shooter's shots are one action at Speed 1 in the round's main
+  // order (see pickNextAttacker): after every Speed 2+ swing (Quick, Haste), before the Speed 0 swings. hasShotSkill says who
+  // gets that action; fireShotsOf fires one shooter's shots (it re-checks that the shooter can still act at that moment).
+  const SHOT_KEYS = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'spitfire', 'snipe'].concat(Object.keys(BOLT_ELEMENTS));
+  function hasShotSkill(c){ const fx = effectsOf(c); return SHOT_KEYS.some(k=> fx[k] && !(Number(fx[k]) < 0)); }
+  function fireArrowVolley(players, sideOf, stats, events){ // every shooter at once (kept for callers outside the round order)
     let fired = false;
     [1,2].forEach(pid=>{
       if(passAttackerIds && !passAttackerIds.includes(pid)) return;
       const pl = players[pid]; if(!pl) return;
-      const enemy = players[otherId(pid)];
-      [...pl.row.left, ...pl.row.center, ...pl.row.right].forEach(c=>{
-        if(c.hp<=0 || c.wait>0 || c.stunned || c.frozen>0 || c.asleep>0) return;
-        if(passOnlyUid && c.uid !== passOnlyUid) return;
-        const def = CARD_DEFS[c.defId]; const fx = def && def.effects; if(!fx) return;
+      [...pl.row.left, ...pl.row.center, ...pl.row.right].forEach(c=>{ if(fireShotsOf(players, sideOf, pid, c, stats, events)) fired = true; });
+    });
+    if(fired) removeDeadCards(players, sideOf, {}, stats, events);
+  }
+  function fireShotsOf(players, sideOf, pid, c, stats, events){
+    let fired = false;
+    {
+      const pl = players[pid]; if(!pl) return false;
+      const enemy = players[otherId(pid)]; if(!enemy) return false;
+      {
+        if(!c || c.hp<=0 || c.wait>0 || c.stunned || c.frozen>0 || c.asleep>0 || c.cageOf) return false;
+        if(passOnlyUid && c.uid !== passOnlyUid) return false;
+        const def = CARD_DEFS[c.defId]; const fx = def && def.effects; if(!fx) return false;
         const shots = [];
         const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
         const fl17 = auraN(pl, 'fletcher'); // Fletcher N (2026-10-17): every arrow of your side deals N more
@@ -4195,9 +4225,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(hitCard && shot.status) applyShotStatus(shot.status, (shot.n || 1) + (shot.status === 'poison' ? venomBoost(bounced ? otherId(pid) : pid) : 0), hitCard, c, sideOf(pid), sideOf(otherId(pid)), events, ensureStat(stats, sideOf(pid), c.defId)); // + Venom Master on the Poison Bolt (2026-10-17)
           if(hitCard && shot.spitfire && !bounced && rnd() < 0.5){ const by = besideOf(enemy, hitCard); if(by.length) skillAreaHit(players, sideOf, pid, c, by[Math.floor(rnd()*by.length)], 1, 'heat', stats, events, {spitfireSplash:true}); }
         });
-      });
-    });
-    if(fired) removeDeadCards(players, sideOf, {}, stats, events);
+      }
+    }
+    return fired;
   }
   // Nearest enemy for Arrow (2026-10-13, user: "Arrow should shoot the nearest enemy. If tied, random."): the same
   // nearest-unit rule Backstab uses. null when the enemy board is empty.
@@ -5698,8 +5728,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Rally N (item #14): recomputed fresh every round, AFTER poison ticks/deaths resolve, so
     // a Rally source that just poisoned itself to death no longer contributes this round.
     computeRallyBonuses(players);
-    fireArrowVolley(players, sideOf, stats, events);
     watchScan(players, sideOf, stats, events); // 2026-10-17: units that arrived or moved during upkeep meet Ambush / Sentry before melee
+    // 2026-10-17 (user: "Arrows etc, and all these kind of skills happen at Speed = 1."): the shooters on the field now (Ready ones;
+    // fireShotsOf checks again when their turn comes) each get one shot action at Speed 1 in the main order below, instead of
+    // one volley before it. Units that arrive or turn Ready later this round shoot from next round, as before.
+    const shotPool = new Map(); // uid -> {att, attId}
+    [[p1,1],[p2,2]].forEach(([pl, ownId])=>{ if(!pl || (passAttackerIds && !passAttackerIds.includes(ownId))) return;
+      allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid) && hasShotSkill(c)) shotPool.set(c.uid, {att:c, attId:ownId}); }); });
     // 2026-09-20 (explicit bug report: "the battle log is missing some of the attack
     // transactions"): every reason below that keeps a card from taking its turn used to be a
     // silent `return` — the card just sat there, and nothing in the log explained why. A player
@@ -5819,25 +5854,31 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       poolMeta.forEach((meta, uid)=>{
         const pos = liveSharedPos(players[meta.attId], uid);
         if(pos===null) return; // defensive only — hp>0 was already confirmed at discovery time
-        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:meta.enemyId, pos});
+        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:meta.enemyId, pos, spd: swingSpeedOf(meta.att)});
+      });
+      shotPool.forEach((meta, uid)=>{ // 2026-10-17: the Speed 1 shot actions (see shotPool above)
+        if(!(meta.att.hp > 0)){ shotPool.delete(uid); return; }
+        const pos = liveSharedPos(players[meta.attId], uid); if(pos===null){ shotPool.delete(uid); return; }
+        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos, spd: SHOT_SPEED, shot:true});
       });
       if(!candidates.length) return null;
-      // Swift (2026-10-02) acts before everything — even Quick — and among several Swift units the
-      // normal position/tie-break order below decides; then Quick; then everyone else.
-      const speedRank = c=>{ const e = CARD_DEFS[c.att.defId].effects || {}; return e.swift ? 0 : (e.quick ? 1 : 2); };
-      const grassFirst = c=> rules.tallGrass && (CARD_DEFS[c.att.defId].effects || {}).stealth ? 0 : 1; // Tall Grass (2026-10-16): "stealth units attack first"
+      // Swift (2026-10-02): inside one Speed it acts before the rest (no card has it at the moment). Since 2026-10-17 Quick is
+      // no longer a rank here: it is Speed 2 (swingSpeedOf).
+      const speedRank = c=>{ if(c.shot) return 1; const e = CARD_DEFS[c.att.defId].effects || {}; return e.swift ? 0 : 1; };
+      const grassFirst = c=> !c.shot && rules.tallGrass && (CARD_DEFS[c.att.defId].effects || {}).stealth ? 0 : 1; // Tall Grass (2026-10-16): "stealth units attack first"
       candidates.sort((a,b)=>{
         if(grassFirst(a) !== grassFirst(b)) return grassFirst(a) - grassFirst(b);
         // Speed (2026-10-14): the highest Speed swings first; everything below is the old order within one Speed.
-        const sa = a.att.speed||0, sb = b.att.speed||0;
-        if(sa!==sb) return sb-sa;
+        if(a.spd!==b.spd) return b.spd-a.spd;
         const ra = speedRank(a), rb = speedRank(b);
         if(ra!==rb) return ra-rb;
         if(a.pos!==b.pos) return a.pos-b.pos;
+        if(a.uid===b.uid) return a.shot ? -1 : 1; // one unit at Speed 1 both ways: it shoots, then swings
         const winsTies = firstAttackerSide || 2;
         return a.attId===winsTies ? -1 : 1;
       });
       const chosen = candidates[0];
+      if(chosen.shot){ shotPool.delete(chosen.uid); return chosen; }
       poolMeta.delete(chosen.uid);
       handledUids.add(chosen.uid);
       return chosen;
@@ -5883,6 +5924,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const a = pending;
       pending = null;
       if(a.att.hp<=0){ pending = pickNextAttacker(); continue; }
+      if(a.shot){ // 2026-10-17: this shooter's Speed 1 shot action; its kills are cleared away before the next action, like a swing's
+        if(fireShotsOf(players, sideOf, a.attId, a.att, stats, events)) removeDeadCards(players, sideOf, {}, stats, events);
+        pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       // Snapshot taken BEFORE this iteration can credit any new kills, so reflowAfterKills()
       // can tell "died just now, this turn" apart from "was already dead/credited earlier
       // this round" — see reflowAfterKills' own comment for why this can't be taken inside it.
