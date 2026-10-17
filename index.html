@@ -37021,7 +37021,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '03d99d6ce470', BUILD_CARD_HASH = '0d895345ed4ca62efd5512c769c8c686ef6e0c821a7acf3338be1e1e5aaee5c6';
+const BUILD_ID = '037e5e3aa389', BUILD_CARD_HASH = '0d895345ed4ca62efd5512c769c8c686ef6e0c821a7acf3338be1e1e5aaee5c6';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -37781,7 +37781,15 @@ function dropCataphractOnReady(id, d){
   const fx = Object.assign({}, e); delete fx.onReadyDamage; if(trs) fx.triggers = trs.filter(t=> !legacyTrig(t));
   return Object.assign({}, d, {effects: fx});
 }
-function cloudCardData0(r){ return dropCataphractOnReady(r && r.id, cloudCardData00(r)); }
+function cloudCardData0(r){ return keepNewBaselineFields(r && r.id, dropCataphractOnReady(r && r.id, cloudCardData00(r))); }
+// 2026-10-18: a whole-card edit published before a field existed keeps the built-in card's value for it. creatureRank (10-18) is the
+// first: four Dragons were published on 10-16, so without this they'd lose their rank. Only fields the edit doesn't set are filled.
+const BASELINE_ONLY_FIELDS = ['creatureRank'];
+function keepNewBaselineFields(id, d){
+  const base = id && CARD_DEFS_BASELINE[id]; if(!d || !base) return d;
+  const add = BASELINE_ONLY_FIELDS.filter(k=> base[k] != null && d[k] == null); if(!add.length) return d;
+  const out = Object.assign({}, d); add.forEach(k=> out[k] = base[k]); return out;
+}
 function cloudCardData00(r){
   const d0 = r && r.data; if(!d0 || !d0.__patch) return migrateWorthyToBounty(dropStaleArtPath(r && r.id, d0));
   const d = d0;

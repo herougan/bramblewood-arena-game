@@ -3346,7 +3346,15 @@ function dropCataphractOnReady(id, d){
   const fx = Object.assign({}, e); delete fx.onReadyDamage; if(trs) fx.triggers = trs.filter(t=> !legacyTrig(t));
   return Object.assign({}, d, {effects: fx});
 }
-function cloudCardData0(r){ return dropCataphractOnReady(r && r.id, cloudCardData00(r)); }
+function cloudCardData0(r){ return keepNewBaselineFields(r && r.id, dropCataphractOnReady(r && r.id, cloudCardData00(r))); }
+// 2026-10-18: a whole-card edit published before a field existed keeps the built-in card's value for it. creatureRank (10-18) is the
+// first: four Dragons were published on 10-16, so without this they'd lose their rank. Only fields the edit doesn't set are filled.
+const BASELINE_ONLY_FIELDS = ['creatureRank'];
+function keepNewBaselineFields(id, d){
+  const base = id && CARD_DEFS_BASELINE[id]; if(!d || !base) return d;
+  const add = BASELINE_ONLY_FIELDS.filter(k=> base[k] != null && d[k] == null); if(!add.length) return d;
+  const out = Object.assign({}, d); add.forEach(k=> out[k] = base[k]); return out;
+}
 function cloudCardData00(r){
   const d0 = r && r.data; if(!d0 || !d0.__patch) return migrateWorthyToBounty(dropStaleArtPath(r && r.id, d0));
   const d = d0;
