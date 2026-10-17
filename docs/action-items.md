@@ -1,5 +1,26 @@
 # Action items
 
+## Platform roadmap (10-17)
+
+Your 21:32 ask (alt emoji, alt effects, security, Electron or Unity, royalty-free music) is answered in [`platform-roadmap-2026-10-17.md`](platform-roadmap-2026-10-17.md). In short:
+
+| Topic | Recommendation |
+|---|---|
+| Emoji | Bundle Twemoji and Noto in the game (no more jsDelivr); add Fluent Flat (MIT); start a 32×32 pixel icon set behind `iconHTML()` with CC0 stand-ins. Avoid OpenMoji as a base (share-alike) |
+| Effects | An "Effects style" setting (Classic / Pixel / Minimal) beside the level, with the Lab's B/C variants wired to it; auto-downgrade on slow frames; no PixiJS yet |
+| Security | Four SQL drafts in `supabase/proposed/` (not applied). Found today: new currency rows aren't capped, the market doesn't check ownership or take payment, feedback can be flooded. Next: server-paid rewards and market, then fight replay |
+| Desktop/mobile | Electron for Steam (proof of concept in `electron/`: `npm i && npm start`), Capacitor for phones later. Not Tauri (Steam overlay), not Unity (rewrite) |
+| Music | Keep the generative music; add a Soundtrack option (per-biome tracks, crossfades, lazy loading). Shortlist of 12 CC0/CC-BY tracks and packs |
+
+**Waiting on you:**
+- "Apply it" for drafts a–d.
+- The gain budgets in draft a.
+- Market: does listing remove a copy?
+- 💰 Supabase Pro (25 USD/month) for leaked-password protection.
+- Stop serving `docs/`, `tools/` and `hub/` from the site at launch?
+- 💰 Apple Developer (99 USD/year) when a Mac build is wanted.
+- Pick 6–8 music tracks; optionally buy one pack (24.99 USD).
+
 _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is built. Only the items below are still open; each one waits on you (a word, a pick, money or a live database write). Older "Done" sections follow for reference._
 
 ## 1. Still open
