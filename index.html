@@ -35254,7 +35254,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'dd71845931f9', BUILD_CARD_HASH = '270c6d1b18e6978cacddec6069d6d704a576a8c0de713139feda8084cf12db99';
+const BUILD_ID = '75b0efb13880', BUILD_CARD_HASH = '270c6d1b18e6978cacddec6069d6d704a576a8c0de713139feda8084cf12db99';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -48087,21 +48087,24 @@ function noticeQuestListHTML(q){
 // the page is open; openQuestsModal('errands') opens straight on Errands.
 let noticesSubTab = 'notices';
 function questsModalShellHTML(dailyBoard, section, nextMon, now){
+  // 2026-10-16 (user: "This is what im talking about for "Quests #6" - move it to the 2nd tab."): the "Your quests" list (the
+  // daily and weekly quests you're on) moved off the first tab onto the second, above the errand writs, and the second tab is
+  // called Quests now since it holds both. The two tabs show from the start (before the Quest Board opens on Map 8 the Quests tab
+  // has just the list). Tab 1 keeps the posted notices. The tab id stays 'errands' (openQuestsModal('errands') still lands there).
   const q = loadQuestState(), erOpen = errandsOpen();
-  if(!erOpen) noticesSubTab = 'notices';
   const onErr = noticesSubTab === 'errands';
   let erBadge = '';
   if(erOpen){ try{ const e = loadErrands(), ready = claimableErrandCount(), n = e.active.length + e.offers.length;
     erBadge = ready ? `<span class="qn-tab-n is-ready" title="${ready} ready to claim">${ready}</span>` : n ? `<span class="qn-tab-n">${n}</span>` : ''; }catch(e){} }
-  const tabs = erOpen ? `<div class="qn-tabs" role="tablist" aria-label="Notices">
+  const tabs = `<div class="qn-tabs" role="tablist" aria-label="Notices">
       <button type="button" role="tab" class="qn-tab ${onErr ? '' : 'is-on'}" data-qn-tab="notices" aria-selected="${!onErr}">📌 Notices</button>
-      <button type="button" role="tab" class="qn-tab ${onErr ? 'is-on' : ''}" data-qn-tab="errands" aria-selected="${onErr}">📜 Errands${erBadge}</button>
-    </div>` : '';
+      <button type="button" role="tab" class="qn-tab ${onErr ? 'is-on' : ''}" data-qn-tab="errands" aria-selected="${onErr}">📜 Quests${erBadge}</button>
+    </div>`;
   const body = onErr
-    ? `<p class="qn-sub">Favours folk asked of you on the road. Do the work and claim the reward here.</p>
-       <div class="qn-cork er-cork">${errandsBoardHTML()}</div>`
-    : `<p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
+    ? `<p class="qn-sub">The quests you're on${erOpen ? ', and the favours folk asked of you on the road' : ''}. Tap one to see its notice; claim the reward when it's done.</p>
        ${noticeQuestListHTML(q)}
+       ${erOpen ? `<div class="qn-cork er-cork">${errandsBoardHTML()}</div>` : ''}`
+    : `<p class="qn-sub">Jobs posted around the Bramblewood. Finish one, take it down, and claim the reward.</p>
        <div class="qn-cork">
          ${dailyBoard()}
          ${section('weekly', 'Weekly', nextMon - now)}
@@ -48141,7 +48144,10 @@ function openQuestsModal(focus){
   overlay.querySelectorAll('[data-qn-tab]').forEach(b=> b.addEventListener('click', ()=>{ if(noticesSubTab === b.dataset.qnTab) return; noticesSubTab = b.dataset.qnTab; try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(_){}
     openQuestsModal(); const m = overlay.querySelector('.quests-modal'); if(m) m.scrollTop = 0; const t = overlay.querySelector(`[data-qn-tab="${noticesSubTab}"]`); if(t) t.focus(); }));
   // 2026-10-15: the quest list scrolls to its board (and the board's notes give a little wiggle); Medals point to the Profile.
-  overlay.querySelectorAll('[data-qn-go]').forEach(b=> b.addEventListener('click', ()=>{ const t = overlay.querySelector(b.dataset.qnGo); if(!t) return;
+  overlay.querySelectorAll('[data-qn-go]').forEach(b=> b.addEventListener('click', ()=>{ let t = overlay.querySelector(b.dataset.qnGo);
+    // 2026-10-16: the list is on the Quests tab and the notes on Notices, so a tap turns to Notices first
+    if(!t && noticesSubTab !== 'notices'){ noticesSubTab = 'notices'; openQuestsModal(); t = overlay.querySelector(b.dataset.qnGo); }
+    if(!t) return;
     try{ t.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(_){} t.classList.remove('qn-flash'); void t.offsetWidth; t.classList.add('qn-flash'); }));
   { const tp = overlay.querySelector('#qnToProfile'); if(tp) tp.onclick = ()=>{ close(); switchTab('profile'); }; }
 }
@@ -49965,6 +49971,7 @@ function cnpRewardStripHTML(mapId, node, done, rank){
   const cur = [];
   if(pay.gold > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.gold} Maple Leaves">${mapleLeafIconHTML()} ${pay.gold}</span>`);
   if(pay.dust > 0) cur.push(`<span class="cnp-rw-cur" aria-label="${pay.dust} Magic Dust">✨ ${pay.dust}</span>`);
+  { const gl = dungeonGoldLeavesPreview(mapId, node); if(gl) cur.push(`<span class="cnp-rw-cur cnp-rw-gems" aria-label="${escapeAttr(gl.label)}" data-zoom-tip="${escapeAttr('Gold Leaves|' + gl.label)}" tabindex="0">🍂 ${gl.n}</span>`); } // 2026-10-16: daily dungeon Gold Leaves
   const rankHTML = rank ? `<span class="rank-hex rank-${rank}" aria-label="Best rank ${rank}"><i aria-hidden="true"></i><b>${rank}</b></span>` : '';
   // 2026-10-15 (user: "0-2 will give a faction pack. (This has to be clearly seen in the first clear rewards section of the skirmish
   // review btw)"): a pack the first clear gives shows as a small pack with its name.
@@ -50677,7 +50684,7 @@ function compassDiamondSVG(mapId, locked){
 // (to resume later) keeps the key in the lock until that fight ends. The Tower (map.tower) takes no keys and never resets.
 const DAILY_DUNGEONS = [
   {mapId:'mm', mapNumber:6},
-  {mapId:'mlb', mapNumber:22, slot:2, icon:'🦡'}, // 2026-10-16: the Long Burrow, Map 22 (was an empty slot at Map 20); admin preview only for now
+  {mapId:'mlb', mapNumber:22, slot:2, icon:'🦡', goldLeavesEveryClear:true}, // 2026-10-16: 🍂 20 + N Gold Leaves on every clear of floor N // 2026-10-16: the Long Burrow, Map 22 (was an empty slot at Map 20); admin preview only for now
   {slot:3, mapNumber:40, icon:'🗿'},
 ];
 // A dungeon players can't see yet (map.preview, 2026-10-16): shown to them as a locked slot, to admins as the real thing.
@@ -50704,6 +50711,22 @@ function dungeonTicketsLeft(){ return loadDungeonTickets().n; }
 function dungeonRunOpen(mapId){ return dungeonFloorProgress(CONQUEST_MAPS.find(m=> m.id === mapId) || {nodes:[]}).done > 0; } // a climb under way
 function isDailyDungeonMap(map){ return !!(map && map.endless && !map.tower); } // the Tower takes no tickets (2026-10-16)
 function dungeonNextTicketMs(){ const d = new Date(); d.setHours(24, 0, 0, 0); return d.getTime() - Date.now(); }
+// Gold Leaves from the daily dungeons (2026-10-16, user: "Is there a way to earn maple leaves after you get all first rewards? ... (the
+// 2nd number, gold leaves) it's okay if its impossible. Maybe the daily dungeons on first clear give 10. Then one of the daily dungeons
+// gives 20+N on every clear. E.g. 22-LB-20 clear: 40 gold leaves per complete = 280 per week."): every daily dungeon floor's first
+// clear (higher than your best floor) gives 🍂 10 Gold Leaves; the Long Burrow (DAILY_DUNGEONS' goldLeavesEveryClear) also gives
+// 20 + N on every clear of floor N. The Tower gives none.
+function dungeonGoldLeavesFor(mapId, floor, firstClear){
+  const map = CONQUEST_MAPS.find(m=> m.id === mapId); if(!isDailyDungeonMap(map) || !(floor > 0)) return 0;
+  const dd = DAILY_DUNGEONS.find(x=> x.mapId === mapId);
+  return (firstClear ? 10 : 0) + (dd && dd.goldLeavesEveryClear ? 20 + floor : 0);
+}
+function dungeonGoldLeavesPreview(mapId, node){
+  if(!node || !node.floor) return null; const map = CONQUEST_MAPS.find(m=> m.id === mapId); if(!isDailyDungeonMap(map)) return null;
+  const first = node.floor > dungeonBestFloor(mapId), n = dungeonGoldLeavesFor(mapId, node.floor, first), every = dungeonGoldLeavesFor(mapId, node.floor, false);
+  if(!n) return null;
+  return {n, label: first ? (every ? `${n} Gold Leaves: 10 for the first clear, and ${every} for every clear` : '10 Gold Leaves for the first clear') : `${n} Gold Leaves for every clear`};
+}
 // May this floor be fought? (a key is in hand)
 function dungeonGateOk(mapId){ return loadDungeonTickets().n > 0; }
 // The fight starts: the key goes in the lock.
@@ -62715,6 +62738,7 @@ async function resolveRoundCore(opts){
       const dunMap = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId), dunNode = isDailyDungeonMap(dunMap) ? dunMap.nodes.find(n=> n.key === m.conquestNode.nodeId) : null;
       // a daily dungeon floor (2026-10-16): first clear = higher than the best floor ever cleared, since lost climbs wipe the floors
       const isFirstClear = dunNode ? (dunNode.floor || 0) > dungeonBestFloor(dunMap.id) : !preProgress.completed.includes(preId);
+      if(dunNode && !m.dungeonOutcome){ try{ const gl = dungeonGoldLeavesFor(dunMap.id, dunNode.floor, isFirstClear); if(gl > 0){ grantCurrency('gems', gl); saveCurrencies(); m.conquestGemsEarned = gl; } }catch(e){} } // 🍂 Gold Leaves (2026-10-16)
       if(dunNode && !m.dungeonOutcome){ try{ dungeonFloorWon(dunMap.id, dunNode.floor, !!m.dungeonKeyStaked); m.dungeonOutcome = {won:true, keyBack: !!m.dungeonKeyStaked, floor: dunNode.floor}; refreshTopbarDungeonKey(currentTab); }catch(e){} }
       // 2026-10-15: start the card-reward ledger before this clear is recorded; on a brand-new save its first read seeds itself
       // from the cleared fights, which counted this fight's cards as already given (0-1's card was lost that way).
@@ -64609,6 +64633,7 @@ function rewardsPanelHTML(m){
   const cur = [];
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
   if(reward && reward.dust>0) cur.push(['dust', reward.dust]);
+  if(m.conquestGemsEarned) cur.push(['gems', m.conquestGemsEarned]); // daily dungeon Gold Leaves (2026-10-16)
   if(m.conquestMetalEarned) cur.push(['metal', m.conquestMetalEarned]);
   if(m.conquestFoodEarned) cur.push(['food', m.conquestFoodEarned]);
   // 2026-10-16 (user: "Reward items not same size. What is "18 sparkle for base growth" - don't have text like 'for base growth'. And
