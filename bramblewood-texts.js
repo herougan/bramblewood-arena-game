@@ -45,7 +45,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.reached-level-deck-hero": "🦸 {name} reached Level {after}!{v3}{v4} — Deck → 🦸 Hero",
   "toast.hero-xp": "🦸 +{n} Hero XP — {why}",
   "toast.need-magic-dust-to-craft-materia": "Need {MATERIA_DUST_COST} ✨ Magic Dust to craft Materia.",
-  "toast.leaders-must-be-heroic-or-above": "👑 Leaders must be Heroic or above (or have the Leader passive).",
   "toast.your-main-deck-has-cards-it": "Your main deck has {v1} cards. It needs exactly {DECK_SIZE} to enter the Dungeon. Head to the Deck tab to adjust it.",
   "toast.your-main-deck-has-cards-it-2": "Your main deck has {v1} cards. It needs exactly {DECK_SIZE} before queueing. Open Deck from Home to adjust it.",
   "dialog.your-opponent-left-the-match": "Your opponent left the match.",
@@ -492,7 +491,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.admin-damage-failed": "Admin damage failed:",
   "toast.reward-paid": "Reward paid: {v1}",
   "toast.no-currency-reward-for-this-win": "No currency reward for this win.",
-  "toast.packed-use-it-from-the-in": "🎒 {icon} {name} packed. Use it from the 🎒 in a fight against the computer."
+  "toast.packed-use-it-from-the-in": "🎒 {icon} {name} packed. Use it from the 🎒 in a fight against the computer.",
+  "toast.the-scale-trail-is-complete-the": "🐉 The Scale Trail is complete. The {rwName} is yours."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

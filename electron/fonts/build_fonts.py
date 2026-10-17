@@ -1,0 +1,110 @@
+#!/usr/bin/env python3
+"""Builds the desktop build's offline script fonts (2026-10-18, roadmap P6: CJK and Tamil came from Google Fonts only,
+so they failed offline in the Electron build).
+
+The web build does NOT use these files: bramblewood-i18n.js only asks for fonts/script/<code>.css under the desktop
+wrapper (app://bramblewood) and keeps Google Fonts on the site. electron/stage.js copies this folder to game/fonts/script/.
+
+Sources (npm registry only, all SIL Open Font License 1.1; download with `npm pack`, no install scripts run):
+  @expo-google-fonts/noto-sans-jp|-sc|-tc|-kr 0.4.4   full static TTFs from Google Fonts (Noto Sans CJK, Adobe/Google)
+  @fontsource/baloo-thambi-2 5.3.0                     Tamil subset woff2 (Ek Type), copied unchanged
+
+Usage:
+  mkdir -p /tmp/f && cd /tmp/f && npm pack --ignore-scripts @expo-google-fonts/noto-sans-jp @expo-google-fonts/noto-sans-sc \
+      @expo-google-fonts/noto-sans-tc @expo-google-fonts/noto-sans-kr @fontsource/baloo-thambi-2
+  # extract each tarball into /tmp/f/<jp|sc|tc|kr|ta>/  (tar -xzf <tgz> -C /tmp/f/jp ...)
+  python3 -I electron/fonts/build_fonts.py /tmp/f
+Needs fonttools + brotli (pip install fonttools brotli).
+
+What gets kept: every character of that language's lang/<code>.json (plus the language picker's native names), ASCII,
+general and CJK punctuation, full-width forms, all of hiragana/katakana (ja) and the Hangul compatibility jamo (ko).
+When translators add a string with a new character, electron/stage.js warns and this script needs a re-run; until then
+that one character falls back to the system CJK font (the CSS stacks name PingFang / Yu Gothic / Malgun Gothic etc.).
+"""
+import json, os, shutil, sys
+from fontTools import subset
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+REPO = os.path.dirname(os.path.dirname(HERE))
+WEIGHTS = {500: '500Medium', 700: '700Bold', 800: '800ExtraBold'}  # the weights bramblewood-i18n.js asks Google for
+CJK = {  # lang code: (source folder, family name as the CSS stack names it, file stem)
+    'ja': ('jp', 'Noto Sans JP', 'NotoSansJP'),
+    'zh-Hans': ('sc', 'Noto Sans SC', 'NotoSansSC'),
+    'zh-Hant': ('tc', 'Noto Sans TC', 'NotoSansTC'),
+    'ko': ('kr', 'Noto Sans KR', 'NotoSansKR'),
+}
+NATIVE = '简体中文繁體中文日本語한국어தமிழ்'  # LANGS[].native in bramblewood-i18n.js
+TAMIL_RANGE = 'U+0964-0965,U+0B82-0BFA,U+200C-200D,U+20B9,U+25CC'  # Fontsource's tamil subset range
+
+
+def rng(a, b):
+    return ''.join(chr(c) for c in range(a, b + 1))
+
+
+BASE = rng(0x20, 0x7E) + rng(0xA0, 0xFF) + rng(0x2010, 0x2027) + rng(0x2030, 0x205E) + rng(0x3000, 0x303F) + rng(0xFF01, 0xFF65) + '…·•→←↑↓★☆○●◎◇◆□■△▲▽▼※〜'
+EXTRA = {'ja': rng(0x3040, 0x30FF) + rng(0x31F0, 0x31FF), 'ko': rng(0x3131, 0x318E)}
+
+
+def pack_chars(code):
+    with open(os.path.join(REPO, 'lang', code + '.json'), encoding='utf-8') as fh:
+        d = json.load(fh)
+    s = set(NATIVE)
+    stack = [d]
+    while stack:
+        v = stack.pop()
+        if isinstance(v, str): s.update(v)
+        elif isinstance(v, dict): stack.extend(v.values())
+        elif isinstance(v, list): stack.extend(v)
+    return s
+
+
+def ranges(cps):
+    cps = sorted(cps); out = []; i = 0
+    while i < len(cps):
+        j = i
+        while j + 1 < len(cps) and cps[j + 1] == cps[j] + 1: j += 1
+        out.append('U+%04X' % cps[i] if i == j else 'U+%04X-%04X' % (cps[i], cps[j])); i = j + 1
+    return ','.join(out)
+
+
+def main(src):
+    manifest = {'built': '2026-10-18', 'langs': {}}
+    for code, (folder, family, stem) in CJK.items():
+        want = pack_chars(code) | set(BASE) | set(EXTRA.get(code, ''))
+        css = []; covered = None
+        for w, sub in WEIGHTS.items():
+            ttf = os.path.join(src, folder, 'package', sub, '%s_%s.ttf' % (stem, sub))
+            out = os.path.join(HERE, '%s-%d.woff2' % (family.lower().replace(' ', '-'), w))
+            opts = subset.Options(); opts.flavor = 'woff2'; opts.layout_features = ['*']; opts.name_IDs = ['*']
+            opts.notdef_outline = True; opts.drop_tables += ['DSIG']
+            font = subset.load_font(ttf, opts)
+            cmap = font.getBestCmap()
+            have = {ord(c) for c in want if ord(c) in cmap}
+            sb = subset.Subsetter(opts); sb.populate(unicodes=have); sb.subset(font)
+            subset.save_font(font, out, opts)
+            covered = have if covered is None else covered & have
+            css.append("@font-face{font-family:'%s';font-style:normal;font-display:swap;font-weight:%d;src:url(%s) format('woff2');unicode-range:%s;}"
+                       % (family, w, os.path.basename(out), ranges(have)))
+            print('%-8s %d  %5d glyph chars  %7.0f KB' % (code, w, len(have), os.path.getsize(out) / 1024))
+        missing = sorted(c for c in pack_chars(code) if ord(c) not in covered and ord(c) > 0x7F)
+        if missing: print('   not in the font (system fallback):', ''.join(missing)[:80])
+        with open(os.path.join(HERE, code + '.css'), 'w', encoding='utf-8') as fh:
+            fh.write('/* generated by build_fonts.py (2026-10-18); desktop build only */\n' + '\n'.join(css) + '\n')
+        # what the pack held at build time (stage.js warns about characters added since; ones the font lacks are printed above)
+        manifest['langs'][code] = ''.join(sorted(c for c in pack_chars(code) if ord(c) > 0x7F))
+    # Tamil: Fontsource's tamil slice is already small (~20 KB a weight); copy it as is.
+    css = []
+    for w in WEIGHTS:
+        fn = 'baloo-thambi-2-tamil-%d-normal.woff2' % w
+        shutil.copyfile(os.path.join(src, 'ta', 'package', 'files', fn), os.path.join(HERE, fn))
+        css.append("@font-face{font-family:'Baloo Thambi 2';font-style:normal;font-display:swap;font-weight:%d;src:url(%s) format('woff2');unicode-range:%s;}" % (w, fn, TAMIL_RANGE))
+    with open(os.path.join(HERE, 'ta.css'), 'w', encoding='utf-8') as fh:
+        fh.write('/* copied from @fontsource/baloo-thambi-2 5.3.0 (2026-10-18); desktop build only */\n' + '\n'.join(css) + '\n')
+    manifest['langs']['ta'] = ''.join(sorted(set(rng(0x0B82, 0x0BFA)) | {c for c in pack_chars('ta') if ord(c) > 0x7F}))
+    with open(os.path.join(HERE, 'manifest.json'), 'w', encoding='utf-8') as fh:
+        json.dump(manifest, fh, ensure_ascii=False, indent=0)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 2: sys.exit(__doc__)
+    main(os.path.abspath(sys.argv[1]))

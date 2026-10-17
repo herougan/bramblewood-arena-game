@@ -141,7 +141,7 @@ R({id:'map-leaves-reveal', stage:'map', inGameHook:'leavesRevealToMap (end of th
     g.fromTo(l, {x:-40, y:Math.random()*r.height, opacity:0, rotation:0}, {x:r.width + 40, y:'+=' + (Math.random()*80 - 40), opacity:1, rotation:Math.random()*540, duration:1.2 + Math.random()*.6, delay:Math.random()*.4, ease:'power1.inOut'}); }
   g.fromTo(main(ctx), {scale:1.15, opacity:.3}, {scale:1, opacity:1, duration:1.4, ease:'power2.out', clearProps:'transform,opacity'}); return hold(ctx, 2400); }}]});
 R({id:'map-dragon-scale-node', stage:'map', inGameHook:'renderConquestSubTab: .map-node-scale on a node that hides a scale', variants:[{key:'A', label:'Something glints on the fight (game CSS)', play:ctx=>{ N(ctx).available.insertAdjacentHTML('beforeend', '<span class="map-node-scale"></span>'); return hold(ctx, 3000); }}]});
-R({id:'map-dragon-scale-found', stage:'ui', inGameHook:'rollDragonScale → fxHook(\'dragonScaleFound\', {index, total}) over the results', variants:[{key:'A', label:'The scale flips up, red glint, 2/10 → 3/10', play:async ctx=>{ await X().scaleFound({index:3, total:10, host:ctx.root}); }}]});
+R({id:'map-dragon-scale-found', stage:'ui', inGameHook:'rollDragonScale → fxHook(\'dragonScaleFound\', {index, total}) over the results', variants:[{key:'A', label:'The scale flips up, red glint, 2/8 → 3/8', play:async ctx=>{ await X().scaleFound({index:3, total:8, host:ctx.root}); }}]}); // 2026-10-18 (audit E4): there are 8 scales (DRAGON_SCALE_NODES), not 10
 
 // ---- feature spots: each opens in its own way (fxHook('mapSpotUnlock') in activateSpot) ----
 Object.keys(X().SPOT_LOOK).filter(k=> !/^shop[23]$/.test(k)).forEach(k=>{

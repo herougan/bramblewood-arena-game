@@ -56,7 +56,9 @@ run node tests/wave-tide-2026-10-17.js   # 2026-10-17 (wave, tide, boomerang): W
 run node tests/skills-2026-10-17.js   # 2026-10-17 (skills): Reflect (shots bounce), Vanguard, Web, Bloodlust leap, Ambush on any entry, Sentry, Crab Claws, Carrion, Leech, Hoard, Venom Master, Fletcher, Herbalist, Shatter
 run node tests/lightning-2026-10-17.js   # 2026-10-17 (lightning): the Wet rule (+1 per Wet counter on lightning hits), Chain Lightning, Voltaic Eel, every lightning hit its own bolt, element emoji
 run node tests/rebuild-2026-10-17.js   # 2026-10-17 (rebuild): Rebuild N (castle +N every upkeep while Ready) and the Rebuild castle N trigger action, its text, look, log and setups
+run node tests/scale-trail-2026-10-18.js   # 2026-10-18 (Scale Trail): the journal tab, the 8/8 finale + Red Dragon Egg once, found-not-held, smith/secret cards obtainable
 run node tests/kin-target-2026-10-18.js   # 2026-10-18 (kin target): who:'kin' on every targeted action and Charge, Esprit's Kin / Any target, the picker, text, keyword
+run node tests/gates-2026-10-18.js   # 2026-10-18 (WP4): no lock names an uncharted map (mapIsCharted), the Long Burrow switch, dead lookups gone
 run node tests/night-2026-10-12.js
 run node tests/phase-status.js
 run node tests/tide.js

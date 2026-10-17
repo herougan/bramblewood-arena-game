@@ -1428,8 +1428,8 @@
   {
    "id": "forge_cobble_dust",
    "where": [
-    "The Forge: Cobble the golem, when an upgrade is refused from forgePromote()  · arena_app.js:38465",
-    "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38569"
+    "The Forge: Cobble the golem, when an upgrade is refused from forgePromote()  · arena_app.js:38578",
+    "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38682"
    ],
    "lines": [
     {
@@ -1443,14 +1443,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "The Forge: Cobble the golem, when an upgrade is refused from forgePromote()  · arena_app.js:38465 ; The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38569"
+     "where": "The Forge: Cobble the golem, when an upgrade is refused from forgePromote()  · arena_app.js:38578 ; The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38682"
     }
    ]
   },
   {
    "id": "forge_cobble_gate",
    "where": [
-    "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38566"
+    "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38679"
    ],
    "lines": [
     {
@@ -1464,15 +1464,15 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38566"
+     "where": "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38679"
     }
    ]
   },
   {
    "id": "forge_cobble_gold",
    "where": [
-    "The Forge: Cobble the golem, when an upgrade is refused from forgePromote()  · arena_app.js:38465",
-    "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38570"
+    "The Forge: Cobble the golem, when an upgrade is refused from forgePromote()  · arena_app.js:38578",
+    "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38683"
    ],
    "lines": [
     {
@@ -1486,14 +1486,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "The Forge: Cobble the golem, when an upgrade is refused from forgePromote()  · arena_app.js:38465 ; The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38570"
+     "where": "The Forge: Cobble the golem, when an upgrade is refused from forgePromote()  · arena_app.js:38578 ; The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38683"
     }
    ]
   },
   {
    "id": "forge_cobble_intro",
    "where": [
-    "renderForge()  · arena_app.js:37990"
+    "renderForge()  · arena_app.js:37964"
    ],
    "lines": [
     {
@@ -1507,7 +1507,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "renderForge()  · arena_app.js:37990"
+     "where": "renderForge()  · arena_app.js:37964"
     },
     {
      "id": "forge_cobble_intro",
@@ -1527,7 +1527,7 @@
   {
    "id": "forge_cobble_limit",
    "where": [
-    "The Forge: Cobble the golem, when an upgrade is refused from forgeLimitBreak()  · arena_app.js:38412"
+    "The Forge: Cobble the golem, when an upgrade is refused from forgeLimitBreak()  · arena_app.js:38525"
    ],
    "lines": [
     {
@@ -1541,14 +1541,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "The Forge: Cobble the golem, when an upgrade is refused from forgeLimitBreak()  · arena_app.js:38412"
+     "where": "The Forge: Cobble the golem, when an upgrade is refused from forgeLimitBreak()  · arena_app.js:38525"
     }
    ]
   },
   {
    "id": "forge_cobble_mats",
    "where": [
-    "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38571"
+    "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38684"
    ],
    "lines": [
     {
@@ -1562,14 +1562,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38571"
+     "where": "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38684"
     }
    ]
   },
   {
    "id": "forge_cobble_tier",
    "where": [
-    "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38567"
+    "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38680"
    ],
    "lines": [
     {
@@ -1583,14 +1583,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38567"
+     "where": "The Forge: Cobble the golem, when an upgrade is refused from cobbleWhyNot()  · arena_app.js:38680"
     }
    ]
   },
   {
    "id": "lesson_leader_rule",
    "where": [
-    "First time you open the 👑 leader picker  · arena_app.js:10764"
+    "First time you open the 👑 leader picker  · arena_app.js:10761"
    ],
    "lines": [
     {
@@ -1604,7 +1604,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "First time you open the 👑 leader picker  · arena_app.js:10764"
+     "where": "First time you open the 👑 leader picker  · arena_app.js:10761"
     },
     {
      "id": "lesson_leader_rule",
@@ -1624,7 +1624,7 @@
   {
    "id": "lesson_leaders",
    "where": [
-    "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:10808"
+    "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:10805"
    ],
    "lines": [
     {
@@ -1638,7 +1638,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:10808"
+     "where": "After a fight, the first time you get a card that can lead (Heroic+); the example uses a Heroic card  · arena_app.js:10805"
     },
     {
      "id": "lesson_leaders",
@@ -1697,7 +1697,7 @@
   {
    "id": "outskirts_reveal",
    "where": [
-    "The first time the Conquest map opens  · arena_app.js:14383"
+    "The first time the Conquest map opens  · arena_app.js:14361"
    ],
    "lines": [
     {
@@ -1711,7 +1711,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "The first time the Conquest map opens  · arena_app.js:14383"
+     "where": "The first time the Conquest map opens  · arena_app.js:14361"
     },
     {
      "id": "outskirts_reveal",
@@ -1796,7 +1796,7 @@
   {
    "id": "pitch_lesson_h",
    "where": [
-    "In a fight, the first time a card needs Lumber  · arena_app.js:32658"
+    "In a fight, the first time a card needs Lumber  · arena_app.js:32632"
    ],
    "lines": [
     {
@@ -1810,14 +1810,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:32658"
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:32632"
     }
    ]
   },
   {
    "id": "pitch_lesson_o",
    "where": [
-    "In a fight, the first time a card needs Lumber  · arena_app.js:32658"
+    "In a fight, the first time a card needs Lumber  · arena_app.js:32632"
    ],
    "lines": [
     {
@@ -1831,14 +1831,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:32658"
+     "where": "In a fight, the first time a card needs Lumber  · arena_app.js:32632"
     }
    ]
   },
   {
    "id": "pitch_spent_h",
    "where": [
-    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:29612"
+    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:29584"
    ],
    "lines": [
     {
@@ -1852,14 +1852,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:29612"
+     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:29584"
     }
    ]
   },
   {
    "id": "pitch_spent_o",
    "where": [
-    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:29612"
+    "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:29584"
    ],
    "lines": [
     {
@@ -1873,7 +1873,80 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:29612"
+     "where": "In a fight, trying to send a 2nd card to the Graveyard in one turn  · arena_app.js:29584"
+    }
+   ]
+  },
+  {
+   "id": "scale_trail_finale",
+   "where": [
+    "scaleTrailFinaleSoon()  · arena_app.js:38158"
+   ],
+   "lines": [
+    {
+     "id": "scale_trail_finale",
+     "n": 1,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Eight scales. Lay them side by side and look: one hide, one dragon.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": "scaleTrailFinaleSoon()  · arena_app.js:38158"
+    },
+    {
+     "id": "scale_trail_finale",
+     "n": 2,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "And still warm. Something a hundred years dead doesn't stay warm.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "scale_trail_finale",
+     "n": 3,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "Remember the rumour? The Crown didn't fly away on its own. Something with wings carried it north.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "scale_trail_finale",
+     "n": 4,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "The dragons never left. They sleep under the mountains, and the Bramblewood forgot them. Sleepers wake.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
+    },
+    {
+     "id": "scale_trail_finale",
+     "n": 5,
+     "who": "traveller",
+     "name": "The Wandering Traveller",
+     "portrait": "card art: Wandering Traveller",
+     "text": "I found this where the last scale pointed. Too warm for me to carry any further. Keep it close.",
+     "replies": "",
+     "act": "",
+     "label": "",
+     "edited": false,
+     "where": ""
     }
    ]
   },
@@ -1927,7 +2000,7 @@
   {
    "id": "tut_boomerang",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:32683"
+    "Tutorial fights: remarks from your side  · arena_app.js:32657"
    ],
    "lines": [
     {
@@ -1941,14 +2014,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:32683"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:32657"
     }
    ]
   },
   {
    "id": "tut_fly",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:32682"
+    "Tutorial fights: remarks from your side  · arena_app.js:32656"
    ],
    "lines": [
     {
@@ -1962,14 +2035,14 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:32682"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:32656"
     }
    ]
   },
   {
    "id": "tut_traveller_cheer",
    "where": [
-    "Tutorial fights: remarks from your side  · arena_app.js:32678"
+    "Tutorial fights: remarks from your side  · arena_app.js:32652"
    ],
    "lines": [
     {
@@ -1983,7 +2056,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tutorial fights: remarks from your side  · arena_app.js:32678"
+     "where": "Tutorial fights: remarks from your side  · arena_app.js:32652"
     }
    ]
   },
@@ -2494,7 +2567,7 @@
   {
    "id": "unlock_phyla",
    "where": [
-    "Opening the Codex once card families (phyla) unlock  · arena_app.js:5574"
+    "Opening the Codex once card families (phyla) unlock  · arena_app.js:5591"
    ],
    "lines": [
     {
@@ -2508,7 +2581,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Opening the Codex once card families (phyla) unlock  · arena_app.js:5574"
+     "where": "Opening the Codex once card families (phyla) unlock  · arena_app.js:5591"
     },
     {
      "id": "unlock_phyla",
@@ -3084,7 +3157,7 @@
   {
    "id": "well_m1",
    "where": [
-    "Tapping the old well on Map 0  · arena_app.js:14362"
+    "Tapping the old well on Map 0  · arena_app.js:14340"
    ],
    "lines": [
     {
@@ -3098,7 +3171,7 @@
      "act": "",
      "label": "",
      "edited": false,
-     "where": "Tapping the old well on Map 0  · arena_app.js:14362"
+     "where": "Tapping the old well on Map 0  · arena_app.js:14340"
     },
     {
      "id": "well_m1",

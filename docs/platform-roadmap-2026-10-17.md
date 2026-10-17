@@ -419,3 +419,29 @@ Music
 - [Free Music Archive FAQ](https://freemusicarchive.org/faq/)
 - [Eric Matyas on itch.io (terms page soundimage.org/attribution-info/ couldn't be opened from here)](https://itch.io/profile/eric-matyas)
 - Track pages: as linked in the shortlist
+
+---
+
+## 2026-10-18: desktop P6 (offline fonts, icon, Steam stub) and what's left
+
+### Done
+- **Offline script fonts (D2, the fonts half).** Code-table row 2 above is fixed for the desktop build. `electron/fonts/` holds Noto Sans JP, SC, TC and KR plus Baloo Thambi 2 (Tamil), weights 500/700/800, all SIL OFL 1.1, from the npm registry (`@expo-google-fonts/noto-sans-*` 0.4.4, `@fontsource/baloo-thambi-2` 5.3.0). The CJK fonts are subset with fontTools to every character in `lang/*.json`, plus kana, punctuation and full-width forms: **2.3 MB for all five languages** (about 200 KB per CJK weight, 80 KB for Korean, 20 KB for Tamil). `stage.js` copies them to `game/fonts/script/`, and `main.js` serves them from `electron/fonts/` in an unstaged run.
+  - `bramblewood-i18n.js` (just after `FONTS`) loads `fonts/script/<code>.css` only under `app://` or an Electron user agent. If the file is missing it switches the link to Google Fonts. **The website still uses Google Fonts and loads no extra bytes.**
+  - New translations with new characters: `node electron/stage.js` warns, and `electron/fonts/build_fonts.py` rebuilds (the steps are in its header). Until then those characters use the system CJK font, so the text never disappears.
+  - Licence texts: `licenses/noto-sans-cjk-OFL-1.1.txt` and `licenses/baloo-thambi-2-OFL-1.1.txt`, with a row each in `CREDITS.md`. `stage.js` now ships `licenses/` with the game, as the OFL requires.
+- **App icon.** `electron/build/make_icon.py` (Pillow, drawn in code, no art credits) draws an acorn on a round wooden shield with a bramble ring, in the banner green and amber of the UI. It writes `icon.png` (1024), `icon.ico` (16–256) and `icons/16x16 … 1024x1024.png`. It's wired into electron-builder (`win.icon`, `mac.icon` (electron-builder makes the .icns from the 1024 PNG), `linux.icon`) and set as the window icon.
+- **Steam stub (start of D3/D4).** `electron/steam.js` is a no-op unless `BRAMBLE_STEAM=1` **and** the optional `steamworks.js` package is installed. The App ID comes from `STEAM_APP_ID`, else `steam_appid.txt`, else 480 (Spacewar). A sandboxed preload (`electron/preload.js`) gives the page `window.bwDesktop.steam`: `status()`, `unlock(id)`, `isUnlocked(id)`, `openOverlay(dialog)`, `openStorePage()` and `playerName()`. `clear(id)` works only in unpackaged runs. The IPC handlers answer only `app://bramblewood` pages, and achievement ids must match `[A-Za-z0-9_]{1,64}`. `steamworks.js` is unpacked from the asar (it's a native module). The game doesn't call any of this yet. Replaces the old `STEAM_APP_ID`-only hook in `main.js`.
+- **Google sign-in stays off in Electron.** Supabase OAuth returns to `location.href`, and Google only returns to registered https:// URLs. An `app://bramblewood/` page can't receive the redirect, and `main.js` keeps the window on `app://` anyway (`will-navigate`). The game already hides the button because `isHostedOnline()` is false off http(s). Email + password sign-in works online. The fix is unchanged (code-table row 4): system browser + PKCE + a `bramblewood://auth` deep link, or Steam ticket sign-in (D5).
+- Checked here: `node --check` on all the JS, `stage.js` (1,440 files, 61.6 MB), and `main.js` with a stubbed Electron: the script fonts are served with the right types, `.py`, `manifest.json` and `../` are refused, the Steam IPC answers our page and refuses others, and every call is a safe no-op with Steam off. Electron itself wasn't run (no display), and the icon hasn't been seen in a real taskbar or Dock yet.
+
+### Still needed for a real release
+| | Item | Notes |
+|---|---|---|
+| ❓💰 | **Steam App ID** | Steam Direct fee, 100 USD per game (recouped after 1,000 USD revenue). Then: put the id in `steam_appid.txt` for dev runs (Steam passes it when launched from the client), create the achievements in the Steamworks partner site with the **same API names** the game will pass to `bwDesktop.steam.unlock`, and set up depots and SteamPipe uploads |
+| ❓💰 | **Mac signing + notarisation** | Apple Developer Program 99 USD/year. A Developer ID Application certificate, the hardened runtime, and the entitlements Electron needs (`com.apple.security.cs.allow-jit`, `allow-unsigned-executable-memory`). Then `notarytool` via electron-builder's `mac.notarize` (an app-specific password or an API key in CI env vars, never in the repo). `steamworks.js`'s native `.node` and `libsteam_api.dylib` must be signed too. Without it, Gatekeeper blocks the download outside Steam (Steam itself doesn't require notarisation, but macOS still quarantines unsigned apps) |
+| ❓💰 | **Windows signing** | Not required by Steam. Only for downloads outside Steam (SmartScreen). See the cost table in §4 |
+| | **Installers** | `package.json` builds `dir` targets only. For Steam that's enough (SteamPipe uploads the folder). Outside Steam: `nsis` (Windows), `dmg` (Mac), `AppImage` (Linux) |
+| | **Wire the hooks** | Call `window.bwDesktop?.steam.unlock(id)` where in-game achievements unlock (arena_app.js; not in this package). Optionally add an "Open Steam overlay" button in Settings |
+| | **Rest of D3** | Preload: quit, a save-file bridge for Steam Auto-Cloud (a JSON in `app.getPath('userData')`, not Chromium's LevelDB) |
+| | **D5 Steam sign-in, D6 Steam purchases** | Unchanged from the step plan |
+| | **Website deploy** | `electron/` (2.3 MB of fonts, about 1 MB of icons) is in the repo, so Vercel uploads it, but the page never loads it. It's covered by the "stop serving docs/, tools/… at launch" question in "What needs you" (add `electron/` to that list) |

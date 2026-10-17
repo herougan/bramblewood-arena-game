@@ -9,7 +9,8 @@
     "start": "electron .",
     "stage": "node stage.js",
     "start:staged": "node stage.js && electron . --root=game",
-    "dist": "node stage.js && electron-builder --dir"
+    "dist": "node stage.js && electron-builder --dir",
+    "icon": "python3 -I build/make_icon.py"
   },
   "devDependencies": {
     "electron": "^44.8.0",
@@ -18,12 +19,14 @@
   "build": {
     "appId": "app.bramblewood.arena",
     "productName": "Bramblewood Arena",
-    "directories": { "output": "dist" },
-    "files": ["main.js", "package.json"],
+    "directories": { "output": "dist", "buildResources": "build" },
+    "files": ["main.js", "preload.js", "steam.js", "package.json", "build/icon.png"],
     "extraResources": [{ "from": "game", "to": "game" }],
     "asar": true,
-    "win": { "target": ["dir"] },
-    "mac": { "target": ["dir"], "category": "public.app-category.games" },
-    "linux": { "target": ["dir"], "category": "Game" }
+    "asarUnpack": ["node_modules/steamworks.js/**"],
+    "icon": "build/icon.png",
+    "win": { "target": ["dir"], "icon": "build/icon.ico" },
+    "mac": { "target": ["dir"], "category": "public.app-category.games", "icon": "build/icon.png" },
+    "linux": { "target": ["dir"], "category": "Game", "icon": "build/icons" }
   }
 }
