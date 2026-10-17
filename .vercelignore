@@ -1,0 +1,2 @@
+# 2026-10-18: the desktop app's source (fonts, icons, Electron code) is never loaded by the website
+electron/
