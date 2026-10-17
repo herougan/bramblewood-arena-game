@@ -132,12 +132,13 @@ ok(swings('kf-fence', 'kf-fly', 40) > 5, 'a Flyer is still out of reach half the
 { const {e, P} = mk(4); const T = put(e, P, 2, 'kf-wall', 0), N = put(e, P, 2, 'kf-wall', 1); const X = put(e, P, 1, 'kf-elec', 0); const ev = []; e.debugAttack(P, so, X.uid, {}, ev);
   const el = ev.find(x=> x.type === 'electricity'); ok(el && el.arcUid === N.uid && N.hp === 48 && T.hp === 49, `Electricity 2: the hit arcs to the unit beside it for 2 (${T.hp}, ${N.hp})`); }
 { const {e, P} = mk(4); const T = put(e, P, 2, 'kf-swim', 0), N = put(e, P, 2, 'kf-swim', -1); const X = put(e, P, 1, 'kf-elec', 0); const ev = []; e.debugAttack(P, so, X.uid, {}, ev);
-  ok(T.hp === 48 && N.hp === 47, `wet (Swimmers): +1 on the target and on the arc (${T.hp}, ${N.hp})`); }
+  // 2026-10-17: Wet is a general rule (+1 lightning damage per Wet counter, tests/lightning-2026-10-17.js); the wet target's extra zap is gone
+  ok(T.hp === 49 && N.hp === 47, `wet (Swimmers): +1 on the arc, no extra zap on the target (${T.hp}, ${N.hp})`); }
 { const {e, P} = mk(4); const T = put(e, P, 2, 'kf-wall', 0); const X = put(e, P, 1, 'kf-elec', 0); const ev = []; e.debugAttack(P, so, X.uid, {}, ev); ok(T.hp === 49 && ev.find(x=> x.type === 'electricity').arcUid === null, 'nobody beside it: no arc'); }
 { const vb = ['voltwing-bat','static-bat','arc-bat'].map(id=> base[id]);
   ok(vb.every(d=> d && d.effects.flying && d.effects.nocturnal && d.effects.electricity >= 1 && (d.species||[]).includes('Bat') && (d.archetypes||[]).includes('Cave') && !d.art), 'three new cave bats with Electricity (no art yet)');
   ok(vb.map(d=> d.rarity).join() === 'common,uncommon,rare' && base['arc-bat'].effects.electricity === 2, 'common, uncommon, rare; Arc Bat has Electricity 2');
-  ok(base['voltaic-eel'].effects.electricity === 1 && base['voltaic-eel'].effects.shock, 'Voltaic Eel gains Electricity (and keeps its Shock)'); }
+  ok(base['voltaic-eel'].effects.chainLightning === 2 && !base['voltaic-eel'].effects.electricity && base['voltaic-eel'].effects.shock, 'Voltaic Eel: Chain Lightning instead of Electricity since 2026-10-17 (and keeps its Shock)'); }
 
 // ---- 9. Keen Sense
 { const miss = (id, foe, rules, seed)=>{ const {e, P} = mk(seed || 3, 'open', rules); put(e, P, 2, foe, 0); const A = put(e, P, 1, id, 0); let m = 0;

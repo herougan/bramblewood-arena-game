@@ -1388,6 +1388,10 @@ M.onEvent = function(ev, env){
     if(ev.ranged && !ev.quake){
       if(isArrow){ const ar = st.arrow[ev.attUid]; delete st.arrow[ev.attUid];
         if(ar && ar.ice && med) M.iceArrow(att || hq(ev.side), tgt, {overlayOnly:true, draw:Math.round(A.windup*.6), flight:arrowMs()}); }
+      // 2026-10-17 (user: "all its lighting attacks should not throw a generic ball at the enemy"): a lightning hit (the game's
+      // lightningBoltOf sets ev._bolt; the flags are a fallback for the Lab) is its own bolt, never a missile (it was a grey stone for
+      // 'shock', a ✦ star for Dragon Lightning's magic).
+      else if(ev._bolt || ev.electricity || ev.chainLightning || ev.dragonLightning || ev.skyBolt || ev.dmgType === 'shock'){ /* the bolt is drawn by the game */ }
       else if(!isBolt){
         const key = String(ev.targetUid != null ? ev.targetUid : 'hq' + ev.targetSide);
         if(st.ballista[key] && med){ delete st.ballista[key]; hideProjectile(glyphOf(ev.dmgType), A.windup + 600); env.at(A.windup, ()=> M.ballista(hq(ev.side), tgt, {flight:Math.round(A.projectile*.6)})); impactDone = true; }
@@ -1492,7 +1496,9 @@ M.onEvent = function(ev, env){
       if(!med) break;
       if(k === 'recoil' && t) M.recoilJolt(t);
       else if(k === 'spite' && self && t) M.spiteLash(self, t);
-      else if(k === 'lightning' && self) M.stormBolt(self);
+      // 2026-10-17: Lightning's bolt comes down on the unit it strikes, drawn by that hit (the game's drawLightningBolt calls
+      // M.stormBolt on the target as the number pops); it used to strike the caster here. Only an old event with no target still does.
+      else if(k === 'lightning' && self && ev.targetSide == null) M.stormBolt(self);
       else if(k === 'nullify' && t) M.nullSeal(t);
       else if(k === 'shellDown'){ const s = t || self; if(s) M.shellCrack(s); }
       else if(k === 'rocket' && self) M.rocketLaunch(self, hq(ev.targetSide));

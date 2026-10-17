@@ -2016,6 +2016,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(attDef && attDef.effects && attDef.effects.keenEye){ const tdK = CARD_DEFS[targetCard.defId]; if(tdK && tdK.effects && tdK.effects.changeling) amt += 2; }
     if(attDef && attDef.effects && attDef.effects.predator && attCard && targetCard.hp > 0 && effAtk(targetCard) < effAtk(attCard)) amt += w2N(attDef, 'predator'); // Predator N (2026-10-16): +N on prey weaker than it
     amt += shatterBonus(attDef, targetCard); // Shatter N (2026-10-17): +N on a Frozen unit
+    amt += wetShockBonus(targetCard, dmgType); // Wet (2026-10-17): +1 lightning damage per Wet counter (wetCountOf)
     if(attDef && attDef.effects && Number(attDef.effects.demolisher) > 0){ const tdD = CARD_DEFS[targetCard.defId]; if(tdD && Array.isArray(tdD.archetypes) && tdD.archetypes.includes('Structure')) amt += Number(attDef.effects.demolisher); }
     // Scare N (2026-10-10, Devilry): anything attacking this card hits for N less (never below 0). Unlike Intimidate,
     // it only weakens attacks aimed at this card.
@@ -2162,6 +2163,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     }
     amount += shatterBonus(attDef, card); // Shatter N (2026-10-17): its shots too
+    amount += wetShockBonus(card, dmgType); // Wet (2026-10-17): +1 lightning damage per Wet counter, from any shock hit
     // Feeble/Mighty (2026-09-29) apply to ranged/flat hits too, same "applies everywhere"
     // precedent Expose/King Slayer just above already set for this path.
     const atkFactor = attackerDamageFactor(attDef);
@@ -3536,7 +3538,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Twin Shot, Volley) deal N more. Herbalist N ("Make ... Healing stronger"): every heal on your units heals N more (applyHeal).
   function venomBoost(pid){ return curPlayers ? auraN(curPlayers[pid], 'venomMaster') : 0; }
   // Shatter N (2026-10-17, user: "Ice on ice, electric on water, fire on fire"): its hits deal N more to a Frozen unit (melee and
-  // shots). Electricity already deals +1 to wet units; there is no Burning status yet, so fire-on-fire waits for one.
+  // shots). Electric-on-water is the Wet rule (2026-10-17: +1 per Wet counter from any lightning hit, wetShockBonus); there is no
+  // Burning status yet, so fire-on-fire waits for one.
   function shatterBonus(attDef, target){ const e = (attDef && attDef.effects) || {}; return (e.shatter && target && target.frozen > 0) ? numN(e.shatter, S17_DEF.shatter) : 0; }
   // Vanguard N (2026-10-17, user: "This card draws itself into its hand at the start of the game, and you discard a random card. (If
   // you have >1, you only do this once. If you alr have a vanguard card in your hand, you skip this step) Vanguards also have +1/+1 if
@@ -3735,9 +3738,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const order = physicalRowOrder(pl), i = order.indexOf(target), side = [order[i-1], order[i+1]].filter(c=> i >= 0 && c && !c.gap && c.hp > 0 && !c.cageOf);
     const struck = [target].concat(side.length ? [side[Math.floor(rnd()*side.length)]] : []).filter(c=> c.hp > 0);
     if(recordEvents && events) events.push({type:'dragonLightning', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, uids:struck.map(c=> c.uid), n});
-    struck.forEach(c=>{ const dmg = damageCardFlat(c, n, 'magic', att.defId, att.uid);
+    struck.forEach((c, i)=>{ const dmg = damageCardFlat(c, n, 'magic', att.defId, att.uid);
       ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg;
-      if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType:'magic', ranged:true, dragonLightning:true});
+      // jump/viaUid (2026-10-17): the bolt's path for the board (attacker -> target -> the unit beside it); its hit draws that jump
+      if(recordEvents && events) events.push({type:'hit', side:sideOf(pid), attDefId:att.defId, attUid:att.uid, targetSide:sideOf(tpid), targetDefId:c.defId, targetUid:c.uid, dmg, dmgType:'magic', ranged:true, dragonLightning:true, jump:i, viaUid: i ? target.uid : undefined});
       if(c.hp <= 0 && killCredit){ if(!killCredit[c.uid]) killCredit[c.uid] = new Set(); killCredit[c.uid].add(statKey(sideOf(pid), att.defId)); } });
   }
   // Wither N: its hits wither the target: for the next 3 rounds it loses N max Health (and N Health) each upkeep, and nothing can
@@ -3907,17 +3911,44 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(recordEvents && events) events.push({type:'statusFx', kind:'unitShield', side:sideOf(pid), attDefId:src ? src.defId : c.defId, attUid:src ? src.uid : c.uid, targetSide:sideOf(pid), targetDefId:c.defId, targetUid:c.uid, amount:n, total:c.shield});
     return n;
   }
-  // Electricity N: its landed hits arc to one enemy unit beside the target (a seeded pick) for N lightning (shock) damage. Wet units
-  // (Swimmers and Tide units, anyone in the rain, anyone while the Tide is in) take +1 from the arc, and a wet target takes +1 too.
-  function isWetUnit(c){ return !!c && (isTide(c) || !!(field && field.id === 'rain') || tideRising()); }
+  // Wet (2026-10-17, user: "Remove the wet unit description from electricity. Wet units just take +N damage by default, for every wet
+  // counter. Can see this in codex instead."): a general rule now, not Electricity's. A unit's Wet counters are read live, one for each
+  // of these that holds: it is a Swimmer or Tide unit; the Rain field is down; the Tide is in (Flood or High Tide). So 0 to 3. Every
+  // lightning (shock) hit on it, from any source (Electricity, Chain Lightning, Shock Bolt, Lightning, a shock attack), deals
+  // WET_SHOCK_PER (1) more for each counter. It is added to the hit's amount (like Scar), so Resist, Shock and Armor still apply after.
+  // Electricity's own +1 (the arc, and the extra zap on a wet target) is gone, so nothing counts twice. (Wet maps, the beach/river/sea
+  // `rules.wet` Bloom reads, give no counter; nothing else in the game makes a unit wet yet.)
+  const WET_SHOCK_PER = 1;
+  function wetCountOf(c){ if(!c) return 0; return (isTide(c) ? 1 : 0) + (field && field.id === 'rain' ? 1 : 0) + (tideRising() ? 1 : 0); }
+  function wetShockBonus(c, dmgType){ return dmgType === 'shock' ? wetCountOf(c) * WET_SHOCK_PER : 0; }
+  function isWetUnit(c){ return wetCountOf(c) > 0; }
+  // Electricity N: its landed hits arc to one enemy unit beside the target (a seeded pick) for N lightning (shock) damage (+ the Wet
+  // rule above). 2026-10-17: the wet target's extra 1-damage zap and the arc's own +1 are gone (Wet is general now).
   function electricityArc(players, sideOf, pid, att, target, n, stats, events, killCredit){
     const tpid = otherId(pid), pl = players[tpid]; if(!pl || !target || !(n > 0)) return;
     const side = besideOf(pl, target), arc = side.length ? side[Math.floor(rnd()*side.length)] : null;
-    const wetT = target.hp > 0 && isWetUnit(target), wetA = !!arc && isWetUnit(arc);
-    if(recordEvents && events) events.push({type:'electricity', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, arcUid: arc ? arc.uid : null, n, wetTarget:wetT, wetArc:wetA});
+    const wetA = arc ? wetCountOf(arc) : 0;
+    if(recordEvents && events) events.push({type:'electricity', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, arcUid: arc ? arc.uid : null, n, wetArc:wetA || undefined});
     const credit = c=>{ if(c.hp <= 0 && killCredit){ if(!killCredit[c.uid]) killCredit[c.uid] = new Set(); killCredit[c.uid].add(statKey(sideOf(pid), att.defId)); } };
-    if(wetT){ skillAreaHit(players, sideOf, pid, att, target, 1, 'shock', stats, events, {electricity:true, wet:true}); credit(target); }
-    if(arc){ skillAreaHit(players, sideOf, pid, att, arc, n + (wetA ? 1 : 0), 'shock', stats, events, {electricity:true, arc:true, wet:wetA || undefined}); credit(arc); }
+    if(arc){ skillAreaHit(players, sideOf, pid, att, arc, n, 'shock', stats, events, {electricity:true, arc:true, viaUid:target.uid, wet:wetA || undefined}); credit(arc); }
+  }
+  // Chain Lightning N (2026-10-17, user: "Voltaic Eel should have chain lighting as well"): every swing that connects sends lightning on
+  // from the target: it jumps to an enemy unit beside a unit it has already struck (a seeded pick; the target counts, even if it just
+  // fell), then once more, never to the same unit twice: up to 2 jumps, N lightning (shock) damage each (+ the Wet rule). Electricity
+  // is the short version (1 jump, beside the target). Logs {type:'chainLightning', uids:[jumped units]}, then one hit per jump
+  // ({chainLightning:true, jump:i, viaUid: the unit it jumped from}).
+  function chainLightningStrike(players, sideOf, pid, att, target, n, stats, events, killCredit){
+    const tpid = otherId(pid), pl = players[tpid]; if(!pl || !target || !(n > 0)) return;
+    const struck = [target], jumps = [];
+    for(let k = 0; k < 2; k++){
+      const cand = []; struck.forEach(s=> besideOf(pl, s).forEach(c=>{ if(!struck.includes(c) && !cand.includes(c)) cand.push(c); }));
+      if(!cand.length) break;
+      const c = cand[Math.floor(rnd()*cand.length)], via = struck.slice().reverse().find(s=> besideOf(pl, s).includes(c)) || target;
+      struck.push(c); jumps.push({c, via, wet: wetCountOf(c)});
+    }
+    if(recordEvents && events) events.push({type:'chainLightning', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:target.uid, uids:jumps.map(j=> j.c.uid), n});
+    jumps.forEach((j, i)=>{ skillAreaHit(players, sideOf, pid, att, j.c, n, 'shock', stats, events, {chainLightning:true, jump:i, viaUid:j.via.uid, wet:j.wet || undefined});
+      if(j.c.hp <= 0 && killCredit){ if(!killCredit[j.c.uid]) killCredit[j.c.uid] = new Set(); killCredit[j.c.uid].add(statKey(sideOf(pid), att.defId)); } });
   }
 
   function applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events){
@@ -3938,8 +3969,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const foes = allBoardCards(players[otherId(playerId)]).filter(c=> c.hp>0 && !c.cageOf);
       const amt = (Number(def.effects.lightning)||0) + Math.floor(prayerOf(pl) / 4);
       const target = foes.length ? {kind:'card', card: foes[Math.floor(rnd()*foes.length)]} : {kind:'hq'};
-      if(recordEvents && events) events.push({type:'statusFx', kind:'lightning', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, amount:amt});
-      fireDamageAction(players, sideOf, playerId, boardCard.defId, amt, 'physical', target, stats, events, {}, boardCard.uid);
+      // 2026-10-17 (user: "all its lighting attacks should not throw a generic ball at the enemy. When the lightning arcs, the enemies
+      // take the lightning damage straight away"): the bolt is lightning (shock) damage now, not physical, so Wet counters add to it, and
+      // its hit (or miss) is tagged skyBolt, with the struck unit on the statusFx: the bolt itself comes down on that unit, nothing is thrown.
+      if(recordEvents && events) events.push({type:'statusFx', kind:'lightning', side:mySide, attDefId:boardCard.defId, attUid:boardCard.uid, amount:amt, targetSide:sideOf(otherId(playerId)), targetUid: target.kind === 'card' ? target.card.uid : null, targetDefId: target.kind === 'card' ? target.card.defId : null});
+      const ev0 = events ? events.length : 0;
+      fireDamageAction(players, sideOf, playerId, boardCard.defId, amt, 'shock', target, stats, events, {}, boardCard.uid);
+      if(recordEvents && events) for(let i = ev0; i < events.length; i++){ const e = events[i]; if(e && (e.type === 'hit' || e.type === 'hitHQ' || e.type === 'evaded') && e.attUid === boardCard.uid){ e.skyBolt = true; if(!e.dmgType) e.dmgType = 'shock'; break; } }
     }
     // (Worthy N, 2026-10-12, became part of Bounty on 2026-10-15; since 2026-10-16 every card says Bounty and `worthy` is a retired slot.)
     // Rainmaker N (2026-10-12, user: "add a rainmaker evergreen that causes rain on summon"): Spring Rain for N rounds (3 by default).
@@ -4181,13 +4217,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Acid Bolt N    N acid damage + 1 Corrode
   //   Poison Bolt N  no damage; N Poison (at the castle: N poison damage)
   //   Ice Bolt N     N cold damage + a 1 in 2 chance of a Freeze counter (only on a unit with none)
-  //   Shock Bolt N   N damage + Shocked for a round (takes 50% more damage)
+  //   Shock Bolt N   N lightning (shock) damage + Shocked for a round (takes 50% more damage); 2026-10-17: shock, so Wet adds to it
   const BOLT_ELEMENTS = {
     fireBolt:   {element:'fire',   dmgType:'heat'},
     acidBolt:   {element:'acid',   dmgType:'acid',     status:'corrode'},
     poisonBolt: {element:'poison', dmgType:'poison',   status:'poison', noDamage:true},
     iceBolt:    {element:'ice',    dmgType:'cold',     status:'freezeCounter'},
-    shockBolt:  {element:'shock',  dmgType:'physical', status:'shock'},
+    shockBolt:  {element:'shock',  dmgType:'shock',    status:'shock'}, // 2026-10-17: lightning (shock) damage, was physical (the Wet rule reads it)
   };
   // What a landed Ice Arrow or Bolt leaves on the unit it hit (2026-10-15).
   function applyShotStatus(kind, n, c, src, side, tSide, events, aStat){
@@ -6399,6 +6435,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(attDef.effects && attDef.effects.wither && defCard.hp>0) applyWither(otherId(a.enemyId), a.att, defCard, numN(attDef.effects.wither, 1), sideOf, events); // Wither N (2026-10-14)
         if(attDef.effects && attDef.effects.dragonLightning) dragonLightningStrike(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.dragonLightning, 1), stats, events, killCredit); // Dragon Lightning N (2026-10-14)
         if(attDef.effects && attDef.effects.electricity) electricityArc(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.electricity, 1), stats, events, killCredit); // Electricity N (2026-10-14)
+        if(attDef.effects && attDef.effects.chainLightning) chainLightningStrike(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.chainLightning, 2), stats, events, killCredit); // Chain Lightning N (2026-10-17; true = 2, as the editor)
         // Elemental status effects (Frozen/Asleep/Paralyzed/Stun-on-hit) — see rollStatusOnHit.
         if(attDef.effects){
           rollStatusOnHit('freeze', attDef.effects.freeze, defCard, mySide, a.att, sideOf, a.enemyId, events);
