@@ -45,6 +45,14 @@ const FONTS = {
   'ja': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans JP','Hiragino Sans','Yu Gothic',system-ui,sans-serif"},
   'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
 };
+// 2026-10-18 (roadmap P6): the desktop build ships these fonts (electron/fonts → fonts/script/<code>.css, subset to the
+// packs' characters) so they work offline. The website keeps Google Fonts, so it gains no bytes. If the local CSS is
+// missing (an unstaged dev copy), the link swaps to the Google URL.
+if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || '')){
+  for(const c in FONTS){ FONTS[c].web = FONTS[c].css; FONTS[c].css = 'fonts/script/' + c + '.css'; }
+  document.addEventListener('error', e=>{ const l = e.target, f = l && l.dataset && FONTS[l.dataset.langFont];
+    if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
+}
 const KEY = 'bramblewood_lang_v1';
 const PACK_URLS = (()=>{ try{ return JSON.parse('__LANG_PACK_URLS__'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};

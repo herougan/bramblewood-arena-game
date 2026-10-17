@@ -8,6 +8,12 @@ Every visual-effect moment in Bramblewood Arena, built and planned, in one check
 
 **Totals (2026-10-15):** 933 entries · good 416 · basic 279 · missing 237 · broken 1 · of which future (planned) 96.
 
+## 2026-10-18: status from the Effects Lab (refresh_inventory.py)
+
+Every row now has a `status`, filled by `tools/effects-lab/refresh_inventory.py` from the lab manifests (`tools/effects-lab/manifest/*.js`; the batch docs `docs/fx-batch-*-status.md` as a second source): **live** the game plays it · **lab-only** built in the Effects Lab, not wired in the game · **future** planned, not built · **missing** nothing on screen and nothing in the lab · **retired** kept from before. Each row also carries `lab` (the manifest that registers it) and `inGameHook`. Rerun the script after a lab change; it rewrites this section, the counts and the entry tables.
+
+**Now:** 1035 entries · live 948 · lab-only 56 · future 22 · missing 0 · retired 9. Of the 142 rows the 10-15 sweep rated "missing", 140 are built now (140 live, 0 lab-only).
+
 ## 2026-10-17: the Effects Lab catches up (batch L17)
 
 Everything visual or audible the game gained on 2026-10-16 and 2026-10-17 (docs/CHANGELOG.md from "2026-10-16 (02:00)" up), checked against the lab. **56 entries added** (batch `L17`, `status: built`, `added: 2026-10-17`), **28 updated** (`updated: 2026-10-17`: the new look, or the game's own function now plays it), **8 retired** (`status: retired` with the reason; their old demos stay playable). The inventory now holds **1029 entries** (good 503 · basic 290 · missing 235 · broken 1); with the lab's own map-title, grandeur and fun entries every one of them is built. The lab entries live in `tools/effects-lab/manifest/x17.js` and `fe2.js` (map titles in `w4.js`); `manifest/_game.js` stands in for the fight around the stage so the lab plays the game's functions (`field2Vfx`, `s17SkillVfx`, `devilPayVfx`, `skills2Vfx`, `killMarkVfx`, `triggerFiredVfx`, `enemyPitchSlotFx`, `skyStepApply`, `skyPhaseLayers` …, listed in `tools/effects-lab/fx-src-extra.txt`). The JSON also renormalised three stray areas (`weather` → `weather-time`, `map` → `conquest-map`, `darkness` → `darkness-light`).
@@ -121,28 +127,31 @@ Everything visual or audible the game gained on 2026-10-16 and 2026-10-17 (docs/
 
 ## Counts by area and quality
 
-| Area | Batch | good | basic | missing | broken | total | future | P1 |
-|---|---|--:|--:|--:|--:|--:|--:|--:|
-| combat-attack | A | 49 | 37 | 4 | 0 | 90 | 0 | 2 |
-| combat-skill | A | 44 | 32 | 15 | 0 | 91 | 0 | 4 |
-| status | B | 33 | 23 | 43 | 0 | 99 | 2 | 4 |
-| field | B | 17 | 14 | 13 | 0 | 44 | 10 | 1 |
-| weather-time | B | 10 | 11 | 6 | 1 | 28 | 2 | 1 |
-| darkness-light | B | 6 | 8 | 13 | 0 | 27 | 5 | 8 |
-| death | C | 13 | 3 | 21 | 0 | 37 | 4 | 3 |
-| castle | C | 7 | 6 | 8 | 0 | 21 | 1 | 2 |
-| summon-spawn | C | 11 | 12 | 7 | 0 | 30 | 5 | 5 |
-| card-treatment | D | 18 | 17 | 14 | 0 | 49 | 14 | 0 |
-| foil | D | 20 | 2 | 22 | 0 | 44 | 22 | 0 |
-| pack-card-open | D | 24 | 5 | 8 | 0 | 37 | 2 | 5 |
-| rewards-results | F | 15 | 9 | 0 | 0 | 24 | 0 | 4 |
-| meta-progression | F | 17 | 20 | 17 | 0 | 54 | 9 | 4 |
-| conquest-map | E | 69 | 52 | 25 | 0 | 146 | 4 | 3 |
-| world-ambience | E | 13 | 4 | 5 | 0 | 22 | 7 | 0 |
-| ui-feedback | F | 33 | 8 | 4 | 0 | 45 | 1 | 1 |
-| tutorial-dialogue | F | 11 | 4 | 1 | 0 | 16 | 0 | 0 |
-| raid-dungeon-pvp | F | 6 | 12 | 11 | 0 | 29 | 8 | 1 |
-| **all** | | **416** | **279** | **237** | **1** | **933** | **96** | **48** |
+Quality is the inventory's rating of the look (the 10-15 sweep, kept); status is where it stands now (2026-10-18, `tools/effects-lab/refresh_inventory.py`). "missing now" counts rows with nothing on screen and nothing in the lab.
+
+| Area | Batch | good | basic | missing | broken | live | lab-only | future | missing now | retired | total | P1 |
+|---|---|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|--:|
+| combat-attack | A | 51 | 36 | 4 | 0 | 91 | 0 | 0 | 0 | 0 | 91 | 2 |
+| combat-skill | A | 80 | 37 | 15 | 0 | 130 | 0 | 0 | 0 | 2 | 132 | 4 |
+| status | B | 41 | 23 | 43 | 0 | 105 | 2 | 0 | 0 | 0 | 107 | 4 |
+| field | B | 31 | 17 | 13 | 0 | 51 | 10 | 0 | 0 | 0 | 61 | 1 |
+| weather-time | B | 16 | 11 | 5 | 1 | 31 | 2 | 0 | 0 | 0 | 33 | 1 |
+| darkness-light | B | 8 | 8 | 13 | 0 | 26 | 3 | 0 | 0 | 0 | 29 | 8 |
+| death | C | 18 | 3 | 18 | 0 | 36 | 1 | 0 | 0 | 2 | 39 | 3 |
+| castle | C | 8 | 6 | 7 | 0 | 20 | 1 | 0 | 0 | 0 | 21 | 2 |
+| summon-spawn | C | 13 | 12 | 5 | 0 | 27 | 3 | 0 | 0 | 0 | 30 | 5 |
+| card-treatment | D | 30 | 17 | 14 | 0 | 57 | 4 | 0 | 0 | 0 | 61 | 2 |
+| foil | D | 20 | 2 | 22 | 0 | 22 | 0 | 22 | 0 | 0 | 44 | 0 |
+| pack-card-open | D | 25 | 6 | 8 | 0 | 37 | 1 | 0 | 0 | 1 | 39 | 5 |
+| rewards-results | F | 15 | 9 | 0 | 0 | 21 | 0 | 0 | 0 | 3 | 24 | 4 |
+| meta-progression | D | 17 | 20 | 17 | 0 | 45 | 9 | 0 | 0 | 0 | 54 | 4 |
+| conquest-map | E | 74 | 52 | 25 | 0 | 147 | 4 | 0 | 0 | 0 | 151 | 4 |
+| world-ambience | E | 13 | 4 | 5 | 0 | 15 | 7 | 0 | 0 | 0 | 22 | 0 |
+| ui-feedback | F | 36 | 8 | 4 | 0 | 47 | 1 | 0 | 0 | 0 | 48 | 4 |
+| tutorial-dialogue | F | 12 | 4 | 1 | 0 | 16 | 0 | 0 | 0 | 1 | 17 | 1 |
+| raid-dungeon-pvp | F | 6 | 12 | 11 | 0 | 21 | 8 | 0 | 0 | 0 | 29 | 1 |
+| map-grandeur | L17 | 3 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
+| **all** | | **517** | **287** | **230** | **1** | **948** | **56** | **22** | **0** | **9** | **1035** | **55** |
 
 Areas `future` items live in their natural area with `future: true` (so a planned dragon death sits under **death**); "Future effects by theme" below gathers them.
 
@@ -176,1035 +185,1142 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 
 ## Entries by area
 
-### Combat: attacks and hits (`combat-attack`, 90)
+### Combat: attacks and hits (`combat-attack`, 91)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `atk-melee-lunge` | Melee lunge (windup + strike) 🎨 | hit / evaded with !ev.ranged → animateAttacker(attUid) at the start of the beat | animateAttacker + @keyframes windup-mine/strike-mine/windup-enemy/strike-enemy | good — anticipation lean, lunge toward target, ±16px lean | 2 |
-| `atk-castle-lunge` | Lunge at the castle | hitHQ (melee) → animateAttacker(..., {toCastle:true}), leanX 0 | animateAttacker toCastle | good — straight-ahead swing, reads clearly | 3 |
-| `atk-impact` | Hit impact on a unit | hit → impactDelay timer → flashDmg + impactSquash + battleLightAt + SoundKit.hitAt | flashDmg, impactSquash, battleLightAt (shader point light), dmgBounceFall number | good — squash, typed number, lit felt | 1 |
-| `atk-heavy-hitstop` | Heavy blow hit-stop | hit with dmg>=8, or any hitHQ → hitStop(70) + Ambience.duck + big battleLightAt with shockwave | hitStop, Ambience.duck, battleWeather.wave | good — frame freeze + felt shockwave | 2 |
-| `atk-big-blow-shake` | Huge hit screen shake (>15 dmg) | hit/hitHQ with dmg>15 → bigBlowShake → battlefieldShake(strength 16..100) | battlefieldShake (GSAP jitter) | good — scales with damage, rate-limited | 2 |
-| `atk-crit` | Critical hit | hit/hitHQ with ev.crit (not ambush) → flashDmg(crit) + critTone | .dmg-float .df-burst (critBurst), CRIT stamp, SoundKit.critTone | good — gold starburst number | 2 |
-| `atk-armor-block-full` | Armor fully blocks a hit | hit with ev.armorBlocked → SoundKit.clang + SkillFX.armorBlock(full) | SkillFX.armorBlock + clang | good — steel plate + sparks + 🛡️ | 2 |
-| `atk-armor-block-partial` | Armor soaks part of a hit | hit on a unit with Armor>0 (once a round) → SkillFX.armorBlock(partial) | SkillFX.armorBlock partial | good — has its own look that plays at the right moment | 3 |
-| `atk-dmgtype-physical` | Damage type look: physical | any hit/hitHQ with dmgType:'physical' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.physical / dmgGlyph | good — warm-white light, ➶ projectile glyph | 3 |
-| `atk-dmgtype-heat` | Damage type look: heat | any hit/hitHQ with dmgType:'heat' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.heat / dmgGlyph | good — orange light, 🔥 glyph, burn death, heat haze on fiery units | 3 |
-| `atk-dmgtype-cold` | Damage type look: cold | any hit/hitHQ with dmgType:'cold' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.cold / dmgGlyph | good — blue light, ❄ glyph, ice-shard death | 3 |
-| `atk-dmgtype-acid` | Damage type look: acid | any hit/hitHQ with dmgType:'acid' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.acid / dmgGlyph | basic — acid light colour + 🧪 glyph only; no fizz on impact | 2 |
-| `atk-dmgtype-poison` | Damage type look: poison | any hit/hitHQ with dmgType:'poison' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.poison / dmgGlyph | basic — green light + ☠ glyph only | 2 |
-| `atk-dmgtype-decay` | Damage type look: decay | any hit/hitHQ with dmgType:'decay' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.decay / dmgGlyph | basic — violet light + 🦠 glyph only | 2 |
-| `atk-dmgtype-magic` | Damage type look: magic 🎨 | any hit/hitHQ with dmgType:'magic' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.magic / dmgGlyph | missing — LIGHT_COLORS has no magic entry (falls back to physical); only 🪄 glyph | 2 |
-| `atk-dmgtype-water` | Damage type look: water 🎨 | any hit/hitHQ with dmgType:'water' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.water / dmgGlyph | missing — LIGHT_COLORS has no water entry; only 💧 glyph | 2 |
-| `atk-dmgtype-true` | Damage type look: true 🎨 | any hit/hitHQ with dmgType:'true' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.true / dmgGlyph | missing — dmgType "true" has no glyph or light colour | 2 |
-| `atk-ranged-projectile` | Generic ranged / triggered missile | hit with ev.ranged and no pending arrow/bolt → spawnProjectile(from, to, dmgGlyph) after windup | spawnProjectile (an emoji glyph flies) | basic — an emoji sliding across; no arc, trail or impact flash of its own | 1 |
-| `atk-arrow` | Arrow shot | arrow event (pendingArrow) then ranged hit → SkillFX.bowShot (draw, release, flight, thunk) | SkillFX.bowShot + bowDraw/arrowLoose/arrowThunk | good — full bow choreography | 2 |
-| `atk-fire-arrow` | Fire Arrow | arrow {fire:true} + hit → SkillFX.bowShot({fire}) | bowShot fire: flame tip, ember trail, ignite ring | good — has its own look that plays at the right moment | 2 |
-| `atk-ice-arrow` | Ice Arrow | arrow (ice) + cold hit, 1 in 2 statusFx freeze | bowShot (plain) then freezeEncase | basic — the arrow itself is a normal arrow: no frost tip, no rime trail | 2 |
-| `atk-twin-shot` | Twin Shot | two arrow events + hits in quick succession | bowShot ×2 | good — has its own look that plays at the right moment | 3 |
-| `atk-volley` | Volley (arrow at every enemy) | Volley N on 1st/3rd/5th Ready round: arrow+hit per enemy unit | bowShot per arrow, one after another | basic — reads as many single shots; SkillFX.volley (a real arrow rain prototype) is not wired | 2 |
-| `atk-snipe` | Snipe | arrow {snipe:true} + hit | bowShot | good — has its own look that plays at the right moment | 3 |
-| `atk-bolt-fire` | Fire Bolt | bolt event {element:'fire'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx | SkillFX.boltGlob (ember splat) | good — spit squash, lobbed glob, coloured splat | 2 |
-| `atk-bolt-acid` | Acid Bolt | bolt event {element:'acid'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx | SkillFX.boltGlob (acid drip splat) | good — spit squash, lobbed glob, coloured splat | 2 |
-| `atk-bolt-poison` | Poison Bolt | bolt event {element:'poison'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx | SkillFX.boltGlob (green glob + 🐍 +N ☠) | good — spit squash, lobbed glob, coloured splat | 2 |
-| `atk-bolt-ice` | Ice Bolt | bolt event {element:'ice'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx | SkillFX.boltGlob (ice-shard splat) | good — spit squash, lobbed glob, coloured splat | 2 |
-| `atk-bolt-shock` | Shock Bolt | bolt event {element:'shock'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx | SkillFX.boltGlob (spark splat) | good — spit squash, lobbed glob, coloured splat | 2 |
-| `atk-cleave` | Cleave (Sweep) | hit with ev.sweep → SkillFX.cleave (once a round) | SkillFX.cleave | good — has its own look that plays at the right moment | 2 |
-| `atk-sweep-whiff` | Cleave hits empty air | sweepWhiff → .sweep-whiff arc + "whoosh" label | .sweep-whiff (@keyframes sweepWhiff) | good — has its own look that plays at the right moment | 3 |
-| `atk-prong-fork` | Fork (2 tines) | hit with ev.fork, ev.prong='fork' (each prong beyond the first) → SkillFX.forkProngs | SkillFX.forkProngs | good — steel tines thrust in | 3 |
-| `atk-prong-trident` | Trident (3 tines) | hit with ev.fork, ev.prong='trident' (each prong beyond the first) → SkillFX.forkProngs | SkillFX.forkProngs | good — steel tines thrust in | 3 |
-| `atk-prong-pitchfork` | Pitchfork (4 tines) | hit with ev.fork, ev.prong='pitchfork' (each prong beyond the first) → SkillFX.forkProngs | SkillFX.forkProngs | good — steel tines thrust in | 3 |
-| `atk-prong-castle` | Fork prong hits the castle | hitHQ {fork:true, prong} (flank damage) | hqHitBigVfx only | basic — the tine look never reaches the castle | 3 |
-| `atk-octolash` | Octolash | hit with prong octolash + statusFx octolash | forkProngs (purple tentacles) + "🐙 Octolash ×N" float | good — has its own look that plays at the right moment | 3 |
-| `atk-crab-claw` | Crab Claws pinch | crabClaw {dir} before the hit | .crab-pinch + "🦞 ←/→" float | basic — no claw shape snapping; retired from the editor but still plays | 3 |
-| `atk-backstab` | Backstab | hit with ev.backstab | SkillFX.backstab dagger flash + slash, backstabSlice | good — has its own look that plays at the right moment | 2 |
-| `atk-ambush` | Ambush strike | hit/hitHQ with ev.ambush | "🗡 Ambush!" float + ambushTone | basic — float text only | 2 |
-| `atk-quick` | Quick strike | hit by a Quick unit | SkillFX.quickStrike (speed lines, afterimages) + float | good — has its own look that plays at the right moment | 3 |
-| `atk-swift` | Swift strike | hit by a Swift unit | "💨 Swift!" float + SoundKit.quick | basic — float only | 3 |
-| `atk-frenzy` | Frenzy / Twin Strike second swing | frenzy {twin} (requeued attack) | SkillFX.rageFlare + "🔥 Frenzy!" / "⚔⚔ Twin Strike!" | good — has its own look that plays at the right moment | 3 |
-| `atk-swarm` | Swarm mobbing | hit by a Swarm unit with a live swarm bonus | SkillFX.swarm (buzzing cloud converges) | good — has its own look that plays at the right moment | 3 |
-| `atk-flying-swoop` | Flying swoop | melee hit by a Flying unit (once a round) | SkillFX.swoop air-trail dive + featherBurst when hit | good — has its own look that plays at the right moment | 3 |
-| `atk-scared-lunge` | Attack on a Scare unit | hit whose target has Scare | animateAttacker {scared} wobbly line (.facing-scared scaredShake) | basic — subtle; no fear tell on the attacker | 3 |
-| `atk-unitfx-claw` | Unit hit style: claw | hit by a unit whose UnitFX style is claw → UnitFX.hitMark('claw') | UnitFX.claw (claw rake marks) | good — has its own look that plays at the right moment | 3 |
-| `atk-unitfx-bite` | Unit hit style: bite | hit by a unit whose UnitFX style is bite → UnitFX.hitMark('bite') | UnitFX.bite (jaw crunch) | good — has its own look that plays at the right moment | 3 |
-| `atk-unitfx-sting` | Unit hit style: sting | hit by a unit whose UnitFX style is sting → UnitFX.hitMark('sting') | UnitFX.sting (stinger dot) | good — has its own look that plays at the right moment | 3 |
-| `atk-unitfx-peck` | Unit hit style: peck | hit by a unit whose UnitFX style is peck → UnitFX.hitMark('peck') | UnitFX.peck (beak dents) | good — has its own look that plays at the right moment | 3 |
-| `atk-unitfx-burn` | Unit hit style: burn | hit by a unit whose UnitFX style is burn → UnitFX.hitMark('burn') | UnitFX.burn (scorch star) | good — has its own look that plays at the right moment | 3 |
-| `atk-unitfx-firebreath` | Unit special attack: fire breath | hit by a unit with ufx.attack (fireBreath) → UnitFX.attackFx | UnitFX.fireBreath | good — has its own look that plays at the right moment | 3 |
-| `atk-counter-parry` | Counterattack parry | statusFx counter (+ hit back) | SkillFX.parry | good — has its own look that plays at the right moment | 3 |
-| `atk-guardian-redirect` | Guardian takes the hit | hit with ev.guardianRedirect | flashShield on the guardian | basic — no line showing the blow being pulled across | 2 |
-| `atk-thorns` | Thorns sting the attacker | thorns {fromUid,targetUid,dmg} | SkillFX.thorns + clang + flashDmg | good — has its own look that plays at the right moment | 3 |
-| `atk-reflect` | Reflect | reflect {dmg} | SkillFX.mirrorFlash + "🪞 -N" | good — has its own look that plays at the right moment | 3 |
-| `atk-recoil` | Recoil from own swing | statusFx recoil | "💢 −N" float + recoilEl | basic — float only | 3 |
-| `atk-spite` | Spiteful lash-back on death | statusFx spite (victim lashes the killer) | none (battle log only) | missing — no on-board cue at all | 2 |
-| `atk-evade-evasive` | Evade: evasive | evaded {reason:'evasive'} → flashDodge / evasiveDodge | flashDodge + missCallout + SkillFX.evasiveDodge | good — SkillFX.evasiveDodge blink sidestep | 3 |
-| `atk-evade-swift` | Evade: swift | evaded {reason:'swift'} → flashDodge / evasiveDodge | flashDodge + missCallout + SkillFX.evasiveDodge | good — evasiveDodge (shared) | 3 |
-| `atk-evade-flying` | Evade: flying | evaded {reason:'flying'} → flashDodge / evasiveDodge | flashDodge + missCallout | basic — flashDodge hop + "Miss" callout only | 2 |
-| `atk-evade-fog` | Evade: fog | evaded {reason:'fog'} → flashDodge / evasiveDodge | flashDodge + missCallout | basic — generic hop; the fog itself never swallows the swing | 2 |
-| `atk-evade-illusory` | Evade: illusory 🎨 | evaded {reason:'illusory'} → flashDodge / evasiveDodge | flashDodge + missCallout | basic — generic hop; raid boss units dodge 67% | 2 |
-| `atk-evade-shadow` | Evade: shadow 🎨 | evaded {reason:'shadow'} → flashDodge / evasiveDodge | flashDodge + missCallout | basic — generic hop; Shadow (night/dark) has no look | 2 |
-| `atk-evade-smoke` | Evade: smoke | evaded {reason:'smoke'} → flashDodge / evasiveDodge | flashDodge + missCallout | basic — generic hop | 2 |
-| `atk-blind-miss` | Blind unit misses | blindMiss (no night flag) — unit with Blind/Purblind | animateAttacker + "👁 Miss!" float + blindTone | basic — float text only | 2 |
-| `atk-confused-whiff` | Confused fizzle | confusedWhiff (on-hit skill or trigger fizzles) | "❓ Fizzle" float | basic — float only | 3 |
-| `atk-tipsy-swing` | Tipsy lurching swing | tipsySwing {drift, miss} | .tipsy-lurch (@keyframes tipsyLurch) | basic — a generic or reused look that does not say what happened | 3 |
-| `atk-boomerang-throw` | Boomerang / Anti-Air throw | hit by a boomerang/bananarang/antiAir unit | SkillFX.boomerang curve out and back + boomerangWhirr | good — has its own look that plays at the right moment | 3 |
-| `atk-boomerang-castle` | Boomerang at the castle | hitHQ by a boomerang unit | SkillFX.boomerangCastle | good — has its own look that plays at the right moment | 3 |
-| `atk-boomerang-return` | Boomerang returns (next round) | boomerangReturn {speed} | "🪃 Boomerang returns!" float | basic — float only; SkillFX.boomerangReturn only plays inside the original throw, not on this next-round return | 2 |
-| `atk-boomerang-caught` | Boomerang caught | boomerangCaught (thrower or the unit in its home slot) | "🪃 Caught!" float | basic — float only | 3 |
-| `atk-boomerang-whiff` | Boomerang misses | boomerangWhiff | missCallout whiff + whirr | basic — a generic or reused look that does not say what happened | 3 |
-| `atk-boomerang-friendly` | Boomerang hits your own side | hit / hitHQ {boomerang, friendly:true} on the way home | plain hit / castle hit | basic — no "oops" read; looks like an enemy hit | 3 |
-| `atk-king-slayer` | King Slayer bonus | kingSlayer {amount} | SkillFX.crownCrack + kingSlayerTone + float | good — has its own look that plays at the right moment | 3 |
-| `atk-pierce-rend` | Pierce / Puncture through Armor | hit with ev.rend | SkillFX.pierceThrough + "🗡 Pierced!" | good — has its own look that plays at the right moment | 3 |
-| `atk-pierce-hq` | Pierce spills to the castle | pierceHQ {dmg} | SkillFX.pierceThrough on the castle + flashHqDamage | good — has its own look that plays at the right moment | 3 |
-| `atk-overwhelm-hq` | Stampede (Overwhelm) spill to the castle | overwhelmHQ {dmg} | shakeEl + flashHqDamage + "💥 -N" | basic — no trample/stampede motion | 2 |
-| `atk-siege` | Siege bonus on the castle | hitHQ with ev.siege | "🏰 Siege!" float + siegeTone | basic — float only | 3 |
-| `atk-bulwark` | Bulwark blocks castle damage | hitHQ with ev.bulwark>0 | "🛡 -N blocked" float + bulwarkTone | basic — float only | 3 |
-| `atk-stealth-slip` | Stealth unit slips past to the castle | hitHQ by a Stealth unit | SkillFX.stealthSlip + "👻 Stealth!" | good — has its own look that plays at the right moment | 3 |
-| `atk-fester` | Fester bonus damage | hit with ev.festerBonus | "+N☠ Fester" float + festerBite | basic — float only | 3 |
-| `atk-rupture` | Rupture bonus damage | hit with ev.ruptureBonus | "+N🩸 Rupture" float + ruptureBite | basic — float only | 3 |
-| `atk-quake-hit` | Earthquake / Landslide jolt per unit | hit/evaded with ev.quake (0.1 s apart) | .quake-jolt + flashDmg | good — has its own look that plays at the right moment | 3 |
-| `atk-retribution` | Divine Retribution | hit with ev.retribution (ranged) | plain projectile | basic — no holy light | 3 |
-| `atk-reload` | Reload after firing | hit by a Reload unit; skipTurn reason reload while reloading | "🔄 Reloading" float + reloadTone | basic — float only; no reloading pose while it waits | 3 |
-| `atk-friction` | Friction (ally rubs) | friction {dmg} on an ally | shakeEl + "⚙️ -N" | basic — a generic or reused look that does not say what happened | 3 |
-| `atk-pounce` | Pounce | pounce {amount} on play | crouch-and-spring GSAP + float | basic — no leap trail | 3 |
-| `atk-swipe-lumber` | Swipe steals Lumber | swipeLumber {amount} | 🪵 projectile castle → swiper + float | basic — a generic or reused look that does not say what happened | 3 |
-| `atk-charge-fire` | Charge fires | charge {fired:true} | updateChargeBadge + "⏲️ Charge!" + .chargebadge.charge-fire | basic — badge pulse only; no wind-up release | 3 |
-| `atk-castle-bolt-shot` | Castle ballista bolt | statusFx castleBolt then fireDamageAction from 'castle' | plain projectile from the castle tile (no own look) | basic — log text only for the bolt itself | 2 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `atk-melee-lunge` | Melee lunge (windup + strike) 🎨 | hit / evaded with !ev.ranged → animateAttacker(attUid) at the start of the beat | animateAttacker + @keyframes windup-mine/strike-mine/windup-enemy/strike-enemy | good — anticipation lean, lunge toward target, ±16px lean | live (a.js) | 2 |
+| `atk-castle-lunge` | Lunge at the castle | hitHQ (melee) → animateAttacker(..., {toCastle:true}), leanX 0 | animateAttacker toCastle | good — straight-ahead swing, reads clearly | live (a.js) | 3 |
+| `atk-impact` | Hit impact on a unit | hit → impactDelay timer → flashDmg + impactSquash + battleLightAt + SoundKit.hitAt | flashDmg, impactSquash, battleLightAt (shader point light), dmgBounceFall number | good — squash, typed number, lit felt | live (a.js) | 1 |
+| `atk-heavy-hitstop` | Heavy blow hit-stop | hit with dmg>=8, or any hitHQ → hitStop(70) + Ambience.duck + big battleLightAt with shockwave | hitStop, Ambience.duck, battleWeather.wave | good — frame freeze + felt shockwave | live (a.js) | 2 |
+| `atk-big-blow-shake` | Huge hit screen shake (>15 dmg) | hit/hitHQ with dmg>15 → bigBlowShake → battlefieldShake(strength 16..100) | battlefieldShake (GSAP jitter) | good — scales with damage, rate-limited | live (a.js) | 2 |
+| `atk-crit` | Critical hit | hit/hitHQ with ev.crit (not ambush) → flashDmg(crit) + critTone | .dmg-float .df-burst (critBurst), CRIT stamp, SoundKit.critTone | good — gold starburst number | live (a.js) | 2 |
+| `atk-armor-block-full` | Armor fully blocks a hit | hit with ev.armorBlocked → SoundKit.clang + SkillFX.armorBlock(full) | SkillFX.armorBlock + clang | good — steel plate + sparks + 🛡️ | live (a.js) | 2 |
+| `atk-armor-block-partial` | Armor soaks part of a hit | hit on a unit with Armor>0 (once a round) → SkillFX.armorBlock(partial) | SkillFX.armorBlock partial | good — has its own look that plays at the right moment | live (a.js, p1.js) | 3 |
+| `atk-dmgtype-physical` | Damage type look: physical | any hit/hitHQ with dmgType:'physical' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.physical / dmgGlyph | good — warm-white light, ➶ projectile glyph | live (a.js) | 3 |
+| `atk-dmgtype-heat` | Damage type look: heat | any hit/hitHQ with dmgType:'heat' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.heat / dmgGlyph | good — orange light, 🔥 glyph, burn death, heat haze on fiery units | live (a.js) | 3 |
+| `atk-dmgtype-cold` | Damage type look: cold | any hit/hitHQ with dmgType:'cold' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.cold / dmgGlyph | good — blue light, ❄ glyph, ice-shard death | live (a.js) | 3 |
+| `atk-dmgtype-acid` | Damage type look: acid | any hit/hitHQ with dmgType:'acid' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.acid / dmgGlyph | basic — acid light colour + 🧪 glyph only; no fizz on impact | live (a.js) | 2 |
+| `atk-dmgtype-poison` | Damage type look: poison | any hit/hitHQ with dmgType:'poison' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.poison / dmgGlyph | basic — green light + ☠ glyph only | live (a.js) | 2 |
+| `atk-dmgtype-decay` | Damage type look: decay | any hit/hitHQ with dmgType:'decay' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.decay / dmgGlyph | basic — violet light + 🦠 glyph only | live (a.js) | 2 |
+| `atk-dmgtype-magic` | Damage type look: magic 🎨 | any hit/hitHQ with dmgType:'magic' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.magic / dmgGlyph | missing — LIGHT_COLORS has no magic entry (falls back to physical); only 🪄 glyph | live (a.js) | 2 |
+| `atk-dmgtype-water` | Damage type look: water 🎨 | any hit/hitHQ with dmgType:'water' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.water / dmgGlyph | missing — LIGHT_COLORS has no water entry; only 💧 glyph | live (a.js) | 2 |
+| `atk-dmgtype-true` | Damage type look: true 🎨 | any hit/hitHQ with dmgType:'true' → battleLightAt(LIGHT_COLORS[dmgType]) + dmgGlyph(dmgType) projectile | LIGHT_COLORS.true / dmgGlyph | missing — dmgType "true" has no glyph or light colour | live (a.js) | 2 |
+| `atk-ranged-projectile` | Generic ranged / triggered missile | hit with ev.ranged and no pending arrow/bolt → spawnProjectile(from, to, dmgGlyph) after windup | spawnProjectile (an emoji glyph flies) | basic — an emoji sliding across; no arc, trail or impact flash of its own | live (a.js) | 1 |
+| `atk-arrow` | Arrow shot | arrow event (pendingArrow) then ranged hit → SkillFX.bowShot (draw, release, flight, thunk) | SkillFX.bowShot + bowDraw/arrowLoose/arrowThunk | good — full bow choreography | live (_existing.js) | 2 |
+| `atk-fire-arrow` | Fire Arrow | arrow {fire:true} + hit → SkillFX.bowShot({fire}) | bowShot fire: flame tip, ember trail, ignite ring | good — has its own look that plays at the right moment | live (_existing.js) | 2 |
+| `atk-ice-arrow` | Ice Arrow | arrow (ice) + cold hit, 1 in 2 statusFx freeze | bowShot (plain) then freezeEncase | basic — the arrow itself is a normal arrow: no frost tip, no rime trail | live (a.js) | 2 |
+| `atk-twin-shot` | Twin Shot | two arrow events + hits in quick succession | bowShot ×2 | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-volley` | Volley (arrow at every enemy) | Volley N on 1st/3rd/5th Ready round: arrow+hit per enemy unit | bowShot per arrow, one after another | basic — reads as many single shots; SkillFX.volley (a real arrow rain prototype) is not wired | live (_existing.js, a.js) | 2 |
+| `atk-snipe` | Snipe | arrow {snipe:true} + hit | bowShot | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-bolt-fire` | Fire Bolt | bolt event {element:'fire'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx | SkillFX.boltGlob (ember splat) | good — spit squash, lobbed glob, coloured splat | live (a.js) | 2 |
+| `atk-bolt-acid` | Acid Bolt | bolt event {element:'acid'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx | SkillFX.boltGlob (acid drip splat) | good — spit squash, lobbed glob, coloured splat | live (a.js) | 2 |
+| `atk-bolt-poison` | Poison Bolt | bolt event {element:'poison'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx | SkillFX.boltGlob (green glob + 🐍 +N ☠) | good — spit squash, lobbed glob, coloured splat | live (a.js) | 2 |
+| `atk-bolt-ice` | Ice Bolt | bolt event {element:'ice'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx | SkillFX.boltGlob (ice-shard splat) | good — spit squash, lobbed glob, coloured splat | live (a.js) | 2 |
+| `atk-bolt-shock` | Shock Bolt | bolt event {element:'shock'} → ninthPassVfx → SkillFX.boltGlob, then ranged hit / statusFx | SkillFX.boltGlob (spark splat) | good — spit squash, lobbed glob, coloured splat | live (a.js) | 2 |
+| `atk-cleave` | Cleave (Sweep) | hit with ev.sweep → SkillFX.cleave (once a round) | SkillFX.cleave | good — has its own look that plays at the right moment | live (a.js, p1.js) | 2 |
+| `atk-sweep-whiff` | Cleave hits empty air | sweepWhiff → .sweep-whiff arc + "whoosh" label | .sweep-whiff (@keyframes sweepWhiff) | good — has its own look that plays at the right moment | live (a.js, p1.js) | 3 |
+| `atk-prong-fork` | Fork (2 tines) | hit with ev.fork, ev.prong='fork' (each prong beyond the first) → SkillFX.forkProngs | SkillFX.forkProngs | good — steel tines thrust in | live (a.js) | 3 |
+| `atk-prong-trident` | Trident (3 tines) | hit with ev.fork, ev.prong='trident' (each prong beyond the first) → SkillFX.forkProngs | SkillFX.forkProngs | good — steel tines thrust in | live (a.js) | 3 |
+| `atk-prong-pitchfork` | Pitchfork (4 tines) | hit with ev.fork, ev.prong='pitchfork' (each prong beyond the first) → SkillFX.forkProngs | SkillFX.forkProngs | good — steel tines thrust in | live (a.js) | 3 |
+| `atk-prong-castle` | Fork prong hits the castle | hitHQ {fork:true, prong} (flank damage) | hqHitBigVfx only | basic — the tine look never reaches the castle | live (a.js) | 3 |
+| `atk-octolash` | Octolash | hit with prong octolash + statusFx octolash | forkProngs (purple tentacles) + "🐙 Octolash ×N" float | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-crab-claw` | Crab Claws pinch | crabClaw {dir} before the hit | .crab-pinch + "🦞 ←/→" float | basic — no claw shape snapping; retired from the editor but still plays | live (a.js) | 3 |
+| `atk-backstab` | Backstab | hit with ev.backstab | SkillFX.backstab dagger flash + slash, backstabSlice | good — has its own look that plays at the right moment | live (_existing.js) | 2 |
+| `atk-ambush` | Ambush strike | hit/hitHQ with ev.ambush | 2026-10-16/17: Ambush N strikes any enemy entering the slot facing it (played, spawned, moved in); FX.A.ambushStrike | basic — float text only | live (a.js, x17.js) | 2 |
+| `atk-quick` | Quick strike | hit by a Quick unit | SkillFX.quickStrike: the dash lands the hit (~0.15 s); 2026-10-16 on every Quick hit and at the castle (quickStrikeCastle), 2026-10-17 on misses too | good — has its own look that plays at the right moment | live (a.js, x17.js) | 3 |
+| `atk-swift` | Swift strike | hit by a Swift unit | "💨 Swift!" float + SoundKit.quick | basic — float only | live (a.js) | 3 |
+| `atk-frenzy` | Frenzy / Twin Strike second swing | frenzy {twin} (requeued attack) | SkillFX.rageFlare + "🔥 Frenzy!" / "⚔⚔ Twin Strike!" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-swarm` | Swarm mobbing | hit by a Swarm unit with a live swarm bonus | SkillFX.swarm (buzzing cloud converges) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-flying-swoop` | Flying swoop | melee hit by a Flying unit (once a round) | SkillFX.swoop air-trail dive + featherBurst when hit | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-scared-lunge` | Attack on a Scare unit | hit whose target has Scare | animateAttacker {scared} wobbly line (.facing-scared scaredShake) | basic — subtle; no fear tell on the attacker | live (a.js) | 3 |
+| `atk-unitfx-claw` | Unit hit style: claw | hit by a unit whose UnitFX style is claw → UnitFX.hitMark('claw') | UnitFX.claw (claw rake marks) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-unitfx-bite` | Unit hit style: bite | hit by a unit whose UnitFX style is bite → UnitFX.hitMark('bite') | UnitFX.bite (jaw crunch) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-unitfx-sting` | Unit hit style: sting | hit by a unit whose UnitFX style is sting → UnitFX.hitMark('sting') | UnitFX.sting (stinger dot) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-unitfx-peck` | Unit hit style: peck | hit by a unit whose UnitFX style is peck → UnitFX.hitMark('peck') | UnitFX.peck (beak dents) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-unitfx-burn` | Unit hit style: burn | hit by a unit whose UnitFX style is burn → UnitFX.hitMark('burn') | UnitFX.burn (scorch star) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-unitfx-firebreath` | Unit special attack: fire breath | hit by a unit with ufx.attack (fireBreath) → UnitFX.attackFx | UnitFX.fireBreath | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-counter-parry` | Counterattack parry | statusFx counter (+ hit back) | SkillFX.parry | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-guardian-redirect` | Guardian takes the hit | hit with ev.guardianRedirect | flashShield on the guardian | basic — no line showing the blow being pulled across | live (a.js) | 2 |
+| `atk-thorns` | Thorns sting the attacker | thorns {fromUid,targetUid,dmg} | SkillFX.thorns + clang + flashDmg | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-reflect` | Reflect (a shot bounces back) | reflectShot {uid, targetUid \| castle}: a shot aimed at a Reflect unit | 2026-10-17 rework: a shot bounces off (s17SkillVfx reflectShot: "🪞 Reflect!" + mirrorFlash) and hits a unit on the shooter's side, or their castle; the melee "Reflect N%" is gone | good — has its own look that plays at the right moment | live (a.js, x17.js) | 3 |
+| `atk-recoil` | Recoil from own swing | statusFx recoil | "💢 −N" float + recoilEl | basic — float only | live (a.js) | 3 |
+| `atk-spite` | Spiteful lash-back on death | statusFx spite (victim lashes the killer) | none (battle log only) | missing — no on-board cue at all | live (a.js) | 2 |
+| `atk-evade-evasive` | Evade: evasive | evaded {reason:'evasive'} → flashDodge / evasiveDodge | flashDodge + missCallout + SkillFX.evasiveDodge | good — SkillFX.evasiveDodge blink sidestep | live (a.js, p1.js) | 3 |
+| `atk-evade-swift` | Evade: swift | evaded {reason:'swift'} → flashDodge / evasiveDodge | flashDodge + missCallout + SkillFX.evasiveDodge | good — evasiveDodge (shared) | live (a.js) | 3 |
+| `atk-evade-flying` | Evade: flying | evaded {reason:'flying'} → flashDodge / evasiveDodge | flashDodge + missCallout | basic — flashDodge hop + "Miss" callout only | live (a.js) | 2 |
+| `atk-evade-fog` | Evade: fog | evaded {reason:'fog'} → flashDodge / evasiveDodge | flashDodge + missCallout | basic — generic hop; the fog itself never swallows the swing | live (a.js) | 2 |
+| `atk-evade-illusory` | Evade: illusory 🎨 | evaded {reason:'illusory'} → flashDodge / evasiveDodge | flashDodge + missCallout | basic — generic hop; raid boss units dodge 67% | live (a.js) | 2 |
+| `atk-evade-shadow` | Evade: shadow 🎨 | evaded {reason:'shadow'} → flashDodge / evasiveDodge | flashDodge + missCallout | basic — generic hop; Shadow (night/dark) has no look | live (a.js) | 2 |
+| `atk-evade-smoke` | Evade: smoke | evaded {reason:'smoke'} → flashDodge / evasiveDodge | flashDodge + missCallout | basic — generic hop | live (a.js) | 2 |
+| `atk-blind-miss` | Blind unit misses | blindMiss (no night flag) — unit with Blind/Purblind | animateAttacker + "👁 Miss!" float + blindTone | basic — float text only | live (a.js, p1.js) | 2 |
+| `atk-confused-whiff` | Confused fizzle | confusedWhiff (on-hit skill or trigger fizzles) | "❓ Fizzle" float | basic — float only | live (a.js) | 3 |
+| `atk-tipsy-swing` | Tipsy lurching swing | tipsySwing {drift, miss} | .tipsy-lurch (@keyframes tipsyLurch) | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `atk-boomerang-throw` | Boomerang / Anti-Air throw | hit by a boomerang/bananarang/antiAir unit | SkillFX.boomerang curve out and back + boomerangWhirr | good — has its own look that plays at the right moment | live (_existing.js) | 3 |
+| `atk-boomerang-castle` | Boomerang at the castle | hitHQ by a boomerang unit | SkillFX.boomerangCastle | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-boomerang-return` | Boomerang returns (next round) | boomerangReturn {speed} | One flight, SkillFX.boomerangReturn on the return's hit / hitHQ / whiff: it retraces the throw (straight back in along the line it left on, the hit, the throw's curve home) and ends in the catch. FX.A.boomerangInbound no longer plays in fights; FX.A.catchSnap / whiffPast skip while it flies (SkillFX.boomerangInFlight). | good — has its own look that plays at the right moment | live (a.js, wave17.js) | 2 |
+| `atk-boomerang-caught` | Boomerang caught | boomerangCaught (thrower or the unit in its home slot) | "🪃 Caught!" float | basic — float only | live (a.js) | 3 |
+| `atk-boomerang-whiff` | Boomerang misses | boomerangWhiff | missCallout whiff + whirr | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `atk-boomerang-friendly` | Boomerang hits your own side | hit / hitHQ {boomerang, friendly:true} on the way home | plain hit / castle hit | basic — no "oops" read; looks like an enemy hit | live (a.js) | 3 |
+| `atk-king-slayer` | King Slayer bonus | kingSlayer {amount} | SkillFX.crownCrack + kingSlayerTone + float | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-pierce-rend` | Pierce / Puncture through Armor | hit with ev.rend | SkillFX.pierceThrough + "🗡 Pierced!" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-pierce-hq` | Pierce spills to the castle | pierceHQ {dmg} | SkillFX.pierceThrough on the castle + flashHqDamage | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-overwhelm-hq` | Stampede (Overwhelm) spill to the castle | overwhelmHQ {dmg} | shakeEl + flashHqDamage + "💥 -N" | basic — no trample/stampede motion | live (a.js) | 2 |
+| `atk-siege` | Siege bonus on the castle | hitHQ with ev.siege | "🏰 Siege!" float + siegeTone | basic — float only | live (a.js) | 3 |
+| `atk-bulwark` | Bulwark blocks castle damage | hitHQ with ev.bulwark>0 | "🛡 -N blocked" float + bulwarkTone | basic — float only | live (a.js) | 3 |
+| `atk-stealth-slip` | Stealth unit slips past to the castle | hitHQ by a Stealth unit | SkillFX.stealthSlip + "👻 Stealth!" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-fester` | Fester bonus damage | hit with ev.festerBonus | "+N☠ Fester" float + festerBite | basic — float only | live (a.js) | 3 |
+| `atk-rupture` | Rupture bonus damage | hit with ev.ruptureBonus | "+N🩸 Rupture" float + ruptureBite | basic — float only | live (a.js) | 3 |
+| `atk-quake-hit` | Earthquake / Landslide jolt per unit | hit/evaded with ev.quake (0.1 s apart) | .quake-jolt + flashDmg | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `atk-retribution` | Divine Retribution | hit with ev.retribution (ranged) | plain projectile | basic — no holy light | live (a.js) | 3 |
+| `atk-reload` | Reload after firing | hit by a Reload unit; skipTurn reason reload while reloading | "🔄 Reloading" float + reloadTone | basic — float only; no reloading pose while it waits | live (a.js) | 3 |
+| `atk-friction` | Friction (ally rubs) | friction {dmg} on an ally | shakeEl + "⚙️ -N" | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `atk-pounce` | Pounce | pounce {amount} on play | crouch-and-spring GSAP + float | basic — no leap trail | live (a.js, p1.js) | 3 |
+| `atk-swipe-lumber` | Swipe steals Lumber | swipeLumber {amount} | 🪵 projectile castle → swiper + float | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `atk-charge-fire` | Charge fires | charge {fired:true} | updateChargeBadge + "⏲️ Charge!" + .chargebadge.charge-fire | basic — badge pulse only; no wind-up release | live (a.js) | 3 |
+| `atk-castle-bolt-shot` | Castle ballista bolt | statusFx castleBolt then fireDamageAction from 'castle' | plain projectile from the castle tile (no own look) | basic — log text only for the bolt itself | live (a.js) | 2 |
+| `atk-arrow-count` | Arrow ×N (War Elephant's two arrows) | the shots at Speed 1: one Arrow shot per arrowCount | SkillFX.bowShot per arrow, one after the other; its card shows two Arrow 2 lines | good — has its own look that plays at the right moment | live (x17.js) | 2 |
 
-### Combat: skills (`combat-skill`, 91)
+### Combat: skills (`combat-skill`, 132)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `sk-trigger-fired` | Custom trigger fires | triggerFired {hook, action} | triggerFiredVfx: .trigger-rune glyph ring + .trigger-aura electric back glow | good — has its own look that plays at the right moment | 2 |
-| `sk-earthquake` | Earthquake cast | earthquake {amount} | playEarthquake + SkillFX.earthquake cracks + earthquakeTone | good — has its own look that plays at the right moment | 2 |
-| `sk-landslide` | Landslide | earthquake {landslide:true} | same as Earthquake | basic — no falling rocks; indistinguishable from Earthquake | 2 |
-| `sk-tornado` | Tornado | tornado {moves, swaps, hits} | boardSweepVfx(tornado) + spins + 🌪️ floats | good — has its own look that plays at the right moment | 2 |
-| `sk-avalanche` | Avalanche | avalanche {hits} + statusFx avalancheWait | boardSweepVfx(avalanche) + frost rings/bursts | good — has its own look that plays at the right moment | 2 |
-| `sk-tsunami` | Tsunami | tsunami {pushed, hits} + wash {tsunami} | boardSweepVfx(tsunami) + elastic push + washSplashVfx | good — has its own look that plays at the right moment | 2 |
-| `sk-wave` | Wave push | wave {dir, blocked, moves} | geyser (eruptionGeyserVfx water) + .wave-pushed slide | basic — reuses the lava geyser shape | 3 |
-| `sk-dragon-lightning` | Dragon Lightning | dragonLightning {uids} | red SkillFX.lightning + .dragon-struck | good — has its own look that plays at the right moment | 2 |
-| `sk-electricity` | Electricity arc | electricity {targetUid, arcUid, wetTarget} | SkillFX.lightning chain + shockTone; "💧⚡" on wet | good — has its own look that plays at the right moment | 2 |
-| `sk-lightning-passive` | Lightning (passive) charges | statusFx lightning {amount} | none (no renderer branch) | missing — engine pushes it, front end ignores it | 2 |
-| `sk-fireball` | Fireball | fireball {targetUid\|castle, uids} | SkillFX.fireball + burnAway sound | good — has its own look that plays at the right moment | 2 |
-| `sk-meteor` | Meteor | meteor {targetUid\|castle, sideUids} | SkillFX.meteor + battlefieldShake + .meteor-crater | good — has its own look that plays at the right moment | 2 |
-| `sk-meteor-burn` | Meteor crater burns | meteorBurn {uid, dmg, left} | SkillFX.scorch + "☄️🔥-N"; crater removed at 0 | basic — crater is a CSS class only | 3 |
-| `sk-psychic` | Psychic mind-wave | psychic {dmg, immune} | SkillFX.mindWave + "💭 -N" / "💭 No mind" | good — has its own look that plays at the right moment | 2 |
-| `sk-smoke-bomb` | Smoke Bomb | smokeBomb {effect: smoke\|blind\|none} | SkillFX.smokeBomb lob + cloud | good — has its own look that plays at the right moment | 3 |
-| `sk-banana-throw` | Banana throw | banana {action:'throw'} | SkillFX.bananaThrow | good — has its own look that plays at the right moment | 3 |
-| `sk-banana-eat` | Banana / Bananarang munch | banana {action:'eat'} | SkillFX.munch + "🍌 Munch!" | good — has its own look that plays at the right moment | 3 |
-| `sk-durian` | Durian thorns up | durian {thorns, bonus} | SkillFX.munch (durian glyph) + "🌵 Thorns +1" | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-chilli` | Chilli eaten | statusFx chilli | SkillFX.chilliHeat (red flush, steam) | good — has its own look that plays at the right moment | 3 |
-| `sk-coffee` | Coffee rush | statusFx coffee (−Wait) | SkillFX.clockTick fast + "☕ −N ⏳" | good — has its own look that plays at the right moment | 3 |
-| `sk-dynamite` | Dynamite blast | dynamite {amount, hits} | .dyn-blast + #battlefieldEl.dyn-shake + siegeTone | basic — CSS blast; SkillFX.dynamite (lobbed stick, fireball, debris) exists but is not used | 2 |
-| `sk-dynamite-fuse` | Dynamite fuse ticks | fuse {left} each round start | .fuse-badge text update; .is-last (fuseLast) on 1 | basic — no fizzing spark on the card | 3 |
-| `sk-explode` | Explode (lit fuse ends) | explode {uid} (Explode N skill) | shakeEl + "💥 Boom!" + SoundKit.boom | basic — a small shake for a self-destruct | 1 |
-| `sk-rocket` | Rocket | statusFx rocket | "🚀 Rocket!" float | basic — float only | 3 |
-| `sk-rally` | Rally | rally {amount} | .rally-pulse + "🚩 Rally!" + rallyTone | basic — SkillFX.rally (prototype banner) not wired | 2 |
-| `sk-inspired` | Inspiring (+Attack next swing) | statusFx inspired | SkillFX.espritAura + "📯 +N⚔ next swing" | good — has its own look that plays at the right moment | 3 |
-| `sk-esprit` | Esprit | statusFx esprit | SkillFX.espritAura + "🤝" float | good — has its own look that plays at the right moment | 3 |
-| `sk-grit` | Grit | statusFx grit | SkillFX.espritAura + gritUp | good — has its own look that plays at the right moment | 3 |
-| `sk-momentum` | Momentum | statusFx momentum | "🔥 +N⚔" float + momentumTone | basic — float only | 3 |
-| `sk-berserk` | Berserk | statusFx berserk | SkillFX.rageFlare + shake + float | good — has its own look that plays at the right moment | 3 |
-| `sk-hive-mind` | Hive Mind (retired) | statusFx berserk {hiveMind:true} | rageFlare | good — retired 2026-10-15; keep working for old cards | 3 |
-| `sk-pack` | Pack bonus | statusFx pack | statChangeVfx + "🐺 Pack!" | basic — float only | 3 |
-| `sk-heal-generic` | Heal (Healing passive / Heal action) | heal {amount, cause} | healTone + "+N❤" float | basic — number only for most heals | 2 |
-| `sk-regen` | Regeneration | heal where attUid===targetUid | SkillFX.regen (green motes knit) | good — has its own look that plays at the right moment | 3 |
-| `sk-bloom` | Bloom heals an ally 🎨 | heal from a Bloom unit to another | SkillFX.bloomPollen + bloomTone | good — has its own look that plays at the right moment | 3 |
-| `sk-sap` | Sap drain | sap {amount} | SkillFX.lifeDrain + sapDrain | good — has its own look that plays at the right moment | 3 |
-| `sk-render` | Render (Attack drain) | render {amount} | SkillFX.curseDrain + float | good — has its own look that plays at the right moment | 3 |
-| `sk-gash` | Gash opening cut | gash {amount} | SkillFX.bleedDrip + "+N🩸" | good — has its own look that plays at the right moment | 3 |
-| `sk-revive` | Revivificated | revive | SkillFX.reviveRise + "✨ Revived!" | good — has its own look that plays at the right moment | 2 |
-| `sk-shield-up` | Shield gained | statusFx unitShield {amount,total} | SkillFX.shieldUp + "💠 +N" | good — has its own look that plays at the right moment | 3 |
-| `sk-shield-soak` | Shield soaks damage | shieldSoak {soaked, left} | "💠 -N" float | basic — no shield flare on impact | 2 |
-| `sk-shield-break` | Shield breaks | shieldSoak with left 0 | "💠 Shield breaks" float | basic — should shatter visibly | 2 |
-| `sk-shell-up` | Shell up | statusFx shellUp | .shell-sweep + .shell-up glow + shellUp tone | good — has its own look that plays at the right moment | 3 |
-| `sk-shell-down` | Shell ends | statusFx shellDown | none (snapshot only) | missing — shell vanishes silently | 3 |
-| `sk-shield-call` | Shield Call | spawn {cause:'shieldCall'} | SkillFX.shieldDrop + shieldDrop sound | good — has its own look that plays at the right moment | 3 |
-| `sk-helmet` | Helmet deflects | deflect | SkillFX.helmetDeflect + "🪖 Deflect!" | good — has its own look that plays at the right moment | 3 |
-| `sk-nullify` | Nullify | statusFx nullify | .nullify-flash + "🚫 Nullified" | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-cleanse` | Cleanse | statusFx cleanse | cleanseVfx (rising band + motes) + float | good — has its own look that plays at the right moment | 3 |
-| `sk-stanch` | Stanch bleeding | statusFx stanch | cleanseVfx + "🩹 -N 🩸" | good — has its own look that plays at the right moment | 3 |
-| `sk-buff-action` | Buff action (namedBuff) | namedBuff {amount, amount2} | statChangeVfx + SkillFX.espritAura + buffUp | good — has its own look that plays at the right moment | 3 |
-| `sk-debuff-action` | Debuff Attack | statusFx debuffAttack | SkillFX.curseDrain + statChangeVfx | good — has its own look that plays at the right moment | 3 |
-| `sk-mind-control` | Mind Control | mindControl {targetUid, slot} | SkillFX.mindWave (reused) then board re-render | basic — the unit just reappears on your side; no crossing / puppet strings | 1 |
-| `sk-swap` | Swap / Scurry | swapPositions {aUid,bUid} | "🔀 Scurry!" floats + re-render (Flip glide) | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-converge` | Converge pulls a line together | converge {moves} | "🧲 Converge!" + glide | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-restless` | Restless move | restless {from,to,swapUid} | "👣" float + glide | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-stun-player` | Player Stun (enemy skips their turn) | stunPlayer {turns} | none (battle log only) | missing — a whole skipped turn has no on-screen cue | 1 |
-| `sk-exile-board` | Exile a unit from the board | statusFx exile → exile {zone:'board'} | SoundKit.exile only; the card just disappears | missing — no banish visual for a removal | 1 |
-| `sk-exile-zone` | Exile from hand / graveyard (Prayer, Exile Grave) | exile {zone:'hand'\|'graveyard', prayer} | SoundKit.exile only | missing — nothing on screen | 3 |
-| `sk-echo-gain` | Echo 🕯️ gained (card exiled) | pl.echoes += 1 on exile (no event) | none | missing — the Exile zone counter grows silently | 3 |
-| `sk-remember` | Remember (returns from Exile) | remember {spent, uid} | "🕯️ +N/+N" float (plus spawn entrance) | basic — a generic or reused look that does not say what happened | 2 |
-| `sk-gain-resource` | Gain resource (Lumber/Grace/Devilry/Stone/Metal/Uranium) 🎨 | lumber / grace / devilry / stone / metal / uranium events with uid | floatResourceGain (float + .hud-pill.bing); Lumber also SkillFX.lootArc | basic — only Lumber has a travelling arc | 2 |
-| `sk-elemental-energy` | Elemental Energy gain | elementalEnergy {amount} | floatResourceGain ✨ | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-refine-action` | Refine action | trigger action refine (ore) | floatResourceGain | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-spell-card` | Spell card cast (Hasten / Tailwind / Mend / Sap) | spell {action, targets} | toast + per-target floats + trigger sound | basic — no cast animation from the hand | 2 |
-| `sk-devour` | Devour | devour {eatenDefId, attack, health} | float on play (+ battle log) | basic — no gulp | 2 |
-| `sk-equip` | Equip an Equipment card | equip {equipDefId, attack, health} | none (battle log only) | missing — nothing on screen | 2 |
-| `sk-sacrifice` | Dark Summon sacrifice | sacrifice + statusFx sacrificed | .sac-chomp jaws (+ "🦷 Sacrifice") | basic — sacrifice event itself is log-only | 2 |
-| `sk-fast-forward` | Fast Forward extra turn | fastForward {n} | .ff-blur afterimages + "⏩ ×N" | good — has its own look that plays at the right moment | 3 |
-| `sk-midas` | Midas Touch | lumber {cause:'midas'} on kill | floatResourceGain | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-worthy` | Worthy loot **(retired 2026-10-16)** | lumber {cause:'worthy'\|'worthyDeath'} | SkillFX.lootArc logs | good — has its own look that plays at the right moment | 3 |
-| `sk-resource-passive` | Resource passives (Lumberjack, Timber, Heavy Metal, Rock-solid, Iron-will) | pitch/gain rules with no event | none | missing — no moment shown when the bonus applies | 3 |
-| `sk-satiety` | Satiety | statusFx satiety | none (log only) | missing — nothing on screen | 3 |
-| `sk-shed` | Shedding / Molting | statusFx shed {molt} | "🐍 +1/+1" float | basic — no skin peeling; statuses drop silently | 2 |
-| `sk-first-blood` | First Blood | statusFx firstBlood | "🩸 First blood +N" float | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-bludgeon` | Bludgeon breaks a trait | statusFx bludgeon {broke} | "🔨 X broken" float | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-immolation-src` | Immolation source pulse | fieldTick immolation (srcUid) | .immolate-pulse + SkillFX.scorch on victims | good — has its own look that plays at the right moment | 3 |
-| `sk-irradiated-src` | Irradiated source pulse | fieldTick irradiated (srcUid) | .irradiate-pulse + geiger | basic — a generic or reused look that does not say what happened | 3 |
-| `sk-wither` | Wither applied | statusFx wither | "💀 Wither" + witherSmokeVfx | good — has its own look that plays at the right moment | 2 |
-| `sk-ichor` | Ichor | statusFx ichor | SkillFX.acidCorrode + "🧪 −N" + recoilEl | good — has its own look that plays at the right moment | 3 |
-| `sk-frostbite` | Frostbite grows a chilled unit | statusFx frostbite | SkillFX.frostChill + float | good — has its own look that plays at the right moment | 3 |
-| `sk-keen-eye-unmask` | Keen Eye reveals a Changeling | changeling hidden while a Keen Eye ally is on the viewer's side | disguise simply not applied | missing — no reveal moment | 3 |
-| `sk-changeling-unmask` | Changeling unmasked | unmaskChangeling on first hit/attack | .changeling-unmask (clUnmask) | good — has its own look that plays at the right moment | 3 |
-| `sk-desecrate` | Desecrate curses a cell | curse {cell, total} | none (battle log only) | missing — the cursed ground is invisible | 2 |
-| `sk-curse-tick` | Cursed ground deals damage | curseTick {dmg} | SkillFX.curseDrain (once/round) + "🜏-N" | good — has its own look that plays at the right moment | 3 |
-| `sk-conditional-stats` | Conditional stat skills (Kinship, Loyal, Usurper, Lone Wolf, Sociable, Defiance, Pack chain) | statusFx phaseGrow/phaseFade via condStatsOf in syncPhaseStats | phase aura/burst (day-night look reused) + statChangeVfx | basic — reads as day/night, not as the condition | 3 |
-| `sk-dry-spared` | Dry / heat-resistant unit spared by Scorching | heatwave fieldTick skips resistant units (no event) | none | missing — no "spared" cue | 3 |
-| `sk-demolisher` | Demolisher bonus vs structures | damage multiplier vs Structure (no event) | none | missing — nothing on screen | 3 |
-| `sk-supreme-strike` | Supreme beast strike (magic, crushes Armor/Ward) | hit by a Supreme unit | none distinct | missing — design says Supreme attacks sparkle | 2 |
-| `sk-armor-shred` | Perforate shreds Armor for good | statusFx armorShred | SkillFX.armorBlock {shatter} + "−N🛡 for good" + rendTone | good — has its own look that plays at the right moment | 3 |
-| `sk-prayer` | Prayer card arrives / Grace from a card | play of a Prayer card; grace {uid} | SkillFX.prayerLight (beam + dove) | good — has its own look that plays at the right moment | 3 |
-| `sk-rainrunner` | Rainrunner charges past the line in the rain | Rainrunner unit while it rains: +N/+N and unblockable (goes straight for the castle) | normal castle hit | missing — nothing says why it ignored the blocker | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `sk-trigger-fired` | Custom trigger fires | triggerFired {hook, action} | 2026-10-16: only the trigger's own ⚡ badge glows (triggerFiredVfx, .ab-trig.is-firing); no rune ring, card glow, aura or bolt | good — has its own look that plays at the right moment | live (a.js, x17.js) | 2 |
+| `sk-earthquake` | Earthquake cast | earthquake {amount} | playEarthquake + SkillFX.earthquake cracks + earthquakeTone | good — has its own look that plays at the right moment | live (a.js) | 2 |
+| `sk-landslide` | Landslide | earthquake {landslide:true} | same as Earthquake | basic — no falling rocks; indistinguishable from Earthquake | live (a.js) | 2 |
+| `sk-tornado` | Tornado | tornado {moves, swaps, hits} | boardSweepVfx(tornado) + spins + 🌪️ floats | good — has its own look that plays at the right moment | live (a.js) | 2 |
+| `sk-avalanche` | Avalanche | avalanche {hits} + statusFx avalancheWait | boardSweepVfx(avalanche) + frost rings/bursts | good — has its own look that plays at the right moment | live (a.js) | 2 |
+| `sk-tsunami` | Tsunami | tsunami {pushed, hits} + wash {tsunami} | boardSweepVfx(tsunami) + elastic push + washSplashVfx | good — has its own look that plays at the right moment | live (a.js) | 2 |
+| `sk-wave` | Wave push | wave {dir, moves, cols, swapUid, awash} | SkillFX.waveRide: the card rides a crest from its old slot to its new one (lifted, leaning into the push), the crest runs on and breaks in a spray, the card drops in and bobs; a swapped unit rocks. The geyser and the .wave-pushed nudge (which made it teleport) are gone. | good — has its own look that plays at the right moment | live (a.js, wave17.js) | 3 |
+| `sk-dragon-lightning` | Dragon Lightning | dragonLightning {uids} | red SkillFX.lightning + .dragon-struck | good — has its own look that plays at the right moment | live (a.js, x17.js) | 2 |
+| `sk-electricity` | Electricity arc (the bolt is the hit) | electricity {targetUid, arcUid, wetTarget} | SkillFX.lightning; 2026-10-16: the bolt is the hit: a yellow ⚡ number as it lands, a ⚡ burst and a pale-blue flash | good — has its own look that plays at the right moment | live (a.js, x17.js) | 2 |
+| `sk-chain-lightning` | Chain Lightning (the jumps) | chainLightning event, then each jump's hit {chainLightning, jump, viaUid} | lightningBoltOf → SkillFX.lightning (plain bolt) per jump; "⚡ -N" pops as each jump lands | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-shock-bolt` | Shock bolt (a lightning shot) | bolt {element:shock}: its hit | a straight bolt shooter → target (lightningBoltOf), no glob; "⚡ -N" as it lands | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-lightning-passive` | Lightning (passive) charges | statusFx lightning {amount} | none (no renderer branch) | missing — engine pushes it, front end ignores it | live (a.js, x17.js) | 2 |
+| `sk-fireball` | Fireball | fireball {targetUid\|castle, uids} | SkillFX.fireball + burnAway sound | good — has its own look that plays at the right moment | live (a.js) | 2 |
+| `sk-meteor` | Meteor | meteor {targetUid\|castle, sideUids} | SkillFX.meteor + battlefieldShake + .meteor-crater | good — has its own look that plays at the right moment | live (a.js) | 2 |
+| `sk-meteor-burn` | Meteor crater burns | meteorBurn {uid, dmg, left} | SkillFX.scorch + "☄️🔥-N"; crater removed at 0 | basic — crater is a CSS class only | live (a.js) | 3 |
+| `sk-psychic` | Psychic mind-wave | psychic {dmg, immune} | SkillFX.mindWave + "💭 -N" / "💭 No mind" | good — has its own look that plays at the right moment | live (a.js) | 2 |
+| `sk-smoke-bomb` | Smoke Bomb | smokeBomb {effect: smoke\|blind\|none} | SkillFX.smokeBomb lob + cloud | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-banana-throw` | Banana throw | banana {action:'throw'} | SkillFX.bananaThrow | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-banana-eat` | Banana / Bananarang munch | banana {action:'eat'} | SkillFX.munch + "🍌 Munch!" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-durian` | Durian thorns up | durian {thorns, bonus} | SkillFX.munch (durian glyph) + "🌵 Thorns +1" | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `sk-chilli` | Chilli eaten | statusFx chilli | SkillFX.chilliHeat (red flush, steam) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-bloodlust` | Bloodlust grows | statusFx bloodlust (its attack drew blood: +N Attack, up to +3N) | retired 2026-10-17: Bloodlust no longer grows (no statusFx bloodlust); it leaps on a kill (sk-bloodlust-leap) | good — has its own look that plays at the right moment | retired | 3 |
+| `sk-coffee` | Coffee rush | statusFx coffee (−Wait) | SkillFX.clockTick fast + "☕ −N ⏳" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-dynamite` | Dynamite blast | dynamite {amount, hits} | .dyn-blast + #battlefieldEl.dyn-shake + siegeTone | basic — CSS blast; SkillFX.dynamite (lobbed stick, fireball, debris) exists but is not used | live (a.js) | 2 |
+| `sk-dynamite-fuse` | Dynamite fuse ticks | fuse {left} each round start | .fuse-badge text update; .is-last (fuseLast) on 1 | basic — no fizzing spark on the card | live (a.js) | 3 |
+| `sk-explode` | Explode (lit fuse ends) | explode {uid} (Explode N skill) | shakeEl + "💥 Boom!" + SoundKit.boom | basic — a small shake for a self-destruct | live (a.js) | 1 |
+| `sk-rocket` | Rocket | statusFx rocket | "🚀 Rocket!" float | basic — float only | live (a.js) | 3 |
+| `sk-rally` | Rally | rally {amount} | .rally-pulse + "🚩 Rally!" + rallyTone | basic — SkillFX.rally (prototype banner) not wired | live (a.js) | 2 |
+| `sk-inspired` | Inspiring (+Attack next swing) | statusFx inspired | SkillFX.espritAura + "📯 +N⚔ next swing" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-esprit` | Esprit | statusFx esprit | SkillFX.espritAura + "🤝" float | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-grit` | Grit | statusFx grit | SkillFX.espritAura + gritUp | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-momentum` | Momentum | statusFx momentum | "🔥 +N⚔" float + momentumTone | basic — float only | live (a.js) | 3 |
+| `sk-berserk` | Berserk | statusFx berserk | SkillFX.rageFlare + shake + float | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-hive-mind` | Hive Mind (retired) | statusFx berserk {hiveMind:true} | rageFlare | good — retired 2026-10-15; keep working for old cards | live (a.js) | 3 |
+| `sk-pack` | Pack bonus | statusFx pack | statChangeVfx + "🐺 Pack!" | basic — float only | live (a.js) | 3 |
+| `sk-heal-generic` | Heal (Healing passive / Heal action) | heal {amount, cause} | healTone + "+N❤" float | basic — number only for most heals | live (_existing.js, a.js, w2.js) | 2 |
+| `sk-regen` | Regeneration | heal where attUid===targetUid | 2026-10-17: SkillFX.regen about 40% faster (motes, stagger, pluses, glow) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-bloom` | Bloom heals an ally 🎨 | heal from a Bloom unit to another | SkillFX.bloomPollen + bloomTone | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-sap` | Leech (Sap) drain | sap {amount} | 2026-10-17: the engine's Sap is the Leech skill ("+ Add Skill", a card line, the 🧛 chip); SkillFX.lifeDrain with half-size drops (10-16) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-render` | Render (Attack drain) | render {amount} | SkillFX.curseDrain + float | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-gash` | Gash opening cut | gash {amount} | SkillFX.bleedDrip + "+N🩸" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-revive` | Revivificated | revive | SkillFX.reviveRise + "✨ Revived!" | good — has its own look that plays at the right moment | live (a.js) | 2 |
+| `sk-shield-up` | Shield gained | statusFx unitShield {amount,total} | SkillFX.shieldUp + "💠 +N" | good — has its own look that plays at the right moment | live (_existing.js) | 3 |
+| `sk-shield-soak` | Shield soaks damage | shieldSoak {soaked, left} | "💠 -N" float | basic — no shield flare on impact | live (a.js) | 2 |
+| `sk-shield-break` | Shield breaks | shieldSoak with left 0 | "💠 Shield breaks" float | basic — should shatter visibly | live (a.js) | 2 |
+| `sk-shell-up` | Shell up | statusFx shellUp | .shell-sweep + .shell-up glow + shellUp tone | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-shell-down` | Shell ends | statusFx shellDown | none (snapshot only) | missing — shell vanishes silently | live (a.js) | 3 |
+| `sk-shield-call` | Shield Call | spawn {cause:'shieldCall'} | SkillFX.shieldDrop + shieldDrop sound | good — has its own look that plays at the right moment | live (_existing.js) | 3 |
+| `sk-helmet` | Helmet deflects | deflect | SkillFX.helmetDeflect + "🪖 Deflect!" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-nullify` | Nullify | statusFx nullify | .nullify-flash + "🚫 Nullified" | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `sk-cleanse` | Cleanse | statusFx cleanse | cleanseVfx (rising band + motes) + float | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-stanch` | Stanch bleeding | statusFx stanch | cleanseVfx + "🩹 -N 🩸" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-buff-action` | Buff action (namedBuff) | namedBuff {amount, amount2} | statChangeVfx + SkillFX.espritAura + buffUp | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-debuff-action` | Debuff Attack | statusFx debuffAttack | SkillFX.curseDrain + statChangeVfx | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-mind-control` | Mind Control | mindControl {targetUid, slot} | SkillFX.mindWave (reused) then board re-render | basic — the unit just reappears on your side; no crossing / puppet strings | live (a.js) | 1 |
+| `sk-swap` | Swap / Scurry | swapPositions {aUid,bUid} | "🔀 Scurry!" floats + re-render (Flip glide) | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `sk-converge` | Converge pulls a line together | converge {moves} | "🧲 Converge!" + glide | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `sk-restless` | Restless move | restless {from,to,swapUid} | "👣" float + glide | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `sk-stun-player` | Player Stun (enemy skips their turn) | stunPlayer {turns} | none (battle log only) | missing — a whole skipped turn has no on-screen cue | live (a.js) | 1 |
+| `sk-exile-board` | Exile a unit from the board | statusFx exile → exile {zone:'board'} | SoundKit.exile only; the card just disappears | missing — no banish visual for a removal | live (a.js, c.js) | 1 |
+| `sk-exile-zone` | Exile from hand / graveyard (Prayer, Exile Grave) | exile {zone:'hand'\|'graveyard', prayer} | SoundKit.exile only | missing — nothing on screen | live (a.js) | 3 |
+| `sk-echo-gain` | Echo 🕯️ gained (card exiled) | pl.echoes += 1 on exile (no event) | none | missing — the Exile zone counter grows silently | live (f.js) | 3 |
+| `sk-remember` | Remember (returns from Exile) | remember {spent, uid} | "🕯️ +N/+N" float (plus spawn entrance) | basic — a generic or reused look that does not say what happened | live (a.js) | 2 |
+| `sk-gain-resource` | Gain resource (Lumber/Grace/Devilry/Stone/Metal/Uranium) 🎨 | lumber / grace / devilry / stone / metal / uranium events with uid | floatResourceGain (float + .hud-pill.bing); Lumber also SkillFX.lootArc | basic — only Lumber has a travelling arc | live (f.js) | 2 |
+| `sk-elemental-energy` | Elemental Energy gain | elementalEnergy {amount} | floatResourceGain ✨ | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `sk-refine-action` | Refine action | trigger action refine (ore) | floatResourceGain | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `sk-spell-card` | Spell card cast (Hasten / Tailwind / Mend / Sap) | spell {action, targets} | toast + per-target floats + trigger sound | basic — no cast animation from the hand | live (a.js) | 2 |
+| `sk-devour` | Devour | devour {eatenDefId, attack, health} | float on play (+ battle log) | basic — no gulp | live (a.js) | 2 |
+| `sk-equip` | Equip an Equipment card | equip {equipDefId, attack, health} | none (battle log only) | missing — nothing on screen | live (a.js) | 2 |
+| `sk-sacrifice` | Dark Summon sacrifice | sacrifice + statusFx sacrificed | .sac-chomp jaws (+ "🦷 Sacrifice") | basic — sacrifice event itself is log-only | live (a.js) | 2 |
+| `sk-fast-forward` | Fast Forward extra turn | fastForward {n} | .ff-blur afterimages + "⏩ ×N" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-midas` | Midas Touch | lumber {cause:'midas'} on kill | floatResourceGain | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `sk-worthy` | Worthy loot | lumber {cause:'worthy'\|'worthyDeath'} | retired 2026-10-16: Worthy is Bounty everywhere (an empty, hidden slot); its loot is Bounty's +🪵 | good — has its own look that plays at the right moment | retired | 3 |
+| `sk-resource-passive` | Resource passives (Lumberjack, Timber, Heavy Metal, Rock-solid, Iron-will) | pitch/gain rules with no event | none | missing — no moment shown when the bonus applies | live (f.js) | 3 |
+| `sk-satiety` | Satiety | statusFx satiety | none (log only) | missing — nothing on screen | live (a.js) | 3 |
+| `sk-shed` | Shedding / Molting | statusFx shed {molt} | "🐍 +1/+1" float | basic — no skin peeling; statuses drop silently | live (a.js, w2.js) | 2 |
+| `sk-first-blood` | First Blood | statusFx firstBlood | "🩸 First blood +N" float | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `sk-bludgeon` | Bludgeon breaks a trait | statusFx bludgeon {broke} | "🔨 X broken" float | basic — a generic or reused look that does not say what happened | live (a.js, w2.js) | 3 |
+| `sk-immolation-src` | Immolation source pulse | fieldTick immolation (srcUid) | .immolate-pulse + SkillFX.scorch on victims | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-irradiated-src` | Irradiated source pulse | fieldTick irradiated (srcUid) | .irradiate-pulse + geiger | basic — a generic or reused look that does not say what happened | live (a.js) | 3 |
+| `sk-wither` | Wither applied | statusFx wither | "💀 Wither" + witherSmokeVfx | good — has its own look that plays at the right moment | live (a.js) | 2 |
+| `sk-ichor` | Ichor | statusFx ichor | SkillFX.acidCorrode + "🧪 −N" + recoilEl | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-frostbite` | Frostbite grows a chilled unit | statusFx frostbite | SkillFX.frostChill + float | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-keen-eye-unmask` | Keen Eye reveals a Changeling | changeling hidden while a Keen Eye ally is on the viewer's side | disguise simply not applied | missing — no reveal moment | live (a.js) | 3 |
+| `sk-changeling-unmask` | Changeling unmasked | unmaskChangeling on first hit/attack | .changeling-unmask (clUnmask) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-desecrate` | Desecrate curses a cell | curse {cell, total} | none (battle log only) | missing — the cursed ground is invisible | live (a.js) | 2 |
+| `sk-curse-tick` | Cursed ground deals damage | curseTick {dmg} | SkillFX.curseDrain (once/round) + "🜏-N" | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-conditional-stats` | Conditional stat skills (Kinship, Loyal, Usurper, Lone Wolf, Sociable, Defiance, Pack chain) | statusFx phaseGrow/phaseFade via condStatsOf in syncPhaseStats | phase aura/burst (day-night look reused) + statChangeVfx | basic — reads as day/night, not as the condition | live (a.js) | 3 |
+| `sk-dry-spared` | Dry / heat-resistant unit spared by Scorching | heatwave fieldTick skips resistant units (no event) | none | missing — no "spared" cue | live (a.js) | 3 |
+| `sk-demolisher` | Demolisher bonus vs structures | damage multiplier vs Structure (no event) | none | missing — nothing on screen | live (a.js) | 3 |
+| `sk-supreme-strike` | Supreme beast strike (magic, crushes Armor/Ward) | hit by a Supreme unit | none distinct | missing — design says Supreme attacks sparkle | live (a.js) | 2 |
+| `sk-armor-shred` | Perforate shreds Armor for good | statusFx armorShred | SkillFX.armorBlock {shatter} + "−N🛡 for good" + rendTone | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-prayer` | Prayer card arrives / Grace from a card | play of a Prayer card; grace {uid} | SkillFX.prayerLight (beam + dove) | good — has its own look that plays at the right moment | live (a.js) | 3 |
+| `sk-rainrunner` | Rainrunner charges past the line in the rain | Rainrunner unit while it rains: +N/+N and unblockable (goes straight for the castle) | normal castle hit | missing — nothing says why it ignored the blocker | live (a.js) | 3 |
+| `sk-venom` | Venomous bite | statusFx venom | SkillFX.venomBite (fangs, venom drips) + "🦂 +N☠" | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-toxin` | Toxin applied | statusFx toxin | SkillFX.toxinMark (closing toxic ring, ☣️) + .is-toxic inner glow | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-weaken` | Weaken | statusFx weaken | SkillFX.weakenDrain (a ⚔ cracks and sinks) + "💔 −N⚔" | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-wilting` | Wilting | statusFx wilting | SkillFX.wilt (petals drop, the card sags) + "🥀 −N⚔" | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-bulldoze` | Bulldoze shove | statusFx bulldoze | SkillFX.bulldozeShove (shoved back, dust) + "🚜 ⏪ +N Wait" | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-bind` | Tangleweed / Strangle bind | statusFx bound | SkillFX.vineBind (vines whip round) + .is-bound vines while Bound | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-invincible` | Invincible | hit for 0 on an Invincible unit; .is-invincible | gold aura (.is-invincible) + SkillFX.invincibleBlock | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-invisible` | Invisible | .is-invisible; statusEnd invisible {attacked} | faint shimmer (.is-invisible) + SkillFX.unveil when it attacks | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-poison-gas` | Poison Gas | poisonGas (on arrival) | SkillFX.gasCloud over every enemy unit + "+N☠" | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-absolute-zero` | Absolute Zero | absoluteZero (on arrival) | SkillFX.absoluteZero: a field-wide frost flash, frost blooms; then the Frozen look | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-spitfire` | Spitfire | bolt {element fire, key spitfire} | SkillFX.boltGlob fire at a random enemy (shared with Fire Bolt) | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-trap-set` | Trap / burning ground set | hazardSet | SkillFX.trapSet on the empty slot; the slot keeps a 🪤 / 🔥 mark | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-trap-snap` | Trap / burning ground sprung | hazardSprung | SkillFX.trapSnap (jaws / embers) + "🪤 -N" | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-nova` | Nova | nova (on death) | SkillFX.nova: a violet ring, orbs to every enemy unit | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-crystallise` | Crystallise | spawn {kind crystal} | SkillFX.crystalForm + the .is-crystal tint | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-cure` | Cure | statusFx cure | SkillFX.cure (💊 and sparkles) + "💊 Cured N" | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-taunt` | Taunt | statusFx taunted | SkillFX.tauntCall (gold calls, the attacker turns) | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `sk-penance` | Penance (Devilry payment) | penance {side, dmg} when the card is played | devilPayVfx → devilPulse: a dark ⛧ sinks into your own castle + "⛧ -N" | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-blood-tithe` | Blood Tithe (Devilry payment) 🎨 | bloodTithe {targetUid \| castle, dmg} when the card is played | devilPayVfx → devilPulse on the ally that pays (your castle with none) + "⛧ -N" | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-amore` | Amore: a pair falls in love | amore {uid, mateUid, hp, regen}: two Amore units of yours sharing a Type | skills2Vfx: hearts drift both ways (floatGlyphs) + "💕 +0/+3" on each | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-amore-broken` | Amore: heartbroken | amoreBroken {uid} when its partner dies | skills2Vfx: "🤎 Heartbroken" + a brown heart and a broken one rise | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-scavenge` | On Pitch trigger ("Scavenge") | triggerFired {hook:onPitch} on each of your On Pitch units when you pitch a card | triggerFiredVfx: the unit's ♻️ badge glows, then the action | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-lumber-burn` | Burn 1 Lumber (a trigger's cost) | lumberBurn {side, uid} | skills2Vfx: "🔥 -1" on your Lumber pill and an ember flies to the unit | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-fire-on-hit` | Fire on hit (trigger action) | fireHit {targetUid \| castle, dmg} with the attack's hit | skills2Vfx: "🔥 -N" and two flames on what it hit, at the impact | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-pounce-stat` | Pounce <Att> / <Hp> 🎨 | a Pounce whose amount is the card's Attack or Health | the Pounce leap (SkillFX.pounceOnto) with that number; the card text's live number is blue | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-vanguard` | Vanguard 🎨 | statusFx vanguard (first card of the game: +N/+N); vanguard (opening hand) is a log line | s17SkillVfx: "🎖️ +N/+N" 0.38 s after the play | basic — the buff float; the opening-hand move is only a battle-log line | live (x17.js) | 2 |
+| `sk-web` | Web (Webbed status) 🎨 | statusFx webbed on the unit its hit lands on; statusEnd webbed | s17SkillVfx: "🕸️ Webbed" + SkillFX.vineBind; the 🕸️N status badge (w2StatusBadges) | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-bloodlust-leap` | Bloodlust leap | bloodlustLeap {uid, from, to} after it kills the unit facing it | s17SkillVfx: the unit moves to its new slot, "🩸 Leap!", a red push (.wave-pushed) and SkillFX.bloodlustPulse({full}) | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-sentry` | Sentry | sentry {uid, targetUid} when an enemy enters one of the 3 slots facing it (once a round, while Ready) | s17SkillVfx: "🗼 Sentry!" + ambushTone, then its strike | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-carrion` | Carrion | statusFx carrion when another unit dies | s17SkillVfx: "🦴 +N" (heal) | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `sk-hoard` | Hoard (passive) | Hoard N: +1 Attack per N Lumber you hold (no event of its own) | its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number | basic — the chip and the number; no look of its own | live (x17.js) | 3 |
+| `sk-venom-master` | Venom Master (passive) | Venom Master N: your units' Poison and Bleed hits add N more (no event of its own) | its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number | basic — the chip and the number; no look of its own | live (x17.js) | 3 |
+| `sk-fletcher` | Fletcher (passive) | Fletcher N: your units' arrows deal N more (no event of its own) | its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number | basic — the chip and the number; no look of its own | live (x17.js) | 3 |
+| `sk-herbalist` | Herbalist (passive) | Herbalist N: every heal on your units heals N more (no event of its own) | its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number | basic — the chip and the number; no look of its own | live (x17.js) | 3 |
+| `sk-shatter` | Shatter (passive) | Shatter N: +N damage to Frozen units (no event of its own) | its chip on the skill strip (CHIP_FALLBACK_SKILLS) and the bigger number | basic — the chip and the number; no look of its own | live (x17.js) | 3 |
+| `sk-atheist` | Atheist | leylinesHit {atheist} (the Leylines' burn skips it); half damage from magic, Devilry and Ecclesia | field2Vfx: "✴️ Atheist" instead of a number; its 🚫✨ chip | good — has its own look that plays at the right moment | live (x17.js) | 3 |
+| `sk-wave-bob` | Wave / Awash: boxed in (it bobs) | wave {blocked, bob, touchUids} | SkillFX.waveBob: the crest rolls in from behind, under the card and past it; the card rises and settles back; the units beside it rock a little as the water reaches them | good — has its own look that plays at the right moment | live (wave17.js) | 2 |
+| `sk-rebuild` | Rebuild N (passive) / Rebuild castle N (trigger action) | rebuild {side, uid, defId, amount, n, trigger}: the passive every upkeep while Ready (endOfRoundUpkeep, beside onReadyGold), the action whenever its trigger fires | rebuildVfx: planks and stones (🪵🧱🪨) fly from the builder into its castle (floatGlyphs), the castle thunks, a green "🔨 +N" pops on that side's HP bar (hqRibbonFloatAnchor) as the bar fills (displayHqHp during the replay); woodKnock + healTone; log "🔨🏰 X rebuilds your castle: +N Health" | good — has its own look that plays at the right moment | live (rebuild17.js) | 2 |
 
-### Statuses (`status`, 99)
+### Statuses (`status`, 107)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `st-poison-apply` | Poison: applied | statusFx poison (on-hit Poison, Poison action, Poison Bolt) | "+N☠" float + poisonApply | basic — number only; poisonCloud plays only on the tick | 1 |
-| `st-poison-active` | Poison: while active (on the card) | board card has the Poison status (updateCardStatusDisplay / boardCardHTML classes) | .is-poisoned + ☠N badge | basic — badge and tint only | 2 |
-| `st-poison-tick` | Poison: tick | poisonTick {dmg, decay} | shakeEl + poison-tint-pulse + poisonBubbleBurstVfx + SkillFX.poisonCloud (once/round) | good — bubbles, green cloud | 2 |
-| `st-poison-expire` | Poison: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — stacks decay one by one with no cue; reaching 0 is silent | 3 |
-| `st-bleed-apply` | Bleed: applied | statusFx bleed / gash | "+N🩸" float + bleedApply | basic — number only | 1 |
-| `st-bleed-active` | Bleed: while active (on the card) | board card has the Bleed status (updateCardStatusDisplay / boardCardHTML classes) | .is-bled + 🩸N badge + bleed tint | basic — a generic or reused look that does not say what happened | 2 |
-| `st-bleed-tick` | Bleed: tick | bleedTick {dmg, cause, decay} | shakeEl + bleed-tint-pulse + SkillFX.bleedDrip | good — has its own look that plays at the right moment | 2 |
-| `st-bleed-expire` | Bleed: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-decay-apply` | Decay: applied | hit by a Decay unit (card.decay += N; no statusFx event) | none | missing — Decay stacks land silently | 2 |
-| `st-decay-active` | Decay: while active (on the card) | board card has the Decay status (updateCardStatusDisplay / boardCardHTML classes) | no badge/tint | missing — nothing on screen | 2 |
-| `st-decay-tick` | Decay: tick | decayTick {dmg, atk} | shakeEl + bleed-tint-pulse + "🦠 N! (−A⚔)" | basic — reuses the bleed tint | 2 |
-| `st-decay-expire` | Decay: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-freeze-apply` | Freeze: applied | statusFx freeze (on-hit Freeze, Ice Bolt, Ice Arrow) | SkillFX.freezeEncase + shakeEl + "❄ Frozen" + freezeChime | good — ice grows over the card | 2 |
-| `st-freeze-active` | Freeze: while active (on the card) | board card has the Freeze status (updateCardStatusDisplay / boardCardHTML classes) | .is-frozen frost creep ::after + .frost-flakes + icy Wait clock | good — has its own look that plays at the right moment | 2 |
-| `st-freeze-tick` | Freeze: tick | statusFx thaw {left} (a freeze counter melts each upkeep) | "❄ Thawed" float at 0 only | basic — no per-counter melt drip | 2 |
-| `st-freeze-expire` | Freeze: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | basic — thaw float exists but the ice never cracks off | 3 |
-| `st-freeze-skip` | Frozen unit skips its turn | skipTurn {reason:'frozen'} | none (log only) | missing — no "can't move" cue | 2 |
-| `st-freeze-field` | Frigid field adds a freeze counter | fieldTick {field:'frozen', freeze:1} | coldWave + icePulseVfx + SkillFX.frostChill | good — has its own look that plays at the right moment | 2 |
-| `st-sleep-apply` | Sleep: applied | statusFx sleep (poison-type on-hit Sleep) | SkillFX.sleepZzz + "💤 Asleep" | good — has its own look that plays at the right moment | 2 |
-| `st-sleep-active` | Sleep: while active (on the card) | board card has the Sleep status (updateCardStatusDisplay / boardCardHTML classes) | .sleep-overlay (sleepBob) + 💤N badge | good — has its own look that plays at the right moment | 2 |
-| `st-sleep-expire` | Sleep: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-sleep-skip` | Asleep unit skips its turn | skipTurn {reason:'asleep'} | none (log only) | missing — nothing on screen | 2 |
-| `st-sleep-wake` | Woken by damage | damage breaks sleep (no event) | none | missing — the Zzz just vanish; should startle awake | 2 |
-| `st-paralyze-apply` | Paralyze: applied | statusFx paralyze | SkillFX.paralyzeSpark + shake + "⚡ Paralyzed" | good — has its own look that plays at the right moment | 2 |
-| `st-paralyze-active` | Paralyze: while active (on the card) | board card has the Paralyze status (updateCardStatusDisplay / boardCardHTML classes) | .paralyze-overlay (paralyzeJitter) | good — has its own look that plays at the right moment | 2 |
-| `st-paralyze-expire` | Paralyze: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-paralyze-coinflip` | Paralyze coin flip fails | skipTurn {reason:'paralyzed'} | none (log only) | missing — the coin flip itself is never shown | 1 |
-| `st-stun-apply` | Stun: applied | statusFx stun (Stun action) / stunOnHit (heat on-hit) | SkillFX.stunStars ★ + shake + "💫 Stunned!" | good — has its own look that plays at the right moment | 2 |
-| `st-stun-active` | Stun: while active (on the card) | board card has the Stun status (updateCardStatusDisplay / boardCardHTML classes) | .stun-overlay.stun-halo (stunHaloSpin) | good — has its own look that plays at the right moment | 2 |
-| `st-stun-expire` | Stun: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-stun-skip` | Stunned unit skips its turn | skipTurn {reason:'stunned'} | none (log only) | missing — nothing on screen | 2 |
-| `st-stagger-apply` | Stagger: applied | statusFx stagger (physical on-hit) | SkillFX.stunStars ✦ + "💢 Staggered" | good — has its own look that plays at the right moment | 2 |
-| `st-stagger-active` | Stagger: while active (on the card) | board card has the Stagger status (updateCardStatusDisplay / boardCardHTML classes) | .stagger-overlay (staggerWobble) | basic — a generic or reused look that does not say what happened | 2 |
-| `st-stagger-expire` | Stagger: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-stagger-weak-hit` | Staggered unit deals half damage | hit by a staggered attacker (no flag on the event) | none | missing — the halved number is unexplained | 3 |
-| `st-blind-apply` | Blind: applied | statusFx blind (Blind on-hit, Smoke Bomb on an enemy) | SkillFX.blindInk + "👁 Blinded" | good — has its own look that plays at the right moment | 2 |
-| `st-blind-active` | Blind: while active (on the card) | board card has the Blind status (updateCardStatusDisplay / boardCardHTML classes) | .blind-overlay (blindDim) + 👁N badge | basic — overlay icon only | 2 |
-| `st-blind-expire` | Blind: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-blind-keen-sense` | Keen Sense ignores Blind | rollStatusOnHit returns early (no event) | none | missing — nothing on screen | 3 |
-| `st-tipsy-apply` | Tipsy: applied | statusFx tipsy | SkillFX.stunStars 🫧 + "🍺 Tipsy" | good — has its own look that plays at the right moment | 2 |
-| `st-tipsy-active` | Tipsy: while active (on the card) | board card has the Tipsy status (updateCardStatusDisplay / boardCardHTML classes) | .is-tipsy (tipsySway) | good — has its own look that plays at the right moment | 2 |
-| `st-tipsy-expire` | Tipsy: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-confuse-apply` | Confuse: applied | statusFx confuse | SkillFX.stunStars ❓ + "❓ Confused" | good — has its own look that plays at the right moment | 2 |
-| `st-confuse-active` | Confuse: while active (on the card) | board card has the Confuse status (updateCardStatusDisplay / boardCardHTML classes) | .is-confused (confusedHue) | basic — a generic or reused look that does not say what happened | 2 |
-| `st-confuse-expire` | Confuse: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-shock-apply` | Shock: applied | statusFx shock (Shock on-hit, Shock Bolt) | glitchVfx + shake + "🌩 Shocked" | good — has its own look that plays at the right moment | 2 |
-| `st-shock-active` | Shock: while active (on the card) | board card has the Shock status (updateCardStatusDisplay / boardCardHTML classes) | .is-shocked + .shock-overlay + .shock-arcs | good — has its own look that plays at the right moment | 2 |
-| `st-shock-expire` | Shock: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-shock-bonus-dmg` | Shocked unit takes +50% damage | hit on a shocked target (no flag on the event) | none | missing — the bigger number is unexplained | 2 |
-| `st-corrode-apply` | Corrode: applied | statusFx corrode (Corrode passive, Acid Bolt) | SkillFX.acidCorrode + "-N⚔ 🧪" | good — has its own look that plays at the right moment | 2 |
-| `st-corrode-active` | Corrode: while active (on the card) | board card has the Corrode status (updateCardStatusDisplay / boardCardHTML classes) | .is-corroded tint | basic — a generic or reused look that does not say what happened | 2 |
-| `st-corrode-expire` | Corrode: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-expose-apply` | Expose: applied | statusFx expose (Expose action / passive) | SkillFX.targetMark + "🎯 Exposed" | good — has its own look that plays at the right moment | 2 |
-| `st-expose-active` | Expose: while active (on the card) | board card has the Expose status (updateCardStatusDisplay / boardCardHTML classes) | none (c.exposed has no class or badge) | missing — an exposed unit looks normal | 2 |
-| `st-expose-expire` | Expose: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-expose-bonus-hit` | Hit on an Exposed unit | hit on a target with exposed>0 (no flag) | none | missing — nothing on screen | 3 |
-| `st-daunt-apply` | Daunt: applied | statusFx daunt (−Attack until end of next round) | SkillFX.fearShiver + "😨 −N⚔" | good — has its own look that plays at the right moment | 2 |
-| `st-daunt-active` | Daunt: while active (on the card) | board card has the Daunt status (updateCardStatusDisplay / boardCardHTML classes) | none (rc.daunts only) | missing — nothing on screen | 2 |
-| `st-daunt-expire` | Daunt: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-wither-apply` | Wither: applied | statusFx wither | witherSmokeVfx + "💀 Wither" | good — has its own look that plays at the right moment | 2 |
-| `st-wither-active` | Wither: while active (on the card) | board card has the Wither status (updateCardStatusDisplay / boardCardHTML classes) | none | missing — no lingering black veins between ticks | 2 |
-| `st-wither-tick` | Wither: tick | witherTick {n, left} | witherSmokeVfx + "💀 −N" (max HP drops) | good — has its own look that plays at the right moment | 2 |
-| `st-wither-expire` | Wither: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-irradiation-apply` | Irradiation tokens: applied | fieldTick irradiated {tokens,total} / irradiation event | "☢️ +N" float + geiger; source .irradiate-pulse | basic — a generic or reused look that does not say what happened | 2 |
-| `st-irradiation-active` | Irradiation tokens: while active (on the card) | board card has the Irradiation tokens status (updateCardStatusDisplay / boardCardHTML classes) | ☢ count in status badges only | basic — no glow on an irradiated unit | 2 |
-| `st-irradiation-tick` | Irradiation tokens: tick | irradiation {points, left} (each token eats HP/Atk/a skill) | .irradiate-pulse + "☢️ −N❤ −N⚔ −skill" + radSizzle | basic — skill loss is a word | 2 |
-| `st-irradiation-expire` | Irradiation tokens: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-smoke-apply` | Smoke (Smoke Bomb on an ally): applied | smokeBomb {effect:'smoke'} | SkillFX.smokeBomb cloud + "🌫️ Smoke" | good — has its own look that plays at the right moment | 2 |
-| `st-smoke-active` | Smoke (Smoke Bomb on an ally): while active (on the card) | board card has the Smoke (Smoke Bomb on an ally) status (updateCardStatusDisplay / boardCardHTML classes) | .smoke-overlay (smokeDrift) + 🌫️ badge | good — has its own look that plays at the right moment | 2 |
-| `st-smoke-expire` | Smoke (Smoke Bomb on an ally): wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | 3 |
-| `st-scar-apply` | Scar: applied | statusFx scar | SkillFX.scarMark claw marks + "+N🗡" | good — has its own look that plays at the right moment | 2 |
-| `st-scar-active` | Scar: while active (on the card) | board card has the Scar status (updateCardStatusDisplay / boardCardHTML classes) | 🗡N badge | basic — a generic or reused look that does not say what happened | 2 |
-| `st-scar-expire` | Scar: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | basic — scars are permanent (no expire); listed for completeness | 3 |
-| `st-chained-active` | Chained (starts chained) | card.chained (Chained skill) on the board | .chain-overlay (chainRattle) ⛓ | basic — a generic or reused look that does not say what happened | 3 |
-| `st-chained-skip` | Chained unit skips its turn | skipTurn {reason:'chained'} | none (log only) | missing — nothing on screen | 3 |
-| `st-chain-break` | Chain breaks | chainBreak {cause} | playChainBreakFlourish (chainSnap) + "⛓ Chain broken!" + chainBreak sound | good — has its own look that plays at the right moment | 2 |
-| `st-petrified-apply` | Petrification (volcano hazard) | fieldTick {field:'petrify'} | .is-petrified grey + "🪨 Stone" + thud | basic — instant grey; no stone creeping over | 2 |
-| `st-petrified-skip` | Petrified unit skips its turn | skipTurn {reason:'petrified'} | none (log only) | missing — nothing on screen | 3 |
-| `st-petrified-end` | Petrification wears off | round end (no event) | none (class removed on re-render) | missing — stone should crack off | 3 |
-| `st-cower-skip` | Cowering unit skips its turn | skipTurn {reason:'cower'} / statusFx cower | SkillFX.fearShiver + "🫣 Hides/Backs off" | good — has its own look that plays at the right moment | 3 |
-| `st-shell-skip` | Shelled unit skips its turn | skipTurn {reason:'shell'} | none (log only) | missing — nothing on screen | 3 |
-| `st-ritual-skip` | Ritual unit skips its turn | skipTurn {reason:'ritual'} | none (log only) | missing — nothing on screen | 3 |
-| `st-zero-attack-skip` | Unit with 0 Attack skips | skipTurn {reason:'zeroAttack'} | none (log only) | missing — nothing on screen | 3 |
-| `st-coffee-crash` | Coffee crash (stunned after the rush) | statusFx coffeeCrash | SkillFX.sleepZzz + "😴 Crash" | good — has its own look that plays at the right moment | 3 |
-| `st-chilli-burn` | Chilli sting each round | statusFx chilliBurn | SkillFX.chilliHeat {burn} + "🌶️ −N" | good — has its own look that plays at the right moment | 3 |
-| `st-inspired-spent` | Inspired bonus spent on the swing | next attack consumes c.inspired (no event) | none | missing — nothing on screen | 3 |
-| `st-rage-enter` | Rage turns on (<50% Health) | raging = rage && hp/maxHp<0.5 (render-time) | .board-card.raging (rage-pulse) + growl on hit | basic — no moment when it flips on | 2 |
-| `st-low-hp` | Low Health tremble (≤25%) | isLowHp(c) | .is-low-hp lowHpTremble + red number | good — has its own look that plays at the right moment | 3 |
-| `st-phase-grow` | Day/night bonus switches on (Nocturnal, Diurnal, Crepuscular, Moonborn) | statusFx phaseGrow {phase} | statChangeVfx + .phase-aura + .phase-burst + growthSwell (+ spores at night) | good — has its own look that plays at the right moment | 2 |
-| `st-phase-fade` | Day/night bonus switches off | statusFx phaseFade | statChangeVfx (stat-down float) and aura removed | basic — no fade-out look | 3 |
-| `st-stat-change` | Stat up/down float | statChangeVfx (namedBuff, debuffAttack, phase, pack...) | gold/debuff float + statPillPulse (statPump/statDrain) | good — has its own look that plays at the right moment | 3 |
-| `st-mind-controlled` | Mind-controlled unit (while on your side) | after mindControl the unit belongs to the other side | none | missing — no tell that it is a stolen unit | 2 |
-| `st-caged-leader` | Caged leader on the board | cage {hp, slot} (a host carries the cage) | cage tile class (cageCls) + log line | basic — no cage-drop moment | 2 |
-| `st-cage-broken` | Caged leader freed | cageBroken | unlock sound + toast "🔓 Your leader is free!" | basic — toast only | 2 |
-| `st-ward-crush` | Supreme crushes Armor / Shell / Stone / temporary Health / Ward | hit by a Supreme attacker (crush flag inside damageCard; no event flag) | none | missing — the crushed defence just fails silently | 2 |
-| `st-resist-weak-hit` | Resisted / Weak-to hit 🎨 | hit whose damage was halved (resist) or doubled (weakness) — no flag on the event | none | missing — players can't see why a number is small or big | 1 |
-| `st-status-badges` | Status badge row (abadge) | updateCardStatusDisplay badges | .abadge poison/bleed/scar/sleep/paralyze/blind/smoke/tipsy | basic — static chips; new badge has no pop | 3 |
-| `st-burn-d65` | Burn (Scorch side effect, D65 proposal) 🔮 | planned: 1 heat hit in 3 leaves Burn 1 | none | missing — not built | 3 |
-| `st-chill-d65` | Chill (Cold side effect, D65 proposal) 🔮 | planned: 1 cold hit in 3 adds +1 Wait | none | missing — not built | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `st-poison-apply` | Poison: applied | statusFx poison (on-hit Poison, Poison action, Poison Bolt) | "+N☠" float + poisonApply | basic — number only; poisonCloud plays only on the tick | live (b.js) | 1 |
+| `st-poison-active` | Poison: while active (on the card) | board card has the Poison status (updateCardStatusDisplay / boardCardHTML classes) | .is-poisoned + ☠N badge | basic — badge and tint only | live (d.js) | 2 |
+| `st-poison-tick` | Poison: tick | poisonTick {dmg, decay} | shakeEl + poison-tint-pulse + poisonBubbleBurstVfx + SkillFX.poisonCloud (once/round) | good — bubbles, green cloud | live (b.js, p1.js) | 2 |
+| `st-poison-expire` | Poison: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — stacks decay one by one with no cue; reaching 0 is silent | live (c.js) | 3 |
+| `st-bleed-apply` | Bleed: applied | statusFx bleed / gash | "+N🩸" float + bleedApply | basic — number only | live (b.js) | 1 |
+| `st-bleed-active` | Bleed: while active (on the card) | board card has the Bleed status (updateCardStatusDisplay / boardCardHTML classes) | .is-bled + 🩸N badge + bleed tint | basic — a generic or reused look that does not say what happened | live (d.js) | 2 |
+| `st-bleed-tick` | Bleed: tick | bleedTick {dmg, cause, decay} | shakeEl + bleed-tint-pulse + SkillFX.bleedDrip | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-bleed-expire` | Bleed: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-decay-apply` | Decay: applied | hit by a Decay unit (card.decay += N; no statusFx event) | none | missing — Decay stacks land silently | live (b.js) | 2 |
+| `st-decay-active` | Decay: while active (on the card) | board card has the Decay status (updateCardStatusDisplay / boardCardHTML classes) | no badge/tint | missing — nothing on screen | live (d.js) | 2 |
+| `st-decay-tick` | Decay: tick | decayTick {dmg, atk} | shakeEl + bleed-tint-pulse + "🦠 N! (−A⚔)" | basic — reuses the bleed tint | live (b.js) | 2 |
+| `st-decay-expire` | Decay: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-freeze-apply` | Freeze: applied | statusFx freeze (on-hit Freeze, Ice Bolt, Ice Arrow) | SkillFX.freezeEncase + shakeEl + "❄ Frozen" + freezeChime | good — ice grows over the card | live (_existing.js, b.js) | 2 |
+| `st-freeze-active` | Freeze: while active (on the card) | board card has the Freeze status (updateCardStatusDisplay / boardCardHTML classes) | .is-frozen frost creep ::after + .frost-flakes + icy Wait clock | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `st-freeze-tick` | Freeze: tick | statusFx thaw {left} (a freeze counter melts each upkeep) | "❄ Thawed" float at 0 only | basic — no per-counter melt drip | live (b.js) | 2 |
+| `st-freeze-expire` | Freeze: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | basic — thaw float exists but the ice never cracks off | live (c.js) | 3 |
+| `st-freeze-skip` | Frozen unit skips its turn | skipTurn {reason:'frozen'} | none (log only) | missing — no "can't move" cue | live (c.js) | 2 |
+| `st-freeze-field` | Frigid field adds a freeze counter | fieldTick {field:'frozen', freeze:1} | coldWave + icePulseVfx + SkillFX.frostChill | good — has its own look that plays at the right moment | live (b.js, p1.js) | 2 |
+| `st-sleep-apply` | Sleep: applied | statusFx sleep (poison-type on-hit Sleep) | SkillFX.sleepZzz + "💤 Asleep" | good — has its own look that plays at the right moment | live (_existing.js, b.js) | 2 |
+| `st-sleep-active` | Sleep: while active (on the card) | board card has the Sleep status (updateCardStatusDisplay / boardCardHTML classes) | .sleep-overlay (sleepBob) + 💤N badge | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `st-sleep-expire` | Sleep: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-sleep-skip` | Asleep unit skips its turn | skipTurn {reason:'asleep'} | none (log only) | missing — nothing on screen | live (c.js) | 2 |
+| `st-sleep-wake` | Woken by damage | damage breaks sleep (no event) | none | missing — the Zzz just vanish; should startle awake | live (c.js) | 2 |
+| `st-paralyze-apply` | Paralyze: applied | statusFx paralyze | SkillFX.paralyzeSpark + shake + "⚡ Paralyzed" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-paralyze-active` | Paralyze: while active (on the card) | board card has the Paralyze status (updateCardStatusDisplay / boardCardHTML classes) | .paralyze-overlay (paralyzeJitter) | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `st-paralyze-expire` | Paralyze: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-paralyze-coinflip` | Paralyze coin flip fails | skipTurn {reason:'paralyzed'} | none (log only) | missing — the coin flip itself is never shown | live (c.js) | 1 |
+| `st-stun-apply` | Stun: applied | statusFx stun: a landed hit of a Stun N unit (1 in 3) | 2026-10-16: Stun N: each landed hit has a 1 in 3 chance to Stun for N rounds (the old % values read as Stun 1); same look | good — has its own look that plays at the right moment | live (_existing.js, b.js) | 2 |
+| `st-stun-active` | Stun: while active (on the card) | board card has the Stun status (updateCardStatusDisplay / boardCardHTML classes) | .stun-overlay.stun-halo (stunHaloSpin) | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `st-stun-expire` | Stun: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-stun-skip` | Stunned unit skips its turn | skipTurn {reason:'stunned'} | none (log only) | missing — nothing on screen | live (c.js) | 2 |
+| `st-stagger-apply` | Stagger: applied | statusFx stagger (physical on-hit) | SkillFX.stunStars ✦ + "💢 Staggered" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-stagger-active` | Stagger: while active (on the card) | board card has the Stagger status (updateCardStatusDisplay / boardCardHTML classes) | .stagger-overlay (staggerWobble) | basic — a generic or reused look that does not say what happened | live (d.js) | 2 |
+| `st-stagger-expire` | Stagger: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-stagger-weak-hit` | Staggered unit deals half damage | hit by a staggered attacker (no flag on the event) | none | missing — the halved number is unexplained | live (b.js) | 3 |
+| `st-blind-apply` | Blind: applied | statusFx blind (Blind on-hit, Smoke Bomb on an enemy) | SkillFX.blindInk + "👁 Blinded" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-blind-active` | Blind: while active (on the card) | board card has the Blind status (updateCardStatusDisplay / boardCardHTML classes) | .blind-overlay (blindDim) + 👁N badge | basic — overlay icon only | live (d.js) | 2 |
+| `st-blind-expire` | Blind: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-blind-keen-sense` | Keen Sense ignores Blind | rollStatusOnHit returns early (no event) | none | missing — nothing on screen | live (b.js) | 3 |
+| `st-tipsy-apply` | Tipsy: applied | statusFx tipsy | SkillFX.stunStars 🫧 + "🍺 Tipsy" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-tipsy-active` | Tipsy: while active (on the card) | board card has the Tipsy status (updateCardStatusDisplay / boardCardHTML classes) | .is-tipsy (tipsySway) | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `st-tipsy-expire` | Tipsy: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-confuse-apply` | Confuse: applied | statusFx confuse | SkillFX.stunStars ❓ + "❓ Confused" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-confuse-active` | Confuse: while active (on the card) | board card has the Confuse status (updateCardStatusDisplay / boardCardHTML classes) | .is-confused (confusedHue) | basic — a generic or reused look that does not say what happened | live (d.js) | 2 |
+| `st-confuse-expire` | Confuse: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-shock-apply` | Shock: applied | statusFx shock (Shock on-hit, Shock Bolt) | glitchVfx + shake + "🌩 Shocked" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-shock-active` | Shock: while active (on the card) | board card has the Shock status (updateCardStatusDisplay / boardCardHTML classes) | .is-shocked + .shock-overlay + .shock-arcs | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `st-shock-expire` | Shock: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-shock-bonus-dmg` | Shocked unit takes +50% damage | hit on a shocked target (no flag on the event) | none | missing — the bigger number is unexplained | live (b.js) | 2 |
+| `st-corrode-apply` | Corrode: applied | statusFx corrode (Corrode passive, Acid Bolt) | SkillFX.acidCorrode + "-N⚔ 🧪" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-corrode-active` | Corrode: while active (on the card) | board card has the Corrode status (updateCardStatusDisplay / boardCardHTML classes) | .is-corroded tint | basic — a generic or reused look that does not say what happened | live (d.js) | 2 |
+| `st-corrode-expire` | Corrode: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-expose-apply` | Expose: applied | statusFx expose (Expose action / passive) | SkillFX.targetMark + "🎯 Exposed" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-expose-active` | Expose: while active (on the card) | board card has the Expose status (updateCardStatusDisplay / boardCardHTML classes) | none (c.exposed has no class or badge) | missing — an exposed unit looks normal | live (d.js) | 2 |
+| `st-expose-expire` | Expose: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-expose-bonus-hit` | Hit on an Exposed unit | hit on a target with exposed>0 (no flag) | none | missing — nothing on screen | live (b.js) | 3 |
+| `st-daunt-apply` | Daunt: applied | statusFx daunt (−Attack until end of next round) | SkillFX.fearShiver + "😨 −N⚔" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-daunt-active` | Daunt: while active (on the card) | board card has the Daunt status (updateCardStatusDisplay / boardCardHTML classes) | none (rc.daunts only) | missing — nothing on screen | live (d.js) | 2 |
+| `st-daunt-expire` | Daunt: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-wither-apply` | Wither: applied | statusFx wither | witherSmokeVfx + "💀 Wither" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-wither-active` | Wither: while active (on the card) | board card has the Wither status (updateCardStatusDisplay / boardCardHTML classes) | none | missing — no lingering black veins between ticks | live (d.js) | 2 |
+| `st-wither-tick` | Wither: tick | witherTick {n, left} | witherSmokeVfx + "💀 −N" (max HP drops) | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-wither-expire` | Wither: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-irradiation-apply` | Irradiation tokens: applied | fieldTick irradiated {tokens,total} / irradiation event | "☢️ +N" float + geiger; source .irradiate-pulse | basic — a generic or reused look that does not say what happened | live (b.js) | 2 |
+| `st-irradiation-active` | Irradiation tokens: while active (on the card) | board card has the Irradiation tokens status (updateCardStatusDisplay / boardCardHTML classes) | ☢ count in status badges only | basic — no glow on an irradiated unit | live (d.js) | 2 |
+| `st-irradiation-tick` | Irradiation tokens: tick | irradiation {points, left} (each token eats HP/Atk/a skill) | .irradiate-pulse + "☢️ −N❤ −N⚔ −skill" + radSizzle | basic — skill loss is a word | live (b.js) | 2 |
+| `st-irradiation-expire` | Irradiation tokens: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-smoke-apply` | Smoke (Smoke Bomb on an ally): applied | smokeBomb {effect:'smoke'} | SkillFX.smokeBomb cloud + "🌫️ Smoke" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-smoke-active` | Smoke (Smoke Bomb on an ally): while active (on the card) | board card has the Smoke (Smoke Bomb on an ally) status (updateCardStatusDisplay / boardCardHTML classes) | .smoke-overlay (smokeDrift) + 🌫️ badge | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `st-smoke-expire` | Smoke (Smoke Bomb on an ally): wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | missing — nothing on screen | live (c.js) | 3 |
+| `st-scar-apply` | Scar: applied | statusFx scar | SkillFX.scarMark claw marks + "+N🗡" | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-scar-active` | Scar: while active (on the card) | board card has the Scar status (updateCardStatusDisplay / boardCardHTML classes) | 🗡N badge | basic — a generic or reused look that does not say what happened | live (d.js) | 2 |
+| `st-scar-expire` | Scar: wears off | endOfRoundUpkeep counter reaches 0 (no event pushed) | none (overlay disappears on the next status sync) | basic — scars are permanent (no expire); listed for completeness | live (c.js) | 3 |
+| `st-chained-active` | Chained (starts chained) | card.chained (Chained skill) on the board | .chain-overlay (chainRattle) ⛓ | basic — a generic or reused look that does not say what happened | live (d.js) | 3 |
+| `st-chained-skip` | Chained unit skips its turn | skipTurn {reason:'chained'} | none (log only) | missing — nothing on screen | live (c.js) | 3 |
+| `st-chain-break` | Chain breaks | chainBreak {cause} | playChainBreakFlourish (chainSnap) + "⛓ Chain broken!" + chainBreak sound | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `st-petrified-apply` | Petrification (volcano hazard) | fieldTick {field:'petrify'} | .is-petrified grey + "🪨 Stone" + thud | basic — instant grey; no stone creeping over | live (b.js) | 2 |
+| `st-petrified-skip` | Petrified unit skips its turn | skipTurn {reason:'petrified'} | none (log only) | missing — nothing on screen | live (c.js) | 3 |
+| `st-petrified-end` | Petrification wears off | round end (no event) | none (class removed on re-render) | missing — stone should crack off | live (c.js) | 3 |
+| `st-cower-skip` | Cowering unit skips its turn | skipTurn {reason:'cower'} / statusFx cower | SkillFX.fearShiver + "🫣 Hides/Backs off" | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `st-shell-skip` | Shelled unit skips its turn | skipTurn {reason:'shell'} | none (log only) | missing — nothing on screen | live (c.js) | 3 |
+| `st-ritual-skip` | Ritual unit skips its turn | skipTurn {reason:'ritual'} | none (log only) | missing — nothing on screen | live (c.js) | 3 |
+| `st-zero-attack-skip` | Unit with 0 Attack skips | skipTurn {reason:'zeroAttack'} | none (log only) | missing — nothing on screen | live (c.js) | 3 |
+| `st-coffee-crash` | Coffee crash (stunned after the rush) | statusFx coffeeCrash | SkillFX.sleepZzz + "😴 Crash" | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `st-chilli-burn` | Chilli sting each round | statusFx chilliBurn | SkillFX.chilliHeat {burn} + "🌶️ −N" | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `st-inspired-spent` | Inspired bonus spent on the swing | next attack consumes c.inspired (no event) | none | missing — nothing on screen | live (b.js) | 3 |
+| `st-rage-enter` | Rage turns on (<50% Health) | raging = rage && hp/maxHp<0.5 (render-time) | .board-card.raging (rage-pulse) + growl on hit | basic — no moment when it flips on | live (d.js) | 2 |
+| `st-low-hp` | Low Health tremble (≤25%) | isLowHp(c) | .is-low-hp lowHpTremble + red number | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `st-phase-grow` | Day/night bonus switches on (Nocturnal, Diurnal, Crepuscular, Moonborn) | statusFx phaseGrow {phase} | statChangeVfx + .phase-aura + .phase-burst + growthSwell (+ spores at night) | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `st-phase-fade` | Day/night bonus switches off | statusFx phaseFade | statChangeVfx (stat-down float) and aura removed | basic — no fade-out look | live (d.js) | 3 |
+| `st-stat-change` | Stat up/down float | statChangeVfx (namedBuff, debuffAttack, phase, pack...) | gold/debuff float + statPillPulse (statPump/statDrain) | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `st-mind-controlled` | Mind-controlled unit (while on your side) | after mindControl the unit belongs to the other side | none | missing — no tell that it is a stolen unit | live (d.js) | 2 |
+| `st-caged-leader` | Caged leader on the board | cage {hp, slot} (a host carries the cage) | cage tile class (cageCls) + log line | basic — no cage-drop moment | live (d.js) | 2 |
+| `st-cage-broken` | Caged leader freed | cageBroken | unlock sound + toast "🔓 Your leader is free!" | basic — toast only | live (b.js) | 2 |
+| `st-ward-crush` | Supreme crushes Armor / Shell / Stone / temporary Health / Ward | hit by a Supreme attacker (crush flag inside damageCard; no event flag) | none | missing — the crushed defence just fails silently | live (b.js) | 2 |
+| `st-resist-weak-hit` | Resisted / Weak-to hit 🎨 | hit whose damage was halved (resist) or doubled (weakness) — no flag on the event | none | missing — players can't see why a number is small or big | live (b.js) | 1 |
+| `st-status-badges` | Status badge row (abadge) | updateCardStatusDisplay badges | .abadge poison/bleed/scar/sleep/paralyze/blind/smoke/tipsy | basic — static chips; new badge has no pop | live (d.js) | 3 |
+| `st-burn-d65` | Burn (Scorch side effect, D65 proposal) 🔮 | planned: 1 heat hit in 3 leaves Burn 1 | none | missing — not built | lab-only (b.js) | 3 |
+| `st-chill-d65` | Chill (Cold side effect, D65 proposal) 🔮 | planned: 1 cold hit in 3 adds +1 Wait | none | missing — not built | lab-only (b.js) | 3 |
+| `st-toxin-tick` | Toxin: tick | toxinTick | green shake + "☣️ -N" | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `st-strangle-tick` | Strangle: squeeze | strangleTick | SkillFX.squeeze + "🪢 -N" | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `fld2-haunted` | Haunted: Frightened | statusFx {kind:'frightened'} | field2Vfx: "👻 Frightened" + SkillFX.fearShiver; the 👻 badge | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `st-expose-crit` | Expose: a counter used by a crit | statusFx exposedHit (counters left), at the impact of the hit that used it | FX.D.exposeCritFlash: the crosshair shines deep dark red | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `st-expose-last` | Expose: the last counter used | statusFx exposedHit {amount:0}, at the impact of the hit that used it | FX.D.exposeMagnify: dark red flash, then the crosshair magnifies as it fades | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `st-expose-fade` | Expose fades (no enemy units left) | statusFx exposeFade (engine exposeLonely) / any Expose turning off | FX.D.statusLook fades the crosshair out (FX.D.exposeFadeOut) | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `st-revive-mark` | Revive mark: phoenix, Angel wings, used 🎨 | a unit with Revive on the board (!revivedOnce); revive event | .revive-mark (ember ring + flame feather) or .angel-wings (isAngelDef); "↺ Revive" chip; used: is-spending + the chip struck in red | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `st-hover-height` | Flyers hover; Tide units and Swimmers float | a .board-card with .is-flying or .is-floating (always on the board) | CSS flySoar: flyers lifted 10.4px (15% higher since 2026-10-17) with a ground shadow; tideFloat: Tide units and Swimmers at half that (5.2px) with a wet shadow | good — has its own look that plays at the right moment | live (wave17.js) | 2 |
 
-### Fields and environment rules (`field`, 44)
+### Fields and environment rules (`field`, 61)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `fld-set` | Field card played | fieldSet {field, rounds} (field card or Rainmaker) | toast + match field tile landing (.match-field-tile.is-landing fieldLand) | basic — no board-wide wash announcing the new field | 1 |
-| `fld-end` | Field card ends | fieldEnd {field, back} | none (battle log only) | missing — the field tile just vanishes | 2 |
-| `fld-base-returns` | Map field returns after a played field ends | fieldEnd {back} | none | missing — nothing on screen | 3 |
-| `fld-frigid-tick` | Frigid (frozen) round start chill | fieldTick {field:'frozen'} | coldWaveVfx (.cold-wave frost-lvN) + icePulseVfx + SkillFX.frostChill | good — has its own look that plays at the right moment | 2 |
-| `fld-frigid-weak` | Frigid: unit weak to cold takes 1 | fieldTick frozen {dmg:1} | float + same chill | basic — a generic or reused look that does not say what happened | 3 |
-| `fld-frost-resist` | Frost can't touch the enemy's native types | rules.frostResist filter (no event) | none | missing — nothing on screen | 3 |
-| `fld-scorching-tick` | Scorching (heatwave) burns units | fieldTick {field:'heatwave', dmg} | SkillFX.scorch (once/round) + "🔥-N" | good — has its own look that plays at the right moment | 2 |
-| `fld-rain-tick` | Spring Rain heals every unit | fieldTick {field:'rain', heal} | "🌧️+N" float per unit | basic — no rain falling on the board for the field card itself (only on wet maps) | 2 |
-| `fld-fog-active` | Thick Fog on the field | field fog active | .field-fog on the field tile only | basic — board not fogged | 2 |
-| `fld-moon-active` | Full Moon field | field moon active | .field-moon on the field tile | basic — a generic or reused look that does not say what happened | 3 |
-| `fld-field-tile-looks` | Field tile looks (snow, rain, fog, heat, moon) | field card tile in the field slot | .field-snow/.field-rain/.field-fog/.field-heat/.field-moon | good — has its own look that plays at the right moment | 3 |
-| `fld-env-cards` | Environment cards stack | fieldCondCardHTML (one env card per rule row) | .env-stack (fanned) + .env-card biome-* | good — has its own look that plays at the right moment | 3 |
-| `fld-env-reveal` | "?" environment effect revealed the first time it happens (Map 0) | markFieldRow on first trigger | .has-new / "New!" chip | basic — no flip from "?" to the real card | 2 |
-| `fld-misty` | Misty (sun and moon hidden) | rules.misty → syncSkyFx tone misty | .sky-fx.tone-misty (mistyTint drift) | good — has its own look that plays at the right moment | 3 |
-| `fld-terrain-banner` | Terrain intro banner | first appearance of a terrain in a match (maybeTerrainIntro) | .terrain-banner (terrainIn) | basic — a generic or reused look that does not say what happened | 3 |
-| `fld-lava-tide` | Lava Tide floods a column | fieldTick {field:'lavaTide'} | .lava-tide-hit + eruptionGeyserVfx + boom | good — has its own look that plays at the right moment | 2 |
-| `fld-eruption` | Eruption hits a unit | fieldTick {field:'eruption'} | .battlefield.erupt-rumble + .erupt-hit + geyser | good — has its own look that plays at the right moment | 2 |
-| `fld-scorched` | Scorched Ground burns a unit | fieldTick {field:'scorched'} | .erupt-hit + SkillFX.scorch + boom | good — has its own look that plays at the right moment | 3 |
-| `fld-comet-rain` | Comet rain begins | fieldTick {field:'cometRain', left} | cometRainVfx (.comet-sky) | good — has its own look that plays at the right moment | 2 |
-| `fld-comet-strike` | Comet strikes a unit | fieldTick {field:'comet'} | cometStrikeVfx (.bw-comet cometFall, .comet-hit) | good — has its own look that plays at the right moment | 2 |
-| `fld-eruption-reset` | Mountain settles (odds reset) | fieldTick {field:'eruptionReset'} | toast only | basic — a generic or reused look that does not say what happened | 3 |
-| `fld-volcanic-ambient` | Volcanic battlefield glow | battlefieldMapClass volcanic | .battlefield.volcanic::after lavaBreath | good — has its own look that plays at the right moment | 3 |
-| `fld-tide-spout` | Tide-spout bursts in a column | fieldTick {field:'tideSpout', col, tideIn} | splash sound + tideWaveVfx(flow) if the tide comes in | basic — no geyser column of its own | 2 |
-| `fld-tide-spout-wash` | Tide-spout pushes / soaks units | wash {spout:true, dmg} | washPushVfx + HP update | good — has its own look that plays at the right moment | 3 |
-| `fld-boss-surge` | Boss surge on cast | statusFx surge {atk,hp} | .surge-glow + rageRoar + float | good — has its own look that plays at the right moment | 2 |
-| `fld-deep-mines` | Deep mines: enemy digs ore | rules.enemyOre → enemy stone/metal gain | floatResourceGain on enemy side | basic — a generic or reused look that does not say what happened | 3 |
-| `fld-first-blood-rule` | First Blood rule | rules.firstBlood → statusFx firstBlood | float | basic — a generic or reused look that does not say what happened | 3 |
-| `fld-lumber-every` | Arena rule: +1 Lumber every N rounds | lumber {rule:true} | pill bing + float | basic — a generic or reused look that does not say what happened | 3 |
-| `fld-forecast` | Next-round forecast pill | forecastPillHTML (engine.forecast) | .forecast-pill chips | basic — static text pill | 3 |
-| `fld-arena-ruleset` | Arena ruleset pill | m.arenaRuleset | bf-pill | basic — a generic or reused look that does not say what happened | 3 |
-| `fld-wet-raindrops` | Raindrops on cards (wet maps) | rules.wet / rain weather, High effects | .rain-drops ::before cardRain | good — has its own look that plays at the right moment | 3 |
-| `fld-water-ripple` | Card landing ripple on water | waterRippleAt on landing (wet battlefields) | shader ripple ring | good — has its own look that plays at the right moment | 3 |
-| `fld-felt-material` | Battlefield floor material per biome | battleWeatherKind / felt shader u_material | shader: wet glints, ash cracks, frost bloom, sand ripples | good — has its own look that plays at the right moment | 3 |
-| `fld-biome-puff` | Ground kick-up by biome (landing / falls) | biomePuff on falls and landings | biomePuff (leaves, spray, ash, grit, snow, bubbles, mud, embers, feathers, sand) | good — has its own look that plays at the right moment | 3 |
-| `fld-future-monsoon` | Monsoon (rain every round, fire halved, Swimmers Flow) 🔮 | planned field / map rule | none | missing — planned, not built | 3 |
-| `fld-future-wildfire` | Wildfire front moving a column a round 🔮 | planned field / map rule | none | missing — planned, not built | 3 |
-| `fld-future-migration` | Migration herd crosses the middle 🔮 | planned field / map rule | none | missing — planned, not built | 3 |
-| `fld-future-fogbanks` | Fog banks (no targeting beyond 1 column) 🔮 | planned field / map rule | none | missing — planned, not built | 3 |
-| `fld-future-pollen` | Pollen season (Insects +1, Flora heal) 🔮 | planned field / map rule | none | missing — planned, not built | 3 |
-| `fld-future-permafrost` | Permafrost thaw (Frigid eases every 3 rounds) 🔮 | planned field / map rule | none | missing — planned, not built | 3 |
-| `fld-future-volcanicwinter` | Volcanic winter (whole fight Night) 🔮 | planned field / map rule | none | missing — planned, not built | 3 |
-| `fld-future-floodplains` | Floodplains loop (Flooded / Receded / Parched) 🔮 | planned field / map rule | none | missing — planned, not built | 3 |
-| `fld-future-abyssal-pressure` | Abyssal pressure (non-Swimmers take 1 a round) 🔮 | planned field / map rule | none | missing — planned, not built | 3 |
-| `fld-future-hurricane` | Hurricane (one-off skill idea) 🔮 | planned field / map rule | none | missing — planned, not built | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `fld-set` | Field card played | fieldSet {field, rounds} (field card or Rainmaker) | toast + match field tile landing (.match-field-tile.is-landing fieldLand) | basic — no board-wide wash announcing the new field | live (b.js) | 1 |
+| `fld-end` | Field card ends | fieldEnd {field, back} | none (battle log only) | missing — the field tile just vanishes | live (b.js) | 2 |
+| `fld-base-returns` | Map field returns after a played field ends | fieldEnd {back} | none | missing — nothing on screen | live (b.js) | 3 |
+| `fld-frigid-tick` | Frigid (frozen) round start chill | fieldTick {field:'frozen'} | coldWaveVfx (.cold-wave frost-lvN) + icePulseVfx + SkillFX.frostChill | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `fld-frigid-weak` | Frigid: unit weak to cold takes 1 | fieldTick frozen {dmg:1} | float + same chill | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `fld-frost-resist` | Frost can't touch the enemy's native types | rules.frostResist filter (no event) | none | missing — nothing on screen | live (b.js) | 3 |
+| `fld-scorching-tick` | Scorching (heatwave) burns units | fieldTick {field:'heatwave', dmg} | SkillFX.scorch (once/round) + "🔥-N" | good — has its own look that plays at the right moment | live (b.js, p1.js) | 2 |
+| `fld-rain-tick` | Spring Rain heals every unit | fieldTick {field:'rain', heal} | "🌧️+N" float per unit | basic — no rain falling on the board for the field card itself (only on wet maps) | live (b.js) | 2 |
+| `fld-fog-active` | Thick Fog on the field | field fog active | .field-fog on the field tile only | basic — board not fogged | live (b.js) | 2 |
+| `fld-moon-active` | Full Moon field | field moon active | .field-moon on the field tile | basic — a generic or reused look that does not say what happened | live (b.js, p1.js) | 3 |
+| `fld-field-tile-looks` | Field tile looks (snow, rain, fog, heat, moon) | field card tile in the field slot | .field-snow/.field-rain/.field-fog/.field-heat/.field-moon | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `fld-env-cards` | Environment cards stack | fieldCondCardHTML (one env card per rule row) | .env-stack (fanned) + .env-card biome-* | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `fld-env-reveal` | "?" environment effect revealed the first time it happens (Map 0) | markFieldRow on first trigger | .has-new / "New!" chip | basic — no flip from "?" to the real card | live (b.js) | 2 |
+| `fld-misty` | Misty (sun and moon hidden) | rules.misty → syncSkyFx tone misty | .sky-fx.tone-misty (mistyTint drift) | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `fld-terrain-banner` | Terrain intro banner | first appearance of a terrain in a match (maybeTerrainIntro) | .terrain-banner (terrainIn) | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `fld-lava-tide` | Lava Tide floods a column | fieldTick {field:'lavaTide'} | .lava-tide-hit + eruptionGeyserVfx + boom | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `fld-eruption` | Eruption hits a unit | fieldTick {field:'eruption'} | .battlefield.erupt-rumble + .erupt-hit + geyser | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `fld-scorched` | Scorched Ground burns a unit | fieldTick {field:'scorched'} | .erupt-hit + SkillFX.scorch + boom | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `fld-comet-rain` | Comet rain begins | fieldTick {field:'cometRain', left} | cometRainVfx (.comet-sky) | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `fld-comet-strike` | Comet strikes a unit | fieldTick {field:'comet'} | cometStrikeVfx (.bw-comet cometFall, .comet-hit) | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `fld-eruption-reset` | Mountain settles (odds reset) | fieldTick {field:'eruptionReset'} | toast only | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `fld-volcanic-ambient` | Volcanic battlefield glow | battlefieldMapClass volcanic | .battlefield.volcanic::after lavaBreath | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `fld-tide-spout` | Tide-spout bursts in a column | fieldTick {field:'tideSpout', col, tideIn} | splash sound + tideWaveVfx(flow) if the tide comes in | basic — no geyser column of its own | live (b.js) | 2 |
+| `fld-tide-spout-wash` | Tide-spout pushes / soaks units | wash {spout:true, dmg} | washPushVfx + HP update | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `fld-boss-surge` | Boss surge on cast | statusFx surge {atk,hp} | .surge-glow + rageRoar + float | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `fld-deep-mines` | Deep mines: enemy digs ore | rules.enemyOre → enemy stone/metal gain | floatResourceGain on enemy side | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `fld-first-blood-rule` | First Blood rule | rules.firstBlood → statusFx firstBlood | float | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `fld-lumber-every` | Arena rule: +1 Lumber every N rounds | lumber {rule:true} | pill bing + float | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `fld-forecast` | Next-round forecast pill | forecastPillHTML (engine.forecast) | .forecast-pill chips | basic — static text pill | live (b.js) | 3 |
+| `fld-arena-ruleset` | Arena ruleset pill | m.arenaRuleset | bf-pill | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `fld-wet-raindrops` | Raindrops on cards (wet maps) | rules.wet / rain weather, High effects | .rain-drops ::before cardRain | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `fld-water-ripple` | Card landing ripple on water | waterRippleAt on landing (wet battlefields) | shader ripple ring | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `fld-felt-material` | Battlefield floor material per biome | battleWeatherKind / felt shader u_material | shader: wet glints, ash cracks, frost bloom, sand ripples | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `fld-biome-puff` | Ground kick-up by biome (landing / falls) | biomePuff on falls and landings | biomePuff (leaves, spray, ash, grit, snow, bubbles, mud, embers, feathers, sand) | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `fld-future-monsoon` | Monsoon (rain every round, fire halved, Swimmers Flow) 🔮 | planned field / map rule | none | missing — planned, not built | lab-only (b.js) | 3 |
+| `fld-future-wildfire` | Wildfire front moving a column a round 🔮 | planned field / map rule | none | missing — planned, not built | lab-only (b.js) | 3 |
+| `fld-future-migration` | Migration herd crosses the middle 🔮 | planned field / map rule | none | missing — planned, not built | lab-only (b.js) | 3 |
+| `fld-future-fogbanks` | Fog banks (no targeting beyond 1 column) 🔮 | planned field / map rule | none | missing — planned, not built | lab-only (b.js) | 3 |
+| `fld-future-pollen` | Pollen season (Insects +1, Flora heal) 🔮 | planned field / map rule | none | missing — planned, not built | lab-only (b.js) | 3 |
+| `fld-future-permafrost` | Permafrost thaw (Frigid eases every 3 rounds) 🔮 | planned field / map rule | none | missing — planned, not built | lab-only (b.js) | 3 |
+| `fld-future-volcanicwinter` | Volcanic winter (whole fight Night) 🔮 | planned field / map rule | none | missing — planned, not built | lab-only (b.js) | 3 |
+| `fld-future-floodplains` | Floodplains loop (Flooded / Receded / Parched) 🔮 | planned field / map rule | none | missing — planned, not built | lab-only (b.js) | 3 |
+| `fld-future-abyssal-pressure` | Abyssal pressure (non-Swimmers take 1 a round) 🔮 | planned field / map rule | none | missing — planned, not built | lab-only (b.js) | 3 |
+| `fld-future-hurricane` | Hurricane (one-off skill idea) 🔮 | planned field / map rule | none | missing — planned, not built | lab-only (b.js) | 3 |
+| `fld2-landslide` | Landslide | fieldTick {field:'landslide'} + landslideHit per unit | field2Vfx (the game's own function now plays in the lab): the rumble, a band of rocks across the board, chips off each grounded unit | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-crushing` | Crushing Depths | fieldTick {field:'crushingDepths'} + crushingHit | field2Vfx: the press (crush-press) and water rings, "🫧 -N" (Swimmers half) | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-lava-spout` | Lava Spout | fieldTick {field:'lavaSpout', col} + lavaSpoutHit | field2Vfx: lavaSpoutHit → eruptionGeyserVfx in the column, "♨️ -3" | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-leylines` | Leylines III burn | fieldTick {field:'leylines'} + leylinesHit / leylinesCastle | field2Vfx: the violet band, "✴️ -3" and violet rings; an Atheist shows "✴️ Atheist" | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-mirage` | Mirage | fieldTick {field:'mirage', illusionUid} + spawn {kind:'mirage'} | field2Vfx: the Illusion shimmers in (.mirage-shimmer) with "🪞 Illusion" | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-slippery` | Slippery | evaded {reason:'slippery'} / slipFizzle | field2Vfx: "⛸️ Slip!" on the attacker; "⛸️ Slipped" on a failed skill | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-lanes` | Rook's Row / Bishop's Path | hit {laneBonus, lane} | field2Vfx: "♜ +2" / "♝ +2" over the target | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-consternation` | Consternation | fieldTick {field:'consternation'} | field2Vfx: "😰 −1/−1" over the hand; a played card keeps the 😰 badge | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-canopy` | High Canopy / Undergrowth | a fight with rules.canopy (Map 13) or rules.undergrowth (Map 15): a Swift / Quick unit dodges (evaded {reason:canopy}); Pounce +2 | the Environment card; the ordinary Evasive dodge (SkillFX.evasiveDodge); Pounce's bigger number | basic — the Environment card and the numbers; no look of its own | live (fe2.js) | 2 |
+| `fld2-tall-grass` | Tall Grass | hit {tallGrass} (Backstab hits and Pounce deal double); Stealth attacks first | field2Vfx: "🌾 ×2" over the target | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-leylines-1` | Leylines I (zeitgebers stronger) | rules.leylines1: Diurnal / Nocturnal / Crepuscular / Tide / Full Moon bonuses grow | the Environment card; the phase bonus number | basic — the Environment card and the numbers; no look of its own | live (fe2.js) | 2 |
+| `fld2-leylines-2` | Leylines II (+1 Lumber a round) | lumber {leylines} for each side from round 2 | resourceGainVfx into each side's Lumber pill | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld3-sulphur-fumes` | Sulphur Fumes (Choking) | fieldTick sulphurFumes; statusFx choking on each unit that breathes them in (not fire-resistant, Dry or Flying) | field2Vfx: a soft yellow sweep (boardSweepVfx glass, from the right) + "💨 −1" on each choking unit | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld3-ash-rain` | Ash Rain | fieldTick ashRain (both castles −1, day bonuses halved); ashRainCastle | field2Vfx: the grey hail band and a boom; the castle loss has no number of its own | basic — the sweep; the castle loss only ticks the HP bars | live (fe2.js) | 2 |
+| `fld3-ashy` | Ashy (and Ashy after an Eruption) | fieldTick ashy (an Eruption on a volcano map leaves it Ashy for 4 rounds); evaded {reason:ashy} | field2Vfx: the board rumbles (erupt-rumble) + boom; a miss in the ash floats "🌫️ Lost in ash" on the attacker | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld3-arrow-slits` | Arrow Slits | fieldTick arrowSlits then arrowSlitHit on a random unit of yours (2; a Helmet can turn it) | field2Vfx: a twang, then "🏹 -2" and a shake on the unit hit | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-awash` | Awash | fieldTick {field:'awash', uid, n} then wave {awash:true} | field2Vfx: "〰️ Awash N" on the unit, then the wave event rides it (SkillFX.waveRide) or bobs it (SkillFX.waveBob); the Environment card (〰️) | good — has its own look that plays at the right moment | live (wave17.js) | 2 |
 
-### Weather and time of day (`weather-time`, 28)
+### Weather and time of day (`weather-time`, 33)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `wt-day-breaks` | Day breaks | phase {phase:'day'} (cycle maps) | toast "☀️ Day breaks." + roosterCrow + sky tone day | basic — a generic or reused look that does not say what happened | 2 |
-| `wt-dawn-draw` | Dawn: both sides draw | dawn {round} | sky tone dawn (rosy) + draw flips; log line | basic — no dawn moment of its own | 2 |
-| `wt-dusk` | Dusk tone (last round of the day) | skyToneOf → 'dusk' | .sky-fx.tone-dusk | basic — a generic or reused look that does not say what happened | 3 |
-| `wt-twilight` | Twilight begins (Day, Night, Day, Night, Twilight) | phase {phase:'twilight'} | sky tone dusk; toast reads "☀️ Day breaks." (wrong text) | broken — the phase toast has no twilight branch, so Twilight is announced as day | 1 |
-| `wt-realtime-phase` | Realtime clock flips day/night | phase {realtime:true} | same as day/night | basic — a generic or reused look that does not say what happened | 3 |
-| `wt-moon-phase` | Moon phase changes (8 phases) 🎨 | moon {phase:0..7} when night falls and Moonborn cards are in play | toast "🌕 Full moon tonight." etc. | basic — toast only; moon pill icon changes | 2 |
-| `wt-tide-flow` | Tide comes in (Flow) | tide {tide:'flow'} | tideWaveVfx (.tide-wave.is-flow tideIn) + .tide-line + every Swimmer splashes | good — has its own look that plays at the right moment | 2 |
-| `wt-tide-ebb` | Tide goes out (Ebb) | tide {tide:'ebb'} | .tide-wave.is-ebb (tideOut) | basic — a generic or reused look that does not say what happened | 3 |
-| `wt-tide-high` | High tide | tide {tide:'high'} (rules.highTide) | reuses the Flow wave | basic — high tide looks the same as Flow | 2 |
-| `wt-perma-tide` | Perma-tide (River maps) | rules.permaTide | tide line always on; pill | basic — a generic or reused look that does not say what happened | 3 |
-| `wt-moonpull` | Moonpull brings the tide in | tide {moonpull:true} | tideWaveVfx | basic — no moon pull visual | 3 |
-| `wt-wind-gust` | Strong wind blows (Windy / Gale) | wind {windy:true, from} | #battlefieldEl.is-windy::after windDrift + wind pill | basic — no direction-aware gust burst at the moment it starts | 2 |
-| `wt-wind-calm` | Wind drops for a round | wind {windy:false} | pill switches to Calm | missing — no settling moment | 3 |
-| `wt-wind-swap` | Wind changes direction | consecutive gusts from opposite sides | none | missing — nothing on screen | 3 |
-| `wt-tailwind` | Tailwind: a Flyer gets a quick turn | statusFx tailwind | SkillFX.gust + "🪁 Tailwind!" | good — has its own look that plays at the right moment | 3 |
-| `wt-headwind` | Headwind: Flyer skills and triggers go off twice | headwindDouble(card) (no event) | none | missing — the doubled trigger is unexplained | 2 |
-| `wt-swimmer-flow` | Swimmer quick turn on Flow | statusFx swimmer | SkillFX.splash + "🏊 Quick!" | good — has its own look that plays at the right moment | 3 |
-| `wt-battle-rain` | Rain on the battlefield | battleWeatherKind 11 (world rain / rain atmosphere / wet map) | shader rain streaks + splash rings; .battlefield.is-raining fallback rainFall | good — has its own look that plays at the right moment | 3 |
-| `wt-lightning-strike` | Storm lightning | scheduleLightning on storm/rain battlefields (9–40 s) | lightningStrike double flicker + thunder | good — has its own look that plays at the right moment | 3 |
-| `wt-world-rain` | World rain roll (10% per hour) | worldRaining() hourly | map + battle rain | good — has its own look that plays at the right moment | 3 |
-| `wt-rain-start-stop` | Rain starts / stops while you look at the map | hour rolls over while the map is open | none (only on re-render) | missing — nothing on screen | 3 |
-| `wt-live-clock` | Live clock atmosphere (Home) | Settings → Atmosphere Live (dawn/day/dusk/night tint) | multiply-blend cast + motes/fireflies | good — has its own look that plays at the right moment | 3 |
-| `wt-seasons` | Seasonal map vignette | calendar month (?season= preview) | autumn/winter/spring/summer vignette | good — has its own look that plays at the right moment | 3 |
-| `wt-sudden-death` | Sudden death (turn 20) | showSuddenDeathBanner + suddenDeathSky | .battlefield.sudden-death::before sdSky + banner + sting | good — has its own look that plays at the right moment | 2 |
-| `wt-first-field-flash` | Who goes first this round | roundStart → flagFirstFieldFlash | .goes-first-flash (red wash + autumn leaves) | good — has its own look that plays at the right moment | 3 |
-| `wt-initiative-coin` | Initiative coin | syncInitiativeCoin | .init-coin flip (initFlip) | basic — a generic or reused look that does not say what happened | 3 |
-| `wt-syzygy` | Syzygy (High tide + Full Moon + Eclipse at once) 🔮 | planned Map 35+ world event | none | missing — planned | 2 |
-| `wt-eclipse-phase` | Eclipse phase pill / sky 🔮 | planned | none | missing — planned | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `wt-day-breaks` | Day breaks | phase {phase:'day'} (cycle maps) | 2026-10-17: FX.B.dayBreaks: no hard disc, a soft blurred glow 60% fainter, rays a third fainter; birds sing on about 1 in 3 daybreaks (SoundKit.dawnChime) | basic — a generic or reused look that does not say what happened | live (b.js, p1.js) | 2 |
+| `wt-dawn-draw` | Dawn: both sides draw | dawn {round} | sky tone dawn (rosy) + draw flips; log line | basic — no dawn moment of its own | live (b.js) | 2 |
+| `wt-dusk` | Dusk tone (last round of the day) | skyToneOf → 'dusk' | .sky-fx.tone-dusk | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `wt-twilight` | Twilight begins (Day, Night, Day, Night, Twilight) | phase {phase:'twilight'} | sky tone dusk; toast reads "☀️ Day breaks." (wrong text) | broken — the phase toast has no twilight branch, so Twilight is announced as day | live (b.js) | 1 |
+| `wt-realtime-phase` | Realtime clock flips day/night | phase {realtime:true} | same as day/night | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `wt-moon-phase` | Moon phase changes (8 phases) 🎨 | moon {phase:0..7} when night falls and Moonborn cards are in play | toast "🌕 Full moon tonight." etc. | basic — toast only; moon pill icon changes | live (b.js) | 2 |
+| `wt-tide-flow` | Tide comes in (Flow) | tide {tide:'flow'} | tideWaveVfx (.tide-wave.is-flow) + .tide-line + SkillFX.tideSway: every card rocks a little as the Flood rises from the foot of the board; floating Tide units and Swimmers lift more | good — has its own look that plays at the right moment | live (b.js, wave17.js) | 2 |
+| `wt-tide-ebb` | Tide goes out (Ebb) | tide {tide:'ebb'} | .tide-wave.is-ebb (tideOut) + SkillFX.tideSway {kind:'ebb'}: the cards settle a little as the water drains from the top down | good — has its own look that plays at the right moment | live (b.js, wave17.js) | 3 |
+| `wt-tide-high` | High tide | tide {tide:'high'} (rules.highTide) | reuses the Flow wave | basic — high tide looks the same as Flow | live (b.js) | 2 |
+| `wt-perma-tide` | Perma-tide (River maps) | rules.permaTide | tide line always on; pill | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `wt-moonpull` | Moonpull brings the tide in | tide {moonpull:true} | tideWaveVfx | basic — no moon pull visual | live (b.js) | 3 |
+| `wt-wind-gust` | Strong wind blows (Windy / Gale) | wind {windy:true, from} | #battlefieldEl.is-windy::after windDrift + wind pill | basic — no direction-aware gust burst at the moment it starts | live (b.js, p1.js) | 2 |
+| `wt-wind-calm` | Wind drops for a round | wind {windy:false} | pill switches to Calm | missing — no settling moment | live (b.js, p1.js) | 3 |
+| `wt-wind-swap` | Wind changes direction | consecutive gusts from opposite sides | none | missing — nothing on screen | live (b.js) | 3 |
+| `wt-tailwind` | Tailwind: a Flyer gets a quick turn | statusFx tailwind | SkillFX.gust + "🪁 Tailwind!" | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `wt-headwind` | Headwind: Flyer skills and triggers go off twice | headwindDouble(card) (no event) | none | missing — the doubled trigger is unexplained | live (b.js) | 2 |
+| `wt-swimmer-flow` | Swimmer quick turn on Flow | statusFx swimmer | SkillFX.splash + "🏊 Quick!" | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `wt-battle-rain` | Rain on the battlefield | battleWeatherKind 11 (world rain / rain atmosphere / wet map) | shader rain streaks + splash rings; .battlefield.is-raining fallback rainFall | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `wt-lightning-strike` | Storm lightning | scheduleLightning on storm/rain battlefields (9–40 s) | lightningStrike double flicker + thunder | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `wt-world-rain` | World rain roll (10% per hour) | worldRaining() hourly | map + battle rain | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `wt-rain-start-stop` | Rain starts / stops while you look at the map | hour rolls over while the map is open | 2026-10-16: rain coming in (on the map and a Spring Rain field arriving) is 90% more transparent (RAIN_ONSET_OPACITY); rain stopping unchanged | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `wt-live-clock` | Live clock atmosphere (Home) | Settings → Atmosphere Live (dawn/day/dusk/night tint) | multiply-blend cast + motes/fireflies | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `wt-seasons` | Seasonal map vignette | calendar month (?season= preview) | autumn/winter/spring/summer vignette | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `wt-sudden-death` | Sudden death (turn 20) | showSuddenDeathBanner + suddenDeathSky | .battlefield.sudden-death::before sdSky + banner + sting | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `wt-first-field-flash` | Who goes first this round | roundStart → flagFirstFieldFlash | .goes-first-flash (red wash + autumn leaves) | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `wt-initiative-coin` | Initiative coin | syncInitiativeCoin | .init-coin flip (initFlip) | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `wt-syzygy` | Syzygy (High tide + Full Moon + Eclipse at once) 🔮 | planned Map 35+ world event | none | missing — planned | lab-only (b.js) | 2 |
+| `wt-eclipse-phase` | Eclipse phase pill / sky 🔮 | planned | none | missing — planned | lab-only (b.js) | 3 |
+| `field-cloudy` | Cloudy | rules.cloudy | SkillFX.cloudShadows: soft cloud shadows drift over the board | good — has its own look that plays at the right moment | live (w2.js) | 2 |
+| `fld2-hail` | Hail | fieldTick {field:'hail'} + hailHit | field2Vfx: the hail band across the board, ice chips, "🌨️ -3" | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `fld2-glass-storm` | Glass-storm | fieldTick {field:'glassStorm'} + glassHit (roll 1–3) | field2Vfx: the glass band (either way), "💎 -1…3" with zaps | good — has its own look that plays at the right moment | live (fe2.js) | 2 |
+| `wt-volcano-glow` | Volcano Glow: Day 4, Night 2 | a volcano map with day and night (20, 20-A, 22) or phaseDay / phaseNight on the fight | phasePillHTML counts "2/4" by day and "1/2" by night (engine.phaseStepInfo); the Environment card's Volcano Glow row | basic — the pill and the card row | live (fe2.js) | 2 |
+| `wt-sky-step` | Day / night steps (10 s) 🎨 | the step inside a phase changes (Day 1→2→3, Night 1→2→3) | skyStepApply: the sky tint eases over SKY_STEP_MS (10 s); a redraw carries on | good — has its own look that plays at the right moment | live (x17.js) | 2 |
 
-### Darkness and light (`darkness-light`, 27)
+### Darkness and light (`darkness-light`, 29)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `dark-dark-enter` | Darkness (level 1, miss 1 in 4): fight opens in it 🎨 | match start with rules.dark='dark' → syncDarkVeil adds .dark-veil.lvl-dark | .dark-veil.lvl-dark (static CSS veil) | basic — the veil is just there; no lights-going-out moment | 1 |
-| `dark-dark-miss` | Darkness (level 1, miss 1 in 4): a unit swings blind and misses | blindMiss {night:true} from sightMiss (rules.dark, no Darksight) | animateAttacker + "🌙 Miss!" float | basic — same float for every darkness level and for night-blind | 1 |
-| `dark-pitch-enter` | Pitch Black (level 2, miss 1 in 2): fight opens in it 🎨 | match start with rules.dark='pitch' → syncDarkVeil adds .dark-veil.lvl-pitch | .dark-veil.lvl-pitch (static CSS veil) | basic — the veil is just there; no lights-going-out moment | 1 |
-| `dark-pitch-miss` | Pitch Black (level 2, miss 1 in 2): a unit swings blind and misses | blindMiss {night:true} from sightMiss (rules.dark, no Darksight) | animateAttacker + "🌙 Miss!" float | basic — same float for every darkness level and for night-blind | 1 |
-| `dark-absolute-enter` | Absolute darkness (every swing misses): fight opens in it 🎨 | match start with rules.dark='absolute' → syncDarkVeil adds .dark-veil.lvl-absolute | .dark-veil.lvl-absolute (static CSS veil) | basic — the veil is just there; no lights-going-out moment | 1 |
-| `dark-absolute-miss` | Absolute darkness (every swing misses): a unit swings blind and misses | blindMiss {night:true} from sightMiss (rules.dark, no Darksight) | animateAttacker + "🌙 Miss!" float | basic — same float for every darkness level and for night-blind | 1 |
-| `dark-leave` | Darkness lifts (match over) | syncDarkVeil with m.over → veil removed | veil removed instantly | missing — no light-returns moment | 3 |
-| `dark-unit-blind` | A unit can't see in the dark (no Darksight, no Lantern) | sightBlind(card) true for the whole fight (no event) | none | missing — the user explicitly asked: units that are blind in darkness should look it | 1 |
-| `dark-sunshy-blind` | Sun-shy unit blind by day | sightMiss: phase day + effects.sunshy | none (only the blindMiss float when it misses) | missing — nothing on screen | 2 |
-| `dark-nightblind` | Night-blind unit blind at night | sightMiss: phase night + effects.nightblind and no Lantern | none (only the miss float) | missing — nothing on screen | 2 |
-| `dark-keen-sense` | Keen Sense unit senses in the dark | keenSense ignores darkness for non-flying targets | none | missing — nothing on screen | 3 |
-| `dark-lantern-lit` | Lantern lights its side | a living Lantern on your board (lit()) | .battlefield.bf-lantern (bfLanternFlicker) + SkillFX.lanternGlow on play | good — has its own look that plays at the right moment | 2 |
-| `dark-lantern-out` | Lantern carrier dies: the dark returns | lantern unit death (no event) | none | missing — nothing on screen | 2 |
-| `dark-lantern-save` | Lantern saves a swing (no miss thanks to the light) | sightMiss returns 0 with lit() | none | missing — nothing on screen | 3 |
-| `dark-darksight-play` | Darksight unit arrives | play of a Darksight card | SkillFX.darksight (eyes open, foes marked) | good — has its own look that plays at the right moment | 3 |
-| `dark-darksight-idle` | Darksight eyes glint in the dark | while rules.dark and the unit has Darksight | none | missing — nothing on screen | 3 |
-| `dark-cave-lamp` | Cave fight lamp follows the pointer | cave battlefield → mountCaveLamp (cards outside the light dim ~30%) | mountCaveLamp (shader fog + dim) | good — has its own look that plays at the right moment | 2 |
-| `dark-night-veil-in` | Night falls on the battlefield | phase {phase:'night'} → syncNightVeil .night-veil.is-on | .night-veil + nightSwell + wolfHowl + toast | good — has its own look that plays at the right moment | 1 |
-| `dark-night-veil-out` | Night lifts | phase {phase:'day'} → .night-veil.is-leaving | veil fades (2.6 s) + roosterCrow | good — has its own look that plays at the right moment | 2 |
-| `dark-shade-night` | Shade halves non-magic hits at night / in the dark 🔮 | damage halved for Shade (no flag) | none | missing — nothing on screen | 2 |
-| `dark-shadow-night` | Shadow: half the hits miss at night / in the dark 🔮 | evaded {reason:'shadow'} | generic dodge hop | basic — a generic or reused look that does not say what happened | 2 |
-| `dark-beware` | Removal-zone crawler at Darkness N (Devilry) | beware {darkness} | none (battle log only) | missing — nothing on screen | 2 |
-| `dark-inherent` | Inherent Darkness / Devilry ★ gain | devilry {amount} (onSpawn/onReady/inherentDarkness) | floatResourceGain ★ + devilryTone | basic — a generic or reused look that does not say what happened | 3 |
-| `dark-devilry-aura` | Devilry card aura | is-devilry card tile | .is-devilry::after devilAura | good — has its own look that plays at the right moment | 3 |
-| `dark-bioluminescent` | Bioluminescent units glow in pitch black (Abyssal Plains) 🔮 | planned: Map 29 natives (anglerfish Lantern for its side) | none | missing — planned | 2 |
-| `dark-pitchblack-fish` | Pitch-black fish strikes in the dark 🔮 | planned: 0/2 fish deals 5 to a random enemy each round in pitch black | none | missing — planned | 3 |
-| `dark-eclipse` | Eclipse (day turns to night mid-round) 🔮 | planned Map 35+ | none | missing — planned | 2 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `dark-dark-enter` | Darkness (level 1, miss 1 in 4): fight opens in it 🎨 | match start with rules.dark='dark' → syncDarkVeil adds .dark-veil.lvl-dark | .dark-veil.lvl-dark (static CSS veil) | basic — the veil is just there; no lights-going-out moment | live (b.js) | 1 |
+| `dark-dark-miss` | Darkness (level 1, miss 1 in 4): a unit swings blind and misses | blindMiss {night:true} from sightMiss (rules.dark, no Darksight) | animateAttacker + "🌙 Miss!" float | basic — same float for every darkness level and for night-blind | live (b.js) | 1 |
+| `dark-pitch-enter` | Pitch Black (level 2, miss 1 in 2): fight opens in it 🎨 | match start with rules.dark='pitch' → syncDarkVeil adds .dark-veil.lvl-pitch | .dark-veil.lvl-pitch (static CSS veil) | basic — the veil is just there; no lights-going-out moment | live (b.js) | 1 |
+| `dark-pitch-miss` | Pitch Black (level 2, miss 1 in 2): a unit swings blind and misses | blindMiss {night:true} from sightMiss (rules.dark, no Darksight) | animateAttacker + "🌙 Miss!" float | basic — same float for every darkness level and for night-blind | live (b.js) | 1 |
+| `dark-absolute-enter` | Absolute darkness (every swing misses): fight opens in it 🎨 | match start with rules.dark='absolute' → syncDarkVeil adds .dark-veil.lvl-absolute | .dark-veil.lvl-absolute (static CSS veil) | basic — the veil is just there; no lights-going-out moment | live (b.js) | 1 |
+| `dark-absolute-miss` | Absolute darkness (every swing misses): a unit swings blind and misses | blindMiss {night:true} from sightMiss (rules.dark, no Darksight) | animateAttacker + "🌙 Miss!" float | basic — same float for every darkness level and for night-blind | live (b.js) | 1 |
+| `dark-leave` | Darkness lifts (match over) | syncDarkVeil with m.over → veil removed | veil removed instantly | missing — no light-returns moment | live (b.js) | 3 |
+| `dark-unit-blind` | A unit can't see in the dark (no Darksight, no Lantern) | sightBlind(card) true for the whole fight (no event) | none | missing — the user explicitly asked: units that are blind in darkness should look it | live (b.js) | 1 |
+| `dark-sunshy-blind` | Sun-shy unit blind by day | sightMiss: phase day + effects.sunshy | none (only the blindMiss float when it misses) | missing — nothing on screen | live (b.js) | 2 |
+| `dark-nightblind` | Night-blind unit blind at night | sightMiss: phase night + effects.nightblind and no Lantern | none (only the miss float) | missing — nothing on screen | live (b.js) | 2 |
+| `dark-keen-sense` | Keen Sense unit senses in the dark | keenSense ignores darkness for non-flying targets | none | missing — nothing on screen | live (b.js) | 3 |
+| `dark-lantern-lit` | Lantern lights its side | a living Lantern on your board (lit()) | .battlefield.bf-lantern (bfLanternFlicker) + SkillFX.lanternGlow on play | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `dark-lantern-out` | Lantern carrier dies: the dark returns | lantern unit death (no event) | none | missing — nothing on screen | live (b.js) | 2 |
+| `dark-lantern-save` | Lantern saves a swing (no miss thanks to the light) | sightMiss returns 0 with lit() | none | missing — nothing on screen | live (b.js) | 3 |
+| `dark-darksight-play` | Darksight unit arrives | play of a Darksight card | SkillFX.darksight (eyes open, foes marked) | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `dark-darksight-idle` | Darksight eyes glint in the dark | while rules.dark and the unit has Darksight | none | missing — nothing on screen | live (b.js) | 3 |
+| `dark-cave-lamp` | Cave fight lamp follows the pointer | cave battlefield → mountCaveLamp (cards outside the light dim ~30%) | mountCaveLamp (shader fog + dim) | good — has its own look that plays at the right moment | live (b.js) | 2 |
+| `dark-night-veil-in` | Night falls on the battlefield | phase {phase:'night'} → syncNightVeil .night-veil.is-on | 2026-10-16: the whole board darkens over 10 s (skyPhaseLayers + the veil) while the night creeps in from the left at 40% | good — has its own look that plays at the right moment | live (b.js, p1.js, x17.js) | 1 |
+| `dark-night-veil-out` | Night lifts | phase {phase:'day'} → .night-veil.is-leaving | 2026-10-16/17: the board lights up over 10 s, the light creeps in from the left at 40%, soft streaks (FX.E.nightRetreat), a barely-there sun (FX.B.dayBreaks) | good — has its own look that plays at the right moment | live (b.js, p1.js, w3.js, x17.js) | 2 |
+| `dark-shade-night` | Shade halves non-magic hits at night / in the dark 🔮 | damage halved for Shade (no flag) | none | missing — nothing on screen | live (b.js) | 2 |
+| `dark-shadow-night` | Shadow: half the hits miss at night / in the dark 🔮 | evaded {reason:'shadow'} | generic dodge hop | basic — a generic or reused look that does not say what happened | live (b.js) | 2 |
+| `dark-beware` | Removal-zone crawler at Darkness N (Devilry) | beware {darkness} | none (battle log only) | missing — nothing on screen | live (b.js) | 2 |
+| `dark-inherent` | Inherent Darkness / Devilry ★ gain | devilry {amount} (onSpawn/onReady/inherentDarkness) | floatResourceGain ★ + devilryTone | basic — a generic or reused look that does not say what happened | live (b.js) | 3 |
+| `dark-devilry-aura` | Devilry card aura | is-devilry card tile | .is-devilry::after devilAura | good — has its own look that plays at the right moment | live (b.js) | 3 |
+| `dark-bioluminescent` | Bioluminescent units glow in pitch black (Abyssal Plains) 🔮 | planned: Map 29 natives (anglerfish Lantern for its side) | none | missing — planned | lab-only (b.js) | 2 |
+| `dark-pitchblack-fish` | Pitch-black fish strikes in the dark 🔮 | planned: 0/2 fish deals 5 to a random enemy each round in pitch black | none | missing — planned | lab-only (b.js) | 3 |
+| `dark-eclipse` | Eclipse (day turns to night mid-round) 🔮 | planned Map 35+ | none | missing — planned | lab-only (b.js) | 2 |
+| `fld-unit-light` | Leader and Light Aura glow (night and dark fields) | render: .board-card .unit-light (leaders: ul-leader; Illuminate: ul-aura; Immolation: ul-fire) shown while .battlefield.is-dark-scene (night or rules.dark); Pitch Black / Absolute: a mask hole in the darkness overlay (syncUnitLightPools) | CSS warm pools in arena_template.html + syncUnitLightPools in arena_app.js | good — faint for leaders, bright for Light Aura units | live (q.js) | 3 |
+| `wt-night-cursor` | Night pointer light | Night in any fight (not Pitch Black, which has its lantern) | .battlefield.bf-night-cursor + .night-cursor-light under the pointer (wireNightCursorLight) | good — has its own look that plays at the right moment | live (x17.js) | 2 |
 
-### Deaths (`death`, 37)
+### Deaths (`death`, 39)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `death-fall` | Normal death (topple) | death → deathVfx → deathStyleFor 'fall' (physical / unknown cause) | fallDeathVfx (rotateX topple, grey) + biomePuff + impactDust + knockOut + 💀 float | good — has its own look that plays at the right moment | 1 |
-| `death-flyer-fall` | Flyer falls out of the sky | death of an is-flying unit | flyerFallVfx | good — has its own look that plays at the right moment | 2 |
-| `death-burn` | Burned away (heat) | death with lastHurtBy heat, or a fiery card | burnAwayVfx (ragged mask, embers) + battleLightAt heat | good — has its own look that plays at the right moment | 2 |
-| `death-poison` | Poison death | lastHurtBy poison | bleedOutVfx(poison tone) + SkillFX.elementDeath poison drips | good — has its own look that plays at the right moment | 2 |
-| `death-acid` | Acid death | lastHurtBy acid (mapped to the poison style) | poison drip look | basic — acid reads as poison; no dissolving / pitting | 3 |
-| `death-decay` | Decay death | lastHurtBy decay (poison style) | poison drip look | basic — no mould crumble | 3 |
-| `death-cold` | Frozen shatter | lastHurtBy cold | ProcFX.shatter ice shards + elementDeath cold + iceShatter | good — has its own look that plays at the right moment | 2 |
-| `death-bleed` | Bleed-out | lastHurtBy bleed | bleedOutVfx red wash + drips | good — has its own look that plays at the right moment | 2 |
-| `death-token` | Token pixel shatter | death of a token card (not burned) | pixelShatterVfx 4×5 grid + pixelShatter chiptune | good — has its own look that plays at the right moment | 3 |
-| `death-lightning` | Electrocuted (Electricity / Dragon Lightning / Shock Bolt) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 2 |
-| `death-magic` | Killed by magic 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 3 |
-| `death-psychic` | Mind shattered (Psychic) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 3 |
-| `death-wither` | Withered away 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 2 |
-| `death-irradiation` | Irradiated to death 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 3 |
-| `death-water` | Drowned / washed away (Tsunami, Tide-spout) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 2 |
-| `death-crushed` | Crushed (Earthquake, Landslide, Avalanche, Meteor, Comet) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 2 |
-| `death-explode` | Blown up (Explode, Dynamite) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 2 |
-| `death-petrified` | Shattered while petrified 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 3 |
-| `death-curse` | Killed on cursed ground (Desecrate) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 3 |
-| `death-true` | True / ichor damage 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | 3 |
-| `death-sacrificed` | Sacrificed for a Dark Summon | statusFx sacrificed then death | .sac-chomp jaws then normal death | basic — a generic or reused look that does not say what happened | 2 |
-| `death-leader` | Leader / King dies | death of the leader unit (m.leaderUid) or a King | normal death | missing — the most important unit dies like any other | 1 |
-| `death-boss` | Boss unit dies | death of a boss-node enemy unit / world boss | normal death | missing — nothing on screen | 1 |
-| `death-egg` | Egg card destroyed before hatching | death of a hatchInto card | normal death | missing — nothing on screen | 3 |
-| `death-structure` | Structure destroyed | death of a Structure card | normal death | missing — buildings topple like animals | 2 |
-| `death-shiny-foil` | Shiny / foil unit dies **(retired 2026-10-17)** | death of a shiny or foil unit | normal death; finish just disappears | missing — nothing on screen | 3 |
-| `death-skull` | Skull float on death | every death | .death-skull deathSkullFloat (hidden for falls/tokens/ice) | good — has its own look that plays at the right moment | 3 |
-| `death-kill-emote` | Killer emote | death of a unit last hit this round | maybeEmote(killer, 'kill') | good — has its own look that plays at the right moment | 3 |
-| `death-speech` | Death line | death | maybeSpeak(uid, 'onDeath') bubble | good — has its own look that plays at the right moment | 3 |
-| `death-bounty` | Bounty drop | bounty {fromDefId, uid} | itemDropVfx 🪵 bounce + itemDrop | good — has its own look that plays at the right moment | 3 |
-| `death-collapse-in` | Row closes the gap | collapseIn {fromSide} | SoundKit.shift + Flip glide + .collapse-landed squash | good — has its own look that plays at the right moment | 3 |
-| `death-revive-save` | Revive saves it from death | revive (instead of death) | SkillFX.reviveRise | good — has its own look that plays at the right moment | 3 |
-| `death-lethal-number` | Killing blow number **(retired 2026-10-16)** | hit that drops hp to 0 | normal damage number | missing — no "KO" emphasis on the final blow | 2 |
-| `death-ghost` | Ghost fades out 🔮 | planned: Ghost units (Map 50+) | none | missing — planned | 3 |
-| `death-dragon` | Dragon falls 🔮 | planned: Map 50 dragons | none | missing — planned | 2 |
-| `death-supreme` | Supreme beast defeated 🔮 | planned: super-boss fights | none | missing — planned | 2 |
-| `death-slime-split` | Slime splits on death 🔮 | planned card idea | none | missing — planned | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `death-fall` | Normal death (smooth topple) | death → deathVfx → deathStyleFor 'fall' (physical / unknown cause) | 2026-10-16 (voices and feel): the topple is back as one smooth motion that starts slow and speeds up, fading as it lands (fallDeathVfx) | good — has its own look that plays at the right moment | live (c.js) | 1 |
+| `death-flyer-fall` | Flyer falls out of the sky | death of an is-flying unit | flyerFallVfx | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `death-burn` | Burned away (heat) | death with lastHurtBy heat, or a fiery card | burnAwayVfx (ragged mask, embers) + battleLightAt heat | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `death-poison` | Poison death | lastHurtBy poison | bleedOutVfx(poison tone) + SkillFX.elementDeath poison drips | good — has its own look that plays at the right moment | live (c.js, p1.js) | 2 |
+| `death-acid` | Acid death | lastHurtBy acid (mapped to the poison style) | poison drip look | basic — acid reads as poison; no dissolving / pitting | live (c.js) | 3 |
+| `death-decay` | Decay death | lastHurtBy decay (poison style) | poison drip look | basic — no mould crumble | live (c.js) | 3 |
+| `death-cold` | Frozen shatter | lastHurtBy cold | ProcFX.shatter ice shards + elementDeath cold + iceShatter | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `death-bleed` | Bleed-out | lastHurtBy bleed | bleedOutVfx red wash + drips | good — has its own look that plays at the right moment | live (c.js, p1.js) | 2 |
+| `death-token` | Token pixel shatter | death of a token card (not burned) | pixelShatterVfx 4×5 grid + pixelShatter chiptune | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `death-lightning` | Electrocuted (Electricity / Dragon Lightning / Shock Bolt) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 2 |
+| `death-magic` | Killed by magic 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 3 |
+| `death-psychic` | Mind shattered (Psychic) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 3 |
+| `death-wither` | Withered away 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 2 |
+| `death-irradiation` | Irradiated to death 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 3 |
+| `death-water` | Drowned / washed away (Tsunami, Tide-spout) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 2 |
+| `death-crushed` | Crushed (Earthquake, Landslide, Avalanche, Meteor, Comet) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 2 |
+| `death-explode` | Blown up (Explode, Dynamite) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 2 |
+| `death-petrified` | Shattered while petrified 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 3 |
+| `death-curse` | Killed on cursed ground (Desecrate) 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 3 |
+| `death-true` | True / ichor damage 🎨 | death after this damage source (deathStyleFor has no style for it → falls to fall/burn/poison) | fall/topple (generic) | missing — no death look of its own | live (c.js) | 3 |
+| `death-sacrificed` | Sacrificed for a Dark Summon | statusFx sacrificed then death | .sac-chomp jaws then normal death | basic — a generic or reused look that does not say what happened | live (c.js) | 2 |
+| `death-leader` | Leader / King dies | death of the leader unit (m.leaderUid) or a King | normal death | missing — the most important unit dies like any other | live (c.js) | 1 |
+| `death-boss` | Boss unit dies | death of a boss-node enemy unit / world boss | normal death | missing — nothing on screen | live (c.js) | 1 |
+| `death-egg` | Egg card destroyed before hatching | death of a hatchInto card | normal death | missing — nothing on screen | live (c.js) | 3 |
+| `death-structure` | Structure destroyed | death of a Structure card | normal death | missing — buildings topple like animals | live (c.js) | 2 |
+| `death-shiny-foil` | Shiny / foil unit dies | death of a shiny or foil unit | retired 2026-10-17: shiny / foil units die like anyone else; the sheen is death-prism | missing — nothing on screen | retired | 3 |
+| `death-skull` | Skull float on death | every death | .death-skull deathSkullFloat (hidden for falls/tokens/ice) | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `death-kill-emote` | Killer emote | death of a unit last hit this round | maybeEmote(killer, 'kill') | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `death-speech` | Death line | death | maybeSpeak(uid, 'onDeath') bubble | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `death-bounty` | Bounty drop | bounty {fromDefId, uid} | itemDropVfx 🪵 bounce + itemDrop | good — has its own look that plays at the right moment | live (c.js, p1.js) | 3 |
+| `death-collapse-in` | Row closes the gap | collapseIn {fromSide} | SoundKit.shift + Flip glide + .collapse-landed squash | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `death-revive-save` | Revive saves it from death | revive (instead of death) | SkillFX.reviveRise | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `death-lethal-number` | Killing blow number | hit that drops hp to 0 | retired 2026-10-16: the "−N ✖" killing-blow stamp is gone; a killer that feeds on kills gets the ✖ (death-kill-mark) | missing — no "KO" emphasis on the final blow | retired | 2 |
+| `death-ghost` | Ghost fades out | death of a Ghost unit (effects.ghost, e.g. Glasswing Butterfly) → hooks.deathLook | FX.C.deathGhost via hooks.deathLook: a Ghost (effects.ghost / Ghost archetype) turns see-through and drifts up | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `death-dragon` | Dragon falls | death of a Dragon (the five Dragons, Thunder Lizard) → hooks.deathLook; the round waits | FX.C.deathDragon via hooks.deathLook: a Dragon (archetype Dragon / creatureRank 1) crashes down, the field quakes (High), scales scatter | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `death-supreme` | Supreme beast defeated | death of another Supreme unit or a rank-2 great beast (Fathom Leviathan, Grovebearer Dragon-Turtle) → hooks.deathLook | FX.C.deathSupreme via hooks.deathLook: another Supreme unit or a rank-2 great beast, a prismatic burst | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `death-slime-split` | Slime splits on death 🔮 | planned card idea | none | missing — planned | lab-only (c.js) | 3 |
+| `death-prism` | Prism death (light / rainbow skills) | death of a unit with Illuminate, Lantern or Reflect (FX.C.PRISM_SKILLS; reserved: prism, rainbow, radiant, dazzle, refract) | FX.C.deathPrism: the rainbow sheet lifts off and flutters away in sparkles (the old shiny / foil death) | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `death-kill-mark` | Killing blow ✖ into the killer | a killing blow from a unit with an On Kill trigger (or Momentum, Midas Touch, Slash & Burn) | killMarkVfx: a ✖ pops on the target and darts into the killer (.kill-gain); its On Kill trigger plays as it lands (pullKillTrigger) | good — has its own look that plays at the right moment | live (x17.js) | 2 |
 
 ### Castle (HQ) (`castle`, 21)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `castle-hit` | Castle hit | hitHQ {dmg} | hqHitBigVfx (shake, burst, rumble) + "−N" hq-big float + displayHqDamage + castle line | good — has its own look that plays at the right moment | 1 |
-| `castle-hp-number` | Castle HP number tick | displayHqDamage | .bf-hp.is-hit (bfHpHit) | good — has its own look that plays at the right moment | 3 |
-| `castle-crack-1` | Castle crack stage 1 (≤66% HP) 🎨 | updateCastleCracks after a castle hit | ProcFX.cracks / pfxCastleCracks + jolt + masonry dust (crackJolt) | good — has its own look that plays at the right moment | 2 |
-| `castle-crack-2` | Castle crack stage 2 (≤33% HP) | updateCastleCracks after a castle hit | ProcFX.cracks / pfxCastleCracks + jolt + masonry dust (crackJolt) | good — has its own look that plays at the right moment | 2 |
-| `castle-crack-3` | Castle crack stage 3 (≤15% HP) | updateCastleCracks after a castle hit | ProcFX.cracks / pfxCastleCracks + jolt + masonry dust (crackJolt) | good — has its own look that plays at the right moment | 2 |
-| `castle-danger` | Castle in danger (<25%) | DangerPulse: heartbeat + red edge (faster <10%) | body.castle-danger::after dangerPulse + heartbeat | good — has its own look that plays at the right moment | 2 |
-| `castle-crumble` | Castle destroyed | match end, a castle at 0 → castleCrumble | castleCrumble (shudder, dust, burn) + castleCollapse | good — has its own look that plays at the right moment | 1 |
-| `castle-crumble-variants` | Castle crumble variants (collapse / sink / topple) 🎨 | SkillFX.castleCrumble {variant} (Lab only) | Effects Lab only | basic — not used in fights | 3 |
-| `castle-regen` | Castle regenerates | castleRegen {amount, perk} | none — no renderer and no log text | missing — the HP just goes up | 2 |
-| `castle-lumber` | Castle produces Lumber (castle passive / Everbloom perk) | lumber {castle:true} / {perk:true} | pill bing + "+1" on the pill | basic — nothing on the castle tile | 3 |
-| `castle-ballista` | Castle ballista bolt | statusFx castleBolt | log line; the hit follows as a plain projectile | basic — a generic or reused look that does not say what happened | 2 |
-| `castle-thorns` | Thorn Cage cuts an attacker | statusFx castleThorns | none (log only) | missing — nothing on screen | 2 |
-| `castle-herb-heal` | Herb Refinery heals | statusFx herbHeal | log line only | missing — nothing on screen | 3 |
-| `castle-herb-bane` | Herb Refinery bitter brew | statusFx herbBane (+ poison hit) | log line only | missing — nothing on screen | 3 |
-| `castle-spawn` | Units pour out of the castle | statusFx castleSpawn (+ spawn events) | log line; units get the generic summonPortal | missing — no gate-opening moment | 2 |
-| `castle-logjam` | Logjam holds up a unit | statusFx logjam {amount} | log line only | missing — nothing on screen | 3 |
-| `castle-speech` | Castle speech bubble | maybeSpeakHQ(side, 'castleOnHit') | speech bubble on the HQ tile | basic — a generic or reused look that does not say what happened | 3 |
-| `castle-friendly-hit` | Your own boomerang hits your castle | hitHQ {boomerang, friendly} | normal castle hit | basic — a generic or reused look that does not say what happened | 3 |
-| `castle-shield` | Castle shield (raid Core / skirmish Shield) | raid part castle shield; castle can't be hit while stumps live | none | missing — nothing on screen | 2 |
-| `castle-enemy-leader-banner` | Enemy leader banner | enemy leader on the board | .enemy-leader-banner (elBanner) | basic — a generic or reused look that does not say what happened | 3 |
-| `castle-skin-future` | Castle looks per faction 🔮 | planned castle art per people | castle tiles | missing — planned | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `castle-hit` | Castle hit | hitHQ {dmg} | hqHitBigVfx (shake, burst, rumble) + "−N" hq-big float + displayHqDamage + castle line | good — has its own look that plays at the right moment | live (c.js) | 1 |
+| `castle-hp-number` | Castle HP number tick | displayHqDamage | 2026-10-16: floatText(hqRibbonFloatAnchor(side), "-N", "hq-big") on the HP bar where its fill ends | good — has its own look that plays at the right moment | live (c.js, p1.js, x17.js) | 3 |
+| `castle-crack-1` | Castle crack stage 1 (≤66% HP) 🎨 | updateCastleCracks after a castle hit | ProcFX.cracks / pfxCastleCracks + jolt + masonry dust (crackJolt) | good — has its own look that plays at the right moment | live (_existing.js, c.js) | 2 |
+| `castle-crack-2` | Castle crack stage 2 (≤33% HP) | updateCastleCracks after a castle hit | ProcFX.cracks / pfxCastleCracks + jolt + masonry dust (crackJolt) | good — has its own look that plays at the right moment | live (_existing.js) | 2 |
+| `castle-crack-3` | Castle crack stage 3 (≤15% HP) | updateCastleCracks after a castle hit | ProcFX.cracks / pfxCastleCracks + jolt + masonry dust (crackJolt) | good — has its own look that plays at the right moment | live (_existing.js) | 2 |
+| `castle-danger` | Castle in danger (<25%) | DangerPulse: heartbeat + red edge (faster <10%) | body.castle-danger::after dangerPulse + heartbeat | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `castle-crumble` | Castle destroyed | match end, a castle at 0 → castleCrumble | castleCrumble (shudder, dust, burn) + castleCollapse | good — has its own look that plays at the right moment | live (_existing.js) | 1 |
+| `castle-crumble-variants` | Castle crumble variants (collapse / sink / topple) 🎨 | SkillFX.castleCrumble {variant} (Lab only) | Effects Lab only | basic — not used in fights | live (_existing.js) | 3 |
+| `castle-regen` | Castle regenerates | castleRegen {amount, perk} | none — no renderer and no log text | missing — the HP just goes up | live (c.js) | 2 |
+| `castle-lumber` | Castle produces Lumber (castle passive / Everbloom perk) | lumber {castle:true} / {perk:true} | pill bing + "+1" on the pill | basic — nothing on the castle tile | live (c.js) | 3 |
+| `castle-ballista` | Castle ballista bolt | statusFx castleBolt | log line; the hit follows as a plain projectile | basic — a generic or reused look that does not say what happened | live (c.js) | 2 |
+| `castle-thorns` | Thorn Cage cuts an attacker | statusFx castleThorns | none (log only) | missing — nothing on screen | live (c.js) | 2 |
+| `castle-herb-heal` | Herb Refinery heals | statusFx herbHeal | log line only | missing — nothing on screen | live (c.js) | 3 |
+| `castle-herb-bane` | Herb Refinery bitter brew | statusFx herbBane (+ poison hit) | 2026-10-16: castleThrowVfx: a 🧪 on a shallow arc that lands in 0.44 s (every castle shot) | good — has its own look that plays at the right moment | live (c.js, x17.js) | 3 |
+| `castle-spawn` | Units pour out of the castle | statusFx castleSpawn (+ spawn events) | log line; units get the generic summonPortal | missing — no gate-opening moment | live (c.js) | 2 |
+| `castle-logjam` | Logjam holds up a unit | statusFx logjam {amount} | log line only | missing — nothing on screen | live (c.js) | 3 |
+| `castle-speech` | Castle speech bubble | maybeSpeakHQ(side, 'castleOnHit') | speech bubble on the HQ tile | basic — a generic or reused look that does not say what happened | live (c.js) | 3 |
+| `castle-friendly-hit` | Your own boomerang hits your castle | hitHQ {boomerang, friendly} | normal castle hit | basic — a generic or reused look that does not say what happened | live (c.js) | 3 |
+| `castle-shield` | Castle shield (raid Core / skirmish Shield) | raid part castle shield; castle can't be hit while stumps live | none | missing — nothing on screen | live (c.js) | 2 |
+| `castle-enemy-leader-banner` | Enemy leader banner | enemy leader on the board | .enemy-leader-banner (elBanner) | basic — a generic or reused look that does not say what happened | live (c.js) | 3 |
+| `castle-skin-future` | Castle looks per faction 🔮 | planned castle art per people | castle tiles | missing — planned | lab-only (c.js) | 3 |
 
 ### Summons, spawns, hatching (`summon-spawn`, 30)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `sum-hand-play` | Card played from hand | play {uid} (player) → renderBoard entrance from pendingEntranceOrigins | entrance tween + playLandingImpact + playHandSummonGlow (gold ring + sparks) | good — has its own look that plays at the right moment | 1 |
-| `sum-enemy-play` | Enemy plays a card | play {side:'B'} | generic fall-in + SoundKit.play | basic — no hand-origin; enemy cards appear from above | 2 |
-| `sum-reserve` | Played into a reserve row | play {reserve} | reserve row entrance | basic — a generic or reused look that does not say what happened | 3 |
-| `sum-advance` | Reserve unit steps up | advance {from,to} | re-render + "⬆" float | basic — a generic or reused look that does not say what happened | 3 |
-| `sum-big-arrival` | Huge unit arrives (>20 HP) | play/spawn/hatch with maxHp>20 | battlefieldShake (21→200 HP); ready of a huge card plays playEarthquake | good — has its own look that plays at the right moment | 2 |
-| `sum-leader` | Leader summoned | play {leader:true} | leaderThroneVfx (pillar, crown, ring shockwave, banner) + leaderFanfare | good — has its own look that plays at the right moment | 1 |
-| `sum-enemy-leader` | Enemy leader summoned | play {leader:true} side B | leaderThroneVfx {enemy:true} (crimson pillar, drum) | good — has its own look that plays at the right moment | 1 |
-| `sum-gladiator` | Gladiator leader enters | play {leader:true, gladiator:true} | no throne (skipped for gladiators) | basic — a generic or reused look that does not say what happened | 3 |
-| `sum-boss-entrance` | Boss entrance | versus opener closes on a boss node → bossEntrance | quake + dust ring + shader shockwave + "BOSS · name" title + bossRumble | good — has its own look that plays at the right moment | 1 |
-| `sum-trigger-spawn` | Spawned by a trigger / action 🎨 | spawn {cause:'triggerSpawn'} | SkillFX.summonPortal (green rune circle) | good — has its own look that plays at the right moment | 2 |
-| `sum-on-death-spawn` | Progeny / On Death spawn | spawn {cause:'onDeathSpawn'} | entrance from the dying card's spot (lastDeathOrigin) + summonPortal | good — has its own look that plays at the right moment | 2 |
-| `sum-meiosis` | Meiosis split | spawn {kind:'meiosis'} | summonPortal on each half | basic — not a split; two portals | 3 |
-| `sum-on-attacked` | Spawn on being attacked (Bee Drone) | spawn {cause:'onAttackedSpawn'} | playBeeSpawnLanding (bouncy squash, bee buzz-off) | good — has its own look that plays at the right moment | 3 |
-| `sum-twin` | Twin appears beside it | spawn of a Twin token (Puddle Changeling, Mirrorhide Mutant) | summonPortal | basic — should read as a mirror copy | 2 |
-| `sum-brood` | Brood | spawn from Brood | summonPortal | good — has its own look that plays at the right moment | 3 |
-| `sum-skyfall` | Skyfall crash-down | Skyfall N: On Spawn damage to a random enemy (ranged hit from fireDamageAction) | generic triggered projectile; SkillFX.skyDrop (shadow grows, squash, dust ring) exists but is Lab-only | basic — the card should crash down, not lob a glyph | 2 |
-| `sum-castle-spawn` | Units come out of the castle | statusFx castleSpawn | summonPortal on each | basic — a generic or reused look that does not say what happened | 3 |
-| `sum-remember` | Returns from Exile (Remember) | remember + spawn | entrance + float | basic — a generic or reused look that does not say what happened | 2 |
-| `sum-hatch-battle` | Egg card hatches in battle | hatch {fromDefId, defId} | eggCrackVfx (shell halves fly) + .egg-hatched + "🐣 Hatched!" + unlockChime | good — has its own look that plays at the right moment | 2 |
-| `sum-egg-idle` | Egg card waiting on the board | egg (hatchInto) card on the board | normal card | missing — eggWobble exists only in the Nest | 3 |
-| `sum-structure` | Structure placed | play of a Structure card | normal landing | missing — no build-up | 2 |
-| `sum-mind-control-arrive` | Stolen unit lands on your side | mindControl → re-render | re-render only | basic — a generic or reused look that does not say what happened | 2 |
-| `sum-devilry-drop` | Dark Summon dropped onto a unit | devilryDropOnto (drag a Dark Summon card onto a unit) | sac-chomp + play entrance | basic — a generic or reused look that does not say what happened | 2 |
-| `sum-seen-new` | New enemy card first seen | matchState.newSeenUntil[defId] | .seen-new tag (seenNew) | good — has its own look that plays at the right moment | 3 |
-| `sum-sprout-token` | Sprout N: Growth Sprout tokens sprout | spawn {cause:'triggerSpawn'} of growth-sprout tokens (Sprout N) | SkillFX.summonPortal (generic rune circle) | basic — a sprout should grow out of the soil, not a rune portal | 2 |
-| `sum-rooted-veggie` | Rooted Wild Veggie takes root 🔮 | planned (Rafflesia, Venus Fly Trap) | none | missing — planned | 3 |
-| `sum-dragon` | Dragon summoned 🔮 | planned Map 50+ | none | missing — planned | 1 |
-| `sum-supreme` | Supreme beast arrives 🔮 | planned super-boss | none | missing — planned | 2 |
-| `sum-wandering-mage` | Wandering Mage joins (Map 51) 🔮 | planned free leader | none | missing — planned | 3 |
-| `sum-drones-enemy-field` | Drones / golems summoned onto the enemy field 🔮 | planned (area control idea) | none | missing — planned | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `sum-hand-play` | Card played from hand | play {uid} (player) → renderBoard entrance from pendingEntranceOrigins | entrance tween + playLandingImpact + playHandSummonGlow (gold ring + sparks) | good — has its own look that plays at the right moment | live (c.js) | 1 |
+| `sum-enemy-play` | Enemy plays a card | play {side:'B'} | generic fall-in + SoundKit.play | basic — no hand-origin; enemy cards appear from above | live (c.js) | 2 |
+| `sum-reserve` | Played into a reserve row | play {reserve} | reserve row entrance | basic — a generic or reused look that does not say what happened | live (c.js) | 3 |
+| `sum-advance` | Reserve unit steps up | advance {from,to} | re-render + "⬆" float | basic — a generic or reused look that does not say what happened | live (c.js) | 3 |
+| `sum-big-arrival` | Huge unit arrives (>20 HP) | play/spawn/hatch with maxHp>20 | battlefieldShake (21→200 HP); ready of a huge card plays playEarthquake | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `sum-leader` | Leader summoned | play {leader:true} | leaderThroneVfx (pillar, crown, ring shockwave, banner) + leaderFanfare | good — has its own look that plays at the right moment | live (c.js) | 1 |
+| `sum-enemy-leader` | Enemy leader summoned | play {leader:true} side B | leaderThroneVfx {enemy:true} (crimson pillar, drum) | good — has its own look that plays at the right moment | live (c.js) | 1 |
+| `sum-gladiator` | Gladiator leader enters | play {leader:true, gladiator:true} | no throne (skipped for gladiators) | basic — a generic or reused look that does not say what happened | live (c.js) | 3 |
+| `sum-boss-entrance` | Boss entrance | versus opener closes on a boss node → bossEntrance | quake + dust ring + shader shockwave + "BOSS · name" title + bossRumble | good — has its own look that plays at the right moment | live (c.js) | 1 |
+| `sum-trigger-spawn` | Spawned by a trigger / action 🎨 | spawn {cause:'triggerSpawn'} | SkillFX.summonPortal (green rune circle) | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `sum-on-death-spawn` | Progeny / On Death spawn | spawn {cause:'onDeathSpawn'} | entrance from the dying card's spot (lastDeathOrigin) + summonPortal | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `sum-meiosis` | Meiosis split | spawn {kind:'meiosis'} | summonPortal on each half | basic — not a split; two portals | live (c.js) | 3 |
+| `sum-on-attacked` | Spawn on being attacked (Bee Drone) | spawn {cause:'onAttackedSpawn'} | playBeeSpawnLanding (bouncy squash, bee buzz-off) | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `sum-twin` | Twin appears beside it | spawn of a Twin token (Puddle Changeling, Mirrorhide Mutant) | summonPortal | basic — should read as a mirror copy | live (c.js) | 2 |
+| `sum-brood` | Brood | spawn from Brood | summonPortal | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `sum-skyfall` | Skyfall crash-down | Skyfall N: On Spawn damage to a random enemy (ranged hit from fireDamageAction) | generic triggered projectile; SkillFX.skyDrop (shadow grows, squash, dust ring) exists but is Lab-only | basic — the card should crash down, not lob a glyph | live (c.js) | 2 |
+| `sum-castle-spawn` | Units come out of the castle | statusFx castleSpawn | summonPortal on each | basic — a generic or reused look that does not say what happened | live (c.js) | 3 |
+| `sum-remember` | Returns from Exile (Remember) | remember + spawn | entrance + float | basic — a generic or reused look that does not say what happened | live (c.js) | 2 |
+| `sum-hatch-battle` | Egg card hatches in battle | hatch {fromDefId, defId} | eggCrackVfx (shell halves fly) + .egg-hatched + "🐣 Hatched!" + unlockChime | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `sum-egg-idle` | Egg card waiting on the board | egg (hatchInto) card on the board | normal card | missing — eggWobble exists only in the Nest | live (c.js) | 3 |
+| `sum-structure` | Structure placed | play of a Structure card | normal landing | missing — no build-up | live (c.js) | 2 |
+| `sum-mind-control-arrive` | Stolen unit lands on your side | mindControl → re-render | re-render only | basic — a generic or reused look that does not say what happened | live (c.js) | 2 |
+| `sum-devilry-drop` | Dark Summon dropped onto a unit | devilryDropOnto (drag a Dark Summon card onto a unit) | sac-chomp + play entrance | basic — a generic or reused look that does not say what happened | live (c.js) | 2 |
+| `sum-seen-new` | New enemy card first seen | matchState.newSeenUntil[defId] | .seen-new tag (seenNew) | good — has its own look that plays at the right moment | live (c.js) | 3 |
+| `sum-sprout-token` | Sprout N: Growth Sprout tokens sprout | spawn {cause:'triggerSpawn'} of growth-sprout tokens (Sprout N) | SkillFX.summonPortal (generic rune circle) | basic — a sprout should grow out of the soil, not a rune portal | live (c.js) | 2 |
+| `sum-rooted-veggie` | Rooted Wild Veggie takes root 🔮 | planned (Rafflesia, Venus Fly Trap) | none | missing — planned | lab-only (c.js) | 3 |
+| `sum-dragon` | Dragon summoned | play of a Dragon (not a leader, reserve, egg or skyfall card) → FX.C.onEvent | FX.C.dragonArrive on play: the sky darkens, a wing shadow sweeps over, a roar, it lands with a quake (High) | good — has its own look that plays at the right moment | live (c.js) | 1 |
+| `sum-supreme` | Supreme beast arrives | play of another Supreme unit or a rank-2 great beast → FX.C.onEvent | FX.C.supremeArrive on play: a prismatic shockwave | good — has its own look that plays at the right moment | live (c.js) | 2 |
+| `sum-wandering-mage` | Wandering Mage joins (Map 51) 🔮 | planned free leader | none | missing — planned | lab-only (c.js) | 3 |
+| `sum-drones-enemy-field` | Drones / golems summoned onto the enemy field 🔮 | planned (area control idea) | none | missing — planned | lab-only (c.js) | 3 |
 
-### Card treatments (`card-treatment`, 49)
+### Card treatments (`card-treatment`, 61)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `tr-rarity-low` | Starter / Common frame | cardTileHTML → rarityTierClass(d.rarity) | .rarity-tier-low grey band | good — rarity colour band | 2 |
-| `tr-rarity-uncommon` | Uncommon / Quest frame | cardTileHTML → rarityTierClass(d.rarity) | .rarity-tier-uncommon green band | good — rarity colour band | 2 |
-| `tr-rarity-mid` | Rare – Epic frame (Rare, Very Rare, Super Rare, Epic) | cardTileHTML → rarityTierClass(d.rarity) | .rarity-tier-mid coloured band + rarityBandDrift | good — rarity colour band | 2 |
-| `tr-rarity-high` | Heroic – Legendary frame | cardTileHTML → rarityTierClass(d.rarity) | .rarity-tier-high | good — rarity colour band | 2 |
-| `tr-rarity-top` | Mythic and up frame | cardTileHTML → rarityTierClass(d.rarity) | .rarity-tier-top::before goldStreak | good — gold-leaf rim with a sliding streak | 2 |
-| `tr-rarity-mythic` | Mythic frame of its own 🎨 | rarity:'mythic' (RARITY_DEFS colour red) | shares .rarity-tier-top with every Mythic+ rarity | basic — five top rarities look almost the same apart from the colour | 2 |
-| `tr-rarity-ancient` | Ancient frame of its own 🎨 | rarity:'ancient' (RARITY_DEFS colour deep blue) | shares .rarity-tier-top with every Mythic+ rarity | basic — five top rarities look almost the same apart from the colour | 2 |
-| `tr-rarity-divine` | Divine frame of its own 🎨 | rarity:'divine' (RARITY_DEFS colour white) | shares .rarity-tier-top with every Mythic+ rarity | basic — five top rarities look almost the same apart from the colour | 2 |
-| `tr-rarity-void` | Void frame of its own 🎨 | rarity:'void' (RARITY_DEFS colour purple-grey) | shares .rarity-tier-top with every Mythic+ rarity | basic — five top rarities look almost the same apart from the colour | 2 |
-| `tr-rarity-daemonic` | Daemonic frame of its own 🎨 | rarity:'daemonic' (RARITY_DEFS colour black) | shares .rarity-tier-top with every Mythic+ rarity | basic — five top rarities look almost the same apart from the colour | 2 |
-| `tr-rarity-special` | Special / Event / Dev rarities 🎨 | rarity quest, questunique, special, devlegendary, devancient, eventlegendary, eventrare | wear their 'as' tier's colour | basic — events have no event mark | 3 |
-| `tr-elite-polish` | Elite enemy polish | fightTreatmentClass(pid 2) on elite nodes | .card-tile.elite-polish::after elitePolish | good — has its own look that plays at the right moment | 3 |
-| `tr-boss-extended` | Boss enemy extended art | fightTreatedDef on boss nodes | artExtended:true (full-bleed art) | basic — a generic or reused look that does not say what happened | 3 |
-| `tr-prestige-gold` | Prestige Gold ring | getCardPrestige(defId) tier on the tile | .card-tile.prestige-gold | basic — static gold ring | 3 |
-| `tr-prestige-rainbow` | Prestige Rainbow ring | getCardPrestige(defId) tier on the tile | .card-tile.prestige-rainbow prestigeRainbowHue | good — has its own look that plays at the right moment | 3 |
-| `tr-prestige-extended` | Prestige Extended Art double frame | getCardPrestige(defId) tier on the tile | .card-tile.prestige-extended prestigeRainbowHue | good — has its own look that plays at the right moment | 3 |
-| `tr-shiny` | Shiny hue shift | is-shiny + --shiny-hue (owned shiny copy) | hue-rotated art | good — has its own look that plays at the right moment | 2 |
-| `tr-shiny-mark` | Shiny mark | pack pull / nest shiny | .shiny-mark ✦ (shinyTwinkle) | basic — a generic or reused look that does not say what happened | 3 |
-| `tr-shiny-spawn` | Shiny spawner passes shine to its spawns | noteShinySpawn | spawns inherit is-shiny | good — has its own look that plays at the right moment | 3 |
-| `tr-leader-frame` | Leader on the board | board card is matchState.leaderUid | .board-card.is-leader::before leaderGlowSpin | good — has its own look that plays at the right moment | 2 |
-| `tr-hero-frame` | Hero card | Hero card in hall / deck | .hero-card-big + heroRing/heroLift on level-up | good — has its own look that plays at the right moment | 3 |
-| `tr-supreme` | Supreme card | effects.supreme | .card-tile.is-supreme stats supremeGlint | basic — small glint on the numbers only | 2 |
-| `tr-devilry` | Devilry card | isDevilryDef | .card-tile.is-devilry::after devilAura | good — has its own look that plays at the right moment | 3 |
-| `tr-antique` | Antique edition (Hall of Fame) | hallOfFame.variant antique | ed-badge / hof ribbon | basic — badge only; no aged look on the card itself | 2 |
-| `tr-classic` | Classic edition | hallOfFame.variant classic | ed-badge | basic — a generic or reused look that does not say what happened | 3 |
-| `tr-cards-of-old` | Cards of old (aged paper, foxing, creases) | holo-old finish → ProcFX.decorateOld | ProcFX.oldCardTexture | good — has its own look that plays at the right moment | 3 |
-| `tr-field-card` | Field card tile | is-field | .field-card .fc-ico fcSpin | good — has its own look that plays at the right moment | 3 |
-| `tr-token` | Token card look | is-token | token frame | basic — a generic or reused look that does not say what happened | 3 |
-| `tr-nest-born` | Nest-born (spawn-only) marker | spawn-only card | tooltip + marker | basic — a generic or reused look that does not say what happened | 3 |
-| `tr-locked` | Locked card (padlock) | card not owned in Codex / rewards | grey + padlock; reward unlock lockBreak | basic — SkillFX.unlockSparkle (padlock springs open) is Lab-only | 2 |
-| `tr-magnetic` | Magnetic hover tilt + shimmer | .card-tile-magnetic hover | ctShimmerSweep + tilt (wireCardTileFlourish) | good — has its own look that plays at the right moment | 3 |
-| `tr-atk-heat` | Hot Attack number (big attack) | atk amp tiers | .atk-amp-3/4 atkHeat | good — has its own look that plays at the right moment | 3 |
-| `tr-skins` | Unit skins | UnitFX.SKINS equipped skin | skin-<id> class | basic — a generic or reused look that does not say what happened | 3 |
-| `tr-card-back` | Card back | po2-back crest 🌰, deck piles, draw flip | single acorn crest | basic — one generic back everywhere | 2 |
-| `tr-card-inspect` | Card inspector spin | Codex → View large | .card-inspect (ciIn) 3D spin with finish light | good — has its own look that plays at the right moment | 3 |
-| `tr-future-backing-faction` | Card backings by faction / card type 🔮 🎨 | planned | none | missing — planned | 2 |
-| `tr-future-backing-monthly` | Monthly card back (pack-bonus reward) 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-frame-otter` | Otter (Rivergate Legion) frame 🔮 🎨 | planned | none | missing — planned | 2 |
-| `tr-future-frame-hummingbird` | Hummingbird (Sunfeather Tribes) frame 🔮 🎨 | planned | none | missing — planned | 2 |
-| `tr-future-frame-roadfolk` | Road-folk frame 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-frame-beast` | Beast frame 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-frame-hive` | Hive (ants, bees) frame 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-folktale` | Folktale / "Legends" style variant 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-oriental` | Oriental painting theme set 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-spy` | Spy theme set 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-veggies` | Flora frame (Maps 20+) 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-breathing-art` | Breathing art (parallax layers) 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-living-ink` | Living ink frame (SVG turbulence) 🔮 🎨 | planned | none | missing — planned | 3 |
-| `tr-future-hero-portraits` | Hero portrait changes at Lv 25/50/100 🔮 🎨 | planned | none | missing — planned | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `tr-rarity-low` | Starter / Common frame | cardTileHTML → rarityTierClass(d.rarity) | .rarity-tier-low grey band | good — rarity colour band | live (d.js) | 2 |
+| `tr-rarity-uncommon` | Uncommon / Quest frame | cardTileHTML → rarityTierClass(d.rarity) | .rarity-tier-uncommon green band | good — rarity colour band | live (d.js) | 2 |
+| `tr-rarity-mid` | Rare – Epic frame (Rare, Very Rare, Super Rare, Epic) | cardTileHTML → rarityTierClass(d.rarity) | .rarity-tier-mid coloured band + rarityBandDrift | good — rarity colour band | live (d.js) | 2 |
+| `tr-rarity-high` | Heroic – Legendary frame | cardTileHTML → rarityTierClass(d.rarity) | .rarity-tier-high | good — rarity colour band | live (d.js) | 2 |
+| `tr-rarity-top` | Mythic and up frame | cardTileHTML → rarityTierClass(d.rarity) | .rarity-tier-top::before goldStreak | good — gold-leaf rim with a sliding streak | live (d.js) | 2 |
+| `tr-rarity-mythic` | Mythic frame of its own 🎨 | rarity:'mythic' (RARITY_DEFS colour red) | shares .rarity-tier-top with every Mythic+ rarity | basic — five top rarities look almost the same apart from the colour | live (d.js) | 2 |
+| `tr-rarity-ancient` | Ancient frame of its own 🎨 | rarity:'ancient' (RARITY_DEFS colour deep blue) | shares .rarity-tier-top with every Mythic+ rarity | basic — five top rarities look almost the same apart from the colour | live (d.js) | 2 |
+| `tr-rarity-divine` | Divine frame of its own 🎨 | rarity:'divine' (RARITY_DEFS colour white) | shares .rarity-tier-top with every Mythic+ rarity | basic — five top rarities look almost the same apart from the colour | live (d.js) | 2 |
+| `tr-rarity-void` | Void frame of its own 🎨 | rarity:'void' (RARITY_DEFS colour purple-grey) | shares .rarity-tier-top with every Mythic+ rarity | basic — five top rarities look almost the same apart from the colour | live (d.js) | 2 |
+| `tr-rarity-daemonic` | Daemonic frame of its own 🎨 | rarity:'daemonic' (RARITY_DEFS colour black) | shares .rarity-tier-top with every Mythic+ rarity | basic — five top rarities look almost the same apart from the colour | live (d.js) | 2 |
+| `tr-rarity-special` | Special / Event / Dev rarities 🎨 | rarity quest, questunique, special, devlegendary, devancient, eventlegendary, eventrare | wear their 'as' tier's colour | basic — events have no event mark | lab-only (d.js) | 3 |
+| `tr-elite-polish` | Elite enemy polish | fightTreatmentClass(pid 2) on elite nodes | .card-tile.elite-polish::after elitePolish | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-boss-extended` | Boss enemy extended art | fightTreatedDef on boss nodes | artExtended:true (full-bleed art) | basic — a generic or reused look that does not say what happened | live (d.js) | 3 |
+| `tr-prestige-gold` | Prestige Gold ring | getCardPrestige(defId) tier on the tile | .card-tile.prestige-gold | basic — static gold ring | live (d.js) | 3 |
+| `tr-prestige-rainbow` | Prestige Rainbow ring | getCardPrestige(defId) tier on the tile | .card-tile.prestige-rainbow prestigeRainbowHue | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-prestige-extended` | Prestige Extended Art double frame | getCardPrestige(defId) tier on the tile | .card-tile.prestige-extended prestigeRainbowHue | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-shiny` | Shiny hue shift | is-shiny + --shiny-hue (owned shiny copy) | hue-rotated art | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `tr-shiny-mark` | Shiny mark | pack pull / nest shiny | .shiny-mark ✦ (shinyTwinkle) | basic — a generic or reused look that does not say what happened | live (d.js) | 3 |
+| `tr-shiny-spawn` | Shiny spawner passes shine to its spawns | noteShinySpawn | spawns inherit is-shiny | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-leader-frame` | Leader on the board | board card is matchState.leaderUid | .board-card.is-leader::before leaderGlowSpin | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `tr-hero-frame` | Hero card | Hero card in hall / deck | .hero-card-big + heroRing/heroLift on level-up | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-supreme` | Supreme card | effects.supreme | .card-tile.is-supreme stats supremeGlint | basic — small glint on the numbers only | live (d.js) | 2 |
+| `tr-devilry` | Devilry card | isDevilryDef | .card-tile.is-devilry::after devilAura | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-antique` | Antique edition (Hall of Fame) | hallOfFame.variant antique | ed-badge / hof ribbon | basic — badge only; no aged look on the card itself | live (d.js) | 2 |
+| `tr-classic` | Classic edition | hallOfFame.variant classic | ed-badge | basic — a generic or reused look that does not say what happened | live (d.js) | 3 |
+| `tr-cards-of-old` | Cards of old (aged paper, foxing, creases) | holo-old finish → ProcFX.decorateOld | ProcFX.oldCardTexture | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-field-card` | Field card tile | is-field | .field-card .fc-ico fcSpin | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-token` | Token card look | is-token | token frame | basic — a generic or reused look that does not say what happened | live (d.js) | 3 |
+| `tr-nest-born` | Nest-born (spawn-only) marker | spawn-only card | tooltip + marker | basic — a generic or reused look that does not say what happened | live (d.js) | 3 |
+| `tr-locked` | Locked card (padlock) | card not owned in Codex / rewards | grey + padlock; reward unlock lockBreak | basic — SkillFX.unlockSparkle (padlock springs open) is Lab-only | live (d.js) | 2 |
+| `tr-magnetic` | Magnetic hover tilt + shimmer | .card-tile-magnetic hover | ctShimmerSweep + tilt (wireCardTileFlourish) | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-atk-heat` | Hot Attack number (big attack) | atk amp tiers | .atk-amp-3/4 atkHeat | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-skins` | Unit skins | UnitFX.SKINS equipped skin | skin-<id> class | basic — a generic or reused look that does not say what happened | live (d.js) | 3 |
+| `tr-card-back` | Card back | po2-back crest 🌰, deck piles, draw flip | single acorn crest | basic — one generic back everywhere | live (d.js) | 2 |
+| `tr-card-inspect` | Card inspector spin | Codex → View large | .card-inspect (ciIn) 3D spin with finish light | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `tr-future-backing-faction` | Card backings by faction / card type 🔮 🎨 | planned | none | missing — planned | live (d.js) | 2 |
+| `tr-future-backing-monthly` | Monthly card back (pack-bonus reward) 🔮 🎨 | planned | none | missing — planned | lab-only (d.js) | 3 |
+| `tr-future-frame-otter` | Otter (Rivergate Legion) frame 🔮 🎨 | planned | none | missing — planned | live (d.js) | 2 |
+| `tr-future-frame-hummingbird` | Hummingbird (Sunfeather Tribes) frame 🔮 🎨 | planned | none | missing — planned | live (d.js) | 2 |
+| `tr-future-frame-roadfolk` | Road-folk frame 🔮 🎨 | planned | none | missing — planned | live (d.js) | 3 |
+| `tr-future-frame-beast` | Beast frame 🔮 🎨 | planned | none | missing — planned | live (d.js) | 3 |
+| `tr-future-frame-hive` | Hive (ants, bees) frame 🔮 🎨 | planned | none | missing — planned | live (d.js) | 3 |
+| `tr-future-folktale` | Folktale / "Legends" style variant 🔮 🎨 | planned | none | missing — planned | live (d.js) | 3 |
+| `tr-future-oriental` | Oriental painting theme set 🔮 🎨 | planned | none | missing — planned | live (d.js) | 3 |
+| `tr-future-spy` | Spy theme set 🔮 🎨 | planned | none | missing — planned | live (d.js) | 3 |
+| `tr-future-veggies` | Flora frame (Maps 20+) 🔮 🎨 | planned | none | missing — planned | live (d.js) | 3 |
+| `tr-future-breathing-art` | Breathing art (parallax layers) 🔮 🎨 | planned | none | missing — planned | lab-only (d.js) | 3 |
+| `tr-future-living-ink` | Living ink frame (SVG turbulence) 🔮 🎨 | planned | none | missing — planned | live (d.js) | 3 |
+| `tr-future-hero-portraits` | Hero portrait changes at Lv 25/50/100 🔮 🎨 | planned | none | missing — planned | lab-only (d.js) | 3 |
+| `tr-frame-kinds` | Card front frames by kind (unit, structure, castle, field) 🎨 | every card face (board, hand, Codex, deck editor, big views) | cardFrameClasses → fr-<kind> + .cframe (art/frames/*.png) | good — has its own look that plays at the right moment | live (x17.js) | 1 |
+| `tr-frame-arch-devilry` | Archetype frame: Devilry 🎨 | a unit or structure of the Devilry archetype | ar-devilry: art/frames/a-devilry.png (unit) / s-devilry.png (structure) | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `tr-frame-arch-grace` | Archetype frame: Ecclesia 🎨 | a unit or structure of the Ecclesia archetype | ar-grace: art/frames/a-grace.png (unit) / s-grace.png (structure) | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `tr-frame-arch-exile` | Archetype frame: Scrappers 🎨 | a unit or structure of the Scrappers archetype | ar-exile: art/frames/a-exile.png (unit) / s-exile.png (structure) | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `tr-frame-arch-evolution` | Archetype frame: Evolution 🎨 | a unit or structure of the Evolution archetype | ar-evolution: art/frames/a-evolution.png (unit) / s-evolution.png (structure) | good — has its own look that plays at the right moment | live (x17.js) | 3 |
+| `tr-frame-arch-exiled` | Archetype frame: Exiled Ones 🎨 | a unit or structure of the Exiled Ones archetype | ar-exiled: art/frames/a-exiled.png (unit) / s-exiled.png (structure) | good — has its own look that plays at the right moment | live (x17.js) | 3 |
+| `tr-frame-arch-forgotten` | Archetype frame: Forgotten Ones 🎨 | a unit or structure of the Forgotten Ones archetype | ar-forgotten: art/frames/a-forgotten.png (unit) / s-forgotten.png (structure) | good — has its own look that plays at the right moment | live (x17.js) | 3 |
+| `tr-frame-arch-ancient` | Archetype frame: Ancient Ones 🎨 | a unit or structure of the Ancient Ones archetype | ar-ancient: art/frames/a-ancient.png (unit) / s-ancient.png (structure) | good — has its own look that plays at the right moment | live (x17.js) | 3 |
+| `tr-frame-arch-outer` | Archetype frame: Outer Ones 🎨 | a unit or structure of the Outer Ones archetype | ar-outer: art/frames/a-outer.png (unit) / s-outer.png (structure) | good — has its own look that plays at the right moment | live (x17.js) | 3 |
+| `tr-frame-arch-void` | Archetype frame: Void 🎨 | a unit or structure of the Void archetype | ar-void: art/frames/a-void.png (unit) / s-void.png (structure) | good — has its own look that plays at the right moment | live (x17.js) | 3 |
+| `tr-card-backing` | Card backs by kind 🎨 | every face-down card (pack opener, draw flip, enemy card, pitch, reward reveals, home fan, deck piles) | cardBackClass → .bw-back.bk-<unit\|structure\|castle\|field> (art/backings/*.png) | good — has its own look that plays at the right moment | live (x17.js) | 1 |
+| `tr-rarity-zoom` | Top rarity frame on a zoomed card 🎨 | the card detail / inspector of a Mythic (or Ancient, Divine, Void, Daemonic) card | FX.D FRAMES_CSS rSel matches "--rarity-a:#…" and "--rarity-a: #…", so the big card wears the same frame | good — has its own look that plays at the right moment | live (x17.js) | 2 |
 
 ### Foils (`foil`, 44)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `foil-pearl` | Foil finish: Pearl | card tile with is-holo holo-pearl (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-pearl | good — soft pastel sheen | 3 |
-| `foil-rainbow` | Foil finish: Rainbow holo | card tile with is-holo holo-rainbow (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-rainbow | good — classic rainbow band | 3 |
-| `foil-cosmos` | Foil finish: Cosmos | card tile with is-holo holo-cosmos (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-cosmos | good — deep-space band | 3 |
-| `foil-starlight` | Foil finish: Starlight sparkle layer | card tile with is-holo holo-starlight (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-starlight | good — twinkling .holo-glitter | 3 |
-| `foil-hex` | Foil finish: Hex | card tile with is-holo holo-hex (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-hex | good — honeycomb lattice | 3 |
-| `foil-etched` | Foil finish: Etched | card tile with is-holo holo-etched (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-etched | good — engraved frame lines | 3 |
-| `foil-ice` | Foil finish: Cracked ice | card tile with is-holo holo-ice (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-ice | good — ice shards flash on tilt | 3 |
-| `foil-gold` | Foil finish: Gold leaf | card tile with is-holo holo-gold (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-gold | good — warm gold sheen + rim | 3 |
-| `foil-reverse` | Foil finish: Reverse holo | card tile with is-holo holo-reverse (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-reverse | good — rainbow frame, plain art | 3 |
-| `foil-prism` | Foil finish: Prism | card tile with is-holo holo-prism (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-prism | good — prismatic facets | 3 |
-| `foil-lattice` | Foil finish: Lattice | card tile with is-holo holo-lattice (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-lattice | basic — not rollable | 3 |
-| `foil-aurora` | Foil finish: Aurora | card tile with is-holo holo-aurora (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-aurora | good — animated finish | 3 |
-| `foil-galaxy` | Foil finish: Galaxy swirl | card tile with is-holo holo-galaxy (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-galaxy | good — animated finish | 3 |
-| `foil-molten` | Foil finish: Molten gold | card tile with is-holo holo-molten (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-molten | good — animated finish | 3 |
-| `foil-frost` | Foil finish: Frost crystal | card tile with is-holo holo-frost (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-frost | good — animated finish | 3 |
-| `foil-oilslick` | Foil finish: Oil slick | card tile with is-holo holo-oilslick (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-oilslick | good — animated finish | 3 |
-| `foil-sakura` | Foil finish: Sakura petals | card tile with is-holo holo-sakura (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-sakura | good — animated finish | 3 |
-| `foil-sparkle` | Foil finish: Glitter field | card tile with is-holo holo-sparkle (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-sparkle | good — animated finish | 3 |
-| `foil-scanline` | Foil finish: Holo scanlines | card tile with is-holo holo-scanline (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-scanline | good — animated finish | 3 |
-| `foil-old` | Foil finish: Cards of old | card tile with is-holo holo-old (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-old | good — animated finish | 3 |
-| `foil-splash` | Legacy splashEffect foil (shimmer ring) | d.splashEffect==='foil' → .card-tile-foil | foilShimmer + foilRingShift | good — has its own look that plays at the right moment | 3 |
-| `foil-tilt-board` | Foil light on the board / in hand | foil units in a fight | finish shows, light only drifts (holoDrift) | basic — no light response in fights; hand tilt on hold | 2 |
-| `foil-new-ember` | New foil idea: Ember crackle 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-tide` | New foil idea: Tide caustics 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-bramble` | New foil idea: Bramble vine 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-firefly` | New foil idea: Firefly night 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-feather` | New foil idea: Hummingbird iridescence 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-bronze` | New foil idea: Legion bronze 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-inkwash` | New foil idea: Ink wash 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-redacted` | New foil idea: Redacted 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-stainedglass` | New foil idea: Stained glass 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-void` | New foil idea: Void static 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-hellfire` | New foil idea: Hellfire 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-radioactive` | New foil idea: Radioactive glow 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-ghostmist` | New foil idea: Ghost mist 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-dragonscale` | New foil idea: Dragon scale 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-mycelium` | New foil idea: Mycelium 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-bioluminescent` | New foil idea: Bioluminescent 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-mirage` | New foil idea: Desert mirage 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-storm` | New foil idea: Storm 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-autumn` | New foil idea: Autumn leaf 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-moonphase` | New foil idea: Moon phase 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-constellation` | New foil idea: Constellation 🔮 🎨 | planned new finish | none | missing — idea | 3 |
-| `foil-new-cream-pearl` | New foil idea: Cream pearl (booster foil) 🔮 🎨 | planned new finish | none | missing — idea | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `foil-pearl` | Foil finish: Pearl | card tile with is-holo holo-pearl (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-pearl | good — soft pastel sheen | live (d.js) | 3 |
+| `foil-rainbow` | Foil finish: Rainbow holo | card tile with is-holo holo-rainbow (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-rainbow | good — classic rainbow band | live (d.js) | 3 |
+| `foil-cosmos` | Foil finish: Cosmos | card tile with is-holo holo-cosmos (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-cosmos | good — deep-space band | live (_existing.js) | 3 |
+| `foil-starlight` | Foil finish: Starlight sparkle layer | card tile with is-holo holo-starlight (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-starlight | good — twinkling .holo-glitter | live (d.js) | 3 |
+| `foil-hex` | Foil finish: Hex | card tile with is-holo holo-hex (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-hex | good — honeycomb lattice | live (d.js) | 3 |
+| `foil-etched` | Foil finish: Etched | card tile with is-holo holo-etched (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-etched | good — engraved frame lines | live (d.js) | 3 |
+| `foil-ice` | Foil finish: Cracked ice | card tile with is-holo holo-ice (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-ice | good — ice shards flash on tilt | live (d.js) | 3 |
+| `foil-gold` | Foil finish: Gold leaf | card tile with is-holo holo-gold (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-gold | good — warm gold sheen + rim | live (d.js) | 3 |
+| `foil-reverse` | Foil finish: Reverse holo | card tile with is-holo holo-reverse (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-reverse | good — rainbow frame, plain art | live (d.js) | 3 |
+| `foil-prism` | Foil finish: Prism | card tile with is-holo holo-prism (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-prism | good — prismatic facets | live (d.js) | 3 |
+| `foil-lattice` | Foil finish: Lattice | card tile with is-holo holo-lattice (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-lattice | basic — not rollable | live (d.js) | 3 |
+| `foil-aurora` | Foil finish: Aurora | card tile with is-holo holo-aurora (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-aurora | good — animated finish | live (_existing.js, d.js) | 3 |
+| `foil-galaxy` | Foil finish: Galaxy swirl | card tile with is-holo holo-galaxy (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-galaxy | good — animated finish | live (d.js) | 3 |
+| `foil-molten` | Foil finish: Molten gold | card tile with is-holo holo-molten (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-molten | good — animated finish | live (d.js) | 3 |
+| `foil-frost` | Foil finish: Frost crystal | card tile with is-holo holo-frost (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-frost | good — animated finish | live (d.js) | 3 |
+| `foil-oilslick` | Foil finish: Oil slick | card tile with is-holo holo-oilslick (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-oilslick | good — animated finish | live (d.js) | 3 |
+| `foil-sakura` | Foil finish: Sakura petals | card tile with is-holo holo-sakura (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-sakura | good — animated finish | live (d.js) | 3 |
+| `foil-sparkle` | Foil finish: Glitter field | card tile with is-holo holo-sparkle (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-sparkle | good — animated finish | live (d.js) | 3 |
+| `foil-scanline` | Foil finish: Holo scanlines | card tile with is-holo holo-scanline (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-scanline | good — animated finish | live (d.js) | 3 |
+| `foil-old` | Foil finish: Cards of old | card tile with is-holo holo-old (pack pull / owned copy / workbench) → decorateHolo + pointer --hx/--hy | .card-tile.holo-old | good — animated finish | live (_existing.js) | 3 |
+| `foil-splash` | Legacy splashEffect foil (shimmer ring) | d.splashEffect==='foil' → .card-tile-foil | foilShimmer + foilRingShift | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `foil-tilt-board` | Foil light on the board / in hand | foil units in a fight | finish shows, light only drifts (holoDrift) | basic — no light response in fights; hand tilt on hold | live (d.js) | 2 |
+| `foil-new-ember` | New foil idea: Ember crackle 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-tide` | New foil idea: Tide caustics 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-bramble` | New foil idea: Bramble vine 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-firefly` | New foil idea: Firefly night 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-feather` | New foil idea: Hummingbird iridescence 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-bronze` | New foil idea: Legion bronze 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-inkwash` | New foil idea: Ink wash 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-redacted` | New foil idea: Redacted 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-stainedglass` | New foil idea: Stained glass 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-void` | New foil idea: Void static 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-hellfire` | New foil idea: Hellfire 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-radioactive` | New foil idea: Radioactive glow 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-ghostmist` | New foil idea: Ghost mist 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-dragonscale` | New foil idea: Dragon scale 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-mycelium` | New foil idea: Mycelium 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-bioluminescent` | New foil idea: Bioluminescent 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-mirage` | New foil idea: Desert mirage 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-storm` | New foil idea: Storm 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-autumn` | New foil idea: Autumn leaf 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-moonphase` | New foil idea: Moon phase 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-constellation` | New foil idea: Constellation 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
+| `foil-new-cream-pearl` | New foil idea: Cream pearl (booster foil) 🔮 🎨 | planned new finish | none | missing — idea | future | 3 |
 
-### Pack and card opening (`pack-card-open`, 37)
+### Pack and card opening (`pack-card-open`, 39)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `pack-idle` | Pack waiting to be opened | po2 stage 1 | .po2-pack.is-idle po2Float / po2GlowPulse, po2Sheen | good — has its own look that plays at the right moment | 2 |
-| `pack-glow` | Pack glows with a hint of the best card | rollPackGlow (sometimes ±1–2 tiers off) | --glow leak colour + .po2-leak | good — has its own look that plays at the right moment | 2 |
-| `pack-jackpot` | Jackpot pack | opened pack has o.jackpot | .po2-pack.is-jackpot po2Jackpot + 👑 burst + rareRise | good — has its own look that plays at the right moment | 2 |
-| `pack-stack` | Several packs layered | multiple reward packs queued | layered pile behind the current pack | good — has its own look that plays at the right moment | 3 |
-| `pack-tear` | Tear the strip | drag across .po2-strip | --tear progress, pageTurn ticks, po2Snip/po2StripOff | good — has its own look that plays at the right moment | 1 |
-| `pack-burst` | Pack bursts open | tear() complete | .is-open + burst(pack.icon, ✨) + swipeTone + gold | good — has its own look that plays at the right moment | 1 |
-| `pack-legacy-shake` | Legacy pack shake + light leak | old pack opener (.pack-open-pack) | poShake + leakRays | basic — older opener path | 3 |
-| `pack-deal` | Cards deal out | showReveal | .po2-card po2DealIn fan | good — has its own look that plays at the right moment | 2 |
-| `pack-tease-rare` | Rare tease (Rare – Super Rare) | current card is tease-rare → po2Tease (+ po2Rattle and sparks for legend) + rareRise | .po2-card.tease-rare | good — has its own look that plays at the right moment | 2 |
-| `pack-tease-epic` | Epic tease (Epic – Legendary) | current card is tease-epic → po2Tease (+ po2Rattle and sparks for legend) + rareRise | .po2-card.tease-epic | good — has its own look that plays at the right moment | 2 |
-| `pack-tease-legend` | Legend tease (tier 11+) | current card is tease-legend → po2Tease (+ po2Rattle and sparks for legend) + rareRise | .po2-card.tease-legend | good — has its own look that plays at the right moment | 2 |
-| `pack-rays` | Light rays on reveal (Rare+) | reveal() tier ≥4 or new → .po2-reveal.is-rays | po2Rays in rarity colour | good — has its own look that plays at the right moment | 2 |
-| `pack-rays-big` | Big fast rays (Epic+) | tier ≥7 → .is-rays-big | po2Rays big | good — has its own look that plays at the right moment | 2 |
-| `pack-spark` | Spark / Superspark | sparkChance(rarity) roll on reveal | .is-spark / .is-superspark + emoji bursts | good — has its own look that plays at the right moment | 3 |
-| `pack-reveal-mythic` | Mythic pull gets its own reveal 🎨 | reveal() of a mythic card | same as every tier 11+ (legend tease + big rays) | missing — top rarities share one reveal | 1 |
-| `pack-reveal-ancient` | Ancient pull gets its own reveal 🎨 | reveal() of a ancient card | same as every tier 11+ (legend tease + big rays) | missing — top rarities share one reveal | 2 |
-| `pack-reveal-divine` | Divine pull gets its own reveal 🎨 | reveal() of a divine card | same as every tier 11+ (legend tease + big rays) | missing — top rarities share one reveal | 2 |
-| `pack-reveal-void` | Void pull gets its own reveal 🎨 | reveal() of a void card | same as every tier 11+ (legend tease + big rays) | missing — top rarities share one reveal | 2 |
-| `pack-reveal-daemonic` | Daemonic pull gets its own reveal 🎨 | reveal() of a daemonic card | same as every tier 11+ (legend tease + big rays) | missing — top rarities share one reveal | 2 |
-| `pack-reveal-foil` | Foil pull reveal 🎨 | reveal() of a card with a foil finish (pullClass) | finish shows on the face, nothing more | missing — a foil is a big moment with no moment | 1 |
-| `pack-reveal-shiny` | Shiny pull reveal | reveal() of r.shiny | .shiny-mark ✦ | basic — a generic or reused look that does not say what happened | 2 |
-| `pack-new-card` | NEW! card | reveal() of r.isNew | is-new-moment po2NewBorder + po2Stamp NEW! + unlockChime + burst + po2-flash | good — has its own look that plays at the right moment | 1 |
-| `pack-duplicate` | Duplicate (×N) pull **(retired 2026-10-17)** | r.count>1 | .po2-stackn ×N | basic — no dust/level progress cue | 3 |
-| `pack-collect` | Card flies to the row | collect() | po2-fly ghost arc + mini pop | good — has its own look that plays at the right moment | 3 |
-| `pack-sweep-reveal` | Sweep across to reveal | pointer sweep >60% of the card | reveal() | good — has its own look that plays at the right moment | 3 |
-| `pack-summary` | Pack summary | showSummary | summary grid + ProcFX.ripple wave + pointer lean | good — has its own look that plays at the right moment | 3 |
-| `pack-open-all-table` | Open all: slash table (10+ packs) | Open-all with 10+ packs | packs laid out, each opens when the slash crosses it; next ten slide in | good — has its own look that plays at the right moment | 2 |
-| `pack-crate` | 100+ packs: crate | opening 100+ | .po2-crate.is-open po2CrateShake | good — has its own look that plays at the right moment | 3 |
-| `pack-pile` | Huge pile reveal | pile mode | .po2-pile-count | good — has its own look that plays at the right moment | 3 |
-| `pack-faction` | Faction pack (Rivergate / Sunfeather) | openFactionPack | same opener | basic — no faction dressing | 2 |
-| `pack-mystery` | Mystery Booster | buy from the wandering trader | mysteryBoing + same opener | basic — a generic or reused look that does not say what happened | 3 |
-| `pack-free-courier` | Free pack courier hands it over | tap Bramble the courier mouse | courier bob → opener | good — has its own look that plays at the right moment | 3 |
-| `pack-purchase` | Buy a pack | buyPack | coinRegister + counter | good — has its own look that plays at the right moment | 3 |
-| `pack-discover` | Discovered pop-up (first time a card is seen) | discover-card | .discover-burst + discoverShine | good — has its own look that plays at the right moment | 3 |
-| `pack-reward-unlock` | Card unlocked on the results screen | rewardCardsReveal | padlock shakes and breaks (lockBreak) + shine + NEW! | good — has its own look that plays at the right moment | 2 |
-| `pack-pity` | Pity guarantee (new card / Epic every 30 packs) 🔮 | planned | none | missing — planned | 3 |
-| `pack-odds` | Pack odds shown in the Shop 🔮 | planned guardrail | none | missing — planned | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `pack-idle` | Pack waiting to be opened | po2 stage 1 | .po2-pack.is-idle po2Float / po2GlowPulse, po2Sheen | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `pack-glow` | Pack glows with a hint of the best card | rollPackGlow (sometimes ±1–2 tiers off) | --glow leak colour + .po2-leak | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `pack-jackpot` | Jackpot pack | opened pack has o.jackpot | .po2-pack.is-jackpot po2Jackpot + 👑 burst + rareRise | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `pack-stack` | Several packs layered | multiple reward packs queued | layered pile behind the current pack | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `pack-tear` | Tear the strip | drag across .po2-strip | --tear progress, pageTurn ticks, po2Snip/po2StripOff | good — has its own look that plays at the right moment | live (d.js) | 1 |
+| `pack-burst` | Pack bursts open | tear() complete | .is-open + burst(pack.icon, ✨) + swipeTone + gold | good — has its own look that plays at the right moment | live (d.js) | 1 |
+| `pack-legacy-shake` | Legacy pack shake + light leak | old pack opener (.pack-open-pack) | poShake + leakRays | basic — older opener path | lab-only (d.js) | 3 |
+| `pack-deal` | Cards deal out | showReveal | .po2-card po2DealIn fan | good — has its own look that plays at the right moment | live (_existing.js) | 2 |
+| `pack-tease-rare` | Rare tease (Rare – Super Rare) | current card is tease-rare → po2Tease (+ po2Rattle and sparks for legend) + rareRise | .po2-card.tease-rare | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `pack-tease-epic` | Epic tease (Epic – Legendary) | current card is tease-epic → po2Tease (+ po2Rattle and sparks for legend) + rareRise | .po2-card.tease-epic | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `pack-tease-legend` | Legend tease (tier 11+) | current card is tease-legend → po2Tease (+ po2Rattle and sparks for legend) + rareRise | .po2-card.tease-legend | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `pack-rays` | Light rays on reveal (Rare+) | reveal() tier ≥4 or new → .po2-reveal.is-rays | po2Rays in rarity colour | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `pack-rays-big` | Big fast rays (Epic+) | tier ≥7 → .is-rays-big | po2Rays big | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `pack-spark` | Spark / Superspark | sparkChance(rarity) roll on reveal | .is-spark / .is-superspark + emoji bursts | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `pack-reveal-mythic` | Mythic pull gets its own reveal 🎨 | reveal() of a mythic card | same as every tier 11+ (legend tease + big rays) | missing — top rarities share one reveal | live (d.js) | 1 |
+| `pack-reveal-ancient` | Ancient pull gets its own reveal 🎨 | reveal() of a ancient card | same as every tier 11+ (legend tease + big rays) | missing — top rarities share one reveal | live (d.js) | 2 |
+| `pack-reveal-divine` | Divine pull gets its own reveal 🎨 | reveal() of a divine card | same as every tier 11+ (legend tease + big rays) | missing — top rarities share one reveal | live (d.js) | 2 |
+| `pack-reveal-void` | Void pull gets its own reveal 🎨 | reveal() of a void card | same as every tier 11+ (legend tease + big rays) | missing — top rarities share one reveal | live (d.js) | 2 |
+| `pack-reveal-daemonic` | Daemonic pull gets its own reveal 🎨 | reveal() of a daemonic card | same as every tier 11+ (legend tease + big rays) | missing — top rarities share one reveal | live (d.js) | 2 |
+| `pack-reveal-foil` | Foil pull reveal 🎨 | reveal() of a card with a foil finish (pullClass) | finish shows on the face, nothing more | missing — a foil is a big moment with no moment | live (d.js) | 1 |
+| `pack-reveal-shiny` | Shiny pull reveal | reveal() of r.shiny | .shiny-mark ✦ | basic — a generic or reused look that does not say what happened | live (d.js) | 2 |
+| `pack-new-card` | NEW! card | reveal() of r.isNew | is-new-moment po2NewBorder + po2Stamp NEW! + unlockChime + burst + po2-flash | good — has its own look that plays at the right moment | live (d.js) | 1 |
+| `pack-duplicate` | Duplicate (×N) pull | r.count>1 | retired 2026-10-17: the "×2" with two blank cards (fired on any card you already owned) is gone; a real bonus copy is pack-bonus-copy | basic — no dust/level progress cue | retired | 3 |
+| `pack-collect` | Card flies to the row | collect() | po2-fly ghost arc + mini pop | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `pack-sweep-reveal` | Sweep across to reveal | pointer sweep >60% of the card | reveal() | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `pack-summary` | Pack summary | showSummary | summary grid + ProcFX.ripple wave + pointer lean | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `pack-open-all-table` | Open all: slash table (10+ packs) | Open-all with 10+ packs | packs laid out, each opens when the slash crosses it; next ten slide in | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `pack-crate` | 100+ packs: crate | opening 100+ | .po2-crate.is-open po2CrateShake | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `pack-pile` | Huge pile reveal | pile mode | .po2-pile-count | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `pack-faction` | Faction pack (Rivergate / Sunfeather) | openFactionPack | same opener | basic — no faction dressing | live (d.js) | 2 |
+| `pack-mystery` | Mystery Booster | buy from the wandering trader | mysteryBoing + same opener | basic — a generic or reused look that does not say what happened | live (d.js) | 3 |
+| `pack-free-courier` | Free pack courier hands it over | tap Bramble the courier mouse | courier bob → opener | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `pack-purchase` | Buy a pack | buyPack | coinRegister + counter | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `pack-discover` | Discovered pop-up (first time a card is seen) | discover-card | .discover-burst + discoverShine | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `pack-reward-unlock` | Card unlocked on the results screen | rewardCardsReveal | padlock shakes and breaks (lockBreak) + shine + NEW! | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `pack-pity` | Pity guarantee (new card / Epic every 30 packs) 🔮 | planned | none | missing — planned | live (d.js) | 3 |
+| `pack-odds` | Pack odds shown in the Shop 🔮 | planned guardrail | none | missing — planned | live (d.js) | 3 |
+| `pack-bonus-copy` | Bonus copy ("Bonus!") | a pack card that rolls a bonus copy (Common 5% … halving from Epic) | .po2-bonus-copy slides out from behind the card, "Bonus! +1 copy" tag, unlockChime and a burst | good — has its own look that plays at the right moment | live (x17.js) | 2 |
+| `pack-count-down` | Pile count counts down | opening a big pile of packs | #poPileCount "N cards" counts down as each card is revealed | basic — the number counts down | live (x17.js) | 2 |
 
 ### Rewards and results (`rewards-results`, 24)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `res-victory` | Victory card | match won → winloss-card.is-glory | .wl-rays (wlRays) + win fanfare | good — has its own look that plays at the right moment | 1 |
-| `res-defeat` | Defeat card | match lost → is-fallen | .wl-dusk ashFall | good — has its own look that plays at the right moment | 1 |
-| `res-draw` | Draw result | match drawn | plain result card | basic — a generic or reused look that does not say what happened | 3 |
-| `res-victory-toss` | Victory toss | victoryParade | winners launched, spin, bump | good — has its own look that plays at the right moment | 2 |
-| `res-loss-scatter` | Units scatter on loss/draw | opts.scatter | .is-scattering cardScatter | good — has its own look that plays at the right moment | 3 |
-| `res-first-clear` | First clear | first clear of a node | .wl-firstclear::after wlShine | good — has its own look that plays at the right moment | 2 |
-| `res-rank-stamp` | Rank earned (B/A/S/SS/SSS) | m.conquestRankEarned | .rank-hex.wl-rank + rankFoil/sssPulse | good — has its own look that plays at the right moment | 2 |
-| `res-rank-lesson` | Rank lesson **(retired 2026-10-16)** | first ranks | .wl-rank-lesson (npcIn) | basic — a generic or reused look that does not say what happened | 3 |
-| `res-reward-reveal` | Reward reveal (cards / unlock tokens) | playRewardReveal | dark card back, shine builds, flash, NEW!; tokens drop with a slight shake | good — has its own look that plays at the right moment | 1 |
-| `res-reward-cards` | Reward cards unlocked | rewardCardsReveal | "Card unlocked!" splash + padlock break + shine + NEW! | good — has its own look that plays at the right moment | 1 |
-| `res-coin-shower` | Currency lands | rewardsCheer | glyphs rain into pills, pills pop | good — has its own look that plays at the right moment | 2 |
-| `res-count-up` | Reward numbers count up | wireWinLossRewardAnim | staggered spring pills + countPop | good — has its own look that plays at the right moment | 3 |
-| `res-pack-won` | Pack won | floatRewardPackUp | .rw-pack-art rwPackBob/rwPackGlow | good — has its own look that plays at the right moment | 2 |
-| `res-held-packs` | Packs won before the Armoury released | releaseHeldPacks | queued reveal | basic — a generic or reused look that does not say what happened | 3 |
-| `res-achv-on-results` | Achievement earned on the results screen | winloss achievements | .winloss-achv waPop | good — has its own look that plays at the right moment | 3 |
-| `res-star-fall` | Star fall celebration | worthCelebrating wins / forge | starFallVfx.celebrate | good — has its own look that plays at the right moment | 3 |
-| `res-dragon-scale` | Dragon Scale found on the results | rollDragonScale (S rank) | line / unlock | basic — a generic or reused look that does not say what happened | 2 |
-| `res-boss-leader` | Boss leader granted | grantClearedBossLeaders | listed | basic — a generic or reused look that does not say what happened | 2 |
-| `res-faction-crown` | Map 20 faction crown (Epic + Heroic) | grantMap20FactionCrown | listed | basic — a generic or reused look that does not say what happened | 2 |
-| `res-materia-drop` | Materia / ore drops | rollMateriaDrops | chips | basic — a generic or reused look that does not say what happened | 3 |
-| `res-card-drop` | Card drop from a fight | rollCardDrop | reward reveal | good — has its own look that plays at the right moment | 3 |
-| `res-xp-line` | XP and level on results **(retired 2026-10-16)** | results | text | basic — a generic or reused look that does not say what happened | 3 |
-| `res-tutorial-result` | Tutorial win/loss | tutorialWinLossTitle | result card | basic — a generic or reused look that does not say what happened | 3 |
-| `res-castle-falls` | Castle falls under the sign | castleCrumble at match end | shudder, dust, burn | good — has its own look that plays at the right moment | 2 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `res-victory` | Victory card | match won → winloss-card.is-glory | .wl-rays (wlRays) + win fanfare | good — has its own look that plays at the right moment | live (f.js) | 1 |
+| `res-defeat` | Defeat card | match lost → is-fallen | .wl-dusk ashFall | good — has its own look that plays at the right moment | live (f.js) | 1 |
+| `res-draw` | Draw result | match drawn | plain result card | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `res-victory-toss` | Victory toss | victoryParade | winners launched, spin, bump | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `res-loss-scatter` | Units scatter on loss/draw | opts.scatter | .is-scattering cardScatter | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `res-first-clear` | First clear | first clear of a node | .wl-firstclear::after wlShine | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `res-rank-stamp` | Rank earned (B/A/S/SS/SSS) | m.conquestRankEarned | .rank-hex.wl-rank + rankFoil/sssPulse | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `res-rank-lesson` | Rank lesson | first ranks | retired 2026-10-16: the results no longer show the rank lesson box; the rank hex says it | basic — a generic or reused look that does not say what happened | retired | 3 |
+| `res-reward-reveal` | Reward reveal (cards / unlock tokens) | playRewardReveal | dark card back, shine builds, flash, NEW!; tokens drop with a slight shake | good — has its own look that plays at the right moment | live (f.js) | 1 |
+| `res-reward-cards` | Reward cards unlocked | rewardCardsReveal | "Card unlocked!" splash + padlock break + shine + NEW! | good — has its own look that plays at the right moment | live (f.js) | 1 |
+| `res-coin-shower` | Currency lands | rewardsCheer | glyphs rain into pills, pills pop | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `res-count-up` | Reward numbers count up | wireWinLossRewardAnim | staggered spring pills + countPop | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `res-pack-won` | Pack won | floatRewardPackUp | .rw-pack-art rwPackBob/rwPackGlow | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `res-held-packs` | Packs won before the Armoury released | releaseHeldPacks | queued reveal | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `res-achv-on-results` | Achievement earned on the results screen | winloss achievements | .winloss-achv waPop | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `res-star-fall` | Star fall celebration | worthCelebrating wins / forge | starFallVfx.celebrate | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `res-dragon-scale` | Dragon Scale found on the results | rollDragonScale (S rank) | line / unlock | basic — a generic or reused look that does not say what happened | live (f.js) | 2 |
+| `res-boss-leader` | Boss leader granted | grantClearedBossLeaders | listed | basic — a generic or reused look that does not say what happened | live (f.js) | 2 |
+| `res-faction-crown` | Map 20 faction crown (Epic + Heroic) | grantMap20FactionCrown | listed | basic — a generic or reused look that does not say what happened | retired | 2 |
+| `res-materia-drop` | Materia / ore drops | rollMateriaDrops | chips | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `res-card-drop` | Card drop from a fight | rollCardDrop | reward reveal | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `res-xp-line` | XP and level on results | results | retired 2026-10-16: the "+3 XP" gold bar with its glow over the results is gone; an account level-up plays after the results close | basic — a generic or reused look that does not say what happened | retired | 3 |
+| `res-tutorial-result` | Tutorial win/loss | tutorialWinLossTitle | result card | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `res-castle-falls` | Castle falls under the sign | castleCrumble at match end | shudder, dust, burn | good — has its own look that plays at the right moment | live (f.js) | 2 |
 
 ### Meta progression (level, forge, nest, inventory, shop, achievements, quests, energy) (`meta-progression`, 54)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `meta-forge-temper` | Forge: temper (card level-up) | forgeTemper | forgeTemperAnimation (ProcFX.forge heat → hammer → quench → shine) + SkillFX.levelUp burst | good — has its own look that plays at the right moment | 1 |
-| `meta-forge-limit-break` | Forge: limit break (Lv 10 → 11) | forgeLimitBreak | forgeSmithAnimation(heavy) flip + starFall | basic — shares the generic smith flip; no limit-break moment of its own | 1 |
-| `meta-forge-promote` | Forge: promote (to the next rarity) | forgePromote | forgeSmithAnimation(heavy) | basic — no rarity-up colour change moment | 2 |
-| `meta-forge-prestige` | Forge: prestige (Gold / Rainbow / Extended) | forgePrestige | forgeSmithAnimation(heavy) + prestigeTone | basic — a generic or reused look that does not say what happened | 2 |
-| `meta-forge-refine` | Forge: refine (finish step: prism, gold...) | forgeRefine | forgeSmithAnimation(heavy for prism/gold) | basic — new finish not showcased | 2 |
-| `meta-forge-enchant` | Forge: enchant / craft Materia | forgeEnchant / craftMateria | materiaBurstVfx (crystal forms, spins, drops) + materiaForm | good — has its own look that plays at the right moment | 2 |
-| `meta-forge-melt` | Forge: melt duplicates for Dust | forgeMeltBtn / disenchantAllExtras | toast | missing — nothing on screen | 2 |
-| `meta-forge-fuse` | Blacksmith: fuse 3 copies into a higher card / craft equipment | blacksmith recipes | smithBurst + starFall | basic — a generic or reused look that does not say what happened | 2 |
-| `meta-forge-tier-up` | Forge tier upgrade | upgradeForge | toast | missing — nothing on screen | 3 |
-| `meta-forge-entrance` | Forge flare-up on entering | forgeOnScreen → forgeFlareUp | .forge-flareup ffTongue | good — has its own look that plays at the right moment | 3 |
-| `meta-castle-temper` | Castle temper / level-up | temperCastle | castle level text | basic — a generic or reused look that does not say what happened | 2 |
-| `meta-castle-drop` | Castle won from a pack / map | grantDropCastle / rollPackCastle | listed | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-hero-level` | Hero level-up | heroGainXp level-up (+ Hall opens next time) | heroHallLevelFlourish ring + heroLevel bell | good — has its own look that plays at the right moment | 2 |
-| `meta-hero-skill-pick` | Hero skill pick (Lv 5/15/30/50/75/100) | renderHeroHall skill slot | choice UI | missing — picking a new skill has no reward moment | 2 |
-| `meta-hero-stat-spend` | Hero stat point spent | Hall +1 Attack/Health/Wait | numbers update | missing — nothing on screen | 3 |
-| `meta-nest-egg-place` | Place an egg in the Nest | placeEggInNest | re-render | missing — nothing on screen | 2 |
-| `meta-nest-egg-idle` | Eggs in the Nest | nest egg waiting | .nest-egg eggWobble | good — has its own look that plays at the right moment | 3 |
-| `meta-nest-hatch` | Egg hatches (Nest) | hatchEgg → hatchRevealVfx | hatch overlay: rock, crack stages, burst, beams (hatch-uncommon / hatch-rare / is-shining) + unlockChime | good — has its own look that plays at the right moment | 1 |
-| `meta-nest-kibble-train` | Train a Level-0 card with Kibble | nest picker → train | re-render + .hay-nest.is-baby babyBob | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-nest-trained` | Kibble training done (Level 1) | training finished | .hay-nest.is-ready readyHop + metaFx levelUp LEVEL 1! | good — has its own look that plays at the right moment | 2 |
-| `meta-nest-egg-drop` | Egg dropped from a win | rollEggDrop / grantEgg | results line | basic — a generic or reused look that does not say what happened | 2 |
-| `meta-inventory-new` | New item in the Inventory | loadItems change | .inv-new invNewPop/invNewBob | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-shop-buy` | Shop purchase | buyPack / shelf buy | coinRegister + shelfPick + counter (counterSlide) | good — has its own look that plays at the right moment | 3 |
-| `meta-shop-wanderer-deal` | Wandering merchant deal | openWandererDeal | modal | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-energy-spend` | Energy spent on a fight | spendEnergy | HUD number | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-energy-short` | Not enough Energy | energyShortToast | .energy-short-toast energyToastIn | good — has its own look that plays at the right moment | 3 |
-| `meta-energy-tick` | Energy refills (+1 every 5 min) / full | settleEnergy tick | countdown text | missing — nothing on screen | 3 |
-| `meta-energy-capsule` | Energy capsule used | useEnergyCapsule | toast + number | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-energy-free` | Free daily Energy claimed | #epFree click | toast | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-energy-upgrade` | Max Energy upgrade (Camp / Forge) | buyEnergyUpgrade | number | missing — nothing on screen | 3 |
-| `meta-stamina` | Stamina bought (Tavern) | buyStamina | pips (mseBob ready) | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-achv-ready` | Achievement ready to claim | achievementStatus claimable | .achv-tile.is-ready achvGlow | good — has its own look that plays at the right moment | 3 |
-| `meta-achv-claim` | Achievement claimed | claimAchievement → rewardRush | rewardRush (reward chips fly to the wallet) | good — has its own look that plays at the right moment | 2 |
-| `meta-achv-unlocked-live` | Achievement unlocked (the moment it happens) | achievement condition met during play | new-achievements chip only | missing — no pop when it happens | 2 |
-| `meta-quest-ready` | Quest ready to claim | claimableQuestCount | .qn-note.is-ready qnPulse | good — has its own look that plays at the right moment | 3 |
-| `meta-quest-claim` | Quest claimed | claimQuest → questRewardFlight + rewardRush | reward flight + starFall | good — has its own look that plays at the right moment | 2 |
-| `meta-quest-progress` | Quest progress ticks | bumpQuestCounter | badge count | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-errand-offer` | Errand offered after a win | maybeOfferErrand (30% from Map 9) | npc prompt | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-errand-claim` | Errand completed | claimErrand | rewardRush | good — has its own look that plays at the right moment | 3 |
-| `meta-daily-notice-swap` | Daily notice swaps | swapDailyNotice | re-render | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-account-level` | Account level-up | awardXp crosses a level | toast "⭐ Level N!" | basic — toast only for a player level-up | 1 |
-| `meta-xp-gain` | XP gained | awardXp | toast + level bar | basic — a generic or reused look that does not say what happened | 3 |
-| `meta-wildpath-learn` | Wildpath perk learned | wp tree learn | .wp-draw .wp-ink (wpInk) + wpNodeIn + wpPulse | good — has its own look that plays at the right moment | 3 |
-| `meta-card-unlock` | Card unlocked for the player | unlockCardForPlayer | discover pop-up / rewards reveal | good — has its own look that plays at the right moment | 3 |
-| `meta-card-level-codex` | Card level shown in Codex / pips | forge pips | .forge-pips i.next pipPulse + forgeLvlPop | good — has its own look that plays at the right moment | 3 |
-| `meta-daily-login` | Daily login reward / streak 🔮 | planned (not built) | none | missing — no daily login system exists | 2 |
-| `meta-monthly-bonus` | Monthly pack-opening bonus steps 🔮 | planned | none | missing — planned | 3 |
-| `meta-bramble-pass` | Bramble Pass daily pouch 🔮 | planned | none | missing — planned | 3 |
-| `meta-steam-achv` | Steam achievements / overlay 🔮 | planned (Steam build) | none | missing — planned | 3 |
-| `meta-attunement` | Attunement instead of levels (every 100 maps) 🔮 | planned | none | missing — planned | 3 |
-| `meta-alchemy` | Alchemy free top-ups (Map 65+) 🔮 | planned | none | missing — planned | 3 |
-| `meta-dragon-egg-craft` | Craft a dragon egg 🔮 | planned (Map 50+, a month of farming) | none | missing — planned | 2 |
-| `meta-materia-socket` | Socket Materia into the Hero (v2) 🔮 | planned | none | missing — planned | 3 |
-| `meta-bring-effect` | Bring your own effect (Map 80+) 🔮 | planned | none | missing — planned | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `meta-forge-temper` | Forge: temper (card level-up) | forgeTemper | forgeTemperAnimation (ProcFX.forge heat → hammer → quench → shine) + SkillFX.levelUp burst | good — has its own look that plays at the right moment | live (d.js, r.js) | 1 |
+| `meta-forge-limit-break` | Forge: limit break (Lv 10 → 11) | forgeLimitBreak | forgeSmithAnimation(heavy) flip + starFall | basic — shares the generic smith flip; no limit-break moment of its own | live (d.js) | 1 |
+| `meta-forge-promote` | Forge: promote (to the next rarity) | forgePromote | forgeSmithAnimation(heavy) | basic — no rarity-up colour change moment | live (d.js) | 2 |
+| `meta-forge-prestige` | Forge: prestige (Gold / Rainbow / Extended) | forgePrestige | forgeSmithAnimation(heavy) + prestigeTone | basic — a generic or reused look that does not say what happened | live (d.js) | 2 |
+| `meta-forge-refine` | Forge: refine (finish step: prism, gold...) | forgeRefine | forgeSmithAnimation(heavy for prism/gold) | basic — new finish not showcased | live (d.js) | 2 |
+| `meta-forge-enchant` | Forge: enchant / craft Materia | forgeEnchant / craftMateria | materiaBurstVfx (crystal forms, spins, drops) + materiaForm | good — has its own look that plays at the right moment | live (d.js) | 2 |
+| `meta-forge-melt` | Forge: melt duplicates for Dust | forgeMeltBtn / disenchantAllExtras | toast | missing — nothing on screen | live (d.js) | 2 |
+| `meta-forge-fuse` | Blacksmith: fuse 3 copies into a higher card / craft equipment | blacksmith recipes | smithBurst + starFall | basic — a generic or reused look that does not say what happened | live (d.js) | 2 |
+| `meta-forge-tier-up` | Forge tier upgrade | upgradeForge | toast | missing — nothing on screen | live (d.js) | 3 |
+| `meta-forge-entrance` | Forge flare-up on entering | forgeOnScreen → forgeFlareUp | .forge-flareup ffTongue | good — has its own look that plays at the right moment | live (d.js) | 3 |
+| `meta-castle-temper` | Castle temper / level-up | temperCastle | castle level text | basic — a generic or reused look that does not say what happened | live (d.js) | 2 |
+| `meta-castle-drop` | Castle won from a pack / map | grantDropCastle / rollPackCastle | listed | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-hero-level` | Hero level-up | heroGainXp level-up (+ Hall opens next time) | heroHallLevelFlourish ring + heroLevel bell | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `meta-hero-skill-pick` | Hero skill pick (Lv 5/15/30/50/75/100) | renderHeroHall skill slot | choice UI | missing — picking a new skill has no reward moment | live (f.js) | 2 |
+| `meta-hero-stat-spend` | Hero stat point spent | Hall +1 Attack/Health/Wait | numbers update | missing — nothing on screen | live (f.js) | 3 |
+| `meta-nest-egg-place` | Place an egg in the Nest | placeEggInNest | re-render | missing — nothing on screen | live (f.js) | 2 |
+| `meta-nest-egg-idle` | Eggs in the Nest | nest egg waiting | .nest-egg eggWobble | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `meta-nest-hatch` | Egg hatches (Nest) | hatchEgg → hatchRevealVfx | hatch overlay: rock, crack stages, burst, beams (hatch-uncommon / hatch-rare / is-shining) + unlockChime | good — has its own look that plays at the right moment | live (f.js) | 1 |
+| `meta-nest-kibble-train` | Train a Level-0 card with Kibble | nest picker → train | re-render + .hay-nest.is-baby babyBob | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-nest-trained` | Kibble training done (Level 1) | training finished | .hay-nest.is-ready readyHop + metaFx levelUp LEVEL 1! | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `meta-nest-egg-drop` | Egg dropped from a win | rollEggDrop / grantEgg | results line | basic — a generic or reused look that does not say what happened | live (f.js) | 2 |
+| `meta-inventory-new` | New item in the Inventory | loadItems change | .inv-new invNewPop/invNewBob | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-shop-buy` | Shop purchase | buyPack / shelf buy | coinRegister + shelfPick + counter (counterSlide) | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `meta-shop-wanderer-deal` | Wandering merchant deal | openWandererDeal | modal | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-energy-spend` | Energy spent on a fight | spendEnergy | HUD number | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-energy-short` | Not enough Energy | energyShortToast | .energy-short-toast energyToastIn | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `meta-energy-tick` | Energy refills (+1 every 5 min) / full | settleEnergy tick | countdown text | missing — nothing on screen | live (f.js) | 3 |
+| `meta-energy-capsule` | Energy capsule used | useEnergyCapsule | toast + number | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-energy-free` | Free daily Energy claimed | #epFree click | toast | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-energy-upgrade` | Max Energy upgrade (Camp / Forge) | buyEnergyUpgrade | number | missing — nothing on screen | live (f.js) | 3 |
+| `meta-stamina` | Stamina bought (Tavern) | buyStamina | pips (mseBob ready) | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-achv-ready` | Achievement ready to claim | achievementStatus claimable | .achv-tile.is-ready achvGlow | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `meta-achv-claim` | Achievement claimed | claimAchievement → rewardRush | rewardRush (reward chips fly to the wallet) | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `meta-achv-unlocked-live` | Achievement unlocked (the moment it happens) | achievement condition met during play | new-achievements chip only | missing — no pop when it happens | live (f.js) | 2 |
+| `meta-quest-ready` | Quest ready to claim | claimableQuestCount | .qn-note.is-ready qnPulse | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `meta-quest-claim` | Quest claimed | claimQuest → questRewardFlight + rewardRush | reward flight + starFall | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `meta-quest-progress` | Quest progress ticks | bumpQuestCounter | badge count | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-errand-offer` | Errand offered after a win | maybeOfferErrand (30% from Map 9) | npc prompt | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-errand-claim` | Errand completed | claimErrand | rewardRush | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `meta-daily-notice-swap` | Daily notice swaps | swapDailyNotice | re-render | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-account-level` | Account level-up | awardXp crosses a level | toast "⭐ Level N!" | basic — toast only for a player level-up | live (f.js) | 1 |
+| `meta-xp-gain` | XP gained | awardXp | toast + level bar | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `meta-wildpath-learn` | Wildpath perk learned | wp tree learn | .wp-draw .wp-ink (wpInk) + wpNodeIn + wpPulse | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `meta-card-unlock` | Card unlocked for the player | unlockCardForPlayer | discover pop-up / rewards reveal | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `meta-card-level-codex` | Card level shown in Codex / pips | forge pips | .forge-pips i.next pipPulse + forgeLvlPop | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `meta-daily-login` | Daily login reward / streak 🔮 | planned (not built) | none | missing — no daily login system exists | lab-only (f.js) | 2 |
+| `meta-monthly-bonus` | Monthly pack-opening bonus steps 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
+| `meta-bramble-pass` | Bramble Pass daily pouch 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
+| `meta-steam-achv` | Steam achievements / overlay 🔮 | planned (Steam build) | none | missing — planned | lab-only (f.js) | 3 |
+| `meta-attunement` | Attunement instead of levels (every 100 maps) 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
+| `meta-alchemy` | Alchemy free top-ups (Map 65+) 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
+| `meta-dragon-egg-craft` | Craft a dragon egg 🔮 | planned (Map 50+, a month of farming) | none | missing — planned | lab-only (f.js) | 2 |
+| `meta-materia-socket` | Socket Materia into the Hero (v2) 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
+| `meta-bring-effect` | Bring your own effect (Map 80+) 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
 
-### Conquest map (`conquest-map`, 146)
+### Conquest map (`conquest-map`, 151)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `map-amb-m1` | Map ambience: Bramblewood Outskirts (m1) 🎨 | conquest map m1 shown → mountMapShader(host, 'm1') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome meadow with 🐝 bees | basic — shader look does not match the place (e.g. savanna shimmer on a misty meadow) | 2 |
-| `map-amb-mtut` | Map ambience: Tutorial (mtut) | conquest map mtut shown → mountMapShader(host, 'mtut') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome meadow with 🐝 bees | good — shader + moving critters | 3 |
-| `map-amb-mo` | Map ambience: The Old Bramble (mo) 🎨 | conquest map mo shown → mountMapShader(host, 'mo') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome forest with 🦋 butterflies | missing — map has no weather/light layer of its own | 2 |
-| `map-amb-mf` | Map ambience: Thistlewood (mf) | conquest map mf shown → mountMapShader(host, 'mf') + startMapMovers + generatedMapDecor | shader kind 0: forest (canopy dapple, light shafts, fireflies); decor biome forest with 🦋 butterflies | good — shader + moving critters | 3 |
-| `map-amb-mq` | Map ambience: Clovermead (mq) 🎨 | conquest map mq shown → mountMapShader(host, 'mq') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome meadow with 🐝 bees | missing — map has no weather/light layer of its own | 2 |
-| `map-amb-mb` | Map ambience: Pebble Beach (mb) | conquest map mb shown → mountMapShader(host, 'mb') + startMapMovers + generatedMapDecor | shader kind 12: beach (warm sun, foam lines, spray); decor biome beach with 🦀 crabs | good — shader + moving critters | 3 |
-| `map-amb-mp` | Map ambience: Lilypad Reach (mp) | conquest map mp shown → mountMapShader(host, 'mp') + startMapMovers + generatedMapDecor | shader kind 1: water (caustics, glints); decor biome water with 🐟 fish | good — shader + moving critters | 3 |
-| `map-amb-mg` | Map ambience: Smugglers' Grotto (mg) | conquest map mg shown → mountMapShader(host, 'mg') + startMapMovers + generatedMapDecor | shader kind 3: caves (fog, spores, pointer lantern); decor biome cave with 🦇 bats | good — shader + moving critters | 3 |
-| `map-amb-mc` | Map ambience: Gannet Cliffs (mc) 🎨 | conquest map mc shown → mountMapShader(host, 'mc') + startMapMovers + generatedMapDecor | shader kind 12: beach (warm sun, foam lines, spray); decor biome alpine with 🦅 birds | basic — shader look does not match the place (e.g. savanna shimmer on a misty meadow) | 2 |
-| `map-amb-m2` | Map ambience: Sunken Hollow (m2) | conquest map m2 shown → mountMapShader(host, 'm2') + startMapMovers + generatedMapDecor | shader kind 1: water (caustics, glints); decor biome water with 🐟 fish | good — shader + moving critters | 3 |
-| `map-amb-mw` | Map ambience: Gatorback Swamp (mw) | conquest map mw shown → mountMapShader(host, 'mw') + startMapMovers + generatedMapDecor | shader kind 7: swamp (low fog, murk, green fireflies); decor biome swamp with ✨ fireflies | good — shader + moving critters | 3 |
-| `map-amb-ms` | Map ambience: The Sunken Grove (ms) 🎨 | conquest map ms shown → mountMapShader(host, 'ms') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome swamp with ✨ fireflies | missing — map has no weather/light layer of its own | 2 |
-| `map-amb-m8` | Map ambience: Sable Swampmire (m8) | conquest map m8 shown → mountMapShader(host, 'm8') + startMapMovers + generatedMapDecor | shader kind 7: swamp (low fog, murk, green fireflies); decor biome swamp with ✨ fireflies | good — shader + moving critters | 3 |
-| `map-amb-mu` | Map ambience: The Morel Hollow (mu) | conquest map mu shown → mountMapShader(host, 'mu') + startMapMovers + generatedMapDecor | shader kind 0: forest (canopy dapple, light shafts, fireflies); decor biome forest with 🦋 butterflies | good — shader + moving critters | 3 |
-| `map-amb-mz` | Map ambience: The Mycelium Deep (mz) 🎨 | conquest map mz shown → mountMapShader(host, 'mz') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome forest (default) with 🦋 butterflies | missing — map has no weather/light layer of its own | 2 |
-| `map-amb-m4` | Map ambience: Caves & Alcoves (m4) | conquest map m4 shown → mountMapShader(host, 'm4') + startMapMovers + generatedMapDecor | shader kind 3: caves (fog, spores, pointer lantern); decor biome cave with 🦇 bats | good — shader + moving critters | 3 |
-| `map-amb-mn` | Map ambience: The Glimmer Depths (mn) 🎨 | conquest map mn shown → mountMapShader(host, 'mn') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome cave with 🦇 bats | missing — map has no weather/light layer of its own | 2 |
-| `map-amb-mk` | Map ambience: The Kelp Mangroves (mk) | conquest map mk shown → mountMapShader(host, 'mk') + startMapMovers + generatedMapDecor | shader kind 6: coral (caustics + bubbles); decor biome reef with 🐠 fish | good — shader + moving critters | 3 |
-| `map-amb-m7` | Map ambience: Coral Current (m7) | conquest map m7 shown → mountMapShader(host, 'm7') + startMapMovers + generatedMapDecor | shader kind 6: coral (caustics + bubbles); decor biome reef with 🐠 fish | good — shader + moving critters | 3 |
-| `map-amb-mj` | Map ambience: The Sunken Depths (mj) | conquest map mj shown → mountMapShader(host, 'mj') + startMapMovers + generatedMapDecor | shader kind 6: coral (caustics + bubbles); decor biome reef with 🐠 fish | good — shader + moving critters | 3 |
-| `map-amb-m10` | Map ambience: Eyrie Heights (m10) | conquest map m10 shown → mountMapShader(host, 'm10') + startMapMovers + generatedMapDecor | shader kind 9: sky (clouds, wind); decor biome alpine with 🦅 birds | good — shader + moving critters | 3 |
-| `map-amb-mv` | Map ambience: The Aerie Vault (mv) 🎨 | conquest map mv shown → mountMapShader(host, 'mv') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome alpine with 🦅 birds | missing — map has no weather/light layer of its own | 2 |
-| `map-amb-mh` | Map ambience: The Briar Maze (mh) | conquest map mh shown → mountMapShader(host, 'mh') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome meadow with 🐝 bees | good — shader + moving critters | 3 |
-| `map-amb-mr` | Map ambience: The Redwood Deep (mr) | conquest map mr shown → mountMapShader(host, 'mr') + startMapMovers + generatedMapDecor | shader kind 0: forest (canopy dapple, light shafts, fireflies); decor biome forest with 🦋 butterflies | good — shader + moving critters | 3 |
-| `map-amb-m5` | Map ambience: Savanna Reaches (m5) | conquest map m5 shown → mountMapShader(host, 'm5') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome savanna with 🦋 butterflies | good — shader + moving critters | 3 |
-| `map-amb-my` | Map ambience: The Canopy (my) | conquest map my shown → mountMapShader(host, 'my') + startMapMovers + generatedMapDecor | shader kind 0: forest (canopy dapple, light shafts, fireflies); decor biome forest with 🦋 butterflies | good — shader + moving critters | 3 |
-| `map-amb-ml` | Map ambience: The Long Grass (ml) | conquest map ml shown → mountMapShader(host, 'ml') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome meadow with 🐝 bees | good — shader + moving critters | 3 |
-| `map-amb-mt` | Map ambience: The Pinewood Taiga (mt) | conquest map mt shown → mountMapShader(host, 'mt') + startMapMovers + generatedMapDecor | shader kind 5: tundra (aurora, snowfall); decor biome tundra with 🐦 birds | good — shader + moving critters | 3 |
-| `map-amb-m6` | Map ambience: Wolfsbane Tundra (m6) | conquest map m6 shown → mountMapShader(host, 'm6') + startMapMovers + generatedMapDecor | shader kind 5: tundra (aurora, snowfall); decor biome tundra with 🐦 birds | good — shader + moving critters | 3 |
-| `map-amb-mi` | Map ambience: The Ice Hollow (mi) 🎨 | conquest map mi shown → mountMapShader(host, 'mi') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome tundra with 🐦 birds | missing — map has no weather/light layer of its own | 2 |
-| `map-amb-md` | Map ambience: The Glass Dunes (md) | conquest map md shown → mountMapShader(host, 'md') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome savanna with 🦋 butterflies | good — shader + moving critters | 3 |
-| `map-amb-m3` | Map ambience: Ashen Spurn (m3) | conquest map m3 shown → mountMapShader(host, 'm3') + startMapMovers + generatedMapDecor | shader kind 2: fire (lava glow, smoke, embers); decor biome ash with 🔥 fireflies | good — shader + moving critters | 3 |
-| `map-amb-m9` | Map ambience: Basalt Foundry (m9) | conquest map m9 shown → mountMapShader(host, 'm9') + startMapMovers + generatedMapDecor | shader kind 8: foundry (embers, forge glow); decor biome forge with 🔥 fireflies | good — shader + moving critters | 3 |
-| `map-amb-m11` | Map ambience: The Sundered Peak (m11) | conquest map m11 shown → mountMapShader(host, 'm11') + startMapMovers + generatedMapDecor | shader kind 10: storm (embers + lightning); decor biome ash with 🔥 fireflies | good — shader + moving critters | 3 |
-| `map-amb-me` | Map ambience: Eye of the Volcano (me) | conquest map me shown → mountMapShader(host, 'me') + startMapMovers + generatedMapDecor | shader kind 10: storm (embers + lightning); decor biome ash with 🔥 fireflies | good — shader + moving critters | 3 |
-| `map-amb-mx` | Map ambience: Volcano Lair (mx) 🎨 | conquest map mx shown → mountMapShader(host, 'mx') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome ash with 🔥 fireflies | missing — map has no weather/light layer of its own | 2 |
-| `map-amb-m21` | Map ambience: The Quiet Summit (m21) | conquest map m21 shown → mountMapShader(host, 'm21') + startMapMovers + generatedMapDecor | shader kind 9: sky (clouds, wind); decor biome alpine with 🦅 birds | good — shader + moving critters | 3 |
-| `map-movers-forest` | Map critters: forest | generatedMapDecor/startMapMovers for biome forest | 🦋 butterflies hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-water` | Map critters: water | generatedMapDecor/startMapMovers for biome water | 🐟 fish hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-ash` | Map critters: ash | generatedMapDecor/startMapMovers for biome ash | 🔥 fireflies hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-cave` | Map critters: cave | generatedMapDecor/startMapMovers for biome cave | 🦇 bats hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-savanna` | Map critters: savanna | generatedMapDecor/startMapMovers for biome savanna | 🦋 butterflies hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-tundra` | Map critters: tundra | generatedMapDecor/startMapMovers for biome tundra | 🐦 birds hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-reef` | Map critters: reef | generatedMapDecor/startMapMovers for biome reef | 🐠 fish hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-swamp` | Map critters: swamp | generatedMapDecor/startMapMovers for biome swamp | ✨ fireflies hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-forge` | Map critters: forge | generatedMapDecor/startMapMovers for biome forge | 🔥 fireflies hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-alpine` | Map critters: alpine | generatedMapDecor/startMapMovers for biome alpine | 🦅 birds hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-meadow` | Map critters: meadow | generatedMapDecor/startMapMovers for biome meadow | 🐝 bees hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-movers-beach` | Map critters: beach | generatedMapDecor/startMapMovers for biome beach | 🦀 crabs hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | 3 |
-| `map-decor-static` | Living decor (trees, plants, props) | generatedMapDecor seeded per map | emoji decor clear of nodes and trails | good — has its own look that plays at the right moment | 3 |
-| `map-snails` | Snails creep on cave maps | startMapAdornments (cave maps) | .snail-trail faint blue trails | good — has its own look that plays at the right moment | 3 |
-| `map-crystal-sparkle` | Crystals in the art sparkle | startMapAdornments (found by colour) | .crystal-sparkle crystalTwinkle | good — has its own look that plays at the right moment | 3 |
-| `map-predator-eyes` | Predator eyes in the dark | startMapAdornments on dark maps, away from the lantern | .pred-eyes predEyes/predBlink | good — has its own look that plays at the right moment | 3 |
-| `map-cave-dark` | Cave map darkness + pointer lantern | mountCaveDark (cave maps) | dark veil with a lantern following the pointer | good — has its own look that plays at the right moment | 2 |
-| `map-cave-light-spread` | Cave cleared: the light spreads | caveLightSpread after clearing a cave map | light grows out then settles (+30% torch, −10% dark) | good — has its own look that plays at the right moment | 2 |
-| `map-dark-cleared` | Dark map cleared tint | .conquest-layout.dark-cleared | darkClearedIn | good — has its own look that plays at the right moment | 3 |
-| `map-veil` | Map loading veil | showMapVeil until the shader reports its first frame | .map-veil mvBob/mvDot + mapUnroll | good — has its own look that plays at the right moment | 3 |
-| `map-nodes-drop` | Skirmishes drop in from the sky (first view) | first view of a map after its name card lifts | .map-node.map-drop-wait → .map-drop (mapDrop, mapDropShadow) | good — has its own look that plays at the right moment | 2 |
-| `map-node-available` | Next fight available | node whose requires are met | tutorial beacon only on tutorial nodes; others static | basic — no "go here" pulse on normal next nodes | 2 |
-| `map-node-locked` | Locked fight | node whose requires are not met | hidden / dimmed | basic — a generic or reused look that does not say what happened | 3 |
-| `map-node-cleared` | Fight cleared (returning to the map) | completeConquestNode then map re-render | node gets .done | missing — no stamp / check animation the moment you come back | 1 |
-| `map-node-rank` | Rank shown on a cleared node | progress.ranks[id] (B/A/S/SS/SSS) | rank chip | basic — a generic or reused look that does not say what happened | 3 |
-| `map-trail-unlock` | Trail to the next fight unlocks | a new node becomes reachable | trail SVG just re-renders | missing — no path drawing | 1 |
-| `map-pawn-hop` | Pawn hops node to node | placeMapPawn on picking another node | hop + pawnStep footfalls | good — has its own look that plays at the right moment | 2 |
-| `map-pawn-walk` | Pawn walks the dotted path | A6 idea: walk the trail instead of hopping | hop only | basic — a generic or reused look that does not say what happened | 3 |
-| `map-pawn-dropin` | Pawn drops in on a new map | mapPawnDropIn | grows out of a point, hops down with a squash | good — has its own look that plays at the right moment | 3 |
-| `map-travel` | Map-to-map travel | world travel (mapTravelMs: +0.3 s per map, decaying) | .conquest-main.world-out/in-left/right | good — has its own look that plays at the right moment | 2 |
-| `map-world-zoom` | Map ↔ World zoom | openConquestWorld | .world-zoom-out / .world-zoom-in | good — has its own look that plays at the right moment | 2 |
-| `map-world-here` | World map: you are here | world-stop.is-here | .world-diamond::after hereRing | good — has its own look that plays at the right moment | 3 |
-| `map-world-fog` | World map: unseen map in fog | world-stop.is-fog | fogged stop | basic — no reveal when the fog lifts | 2 |
-| `map-world-compass` | World home compass | world-home | .wh-compass whSpin | good — has its own look that plays at the right moment | 3 |
-| `map-submap-enter` | Zoom into a sub-map (cave mouth) | enterSubMap | parent map zooms into the entrance, goes dark, sub-map grows out (subMapIris) | good — has its own look that plays at the right moment | 2 |
-| `map-submap-leave` | Leave a sub-map | leaveSubMap | quick pull-back | good — has its own look that plays at the right moment | 3 |
-| `map-submap-emblem` | Sub-map entrance emblem | map-subemblem / map-subcave / map-subexit | mseBob, mscGlow, mseShine, mseFlicker, mnShine on done | good — has its own look that plays at the right moment | 3 |
-| `map-cleared` | Whole map cleared | conquestMapCleared(mapId) becomes true | XP milestone toast only | missing — finishing a map has no celebration on the map | 1 |
-| `map-next-unlocked` | Next map unlocked | isMapUnlocked flips after a boss | world stop opens next time | missing — nothing on screen | 2 |
-| `map-ambush-node` | Ambush node appears | applyAmbushNode | .map-node.ambush-pop | good — has its own look that plays at the right moment | 3 |
-| `map-chance-node` | Chance fight found | completeConquestNode rolls a hidden chance node | appears on next render | missing — no "found!" moment | 2 |
-| `map-late-side-map` | Late side map arrives (days later / after a quest) | entry.afterDays / entry.quest | appears on next render | missing — nothing on screen | 3 |
-| `map-boss-node` | Boss / final boss / world boss node | kind boss\|finalboss\|worldboss\|subboss\|miniboss | .map-node.kind-* styling | basic — static; no menace | 2 |
-| `map-raid-node` | Raid boss node | kind raidboss / megaraid | .map-node.kind-raidboss | basic — a generic or reused look that does not say what happened | 2 |
-| `map-dungeon-node` | Dungeon / endless node | kind dungeon, map.endless | .map-node.kind-dungeon | basic — a generic or reused look that does not say what happened | 3 |
-| `map-elite-node` | Elite / champion node | kind elite / champion | .map-node.kind-elite | basic — a generic or reused look that does not say what happened | 3 |
-| `map-tutorial-reveal` | Tutorial node reveal | tutorial-solo.is-next + tut-reveal | tutorialBeacon + tutReveal | good — has its own look that plays at the right moment | 3 |
-| `map-leaves-reveal` | Leaves part to reveal the map (end of the tutorial) | leavesRevealToMap | leaf sweep + tutBgZoom | good — has its own look that plays at the right moment | 2 |
-| `map-dragon-scale-node` | Dragon Scale glint on a node | scaleNodeAt (S-rank a node to find a scale) | .map-node-scale scaleGlint | good — has its own look that plays at the right moment | 3 |
-| `map-dragon-scale-found` | Dragon Scale found | rollDragonScale on an S rank | unlockCardForPlayer + line | basic — no scale-collected moment on the map | 2 |
-| `map-spot-deck` | Feature spot unlock: Camp (Armoury) | activateSpot('deck') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot + tent flaps (flapL/flapR); .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 2 |
-| `map-spot-nest` | Feature spot unlock: Nest | activateSpot('nest') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; nest entrance down (downFall); .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 2 |
-| `map-spot-quests` | Feature spot unlock: Notices | activateSpot('quests') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot + quest board entrance; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-shop` | Feature spot unlock: Traveller's Cart | activateSpot('shop') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot + awning (awningUp); .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 2 |
-| `map-spot-forge` | Feature spot unlock: The Forge | activateSpot('forge') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot + forge flare-up (ffTongue); .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 2 |
-| `map-spot-codex` | Feature spot unlock: Codex | activateSpot('codex') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-arena` | Feature spot unlock: The Arena | activateSpot('arena') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-questboard` | Feature spot unlock: Quest Board (errands) | activateSpot('questboard') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-raid` | Feature spot unlock: Raid Banner | activateSpot('raid') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-wanderer` | Feature spot unlock: Wanderer's Camp | activateSpot('wanderer') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot + .map-wanderer (wanderBob); .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-tavern` | Feature spot unlock: The Tavern | activateSpot('tavern') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-gauntlet` | Feature spot unlock: Gauntlet Gate | activateSpot('gauntlet') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-autobattle` | Feature spot unlock: Whisper's Game | activateSpot('autobattle') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-skillcodex` | Feature spot unlock: Skill Codex | activateSpot('skillcodex') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-mapcodex` | Feature spot unlock: Map Codex | activateSpot('mapcodex') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-stomp` | Feature spot unlock: Stomping Grounds | activateSpot('stomp') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-testlab` | Feature spot unlock: Test Lab | activateSpot('testlab') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-market` | Feature spot unlock: Flea Market (Map 31) | activateSpot('market') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-fieldkit` | Feature spot unlock: The traveller's kit | activateSpot('fieldkit') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-backpack` | Feature spot unlock: A note in your pack | activateSpot('backpack') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | 3 |
-| `map-spot-new-bang` | "!" on a new spot fades after a look | fadeNewBang | fade | good — has its own look that plays at the right moment | 3 |
-| `map-curio-signpost` | Curiosity: signpost | visitCuriosity('signpost') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-scarecrow` | Curiosity: scarecrow | visitCuriosity('scarecrow') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-beehive` | Curiosity: beehive | visitCuriosity('beehive') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-bottle` | Curiosity: bottle | visitCuriosity('bottle') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-crab` | Curiosity: crab | visitCuriosity('crab') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-lantern` | Curiosity: lantern | visitCuriosity('lantern') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-ashcairn` | Curiosity: ashcairn | visitCuriosity('ashcairn') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-peddler` | Curiosity: peddler | visitCuriosity('peddler') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-echo` | Curiosity: echo | visitCuriosity('echo') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-glowpool` | Curiosity: glowpool | visitCuriosity('glowpool') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-baobab` | Curiosity: baobab | visitCuriosity('baobab') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-drum` | Curiosity: drum | visitCuriosity('drum') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-icefish` | Curiosity: icefish | visitCuriosity('icefish') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-shell` | Curiosity: shell | visitCuriosity('shell') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-wreck` | Curiosity: wreck | visitCuriosity('wreck') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-wisp` | Curiosity: wisp | visitCuriosity('wisp') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-anvil` | Curiosity: anvil | visitCuriosity('anvil') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-eyrie` | Curiosity: eyrie | visitCuriosity('eyrie') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-curio-banner` | Curiosity: banner | visitCuriosity('banner') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | 3 |
-| `map-well` | The old well | mapWellHTML / visitOldWell | .map-well bucket swing (mwSwing) + ripple (mwRipple) | good — has its own look that plays at the right moment | 3 |
-| `map-campfire` | Glimmer Depths campfire | mapCampfireHTML | .map-campfire mcfGlow/mcfFlick/mcfSpark | good — has its own look that plays at the right moment | 3 |
-| `map-courier` | Courier mouse with a free pack | freePackCourierHTML | .map-courier courierBob | good — has its own look that plays at the right moment | 3 |
-| `map-wanderer` | Wandering merchant on the map | wandererMapHTML (some days) | .map-wanderer wanderBob + .wander-card.is-fresh | good — has its own look that plays at the right moment | 3 |
-| `map-seasonal` | Seasonal vignette | calendar month | vignette | good — has its own look that plays at the right moment | 3 |
-| `map-day-night-tint` | Map time-of-day grading | planned (time of day on maps) | live clock tint only on Home | missing — maps never go to dusk or night | 2 |
-| `map-weather-fronts` | Map weather fronts (rain/snow/fog tweened) | planned | world rain only (shader kind 11) | basic — a generic or reused look that does not say what happened | 3 |
-| `map-water-shimmer` | Water shimmer on map ponds/rivers | water/coral/beach shader caustics | caustics + glints | good — has its own look that plays at the right moment | 3 |
-| `map-fog-misty` | Mist drifting over Map 0 | misty map (Outskirts / Old Bramble) | none on the map itself (savanna shader on m1) | missing — the misty map is not misty | 2 |
-| `map-chaos-returns` | Chaos returns (Map 40+ respawn) 🔮 | planned | none | missing — planned | 3 |
-| `map-headline-ghost` | Map title banner ghosting | pointer over the headline | .is-away / .is-ghost | good — has its own look that plays at the right moment | 3 |
-| `map-shader-new-fungal` | New map shader look: fungal | planned shader kind | none | missing — no shader kind exists for this biome | 2 |
-| `map-shader-new-dragon-lair` | New map shader look: dragon-lair | planned shader kind | none | missing — no shader kind exists for this biome | 2 |
-| `map-shader-new-ice-cave` | New map shader look: ice-cave | planned shader kind | none | missing — no shader kind exists for this biome | 3 |
-| `map-shader-new-crystal-cave` | New map shader look: crystal-cave | planned shader kind | none | missing — no shader kind exists for this biome | 3 |
-| `map-shader-new-misty-meadow` | New map shader look: misty-meadow | planned shader kind | none | missing — no shader kind exists for this biome | 2 |
-| `map-shader-new-abyssal` | New map shader look: abyssal 🔮 | planned shader kind | none | missing — no shader kind exists for this biome | 3 |
-| `map-shader-new-dragonic-spire` | New map shader look: dragonic-spire 🔮 | planned shader kind | none | missing — no shader kind exists for this biome | 3 |
-| `map-shader-new-floodplains` | New map shader look: floodplains 🔮 | planned shader kind | none | missing — no shader kind exists for this biome | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `map-amb-m1` | Map ambience: Bramblewood Outskirts (m1) 🎨 | conquest map m1 shown → mountMapShader(host, 'm1') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome meadow with 🐝 bees | basic — shader look does not match the place (e.g. savanna shimmer on a misty meadow) | live (e.js) | 2 |
+| `map-amb-mtut` | Map ambience: Tutorial (mtut) | conquest map mtut shown → mountMapShader(host, 'mtut') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome meadow with 🐝 bees | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mo` | Map ambience: The Old Bramble (mo) 🎨 | conquest map mo shown → mountMapShader(host, 'mo') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome forest with 🦋 butterflies | missing — map has no weather/light layer of its own | live (e.js) | 2 |
+| `map-amb-mf` | Map ambience: Thistlewood (mf) | conquest map mf shown → mountMapShader(host, 'mf') + startMapMovers + generatedMapDecor | shader kind 0: forest (canopy dapple, light shafts, fireflies); decor biome forest with 🦋 butterflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mq` | Map ambience: Clovermead (mq) 🎨 | conquest map mq shown → mountMapShader(host, 'mq') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome meadow with 🐝 bees | missing — map has no weather/light layer of its own | live (e.js) | 2 |
+| `map-amb-mb` | Map ambience: Pebble Beach (mb) | conquest map mb shown → mountMapShader(host, 'mb') + startMapMovers + generatedMapDecor | shader kind 12: beach (warm sun, foam lines, spray); decor biome beach with 🦀 crabs | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mp` | Map ambience: Lilypad Reach (mp) | conquest map mp shown → mountMapShader(host, 'mp') + startMapMovers + generatedMapDecor | shader kind 1: water (caustics, glints); decor biome water with 🐟 fish | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mg` | Map ambience: Smugglers' Grotto (mg) | conquest map mg shown → mountMapShader(host, 'mg') + startMapMovers + generatedMapDecor | shader kind 3: caves (fog, spores, pointer lantern); decor biome cave with 🦇 bats | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mc` | Map ambience: Gannet Cliffs (mc) 🎨 | conquest map mc shown → mountMapShader(host, 'mc') + startMapMovers + generatedMapDecor | shader kind 12: beach (warm sun, foam lines, spray); decor biome alpine with 🦅 birds | basic — shader look does not match the place (e.g. savanna shimmer on a misty meadow) | live (e.js) | 2 |
+| `map-amb-m2` | Map ambience: Sunken Hollow (m2) | conquest map m2 shown → mountMapShader(host, 'm2') + startMapMovers + generatedMapDecor | shader kind 1: water (caustics, glints); decor biome water with 🐟 fish | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mw` | Map ambience: Gatorback Swamp (mw) | conquest map mw shown → mountMapShader(host, 'mw') + startMapMovers + generatedMapDecor | shader kind 7: swamp (low fog, murk, green fireflies); decor biome swamp with ✨ fireflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-ms` | Map ambience: The Sunken Grove (ms) 🎨 | conquest map ms shown → mountMapShader(host, 'ms') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome swamp with ✨ fireflies | missing — map has no weather/light layer of its own | live (e.js) | 2 |
+| `map-amb-m8` | Map ambience: Sable Swampmire (m8) | conquest map m8 shown → mountMapShader(host, 'm8') + startMapMovers + generatedMapDecor | shader kind 7: swamp (low fog, murk, green fireflies); decor biome swamp with ✨ fireflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mu` | Map ambience: The Morel Hollow (mu) | conquest map mu shown → mountMapShader(host, 'mu') + startMapMovers + generatedMapDecor | shader kind 0: forest (canopy dapple, light shafts, fireflies); decor biome forest with 🦋 butterflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mz` | Map ambience: The Mycelium Deep (mz) 🎨 | conquest map mz shown → mountMapShader(host, 'mz') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome forest (default) with 🦋 butterflies | missing — map has no weather/light layer of its own | live (e.js) | 2 |
+| `map-amb-m4` | Map ambience: Caves & Alcoves (m4) | conquest map m4 shown → mountMapShader(host, 'm4') + startMapMovers + generatedMapDecor | shader kind 3: caves (fog, spores, pointer lantern); decor biome cave with 🦇 bats | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mn` | Map ambience: The Glimmer Depths (mn) 🎨 | conquest map mn shown → mountMapShader(host, 'mn') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome cave with 🦇 bats | missing — map has no weather/light layer of its own | live (e.js) | 2 |
+| `map-amb-mk` | Map ambience: The Kelp Mangroves (mk) | conquest map mk shown → mountMapShader(host, 'mk') + startMapMovers + generatedMapDecor | shader kind 6: coral (caustics + bubbles); decor biome reef with 🐠 fish | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-m7` | Map ambience: Coral Current (m7) | conquest map m7 shown → mountMapShader(host, 'm7') + startMapMovers + generatedMapDecor | shader kind 6: coral (caustics + bubbles); decor biome reef with 🐠 fish | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mj` | Map ambience: The Sunken Depths (mj) | conquest map mj shown → mountMapShader(host, 'mj') + startMapMovers + generatedMapDecor | shader kind 6: coral (caustics + bubbles); decor biome reef with 🐠 fish | good — shader + moving critters | live (e.js, r.js) | 3 |
+| `map-amb-m10` | Map ambience: Eyrie Heights (m10) | conquest map m10 shown → mountMapShader(host, 'm10') + startMapMovers + generatedMapDecor | shader kind 9: sky (clouds, wind); decor biome alpine with 🦅 birds | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mv` | Map ambience: The Aerie Vault (mv) 🎨 | conquest map mv shown → mountMapShader(host, 'mv') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome alpine with 🦅 birds | missing — map has no weather/light layer of its own | live (e.js) | 2 |
+| `map-amb-mh` | Map ambience: The Briar Maze (mh) | conquest map mh shown → mountMapShader(host, 'mh') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome meadow with 🐝 bees | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mr` | Map ambience: The Redwood Deep (mr) | conquest map mr shown → mountMapShader(host, 'mr') + startMapMovers + generatedMapDecor | shader kind 0: forest (canopy dapple, light shafts, fireflies); decor biome forest with 🦋 butterflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-m5` | Map ambience: Savanna Reaches (m5) | conquest map m5 shown → mountMapShader(host, 'm5') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome savanna with 🦋 butterflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-my` | Map ambience: The Canopy (my) | conquest map my shown → mountMapShader(host, 'my') + startMapMovers + generatedMapDecor | shader kind 0: forest (canopy dapple, light shafts, fireflies); decor biome forest with 🦋 butterflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-ml` | Map ambience: The Long Grass (ml) | conquest map ml shown → mountMapShader(host, 'ml') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome meadow with 🐝 bees | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mt` | Map ambience: The Pinewood Taiga (mt) | conquest map mt shown → mountMapShader(host, 'mt') + startMapMovers + generatedMapDecor | shader kind 5: tundra (aurora, snowfall); decor biome tundra with 🐦 birds | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-m6` | Map ambience: Wolfsbane Tundra (m6) | conquest map m6 shown → mountMapShader(host, 'm6') + startMapMovers + generatedMapDecor | shader kind 5: tundra (aurora, snowfall); decor biome tundra with 🐦 birds | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mi` | Map ambience: The Ice Hollow (mi) 🎨 | conquest map mi shown → mountMapShader(host, 'mi') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome tundra with 🐦 birds | missing — map has no weather/light layer of its own | live (e.js) | 2 |
+| `map-amb-md` | Map ambience: The Glass Dunes (md) | conquest map md shown → mountMapShader(host, 'md') + startMapMovers + generatedMapDecor | shader kind 4: savanna (heat shimmer, dust, sun shafts); decor biome savanna with 🦋 butterflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-m3` | Map ambience: Ashen Spurn (m3) | conquest map m3 shown → mountMapShader(host, 'm3') + startMapMovers + generatedMapDecor | shader kind 2: fire (lava glow, smoke, embers); decor biome ash with 🔥 fireflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-m9` | Map ambience: Basalt Foundry (m9) | conquest map m9 shown → mountMapShader(host, 'm9') + startMapMovers + generatedMapDecor | shader kind 8: foundry (embers, forge glow); decor biome forge with 🔥 fireflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-m11` | Map ambience: The Sundered Peak (m11) | conquest map m11 shown → mountMapShader(host, 'm11') + startMapMovers + generatedMapDecor | shader kind 10: storm (embers + lightning); decor biome ash with 🔥 fireflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-me` | Map ambience: Eye of the Volcano (me) | conquest map me shown → mountMapShader(host, 'me') + startMapMovers + generatedMapDecor | shader kind 10: storm (embers + lightning); decor biome ash with 🔥 fireflies | good — shader + moving critters | live (e.js) | 3 |
+| `map-amb-mx` | Map ambience: Volcano Lair (mx) 🎨 | conquest map mx shown → mountMapShader(host, 'mx') + startMapMovers + generatedMapDecor | no shader kind in MAP_KIND (no map overlay; battle ambience/shader fall back to forest); decor biome ash with 🔥 fireflies | missing — map has no weather/light layer of its own | live (e.js) | 2 |
+| `map-amb-m21` | Map ambience: The Quiet Summit (m21) | conquest map m21 shown → mountMapShader(host, 'm21') + startMapMovers + generatedMapDecor | shader kind 9: sky (clouds, wind); decor biome alpine with 🦅 birds | good — shader + moving critters | live (e.js) | 3 |
+| `map-movers-forest` | Map critters: forest | generatedMapDecor/startMapMovers for biome forest | 🦋 butterflies hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-water` | Map critters: water | generatedMapDecor/startMapMovers for biome water | 🐟 fish hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-ash` | Map critters: ash | generatedMapDecor/startMapMovers for biome ash | 🔥 fireflies hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-cave` | Map critters: cave | generatedMapDecor/startMapMovers for biome cave | 🦇 bats hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-savanna` | Map critters: savanna | generatedMapDecor/startMapMovers for biome savanna | 🦋 butterflies hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-tundra` | Map critters: tundra | generatedMapDecor/startMapMovers for biome tundra | 🐦 birds hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-reef` | Map critters: reef | generatedMapDecor/startMapMovers for biome reef | 🐠 fish hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-swamp` | Map critters: swamp | generatedMapDecor/startMapMovers for biome swamp | ✨ fireflies hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-forge` | Map critters: forge | generatedMapDecor/startMapMovers for biome forge | 🔥 fireflies hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-alpine` | Map critters: alpine | generatedMapDecor/startMapMovers for biome alpine | 🦅 birds hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-meadow` | Map critters: meadow | generatedMapDecor/startMapMovers for biome meadow | 🐝 bees hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-movers-beach` | Map critters: beach | generatedMapDecor/startMapMovers for biome beach | 🦀 crabs hopping between plants / looping rosettes (facing direction) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-decor-static` | Living decor (trees, plants, props) | generatedMapDecor seeded per map | emoji decor clear of nodes and trails | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-snails` | Snails creep on cave maps | startMapAdornments (cave maps) | .snail-trail faint blue trails | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-crystal-sparkle` | Crystals in the art sparkle | startMapAdornments (found by colour) | .crystal-sparkle crystalTwinkle | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-predator-eyes` | Predator eyes in the dark | startMapAdornments on dark maps, away from the lantern | .pred-eyes predEyes/predBlink | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-cave-dark` | Cave map darkness + pointer lantern | mountCaveDark (cave maps) | dark veil with a lantern following the pointer | good — has its own look that plays at the right moment | live (e.js, r.js) | 2 |
+| `map-cave-light-spread` | Cave cleared: the light spreads | caveLightSpread after clearing a cave map | light grows out then settles (+30% torch, −10% dark) | good — has its own look that plays at the right moment | live (e.js) | 2 |
+| `map-dark-cleared` | Dark map cleared tint | .conquest-layout.dark-cleared | darkClearedIn | good — has its own look that plays at the right moment | live (e.js, r.js) | 3 |
+| `map-veil` | Map loading veil | showMapVeil until the shader reports its first frame | .map-veil mvBob/mvDot + mapUnroll | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-nodes-drop` | Skirmishes drop in from the sky (first view) | first view of a map after its name card lifts | .map-node.map-drop-wait → .map-drop (mapDrop, mapDropShadow) | good — has its own look that plays at the right moment | live (_existing.js) | 2 |
+| `map-node-available` | Next fight available | node whose requires are met | tutorial beacon only on tutorial nodes; others static | basic — no "go here" pulse on normal next nodes | live (e.js) | 2 |
+| `map-node-locked` | Locked fight | node whose requires are not met | hidden / dimmed | basic — a generic or reused look that does not say what happened | live (e.js) | 3 |
+| `map-node-cleared` | Fight cleared (returning to the map) | completeConquestNode then map re-render | node gets .done | missing — no stamp / check animation the moment you come back | live (e.js) | 1 |
+| `map-node-rank` | Rank shown on a cleared node | progress.ranks[id] (B/A/S/SS/SSS) | rank chip | basic — a generic or reused look that does not say what happened | live (e.js) | 3 |
+| `map-trail-unlock` | Trail to the next fight unlocks | a new node becomes reachable | trail SVG just re-renders | missing — no path drawing | live (e.js) | 1 |
+| `map-pawn-hop` | Pawn hops node to node | placeMapPawn on picking another node | hop + pawnStep footfalls | good — has its own look that plays at the right moment | live (e.js) | 2 |
+| `map-pawn-walk` | Pawn walks the dotted path | A6 idea: walk the trail instead of hopping | hop only | basic — a generic or reused look that does not say what happened | live (e.js) | 3 |
+| `map-pawn-dropin` | Pawn drops in on a new map | mapPawnDropIn | grows out of a point, hops down with a squash | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-travel` | Map-to-map travel | world travel (mapTravelMs: +0.3 s per map, decaying) | .conquest-main.world-out/in-left/right | good — has its own look that plays at the right moment | live (e.js) | 2 |
+| `map-world-zoom` | Map ↔ World zoom | openConquestWorld | .world-zoom-out / .world-zoom-in | good — has its own look that plays at the right moment | live (e.js) | 2 |
+| `map-world-here` | World map: you are here | world-stop.is-here | .world-diamond::after hereRing | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-world-fog` | World map: unseen map in fog | world-stop.is-fog | fogged stop | basic — no reveal when the fog lifts | live (e.js) | 2 |
+| `map-world-compass` | World home compass | world-home | .wh-compass whSpin | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-submap-enter` | Zoom into a sub-map (cave mouth) | enterSubMap | parent map zooms into the entrance, goes dark, sub-map grows out (subMapIris) | good — has its own look that plays at the right moment | live (e.js) | 2 |
+| `map-submap-leave` | Leave a sub-map | leaveSubMap | quick pull-back | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-submap-emblem` | Sub-map entrance emblem | map-subemblem / map-subcave / map-subexit | mseBob, mscGlow, mseShine, mseFlicker, mnShine on done | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-cleared` | Whole map cleared | conquestMapCleared(mapId) becomes true | XP milestone toast only | missing — finishing a map has no celebration on the map | live (e.js) | 1 |
+| `map-next-unlocked` | Next map unlocked | isMapUnlocked flips after a boss | world stop opens next time | missing — nothing on screen | live (e.js) | 2 |
+| `map-ambush-node` | Ambush node appears | applyAmbushNode | .map-node.ambush-pop | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-chance-node` | Chance fight found | completeConquestNode rolls a hidden chance node | appears on next render | missing — no "found!" moment | live (e.js) | 2 |
+| `map-late-side-map` | Late side map arrives (days later / after a quest) | entry.afterDays / entry.quest | appears on next render | missing — nothing on screen | live (e.js) | 3 |
+| `map-boss-node` | Boss / final boss / world boss node | kind boss\|finalboss\|worldboss\|subboss\|miniboss | .map-node.kind-* styling | basic — static; no menace | live (e.js) | 2 |
+| `map-raid-node` | Raid boss node | kind raidboss / megaraid | .map-node.kind-raidboss | basic — a generic or reused look that does not say what happened | live (e.js) | 2 |
+| `map-dungeon-node` | Dungeon / endless node | kind dungeon, map.endless | .map-node.kind-dungeon | basic — a generic or reused look that does not say what happened | live (e.js) | 3 |
+| `map-elite-node` | Elite / champion node | kind elite / champion | .map-node.kind-elite | basic — a generic or reused look that does not say what happened | live (e.js) | 3 |
+| `map-tutorial-reveal` | Tutorial node reveal | tutorial-solo.is-next + tut-reveal | tutorialBeacon + tutReveal | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-leaves-reveal` | Leaves part to reveal the map (end of the tutorial) | leavesRevealToMap | leaf sweep + tutBgZoom | good — has its own look that plays at the right moment | live (e.js) | 2 |
+| `map-dragon-scale-node` | Dragon Scale glint on a node | scaleNodeAt (S-rank a node to find a scale) | .map-node-scale scaleGlint | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-dragon-scale-found` | Dragon Scale found | rollDragonScale on an S rank | unlockCardForPlayer + line | basic — no scale-collected moment on the map | live (e.js) | 2 |
+| `map-spot-deck` | Feature spot unlock: Camp (Armoury) | activateSpot('deck') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot + tent flaps (flapL/flapR); .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 2 |
+| `map-spot-nest` | Feature spot unlock: Nest | activateSpot('nest') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; nest entrance down (downFall); .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 2 |
+| `map-spot-quests` | Feature spot unlock: Notices | activateSpot('quests') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot + quest board entrance; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-shop` | Feature spot unlock: Traveller's Cart | activateSpot('shop') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot + awning (awningUp); .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 2 |
+| `map-spot-forge` | Feature spot unlock: The Forge | activateSpot('forge') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot + forge flare-up (ffTongue); .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 2 |
+| `map-spot-codex` | Feature spot unlock: Codex | activateSpot('codex') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-arena` | Feature spot unlock: The Arena | activateSpot('arena') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-questboard` | Feature spot unlock: Quest Board (errands) | activateSpot('questboard') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-raid` | Feature spot unlock: Raid Banner | activateSpot('raid') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-wanderer` | Feature spot unlock: Wanderer's Camp | activateSpot('wanderer') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot + .map-wanderer (wanderBob); .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-tavern` | Feature spot unlock: The Tavern | activateSpot('tavern') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-gauntlet` | Feature spot unlock: Gauntlet Gate | activateSpot('gauntlet') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-autobattle` | Feature spot unlock: Whisper's Game | activateSpot('autobattle') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-skillcodex` | Feature spot unlock: Skill Codex | activateSpot('skillcodex') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-mapcodex` | Feature spot unlock: Map Codex | activateSpot('mapcodex') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-stomp` | Feature spot unlock: Stomping Grounds | activateSpot('stomp') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-testlab` | Feature spot unlock: Test Lab | activateSpot('testlab') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-market` | Feature spot unlock: Flea Market (Map 31) | activateSpot('market') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-fieldkit` | Feature spot unlock: The traveller's kit | activateSpot('fieldkit') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-backpack` | Feature spot unlock: A note in your pack | activateSpot('backpack') first visit → unlockFeature + toast + dialogue | toast "unlocked!" + SoundKit.unlock + dialogue; map-spot; .map-spot.is-new spotPulse/spotShake | basic — unlock is a toast; the spot itself has no opening moment | live | 3 |
+| `map-spot-new-bang` | "!" on a new spot fades after a look | fadeNewBang | fade | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-curio-signpost` | Curiosity: signpost | visitCuriosity('signpost') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-scarecrow` | Curiosity: scarecrow | visitCuriosity('scarecrow') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-beehive` | Curiosity: beehive | visitCuriosity('beehive') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-bottle` | Curiosity: bottle | visitCuriosity('bottle') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-crab` | Curiosity: crab | visitCuriosity('crab') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-lantern` | Curiosity: lantern | visitCuriosity('lantern') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-ashcairn` | Curiosity: ashcairn | visitCuriosity('ashcairn') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-peddler` | Curiosity: peddler | visitCuriosity('peddler') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-echo` | Curiosity: echo | visitCuriosity('echo') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-glowpool` | Curiosity: glowpool | visitCuriosity('glowpool') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-baobab` | Curiosity: baobab | visitCuriosity('baobab') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-drum` | Curiosity: drum | visitCuriosity('drum') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-icefish` | Curiosity: icefish | visitCuriosity('icefish') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-shell` | Curiosity: shell | visitCuriosity('shell') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-wreck` | Curiosity: wreck | visitCuriosity('wreck') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-wisp` | Curiosity: wisp | visitCuriosity('wisp') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-anvil` | Curiosity: anvil | visitCuriosity('anvil') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-eyrie` | Curiosity: eyrie | visitCuriosity('eyrie') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-curio-banner` | Curiosity: banner | visitCuriosity('banner') (first time plays a dialogue; after that a speech bubble) | .map-curio.is-new + unlock sound + dialogue; later showSpeechBubble | basic — static emoji; no idle life of its own | live (e.js) | 3 |
+| `map-well` | The old well | mapWellHTML / visitOldWell | .map-well bucket swing (mwSwing) + ripple (mwRipple) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-campfire` | Glimmer Depths campfire | mapCampfireHTML | .map-campfire mcfGlow/mcfFlick/mcfSpark | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-courier` | Courier mouse with a free pack | freePackCourierHTML | .map-courier courierBob | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-wanderer` | Wandering merchant on the map | wandererMapHTML (some days) | .map-wanderer wanderBob + .wander-card.is-fresh | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-seasonal` | Seasonal vignette | calendar month | vignette | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-day-night-tint` | Map time-of-day grading | planned (time of day on maps) | live clock tint only on Home | missing — maps never go to dusk or night | live (e.js) | 2 |
+| `map-weather-fronts` | Map weather fronts (rain/snow/fog tweened) | planned | world rain only (shader kind 11) | basic — a generic or reused look that does not say what happened | live (e.js) | 3 |
+| `map-water-shimmer` | Water shimmer on map ponds/rivers | water/coral/beach shader caustics | caustics + glints | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-fog-misty` | Mist drifting over Map 0 | misty map (Outskirts / Old Bramble) | none on the map itself (savanna shader on m1) | missing — the misty map is not misty | live (e.js) | 2 |
+| `map-chaos-returns` | Chaos returns (Map 40+ respawn) 🔮 | planned | none | missing — planned | lab-only (e.js) | 3 |
+| `map-headline-ghost` | Map title banner ghosting | pointer over the headline | .is-away / .is-ghost | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `map-shader-new-fungal` | New map shader look: fungal | planned shader kind | none | missing — no shader kind exists for this biome | live (e.js) | 2 |
+| `map-shader-new-dragon-lair` | New map shader look: dragon-lair | planned shader kind | none | missing — no shader kind exists for this biome | live (e.js) | 2 |
+| `map-shader-new-ice-cave` | New map shader look: ice-cave | planned shader kind | none | missing — no shader kind exists for this biome | live (e.js) | 3 |
+| `map-shader-new-crystal-cave` | New map shader look: crystal-cave | planned shader kind | none | missing — no shader kind exists for this biome | live (e.js) | 3 |
+| `map-shader-new-misty-meadow` | New map shader look: misty-meadow | planned shader kind | none | missing — no shader kind exists for this biome | live (e.js) | 2 |
+| `map-shader-new-abyssal` | New map shader look: abyssal 🔮 | planned shader kind | none | missing — no shader kind exists for this biome | lab-only (e.js) | 3 |
+| `map-shader-new-dragonic-spire` | New map shader look: dragonic-spire 🔮 | planned shader kind | none | missing — no shader kind exists for this biome | lab-only (e.js) | 3 |
+| `map-shader-new-floodplains` | New map shader look: floodplains 🔮 | planned shader kind | none | missing — no shader kind exists for this biome | lab-only (e.js) | 3 |
+| `map-hidden-skirmish-pop` | Hidden skirmish appears | renderConquestSubTab: a hidden skirmish shown for the first time (hiddenPopNow) -> .map-node.is-secret.secret-pop + toast | 2026-10-17: the hidden skirmish pops in with its trail from the fight beside it (.trail-pop); it opens once that fight is cleared | good | live (q.js, x17.js) | 3 |
+| `map-jumper-arrive` | Jumper lands on the trail (hidden skirmish, Type 2) 🎨 | jumperArrivals (arena_app.js): a jumper's `after` fight is cleared → fxHook('mapJumperArrive', node, entrance, {canvas, from, to}), once per save | FX.E.jumperArrive: the old link starts inking, the jumper lands across it (meteor / splash / psychic / ghost), the trail redraws through it | good | live (w3.js) | 2 |
+| `map-night-retreat` | Night gives way to day on the map | FX.E.dayNight when the phase changes from night to dawn or day (the clock or the Atmosphere setting) | FX.E.nightRetreat: the night tint fades from the whole map while soft, uneven light streaks drift across | good | live (w3.js) | 3 |
+| `map-trails-one-by-one` | New trails ink in one by one | coming back to the map after a clear that opens new fights | FX.E playReturn: the new trails and fights are hidden, then each trail inks in (trailDraw) and its fight fades in | good — has its own look that plays at the right moment | live (x17.js) | 1 |
+| `map-cave-fires` | Cave fire pits light up | a cave map: fire pits along the trail (at most 3) light as you win | .cave-fire.is-igniting / .is-lit | good — has its own look that plays at the right moment | live (r.js) | 2 |
 
 ### World ambience (`world-ambience`, 22)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `amb-home-splash` | Splash / entrance | entrance screen | scene shader (sway, ripple, bloom, light shafts, fireflies) + depth parallax + titleDrop/ribbonClash/efFloat | good — has its own look that plays at the right moment | 2 |
-| `amb-home` | Home screen | Home | depth parallax + live clock tint + CalmMusic + ambience | good — has its own look that plays at the right moment | 2 |
-| `amb-leaf-sweep` | In-world transition leaf sweep | tab change between Home/Play/Codex/menus | leaf sweep (.leaf-sweep lsVeil) | good — has its own look that plays at the right moment | 3 |
-| `amb-armoury` | Armoury Tent (deck builder) | enter Deck | tent flaps part, lantern light, canvas ambience | good — has its own look that plays at the right moment | 3 |
-| `amb-shop` | Traveller's Cart (Shop) | enter Shop | awning rolls up, bell, lantern hum; shelves | good — has its own look that plays at the right moment | 3 |
-| `amb-nest` | Old Nest | enter Nest | down drifts in (downFall), breeze, birds | good — has its own look that plays at the right moment | 3 |
-| `amb-forge` | Forge | enter Forge | sparks rise, ember flare (forgeFlare, forgeSpark, emberRise), hearth roar | good — has its own look that plays at the right moment | 3 |
-| `amb-codex` | Codex | enter Codex | page turn between sections, Margins harp theme | good — has its own look that plays at the right moment | 3 |
-| `amb-quests` | Notice Board (Quests) | open quests | questBoardEntrance | basic — a generic or reused look that does not say what happened | 3 |
-| `amb-arena` | The Arena as a real arena 🔮 | planned | menu only | missing — planned (immersion "next round") | 3 |
-| `amb-tavern` | The Tavern | enter Tavern (stamina) | tavernStaminaHTML | basic — a generic or reused look that does not say what happened | 3 |
-| `amb-battle-felt` | Lit felt on the battlefield | every battle | felt shader: lamp, impact lights, card shadows | good — has its own look that plays at the right moment | 2 |
-| `amb-battle-map-terrain` | Fight on the map's own terrain | battle background | map pixel terrain under a scrim + map shader kind | good — has its own look that plays at the right moment | 3 |
-| `amb-sound-places` | Place soundscapes | Ambience by place / map kind | Ambience beds + events (breeze, frogs, drips, wind, rumble...) | good — has its own look that plays at the right moment | 3 |
-| `amb-music` | Songbook / Battle music | place themes and battle bands | Songbook + BattleMusic (3 intensities) | good — has its own look that plays at the right moment | 3 |
-| `amb-motes` | Floating motes / fireflies | scene/map shaders | shader motes | good — has its own look that plays at the right moment | 3 |
-| `amb-raid-splash` | Raid splash parallax 🔮 | planned (depth rig reuse) | none | missing — planned | 3 |
-| `amb-crt-grain` | Atmosphere packs (film grain, CRT, rain on glass) 🔮 | planned optional atmospheres | 🌧️ Rain atmosphere only | missing — planned | 3 |
-| `amb-ink-transition` | Ink-wash transition 🔮 | planned (lore, faction choice, campaign end) | none | missing — planned | 3 |
-| `amb-ant-lampposts` | Ant acid-battery lampposts 🔮 | planned faction scenery (ants as builders) | none | missing — planned | 3 |
-| `amb-otter-roads` | Otter territory scenery (roads, forts, bridges) 🔮 | map art direction | art only | basic — no animated legion life (patrols, banners) | 3 |
-| `amb-hummingbird-cliffs` | Hummingbird territory (painted cliffs, totems, blossoms) 🔮 | map art direction | art only | basic — a generic or reused look that does not say what happened | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `amb-home-splash` | Splash / entrance | entrance screen | scene shader (sway, ripple, bloom, light shafts, fireflies) + depth parallax + titleDrop/ribbonClash/efFloat | good — has its own look that plays at the right moment | live (e.js) | 2 |
+| `amb-home` | Home screen | Home | depth parallax + live clock tint + CalmMusic + ambience | good — has its own look that plays at the right moment | live (e.js) | 2 |
+| `amb-leaf-sweep` | In-world transition leaf sweep | tab change between Home/Play/Codex/menus | leaf sweep (.leaf-sweep lsVeil) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `amb-armoury` | Armoury Tent (deck builder) | enter Deck | tent flaps part, lantern light, canvas ambience | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `amb-shop` | Traveller's Cart (Shop) | enter Shop | awning rolls up, bell, lantern hum; shelves | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `amb-nest` | Old Nest | enter Nest | down drifts in (downFall), breeze, birds | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `amb-forge` | Forge | enter Forge | sparks rise, ember flare (forgeFlare, forgeSpark, emberRise), hearth roar | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `amb-codex` | Codex | enter Codex | page turn between sections, Margins harp theme | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `amb-quests` | Notice Board (Quests) | open quests | questBoardEntrance | basic — a generic or reused look that does not say what happened | live (e.js) | 3 |
+| `amb-arena` | The Arena as a real arena 🔮 | planned | menu only | missing — planned (immersion "next round") | lab-only (e.js) | 3 |
+| `amb-tavern` | The Tavern | enter Tavern (stamina) | tavernStaminaHTML | basic — a generic or reused look that does not say what happened | live (e.js) | 3 |
+| `amb-battle-felt` | Lit felt on the battlefield | every battle | felt shader: lamp, impact lights, card shadows | good — has its own look that plays at the right moment | live (e.js) | 2 |
+| `amb-battle-map-terrain` | Fight on the map's own terrain | battle background | map pixel terrain under a scrim + map shader kind | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `amb-sound-places` | Place soundscapes | Ambience by place / map kind | Ambience beds + events (breeze, frogs, drips, wind, rumble...) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `amb-music` | Songbook / Battle music | place themes and battle bands | Songbook + BattleMusic (3 intensities) | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `amb-motes` | Floating motes / fireflies | scene/map shaders | shader motes | good — has its own look that plays at the right moment | live (e.js) | 3 |
+| `amb-raid-splash` | Raid splash parallax 🔮 | planned (depth rig reuse) | none | missing — planned | lab-only (e.js) | 3 |
+| `amb-crt-grain` | Atmosphere packs (film grain, CRT, rain on glass) 🔮 | planned optional atmospheres | 🌧️ Rain atmosphere only | missing — planned | lab-only (e.js) | 3 |
+| `amb-ink-transition` | Ink-wash transition 🔮 | planned (lore, faction choice, campaign end) | none | missing — planned | lab-only (e.js) | 3 |
+| `amb-ant-lampposts` | Ant acid-battery lampposts 🔮 | planned faction scenery (ants as builders) | none | missing — planned | lab-only (e.js) | 3 |
+| `amb-otter-roads` | Otter territory scenery (roads, forts, bridges) 🔮 | map art direction | art only | basic — no animated legion life (patrols, banners) | lab-only (e.js) | 3 |
+| `amb-hummingbird-cliffs` | Hummingbird territory (painted cliffs, totems, blossoms) 🔮 | map art direction | art only | basic — a generic or reused look that does not say what happened | lab-only (e.js) | 3 |
 
-### UI feedback (`ui-feedback`, 45)
+### UI feedback (`ui-feedback`, 48)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `ui-deny` | Deny shake (can't afford / can't pitch) | playCardByUid / discardCardByUid refuse | .deny-shake (denyShakeAnim) red | good — has its own look that plays at the right moment | 3 |
-| `ui-toast` | Toast | showToast | toast slide | basic — plain toast for many big moments | 3 |
-| `ui-hud-pill-bing` | Resource pill bing | floatResourceGain → .hud-pill.bing | hudPillBing | good — has its own look that plays at the right moment | 3 |
-| `ui-pill-gain` | Pill gain pulse | pill-gain-pulse | pillGainPulse | good — has its own look that plays at the right moment | 3 |
-| `ui-tab-emoji` | Tab emoji spin on hover | .tab-btn:hover | tabEmojiSpin | good — has its own look that plays at the right moment | 3 |
-| `ui-home-buttons` | Home menu buttons dazzle | hover / click | menuBtnDazzle + menuBtnClickPop | good — has its own look that plays at the right moment | 3 |
-| `ui-chestnut-knock` | Chestnut knock on Home | click the logo chestnut | knockVibrate + knock sound | good — has its own look that plays at the right moment | 3 |
-| `ui-codex-page` | Codex page turn | switch Codex section | codexPageTurn (pageTurnFwd/Back + pageShade) | good — has its own look that plays at the right moment | 3 |
-| `ui-pixel-reveal` | Pixel reveal into a battle | battle without a versus opener | pixelReveal | good — has its own look that plays at the right moment | 3 |
-| `ui-versus` | Versus opener | Conquest skirmish start | .vs-opener (vsIn, vsFromLeft/Right, vsTaunt, vsRays, vsSeam) + babble | good — has its own look that plays at the right moment | 1 |
-| `ui-fight-sign` | "Fight!" sign | combat starts | .fight-sign fightSignIn/Out | good — has its own look that plays at the right moment | 2 |
-| `ui-next-turn` | Next turn banner | wait-tick phase with at least one waitTick | showNextTurnBanner (nextTurnSignIn/Pulse/Out) | good — has its own look that plays at the right moment | 2 |
-| `ui-turn-glow` | Your turn lane glow | your play phase | #rowMine.turn-glow | good — has its own look that plays at the right moment | 3 |
-| `ui-wait-tick` | Wait ticks down | waitTick {waitRemaining} | updateCardWaitDisplay + waitTickFlash/Pulse + hourglass waitFlip + waitTickTone | good — has its own look that plays at the right moment | 2 |
-| `ui-ready` | Unit becomes Ready | ready | playReadyFlourish (spin, red ring, number pop) + .ready-pulse + readyChime | good — has its own look that plays at the right moment | 2 |
-| `ui-drag-trail` | Hand card drag trail | dragging a hand card | .drag-spark (dragSpark) | good — has its own look that plays at the right moment | 3 |
-| `ui-drop-highlight` | Slot highlight while dragging | highlightSlotTarget | slot glow | good — has its own look that plays at the right moment | 3 |
-| `ui-attack-preview` | Attack preview lines | hovering / dragging a card | .facing-svg lines (facingFlow), prong lines | good — has its own look that plays at the right moment | 3 |
-| `ui-pitch-preview` | Pitch preview | dragging over the discard zone | .discardzone.pitch-ready (pitchReady) + .pitch-callout | good — has its own look that plays at the right moment | 3 |
-| `ui-pitch` | Card pitched for Lumber | discard (player) | pitch fly + pitchChime + "+1 🪵" | good — has its own look that plays at the right moment | 2 |
-| `ui-overdraw` | Full-hand auto-pitch | overdraw {lumber} | animateOverdraw (face-down card flies to the graveyard, +1 🪵) | good — has its own look that plays at the right moment | 3 |
-| `ui-draw` | Card drawn into hand | draw | drawFlipVfx (flies face down, flips) | good — has its own look that plays at the right moment | 2 |
-| `ui-deck-shuffle` | Deck shuffle at match start | maybeDeckShuffle | deckShuffleVfx riffle + riffle sound | good — has its own look that plays at the right moment | 3 |
-| `ui-deck-riffle` | Deck riffle (pile) | deckRiffleFx | ProcFX.flipShuffle fan | good — has its own look that plays at the right moment | 3 |
-| `ui-lumber-nudge` | Lumber nudge on a card you can't afford | hand card cost check | .lumber-nudge (lnudge) | good — has its own look that plays at the right moment | 3 |
-| `ui-card-hover` | Card hover pop-over | hover a card | fullCardHTML pop-over | basic — a generic or reused look that does not say what happened | 3 |
-| `ui-bf-pill-tip` | Battlefield pill tooltip | hover a phase/tide/wind pill | .bf-tip-float (bfTipIn) | good — has its own look that plays at the right moment | 3 |
-| `ui-tip-ticker` | Tip ticker | loading / idle tips | .tip-ticker tipIn/tipOut/tipDrift | good — has its own look that plays at the right moment | 3 |
-| `ui-modal-dialog` | Centre dialog in/out | bwTextDialog / bw-centre-dialog | bwDimIn/Out + bwPopIn/Out | good — has its own look that plays at the right moment | 3 |
-| `ui-deck-add` | Card added to a deck | deck editor add | none | missing — the card just appears in the list | 2 |
-| `ui-deck-remove` | Card removed from a deck | deck editor remove | none | missing — nothing on screen | 2 |
-| `ui-deck-full` | Deck full / copy limit reached | editionCapReached / 20-card limit | toast | basic — a generic or reused look that does not say what happened | 3 |
-| `ui-deck-swap` | Deck swap prompt (new card to swap in) | pendingDeckSwap → ds2 overlay | .ds2-overlay ds2In + "Nice!" ds2Nice + ssBump | good — has its own look that plays at the right moment | 2 |
-| `ui-deck-hero-banner` | Deck hero banner / showcase | deck tab | deck showcase tile | basic — a generic or reused look that does not say what happened | 3 |
-| `ui-codex-new` | Codex: newly seen card | codex grid | new marker | basic — a generic or reused look that does not say what happened | 3 |
-| `ui-skill-reveal` | Skill "?" lifts (first time a skill is shown) | skillRevealState / noteMapEnteredForReveal | text swap | missing — a skill name reveal has no moment | 2 |
-| `ui-rank-hex` | Rank hex S/SS/SSS | rank badges | rankFoil + sssPulse | good — has its own look that plays at the right moment | 3 |
-| `ui-avatar-unlock` | Avatar / title unlocked | diffUnlocks after a match | listed on results | basic — a generic or reused look that does not say what happened | 3 |
-| `ui-cloud-sync` | Cloud sync pill | setCloudPill | text pill | basic — a generic or reused look that does not say what happened | 3 |
-| `ui-banners` | Sign-in / invite / version banners | showSignInBanner / showInviteBanner / versionBanner | plain banners | basic — a generic or reused look that does not say what happened | 3 |
-| `ui-fx-level` | Effects level + reduced motion | fxLevel / reducedMotion | data-fx attribute gates; reduced motion skips motion | good — every new effect must respect both | 2 |
-| `ui-emoji-set` | Emoji / icon set swap (Twemoji, OpenMoji, Noto, Fluent) via icon(key) 🔮 | planned | system emoji + iconHTML | missing — planned | 3 |
-| `ui-emote` | Unit emoji shout-outs | maybeEmote (attack, hurt, dodge, kill, healed, rage...) | emote bubble (rare, one at a time) | good — has its own look that plays at the right moment | 3 |
-| `ui-speech` | Unit speech bubbles | maybeSpeak (onSpawn/onAttack/onHit/onDeath/onSkill) | .speech-bubble + voiceTone | good — has its own look that plays at the right moment | 3 |
-| `ui-log-row` | Battle log row | pushLog | .log-row logpop | good — has its own look that plays at the right moment | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `ui-deny` | Deny shake (can't afford / can't pitch) | playCardByUid / discardCardByUid refuse | .deny-shake (denyShakeAnim) red | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-toast` | Toast | showToast | toast slide | basic — plain toast for many big moments | live (_existing.js, f.js) | 3 |
+| `ui-hud-pill-bing` | Resource pill bing | floatResourceGain → .hud-pill.bing | hudPillBing | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-pill-gain` | Pill gain pulse | pill-gain-pulse | pillGainPulse | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-tab-emoji` | Tab emoji spin on hover | .tab-btn:hover | tabEmojiSpin | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-home-buttons` | Home menu buttons dazzle | hover / click | menuBtnDazzle + menuBtnClickPop | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-chestnut-knock` | Chestnut knock on Home | click the logo chestnut | knockVibrate + knock sound | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-codex-page` | Codex page turn | switch Codex section | codexPageTurn (pageTurnFwd/Back + pageShade) | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-pixel-reveal` | Pixel reveal into a battle | battle without a versus opener | pixelReveal | good — has its own look that plays at the right moment | live (_existing.js) | 3 |
+| `ui-versus` | Versus opener | Conquest skirmish start | .vs-opener (vsIn, vsFromLeft/Right, vsTaunt, vsRays, vsSeam) + babble | good — has its own look that plays at the right moment | live (f.js) | 1 |
+| `ui-fight-sign` | "Fight!" sign | combat starts | .fight-sign fightSignIn/Out | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `ui-next-turn` | Next turn banner | wait-tick phase with at least one waitTick | showNextTurnBanner (nextTurnSignIn/Pulse/Out) | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `ui-turn-glow` | Your turn lane glow | your play phase | #rowMine.turn-glow | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-wait-tick` | Wait ticks down | waitTick {waitRemaining} | updateCardWaitDisplay + waitTickFlash/Pulse + hourglass waitFlip + waitTickTone | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `ui-ready` | Unit becomes Ready | ready | playReadyFlourish (spin, red ring, number pop) + .ready-pulse + readyChime | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `ui-drag-trail` | Hand card drag trail | dragging a hand card | .drag-spark (dragSpark) | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-drop-highlight` | Slot highlight while dragging | highlightSlotTarget | slot glow | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-attack-preview` | Attack preview lines | hovering / dragging a card | .facing-svg lines (facingFlow), prong lines | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-pitch-preview` | Pitch preview | dragging over the discard zone | .discardzone.pitch-ready (pitchReady) + .pitch-callout | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-pitch` | Card pitched for Lumber | discard (player) | pitch fly + pitchChime + "+1 🪵" | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `ui-overdraw` | Full-hand auto-pitch | overdraw {lumber} | animateOverdraw (face-down card flies to the graveyard, +1 🪵) | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-draw` | Card drawn into hand | draw | drawFlipVfx (flies face down, flips) | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `ui-deck-shuffle` | Deck shuffle at match start | maybeDeckShuffle | deckShuffleVfx riffle + riffle sound | good — has its own look that plays at the right moment | live (f.js, p1.js) | 3 |
+| `ui-deck-riffle` | Deck riffle (pile) | deckRiffleFx | ProcFX.flipShuffle fan | good — has its own look that plays at the right moment | live (_existing.js) | 3 |
+| `ui-lumber-nudge` | Lumber nudge on a card you can't afford | hand card cost check | .lumber-nudge (lnudge) | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-card-hover` | Card hover pop-over | hover a card | fullCardHTML pop-over | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `ui-bf-pill-tip` | Battlefield pill tooltip | hover a phase/tide/wind pill | .bf-tip-float (bfTipIn) | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-tip-ticker` | Tip ticker | loading / idle tips | .tip-ticker tipIn/tipOut/tipDrift | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-modal-dialog` | Centre dialog in/out | bwTextDialog / bw-centre-dialog | bwDimIn/Out + bwPopIn/Out | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-deck-add` | Card added to a deck | deck editor add | none | missing — the card just appears in the list | live (f.js) | 2 |
+| `ui-deck-remove` | Card removed from a deck | deck editor remove | none | missing — nothing on screen | live (f.js) | 2 |
+| `ui-deck-full` | Deck full / copy limit reached | editionCapReached / 20-card limit | toast | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `ui-deck-swap` | Deck swap prompt (new card to swap in) | pendingDeckSwap → ds2 overlay | .ds2-overlay ds2In + "Nice!" ds2Nice + ssBump | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `ui-deck-hero-banner` | Deck hero banner / showcase | deck tab | deck showcase tile | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `ui-codex-new` | Codex: newly seen card | codex grid | new marker | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `ui-skill-reveal` | Skill "?" lifts (first time a skill is shown) | skillRevealState / noteMapEnteredForReveal | text swap | missing — a skill name reveal has no moment | live (f.js) | 2 |
+| `ui-rank-hex` | Rank hex S/SS/SSS | rank badges | rankFoil + sssPulse | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-avatar-unlock` | Avatar / title unlocked | diffUnlocks after a match | listed on results | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `ui-cloud-sync` | Cloud sync pill | setCloudPill | text pill | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `ui-banners` | Sign-in / invite / version banners | showSignInBanner / showInviteBanner / versionBanner | plain banners | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `ui-fx-level` | Effects level + reduced motion | fxLevel / reducedMotion | data-fx attribute gates; reduced motion skips motion | good — every new effect must respect both | live (f.js) | 2 |
+| `ui-emoji-set` | Emoji / icon set swap (Twemoji, OpenMoji, Noto, Fluent) via icon(key) 🔮 | planned | system emoji + iconHTML | missing — planned | lab-only (f.js) | 3 |
+| `ui-emote` | Unit emoji shout-outs | maybeEmote (attack, hurt, dodge, kill, healed, rage...) | emote bubble (rare, one at a time) | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-speech` | Unit speech bubbles | maybeSpeak (onSpawn/onAttack/onHit/onDeath/onSkill) | .speech-bubble + voiceTone | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-log-row` | Battle log row | pushLog | .log-row logpop | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `ui-enemy-pitch` | Opponent pitches a card | discard by the opponent → enemyPitchVfx | enemyPitchSlotFx: the card drops into a slot under their pills, settles, fades; "+1 🪵 Lumber" rises; their pill bings | good — has its own look that plays at the right moment | live (x17.js) | 1 |
+| `ui-enemy-hand-count` | Enemy hand counter | the opponent's hand size changes | "N 🃏" pill on their Deck, .ehc-bump on change, .is-zero at 0 | good — a small, clear counter | live (x17.js) | 1 |
+| `ui-upkeep-chip` | Upkeep lock | the round-start effects play before your turn opens | html.bw-upkeep (hand dims, play / pitch / Pass wait) + "⏳ Upkeep" chip (showUpkeepChip) | good — has its own look that plays at the right moment | live (x17.js) | 1 |
 
-### Tutorial and dialogue (`tutorial-dialogue`, 16)
+### Tutorial and dialogue (`tutorial-dialogue`, 17)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `tut-coach-tip` | Coach tip | showCoachTip | .coach-tip coachIn + coachNudge | good — has its own look that plays at the right moment | 2 |
-| `tut-coach-pointer` | Coach pointer (ring + hand) | coach pointer | .coach-pointer cpRing/cpBob/cpTargetIn/cpTargetPulse | good — has its own look that plays at the right moment | 2 |
-| `tut-coach-phantom` | Phantom card drag demo | syncCoachPhantom | looping phantom drag | good — has its own look that plays at the right moment | 3 |
-| `tut-highlight` | Tutorial highlight | tut-highlight | tutGlow | good — has its own look that plays at the right moment | 3 |
-| `tut-lumber-lesson` | Lumber lesson **(retired 2026-10-16)** | first pitch lesson | .lumber-lesson llIn/llPop/llPulse/llToss | good — has its own look that plays at the right moment | 3 |
-| `tut-faction-pick` | Faction pick → first fight | factionToBattleFx | cards arc to the deck, zoom, battlefield fades in | good — has its own look that plays at the right moment | 2 |
-| `tut-faction-showcase` | Faction showcase | faction picker | .faction-showcase fsBob + .faction-btn.fs-appear | good — has its own look that plays at the right moment | 3 |
-| `tut-leader-join` | Leader joins (Tutorial II) | tutorialLeaderJoin | leader slot in (leaderSlotIn) | good — has its own look that plays at the right moment | 3 |
-| `tut-dialogue-dock` | Dialogue dock opens | playDialogue | .npc-prompt npcIn | good — has its own look that plays at the right moment | 2 |
-| `tut-dialogue-question` | Dialogue waiting on your answer (collapsed) | dialogue-dock.is-collapsed.has-question | dlgChipPulse | good — has its own look that plays at the right moment | 3 |
-| `tut-dialogue-portrait` | NPC portrait expression change | dialogue line with a mood | static portrait art | missing — no talking / emotion cue | 2 |
-| `tut-dialogue-act` | Dialogue act opens a menu / shows a place | performDialogueAct | menu opens | basic — a generic or reused look that does not say what happened | 3 |
-| `tut-faction-warning` | Faction general warns you | playFactionWarning | dialogue | basic — a generic or reused look that does not say what happened | 3 |
-| `tut-curio-bubble` | Curiosity speech bubble (repeat visit) | visitCuriosity | showSpeechBubble | basic — a generic or reused look that does not say what happened | 3 |
-| `tut-rival-babble` | Rival babble voice | versus opener taunt | SoundKit.babble | good — has its own look that plays at the right moment | 3 |
-| `tut-afk` | Dialogue AFK line | dialogue timeout | AFK_LINES text | basic — a generic or reused look that does not say what happened | 3 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `tut-coach-tip` | Coach tip | showCoachTip | .coach-tip coachIn + coachNudge | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `tut-coach-pointer` | Coach pointer (ring + hand) | coach pointer | .coach-pointer cpRing/cpBob/cpTargetIn/cpTargetPulse | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `tut-coach-phantom` | Phantom card drag demo | syncCoachPhantom | looping phantom drag | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `tut-highlight` | Tutorial highlight | tut-highlight | tutGlow | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `tut-lumber-lesson` | Lumber lesson | first pitch lesson | retired 2026-10-16: the big Lumber lesson window is gone; the spotlighted Pitching lesson teaches Lumber | good — has its own look that plays at the right moment | retired | 3 |
+| `tut-faction-pick` | Faction pick → first fight | factionToBattleFx | cards arc to the deck, zoom, battlefield fades in | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `tut-faction-showcase` | Faction showcase | faction picker | .faction-showcase fsBob + .faction-btn.fs-appear | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `tut-leader-join` | Leader joins (Tutorial II) | tutorialLeaderJoin | leader slot in (leaderSlotIn) | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `tut-dialogue-dock` | Dialogue dock opens | playDialogue | .npc-prompt npcIn | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `tut-dialogue-question` | Dialogue waiting on your answer (collapsed) | dialogue-dock.is-collapsed.has-question | dlgChipPulse | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `tut-dialogue-portrait` | NPC portrait expression change | dialogue line with a mood | static portrait art | missing — no talking / emotion cue | live (f.js) | 2 |
+| `tut-dialogue-act` | Dialogue act opens a menu / shows a place | performDialogueAct | menu opens | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `tut-faction-warning` | Faction general warns you | playFactionWarning | dialogue | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `tut-curio-bubble` | Curiosity speech bubble (repeat visit) | visitCuriosity | showSpeechBubble | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `tut-rival-babble` | Rival babble voice | versus opener taunt | SoundKit.babble | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `tut-afk` | Dialogue AFK line | dialogue timeout | AFK_LINES text | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `ui-voice-bark` | Voice bark and babble 🎨 | maybeBark on play / kill / death / skill (leaders and bosses always) | showSpeechBubble(.is-bark, 1.6 s) + SoundKit.barkBabble in the species' voice (barkVoiceFor) | good — has its own look that plays at the right moment | live (x17.js) | 1 |
 
 ### Raid, dungeon, PvP, co-op (`raid-dungeon-pvp`, 29)
 
-| id | name | trigger | current | quality | P |
-|---|---|---|---|---|--:|
-| `raid-telegraph` | Raid column telegraph | raidTelegraphCols (next column smack) | .board-card.raid-tele raidTele + red lane + ⬇ | good — has its own look that plays at the right moment | 2 |
-| `raid-trench-danger` | Trench danger cells / aim | trench replay | .tr-cell.is-danger trDanger, .is-aim trAim, .is-charging trCharge, .tr-tele trPulse | good — has its own look that plays at the right moment | 2 |
-| `raid-trench-hit` | Trench replay hits | trench replay | .rp-card.is-hit rpShake + rpDmg | basic — a generic or reused look that does not say what happened | 3 |
-| `raid-boss-roar` | Raid fight start roar | raid fight start | bossRumble / versus | basic — a generic or reused look that does not say what happened | 2 |
-| `raid-tentacle-smack` | Tentacle Smack (whole column) | special attack column | telegraph + hits | basic — no tentacle | 2 |
-| `raid-tail-sweep` | Tail Sweep (every front-row card) | special attack front row | hits | basic — a generic or reused look that does not say what happened | 2 |
-| `raid-stage-change` | Raid stage change (Enraged 75%, Exposed <1%) | global raid stage crossed | stage name chip | missing — nothing on screen | 1 |
-| `raid-part-down` | Raid part defeated | ps.defeated | .r2-part.is-down | basic — a generic or reused look that does not say what happened | 2 |
-| `raid-bars` | Raid HP bars | raidBarsHTML | bars | basic — a generic or reused look that does not say what happened | 3 |
-| `raid-feed` | Raid feed entry | renderOnlineRaidFeed | rows | basic — a generic or reused look that does not say what happened | 3 |
-| `raid-claim` | Raid reward claim | claimRaidReward | rewardRush? | basic — a generic or reused look that does not say what happened | 3 |
-| `raid-core-stumps` | Core stumps armour each other | trench Core | numbers | missing — nothing on screen | 3 |
-| `dng-wave` | Dungeon wave arrives | advanceDungeonWave → dungeonWaveVfx | dungeonWaveVfx + chip | good — has its own look that plays at the right moment | 2 |
-| `dng-floor` | Dungeon floor / endless climb | endless map next floor | re-render | basic — a generic or reused look that does not say what happened | 3 |
-| `pvp-ticket` | PvP ticket used | usePvpTicket | number | basic — a generic or reused look that does not say what happened | 3 |
-| `pvp-portent` | PvP daily portent | pvpPortentHTML | .pvp-portent ppStrange | good — has its own look that plays at the right moment | 3 |
-| `pvp-rating` | Rating change after PvP / ranked | settlePvpAfterMatch / updateRating | numbers | missing — no rating swing animation | 2 |
-| `pvp-queue` | Live ranked queue | live queue | .live-queue-status liveQueuePulse | good — has its own look that plays at the right moment | 3 |
-| `pvp-rejoin` | Rejoin a live match | rejoin button | rejoinPulse | good — has its own look that plays at the right moment | 3 |
-| `pvp-gauntlet-streak` | Gauntlet streak | gauntlet win streak | "🔥 N / goal" text | basic — a generic or reused look that does not say what happened | 3 |
-| `pvp-autobattle` | Whisper's Game (autobattler) buffs and triggers | autobattle buff/dup/passive | .ab-trig trigSpent, boltWake, .ab-bloom bloomPulse | basic — a generic or reused look that does not say what happened | 3 |
-| `coop-shared-cell` | Co-op: partner hovering a shared cell 🔮 | planned D49 | none | missing — planned | 2 |
-| `coop-lock` | Co-op: player locks in (Ready) 🔮 | planned | none | missing — planned | 2 |
-| `coop-resolve` | Co-op: four plays land together 🔮 | planned | none | missing — planned | 2 |
-| `coop-cell-clash` | Co-op: two players pick the same cell 🔮 | planned | none | missing — planned | 3 |
-| `coop-floor-mechanic` | Co-op floor mechanic (cursed shared cells, row-target) 🔮 | planned | none | missing — planned | 2 |
-| `dng-murgle` | Murgle daily dungeons 🔮 | planned | none | missing — planned | 2 |
-| `pvp-map60` | Collection PvP gets wild (Map 60+) 🔮 | planned | none | missing — planned | 3 |
-| `world-event` | World events (community stage rally horn) 🔮 | planned | none | missing — planned | 2 |
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `raid-telegraph` | Raid column telegraph | raidTelegraphCols (next column smack) | .board-card.raid-tele raidTele + red lane + ⬇ | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `raid-trench-danger` | Trench danger cells / aim | trench replay | .tr-cell.is-danger trDanger, .is-aim trAim, .is-charging trCharge, .tr-tele trPulse | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `raid-trench-hit` | Trench replay hits | trench replay | .rp-card.is-hit rpShake + rpDmg | basic — a generic or reused look that does not say what happened | live (f.js, p1.js) | 3 |
+| `raid-boss-roar` | Raid fight start roar | raid fight start | bossRumble / versus | basic — a generic or reused look that does not say what happened | live (f.js) | 2 |
+| `raid-tentacle-smack` | Tentacle Smack (whole column) | special attack column | telegraph + hits | basic — no tentacle | live (f.js) | 2 |
+| `raid-tail-sweep` | Tail Sweep (every front-row card) | special attack front row | hits | basic — a generic or reused look that does not say what happened | live (f.js) | 2 |
+| `raid-stage-change` | Raid stage change (Enraged 75%, Exposed <1%) | global raid stage crossed | stage name chip | missing — nothing on screen | live (f.js) | 1 |
+| `raid-part-down` | Raid part defeated | ps.defeated | .r2-part.is-down | basic — a generic or reused look that does not say what happened | live (f.js) | 2 |
+| `raid-bars` | Raid HP bars | raidBarsHTML | bars | basic — a generic or reused look that does not say what happened | live (f.js, r.js) | 3 |
+| `raid-feed` | Raid feed entry | renderOnlineRaidFeed | rows | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `raid-claim` | Raid reward claim | claimRaidReward | rewardRush? | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `raid-core-stumps` | Core stumps armour each other | trench Core | numbers | missing — nothing on screen | live (f.js) | 3 |
+| `dng-wave` | Dungeon wave arrives | advanceDungeonWave → dungeonWaveVfx | dungeonWaveVfx + chip | good — has its own look that plays at the right moment | live (f.js) | 2 |
+| `dng-floor` | Dungeon floor / endless climb | endless map next floor | re-render | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `pvp-ticket` | PvP ticket used | usePvpTicket | number | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `pvp-portent` | PvP daily portent | pvpPortentHTML | .pvp-portent ppStrange | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `pvp-rating` | Rating change after PvP / ranked | settlePvpAfterMatch / updateRating | numbers | missing — no rating swing animation | live (f.js) | 2 |
+| `pvp-queue` | Live ranked queue | live queue | .live-queue-status liveQueuePulse | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `pvp-rejoin` | Rejoin a live match | rejoin button | rejoinPulse | good — has its own look that plays at the right moment | live (f.js) | 3 |
+| `pvp-gauntlet-streak` | Gauntlet streak | gauntlet win streak | "🔥 N / goal" text | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `pvp-autobattle` | Whisper's Game (autobattler) buffs and triggers | autobattle buff/dup/passive | .ab-trig trigSpent, boltWake, .ab-bloom bloomPulse | basic — a generic or reused look that does not say what happened | live (f.js) | 3 |
+| `coop-shared-cell` | Co-op: partner hovering a shared cell 🔮 | planned D49 | none | missing — planned | lab-only (f.js) | 2 |
+| `coop-lock` | Co-op: player locks in (Ready) 🔮 | planned | none | missing — planned | lab-only (f.js) | 2 |
+| `coop-resolve` | Co-op: four plays land together 🔮 | planned | none | missing — planned | lab-only (f.js) | 2 |
+| `coop-cell-clash` | Co-op: two players pick the same cell 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
+| `coop-floor-mechanic` | Co-op floor mechanic (cursed shared cells, row-target) 🔮 | planned | none | missing — planned | lab-only (f.js) | 2 |
+| `dng-murgle` | Murgle daily dungeons 🔮 | planned | none | missing — planned | lab-only (f.js) | 2 |
+| `pvp-map60` | Collection PvP gets wild (Map 60+) 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
+| `world-event` | World events (community stage rally horn) 🔮 | planned | none | missing — planned | lab-only (f.js) | 2 |
 
-🔮 = future (planned). 🎨 = build variants for the designer to choose.
+### map-grandeur (`map-grandeur`, 3)
+
+| id | name | trigger | current | quality | status | P |
+|---|---|---|---|---|---|--:|
+| `map-title-frostfire` | Map title: Frostfire (Map 22) | entering the Rimefire Caldera (m22) for the first time in a session | FX.G.mapTitle, theme frostfire (ribbon banner) | good — has its own look that plays at the right moment | live (w4.js) | 2 |
+| `map-title-castle` | Map title: Fortress (Maps 23-24) | entering the Goldfeather Siege (m23) or Goldfeather Keep (m24) for the first time in a session | FX.G.mapTitle, theme castle (ribbon banner) | good — has its own look that plays at the right moment | live (w4.js) | 2 |
+| `map-grand-silhouettes-2` | Distant silhouettes (II): battlements, the ice volcano | the Frostfire and Fortress titles | FX.G.silhouettes {sil:battlements} / the frostfire volcano | good — has its own look that plays at the right moment | live (w4.js) | 2 |
+
+🔮 = future (planned). 🎨 = build variants for the designer to choose. Status (manifest file): where it is built in the Effects Lab.
 
 ## Future effects by theme
 

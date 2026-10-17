@@ -1,0 +1,4 @@
+/* copied from @fontsource/baloo-thambi-2 5.3.0 (2026-10-18); desktop build only */
+@font-face{font-family:'Baloo Thambi 2';font-style:normal;font-display:swap;font-weight:500;src:url(baloo-thambi-2-tamil-500-normal.woff2) format('woff2');unicode-range:U+0964-0965,U+0B82-0BFA,U+200C-200D,U+20B9,U+25CC;}
+@font-face{font-family:'Baloo Thambi 2';font-style:normal;font-display:swap;font-weight:700;src:url(baloo-thambi-2-tamil-700-normal.woff2) format('woff2');unicode-range:U+0964-0965,U+0B82-0BFA,U+200C-200D,U+20B9,U+25CC;}
+@font-face{font-family:'Baloo Thambi 2';font-style:normal;font-display:swap;font-weight:800;src:url(baloo-thambi-2-tamil-800-normal.woff2) format('woff2');unicode-range:U+0964-0965,U+0B82-0BFA,U+200C-200D,U+20B9,U+25CC;}
