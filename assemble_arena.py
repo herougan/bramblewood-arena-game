@@ -77,10 +77,16 @@ def data_uri_to_asset(rel_base, uri):
 # bramblewood-i18n.js (or all inlined with BW_INLINE=1).
 import glob as _glob
 _pack_urls, _inline_packs = {}, []
-for _fp in sorted(_glob.glob(SCRATCH + "lang/*.json")):
-    _code = os.path.basename(_fp)[:-5]
+# 2026-10-18 (audit I2: about 360 card names were in no pack): card names live in their own files, lang/cards/<code>.json (same
+# {"English": "translation"} shape), merged into each built pack here; the main pack wins on a clash so a hand edit there sticks.
+# Both the assets/lang/<code>.js file and the BW_INLINE=1 copy are made from the merged pack. tools/i18n_cards.py reports coverage.
+_pack_codes = sorted({os.path.basename(_p)[:-5] for _p in _glob.glob(SCRATCH + "lang/*.json") + _glob.glob(SCRATCH + "lang/cards/*.json")})
+for _code in _pack_codes:
     if _code == "en": continue
-    _js = "(window.BW_LANG_PACKS=window.BW_LANG_PACKS||{})[%s]=%s;\n" % (json.dumps(_code), json.dumps(json.load(open(_fp, encoding="utf-8")), ensure_ascii=False, separators=(",", ":")))
+    _pack = {}
+    for _fp in (SCRATCH + "lang/cards/%s.json" % _code, SCRATCH + "lang/%s.json" % _code):
+        if os.path.exists(_fp): _pack.update(json.load(open(_fp, encoding="utf-8")))
+    _js = "(window.BW_LANG_PACKS=window.BW_LANG_PACKS||{})[%s]=%s;\n" % (json.dumps(_code), json.dumps(_pack, ensure_ascii=False, separators=(",", ":")))
     if INLINE: _inline_packs.append(_js)
     else: _pack_urls[_code] = asset_url("lang/%s.js" % _code, _js.encode("utf-8"), "text/javascript")
 ghosts_src = ("".join(_inline_packs) if INLINE else "") + ghosts_src.replace("__LANG_PACK_URLS__", json.dumps(_pack_urls).replace("\\", "\\\\").replace("'", "\\'"), 1)
