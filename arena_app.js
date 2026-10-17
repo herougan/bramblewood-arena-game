@@ -31161,16 +31161,18 @@ const FIELD_ART = {
   sandstorm:{art:'art/fields/sandstorm.png'}, scorching:{art:'art/fields/scorching.png'}, scorched:{art:'art/fields/scorched.png'},
   lavatide:{art:'art/fields/lavatide.png'}, petrify:{art:'art/fields/petrify.png'}, eruption:{art:'art/fields/eruption.png'},
   surge:{art:'art/fields/surge.png'}, mines:{art:'art/fields/mines.png'}, rain:{art:'art/fields/rain.png'},
-  // Field effects 2 (2026-10-16): a key per new card. Where an existing scene fits it is reused (Glass-storm the sandstorm, Lava Spout the
-  // lava tide, Hail the frost, Slippery the freezing ice, Haunted the mist); the others name their own picture, which doesn't exist yet,
-  // so the card shows its icon until art/fields/<key>.png is added (the build only hashes files that exist).
+  // Field effects 2 (2026-10-16): a key per new card, each with its own scene since 2026-10-17 (Leylines I-III share one). A path whose
+  // file doesn't exist shows the card's icon (the build only hashes files that exist).
   tide:{art:'art/fields/tide.png'}, landslide:{art:'art/fields/landslide.png'}, consternation:{art:'art/fields/consternation.png'},
   crushingdepths:{art:'art/fields/crushingdepths.png'}, rookrow:{art:'art/fields/rookrow.png'}, bishoppath:{art:'art/fields/bishoppath.png'},
   mirage:{art:'art/fields/mirage.png'}, canopy:{art:'art/fields/canopy.png'}, undergrowth:{art:'art/fields/undergrowth.png'}, tallgrass:{art:'art/fields/tallgrass.png'},
-  slippery:{art:'art/fields/freezing.png'}, glassstorm:{art:'art/fields/sandstorm.png'}, hail:{art:'art/fields/frost.png'}, lavaspout:{art:'art/fields/lavatide.png'},
-  leylines1:{art:'art/fields/leylines.png'}, leylines2:{art:'art/fields/leylines.png'}, leylines3:{art:'art/fields/leylines.png'}, haunted:{art:'art/fields/misty.png'},
-  // Field effects 3 (2026-10-17): borrowed pictures until their own exist (fumes the misty air, ash the eruption, the walls' arrows the gale).
-  sulphurfumes:{art:'art/fields/misty.png'}, ashrain:{art:'art/fields/eruption.png'}, ashy:{art:'art/fields/eruption.png'}, arrowslits:{art:'art/fields/gale.png'},
+  slippery:{art:'art/fields/slippery.png'}, glassstorm:{art:'art/fields/glassstorm.png'}, hail:{art:'art/fields/hail.png'}, lavaspout:{art:'art/fields/lavaspout.png'},
+  leylines1:{art:'art/fields/leylines.png'}, leylines2:{art:'art/fields/leylines.png'}, leylines3:{art:'art/fields/leylines.png'}, haunted:{art:'art/fields/haunted.png'},
+  // Field effects 3 (2026-10-17).
+  sulphurfumes:{art:'art/fields/sulphurfumes.png'}, ashrain:{art:'art/fields/ashrain.png'}, ashy:{art:'art/fields/ashy.png'}, arrowslits:{art:'art/fields/arrowslits.png'},
+  // 2026-10-17 (art, the user's notes 21 and 26): every field effect has its own scene now (the borrowed ones above got theirs), plus
+  // Awash (its card is being added separately; its art key is 'awash') and the volcano's Day/Night Glow pill (it borrowed Twilight).
+  awash:{art:'art/fields/awash.png'}, volcanoglow:{art:'art/fields/volcanoglow.png'},
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
@@ -31178,7 +31180,7 @@ function fieldArtKeyOfRow(row, fr){
   if(k === 'permaTide') return fr.rapids ? 'rapids' : 'permatide';
   const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
     swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
-    eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines', ashyAfter:'ashy', volcanoGlow:'twilight'}; // + 2026-10-17
+    eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines', ashyAfter:'ashy', volcanoGlow:'volcanoglow', awash:'awash'}; // + 2026-10-17
   if(FIELD2[k]) return FIELD2[k].editor; // field effects 2 (2026-10-16): the art key is the editor id
   if(k === 'eruption'){ let v = false; try{ v = volcanoRulesOn(fr); }catch(e){} if(!v) return 'scorched'; } // the fixed Scorched Ground, not the volcano's Eruption
   return map[k] || null;
