@@ -628,7 +628,7 @@ M.nightRetreat = function(host, opts){
   if(anchor) anchor.after(wrap); else host.insertBefore(wrap, host.firstChild);
   const n = opts.n || 8, base = opts.hue == null ? 40 : opts.hue, jobs = [];
   for(let i = 0; i < n; i++){
-    const s = document.createElement('i'), h = H * rnd(.10, .24), w = W * rnd(.75, 1.25), hue = base + rnd(-1.8, 1.8), light = rnd(76, 88), peak = rnd(.26, .58); // some streaks clearly brighter than others
+    const s = document.createElement('i'), h = H * rnd(.10, .24), w = W * rnd(.75, 1.25), hue = base + rnd(-1.8, 1.8), light = rnd(76, 88), peak = rnd(.26, .58) * (opts.strength || 1); // some streaks clearly brighter than others (opts.strength: 2026-10-16)
     s.style.cssText = `top:${(H * (i + rnd(.1, .9)) / n - h/2).toFixed(0)}px; width:${w.toFixed(0)}px; height:${h.toFixed(0)}px;
       background:radial-gradient(ellipse 50% 50% at 55% 50%, hsla(${hue.toFixed(2)}, 92%, ${light.toFixed(1)}%, 1), hsla(${hue.toFixed(2)}, 90%, ${(light - 6).toFixed(1)}%, .45) 45%, hsla(${hue.toFixed(2)}, 90%, 70%, 0) 72%);`;
     wrap.appendChild(s);
@@ -1576,6 +1576,8 @@ M.jumperArrive = async function(node, kind, opts){
 };
 M.hooks.mapJumperArrive = function(node, kind, opts, env){ if(!env.fxAtLeast('low')) return; M.jumperArrive(node, kind, opts); };
 // Night lifting on the battlefield: the veil fades (arena_app.js syncNightVeil) and the morning light drifts across.
-M.hooks.fieldNightLifts = function(bf, env){ if(env.fxAtLeast('med')) M.nightRetreat(bf, {n:7}); };
+// 2026-10-16 (user, 20:19: "the light creeping up needs to be 60% less strong as well"): in a fight the morning streaks are at 40% and
+// slower, alongside the board's 10 s light-up and its left-to-right creep (syncSkyFx / syncNightVeil in arena_app.js).
+M.hooks.fieldNightLifts = function(bf, env){ if(env.fxAtLeast('med')) M.nightRetreat(bf, {n:7, strength:.4, speed:1.6}); };
 
 })(typeof window !== 'undefined' ? window : globalThis);

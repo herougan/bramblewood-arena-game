@@ -212,6 +212,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // there is no castle — "castle" damage goes into the leader, and the leader dying loses the game.
   const battleMode = opts.battleMode || 'gravity';
   const slotMode = battleMode==='open' || battleMode==='gladiator';
+  // CPU slot choice (2026-10-16, see aiChooseSlot): on in the game's own fights (they record events), off in the silent sims
+  // (tools/difficulty_curve.js and friends) unless they pass aiAim:true, so their numbers stay comparable with earlier runs.
+  const aiAim = opts.aiAim != null ? !!opts.aiAim : recordEvents;
   const isGladiator = battleMode==='gladiator';
   // Reserve rows (2026-10-12, user: "for raids, I want a FULL proper game. Just that, there's multi rows! like maybe 3 rows v 3
   // rows"): opts.reserveRows (0–2) gives each side that many rows behind its front row, in Open (slot) battles. A card can be
@@ -4548,6 +4551,37 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return null;
   }
 
+  // Where the CPU puts a unit (2026-10-16, user: "It should be like us, they play the card ... then the card goes onto the slot they
+  // meant for it to. Simple CPU - just random. But also, if they can win, they would put far left or far right. But at the start,
+  // they will just try to dominate the field, so mainly trying to kill of your units."). It used to go to the legal slot nearest the
+  // centre on a random side. Now, among the legal slots (next to its own units):
+  //   1. it can win this round: the unit plus its Ready units in open columns hit for at least the castle's Health and Shield, so it
+  //      goes to an open column (nothing of yours across), the outermost one: far left or far right;
+  //   2. otherwise, mostly (3 in 4), it goes across from one of your units it can kill (or out-last), the best such trade first;
+  //   3. otherwise anywhere legal, at random.
+  // Returns a slot number, or null to keep the old placement (gravity mode, spells, no legal slot, aiAim off).
+  function aiChooseSlot(players, aiId, defId){
+    if(!slotMode || !aiAim) return null;
+    const d = CARD_DEFS[defId] || {}; if(d.field || d.cardType === 'spell' || d.cardType === 'equipment') return null;
+    const ai = players[aiId], foe = players[otherId(aiId)], legal = legalSlots(ai); if(!legal.length) return null;
+    const atk = Number(d.attack) || 0, hp = Number(d.health) || 0, ready = !(Number(d.wait) > 0);
+    const across = sl=> frontCardAt(foe, sl);
+    const open = legal.filter(sl=> !across(sl));
+    if(foe.hq && open.length){
+      const already = allLive(ai).filter(c=> !(c.wait > 0) && !c.stunned && !across(c.slot)).reduce((t, c)=> t + Math.max(0, c.atk || 0), 0);
+      if((ready ? atk : 0) + already >= Math.max(1, (foe.hq.hp || 0) + (foe.hq.shield || 0))){
+        const far = Math.max(...open.map(Math.abs)), ends = open.filter(sl=> Math.abs(sl) === far);
+        return ends[Math.floor(rnd() * ends.length)];
+      }
+    }
+    if(rnd() < 0.75){
+      const fights = legal.map(sl=>{ const f = across(sl); if(!f) return null;
+        const kills = atk >= (f.hp || 0), lives = hp > (f.atk || 0);
+        return (kills || lives) ? {sl, score: (kills ? 2 : 0) + (lives ? 1 : 0) + rnd() * 0.5} : null; }).filter(Boolean);
+      if(fights.length) return fights.reduce((a, b)=> b.score > a.score ? b : a).sl;
+    }
+    return legal[Math.floor(rnd() * legal.length)];
+  }
   // Saving reach (2026-10-09): 2 turns. Saving further (or refusing smaller costly cards while saving)
   // cost the CPU more tempo than the big card won back under today's discard-only Lumber (decision B4).
   const SAVE_REACH = 2;
@@ -4633,6 +4667,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const best = scored.reduce((a, b)=> b[1] > a[1] ? b : a);
       // Only a useless spell left? Hold it (fall through to equipment below) rather than waste the turn on it.
       if(best[1] > -50){ let side = rnd() < 0.5 ? 'left' : 'right';
+        { const aim = aiChooseSlot(players, aiId, best[0].defId); if(aim != null) side = aim; } // its own slot choice (2026-10-16)
         { const pk = packPlacementFor(ai, best[0].defId); if(pk != null) side = pk; } // Packs try to be adjacent (2026-10-14)
         placeCard(players, sideOf, aiId, best[0].uid, side, stats, events); }
     }

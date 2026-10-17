@@ -866,10 +866,18 @@ M.dayBreaks = function(host, opts){
   const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'background:linear-gradient(270deg, rgba(255,214,120,.0), rgba(255,214,120,.55) 45%, rgba(255,240,190,.75) 55%, rgba(255,214,120,0));'}))[0];
   const rays = bits(box, 1, ()=> ({cls:'fxb-rays'}))[0];
   const sun = bits(box, 1, ()=> ({cls:'fxb-disc', style:'right:6%; top:50%; background:radial-gradient(circle, #fffbe0, #ffd24a 60%, #ffae2a); box-shadow:0 0 30px 12px rgba(255,210,90,.55);'}))[0];
+  // 2026-10-16 (user, 20:19: "Day animation is too 'hard'. Soften the day's sun animation by 50% (make it 85% more transparent); also the
+  // sun should keep moving, and fade off while moving." and "the light creeping up needs to be 60% less strong as well."): the sun and
+  // its rays peak at 15% of their old strength, and the sun climbs and drifts the whole time, fading out on the way instead of
+  // stopping to fade; the golden wash creeps in from the left (like the board's own dawn creep) at 40% of its old strength, slower.
+  const SUN = .15, WASH = .4, D = 3.6;
+  w.style.background = 'linear-gradient(90deg, rgba(255,214,120,.0), rgba(255,214,120,.55) 45%, rgba(255,240,190,.75) 55%, rgba(255,214,120,0))';
   return run([box], opts, (t)=>{
-    t.fromTo(w, {xPercent:60, opacity:0}, {xPercent:-60, opacity:1, duration:1.3, ease:'power1.inOut'}).to(w, {opacity:0, duration:.35}, 1.0)
-      .fromTo(sun, {y:r.height*.35, opacity:0}, {y:-r.height*.3, opacity:1, duration:1, ease:'power2.out'}, 0).to(sun, {opacity:0, duration:.4}, 1.1)
-      .fromTo(rays, {opacity:0, rotation:-6}, {opacity:1, rotation:4, duration:.8, ease:'sine.out'}, .2).to(rays, {opacity:0, duration:.5}, 1.0);
+    t.fromTo(w, {xPercent:-60, opacity:0}, {xPercent:60, duration:D*.75, ease:'sine.inOut'}, 0)
+      .to(w, {opacity:WASH, duration:D*.25, ease:'sine.out'}, 0).to(w, {opacity:0, duration:D*.4, ease:'sine.in'}, D*.35)
+      .fromTo(sun, {x:0, y:r.height*.35}, {x:-r.width*.12, y:-r.height*.42, duration:D, ease:'none'}, 0)
+      .fromTo(sun, {opacity:0}, {opacity:SUN, duration:D*.3, ease:'sine.out'}, 0).to(sun, {opacity:0, duration:D*.6, ease:'sine.in'}, D*.4)
+      .fromTo(rays, {opacity:0, rotation:-6}, {opacity:SUN, rotation:2, duration:D*.4, ease:'sine.out'}, .2).to(rays, {opacity:0, rotation:9, duration:D*.5, ease:'sine.in'}, D*.45);
   });
 };
 // Dawn: both sides draw (wt-dawn-draw): rosy light rises from the horizon and a few birds take off (the dawn chorus).
@@ -1059,10 +1067,14 @@ css('rainmap', `.fxb-rainsheet{position:absolute; inset:-10%; background:repeati
 @keyframes fxbRain{to{background-position:-40px 220px;}}
 .fxb-bigdrop{position:absolute; width:2px; height:16px; border-radius:2px; background:linear-gradient(180deg, rgba(220,240,255,0), rgba(220,240,255,.95));}
 .fxb-splash{position:absolute; width:14px; height:5px; border-radius:50%; border:1.5px solid rgba(220,240,255,.85);}`);
+const RAIN_ONSET_OPACITY = .1; // 2026-10-16 (user: "Transition to rain: Too strong ... make it 90% more transparent.")
 M.rainStartStop = function(host, opts){
   opts = Object.assign({}, opts, host && host.nodeType ? {host} : {}); const r = hostRect(opts); const start = opts.start !== false;
   const box = over(r, 'fxb-sky', '<i class="fxb-bit" style="inset:0; background:rgba(40,60,90,.35)"></i><i class="fxb-bit fxb-rainsheet"></i>'); const [dim, sheet] = box.children;
   const drops = bits(box, 10, ()=> ({cls:'fxb-bigdrop', style:`left:${rnd(5, 95)}%; top:-5%;`})); const spl = bits(box, 10, ()=> ({cls:'fxb-splash', style:`left:${rnd(5, 95)}%; top:${rnd(40, 95)}%;`}));
+  // 2026-10-16 (user: "Transition to rain: Too strong. Either remove it or make it 90% more transparent."): the rain coming in is
+  // drawn at a tenth of its old strength (the whole layer: the dim, the sheet, the drops and the splashes). Rain stopping is unchanged.
+  if(start) box.style.opacity = String(RAIN_ONSET_OPACITY);
   return run([box], opts, (t)=>{
     if(start){ drops.forEach((d, i)=> t.fromTo(d, {y:0, opacity:1}, {y:r.height*rnd(.5, .95), duration:.5, ease:'power1.in'}, i*.08).to(d, {opacity:0, duration:.05}, '>'));
       spl.forEach((s, i)=> t.fromTo(s, {scale:.2, opacity:1}, {scale:1.6, opacity:0, duration:.35}, .4 + i*.07));
@@ -1126,7 +1138,8 @@ M.fieldSet = function(host, opts){
       const fl = bits(box, 16, i=> ({cls:'fxb-flake', text:i%3 ? '❄' : '❅', style:`left:${i < 8 ? (i%2 ? 2 : 92) : rnd(5, 95)}%; top:${i < 8 ? rnd(5, 90) : (i%2 ? 2 : 90)}%; font-size:${rnd(12, 22)}px;`}));
       t.fromTo(w, {opacity:0}, {opacity:1, duration:.5}).to(w, {opacity:0, duration:.6}, 1.0);
       fl.forEach((s, i)=> t.fromTo(s, {scale:0, rotation:0, opacity:0}, {scale:1, rotation:120, opacity:1, x:(W/2 - (parseFloat(s.style.left)/100)*W)*.25, y:(H/2 - (parseFloat(s.style.top)/100)*H)*.25, duration:.6, ease:'power2.out'}, .05*i).to(s, {opacity:0, duration:.35}, 1.0 + i*.01)); }
-    else if(f === 'rain'){ const sh = bits(box, 1, ()=> ({cls:'fxb-rainsheet'}))[0]; const dim = bits(box, 1, ()=> ({cls:'fxb-fwash', style:'background:linear-gradient(180deg, rgba(80,110,150,.4), rgba(80,140,190,.15));'}))[0];
+    else if(f === 'rain'){ box.style.opacity = String(RAIN_ONSET_OPACITY); // 2026-10-16: the rain coming in, 90% more transparent (see M.rainStartStop)
+      const sh = bits(box, 1, ()=> ({cls:'fxb-rainsheet'}))[0]; const dim = bits(box, 1, ()=> ({cls:'fxb-fwash', style:'background:linear-gradient(180deg, rgba(80,110,150,.4), rgba(80,140,190,.15));'}))[0];
       const spl = bits(box, 12, ()=> ({cls:'fxb-splash', style:`left:${rnd(5, 95)}%; top:${rnd(20, 95)}%;`}));
       t.fromTo([dim, sh], {opacity:0, xPercent:-30}, {opacity:1, xPercent:0, duration:.6, ease:'power2.out'}).to([dim, sh], {opacity:0, duration:.5}, 1.1);
       spl.forEach((s, i)=> t.fromTo(s, {scale:.2, opacity:1}, {scale:1.7, opacity:0, duration:.35}, .3 + i*.06)); }

@@ -7,7 +7,8 @@
 // Pure and dependency-free so the browser, Node tests and a Supabase Edge Function share one copy.
 (function(root){
 'use strict';
-const COSMETIC = new Set(['flavor', 'art', 'arts', 'icon', 'uuid', 'numericId', 'locked', 'source', 'lore', 'credit', 'artCredit', 'level']);
+// 'barks' (2026-10-16): a card's voice lines are words only, so adding or editing them never changes the fingerprint.
+const COSMETIC = new Set(['flavor', 'art', 'arts', 'icon', 'uuid', 'numericId', 'locked', 'source', 'lore', 'credit', 'artCredit', 'level', 'barks']);
 
 function stableStringify(v){
   if(v === null || typeof v !== 'object') return JSON.stringify(v === undefined ? null : v);
