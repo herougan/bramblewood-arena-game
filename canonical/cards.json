@@ -24812,7 +24812,7 @@
     "wait": 1,
     "attack": 4,
     "flavor": "It hunts the crater rim in the steam, where nothing can see it coming and nothing can hear it over the vents.",
-    "health": 8,
+    "health": 7,
     "locked": true,
     "rarity": "superrare",
     "resist": [
@@ -24822,7 +24822,9 @@
     "effects": {
       "mountainClimber": true,
       "pounce": 3,
-      "bleed": 1
+      "bleed": 1,
+      "ambush": 3,
+      "bloodlust": true
     },
     "species": [
       "Feline"
@@ -24836,7 +24838,7 @@
       "Mountain",
       "Frost"
     ],
-    "creatorNote": "2026-10-17 (new maps 22-24): Map 22 boss reward (22-8), the map's one Super Rare.",
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 22 boss reward (22-8), the map's one Super Rare. 2026-10-17 (new skills on cards): Ambush 3 and Bloodlust (it hunts from the steam); Health 8 -> 7 to stay on budget (35 <= 37.4).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none",
@@ -24911,7 +24913,8 @@
     "effects": {
       "armor": 2,
       "arrow": 2,
-      "arrowCount": 2
+      "arrowCount": 2,
+      "vanguard": 1
     },
     "species": [
       "Mammal"
@@ -24926,7 +24929,7 @@
       "Savanna",
       "Structure"
     ],
-    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 boss reward (23-8), the map's one Super Rare. The first creature with Arrow 2 twice (arrowCount 2). Structure: Demolisher hurts it more.",
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 boss reward (23-8), the map's one Super Rare. The first creature with Arrow 2 twice (arrowCount 2). Structure: Demolisher hurts it more. 2026-10-17 (new skills on cards): Vanguard 1 (budget 51 <= 51.6).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none",
@@ -24997,7 +25000,8 @@
     "effects": {
       "armor": 3,
       "guardian": true,
-      "helmet": true
+      "helmet": true,
+      "vanguard": 1
     },
     "species": [
       "Reptile"
@@ -25011,7 +25015,7 @@
       "Turtle",
       "Field"
     ],
-    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 reward (23-2 Trench Works). Helmet turns half the arrows (Arrow Slits too); Guardian takes the hits meant for its neighbours.",
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 reward (23-2 Trench Works). Helmet turns half the arrows (Arrow Slits too); Guardian takes the hits meant for its neighbours. 2026-10-17 (new skills on cards): Vanguard 1 (budget 35 <= 38.6).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none",
@@ -25083,7 +25087,8 @@
       "armor": 3,
       "overwhelm": true,
       "inspiring": 2,
-      "arrow": 3
+      "arrow": 3,
+      "vanguard": 1
     },
     "species": [
       "Mammal"
@@ -25097,7 +25102,7 @@
       "Elephant",
       "Savanna"
     ],
-    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 boss card (23-8). Enemy only for now (no source).",
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 boss card (23-8). Enemy only for now (no source). 2026-10-17 (new skills on cards): Vanguard 1 (boss, enemy only).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none"
@@ -25154,7 +25159,8 @@
     "dmgType": "physical",
     "effects": {
       "guardian": true,
-      "taunt": true
+      "taunt": true,
+      "sentry": true
     },
     "species": [
       "Bird"
@@ -25168,7 +25174,7 @@
       "Duck",
       "Village"
     ],
-    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 reward (24-2 The Bailey). Gets Sentry when that skill exists.",
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 reward (24-2 The Bailey). 2026-10-17 (new skills on cards): Sentry (budget 27 <= 29.8).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none",
@@ -25231,14 +25237,15 @@
     "wait": 0,
     "attack": 2,
     "flavor": "Every hit comes with a receipt.",
-    "health": 5,
+    "health": 4,
     "locked": true,
     "rarity": "uncommon",
     "resist": [],
     "dmgType": "physical",
     "effects": {
       "flying": true,
-      "swipe": 1
+      "swipe": 1,
+      "hoard": 2
     },
     "species": [
       "Bird"
@@ -25252,7 +25259,7 @@
       "Duck",
       "Village"
     ],
-    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 reward (24-3 The Counting House).",
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 reward (24-3 The Counting House). 2026-10-17 (new skills on cards): Hoard 2; Health 5 -> 4 to stay on budget (16.5 <= 18.8).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none",
@@ -25280,7 +25287,8 @@
     "dmgType": "physical",
     "effects": {
       "arrow": 2,
-      "reach": true
+      "reach": true,
+      "sentry": true
     },
     "species": [
       "Bird"
@@ -25294,7 +25302,7 @@
       "Bird",
       "River"
     ],
-    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 reward (24-5 The Battlements). Gets Sentry when that skill exists.",
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 reward (24-5 The Battlements). 2026-10-17 (new skills on cards): Sentry (budget 25 <= 29.8).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none",
@@ -25323,7 +25331,8 @@
     "effects": {
       "armor": 2,
       "bounty": 2,
-      "inspiring": 1
+      "inspiring": 1,
+      "reflect": true
     },
     "species": [
       "Bird"
@@ -25337,7 +25346,7 @@
       "Duck",
       "Village"
     ],
-    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 boss reward (24-8), the map's one Super Rare.",
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 boss reward (24-8), the map's one Super Rare. 2026-10-17 (new skills on cards): Reflect: its polished plate bounces shots (budget 40 <= 42.8).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none",
@@ -25369,7 +25378,8 @@
       "bounty": 3,
       "swipe": 2,
       "shieldCall": true,
-      "inspiring": 2
+      "inspiring": 2,
+      "hoard": 3
     },
     "species": [
       "Bird"
@@ -25383,9 +25393,268 @@
       "Duck",
       "King"
     ],
-    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 boss card (24-8). Enemy only for now (no source). King: King Slayer hits him harder. Gets Hoard when that skill exists.",
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 boss card (24-8). Enemy only for now (no source). King: King Slayer hits him harder. 2026-10-17 (new skills on cards): Hoard 3 (+1 Attack per 3 Lumber; boss, enemy only).",
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none"
+  },
+  {
+    "id": "gallery-orb-weaver",
+    "cost": 1,
+    "icon": "\ud83d\udd78\ufe0f",
+    "name": "Gallery Orb-Weaver",
+    "tags": [],
+    "test": false,
+    "uuid": "8c6f8c75-5687-52f1-aa20-c7d05aee2267",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It spins the gallery a new ceiling every night, and keeps whatever sticks to it.",
+    "health": 8,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "web": 1,
+      "poison": 1
+    },
+    "species": [
+      "Arachnid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1218,
+    "stoneCost": 0,
+    "archetypes": [
+      "Arachnid",
+      "Cave"
+    ],
+    "creatorNote": "2026-10-17 (new skills on cards): the first Web card. 7-A-3 Silk Gallery deck (x2) and its card reward. No art yet.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "mz",
+      "node": "7-A-3"
+    }
+  },
+  {
+    "id": "cottonmouth-matriarch",
+    "cost": 1,
+    "icon": "\ud83d\udc0d",
+    "name": "Cottonmouth Matriarch",
+    "tags": [],
+    "test": false,
+    "uuid": "614df447-1290-5811-90c5-5cb1581f5d9c",
+    "wait": 2,
+    "attack": 3,
+    "flavor": "She opens her white mouth once, as a warning. Her daughters skip that part.",
+    "health": 9,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "poison": 1,
+      "venomMaster": 1
+    },
+    "species": [
+      "Reptile"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1219,
+    "stoneCost": 0,
+    "archetypes": [
+      "Snake",
+      "Swamp"
+    ],
+    "creatorNote": "2026-10-17 (new skills on cards): the first Venom Master card. 6-7 Adder Gauntlet deck (x1) and its card reward. No art yet.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m8",
+      "node": "6-7"
+    }
+  },
+  {
+    "id": "hedgehog-herbalist",
+    "cost": 1,
+    "icon": "\ud83e\udd94",
+    "name": "Hedgehog Herbalist",
+    "tags": [],
+    "test": false,
+    "uuid": "56e50568-e3cd-55cc-a5f9-f635082bd278",
+    "wait": 1,
+    "attack": 2,
+    "flavor": "Pockets full of moss, mint and something nobody should eat raw.",
+    "health": 10,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "bloom": 2,
+      "herbalist": 1
+    },
+    "species": [
+      "Erinaceid"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1220,
+    "stoneCost": 0,
+    "archetypes": [
+      "Hedgehog",
+      "Forest"
+    ],
+    "creatorNote": "2026-10-17 (new skills on cards): the first Herbalist card (its own Bloom heals 3). 5-A-4 The Grove Warden deck (x2) and its card reward. No art yet.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "ms",
+      "node": "5-A-4"
+    }
+  },
+  {
+    "id": "eagle-owl-quartermaster",
+    "cost": 1,
+    "icon": "\ud83e\udd89",
+    "name": "Eagle-Owl Quartermaster",
+    "tags": [],
+    "test": false,
+    "uuid": "81714a34-cdcf-5a09-a735-cbf7346c1ae1",
+    "wait": 1,
+    "attack": 2,
+    "flavor": "Every feather in the eyrie\u2019s quivers passed through her talons first.",
+    "health": 8,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "flying": true,
+      "arrow": 1,
+      "fletcher": 1
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1221,
+    "stoneCost": 0,
+    "archetypes": [
+      "Owl",
+      "Mountain"
+    ],
+    "creatorNote": "2026-10-17 (new skills on cards): the first Fletcher card (its own Arrow hits for 2). 11-8 Summit Approach deck (x2) and its card reward. No art yet.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m10",
+      "node": "11-8"
+    }
+  },
+  {
+    "id": "ossuary-lammergeier",
+    "cost": 1,
+    "icon": "\ud83e\udd85",
+    "name": "Ossuary Lammergeier",
+    "tags": [],
+    "test": false,
+    "uuid": "716f2a02-3459-5d88-bcf6-cd2fabea0ac2",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It drops the bones on the rocks until they crack, then eats what is inside. It is in no hurry.",
+    "health": 6,
+    "locked": true,
+    "rarity": "veryrare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "flying": true,
+      "carrion": 2
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1222,
+    "stoneCost": 0,
+    "archetypes": [
+      "Vulture",
+      "Volcanic"
+    ],
+    "creatorNote": "2026-10-17 (new skills on cards): the first Carrion card. 20-A-1 The Ash Ossuary deck (x2) and a second card reward there (with the Ashbone Ghoul). No art yet.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "me",
+      "node": "20-A-1"
+    }
+  },
+  {
+    "id": "walrus-icebreaker",
+    "cost": 2,
+    "icon": "\ud83e\uddad",
+    "name": "Walrus Icebreaker",
+    "tags": [],
+    "test": false,
+    "uuid": "d81b3a39-f520-5f41-be4a-4fdc9d6a149b",
+    "wait": 2,
+    "attack": 3,
+    "flavor": "Two tusks, one tonne, and a firm belief that ice is only a suggestion.",
+    "health": 11,
+    "locked": true,
+    "rarity": "veryrare",
+    "resist": [
+      "cold"
+    ],
+    "dmgType": "physical",
+    "effects": {
+      "freeze": {
+        "chance": 25,
+        "duration": 1
+      },
+      "shatter": 2,
+      "armor": 1
+    },
+    "species": [
+      "Pinniped"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1223,
+    "stoneCost": 0,
+    "archetypes": [
+      "Tundra",
+      "Coastal"
+    ],
+    "creatorNote": "2026-10-17 (new skills on cards): the first Shatter card (it freezes, then shatters). 17-6 Glacier Herd deck (x2) and its card reward. No art yet.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m6",
+      "node": "17-6"
+    }
   }
 ]

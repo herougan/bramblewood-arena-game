@@ -2,6 +2,22 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-17 (new skills on cards)
+- **Today's skills are on the Map 22–24 cards** (each still on its stat budget at Level 1):
+  - **Vanguard 1:** War Elephant (51 ≤ 51.6), Testudo Tortoise (35 ≤ 38.6), Marshal Tuskwell (boss).
+  - **Sentry:** Goose Sentry (27 ≤ 29.8), Battlement Heron (25 ≤ 29.8).
+  - **Hoard:** Tax-Collector Teal, Hoard 2, now 2/4 (was 2/5; 16.5 ≤ 18.8). The Magnate Duck, Hoard 3 (boss).
+  - **Reflect:** Gilded Swan Knight (40 ≤ 42.8).
+  - **Ambush 3 and Bloodlust:** Caldera Snow Leopard, now 4/7 (was 4/8; 35 ≤ 37.4).
+- **Six new cards, each the first to carry its skill** (no art yet, so they show their emoji). Each one is in one fight's deck and is that fight's card reward:
+  - 🕸️ **Gallery Orb-Weaver** (Rare 3/8, 1/1; Web 1, Poison 1): 7-A-3 Silk Gallery, replacing 2 Garden Snails.
+  - 🐍 **Cottonmouth Matriarch** (Rare 3/9, 1/2; Poison 1, Venom Master 1): 6-7 Adder Gauntlet, replacing 1 Beaver Builder.
+  - 🦔 **Hedgehog Herbalist** (Rare 2/10, 1/1; Bloom 2, Herbalist 1): 5-A-4 The Grove Warden, replacing 2 Echo-Keepers.
+  - 🦉 **Eagle-Owl Quartermaster** (Rare 2/8, 1/1; Flying, Arrow 1, Fletcher 1): 11-8 Summit Approach, replacing 2 Chipmunk Hoarders.
+  - 🦅 **Ossuary Lammergeier** (Very Rare 3/6, 1/1; Flying, Carrion 2): 20-A-1 The Ash Ossuary, replacing 2 Cinder Imps. It is that fight's second card reward, next to the Ashbone Ghoul.
+  - 🦭 **Walrus Icebreaker** (Very Rare 3/11, 2/2; Freeze 25%, Shatter 2, Armor 1; resists cold): 17-6 Glacier Herd, replacing 2 Chipmunk Hoarders.
+- **Leech:** no new card, because the Barrow Leech and the Vampire Bat already have it (`sap`).
+
 ## 2026-10-17 (effects)
 - **Expose with no one to strike it:** when a side has no units left, every Expose counter on the other side's units goes (checked after each death sweep and at the end of the round); the crosshair fades off and the log says so. The Expose crosshair never just blinks off now: it fades.
 - **Expose crits:** a counter used by a crit makes the crosshair shine deep dark red at the hit; when the last counter goes, it flashes dark red and magnifies as it fades (the round-end "wears off" doesn't play a second one).
