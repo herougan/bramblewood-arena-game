@@ -84,6 +84,17 @@ for _fp in sorted(_glob.glob(SCRATCH + "lang/*.json")):
     if INLINE: _inline_packs.append(_js)
     else: _pack_urls[_code] = asset_url("lang/%s.js" % _code, _js.encode("utf-8"), "text/javascript")
 ghosts_src = ("".join(_inline_packs) if INLINE else "") + ghosts_src.replace("__LANG_PACK_URLS__", json.dumps(_pack_urls).replace("\\", "\\\\").replace("'", "\\'"), 1)
+# Emoji sets (2026-10-17, user: "For Emoji - use the best and free one ... fluent flat"): tools/emoji/sets/<set>.json (made by
+# tools/emoji/build_sets.py: only the ~540 emoji the game uses, svgo'd) -> assets/emoji/<set>.js, one file per set, which
+# EmojiStyle in arena_app.js loads only when that set is in use (Fluent Flat is the default). No CDN. Under BW_INLINE=1 they
+# become data: URLs like every other asset.
+_emoji_urls = {}
+for _fp in sorted(_glob.glob(SCRATCH + "tools/emoji/sets/*.json")):
+    _ed = json.load(open(_fp, encoding="utf-8"))
+    _js = "(window.BW_EMOJI_SETS=window.BW_EMOJI_SETS||{})[%s]=%s;\n" % (json.dumps(_ed["set"]), json.dumps({"vs": _ed.get("vs", []), "emoji": _ed["emoji"]}, ensure_ascii=False, separators=(",", ":")))
+    _emoji_urls[_ed["set"]] = asset_url("emoji/%s.js" % _ed["set"], _js.encode("utf-8"), "text/javascript")
+if app_src.count("__EMOJI_SET_URLS__") != 1: raise SystemExit("Expected exactly 1 __EMOJI_SET_URLS__ in arena_app.js")
+app_src = app_src.replace("__EMOJI_SET_URLS__", json.dumps(_emoji_urls), 1)
 
 canonical = json.load(open(SCRATCH + "canonical/cards.json", encoding="utf-8"))
 card_defs_obj = {}

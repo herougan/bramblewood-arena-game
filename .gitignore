@@ -13,3 +13,6 @@ graphify-out/
 /*.png
 __pycache__/
 .claude/
+
+# emoji build cache (2026-10-17, tools/emoji/build_sets.py)
+tools/emoji/.src/

@@ -10346,7 +10346,8 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
     -webkit-mask-image:none !important; mask-image:none !important; animation:none !important; filter:none !important; background:none !important; margin:0; padding:0;}
   img.ico[data-ik], .card-tile img.ico[data-ik]{display:inline-block !important; width:1em !important; height:1em !important; vertical-align:-.12em; object-fit:contain;}
   /* Twemoji (Settings → Emoji style): the images sit in the text like the emoji they replace. */
-  img.tw-emoji{display:inline-block; width:1em; height:1em; margin:0 .04em; vertical-align:-.12em; pointer-events:none;}
+  /* 2026-10-17: 1.2em, the size an emoji font glyph shows at (at 1em the bundled sets looked a size smaller than System) */
+  img.tw-emoji{display:inline-block; width:1.2em; height:1.2em; margin:0 .02em; vertical-align:-.22em; pointer-events:none;}
   .card-tile .ico > img.tw-emoji, .card-tile .ico .ico-emoji-fallback img.tw-emoji{width:1em; height:1em; margin:0;}
   .ico-fireball{display:inline-block; position:relative; width:.86em; height:.86em; margin:0 .1em 0 .18em; vertical-align:-.08em; border-radius:50%;
     background:radial-gradient(circle at 40% 38%, #fffbe0 0, #ffd54a 26%, #ff8a1e 55%, #d8380e 85%); box-shadow:0 0 .25em rgba(255,130,30,.8);}
@@ -10794,6 +10795,17 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
               <select id="fxSelect" aria-label="Effects quality"></select>
               <div class="settings-row-note">Lower this if the game feels slow. Gameplay feedback always stays.</div>
             </div>
+            <!-- 2026-10-17: Effects style (Classic / Pixel / Minimal) and auto-lower. See fxStyle() and FxAutoLower in arena_app.js. -->
+            <div class="settings-row">
+              <div class="settings-row-label"><span>🎨 Effects style</span></div>
+              <select id="fxStyleSelect" aria-label="Effects style"></select>
+              <div class="settings-row-note">Classic: the full look. Pixel: retro, hard-edged versions. Minimal: just what you need to read the fight.</div>
+            </div>
+            <div class="settings-row">
+              <div class="settings-row-label"><span>🐢 Auto-lower effects</span></div>
+              <select id="fxAutoSelect" aria-label="Auto-lower effects"></select>
+              <div class="settings-row-note">If a fight runs slowly, effects step down one level (once per session).</div>
+            </div>
             <!-- 2026-10-16 (voice barks): who speaks in a fight. See voiceLinesMode in arena_app.js. -->
             <div class="settings-row">
               <div class="settings-row-label"><span>🗨️ Voice lines</span></div>
@@ -10811,11 +10823,17 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
               <select id="shaderSelect" aria-label="Shader effects"></select>
               <div class="settings-row-note">Moving water, wind and light on the maps and title screens.</div>
             </div>
-            <!-- 2026-10-14: Display → Emoji style. Twemoji loads from jsDelivr only when picked (see EmojiStyle in arena_app.js). -->
+            <!-- 2026-10-14: Display → Emoji style. 2026-10-17: the sets ship with the game (assets/emoji/), Fluent is the default
+                 (see EmojiStyle in arena_app.js). -->
             <div class="settings-row">
               <div class="settings-row-label"><span>😀 Emoji style</span></div>
               <select id="emojiStyleSelect" aria-label="Emoji style"></select>
-              <div class="settings-row-note emoji-credit" hidden>Twemoji graphics CC-BY 4.0 (Twitter, Inc. and contributors).</div>
+              <div class="settings-row-note emoji-credit" hidden>Fluent Emoji graphics © Microsoft, MIT licence.</div>
+            </div>
+            <!-- 2026-10-17: Credits (the full licence texts are in CREDITS.md). -->
+            <div class="settings-row settings-credits">
+              <div class="settings-row-label"><span>📜 Credits</span></div>
+              <div class="settings-row-note">Emoji: Fluent Emoji © Microsoft (MIT) · Twemoji © Twitter, Inc. and contributors (CC-BY 4.0) · Noto Emoji © Google (Apache 2.0). Animation: GSAP. Online play: Supabase.</div>
             </div>
             <!-- 2026-10-15 (user: "Danger warnings is not to be a setting in settings."): the ⚠️ Danger warnings row is gone; warnings
                  always run at their default (the ladder from Uncommon). -->
