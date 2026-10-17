@@ -42,13 +42,37 @@ FRIENDLY = {'maybeLeaderRuleLesson':'First time you open the 👑 leader picker'
   'visitCuriosity':'Tapping a curiosity on the map', 'maybeShowCoachTip':'During a fight (tutorial and lessons)', 'renderMatchUI':'After finishing Tutorial Part 2', 'discardCardByUid':'In a fight, trying to send a 2nd card to the Graveyard in one turn',
   'pitchLessonTip':'In a fight, the first time a card needs Lumber', 'tutorialAllyRemarks':'Tutorial fights: remarks from your side', 'leavesRevealToMap':'The first time the Conquest map opens',
   'visitOldWell':'Tapping the old well on Map 0', 'renderCodex':'Opening the Codex once card families (phyla) unlock'}
-SPECIFIC = {'both_peace':'After Tutorial Part 2, if you chose both tribes', 'training_wheels_off':'After Tutorial Part 2, the first time'}
+SPECIFIC = {'both_peace':'After Tutorial Part 2, if you chose both tribes', 'training_wheels_off':'After Tutorial Part 2, the first time',
+  'boss_banter':'The first time you start each boss fight (after the tutorial), in your side’s voices'}
+FRIENDLY.update({'cobbleSay':'The Forge: Cobble the golem, when an upgrade is refused'})
+
+# Dynamic ids (2026-10-18, audit P4: forge_cobble_* showed "(not found: maybe unused)" because cobbleSay builds the id as
+# 'forge_cobble_' + key). Any playDialogue('prefix' + x) or playDialogue(`prefix${x}`) inside a function makes that function a
+# wrapper for the prefix; a script whose id starts with the prefix is then found at each wrapper('suffix') call.
+DYNAMIC = []   # (prefix, wrapper function name, line index)
+for _i, _l in enumerate(SRC):
+    for _m in re.finditer(r"""playDialogue\(\s*(?:(['"])([\w:@-]+)\1\s*\+|`([\w:@-]+)\$\{)""", _l):
+        DYNAMIC.append((_m.group(2) or _m.group(3), func_at(_i), _i))
+
+def dynamic_where(id, fallback=False):
+    """Call sites of a wrapper that builds this id. With fallback (nothing else found), a wrapper with no literal call is named too."""
+    out = []
+    for prefix, fn, at in DYNAMIC:
+        if not id.startswith(prefix) or fn == '?': continue
+        suffix = id[len(prefix):]
+        call = re.compile(r'\b' + re.escape(fn) + r"""\(\s*['"`]""" + re.escape(suffix) + r"""['"`]""")
+        hits = [i for i, l in enumerate(SRC) if call.search(l)]
+        for i in hits:
+            f = func_at(i); out.append(FRIENDLY.get(fn, fn + '()') + ' from ' + f + f'()  · arena_app.js:{i+1}')
+        if not hits and fallback: out.append(FRIENDLY.get(fn, fn + '()') + f' builds "{prefix}…" ids, but no {fn}(\'{suffix}\') call was found  · arena_app.js:{at+1}')
+    return out
 
 def where_for(id, places):
     if id in SPECIFIC: return [SPECIFIC[id]]
     out = [p['where'] for p in places if p['d'] == id]
     if id.startswith('errand:'): out.append('After a Conquest win, sometimes: an errand offer (' + id[7:] + ')')
     if id.startswith('warn:'): out.append('A warning, in your faction’s voice')
+    out += dynamic_where(id)
     pat = re.compile(r"""['"`]""" + re.escape(id) + r"""['"`]""")
     start = next(i for i, l in enumerate(SRC) if l.startswith('const DIALOGUES = {'))
     end = next(i for i in range(start, len(SRC)) if SRC[i].startswith('};'))
@@ -60,6 +84,7 @@ def where_for(id, places):
     m = re.search(r'DIALOGUES\.' + re.escape(id) + r'\s*=', '\n'.join(SRC))
     if m:
         i = '\n'.join(SRC)[:m.start()].count('\n'); f = func_at(i); out.append(FRIENDLY.get(f, f + '()') + f'  · arena_app.js:{i+1}')
+    if not out: out = dynamic_where(id, fallback=True)
     seen, res = set(), []
     for w in out:
         k = w.split('  · ')[0]

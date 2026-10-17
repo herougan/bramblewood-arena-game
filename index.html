@@ -33714,7 +33714,7 @@ const FONTS = {
   'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
 };
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=97aa5107d7", "es": "assets/lang/es.js?v=8f8c474a42", "fr": "assets/lang/fr.js?v=9f12ac993c", "id": "assets/lang/id.js?v=29a2283330", "it": "assets/lang/it.js?v=36332fe47e", "ja": "assets/lang/ja.js?v=fb9353fe82", "ko": "assets/lang/ko.js?v=e2339bfda2", "pt": "assets/lang/pt.js?v=b4aff06a29", "ta": "assets/lang/ta.js?v=bc603b3b9c", "tl": "assets/lang/tl.js?v=dbc6921208", "zh-Hans": "assets/lang/zh-Hans.js?v=a74f7afe4c", "zh-Hant": "assets/lang/zh-Hant.js?v=2d1203cf28"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=0e21e3c4d9", "es": "assets/lang/es.js?v=ddb27780a4", "fr": "assets/lang/fr.js?v=459ec012bb", "id": "assets/lang/id.js?v=69770d4d4d", "it": "assets/lang/it.js?v=c789e65059", "ja": "assets/lang/ja.js?v=cfce0eb29b", "ko": "assets/lang/ko.js?v=c6d5c48032", "pt": "assets/lang/pt.js?v=627af7474b", "ta": "assets/lang/ta.js?v=9bde90e3ab", "tl": "assets/lang/tl.js?v=3aeefd49c8", "zh-Hans": "assets/lang/zh-Hans.js?v=e6b14e16cf", "zh-Hant": "assets/lang/zh-Hant.js?v=1b670752da"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -36976,7 +36976,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'e9382a3dc27d', BUILD_CARD_HASH = 'adce97ad4d4027ff7e4d2d528a7bcc6c78b2f86cb2439eec365ce5fff1b40b94';
+const BUILD_ID = '374ac8e572d1', BUILD_CARD_HASH = 'adce97ad4d4027ff7e4d2d528a7bcc6c78b2f86cb2439eec365ce5fff1b40b94';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -56536,7 +56536,6 @@ function startConquestMatch(mapId, nodeKey, opts){
   { const amap = CONQUEST_MAPS.find(m=> m.id === mapId); // the ambush (see runAmbush) catches every way into 3-2
     if(!(opts && opts.noAmbush) && ambushShouldTrigger(amap, node)){ runAmbush(amap, nodeKey); return true; }
     if(ambushPending() && mapId === (ambushMap()||{}).id && skirmishCode(mapId, nodeKey) === AMBUSH_AT){ showToast(TX('toast.the-ambush-still-blocks-the-way'), 'warn'); conquestSelectedNodeKey = 'ambush'; try{ renderPlay(); }catch(e){} return true; } }
-  if(/boss/.test(node.kind||'') && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){ setDialogueFlag('boss:'+mapId+':'+nodeKey, true); setTimeout(()=> playFactionWarning('That one doesn\'t surrender. Don\'t wait for it to.'), 3200); }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(node.stage === 2) beginTutorialStage(2, loadTutorial2Done() ? {replay:true} : undefined); else beginTutorialStage(1, {replay:true}); return true; }
   if(!deckSizeOkOrWarn()) return false;
   const battleMode = (opts && opts.battleMode) || node.battleMode || CONQUEST_DEFAULT_MODE; // C2: set in Edit skirmish only
@@ -56553,6 +56552,20 @@ function startConquestMatch(mapId, nodeKey, opts){
       return false;
     }
     bumpQuestCounter('energyConquest', cost);
+  }
+  // Boss banter (2026-10-18, audit E5: the boss_banter dialogue was written but never played; a one-line copy of its first line
+  // stood in): the two-line exchange plays once per boss per save, after the fight is paid for (a refused start no longer uses it
+  // up), never before the tutorial is done. playDialogue keeps the NPC dialogue speed and its 3-minute repeat guard. The voices
+  // follow your side like playFactionWarning: the otter pair, or Aurelia and Vesper for the Hummingbirds.
+  if(/boss/.test(node.kind||'') && loadTutorialDone() && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){
+    setDialogueFlag('boss:'+mapId+':'+nodeKey, true);
+    setTimeout(()=>{ try{
+      const base = dialogueScript('boss_banter'); if(!base) return;
+      if(factionVoice() !== 'aurelia') return playDialogue('boss_banter');
+      const swap = {shieldback:'aurelia', swiftpaw:'vesper'};
+      DIALOGUES['boss_banter@birds'] = Object.assign({}, base, {lines: base.lines.map(l=> Object.assign({}, l, {who: swap[l.who] || l.who}))});
+      playDialogue('boss_banter@birds');
+    }catch(e){} }, 3200);
   }
   const dungeonKeyStaked = dungeonEntry && dungeonStakeKey(mapId); // 2026-10-16: the key goes in the lock; a win gives it back
   if(dungeonKeyStaked){ showToast(TX('toast.dungeon-key-in-the-lock-win', {dungeonTicketsLeft: dungeonTicketsLeft()}), 'ok'); try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
@@ -67256,8 +67269,8 @@ const AVATAR_CHARACTERS = [
   {id:'hummingbird', name:'Hummingbird', emoji:'🐦'},
   {id:'mouse', name:'Mouse', emoji:'🐭'},
   {id:'fox', name:'Fox', emoji:'🦊', unlockHint:'Clear the Wolfsbane Tundra', unlocked:()=> conquestMapCleared('m6')},
-  {id:'hedgehog', name:'Hedgehog', emoji:'🦔', unlockHint:'Clear The Ashen Peak', unlocked:()=> conquestMapCleared('m3')},
-  {id:'dragon', name:'Dragon', emoji:'🐉', unlockHint:'Win the whole campaign', unlocked:()=> conquestMapCleared('m11')},
+  {id:'hedgehog', name:'Hedgehog', emoji:'🦔', unlockHint:'Clear Ashen Spurn', unlocked:()=> conquestMapCleared('m3')}, // 2026-10-18: hint used the old map name (The Ashen Peak, renamed 2026-10-12)
+  {id:'dragon', name:'Dragon', emoji:'🐉', unlockHint:'Clear The Sundered Peak', unlocked:()=> conquestMapCleared('m11')}, // 2026-10-18: the campaign now runs past Map 20 (to Goldfeather Keep), so the hint names the map that actually unlocks it
 ];
 const AVATAR_COLORS = [
   {id:'acorn', name:'Acorn', hex:'#c9853a'}, {id:'berry', name:'Berry', hex:'#c0392b'}, {id:'river', name:'River', hex:'#2f80ed'},

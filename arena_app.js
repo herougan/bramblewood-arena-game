@@ -22146,7 +22146,6 @@ function startConquestMatch(mapId, nodeKey, opts){
   { const amap = CONQUEST_MAPS.find(m=> m.id === mapId); // the ambush (see runAmbush) catches every way into 3-2
     if(!(opts && opts.noAmbush) && ambushShouldTrigger(amap, node)){ runAmbush(amap, nodeKey); return true; }
     if(ambushPending() && mapId === (ambushMap()||{}).id && skirmishCode(mapId, nodeKey) === AMBUSH_AT){ showToast(TX('toast.the-ambush-still-blocks-the-way'), 'warn'); conquestSelectedNodeKey = 'ambush'; try{ renderPlay(); }catch(e){} return true; } }
-  if(/boss/.test(node.kind||'') && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){ setDialogueFlag('boss:'+mapId+':'+nodeKey, true); setTimeout(()=> playFactionWarning('That one doesn\'t surrender. Don\'t wait for it to.'), 3200); }
   if(node.kind==='tutorial'){ if(!loadFactionChoice()) showFactionScreen(); else if(!loadTutorialDone()) beginTutorialStage(1); else if(node.stage === 2) beginTutorialStage(2, loadTutorial2Done() ? {replay:true} : undefined); else beginTutorialStage(1, {replay:true}); return true; }
   if(!deckSizeOkOrWarn()) return false;
   const battleMode = (opts && opts.battleMode) || node.battleMode || CONQUEST_DEFAULT_MODE; // C2: set in Edit skirmish only
@@ -22163,6 +22162,20 @@ function startConquestMatch(mapId, nodeKey, opts){
       return false;
     }
     bumpQuestCounter('energyConquest', cost);
+  }
+  // Boss banter (2026-10-18, audit E5: the boss_banter dialogue was written but never played; a one-line copy of its first line
+  // stood in): the two-line exchange plays once per boss per save, after the fight is paid for (a refused start no longer uses it
+  // up), never before the tutorial is done. playDialogue keeps the NPC dialogue speed and its 3-minute repeat guard. The voices
+  // follow your side like playFactionWarning: the otter pair, or Aurelia and Vesper for the Hummingbirds.
+  if(/boss/.test(node.kind||'') && loadTutorialDone() && !loadDialogueFlags()['boss:'+mapId+':'+nodeKey]){
+    setDialogueFlag('boss:'+mapId+':'+nodeKey, true);
+    setTimeout(()=>{ try{
+      const base = dialogueScript('boss_banter'); if(!base) return;
+      if(factionVoice() !== 'aurelia') return playDialogue('boss_banter');
+      const swap = {shieldback:'aurelia', swiftpaw:'vesper'};
+      DIALOGUES['boss_banter@birds'] = Object.assign({}, base, {lines: base.lines.map(l=> Object.assign({}, l, {who: swap[l.who] || l.who}))});
+      playDialogue('boss_banter@birds');
+    }catch(e){} }, 3200);
   }
   const dungeonKeyStaked = dungeonEntry && dungeonStakeKey(mapId); // 2026-10-16: the key goes in the lock; a win gives it back
   if(dungeonKeyStaked){ showToast(TX('toast.dungeon-key-in-the-lock-win', {dungeonTicketsLeft: dungeonTicketsLeft()}), 'ok'); try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
@@ -32866,8 +32879,8 @@ const AVATAR_CHARACTERS = [
   {id:'hummingbird', name:'Hummingbird', emoji:'🐦'},
   {id:'mouse', name:'Mouse', emoji:'🐭'},
   {id:'fox', name:'Fox', emoji:'🦊', unlockHint:'Clear the Wolfsbane Tundra', unlocked:()=> conquestMapCleared('m6')},
-  {id:'hedgehog', name:'Hedgehog', emoji:'🦔', unlockHint:'Clear The Ashen Peak', unlocked:()=> conquestMapCleared('m3')},
-  {id:'dragon', name:'Dragon', emoji:'🐉', unlockHint:'Win the whole campaign', unlocked:()=> conquestMapCleared('m11')},
+  {id:'hedgehog', name:'Hedgehog', emoji:'🦔', unlockHint:'Clear Ashen Spurn', unlocked:()=> conquestMapCleared('m3')}, // 2026-10-18: hint used the old map name (The Ashen Peak, renamed 2026-10-12)
+  {id:'dragon', name:'Dragon', emoji:'🐉', unlockHint:'Clear The Sundered Peak', unlocked:()=> conquestMapCleared('m11')}, // 2026-10-18: the campaign now runs past Map 20 (to Goldfeather Keep), so the hint names the map that actually unlocks it
 ];
 const AVATAR_COLORS = [
   {id:'acorn', name:'Acorn', hex:'#c9853a'}, {id:'berry', name:'Berry', hex:'#c0392b'}, {id:'river', name:'River', hex:'#2f80ed'},

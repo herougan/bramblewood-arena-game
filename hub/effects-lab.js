@@ -164,7 +164,7 @@
     const st = $('#musicStop'); if(st) st.onclick = ()=>{ clear(); try{ Songbook.preview(null); BattleMusic.preview(null); }catch(e){} };
   })();
   // ---- ambience
-  const PLACES = [['home', 'Home'], ['tent', 'Armoury Tent'], ['cart', "Traveller's Cart"], ['nest', 'Old Nest'], ['forge', 'Forge'], [0, 'Outskirts'], [1, 'Sunken Hollow'], [2, 'Ashen Peak'], [3, 'Caves'], [4, 'Savanna'], [5, 'Tundra'], [6, 'Coral Current'], [7, 'Swamp'], [8, 'Foundry'], [9, 'Eyrie'], [10, 'Sundered Peak'], [11, 'Rain'], [12, 'Pebble Beach']];
+  const PLACES = [['home', 'Home'], ['tent', 'Armoury Tent'], ['cart', "Traveller's Cart"], ['nest', 'Old Nest'], ['forge', 'Forge'], [0, 'Outskirts'], [1, 'Sunken Hollow'], [2, 'Ashen Spurn'], [3, 'Caves'], [4, 'Savanna'], [5, 'Tundra'], [6, 'Coral Current'], [7, 'Swamp'], [8, 'Foundry'], [9, 'Eyrie'], [10, 'Sundered Peak'], [11, 'Rain'], [12, 'Pebble Beach']];
   const ag = $('#ambGrid');
   PLACES.forEach(([k, label])=>{ const b = document.createElement('button'); b.type = 'button'; b.className = 'btn small'; b.textContent = '🎵 ' + label; b.onclick = ()=>{ try{ Ambience.setVolume(0.6); Ambience.play(k); $$('#ambGrid .btn').forEach(x=> x.classList.remove('primary')); b.classList.add('primary'); }catch(e){} }; ag.appendChild(b); });
   const stop = document.createElement('button'); stop.type = 'button'; stop.className = 'btn small ghost'; stop.textContent = '⏹ Stop'; stop.onclick = ()=>{ try{ Ambience.stop(); }catch(e){} $$('#ambGrid .btn').forEach(x=> x.classList.remove('primary')); }; ag.appendChild(stop);
