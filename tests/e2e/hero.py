@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Hero card (2026-10-05): create a Hero, level it, spend points, pick a skill, craft Materia,
 put it in the deck, win a Conquest skirmish and check XP arrives; the Hero never leaves the device.
+2026-10-18: retargeted to the Stomping Grounds (switchTab('stomp')); the Hero Hall moved there on 2026-10-13 and the deck
+screen's #deckHeroBtn is gone.
     python3 tests/e2e/hero.py [--shots DIR]
 """
 import asyncio, os, sys
@@ -17,15 +19,14 @@ async def main():
             pg.on('pageerror', lambda e: errs.append(str(e)))
             await pg.add_init_script("localStorage.setItem('bramblewood_arena_tutorial_done','1'); sessionStorage.setItem('bramblewood_seen_splash','1');")
             await pg.goto('file://' + os.path.join(ROOT, 'index.html')); await pg.wait_for_timeout(1300)
-            await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); switchTab('deck'); 1"); await pg.wait_for_timeout(500)
-            if not await pg.query_selector('#deckHeroBtn'): bad.append('no 🦸 Hero button on the deck screen'); await pg.close(); continue
-            await pg.click('#deckHeroBtn'); await pg.wait_for_timeout(500)
+            await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); switchTab('stomp'); 1"); await pg.wait_for_timeout(500)
+            if not await pg.query_selector('#stompBody #heroCreateBtn'): bad.append('no Hero Hall (Raise a Hero) in the Stomping Grounds'); await pg.close(); continue
             if SHOTS: await pg.screenshot(path=f'{SHOTS}/hero_create_{vw[2]}.png', full_page=False)
             await pg.click('[data-people="tribes"]'); await pg.wait_for_timeout(200)
             await pg.fill('#heroNameInput', 'Quill'); await pg.click('#heroCreateBtn'); await pg.wait_for_timeout(500)
             if not await pg.evaluate("!!myHero && myHero.name==='Quill' && myHero.people==='tribes'"): bad.append('hero not created')
             # level up to 12: 5 skill slot opens, points to spend
-            await pg.evaluate("heroGainXp(600, 'test'); renderDeckSection(); 1"); await pg.wait_for_timeout(400)
+            await pg.evaluate("heroGainXp(600, 'test'); heroHallRerender(); 1"); await pg.wait_for_timeout(400)
             L = await pg.evaluate("heroLevelFromXp(myHero.xp).level")
             if L < 5: bad.append(f'level after XP grant only {L}')
             free0 = await pg.evaluate("heroPointsFree(myHero)")
@@ -39,14 +40,14 @@ async def main():
             else:
                 await pick.click(); await pg.wait_for_timeout(300)
                 if not await pg.evaluate("Object.keys(getCardDefs().hero.effects||{}).length>0"): bad.append('picked skill not on the card')
-            await pg.evaluate("myCurrencies.dust=60; renderDeckSection(); 1"); await pg.wait_for_timeout(200)
+            await pg.evaluate("myCurrencies.dust=MATERIA_DUST_COST; heroHallRerender(); 1")  # 2026-10-18: Materia costs 125 Dust since 10-11 (was a fixed 60); await pg.wait_for_timeout(200)
             xp0 = await pg.evaluate("myHero.xp"); await pg.click('#heroCraftBtn'); await pg.wait_for_timeout(300)
             if await pg.evaluate("myHero.xp") - xp0 != 30: bad.append('materia craft did not give 30 XP')
             if await pg.evaluate("Object.values(materiaStore()).reduce((a,b)=>a+b,0)") != 1: bad.append('no materia crystal (player store, 2026-10-08)')
             await pg.click('#heroDeckBtn'); await pg.wait_for_timeout(300)
             if not await pg.evaluate("myDeckCounts.hero===1"): bad.append('hero not added to deck')
             # the Hero takes a slot: drop one other card so the deck is legal again
-            await pg.evaluate("(()=>{ if(deckTotal(myDeckCounts)>DECK_SIZE){ const k=Object.keys(myDeckCounts).find(k=> k!=='hero' && myDeckCounts[k]>0); myDeckCounts[k]--; if(!myDeckCounts[k]) delete myDeckCounts[k]; saveMyDeck(); } deckHeroView=true; renderDeckSection(); return 1; })()"); await pg.wait_for_timeout(300)
+            await pg.evaluate("(()=>{ if(deckTotal(myDeckCounts)>DECK_SIZE){ const k=Object.keys(myDeckCounts).find(k=> k!=='hero' && myDeckCounts[k]>0); myDeckCounts[k]--; if(!myDeckCounts[k]) delete myDeckCounts[k]; saveMyDeck(); } heroHallRerender(); return 1; })()"); await pg.wait_for_timeout(300)
             if SHOTS:
                 await pg.screenshot(path=f'{SHOTS}/hero_hall_{vw[2]}.png', full_page=True)
             if await pg.evaluate("'hero' in publicDeck(myDeckCounts)"): bad.append('publicDeck leaks the hero')

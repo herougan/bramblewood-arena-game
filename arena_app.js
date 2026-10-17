@@ -15530,6 +15530,52 @@ function loadQuestState(){
 }
 function saveQuestState(q){ try{ localStorage.setItem(QUESTS_KEY, JSON.stringify(q)); }catch(e){} }
 function loadLifetimeStats(){ try{ return JSON.parse(localStorage.getItem(STATS_KEY)||'{}') || {}; }catch(e){ return {}; } }
+// ---- Steam achievements (2026-10-18, package C: the desktop build's Steam hooks had no caller) ----
+// The desktop build (electron/preload.js) gives window.bwDesktop.steam.unlock(id), which resolves to false while Steam is off
+// (electron/steam.js); the web build has no bwDesktop and nothing happens. Each id is the Steamworks API name, so it must pass
+// steam.js's check ([A-Za-z0-9_]{1,64}); docs/platform-roadmap-2026-10-17.md lists them for the Steamworks set-up and
+// tests/steam-ach-2026-10-18.js checks both. var, not const: saves during start-up can reach steamUnlock before this line.
+var STEAM_ACHIEVEMENTS = [
+  {id:'FIRST_WIN', name:'First Victory', desc:'Win a battle.'},
+  {id:'FIRST_MAP_CLEARED', name:'Trailblazer', desc:'Clear a map.'},
+  {id:'MAP_5_CLEARED', name:'Into the Swamp', desc:'Clear Map 5.'},
+  {id:'MAP_10_CLEARED', name:'Deep in the Wilds', desc:'Clear Map 10.'},
+  {id:'MAP_20_CLEARED', name:'The Long Road', desc:'Clear Map 20.'},
+  {id:'FIRST_LEGENDARY', name:'Legend in the Pack', desc:'Pull a Legendary card (or rarer) from a pack.'},
+  {id:'SCALE_TRAIL_COMPLETE', name:'The Scale Trail', desc:'Find all eight Dragon Scales.'},
+  {id:'RED_DRAGON_HATCHED', name:'Hatchling of Fire', desc:'Hatch the Red Dragon Egg in battle.'},
+  {id:'FIRST_RAID_HIT', name:'First Strike', desc:'Deal damage to a raid boss.'},
+  {id:'SPIRE_FLOOR_10', name:'Spire Climber', desc:'Clear floor 10 of the Babel Spire.'},
+  {id:'SPIRE_FLOOR_25', name:'Above the Clouds', desc:'Clear floor 25 of the Babel Spire.'},
+  {id:'SPIRE_FLOOR_50', name:'Top of the Spire', desc:'Clear floor 50 of the Babel Spire.'},
+  {id:'WINS_100', name:'Seasoned', desc:'Win 100 battles.'},
+];
+var STEAM_ACH_KEY = 'bramblewood_steam_ach_v1', steamAchTried = new Set();
+// One call per milestone. An id Steam took is saved (STEAM_ACH_KEY) and never sent again; one it refused (Steam off) is tried
+// once a session, so a later start with Steam on still gets it (steamCheckProgress below catches up the saved milestones).
+function steamUnlock(id){
+  try{
+    const steam = typeof window !== 'undefined' && window.bwDesktop && window.bwDesktop.steam;
+    if(!steam || typeof steam.unlock !== 'function' || steamAchTried.has(id) || !STEAM_ACHIEVEMENTS.some(a=> a.id === id)) return;
+    if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return; // 2026-10-18: no real Steam unlocks from Admin Mode jumps and test clears
+    const done = ()=>{ try{ const d = JSON.parse(localStorage.getItem(STEAM_ACH_KEY) || '[]'); return Array.isArray(d) ? d : []; }catch(e){ return []; } };
+    if(done().includes(id)) return;
+    steamAchTried.add(id);
+    Promise.resolve(steam.unlock(id)).then(ok=>{ if(!ok) return; const d = done(); if(!d.includes(id)){ d.push(id); try{ localStorage.setItem(STEAM_ACH_KEY, JSON.stringify(d)); }catch(e){} } }).catch(()=>{});
+  }catch(e){}
+}
+// The milestones a save can show (wins, raid damage, map clears, Spire floors, the Scale Trail): run after a node is cleared,
+// after a win, and once at start-up for progress made before Steam was on or on another device.
+function steamCheckProgress(){
+  if(!(typeof window !== 'undefined' && window.bwDesktop && window.bwDesktop.steam)) return;
+  try{ const st = loadLifetimeStats(); if((st.wins||0) >= 1) steamUnlock('FIRST_WIN'); if((st.wins||0) >= 100) steamUnlock('WINS_100'); if((st.raidDamage||0) > 0) steamUnlock('FIRST_RAID_HIT'); }catch(e){}
+  try{ if(CONQUEST_MAPS.some(m=> conquestMapCleared(m.id))) steamUnlock('FIRST_MAP_CLEARED');
+    if(conquestMapCleared(mapIdAt(5))) steamUnlock('MAP_5_CLEARED'); if(conquestMapCleared(mapIdAt(10))) steamUnlock('MAP_10_CLEARED'); if(conquestMapCleared(mapIdAt(20))) steamUnlock('MAP_20_CLEARED'); }catch(e){}
+  try{ const tw = CONQUEST_MAPS.find(m=> m.id === 'tw'), f = tw ? dungeonFloorProgress(tw).done : 0;
+    if(f >= 10) steamUnlock('SPIRE_FLOOR_10'); if(f >= 25) steamUnlock('SPIRE_FLOOR_25'); if(f >= 50) steamUnlock('SPIRE_FLOOR_50'); }catch(e){}
+  try{ if(scaleTrailComplete()) steamUnlock('SCALE_TRAIL_COMPLETE'); }catch(e){}
+}
+if(typeof document !== 'undefined') setTimeout(()=>{ try{ steamCheckProgress(); }catch(e){} }, 5000);
 // Quest done (2026-10-15, user: "After accomplishing a quest, should it also drop like an errand?"): the moment a daily or weekly
 // quest reaches its goal, the errand's pinned note flutters down (FX.F.errandOffer, the same effect) reading "Quest done!", once
 // per quest, pinned over the Quests note on Home or the middle of the screen elsewhere (after a fight, once the result is up).
@@ -15579,6 +15625,7 @@ function bumpQuestCounter(counter, n){
   saveQuestState(q);
   const st = loadLifetimeStats(); st[counter] = (st[counter]||0) + n;
   try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
+  if(counter === 'wins' || counter === 'raidDamage') steamCheckProgress(); // 2026-10-18 (package C): First Win, 100 Wins, First Raid Hit
   noteErrandProgress(errandsBefore, counter);
   refreshQuestBadge(); soonCheckMilestones();
   try{ fxHook('questProgress', counter, n); }catch(e){} // 2026-10-15 batch F (only when the Quests button is on screen)
@@ -18118,6 +18165,7 @@ function completeConquestNode(node, rank){
       const ok = (n.requires||[]).every(k=> progress.completed.includes(conquestNodeId(map.id, k)));
       if(ok && Math.random() < n.chance) progress.found.push(conquestNodeId(map.id, n.key)); }); } }catch(e){}
   saveConquestProgress(progress);
+  steamCheckProgress(); // 2026-10-18 (package C): Steam achievements for map clears and Babel Spire floors
 }
 function findConquestNode(mapId, nodeKey){
   const map = CONQUEST_MAPS.find(m=>m.id===mapId); if(!map) return null;
@@ -25477,7 +25525,6 @@ function wireLeaderDragDelegation(){
     if(el) el.classList.remove('dragging');
     // 2026-10-10 (phone screenshot: a drop highlight stayed on your row after a touch drag that landed nowhere).
     setTimeout(()=>{ document.querySelectorAll('.row-dragover, .drag-side-left, .drag-side-right, .drag-center').forEach(r=> r.classList.remove('row-dragover','drag-side-left','drag-side-right','drag-center'));
-      document.querySelectorAll('.dropzone.dragover').forEach(z=> z.classList.remove('dragover'));
       try{ if(typeof clearPlacementPreview==='function' && !(matchState && matchState.resolving)) clearPlacementPreview({instant:true}); }catch(err){} }, 0);
   });
 }
@@ -26328,76 +26375,9 @@ function ownRowCenterEmpty(m){
 }
 function wireDropZones(){
   wireLiveHoverSelfHeal();
-  const root = document.getElementById('view-play');
-  // 2026-09-17 follow-up ("when hovering over the L/R buttons, the slots in the real field
-  // should correspondingly appear") — computed once, up front, so both the dedicated-button
-  // loop below AND the direct-to-battlefield listeners further down can share the exact same
-  // "which physical row is mine right now" resolution (see that block's own comment for why it
-  // depends on whose turn it is / vs-AI vs hot-seat).
-  const mForRowLookup = matchState;
-  const ownRowForButtons = mForRowLookup ? document.getElementById(viewerHandPid(mForRowLookup)===1 ? 'rowMine' : 'rowEnemy') : null;
-  // 2026-09-17, per explicit request ("there should be a preview when you drag the card over
-  // the L/R buttons at the bottom"): both the highlight glow AND the actual ghost-card
-  // placement preview (showPlacementPreview — previously wired only for dragging directly over
-  // the battlefield row itself) now fire for the small Left/Right buttons too, for BOTH a plain
-  // hover (mouseenter, no drag) and a genuine native drag hovering over them — one shared pair
-  // of helpers so all four listeners below stay in sync.
-  const showButtonPreview = (side)=>{
-    if(!ownRowForButtons) return;
-    ownRowForButtons.classList.add('row-dragover');
-    const centerEmpty = ownRowCenterEmpty(matchState);
-    ownRowForButtons.classList.toggle('drag-center', centerEmpty);
-    ownRowForButtons.classList.toggle('drag-side-left', !centerEmpty && side==='left');
-    ownRowForButtons.classList.toggle('drag-side-right', !centerEmpty && side==='right');
-    showPlacementPreview(ownRowForButtons, side);
-  };
-  const clearButtonPreview = ()=>{
-    if(ownRowForButtons) ownRowForButtons.classList.remove('row-dragover', 'drag-side-left', 'drag-side-right', 'drag-center');
-    clearPlacementPreview();
-  };
-  root.querySelectorAll('.dropzone').forEach(zone=>{
-    const side = zone.getAttribute('data-side');
-    zone.addEventListener('dragover', e=>{ e.preventDefault(); zone.classList.add('dragover'); showButtonPreview(side); });
-    zone.addEventListener('dragleave', ()=>{ zone.classList.remove('dragover'); clearButtonPreview(); });
-    zone.addEventListener('drop', e=>{
-      e.preventDefault(); zone.classList.remove('dragover');
-      // Bugfix (2026-09-17, found via a real click-to-play/drag-to-play playtest, not caught by
-      // the V25 hover-preview unit tests because those dispatch mouseenter/mouseleave as a
-      // matched pair by hand): the mouseenter below turns on ownRowForButtons' row-dragover/
-      // drag-side-* highlight, but a genuine drop here (or a tap via the click handler right
-      // below) never generates a real mouse-leave the browser will deliver — the cursor just
-      // sits there while playCardByUid() rebuilds the row's innerHTML in place (renderBoard()
-      // only replaces the row's CONTENT, not the row element itself, so classes added straight
-      // to that element persist across every render until the next full renderMatchUI() rebuild,
-      // which in vs-AI play can be many rounds away). Left unfixed, the highlight overlay froze
-      // "on" for the rest of the match after the very first tap/drag-play — a highlight that's
-      // supposed to live-track the cursor but instead went static. Clearing it explicitly here
-      // (same as the direct-to-battlefield drop handler already does two blocks down) closes
-      // that gap for both the drag-onto-button and tap-to-play paths.
-      clearButtonPreview();
-      const payload = e.dataTransfer.getData('text/plain');
-      // Item #269 ("The leader should be drag and droppable as well"): a Left/Right button drop
-      // requests that specific lane, same as a dragged hand card does via playCardByUid(uid, side).
-      if(payload===LEADER_DRAG_PAYLOAD){ attemptSummonLeader(side); return; }
-      const uid = Number(payload);
-      // 2026-09-21 ("it should also fly from where you let go of the card, not randomly from the
-      // ether"): the real cursor release point, passed through so the entrance tween can start
-      // from THERE instead of a fixed guessed offset — see playCardByUid's dropPoint param.
-      if(uid) playCardByUid(uid, side, {x:e.clientX, y:e.clientY});
-    });
-    zone.addEventListener('click', ()=>{
-      const m=matchState; if(!m || m.selectedUid==null) return;
-      clearButtonPreview();
-      playCardByUid(m.selectedUid, side);
-    });
-    // A plain mouse hover (no drag in progress) mirrors the exact same highlight a live drag
-    // shows on the real battlefield row — so pointing at "Left"/"Right" previews where that
-    // side actually lands, same as dragging near it would, without needing to pick the card up.
-    if(ownRowForButtons && !zone.classList.contains('disabled')){
-      zone.addEventListener('mouseenter', ()=> showButtonPreview(side));
-      zone.addEventListener('mouseleave', ()=> clearButtonPreview());
-    }
-  });
+  // 2026-10-18 (package C clean-up): the Left/Right .dropzone buttons' wiring (showButtonPreview/clearButtonPreview, their
+  // dragover/drop/click/hover listeners) went; no .dropzone has been drawn since the 2026-09-26 drop-row rework. Dropping on
+  // the battlefield row itself (below) and the discard zone are the live drag targets.
   const discardZone = document.getElementById('dropDiscard');
   if(discardZone){
     // 2026-09-17, per explicit request ("show how many resources will be gained when pitching
@@ -26409,8 +26389,7 @@ function wireDropZones(){
     // a visual swap (not touching selectedUid/state), so both play styles show the payout.
     const discardGraveyardHTML = () => { const m=matchState; return `<span class="dz-ico">💀</span><span>Graveyard</span><span class="dz-sub">${m?m.players[viewerHandPid(m)].graveyard.length:0} cards</span>`; };
     // 2026-09-17 follow-up ("the resources it would generate MUST come out"): reads the actual
-    // dragged card's defId (same '.dragging' hand-tile technique showButtonPreview uses for the
-    // L/R buttons — dataTransfer's real payload is withheld from the browser until 'drop') so the
+    // dragged card's defId (the '.dragging' hand-tile technique — dataTransfer's real payload is withheld from the browser until 'drop') so the
     // preview shows what THIS specific card pitches for (1 Stone for a creature, by default —
     // see pitchYieldOf) instead of a hardcoded amount.
     const discardPreviewHTML = () => {
@@ -28100,7 +28079,7 @@ function wireBattlefieldPan(){
   const THRESH = 8;
   let tracking = false, dragging = false, startX = 0, startPanX = 0;
   const getBattlefield = ()=> document.querySelector('.battlefield');
-  const shouldIgnore = (target)=> !!(target.closest && target.closest('[draggable="true"], button, .dropzone, .discardzone, .skipzone, a, input, select, textarea'));
+  const shouldIgnore = (target)=> !!(target.closest && target.closest('[draggable="true"], button, .discardzone, .skipzone, a, input, select, textarea'));
   function tryStart(target, clientX){
     const battlefield = getBattlefield();
     if(!battlefield || !battlefield.classList.contains('pannable')) return false;
@@ -31021,6 +31000,7 @@ async function resolveRoundCore(opts){
   // they can be replayed as their own distinct "next turn starting" beat afterward, instead of
   // wherever they happened to land in the middle of this round's attack sequence.
   if(QUEST_COUNTING_MODES.has(m.mode)) bumpQuestCounter('unitsDefeated', events.filter(ev=> ev.type==='death' && ev.side==='B').length);
+  if(QUEST_COUNTING_MODES.has(m.mode) && events.some(ev=> ev.type==='hatch' && ev.side==='A' && ev.fromDefId==='egg-red-dragon')) steamUnlock('RED_DRAGON_HATCHED'); // 2026-10-18 (package C)
   if(m.mode !== 'sandbox') (m._csEv || (m._csEv = [])).push(events); // 2026-10-17 (card stats): kept for the tally at match end (recordCardStatsForMatch), nothing read now
   const mainEvents = settleDeathsEarly(groupForkLines(events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready' && ev.type!=='hatch'))); // + one Fork swing's lines together (2026-10-17) // 2026-10-17: each death right after its killing blow
   clearArrivalHold(m); // 2026-10-17: anything held for an arrival replay is settled by now
@@ -38134,6 +38114,7 @@ function claimScaleTrailFinale(){
     if(copiesOwned(r.card) <= before){ try{ console.warn('Scale Trail: could not give ' + r.card + ' (is it obtainable?)'); }catch(e){} return null; }
     out.card = r.card; }
   setDialogueFlag(SCALE_TRAIL_DONE_FLAG, Date.now());
+  steamUnlock('SCALE_TRAIL_COMPLETE'); // 2026-10-18 (package C)
   Object.keys(r).forEach(k=>{ if(k !== 'card' && (r[k]|0) > 0 && typeof CURRENCY_META !== 'undefined' && CURRENCY_META[k]){ grantCurrency(k, r[k]|0); out.currencies[k] = r[k]|0; } });
   try{ refreshQuestBadge(); }catch(e){}
   return out;
@@ -41427,6 +41408,7 @@ function openPackAnimation(pack, opened, opts){
   markFirstNew([].concat(...opened.map(o=> o.results)));
   const tierOf = id=> RARITY_TIER_BANDS.indexOf((defs[id] && defs[id].rarity) || 'common');
   const teaseOf = id=>{ const t = tierOf(id); return t >= 11 ? 'tease-legend' : t >= 7 ? 'tease-epic' : t >= 4 ? 'tease-rare' : ''; };
+  if([].concat(...opened.map(o=> o.results)).some(r=> tierOf(r.id) >= RARITY_TIER_BANDS.indexOf('legendary'))) steamUnlock('FIRST_LEGENDARY'); // 2026-10-18 (package C)
   let overlay = document.getElementById('packOpenOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'packOpenOverlay'; document.body.appendChild(overlay); }
   overlay.className = 'pack-open-overlay po2';

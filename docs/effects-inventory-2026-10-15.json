@@ -15755,7 +15755,7 @@
   "area": "ui-feedback",
   "name": "Deck hero banner / showcase",
   "trigger": "deck tab",
-  "current": "deck showcase tile",
+  "current": "retired 2026-10-18: the deck banner no longer plays it (refreshDeckHeroBanner only redraws the banner); the look stays in the Effects Lab",
   "quality": "basic — a generic or reused look that does not say what happened",
   "priority": 3,
   "themeNotes": "",
@@ -15765,9 +15765,11 @@
    "arena_app.js:10196"
   ],
   "batch": "F",
-  "status": "live",
+  "status": "retired",
   "lab": "f.js",
-  "inGameHook": "refreshDeckHeroBanner → fxHook(deckHeroBanner)"
+  "inGameHook": "retired 2026-10-18: refreshDeckHeroBanner no longer calls fxHook(deckHeroBanner); no caller",
+  "retired": "2026-10-18: the deck banner no longer plays it (refreshDeckHeroBanner only redraws the banner); the look stays in the Effects Lab",
+  "updated": "2026-10-18"
  },
  {
   "id": "ui-codex-new",
@@ -15850,7 +15852,7 @@
   "area": "ui-feedback",
   "name": "Cloud sync pill",
   "trigger": "setCloudPill",
-  "current": "text pill",
+  "current": "retired 2026-10-18: the cloud sync pill (#cloudSyncPill) is gone and the account chip shows the account state; the look stays in the Effects Lab",
   "quality": "basic — a generic or reused look that does not say what happened",
   "priority": 3,
   "themeNotes": "",
@@ -15860,9 +15862,11 @@
    "arena_app.js:8280"
   ],
   "batch": "F",
-  "status": "live",
+  "status": "retired",
   "lab": "f.js",
-  "inGameHook": "setCloudPill → fxHook(cloudSync), only when it changes"
+  "inGameHook": "retired 2026-10-18: the #cloudSyncPill is gone and setCloudPill only refreshes the account chip; no caller",
+  "retired": "2026-10-18: the cloud sync pill (#cloudSyncPill) is gone and the account chip shows the account state; the look stays in the Effects Lab",
+  "updated": "2026-10-18"
  },
  {
   "id": "ui-banners",

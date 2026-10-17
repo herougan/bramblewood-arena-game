@@ -1585,15 +1585,11 @@
   .card-tile.quake-jolt{animation:quakeJolt .4s cubic-bezier(.3,.7,.4,1);}
   @keyframes quakeJolt{0%{transform:translateY(0);} 20%{transform:translateY(-9px) rotate(-2deg);} 45%{transform:translateY(3px) rotate(1.5deg);} 70%{transform:translateY(-2px);} 100%{transform:none;}}
   @media (prefers-reduced-motion: reduce){ .card-tile.quake-jolt{animation:none;} }
-  /* Terrain (2026-10-12): the field pill (top-left), its tooltip, the intro banner, the volcano's lava glow and geyser */
-  .terrain-pill{position:absolute; top:14px; left:12px; z-index:31; display:inline-flex; align-items:center; gap:6px; padding:4px 11px; border-radius:999px; border:1px solid rgba(255,255,255,.35); background:rgba(28,22,14,.72); color:#fff6dc; font-family:'Baloo 2', system-ui, sans-serif; font-weight:800; font-size:12.5px; cursor:help; box-shadow:0 2px 8px rgba(0,0,0,.35);}
+  /* Terrain (2026-10-12): the intro banner, the volcano's lava glow and geyser. 2026-10-18: the .terrain-pill rules went (the pill became the field card on 2026-10-14). */
   .fcr-list{list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px;} .fcr{display:flex; flex-direction:column; gap:1px;} .fcr-h{font-weight:800;} .fcr-t{font-weight:500;}
   .fcr.is-unknown .fcr-h{opacity:.85;} .fcr.is-unknown{flex-direction:row; align-items:center; gap:8px;} /* 2026-10-13: the (?) sits right of the name */ .fcr-q{display:inline-grid; place-items:center; width:20px; height:20px; border-radius:50%; background:rgba(120,100,60,.25); font-weight:800;}
-  .fcr-new{display:inline-block; padding:0 6px; border-radius:999px; background:#e8b23a; color:#2b1d05; font-size:11px;} .terrain-pill.has-new .tp-head::after{content:' •'; color:#ffd76a;}
+  .fcr-new{display:inline-block; padding:0 6px; border-radius:999px; background:#e8b23a; color:#2b1d05; font-size:11px;}
   .cnp-field{margin:6px 0; padding:8px 10px; border-radius:10px; background:rgba(110,90,50,.1); font-size:13px;} .cnp-field-k{display:block; margin-bottom:4px;}
-  .terrain-pill:focus-visible{outline:2px solid #ffd76a; outline-offset:2px;}
-  .terrain-pill .tp-tip{position:absolute; top:calc(100% + 8px); left:0; width:min(300px, 80vw); padding:10px 12px; border-radius:12px; background:#fff8e6; color:#2b2117; font:500 13px/1.45 'Nunito', system-ui, sans-serif; text-align:left; box-shadow:0 10px 26px rgba(0,0,0,.4), 0 0 0 2px #e0b85a; opacity:0; visibility:hidden; transform:translateY(-4px); transition:opacity .15s, transform .15s, visibility .15s; pointer-events:none;}
-  .terrain-pill:hover .tp-tip, .terrain-pill:focus-visible .tp-tip, .terrain-pill.open .tp-tip{opacity:1; visibility:visible; transform:none;}
   /* ---- 2026-10-14: battlefield pills (user: "Night, Tide/Ebb need tooltips when you hover." and "The Night, Ebb etc pills will be on
      the battlefield instead"), field cards on the enemy's side ("The open meadow and effects like this should look like a card on the
      opposite side of the field") and the enemy's resources at the top right ("The opponent's lumber pill will be on the top right"). */
@@ -1725,7 +1721,6 @@
     .card-tile.env-card .env-line{font-size:8px; padding:2px 3px;}
   }
   @media (prefers-reduced-motion: reduce){ .env-stack .env-card{transition:none;} .env-stack.is-landing{animation:none;} }
-  .terrain-pill.biome-ash, .terrain-pill.biome-forge{border-color:rgba(255,120,50,.7); box-shadow:0 0 12px rgba(255,90,20,.45);}
   .terrain-banner{position:absolute; left:50%; top:42%; transform:translate(-50%,-50%); z-index:32; width:min(520px, 86%); padding:12px 18px; border-radius:16px; background:rgba(24,18,12,.86); color:#fff6dc; text-align:center; display:flex; flex-direction:column; gap:4px; box-shadow:0 12px 30px rgba(0,0,0,.45); animation:terrainIn .5s cubic-bezier(.2,1.3,.4,1) both; pointer-events:none;}
   .terrain-banner > b{font-family:'Baloo 2', system-ui, sans-serif; font-size:19px;}
   .terrain-banner span{font-size:13.5px; line-height:1.45;}
@@ -1740,7 +1735,7 @@
   .lava-geyser b{position:absolute; left:-4px; bottom:0; width:8px; height:8px; border-radius:50%; background:#ffb13a; box-shadow:0 0 8px #ff6a14; animation:ember 1.1s ease-out var(--d) forwards; opacity:0;}
   @keyframes geyser{0%{transform:scaleY(.1); opacity:0;} 25%{transform:scaleY(1.05); opacity:1;} 70%{opacity:.8;} 100%{transform:scaleY(.6); opacity:0;}}
   @keyframes ember{0%{opacity:1; transform:translate(0,0) scale(1);} 100%{opacity:0; transform:translate(var(--x), var(--y)) scale(.4);}}
-  @media (max-width:699px){ .terrain-pill{top:10px; left:6px; font-size:11px; padding:3px 8px;} .terrain-banner > b{font-size:16px;} .terrain-banner span{font-size:12.5px;} }
+  @media (max-width:699px){ .terrain-banner > b{font-size:16px;} .terrain-banner span{font-size:12.5px;} }
   @media (prefers-reduced-motion: reduce){ .battlefield.volcanic::after{animation:none;} .terrain-banner{animation:none;} }
   /* In-page select menus (2026-10-12): replaces the browser's own <select> popup on mouse devices */
   .bw-sel-menu{position:fixed; z-index:20000; overflow:auto; padding:5px; border-radius:12px; background:var(--surface, #fff8e6); color:var(--ink, #2c3320); border:1px solid var(--surface-border, #c9b483); box-shadow:0 12px 30px rgba(0,0,0,.3); display:flex; flex-direction:column; gap:1px; font-family:'Nunito', system-ui, sans-serif; font-size:13.5px;}
@@ -1942,7 +1937,7 @@
      left-sided or right-sided"), REVISED the same day per direct feedback ("don't show all
      squares — only the slot that is relevant should be visible"): originally both halves lit
      up together with the hovered one just brighter, but that read as noisier than helpful — now
-     only the ONE half the cursor (or a hovered L/R button — see .dropzone:hover below) is
+     only the ONE half the cursor is
      actually over ever shows anything at all; the other side stays fully invisible until the
      cursor crosses to it. Still two independent pseudo-elements (survive renderBoard()'s
      innerHTML rebuild) so either side can light up on its own. */
@@ -2895,27 +2890,14 @@
      the discardzone alone is left to center itself in the row. */
   .skipzone.compact{position:absolute; right:0; bottom:0; width:auto; min-height:0; flex-direction:row; padding:8px 14px; border-radius:999px; gap:6px; font-size:12px;}
   .skipzone.compact .dz-ico{font-size:15px;}
-  .dropzone, .discardzone, .skipzone{
+  /* 2026-10-18: the .dropzone (Left/Right button) rules went; no .dropzone is drawn since the 2026-09-26 drop-row rework. */
+  .discardzone, .skipzone{
     width:104px; min-height:88px; border-radius:10px;
     padding:8px 6px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px;
     text-align:center; font-family:'Baloo 2'; font-weight:800; font-size:12px;
     transition:background .1s, border-color .1s, color .1s, transform .08s, outline-color .1s;
   }
-  .dropzone .dz-ico, .discardzone .dz-ico, .skipzone .dz-ico{font-size:19px;}
-  .dropzone{border:2px dashed var(--surface-border); color:var(--ink-muted); background:var(--bg); cursor:pointer;}
-  .dropzone.dragover{border-color:var(--accent); background:var(--gold-soft); color:var(--accent-strong); transform:scale(1.03);}
-  .dropzone.disabled{opacity:.45; cursor:not-allowed;}
-  /* Center slot (2026-09-16): while the board's dedicated center lane is empty, BOTH the
-     Left and Right drop zones relabel to "Play in Centre" and get a matching gold
-     highlight, since either one places the card there right now regardless of which was
-     picked — only once center is filled do they go back to being genuinely Left/Right. */
-  .dropzone.center-target{border-style:solid; border-color:var(--gold); color:var(--accent-strong); background:var(--gold-soft);}
-  .dropzone.center-target.dragover{transform:scale(1.03);}
-  /* 2026-09-17, per explicit request ("remove the text labels from those drop zones, the icon
-     is sufficient"): Left/Right lost their "Left"/"Right"/"Play in Centre" caption text (still
-     available as a native title="" tooltip on hover) — size the icon up to fill the space that
-     freed up instead of leaving it looking sparse. */
-  .dropzone.icon-only .dz-ico{font-size:30px;}
+  .discardzone .dz-ico, .skipzone .dz-ico{font-size:19px;}
   .discardzone{border:2px solid var(--gold); background:var(--gold-soft); color:var(--accent-strong); cursor:pointer; box-shadow:0 3px 8px var(--shadow);}
   .discardzone .dz-sub{font-size:10px; font-weight:700; opacity:.85;}
   .discardzone.dragover{outline:3px solid var(--gold); outline-offset:1px; transform:scale(1.04);}
@@ -5749,9 +5731,8 @@
        mobile-scaled match UI (cards, castle/deck tiles, etc. all already scale down via
        --match-card-w/h above; these four were left out of that pass). Shrinking them to fit all
        four on one line, same treatment the card family already gets. */
-    .dropzone, .discardzone, .skipzone{width:82px; min-height:72px; padding:6px 4px; gap:2px; font-size:10.5px;}
-    .dropzone .dz-ico, .discardzone .dz-ico, .skipzone .dz-ico{font-size:16px;}
-    .dropzone.icon-only .dz-ico{font-size:24px;}
+    .discardzone, .skipzone{width:82px; min-height:72px; padding:6px 4px; gap:2px; font-size:10.5px;}
+    .discardzone .dz-ico, .skipzone .dz-ico{font-size:16px;}
     .discardzone .dz-sub{font-size:9px;}
     .drop-row{gap:6px; margin-bottom:12px;}
     .hud{gap:8px;} .hud-pill{font-size:11.5px;}
@@ -5814,7 +5795,7 @@
     .hud{margin-bottom:4px;}
     .top-play-row, .bottom-play-row{margin-bottom:3px;}
     .drop-row{margin-bottom:3px;}
-    .dropzone, .discardzone, .skipzone{min-height:60px;}
+    .discardzone, .skipzone{min-height:60px;}
     .battle-log-panel{padding:6px 12px 5px;}
   }
   /* 2026-10-17 (user: "In Mobile and iPad, the field can be 15% more zoomed in."): on a phone the battlefield's cards are 15% bigger
@@ -37139,7 +37120,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '37c73a93ddce', BUILD_CARD_HASH = '0d895345ed4ca62efd5512c769c8c686ef6e0c821a7acf3338be1e1e5aaee5c6';
+const BUILD_ID = '12b8aa4ec984', BUILD_CARD_HASH = '0d895345ed4ca62efd5512c769c8c686ef6e0c821a7acf3338be1e1e5aaee5c6';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -50083,6 +50064,52 @@ function loadQuestState(){
 }
 function saveQuestState(q){ try{ localStorage.setItem(QUESTS_KEY, JSON.stringify(q)); }catch(e){} }
 function loadLifetimeStats(){ try{ return JSON.parse(localStorage.getItem(STATS_KEY)||'{}') || {}; }catch(e){ return {}; } }
+// ---- Steam achievements (2026-10-18, package C: the desktop build's Steam hooks had no caller) ----
+// The desktop build (electron/preload.js) gives window.bwDesktop.steam.unlock(id), which resolves to false while Steam is off
+// (electron/steam.js); the web build has no bwDesktop and nothing happens. Each id is the Steamworks API name, so it must pass
+// steam.js's check ([A-Za-z0-9_]{1,64}); docs/platform-roadmap-2026-10-17.md lists them for the Steamworks set-up and
+// tests/steam-ach-2026-10-18.js checks both. var, not const: saves during start-up can reach steamUnlock before this line.
+var STEAM_ACHIEVEMENTS = [
+  {id:'FIRST_WIN', name:'First Victory', desc:'Win a battle.'},
+  {id:'FIRST_MAP_CLEARED', name:'Trailblazer', desc:'Clear a map.'},
+  {id:'MAP_5_CLEARED', name:'Into the Swamp', desc:'Clear Map 5.'},
+  {id:'MAP_10_CLEARED', name:'Deep in the Wilds', desc:'Clear Map 10.'},
+  {id:'MAP_20_CLEARED', name:'The Long Road', desc:'Clear Map 20.'},
+  {id:'FIRST_LEGENDARY', name:'Legend in the Pack', desc:'Pull a Legendary card (or rarer) from a pack.'},
+  {id:'SCALE_TRAIL_COMPLETE', name:'The Scale Trail', desc:'Find all eight Dragon Scales.'},
+  {id:'RED_DRAGON_HATCHED', name:'Hatchling of Fire', desc:'Hatch the Red Dragon Egg in battle.'},
+  {id:'FIRST_RAID_HIT', name:'First Strike', desc:'Deal damage to a raid boss.'},
+  {id:'SPIRE_FLOOR_10', name:'Spire Climber', desc:'Clear floor 10 of the Babel Spire.'},
+  {id:'SPIRE_FLOOR_25', name:'Above the Clouds', desc:'Clear floor 25 of the Babel Spire.'},
+  {id:'SPIRE_FLOOR_50', name:'Top of the Spire', desc:'Clear floor 50 of the Babel Spire.'},
+  {id:'WINS_100', name:'Seasoned', desc:'Win 100 battles.'},
+];
+var STEAM_ACH_KEY = 'bramblewood_steam_ach_v1', steamAchTried = new Set();
+// One call per milestone. An id Steam took is saved (STEAM_ACH_KEY) and never sent again; one it refused (Steam off) is tried
+// once a session, so a later start with Steam on still gets it (steamCheckProgress below catches up the saved milestones).
+function steamUnlock(id){
+  try{
+    const steam = typeof window !== 'undefined' && window.bwDesktop && window.bwDesktop.steam;
+    if(!steam || typeof steam.unlock !== 'function' || steamAchTried.has(id) || !STEAM_ACHIEVEMENTS.some(a=> a.id === id)) return;
+    if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return; // 2026-10-18: no real Steam unlocks from Admin Mode jumps and test clears
+    const done = ()=>{ try{ const d = JSON.parse(localStorage.getItem(STEAM_ACH_KEY) || '[]'); return Array.isArray(d) ? d : []; }catch(e){ return []; } };
+    if(done().includes(id)) return;
+    steamAchTried.add(id);
+    Promise.resolve(steam.unlock(id)).then(ok=>{ if(!ok) return; const d = done(); if(!d.includes(id)){ d.push(id); try{ localStorage.setItem(STEAM_ACH_KEY, JSON.stringify(d)); }catch(e){} } }).catch(()=>{});
+  }catch(e){}
+}
+// The milestones a save can show (wins, raid damage, map clears, Spire floors, the Scale Trail): run after a node is cleared,
+// after a win, and once at start-up for progress made before Steam was on or on another device.
+function steamCheckProgress(){
+  if(!(typeof window !== 'undefined' && window.bwDesktop && window.bwDesktop.steam)) return;
+  try{ const st = loadLifetimeStats(); if((st.wins||0) >= 1) steamUnlock('FIRST_WIN'); if((st.wins||0) >= 100) steamUnlock('WINS_100'); if((st.raidDamage||0) > 0) steamUnlock('FIRST_RAID_HIT'); }catch(e){}
+  try{ if(CONQUEST_MAPS.some(m=> conquestMapCleared(m.id))) steamUnlock('FIRST_MAP_CLEARED');
+    if(conquestMapCleared(mapIdAt(5))) steamUnlock('MAP_5_CLEARED'); if(conquestMapCleared(mapIdAt(10))) steamUnlock('MAP_10_CLEARED'); if(conquestMapCleared(mapIdAt(20))) steamUnlock('MAP_20_CLEARED'); }catch(e){}
+  try{ const tw = CONQUEST_MAPS.find(m=> m.id === 'tw'), f = tw ? dungeonFloorProgress(tw).done : 0;
+    if(f >= 10) steamUnlock('SPIRE_FLOOR_10'); if(f >= 25) steamUnlock('SPIRE_FLOOR_25'); if(f >= 50) steamUnlock('SPIRE_FLOOR_50'); }catch(e){}
+  try{ if(scaleTrailComplete()) steamUnlock('SCALE_TRAIL_COMPLETE'); }catch(e){}
+}
+if(typeof document !== 'undefined') setTimeout(()=>{ try{ steamCheckProgress(); }catch(e){} }, 5000);
 // Quest done (2026-10-15, user: "After accomplishing a quest, should it also drop like an errand?"): the moment a daily or weekly
 // quest reaches its goal, the errand's pinned note flutters down (FX.F.errandOffer, the same effect) reading "Quest done!", once
 // per quest, pinned over the Quests note on Home or the middle of the screen elsewhere (after a fight, once the result is up).
@@ -50132,6 +50159,7 @@ function bumpQuestCounter(counter, n){
   saveQuestState(q);
   const st = loadLifetimeStats(); st[counter] = (st[counter]||0) + n;
   try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){}
+  if(counter === 'wins' || counter === 'raidDamage') steamCheckProgress(); // 2026-10-18 (package C): First Win, 100 Wins, First Raid Hit
   noteErrandProgress(errandsBefore, counter);
   refreshQuestBadge(); soonCheckMilestones();
   try{ fxHook('questProgress', counter, n); }catch(e){} // 2026-10-15 batch F (only when the Quests button is on screen)
@@ -52671,6 +52699,7 @@ function completeConquestNode(node, rank){
       const ok = (n.requires||[]).every(k=> progress.completed.includes(conquestNodeId(map.id, k)));
       if(ok && Math.random() < n.chance) progress.found.push(conquestNodeId(map.id, n.key)); }); } }catch(e){}
   saveConquestProgress(progress);
+  steamCheckProgress(); // 2026-10-18 (package C): Steam achievements for map clears and Babel Spire floors
 }
 function findConquestNode(mapId, nodeKey){
   const map = CONQUEST_MAPS.find(m=>m.id===mapId); if(!map) return null;
@@ -60030,7 +60059,6 @@ function wireLeaderDragDelegation(){
     if(el) el.classList.remove('dragging');
     // 2026-10-10 (phone screenshot: a drop highlight stayed on your row after a touch drag that landed nowhere).
     setTimeout(()=>{ document.querySelectorAll('.row-dragover, .drag-side-left, .drag-side-right, .drag-center').forEach(r=> r.classList.remove('row-dragover','drag-side-left','drag-side-right','drag-center'));
-      document.querySelectorAll('.dropzone.dragover').forEach(z=> z.classList.remove('dragover'));
       try{ if(typeof clearPlacementPreview==='function' && !(matchState && matchState.resolving)) clearPlacementPreview({instant:true}); }catch(err){} }, 0);
   });
 }
@@ -60881,76 +60909,9 @@ function ownRowCenterEmpty(m){
 }
 function wireDropZones(){
   wireLiveHoverSelfHeal();
-  const root = document.getElementById('view-play');
-  // 2026-09-17 follow-up ("when hovering over the L/R buttons, the slots in the real field
-  // should correspondingly appear") — computed once, up front, so both the dedicated-button
-  // loop below AND the direct-to-battlefield listeners further down can share the exact same
-  // "which physical row is mine right now" resolution (see that block's own comment for why it
-  // depends on whose turn it is / vs-AI vs hot-seat).
-  const mForRowLookup = matchState;
-  const ownRowForButtons = mForRowLookup ? document.getElementById(viewerHandPid(mForRowLookup)===1 ? 'rowMine' : 'rowEnemy') : null;
-  // 2026-09-17, per explicit request ("there should be a preview when you drag the card over
-  // the L/R buttons at the bottom"): both the highlight glow AND the actual ghost-card
-  // placement preview (showPlacementPreview — previously wired only for dragging directly over
-  // the battlefield row itself) now fire for the small Left/Right buttons too, for BOTH a plain
-  // hover (mouseenter, no drag) and a genuine native drag hovering over them — one shared pair
-  // of helpers so all four listeners below stay in sync.
-  const showButtonPreview = (side)=>{
-    if(!ownRowForButtons) return;
-    ownRowForButtons.classList.add('row-dragover');
-    const centerEmpty = ownRowCenterEmpty(matchState);
-    ownRowForButtons.classList.toggle('drag-center', centerEmpty);
-    ownRowForButtons.classList.toggle('drag-side-left', !centerEmpty && side==='left');
-    ownRowForButtons.classList.toggle('drag-side-right', !centerEmpty && side==='right');
-    showPlacementPreview(ownRowForButtons, side);
-  };
-  const clearButtonPreview = ()=>{
-    if(ownRowForButtons) ownRowForButtons.classList.remove('row-dragover', 'drag-side-left', 'drag-side-right', 'drag-center');
-    clearPlacementPreview();
-  };
-  root.querySelectorAll('.dropzone').forEach(zone=>{
-    const side = zone.getAttribute('data-side');
-    zone.addEventListener('dragover', e=>{ e.preventDefault(); zone.classList.add('dragover'); showButtonPreview(side); });
-    zone.addEventListener('dragleave', ()=>{ zone.classList.remove('dragover'); clearButtonPreview(); });
-    zone.addEventListener('drop', e=>{
-      e.preventDefault(); zone.classList.remove('dragover');
-      // Bugfix (2026-09-17, found via a real click-to-play/drag-to-play playtest, not caught by
-      // the V25 hover-preview unit tests because those dispatch mouseenter/mouseleave as a
-      // matched pair by hand): the mouseenter below turns on ownRowForButtons' row-dragover/
-      // drag-side-* highlight, but a genuine drop here (or a tap via the click handler right
-      // below) never generates a real mouse-leave the browser will deliver — the cursor just
-      // sits there while playCardByUid() rebuilds the row's innerHTML in place (renderBoard()
-      // only replaces the row's CONTENT, not the row element itself, so classes added straight
-      // to that element persist across every render until the next full renderMatchUI() rebuild,
-      // which in vs-AI play can be many rounds away). Left unfixed, the highlight overlay froze
-      // "on" for the rest of the match after the very first tap/drag-play — a highlight that's
-      // supposed to live-track the cursor but instead went static. Clearing it explicitly here
-      // (same as the direct-to-battlefield drop handler already does two blocks down) closes
-      // that gap for both the drag-onto-button and tap-to-play paths.
-      clearButtonPreview();
-      const payload = e.dataTransfer.getData('text/plain');
-      // Item #269 ("The leader should be drag and droppable as well"): a Left/Right button drop
-      // requests that specific lane, same as a dragged hand card does via playCardByUid(uid, side).
-      if(payload===LEADER_DRAG_PAYLOAD){ attemptSummonLeader(side); return; }
-      const uid = Number(payload);
-      // 2026-09-21 ("it should also fly from where you let go of the card, not randomly from the
-      // ether"): the real cursor release point, passed through so the entrance tween can start
-      // from THERE instead of a fixed guessed offset — see playCardByUid's dropPoint param.
-      if(uid) playCardByUid(uid, side, {x:e.clientX, y:e.clientY});
-    });
-    zone.addEventListener('click', ()=>{
-      const m=matchState; if(!m || m.selectedUid==null) return;
-      clearButtonPreview();
-      playCardByUid(m.selectedUid, side);
-    });
-    // A plain mouse hover (no drag in progress) mirrors the exact same highlight a live drag
-    // shows on the real battlefield row — so pointing at "Left"/"Right" previews where that
-    // side actually lands, same as dragging near it would, without needing to pick the card up.
-    if(ownRowForButtons && !zone.classList.contains('disabled')){
-      zone.addEventListener('mouseenter', ()=> showButtonPreview(side));
-      zone.addEventListener('mouseleave', ()=> clearButtonPreview());
-    }
-  });
+  // 2026-10-18 (package C clean-up): the Left/Right .dropzone buttons' wiring (showButtonPreview/clearButtonPreview, their
+  // dragover/drop/click/hover listeners) went; no .dropzone has been drawn since the 2026-09-26 drop-row rework. Dropping on
+  // the battlefield row itself (below) and the discard zone are the live drag targets.
   const discardZone = document.getElementById('dropDiscard');
   if(discardZone){
     // 2026-09-17, per explicit request ("show how many resources will be gained when pitching
@@ -60962,8 +60923,7 @@ function wireDropZones(){
     // a visual swap (not touching selectedUid/state), so both play styles show the payout.
     const discardGraveyardHTML = () => { const m=matchState; return `<span class="dz-ico">💀</span><span>Graveyard</span><span class="dz-sub">${m?m.players[viewerHandPid(m)].graveyard.length:0} cards</span>`; };
     // 2026-09-17 follow-up ("the resources it would generate MUST come out"): reads the actual
-    // dragged card's defId (same '.dragging' hand-tile technique showButtonPreview uses for the
-    // L/R buttons — dataTransfer's real payload is withheld from the browser until 'drop') so the
+    // dragged card's defId (the '.dragging' hand-tile technique — dataTransfer's real payload is withheld from the browser until 'drop') so the
     // preview shows what THIS specific card pitches for (1 Stone for a creature, by default —
     // see pitchYieldOf) instead of a hardcoded amount.
     const discardPreviewHTML = () => {
@@ -62653,7 +62613,7 @@ function wireBattlefieldPan(){
   const THRESH = 8;
   let tracking = false, dragging = false, startX = 0, startPanX = 0;
   const getBattlefield = ()=> document.querySelector('.battlefield');
-  const shouldIgnore = (target)=> !!(target.closest && target.closest('[draggable="true"], button, .dropzone, .discardzone, .skipzone, a, input, select, textarea'));
+  const shouldIgnore = (target)=> !!(target.closest && target.closest('[draggable="true"], button, .discardzone, .skipzone, a, input, select, textarea'));
   function tryStart(target, clientX){
     const battlefield = getBattlefield();
     if(!battlefield || !battlefield.classList.contains('pannable')) return false;
@@ -65574,6 +65534,7 @@ async function resolveRoundCore(opts){
   // they can be replayed as their own distinct "next turn starting" beat afterward, instead of
   // wherever they happened to land in the middle of this round's attack sequence.
   if(QUEST_COUNTING_MODES.has(m.mode)) bumpQuestCounter('unitsDefeated', events.filter(ev=> ev.type==='death' && ev.side==='B').length);
+  if(QUEST_COUNTING_MODES.has(m.mode) && events.some(ev=> ev.type==='hatch' && ev.side==='A' && ev.fromDefId==='egg-red-dragon')) steamUnlock('RED_DRAGON_HATCHED'); // 2026-10-18 (package C)
   if(m.mode !== 'sandbox') (m._csEv || (m._csEv = [])).push(events); // 2026-10-17 (card stats): kept for the tally at match end (recordCardStatsForMatch), nothing read now
   const mainEvents = settleDeathsEarly(groupForkLines(events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready' && ev.type!=='hatch'))); // + one Fork swing's lines together (2026-10-17) // 2026-10-17: each death right after its killing blow
   clearArrivalHold(m); // 2026-10-17: anything held for an arrival replay is settled by now
@@ -72687,6 +72648,7 @@ function claimScaleTrailFinale(){
     if(copiesOwned(r.card) <= before){ try{ console.warn('Scale Trail: could not give ' + r.card + ' (is it obtainable?)'); }catch(e){} return null; }
     out.card = r.card; }
   setDialogueFlag(SCALE_TRAIL_DONE_FLAG, Date.now());
+  steamUnlock('SCALE_TRAIL_COMPLETE'); // 2026-10-18 (package C)
   Object.keys(r).forEach(k=>{ if(k !== 'card' && (r[k]|0) > 0 && typeof CURRENCY_META !== 'undefined' && CURRENCY_META[k]){ grantCurrency(k, r[k]|0); out.currencies[k] = r[k]|0; } });
   try{ refreshQuestBadge(); }catch(e){}
   return out;
@@ -75980,6 +75942,7 @@ function openPackAnimation(pack, opened, opts){
   markFirstNew([].concat(...opened.map(o=> o.results)));
   const tierOf = id=> RARITY_TIER_BANDS.indexOf((defs[id] && defs[id].rarity) || 'common');
   const teaseOf = id=>{ const t = tierOf(id); return t >= 11 ? 'tease-legend' : t >= 7 ? 'tease-epic' : t >= 4 ? 'tease-rare' : ''; };
+  if([].concat(...opened.map(o=> o.results)).some(r=> tierOf(r.id) >= RARITY_TIER_BANDS.indexOf('legendary'))) steamUnlock('FIRST_LEGENDARY'); // 2026-10-18 (package C)
   let overlay = document.getElementById('packOpenOverlay');
   if(!overlay){ overlay = document.createElement('div'); overlay.id = 'packOpenOverlay'; document.body.appendChild(overlay); }
   overlay.className = 'pack-open-overlay po2';
