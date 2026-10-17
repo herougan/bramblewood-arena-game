@@ -1,5 +1,29 @@
 # Action items
 
+## Overnight 10-18: your calls
+
+Built while you slept: the Bleed / Poison / Cure / Awash rules, the balance pass (173 cards), three legendaries with creature ranks, the Scale Trail finale, Dragon / Supreme / Ghost looks, honest locks on uncharted maps, dead-code clean-up, Arena and Leylines scenes, boss banter, translations for every game text, and the desktop build's offline fonts, icon and Steam stub. Details in the CHANGELOG.
+
+| Item | Question |
+|---|---|
+| Wave and crashes | The Awash field now crashes (both units take N). Should the Wave skill crash too, or keep pushing / swapping? |
+| Long burners (B4) | 77 cards costing 2+ Lumber stay at 22–37% whatever their stats; one Lumber less is the real lever (Voltaic Eel 3→1 went 30%→97.5%). Cut Lumber on some? |
+| Great Gate | Over budget; fitting it (0/28) changes fights 23-7 and 24-1. Fit it? |
+| The Sixfold | The budget doesn't count Ritual. Add a Ritual discount to the skill-cost table? |
+| Dragon-Turtle | Placed in the Map 23 siege boss deck and reward for now. Or hold it for a future forest map (25+)? |
+| Leviathan | Only drops from the Goliath raid. Also fight it in the raid (it would become the boss unit)? |
+| Supreme | Give the Dragon-Turtle Supreme like the Leviathan? Give the Ashmantle Fiend the Supreme looks? |
+| Supreme isn't a boss | Supreme units no longer get the "Boss · Defeated!" banner unless they are a real boss. OK? |
+| Scale Trail reward | 8/8 gives the Red Dragon Egg (`SCALE_TRAIL_FINALE_REWARD`). Keep? Should an egg be allowed to lead (it's Legendary)? |
+| Long Burrow | Still "Coming soon". Release: set `LONG_BURROW_RELEASED = true` (arena_app.js, just above the Long Burrow's map entry) |
+| Uncharted unlocks | Nest 6/7 (Maps 25/30), Forge tiers 4/5 and card Levels 9/10 (Maps 26/31), Flea Market (31), dungeon slot 3 (40) now say "Unlocks beyond the charted maps". Suggested moves: Nest 6→22, Nest 7→24, Forge 4 / Level 9→22, Forge 5 / Level 10→24, Strange Materia→bosses of Maps 21 and 23 |
+| Placeholder translations | 159 texts with {n}, {name} etc. are still English in every language (TX fills them before the translator sees them). Change TX to translate first? |
+| Card names | ~412 card names aren't translated. Do them? |
+| Art | 119 cards (incl. the 3 new legendaries and all Map 22–24 bosses) have no art and show their emoji. Generate with your NightCafe credits (~0.75 each)? The new Arena scenes are code-drawn; repaint later? |
+| Desktop | Steam App ID (100 USD), Apple Developer (99 USD/year) for Mac signing. Wire achievements to `bwDesktop.steam.unlock` once there is an App ID |
+| e2e hero test | `tests/e2e/hero.py` clicks a Hero button that no longer exists on the deck screen. Retire the test, or bring the button back? |
+
+
 ## Platform roadmap (10-17)
 
 Your 21:32 ask (alt emoji, alt effects, security, Electron or Unity, royalty-free music) is answered in [`platform-roadmap-2026-10-17.md`](platform-roadmap-2026-10-17.md). In short:
