@@ -26856,7 +26856,7 @@ M.bossDeath = function(el, opts){
   });
 };
 
-// ---- Planned (lab only, 2026-10-15): looks for later themes, ready for when the units exist ----
+// ---- Looks for later themes (2026-10-15). Ghost, Dragon and Supreme are live since 2026-10-18 (M.deathPlan, M.greatLook) ----
 // Ghost (Map 50+): it turns translucent and drifts up as a wisp.
 M.deathGhost = function(el, opts){
   const D = dying(el); if(!D) return Promise.resolve(); const {t, x, w, h, top} = D;
@@ -26872,7 +26872,8 @@ M.deathDragon = function(el, opts){
   opts = opts || {}; const D = dying(el); if(!D) return Promise.resolve(); const {t, x, y, w, h, bot} = D, host = opts.host || document.getElementById('battlefieldEl');
   return run(opts, (tl, mk)=>{
     tl.to(t, {rotation:-8, y:-10, duration:.25, ease:'power1.out'}, 0).to(t, {rotation:12, y:h*.2, scaleY:.85, transformOrigin:'50% 100%', filter:F('brightness(.6)'), duration:.3, ease:'power3.in'}, .25).to(t, {opacity:0, duration:.35}, .7);
-    if(host) tl.fromTo(host, {y:0}, {keyframes:[{y:9}, {y:-6}, {y:4}, {y:-2}, {y:0}], duration:.5, ease:'none', clearProps:'transform'}, .55);
+    if(host && opts.shake !== false) tl.fromTo(host, {y:0}, {keyframes:[{y:9}, {y:-6}, {y:4}, {y:-2}, {y:0}], duration:.5, ease:'none', clearProps:'transform'}, .55); // shake: 2026-10-18, off below High
+    fadeSlot(tl, el, t, .6); // 2026-10-18: its stat chips go with it, like the other deaths
     puffs(tl, mk, .55, x, bot - 8, {n:8, color:'rgba(120,100,80,.7)', w:w*1.6, rise:-20, drift:60, size:[20, 34], stagger:.02});
     spray(tl, mk, .55, x, y, {n:12, colors:['#c0392b', '#e67e22', '#8e2a1e'], size:[5, 9], shard:true, dist:[40, 100], dur:[.6, .9], gravity:50, spin:300});
     const sc = mk('fxc-g', '🐉'); sc.style.fontSize = '24px'; tl.set(sc, {x, y, xPercent:-50, yPercent:-50, opacity:0, scale:.4}, .7).to(sc, {opacity:1, scale:1, y:y - 30, duration:.25, ease:'back.out(2)'}, .7).to(sc, {y:bot - 10, duration:.4, ease:'bounce.out'}, .95).to(sc, {opacity:0, duration:.3}, 1.6);
@@ -27336,7 +27337,7 @@ M.runePortal = function(el, opts){
     tl.add(()=> snd('pitchChime'), 0);
   });
 };
-// ---- Planned (lab only) ----
+// ---- Planned (lab only); dragonArrive and supremeArrive are live since 2026-10-18 (onEvent play) ----
 // Dragon summoned (Map 50+): the sky darkens, a wing shadow sweeps across the field, a roar, and it lands with a quake.
 M.dragonArrive = function(el, opts){
   opts = opts || {}; const t = tileOf(el); if(!t || !t.isConnected) return Promise.resolve(); const host = opts.host || document.getElementById('battlefieldEl');
@@ -27347,7 +27348,7 @@ M.dragonArrive = function(el, opts){
     const sh = mk('fxc-g', '🐉'); sh.style.fontSize = '90px'; sh.style.filter = 'brightness(0) blur(2px)'; sh.style.opacity = '.5';
     tl.set(sh, {x:bf.left - 100, y:bf.top + bf.height*.3, xPercent:-50, yPercent:-50, scaleX:-1}, .1).to(sh, {x:bf.left + bf.width + 100, duration:.8, ease:'sine.inOut'}, .1);
     tl.fromTo(t, {y:-160, opacity:0, scale:1.3}, {y:0, opacity:1, scale:1, duration:.35, ease:'power3.in', clearProps:'transform,opacity'}, .8);
-    if(host) tl.fromTo(host, {y:0}, {keyframes:[{y:8}, {y:-6}, {y:3}, {y:0}], duration:.4, ease:'none', clearProps:'transform'}, 1.15);
+    if(host && opts.shake !== false) tl.fromTo(host, {y:0}, {keyframes:[{y:8}, {y:-6}, {y:3}, {y:0}], duration:.4, ease:'none', clearProps:'transform'}, 1.15); // shake: 2026-10-18, off below High
     puffs(tl, mk, 1.15, c.x, c.r.bottom - 6, {n:7, color:'rgba(120,100,80,.7)', w:c.w*1.5, rise:-14, drift:50, size:[18, 30], stagger:.02});
     tl.add(()=> snd('roar'), .2).add(()=> snd('boom'), 1.15);
   });
@@ -27418,6 +27419,15 @@ const hqEl = side=> document.querySelector(`[data-hq="${side}"]`);
 const defOf = (env, id)=> (env && env.defs && env.defs[id]) || {};
 const archOf = d=> [].concat(d.archetypes || [], d.species || []);
 const isStructureDef = d=> archOf(d).includes('Structure') || d.type === 'Structure';
+// 2026-10-18 (audit E2: the Ghost, Dragon and Supreme looks were built but never played): who gets them. A Dragon is a card whose
+// archetype is "Dragon" (the five Dragons, Thunder Lizard), or a first-rank great beast (creatureRank 1). Species "Dragon" alone
+// doesn't count: it covers the small wyrms and drakes, and a common Tunnel Wyrm shouldn't shake the field. The rank-2 great beasts
+// (Fathom Leviathan, Grovebearer Dragon-Turtle; their species say Dragon too) and any other Supreme unit get the Supreme look.
+// A Ghost has effects.ghost (the engine's own test, isGhost) or the Ghost archetype.
+const isDragonDef = d=> (d.archetypes || []).includes('Dragon') || Number(d.creatureRank) === 1;
+const isSupremeDef = d=> !!(d.effects && d.effects.supreme) || Number(d.creatureRank) === 2;
+const isGhostDef = d=> !!(d.effects && d.effects.ghost) || archOf(d).includes('Ghost');
+M.greatLook = d=>{ d = d || {}; return Number(d.creatureRank) === 2 ? 'supreme' : isDragonDef(d) ? 'dragon' : isSupremeDef(d) ? 'supreme' : isGhostDef(d) ? 'ghost' : null; };
 // A source that hurts several units through ordinary hit events (Avalanche, Tsunami, Explode, Dynamite): hits from that
 // attacker in the next few events carry its look.
 function tag(attUid, cause, sub, n){ if(attUid == null) return; TAGS.push({attUid:String(attUid), cause, sub, until:SEQ + (n || 8)}); while(TAGS.length > 12) TAGS.shift(); }
@@ -27478,6 +27488,9 @@ M.deathPlan = function(el, uid, env){
     if(EXILED.has(String(uid))) plan.look = 'deathExile';
     else if(d.hatchInto) plan.look = 'deathEgg';
     else if((b && b.classList.contains('is-petrified')) || PETRI.has(String(uid))) plan.look = 'deathPetrified';
+    // 2026-10-18 (audit E2): who the unit is beats what killed it for the great beasts and ghosts (a Dragon crashes down whatever
+    // the blow; a ghost fades whatever hit it).
+    else if(M.greatLook(d)) plan.look = {dragon:'deathDragon', supreme:'deathSupreme', ghost:'deathGhost'}[M.greatLook(d)];
     else if(cz && DEATH_BY[cz.cause]) { plan.look = DEATH_BY[cz.cause]; plan.sub = cz.sub; if(cz.cause === 'crushed' && cz.sub === 'snow') plan.look = 'deathCrushed_B'; }
     else if(isStructureDef(d)) plan.look = 'deathStructure';
   }
@@ -27501,7 +27514,9 @@ M.deathPlan = function(el, uid, env){
 };
 // A boss: a def flagged boss/world boss, the raid boss, or the enemy leader of a boss node.
 M.isBoss = function(uid, d, env){
-  d = d || {}; const m = env && env.match; if(d.boss || d.worldBoss || d.supreme) return true;
+  // 2026-10-18 (audit E2): a Supreme def alone is no longer a boss (it got the "Boss · Defeated!" banner wherever it fell); it dies
+  // the Dragon or Supreme look now. A Supreme leading a boss node is still a boss (the LEADERS test below).
+  d = d || {}; const m = env && env.match; if(d.boss || d.worldBoss) return true;
   const kind = m && m.conquestNode && m.conquestNode.kind;
   const lead = LEADERS.get(String(uid));
   return !!(lead && lead.side === 'B' && /boss/.test(String(kind || '')));
@@ -27509,11 +27524,14 @@ M.isBoss = function(uid, d, env){
 M.hooks.deathLook = function(el, info, env){
   if(!el || !info || !env.fxAtLeast('med')) return;
   resetFor(env.match);
-  const plan = M.deathPlan(el, info.uid, env), o = {speed:speedOf(env)};
+  const plan = M.deathPlan(el, info.uid, env), o = {speed:speedOf(env), shake:env.fxAtLeast('high')}; // shake: 2026-10-18, the Dragon's quake only at High (auto-lower drops it)
   if(plan.look && typeof M[plan.look] === 'function'){
     info.handled = true;
     if(plan.look === 'bossDeath'){ const m = env.match, n = m && m.conquestNode; try{ if(typeof noteMatchFx === 'function') noteMatchFx(2300); }catch(e){}
       M.bossDeath(el, Object.assign(o, {host:env.battlefield, name:(n && n.name) || (defOf(env, boardOf(el).getAttribute('data-defid')).name) || '', kicker:(n && /final/.test(n.kind || '')) ? 'Final boss' : 'Boss', speed:1})); }
+    else if(plan.look === 'deathDragon' || plan.look === 'deathSupreme'){ // 2026-10-18 (audit E2): the round waits for the great beasts' falls (~1.7 s)
+      try{ if(typeof noteMatchFx === 'function') noteMatchFx(1700); }catch(e){}
+      M[plan.look](el, Object.assign(o, {host:env.battlefield})); }
     else if(plan.look === 'kingFall'){ const d = defOf(env, boardOf(el).getAttribute('data-defid')); M.kingFall(el, Object.assign(o, {title:archOf(d).includes('King') ? 'King' : 'Leader'})); }
     else M[plan.look](el, o);
   }
@@ -27578,9 +27596,15 @@ M.onEvent = function(ev, env){
       PLAYS.push({uid:ev.uid, side:ev.side, defId:ev.defId, seq:SEQ}); while(PLAYS.length > 16) PLAYS.shift();
       if(ev.leader) LEADERS.set(String(ev.uid), {side:ev.side, gladiator:!!ev.gladiator});
       const d = defOf(env, ev.defId);
+      // 2026-10-18 (audit E2): a Dragon or a Supreme / rank-2 great beast arrives in its own way (a leader keeps the throne drop,
+      // a skyfall card keeps its fall). The Dragon's darkened sky and wing shadow need Medium; its quake only plays at High.
+      const great = !ev.leader && !ev.reserve && !d.hatchInto && !(d.effects && d.effects.skyfall) ? M.greatLook(d) : null; // hatchInto: the Red Dragon Egg is tagged Dragon too
       if(ev.leader && ev.gladiator) at(120, ()=>{ const e = el(ev.uid); if(e) M.gladiatorSand(e, o); });
       else if(ev.leader) at(40, ()=>{ const b = document.querySelector('.leader-callout'); if(b) M.bannerUnfurl(b, o); });
       else if(ev.reserve) at(200, ()=>{ const e = el(ev.uid); if(e) M.reserveIn(e, o); });
+      else if(great === 'dragon'){ try{ if(typeof noteMatchFx === 'function') noteMatchFx(1600, env.match); }catch(e){}
+        at(30, ()=>{ const e = el(ev.uid); if(e) M.dragonArrive(e, Object.assign({}, o, {host:env.battlefield, shake:env.fxAtLeast('high')})); }); }
+      else if(great === 'supreme') at(30, ()=>{ const e = el(ev.uid); if(e) M.supremeArrive(e, o); });
       else if(ev.side === 'B' && !ev.leader) at(30, ()=>{ const e = el(ev.uid); if(e) M.enemyCardFlip(e, o); });
       if(isStructureDef(d) && !ev.leader) at(260, ()=>{ const e = el(ev.uid); if(e) (archOf(d).includes('Ants') || archOf(d).includes('Insect') ? M.structureBuild_B : M.structureBuild)(e, o); });
       if(d.effects && d.effects.skyfall && root.SkillFX && SkillFX.skyDrop) at(60, ()=>{ const e = el(ev.uid); if(e) SkillFX.skyDrop([e], {fall:420}); });
@@ -30218,7 +30242,7 @@ M.nextMapUnlocked = function(edge, fromEl){
 M.scaleFound = function(opts){
   opts = opts || {}; const g = G(); if(!g) return Promise.resolve();
   const host = opts.host, r = host ? host.getBoundingClientRect() : {left:0, top:0, width:innerWidth, height:innerHeight};
-  const idx = opts.index || 1, tot = opts.total || 10;
+  const idx = opts.index || 1, tot = opts.total || 8; // 2026-10-18: the Scale Trail has 8 scales
   const o = layer('fxe-at fxe-scale', `<div class="fs-s"></div><div class="fs-n">${idx - 1}/${tot}</div><div class="fs-l">Dragon Scale</div>`);
   Object.assign(o.style, {left:(r.left + r.width/2 - 80) + 'px', top:(r.top + r.height*.42 - 90) + 'px', width:'160px', height:'180px'});
   const s = o.querySelector('.fs-s'), num = o.querySelector('.fs-n'); sound('roar');
@@ -31806,19 +31830,8 @@ M.bossLeader = function(el, opts){
   return glyph(c.x, top, '👑', {size:30, scale0:1.8, rot0:-20, rise:0, hold:.7, inDur:.25, ease:'bounce.out', onTl:(t)=> t.add(()=>{ ring(c.x, top, {color:'#ffd56e', size:80}); burst(c.x, top, {n:12, colors:['#ffe27a', '#fff6c8'], dist:[20, 60], dur:.55, shape:'star', size:7, glow:true}); bump(el); }, .25)})
     .then(()=> call(opts.onDone));
 };
-// The Map 20 faction crown: a laurel wreath draws itself leaf by leaf round a glowing crown, in the faction's colours.
-M.factionCrown = function(el, opts){
-  opts = opts || {}; const g = G(); if(!g) return Promise.resolve();
-  const c = el ? pt(el) : hostPt(opts.host), R = 54, hum = opts.faction === 'hummingbirds', glow = hum ? '#ff5fc8' : '#2fb3a5', h = lay('fxf-wreath', '', 6000);
-  const leaves = Array.from({length:14}, (_, i)=>{ const a = Math.PI*.62 + (i/13)*Math.PI*1.76, e = document.createElement('div'); e.className = 'fxf-g'; e.textContent = hum ? ['🌺', '🍃'][i % 2] : '🍃'; e.style.fontSize = '18px';
-    h.appendChild(e); g.set(e, {x:c.x + Math.cos(a)*R, y:c.y + Math.sin(a)*R, xPercent:-50, yPercent:-50, rotation:a*180/Math.PI + 90, scale:0}); return e; });
-  const cr = document.createElement('div'); cr.className = 'fxf-g'; cr.textContent = '👑'; cr.style.fontSize = '44px'; h.appendChild(cr); g.set(cr, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, scale:0, filter:`drop-shadow(0 0 12px ${glow})`});
-  return new Promise(res=> g.timeline({onComplete:()=>{ h.remove(); finish(opts, res); }})
-    .to(leaves, {scale:1, duration:.18, ease:'back.out(3)', stagger:.04})
-    .to(cr, {scale:1.2, duration:.3, ease:'back.out(2.5)'}, .3).to(cr, {scale:1, duration:.2})
-    .add(()=>{ ring(c.x, c.y, {color:glow, size:150, width:4}); burst(c.x, c.y, {n:18, colors:hum ? ['#ff5fc8', '#7ad7ff', '#ffd36e', '#8a4dff', '#5ee07a'] : ['#2fb3a5', '#c58b4a', '#e9fbf6', '#ffd56e'], dist:[40, 110], dur:.7, shape:'star', size:8, glow:true}); label(c.x, c.y + R + 22, opts.text || 'Faction crown!', 'gold'); }, .85)
-    .to([...leaves, cr], {opacity:0, scale:.8, duration:.35}, '+=.8'));
-};
+// 2026-10-18 (audit P1): the Map 20 faction crown (M.factionCrown, H.factionCrown, lab res-faction-crown) is gone with
+// grantMap20FactionCrown, which was retired 2026-10-13 and never had a caller.
 // Materia / ore drops: prism shards rain into the reward chip, which pops.
 M.materiaDrop = function(el, opts){
   opts = opts || {}; const g = G(); if(!g || !el) return Promise.resolve();
@@ -32437,7 +32450,6 @@ H.noticeSwap = (rect, env)=>{ if(rect && medOK(env)) M.noticeSwap(rect); };
 H.wandererDeal = (el, env)=>{ if(el && medOK(env)) M.wandererDeal(el); };
 H.questProgress = (counter, n, env)=>{ const b = document.getElementById('homeQuestsBtn'); if(visible(b) && medOK(env)) M.questProgress(b); };
 H.heldPacks = (n, env)=>{ if(n > 0 && medOK(env)) later(()=> M.heldPacks($('.map-spot[data-spot="deck"]'), {count:n}), 200); };
-H.factionCrown = (faction, env)=>{ if(medOK(env)) M.factionCrown(null, {faction}); };
 H.pvpTicketUsed = (env)=>{ if(medOK(env)) M.pvpTicket(null, {at:{x:VW()/2, y:VH()*.22}}); };
 H.replayHits = (ov, env)=>{ if(ov && medOK(env)) $$('.rp-card.is-hit', ov).slice(0, 6).forEach((c, i)=> later(()=> M.trenchHit(c), i*60)); };
 H.trenchRender = (ov, round, env)=>{ if(!ov || !medOK(env) || ov._fxfRound === round) return; ov._fxfRound = round;
@@ -33713,6 +33725,14 @@ const FONTS = {
   'ja': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans JP','Hiragino Sans','Yu Gothic',system-ui,sans-serif"},
   'ko': {css:'https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@500;700;800&display=swap', stack:"'Baloo 2','Noto Sans KR','Apple SD Gothic Neo','Malgun Gothic',system-ui,sans-serif"},
 };
+// 2026-10-18 (roadmap P6): the desktop build ships these fonts (electron/fonts → fonts/script/<code>.css, subset to the
+// packs' characters) so they work offline. The website keeps Google Fonts, so it gains no bytes. If the local CSS is
+// missing (an unstaged dev copy), the link swaps to the Google URL.
+if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || '')){
+  for(const c in FONTS){ FONTS[c].web = FONTS[c].css; FONTS[c].css = 'fonts/script/' + c + '.css'; }
+  document.addEventListener('error', e=>{ const l = e.target, f = l && l.dataset && FONTS[l.dataset.langFont];
+    if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
+}
 const KEY = 'bramblewood_lang_v1';
 const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=97aa5107d7", "es": "assets/lang/es.js?v=8f8c474a42", "fr": "assets/lang/fr.js?v=9f12ac993c", "id": "assets/lang/id.js?v=29a2283330", "it": "assets/lang/it.js?v=36332fe47e", "ja": "assets/lang/ja.js?v=fb9353fe82", "ko": "assets/lang/ko.js?v=e2339bfda2", "pt": "assets/lang/pt.js?v=b4aff06a29", "ta": "assets/lang/ta.js?v=bc603b3b9c", "tl": "assets/lang/tl.js?v=dbc6921208", "zh-Hans": "assets/lang/zh-Hans.js?v=a74f7afe4c", "zh-Hant": "assets/lang/zh-Hant.js?v=2d1203cf28"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
@@ -36975,7 +36995,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd123432ae607', BUILD_CARD_HASH = 'adce97ad4d4027ff7e4d2d528a7bcc6c78b2f86cb2439eec365ce5fff1b40b94';
+const BUILD_ID = '604c8562071f', BUILD_CARD_HASH = 'adce97ad4d4027ff7e4d2d528a7bcc6c78b2f86cb2439eec365ce5fff1b40b94';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -66554,28 +66574,30 @@ const FIELD_ART = {
   sandstorm:{art:'assets/fields/sandstorm.png?v=f9d6200fc8'}, scorching:{art:'assets/fields/scorching.png?v=087d94132d'}, scorched:{art:'assets/fields/scorched.png?v=8b446156d9'},
   lavatide:{art:'assets/fields/lavatide.png?v=ca377356cc'}, petrify:{art:'assets/fields/petrify.png?v=0f0cd69b95'}, eruption:{art:'assets/fields/eruption.png?v=d4d62ef08e'},
   surge:{art:'assets/fields/surge.png?v=a3a724ff03'}, mines:{art:'assets/fields/mines.png?v=c7be1c5030'}, rain:{art:'assets/fields/rain.png?v=3a6bd2899c'},
-  // Field effects 2 (2026-10-16): a key per new card, each with its own scene since 2026-10-17 (Leylines I-III share one). A path whose
+  // Field effects 2 (2026-10-16): a key per new card, each with its own scene since 2026-10-17 (Leylines I-III each their own since 2026-10-18). A path whose
   // file doesn't exist shows the card's icon (the build only hashes files that exist).
   tide:{art:'assets/fields/tide.png?v=72afb122e0'}, landslide:{art:'assets/fields/landslide.png?v=349ad48245'}, consternation:{art:'assets/fields/consternation.png?v=95dee5c243'},
   crushingdepths:{art:'assets/fields/crushingdepths.png?v=2a205a0e5b'}, rookrow:{art:'assets/fields/rookrow.png?v=6627a011d0'}, bishoppath:{art:'assets/fields/bishoppath.png?v=722ccd4bb1'},
   mirage:{art:'assets/fields/mirage.png?v=c14404e913'}, canopy:{art:'assets/fields/canopy.png?v=b4046adf35'}, undergrowth:{art:'assets/fields/undergrowth.png?v=04f8fd0e5d'}, tallgrass:{art:'assets/fields/tallgrass.png?v=eede8aaa96'},
   slippery:{art:'assets/fields/slippery.png?v=d4743fc10d'}, glassstorm:{art:'assets/fields/glassstorm.png?v=0c2886e48b'}, hail:{art:'assets/fields/hail.png?v=09221a4cbb'}, lavaspout:{art:'assets/fields/lavaspout.png?v=bac620256e'},
-  leylines1:{art:'assets/fields/leylines.png?v=629b093377'}, leylines2:{art:'assets/fields/leylines.png?v=629b093377'}, leylines3:{art:'assets/fields/leylines.png?v=629b093377'}, haunted:{art:'assets/fields/haunted.png?v=9882d1fda0'},
+  leylines1:{art:'assets/fields/leylines1.png?v=04c8df4dc8'}, leylines2:{art:'assets/fields/leylines2.png?v=9c5ade7e11'}, leylines3:{art:'assets/fields/leylines3.png?v=e578f99cca'}, haunted:{art:'assets/fields/haunted.png?v=9882d1fda0'}, // Leylines I-III: one, two, three strands (2026-10-18)
   // Field effects 3 (2026-10-17).
   sulphurfumes:{art:'assets/fields/sulphurfumes.png?v=befe627180'}, ashrain:{art:'assets/fields/ashrain.png?v=2494f69837'}, ashy:{art:'assets/fields/ashy.png?v=c7d4d3b3e1'}, arrowslits:{art:'assets/fields/arrowslits.png?v=d0d6f71d2d'},
   // 2026-10-17 (art, the user's notes 21 and 26): every field effect has its own scene now (the borrowed ones above got theirs), plus
   // Awash (its card is being added separately; its art key is 'awash') and the volcano's Day/Night Glow pill (it borrowed Twilight).
   awash:{art:'assets/fields/awash.png?v=09ae338c67'}, volcanoglow:{art:'assets/fields/volcanoglow.png?v=5dd2dee481'},
-  // 2026-10-17: the raid's Psychic Dampener (tools/make_field_art_2026_10_17.py), and the Arena's day rules as Environment cards. Those
-  // borrow scenes for now: Lumber Rush / Timber Fair the Undergrowth's fallen logs, Midsummer the Tall Grass's sunny field, Dusk Start and
-  // Restless Sky the Twilight, First Blood the Boss surge, Double Time the Leylines, Collapse the Landslide.
-  psychicdampener:{art:'assets/fields/psychicdampener.png?v=23af523fe8'}, timber:{art:'assets/fields/undergrowth.png?v=04f8fd0e5d'}, midsummer:{art:'assets/fields/tallgrass.png?v=eede8aaa96'},
-  dusk:{art:'assets/fields/twilight.png?v=60d886edbe'}, restless:{art:'assets/fields/twilight.png?v=60d886edbe'}, firstblood:{art:'assets/fields/surge.png?v=a3a724ff03'}, doubletime:{art:'assets/fields/leylines.png?v=629b093377'}, collapse:{art:'assets/fields/landslide.png?v=349ad48245'},
+  // 2026-10-17: the raid's Psychic Dampener (tools/make_field_art_2026_10_17.py), and the Arena's day rules as Environment cards.
+  // 2026-10-18: those day rules no longer borrow other cards' scenes; each has its own (tools/make_field_art_2026_10_18.py): the sawmill
+  // (Lumber Rush), the fair's stalls and bunting (Timber Fair), the high sun (Midsummer), the violet sunset (Dusk), the wind-tossed night
+  // trees (Restless), the red banner at dawn (First Blood), the twin hourglasses (Double Time) and the crumbling cliff (Collapse).
+  psychicdampener:{art:'assets/fields/psychicdampener.png?v=23af523fe8'}, timber:{art:'assets/fields/timberfair.png?v=84c454280d'}, lumberrush:{art:'assets/fields/lumberrush.png?v=a9a9400fac'}, midsummer:{art:'assets/fields/midsummer.png?v=07626d6f7a'},
+  dusk:{art:'assets/fields/dusk.png?v=48bfd50758'}, restless:{art:'assets/fields/restless.png?v=6378c2f445'}, firstblood:{art:'assets/fields/firstblood.png?v=43524e7a53'}, doubletime:{art:'assets/fields/doubletime.png?v=3036516831'}, collapse:{art:'assets/fields/collapse.png?v=9926305627'},
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
   if(k === 'dark') return fr.dark === 'absolute' ? 'absolute' : fr.dark === 'pitch' ? 'pitch' : 'darkness';
   if(k === 'permaTide') return fr.rapids ? 'rapids' : 'permatide';
+  if(k === 'lumberEvery' && /every 2 rounds/.test(row.text || '')) return 'lumberrush'; // Lumber Rush's sawmill, not the Timber Fair (2026-10-18)
   const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
     swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
     eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines', ashyAfter:'ashy', volcanoGlow:'volcanoglow', awash:'awash',

@@ -1056,7 +1056,7 @@ M.bossDeath = function(el, opts){
   });
 };
 
-// ---- Planned (lab only, 2026-10-15): looks for later themes, ready for when the units exist ----
+// ---- Looks for later themes (2026-10-15). Ghost, Dragon and Supreme are live since 2026-10-18 (M.deathPlan, M.greatLook) ----
 // Ghost (Map 50+): it turns translucent and drifts up as a wisp.
 M.deathGhost = function(el, opts){
   const D = dying(el); if(!D) return Promise.resolve(); const {t, x, w, h, top} = D;
@@ -1072,7 +1072,8 @@ M.deathDragon = function(el, opts){
   opts = opts || {}; const D = dying(el); if(!D) return Promise.resolve(); const {t, x, y, w, h, bot} = D, host = opts.host || document.getElementById('battlefieldEl');
   return run(opts, (tl, mk)=>{
     tl.to(t, {rotation:-8, y:-10, duration:.25, ease:'power1.out'}, 0).to(t, {rotation:12, y:h*.2, scaleY:.85, transformOrigin:'50% 100%', filter:F('brightness(.6)'), duration:.3, ease:'power3.in'}, .25).to(t, {opacity:0, duration:.35}, .7);
-    if(host) tl.fromTo(host, {y:0}, {keyframes:[{y:9}, {y:-6}, {y:4}, {y:-2}, {y:0}], duration:.5, ease:'none', clearProps:'transform'}, .55);
+    if(host && opts.shake !== false) tl.fromTo(host, {y:0}, {keyframes:[{y:9}, {y:-6}, {y:4}, {y:-2}, {y:0}], duration:.5, ease:'none', clearProps:'transform'}, .55); // shake: 2026-10-18, off below High
+    fadeSlot(tl, el, t, .6); // 2026-10-18: its stat chips go with it, like the other deaths
     puffs(tl, mk, .55, x, bot - 8, {n:8, color:'rgba(120,100,80,.7)', w:w*1.6, rise:-20, drift:60, size:[20, 34], stagger:.02});
     spray(tl, mk, .55, x, y, {n:12, colors:['#c0392b', '#e67e22', '#8e2a1e'], size:[5, 9], shard:true, dist:[40, 100], dur:[.6, .9], gravity:50, spin:300});
     const sc = mk('fxc-g', '🐉'); sc.style.fontSize = '24px'; tl.set(sc, {x, y, xPercent:-50, yPercent:-50, opacity:0, scale:.4}, .7).to(sc, {opacity:1, scale:1, y:y - 30, duration:.25, ease:'back.out(2)'}, .7).to(sc, {y:bot - 10, duration:.4, ease:'bounce.out'}, .95).to(sc, {opacity:0, duration:.3}, 1.6);
@@ -1536,7 +1537,7 @@ M.runePortal = function(el, opts){
     tl.add(()=> snd('pitchChime'), 0);
   });
 };
-// ---- Planned (lab only) ----
+// ---- Planned (lab only); dragonArrive and supremeArrive are live since 2026-10-18 (onEvent play) ----
 // Dragon summoned (Map 50+): the sky darkens, a wing shadow sweeps across the field, a roar, and it lands with a quake.
 M.dragonArrive = function(el, opts){
   opts = opts || {}; const t = tileOf(el); if(!t || !t.isConnected) return Promise.resolve(); const host = opts.host || document.getElementById('battlefieldEl');
@@ -1547,7 +1548,7 @@ M.dragonArrive = function(el, opts){
     const sh = mk('fxc-g', '🐉'); sh.style.fontSize = '90px'; sh.style.filter = 'brightness(0) blur(2px)'; sh.style.opacity = '.5';
     tl.set(sh, {x:bf.left - 100, y:bf.top + bf.height*.3, xPercent:-50, yPercent:-50, scaleX:-1}, .1).to(sh, {x:bf.left + bf.width + 100, duration:.8, ease:'sine.inOut'}, .1);
     tl.fromTo(t, {y:-160, opacity:0, scale:1.3}, {y:0, opacity:1, scale:1, duration:.35, ease:'power3.in', clearProps:'transform,opacity'}, .8);
-    if(host) tl.fromTo(host, {y:0}, {keyframes:[{y:8}, {y:-6}, {y:3}, {y:0}], duration:.4, ease:'none', clearProps:'transform'}, 1.15);
+    if(host && opts.shake !== false) tl.fromTo(host, {y:0}, {keyframes:[{y:8}, {y:-6}, {y:3}, {y:0}], duration:.4, ease:'none', clearProps:'transform'}, 1.15); // shake: 2026-10-18, off below High
     puffs(tl, mk, 1.15, c.x, c.r.bottom - 6, {n:7, color:'rgba(120,100,80,.7)', w:c.w*1.5, rise:-14, drift:50, size:[18, 30], stagger:.02});
     tl.add(()=> snd('roar'), .2).add(()=> snd('boom'), 1.15);
   });
@@ -1618,6 +1619,15 @@ const hqEl = side=> document.querySelector(`[data-hq="${side}"]`);
 const defOf = (env, id)=> (env && env.defs && env.defs[id]) || {};
 const archOf = d=> [].concat(d.archetypes || [], d.species || []);
 const isStructureDef = d=> archOf(d).includes('Structure') || d.type === 'Structure';
+// 2026-10-18 (audit E2: the Ghost, Dragon and Supreme looks were built but never played): who gets them. A Dragon is a card whose
+// archetype is "Dragon" (the five Dragons, Thunder Lizard), or a first-rank great beast (creatureRank 1). Species "Dragon" alone
+// doesn't count: it covers the small wyrms and drakes, and a common Tunnel Wyrm shouldn't shake the field. The rank-2 great beasts
+// (Fathom Leviathan, Grovebearer Dragon-Turtle; their species say Dragon too) and any other Supreme unit get the Supreme look.
+// A Ghost has effects.ghost (the engine's own test, isGhost) or the Ghost archetype.
+const isDragonDef = d=> (d.archetypes || []).includes('Dragon') || Number(d.creatureRank) === 1;
+const isSupremeDef = d=> !!(d.effects && d.effects.supreme) || Number(d.creatureRank) === 2;
+const isGhostDef = d=> !!(d.effects && d.effects.ghost) || archOf(d).includes('Ghost');
+M.greatLook = d=>{ d = d || {}; return Number(d.creatureRank) === 2 ? 'supreme' : isDragonDef(d) ? 'dragon' : isSupremeDef(d) ? 'supreme' : isGhostDef(d) ? 'ghost' : null; };
 // A source that hurts several units through ordinary hit events (Avalanche, Tsunami, Explode, Dynamite): hits from that
 // attacker in the next few events carry its look.
 function tag(attUid, cause, sub, n){ if(attUid == null) return; TAGS.push({attUid:String(attUid), cause, sub, until:SEQ + (n || 8)}); while(TAGS.length > 12) TAGS.shift(); }
@@ -1678,6 +1688,9 @@ M.deathPlan = function(el, uid, env){
     if(EXILED.has(String(uid))) plan.look = 'deathExile';
     else if(d.hatchInto) plan.look = 'deathEgg';
     else if((b && b.classList.contains('is-petrified')) || PETRI.has(String(uid))) plan.look = 'deathPetrified';
+    // 2026-10-18 (audit E2): who the unit is beats what killed it for the great beasts and ghosts (a Dragon crashes down whatever
+    // the blow; a ghost fades whatever hit it).
+    else if(M.greatLook(d)) plan.look = {dragon:'deathDragon', supreme:'deathSupreme', ghost:'deathGhost'}[M.greatLook(d)];
     else if(cz && DEATH_BY[cz.cause]) { plan.look = DEATH_BY[cz.cause]; plan.sub = cz.sub; if(cz.cause === 'crushed' && cz.sub === 'snow') plan.look = 'deathCrushed_B'; }
     else if(isStructureDef(d)) plan.look = 'deathStructure';
   }
@@ -1701,7 +1714,9 @@ M.deathPlan = function(el, uid, env){
 };
 // A boss: a def flagged boss/world boss, the raid boss, or the enemy leader of a boss node.
 M.isBoss = function(uid, d, env){
-  d = d || {}; const m = env && env.match; if(d.boss || d.worldBoss || d.supreme) return true;
+  // 2026-10-18 (audit E2): a Supreme def alone is no longer a boss (it got the "Boss · Defeated!" banner wherever it fell); it dies
+  // the Dragon or Supreme look now. A Supreme leading a boss node is still a boss (the LEADERS test below).
+  d = d || {}; const m = env && env.match; if(d.boss || d.worldBoss) return true;
   const kind = m && m.conquestNode && m.conquestNode.kind;
   const lead = LEADERS.get(String(uid));
   return !!(lead && lead.side === 'B' && /boss/.test(String(kind || '')));
@@ -1709,11 +1724,14 @@ M.isBoss = function(uid, d, env){
 M.hooks.deathLook = function(el, info, env){
   if(!el || !info || !env.fxAtLeast('med')) return;
   resetFor(env.match);
-  const plan = M.deathPlan(el, info.uid, env), o = {speed:speedOf(env)};
+  const plan = M.deathPlan(el, info.uid, env), o = {speed:speedOf(env), shake:env.fxAtLeast('high')}; // shake: 2026-10-18, the Dragon's quake only at High (auto-lower drops it)
   if(plan.look && typeof M[plan.look] === 'function'){
     info.handled = true;
     if(plan.look === 'bossDeath'){ const m = env.match, n = m && m.conquestNode; try{ if(typeof noteMatchFx === 'function') noteMatchFx(2300); }catch(e){}
       M.bossDeath(el, Object.assign(o, {host:env.battlefield, name:(n && n.name) || (defOf(env, boardOf(el).getAttribute('data-defid')).name) || '', kicker:(n && /final/.test(n.kind || '')) ? 'Final boss' : 'Boss', speed:1})); }
+    else if(plan.look === 'deathDragon' || plan.look === 'deathSupreme'){ // 2026-10-18 (audit E2): the round waits for the great beasts' falls (~1.7 s)
+      try{ if(typeof noteMatchFx === 'function') noteMatchFx(1700); }catch(e){}
+      M[plan.look](el, Object.assign(o, {host:env.battlefield})); }
     else if(plan.look === 'kingFall'){ const d = defOf(env, boardOf(el).getAttribute('data-defid')); M.kingFall(el, Object.assign(o, {title:archOf(d).includes('King') ? 'King' : 'Leader'})); }
     else M[plan.look](el, o);
   }
@@ -1778,9 +1796,15 @@ M.onEvent = function(ev, env){
       PLAYS.push({uid:ev.uid, side:ev.side, defId:ev.defId, seq:SEQ}); while(PLAYS.length > 16) PLAYS.shift();
       if(ev.leader) LEADERS.set(String(ev.uid), {side:ev.side, gladiator:!!ev.gladiator});
       const d = defOf(env, ev.defId);
+      // 2026-10-18 (audit E2): a Dragon or a Supreme / rank-2 great beast arrives in its own way (a leader keeps the throne drop,
+      // a skyfall card keeps its fall). The Dragon's darkened sky and wing shadow need Medium; its quake only plays at High.
+      const great = !ev.leader && !ev.reserve && !d.hatchInto && !(d.effects && d.effects.skyfall) ? M.greatLook(d) : null; // hatchInto: the Red Dragon Egg is tagged Dragon too
       if(ev.leader && ev.gladiator) at(120, ()=>{ const e = el(ev.uid); if(e) M.gladiatorSand(e, o); });
       else if(ev.leader) at(40, ()=>{ const b = document.querySelector('.leader-callout'); if(b) M.bannerUnfurl(b, o); });
       else if(ev.reserve) at(200, ()=>{ const e = el(ev.uid); if(e) M.reserveIn(e, o); });
+      else if(great === 'dragon'){ try{ if(typeof noteMatchFx === 'function') noteMatchFx(1600, env.match); }catch(e){}
+        at(30, ()=>{ const e = el(ev.uid); if(e) M.dragonArrive(e, Object.assign({}, o, {host:env.battlefield, shake:env.fxAtLeast('high')})); }); }
+      else if(great === 'supreme') at(30, ()=>{ const e = el(ev.uid); if(e) M.supremeArrive(e, o); });
       else if(ev.side === 'B' && !ev.leader) at(30, ()=>{ const e = el(ev.uid); if(e) M.enemyCardFlip(e, o); });
       if(isStructureDef(d) && !ev.leader) at(260, ()=>{ const e = el(ev.uid); if(e) (archOf(d).includes('Ants') || archOf(d).includes('Insect') ? M.structureBuild_B : M.structureBuild)(e, o); });
       if(d.effects && d.effects.skyfall && root.SkillFX && SkillFX.skyDrop) at(60, ()=>{ const e = el(ev.uid); if(e) SkillFX.skyDrop([e], {fall:420}); });

@@ -123,9 +123,9 @@ R({id:'death-lethal-number', stage:'board', inGameHook:"deathVfx → hooks.death
   {key:'A', label:'Retired 10-16: number slammed with ✖ (death-kill-mark replaced it)', play:ctx=>{ const el = foe(ctx); ctx.float(el, '-7'); ctx.wait(250).then(()=> fall(el)); return ctx.wait(250).then(()=> X().lethalStamp(el, {dmg:7})); }},
   {key:'B', label:'"KO!" burst', play:ctx=>{ const el = foe(ctx); ctx.float(el, '-7'); ctx.wait(250).then(()=> fall(el)); return ctx.wait(250).then(()=> X().lethalStamp_B(el)); }},
   {key:'C', label:'A red ✖ alone', play:ctx=>{ const el = foe(ctx); ctx.float(el, '-7'); ctx.wait(250).then(()=> fall(el)); return ctx.wait(250).then(()=> X().lethalStamp_C(el)); }}]});
-R({id:'death-ghost', stage:'board', inGameHook:'future', variants:[{key:'A', label:'Turns see-through and drifts up', play:deathOf('deathGhost')}]});
-R({id:'death-dragon', stage:'board', inGameHook:'future', variants:[{key:'A', label:'Crashes down, scales scatter, a scale drops', play:ctx=> X().deathDragon(foe(ctx), {host:B(ctx).el})}]});
-R({id:'death-supreme', stage:'board', inGameHook:'future', variants:[{key:'A', label:'Prismatic burst in slow motion', play:deathOf('deathSupreme')}]});
+R({id:'death-ghost', stage:'board', inGameHook:"deathVfx → hooks.deathLook: a Ghost (effects.ghost or the Ghost archetype; live 2026-10-18)", variants:[{key:'A', label:'Turns see-through and drifts up', play:deathOf('deathGhost')}]});
+R({id:'death-dragon', stage:'board', inGameHook:"deathVfx → hooks.deathLook: a Dragon (archetype Dragon or creatureRank 1); the round waits; the quake only at High (live 2026-10-18)", variants:[{key:'A', label:'Crashes down, scales scatter, a scale drops', play:ctx=> X().deathDragon(foe(ctx), {host:B(ctx).el})}]});
+R({id:'death-supreme', stage:'board', inGameHook:"deathVfx → hooks.deathLook: another Supreme unit or a rank-2 great beast (Leviathan, Dragon-Turtle); the round waits (live 2026-10-18)", variants:[{key:'A', label:'Prismatic burst in slow motion', play:deathOf('deathSupreme')}]});
 R({id:'death-slime-split', stage:'board', inGameHook:'future', variants:[{key:'A', label:'Sags into a blob that splits in two', play:deathOf('deathSlimeSplit')}]});
 
 // ===================================================== castle =====================================================
@@ -210,8 +210,8 @@ R({id:'sum-sprout-token', stage:'board', inGameHook:"onEvent: spawn {kind:'sprou
   {key:'A', label:'A seed pops from the soil, two leaves unfurl', play:ctx=> X().sproutPop(foe(ctx, 2))},
   {key:'B', label:'Before: the green portal', play:ctx=>{ W.SkillFX.summonPortal(foe(ctx, 2)); return ctx.wait(1100); }}]});
 R({id:'sum-rooted-veggie', stage:'board', inGameHook:'future', variants:[{key:'A', label:'Roots burrow into the felt', play:ctx=> X().rootTake(foe(ctx))}]});
-R({id:'sum-dragon', stage:'board', inGameHook:'future', variants:[{key:'A', label:'Sky darkens, wing shadow, roar, crash', play:ctx=> X().dragonArrive(foe(ctx), {host:B(ctx).el})}]});
-R({id:'sum-supreme', stage:'board', inGameHook:'future', variants:[{key:'A', label:'Prismatic shockwave', play:ctx=> X().supremeArrive(foe(ctx))}]});
+R({id:'sum-dragon', stage:'board', inGameHook:"onEvent: play of a Dragon (not a leader, reserve, egg or skyfall card); the quake only at High (live 2026-10-18)", variants:[{key:'A', label:'Sky darkens, wing shadow, roar, crash', play:ctx=> X().dragonArrive(foe(ctx), {host:B(ctx).el})}]});
+R({id:'sum-supreme', stage:'board', inGameHook:"onEvent: play of another Supreme unit or a rank-2 great beast (live 2026-10-18)", variants:[{key:'A', label:'Prismatic shockwave', play:ctx=> X().supremeArrive(foe(ctx))}]});
 R({id:'sum-wandering-mage', stage:'board', inGameHook:'future', variants:[{key:'A', label:'A wizard-cat in a puff of stars', play:ctx=> X().mageArrive(mine(ctx))}]});
 R({id:'sum-drones-enemy-field', stage:'board', inGameHook:'future', variants:[{key:'A', label:'Drones drop onto their field', play:ctx=> X().dronesDrop(mine(ctx), [foe(ctx, 0), foe(ctx, 2)])}]});
 })();

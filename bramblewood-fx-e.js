@@ -964,7 +964,7 @@ M.nextMapUnlocked = function(edge, fromEl){
 M.scaleFound = function(opts){
   opts = opts || {}; const g = G(); if(!g) return Promise.resolve();
   const host = opts.host, r = host ? host.getBoundingClientRect() : {left:0, top:0, width:innerWidth, height:innerHeight};
-  const idx = opts.index || 1, tot = opts.total || 10;
+  const idx = opts.index || 1, tot = opts.total || 8; // 2026-10-18: the Scale Trail has 8 scales
   const o = layer('fxe-at fxe-scale', `<div class="fs-s"></div><div class="fs-n">${idx - 1}/${tot}</div><div class="fs-l">Dragon Scale</div>`);
   Object.assign(o.style, {left:(r.left + r.width/2 - 80) + 'px', top:(r.top + r.height*.42 - 90) + 'px', width:'160px', height:'180px'});
   const s = o.querySelector('.fs-s'), num = o.querySelector('.fs-n'); sound('roar');
