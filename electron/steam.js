@@ -3,8 +3,8 @@
 //   2. the optional `steamworks.js` npm package is installed (npm i steamworks.js; it bundles Valve's redistributable
 //      steam_api library, so no Steamworks SDK download and no fees are needed to test with App ID 480 "Spacewar").
 // The App ID comes from STEAM_APP_ID, else steam_appid.txt in the working folder (Steam's own dev convention), else 480.
-// Nothing here is called by the game yet: main.js wires it to window.bwDesktop.steam (preload.js), and the game can call
-// those hooks later (e.g. when an in-game achievement unlocks). Every call is safe when Steam is off and just returns false.
+// main.js wires it to window.bwDesktop.steam (preload.js). 2026-10-18 (package C): the game calls unlock(id) for the ids in
+// arena_app.js's STEAM_ACHIEVEMENTS (steamUnlock). Every call is safe when Steam is off and just returns false.
 'use strict';
 
 const ACH_ID = /^[A-Za-z0-9_]{1,64}$/; // Steam API names; the game passes its own ids, mapped 1:1 in Steamworks
