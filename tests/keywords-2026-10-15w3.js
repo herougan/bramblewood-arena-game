@@ -17,8 +17,8 @@ const constSrc = name=>{ const i = src.indexOf('const ' + name + ' ='); if(i < 0
 const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8')), defs = {}; cards.forEach(c=> defs[c.id] = c);
 const ctx = {CARD_DEFS_BASELINE: defs, RARITY_DEFS: [], DECK_SIZE: 20}; vm.createContext(ctx);
 const towerConsts = src.slice(src.indexOf('const TOWER_LEVEL_CAP'), src.indexOf(';', src.indexOf('const TOWER_LEVEL_CAP')) + 1);
-vm.runInContext([constSrc('RATING_WEIGHT'), constSrc('LEVEL_STEPS'), constSrc('LEVEL_STEP_GAIN'), constSrc('RARITY_MAX_LEVEL'), towerConsts, constSrc('TOWER_POOLS'), constSrc('JUMPER_SKIRMISHES'),
-  ...['hashStr', 'cardBaseLevel', 'cardMaxLevel', 'statsAtLevel', 'statsBeyondLevel', 'ratingWeightOf', 'ratingLevelFactor', 'towerTargetBR', 'seededUnit', 'towerDeckBR', 'towerFloorDeck'].map(fnSrc),
+vm.runInContext([constSrc('RATING_WEIGHT'), constSrc('LEVEL_STEPS'), constSrc('LEVEL_STEP_GAIN'), constSrc('RARITY_MAX_LEVEL'), towerConsts, constSrc('TOWER_POOLS'), constSrc('JUMPER_SKIRMISHES'), constSrc('TOWER_LUMBER_POOL'),
+  ...['hashStr', 'cardBaseLevel', 'cardMaxLevel', 'statsAtLevel', 'statsBeyondLevel', 'ratingWeightOf', 'ratingLevelFactor', 'towerTargetBR', 'seededUnit', 'towerDeckBR', 'isLumberSource', 'towerNeedsLumber', 'towerFloorDeck'].map(fnSrc),
   'this.api = {statsAtLevel, statsBeyondLevel, ratingLevelFactor, towerFloorDeck, towerDeckBR, TOWER_POOLS, JUMPER_SKIRMISHES, TOWER_FLOORS, TOWER_BR_START, TOWER_BR_STEP};'].join('\n'), ctx);
 const A = ctx.api;
 // Past the top: at or below 11 the usual curve; above, +1 Attack or Health per level, stable for a card and level
@@ -46,7 +46,7 @@ const A = ctx.api;
     if(f % 10 === 0) ok(Object.keys(t.deck).some(id=> A.TOWER_POOLS.legendary.includes(id)), `tower floor ${f}: a legendary heads the boss floor`);
     ok(t.br > prev, `tower floor ${f}: harder than the floor below`); prev = t.br;
     ok(JSON.stringify(A.towerFloorDeck(f)) === JSON.stringify(t), `tower floor ${f}: the same fight every time`); }
-  ok(worst <= 15, `tower: every floor within 15 of its battle rating (worst ${worst})`);
+  ok(worst <= 20, `tower: every floor within 20 of its battle rating (worst ${worst}); 2026-10-18: the 10-17 Lumber swap trades one card, so a floor can land a little further off`);
   ok(A.towerFloorDeck(1).br >= 540 && A.towerFloorDeck(1).br <= 570, 'tower: floor 1 starts at about 555'); }
 // The jumpers: 2–3 on Maps 5–20, between two real fights, a real entrance, decks of real cards
 { const J = A.JUMPER_SKIRMISHES, ENTR = ['meteor', 'splash', 'psychic', 'ghost'];

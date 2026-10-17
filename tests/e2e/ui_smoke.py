@@ -119,9 +119,9 @@ async def main():
         check(await pg.query_selector('#poTable') is not None and await pg.query_selector('#poOpenAll') is not None, 'a set of 10 packs should show the table with Open all')
         await pg.click('#poOpenAll'); await pg.wait_for_timeout(500)
         n_all = await pg.evaluate("[...document.querySelectorAll('.po2-all .po2-sum-card')].reduce((t,e)=> t + (parseInt((e.querySelector('.po2-x')||{}).textContent?.slice(1)) || 1), 0)")
-        check(n_all == 30, f'Open all on 10 packs should show 30 cards (saw {n_all})')
+        check(30 <= n_all <= 45, f'Open all on 10 packs should show 30 cards plus any Bonus! copies (saw {n_all})')  # 2026-10-18: bonus copies show too
         after2 = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
-        check(after2 - after == 30, f'10 packs should add 30 copies (added {after2-after})')
+        check(after2 - after == n_all, f'10 packs should add one copy per card shown, bonus copies included (added {after2-after}, shown {n_all})')
         await pg.click('#poDone')
         # 4b: Forge — temper a card: the smithing sequence plays, the level goes up once, currency is spent
         await pg.evaluate("myCurrencies.dust=300; myCurrencies.gold=400; codexSubTab='forge'; switchTab('codex'); 1"); await pg.wait_for_timeout(300)

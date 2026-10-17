@@ -28,7 +28,7 @@ function load(store){
     rankAtLeast: (r, min)=> RANKS.indexOf(r) >= RANKS.indexOf(min),
     unlockCardForPlayer: (id, why)=>{ if(!defs[id]) return false; (st.copies[id] = st.copies[id] || []).push({why}); st.unlocked.push([id, why]); return true; },
     copiesOwned: id=> (st.copies[id] || []).length, grantCurrency: (k, v)=>{ st.currency[k] = (st.currency[k]||0) + v; },
-    CURRENCY_META: {dust:{glyph:'✨'}, gold:{glyph:'🍁'}}, refreshQuestBadge: ()=>{}, fxHook: ()=>{},
+    CURRENCY_META: {dust:{glyph:'✨'}, gold:{glyph:'🍁'}}, refreshQuestBadge: ()=>{}, fxHook: ()=>{}, steamUnlock: ()=>{},
     getCardDefs: ()=> defs, CONQUEST_MAPS: MAPS, adminModeEnabled: false,
     findConquestNode: (m, k)=>{ const map = MAPS.find(x=> x.id === m), node = map && map.nodes.find(x=> x.key === k); return node ? {map, node} : null; },
     skirmishCode: (m, k)=> k, escapeHtml: s=> String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'),
