@@ -2,7 +2,7 @@
 
 ## Overnight 10-18: your calls
 
-Built while you slept: the Bleed / Poison / Cure / Awash rules, the balance pass (173 cards), three legendaries with creature ranks, the Scale Trail finale, Dragon / Supreme / Ghost looks, honest locks on uncharted maps, dead-code clean-up, Arena and Leylines scenes, boss banter, translations for every game text, and the desktop build's offline fonts, icon and Steam stub. Details in the CHANGELOG.
+Built while you slept (two rounds): the Bleed / Poison / Cure / Awash rules, the balance pass (173 cards), three legendaries with creature ranks, the Scale Trail finale, Dragon / Supreme / Ghost looks, honest locks on uncharted maps, dead-code clean-up, Arena and Leylines scenes, boss banter, translations for every game text, the desktop build's offline fonts, icon and Steam stub; round 2: placeholder texts and card names translated, Steam achievements wired, dead drop-zone code removed. Details in the CHANGELOG.
 
 | Item | Question |
 |---|---|
@@ -17,11 +17,9 @@ Built while you slept: the Bleed / Poison / Cure / Awash rules, the balance pass
 | Scale Trail reward | 8/8 gives the Red Dragon Egg (`SCALE_TRAIL_FINALE_REWARD`). Keep? Should an egg be allowed to lead (it's Legendary)? |
 | Long Burrow | Still "Coming soon". Release: set `LONG_BURROW_RELEASED = true` (arena_app.js, just above the Long Burrow's map entry) |
 | Uncharted unlocks | Nest 6/7 (Maps 25/30), Forge tiers 4/5 and card Levels 9/10 (Maps 26/31), Flea Market (31), dungeon slot 3 (40) now say "Unlocks beyond the charted maps". Suggested moves: Nest 6→22, Nest 7→24, Forge 4 / Level 9→22, Forge 5 / Level 10→24, Strange Materia→bosses of Maps 21 and 23 |
-| Placeholder translations | 159 texts with {n}, {name} etc. are still English in every language (TX fills them before the translator sees them). Change TX to translate first? |
-| Card names | ~412 card names aren't translated. Do them? |
 | Art | 119 cards (incl. the 3 new legendaries and all Map 22–24 bosses) have no art and show their emoji. Generate with your NightCafe credits (~0.75 each)? The new Arena scenes are code-drawn; repaint later? |
-| Desktop | Steam App ID (100 USD), Apple Developer (99 USD/year) for Mac signing. Wire achievements to `bwDesktop.steam.unlock` once there is an App ID |
-| e2e hero test | `tests/e2e/hero.py` clicks a Hero button that no longer exists on the deck screen. Retire the test, or bring the button back? |
+| Desktop | Steam App ID (100 USD), Apple Developer (99 USD/year) for Mac signing. 13 achievements are already wired (ids in platform-roadmap 10-18); they fire once Steam is on. Admin Mode never unlocks them. Set names in Steamworks |
+| Translations | Every game text and all 647 card names now translate in the 12 languages (my drafts; Tagalog, Tamil, Japanese, Korean want a native read). Named cards: the descriptive part is translated (The Thistle Baron); keep such names in English instead? |
 
 
 ## Platform roadmap (10-17)
@@ -90,7 +88,6 @@ _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is buil
 
 | Item | Where |
 |---|---|
-| Card names | `docs/name-picker-2026-10-14.xlsx`: tick ✓ for 15 Base, 15 Otters, 15 Hummingbirds and 6 per biome |
 | Flora | The Flora sheet in the card plan workbook (12 plant cards for Maps 20+; renamed from Wild Veggies) |
 | Card placement | `docs/card-placement-proposal-2026-10-15.md` / `.xlsx` and the Recommended sheet in `docs/skills-by-map-2026-10-15.xlsx`. The new skills, field effects and cards are built but on no maps until you choose |
 | Skill N for the new skills | Fill "Your N" on the Skill N sheet for the 10-14 to 10-16 skills (Electricity, Keen Sense, Psychic, Bloodlust, the Bolts, Bulldoze and the rest) |
