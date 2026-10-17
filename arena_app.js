@@ -7106,6 +7106,78 @@ function cardUsageStatsHTML(defId){
       <div class="cd-stat"><div class="cd-stat-n">${s.contribution!=null?s.contribution+'%':'—'}</div><div class="cd-stat-l">Contribution</div></div>
     </div>`;
 }
+// ---- Card records (2026-10-17, user: "Do you also record the times ive played each card? Record in the background. Myabe in the
+// codex card detail ONLY, you can say how many times it was played, and number of times it died, damage dealt and damage taken? if
+// relevant, health healed, and etc. skill related basically."): lifetime numbers for each of YOUR cards, tallied once per match after
+// it ends — never while the fight animates. Most come from the engine's own per-match tally (m.stats, which it keeps anyway); heals,
+// revives, Readys and shots come from one pass over the round event lists the fight kept (resolveRoundCore pushes each round's list,
+// one array push a round). Stored in localStorage CARD_STATS_KEY as {defId: [ints in CARD_STATS_FIELDS order, trailing zeros cut]},
+// only cards with something recorded (about 20-40 bytes a card); it rides the progress blob to the cloud (PROGRESS_KEYS, merged by
+// taking the larger count per number). Counted in every mode except the Effects library, the Test Lab / sandbox and admin test
+// fights; your side only (seat 2 in a live match you joined as seat 2). Shown only in the Codex card detail ("Your record").
+const CARD_STATS_KEY = 'bramblewood_card_stats_v1';
+const CARD_STATS_FIELDS = [ // order is the storage format: append new numbers at the end, never reorder
+  {k:'mt', label:'Matches', icon:'🗓️'},
+  {k:'p',  label:'Times played', icon:'🃏', stat:'played'},
+  {k:'d',  label:'Times died', icon:'💀', stat:'deaths'},
+  {k:'dd', label:'Damage dealt', icon:'⚔️', stat:'dealt'},
+  {k:'dt', label:'Damage taken', icon:'🛡️', stat:'taken'},
+  {k:'k',  label:'Kills', icon:'🎯', stat:'kills'},
+  {k:'fd', label:'Castle damage', icon:'🏰', stat:'faceDamage'},
+  {k:'hl', label:'Health healed', icon:'💚'},
+  {k:'lm', label:'Lumber generated', icon:'🪵', stat:'lumberGenerated'},
+  {k:'gr', label:'Grace generated', icon:'🕊️', stat:'graceGenerated'},
+  {k:'dv', label:'Devilry generated', icon:'😈', stat:'devilryGenerated'},
+  {k:'pz', label:'Poison applied', icon:'☠️', stat:'poisonApplied'},
+  {k:'tk', label:'Tokens summoned', icon:'✨', stat:'spawnedTokens'},
+  {k:'th', label:'Thorns damage', icon:'🌵', stat:'thornsDealt'},
+  {k:'rv', label:'Revives', icon:'🔁'},
+  {k:'rd', label:'Times Ready', icon:'⏳'},
+  {k:'sh', label:'Shots fired', icon:'🏹'},
+  {k:'ht', label:'Times hatched', icon:'🐣', stat:'hatched'},
+];
+const CARD_STATS_IX = Object.fromEntries(CARD_STATS_FIELDS.map((f, i)=> [f.k, i]));
+function loadCardStats(){ try{ const o = JSON.parse(localStorage.getItem(CARD_STATS_KEY) || 'null'); if(o && typeof o === 'object' && !Array.isArray(o)) return o; }catch(e){} return {}; }
+function cardStatsTrim(r){ const a = (Array.isArray(r) ? r : []).map(x=> Math.max(0, Math.round(Number(x)) || 0)); let n = a.length; while(n && !a[n-1]) n--; return a.slice(0, n); }
+// One match's numbers for `side` ('A'/'B'): {defId: [ints]}, cards with nothing recorded left out.
+function tallyCardStats(side, stats, eventLists){
+  const defs = getCardDefs(), out = {}, N = CARD_STATS_FIELDS.length, IX = CARD_STATS_IX;
+  const row = id=>{ id = String(id || '').split('~')[0]; if(!id || !defs[id]) return null; return out[id] || (out[id] = new Array(N).fill(0)); }; // '~' = an Autobattler patched copy
+  Object.keys(stats || {}).forEach(key=>{ const s = stats[key]; if(!s || s.side !== side) return; const r = row(s.defId); if(!r) return;
+    CARD_STATS_FIELDS.forEach((f, i)=>{ if(f.stat) r[i] += Math.max(0, Math.round(Number(s[f.stat])) || 0); }); });
+  (eventLists || []).forEach(list=> (list || []).forEach(e=>{ if(!e || e.side !== side) return; let r;
+    switch(e.type){
+      case 'heal': if((r = row(e.attDefId))) r[IX.hl] += Math.max(0, Math.round(Number(e.amount)) || 0); break;
+      case 'revive': if((r = row(e.defId))) r[IX.rv]++; break;
+      case 'ready': if((r = row(e.defId))) r[IX.rd]++; break;
+      case 'arrow': case 'bolt': if((r = row(e.defId))) r[IX.sh]++; break;
+      case 'fireball': if((r = row(e.attDefId))) r[IX.sh]++; break;
+    } }));
+  Object.keys(out).forEach(id=>{ const r = out[id]; if(r.some(x=> x > 0)){ r[IX.mt] = 1; out[id] = cardStatsTrim(r); } else delete out[id]; });
+  return out;
+}
+function addCardStats(add){
+  if(!add || !Object.keys(add).length) return;
+  const store = loadCardStats();
+  Object.keys(add).forEach(id=>{ const a = add[id], cur = Array.isArray(store[id]) ? store[id].slice() : [];
+    for(let i = 0; i < a.length; i++) cur[i] = (Number(cur[i]) || 0) + (Number(a[i]) || 0);
+    store[id] = cardStatsTrim(cur); });
+  try{ localStorage.setItem(CARD_STATS_KEY, JSON.stringify(store)); }catch(e){}
+}
+// In the background: after the result is up, when the browser is idle.
+function cardStatsLater(fn){ try{ if(typeof requestIdleCallback === 'function'){ requestIdleCallback(()=>{ try{ fn(); }catch(e){} }, {timeout:4000}); return; } }catch(e){} setTimeout(()=>{ try{ fn(); }catch(e){} }, 900); }
+function recordCardStatsForMatch(m){
+  if(!m || m._cardStatsDone) return; m._cardStatsDone = true;
+  const lists = m._csEv || []; m._csEv = null;
+  if(m.mode === 'sandbox' || m.fxLib || m.testKit || m.adminTest) return;
+  const side = (m.mode === 'liveRanked' && m.liveMySeat === 2) ? 'B' : 'A', stats = m.stats;
+  cardStatsLater(()=> addCardStats(tallyCardStats(side, stats, lists)));
+}
+function cardRecordHTML(defId){
+  const r = loadCardStats()[defId]; if(!Array.isArray(r) || !r.some(x=> x > 0)) return '';
+  const tiles = CARD_STATS_FIELDS.map((f, i)=> (r[i] > 0) ? `<div class="cd-rec" title="${escapeAttr(f.label)}"><b>${Number(r[i]).toLocaleString('en-US')}</b><small>${f.icon} ${escapeHtml(f.label)}</small></div>` : '').join('');
+  return `<div class="cd-record"><h3>Your record</h3><div class="cd-rec-grid">${tiles}</div></div>`;
+}
 let cardDetailOpenId = null;
 // 2026-09-26, per explicit UX-consultant redesign request: this used to reuse the same
 // fullCardHTML() blob every hover-popover uses (name/rarity/tags/stat-row, then abilities, then
@@ -7164,6 +7236,7 @@ function openCardDetail(defId){
       ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
       ${noteHTML}
       <div class="cd-stats-block">${cardUsageStatsHTML(defId)}</div>
+      ${cardRecordHTML(defId)}
       ${adminModeEnabled ? codexPlacementHTML(d) : `<div class="cd-where"><span class="cd-where-k">Where to get it</span> ${escapeHtml(cardWhereToGetText(d))}</div>`}
       </div>
       ${spawnHTML}
@@ -12860,11 +12933,19 @@ const PROGRESS_KEYS = ['bramblewood_conquest_progress_v1','bramblewood_arena_tut
   // 2026-10-07: optional personal details (hobby, birthday) — player_progress is readable only by its owner
   'bramblewood_personal_v1',
   // 2026-10-10: tutorial progress (level, side, guided step, tries), for Admin → Players
-  'bramblewood_tutorial_progress_v1'];
+  'bramblewood_tutorial_progress_v1',
+  // 2026-10-17 (card stats): your lifetime record per card (CARD_STATS_KEY; integers only, only cards with a record)
+  'bramblewood_card_stats_v1'];
 // Keys merged (union) on pull instead of overwritten, because both devices may have added to them.
 const PROGRESS_MERGE_KEYS = {
   'bramblewood_arena_discovered': (a,b)=> JSON.stringify(Array.from(new Set([...(JSON.parse(a||'[]')||[]), ...(JSON.parse(b||'[]')||[])]))),
   'bramblewood_raid_claims_v1': (a,b)=> JSON.stringify(Object.assign({}, JSON.parse(a||'{}')||{}, JSON.parse(b||'{}')||{})),
+  // 2026-10-17 (card stats): counts only ever grow, so the larger of the two copies wins, number by number (never added twice)
+  'bramblewood_card_stats_v1': (a,b)=>{ const A = JSON.parse(a||'{}')||{}, B = JSON.parse(b||'{}')||{}, out = Object.assign({}, A);
+    Object.keys(B).forEach(id=>{ const x = Array.isArray(A[id]) ? A[id] : [], y = Array.isArray(B[id]) ? B[id] : [], r = [];
+      for(let i = 0; i < Math.max(x.length, y.length); i++) r[i] = Math.max(Number(x[i])||0, Number(y[i])||0);
+      out[id] = cardStatsTrim(r); });
+    return JSON.stringify(out); },
 };
 const PROGRESS_LOCAL_AT_KEY = 'bramblewood_progress_local_at';
 function progressSnapshot(){ const d = {}; PROGRESS_KEYS.forEach(k=>{ try{ const v = localStorage.getItem(k); if(v!=null) d[k] = v; }catch(e){} }); return d; }
@@ -15969,6 +16050,7 @@ function abFight(body, run){
   if(res.winner===1){ bumpQuestCounter('wins', 1); awardXp(3); }
   { const st = loadLifetimeStats(); if((st.abBestWins||0) < run.wins){ st.abBestWins = run.wins; try{ localStorage.setItem(STATS_KEY, JSON.stringify(st)); }catch(e){} } }
   bumpQuestCounter('unitsDefeated', res.events.filter(e=> e.type==='death' && e.side==='B').length);
+  { const st = res.stats, evs = res.events; cardStatsLater(()=> addCardStats(tallyCardStats('A', st, [evs]))); } // 2026-10-17 (card stats)
   abLastFight = {res, opp, hpBefore};
   recordRecentOpponent({name: opp.name, mode:'autobattle', deck: Object.fromEntries(Object.entries(opp.deck||{}).map(([k,v])=> [AutoB.baseId(k), v])), result: res.winner===1 ? 'win' : (res.winner===2 ? 'loss' : 'draw')});
   run.phase = 'result';
@@ -30448,6 +30530,7 @@ async function resolveRoundCore(opts){
   // they can be replayed as their own distinct "next turn starting" beat afterward, instead of
   // wherever they happened to land in the middle of this round's attack sequence.
   if(QUEST_COUNTING_MODES.has(m.mode)) bumpQuestCounter('unitsDefeated', events.filter(ev=> ev.type==='death' && ev.side==='B').length);
+  if(m.mode !== 'sandbox') (m._csEv || (m._csEv = [])).push(events); // 2026-10-17 (card stats): kept for the tally at match end (recordCardStatsForMatch), nothing read now
   const mainEvents = settleDeathsEarly(groupForkLines(events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready' && ev.type!=='hatch'))); // + one Fork swing's lines together (2026-10-17) // 2026-10-17: each death right after its killing blow
   clearArrivalHold(m); // 2026-10-17: anything held for an arrival replay is settled by now
   const waitEvents = events.filter(ev=> ev.type==='waitTick' || ev.type==='ready' || ev.type==='hatch'); // an egg cracks open right after its Ready (2026-10-14)
@@ -30794,6 +30877,7 @@ async function resolveRoundCore(opts){
     if(m.mode!=='sandbox') await showEndSign(m);
     if(castleFall){ await castleFall; m._crumbling = null; }
     m.over = true;
+    try{ recordCardStatsForMatch(m); }catch(e){} // 2026-10-17 (card stats): this match's numbers per card, tallied when the browser is idle
     setTimeout(revealBoardCardsAtEnd, 60); setTimeout(revealBoardCardsAtEnd, 700);
     if(m.reopenSkirmishEditor) pendingSkirmishReopen = m.reopenSkirmishEditor;
     // Personal win/loss stats only mean something vs an AI opponent — a vs-PC pass-and-play

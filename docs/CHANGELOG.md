@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-17 (card stats)
+- **Your record, per card.** The game now keeps lifetime numbers for each of your cards, in the background: matches, times played, times died, damage dealt, damage taken, kills, and, where the card does it, castle damage, Health healed, Lumber / Grace / Devilry generated, Poison applied, tokens summoned, thorns damage, revives, times Ready, shots fired and times hatched. A match is tallied once, after it ends (from the engine's own per-match tally plus the round logs), never during the fight. Every mode counts (Autobattler fights too) except the Effects library, the Test Lab / sandbox and admin test fights.
+- **Shown only in the Codex card detail**, as a small "Your record" block that lists the numbers above zero for that card.
+- **Stored compactly and synced:** localStorage `bramblewood_card_stats_v1`, `{cardId: [integers]}` with trailing zeros cut and only cards with a record (about 20 to 40 bytes a card). It is part of the cloud progress blob (`player_progress.data`). On pull, the two copies are merged by keeping the larger count for each number.
+
 ## 2026-10-17 (lightning)
 - **Voltaic Eel: Chain Lightning 2 instead of Electricity 1.** New skill **Chain Lightning N** 🌩️: when its attack connects, the bolt jumps from the target to an enemy unit beside it, then on to one more (never the same unit twice). Each unit it jumps to takes N lightning damage. Electricity is the short version: one jump, to a unit beside the target. The Eel's stat budget (v3, Level 1): 2×3 + 10 + 5 = 21 < N 40.6, and 3×10 + 5 = 35 < 183.
 - **Wet is a general rule:** every lightning hit (Electricity, Chain Lightning, Shock Bolt, Lightning, any shock hit) deals **+1 for each Wet counter** the unit has. A unit gets one counter for each of these: it is a Swimmer or Tide unit; it is raining (the Rain field); the Tide is in (Flood or High Tide). That makes 0 to 3 counters. Electricity's own wet bonus is gone (the +1 on the arc, and the extra 1-damage zap on a wet target), so nothing counts twice. Its card line no longer mentions wet units. The rule is in the **Wet** keyword's gloss, and the Skills Codex adds it under Electricity, Chain Lightning, Shock Bolt and Lightning.

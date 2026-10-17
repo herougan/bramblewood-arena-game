@@ -196,7 +196,7 @@ function simulateFight(Engine, baseDefs, characters, me, opp, seed){
   const dmgBy = {};
   events.forEach(e=>{ if((e.type==='hit' || e.type==='hitHQ') && e.side==='A' && e.attDefId){ const k = baseId(e.attDefId); dmgBy[k] = (dmgBy[k]||0) + (e.dmg||e.amount||0); } });
   const mvp = Object.keys(dmgBy).sort((x,y)=> dmgBy[y]-dmgBy[x])[0] || null;
-  return {winner, rounds: Math.min(round, AB.FIGHT_ROUND_CAP), hp:[Math.max(0,players[1].hq.hp), Math.max(0,players[2].hq.hp)], maxHp:[players[1].hq.maxHp, players[2].hq.maxHp], mvp, mvpDamage: mvp ? dmgBy[mvp] : 0, events, frames};
+  return {winner, rounds: Math.min(round, AB.FIGHT_ROUND_CAP), hp:[Math.max(0,players[1].hq.hp), Math.max(0,players[2].hq.hp)], maxHp:[players[1].hq.maxHp, players[2].hq.maxHp], mvp, mvpDamage: mvp ? dmgBy[mvp] : 0, events, frames, stats}; // + stats (2026-10-17): the engine's per-card tally, for your card records
 }
 // Record a fight's outcome on the run. Returns the run.
 function afterFight(run, result, oppName){
