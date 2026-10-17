@@ -320,8 +320,12 @@ function isSupported(){
 }
 
 let pointer = [0, 0];
-window.addEventListener('pointermove', e=>{ pointer = [(e.clientX/innerWidth)*2 - 1, (e.clientY/innerHeight)*2 - 1]; }, {passive:true});
-window.addEventListener('deviceorientation', e=>{ if(e.gamma == null) return; pointer = [Math.max(-1, Math.min(1, e.gamma/30)), Math.max(-1, Math.min(1, (e.beta-40)/30))]; }, {passive:true});
+// 2026-10-17 (user: "The light is not following my mouse."): each layer now reads the pointer against its own box (pointerClient, in loop),
+// not the whole window, so a layer that covers only the battlefield (the battle's cave lamp) puts its lamp under the pointer. Tilt still
+// steers it on a phone (pointer, window-wide) until a pointer is seen.
+let pointerClient = null;
+window.addEventListener('pointermove', e=>{ pointer = [(e.clientX/innerWidth)*2 - 1, (e.clientY/innerHeight)*2 - 1]; pointerClient = [e.clientX, e.clientY]; }, {passive:true, capture:true});
+window.addEventListener('deviceorientation', e=>{ if(e.gamma == null) return; pointer = [Math.max(-1, Math.min(1, e.gamma/30)), Math.max(-1, Math.min(1, (e.beta-40)/30))]; pointerClient = null; }, {passive:true});
 
 function mount(host, opts){
   opts = opts || {};
@@ -415,7 +419,8 @@ function loop(now){
     const w = Math.max(1, Math.round(r.width * dpr * l.scale)), h = Math.max(1, Math.round(r.height * dpr * l.scale));
     if(w !== l.w || h !== l.h){ l.cv.width = w; l.cv.height = h; l.w = w; l.h = h; l.gl.viewport(0, 0, w, h); }
     // ease the pointer so the light doesn't jump
-    l.mouse[0] += (pointer[0] - l.mouse[0]) * 0.08; l.mouse[1] += (pointer[1] - l.mouse[1]) * 0.08;
+    const pt = pointerClient ? [Math.max(-2, Math.min(2, (pointerClient[0] - r.left) / r.width * 2 - 1)), Math.max(-2, Math.min(2, (pointerClient[1] - r.top) / r.height * 2 - 1))] : pointer; // its own box (2026-10-17)
+    l.mouse[0] += (pt[0] - l.mouse[0]) * 0.08; l.mouse[1] += (pt[1] - l.mouse[1]) * 0.08;
     const gl = l.gl, u = l.u;
     gl.uniform2f(u.res, w, h); gl.uniform1f(u.time, t); gl.uniform2f(u.mouse, l.mouse[0], l.mouse[1]); gl.uniform1f(u.int, l.intensity);
     if(!l.scene){

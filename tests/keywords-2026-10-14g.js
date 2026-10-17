@@ -38,8 +38,9 @@ function put(e, P, pid, id, slot, ev){ const pl = P[pid]; e.debugSpawnCard(P, so
 
 // ---- 1. Crabs Fork
 { const crabs = Object.values(base).filter(d=> (d.species||[]).includes('Crustacean') || /crab/i.test(d.name||''));
-  ok(!crabs.some(d=> d.effects && d.effects.crabClaws), 'no crab keeps Crab Claws');
-  ['sulfur-vent-crab', 'open-ocean-hermit-crab'].forEach(id=> ok(base[id].effects.fork === true && !base[id].effects.crabClaws, `${id}: Fork instead of Crab Claws`)); }
+  // 2026-10-17 (user: "for all crabs with fork - change them to crab claws"): reversed: no crab Forks; those that did have Crab Claws.
+  ok(!crabs.some(d=> d.effects && d.effects.fork), 'no crab Forks');
+  ['sulfur-vent-crab', 'open-ocean-hermit-crab', 'fiddler-crab-swarm'].forEach(id=> ok(base[id].effects.crabClaws === true && !base[id].effects.fork, `${id}: Crab Claws instead of Fork`)); }
 { const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
   ok(/\{key:'crabClaws', category:'passive', label:'Crab Claws'/.test(src), 'Crab Claws is back in "+ Add Skill" (2026-10-15, user: "Crab claws can be, attack a random unit L or R")');
   ok(/const gateOk = x => row\.key===x\.key \|\| \(!x\.hidden/.test(src), 'the editor picker leaves hidden skills out');

@@ -5304,7 +5304,7 @@
       "thorns": 1,
       "tide": true,
       "molting": 1,
-      "fork": true
+      "crabClaws": true
     },
     "flavor": "Lives somewhere that would kill almost anything else instantly. Unbothered.",
     "locked": true,
@@ -5748,7 +5748,7 @@
     ],
     "effects": {
       "tide": true,
-      "fork": true
+      "crabClaws": true
     },
     "flavor": "One waving claw is a threat display. A thousand is a tactic.",
     "locked": true,
@@ -6078,7 +6078,7 @@
       "armor": 1,
       "tide": true,
       "molting": 1,
-      "fork": true
+      "crabClaws": true
     },
     "flavor": "Small, sideways, and surprisingly hard to actually pick a fight with.",
     "dmgType": "physical",

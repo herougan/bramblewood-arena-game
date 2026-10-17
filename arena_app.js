@@ -551,7 +551,7 @@ const PASSIVE_DEFS = [
   // incidental flank redirect). So a lone defender with empty flanks eats the castle hit twice.
   // 2026-10-12 (user: "Swipe should be renamed to Fork, it does a bi-fork attack"): the old Swipe is Fork now (an old
   // swipe:true still reads as Fork). Swipe is a new number skill: it steals Lumber.
-  {key:'fork', category:'passive', label:'Fork', kind:'boolean', desc:()=>`Hits the 2 nearest enemy units, full Attack each (none more than 1 column away). With no enemy unit that near, it attacks straight ahead as normal.`,
+  {key:'fork', category:'passive', label:'Fork', kind:'boolean', desc:()=>`One swing with two prongs, full Attack on each: it strikes the enemy units to its left and right when both are there; otherwise only the unit in front (never the one in front and a side together); otherwise the one unit beside it; otherwise the castle.`, // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines.")
     get:e=> (e.fork || e.swipe === true) ? true : undefined, apply:(e)=>{ e.fork = true; }},
   {key:'swipe', category:'passive', label:'Swipe', kind:'number', min:0, desc:v=>`Every swing that lands swipes ${v} Lumber from the opponent: they lose it, you gain it.`,
     get:e=> (typeof e.swipe === 'number' && e.swipe > 0) ? e.swipe : undefined},
@@ -632,7 +632,7 @@ const PASSIVE_DEFS = [
   // Illuminate (2026-10-15, user: "Lantern Bearer should have 'Illuminate' - lights up in darkness. Removes darkness debuff for all
   // allies."): Lantern's new name, and a little stronger: Absolute darkness is lit too. Lantern stays in the engine for old saves
   // and published edits (it reads as Illuminate) but leaves the editor and the lists.
-  {key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean', desc:()=>`Lights up the dark. While it's on your board, none of your units miss because of Darkness, Pitch Black or Absolute darkness, and at Night your Diurnal units keep their daytime bonus. It also lights the enemy unit directly facing it, so a Night-blind foe there sees.`}, // 2026-10-16
+  {key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean', desc:()=>`Lights up the dark. While it's on your board, none of your units miss because of Darkness, Pitch Black or Absolute darkness, and at Night your Diurnal units keep their daytime bonus. The catch: its light also reaches the enemy unit directly facing it, which doesn't miss for the dark either (nor for Night-blindness).`}, // 2026-10-16; 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate.")
   {key:'lantern', category:'passive', hidden:true, retired:true, label:'Lantern', kind:'boolean', desc:()=>`Now called Illuminate: while it's on your board, your units don't miss because of the dark.`},
   {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
@@ -640,8 +640,8 @@ const PASSIVE_DEFS = [
   {key:'boomerang', category:'evergreen', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
-  {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`Hits the 3 nearest enemy units, full Attack each (none more than 1 column away). With no enemy unit that near, it attacks straight ahead as normal.`},
-  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`Hits the 4 nearest enemy units, full Attack each (none more than 2 columns away). With no enemy unit that near, it attacks straight ahead as normal.`},
+  {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`One swing with three prongs, always aimed straight ahead: the unit in front takes its full Attack, the units to its left and right half (rounded down, at least 1). With nobody in front, the middle prong hits the castle.`}, // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines.")
+  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`One swing with four prongs, aimed left or right at random: two columns left to one right, or one left to two right. Every prong deals half its Attack (rounded down, at least 1). With nobody in front, the middle prong hits the castle for half.`}, // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines.")
   {key:'octolash', category:'passive', label:'Octolash', kind:'boolean', desc:()=>`Lashes the 8 enemy units nearest it (the one in front first), full Attack each. It never lashes the castle; with no units, it just attacks normally.`},
   // 2026-10-14 skills (for the cards on the maps after Map 20; engine: bramblewood-engine.js, "2026-10-14 skills").
   // Speed (user: "Swing Order. So Speed +N means that: When combat begins, all creatures of the highest speed go in turn order.
@@ -2012,7 +2012,7 @@ const SKILL_TEXT = {
   counterattack: ()=> `Never attacks on its own. Each time an enemy hits it, it strikes the enemy facing it.`, // 2026-10-16 skill audit: it hits the unit in front, not the attacker (counterStrike)
   spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,
   thorns: v=> `Melee attackers take ${v} damage.`,
-  fork: ()=> `Hits the 2 nearest enemy units (within 1 column) with full Attack.`,
+  fork: ()=> `One two-pronged swing: full Attack on the units to its left and right when both are there, or else just the one in front.`, // 2026-10-17
   swipe: v=> `Each hit steals ${v} Lumber.`,
   twinStrike: ()=> `Attacks twice.`,
   pack: v=> `Pack units of its type standing side by side each get +1/+1 for every Pack point in the chain (two Pack ${numOr(v, 2)}s: +${2*numOr(v, 2)}/+${2*numOr(v, 2)} each).`, // 2026-10-16 skill audit: plain words, no "N = …"
@@ -2050,14 +2050,14 @@ const SKILL_TEXT = {
   keenEye: ()=> `Sees through Changelings and hits them for 2 more.`,
   demolisher: v=> `Deals ${v} more damage to Structures.`,
   lantern: ()=> `Lights up the dark: your units don't miss in darkness.`, // shown only on an old card that still has it (2026-10-15)
-  illuminate: ()=> `Lights up the dark: your units don't miss in darkness.`, // 2026-10-15
+  illuminate: ()=> `Lights up the dark: your units don't miss in darkness, and nor does the enemy unit facing it.`, // 2026-10-15; the facing foe too (2026-10-17)
   darksight: ()=> `It can see in darkness.`, // 2026-10-15
   nursing: v=> `Heal your weakest wounded unit for ${numOr(v, 2)} every upkeep.`, // 2026-10-15
   backstab: v=> `Attacks the nearest enemy unit, never the castle. +${v} damage when that unit isn't the one in front.`,
   shieldCall: ()=> `Once a battle, the first enemy skill aimed at one of your units hits a 0/10 Guardian shield instead.`,
   boomerang: ()=> `Its throw comes back next round and hits the same target again. Catch it!`,
-  trident: ()=> `Hits the 3 nearest enemy units (within 1 column) with full Attack.`,
-  pitchfork: ()=> `Hits the 4 nearest enemy units (within 2 columns) with full Attack.`,
+  trident: ()=> `One three-pronged swing straight ahead: full Attack in front, half to the units on its left and right.`, // 2026-10-17
+  pitchfork: ()=> `One four-pronged swing, aimed left or right at random: half Attack on each of 4 neighbouring columns.`, // 2026-10-17
   octolash: ()=> `Hits the 8 nearest enemy units with full Attack.`,
   rainmaker: v=> `When played, Spring Rain falls for ${numOr(v, 3)} rounds (every unit heals 2 a round).`, // 2026-10-16 skill audit
   rainrunner: v=> `In rain: +${v}/+${v}, and it can't be blocked.`,
@@ -2200,7 +2200,7 @@ Object.assign(SKILL_TEXT, {
   swarm: (v, n)=> Array.isArray(v) && v.length ? `+${n||1} Attack for every ally that is ${v.join(' or ')}.` : `+${n||1} Attack for every ally that shares a type with it.`,
   crepuscular: v=> { const [a, h] = phaseVals(v); return `At Twilight: +${a}/+${h}. With it in your deck, every fifth phase is Twilight.`; },
   sunshy: ()=> `Blind by day.`,
-  nightblind: ()=> `Blind at night, unless an Illuminate unit lights your side.`,
+  nightblind: ()=> `Blind at night, unless an Illuminate unit lights your side (or faces it).`, // 2026-10-17
   nocturnal: v=> { const [a, h] = phaseVals(v); return `At night: +${a}/+${h}.`; },
   diurnal: v=> { const [a, h] = phaseVals(v); return `By day: +${a}/+${h}.`; },
   tideGrant: v=> { if(!Array.isArray(v)) return `On Flood and on Ebb it has the skills in its braces; at High Tide, both.`; const [f, b] = v; return `On Flood it has ${grantText(parseGrantText(f)) || 'nothing'}; on Ebb, ${grantText(parseGrantText(b)) || 'nothing'}; at High Tide, both.`; },
@@ -6450,7 +6450,7 @@ function abilityBadges(d, bopts){
   if(e.lumberjack) out.push(`${iconHTML('lumberjack', '🪓')}`); if(e.heavyMetal) out.push(`${iconHTML('heavy-metal', '🤘')}`);
   if(e.timber) out.push(`${iconHTML('timber', '🌲')}`); if(e.rockSolid) out.push(`${iconHTML('rock-solid', '🪨')}`); if(e.ironWill) out.push(`${iconHTML('iron-will', '🔩')}`);
   if(e.loyal || e.loyalGrant) out.push(`${iconHTML('loyal', '🎖️')}`); if(e.usurper || e.usurperGrant) out.push(`<span class="ab-pair">${iconHTML('usurper', '👑')}<i>🗡️</i></span>`);
-  if(e.shell) out.push(`<span title="Shell">${iconHTML('shell', '🐢')}${n1(e.shell)}</span>`); if(e.pitchfork) out.push(`<span title="Pitchfork: the 4 nearest enemy units, within 2 columns">${iconHTML('pitchfork', '🍴')}</span>`); if(e.trident) out.push(`<span title="Trident: the 3 nearest enemy units, within 1 column">${iconHTML('trident', '🔱')}</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">${iconHTML('octolash', '🐙')}</span>`);
+  if(e.shell) out.push(`<span title="Shell">${iconHTML('shell', '🐢')}${n1(e.shell)}</span>`); if(e.pitchfork) out.push(`<span title="Pitchfork: one swing, 4 prongs, half Attack each">${iconHTML('pitchfork', '🍴')}</span>`); if(e.trident) out.push(`<span title="Trident: one swing, full Attack in front, half beside it">${iconHTML('trident', '🔱')}</span>`); if(e.octolash) out.push(`<span title="Octolash: the 8 nearest enemy units">${iconHTML('octolash', '🐙')}</span>`);
   // 2026-10-14 skills. Speed shows the live value on the board (c.speed: its own Speed, Haste, and a Haste ally beside it).
   { const lv = bopts && bopts.live && bopts.live.speed != null ? Number(bopts.live.speed)||0 : (Number(e.speed)||0) + (e.haste ? 2 : 0);
     if(lv) out.push(`<span class="ab-speed" title="Speed ${lv}: the fastest units swing first">🐇${lv}</span>`); }
@@ -6524,7 +6524,7 @@ function abilityBadges(d, bopts){
   // 2026-09-21: Swipe became a boolean flag (flank columns + castle redirect, not a hit count),
   // so the old "🗡×N" badge no longer has a count to show — swapped for 🗡↔ (dagger + left-right
   // arrows) to read as "hits both sides" at a glance.
-  if(e.fork || e.swipe === true) out.push(isCrabDef(d) ? `<span class="ab-fork ab-crab" title="Fork: its claws hit the 2 nearest enemy units, within 1 column">🦞</span>` : `<span class="ab-fork" title="Fork: hits the 2 nearest enemy units, within 1 column">⇔</span>`); // a crab's Fork is a crab claw (2026-10-14) // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
+  if(e.fork || e.swipe === true) out.push(isCrabDef(d) ? `<span class="ab-fork ab-crab" title="Fork: one swing, its claws hit left and right, or just the one in front">🦞</span>` : `<span class="ab-fork" title="Fork: one swing, left and right, or just the one in front">⇔</span>`); // a crab's Fork is a crab claw (2026-10-14) // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
   if(typeof e.swipe === 'number' && e.swipe > 0) out.push(`🫳${n1(e.swipe)}`);
   if(e.twinStrike) out.push(`<span class="ab-pair">${iconHTML('twin-strike', '⚔')}<i>⚔</i></span>`); // stacked (2026-10-17)
   if(e.converge) out.push(`${iconHTML('converge', '🧲')}`);
@@ -14335,40 +14335,54 @@ function terrainSummary(t, rules){
 // Lantern light in the dark (2026-10-14, the Effects Lab's lantern, made safe for fights): in pitch-black and absolute
 // darkness the field is shadowed except a warm pool of light that follows your pointer (or drifts on its own on touch).
 // It only changes what you see; the cards themselves aren't moved.
+// 2026-10-17 (user: "The light is not following my mouse. It can lag by abit, that's okay."): the darkness lantern (pitch-black and absolute
+// fights, .bf-lantern) and the night pointer light (.bf-night-cursor) are now one controller that eases both toward the pointer every frame.
+// Why they didn't follow: each was only moved inside a pointermove handler and nothing put it back afterwards. The board is redrawn all
+// through a turn (each placement, each round's replay), and a redraw replaces #battlefieldEl: the lantern's --lx/--ly (inline on the old
+// board) went with it, so the pool snapped back to the middle, and the night light's element (with its 'on' state) was dropped, so it stayed
+// dark until the pointer moved again. The lantern also wandered off on its own after 4 s without a move, even with the mouse resting on the
+// board. (The battle shader's own cave lamp read the pointer against the whole window instead of the board; see bramblewood-shaders.js.)
+// Now: the pointer is read on the capture phase (nothing on the page can swallow it), a requestAnimationFrame loop eases the light toward it
+// (a slight lag, about 0.12 s) and re-applies it to whatever #battlefieldEl is current, so a redraw or the pointer coming in from outside
+// is picked up on the next frame. Touch: the light shows at the touch point and fades 1.4 s after the finger lifts; the lantern drifts on
+// its own only when no mouse has been seen for 4 s.
 function matchDarkLevel(m){ try{ const r = m && m.engine && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.arenaRuleset && m.arenaRuleset.rules) || null; return r && r.dark ? (r.dark === true ? 'dark' : r.dark) : null; }catch(e){ return null; } }
-(function wireLanternLight(){
+const pointerLight = {x:null, y:null, sx:null, sy:null, type:'mouse', moved:0, touchUp:0, raf:0, last:0, t0:0};
+(function wirePointerLights(){
   if(typeof document === 'undefined') return;
-  let t0 = performance.now(), last = 0, raf = 0;
-  const set = (bf, x, y)=>{ bf.style.setProperty('--lx', x.toFixed(1) + '%'); bf.style.setProperty('--ly', y.toFixed(1) + '%'); };
-  document.addEventListener('pointermove', e=>{ const bf = document.querySelector('.battlefield.bf-lantern'); if(!bf) return; const r = bf.getBoundingClientRect(); if(!r.width) return;
-    last = performance.now(); set(bf, (e.clientX - r.left)/r.width*100, (e.clientY - r.top)/r.height*100); }, {passive:true});
-  const drift = now=>{ raf = requestAnimationFrame(drift); const bf = document.querySelector('.battlefield.bf-lantern'); if(!bf || now - last < 4000 || reducedMotion()) return;
-    const a = (now - t0)/5200; set(bf, 50 + Math.cos(a)*30, 50 + Math.sin(a*1.4)*22); };
-  raf = requestAnimationFrame(drift);
-})();
-// 2026-10-17 (user: "During Night, there should be a light effect on your mouse"): at night (any fight whose phase is Night, not only the
-// pitch-black ones above, which keep their own lantern) a soft, faint pool of light sits under the pointer over the battlefield, dimmer
-// than the darkness lantern and clipped to the board. On touch it shows at the last touch point and fades. syncNightVeil sets
-// .bf-night-cursor on the battlefield while it is Night.
-(function wireNightCursorLight(){
-  if(typeof document === 'undefined') return;
-  let fadeT = 0;
+  const P = pointerLight; P.t0 = performance.now();
   const lightOf = bf=>{ let l = bf.querySelector(':scope > .night-cursor-light'); if(!l){ l = document.createElement('div'); l.className = 'night-cursor-light'; l.setAttribute('aria-hidden', 'true'); bf.appendChild(l); } return l; };
-  const hide = ()=>{ document.querySelectorAll('.night-cursor-light.is-on').forEach(l=> l.classList.remove('is-on')); };
-  const at = (e)=>{
-    const bf = document.querySelector('.battlefield.bf-night-cursor'); if(!bf){ hide(); return; }
-    const r = bf.getBoundingClientRect(); if(!r.width) return;
-    const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
-    const l = lightOf(bf); if(!inside){ l.classList.remove('is-on'); return; }
-    l.style.setProperty('--nx', ((e.clientX - r.left)/r.width*100).toFixed(1) + '%'); l.style.setProperty('--ny', ((e.clientY - r.top)/r.height*100).toFixed(1) + '%');
-    l.classList.add('is-on'); clearTimeout(fadeT);
-    if(e.pointerType === 'touch') fadeT = setTimeout(()=> l.classList.remove('is-on'), 1400); // touch: it fades from the last touch point
+  const note = e=>{ P.x = e.clientX; P.y = e.clientY; P.type = e.pointerType || 'mouse'; P.moved = performance.now(); if(P.sx == null){ P.sx = P.x; P.sy = P.y; } kick(); };
+  document.addEventListener('pointermove', note, {passive:true, capture:true});
+  document.addEventListener('pointerdown', note, {passive:true, capture:true});
+  document.addEventListener('pointerup', e=>{ if(e.pointerType === 'touch'){ P.touchUp = performance.now(); kick(); } }, {passive:true, capture:true});
+  document.addEventListener('pointercancel', e=>{ if(e.pointerType === 'touch'){ P.touchUp = performance.now(); kick(); } }, {passive:true, capture:true});
+  // the pointer left the window: put the night light out (it comes back with the next move)
+  document.addEventListener('mouseout', e=>{ if(!e.relatedTarget){ P.x = P.y = null; kick(); } }, {passive:true});
+  const frame = now=>{
+    P.raf = 0;
+    const bf = document.getElementById('battlefieldEl');
+    const night = !!(bf && bf.classList.contains('bf-night-cursor')), lantern = !!(bf && bf.classList.contains('bf-lantern'));
+    document.querySelectorAll('.night-cursor-light.is-on').forEach(l=>{ if(!night || l.parentElement !== bf) l.classList.remove('is-on'); });
+    if(!night && !lantern){ P.last = now; return; } // nothing to light: sleep until the next pointer event or the watch below
+    const dt = Math.min(100, Math.max(1, now - (P.last || now))); P.last = now;
+    if(P.x != null){ const k = reducedMotion() ? 1 : 1 - Math.pow(1 - 0.22, dt / 16.7); // ease toward the pointer
+      P.sx += (P.x - P.sx) * k; P.sy += (P.y - P.sy) * k; }
+    const r = bf.getBoundingClientRect(); if(!r.width || !r.height){ P.raf = requestAnimationFrame(frame); return; }
+    const px = P.sx == null ? null : (P.sx - r.left) / r.width * 100, py = P.sy == null ? null : (P.sy - r.top) / r.height * 100;
+    if(night){ const l = lightOf(bf);
+      const inside = P.x != null && P.x >= r.left && P.x <= r.right && P.y >= r.top && P.y <= r.bottom;
+      const touchGone = P.type === 'touch' && P.touchUp > P.moved && now - P.touchUp > 1400;
+      if(px != null){ l.style.setProperty('--nx', px.toFixed(2) + '%'); l.style.setProperty('--ny', py.toFixed(2) + '%'); }
+      l.classList.toggle('is-on', inside && !touchGone); }
+    if(lantern){ const follow = P.x != null && (P.type !== 'touch' || now - P.moved < 4000); // a mouse on the page, or a touch in the last 4 s
+      if(px != null && follow){ bf.style.setProperty('--lx', px.toFixed(2) + '%'); bf.style.setProperty('--ly', py.toFixed(2) + '%'); }
+      else if(!reducedMotion()){ const a = (now - P.t0)/5200; bf.style.setProperty('--lx', (50 + Math.cos(a)*30).toFixed(2) + '%'); bf.style.setProperty('--ly', (50 + Math.sin(a*1.4)*22).toFixed(2) + '%'); } }
+    P.raf = requestAnimationFrame(frame);
   };
-  document.addEventListener('pointermove', at, {passive:true});
-  document.addEventListener('pointerdown', at, {passive:true});
-  document.addEventListener('pointerleave', hide, {passive:true});
-  // the phase turned to day (or the fight ended): put it out
-  setInterval(()=>{ try{ if(!document.querySelector('.battlefield.bf-night-cursor')) hide(); }catch(e){} }, 1000);
+  function kick(){ if(!P.raf) P.raf = requestAnimationFrame(frame); }
+  // a fight that turns to Night (or opens in the dark) wakes the loop even before the pointer moves
+  setInterval(()=>{ try{ const bf = document.getElementById('battlefieldEl'); if(bf && (bf.classList.contains('bf-night-cursor') || bf.classList.contains('bf-lantern'))) kick(); else document.querySelectorAll('.night-cursor-light.is-on').forEach(l=> l.classList.remove('is-on')); }catch(e){} }, 500);
 })();
 function terrainOfMatch(m){ try{ const r = m && m.engine && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.engine && m.arenaRuleset && m.arenaRuleset.rules) || null; /* the Arena's portent can bring home ground or the eruption too */ return r && r.terrain ? {t: r.terrain, rules: r} : (r && Number(r.eruption) > 0 && !volcanoRulesOn(r) ? {t: null, rules: r} : null); /* the volcano's hazards (2026-10-14) list as field rows instead */ }catch(e){ return null; } }
 // The eruption you can see (2026-10-12, user: "The fire effects of the volcano are not visible on the field"): a lava geyser
@@ -14439,7 +14453,7 @@ function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return
 // (fieldEffects2Tick and the helper block near `rules`). key = the rules flag; editor = the Edit skirmish id.
 const FIELD2 = {
   tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor.'},
-  landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:"Each round from round 2, a 1 in 4 chance that rocks come down: 5 damage to every unit that isn't flying, on both sides."},
+  landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:"Each round from round 2, a 1 in 4 chance that rocks come down on three neighbouring columns: 5 damage to every unit there that isn't flying, on both sides."}, // 2026-10-17 (user: "it should only affect the L/C/R cards")
   consternation: {icon:'😰', name:'Consternation', editor:'consternation', short:'Hand cards lose 1/1 a round', text:'Each round from round 2, every card in each hand loses 1/1. The loss stays on the card when it is played (down to 0 Attack and 1 Health at most).'},
   crushingDepths:{icon:'🫧', name:'Crushing Depths', editor:'crushingdepths', short:'5 water damage a round', text:'Each round from round 2, every unit takes 5 water damage. Tide units and Swimmers take half, and water Resist halves it again. No day or night reaches down here.'},
   rookRow:       {icon:'♜', name:"Rook's Row", editor:'rookrow', short:'Straight hits +2', text:'A hit on the unit standing square in front of the attacker deals +2 damage.'},
@@ -21974,7 +21988,7 @@ function runCardCheck(host){
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
 const SB_KEY = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2';
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
-const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', bleed:'v', snipe:'v', arrows:'v'};
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', bleed:'v', snipe:'v', arrows:'v', crabClaws:0}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, missMult:1.5};
@@ -22891,7 +22905,7 @@ const FXL_FIELDS = [
   {key:'scorching3', icon:'🔥', name:'Scorching III', text:()=> FIELD2_SCORCHING3_TEXT, rules:{field:'heatwave', heatLevel:3}},
   ...[
     ['tide', {tide:true}, {units:FXL_TIDE_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: Flood, Ebb, Flood. The Landlubber is not a Tide unit.'}],
-    ['landslide', {landslide:100}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Hawk', icon:'🦅', effects:{flying:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Forced to 100% here (1 in 4 in a fight). The Hawk flies above the rocks.'}],
+    ['landslide', {landslide:100}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Hawk', icon:'🦅', effects:{flying:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Forced to 100% here (1 in 4 in a fight). The rocks come down on three neighbouring columns round a random one, both sides; the Hawk flies above them.'}],
     ['consternation', {consternation:true}, {drawHand:3, steps:['round', 'round'], note:'Three cards in your hand: watch them lose 1/1 each round.'}],
     ['crushingDepths', {crushingDepths:true}, {units:FXL_TIDE_UNITS, steps:['round', 'round'], note:'The Tide units take half; the Landlubber takes it all.'}],
     ['rookRow', {rookRow:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:1, def:{name:'Fork Crab', icon:'🦀', effects:{fork:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Straight hits get +2 (the Fork\'s second prong, on the slant, does not).'}],
@@ -22933,10 +22947,10 @@ const FXL_FIELDS = [
 // Hand-made skill setups (merged over the default scenario). steps: see fxlRunStep.
 const FXL_FOES3 = [{role:'foe', slot:0}, {role:'foe2', slot:-1}, {role:'foe3', slot:1}];
 const FXL_SKILL_SETUPS = {
-  fork: {foes:FXL_FOES3, note:'Three dummies side by side: it hits the one in front and the nearer one beside it (2 in all).'}, // 2026-10-15 rework
+  fork: {foes:FXL_FOES3, note:'Three dummies side by side: one swing strikes the two either side (never the one in front with a side). Kill one and it strikes the one in front alone.'}, // 2026-10-17 rework
   // 2026-10-15: Trident / Pitchfork / Crab Claws (the new prong rules), the new arrows, the Bolts and Chilli.
-  trident: {foes:FXL_FOES3, note:'Three dummies side by side: all three are within 1 column, so all three are hit.'},
-  pitchfork: {foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}, {role:'foe3', slot:1}, {role:'foe2', slot:-2}, {role:'foe3', slot:2}], note:'Five dummies: it hits the 4 nearest (none more than 2 columns away).'},
+  trident: {foes:FXL_FOES3, note:'Three dummies side by side: one swing, full Attack on the one in front, half on the two beside it.'}, // 2026-10-17
+  pitchfork: {foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}, {role:'foe3', slot:1}, {role:'foe2', slot:-2}, {role:'foe3', slot:2}], note:'Five dummies: one swing along 4 columns, aimed left or right at random, half Attack on each.'}, // 2026-10-17
   crabClaws: {foes:FXL_FOES3, steps:['round', 'round'], note:'Dummies either side of the one in front: each round it pinches left or right at random (never the one in front; with nobody beside it, the castle).'},
   iceArrow: {steps:['round', 'round'], note:'Two rounds of icy arrows (1 in 2 freezes the dummy).'},
   twinShot: {foes:FXL_FOES3, note:'Three dummies: two arrows, at two different ones.'},
@@ -28194,15 +28208,29 @@ function unitLightKindOf(c, d){
 }
 // Light pools in Pitch Black and Absolute darkness (2026-10-15): the darkness overlay (.battlefield.bf-lantern::after) gets a mask
 // with a soft hole over every lit unit, so a leader shows faintly and a Light Aura unit clearly. Positions are read after each render.
+// 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate."): the enemy unit in the
+// column facing an Illuminate unit (a .ul-aura light) stands in its light: it gets a soft pool of its own (.ul-foelit, warm and fainter,
+// leaning toward the lamp) and, in Pitch Black / Absolute darkness, a small hole in the dark. The engine lets it see (sightMiss).
+function markLitFoes(bf){
+  bf.querySelectorAll('.board-card.is-lit-by-foe').forEach(c=>{ c.classList.remove('is-lit-by-foe'); const sp = c.querySelector(':scope > .unit-light.ul-foelit'); if(sp) sp.remove(); });
+  const rows = [bf.querySelector('#rowMine'), bf.querySelector('#rowEnemy')]; if(!rows[0] || !rows[1]) return;
+  rows.forEach((row, i)=>{ const other = rows[1 - i];
+    row.querySelectorAll('.board-card .unit-light.ul-aura').forEach(sp=>{ const card = sp.closest('.board-card'); if(!card || !row.contains(card)) return;
+      const r = card.getBoundingClientRect(); if(!r.width) return; const cx = r.left + r.width/2; let best = null, bd = 1e9;
+      other.querySelectorAll('.board-card').forEach(o=>{ const q = o.getBoundingClientRect(); if(!q.width) return; const d = Math.abs(q.left + q.width/2 - cx); if(d < bd){ bd = d; best = o; } });
+      if(!best || bd > r.width*0.5) return; best.classList.add('is-lit-by-foe');
+      if(!best.querySelector(':scope > .unit-light')){ const l = document.createElement('span'); l.className = 'unit-light ul-foelit ' + (i === 0 ? 'from-below' : 'from-above'); l.setAttribute('aria-hidden', 'true'); best.insertBefore(l, best.firstChild); } }); });
+}
 function syncUnitLightPools(){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
+  try{ markLitFoes(bf); }catch(e){}
   try{ clipLightsToBoard(bf); }catch(e){}
   if(!bf.classList.contains('bf-lantern')){ bf.style.removeProperty('--unit-lights'); return; }
   const r = bf.getBoundingClientRect(); if(!r.width) return;
   const zoom = bf.offsetWidth ? r.width / bf.offsetWidth : 1;
   const pools = [...bf.querySelectorAll('.board-card .unit-light')].map(sp=>{ const card = sp.closest('.board-card'); const t = card && (card.querySelector('.card-tile') || card); if(!t) return '';
     const b = t.getBoundingClientRect(); if(!b.width) return '';
-    const x = ((b.left + b.width/2) - r.left) / zoom, y = ((b.top + b.height/2) - r.top) / zoom, k = sp.classList.contains('ul-leader') ? 'leader' : 'aura';
+    const x = ((b.left + b.width/2) - r.left) / zoom, y = ((b.top + b.height/2) - r.top) / zoom, k = (sp.classList.contains('ul-leader') || sp.classList.contains('ul-foelit')) ? 'leader' : 'aura'; // a unit lit by the lamp facing it: a small hole (2026-10-17)
     // 2026-10-16 (user: "Lantern glow is too bright. but it is also not 'wide' enough"): a Light Aura opens a wider, dimmer hole
     const rad = Math.round((k === 'leader' ? 0.85 : 2.05) * b.width / zoom), core = k === 'leader' ? 0.62 : 0.36;
     return `radial-gradient(circle ${rad}px at ${x.toFixed(0)}px ${y.toFixed(0)}px, rgba(0,0,0,${core}) 0, rgba(0,0,0,${(core + 1) / 2}) 45%, #000 100%)`; }).filter(Boolean);
@@ -30409,7 +30437,7 @@ async function resolveRoundCore(opts){
   // they can be replayed as their own distinct "next turn starting" beat afterward, instead of
   // wherever they happened to land in the middle of this round's attack sequence.
   if(QUEST_COUNTING_MODES.has(m.mode)) bumpQuestCounter('unitsDefeated', events.filter(ev=> ev.type==='death' && ev.side==='B').length);
-  const mainEvents = settleDeathsEarly(events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready' && ev.type!=='hatch')); // 2026-10-17: each death right after its killing blow
+  const mainEvents = settleDeathsEarly(groupForkLines(events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready' && ev.type!=='hatch'))); // + one Fork swing's lines together (2026-10-17) // 2026-10-17: each death right after its killing blow
   clearArrivalHold(m); // 2026-10-17: anything held for an arrival replay is settled by now
   const waitEvents = events.filter(ev=> ev.type==='waitTick' || ev.type==='ready' || ev.type==='hatch'); // an egg cracks open right after its Ready (2026-10-14)
   // 2026-09-17 follow-up ("there should be a 'fight' sign before the combat anims begin"):
@@ -30484,12 +30512,15 @@ async function resolveRoundCore(opts){
     // by 0.3s"): a Sweep's hits come 0.3 s apart instead of a full beat each.
     if(ev._cleave === 'L' || (ev._cleave === 'M' && m._cl && m._cl.ri >= 0)){ /* the group's next beat waits for itself (above) */ }
     else { const nx = mainEvents[evIdx+1]; const rapid = nx && nx.sweep && (nx.type==='hit' || nx.type==='evaded') && nx.attUid === ev.attUid && (ev.type==='hit' || ev.type==='evaded');
+      // 2026-10-17: the next line of the same Fork / Trident / Pitchfork swing starts with this one (they land together)
+      const forkNext = !!(nx && ev.forkSwing != null && nx.forkSwing === ev.forkSwing && FORK_LINE_TYPES.has(nx.type));
+      if(forkNext){ await sleep(Math.max(16, Math.round(30 / ((matchState && matchState.speedMult) || 1)))); } else {
       // 2026-10-16 (user: "After a creature gets hit, the death animation should play immediately."): a killing blow no longer waits
       // out the hit's full 0.9 s beat; the replay moves on the moment the blow lands, so the death starts right under the number.
       const killNow = !rapid && !ev._cleave && ev.type==='hit' && ev.targetUid!=null && lethalDeathFollows(mainEvents, evIdx);
       const pi = killNow && m._pendingImpacts && m._pendingImpacts[String(ev.targetUid)];
       if(pi){ if(!pi.landed) await Promise.race([pi, sleep(1600)]); await sleep(Math.max(16, Math.round(40 / ((matchState && matchState.speedMult) || 1)))); }
-      else await sleep(rapid ? Math.max(18, Math.round(300 / ((matchState && matchState.speedMult) || 1))) : delayForEvent(ev, lastVfxKind)); }
+      else await sleep(rapid ? Math.max(18, Math.round(300 / ((matchState && matchState.speedMult) || 1))) : delayForEvent(ev, lastVfxKind)); } }
     if(ev._cleave === 'R' || (ev._cleave === 'M' && m._cl && m._cl.ri < 0)) m._cl = null;
     lastVfxKind = vfxKindOf(ev);
     // 2026-10-03 ("When the enemy's castle reaches 0 health, pause the combat, and celebrate"):
@@ -32594,6 +32625,43 @@ function evNamesUid(e, u){
   if(Array.isArray(e.placements) && e.placements.some(p=> p && String(p.uid) === u)) return true;
   return false;
 }
+// One Fork / Trident / Pitchfork swing (2026-10-17, user: "It's a single attack. 2, 3, or 4 attack lines."): the engine logs the swing
+// (forkSwing), then the swing proper's hit with its on-hit beats, then the other lines. Here every line's blow (hit, castle hit, dodge,
+// miss: ev.forkSwing names the swing) moves up to sit right behind the first one, so the replay plays them together (see the replay loop).
+const FORK_LINE_TYPES = new Set(['hit', 'hitHQ', 'evaded', 'blindMiss']);
+function groupForkLines(events){
+  if(!Array.isArray(events)) return events;
+  for(let i = 0; i < events.length; i++){ const e = events[i]; if(!e || e.forkSwing == null || !FORK_LINE_TYPES.has(e.type)) continue;
+    let at = i + 1;
+    for(let j = i + 1; j < Math.min(events.length, i + 60); j++){ const f = events[j]; if(!f) continue;
+      if(f.type === 'forkSwing' || f.type === 'death') break;
+      if(f.forkSwing === e.forkSwing && FORK_LINE_TYPES.has(f.type)){ if(j !== at){ events.splice(j, 1); events.splice(at, 0, f); } at++; } }
+    i = at - 1; }
+  return events;
+}
+function forkLaterLine(ev){ return !!(ev && ev.forkSwing != null && matchState && matchState._forkLunge === ev.forkSwing); }
+function forkSwingVfx(ev){
+  const m = matchState; if(!m || !ev) return; m._forkLunge = ev.swing;
+  const attEl = boardCardEl(ev.attUid), lines = ev.lines || [], isMine = ev.side === 'A';
+  const lean = ev.aim === 'left' ? -8 : ev.aim === 'right' ? 8 : 0;
+  try{ animateAttacker(ev.attUid, isMine, {leanX: lean, toCastle: lines.some(l=> l.castle) && !lines.some(l=> l.targetUid != null)}); }catch(e){}
+  const am = animMs(), label = ev.kind === 'pitchfork' ? `🔱 Pitchfork${ev.aim === 'left' ? ' ⇠' : ev.aim === 'right' ? ' ⇢' : ''}` : ev.kind === 'trident' ? '🔱 Trident!' : '⇔ Fork!';
+  setTimeout(()=>{ try{ SoundKit.swipeTone(); if(attEl && attEl.isConnected) floatText(attEl, label, 'quick'); }catch(e){} }, Math.max(0, am.windup - 60));
+  const F = window.SkillFX; if(!attEl || !F || !F.forkSwing || reducedMotion() || !fxAtLeast('low')) return;
+  // where each line lands: a struck card's centre, else its column on the enemy row (the board's columns line up across the divider)
+  const A = attEl.getBoundingClientRect(), ax = A.left + A.width/2, ay = A.top + A.height/2;
+  const els = lines.map(l=> l.targetUid != null ? boardCardEl(l.targetUid) : null), cs = els.map(e=> e ? e.getBoundingClientRect() : null);
+  const known = lines.map((l, i)=> cs[i] ? {off:l.off, x:cs[i].left + cs[i].width/2, y:cs[i].top + cs[i].height/2} : null).filter(Boolean);
+  let pitch = A.width * 1.12; if(known.length > 1 && known[1].off !== known[0].off) pitch = Math.abs((known[1].x - known[0].x) / (known[1].off - known[0].off)) || pitch;
+  const baseX = known.length ? known[0].x - known[0].off * pitch : ax;
+  let rowY = known.length ? known[0].y : null;
+  if(rowY == null){ const dv = document.querySelector('#battlefieldEl .battlefield-divider'), dr = dv && dv.getBoundingClientRect(); rowY = dr && dr.height >= 0 && dr.width ? 2*(dr.top + dr.height/2) - ay : ay + (isMine ? -1.3 : 1.3)*A.height; }
+  const pts = lines.map((l, i)=> cs[i] ? {x:known.find(k=> k.off === l.off).x, y:cs[i].top + cs[i].height/2, el:els[i], struck:true, half:!!l.half} : {x:baseX + l.off*pitch, y:rowY, el:null, struck:false, half:!!l.half});
+  // Fork striking only the one in front: one prong takes it, the other goes past it into the empty column on its other side
+  if(ev.kind === 'fork' && lines.length === 1 && lines[0].off === 0 && pts[0] && !lines[0].castle){ const sp = ev.prong === 'right' ? -1 : 1; pts.push({x:pts[0].x + sp*pitch, y:pts[0].y, el:null, struck:false, half:false}); }
+  // a line at the castle shows there (FX.A.prongCastle on its hitHQ), not as a thrust into the empty column
+  F.forkSwing(attEl, pts.filter((p, i)=> !(lines[i] && lines[i].castle)), {kind:ev.kind, delay: Math.max(0, am.windup + am.impactPad - 130)});
+}
 function settleDeathsEarly(events){
   if(!Array.isArray(events)) return events;
   for(let d = 0; d < events.length; d++){
@@ -32632,6 +32700,7 @@ function delayForEvent(ev, prevKind){
   else if(ev.type==='pounce') base = 340;
   else if(ev.type==='triggerFired') base = 300; // a beat to see the rune before the effect lands
   else if(ev.type==='wave') base = ev.blocked ? 640 : 820; // 2026-10-17 (user: "Make it ride the wave and move to its new location"): the ride (or the bob) plays out before the next re-render
+  else if(ev.type==='forkSwing') base = 0; // the swing's lines follow at once (2026-10-17)
   // Generic bucket pacing (was 200/500 through 2026-09-20; trimmed 2026-09-21 per explicit
   // feedback -- "Sometimes, there is a small 0.2-0.3s pause between anims. Why? I want the
   // anims to be smooth" -- that gap was exactly this bucket's same-kind/diff-kind pause on
@@ -33389,6 +33458,9 @@ function logText(ev){
     case 'converge': return {cls:'', text:`${nm(ev.defId)} pulls ${ev.targetSide===ev.side ? 'its own' : 'the enemy'} line together! 🧲`};
     case 'roundStart': return {cls:'', text:`— Round ${ev.round} —`};
     case 'swapPositions': return {cls:'', text:`${nm(ev.attDefId)} scurries ${nm(ev.aDefId)} and ${nm(ev.bDefId)} out of position! 🔀`};
+    // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines."): one log line for the swing; each line's hit logs as usual.
+    case 'forkSwing': { const k = ev.kind === 'pitchfork' ? '🔱 Pitchfork' : ev.kind === 'trident' ? '🔱 Trident' : '⇔ Fork', n = (ev.lines||[]).filter(l=> l.targetUid != null).length;
+      return {cls:'', text:`${k}: ${nm(ev.attDefId)} swings once${ev.aim ? ` (aimed ${ev.aim})` : ''}, ${ev.kind === 'pitchfork' ? 4 : ev.kind === 'trident' ? 3 : 2} prongs${n ? `, ${n} striking a unit` : ''}${(ev.lines||[]).some(l=> l.castle) ? ', the middle one at the castle' : ''}.`}; }
     case 'crabClaw': return {cls:'', text: ev.whiff ? `🦞 ${nm(ev.attDefId)} pinches at thin air: nobody beside the unit in front.` : ev.dir === 'castle' ? `🦞 ${nm(ev.attDefId)} has nobody to either side: its claws reach past into the castle!` : `🦞 ${nm(ev.attDefId)} pinches to the ${ev.dir}!`}; // + the castle (2026-10-17) // (whiff: no longer happens since 2026-10-15; kept for old logs) // Crab Claws (2026-10-14)
     case 'charge': return {cls: ev.fired ? 'gold' : '', text: ev.start ? `⏲️ ${nm(ev.defId)} starts charging (${ev.left}).` : ev.fired ? `⏲️ ${nm(ev.defId)}'s charge goes off!` : `⏲️ ${nm(ev.defId)} charges… ${ev.left} to go.`}; // Charge N (2026-10-14)
     case 'restless': return {cls:'', text:`👣 ${nm(ev.defId)} can't keep still: it moves ${ev.to > ev.from ? 'right' : 'left'}${ev.swapUid != null ? ', swapping places' : ''}.`}; // Restless (2026-10-14)
@@ -34514,7 +34586,7 @@ function keywordCuesForHit(ev, attEl, targetEl){
   // flash+clang via the main handler above, but until now nothing distinguished "this landed
   // because of Swipe/Sweep" from an ordinary simultaneous hit. Fires once per continuation hit,
   // same convention as Ambush/Siege/Rend just above.
-  if((ev.type==='hit' || ev.type==='hitHQ') && (ev.fork || ev.swipe || ev.sweep) && targetEl && !ev._cleave){ // a Cleave swing labels itself once (2026-10-15)
+  if((ev.type==='hit' || ev.type==='hitHQ') && (ev.fork || ev.swipe || ev.sweep) && targetEl && !ev._cleave && ev.forkSwing == null){ // a Fork swing labels itself once (forkSwingVfx, 2026-10-17) // a Cleave swing labels itself once (2026-10-15)
     const label = ev.sweep ? '🪓 Cleave!' : ev.prong==='octolash' ? '🐙 Lash!' : ev.prong==='trident' ? '🔱 Trident!' : ev.prong==='pitchfork' ? '🔱 Pitchfork!' : '⇔ Fork!';
     // 2026-10-12 (user: "The Fork float label appears too early"): it now shows 0.1 s before the damage number lands.
     const am = animMs(), at = ev.ranged ? am.windup + am.projectile : am.windup + am.impactPad;
@@ -34988,7 +35060,7 @@ function eighthPassVfx(ev){
     if(ev.attUid != null && ev.targetUid != null) (matchState._lastHitOf = matchState._lastHitOf || {})[ev.attUid] = ev.targetUid; // Sap drains the last unit it hit
     // 2026-10-16 (user: "Many flying cards throw a 'line' at the enemy to attack. Make them attack normally is okay."): no swoop trail
     // any more; a flyer lunges like everyone else and its shadow draws in under it (SkillFX.flyDescend, from animateAttacker).
-    if(a && t && ev.fork && skillFxOnce('fork' + ev.attUid + ':' + ev.targetUid)) at(hitMs - 140, ()=>{ const a2 = el(ev.attUid), t2 = el(ev.targetUid); if(t2) F.forkProngs(a2, [t2], {kind: ev.prong}); });
+    if(a && t && ev.fork && ev.forkSwing == null && skillFxOnce('fork' + ev.attUid + ':' + ev.targetUid)) at(hitMs - 140, ()=>{ const a2 = el(ev.attUid), t2 = el(ev.targetUid); if(t2) F.forkProngs(a2, [t2], {kind: ev.prong}); });
     // (passive Expose: the engine sends a statusFx 'expose' now, 2026-10-15, and its targetMark plays from there)
     if(t && ev.rend) at(hitMs, ()=>{ const t2 = el(ev.targetUid); if(t2) F.pierceThrough(t2, {from: degFrom(el(ev.attUid), t2)}); });
     else if(t && (ev.armorBlocked || (Number(te.armor) > 0 && (ev.dmg||0) >= 0)) && (ev.armorBlocked || skillFxOnce('armor' + ev.targetUid)))
@@ -35101,7 +35173,7 @@ function field2LogText(ev, nm){
     const h = FIELD2_HIT[ev.field];
     if(h) return ev.atheist ? {cls:'', text:`✴️ ${nm(ev.defId)} doesn't believe in ley lines: no damage.`} : {cls:'', text:`${h[0]} ${nm(ev.defId)} takes ${ev.dmg} from ${h[1]}${ev.roll ? ` (${ev.roll})` : ''}${ev.swimmer ? ' (it swims: half)' : ''}.`};
     switch(ev.field){
-      case 'landslide': return {cls:'', text:`🪨 Landslide! Rocks come down: ${ev.amount} damage to every unit that isn't flying.`};
+      case 'landslide': return {cls:'', text:`🪨 Landslide! Rocks come down on three neighbouring columns: ${ev.amount} damage to every unit there that isn't flying.`}; // 2026-10-17
       case 'crushingDepths': return {cls:'', text:`🫧 The depths press down: ${ev.amount} water damage to every unit (Swimmers take half).`};
       case 'hail': return {cls:'', text:`🌨️ Hail: ${ev.amount} ice damage to every unit.`};
       case 'glassStorm': return {cls:'', text:'💎 The glass-storm buffets every unit (1–3 each).'};
@@ -35154,7 +35226,10 @@ function field2Vfx(ev){
       else if(ev.field === 'leylinesHit' && F.ring) F.ring(c.x, c.y, 'sfx-violet', 90, 480);
       return; }
     switch(ev.field){
-      case 'landslide': snd('boom'); if(bf && fx()){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); boardSweepVfx('landslide', 'A'); } break;
+      // 2026-10-17 (user: "Landslide's effect is too much. it should only affect the L/C/R cards, and the vfx should only land on those."): the
+      // rocks (FX.A.landslide) fall only on the units the header names (ev.uids: the three struck columns), no whole-board band or rumble.
+      case 'landslide': snd('boom'); if(fx()){ const cards = (ev.uids || []).map(u=> boardCardEl(u)).filter(Boolean);
+        if(cards.length && window.FX && FX.A && FX.A.landslide) try{ FX.A.landslide(cards, {host:bf}); }catch(e){} } break;
       case 'crushingDepths': snd('splash'); if(bf && fx()){ bf.classList.remove('crush-press'); void bf.offsetWidth; bf.classList.add('crush-press'); setTimeout(()=> bf.classList.remove('crush-press'), 900); } break;
       case 'hail': snd('freezeChime'); if(fx()) boardSweepVfx('hail', 'A'); break;
       case 'glassStorm': snd('swipeTone'); if(fx()) boardSweepVfx('glass', Math.random() < .5 ? 'A' : 'B'); break;
@@ -35437,6 +35512,7 @@ function fxHook(name, ...args){
     try{ h(...args, env || (env = fxEnv())); }catch(e){ if(window.__fxDebug) console.warn('FX.' + k + '.hooks.' + name, e); } });
 }
 function renderVfxForEvent(ev){
+  if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)
   try{ noteFieldEvent(ev); }catch(e){}
   try{ if(typeof FxAutoLower !== 'undefined') FxAutoLower.poke(); }catch(e){} // 2026-10-17: a fight is playing; watch the frame rate (auto-lower effects)
@@ -35567,7 +35643,7 @@ function renderVfxForEvent(ev){
       SkillFX.pounceOnto(attEl, targetEl, {impact: am0.windup + am0.impactPad, scale: attEl.closest('#battlefieldInner') && battlefieldScale > 0 ? battlefieldScale : 1});
       setTimeout(()=>{ attackingUids.delete(String(ev.attUid)); attEl.classList.remove('is-attacking', 'is-pouncing'); }, am0.windup + am0.impactPad + 700);
     }
-    else if(!ev.ranged && !ev._cleave && quickImpactMs(ev) == null) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf}); // Quick dashes itself (2026-10-16)
+    else if(!ev.ranged && !ev._cleave && quickImpactMs(ev) == null && !forkLaterLine(ev)) animateAttacker(ev.attUid, isMine, {leanX, sweep: !!ev.sweep, toCastle: ev.type==='hitHQ', scared: scaredOf}); // Quick dashes itself (2026-10-16); a Fork swing lunged once already (2026-10-17)
     const {windup, projectile, impactPad} = animMs();
     // An 'arrow' event just before this hit (Arrow / Fire Arrow skills) turns its projectile into a real arrow.
     const pa = matchState.pendingArrow;
@@ -36126,7 +36202,7 @@ function renderVfxForEvent(ev){
     // floats "Miss!" on the unit it swung at (the engine now names it, targetUid; the castle when it swung at the castle); older
     // replays without a target keep it on the attacker.
     const el = boardCardEl(ev.attUid), tgt = ev.targetUid != null ? boardCardEl(ev.targetUid) : (ev.night && ev.targetKind === 'hq' ? hqTileEl(ev.side === 'A' ? 'B' : 'A') : null);
-    if(quickImpactMs(ev) == null) animateAttacker(ev.attUid, ev.side==='A'); // a Quick attacker dashes instead (labSkillFx, 2026-10-17)
+    if(quickImpactMs(ev) == null && !forkLaterLine(ev)) animateAttacker(ev.attUid, ev.side==='A'); // a Quick attacker dashes instead (labSkillFx, 2026-10-17); a Fork swing lunged once already
     setTimeout(()=>{ SoundKit.blindTone(); const on = (ev.night && tgt && tgt.isConnected ? tgt : null) || el; if(on) floatText(on, (ev.night && window.FX && FX.B && FX.B.missText && FX.B.missText(ev, matchState)) || (ev.night ? 'Miss!' : '👁 Miss!'), 'debuff'); }, quickImpactMs(ev) != null ? quickImpactMs(ev) : animMs().windup);
   }
   // Poison tick (item #1, 2026-09-16): a bubbling sound instead of the old flat drip, and a
