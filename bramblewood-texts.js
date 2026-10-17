@@ -267,7 +267,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.now-in-your-collection": "{v1} — now in your collection",
   "results.open-your-deck-to-swap-in": "Open your deck to swap {plural_them} in",
   "results.put-in-my-deck": "🃏 Put {plural_them} in my deck",
-  "results.won": "🎁 {v1} won!",
   "results.cards-it-opens-as-soon-as": "{name}: {cards} cards. It opens as soon as you leave this screen",
   "results.cards-opens-next": "{v1}<b>{name}</b><small>{cards} cards · opens next</small>",
   "results.packs-open-once-the-armoury-camp": "Packs open once the Armoury (⛺ Camp) is open on the map",
@@ -286,23 +285,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.lv": "🌱 {v1} Lv {to}",
   "results.a-spare-copy-of-a-base": "A spare copy of a Base card in your deck: feed it in the Forge",
   "results.your-base-cards-had-nothing-left": "Your Base cards had nothing left to grow, so it came as Dust",
-  "results.spare-castle": "Spare castle",
   "results.fuse-it-in-the-forge-castles": "Fuse it in the Forge (Castles) to bank progress toward its next levels",
-  "results.kibble": "Kibble",
-  "results.dungeon-key": "Dungeon key",
   "results.a-win-gives-your-key-back": "A won floor gives your Dungeon key back, so you can keep climbing",
   "results.dungeon-key-back": "🗝️ +1 Dungeon key ({n} in hand)",
   "results.dungeon-key-lost-climb-resets": "🗝️ Your Dungeon key is lost, and the climb starts again from floor 1 (you fell on floor {floor}; best: floor {best}).",
   "results.dungeon-climb-resets": "The climb starts again from floor 1 (you fell on floor {floor}; best: floor {best}).",
   "results.trains-a-level-0-card-to": "Trains a Level-0 card to Level 1 in the Nest",
   "results.kibble-2": "🦴 {conquestKibbleEarned} Kibble",
-  "results.found": "Found",
   "results.it-s-in-your-pack-place": "It's in your pack: place it in a hay nest in the Nest",
   "results.an-egg": "An egg",
   "results.unlocked": "Unlocked",
   "results.conquest-map": "🗺️ Conquest Map",
   "results.tutorial-part-2": "🎓 Tutorial Part 2",
-  "results.new-fights": "New fights",
   "results.hp": "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}",
   "results.next": "Next: {name} ⚔️",
   "results.needs-you-have": "— needs {e}⚡, you have {currentEnergy}⚡",
@@ -488,7 +482,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.thanks-we-read-every-one": "💬 Thanks! We read every one.",
   "toast.jumps-you-on-the-road-beat": "{icon} {name} jumps you on the road! Beat it to go on.",
   "toast.errand-complete-claim-it-on-the": "📜 Errand complete: {title}. Claim it on the Notices.",
-  "toast.errand": "📜 Errand: {title} — {v}/{g}"
+  "toast.errand": "📜 Errand: {title} — {v}/{g}",
+  "toast.voice-lines": "Voice lines:",
+  "toast.npc-dialogue": "NPC dialogue:"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
