@@ -1329,6 +1329,13 @@
   .cd-stat-n{font-family:'Baloo 2'; font-weight:800; font-size:19px; color:var(--accent);}
   .cd-stat-l{font-size:10px; color:var(--ink-muted); text-transform:uppercase; letter-spacing:.03em; margin-top:2px;}
   .cd-stat-note{margin-top:8px;}
+  /* 2026-10-17 (card stats): "Your record" in the Codex card detail — this card's lifetime numbers (see cardRecordHTML) */
+  .cd-record{margin-top:14px;}
+  .cd-record h3{margin:0 0 6px; font-size:15px;}
+  .cd-rec-grid{display:grid; grid-template-columns:repeat(auto-fill, minmax(104px, 1fr)); gap:6px;}
+  .cd-rec{background:var(--bg); border:1px solid var(--surface-border); border-radius:10px; padding:6px 9px; display:flex; flex-direction:column; min-width:0;}
+  .cd-rec b{font-family:'Baloo 2'; font-weight:800; font-size:17px; line-height:1.15; color:var(--accent); font-variant-numeric:tabular-nums;}
+  .cd-rec small{font-size:10.5px; color:var(--ink-muted); line-height:1.25;}
   .creator-note{background:var(--bg); border:1px solid var(--surface-border); border-left:3px solid var(--accent); border-radius:8px; padding:9px 12px; font-size:13.5px; line-height:1.5; margin:14px 0 0;}
   .creator-note-sig{font-weight:800; color:var(--accent); font-style:normal; white-space:nowrap;}
   /* Admin panel's "Manage Cards" section (#363) — a compact search-to-edit grid, deliberately
