@@ -196,7 +196,7 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   // field when you pitch a card (firePitchTriggers). Its card text reads "Scavenge - <effect>" (a placeholder name).
   'onPitch'];
 const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // fire even while Waiting
-const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit']; // + Fire on hit (2026-10-16)
+const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
   rnd = rnd || Math.random;
@@ -4583,6 +4583,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           else { const tg = who === 'self' ? {card:boardCard} : resolveGeneralTarget(players, playerId, boardCard, who === 'enemy' ? 'ally' : who, sub); if(tg && tg.card) grantShield(playerId, boardCard, tg.card, n, sideOf, events); }
           break;
         }
+        // Rebuild castle N (2026-10-17, the Rebuild skill's action form): restore N Health to this card's own castle (its Attack or
+        // Health with the amount selector), never above max. Works from any trigger, a hand trigger (On Discard) too.
+        case 'rebuild': { const n = (t.amount==='attack') ? (boardCard ? boardCard.atk : 0) : (t.amount==='health') ? (boardCard ? boardCard.hp : 0) : (Number(t.amount)||0);
+          rebuildCastle(players, sideOf, playerId, boardCard, n, stats, events, 'trigger'); break; }
         case 'heal': {
           // Custom/My-Attack/My-Health amount selector (2026-09-30) -- 'health' reads the card's
           // own CURRENT hp (captured before the heal applies, so it isn't inflated by its own
@@ -5235,6 +5239,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!(recordEvents && shieldEvents) || !card || !(card.hp > 0)) return;
     const pid = ownerPidOfCard(card); shieldEvents.push({type:'statusEnd', status:'asleep', woke:true, side: shieldSideOf ? shieldSideOf(pid) : (pid===1 ? 'A' : 'B'), uid:card.uid, defId:card.defId});
   }
+  // Rebuild N (2026-10-17, user: "A new skill: Rebuild N: The unit regenerates the castle for N on ready. As an action, then on the
+  // trigger, it regenerates the castle for N."): the passive restores N Health to its own castle every upkeep while it is Ready
+  // (the same "On Ready" rule as onReadyGold's income: every round it is awake, from the upkeep its Wait runs out, and a unit
+  // played on Wait 0 from the next upkeep); the trigger action 'rebuild' does it once whenever its trigger fires. Never above
+  // the castle's max, nothing for a fallen castle, and a full castle makes no event. Not a unit heal: Herbalist and the heal
+  // triggers don't see it. Event: {type:'rebuild', side, defId, uid, amount (what it restored), n, trigger, hp, maxHp}.
+  const REBUILD_DEF = 2;
+  function rebuildCastle(players, sideOf, pid, src, n, stats, events, how){
+    const pl = players && players[pid]; if(!pl || !pl.hq || !(pl.hq.hp > 0)) return 0;
+    const h = Math.min(Math.max(0, Math.floor(Number(n)||0)), Math.max(0, pl.hq.maxHp - pl.hq.hp)); if(!(h > 0)) return 0;
+    pl.hq.hp += h;
+    if(src && src.defId && stats){ const st = ensureStat(stats, sideOf(pid), src.defId); st.castleRebuilt = (st.castleRebuilt||0) + h; }
+    if(recordEvents && events) events.push({type:'rebuild', side:sideOf(pid), defId: src ? src.defId : null, uid: src ? src.uid : null, amount:h, n:Math.floor(Number(n)||0), trigger: how === 'trigger', hp:pl.hq.hp, maxHp:pl.hq.maxHp});
+    return h;
+  }
   function endOfRoundUpkeep(players, sideOf, stats, events){
     const p1=players[1], p2=players[2];
     // Shell: deactivate whatever was active THIS round (already applied above in resolveCombat/
@@ -5397,6 +5416,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           ensureStat(stats, sideOf(pl.id), c.defId).lumberGenerated += def.effects.onReadyGold;
           if(recordEvents && events) events.push({type:'lumber', side:sideOf(pl.id), defId:c.defId, uid:c.uid, amount:def.effects.onReadyGold});
         }
+        // Rebuild N (2026-10-17): every upkeep while Ready, like onReadyGold just above (so also the upkeep its Wait runs out).
+        if(def.effects && def.effects.rebuild && c.hp > 0 && !c.cageOf) rebuildCastle(players, sideOf, pl.id, c, numN(def.effects.rebuild, REBUILD_DEF), stats, events, 'ready');
         if(def.effects && def.effects.onReadyGrace){
           pl.grace += def.effects.onReadyGrace;
           ensureStat(stats, sideOf(pl.id), c.defId).graceGenerated += def.effects.onReadyGrace;

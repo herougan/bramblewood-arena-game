@@ -17276,5 +17276,24 @@
   "status": "built",
   "added": "2026-10-17",
   "id": "st-hover-height"
+ },
+ {
+  "id": "sk-rebuild",
+  "area": "combat-skill",
+  "name": "Rebuild N (passive) / Rebuild castle N (trigger action)",
+  "trigger": "rebuild {side, uid, defId, amount, n, trigger}: the passive every upkeep while Ready (endOfRoundUpkeep, beside onReadyGold), the action whenever its trigger fires",
+  "current": "rebuildVfx: planks and stones (🪵🧱🪨) fly from the builder into its castle (floatGlyphs), the castle thunks, a green \"🔨 +N\" pops on that side's HP bar (hqRibbonFloatAnchor) as the bar fills (displayHqHp during the replay); woodKnock + healTone; log \"🔨🏰 X rebuilds your castle: +N Health\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Builders: beavers, the Lodge Engineer, sappers. On no card yet (2026-10-17).",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: rebuildVfx, rebuildLogText, PASSIVE_DEFS rebuild, ACTION_DEFS rebuild",
+   "bramblewood-engine.js: rebuildCastle"
+  ],
+  "batch": "RB17",
+  "status": "built",
+  "added": "2026-10-17"
  }
 ]

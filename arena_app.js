@@ -327,6 +327,7 @@ SKILL_ICON.amore = '💕'; // Amore (2026-10-16): 💕 waiting, ❤️ paired, �
 Object.assign(SKILL_ICON, {iceArrow:'🧊🏹', twinShot:'🏹🏹', volley:'🎯🏹', fireBolt:'🔥', acidBolt:'🧪', poisonBolt:'🐍', iceBolt:'❄️', shockBolt:'⚡', chilli:'🌶️'});
 Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌', keenSense:'👃'});
 Object.assign(SKILL_ICON, {chainLightning:'🌩️'}); // 2026-10-17: Chain Lightning
+SKILL_ICON.rebuild = '🔨🏰'; // Rebuild N (2026-10-17; 🧱 alone is Bulwark's)
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
 // because 💨 is Swift's, 🌫️ Shade's and 🫧 Poison's, with 💣💨 where only text fits.
 Object.assign(SKILL_ICON, {psychic:'💭', smokeBomb:'💣💨'});
@@ -1088,6 +1089,11 @@ const PASSIVE_DEFS = [
   {key:'fletcher', category:'passive', label:'Fletcher', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, your units' arrows (Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley) deal ${numOr(v, 1)} more damage (its own too).`, get:e=> e.fletcher ? numOr(e.fletcher, 1) : undefined},
   {key:'herbalist', category:'passive', label:'Herbalist', kind:'number', min:1, defaultValue:1, desc:v=>`While it is on the field, every heal on your units heals ${numOr(v, 1)} more (Healing, Regeneration, Bloom, Nursing, a Heal trigger...).`, get:e=> e.herbalist ? numOr(e.herbalist, 1) : undefined},
   {key:'shatter', category:'passive', label:'Shatter', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits and shots deal ${numOr(v, 2)} more damage to a Frozen unit.`, get:e=> e.shatter ? numOr(e.shatter, 2) : undefined},
+  // Rebuild N (2026-10-17, user: "A new skill: Rebuild N: The unit regenerates the castle for N on ready. As an action, then on the
+  // trigger, it regenerates the castle for N."): the engine's rebuildCastle. "On Ready" as with the On Ready income (onReadyGold):
+  // every upkeep while Ready. Its action form is "Rebuild castle" in ACTION_DEFS.
+  {key:'rebuild', category:'passive', label:'Rebuild', kind:'number', min:1, defaultValue:2, desc:v=>`While Ready, it restores ${numOr(v, 2)} Health to your castle every upkeep (every round it is awake, from the upkeep its Wait runs out), never above the castle's max. It mends the castle, not a unit: Herbalist doesn't add to it.`, get:e=> e.rebuild ? numOr(e.rebuild, 2) : undefined,
+    codexNote:'Its action form, Rebuild castle N, mends your castle once whenever its trigger fires (any trigger).'},
 ];
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
@@ -1299,6 +1305,8 @@ const ACTION_DEFS = [
   // Fire on hit (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. (Meant for Map 20)").
   // The Burn 1 Lumber step is the trigger's "Pay" field (t.cost = 'burnLumber'), open to every action ("Burn 1 Lumber, Heal ally N").
   {key:'fireHit', label:'Fire on hit', fields:['amount'], desc:"Pair with On Attack: this attack's hit also deals N fire damage to what it hits (a unit, or the castle)."},
+  // Rebuild castle (2026-10-17, the Rebuild skill's action form: "As an action, then on the trigger, it regenerates the castle for N").
+  {key:'rebuild', label:'Rebuild castle', fields:['amount'], desc:"Restore N Health to this card's own castle (or its Attack or Health with the amount picker), never above the castle's max. Any trigger."},
   {key:'addWait', label:'Increase Wait', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
 ];
 // Chained (Devilry, 2026-09-17) break conditions — the one place to add a new one later (the
@@ -2250,6 +2258,7 @@ Object.assign(SKILL_TEXT, {
   fletcher: v=> `Your units' arrows deal ${numOr(v, 1)} more damage.`,
   herbalist: v=> `Every heal on your units heals ${numOr(v, 1)} more.`,
   shatter: v=> `Its hits deal ${numOr(v, 2)} more damage to Frozen units.`,
+  rebuild: v=> `While Ready, restore ${numOr(v, 2)} Health to your castle every upkeep.`, // 2026-10-17
 });
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 // Pounce's amount in words (2026-10-16): "5", "<Att>" (its Attack) or "<Hp>" (its Health); an editor row value [mode, n] too.
@@ -6366,6 +6375,7 @@ function triggerActionEmoji(t){
     case 'stunPlayer': return '🚫';
     case 'heal': return '💚';
     case 'shield': return '💠';
+    case 'rebuild': return '🔨'; // Rebuild castle (2026-10-17)
     case 'cleanse': return '🫧';
     case 'addWait': return '⏳';
     case 'reduceWaitOfSpawned': return '⏩';
@@ -6408,7 +6418,7 @@ function triggerBadges(d, live){
   });
 }
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
-  'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'shatter']; // + the 2026-10-17 skills (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
+  'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'shatter', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -8549,6 +8559,7 @@ function triggerPreviewText(t){
     case 'cleanse': { const w = t.who && t.who!=='self' ? whoTarget : 'itself'; doText = t.amount ? `cleanse ${t.amount} ailment${t.amount===1?'':'s'} from ${w} (curses first)` : `cleanse ${w} of every ailment`; break; }
     case 'addWait': doText = `delay ${whoTarget} by ${amt} Wait`; break;
     case 'fireHit': doText = `its hit also deals ${amt} fire damage`; break; // 2026-10-16
+    case 'rebuild': doText = `restore ${amt} Health to your castle`; break; // 2026-10-17
     default: doText = aDef.label.toLowerCase();
   }
   if(t.cost === 'burnLumber') doText = `burn 1 Lumber (if you have it), then ${doText}`; // the cost step (2026-10-16)
@@ -8574,7 +8585,7 @@ function actionFieldsHTML(t,i){
   // available for Health too and on Heal as well as Deal Damage. Judgment call: "= My Health"
   // uses the card's current HP (boardCard.hp), not its printed max -- parallel to how "= My
   // Attack" already reads the current, possibly-buffed Attack rather than a frozen base number.
-  if(aDef.key==='damage' || aDef.key==='heal'){
+  if(aDef.key==='damage' || aDef.key==='heal' || aDef.key==='rebuild'){ // + Rebuild castle (2026-10-17)
     const mode = t.amount==='attack' ? 'attack' : t.amount==='health' ? 'health' : 'custom';
     html += `<select data-t="amtMode" data-i="${i}" title="Use a fixed number, or an amount equal to this card's own current Attack or Health stat.">
       <option value="custom" ${mode==='custom'?'selected':''}>Custom amount</option>
@@ -21998,7 +22009,7 @@ function runCardCheck(host){
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
 const SB_KEY = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2';
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
-const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', bleed:'v', snipe:'v', arrows:'v', crabClaws:0}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, missMult:1.5};
@@ -23014,6 +23025,7 @@ const FXL_SKILL_SETUPS = {
   fletcher: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Archer', icon:'🏹', effects:{arrow:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}], steps:['round'], note:'The Archer beside it shoots for 2; with Fletcher its arrows hit harder.'},
   herbalist: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Mender', icon:'💚', effects:{regen:2}}}], status:{ally:{hp:1}}, steps:['round', 'round'], note:'The Mender beside it regenerates 2 a round; with Herbalist every heal is bigger.'},
   shatter: {status:{foe:{frozen:3}}, steps:['round'], note:'The dummy in front is Frozen: its hit shatters for more.'},
+  rebuild: {hqHurt:12, steps:['round', 'round'], note:'Your castle starts 12 Health down; each upkeep the Specimen is Ready it puts 2 back (planks and stones fly in, a green +2 on the HP bar).'}, // 2026-10-17
   vanguard: {unsupported:'It acts on the opening hand and the first card you play, which a staged board can\'t show. See it in a real fight.'},
   reach: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}], note:'It faces a Flyer.'},
   boomerang: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}], note:'It faces Flyers.'},
@@ -23129,6 +23141,7 @@ const FXL_ACTION_SETUPS = {
   cleanse: {t:{who:'ally', sub:'adjacent'}, status:{ally:{poison:3, bleed:2}}, note:'The Sparring Partner starts Poisoned and Bleeding.'},
   addWait: {t:{amount:2, who:'enemy', sub:'adjacent'}},
   shield: {t:{amount:4, who:'ally', sub:'all'}, steps:[{spawn:'subject'}, 'round'], note:'Every ally gets Shield 4, then a round of blows eats into it.'}, // 2026-10-14
+  rebuild: {t:{amount:4}, hqHurt:12, note:'Your castle starts 12 Health down: the Specimen arrives and mends 4 of it.'}, // 2026-10-17
   fireHit: {on:'onAttack', t:{amount:3, cost:'burnLumber'}, lumber:2, steps:['round', 'round', 'round'], note:'On Attack, Burn 1 Lumber: its hit deals 3 extra fire damage. You hold 2 Lumber, so the third round has nothing to burn.'}, // 2026-10-16
 };
 const FXL_CHANCE_TWO = new Set(['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger']);
@@ -23156,7 +23169,7 @@ function fxlRealSkillValue(sd){
 function fxlKnownTypes(){ if(fxLib && fxLib.types) return fxLib.types; const defs = getCardDefs(), s = new Set(); Object.values(defs).forEach(d=> (d && d.archetypes || []).forEach(t=> s.add(t))); if(fxLib) fxLib.types = s; return s; }
 function fxlRetype(v, to){ const T = fxlKnownTypes(); if(typeof v === 'string') return T.has(v) ? to : v; if(Array.isArray(v)) return v.map(x=> fxlRetype(x, to)); if(v && typeof v === 'object'){ const o = {}; Object.keys(v).forEach(k=> o[k] = fxlRetype(v[k], to)); return o; } return v; }
 // Skills whose stand-in value is their own default rather than 3 (2026-10-14: a Fireball 3 or a Meteor 3 shows little).
-const FXL_NUMBER_DEFAULTS = {chainLightning:2, /* 2026-10-17 */ vanguard:1, web:2, carrion:2, hoard:2, venomMaster:1, fletcher:1, herbalist:1, shatter:2, ambush:3, penance:3, bloodTithe:2, fireball:15, meteor:20, bloodlust:1, venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, predator:2, nova:3, crystallise:5, cure:2, molting:1, sweep:1}; // + the W2 skills' own defaults (2026-10-16) // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
+const FXL_NUMBER_DEFAULTS = {chainLightning:2, rebuild:2, /* 2026-10-17 */ vanguard:1, web:2, carrion:2, hoard:2, venomMaster:1, fletcher:1, herbalist:1, shatter:2, ambush:3, penance:3, bloodTithe:2, fireball:15, meteor:20, bloodlust:1, venomous:2, toxin:1, weaken:1, wilting:1, bulldoze:1, tangle:1, strangle:2, invincible:1, invisible:2, poisonGas:2, spitfire:2, slashBurn:3, trap:5, predator:2, nova:3, crystallise:5, cure:2, molting:1, sweep:1}; // + the W2 skills' own defaults (2026-10-16) // Bloodlust 1: +1 a blood-drawing hit, up to +3 (2026-10-15)
 function fxlSkillEffects(sd){
   const e = {}; let from = null;
   const real = fxlRealSkillValue(sd);
@@ -23185,7 +23198,7 @@ function fxlScenario(entry){
     sc.subjectFx = sk.e; if(sk.from) sc.notes.push(`Its value is taken from ${sk.from}.`);
     const hm = FXL_SKILL_SETUPS[entry.key];
     if(hm && hm.unsupported){ sc.unsupported = hm.unsupported; return sc; } // 2026-10-17: a skill a staged board can't show (Vanguard)
-    if(hm){ sc.hand = true; if(hm.lumber) sc.lumber = hm.lumber; /* 2026-10-17: Hoard */ if(hm.foeFx) ['foe', 'foe2', 'foe3'].forEach(r=> setRoleDef(r, {effects: hm.foeFx})); if(hm.foeDef) setRoleDef('foe', hm.foeDef); if(hm.status) sc.status = JSON.parse(JSON.stringify(hm.status)); if(hm.foeLumber) sc.foeLumber = hm.foeLumber; if(hm.res) sc.res = Object.assign({}, hm.res); if(hm.helperFx) sc.helperFx = Object.assign({}, hm.helperFx); if(hm.rainy) sc.rainy = true; if(hm.mine) useUnits({mine:hm.mine}); if(hm.foes) useUnits({foes:hm.foes}); if(hm.rules) sc.rules = Object.assign({}, hm.rules); if(hm.pre) sc.pre = hm.pre; if(hm.steps) sc.steps = hm.steps.slice(); if(hm.startTide) sc.startTide = true; if(hm.withhold) sc.withhold = hm.withhold; if(hm.wait) sc.wait = Object.assign({}, hm.wait); if(hm.note) sc.notes.push(hm.note); } // + withhold / wait (2026-10-16)
+    if(hm){ sc.hand = true; if(hm.lumber) sc.lumber = hm.lumber; /* 2026-10-17: Hoard */ if(hm.hqHurt) sc.hqHurt = hm.hqHurt; /* 2026-10-17: Rebuild */ if(hm.foeFx) ['foe', 'foe2', 'foe3'].forEach(r=> setRoleDef(r, {effects: hm.foeFx})); if(hm.foeDef) setRoleDef('foe', hm.foeDef); if(hm.status) sc.status = JSON.parse(JSON.stringify(hm.status)); if(hm.foeLumber) sc.foeLumber = hm.foeLumber; if(hm.res) sc.res = Object.assign({}, hm.res); if(hm.helperFx) sc.helperFx = Object.assign({}, hm.helperFx); if(hm.rainy) sc.rainy = true; if(hm.mine) useUnits({mine:hm.mine}); if(hm.foes) useUnits({foes:hm.foes}); if(hm.rules) sc.rules = Object.assign({}, hm.rules); if(hm.pre) sc.pre = hm.pre; if(hm.steps) sc.steps = hm.steps.slice(); if(hm.startTide) sc.startTide = true; if(hm.withhold) sc.withhold = hm.withhold; if(hm.wait) sc.wait = Object.assign({}, hm.wait); if(hm.note) sc.notes.push(hm.note); } // + withhold / wait (2026-10-16)
     if(!sc.steps){ const how = fxlProbeTiming(sc); sc.steps = how.steps; if(how.note) sc.notes.push(how.note); }
   } else if(entry.group === 'on'){
     const hm = FXL_TRIGGER_SETUPS[entry.key] || {}; sc.hand = true;
@@ -23208,7 +23221,7 @@ function fxlScenario(entry){
     sc.steps = hm.steps ? hm.steps.slice() : [{spawn: sc.withhold}];
     if(hm.wait) sc.wait = Object.assign({}, hm.wait);
     if(hm.status) sc.status = JSON.parse(JSON.stringify(hm.status));
-    if(hm.lumber) sc.lumber = hm.lumber; if(hm.decks) sc.decks = true;
+    if(hm.lumber) sc.lumber = hm.lumber; if(hm.decks) sc.decks = true; if(hm.hqHurt) sc.hqHurt = hm.hqHurt; // + a wounded castle (Rebuild castle, 2026-10-17)
     sc.notes.push(`The Specimen carries "${(TRIGGER_DEFS.find(t=> t.key === (hm.on || 'onSpawn'))||{}).label || hm.on}: ${entry.name}".`);
     if(hm.note) sc.notes.push(hm.note);
   } else if(entry.field){
@@ -23255,6 +23268,7 @@ function fxlPopulate(E, P, so, stats, sc, events){
   [1, 2].forEach(pid=> E.allBoardCards(P[pid]).forEach(c=>{ const role = Object.keys(roles).find(r=> roles[r] === c.uid); c.wait = (role && sc.wait[role] != null) ? sc.wait[role] : 0; if(role && sc.status[role]) Object.assign(c, sc.status[role]); }));
   if(sc.lumber) P[1].lumber = sc.lumber;
   if(sc.foeLumber) P[2].lumber = sc.foeLumber;
+  if(sc.hqHurt > 0) P[1].hq.hp = Math.max(1, P[1].hq.maxHp - sc.hqHurt); // a wounded castle to mend (Rebuild, 2026-10-17)
   if(sc.res) Object.keys(sc.res).forEach(k=>{ P[1][k] = sc.res[k]; });
   return roles;
 }
@@ -23276,9 +23290,12 @@ function fxlStepSilent(E, P, so, stats, roles, step, round, events, sc){
   else if(step.heal) E.debugHeal(P, so, roles[step.heal], step.n || 3, stats, events);
   else if(step.attack) E.debugAttack(P, so, roles[step.attack], stats, events);
   else if(step.fire) E.debugFireTrigger(P, so, roles.subject, step.fire, stats, events);
-  [1, 2].forEach(pid=>{ P[pid].hq.hp = P[pid].hq.maxHp; });
+  fxlHqFill(P, sc);
   return round;
 }
+// The stage's castles never fall: both are filled back up after every step. 2026-10-17 (Rebuild): with sc.hqHurt your castle is
+// left as it is instead (just kept above 0), so the Health a castle heal puts back stays on the bar.
+function fxlHqFill(P, sc){ [1, 2].forEach(pid=>{ const hq = P[pid].hq; hq.hp = (pid === 1 && sc && sc.hqHurt > 0) ? Math.max(1, Math.min(hq.hp, hq.maxHp)) : hq.maxHp; }); }
 // What the steps report, without uids: the same fight with and without the entry is compared on this.
 function fxlSig(events){ return events.map(ev=> Object.keys(ev).filter(k=> !/uid|slot/i.test(k) && ev[k] != null && typeof ev[k] !== 'object').sort().map(k=> k + '=' + ev[k]).join(',')).join('|'); }
 function fxlProbe(sc, bare, steps, seed){
@@ -23341,7 +23358,7 @@ function fxlBuildStage(){
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   fxLib.roles = sc.unsupported ? {} : fxlPopulate(E, P, so, stats, sc, []);
   for(let i = 0; i < (sc.pre||0); i++){ matchState.round++; E.roundStart(P, matchState.round, so, stats, []); }
-  [1,2].forEach(pid=>{ P[pid].hq.hp = P[pid].hq.maxHp; });
+  fxlHqFill(P, sc);
   fxlRenderInfo(); fxlRenderLog(null); fxlRenderControls();
 }
 // Leftover effect layers from the last play (VFX nodes the game hangs on <body>) are removed, and any lightning timer stops.
@@ -23376,7 +23393,7 @@ async function fxlPlay(){
     for(const step of sc.steps){
       if(!fxLib || fxLib.token !== token || matchState !== m) break;
       await fxlRunStep(m, step);
-      [1,2].forEach(pid=>{ m.players[pid].hq.hp = m.players[pid].hq.maxHp; }); m.over = false; m.winner = 0;
+      fxlHqFill(m.players, sc); m.over = false; m.winner = 0;
       try{ updateHqHpDisplay('A'); updateHqHpDisplay('B'); }catch(e){}
       await sleep(Math.round(350 / (m.speedMult||1)));
     }
@@ -29053,7 +29070,7 @@ async function discardCardByUid(uid){
   // the plain resource-gain actions apply. Accumulated separately from onDiscardGainChips so
   // it can be folded into the SAME gainChips array below and ride the existing "+N flying
   // icon" VFX rather than needing a second VFX pass.
-  const onDiscardGains = [];
+  const onDiscardGains = [], onDiscardRebuild = []; // + Rebuild castle (2026-10-17)
   if(dcDef && dcDef.effects && Array.isArray(dcDef.effects.triggers)){
     dcDef.effects.triggers.filter(t=>t.on==='onDiscard').forEach(t=>{
       const amt = t.amount||0; if(amt<=0) return;
@@ -29061,6 +29078,9 @@ async function discardCardByUid(uid){
       else if(t.do==='gainGrace'){ me.grace = (me.grace||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.grace.glyph, pillId:PITCH_RESOURCE_META.grace.pillId}); }
       else if(t.do==='gainStone'){ me.stone = (me.stone||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.stone.glyph, pillId:PITCH_RESOURCE_META.stone.pillId}); }
       else if(t.do==='gainDevilry'){ me.devilry = (me.devilry||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.devilry.glyph, pillId:PITCH_RESOURCE_META.devilry.pillId}); }
+      // Rebuild castle (2026-10-17): On Discard mends your castle, never above max (a number; From the hand it has no Attack or Health).
+      else if(t.do==='rebuild' && me.hq && me.hq.hp > 0){ const h = Math.min(Math.max(0, Math.floor(Number(amt)||0)), me.hq.maxHp - me.hq.hp);
+        if(h > 0){ me.hq.hp += h; onDiscardRebuild.push({type:'rebuild', side:m.sideOf(activePid), defId:dc.defId, uid:null, amount:h, n:Math.floor(Number(amt)||0), trigger:true, hp:me.hq.hp, maxHp:me.hq.maxHp}); } }
     });
   }
   if(me.perks && me.perks.secondPitch) me.perks.secondPitch = false; // Wildpath "Second Pitch": once a fight, a second pitch this turn
@@ -29090,6 +29110,7 @@ async function discardCardByUid(uid){
   pushLog({type:'discard', side:m.sideOf(activePid), defId:dc.defId, resource:yieldInfo.resource, amount:yieldInfo.amount});
   if(darkPointBonus>0) pushLog({type:'devilry', side:m.sideOf(activePid), defId:dc.defId, amount:darkPointBonus});
   pitchEv.forEach(ev=>{ try{ pushLog(ev); renderVfxForEvent(ev); }catch(e){} }); // On Pitch (2026-10-16)
+  onDiscardRebuild.forEach(ev=>{ try{ pushLog(ev); renderVfxForEvent(ev); }catch(e){} }); // Rebuild castle On Discard (2026-10-17)
   }, 'pitch presentation');
   // Discarding no longer auto-ends the turn (2026-09-14, per explicit request) — you can
   // still play a card (or manually Skip Turn) afterward. It only ends the turn on its own
@@ -32714,6 +32735,7 @@ function delayForEvent(ev, prevKind){
   else if(ev.type==='triggerFired') base = 300; // a beat to see the rune before the effect lands
   else if(ev.type==='wave') base = ev.blocked ? 640 : 820; // 2026-10-17 (user: "Make it ride the wave and move to its new location"): the ride (or the bob) plays out before the next re-render
   else if(ev.type==='forkSwing') base = 0; // the swing's lines follow at once (2026-10-17)
+  else if(ev.type==='rebuild') base = 560; // Rebuild (2026-10-17): the planks are in the air; the bar fills as they land
   // Generic bucket pacing (was 200/500 through 2026-09-20; trimmed 2026-09-21 per explicit
   // feedback -- "Sometimes, there is a small 0.2-0.3s pause between anims. Why? I want the
   // anims to be smooth" -- that gap was exactly this bucket's same-kind/diff-kind pause on
@@ -33244,6 +33266,7 @@ function logText(ev){
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
   { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
+  if(ev.type === 'rebuild') return rebuildLogText(ev, nm); // Rebuild (2026-10-17)
   { const f2 = field2LogText(ev, nm); if(f2) return f2; } // field effects 2 (2026-10-16)
   switch(ev.type){
     case 'play': return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}.`};
@@ -35407,6 +35430,36 @@ function w2SkillVfx(ev){
     case 'hit': { const rc = rcOf(ev.targetUid); if(rc && rc.invincible > 0 && !(ev.dmg > 0)){ const el = boardCardEl(ev.targetUid); fl(el, '🌟 Invincible', 'quick'); if(el && fx()) F.invincibleBlock(el); } break; }
   }
 }
+// ==== Rebuild N / Rebuild castle N (2026-10-17, user: "A new skill: Rebuild N: The unit regenerates the castle for N on ready. As an
+// action, then on the trigger, it regenerates the castle for N."): the engine's 'rebuild' event {side, defId, uid, amount, n, trigger}.
+// The log says who mended which castle; the look: planks and stones fly from the builder into its castle, the castle thunks, and a
+// green "+N" pops on that side's HP bar as the bar fills. During a round's replay the bar's running number (displayHqHp) goes up
+// by what it restored, so the next castle hit counts down from the mended number.
+function rebuildLogText(ev, nm){
+  const pc = matchState && matchState.mode === 'pc', whose = pc ? (ev.side === 'A' ? "Player 1's" : "Player 2's") : (ev.side === 'A' ? 'your' : "the enemy's");
+  const who = ev.defId ? nm(ev.defId) : 'A builder', part = ev.n > ev.amount ? ` (${ev.amount} of ${ev.n}: it is back to full)` : '';
+  return {cls:'heal', text:`🔨🏰 ${who} rebuilds ${whose} castle: +${ev.amount} Health${part}.`};
+}
+function rebuildVfx(ev){
+  if(!ev || ev.type !== 'rebuild' || !matchState) return;
+  const m = matchState, side = ev.side, amt = Math.max(0, Number(ev.amount)||0); if(!amt) return;
+  const pl = m.players && m.players[side === 'A' ? 1 : 2];
+  if(m.resolving && m.displayHqHp && m.displayHqHp[side] != null) m.displayHqHp[side] = Math.min((pl && pl.hq && pl.hq.maxHp) || Infinity, m.displayHqHp[side] + amt);
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  // After a play (On Spawn) the board is re-rendered: look the builder and the castle up a moment later.
+  w2Later(m.resolving ? 0 : 420, ()=>{
+    const castle = hqTileEl(side), src = ev.uid != null ? boardCardEl(ev.uid) : null, calm = reducedMotion() || fxLevel() === 'none';
+    if(!calm && castle) floatGlyphs(src || castle, castle, src ? ['🪵', '🧱', '🪨', '🪵'] : ['🧱', '🪵'], {size:20, rise: src ? 46 : 24, rise2: src ? 4 : 30, ms:780});
+    snd('woodKnock');
+    setTimeout(()=>{
+      try{ updateHqHpDisplay(side); }catch(e){}
+      try{ floatText(hqRibbonFloatAnchor(side) || castle, '🔨 +' + amt, 'heal hq-big'); }catch(e){}
+      const c2 = hqTileEl(side), tile = c2 && (c2.classList.contains('card-tile') ? c2 : (c2.querySelector('.card-tile') || c2));
+      if(tile && !calm && tile.animate) try{ tile.animate([{transform:'scale(1)'}, {transform:'scale(1.045) translateY(-2px)', offset:.35}, {transform:'scale(1)'}], {duration:320, easing:'ease-out'}); }catch(e){}
+      snd('woodKnock'); snd('healTone');
+    }, calm ? 0 : 760);
+  });
+}
 // ==== 2026-10-17 skills: battle-log lines and looks for Reflect (a bounced shot), the Bloodlust leap, Sentry, Vanguard, Web, Carrion.
 function s17LogText(ev, nm){
   if(ev.type === 'reflectShot') return {cls:'', text: ev.fireball ? `🪞 ${nm(ev.defId)} reflects the fireball back!` : ev.castle ? `🪞 ${nm(ev.defId)} reflects the shot into the castle!` : `🪞 ${nm(ev.defId)} reflects the shot at ${nm(ev.targetDefId)}!`};
@@ -35601,6 +35654,7 @@ function renderVfxForEvent(ev){
   try{ ninthPassVfx(ev); }catch(e){} // the Bolts and Chilli (2026-10-15)
   try{ w2SkillVfx(ev); }catch(e){} // W2 skills (2026-10-16)
   try{ s17SkillVfx(ev); }catch(e){} // 2026-10-17 skills
+  try{ rebuildVfx(ev); }catch(e){} // Rebuild (2026-10-17)
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)

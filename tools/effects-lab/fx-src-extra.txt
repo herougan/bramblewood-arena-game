@@ -52,3 +52,5 @@ bubbleFollowStart
 w2SkillVfx
 # animMs → sharpBoard asks it once a stand-in matchState is up
 isSlotMatch
+# Rebuild N / Rebuild castle N (2026-10-17): planks and stones into the castle, a green +N on its HP bar (sk-rebuild)
+rebuildVfx
