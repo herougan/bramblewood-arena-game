@@ -89,13 +89,13 @@ function veil(ctx, on){ const bf = ctx.board.el; let v = bf.querySelector(':scop
   v.classList.add('no-anim', 'is-leaving'); void v.offsetWidth; v.classList.remove('no-anim'); void v.offsetWidth; v.classList.add('is-gone'); }
 R({id:'dark-night-veil-in', stage:'board', inGameHook:'renderVfxForEvent phase → syncNightVeil / syncSkyFx',
   note:'2026-10-15 (user: "The transition from day to night should be gradual, and from left to right unevenly."): a ragged, soft edge sweeps the board in ~1.3 s.',
-  variants:[{key:'G', label:'Night sweeps in from the left (ragged edge)', play:ctx=>{ ctx.sound('nightSwell'); ctx.sound('wolfHowl'); sweepSky(ctx, 'day', 'night'); veil(ctx, true); return ctx.wait(2200); }}]});
+  variants:[{key:'G', label:'Before 10-16: night sweeps in from the left (ragged edge)', play:ctx=>{ ctx.sound('nightSwell'); ctx.sound('wolfHowl'); sweepSky(ctx, 'day', 'night'); veil(ctx, true); return ctx.wait(2200); }}]});
 R({id:'dark-night-veil-out', stage:'board', inGameHook:'renderVfxForEvent phase → syncNightVeil / syncSkyFx', variants:[
-  {key:'G', label:'Day comes back from the left (ragged edge)', play:async ctx=>{ sweepSky(ctx, 'day', 'night'); veil(ctx, true); await ctx.wait(1700); ctx.sound('dawnChime'); sweepSky(ctx, 'night', 'day'); veil(ctx, false); await ctx.wait(1900); }}]});
+  {key:'G', label:'Before 10-16: day comes back from the left (ragged edge)', play:async ctx=>{ sweepSky(ctx, 'day', 'night'); veil(ctx, true); await ctx.wait(1700); ctx.sound('dawnChime'); sweepSky(ctx, 'night', 'day'); veil(ctx, false); await ctx.wait(1900); }}]});
 
 // 16: the dawn sound
 R({id:'wt-day-breaks', stage:'board', inGameHook:'renderVfxForEvent phase day → SoundKit.dawnChime (was roosterCrow)', note:'2026-10-15 (user: "The turn to day sfx needs to be improved."): a soft rising chime and two birds.',
-  variants:[{key:'G', label:'Dawn chime and birds (sound)', play:ctx=>{ ctx.sound('dawnChime'); sweepSky(ctx, 'night', 'day'); return ctx.wait(2200); }}]});
+  variants:[{key:'G', label:'Dawn chime; birds on about 1 in 3 daybreaks (sound)', play:ctx=>{ ctx.sound('dawnChime'); sweepSky(ctx, 'night', 'day'); return ctx.wait(2200); }}]});
 
 // 18: the Full Moon howl
 R({id:'fld-moon-active', stage:'board', inGameHook:'fieldSet moon (and nightfall while the Full Moon is up) → SoundKit.moonHowl + moonHowlVfx',
@@ -128,7 +128,7 @@ R({id:'death-bounty', stage:'board', inGameHook:'bounty event → itemDropVfx + 
     if(pill && typeof W.resourceGainVfx === 'function'){ if(!pill.id) pill.id = 'hudLumberPill'; W.resourceGainVfx(el.getBoundingClientRect(), [{amount:2, glyph:'🪵', pillId:pill.id}]); } else ctx.float(el, '+2 🪵', 'gold'); return ctx.wait(1000); }}]});
 R({id:'castle-hp-number', stage:'board', inGameHook:'hitHQ → floatText(hqRibbonFloatAnchor(side)) — the castle damage number rises from the field\'s HP ribbon',
   note:'2026-10-15 (user: "The damage numbers to your castle should come from the battlefield respective HP bar instead").',
-  variants:[{key:'G', label:'Castle damage number off the field\'s HP ribbon', play:ctx=>{ const h = ctx.board.hpMine || ctx.board.hpFoe; if(!h) return ctx.wait(200);
+  variants:[{key:'G', label:'Before 10-16: the castle damage number off the middle of the field\'s HP ribbon', play:ctx=>{ const h = ctx.board.hpMine || ctx.board.hpFoe; if(!h) return ctx.wait(200);
     const bf = h.closest('.battlefield') || ctx.board.el, r = h.getBoundingClientRect(), b = bf.getBoundingClientRect(), a = document.createElement('div');
     a.style.cssText = `position:absolute; width:0; height:0; z-index:40; left:${r.left + r.width/2 - b.left}px; top:${r.top - b.top - 26}px;`; bf.appendChild(a); ctx.float(a, '-6', 'hq-big'); setTimeout(()=> a.remove(), 2000); return ctx.wait(1400); }}]});
 })();

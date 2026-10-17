@@ -52,7 +52,7 @@ CLEAN_JS = r"""(sel)=>{ const src = document.querySelector(sel); if(!src) return
   return {cls: src.className, style: src.getAttribute('style') || '', html: c.innerHTML.replace(/\s{2,}/g, ' ')}; }"""
 
 async def main():
-    out = {'captured': '2026-10-15'}
+    out = {'captured': '2026-10-17'}  # re-captured 2026-10-17: card front frames, card backs, enemy hand count, Pass beside the Graveyard
     async with async_playwright() as p:
         b = await p.chromium.launch(executable_path=EXE)
         pg = await b.new_page(viewport={'width': 1280, 'height': 900})
@@ -79,7 +79,8 @@ async def main():
             return {cls: m.className, bg: cs.backgroundImage.replace(/url\\("?file:[^)"]*?\\/(assets\\/[^)"]+)"?\\)/g, 'url($1)'), bgSize: cs.backgroundSize, bgColor: cs.backgroundColor, w: m.clientWidth, h: m.clientHeight}; })()""")
         out['map']['canvasRect'] = await pg.evaluate("(()=>{ const r = document.getElementById('conquestCanvas').getBoundingClientRect(); return [r.width, r.height]; })()")
         # board: a conquest fight with three units a side
-        await pg.evaluate("(async()=>{ const m = CONQUEST_MAPS[0]; const n = m.nodes.find(n=> n.kind==='skirmish'); startConquestMatch(m.id, n.key, {skipEnergyCost:true}); return 1; })()")
+        # 2026-10-17: a Map 1 fight under Spring Rain, so the board has an Environment card (Map 0's Mist is only a pill since 10-15)
+        await pg.evaluate("(async()=>{ const m = CONQUEST_MAPS.find(m=> m.id==='m1') || CONQUEST_MAPS[0]; const n = m.nodes.find(n=> n.kind==='skirmish'); n.rules = Object.assign({}, n.rules || {}, {field:'rain'}); startConquestMatch(m.id, n.key, {skipEnergyCost:true}); return 1; })()")
         await pg.wait_for_timeout(4200)
         await pg.evaluate("document.querySelectorAll('.vs-screen,#vsScreen,.vs-overlay,.coach-tip,.coach').forEach(e=> e.remove()); 1")
         await pg.evaluate(BOARD_JS)

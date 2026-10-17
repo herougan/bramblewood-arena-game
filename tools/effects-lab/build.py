@@ -5,7 +5,9 @@ ROOT=os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.
 # 2026-10-10 (user: "Can they maybe share the same engine, so that we remove the need of coding both sides?"): every
 # build first re-copies each effect function the lab uses from the game's own source (sync_fx_src.py), and the lab
 # reuses the game's stylesheet, shaders, skill effects and GSAP build. Nothing in the lab is hand-copied any more.
-subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sync_fx_src.py')], check=True)
+# 2026-10-17: plus the names in fx-src-extra.txt (--add), so the functions the lab plays are in fx-src.js on any checkout.
+_extra = [l.strip() for l in open(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'fx-src-extra.txt'), encoding='utf-8') if l.strip() and not l.lstrip().startswith('#')]
+subprocess.run([sys.executable, os.path.join(os.path.dirname(os.path.abspath(__file__)), 'sync_fx_src.py')] + (['--add', ','.join(_extra)] if _extra else []), check=True)
 idx=open(f'{ROOT}/index.html').read()
 # every <style> block of the game, not only the first (2026-10-10: later blocks hold the newest look: rarity borders, Shock...)
 gamecss='\n'.join(m.group(1) for m in re.finditer(r'<style[^>]*>(.*?)</style>', idx, re.S))
@@ -25,7 +27,7 @@ unitfx = open(f'{ROOT}/bramblewood-unitfx.js').read()
 # the six effect batches, exactly as the game bundles them (assemble_arena.py)
 fxbatches = '\n'.join(open(f'{ROOT}/bramblewood-fx-{b}.js', encoding='utf-8').read() for b in 'abcdefg')  # 2026-10-16: + G (map titles and grandeur, the fun set)
 _inv = json.load(open(f'{ROOT}/docs/effects-inventory-2026-10-15.json', encoding='utf-8'))
-_INV_KEYS = ['id', 'area', 'name', 'trigger', 'current', 'quality', 'priority', 'themeNotes', 'variantsSuggested', 'future', 'batch']
+_INV_KEYS = ['id', 'area', 'name', 'trigger', 'current', 'quality', 'priority', 'themeNotes', 'variantsSuggested', 'future', 'batch', 'status', 'retired', 'added', 'updated']  # + status / retired / added / updated (2026-10-17)
 inventory_js = json.dumps([{k: e.get(k) for k in _INV_KEYS} for e in _inv], ensure_ascii=False, separators=(',', ':'))
 fixtures_js = open(f'{LAB}/fixtures.json', encoding='utf-8').read()  # the game's own markup (capstages.py)
 fxcore = open(f'{LAB}/fxlab-core.js', encoding='utf-8').read()
@@ -175,6 +177,7 @@ html{overflow-x:hidden;} body{overflow-x:clip !important; overflow-y:visible !im
 .fxl-pb:hover{filter:brightness(1.1);} .fxl-pb.is-playing{outline:2px solid #ffd56e; outline-offset:1px;}
 .fxl-nb{font-size:10.5px; line-height:1.2; color:var(--ink-muted); font-style:italic; text-align:center;}
 .q-new{background:#7a3fb0; color:#fff;}
+.q-retired{background:#6b6f76; color:#fff;} .q-upd{background:#2d7f8f; color:#fff;} .fxl-row.is-retired .fxl-name{text-decoration:line-through; text-decoration-color:rgba(160,60,60,.7);} /* 2026-10-17 */
 .fxl-more{grid-column:1 / -1; font-size:12px; color:var(--ink); background:var(--surface-2); border-radius:8px; padding:6px 9px; display:grid; gap:3px;}
 .fxl-more[hidden]{display:none;} .fxl-more b{color:var(--ink-muted); margin-right:4px;}
 .fxl-vgrid{display:grid; grid-template-columns:repeat(auto-fill, minmax(250px,1fr)); gap:10px;}
@@ -270,11 +273,23 @@ TREAT_JSON = json.dumps({k: cards[k]['plain'] for k in TREAT_KEYS})
 TREAT_CARDS = treat_cards('legendary')
 def stage_card(k, holo=False, extra=''):
     return f'<div class="board-card" data-demo="{k}">{C(k, "holo" if holo else "plain")}</div>'
+# 2026-10-17 (effects lab): the card front frames and card backs. The game sets --fr-* / --bk-* on :root from installCardFrames /
+# installCardBackings (arena_app.js) with its hashed assets/ URLs; the lab inlines the same pictures as data URIs (≈300 KB), so the
+# hub's file count doesn't grow by 29 and every tile on every stage wears its real frame.
+import base64 as _b64
+def _datauri(p): return 'data:image/png;base64,' + _b64.b64encode(open(p, 'rb').read()).decode()
+_frvars = []
+for _f in sorted(os.listdir(f'{ROOT}/assets/frames')) if os.path.isdir(f'{ROOT}/assets/frames') else []:
+    if _f.endswith('.png'): _frvars.append(f'--fr-{_f[:-4]}:url("{_datauri(os.path.join(ROOT, "assets/frames", _f))}");')
+for _f in sorted(os.listdir(f'{ROOT}/assets/backings')) if os.path.isdir(f'{ROOT}/assets/backings') else []:
+    if _f.endswith('.png'): _frvars.append(f'--bk-{_f[:-4]}:url("{_datauri(os.path.join(ROOT, "assets/backings", _f))}");')
+FRAME_VARS = ':root{' + ''.join(_frvars) + '}'
 # 2026-10-16: a doctype, as the hub serves it (tools/hub/build_hub.py doc()); without it the page ran in quirks mode locally.
 html = f'''<!doctype html>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bramblewood Effects Lab</title>
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>{gamecss}</style>
+<style id="bwCardFrames">{FRAME_VARS}</style>
 <style>{page_css}</style>
 
 <div class="lab">
@@ -299,7 +314,7 @@ html = f'''<!doctype html>
         <select id="fxlArea" aria-label="Area"></select>
         <select id="fxlQual" aria-label="Quality"><option value="">Any quality</option><option value="good">Good</option><option value="basic">Basic</option><option value="missing">Missing</option><option value="broken">Broken</option><option value="future">Future</option></select>
         <select id="fxlVars" aria-label="Variants"><option value="">Variants: any</option><option value="suggested">Variants suggested</option><option value="registered">Has 2+ variants</option></select>
-        <select id="fxlBuilt" aria-label="Built"><option value="">Built or not</option><option value="built">Built in the lab</option><option value="todo">Not built yet</option></select>
+        <select id="fxlBuilt" aria-label="Built"><option value="">Built or not</option><option value="built">Built in the lab</option><option value="todo">Not built yet</option><option value="new17">New or updated 10-16/17</option><option value="retired">Retired</option></select>
         <select id="fxlFut" aria-label="Future"><option value="">Now and future</option><option value="hide">Hide future</option><option value="only">Future only</option></select>
         <button type="button" class="btn small ghost" id="fxlClear">Clear</button><span id="fxlShown"></span>
       </div>
@@ -632,7 +647,9 @@ import shutil as _sh
 _sh.copy(f'{ROOT}/tools/effects-lab/effects-lab.js', f'{ROOT}/.fxcat/effects-lab.js')
 # 2026-10-15: the catalogue's stages show the game's own art (card art, the castle, the map ground, the pack art), so every
 # asset the fixtures point at is copied from the game's assets/ beside the page (.fxcat/assets/ → the hub root).
-_need = set(re.findall(r'assets/((?:cards|castles|maps|fx|tex)/[\w.-]+?\.(?:png|webp|jpg|jpeg|gif|svg))', fixtures_js)) | {'maps/m1.png'}
+_need = set(re.findall(r'assets/((?:cards|castles|maps|fx|tex|fields)/[\w.-]+?\.(?:png|webp|jpg|jpeg|gif|svg))', fixtures_js)) | {'maps/m1.png'}
+# 2026-10-17: the Environment-card pictures the lab's field-effect entries show (the 10-16/10-17 fields borrow these until theirs exist)
+_need |= {'fields/' + f + '.png' for f in ['rain', 'misty', 'eruption', 'gale', 'frost', 'sandstorm', 'lavatide', 'freezing', 'twilight']}
 # 2026-10-15 (batch E): every map's art (≈350 KB), so the map stage can be dressed as any map (map-theme-<id>) without 404s.
 _need |= {'maps/' + f for f in os.listdir(f'{ROOT}/assets/maps') if f.endswith('.png')}
 _copied = 0

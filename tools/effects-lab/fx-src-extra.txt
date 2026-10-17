@@ -1,0 +1,54 @@
+# Game functions and constants the Effects Lab plays (2026-10-17). build.py passes these names to
+# `sync_fx_src.py --add`, so a fresh checkout (where .fxcat/fx-src.js doesn't exist yet or lacks them) gets them too,
+# and every build refreshes them from arena_app.js. One name per line; # starts a comment.
+# Field effects 2 and 3 (field2Vfx and what it calls; FIELD2 holds the Environment cards' words)
+FIELD2
+ASHY_AFTER_TEXT
+FIELD2_HIT
+boardSweepVfx
+eruptionGeyserVfx
+field2Vfx
+# 2026-10-16/17 skills: Penance, Blood Tithe, Amore, Burn 1 Lumber, Fire on hit, Reflect, Bloodlust leap, Sentry, Web, Carrion, Vanguard
+w2Later
+devilPulse
+floatGlyphs
+skills2Vfx
+devilPayVfx
+s17SkillVfx
+# fight flow: kill mark, trigger badge, castle throw, Quick at the castle, castle numbers, upkeep chip, burst glyphs
+killMarks
+killMarkVfx
+launchKillMark
+triggerFiredVfx
+castleThrowVfx
+quickStrikeCastle
+hqRibbonFloatAnchor
+showUpkeepChip
+hideUpkeepChip
+ELEMENTAL_BURST_GLYPH
+hitExplosionVfx
+# board: the opponent's pitch into a slot
+enemyPitchSlotFx
+# Revive marks
+REVIVE_FEATHER_SVG
+isAngelDef
+# voice barks
+BARK_VOICES
+BARK_VOICE_BY_ARCH
+barkVoiceFor
+# the sky's 10 s steps and changes of phase
+SKY_STEP_MS
+skyClassFor
+skyStepApply
+SKY_PHASE_MS
+skyPhaseLayers
+# speech bubbles follow their cards from one shared loop since the 10-17 fight-lag fix (showSpeechBubble calls these)
+bubbleFollowers
+bubbleFollowRead
+bubbleFollowWrite
+bubbleFollowTick
+bubbleFollowStart
+# W2 skills: Strangle's squeeze (st-strangle-tick, the last unbuilt inventory entry)
+w2SkillVfx
+# animMs → sharpBoard asks it once a stand-in matchState is up
+isSlotMatch

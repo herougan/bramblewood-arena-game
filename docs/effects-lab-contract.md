@@ -1,7 +1,8 @@
 # Effects Lab contract (2026-10-15)
 
 How the six effect batches add effects to the game and to the Effects Lab catalogue. The source of truth for *what* to
-build is `docs/effects-inventory-2026-10-15.json` (933 entries; `batch` says whose it is). This page says *how*.
+build is `docs/effects-inventory-2026-10-15.json` (933 entries on 10-15, 1029 since the 10-17 lab pass; `batch` says whose it is, `status` says
+`built` or `retired`, `added` / `updated` date the later passes). This page says *how*.
 
 ## Files
 
@@ -15,6 +16,7 @@ build is `docs/effects-inventory-2026-10-15.json` (933 entries; `batch` says who
 | `tools/effects-lab/fixtures.json` | the game's own markup for the stages (`capstages.py` re-captures it) | nobody in a batch |
 | `tools/effects-lab/manifest/_existing.js` | demos of effects that already exist (worked examples) | read it |
 | `bramblewood-fx-g.js`, `tools/effects-lab/manifest/w4.js` | 2026-10-16: `FX.G`, map titles (`fxHook('mapTitle')`), map grandeur and the fun set. Entries with ids `map-title-*`, `map-grand-*` and `fun-*` may be outside the inventory: they pass their own `name` / `trigger` to `register()` | W4 |
+| `tools/effects-lab/manifest/_game.js`, `tools/effects-lab/fx-src-extra.txt` | 2026-10-17: a stand-in for the fight around the stage (`LabGame.match(ctx)` sets a `matchState`, `boardCardEl` finds the stage's cards by `data-uid`), so a lab entry can call the game's own vfx function with the event the engine sends; `fx-src-extra.txt` lists the `arena_app.js` functions build.py copies into the lab (`sync_fx_src.py --add`). Add a name there instead of copying code into a manifest. Retire an entry by setting `status: "retired"` and `retired: "<date>: why"` in the inventory (don't delete it) | anyone, with care |
 
 Never put new CSS in `arena_template.html`. Never edit another batch's files.
 `assemble_arena.py` bundles the six modules after `procfx`/`unitfx`; `build.py` bundles the same six files, then every
