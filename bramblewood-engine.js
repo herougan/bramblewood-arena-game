@@ -5080,6 +5080,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       removeDeadCardsPass(players, sideOf, killCredit || {}, stats, events);
       if(![players[1], players[2]].some(pl=> pl && allBoardCards(pl).some(c=> c.hp<=0))) break;
     }
+    exposeLonely(players, sideOf, events); // 2026-10-17: the last enemy unit just fell, so Expose has nothing left to strike for
+  }
+  // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades
+  // off."): Expose counters only mean something while someone across the board can cash them in. Whenever one side has no live
+  // units (checked after every death sweep and at the end of each round), every Expose counter on the other side's units is gone,
+  // and the board is told ({statusFx, kind:'exposeFade'}) so the crosshair fades out.
+  function exposeLonely(players, sideOf, events){
+    [1, 2].forEach(pid=>{ const me = players[pid], foe = players[otherId(pid)]; if(!me || !foe || allLive(foe).length) return;
+      allLive(me).forEach(c=>{ if(!(c.exposed > 0)) return; const had = c.exposed; c.exposed = 0;
+        if(recordEvents && events){ const sd = sideOf ? sideOf(pid) : (pid===1 ? 'A' : 'B'); events.push({type:'statusFx', kind:'exposeFade', side:sd, targetSide:sd, targetUid:c.uid, targetDefId:c.defId, amount:had}); } }); });
   }
   function removeDeadCardsPass(players, sideOf, killCredit, stats, events){
     const p1=players[1], p2=players[2];
@@ -6236,6 +6246,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // action)"): after the whole swing order.
     if(!passOnlyUid && p1.hq.hp > 0 && p2.hq.hp > 0) snackTime(players, sideOf, stats, events, firstAttackerSide);
     endOfRoundUpkeep(players, sideOf, stats, events);
+    exposeLonely(players, sideOf, events); // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed")
     pushStatusEnds(stRound, players, sideOf, events); // 2026-10-15: whatever ran out this round (upkeep, cleanses, Expose used up)
     if(isGladiator){ syncGladiatorHq(p1); syncGladiatorHq(p2); }
     return p1.hq.hp<=0 || p2.hq.hp<=0;

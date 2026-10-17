@@ -967,7 +967,8 @@ M.leaderFall = function(el, opts){
     tl.add(()=>{ snd('drum'); snd('leaderFanfare'); }, .05);
   });
 };
-// Shiny / foil unit: its finish peels off the corner in one rainbow sheet and flutters away in sparkles.
+// The Prism death's sheen (was the shiny / foil death until 2026-10-17; now M.deathPrism, see PRISM_SKILLS below): one rainbow sheet
+// lifts off the card and flutters away in sparkles.
 M.foilPeel = function(el, opts){
   const D = dying(el); if(!D) return Promise.resolve(); const {x, y, w, h, left, top} = D;
   return run(opts, (tl, mk)=>{
@@ -979,6 +980,15 @@ M.foilPeel = function(el, opts){
     tl.add(()=> snd('rareRise', false), 0);
   });
 };
+// Prism death (2026-10-17, user: "...this effect is nice for like - prism related deaths (skills relating to light or rainbows. add that
+// btw - and save this effect)"): the rainbow sheet above, no longer played for shiny / foil units, now rides on the death of a unit with
+// a light or rainbow skill. Illuminate (and its old name Lantern) and Reflect are the ones cards have today; the rest are reserved names,
+// so a future Prism / Rainbow / Radiant / Dazzle / Refract skill gets it with no change here.
+const PRISM_SKILLS = ['illuminate', 'lantern', 'reflect', 'prism', 'rainbow', 'radiant', 'dazzle', 'refract'];
+M.PRISM_SKILLS = PRISM_SKILLS;
+function isPrismDef(d){ const e = (d && d.effects) || {}; return PRISM_SKILLS.some(k=> !!e[k]); }
+M.isPrismDef = isPrismDef;
+M.deathPrism = function(el, opts){ return M.foilPeel(el, opts); };
 // Killing blow: the final number is slammed onto the card with a ✖ (A); a "KO!" burst (B); a red ✖ alone (C).
 M.lethalStamp = function(el, opts){
   opts = opts || {}; const D = dying(el); if(!D) return Promise.resolve(); const {x, y, h} = D;
@@ -1658,7 +1668,11 @@ M.deathPlan = function(el, uid, env){
   if(!boss){
     const leader = (b && b.classList.contains('is-leader')) || (m && String(m.leaderUid) === String(uid)) || LEADERS.has(String(uid)) || archOf(d).includes('King');
     if(leader){ if(!plan.look && !token) plan.look = 'kingFall'; else plan.addons.push('leaderFall'); }
-    const t = tileOf(el); if(t && (t.classList.contains('is-shiny') || t.classList.contains('is-holo'))) plan.addons.push('foilPeel');
+    // 2026-10-17 (user: "Foil treatment of shiny death: There is a sheen that spawns out then fades out on death. I think don't do this for
+    // shinies. Idk if you do this for foils - but i think is not needed also. But this effect is nice for like - prism related deaths
+    // (skills relating to light or rainbows. add that btw - and save this effect)"): shiny and foil units die like anyone else now; the
+    // sheen is the Prism death, for a unit with a light or rainbow skill (PRISM_SKILLS).
+    if(isPrismDef(d)) plan.addons.push('deathPrism');
     // 2026-10-16 (user: "For killing blows, no need to put the additiona - N X"): the "−N ✖" stamp is gone. A killer with an on-kill
     // trigger gets its own ✖ that flies into it instead (arena_app.js, killMarkVfx). M.lethalStamp stays for the Effects Lab.
   }
@@ -1707,7 +1721,11 @@ M.onEvent = function(ev, env){
   switch(ev.type){
     case 'statusEnd': {
       if(ev.woke){ WAKE.set(String(ev.uid), true); at(450, ()=>{ if(WAKE.get(String(ev.uid))){ WAKE.delete(String(ev.uid)); const e = el(ev.uid); if(e) M.wakeJolt(e, o); } }); break; }
-      const e = el(ev.uid); if(e && STATUS_END[ev.status]) M.statusEnd(e, ev.status, o); break; }
+      const e = el(ev.uid);
+      // 2026-10-17 (user: "If there's no more exposure left, it fades as it magnifies!"): FX.D already faded / magnified the crosshair away
+      // the moment its last counter went, so the round-end "wears off" doesn't play a second one.
+      if(ev.status === 'exposed' && e){ const tl = e.querySelector('.card-tile') || e; if(tl.dataset && tl.dataset.fxdExposeLeft){ delete tl.dataset.fxdExposeLeft; break; } }
+      if(e && STATUS_END[ev.status]) M.statusEnd(e, ev.status, o); break; }
     case 'skipTurn': if(SKIP_OWN.has(ev.reason)){ const e = el(ev.uid); if(e) M.lostTurn(e, ev.reason, o); } break;
     case 'hit': {
       const u = ev.targetUid;

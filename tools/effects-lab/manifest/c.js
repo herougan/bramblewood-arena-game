@@ -112,8 +112,13 @@ R({id:'death-boss', stage:'board', inGameHook:"deathVfx → hooks.deathLook: ene
 R({id:'death-egg', stage:'board', inGameHook:"deathVfx → hooks.deathLook: a hatchInto card", variants:[{key:'A', label:'Shell cracks in two, a sad puff', play:deathOf('deathEgg')}]});
 R({id:'death-structure', stage:'board', inGameHook:"deathVfx → hooks.deathLook: a Structure card (A)", variants:[
   {key:'A', label:'Slumps, planks tumble, dust', play:deathOf('deathStructure')}, {key:'B', label:'Tips over sideways and breaks', play:deathOf('deathStructure_B')}]});
-R({id:'death-shiny-foil', stage:'board', inGameHook:"deathVfx → hooks.deathLook add-on: tile is-shiny / is-holo — plays over the normal death", variants:[
-  {key:'A', label:'The finish peels off in a sparkle', play:ctx=>{ const el = foe(ctx); ctx.sound('death'); fall(el); return X().foilPeel(el); }}]});
+// 2026-10-17 (user: "...don't do this for shinies ... foils - not needed also. But this effect is nice for like - prism related deaths
+// (skills relating to light or rainbows. add that btw - and save this effect)"): retired from shiny / foil deaths (they die like anyone
+// else); the same sheen is the Prism death below.
+R({id:'death-shiny-foil', stage:'board', inGameHook:"retired 2026-10-17: shiny / foil units get no add-on; the sheen moved to death-prism", variants:[
+  {key:'A', label:'Retired: shiny / foil die like anyone (plain fall)', play:ctx=>{ const el = foe(ctx); el.classList.add('is-shiny'); ctx.sound('death'); fall(el); return ctx.wait(1200); }}]});
+R({id:'death-prism', stage:'board', inGameHook:"deathVfx → hooks.deathLook add-on: the unit has a light / rainbow skill (FX.C.PRISM_SKILLS: Illuminate, Lantern, Reflect; reserved: Prism, Rainbow, Radiant, Dazzle, Refract)", variants:[
+  {key:'A', label:'Prism death: a rainbow sheet lifts off and flutters away in sparkles', play:ctx=>{ const el = foe(ctx); ctx.sound('death'); fall(el); return X().deathPrism(el); }}]});
 R({id:'death-lethal-number', stage:'board', inGameHook:"deathVfx → hooks.deathLook add-on: the last blow's number (A)", variants:[
   {key:'A', label:'Number slammed with ✖', play:ctx=>{ const el = foe(ctx); ctx.float(el, '-7'); ctx.wait(250).then(()=> fall(el)); return ctx.wait(250).then(()=> X().lethalStamp(el, {dmg:7})); }},
   {key:'B', label:'"KO!" burst', play:ctx=>{ const el = foe(ctx); ctx.float(el, '-7'); ctx.wait(250).then(()=> fall(el)); return ctx.wait(250).then(()=> X().lethalStamp_B(el)); }},

@@ -68,8 +68,18 @@ for(const rules of [null, {wind:'gale'}]){
 { let landed = 0; for(let s = 1; s <= 30; s++){ const {e, P} = mk({dark:'absolute'}, s); const V = put(e, P, 2, 'ke-wall', 0); V.exposed = 50; const A = put(e, P, 1, 'ke-blind', 0); A.blind = 3;
     e.debugAttack(P, so, A.uid, {}, []); if(V.hp < 500) landed++; }
   ok(landed === 30, `4. Blind, in Absolute darkness, still hits an Exposed unit (${landed}/30)`); }
-{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); W.exposed = 1; W.poison = 3; e.roundStart(P, 2, so, {}, []); e.resolveCombat(P, so, {}, [], 1);
+// 2026-10-17: a unit on the other side (one that never swings), so the new "no enemy units: Expose fades" rule below doesn't clear it
+{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const F = put(e, P, 1, 'ke-wall', 0); F.wait = 99; W.exposed = 1; W.poison = 3; e.roundStart(P, 2, so, {}, []); e.resolveCombat(P, so, {}, [], 1);
   ok(W.exposed === 1, `4. a Poison tick is not a hit: Exposed stays (${W.exposed})`); }
+// 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades off.")
+{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); W.exposed = 2; const ev = []; e.resolveCombat(P, so, {}, ev, 1);
+  ok(W.exposed === 0, `4b. no units across the board: Expose counters are gone by the end of the round (${W.exposed})`);
+  ok(ev.some(x=> x.type === 'statusFx' && x.kind === 'exposeFade' && x.targetUid === W.uid && x.amount === 2), '4b. ...and the board is told (statusFx exposeFade, with how many faded)'); }
+{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const F = put(e, P, 1, 'ke-wall', 0); W.exposed = 3; const ev = []; e.debugDamage(P, so, F.uid, 9999, {}, ev);
+  ok(W.exposed === 0 && ev.some(x=> x.type === 'statusFx' && x.kind === 'exposeFade' && x.targetUid === W.uid), `4b. the last enemy unit dying clears them at once (${W.exposed})`); }
+{ const {e, P} = mk(); const W = put(e, P, 2, 'ke-wall', 0); const F = put(e, P, 1, 'ke-wall', 0); F.wait = 99; W.exposed = 3; const ev = []; e.resolveCombat(P, so, {}, ev, 1);
+  ok(W.exposed === 3 && !ev.some(x=> x.kind === 'exposeFade'), `4b. while an enemy unit stands, they stay (${W.exposed})`); }
+ok(/kind==='exposeFade'/.test(src), '4b. the board fades the crosshair on exposeFade');
 ok(/function exposedTip\(n\)/.test(src) && /abadge exposed/.test(src) && /\.abadge\.exposed\{/.test(tpl), '4. an Exposed badge with its tooltip');
 ok(/exposedHit/.test(fs.readFileSync(path.join(__dirname, '..', 'bramblewood-fx-b.js'), 'utf8')), '4. FX.B.exposeCash plays on every Exposed hit');
 

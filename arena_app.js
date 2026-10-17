@@ -2228,6 +2228,9 @@ function describeEffects(def, liveCard){
   // only in SKILL_DEFS (Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock, Stagger, Chained, Revive) had no line on the
   // card at all. Each gets its short text now, like every other skill.
   SKILL_DEFS_ONLY_LINES.forEach(k=>{ const sd = SKILL_DEFS.find(s=> s.key === k); if(!sd || !SKILL_TEXT[k]) return; let v; try{ v = sd.get(e); }catch(_){ v = undefined; } if(v === undefined || v === false) return;
+    // 2026-10-17 (user: "...the revive skill text is redded out"): a unit in play that has already come back shows its Revive line
+    // struck through in red, marked "used".
+    if(k === 'revive' && liveCard){ const lc = currentCardByUidSafe(liveCard.uid) || liveCard; if(lc && lc.revivedOnce){ lines.push(`<span class="sk-used" title="Already used: it came back once">${ic(k)}${sd.label} — ${SKILL_TEXT[k](v)}</span> <b class="sk-used-tag">used</b>`); return; } }
     lines.push(`${ic(k)}${sd.label} — ${SKILL_TEXT[k](v)}`); });
   if(e.onSpawnGold) lines.push(`On Spawn: gain ${e.onSpawnGold} lumber.`); // 2026-09-22: pays Lumber now, not Gold
   if(e.onSpawnGrace) lines.push(`On Spawn: gain ${e.onSpawnGrace} grace.`);
@@ -6063,7 +6066,10 @@ function abilityBadges(d, bopts){
   if(e.thorns) out.push(`${iconHTML('thorns', '🌵')}${n1(e.thorns)}`);
   // 2026-10-12 (user: "Evasive's symbol must show on the card"; the turtle's wings were unclear): Evasive, Revive and Tide get marks.
   if(e.evasive) out.push(`<span class="ab-evasive" title="Evasive: dodges half of single-target hits">${iconHTML('evasive', '🍃')}</span>`);
-  if(e.revive) out.push(`<span class="ab-revive" title="Revive: comes back once">${iconHTML('revive', '↺')}</span>`);
+  // 2026-10-17 (user: "I think there should be a context label caues its important"): on the board Revive is a labelled chip,
+  // struck through in red once it has been used (the unit came back).
+  if(e.revive){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.revivedOnce; }catch(err){ return false; } })());
+    out.push(lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${used ? 'Revive: used, it already came back once' : 'Revive: comes back once'}">${iconHTML('revive', '↺')}<b>Revive</b></span>` : `<span class="ab-revive" title="Revive: comes back once">${iconHTML('revive', '↺')}</span>`); }
   { const lt = (e.tide || e.swimmer) && bopts && bopts.live ? liveTideState(e) : null; // live: blue, and its title says what the tide gives now (2026-10-14)
     if(e.tide) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}" title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${iconHTML('tide', '🌊')}</span>`);
     if(e.swimmer) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}" title="${escapeAttr('Swimmer – ' + (lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide') + ', ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span title="${escapeAttr(swimmerLine(e))}">${iconHTML('swimmer', '🏊')}</span>`); } // 2026-10-15: titled Swimmer, not Tide
@@ -25395,7 +25401,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, staggered:rc.staggered||0, bound:rc.bound||0, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0};
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, staggered:rc.staggered||0, bound:rc.bound||0, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -27097,8 +27103,14 @@ function boardCardHTML(c, defs, opts){
   // units also open a hole in the darkness overlay (syncUnitLightPools).
   const lightKind = unitLightKindOf(c, d);
   const lightHTML = lightKind ? `<span class="unit-light ul-${lightKind}" aria-hidden="true"></span>` : '';
-  const wingHTML = winged ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>' : '';
-  return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${winged?'has-wings':''} ${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
+  // 2026-10-17 (user: "Revive is off-centered ... Make the wings smaller - make this and the halo more transparent ... I also think revive
+  // skills should look different ... the angel wings should be reserved for units with the subtype angel."): an Angel keeps the (smaller,
+  // fainter, now centred) wings and halo; every other Revive unit gets a phoenix mark: a faint ember ring round the card and a small
+  // flame feather at its top centre. Both go once the revive is spent (c.revivedOnce), and the skill strip's "↺ Revive" chip says so.
+  const angelic = winged && isAngelDef(d);
+  const wingHTML = !winged ? '' : angelic ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>'
+    : `<span class="revive-mark" aria-hidden="true"><i class="rm-ring"></i><i class="rm-feather">${REVIVE_FEATHER_SVG}</i></span>`;
+  return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
@@ -27110,6 +27122,12 @@ function boardCardHTML(c, defs, opts){
 // them fade during card animations or successfully make the aura follow the card's movements exactly"): the strip lives in the
 // card tile itself, so every lunge, shake, flip and topple carries it along.
 function withOwnerEdgeInTile(html){ return html.replace(/(<div class="card-tile[^>]*>)/, '$1<span class="owner-edge" aria-hidden="true"></span>'); }
+// 2026-10-17 (user: "the angel wings should be reserved for units with the subtype angel"): an Angel is a card whose type, subtype,
+// archetypes or species name one (none ship yet; the wings wait for them).
+function isAngelDef(d){ if(!d) return false; const all = [].concat(d.archetypes || [], d.species || [], d.subtype || [], d.subtypes || [], d.type || []);
+  return all.some(x=> /^(arch)?angel(s|ic)?$/i.test(String(x).trim())); }
+// The phoenix mark's flame feather (2026-10-17): drawn, so it looks the same everywhere (the 🐦‍🔥 emoji is too new for many devices).
+const REVIVE_FEATHER_SVG = `<svg viewBox="0 0 24 32" width="100%" height="100%" aria-hidden="true"><path d="M12 1 C19 7 21 14 18 21 C16 26 13 28 12 31 C11 28 8 26 6 21 C3 14 5 7 12 1 Z" fill="#ff6a24" stroke="#8a2a10" stroke-width=".9"/><path d="M12 4 C16.5 8.5 17.5 13.5 15.5 18.5 C14.3 21.5 12.8 23 12 25 C11.2 23 9.7 21.5 8.5 18.5 C6.5 13.5 7.5 8.5 12 4 Z" fill="#ffc444"/><path d="M12 6.5 C14 9.5 14.4 12.5 13.3 15.5 C12.8 16.8 12.3 17.6 12 18.5 C11.7 17.6 11.2 16.8 10.7 15.5 C9.6 12.5 10 9.5 12 6.5 Z" fill="#fff4c2"/><path d="M12 4 V30" stroke="#8a2a10" stroke-width=".9" fill="none"/><path d="M12 10 L7 14 M12 15 L6.5 19 M12 20 L8 23 M12 10 L17 14 M12 15 L17.5 19 M12 20 L16 23" stroke="#fff1c8" stroke-width=".7" opacity=".75" fill="none"/></svg>`;
 // Bounty bubble (2026-10-10, user: "on your turn, it has a visible text bubble above it that says
 // lumber... coloured so it looks like a reward... visible only when the player is holding a card.
 // It also first appears at the start of your turn, then fades after 3s"). Only on the opponent's
@@ -29240,7 +29258,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, staggered:c.staggered||0, bound:c.bound||0, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, staggered:c.staggered||0, bound:c.bound||0, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
       });
     });
   });
@@ -31990,6 +32008,7 @@ function logText(ev){
           herbBane: ()=> `⚗️ The Herb Refinery's bitter brew splashes ${nm(ev.targetDefId)} (${ev.amount}).`, castleSpawn: ()=> `🏰 ${ev.amount > 1 ? ev.amount + '× ' : ''}${nm(ev.targetDefId)} ${ev.amount > 1 ? 'pour' : 'slips'} out of the castle.`}[ev.kind];
         if(castleTxt) return {cls: ev.kind==='herbHeal' ? 'heal' : '', text: castleTxt()}; }
       if(ev.kind === 'exposedHit') return {cls:'', text:`🎯 ${nm(ev.targetDefId)} is Exposed: ${ev.crit === false ? 'the swing had crit already' : 'a crit'}, 1 counter used${ev.amount ? ` (${ev.amount} left)` : ' (none left)'}.`}; // 2026-10-15; a crit per counter (2026-10-16)
+      if(ev.kind === 'exposeFade') return {cls:'', text:`🎯 No enemy units left to strike ${nm(ev.targetDefId)}: its Expose ${ev.amount > 1 ? ev.amount + ' counters fade' : 'counter fades'}.`}; // 2026-10-17
       const kindText = {
         surge: `surges with the mountain's fire: +${ev.atk} Attack, +${ev.hp} Health 🌋`,
         poison: `poisoned ${nm(ev.targetDefId)} (+${ev.amount} ☠)`,
@@ -33275,7 +33294,10 @@ function cleaveSlots(evL, evM, evR){
 // 2026-10-16 (user: "Quick animation: When it hits the castle, it doesn't show it. It should always show."): a Quick hit on the castle
 // (hitHQ) dashes too (labSkillFx → quickStrikeCastle), and the dash plays on every Quick hit, not once a round.
 function quickImpactMs(ev){
-  try{ if(!ev || (ev.type !== 'hit' && ev.type !== 'hitHQ') || ev.ranged || ev._cleave || ev.sweep || ev.fork || ev.swipe || ev.pounce || ev.source) return null;
+  // 2026-10-17 (user: "Quick effect should always play, even if the unit misses."): a dodged swing (evaded) and a swing in the dark / blind
+  // (blindMiss at a unit or the castle) dash too, and skip the ordinary lunge, like a landed Quick hit.
+  try{ if(!ev || !['hit', 'hitHQ', 'evaded', 'blindMiss'].includes(ev.type) || ev.ranged || ev._cleave || ev.sweep || ev.fork || ev.swipe || ev.pounce || ev.source) return null;
+    if(ev.type === 'blindMiss' && ev.targetKind && ev.targetKind !== 'card' && ev.targetKind !== 'hq') return null;
     if(!window.SkillFX || !SkillFX.quickStrike || reducedMotion() || !fxAtLeast('med')) return null;
     const d = getCardDefs()[ev.attDefId]; if(!d || !(d.effects||{}).quick) return null;
     return 150; // quickStrike's GSAP dash: 0.05 s cock + 0.1 s dart
@@ -33370,7 +33392,12 @@ function labSkillFx(ev){
     // the blow lands (evadeImpactMs), not when the attacker begins its wind-up; the game's own "Miss" hop/float is skipped for it.
     case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift' || ev.reason === 'canopy' /* + High Canopy's dodge (2026-10-16) */) && F.evasiveDodge){ const t = el(ev.targetUid); if(t){ t.dataset.sfxDodge = '1';
       const a = el(ev.attUid), fromLeft = a ? a.getBoundingClientRect().left < t.getBoundingClientRect().left : Math.random() < .5;
-      setTimeout(()=>{ const t2 = el(ev.targetUid) || t; F.evasiveDodge(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 90)); } } break;
+      setTimeout(()=>{ const t2 = el(ev.targetUid) || t; F.evasiveDodge(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 90)); } }
+      // 2026-10-17 (user: "Quick effect should always play, even if the unit misses."): the Quick dash at the unit that dodged it
+      { const a = el(ev.attUid), t = el(ev.targetUid); if(a && t && fxOf(ev.attDefId).quick && F.quickStrike && quickImpactMs(ev) != null) F.quickStrike(a, t); }
+      break;
+    case 'blindMiss': { const fx = fxOf(ev.attDefId), a = el(ev.attUid); if(!a || !fx.quick || !F.quickStrike || quickImpactMs(ev) == null) break; // 2026-10-17: and when it swings blind
+      if(ev.targetUid != null){ const t = el(ev.targetUid); if(t) F.quickStrike(a, t); } else if(ev.targetKind === 'hq') quickStrikeCastle(a, ev.side === 'A' ? 'B' : 'A'); break; }
     case 'hit': { const fx = fxOf(ev.attDefId), a = el(ev.attUid), t = el(ev.targetUid); if(!a || !t || ev.source) break;
       // 2026-10-15 (user: "If it hits, the animation still plays, but they get hit out of the animation, then go back into position."):
       // a blow that could have been evaded (an Evasive target, a single-target strike that isn't Fencing/Ambush) but landed.
@@ -34398,6 +34425,9 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='octolash'){ if(el) floatText(el, `🐙 Octolash ×${ev.amount}`, 'quick'); }
     else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); if(rc){ rc.exposed = (rc.exposed||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Exposed (2026-10-15)
     else if(ev.kind==='exposedHit'){ if(rc){ rc.exposed = ev.amount||0; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // one Exposed hit used up (its "🎯 +1" chip is FX.B.exposeCash)
+    // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades off."):
+    // the badge goes, and FX.D.statusLook fades the crosshair out (it never just blinks off now).
+    else if(ev.kind==='exposeFade'){ if(rc){ rc.exposed = 0; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } }
     else if(ev.kind==='stun'){ SoundKit.stunTone(); if(el){ shakeEl(el); floatText(el, '💫 Stunned!', 'debuff'); } if(rc) rc.stunned = true; }
     else if(ev.kind==='debuffAttack'){ SoundKit.curse(); statChangeVfx(ev.targetUid, -(ev.amount||0), -(ev.amount2||0)); }
     // addWait (2026-09-26, new basic action — the debuff-side counterpart to Reduce Wait):
@@ -34635,8 +34665,8 @@ function renderVfxForEvent(ev){
     // floats "Miss!" on the unit it swung at (the engine now names it, targetUid; the castle when it swung at the castle); older
     // replays without a target keep it on the attacker.
     const el = boardCardEl(ev.attUid), tgt = ev.targetUid != null ? boardCardEl(ev.targetUid) : (ev.night && ev.targetKind === 'hq' ? hqTileEl(ev.side === 'A' ? 'B' : 'A') : null);
-    animateAttacker(ev.attUid, ev.side==='A');
-    setTimeout(()=>{ SoundKit.blindTone(); const on = (ev.night && tgt && tgt.isConnected ? tgt : null) || el; if(on) floatText(on, (ev.night && window.FX && FX.B && FX.B.missText && FX.B.missText(ev, matchState)) || (ev.night ? 'Miss!' : '👁 Miss!'), 'debuff'); }, animMs().windup);
+    if(quickImpactMs(ev) == null) animateAttacker(ev.attUid, ev.side==='A'); // a Quick attacker dashes instead (labSkillFx, 2026-10-17)
+    setTimeout(()=>{ SoundKit.blindTone(); const on = (ev.night && tgt && tgt.isConnected ? tgt : null) || el; if(on) floatText(on, (ev.night && window.FX && FX.B && FX.B.missText && FX.B.missText(ev, matchState)) || (ev.night ? 'Miss!' : '👁 Miss!'), 'debuff'); }, quickImpactMs(ev) != null ? quickImpactMs(ev) : animMs().windup);
   }
   // Poison tick (item #1, 2026-09-16): a bubbling sound instead of the old flat drip, and a
   // bolder, emoji-led, distinctly-styled float ("🫧 5!") so a poison TICK (actual damage,
@@ -34683,8 +34713,8 @@ function renderVfxForEvent(ev){
   if(ev.type==='revive'){
     SoundKit.buffUp(); const el = boardCardEl(ev.uid);
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
-    if(rc){ rc.hp = 1; rc.poison = 0; rc.stunned = false; }
-    if(el) floatText(el, '✨ Revived!', 'gold');
+    if(rc){ rc.hp = 1; rc.poison = 0; rc.stunned = false; rc.revivedOnce = true; } // 2026-10-17: its Revive is spent (the mark goes, the line reads used)
+    if(el){ floatText(el, '✨ Revived!', 'gold'); el.classList.remove('has-wings', 'has-revive'); el.querySelectorAll('.angel-wings, .revive-mark').forEach(x=> x.classList.add('is-spending')); el.querySelectorAll('.ab-revive').forEach(x=> x.classList.add('is-used')); }
     updateCardHpDisplay(ev.uid); updateCardStatusDisplay(ev.uid);
   }
   if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death');

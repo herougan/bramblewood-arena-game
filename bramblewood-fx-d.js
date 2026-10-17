@@ -617,9 +617,12 @@ M.STATUS_KEYS = ['poison', 'bleed', 'decay', 'stagger', 'blind', 'confuse', 'cor
 M.statusLook = function(el, key, on, n){
   css('status', STATUS_CSS); css('foil-base', FOIL_BASE);
   const t = tileOf(el); if(!t) return null;
-  let b = t.querySelector(':scope > .fxd-st-' + key);
-  if(!on){ if(b) b.remove(); return null; }
-  if(!b){ b = document.createElement('b'); b.className = 'fxd-st fxd-st-' + key; b.setAttribute('aria-hidden', 'true');
+  let b = t.querySelector(':scope > .fxd-st-' + key + ':not(.fxd-st-leaving)');
+  // 2026-10-17 (user: "...the other side's expose counters are removed - effect fades off." / "If there's no more exposure left, it
+  // fades as it magnifies!"): the Expose crosshair never just blinks off. It fades out, unless the crit that used its last counter
+  // claims it (FX.D.onEvent exposedHit, a moment later in the same event), which magnifies it away instead.
+  if(!on){ if(b){ if(key === 'expose') exposeLeave(t, b); else b.remove(); } return null; }
+  if(!b){ b = document.createElement('b'); b.className = 'fxd-st fxd-st-' + key; b.setAttribute('aria-hidden', 'true'); if(key === 'expose') try{ delete t.dataset.fxdExposeLeft; }catch(e){}
     const s = ST_BITS[key]; if(s){ let h = ''; for(let k = 0; k < s.n; k++){ const dur = s.d[0] + hr(k, 11)*(s.d[1] - s.d[0]);
       h += `<i style="--x:${f1(s.q ? 50 : 10 + ((k + .5)/s.n)*80 + (hr(k, 12) - .5)*10)}%; --y:${f1(8 + hr(k, 13)*84)}%; --d:${dur.toFixed(2)}s; --dl:${(s.q ? -k*dur/s.n : -hr(k, 14)*dur).toFixed(2)}s; --sx:${Math.round((hr(k, 15) - .5)*24)}px;${s.len ? ` --len:${Math.round(12 + hr(k, 16)*22)}cqh;` : ''}">${s.q ? '?' : ''}</i>`; } b.innerHTML = h; }
     const before = t.querySelector(':scope > .badges-bottom, :scope > .stats'); t.insertBefore(b, before || null); }
@@ -627,6 +630,46 @@ M.statusLook = function(el, key, on, n){
   return b;
 };
 M.syncStatusLooks = function(el, states){ if(!el) return; M.STATUS_KEYS.forEach(k=> M.statusLook(el, k, !!(states && states[k]), states && states[k + 'N'])); };
+// ---- Expose counters at work (2026-10-17, user: "Exposed units expose vfx shines deep dark red when it triggers crit. If there's no
+// more exposure left, it fades as it magnifies! fun effect.") ----
+css('expose-crit', `.fxd-st-expose.fxd-x-crit{animation:fxdXCrit .6s ease-out;}
+  @keyframes fxdXCrit{0%{filter:none; background:transparent;} 14%{filter:brightness(.5) saturate(1.9) drop-shadow(0 0 6px #6a0010); background:rgba(70,0,10,.42); box-shadow:inset 0 0 0 3px #5c000c, inset 0 0 30px rgba(80,0,10,.9);} 100%{filter:none; background:transparent;}}
+  .fxd-xmag{background-repeat:no-repeat; background-position:center; background-size:contain; transform-origin:50% 50%; filter:brightness(.55) saturate(1.8) drop-shadow(0 0 5px #7a0010) drop-shadow(0 0 14px rgba(90,0,12,.85));}`);
+// The mark leaves: wait a tick (a crit using the last counter may claim it), then fade.
+function exposeLeave(t, b){
+  b.classList.add('fxd-st-leaving'); try{ t.dataset.fxdExposeLeft = '1'; }catch(e){}
+  setTimeout(()=>{ if(!b.__crit) M.exposeFadeOut(b); }, 0);
+}
+// st-expose-fade: the crosshair just fades (no enemy left to strike it, or a cleanse).
+M.exposeFadeOut = function(b){
+  if(!b || !b.isConnected) return Promise.resolve(); const g = G();
+  if(!g){ b.remove(); return Promise.resolve(); }
+  return new Promise(res=> g.to(b, {opacity:0, duration:.7, ease:'power1.in', onComplete:()=>{ b.remove(); res(); }}));
+};
+// st-expose-crit: a counter is used by a crit; the mark shines deep dark red.
+M.exposeCritFlash = function(el){
+  const t = tileOf(el), b = t && (t.classList && t.classList.contains('fxd-st-expose') ? t : t.querySelector(':scope > .fxd-st-expose'));
+  if(!b) return Promise.resolve(); b.classList.remove('fxd-x-crit'); void b.offsetWidth; b.classList.add('fxd-x-crit');
+  return wait(620).then(()=> b.classList.remove('fxd-x-crit'));
+};
+// st-expose-last: the last counter is used; the mark flashes dark red and magnifies as it fades. A fixed copy does the growing,
+// so the card's clipping can't cut it off.
+M.exposeMagnify = function(el){
+  const g = G(); const t = tileOf(el), b = t && (t.classList && t.classList.contains('fxd-st-expose') ? t : (t.querySelector(':scope > .fxd-st-expose.fxd-st-leaving') || t.querySelector(':scope > .fxd-st-expose')));
+  const host = b || t; if(!host || !host.isConnected || !g){ if(b) b.remove(); return Promise.resolve(); }
+  const r = host.getBoundingClientRect(); if(b) b.remove();
+  const L = layer('fxd-xmag'); L.style.backgroundImage = CROSSHAIR;
+  g.set(L, {left:r.left + r.width*.04, top:r.top + r.height*.12, width:r.width*.92, height:r.height*.76, opacity:1, scale:.92});
+  return new Promise(res=> g.timeline({onComplete:()=>{ L.remove(); res(); }})
+    .to(L, {scale:1, duration:.08, ease:'power2.out'})
+    .to(L, {scale:2.4, opacity:0, rotation:35, duration:.7, ease:'power2.out'}, '+=.08'));
+};
+// A crit used a counter (statusFx exposedHit): play at the hit's impact, or after a moment if no hit follows (a skill's flat hit).
+const xHoldBy = new WeakMap();
+const xHold = env=>{ const k = matchKey(env); let s = xHoldBy.get(k); if(!s){ s = new Map(); xHoldBy.set(k, s); } return s; };
+function exposeFire(job){ if(job.done) return; job.done = true; let tile = null; try{ tile = job.env.tile(job.uid); }catch(e){} tile = tile || job.tile;
+  if(job.last){ if(job.b && job.b.isConnected) M.exposeMagnify(job.b); else if(tile && tile.isConnected) M.exposeMagnify(tile); }
+  else if(tile && tile.isConnected) M.exposeCritFlash(tile); }
 // What the unit is suffering, from its live (replay) record.
 const mindByMatch = new WeakMap(), seenByMatch = new WeakMap();
 const matchKey = env=> (env && env.match && typeof env.match === 'object') ? env.match : M;
@@ -703,7 +746,10 @@ M.badgePop = function(badge, opts){
 // ring (the gold-leaf rim it replaces) and on .rarity-band::before (inside the card, above the art, under the text).
 // Lab variants: add `fxd-r-alt` to opt out of A, plus `fxd-r-<rarity>-b`/`-c` for B/C; `fxd-r-alt` alone is the old gold rim.
 const RK = {mythic:'#dc2626', ancient:'#1e3a8a', divine:'#f8fafc', void:'#7c6f8f', daemonic:'#111111'};
-const rSel = (k, v)=> v ? `.card-tile.rarity-tier-top.fxd-r-alt.fxd-r-${k}-${v}` : `.card-tile.rarity-tier-top:not(.fxd-r-alt):is([style*="--rarity-a:${RK[k]}"], .fxd-r-${k})`;
+// 2026-10-17 (user: "Mythic effect when zoomed out and zoomed in ... not exactly the same. It's gold on the blow up."): once a script
+// touches a tile's style (the card detail sets its cursor, the inspector its light vars), the browser rewrites the attribute as
+// "--rarity-a: #dc2626;" with a space, the match failed and the big card fell back to the plain gold rim. Both spellings match now.
+const rSel = (k, v)=> v ? `.card-tile.rarity-tier-top.fxd-r-alt.fxd-r-${k}-${v}` : `.card-tile.rarity-tier-top:not(.fxd-r-alt):is([style*="--rarity-a:${RK[k]}"], [style*="--rarity-a: ${RK[k]}"], .fxd-r-${k})`;
 const RUNES = svgUrl(SVG((()=>{ const r = seeded('runes'); let p = ''; const glyph = (x, y)=>{ const k = r()*6|0; const G = ['M0 -3v6M0 -3l2 2M0 0l-2 2', 'M-2 -3v6M-2 -3l4 3l-4 3', 'M0 -3v6M-2 -1l4 2', 'M-2 -3l4 6M2 -3l-4 6', 'M-2 3v-6l4 6v-6', 'M0 -3l2 3l-2 3l-2 -3z'][k]; p += `<path transform='translate(${f1(x)} ${f1(y)})' d='${G}'/>`; };
   for(let k = 0; k < 9; k++){ glyph(7, 12 + k*14.5); glyph(93, 12 + k*14.5); } for(let k = 0; k < 5; k++){ glyph(22 + k*14, 7); glyph(22 + k*14, 133); }
   return `<g fill='none' stroke='#7fb4ff' stroke-width='.9' stroke-linecap='round' stroke-linejoin='round'>${p}</g>`; })()));
@@ -1508,6 +1554,16 @@ M.onEvent = function(ev, env){
   if(ev.type === 'mindControl' && ev.targetUid != null){ mindSet(env).add(String(ev.targetUid)); env.at(750, ()=>{ const el = env.el(ev.targetUid); if(el) M.statusLook(el, 'mind', true); }); }
   // the day/night bonus fades out (st-phase-fade)
   if(ev.type === 'statusFx' && ev.kind === 'phaseFade' && env.fxAtLeast('med')){ const el = env.el(ev.uid != null ? ev.uid : ev.targetUid); if(el) M.phaseFade(el, ev.phase); }
+  // 2026-10-17 (user: "Exposed units expose vfx shines deep dark red when it triggers crit. If there's no more exposure left, it fades as
+  // it magnifies!"): an Expose counter used by a crit (st-expose-crit / st-expose-last), timed to the hit that used it.
+  if(ev.type === 'statusFx' && ev.kind === 'exposedHit' && ev.targetUid != null){
+    const tile = env.tile(ev.targetUid), last = !(ev.amount > 0);
+    const b = tile && (tile.querySelector(':scope > .fxd-st-expose.fxd-st-leaving') || tile.querySelector(':scope > .fxd-st-expose'));
+    if(tile && (b || last)){ if(b && last) b.__crit = true; const job = {uid:ev.targetUid, tile, b, last, env, done:false};
+      xHold(env).set(String(ev.targetUid), job); env.at(900, ()=>{ if(!job.viaHit){ xHold(env).delete(String(job.uid)); exposeFire(job); } }); }
+  }
+  if(ev.type === 'hit' && ev.targetUid != null){ const H = xHold(env), job = H.get(String(ev.targetUid));
+    if(job && !job.done){ H.delete(String(ev.targetUid)); job.viaHit = true; env.at(env.hitAtMs(ev), ()=> exposeFire(job)); } }
 };
 // Non-battle moments: fxHook('<name>', ...args) in arena_app.js calls M.hooks.<name>(...args, env).
 // Live status looks: after updateCardStatusDisplay(uid) patches a board card.
