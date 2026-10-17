@@ -37002,7 +37002,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'ca78f5fdc6eb', BUILD_CARD_HASH = '0d895345ed4ca62efd5512c769c8c686ef6e0c821a7acf3338be1e1e5aaee5c6';
+const BUILD_ID = '4341bda6a6ab', BUILD_CARD_HASH = '0d895345ed4ca62efd5512c769c8c686ef6e0c821a7acf3338be1e1e5aaee5c6';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -49973,6 +49973,7 @@ function steamUnlock(id){
   try{
     const steam = typeof window !== 'undefined' && window.bwDesktop && window.bwDesktop.steam;
     if(!steam || typeof steam.unlock !== 'function' || steamAchTried.has(id) || !STEAM_ACHIEVEMENTS.some(a=> a.id === id)) return;
+    if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return; // 2026-10-18: no real Steam unlocks from Admin Mode jumps and test clears
     const done = ()=>{ try{ const d = JSON.parse(localStorage.getItem(STEAM_ACH_KEY) || '[]'); return Array.isArray(d) ? d : []; }catch(e){ return []; } };
     if(done().includes(id)) return;
     steamAchTried.add(id);

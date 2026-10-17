@@ -15557,6 +15557,7 @@ function steamUnlock(id){
   try{
     const steam = typeof window !== 'undefined' && window.bwDesktop && window.bwDesktop.steam;
     if(!steam || typeof steam.unlock !== 'function' || steamAchTried.has(id) || !STEAM_ACHIEVEMENTS.some(a=> a.id === id)) return;
+    if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return; // 2026-10-18: no real Steam unlocks from Admin Mode jumps and test clears
     const done = ()=>{ try{ const d = JSON.parse(localStorage.getItem(STEAM_ACH_KEY) || '[]'); return Array.isArray(d) ? d : []; }catch(e){ return []; } };
     if(done().includes(id)) return;
     steamAchTried.add(id);
