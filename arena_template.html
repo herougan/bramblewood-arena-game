@@ -6802,6 +6802,9 @@
      be gone. Remove skip turn."): once the match is over, the hand, the Graveyard drop and Pass turn
      are hidden; the board stays to look at. */
   body.match-ended #handStrip, body.match-ended .drop-row, body.match-ended #dropDiscard, body.match-ended #leaderWidgetWrap, body.match-ended .coach-tip{visibility:hidden !important; pointer-events:none !important;}
+  /* 2026-10-17 (user: "Remove the pass button when i do post-battle analysis. since i already won."): Pass and Auto-play are not
+     rendered once m.over (renderMatchUI); this also hides one left by a render from just before the end. */
+  body.match-ended #skipZone, body.match-ended #autoplayBtn, body.match-ended #hudPackBtn{display:none !important;}
   .wl-reopen{position:fixed; left:50%; bottom:22px; transform:translateX(-50%); z-index:80; display:flex; gap:8px;}
   /* Conquest: less scrolling, sturdier glass (2026-10-08, user: "minimise the y-scrolling" and "the
      translucent UI on the conquest page should have slightly higher opacity"). In full-window
