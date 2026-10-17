@@ -165,6 +165,10 @@ ARCHETYPE_ICON = {
     "Hummingbird": "🐦",
     # Irradiated (2026-10-12, user: "Uranium resource, only for irradiated glow wyrms, axolotls and couatls").
     "Irradiated": "☢️",
+    # The great beasts (2026-10-18, user: "Add a legendary leviathan ... second in rank as Dragons ... a unique balrog ... third in
+    # rank ... Dragon-Turtles? also legendary"): each family is a tag of its own so more can follow (see creatureRank in arena_app.js).
+    # The five Dragons already carried "Dragon" with no icon.
+    "Dragon": "🐉", "Leviathan": "🐋", "Dragon-Turtle": "🐢", "Fiend": "👺",
 }
 archetype_icon_literal = json.dumps(ARCHETYPE_ICON, ensure_ascii=False)
 

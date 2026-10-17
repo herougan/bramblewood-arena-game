@@ -485,7 +485,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.errand": "📜 Errand: {title} — {v}/{g}",
   "toast.voice-lines": "Voice lines:",
   "toast.npc-dialogue": "NPC dialogue:",
-  "results.field-kit-your-first-conquest-wins": "Field kit: your first {of} Conquest wins each day bring an item ({nth} of {of} today). Use it from 🎒 in a skirmish."
+  "results.field-kit-your-first-conquest-wins": "Field kit: your first {of} Conquest wins each day bring an item ({nth} of {of} today). Use it from 🎒 in a skirmish.",
+  "toast.nothing-to-fuse-no-card-has": "🧩 Nothing to fuse: no card has more plain copies than a deck can hold. Foil, Shiny and skinned copies are always kept.",
+  "toast.nothing-to-disenchant-you-have-one": "♻️ Nothing to disenchant: you have one copy of everything that can melt. Base and Quest cards, levelled cards, foils and Shinies are never touched.",
+  "toast.admin-raid-damage-dealt": "💥 Admin: {toLocaleString} raid damage dealt{v2}.",
+  "toast.admin-damage-failed": "Admin damage failed:",
+  "toast.reward-paid": "Reward paid: {v1}",
+  "toast.no-currency-reward-for-this-win": "No currency reward for this win.",
+  "toast.packed-use-it-from-the-in": "🎒 {icon} {name} packed. Use it from the 🎒 in a fight against the computer."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

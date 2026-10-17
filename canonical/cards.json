@@ -11390,7 +11390,8 @@
         "*a slow, smoky yawn*",
         "*its scales tick as they cool*"
       ]
-    }
+    },
+    "creatureRank": 1
   },
   {
     "id": "white-dragon",
@@ -11446,7 +11447,8 @@
         "*turns over in its sleep*",
         "*snowflakes drift from its nose*"
       ]
-    }
+    },
+    "creatureRank": 1
   },
   {
     "id": "blue-dragon",
@@ -11503,7 +11505,8 @@
         "*hums like a storm cloud*",
         "*a spark hops between its horns*"
       ]
-    }
+    },
+    "creatureRank": 1
   },
   {
     "id": "green-dragon",
@@ -11555,7 +11558,8 @@
         "*the marsh bubbles around it*",
         "*a lazy, green-tinged yawn*"
       ]
-    }
+    },
+    "creatureRank": 1
   },
   {
     "id": "black-dragon",
@@ -11608,7 +11612,8 @@
         "*claws scrape slowly on stone*",
         "*eyes open in the dark*"
       ]
-    }
+    },
+    "creatureRank": 1
   },
   {
     "id": "straw-training-dummy",
@@ -25837,5 +25842,204 @@
       "id": "m7",
       "node": "10-3"
     }
+  },
+  {
+    "id": "fathom-leviathan",
+    "name": "Fathom Leviathan",
+    "icon": "\ud83c\udf0a",
+    "cost": 4,
+    "wait": 4,
+    "attack": 9,
+    "health": 40,
+    "rarity": "legendary",
+    "creatureRank": 2,
+    "archetypes": [
+      "Leviathan",
+      "Ocean"
+    ],
+    "species": [
+      "Dragon"
+    ],
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "effects": {
+      "supreme": true,
+      "tide": true,
+      "tsunami": 2,
+      "wave": "alternate",
+      "bounty": 1
+    },
+    "flavor": "Sailors call the first swell a storm. The second one has eyes.",
+    "source": {
+      "kind": "raid",
+      "id": "goliath"
+    },
+    "raid": "goliath",
+    "barks": {
+      "play": [
+        "*the sea draws a long breath*",
+        "*a swell rises with eyes in it*"
+      ],
+      "kill": [
+        "*the water closes over them*",
+        "*a slow, deep rumble*"
+      ],
+      "death": [
+        "*it sinks, and the sea goes flat*",
+        "*one last swell, then calm*"
+      ],
+      "idle": [
+        "*the tide leans toward it*",
+        "*bubbles rise from very far down*"
+      ]
+    },
+    "locked": true,
+    "test": false,
+    "numericId": 1225,
+    "uuid": "6517020e-f994-5821-94c9-b722d7cbb1f4",
+    "creatorNote": "2026-10-18 (user: \"Add a legendary leviathan to the game. These 'leviathan' types are second in rank as Dragons. Add a unique balrog if not yet. third in rank. For the land... we have grand tortoises, but im not sure what name to give them, maybe Dragon-Turtles? also legendary, equal to leviathan's rank.\"). The first Leviathan: rank 2 of the great beasts (creatureRank 2), second only to the Dragons, so a little under them (9/40, Lumber 4, Wait 4, no Flying, one Tsunami instead of a Dragon's two elemental skills) and over an ordinary Legendary. Supreme (the user: \"Dragons and Sphinxes are supreme beasts. Leviathans too\"). Tide unit; Tsunami 2 washes the enemy board back a Wait and brings the Tide in for every Tide card you hold; Wave (alternate) shoves what it hits. Stat budget v3 at Level 1: 2x9 + 40 + 5 = 63 < N 85.4, 9x40 + 5 = 365 < (N/3)\u00b2 810.4. Drops from the Goliath raid (the deep things are raid beasts), like the Goliath Broodmother; on no map yet. Art to come: art/cards/fathom-leviathan.png.",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "splashEffect": "none",
+    "mechanicLine": "none"
+  },
+  {
+    "id": "grovebearer-dragon-turtle",
+    "name": "Grovebearer Dragon-Turtle",
+    "icon": "\ud83d\udc22",
+    "cost": 4,
+    "wait": 5,
+    "attack": 6,
+    "health": 48,
+    "rarity": "legendary",
+    "creatureRank": 2,
+    "archetypes": [
+      "Dragon-Turtle",
+      "Turtle",
+      "Forest"
+    ],
+    "species": [
+      "Reptile",
+      "Dragon"
+    ],
+    "dmgType": "physical",
+    "resist": [
+      "acid"
+    ],
+    "tags": [],
+    "effects": {
+      "sturdy": true,
+      "regen": 3,
+      "guardian": true,
+      "sprout": 2,
+      "tide": true
+    },
+    "flavor": "There is a whole wood on its back, with a stream, two badger setts and a shrine. Nobody up there has noticed it walking.",
+    "source": {
+      "kind": "map",
+      "id": "m23",
+      "node": "23-8"
+    },
+    "barks": {
+      "play": [
+        "*the ground rolls under a shell like a hill*",
+        "*leaves fall from its back*"
+      ],
+      "kill": [
+        "*a slow, patient blink*",
+        "*moss closes over the place*"
+      ],
+      "death": [
+        "*the grove on its back goes quiet*",
+        "*it settles, and becomes a hill*"
+      ],
+      "idle": [
+        "*birds argue somewhere on its shell*",
+        "*a very, very slow breath*"
+      ]
+    },
+    "locked": true,
+    "test": false,
+    "numericId": 1226,
+    "uuid": "f536d9de-37f2-594a-9086-69944c728523",
+    "creatorNote": "2026-10-18 (user: \"Add a legendary leviathan to the game. These 'leviathan' types are second in rank as Dragons. Add a unique balrog if not yet. third in rank. For the land... we have grand tortoises, but im not sure what name to give them, maybe Dragon-Turtles? also legendary, equal to leviathan's rank.\"). The first Dragon-Turtle (a name from old Chinese tales), the land's great tortoise: rank 2, equal to the Leviathan, under the Dragons. Old, armoured and slow (Lumber 4, Wait 5, 6/48): Sturdy halves every hit, Regeneration 3, Guardian takes the hits meant for its neighbours, and Sprout 2 drops two Growth Sprouts off the wood on its back. A Tide unit like every turtle. No Supreme: the user named only dragons, sphinxes and leviathans for that. Stat budget v3 at Level 1: 2x6 + 48 + 8 = 68 < N 95.9, 6x48 + 8 = 296 < (N/3)\u00b2 1021.9. Placed on 23-8 Marshal Tuskwell (the Goldfeather Siege, Map 23): one in the boss's deck and its second card reward. Art to come: art/cards/grovebearer-dragon-turtle.png.",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "splashEffect": "none",
+    "mechanicLine": "none"
+  },
+  {
+    "id": "ashmantle-fiend",
+    "name": "Ashmantle Fiend",
+    "icon": "\ud83d\udc7a",
+    "cost": 3,
+    "wait": 3,
+    "attack": 8,
+    "health": 30,
+    "rarity": "unique",
+    "creatureRank": 3,
+    "archetypes": [
+      "Fiend",
+      "Devil",
+      "Volcanic"
+    ],
+    "species": [
+      "Elemental"
+    ],
+    "dmgType": "heat",
+    "resist": [
+      "heat"
+    ],
+    "tags": [],
+    "mechanicLine": "devilry",
+    "effects": {
+      "immolation": 2,
+      "shade": true,
+      "scare": 2
+    },
+    "flavor": "The Ashen Choir sang for something bigger. It came up out of the vent wearing the smoke like a cloak, and the singing stopped.",
+    "source": {
+      "kind": "map",
+      "id": "me",
+      "node": "20-A-4"
+    },
+    "barks": {
+      "play": [
+        "*the smoke stands up and walks*",
+        "*every ember turns to look*"
+      ],
+      "kill": [
+        "*a laugh like a furnace door*",
+        "*ash settles where they stood*"
+      ],
+      "death": [
+        "*the fire gutters, then goes out*",
+        "*smoke, and nothing in it*"
+      ],
+      "idle": [
+        "*cinders drip from its horns*",
+        "*the shadows round it smoulder*"
+      ]
+    },
+    "locked": true,
+    "test": false,
+    "numericId": 1227,
+    "uuid": "84de93ed-6989-5d16-90a6-57f913c0f7a2",
+    "creatorNote": "2026-10-18 (user: \"Add a legendary leviathan to the game. These 'leviathan' types are second in rank as Dragons. Add a unique balrog if not yet. third in rank. For the land... we have grand tortoises, but im not sure what name to give them, maybe Dragon-Turtles? also legendary, equal to leviathan's rank.\"). Not a Balrog: that name and creature are Tolkien's, so the volcano's fire demon is our own, the Ashmantle Fiend. Rank 3 of the great beasts (creatureRank 3), under the Dragons, Leviathans and Dragon-Turtles. Unique (one a deck). Fire and shadow: Immolation 2 burns everything beside it and the enemy facing it each round, Shade halves non-magic hits at night and in the dark, and Scare 2 takes 2 off every attack at it. A Devilry-line Devil, so discarding it gives a bonus Dark Point. Stat budget v3 at Level 1: 2x8 + 30 + 5 = 51 < N 68.1, 8x30 + 5 = 245 < (N/3)\u00b2 515.3. Placed in the Heart of the Mountain (20-A-4, Eye of the Volcano): it guards the last door and is the dungeon's second card reward, beside the Contradiction. Art to come: art/cards/ashmantle-fiend.png.",
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "stoneCost": 0,
+    "devilryCost": 0,
+    "splashEffect": "none"
   }
 ]
