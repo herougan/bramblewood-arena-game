@@ -1483,6 +1483,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function washPush(players, sideOf, tpid, t, n, dir, ev, events, stats){
     const pl = players[tpid]; n = Math.max(1, Math.round(Number(n) || 1));
     let other = null; const shifted = [];
+    // 2026-10-18 (user: "Awash N: Move N. If crash into another unit, both take N damage."): the Awash field crashes instead of bouncing.
+    const crash = !!ev.awash; let crashInto = null;
     const blocks = c=> !!(c && c.hp > 0 && (stuckFast(c) || c.cageOf));
     if(slotMode){
       syncSlots(players[1]); syncSlots(players[2]);
@@ -1497,9 +1499,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const occ = new Map(allBoardCards(pl).filter(c=> c !== t && c.hp > 0 && !c.gap).map(c=> [c.slot, c]));
         const reach = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > edge || occ.has(d)) break; s = d; } return s; };
         const first = washDir(s0, 0); let way = first, to = reach(way);
-        if(to === s0){ way = -first; to = reach(way); if(to !== s0) ev.bounced = true; }
+        if(crash){ // Awash N (2026-10-18): ride up to N columns; a unit in the way is crashed into. Only the board's edge turns it back.
+          const hitAt = (w, from)=> occ.get(from + w) || null;
+          let hit = to - s0 !== n * way ? hitAt(way, to) : null;
+          if(to === s0 && !hit){ way = -first; to = reach(way); hit = to - s0 !== n * way ? hitAt(way, to) : null; if(to !== s0 || hit) ev.bounced = true; }
+          if(hit){ crashInto = hit; ev.crashUid = hit.uid; }
+          if(to === s0 && hit){ ev.dir = way < 0 ? 'left' : 'right'; ev.n = n; ev.cols = 0; }
+        }
         ev.n = n;
-        if(to === s0){ ev.dir = first < 0 ? 'left' : 'right'; ev.blocked = true; ev.bob = true; ev.touchUids = [s0 - 1, s0 + 1].map(s=> occ.get(s)).filter(Boolean).map(c=> c.uid); }
+        if(crashInto && to === s0){ /* rammed the unit right beside it: no columns ridden */ }
+        else if(to === s0){ ev.dir = first < 0 ? 'left' : 'right'; ev.blocked = true; ev.bob = true; ev.touchUids = [s0 - 1, s0 + 1].map(s=> occ.get(s)).filter(Boolean).map(c=> c.uid); }
         else { ev.dir = way < 0 ? 'left' : 'right'; t.slot = to; ev.moves.push({uid:t.uid, from:s0, to}); ev.cols = Math.abs(to - s0); relayoutRow(pl); }
       }
     } else {
@@ -1512,16 +1521,25 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       } else {
         const reach = w=>{ let j = i; for(let k = 0; k < n; k++){ const nx = order[j + w]; if(!nx || blocks(nx)) break; j += w; } return j; };
         const first = i < 0 ? 1 : washDir(i, (order.length - 1) / 2); let way = first, j = i < 0 ? i : reach(way);
-        if(i >= 0 && j === i){ way = -first; j = reach(way); if(j !== i) ev.bounced = true; }
-        ev.n = n; ev.dir = (j === i ? first : way) < 0 ? 'left' : 'right';
-        if(i < 0 || j === i){ ev.blocked = true; ev.bob = true; ev.touchUids = i < 0 ? [] : [order[i - 1], order[i + 1]].filter(c=> c && c.hp > 0).map(c=> c.uid); }
+        if(crash && i >= 0){ // Awash N on a packed row (2026-10-18): every neighbour is a unit, so it rams the one that way (or the other way at the end of the row)
+          let nb = order[i + first]; way = first; if(!nb){ nb = order[i - first]; way = -first; if(nb) ev.bounced = true; }
+          if(nb && nb.hp > 0){ crashInto = nb; ev.crashUid = nb.uid; j = i; } }
+        if(i >= 0 && j === i && !crashInto){ way = -first; j = reach(way); if(j !== i) ev.bounced = true; }
+        ev.n = n; ev.dir = (j === i && !crashInto ? first : way) < 0 ? 'left' : 'right';
+        if(crashInto){ ev.cols = 0; }
+        else if(i < 0 || j === i){ ev.blocked = true; ev.bob = true; ev.touchUids = i < 0 ? [] : [order[i - 1], order[i + 1]].filter(c=> c && c.hp > 0).map(c=> c.uid); }
         else { const lo = Math.min(i, j), hi = Math.max(i, j); for(let k = lo; k <= hi; k++) if(order[k] !== t) shifted.push(order[k]);
           order.splice(i, 1); order.splice(j, 0, t); relay(); ev.moves.push({uid:t.uid, from:i, to:j}); ev.cols = Math.abs(j - i); ev.order = order.map(c=> c.uid);
           if(shifted.length === 1){ other = shifted[0]; ev.swapUid = other.uid; ev.aUid = t.uid; ev.bUid = other.uid; } }
       }
     }
     if(recordEvents && events) events.push(ev);
-    if(!ev.blocked){ // a pushed unit has moved: its On Move triggers fire (as Scurry's do)
+    if(crashInto && t.hp > 0 && crashInto.hp > 0){ // both take N (a hit: Exposed doubles it, like any flat hit)
+      const sd = sideOf(tpid), d1 = damageCardFlat(t, n, 'impact'), d2 = damageCardFlat(crashInto, n, 'impact');
+      ensureStat(stats || {}, sd, t.defId).taken += d1; ensureStat(stats || {}, sd, crashInto.defId).taken += d2;
+      if(recordEvents && events) events.push({type:'washCrash', side:sd, uid:t.uid, defId:t.defId, otherUid:crashInto.uid, otherDefId:crashInto.defId, n, dmg:d1, otherDmg:d2});
+      removeDeadCards(players, sideOf, {}, stats || {}, events); }
+    if(!ev.blocked && !(crashInto && !(ev.cols > 0))){ // a pushed unit has moved: its On Move triggers fire (as Scurry's do)
       runCustomTriggers(players, sideOf, tpid, t, CARD_DEFS[t.defId], 'onMove', stats || {}, events, {movedCard: other || t});
       (other ? [other] : shifted).forEach(o=>{ if(o && o.hp > 0) runCustomTriggers(players, sideOf, tpid, o, CARD_DEFS[o.defId], 'onMove', stats || {}, events, {movedCard: t}); }); }
     return ev;
@@ -2606,15 +2624,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Heal (2026-10-10, user: "Heal N heals for N health. But if they have bleed counters - it removes them instead (if
   // there's extra heal left over, it goes to health)"). Every explicit heal (the Heal action, Regeneration, Bloom,
   // Spring Rain) goes through here. Returns the HP actually restored.
-  // 2026-10-16 (user: "When regeneration of heal are used to reduce poison ... Note: it takes heal values to remove poison counters -
-  // priority. Only the remaining left over heals the unit."): Poison comes off first, 1 counter per 1 heal (a 'healPoison' statusFx
-  // reports how many and how many are left), then Bleed as before, and only what is left restores Health.
+  // 2026-10-16 heals took Poison off first; 2026-10-18 (user: "Heal-likes doesn't decrease poison, only bleed."): reverted. Heals
+  // stanch Bleed first (1 counter per 1 heal), and only what is left restores Health. Poison comes off only with Cure / Cleanse.
   function applyHeal(card, amount, side, events){
     let n = Math.max(0, amount|0); if(!card || card.hp<=0 || !n) return 0;
     if(card.wither > 0) return 0; // Wither (2026-10-14): nothing heals a withering unit
     { const hp = pidOfLive(card); if(hp) n += auraN(curPlayers[hp], 'herbalist'); } // Herbalist N (2026-10-17): every heal on your units heals N more
-    const cure = Math.min(n, card.poison|0);
-    if(cure > 0){ card.poison -= cure; n -= cure; if(recordEvents && events) events.push({type:'statusFx', kind:'healPoison', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:cure, left:card.poison}); }
     const stanch = Math.min(n, card.bleed|0);
     if(stanch > 0){ card.bleed -= stanch; n -= stanch; if(recordEvents && events) events.push({type:'statusFx', kind:'stanch', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:stanch}); }
     const healed = Math.min(card.maxHp - card.hp, n); if(healed > 0) card.hp += healed;
@@ -2642,10 +2657,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(cause==='defend') return;
     const dmg = damageCardFlat(card, card.bleed, 'bleed');
     ensureStat(stats, sideOf(ownerId), card.defId).taken += dmg;
-    const decay = !statusDecayHeld() && card.bleed > 0;
-    if(decay) card.bleed -= 1;
-    if(card.ichorBleed > card.bleed) card.ichorBleed = card.bleed;
-    if(recordEvents && events) events.push({type:'bleedTick', side:sideOf(ownerId), defId:card.defId, uid:card.uid, dmg, cause, decay});
+    // 2026-10-18 (user: "Bleed and poison both tick down by 1 per turn."): the stack no longer wears down per action; it loses 1
+    // once a round at upkeep, like Poison (applyPoisonTicks, a 'bleedFade' event). decay:false keeps old replays' badge maths right.
+    if(recordEvents && events) events.push({type:'bleedTick', side:sideOf(ownerId), defId:card.defId, uid:card.uid, dmg, cause, decay:false});
   }
   // Festering (2026-10-10, user: "a new global effect skill - this passive makes it such that all units on the field do
   // not remove their status counters naturally when they trigger - bleed & poison only, for now"): while any live unit
@@ -5098,6 +5112,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function applyPoisonTicks(players, sideOf, stats, events){
     const p1=players[1], p2=players[2];
     const poisoned = [];
+    // Bleed wears down by 1 every round (2026-10-18, user: "Bleed and poison both tick down by 1 per turn."). Its damage still comes
+    // on the unit's own attacks and skills (bleedTick); only the stack's countdown moved here. Festering holds it, as before.
+    if(!statusDecayHeld()) [p1,p2].filter(inUpkeep).forEach(pl=> allBoardCards(pl).forEach(c=>{ if(!c || c.gap || !(c.hp > 0) || !(c.bleed > 0)) return;
+      c.bleed -= 1; if(c.ichorBleed > c.bleed) c.ichorBleed = c.bleed;
+      if(recordEvents && events) events.push({type:'bleedFade', side:sideOf(pl.id), defId:c.defId, uid:c.uid, left:c.bleed}); }));
     [p1,p2].filter(inUpkeep).forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{ if(c.poison>0 && isStructureCard(c)) c.poison = 0; /* Structures are immune (2026-10-15) */ if(c.poison>0) poisoned.push({pl,card:c}); })));
     // Curses tick alongside poison: every unit standing on a cursed cell takes the cell's total.
     const cursed = [];
@@ -5182,7 +5201,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // triggers (see fireHealTriggers) exactly like any other heal source.
         // 2026-10-14 (user: "Do not regenerate when the unit is at full health"): nothing at all at full health, not even a bleed stanch.
         const regenN = ((def.effects && def.effects.regen) ? (def.effects.regen === true ? 1 : Number(def.effects.regen)||0) : 0) + (c.amoreRegen||0); // + Amore's Regeneration 3 (2026-10-16)
-        if(c.hp>0 && (c.hp < c.maxHp || c.poison > 0) && regenN > 0){ // + a poisoned unit: the heal takes the Poison off first (2026-10-16)
+        if(c.hp>0 && c.hp < c.maxHp && regenN > 0){ // 2026-10-18: heals no longer touch Poison, so a poisoned unit at full health doesn't regenerate
           const healed = applyHeal(c, regenN, sideOf(pl.id), events);
           if(healed>0){ fireHealTriggers(players, sideOf, pl.id, c, c, healed, stats, events); }
         }
@@ -5190,7 +5209,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // itself, it heals a random OTHER damaged ally on the same board, every round it's on
         // the field. No-op if every other ally is already at full HP (or there are none).
         if(c.hp>0 && def.effects && def.effects.bloom && !c.stunned){ // a stunned unit skips its upkeep actions
-          const others = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && (o.hp<o.maxHp || o.bleed>0 || o.poison>0)); // + Poison (2026-10-16)
+          const others = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && (o.hp<o.maxHp || o.bleed>0)); // 2026-10-18: Poison no longer counts (heals don't remove it)
           if(others.length){
             const bloomTarget = others[Math.floor(rnd()*others.length)];
             const bloomHealed = applyHeal(bloomTarget, def.effects.bloom + ((pl.perks && pl.perks.pollen) || 0), sideOf(pl.id), events); // + Wildpath "Pollen Drift"
@@ -5201,22 +5220,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // weakest wounded ally (the lowest Health right now, not itself; ties at random) for N. A stunned nurse skips it.
         if(c.hp>0 && def.effects && def.effects.nursing && !c.stunned){
           const n = def.effects.nursing === true ? 2 : (Number(def.effects.nursing)||0);
-          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && !o.gap && (o.hp<o.maxHp || o.bleed>0 || o.poison>0)); // + Poison (2026-10-16)
+          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && o.uid!==c.uid && !o.gap && (o.hp<o.maxHp || o.bleed>0)); // 2026-10-18: Poison no longer counts
           if(n > 0 && hurt.length){ const lo = Math.min(...hurt.map(o=> o.hp)), pool = hurt.filter(o=> o.hp === lo), tgt = pool[Math.floor(rnd()*pool.length)];
             const h = applyHeal(tgt, n, sideOf(pl.id), events);
             if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:tgt.uid, targetDefId:tgt.defId, amount:h, cause:'nursing'}); fireHealTriggers(players, sideOf, pl.id, c, tgt, h, stats, events); } }
         }
         // Healing N (Ecclesia, 2026-10-10): heals the most wounded ally (itself included) for N.
         if(c.hp>0 && def.effects && def.effects.healing && !c.stunned){
-          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && (o.hp<o.maxHp || o.bleed>0 || o.poison>0)).sort((a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp)); // + Poison (2026-10-16)
+          const hurt = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(o=> o.hp>0 && (o.hp<o.maxHp || o.bleed>0)).sort((a,b)=> (a.hp/a.maxHp) - (b.hp/b.maxHp)); // 2026-10-18: Poison no longer counts
           if(hurt.length){ const h = applyHeal(hurt[0], def.effects.healing, sideOf(pl.id), events); if(h>0){ if(recordEvents && events) events.push({type:'heal', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetUid:hurt[0].uid, targetDefId:hurt[0].defId, amount:h, cause:'healing'}); fireHealTriggers(players, sideOf, pl.id, c, hurt[0], h, stats, events); } }
         }
-        // Cure N (2026-10-16, user: "Cure."): every upkeep it cures your most afflicted unit (itself included): up to N Poison, then
-        // Bleed, comes off. Toxin can't be cured.
+        // Cure N (2026-10-16, user: "Cure."): every upkeep it cures your most poisoned unit (itself included) of up to N Poison.
+        // 2026-10-18 (user: "Cure doesn't heal bleed."): Poison only now; heals stanch Bleed. Toxin can't be cured.
         if(c.hp>0 && def.effects && def.effects.cure && !c.stunned){
-          const sick = allBoardCards(pl).filter(o=> o && !o.gap && o.hp>0 && ((o.poison||0) + (o.bleed||0)) > 0).sort((a,b)=> ((b.poison||0) + (b.bleed||0)) - ((a.poison||0) + (a.bleed||0)));
-          if(sick.length){ const t = sick[0]; let n = w2N(def, 'cure'); const p0 = Math.min(n, t.poison||0); t.poison -= p0; n -= p0; const b0 = Math.min(n, t.bleed||0); t.bleed -= b0;
-            if(recordEvents && events) events.push({type:'statusFx', kind:'cure', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:p0 + b0, poison:p0, bleed:b0}); }
+          const sick = allBoardCards(pl).filter(o=> o && !o.gap && o.hp>0 && (o.poison||0) > 0).sort((a,b)=> (b.poison||0) - (a.poison||0));
+          if(sick.length){ const t = sick[0]; const p0 = Math.min(w2N(def, 'cure'), t.poison||0); t.poison -= p0;
+            if(recordEvents && events) events.push({type:'statusFx', kind:'cure', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:p0, poison:p0, bleed:0}); }
         }
         // Satiety N (Ecclesia, 2026-10-10, my reading of the name): well fed. At the start of a round at full health it gains +N max HP.
         if(c.hp>0 && def.effects && def.effects.satiety && c.hp >= c.maxHp){

@@ -1322,7 +1322,7 @@ const ACTION_DEFS = [
   // NOT, since this isn't damage, it's direct removal).
   {key:'exile', label:'Exile', fields:['who','sub','targets'], whoOptions:['self','ally','enemy','kin','any'], desc:'Send a target to the Removal Zone instead of the graveyard. "Self" only works paired with On Death (redirects where this card\'s own death sends it); Ally/Enemy instantly removes a live target from the board right now.'},
   {key:'swapPositions', label:'Swap', fields:[], desc:'Swaps the board positions of two random live enemy creatures. No-op with fewer than 2. (The Scurry passive uses this same action under the hood.)'},
-  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent, a Kin unit or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Poison counters are removed first (1 per heal), then Bleed counters, then any heal left over restores HP. Fires On Heal/On Healed/On Ally Healed."}, // + Poison first (2026-10-16)
+  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent, a Kin unit or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Bleed counters are removed first (1 per heal), then any heal left over restores HP. Poison isn't touched (only Cure removes it). Fires On Heal/On Healed/On Ally Healed."}, // 2026-10-18: no longer Poison first
   {key:'mindControl', label:'Mind Control', fields:['sub'], subOptions:['random','adjacent','furthest'], desc:"Takes a unit from the opposing field and puts it on this side, if there's a free slot."},
   {key:'stunPlayer', label:'Player Stun', fields:['count'], desc:"The enemy player skips their turn: they can't play cards until the next round."},
   {key:'cleanse', label:'Cleanse', fields:['amount','who','sub','targets'], desc:"Cleanse N: remove up to N harmful counters from the chosen target (this card by default): a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
@@ -1938,7 +1938,7 @@ const SKILL_COUNTERS = {
   evasive: ['sweep', 'fork', 'fencing'], // Fencing (2026-10-14): Evasive can't dodge it
   stealth: ['guardian'],
   swarm: ['sweep', 'fork', 'defiance'],
-  poison: ['regen', 'bloom', 'healing'],
+  poison: ['cure'], // 2026-10-18: heals no longer remove Poison; Cure does
   bleed: ['regen', 'bloom', 'healing'],
   guardian: ['stealth'],
   revive: ['exileAns'],
@@ -1949,8 +1949,8 @@ const SKILL_COUNTER_EXTRA = {exileAns: '🌫 Exile'};
 // example. THEN after the skills are done, a small separating line, then more explanations for each keyword"). Skill
 // lines name the status in its colour; one short glossary under the skills explains each status that came up.
 const STATUS_KEYWORDS = [
-  {k:'poison', re:/\b(poison(?:ed|s)?)\b/gi, name:'Poison', c:'#3fa535', text:'takes damage equal to its stacks at the start of each round, then loses 1 stack.'},
-  {k:'bleed', re:/\b(bleed(?:ing|s)?|bled)\b/gi, name:'Bleed', c:'#d0344a', text:'takes damage equal to its stacks whenever it attacks or uses a skill, then loses 1 stack.'},
+  {k:'poison', re:/\b(poison(?:ed|s)?)\b/gi, name:'Poison', c:'#3fa535', text:'takes damage equal to its stacks at the start of each round, then loses 1 stack. Only Cure removes it; heals don’t.'},
+  {k:'bleed', re:/\b(bleed(?:ing|s)?|bled)\b/gi, name:'Bleed', c:'#d0344a', text:'takes damage equal to its stacks whenever it attacks or uses a skill, and loses 1 stack each round. Heals remove it.'},
   {k:'decay', re:/\b(decay(?:ing|s)?)\b/gi, name:'Decay', c:'#8d8a2e', text:'at the start of each round, takes damage and loses Attack equal to its stacks.'},
   {k:'corrode', re:/\b(corrode[ds]?)\b/gi, name:'Corrode', c:'#b8732c', text:'deals that much less Attack; loses 1 stack each round.'},
   {k:'freeze', re:/\b(freez(?:e|es|ing)|frozen)\b/gi, /* + Freezes (2026-10-16 skill audit) */ name:'Frozen', c:'#3d9fd8', text:'can’t attack, and its Wait doesn’t tick down.'},
@@ -2218,7 +2218,7 @@ Object.assign(SKILL_TEXT, {
   prey: ()=> `Evasive while an enemy Predator is on the field.`,
   nova: v=> `When it dies, every enemy unit takes ${numOr(v, 3)} magic damage.`,
   crystallise: v=> `When it dies, it becomes a 0/${numOr(v, 5)} crystal in its slot.`,
-  cure: v=> `Every upkeep, cure ${numOr(v, 2)} Poison or Bleed from your most afflicted unit.`,
+  cure: v=> `Every upkeep, cure ${numOr(v, 2)} Poison from your most poisoned unit.`, // 2026-10-18: Poison only
   mountainClimber: ()=> `Field and terrain hazards pass it by.`,
   atheist: ()=> `Half damage from magic, Devilry and Ecclesia. Immune to the Leylines.`, // 2026-10-16
   taunt: ()=> `Enemies facing it or beside that column must attack it.`,
@@ -4970,9 +4970,9 @@ function ambienceKindForMatch(m){
 // with no statuses.
 const LIVE_STATUS_ROWS = [
   // [field, STATUS_KEYWORDS k (colour) or null, name, text(n, c), shows its number]
-  ['poison', 'poison', 'Poison', n=> `takes ${n} damage at upkeep, then loses 1 stack.`, true],
+  ['poison', 'poison', 'Poison', n=> `takes ${n} damage at upkeep, then loses 1 stack. Heals don’t touch it; Cure does.`, true],
   ['toxin', 'toxin', 'Toxin', n=> `takes ${n} damage every round. It never wears off and can’t be cured.`, true],
-  ['bleed', 'bleed', 'Bleed', n=> `takes ${n} damage whenever it attacks or uses a skill, then loses 1 stack.`, true],
+  ['bleed', 'bleed', 'Bleed', n=> `takes ${n} damage whenever it attacks or uses a skill; loses 1 stack each round. Heals remove it first.`, true],
   ['decay', 'decay', 'Decay', n=> `at upkeep, takes ${n} damage and loses ${n} Attack.`, true],
   ['corrode', 'corrode', 'Corrode', n=> `deals ${n} less Attack; loses 1 stack each round.`, true],
   ['wither', null, 'Wither', (n, c)=> `loses ${n} max Health at upkeep${c.witherLeft ? ` for ${c.witherLeft} more round${c.witherLeft === 1 ? '' : 's'}` : ''}, and can’t be healed.`, true],
@@ -14764,7 +14764,7 @@ const FIELD2 = {
   // 2026-10-17 (user, on the raid: "There should be all the related field effects but also some kind of psychic dampener"): rules.psychicDampener,
   // in the engine's psychicHit (half, rounded down) and rollStatusOnHit's Confuse (1 round less). The Goliath raid fights under it.
   psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', short:'Psychic halved; Confuse 1 round less', text:"The deep presses on every mind: Psychic damage is halved (rounded down), and a Confuse lasts 1 round less, so a 1-round Confuse doesn't land. Both sides."},
-  awash:         {icon:'〰️', name:'Awash', editor:'awash', short:'A unit is washed 1–3 columns', text:'Each round from round 2, the water washes one random unit 1–3 columns along its row, leaning slightly toward the middle. A unit in the way turns it back the other way; boxed in on both sides, it just bobs where it is. Pinned and Webbed units hold fast.'},
+  awash:         {icon:'〰️', name:'Awash', editor:'awash', short:'A unit is washed 1–3 columns; crashes hurt', text:'Each round from round 2, the water washes one random unit N columns (1–3) along its row, leaning slightly toward the middle. If it crashes into another unit on the way, both take N damage. Only the board\'s edge turns it back the other way. Pinned and Webbed units hold fast.'}, // 2026-10-18: crash damage
 };
 // 2026-10-17 (user: "Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow of the volcanoes"): the row the volcano
 // maps' uneven cycle shows, and the "after an Eruption" form of Ashy.
@@ -23402,7 +23402,7 @@ const FXL_FIELDS = [
     // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card.")
     // 2026-10-17: the raid's Psychic Dampener: a Psychic 3 hit lands for 1, and its 1-round Confuse never lands.
     ['psychicDampener', {psychicDampener:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Mind Eel', icon:'🧠', effects:{psychic:3, confuse:{chance:100, duration:1}}}}], foes:[{role:'foe', slot:0}]}, steps:['round'], note:"The Mind Eel's Psychic 3 lands for 1, and its sure 1-round Confuse fizzles."}],
-    ['awash', {awash:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-2}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, steps:['round', 'round', 'round'], note:'Each round one unit rides the water 1–3 columns (stopping at a unit or the edge); a boxed-in unit bobs.'}],
+    ['awash', {awash:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-2}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, steps:['round', 'round', 'round'], note:'Each round one unit rides the water 1–3 columns; crashing into a unit hurts both for that many.'}],
   ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> WIND_TEXT.windy, rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: each one rolls its own wind (at your back, in your face or calm).'},
@@ -23461,7 +23461,7 @@ const FXL_SKILL_SETUPS = {
   prey: {foeFx:{predator:1}, steps:['round', 'round', 'round'], note:'The dummies are Predators: it dodges half of their attacks.'},
   nova: {status:{subject:{hp:1}}, steps:['round'], note:'It falls to the first hit and bursts.'},
   crystallise: {status:{subject:{hp:1}}, steps:['round', 'round'], note:'It falls to the first hit and leaves a crystal in its slot.'},
-  cure: {status:{ally:{poison:4, bleed:2}}, steps:['round'], note:'The ally beside it is Poisoned and Bleeding.'},
+  cure: {status:{ally:{poison:4}}, steps:['round'], note:'The ally beside it is Poisoned.'},
   mountainClimber: {rules:{field:'heatwave', heatLevel:3}, steps:['round', 'round'], note:'Scorching: the heat burns every unit but the climber.'},
   atheist: {rules:{leylines3:true}, steps:['round', 'round'], note:'Leylines III: every unit burns for 3 a round, but not the Atheist.'}, // 2026-10-16
   taunt: {mine:[{role:'subject', slot:1}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0}], steps:['round'], note:'The dummy faces an empty column; the Taunt beside it pulls the swing.'},
@@ -34088,7 +34088,9 @@ function logText(ev){
     case 'hatch': return {cls:'', text:`🥚 ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.fromDefId)} cracks open: out comes ${nm(ev.defId)}!`};
     case 'wave': { const who = ev.awash ? 'The water' : `${nm(ev.attDefId)}'s wave`, cols = ev.cols > 1 ? ` ${ev.cols} columns` : ''; // + Awash, the bob and the bounce (2026-10-17)
       return {cls:'', text: ev.bob ? `〰️ ${who} lifts ${nm(ev.targetDefId)}, but it's boxed in: it bobs in place.` : ev.blocked ? `〰️ ${who} breaks on ${nm(ev.targetDefId)}: no room to push it ${ev.dir}.`
-        : `〰️ ${who} ${ev.awash ? 'washes' : 'pushes'} ${nm(ev.targetDefId)} ${ev.dir}${cols}${ev.bounced ? ' (the other way was blocked)' : ''}${ev.swapUid != null ? ' (they swap places)' : ''}!`}; } // Wave (2026-10-14)
+        : ev.crashUid != null && !(ev.cols > 0) ? `〰️ ${who} slams ${nm(ev.targetDefId)} ${ev.dir} into the unit beside it!`
+        : `〰️ ${who} ${ev.awash ? 'washes' : 'pushes'} ${nm(ev.targetDefId)} ${ev.dir}${cols}${ev.bounced ? ' (the other way was blocked)' : ''}${ev.swapUid != null ? ' (they swap places)' : ''}${ev.crashUid != null ? ', into another unit' : ''}!`}; } // Wave (2026-10-14)
+    case 'washCrash': return {cls:'', text:`💥 Crash! ${nm(ev.defId)} and ${nm(ev.otherDefId)} each take ${ev.n} (${ev.dmg} and ${ev.otherDmg}).`}; // Awash N (2026-10-18)
     // 2026-10-14 (sixth pass)
     case 'fireball': return {cls:'', text: ev.castle ? `🟠 ${nm(ev.attDefId)} hurls a fireball at the castle!` : `🟠 ${nm(ev.attDefId)} hurls a fireball: it bursts over ${(ev.uids||[]).length} enemy unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} fire each!`};
     case 'meteor': return {cls:'', text: ev.castle ? `☄️ ${nm(ev.attDefId)} calls down a meteor on the castle!` : `☄️ ${nm(ev.attDefId)} calls down a meteor: ${ev.n} to the unit it lands on${(ev.sideUids||[]).length ? `, ${ev.sideN} to ${(ev.sideUids||[]).length} beside it` : ''}. The crater burns.`};
@@ -36960,6 +36962,18 @@ function renderVfxForEvent(ev){
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(ev.decay) rc.bleed = Math.max(0, (rc.bleed||0) - 1); }
     updateCardHpDisplay(ev.uid); try{ updateCardStatusDisplay(ev.uid); }catch(e){}
+  }
+  // Awash crash (2026-10-18, user: "Awash N: Move N. If crash into another unit, both take N damage."): both units jolt and take N.
+  if(ev.type==='washCrash'){
+    try{ SoundKit.thud ? SoundKit.thud() : (SoundKit.quick && SoundKit.quick()); }catch(e){}
+    [[ev.uid, ev.dmg], [ev.otherUid, ev.otherDmg]].forEach(([u, d])=>{ const el = boardCardEl(u); if(el){ shakeEl(el); floatText(el, '💥 -' + d, 'bleed-tick'); }
+      const rc = matchState && matchState.replayCards && matchState.replayCards[u]; if(rc) rc.hp = Math.max(0, rc.hp - (d|0)); updateCardHpDisplay(u); });
+  }
+  // Bleed wears down 1 a round at upkeep (2026-10-18): no damage, just the badge counting down.
+  if(ev.type==='bleedFade'){
+    const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
+    if(rc) rc.bleed = Math.max(0, ev.left|0);
+    try{ updateCardStatusDisplay(ev.uid); }catch(e){}
   }
   // Decay tick (2026-09-29): mirrors Poison/Bleed's tick treatment (shake, tint-pulse, emoji-led
   // float), plus its own note on the permanent Attack loss that a plain HP float wouldn't show.
