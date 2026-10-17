@@ -134,7 +134,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "tutorial.the-strongest-cards-ask-for-both": "The strongest cards ask for both patience and Lumber at once.",
   "toast.the-river-chose-the-otters": "🎲 The river chose the Otters.",
   "toast.the-river-chose-the-hummingbirds": "🎲 The river chose the Hummingbirds.",
-  "toast.tutorial-paused-tap-start-the-tutorial": "Tutorial paused — tap “Start the tutorial” on Home (or the 🎓 on the Outskirts map) whenever you’re ready.",
+  "toast.tutorial-paused-tap-start-the-tutorial": "Tutorial paused — tap the 🎓 on the Outskirts map whenever you’re ready.",
   "coach.tap-t-1-then-press-fight": "🎓 Tap T-1, then press ⚔️ Fight.",
   "coach.press-fight": "⚔️ Press Fight.",
   "tutorial.your-leader": "Your leader",

@@ -3,6 +3,7 @@
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
 ## 2026-10-17 (21:45)
+- **Home:** no "Start the tutorial" button (the game goes straight into it); a paused tutorial resumes from the 🎓 on the Outskirts map.
 - **Final check of the evening batches:** the full test suite was run once over everything merged today. Fixes from it: seven Map 22–24 fight decks now meet the Maps 21–40 rule (at least a quarter Rare or better), "Arrows (count)" is named Arrow Count, and the tests follow the Codex losing its one-off tag.
 
 ## 2026-10-17 (new skills on cards)

@@ -32956,7 +32956,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "tutorial.the-strongest-cards-ask-for-both": "The strongest cards ask for both patience and Lumber at once.",
   "toast.the-river-chose-the-otters": "🎲 The river chose the Otters.",
   "toast.the-river-chose-the-hummingbirds": "🎲 The river chose the Hummingbirds.",
-  "toast.tutorial-paused-tap-start-the-tutorial": "Tutorial paused — tap “Start the tutorial” on Home (or the 🎓 on the Outskirts map) whenever you’re ready.",
+  "toast.tutorial-paused-tap-start-the-tutorial": "Tutorial paused — tap the 🎓 on the Outskirts map whenever you’re ready.",
   "coach.tap-t-1-then-press-fight": "🎓 Tap T-1, then press ⚔️ Fight.",
   "coach.press-fight": "⚔️ Press Fight.",
   "tutorial.your-leader": "Your leader",
@@ -35845,7 +35845,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'a6973c3f0fd4', BUILD_CARD_HASH = '4787036bc50491384d09a01b915174d50debd7c82214eb661a9e3d5367ee1abc';
+const BUILD_ID = 'b4916ea26462', BUILD_CARD_HASH = '4787036bc50491384d09a01b915174d50debd7c82214eb661a9e3d5367ee1abc';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -70655,7 +70655,7 @@ function renderHome(){
       <div class="home-menu-mark">🌰</div>
       <h1 class="home-menu-title">Bramblewood Arena</h1>
       ${levelBadgeHTML()}
-      ${loadTutorialDone() ? '' : `<button class="btn primary big home-menu-btn home-tutorial-btn" id="homeContinueTutorialBtn" type="button"><span class="tab-emoji">🎓</span> Start the tutorial</button>`}
+      ${'' /* 2026-10-17 (user: "No need for "Start the tutorial" button since we get right into it."): removed; a paused tutorial resumes from the 🎓 on the Outskirts map */}
       ${loadTutorialDone() || adminModeEnabled || devModeEnabled ? `<div class="home-grid">
         ${rejoin ? `<button class="btn primary big home-menu-btn home-tile home-play is-rejoin" id="homeRejoinBtn"><span class="tab-emoji">▶️</span><span>Continue</span><small class="home-sub">${escapeHtml(rejoin)}</small></button>`
           : `<button class="btn primary big home-menu-btn home-tile home-play" data-hometab="play"><span class="tab-emoji">⚔️</span><span>Play</span>${sub.play ? `<small class="home-sub">${escapeHtml(sub.play)}</small>` : ''}</button>`}
