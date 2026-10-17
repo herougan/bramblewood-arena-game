@@ -503,6 +503,58 @@ def m21(rng):  # The Quiet Summit (2026-10-13, Map 21): above the clouds after t
     return img
 
 
+def m22(rng):  # The Rimefire Caldera (2026-10-17, Map 22, user: "Ice volcano stage ... you're still very high up"): snow over black
+    # frozen lava, a glowing crater lake, steam vents and blue ice
+    img = dither_palette(fbm(rng, W, H), ['#5a6170', '#7f8a9c', '#a3afc0', '#c9d3e0', '#eef3f8'])
+    flow = fbm(rng, W, H, (48, 24, 12), (0.5, 0.3, 0.2))
+    blend_mask(img, np.clip((0.34 - flow) * 7, 0, 1), '#2a2228')   # frozen black lava tongues
+    blend_mask(img, np.clip((0.26 - flow) * 7, 0, 1), '#3a2a2a')
+    ponds(img, rng, 2, '#ff7a2a', '#ffc36b', '#4a2a24', rmin=9, rmax=15)   # the crater's glow
+    ponds(img, rng, 3, '#6fa8d0', '#b8e0f4', '#e6f2fa', 6, 11)              # blue ice pools
+    cracks(img, rng, 12, '#ff6a3a', '#ffd08a', (14, 40))
+    scatter(img, rng, CLOUD, {'a': '#ffffff', 'b': '#dfe6ee'}, 14, avoid_band=False)   # steam
+    scatter(img, rng, BOULDER, {'a': '#4a3c3c', 'b': '#1e1618'}, 30, shadow_w=lambda w: w)
+    scatter(img, rng, CRYSTAL, {'a': '#dff4ff', 'b': '#7fb6da'}, 18, shadow_w=lambda w: w)   # ice spires
+    sparkle(img, rng, 90, '#ffffff'); sparkle(img, rng, 40, '#ffb36b')
+    return edge_vignette(img, 0.3)
+
+
+TENT = ["...a...", "..aba..", ".abbba.", "abbbbba", "abcccba"]
+BANNER = ["ab", "aa", "a.", "a.", "a."]
+WALL = ["aaaa", "abba", "abba"]
+
+
+def m23(rng):  # The Goldfeather Siege (2026-10-17, Map 23): trampled fields outside the walls, siege camps, trenches, the wall along the top
+    img = dither_palette(fbm(rng, W, H), ['#6b5a3a', '#7d6a44', '#8f7a50', '#a38c5e', '#b49c6c'])
+    mud = fbm(rng, W, H, (32, 16), (0.7, 0.3))
+    blend_mask(img, np.clip((mud - 0.64) * 6, 0, 1), '#5a4a32')   # churned mud
+    for y in range(0, 12):   # the curtain wall along the top edge, with merlons
+        img[y, :] = np.array(hexrgb('#7a746a' if y > 2 else '#8a8478'), dtype=img.dtype)
+    for x in range(0, W, 8): img[0:3, x:x + 4] = np.array(hexrgb('#5e5950'), dtype=img.dtype)
+    img[12:14, :] = np.array(hexrgb('#3a3630'), dtype=img.dtype)
+    for x in (40, 128, 216):   # trench lines across the field
+        for y in range(30, H - 10, 3): img[y, x:x + 2] = np.array(hexrgb('#3e3222'), dtype=img.dtype)
+    scatter(img, rng, TENT, {'a': '#e8dcc0', 'b': '#c9b48a', 'c': '#5a4632'}, 14, shadow_w=lambda w: w)
+    scatter(img, rng, BANNER, {'a': '#4a3a2a', 'b': '#d9a23a'}, 16)
+    scatter(img, rng, TUFT, {'a': '#a8a060'}, 120, avoid_band=False)
+    scatter(img, rng, ROCK, {'a': '#9a8a70', 'b': '#5a4a38'}, 30)
+    return edge_vignette(img, 0.3)
+
+
+def m24(rng):  # Goldfeather Keep (2026-10-17, Map 24): inside the walls, flagstone courtyard, a fountain, gold banners, the keep's shadow
+    img = dither_palette(fbm(rng, W, H, (16, 8, 4), (0.5, 0.3, 0.2)), ['#6a655c', '#7a756a', '#8a8478', '#9a9486', '#aaa496'])
+    for x in range(0, W, 16): img[:, x] = np.array(hexrgb('#5a564e'), dtype=img.dtype)   # flagstone joints
+    for y in range(0, H, 12): img[y, :] = np.array(hexrgb('#5a564e'), dtype=img.dtype)
+    ponds(img, rng, 1, '#4f8fb3', '#8fc4dc', '#c9c2b0', rmin=10, rmax=12)   # the courtyard fountain
+    grass = fbm(rng, W, H, (32, 16), (0.7, 0.3))
+    blend_mask(img, np.clip((grass - 0.68) * 6, 0, 1), '#5f7a3a')   # kept lawns
+    scatter(img, rng, WALL, {'a': '#4a463e', 'b': '#6a655a'}, 26, shadow_w=lambda w: w)
+    scatter(img, rng, BANNER, {'a': '#3a2a1a', 'b': '#e8c46a'}, 18)
+    scatter(img, rng, BUSH, {'a': '#d9a23a', 'b': '#3f5a2a'}, 22)
+    sparkle(img, rng, 50, '#ffe38a')   # coins everywhere: it is the Magnate's house
+    return edge_vignette(img, 0.35)
+
+
 # The Sunken Depths (2026-10-15, user: "The sunken depth background is too low-res. I think follow the same format you have done for
 # the other backgrounds."): it was the AI "Sunken Ferry" picture squeezed into 256x144, which smeared into mush when upscaled. Now it
 # is painted here like every other map: a dark sea floor with sand ridges, the wrecked ferry's hull and planks, kelp, coral, rocks,

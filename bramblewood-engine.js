@@ -701,6 +701,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-16 (user: "12: I think it's about straight lines in this one ... a one or two-off field effect that encourages straights or
   // diagonals"): rules.rookRow N (default 2): a hit on the unit standing square in front of the attacker deals +N. rules.bishopPath N
   // (default 2): a hit on a unit on the slant (a half-step off, or a column over: interlocked ranks, prongs, Backstab, Crab Claws) deals +N.
+  // ---- Field effects 3 (2026-10-17, the user's map notes 17 and 24). Rules flags like the ones above; texts in arena_app.js FIELD2.
+  // 2026-10-17 (user: "Some skirmishes near vents have 'Hazardous Gas' field effect. Since poison is already used, think of something else."):
+  // rules.sulphurFumes N (default 1): from round 2, at the start of every round every unit that doesn't resist fire, isn't Dry and isn't
+  // Flying is Choking for that round: −N Attack on everything it deals (never below 0). No poison, no damage: just a weaker round.
+  function chokeOf(card){ return (card && rules.sulphurFumes && card.chokeRound === turnNo) ? (card.chokeN || 1) : 0; }
+  // 2026-10-17 (user: "new ones like Ash Rain and Ashy (volcano explosion)"): rules.ashRain N (default 1): from round 2, ash falls every round:
+  // both castles take N (never below 1), and the ash dims the sun: day bonuses are halved, as under Cloudy.
+  // rules.ashy: the ground is Ashy all fight. rules.ashyAfterEruption: after the volcano's Eruption the ground is Ashy for that round and
+  // the next 3. While Ashy, Flying units are grounded (Flying gives no dodge, and no Tailwind or Headwind), and every attack at a unit
+  // misses 1 in 5 in the ash cloud (Darksight, Keen Sense and Sonar see through it).
+  let ashyUntil = -1;
+  function ashyNow(){ return !!(rules.ashy || (ashyUntil >= 0 && turnNo <= ashyUntil)); }
+  function dimSun(){ return !!(rules.cloudy || rules.ashRain); }
+  // 2026-10-17 (user: "Fortified Castle map ... Fortified: arrows from walls? e.g. 'Arrow Slits': the defender's castle shoots 1 arrow a
+  // round"): rules.arrowSlits N (default 2): from round 2, the defenders' walls (the enemy castle, player 2) loose one arrow a round at a
+  // random unit on the attackers' side (player 1) for N damage. With no unit to aim at, the arrow is wasted. A Helmet can deflect it.
   let lastLaneKind = null; // 'rook' | 'bishop': which of the two gave the last bonus (for the hit event)
   function laneBonusOf(myCols, enemyCols, myCol, targetCol){
     lastLaneKind = null;
@@ -747,6 +763,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     field = FIELDS[id] ? {id, rounds: rounds || null, by: by || null} : null;
   }
   function getPhase(){ return phaseOff ? null : phase; } // the Full Moon no longer forces night (2026-10-14)
+  // 2026-10-17 (user: "I think there is no true night on the volcano. Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot
+  // glow of the volcanoes."): an uneven cycle. rules.phaseDay / rules.phaseNight are the rounds of each (either one defaults to rules.phaseLen,
+  // 3). The volcano maps set 4 and 2 (arena_app.js fightRules): Day rounds 1-4, Night 5-6, Day 7-10 ... Twilight cycles keep the even length.
+  function phaseLens(){ const PL = Math.max(1, Number(rules.phaseLen)||3);
+    const D = Number(rules.phaseDay) > 0 ? Math.max(1, Math.round(Number(rules.phaseDay))) : PL, N = Number(rules.phaseNight) > 0 ? Math.max(1, Math.round(Number(rules.phaseNight))) : PL;
+    return {D, N, PL}; }
+  // Where round rr (0 = the cycle's first round) falls: in the first half (Day, or Night on a nightFirst map), and which round of it.
+  function cycleStep(rr){ const {D, N} = phaseLens(), first = phaseMode==='nightFirst' ? N : D, total = D + N, pos = ((rr % total) + total) % total;
+    return pos < first ? {first:true, idx: pos + 1, len: first} : {first:false, idx: pos - first + 1, len: total - first}; }
+  function phaseStepInfo(round){ const r = Number(round)||1, rr = zeitStart !== null ? r - zeitStart : r - 1; const s = cycleStep(Math.max(0, rr)), L = phaseLens();
+    return {idx: s.idx, len: s.len, day: L.D, night: L.N, uneven: L.D !== L.N}; }
   // Nocturnal / Diurnal N (2026-10-10, user: "The effect for units with Nocturnal looks like 'Nocturnal - Gain +2/+2'"
   // + "the weredog gains +5/+6 at night"): while it's night (day for Diurnal) the unit has +N Attack and +M Health
   // (effects.nocturnal = N, effects.nocturnalHp = M; the old `true` means +1/+0). syncPhaseStats applies and removes it
@@ -761,7 +788,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const pick = k=>{ const r = pick0(k); if(!leyZeit || (e[k+'Grant'] && typeof e[k+'Grant'] === 'object') || !(e[k] || e[k+'Hp'])) return r; return e[k] === true && !e[k+'Hp'] ? [3, 3] : [r[0] + 2, r[1] + 2]; };
     if(ph==='twilight'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0], d = (e.diurnal || e.diurnalHp) ? pick('diurnal') : [0,0], c = (e.crepuscular || e.crepuscularHp) ? pick('crepuscular') : [0,0]; return [n[0] + d[0] + c[0], n[1] + d[1] + c[1]]; } // 2026-10-13: both are active in Twilight, and Crepuscular only then
     if(ph==='night' && (e.nocturnal || e.nocturnalHp)) return pick('nocturnal');
-    if(ph==='day' && (e.diurnal || e.diurnalHp)) return rules.cloudy ? pick('diurnal').map(x=> Math.floor(x / 2)) : pick('diurnal'); // Cloudy (2026-10-16): clouds over the sun halve the day bonus
+    if(ph==='day' && (e.diurnal || e.diurnalHp)) return dimSun() ? pick('diurnal').map(x=> Math.floor(x / 2)) : pick('diurnal'); // Cloudy (2026-10-16): clouds over the sun halve the day bonus; Ash Rain too (2026-10-17)
     return [0, 0];
   }
   function syncPhaseStats(players, sideOf, events){
@@ -926,7 +953,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const r = turnNo + 1, out = {round:r};
     let ph = getPhase();
     if(dayNight && r > 1 && ((!phaseFixed && !phaseOff) || (zeitStart !== null && r > zeitStart))){
-      const PL = Math.max(1, Number(rules.phaseLen)||3), rr = zeitStart !== null ? r - zeitStart : r - 1, first = (rr % (2*PL)) < PL;
+      const PL = Math.max(1, Number(rules.phaseLen)||3), rr = zeitStart !== null ? r - zeitStart : r - 1, first = cycleStep(rr).first; // uneven Day/Night (2026-10-17)
       ph = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
       if(twilightOn(curPlayers)){ const k = Math.floor(rr / PL) % 5; ph = k === 4 ? 'twilight' : ((k % 2 === 0) !== (phaseMode==='nightFirst')) ? 'day' : 'night'; }
     }
@@ -946,7 +973,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function isWindy(){ return windNow; }
   function windSideOf(pid){ return !windNow ? null : (pid === windFrom ? 'tail' : 'head'); }
   function isFlyingCard(c){ const e = c && (CARD_DEFS[c.defId]||{}).effects; return !!(e && e.flying); }
-  function headwindDouble(card, pid){ return windNow && isFlyingCard(card) && windSideOf(pid) === 'head'; }
+  function headwindDouble(card, pid){ return windNow && isFlyingCard(card) && !ashyNow() && windSideOf(pid) === 'head'; } // Ashy grounds the flyers (2026-10-17)
   // Seeing (2026-10-13, 10:57 list: "Sun-shyness ... Blind during the day. Night-blindness - blind at night. Perma-blind in cave.
   // ... normal units are only blind in complete darkness"): night alone no longer dims anyone. A unit swings blind (misses 1 in
   // 2, like Blind) when: the fight is in complete darkness (rules.dark: caves, the abyss) and it has no Darksight, or it is
@@ -1025,7 +1052,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'lumber', side:sideOf(pid), defId:null, amount:1, rule:true}); });
     }
     if(dayNight && round > 1 && ((!phaseFixed && !phaseOff) || (zeitStart !== null && round > zeitStart))){
-      const before = phase, PL = Math.max(1, Number(rules.phaseLen)||3), rr = zeitStart !== null ? round - zeitStart : round - 1; const first = (rr % (2*PL)) < PL; /* phaseLen (2026-10-10): rounds per day/night, 3 by default */ phase = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
+      const before = phase, PL = Math.max(1, Number(rules.phaseLen)||3), rr = zeitStart !== null ? round - zeitStart : round - 1; const first = cycleStep(rr).first; /* phaseLen (2026-10-10): rounds per day/night, 3 by default; phaseDay / phaseNight (2026-10-17) */ phase = phaseMode==='nightFirst' ? (first ? 'night' : 'day') : (first ? 'day' : 'night');
       // Twilight (2026-10-13, 10:57 list: "Diurnal and Nocturnal are both active. Crepuscular are also active - but only in Twilight
       // ... D/N/D/N/T repeating"): on twilight maps, or when either deck carries a Crepuscular card, the cycle is Day, Night, Day,
       // Night, Twilight, each PL rounds long.
@@ -1140,6 +1167,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
         liveUnits(pl).forEach(c=>{ if(isAtheist(c)){ ev({type:'fieldTick', field:'leylinesHit', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:0, atheist:true}); return; } hit(pid, c, 3, 'magic', 'leylinesHit'); });
         if(pl.hq && pl.hq.hp > 1){ const d = Math.min(3, pl.hq.hp - 1); pl.hq.hp -= d; ev({type:'fieldTick', field:'leylinesCastle', side:sideOf(pid), dmg:d}); } }); }
+    // Field effects 3 (2026-10-17). Sulphur Fumes: every unit that doesn't resist fire, isn't Dry and isn't Flying chokes this round (−N Attack).
+    if(rules.sulphurFumes){ const n = fxN(rules.sulphurFumes, 1); let k = 0;
+      [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ const e = effectsOf(c), rs = (CARD_DEFS[c.defId]||{}).resist || []; if(e.flying || e.dry || rs.includes('heat') || rs.includes('fire') || resistFactor(c.defId, 'heat') < 1 || isStructureCard(c)) return;
+        c.chokeRound = turnNo; c.chokeN = n; k++; ev({type:'statusFx', kind:'choking', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId, amount:n}); }));
+      ev({type:'fieldTick', field:'sulphurFumes', round, amount:n, count:k}); }
+    // Ash Rain: both castles take N (1), never below 1. (Its other half, the dimmed sun, is in phaseStatsOf: dimSun.)
+    if(rules.ashRain){ const n = fxN(rules.ashRain, 1); ev({type:'fieldTick', field:'ashRain', round, amount:n});
+      [1,2].forEach(pid=>{ const pl = players[pid]; if(pl && pl.hq && pl.hq.hp > 1){ const d = Math.min(n, pl.hq.hp - 1); pl.hq.hp -= d; ev({type:'fieldTick', field:'ashRainCastle', side:sideOf(pid), dmg:d}); } }); }
+    // Arrow Slits: the defenders' walls (player 2's castle) shoot one arrow at a random unit of player 1.
+    if(rules.arrowSlits){ const n = fxN(rules.arrowSlits, 2), pool = liveUnits(players[1]);
+      if(pool.length){ const c = pool[Math.floor(rnd()*pool.length)]; ev({type:'fieldTick', field:'arrowSlits', round, amount:n, side:sideOf(1), uid:c.uid, defId:c.defId});
+        if(!helmetDeflects({kind:'card', card:c}, sideOf(1), events)) hit(1, c, n, 'physical', 'arrowSlitHit'); }
+      else ev({type:'fieldTick', field:'arrowSlits', round, amount:n, none:true}); }
     // Landslide: 1 in 4 (rules.landslide %) a round, rocks come down: 5 (rules.landslideDmg) damage to every unit that isn't flying, both sides.
     if(rules.landslide && rnd() < landslideOdds()){ const n = Number(rules.landslideDmg) > 0 ? Number(rules.landslideDmg) : 5; ev({type:'fieldTick', field:'landslide', round, amount:n});
       [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ if(effectsOf(c).flying || climbs(c)) return; hit(pid, c, n, 'physical', 'landslideHit'); })); }
@@ -1256,7 +1296,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'fieldTick', field:'petrify', side:sideOf(pid), uid:c.uid, defId:c.defId}); });
       if(boom){ erupt(Number(rules.eruption) > 0 ? Number(rules.eruption) : 2);
         volcanoRiseFrom = round + 1; cometRounds = 3; // the cycle resets (a rising level climbs again from its base), and comets follow
-        if(recordEvents && events) events.push({type:'fieldTick', field:'eruptionReset', round, comets:3}); }
+        if(recordEvents && events) events.push({type:'fieldTick', field:'eruptionReset', round, comets:3});
+        // 2026-10-17 (user: "Ashy (volcano explosion)"): after the Eruption the ground is Ashy this round and the next 3.
+        if(rules.ashyAfterEruption){ ashyUntil = turnNo + 3; if(recordEvents && events) events.push({type:'fieldTick', field:'ashy', round, until: ashyUntil, rounds:4}); } }
     } else {
       const n = Number(rules.eruption)||0;
       if(n > 0 && round > 1 && !volcanoOn()) erupt(n, true);
@@ -1553,7 +1595,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function leaderOnBoard(pl, except){ return !!pl && allBoardCards(pl).some(c=> c && c !== except && c.hp > 0 && !c.cageOf && (c.isLeader || c.gladiatorLeader || (((CARD_DEFS[c.defId]||{}).effects)||{}).leader)); }
   // Every swing at the castle: the situational bonuses count (the day/night, aura and resource bonus, Inspired, Flow), and
   // Rage doubles it (user, 2026-10-12: "Rage doubles the unit's attack, including against castles").
-  function castleSwingAmt(att, base){ let n = base + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att); if(isRaging(att)) n *= 2; return n; }
+  function castleSwingAmt(att, base){ let n = Math.max(0, base + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att) - chokeOf(att)); if(isRaging(att)) n *= 2; return n; } // − Sulphur Fumes' choke (2026-10-17)
   // First blood (2026-10-12, user: "In savannah, 1 random quick enemy per turn gets the first blood bonus of +1 and at the boss,
   // +2 damage. Only 1 unit on the field can get this bonus, so if you have a quick unit that goes first before theirs, they
   // dont get it"): rules.firstBlood N. The first Quick unit to swing in a round, on either side, hits +N; nobody else does.
@@ -1923,7 +1965,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
     // lands a hit on it (see the application site in resolveCombat).
     if(targetCard.scar>0) amt += targetCard.scar;
-    if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (attCard.inspired||0) + tideAtk(attCard) + firstBloodBonus(attCard); if(sb) amt += sb; }
+    if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (attCard.inspired||0) + tideAtk(attCard) + firstBloodBonus(attCard) - chokeOf(attCard); if(sb) amt = Math.max(0, amt + sb); } // − Sulphur Fumes' choke (2026-10-17)
     // (Ebb's old "1 less per hit" is now +1 Armour, in nominalArmor below; 2026-10-12)
     if(attCard && isRaging(attCard)) amt = amt * 2;
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
@@ -2360,7 +2402,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(singleTarget && (dd.evasive || preyAlert(defCard) || tideEvades(defCard, CARD_DEFS[attCard.defId]) || canopySwift(dd)) && !ad.fencing && rnd() < 0.5){ lastMissReason = canopySwift(dd) && !dd.evasive ? 'canopy' : 'evasive'; return false; } // + Prey (2026-10-16)
     if(dd.swift && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     // High Canopy (2026-10-16, user: "Flying loses its benefit"): under the treetops a Flyer has nowhere to fly off to: no Flying dodge.
-    if(dd.flying && canopyMode() !== 'canopy' && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    if(dd.flying && canopyMode() !== 'canopy' && !ashyNow() /* Ashy grounds the flyers (2026-10-17) */ && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
     // Slippery (2026-10-16, user: "all units have 1/2 to miss"): every swing at a unit can skid off (1 in 2 by default).
     if(slips()){ lastMissReason = 'slippery'; return false; }
     // Smoke (2026-10-14, Smoke Bomb): an ally hidden in smoke makes attacks at it miss 1 in 2 until the end of the next round.
@@ -2370,6 +2412,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Keen Sense (2026-10-14): it smells out a grounded target: Thick Fog and Shadow don't make it miss one.
     const keenNose = (!!ad.keenSense && !dd.flying) || !!ad.sonar; // Sonar (2026-10-16): Keen Sense that hears flyers too
     if(!keenNose && fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
+    if(ashyNow() && !ad.darksight && !keenNose && rnd() < 0.2){ lastMissReason = 'ashy'; return false; } // Ashy (2026-10-17): the ash cloud, 1 in 5
     if(sandstormOn() && !ad.dry && !keenNose && rnd() < 0.25){ lastMissReason = 'sandstorm'; return false; } // Sandstorm (2026-10-15): Dry units see through it; + the Glass-storm (2026-10-16)
     // Shadow (2026-10-14, user: "Effects like Shade and Ghost and Shadow"): at night or in darkness, attacks at it miss 1 in 2.
     // Magic always finds it.
@@ -3931,7 +3974,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const def = CARD_DEFS[c.defId]; const fx = def && def.effects; if(!fx) return;
         const shots = [];
         const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
-        if(fx.arrow > 0) shots.push({amount: fx.arrow + fletch, dmgType: 'physical', fire: false});
+        // 2026-10-17 (user: "First creature to have 2x Arrow 2."): a skill can't sit on a card twice (effects is one key each), so
+        // effects.arrowCount N says how many Arrow shots it looses: War Elephant has Arrow 2 and arrowCount 2, two arrows of 2 a round,
+        // each aimed on its own (the second one goes on to the nearest if the first killed the target). The card reads "Arrow 2" twice.
+        if(fx.arrow > 0){ const nA = Math.max(1, Math.min(4, Math.round(Number(fx.arrowCount)||1))); for(let k = 0; k < nA; k++) shots.push({amount: fx.arrow + fletch, dmgType: 'physical', fire: false, nth: k || undefined}); }
         if(fx.fireArrow > 0) shots.push({amount: fx.fireArrow, dmgType: 'heat', fire: true});
         // Ice Arrow N, Twin Shot N, Volley N (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire
         // Arrow, Ice Arrow etc. will be more normal."). Ice Arrow: N cold, and a 1 in 2 chance to lay a Freeze counter on a unit
@@ -5414,7 +5460,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!pass){ const flow = tideRising(), wind = isWindy(); // strong wind: the Flyers on the Tailwind side get the extra turn (2026-10-13)
       if(flow || wind) for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
         for(const c of allBoardCards(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {};
-          const why = (flow && e.swimmer && (e.swimmer === 'quickAttack' || (e.swimmerGrant && e.swimmerGrant.fastForward))) ? 'swimmer' : (wind && e.flying && windSideOf(pid) === 'tail') ? 'tailwind' : null; if(!why) continue;
+          const why = (flow && e.swimmer && (e.swimmer === 'quickAttack' || (e.swimmerGrant && e.swimmerGrant.fastForward))) ? 'swimmer' : (wind && e.flying && !ashyNow() && windSideOf(pid) === 'tail') ? 'tailwind' : null; if(!why) continue; // no Tailwind while Ashy (2026-10-17)
           c.ffCounters = (c.ffCounters||0) + 1; c._speedCombat = combatNo;
           if(recordEvents && events) events.push({type:'statusFx', kind:why, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } } }
     if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && allBoardCards(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; }
@@ -5513,7 +5559,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // special-casing needed for which of those two cases actually applies.
     const handledUids = new Set(); // acted OR permanently skipped (reload/stun/etc.) this round — never reconsidered
     const zeroNoted = new Set();   // 0-Attack units already logged this round (they stay eligible for a later look)
-    const swingAtkNow = card=> effAtk(card) + swarmBonus(card) + defianceBonus(card) + phaseBonus(card) + (card.inspired||0) + tideAtk(card);
+    const swingAtkNow = card=> Math.max(0, effAtk(card) + swarmBonus(card) + defianceBonus(card) + phaseBonus(card) + (card.inspired||0) + tideAtk(card) - chokeOf(card)); // − Sulphur Fumes (2026-10-17)
     const poolMeta = new Map();    // uid -> {att, attId, enemyId} — currently eligible, not yet acted
     function discoverEligibleAttackers(){
       [[p1,1,2],[p2,2,1]].forEach(([pl,ownId,enemyId])=>{
@@ -6283,7 +6329,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+  return { tideEvadeOn, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

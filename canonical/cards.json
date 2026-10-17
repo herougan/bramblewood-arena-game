@@ -23296,5 +23296,725 @@
     "devilryCost": 0,
     "mechanicLine": "none",
     "splashEffect": "none"
+  },
+  {
+    "id": "rimefire-salamander",
+    "cost": 1,
+    "icon": "\ud83e\udd8e",
+    "name": "Rimefire Salamander",
+    "tags": [],
+    "test": false,
+    "uuid": "1eaab24a-e9a4-54c6-98a5-a121c77640a0",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Born where a lava tube runs under a glacier. It breathes steam and has never once been comfortable.",
+    "health": 8,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [
+      "cold",
+      "heat"
+    ],
+    "dmgType": "physical",
+    "effects": {
+      "fireArrow": 1,
+      "iceArrow": 1
+    },
+    "species": [
+      "Amphibian",
+      "Elemental"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1201,
+    "stoneCost": 0,
+    "archetypes": [
+      "Newt",
+      "Volcanic",
+      "Frost"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 22 reward (22-2 Steam Vents). Fire and ice at once; resists both, so Hail and Lava Spout only half-hurt it.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m22",
+      "node": "22-2"
+    }
+  },
+  {
+    "id": "fumarole-ibex",
+    "cost": 1,
+    "icon": "\ud83d\udc10",
+    "name": "Fumarole Ibex",
+    "tags": [],
+    "test": false,
+    "uuid": "3d08863a-6595-51bb-9b79-b637e7ffe25b",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Warms its hooves on the vents, licks the salt off the sulphur, and climbs anything.",
+    "health": 8,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "mountainClimber": true,
+      "dry": true,
+      "pounce": 2
+    },
+    "species": [
+      "Mammal"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1202,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mountain",
+      "Volcanic"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 22 reward (22-4 Hailstone Ridge). Dry: Sulphur Fumes and Scorching pass it by; Mountain Climber: the volcano too.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m22",
+      "node": "22-4"
+    }
+  },
+  {
+    "id": "ashwing-ptarmigan",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Ashwing Ptarmigan",
+    "tags": [],
+    "test": false,
+    "uuid": "8e66410a-76e3-5440-bd93-268d441e21f2",
+    "wait": 0,
+    "attack": 3,
+    "flavor": "White in winter, brown in summer, and grey since the crater started coughing.",
+    "health": 5,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "flying": true,
+      "darksight": true
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1203,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "Tundra",
+      "Volcanic"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 22 reward (22-6 Ashfall Cornice). Darksight: sees through Ashy ash (no 1-in-5 miss).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m22",
+      "node": "22-6"
+    }
+  },
+  {
+    "id": "caldera-snow-leopard",
+    "cost": 2,
+    "icon": "\ud83d\udc06",
+    "name": "Caldera Snow Leopard",
+    "tags": [],
+    "test": false,
+    "uuid": "0175594e-8962-5d6a-b8ad-02e2bd1b6e8c",
+    "wait": 1,
+    "attack": 4,
+    "flavor": "It hunts the crater rim in the steam, where nothing can see it coming and nothing can hear it over the vents.",
+    "health": 8,
+    "locked": true,
+    "rarity": "superrare",
+    "resist": [
+      "cold"
+    ],
+    "dmgType": "physical",
+    "effects": {
+      "mountainClimber": true,
+      "pounce": 3,
+      "bleed": 1
+    },
+    "species": [
+      "Feline"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1204,
+    "stoneCost": 0,
+    "archetypes": [
+      "Mountain",
+      "Frost"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 22 boss reward (22-8), the map's one Super Rare.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m22",
+      "node": "22-8"
+    }
+  },
+  {
+    "id": "rimeheart-colossus",
+    "cost": 3,
+    "icon": "\ud83d\uddff",
+    "name": "Rimeheart Colossus",
+    "tags": [],
+    "test": false,
+    "uuid": "33147f26-f1ba-55cc-86a6-b27737b0c63f",
+    "wait": 3,
+    "attack": 8,
+    "flavor": "Half glacier, half magma. Where it walks the snow boils and the lava freezes.",
+    "health": 40,
+    "locked": true,
+    "rarity": "epic",
+    "resist": [
+      "cold",
+      "heat"
+    ],
+    "dmgType": "physical",
+    "effects": {
+      "immolation": 1,
+      "freeze": {
+        "chance": 30,
+        "duration": 1
+      },
+      "armor": 2,
+      "frostbite": 1
+    },
+    "species": [
+      "Elemental"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1205,
+    "stoneCost": 0,
+    "archetypes": [
+      "Elemental",
+      "Frost",
+      "Volcanic"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 22 boss card (22-8). Enemy only for now (no source): a boss, so over the budget by design.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "war-elephant",
+    "cost": 3,
+    "icon": "\ud83d\udc18",
+    "name": "War Elephant",
+    "tags": [],
+    "test": false,
+    "uuid": "2877e846-8948-54a6-aaaa-b8115c8113ba",
+    "wait": 3,
+    "attack": 2,
+    "flavor": "A walking tower with a howdah on top and two archers inside who never agree on a target.",
+    "health": 22,
+    "locked": true,
+    "rarity": "superrare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "armor": 2,
+      "arrow": 2,
+      "arrowCount": 2
+    },
+    "species": [
+      "Mammal"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1206,
+    "stoneCost": 0,
+    "archetypes": [
+      "Elephant",
+      "Savanna",
+      "Structure"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 boss reward (23-8), the map's one Super Rare. The first creature with Arrow 2 twice (arrowCount 2). Structure: Demolisher hurts it more.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m23",
+      "node": "23-8"
+    }
+  },
+  {
+    "id": "howdah-archers",
+    "cost": 1,
+    "icon": "\ud83d\udc12",
+    "name": "Howdah Archers",
+    "tags": [],
+    "test": false,
+    "uuid": "710c5836-18c7-51c3-bfce-7c8e25586c93",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "Two langurs, one bow each, and a running argument about whose turn it is to duck.",
+    "health": 7,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "arrow": 2,
+      "quick": true
+    },
+    "species": [
+      "Primate"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1207,
+    "stoneCost": 0,
+    "archetypes": [
+      "Ape",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 reward (23-6 The Elephant Line).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m23",
+      "node": "23-6"
+    }
+  },
+  {
+    "id": "testudo-tortoise",
+    "cost": 2,
+    "icon": "\ud83d\udc22",
+    "name": "Testudo Tortoise",
+    "tags": [],
+    "test": false,
+    "uuid": "359a1cba-eca1-5608-af50-0fbc8626b4d5",
+    "wait": 2,
+    "attack": 2,
+    "flavor": "Shell up, head in, and let the arrows rain. It has been rained on before.",
+    "health": 14,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "armor": 3,
+      "guardian": true,
+      "helmet": true
+    },
+    "species": [
+      "Reptile"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1208,
+    "stoneCost": 0,
+    "archetypes": [
+      "Turtle",
+      "Field"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 reward (23-2 Trench Works). Helmet turns half the arrows (Arrow Slits too); Guardian takes the hits meant for its neighbours.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m23",
+      "node": "23-2"
+    }
+  },
+  {
+    "id": "trebuchet-crew",
+    "cost": 2,
+    "icon": "\ud83e\uddab",
+    "name": "Trebuchet Crew",
+    "tags": [],
+    "test": false,
+    "uuid": "949d9c1e-6a08-591d-a9df-284bea3c9116",
+    "wait": 3,
+    "attack": 0,
+    "flavor": "Beavers know timber, and timber knows how to throw a rock over a wall.",
+    "health": 24,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "volley": 2,
+      "demolisher": 2
+    },
+    "species": [
+      "Rodent"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1209,
+    "stoneCost": 0,
+    "archetypes": [
+      "Beaver",
+      "Structure"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 reward (23-4 Siege Camp). No melee: every other round a volley of 2 at every enemy unit, +2 on Structures.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m23",
+      "node": "23-4"
+    }
+  },
+  {
+    "id": "marshal-tuskwell",
+    "cost": 4,
+    "icon": "\ud83d\udc18",
+    "name": "Marshal Tuskwell",
+    "tags": [],
+    "test": false,
+    "uuid": "96cf1fff-4b5f-5ebc-9cea-b339fc160025",
+    "wait": 4,
+    "attack": 9,
+    "flavor": "Forty sieges, forty wins, and a howdah with a little flag on it for each.",
+    "health": 48,
+    "locked": true,
+    "rarity": "epic",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "armor": 3,
+      "overwhelm": true,
+      "inspiring": 2,
+      "arrow": 3
+    },
+    "species": [
+      "Mammal"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1210,
+    "stoneCost": 0,
+    "archetypes": [
+      "Elephant",
+      "Savanna"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 23 boss card (23-8). Enemy only for now (no source).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "great-gate",
+    "cost": 2,
+    "icon": "\ud83d\udeaa",
+    "name": "Great Gate",
+    "tags": [],
+    "test": false,
+    "uuid": "036843ff-49fe-5cf2-8a44-8aa20ae1adc7",
+    "wait": 0,
+    "attack": 0,
+    "flavor": "Oak, iron, gold leaf, and a doorbell nobody has ever dared ring.",
+    "health": 45,
+    "locked": true,
+    "rarity": "common",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "armor": 3,
+      "guardian": true
+    },
+    "species": [],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1211,
+    "stoneCost": 0,
+    "archetypes": [
+      "Structure"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 23-7 and 24-1 (Breach the Gate). Enemy only: the gate the player has to break. A Structure, so Demolisher and Siege units shine.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
+  },
+  {
+    "id": "goose-sentry",
+    "cost": 1,
+    "icon": "\ud83e\udebf",
+    "name": "Goose Sentry",
+    "tags": [],
+    "test": false,
+    "uuid": "ae3a015c-2f78-57a7-9d69-583b183da729",
+    "wait": 1,
+    "attack": 2,
+    "flavor": "Nobody gets past the goose. Nobody has ever wanted to try twice.",
+    "health": 12,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "guardian": true,
+      "taunt": true
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1212,
+    "stoneCost": 0,
+    "archetypes": [
+      "Duck",
+      "Village"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 reward (24-2 The Bailey). Gets Sentry when that skill exists.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m24",
+      "node": "24-2"
+    }
+  },
+  {
+    "id": "mallard-halberdier",
+    "cost": 1,
+    "icon": "\ud83e\udd86",
+    "name": "Mallard Halberdier",
+    "tags": [],
+    "test": false,
+    "uuid": "58d9cd16-e004-54d5-be93-45ee6661d2b0",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "A long pole with a blade on the end, and a duck who knows exactly how long it is.",
+    "health": 8,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "reach": true,
+      "pierce": 2
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1213,
+    "stoneCost": 0,
+    "archetypes": [
+      "Duck",
+      "Village"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 reward (24-6 The Gilded Guard). Reach for the flyers, Pierce for the armour.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m24",
+      "node": "24-6"
+    }
+  },
+  {
+    "id": "tax-collector-teal",
+    "cost": 0,
+    "icon": "\ud83e\udd86",
+    "name": "Tax-Collector Teal",
+    "tags": [],
+    "test": false,
+    "uuid": "3ceff59a-f451-5c86-9998-4e416876d34a",
+    "wait": 0,
+    "attack": 2,
+    "flavor": "Every hit comes with a receipt.",
+    "health": 5,
+    "locked": true,
+    "rarity": "uncommon",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "flying": true,
+      "swipe": 1
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1214,
+    "stoneCost": 0,
+    "archetypes": [
+      "Duck",
+      "Village"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 reward (24-3 The Counting House).",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m24",
+      "node": "24-3"
+    }
+  },
+  {
+    "id": "battlement-heron",
+    "cost": 1,
+    "icon": "\ud83d\udc26",
+    "name": "Battlement Heron",
+    "tags": [],
+    "test": false,
+    "uuid": "8e8d0276-0fdf-5796-96c9-d00f96827f6c",
+    "wait": 1,
+    "attack": 3,
+    "flavor": "It stands on one leg on the wall walk for hours, and then it does not miss.",
+    "health": 7,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "arrow": 2,
+      "reach": true
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1215,
+    "stoneCost": 0,
+    "archetypes": [
+      "Bird",
+      "River"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 reward (24-5 The Battlements). Gets Sentry when that skill exists.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m24",
+      "node": "24-5"
+    }
+  },
+  {
+    "id": "gilded-swan-knight",
+    "cost": 2,
+    "icon": "\ud83e\udda2",
+    "name": "Gilded Swan Knight",
+    "tags": [],
+    "test": false,
+    "uuid": "ac34bd59-3e0a-553a-8b0d-4391a7525d92",
+    "wait": 2,
+    "attack": 3,
+    "flavor": "Gold plate on white feathers. It is worth a fortune dead, and it knows it.",
+    "health": 12,
+    "locked": true,
+    "rarity": "superrare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "armor": 2,
+      "bounty": 2,
+      "inspiring": 1
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1216,
+    "stoneCost": 0,
+    "archetypes": [
+      "Duck",
+      "Village"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 boss reward (24-8), the map's one Super Rare.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "m24",
+      "node": "24-8"
+    }
+  },
+  {
+    "id": "magnate-duck",
+    "cost": 4,
+    "icon": "\ud83e\udd86",
+    "name": "The Magnate Duck",
+    "tags": [],
+    "test": false,
+    "uuid": "08fd7c02-20ab-5658-83c7-f4a017a258c4",
+    "wait": 4,
+    "attack": 6,
+    "flavor": "He owns the keep, the valley and the road you came in on. Every hit he lands, he invoices.",
+    "health": 60,
+    "locked": true,
+    "rarity": "legendary",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "armor": 3,
+      "midas": 3,
+      "bounty": 3,
+      "swipe": 2,
+      "shieldCall": true,
+      "inspiring": 2
+    },
+    "species": [
+      "Bird"
+    ],
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1217,
+    "stoneCost": 0,
+    "archetypes": [
+      "Duck",
+      "King"
+    ],
+    "creatorNote": "2026-10-17 (new maps 22-24): Map 24 boss card (24-8). Enemy only for now (no source). King: King Slayer hits him harder. Gets Hoard when that skill exists.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none"
   }
 ]

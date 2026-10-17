@@ -2,6 +2,29 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-17 (new maps)
+- **Map 22: The Rimefire Caldera** 🌨️ (`m22`, was the Reserved slot). An ice volcano above the clouds with 8 fights, ending at the boss **the Rimeheart Colossus**. Cold and heat meet in every fight: Sulphur Fumes, Slippery 25, Hail 2, Frigid with Lava Spout, Ash Rain, Scorching with Hail. It is a volcano map, so it has the Day 4 / Night 2 glow, Scorched Ground in the big fights and the volcano's odds on 22-6 and 22-8. Its rewards are 3 Rares and a Super Rare (the Caldera Snow Leopard). **The Long Burrow (22-LB) is still attached.**
+- **Map 23: The Goldfeather Siege** ⚔️ (`m23`). The warfield outside the Magnate's walls, with 8 fights: war elephants with archers in their howdahs, trenches, trebuchets and the Barbican. It ends at the boss **Marshal Tuskwell**. Arrow Slits shoot down from 23-5 on. The **War Elephant** is the first creature with Arrow 2 twice.
+- **Map 24: Goldfeather Keep** 🏰 (`m24`). **Breach the Gate**, then the Bailey, the Counting House, the Courtyard, the Battlements, the Gilded Guard and the Treasury, and finally **the Magnate Duck** (Legendary, King; Midas, Bounty, Swipe, Shield Call). The map's Super Rare is the Gilded Swan Knight.
+- **Volcano Glow:** the volcano maps that have day and night (20, 20-A, 22) run **Day for 4 rounds, then Night for 2**, instead of 3 and 3. It is a per-fight rule (`phaseDay` / `phaseNight`), and Edit skirmish has a Day / Night box for it. The phase pill counts "2/4" by day and "1/2" by night, and the Environment card has a Volcano Glow row.
+- **New field effects**, each with an Environment card, a battle-log line, a look, an Edit skirmish entry and an Effects library staging:
+  - **💨 Sulphur Fumes** (`sulphurFumes`): from round 2, every unit that doesn't resist fire, isn't Dry and isn't Flying is Choking that round (−1 Attack on everything it deals). It does no damage and adds no poison. It is on **20-A-2 The Wraith Vents**, **20-A-6 The Vent Crabs** and **22-2 Steam Vents**.
+  - **🌋 Ash Rain** (`ashRain`): both castles take 1 a round (never below 1), and day bonuses are halved, as under Cloudy.
+  - **🌫️ Ashy** (`ashy`, or `ashyAfterEruption`): Flying units are grounded (no Flying dodge, no Tailwind or Headwind), and attacks at units miss 1 in 5. Darksight, Keen Sense and Sonar see through it. On the volcano maps, every **Eruption** leaves the ground Ashy for 4 rounds.
+  - **🏹 Arrow Slits** (`arrowSlits`, 2 by default): the defenders' walls shoot a random unit on your side each round. A Helmet can turn the arrow.
+- **Arrow ×N:** a card can loose its Arrow more than once a round (`arrowCount`; it is a hidden skill in the editor). The War Elephant has Arrow 2 ×2, and its card shows two Arrow 2 lines.
+- **17 new cards, with no art yet:**
+  - Map 22: Rimefire Salamander, Fumarole Ibex, Ashwing Ptarmigan, Caldera Snow Leopard, Rimeheart Colossus.
+  - Map 23: War Elephant, Howdah Archers, Testudo Tortoise, Trebuchet Crew, Marshal Tuskwell, Great Gate.
+  - Map 24: Goose Sentry, Mallard Halberdier, Tax-Collector Teal, Battlement Heron, Gilded Swan Knight, The Magnate Duck.
+  - The boss cards and the Great Gate are enemy-only.
+- **Map looks:** a procedural background for each new map (`tools/make_map_backgrounds.py` m22–m24), battlefield gradients, a Frostfire title theme (Map 22) and a Fortress theme with a new battlements silhouette (Maps 23–24), map music and ambience, and decor sets.
+- **Plan: `docs/synergy-curriculum-2026-10-17.md`** (+ `.xlsx`). For Maps 0–40 it covers:
+  - where each skill, synergy pair and field effect is met, felt and combined;
+  - a Codex "Works well with" design;
+  - showcase decks;
+  - the Tinker's Workshop, Armourer, Chrysalis Grove, Caravan Trader and Brewmaster, with the map where each unlocks.
+
 ## 2026-10-16 (field effects 2)
 - **19 new field effects**, built and selectable in Edit skirmish (Hazards and rules), each with an Environment card, a battle-log line, a look and an Effects library entry. **No map carries them yet**; map placement is a separate pass. Engine: `fieldEffects2Tick` and the helper block near `rules` in bramblewood-engine.js; texts: `FIELD2` in arena_app.js; tests: `tests/field-effects-2026-10-16.js`.
   - **Tide** (`tide`): the Flood/Ebb cycle as a field effect of its own, Flood from round 2.
