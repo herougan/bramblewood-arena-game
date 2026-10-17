@@ -6725,7 +6725,7 @@
   "area": "death",
   "name": "Shiny / foil unit dies",
   "trigger": "death of a shiny or foil unit",
-  "current": "normal death; finish just disappears",
+  "current": "retired 2026-10-17: shiny / foil units die like anyone else; the sheen is death-prism",
   "quality": "missing — nothing on screen",
   "priority": 3,
   "themeNotes": "The foil peels away in a sparkle.",
@@ -16060,5 +16060,70 @@
    "bramblewood-engine.js: fieldEffects2Tick"
   ],
   "batch": "FE2"
+ },
+ {
+  "id": "st-expose-crit",
+  "area": "status",
+  "name": "Expose: a counter used by a crit",
+  "trigger": "statusFx exposedHit (counters left), at the impact of the hit that used it",
+  "current": "FX.D.exposeCritFlash: the crosshair shines deep dark red",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "User 2026-10-17: \"Exposed units expose vfx shines deep dark red when it triggers crit.\"",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-d.js: exposeCritFlash, onEvent exposedHit"
+  ],
+  "batch": "D"
+ },
+ {
+  "id": "st-expose-last",
+  "area": "status",
+  "name": "Expose: the last counter used",
+  "trigger": "statusFx exposedHit {amount:0}, at the impact of the hit that used it",
+  "current": "FX.D.exposeMagnify: dark red flash, then the crosshair magnifies as it fades",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "User 2026-10-17: \"If there's no more exposure left, it fades as it magnifies! fun effect.\"",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-d.js: exposeMagnify"
+  ],
+  "batch": "D"
+ },
+ {
+  "id": "st-expose-fade",
+  "area": "status",
+  "name": "Expose fades (no enemy units left)",
+  "trigger": "statusFx exposeFade (engine exposeLonely) / any Expose turning off",
+  "current": "FX.D.statusLook fades the crosshair out (FX.D.exposeFadeOut)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 3,
+  "themeNotes": "User 2026-10-17: \"When there are no units on the opposing side, the other side's expose counters are removed - effect fades off.\"",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-engine.js: exposeLonely",
+   "bramblewood-fx-d.js: exposeLeave"
+  ],
+  "batch": "D"
+ },
+ {
+  "id": "death-prism",
+  "area": "death",
+  "name": "Prism death (light / rainbow skills)",
+  "trigger": "death of a unit with Illuminate, Lantern or Reflect (FX.C.PRISM_SKILLS; reserved: prism, rainbow, radiant, dazzle, refract)",
+  "current": "FX.C.deathPrism: the rainbow sheet lifts off and flutters away in sparkles (the old shiny / foil death)",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 3,
+  "themeNotes": "User 2026-10-17: \"this effect is nice for like - prism related deaths (skills relating to light or rainbows. add that btw - and save this effect)\"",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-c.js: deathPlan, PRISM_SKILLS"
+  ],
+  "batch": "C"
  }
 ]

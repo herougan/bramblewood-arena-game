@@ -14020,6 +14020,30 @@ function matchDarkLevel(m){ try{ const r = m && m.engine && m.conquestNode ? fig
     const a = (now - t0)/5200; set(bf, 50 + Math.cos(a)*30, 50 + Math.sin(a*1.4)*22); };
   raf = requestAnimationFrame(drift);
 })();
+// 2026-10-17 (user: "During Night, there should be a light effect on your mouse"): at night (any fight whose phase is Night, not only the
+// pitch-black ones above, which keep their own lantern) a soft, faint pool of light sits under the pointer over the battlefield, dimmer
+// than the darkness lantern and clipped to the board. On touch it shows at the last touch point and fades. syncNightVeil sets
+// .bf-night-cursor on the battlefield while it is Night.
+(function wireNightCursorLight(){
+  if(typeof document === 'undefined') return;
+  let fadeT = 0;
+  const lightOf = bf=>{ let l = bf.querySelector(':scope > .night-cursor-light'); if(!l){ l = document.createElement('div'); l.className = 'night-cursor-light'; l.setAttribute('aria-hidden', 'true'); bf.appendChild(l); } return l; };
+  const hide = ()=>{ document.querySelectorAll('.night-cursor-light.is-on').forEach(l=> l.classList.remove('is-on')); };
+  const at = (e)=>{
+    const bf = document.querySelector('.battlefield.bf-night-cursor'); if(!bf){ hide(); return; }
+    const r = bf.getBoundingClientRect(); if(!r.width) return;
+    const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+    const l = lightOf(bf); if(!inside){ l.classList.remove('is-on'); return; }
+    l.style.setProperty('--nx', ((e.clientX - r.left)/r.width*100).toFixed(1) + '%'); l.style.setProperty('--ny', ((e.clientY - r.top)/r.height*100).toFixed(1) + '%');
+    l.classList.add('is-on'); clearTimeout(fadeT);
+    if(e.pointerType === 'touch') fadeT = setTimeout(()=> l.classList.remove('is-on'), 1400); // touch: it fades from the last touch point
+  };
+  document.addEventListener('pointermove', at, {passive:true});
+  document.addEventListener('pointerdown', at, {passive:true});
+  document.addEventListener('pointerleave', hide, {passive:true});
+  // the phase turned to day (or the fight ended): put it out
+  setInterval(()=>{ try{ if(!document.querySelector('.battlefield.bf-night-cursor')) hide(); }catch(e){} }, 1000);
+})();
 function terrainOfMatch(m){ try{ const r = m && m.engine && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.engine && m.arenaRuleset && m.arenaRuleset.rules) || null; /* the Arena's portent can bring home ground or the eruption too */ return r && r.terrain ? {t: r.terrain, rules: r} : (r && Number(r.eruption) > 0 && !volcanoRulesOn(r) ? {t: null, rules: r} : null); /* the volcano's hazards (2026-10-14) list as field rows instead */ }catch(e){ return null; } }
 // The eruption you can see (2026-10-12, user: "The fire effects of the volcano are not visible on the field"): a lava geyser
 // bursts up through the struck card, embers fly, and the whole field flashes red.
@@ -30551,6 +30575,7 @@ function syncNightVeil(m, phase){
   const want = !!(m && !m.over && matchPhaseMatters(m) && (phase || (m.engine && m.engine.getPhase && m.engine.getPhase())) === 'night');
   // Night or a dark field: the leaders' and Light Aura units' glow shows (2026-10-15, .unit-light).
   try{ bf.classList.toggle('is-dark-scene', !!(m && !m.over && (want || matchDarkLevel(m)))); }catch(e){}
+  try{ bf.classList.toggle('bf-night-cursor', want && !bf.classList.contains('bf-lantern')); }catch(e){} // 2026-10-17: the pointer's soft night light (wireNightCursorLight)
   const now = performance.now();
   if(!veilEase || veilEase.want !== want){
     const animate = !reducedMotion() && !!veilEase && veilEase.m === m; // a change seen as it happens in this fight (not its first look)

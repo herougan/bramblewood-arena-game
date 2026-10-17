@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-17 (effects)
+- **Expose with no one to strike it:** when a side has no units left, every Expose counter on the other side's units goes (checked after each death sweep and at the end of the round); the crosshair fades off and the log says so. The Expose crosshair never just blinks off now: it fades.
+- **Expose crits:** a counter used by a crit makes the crosshair shine deep dark red at the hit; when the last counter goes, it flashes dark red and magnifies as it fades (the round-end "wears off" doesn't play a second one).
+- **Prism death:** shiny and foil units no longer shed a rainbow sheen when they die. That sheen is now the Prism death, for units with a light or rainbow skill: Illuminate (Lantern), Reflect, and the reserved Prism / Rainbow / Radiant / Dazzle / Refract. In the Effects Lab as death-prism (death-shiny-foil marked retired).
+- **Quick on a miss:** the Quick dash plays when the swing is dodged or misses in the dark / blind too, instead of the ordinary lunge.
+- **Regeneration** plays about 40% faster (the motes, their stagger, the pluses and the glow).
+- **Mythic (and every top rarity frame) on zoomed cards:** the card detail and the inspector showed the plain gold rim, because touching a tile's style rewrote its `--rarity-a` and the frame stopped matching. The big card now wears the same frame as the small one.
+- **Revive:** the wings and halo are for Angels only (none ship yet), smaller, fainter and centred (the right wing was mirrored beside the card). Every other Revive unit gets a phoenix mark: a faint ember ring and a small flame feather at the card's top centre, plus a "↺ Revive" chip on its skill strip. Once it has come back, the mark burns off, the chip is struck through in red, and its Revive line in the card text reads struck, red, "used".
+- **Night pointer light:** at night a soft, faint warm light follows your pointer over the battlefield (fainter than the pitch-dark lantern, inside the board only); on touch it shows at the last touch and fades.
+- **Daybreak sun:** barely there: no hard disc, a soft blurred glow at a further 60% fainter, its rays a third fainter; the left-to-right light and the whole-board brightening stay.
+
 ## 2026-10-16 (gameplay fixes)
 - **Daily dungeon keys:** the 🎟️ Dungeon tickets are 🗝️ Dungeon keys now (still 1 a day, up to 3, plus 1 on Mondays). Every floor takes a key when the fight starts; win and you get it back ("+1 🗝️ Dungeon key" in the rewards), lose or forfeit and it's gone, and the climb starts again from floor 1. Your best floor is remembered, so a floor's first-clear payout is still paid only once, and "Play again" after a loss starts at floor 1. A run left open under the old rule gives its ticket back. The Babel Spire takes no keys and never resets.
 - **Gold Leaves from daily dungeons:** every daily dungeon floor's first clear (above your best floor) gives 🍂 10 Gold Leaves, and the Long Burrow (22-LB) also gives 🍂 20 + N on every clear of floor N (floor 20: 40). The floor's reward strip and the results show them. (The Long Burrow is still an admin preview.)

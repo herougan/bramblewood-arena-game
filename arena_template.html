@@ -8531,6 +8531,13 @@
   .battlefield.bf-lantern.bf-dark-absolute::after{background:radial-gradient(circle 150px at var(--lx) var(--ly), rgba(255,200,120,.08) 0, rgba(6,6,14,.62) 62%, rgba(2,2,8,.80) 100%);}
   @keyframes bfLanternFlicker{0%,100%{opacity:1;} 30%{opacity:.94;} 55%{opacity:.98;} 80%{opacity:.92;}}
   @media (prefers-reduced-motion: reduce){ .battlefield.bf-lantern::after{animation:none;} }
+  /* The pointer's night light (2026-10-17, user: "During Night, there should be a light effect on your mouse"): a soft, faint warm pool
+     under the pointer at night, fainter than the darkness lantern above, inside the board only (inset 0, the board's own corners). */
+  .battlefield .night-cursor-light{position:absolute; inset:0; z-index:6; pointer-events:none; border-radius:inherit; overflow:hidden; --nx:50%; --ny:50%;
+    background:radial-gradient(circle 150px at var(--nx) var(--ny), rgba(255,232,180,.13) 0, rgba(255,220,160,.06) 40%, rgba(255,220,160,0) 100%); mix-blend-mode:screen;
+    opacity:0; transition:opacity .6s ease;}
+  .battlefield.bf-night-cursor .night-cursor-light.is-on{opacity:1; transition:opacity .25s ease;}
+  .battlefield:not(.bf-night-cursor) .night-cursor-light{display:none;}
   /* Unit light (2026-10-15, user: "Leader should have abit of light in darkness. (Night too) Just abit. Creatures with Light Aura shine
      brighter"): a warm pool behind a leader (faint) or a Light Aura unit (Illuminate: bright; Immolation: orange, flickering), only at
      night and in the dark. In Pitch Black / Absolute darkness the overlay also gets a soft hole over each one (syncUnitLightPools). */
