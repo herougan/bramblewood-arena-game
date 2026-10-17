@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-17 (hidden skirmish links)
+- **Hidden skirmishes keep their links:** a revealed hidden skirmish (4-H, 8-H, 10-H, 14-H, 17-H) appears with a trail from the fight it sits next to and opens once that fight is cleared, instead of standing unlinked and open from the start (only each map's first fight is like that). Its trail fades in as it pops onto the map. A jumper (5-J, 13-J, 19-J) still lands on the trail between its two fights, and its links no longer depend on where it lands. While a hidden fight isn't on the map, the fights linked from it pass straight through it, so nothing waits behind a fight you can't see. The Ambush on 3-2 hangs off the same trail as 3-2.
+- **Link edits on hidden skirmishes stick:** 🔗 Links edits to and from a hidden skirmish or a jumper (including the fight after a jumper, for example linking 19-2 to 19-3 as well as 19-J) now save, publish and draw; they were being rewritten on every render. Skirmish edits on a hidden fight no longer save its on-the-map state (position, secret flag, empty links), and old edits that did are cleaned up when they load.
+
 ## 2026-10-16 (gameplay fixes)
 - **Daily dungeon keys:** the 🎟️ Dungeon tickets are 🗝️ Dungeon keys now (still 1 a day, up to 3, plus 1 on Mondays). Every floor takes a key when the fight starts; win and you get it back ("+1 🗝️ Dungeon key" in the rewards), lose or forfeit and it's gone, and the climb starts again from floor 1. Your best floor is remembered, so a floor's first-clear payout is still paid only once, and "Play again" after a loss starts at floor 1. A run left open under the old rule gives its ticket back. The Babel Spire takes no keys and never resets.
 - **Gold Leaves from daily dungeons:** every daily dungeon floor's first clear (above your best floor) gives 🍂 10 Gold Leaves, and the Long Burrow (22-LB) also gives 🍂 20 + N on every clear of floor N (floor 20: 40). The floor's reward strip and the results show them. (The Long Burrow is still an admin preview.)

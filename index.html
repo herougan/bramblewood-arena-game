@@ -8583,6 +8583,10 @@
   .map-node.secret-pop::after{content:''; position:absolute; inset:-22px; border-radius:50%; pointer-events:none; background:radial-gradient(circle, rgba(255,236,170,.85) 0, rgba(255,214,110,.35) 40%, rgba(255,214,110,0) 70%); animation:secretBurst 1.6s ease-out .45s both;}
   @keyframes secretBurst{0%{transform:scale(.2); opacity:1;} 100%{transform:scale(2.2); opacity:0;}}
   @media (prefers-reduced-motion: reduce){ .map-node.secret-pop, .map-node.secret-pop::after{animation:none;} }
+  /* 2026-10-17 (user: "the links should be preserved"): a hidden skirmish lands with its trail, which fades in as it pops */
+  .map-trail-svg .trail-pop{animation:trailPopIn .9s ease-out 1.3s both;}
+  @keyframes trailPopIn{from{opacity:0;}}
+  @media (prefers-reduced-motion: reduce){ .map-trail-svg .trail-pop{animation:none;} }
 </style>
 </head>
 <body>
@@ -35307,7 +35311,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '957e7a955244', BUILD_CARD_HASH = '270c6d1b18e6978cacddec6069d6d704a576a8c0de713139feda8084cf12db99';
+const BUILD_ID = 'e8fa8ea8dc15', BUILD_CARD_HASH = '270c6d1b18e6978cacddec6069d6d704a576a8c0de713139feda8084cf12db99';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -45910,7 +45914,7 @@ async function saveNodeShowcase(mapId, key, id){
   const e = nodePatchFor(mapId);
   if(isAddedNode(mapId, key)){ e.added = e.added.map(n=>{ if(n.key !== key) return n; const c = Object.assign({}, n); if(id) c.showcase = id; else delete c.showcase; return c; }); }
   else {
-    const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===key) || {};
+    const base = designedNodeBase(mapId, key); // 2026-10-17: a hidden skirmish's design counts as its base
     const p = Object.assign({}, e.patches[key] || {});
     if(id && id !== base.showcase) p.showcase = id; else if(!id && base.showcase) p.showcase = null; else delete p.showcase;
     if(Object.keys(p).length) e.patches[key] = p; else delete e.patches[key];
@@ -47587,8 +47591,10 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       const e = nodePatchFor(mapId);
       if(isAddedNode(mapId, draft.key)){ e.added = e.added.map(n=> n.key===draft.key ? JSON.parse(JSON.stringify(draft)) : n); }
       else {
-        const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===mapId)||{nodes:[]}).nodes.find(n=> n.key===draft.key) || {};
-        const patch = {}; Object.keys(draft).forEach(k=>{ if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
+        // 2026-10-17 (user: "the links should be preserved"): a hidden skirmish / jumper is compared against its design, and the fields
+        // the map sets on it as it stands (secret, fixedPos, the resolved links' stash…) are never saved into the edit.
+        const base = designedNodeBase(mapId, draft.key), secret = !!secretEntryOf(mapId, draft.key);
+        const patch = {}; Object.keys(draft).forEach(k=>{ if(k.charAt(0) === '_' || (secret && SECRET_RUNTIME_FIELDS.includes(k))) return; if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
         ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
@@ -49390,7 +49396,7 @@ function applyNodeEdits(){
     const base = CONQUEST_MAPS_BASELINE[mi] ? JSON.parse(JSON.stringify(CONQUEST_MAPS_BASELINE[mi].nodes)) : [];
     const ed = nodeEdits[map.id] || {};
     const nodes = base.concat(JSON.parse(JSON.stringify(ed.added||[])));
-    nodes.forEach(n=>{ const p = (ed.patches||{})[n.key]; if(p) Object.assign(n, JSON.parse(JSON.stringify(p))); });
+    nodes.forEach(n=>{ const p = (ed.patches||{})[n.key]; if(p) Object.assign(n, stripRuntimeNodeFields(JSON.parse(JSON.stringify(p)))); }); // 2026-10-17: no stale _preJumpRequires from an old save
     map.nodes.length = 0; nodes.forEach(n=> map.nodes.push(n));
   });
   try{ applyRoadKinds(); }catch(e){}
@@ -49429,8 +49435,11 @@ function applyAmbushNode(){
   const foe = st.foe || ambushFoe(), hb = foe === 'hummingbirds';
   map.nodes.push({key:'ambush', kind:'elite', name: hb ? 'Sunfeather Ambush' : 'Rivergate Ambush', icon: hb ? '🐦' : '🦦', deck: st.deck || ambushDeck(foe), hqHp:24,
     flavor: hb ? 'A Dominion patrol drops out of the canopy, blades already drawn.' : 'A Rivergate shield-line rises out of the shallows, right across your path.',
-    rewardTokens:['factionGrowth'], requires:[], ambush:true, fixedPos: st.pos || null, faction: foe});
+    rewardTokens:['factionGrowth'], requires: ambushLinks(map), ambush:true, fixedPos: st.pos || null, faction: foe});
 }
+// 2026-10-17 (user: "Unliked nodes by default are accessible on scratch. The only thing that is like that is the 1st skirmish in a map"):
+// the Ambush hangs off the same trail as the fight it interrupts (3-2's own links), instead of floating unlinked.
+function ambushLinks(map){ const at = map && map.nodes.find(n=> !n.ambush && skirmishCode(map.id, n.key) === AMBUSH_AT); return at && Array.isArray(at.requires) ? at.requires.slice() : []; }
 // Hidden skirmishes (2026-10-15, user: "You can also add HIDDEN skirmishes (max 5 across Map 1-20). Idk how they will be revealed."):
 // a fight that isn't on the map at all until something reveals it. Each entry: map, the node (flagged hidden:true and secret:true,
 // with its own code X-H), where it sits (next to `near`, dx/dy in map %), and `reveal`, the condition:
@@ -49492,11 +49501,67 @@ function refreshHiddenSkirmishes(){
     if(i >= 0) return; // already there (an edit may have patched it)
     const plain = Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret)}), ps = mapNodePositions(plain), ri = plain.nodes.findIndex(n=> n.key === h.near), ref = ps[ri] || {x:50, y:50};
     const pos = {x: Math.max(6, Math.min(94, ref.x + (h.dx||0))), y: Math.max(8, Math.min(92, ref.y + (h.dy||0)))};
-    const patch = ((nodeEdits[h.map]||{}).patches||{})[h.node.key];
-    map.nodes.push(Object.assign(JSON.parse(JSON.stringify(h.node)), {hidden:true, secret:true, requires:[], fixedPos: pos, revealHint: h.hint || ''}, patch ? JSON.parse(JSON.stringify(patch)) : {}));
+    // 2026-10-17 (user: "the links should be preserved. it just that it drop randomly - seemingly unlinked"): it lands with its
+    // designed links (next to `near` = linked from `near`, or the entry's own `requires`, or the designer's link edits), not requires:[].
+    const patch = cleanSecretPatch(((nodeEdits[h.map]||{}).patches||{})[h.node.key]);
+    map.nodes.push(Object.assign(JSON.parse(JSON.stringify(h.node)), {hidden:true, secret:true, requires: secretDesignedLinks(h.map, h.node.key), fixedPos: pos, revealHint: h.hint || ''}, patch));
   });
   if(fresh.length) saveHiddenState(st);
   return fresh;
+}
+// Links of the hidden skirmishes and jumpers (2026-10-17, user: "1. The links is not updating. I tried messing with the sudden hidden
+// skirmishes- btw, the links should be preserved. it just that it drop randomly - seemingly unlinked. (Unliked nodes by default are
+// accessible on scratch. The only thing that is like that is the 1st skirmish in a map)"):
+// * Each one has designed links like any fight: a Type 1 hangs off the fight it sits next to (`near`, or its own `requires`), a
+//   jumper off its `after`, and its `before` needs the jumper. The designer's 🔗 link edits and skirmish edits override them (patches).
+// * A fight whose required fight isn't on the map right now (a hidden one not revealed yet, a jumper that hasn't landed, a jumper an
+//   older save went past) asks for what that fight itself asks for instead, so the trail and the unlocking pass straight through it
+//   and nothing is ever stuck behind a fight you can't see. The designed links stay in node._designRequires; requires is that, resolved.
+// * Old saves: patches written by the skirmish editor before this carried the runtime fields (secret, fixedPos, requires:[], …) of the
+//   node as it stood; they're cleaned up on load, and an empty requires from one of those never unlinks the node.
+const SECRET_RUNTIME_FIELDS = ['hidden', 'secret', 'jumper', 'entrance', 'fixedPos', 'revealHint'];
+function stripRuntimeNodeFields(o){ if(o && typeof o === 'object') Object.keys(o).forEach(k=>{ if(k.charAt(0) === '_') delete o[k]; }); return o; }
+function cleanSecretPatch(p){
+  if(!p || typeof p !== 'object') return {};
+  const c = stripRuntimeNodeFields(JSON.parse(JSON.stringify(p))), legacy = SECRET_RUNTIME_FIELDS.some(k=> k in c);
+  SECRET_RUNTIME_FIELDS.forEach(k=>{ delete c[k]; });
+  if(legacy && Array.isArray(c.requires) && !c.requires.length) delete c.requires; // the old full-node save, not a deliberate unlink
+  return c;
+}
+function secretEntryOf(mapId, key){
+  const h = HIDDEN_SKIRMISHES.find(x=> x.map === mapId && x.node.key === key); if(h) return {type:'hidden', e:h};
+  const j = JUMPER_SKIRMISHES.find(x=> x.map === mapId && x.node.key === key); return j ? {type:'jumper', e:j} : null;
+}
+// The links a hidden skirmish / jumper is designed with (before any edit).
+function secretDesignedLinks(mapId, key){
+  const s = secretEntryOf(mapId, key); if(!s) return [];
+  if(s.type === 'jumper') return [s.e.after];
+  return (Array.isArray(s.e.requires) ? s.e.requires : (s.e.near ? [s.e.near] : [])).slice();
+}
+// Its links now: the designed ones, or the designer's edit.
+function secretCurrentLinks(mapId, key){ const p = cleanSecretPatch(((nodeEdits[mapId]||{}).patches||{})[key]); return Array.isArray(p.requires) ? p.requires.slice() : secretDesignedLinks(mapId, key); }
+// What a saved edit is compared against (link editor, skirmish editor, showcase): the built-in node, or the hidden skirmish's
+// design, or for a jumper's `before` its built-in links with the jumper in them.
+function designedNodeBase(mapId, key){
+  const b = (CONQUEST_MAPS_BASELINE.find(m=> m.id === mapId) || {nodes:[]}).nodes.find(n=> n.key === key);
+  if(b){ const j = JUMPER_SKIRMISHES.find(x=> x.map === mapId && x.before === key);
+    if(!j) return b; const c = JSON.parse(JSON.stringify(b)); c.requires = jumperBeforeLinks(c.requires, j); return c; }
+  const s = secretEntryOf(mapId, key); if(!s) return {};
+  return Object.assign(JSON.parse(JSON.stringify(s.e.node)), {requires: secretDesignedLinks(mapId, key)});
+}
+function jumperBeforeLinks(req, j){ const r = (Array.isArray(req) ? req : []).map(k=> k === j.after ? j.node.key : k); return [...new Set(r.includes(j.node.key) ? r : r.concat([j.node.key]))]; }
+// Resolve every node's links on one map against what is on it right now (idempotent; called after the hidden ones are placed).
+function resolveSecretLinks(map, optional){
+  if(!map) return; const here = new Set(map.nodes.map(n=> n.key)), skip = optional || new Set();
+  const expand = (keys, seen)=>{ const out = [];
+    keys.forEach(k=>{ const gone = (!here.has(k) || skip.has(k)) && secretEntryOf(map.id, k);
+      if(!gone){ out.push(k); return; } if(seen.has(k)) return; seen.add(k);
+      const n = map.nodes.find(x=> x.key === k), via = n && Array.isArray(n._designRequires) ? n._designRequires : secretCurrentLinks(map.id, k);
+      expand(via, seen).forEach(x=> out.push(x)); });
+    return [...new Set(out)]; };
+  map.nodes.forEach(n=>{ if(!Array.isArray(n.requires) && !Array.isArray(n._designRequires)) return;
+    if(!Array.isArray(n._designRequires)) n._designRequires = n.requires.slice();
+    n.requires = skip.has(n.key) ? n._designRequires.slice() : expand(n._designRequires, new Set([n.key])); });
 }
 function hiddenJustRevealed(key){ const st = hiddenState(); return !!st.found[key] && !st.popped[key]; }
 const hiddenPopNow = new Set(); // the ones popping in on this render (the class lasts until the next one, 2026-10-15)
@@ -49527,29 +49592,39 @@ function jumperState(){ try{ const s = JSON.parse(localStorage.getItem(JUMPER_KE
 function saveJumperState(s){ try{ localStorage.setItem(JUMPER_KEY, JSON.stringify(s)); }catch(e){} }
 // Put the jumpers whose `after` is cleared on their maps and run the trail through them (idempotent: called on every map render).
 function applyJumperSkirmishes(){
-  const progress = loadConquestProgress(), admin = typeof adminModeEnabled !== 'undefined' && adminModeEnabled;
+  const progress = loadConquestProgress(), admin = typeof adminModeEnabled !== 'undefined' && adminModeEnabled, optional = new Set();
   JUMPER_SKIRMISHES.forEach(j=>{
     const map = CONQUEST_MAPS.find(m=> m.id === j.map); if(!map) return;
     const done = k=> (progress.completed || []).includes(conquestNodeId(j.map, k));
     const before = map.nodes.find(n=> n.key === j.before), i = map.nodes.findIndex(n=> n.key === j.node.key);
-    const restore = ()=>{ if(before && before._preJumpRequires){ before.requires = before._preJumpRequires; delete before._preJumpRequires; } };
+    // 2026-10-17 (user: "The links is not updating ... the links should be preserved"): `before` is designed with the jumper in its
+    // links (its built-in links with `after` swapped for the jumper), set once per rebuild, so a 🔗 link edit to it (linking `after`
+    // straight to it too, or unlinking the jumper) now sticks instead of being rewritten here on every render. A saved link edit
+    // to `before` is the designer's word as it stands. While the jumper isn't on the map, resolveSecretLinks passes through it.
+    if(before && !Array.isArray(before._designRequires)){ const p = ((nodeEdits[j.map]||{}).patches||{})[j.before];
+      before._designRequires = (p && Array.isArray(p.requires)) ? (before.requires || []).slice() : jumperBeforeLinks(before.requires, j); }
     const show = admin || done(j.after) || done(j.node.key);
-    if(!show){ if(i >= 0 && map.nodes[i].jumper) map.nodes.splice(i, 1); restore(); return; }
-    const optional = !admin && !!before && done(j.before) && !done(j.node.key); // an older save that already went past it
+    if(!show){ if(i >= 0 && map.nodes[i].jumper) map.nodes.splice(i, 1); return; }
+    const opt = !admin && !!before && done(j.before) && !done(j.node.key); // an older save that already went past it
     let node = i >= 0 ? map.nodes[i] : null;
     if(!node){
+      // Where it lands: on the trail between `after` and `before` (just off the line, so the old link can't hide behind it). Its links
+      // don't depend on the spot; a 📐 layout move of it is kept like any other fight's.
       const plain = Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret && !n.jumper)}), ps = mapNodePositions(plain);
       const a = ps[plain.nodes.findIndex(n=> n.key === j.after)] || {x:45, y:50}, b = ps[plain.nodes.findIndex(n=> n.key === j.before)] || {x:55, y:50};
-      const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, off = j.offset == null ? 7 : j.offset; // just off the old line, so the old link can't hide behind it
+      const dx = b.x - a.x, dy = b.y - a.y, L = Math.hypot(dx, dy) || 1, off = j.offset == null ? 7 : j.offset;
       const pos = {x: Math.max(6, Math.min(94, (a.x + b.x)/2 - dy/L*off)), y: Math.max(8, Math.min(92, (a.y + b.y)/2 + dx/L*off))};
-      const patch = ((nodeEdits[j.map]||{}).patches||{})[j.node.key];
-      node = Object.assign(JSON.parse(JSON.stringify(j.node)), {jumper:true, entrance: j.entrance, requires:[j.after], fixedPos: pos}, patch ? JSON.parse(JSON.stringify(patch)) : {});
+      const patch = cleanSecretPatch(((nodeEdits[j.map]||{}).patches||{})[j.node.key]);
+      node = Object.assign(JSON.parse(JSON.stringify(j.node)), {jumper:true, entrance: j.entrance, requires: secretDesignedLinks(j.map, j.node.key), fixedPos: pos}, patch);
       map.nodes.splice(Math.max(0, map.nodes.indexOf(before)), 0, node); // just ahead of `before`, so lists read in trail order
     }
-    node.secret = optional || undefined; if(!node.secret) delete node.secret;
-    if(before && !optional){ if(!before._preJumpRequires) before._preJumpRequires = (before.requires || []).slice();
-      const rq = before._preJumpRequires.map(k=> k === j.after ? j.node.key : k); before.requires = rq.includes(j.node.key) ? rq : rq.concat([j.node.key]); }
-    else restore();
+    node.secret = opt || undefined; if(!node.secret) delete node.secret;
+    if(opt) optional.add(j.map + ':' + j.node.key);
+  });
+  // Every map with a hidden skirmish or a jumper: resolve the links against what's on it now.
+  [...new Set(HIDDEN_SKIRMISHES.map(h=> h.map).concat(JUMPER_SKIRMISHES.map(j=> j.map)))].forEach(mid=>{
+    const map = CONQUEST_MAPS.find(m=> m.id === mid); if(!map) return;
+    resolveSecretLinks(map, new Set(JUMPER_SKIRMISHES.filter(j=> j.map === mid && optional.has(mid + ':' + j.node.key)).map(j=> j.node.key)));
   });
 }
 // After the map is drawn: a jumper that just got on the map lands with its entrance (once per save).
@@ -50232,14 +50307,18 @@ function nodeRequiresAncestors(map, key, seen){ seen = seen || new Set(); const 
 async function toggleNodeLink(map, fromKey, toKey){
   const to = map.nodes.find(n=> n.key===toKey), from = map.nodes.find(n=> n.key===fromKey); if(!to || !from) return;
   if(to.kind==='tutorial'){ showToast(TX('toast.the-tutorial-marker-can-t-require'), 'warn'); return; }
-  const reqs = (to.requires||[]).slice(), has = reqs.includes(fromKey);
+  const reqs = (Array.isArray(to._designRequires) ? to._designRequires : (to.requires||[])).slice(), has = reqs.includes(fromKey); // 2026-10-17: the designed links, not the ones resolved past a hidden fight
   if(!has && nodeRequiresAncestors(map, fromKey).has(toKey)){ showToast(TX('toast.that-would-make-a-loop-already', {name: from.name, name2: to.name}), 'warn'); return; }
   const next = has ? reqs.filter(k=> k!==fromKey) : reqs.concat(fromKey);
   const e = nodePatchFor(map.id);
   if(isAddedNode(map.id, toKey)) e.added = e.added.map(n=> n.key===toKey ? Object.assign({}, n, {requires: next}) : n);
   else {
-    const base = (CONQUEST_MAPS_BASELINE.find(m=> m.id===map.id)||{nodes:[]}).nodes.find(n=> n.key===toKey) || {};
+    // 2026-10-17 (user: "The links is not updating. I tried messing with the sudden hidden skirmishes"): compared against the hidden
+    // skirmish's / jumper's design (designedNodeBase), so its link edits save, publish and draw like any other fight's.
+    const base = designedNodeBase(map.id, toKey);
     const pt = Object.assign({}, e.patches[toKey]||{});
+    if(secretEntryOf(map.id, toKey)) SECRET_RUNTIME_FIELDS.forEach(k=>{ delete pt[k]; }); // an old full-node save's leftovers go
+    stripRuntimeNodeFields(pt);
     if(JSON.stringify(next) === JSON.stringify(base.requires||[])) delete pt.requires; else pt.requires = next;
     if(Object.keys(pt).length) e.patches[toKey] = pt; else delete e.patches[toKey];
   }
@@ -51460,6 +51539,7 @@ function renderConquestSubTab(body){
       else if(va !== vb){ const gid = `trl-${map.id}-${j}-${i}`, from = va ? A : B, to = va ? B : A;
         trailGrads.push(`<linearGradient id="${gid}" gradientUnits="userSpaceOnUse" x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}"><stop offset="0" class="trl-on"/><stop offset=".35" class="trl-on"/><stop offset="1" class="trl-off"/></linearGradient>`);
         st = ` style="stroke:url(#${gid})"`; cls += ' is-half'; }
+      if(hiddenPopNow.has(n.key) || hiddenPopNow.has(map.nodes[j].key)) cls += ' trail-pop'; // 2026-10-17: a hidden skirmish's trail draws in as it pops onto the map
       cls = cls.trim();
       if(blocked){ const nx = -dy / L, ny = dx / L, bow = Math.min(18, 6 + L*0.18), cx = (A.x+B.x)/2 + nx*bow*(ny > 0 ? -1 : 1), cy = (A.y+B.y)/2 + ny*bow*(ny > 0 ? -1 : 1);
         edgeLines.push(`<path class="${cls} is-curve"${st} data-a="${map.nodes[j].key}" data-b="${n.key}" d="M ${A.x} ${A.y} Q ${cx.toFixed(2)} ${cy.toFixed(2)} ${B.x} ${B.y}" />`); }
@@ -51527,7 +51607,7 @@ function renderConquestSubTab(body){
         // place you haven't reached yet" rather than "a total mystery," while still making
         // unmistakably clear it can't be clicked/fought yet.
         if(!visible){
-          return `<div class="map-node map-node-hidden" data-lkey="${node.key}" role="img" aria-label="Locked skirmish" style="${style}" title="Locked — clear the previous skirmish on this trail first">
+          return `<div class="map-node map-node-hidden${node.secret ? ' is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''}" data-lkey="${node.key}" role="img" aria-label="Locked skirmish" style="${style}" title="Locked — clear the previous skirmish on this trail first">
             <span class="map-node-ico map-node-ico-locked">${node.icon}</span><span class="map-node-lock">🔒</span>
           </div>`;
         }
