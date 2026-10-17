@@ -746,7 +746,7 @@ const PASSIVE_DEFS = [
   // a crit, but the counters decrease by 1."): N Expose counters; each later hit is a crit and uses one. Still can't miss.
   {key:'expose', category:'evergreen', label:'Expose', kind:'number', min:0, desc:v=>`Every landed attack puts ${v||1} Expose counter${(v||1)===1 ? '' : 's'} on the target. Each later hit on it is a crit (double damage) and removes 1 counter, and attacks at an Exposed unit can't miss.`},
   {key:'guardian', category:'passive', label:'Guardian', kind:'boolean', desc:()=>`Hits aimed at an adjacent ally redirect onto this card instead.`},
-  {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Attacks before every non-Quick attacker this round (Swift units still go first).`},
+  {key:'quick', category:'passive', label:'Quick', kind:'boolean', desc:()=>`Swings at Speed 2: before Arrows and Bolts (Speed 1) and before units without Quick (Speed 0). Speed and Haste add to it.`}, // 2026-10-17 (user: "Quick happens at Speed = 2.")
   {key:'fastForward', category:'passive', label:'Fast Forward', kind:'number', min:0, desc:v=>`Arrives ${v} turn${v===1?'':'s'} ahead: before its first combat it takes ${v} extra turn${v===1?'':'s'} on its own (counting down its Wait, then swinging), then joins the normal order.`},
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
   {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round${v===1?'':'s'} before attacking again.`},
@@ -888,22 +888,22 @@ const PASSIVE_DEFS = [
   // "King" (Rodent King, Glacial Ape-King) so this has real targets from day one.
   // Arrow / Fire Arrow (2026-10-04): see fireArrowVolley in bramblewood-engine.js.
   // 2026-10-16 skill audit: the arrows aim at the enemy facing it first, then the nearest (fireArrowVolley / arrowTargetOf).
-  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots an arrow for ${v} damage at the enemy facing it (with none there, the nearest enemy, a random one if two are as near; the castle if the board is empty). Never misses Flying units.`},
-  {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, before melee: shoots a flaming arrow for ${v} fire damage at the enemy facing it (or the nearest; fire resistance and weakness apply). Never misses Flying units.`},
+  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots an arrow for ${v} damage at the enemy facing it (with none there, the nearest enemy, a random one if two are as near; the castle if the board is empty). Never misses Flying units.`},
+  {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots a flaming arrow for ${v} fire damage at the enemy facing it (or the nearest; fire resistance and weakness apply). Never misses Flying units.`},
   // Ice Arrow / Twin Shot / Volley (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire Arrow, Ice
   // Arrow etc. will be more normal."): see fireArrowVolley in bramblewood-engine.js.
-  {key:'iceArrow', category:'evergreen', label:'Ice Arrow', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: shoots an icy arrow for ${v||2} cold damage at the enemy facing it (or the nearest). A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter). Never misses Flying units.`},
-  {key:'twinShot', category:'evergreen', label:'Twin Shot', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: shoots two arrows for ${v||2} damage each, at two different random enemy units (both at one if there is only one; the castle if the board is empty). Never misses Flying units.`},
-  {key:'volley', category:'evergreen', label:'Volley', kind:'number', min:1, defaultValue:1, desc:v=>`Every other round while Ready (its first Ready round, then every 2nd), before melee: looses a volley, an arrow for ${v||1} damage at every enemy unit (the castle if the board is empty). Never misses Flying units.`},
+  {key:'iceArrow', category:'evergreen', label:'Ice Arrow', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots an icy arrow for ${v||2} cold damage at the enemy facing it (or the nearest). A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter). Never misses Flying units.`},
+  {key:'twinShot', category:'evergreen', label:'Twin Shot', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots two arrows for ${v||2} damage each, at two different random enemy units (both at one if there is only one; the castle if the board is empty). Never misses Flying units.`},
+  {key:'volley', category:'evergreen', label:'Volley', kind:'number', min:1, defaultValue:1, desc:v=>`Every other round while Ready (its first Ready round, then every 2nd), at Speed 1 (after Quick units, before the rest swing): looses a volley, an arrow for ${v||1} damage at every enemy unit (the castle if the board is empty). Never misses Flying units.`},
   // The Bolts (2026-10-15, user: "We need bolts - these might be quite creature-specific. All elemental or status-y. They just
   // represents 'spits' of something at the enemy. Fire bolt, Acid bolt, Poison bolt etc."): one engine implementation with an
   // element table (BOLT_ELEMENTS in bramblewood-engine.js). Each spits every round while Ready, before melee, at the enemy opposite
   // (the nearest enemy unit if none is opposite; the castle if the board is empty).
-  {key:'fireBolt', category:'evergreen', label:'Fire Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits a glob of fire at the enemy opposite (the nearest one if none is) for ${v||2} fire damage.`},
-  {key:'acidBolt', category:'evergreen', label:'Acid Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits acid at the enemy opposite (the nearest one if none is) for ${v||2} acid damage, and 1 Corrode.`},
-  {key:'poisonBolt', category:'evergreen', label:'Poison Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits venom at the enemy opposite (the nearest one if none is): no damage, but ${v||2} Poison.`},
-  {key:'iceBolt', category:'evergreen', label:'Ice Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits a shard of ice at the enemy opposite (the nearest one if none is) for ${v||2} Cold damage. A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter).`},
-  {key:'shockBolt', category:'evergreen', label:'Shock Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits a crackling spark at the enemy opposite (the nearest one if none is) for ${v||2} damage, and Shocks it for a round (it takes 50% more damage).`},
+  {key:'fireBolt', category:'evergreen', label:'Fire Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a glob of fire at the enemy opposite (the nearest one if none is) for ${v||2} fire damage.`},
+  {key:'acidBolt', category:'evergreen', label:'Acid Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits acid at the enemy opposite (the nearest one if none is) for ${v||2} acid damage, and 1 Corrode.`},
+  {key:'poisonBolt', category:'evergreen', label:'Poison Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits venom at the enemy opposite (the nearest one if none is): no damage, but ${v||2} Poison.`},
+  {key:'iceBolt', category:'evergreen', label:'Ice Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a shard of ice at the enemy opposite (the nearest one if none is) for ${v||2} Cold damage. A 1 in 2 chance it freezes a unit that isn't already frozen (1 Freeze counter).`},
+  {key:'shockBolt', category:'evergreen', label:'Shock Bolt', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits a crackling spark at the enemy opposite (the nearest one if none is) for ${v||2} damage, and Shocks it for a round (it takes 50% more damage).`},
   {key:'kingSlayer', category:'passive', label:'King Slayer', kind:'number', min:0, desc:v=>`Deals ${v} bonus damage on every landed hit against a target with the King type.`},
   // 2026-10-14 (fifth pass). Tornado, Avalanche, Tsunami (user: "All evergreen abilities"); Dragon Lightning and Wither, the
   // Dragonic Spire's signature skills (user: "Dragonic Spire - (imagine elden ring) - Skills, Dragon Lightning (monster hunter), and Wither (Minecraft)").
@@ -964,7 +964,7 @@ const PASSIVE_DEFS = [
   {key:'sonar', category:'passive', label:'Sonar', kind:'boolean', desc:()=>`Hunts by sound: Darkness, Blind, Smoke, Fog and Shadow never make it miss (flyers included), and it can't be Blinded.`},
   {key:'poisonGas', category:'evergreen', label:'Poison Gas', kind:'number', min:1, defaultValue:2, desc:v=>`When it arrives, every enemy unit gets ${numOr(v, 2)} Poison.`},
   {key:'absoluteZero', category:'evergreen', label:'Absolute Zero', kind:'boolean', desc:()=>`When it arrives, every enemy unit is Frozen for the round (units immune to cold are spared).`},
-  {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, before melee: spits ${numOr(v, 2)} fire at a random enemy unit (the castle if there are none). 1 in 2 the flames catch a unit beside it for 1. (Fire Bolt always aims at the enemy opposite.)`},
+  {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits ${numOr(v, 2)} fire at a random enemy unit (the castle if there are none). 1 in 2 the flames catch a unit beside it for 1. (Fire Bolt always aims at the enemy opposite.)`},
   {key:'slashBurn', category:'evergreen', label:'Slash & Burn', kind:'number', min:1, defaultValue:3, desc:v=>`When it kills a unit, the ground there burns: the next enemy card played into that slot takes ${numOr(v, 3)} fire damage.`},
   // Devilry payments (2026-10-16, user: "Devilry 2 skills: hurting your own castle on play as payment. Also, hurting a random ally on
   // play as payment. Not sure of the name. Penance?"): Penance N (your castle) and Blood Tithe N (a random ally; the castle if none).
@@ -1960,7 +1960,7 @@ const SKILL_TEXT = {
   remember: v=> `In your Removal Zone: at upkeep, spend ${v} Echoes to return with +${v}/+${v}.`,
   expose: v=> `Its hits put ${numOr(v, 1)} Expose counter${numOr(v, 1)===1 ? '' : 's'} on the target. Each later hit on it crits and removes 1.`, // 2026-10-16 (user: "that hit is guaranteed a crit, but the counters decrease by 1")
   guardian: ()=> `Takes the hits aimed at adjacent allies.`,
-  quick: ()=> `Attacks before every unit without Quick.`,
+  quick: ()=> `Swings at Speed 2: before Arrows and Bolts and units without Quick.`, // 2026-10-17
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
   swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
   reload: v=> `After attacking, sits out ${v} round${v==1?'':'s'}.`,
@@ -2525,7 +2525,9 @@ function getCardDefs0(){
   if(_cardDefsCache && sig === _cardDefsSig) return _cardDefsCache;
   const res = buildCardDefs();
   _cardDefsCache = res; _cardDefsSig = sig;
-  if(!_cardDefsTick){ _cardDefsTick = true; setTimeout(()=>{ _cardDefsCache = null; _cardDefsTick = false; }, 0); }
+  // 2026-10-17 (fight lag): while a round plays back, nothing edits the cards, but every replayed beat is its own task, so the defs
+  // were rebuilt (~5-10 ms) on nearly every beat. During playback the copy now lives for a second.
+  if(!_cardDefsTick){ _cardDefsTick = true; let ms = 0; try{ if(matchState && matchState.resolving) ms = 1000; }catch(e){} /* matchState is declared further down */ setTimeout(()=>{ _cardDefsCache = null; _cardDefsTick = false; }, ms); }
   return res;
 }
 function buildCardDefs(){
@@ -5453,7 +5455,7 @@ function setCodexStatsChart(v){ codexStatsChart = v; refreshCodexStats(); }
 // 2026-10-15 (user: "reduce the amount of cards shown in Codex, maybe max 40 cards at a time. (If the card group on its own >40,
 // its okay.) But if card group A = 10, B = 31, then only show A"): 40 a page; a page takes whole groups while they fit in 40, a
 // group that doesn't fit starts the next page, and only a group bigger than 40 on its own is cut into pages of 40.
-const CODEX_PAGE_SIZE = 40;
+const CODEX_PAGE_SIZE = 80, CODEX_FIRST_CHUNK = 32; // 2026-10-17 (user: "Codex the page size is too small I think, increase the number of card display more"): was 40
 let codexPage = 0, codexShowUnseen = false;
 function saveCodexFilters(){ const o = Object.assign({}, codexFilter); delete o.showTest; uiStickySave('codex', o); } // 2026-10-16: kept (uiSticky)
 // 2026-10-14 (user: "have a button to not partition the cards anymore, and arrange by ascending ID. - display 50 by 50"): one flat list by card number.
@@ -5537,7 +5539,7 @@ function renderCodexGrid(keepPage){
     // 2026-10-13 (user: "There's Hidden, Locked, Unlocked, In Possession ... shown together! Those Locked and Unlocked (0 copies)
     // will be greyed out. Those locked will have a locked symbol on them"): one list; no copies = greyed; locked = 🔒.
     const owned = (myCardCopies[id]||[]).length > 0;
-    return `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
+    return `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
   };
   // Paging: split into pages first, then only the current page is drawn.
   const pages = [];
@@ -5549,18 +5551,23 @@ function renderCodexGrid(keepPage){
       cur.push({sec:g.sec, ids:sorted, all:g.ids}); n += sorted.length; });
     if(cur.length) pages.push(cur); }
   if(codexPage >= pages.length) codexPage = Math.max(0, pages.length - 1);
-  let html = '';
+  // 2026-10-17 (80 cards a page): the first CODEX_FIRST_CHUNK tiles (the ones on screen) are drawn at once; the rest of the page
+  // follows on the next frame, so a page turn shows as quickly as the old 40-card page did.
+  let html = '', tail = '', nTiles = 0;
   (pages[codexPage] || []).forEach(({sec, ids:gIds, all, cont})=>{
+    const into = nTiles >= CODEX_FIRST_CHUNK ? 'tail' : 'html'; let part = '';
     const un = all.filter(id=>!defs[id].locked);
     const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
     // Admin: take every card of a section (a season, a pack, a skirmish) at once (2026-10-13).
     const getAll = adminModeEnabled && all.length ? `<button type="button" class="btn small ghost cx-get-all" data-getall="${escapeAttr(sec.key)}" title="Admin: add one copy of every card in this section to your collection">🎁 Get all</button>` : '';
-    if(!sec.bare) html += `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}${cont ? ' (cont.)' : ''}</span><span class="cx-section-right">${all.length ? `<span class="cx-section-count">${un.length}/${all.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}${getAll}</span></div>`;
-    html += gIds.map(tileFor).join('');
+    if(!sec.bare) part += `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}${cont ? ' (cont.)' : ''}</span><span class="cx-section-right">${all.length ? `<span class="cx-section-count">${un.length}/${all.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}${getAll}</span></div>`;
+    if(into === 'tail'){ tail += part + gIds.map(tileFor).join(''); nTiles += gIds.length; return; }
+    const room = Math.max(0, CODEX_FIRST_CHUNK - nTiles);
+    html += part + gIds.slice(0, room).map(tileFor).join(''); tail += gIds.slice(room).map(tileFor).join(''); nTiles += gIds.length;
   });
   // 2026-10-14 (user: "Pagination in the codex should also exist at the top of the page"): the same pager above the grid too.
   const pagerHTML = (where)=> pages.length > 1 ? `<div class="cx-pager cx-pager-${where}" role="navigation" aria-label="Codex pages${where === 'top' ? ' (top)' : ''}"><button type="button" class="btn small" data-cxpage="${codexPage - 1}" ${codexPage === 0 ? 'disabled' : ''}>‹ Back</button>${pages.map((_, i)=> `<button type="button" class="btn small ${i === codexPage ? 'primary' : 'ghost'}" data-cxpage="${i}" aria-current="${i === codexPage ? 'page' : 'false'}">${i + 1}</button>`).join('')}<button type="button" class="btn small" data-cxpage="${codexPage + 1}" ${codexPage >= pages.length - 1 ? 'disabled' : ''}>Next ›</button></div>` : '';
-  if(html) html = pagerHTML('top') + html + pagerHTML('bottom');
+  if(html || tail){ html = pagerHTML('top') + html; tail += pagerHTML('bottom'); }
   const groupIds = {}; ordered.forEach(g=>{ groupIds[g.sec.key] = g.ids; });
   const hints = {
     skirmish: 'Cards here are granted the first time a player clears that node. Edit a node with ✏️ Edit rewards, or set a card’s source in its detail view.',
@@ -5569,10 +5576,18 @@ function renderCodexGrid(keepPage){
     unassigned: 'These locked cards can’t be obtained anywhere yet. Open one to choose where it comes from.',
   };
   const hint = adminModeEnabled && hints[view] ? `<div class="cx-view-hint">${hints[view]}</div>` : '';
-  document.getElementById('codexGrid').innerHTML = hint + (html || `<div class="cx-view-hint">No cards in this view yet.</div>`);
-  document.querySelectorAll('#codexGrid .cx-edit-rewards').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); openNodeRewardsEditor(b.getAttribute('data-map'), b.getAttribute('data-node')); }));
-  document.querySelectorAll('#codexGrid [data-cxpage]').forEach(b=> b.addEventListener('click', ()=>{ codexPage = +b.dataset.cxpage; renderCodexGrid(true); const g = document.getElementById('codexToolbar'); if(g) g.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }));
-  document.querySelectorAll('#codexGrid [data-getall]').forEach(b=> b.addEventListener('click', ()=>{ const list = groupIds[b.dataset.getall] || []; let n = 0; list.forEach(id=>{ try{ unlockCardForPlayer(id, 'admin'); n++; }catch(e){} }); noteSighted(list); showToast(TX('toast.card-added-to-your-collection', {n, s: n===1?'':'s'}), 'ok'); renderCodexGrid(true); }));
+  const gridEl = document.getElementById('codexGrid');
+  gridEl.innerHTML = hint + (html || tail ? html : `<div class="cx-view-hint">No cards in this view yet.</div>`);
+  const tok = gridEl._cxTok = (gridEl._cxTok || 0) + 1;
+  wireCodexGrid(groupIds);
+  if(tail) requestAnimationFrame(()=>{ if(gridEl._cxTok !== tok || !gridEl.isConnected) return; gridEl.insertAdjacentHTML('beforeend', tail); wireCodexGrid(groupIds); });
+}
+// Wires whatever in the Codex grid isn't wired yet (the grid is drawn in two parts, see CODEX_FIRST_CHUNK).
+function wireCodexGrid(groupIds){
+  const fresh = sel=> [...document.querySelectorAll('#codexGrid ' + sel)].filter(el=>{ if(el._cxw) return false; el._cxw = 1; return true; });
+  fresh('.cx-edit-rewards').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); openNodeRewardsEditor(b.getAttribute('data-map'), b.getAttribute('data-node')); }));
+  fresh('[data-cxpage]').forEach(b=> b.addEventListener('click', ()=>{ codexPage = +b.dataset.cxpage; renderCodexGrid(true); const g = document.getElementById('codexToolbar'); if(g) g.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }));
+  fresh('[data-getall]').forEach(b=> b.addEventListener('click', ()=>{ const list = groupIds[b.dataset.getall] || []; let n = 0; list.forEach(id=>{ try{ unlockCardForPlayer(id, 'admin'); n++; }catch(e){} }); noteSighted(list); showToast(TX('toast.card-added-to-your-collection', {n, s: n===1?'':'s'}), 'ok'); renderCodexGrid(true); }));
   // 2026-09-26 (#364, "in codex, i want click to instead open the card to learn more about it,
   // and tidbits or fun text from me, the creator... include their uses with this card and winrate
   // and maybe overall contribution score"): a Codex click now ALWAYS opens the new read-only
@@ -5582,11 +5597,11 @@ function renderCodexGrid(keepPage){
   // the admin's functions like editing cards") — Admin Mode no longer changes what a Codex click
   // does at all; an admin who wants to edit a card now does it from the Admin tab, with the
   // detail view itself offering a shortcut there too (its own "Edit (Admin)" button, admin-only).
-  document.querySelectorAll('#codexGrid .card-tile').forEach(t=>{
+  fresh('.card-tile').forEach(t=>{
     t.addEventListener('click', ()=> openCardDetail(t.getAttribute('data-defid')));
     t.classList.add('cx-editable'); // name predates this change but the "this is clickable" hover/cursor affordance is still exactly right
   });
-  document.querySelectorAll('#codexGrid .codexShopLink').forEach(shopLink=> shopLink.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); switchTab('shop'); }));
+  fresh('.codexShopLink').forEach(shopLink=> shopLink.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); switchTab('shop'); }));
 }
 // Hall of Fame tab (2026-10-02): Classic and Antique variants, each tagged with what it's a variant
 // of; Antiques show their improvement and (admin) their balance-check result; drafts are
@@ -5697,8 +5712,11 @@ function preloadFightAssets(m){
   try{ const c = SoundKit.audioContext && SoundKit.audioContext(); if(c){ if(c.state === 'suspended' && c.resume) c.resume().catch(()=>{});
     const b = c.createBuffer(1, 1, c.sampleRate), s = c.createBufferSource(); s.buffer = b; s.connect(c.destination); s.start(); } }catch(e){}
 }
-function cardIcoHTML(d){
+function cardIcoHTML(d, lazy){
   if(d && d.art){
+    // 2026-10-17 (Codex / Nest lag): a long grid (the Codex, the Nest) asks for lazy, async art, so a page of cards doesn't fetch and
+    // decode every painting on the main thread before it can show; the board and hand keep the synchronous decode below.
+    if(lazy) return `<img class="card-art-img" src="${d.art}" alt="${escapeAttr(d.name||'')}" draggable="false" decoding="async" loading="lazy" onerror="this.style.display='none'; var f=this.nextElementSibling; if(f) f.style.display='flex';"><span class="ico-emoji-fallback" style="display:none">${escapeAttr((d && d.icon) || '❔')}</span>`;
     const icon = escapeAttr((d && d.icon) || '❔');
     // 2026-09-26 (bug report: "backgrounds sometimes randomly disappear" — a card briefly showing
     // just its plain rarity-color background, no art). Root cause: every board/hand re-render
@@ -5976,7 +5994,7 @@ function cardTileHTML(d, opts){
       ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
       ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel}">${d.prestigeIcon}</div>`:''}
       ${live.overlaysHTML||''}
-      <div class="ico">${cardIcoHTML(d)}</div>
+      <div class="ico">${cardIcoHTML(d, !!opts.lazyArt)}</div>
       <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${isMagicDef(d) ? ' atk-magic' : ''}">${isMagicDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🪄</i>') : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
@@ -23950,6 +23968,31 @@ async function waitForBoardEntrances(max){
 //  - resolveRound always hands control back (see resolveRound's wrapper), and a fight watchdog resumes a played turn whose round
 //    never started (fightWatchdog).
 function fightSafe(fn, label){ try{ return fn(); }catch(e){ try{ console.error('[fight] ' + (label || 'step') + ' failed', e); }catch(_){} return undefined; } }
+// 2026-10-17 (user: "General animation lag - during animation."): profiling a fight round showed style recalculation as the main cost
+// (about 3 s of 5 s main-thread work per round), and half of it came from a few `body:has(...)` CSS rules: with a :has() on <body>,
+// every spark, number and particle the fight adds to the page made the browser re-check the whole page's styles. Those rules now read
+// classes on <body> that this keeps in step: pg-has-vs (a VS screen or opener is up), pg-has-overlay (that, or the reward reveal),
+// pg-has-spot (a tutorial spotlight), pg-shop-back (the Shop shows its own back button), pg-in-match (#appWrap.in-match).
+const syncPageFlags = (()=>{
+  let queued = false;
+  const run = ()=>{ queued = false; const b = document.body; if(!b) return;
+    const vs = !!document.querySelector('.vs-screen, .vs-opener'), aw = document.getElementById('appWrap');
+    b.classList.toggle('pg-has-vs', vs);
+    b.classList.toggle('pg-has-overlay', vs || !!document.querySelector('.rr-stage'));
+    b.classList.toggle('pg-has-spot', !!document.querySelector('.coach-spotlight'));
+    b.classList.toggle('pg-shop-back', !!document.querySelector('#view-shop:not([hidden]) #shopBackBtn'));
+    b.classList.toggle('pg-in-match', !!(aw && aw.classList.contains('in-match'))); };
+  const sync = ()=>{ if(queued) return; queued = true; (window.queueMicrotask || (f=> Promise.resolve().then(f)))(run); };
+  const watch = ()=>{ try{
+    const mo = new MutationObserver(sync), b = document.body; if(!b) return;
+    mo.observe(b, {childList:true});
+    const vp = document.getElementById('view-play'); if(vp) mo.observe(vp, {childList:true});
+    const aw = document.getElementById('appWrap'); if(aw) mo.observe(aw, {attributes:true, attributeFilter:['class']});
+    const vsh = document.getElementById('view-shop'); if(vsh) mo.observe(vsh, {attributes:true, attributeFilter:['hidden'], childList:true, subtree:true});
+    run(); }catch(e){} };
+  if(typeof document !== 'undefined'){ if(document.body) watch(); else document.addEventListener('DOMContentLoaded', watch); }
+  return sync;
+})();
 async function afterPlayerAction(actingPid){
   const m = matchState; if(!m) return;
   // a commit already in flight is the one that will resolve this round; a stale one (well past any real wait) is overridden
@@ -25677,10 +25720,11 @@ function renderBoard(opts){
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
-    if(!rr) return pl.row;
+    if(!rr) return arrivalHoldRows(m, pl, slotViewEarly);
     const map = uids => uids.map(replayCardLike).filter(Boolean);
     return {left: map(rr.left), center: map(rr.center), right: map(rr.right)};
   }
+  const slotViewEarly = isSlotMatch(m);
   const p1Rows = rowsFor(m.players[1]), p2Rows = rowsFor(m.players[2]);
   // Discovery (2026-10-02): any card on either side of the board counts as sighted.
   noteSighted([...p1Rows.left, ...p1Rows.center, ...p1Rows.right, ...p2Rows.left, ...p2Rows.center, ...p2Rows.right].map(c=>c.defId));
@@ -27698,6 +27742,7 @@ function maybeDangerWarn(defId){
 function aiActNow(){
   const m = matchState; if(!m) return;
   const events = [];
+  const prePos = boardPosSnapshot(m); // 2026-10-17: where each unit stood, so one an arrival kills can stay drawn until its death plays
   m.engine.aiTakeTurn(m.players, m.sideOf, 2, m.stats, events);
   try{ events.filter(ev=> ev.type==='play' && ev.side==='B').forEach(ev=> maybeDangerWarn(ev.defId)); }catch(e){}
   // 2026-10-12 (user: "An opponent card with 0 wait deals damage immediately without animation"): whatever the new card
@@ -27713,6 +27758,7 @@ function aiActNow(){
     events.filter(ev=> ev.type==='play' && ev.side==='B' && ev.uid!=null).forEach(ev=> pendingEntranceOrigins.set(String(ev.uid), {x: r.left + r.width/2, y: Math.max(-60, r.top - 150), rotate: 0, kind:'hand', enemyHand:true})); } }catch(e){}
   now.concat(later.filter(ev=> ARRIVAL_NOW.has(ev.type))).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'ai event ' + ev.type)); // 2026-10-16: never stops the turn
   m.aiArrivalEvents = deferred;
+  fightSafe(()=> holdArrivalDead(m, prePos, deferred), 'holdArrivalDead');
   // 2026-10-15 (user: "When the enemy has no cards to play, and did not pitch AND has no cards on their field, there is a puff of
   // smoke on his middle field (very translucent). Just as a joke. Like dust flying off."): tumbleweed moment.
   try{ const p2 = m.players[2], acted = events.some(ev=> ev.side==='B' && (ev.type==='play' || ev.type==='pitch' || ev.type==='discard'));
@@ -27767,15 +27813,59 @@ function emptyFieldDustPuff(row){
       .to(p, {opacity:0, duration:.7, ease:'power1.in'}, .55);
   }
 }
+// 2026-10-17 (user: "Settle death effects after a skill or attack finishes ... pounce ..."): the engine now clears a unit killed by an
+// arrival (Pounce, Ambush, a trap, an on-play skill) as soon as that card has arrived, so the live board no longer has it while the
+// arrival's leap / hit is still to be replayed. The board keeps drawing it (at its old place, 0 Health) until its own death event
+// plays in replayAiArrivalEvents; a unit that fell into the centre after it (classic rows) waits on its flank until then too.
+function boardPosSnapshot(m){
+  const out = new Map(); if(!m || !m.players) return out;
+  [1,2].forEach(pid=>{ const pl = m.players[pid]; if(!pl || !pl.row) return;
+    ['left','center','right'].forEach(lane=> (pl.row[lane]||[]).forEach((c, idx)=>{ if(c && !c.gap && c.uid != null) out.set(String(c.uid), {pid, lane, idx, card:c}); })); });
+  return out;
+}
+function holdArrivalDead(m, pre, events){
+  if(!m || !Array.isArray(events) || !events.some(ev=> ev && ev.type==='death')) return;
+  const defs = getCardDefs(); m._arrivalHold = m._arrivalHold || new Map(); m._arrivalCollapse = m._arrivalCollapse || new Map();
+  events.forEach(ev=>{
+    if(!ev) return;
+    if(ev.type==='collapseIn' && ev.uid != null) m._arrivalCollapse.set(String(ev.uid), {pid: ev.side==='A' ? 1 : 2, fromSide: ev.fromSide});
+    if(ev.type!=='death' || ev.uid == null) return;
+    const u = String(ev.uid), was = pre && pre.get(u);
+    if(was){ m._arrivalHold.set(u, was); return; }
+    const pe = events.find(x=> x && x.type==='play' && String(x.uid) === u); if(!pe) return; // the card just played died as it landed
+    const d = defs[pe.defId] || {};
+    m._arrivalHold.set(u, {pid: pe.side==='A' ? 1 : 2, lane: pe.boardSide || 'center', idx: Infinity, card: {uid: pe.uid, defId: pe.defId, slot: pe.slot, hp: 0, maxHp: d.health||1, atk: d.attack||0, baseAtk: d.attack||0, wait: d.wait||0}});
+  });
+}
+function clearArrivalHold(m){ if(m){ m._arrivalHold = null; m._arrivalCollapse = null; } }
+function releaseArrivalHold(m, uid){
+  if(!m || !m._arrivalHold || !m._arrivalHold.delete(String(uid))) return false;
+  if(!m._arrivalHold.size) m._arrivalCollapse = null; // the fall into the centre shows once the last held death has played
+  return true;
+}
+function arrivalHoldRows(m, pl, slotView){
+  const hold = m && m._arrivalHold, col = m && m._arrivalCollapse;
+  if(!(hold && hold.size) || !pl || !pl.row) return pl.row;
+  const mine = [...hold.values()].filter(h=> h.pid === pl.id); if(!mine.length) return pl.row;
+  const rows = {left: (pl.row.left||[]).slice(), center: (pl.row.center||[]).slice(), right: (pl.row.right||[]).slice()};
+  if(slotView){ mine.forEach(h=> rows.right.push(h.card)); return rows; } // fixed slots: drawn by c.slot, and the held card wins its slot
+  if(col) col.forEach((c, u)=>{ if(c.pid !== pl.id) return; const i = rows.center.findIndex(x=> String(x.uid) === u); if(i >= 0 && rows[c.fromSide]){ const [x] = rows.center.splice(i, 1); rows[c.fromSide].unshift(x); } });
+  mine.forEach(h=>{ const ln = rows[h.lane] ? h.lane : 'center'; rows[ln].splice(Math.min(h.idx, rows[ln].length), 0, h.card); });
+  return rows;
+}
 async function replayAiArrivalEvents(m){
   // your own Pounce goes first (you played first; see playCardByUid, 2026-10-15), then the enemy's arrivals
-  const evs = [...((m && m.playerArrivalEvents) || []), ...((m && m.aiArrivalEvents) || [])]; if(!evs.length) return; m.aiArrivalEvents = null; m.playerArrivalEvents = null;
+  const evs = [...((m && m.playerArrivalEvents) || []), ...((m && m.aiArrivalEvents) || [])]; if(!evs.length){ if(m && m._arrivalHold){ clearArrivalHold(m); fightSafe(renderBoard, 'renderBoard'); } return; } m.aiArrivalEvents = null; m.playerArrivalEvents = null;
+  settleDeathsEarly(evs); // 2026-10-17: each death right after the blow that caused it
   let last = null;
   for(const ev of evs){
     if(matchState !== m) return;
     fightSafe(()=> pushLog(ev)); try{ renderVfxForEvent(ev); }catch(e){}
     await sleep(delayForEvent(ev, last)); last = vfxKindOf(ev);
+    // 2026-10-17: the toppled unit leaves the board now (it was held for this; see holdArrivalDead)
+    if(ev.type==='death' && releaseArrivalHold(m, ev.uid)) fightSafe(()=> renderBoard({collapseLandingUids:[]}), 'renderBoard');
   }
+  clearArrivalHold(m);
   fightSafe(renderBoard, 'renderBoard'); fightSafe(renderHUD, 'renderHUD');
 }
 // Ecclesia offering (2026-10-10): playable now, or playable once you exile another hand card for +1 Prayer.
@@ -27859,6 +27949,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   }
   const activePid = activePlayerId(m);
   const events = [];
+  const prePos = boardPosSnapshot(m); // 2026-10-17: see holdArrivalDead
   const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}) : undefined);
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
@@ -27898,12 +27989,15 @@ async function playCardByUid(uid, side, dropPoint, popts){
   // it would hit, then it jumps back."): the pounce and its hit were replayed in the same tick as the play, before the card was on
   // the board, so there was nothing to leap and the number just appeared. Like the enemy's arrivals (aiActNow), they now wait until
   // the card has landed (afterPlayerAction → replayAiArrivalEvents).
-  const pIdx = events.findIndex(ev=> ev.type==='pounce' || ev.type==='ambush'); // + an enemy Ambush on the card just played (2026-10-16)
+  let pIdx = events.findIndex(ev=> ev.type==='pounce' || ev.type==='ambush'); // + an enemy Ambush on the card just played (2026-10-16)
+  // 2026-10-17: any arrival that kills (a trap, Skyfall, an Earthquake...) waits for the landing too, so the death plays after its blow
+  if(pIdx < 0 && events.some(ev=> ev.type==='death')) pIdx = events.findIndex(ev=> ev.type==='hit' || ev.type==='hitHQ' || ev.type==='evaded' || ev.type==='death' || ev.type==='statusFx');
   if(pIdx >= 0 && m.mode!=='pc' && m.mode!=='liveRanked' && !events.some(ev=> ev.type==='fieldSet')){
     const keep = new Set(['play', 'lumber', 'pitch', 'draw', 'discard', 'converge']);
     const later = events.slice(pIdx).filter(ev=> !keep.has(ev.type));
     events.filter(ev=> !later.includes(ev)).forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'play event ' + ev.type));
-    m.playerArrivalEvents = later;
+    m.playerArrivalEvents = (m.playerArrivalEvents || []).concat(later); // 2026-10-17: a second play this turn adds to what is still waiting
+    fightSafe(()=> holdArrivalDead(m, prePos, later), 'holdArrivalDead');
   } else
   events.forEach(ev=> fightSafe(()=>{ pushLog(ev); renderVfxForEvent(ev); }, 'play event ' + ev.type));
   }catch(e){ try{ console.error('[fight] play presentation failed', e); }catch(_){} }
@@ -29556,7 +29650,8 @@ async function resolveRoundCore(opts){
   // they can be replayed as their own distinct "next turn starting" beat afterward, instead of
   // wherever they happened to land in the middle of this round's attack sequence.
   if(QUEST_COUNTING_MODES.has(m.mode)) bumpQuestCounter('unitsDefeated', events.filter(ev=> ev.type==='death' && ev.side==='B').length);
-  const mainEvents = events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready' && ev.type!=='hatch');
+  const mainEvents = settleDeathsEarly(events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready' && ev.type!=='hatch')); // 2026-10-17: each death right after its killing blow
+  clearArrivalHold(m); // 2026-10-17: anything held for an arrival replay is settled by now
   const waitEvents = events.filter(ev=> ev.type==='waitTick' || ev.type==='ready' || ev.type==='hatch'); // an egg cracks open right after its Ready (2026-10-14)
   // 2026-09-17 follow-up ("there should be a 'fight' sign before the combat anims begin"):
   // resolveCombat() above already ran the WHOLE round synchronously to completion — events is
@@ -31695,6 +31790,31 @@ async function showNextTurnBanner(){
 // status VFX) -- hit/death/render combat beats keep their own, separately-tuned pacing untouched.
 function vfxKindOf(ev){
   return ev.type==='statusFx' ? ('statusFx:'+ev.kind) : ev.type;
+}
+// 2026-10-17 (user: "Settle death effects after a skill or attack finishes. I realise pounce, quick, and arrow happen first, before
+// finally the die animation plays. (Insert the animations?)"): the engine now clears the dead after each action (a swing, one
+// shooter's shots, an arrival's Pounce), so a death plays once that attack or skill has finished, before the next one starts. Here a
+// death also moves up past the non-blow beats that trail its action (status marks, trigger chimes, shield soaks...) to just after the
+// last event that still involves that unit, so it topples as soon as the action's last blow lands. It never moves past another blow
+// (so a Sweep, Cleave or Volley still plays as one quick run) nor past anything that names the unit, so a dead unit never shows
+// acting or being hit.
+const SETTLE_BLOW_TYPES = new Set(['hit', 'hitHQ', 'evaded', 'arrow', 'bolt', 'sweepWhiff', 'blindMiss', 'tipsySwing', 'pounce', 'ambush', 'boomerangReturn']);
+function evNamesUid(e, u){
+  if(!e) return false;
+  if(String(e.uid) === u || String(e.targetUid) === u || String(e.attUid) === u || String(e.nearUid) === u || String(e.fromUid) === u || String(e.thrownBy) === u) return true;
+  if(Array.isArray(e.uids) && e.uids.some(x=> String(x) === u)) return true;
+  if(Array.isArray(e.placements) && e.placements.some(p=> p && String(p.uid) === u)) return true;
+  return false;
+}
+function settleDeathsEarly(events){
+  if(!Array.isArray(events)) return events;
+  for(let d = 0; d < events.length; d++){
+    const ev = events[d]; if(!ev || ev.type !== 'death' || ev.uid == null) continue;
+    const u = String(ev.uid); let h = -1;
+    for(let j = d - 1; j >= Math.max(0, d - 80); j--){ const e = events[j]; if(evNamesUid(e, u) || (e && (SETTLE_BLOW_TYPES.has(e.type) || e.type === 'death'))){ h = j; break; } }
+    if(h >= 0 && h < d - 1){ events.splice(d, 1); events.splice(h + 1, 0, ev); }
+  }
+  return events;
 }
 // Is the hit at events[i] a killing blow whose death comes next (only quick, non-attack beats in between)? 2026-10-16
 function lethalDeathFollows(events, i){
@@ -38156,6 +38276,33 @@ function openNursePicker(){
   document.body.appendChild(ov);
   ov.addEventListener('click', e=>{ const b = e.target.closest('[data-nurse]'); if(b){ const st = nestState(); st.nurse = b.dataset.nurse; saveNestState(st); ov.remove(); renderNest(); return; } if(e.target===ov || e.target.closest('[data-close]')) ov.remove(); });
 }
+// 2026-10-17 (user: "Codex & Nest slow down (Nest lists everything, it didn't do pagination)"): the Nest drew every owned card at once
+// (600 cards and ~16,000 elements for a full collection, about 3 s to open). It now shows NEST_PAGE_SIZE at a time with the Codex's
+// pager above and below, and a page turn redraws only the grid.
+const NEST_PAGE_SIZE = 60;
+let nestPage = 0;
+function nestGridHTML(ownedIds, defs){
+  const pages = Math.max(1, Math.ceil(ownedIds.length / NEST_PAGE_SIZE));
+  if(nestPage >= pages) nestPage = pages - 1; if(nestPage < 0) nestPage = 0;
+  const shown = ownedIds.slice(nestPage * NEST_PAGE_SIZE, (nestPage + 1) * NEST_PAGE_SIZE);
+  const pager = where=> pages > 1 ? `<div class="cx-pager cx-pager-${where} nest-pager" role="navigation" aria-label="Nest pages${where === 'top' ? ' (top)' : ''}"><button type="button" class="btn small" data-nestpage="${nestPage - 1}" ${nestPage === 0 ? 'disabled' : ''}>‹ Back</button>${Array.from({length: pages}, (_, i)=> `<button type="button" class="btn small ${i === nestPage ? 'primary' : 'ghost'}" data-nestpage="${i}" aria-current="${i === nestPage ? 'page' : 'false'}">${i + 1}</button>`).join('')}<button type="button" class="btn small" data-nestpage="${nestPage + 1}" ${nestPage >= pages - 1 ? 'disabled' : ''}>Next ›</button></div>` : '';
+  return pager('top') + shown.map(id=> nestCardHTML(id, defs[id])).join('') + pager('bottom');
+}
+function wireNestGrid(root, ownedIds, defs){
+  root.querySelectorAll('[data-nestpage]').forEach(b=> b.addEventListener('click', ()=>{
+    nestPage = +b.dataset.nestpage; const g = root.querySelector('#nestGrid'); if(!g) return;
+    g.innerHTML = nestGridHTML(ownedIds, defs); wireNestGrid(g, ownedIds, defs);
+    g.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }));
+  // 2026-10-08 (user: "Why does clicking a card in the Nest toggle foil? ... just clicking the card
+  // launches the card close-up view."): a click opens the large viewer; foil is no longer a toggle.
+  root.querySelectorAll('[data-nestcard]').forEach(wrap=>{
+    const id = wrap.getAttribute('data-nestcard');
+    wrap.tabIndex = 0; wrap.setAttribute('role', 'button');
+    const open = ()=> openCardInspector(id, {foil: (myCardCopies[id]||[]).some(c=> c && c.foil), returnFocus: wrap});
+    wrap.addEventListener('click', open);
+    wrap.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(); } });
+  });
+}
 function renderNest(){
   const root = document.getElementById('view-nest');
   const defs = getCardDefs();
@@ -38170,7 +38317,7 @@ function renderNest(){
       ${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}
     </div>
     <div class="grid-view" id="nestGrid">${
-      ownedIds.length ? ownedIds.map(id=> nestCardHTML(id, defs[id])).join('')
+      ownedIds.length ? nestGridHTML(ownedIds, defs)
       : `<div class="panel nest-empty"><p class="panel-sub" style="margin:0 0 10px;">You don't own any cards yet — win fights or open packs to start your collection.</p>
           <div class="nest-empty-actions"><button type="button" class="btn primary" data-nest-go="conquest">🗺️ Play Conquest</button><button type="button" class="btn" data-nest-go="shop">🛒 Open the Shop</button></div></div>`
     }</div>`;
@@ -38193,15 +38340,7 @@ function renderNest(){
   // thicker, stacking upwards... the stack is such that the left & bottom boundaries look thicker"):
   // the old per-copy chip row is gone. Clicking the stack now toggles the foil shimmer on the
   // front-of-stack copy (index 0) — the one visual "shimmer or not" state the stack itself can show.
-  // 2026-10-08 (user: "Why does clicking a card in the Nest toggle foil? ... just clicking the card
-  // launches the card close-up view."): a click opens the large viewer; foil is no longer a toggle.
-  root.querySelectorAll('[data-nestcard]').forEach(wrap=>{
-    const id = wrap.getAttribute('data-nestcard');
-    wrap.tabIndex = 0; wrap.setAttribute('role', 'button');
-    const open = ()=> openCardInspector(id, {foil: (myCardCopies[id]||[]).some(c=> c && c.foil), returnFocus: wrap});
-    wrap.addEventListener('click', open);
-    wrap.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); open(); } });
-  });
+  wireNestGrid(root, ownedIds, defs); // the page buttons and the cards (2026-10-17)
   startTipTicker(document.getElementById('nestTipTicker'), NEST_TIPS);
 }
 // 2026-10-08 (user: "the tooltip '1 copy owned · foil · click to toggle…' is intrusive; rotate tips
@@ -38349,7 +38488,7 @@ function nestCardHTML(id, d){
   // what tells you "more than one," the way a real stack of cards would. The exact count is still
   // one hover away via the title tooltip.
   return `<div class="nest-card-wrap nest-stack-${stackLevel}" data-nestcard="${id}" aria-label="${escapeAttr(d.name || id)}, ${n} cop${n===1?'y':'ies'}${hasFoil?', foil':''}">
-    ${cardTileHTML(d, {editable:false, extraClass: bestCopyClass(id, d)})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
+    ${cardTileHTML(d, {editable:false, lazyArt:true, extraClass: bestCopyClass(id, d)})}${ownsShiny(id) ? '<span class="shiny-mark" title="Shiny">✦</span>' : ''}
   </div>`;
 }
 // A pack's pool: every card whose From is that pack pool ({kind:'pack', tier:N}; no tier = 1).
@@ -41881,6 +42020,36 @@ const SPEECH_CHANCE = 0.28;
 // doesn't stack two bubbles on top of each other mid-animation.
 const SPEECH_COOLDOWN_MS = 2600;
 const lastSpokeAt = new Map(); // uid -> timestamp, module-scoped so it survives across renders
+// 2026-10-17 (fight lag): every bubble used to re-place itself in its own requestAnimationFrame loop, reading its card's position
+// right after the frame's tweens had written theirs, which made the browser redo the page's style and layout once per bubble per
+// frame (about a third of a fight round's remaining style work). Now one loop serves every bubble: it runs at the very start of
+// GSAP's frame (before any tween writes), reads every card's position first, then writes only the bubbles that moved.
+const bubbleFollowers = new Set(); let bubbleFollowOn = false;
+function bubbleFollowRead(f){
+  let a = f.anchor;
+  if(!a.isConnected && f.uid){ const fresh = document.querySelector(`.board-card[data-uid="${f.uid}"]`); if(fresh) a = fresh; }
+  // a map tile survives a map re-render (zooming or scrolling the map) by its layout key (2026-10-12, "scrolling over those
+  // speech bubbles hides them")
+  if(!a.isConnected && f.lkey){ const fresh = document.querySelector(`#conquestCanvas [data-lkey="${f.lkey}"]`); if(fresh){ a = fresh; a._bubble = f.b; } }
+  f.anchor = a; f.r = a.isConnected ? a.getBoundingClientRect() : null;
+}
+function bubbleFollowWrite(f){
+  const r = f.r; if(!r) return;
+  const l = Math.round(r.left + r.width/2 - f.bw/2), t = Math.round(Math.max(4, r.top - f.bh - 6)); // 2026-10-16: never off the top of the screen
+  if(l !== f.l){ f.l = l; f.b.style.left = l + 'px'; }
+  if(t !== f.t){ f.t = t; f.b.style.top = t + 'px'; }
+}
+function bubbleFollowTick(){
+  const live = [];
+  bubbleFollowers.forEach(f=>{ if(f.b.isConnected) live.push(f); else bubbleFollowers.delete(f); });
+  live.forEach(bubbleFollowRead); live.forEach(bubbleFollowWrite); // all the reads, then all the writes
+  if(!bubbleFollowers.size){ bubbleFollowOn = false; if(hasGsap()) gsap.ticker.remove(bubbleFollowTick); return; }
+  if(!hasGsap()) requestAnimationFrame(bubbleFollowTick);
+}
+function bubbleFollowStart(){
+  if(bubbleFollowOn) return; bubbleFollowOn = true;
+  if(hasGsap()) gsap.ticker.add(bubbleFollowTick, false, true); else requestAnimationFrame(bubbleFollowTick);
+}
 function showSpeechBubble(el, text, extraClass, opts){
   if(!el) return;
   const holdS = opts && opts.hold != null ? opts.hold : 1.4; // 2026-10-16: a voice bark holds ~1.1 s (about 1.6 s on screen in all)
@@ -41900,20 +42069,9 @@ function showSpeechBubble(el, text, extraClass, opts){
   // every frame while the bubble is alive, so it follows scrolling (and a board re-render, which
   // swaps the card's element — re-found by its data-uid) instead of staying where it first appeared.
   const uid = el.getAttribute && el.getAttribute('data-uid'), lkey = el.getAttribute && el.getAttribute('data-lkey');
-  let anchor = el;
-  const place = ()=>{
-    if(!anchor.isConnected && uid){ const fresh = document.querySelector(`.board-card[data-uid="${uid}"]`); if(fresh) anchor = fresh; }
-    // a map tile survives a map re-render (zooming or scrolling the map) by its layout key (2026-10-12, "scrolling over those
-    // speech bubbles hides them")
-    if(!anchor.isConnected && lkey){ const fresh = document.querySelector(`#conquestCanvas [data-lkey="${lkey}"]`); if(fresh){ anchor = fresh; anchor._bubble = b; } }
-    if(!anchor.isConnected) return;
-    const cardRect = anchor.getBoundingClientRect();
-    b.style.left = (cardRect.left + cardRect.width/2 - bubbleRect.width/2) + 'px';
-    b.style.top = Math.max(4, cardRect.top - bubbleRect.height - 6) + 'px'; // 2026-10-16: never off the top of the screen
-  };
-  place();
-  const follow = ()=>{ if(!b.isConnected) return; place(); requestAnimationFrame(follow); };
-  requestAnimationFrame(follow);
+  const f = {b, anchor: el, uid, lkey, bw: bubbleRect.width, bh: bubbleRect.height, l: null, t: null};
+  bubbleFollowRead(f); bubbleFollowWrite(f);
+  bubbleFollowers.add(f); bubbleFollowStart();
   if(hasGsap()){
     gsap.timeline({onComplete:()=> b.remove()})
       .to(b, {opacity:1, scale:1, y:0, duration:.22, ease:'back.out(2.2)'})
