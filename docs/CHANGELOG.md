@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (kin target)
+- **New target: Kin.** Every action with a target picker now offers Self / Ally / Opponent / **Kin** / Any (Shield: Self / Ally / Kin). Kin = your own units that share at least one Type with the acting card (the rule Esprit uses), never the card itself. Every distance works as for Ally: Adjacent, Any distance, Furthest, All of them ("all your Kin", which skips the card itself), and N targets. No Kin on the board: the action does nothing.
+- Kin is on: Deal damage, Buff, Debuff, Poison, Bleed, Expose, Stun, Increase Wait, Heal, Cleanse, Shield and Exile, and on a Charge action ("2, buff 3 kin random").
+- Card text: "a random Kin unit", "an adjacent Kin unit", "2 furthest Kin units", "all your Kin". **Kin** is a keyword with a gloss.
+- **Esprit has a target:** Kin (the default; every existing Esprit card keeps it) or Any (every unit of yours that arrives, played or spawned, whatever its Type). Saved as `espritWho: 'any'`; the editor row has a Kin / Any picker after the two numbers; an Any card reads "Esprit +1/+1 (Any) — …". Esprit's text now says Kin (it said "another ally", out of date since 2026-10-14), and the Codex adds a note on Any.
+- Irradiation narrows a Kin action the way it narrows an Ally one.
+- `tests/kin-target-2026-10-18.js` (in `tests/run-all.sh`).
+
 ## 2026-10-17 (rebuild)
 - **New skill: Rebuild N** 🔨🏰 ("While Ready, restore N Health to your castle every upkeep."). "On Ready" works as the On Ready income does: every round the unit is awake, starting with the upkeep its Wait runs out (a unit played on Wait 0 starts at the next upkeep). Never above the castle's max, nothing for a fallen castle, and a full castle makes no event. It mends the castle, not a unit, so Herbalist doesn't add to it. On no card yet; default 2.
 - **New trigger action: Rebuild castle N** (⚡ → 🔨, "…, restore N Health to your castle."): restores N to this card's own castle once, whenever its trigger fires. It works with any trigger, On Discard from the hand too, and the editor row has the = My Attack / = My Health picker.
