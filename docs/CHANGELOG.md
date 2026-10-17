@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-16 (voices and feel)
+- **Voice barks:** cards say short lines (6 words at most) in a bubble above the card for about 1.6 s: on play (about 1 in 3), the killer on a kill (1 in 2), on death (1 in 3), on a skill (leaders and bosses only), and idle when you hover a card in the Codex or a deck pool. Leaders and bosses always speak on arrival, on their first kill and on death. One bubble on the board at a time, one bark per card per round. Wild animals, dragons and objects "speak" in sound text (*hiss*), in italics.
+- **Lines for 49 cards:** every Heroic, Epic, Unique and Legendary card, the leaders and bosses below that (Wandering Traveller, Wandering Mage, Rodent King, Glacial Ape-King) and the proposal's samples (Otter Centurion, Lantern Bearer, Raccoon Bandit). Otters are dry and soldierly, Hummingbirds quick and boastful. The full list is in `docs/barks-2026-10-16.md`; the card editor has a Voice lines box per moment (under More), saved as `barks` on the card.
+- **Babble:** each bark is read out as a short Animal-Crossing-style babble in the species' voice (a mouse high and quick, a bear low and slow, a dragon a deep rumble, a fish bubbly), made in code. It follows the Voice and Sound sliders, is silent when either is 0, lasts under a second, and never plays more than about once a second.
+- **Voice lines setting:** On / Leaders only (default) / Off, next to Effects (and next to Voice in the fight's settings). The old generic chatter ("Let's go!") only plays with On, and never over a bark.
+- **Normal death:** the earlier topple is back (the card tips over on its bottom edge, greying), as one smooth motion that starts slow and speeds up, fading as it lands, with the leaves and thump on the landing. It was a near-still lean and a snap, then a separate fade.
+- **Day and night steps:** within a phase, ☀️ 1/3 → 2/3 → 3/3 (dawn, day, dusk) and the night's three steps (early, deep, late night: new shades) now ease the board's light over 10 s instead of sweeping in. A board redraw mid-way carries on from where it was.
+- **Rain coming in:** the start-of-rain effect (on the map, and a Spring Rain field arriving) is 90% more transparent. Rain stopping is unchanged.
+
 ## 2026-10-16 (results and rewards)
 - **No rank lesson box:** the results no longer show "🎉 Rank A! Well fought. Keep 90% of your castle…" (or its E/S/SS/SSS versions); the rank hex already says it.
 - **Packs in First Clear:** the skirmish preview shows just the pack, no name. Hovering or focusing it opens a small card with its name and "Faction rewards!" (a free pack says how many cards).
