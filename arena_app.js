@@ -2935,6 +2935,18 @@ function cardObtainableFrom(d){
   if(src.kind==='nest') return 'nest'; // egg cards (2026-10-14): the Nest gives one when you set that kind of egg in a nest
   return null; // unsorted, or an event (no event system live yet)
 }
+// Creature rank (2026-10-18, user: "Add a legendary leviathan to the game. These 'leviathan' types are second in rank as Dragons. Add
+// a unique balrog if not yet. third in rank. For the land... we have grand tortoises ... maybe Dragon-Turtles? also legendary, equal
+// to leviathan's rank."): the great beasts' order, a card field `creatureRank`. 1 = the Dragons, 2 = Leviathans and Dragon-Turtles,
+// 3 = the volcano's fire fiends. It is a design rule, not a stat the engine reads: a rank-2 card stays under the Dragons' stats and
+// skills and over an ordinary Legendary, and rank 3 sits under rank 2. The family is the card's first archetype (Dragon, Leviathan,
+// Dragon-Turtle, Fiend). Only the Codex card detail shows it, as one line under the chips. See docs/creature-ranks-2026-10-18.md.
+const CREATURE_RANK_TEXT = {1:'first of the great beasts', 2:'second only to Dragons', 3:'third, after Dragons, Leviathans and Dragon-Turtles'};
+function creatureRankText(d){
+  const r = d && Number(d.creatureRank); if(!r || !CREATURE_RANK_TEXT[r]) return '';
+  const fam = (d.archetypes || [])[0] || '';
+  return (fam ? fam + ' — ' : '') + CREATURE_RANK_TEXT[r];
+}
 // Player-facing "where do I get this?" line for the card detail view (story pass, US-35).
 function cardWhereToGetText(d){
   if(isUnattainable(d)) return 'Not obtainable yet';
@@ -7332,6 +7344,7 @@ function openCardDetail(defId){
       ${'' /* 2026-10-13 (user: "Don't repeat the name of the card in the card detail. Don't repeat its stats too!"): the card shows both */}
       <h2 class="cd-name sr-only">${escapeHtml(d.name||'')}</h2>
       <div class="cd-chips">${chips}</div>
+      ${creatureRankText(d) ? `<div class="cd-where cd-rank"><span class="cd-where-k">Rank</span> ${escapeHtml(creatureRankText(d))}</div>` : ''}
       <div class="cd-abilities"><h3>Abilities</h3>${abilityHTML}</div>
       ${d.flavor?`<div class="flavor">${d.flavor}</div>`:''}
       ${noteHTML}
@@ -11388,8 +11401,8 @@ function fuseAllPlan(){
 function openForgeBulk(kind, btn){
   const fuse = kind === 'fuse', plan = fuse ? fuseAllPlan() : disenchantSummary(), defs = getCardDefs();
   if(!plan.copies){ if(btn) denyShake(btn); try{ SoundKit.deny && SoundKit.deny(); }catch(e){}
-    showToast(fuse ? '🧩 Nothing to fuse: no card has more plain copies than a deck can hold. Foil, Shiny and skinned copies are always kept.'
-                   : '♻️ Nothing to disenchant: you have one copy of everything that can melt. Base and Quest cards, levelled cards, foils and Shinies are never touched.', 'warn'); return; }
+    showToast(fuse ? TX('toast.nothing-to-fuse-no-card-has')
+                   : TX('toast.nothing-to-disenchant-you-have-one'), 'warn'); return; }
   const per = plan.per.slice().sort((a, b)=> b.n - a.n), SHOW = 24, more = per.length - SHOW;
   const valHTML = (dust, gold)=> `${dust ? `<span>✨${dust}</span>` : ''}${gold ? ` <span>${mapleLeafIconHTML()}${gold}</span>` : ''}`;
   const title = fuse ? '🧩 Fuse all extras' : '♻️ Disenchant extras';
@@ -16951,7 +16964,7 @@ const CONQUEST_MAPS = [
       { key:"23-5", kind:"skirmish", name:"Under the Walls", icon:"🏹", deck:{"howdah-archers":2,"balloon-archer":2,"talon-archer":2,"badger-trench-digger":2,"testudo-tortoise":2}, hqHp:335, rules:{arrowSlits:true}, flavor:"From here the arrow slits can see you. Shields up.", requires:["23-4"], fixedPos:{x:58, y:22} },
       { key:"23-6", kind:"elite", name:"The Elephant Line", icon:"🐘", deck:{"war-elephant":2,"howdah-archers":3,"marching-elephant":2,"cataphract-destrier":2,"warhorse-charger":2}, hqHp:350, rules:{arrowSlits:true}, flavor:"Six elephants abreast, and every howdah bristling.", requires:["23-4"], fixedPos:{x:60, y:74} },
       { key:"23-7", kind:"elite", name:"The Barbican", icon:"🏯", deck:{"great-gate":1,"goose-sentry":3,"battlement-heron":2,"mallard-halberdier":2,"trebuchet-crew":2}, hqHp:360, rules:{arrowSlits:3}, flavor:"The gate's own little fortress. The geese have been told nobody gets in. They took it personally.", requires:["23-5","23-6"], fixedPos:{x:76, y:46} },
-      { key:"23-8", kind:"boss", name:"Marshal Tuskwell", icon:"👑", deck:{"marshal-tuskwell":1,"war-elephant":2,"howdah-archers":3,"siege-rhino":1,"trebuchet-crew":2,"pack-mule":2}, hqHp:380, /* 2026-10-17 lumber audit: Testudo Tortoise ×2 → Pack Mule ×2 (Bounty: the army's baggage train) */ rules:{arrowSlits:true}, flavor:"The Magnate's marshal has never lost a siege. He has never been on the outside of one before.", requires:["23-7"], fixedPos:{x:90, y:50} },
+      { key:"23-8", kind:"boss", name:"Marshal Tuskwell", icon:"👑", deck:{"marshal-tuskwell":1,"war-elephant":2,"howdah-archers":2,"siege-rhino":1,"trebuchet-crew":2,"pack-mule":2,"grovebearer-dragon-turtle":1}, hqHp:380, /* 2026-10-17 lumber audit: Testudo Tortoise ×2 → Pack Mule ×2 (Bounty: the army's baggage train) */ /* 2026-10-18: Howdah Archers ×3 → ×2 + the Grovebearer Dragon-Turtle (Legendary, the fight's second card reward; a Map 21+ boss may field a Legendary) */ rules:{arrowSlits:true}, flavor:"The Magnate's marshal has never lost a siege. He has never been on the outside of one before.", requires:["23-7"], fixedPos:{x:90, y:50} },
     ]},
   { id:"m24", unlockAfter:"m23", name:"Goldfeather Keep", icon:"🏰", blurb:"Through the gate at last. Inside the walls everything is gilded, guarded and counted, and the Magnate Duck is waiting at the top of the keep.", sequential:true,
     nodes: [
@@ -17079,7 +17092,9 @@ const CONQUEST_MAPS = [
       { key:"20-A-2", rating:420, kind:"elite", name:"The Wraith Vents", icon:"👻", deck:{"ashbone-ghoul":3,"cinder-skeleton":3,"pit-glutton":1,"sulfur-vent-crab":2,"cinder-gecko":1}, hqHp:219, rules:{sulphurFumes:true} /* 2026-10-17: a vent-side fight, Sulphur Fumes */, flavor:"Every vent breathes out something that used to breathe in.", rewards:{first:{gold:210, dust:32}}, requires:["20-A-1"] },
       { key:"20-A-3", rating:435, kind:"elite", name:"The Lich's Kiln", icon:"🧙", deck:{"cinder-skeleton":3,"ashbone-ghoul":2,"blessed-avatar":2,"echo-keeper":1,"cinder-stoker":2}, hqHp:157, flavor:"It fires its servants like pottery. They come out harder every time.", rewards:{first:{gold:220, dust:35}}, requires:["20-A-2"] },
       { key:"20-A-4", rating:450, kind:"dungeon", name:"Heart of the Mountain", icon:"🗝️", deck:{"cinder-skeleton":4,"ashbone-ghoul":4,"magma-wraith":2}, hqHp:260, flavor:"Four doors down to where the fire began. The Contradiction is waiting at the bottom, and it is not dead.",
-        dungeon:{rounds:4, tier:'boss', waveDecks:[null, {"magma-wraith":4,"obsidian-lich":2,"cinder-skeleton":4}, {"obsidian-lich":3,"ember-revenant":2,"magma-wraith":3,"ashbone-ghoul":2}, {"ember-revenant":3,"obsidian-lich":3,"magma-titan":2,"pyroclast-wyrm":2}]},
+        dungeon:{rounds:4, tier:'boss', waveDecks:[null, {"magma-wraith":4,"obsidian-lich":2,"cinder-skeleton":4}, {"obsidian-lich":3,"ember-revenant":2,"magma-wraith":3,"ashbone-ghoul":2}, {"ember-revenant":3,"obsidian-lich":3,"magma-titan":1,"pyroclast-wyrm":2,"ashmantle-fiend":1}]},
+        /* 2026-10-18: the last door, Magma Titan ×2 → ×1 + the Ashmantle Fiend (Unique, rank 3; a Map 20 dungeon may field a Unique), the
+           dungeon's second card reward beside the Contradiction */
         rewards:{first:{gold:320, dust:50}}, requires:["20-A-3"] },
       { key:"20-A-5", rating:410, kind:"elite", name:"Scorched Boars", icon:"🐗", chance:0.35, deck:{"basalt-boar":2,"cinder-stoker":2,"sulfur-vent-crab":2,"echo-keeper":2,"ashbone-ghoul":2}, hqHp:229, flavor:"They root for beetles in ground that would cook an egg.", rewards:{first:{gold:180, dust:28}}, requires:["20-A-1"] },
       { key:"20-A-6", rating:425, kind:"elite", name:"The Vent Crabs", icon:"🦀", chance:0.35, deck:{"sulfur-vent-crab":4,"obsidian-scorpion":1,"magma-salamander":3,"blessed-avatar":2}, hqHp:190, rules:{sulphurFumes:true} /* 2026-10-17: a vent-side fight, Sulphur Fumes */, flavor:"The shells are black glass now. The tempers were always like that.", rewards:{first:{gold:190, dust:30}}, requires:["20-A-2"] },
@@ -20204,7 +20219,7 @@ function wireRaidPanel(){
   document.querySelectorAll('[data-raid-claim]').forEach(b=> b.addEventListener('click', ()=>{ claimRaidReward(def, claims[+b.dataset.raidClaim]); renderRaidSubTab(document.getElementById('playSubBody')); }));
   const eb = document.getElementById('raidEditBtn'); if(eb) eb.addEventListener('click', ()=> openRaidEditor(def.id));
   document.querySelectorAll('[data-raid-admin-dmg]').forEach(b=> b.addEventListener('click', async ()=>{ if(!adminModeEnabled) return; b.disabled = true;
-    try{ const r = await adminRaidDamage(def, Number(b.dataset.raidAdminDmg)); showToast(`💥 Admin: ${r.dealt.toLocaleString()} raid damage dealt${r.live ? ' (live)' : ' (this browser only)'}.`, 'ok'); }catch(e){ showToast('Admin damage failed: ' + ((e && e.message) || e), 'error'); }
+    try{ const r = await adminRaidDamage(def, Number(b.dataset.raidAdminDmg)); showToast(TX('toast.admin-raid-damage-dealt', {toLocaleString: r.dealt.toLocaleString(), v2: r.live ? ' (live)' : ' (this browser only)'}), 'ok'); }catch(e){ showToast((TX('toast.admin-damage-failed') + ' ') + ((e && e.message) || e), 'error'); }
     renderRaidSubTab(document.getElementById('playSubBody')); }));
   try{ fxHook('raidPanel', document.querySelector('.raid2-panel'), def); }catch(e){} // 2026-10-15 batch F: stage change, parts down, bars, claim
 }
@@ -21983,7 +21998,7 @@ async function settleFightReward(m){
     if(m.conquestRewardEarned){ m.conquestRewardEarned.gold = paid.gold; m.conquestRewardEarned.dust = paid.dust; }
     m.conquestGemsEarned = paid.gems || 0; m.conquestMetalEarned = paid.metal || 0;
     const parts = ['gold','gems','dust','metal'].filter(k=> paid[k] > 0).map(k=> `${(CURRENCY_META[k]||{}).glyph||''} ${paid[k]}`);
-    try{ showToast(parts.length ? `Reward paid: ${parts.join(' · ')}` : 'No currency reward for this win.', 'ok'); }catch(e){}
+    try{ showToast(parts.length ? TX('toast.reward-paid', {v1: parts.join(' · ')}) : TX('toast.no-currency-reward-for-this-win'), 'ok'); }catch(e){}
   }
 }
 // ---- Dungeons (2026-10-10, user: "Big change to Dungeon") ----
@@ -39869,7 +39884,7 @@ function renderShopShelves(grid, signedIn){
         const o = loadItems(); o.counts[K.id] = Math.min(ITEM_CAP, (o.counts[K.id]||0) + 1); saveItems(o);
         try{ localStorage.setItem(SHOP_KIT_KEY, String(K.day)); }catch(e){}
         try{ SoundKit.shelfPick(); SoundKit.gold && SoundKit.gold(); }catch(e){}
-        showToast(`🎒 ${K.def.icon} ${K.def.name} packed. Use it from the 🎒 in a fight against the computer.`, 'ok');
+        showToast(TX('toast.packed-use-it-from-the-in', {icon: K.def.icon, name: K.def.name}), 'ok');
         renderShop(); };
       return; }
     if(it.bread){ const sold = shopBreadSold(), afford = (myCurrencies.gold||0) >= 1;

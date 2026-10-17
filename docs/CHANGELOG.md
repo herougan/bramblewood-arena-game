@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (great beasts: Leviathan, Dragon-Turtle, Fiend)
+- **Creature rank:** a new card field, `creatureRank`. 1 = the five Dragons, 2 = Leviathans and Dragon-Turtles, 3 = the volcano's fire fiends. It is a design rule (rank 2 sits under the Dragons and above an ordinary Legendary; rank 3 under rank 2); the engine doesn't read it. The Codex card detail shows one line under the chips, e.g. "Rank: Leviathan — second only to Dragons". The new type tags Dragon 🐉, Leviathan 🐋, Dragon-Turtle 🐢 and Fiend 👺 have icons. See `docs/creature-ranks-2026-10-18.md`.
+- **New card: Fathom Leviathan** 🌊 (Legendary, rank 2, Leviathan / Ocean, 9/40, Lumber 4, Wait 4): Supreme, Tide, Tsunami 2, Wave (alternate), Bounty 1. Drops from the Goliath raid, like the Goliath Broodmother.
+- **New card: Grovebearer Dragon-Turtle** 🐢 (Legendary, rank 2, Dragon-Turtle / Turtle / Forest, 6/48, Lumber 4, Wait 5): Sturdy, Regeneration 3, Guardian, Sprout 2, Tide. In Marshal Tuskwell's deck (23-8, Howdah Archers ×3 → ×2) and that fight's second card reward. No existing tortoise was renamed.
+- **New card: Ashmantle Fiend** 👺 (Unique, rank 3, Fiend / Devil / Volcanic, Devilry line, 8/30, Lumber 3, Wait 3, fire damage, resists fire): Immolation 2, Shade, Scare 2. It guards the last door of the Heart of the Mountain (20-A-4, Magma Titan ×2 → ×1) and is the dungeon's second card reward beside the Contradiction. Not called a Balrog: that name is Tolkien's.
+- All three pass stat budget v3 at Level 1, while the Dragons stay over it. Art to come; they show their emoji until then.
+
 ## 2026-10-18 (kin target)
 - **New target: Kin.** Every action with a target picker now offers Self / Ally / Opponent / **Kin** / Any (Shield: Self / Ally / Kin). Kin = your own units that share at least one Type with the acting card (the rule Esprit uses), never the card itself. Every distance works as for Ally: Adjacent, Any distance, Furthest, All of them ("all your Kin", which skips the card itself), and N targets. No Kin on the board: the action does nothing.
 - Kin is on: Deal damage, Buff, Debuff, Poison, Bleed, Expose, Stun, Increase Wait, Heal, Cleanse, Shield and Exile, and on a Charge action ("2, buff 3 kin random").

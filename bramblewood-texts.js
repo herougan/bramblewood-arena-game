@@ -378,9 +378,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.night-falls": "🌙 Night falls.",
   "toast.day-breaks": "☀️ Day breaks.",
   "toast.loaded-your-deck-as-a-their": "Loaded: your deck as A, their deck as B.",
-  "dialog.disenchant-extras": "♻️ Disenchant extras",
-  "dialog.melt-extra-cop-into-magic-dust": "Melt {copies} extra cop{plural_ies} into ✨ {dust} Magic Dust? One copy of every card stays, and Base, Quest and Event cards and foil, Shiny and skinned copies are never touched.",
-  "dialog.disenchant": "Disenchant",
   "toast.disenchanted-cop-for-magic-dust": "♻️ Disenchanted {copies} cop{plural_ies} for ✨ {dust} Magic Dust.",
   "toast.fused-duplicate-into-card-of-credit": "🧩 Fused {count} duplicate{s} into {cards} card{s2}: ✨ {dust} of credit.",
   "toast.tempered-to-lv-2": "🏰 {v1} tempered to Lv {v2}.",
@@ -488,7 +485,14 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.errand": "📜 Errand: {title} — {v}/{g}",
   "toast.voice-lines": "Voice lines:",
   "toast.npc-dialogue": "NPC dialogue:",
-  "results.field-kit-your-first-conquest-wins": "Field kit: your first {of} Conquest wins each day bring an item ({nth} of {of} today). Use it from 🎒 in a skirmish."
+  "results.field-kit-your-first-conquest-wins": "Field kit: your first {of} Conquest wins each day bring an item ({nth} of {of} today). Use it from 🎒 in a skirmish.",
+  "toast.nothing-to-fuse-no-card-has": "🧩 Nothing to fuse: no card has more plain copies than a deck can hold. Foil, Shiny and skinned copies are always kept.",
+  "toast.nothing-to-disenchant-you-have-one": "♻️ Nothing to disenchant: you have one copy of everything that can melt. Base and Quest cards, levelled cards, foils and Shinies are never touched.",
+  "toast.admin-raid-damage-dealt": "💥 Admin: {toLocaleString} raid damage dealt{v2}.",
+  "toast.admin-damage-failed": "Admin damage failed:",
+  "toast.reward-paid": "Reward paid: {v1}",
+  "toast.no-currency-reward-for-this-win": "No currency reward for this win.",
+  "toast.packed-use-it-from-the-in": "🎒 {icon} {name} packed. Use it from the 🎒 in a fight against the computer."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
