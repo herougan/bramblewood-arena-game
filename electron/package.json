@@ -1,0 +1,29 @@
+{
+  "name": "bramblewood-arena-desktop",
+  "productName": "Bramblewood Arena",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Desktop wrapper (proof of concept, 2026-10-17) that runs the built index.html from local files. See docs/platform-roadmap-2026-10-17.md.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "stage": "node stage.js",
+    "start:staged": "node stage.js && electron . --root=game",
+    "dist": "node stage.js && electron-builder --dir"
+  },
+  "devDependencies": {
+    "electron": "^44.8.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "app.bramblewood.arena",
+    "productName": "Bramblewood Arena",
+    "directories": { "output": "dist" },
+    "files": ["main.js", "package.json"],
+    "extraResources": [{ "from": "game", "to": "game" }],
+    "asar": true,
+    "win": { "target": ["dir"] },
+    "mac": { "target": ["dir"], "category": "public.app-category.games" },
+    "linux": { "target": ["dir"], "category": "Game" }
+  }
+}
