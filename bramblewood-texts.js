@@ -492,7 +492,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.admin-damage-failed": "Admin damage failed:",
   "toast.reward-paid": "Reward paid: {v1}",
   "toast.no-currency-reward-for-this-win": "No currency reward for this win.",
-  "toast.packed-use-it-from-the-in": "🎒 {icon} {name} packed. Use it from the 🎒 in a fight against the computer."
+  "toast.packed-use-it-from-the-in": "🎒 {icon} {name} packed. Use it from the 🎒 in a fight against the computer.",
+  "toast.the-scale-trail-is-complete-the": "🐉 The Scale Trail is complete. The {rwName} is yours."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

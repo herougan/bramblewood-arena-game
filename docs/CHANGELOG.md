@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (the dragon thread: Scale Trail)
+- **The Scale Trail can be finished.** Finding the eighth Dragon Scale now ends it: once the results close, the Wandering Traveller's finale plays (`DIALOGUES.scale_trail_finale`: one hide, still warm, the Crown carried north, the dragons sleep under the mountains), then a reward screen (the eight scales orbit and fuse in a red glow, the Effects Lab's `meta-dragon-egg-craft` look; the card pops out, the quest ribbon and a toast). Reward: the **Red Dragon Egg** (hatches into the Red Dragon), set in `SCALE_TRAIL_FINALE_REWARD = {card:'egg-red-dragon'}` so it can be changed. Given once (saved flag `scaleTrail:rewarded`); a save that is already at 8/8 gets the finale a few seconds after load.
+- **Journal:** a third Notices tab, 🐉 Scale Trail (shown once the first scale is found; Admin always): one writ with x/8, each found scale's fight and line, a hint for each one still hidden (the map and a clue, not the fight), the reward (hidden until 8/8), and a Claim at 8/8 if the finale hasn't given it.
+- The trail counts scales **found**, not held: spending scales on Dragonscale Mail, a Mythic's level 10 or a castle's level 25 never undoes it. The scale toast now counts finds ("1/8" for your first, whichever site).
+- **Fix: Blacksmith crafts gave nothing.** `cardObtainableFrom` knew no `smith` or `secret` source, so the anvil's equipment (Dragonscale Mail and the rest) and the Map 2 cave's Tiny Cave Dweller were "not obtainable" and `unlockCardForPlayer` refused them after the Materia was spent. Both kinds, and the new `quest` kind (the egg's source: `{kind:'quest', id:'scale-trail'}`), are obtainable now, with a "where to get it" line each.
+- The Map 19 scale line says Ashen Spurn (was Ashen Peak). `tests/scale-trail-2026-10-18.js` (in `tests/run-all.sh`).
+
 ## 2026-10-18 (great beasts: Leviathan, Dragon-Turtle, Fiend)
 - **Creature rank:** a new card field, `creatureRank`. 1 = the five Dragons, 2 = Leviathans and Dragon-Turtles, 3 = the volcano's fire fiends. It is a design rule (rank 2 sits under the Dragons and above an ordinary Legendary; rank 3 under rank 2); the engine doesn't read it. The Codex card detail shows one line under the chips, e.g. "Rank: Leviathan — second only to Dragons". The new type tags Dragon 🐉, Leviathan 🐋, Dragon-Turtle 🐢 and Fiend 👺 have icons. See `docs/creature-ranks-2026-10-18.md`.
 - **New card: Fathom Leviathan** 🌊 (Legendary, rank 2, Leviathan / Ocean, 9/40, Lumber 4, Wait 4): Supreme, Tide, Tsunami 2, Wave (alternate), Bounty 1. Drops from the Goliath raid, like the Goliath Broodmother.
