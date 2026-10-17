@@ -1840,8 +1840,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(c._condBase){ let g = null; try{ g = c._condKey ? JSON.parse(c._condKey) : null; }catch(e){} c.defId = c._condBase; deriveDef(c, patch); c._condBase = c.defId; if(g) deriveDef(c, g); }
     else deriveDef(c, patch);
   }
-  const IRR_NOT_SKILLS = new Set(['resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'triggers', 'level', 'baseLevel']);
-  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp'], esprit:['espritHp'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
+  const IRR_NOT_SKILLS = new Set(['resist', 'weakness', 'immune', 'swarmN', 'defianceN', 'nocturnalHp', 'diurnalHp', 'crepuscularHp', 'espritHp', 'espritWho', 'loyalGrant', 'usurperGrant', 'swimmerGrant', 'diurnalGrant', 'nocturnalGrant', 'tideGrant', 'fullMoonGrant', 'triggers', 'level', 'baseLevel']);
+  const IRR_COMPANION = {nocturnal:['nocturnalHp', 'nocturnalGrant'], diurnal:['diurnalHp', 'diurnalGrant'], tide:['tideGrant'], fullMoon:['fullMoonGrant'], crepuscular:['crepuscularHp'], esprit:['espritHp', 'espritWho'], loyal:['loyalGrant'], usurper:['usurperGrant'], swimmer:['swimmerGrant'], swarm:['swarmN'], defiance:['defianceN']};
   function irrAbilities(c){
     const e = effectsOf(c), out = [];
     Object.keys(e).forEach(k=>{ if(IRR_NOT_SKILLS.has(k)) return; const v = e[k]; if(v === false || v == null || v === 0 || v === '' || (Array.isArray(v) && !v.length)) return; out.push({key:k}); });
@@ -1855,8 +1855,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(k === 'triggers'){
       const ts = e.triggers.map(t=> Object.assign({}, t)), t = ts[ab.i], lbl = trigLabel(e.triggers[ab.i]); let what;
       const wide = t.sub === 'all' || t.sub === 'random' || t.sub === 'furthest' || (t.who && t.who !== 'self' && !t.sub);
-      if(t.who === 'ally' && wide){ t.sub = 'adjacent'; what = 'narrowed'; }
-      else if(t.who === 'ally' && t.sub === 'adjacent'){ t.who = 'self'; delete t.sub; what = 'narrowed'; }
+      if((t.who === 'ally' || t.who === 'kin') && wide){ t.sub = 'adjacent'; what = 'narrowed'; } // + Kin, read as Ally (2026-10-18)
+      else if((t.who === 'ally' || t.who === 'kin') && t.sub === 'adjacent'){ t.who = 'self'; delete t.sub; what = 'narrowed'; }
       else if(t.who === 'enemy' && wide){ t.sub = 'adjacent'; what = 'narrowed'; }
       else if(Number(t.count) > 1){ t.count = Number(t.count) - 1; what = 'count'; }
       else if(Number(t.amount) > 1){ t.amount = Number(t.amount) - 1; what = 'value'; }
@@ -2277,7 +2277,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // action that targets a single card (Buff, Debuff, Exile, Poison, Bleed, Expose, Stun,
   // Increase Wait, and Deal damage's non-random modes) now funnels through this one function
   // instead of each inventing its own opposite/all/left/right special-casing.
-  //   who: 'self' (always resolves to the caster, never null) | 'ally' | 'enemy'
+  //   who: 'self' (always resolves to the caster, never null) | 'ally' | 'enemy' (+ 'any', and 'kin' = Ally narrowed to its Kin, 2026-10-18)
   //   sub (ally/enemy only): 'adjacent' | 'random' | 'furthest'
   //     - adjacent + enemy == the old "opposite creature" (reuses opposingCardOf, unchanged math)
   //     - adjacent + ally  == the old buffAlly left/right neighbor, merged into one option: picks
@@ -2299,6 +2299,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!a && !e) return 'enemy';
     return rnd() * (a + e) < a ? 'ally' : 'enemy';
   }
+  // Kin (2026-10-18, user: "Targets: Ally, Enemy, Kin, Any (Espirit default is Kin, but can choose Any)"): who:'kin' is your own
+  // units that share at least one Type (archetype) with the acting unit, the rule Esprit has used since 2026-10-14 (sharesType),
+  // never the unit itself (Self is its own target, so an "all your Kin" action skips it too). It runs as who:'ally' with the ally
+  // pool narrowed to Kin while kinSrc is that acting unit (set by runCustomTriggers), so Adjacent / Any distance / Furthest / All /
+  // N targets read exactly as they do for Ally. Only a pick made for kinSrc itself is narrowed: anything else resolved meanwhile
+  // (a Reflect, another unit's trigger) is untouched.
+  function sharesType(a, b){ const da = a && CARD_DEFS[a.defId], db = b && CARD_DEFS[b.defId]; if(!da || !db) return false; const mine = da.archetypes || [], theirs = db.archetypes || []; return mine.some(t=> theirs.includes(t)); }
+  function isKinOf(src, c){ return !!(src && c && c !== src && c.uid !== src.uid && sharesType(src, c)); }
+  let kinSrc = null;
+  function kinOk(src, c){ return !kinSrc || src !== kinSrc || isKinOf(src, c); }
   function resolveGeneralTarget(players, playerId, boardCard, who, sub){
     const r = resolveGeneralTarget0(players, playerId, boardCard, who === 'any' ? anySide(players, playerId, boardCard) : who, sub);
     if(targetExclude && r && r.card) targetExclude.add(r.card.uid);
@@ -2312,7 +2322,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const isAlly = who==='ally';
     const sidePl = isAlly ? pl : enemy;
     const order = physicalRowOrder(sidePl).filter(c=>c.hp>0);
-    const pool = (isAlly ? order.filter(c=>c.uid!==boardCard.uid) : order).filter(c=> !(targetExclude && targetExclude.has(c.uid)));
+    const pool = (isAlly ? order.filter(c=>c.uid!==boardCard.uid && kinOk(boardCard, c)) : order).filter(c=> !(targetExclude && targetExclude.has(c.uid))); // + Kin (2026-10-18)
     if(!pool.length) return null;
     if(sub==='furthest'){
       if(isAlly){
@@ -2334,7 +2344,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(isAlly){
         const fullOrder = physicalRowOrder(sidePl);
         const idx = fullOrder.findIndex(c=>c.uid===boardCard.uid);
-        const cands = [fullOrder[idx-1], fullOrder[idx+1]].filter(c=>c && c.hp>0 && !(targetExclude && targetExclude.has(c.uid)));
+        const cands = [fullOrder[idx-1], fullOrder[idx+1]].filter(c=>c && c.hp>0 && kinOk(boardCard, c) && !(targetExclude && targetExclude.has(c.uid))); // + Kin (2026-10-18)
         if(!cands.length) return null;
         return {pl:sidePl, card: cands[Math.floor(rnd()*cands.length)]};
       }
@@ -2370,7 +2380,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const gated = c=>{ if(who==='self' || sub==='killer' || dodgeCheck(c)) apply(c); else dodge(c); }; // the killer ate it: no dodging
     if(sub==='all' && who!=='self'){
       const sidePl = who==='ally' ? pl : enemy;
-      ['left','center','right'].forEach(side=> sidePl.row[side].forEach(c=>{ if(c.hp>0) apply(c); })); // area effect: Evade only dodges single-target
+      ['left','center','right'].forEach(side=> sidePl.row[side].forEach(c=>{ if(c.hp>0 && kinOk(boardCard, c)) apply(c); })); // area effect: Evade only dodges single-target; Kin: only your Kin (2026-10-18)
       return;
     }
     const target = resolveGeneralTarget(players, playerId, boardCard, who, sub);
@@ -4489,7 +4499,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(sub==='all' && who!=='self'){
             const sidePl = who==='ally' ? pl : enemy;
             ['left','center','right'].forEach(side=> sidePl.row[side].slice().forEach(c=>{
-              if(c.hp<=0) return;
+              if(c.hp<=0 || !kinOk(boardCard, c)) return; // Kin (2026-10-18): only your Kin
               fireDamageAction(players, sideOf, playerId, boardCard.defId, amount, t.dmgType, {kind:'card', card:c}, stats, events, null, boardCard.uid);
             }));
             break;
@@ -4579,7 +4589,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         case 'shield': {
           const n = (t.amount==='attack') ? boardCard.atk : (t.amount==='health') ? boardCard.hp : Math.max(0, Number(t.amount)||0);
           const who = t.who === 'allies' ? 'ally' : (t.who || 'self'), sub = t.who === 'allies' ? 'all' : (t.sub || 'random');
-          if(who === 'ally' && sub === 'all') physicalRowOrder(pl).filter(c=> c && !c.gap && c.hp > 0 && c.uid !== boardCard.uid).forEach(c=> grantShield(playerId, boardCard, c, n, sideOf, events));
+          if(who === 'ally' && sub === 'all') physicalRowOrder(pl).filter(c=> c && !c.gap && c.hp > 0 && c.uid !== boardCard.uid && kinOk(boardCard, c)).forEach(c=> grantShield(playerId, boardCard, c, n, sideOf, events));
           else { const tg = who === 'self' ? {card:boardCard} : resolveGeneralTarget(players, playerId, boardCard, who === 'enemy' ? 'ally' : who, sub); if(tg && tg.card) grantShield(playerId, boardCard, tg.card, n, sideOf, events); }
           break;
         }
@@ -4800,8 +4810,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         return; }
       const reps = (t.who && t.who!=='self' && t.sub!=='all' && (t.targets|0) > 1) ? Math.min(8, t.targets|0) : 1;
       targetExclude = reps > 1 ? new Set() : null;
-      try{ for(let k=0; k<reps; k++) runAction(t.who==='any' ? Object.assign({}, t, {who: anySide(players, playerId, boardCard)}) : t); }
-      finally{ targetExclude = null; }
+      // who:'kin' (2026-10-18): runs as who:'ally' with the pool narrowed to this unit's Kin (see kinSrc above resolveGeneralTarget).
+      const kinT = t.who === 'kin', kinPrev = kinSrc; kinSrc = kinT ? boardCard : null;
+      try{ for(let k=0; k<reps; k++) runAction(t.who==='any' ? Object.assign({}, t, {who: anySide(players, playerId, boardCard)}) : kinT ? Object.assign({}, t, {who:'ally'}) : t); }
+      finally{ targetExclude = null; kinSrc = kinPrev; }
     });
   }
   // fireSpawnFamilyTriggers (2026-09-27, per explicit request: "Spawn triggers now refer to
@@ -4828,8 +4840,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function espritFrom(sideOf, playerId, src, newCard, events){
     const def = src && CARD_DEFS[src.defId], nd = newCard && CARD_DEFS[newCard.defId];
     if(!def || !nd || src === newCard || !(src.hp > 0) || !def.effects || !(def.effects.esprit || def.effects.espritHp)) return false;
-    const mine = def.archetypes || [], theirs = nd.archetypes || [];
-    if(!mine.some(t=> theirs.includes(t))) return false;
+    // Esprit's target (2026-10-18, user: "Espirit default is Kin, but can choose Any"): effects.espritWho 'any' counts every unit of
+    // yours that arrives; unset (Kin, every card so far) only your Kin, a unit sharing a Type with it (sharesType, the Kin target's rule).
+    if(def.effects.espritWho !== 'any' && !sharesType(src, newCard)) return false;
     const ea = def.effects.esprit || 0, eh = def.effects.espritHp || 0;
     src.atk += ea; src.baseAtk += ea;
     if(eh){ src.hp += eh; if(typeof src.maxHp === 'number') src.maxHp += eh; }

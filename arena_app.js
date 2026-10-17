@@ -298,7 +298,7 @@ function chargeLabel(c){ const cp = chargeParts(c) || {n:1, act:null}; return `C
 function chargeToText(c){ const cp = chargeParts(c); if(!cp || !cp.act) return ''; const a = cp.act; return [cp.n + ',', a.do, a.amount, a.who, a.sub].filter(x=> x != null && x !== '').join(' '); }
 function parseChargeText(v){ const m = String(v||'').trim().match(/^(\d+)\s*[,:\-]?\s*(.*)$/); if(!m) return null; const toks = m[2].split(/[\s,]+/).filter(Boolean); if(!toks.length) return null;
   const ad = (typeof ACTION_DEFS !== 'undefined' ? ACTION_DEFS : []).find(a=> a.key.toLowerCase() === toks[0].toLowerCase() || String(a.label||'').toLowerCase() === toks[0].toLowerCase()); if(!ad) return null;
-  const act = {do: ad.key}; toks.slice(1).forEach(t=>{ const lt = t.toLowerCase(); if(/^-?\d+$/.test(t)) act.amount = Number(t); else if(['self','ally','enemy','any'].includes(lt)) act.who = lt; else if(['adjacent','random','furthest','all'].includes(lt)) act.sub = lt; else if(['attack','health'].includes(lt)) act.amount = lt; });
+  const act = {do: ad.key}; toks.slice(1).forEach(t=>{ const lt = t.toLowerCase(); if(/^-?\d+$/.test(t)) act.amount = Number(t); else if(['self','ally','enemy','kin','any'].includes(lt)) act.who = lt; /* + kin (2026-10-18) */ else if(['adjacent','random','furthest','all'].includes(lt)) act.sub = lt; else if(['attack','health'].includes(lt)) act.amount = lt; });
   return {n: Math.max(1, Number(m[1])||1), do: act}; }
 // Meiosis (2026-10-14, user: "Meiosis N (Default 1): Simple units only"): the editor warns when a Meiosis card carries more than
 // 2 other skills. Returns the warning, or '' when the card is simple enough.
@@ -532,6 +532,8 @@ function parseGrantText(v){
   return out;
 }
 function grantToText(g){ g = g || {}; const st = (g.attack || g.health) ? [`+${Number(g.attack)||0}/+${Number(g.health)||0}`] : []; return st.concat(Object.entries(g).filter(([k])=> k !== 'attack' && k !== 'health').map(([k, v])=> v === true ? k : `${k} ${v}`)).join(', '); }
+// Esprit's target (2026-10-18): 'kin' (default) or 'any', from the skill value's third slot or the card's effects.espritWho.
+function espritWhoOf(v, e){ return (Array.isArray(v) && v[2] === 'any') || (e && e.espritWho === 'any') ? 'any' : 'kin'; }
 function phaseVals(v){ return Array.isArray(v) ? [Number(v[0])||0, Number(v[1])||0] : [v===true ? 1 : (Number(v)||0), 0]; }
 const PASSIVE_DEFS = [
   {key:'poison', category:'passive', label:'Poison', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Poison.`},
@@ -844,9 +846,14 @@ const PASSIVE_DEFS = [
   // as every other retired mechanic in this file (gainGold, the old Arrow N missile, etc).
   // Esprit (2026-10-08, user: "just gain +X/+Y when an ally enters. Not just same archetype"): any ally you play
   // counts now, and it can grow Health too (effects.espritHp). Two numbers in the editor: Attack, Health.
-  {key:'esprit', category:'passive', label:'Esprit', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const a = Array.isArray(v) ? v[0] : v, h = Array.isArray(v) ? v[1] : 0; return `Gains +${a}/+${h||0} whenever another ally enters play.`; },
-    get:e=> (e.esprit || e.espritHp) ? [e.esprit||0, e.espritHp||0] : undefined,
-    apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0) e.esprit = a; if(h>0) e.espritHp = h; }},
+  // 2026-10-18 (user: "Targets: Ally, Enemy, Kin, Any (Espirit default is Kin, but can choose Any)"): a third value, the target. Kin
+  // (the default, every card so far: a unit sharing a Type with it, as since 2026-10-14) or Any (every unit of yours that arrives),
+  // saved as effects.espritWho = 'any' (left out for Kin). The editor row shows it as a picker after the two numbers.
+  {key:'esprit', category:'passive', label:'Esprit', kind:'twoNumber', placeholders:['Attack','Health'], whoPicker:[{value:'kin', label:'Kin'}, {value:'any', label:'Any'}],
+    desc:(v, n, e)=>{ const a = Array.isArray(v) ? v[0] : v, h = Array.isArray(v) ? v[1] : 0; return `Gains +${a}/+${h||0} whenever ${espritWhoOf(v, e) === 'any' ? 'another unit of yours' : 'another of your Kin (a unit that shares a Type with it)'} enters play.`; },
+    codexNote:'Its target is Kin unless the card says Any: then every unit of yours that arrives counts, whatever its Type.',
+    get:e=> (e.esprit || e.espritHp) ? [e.esprit||0, e.espritHp||0, e.espritWho === 'any' ? 'any' : 'kin'] : undefined,
+    apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0) e.esprit = a; if(h>0) e.espritHp = h; if((a>0 || h>0) && vals && vals[2] === 'any') e.espritWho = 'any'; }},
   // Regeneration N + Stun (on hit) % (2026-09-16) — both plain single-number passives, so
   // (unlike Freeze/Sleep/Paralyze just below, which need a chance+duration PAIR) they fit the
   // generic PASSIVE_DEFS -> SKILL_DEFS mapping as-is, no custom get/apply needed.
@@ -1239,11 +1246,13 @@ function topLevelTriggerOptions(){
 // See resolveGeneralTarget() in bramblewood-engine.js for the shared resolver every case below
 // calls into. subOptions defaults to ['adjacent','random','furthest']; pass an explicit array
 // (e.g. adding 'all') to widen it per-action. whoOptions defaults to ['self','ally','enemy'].
+// 2026-10-18 (user: "Targets: Ally, Enemy, Kin, Any"): the default is now Self / Ally / Opponent / Kin / Any. Kin = your own units
+// that share a Type with this card (never the card itself), the rule Esprit uses; the engine reads it as Ally narrowed to Kin.
 const ACTION_DEFS = [
   // 'target' generalized to who/sub (was: random enemy / opposite creature / all enemies only —
   // now also Self/Ally, so e.g. a card can genuinely hit its own HQ... no, itself, or an ally,
   // for a self-damage or friendly-fire archetype, not just ever the opponent).
-  {key:'damage', label:'Deal damage', fields:['amount','dmgType','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Deal damage to a chosen target — self, an ally, or an enemy — picked by Adjacent/Random/Furthest (or every card on that side, with "all").'},
+  {key:'damage', label:'Deal damage', fields:['amount','dmgType','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Deal damage to a chosen target — self, an ally, your Kin or an enemy — picked by Adjacent/Random/Furthest (or every card on that side, with "all").'},
   // Gain (2026-09-30, merges gainGrace/gainStone/gainLumber/gainDevilry/gainGold into one action
   // with the resource picked as its own parameter, per explicit request: "Same with 'Gain'.
   // Select the resource as the next parameter" — mirrors the same "simplify the verb, push the
@@ -1268,17 +1277,17 @@ const ACTION_DEFS = [
   // single-stat buff, same as before. The 3 canonical cards that used the old self-only actions
   // were migrated to who:'self' with the matching amount field; the 0 that used buffAlly needed
   // no migration.
-  {key:'buff', label:'Buff', fields:['who','sub','targets','amount','amount2'], desc:'Give +Attack/+Health to a target: yourself, an ally, or an enemy. Effects last for good unless they say "until end of turn".'},
+  {key:'buff', label:'Buff', fields:['who','sub','targets','amount','amount2'], desc:'Give +Attack/+Health to a target: yourself, an ally, your Kin or an enemy. Effects last for good unless they say "until end of turn".'},
   // Debuff (2026-09-30, generalizes the old Debuff Attack the same way, now also lowering Health
   // — floored at 1, it weakens rather than kills; pair with Deal damage or Exile for an actual
   // kill) so Buff and Debuff are exact mirrors of each other. Self-targeting a debuff always lands
   // (no dodging your own effect, same as Buff); targeting an ally or enemy is Evasion-gated, same
   // as the old Debuff Attack was.
-  {key:'debuff', label:'Debuff', fields:['who','sub','targets','amount','amount2'], desc:'Take away Attack/Health from a target: yourself, an ally, or an enemy (Health floored at 1 — this weakens, it never kills outright).'},
-  {key:'poison', label:'Poison', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply poison stacks to a chosen target — self, an ally, or an enemy.'},
-  {key:'bleed', label:'Bleed', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply bleed stacks to a chosen target — self, an ally, or an enemy.'},
-  {key:'expose', label:'Expose', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Put N Expose counters on a chosen target (self, an ally or an enemy): each later hit on it is a crit and removes 1, and attacks at it can\'t miss.'}, // 2026-10-15: the Exposed status; 2026-10-16: counters, each hit a crit
-  {key:'stun', label:'Stun', fields:['who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:"Stun a chosen target — self, an ally, or an enemy — no Wait tick, can't attack."},
+  {key:'debuff', label:'Debuff', fields:['who','sub','targets','amount','amount2'], desc:'Take away Attack/Health from a target: yourself, an ally, your Kin or an enemy (Health floored at 1 — this weakens, it never kills outright).'},
+  {key:'poison', label:'Poison', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply poison stacks to a chosen target — self, an ally, your Kin or an enemy.'},
+  {key:'bleed', label:'Bleed', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Apply bleed stacks to a chosen target — self, an ally, your Kin or an enemy.'},
+  {key:'expose', label:'Expose', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Put N Expose counters on a chosen target (self, an ally, your Kin or an enemy): each later hit on it is a crit and removes 1, and attacks at it can\'t miss.'}, // 2026-10-15: the Exposed status; 2026-10-16: counters, each hit a crit
+  {key:'stun', label:'Stun', fields:['who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:"Stun a chosen target — self, an ally, your Kin or an enemy — no Wait tick, can't attack."},
   {key:'reduceWaitOfSpawned', label:'Reduce Wait', fields:['amount'], desc:'Pair with On Ally Spawn — lowers the Wait of the ally just played.'},
   // Missile (2026-09-30, new action, per explicit request: "Add an action called Missile. Missile
   // just means do N damage to a random enemy unit"). Deliberately fixed to random-enemy, no
@@ -1294,20 +1303,20 @@ const ACTION_DEFS = [
   // instant-removal effect — the target is unconditionally sent to its owner's Removal Zone right
   // now (Evasion still applies, same as every other harmful skill effect here; Armor/Resist do
   // NOT, since this isn't damage, it's direct removal).
-  {key:'exile', label:'Exile', fields:['who','sub','targets'], whoOptions:['self','ally','enemy','any'], desc:'Send a target to the Removal Zone instead of the graveyard. "Self" only works paired with On Death (redirects where this card\'s own death sends it); Ally/Enemy instantly removes a live target from the board right now.'},
+  {key:'exile', label:'Exile', fields:['who','sub','targets'], whoOptions:['self','ally','enemy','kin','any'], desc:'Send a target to the Removal Zone instead of the graveyard. "Self" only works paired with On Death (redirects where this card\'s own death sends it); Ally/Enemy instantly removes a live target from the board right now.'},
   {key:'swapPositions', label:'Swap', fields:[], desc:'Swaps the board positions of two random live enemy creatures. No-op with fewer than 2. (The Scurry passive uses this same action under the hood.)'},
-  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Poison counters are removed first (1 per heal), then Bleed counters, then any heal left over restores HP. Fires On Heal/On Healed/On Ally Healed."}, // + Poison first (2026-10-16)
+  {key:'heal', label:'Heal', fields:['amount','who','sub','targets'], desc:"Restore the chosen target's current HP (Self, an Ally, an Opponent, a Kin unit or Any; this card itself by default) (capped at its existing max — unlike Buff, this never raises the cap itself). Poison counters are removed first (1 per heal), then Bleed counters, then any heal left over restores HP. Fires On Heal/On Healed/On Ally Healed."}, // + Poison first (2026-10-16)
   {key:'mindControl', label:'Mind Control', fields:['sub'], subOptions:['random','adjacent','furthest'], desc:"Takes a unit from the opposing field and puts it on this side, if there's a free slot."},
   {key:'stunPlayer', label:'Player Stun', fields:['count'], desc:"The enemy player skips their turn: they can't play cards until the next round."},
   {key:'cleanse', label:'Cleanse', fields:['amount','who','sub','targets'], desc:"Cleanse N: remove up to N harmful counters from the chosen target (this card by default): a curse on its cell first, then Poison, Bleed, Decay, Corrosion, Scar, Expose and the skip-a-turn statuses. Leave the amount empty to remove everything."},
   // Shield (2026-10-14, user: "As an action - On X, Shield N"): N Shield (temporary Health) on itself, an ally, or every ally (sub All).
-  {key:'shield', label:'Shield', fields:['amount','who','sub','targets'], whoOptions:['self','ally'], subOptions:['adjacent','random','furthest','all'], desc:'Give Shield N: temporary Health that soaks damage before Health does and never comes back once spent (not Armor). This card by default; Ally + All shields every ally.'},
+  {key:'shield', label:'Shield', fields:['amount','who','sub','targets'], whoOptions:['self','ally','kin'], subOptions:['adjacent','random','furthest','all'], desc:'Give Shield N: temporary Health that soaks damage before Health does and never comes back once spent (not Armor). This card by default; Ally + All shields every ally, Kin + All every one of your Kin.'},
   // Fire on hit (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. (Meant for Map 20)").
   // The Burn 1 Lumber step is the trigger's "Pay" field (t.cost = 'burnLumber'), open to every action ("Burn 1 Lumber, Heal ally N").
   {key:'fireHit', label:'Fire on hit', fields:['amount'], desc:"Pair with On Attack: this attack's hit also deals N fire damage to what it hits (a unit, or the castle)."},
   // Rebuild castle (2026-10-17, the Rebuild skill's action form: "As an action, then on the trigger, it regenerates the castle for N").
   {key:'rebuild', label:'Rebuild castle', fields:['amount'], desc:"Restore N Health to this card's own castle (or its Attack or Health with the amount picker), never above the castle's max. Any trigger."},
-  {key:'addWait', label:'Increase Wait', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
+  {key:'addWait', label:'Increase Wait', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, your Kin or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
 ];
 // Chained (Devilry, 2026-09-17) break conditions — the one place to add a new one later (the
 // user named "opponent unit enters the battlefield" as just an example of "other ways" a
@@ -1328,7 +1337,7 @@ function CHAIN_BREAK_OPTIONS(){
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
     key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, reserved:p.reserved, oneOff:p.oneOff,
-    get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, codexNote:p.codexNote, // (2026-10-15: + the grant pickers' hints, defaultValue; 2026-10-17: + codexNote, a Codex-only sentence)
+    get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, codexNote:p.codexNote, whoPicker:p.whoPicker, // (2026-10-18: + whoPicker, Esprit's Kin / Any; 2026-10-15: + the grant pickers' hints, defaultValue; 2026-10-17: + codexNote, a Codex-only sentence)
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
   })),
   {
@@ -1960,6 +1969,7 @@ const KEYWORD_TERMS = [
   {name:'Pitch', re:'pitch(?:ed|es|ing)?', text:'give up a card from your hand for Lumber (once a turn).'},
   {name:'Upkeep', re:'upkeep', text:'the start of each round, before anyone attacks. Upkeep effects go in the same order units act.'},
   {name:'Adjacent', re:'adjacent', text:'the columns to its left, centre and right.'},
+  {name:'Kin', re:'kin', cs:true, text:'your own units that share a Type with this one (never itself).'}, // 2026-10-18: the Kin target
   {name:'Graveyard', re:'graveyard'}, {name:'Wait', re:'wait(?:ing)?', cs:true}, {name:'Ready', re:'ready', cs:true},
   {name:'Leader', re:'leaders?', cs:true}, {name:'Removal Zone', re:'removal zone'}, {name:'Flood', re:'flood', cs:true}, {name:'Ebb', re:'ebb', cs:true},
   {name:'Field', re:'field card', cs:false}, {name:'Dark Summon', re:'dark summons?'}, {name:'Structure', re:'structures?', cs:true},
@@ -2236,7 +2246,7 @@ Object.assign(SKILL_TEXT, {
   natureForce: v=> `Your Elementals get +${numOr(v, 1)}/+${numOr(v, 1)}.`,
   loyal: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.loyalGrant ? grantText(e.loyalGrant) : ''; return `While one of your leaders is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
   usurper: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.usurperGrant ? grantText(e.usurperGrant) : ''; return `While the enemy leader is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
-  esprit: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} whenever another ally enters play.`; },
+  esprit: (v, n, e)=> { const [a, h] = phaseVals(v); return `+${a}/+${h} whenever ${espritWhoOf(v, e) === 'any' ? 'another unit of yours' : 'another of your Kin'} enters play.`; }, // Kin / Any (2026-10-18)
   explode: v=> { const t = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Number(v[1])||0 : 0; return t || d ? `In ${t} upkeep${t === 1 ? '' : 's'} it explodes once: ${d} damage to the enemy facing it, or the castle if there is none.` : `After its timer runs down it explodes once, hitting the enemy facing it (or the castle).`; },
   freeze: procSkillText('Freeze the target'), sleep: procSkillText('put the target to Sleep'), paralyze: procSkillText('Paralyze the target'),
   blind: procSkillText('Blind the target'), tipsy: procSkillText('make the target Tipsy'), confuse: procSkillText('Confuse the target'),
@@ -2350,7 +2360,7 @@ function describeEffects(def, liveCard){
   // 2026-10-10 (user: "The effect descriptions should include the effect icon"): each line opens with the same glyph the
   // card face uses for it (SKILL_ICON). Fork on a crab shows the crab claw (2026-10-14).
   const ic = k=>{ const g = skillIconFor(k, def); return g ? g + ' ' : ''; };
-  PASSIVE_DEFS.forEach(p=>{ if(p.reserved) return; /* a retired, empty slot (Worthy, 2026-10-16) has no line */ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0} — ${skillText(p, [e.esprit||0, e.espritHp||0], e)}`); return; } // 2026-10-16 skill audit: the short card text
+  PASSIVE_DEFS.forEach(p=>{ if(p.reserved) return; /* a retired, empty slot (Worthy, 2026-10-16) has no line */ if(p.key==='esprit'){ if(e.esprit || e.espritHp) lines.push(`${ic('esprit')}Esprit +${e.esprit||0}/+${e.espritHp||0}${e.espritWho === 'any' ? ' (Any)' : ''} — ${skillText(p, [e.esprit||0, e.espritHp||0, e.espritWho === 'any' ? 'any' : 'kin'], e)}`); return; } // + its target (2026-10-18) // 2026-10-16 skill audit: the short card text
     const v = p.get ? p.get(e) : e[p.key]; if(!v) return;
     if(p.key==='swimmerGrant' && e.swimmer) return; // Swimmer's own line already lists what the Flow brings
     if(p.key==='arrowCount') return; // 2026-10-17: read on the Arrow line, which repeats
@@ -8321,6 +8331,8 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     const ph = s.placeholders || ['Timer','Damage'];
     // 2026-10-16 skill audit: a hover title too, so "Chance %" / "Rounds" (Freeze …) or "Fuse" / "Damage" (Dynamite) show with a value in.
     valueHtml = `<input type="number" min="0" class="w-60" placeholder="${ph[0]}" aria-label="${ph[0]}" title="${ph[0]}" data-sk="val0" data-i="${i}" value="${vals[0]}"><input type="number" min="0" class="w-60" placeholder="${ph[1]}" aria-label="${ph[1]}" title="${ph[1]}" data-sk="val1" data-i="${i}" value="${vals[1]}">`;
+    // A target picker after the numbers (2026-10-18, Esprit: Kin by default, or Any).
+    if(s.whoPicker) valueHtml += `<select data-sk="val2" data-i="${i}" aria-label="Target" title="Which arrivals count: Kin (your units that share a Type with it) or Any (every unit of yours)">${s.whoPicker.map(o=> `<option value="${o.value}" ${(vals[2] || s.whoPicker[0].value) === o.value ? 'selected' : ''}>${escapeHtml(o.label)}</option>`).join('')}</select>`;
   } else if(s.kind==='select' && s.selectOptions){
     valueHtml = `<select data-sk="val" data-i="${i}">${s.selectOptions().map(o=>`<option value="${o.value}" ${row.value===o.value?'selected':''}>${escapeHtml(o.label)}</option>`).join('')}</select>`;
   } else if(s.kind==='select'){
@@ -8495,9 +8507,10 @@ function triggerPreviewText(t){
   // 2026-10-12 (user: "On Death: Deal 5 fire damage to an adjacent enemy"): plain English targets.
   const whoTarget = (()=>{ if(t.who==='self') return 'itself'; if(t.who==='killer') return 'the unit that killed it';
     const n = t.targets > 1 && t.sub !== 'all' ? t.targets : 1;
-    const noun = {ally: n>1 ? 'allies' : 'ally', enemy: n>1 ? 'opponents' : 'opponent', any: n>1 ? 'units' : 'unit'}[t.who];
+    // Kin (2026-10-18): "a random Kin unit", "an adjacent Kin unit", "2 random Kin units", "all your Kin".
+    const noun = {ally: n>1 ? 'allies' : 'ally', enemy: n>1 ? 'opponents' : 'opponent', kin: n>1 ? 'Kin units' : 'Kin unit', any: n>1 ? 'units' : 'unit'}[t.who];
     if(!noun) return FILL;
-    if(t.sub === 'all') return {ally:'all allies', enemy:'all opponents', any:'every unit'}[t.who];
+    if(t.sub === 'all') return {ally:'all allies', enemy:'all opponents', kin:'all your Kin', any:'every unit'}[t.who];
     const lead = n > 1 ? n + ' ' : (t.sub === 'furthest' ? 'the ' : (t.sub === 'adjacent' && t.who !== 'any') ? 'an ' : 'a ');
     const adj = {adjacent:'adjacent ', random: n>1 ? 'random ' : 'random ', furthest:'furthest '}[t.sub] || '';
     return (lead + adj + noun).replace(/^a (adjacent|opponent|ally)/, 'an $1'); })();
@@ -8611,11 +8624,12 @@ function actionFieldsHTML(t,i){
   if(aDef.fields.includes('who')){
     // 2026-10-12 (23:12 list): Self / Ally / Opponent / Any, then distance (Adjacent or Any), then how many targets.
     // Killer (2026-10-14, user: "On Death: Attacking unit gets 5 Poison"): On Death only, the unit whose hit killed it.
-    const whoOptions0 = aDef.whoOptions || ['self','ally','enemy','any'];
+    // Kin (2026-10-18, user: "Targets: Ally, Enemy, Kin, Any"): your own units that share a Type with this card.
+    const whoOptions0 = aDef.whoOptions || ['self','ally','enemy','kin','any'];
     const whoOptions = t.on === 'onDeath' && whoOptions0.includes('enemy') ? whoOptions0.concat('killer') : whoOptions0;
-    const whoLabels = {self:'Self', ally:'Ally', enemy:'Opponent', any:'Any', killer:'Killer'};
+    const whoLabels = {self:'Self', ally:'Ally', enemy:'Opponent', kin:'Kin', any:'Any', killer:'Killer'};
     const curWho = t.who && whoOptions.includes(t.who) ? t.who : whoOptions[0];
-    html += `<select data-t="who" data-i="${i}">${whoOptions.map(w=>`<option value="${w}" ${curWho===w?'selected':''}>${whoLabels[w]}</option>`).join('')}</select>`;
+    html += `<select data-t="who" data-i="${i}">${whoOptions.map(w=>`<option value="${w}" ${curWho===w?'selected':''}${w==='kin' ? ' title="Your own units that share a Type with this card (not itself)"' : ''}>${whoLabels[w]}</option>`).join('')}</select>`;
     if(aDef.fields.includes('sub') && curWho!=='self' && curWho!=='killer'){
       const subOptions = aDef.subOptions || ['adjacent','random','furthest'];
       const subLabels = {adjacent:'Adjacent', random:'Any distance', furthest:'Furthest', all:'All of them'};
@@ -8733,8 +8747,8 @@ function readEditorFormIntoCard(){
     const fx = L > 0 ? (levelFx[L] = levelFx[L] || {}) : newEffects;
     if(sdef.kind==='typeTwoNumber'){ sdef.apply(fx, ['val0','val1','val2'].map(k=> (row.querySelector(`[data-sk="${k}"]`)||{}).value)); }
     else if(sdef.kind==='twoNumber' || sdef.kind==='selectNumber' || sdef.kind==='cardCount' || sdef.kind==='grant2'){ // + Tide – {…}, {…} (2026-10-15)
-      const v0 = row.querySelector('[data-sk="val0"]').value, v1 = row.querySelector('[data-sk="val1"]').value;
-      sdef.apply(fx, [v0,v1]);
+      const v0 = row.querySelector('[data-sk="val0"]').value, v1 = row.querySelector('[data-sk="val1"]').value, v2El = row.querySelector('[data-sk="val2"]');
+      sdef.apply(fx, v2El ? [v0, v1, v2El.value] : [v0,v1]); // + a target picker's value (Esprit Kin / Any, 2026-10-18)
     } else if(sdef.kind==='number' || sdef.kind==='select' || sdef.kind==='text' || sdef.kind==='grant'){ // + the Zeitgeber braces (2026-10-15)
       sdef.apply(fx, row.querySelector('[data-sk="val"]').value);
     } else if(sdef.kind==='types'){
