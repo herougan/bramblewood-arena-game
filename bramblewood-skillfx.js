@@ -396,6 +396,10 @@ const MORE_CSS = `
 .sfx-thorn{width:9px; height:26px; background:linear-gradient(#e9f2b0, #6f9b2e 45%, #3d5a18); clip-path:polygon(50% 0, 100% 100%, 0 100%); transform-origin:50% 100%; filter:drop-shadow(0 0 3px rgba(40,60,10,.6));}
 .sfx-quake{overflow:visible;} .sfx-quake path{fill:none; stroke-linecap:round; stroke-linejoin:round;}
 .sfx-quake path.edge{stroke:rgba(255,226,170,.28); stroke-width:7; filter:blur(1px);} .sfx-quake path.gap{stroke:#140d07; stroke-width:3.2;}
+/* 2026-10-17: the fissures are filled shapes now (a dark gap, a pale broken edge just outside it), not stroked lines */
+.sfx-quake g path.edge{fill:rgba(255,232,186,.55); stroke:rgba(255,232,186,.5); stroke-width:2.4; filter:none;}
+.sfx-quake g path.gap{fill:#120b06; stroke:#2a1a0e; stroke-width:.8;}
+.sfx-quake g.q-hair path.edge{fill:rgba(255,232,186,.4); stroke-width:1.6;}
 .sfx-dust{width:22px; height:22px; border-radius:50%; background:radial-gradient(circle, rgba(214,190,150,.9), rgba(214,190,150,0) 70%);}
 .sfx-speed{height:2px; border-radius:2px; background:linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.95));}
 .sfx-ghost{opacity:.35; filter:saturate(.4) brightness(1.4) blur(.5px); margin:0 !important;}
@@ -596,25 +600,75 @@ function thorns(defender, attacker, o){
     call(o.onImpact); }, 110);
 }
 // Earthquake: the board rumbles, cracks tear open under each card and they're thrown up in dust.
+// 2026-10-17 (user: "Earthquake: Make the effects fade out faster. Also, let the ground rumble abit more. Also, you're drawing lines
+// around right. Can you make the lines more earthquake looking? When the first round of lines come out, theyre offset randomly and
+// fade quickly too - representing the rumbling."): two beats now.
+//   1. The rumble: a harder, longer shake of the whole field, and a scatter of thin hairline cracks flickering open at random spots
+//      across it (each one nudged off its spot as it appears) that are gone again in about a quarter of a second.
+//   2. The quake proper: under each card a real fissure tears open from the middle outwards: a jagged, tapering dark gap with a pale
+//      broken edge, with two or three forks splitting off it. Dust kicks up, the card is thrown and lands.
+// Everything clears faster than before (the fissures start fading ~0.45 s after the last one opens, over 0.3 s; was 1.3 s + 0.6 s).
+// opts.speed (the fight's playback speed) scales the timing.
+// A jagged line from (x0,y0) to (x1,y1): ~10 px steps, each pushed sideways a little, now and then a sharper kink.
+function quakeJag(x0, y0, x1, y1, amp){
+  const dx = x1 - x0, dy = y1 - y0, L = Math.hypot(dx, dy) || 1, nx = -dy/L, ny = dx/L, n = Math.max(3, Math.round(L / 10)), pts = [[x0, y0]];
+  for(let k = 1; k < n; k++){ const t = k/n, j = rnd(-amp, amp) * (Math.random() < .2 ? 1.8 : 1); pts.push([x0 + dx*t + nx*j, y0 + dy*t + ny*j]); }
+  pts.push([x1, y1]); return pts;
+}
+// A tapering fissure around a jagged line: widest at `peak` (0..1 along it), closing to a point at both ends.
+function quakeFissure(pts, w, peak){
+  const n = pts.length, left = [], right = []; peak = peak == null ? .5 : peak;
+  for(let i = 0; i < n; i++){
+    const a = pts[Math.max(0, i - 1)], b = pts[Math.min(n - 1, i + 1)], dx = b[0] - a[0], dy = b[1] - a[1], L = Math.hypot(dx, dy) || 1;
+    const t = i/(n - 1), d = t < peak ? t/peak : (1 - t)/(1 - peak), hw = (i === 0 || i === n - 1) ? 0 : w * Math.pow(Math.max(0, d), .7) * rnd(.65, 1.15) / 2;
+    left.push([pts[i][0] - dy/L*hw, pts[i][1] + dx/L*hw]); right.push([pts[i][0] + dy/L*hw, pts[i][1] - dx/L*hw]);
+  }
+  const f = p=> p[0].toFixed(1) + ',' + p[1].toFixed(1);
+  return 'M' + left.map(f).join(' L') + ' L' + right.reverse().map(f).join(' L') + ' Z';
+}
+function quakePath(svg, d, cls){ const p = document.createElementNS('http://www.w3.org/2000/svg', 'path'); p.setAttribute('d', d); p.setAttribute('class', cls); svg.appendChild(p); return p; }
 function earthquake(cards, o){
   o = o || {}; const list = (cards||[]).filter(Boolean); if(!list.length) return;
   if(!ready()){ list.forEach((el, i)=> call(o.onEachImpact, el, i)); return; }
   const g = G(), host = o.host || list[0].closest('.battlefield, .skill-arena, .stage') || list[0].parentElement;
-  shakeEl(host, 7, .75);
+  const sp = Math.max(.5, Math.min(3, Number(o.speed) || 1)), T = ms=> ms / sp, S = s=> s / sp;
+  shakeEl(host, 12, S(1.05)); // a harder, longer rumble (was 7 px for .75 s)
   const sv = svgLayer('sfx-quake');
+  // 1. the rumble: hairline cracks flicker open at random spots across the field, each nudged off its place, gone in ~0.25 s
+  const hr = host && host.getBoundingClientRect ? host.getBoundingClientRect() : {left:0, top:0, width:innerWidth, height:innerHeight};
+  for(let k = 0; k < 11; k++) later(()=>{
+    const x = hr.left + hr.width*rnd(.06, .94), y = hr.top + hr.height*rnd(.1, .92), len = rnd(36, 96), ang = rnd(-.6, .6) + (Math.random() < .5 ? 0 : Math.PI);
+    const pts = quakeJag(x, y, x + Math.cos(ang)*len, y + Math.sin(ang)*len, 4.5);
+    if(Math.random() < .55){ const m = pts[Math.floor(pts.length/2)], a2 = ang + rnd(.5, 1.1)*(Math.random() < .5 ? -1 : 1), l2 = len*rnd(.25, .45);
+      pts.fork = quakeJag(m[0], m[1], m[0] + Math.cos(a2)*l2, m[1] + Math.sin(a2)*l2, 3); }
+    const gEl = document.createElementNS('http://www.w3.org/2000/svg', 'g'); gEl.setAttribute('class', 'q-hair'); sv.appendChild(gEl);
+    [pts, pts.fork].filter(Boolean).forEach((p, j)=>{ const d = quakeFissure(p, j ? 2.2 : 3.6); quakePath(gEl, d, 'edge'); quakePath(gEl, d, 'gap'); });
+    g.fromTo(gEl, {opacity:0, x:rnd(-9, 9), y:rnd(-6, 6)}, {opacity:1, x:rnd(-3, 3), y:rnd(-2, 2), duration:S(.05), ease:'none'});
+    g.to(gEl, {opacity:0, x:`+=${rnd(-5, 5)}`, duration:S(.2), delay:S(.06), ease:'power2.in', onComplete:()=> gEl.remove()});
+  }, T(rnd(0, 170)));
+  // 2. the fissures: torn open under each card from the middle outwards, with forks
   list.forEach((el, i)=> later(()=>{
-    const c = centre(el), y = c.r.bottom + 4; let L = `M${c.x},${y}`, R = `M${c.x},${y}`;
-    for(let k = 1; k <= 5; k++){ L += ` L${c.x - c.w*0.2*k},${y + rnd(-7, 7)}`; R += ` L${c.x + c.w*0.2*k},${y + rnd(-7, 7)}`; }
-    const br = `M${c.x - c.w*0.4},${y} L${c.x - c.w*0.5},${y - 14} L${c.x - c.w*0.62},${y - 20} M${c.x + c.w*0.45},${y} L${c.x + c.w*0.52},${y + 12}`;
-    [L, R, br].forEach(d=>{ const e = drawPath(sv, d, 'edge'), p = drawPath(sv, d, 'gap'); g.to([e, p], {strokeDashoffset:0, duration:.22, ease:'power2.out'}); });
+    const c = centre(el), y = c.r.bottom + 4, half = c.w*rnd(.62, .78), x0 = c.x - half, x1 = c.x + half;
+    const pts = quakeJag(x0, y + rnd(-4, 4), x1, y + rnd(-4, 4), 6);
+    const gEl = document.createElementNS('http://www.w3.org/2000/svg', 'g'); gEl.setAttribute('class', 'q-main'); sv.appendChild(gEl);
+    quakePath(gEl, quakeFissure(pts, 9, rnd(.38, .62)), 'edge'); quakePath(gEl, quakeFissure(pts, 9, .5), 'gap');
+    const forks = 2 + (Math.random() < .5 ? 1 : 0);
+    for(let k = 0; k < forks; k++){
+      const at = pts[Math.max(1, Math.min(pts.length - 2, Math.round(pts.length*rnd(.18, .82))))], side = at[0] < c.x ? -1 : 1, up = Math.random() < .5 ? -1 : 1;
+      const a = Math.atan2(up*rnd(.45, 1.1), side), l = c.w*rnd(.18, .36), tip = [at[0] + Math.cos(a)*l, at[1] + Math.sin(a)*l];
+      const fp = quakeJag(at[0], at[1], tip[0], tip[1], 3.5), d = quakeFissure(fp, 5, .2);
+      quakePath(gEl, d, 'edge'); quakePath(gEl, d, 'gap');
+    }
+    g.set(gEl, {svgOrigin:`${c.x} ${y}`});
+    g.timeline().fromTo(gEl, {scaleX:0, scaleY:.3}, {scaleX:1, duration:S(.13), ease:'power3.out'}).to(gEl, {scaleY:1, duration:S(.16), ease:'back.out(3)'}, '<0.05');
     for(let k = 0; k < 6; k++){ const p = layer('sfx-dust'); g.set(p, {x:c.r.left + c.w*k/5 - 11, y:y - 14, scale:.5, opacity:.9});
-      g.to(p, {x:`+=${(k/5 - .5)*70}`, y:`-=${rnd(8, 24)}`, scale:2, opacity:0, duration:.7, ease:'power2.out', onComplete:()=> p.remove()}); }
+      g.to(p, {x:`+=${(k/5 - .5)*70}`, y:`-=${rnd(8, 24)}`, scale:2, opacity:0, duration:S(.45), ease:'power2.out', onComplete:()=> p.remove()}); }
     const t = tileOf(el);
-    g.timeline().to(t, {y:-16, rotation:rnd(-6, 6), duration:.12, ease:'power2.out'}).to(t, {y:0, rotation:0, duration:.5, ease:'bounce.out', clearProps:'transform'});
+    g.timeline().to(t, {y:-16, rotation:rnd(-6, 6), duration:S(.12), ease:'power2.out'}).to(t, {y:0, rotation:0, duration:S(.42), ease:'bounce.out', clearProps:'transform'});
     if(o.light) call(o.light, c.x, y, [1, .8, .55], true);
     call(o.onEachImpact, el, i);
-  }, 120 + i*110));
-  g.to(sv, {opacity:0, duration:.6, delay:1.3 + list.length*0.11, onComplete:()=> sv.remove()});
+  }, T(170 + i*100)));
+  g.to(sv, {opacity:0, duration:S(.3), delay:S(.62 + list.length*0.1), ease:'power1.in', onComplete:()=> sv.remove()});
 }
 // Quick: speed lines and a blur of afterimages as the attacker darts in, strikes and darts back.
 function quickStrike(attacker, target, o){

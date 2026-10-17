@@ -1278,6 +1278,29 @@
   @keyframes bwPopIn{from{opacity:0; transform:scale(.94) translateY(8px);}}
   @keyframes bwPopOut{to{opacity:0; transform:scale(.96);}}
   @media (prefers-reduced-motion: reduce){ .bw-centre-dialog, .bw-centre-dialog .modal{animation:none;} }
+  /* Forge bulk sheet (2026-10-17): Fuse all extras / Disenchant extras, see openForgeBulk */
+  .fbulk{max-width:min(640px, calc(100vw - 32px)); width:100%;}
+  .fbulk .fb-grid{display:flex; flex-wrap:wrap; gap:12px 10px; justify-content:center; max-height:min(46vh, 360px); overflow:auto; padding:10px 4px 6px; margin:4px 0 8px;}
+  .fbulk .fb-card{position:relative; width:62px; display:flex; flex-direction:column; align-items:center; gap:3px; transition:transform .35s ease, opacity .35s ease, filter .35s ease;}
+  .fbulk .fb-tile .card-tile{width:62px !important; height:78px !important; font-size:7px; margin:0; pointer-events:none;}
+  .fbulk .fb-n{position:absolute; top:-6px; right:-6px; z-index:8; font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:3px 6px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 2px #e0b85a;}
+  .fbulk .fb-val{font-size:10.5px; font-weight:700; text-align:center; line-height:1.2; margin-top:12px; display:block; white-space:nowrap;}
+  .fbulk .fb-val > span{display:block;}
+  .fbulk.is-done .fb-grid{max-height:0; padding:0; margin:0; overflow:hidden;}
+  .fbulk .fb-more{align-self:center; font-size:12px; opacity:.8; padding:6px 10px; border-radius:999px; background:rgba(0,0,0,.08);}
+  .fbulk .fb-total{position:relative; text-align:center; font-size:15px; padding:10px 12px; border-radius:12px; background:rgba(0,0,0,.08);}
+  .fbulk .fb-total-val{font-family:'Baloo 2',system-ui,sans-serif; font-size:20px; font-variant-numeric:tabular-nums;}
+  .fbulk .fb-total.is-landed{animation:fbLand .5s cubic-bezier(.2,.9,.3,1.3);}
+  @keyframes fbLand{0%{transform:scale(1);} 40%{transform:scale(1.08);} 100%{transform:scale(1);}}
+  .fbulk .fb-card.is-melting{transform:translateY(6px) scale(.55); opacity:0; filter:brightness(2.2) sepia(1) saturate(2.4) hue-rotate(-12deg) blur(1px);}
+  .fbulk.is-dis .fb-card.is-melting{filter:brightness(1.8) saturate(.2) blur(1.5px);}
+  .fbulk-ov .fb-mote{position:fixed; left:0; top:0; z-index:5; font-size:14px; font-style:normal; pointer-events:none; text-shadow:0 0 8px rgba(255,220,120,.9);}
+  .fbulk .fb-burst{position:absolute; left:50%; top:50%; width:20px; height:20px; margin:-10px 0 0 -10px; border-radius:50%; pointer-events:none;
+    background:radial-gradient(circle, rgba(255,240,190,.95), rgba(255,190,90,.55) 45%, transparent 70%); animation:fbBurst .8s ease-out forwards;}
+  @keyframes fbBurst{0%{transform:scale(.4); opacity:1;} 100%{transform:scale(14); opacity:0;}}
+  .fbulk.is-running .modal-close-btn{visibility:hidden;}
+  @media (prefers-reduced-motion: reduce){ .fbulk .fb-card{transition:none;} .fbulk .fb-total.is-landed{animation:none;} }
+  .forge-deck-scope.is-on{box-shadow:0 0 0 2px rgba(224,184,90,.8);}
   .bw-text-dialog textarea{width:100%; box-sizing:border-box; font:13px ui-monospace, Menlo, monospace; padding:10px 12px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface); color:var(--ink); resize:vertical;}
   .bw-text-dialog .btd-msg{min-height:1.2em; margin:6px 0 0; font-size:12.5px; color:var(--status-positive-ink);}
   .forge-bench-toggle{align-self:flex-start; margin:0 0 10px;}
@@ -6144,6 +6167,9 @@
     body.conquest-full .conquest-layout > .conquest-maps{flex:0 0 auto;}
     body.conquest-full .conquest-main{flex:1 1 auto; min-height:0; overflow-y:auto !important; overflow-x:hidden; -webkit-overflow-scrolling:touch; overscroll-behavior:contain; padding-bottom:calc(110px + env(safe-area-inset-bottom, 0px)) !important;}
     body.conquest-full .conquest-map-canvas{min-height:max(420px, calc(100dvh - 260px)) !important;}
+    /* 2026-10-17: the Babel Spire's 50 floors were squeezed into this one-screen height on phones (floors on top of each other, the
+       Way out button over the bottom floors); a tall map keeps its own height (--endless-h, set by renderConquestSubTab). */
+    body.conquest-full .conquest-map-canvas.endless-map:not(.endless-x){min-height:var(--endless-h, 600px) !important;}
     body.conquest-full .conquest-main:has(> .conquest-node-panel){padding-bottom:calc(min(46dvh, 380px) + 120px + env(safe-area-inset-bottom, 0px)) !important;}
     .conquest-main > .conquest-node-panel{overflow-y:auto !important; overflow-x:hidden !important; max-height:min(46dvh, 380px) !important; padding-top:0 !important; overscroll-behavior:contain;}
     body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) .conquest-main > .conquest-node-panel{bottom:calc(96px + env(safe-area-inset-bottom, 0px)) !important;}
@@ -6816,6 +6842,10 @@
   body.conquest-full .conquest-main > .conquest-headline{position:absolute; top:16px; left:18px; z-index:7; margin:0; max-width:min(520px, 46%);}
   body.conquest-full .conquest-map-canvas{min-height:calc(100dvh - 24px); margin-top:0;}
   @media (min-width:821px){ body.conquest-full .conquest-main > .conquest-node-panel{position:absolute; left:18px; right:18px; bottom:16px; margin:0;} body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs) .conquest-main > .conquest-node-panel{bottom:72px;} }
+  /* 2026-10-17 (user: "Why does clicking a tower of babel fight flash then close the skirmish menu!"): on the Babel Spire (a tall map that
+     scrolls inside .conquest-main) the absolute panel sat at the bottom of the FIRST screenful of the scroll, so once the scroll was put
+     back after the re-render it was thousands of pixels above the view: a flash, then gone. A tall map pins it with sticky instead. */
+  @media (min-width:821px){ body.conquest-full .conquest-main.endless-y-main > .conquest-node-panel{position:sticky; left:auto; right:auto; margin:0 auto !important; max-width:760px;} }
   @media (max-width:820px){ body.conquest-full .conquest-main > .conquest-headline{position:static; max-width:none; margin-bottom:8px;} body.conquest-full .conquest-map-canvas{min-height:calc(100dvh - 220px);} }
   /* Admin layout bar (2026-10-08, user: "fix the overlay issue on conquest"): in full-window Conquest it used
      to sit under the floating map title. It now floats beside the title (wide screens) or below it. */
@@ -7676,6 +7706,72 @@
     background:repeating-linear-gradient(90deg, #3b4a78 0 60px, #d9c7a6 60px 120px); box-shadow:0 12px 30px rgba(0,0,0,.45);
     transform-origin:50% 0; animation:awningUp .8s cubic-bezier(.6,.05,.35,1) forwards;}
   @keyframes awningUp{0%{transform:scaleY(1);} 100%{transform:scaleY(0);}}
+  /* The market around the cart (2026-10-17, user: "Shop: Can we make it more fun by having some background doodads or doors n the
+     background"). See marketStreetHTML / cartDoodadsHTML in arena_app.js. Flat pixel-ish shapes: hard edges, plank and timber lines,
+     warm lamplight; slow idle motion only (lanterns sway, windows flicker, shopkeepers bob), none with reduced motion. */
+  .market-street{position:fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; display:none;}
+  body[data-tab="shop"] .market-street{display:block;}
+  body[data-tab="shop"]{isolation:isolate;} /* so the street (z-index -1) sits above the body's own background, below everything else */
+  body.bw-no-scenes .market-street{display:none !important;}
+  .ms-sky{position:absolute; inset:0; background:radial-gradient(ellipse 60% 40% at 50% 0%, rgba(255,190,110,.18), transparent 70%), linear-gradient(180deg, #2a2030 0%, #3a2a24 45%, #2b1e15 100%);}
+  .ms-row{position:absolute; left:0; right:0; bottom:46px; height:340px;}
+  .ms-house{position:absolute; bottom:0; background:
+      repeating-linear-gradient(90deg, transparent 0 46px, rgba(40,24,12,.55) 46px 52px),
+      linear-gradient(0deg, rgba(40,24,12,.55) 0 6px, transparent 6px calc(50% - 3px), rgba(40,24,12,.5) calc(50% - 3px) calc(50% + 3px), transparent calc(50% + 3px)),
+      var(--wall); box-shadow:inset 0 0 0 4px rgba(40,24,12,.6), inset 0 -40px 50px rgba(0,0,0,.35);}
+  .ms-roof{position:absolute; left:-14px; right:-14px; bottom:100%; height:70px; background:repeating-linear-gradient(0deg, rgba(0,0,0,.18) 0 4px, transparent 4px 12px), var(--roof); clip-path:polygon(50% 0, 100% 100%, 0 100%);}
+  .ms-chimney{position:absolute; right:18%; bottom:calc(100% + 30px); width:18px; height:44px; background:#4a3a32; box-shadow:inset 0 4px 0 #2e241f;}
+  .ms-chimney b{position:absolute; left:2px; top:-10px; width:14px; height:14px; border-radius:50%; background:rgba(210,200,190,.28); animation:msSmoke 4.5s ease-out infinite;}
+  .ms-chimney b + b{animation-delay:2.2s;}
+  @keyframes msSmoke{0%{transform:translate(0,0) scale(.6); opacity:0;} 15%{opacity:.6;} 100%{transform:translate(14px,-70px) scale(2.2); opacity:0;}}
+  .ms-win{position:absolute; width:26px; height:30px; border-radius:13px 13px 3px 3px; background:radial-gradient(circle at 50% 60%, #ffe3a0, #f2a94a 70%); box-shadow:0 0 16px 4px rgba(255,190,90,.35), inset 0 0 0 3px #3a2616;
+    animation:msFlicker 3.2s steps(4) infinite;}
+  .ms-win::after{content:''; position:absolute; left:50%; top:3px; bottom:3px; width:3px; margin-left:-1.5px; background:#3a2616;}
+  .ms-house:nth-child(2) .ms-win{animation-delay:-1.1s;} .ms-house:nth-child(4) .ms-win{animation-delay:-2.3s;}
+  @keyframes msFlicker{0%,100%{opacity:1;} 30%{opacity:.86;} 55%{opacity:.97;} 80%{opacity:.82;}}
+  .ms-door{position:absolute; bottom:0; width:40px; height:64px; border-radius:20px 20px 0 0; background:repeating-linear-gradient(90deg, #5a3a1e 0 9px, #4a2f17 9px 10px); box-shadow:inset 0 0 0 4px #2e1d0e, 0 0 0 3px rgba(20,12,6,.5);}
+  .ms-door b{position:absolute; right:7px; top:34px; width:5px; height:5px; border-radius:50%; background:#e8c06a;}
+  .ms-door.is-ajar{background:linear-gradient(90deg, #ffd890 0 9px, #5a3a1e 9px); box-shadow:inset 0 0 0 4px #2e1d0e, 0 0 22px 6px rgba(255,190,90,.35); animation:msFlicker 2.6s steps(3) infinite;}
+  .ms-sign{position:absolute; bottom:72px; width:30px; height:22px; background:#c9a46a; border:2px solid #6b4a2a; border-radius:3px; display:grid; place-items:center; font-size:13px; transform-origin:50% -8px; animation:msSway 4s ease-in-out infinite;}
+  .ms-sign::before{content:''; position:absolute; left:50%; top:-10px; width:2px; height:9px; background:#3a2616;}
+  .ms-stall{position:absolute; bottom:46px; width:170px; height:150px;}
+  .ms-stall.is-l{left:calc(50% - 720px);} .ms-stall.is-r{right:calc(50% - 720px);}
+  .ms-awn{position:absolute; left:-8px; right:-8px; top:0; height:40px; background:repeating-linear-gradient(90deg, #a84a3a 0 22px, #e9dcc0 22px 44px);
+    -webkit-mask:linear-gradient(#000 0 0) top / 100% 28px no-repeat, radial-gradient(circle at 11px 28px, #000 11px, transparent 11.5px) 0 0 / 22px 40px repeat-x;
+            mask:linear-gradient(#000 0 0) top / 100% 28px no-repeat, radial-gradient(circle at 11px 28px, #000 11px, transparent 11.5px) 0 0 / 22px 40px repeat-x;}
+  .ms-stall.is-r .ms-awn{background:repeating-linear-gradient(90deg, #3d6a4a 0 22px, #e9dcc0 22px 44px);}
+  .ms-stall::before, .ms-stall::after{content:''; position:absolute; top:24px; bottom:0; width:6px; background:#4a2f17;} .ms-stall::before{left:0;} .ms-stall::after{right:0;}
+  .ms-counter{position:absolute; left:0; right:0; bottom:0; height:52px; background:repeating-linear-gradient(0deg, #6b4a2a 0 12px, #5a3c20 12px 13px); box-shadow:inset 0 4px 0 #8a6238; display:flex; justify-content:space-around; align-items:flex-start; z-index:2;}
+  .ms-counter span{font-size:20px; margin-top:-16px; filter:drop-shadow(0 2px 1px rgba(0,0,0,.4));}
+  .ms-folk{position:absolute; bottom:36px; width:84px; height:84px; image-rendering:pixelated; z-index:1; animation:msBob 2.8s ease-in-out infinite; transform-origin:50% 100%;}
+  .ms-folk.is-mouse{left:40px;} .ms-folk.is-hog{right:36px; transform:scaleX(-1); animation-name:msBobFlip; animation-delay:-1.3s;}
+  @keyframes msBob{0%,100%{translate:0 0; scale:1 1;} 50%{translate:0 -3px; scale:1 1.03;}}
+  @keyframes msBobFlip{0%,100%{translate:0 0;} 50%{translate:0 -3px;}}
+  .ms-crate, .cd-crate{position:absolute; bottom:46px; width:46px; height:40px; background:linear-gradient(45deg, transparent calc(50% - 3px), #4a2f17 calc(50% - 3px) calc(50% + 3px), transparent calc(50% + 3px)), repeating-linear-gradient(0deg, #8a6238 0 12px, #6b4a2a 12px 13px); box-shadow:inset 0 0 0 4px #4a2f17;}
+  .ms-crate.is-small{width:34px; height:30px;}
+  .ms-barrel, .cd-barrel{position:absolute; bottom:46px; width:36px; height:48px; border-radius:10px / 16px; background:linear-gradient(180deg, transparent 18%, #3a2616 18% 24%, transparent 24% 76%, #3a2616 76% 82%, transparent 82%), linear-gradient(90deg, #5a3a1e, #8a6238 45%, #5a3a1e);}
+  .ms-string{position:absolute; left:-2%; right:-2%; top:136px; height:40px; border-top:2px solid rgba(30,20,12,.8); border-radius:0 0 50% 50% / 0 0 30px 30px;}
+  .ms-lantern, .cd-lantern{position:absolute; top:0; width:16px; height:22px; margin-top:var(--h, 18px); border-radius:5px; background:radial-gradient(circle at 50% 55%, #fff2c2, #f2a94a 60%, #b0582a); box-shadow:0 0 18px 6px rgba(255,180,90,.35);
+    transform-origin:50% calc(-1 * var(--h, 18px)); animation:msSway 3.6s ease-in-out infinite; animation-delay:calc(-1 * var(--d, 0s));}
+  .ms-lantern::before, .cd-lantern::before{content:''; position:absolute; left:50%; bottom:100%; width:2px; height:var(--h, 18px); background:rgba(30,20,12,.8);}
+  .ms-lantern::after, .cd-lantern::after{content:''; position:absolute; left:-2px; right:-2px; top:-3px; height:5px; border-radius:2px; background:#3a2616;}
+  @keyframes msSway{0%,100%{rotate:-5deg;} 50%{rotate:5deg;}}
+  .ms-cobbles{position:absolute; left:0; right:0; bottom:0; height:46px; background:radial-gradient(ellipse 14px 7px at 14px 10px, #5d5148 85%, transparent 90%) 0 0 / 32px 18px, radial-gradient(ellipse 14px 7px at 30px 19px, #51463e 85%, transparent 90%) 0 0 / 32px 18px, #2f2620;}
+  /* in the cart */
+  #view-shop.cart-scene > .cart-doodads{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; border-radius:inherit;}
+  .cd-lantern{top:34px; --h:22px;} .cd-lantern.is-l{left:calc(50% - 130px);} .cd-lantern.is-r{right:calc(50% - 130px); animation-delay:-1.7s;}
+  .cd-floor{position:absolute; left:0; right:0; bottom:0; height:58px; background:repeating-linear-gradient(90deg, rgba(0,0,0,.18) 0 2px, transparent 2px 64px), linear-gradient(180deg, #6b4a2a, #4a3320);}
+  .cd-floor .cd-crate{bottom:36px; left:14px; width:40px; height:34px;} .cd-floor .cd-crate.is-r{left:auto; right:18px; width:34px; height:30px;}
+  .cd-floor .cd-barrel{bottom:34px; right:60px; width:30px; height:40px;}
+  .cd-sack{position:absolute; bottom:34px; left:58px; width:34px; height:30px; border-radius:45% 45% 30% 30% / 60% 60% 30% 30%; background:radial-gradient(circle at 40% 35%, #d9c08e, #a8875a 70%); box-shadow:inset 0 -4px 0 rgba(0,0,0,.2);}
+  .cd-sack::before{content:''; position:absolute; left:40%; top:-5px; width:8px; height:8px; background:#8a6238; border-radius:2px;}
+  .cd-folk{position:absolute; bottom:36px; left:84px; width:58px; height:58px; image-rendering:pixelated; animation:msBob 3.1s ease-in-out infinite; transform-origin:50% 100%;}
+  #view-shop.cart-scene{padding-bottom:92px;}
+  @media (max-width:560px){ html body #view-shop.cart-scene{padding-bottom:86px;} .cd-lantern.is-l{left:16px;} .cd-lantern.is-r{right:16px;} }
+  .ms-folk.is-door{right:calc(1.5% + 6px); bottom:46px; width:76px; height:76px; transform:scaleX(-1); animation-name:msBobFlip; animation-delay:-1.3s;}
+  @media (max-width:1499px){ .ms-stall{display:none;} }
+  @media (min-width:1500px){ .ms-folk.is-door{display:none;} }
+  @media (prefers-reduced-motion: reduce){ .ms-lantern, .cd-lantern, .ms-sign, .ms-folk, .cd-folk, .ms-win, .ms-door.is-ajar, .ms-chimney b{animation:none !important;} }
   /* The Old Nest — a woven twig hollow with soft down drifting in the warm light. */
   #view-nest.nest-scene{position:relative; padding:70px clamp(14px,3vw,40px) 26px; border-radius:28px; margin-top:4px; isolation:isolate;
     background:
@@ -9462,6 +9558,12 @@ body.world-hidden #conquestMapList, body.world-hidden .conquest-world-btn, body.
 body.cq-opening .map-trail-svg{display:none !important;}
 .conquest-layout.world-hidden{grid-template-columns:1fr !important;}
 .map-node.kind-tutorial .tut-num{position:absolute; bottom:-6px; right:-6px; font:800 11px/1 'Baloo 2', system-ui, sans-serif; background:#2b4f8f; color:#fff; border-radius:999px; padding:2px 5px;}
+/* 2026-10-17: the day's field-kit item, in a little open crate with a "Today" ribbon */
+.shelf-kit{position:relative; display:grid; place-items:center; width:62px; height:52px; margin-top:auto; border-radius:4px 4px 6px 6px; background:repeating-linear-gradient(0deg, #8a6238 0 12px, #6b4a2a 12px 13px); box-shadow:inset 0 0 0 3px #4a2f17, 0 4px 6px rgba(0,0,0,.35);}
+.shelf-kit .sk-ico{font-size:34px; line-height:1; margin-top:-22px; filter:drop-shadow(0 3px 3px rgba(0,0,0,.4));}
+.shelf-kit .sk-today{position:absolute; left:-8px; top:-4px; padding:0 6px; font:800 10px/1.5 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; color:#fff8e6; background:#a8432f; border-radius:2px; transform:rotate(-8deg); box-shadow:0 2px 3px rgba(0,0,0,.35);}
+.shelf-kit.is-big{width:92px; height:78px;} .shelf-kit.is-big .sk-ico{font-size:52px; margin-top:-30px;}
+.shelf-item.is-selected .shelf-kit{filter:drop-shadow(0 0 10px rgba(255,214,120,.95));}
 .shelf-item.is-bread .shelf-loaf{font-size:42px; line-height:1; filter:drop-shadow(0 4px 4px rgba(0,0,0,.35));} .shelf-loaf.is-big{font-size:64px;}
 .shelf-wall{position:relative; max-height:none; overflow:visible; /* 2026-10-12 (user): one page scroll, no inner scroll areas */ padding:18px clamp(10px,3vw,34px) 8px; border-radius:16px 16px 6px 6px;
   background:
