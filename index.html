@@ -1883,6 +1883,10 @@
   @media (min-width: 701px) and (max-width: 1199px){
     #appWrap.in-match{--match-card-h: clamp(92px, min(calc((100dvh - 214px) / 4.55), calc((100vw - 110px) / 8.4 / 0.8)), 149px);}
     #appWrap.in-match .hand-strip{flex-wrap:nowrap;}
+    /* 2026-10-17 (user: "In Mobile and iPad, the field can be 15% more zoomed in."): the battlefield's own cards are 15% bigger than
+       the hand's (the same size rule x 1.15). A row still never runs wider than the field: .board-row > .board-card shrinks a crowded
+       row to fit, and fitBattlefieldZoom() zooms out past that. */
+    #appWrap.in-match .battlefield{--match-card-h: calc(clamp(92px, min(calc((100dvh - 214px) / 4.55), calc((100vw - 110px) / 8.4 / 0.8)), 149px) * 1.15); --match-card-w: calc(var(--match-card-h) * 0.8);}
   }
   /* RWD large pass (2026-10-12, 10:57 list: "Put Responsive web design (RWD) large pass"): on big screens the match grows into
      the space instead of sitting small in the middle (cards up to 1.6x), and the menu pages scale up as a whole. */
@@ -2138,6 +2142,11 @@
      the play-controls row above the leaf "mid" layer (z-index:11) but the battlefield above
      stays at 10, below mid — see #autumnWeatherLayerMid's own comment for the full layer order. */
   .bottom-play-row, .top-play-row{display:flex; align-items:center; gap:12px; margin-bottom:12px; position:relative; z-index:12;}
+  /* 2026-10-17 (user: "When you've played your turn, your hand area (the btm part of the screen) darkens by a hint. Just very slightly,
+     like 5%."): set by syncTurnPlayedDim (arena_app.js) from your play or Pass until your next turn starts; fades both ways. */
+  .bottom-play-row{transition:filter .6s ease;}
+  .bottom-play-row.is-turn-played{filter:brightness(.95);}
+  @media (prefers-reduced-motion: reduce){ .bottom-play-row{transition:none;} }
   /* Standardised card sizing (2026-09-18): previously height:auto + a much smaller 88px floor
      here quietly overrode .hq-tile's own fixed height, so the castle widget never actually
      matched a real card's size even on desktop, whatever .hq-tile itself said. Now it keeps
@@ -2192,7 +2201,7 @@
   /* Changeling unmasked (2026-10-11): a violet label and a quick shimmer as the disguise falls away */
   .dmg-float.ft-reveal{color:#c9a7ff; font-size:17px; white-space:nowrap;}
   .board-card.changeling-unmask{animation:clUnmask .85s ease-out;}
-  @keyframes clUnmask{0%{filter:brightness(1.9) saturate(.2) hue-rotate(60deg); transform:scale(.94);} 45%{filter:brightness(1.3) hue-rotate(20deg); transform:scale(1.04);} 100%{filter:none; transform:none;}}
+  @keyframes clUnmask{0%{filter:brightness(1.9) saturate(.2) hue-rotate(60deg); scale:.94;} 45%{filter:brightness(1.3) hue-rotate(20deg); scale:1.04;} 100%{filter:none; scale:1;}} /* scale, not transform (2026-10-17, see readyPulseAnim) */
   @media (prefers-reduced-motion: reduce){ .board-card.changeling-unmask{animation:none;} }
   .dmg-float.debuff{color:var(--wait);}
   .dmg-float.evaded{color:var(--ink-muted); font-size:12px;}
@@ -2326,14 +2335,19 @@
      separately, on top of it, from playReadyFlourish's own caller. */
   .board-card.ready-pulse{animation:readyPulseAnim 460ms cubic-bezier(.34,1.56,.64,1);}
   @keyframes readyPulseAnim{
-    0%{transform:scale(1) translateY(0); box-shadow:0 0 0 0 rgba(250,204,21,0), 0 0 0 0 rgba(250,204,21,0);}
-    30%{transform:scale(1.08) translateY(-4px); box-shadow:0 0 14px 4px rgba(250,204,21,.85), 0 0 0 3px rgba(250,204,21,.7);}
-    55%{transform:scale(.98) translateY(1px); box-shadow:0 0 10px 2px rgba(250,204,21,.5), 0 0 0 2px rgba(250,204,21,.4);}
-    100%{transform:scale(1) translateY(0); box-shadow:0 0 0 0 rgba(250,204,21,0), 0 0 0 0 rgba(250,204,21,0);}
+    0%{scale:1; translate:0 0; box-shadow:0 0 0 0 rgba(250,204,21,0), 0 0 0 0 rgba(250,204,21,0);}
+    30%{scale:1.08; translate:0 -4px; box-shadow:0 0 14px 4px rgba(250,204,21,.85), 0 0 0 3px rgba(250,204,21,.7);}
+    55%{scale:.98; translate:0 1px; box-shadow:0 0 10px 2px rgba(250,204,21,.5), 0 0 0 2px rgba(250,204,21,.4);}
+    100%{scale:1; translate:0 0; box-shadow:0 0 0 0 rgba(250,204,21,0), 0 0 0 0 rgba(250,204,21,0);}
   }
+  /* 2026-10-17 (user: "Sometimes, after a card ends its actions, it appears on the left area."): the outer .board-card is the element
+     GSAP Flip glides (position:absolute + an inline transform that holds it in its slot while the row reflows). A CSS animation or
+     rule that sets `transform` on it REPLACES that inline transform for its whole run, so the card showed at the row's left edge
+     until it ended: the Ready pulse, Wave / Restless / Bloodlust's push (wavePush), the Changeling unmask and the dying fade all did.
+     They now use the separate scale / translate / rotate properties, which add to GSAP's transform (as the dodge hop already does). */
   /* Death VFX (2026-09-14): a dying card phases out slowly in place, with a small skull
      floating above it, instead of just vanishing at the next full board repaint. */
-  .board-card.dying{transition:opacity 650ms ease, transform 650ms ease; opacity:0; transform:scale(.82) translateY(8px);}
+  .board-card.dying{transition:opacity 650ms ease, scale 650ms ease, translate 650ms ease; opacity:0; scale:.82; translate:0 8px;} /* not transform (2026-10-17, see readyPulseAnim) */
   /* Burn-away death (2026-10-04) — see burnAwayVfx(). The mask image is 2.2× the card's height (edge at its middle);
      sliding it from top to bottom moves the ragged edge up through the card. */
   .board-card.burning, .card-tile.burning{-webkit-mask-image:var(--burn-mask); mask-image:var(--burn-mask); -webkit-mask-size:100% 220%; mask-size:100% 220%; -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;
@@ -5428,6 +5442,11 @@
     padding:2px 9px; border-radius:20px; white-space:nowrap; box-shadow:0 2px 4px rgba(0,0,0,.35);
   }
 
+  /* 2026-10-17 (user: "On leader death, there's a ribbon leader, then it fades. Instead that ribbon could come out at the start as well."):
+     the "👑 Leader" ribbon that used to mark a leader's fall now comes out under the card as it lands (leaderThroneVfx). */
+  .leader-arrive-ribbon{position:fixed; left:0; top:0; z-index:1250; pointer-events:none; white-space:nowrap; font:800 11px/1.2 'Baloo 2', system-ui, sans-serif;
+    color:#fff; background:#1f4f8e; border:1.5px solid #e8c25a; border-radius:20px; padding:2px 10px; box-shadow:0 3px 8px rgba(0,0,0,.4); text-shadow:0 1px 1px rgba(0,0,0,.4);}
+  .leader-arrive-ribbon.is-enemy{background:#8e1420;}
   /* .lr-group (the old grouped Left/Right dropzone buttons) removed 2026-09-26 — see the
      drop-row's own HTML comment in arena_app.js for why. */
 
@@ -5733,6 +5752,16 @@
     .drop-row{margin-bottom:3px;}
     .dropzone, .discardzone, .skipzone{min-height:60px;}
     .battle-log-panel{padding:6px 12px 5px;}
+  }
+  /* 2026-10-17 (user: "In Mobile and iPad, the field can be 15% more zoomed in."): on a phone the battlefield's cards are 15% bigger
+     than the hand's (65x81 -> 75x93; 54x68 -> 62x78 on a short phone) and the rows grow with them. A crowded row still shrinks its
+     cards to the field's width (.board-row > .board-card), and fitBattlefieldZoom() zooms out past that, so nothing runs off the side. */
+  @media (max-width:700px){
+    #appWrap .battlefield{--match-card-w:75px; --match-card-h:93px;}
+    #appWrap .battlefield .board-row{min-height:calc(var(--match-card-h) + 40px);}
+  }
+  @media (max-height:700px) and (max-width:700px){
+    #appWrap .battlefield{--match-card-w:62px; --match-card-h:78px;}
   }
   /* ===== Card sizes that scale (2026-10-03, explicit: "There should be several card sizes, and they
      need to scale sensibly... text just needs to stay legible at all sizes"). Every .card-tile is its
@@ -8918,7 +8947,12 @@
   .card-tile .badges, .card-tile .badges-2row .badges-row{gap:0 !important;}
   .card-tile .badges .abadge{padding:1px 1px;}
   .ab-shields i + i{margin-left:-.66em !important;}
-  .ab-pair{display:inline-flex; align-items:center;} .ab-pair i{font-style:normal; margin-left:-.42em; font-size:.82em; position:relative; top:.18em;}
+  /* 2026-10-17 (user: "Effects tied together context symbols should stack on top of each other. For the ebb x armour symbol - make them
+     closer. make this consistent for all."): one stack for every combined symbol (skill chips' .ab-pair, the board's Flood / Ebb /
+     High Tide chip and the High Tide pill's .sym-stack): each next glyph sits over the one before, lower-right, by the same amount. */
+  .ab-pair, .sym-stack{display:inline-flex; align-items:center; line-height:1; white-space:nowrap;}
+  .ab-pair > i, .sym-stack > i{font-style:normal; margin-left:-.52em; font-size:.8em; position:relative; top:.22em; filter:drop-shadow(0 1px 1px rgba(0,0,0,.45));}
+  .sym-stack > i + i{margin-left:-.38em;}
   /* Bounty bubble: the opponent's bounty card offers you Lumber. Shown while you hold a card, and for 3s as your turn starts. */
   .board-card:has(.bounty-bubble) .abadge:has(.ab-bounty){display:none;}
   .bounty-bubble{position:absolute; left:50%; bottom:calc(100% + 12px); z-index:30; pointer-events:none; display:flex; flex-direction:column; align-items:center;
@@ -9443,7 +9477,7 @@
 @keyframes bloomPulse{0%,100%{transform:scale(1);} 50%{transform:scale(1.14);}}
 .ab-pack.is-on, .ab-pair.is-on{filter:drop-shadow(0 0 4px rgba(120,190,255,.95)); font-weight:700;}
 .board-card.wave-pushed{animation:wavePush .55s ease-out;}
-@keyframes wavePush{0%{transform:translateX(0);} 30%{transform:translateX(var(--wave-dx, 10px)) rotate(var(--wave-rot, 3deg));} 100%{transform:translateX(0);}}
+@keyframes wavePush{0%{translate:0 0; rotate:0deg;} 30%{translate:var(--wave-dx, 10px) 0; rotate:var(--wave-rot, 3deg);} 100%{translate:0 0; rotate:0deg;}} /* translate / rotate, not transform: it rode over Flip's slot hold (2026-10-17, see readyPulseAnim) */
 @media (prefers-reduced-motion: reduce){ .ab-bloom.is-on, .board-card.wave-pushed{animation:none;} }
 /* Irradiation tokens (2026-10-14) and the card details' green "taken by Irradiation" number. */
 .abadge.irradiation{background:rgba(40,70,20,.88); color:#c8ff6a; box-shadow:0 0 6px rgba(160,255,60,.6);}
@@ -10463,34 +10497,73 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   /* The deck-swap offer (maybeOfferDeckSwap) had no styles at all, so it fell into the page flow at the bottom of every page. It is
      a modal now: a centred card on wide screens, a compact bottom sheet on phones (old → new side by side, the text, Keep and Swap). */
   .ds2-overlay{position:fixed; inset:0; z-index:9000; display:flex; align-items:center; justify-content:center; padding:16px; background:rgba(10,7,4,.62); animation:ds2In .25s ease both;}
-  .ds2-overlay.is-out{opacity:0; transition:opacity .15s ease;} /* 2026-10-14 (user: "When you click Swap, it says 'Nice!' then the window fades abit faster than now."): .25s → .15s */
+  /* 2026-10-17 (user: "The Swap menu fade blows up and fade shrinks down (transition). Clicking Swap changes the fade shrink down
+     transition to a bounce then fade shrink down! like its happy."): in, the window fades in growing from 70%; out, it fades while it
+     shrinks back; after a Swap (.is-happy) it bounces first. */
+  .ds2-overlay.is-out{opacity:0; transition:opacity .22s ease .02s;}
+  .ds2-overlay .ds2{animation:ds2Grow .34s cubic-bezier(.3,1.35,.5,1) both;}
+  .ds2-overlay.is-happy .ds2{animation:ds2Happy .5s cubic-bezier(.3,1.4,.5,1) both;}
+  .ds2-overlay.is-out .ds2{animation:ds2Shrink .24s ease-in both;}
+  @keyframes ds2Grow{from{opacity:0; transform:scale(.7);} to{opacity:1; transform:none;}}
+  @keyframes ds2Shrink{from{opacity:1; transform:none;} to{opacity:0; transform:scale(.72);}}
+  @keyframes ds2Happy{0%{transform:none;} 25%{transform:scale(1.07) rotate(-1.2deg);} 50%{transform:scale(.97) rotate(.8deg);} 75%{transform:scale(1.03);} 100%{transform:none;}}
   .ds2-say .ds2-nice{display:inline-block; font:900 26px 'Baloo 2',system-ui,sans-serif; color:#3a8f4b; animation:ds2Nice .35s cubic-bezier(.3,1.5,.5,1) both;}
   @keyframes ds2Nice{from{opacity:0; transform:scale(.6);} to{opacity:1; transform:none;}}
   @keyframes ds2In{from{opacity:0;} to{opacity:1;}}
-  .ds2{width:min(560px, 100%); max-height:calc(100vh - 32px); overflow:auto; overflow-x:hidden; box-sizing:border-box; background:#f6ecd6; color:#2b1d10; border:2px solid #c9a25a; border-radius:18px; padding:16px 18px 14px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.55);}
-  .ds2-stage{display:flex; justify-content:center;}
-  .ds2-strip{display:flex; justify-content:center; align-items:center; gap:8px;}
-  .ds2-side{opacity:.45; transform:scale(.82); filter:saturate(.7);} .ds2-side .card-tile{width:56px !important;} .ds2-side{margin:0 -3px;}
-  .ds2-focus{position:relative; display:flex; align-items:center; gap:30px; padding:0 4px;}
+  .ds2{width:min(600px, 100%); max-height:calc(100vh - 32px); overflow:auto; overflow-x:hidden; box-sizing:border-box; background:#f6ecd6; color:#2b1d10; border:2px solid #c9a25a; border-radius:18px; padding:16px 18px 14px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.55); transform-origin:50% 55%;}
+  /* 2026-10-17 (user: "Left is your deck, Right is cards not in your deck"): two columns, each its pick, ‹ › and the other candidates. */
+  .ds2-stage{position:relative; display:flex; justify-content:center; align-items:flex-start; gap:34px;}
+  .ds2-col{display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0;}
+  .ds2-col-h{font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; color:#7a5a30;}
+  .ds2-pick{display:flex; align-items:center; gap:4px;}
+  .ds2-nav{width:28px; height:44px; border:0; border-radius:10px; background:rgba(138,90,32,.14); color:#6b4418; font:900 22px/1 system-ui,sans-serif; cursor:pointer; padding:0;}
+  .ds2-nav:hover, .ds2-nav:focus-visible{background:rgba(138,90,32,.28);}
+  .ds2-thumbs{display:flex; gap:6px; justify-content:center;}
+  .ds2-thumb{position:relative; padding:0; border:2px solid transparent; border-radius:9px; background:none; cursor:pointer; opacity:.55; filter:saturate(.7); transition:opacity .15s, transform .15s;}
+  .ds2-thumb .card-tile{width:46px !important; pointer-events:none;}
+  .ds2-thumb.is-on{opacity:1; filter:none; border-color:#c9a25a; transform:translateY(-2px);}
+  .ds2-thumb:hover{opacity:.9;}
+  .ds2-rec{position:absolute; top:-7px; right:-6px; font-style:normal; font-size:11px; line-height:1; padding:2px 3px; border-radius:999px; background:#e9b949; color:#4a2c08; box-shadow:0 1px 3px rgba(0,0,0,.3);}
   .ds2-old .card-tile, .ds2-new .card-tile{width:112px !important;}
   .ds2-old, .ds2-new{transition:transform .6s cubic-bezier(.3,1.3,.5,1), opacity .5s ease, filter .5s ease;}
   .ds2-new{filter:drop-shadow(0 0 10px rgba(255,214,110,.8));}
-  .ds2-arrows{position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) rotate(90deg); font-size:22px; font-weight:800; color:#8a5a20;}
-  .ds2-focus.is-swapped .ds2-old{opacity:.25; transform:translateY(12px) scale(.88); filter:grayscale(1);}
-  .ds2-focus.is-swapped .ds2-new{transform:scale(1.08);}
+  .ds2-arrows{position:absolute; left:50%; top:96px; transform:translateX(-50%); font-size:22px; font-weight:800; color:#8a5a20;}
+  .ds2-stage.is-swapped .ds2-old{opacity:.25; transform:translateY(12px) scale(.88); filter:grayscale(1);}
+  .ds2-stage.is-swapped .ds2-new{transform:scale(1.08);}
+  .ds2-stage.is-swapped .ds2-thumbs, .ds2-stage.is-swapped .ds2-nav{opacity:0; pointer-events:none; transition:opacity .2s;}
   .ds2-say{margin:12px 0 10px; font-size:15px; line-height:1.4; color:#2b1d10;} .ds2-say span{font-size:13px; color:#5a4630;}
   .ds2-actions{display:flex; gap:10px; justify-content:center; align-items:center;}
   @media (max-width:560px){
     .ds2-overlay{align-items:flex-end; padding:0;}
-    .ds2{width:100%; max-height:70vh; border-radius:18px 18px 0 0; border-width:2px 0 0; padding:12px 14px calc(12px + env(safe-area-inset-bottom));}
-    .ds2-side, .ds2-lbl-x{display:none;}
-    .ds2-focus{gap:26px;}
+    .ds2{width:100%; max-height:78vh; border-radius:18px 18px 0 0; border-width:2px 0 0; padding:12px 10px calc(12px + env(safe-area-inset-bottom)); transform-origin:50% 100%;}
+    .ds2-lbl-x{display:none;}
+    .ds2-stage{gap:18px;}
+    .ds2-nav{width:22px; height:38px; font-size:18px;}
+    .ds2-thumb .card-tile{width:36px !important;}
+    .ds2-arrows{top:76px; font-size:18px;}
     .ds2-old .card-tile, .ds2-new .card-tile{width:84px !important;}
     .ds2-say{font-size:14px; margin:8px 0;}
     .ds2-actions .btn{flex:1; min-height:42px;}
     .ds2-actions .btn.big{font-size:16px; padding:8px 12px;}
   }
-  @media (prefers-reduced-motion: reduce){ .ds2-overlay{animation:none;} .ds2-old, .ds2-new{transition:none;} }
+  @media (prefers-reduced-motion: reduce){ .ds2-overlay, .ds2-overlay .ds2, .ds2-overlay.is-happy .ds2, .ds2-overlay.is-out .ds2{animation:none;} .ds2-old, .ds2-new{transition:none;} }
+  /* 2026-10-17 (menus): the Tutorial map's later fights say which fight opens them */
+  .map-node-hidden.is-gated{pointer-events:auto; cursor:help;}
+  .map-node-hidden.is-gated .map-node-code{position:absolute; left:50%; bottom:-9px; transform:translateX(-50%); font:800 10px/1 'Baloo 2',system-ui,sans-serif; padding:2px 5px; border-radius:999px; background:rgba(58,43,30,.86); color:#f3e7cc; white-space:nowrap; pointer-events:none;}
+  .map-node-gate{position:absolute; left:50%; top:calc(100% + 12px); transform:translateX(-50%); width:max-content; max-width:120px; white-space:normal; text-align:center; font:700 11px/1.2 'Baloo 2',system-ui,sans-serif; padding:3px 7px; border-radius:8px; background:rgba(20,14,8,.78); color:#fbefd2; pointer-events:none;}
+  @media (max-width:560px){ .map-node-gate{font-size:10px; max-width:96px; padding:2px 5px;} }
+  /* 2026-10-17 (menus): results, one Rewards block (packs and chips inside), New cards seen with what opened */
+  .rw-rewards .rw-pack-row{margin-top:10px;}
+  .rw-rewards .rw-item-row{flex-wrap:wrap; justify-content:center; gap:8px;}
+  .rw-seen .rw-open-row, .rw-seen .rw-fight-row{margin-top:8px; flex-wrap:wrap; justify-content:center; gap:8px;}
+  .rw-card.is-unlock .rw-new{z-index:7;}
+  /* 2026-10-17 (menus): Wildpaths hover tooltips */
+  .wp-tip{position:fixed; z-index:9500; max-width:min(280px, calc(100vw - 16px)); box-sizing:border-box; padding:9px 11px; border-radius:10px; background:#fff8e6; color:#2b2117; box-shadow:0 8px 22px rgba(0,0,0,.4); font-size:13px; line-height:1.4; pointer-events:none; display:flex; flex-direction:column; gap:3px; text-align:left;}
+  .wp-tip[hidden]{display:none;}
+  .wp-tip b{font-size:14px;} .wp-tip small{color:#6a5640; font-size:12px;}
+  .wp-points[data-wptip]{cursor:help;}
+  /* 2026-10-17 (menus): the Tavern's empty bar */
+  .tavern-recruit .tr-empty{text-align:center; margin:10px 0 4px;} .tavern-recruit .tr-empty small{opacity:.8;}
   /* Phone header and Home (user: "In mobile, the logo, the icons are too separated from each other"): the logo and the header
      icons sit together as one centred cluster, and Home's chestnut, title and level badge close up. */
   @media (max-width:560px){
@@ -10756,6 +10829,12 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
               <div class="settings-row-label"><span>🗨️ Voice lines</span></div>
               <select id="voiceLinesSelect" aria-label="Voice lines"></select>
               <div class="settings-row-note">Short lines over the cards, read out in each animal's babble.</div>
+            </div>
+            <!-- 2026-10-17 (user: "Have a setting for NPC dialogue speed. The current is Medium. There is slow and fast."). See dialogueSpeed in arena_app.js. -->
+            <div class="settings-row">
+              <div class="settings-row-label"><span>💬 NPC dialogue speed</span></div>
+              <select id="dialogueSpeedSelect" aria-label="NPC dialogue speed"></select>
+              <div class="settings-row-note">How long the travellers' lines stay up, and how soon the next one comes.</div>
             </div>
             <div class="settings-row">
               <div class="settings-row-label"><span>🌊 Shader effects</span></div>
@@ -24158,7 +24237,9 @@ M.dayBreaks = function(host, opts){
   // sun should keep moving, and fade off while moving." and "the light creeping up needs to be 60% less strong as well."): the sun and
   // its rays peak at 15% of their old strength, and the sun climbs and drifts the whole time, fading out on the way instead of
   // stopping to fade; the golden wash creeps in from the left (like the board's own dawn creep) at 40% of its old strength, slower.
-  const SUN = .06, RAYS = .1, WASH = .4, D = 3.6; // SUN was .15 (2026-10-17), RAYS was SUN
+  // 2026-10-17 (user: "Day/Night: Lower the transparency of the effect by another 50%. It's mainly for the slow transition of the lighting."):
+  // the golden wash that creeps in from the left is half as strong again (WASH was .4).
+  const SUN = .06, RAYS = .1, WASH = .2, D = 3.6; // SUN was .15 (2026-10-17), RAYS was SUN
   w.style.background = 'linear-gradient(90deg, rgba(255,214,120,.0), rgba(255,214,120,.55) 45%, rgba(255,240,190,.75) 55%, rgba(255,214,120,0))';
   return run([box], opts, (t)=>{
     t.fromTo(w, {xPercent:-60, opacity:0}, {xPercent:60, duration:D*.75, ease:'sine.inOut'}, 0)
@@ -25837,6 +25918,22 @@ M.leaderFall = function(el, opts){
     tl.add(()=>{ snd('drum'); snd('leaderFanfare'); }, .05);
   });
 };
+// 2026-10-17 (user: "On death, well, he just dies. Then the border bounces outwards slightly and fades."): the leader's rainbow rim
+// (.board-card.is-leader::before) is copied to a fixed ring that holds while the card dies, then bounces out a little and fades.
+M.leaderRim = function(el, opts){
+  opts = opts || {}; const b = boardOf(el) || el; if(!b || !b.isConnected) return Promise.resolve();
+  const r = b.getBoundingClientRect(); if(!r.width) return Promise.resolve();
+  css('leaderRim', `.fxc-rim{border-radius:14px; padding:3px; box-sizing:border-box; background:conic-gradient(from 40deg, #ffd75e, #ff9f4a, #ff5ea8, #b46bff, #5ec8ff, #ffd75e);
+    -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite:xor; mask-composite:exclude; filter:drop-shadow(0 0 5px rgba(255,180,80,.65));}
+    .board-card.fxc-rim-out::before{opacity:0 !important; animation:none !important;}`);
+  const inset = b.closest && b.closest('.battlefield') ? 7 : 3;
+  return run(opts, (tl, mk)=>{
+    const R = mk('fxc-rim'); b.classList.add('fxc-rim-out');
+    tl.set(R, {x:r.left - inset, y:r.top - inset, width:r.width + inset*2, height:r.height + inset*2, opacity:1, scale:1, transformOrigin:'50% 50%'}, 0)
+      .to(R, {scale:1.08, duration:.34, ease:'back.out(2.4)'}, .62)
+      .to(R, {opacity:0, duration:.42, ease:'power1.in'}, .72);
+  });
+};
 // The Prism death's sheen (was the shiny / foil death until 2026-10-17; now M.deathPrism, see PRISM_SKILLS below): one rainbow sheet
 // lifts off the card and flutters away in sparkles.
 M.foilPeel = function(el, opts){
@@ -26536,8 +26633,13 @@ M.deathPlan = function(el, uid, env){
     else if(isStructureDef(d)) plan.look = 'deathStructure';
   }
   if(!boss){
-    const leader = (b && b.classList.contains('is-leader')) || (m && String(m.leaderUid) === String(uid)) || LEADERS.has(String(uid)) || archOf(d).includes('King');
-    if(leader){ if(!plan.look && !token) plan.look = 'kingFall'; else plan.addons.push('leaderFall'); }
+    // 2026-10-17 (user: "On leader death, there's a ribbon leader, then it fades. Instead that ribbon could come out at the start as
+    // well. On death, well, he just dies. Then the border bounces outwards slightly and fades."): a fight's leader dies its normal
+    // death (no King-fall chip or banner); its rim then bounces outward and fades (M.leaderRim). The "👑 Leader" ribbon is shown on
+    // arrival instead (arena_app.js, leaderThroneVfx). A King-type unit that isn't the leader keeps the King fall.
+    const isLeader = (b && b.classList.contains('is-leader')) || (m && String(m.leaderUid) === String(uid)) || LEADERS.has(String(uid));
+    if(isLeader) plan.addons.push('leaderRim');
+    else if(archOf(d).includes('King')){ if(!plan.look && !token) plan.look = 'kingFall'; else plan.addons.push('leaderFall'); }
     // 2026-10-17 (user: "Foil treatment of shiny death: There is a sheen that spawns out then fades out on death. I think don't do this for
     // shinies. Idk if you do this for foils - but i think is not needed also. But this effect is nice for like - prism related deaths
     // (skills relating to light or rainbows. add that btw - and save this effect)"): shiny and foil units die like anyone else now; the
@@ -29892,7 +29994,8 @@ M.hooks.mapJumperArrive = function(node, kind, opts, env){ if(!env.fxAtLeast('lo
 // Night lifting on the battlefield: the veil fades (arena_app.js syncNightVeil) and the morning light drifts across.
 // 2026-10-16 (user, 20:19: "the light creeping up needs to be 60% less strong as well"): in a fight the morning streaks are at 40% and
 // slower, alongside the board's 10 s light-up and its left-to-right creep (syncSkyFx / syncNightVeil in arena_app.js).
-M.hooks.fieldNightLifts = function(bf, env){ if(env.fxAtLeast('med')) M.nightRetreat(bf, {n:7, strength:.4, speed:1.6}); };
+// 2026-10-17 (user: "Day/Night: Lower the transparency of the effect by another 50%"): the streaks at 20% (were 40%).
+M.hooks.fieldNightLifts = function(bf, env){ if(env.fxAtLeast('med')) M.nightRetreat(bf, {n:7, strength:.2, speed:1.6}); };
 
 })(typeof window !== 'undefined' ? window : globalThis);
 
@@ -31458,8 +31561,9 @@ H.resultsShown = (card, m, env)=>{
   add(c=> m.mode === 'gauntlet' && [...c.querySelectorAll('.conquest-rank-badge')].find(x=> /🔥/.test(x.textContent)), el=> M.gauntletStreak(el, {streak:m.gauntletStreakAfter}));
   add(c=> c.querySelector('.rw-scale'), el=> M.dragonScale(el));
   add(c=> c.querySelector('.rw-materia'), el=> M.materiaDrop(el));
-  add(c=>{ const s = sec(c, 'Found'); return s && s.querySelector('.rw-act'); }, el=> M.nestEggDrop(el, {icon:el.textContent.trim().split(' ')[0] || '🥚'}));
-  add(c=>{ const s = sec(c, 'Spare castle'); return s && s.querySelector('.rw-act'); }, el=> M.castleDrop(el, {text:/New castle/.test(el.textContent) ? 'New castle!' : 'Spare castle'}));
+  // 2026-10-17: the egg and the castle are chips in the one Rewards block now (rewardsPanelHTML), found by their own class.
+  add(c=> c.querySelector('.rw-act.rw-egg') || (()=>{ const s = sec(c, 'Found'); return s && s.querySelector('.rw-act'); })(), el=> M.nestEggDrop(el, {icon:el.textContent.trim().split(' ')[0] || '🥚'}));
+  add(c=> c.querySelector('.rw-act.rw-castle') || (()=>{ const s = sec(c, 'Spare castle'); return s && s.querySelector('.rw-act'); })(), el=> M.castleDrop(el, {text:/New castle/.test(el.textContent) ? 'New castle!' : 'Spare castle'}));
   add(c=> [...c.querySelectorAll('.rw-act')].find(x=> /Your character/.test(x.getAttribute('data-tip') || '')), el=> M.avatarUnlock(el));
   add(c=> c.querySelector('.rw-card.is-seen'), (_, c)=> [...c.querySelectorAll('.rw-card.is-seen')].slice(0, 3).forEach((s, i)=> later(()=> M.codexNew(s), i*180)));
   add(c=> c.querySelector('.winloss-achv'), el=> M.achvUnlocked(el));
@@ -33089,7 +33193,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.now-in-your-collection": "{v1} — now in your collection",
   "results.open-your-deck-to-swap-in": "Open your deck to swap {plural_them} in",
   "results.put-in-my-deck": "🃏 Put {plural_them} in my deck",
-  "results.won": "🎁 {v1} won!",
   "results.cards-it-opens-as-soon-as": "{name}: {cards} cards. It opens as soon as you leave this screen",
   "results.cards-opens-next": "{v1}<b>{name}</b><small>{cards} cards · opens next</small>",
   "results.packs-open-once-the-armoury-camp": "Packs open once the Armoury (⛺ Camp) is open on the map",
@@ -33108,23 +33211,18 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.lv": "🌱 {v1} Lv {to}",
   "results.a-spare-copy-of-a-base": "A spare copy of a Base card in your deck: feed it in the Forge",
   "results.your-base-cards-had-nothing-left": "Your Base cards had nothing left to grow, so it came as Dust",
-  "results.spare-castle": "Spare castle",
   "results.fuse-it-in-the-forge-castles": "Fuse it in the Forge (Castles) to bank progress toward its next levels",
-  "results.kibble": "Kibble",
-  "results.dungeon-key": "Dungeon key",
   "results.a-win-gives-your-key-back": "A won floor gives your Dungeon key back, so you can keep climbing",
   "results.dungeon-key-back": "🗝️ +1 Dungeon key ({n} in hand)",
   "results.dungeon-key-lost-climb-resets": "🗝️ Your Dungeon key is lost, and the climb starts again from floor 1 (you fell on floor {floor}; best: floor {best}).",
   "results.dungeon-climb-resets": "The climb starts again from floor 1 (you fell on floor {floor}; best: floor {best}).",
   "results.trains-a-level-0-card-to": "Trains a Level-0 card to Level 1 in the Nest",
   "results.kibble-2": "🦴 {conquestKibbleEarned} Kibble",
-  "results.found": "Found",
   "results.it-s-in-your-pack-place": "It's in your pack: place it in a hay nest in the Nest",
   "results.an-egg": "An egg",
   "results.unlocked": "Unlocked",
   "results.conquest-map": "🗺️ Conquest Map",
   "results.tutorial-part-2": "🎓 Tutorial Part 2",
-  "results.new-fights": "New fights",
   "results.hp": "{name} — {v2} · 🏰 {hqHp} HP{v4}{v5}",
   "results.next": "Next: {name} ⚔️",
   "results.needs-you-have": "— needs {e}⚡, you have {currentEnergy}⚡",
@@ -33310,7 +33408,9 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.thanks-we-read-every-one": "💬 Thanks! We read every one.",
   "toast.jumps-you-on-the-road-beat": "{icon} {name} jumps you on the road! Beat it to go on.",
   "toast.errand-complete-claim-it-on-the": "📜 Errand complete: {title}. Claim it on the Notices.",
-  "toast.errand": "📜 Errand: {title} — {v}/{g}"
+  "toast.errand": "📜 Errand: {title} — {v}/{g}",
+  "toast.voice-lines": "Voice lines:",
+  "toast.npc-dialogue": "NPC dialogue:"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -35845,7 +35945,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '1d9dfd9f3145', BUILD_CARD_HASH = 'a486d1ea577cd2a19ea825d5395c9e15a154200e40301eb4f9ec5c47bdac2085';
+const BUILD_ID = '974136b26ccf', BUILD_CARD_HASH = 'a486d1ea577cd2a19ea825d5395c9e15a154200e40301eb4f9ec5c47bdac2085';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -36257,11 +36357,24 @@ function mapBandColour(n){
 // trail) while the two tutorials are being played, then appear as you reach Map 1, Map 8 and Map 18 (that map open: the boss of the
 // map before it beaten). Visible in the layout editor.
 const TUT_SIDE_GATE = {'T-2':1, 'T-3':8, 'T-4':18};
+// 2026-10-17 (user: "Tutorial only: ... Only after the tutorial is completed and when you go back do you see it the full T1-5
+// unlocked. While the tutorial is locked, it should say "Defeat (e.g.) 7-1 to unlock this""): while the two tutorials are being
+// played only T-0 and T-1 are on the map. Once both are won, all five are: a later one not reached yet is a locked marker that says
+// which fight opens it (the boss of the map before its gate map, e.g. "Defeat 0-6 to unlock this" for T-2).
 function tutSideNodeHidden(map, node){
   try{ if(!map || map.id !== 'mtut' || !node || TUT_SIDE_GATE[node.key] == null || (typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)) return false;
-    if(!loadTutorialDone() || !loadTutorial2Done()) return true;
+    return !loadTutorialDone() || !loadTutorial2Done();
+  }catch(e){ return false; }
+}
+function tutSideNodeGated(map, node){
+  try{ if(!map || map.id !== 'mtut' || !node || TUT_SIDE_GATE[node.key] == null || (typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)) return false;
     return (mapsPassed() + 1) < TUT_SIDE_GATE[node.key];
   }catch(e){ return false; }
+}
+// The fight that opens a gated T-2…T-4: the reward fight (boss) of the main map just before its gate map.
+function tutSideGateFightCode(node){
+  try{ const n = TUT_SIDE_GATE[node && node.key]; const m = n ? mainConquestMaps()[n - 1] : null; const k = m && mapRewardNodeKey(m);
+    return k ? skirmishCode(m.id, k) : ''; }catch(e){ return ''; }
 }
 function mainConquestMaps(){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).filter(m=> !m.sub); }
 function mapIndexOf(mapId){ return (typeof CONQUEST_MAPS!=='undefined' ? CONQUEST_MAPS : []).findIndex(m=>m.id===mapId); }
@@ -39650,12 +39763,14 @@ function abilityBadges(d, bopts){
   if(e.twin) out.push(`<span title="Twin: a token twin arrives with it">${iconHTML('twin', '👯')}</span>`);
   if(e.sprout) out.push(`<span title="Sprout: Growth Sprouts arrive with it">${iconHTML('sprout', '🌱')}${n1(e.sprout)}</span>`);
   if(e.growth) out.push(`<span title="Growth: counts toward every Swarm">${iconHTML('growth', '🌿')}</span>`);
-  if(e.moonpull) out.push(`<span title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}🌊</span>`);
+  // 2026-10-17 (user: "Effects tied together context symbols should stack on top of each other ... make this consistent for all"):
+  // every two-glyph chip is one .ab-pair (the second glyph tucked over the first), Moonpull, Supreme Tide and Twin Strike included.
+  if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
   if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
   if(e.wave) out.push(`<span title="Wave: its hits push the unit one column ${e.wave === true ? 'toward more room' : e.wave === 'alternate' ? 'left, then right' : e.wave}">〰️</span>`);
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
-  if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb">${iconHTML('supreme-tide', '✨')}🌊</span>`);
+  if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb"><span class="ab-pair">${iconHTML('supreme-tide', '✨')}<i>🌊</i></span></span>`); // stacked (2026-10-17)
   // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
   if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only (the castle when neither has a unit)">${iconHTML('crab-claws', '🦞')}</span>`);
   if(e.meiosis) out.push(`<span title="Meiosis ${e.meiosis === true ? 1 : e.meiosis}: splits in two when it dies">${iconHTML('meiosis', '🧫')}${n1(e.meiosis)}</span>`);
@@ -39707,7 +39822,7 @@ function abilityBadges(d, bopts){
   // arrows) to read as "hits both sides" at a glance.
   if(e.fork || e.swipe === true) out.push(isCrabDef(d) ? `<span class="ab-fork ab-crab" title="Fork: its claws hit the 2 nearest enemy units, within 1 column">🦞</span>` : `<span class="ab-fork" title="Fork: hits the 2 nearest enemy units, within 1 column">⇔</span>`); // a crab's Fork is a crab claw (2026-10-14) // Fork (was Swipe, 2026-10-12): one two-sided arrow, light red
   if(typeof e.swipe === 'number' && e.swipe > 0) out.push(`🫳${n1(e.swipe)}`);
-  if(e.twinStrike) out.push(`${iconHTML('twin-strike', '⚔')}⚔`);
+  if(e.twinStrike) out.push(`<span class="ab-pair">${iconHTML('twin-strike', '⚔')}<i>⚔</i></span>`); // stacked (2026-10-17)
   if(e.converge) out.push(`${iconHTML('converge', '🧲')}`);
   if(e.defiance) out.push(`${iconHTML('defiance', '😤')}${(Number(e.defianceN)||1) > 1 ? e.defianceN : ''}`);
   // Pack (reworked 2026-10-14): on the board it shows the live chain, 🐺×n (n units in its chain).
@@ -45359,6 +45474,7 @@ function renderPlay(){
             <div class="settings-row"><div class="settings-row-label"><span>✨ Atmosphere</span></div><select id="atmosphereSelectPlaySub" aria-label="Atmosphere"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🎆 Effects</span></div><select id="fxSelectPlaySub" aria-label="Effects quality"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🗨️ Voice lines</span></div><select id="voiceLinesSelectPlaySub" aria-label="Voice lines"></select></div>
+            <div class="settings-row"><div class="settings-row-label"><span>💬 NPC dialogue speed</span></div><select id="dialogueSpeedSelectPlaySub" aria-label="NPC dialogue speed"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>🌊 Shader effects</span></div><select id="shaderSelectPlaySub" aria-label="Shader effects"></select></div>
             <div class="settings-row"><div class="settings-row-label"><span>😀 Emoji style</span></div><select id="emojiStyleSelectPlaySub" aria-label="Emoji style"></select><div class="settings-row-note emoji-credit" ${EmojiStyle.isActive() ? '' : 'hidden'}>Twemoji graphics CC-BY 4.0 (Twitter, Inc. and contributors).</div></div>
             </div>
@@ -46374,7 +46490,13 @@ let DIALOGUE_REPLY_MS = 30000, DIALOGUE_LINE_MS = 3600; // let: tests shorten th
 // on how long the text is, before moving on the next."): a line stays for its reading time (about 55 ms a character, at least
 // 1.8 s, never more than 8 s), then the next line comes in 1 s later. A tap on a line moves on straight away.
 let DIALOGUE_GAP_MS = 1000, DIALOGUE_READ_MAX_MS = 8000;
-function dialogueReadMs(text){ return Math.min(DIALOGUE_READ_MAX_MS, Math.max(1800, 1000 + String(text||'').length * 55)); }
+// NPC dialogue speed (2026-10-17, user: "Have a setting for NPC dialogue speed. The current is Medium. There is slow and fast."):
+// Settings → 💬 NPC dialogue: Slow (lines stay 1.5× as long, and come 1.5× further apart), Medium (the pacing above) or Fast (0.6×).
+const DIALOGUE_SPEED_KEY = 'bramblewood_dialogue_speed_v1', DIALOGUE_SPEEDS = {slow:1.5, medium:1, fast:0.6};
+function dialogueSpeed(){ try{ const v = localStorage.getItem(DIALOGUE_SPEED_KEY); return DIALOGUE_SPEEDS[v] ? v : 'medium'; }catch(e){ return 'medium'; } }
+function setDialogueSpeed(v){ try{ localStorage.setItem(DIALOGUE_SPEED_KEY, DIALOGUE_SPEEDS[v] ? v : 'medium'); }catch(e){} }
+function dialogueSpeedMul(){ return DIALOGUE_SPEEDS[dialogueSpeed()] || 1; }
+function dialogueReadMs(text){ return Math.round(Math.min(DIALOGUE_READ_MAX_MS, Math.max(1800, 1000 + String(text||'').length * 55)) * dialogueSpeedMul()); }
 let dialogueAdvance = null; // ends the current wait early; resolves true when it was a tap
 function dialogueWait(ms){ return new Promise(res=>{ let t = 0; const done = tapped=>{ clearTimeout(t); if(dialogueAdvance === done) dialogueAdvance = null; res(!!tapped); }; t = setTimeout(()=> done(false), ms); dialogueAdvance = done; }); }
 function loadDialogueFlags(){ try{ return JSON.parse(localStorage.getItem(DIALOGUE_FLAGS_KEY)||'{}') || {}; }catch(e){ return {}; } }
@@ -46647,17 +46769,17 @@ function playDialogue(id, opts){
         replies.push(choice ? choice.label : '…');
         const target = choice ? choice.goto : line.silent;
         if(target && byLabel[target]!=null) next = byLabel[target];
-        await dialogueWait(DIALOGUE_GAP_MS); // 2026-10-14: the next line 1 s later
+        await dialogueWait(DIALOGUE_GAP_MS * dialogueSpeedMul()); // 2026-10-14: the next line 1 s later (2026-10-17: × the dialogue speed)
       } else {
         if(line.act) setTimeout(()=> performDialogueAct(line.act), 600);
         // 2026-10-14: its reading time (≤ 8 s), then 1 s before the next line; a tap skips both
-        if(!(await dialogueWait(dialogueReadMs(line.text))) && i + 1 < script.lines.length) await dialogueWait(DIALOGUE_GAP_MS);
+        if(!(await dialogueWait(dialogueReadMs(line.text))) && i + 1 < script.lines.length) await dialogueWait(DIALOGUE_GAP_MS * dialogueSpeedMul());
         if(line.goto && byLabel[line.goto]!=null) next = byLabel[line.goto];
         if(line.goto === '__end') next = script.lines.length;
       }
       i = next;
     }
-    await sleep(1800);
+    await sleep(1800 * dialogueSpeedMul()); // the last line's time on screen follows the dialogue speed too (2026-10-17)
     Array.from(dock.children).forEach(el=>{ if(hasGsap()) gsap.to(el, {opacity:0, x:-30, duration:.3, onComplete:()=> el.remove()}); else el.remove(); });
     if(opts.onDone) try{ opts.onDone(replies); }catch(e){}
     return {replies};
@@ -50963,6 +51085,7 @@ function worldRevealed(){
 }
 function isNodeVisible(map, node, index, progress){
   if(node.chance > 0 && !adminModeEnabled){ const nid = conquestNodeId(map.id, node.key); if(!progress.completed.includes(nid) && !(progress.found||[]).includes(nid)) return false; }
+  if(tutSideNodeGated(map, node)) return false; // 2026-10-17: T-2…T-4 stay locked until their gate fight (tutSideGateFightCode)
   if(!map.sequential) return true;
   // Branching campaign graph (2026-09-24 redesign): each node lists its own predecessor key(s)
   // in `requires` (AND semantics — every listed node must be completed). An empty `requires:[]`
@@ -51780,7 +51903,10 @@ function worldDungeonStopsHTML(maps, pts, narrow, progress, firstLocked){
     if(!open && !admin) return '';
     const i = maps.findIndex(m=> m.id === map.parent); if(i < 0) return '';
     // narrow (2026-10-16): in the free column at the screen's edge, beside its map's diamond, so its card no longer covers that map's card
-    const p = pts[i], x = narrow ? (p.x < 50 ? 86 : 14) : (p.x <= 50 ? p.x + 24 : p.x - 24), y = p.y + (narrow ? -30 : 0);
+    // 2026-10-17 (user: "Murgle Mayhem in World (All maps), and other daily dungeons - move them further from the map. Like 2x distance"):
+    // twice as far from their map's diamond: ±48% across on wide screens (kept 12–88% so the card stays on screen, made up with a step
+    // up), and on phones, already in the edge column, twice as far up (−60 px, was −30).
+    const p = pts[i], wx = p.x <= 50 ? Math.min(88, p.x + 48) : Math.max(12, p.x - 48), x = narrow ? (p.x < 50 ? 86 : 14) : wx, y = p.y + (narrow ? -60 : -Math.round(Math.max(0, 48 - Math.abs(wx - p.x)) * 2.5));
     const f = dungeonFloorProgress(map, progress), here = map.id === conquestSelectedMap, go = open || admin;
     const note = open ? ` · floor ${Math.min(f.total, f.done + 1)}/${f.total}` : map.preview ? ' · 🛠️ admin preview' : ' · 🛠️ locked for players';
     return `<svg class="world-branch" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" style="top:${Math.min(p.y, y)}px; height:${Math.max(2, Math.abs(p.y - y))}px"><line x1="${p.x}" y1="${p.y <= y ? 0 : 100}" x2="${x}" y2="${p.y <= y ? 100 : 0}"/></svg>
@@ -52081,33 +52207,63 @@ function maybeOfferDeckSwap(){
     if(swapOffersShown() >= SWAP_OFFERS_MAX || !swapTutorialDone() || (d.cost||0) > 0 && !pitchingUnlocked()){ setTimeout(maybeOfferDeckSwap, 50); return; }
     noteSwapOfferShown();
   }
-  const others = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && k !== out && k !== id).slice(0, 4);
-  const why = item.teach ? (TEACH_SAY[item.teach] || '') : item.forced ? `${d.attack||0}/${d.health||0} in place of ${od.attack||0}/${od.health||0}.` : `⚔${d.attack||0} ❤${d.health||0}${(d.wait||0) < (od.wait||0) ? ` ⏳${d.wait||0}` : ''}${(d.cost||0) < (od.cost||0) ? ` 🪵${d.cost||0}` : ''} against ⚔${od.attack||0} ❤${od.health||0}${(d.wait||0) < (od.wait||0) ? ` ⏳${od.wait||0}` : ''}${(d.cost||0) < (od.cost||0) ? ` 🪵${od.cost||0}` : ''}: as good or better in every way.`;
+  // 2026-10-17 (user: "Swap: You see cards on the left and right. But you get to switch between the card recos on the left and right.
+  // Left is your deck, Right is cards not in your deck. Note, if you have <3 cards, no worries, then just show the 1 card as
+  // recommendation."): two columns. Left, up to three deck cards you could let go (the recommended one first); right, up to three
+  // cards you own that aren't in the deck (the new card first). ‹ › or a tap on a small card switches each side; a side with one
+  // candidate shows just that card. A teaching swap keeps its taught card on the right; its left side can still be switched.
+  const pw = k=> (defs[k].attack||0) + (defs[k].health||0);
+  const pitchOk = k=> !((defs[k].cost||0) > 0 && !pitchingUnlocked());
+  const deckIds = Object.keys(myDeckCounts).filter(k=> myDeckCounts[k] > 0 && defs[k] && swapEligibleDef(defs[k]));
+  const inList = [id].concat(item.forced ? [] : Object.keys(myCardCopies || {}).filter(k=> k !== id && copiesOwned(k) > 0 && !(myDeckCounts[k] > 0) && defs[k] && swapEligibleDef(defs[k]) && pitchOk(k) && deckIds.some(o=> swapOutAllowed(o, k)))
+    .sort((a, b)=> pw(b) - pw(a) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b)).slice(0, 2));
+  const outListFor = inId=>{ const rec = inId === id ? out : (dominatedDeckCard(inId) || weakestDeckCard(inId));
+    const rest = deckIds.filter(k=> k !== inId && k !== rec && swapOutAllowed(k, inId)).sort((a, b)=> pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
+    return (rec ? [rec] : []).concat(rest).slice(0, 3); };
+  let inSel = id, outList = outListFor(id), outSel = out;
+  const whyFor = (dIn, dOut)=> item.teach && dIn.id === id ? (TEACH_SAY[item.teach] || '') : item.forced ? `${dIn.attack||0}/${dIn.health||0} in place of ${dOut.attack||0}/${dOut.health||0}.`
+    : strictlyDominates(dIn, dOut) ? `⚔${dIn.attack||0} ❤${dIn.health||0}${(dIn.wait||0) < (dOut.wait||0) ? ` ⏳${dIn.wait||0}` : ''}${(dIn.cost||0) < (dOut.cost||0) ? ` 🪵${dIn.cost||0}` : ''} against ⚔${dOut.attack||0} ❤${dOut.health||0}${(dIn.wait||0) < (dOut.wait||0) ? ` ⏳${dOut.wait||0}` : ''}${(dIn.cost||0) < (dOut.cost||0) ? ` 🪵${dOut.cost||0}` : ''}: as good or better in every way.`
+    : `⚔${dIn.attack||0} ❤${dIn.health||0} 🪵${dIn.cost||0} against ⚔${dOut.attack||0} ❤${dOut.health||0} 🪵${dOut.cost||0}.`;
+  const colHTML = (side, list, sel)=>{ const many = list.length > 1;
+    return `<div class="ds2-col is-${side}" data-col="${side}"><div class="ds2-col-h">${side === 'out' ? 'Your deck' : 'Not in your deck'}</div>
+      <div class="ds2-pick">${many ? `<button type="button" class="ds2-nav" data-nav="${side}" data-dir="-1" aria-label="${side === 'out' ? 'Previous deck card' : 'Previous card'}">‹</button>` : ''}<div class="ds2-${side === 'out' ? 'old' : 'new'}">${cardTileHTML(defs[sel], {inPlay:true})}</div>${many ? `<button type="button" class="ds2-nav" data-nav="${side}" data-dir="1" aria-label="${side === 'out' ? 'Next deck card' : 'Next card'}">›</button>` : ''}</div>
+      ${many ? `<div class="ds2-thumbs">${list.map((k, i)=> `<button type="button" class="ds2-thumb ${k === sel ? 'is-on' : ''}" data-pick="${side}" data-id="${escapeAttr(k)}" aria-label="${escapeAttr(defs[k].name)}" aria-pressed="${k === sel}">${cardTileHTML(defs[k], {inPlay:true})}${i === 0 ? '<i class="ds2-rec" aria-hidden="true">★</i>' : ''}</button>`).join('')}</div>` : ''}</div>`; };
+  const sayHTML = ()=> `<b>${item.teach && inSel === id ? 'New card!' : inSel === id ? 'Better card!' : 'Your pick!'}</b> Swap <b>${escapeHtml(defs[outSel].name)}</b> for <b>${escapeHtml(defs[inSel].name)}</b>?<br><span>${escapeHtml(whyFor(defs[inSel], defs[outSel]))}</span>`;
   const ov = document.createElement('div'); ov.id = 'deckSwapOverlay'; ov.className = 'ds2-overlay';
   ov.innerHTML = `<div class="ds2" role="dialog" aria-modal="true" aria-label="Swap a card">
-    <div class="ds2-stage">
-      <div class="ds2-strip">${others.slice(0, 2).map((k, i)=> `<div class="ds2-side is-left" style="--k:${i}">${cardTileHTML(defs[k], {inPlay:true})}</div>`).join('')}
-        <div class="ds2-focus"><div class="ds2-old">${cardTileHTML(od, {inPlay:true})}</div><div class="ds2-new">${cardTileHTML(d, {inPlay:true})}</div><span class="ds2-arrows" aria-hidden="true">⇅</span></div>
-        ${others.slice(2, 4).map((k, i)=> `<div class="ds2-side is-right" style="--k:${i}">${cardTileHTML(defs[k], {inPlay:true})}</div>`).join('')}</div>
-    </div>
-    <p class="ds2-say"><b>${item.teach ? 'New card!' : 'Better card!'}</b> Swap <b>${escapeHtml(od.name)}</b> for <b>${escapeHtml(d.name)}</b>?<br><span>${escapeHtml(why)}</span></p>
+    <div class="ds2-stage">${colHTML('out', outList, outSel)}<span class="ds2-arrows" aria-hidden="true">⇄</span>${colHTML('in', inList, inSel)}</div>
+    <p class="ds2-say">${sayHTML()}</p>
     <div class="ds2-actions">${item.forced ? '<button type="button" class="btn ghost small" id="dsCancel">Cancel</button>' : '<button type="button" class="btn ghost small" id="dsKeep" aria-label="Keep my deck">Keep<span class="ds2-lbl-x"> my deck</span></button>'}<button type="button" class="btn primary big" id="dsSwap">🔁 Swap</button></div></div>`;
   document.body.appendChild(ov);
-  const close = ()=>{ ov.classList.add('is-out'); if(item.forced) setDialogueFlag(SWAP_TUTORIAL_FLAG, true); setTimeout(()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); }, 160); }; // 2026-10-14: quicker fade (was 260 ms)
+  const redrawCol = side=>{ const col = ov.querySelector(`[data-col="${side}"]`); if(!col) return; col.outerHTML = side === 'out' ? colHTML('out', outList, outSel) : colHTML('in', inList, inSel); const say = ov.querySelector('.ds2-say'); if(say) say.innerHTML = sayHTML();
+    const nc = ov.querySelector(`[data-col="${side}"] .ds2-${side === 'out' ? 'old' : 'new'}`); if(nc && hasGsap() && !reducedMotion()) gsap.fromTo(nc, {scale:.9, opacity:.4}, {scale:1, opacity:1, duration:.25, ease:'back.out(2)'}); };
+  const choose = (side, k)=>{ if(ov.classList.contains('is-done')) return;
+    if(side === 'out'){ if(!outList.includes(k) || k === outSel) return; outSel = k; redrawCol('out'); }
+    else { if(!inList.includes(k) || k === inSel) return; inSel = k; outList = outListFor(inSel); if(!outList.includes(outSel)) outSel = outList[0]; redrawCol('in'); redrawCol('out'); }
+    try{ SoundKit.quick && SoundKit.quick(); }catch(e){} };
+  ov.addEventListener('click', e=>{ const nv = e.target.closest('[data-nav]'); if(nv){ const side = nv.dataset.nav, list = side === 'out' ? outList : inList, cur = side === 'out' ? outSel : inSel; choose(side, list[(list.indexOf(cur) + (+nv.dataset.dir) + list.length) % list.length]); return; }
+    const pk = e.target.closest('[data-pick]'); if(pk) choose(pk.dataset.pick, pk.dataset.id); });
+  // 2026-10-17 (user: "The Swap menu fade blows up and fade shrinks down (transition). Clicking Swap changes the fade shrink down
+  // transition to a bounce then fade shrink down! like its happy."): the window fades in growing from small (CSS ds2Grow), and goes
+  // fading while it shrinks (.is-out); after a Swap it first does a happy bounce (.is-happy), then the same fade-and-shrink.
+  const close = ()=>{ ov.classList.add('is-out'); if(item.forced) setDialogueFlag(SWAP_TUTORIAL_FLAG, true); setTimeout(()=>{ ov.remove(); setTimeout(maybeOfferDeckSwap, 300); }, reducedMotion() ? 60 : 240); };
   const keep = ov.querySelector('#dsKeep'); if(keep) keep.onclick = ()=>{ try{ localStorage.setItem(SWAP_DECLINES_KEY, String((+localStorage.getItem(SWAP_DECLINES_KEY) || 0) + 1)); }catch(e){} close(); };
   // 2026-10-15 (user: "The Swap dialogue (Map 0) should be an option w/ a Cancel button."): the teaching swap can be turned down too;
   // the card stays in your collection (the Camp can still put it in), and it doesn't count as a "no thanks" to later offers.
   const cancel = ov.querySelector('#dsCancel'); if(cancel) cancel.onclick = ()=>{ cancel.disabled = true; close(); };
   ov.addEventListener('keydown', e=>{ if(e.key === 'Escape'){ e.stopPropagation(); (keep || cancel) && (keep || cancel).click(); } });
   const sw = ov.querySelector('#dsSwap'); setTimeout(()=>{ try{ sw.focus(); }catch(e){} }, 60);
-  sw.onclick = ()=>{ sw.disabled = true; if(keep) keep.disabled = true; if(cancel) cancel.disabled = true;
-    myDeckCounts[out] -= 1; if(myDeckCounts[out] <= 0) delete myDeckCounts[out]; myDeckCounts[id] = (myDeckCounts[id]||0) + 1; saveMyDeck();
+  sw.onclick = ()=>{ sw.disabled = true; if(keep) keep.disabled = true; if(cancel) cancel.disabled = true; ov.classList.add('is-done');
+    const tIn = inSel, tOut = outSel, dIn = defs[tIn], dOut = defs[tOut];
+    myDeckCounts[tOut] -= 1; if(myDeckCounts[tOut] <= 0) delete myDeckCounts[tOut]; myDeckCounts[tIn] = (myDeckCounts[tIn]||0) + 1; saveMyDeck();
     try{ SoundKit.draw && SoundKit.draw(); }catch(e){}
-    ov.querySelector('.ds2-focus').classList.add('is-swapped');
+    ov.querySelector('.ds2-stage').classList.add('is-swapped');
     // 2026-10-14 (user: "When you click Swap, it says 'Nice!' then the window fades abit faster than now."): the line under the
-    // cards turns into a "Nice!", and the window goes after 650 ms (was 1.3 s) with a quicker fade (CSS .ds2-overlay.is-out).
+    // cards turns into a "Nice!"; 2026-10-17: then the happy bounce, then the fade-and-shrink.
     { const say = ov.querySelector('.ds2-say'); if(say) say.innerHTML = '<b class="ds2-nice">Nice!</b>'; }
-    setTimeout(()=>{ try{ showToast(TX('toast.is-in-your-deck-in-place', {name: d.name, name2: od.name}), 'ok'); }catch(e){} close(); }, reducedMotion() ? 200 : 650); };
+    const rm = reducedMotion();
+    setTimeout(()=> ov.classList.add('is-happy'), rm ? 0 : 420);
+    setTimeout(()=>{ try{ showToast(TX('toast.is-in-your-deck-in-place', {name: dIn.name, name2: dOut.name}), 'ok'); }catch(e){} close(); }, rm ? 200 : 1000); };
 }
 // Arrow keys (2026-10-13, user: "Pressing Up or down arrows should go to the next or previous map"). Flipped 2026-10-15 (user:
 // "Up arrow should go lower in map number, down arrow should go higher in map number!"): ↑ the map before (lower number, like the
@@ -52177,7 +52333,9 @@ function renderConquestSubTab(body){
   const worldOpen = worldRevealed();
   if(worldOpen && !loadDialogueFlags()['world_revealed_toast'] && !adminModeEnabled){ setDialogueFlag('world_revealed_toast', true); setTimeout(()=>{ try{ showToast(TX('toast.the-world-opens-up-every-map'), 'ok'); SoundKit.unlock && SoundKit.unlock(); }catch(e){} }, 600); }
   document.body.classList.toggle('world-hidden', !worldOpen);
-  document.body.classList.toggle('cq-opening', !loadTutorial2Done() && (conquestSelectedMap==='m1' || conquestSelectedMap==='mtut') && !adminModeEnabled);
+  // 2026-10-17 (user: "Tutorial only: You see the tutorials placed left and right (T1  T2), not anymore"): on the Tutorial map itself
+  // T-0 and T-1 show as they always will (their own spots, the trail between them); only the Outskirts keep the opening look.
+  document.body.classList.toggle('cq-opening', !loadTutorial2Done() && conquestSelectedMap==='m1' && !adminModeEnabled);
   body.innerHTML = `
     <div class="conquest-layout ${worldOpen ? '' : 'world-hidden'} ${(!loadTutorial2Done() && (conquestSelectedMap==='m1' || conquestSelectedMap==='mtut')) ? 'is-opening' : ''}" id="conquestLayout">
       <div class="conquest-maps" id="conquestMapList"></div>
@@ -52346,8 +52504,10 @@ function renderConquestSubTab(body){
         // place you haven't reached yet" rather than "a total mystery," while still making
         // unmistakably clear it can't be clicked/fought yet.
         if(!visible){
-          return `<div class="map-node map-node-hidden${node.secret ? ' is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''}" data-lkey="${node.key}" role="img" aria-label="Locked skirmish" style="${style}" title="Locked — clear the previous skirmish on this trail first">
-            <span class="map-node-ico map-node-ico-locked">${node.icon}</span><span class="map-node-lock">🔒</span>
+          // 2026-10-17: a Tutorial-map fight that waits on a later map says which fight opens it
+          const gate = tutSideNodeGated(map, node) ? tutSideGateFightCode(node) : '', gateTxt = gate ? `Defeat ${gate} to unlock this` : '';
+          return `<div class="map-node map-node-hidden${node.secret ? ' is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''}${gate ? ' is-gated' : ''}" data-lkey="${node.key}" role="img" aria-label="${escapeAttr(gateTxt || 'Locked skirmish')}" style="${style}" title="${escapeAttr(gateTxt || 'Locked — clear the previous skirmish on this trail first')}">
+            <span class="map-node-ico map-node-ico-locked">${node.icon}</span><span class="map-node-lock">🔒</span>${gate ? `<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span><span class="map-node-gate" aria-hidden="true">${escapeHtml(gateTxt)}</span>` : ''}
           </div>`;
         }
         // Bugfix 2026-09-30 (same repeat report as the tutorial-node fix above — a cleared real
@@ -52450,7 +52610,11 @@ function renderConquestSubTab(body){
     } }
   // 2026-10-16 (user: "I like having more map effects and title effects. Could be cool to give grandeur to a map."): a title card with the map's
   // own particles and flourish, once per map per session (FX.G.hooks.mapTitle keeps the count), after the map veil / first zoom-out has lifted.
-  try{ if(!tutPhase && !conquestLayoutEdit) fxHook('mapTitle', document.getElementById('conquestLayout'), {id:map.id, name:map.name, icon:map.icon, biome:MAP_BIOME_OF[map.id] || MAP_BIOME_OF[map.parent], sub:isDailyDungeonMap(map) ? 'Daily dungeon' : map.sub ? 'Side map' : (mapNumberOf(map.id) != null ? 'Map ' + mapNumberOf(map.id) : ''), delay:(document.querySelector('.map-veil') || tutZoomOut) ? 2100 : 300}); }catch(e){}
+  // 2026-10-17 (user: "the map name title bar introducing the tutorial map should only show up once you visit it the 2nd time, when it
+  // has T1-5, from Bramblewood Outskirts"): no title over the first tutorial run; it waits until you come back from the Outskirts.
+  if(map.id === 'm1' && loadTutorial2Done()){ try{ localStorage.setItem('bramblewood_tut_title_ok_v1', '1'); }catch(e){} }
+  const tutTitleWait = map.id === 'mtut' && (!loadTutorial2Done() || (()=>{ try{ return localStorage.getItem('bramblewood_tut_title_ok_v1') !== '1'; }catch(e){ return false; } })());
+  try{ if(!tutPhase && !conquestLayoutEdit && !tutTitleWait) fxHook('mapTitle', document.getElementById('conquestLayout'), {id:map.id, name:map.name, icon:map.icon, biome:MAP_BIOME_OF[map.id] || MAP_BIOME_OF[map.parent], sub:isDailyDungeonMap(map) ? 'Daily dungeon' : map.sub ? 'Side map' : (mapNumberOf(map.id) != null ? 'Map ' + mapNumberOf(map.id) : ''), delay:(document.querySelector('.map-veil') || tutZoomOut) ? 2100 : 300}); }catch(e){}
   // 2026-10-16 (user: "Ah the Murgle sidemap intro title should follow the same format! But since its a daily dungeon - make the background a
   // little darker and castle-dungeony. with dripping swamp shit"): Murgle Mayhem's theme is now FX.G's 'dungeon' (the ribbon banner in its
   // slime-and-stone 'dungeon' variant), and a daily dungeon's subtitle says so.
@@ -57693,6 +57857,7 @@ function leaveMatchResumable(){
 }
 function endMatch(opts){
   if(matchState && matchState.fxLib){ closeEffectsLibrary(); return; } // 🔬 the Effects library has no result to record (2026-10-14)
+  try{ packHoldForReplay = 0; }catch(e){} // 2026-10-17: leaving a fight lets held packs open (a Play again sets the hold again)
   standardMatchActive = false;
   if(!(opts && opts.keepResume) && matchState && matchState.mode !== 'tutorial') bumpFightSerial(); // D53: a row's "New!" lasts the fight it first happened in
   try{ EMOTE_LAST_HIT.clear(); }catch(e){}
@@ -57733,7 +57898,7 @@ async function waitForBoardEntrances(max){
   await sleep(60);
   while(performance.now() - t0 < (max||1400)){
     // 2026-10-14: a card whose tile is still mid-drop (the leader's throne drop tweens the tile, not the card) counts too.
-    const busy = [...document.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].some(el=> el.classList.contains('is-entering') || el.classList.contains('landing-impact') || (hasGsap() && el.style.position==='absolute' && gsap.isTweening(el)) || (hasGsap() && el.querySelector('.card-tile') && gsap.isTweening(el.querySelector('.card-tile'))));
+    const busy = !!document.querySelector('.hand-flight-proxy') || [...document.querySelectorAll('#rowEnemy .board-card, #rowMine .board-card')].some(el=> el.classList.contains('is-entering') || el.classList.contains('landing-impact') || (hasGsap() && el.style.position==='absolute' && gsap.isTweening(el)) || (hasGsap() && el.querySelector('.card-tile') && gsap.isTweening(el.querySelector('.card-tile'))));
     if(!busy) return;
     await sleep(50);
   }
@@ -57952,16 +58117,27 @@ async function attemptSummonLeader(preferredLane){
     lane = openLanes[Math.floor(Math.random()*openLanes.length)];
   }
   const events = [];
+  // 2026-10-17 (user: "When playing a card, make it look like it came from my hand. Leader as well ... You can launch it from my hand"):
+  // where the leader leaves from: the dragged card's centre on a drop, else the leader slot (read before the slot empties below).
+  let leaderOrigin = null;
+  try{ const ld = window.__bwLastDrop, gc = window.__bwDropCenter || (ld && performance.now() - ld.t < 60 && (ld.x || ld.y) ? ld : null), face = widgetEl && (widgetEl.querySelector('.card-tile') || widgetEl), fr = face && face.getBoundingClientRect();
+    if(gc) leaderOrigin = {x:gc.x, y:gc.y, kind:'hand', leader:true, rotate: window.__bwDropTilt != null ? window.__bwDropTilt : undefined, w: window.__bwDropW || (fr && fr.width) || null};
+    else if(fr && fr.width) leaderOrigin = {x:fr.left + fr.width/2, y:fr.top + fr.height/2, kind:'hand', leader:true, fromTile:true, w:fr.width}; }catch(e){}
   const ok = m.engine.summonLeader(m.players, m.sideOf, activePid, m.leaderDefId, lane, m.stats, events);
   if(!ok){ denyShake(widgetEl); return; }
   const playEv = events.find(ev=>ev.type==='play' && ev.leader);
   if(playEv) m.leaderUid = playEv.uid;
+  if(playEv && leaderOrigin) pendingEntranceOrigins.set(String(playEv.uid), leaderOrigin);
   SoundKit.play();
   events.forEach(ev=>{ pushLog(ev); renderVfxForEvent(ev); });
   const wrap = document.getElementById('leaderWidgetWrap');
   if(wrap){ wrap.innerHTML = leaderWidgetHTML(m); wireLeaderWidget(); }
-  if(m.leaderUid != null){ const lu = m.leaderUid; noteMatchFx(Math.round(animMs().strike || 380) + LEADER_THRONE_FX_MS, m); // 2026-10-14: the round waits for it
-    setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId}), Math.round(animMs().strike || 380)); }
+  if(m.leaderUid != null){ const lu = m.leaderUid;
+    // 2026-10-17: flying in from your hand, the throne moment (ring, flash, crown, "👑 Leader" ribbon) starts as it lands, and its own
+    // drop from above is skipped (fromHand); without the flight (reduced motion, no GSAP) it plays as before.
+    const fromHand = !!leaderOrigin && hasGsap() && !reducedMotion(), at = fromHand ? Math.round(handFlightSec(true)*1000) : Math.round(animMs().strike || 380);
+    noteMatchFx(at + LEADER_THRONE_FX_MS, m); // 2026-10-14: the round waits for it
+    setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId, fromHand}), at); }
   setTimeout(()=> settleStrayBoardCards(), 1600); setTimeout(()=> settleStrayBoardCards(), 3000); // the leader always ends its landing at full height
   await afterPlayerAction(activePid);
 }
@@ -57971,6 +58147,8 @@ async function attemptSummonLeader(preferredLane){
 // this payload safely on its own; the drop handlers below just need to actively check for it
 // FIRST and route to attemptSummonLeader(lane) instead of falling through to playCardByUid).
 const LEADER_DRAG_PAYLOAD = 'LEADER';
+// 2026-10-17: where the last drop let go (page px), read by attemptSummonLeader so a dragged leader flies on from where you released it.
+try{ document.addEventListener('drop', e=>{ window.__bwLastDrop = {x:e.clientX, y:e.clientY, t:performance.now()}; }, true); }catch(e){}
 // Bugfix (2026-09-22, explicit report: "Sometimes the drag and drop doesnt work for the
 // leader."): dragstart/dragend used to be bound directly to the specific #leaderWidget element
 // wireLeaderWidget() saw at the moment it ran, re-attached only by wireLeaderWidget()'s own call
@@ -58048,6 +58226,7 @@ function hudSettingsWidgetHTML(){
         <input type="range" id="voiceVolumeSliderHud" min="0" max="100" step="1" aria-label="Voice volume">
       </div>
       <div class="settings-row"><div class="settings-row-label"><span>🗨️ Voice lines</span></div><select id="voiceLinesSelectHud" aria-label="Voice lines"></select></div>
+      <div class="settings-row"><div class="settings-row-label"><span>💬 NPC dialogue speed</span></div><select id="dialogueSpeedSelectHud" aria-label="NPC dialogue speed"></select></div>
       <div class="settings-row">
         <div class="settings-row-label"><span>🖼️ Battlefield</span></div>
         <select id="battlefieldBgSelectHud" aria-label="Battlefield background"></select>
@@ -58396,7 +58575,7 @@ function renderMatchUI(){
       ${fieldResSideHTML(m, true)}${fieldResSideHTML(m, false)}
     </div>
     <div class="hud">${resourcePillsHTML}</div>
-    <div class="bottom-play-row">
+    <div class="bottom-play-row${document.querySelector('.bottom-play-row.is-turn-played') ? ' is-turn-played' : ''}">
       ${matchCastleTileHTML(castleCharOf(m, 1), (m.resolving && m.displayHqHp && m.displayHqHp.A != null) ? m.displayHqHp.A : p1.hq.hp, p1.hq.maxHp, 'A', bottomLabel)}
       <div class="deck-widget hq-tile ${(p1.deck||[]).length ? 'bw-back bk-unit' : 'is-empty'}" id="deckWidgetBottom" style="${deckPileStyle((p1.deck||[]).length)}">
         ${(p1.deck||[]).length ? `<div class="castle-label">Deck</div><div class="ico deck-back-mark">🌰</div>` : `<div class="deck-empty-label">Deck<br>Empty</div>`}
@@ -58679,8 +58858,8 @@ function renderMatchUI(){
       }
       // 2026-10-05 (user: "Play Again seems to make me fight the old deck instead of the Skirmish I
       // just fought"): a Conquest fight replays the same node, not a generic AI match.
-      if(mode==='conquest' && m.conquestNode){ const cn = m.conquestNode, bm = m.battleMode; endMatch(); startConquestMatch(cn.mapId, cn.nodeId, bm ? {battleMode: bm} : undefined); return; }
-      endMatch(); if(mode==='sandbox') startSandboxMatch(); else startMatch(mode);
+      if(mode==='conquest' && m.conquestNode){ const cn = m.conquestNode, bm = m.battleMode; endMatch(); holdPacksForReplay(); if(!startConquestMatch(cn.mapId, cn.nodeId, bm ? {battleMode: bm} : undefined)) packHoldForReplay = 0; return; }
+      endMatch(); holdPacksForReplay(); if(mode==='sandbox') startSandboxMatch(); else startMatch(mode);
     });
     const wlBackBtn = document.getElementById('wlBackBtn'); if(wlBackBtn) wlBackBtn.addEventListener('click', ()=>{ m.winModalDismissed = true; renderMatchUI(); });
     const wlNext = document.getElementById('wlNextBattleBtn');
@@ -58690,9 +58869,9 @@ function renderMatchUI(){
         const firstTime = claimTutorialWin(m.tutorialFaction || loadFactionChoice() || 'both');
         if(firstTime){ endMatch(); leavesRevealToMap(); return; }
       }
-      endMatch();
+      endMatch(); holdPacksForReplay(); // 2026-10-17: the packs won wait until you stop playing
       conquestSelectedMap = nb.mapId; playSubTab = 'conquest';
-      if(!startConquestMatch(nb.mapId, nb.key)){ conquestSelectedNodeKey = nb.key; switchTab('play'); }
+      if(!startConquestMatch(nb.mapId, nb.key)){ packHoldForReplay = 0; conquestSelectedNodeKey = nb.key; switchTab('play'); }
     });
     const wlQuitBtn = document.getElementById('wlQuitBtn'); if(wlQuitBtn) wlQuitBtn.addEventListener('click', endMatch);
     // 2026-10-04 (D18): a new reward card is only useful once it's in your deck — one tap there.
@@ -59249,8 +59428,17 @@ function showPlacementPreview(row, side){
   placementPreview = {row, ghostEl:ghost, side};
   if(doFlip) Flip.from(flipState, {duration:.22, ease:'power2.out'});
 }
+// 2026-10-17 (user: "When you've played your turn, your hand area (the btm part of the screen) darkens by a hint. Just very slightly, like
+// 5%."): from your play (or Pass) until your next turn starts, the bottom row (castle, deck, hand, graveyard) is 5% darker. It fades
+// both ways (CSS transition); a rebuilt row starts in the state the old one showed (renderMatchUI), so the fade back still plays.
+function syncTurnPlayedDim(m){
+  try{ const el = document.querySelector('.bottom-play-row'); if(!el) return;
+    const pid = m && m.players ? viewerHandPid(m) : null, me = pid != null && !m.over ? m.players[pid] : null;
+    const want = !!(me && (me.playedThisTurn || m.resolving || m._committing));
+    if(el.classList.contains('is-turn-played') !== want){ void el.offsetWidth; el.classList.toggle('is-turn-played', want); } }catch(e){}
+}
 function updateControlsDisabled(){
-  const m = matchState; if(!m||m.over) return;
+  const m = matchState; syncTurnPlayedDim(m); if(!m||m.over) return;
   // Live Ranked (#277): not my turn — lock every drop zone. No "playedThisTurn" state to gate
   // per-button on; the opponent's-turn banner (renderMatchUI) already explains why nothing's
   // clickable, same idea as the 'pc' pass overlay hiding controls during the other seat's turn.
@@ -59791,7 +59979,7 @@ function renderBoard(opts){
           tl.kill();
           enteringTimelines.delete(uid);
           const isSpawn = spawnUidsForKilledEntrants.includes(String(uid));
-          setTimeout(()=>{ if(isSpawn) playBeeSpawnLanding(uid); else playLandingImpact(uid); }, 0);
+          if(!handFlightsLive.has(String(uid))) setTimeout(()=>{ if(isSpawn) playBeeSpawnLanding(uid); else playLandingImpact(uid); }, 0); // a hand flight lands its own (2026-10-17)
         }
       });
       gsap.killTweensOf(enteringEls);
@@ -60222,15 +60410,22 @@ function renderBoard(opts){
         // instead of the generic fixed fall-from-above offset. Consumed (deleted) once so it can
         // never leak onto some later, unrelated card reusing the same uid space.
         let fromVars = {opacity:0, scale:.4, y:-52, rotate:-10};
-        let isHandPlay = false;
+        let isHandPlay = false, handFlight = null; // handFlight: your own play flies in as a page-level copy (2026-10-17, see handFlightProxy)
         // Set below only for a genuine spawn-origin entrance (born from a spawner structure/
         // drone) — see the jump-arc timeline branch further down for what this drives.
         let spawnPeakVars = null;
         const origin = pendingEntranceOrigins.get(String(uid));
         if(origin){
           const fr = el.getBoundingClientRect();
-          const dx = origin.x - (fr.left + fr.width/2);
-          const dy = origin.y - (fr.top + fr.height/2);
+          // 2026-10-17 (user: "When playing a card, make it look like it came from my hand ... (When playing the 3rd card from the centre,
+          // it seems to work, though w a 0.1s lag)"): the offset to the origin is measured in screen px, but the card's x/y live inside
+          // #battlefieldInner, which the camera zooms (battlefieldScale < 1 on any board wider than the column) and leans. The tween
+          // used the screen px as board px, so a card started dx*scale from its slot instead of at the origin: only the hand card
+          // straight under its slot (dx about 0) looked right. The offset is now divided by the card's on-screen scale.
+          const bsc = el.offsetWidth > 0 && fr.width > 0 ? fr.width / el.offsetWidth : 1;
+          const dx = (origin.x - (fr.left + fr.width/2)) / bsc;
+          const dy = (origin.y - (fr.top + fr.height/2)) / bsc;
+          if(origin.kind==='hand' && !origin.enemyHand) handFlight = origin;
           if(origin.kind==='hand'){
             // 2026-09-21 ("it should also fly from where you let go of the card. not randomly
             // from the ether" + "should look sexier"): origin is now the REAL cursor release
@@ -60279,8 +60474,11 @@ function renderBoard(opts){
           pendingEntranceOrigins.delete(String(uid));
         }
         const sharp = sharpBoard();
+        // 2026-10-17: your own play never waits on the stagger (the enemy's card rendered first in this pass pushed yours 0.05 s
+        // back, sat still at the hand: the "0.1 s lag").
+        const flightOk = !!(handFlight && handFlightProxy(el, uid, handFlight));
         const entranceTl = gsap.timeline({
-          delay: i*(sharp ? 0.03 : 0.05),
+          delay: (isHandPlay && !(origin && origin.enemyHand)) ? 0 : i*(sharp ? 0.03 : 0.05),
           onComplete: ()=>{
             enteringUids.delete(uid);
             el.classList.remove('is-entering');
@@ -60297,10 +60495,18 @@ function renderBoard(opts){
             // is done — would let it compute a static flow position as if Flip's still-absolute
             // targets don't exist yet, which is exactly the desync this whole scheme prevents.
             if(spawnUids.includes(String(uid))) playBeeSpawnLanding(uid);
-            else { playLandingImpact(uid); if(isHandPlay) playHandSummonGlow(uid); }
+            else if(!flightOk){ playLandingImpact(uid); if(isHandPlay) playHandSummonGlow(uid); } // a flight lands its own thud (handFlightProxy)
           },
         });
-        if(spawnPeakVars){
+        if(flightOk){
+          // 2026-10-17 (user: "Placing a card: It looks like it moves from your hand into play." / "When playing a card, make it look
+          // like it came from my hand. Leader as well ... launch it from my hand, then using reverse ease to seem like it made more of
+          // an impact"): a page-level copy of the card flies from the hand (or the dragged card, or the leader slot) to this slot
+          // (handFlightProxy), drawn above the battlefield's clip and its camera zoom. The real card waits hidden (visibility, which
+          // Flip leaves alone) at its slot and takes over the moment the copy arrives, its face squashing into place (the leader
+          // harder, a stomp). This timeline only holds the card's "entering" state for that long.
+          entranceTl.set(el, {opacity:1, x:0, y:0, rotate:0, scale:1}, 0).to({}, {duration: handFlightSec(!!handFlight.leader) + .25});
+        } else if(spawnPeakVars){
           // Jump-arc: launch (fast start, decelerating as it nears the peak — like leaving the
           // ground) then fall-and-land (accelerating back down — like gravity), instead of one
           // flat straight-line lerp. Total duration matches the single-tween case exactly (same
@@ -61177,7 +61383,7 @@ function boardCardHTML(c, defs, opts){
   if(c.shield > 0) badges.push(`<span class="abadge unit-shield" title="Shield: ${c.shield} temporary Health, spent before its Health">💠${c.shield}</span>`);
   if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
-  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${tideNow ? `<div class="tide-chip tide-${tideNow}" title="${tideNow==='flow' ? 'Flow: +1 Attack' : tideNow==='high' ? 'High tide: +2 Attack, +2 Armor' : 'Ebb: +1 Armor'}">${tideNow==='flow' ? '🌊⚔' : tideNow==='high' ? '🌊⚔🛡' : '🐚🛡'}</div>` : ''}
+  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${tideNow ? `<div class="tide-chip tide-${tideNow}" title="${tideNow==='flow' ? 'Flow: +1 Attack' : tideNow==='high' ? 'High tide: +2 Attack, +2 Armor' : 'Ebb: +1 Armor'}"><span class="sym-stack">${tideNow==='flow' ? '🌊<i>⚔</i>' : tideNow==='high' ? '🌊<i>⚔</i><i>🛡</i>' : '🐚<i>🛡</i>'}</span></div>` : ''}
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${c.chained?`<div class="status-overlay chain-overlay">⛓</div>`:''}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
@@ -62903,7 +63109,20 @@ function leaderThroneVfx(uid, opts){
   if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
   // the drop: the card falls onto its spot from above, a touch too big, and settles
-  { const t0 = el.querySelector('.card-tile'); if(t0) gsap.fromTo(t0, {y: enemy ? -90 : -70, scale:1.25, opacity:.2}, {y:0, scale:1, opacity:1, duration:.42, ease:'power3.in', clearProps:'transform,opacity'}); }
+  // 2026-10-17: a leader that flew in from your hand (opts.fromHand, handFlightProxy) has already landed: no second drop, the ring at once.
+  if(!opts.fromHand){ const t0 = el.querySelector('.card-tile'); if(t0) gsap.fromTo(t0, {y: enemy ? -90 : -70, scale:1.25, opacity:.2}, {y:0, scale:1, opacity:1, duration:.42, ease:'power3.in', clearProps:'transform,opacity'}); }
+  // 2026-10-17 (user: "On leader death, there's a ribbon leader, then it fades. Instead that ribbon could come out at the start as well."):
+  // the "👑 Leader" ribbon now comes out as the leader lands (and no longer on its death, see FX.C deathPlan): it pops out under the card,
+  // holds, and fades, following the card.
+  setTimeout(()=>{ try{ const cur = boardCardEl(uidKey0) || el; if(!cur || !cur.isConnected) return; const q0 = cur.getBoundingClientRect(); if(!q0.width) return;
+    document.querySelectorAll('.leader-arrive-ribbon').forEach(x=>{ if(x.dataset.uid === String(uidKey0)) x.remove(); });
+    const rb = document.createElement('div'); rb.className = 'leader-arrive-ribbon' + (enemy ? ' is-enemy' : ''); rb.dataset.uid = String(uidKey0); rb.setAttribute('aria-hidden', 'true'); rb.textContent = '👑 Leader';
+    document.body.appendChild(rb);
+    const at = ()=>{ const c2 = boardCardEl(uidKey0); if(!c2 || !c2.isConnected) return; const q = c2.getBoundingClientRect(); if(!q.width) return; rb.style.left = (q.left + q.width/2) + 'px'; rb.style.top = (q.bottom - 4) + 'px'; };
+    at(); gsap.ticker.add(at);
+    gsap.timeline({onComplete:()=>{ gsap.ticker.remove(at); rb.remove(); }})
+      .fromTo(rb, {xPercent:-50, yPercent:-50, scale:.3, opacity:0}, {scale:1, opacity:1, duration:.26, ease:'back.out(2.6)'})
+      .to(rb, {opacity:0, y:8, duration:.45, ease:'power1.in'}, '+=1.15'); }catch(e){} }, opts.fromHand ? 60 : 420);
   setTimeout(()=>{ const cur = boardCardEl(uidKey0) || el; if(!cur || !cur.isConnected) return; const q = cur.getBoundingClientRect(); if(!q.width) return;
     // the shockwave and the flash, as it lands
     const ring = document.createElement('div'); ring.className = 'leader-ring' + (enemy ? ' is-enemy' : ''); ring.setAttribute('aria-hidden', 'true');
@@ -62913,8 +63132,8 @@ function leaderThroneVfx(uid, opts){
     flash.style.cssText = `left:${q.left + q.width/2}px; top:${q.top + q.height/2}px; width:${q.width*1.8}px; height:${q.height*1.5}px;`;
     document.body.append(flash, ring, ring2); setTimeout(()=>{ ring.remove(); ring2.remove(); flash.remove(); }, 1300);
     try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){}
-    if(big) battlefieldShake(Math.max(0.35, shakeStrengthForArrival(hp)));
-  }, 420);
+    if(big || opts.fromHand) battlefieldShake(Math.max(big ? 0.35 : 0.22, shakeStrengthForArrival(hp))); // 2026-10-17: a stomp from the hand always jolts the field a little
+  }, opts.fromHand ? 0 : 420);
   // The field's middle line: halfway between the two rows (or the battlefield's own middle).
   const rm = document.getElementById('rowMine'), re = document.getElementById('rowEnemy'), bfr = (document.querySelector('.battlefield')||el).getBoundingClientRect();
   const midY = (rm && re) ? (re.getBoundingClientRect().bottom + rm.getBoundingClientRect().top)/2 : bfr.top + bfr.height/2;
@@ -64397,7 +64616,9 @@ function syncSkyFx(m, phase){
   sky.className = skyClassFor(tone, shade); skyToneLast = tone; skyShadeLast = shade;
   if(tone === 'misty') sky.style.animationDelay = (-((performance.now() / 1000) % 90)).toFixed(2) + 's'; // the loop carries on across re-renders
 }
-const SKY_PHASE_MS = 10000, SKY_CREEP_MS = 4200, SKY_CREEP_PEAK = .4; // the creep: 40% of the old full-strength sweep
+// 2026-10-17 (user: "Day/Night: Lower the transparency of the effect by another 50%. It's mainly for the slow transition of the lighting."):
+// the creep is half as strong again (20% of the old full sweep, was 40%); the 10 s timing is unchanged.
+const SKY_PHASE_MS = 10000, SKY_CREEP_MS = 4200, SKY_CREEP_PEAK = .2; // the creep: 20% of the old full-strength sweep (was .4)
 let skyPhaseEase = null; // {from, to, t0} while a change of phase is easing
 // Lay out a change of phase on `sky` (the layer showing `pe.from`), `elapsed` ms into it: `sky` fades out, a new layer with `pe.to`
 // fades in, and (while it has time left) the creep slides across. Returns the new main layer.
@@ -64513,7 +64734,7 @@ function tidePillHTML(m){
   const high = t==='high', flow = t==='flow', name = high ? _t('High Tide') : flow ? _t('Flood') : _t('Ebb');
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): with the Tide-evade rule test on, the pill says so.
   const te = tideEvadeLive(m);
-  return bfPillHTML('tide-' + t + (te ? ' tide-evade' : ''), high ? '🌊🌊' : flow ? '🌊' : '', name, high ? '' : name, pillTipHTML(name, te ? [TIDE_PILL_TIP, TIDE_EVADE_TIP] : [TIDE_PILL_TIP]), 'Tide: ' + (high ? 'High Tide' : flow ? 'Flood' : 'Ebb') + (te ? '. ' + TIDE_EVADE_TIP : ''));
+  return bfPillHTML('tide-' + t + (te ? ' tide-evade' : ''), high ? '<span class="sym-stack">🌊<i>🌊</i></span>' : flow ? '🌊' : '', name, high ? '' : name, pillTipHTML(name, te ? [TIDE_PILL_TIP, TIDE_EVADE_TIP] : [TIDE_PILL_TIP]), 'Tide: ' + (high ? 'High Tide' : flow ? 'Flood' : 'Ebb') + (te ? '. ' + TIDE_EVADE_TIP : ''));
 }
 const TIDE_EVADE_TIP = 'Tide evade (test): Tide units are Evasive against attacks from units without Tide.';
 function tideEvadeLive(m){ try{ return !!(m && m.engine && m.engine.tideEvadeOn && m.engine.tideEvadeOn()); }catch(e){ return false; } }
@@ -65833,29 +66054,41 @@ function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
   // The loss-rank pill that sat here was removed 2026-10-14: the headline (lossRankHeadlineHTML) shows the rank once.
+  // 2026-10-17 (user: "In the rewards menu, the rewards section should contain all the rewards including kibble. New cards seen should
+  // contain the Title unlocks & skirmish fight unlock. New cards seen on top. If you GOT a card reward, it appears on the left. If you
+  // seen it for the first time, put a NEW! on it as well."): three blocks now. Cards won sit on the left (a first-seen one also wears
+  // NEW!); on the right, "New cards seen" comes first and also carries what opened (titles, characters, maps, new fights), then one
+  // Rewards block with every reward: currencies, packs, Kibble, egg, castle, dungeon key, Base growth.
   const cards = m.rewardCardIds || m.conquestCardsEarned || [];
+  const firstSeen = new Set(m.discoveredThisMatch || []);
   if(cards.length){
     const defs = getCardDefs();
-    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards" style="--n:${cards.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span></div>` : '').join('')}</div>
+    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards" style="--n:${cards.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}</div>` : '').join('')}</div>
       ${tabOpen('deck') ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: cards.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: cards.length===1?'it':'them'})}</button>` : ''}</div>`);
+  }
+  // New cards seen, with what opened (2026-10-17): titles / characters / maps, then the new fights as map circles.
+  const seen = (m.discoveredThisMatch||[]).filter((id, i, a)=> a.indexOf(id)===i && !cards.includes(id));
+  const openRows = [];
+  if(m.mode==='tutorial' && m.winner===1){
+    const t2 = (m.tutorialStage||1) >= 2; // Tutorial Complete (2026-10-13, user): part 1 unlocks only "Tutorial Part 2", part 2 only "Conquest Map"
+    openRows.push(`<span class="rw-act">${t2 ? TX('results.conquest-map') : TX('results.tutorial-part-2')}</span>`);
+  } else (m.unlockedActivities||[]).forEach(a=> openRows.push(`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`));
+  const fightRow = (m.unlockedFights||[]).length && m.mode!=='tutorial' ? m.unlockedFights.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
+      return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: n.hqHp, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
+  if(seen.length || openRows.length || fightRow){
+    const defs = getCardDefs();
+    secs.push(`<div class="rw-sec rw-seen"><div class="rw-head">${seen.length ? TX('results.new-cards-seen') : TX('results.unlocked')}</div>${seen.length ? `<div class="rw-cards">${seen.map(id=> defs[id] ? `<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>` : '').join('')}</div>` : ''}${openRows.length ? `<div class="rw-row rw-open-row">${openRows.join('')}</div>` : ''}${fightRow ? `<div class="rw-row rw-fight-row">${fightRow}</div>` : ''}</div>`);
   }
   // Packs won (2026-10-15, user: "it should be more obviously a reward in the post-battle analysis! Than it hovers up and goes
   // into the pack opening screen"): the pack itself, glowing, with its name; leaving the screen lifts it into the opener.
+  // 2026-10-17: inside the one Rewards block.
   const packRefs = [];
   if(m.conquestFactionPack) packRefs.push({kind:'faction', id:m.conquestFactionPack});
   if(m.conquestPackEarned && FACTION_PACKS[m.conquestPackEarned]) packRefs.push({kind:'faction', id:m.conquestPackEarned});
   if(m.conquestFreePack) packRefs.push({kind:'free', id:m.conquestFreePack});
   const packInfos = packRefs.map(rewardPackInfo).filter(Boolean);
-  if(packInfos.length || m.conquestPackHeld){
-    const heldInfo = m.conquestPackHeld ? rewardPackInfo({kind:'free', id:m.conquestPackHeld}) : null;
-    secs.push(`<div class="rw-sec rw-packs"><div class="rw-head">${TX('results.won', {v1: packInfos.length > 1 ? 'Packs' : 'Pack'})}</div><div class="rw-pack-row">${packInfos.map(pi=> `<div class="rw-pack-art" data-tip="${escapeAttr(TX('results.cards-it-opens-as-soon-as', {name: escapeAttr(pi.name), cards: pi.cards}))}">${TX('results.cards-opens-next', {v1: rewardPackBoosterHTML(pi), name: escapeHtml(pi.name), cards: pi.cards})}</div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div></div>`);
-  }
-  // 2026-10-08 (user): cards first seen this match follow the unlocks, each with a "NEW!" reveal.
-  const seen = (m.discoveredThisMatch||[]).filter((id, i, a)=> a.indexOf(id)===i && !cards.includes(id));
-  if(seen.length){
-    const defs = getCardDefs();
-    secs.push(`<div class="rw-sec rw-seen"><div class="rw-head">${TX('results.new-cards-seen')}</div><div class="rw-cards">${seen.map(id=> defs[id] ? `<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>` : '').join('')}</div></div>`);
-  }
+  const heldInfo = m.conquestPackHeld ? rewardPackInfo({kind:'free', id:m.conquestPackHeld}) : null;
+  const packRow = (packInfos.length || heldInfo) ? `<div class="rw-pack-row">${packInfos.map(pi=> `<div class="rw-pack-art" data-tip="${escapeAttr(TX('results.cards-it-opens-as-soon-as', {name: escapeAttr(pi.name), cards: pi.cards}))}">${TX('results.cards-opens-next', {v1: rewardPackBoosterHTML(pi), name: escapeHtml(pi.name), cards: pi.cards})}</div>`).join('')}${heldInfo ? `<div class="rw-pack-art is-held" data-tip="${escapeAttr(TX('results.packs-open-once-the-armoury-camp'))}">${TX('results.opens-with-the-armoury', {v1: rewardPackBoosterHTML(heldInfo), name: escapeHtml(heldInfo.name)})}</div>` : ''}</div>` : '';
   const cur = [];
   if(reward && reward.gold>0) cur.push(['gold', reward.gold]);
   if(reward && reward.dust>0) cur.push(['dust', reward.dust]);
@@ -65870,32 +66103,25 @@ function rewardsPanelHTML(m){
   // shows greyed, and its dust bursts into the Magic Dust pill, which counts on up (baseDustBurst).
   const bg = m.conquestBaseGrowth, bgDust = (bg && bg.dust) || 0;
   if(bgDust && !cur.some(c=> c[0]==='dust')) cur.push(['dust', 0]);
-  if(cur.length){
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">${TX('results.rewards')}</div><div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div><div class="rw-row rw-item-row">${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-spare-copy-of-a-base'))}">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join(''); })() : ''}</div></div>`);
-  }
-  // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
-  if(m.conquestCastleSpare){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">${TX('results.spare-castle')}</div><div class="rw-row"><span class="rw-act" data-tip="${escapeAttr(TX('results.fuse-it-in-the-forge-castles'))}">🏰 ${escapeHtml(m.conquestCastleSpare)}</span></div></div>`); }
-  if(m.dungeonOutcome && m.dungeonOutcome.keyBack){ secs.push(`<div class="rw-sec rw-cheer rw-dkey"><div class="rw-head">${TX('results.dungeon-key')}</div><div class="rw-row"><span class="rw-act" data-tip="${escapeAttr(TX('results.a-win-gives-your-key-back'))}">${TX('results.dungeon-key-back', {n: dungeonTicketsLeft()})}</span></div></div>`); } // 2026-10-16
-  if(m.conquestKibbleEarned){ secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">${TX('results.kibble')}</div><div class="rw-row"><span class="rw-act" data-tip="${escapeAttr(TX('results.trains-a-level-0-card-to'))}">${TX('results.kibble-2', {conquestKibbleEarned: m.conquestKibbleEarned})}</span></div></div>`); }
+  // 2026-10-17: everything else that was its own block (Kibble, Spare castle, Dungeon key, Found) is a chip in the Rewards block.
+  const acts = [];
+  if(m.conquestKibbleEarned) acts.push(`<span class="rw-act rw-kibble" data-tip="${escapeAttr(TX('results.trains-a-level-0-card-to'))}">${TX('results.kibble-2', {conquestKibbleEarned: m.conquestKibbleEarned})}</span>`);
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
-    secs.push(`<div class="rw-sec rw-cheer"><div class="rw-head">${TX('results.found')}</div><div class="rw-row"><span class="rw-act" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(ek.name || TX('results.an-egg'))}</span></div>${noNest ? `<p class="panel-sub rw-egg-note">${escapeHtml(noNest)}</p>` : ''}</div>`); }
-  // Tutorial Complete (2026-10-13, user): part 1 unlocks only "Tutorial Part 2", part 2 only "Conquest Map"; no fight list.
-  if(m.mode==='tutorial' && m.winner===1){
-    const t2 = (m.tutorialStage||1) >= 2;
-    secs.push(`<div class="rw-sec"><div class="rw-head">${TX('results.unlocked')}</div><div class="rw-row"><span class="rw-act">${t2 ? TX('results.conquest-map') : TX('results.tutorial-part-2')}</span></div></div>`);
-  } else if((m.unlockedActivities||[]).length){
-    secs.push(`<div class="rw-sec"><div class="rw-head">${TX('results.unlocked')}</div><div class="rw-row">${m.unlockedActivities.map(a=>`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`).join('')}</div></div>`);
-  }
-  if((m.unlockedFights||[]).length && m.mode!=='tutorial'){
-    secs.push(`<div class="rw-sec"><div class="rw-head">${TX('results.new-fights')}</div><div class="rw-row">${m.unlockedFights.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
-      return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: n.hqHp, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('')}</div></div>`);
+    acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(ek.name || TX('results.an-egg'))}</span>`); }
+  // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
+  if(m.conquestCastleSpare) acts.push(`<span class="rw-act rw-castle" data-tip="${escapeAttr(TX('results.fuse-it-in-the-forge-castles'))}">🏰 ${escapeHtml(m.conquestCastleSpare)}</span>`);
+  if(m.dungeonOutcome && m.dungeonOutcome.keyBack) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(TX('results.a-win-gives-your-key-back'))}">${TX('results.dungeon-key-back', {n: dungeonTicketsLeft()})}</span>`); // 2026-10-16
+  const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-spare-copy-of-a-base'))}">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join(''); })() : ''}`;
+  const eggNote = m.conquestEggDrop ? eggNeedsNestNote() : '';
+  if(cur.length || packRow || acts.length || itemsHTML){
+    secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div>` : ''}${packRow}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
   }
   if(!secs.length) return '';
   // 2026-10-10 (user: "Centre the cards and rewards in their own halves"): when cards were won, the panel splits
   // into two equal halves, the cards on the left and everything else on the right, each centred.
   const ui = secs.findIndex(x=> x.startsWith('<div class="rw-sec rw-unlocks"'));
   if(ui >= 0 && secs.length > 1){
-    const rest = secs.filter((_, i)=> i !== ui).sort((a, b)=> b.startsWith('<div class="rw-sec rw-packs"') - a.startsWith('<div class="rw-sec rw-packs"'));
+    const rest = secs.filter((_, i)=> i !== ui); // New cards seen first, then Rewards (2026-10-17)
     return `<div class="rw-panel winloss-conquest-rewards has-split"><div class="rw-half rw-half-cards">${secs[ui]}</div><div class="rw-half rw-half-side">${rest.join('')}</div></div>`;
   }
   return `<div class="rw-panel winloss-conquest-rewards">${secs.join('')}</div>`;
@@ -66128,7 +66354,7 @@ function rewardCardsReveal(){
   const unlocks = [...document.querySelectorAll('.rw-card.is-unlock')], seen = [...document.querySelectorAll('.rw-card.is-seen')];
   if(!unlocks.length && !seen.length) return;
   const rich = hasGsap() && fxAtLeast('low') && !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
-  if(!rich){ unlocks.forEach(c=> c.classList.add('unlocked')); seen.forEach(c=> c.classList.add('shown')); return; }
+  if(!rich){ unlocks.forEach(c=>{ c.classList.add('unlocked'); if(c.classList.contains('is-first-seen')) c.classList.add('shown'); }); seen.forEach(c=> c.classList.add('shown')); return; }
   const splash = (card, text, cls)=>{
     const sp = document.createElement('span'); sp.className = 'rw-splash ' + cls; sp.innerHTML = `<i></i>${text ? `<b>${text}</b>` : ''}`; card.appendChild(sp);
     gsap.fromTo(sp.querySelector('i'), {scale:.2, opacity:.95}, {scale:2.1, opacity:0, duration:.75, ease:'power2.out'});
@@ -66149,7 +66375,7 @@ function rewardCardsReveal(){
       .to(card.querySelector('.card-tile'), {filter:'grayscale(0) brightness(1.35)', duration:.25, ease:'power2.out'}, .5)
       .to(card.querySelector('.card-tile'), {filter:'grayscale(0) brightness(1)', duration:.4, ease:'power1.out', clearProps:'filter'}, .75)
       .fromTo(card, {scale:1}, {scale:1.08, duration:.18, yoyo:true, repeat:1, ease:'power2.out', clearProps:'scale'}, .5)
-      .add(()=> card.classList.add('unlocked'), .8);
+      .add(()=>{ card.classList.add('unlocked'); if(card.classList.contains('is-first-seen')) card.classList.add('shown'); }, .8); // a won card seen for the first time also gets NEW! (2026-10-17)
   });
   t0 += (unlocks.length*0.9 + (unlocks.length ? 0.3 : 0)) * pace;
   // The New! cascade runs 35% faster (2026-10-13, user).
@@ -66555,6 +66781,53 @@ function playLandingImpact(uid){
 // a card the PLAYER just dragged in from hand (isHandPlay in renderBoard's entrance tween) — kept
 // off onAttackedSpawn/onDeathSpawn/triggerSpawn tokens, which already have their own distinct
 // bee-landing/generic-impact flourishes and don't need a third competing effect layered on.
+// The flight from your hand (2026-10-17, user: "When playing a card, make it look like it came from my hand. Leader as well. I know it has a
+// special stomping animation. You can launch it from my hand, then using reverse ease to seem like it made more of an impact."): a copy
+// of the board card's face, fixed to the page (so the battlefield's clip and camera zoom can't cut or shift it), flies from `origin`
+// (the hand card's centre, the dragged card's centre, or the leader slot) onto the real card's slot. It re-reads the slot every frame,
+// so a camera move mid-flight still lands it. A card flies in an accelerating curve; the leader winds back first and slams in
+// (back.in, the "reverse ease"). Returns false (and the old in-board tween plays) when it can't run.
+const handFlightsLive = new Set(); // uids whose hand flight is still in the air
+function handFlightSec(leader){
+  const mult = (matchState && matchState.speedMult) || 1, hd = Math.max(0.12, entranceCardTweenDur(mult)*0.62);
+  return leader ? Math.max(.3, hd*1.25) : Math.max(.12, hd*.82);
+}
+function handFlightProxy(el, uid, origin){
+  if(!el || !origin || !hasGsap() || reducedMotion()) return false;
+  const tile = el.querySelector('.card-tile'); if(!tile) return false;
+  const w0 = tile.offsetWidth, h0 = tile.offsetHeight; if(!w0 || !h0) return false;
+  const leader = !!origin.leader, fl = handFlightSec(leader);
+  const p = tile.cloneNode(true); p.removeAttribute('id'); p.querySelectorAll('[id]').forEach(n=> n.removeAttribute('id'));
+  p.classList.remove('holo-active', 'holo-tilt'); p.classList.add('hand-flight-proxy'); p.setAttribute('aria-hidden', 'true');
+  [['position','fixed'], ['left','0'], ['top','0'], ['margin','0'], ['width', w0 + 'px'], ['height', h0 + 'px'], ['box-sizing','border-box'], ['pointer-events','none'], ['z-index','1300'], ['transition','none'], ['animation','none']]
+    .forEach(([k, v])=> p.style.setProperty(k, v, 'important'));
+  document.body.appendChild(p);
+  const s0 = origin.w ? Math.max(.4, Math.min(1.6, origin.w / w0)) : .7, r0 = origin.rotate != null ? origin.rotate : (Math.random()*14 - 7);
+  const key = String(uid), land = leader ? 1.16 : 1.08;
+  let last = tile.getBoundingClientRect(), cur = el;
+  handFlightsLive.add(key);
+  const st = {k:0};
+  // the card itself stays hidden at its slot; a re-render in the same moment (the turn's own renders) replaces the element, so the
+  // live one is looked up every frame. Hidden with visibility, which neither Flip nor the entrance tweens touch.
+  const hide = c=>{ if(c && c.style.visibility !== 'hidden') c.style.visibility = 'hidden'; };
+  const place = ()=>{
+    const c = boardCardEl(uid); if(c && c !== cur){ if(cur) cur.style.visibility = ''; cur = c; } hide(cur);
+    const ct = cur && cur.isConnected && cur.querySelector('.card-tile'); if(ct){ const q = ct.getBoundingClientRect(); if(q.width) last = {left:q.left + q.width/2 - q.width*land/2, top:q.top + q.height/2 - q.height*land/2, width:q.width*land, height:q.height*land}; }
+    const k = st.k, tx = last.left + last.width/2, ty = last.top + last.height/2, s1 = last.width / w0;
+    const x = origin.x + (tx - origin.x)*k, y = origin.y + (ty - origin.y)*k - (leader ? Math.sin(Math.max(0, Math.min(1, k))*Math.PI)*28 : 0);
+    gsap.set(p, {x: x - w0/2, y: y - h0/2, scale: s0 + (s1 - s0)*k, rotation: r0*(1 - Math.max(0, Math.min(1, k))), transformOrigin:'50% 50%'});
+  };
+  let done = false; const gone = landed=>{ if(done) return; done = true; try{ gsap.killTweensOf(st); }catch(e){} p.remove(); handFlightsLive.delete(key);
+    const c = boardCardEl(uid) || cur; if(!c) return; c.style.visibility = '';
+    if(!landed || !c.isConnected) return;
+    // the landing: the face lands a touch big and squashes into place (the leader harder: its stomp), then the usual thud and glow
+    const t = c.querySelector('.card-tile'); if(t) gsap.fromTo(t, {scale:land}, {scale:1, duration: leader ? .32 : .2, ease: leader ? 'back.out(5)' : 'back.out(4)', clearProps:'scale'});
+    try{ playLandingImpact(uid); playHandSummonGlow(uid); if(leader) pushNeighborCards(c, {distance:16, durationMs:300}); }catch(e){} };
+  place();
+  gsap.to(st, {k:1, duration:fl, ease: leader ? 'back.in(1.6)' : (sharpBoard() ? 'power3.in' : 'power2.in'), onUpdate:place, onComplete:()=>{ place(); gone(true); }});
+  setTimeout(()=> gone(false), fl*1000 + 800); // never left behind
+  return true;
+}
 function playHandSummonGlow(uid){
   const el = boardCardEl(uid); if(!el) return;
   const ring = document.createElement('div');
@@ -69985,6 +70258,9 @@ let forgeSelectedId = null;
 // the card heats up, three hammer strikes throw sparks, steam on the quench, then the card flips
 // to its new stats. Reduced motion skips straight to the result.
 let forgeFilter = 'all', forgeSearch = '', forgeSort = 'cost', forgeBusy = false;
+// 2026-10-17 (user: "Forge: don't show all the cards. Have pagination"): FORGE_PAGE_SIZE cards a page, the Codex/Nest pager above and
+// below the grid; a new search, filter, sort or mode starts again at page 1 (forgePageKey), picking a card keeps the page.
+const FORGE_PAGE_SIZE = 60; let forgePage = 0, forgePageKey = '';
 { const f = uiSticky('forge'); if(typeof f.filter === 'string') forgeFilter = f.filter; if(typeof f.q === 'string') forgeSearch = f.q; if(typeof f.sort === 'string') forgeSort = f.sort; } // 2026-10-16: kept between visits
 // The Forge sorts like the Codex (2026-10-15, user: "The Forge sort should have the codex sort like cost, wait, attack, hp. Also the
 // sort is not consistent sizing."): Cost, Wait, Attack, Health, then Rarity, Level and Name; the same "Sort: …" labels as the Codex.
@@ -70088,6 +70364,10 @@ function renderForge(){
   if(forgeFilter==='leveled') shown = shown.filter(id=> getCardLevel(id)>0);
   const rIdx = id=> RARITY_TIER_BANDS.indexOf(defs[id].rarity||'common');
   shown.sort(forgeSortCmp(defs, rIdx)); // Codex-like sorts (2026-10-15)
+  { const pk = [forgeMode, forgeFilter, q, forgeSort].join('|'); if(pk !== forgePageKey){ forgePageKey = pk; forgePage = 0; } }
+  const forgePages = Math.max(1, Math.ceil(shown.length / FORGE_PAGE_SIZE)); if(forgePage >= forgePages) forgePage = forgePages - 1; if(forgePage < 0) forgePage = 0;
+  const forgePagerHTML = where=> forgePages > 1 ? `<div class="cx-pager cx-pager-${where} forge-pager" role="navigation" aria-label="Forge pages${where === 'top' ? ' (top)' : ''}"><button type="button" class="btn small" data-forgepage="${forgePage - 1}" ${forgePage === 0 ? 'disabled' : ''}>‹ Back</button>${Array.from({length: forgePages}, (_, i)=> `<button type="button" class="btn small ${i === forgePage ? 'primary' : 'ghost'}" data-forgepage="${i}" aria-current="${i === forgePage ? 'page' : 'false'}">${i + 1}</button>`).join('')}<button type="button" class="btn small" data-forgepage="${forgePage + 1}" ${forgePage >= forgePages - 1 ? 'disabled' : ''}>Next ›</button></div>` : '';
+  const pageIds = shown.slice(forgePage * FORGE_PAGE_SIZE, (forgePage + 1) * FORGE_PAGE_SIZE);
   const sel = forgeSelectedId ? defs[forgeSelectedId] : null;
   const L = sel ? getCardLevel(forgeSelectedId) : 0;
   const maxed = L>=10;
@@ -70120,7 +70400,7 @@ function renderForge(){
           ${forgeMode==='upgrade' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'disabled'} title="Feeds every copy beyond what a deck can hold into its own card's credit. Foil, shiny and skinned copies are kept.">🧩 Fuse all extras${n ? ` (${n})` : ''}</button>${(()=>{ const ds = disenchantSummary(); return `<button type="button" class="btn small" id="forgeDisBtn" ${ds.copies ? '' : 'disabled'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button>`; })()}`; })() : ''}
           <select id="forgeSort" class="forge-sort" aria-label="Sort cards">${FORGE_SORTS.map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>Sort: ${l}</option>`).join('')}</select>
         </div>
-        <div class="pool-grid forge-pool show-levels ${forgeFilter==='ready'?'only-ready':''}" id="forgePool">${shown.length ? '' : `<p class="panel-sub forge-empty">${forgeFilter==='ready' ? 'Nothing you can afford right now — win a few fights for Dust and Maple Leaves.' : 'No cards match.'}</p>`}</div>
+        ${forgePagerHTML('top')}<div class="pool-grid forge-pool show-levels ${forgeFilter==='ready'?'only-ready':''}" id="forgePool">${shown.length ? '' : `<p class="panel-sub forge-empty">${forgeFilter==='ready' ? 'Nothing you can afford right now — win a few fights for Dust and Maple Leaves.' : 'No cards match.'}</p>`}</div>${forgePagerHTML('bottom')}
       </div>
       <div class="panel forge-anvil" id="forgeDetail">${sel ? (forgeMode==='refine' ? refineAnvilHTML(forgeSelectedId, sel) : forgeMode==='enchant' ? enchantAnvilHTML(forgeSelectedId, sel) : forgeAnvilHTML(forgeSelectedId, sel, L, maxed)) : `
         <div class="forge-anvil-empty">
@@ -70132,11 +70412,12 @@ function renderForge(){
     </div>`;
   const poolEl = document.getElementById('forgePool');
   const tileCls = id=> (id===forgeSelectedId?'selected ':'') + (forgeMode==='refine' ? bestCopyClass(id, defs[id]) : '');
-  if(shown.length) poolEl.innerHTML = shown.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id)})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${defs[id].enchant ? `<span class="forge-ench-badge" title="Enchanted">${(MATERIA_KINDS.find(k=> k.id===defs[id].enchant)||{}).icon||'💎'}</span>` : ''}</div>`).join('');
+  if(shown.length) poolEl.innerHTML = pageIds.map(id=> `<div class="forge-tile ${forgeReady(id)?'is-ready':''}">${cardTileHTML(defs[id], {extraClass: tileCls(id)})}${forgeReady(id)?`<span class="forge-ready-badge" title="You can do this now">${FORGE_MODES[forgeMode].icon}</span>`:''}${defs[id].enchant ? `<span class="forge-ench-badge" title="Enchanted">${(MATERIA_KINDS.find(k=> k.id===defs[id].enchant)||{}).icon||'💎'}</span>` : ''}</div>`).join('');
   poolEl.querySelectorAll('.card-tile').forEach(el=> el.addEventListener('click', ()=>{ if(forgeBusy) return; forgeSelectedId = el.getAttribute('data-defid'); renderForge(); }));
   const search = document.getElementById('forgeSearch');
   search.addEventListener('input', ()=>{ forgeSearch = search.value; const pos = search.selectionStart; renderForge(); const s2 = document.getElementById('forgeSearch'); s2.focus(); try{ s2.setSelectionRange(pos, pos); }catch(e){} });
   root.querySelectorAll('[data-forgefilter]').forEach(b=> b.addEventListener('click', ()=>{ forgeFilter = b.dataset.forgefilter; renderForge(); }));
+  root.querySelectorAll('[data-forgepage]').forEach(b=> b.addEventListener('click', ()=>{ forgePage = +b.dataset.forgepage; renderForge(); const t = document.querySelector('#view-forge .forge-toolbar'); if(t) t.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }));
   document.getElementById('forgeSort').addEventListener('change', e=>{ forgeSort = e.target.value; renderForge(); });
   // 2026-10-12 (11:39 list: "'Show the X I can temper' is only visible once, per entering the forge - then the button fades out -
   // there is a light gadget sound"): one press a visit; it fades out and stays gone until you come back to the Forge.
@@ -71052,22 +71333,36 @@ function wildpathsOpen(){
   try{ const m20 = mainConquestMaps()[WILDPATH_FROM_MAP - 1]; if(!m20) return false; const key = mapRewardNodeKey(m20);
     return !!key && (loadConquestProgress().completed || []).includes(conquestNodeId(m20.id, key)); }catch(e){ return false; }
 }
+// 2026-10-17 (user: "1 point per map, 2 from boss S rank"): a map cleared (its boss, the reward fight, beaten) is 1 point, and an S
+// rank or better on that boss adds 2. Before: 1 per map, and +1 for every boss-kind fight on the map won at S (so a map with two
+// bosses could give 3). Still only maps from WILDPATH_FROM_MAP on count.
+const WILDPATH_PER_MAP = 1, WILDPATH_PER_BOSS_S = 2;
 function wildpathPoints(){
   const pr = loadConquestProgress(), done = new Set(pr.completed || []), ranks = pr.ranks || {};
   let maps = 0, sRanks = 0;
   mainConquestMaps().filter((m, i)=> !m.reserved && i >= WILDPATH_FROM_MAP).forEach(m=>{
-    const key = mapRewardNodeKey(m); if(key && done.has(conquestNodeId(m.id, key))) maps++;
-    (m.nodes||[]).forEach(n=>{ if((n.ender || ['boss','finalboss'].includes(baseKind(n.kind||''))) && rankAtLeast(ranks[conquestNodeId(m.id, n.key)], 'S')) sRanks++; });
+    const key = mapRewardNodeKey(m); if(!key) return; const id = conquestNodeId(m.id, key);
+    if(done.has(id)) maps++;
+    if(done.has(id) && rankAtLeast(ranks[id], 'S')) sRanks++;
   });
-  return {maps, sRanks, total: maps + sRanks};
+  return {maps, sRanks, fromMaps: maps * WILDPATH_PER_MAP, fromS: sRanks * WILDPATH_PER_BOSS_S, total: maps * WILDPATH_PER_MAP + sRanks * WILDPATH_PER_BOSS_S};
+}
+const WILDPATH_EARN_TIP = '1 Path point for each map you clear, +2 for an S rank on its boss.';
+// Hover tooltips (2026-10-17, user: "Hover tooltips for Wildpaths"): every mark explains itself on hover or keyboard focus (and on a tap,
+// after it is picked): its name, what it does, its cost a rank, ranks learned and what it needs first.
+function wildpathTipHTML(n, all){
+  const r = wildpathRanks()[n.id] || 0, st = wildpathCanLearn(n), c = wildpathCost(n);
+  const need = (n.req||[]).length ? 'Comes after ' + n.req.map(q=> (all.find(x=> x.id === q) || {}).name || q).join(' or ') + '.' : 'A starting mark.';
+  const state = st === 'max' ? 'Learned.' : st === 'locked' ? 'Learn the one before first.' : st === 'points' ? `Needs ✦ ${c}; you have ✦ ${wildpathAvailable()}.` : 'Ready to learn.';
+  return `<b>${n.icon} ${escapeHtml(n.name)}</b>${n.capstone ? ' <small>capstone</small>' : ''}<span>${escapeHtml(n.desc)}</span><small>✦ ${c} a rank${n.ranks ? ` · ${r}/${n.ranks} learned` : ''}</small><small>${escapeHtml(need)} ${escapeHtml(state)}</small>`;
 }
 function renderWildpaths(){
   const root = document.getElementById('view-paths'); if(!root) return;
   const all = WILDPATH_TREES.flatMap(t=> t.nodes.map(n=> Object.assign({tree:t}, n)));
   const sel = all.find(n=> n.id === wildpathSel);
   root.innerHTML = `<div class="wp-page">
-    <header class="wp-head">${wildpathsLogoSVG(64)}<div><h2>Wildpaths</h2><p>Passive skills for Conquest, never the Arena. Earn a Path point per map cleared and per boss beaten at rank S.</p>${(()=>{ const wp = wildpathPoints(); return `<p class="wp-points"><b>🐾 ${wp.total} Path point${wp.total===1?'':'s'}</b> · ${wp.maps} from maps, ${wp.sRanks} from boss S ranks</p>`; })()}</div>
-      <span class="wp-points" title="Path points to spend">✦ ${wildpathAvailable()} Path point${wildpathAvailable()===1?'':'s'}</span></header>
+    <header class="wp-head">${wildpathsLogoSVG(64)}<div><h2>Wildpaths</h2><p>Passive skills for Conquest</p>${(()=>{ const wp = wildpathPoints(); return `<p class="wp-points" data-wptip="earn" tabindex="0" title="${escapeAttr(WILDPATH_EARN_TIP)}"><b>🐾 ${wp.total} Path point${wp.total===1?'':'s'}</b> · ${wp.fromMaps} from maps, ${wp.fromS} from boss S ranks</p>`; })()}</div>
+      <span class="wp-points" data-wptip="earn" tabindex="0" title="${escapeAttr('Path points to spend. ' + WILDPATH_EARN_TIP)}">✦ ${wildpathAvailable()} Path point${wildpathAvailable()===1?'':'s'}</span></header>
     ${'' /* 2026-10-15 ("Wildpaths, too verbose"): the "Design preview ... don't change fights yet" line is gone; every mark is live (WILDPATH_LIVE). */}
     <div class="wp-trees">${WILDPATH_TREES.map(t=> `<section class="wp-tree" aria-label="${escapeAttr(t.name)}"><h3><span>${t.icon}</span> ${escapeHtml(t.name)}</h3><p>${escapeHtml(t.blurb)}</p>${wildpathTreeSVG(t)}</section>`).join('')}</div>
     <div class="wp-detail" aria-live="polite">${sel ? `<b>${sel.icon} ${escapeHtml(sel.name)}</b>${sel.capstone ? ' <small>capstone</small>' : ''}${sel.ranks ? ` <small>${sel.ranks} ranks</small>` : ''}<span>${escapeHtml(sel.desc)}</span>${WILDPATH_LIVE.has(sel.id) ? '' : '<small class="wp-req">Preview: not in fights yet.</small>'}${(sel.req||[]).length ? `<small class="wp-req">Comes after: ${sel.req.map(r=> escapeHtml((all.find(n=> n.id===r)||{}).name || r)).join(' or ')}</small>` : `<small class="wp-req">Starting mark.</small>`}${(()=>{ const st = wildpathCanLearn(sel), c = wildpathCost(sel); return `<div class="wp-learn"><b>✦ ${c} a rank</b>${st === 'max' ? '<small>Learned.</small>' : `<button type="button" class="btn small primary" id="wpLearn" ${st === 'ok' ? '' : 'disabled'}>Learn</button><small>${st === 'locked' ? 'Learn the one before.' : st === 'points' ? `You have ✦ ${wildpathAvailable()}.` : ''}</small>`}</div>`; })()}` : '<span>Pick a mark to read it.</span>'}</div>
@@ -71077,6 +71372,23 @@ function renderWildpaths(){
   root.querySelectorAll('[data-wp]').forEach(g=>{ const pick = ()=>{ wildpathSel = g.dataset.wp; renderWildpaths(); const ng = root.querySelector(`[data-wp="${wildpathSel}"]`); if(ng) ng.focus({preventScroll:true}); };
     g.addEventListener('click', pick); g.addEventListener('keydown', e=>{ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } }); });
   if(!renderWildpaths.drawn){ renderWildpaths.drawn = true; root.classList.add('wp-draw'); setTimeout(()=> root.classList.remove('wp-draw'), 2600); }
+  // the tooltip (2026-10-17): one floating box, placed above the mark (below it near the top), kept on screen
+  let tip = document.getElementById('wpTip'); if(!tip){ tip = document.createElement('div'); tip.id = 'wpTip'; tip.className = 'wp-tip'; tip.setAttribute('role', 'tooltip'); tip.hidden = true; document.body.appendChild(tip); }
+  const showTip = (el, html)=>{ tip.innerHTML = html; tip.hidden = false; const r = el.getBoundingClientRect(), tw = tip.offsetWidth, th = tip.offsetHeight;
+    const left = Math.max(8, Math.min(innerWidth - tw - 8, r.left + r.width/2 - tw/2)), above = r.top - th - 10;
+    tip.style.left = left + 'px'; tip.style.top = (above >= 8 ? above : Math.min(innerHeight - th - 8, r.bottom + 10)) + 'px'; };
+  const hideTip = ()=>{ tip.hidden = true; };
+  root.querySelectorAll('[data-wp]').forEach(g=>{ const n = all.find(x=> x.id === g.dataset.wp); if(!n) return; g.removeAttribute('title');
+    g.addEventListener('pointerenter', e=>{ if(e.pointerType !== 'touch') showTip(g, wildpathTipHTML(n, all)); });
+    g.addEventListener('pointerleave', hideTip); g.addEventListener('focus', ()=> showTip(g, wildpathTipHTML(n, all))); g.addEventListener('blur', hideTip); });
+  root.querySelectorAll('[data-wptip="earn"]').forEach(el=>{ el.removeAttribute('title'); const html = `<b>🐾 Path points</b><span>${escapeHtml(WILDPATH_EARN_TIP)}</span><small>Only maps from Map ${WILDPATH_FROM_MAP} on count.</small>`;
+    el.addEventListener('pointerenter', ()=> showTip(el, html)); el.addEventListener('pointerleave', hideTip); el.addEventListener('focus', ()=> showTip(el, html)); el.addEventListener('blur', hideTip);
+    el.addEventListener('click', ()=> showTip(el, html)); });
+  // a tap picks the mark (and redraws), so the tip follows the picked one for a moment on touch screens
+  if(renderWildpaths.tapTip && wildpathSel){ const g = root.querySelector(`[data-wp="${wildpathSel}"]`), n = all.find(x=> x.id === wildpathSel); if(g && n){ showTip(g, wildpathTipHTML(n, all)); clearTimeout(renderWildpaths.tapTimer); renderWildpaths.tapTimer = setTimeout(hideTip, 2600); } }
+  renderWildpaths.tapTip = false;
+  root.querySelectorAll('[data-wp]').forEach(g=> g.addEventListener('pointerdown', e=>{ if(e.pointerType === 'touch') renderWildpaths.tapTip = true; }));
+  if(!renderWildpaths.tipWired){ renderWildpaths.tipWired = true; addEventListener('scroll', ()=>{ const t = document.getElementById('wpTip'); if(t) t.hidden = true; }, {passive:true, capture:true}); }
 }
 // ---- The Tavern (2026-10-15, user: "Tavern's upgrades are not free. They cost advanced resources." and "... then 50-60 in Tavern.
 // The Tavern also lets you recruit cards (singles) permanently using resources + a beer (1-3 beer per week)"). Three things here:
@@ -71088,14 +71400,31 @@ function settleWeeklyBeer(){ try{ if(!featureUnlockedSafe('tavern')) return 0; c
 // Recruits: three singles a week, picked from cards you've met (seen in a fight, a reward or a pack) but don't own, Rare at most.
 const TAVERN_RECRUIT_RARITIES = ['common', 'uncommon', 'rare'];
 const TAVERN_RECRUIT_COST = {common:{dust:150, gold:150}, uncommon:{dust:300, gold:250}, rare:{dust:600, gold:300, mats:{'iron-shard':1}}};
+// 2026-10-17 (user: "Recruit: ... (But cards you already seen/own do still turn up in recruit.) I think it's cool if cards that you have
+// have a 50% lower chance to appear."): cards you own are in the pool too (not once you hold as many copies as a deck can use), at half
+// the weight of a card you've only met. The week's three are drawn once (a seeded weighted draw: the smallest -ln(u)/weight wins) and
+// kept for the week in TAVERN_WEEK_KEY, so recruiting one doesn't reshuffle the others; an empty board fills in as you meet cards.
+const TAVERN_WEEK_KEY = 'bramblewood_tavern_week_v1', TAVERN_OWNED_WEIGHT = 0.5;
 function tavernRecruitPool(){
   const defs = getCardDefs(), seen = seenCardIds();
-  return Object.keys(defs).filter(id=>{ const d = defs[id]; if(!d || !seen.has(id) || (myCardCopies[id]||[]).length) return false;
+  return Object.keys(defs).filter(id=>{ const d = defs[id]; const have = (myCardCopies[id]||[]).length; if(!d || !(seen.has(id) || have)) return false;
+    if(have && have >= maxCopiesForRarity(d.rarity)) return false;
     if(d.token || d.hero || d.test || d.basic || d.cardType === 'materia' || d.cardType === 'item' || isHofVariant(d) || d.derivedFrom) return false;
     try{ if(isUnattainable(d)) return false; }catch(e){}
     return TAVERN_RECRUIT_RARITIES.includes(d.rarity || 'common'); });
 }
-function tavernOffers(){ const wk = weekKey(); return tavernRecruitPool().map(id=> [hashStr(wk + ':' + id), id]).sort((a, b)=> a[0] - b[0]).slice(0, 3).map(x=> x[1]); }
+function tavernWeek(){ const wk = weekKey(); let st = null; try{ st = JSON.parse(localStorage.getItem(TAVERN_WEEK_KEY) || 'null'); }catch(e){}
+  if(!st || st.wk !== wk || !Array.isArray(st.ids)) st = {wk, ids:[], taken:[]};
+  if(st.ids.length < 3){
+    const weight = id=> (myCardCopies[id]||[]).length ? TAVERN_OWNED_WEIGHT : 1;
+    const draw = tavernRecruitPool().filter(id=> !st.ids.includes(id)).map(id=> [-Math.log(((hashStr(wk + ':' + id) >>> 0) % 1000003 + 1) / 1000004) / weight(id), id]).sort((a, b)=> a[0] - b[0]);
+    const add = draw.slice(0, 3 - st.ids.length).map(x=> x[1]);
+    if(add.length){ st.ids = st.ids.concat(add); try{ localStorage.setItem(TAVERN_WEEK_KEY, JSON.stringify(st)); }catch(e){} }
+  }
+  return st;
+}
+function tavernOffers(){ const st = tavernWeek(), defs = getCardDefs(); return st.ids.filter(id=> defs[id] && !(st.taken||[]).includes(id)); }
+function tavernMarkTaken(id){ const st = tavernWeek(); st.taken = (st.taken||[]).concat([id]); try{ localStorage.setItem(TAVERN_WEEK_KEY, JSON.stringify(st)); }catch(e){} }
 function tavernRecruitCost(id){ const d = getCardDefs()[id] || {}; return TAVERN_RECRUIT_COST[d.rarity || 'common'] || TAVERN_RECRUIT_COST.common; }
 function tavernCanRecruit(id){ const c = tavernRecruitCost(id); return (myCurrencies.beer||0) >= 1 && canAffordCost(c) && Object.entries(c.mats||{}).every(([m, n])=> ownedCount(m) >= n); }
 function tavernRecruit(id){
@@ -71103,7 +71432,7 @@ function tavernRecruit(id){
   const c = tavernRecruitCost(id);
   myCurrencies.beer -= 1; myCurrencies.dust -= (c.dust||0); myCurrencies.gold -= (c.gold||0); saveCurrencies();
   Object.entries(c.mats||{}).forEach(([m, n])=> spendCopies(m, n));
-  unlockCardForPlayer(id, 'tavern');
+  unlockCardForPlayer(id, 'tavern'); tavernMarkTaken(id);
   return 'ok';
 }
 function tavernBeerHTML(){ const b = myCurrencies.beer||0;
@@ -71114,7 +71443,7 @@ function tavernRecruitHTML(){
   return `<section class="tavern-recruit" aria-label="Recruit"><h3>🤝 Recruit <small>a card of your own for a Beer and a few resources · new faces every Monday</small></h3>
     ${offers.length ? `<div class="tr-offers">${offers.map(id=>{ const d = defs[id]; const c = tavernRecruitCost(id), ok = tavernCanRecruit(id);
       return `<div class="tr-offer">${cardTileHTML(d, {inPlay:true})}<button type="button" class="btn small primary" data-tv-recruit="${escapeAttr(id)}" ${ok ? '' : 'aria-disabled="true"'}>Recruit${btnCostHTML(c, [{icon:'🍺', need:1, have:myCurrencies.beer||0, label:'Beer'}])}</button></div>`; }).join('')}</div>`
-      : '<p>No one at the bar today. Cards you meet on the road but don\'t own turn up here.</p>'}</section>`;
+      : '<p class="tr-empty"><b>No one at the bar today.</b><br><small>Cards you meet on the road may turn up here.</small></p>'}</section>`; // 2026-10-17 (user)
 }
 function openTavern(){
   try{ settleWeeklyBeer(); }catch(e){}
@@ -72708,8 +73037,14 @@ function packRevealReady(){
   // before, it could open during the castle-crumble pause before the results appeared, on top of them.
   if(typeof matchState !== 'undefined' && matchState) return false;
   if(document.querySelector('.winloss-overlay')) return false;
+  if(packHoldForReplay && Date.now() - packHoldForReplay < 6000) return false; // between "Play again" and the next fight (2026-10-17)
   return true;
 }
+// 2026-10-17 (user: "If you win a reward, and you press play again instead, you play again. At the end of playing, you open all the
+// packs."): Play again / Next fight off the results go straight into the next fight; the packs won keep waiting in packRevealQueue and
+// open together (same packs as one bundle) once you leave the results any other way (endMatch clears the hold).
+let packHoldForReplay = 0;
+function holdPacksForReplay(){ if(packRevealQueue.length) packHoldForReplay = Date.now(); }
 // The pack rises out of the results (2026-10-15, user: "it should be more obviously a reward in the post-battle analysis! Than it
 // hovers up and goes into the pack opening screen"): pressing a button on the results screen remembers where its pack art sat
 // (rewardPackFloat); when the reveal starts, a copy of that pack floats up from there to the middle of the screen, grows, and
@@ -74680,7 +75015,9 @@ function switchTab(tab){
   if(tab==='ranking') safeRender('Ranking', renderRanking);
   if(tab==='achievements') safeRender('Achievements', renderAchievementsPage);
   if(tab==='inventory') safeRender('Inventory', renderInventory);
-  if(tab==='stomp') safeRender('Stomp', renderStomp);
+  // 2026-10-17 (user: "Stomping Grounds default: On load, load the main screen, not the last seen card."): coming in from another page
+  // always opens the Stomping Grounds at its front (the top of the page, the Hero Hall), with no card close-up left open over it.
+  if(tab==='stomp'){ if(currentTabBeforeSwitch !== 'stomp'){ try{ const cd = document.getElementById('cardDetailOverlay'); if(cd && !cd.hidden){ cd.hidden = true; cd.innerHTML = ''; cardDetailOpenId = null; } window.hideCardPop && window.hideCardPop(); }catch(e){} try{ window.scrollTo(0, 0); }catch(e){} } safeRender('Stomp', renderStomp); }
   if(tab==='paths') safeRender('Wildpaths', ()=>{ renderWildpaths.drawn = false; renderWildpaths(); });
   if(tab==='guild') safeRender('Guild', renderGuild);
   if(tab==='friends') safeRender('Friends', renderFriends);
@@ -75615,7 +75952,14 @@ function wireSettingsButton(idSuffix){
   if(vlSel){
     vlSel.innerHTML = [['on','On'],['leaders','Leaders only'],['off','Off']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
     vlSel.value = voiceLinesMode();
-    vlSel.addEventListener('change', ()=>{ setVoiceLinesMode(vlSel.value); document.querySelectorAll('select[id^="voiceLinesSelect"]').forEach(x=>{ x.value = voiceLinesMode(); }); showToast('Voice lines: ' + vlSel.options[vlSel.selectedIndex].text); });
+    vlSel.addEventListener('change', ()=>{ setVoiceLinesMode(vlSel.value); document.querySelectorAll('select[id^="voiceLinesSelect"]').forEach(x=>{ x.value = voiceLinesMode(); }); showToast((TX('toast.voice-lines') + ' ') + vlSel.options[vlSel.selectedIndex].text); });
+  }
+  // NPC dialogue speed (2026-10-17): Slow / Medium (default) / Fast (see dialogueSpeed). Every open copy follows the change.
+  const dsSel = document.getElementById('dialogueSpeedSelect'+idSuffix);
+  if(dsSel){
+    dsSel.innerHTML = [['slow','Slow'],['medium','Medium'],['fast','Fast']].map(([v, l])=> `<option value="${v}">${l}</option>`).join('');
+    dsSel.value = dialogueSpeed();
+    dsSel.addEventListener('change', ()=>{ setDialogueSpeed(dsSel.value); document.querySelectorAll('select[id^="dialogueSpeedSelect"]').forEach(x=>{ x.value = dialogueSpeed(); }); showToast((TX('toast.npc-dialogue') + ' ') + dsSel.options[dsSel.selectedIndex].text); });
   }
   // Emoji style (2026-10-14): System / Twemoji. Picking Twemoji falls back to System quietly if the library can't load.
   const emSel = document.getElementById('emojiStyleSelect'+idSuffix);
