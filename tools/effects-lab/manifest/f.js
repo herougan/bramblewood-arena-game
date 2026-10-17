@@ -201,9 +201,7 @@ R({id:'res-dragon-scale', stage:'ui', inGameHook:'results: .rw-scale → fxHook(
   variants:[{key:'A', label:'A scale spins in embers, a dragon eye opens, it drops in', play:ctx=> X().dragonScale(mount(ctx, '<span class="hud-pill rank-bonus-pill rw-scale">🐉 Dragon Scale 1/3</span>', 'top:66%').firstChild)},
     {key:'B', label:'A dragon’s shadow passes over and drops a scale', play:ctx=> X().dragonScale_B(mount(ctx, '<span class="hud-pill rank-bonus-pill rw-scale">🐉 Dragon Scale 1/3</span>', 'top:66%').firstChild, {host:ctx.root})}]});
 R({id:'res-boss-leader', stage:'cards', inGameHook:'the “👑 … joins you” toast → fxHook(toast)', variants:[{key:'A', label:'A crown drops onto the leader in a gold ring', play:ctx=>{ ctx.sound('unlockChime'); return X().bossLeader(ctx.cards[3].closest('.board-card')); }}]});
-R({id:'res-faction-crown', stage:'ui', note:'grantMap20FactionCrown has no caller yet; the hook sits inside it, ready.', inGameHook:'grantMap20FactionCrown → fxHook(factionCrown)',
-  variants:[{key:'A', label:'Otters: a laurel wreath draws round a bronze-teal crown', play:ctx=> X().factionCrown(null, {host:ctx.root, faction:'otters'})},
-    {key:'B', label:'Hummingbirds: flowers and leaves, jewel sparks', play:ctx=> X().factionCrown(null, {host:ctx.root, faction:'hummingbirds'})}]});
+// res-faction-crown removed 2026-10-18 (audit P1): it only served grantMap20FactionCrown, retired 2026-10-13.
 R({id:'res-materia-drop', stage:'ui', inGameHook:'results: .rw-materia → fxHook(resultsShown)', variants:[{key:'A', label:'Prism shards rain into the chip', play:ctx=> X().materiaDrop(mount(ctx, '<span class="hud-pill rw-materia">💠 2 Iron Shard</span>', 'top:66%').firstChild)}]});
 R({id:'res-card-drop', stage:'cards', note:'Same reveal as res-reward-reveal (approximated).', variants:[{key:'A', label:'Card drop reveal (approximated)', play:ctx=> reveal(ctx, ctx.cards[0])}]});
 R({id:'res-xp-line', stage:'ui', inGameHook:'results (a win) → fxHook(resultsShown)', variants:[{key:'A', label:'Retired 10-16: "+3 XP" rises off the card, a thin bar fills', play:ctx=> X().xpLine(wl(ctx).querySelector('.wl-title'), {amount:3})}]});

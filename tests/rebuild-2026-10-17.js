@@ -120,7 +120,7 @@ ok(/if\(sc\.hqHurt > 0\) P\[1\]\.hq\.hp = Math\.max\(1, P\[1\]\.hq\.maxHp - sc\.
 { const lab = fs.readFileSync(path.join(H.ROOT, 'tools/effects-lab/manifest/rebuild17.js'), 'utf8'); ok(/R\(\{id:'sk-rebuild'/.test(lab) && /G\.fire\('rebuildVfx'/.test(lab), 'Effects Lab manifest: sk-rebuild plays the game\'s rebuildVfx');
   const extra = fs.readFileSync(path.join(H.ROOT, 'tools/effects-lab/fx-src-extra.txt'), 'utf8'); ok(/\nrebuildVfx\n?/.test(extra), 'fx-src-extra.txt lists rebuildVfx');
   const inv = JSON.parse(fs.readFileSync(path.join(H.ROOT, 'docs/effects-inventory-2026-10-15.json'), 'utf8')); const it = inv.filter(x=> x.id === 'sk-rebuild');
-  ok(it.length === 1 && it[0].status === 'built' && it[0].added === '2026-10-17', 'inventory: one sk-rebuild entry, built'); }
+  ok(it.length === 1 && ['built', 'live'].includes(it[0].status) && it[0].added === '2026-10-17', 'inventory: one sk-rebuild entry, built'); } // 'live' since 2026-10-18 (refresh_inventory.py)
 { const cl = fs.readFileSync(path.join(H.ROOT, 'docs/CHANGELOG.md'), 'utf8'); const i = cl.indexOf('## 2026-10-17 (rebuild)'); ok(i >= 0 && /Rebuild N/.test(cl.slice(i, i + 3000)), 'CHANGELOG: the 2026-10-17 (rebuild) section'); }
 
 console.log(`rebuild-2026-10-17: ${n - fail}/${n} passed`);

@@ -956,19 +956,8 @@ M.bossLeader = function(el, opts){
   return glyph(c.x, top, '👑', {size:30, scale0:1.8, rot0:-20, rise:0, hold:.7, inDur:.25, ease:'bounce.out', onTl:(t)=> t.add(()=>{ ring(c.x, top, {color:'#ffd56e', size:80}); burst(c.x, top, {n:12, colors:['#ffe27a', '#fff6c8'], dist:[20, 60], dur:.55, shape:'star', size:7, glow:true}); bump(el); }, .25)})
     .then(()=> call(opts.onDone));
 };
-// The Map 20 faction crown: a laurel wreath draws itself leaf by leaf round a glowing crown, in the faction's colours.
-M.factionCrown = function(el, opts){
-  opts = opts || {}; const g = G(); if(!g) return Promise.resolve();
-  const c = el ? pt(el) : hostPt(opts.host), R = 54, hum = opts.faction === 'hummingbirds', glow = hum ? '#ff5fc8' : '#2fb3a5', h = lay('fxf-wreath', '', 6000);
-  const leaves = Array.from({length:14}, (_, i)=>{ const a = Math.PI*.62 + (i/13)*Math.PI*1.76, e = document.createElement('div'); e.className = 'fxf-g'; e.textContent = hum ? ['🌺', '🍃'][i % 2] : '🍃'; e.style.fontSize = '18px';
-    h.appendChild(e); g.set(e, {x:c.x + Math.cos(a)*R, y:c.y + Math.sin(a)*R, xPercent:-50, yPercent:-50, rotation:a*180/Math.PI + 90, scale:0}); return e; });
-  const cr = document.createElement('div'); cr.className = 'fxf-g'; cr.textContent = '👑'; cr.style.fontSize = '44px'; h.appendChild(cr); g.set(cr, {x:c.x, y:c.y, xPercent:-50, yPercent:-50, scale:0, filter:`drop-shadow(0 0 12px ${glow})`});
-  return new Promise(res=> g.timeline({onComplete:()=>{ h.remove(); finish(opts, res); }})
-    .to(leaves, {scale:1, duration:.18, ease:'back.out(3)', stagger:.04})
-    .to(cr, {scale:1.2, duration:.3, ease:'back.out(2.5)'}, .3).to(cr, {scale:1, duration:.2})
-    .add(()=>{ ring(c.x, c.y, {color:glow, size:150, width:4}); burst(c.x, c.y, {n:18, colors:hum ? ['#ff5fc8', '#7ad7ff', '#ffd36e', '#8a4dff', '#5ee07a'] : ['#2fb3a5', '#c58b4a', '#e9fbf6', '#ffd56e'], dist:[40, 110], dur:.7, shape:'star', size:8, glow:true}); label(c.x, c.y + R + 22, opts.text || 'Faction crown!', 'gold'); }, .85)
-    .to([...leaves, cr], {opacity:0, scale:.8, duration:.35}, '+=.8'));
-};
+// 2026-10-18 (audit P1): the Map 20 faction crown (M.factionCrown, H.factionCrown, lab res-faction-crown) is gone with
+// grantMap20FactionCrown, which was retired 2026-10-13 and never had a caller.
 // Materia / ore drops: prism shards rain into the reward chip, which pops.
 M.materiaDrop = function(el, opts){
   opts = opts || {}; const g = G(); if(!g || !el) return Promise.resolve();
@@ -1587,7 +1576,6 @@ H.noticeSwap = (rect, env)=>{ if(rect && medOK(env)) M.noticeSwap(rect); };
 H.wandererDeal = (el, env)=>{ if(el && medOK(env)) M.wandererDeal(el); };
 H.questProgress = (counter, n, env)=>{ const b = document.getElementById('homeQuestsBtn'); if(visible(b) && medOK(env)) M.questProgress(b); };
 H.heldPacks = (n, env)=>{ if(n > 0 && medOK(env)) later(()=> M.heldPacks($('.map-spot[data-spot="deck"]'), {count:n}), 200); };
-H.factionCrown = (faction, env)=>{ if(medOK(env)) M.factionCrown(null, {faction}); };
 H.pvpTicketUsed = (env)=>{ if(medOK(env)) M.pvpTicket(null, {at:{x:VW()/2, y:VH()*.22}}); };
 H.replayHits = (ov, env)=>{ if(ov && medOK(env)) $$('.rp-card.is-hit', ov).slice(0, 6).forEach((c, i)=> later(()=> M.trenchHit(c), i*60)); };
 H.trenchRender = (ov, round, env)=>{ if(!ov || !medOK(env) || ov._fxfRound === round) return; ov._fxfRound = round;
