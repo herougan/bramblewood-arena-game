@@ -488,8 +488,10 @@ function swarm(attacker, target, o){
 // toward the centre while turning only a little (about 30 degrees), its opacity rising to a peak halfway in and falling to nothing at
 // the centre (sin of the progress); then the heal's green pluses rise (healPlus) with a soft glow. opts.onDone fires as they start.
 function regen(target, o){
-  o = o || {}; if(!ready() || !target){ later(o.onDone, 500); return; }
-  const g = G(), c = centre(target), n = 14, dur = .95, P = 2*(c.w + c.h);
+  o = o || {}; if(!ready() || !target){ later(o.onDone, 300); return; }
+  // 2026-10-17 (user: "Speed up regeneration animation."): about 40% faster all through (was .95 s motes, .035 s apart, .22 s glow).
+  const SP = 0.6, stg = .035*SP;
+  const g = G(), c = centre(target), n = 14, dur = .95*SP, P = 2*(c.w + c.h);
   for(let i = 0; i < n; i++){
     // a point on the card's border, spaced evenly round the perimeter with a little jitter
     let d = ((i + rnd(.15, .85))/n)*P, ex, ey;
@@ -501,15 +503,15 @@ function regen(target, o){
     const put = ()=>{ const k = 1 - st.t, a = spin*st.t, cs = Math.cos(a), sn = Math.sin(a);
       g.set(m, {x:c.x + (dx*cs - dy*sn)*k - 3.5, y:c.y + (dx*sn + dy*cs)*k - 3.5, opacity:Math.sin(Math.PI*st.t), scale:1 - .45*st.t}); };
     put();
-    g.to(st, {t:1, duration:dur, delay:i*.035, ease:'sine.inOut', onUpdate:put, onComplete:()=> m.remove()});
+    g.to(st, {t:1, duration:dur, delay:i*stg, ease:'sine.inOut', onUpdate:put, onComplete:()=> m.remove()});
   }
   later(()=>{
     // (2026-10-14, user: "Remove the green Z effect at the end": no stitch line.) The pluses from Heal, and a soft glow.
-    healPlus(target);
-    g.fromTo(tileOf(target), {filter:'brightness(1) saturate(1)'}, {filter:'brightness(1.25) saturate(1.25)', duration:.22, yoyo:true, repeat:1, clearProps:'filter'});
+    healPlus(target, {speed:1/SP});
+    g.fromTo(tileOf(target), {filter:'brightness(1) saturate(1)'}, {filter:'brightness(1.25) saturate(1.25)', duration:.22*SP, yoyo:true, repeat:1, clearProps:'filter'});
     if(o.light) call(o.light, c.x, c.y, [.5, 1, .55], false);
     call(o.onDone);
-  }, Math.round((dur + n*.035)*1000) - 120);
+  }, Math.round((dur + n*stg)*1000) - 70);
 }
 // Poison cloud: green puffs billow up around the card, bubbles rise, the card sickens for a beat.
 function poisonCloud(target, o){
@@ -1828,9 +1830,10 @@ function cloudShadows(host, on){
 // Heal: a few ➕ rise from the card (the heal's own plus, 2026-10-16: "The heal animation should include the + emoji.").
 function healPlus(target, o){
   o = o || {}; if(!target || !w2ready()){ call(o.onDone); return; } const g = G(), c = centre(target);
+  const k = o.speed > 0 ? 1/o.speed : 1; // o.speed (2026-10-17): Regeneration plays its pluses faster
   for(let i = 0; i < 4; i++){ const p = layer('sfx-w2-plus', GREEN_PLUS) /* green, not the grey ➕ glyph (2026-10-16) */; g.set(p, {x:c.r.left + c.w*rnd(.2, .8), y:c.r.top + c.h*rnd(.45, .8), xPercent:-50, yPercent:-50, opacity:0, scale:.5});
-    g.timeline({delay:i*.09, onComplete:()=> p.remove()}).to(p, {opacity:1, scale:1, duration:.14, ease:'back.out(3)'}).to(p, {y:`-=${rnd(30, 50)}`, opacity:0, duration:.55, ease:'power1.in'}); }
-  later(o.onDone, 700);
+    g.timeline({delay:i*.09*k, onComplete:()=> p.remove()}).to(p, {opacity:1, scale:1, duration:.14*k, ease:'back.out(3)'}).to(p, {y:`-=${rnd(30, 50)}`, opacity:0, duration:.55*k, ease:'power1.in'}); }
+  later(o.onDone, Math.round(700*k));
 }
 root.SkillFX.GREEN_PLUS = GREEN_PLUS;
 // Heal against Poison (2026-10-16, user: "When regeneration of heal are used to reduce poison, a grey poison counter jumps out of the

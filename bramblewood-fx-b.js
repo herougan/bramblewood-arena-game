@@ -865,19 +865,22 @@ M.dayBreaks = function(host, opts){
   opts = Object.assign({}, opts, host && host.nodeType ? {host} : {}); const {r, box} = skyBox(opts);
   const w = bits(box, 1, ()=> ({cls:'fxb-wash', style:'background:linear-gradient(270deg, rgba(255,214,120,.0), rgba(255,214,120,.55) 45%, rgba(255,240,190,.75) 55%, rgba(255,214,120,0));'}))[0];
   const rays = bits(box, 1, ()=> ({cls:'fxb-rays'}))[0];
-  const sun = bits(box, 1, ()=> ({cls:'fxb-disc', style:'right:6%; top:50%; background:radial-gradient(circle, #fffbe0, #ffd24a 60%, #ffae2a); box-shadow:0 0 30px 12px rgba(255,210,90,.55);'}))[0];
+  // 2026-10-17 (user: "The sun should be less obvious btw. barely discernable. I just want the transition to be more complex."): no hard
+  // disc any more, a soft blurred glow with no edge, at a further 60% fainter (peak 6% where it was 15%); its rays a third fainter. The
+  // left-to-right light and the whole-board brightening (the sky's own 10 s cross-fade) are unchanged.
+  const sun = bits(box, 1, ()=> ({cls:'fxb-disc', style:'right:6%; top:50%; width:64px; height:64px; background:radial-gradient(circle, rgba(255,251,224,.9), rgba(255,214,110,.45) 38%, rgba(255,190,90,.12) 58%, rgba(255,180,80,0) 72%); filter:blur(4px);'}))[0];
   // 2026-10-16 (user, 20:19: "Day animation is too 'hard'. Soften the day's sun animation by 50% (make it 85% more transparent); also the
   // sun should keep moving, and fade off while moving." and "the light creeping up needs to be 60% less strong as well."): the sun and
   // its rays peak at 15% of their old strength, and the sun climbs and drifts the whole time, fading out on the way instead of
   // stopping to fade; the golden wash creeps in from the left (like the board's own dawn creep) at 40% of its old strength, slower.
-  const SUN = .15, WASH = .4, D = 3.6;
+  const SUN = .06, RAYS = .1, WASH = .4, D = 3.6; // SUN was .15 (2026-10-17), RAYS was SUN
   w.style.background = 'linear-gradient(90deg, rgba(255,214,120,.0), rgba(255,214,120,.55) 45%, rgba(255,240,190,.75) 55%, rgba(255,214,120,0))';
   return run([box], opts, (t)=>{
     t.fromTo(w, {xPercent:-60, opacity:0}, {xPercent:60, duration:D*.75, ease:'sine.inOut'}, 0)
       .to(w, {opacity:WASH, duration:D*.25, ease:'sine.out'}, 0).to(w, {opacity:0, duration:D*.4, ease:'sine.in'}, D*.35)
       .fromTo(sun, {x:0, y:r.height*.35}, {x:-r.width*.12, y:-r.height*.42, duration:D, ease:'none'}, 0)
       .fromTo(sun, {opacity:0}, {opacity:SUN, duration:D*.3, ease:'sine.out'}, 0).to(sun, {opacity:0, duration:D*.6, ease:'sine.in'}, D*.4)
-      .fromTo(rays, {opacity:0, rotation:-6}, {opacity:SUN, rotation:2, duration:D*.4, ease:'sine.out'}, .2).to(rays, {opacity:0, rotation:9, duration:D*.5, ease:'sine.in'}, D*.45);
+      .fromTo(rays, {opacity:0, rotation:-6}, {opacity:RAYS, rotation:2, duration:D*.4, ease:'sine.out'}, .2).to(rays, {opacity:0, rotation:9, duration:D*.5, ease:'sine.in'}, D*.45);
   });
 };
 // Dawn: both sides draw (wt-dawn-draw): rosy light rises from the horizon and a few birds take off (the dawn chorus).

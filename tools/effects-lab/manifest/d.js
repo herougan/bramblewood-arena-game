@@ -52,6 +52,15 @@ R({id:'st-shock-active', stage:'board', variants:[{key:'A', label:'Storm icon an
 R({id:'st-corrode-active', stage:'board', inGameHook:'cardStatusShown + boardRowsBuilt', variants:[
   {key:'A', label:'Ant acid pits the card, fizz at the edges', play:stNew('corrode')}, {key:'B', label:'Before: tint and 🧪 badge', play:stOld('corrode')}]});
 R({id:'st-expose-active', stage:'board', inGameHook:'cardStatusShown + boardRowsBuilt (unit.exposed > 0)', variants:[{key:'A', label:'A red crosshair stays faintly, turning', play:stNew('expose')}]});
+// 2026-10-17 (user: "Exposed units expose vfx shines deep dark red when it triggers crit. If there's no more exposure left, it fades as it
+// magnifies! fun effect." / "When there are no units on the opposing side, the other side's expose counters are removed - effect fades off.")
+const xOn = ctx=>{ const bc = ctx.board.foe[1]; X().statusLook(bc, 'expose', true); return bc; };
+R({id:'st-expose-crit', stage:'board', inGameHook:'onEvent: statusFx exposedHit (counters left), at the hit that used it', variants:[
+  {key:'A', label:'A counter is used by a crit: the crosshair shines deep dark red', play:async ctx=>{ const bc = xOn(ctx); await ctx.wait(700); ctx.sound('hitAt', 6, false); ctx.float(bc, '-6'); X().exposeCritFlash(bc); await ctx.wait(1100); }}]});
+R({id:'st-expose-last', stage:'board', inGameHook:'onEvent: statusFx exposedHit {amount:0}, at the hit that used it', variants:[
+  {key:'A', label:'The last counter is used: dark red flash, then it magnifies as it fades', play:async ctx=>{ const bc = xOn(ctx); await ctx.wait(700); ctx.sound('hitAt', 6, false); ctx.float(bc, '-6'); await X().exposeMagnify(bc); await ctx.wait(300); }}]});
+R({id:'st-expose-fade', stage:'board', inGameHook:'statusFx exposeFade (no enemy units left) / any Expose turning off: FX.D.statusLook fades it', variants:[
+  {key:'A', label:'No one left to strike it: the crosshair fades off', play:async ctx=>{ const bc = xOn(ctx); await ctx.wait(900); X().statusLook(bc, 'expose', false); await ctx.wait(1100); }}]});
 R({id:'st-daunt-active', stage:'board', inGameHook:'cardStatusShown + boardRowsBuilt (unit.daunts)', variants:[{key:'A', label:'A cold purple pall settles; cold drops fall', play:stNew('daunt')}]});
 R({id:'st-wither-active', stage:'board', inGameHook:'cardStatusShown + boardRowsBuilt (unit.wither > 0)', variants:[{key:'A', label:'Black smoke rolls down; dark veins in the edges', play:stNew('wither')}]});
 R({id:'st-irradiation-active', stage:'board', inGameHook:'cardStatusShown + boardRowsBuilt (glow grows with tokens)', variants:[
