@@ -654,6 +654,65 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(rules.tideEvade || opts.tideEvade) return true;
     try{ const g = (typeof globalThis !== 'undefined') ? globalThis.BramblewoodTestRules : null; return !!(g && g.tideEvade); }catch(e){ return false; }
   }
+  // ---- Field effects 2 (2026-10-16, user's field-effect curriculum notes). All rules flags, so they stack with a field and with
+  // each other; the Edit skirmish list, the Environment cards and the Effects library name them (arena_app.js FIELD_EFFECTS,
+  // fieldConditionRows, FXL_FIELDS). No map carries them yet (map placement is a separate job).
+  // A number on a flag is its strength (a chance in %, or damage); true is the default.
+  const fxN = (v, dflt)=> v === true ? dflt : (Number(v) > 0 ? Number(v) : (v ? dflt : 0));
+  // 2026-10-16 (user: "Landslide as a field effect, not just ability: 1/4 to deal 5 damage to all non-flying."): rules.landslide (chance
+  // in %, default 25), rules.landslideDmg (default 5).
+  function landslideOdds(){ return Math.min(100, fxN(rules.landslide, 25)) / 100; }
+  // 2026-10-16 (user: "Consternation: cards in the hand lose 1/1 every upkeep. This holds even after playing it."): rules.consternation N.
+  function consternationN(){ return fxN(rules.consternation, 1); }
+  // 2026-10-16 (user: "Crushing Depths - Does 5 water damage to all creatures every turn. Swimmers take half. (Stacks w/ resistance = 1/4)")
+  function crushingN(){ return fxN(rules.crushingDepths, 5); }
+  // 2026-10-16 (user: "Illusions or Mirage?: every turn, a random card is made a clone off - but at 1/1 and only copies over skills like
+  // Flying, Swimming and Haste, nothing else."): rules.mirage.
+  // 2026-10-16 (user: "FE about something about hiding in the treetops ... Pounce does extra damage and units with Swift have Evasive, Flying
+  // loses its benefit and all Bounty creatures have Bounty+1" / "15: Has same effect as 13 - except Flying and Bounty parts"): one rule with
+  // two strengths. rules.canopy (Map 13, High Canopy) is all four; rules.undergrowth (Map 15) is only the Pounce and Swift parts.
+  function canopyMode(){ return rules.canopy ? 'canopy' : rules.undergrowth ? 'undergrowth' : null; }
+  // "Swift" is on no card since 2026-10-15 (user: "Quick and Swift is the same right now"), so the canopy's Swift line reads Quick too.
+  function canopySwift(e){ return !!(canopyMode() && e && (e.swift || e.quick)); }
+  function canopyPounceBonus(){ return canopyMode() ? 2 : 0; }
+  // 2026-10-16 (user: "Sometimes has additional effect Tall grass: stealth units attack first. Backstab and pounce does 2x damage."): rules.tallGrass.
+  // 2026-10-16 (user: "Ice Hollow can have slippery on one of them - all units have 1/2 to miss and triggers/effects to fail."): rules.slippery
+  // (chance in %, default 50). That is a very heavy rule (every swing and every trigger is a coin flip), so the number can soften it.
+  function slipOdds(){ return Math.min(100, fxN(rules.slippery, 50)) / 100; }
+  function slips(){ return !!rules.slippery && rnd() < slipOdds(); }
+  // 2026-10-16 (user: "Should sandstorm also have windy rules? I think so." / "glass-storm: sandstorm + all units are buffeted for random 1-3
+  // damage"): a Sandstorm (and the Glass-storm, which is a Sandstorm) brings Windy's random wind unless the fight sets its own.
+  function sandstormOn(){ return !!(rules.sandstorm || rules.glassStorm); }
+  function windMode(){ return rules.wind || (sandstormOn() ? 'windy' : null); }
+  // 2026-10-16 (user: "Hail (new): all units take 3 ice damage every upkeep."): rules.hail N (default 3), cold damage.
+  // 2026-10-16 (user: "19-A: Lava Spout."): rules.lavaSpout N (default 3): the Tide-spout's fiery cousin, one random column a round.
+  // 2026-10-16 (user: "In Map 40+: Leylines I - zeitgeiber effects are strengthened e.g. Diurnal default becomes +3/+3 not +1/+1 ... and Tide
+  // default becomes +3/+0 // Armor 3, Moon etc etc.. Map 50+ Leylines II - gives 1 mana every turn ... Leylines III - get 1 lumber & stone per
+  // turn, but all units and brambles take 3 damage per turn. (Unless Atheist ...)"): rules.leylines1 / leylines2 / leylines3, independent,
+  // so a fight can carry any of them together.
+  const leyZeit = !!rules.leylines1;
+  // Atheist (2026-10-16): half damage from magic, from Devilry and Ecclesia attackers (and 'dark' / 'holy' damage, if a card ever deals
+  // it); Leylines III's drain doesn't touch it at all.
+  function isAtheist(c){ const d = c && CARD_DEFS[c.defId]; return !!(d && d.effects && d.effects.atheist); }
+  function atheistHalves(card, dmgType, attDef){
+    if(!isAtheist(card)) return false;
+    if(dmgType === 'magic' || dmgType === 'dark' || dmgType === 'holy') return true;
+    const ar = (attDef && attDef.archetypes) || []; return ar.includes('Devilry') || ar.includes('Ecclesia');
+  }
+  // 2026-10-16 (user: "Field effect: Haunted - idk. but definitely skills or statuses - initimidate and fear is in question."): rules.haunted.
+  // From round 2, one random unit on each side is Frightened for the round: it doesn't attack. Ghosts and Atheists aren't scared.
+  // 2026-10-16 (user: "12: I think it's about straight lines in this one ... a one or two-off field effect that encourages straights or
+  // diagonals"): rules.rookRow N (default 2): a hit on the unit standing square in front of the attacker deals +N. rules.bishopPath N
+  // (default 2): a hit on a unit on the slant (a half-step off, or a column over: interlocked ranks, prongs, Backstab, Crab Claws) deals +N.
+  let lastLaneKind = null; // 'rook' | 'bishop': which of the two gave the last bonus (for the hit event)
+  function laneBonusOf(myCols, enemyCols, myCol, targetCol){
+    lastLaneKind = null;
+    if(!(rules.rookRow || rules.bishopPath) || targetCol == null) return 0;
+    let d; try{ d = prongLanes(myCols, enemyCols, myCol).dist(targetCol); }catch(e){ return 0; }
+    if(!(d < 50)) return 0;
+    if(d === 0){ if(!rules.rookRow) return 0; lastLaneKind = 'rook'; return fxN(rules.rookRow, 2); }
+    if(!(rules.bishopPath && d <= 1)) return 0; lastLaneKind = 'bishop'; return fxN(rules.bishopPath, 2);
+  }
   // Terrain (2026-10-12, user: "Do effects for each biome, highlighting that biome's strength"): rules.terrain =
   // {types:[...], atk, hp, grant:{skill:value}}. A card whose types include one of the biome's is native: on either side it
   // arrives with +atk/+hp and gains the granted skills (its own value wins if it already has that skill). Done on this
@@ -674,7 +733,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // rule it is day all match (Conquest's night maps pass phase:'night'); 'off' still turns day and night off entirely.
   // 'realtime' (an option, on no map yet; user: "in this map, 7PM - 7AM realtime is day, 7AM-7PM is night. The minute on
   // the dot is called twilight, both effects are active and doubled"): the player's clock decides, checked every round.
-  const phaseMode = rules.phase || 'day';
+  // 2026-10-16 (user: "First Blood and Night not needed - moon can't be seen. So no day/night."): under Crushing Depths there is no day or night.
+  const phaseMode = rules.crushingDepths ? 'off' : (rules.phase || 'day');
   const phaseOff = phaseMode==='off';
   const phaseFixed = phaseMode==='day' || phaseMode==='night' || phaseMode==='realtime';
   function realtimePhase(){ const d = rules.clock != null ? new Date(rules.clock) : new Date(), h = d.getHours(), m = d.getMinutes();
@@ -698,7 +758,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return [1,2].some(pid=> players[pid] && [...(players[pid].deck||[]).map(x=> x && (x.defId || x)), ...(players[pid].hand||[]).map(h=> h.defId), ...allBoardCards(players[pid]).map(c=> c.defId)].some(id=>{ const e = (CARD_DEFS[id]||{}).effects; return !!(e && (e.crepuscular || e.crepuscularHp)); })); }
   function phaseActive(){ return !!((turnNo && !phaseOff) || phaseFixed); }
   function phaseStatsOf(e, ph){
-    const pick = k=>{ if(e[k+'Grant'] && typeof e[k+'Grant'] === 'object') return [0, 0]; const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; }; // Diurnal – {…}: the braces, not the plain bonus (2026-10-15)
+    const pick0 = k=>{ if(e[k+'Grant'] && typeof e[k+'Grant'] === 'object') return [0, 0]; const v = e[k]; return [v===true ? 1 : (Number(v)||0), Number(e[k+'Hp'])||0]; }; // Diurnal – {…}: the braces, not the plain bonus (2026-10-15)
+    // Leylines I (2026-10-16, user: "Diurnal default becomes +3/+3 not +1/+1"): the plain bonus (Diurnal with no number) is +3/+3, and a
+    // numbered one gets +2/+2 more. A Diurnal – {skills} card has no stat bonus to strengthen.
+    const pick = k=>{ const r = pick0(k); if(!leyZeit || (e[k+'Grant'] && typeof e[k+'Grant'] === 'object') || !(e[k] || e[k+'Hp'])) return r; return e[k] === true && !e[k+'Hp'] ? [3, 3] : [r[0] + 2, r[1] + 2]; };
     if(ph==='twilight'){ const n = (e.nocturnal || e.nocturnalHp) ? pick('nocturnal') : [0,0], d = (e.diurnal || e.diurnalHp) ? pick('diurnal') : [0,0], c = (e.crepuscular || e.crepuscularHp) ? pick('crepuscular') : [0,0]; return [n[0] + d[0] + c[0], n[1] + d[1] + c[1]]; } // 2026-10-13: both are active in Twilight, and Crepuscular only then
     if(ph==='night' && (e.nocturnal || e.nocturnalHp)) return pick('nocturnal');
     if(ph==='day' && (e.diurnal || e.diurnalHp)) return rules.cloudy ? pick('diurnal').map(x=> Math.floor(x / 2)) : pick('diurnal'); // Cloudy (2026-10-16): clouds over the sun halve the day bonus
@@ -718,7 +781,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const e = (CARD_DEFS[c._condBase || c.defId] && CARD_DEFS[c._condBase || c.defId].effects) || {};
         // Full Moon (2026-10-15): the first full moon over it (night with a full moon, or the Full Moon field) marks it for good.
         if((e.fullMoon || e.fullMoonGrant) && !c.fullMoonRisen && ((ph === 'night' && moonPhase() === 4) || (field && field.id === 'moon'))){ c.fullMoonRisen = true;
-          if(recordEvents && events) events.push({type:'statusFx', kind:'fullMoon', side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount: e.fullMoonGrant ? 0 : (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)), grant: e.fullMoonGrant ? Object.keys(e.fullMoonGrant) : null}); }
+          if(recordEvents && events) events.push({type:'statusFx', kind:'fullMoon', side:sideOf ? sideOf(pid) : (pid===1?'A':'B'), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount: e.fullMoonGrant ? 0 : (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0), grant: e.fullMoonGrant ? Object.keys(e.fullMoonGrant) : null}); }
         let [a, h] = ph ? phaseStatsOf(e, (lit && (e.diurnal || e.diurnalHp) && !(e.nocturnal || e.nocturnalHp)) ? 'day' : ph) : [0, 0]; const pa = c.phaseAtk||0, ph0 = c.phaseHp||0;
         a += c.packChainBonus; h += c.packChainBonus;
         { const [ca, ch, grant] = condStatsOf(c, e, pid, players); a += ca; h += ch;
@@ -802,7 +865,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 2026-10-15 (user: "Tide shouldn't occur even if you play a card with Tide."): playing a Tide (or Swimmer) unit no longer
   // starts the tide. Only the field and the explicit tide-bringers do: High Tide (rules.highTide, a field effect: its cycle runs
   // from round 1, so round 2 is Ebb, 3 Flow, 4 Ebb, 5 High), Perma-tide, the Tide-spout, Moonpull and Tsunami.
-  let tideStart = rules.highTide ? 0 : null;
+  // 2026-10-16 (user: "2: Tide. Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the Tide is a field effect of its
+  // own now, rules.tide: Flood from round 2, then Ebb, Flood… The Tide-spout no longer brings the tide in (see tideSpoutTick). The only
+  // ways the tide runs: the Tide, High Tide, Perma-tide / River Rapids, or a Moonpull / Tsunami card.
+  let tideStart = rules.highTide ? 0 : (rules.tide ? 1 : null);
   // 2026-10-14 (user: "Tide effects: All swimmers and Tide units float. Remove Tide from those who are Swimmers. Swimmers = Tide"):
   // a Swimmer is a Tide unit. It gets Flow's +1 Attack and Ebb's +1 Armor, and the first one played starts the tide too.
   function isTideDef(def){ const e = def && def.effects; return !!(e && (e.tide || e.swimmer || e.supremeTide)); }
@@ -826,8 +892,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Ebb +2 Armor) and always on, both at once, every round: before the tide starts, on Flow, on Ebb, under Perma-tide. Nothing that
   // moves the tide can take them away.
   function supremeTideOf(card){ const e = card && (CARD_DEFS[card.defId]||{}).effects; return !!(e && e.supremeTide); }
-  function tideAtk(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'flow' ? 1 : 0; } // Tide – {…}: its facets instead (2026-10-15)
-  function tideArmor(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? 2 : t === 'ebb' ? 1 : 0; }
+  // Leylines I (2026-10-16, user: "Tide default becomes +3/+0 // Armor 3"): Flood +3 Attack, Ebb Armor 3, High Tide +3 and Armor 3; Supreme Tide 3 too.
+  function tideAtk(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return leyZeit ? 3 : 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? (leyZeit ? 3 : 2) : t === 'flow' ? (leyZeit ? 3 : 1) : 0; } // Tide – {…}: its facets instead (2026-10-15)
+  function tideArmor(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return leyZeit ? 3 : 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? (leyZeit ? 3 : 2) : t === 'ebb' ? (leyZeit ? 3 : 1) : 0; }
   function isTide(card){ return isTideDef(card && CARD_DEFS[card.defId]); } // Swimmers count (2026-10-14)
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): does this Tide-evade test rule let defCard dodge a hit from attDef?
   // Only a unit's attack counts (a spell or a field hazard is not a swimmer or a non-swimmer).
@@ -849,7 +916,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // the wind is a roll each round now, no longer a fixed flip. Windy: 1 in 3 at Player 1's back, 1 in 3 in their
   // face (at Player 2's back), 1 in 3 calm. Gale: always strong, 1 in 2 either way. The field texts (WIND_TEXT in arena_app.js) say these odds.
   function rollWind(players, sideOf, events){
-    const mode = rules.wind; windNow = false; windFrom = 0;
+    const mode = windMode(); windNow = false; windFrom = 0; // + a Sandstorm's wind (2026-10-16)
     if(mode !== 'windy' && mode !== 'gale') return;
     const calm = mode === 'windy' && rnd() < 1/3;
     if(calm){ if(recordEvents && events && windRound !== turnNo){ windRound = turnNo; events.push({type:'wind', windy:false, round: turnNo}); } return; }
@@ -869,10 +936,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     out.phase = ph; out.phaseChanges = !!(ph && ph !== getPhase());
     if(permaTide) out.tide = 'flow'; // Perma-tide (2026-10-14)
     else if(tideStart !== null && r > tideStart){ const d = r - tideStart; out.tide = rules.highTide ? ({0:'high', 2:'flow'}[d % 4] || 'ebb') : (d % 2 === 1 ? 'flow' : 'ebb'); }
-    const wm = rules.wind; if(wm === 'gale' || wm === 'windy') out.wind = {random:true, mode:wm}; // a roll each round (2026-10-16): which way stays hidden
+    const wm = windMode(); if(wm === 'gale' || wm === 'windy') out.wind = {random:true, mode:wm}; // a roll each round (2026-10-16): which way stays hidden
     if(field){ out.field = field.id; out.fieldLeft = field.rounds; }
     const vc = r >= 2 ? volcanoChances(r) : null;
     if(rules.tideSpout && r >= 2) out.tideSpout = true; // a spout bursts somewhere next round (2026-10-14)
+    if(rules.lavaSpout && r >= 2) out.lavaSpout = true; // 2026-10-16
     if(cometRounds > 0) out.comets = cometRounds; // comets still to fall after an Eruption (2026-10-14)
     if(vc) out.volcano = vc; // the hazards' odds next round (2026-10-14); whether they come stays a roll
     else if(Number(rules.eruption) > 0 && r >= 2) out.eruption = Number(rules.eruption);
@@ -998,6 +1066,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     } else if(getTide() === 'ebb' && recordEvents && events) events.push({type:'tide', tide:'ebb', round});
     { const stV = statusSnap(players); volcanoTick(players, round, sideOf, stats, events); pushStatusEnds(stV, players, sideOf, events); } // 2026-10-15: petrification wearing off
     if(rules.swampFever && round > 1) swampFeverTick(players, sideOf, events); // Swamp Fever (2026-10-15)
+    if(round > 1) fieldEffects2Tick(players, round, sideOf, stats, events); // Field effects 2 (2026-10-16)
     if(!field) return;
     const f = field.id;
     if(f === 'frozen'){
@@ -1047,6 +1116,66 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     [1,2].forEach(pid=> allLive(players[pid]).filter(c=> !c.cageOf).forEach(c=>{ if(poisonProof(c) || rnd() >= p) return; addPoison(c, 1);
       if(recordEvents && events) events.push({type:'fieldTick', field:'swampFever', side:sideOf(pid), uid:c.uid, defId:c.defId, poison:1, total:c.poison}); }));
   }
+  // Field effects 2 (2026-10-16): the round-start (upkeep) ticks. Each one is off unless its rules flag is set; see the helper block near
+  // `rules` for what each flag means. Order: the Leylines' resources, then the hazards (each one logs one header event and one event per
+  // unit it hurt), the dead are cleared, then the Mirage's clone and the Haunting.
+  function illusionDefOf(defId){ const base = CARD_DEFS[defId], root = base.derivedFrom || base.id, id = root + '~illusion';
+    if(!CARD_DEFS[id]){ const pe = base.effects || {}, eff = {}; ['flying', 'tide', 'swimmer', 'haste', 'speed'].forEach(k=>{ if(pe[k]) eff[k] = pe[k]; });
+      const src = CARD_DEFS[root] || base;
+      CARD_DEFS[id] = derivedDefs[id] = Object.assign({}, src, {id, name: (src.name || root) + ' Illusion', attack:1, health:1, wait:1, cost:0, stoneCost:0, metalCost:0, uraniumCost:0, graceCost:0, devilryCost:0,
+        derivedFrom: root, token:true, illusionOf: root, effects: eff}); }
+    return id; }
+  function liveUnits(pl){ return pl ? allLive(pl).filter(c=> !c.cageOf) : []; }
+  function columnBurst(players){ const cols = {1: combatColumnsOf(players[1]), 2: combatColumnsOf(players[2])};
+    const keys = [...new Set([...Object.keys(cols[1]), ...Object.keys(cols[2])].map(Number))].sort((x, y)=> x - y);
+    return keys.length ? {cols, col: keys[Math.floor(rnd()*keys.length)]} : null; }
+  function fieldEffects2Tick(players, round, sideOf, stats, events){
+    const ev = o=>{ if(recordEvents && events) events.push(o); };
+    let hurt = false;
+    const hit = (pid, c, n, type, field, extra)=>{ if(!c || !(c.hp > 0) || !(n > 0)) return 0; const hp0 = c.hp; damageCardFlat(c, n, type); const dmg = Math.max(0, hp0 - c.hp); hurt = true;
+      ensureStat(stats, sideOf(pid), c.defId).taken += dmg; ev(Object.assign({type:'fieldTick', field, side:sideOf(pid), uid:c.uid, defId:c.defId, dmg, dmgType:type}, extra || {})); return dmg; };
+    // Leylines II: +1 Lumber a round to each side (the game has no mana: Lumber is what cards cost). Leylines III: +1 Lumber and +1 Stone.
+    if(rules.leylines2 || rules.leylines3) [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
+      const l = (rules.leylines2 ? 1 : 0) + (rules.leylines3 ? 1 : 0); const got = addLumber(pl, l); ev({type:'lumber', side:sideOf(pid), defId:null, amount:got, rule:true, leylines:true});
+      if(rules.leylines3){ const st = addOre(pl, 'stone', 1); ev({type:'stone', side:sideOf(pid), defId:null, amount:st, rule:true, leylines:true}); } });
+    // Leylines III: the lines burn: 3 magic damage to every unit and to both castles (a castle never drops below 1 from it). Atheists: none.
+    if(rules.leylines3){ ev({type:'fieldTick', field:'leylines', round});
+      [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl) return;
+        liveUnits(pl).forEach(c=>{ if(isAtheist(c)){ ev({type:'fieldTick', field:'leylinesHit', side:sideOf(pid), uid:c.uid, defId:c.defId, dmg:0, atheist:true}); return; } hit(pid, c, 3, 'magic', 'leylinesHit'); });
+        if(pl.hq && pl.hq.hp > 1){ const d = Math.min(3, pl.hq.hp - 1); pl.hq.hp -= d; ev({type:'fieldTick', field:'leylinesCastle', side:sideOf(pid), dmg:d}); } }); }
+    // Landslide: 1 in 4 (rules.landslide %) a round, rocks come down: 5 (rules.landslideDmg) damage to every unit that isn't flying, both sides.
+    if(rules.landslide && rnd() < landslideOdds()){ const n = Number(rules.landslideDmg) > 0 ? Number(rules.landslideDmg) : 5; ev({type:'fieldTick', field:'landslide', round, amount:n});
+      [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ if(effectsOf(c).flying || climbs(c)) return; hit(pid, c, n, 'physical', 'landslideHit'); })); }
+    // Crushing Depths: N (5) water damage to every unit; Tide units and Swimmers take half (rounded down); water Resist halves it again.
+    if(rules.crushingDepths){ const n = crushingN(); ev({type:'fieldTick', field:'crushingDepths', round, amount:n});
+      [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=> hit(pid, c, isTide(c) ? Math.max(1, Math.floor(n / 2)) : n, 'water', 'crushingHit', {swimmer: isTide(c) || undefined}))); }
+    // Hail: N (3) cold damage to every unit.
+    if(rules.hail){ const n = fxN(rules.hail, 3); ev({type:'fieldTick', field:'hail', round, amount:n}); [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=> hit(pid, c, n, 'cold', 'hailHit'))); }
+    // Glass-storm: every unit is buffeted by flying glass for its own random 1–3 damage.
+    if(rules.glassStorm){ ev({type:'fieldTick', field:'glassStorm', round}); [1,2].forEach(pid=> liveUnits(players[pid]).forEach(c=>{ const r = 1 + Math.floor(rnd()*3); hit(pid, c, r, 'physical', 'glassHit', {roll:r}); })); }
+    // Lava Spout: one random column bursts: N (3) fire damage to the units there, both sides.
+    if(rules.lavaSpout){ const b = columnBurst(players); if(b){ const n = fxN(rules.lavaSpout, 3); ev({type:'fieldTick', field:'lavaSpout', col:b.col, round, amount:n});
+      [1,2].forEach(pid=>{ const en = b.cols[pid][b.col], c = en && en.kind === 'card' ? en.card : null; if(c && !c.gap && !c.cageOf) hit(pid, c, n, 'heat', 'lavaSpoutHit', {col:b.col}); }); } }
+    // Consternation: every card in each hand loses 1/1 (N/N). The loss rides on the hand card (h.consterned) and comes onto the field with it.
+    if(rules.consternation){ const n = consternationN(); [1,2].forEach(pid=>{ const pl = players[pid]; if(!pl || !pl.hand.length) return; let k = 0;
+      pl.hand.forEach(h=>{ const d = CARD_DEFS[h.defId]; if(!d || d.field || ['spell', 'equipment', 'materia'].includes(d.cardType)) return; h.consterned = (h.consterned||0) + n; k++; });
+      if(k) ev({type:'fieldTick', field:'consternation', side:sideOf(pid), count:k, amount:n}); }); }
+    if(hurt) removeDeadCards(players, sideOf, {}, stats, events);
+    // Mirage: a random unit on the field (either side) gets a 1/1 Illusion beside it that copies only Flying, Tide / Swimmer, Haste and Speed.
+    // It takes a free slot right beside the unit; with both taken (or on a packed row with no room) no illusion appears.
+    if(rules.mirage){ const pool = [1,2].flatMap(pid=> liveUnits(players[pid]).filter(c=> !(CARD_DEFS[c.defId]||{}).illusionOf).map(c=> [pid, c]));
+      if(pool.length){ const [pid, src] = pool[Math.floor(rnd()*pool.length)], pl = players[pid], iid = illusionDefOf(src.defId); let nc = null;
+        if(slotMode){ syncSlots(pl); const used = new Set(allBoardCards(pl).filter(c=> c.hp > 0).map(c=> c.slot)); const free = [src.slot - 1, src.slot + 1].filter(s=> Number.isInteger(s) && !used.has(s));
+          if(free.length){ nc = makeBoardCard(iid); putInSlot(pl, nc, free.length > 1 ? free[Math.floor(rnd()*2)] : free[0]); } }
+        else { nc = makeBoardCard(iid); pl.row[flankOrShorter(pl, findCardSide(pl, src.uid) || 'left')].push(nc); }
+        ev({type:'fieldTick', field:'mirage', side:sideOf(pid), uid:src.uid, defId:src.defId, illusionUid: nc ? nc.uid : null, none: !nc || undefined});
+        if(nc){ ev({type:'spawn', side:sideOf(pid), defId:iid, count:1, cause:'triggerSpawn', kind:'mirage', uids:[nc.uid], lane: findCardSide(pl, nc.uid), nearUid:src.uid});
+          fireSpawnFamilyTriggers(players, sideOf, pid, nc, stats, events, 'spawned'); try{ syncPhaseStats(players, sideOf, events); }catch(e){} } } } // the new Illusion's Speed / Pack
+    // Haunted: one random unit on each side is Frightened this round (no attack). Ghosts and Atheists aren't scared.
+    if(rules.haunted){ ev({type:'fieldTick', field:'haunted', round});
+      [1,2].forEach(pid=>{ const cs = liveUnits(players[pid]).filter(c=> !isGhost(c) && !isAtheist(c)); if(!cs.length) return; const c = cs[Math.floor(rnd()*cs.length)]; c.frightRound = turnNo;
+        ev({type:'statusFx', kind:'frightened', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetSide:sideOf(pid), targetUid:c.uid, targetDefId:c.defId}); }); }
+  }
   // The Volcano (2026-10-12, user: "a strong volcano effect on the field, maybe like deal 2/3/5 fire damage to a random unit
   // on both sides every turn"; the world boss: "Immolation 2, it deals 2 fire damage to all surrounding units allied and
   // enemy"; "when this monster is cast, it gains +2/+4. This is for the boss AND world boss"):
@@ -1080,7 +1209,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const keys = [...new Set([...Object.keys(cols[1]), ...Object.keys(cols[2])].map(Number))].sort((x, y)=> x - y);
     if(!keys.length) return;
     const col = keys[Math.floor(rnd()*keys.length)];
-    const tideIn = tideStart === null && !permaTide; if(tideIn) tideInNow(); // under Perma-tide the tide is already in (2026-10-14)
+    // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the spout no longer brings the tide in.
+    // It only bursts; the Flood and Ebb come from the Tide (or High Tide, Perma-tide, Moonpull, Tsunami). tideIn stays false for old logs.
+    const tideIn = false;
     if(recordEvents && events) events.push({type:'fieldTick', field:'tideSpout', col, round, tideIn});
     let hurt = false;
     [1,2].forEach(pid=>{ const en = cols[pid][col], c = en && en.kind === 'card' ? en.card : null;
@@ -1546,7 +1677,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // as Bounty. Every card carries Bounty now, and the app migrates an old Worthy N on a saved or published card to Bounty N as it
   // loads (migrateWorthyToBounty in arena_app.js). effects.worthy is a RETIRED, EMPTY slot: the engine does nothing with it, so a
   // future Worthy can be defined there.
-  function bountyOf(def){ const e = (def && def.effects) || {}; return Math.max(0, Number(e.bounty)||0); }
+  function bountyOf(def){ const e = (def && def.effects) || {}; const n = Math.max(0, Number(e.bounty)||0); return n > 0 && canopyMode() === 'canopy' ? n + 1 : n; } // High Canopy (2026-10-16): Bounty +1
   // Poison immunity (2026-10-15, user: "Units not ready can be poisoned. Structures are immune to poison."): a Structure, or a unit
   // Immune to poison, never takes Poison stacks. (A unit still under Wait can be poisoned like any other.)
   function isStructureCard(c){ const d = c && CARD_DEFS[c.defId]; return !!(d && Array.isArray(d.archetypes) && d.archetypes.includes('Structure')); }
@@ -1696,7 +1827,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(e.nocturnalGrant && typeof e.nocturnalGrant === 'object' && (ph === 'night' || ph === 'twilight')) addGrant(e.nocturnalGrant); }
     if(hasTideGrant(e)){ const t = getTide(); // Tide – {Flood}, {Ebb} (2026-10-15): High Tide brings both facets
       if(t === 'flow' || t === 'high') addGrant(e.tideGrant.flood); if(t === 'ebb' || t === 'high') addGrant(e.tideGrant.ebb); }
-    if(c.fullMoonRisen){ if(e.fullMoonGrant && typeof e.fullMoonGrant === 'object') addGrant(e.fullMoonGrant); else if(e.fullMoon){ const n = e.fullMoon === true ? 3 : (Number(e.fullMoon)||3); a += n; h += n; } } // Full Moon (2026-10-15)
+    if(c.fullMoonRisen){ if(e.fullMoonGrant && typeof e.fullMoonGrant === 'object') addGrant(e.fullMoonGrant); else if(e.fullMoon){ const n = (e.fullMoon === true ? 3 : (Number(e.fullMoon)||3)) + (leyZeit ? 2 : 0); a += n; h += n; } } // Full Moon (2026-10-15); Leylines I +2/+2 (2026-10-16)
     if((e.loyal || e.loyalGrant) && leaderOnBoard(pl, c)) add(e.loyal || 0, e.loyalGrant);
     if((e.usurper || e.usurperGrant) && leaderOnBoard(foe)) add(e.usurper || 0, e.usurperGrant);
     if(e.timber){ const n = Math.max(0, pl.lumber||0); a += n; h += n; }
@@ -1710,7 +1841,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(e.rainrunner && field && field.id === 'rain'){ const n = Number(e.rainrunner)||1; a += n; h += n; }
     // Moonborn N (2026-10-12, user: "Add lunar cycles - only matters when there's a card that cares about it"): at night,
     // +N/+N scaled by how full the moon is (new 0, crescent ¼, quarter ½, gibbous ¾, full all of it).
-    if(e.moonborn && getPhase() === 'night'){ const n = Math.round((Number(e.moonborn)||1) * moonFullness()); a += n; h += n; }
+    if(e.moonborn && getPhase() === 'night'){ const n = Math.round(((Number(e.moonborn)||1) + (leyZeit ? 2 : 0)) * moonFullness()); a += n; h += n; } // Leylines I (2026-10-16): Moonborn +2 before the moon scales it
     if(e.rockSolid){ const n = Math.max(0, pl.stone||0) * 2; a += n; h += n; }
     if(e.ironWill){ const n = Math.max(0, pl.metal||0) * 3; a += n; h += n; }
     // Bloom (conditions) (2026-10-14, user: "Bloom (Tide & Night) or Bloom(Wind or Wet)..."): effects.bloomWhen = {when:[...],
@@ -1809,6 +1940,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const factor = resistFactor(targetCard.defId, dmgType, attDef) * weaknessFactor(targetCard.defId, dmgType, attDef) * defenderDamageFactor(targetCard.defId);
     if(factor===0) amt = 0; else if(factor!==1) amt = Math.max(1, Math.floor(amt*factor)); // Immune takes nothing
     { const hv = spiritHalves(targetCard, supremeAtt ? 'magic' : dmgType, !!attCard); if(hv) amt = halveTimes(Math.floor(amt), hv); } // Ghost / Supreme / Shade (2026-10-14)
+    if(amt > 0 && atheistHalves(targetCard, supremeAtt ? 'magic' : dmgType, attDef)) amt = Math.max(1, Math.floor(amt / 2)); // Atheist (2026-10-16)
     // Shock (status, 2026-09-17): while active, every hit this card takes lands for 50% more —
     // a "vulnerable" debuff, distinct from Rage's self-damage-doubling (that's a stance the card
     // chooses; Shock is inflicted on it). Applied after Resist/Weakness so a resisted hit still
@@ -1928,6 +2060,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const factor = resistFactor(card.defId, dmgType, attDef) * weaknessFactor(card.defId, dmgType, attDef) * defenderDamageFactor(card.defId);
     let dmg = factor===0 ? 0 : factor!==1 ? Math.max(1, Math.floor(amount*factor)) : amount; // Immune takes nothing
     { const hv = spiritHalves(card, dmgType, !!attDef); if(hv) dmg = halveTimes(Math.floor(dmg), hv); } // Ghost / Supreme / Shade (2026-10-14)
+    if(dmg > 0 && atheistHalves(card, dmgType, attDef)) dmg = Math.max(1, Math.floor(dmg / 2)); // Atheist (2026-10-16): magic bolts, Devilry / Ecclesia skills
     if(card.shocked>0) dmg = Math.ceil(dmg*1.5); // Shock applies to ranged/flat hits too
     if((dmgType === 'physical' || dmgType === 'magic') && shelledByCower(card) && !crush) dmg = 0; // Cower 'shell': arrows and bolts too, not statuses
     if(card.petrified && !crush) dmg = Math.floor(dmg / 2); // Petrification (2026-10-14)
@@ -2226,9 +2359,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // A Flyer's dodge still applies (it is out of reach, not quick).
     // + Tide evade (2026-10-16, user: "Evade to non-swimmers for me to test."): the test rule makes a Tide unit in the tide Evasive
     // against a non-Tide attacker (tideEvades); off unless switched on.
-    if(singleTarget && (dd.evasive || preyAlert(defCard) || tideEvades(defCard, CARD_DEFS[attCard.defId])) && !ad.fencing && rnd() < 0.5){ lastMissReason = 'evasive'; return false; } // + Prey (2026-10-16)
+    // + High Canopy / Undergrowth (2026-10-16): Swift (and Quick) units are Evasive among the branches.
+    if(singleTarget && (dd.evasive || preyAlert(defCard) || tideEvades(defCard, CARD_DEFS[attCard.defId]) || canopySwift(dd)) && !ad.fencing && rnd() < 0.5){ lastMissReason = canopySwift(dd) && !dd.evasive ? 'canopy' : 'evasive'; return false; } // + Prey (2026-10-16)
     if(dd.swift && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
-    if(dd.flying && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    // High Canopy (2026-10-16, user: "Flying loses its benefit"): under the treetops a Flyer has nowhere to fly off to: no Flying dodge.
+    if(dd.flying && canopyMode() !== 'canopy' && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    // Slippery (2026-10-16, user: "all units have 1/2 to miss"): every swing at a unit can skid off (1 in 2 by default).
+    if(slips()){ lastMissReason = 'slippery'; return false; }
     // Smoke (2026-10-14, Smoke Bomb): an ally hidden in smoke makes attacks at it miss 1 in 2 until the end of the next round.
     if(defCard.smoke > 0 && !ad.sonar && rnd() < 0.5){ lastMissReason = 'smoke'; return false; } // Sonar (2026-10-16) hears through smoke
     // Illusory (raid bosses only): dodges this share of combat attacks, e.g. 0.667 = 2 in 3.
@@ -2236,7 +2373,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Keen Sense (2026-10-14): it smells out a grounded target: Thick Fog and Shadow don't make it miss one.
     const keenNose = (!!ad.keenSense && !dd.flying) || !!ad.sonar; // Sonar (2026-10-16): Keen Sense that hears flyers too
     if(!keenNose && fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
-    if(rules.sandstorm && !ad.dry && !keenNose && rnd() < 0.25){ lastMissReason = 'sandstorm'; return false; } // Sandstorm (2026-10-15): Dry units see through it
+    if(sandstormOn() && !ad.dry && !keenNose && rnd() < 0.25){ lastMissReason = 'sandstorm'; return false; } // Sandstorm (2026-10-15): Dry units see through it; + the Glass-storm (2026-10-16)
     // Shadow (2026-10-14, user: "Effects like Shade and Ghost and Shadow"): at night or in darkness, attacks at it miss 1 in 2.
     // Magic always finds it.
     if(!keenNose && dd.shadow && darkNow() && attackDmgType(CARD_DEFS[attCard.defId]) !== 'magic' && rnd() < 0.5){ lastMissReason = 'shadow'; return false; }
@@ -2384,6 +2521,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function rollStatusOnHit(kind, cfg, defCard, mySide, attCard, sideOfFn, enemyId, events){
     if(!cfg || !defCard || defCard.hp<=0) return;
     if(attCard && attCard.confused>0 && rnd() < 0.5){ if(recordEvents && events) events.push({type:'confusedWhiff', side:mySide, defId:attCard.defId, uid:attCard.uid, what:kind}); return; } // Confused: on-hit skills fizzle half the time
+    if(attCard && slips()){ if(recordEvents && events) events.push({type:'slipFizzle', side:mySide, defId:attCard.defId, uid:attCard.uid, what:kind}); return; } // Slippery (2026-10-16): on-hit skills fizzle too
     let chance = (typeof cfg==='object') ? Number(cfg.chance)||0 : Number(cfg)||0;
     let duration = (typeof cfg==='object') ? Math.max(1, Number(cfg.duration)||1) : 1;
     // Stun N (2026-10-16, user: "Stun N: 1/3 chance to Stun a card for N turns - Default 1."): a 1 in 3 chance for N rounds.
@@ -2823,6 +2961,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     payExileCost(players, sideOf, playerId, exileCostOfCard(hc.defId), uid, stats, events);
     if(fdef && fdef.darkSummon) pl.darkUsed = (pl.darkUsed||0) + 1; else markPlayed(pl);
     const boardCard = makeBoardCard(hc.defId);
+    // Consternation (2026-10-16, user: "cards in the hand lose 1/1 every upkeep. This holds even after playing it."): what the card lost in
+    // the hand comes onto the field with it, for good: Attack down to 0 at least, Health down to 1 at least.
+    if(hc.consterned > 0){ const n = hc.consterned|0, a0 = boardCard.atk|0, h0 = boardCard.maxHp|0;
+      boardCard.atk = Math.max(0, a0 - n); boardCard.baseAtk = Math.max(0, (boardCard.baseAtk|0) - n); boardCard.maxHp = Math.max(1, h0 - n); boardCard.hp = Math.min(boardCard.hp, boardCard.maxHp); boardCard.consterned = n; } // the 'play' event carries it (consterned: n)
     // Character passive: Plains Terrace-style "first unit gets +N attack" — applies once,
     // to whichever card is the very first one this player plays in the match.
     if(pl.unitHpBonus){ boardCard.hp += pl.unitHpBonus; boardCard.maxHp += pl.unitHpBonus; }
@@ -2849,7 +2991,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(slotMode){ actualSide = putInSlot(pl, boardCard, targetSlot); }
     else { actualSide = pl.row.center.length===0 ? 'center' : side; pl.row[actualSide].push(boardCard); }
     ensureStat(stats, sideOf(playerId), hc.defId).played++;
-    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId:hc.defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot});
+    if(recordEvents && events) events.push({type:'play', side:sideOf(playerId), defId:hc.defId, uid:boardCard.uid, boardSide:actualSide, slot:boardCard.slot, consterned: boardCard.consterned || undefined}); // + Consternation (2026-10-16)
     applyOnSpawnEffects(players, sideOf, playerId, boardCard, stats, events);
     fireSpawnFamilyTriggers(players, sideOf, playerId, boardCard, stats, events, 'played');
     // Chained (Devilry, 2026-09-17, per explicit request: "other ways like when opponent unit
@@ -3609,7 +3751,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // 2026-10-16 (user: "Pounce <Att> or <Hp>: The Pounce value is dynamically calculated on play"): pounce:'attack' / 'health'
       // pounces for the card's own Attack / Health as it lands; a number is a fixed N as before. boardCard.pounceN keeps the value.
       const pScale = def.effects.pounce === 'attack' || def.effects.pounce === 'health' ? def.effects.pounce : null;
-      const pAmt = pScale === 'attack' ? Math.max(0, effAtk(boardCard)) : pScale === 'health' ? Math.max(0, boardCard.hp|0) : (Number(def.effects.pounce)||0);
+      let pAmt = pScale === 'attack' ? Math.max(0, effAtk(boardCard)) : pScale === 'health' ? Math.max(0, boardCard.hp|0) : (Number(def.effects.pounce)||0);
+      // 2026-10-16: High Canopy / Undergrowth +2 ("Pounce does extra damage"), then Tall Grass doubles it ("Backstab and pounce does 2x damage").
+      if(pAmt > 0 || canopyPounceBonus()){ pAmt += canopyPounceBonus(); if(rules.tallGrass) pAmt *= 2; }
       boardCard.pounceN = pAmt;
       const pev = {type:'pounce', side:sideOf(playerId), defId:boardCard.defId, uid:boardCard.uid, amount:pAmt, scale:pScale, targetSide:sideOf(otherId(playerId))};
       if(recordEvents && events) events.push(pev);
@@ -3922,6 +4066,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // 2026-10-11 (16:56 list, item 9): also off while Stunned, Frozen or Asleep. Primed cards keep every trigger online.
       if(boardCard && !ALWAYS_ON_HOOKS.has(hook) && !t.whileWaiting && !(def.effects && def.effects.primed) && (boardCard.wait>0 || boardCard.stunned || boardCard.frozen>0 || boardCard.asleep>0)) return;
       if(boardCard && boardCard.confused>0 && rnd() < 0.5){ if(recordEvents && events) events.push({type:'confusedWhiff', side:mySide, defId:boardCard.defId, uid:boardCard.uid, what:t.do}); return; } // Confused: the trigger fizzles
+      if(boardCard && slips()){ if(recordEvents && events) events.push({type:'slipFizzle', side:mySide, defId:boardCard.defId, uid:boardCard.uid, what:t.do}); return; } // Slippery (2026-10-16): "triggers/effects to fail" 1 in 2
       // A cost step (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. ... So the mid-action
       // is Burn 1 Lumber, the after-action is Deal N extra fire damage. One (unused) is Burn 1 Lumber, Heal ally N"): t.cost
       // 'burnLumber' = pay 1 Lumber first; with none, the trigger doesn't go off (and a "once" trigger isn't used up).
@@ -5435,6 +5580,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card.shellSkip || (card.shellQuiet != null && combatNo <= card.shellQuiet)){ skipTurn('shell', card, ownId); handledUids.add(uid); return; } // in its shell: no attack this round
             if(card.cowerRound === combatNo){ skipTurn('cower', card, ownId); handledUids.add(uid); return; } // Cower (2026-10-14): hiding or backing off this round
             if(card.petrified){ skipTurn('petrified', card, ownId); handledUids.add(uid); return; } // Petrification (2026-10-14): stone can't swing
+            if(card.frightRound != null && card.frightRound === turnNo){ skipTurn('frightened', card, ownId); handledUids.add(uid); return; } // Haunted (2026-10-16): Frightened, it won't attack this round
             // 0 Attack (2026-10-12, user: "On tide, the coral polyps should have 1 attack - it can attack as long the attack is
             // >0. Please check at every battle step not just at the start ... what if an ally buffs it midway combat?"): the
             // swing's own bonuses count (Swarm, Defiance, day/night, Inspiring, the Flow tide), and a unit at 0 is NOT retired
@@ -5464,7 +5610,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Swift (2026-10-02) acts before everything — even Quick — and among several Swift units the
       // normal position/tie-break order below decides; then Quick; then everyone else.
       const speedRank = c=>{ const e = CARD_DEFS[c.att.defId].effects || {}; return e.swift ? 0 : (e.quick ? 1 : 2); };
+      const grassFirst = c=> rules.tallGrass && (CARD_DEFS[c.att.defId].effects || {}).stealth ? 0 : 1; // Tall Grass (2026-10-16): "stealth units attack first"
       candidates.sort((a,b)=>{
+        if(grassFirst(a) !== grassFirst(b)) return grassFirst(a) - grassFirst(b);
         // Speed (2026-10-14): the highest Speed swings first; everything below is the old order within one Speed.
         const sa = a.att.speed||0, sb = b.att.speed||0;
         if(sa!==sb) return sb-sa;
@@ -5591,6 +5739,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         target = near ? near.entry : null;
         if(near && !near.direct) backstabBonus = Number(attDef.effects.backstab);
       }
+      // Tall Grass (2026-10-16, user: "Backstab and pounce does 2x damage"): a Backstab (a hit on a unit not directly in front) lands double.
+      const tallGrassStab = !!(rules.tallGrass && backstabBonus > 0);
       // Crab claws (2026-10-15 rework, user: "Crab claws can be, attack a random unit L or R. Very awkward for the crab, but very
       // fitting."): each swing pinches one random enemy unit in the column to its left or right (a coin flip when both have one).
       // Neither side has a unit: it attacks straight ahead as normal (the unit in front, or the castle). (Was: alternating
@@ -5707,10 +5857,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               }
               const c2 = redirectToGuardian(players[a.enemyId], c2raw);
               const c2GuardianRedirect = c2.uid !== c2raw.uid;
-              const r3 = damageCard(c2, atkThisRound, dmgType, a.att);
+              const r3 = damageCard(c2, atkThisRound + laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), dmgType, a.att); // + Rook's Row / Bishop's Path (2026-10-16)
               aStat.dealt += r3.dmg;
               ensureStat(stats, sideOf(a.enemyId), c2.defId).taken += r3.dmg;
-              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
+              const lb3 = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, flankCol), lk3 = lastLaneKind; // for the hit event (2026-10-16)
+              if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, dmg:r3.dmg, dmgType, armorBlocked:r3.armorBlocked, armorSoaked:r3.armorSoaked||0, fork:true, prong: prong || null, laneBonus: lb3 || undefined, lane: lb3 ? lk3 : undefined, guardianRedirect:c2GuardianRedirect, crit:critLanded || !!r3.exposedCrit, exposedCrit:!!r3.exposedCrit, rend:r3.rendBypass, festerBonus, ruptureBonus, elementalConvert:r3.elementalConvert, elementalAmount:r3.elementalAmount});
               if(r3.kingSlayerBonus>0 && recordEvents && events) events.push({type:'kingSlayer', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:c2.defId, targetUid:c2.uid, amount:r3.kingSlayerBonus});
               maybeBreakChain(players, sideOf, a.enemyId, c2, stats, events, {kind:'damage', amount:r3.dmg});
               psychicHit(otherId(a.enemyId), a.att, c2, sideOf, stats, events); // Psychic N (2026-10-14)
@@ -5774,11 +5925,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const guardianRedirect = defCard.uid !== target.card.uid;
         const hpBeforeHit = defCard.hp; // Overwhelm (below) needs this to compute overkill
         const bleedBeforeHit = defCard.bleed || 0; // Bloodlust (2026-10-15): was it already Bleeding?
-        const {dmg, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = damageCard(defCard, atkThisRound + backstabBonus, dmgType, a.att);
+        // Rook's Row / Bishop's Path (2026-10-16): +N for a hit straight ahead / on the slant (laneBonusOf). Tall Grass doubles a Backstab.
+        const laneBonus = laneBonusOf(liveOwnCols, liveEnemyCols, liveSelf.col, target.col);
+        const swingAmt = (atkThisRound + backstabBonus + laneBonus) * (tallGrassStab ? 2 : 1);
+        const {dmg, armorBlocked, armorSoaked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = damageCard(defCard, swingAmt, dmgType, a.att);
         swingLanded = true;
         aStat.dealt += dmg;
         ensureStat(stats, sideOf(a.enemyId), defCard.defId).taken += dmg;
-        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0});
+        if(recordEvents && events) events.push({type:'hit', side:mySide, attDefId:a.att.defId, attUid:a.att.uid, targetSide:sideOf(a.enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, dmg, dmgType, armorBlocked, armorSoaked, guardianRedirect, crit:critLanded || !!exposedCrit, exposedCrit:!!exposedCrit, rend:rendBypass, festerBonus, ruptureBonus, elementalConvert, elementalAmount, backstab:backstabBonus||0, laneBonus: laneBonus || undefined, lane: laneBonus ? lastLaneKind : undefined, tallGrass: tallGrassStab || undefined});
         // King Slayer (2026-09-22): a dedicated event, separate from the plain 'hit' above, so
         // the front end can flourish this distinctly instead of the bonus silently blending into
         // the ordinary damage number — see computeHitDamage's kingSlayerBonus for the actual math.
@@ -6164,7 +6318,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, firePitchTriggers, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+  return { tideEvadeOn, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

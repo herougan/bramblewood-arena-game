@@ -15873,5 +15873,192 @@
    "bramblewood-skillfx.js: cloudShadows"
   ],
   "batch": "W2"
+ },
+ {
+  "id": "fld2-landslide",
+  "area": "field",
+  "name": "Landslide",
+  "trigger": "fieldTick {field:'landslide'} + landslideHit per unit",
+  "current": "the board rumbles, a brown band of rocks sweeps down, chips fly off each grounded unit",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "2026-10-16 field effect: 1 in 4, 5 to every unit that isn't flying.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
+ },
+ {
+  "id": "fld2-crushing",
+  "area": "field",
+  "name": "Crushing Depths",
+  "trigger": "fieldTick {field:'crushingDepths'} + crushingHit",
+  "current": "a dark-blue weight presses in from the board's edges; a water ring on each unit",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "The deep: 5 water a round, Swimmers half.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
+ },
+ {
+  "id": "fld2-hail",
+  "area": "weather",
+  "name": "Hail",
+  "trigger": "fieldTick {field:'hail'} + hailHit",
+  "current": "a slanted band of hailstones sweeps down the board; ice chips on each unit",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "3 ice damage a round.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
+ },
+ {
+  "id": "fld2-glass-storm",
+  "area": "weather",
+  "name": "Glass-storm",
+  "trigger": "fieldTick {field:'glassStorm'} + glassHit (roll 1–3)",
+  "current": "a sand band full of glass glints sweeps across; sparks on each unit",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "A Sandstorm full of glass, one fight on the Glass Dunes.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
+ },
+ {
+  "id": "fld2-lava-spout",
+  "area": "field",
+  "name": "Lava Spout",
+  "trigger": "fieldTick {field:'lavaSpout', col} + lavaSpoutHit",
+  "current": "a lava geyser at each unit in the column; a boom",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "The Tide-spout's fiery cousin.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
+ },
+ {
+  "id": "fld2-leylines",
+  "area": "field",
+  "name": "Leylines III burn",
+  "trigger": "fieldTick {field:'leylines'} + leylinesHit / leylinesCastle",
+  "current": "a violet line runs across the board; a violet ring on each unit; Atheists show \"Atheist\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "The ley lines feed you Lumber and Stone and burn everything else.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
+ },
+ {
+  "id": "fld2-mirage",
+  "area": "field",
+  "name": "Mirage",
+  "trigger": "fieldTick {field:'mirage', illusionUid} + spawn {kind:'mirage'}",
+  "current": "the Illusion shimmers into being (hue-shifted blur), \"🪞 Illusion\"",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "A 1/1 clone that copies only how it moves.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
+ },
+ {
+  "id": "fld2-haunted",
+  "area": "status",
+  "name": "Haunted: Frightened",
+  "trigger": "statusFx {kind:'frightened'}",
+  "current": "SkillFX.fearShiver and \"👻 Frightened\"; a 👻 badge while it lasts",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "One unit a side won't attack this round.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
+ },
+ {
+  "id": "fld2-slippery",
+  "area": "field",
+  "name": "Slippery",
+  "trigger": "evaded {reason:'slippery'} / slipFizzle",
+  "current": "\"⛸️ Slip!\" on the attacker, \"⛸️ Slipped\" on a failed skill",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "The Ice Hollow's ice: every swing and trigger a coin flip.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
+ },
+ {
+  "id": "fld2-lanes",
+  "area": "field",
+  "name": "Rook's Row / Bishop's Path",
+  "trigger": "hit {laneBonus, lane}",
+  "current": "\"♜ +2\" / \"♝ +2\" over the target",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Map 12, the Briar Maze: straights and diagonals.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
+ },
+ {
+  "id": "fld2-consternation",
+  "area": "field",
+  "name": "Consternation",
+  "trigger": "fieldTick {field:'consternation'}",
+  "current": "\"😰 −1/−1\" over your hand; the hand cards show what they have left",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Hand cards wilt every upkeep.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_app.js: field2Vfx",
+   "bramblewood-engine.js: fieldEffects2Tick"
+  ],
+  "batch": "FE2"
  }
 ]

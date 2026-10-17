@@ -319,7 +319,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
-  absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢'});
+  absoluteZero:'🧊', spitfire:'🔥👄', slashBurn:'🔪🔥', trap:'🪤', predator:'🐆', prey:'🦌', nova:'🔮', crystallise:'💎', cure:'💊', mountainClimber:'🧗', taunt:'📢', atheist:'🚫✨'}); // + Atheist (2026-10-16)
 Object.assign(SKILL_ICON, {diurnalGrant:'☀️', nocturnalGrant:'🌙', tideGrant:'🌊', fullMoon:'🌕', fullMoonGrant:'🌕'}); // Zeitgeber advanced forms (2026-10-15)
 Object.assign(SKILL_ICON, {penance:'⛧🏰', bloodTithe:'⛧🩸'});
 SKILL_ICON.amore = '💕'; // Amore (2026-10-16): 💕 waiting, ❤️ paired, 🤎 heartbroken (amoreChip) // Devilry payments (2026-10-16): the Dark Summon pentagram, into your castle / an ally
@@ -981,6 +981,9 @@ const PASSIVE_DEFS = [
   {key:'crystallise', category:'evergreen', label:'Crystallise', kind:'number', min:1, defaultValue:5, desc:v=>`When it dies, it turns into a 0/${numOr(v, 5)} crystal that holds its slot.`},
   {key:'cure', category:'evergreen', label:'Cure', kind:'number', min:1, defaultValue:2, desc:v=>`Every upkeep, cures your most afflicted unit (itself too): up to ${numOr(v, 2)} Poison, then Bleed, come off. Toxin can't be cured.`},
   {key:'mountainClimber', category:'passive', label:'Mountain Climber', kind:'boolean', desc:()=>`Sure-footed: Frigid, Scorching, Scorched Ground, the volcano, Avalanche, Landslide and Earthquake pass it by.`},
+  // Atheist (2026-10-16, user: "Unless Atheist (1/2 damage from magic sources, dark (some devilry attacks) or holy (some ecclesia attacks) damage) -
+  // then take 0 damage from this [Leylines III]."): on no card yet.
+  {key:'atheist', category:'passive', label:'Atheist', kind:'boolean', desc:()=>`Takes half damage from magic and from Devilry and Ecclesia attackers. The Leylines' burn doesn't touch it, and it is never Frightened.`},
   // Taunt (user: "Add a sheep card (basic) - it has taunt."): not the same as Guardian. Guardian only takes the hits aimed at the units
   // beside it; Taunt pulls the attacks of the enemy units facing it or one column away, even ones that were going to the castle.
   {key:'taunt', category:'passive', label:'Taunt', kind:'boolean', desc:()=>`Enemy units facing it, or one column to either side, must attack it (even ones that would hit the castle). Stealth slips past.`},
@@ -2049,6 +2052,7 @@ Object.assign(SKILL_TEXT, {
   crystallise: v=> `When it dies, it becomes a 0/${numOr(v, 5)} crystal in its slot.`,
   cure: v=> `Every upkeep, cure ${numOr(v, 2)} Poison or Bleed from your most afflicted unit.`,
   mountainClimber: ()=> `Field and terrain hazards pass it by.`,
+  atheist: ()=> `Half damage from magic, Devilry and Ecclesia. Immune to the Leylines.`, // 2026-10-16
   taunt: ()=> `Enemies facing it or beside that column must attack it.`,
   amore: ()=> `When it arrives with one of your Amore units on the field that shares a Type, the two fall in love (once): +0/+3 and Regeneration 3 each. If one dies, the other keeps the +0/+3 but loses the Regeneration.`, // 2026-10-16
   molting: v=> `Every 2 rounds: +${numOr(v, 1)}/+${numOr(v, 1)} for good, but +1 Wait.`, // 2026-10-16
@@ -6158,7 +6162,7 @@ function abilityBadges(d, bopts){
   [['venomous', 'Venomous', 2], ['toxin', 'Toxin', 1], ['weaken', 'Weaken', 1], ['wilting', 'Wilting', 1], ['bulldoze', 'Bulldoze', 1], ['tangle', 'Tangleweed', 1], ['strangle', 'Strangle', 2],
     ['invincible', 'Invincible', 1], ['invisible', 'Invisible', 2], ['sonar', 'Sonar', 0], ['poisonGas', 'Poison Gas', 2], ['absoluteZero', 'Absolute Zero', 0], ['spitfire', 'Spitfire', 2],
     ['slashBurn', 'Slash & Burn', 3], ['trap', 'Trap', 5], ['predator', 'Predator', 1], ['prey', 'Prey', 0], ['nova', 'Nova', 3], ['crystallise', 'Crystallise', 5], ['cure', 'Cure', 2],
-    ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
+    ['mountainClimber', 'Mountain Climber', 0], ['taunt', 'Taunt', 0], ['penance', 'Penance', 3], ['bloodTithe', 'Blood Tithe', 2], ['atheist', 'Atheist', 0]].forEach(([k, nm, dv])=>{ // + the Devilry payments (2026-10-16)
     if(e[k]) out.push(`<span class="ab-w2 ab-${k.toLowerCase()}" title="${escapeAttr(nm + (dv ? ' ' + numOr(e[k], dv) : '') + ': ' + ((SKILL_TEXT[k] && SKILL_TEXT[k](e[k])) || ''))}">${iconHTML(k, SKILL_ICON[k])}${dv ? n1(numOr(e[k], dv)) : ''}</span>`); });
   if(e.smokeBomb) out.push(`<span class="ab-smokebomb" title="Smoke Bomb: 1 in 2 each round, a smoke bomb at a random unit: Smoke for an ally, Blind for an enemy">${iconHTML('smoke-bomb', '💣')}</span>`);
   // Ore costs (2026-10-12, user: "What is +1 Stone Cost btw?"): it read "🪨1cost"; now just 🪨1 with a plain tip.
@@ -13396,7 +13400,9 @@ function enterSubMap(id, el, body){
     const lay = document.getElementById('conquestLayout') || mainEl, lr = lay.getBoundingClientRect();
     try{ SoundKit && SoundKit.play && SoundKit.play('whoosh'); }catch(e){}
     document.documentElement.classList.add('submap-zooming');
-    const za = mapOnlyZoom(lay, 1, 4.5, r.left + r.width/2 - lr.left, r.top + r.height/2 - lr.top, 560, t=> t*t*t, true);
+    // 2026-10-16 (user: "When zooming in a submap like Tutorial, and clovermead, the map background doesnt need to zoom in that much, just a
+    // little bit."): a small push toward the entrance (×1.3, was ×4.5), and the side map grows from 90% (was 35%), below.
+    const za = mapOnlyZoom(lay, 1, SUBMAP_PUSH_ZOOM, r.left + r.width/2 - lr.left, r.top + r.height/2 - lr.top, 480, t=> t*t, true);
     za.onfinish = ()=>{ conquestVeiledMap = id; // the side map's loading card would darken the screen again
       conquestSelectedMap = id; conquestSelectedNodeKey = null; conquestSubZoom = 'grow'; renderConquestSubTab(body); try{ za.cancel(); }catch(e){} };
     setTimeout(()=> document.documentElement.classList.remove('submap-zooming'), 2200);
@@ -13428,6 +13434,7 @@ function enterSubMap(id, el, body){
 // Zoom the map but not the map list (2026-10-14): the art lives on #conquestLayout, which also holds the list, so the layout is
 // scaled about (ox, oy) and the list gets the exact inverse scale at every keyframe (its own origin placed on the same point),
 // which keeps it where it is. ease maps 0–1 progress to 0–1; the keyframes carry the easing, so they run linear.
+const SUBMAP_PUSH_ZOOM = 1.3, SUBMAP_GROW_FROM = .9; // daylight side maps: how far the map pushes in, and where the side map grows from (2026-10-16)
 function mapOnlyZoom(lay, from, to, ox, oy, ms, ease, hold){
   const list = lay.querySelector(':scope > .conquest-maps'), N = 18, ks = [], lk = [];
   const lo = list ? {x: list.offsetLeft, y: list.offsetTop} : null;
@@ -13845,7 +13852,9 @@ const MAP_DAYNIGHT = {
 };
 function mapDayNight(mid){ return MAP_DAYNIGHT[mid] || (mid ? 'cycle' : 'day'); } // every other map is out in the open: it cycles
 // Tide-spout (2026-10-14, user: "new effect on the beach map - Tide-spout!"): on by default in every Pebble Beach fight.
-const TIDESPOUT_MAPS = new Set(['mb']);
+// 2026-10-16 (user: "2: Tide. Tide-spout should be one-off."): one Pebble Beach fight only, 2-4 Pelican Point (map -> node key). The map's
+// own Tide (rules.tide) is for the map placement pass to set; until then the beach has no Flood or Ebb.
+const TIDESPOUT_NODES = {mb:'2-4'};
 // Map 0 is misty (2026-10-15): no day and night there at all (fightRules turns the cycle off in the mist), so no nightfall,
 // no howl and no night sounds on Map 0.
 const MISTY_MAPS = new Set(['m1', 'mo']); // Bramblewood Outskirts and its side map The Old Bramble
@@ -13858,7 +13867,8 @@ function mapIdOfNode(node){ if(!node) return null; const m = CONQUEST_MAPS.find(
 function fightRules(mapId, node){ const r = Object.assign({}, (node && node.rules) || {}); const mid = mapId || mapIdOfNode(node); if(!r.phase) r.phase = mapDayNight(mid); // the map's own day and night (2026-10-14; Zeitgebers retired)
   if(r.misty == null && MISTY_MAPS.has(mid) && node) r.misty = true; // Map 0 is misty (2026-10-15, user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist'")
   if(r.misty) r.phase = 'off'; // Misty (2026-10-14): no day or night in the mist; the fog's tint drifts instead (syncSkyFx)
-  if(r.tideSpout == null && TIDESPOUT_MAPS.has(mid) && node) r.tideSpout = true;
+  if(r.crushingDepths) r.phase = 'off'; // 2026-10-16 (user: "First Blood and Night not needed - moon can't be seen. So no day/night."): none in the depths
+  if(r.tideSpout == null && node && TIDESPOUT_NODES[mid] === node.key) r.tideSpout = true; // one fight (2026-10-16)
   if(r.permaTide == null && PERMATIDE_MAPS.has(mid) && node) r.permaTide = true; // the river's Perma-tide (2026-10-14)
   if(r.wet == null && mid && wetMap(mid)) r.wet = true;
   if(r.wind == null && WINDY_MAPS[mid]) r.wind = WINDY_MAPS[mid]; // strong wind on the high, open maps (2026-10-13)
@@ -13947,8 +13957,9 @@ function eruptionGeyserVfx(el, water){
   const r = el.getBoundingClientRect(), g = document.createElement('div');
   g.className = 'lava-geyser' + (water ? ' is-water' : ''); g.setAttribute('aria-hidden', 'true');
   g.style.left = (r.left + r.width / 2) + 'px'; g.style.top = (r.bottom - 6) + 'px'; g.style.setProperty('--h', Math.round(r.height * 1.25) + 'px');
-  g.innerHTML = '<i class="lg-col"></i>' + Array.from({length: 12}, (_, k)=> `<b style="--x:${Math.round((Math.random() - .5) * r.width * 1.2)}px; --y:${-Math.round(r.height * (.6 + Math.random() * .8))}px; --d:${(k * 0.04).toFixed(2)}s"></b>`).join('');
-  document.body.appendChild(g); setTimeout(()=> g.remove(), 1300);
+  // 2026-10-16 (user: "Tide Spout - Make it fade in and fade out faster."): the water spout rises and drains in about half the time.
+  g.innerHTML = '<i class="lg-col"></i>' + Array.from({length: 12}, (_, k)=> `<b style="--x:${Math.round((Math.random() - .5) * r.width * 1.2)}px; --y:${-Math.round(r.height * (.6 + Math.random() * .8))}px; --d:${(k * (water ? 0.02 : 0.04)).toFixed(2)}s"></b>`).join('');
+  document.body.appendChild(g); setTimeout(()=> g.remove(), water ? 750 : 1300);
   if(water) return;
   const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.remove('erupt-flash'); void bf.offsetWidth; bf.classList.add('erupt-flash'); setTimeout(()=> bf.classList.remove('erupt-flash'), 800); }
 }
@@ -13980,7 +13991,7 @@ function fieldRowsSeen(){ try{ return JSON.parse(localStorage.getItem(FIELD_ROWS
 function markFieldRow(key){ if(matchState && matchState.fxLib) return false; /* 🔬 the Effects library never marks a field row seen (2026-10-14) */ const st = fieldRowsSeen(); if(st[key] != null) return false; st[key] = fightSerial(); try{ localStorage.setItem(FIELD_ROWS_KEY, JSON.stringify(st)); }catch(e){} return true; }
 function fieldRowState(key){ const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
 // Rows that are in force from the first round (no event to wait for) count as happening when the fight starts.
-const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty']);
+const FIELD_ROWS_AT_START = new Set(['terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1']); // + field effects 2 that have no event of their own (2026-10-16)
 // Volcano hazards with odds (2026-10-14, user: "Volcano: Lava Tide, Petrification, Eruption - 1%, 2%, 3% (Hovering says 'Very Low'),
 // 10/12/14% (Low), 20/22/24% (Medium), 45/50/55 and increasing (1/2 chance), 60 and above, (High)"). rules.volcano is the level;
 // rules.lavaTideChance / petrifyChance / eruptionChance override one hazard (0–100). The engine rolls them (volcanoTick); the
@@ -14001,6 +14012,32 @@ const VOLCANO_HAZARDS = [
   {key:'eruption', icon:'🌋', name:'Eruption', text:r=> `From round 2, one random unit on each side may take ${Number(r.eruption) > 0 ? r.eruption : 2} fire damage. Then the odds reset, and for 3 rounds comets rain down: every unit takes 2–5 fire damage (fire-resistant units take half).`},
 ];
 function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return ''; return volcanoBand(o[key]) + (r.volcano === 'even' && r[key + 'Chance'] == null ? ', and rising' : ''); }
+// Field effects 2 (2026-10-16, the user's field-effect curriculum notes): one text per effect, shared by the Environment cards
+// (fieldConditionRows), Edit skirmish (FIELD_EFFECTS) and the Effects library (FXL_FIELDS). The rules live in bramblewood-engine.js
+// (fieldEffects2Tick and the helper block near `rules`). key = the rules flag; editor = the Edit skirmish id.
+const FIELD2 = {
+  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor.'},
+  landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:"Each round from round 2, a 1 in 4 chance that rocks come down: 5 damage to every unit that isn't flying, on both sides."},
+  consternation: {icon:'😰', name:'Consternation', editor:'consternation', short:'Hand cards lose 1/1 a round', text:'Each round from round 2, every card in each hand loses 1/1. The loss stays on the card when it is played (down to 0 Attack and 1 Health at most).'},
+  crushingDepths:{icon:'🫧', name:'Crushing Depths', editor:'crushingdepths', short:'5 water damage a round', text:'Each round from round 2, every unit takes 5 water damage. Tide units and Swimmers take half, and water Resist halves it again. No day or night reaches down here.'},
+  rookRow:       {icon:'♜', name:"Rook's Row", editor:'rookrow', short:'Straight hits +2', text:'A hit on the unit standing square in front of the attacker deals +2 damage.'},
+  bishopPath:    {icon:'♝', name:"Bishop's Path", editor:'bishoppath', short:'Slanted hits +2', text:'A hit on a unit on the slant (half a step or one column to the side, as with interlocked ranks, Fork prongs, Backstab and Crab Claws) deals +2 damage.'},
+  mirage:        {icon:'🪞', name:'Mirage', editor:'mirage', short:'An Illusion appears each round', text:'Each round from round 2, a random unit gets a 1/1 Illusion in a free slot right beside it (none if both are taken). The Illusion copies only Flying, Tide, Swimmer, Haste and Speed.'},
+  canopy:        {icon:'🌳', name:'High Canopy', editor:'canopy', short:'Pounce +2, Swift dodge, no Flying dodge', text:'Up in the treetops: Pounce deals +2 damage, Swift and Quick units are Evasive, Flying gives no dodge, and Bounty creatures have Bounty +1.'},
+  undergrowth:   {icon:'🌿', name:'Undergrowth', editor:'undergrowth', short:'Pounce +2, Swift dodge', text:'Thick cover: Pounce deals +2 damage, and Swift and Quick units are Evasive.'},
+  tallGrass:     {icon:'🌾', name:'Tall Grass', editor:'tallgrass', short:'Stealth first; Backstab, Pounce ×2', text:'Stealth units attack first. Backstab hits and Pounce deal double damage.'},
+  slippery:      {icon:'⛸️', name:'Slippery', editor:'slippery', short:'Swings and triggers fail 1 in 2', text:'Ice everywhere: every attack at a unit misses 1 in 2, and every trigger and on-hit effect fails 1 in 2.'},
+  glassStorm:    {icon:'💎', name:'Glass-storm', editor:'glassstorm', short:'Sandstorm, plus 1–3 glass a round', text:'A Sandstorm full of glass: attacks miss 1 in 4 (not from Dry units), the wind is random each round, and from round 2 every unit is buffeted for a random 1–3 damage each round.'},
+  hail:          {icon:'🌨️', name:'Hail', editor:'hail', short:'3 ice damage a round', text:'Each round from round 2, every unit takes 3 ice damage. Cold Resist halves it.'},
+  lavaSpout:     {icon:'♨️', name:'Lava Spout', editor:'lavaspout', short:'A column bursts: 3 fire', text:'Each round from round 2, lava bursts up in one random column: the units there, on both sides, take 3 fire damage. Fire Resist halves it.'},
+  leylines1:     {icon:'✴️', name:'Leylines I', editor:'leylines1', short:'Day, night, tide, moon stronger', text:'The old rhythms run strong: Diurnal, Nocturnal and Crepuscular bonuses are +2/+2 more (a plain one is +3/+3), the Tide gives +3 Attack on Flood and Armor 3 on Ebb, and Full Moon and Moonborn are +2/+2 more.'},
+  leylines2:     {icon:'✴️', name:'Leylines II', editor:'leylines2', short:'+1 Lumber a round', text:'Each round from round 2, both sides gain 1 Lumber.'},
+  leylines3:     {icon:'✴️', name:'Leylines III', editor:'leylines3', short:'+1 Lumber, +1 Stone; 3 damage to all', text:'Each round from round 2, both sides gain 1 Lumber and 1 Stone, but every unit takes 3 magic damage and both castles take 3 (never below 1). Atheist units take none.'},
+  haunted:       {icon:'👻', name:'Haunted', editor:'haunted', short:'A unit a side is Frightened', text:"Each round from round 2, one random unit on each side is Frightened: it doesn't attack that round. Ghosts and Atheists aren't scared."},
+};
+// 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the spout no longer brings the Tide in.
+const TIDESPOUT_TEXT = "Each round from round 2, a spout bursts in one random column: the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.";
+const FIELD2_SCORCHING3_TEXT ='Scorching, level 3: each round 4 random units on each side take 3 fire damage. Heat-resistant units are spared.';
 function fieldConditionRows(r){
   // 2026-10-14 (user: "For field effects with many multiple effects, split into multiple field cards"): every row also has a short
   // line (`short`) for its own Environment card on the board. The terrain row went with home ground (user: "Remove the Home ground
@@ -14010,8 +14047,10 @@ function fieldConditionRows(r){
     const SH = {lavaTide:'Lava may flood a column', petrify:'A unit may turn to stone', eruption:'Eruptions, then comets'};
     VOLCANO_HAZARDS.forEach(h=>{ if(!(o[h.key] > 0)) return; const w = volcanoChanceWord(r, h.key); add(h.key, h.icon, `${h.name} · ${w}`, `${h.text(r)} Chance each round: ${w}.`, `Chance each round: ${w}`, `${SH[h.key]} (${w})`); }); }
   else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(r.eruption), '', `Burns a unit a side for ${r.eruption}`);
-  if(r.wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale);
-  else if(r.wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy);
+  // 2026-10-16 (user: "Should sandstorm also have windy rules? I think so."): a Sandstorm or Glass-storm brings Windy's wind (unless the fight sets one).
+  const wind = r.wind || ((r.sandstorm || r.glassStorm) ? 'windy' : null);
+  if(wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale);
+  else if(wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy);
   if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (none with an Illuminate unit on their side).', '', 'No Darksight: every attack misses');
   // 2026-10-15 (user: "It will be an explicit field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): the two dark levels.
   else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', 'No Darksight: miss 1 in 2');
@@ -14027,7 +14066,8 @@ function fieldConditionRows(r){
   if(r.sandstorm) add('sandstorm', '🏜️', 'Sandstorm', 'Attacks at units miss 1 in 4, except from Dry units.', '', 'Attacks miss 1 in 4');
   // 2026-10-14 (user: "Tideline II doesn't need to explain Tide & High Tide ... The effect of it just says, Periodic High Tides"):
   if(r.highTide && !r.permaTide) add('highTide', '🌊', 'High Tide', 'Periodic High Tides.', '', 'Periodic High Tides');
-  if(r.tideSpout) add('tideSpout', '⛲', 'Tide-spout', 'Each round from round 2, a spout bursts in one random column: the Tide comes in, the units there are pushed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', '', 'A spout pushes a column back'); // 2026-10-14
+  if(r.tide && !r.permaTide && !r.highTide){ const f = FIELD2.tide; add('tide', f.icon, f.name, f.text, '', f.short); } // 2026-10-16
+  if(r.tideSpout) add('tideSpout', '⛲', 'Tide-spout', TIDESPOUT_TEXT, '', 'A spout pushes a column back'); // 2026-10-14
   if(r.frostWait || r.frostCount || r.frostbite || (r.frostResist||[]).length){
     const n = Math.max(1, Number(r.frostCount)||1, Number(r.frostWait)||1);
     add('frost', '❄️', 'Frost', `Each round ${n > 1 ? n + ' random units' : 'one random unit'} on each side ${n > 1 ? 'get' : 'gets'} +1 Wait. Units weak to cold also take 1 damage.`, '', `Chills ${n} a side each round`);
@@ -14035,6 +14075,8 @@ function fieldConditionRows(r){
     if((r.frostResist||[]).length){ const fr = rows[rows.length - 1]; fr.text += ` Their ${r.frostResist.join(', ')} units never feel it.`; }
     if(r.frostbite) add('frostbite', '🥶', 'Frostbite', `An enemy unit the frost chills gains +${r.frostbite}/+${r.frostbite}.`, '', `Chilled foes gain +${r.frostbite}/+${r.frostbite}`);
   }
+  // Field effects 2 (2026-10-16): one row each, in FIELD2's order (the Tide's row sits with the other tides above).
+  Object.keys(FIELD2).forEach(k=>{ if(k === 'tide' || !r[k]) return; if(k === 'undergrowth' && r.canopy) return; const f = FIELD2[k]; add(k, f.icon, f.name, f.text, '', f.short); });
   if(r.bossSurge) add('bossSurge', '💢', 'Boss surge', `Their boss surges +${r.bossSurge.atk}/+${r.bossSurge.hp} when it's cast.`, '', `Their boss arrives +${r.bossSurge.atk}/+${r.bossSurge.hp}`);
   if(r.enemyOre) add('enemyOre', '⛏️', 'Deep mines', 'Their side digs the Stone and Metal it needs.', '', 'They dig Stone and Metal');
   return rows;
@@ -14080,6 +14122,12 @@ function noteFieldEvent(ev){
   else if(ev.type === 'fieldTick' && (ev.field === 'swampFever' || ev.field === 'freezing')) hit = markFieldRow(ev.field); // 2026-10-15
   else if(ev.type === 'evaded' && ev.reason === 'sandstorm') hit = markFieldRow('sandstorm'); // 2026-10-15
   else if(ev.type === 'phase' && (ev.phase === 'twilight' || ev.to === 'twilight')) hit = markFieldRow('twilight');
+  // Field effects 2 (2026-10-16): each row is learned the first time it does something.
+  else if(ev.type === 'fieldTick' && ['landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'mirage', 'haunted'].includes(ev.field)) hit = markFieldRow(ev.field);
+  else if(ev.type === 'fieldTick' && ev.field === 'leylines') hit = markFieldRow('leylines3');
+  else if(ev.type === 'lumber' && ev.leylines && r.leylines2) hit = markFieldRow('leylines2');
+  else if(ev.type === 'tide' && r.tide) hit = markFieldRow('tide');
+  else if((ev.type === 'evaded' && ev.reason === 'slippery') || ev.type === 'slipFizzle') hit = markFieldRow('slippery');
   if(hit){ const p = document.getElementById('fieldCondCard') || document.getElementById('terrainPill'); if(p){ p.classList.add('has-new'); try{ fxHook('fieldReveal', p); }catch(e){} } }
 }
 // The terrain pill on the board became a field card on the enemy's side (2026-10-14): see fieldCondCardHTML.
@@ -14272,14 +14320,14 @@ function skirmishFieldChips(mapId, draft){
   const exp = draft.rules || {}, auto = skirmishFxAuto(mapId, draft), eff = Object.assign({}, auto, exp), out = [];
   const add = (key, on, icon, name, text)=> out.push({key, on, icon, name, text, src: key in exp ? 'set' : 'map', restore: (key in exp) && auto[key] != null && auto[key] !== false && auto[key] !== 0 && auto[key] !== 'none'});
   const ph = eff.phase || 'day'; if(ph !== 'day' || 'phase' in exp){ const L = SE_PHASE_LABEL[ph] || ['🌗', ph]; add('phase', true, L[0], L[1] + ((ph === 'cycle' || ph === 'nightFirst') ? `, every ${eff.phaseLen || 3} rounds` : ''), 'Day & night, in the battle box above.'); }
-  if(eff.field && eff.field !== 'none'){ const f = FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field); add('field', true, f ? f.icon : '🌦️', f ? f.name : eff.field, f ? f.text : ''); }
+  if(eff.field && eff.field !== 'none'){ const f = FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field && (Number(x.rules.heatLevel)||1) === (Number(eff.heatLevel)||1)) || FIELD_EFFECTS.find(x=> x.group === 'field' && x.rules.field === eff.field); add('field', true, f ? f.icon : '🌦️', f ? f.name : eff.field, f ? f.text : ''); } // + the Scorching level (2026-10-16)
   else if(eff.field === 'none' && auto.field) add('field', false, '❄️', 'Frigid (off)', 'The map would freeze this fight.');
   // (Terrain chips went with home ground, 2026-10-14: a terrain on its own does nothing to switch on or off.)
   if(volcanoRulesOn(eff)){ const lv = VOLCANO_LEVELS[eff.volcano]; add('volcano', true, '🌋', `Volcano: ${lv ? lv.label : 'custom odds'}`, VOLCANO_HAZARDS.map(h=> `${h.name}: ${volcanoChanceWord(eff, h.key)}`).join(' · ') + (Number(eff.eruption) > 0 ? ` (eruptions deal ${eff.eruption})` : '') + '.'); }
   else if(Number(eff.eruption) > 0) add('eruption', true, '🔥', `${SCORCHED_NAME} ${eff.eruption}`, scorchedGroundText(eff.eruption));
   else if('eruption' in exp && Number(auto.eruption) > 0) add('eruption', false, '🔥', `${SCORCHED_NAME} (off)`, `The ground would burn for ${auto.eruption}.`);
   if(eff.highTide) add('highTide', true, '🌊', 'High Tide', 'Periodic High Tides.'); else if(exp.highTide === false && auto.highTide) add('highTide', false, '🌊', 'High Tide (off)', '');
-  if(eff.tideSpout) add('tideSpout', true, '⛲', 'Tide-spout', 'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there get +1 Wait, and non-swimmers take 1 water damage.'); else if(exp.tideSpout === false && auto.tideSpout) add('tideSpout', false, '⛲', 'Tide-spout (off)', 'The beach would spout in this fight.'); // 2026-10-14
+  if(eff.tideSpout) add('tideSpout', true, '⛲', 'Tide-spout', TIDESPOUT_TEXT); else if(exp.tideSpout === false && auto.tideSpout) add('tideSpout', false, '⛲', 'Tide-spout (off)', 'The beach would spout in this fight.'); // 2026-10-14
   if(eff.tideEvade) add('tideEvade', true, '🌊', 'Tide evade (test)', 'While the tide is in, Tide units are Evasive against attacks from units without Tide. Both sides.'); // 2026-10-16
   if(eff.misty) add('misty', true, '🌫️', 'Misty', MISTY_TEXT); // 2026-10-14
   if(eff.cloudy) add('cloudy', true, '☁️', 'Cloudy', CLOUDY_TEXT); else if(exp.cloudy === false && auto.cloudy) add('cloudy', false, '☁️', 'Cloudy (off)', ''); // 2026-10-16
@@ -14290,19 +14338,23 @@ function skirmishFieldChips(mapId, draft){
   if(Number(eff.lumberEvery) > 0) add('lumberEvery', true, '🪵', `Lumber every ${eff.lumberEvery} rounds`, `Both sides gain 1 Lumber every ${eff.lumberEvery} rounds.`);
   if(Number(eff.firstBlood) > 0) add('firstBlood', true, '🩸', `First Blood +${eff.firstBlood}`, `The first Quick unit to attack each round hits +${eff.firstBlood}.`);
   if(Number(eff.actions) > 1) add('actions', true, '⚡', `${eff.actions} actions a turn`, 'Actions per turn, in the battle box above.');
+  // 2026-10-16: every other field effect in FIELD_EFFECTS (Swamp Fever, Freezing, Sandstorm, River Rapids and the field effects 2) gets its
+  // chip from its first rules key, so an effect added here shows and can be switched off (the 2026-10-15 ones had no chip).
+  FIELD_EFFECTS.forEach(f=>{ if(!f.rules || f.arenaOnly || f.group === 'field' || f.group === 'phase' || f.group === 'lumber') return; const k = Object.keys(f.rules)[0];
+    if(!k || !eff[k] || out.some(c=> c.key === k)) return; add(k, true, f.icon, f.name + (f.oneOff ? ' (one-off)' : ''), f.text); });
   if(eff.frostWait || eff.frostCount || eff.frostbite || (eff.frostResist||[]).length) add('frosttune', true, '🧊', 'Frost tuning', [(eff.frostWait || eff.frostCount) ? `level ${Math.max(Number(eff.frostWait)||1, Number(eff.frostCount)||1)} (${Math.max(Number(eff.frostWait)||1, Number(eff.frostCount)||1)} a side, +1 Wait)` : '', eff.frostbite ? `enemy Frostbite ${eff.frostbite}` : '', (eff.frostResist||[]).length ? `${eff.frostResist.join(', ')} resist` : ''].filter(Boolean).join(' · '));
   const g = draft.leaderGrant || exp.leaderGrant || {};
   Object.keys(g).forEach(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key === k); out.push({key:'gift:' + k, on:true, icon:'👑', name:`Leader gift: ${pd ? pd.label : k}${g[k] === true ? '' : ' ' + g[k]}`, text:'Light blue on the enemy leaders.', src:'set'}); });
   return out;
 }
 function skirmishFxAddOptionsHTML(){
-  const o = f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name)}</option>`;
+  const o = f=> `<option value="${escapeAttr(f.id)}">${escapeHtml(f.icon + ' ' + f.name + (f.oneOff ? ' (one-off)' : ''))}</option>`; // one-off: meant for one fight (2026-10-16)
   const grp = (label, list)=> `<optgroup label="${escapeAttr(label)}">${list.map(o).join('')}</optgroup>`;
   const by = g=> FIELD_EFFECTS.filter(f=> !f.arenaOnly && g.includes(f.group));
   const erupt = [2, 3, 5].map(n=> ({id:'eruption@' + n, icon:'🔥', name:SCORCHED_NAME + ' ' + n}))
     .concat(Object.keys(VOLCANO_LEVELS).map(k=> ({id:'volcano@' + k, icon:'🌋', name:'Volcano hazards: ' + VOLCANO_LEVELS[k].label}))); // 2026-10-14: Lava Tide, Petrification, Eruption by odds
   const grounds = Object.keys(TERRAIN_BIOMES).filter(b=> b !== 'ash').flatMap(b=> [1, 2, 3].map(t=> groundEffect(b, t)));
-  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field', 'cloudy']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', by(['firstBlood', 'highTide', 'tideSpout', 'tideEvade', 'misty', 'dark', 'actions']).concat(erupt))}${grounds.filter(Boolean).length ? grp('Home ground', grounds.filter(Boolean)) : ''}${grp('Leader gifts', by(['gift']))}`;
+  return `<option value="">＋ Add a field effect…</option>${grp('Weather', by(['field', 'cloudy']))}${grp('Lumber', by(['lumber']))}${grp('Hazards and rules', FIELD_EFFECTS.filter(f=> !f.arenaOnly && !['field', 'cloudy', 'lumber', 'gift', 'phase', 'mode'].includes(f.group)).concat(erupt))}${grounds.filter(Boolean).length ? grp('Home ground', grounds.filter(Boolean)) : ''}${grp('Leader gifts', by(['gift']))}`;
 }
 function applySkirmishFx(draft, id){
   const m = /^eruption@(\d+)$/.exec(id || ''); const r = Object.assign({}, draft.rules || {});
@@ -14323,7 +14375,8 @@ function removeSkirmishFx(mapId, draft, key, restore){
   else if(key === 'volcano'){ ['volcano', 'lavaTideChance', 'petrifyChance', 'eruptionChance'].forEach(k=> delete r[k]); }
   else if(restore) delete r[key];
   else if(key in SE_FX_OFF && auto[key] && auto[key] !== 'none') r[key] = SE_FX_OFF[key];
-  else delete r[key];
+  else { delete r[key]; const f = FIELD_EFFECTS.find(x=> x.rules && Object.keys(x.rules)[0] === key); if(f) Object.keys(f.rules).forEach(k=>{ if(k !== 'field') delete r[k]; }); } // 2026-10-16: an effect's helper keys go with it (River Rapids' permaTide, the canopy pair)
+  if(key === 'field') delete r.heatLevel; // Scorching II / III's level goes with the field (2026-10-16)
   if(Object.keys(r).length) draft.rules = r; else delete draft.rules;
 }
 function openSkirmishEditor(mapId, nodeKey, draftOverride){
@@ -18603,8 +18656,8 @@ function renderConquestSubTab(body){
     // shrinks it away; this is the same move the other way round). The map list holds still.
     const lay = document.getElementById('conquestLayout') || mainEl, lr = lay.getBoundingClientRect(), mr = mainEl.getBoundingClientRect();
     const ox = mr.left + mr.width/2 - lr.left, oy = mr.top + mr.height/2 - lr.top;
-    if(lay.animate){ const zo = mapOnlyZoom(lay, .35, 1, ox, oy, 640, t=> 1 - Math.pow(1 - t, 3), false);
-      mainEl.animate([{opacity:0}, {opacity:1, offset:.35}, {opacity:1}], {duration:640, easing:'ease-out'});
+    if(lay.animate){ const zo = mapOnlyZoom(lay, SUBMAP_GROW_FROM, 1, ox, oy, 520, t=> 1 - Math.pow(1 - t, 3), false); // a little (2026-10-16), was .35
+      mainEl.animate([{opacity:0}, {opacity:1, offset:.45}, {opacity:1}], {duration:520, easing:'ease-out'});
       zo.onfinish = zo.oncancel = ()=> document.documentElement.classList.remove('submap-zooming'); }
     else document.documentElement.classList.remove('submap-zooming');
   }
@@ -22092,7 +22145,29 @@ const FXL_FIELDS = [
   {key:'freezing', icon:'🧊', name:'Freezing', text:()=> 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', rules:{freezing:true}, steps:[{spawn:'subject'}, 'round'], note:'The Specimen arrives frozen and sits out a round.'},
   {key:'sandstorm', icon:'🏜️', name:'Sandstorm', text:()=> 'Attacks at units miss 1 in 4, except from Dry units.', rules:{sandstorm:true}, units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Fennec', icon:'🦊', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'The Fennec beside it is Dry and never misses in the sand.'},
   {key:'scorching2', icon:'🔥', name:'Scorching II', text:()=> 'Scorching, level 2: each round 3 random units on each side take 2 fire damage. Heat-resistant units are spared.', rules:{field:'heatwave', heatLevel:2}},
-  {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> "From round 2, a spout bursts in one random column each round. The Tide comes in, the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.", rules:{tideSpout:true}, units:FXL_TIDE_UNITS},
+  // Field effects 2 (2026-10-16): texts in FIELD2; each entry stages what makes its rule visible.
+  {key:'scorching3', icon:'🔥', name:'Scorching III', text:()=> FIELD2_SCORCHING3_TEXT, rules:{field:'heatwave', heatLevel:3}},
+  ...[
+    ['tide', {tide:true}, {units:FXL_TIDE_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: Flood, Ebb, Flood. The Landlubber is not a Tide unit.'}],
+    ['landslide', {landslide:100}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Hawk', icon:'🦅', effects:{flying:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Forced to 100% here (1 in 4 in a fight). The Hawk flies above the rocks.'}],
+    ['consternation', {consternation:true}, {drawHand:3, steps:['round', 'round'], note:'Three cards in your hand: watch them lose 1/1 each round.'}],
+    ['crushingDepths', {crushingDepths:true}, {units:FXL_TIDE_UNITS, steps:['round', 'round'], note:'The Tide units take half; the Landlubber takes it all.'}],
+    ['rookRow', {rookRow:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:1, def:{name:'Fork Crab', icon:'🦀', effects:{fork:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, note:'Straight hits get +2 (the Fork\'s second prong, on the slant, does not).'}],
+    ['bishopPath', {bishopPath:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Fork Crab', icon:'🦀', effects:{fork:true}}}, {role:'ally', slot:1, def:{name:'Backstabber', icon:'🗡️', effects:{backstab:1}}}], foes:[{role:'foe', slot:-1}, {role:'foe2', slot:0}]}, note:'The Fork\'s prong and the Backstab land on the slant: +2 each.'}],
+    ['mirage', {mirage:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Hawk', icon:'🦅', effects:{flying:true, armor:2}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'An Illusion appears beside a random unit: 1/1, Flying copied, Armor not.'}],
+    ['canopy', {canopy:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Lynx', icon:'🐈', effects:{pounce:2}}}, {role:'ally', slot:-1, def:{name:'Hawk', icon:'🦅', effects:{flying:true, bounty:1}}}], foes:[{role:'foe', slot:0, def:{name:'Quick Marten', icon:'🦦', effects:{quick:true}}}, {role:'foe2', slot:-1}]}, withhold:'subject', steps:[{spawn:'subject'}, 'round', 'round'], note:'The Lynx pounces for 2+2; the Marten is Evasive; the Hawk gets no Flying dodge.'}],
+    ['undergrowth', {undergrowth:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Lynx', icon:'🐈', effects:{pounce:2}}}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0, def:{name:'Quick Marten', icon:'🦦', effects:{quick:true}}}, {role:'foe2', slot:-1}]}, withhold:'subject', steps:[{spawn:'subject'}, 'round', 'round'], note:'Like High Canopy, without the Flying and Bounty parts.'}],
+    ['tallGrass', {tallGrass:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Stoat', icon:'🦡', effects:{stealth:true}}}, {role:'ally', slot:-1, def:{name:'Backstabber', icon:'🗡️', effects:{backstab:2}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'The Stoat (Stealth) strikes first; the Backstab hit lands double.'}],
+    ['slippery', {slippery:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round', 'round'], note:'Every swing at a unit is a coin flip; so is every trigger.'}],
+    ['glassStorm', {glassStorm:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Fennec', icon:'🦊', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'Glass buffets everyone; the wind rolls each round; the Dry Fennec sees through the sand.'}],
+    ['hail', {hail:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Snow Hare', icon:'🐇', resist:['cold']}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'The Snow Hare resists cold: half.'}],
+    ['lavaSpout', {lavaSpout:true}, {steps:['round', 'round', 'round'], note:'Three rounds, three bursts in random columns.'}],
+    ['leylines1', {leylines1:true, phase:'day'}, {units:FXL_PHASE_UNITS, note:'By day the Sun Lark\'s Diurnal 2/2 is +4/+4.'}],
+    ['leylines2', {leylines2:true}, {steps:['round', 'round'], note:'Watch the Lumber.'}],
+    ['leylines3', {leylines3:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Doubting Badger', icon:'🦡', effects:{atheist:true}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'Every unit and castle burns for 3; the Atheist badger doesn\'t.'}],
+    ['haunted', {haunted:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Wisp', icon:'👻', effects:{ghost:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'A unit on each side is Frightened and skips its attack; the Ghost is never scared.'}],
+  ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
+  {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> WIND_TEXT.windy, rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: each one rolls its own wind (at your back, in your face or calm).'},
   {key:'gale', icon:'🌪️', name:'Gale', text:()=> WIND_TEXT.gale, rules:{wind:'gale'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds, each with strong wind blowing a random way.'},
   {key:'dark', icon:'🌘', name:'Darkness', text:()=> DARK_LEVEL_TEXT.dark, rules:{dark:'dark'}, units:FXL_DARK_UNITS},
@@ -22151,6 +22226,7 @@ const FXL_SKILL_SETUPS = {
   crystallise: {status:{subject:{hp:1}}, steps:['round', 'round'], note:'It falls to the first hit and leaves a crystal in its slot.'},
   cure: {status:{ally:{poison:4, bleed:2}}, steps:['round'], note:'The ally beside it is Poisoned and Bleeding.'},
   mountainClimber: {rules:{field:'heatwave', heatLevel:3}, steps:['round', 'round'], note:'Scorching: the heat burns every unit but the climber.'},
+  atheist: {rules:{leylines3:true}, steps:['round', 'round'], note:'Leylines III: every unit burns for 3 a round, but not the Atheist.'}, // 2026-10-16
   taunt: {mine:[{role:'subject', slot:1}, {role:'ally', slot:-1}], foes:[{role:'foe', slot:0}], steps:['round'], note:'The dummy faces an empty column; the Taunt beside it pulls the swing.'},
   molting: {steps:['round', 'round', 'round'], note:'Round 2: it molts (+N/+N, +1 Wait); round 3 it sits out while the shell hardens.'},
   bludgeon: {foeFx:{thorns:1, armor:1, flying:true}, steps:['round', 'round'], note:'The dummy has Armor, Thorns and Flying: each hit takes 1 Attack and breaks one of them.'},
@@ -22354,6 +22430,8 @@ function fxlScenario(entry){
     if(f.unsupported){ sc.unsupported = f.unsupported; return sc; }
     sc.rules = JSON.parse(JSON.stringify(f.rules || {}));
     useUnits(f.units); if(f.pre) sc.pre = f.pre; sc.steps = (f.steps || ['round']).slice(); sc.rainy = !!f.rainy; if(f.decks) sc.decks = true; if(f.startTide) sc.startTide = true;
+    if(f.drawHand){ sc.decks = true; sc.drawHand = f.drawHand; } // a few cards in your hand to start (Consternation, 2026-10-16)
+    if(f.withhold) sc.withhold = f.withhold; // a unit that arrives as a step (High Canopy's pouncing Lynx, 2026-10-16)
     if(f.myTypes){ ['subject', 'ally', 'ally2'].forEach(r=> setRoleDef(r, {archetypes: f.myTypes.slice()})); }
     if(f.note) sc.notes.push(f.note);
   }
@@ -22400,6 +22478,7 @@ function fxlNewEngine(sc, defs, rng){
   if(sc.startTide && E.startTide) E.startTide(); // 2026-10-15: a Tide card no longer starts the tide, so the tide entries start it here
   const deck = sc.decks ? {[FXL_IDS.ally2]: 6} : {}, foeDeck = sc.decks ? {[FXL_IDS.foe3]: 6} : {};
   const P = {1: E.newPlayer(1, deck, TESTKIT_WALL), 2: E.newPlayer(2, foeDeck, TESTKIT_WALL)};
+  if(sc.drawHand) try{ E.draw(P[1], sc.drawHand, 'A', {}, null); }catch(e){} // 2026-10-16
   return {E, P, all};
 }
 // Runs one step on an engine with no screen. Returns the round number after it.
@@ -23505,7 +23584,8 @@ const FIELD_EFFECTS = [
   {id:'lumberrush',group:'lumber', icon:'🪓', name:'Lumber Rush',   weird:2, cost:1, rules:{lumberEvery:2}, text:'Both sides gain 1 Lumber every 2 rounds.'},
   {id:'firstblood',group:'firstBlood', icon:'🩸', name:'First Blood', weird:2, cost:1, rules:{firstBlood:2}, text:'The first Quick unit to attack each round, on either side, hits +2.'},
   {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, the ground burns one random unit on each side for 2 fire damage every round.'},
-  {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:'From round 2, a spout bursts in one random column each round: the Tide comes in, the units there are pushed back (+1 Wait), and the ones that can\'t swim take 1 water damage.', editorOnly:true}, // 2026-10-14
+  // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): one fight's hazard, and it no longer brings the tide.
+  {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:TIDESPOUT_TEXT, editorOnly:true, oneOff:true}, // 2026-10-14
   {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:'Level 1: units without Darksight miss 1 attack in 4. An Illuminate unit lights your side.', editorOnly:true}, // 2026-10-15
   {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:'Level 2: units without Darksight miss 1 attack in 2. An Illuminate unit lights your side.', editorOnly:true}, // 2026-10-15
   // New field effects (2026-10-15, user: "Propose field effects for each map, up till Map 22 ... Swamp can give swamp fever - all cards
@@ -23520,6 +23600,12 @@ const FIELD_EFFECTS = [
   {id:'hightide',  group:'highTide', icon:'🌊', name:'High Tide',   weird:2, cost:1, rules:{highTide:true}, text:'Periodic High Tides (they move Tide units only).', editorOnly:true},
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): the Tide-evade rule test as a skirmish field rule (Edit skirmish only).
   {id:'tideevade', group:'tideEvade', icon:'🌊', name:'Tide evade (test)', weird:3, cost:1, rules:{tideEvade:true}, text:'While the tide is in (Flood, Ebb or High Tide), Tide units are Evasive against attacks from units without Tide. Both sides.', editorOnly:true},
+  // Field effects 2 (2026-10-16, the user's field-effect curriculum notes): built and offered here; no map carries them yet (map placement
+  // is a separate job). Texts in FIELD2. oneOff: meant for a single fight (the user: "18: One-off, glass-storm").
+  {id:'scorching3',group:'field', icon:'🔥', name:'Scorching III', weird:3, cost:1, rules:{field:'heatwave', heatLevel:3}, text:FIELD2_SCORCHING3_TEXT, editorOnly:true},
+  ...Object.keys(FIELD2).map(k=>{ const f = FIELD2[k], rules = {}; rules[k] = true;
+    if(k === 'undergrowth') rules.canopy = false; if(k === 'canopy') rules.undergrowth = false; // the two canopy strengths replace each other
+    return {id:f.editor, group:k, icon:f.icon, name:f.name, weird: /^(slippery|consternation|mirage|leylines3)$/.test(k) ? 4 : 3, cost:1, rules, text:f.text, editorOnly:true, oneOff: k === 'glassStorm' || undefined}; }),
   {id:'double',    group:'actions', icon:'⚡', name:'Double Time',   weird:4, cost:2, rules:{actions:2}, text:'Each side plays 2 cards a turn.'},
   {id:'collapse',  group:'mode', icon:'🧱', name:'Collapse',        weird:4, cost:2, battleMode:'gravity', text:'When a card falls, the cards beside it slide toward the centre.', arenaOnly:true},
   {id:'gift-immolation', group:'gift', icon:'🔥', name:'Leader gift: Immolation 2', weird:3, cost:1, leaderGrant:{immolation:2}, text:'The enemy leaders deal 2 fire damage to adjacent units every upkeep.', editorOnly:true},
@@ -27412,7 +27498,9 @@ function renderHand(){
     else if(m._tutHlUid == null){ const first = me.hand.find(isHlCard); if(first) m._tutHlUid = first.uid; }
   }
   strip.innerHTML = me.hand.map(hc=>{
-    const d = defs[hc.defId]; if(!d) return '';
+    let d = defs[hc.defId]; if(!d) return '';
+    // Consternation (2026-10-16, user: "cards in the hand lose 1/1 every upkeep"): the hand card shows what it has left.
+    if(hc.consterned > 0) d = Object.assign({}, d, {attack: Math.max(0, (d.attack|0) - hc.consterned), health: Math.max(1, (d.health|0) - hc.consterned)});
     const can = canPlayWithOffer(m, me, hc);
     const canDiscard = !me.discardUsedThisTurn;
     const canDrag = (can || canDiscard || (d.cardType==='equipment' && !me.playedThisTurn)) && !m.resolving;
@@ -30175,7 +30263,7 @@ function matchHasTide(m){
   // 2026-10-15 (user: "Tide shouldn't occur even if you play a card with Tide."): a Tide card no longer brings the tide, so the
   // pill shows only when something can: the field (Tide-spout, Perma-tide, High Tide) or a Moonpull/Tsunami card in either deck.
   const DEFS = getCardDefs(); const isT = id=>{ const e = (DEFS[id && (id.defId || id)] || {}).effects; return !!(e && (e.moonpull || e.tsunami)); };
-  let yes = false; try{ const fr = matchFieldRules(m); if(fr && (fr.tideSpout || fr.permaTide || fr.highTide)) yes = true; }catch(e){} // a Tide-spout brings the tide in itself (2026-10-14)
+  let yes = false; try{ const fr = matchFieldRules(m); if(fr && (fr.tide || fr.permaTide || fr.highTide)) yes = true; }catch(e){} // the Tide field (2026-10-16; the Tide-spout no longer brings it)
   try{ [1,2].forEach(p=>{ const pl = m.players[p]; if(!pl) return;
     if((pl.deck||[]).some(isT) || (pl.hand||[]).some(isT) || (pl.graveyard||[]).some(isT) || ['left','center','right'].some(l=> (pl.row[l]||[]).some(c=> c && isT(c)))) yes = true; }); }catch(e){}
   return (m._hasTide = yes);
@@ -30355,7 +30443,9 @@ function liveTideState0(e){
 // it), the wind pill only on windy maps, the Mist pill only on misty ones.
 const TIDE_PILL_TIP = 'Tide goes in, Ebb goes out.';
 function tidePillHTML(m){
-  const t = dayNightOn(m) && m.engine.getTide && m.engine.getTide();
+  // 2026-10-16 (user: "Without Tide, there won't be flood or ebb."): the pill shows whenever a tide runs, day/night or not (it used to need
+  // the day/night cycle, so a tide in a cave, the mist or the Crushing Depths had no pill).
+  const t = m && m.engine && m.engine.getTide && m.mode !== 'tutorial' && m.mode !== 'liveRanked' && m.engine.getTide();
   if(!t || !matchHasTide(m)) return '';
   const high = t==='high', flow = t==='flow', name = high ? _t('High Tide') : flow ? _t('Flood') : _t('Ebb');
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): with the Tide-evade rule test on, the pill says so.
@@ -30444,7 +30534,8 @@ function matchFieldTileHTML(def, cls, attrs, badges){
 // lasting field rule (the High Tide, the Tide-spout, the darkness, the wind…), fanned in a little stack beside the enemy's Deck.
 // Each card says one short line; hover (or hold) shows that rule in full. The stack keeps the old #fieldCondCard id, so the
 // terrain banner still flies into it and a new row still lights it.
-function fieldEnvBiome(key){ return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
+const FIELD2_BIOME = {lavaSpout:'ash', crushingDepths:'water', hail:'tundra', slippery:'tundra', canopy:'forest', undergrowth:'forest', tallGrass:'forest', glassStorm:'desert', haunted:'cave', landslide:'alpine'}; // 2026-10-16
+function fieldEnvBiome(key){ if(FIELD2_BIOME[key]) return FIELD2_BIOME[key]; return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
 // The field's rows in a fight (2026-10-15): Map 0's Mist is only a pill (its hover says "?"), not a card; a misty map that cares about
 // the moon adds "The Moon is not visible." to its Mist card.
 function matchFieldCondRows(m, fr){
@@ -30465,6 +30556,14 @@ const FIELD_ART = {
   sandstorm:{art:'art/fields/sandstorm.png'}, scorching:{art:'art/fields/scorching.png'}, scorched:{art:'art/fields/scorched.png'},
   lavatide:{art:'art/fields/lavatide.png'}, petrify:{art:'art/fields/petrify.png'}, eruption:{art:'art/fields/eruption.png'},
   surge:{art:'art/fields/surge.png'}, mines:{art:'art/fields/mines.png'}, rain:{art:'art/fields/rain.png'},
+  // Field effects 2 (2026-10-16): a key per new card. Where an existing scene fits it is reused (Glass-storm the sandstorm, Lava Spout the
+  // lava tide, Hail the frost, Slippery the freezing ice, Haunted the mist); the others name their own picture, which doesn't exist yet,
+  // so the card shows its icon until art/fields/<key>.png is added (the build only hashes files that exist).
+  tide:{art:'art/fields/tide.png'}, landslide:{art:'art/fields/landslide.png'}, consternation:{art:'art/fields/consternation.png'},
+  crushingdepths:{art:'art/fields/crushingdepths.png'}, rookrow:{art:'art/fields/rookrow.png'}, bishoppath:{art:'art/fields/bishoppath.png'},
+  mirage:{art:'art/fields/mirage.png'}, canopy:{art:'art/fields/canopy.png'}, undergrowth:{art:'art/fields/undergrowth.png'}, tallgrass:{art:'art/fields/tallgrass.png'},
+  slippery:{art:'art/fields/freezing.png'}, glassstorm:{art:'art/fields/sandstorm.png'}, hail:{art:'art/fields/frost.png'}, lavaspout:{art:'art/fields/lavatide.png'},
+  leylines1:{art:'art/fields/leylines.png'}, leylines2:{art:'art/fields/leylines.png'}, leylines3:{art:'art/fields/leylines.png'}, haunted:{art:'art/fields/misty.png'},
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
@@ -30473,6 +30572,7 @@ function fieldArtKeyOfRow(row, fr){
   const map = {gale:'gale', wind:'wind', cloudy:'cloudy', misty:'misty', night:'night', twilight:'twilight', highTide:'hightide', tideSpout:'tidespout',
     swampFever:'swampfever', freezing:'freezing', frost:'frost', frostbite:'frostbite', sandstorm:'sandstorm', heatwave:'scorching', scorching:'scorching',
     eruption:'eruption', lavaTide:'lavatide', petrify:'petrify', bossSurge:'surge', enemyOre:'mines'};
+  if(FIELD2[k]) return FIELD2[k].editor; // field effects 2 (2026-10-16): the art key is the editor id
   if(k === 'eruption'){ let v = false; try{ v = volcanoRulesOn(fr); }catch(e){} if(!v) return 'scorched'; } // the fixed Scorched Ground, not the volcano's Eruption
   return map[k] || null;
 }
@@ -30522,13 +30622,15 @@ function coldWaveVfx(m){
 }
 function tideWaveVfx(kind){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
-  if(kind === 'high') kind = 'flow'; // the high tide rides the flow's wave, bigger in the log and the pill
+  const high = kind === 'high'; if(high) kind = 'flow'; // the high tide rides the flow's wave, bigger (2026-10-16: is-high)
   bf.classList.toggle('tide-is-flow', kind === 'flow'); bf.classList.toggle('tide-is-ebb', kind === 'ebb');
   let line = bf.querySelector(':scope > .tide-line'); if(!line){ line = document.createElement('div'); line.className = 'tide-line'; line.setAttribute('aria-hidden', 'true'); bf.appendChild(line); }
   if(reducedMotion() || !fxAtLeast('low')) return;
-  const w = document.createElement('div'); w.className = 'tide-wave is-' + kind; w.setAttribute('aria-hidden', 'true');
+  // 2026-10-16 (user: "Flood Ebb effects need to be improved."): a light tint washes over the board, the water rises (Flood) or drains
+  // away (Ebb) with a foam line on its edge, and the lasting water line at the board's foot has its own foam (Flood) or wet-sand glints (Ebb).
+  const w = document.createElement('div'); w.className = 'tide-wave is-' + kind + (high ? ' is-high' : ''); w.setAttribute('aria-hidden', 'true');
   w.innerHTML = '<span></span><span></span>';
-  bf.appendChild(w); setTimeout(()=> w.remove(), 1500);
+  bf.appendChild(w); setTimeout(()=> w.remove(), 1600);
   try{ if(kind === 'flow' && SoundKit.splash) SoundKit.splash(); else if(SoundKit.swipeTone) SoundKit.swipeTone(); }catch(e){}
 }
 function icePulseVfx(uid){
@@ -31971,6 +32073,7 @@ function logText(ev){
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
+  { const f2 = field2LogText(ev, nm); if(f2) return f2; } // field effects 2 (2026-10-16)
   switch(ev.type){
     case 'play': return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}.`};
     case 'statusEnd': return {cls:'', text: ev.woke ? `${nm(ev.defId)} wakes up.` : `${nm(ev.defId)}: ${STATUS_END_NAMES[ev.status] || ev.status} wears off.`}; // 2026-10-15
@@ -33462,7 +33565,7 @@ function labSkillFx(ev){
       break; }
     // 2026-10-15 (user: "it starts delayed - right now, it looks like it's dodging in advance"): the sidestep starts a beat before
     // the blow lands (evadeImpactMs), not when the attacker begins its wind-up; the game's own "Miss" hop/float is skipped for it.
-    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift') && F.evasiveDodge){ const t = el(ev.targetUid); if(t){ t.dataset.sfxDodge = '1';
+    case 'evaded': if((ev.reason === 'evasive' || ev.reason === 'swift' || ev.reason === 'canopy' /* + High Canopy's dodge (2026-10-16) */) && F.evasiveDodge){ const t = el(ev.targetUid); if(t){ t.dataset.sfxDodge = '1';
       const a = el(ev.attUid), fromLeft = a ? a.getBoundingClientRect().left < t.getBoundingClientRect().left : Math.random() < .5;
       setTimeout(()=>{ const t2 = el(ev.targetUid) || t; F.evasiveDodge(t2, {fromLeft}); }, Math.max(0, evadeImpactMs(ev) - 90)); } } break;
     case 'hit': { const fx = fxOf(ev.attDefId), a = el(ev.attUid), t = el(ev.targetUid); if(!a || !t || ev.source) break;
@@ -33767,6 +33870,9 @@ function w2StatusBadges(c, badges){
   if(c.toxin>0) badges.push(`<span class="abadge toxin" title="Toxin: ${c.toxin} damage every round; it never wears off and can't be cured">☣️${c.toxin}</span>`);
   if(c.invisible>0) badges.push(`<span class="abadge invisible" title="Invisible: attacks and enemy skills can't find it until it attacks">🫥</span>`);
   if(c.invincible>0) badges.push(`<span class="abadge invincible" title="Invincible: takes no damage this round">🌟</span>`);
+  // Field effects 2 (2026-10-16): Haunted's Frightened (this round only) and what Consternation took off a card in the hand.
+  try{ const tn = matchState && matchState.engine && matchState.engine.turnNo ? matchState.engine.turnNo() : null; if(c.frightRound != null && c.frightRound === tn) badges.push(`<span class="abadge frightened" title="Frightened: it won't attack this round (Haunted)">👻</span>`); }catch(e){}
+  if(c.consterned > 0) badges.push(`<span class="abadge consterned" title="Consternation: it lost ${c.consterned}/${c.consterned} in the hand, for good">😰</span>`);
 }
 function w2HazardMark(h){
   if(!h) return '';
@@ -33777,6 +33883,79 @@ function w2HazardMark(h){
 }
 const W2_BROKE_NAME = {armor:'Armor', flying:'Flying', swimmer:'Swimmer', burrow:'Burrow', trigger:'a trigger'};
 function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_NAME[k]; const pd = PASSIVE_DEFS.find(p=> p.key === k); return pd ? pd.label : k; }
+// ==== Field effects 2 (2026-10-16): battle-log lines and looks for the new field effects (rules in bramblewood-engine.js,
+// fieldEffects2Tick). Hazards log one header line, then one line per unit they hurt.
+const FIELD2_OWN_TICKS = new Set(['landslide', 'landslideHit', 'crushingDepths', 'crushingHit', 'hail', 'hailHit', 'glassStorm', 'glassHit', 'lavaSpout', 'lavaSpoutHit', 'leylines', 'leylinesHit', 'leylinesCastle', 'consternation', 'mirage', 'haunted']);
+const FIELD2_HIT = {landslideHit:['🪨', 'rocks'], crushingHit:['🫧', 'the crushing depths'], hailHit:['🌨️', 'the hail'], glassHit:['💎', 'flying glass'], lavaSpoutHit:['♨️', 'the lava spout'], leylinesHit:['✴️', 'the ley lines']};
+function field2LogText(ev, nm){
+  const who = s=> s === 'A' ? 'your' : "the enemy's";
+  if(ev.type === 'fieldTick'){
+    const h = FIELD2_HIT[ev.field];
+    if(h) return ev.atheist ? {cls:'', text:`✴️ ${nm(ev.defId)} doesn't believe in ley lines: no damage.`} : {cls:'', text:`${h[0]} ${nm(ev.defId)} takes ${ev.dmg} from ${h[1]}${ev.roll ? ` (${ev.roll})` : ''}${ev.swimmer ? ' (it swims: half)' : ''}.`};
+    switch(ev.field){
+      case 'landslide': return {cls:'', text:`🪨 Landslide! Rocks come down: ${ev.amount} damage to every unit that isn't flying.`};
+      case 'crushingDepths': return {cls:'', text:`🫧 The depths press down: ${ev.amount} water damage to every unit (Swimmers take half).`};
+      case 'hail': return {cls:'', text:`🌨️ Hail: ${ev.amount} ice damage to every unit.`};
+      case 'glassStorm': return {cls:'', text:'💎 The glass-storm buffets every unit (1–3 each).'};
+      case 'lavaSpout': return {cls:'', text:`♨️ Lava bursts up through a column (${ev.amount} fire damage).`};
+      case 'leylines': return {cls:'', text:'✴️ The ley lines burn: 3 magic damage to every unit and to both castles.'};
+      case 'leylinesCastle': return {cls:'', text:`✴️ The ley lines burn ${who(ev.side)} castle: −${ev.dmg}.`};
+      case 'consternation': return {cls:'', text:`😰 Consternation: ${ev.count} card${ev.count === 1 ? '' : 's'} in ${who(ev.side)} hand lose ${ev.amount}/${ev.amount}.`};
+      case 'mirage': return {cls:'', text: ev.none ? `🪞 A mirage flickers by ${nm(ev.defId)}, but there's no room for it.` : `🪞 A mirage: an Illusion of ${nm(ev.defId)} appears beside it (1/1).`};
+      case 'haunted': return {cls:'', text:'👻 Something stirs in the haunted air…'};
+    }
+    return null;
+  }
+  if((ev.type === 'lumber' || ev.type === 'stone') && ev.leylines) return {cls:'gold', text:`✴️ The ley lines: ${ev.side === 'A' ? 'you gain' : 'the enemy gains'} ${ev.amount} ${ev.type === 'stone' ? 'Stone 🪨' : 'Lumber 🪵'}.`};
+  if(ev.type === 'statusFx' && ev.kind === 'frightened') return {cls:'', text:`👻 ${nm(ev.targetDefId)} is Frightened: it won't attack this round.`};
+  if(ev.type === 'slipFizzle') return {cls:'', text:`⛸️ ${nm(ev.defId)} slips: its skill fails.`};
+  if(ev.type === 'evaded' && ev.reason === 'slippery') return {cls:'', text:`⛸️ ${nm(ev.attDefId)} slips on the ice and misses ${nm(ev.targetDefId)}.`};
+  if(ev.type === 'evaded' && ev.reason === 'canopy') return {cls:'', text:`🌳 ${nm(ev.targetDefId)} darts through the branches: ${nm(ev.attDefId)} misses.`};
+  if(ev.type === 'skipTurn' && ev.reason === 'frightened') return {cls:'', text:`${nm(ev.defId)} is too frightened to attack. 👻`};
+  if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
+  if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
+  return null;
+}
+function field2Vfx(ev){
+  if(!ev || !matchState) return; const m = matchState, F = window.SkillFX, bf = document.getElementById('battlefieldEl');
+  const fx = lvl=> !reducedMotion() && fxAtLeast(lvl || 'low');
+  const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
+  const at = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2}; };
+  if(ev.type === 'fieldTick'){
+    const h = FIELD2_HIT[ev.field];
+    if(h){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){}
+      if(!el) return; if(ev.atheist){ fl(el, '✴️ Atheist', 'quick'); return; }
+      fl(el, `${h[0]}-${ev.dmg}`, ev.field === 'lavaSpoutHit' ? 'heat' : 'dmg'); try{ shakeEl(el); }catch(e){}
+      if(!F || !fx()) return; const c = at(el);
+      if(ev.field === 'hailHit' && F.burst) F.burst(c.x, c.y - 20, 270, 'ice', 6);
+      else if(ev.field === 'glassHit' && F.burst) F.burst(c.x, c.y, Math.random()*360, 'zap', 5);
+      else if(ev.field === 'landslideHit' && F.burst) F.burst(c.x, c.y - 24, 270, 'wood', 7);
+      else if(ev.field === 'crushingHit' && F.ring) F.ring(c.x, c.y, 'sfx-water', 110, 520);
+      else if(ev.field === 'lavaSpoutHit'){ try{ eruptionGeyserVfx(el); }catch(e){} }
+      else if(ev.field === 'leylinesHit' && F.ring) F.ring(c.x, c.y, 'sfx-violet', 90, 480);
+      return; }
+    switch(ev.field){
+      case 'landslide': snd('boom'); if(bf && fx()){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); boardSweepVfx('landslide', 'A'); } break;
+      case 'crushingDepths': snd('splash'); if(bf && fx()){ bf.classList.remove('crush-press'); void bf.offsetWidth; bf.classList.add('crush-press'); setTimeout(()=> bf.classList.remove('crush-press'), 900); } break;
+      case 'hail': snd('freezeChime'); if(fx()) boardSweepVfx('hail', 'A'); break;
+      case 'glassStorm': snd('swipeTone'); if(fx()) boardSweepVfx('glass', Math.random() < .5 ? 'A' : 'B'); break;
+      case 'leylines': snd('curse'); if(fx()) boardSweepVfx('leylines', 'A'); break;
+      case 'lavaSpout': snd('boom'); break;
+      case 'consternation': if(ev.side === 'A'){ const hs = document.getElementById('handStrip'); fl(hs, `😰 −${ev.amount}/−${ev.amount}`, 'debuff'); try{ renderHand(); }catch(e){} } break;
+      case 'mirage': if(ev.illusionUid != null) setTimeout(()=>{ const el = boardCardEl(ev.illusionUid); if(!el) return; el.classList.add('mirage-shimmer'); fl(el, '🪞 Illusion', 'quick'); setTimeout(()=> el.classList.remove('mirage-shimmer'), 1200); }, 420); break;
+    }
+    return;
+  }
+  if(ev.type === 'statusFx' && ev.kind === 'frightened'){ const el = boardCardEl(ev.targetUid), rc = rcOf(ev.targetUid); if(rc) rc.frightRound = (m.engine && m.engine.turnNo) ? m.engine.turnNo() : rc.frightRound;
+    fl(el, '👻 Frightened', 'debuff'); if(el && F && F.fearShiver && fx()) F.fearShiver(el); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} return; }
+  if(ev.type === 'slipFizzle'){ fl(boardCardEl(ev.uid), '⛸️ Slipped', 'quick'); return; }
+  if(ev.type === 'evaded' && ev.reason === 'slippery'){ fl(boardCardEl(ev.attUid), '⛸️ Slip!', 'quick'); return; }
+  if(ev.type === 'hit' && (ev.laneBonus > 0 || ev.tallGrass)){ const el = boardCardEl(ev.targetUid); const fr = matchFieldRules(m) || {};
+    const t = ev.tallGrass ? '🌾 ×2' : ''; const ln = ev.laneBonus > 0 ? `${ev.lane === 'bishop' ? '♝' : ev.lane === 'rook' ? '♜' : (fr.bishopPath ? '♝' : '♜')} +${ev.laneBonus}` : '';
+    setTimeout(()=> fl(el, [ln, t].filter(Boolean).join(' '), 'quick'), 160); return; }
+}
 function w2LogText(ev, nm){
   { const d = devilPayLogText(ev, nm); if(d) return d; } // Penance, Blood Tithe, Ambush (2026-10-16)
   if(ev.type === 'statusFx'){
@@ -34000,6 +34179,7 @@ function renderVfxForEvent(ev){
   try{ labSkillFx(ev); }catch(e){}
   try{ ninthPassVfx(ev); }catch(e){} // the Bolts and Chilli (2026-10-15)
   try{ w2SkillVfx(ev); }catch(e){} // W2 skills (2026-10-16)
+  try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)
   // 2026-10-10: attack changes during the replay keep the snapshot (and the number on the card) in step.
@@ -34777,7 +34957,7 @@ function renderVfxForEvent(ev){
     if(ev.field==='swampFever'){ if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; if(el) try{ floatText(el, '🤢 +1☠', 'poison'); SoundKit.poisonApply(); }catch(e){} }
     else { if(rc) rc.frozen = Math.max(rc.frozen||0, 1); if(el) try{ floatText(el, '🧊 Frozen', 'debuff'); SoundKit.freezeChime && SoundKit.freezeChime(); }catch(e){} }
     try{ updateCardStatusDisplay(ev.uid); }catch(e){} }
-  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing'].includes(ev.field)){ const el = boardCardEl(ev.uid);
+  if(ev.type==='fieldTick' && !['frozen', 'tideSpout', 'comet', 'cometRain', 'eruptionReset', 'swampFever', 'freezing'].includes(ev.field) && !FIELD2_OWN_TICKS.has(ev.field)){ const el = boardCardEl(ev.uid); // field effects 2 play in field2Vfx (2026-10-16)
     // 2026-10-14: Petrification has no number (it turns the card to stone); Irradiated withers max Health; Lava Tide burns.
     const fieldGlyph = {eruption:'🌋', lavaTide:'🌋', irradiated:'☢️', scorched:'🔥'}[ev.field] || '🔥';
     if(el) try{ ev.field === 'petrify' ? floatText(el, '🪨 Stone', 'debuff') : ev.field === 'irradiated' ? floatText(el, `☢️ +${ev.tokens||0}`, 'debuff') : floatText(el, ev.dmg ? `${fieldGlyph}-${ev.dmg}` : `🌧️+${ev.heal}`, ev.dmg ? (ev.field === 'immolation' ? 'heat' : 'dmg') : 'heal'); }catch(e){} // Immolation's burn is a fire number (2026-10-16)
