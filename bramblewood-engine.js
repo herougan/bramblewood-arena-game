@@ -1499,6 +1499,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const occ = new Map(allBoardCards(pl).filter(c=> c !== t && c.hp > 0 && !c.gap).map(c=> [c.slot, c]));
         const reach = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > edge || occ.has(d)) break; s = d; } return s; };
         const first = washDir(s0, 0); let way = first, to = reach(way);
+        if(!crash && to === s0){ way = -first; to = reach(way); if(to !== s0) ev.bounced = true; }
         if(crash){ // Awash N (2026-10-18): ride up to N columns; a unit in the way is crashed into. Only the board's edge turns it back.
           const hitAt = (w, from)=> occ.get(from + w) || null;
           let hit = to - s0 !== n * way ? hitAt(way, to) : null;

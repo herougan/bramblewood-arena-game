@@ -104,7 +104,7 @@ async def main():
             await pg.evaluate("(()=>{ const c = document.querySelector('.po2-card.is-current'); if(c) c.click(); return 1; })()"); await pg.wait_for_timeout(900)
         check(await pg.evaluate("document.querySelectorAll('.po-card.is-flipped').length") == 3, 'the Sprout Pouch should reveal 3 cards')
         after = await pg.evaluate("Object.values(myCardCopies).reduce((t,c)=> t+c.length, 0)")
-        check(after - before == 3, f'pack should add 3 copies (added {after-before})')
+        check(3 <= after - before <= 6, f'pack should add 3 copies, plus any Bonus! copies (added {after-before})')  # 2026-10-17: a pull can roll a bonus copy
         await pg.evaluate("document.querySelector('[data-poview]').click(); 1"); await pg.wait_for_timeout(400)
         check(await pg.evaluate("!!document.querySelector('.card-inspect')"), 'tapping a card in the pack summary should open it large')
         await pg.keyboard.press('Escape'); await pg.wait_for_timeout(200)

@@ -104,8 +104,8 @@ const tpl = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), '
 { const m = src.match(/const FIELD2 = \{([\s\S]*?)\n\};/); ok(m && /\n  awash:\s*\{icon:'〰️', name:'Awash', editor:'awash'/.test('\n' + m[1]), 'FIELD2 has Awash (the field card, Edit skirmish and the Environment row come from it)'); }
 ok(/\['awash', \{awash:true\}/.test(src), 'the Effects library stages Awash');
 ok(/\['sulphurFumes', 'ashRain', 'arrowSlits', 'awash'\]\.includes\(ev\.field\)\) hit = markFieldRow\(ev\.field\)/.test(src), 'the Awash row is learned when it first washes');
-ok(/case 'awash': return \{cls:'', text:/.test(src) && /'arrowSlitHit', 'awash'\]\)/.test(src), 'Awash has a battle-log line and its own tick handling');
-ok(/awash:\{art:'art\/fields\/rapids\.png'\}/.test(src), 'Awash has an art key');
+ok(/case 'awash': return \{cls:'', text:/.test(src) && /'arrowSlitHit', 'awash'[,\]]/.test(src), 'Awash has a battle-log line and its own tick handling');
+ok(/awash:\{art:'art\/fields\/(rapids|awash)\.png'\}/.test(src), 'Awash has an art key');
 ok(/else if\(ev\.type==='wave'\) base = ev\.blocked \? 640 : 820;/.test(src), 'the replay waits for the ride before the next event');
 ok(/SkillFX\.waveRide\(e2, \{from:fromRect/.test(src) && /SkillFX\.waveBob\(el, /.test(src) && !/e2\.classList\.add\('wave-pushed'\)/.test(src), 'the wave handler rides the card (no .wave-pushed teleport)');
 ok(/function waveRide\(el, o\)/.test(sfx) && /function waveBob\(el, o\)/.test(sfx) && /function tideSway\(cards, o\)/.test(sfx) && /Object\.assign\(root\.SkillFX, \{waveRide, waveBob, tideSway\}\)/.test(sfx), 'SkillFX has waveRide, waveBob, tideSway');

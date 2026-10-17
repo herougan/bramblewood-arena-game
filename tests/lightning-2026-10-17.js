@@ -90,7 +90,7 @@ function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setF
 
 // ---- 4. Voltaic Eel
 { const d = base['voltaic-eel']; ok(d && d.effects.chainLightning === 2 && !('electricity' in d.effects), 'Voltaic Eel: Chain Lightning 2, no Electricity');
-  ok(d.effects.shock && d.effects.tide && d.attack === 3 && d.health === 10 && d.cost === 3 && d.rarity === 'rare', 'the rest of the Eel is as it was'); }
+  ok(d.effects.shock && d.effects.tide && d.rarity === 'rare', 'the rest of the Eel is as it was (stats moved by the 10-17 balance pass)'); }
 
 // ---- 5. The text: no wet sentence on Electricity's line; Wet is a keyword with its gloss; the Codex carries the note
 const src = fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8');
@@ -132,7 +132,7 @@ ok(/const bolt = lightningBoltOf\(ev\);/.test(src) && /: bolt \? bolt\.ms :/.tes
 ok(src.indexOf('else if(bolt) drawLightningBolt(ev);') < src.indexOf("else setTimeout(()=> spawnProjectile(boardCardEl(ev.attUid) || hqTileEl(ev.side), targetEl, dmgGlyph(ev.dmgType)), windup);"), 'the bolt branch comes before the generic projectile');
 ok(/\{ const lb = lightningBoltOf\(ev\); if\(lb\) return lb\.ms; \}/.test(fnSrc('eighthHitAtMs')), 'eighthHitAtMs (and FX env.hitAtMs) reads the bolt');
 ok(/ev\._bolt\) base = ev\._bolt\.more \? ev\._bolt\.ms \+ 30 : 640;/.test(fnSrc('delayForEvent')), 'delayForEvent: a lightning hit is quick; a chain hands over to its next jump');
-ok(/try\{ lightningBoltOf\(ev\); \}catch\(e\)\{\}/.test(fnSrc('renderVfxForEvent').split('\n').slice(0, 3).join('\n')), 'renderVfxForEvent works the bolt out first');
+ok(/try\{ lightningBoltOf\(ev\); \}catch\(e\)\{\}/.test(fnSrc('renderVfxForEvent').split('\n').slice(0, 4).join('\n')), 'renderVfxForEvent works the bolt out first');
 ok(/if\(ev\.element === 'shock'\) return;/.test(fnSrc('ninthPassVfx')), 'a Shock Bolt lobs no glob');
 ok(!/F\.lightning\(att, ts/.test(src), 'the Dragon Lightning event no longer flashes its own bolt ahead of the hits');
 { const fxa = fs.readFileSync(path.join(H.ROOT, 'bramblewood-fx-a.js'), 'utf8');

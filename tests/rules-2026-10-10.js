@@ -22,7 +22,7 @@ const spawn = (e, P, pid, id, side)=>{ e.debugSpawnCard(P, so, pid, id, side||'l
 { const {e, P} = mk(); const c = spawn(e, P, 1, 'tr-regen'); c.hp = 10; c.bleed = 3;
   e.resolveCombat(P, so, {}, [], 1);
   ok(c.bleed === 0, `Bleed removed by the heal (bleed ${c.bleed})`);
-  ok(c.hp === 12, `the 2 left over heal HP (hp ${c.hp})`); }
+  ok(c.hp === 13, `Bleed 3 wears to 2 at upkeep (2026-10-18), so 3 left over heal HP (hp ${c.hp})`); }
 // 2) Stun counters: 2 counters hold the Wait countdown for 2 rounds
 { const {e, P} = mk(); const c = spawn(e, P, 1, 'tr-waiter'); const w0 = c.wait; c.stunned = 2; c._stunnedJustSet = false;
   e.resolveCombat(P, so, {}, [], 1); ok(c.wait === w0 && c.stunned === 1, `round 1: no Wait tick, 1 counter left (wait ${c.wait}, stun ${c.stunned})`);
