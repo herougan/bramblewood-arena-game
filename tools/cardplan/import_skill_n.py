@@ -18,25 +18,25 @@ for r in range(head + 1, ws.max_row + 1):
     key, v = ws.cell(r, cols['Key']).value, ws.cell(r, cols['Your N']).value
     if not key or v is None or str(v).strip() == '': continue
     s = str(v).strip().lower()
-    if s == 'v': want[key] = 'v'
+    if s in ('v', '-v'): want[key] = s  # -v = a payment (Penance, Blood Tithe), 2026-10-17
     else:
         try: n = float(s)
-        except ValueError: sys.exit(f'Row {r} ({key}): "Your N" must be a number or v, not {v!r}')
+        except ValueError: sys.exit(f'Row {r} ({key}): "Your N" must be a number, v or -v, not {v!r}')
         want[key] = int(n) if n == int(n) else n
 
 src = open(APP, encoding='utf-8').read()
 m = re.search(r"^const SB_DEFAULT_SKILLS = \{(.*?)\};$", src, re.M)
 if not m: sys.exit('SB_DEFAULT_SKILLS not found in arena_app.js')
 cur = {}
-for k, v in re.findall(r"(\w+)\s*:\s*('v'|-?\d+(?:\.\d+)?)", m.group(1)):
-    cur[k] = 'v' if v == "'v'" else (float(v) if '.' in v else int(v))
+for k, v in re.findall(r"(\w+)\s*:\s*('-?v'|-?\d+(?:\.\d+)?)", m.group(1)):  # 2026-10-17: '-v' kept (it was dropped before)
+    cur[k] = v.strip("'") if v.startswith("'") else (float(v) if '.' in v else int(v))
 changes = {k: (cur.get(k), v) for k, v in want.items() if cur.get(k) != v}
 if not changes:
     print(f'No changes: {len(want)} value(s) filled in, all already match SB_DEFAULT_SKILLS ({len(cur)} entries).'); sys.exit(0)
 for k, (a, b) in changes.items(): print(f'  {k}: {a if a is not None else "(default rule)"} -> {b}')
 if '--dry-run' in sys.argv: print('Dry run: arena_app.js not written.'); sys.exit(0)
 cur.update(want)
-fmt = lambda v: "'v'" if v == 'v' else str(v)
+fmt = lambda v: f"'{v}'" if v in ('v', '-v') else str(v)
 line = 'const SB_DEFAULT_SKILLS = {' + ', '.join(f'{k}:{fmt(v)}' for k, v in cur.items()) + '};'
 open(APP, 'w', encoding='utf-8').write(src[:m.start()] + line + src[m.end():])
 print(f'Updated SB_DEFAULT_SKILLS in arena_app.js ({len(changes)} change(s)).')

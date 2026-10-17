@@ -391,7 +391,7 @@ New calls for you:
 - **Effects:** 958 effect moments, all in the hub's Effects Lab with A/B/C variants; the game uses A. Pick a different variant anywhere and I'll switch it.
 - **Cards:** every card has art; the new cards and skills from 10-14 to 10-16 are built but sit on no map until you place them.
 - **Game text:** `docs/game-texts.xlsx` (6,858 rows). Edit the New text column and send it back.
-- **Balance:** stat budget Max(A, B) against N in the card editor and Test Lab; the card balance report is in the ⚖️ Balance tab.
+- **Balance:** stat budget v3 (2026-10-17: 2A + H + S < N and A×H + S < (N/3)², N = 20 + 2×Level + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber²) in the card editor and Test Lab; the card balance report is in the ⚖️ Balance tab.
 - **Difficulty:** Map 0 and the Map 10, 14 and 16 bosses need a retune (section 1).
 
 ## Things only you can do (outside chat)
