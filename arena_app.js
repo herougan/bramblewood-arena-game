@@ -624,8 +624,11 @@ const PASSIVE_DEFS = [
     desc:(v, n, e)=>{ const bw = (e && e.bloomWhen) || (typeof v === 'string' ? parseBloomText(v) : null) || {when:['tide','night']}; return `${bloomLabel(bw)}. While ${(bw.when||[]).map(k=> BLOOM_COND_NAMES[k] || k).join(bw.mode === 'or' ? ' or ' : ' and ')} hold${bw.mode === 'or' ? 's' : ''}, it is in bloom 🌸 and has the bonus. Conditions: Tide (in), Ebb, Night, Day, Twilight, Wind, Wet (rain, the Tide in, or a beach, river or sea map), Dark, Heat, Frost.`; },
     get:e=> e.bloomWhen ? bloomToText(e.bloomWhen) : undefined, apply:(e, v)=>{ const b = parseBloomText(v); if(b) e.bloomWhen = b; }},
   // Wave (user: "Sea creatures might have more skills related to water. Such as pushing creatures left or right - waves.").
-  {key:'wave', category:'passive', label:'Wave', kind:'select', desc:v=>`When its attack lands on a unit, it pushes that unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : v === 'alternate' ? 'left, then right on its next swing, and so on' : 'toward the side with more room'}. If a unit stands there, the two swap. Never past the edge of the board.`,
-    selectOptions:()=> [{value:'left', label:'Left'}, {value:'right', label:'Right'}, {value:'alternate', label:'Alternate'}, {value:'room', label:'Toward more room'}],
+  // 2026-10-17 (user: "for Awash skills, there's always a slight bias towards awashing inwards - very slight. If it's awash 1 and there's
+  // another unit in the way, push the other way instead."): the "no fixed way" option (value 'room', stored as true) is that rule now.
+  {key:'wave', category:'passive', label:'Wave', kind:'select', desc:v=> ['left', 'right', 'alternate'].includes(v) ? `When its attack lands on a unit, it pushes that unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : 'left, then right on its next swing, and so on'}. If a unit stands there, the two swap. Never past the edge of the board.`
+      : `When its attack lands on a unit, it pushes that unit one column, either way (leaning slightly toward the middle). If a unit is in the way, it goes the other way instead; boxed in on both sides, it just bobs. Never past the edge of the board.`,
+    selectOptions:()=> [{value:'left', label:'Left'}, {value:'right', label:'Right'}, {value:'alternate', label:'Alternate'}, {value:'room', label:'Either way (leans inward)'}],
     get:e=> e.wave ? (e.wave === true ? 'room' : e.wave) : undefined, apply:(e, v)=>{ e.wave = ['left','right','alternate'].includes(v) ? v : true; }},
   // Supreme Tide (user: "Blue Dragon - Has Supreme Tide!").
   // 2026-10-14 (fourth pass). Crab Claws (user: "Crab claws: Attacks left or right only.").
@@ -1952,7 +1955,8 @@ const SKILL_TEXT = {
   pack: v=> `Pack units of its type standing side by side each get +1/+1 for every Pack point in the chain (two Pack ${numOr(v, 2)}s: +${2*numOr(v, 2)}/+${2*numOr(v, 2)} each).`, // 2026-10-16 skill audit: plain words, no "N = …"
   packLeader: ()=> `Links every Pack unit of its type on your side into one chain, adjacent or not, and adds +2/+2 of its own and +2/+2 for the type.`,
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
-  wave: v=> `Its hits push the unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : v === 'alternate' ? 'left, then right, in turn' : 'toward the side with more room'} (swapping with any unit there).`,
+  wave: v=> ['left', 'right', 'alternate'].includes(v) ? `Its hits push the unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : 'left, then right, in turn'} (swapping with any unit there).`
+    : 'Its hits push the unit one column either way, leaning inward (the other way if a unit is in the way; boxed in, it bobs).', // 2026-10-17
   supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flood or Ebb. Tide effects can't take them away.`,
   crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right, never the one in front. With none there, it hits the castle.`, // 2026-10-17
   meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
@@ -6282,7 +6286,7 @@ function abilityBadges(d, bopts){
   if(e.moonpull) out.push(`<span title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}🌊</span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
   if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
-  if(e.wave) out.push(`<span title="Wave: its hits push the unit one column ${e.wave === true ? 'toward more room' : e.wave === 'alternate' ? 'left, then right' : e.wave}">〰️</span>`);
+  if(e.wave) out.push(`<span title="Wave: its hits push the unit one column ${e.wave === true ? 'either way, leaning inward' : e.wave === 'alternate' ? 'left, then right' : e.wave}">〰️</span>`);
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
   if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb">${iconHTML('supreme-tide', '✨')}🌊</span>`);
   // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
@@ -14252,6 +14256,8 @@ const FIELD2 = {
   ashRain:       {icon:'🌋', name:'Ash Rain', editor:'ashrain', short:'Castles −1; the sun dims', text:'Each round from round 2, ash falls: both castles take 1 damage (never below 1), and the ash dims the sun: day bonuses are halved, as under Cloudy.'},
   ashy:          {icon:'🌫️', name:'Ashy', editor:'ashy', short:'Flyers grounded; misses 1 in 5', text:'Thick ash on the ground and in the air: Flying units are grounded (Flying gives no dodge, and no Tailwind or Headwind), and every attack at a unit misses 1 in 5. Darksight, Keen Sense and Sonar see through it.'},
   arrowSlits:    {icon:'🏹', name:'Arrow Slits', editor:'arrowslits', short:'The walls shoot 2 a round', text:"Each round from round 2, the defenders' walls loose an arrow at a random unit on the attackers' side: 2 damage. A Helmet can turn it."},
+  // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card."): rules.awash; the push is Wave's (washPush in the engine).
+  awash:         {icon:'〰️', name:'Awash', editor:'awash', short:'A unit is washed 1–3 columns', text:'Each round from round 2, the water washes one random unit 1–3 columns along its row, leaning slightly toward the middle. A unit in the way turns it back the other way; boxed in on both sides, it just bobs where it is. Pinned and Webbed units hold fast.'},
 };
 // 2026-10-17 (user: "Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow of the volcanoes"): the row the volcano
 // maps' uneven cycle shows, and the "after an Eruption" form of Ashy.
@@ -14355,7 +14361,7 @@ function noteFieldEvent(ev){
   else if(ev.type === 'tide' && r.tide) hit = markFieldRow('tide');
   else if((ev.type === 'evaded' && ev.reason === 'slippery') || ev.type === 'slipFizzle') hit = markFieldRow('slippery');
   // Field effects 3 (2026-10-17)
-  else if(ev.type === 'fieldTick' && ['sulphurFumes', 'ashRain', 'arrowSlits'].includes(ev.field)) hit = markFieldRow(ev.field);
+  else if(ev.type === 'fieldTick' && ['sulphurFumes', 'ashRain', 'arrowSlits', 'awash'].includes(ev.field)) hit = markFieldRow(ev.field); // + Awash (2026-10-17)
   else if(ev.type === 'fieldTick' && ev.field === 'ashy') hit = markFieldRow('ashyAfter');
   else if(ev.type === 'evaded' && ev.reason === 'ashy') hit = markFieldRow(r.ashy ? 'ashy' : 'ashyAfter');
   if(hit){ const p = document.getElementById('fieldCondCard') || document.getElementById('terrainPill'); if(p){ p.classList.add('has-new'); try{ fxHook('fieldReveal', p); }catch(e){} } }
@@ -22583,6 +22589,8 @@ const FXL_FIELDS = [
     ['ashRain', {ashRain:true, phase:'day'}, {units:FXL_PHASE_UNITS, steps:['round', 'round'], note:'Watch both castles lose 1 a round; the Sun Lark\'s Diurnal 2/2 is halved to 1/1.'}],
     ['ashy', {ashy:true}, {units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'The Hawk and the Crow get no Flying dodge, and 1 swing in 5 is lost in the ash.'}],
     ['arrowSlits', {arrowSlits:true}, {steps:['round', 'round', 'round'], note:'The enemy castle shoots one of your units for 2 each round.'}],
+    // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card.")
+    ['awash', {awash:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-2}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, steps:['round', 'round', 'round'], note:'Each round one unit rides the water 1–3 columns (stopping at a unit or the edge); a boxed-in unit bobs.'}],
   ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> WIND_TEXT.windy, rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: each one rolls its own wind (at your back, in your face or calm).'},
@@ -27751,7 +27759,7 @@ function boardCardHTML(c, defs, opts){
   const wingHTML = !winged ? '' : angelic ? '<span class="angel-wings" aria-hidden="true"><i class="aw-l"></i><i class="aw-r"></i></span>'
     : `<span class="revive-mark" aria-hidden="true"><i class="rm-ring"></i><i class="rm-feather">${REVIVE_FEATHER_SVG}</i></span>`;
   return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
-    ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
+    ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
       waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
@@ -31139,7 +31147,7 @@ function matchFieldTileHTML(def, cls, attrs, badges){
 // lasting field rule (the High Tide, the Tide-spout, the darkness, the wind…), fanned in a little stack beside the enemy's Deck.
 // Each card says one short line; hover (or hold) shows that rule in full. The stack keeps the old #fieldCondCard id, so the
 // terrain banner still flies into it and a new row still lights it.
-const FIELD2_BIOME = {lavaSpout:'ash', crushingDepths:'water', hail:'tundra', slippery:'tundra', canopy:'forest', undergrowth:'forest', tallGrass:'forest', glassStorm:'desert', haunted:'cave', landslide:'alpine'}; // 2026-10-16
+const FIELD2_BIOME = {awash:'water', lavaSpout:'ash', crushingDepths:'water', hail:'tundra', slippery:'tundra', canopy:'forest', undergrowth:'forest', tallGrass:'forest', glassStorm:'desert', haunted:'cave', landslide:'alpine'}; // 2026-10-16
 function fieldEnvBiome(key){ if(FIELD2_BIOME[key]) return FIELD2_BIOME[key]; return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
 // The field's rows in a fight (2026-10-15): Map 0's Mist is only a pill (its hover says "?"), not a card; a misty map that cares about
 // the moon adds "The Moon is not visible." to its Mist card.
@@ -31171,6 +31179,7 @@ const FIELD_ART = {
   leylines1:{art:'art/fields/leylines.png'}, leylines2:{art:'art/fields/leylines.png'}, leylines3:{art:'art/fields/leylines.png'}, haunted:{art:'art/fields/misty.png'},
   // Field effects 3 (2026-10-17): borrowed pictures until their own exist (fumes the misty air, ash the eruption, the walls' arrows the gale).
   sulphurfumes:{art:'art/fields/misty.png'}, ashrain:{art:'art/fields/eruption.png'}, ashy:{art:'art/fields/eruption.png'}, arrowslits:{art:'art/fields/gale.png'},
+  awash:{art:'art/fields/rapids.png'}, // 2026-10-17: the river rapids' water, until Awash has its own
 };
 function fieldArtKeyOfRow(row, fr){
   fr = fr || {}; const k = row && row.key;
@@ -31239,6 +31248,11 @@ function tideWaveVfx(kind){
   w.innerHTML = '<span></span><span></span>';
   bf.appendChild(w); setTimeout(()=> w.remove(), 1600);
   try{ if(kind === 'flow' && SoundKit.splash) SoundKit.splash(); else if(SoundKit.swipeTone) SoundKit.swipeTone(); }catch(e){}
+  // 2026-10-17 (user: "Improve the tide animations. It should impact all of the cards very slightly, BUT all the tide and swimmer cards
+  // float up - half way like they are flying."): every card on the board rocks a little as the water passes it (the Tide units and
+  // Swimmers lift with it more); their resting hover, half a flyer's, is CSS (tideFloat).
+  try{ if(window.SkillFX && SkillFX.tideSway){ const c0 = bf.querySelector('.board-card'), sc = c0 && c0.offsetWidth ? (c0.getBoundingClientRect().width / c0.offsetWidth) || 1 : 1;
+    SkillFX.tideSway([...bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card')].filter(b=> b.querySelector('.card-tile')), {kind, high, scale:sc, speed:(matchState && matchState.speedMult) || 1}); } }catch(e){}
 }
 function icePulseVfx(uid){
   const el = boardCardEl(uid); if(!el) return;
@@ -32198,6 +32212,7 @@ function delayForEvent(ev, prevKind){
   else if(ev.type==='render') base = 780;
   else if(ev.type==='pounce') base = 340;
   else if(ev.type==='triggerFired') base = 300; // a beat to see the rune before the effect lands
+  else if(ev.type==='wave') base = ev.blocked ? 640 : 820; // 2026-10-17 (user: "Make it ride the wave and move to its new location"): the ride (or the bob) plays out before the next re-render
   // Generic bucket pacing (was 200/500 through 2026-09-20; trimmed 2026-09-21 per explicit
   // feedback -- "Sometimes, there is a small 0.2-0.3s pause between anims. Why? I want the
   // anims to be smooth" -- that gap was exactly this bucket's same-kind/diff-kind pause on
@@ -32954,7 +32969,9 @@ function logText(ev){
     case 'dragonLightning': return {cls:'', text:`🐉⚡ Red lightning from ${nm(ev.attDefId)} strikes ${(ev.uids||[]).length} unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} each!`};
     case 'witherTick': return {cls:'poison', text:`💀 ${nm(ev.defId)} withers: −${ev.n} max Health${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the Wither fades)'}.`};
     case 'hatch': return {cls:'', text:`🥚 ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.fromDefId)} cracks open: out comes ${nm(ev.defId)}!`};
-    case 'wave': return {cls:'', text: ev.blocked ? `〰️ ${nm(ev.attDefId)}'s wave breaks on ${nm(ev.targetDefId)}: no room to push it ${ev.dir}.` : `〰️ ${nm(ev.attDefId)}'s wave pushes ${nm(ev.targetDefId)} ${ev.dir}${ev.swapUid != null ? ' (they swap places)' : ''}!`}; // Wave (2026-10-14)
+    case 'wave': { const who = ev.awash ? 'The water' : `${nm(ev.attDefId)}'s wave`, cols = ev.cols > 1 ? ` ${ev.cols} columns` : ''; // + Awash, the bob and the bounce (2026-10-17)
+      return {cls:'', text: ev.bob ? `〰️ ${who} lifts ${nm(ev.targetDefId)}, but it's boxed in: it bobs in place.` : ev.blocked ? `〰️ ${who} breaks on ${nm(ev.targetDefId)}: no room to push it ${ev.dir}.`
+        : `〰️ ${who} ${ev.awash ? 'washes' : 'pushes'} ${nm(ev.targetDefId)} ${ev.dir}${cols}${ev.bounced ? ' (the other way was blocked)' : ''}${ev.swapUid != null ? ' (they swap places)' : ''}!`}; } // Wave (2026-10-14)
     // 2026-10-14 (sixth pass)
     case 'fireball': return {cls:'', text: ev.castle ? `🟠 ${nm(ev.attDefId)} hurls a fireball at the castle!` : `🟠 ${nm(ev.attDefId)} hurls a fireball: it bursts over ${(ev.uids||[]).length} enemy unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} fire each!`};
     case 'meteor': return {cls:'', text: ev.castle ? `☄️ ${nm(ev.attDefId)} calls down a meteor on the castle!` : `☄️ ${nm(ev.attDefId)} calls down a meteor: ${ev.n} to the unit it lands on${(ev.sideUids||[]).length ? `, ${ev.sideN} to ${(ev.sideUids||[]).length} beside it` : ''}. The crater burns.`};
@@ -34199,7 +34216,7 @@ function castleShotMs(ev){
 function upkeepHoldMs(events, m){
   let ms = 0;
   (events || []).forEach(ev=>{ if(!ev || ev.type === 'draw') return;
-    ms = Math.max(ms, (ev.type === 'hit' || ev.type === 'hitHQ') ? (fightSafe(()=> eighthHitAtMs(ev)) || 600) + 360 : 650); });
+    ms = Math.max(ms, (ev.type === 'hit' || ev.type === 'hitHQ') ? (fightSafe(()=> eighthHitAtMs(ev)) || 600) + 360 : ev.type === 'wave' ? 1250 : 650); }); // + an Awash ride plays out (2026-10-17)
   const mult = (m && m.speedMult) || 1;
   return ms ? Math.max(120, Math.round(Math.min(1600, ms) / mult)) : 0;
 }
@@ -34595,7 +34612,7 @@ function w2BrokeName(k){ if(!k) return ''; if(W2_BROKE_NAME[k]) return W2_BROKE_
 // ==== Field effects 2 (2026-10-16): battle-log lines and looks for the new field effects (rules in bramblewood-engine.js,
 // fieldEffects2Tick). Hazards log one header line, then one line per unit they hurt.
 const FIELD2_OWN_TICKS = new Set(['landslide', 'landslideHit', 'crushingDepths', 'crushingHit', 'hail', 'hailHit', 'glassStorm', 'glassHit', 'lavaSpout', 'lavaSpoutHit', 'leylines', 'leylinesHit', 'leylinesCastle', 'consternation', 'mirage', 'haunted',
-  'sulphurFumes', 'ashRain', 'ashRainCastle', 'ashy', 'arrowSlits', 'arrowSlitHit']); // + field effects 3 (2026-10-17)
+  'sulphurFumes', 'ashRain', 'ashRainCastle', 'ashy', 'arrowSlits', 'arrowSlitHit', 'awash']); // + field effects 3 (2026-10-17), + Awash (2026-10-17)
 const FIELD2_HIT = {landslideHit:['🪨', 'rocks'], crushingHit:['🫧', 'the crushing depths'], hailHit:['🌨️', 'the hail'], glassHit:['💎', 'flying glass'], lavaSpoutHit:['♨️', 'the lava spout'], leylinesHit:['✴️', 'the ley lines'], arrowSlitHit:['🏹', 'an arrow from the walls']};
 function field2LogText(ev, nm){
   const who = s=> s === 'A' ? 'your' : "the enemy's";
@@ -34619,6 +34636,7 @@ function field2LogText(ev, nm){
       case 'ashRainCastle': return {cls:'', text:`🌋 Ash settles on ${who(ev.side)} castle: −${ev.dmg}.`};
       case 'ashy': return {cls:'', text:'🌫️ The eruption leaves the ground Ashy: flyers are grounded and the air is thick (4 rounds).'};
       case 'arrowSlits': return {cls:'', text: ev.none ? '🏹 An arrow from the walls thuds into empty ground.' : `🏹 The walls loose an arrow at ${nm(ev.defId)}.`};
+      case 'awash': return {cls:'', text: ev.none ? '〰️ The water swirls over an empty field.' : `〰️ Awash ${ev.n}: the water takes ${nm(ev.defId)}.`}; // 2026-10-17
     }
     return null;
   }
@@ -34667,6 +34685,7 @@ function field2Vfx(ev){
       case 'ashRain': snd('boom'); if(fx()) boardSweepVfx('hail', 'A'); break;
       case 'ashy': snd('boom'); if(bf && fx()){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } break;
       case 'arrowSlits': if(!ev.none) snd('swipeTone'); break;
+      case 'awash': if(!ev.none){ const el = boardCardEl(ev.uid); fl(el, `〰️ Awash ${ev.n}`, 'quick'); } break; // 2026-10-17: the ride itself is the wave event that follows
       case 'mirage': if(ev.illusionUid != null) setTimeout(()=>{ const el = boardCardEl(ev.illusionUid); if(!el) return; el.classList.add('mirage-shimmer'); fl(el, '🪞 Illusion', 'quick'); setTimeout(()=> el.classList.remove('mirage-shimmer'), 1200); }, 420); break;
     }
     return;
@@ -35241,16 +35260,23 @@ function renderVfxForEvent(ev){
     try{ if(el && window.SkillFX && SkillFX.backstab){ const fromLeft = at ? at.getBoundingClientRect().left < el.getBoundingClientRect().left : true; SkillFX.backstab(el, fromLeft); } }catch(e){} }
   // Anti-Air (2026-10-10): a hit on a flier from an Anti-Air unit throws a boomerang that knocks feathers loose.
   if(ev.type==='hit' && !ev.source){ try{ const defs = getCardDefs(), ad = defs[ev.attDefId], td = defs[ev.targetDefId];
-    if(ad && td && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t){ SoundKit.boomerangWhirr(); if(matchState && matchState.boomerangBack === String(ev.attUid)){ matchState.boomerangBack = null; (SkillFX.boomerangReturn || SkillFX.boomerang)(a, t, {flight:420}); } else (SkillFX.boomerangThrow || SkillFX.boomerang)(a, t, {flight:420}); } } }catch(e){} }
+    if(ad && td && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerang){ const a = boardCardEl(ev.attUid), t = boardCardEl(ev.targetUid); if(a && t){ SoundKit.boomerangWhirr(); const key = String(ev.attUid); if((ev.boomerang && !ev.friendly) || (matchState && matchState.boomerangBack === key)){ if(matchState) matchState.boomerangBack = null; (SkillFX.boomerangReturn || SkillFX.boomerang)(a, t, {flight:420, key}); } else (SkillFX.boomerangThrow || SkillFX.boomerang)(a, t, {flight:420, key}); } } }catch(e){} } // key (2026-10-17): the return retraces this throw
   // A boomerang thrown at the castle bounces off it and flies out the top (2026-10-13).
-  if(ev.type==='hitHQ' && !ev.source){ try{ const ad = getCardDefs()[ev.attDefId]; if(ad && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerangCastle){ const a = boardCardEl(ev.attUid), c = hqTileEl(ev.targetSide || 'B'); if(a && c){ SoundKit.boomerangWhirr(); if(ev.boomerang || (matchState && matchState.boomerangBack === String(ev.attUid))){ matchState.boomerangBack = null; SkillFX.boomerangReturn(a, c, {flight:420}); } else SkillFX.boomerangCastle(a, c, {flight:420}); } } }catch(e){} }
+  if(ev.type==='hitHQ' && !ev.source){ try{ const ad = getCardDefs()[ev.attDefId]; if(ad && ad.effects && (ad.effects.boomerang || ad.effects.bananarang || Number(ad.effects.antiAir) > 0) && window.SkillFX && SkillFX.boomerangCastle){ const a = boardCardEl(ev.attUid), c = hqTileEl(ev.targetSide || 'B'); if(a && c){ SoundKit.boomerangWhirr(); const key = String(ev.attUid); if(ev.boomerang || (matchState && matchState.boomerangBack === key)){ if(matchState) matchState.boomerangBack = null; SkillFX.boomerangReturn(a, c, {flight:420, key, castle:true}); } else SkillFX.boomerangCastle(a, c, {flight:420, key}); } } }catch(e){} }
   // Boomerang return (2026-10-12): the next hit from this unit is the boomerang flying home.
+  // 2026-10-17 (user: "2 boomerangs come back by the way - this is wrong. Only 1 should come back."): the cause was two looks for one
+  // return. This event also played FX.A.boomerangInbound (a boomerang swinging in from the edge of the field to hang by its thrower),
+  // while the return's own hit, a beat later, flew SkillFX.boomerangReturn (dropping in from the top onto the target, then home); and the
+  // catch (FX.A.catchSnap) slapped a third one into the thrower's hand. Now only SkillFX.boomerangReturn flies, retracing the throw and
+  // ending in the catch; FX.A skips the inbound look, and skips catchSnap / whiffPast while that flight is in the air.
   if(ev.type==='boomerangReturn'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '🪃 Boomerang returns!', 'quick'); if(matchState) matchState.boomerangBack = String(ev.uid); }
   // Ebb and flow you can see (2026-10-12, user: "There should be an ebb and flow effect - otherwise its not obvious... pill is
   // insufficient!"): the tide rolls in across the field on Flow and drains back out on Ebb, then a soft water line stays.
   if(ev.type==='tide' && matchState && matchHasTide(matchState)) tideWaveVfx(ev.tide);
   if(ev.type==='advance'){ clearTimeout(window.__bwAdvT); window.__bwAdvT = setTimeout(()=>{ try{ renderBoard(); }catch(e){} const el = boardCardEl(ev.uid); if(el) floatText(el, '⬆', 'quick'); }, 60); }
-  if(ev.type==='boomerangWhiff'){ const el = boardCardEl(ev.uid); if(el) missCallout(el, 'whiff'); try{ SoundKit.boomerangWhirr && SoundKit.boomerangWhirr(); }catch(e){} }
+  if(ev.type==='boomerangWhiff'){ const el = boardCardEl(ev.uid); if(el) missCallout(el, 'whiff'); try{ SoundKit.boomerangWhirr && SoundKit.boomerangWhirr(); }catch(e){}
+    // 2026-10-17: the return still flies (one boomerang), back along its throw through the place its target stood, and is caught
+    try{ const key = String(ev.uid); if(el && matchState && matchState.boomerangBack === key && window.SkillFX && SkillFX.boomerangReturn){ matchState.boomerangBack = null; SkillFX.boomerangReturn(el, null, {flight:420, key, whiff:true}); } }catch(e){} }
   if(ev.type==='boomerangCaught'){ const el = boardCardEl(ev.uid); if(el) floatText(el, '🪃 Caught!', 'quick'); }
   if(ev.type==='kingSlayer'){
     const el = boardCardEl(ev.targetUid);
@@ -35531,11 +35557,23 @@ function renderVfxForEvent(ev){
   // 'collapseIn' just above: find each swapped uid's current (lane, idx) in the replay snapshot
   // and exchange them, then repaint immediately.
   // Wave (2026-10-14): a splash on the struck unit, and it slides to its new column (both, if they swapped).
+  // 2026-10-17 (user: "Wave: Improve this vfx. I like the current direction. Just have to improve the execution. The card doesn't move also -
+  // it teleports. Make it ride the wave and move to its new location."): the teleport was the old .wave-pushed CSS nudge, an animation on
+  // the card's transform that overrode the board's own glide, so the card showed in its new slot at once. Now the card's old place is
+  // measured before the re-render and SkillFX.waveRide carries it there on a crest (the water geyser is gone). Blocked (ev.bob: no room
+  // either way, or a fixed-way Wave at the edge), SkillFX.waveBob: it bobs as the crest rolls past and the units beside it rock a little.
+  // The Awash field's pushes are wave events too ({awash:true}).
   if(ev.type==='wave'){
     const el = boardCardEl(ev.targetUid); try{ SoundKit.splash(); }catch(e){}
-    if(el){ floatText(el, ev.blocked ? '〰️ Wave!' : `〰️ ${ev.dir === 'left' ? '←' : '→'}`, 'quick'); try{ eruptionGeyserVfx(el, true); }catch(e){} }
+    const rideFx = !!(window.SkillFX && SkillFX.waveRide && hasGsap() && !reducedMotion() && fxAtLeast('low'));
+    const sc = (()=>{ try{ const w = el && el.offsetWidth, r = w ? el.getBoundingClientRect().width / w : 1; return r > .05 && r < 20 ? r : 1; }catch(e){ return 1; } })(); // screen px per layout px (the board's scale)
+    if(el) floatText(el, ev.blocked ? (ev.bob ? '〰️ Bob' : '〰️ Wave!') : `〰️ ${ev.dir === 'left' ? '←' : '→'}${ev.cols > 1 ? ' ' + ev.cols : ''}`, 'quick');
+    if(ev.blocked && el && rideFx && SkillFX.waveBob) SkillFX.waveBob(el, {dir:ev.dir, scale:sc, speed:(matchState && matchState.speedMult) || 1, touch:(ev.touchUids || []).map(u=> boardCardEl(u)).filter(Boolean)});
+    const fromRect = el && !ev.blocked ? el.getBoundingClientRect() : null;
     if(!ev.blocked){ const m = matchState, pid = ev.targetSide==='A' ? 1 : 2, rr = m && m.replayRows && m.replayRows[pid];
-      if(ev.slotMode){
+      if(!ev.slotMode && rr && Array.isArray(ev.order)){ const L = rr.left.length, C = rr.center.length, o = ev.order; // a packed row, several places along (2026-10-17)
+        rr.left = o.slice(0, L).reverse(); rr.center = o.slice(L, L + C); rr.right = o.slice(L + C); }
+      else if(ev.slotMode){
         if(m && m.replayCards) (ev.moves||[]).forEach(mv=>{ if(m.replayCards[mv.uid]) m.replayCards[mv.uid].slot = mv.to; });
         if(rr){ const all = ['left','center','right'].flatMap(ln=> rr[ln]);
           const slotOf = u=>{ const mv = (ev.moves||[]).find(x=> String(x.uid)===String(u)); if(mv) return mv.to; const rc = m.replayCards && m.replayCards[u]; return rc && rc.slot!=null ? rc.slot : 0; };
@@ -35544,7 +35582,8 @@ function renderVfxForEvent(ev){
         ['left','center','right'].forEach(ln=>{ const ia = rr[ln].indexOf(ev.aUid); if(ia!==-1){ aL=ln; aI=ia; } const ib = rr[ln].indexOf(ev.bUid); if(ib!==-1){ bL=ln; bI=ib; } });
         if(aL && bL){ const t = rr[aL][aI]; rr[aL][aI] = rr[bL][bI]; rr[bL][bI] = t; } }
       try{ renderBoard({collapseLandingUids:[]}); }catch(e){}
-      [ev.targetUid, ev.swapUid].forEach(u=>{ const e2 = u != null && boardCardEl(u); if(e2){ e2.style.setProperty('--wave-dx', ev.dir === 'left' ? '-10px' : '10px'); e2.style.setProperty('--wave-rot', ev.dir === 'left' ? '-3deg' : '3deg'); e2.classList.add('wave-pushed'); setTimeout(()=> e2.classList.remove('wave-pushed'), 600); } }); }
+      const e2 = boardCardEl(ev.targetUid);
+      if(e2 && fromRect && rideFx) SkillFX.waveRide(e2, {from:fromRect, dir:ev.dir, scale:sc, speed:(matchState && matchState.speedMult) || 1, touch:ev.swapUid != null ? [boardCardEl(ev.swapUid)].filter(Boolean) : []}); }
   }
   // Crab Claws (2026-10-14): a sideways pinch, or a snap at thin air.
   if(ev.type==='crabClaw'){ const el = boardCardEl(ev.attUid); if(el){ floatText(el, ev.whiff ? '🦞 Whiff' : ev.dir === 'castle' ? '🦞 🏰' : (ev.dir === 'left' ? '🦞 ←' : '🦞 →'), 'quick'); el.style.setProperty('--crab-dx', ev.dir === 'right' ? '8px' : '-8px'); el.classList.remove('crab-pinch'); void el.offsetWidth; el.classList.add('crab-pinch'); setTimeout(()=> el.classList.remove('crab-pinch'), 500); } }

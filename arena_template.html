@@ -2396,16 +2396,18 @@
      .card-tile, never the wrapper, so the motions add up and a hit always ends back on the flight path. (Putting
      CSS translate on a GSAP-driven element made GSAP fold it into its own x/y, which is what jerked cards home.) */
   .board-card .fly-body{display:block; position:relative; width:100%; height:100%;}
-  #appWrap.in-match .board-card.is-flying .fly-body{translate:5px -9px; animation:flySoar 3.4s ease-in-out infinite;}
+  /* 2026-10-17 (user: "Fliers should look slightly higher, 15% maybe."): the lift and its sway are 15% higher (9 → 10.4px); the shadow sits a
+     touch further down. Tide units and Swimmers hover half as high (tideFloat, below). */
+  #appWrap.in-match .board-card.is-flying .fly-body{translate:5px -10.4px; animation:flySoar 3.4s ease-in-out infinite;}
   #appWrap.in-match .board-card.is-flying:nth-child(2n) .fly-body{animation-delay:-1.1s;}
   .board-card .fly-shadow{display:none;}
-  #appWrap.in-match .board-card.is-flying .fly-shadow{display:block; position:absolute; left:6%; right:14%; bottom:-14px; height:14px; border-radius:50%; z-index:0; pointer-events:none;
+  #appWrap.in-match .board-card.is-flying .fly-shadow{display:block; position:absolute; left:6%; right:14%; bottom:-15px; height:14px; border-radius:50%; z-index:0; pointer-events:none;
     background:radial-gradient(ellipse at center, rgba(0,0,0,.6), rgba(0,0,0,.28) 45%, transparent 72%); animation:flyShadow 3.4s ease-in-out infinite;}
   #appWrap.in-match .board-card.is-flying:nth-child(2n) .fly-shadow{animation-delay:-1.1s;}
   /* 2026-10-16 (user: "using the shadows, make it look like it's descending for the attack"): SkillFX.flyDescend tweens these during a
      flyer's lunge (the hover animation keeps the transform; translate / scale compose with it). */
   #appWrap.in-match .board-card.is-flying .fly-shadow{translate:var(--fs-x, 0px) var(--fs-y, 0px); scale:var(--fs-s, 1);}
-  @keyframes flySoar{0%,100%{translate:5px -9px; rotate:.6deg;} 22%{translate:7px -12px; rotate:1.3deg;} 50%{translate:5px -8px; rotate:.6deg;} 74%{translate:3px -12px; rotate:-.3deg;}}
+  @keyframes flySoar{0%,100%{translate:5px -10.4px; rotate:.6deg;} 22%{translate:7px -13.8px; rotate:1.3deg;} 50%{translate:5px -9.2px; rotate:.6deg;} 74%{translate:3px -13.8px; rotate:-.3deg;}}
   @keyframes flyShadow{0%,100%{transform:scaleX(1); opacity:1;} 22%,74%{transform:scaleX(.86); opacity:.75;} 50%{transform:scaleX(1.03); opacity:1;}}
   :where(.board-card.is-stunned, .board-card.is-frozen, .board-card.is-asleep, .board-card.ghost-preview) .card-tile{animation:none;}
   :where(.board-card.is-low-hp) .card-tile{animation:lowHpTremble 2.4s ease-in-out infinite;}
@@ -9385,10 +9387,16 @@
 @media (prefers-reduced-motion: reduce){ #battlefieldEl > .sky-fx{transition:none;} #battlefieldEl > .sky-fx.tone-misty{animation:none; background-color:rgba(232,228,218,.28);} }
 /* Tide units and Swimmers float (2026-10-14, user: "All swimmers and Tide units float"): a slow bob on the board only (hand and Codex
    tiles stay still). It rides on the .fly-body wrapper, like a flyer's flight, so GSAP's lunges add up with it. */
-#appWrap.in-match .board-card.is-floating .fly-body{animation:tideFloat 4.2s ease-in-out infinite;}
+/* 2026-10-17 (user: "all the tide and swimmer cards float up - half way like they are flying"): they hover at half a flyer's height (5.2px,
+   bobbing 4.6–6.9px) with a faint wet shadow under them, like a flyer's but nearer and bluer. */
+#appWrap.in-match .board-card.is-floating .fly-body{translate:0 -5.2px; animation:tideFloat 4.2s ease-in-out infinite;}
 #appWrap.in-match .board-card.is-floating:nth-child(2n) .fly-body{animation-delay:-1.6s;}
-@keyframes tideFloat{0%,100%{translate:0 0; rotate:0deg;} 30%{translate:0 -4px; rotate:-.7deg;} 55%{translate:0 -1px; rotate:.2deg;} 80%{translate:0 -5px; rotate:.7deg;}}
-@media (prefers-reduced-motion: reduce){ #appWrap.in-match .board-card.is-floating .fly-body{animation:none;} }
+@keyframes tideFloat{0%,100%{translate:0 -5.2px; rotate:0deg;} 30%{translate:0 -6.4px; rotate:-.7deg;} 55%{translate:0 -4.6px; rotate:.2deg;} 80%{translate:0 -6.9px; rotate:.7deg;}}
+#appWrap.in-match .board-card.is-floating .fly-shadow{display:block; position:absolute; left:10%; right:10%; bottom:-8px; height:10px; border-radius:50%; z-index:0; pointer-events:none;
+  background:radial-gradient(ellipse at center, rgba(10,40,80,.45), rgba(20,70,120,.2) 50%, transparent 72%); animation:floatShadow 4.2s ease-in-out infinite;}
+#appWrap.in-match .board-card.is-floating:nth-child(2n) .fly-shadow{animation-delay:-1.6s;}
+@keyframes floatShadow{0%,100%{transform:scaleX(1); opacity:.9;} 30%,80%{transform:scaleX(.9); opacity:.7;} 55%{transform:scaleX(1.02); opacity:.95;}}
+@media (prefers-reduced-motion: reduce){ #appWrap.in-match .board-card.is-floating .fly-body, #appWrap.in-match .board-card.is-floating .fly-shadow{animation:none;} }
 /* Supreme beasts (2026-10-14, user: "Their attacks have a sparkle on the icon ... Their armor (HP also sparkles) are magic"): a ✨ glint on
    the Attack and Health chips. */
 .card-tile.is-supreme .stats .atk::after, .card-tile.is-supreme .stats .hp::after{content:'✨'; position:absolute; top:-.55em; right:-.45em; font-size:.62em; line-height:1; pointer-events:none; filter:drop-shadow(0 0 3px rgba(255,240,170,.95)); animation:supremeGlint 2.6s ease-in-out infinite;}

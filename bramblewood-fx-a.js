@@ -1432,9 +1432,13 @@ M.onEvent = function(ev, env){
     case 'confusedWhiff': { const a = el(ev.uid); if(a) M.fizzle(a); break; }
     case 'tipsySwing': { const a = el(ev.attUid); if(a) M.tipsyBubbles(a, {drift:ev.drift}); break; }
     case 'crabClaw': { const a = el(ev.attUid); if(a) M.crabPinch(a, {dir:ev.dir}); break; }
-    case 'boomerangReturn': { const a = el(ev.uid); if(a) M.boomerangInbound(a, {host:env.battlefield}); break; }
-    case 'boomerangCaught': { const a = el(ev.uid); if(a) M.catchSnap(a); break; }
-    case 'boomerangWhiff': { const a = el(ev.uid); if(a) M.whiffPast(a); break; }
+    // 2026-10-17 (user: "2 boomerangs come back by the way - this is wrong. Only 1 should come back."): the return is one flight now,
+    // SkillFX.boomerangReturn (started by the game on the return's hit or whiff, retracing the throw and ending in the catch). The
+    // inbound swing stays in the Lab only; the catch and whiff looks only play when no return flight is in the air for that unit
+    // (a Boomerang ally catching someone else's, say).
+    case 'boomerangReturn': break;
+    case 'boomerangCaught': { const a = el(ev.uid), F = S(); if(a && !(F && F.boomerangInFlight && F.boomerangInFlight(String(ev.uid)))) M.catchSnap(a); break; }
+    case 'boomerangWhiff': { const a = el(ev.uid), F = S(); if(a && !(F && F.boomerangInFlight && F.boomerangInFlight(String(ev.uid)))) M.whiffPast(a); break; }
     case 'overwhelmHQ': { const c = hq(ev.targetSide); if(c) M.stampede(el(ev.attUid), c); break; }
     case 'pierceHQ': { const F = S(), c = hq(ev.targetSide), u = env.match && env.match._lastHitOf && env.match._lastHitOf[ev.attUid], from = u != null ? el(u) : el(ev.attUid);
       if(F && F.pierce && c && from) F.pierce(from, c, null, {draw:0, flight:220}); break; } // SkillFX.pierce: the shot carries on out of the unit into the castle
@@ -1447,7 +1451,7 @@ M.onEvent = function(ev, env){
     case 'charge': if(ev.fired){ const a = el(ev.uid); if(a) M.chargeRelease(a, {cards:rowCards(a).filter(x=> x !== a)}); } break;
     case 'earthquake': if(ev.landslide && high){ const bf = env.battlefield; const cards = bf ? [...bf.querySelectorAll('.board-card')].filter(b=> b.querySelector('.card-tile') && b.getAttribute('data-uid') !== String(ev.uid)) : [];
       if(cards.length) M.landslide(cards, {host:bf}); } break;
-    case 'wave': { const t = el(ev.targetUid); if(t){ hideNext(n=> n.classList && n.classList.contains('lava-geyser') && n.classList.contains('is-water'), 300); M.rollingCrest(t, {dir:ev.dir}); } break; }
+    case 'wave': { const F = S(); if(F && F.waveRide) break; /* 2026-10-17: the game's own SkillFX.waveRide / waveBob carry the crest now */ const t = el(ev.targetUid); if(t){ hideNext(n=> n.classList && n.classList.contains('lava-geyser') && n.classList.contains('is-water'), 300); M.rollingCrest(t, {dir:ev.dir}); } break; }
     case 'meteorBurn': { const t = ev.uid != null ? el(ev.uid) : null; if(t && env.once('crater' + ev.uid)) M.craterBurn(t); break; }
     case 'durian': { const t = el(ev.uid); if(t) M.durianSpikes(t); break; }
     case 'dynamite': { const t = el(ev.uid); if(t){ hideNext(n=> n.classList && n.classList.contains('dyn-blast'), 300); M.dynamiteBlast(t, {host:env.battlefield, flight:240, fuse:160}); } break; }
