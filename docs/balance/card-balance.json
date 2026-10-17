@@ -1,5 +1,5 @@
 {
- "generated": "2026-10-13",
+ "generated": "2026-10-17",
  "games": 40,
  "mode": "open",
  "filler": [
@@ -74,17 +74,17 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 2,
-   "health": 9,
+   "attack": 3,
+   "health": 6,
    "skills": [
     "boomerang"
    ],
-   "winRate": 72.5,
+   "winRate": 80,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -96,17 +96,17 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 3,
-   "attack": 3,
+   "attack": 2,
    "health": 20,
    "skills": [],
-   "winRate": 92.5,
+   "winRate": 70,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
-   "source": "base",
+   "source": "map",
    "startsAt0": false
   },
   {
@@ -115,19 +115,18 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 3,
+   "attack": 4,
    "health": 3,
    "skills": [
     "tide",
-    "wash",
-    "swimmer"
+    "wave"
    ],
-   "winRate": 72.5,
+   "winRate": 37.5,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -139,18 +138,17 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 3,
+   "health": 2,
    "skills": [
-    "flying",
     "swarm",
-    "diurnal"
+    "flying"
    ],
-   "winRate": 65,
+   "winRate": 37.5,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -163,19 +161,17 @@
    "cost": 0,
    "wait": 0,
    "attack": 0,
-   "health": 4,
+   "health": 6,
    "skills": [
     "flying",
-    "swarm",
-    "diurnal",
     "triggers"
    ],
-   "winRate": 97.5,
+   "winRate": 15,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": false,
    "source": "base",
    "startsAt0": false
@@ -186,7 +182,7 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 2,
-   "attack": 5,
+   "attack": 3,
    "health": 13,
    "skills": [
     "poison",
@@ -194,7 +190,7 @@
     "dry",
     "thorns"
    ],
-   "winRate": 75,
+   "winRate": 70,
    "band": [
     45,
     68
@@ -216,12 +212,12 @@
     "bounty",
     "scare"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -238,7 +234,7 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 32.5,
+   "winRate": 30,
    "band": [
     35,
     60
@@ -257,15 +253,14 @@
    "attack": 1,
    "health": 4,
    "skills": [
-    "swarm",
-    "hiveMind"
+    "triggers"
    ],
-   "winRate": 50,
+   "winRate": 2.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -277,17 +272,17 @@
    "rarity": "uncommon",
    "cost": 0,
    "wait": 1,
-   "attack": 1,
-   "health": 8,
+   "attack": 3,
+   "health": 5,
    "skills": [
     "swarm"
    ],
-   "winRate": 42.5,
+   "winRate": 60,
    "band": [
     45,
     68
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": false,
    "source": "base",
    "startsAt0": false
@@ -304,12 +299,12 @@
     "rage",
     "swarm"
    ],
-   "winRate": 32.5,
+   "winRate": 60,
    "band": [
     45,
     68
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -326,7 +321,7 @@
     "onReadyGold",
     "bounty"
    ],
-   "winRate": 42.5,
+   "winRate": 40,
    "band": [
     35,
     60
@@ -347,12 +342,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 50,
+   "winRate": 57.5,
    "band": [
     52,
     75
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -363,12 +358,12 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 2,
-   "attack": 4,
+   "attack": 3,
    "health": 18,
    "skills": [
     "bounty"
    ],
-   "winRate": 67.5,
+   "winRate": 65,
    "band": [
     45,
     68
@@ -384,14 +379,14 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 3,
+   "attack": 2,
    "health": 3,
    "skills": [
     "flying",
     "arrow",
     "nocturnal"
    ],
-   "winRate": 82.5,
+   "winRate": 85,
    "band": [
     52,
     75
@@ -407,20 +402,20 @@
    "rarity": "common",
    "cost": 1,
    "wait": 2,
-   "attack": 3,
-   "health": 12,
+   "attack": 2,
+   "health": 10,
    "skills": [
     "bounty",
     "flying",
     "nocturnal",
     "keenEye"
    ],
-   "winRate": 57.5,
+   "winRate": 67.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -431,20 +426,20 @@
    "rarity": "common",
    "cost": 2,
    "wait": 3,
-   "attack": 7,
-   "health": 22,
+   "attack": 6,
+   "health": 21,
    "skills": [
     "onReadyDamage",
     "bounty",
     "flying",
     "nocturnal"
    ],
-   "winRate": 42.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -479,12 +474,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 60,
+   "winRate": 77.5,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -500,12 +495,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 37.5,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -516,15 +511,18 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 0,
-   "attack": 3,
-   "health": 4,
-   "skills": [],
-   "winRate": 65,
+   "attack": 2,
+   "health": 2,
+   "skills": [
+    "bleed",
+    "twinStrike"
+   ],
+   "winRate": 80,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -540,12 +538,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 67.5,
+   "winRate": 80,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -561,12 +559,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 37.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -579,13 +577,15 @@
    "wait": 1,
    "attack": 2,
    "health": 10,
-   "skills": [],
-   "winRate": 67.5,
+   "skills": [
+    "banana"
+   ],
+   "winRate": 100,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -602,12 +602,12 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 40,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -623,7 +623,7 @@
    "skills": [
     "poison"
    ],
-   "winRate": 72.5,
+   "winRate": 65,
    "band": [
     52,
     75
@@ -645,7 +645,7 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 40,
+   "winRate": 35,
    "band": [
     35,
     60
@@ -680,12 +680,12 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 2,
-   "attack": 4,
+   "attack": 3,
    "health": 16,
    "skills": [
     "bounty"
    ],
-   "winRate": 57.5,
+   "winRate": 65,
    "band": [
     45,
     68
@@ -708,12 +708,12 @@
     "bounty",
     "earthquake"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -727,7 +727,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -743,13 +743,14 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 3,
-   "health": 5,
+   "attack": 2,
+   "health": 3,
    "skills": [
     "poison",
-    "flying"
+    "flying",
+    "brood"
    ],
-   "winRate": 87.5,
+   "winRate": 85,
    "band": [
     52,
     75
@@ -765,14 +766,14 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 1,
-   "attack": 5,
-   "health": 9,
+   "attack": 3,
+   "health": 6,
    "skills": [
     "poison",
     "bounty",
     "flying"
    ],
-   "winRate": 90,
+   "winRate": 82.5,
    "band": [
     52,
     75
@@ -808,14 +809,14 @@
    "cost": 0,
    "wait": 1,
    "attack": 3,
-   "health": 9,
+   "health": 7,
    "skills": [],
-   "winRate": 75,
+   "winRate": 82.5,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -832,12 +833,12 @@
     "onDeathSpawn",
     "bounty"
    ],
-   "winRate": 37.5,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -854,12 +855,12 @@
     "onReadyGold",
     "bounty"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -870,17 +871,17 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 0,
-   "attack": 3,
+   "attack": 4,
    "health": 3,
    "skills": [
     "immolation"
    ],
-   "winRate": 15,
+   "winRate": 60,
    "band": [
     52,
     75
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -891,18 +892,17 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 2,
+   "attack": 3,
    "health": 5,
    "skills": [
-    "tide",
-    "wash"
+    "tide"
    ],
-   "winRate": 62.5,
+   "winRate": 32.5,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -918,12 +918,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 40,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -937,12 +937,12 @@
    "attack": 4,
    "health": 6,
    "skills": [],
-   "winRate": 40,
+   "winRate": 65,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -959,12 +959,12 @@
     "bounty",
     "triggers"
    ],
-   "winRate": 47.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -978,14 +978,14 @@
    "attack": 2,
    "health": 5,
    "skills": [
-    "swimmer"
+    "tide"
    ],
-   "winRate": 67.5,
+   "winRate": 37.5,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -996,17 +996,17 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 4,
+   "attack": 3,
    "health": 6,
    "skills": [
-    "swimmer"
+    "tide"
    ],
-   "winRate": 87.5,
+   "winRate": 57.5,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1017,19 +1017,18 @@
    "rarity": "common",
    "cost": 1,
    "wait": 2,
-   "attack": 2,
+   "attack": 1,
    "health": 20,
    "skills": [
     "bounty",
-    "tide",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 60,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1045,15 +1044,14 @@
    "skills": [
     "sweep",
     "bounty",
-    "tide",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 40,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1064,12 +1062,12 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 2,
-   "attack": 4,
+   "attack": 3,
    "health": 22,
    "skills": [
     "bounty"
    ],
-   "winRate": 75,
+   "winRate": 72.5,
    "band": [
     52,
     75
@@ -1092,12 +1090,12 @@
     "bounty",
     "gash"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1108,18 +1106,18 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 3,
+   "attack": 4,
    "health": 6,
    "skills": [
     "nocturnal",
     "bounty"
    ],
-   "winRate": 25,
+   "winRate": 67.5,
    "band": [
     52,
     75
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1136,12 +1134,12 @@
     "bounty",
     "nocturnal"
    ],
-   "winRate": 37.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1152,12 +1150,12 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 1,
-   "attack": 6,
+   "attack": 5,
    "health": 14,
    "skills": [
     "bounty"
    ],
-   "winRate": 85,
+   "winRate": 90,
    "band": [
     52,
     75
@@ -1173,15 +1171,15 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 2,
-   "attack": 5,
-   "health": 20,
+   "attack": 4,
+   "health": 14,
    "skills": [
     "sweep",
     "bounty",
     "nocturnal",
     "demolisher"
    ],
-   "winRate": 90,
+   "winRate": 82.5,
    "band": [
     52,
     75
@@ -1202,12 +1200,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 37.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1218,19 +1216,18 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
+   "attack": 1,
    "health": 3,
    "skills": [
     "flying",
-    "pounce",
-    "tailwind"
+    "pounce"
    ],
-   "winRate": 92.5,
+   "winRate": 57.5,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1246,7 +1243,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 55,
+   "winRate": 72.5,
    "band": [
     52,
     75
@@ -1266,10 +1263,9 @@
    "health": 14,
    "skills": [
     "sweep",
-    "bounty",
-    "headwind"
+    "bounty"
    ],
-   "winRate": 80,
+   "winRate": 82.5,
    "band": [
     52,
     75
@@ -1289,14 +1285,14 @@
    "health": 36,
    "skills": [
     "bounty",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 37.5,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1310,7 +1306,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -1327,15 +1323,14 @@
    "cost": 1,
    "wait": 1,
    "attack": 3,
-   "health": 6,
+   "health": 5,
    "skills": [
     "bounty",
     "flying",
     "diurnal",
-    "pounce",
-    "tailwind"
+    "pounce"
    ],
-   "winRate": 92.5,
+   "winRate": 90,
    "band": [
     52,
     75
@@ -1356,10 +1351,9 @@
    "skills": [
     "sweep",
     "bounty",
-    "tide",
-    "wash"
+    "tide"
    ],
-   "winRate": 42.5,
+   "winRate": 35,
    "band": [
     52,
     75
@@ -1381,7 +1375,7 @@
     "onReadyGold",
     "bounty"
    ],
-   "winRate": 77.5,
+   "winRate": 80,
    "band": [
     52,
     75
@@ -1404,12 +1398,12 @@
     "bounty",
     "nocturnal"
    ],
-   "winRate": 40,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1420,15 +1414,15 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 0,
-   "attack": 3,
+   "attack": 2,
    "health": 7,
    "skills": [],
-   "winRate": 92.5,
+   "winRate": 65,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1440,18 +1434,39 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 12,
+   "health": 13,
    "skills": [
-    "swimmer"
+    "tide"
    ],
-   "winRate": 72.5,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "snapstick-turtle",
+   "name": "Snapstick Turtle",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 14,
+   "skills": [
+    "tide"
+   ],
+   "winRate": 40,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
    "startsAt0": false
   },
   {
@@ -1461,16 +1476,16 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 7,
+   "health": 9,
    "skills": [
     "bounty"
    ],
-   "winRate": 37.5,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1481,20 +1496,20 @@
    "rarity": "common",
    "cost": 3,
    "wait": 3,
-   "attack": 9,
-   "health": 28,
+   "attack": 7,
+   "health": 24,
    "skills": [
     "onReadyDamage",
     "bounty",
     "flying",
     "daunt"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1511,12 +1526,12 @@
     "bounty",
     "demolisher"
    ],
-   "winRate": 37.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1528,19 +1543,18 @@
    "cost": 2,
    "wait": 2,
    "attack": 5,
-   "health": 20,
+   "health": 19,
    "skills": [
     "poison",
     "bounty",
-    "flying",
-    "tailwind"
+    "flying"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1548,7 +1562,7 @@
   {
    "id": "bear-cub",
    "name": "Bear Cub",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -1556,8 +1570,8 @@
    "skills": [],
    "winRate": 65,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
@@ -1570,12 +1584,12 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 1,
-   "attack": 5,
-   "health": 16,
+   "attack": 4,
+   "health": 14,
    "skills": [
     "bounty"
    ],
-   "winRate": 90,
+   "winRate": 85,
    "band": [
     52,
     75
@@ -1597,12 +1611,12 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 40,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1620,12 +1634,12 @@
     "bounty",
     "daunt"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1633,7 +1647,7 @@
   {
    "id": "fawn-scout",
    "name": "Fawn Scout",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -1641,12 +1655,12 @@
    "skills": [
     "keenEye"
    ],
-   "winRate": 62.5,
+   "winRate": 82.5,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1660,7 +1674,7 @@
    "attack": 4,
    "health": 12,
    "skills": [],
-   "winRate": 65,
+   "winRate": 72.5,
    "band": [
     52,
     75
@@ -1681,12 +1695,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 37.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1703,12 +1717,12 @@
     "onReadyGold",
     "bounty"
    ],
-   "winRate": 47.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1716,18 +1730,18 @@
   {
    "id": "fox-kit",
    "name": "Fox Kit",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
-   "attack": 3,
+   "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 72.5,
+   "winRate": 42.5,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1738,7 +1752,7 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 0,
-   "attack": 3,
+   "attack": 2,
    "health": 9,
    "skills": [
     "bounty",
@@ -1766,7 +1780,7 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 40,
+   "winRate": 35,
    "band": [
     35,
     60
@@ -1783,7 +1797,7 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 8,
+   "health": 9,
    "skills": [
     "bounty"
    ],
@@ -1808,7 +1822,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 2.5,
+   "winRate": 7.5,
    "band": [
     35,
     60
@@ -1830,12 +1844,12 @@
     "onReadyGold",
     "bounty"
    ],
-   "winRate": 45,
+   "winRate": 37.5,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1851,12 +1865,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -1864,18 +1878,19 @@
   {
    "id": "grass-viper",
    "name": "Grass Viper",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
+   "attack": 1,
    "health": 5,
    "skills": [
-    "poison"
+    "poison",
+    "shedding"
    ],
-   "winRate": 57.5,
+   "winRate": 47.5,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
@@ -1888,12 +1903,13 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 1,
-   "attack": 4,
+   "attack": 3,
    "health": 10,
    "skills": [
-    "poison"
+    "poison",
+    "shedding"
    ],
-   "winRate": 67.5,
+   "winRate": 70,
    "band": [
     52,
     75
@@ -1915,12 +1931,12 @@
     "sweep",
     "bounty"
    ],
-   "winRate": 42.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1938,12 +1954,12 @@
     "bounty",
     "ambush"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -1951,19 +1967,19 @@
   {
    "id": "cave-flitter",
    "name": "Cave Flitter",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
-   "attack": 3,
+   "attack": 2,
    "health": 3,
    "skills": [
     "flying",
     "nocturnal"
    ],
-   "winRate": 65,
+   "winRate": 55,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
@@ -1976,14 +1992,14 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 1,
-   "attack": 4,
+   "attack": 3,
    "health": 6,
    "skills": [
     "onReadyDamage",
     "flying",
     "nocturnal"
    ],
-   "winRate": 72.5,
+   "winRate": 62.5,
    "band": [
     52,
     75
@@ -2006,12 +2022,12 @@
     "bounty",
     "nocturnal"
    ],
-   "winRate": 37.5,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2022,17 +2038,17 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 5,
    "skills": [
     "bounty"
    ],
-   "winRate": 22.5,
+   "winRate": 40,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -2048,7 +2064,7 @@
    "skills": [
     "demolisher"
    ],
-   "winRate": 27.5,
+   "winRate": 25,
    "band": [
     35,
     60
@@ -2070,7 +2086,7 @@
     "onReadyGold",
     "bounty"
    ],
-   "winRate": 42.5,
+   "winRate": 37.5,
    "band": [
     45,
     68
@@ -2083,16 +2099,16 @@
   {
    "id": "stable-colt",
    "name": "Stable Colt",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 9,
+   "health": 8,
    "skills": [],
-   "winRate": 67.5,
+   "winRate": 65,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
@@ -2106,16 +2122,16 @@
    "cost": 1,
    "wait": 1,
    "attack": 4,
-   "health": 14,
+   "health": 12,
    "skills": [
     "bounty"
    ],
-   "winRate": 75,
+   "winRate": 77.5,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2131,12 +2147,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 37.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2150,16 +2166,15 @@
    "attack": 11,
    "health": 52,
    "skills": [
-    "onReadyDamage",
     "bounty",
     "overwhelm"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2173,14 +2188,14 @@
    "attack": 2,
    "health": 6,
    "skills": [
-    "swimmer"
+    "tide"
    ],
-   "winRate": 72.5,
+   "winRate": 45,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -2194,9 +2209,10 @@
    "attack": 3,
    "health": 8,
    "skills": [
-    "poison"
+    "poison",
+    "tide"
    ],
-   "winRate": 42.5,
+   "winRate": 47.5,
    "band": [
     35,
     60
@@ -2219,12 +2235,12 @@
     "nocturnal",
     "regen"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2232,7 +2248,7 @@
   {
    "id": "warren-scout",
    "name": "Warren Scout",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 3,
@@ -2240,12 +2256,12 @@
    "skills": [
     "keenEye"
    ],
-   "winRate": 50,
+   "winRate": 72.5,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
-   "verdict": "weak",
+   "verdict": "strong",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -2256,12 +2272,12 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 0,
-   "attack": 4,
+   "attack": 3,
    "health": 11,
    "skills": [
     "bounty"
    ],
-   "winRate": 92.5,
+   "winRate": 85,
    "band": [
     52,
     75
@@ -2282,12 +2298,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 37.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2298,12 +2314,12 @@
    "rarity": "common",
    "cost": 1,
    "wait": 4,
-   "attack": 4,
+   "attack": 3,
    "health": 22,
    "skills": [
     "bounty"
    ],
-   "winRate": 35,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -2325,12 +2341,12 @@
     "bounty",
     "bulwark"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -2342,16 +2358,16 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 4,
+   "health": 3,
    "skills": [
     "flying"
    ],
-   "winRate": 82.5,
+   "winRate": 52.5,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2362,13 +2378,13 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 0,
-   "attack": 4,
-   "health": 10,
+   "attack": 3,
+   "health": 8,
    "skills": [
     "flying",
     "pounce"
    ],
-   "winRate": 95,
+   "winRate": 90,
    "band": [
     52,
     75
@@ -2390,12 +2406,12 @@
     "bounty",
     "earthquake"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -2413,12 +2429,12 @@
     "bounty",
     "dry"
    ],
-   "winRate": 37.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2435,14 +2451,14 @@
     "sweep",
     "bounty",
     "momentum",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -2453,8 +2469,8 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 0,
-   "attack": 4,
-   "health": 14,
+   "attack": 3,
+   "health": 10,
    "skills": [
     "bounty",
     "pounce"
@@ -2479,14 +2495,14 @@
    "health": 30,
    "skills": [
     "armor",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 40,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -2500,10 +2516,9 @@
    "attack": 1,
    "health": 14,
    "skills": [
-    "thorns",
-    "headwind"
+    "thorns"
    ],
-   "winRate": 72.5,
+   "winRate": 60,
    "band": [
     52,
     75
@@ -2522,15 +2537,14 @@
    "attack": 6,
    "health": 16,
    "skills": [
-    "rage",
-    "headwind"
+    "rage"
    ],
-   "winRate": 42.5,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -2546,7 +2560,7 @@
    "skills": [
     "fork"
    ],
-   "winRate": 42.5,
+   "winRate": 35,
    "band": [
     35,
     60
@@ -2566,10 +2580,9 @@
    "health": 10,
    "skills": [
     "render",
-    "flying",
-    "tailwind"
+    "flying"
    ],
-   "winRate": 80,
+   "winRate": 65,
    "band": [
     35,
     60
@@ -2590,10 +2603,9 @@
    "skills": [
     "flying",
     "diurnal",
-    "arrow",
-    "tailwind"
+    "arrow"
    ],
-   "winRate": 47.5,
+   "winRate": 40,
    "band": [
     35,
     60
@@ -2614,15 +2626,14 @@
    "skills": [
     "flying",
     "diurnal",
-    "pounce",
-    "tailwind"
+    "pounce"
    ],
-   "winRate": 77.5,
+   "winRate": 47.5,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2659,7 +2670,7 @@
    "skills": [
     "prayer"
    ],
-   "winRate": 52.5,
+   "winRate": 40,
    "band": [
     35,
     60
@@ -2697,12 +2708,12 @@
    "attack": 4,
    "health": 16,
    "skills": [],
-   "winRate": 60,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2719,12 +2730,12 @@
     "flying",
     "triggers"
    ],
-   "winRate": 45,
+   "winRate": 35,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -2740,7 +2751,7 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 97.5,
+   "winRate": 100,
    "band": [
     52,
     75
@@ -2761,7 +2772,7 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 7.5,
+   "winRate": 15,
    "band": [
     35,
     60
@@ -2778,16 +2789,17 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 6,
+   "health": 4,
    "skills": [
-    "nocturnal"
+    "nocturnal",
+    "bananarang"
    ],
-   "winRate": 50,
+   "winRate": 82.5,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -2803,7 +2815,7 @@
    "skills": [
     "quick"
    ],
-   "winRate": 72.5,
+   "winRate": 75,
    "band": [
     52,
     75
@@ -2825,12 +2837,12 @@
     "diurnal",
     "bounty"
    ],
-   "winRate": 50,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2846,12 +2858,12 @@
    "skills": [
     "poison"
    ],
-   "winRate": 47.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -2867,7 +2879,7 @@
    "skills": [
     "thorns"
    ],
-   "winRate": 67.5,
+   "winRate": 65,
    "band": [
     52,
     75
@@ -2888,12 +2900,12 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 35,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -2909,12 +2921,12 @@
    "skills": [
     "quick"
    ],
-   "winRate": 70,
+   "winRate": 82.5,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -2922,20 +2934,20 @@
   {
    "id": "dust-hyena",
    "name": "Dust Hyena",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 8,
+   "health": 6,
    "skills": [
     "triggers"
    ],
    "winRate": 75,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -2951,7 +2963,7 @@
    "skills": [
     "armor"
    ],
-   "winRate": 5,
+   "winRate": 0,
    "band": [
     35,
     60
@@ -2964,7 +2976,7 @@
   {
    "id": "plains-zebra",
    "name": "Plains Zebra",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -2972,12 +2984,12 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 55,
+   "winRate": 70,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -2985,22 +2997,22 @@
   {
    "id": "snow-owl-sentinel",
    "name": "Snow Owl Sentinel",
-   "rarity": "rare",
+   "rarity": "superrare",
    "cost": 1,
    "wait": 1,
    "attack": 3,
-   "health": 10,
+   "health": 9,
    "skills": [
     "expose",
     "flying",
     "nocturnal"
    ],
-   "winRate": 80,
+   "winRate": 77.5,
    "band": [
-    52,
-    75
+    60,
+    84
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -3014,15 +3026,14 @@
    "attack": 5,
    "health": 24,
    "skills": [
-    "thorns",
-    "headwind"
+    "thorns"
    ],
-   "winRate": 42.5,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -3038,12 +3049,12 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 72.5,
+   "winRate": 80,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -3059,15 +3070,14 @@
    "skills": [
     "sweep",
     "nocturnal",
-    "frostbite",
-    "headwind"
+    "frostbite"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -3083,12 +3093,12 @@
    "skills": [
     "bleed"
    ],
-   "winRate": 77.5,
+   "winRate": 67.5,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -3103,15 +3113,14 @@
    "health": 5,
    "skills": [
     "guardian",
-    "tide",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 70,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -3126,15 +3135,14 @@
    "health": 14,
    "skills": [
     "crit",
-    "tide",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 45,
+   "winRate": 35,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -3145,13 +3153,14 @@
    "rarity": "common",
    "cost": 1,
    "wait": 2,
-   "attack": 6,
-   "health": 12,
+   "attack": 7,
+   "health": 14,
    "skills": [
     "stealth",
-    "tide"
+    "tide",
+    "wave"
    ],
-   "winRate": 27.5,
+   "winRate": 15,
    "band": [
     35,
     60
@@ -3174,12 +3183,12 @@
     "revive",
     "tide"
    ],
-   "winRate": 35,
+   "winRate": 25,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3196,12 +3205,12 @@
     "onReadyGold",
     "tide"
    ],
-   "winRate": 40,
+   "winRate": 20,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -3209,7 +3218,7 @@
   {
    "id": "mountain-goat-climber",
    "name": "Mountain Goat Climber",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 1,
@@ -3217,10 +3226,10 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 57.5,
+   "winRate": 52.5,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
    "verdict": "ok",
    "locked": true,
@@ -3238,15 +3247,14 @@
    "skills": [
     "flying",
     "diurnal",
-    "pounce",
-    "tailwind"
+    "pounce"
    ],
-   "winRate": 95,
+   "winRate": 62.5,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3262,12 +3270,12 @@
    "skills": [
     "fork"
    ],
-   "winRate": 35,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3275,7 +3283,7 @@
   {
    "id": "rockslide-ram",
    "name": "Rockslide Ram",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
    "attack": 3,
@@ -3283,12 +3291,12 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 67.5,
+   "winRate": 72.5,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3299,14 +3307,13 @@
    "rarity": "common",
    "cost": 1,
    "wait": 1,
-   "attack": 4,
+   "attack": 5,
    "health": 8,
    "skills": [
     "reload",
-    "flying",
-    "tailwind"
+    "flying"
    ],
-   "winRate": 37.5,
+   "winRate": 40,
    "band": [
     35,
     60
@@ -3319,7 +3326,7 @@
   {
    "id": "bog-leech",
    "name": "Bog Leech",
-   "rarity": "rare",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 2,
@@ -3327,12 +3334,12 @@
    "skills": [
     "bleed"
    ],
-   "winRate": 57.5,
+   "winRate": 75,
    "band": [
-    52,
-    75
+    45,
+    68
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3348,12 +3355,12 @@
    "skills": [
     "armor"
    ],
-   "winRate": 37.5,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3370,7 +3377,7 @@
     "render",
     "flying"
    ],
-   "winRate": 50,
+   "winRate": 45,
    "band": [
     35,
     60
@@ -3391,7 +3398,7 @@
    "skills": [
     "explode"
    ],
-   "winRate": 30,
+   "winRate": 22.5,
    "band": [
     35,
     60
@@ -3412,12 +3419,12 @@
    "skills": [
     "guardian"
    ],
-   "winRate": 40,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3429,18 +3436,18 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 3,
+   "health": 2,
    "skills": [
     "flying",
     "nocturnal",
     "fork"
    ],
-   "winRate": 80,
+   "winRate": 75,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -3455,14 +3462,15 @@
    "health": 6,
    "skills": [
     "evasive",
-    "darksight"
+    "darksight",
+    "tide"
    ],
-   "winRate": 22.5,
+   "winRate": 42.5,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3476,15 +3484,14 @@
    "attack": 6,
    "health": 26,
    "skills": [
-    "shell",
-    "darksight"
+    "shell"
    ],
-   "winRate": 37.5,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3501,7 +3508,7 @@
     "nocturnal",
     "prayer"
    ],
-   "winRate": 15,
+   "winRate": 2.5,
    "band": [
     35,
     60
@@ -3524,12 +3531,12 @@
     "siege",
     "darksight"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -3545,7 +3552,7 @@
    "skills": [
     "fireArrow"
    ],
-   "winRate": 92.5,
+   "winRate": 82.5,
    "band": [
     52,
     75
@@ -3565,15 +3572,14 @@
    "health": 7,
    "skills": [
     "flying",
-    "tailwind",
     "triggers"
    ],
-   "winRate": 85,
+   "winRate": 70,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -3590,12 +3596,12 @@
     "armor",
     "poison"
    ],
-   "winRate": 82.5,
+   "winRate": 67.5,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3607,12 +3613,14 @@
    "cost": 0,
    "wait": 1,
    "attack": 1,
-   "health": 9,
+   "health": 8,
    "skills": [
     "thorns",
-    "tide"
+    "tide",
+    "molting",
+    "crabClaws"
    ],
-   "winRate": 90,
+   "winRate": 77.5,
    "band": [
     45,
     68
@@ -3633,12 +3641,12 @@
    "skills": [
     "fireArrow"
    ],
-   "winRate": 40,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -3654,7 +3662,7 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 65,
+   "winRate": 67.5,
    "band": [
     52,
     75
@@ -3673,15 +3681,14 @@
    "attack": 5,
    "health": 17,
    "skills": [
-    "sweep",
-    "headwind"
+    "sweep"
    ],
-   "winRate": 40,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3693,11 +3700,11 @@
    "cost": 0,
    "wait": 1,
    "attack": 0,
-   "health": 6,
+   "health": 7,
    "skills": [
     "explode"
    ],
-   "winRate": 25,
+   "winRate": 27.5,
    "band": [
     35,
     60
@@ -3714,11 +3721,11 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 4,
+   "health": 6,
    "skills": [
     "evasive"
    ],
-   "winRate": 45,
+   "winRate": 35,
    "band": [
     35,
     60
@@ -3737,12 +3744,12 @@
    "attack": 4,
    "health": 14,
    "skills": [],
-   "winRate": 37.5,
+   "winRate": 25,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -3757,14 +3764,16 @@
    "health": 5,
    "skills": [
     "armor",
-    "tide"
+    "tide",
+    "molting",
+    "wave"
    ],
-   "winRate": 60,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -3775,19 +3784,18 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
-   "health": 3,
+   "attack": 1,
+   "health": 6,
    "skills": [
     "flying",
-    "tailwind",
     "triggers"
    ],
-   "winRate": 85,
+   "winRate": 57.5,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3798,20 +3806,18 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
-   "attack": 7,
+   "attack": 8,
    "health": 5,
    "skills": [
     "reload",
-    "tide",
-    "wash",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 65,
+   "winRate": 25,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3827,7 +3833,7 @@
    "skills": [
     "armor"
    ],
-   "winRate": 5,
+   "winRate": 0,
    "band": [
     35,
     60
@@ -3847,15 +3853,14 @@
    "health": 9,
    "skills": [
     "flying",
-    "tailwind",
     "triggers"
    ],
-   "winRate": 90,
+   "winRate": 70,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3869,9 +3874,10 @@
    "attack": 2,
    "health": 4,
    "skills": [
-    "quick"
+    "quick",
+    "tide"
    ],
-   "winRate": 52.5,
+   "winRate": 55,
    "band": [
     35,
     60
@@ -3892,12 +3898,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 47.5,
+   "winRate": 67.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3908,18 +3914,18 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 3,
    "skills": [
     "tide",
-    "fork"
+    "crabClaws"
    ],
-   "winRate": 50,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -3958,7 +3964,7 @@
     "poison",
     "fester"
    ],
-   "winRate": 67.5,
+   "winRate": 47.5,
    "band": [
     45,
     68
@@ -3980,12 +3986,12 @@
     "bleed",
     "rupture"
    ],
-   "winRate": 85,
+   "winRate": 75,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -3998,13 +4004,15 @@
    "wait": 1,
    "attack": 4,
    "health": 16,
-   "skills": [],
-   "winRate": 37.5,
+   "skills": [
+    "durian"
+   ],
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4015,11 +4023,12 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
-   "health": 15,
+   "attack": 1,
+   "health": 13,
    "skills": [
     "esprit",
-    "flying"
+    "flying",
+    "brood"
    ],
    "winRate": 87.5,
    "band": [
@@ -4040,7 +4049,6 @@
    "attack": 3,
    "health": 14,
    "skills": [
-    "headwind",
     "triggers"
    ],
    "winRate": 80,
@@ -4059,17 +4067,17 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 0,
-   "attack": 2,
+   "attack": 1,
    "health": 12,
    "skills": [
     "triggers"
    ],
-   "winRate": 92.5,
+   "winRate": 75,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4085,7 +4093,7 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 42.5,
+   "winRate": 37.5,
    "band": [
     35,
     60
@@ -4104,15 +4112,15 @@
    "attack": 3,
    "health": 20,
    "skills": [
-    "swimmer",
+    "tide",
     "triggers"
    ],
-   "winRate": 37.5,
+   "winRate": 25,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4128,7 +4136,7 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 37.5,
+   "winRate": 32.5,
    "band": [
     52,
     75
@@ -4148,9 +4156,11 @@
    "health": 4,
    "skills": [
     "armor",
-    "tide"
+    "tide",
+    "molting",
+    "crabClaws"
    ],
-   "winRate": 47.5,
+   "winRate": 45,
    "band": [
     35,
     60
@@ -4166,19 +4176,19 @@
    "rarity": "common",
    "cost": 2,
    "wait": 1,
-   "attack": 5,
-   "health": 16,
+   "attack": 4,
+   "health": 15,
    "skills": [
     "evasive",
     "tide",
-    "swimmer"
+    "wave"
    ],
-   "winRate": 42.5,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4193,14 +4203,14 @@
    "health": 20,
    "skills": [
     "expose",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 45,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4212,18 +4222,18 @@
    "cost": 3,
    "wait": 3,
    "attack": 8,
-   "health": 40,
+   "health": 39,
    "skills": [
     "thorns",
     "inspiring",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4235,18 +4245,17 @@
    "cost": 1,
    "wait": 0,
    "attack": 2,
-   "health": 10,
+   "health": 12,
    "skills": [
     "quick",
-    "dry",
-    "swift"
+    "dry"
    ],
-   "winRate": 65,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -4263,7 +4272,7 @@
     "fork",
     "dry"
    ],
-   "winRate": 40,
+   "winRate": 35,
    "band": [
     35,
     60
@@ -4284,7 +4293,7 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 55,
+   "winRate": 60,
    "band": [
     35,
     60
@@ -4305,12 +4314,12 @@
    "skills": [
     "bleed"
    ],
-   "winRate": 37.5,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4322,16 +4331,16 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 8,
+   "health": 6,
    "skills": [
     "thorns"
    ],
-   "winRate": 85,
+   "winRate": 60,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -4347,12 +4356,12 @@
    "skills": [
     "armor"
    ],
-   "winRate": 40,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4363,18 +4372,18 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
-   "health": 8,
+   "attack": 3,
+   "health": 3,
    "skills": [
     "nocturnal",
     "bounty"
    ],
-   "winRate": 52.5,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -4385,13 +4394,13 @@
    "rarity": "common",
    "cost": 1,
    "wait": 1,
-   "attack": 7,
+   "attack": 8,
    "health": 12,
    "skills": [
     "stealth",
     "nocturnal"
    ],
-   "winRate": 40,
+   "winRate": 35,
    "band": [
     35,
     60
@@ -4412,7 +4421,7 @@
    "skills": [
     "rage"
    ],
-   "winRate": 47.5,
+   "winRate": 57.5,
    "band": [
     35,
     60
@@ -4433,12 +4442,12 @@
    "skills": [
     "guardian"
    ],
-   "winRate": 42.5,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -4449,17 +4458,17 @@
    "rarity": "common",
    "cost": 0,
    "wait": 1,
-   "attack": 1,
+   "attack": 2,
    "health": 5,
    "skills": [
     "onReadyGold"
    ],
-   "winRate": 32.5,
+   "winRate": 42.5,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4475,12 +4484,12 @@
    "skills": [
     "quick"
    ],
-   "winRate": 57.5,
+   "winRate": 62.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4497,12 +4506,12 @@
     "evasive",
     "tide"
    ],
-   "winRate": 55,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4514,17 +4523,17 @@
    "cost": 3,
    "wait": 2,
    "attack": 9,
-   "health": 34,
+   "health": 31,
    "skills": [
     "fork",
     "gash"
    ],
-   "winRate": 47.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4536,11 +4545,11 @@
    "cost": 0,
    "wait": 1,
    "attack": 1,
-   "health": 12,
+   "health": 10,
    "skills": [
     "armor"
    ],
-   "winRate": 77.5,
+   "winRate": 72.5,
    "band": [
     35,
     60
@@ -4561,12 +4570,12 @@
    "skills": [
     "guardian"
    ],
-   "winRate": 42.5,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4578,12 +4587,12 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 3,
+   "health": 4,
    "skills": [
     "flying",
     "fork"
    ],
-   "winRate": 50,
+   "winRate": 55,
    "band": [
     35,
     60
@@ -4602,15 +4611,14 @@
    "attack": 2,
    "health": 12,
    "skills": [
-    "flying",
-    "tailwind"
+    "flying"
    ],
-   "winRate": 70,
+   "winRate": 52.5,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4626,12 +4634,12 @@
    "skills": [
     "armor"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4642,61 +4650,61 @@
    "rarity": "common",
    "cost": 1,
    "wait": 1,
-   "attack": 4,
-   "health": 10,
+   "attack": 1,
+   "health": 4,
    "skills": [
-    "stealth",
     "flying",
+    "stealth",
     "nocturnal"
    ],
-   "winRate": 42.5,
+   "winRate": 15,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
   },
   {
    "id": "shepherds-bark",
-   "name": "Shepherd's Bark",
+   "name": "Shepherd",
    "rarity": "common",
    "cost": 1,
    "wait": 1,
-   "attack": 3,
+   "attack": 2,
    "health": 12,
    "skills": [
     "guardian"
    ],
-   "winRate": 57.5,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
   },
   {
    "id": "feral-tomcat",
-   "name": "Feral Tomcat",
+   "name": "Tomcat",
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 3,
+   "attack": 2,
    "health": 3,
    "skills": [
     "quick"
    ],
-   "winRate": 62.5,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4712,12 +4720,12 @@
    "skills": [
     "poison"
    ],
-   "winRate": 67.5,
+   "winRate": 45,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4733,12 +4741,12 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 32.5,
+   "winRate": 50,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4753,9 +4761,9 @@
    "health": 9,
    "skills": [
     "evasive",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 70,
+   "winRate": 62.5,
    "band": [
     35,
     60
@@ -4776,7 +4784,7 @@
    "skills": [
     "quick"
    ],
-   "winRate": 50,
+   "winRate": 52.5,
    "band": [
     35,
     60
@@ -4797,12 +4805,12 @@
    "skills": [
     "prayer"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4814,16 +4822,16 @@
    "cost": 1,
    "wait": 0,
    "attack": 3,
-   "health": 8,
+   "health": 9,
    "skills": [
     "frenzy"
    ],
-   "winRate": 50,
+   "winRate": 52.5,
    "band": [
     52,
     75
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4840,12 +4848,12 @@
     "scar",
     "immolation"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4862,7 +4870,7 @@
     "renewal",
     "flying"
    ],
-   "winRate": 37.5,
+   "winRate": 35,
    "band": [
     35,
     60
@@ -4881,15 +4889,14 @@
    "attack": 4,
    "health": 20,
    "skills": [
-    "grit",
-    "headwind"
+    "grit"
    ],
-   "winRate": 35,
+   "winRate": 25,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4906,12 +4913,12 @@
     "pierce",
     "fireArrow"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -4929,7 +4936,7 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 75,
+   "winRate": 52.5,
    "band": [
     52,
     75
@@ -4946,19 +4953,17 @@
    "cost": 1,
    "wait": 0,
    "attack": 2,
-   "health": 5,
+   "health": 6,
    "skills": [
     "poison",
-    "tide",
-    "wash",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 80,
+   "winRate": 37.5,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -4974,12 +4979,12 @@
    "skills": [
     "bleed"
    ],
-   "winRate": 37.5,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -4994,15 +4999,14 @@
    "health": 6,
    "skills": [
     "armor",
-    "dry",
-    "swift"
+    "dry"
    ],
-   "winRate": 82.5,
+   "winRate": 50,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -5020,7 +5024,7 @@
     "nocturnal",
     "triggers"
    ],
-   "winRate": 45,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -5040,15 +5044,14 @@
    "health": 16,
    "skills": [
     "freeze",
-    "headwind",
     "triggers"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -5066,12 +5069,12 @@
     "flying",
     "nocturnal"
    ],
-   "winRate": 40,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -5080,16 +5083,17 @@
    "id": "voltaic-eel",
    "name": "Voltaic Eel",
    "rarity": "rare",
-   "cost": 3,
+   "cost": 2,
    "wait": 0,
    "attack": 3,
    "health": 10,
    "skills": [
     "shock",
-    "swimmer",
+    "tide",
+    "chainLightning",
     "triggers"
    ],
-   "winRate": 45,
+   "winRate": 42.5,
    "band": [
     52,
     75
@@ -5111,7 +5115,7 @@
     "stunOnHit",
     "flying"
    ],
-   "winRate": 45,
+   "winRate": 35,
    "band": [
     35,
     60
@@ -5131,15 +5135,15 @@
    "health": 18,
    "skills": [
     "regen",
-    "swimmer",
+    "tide",
     "triggers"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -5156,12 +5160,12 @@
     "onDeathSpawn",
     "triggers"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -5177,7 +5181,7 @@
    "skills": [
     "kingSlayer"
    ],
-   "winRate": 65,
+   "winRate": 72.5,
    "band": [
     52,
     75
@@ -5196,7 +5200,7 @@
    "attack": 1,
    "health": 3,
    "skills": [],
-   "winRate": 7.5,
+   "winRate": 2.5,
    "band": [
     20,
     48
@@ -5214,9 +5218,9 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 6,
+   "health": 4,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 32.5,
    "band": [
     20,
     48
@@ -5230,22 +5234,23 @@
   {
    "id": "otter-guard",
    "name": "Otter Guard",
-   "rarity": "starter",
-   "cost": 0,
+   "rarity": "uncommon",
+   "cost": 1,
    "wait": 1,
-   "attack": 3,
-   "health": 9,
-   "skills": [],
-   "winRate": 75,
-   "band": [
-    20,
-    48
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "arrow"
    ],
-   "verdict": "strong",
+   "winRate": 32.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
    "locked": false,
    "source": "base",
-   "startsAt0": true,
-   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
+   "startsAt0": false
   },
   {
    "id": "honey-bee",
@@ -5256,17 +5261,14 @@
    "attack": 1,
    "health": 2,
    "skills": [
-    "flying",
-    "swarm",
-    "hiveMind",
-    "diurnal"
+    "flying"
    ],
-   "winRate": 75,
+   "winRate": 5,
    "band": [
     20,
     48
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -5281,16 +5283,16 @@
    "attack": 0,
    "health": 3,
    "skills": [
-    "flying",
     "swarm",
-    "diurnal"
+    "flying",
+    "triggers"
    ],
-   "winRate": 50,
+   "winRate": 37.5,
    "band": [
     20,
     48
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -5303,17 +5305,17 @@
    "cost": 0,
    "wait": 1,
    "attack": 2,
-   "health": 5,
+   "health": 3,
    "skills": [
     "flying",
-    "diurnal"
+    "poison"
    ],
-   "winRate": 77.5,
+   "winRate": 47.5,
    "band": [
     20,
     48
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
    "source": "base",
    "startsAt0": false
@@ -5327,10 +5329,9 @@
    "attack": 1,
    "health": 3,
    "skills": [
-    "swarm",
-    "hiveMind"
+    "triggers"
    ],
-   "winRate": 25,
+   "winRate": 35,
    "band": [
     20,
     48
@@ -5344,42 +5345,42 @@
   {
    "id": "tunnel-ant",
    "name": "Tunnel Ant",
-   "rarity": "starter",
-   "cost": 0,
-   "wait": 0,
-   "attack": 1,
-   "health": 4,
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 5,
    "skills": [
-    "swarm"
+    "swarm",
+    "swarmN"
    ],
-   "winRate": 25,
+   "winRate": 20,
    "band": [
-    20,
-    48
+    52,
+    75
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": false,
    "source": "base",
-   "startsAt0": true,
-   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
+   "startsAt0": false
   },
   {
    "id": "ant-scout",
    "name": "Ant Scout",
    "rarity": "starter",
    "cost": 0,
-   "wait": 1,
-   "attack": 2,
-   "health": 7,
+   "wait": 0,
+   "attack": 1,
+   "health": 2,
    "skills": [
     "swarm"
    ],
-   "winRate": 70,
+   "winRate": 5,
    "band": [
     20,
     48
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -5393,10 +5394,8 @@
    "wait": 0,
    "attack": 1,
    "health": 2,
-   "skills": [
-    "swimmer"
-   ],
-   "winRate": 15,
+   "skills": [],
+   "winRate": 0,
    "band": [
     20,
     48
@@ -5414,16 +5413,14 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 4,
-   "skills": [
-    "swimmer"
-   ],
-   "winRate": 65,
+   "health": 3,
+   "skills": [],
+   "winRate": 20,
    "band": [
     20,
     48
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -5436,16 +5433,14 @@
    "cost": 0,
    "wait": 1,
    "attack": 3,
-   "health": 8,
-   "skills": [
-    "swimmer"
-   ],
-   "winRate": 82.5,
+   "health": 6,
+   "skills": [],
+   "winRate": 47.5,
    "band": [
     20,
     48
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -5458,11 +5453,9 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 3,
-   "skills": [
-    "flying"
-   ],
-   "winRate": 7.5,
+   "health": 1,
+   "skills": [],
+   "winRate": 0,
    "band": [
     20,
     48
@@ -5480,16 +5473,14 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 6,
-   "skills": [
-    "flying"
-   ],
-   "winRate": 87.5,
+   "health": 3,
+   "skills": [],
+   "winRate": 20,
    "band": [
     20,
     48
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -5502,16 +5493,14 @@
    "cost": 0,
    "wait": 1,
    "attack": 3,
-   "health": 7,
-   "skills": [
-    "flying"
-   ],
-   "winRate": 97.5,
+   "health": 6,
+   "skills": [],
+   "winRate": 47.5,
    "band": [
     20,
     48
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -5523,10 +5512,10 @@
    "rarity": "starter",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
-   "health": 4,
+   "attack": 2,
+   "health": 1,
    "skills": [],
-   "winRate": 5,
+   "winRate": 15,
    "band": [
     20,
     48
@@ -5543,10 +5532,10 @@
    "rarity": "starter",
    "cost": 0,
    "wait": 0,
-   "attack": 2,
-   "health": 6,
+   "attack": 3,
+   "health": 1,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 32.5,
    "band": [
     20,
     48
@@ -5566,7 +5555,7 @@
    "attack": 3,
    "health": 8,
    "skills": [],
-   "winRate": 65,
+   "winRate": 92.5,
    "band": [
     20,
     48
@@ -5584,9 +5573,9 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 3,
+   "health": 4,
    "skills": [],
-   "winRate": 7.5,
+   "winRate": 2.5,
    "band": [
     20,
     48
@@ -5604,14 +5593,14 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 6,
+   "health": 2,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 15,
    "band": [
     20,
     48
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -5629,7 +5618,7 @@
     "flying",
     "diurnal"
    ],
-   "winRate": 35,
+   "winRate": 27.5,
    "band": [
     20,
     48
@@ -5647,12 +5636,12 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 3,
+   "health": 1,
    "skills": [
     "flying",
     "diurnal"
    ],
-   "winRate": 77.5,
+   "winRate": 80,
    "band": [
     20,
     48
@@ -5669,10 +5658,123 @@
    "rarity": "starter",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
-   "health": 6,
+   "attack": 0,
+   "health": 4,
    "skills": [
     "flying"
+   ],
+   "winRate": 2.5,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "weak",
+   "locked": false,
+   "source": "base",
+   "startsAt0": true,
+   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
+  },
+  {
+   "id": "gold-throated-acolyte",
+   "name": "Gold-throated Acolyte",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 2,
+   "attack": 2,
+   "health": 3,
+   "skills": [
+    "flying",
+    "evasive"
+   ],
+   "winRate": 57.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "violet-vane-fletcher",
+   "name": "Violet Vane Fletcher",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 3,
+   "skills": [
+    "sweep",
+    "flying"
+   ],
+   "winRate": 40,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base",
+   "startsAt0": true,
+   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
+  },
+  {
+   "id": "sunthroat-courier",
+   "name": "Sunthroat Courier",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 3,
+   "skills": [
+    "flying",
+    "espritHp"
+   ],
+   "winRate": 47.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "voidfeather-scout",
+   "name": "Voidfeather Scout",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 4,
+   "skills": [
+    "flying",
+    "nocturnal",
+    "nocturnalHp"
+   ],
+   "winRate": 57.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": false,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "crimson-wing-duelist-cadet",
+   "name": "Crimson Wing Duelist Cadet",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 2,
+   "skills": [
+    "flying",
+    "diurnal"
    ],
    "winRate": 35,
    "band": [
@@ -5686,131 +5788,18 @@
    "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
   },
   {
-   "id": "gold-throated-acolyte",
-   "name": "Gold-throated Acolyte",
+   "id": "cobalt-talon-skirmisher",
+   "name": "Cobalt Talon Skirmisher",
    "rarity": "starter",
    "cost": 0,
-   "wait": 0,
+   "wait": 1,
    "attack": 1,
    "health": 4,
    "skills": [
     "flying",
     "diurnal"
    ],
-   "winRate": 80,
-   "band": [
-    20,
-    48
-   ],
-   "verdict": "strong",
-   "locked": false,
-   "source": "base",
-   "startsAt0": true,
-   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
-  },
-  {
-   "id": "violet-vane-fletcher",
-   "name": "Violet Vane Fletcher",
-   "rarity": "starter",
-   "cost": 0,
-   "wait": 0,
-   "attack": 2,
-   "health": 4,
-   "skills": [
-    "flying",
-    "diurnal"
-   ],
-   "winRate": 97.5,
-   "band": [
-    20,
-    48
-   ],
-   "verdict": "strong",
-   "locked": false,
-   "source": "base",
-   "startsAt0": true,
-   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
-  },
-  {
-   "id": "sunthroat-courier",
-   "name": "Sunthroat Courier",
-   "rarity": "starter",
-   "cost": 0,
-   "wait": 1,
-   "attack": 2,
-   "health": 6,
-   "skills": [
-    "flying",
-    "diurnal"
-   ],
-   "winRate": 85,
-   "band": [
-    20,
-    48
-   ],
-   "verdict": "strong",
-   "locked": false,
-   "source": "base",
-   "startsAt0": true,
-   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
-  },
-  {
-   "id": "voidfeather-scout",
-   "name": "Voidfeather Scout",
-   "rarity": "common",
-   "cost": 0,
-   "wait": 1,
-   "attack": 3,
-   "health": 4,
-   "skills": [
-    "flying"
-   ],
-   "winRate": 80,
-   "band": [
-    35,
-    60
-   ],
-   "verdict": "strong",
-   "locked": true,
-   "source": "map",
-   "startsAt0": false
-  },
-  {
-   "id": "crimson-wing-duelist-cadet",
-   "name": "Crimson Wing Duelist Cadet",
-   "rarity": "starter",
-   "cost": 0,
-   "wait": 1,
-   "attack": 3,
-   "health": 6,
-   "skills": [
-    "flying",
-    "diurnal"
-   ],
-   "winRate": 92.5,
-   "band": [
-    20,
-    48
-   ],
-   "verdict": "strong",
-   "locked": false,
-   "source": "base",
-   "startsAt0": true,
-   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
-  },
-  {
-   "id": "cobalt-talon-skirmisher",
-   "name": "Cobalt Talon Skirmisher",
-   "rarity": "starter",
-   "cost": 0,
-   "wait": 1,
-   "attack": 3,
-   "health": 7,
-   "skills": [
-    "flying",
-    "diurnal"
-   ],
-   "winRate": 100,
+   "winRate": 57.5,
    "band": [
     20,
     48
@@ -5824,24 +5813,23 @@
   {
    "id": "dominion-nestguard",
    "name": "Dominion Nestguard",
-   "rarity": "starter",
+   "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
    "attack": 4,
-   "health": 10,
+   "health": 4,
    "skills": [
     "flying"
    ],
-   "winRate": 80,
+   "winRate": 55,
    "band": [
-    20,
-    48
+    45,
+    68
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
    "source": "base",
-   "startsAt0": true,
-   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
+   "startsAt0": false
   },
   {
    "id": "river-warden",
@@ -5849,61 +5837,65 @@
    "rarity": "rare",
    "cost": 2,
    "wait": 1,
-   "attack": 5,
-   "health": 15,
-   "skills": [],
-   "winRate": 37.5,
+   "attack": 4,
+   "health": 14,
+   "skills": [
+    "tide"
+   ],
+   "winRate": 25,
    "band": [
     52,
     75
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
+   "source": "pack",
    "startsAt0": false
   },
   {
    "id": "sunspire-envoy",
    "name": "Sunspire Envoy",
    "rarity": "rare",
-   "cost": 2,
+   "cost": 1,
    "wait": 1,
-   "attack": 6,
-   "health": 11,
+   "attack": 2,
+   "health": 6,
    "skills": [
     "esprit",
     "flying"
    ],
-   "winRate": 42.5,
+   "winRate": 35,
    "band": [
     52,
     75
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "base",
+   "source": "pack",
    "startsAt0": false
   },
   {
    "id": "quarry-mole",
    "name": "Quarry Mole",
    "rarity": "common",
-   "cost": 0,
+   "cost": 1,
    "wait": 1,
-   "attack": 2,
-   "health": 10,
+   "attack": 3,
+   "health": 11,
    "skills": [
-    "darksight"
+    "darksight",
+    "keenSense"
    ],
-   "winRate": 10,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
    "verdict": "weak",
    "locked": true,
-   "source": "map",
-   "startsAt0": false
+   "source": "base",
+   "startsAt0": true,
+   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
   },
   {
    "id": "bramblewood-bonebreaker",
@@ -5916,12 +5908,12 @@
    "skills": [
     "stagger"
    ],
-   "winRate": 35,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -5931,19 +5923,18 @@
    "name": "Wandering Traveller",
    "rarity": "rare",
    "cost": 0,
-   "wait": 3,
-   "attack": 7,
-   "health": 12,
+   "wait": 0,
+   "attack": 3,
+   "health": 3,
    "skills": [
-    "leader",
-    "triggers"
+    "leader"
    ],
-   "winRate": 97.5,
+   "winRate": 50,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -5961,9 +5952,10 @@
     "flying",
     "bounty",
     "stunOnHit",
-    "fireArrow"
+    "fireArrow",
+    "supreme"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     70,
     97
@@ -5985,9 +5977,10 @@
     "flying",
     "bounty",
     "freeze",
-    "scare"
+    "scare",
+    "supreme"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     70,
     97
@@ -6009,9 +6002,11 @@
     "flying",
     "bounty",
     "paralyze",
-    "lightning"
+    "lightning",
+    "supreme",
+    "supremeTide"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     70,
     97
@@ -6032,9 +6027,10 @@
    "skills": [
     "flying",
     "bounty",
-    "poison"
+    "poison",
+    "supreme"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     70,
     97
@@ -6056,9 +6052,10 @@
     "flying",
     "bounty",
     "corrode",
-    "darksight"
+    "darksight",
+    "supreme"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     70,
     97
@@ -6075,9 +6072,9 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 3,
+   "health": 2,
    "skills": [],
-   "winRate": 7.5,
+   "winRate": 0,
    "band": [
     20,
     48
@@ -6094,17 +6091,17 @@
    "rarity": "starter",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
-   "health": 7,
+   "attack": 0,
+   "health": 4,
    "skills": [
     "armor"
    ],
-   "winRate": 35,
+   "winRate": 0,
    "band": [
     20,
     48
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": true,
@@ -6121,7 +6118,7 @@
    "skills": [
     "thorns"
    ],
-   "winRate": 70,
+   "winRate": 67.5,
    "band": [
     35,
     60
@@ -6139,9 +6136,7 @@
    "wait": 0,
    "attack": 3,
    "health": 3,
-   "skills": [
-    "swimmer"
-   ],
+   "skills": [],
    "winRate": 52.5,
    "band": [
     35,
@@ -6156,24 +6151,23 @@
   {
    "id": "pill-bug",
    "name": "Pill Bug",
-   "rarity": "starter",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 4,
    "skills": [
     "armor"
    ],
-   "winRate": 7.5,
+   "winRate": 47.5,
    "band": [
-    20,
-    48
+    45,
+    68
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
-   "startsAt0": true,
-   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
+   "startsAt0": false
   },
   {
    "id": "sparrow-chick",
@@ -6184,10 +6178,10 @@
    "attack": 1,
    "health": 2,
    "skills": [
-    "flying",
-    "diurnal"
+    "bleed",
+    "flying"
    ],
-   "winRate": 35,
+   "winRate": 20,
    "band": [
     20,
     48
@@ -6204,12 +6198,12 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 3,
-   "health": 2,
+   "attack": 2,
+   "health": 1,
    "skills": [
-    "quick"
+    "evasive"
    ],
-   "winRate": 55,
+   "winRate": 37.5,
    "band": [
     35,
     60
@@ -6225,9 +6219,11 @@
    "rarity": "common",
    "cost": 0,
    "wait": 1,
-   "attack": 2,
-   "health": 7,
-   "skills": [],
+   "attack": 3,
+   "health": 4,
+   "skills": [
+    "armor"
+   ],
    "winRate": 35,
    "band": [
     35,
@@ -6244,12 +6240,10 @@
    "rarity": "starter",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
-   "health": 2,
-   "skills": [
-    "regen"
-   ],
-   "winRate": 5,
+   "attack": 0,
+   "health": 4,
+   "skills": [],
+   "winRate": 0,
    "band": [
     20,
     48
@@ -6269,7 +6263,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -6288,9 +6282,9 @@
    "attack": 1,
    "health": 2,
    "skills": [
-    "swimmer"
+    "tide"
    ],
-   "winRate": 15,
+   "winRate": 0,
    "band": [
     20,
     48
@@ -6307,14 +6301,14 @@
    "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
+   "attack": 2,
    "health": 4,
    "skills": [
     "armor",
     "nocturnal",
     "bounty"
    ],
-   "winRate": 5,
+   "winRate": 30,
    "band": [
     45,
     68
@@ -6335,12 +6329,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 40,
+   "winRate": 27.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": false,
    "source": "base",
    "startsAt0": false
@@ -6357,7 +6351,7 @@
     "flying",
     "triggers"
    ],
-   "winRate": 45,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -6378,7 +6372,7 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 47.5,
+   "winRate": 52.5,
    "band": [
     35,
     60
@@ -6400,7 +6394,7 @@
     "remember",
     "triggers"
    ],
-   "winRate": 27.5,
+   "winRate": 20,
    "band": [
     35,
     60
@@ -6422,12 +6416,12 @@
     "remember",
     "triggers"
    ],
-   "winRate": 47.5,
+   "winRate": 55,
    "band": [
     52,
     75
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -6444,12 +6438,12 @@
     "remember",
     "triggers"
    ],
-   "winRate": 52.5,
+   "winRate": 40,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -6465,7 +6459,7 @@
    "skills": [
     "sacrifice"
    ],
-   "winRate": 65,
+   "winRate": 72.5,
    "band": [
     35,
     60
@@ -6487,7 +6481,7 @@
     "sacrifice",
     "onSpawnDevilry"
    ],
-   "winRate": 75,
+   "winRate": 82.5,
    "band": [
     35,
     60
@@ -6508,12 +6502,12 @@
    "skills": [
     "devour"
    ],
-   "winRate": 67.5,
+   "winRate": 80,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -6529,12 +6523,12 @@
    "skills": [
     "pitchfork"
    ],
-   "winRate": 65,
+   "winRate": 70,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -6550,12 +6544,12 @@
    "skills": [
     "desecrate"
    ],
-   "winRate": 37.5,
+   "winRate": 55,
    "band": [
     45,
     68
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -6571,7 +6565,7 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 70,
+   "winRate": 75,
    "band": [
     45,
     68
@@ -6590,7 +6584,7 @@
    "attack": 5,
    "health": 8,
    "skills": [],
-   "winRate": 55,
+   "winRate": 50,
    "band": [
     45,
     68
@@ -6613,7 +6607,7 @@
     "scare",
     "triggers"
    ],
-   "winRate": 90,
+   "winRate": 95,
    "band": [
     52,
     75
@@ -6634,7 +6628,7 @@
    "skills": [
     "triggers"
    ],
-   "winRate": 80,
+   "winRate": 85,
    "band": [
     52,
     75
@@ -6655,7 +6649,7 @@
    "skills": [
     "ritual"
    ],
-   "winRate": 47.5,
+   "winRate": 37.5,
    "band": [
     62,
     87
@@ -6668,20 +6662,21 @@
   {
    "id": "fleetfootd",
    "name": "Fleetfoot'd",
-   "rarity": "starter",
+   "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
    "attack": 2,
    "health": 4,
    "skills": [
+    "tide",
     "quick"
    ],
-   "winRate": 52.5,
+   "winRate": 55,
    "band": [
-    20,
-    48
+    45,
+    68
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -6694,16 +6689,14 @@
    "cost": 0,
    "wait": 0,
    "attack": 2,
-   "health": 3,
-   "skills": [
-    "flying"
-   ],
-   "winRate": 40,
+   "health": 2,
+   "skills": [],
+   "winRate": 15,
    "band": [
     20,
     48
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": false,
    "source": "base",
    "startsAt0": true,
@@ -6721,7 +6714,7 @@
     "prayer",
     "flying"
    ],
-   "winRate": 47.5,
+   "winRate": 55,
    "band": [
     35,
     60
@@ -6743,7 +6736,7 @@
     "prayer",
     "flying"
    ],
-   "winRate": 22.5,
+   "winRate": 12.5,
    "band": [
     35,
     60
@@ -6764,7 +6757,7 @@
    "skills": [
     "worship"
    ],
-   "winRate": 15,
+   "winRate": 25,
    "band": [
     35,
     60
@@ -6785,7 +6778,7 @@
    "skills": [
     "healing"
    ],
-   "winRate": 12.5,
+   "winRate": 10,
    "band": [
     45,
     68
@@ -6807,7 +6800,7 @@
     "midas",
     "flying"
    ],
-   "winRate": 12.5,
+   "winRate": 10,
    "band": [
     45,
     68
@@ -6887,13 +6880,12 @@
    "rarity": "legendary",
    "cost": 0,
    "wait": 1,
-   "attack": 5,
+   "attack": 4,
    "health": 14,
    "skills": [
     "worship",
     "flying",
-    "prayer",
-    "tailwind"
+    "prayer"
    ],
    "winRate": 10,
    "band": [
@@ -6922,8 +6914,8 @@
     92
    ],
    "verdict": "strong",
-   "locked": false,
-   "source": "base",
+   "locked": true,
+   "source": "map",
    "startsAt0": false
   },
   {
@@ -6939,7 +6931,7 @@
     "armor",
     "fork"
    ],
-   "winRate": 47.5,
+   "winRate": 32.5,
    "band": [
     62,
     87
@@ -6961,12 +6953,12 @@
     "nocturnal",
     "nocturnalHp"
    ],
-   "winRate": 42.5,
+   "winRate": 52.5,
    "band": [
     52,
     75
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": false,
    "source": "pack",
    "startsAt0": false
@@ -6982,7 +6974,7 @@
    "skills": [
     "rally"
    ],
-   "winRate": 55,
+   "winRate": 57.5,
    "band": [
     45,
     68
@@ -7003,12 +6995,12 @@
    "skills": [
     "onReadyGold"
    ],
-   "winRate": 40,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": false,
    "source": "pack",
    "startsAt0": false
@@ -7024,12 +7016,12 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 67.5,
+   "winRate": 40,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": false,
    "source": "pack",
    "startsAt0": false
@@ -7047,12 +7039,12 @@
     "nocturnal",
     "nocturnalHp"
    ],
-   "winRate": 25,
+   "winRate": 55,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": false,
    "source": "pack",
    "startsAt0": false
@@ -7068,12 +7060,12 @@
    "skills": [
     "tide"
    ],
-   "winRate": 65,
+   "winRate": 32.5,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -7089,7 +7081,7 @@
    "skills": [
     "armor"
    ],
-   "winRate": 45,
+   "winRate": 47.5,
    "band": [
     35,
     60
@@ -7111,7 +7103,7 @@
     "flying",
     "bloom"
    ],
-   "winRate": 37.5,
+   "winRate": 55,
    "band": [
     35,
     60
@@ -7134,12 +7126,12 @@
     "diurnal",
     "diurnalHp"
    ],
-   "winRate": 42.5,
+   "winRate": 47.5,
    "band": [
     45,
     68
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -7155,7 +7147,7 @@
    "skills": [
     "shieldCall"
    ],
-   "winRate": 30,
+   "winRate": 22.5,
    "band": [
     52,
     75
@@ -7176,12 +7168,12 @@
    "skills": [
     "backstab"
    ],
-   "winRate": 47.5,
+   "winRate": 57.5,
    "band": [
     52,
     75
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -7197,7 +7189,7 @@
    "skills": [
     "fork"
    ],
-   "winRate": 70,
+   "winRate": 60,
    "band": [
     52,
     75
@@ -7219,12 +7211,12 @@
     "flying",
     "diurnal"
    ],
-   "winRate": 65,
+   "winRate": 82.5,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -7240,7 +7232,7 @@
    "skills": [
     "regen"
    ],
-   "winRate": 60,
+   "winRate": 50,
    "band": [
     45,
     68
@@ -7256,19 +7248,19 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
+   "attack": 3,
    "health": 6,
    "skills": [
     "flying",
     "evasive",
     "reflect"
    ],
-   "winRate": 47.5,
+   "winRate": 65,
    "band": [
     52,
     75
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -7285,7 +7277,7 @@
     "armor",
     "triggers"
    ],
-   "winRate": 65,
+   "winRate": 50,
    "band": [
     45,
     68
@@ -7301,10 +7293,10 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 1,
-   "attack": 7,
+   "attack": 8,
    "health": 1,
    "skills": [],
-   "winRate": 12.5,
+   "winRate": 22.5,
    "band": [
     52,
     75
@@ -7323,9 +7315,10 @@
    "attack": 1,
    "health": 3,
    "skills": [
-    "backstab"
+    "backstab",
+    "tide"
    ],
-   "winRate": 50,
+   "winRate": 65,
    "band": [
     45,
     68
@@ -7342,7 +7335,7 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 7,
+   "health": 6,
    "skills": [
     "armor",
     "thorns"
@@ -7364,18 +7357,18 @@
    "cost": 1,
    "wait": 1,
    "attack": 1,
-   "health": 6,
+   "health": 5,
    "skills": [
     "flying",
     "arrow",
     "diurnal"
    ],
-   "winRate": 80,
+   "winRate": 72.5,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -7384,19 +7377,17 @@
    "id": "sergeant-bramblefox",
    "name": "Sergeant Bramblefox",
    "rarity": "heroic",
-   "cost": 2,
-   "wait": 2,
+   "cost": 1,
+   "wait": 0,
    "attack": 4,
-   "health": 14,
-   "skills": [
-    "rally"
-   ],
-   "winRate": 42.5,
+   "health": 8,
+   "skills": [],
+   "winRate": 72.5,
    "band": [
     64,
     89
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -7412,7 +7403,7 @@
    "skills": [
     "thorns"
    ],
-   "winRate": 37.5,
+   "winRate": 25,
    "band": [
     64,
     89
@@ -7434,7 +7425,7 @@
     "armor",
     "tide"
    ],
-   "winRate": 35,
+   "winRate": 25,
    "band": [
     64,
     89
@@ -7456,7 +7447,7 @@
     "tide",
     "fork"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     64,
     89
@@ -7477,7 +7468,7 @@
    "skills": [
     "rage"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     64,
     89
@@ -7500,7 +7491,7 @@
     "nocturnal",
     "onReadyDamage"
    ],
-   "winRate": 37.5,
+   "winRate": 35,
    "band": [
     64,
     89
@@ -7521,7 +7512,7 @@
    "skills": [
     "quick"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     64,
     89
@@ -7543,7 +7534,7 @@
     "bleed",
     "nocturnal"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     64,
     89
@@ -7563,10 +7554,9 @@
    "health": 16,
    "skills": [
     "evasive",
-    "tide",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 37.5,
+   "winRate": 32.5,
    "band": [
     64,
     89
@@ -7588,7 +7578,7 @@
     "flying",
     "poison"
    ],
-   "winRate": 37.5,
+   "winRate": 27.5,
    "band": [
     64,
     89
@@ -7607,7 +7597,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -7626,7 +7616,7 @@
    "attack": 2,
    "health": 9,
    "skills": [],
-   "winRate": 52.5,
+   "winRate": 45,
    "band": [
     35,
     60
@@ -7647,7 +7637,7 @@
    "skills": [
     "reach"
    ],
-   "winRate": 57.5,
+   "winRate": 62.5,
    "band": [
     45,
     68
@@ -7668,12 +7658,12 @@
    "skills": [
     "boomerang"
    ],
-   "winRate": 45,
+   "winRate": 70,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -7711,7 +7701,7 @@
     "armor",
     "sweep"
    ],
-   "winRate": 42.5,
+   "winRate": 35,
    "band": [
     62,
     87
@@ -7733,7 +7723,7 @@
     "flying",
     "triggers"
    ],
-   "winRate": 40,
+   "winRate": 60,
    "band": [
     35,
     60
@@ -7755,7 +7745,7 @@
     "flying",
     "arrow"
    ],
-   "winRate": 80,
+   "winRate": 87.5,
    "band": [
     35,
     60
@@ -7771,18 +7761,18 @@
    "rarity": "common",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
-   "health": 4,
+   "attack": 2,
+   "health": 2,
    "skills": [
     "flying",
     "regen"
    ],
-   "winRate": 22.5,
+   "winRate": 40,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -7793,18 +7783,18 @@
    "rarity": "common",
    "cost": 0,
    "wait": 1,
-   "attack": 2,
+   "attack": 1,
    "health": 5,
    "skills": [
     "flying",
     "onReadyGold"
    ],
-   "winRate": 67.5,
+   "winRate": 37.5,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -7816,12 +7806,12 @@
    "cost": 0,
    "wait": 1,
    "attack": 2,
-   "health": 6,
+   "health": 5,
    "skills": [
     "flying",
-    "lantern"
+    "illuminate"
    ],
-   "winRate": 50,
+   "winRate": 65,
    "band": [
     45,
     68
@@ -7843,7 +7833,7 @@
     "flying",
     "stealth"
    ],
-   "winRate": 52.5,
+   "winRate": 57.5,
    "band": [
     45,
     68
@@ -7859,18 +7849,20 @@
    "rarity": "rare",
    "cost": 0,
    "wait": 1,
-   "attack": 3,
+   "attack": 2,
    "health": 3,
    "skills": [
     "flying",
-    "quick"
+    "quick",
+    "pierce",
+    "evasive"
    ],
-   "winRate": 50,
+   "winRate": 90,
    "band": [
     52,
     75
    ],
-   "verdict": "weak",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -7878,19 +7870,22 @@
   {
    "id": "sunspire-choirmother",
    "name": "Sunspire Choirmother",
-   "rarity": "epic",
+   "rarity": "veryrare",
    "cost": 2,
    "wait": 2,
    "attack": 5,
-   "health": 14,
+   "health": 10,
    "skills": [
+    "esprit",
     "flying",
-    "esprit"
+    "diurnal",
+    "espritHp",
+    "diurnalHp"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
-    62,
-    87
+    56.00000000000001,
+    80
    ],
    "verdict": "weak",
    "locked": true,
@@ -7906,10 +7901,10 @@
    "attack": 2,
    "health": 5,
    "skills": [
-    "swimmer",
+    "tide",
     "triggers"
    ],
-   "winRate": 60,
+   "winRate": 45,
    "band": [
     35,
     60
@@ -7930,7 +7925,7 @@
    "skills": [
     "bounty"
    ],
-   "winRate": 55,
+   "winRate": 40,
    "band": [
     35,
     60
@@ -7952,7 +7947,7 @@
     "flying",
     "pounce"
    ],
-   "winRate": 55,
+   "winRate": 62.5,
    "band": [
     45,
     68
@@ -7974,12 +7969,12 @@
     "flying",
     "guardian"
    ],
-   "winRate": 80,
+   "winRate": 67.5,
    "band": [
     52,
     75
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -7996,7 +7991,7 @@
     "regen",
     "onReadyGold"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     70,
     97
@@ -8091,7 +8086,7 @@
    "attack": 0,
    "health": 5,
    "skills": [],
-   "winRate": 97.5,
+   "winRate": 92.5,
    "band": [
     35,
     60
@@ -8110,12 +8105,12 @@
    "attack": 2,
    "health": 0,
    "skills": [],
-   "winRate": 50,
+   "winRate": 40,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "smith",
    "startsAt0": false
@@ -8129,7 +8124,7 @@
    "attack": 3,
    "health": 0,
    "skills": [],
-   "winRate": 50,
+   "winRate": 45,
    "band": [
     45,
     68
@@ -8148,12 +8143,12 @@
    "attack": 1,
    "health": 2,
    "skills": [],
-   "winRate": 45,
+   "winRate": 52.5,
    "band": [
     52,
     75
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "smith",
    "startsAt0": false
@@ -8167,7 +8162,7 @@
    "attack": 2,
    "health": 0,
    "skills": [],
-   "winRate": 35,
+   "winRate": 25,
    "band": [
     52,
     75
@@ -8186,7 +8181,7 @@
    "attack": 0,
    "health": 12,
    "skills": [],
-   "winRate": 35,
+   "winRate": 25,
    "band": [
     70,
     97
@@ -8205,14 +8200,15 @@
    "attack": 2,
    "health": 5,
    "skills": [
-    "changeling"
+    "changeling",
+    "twin"
    ],
-   "winRate": 27.5,
+   "winRate": 90,
    "band": [
     35,
     60
    ],
-   "verdict": "weak",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -8229,7 +8225,7 @@
     "changeling",
     "swarm"
    ],
-   "winRate": 80,
+   "winRate": 85,
    "band": [
     45,
     68
@@ -8251,12 +8247,12 @@
     "changeling",
     "flying"
    ],
-   "winRate": 52.5,
+   "winRate": 40,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -8309,16 +8305,16 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 7,
+   "health": 9,
    "skills": [
     "bounty"
    ],
-   "winRate": 37.5,
+   "winRate": 30,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -8330,7 +8326,7 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 10,
+   "health": 11,
    "skills": [
     "bounty"
    ],
@@ -8353,7 +8349,7 @@
    "attack": 0,
    "health": 0,
    "skills": [],
-   "winRate": 27.5,
+   "winRate": 17.5,
    "band": [
     45,
     68
@@ -8372,12 +8368,12 @@
    "attack": 1,
    "health": 2,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 40,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -8388,18 +8384,18 @@
    "rarity": "rare",
    "cost": 1,
    "wait": 1,
-   "attack": 4,
-   "health": 22,
+   "attack": 2,
+   "health": 19,
    "skills": [
     "counterattack",
     "spiteful"
    ],
-   "winRate": 62.5,
+   "winRate": 82.5,
    "band": [
     52,
     75
    ],
-   "verdict": "ok",
+   "verdict": "strong",
    "locked": true,
    "source": "pack",
    "startsAt0": false
@@ -8416,12 +8412,12 @@
     "tide",
     "shell"
    ],
-   "winRate": 80,
+   "winRate": 40,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "design",
    "startsAt0": false
@@ -8432,18 +8428,18 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
+   "attack": 3,
    "health": 9,
    "skills": [
     "tide",
     "inspiring"
    ],
-   "winRate": 50,
+   "winRate": 37.5,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "design",
    "startsAt0": false
@@ -8457,10 +8453,9 @@
    "attack": 6,
    "health": 16,
    "skills": [
-    "tide",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 37.5,
+   "winRate": 27.5,
    "band": [
     45,
     68
@@ -8482,7 +8477,7 @@
     "shell",
     "darksight"
    ],
-   "winRate": 37.5,
+   "winRate": 22.5,
    "band": [
     52,
     75
@@ -8498,12 +8493,12 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
+   "attack": 3,
    "health": 10,
    "skills": [
     "triggers"
    ],
-   "winRate": 17.5,
+   "winRate": 35,
    "band": [
     45,
     68
@@ -8524,7 +8519,7 @@
    "skills": [
     "poison"
    ],
-   "winRate": 20,
+   "winRate": 15,
    "band": [
     52,
     75
@@ -8540,12 +8535,12 @@
    "rarity": "epic",
    "cost": 2,
    "wait": 3,
-   "attack": 9,
-   "health": 26,
+   "attack": 8,
+   "health": 24,
    "skills": [
     "flying"
    ],
-   "winRate": 37.5,
+   "winRate": 22.5,
    "band": [
     62,
     87
@@ -8566,7 +8561,7 @@
    "skills": [
     "timber"
    ],
-   "winRate": 32.5,
+   "winRate": 22.5,
    "band": [
     52,
     75
@@ -8588,7 +8583,7 @@
     "rockSolid",
     "darksight"
    ],
-   "winRate": 32.5,
+   "winRate": 25,
    "band": [
     52,
     75
@@ -8609,7 +8604,7 @@
    "skills": [
     "ironWill"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     62,
     87
@@ -8630,7 +8625,7 @@
    "skills": [
     "lumberjack"
    ],
-   "winRate": 17.5,
+   "winRate": 25,
    "band": [
     45,
     68
@@ -8646,14 +8641,15 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
-   "attack": 1,
+   "attack": 3,
    "health": 10,
    "skills": [
     "heavyMetal",
     "darksight",
+    "keenSense",
     "triggers"
    ],
-   "winRate": 5,
+   "winRate": 22.5,
    "band": [
     45,
     68
@@ -8669,13 +8665,13 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
+   "attack": 3,
    "health": 12,
    "skills": [
     "loyal",
     "loyalGrant"
    ],
-   "winRate": 17.5,
+   "winRate": 30,
    "band": [
     45,
     68
@@ -8691,12 +8687,12 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
+   "attack": 3,
    "health": 10,
    "skills": [
     "usurper"
    ],
-   "winRate": 17.5,
+   "winRate": 35,
    "band": [
     45,
     68
@@ -8712,18 +8708,17 @@
    "rarity": "common",
    "cost": 1,
    "wait": 1,
-   "attack": 7,
-   "health": 20,
+   "attack": 6,
+   "health": 19,
    "skills": [
-    "friction",
-    "headwind"
+    "friction"
    ],
-   "winRate": 80,
+   "winRate": 52.5,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "design",
    "startsAt0": false
@@ -8734,13 +8729,13 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
-   "health": 10,
+   "attack": 3,
+   "health": 12,
    "skills": [
     "rainmaker",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 12.5,
+   "winRate": 22.5,
    "band": [
     45,
     68
@@ -8756,17 +8751,17 @@
    "rarity": "uncommon",
    "cost": 0,
    "wait": 1,
-   "attack": 2,
+   "attack": 3,
    "health": 6,
    "skills": [
     "rainrunner"
    ],
-   "winRate": 22.5,
+   "winRate": 57.5,
    "band": [
     45,
     68
    ],
-   "verdict": "weak",
+   "verdict": "ok",
    "locked": true,
    "source": "design",
    "startsAt0": false
@@ -8777,12 +8772,12 @@
    "rarity": "uncommon",
    "cost": 0,
    "wait": 1,
-   "attack": 1,
+   "attack": 2,
    "health": 8,
    "skills": [
     "moonborn"
    ],
-   "winRate": 25,
+   "winRate": 40,
    "band": [
     45,
     68
@@ -8803,7 +8798,7 @@
    "skills": [
     "moonborn"
    ],
-   "winRate": 32.5,
+   "winRate": 25,
    "band": [
     52,
     75
@@ -8820,16 +8815,16 @@
    "cost": 1,
    "wait": 1,
    "attack": 3,
-   "health": 12,
+   "health": 13,
    "skills": [
     "frostbite"
    ],
-   "winRate": 45,
+   "winRate": 37.5,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "design",
    "startsAt0": false
@@ -8847,7 +8842,7 @@
     "daunt",
     "nocturnal"
    ],
-   "winRate": 40,
+   "winRate": 37.5,
    "band": [
     45,
     68
@@ -8893,7 +8888,7 @@
     "rage",
     "regen"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     66,
     92
@@ -8915,7 +8910,7 @@
     "remember",
     "triggers"
    ],
-   "winRate": 75,
+   "winRate": 87.5,
    "band": [
     35,
     60
@@ -8931,17 +8926,17 @@
    "rarity": "common",
    "cost": 1,
    "wait": 0,
-   "attack": 4,
+   "attack": 3,
    "health": 5,
    "skills": [
     "revive"
    ],
-   "winRate": 67.5,
+   "winRate": 45,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -8958,12 +8953,12 @@
     "evasive",
     "fireArrow"
    ],
-   "winRate": 70,
+   "winRate": 67.5,
    "band": [
     45,
     68
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -8980,7 +8975,7 @@
     "regen",
     "armor"
    ],
-   "winRate": 37.5,
+   "winRate": 27.5,
    "band": [
     52,
     75
@@ -9003,7 +8998,7 @@
     "armor",
     "pierce"
    ],
-   "winRate": 45,
+   "winRate": 37.5,
    "band": [
     62,
     87
@@ -9017,20 +9012,20 @@
    "id": "meerkat-wayfarer",
    "name": "Meerkat Wayfarer",
    "rarity": "uncommon",
-   "cost": 1,
-   "wait": 0,
-   "attack": 3,
-   "health": 8,
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 6,
    "skills": [
     "reach",
     "inspiring"
    ],
-   "winRate": 80,
+   "winRate": 65,
    "band": [
     45,
     68
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": true,
@@ -9087,7 +9082,7 @@
     "swarm",
     "scare"
    ],
-   "winRate": 57.5,
+   "winRate": 60,
    "band": [
     35,
     60
@@ -9108,7 +9103,7 @@
    "skills": [
     "flying"
    ],
-   "winRate": 40,
+   "winRate": 52.5,
    "band": [
     35,
     60
@@ -9128,10 +9123,9 @@
    "health": 30,
    "skills": [
     "overwhelm",
-    "armor",
-    "headwind"
+    "armor"
    ],
-   "winRate": 42.5,
+   "winRate": 27.5,
    "band": [
     52,
     75
@@ -9151,10 +9145,9 @@
    "health": 24,
    "skills": [
     "siege",
-    "demolisher",
-    "headwind"
+    "demolisher"
    ],
-   "winRate": 42.5,
+   "winRate": 32.5,
    "band": [
     52,
     75
@@ -9176,7 +9169,7 @@
     "flying",
     "skyfall"
    ],
-   "winRate": 55,
+   "winRate": 62.5,
    "band": [
     45,
     68
@@ -9197,12 +9190,12 @@
    "skills": [
     "healing"
    ],
-   "winRate": 57.5,
+   "winRate": 35,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "base",
    "startsAt0": false
@@ -9219,7 +9212,7 @@
     "arrow",
     "twinStrike"
    ],
-   "winRate": 70,
+   "winRate": 57.5,
    "band": [
     52,
     75
@@ -9253,20 +9246,19 @@
   {
    "id": "ur-elk",
    "name": "Ür-Elk",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "cost": 2,
    "wait": 3,
    "attack": 8,
    "health": 26,
    "skills": [
     "overwhelm",
-    "rage",
-    "headwind"
+    "rage"
    ],
-   "winRate": 42.5,
+   "winRate": 30,
    "band": [
-    52,
-    75
+    56.00000000000001,
+    80
    ],
    "verdict": "weak",
    "locked": true,
@@ -9279,14 +9271,15 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
-   "attack": 5,
-   "health": 8,
+   "attack": 7,
+   "health": 10,
    "skills": [
     "stealth",
     "ambush",
-    "darksight"
+    "darksight",
+    "keenSense"
    ],
-   "winRate": 17.5,
+   "winRate": 20,
    "band": [
     45,
     68
@@ -9305,7 +9298,7 @@
    "attack": 2,
    "health": 5,
    "skills": [],
-   "winRate": 47.5,
+   "winRate": 42.5,
    "band": [
     35,
     60
@@ -9324,7 +9317,7 @@
    "attack": 3,
    "health": 3,
    "skills": [],
-   "winRate": 37.5,
+   "winRate": 52.5,
    "band": [
     35,
     60
@@ -9345,7 +9338,7 @@
    "skills": [
     "shell"
    ],
-   "winRate": 47.5,
+   "winRate": 40,
    "band": [
     35,
     60
@@ -9357,20 +9350,20 @@
   },
   {
    "id": "otter-royal-guard",
-   "name": "Otter Royal Guard",
-   "rarity": "rare",
+   "name": "Royal Guard",
+   "rarity": "veryrare",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
-   "health": 13,
+   "attack": 4,
+   "health": 6,
    "skills": [
-    "guardian",
-    "armor"
+    "armor",
+    "boomerang"
    ],
-   "winRate": 60,
+   "winRate": 77.5,
    "band": [
-    52,
-    75
+    56.00000000000001,
+    80
    ],
    "verdict": "ok",
    "locked": false,
@@ -9388,7 +9381,7 @@
    "skills": [
     "inspiring"
    ],
-   "winRate": 57.5,
+   "winRate": 50,
    "band": [
     45,
     68
@@ -9407,9 +9400,9 @@
    "attack": 3,
    "health": 6,
    "skills": [
-    "lantern"
+    "illuminate"
    ],
-   "winRate": 45,
+   "winRate": 57.5,
    "band": [
     45,
     68
@@ -9430,7 +9423,7 @@
    "skills": [
     "evasive"
    ],
-   "winRate": 50,
+   "winRate": 52.5,
    "band": [
     45,
     68
@@ -9447,18 +9440,18 @@
    "cost": 0,
    "wait": 0,
    "attack": 1,
-   "health": 4,
+   "health": 3,
    "skills": [
     "flying",
     "pierce",
     "bleed"
    ],
-   "winRate": 77.5,
+   "winRate": 42.5,
    "band": [
     45,
     68
    ],
-   "verdict": "strong",
+   "verdict": "weak",
    "locked": false,
    "source": "pack",
    "startsAt0": false
@@ -9469,17 +9462,17 @@
    "rarity": "uncommon",
    "cost": 0,
    "wait": 0,
-   "attack": 1,
-   "health": 6,
+   "attack": 2,
+   "health": 4,
    "skills": [
     "esprit"
    ],
-   "winRate": 72.5,
+   "winRate": 65,
    "band": [
     45,
     68
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "base",
    "startsAt0": true,
@@ -9497,7 +9490,7 @@
     "dictator",
     "inspiring"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     66,
     92
@@ -9517,10 +9510,9 @@
    "health": 7,
    "skills": [
     "evasive",
-    "tide",
-    "swimmer"
+    "tide"
    ],
-   "winRate": 97.5,
+   "winRate": 87.5,
    "band": [
     35,
     60
@@ -9542,7 +9534,7 @@
     "tide",
     "shock"
    ],
-   "winRate": 32.5,
+   "winRate": 12.5,
    "band": [
     45,
     68
@@ -9564,7 +9556,7 @@
     "corrode",
     "stealth"
    ],
-   "winRate": 10,
+   "winRate": 0,
    "band": [
     52,
     75
@@ -9586,7 +9578,7 @@
     "bleed",
     "regen"
    ],
-   "winRate": 37.5,
+   "winRate": 30,
    "band": [
     52,
     75
@@ -9606,10 +9598,9 @@
    "health": 26,
    "skills": [
     "sweep",
-    "wash",
     "tide"
    ],
-   "winRate": 42.5,
+   "winRate": 32.5,
    "band": [
     62,
     87
@@ -9631,7 +9622,7 @@
     "onDeathSpawn",
     "inspiring"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     70,
     97
@@ -9647,19 +9638,19 @@
    "rarity": "common",
    "cost": 0,
    "wait": 1,
-   "attack": 3,
+   "attack": 2,
    "health": 6,
    "skills": [
     "quick",
     "poison",
     "darksight"
    ],
-   "winRate": 75,
+   "winRate": 45,
    "band": [
     35,
     60
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -9677,12 +9668,12 @@
     "onDeathSpawn",
     "darksight"
    ],
-   "winRate": 70,
+   "winRate": 67.5,
    "band": [
     45,
     68
    ],
-   "verdict": "strong",
+   "verdict": "ok",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -9699,12 +9690,12 @@
     "thorns",
     "dry"
    ],
-   "winRate": 35,
+   "winRate": 22.5,
    "band": [
     35,
     60
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -9715,19 +9706,18 @@
    "rarity": "uncommon",
    "cost": 1,
    "wait": 1,
-   "attack": 2,
+   "attack": 3,
    "health": 10,
    "skills": [
-    "swift",
     "dry",
     "darksight"
    ],
-   "winRate": 47.5,
+   "winRate": 22.5,
    "band": [
     45,
     68
    ],
-   "verdict": "ok",
+   "verdict": "weak",
    "locked": true,
    "source": "map",
    "startsAt0": false
@@ -9744,7 +9734,7 @@
     "sociable",
     "dry"
    ],
-   "winRate": 50,
+   "winRate": 47.5,
    "band": [
     35,
     60
@@ -9757,7 +9747,7 @@
   {
    "id": "lone-grey-wolf",
    "name": "Lone Grey Wolf",
-   "rarity": "rare",
+   "rarity": "veryrare",
    "cost": 3,
    "wait": 2,
    "attack": 4,
@@ -9765,10 +9755,10 @@
    "skills": [
     "loneWolf"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
-    52,
-    75
+    56.00000000000001,
+    80
    ],
    "verdict": "weak",
    "locked": true,
@@ -9807,7 +9797,7 @@
    "skills": [
     "landslide"
    ],
-   "winRate": 37.5,
+   "winRate": 25,
    "band": [
     45,
     68
@@ -9829,7 +9819,7 @@
     "armor",
     "kinship"
    ],
-   "winRate": 45,
+   "winRate": 32.5,
    "band": [
     64,
     89
@@ -9849,11 +9839,10 @@
    "health": 18,
    "skills": [
     "flying",
-    "swift",
     "esprit",
     "espritHp"
    ],
-   "winRate": 45,
+   "winRate": 30,
    "band": [
     64,
     89
@@ -9874,7 +9863,3698 @@
    "skills": [
     "rocket"
    ],
+   "winRate": 50,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "cunning-vixen",
+   "name": "Cunning Vixen",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "evasive",
+    "backstab"
+   ],
+   "winRate": 70,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "fox-sharpshot",
+   "name": "Fox Sharpshot",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 2,
+   "attack": 3,
+   "health": 10,
+   "skills": [
+    "snipe"
+   ],
+   "winRate": 40,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "balloon-archer",
+   "name": "Balloon Archer",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 2,
+   "attack": 1,
+   "health": 8,
+   "skills": [
+    "flying",
+    "arrow"
+   ],
+   "winRate": 32.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "frillneck-duelist",
+   "name": "Frillneck Duelist",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "attack": 3,
+   "health": 11,
+   "skills": [
+    "quick",
+    "fencing",
+    "dry"
+   ],
+   "winRate": 25,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "monitor-rambler",
+   "name": "Monitor Rambler",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 16,
+   "skills": [
+    "armor",
+    "thorns"
+   ],
+   "winRate": 25,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "dynamite-packrat",
+   "name": "Dynamite Packrat",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 18,
+   "skills": [
+    "dynamite"
+   ],
+   "winRate": 10,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "helmeted-otter",
+   "name": "Helmeted Otter",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "helmet"
+   ],
+   "winRate": 40,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "pack",
+   "startsAt0": false
+  },
+  {
+   "id": "bramble-hoglet",
+   "name": "Bramble Hoglet",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 8,
+   "skills": [
+    "regen"
+   ],
+   "winRate": 25,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "clover-butterfly",
+   "name": "Clover Butterfly",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 3,
+   "skills": [
+    "flying",
+    "diurnal"
+   ],
+   "winRate": 40,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "the-gannet-queen",
+   "name": "The Gannet Queen",
+   "rarity": "heroic",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 14,
+   "skills": [
+    "flying",
+    "pounce"
+   ],
+   "winRate": 35,
+   "band": [
+    64,
+    89
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "old-snapjaw",
+   "name": "Old Snapjaw",
+   "rarity": "heroic",
+   "cost": 2,
+   "wait": 3,
+   "attack": 5,
+   "health": 24,
+   "skills": [
+    "bleed",
+    "armor"
+   ],
+   "winRate": 25,
+   "band": [
+    64,
+    89
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "guardian"
+   ],
+   "winRate": 65,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "meerkat-burrower",
+   "name": "Meerkat Burrower",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "dry",
+    "darksight"
+   ],
+   "winRate": 15,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 7,
+   "skills": [
+    "tide",
+    "poison",
+    "moonpull"
+   ],
+   "winRate": 32.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "lions-mane-jelly",
+   "name": "Lion's Mane Jelly",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 2,
+   "attack": 4,
+   "health": 13,
+   "skills": [
+    "tide",
+    "poison"
+   ],
+   "winRate": 40,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "quick"
+   ],
+   "winRate": 67.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "mudpuppy",
+   "name": "Mudpuppy",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 8,
+   "skills": [
+    "regen",
+    "tide"
+   ],
+   "winRate": 80,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "harbor-seal",
+   "name": "Harbor Seal",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 11,
+   "skills": [
+    "tide",
+    "evasive"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "snow-ermine",
+   "name": "Snow Ermine",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 3,
+   "skills": [
+    "evasive"
+   ],
+   "winRate": 60,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "ember-centipede",
+   "name": "Ember Centipede",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 7,
+   "skills": [
+    "quick",
+    "dry"
+   ],
+   "winRate": 52.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "cinder-gecko",
+   "name": "Cinder Gecko",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 4,
+   "skills": [
+    "evasive",
+    "dry"
+   ],
+   "winRate": 65,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "ash-moth",
+   "name": "Ash Moth",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "flying",
+    "nocturnal"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "cave-olm",
+   "name": "Cave Olm",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 11,
+   "skills": [
+    "darksight",
+    "regen"
+   ],
+   "winRate": 27.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "glimmer-spider",
+   "name": "Glimmer Spider",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "darksight",
+    "poison"
+   ],
+   "winRate": 37.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "field-crow",
+   "name": "Field Crow",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 3,
+   "skills": [
+    "flying"
+   ],
+   "winRate": 52.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "rabid-jackal",
+   "name": "Rabid Jackal",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 3,
+   "skills": [
+    "rabid",
+    "weakness"
+   ],
+   "winRate": 60,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "mirrorhide-mutant",
+   "name": "Mirrorhide Mutant",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 2,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "twin"
+   ],
+   "winRate": 82.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "shallows-fry",
+   "name": "Shallows Fry",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 2,
+   "skills": [
+    "tide"
+   ],
+   "winRate": 15,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 4,
+   "skills": [
+    "flying",
+    "nocturnal",
+    "sap"
+   ],
+   "winRate": 72.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "wandering-mage",
+   "name": "Wandering Mage",
+   "rarity": "rare",
+   "cost": 0,
+   "wait": 3,
+   "attack": 5,
+   "health": 10,
+   "skills": [
+    "leader",
+    "magic",
+    "triggers"
+   ],
+   "winRate": 85,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "egg-woodland",
+   "name": "Woodland Egg",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 7,
+   "attack": 0,
+   "health": 4,
+   "skills": [],
+   "winRate": 2.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "nest",
+   "startsAt0": false
+  },
+  {
+   "id": "egg-bird",
+   "name": "Speckled Egg",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 8,
+   "attack": 0,
+   "health": 3,
+   "skills": [],
+   "winRate": 0,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "nest",
+   "startsAt0": false
+  },
+  {
+   "id": "egg-otter",
+   "name": "River Bundle",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 8,
+   "attack": 0,
+   "health": 5,
+   "skills": [],
+   "winRate": 2.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "nest",
+   "startsAt0": false
+  },
+  {
+   "id": "egg-scaly",
+   "name": "Leathery Egg",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 10,
+   "attack": 0,
+   "health": 6,
+   "skills": [],
+   "winRate": 0,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "nest",
+   "startsAt0": false
+  },
+  {
+   "id": "egg-bug",
+   "name": "Cocoon",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 5,
+   "attack": 0,
+   "health": 3,
+   "skills": [],
+   "winRate": 5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "nest",
+   "startsAt0": false
+  },
+  {
+   "id": "egg-water",
+   "name": "Roe Pearl",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 6,
+   "attack": 0,
+   "health": 3,
+   "skills": [],
+   "winRate": 5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "nest",
+   "startsAt0": false
+  },
+  {
+   "id": "egg-beast",
+   "name": "Den Bundle",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 9,
+   "attack": 0,
+   "health": 5,
+   "skills": [],
+   "winRate": 0,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "nest",
+   "startsAt0": false
+  },
+  {
+   "id": "rafflesia",
+   "name": "Rafflesia",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 0,
+   "attack": 0,
+   "health": 13,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 22.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball Bombardier",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 6,
+   "skills": [
+    "arrow",
+    "poison"
+   ],
+   "winRate": 85,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "otter-angler",
+   "name": "Otter Angler",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 11,
+   "skills": [
+    "tide",
+    "triggers"
+   ],
+   "winRate": 35,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "flying",
+    "coffee",
+    "kinship"
+   ],
+   "winRate": 95,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "voltwing-bat",
+   "name": "Voltwing Bat",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "flying",
+    "nocturnal",
+    "electricity"
+   ],
+   "winRate": 55,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "static-bat",
+   "name": "Static Bat",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "flying",
+    "nocturnal",
+    "electricity"
+   ],
+   "winRate": 50,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "arc-bat",
+   "name": "Arc Bat",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "flying",
+    "nocturnal",
+    "electricity"
+   ],
    "winRate": 62.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "hammerhead-shark",
+   "name": "Hammerhead Shark",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 12,
+   "skills": [
+    "tide",
+    "sweep"
+   ],
+   "winRate": 27.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "ironback-gorilla",
+   "name": "Ironback Gorilla",
+   "rarity": "rare",
+   "cost": 3,
+   "wait": 4,
+   "attack": 8,
+   "health": 20,
+   "skills": [
+    "bludgeon"
+   ],
+   "winRate": 30,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "smoke-raccoon",
+   "name": "Smokescreen Raccoon",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "smokeBomb"
+   ],
+   "winRate": 52.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "blister-beetle",
+   "name": "Blister Beetle",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 1,
+   "health": 5,
+   "skills": [
+    "triggers"
+   ],
+   "winRate": 27.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "design",
+   "startsAt0": false
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "rarity": "rare",
+   "cost": 4,
+   "wait": 3,
+   "attack": 4,
+   "health": 10,
+   "skills": [
+    "tide",
+    "fork",
+    "gash"
+   ],
+   "winRate": 32.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "lantern-spark-fly",
+   "name": "Lantern Spark Fly",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "flying",
+    "illuminate"
+   ],
+   "winRate": 65,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "baby-bat",
+   "name": "Baby Bat",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "flying",
+    "nocturnal"
+   ],
+   "winRate": 65,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "baby-horned-capybara",
+   "name": "Baby Horned Capybara",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 1,
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "thorns"
+   ],
+   "winRate": 52.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "egg-red-dragon",
+   "name": "Red Dragon Egg",
+   "rarity": "legendary",
+   "cost": 0,
+   "wait": 12,
+   "attack": 0,
+   "health": 10,
+   "skills": [],
+   "winRate": 2.5,
+   "band": [
+    70,
+    97
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "sheep",
+   "name": "Sheep",
+   "rarity": "starter",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 6,
+   "skills": [
+    "taunt"
+   ],
+   "winRate": 32.5,
+   "band": [
+    20,
+    48
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": true,
+   "note": "measured at Lv 1 (starts at Lv 0: its first level is a major +10% step)"
+  },
+  {
+   "id": "jay-pilferer",
+   "name": "Jay Pilferer",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "swipe"
+   ],
+   "winRate": 42.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "border-collie",
+   "name": "Border Collie",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "converge"
+   ],
+   "winRate": 45,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "mongoose-duelist",
+   "name": "Mongoose Duelist",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "defiance",
+    "defianceN"
+   ],
+   "winRate": 25,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "dhole-runner",
+   "name": "Dhole Runner",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "pack"
+   ],
+   "winRate": 30,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "dhole-matriarch",
+   "name": "Dhole Matriarch",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 7,
+   "skills": [
+    "packLeader"
+   ],
+   "winRate": 22.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "nightjar-drifter",
+   "name": "Nightjar Drifter",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 5,
+   "skills": [
+    "crepuscular",
+    "crepuscularHp"
+   ],
+   "winRate": 65,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "aye-aye-prowler",
+   "name": "Aye-aye Prowler",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "sunshy"
+   ],
+   "winRate": 17.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "hoopoe-herald",
+   "name": "Hoopoe Herald",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "nightblind"
+   ],
+   "winRate": 45,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "sunbittern-strider",
+   "name": "Sunbittern Strider",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "diurnalGrant",
+    "diurnal"
+   ],
+   "winRate": 67.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "kinkajou-lurker",
+   "name": "Kinkajou Lurker",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "nocturnalGrant",
+    "nocturnal"
+   ],
+   "winRate": 52.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "mudflat-godwit",
+   "name": "Mudflat Godwit",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "tideGrant",
+    "tide"
+   ],
+   "winRate": 52.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "moon-jerboa",
+   "name": "Moon Jerboa",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "fullMoon"
+   ],
+   "winRate": 52.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "werebadger",
+   "name": "Werebadger",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "fullMoonGrant"
+   ],
+   "winRate": 22.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "carrion-beetle",
+   "name": "Carrion Beetle",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "festering"
+   ],
+   "winRate": 47.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "drunk"
+   ],
+   "winRate": 22.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "purblind"
+   ],
+   "winRate": 17.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "pika-hoarder",
+   "name": "Pika Hoarder",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 7,
+   "skills": [
+    "scatterbrained"
+   ],
+   "winRate": 67.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "tarantula-hawk",
+   "name": "Tarantula Hawk",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "primed"
+   ],
+   "winRate": 55,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "swordfish-spearman",
+   "name": "Swordfish Spearman",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "trident"
+   ],
+   "winRate": 50,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "blue-ringed-octopus",
+   "name": "Blue-ringed Octopus",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "octolash"
+   ],
+   "winRate": 35,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "pronghorn-racer",
+   "name": "Pronghorn Racer",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "speed"
+   ],
+   "winRate": 32.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "roadrunner-courier",
+   "name": "Roadrunner Courier",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "haste"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "box-turtle",
+   "name": "Box Turtle",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 5,
+   "skills": [
+    "cower"
+   ],
+   "winRate": 47.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "glasswing-butterfly",
+   "name": "Glasswing Butterfly",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "ghost"
+   ],
+   "winRate": 60,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "velvet-worm",
+   "name": "Velvet Worm",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "ichor"
+   ],
+   "winRate": 50,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "glowing-gecko",
+   "name": "Glowing Gecko",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 12,
+   "skills": [
+    "irradiated"
+   ],
+   "winRate": 17.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "gloom-gibbon",
+   "name": "Gloom Gibbon",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "shade"
+   ],
+   "winRate": 25,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "margay",
+   "name": "Margay",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "shadow"
+   ],
+   "winRate": 22.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "seed-cache-squirrel",
+   "name": "Seed-cache Squirrel",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "sprout"
+   ],
+   "winRate": 32.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "leafcutter-gardener",
+   "name": "Leafcutter Gardener",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 6,
+   "skills": [
+    "growth"
+   ],
+   "winRate": 45,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "lotus-frog",
+   "name": "Lotus Frog",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "bloomWhen"
+   ],
+   "winRate": 52.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "planarian-splitter",
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "meiosis"
+   ],
+   "winRate": 40,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "hagfish-silencer",
+   "name": "Hagfish Silencer",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "nullify"
+   ],
+   "winRate": 25,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "electric-ray",
+   "name": "Electric Ray",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "charge"
+   ],
+   "winRate": 70,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "vampire-bat-nurse",
+   "name": "Vampire Bat Nurse",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "nursing"
+   ],
+   "winRate": 37.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "lichen-tortoise",
+   "name": "Lichen Tortoise",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "natureForce"
+   ],
+   "winRate": 22.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "swift-fox",
+   "name": "Swift Fox",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "fastForward"
+   ],
+   "winRate": 40,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "slow-loris",
+   "name": "Slow Loris",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "feeble"
+   ],
+   "winRate": 37.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "hercules-beetle",
+   "name": "Hercules Beetle",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "mighty"
+   ],
+   "winRate": 27.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "mayfly-dancer",
+   "name": "Mayfly Dancer",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "fragile"
+   ],
+   "winRate": 47.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "pangolin-roller",
+   "name": "Pangolin Roller",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "sturdy"
+   ],
+   "winRate": 52.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "sawfish",
+   "name": "Sawfish",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "puncture"
+   ],
+   "winRate": 60,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "tasmanian-devil",
+   "name": "Tasmanian Devil",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "berserk"
+   ],
+   "winRate": 47.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "mantis-shrimp",
+   "name": "Mantis Shrimp",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "attack": 3,
+   "health": 10,
+   "skills": [
+    "recoil"
+   ],
+   "winRate": 22.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "fruit-bat-familiar",
+   "name": "Fruit-bat Familiar",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "inherentDarkness"
+   ],
+   "winRate": 55,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "hellbender",
+   "name": "Hellbender",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 7,
+   "skills": [
+    "coreEvil"
+   ],
+   "winRate": 67.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "woodpecker-sapper",
+   "name": "Woodpecker Sapper",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "perforate"
+   ],
+   "winRate": 45,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "snow-bunting-archer",
+   "name": "Snow Bunting Archer",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "iceArrow"
+   ],
+   "winRate": 65,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "spitting-cobra",
+   "name": "Spitting Cobra",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 7,
+   "skills": [
+    "twinShot"
+   ],
+   "winRate": 30,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "echidna-quillshot",
+   "name": "Echidna Quillshot",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "volley"
+   ],
+   "winRate": 30,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "firefly-swarm",
+   "name": "Firefly Swarm",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "fireBolt"
+   ],
+   "winRate": 60,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "archerfish",
+   "name": "Archerfish",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "acidBolt"
+   ],
+   "winRate": 65,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "spitting-spider",
+   "name": "Spitting Spider",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "poisonBolt"
+   ],
+   "winRate": 50,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "ice-petrel",
+   "name": "Ice Petrel",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "iceBolt"
+   ],
+   "winRate": 65,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "electric-catfish",
+   "name": "Electric Catfish",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "attack": 3,
+   "health": 10,
+   "skills": [
+    "shockBolt"
+   ],
+   "winRate": 35,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "dust-devil-kestrel",
+   "name": "Dust-devil Kestrel",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "tornado"
+   ],
+   "winRate": 22.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "ibex-rockcaller",
+   "name": "Ibex Rockcaller",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "avalanche"
+   ],
+   "winRate": 25,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "sperm-whale-elder",
+   "name": "Sperm Whale Elder",
+   "rarity": "epic",
+   "cost": 3,
+   "wait": 3,
+   "attack": 5,
+   "health": 11,
+   "skills": [
+    "tsunami"
+   ],
+   "winRate": 30,
+   "band": [
+    62,
+    87
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "thunder-lizard",
+   "name": "Thunder Lizard",
+   "rarity": "epic",
+   "cost": 3,
+   "wait": 3,
+   "attack": 5,
+   "health": 11,
+   "skills": [
+    "dragonLightning"
+   ],
+   "winRate": 30,
+   "band": [
+    62,
+    87
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "corpse-flower-beetle",
+   "name": "Corpse-flower Beetle",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "wither"
+   ],
+   "winRate": 22.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer",
+   "rarity": "epic",
+   "cost": 3,
+   "wait": 3,
+   "attack": 4,
+   "health": 12,
+   "skills": [
+    "fireball"
+   ],
+   "winRate": 30,
+   "band": [
+    62,
+    87
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "starfall-owl",
+   "name": "Starfall Owl",
+   "rarity": "legendary",
+   "cost": 4,
+   "wait": 4,
+   "attack": 5,
+   "health": 12,
+   "skills": [
+    "meteor"
+   ],
+   "winRate": 32.5,
+   "band": [
+    70,
+    97
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "armadillo-guard",
+   "name": "Armadillo Guard",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "shield"
+   ],
+   "winRate": 42.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "elephant-nose-fish",
+   "name": "Elephant-nose Fish",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "psychic"
+   ],
+   "winRate": 40,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "piranha-shoal",
+   "name": "Piranha Shoal",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 6,
+   "skills": [
+    "bloodlust"
+   ],
+   "winRate": 55,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "chilli-parrot",
+   "name": "Chilli Parrot",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "chilli"
+   ],
+   "winRate": 35,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "platypus-spur",
+   "name": "Platypus Spur",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "venomous"
+   ],
+   "winRate": 42.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "cone-snail",
+   "name": "Cone Snail",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "toxin"
+   ],
+   "winRate": 42.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "lamprey",
+   "name": "Lamprey",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "weaken"
+   ],
+   "winRate": 30,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "paper-wasp",
+   "name": "Paper Wasp",
+   "rarity": "common",
+   "cost": 0,
+   "wait": 0,
+   "attack": 2,
+   "health": 7,
+   "skills": [
+    "wilting"
+   ],
+   "winRate": 27.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "bison-bulldozer",
+   "name": "Bison Bulldozer",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "bulldoze"
+   ],
+   "winRate": 25,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "weaver-bird",
+   "name": "Weaver Bird",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "tangle"
+   ],
+   "winRate": 47.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "anaconda-coil",
+   "name": "Anaconda Coil",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "strangle"
+   ],
+   "winRate": 25,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "tardigrade",
+   "name": "Tardigrade",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "invincible"
+   ],
+   "winRate": 25,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "leaf-chameleon",
+   "name": "Leaf Chameleon",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "invisible"
+   ],
+   "winRate": 37.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "oilbird",
+   "name": "Oilbird",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "sonar"
+   ],
+   "winRate": 55,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "skunk-gasser",
+   "name": "Skunk Gasser",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "poisonGas"
+   ],
+   "winRate": 62.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "ice-fish",
+   "name": "Ice Fish",
+   "rarity": "epic",
+   "cost": 3,
+   "wait": 3,
+   "attack": 5,
+   "health": 11,
+   "skills": [
+    "absoluteZero"
+   ],
+   "winRate": 32.5,
+   "band": [
+    62,
+    87
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "fire-salamander",
+   "name": "Fire Salamander",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 8,
+   "skills": [
+    "spitfire"
+   ],
+   "winRate": 52.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "fire-hawk",
+   "name": "Fire Hawk",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "slashBurn"
+   ],
+   "winRate": 25,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "flagellant-vulture",
+   "name": "Flagellant Vulture",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "penance"
+   ],
+   "winRate": 47.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "vampire-finch",
+   "name": "Vampire Finch",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 5,
+   "health": 7,
+   "skills": [
+    "bloodTithe"
+   ],
+   "winRate": 40,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "antlion-pit",
+   "name": "Antlion Pit",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 7,
+   "skills": [
+    "trap"
+   ],
+   "winRate": 42.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "leopard-seal",
+   "name": "Leopard Seal",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "predator"
+   ],
+   "winRate": 22.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "springbok-pronker",
+   "name": "Springbok Pronker",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 4,
+   "health": 5,
+   "skills": [
+    "prey"
+   ],
+   "winRate": 55,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "supernova-jelly",
+   "name": "Supernova Jelly",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "nova"
+   ],
+   "winRate": 32.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "geode-scorpion",
+   "name": "Geode Scorpion",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "crystallise"
+   ],
+   "winRate": 22.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "cleaner-wrasse",
+   "name": "Cleaner Wrasse",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "cure"
+   ],
+   "winRate": 67.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "snow-leopard",
+   "name": "Snow Leopard",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "mountainClimber"
+   ],
+   "winRate": 25,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "lovebird",
+   "name": "Lovebird",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "amore"
+   ],
+   "winRate": 27.5,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "horned-lizard",
+   "name": "Horned Lizard",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 6,
+   "skills": [
+    "blind"
+   ],
+   "winRate": 32.5,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "marula-monkey",
+   "name": "Marula Monkey",
+   "rarity": "common",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "tipsy"
+   ],
+   "winRate": 30,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "lyrebird-mimic",
+   "name": "Lyrebird Mimic",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "confuse"
+   ],
+   "winRate": 55,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "chained-binturong",
+   "name": "Chained Binturong",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "chained"
+   ],
+   "winRate": 10,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "rimefire-salamander",
+   "name": "Rimefire Salamander",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 7,
+   "skills": [
+    "fireArrow",
+    "iceArrow"
+   ],
+   "winRate": 60,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "fumarole-ibex",
+   "name": "Fumarole Ibex",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "mountainClimber",
+    "dry",
+    "pounce"
+   ],
+   "winRate": 75,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "ashwing-ptarmigan",
+   "name": "Ashwing Ptarmigan",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 0,
+   "attack": 3,
+   "health": 5,
+   "skills": [
+    "flying",
+    "darksight"
+   ],
+   "winRate": 52.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "caldera-snow-leopard",
+   "name": "Caldera Snow Leopard",
+   "rarity": "superrare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 7,
+   "skills": [
+    "mountainClimber",
+    "pounce",
+    "bleed",
+    "ambush",
+    "bloodlust"
+   ],
+   "winRate": 77.5,
+   "band": [
+    60,
+    84
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "rimeheart-colossus",
+   "name": "Rimeheart Colossus",
+   "rarity": "epic",
+   "cost": 3,
+   "wait": 3,
+   "attack": 8,
+   "health": 40,
+   "skills": [
+    "immolation",
+    "freeze",
+    "armor",
+    "frostbite"
+   ],
+   "winRate": 30,
+   "band": [
+    62,
+    87
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "war-elephant",
+   "name": "War Elephant",
+   "rarity": "superrare",
+   "cost": 3,
+   "wait": 3,
+   "attack": 2,
+   "health": 22,
+   "skills": [
+    "armor",
+    "arrow",
+    "arrowCount",
+    "vanguard"
+   ],
+   "winRate": 35,
+   "band": [
+    60,
+    84
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "howdah-archers",
+   "name": "Howdah Archers",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 7,
+   "skills": [
+    "arrow",
+    "quick"
+   ],
+   "winRate": 67.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "testudo-tortoise",
+   "name": "Testudo Tortoise",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 2,
+   "health": 14,
+   "skills": [
+    "armor",
+    "guardian",
+    "helmet",
+    "vanguard"
+   ],
+   "winRate": 57.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "trebuchet-crew",
+   "name": "Trebuchet Crew",
+   "rarity": "rare",
+   "cost": 2,
+   "wait": 3,
+   "attack": 0,
+   "health": 24,
+   "skills": [
+    "volley",
+    "demolisher"
+   ],
+   "winRate": 40,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "marshal-tuskwell",
+   "name": "Marshal Tuskwell",
+   "rarity": "epic",
+   "cost": 4,
+   "wait": 4,
+   "attack": 9,
+   "health": 48,
+   "skills": [
+    "armor",
+    "overwhelm",
+    "inspiring",
+    "arrow",
+    "vanguard"
+   ],
+   "winRate": 35,
+   "band": [
+    62,
+    87
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "great-gate",
+   "name": "Great Gate",
+   "rarity": "common",
+   "cost": 2,
+   "wait": 0,
+   "attack": 0,
+   "health": 45,
+   "skills": [
+    "armor",
+    "guardian"
+   ],
+   "winRate": 35,
+   "band": [
+    35,
+    60
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "goose-sentry",
+   "name": "Goose Sentry",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 12,
+   "skills": [
+    "guardian",
+    "taunt",
+    "sentry"
+   ],
+   "winRate": 60,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "mallard-halberdier",
+   "name": "Mallard Halberdier",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 8,
+   "skills": [
+    "reach",
+    "pierce"
+   ],
+   "winRate": 65,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "tax-collector-teal",
+   "name": "Tax-Collector Teal",
+   "rarity": "uncommon",
+   "cost": 0,
+   "wait": 0,
+   "attack": 1,
+   "health": 4,
+   "skills": [
+    "flying",
+    "swipe",
+    "hoard"
+   ],
+   "winRate": 90,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "battlement-heron",
+   "name": "Battlement Heron",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "arrow",
+    "reach",
+    "sentry"
+   ],
+   "winRate": 90,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "gilded-swan-knight",
+   "name": "Gilded Swan Knight",
+   "rarity": "superrare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 3,
+   "health": 12,
+   "skills": [
+    "armor",
+    "bounty",
+    "inspiring",
+    "reflect"
+   ],
+   "winRate": 35,
+   "band": [
+    60,
+    84
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "magnate-duck",
+   "name": "The Magnate Duck",
+   "rarity": "legendary",
+   "cost": 4,
+   "wait": 4,
+   "attack": 6,
+   "health": 60,
+   "skills": [
+    "armor",
+    "midas",
+    "bounty",
+    "swipe",
+    "shieldCall",
+    "inspiring",
+    "hoard"
+   ],
+   "winRate": 32.5,
+   "band": [
+    70,
+    97
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "base",
+   "startsAt0": false
+  },
+  {
+   "id": "gallery-orb-weaver",
+   "name": "Gallery Orb-Weaver",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 4,
+   "health": 9,
+   "skills": [
+    "web",
+    "poison"
+   ],
+   "winRate": 37.5,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "cottonmouth-matriarch",
+   "name": "Cottonmouth Matriarch",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 2,
+   "attack": 3,
+   "health": 10,
+   "skills": [
+    "poison",
+    "venomMaster"
+   ],
+   "winRate": 30,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "hedgehog-herbalist",
+   "name": "Hedgehog Herbalist",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 10,
+   "skills": [
+    "bloom",
+    "herbalist"
+   ],
+   "winRate": 60,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "eagle-owl-quartermaster",
+   "name": "Eagle-Owl Quartermaster",
+   "rarity": "rare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 1,
+   "health": 8,
+   "skills": [
+    "flying",
+    "arrow",
+    "fletcher"
+   ],
+   "winRate": 90,
+   "band": [
+    52,
+    75
+   ],
+   "verdict": "strong",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "ossuary-lammergeier",
+   "name": "Ossuary Lammergeier",
+   "rarity": "veryrare",
+   "cost": 1,
+   "wait": 1,
+   "attack": 3,
+   "health": 6,
+   "skills": [
+    "flying",
+    "carrion"
+   ],
+   "winRate": 75,
+   "band": [
+    56.00000000000001,
+    80
+   ],
+   "verdict": "ok",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "walrus-icebreaker",
+   "name": "Walrus Icebreaker",
+   "rarity": "veryrare",
+   "cost": 2,
+   "wait": 2,
+   "attack": 3,
+   "health": 11,
+   "skills": [
+    "freeze",
+    "shatter",
+    "armor"
+   ],
+   "winRate": 25,
+   "band": [
+    56.00000000000001,
+    80
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false
+  },
+  {
+   "id": "sea-cucumber",
+   "name": "Sea Cucumber",
+   "rarity": "uncommon",
+   "cost": 1,
+   "wait": 1,
+   "attack": 2,
+   "health": 14,
+   "skills": [
+    "tide",
+    "regen",
+    "triggers"
+   ],
+   "winRate": 52.5,
    "band": [
     45,
     68

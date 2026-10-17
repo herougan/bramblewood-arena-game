@@ -75,12 +75,20 @@ const push = (e, P, waveId, T)=>{ const W = put(e, P, 1, waveId, 0); const ev = 
     // left: -1, -2 free (-3 is a unit), right: 1 free (2 is a unit)
     const want = w.dir === 'left' ? -Math.min(ft.n, 2) : Math.min(ft.n, 1);
     if(T.slot !== want || T.slot === -3 || T.slot === 2) bad++; else moved++;
+    // 2026-10-18 (Awash N: "If crash into another unit, both take N damage"): left n=3 hits L, right n>=2 hits R
+    const crashWant = w.dir === 'left' ? (ft.n === 3 ? L : null) : (ft.n >= 2 ? R : null), cr = ev.find(x=> x.type === 'washCrash');
+    if(crashWant ? !(cr && cr.otherUid === crashWant.uid && cr.n === ft.n && T.hp === 500 - ft.n && crashWant.hp === 500 - ft.n) : (cr || T.hp !== 500)) bad++;
     if(w.bob) bobbed++; }
-  ok(!bad, `Awash: one fieldTick and one wave a round, and it rides n free columns, stopping before a unit (${bad} wrong)`);
+  ok(!bad, `Awash: one fieldTick and one wave a round, it rides n columns, and a unit in the way is crashed into for n each (${bad} wrong)`);
   ok(ns.size === 3 && [...ns].every(n=> n >= 1 && n <= 3), `Awash rolls 1–3 (${[...ns].sort()})`); ok(!bobbed && moved === 300, 'with room it always moves'); }
 { const {e, P} = mk({awash:true}, 5); const T = put(e, P, 1, 'wt-wall', 0), A = put(e, P, 1, 'wt-wall', -1), B = put(e, P, 1, 'wt-wall', 1); A.pinned = true; B.pinned = true;
   e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev); const w = ev.find(x=> x.type === 'wave');
-  ok(w && w.awash && w.bob && T.slot === 0 && w.targetSide === 'A', 'Awash on a boxed-in unit: it bobs where it is'); }
+  const cr = ev.find(x=> x.type === 'washCrash'), ft = ev.find(x=> x.field === 'awash');
+  ok(w && w.awash && !w.bob && T.slot === 0 && w.targetSide === 'A' && cr && [A.uid, B.uid].includes(cr.otherUid), 'Awash on a boxed-in unit: it rams the unit beside it (2026-10-18)');
+  ok(cr && T.hp === 500 - ft.n && [A, B].find(x=> x.uid === cr.otherUid).hp === 500 - ft.n, '...and both take N'); }
+{ const {e, P} = mk({awash:true}, 5); const T = put(e, P, 1, 'wt-wall', -2), A = put(e, P, 1, 'wt-wall', 2); A.pinned = true;
+  e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev); const w = ev.find(x=> x.type === 'wave');
+  ok(w && T.slot > -2 && !ev.some(x=> x.type === 'washCrash' && w.dir === 'left'), 'at the edge it turns back the other way (only the edge bounces it)'); }
 { const {e, P} = mk({awash:1}, 9); const T = put(e, P, 2, 'wt-wall', 0); put(e, P, 2, 'wt-wall', 3).pinned = true; e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);
   const ft = ev.find(x=> x.field === 'awash'); ok(ft && ft.n === 1 && Math.abs(T.slot) === 1, 'rules.awash: 1 caps the roll at 1'); }
 { const {e, P} = mk({awash:true}, 9); e.roundStart(P, 1, so, {}, []); const ev = []; e.roundStart(P, 2, so, {}, ev);

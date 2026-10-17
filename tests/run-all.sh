@@ -47,7 +47,7 @@ run node tests/skills2-2026-10-16.js   # 2026-10-16 (skills 2): random wind, Amo
 run node tests/skills-2026-10-16-devilry.js   # 2026-10-16 (skills): Penance / Blood Tithe, Ambush N, Expose crits, Perma-tide text, live status lines
 run node tests/road-rarity-2026-10-16.js   # 2026-10-16 (placement and rarity): rarity caps on the road, pack commons by number, field curriculum
 run node tests/regen-fullhp-2026-10-14.js
-run node tests/heal-poison-2026-10-16.js   # 2026-10-16: a heal takes Poison off first (1 per heal), only the rest heals Health
+run node tests/heal-poison-2026-10-16.js   # 2026-10-18: heals stanch Bleed only; Bleed and Poison drop 1 a round; Cure is Poison only
 run node tests/fork-family-2026-10-17.js   # 2026-10-17: Fork / Trident / Pitchfork as one swing along 2/3/4 lines, crabs' Crab Claws
 run node tests/nightblind-illuminate-2026-10-16.js   # 2026-10-16: an enemy Illuminate unit facing a Night-blind one lights it
 run node tests/combat-order-2026-10-17.js   # 2026-10-17: one Speed order (Quick 2, shots and Boomerang throws 1), deaths settled after each action and each arrival

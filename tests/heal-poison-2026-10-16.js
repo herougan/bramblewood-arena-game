@@ -1,7 +1,6 @@
 #!/usr/bin/env node
-// 2026-10-16 (user: "When regeneration of heal are used to reduce poison ... Note: it takes heal values to remove poison counters -
-// priority. Only the remaining left over heals the unit."): every heal (Regeneration, the Heal action, ...) first removes Poison,
-// 1 counter per 1 heal; only what is left restores Health (Bleed still comes off before Health, after Poison).
+// Heals, Poison, Bleed and Cure. 2026-10-16 heals took Poison off first; 2026-10-18 (user): "1. Heal-likes doesn't decrease poison,
+// only bleed. 2. Bleed and poison both tick down by 1 per turn. Cure doesn't heal bleed."
 'use strict';
 const H = require('./lib/harness.js'), E = H.Engine;
 let fail = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  ✗', m); } };
@@ -9,6 +8,8 @@ const so = id=> id===1 ? 'A' : 'B';
 const defs = Object.assign({}, H.loadCardDefs(), {
   'hp-regen': {id:'hp-regen', name:'HP Regen', attack:0, health:30, wait:0, cost:0, effects:{regen:5}},
   'hp-healer': {id:'hp-healer', name:'HP Healer', attack:0, health:30, wait:0, cost:0, effects:{triggers:[{on:'onRoundStart', do:'heal', amount:4}]}},
+  'hp-curer': {id:'hp-curer', name:'HP Curer', attack:0, health:30, wait:0, cost:0, effects:{cure:3}},
+  'hp-idle': {id:'hp-idle', name:'HP Idle', attack:0, health:30, wait:5, cost:0, effects:{}},
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 function run(id, setup){
@@ -17,30 +18,32 @@ function run(id, setup){
   const c = all(P[1]).find(x=> x.defId === id); setup(c);
   const ev = []; e.resolveCombat(P, so, {}, ev, 1); return {c, ev};
 }
-const cureOf = (ev, c)=> ev.filter(x=> x.type === 'statusFx' && x.kind === 'healPoison' && x.targetUid === c.uid);
-const healOf = (ev, c)=> ev.filter(x=> x.type === 'heal' && x.targetUid === c.uid).reduce((a, x)=> a + (x.amount||0), 0);
 const tickOf = (ev, c)=> ev.filter(x=> x.type === 'poisonTick' && x.uid === c.uid);
-// 1) Regeneration 5 on a unit with Poison 3 (after its tick): 3 counters off first, then 2 Health
+// 1) Regeneration doesn't touch Poison: the stack only drops by its own tick
 { const {c, ev} = run('hp-regen', c=>{ c.hp = 10; c.poison = 4; });
-  const t = tickOf(ev, c)[0], p1 = 4 - (t && t.decay ? 1 : 0), hp1 = 10 - (t ? t.dmg : 0); // the upkeep tick lands before Regeneration
-  const cu = cureOf(ev, c);
-  ok(cu.length === 1 && cu[0].amount === Math.min(5, p1), `Regen removes ${Math.min(5, p1)} Poison first (got ${JSON.stringify(cu.map(x=> x.amount))})`);
-  ok(c.poison === Math.max(0, p1 - 5), `no Poison left (poison ${c.poison})`);
-  ok(c.hp === Math.min(c.maxHp, hp1 + Math.max(0, 5 - p1)), `only the left-over ${Math.max(0, 5 - p1)} heals (hp ${c.hp}, from ${hp1})`);
-  ok(healOf(ev, c) === Math.max(0, 5 - p1), `the heal event reports only the Health restored (${healOf(ev, c)})`);
-  ok(cu.length && cu[0].left === c.poison, 'the event says how many counters are left'); }
-// 2) More Poison than heal: the whole heal goes to the Poison, no Health at all
-{ const {c, ev} = run('hp-regen', c=>{ c.hp = 10; c.poison = 9; });
-  const t = tickOf(ev, c)[0], p1 = 9 - (t && t.decay ? 1 : 0), hp1 = 10 - (t ? t.dmg : 0);
-  ok(c.poison === p1 - 5, `5 of ${p1} counters come off (poison ${c.poison})`);
-  ok(c.hp === hp1, `no Health restored while Poison soaks the heal (hp ${c.hp}, ${hp1} before)`);
-  ok(healOf(ev, c) === 0, 'no heal event for 0 Health'); }
-// 3) Poison first, then Bleed, then Health
-{ const {c} = run('hp-regen', c=>{ c.hp = 10; c.poison = 0; c.bleed = 2; });
-  ok(c.bleed === 0 && c.hp === 13, `no Poison: Bleed 2 then 3 Health, as before (bleed ${c.bleed}, hp ${c.hp})`); }
-// 4) The Heal action follows the same rule
-{ const {c, ev} = run('hp-healer', c=>{ c.hp = 20; c.poison = 3; });
-  const t = tickOf(ev, c)[0], p1 = 3 - (t && t.decay ? 1 : 0), hp1 = 20 - (t ? t.dmg : 0);
-  ok(c.poison === Math.max(0, p1 - 4), `Heal 4 removes the Poison first (poison ${c.poison})`);
-  ok(c.hp === Math.min(c.maxHp, hp1 + Math.max(0, 4 - p1)), `then heals the rest (hp ${c.hp}, ${hp1} before)`); }
+  const t = tickOf(ev, c)[0];
+  ok(!ev.some(x=> x.kind === 'healPoison'), 'no heal-away-Poison event any more');
+  ok(c.poison === 3, `Poison 4 → 3 from its own tick only (poison ${c.poison})`);
+  ok(t && c.hp === Math.min(c.maxHp, 10 - t.dmg + 5), `the whole Regeneration 5 heals Health (hp ${c.hp})`); }
+// 2) A poisoned unit at full Health doesn't regenerate
+{ const {c, ev} = run('hp-regen', c=>{ c.poison = 1; });
+  ok(c.poison === 0, 'Poison 1 ticks down to 0');
+  ok(!ev.some(x=> x.type === 'heal' && x.targetUid === c.uid && x.amount > 0 && x.cause === 'regen'), 'nothing to heal but the tick'); }
+// 3) Bleed: wears down 1 a round (before the upkeep heals), then a heal stanches the rest before Health
+{ const {c, ev} = run('hp-regen', c=>{ c.hp = 10; c.bleed = 3; });
+  ok(ev.some(x=> x.type === 'bleedFade' && x.uid === c.uid && x.left === 2), 'Bleed 3 → 2 at upkeep (bleedFade)');
+  ok(c.bleed === 0 && c.hp === 13, `Regeneration 5: 2 Bleed stanched, 3 Health (bleed ${c.bleed}, hp ${c.hp})`); }
+// 4) A unit that doesn't act still loses 1 Bleed a round, and takes no Bleed damage
+{ const {c, ev} = run('hp-idle', c=>{ c.bleed = 4; });
+  ok(c.bleed === 3 && c.hp === 30 && !ev.some(x=> x.type === 'bleedTick'), `an idle unit: Bleed 4 → 3, no damage (bleed ${c.bleed}, hp ${c.hp})`); }
+// 5) The Heal action: Bleed first, Poison untouched
+{ const {c} = run('hp-healer', c=>{ c.hp = 20; c.poison = 3; c.bleed = 0; });
+  ok(c.poison === 2, `Heal 4 leaves Poison to its tick (poison ${c.poison})`); }
+// 6) Cure takes Poison only, never Bleed
+{ const {c, ev} = run('hp-curer', c=>{ c.poison = 6; c.bleed = 5; });
+  const cu = ev.find(x=> x.kind === 'cure');
+  ok(cu && cu.poison === 3 && cu.bleed === 0, `Cure 3 removes 3 Poison and no Bleed (${JSON.stringify(cu && {p:cu.poison, b:cu.bleed})})`);
+  ok(c.poison === 2 && c.bleed === 4, `Poison 6 -1 tick -3 cure = 2, Bleed 5 -1 a round = 4 (poison ${c.poison}, bleed ${c.bleed})`); }
+{ const {ev} = run('hp-curer', c=>{ c.bleed = 5; });
+  ok(!ev.some(x=> x.kind === 'cure'), 'Cure ignores a unit that only Bleeds'); }
 console.log(fail ? `heal-poison: ${fail} failure(s)` : 'heal-poison: all passed'); process.exit(fail ? 1 : 0);
