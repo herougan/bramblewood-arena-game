@@ -1810,7 +1810,7 @@ const SPECIES_PHYLUM = {
   Canid:'Beast', Felid:'Beast', Bovine:'Beast', Mustelid:'Beast', Ursid:'Beast', Rodent:'Beast', Lagomorph:'Beast', Cervid:'Beast', Suid:'Beast',
   Equid:'Beast', Primate:'Beast', Procyonid:'Beast', Bat:'Beast', Xenarthran:'Beast', Erinaceid:'Beast', Herpestid:'Beast', Megafauna:'Beast', Hyaenid:'Beast', Cetacean:'Beast', Pinniped:'Beast',
   Bird:'Bird', Insect:'Arthropod', Arachnid:'Arthropod', Crustacean:'Arthropod', Reptile:'Scaled', Dragon:'Scaled', Amphibian:'Scaled',
-  Fish:'Aquatic', Mollusc:'Aquatic', Cnidarian:'Aquatic', Annelid:'Crawler', Myriapod:'Arthropod', Elemental:'Elemental'};
+  Fish:'Aquatic', Mollusc:'Aquatic', Cnidarian:'Aquatic', Echinoderm:'Aquatic' /* 2026-10-17: the Sea Cucumber */, Annelid:'Crawler', Myriapod:'Arthropod', Elemental:'Elemental'};
 function speciesLine(def){
   const sp = (def && def.species) || []; if(!sp.length) return '';
   const ph = [...new Set(sp.map(x=> SPECIES_PHYLUM[x] || x))];
@@ -16221,7 +16221,7 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"10-1", people:"deep", kind:"skirmish", name:"Clownfish Shoal", icon:"🐟", deck:{"clownfish-scout":1,"tide-pool-crab":2,"gull-thief":4,"coral-polyp-colony":1,"riptide-eel":2,"coral-current-eel":2,"cleaner-wrasse":2}, hqHp:43, rules:{"tide":true}, flavor:"A shoal this dense usually means something bigger is herding it.", requires:[] },
       { key:"10-2", kind:"skirmish", name:"Moray Ambush", icon:"🐍", deck:{"riptide-eel":4,"coral-current-eel":2,"clownfish-scout":2,"gull-thief":2,"electric-ray":2}, hqHp:142, rules:{"tide":true}, flavor:"The current here is faster than it has any right to be.", requires:["10-1"] },
-      { key:"10-3", people:"deep", kind:"skirmish", name:"Tide Pool Line", icon:"🦀", deck:{"gull-thief":2,"riptide-eel":2,"coral-polyp-colony":2,"clownfish-scout":2,"coral-current-eel":2,"cone-snail":2}, hqHp:31, rules:{"tide":true}, flavor:"Every pool along this stretch hides something with claws.", requires:["10-2"] },
+      { key:"10-3", people:"deep", kind:"skirmish", name:"Tide Pool Line", icon:"🦀", deck:{"gull-thief":2,"riptide-eel":2,"coral-polyp-colony":2,"clownfish-scout":2,"sea-cucumber":2,"cone-snail":2}, hqHp:31, /* 2026-10-17: Coral Current Eel ×2 → Sea Cucumber ×2, the fight's new card reward */ rules:{"tide":true}, flavor:"Every pool along this stretch hides something with claws.", requires:["10-2"] },
       { key:"10-4", kind:"skirmish", name:"Riptide Channel", icon:"🌊", deck:{"riptide-eel":2,"gull-thief":2,"clownfish-scout":2,"tide-pool-crab":2,"coral-current-eel":2,"sawfish":2}, hqHp:61, rules:{"tide":true}, flavor:"The channel pulls harder than the current should allow.", requires:["10-3"] },
       { key:"10-5", people:"deep", kind:"skirmish", name:"Current Split", icon:"🐠", deck:{"coral-polyp-colony":3,"clownfish-scout":3,"tide-pool-crab":1,"orca-vanguard":2,"dolphin-knight":1}, hqHp:22, rules:{"tide":true}, flavor:"The reef forks here — two currents, two dangers.", requires:["10-4"] },
       { key:"10-6", kind:"elite", name:"Reef Shark Pack", icon:"🦈", deck:{"coral-reef-shark":3,"orca-vanguard":2,"moray-ambusher":1,"coral-polyp-colony":1,"blue-ringed-octopus":2}, hqHp:26, flavor:"They circle twice before the first one ever commits.", characterId:"collapsed-mine", requires:["10-5"] },
@@ -16377,7 +16377,7 @@ const CONQUEST_MAPS = [
       { key:"22-4", kind:"skirmish", name:"Hailstone Ridge", icon:"🌨️", deck:{"snow-owl-sentinel":2,"snow-bunting-archer":3,"ice-petrel":3,"glacier-yak":2,"ashwing-ptarmigan":1,"frost-hare-sprinter":1}, hqHp:285, rules:{hail:2}, flavor:"The storm up here doesn't snow. It throws.", requires:["22-2"], fixedPos:{x:38, y:24} },
       { key:"22-5", kind:"skirmish", name:"The Geyser Field", icon:"⛲", deck:{"permafrost-mammoth":1,"fire-drake-hatchling":2,"magma-salamander":2,"ice-crevasse-wolf":3,"ash-moth":2,"rimefire-salamander":2}, hqHp:295, rules:{field:"frozen", lavaSpout:2}, flavor:"The ground freezes, the geysers thaw it, the ground freezes again. Twice a minute.", requires:["22-3"], fixedPos:{x:58, y:80} },
       { key:"22-6", kind:"elite", name:"Ashfall Cornice", icon:"🌋", deck:{"ash-cloud-condor":2,"phoenix-fledgling":2,"cinder-hornet":2,"peak-condor":2,"ashwing-ptarmigan":2,"stonedrop-vulture":2}, hqHp:305, rules:{ashRain:true, volcano:"low"}, flavor:"Grey snow falls on white snow. The birds ride the heat until the crater coughs.", requires:["22-4"], fixedPos:{x:62, y:20} },
-      { key:"22-7", kind:"elite", name:"The Steam Wall", icon:"🌫️", deck:{"ur-elk":2,"permafrost-mammoth":2,"magma-titan":2,"fumarole-ibex":2,"glacier-wolf-pack":2,"tundra-musk-ox":2}, hqHp:315, rules:{field:"heatwave", hail:2}, flavor:"Where the lava meets the glacier, a wall of steam a mile high. Big shapes walk inside it.", requires:["22-5"], fixedPos:{x:78, y:62} },
+      { key:"22-7", kind:"elite", name:"The Steam Wall", icon:"🌫️", deck:{"ur-elk":2,"permafrost-mammoth":2,"magma-titan":2,"fumarole-ibex":2,"glacier-wolf-pack":2,"cinder-stoker":2}, hqHp:315, /* 2026-10-17 lumber audit: Tundra Musk Ox ×2 → Cinder Stoker ×2 (Bounty) */ rules:{field:"heatwave", hail:2}, flavor:"Where the lava meets the glacier, a wall of steam a mile high. Big shapes walk inside it.", requires:["22-5"], fixedPos:{x:78, y:62} },
       { key:"22-8", kind:"boss", name:"The Rimeheart Colossus", icon:"👑", deck:{"rimeheart-colossus":1,"magma-titan":2,"glacial-ape-king":1,"yeti":2,"rimefire-salamander":2,"fumarole-ibex":2,"caldera-snow-leopard":1,"snow-owl-sentinel":2}, hqHp:340, rules:{volcano:"low", hail:2, lavaSpout:2}, flavor:"Half glacier, half magma, all of it angry. It is the reason the crater never cooled.", requires:["22-6","22-7"], fixedPos:{x:90, y:36} },
     ]},
   // Maps 23 and 24, the Fortified Castle (2026-10-17, user: "Interesting map and their units (Map 23, 24) e.g. Fortified Castle map,- breach the
@@ -16395,7 +16395,7 @@ const CONQUEST_MAPS = [
       { key:"23-5", kind:"skirmish", name:"Under the Walls", icon:"🏹", deck:{"howdah-archers":2,"balloon-archer":2,"talon-archer":2,"badger-trench-digger":2,"testudo-tortoise":2}, hqHp:335, rules:{arrowSlits:true}, flavor:"From here the arrow slits can see you. Shields up.", requires:["23-4"], fixedPos:{x:58, y:22} },
       { key:"23-6", kind:"elite", name:"The Elephant Line", icon:"🐘", deck:{"war-elephant":2,"howdah-archers":3,"marching-elephant":2,"cataphract-destrier":2,"warhorse-charger":2}, hqHp:350, rules:{arrowSlits:true}, flavor:"Six elephants abreast, and every howdah bristling.", requires:["23-4"], fixedPos:{x:60, y:74} },
       { key:"23-7", kind:"elite", name:"The Barbican", icon:"🏯", deck:{"great-gate":1,"goose-sentry":3,"battlement-heron":2,"mallard-halberdier":2,"trebuchet-crew":2}, hqHp:360, rules:{arrowSlits:3}, flavor:"The gate's own little fortress. The geese have been told nobody gets in. They took it personally.", requires:["23-5","23-6"], fixedPos:{x:76, y:46} },
-      { key:"23-8", kind:"boss", name:"Marshal Tuskwell", icon:"👑", deck:{"marshal-tuskwell":1,"war-elephant":2,"howdah-archers":3,"siege-rhino":1,"trebuchet-crew":2,"testudo-tortoise":2}, hqHp:380, rules:{arrowSlits:true}, flavor:"The Magnate's marshal has never lost a siege. He has never been on the outside of one before.", requires:["23-7"], fixedPos:{x:90, y:50} },
+      { key:"23-8", kind:"boss", name:"Marshal Tuskwell", icon:"👑", deck:{"marshal-tuskwell":1,"war-elephant":2,"howdah-archers":3,"siege-rhino":1,"trebuchet-crew":2,"pack-mule":2}, hqHp:380, /* 2026-10-17 lumber audit: Testudo Tortoise ×2 → Pack Mule ×2 (Bounty: the army's baggage train) */ rules:{arrowSlits:true}, flavor:"The Magnate's marshal has never lost a siege. He has never been on the outside of one before.", requires:["23-7"], fixedPos:{x:90, y:50} },
     ]},
   { id:"m24", unlockAfter:"m23", name:"Goldfeather Keep", icon:"🏰", blurb:"Through the gate at last. Inside the walls everything is gilded, guarded and counted, and the Magnate Duck is waiting at the top of the keep.", sequential:true,
     nodes: [
@@ -16537,7 +16537,7 @@ const CONQUEST_MAPS = [
       { key:"20-B-1", rating:350, kind:"skirmish", name:"Cinder Slopes", icon:"🔥", deck:{"ember-jackal":4,"magma-salamander":3,"cinder-hornet":3,"fire-drake-hatchling":2,"cinder-gecko":2}, hqHp:101, flavor:"The rocks are warm underfoot, then hot, then glowing.", rewards:{"first":{"gold":240,"dust":36}}, requires:[] },
       { key:"20-B-2", rating:375, kind:"skirmish", name:"Obsidian Run", icon:"🪨", deck:{"obsidian-scorpion":3,"basalt-boar":3,"magma-titan":2,"pyroclast-wyrm":2,"cinder-stoker":2,"ember-centipede":2}, hqHp:137, flavor:"Black glass in long, sharp ribbons. Watch where you step.", rewards:{"first":{"gold":260,"dust":40}}, requires:["20-B-1"] },
       { key:"20-B-3", rating:400, kind:"skirmish", name:"The Wyrm's Antechamber", icon:"🌋", deck:{"magma-titan":3,"pyroclast-wyrm":1,"magma-salamander":1,"blessed-avatar":2,"gorge-wyrm":1,"ashbone-ghoul":2,"cinder-stoker":2}, hqHp:216, flavor:"The heat comes in waves now, like breathing.", rewards:{"first":{"gold":280,"dust":44}}, requires:["20-B-2"] },
-      { key:"20-B-4", rating:500, kind:"worldboss", name:"The Caldera Wyrm", icon:"🐉", deck:{"fire-drake-hatchling":2,"magma-titan":2,"pyroclast-wyrm":2,"magma-salamander":2,"ember-jackal":2,"obsidian-scorpion":2,"cinder-imp":2}, leaders:["caldera-wyrm"], leaderGrant:{"immolation":2}, hqHp:240, flavor:"The mountain has a heartbeat. Get close enough and you can feel it in your teeth.", characterId:"collapsed-mine", rewards:{"first":{"gold":400,"dust":60}}, requires:["20-B-3"] }
+      { key:"20-B-4", rating:500, kind:"worldboss", name:"The Caldera Wyrm", icon:"🐉", deck:{"fire-drake-hatchling":2,"magma-titan":2,"pyroclast-wyrm":2,"magma-salamander":2,"ember-jackal":2,"obsidian-scorpion":2,"cinder-stoker":2}, /* 2026-10-17 lumber audit: Cinder Imp ×2 → Cinder Stoker ×2 (Bounty) */ leaders:["caldera-wyrm"], leaderGrant:{"immolation":2}, hqHp:240, flavor:"The mountain has a heartbeat. Get close enough and you can feel it in your teeth.", characterId:"collapsed-mine", rewards:{"first":{"gold":400,"dust":60}}, requires:["20-B-3"] }
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from mw's own cards; tune in the editor.
   { id:"ms", sub:true, parent:"mw", entry:{x:70, y:76, after:"5-7", label:"The Sunken Grove"}, name:"The Sunken Grove", icon:"🌳", blurb:"Where the swamp swallowed an old forest. The trees still stand, up to their necks.", sequential:true,
@@ -16640,6 +16640,16 @@ const TOWER_POOLS = {
   unique: ['the-contradiction', 'triumvirate'],
   legendary: ['red-dragon', 'white-dragon', 'blue-dragon', 'green-dragon', 'black-dragon', 'caldera-wyrm', 'old-willow-of-the-ford'],
 };
+// Lumber sources for the tower (2026-10-17): the Nautilus Drifter (Rare: +1 Lumber each time it is Ready, Bounty 1) and the Gilded
+// Swan Knight (Super Rare: Bounty 2). See towerFloorDeck.
+const TOWER_LUMBER_POOL = ['nautilus-drifter', 'gilded-swan-knight'];
+// A Lumber source (2026-10-17): +Lumber on arrival or when Ready, Bounty, or a trigger that gains Lumber.
+function isLumberSource(d){ const e = (d && d.effects) || {}; if(e.onSpawnGold || e.onReadyGold || e.bounty) return true;
+  return (e.triggers || []).some(t=> t && (t.do === 'gainGold' || t.do === 'gainLumber' || (t.do === 'gain' && (!t.resource || t.resource === 'lumber')))); }
+// A deck that costs a lot of Lumber (3+ cards at 3+ Lumber, or 2+ on average, copies counted) with no Lumber source in it.
+function towerNeedsLumber(deck, defs){ let n = 0, sum = 0, big = 0, src = false;
+  Object.entries(deck).forEach(([id, k])=>{ const d = defs[id]; if(!d) return; const c = d.cost||0; n += k; sum += k * c; if(c >= 3) big += k; if(isLumberSource(d)) src = true; });
+  return !src && n > 0 && (big >= 3 || sum / n >= 2); }
 function towerTargetBR(f){ return TOWER_BR_START + TOWER_BR_STEP * (f - 1); }
 function seededUnit(key){ return hashStr(String(key)) / 4294967296; } // a stable 0..1 from a string
 // A deck's rating at the tower's levels (the same sum as enemyDeckLevel, levels up to 20).
@@ -16663,6 +16673,17 @@ function towerFloorDeck(f, defs){
     const k = Math.min(2, 12 - count);
     let best = null, bestErr = Infinity; tiers.forEach(t=>{ if(!(TOWER_POOLS[t] || []).some(id=> defs[id] && !used.has(id))) return; const w = RATING_WEIGHT[t], err = Math.abs((wsum + k*w) / (count + k) - wantAvg); if(err < bestErr){ bestErr = err; best = t; } });
     const id = best && pick(best); if(!id) break; deck[id] = k; count += k; wsum += k * ratingWeightOf(defs[id]);
+  }
+  // Lumber (2026-10-17, user: "The tower of babel decks need more lumber generators ... For skirmishes with high lumber counts - do
+  // they have a lumber generator or bounty? If they don't, swap out one of the less important cards for a generator or bounty that
+  // fits"): a floor whose cards cost a lot of Lumber (3+ cards at 3+ Lumber, or 2+ on average) and that has no Lumber source swaps
+  // one copy of its least important card (lowest rarity weight, then the smallest body; never the boss floor's legendary) for one
+  // card from TOWER_LUMBER_POOL, the one closest in rarity weight. The levels below then bring the floor back to its rating.
+  if(towerNeedsLumber(deck, defs)){
+    const ids = Object.keys(deck).filter(id=> !TOWER_POOLS.legendary.includes(id)).sort((a, b)=> ratingWeightOf(defs[a]) - ratingWeightOf(defs[b]) || ((defs[a].attack||0) + (defs[a].health||0)) - ((defs[b].attack||0) + (defs[b].health||0)) || a.localeCompare(b));
+    const out = ids[0], w = out ? ratingWeightOf(defs[out]) : 0;
+    const gen = TOWER_LUMBER_POOL.filter(id=> defs[id] && !deck[id]).sort((a, b)=> Math.abs(ratingWeightOf(defs[a]) - w) - Math.abs(ratingWeightOf(defs[b]) - w))[0];
+    if(out && gen){ deck[gen] = 1; if(--deck[out] <= 0) delete deck[out]; used.add(gen); } // one card, as asked: the floor keeps its size and most of its strength
   }
   // Levels only go up from 11, so the deck must not rate above the target at 11: trade a copy of its rarest card for a common-er one until it doesn't.
   const at11 = ()=> towerDeckBR(deck, Object.fromEntries(Object.keys(deck).map(id=> [id, 11])), defs);
@@ -21634,14 +21655,31 @@ function runCardCheck(host){
 //   Score: (2×Attack + Health + Skills) and (Attack × Health + Skills), each ×1.5 for every skill that makes attacks at (or by)
 //   the card miss about half the time (SB_HALF_MISS: Evasive, Swift, Flying vs ground, Shadow, Blind); those skills cost 0 themselves.
 //   Check (2026-10-14, 22:50): Max(added score, multiplied score) ≤ N. Bounty costs 0.
-const SB_KEY = 'bramblewood_stat_budget_v2';
+// Stat budget v3 (2026-10-17, user: "The N formula is changed. Now A*2 + B + Skills < N and A*B + Skills < (N/3)^2 And N is now
+// 20 + L*2 + Rarity + Wait * 6 + 0.5 * Wait^2 + Lumber * 4 + 0.4 * Lumber^2. Base Rarity defined as 0, Common as 1, and onwards."):
+//   N = 20 + 2×Level + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber²
+//   L is the card's level (v1's "each level increases N"; Lumber has its own term): the Test Lab uses the level the card starts at
+//   (Base, Starter and quest cards 0, rewards 1), the card editor Level 1 as before. Level 0 has no separate penalty any more: it
+//   simply gets 2 less than Level 1.
+//   Rarity = the rank on the main ladder, 1 point a step, no cap: Starter (the Base rarity) 0, Common 1, Uncommon 2, Rare 3,
+//   Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11, Divine 12, Void 13, Daemonic 14.
+//   Special rarities count as the tier in `as` (Quest 2, Special 3, Event-Rare 3, Quest-Unique 8, Dev/Event-Legendary 9,
+//   Dev-Ancient 11); no rarity = Common 1. sbRarityRank already gives exactly this ladder.
+//   The map term (v2: +0.2 a map) is gone: the new formula has none.
+//   Pass = BOTH (strictly under): 2×Attack + Health + Skills < N  and  Attack × Health + Skills < (N/3)².
+//   Skill costs (SB_DEFAULT_SKILLS) and the ×1.5 per half-miss skill on both scores are kept from v2 (those skills cost 0 themselves).
+//   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
+const SB_KEY = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2';
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
 const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', bleed:'v', snipe:'v', arrows:'v'};
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
-const SB_V2_DEFAULTS = {base:10, perWait:5, perLumber:4, perMap:0.2, levelTop:20, rarityTop:30, rarityTopRank:10, missMult:1.5, mode:'and'};
-function sbLoad(){ const def = Object.assign({}, SB_V2_DEFAULTS, {skills:SB_DEFAULT_SKILLS, halfMiss:SB_HALF_MISS});
-  try{ return Object.assign(def, JSON.parse(localStorage.getItem(SB_KEY)||'{}')); }catch(e){ return def; } }
+const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, missMult:1.5};
+// The v3 numbers start fresh (a v2 save's N numbers would be wrong for v3); the skill costs a browser saved under v2 carry over.
+function sbLoad(){ const def = Object.assign({}, SB_V3_DEFAULTS, {skills:SB_DEFAULT_SKILLS, halfMiss:SB_HALF_MISS});
+  let saved = null; try{ saved = JSON.parse(localStorage.getItem(SB_KEY)||'null'); }catch(e){}
+  if(!saved){ try{ const v2 = JSON.parse(localStorage.getItem(SB_KEY_V2)||'null'); if(v2){ saved = {}; if(v2.skills) saved.skills = v2.skills; if(v2.halfMiss) saved.halfMiss = v2.halfMiss; } }catch(e){} }
+  return Object.assign(def, saved && typeof saved === 'object' ? saved : {}); }
 function sbSave(c){ try{ localStorage.setItem(SB_KEY, JSON.stringify(c)); }catch(e){} }
 function sbSkillCost(effects, cfg){
   let t = 0; Object.entries(effects||{}).forEach(([k, v])=>{
@@ -21652,71 +21690,60 @@ function sbSkillCost(effects, cfg){
 // The ×1.5 per half-miss skill the card has (they stack in the engine, so they stack here).
 function sbMissMult(d, cfg){ const e = (d && d.effects) || {}, m = cfg.missMult == null ? 1.5 : cfg.missMult; let x = 1; (cfg.halfMiss || SB_HALF_MISS).forEach(k=>{ if(e[k]) x *= m; }); return x; }
 function sbRarityRank(k){ const ladder = RARITY_DEFS.filter(r=> !r.as).map(r=> r.key), d = RARITY_DEFS.find(r=> r.key === k); return Math.max(0, ladder.indexOf(d && d.as ? d.as : (k || 'common'))); }
-function sbBudgetAt(d, cfg, mapNo, lv){
-  const base = cfg.base == null ? 10 : cfg.base, top = Math.max(2, cardMaxLevel(d) || 10);
-  const lvPart = lv <= 0 ? -2 : ((cfg.levelTop == null ? 20 : cfg.levelTop) - base) * Math.min(1, (lv - 1) / (top - 1));
-  const rr = cfg.rarityTopRank || 10, rTop = (cfg.rarityTop == null ? 30 : cfg.rarityTop) - base, rPart = Math.min(rTop, rTop * sbRarityRank(d.rarity) / rr);
-  return Math.round((base + lvPart + rPart + (d.wait||0) * (cfg.perWait == null ? 5 : cfg.perWait) + (d.cost||0) * (cfg.perLumber == null ? 4 : cfg.perLumber) + (mapNo||0) * (cfg.perMap == null ? 0.2 : cfg.perMap)) * 10) / 10;
+// N for a card at a level (v3, 2026-10-17).
+function sbBudgetAt(d, cfg, lv){
+  const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], W = Number(d.wait)||0, C = Number(d.cost)||0, L = Math.max(0, Number(lv)||0);
+  return Math.round((g('base') + g('perLevel')*L + g('perRarity')*sbRarityRank(d.rarity) + g('perWait')*W + g('perWait2')*W*W + g('perLumber')*C + g('perLumber2')*C*C) * 100) / 100;
 }
-function sbBudget(d, cfg){
-  const src = cardSourceOf(d), mapNo = src.kind === 'map' ? (mapNumberOf(src.id) || 0) : 0;
-  return sbBudgetAt(d, cfg, mapNo, cardBaseLevel(d));
-}
-// 2026-10-14 (22:50, user: "Say this card scores Max(A, B) < N ... If Max(A, B) <= N green, if Max(A, B) > N, red. If <<, Pink"):
-// one score, the larger of the multiplied (Attack × Health + Skills) and the added (2×Attack + Health + Skills) forms, against N.
-// "Well under" (pink) is at or below SB_WELL_UNDER of N. x1 = added, x2 = multiplied, as before.
+function sbBudget(d, cfg){ return sbBudgetAt(d, cfg, cardBaseLevel(d)); }
+// v3 check (2026-10-17): x1 = added score (2×Attack + Health + Skills) < N; x2 = multiplied score (Attack × Health + Skills)
+// < N2 = (N/3)². Both must pass. "Well under" (pink) = passes with x1 at or below SB_WELL_UNDER of N.
 const SB_WELL_UNDER = 0.6;
-function sbCheck(A, D, S, N, mode, M){ M = M || 1; const x1 = Math.round((2*A + D + S) * M * 100) / 100, x2 = Math.round((A*D + S) * M * 100) / 100, score = Math.max(x1, x2), ok = score <= N;
-  return {r1: x1 <= N, r2: x2 <= N, x1, x2, score, ok, wellUnder: score <= N * SB_WELL_UNDER}; }
-function sbFit(d, S, N, mode, M){ let A = d.attack||0, D = d.health||1; let guard = 200; while(!sbCheck(A, D, S, N, mode, M).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
+function sbCheck(A, D, S, N, M){ M = M || 1; const r2d = v=> Math.round(v * 100) / 100, x1 = r2d((2*A + D + S) * M), x2 = r2d((A*D + S) * M), N2 = r2d((N/3) * (N/3));
+  const r1 = x1 < N, r2 = x2 < N2, ok = r1 && r2; return {r1, r2, x1, x2, N2, ok, wellUnder: ok && x1 <= N * SB_WELL_UNDER}; }
+// "Fit" lowers Attack, then Health, until both rules pass.
+function sbFit(d, S, N, M){ let A = d.attack||0, D = d.health||1; let guard = 200; while(!sbCheck(A, D, S, N, M).ok && guard-- > 0){ if(A > 1 && (A >= D/3 || D <= 1)) A--; else if(D > 1) D--; else if(A > 0) A--; else break; } return {A, D}; }
+function sbColour(c){ return !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '#d0569a' : '#2e8b57'); }
+function sbVerdict(c){ return !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'within'); }
+function sbFormulaText(cfg){ const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k];
+  return `N = ${g('base')} + ${g('perLevel')}×Level + ${g('perRarity') === 1 ? '' : g('perRarity') + '×'}Rarity + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber²`; }
 // Budget line in the card editor (2026-10-14, user: "In the card editor in the game, show the N value versus the optimal N
-// value for the map, level, and rarity"). Same N as sbBudget, but for a Map and Level picked in the line itself; the Map
-// comes from the card's own map when it has one.
-let ceBudgetSel = {map:0, level:1};
-// 2026-10-14 (22:50, user): no Level picker (the budget assumes Level 1), a small Map picker, N shown plainly, and one score:
-// Budget: Max(A, B) against N, where A is the multiplied form and B the added one. Green at or under N, red over, pink well under.
+// value for the map, level, and rarity"). 2026-10-17 (v3): no Map picker any more (the formula has no map term); Level 1 as
+// before; both checks shown, coloured green within both, red over either, pink well under on the first.
 function ceBudgetHTML(d){
-  const cfg = sbLoad(), src = cardSourceOf(d), known = src.kind === 'map' ? mapNumberOf(src.id) : null;
-  const mapNo = known != null ? known : ceBudgetSel.map;
-  const A = Number(d.attack)||0, D = Number(d.health)||0, S = sbSkillCost(d.effects, cfg), N = sbBudgetAt(d, cfg, mapNo, 1), M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, cfg.mode, M);
-  const rar = (d.rarity || 'common'), rarLabel = rar[0].toUpperCase() + rar.slice(1);
-  const maxMap = Math.max(1, (typeof mainConquestMaps === 'function' ? mainConquestMaps().length : 0) - 1, 30);
-  const mapCtl = known != null ? `Map ${known}` : `Map <select id="ceBudgetMap" aria-label="Map for the budget" style="font-size:12px; line-height:1.2; padding:1px 22px 1px 8px; height:24px; min-height:0; width:auto; min-width:56px; border-radius:6px; vertical-align:middle">${Array.from({length:maxMap + 1}, (_, i)=> `<option value="${i}" ${i===mapNo?'selected':''}>${i}</option>`).join('')}</select>`;
-  const mA = c.x2, mB = c.x1, sc = c.score, col = !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '#d0569a' : '#2e8b57');
-  const verdict = !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'under');
-  const mTxt = M !== 1 ? ` × ${Math.round(M*1000)/1000}` : '';
-  return `<div style="color:${col}; font-weight:700; font-size:14px">⚖️ Budget: ${sc} ${c.ok ? '≤' : '&gt;'} N = ${N} <span style="font-weight:600">· ${verdict}</span></div>
-    <div style="font-size:12px; margin:2px 0">${mapCtl} · Level 1 · ${escapeHtml(rarLabel)}</div>
-    <small style="color:var(--ink-muted)">Score = Max(A, B) = Max(${mA}, ${mB}) = ${sc}. A = (Attack × Health + Skills)${mTxt} = (${A}×${D} + ${S})${mTxt} = ${mA}. B = (2×Attack + Health + Skills)${mTxt} = (2×${A} + ${D} + ${S})${mTxt} = ${mB}. N = 10 + 5×Wait ${d.wait||0} + 4×Lumber ${d.cost||0} + 0.2×map + rarity.${S ? '' : ' Skills = 0.'} Pink means at or below ${Math.round(SB_WELL_UNDER*100)}% of N.</small>`;
+  const cfg = sbLoad(), A = Number(d.attack)||0, D = Number(d.health)||0, S = sbSkillCost(d.effects, cfg), N = sbBudgetAt(d, cfg, 1), M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, M);
+  const rar = (d.rarity || 'common'), rd = RARITY_DEFS.find(r=> r.key === rar), rarLabel = rd ? rd.label : rar[0].toUpperCase() + rar.slice(1), R = sbRarityRank(rar);
+  const W = Number(d.wait)||0, C = Number(d.cost)||0, mTxt = M !== 1 ? ` × ${Math.round(M*1000)/1000}` : '';
+  return `<div style="color:${sbColour(c)}; font-weight:700; font-size:14px">⚖️ Budget: ${c.x1} ${c.r1 ? '&lt;' : '≥'} N ${N} · ${c.x2} ${c.r2 ? '&lt;' : '≥'} (N/3)² ${c.N2} <span style="font-weight:600">· ${sbVerdict(c)}</span></div>
+    <div style="font-size:12px; margin:2px 0">Level 1 · ${escapeHtml(rarLabel)} (rarity ${R}) · Wait ${W} · Lumber ${C}</div>
+    <small style="color:var(--ink-muted)">Both must pass. First: (2×Attack + Health + Skills)${mTxt} = (2×${A} + ${D} + ${S})${mTxt} = ${c.x1} ${c.r1 ? '&lt;' : '≥'} N = ${N}. Second: (Attack × Health + Skills)${mTxt} = (${A}×${D} + ${S})${mTxt} = ${c.x2} ${c.r2 ? '&lt;' : '≥'} (N/3)² = ${c.N2}. ${sbFormulaText(cfg)}.${S ? '' : ' Skills = 0.'} Pink means the first score is at or below ${Math.round(SB_WELL_UNDER*100)}% of N.</small>`;
 }
 function ceBudgetRefresh(d){
   const fa = document.getElementById('fAtk'); if(!fa) return;
   let box = document.getElementById('ceBudget');
-  if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('afterend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:2px 0 10px; font-size:12.5px; line-height:1.5"></div>'); box = document.getElementById('ceBudget');
-    box.addEventListener('change', e=>{ if(e.target.id === 'ceBudgetMap') ceBudgetSel.map = Number(e.target.value)||0; }); }
+  if(!box){ const row = fa.closest('.field-row'); if(!row) return; row.insertAdjacentHTML('afterend', '<div id="ceBudget" class="ce-budget" aria-live="polite" style="margin:2px 0 10px; font-size:12.5px; line-height:1.5"></div>'); box = document.getElementById('ceBudget'); }
   try{ box.innerHTML = ceBudgetHTML(d); }catch(e){ box.textContent = ''; }
 }
 let sbState = {upTo:5, onlyFail:true};
 function renderStatBudget(host){
   const cfg = sbLoad(), defs = getCardDefs(), ids = cardCheckPool(sbState.upTo);
-  const rows = ids.map(id=>{ const d = defs[id], S = sbSkillCost(d.effects, cfg), N = sbBudget(d, cfg), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, cfg.mode, M); return {id, d, S, N, A, D, M, c, fit: c.ok ? null : sbFit(d, S, N, cfg.mode, M)}; });
-  const fails = rows.filter(r=> !r.c.ok), shown = sbState.onlyFail ? fails : rows;
+  const rows = ids.map(id=>{ const d = defs[id], S = sbSkillCost(d.effects, cfg), lv = cardBaseLevel(d), N = sbBudgetAt(d, cfg, lv), A = d.attack||0, D = d.health||0, M = sbMissMult(d, cfg), c = sbCheck(A, D, S, N, M); return {id, d, S, lv, N, A, D, M, c, fit: c.ok ? null : sbFit(d, S, N, M)}; });
+  const fails = rows.filter(r=> !r.c.ok), pinks = rows.filter(r=> r.c.wellUnder), shown = sbState.onlyFail ? fails : rows;
+  const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], inp = (id, k, step)=> `<input type="number" ${step ? `step="${step}"` : ''} id="${id}" value="${g(k)}" class="w-60">`;
   host.innerHTML = `<h2>⚖️ Stat budget</h2>
-    <p class="panel-sub">Budget v2. Rule: <b>Max(Attack × Health + Skills, 2×Attack + Health + Skills) ≤ N</b>, each score ×${cfg.missMult} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). N = ${cfg.base} + ${cfg.perWait} per Wait + ${cfg.perLumber} per Lumber + ${cfg.perMap} per map number + Level (Level 1 +0 up to N ${cfg.levelTop} at the top level; Level 0 −2) + rarity (+${Math.round((cfg.rarityTop - cfg.base) / (cfg.rarityTopRank||10) * 100) / 100} a step: Common 1, Uncommon 2, Rare 3 … rarity ${cfg.rarityTopRank||10} = N ${cfg.rarityTop}). Bounty costs 0.</p>
-    <div class="cc-controls"><label>Base N <input type="number" id="sbBase" value="${cfg.base}" class="w-60"></label><label>Per Wait <input type="number" id="sbPerWait" value="${cfg.perWait}" class="w-60"></label><label>Per Lumber <input type="number" id="sbLumber" value="${cfg.perLumber}" class="w-60"></label><label>Per map <input type="number" step="0.05" id="sbPerMap" value="${cfg.perMap}" class="w-60"></label>
-      <label>N at top level <input type="number" id="sbLevelTop" value="${cfg.levelTop}" class="w-60"></label><label>N at rarity ${cfg.rarityTopRank||10} <input type="number" id="sbRarityTop" value="${cfg.rarityTop}" class="w-60"></label><label>Half-miss × <input type="number" step="0.05" id="sbMissMult" value="${cfg.missMult}" class="w-60"></label>
-      <button type="button" class="btn small ghost" id="sbResetV2" title="Back to the v2 numbers">Reset to v2</button>
-      <label>Rules <select id="sbMode"><option value="and" ${cfg.mode==='and'?'selected':''}>Both must pass</option><option value="or" ${cfg.mode==='or'?'selected':''}>Either passes</option></select></label>
+    <p class="panel-sub">Budget v3 (2026-10-17). A card passes when <b>both</b> hold: <b>2×Attack + Health + Skills &lt; N</b> and <b>Attack × Health + Skills &lt; (N/3)²</b>. ${escapeHtml(sbFormulaText(cfg))}. Level = the level the card starts at (Base and quest cards 0, rewards 1). Rarity: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11 …; Quest counts as Uncommon. Both scores ×${g('missMult')} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). Bounty costs 0. <span style="color:#2e8b57; font-weight:700">Green</span> within both, <span style="color:#c0392b; font-weight:700">red</span> over either, <span style="color:#d0569a; font-weight:700">pink</span> well under (first score ≤ ${Math.round(SB_WELL_UNDER*100)}% of N).</p>
+    <div class="cc-controls"><label>Base N ${inp('sbBase', 'base')}</label><label>Per Level ${inp('sbPerLevel', 'perLevel')}</label><label>Per rarity step ${inp('sbPerRarity', 'perRarity', '0.1')}</label>
+      <label>Per Wait ${inp('sbPerWait', 'perWait')}</label><label>Per Wait² ${inp('sbPerWait2', 'perWait2', '0.05')}</label><label>Per Lumber ${inp('sbLumber', 'perLumber')}</label><label>Per Lumber² ${inp('sbLumber2', 'perLumber2', '0.05')}</label><label>Half-miss × ${inp('sbMissMult', 'missMult', '0.05')}</label>
+      <button type="button" class="btn small ghost" id="sbResetV3" title="Back to the v3 numbers">Reset to v3</button>
       <label>Up to Map <input type="number" id="sbUpTo" min="0" max="60" value="${sbState.upTo}" class="w-60"></label><label><input type="checkbox" id="sbOnlyFail" ${sbState.onlyFail?'checked':''}> Only over budget</label></div>
     <details><summary>Skill costs (a number; v = its value; -v = a payment, minus its value)</summary><textarea id="sbSkills" rows="4" style="width:100%; font-family:monospace">${escapeHtml(Object.entries(cfg.skills).map(([k, v])=> k + ': ' + v).join(', '))}</textarea><button type="button" class="btn small" id="sbSkillsSave">Save costs</button><span class="panel-sub"> Any other skill costs 1, plus half its number.</span></details>
-    <p class="panel-sub">${fails.length} of ${rows.length} cards over budget.${fails.length ? ' <button type="button" class="btn small primary" id="sbFitAll">Fit all over budget</button>' : ''}</p>
-    <div class="cc-table-wrap"><table class="cc-table"><thead><tr><th>Card</th><th>Rarity</th><th>A/H</th><th>Skills</th><th>N</th><th>(2A+H+S)×m</th><th>(A×H+S)×m</th><th>Fits as</th><th></th></tr></thead><tbody>
-    ${shown.map(r=> `<tr class="${r.c.ok ? '' : 'cc-strong'}"><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.A}/${r.D}</td><td>${r.S}${r.M !== 1 ? ` <small title="Half-miss multiplier">×${Math.round(r.M*1000)/1000}</small>` : ''}</td><td>${r.N}</td><td>${r.c.x1} ${r.c.r1 ? '✓' : '✗'} &lt; ${Math.round((r.N + 2)*10)/10}</td><td>${r.c.x2} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
+    <p class="panel-sub">${fails.length} of ${rows.length} cards over budget · ${rows.length - fails.length - pinks.length} within · ${pinks.length} well under.${fails.length ? ' <button type="button" class="btn small primary" id="sbFitAll">Fit all over budget</button>' : ''}</p>
+    <div class="cc-table-wrap"><table class="cc-table"><thead><tr><th>Card</th><th>Rarity</th><th>Lv</th><th>Wait/Lumber</th><th>A/H</th><th>Skills</th><th>N</th><th>(2A+H+S)×m &lt; N</th><th>(A×H+S)×m &lt; (N/3)²</th><th>Budget</th><th>Fits as</th><th></th></tr></thead><tbody>
+    ${shown.map(r=> `<tr><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.lv}</td><td>${r.d.wait||0}/${r.d.cost||0}</td><td>${r.A}/${r.D}</td><td>${r.S}${r.M !== 1 ? ` <small title="Half-miss multiplier">×${Math.round(r.M*1000)/1000}</small>` : ''}</td><td>${r.N}</td><td>${r.c.x1} ${r.c.r1 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.c.x2} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.c.N2}</td><td style="color:${sbColour(r.c)}; font-weight:800">${sbVerdict(r.c)}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
     </tbody></table></div>`;
   const re = ()=> renderStatBudget(host), num = (id, k)=>{ const el = host.querySelector(id); if(el) el.onchange = ()=>{ const c = sbLoad(); c[k] = Number(el.value)||0; sbSave(c); re(); }; };
-  num('#sbBase', 'base'); num('#sbLumber', 'perLumber'); num('#sbPerMap', 'perMap'); num('#sbPerWait', 'perWait'); num('#sbLevelTop', 'levelTop'); num('#sbRarityTop', 'rarityTop'); num('#sbMissMult', 'missMult');
-  { const rb = host.querySelector('#sbResetV2'); if(rb) rb.onclick = ()=>{ const c = sbLoad(); Object.assign(c, SB_V2_DEFAULTS); sbSave(c); re(); }; }
-  host.querySelector('#sbMode').onchange = e=>{ const c = sbLoad(); c.mode = e.target.value; sbSave(c); re(); };
+  num('#sbBase', 'base'); num('#sbPerLevel', 'perLevel'); num('#sbPerRarity', 'perRarity'); num('#sbPerWait', 'perWait'); num('#sbPerWait2', 'perWait2'); num('#sbLumber', 'perLumber'); num('#sbLumber2', 'perLumber2'); num('#sbMissMult', 'missMult');
+  { const rb = host.querySelector('#sbResetV3'); if(rb) rb.onclick = ()=>{ const c = sbLoad(); Object.assign(c, SB_V3_DEFAULTS); sbSave(c); re(); }; }
   host.querySelector('#sbUpTo').onchange = e=>{ sbState.upTo = Math.max(0, Number(e.target.value)||0); re(); };
   host.querySelector('#sbOnlyFail').onchange = e=>{ sbState.onlyFail = e.target.checked; re(); };
   host.querySelector('#sbSkillsSave').onclick = ()=>{ const c = sbLoad(), out = {}; host.querySelector('#sbSkills').value.split(',').forEach(p=>{ const [k, v] = p.split(':').map(x=> (x||'').trim()); if(k) out[k] = (v === 'v' || v === '-v') ? v : Number(v)||0; }); c.skills = out; sbSave(c); re(); };
@@ -42808,7 +42835,7 @@ const BARK_VOICES = {
   Xenarthran:{base:230, rate:6, wave:'triangle', spread:.14, formant:2.8, drop:.9}, Pinniped:{base:300, rate:10, wave:'sine', spread:.3, formant:2.6, vibrato:5},
   Reptile:{base:200, rate:8, wave:'triangle', spread:.12, formant:3.2, drop:.8}, Amphibian:{base:280, rate:10, wave:'square', spread:.18, formant:2.4, gain:.45},
   Dragon:{base:100, rate:6, wave:'sawtooth', spread:.12, formant:4.2, gain:.65, drop:.75}, Fish:{base:620, rate:12, wave:'sine', spread:.25, formant:2.0, vibrato:9},
-  Mollusc:{base:240, rate:9, wave:'sine', spread:.2, formant:2.8, vibrato:6}, Crustacean:{base:520, rate:15, wave:'square', spread:.15, formant:2.0, gain:.4},
+  Mollusc:{base:240, rate:9, wave:'sine', spread:.2, formant:2.8, vibrato:6}, Echinoderm:{base:200, rate:7, wave:'sine', spread:.18, formant:3.0, vibrato:4} /* 2026-10-17 */, Crustacean:{base:520, rate:15, wave:'square', spread:.15, formant:2.0, gain:.4},
   Cnidarian:{base:700, rate:10, wave:'sine', spread:.3, formant:1.9, vibrato:7}, Cetacean:{base:150, rate:6, wave:'sine', spread:.32, formant:3.0, vibrato:4, drop:1.12},
   Annelid:{base:420, rate:9, wave:'sine', spread:.16, formant:2.2, vibrato:5}, Plant:{base:165, rate:6, wave:'sine', spread:.16, formant:3.2, drop:.92},
   Elemental:{base:240, rate:10, wave:'square', spread:.05, formant:2.6, gain:.45}, Undead:{base:170, rate:8, wave:'sawtooth', spread:.1, formant:2.2, vibrato:5, gain:.5},

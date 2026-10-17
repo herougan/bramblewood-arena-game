@@ -23,7 +23,7 @@ YELLOW = PatternFill('solid', fgColor='FFF2CC'); GREY = PatternFill('solid', fgC
 WRAP = Alignment(wrap_text=True, vertical='top')
 
 data = json.loads(subprocess.check_output(['node', os.path.join(ROOT, 'tools', 'cardplan', 'extract_skills.js')]))
-SKILLS, BUDGET, HALF_MISS, V2 = data['skills'], data['budget'], data.get('halfMiss', []), data.get('v2', {})
+SKILLS, BUDGET, HALF_MISS, V3 = data['skills'], data['budget'], data.get('halfMiss', []), data.get('v3', {})
 LABEL = {s['key']: s['label'] for s in SKILLS}; ICON = {s['key']: s['icon'] for s in SKILLS}
 cards = json.load(open(os.path.join(ROOT, 'canonical', 'cards.json')))
 CARD = {c['id']: c for c in cards}
@@ -65,31 +65,31 @@ ws = wb.create_sheet('Skill N values', index=wb.sheetnames.index('Skill curricul
 use = collections.Counter(k for c in cards for k in (c.get('effects') or {}))
 def counted(key, kind):
     w = BUDGET.get(key)
-    if key in HALF_MISS: return f'Costs {w if w is not None else 0}: instead the card\'s whole score is ×{V2.get("missMult", 1.5)} (attacks miss it, or by it, about half the time)'
+    if key in HALF_MISS: return f'Costs {w if w is not None else 0}: instead the card\'s whole score is ×{V3.get("missMult", 1.5)} (attacks miss it, or by it, about half the time)'
     if key == 'bounty': return 'Costs 0: Bounty pays both players (the one who plays it, and the other side when it dies)'
     if w == 'v': return f'By its number: {LABEL.get(key, key)} 2 costs 2 (at least 1; two-number values add up)'
     if isinstance(w, (int, float)): return f'Fixed: costs {w} whatever its number' if kind != 'flag' else f'Fixed: costs {w}'
     return 'Not in the table: costs 1' + ('' if kind == 'flag' else ', plus half its number (rounded down) when over 1')
 ws.append(['Skill N values: what each skill costs in the stat budget'])
-ws.append(['Rule (Test Lab ⚖️ Stat budget, v2): (2×Attack + Health + Skills) < N + 2 and (Attack × Health + Skills) < N. Skills is the sum of the costs below. See the Budget v2 legend for N.'])
+ws.append(['Rule (Test Lab ⚖️ Stat budget, v3, 2026-10-17): (2×Attack + Health + Skills) < N and (Attack × Health + Skills) < (N/3)², both must pass. Skills is the sum of the costs below. See the Budget v3 legend for N.'])
 ws.append(['Fill the yellow "Your N" column: a number (the skill always costs that much) or v (it costs its own number, e.g. Poison 2 = 2). Leave it empty to keep the current weight. Then run: python3 tools/cardplan/import_skill_n.py'])
 ws.append(['Kind: flag = on or off · number = it has a value (Poison 2) · trigger = a bundled When … do … skill. Blue text = values you type.'])
 ws.append(['Example', '⚡', 'Quick', 'flag', 'boolean', 2, 'Fixed: costs 2', 3, 'Example only (this row is not read): Quick would cost 3 instead of 2.'])
 ws.append([])
-# Budget v2 legend (2026-10-14, user: "Balancing formula v2: N=10 base. Each Wait gives 5 bonus points. Any skill with about a 1/2 miss
-# chance gives a ×1.5 multiplier ... Max level N=20; rarity 10 N=30. Each map +0.2 (Map 40 → N=38)." and "Each lumber increases your
-# budget by 4. If you have bounty, that is worth 0.")
-b, rt, rr = V2.get('base', 10), V2.get('rarityTop', 30), V2.get('rarityTopRank', 10)
-LEG = [('Budget v2', 'What N is made of (the same numbers as the game\'s Test Lab and card editor)'),
+# Budget v3 legend (2026-10-17, user: "The N formula is changed. Now A*2 + B + Skills < N and A*B + Skills < (N/3)^2 And N is now
+# 20 + L*2 + Rarity + Wait * 6 + 0.5 * Wait^2 + Lumber * 4 + 0.4 * Lumber^2. Base Rarity defined as 0, Common as 1, and onwards.")
+# Replaces the v2 legend (N = 10 + 5×Wait + 4×Lumber + 0.2×map + level part + rarity part); the map term is gone.
+v3g = lambda k, d: V3.get(k, d)
+b = v3g('base', 20)
+LEG = [('Budget v3', 'What N is made of (the same numbers as the game\'s Test Lab and card editor)'),
        ('Base', f'N starts at {b}'),
-       ('Wait', f'+{V2.get("perWait", 5)} per Wait'),
-       ('Lumber', f'+{V2.get("perLumber", 4)} per Lumber it costs'),
-       ('Map', f'+{V2.get("perMap", 0.2)} per map number (Map 40: +{round(40 * V2.get("perMap", 0.2), 1)})'),
-       ('Level', f'Level 1 adds 0, the top level (10) brings N to {V2.get("levelTop", 20)} (+{V2.get("levelTop", 20) - b}), straight line between; Level 0 is −2'),
-       ('Rarity', f'+{round((rt - b) / rr, 2)} per rarity step (Starter 0, Common 1, Uncommon 2, Rare 3 … Mythic {rr}): rarity {rr} brings N to {rt}, never more. Quest and special rarities count as the tier they stand for'),
-       ('Half-miss ×', f'The card\'s scores are ×{V2.get("missMult", 1.5)} for each of: {", ".join(HALF_MISS)} (they cost 0 themselves). A 2/5 Evasive card: (4+5)×1.5 = 13.5 and 2×5×1.5 = 15'),
+       ('Level', f'+{v3g("perLevel", 2)} per level (the Test Lab uses the level the card starts at: Base and quest cards 0, rewards 1; the card editor Level 1)'),
+       ('Rarity', f'+{v3g("perRarity", 1)} per rarity step: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11, Divine 12, Void 13, Daemonic 14. Quest and special rarities count as the tier they stand for'),
+       ('Wait', f'+{v3g("perWait", 6)}×Wait + {v3g("perWait2", 0.5)}×Wait²'),
+       ('Lumber', f'+{v3g("perLumber", 4)}×Lumber + {v3g("perLumber2", 0.4)}×Lumber²'),
+       ('Half-miss ×', f'Both scores are ×{v3g("missMult", 1.5)} for each of: {", ".join(HALF_MISS)} (they cost 0 themselves)'),
        ('Bounty', 'Costs 0: it pays the player who plays it and, when it dies, the other side'),
-       ('Formula', f'N = {b} + {V2.get("perWait", 5)}×Wait + {V2.get("perLumber", 4)}×Lumber + {V2.get("perMap", 0.2)}×map + level part + rarity part')]
+       ('Formula', f'N = {b} + {v3g("perLevel", 2)}×Level + Rarity + {v3g("perWait", 6)}×Wait + {v3g("perWait2", 0.5)}×Wait² + {v3g("perLumber", 4)}×Lumber + {v3g("perLumber2", 0.4)}×Lumber². Pass: 2A+H+S < N and A×H+S < (N/3)²')]
 for k, v in LEG: ws.append([k, None, v])
 LEG0 = ws.max_row - len(LEG) + 1
 ws.append([])
@@ -187,9 +187,9 @@ for g, ic, nm, v, n, sg in detail:
 fr.append([])
 fr.append(['Proposed subfactions (design only, not in the game yet)'])
 fr.cell(fr.max_row, 1).font = Font(name=F, bold=True, size=12)
-fr.append(['Stats are set from the stat budget at Level 1 with no map bonus: N = 8 + rarity step (Common 1, Uncommon 2, Rare 4) + 1. Skills = the budget cost of the card\'s skills (Skill N values sheet).'])
+fr.append(['Stats checked against the stat budget v3 (2026-10-17) at Level 1: N = 20 + 2×Level + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² (Common 1, Uncommon 2, Rare 3). Skills = the budget cost of the card\'s skills (Skill N values sheet).'])
 fr.cell(fr.max_row, 1).font = SUB
-fr.append(['Subfaction', 'Theme', 'Signature skills', 'Card', 'Animal', 'Rarity', 'Lumber', 'Wait', 'Attack', 'Health', 'Skills on the card', 'Skill cost', 'N', '2A+H+S < N+2', 'A×H+S < N', 'Flavour'])
+fr.append(['Subfaction', 'Theme', 'Signature skills', 'Card', 'Animal', 'Rarity', 'Lumber', 'Wait', 'Attack', 'Health', 'Skills on the card', 'Skill cost', 'N', '2A+H+S < N', 'A×H+S < (N/3)²', 'Flavour'])
 H3 = fr.max_row
 for c in fr[H3]: c.font = HDR; c.fill = HFILL; c.alignment = WRAP
 SUBF = [
@@ -205,9 +205,10 @@ SUBF = [
 ]
 for (sf, theme, sig, cardn, animal, rar, lum, wait, a, h, sk, s, step, flav) in SUBF:
     fr.append([sf, theme, sig, cardn, animal, rar, lum, wait, a, h, sk, s, None, None, None, flav]); r = fr.max_row
-    fr.cell(r, 13).value = f'=8+{step}+1'
-    fr.cell(r, 14).value = f'=IF(2*I{r}+J{r}+L{r}<M{r}+2,"✓ "&(2*I{r}+J{r}+L{r})&" < "&(M{r}+2),"✗ over")'
-    fr.cell(r, 15).value = f'=IF(I{r}*J{r}+L{r}<M{r},"✓ "&(I{r}*J{r}+L{r})&" < "&M{r},"✗ over")'
+    rank = {'Common': 1, 'Uncommon': 2, 'Rare': 3}.get(rar, 1)  # v3 (2026-10-17): the rarity rank, not v1's step
+    fr.cell(r, 13).value = f'={v3g("base", 20)}+{v3g("perLevel", 2)}*1+{rank}+{v3g("perWait", 6)}*H{r}+{v3g("perWait2", 0.5)}*H{r}^2+{v3g("perLumber", 4)}*G{r}+{v3g("perLumber2", 0.4)}*G{r}^2'
+    fr.cell(r, 14).value = f'=IF(2*I{r}+J{r}+L{r}<M{r},"✓ "&(2*I{r}+J{r}+L{r})&" < "&M{r},"✗ over")'
+    fr.cell(r, 15).value = f'=IF(I{r}*J{r}+L{r}<(M{r}/3)^2,"✓ "&(I{r}*J{r}+L{r})&" < "&ROUND((M{r}/3)^2,1),"✗ over")'
     for c in fr[r]: c.font = BODY; c.alignment = WRAP
     fr.cell(r, 1).font = BOLD
 for col, w in zip('ABCDEFGHIJKLMNOP', (30, 46, 40, 16, 18, 10, 8, 7, 8, 8, 30, 9, 7, 14, 12, 44)): fr.column_dimensions[col].width = w
