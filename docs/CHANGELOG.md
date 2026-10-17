@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-17 (shiny and review)
+- **A Shiny card stays Shiny on the board.** Playing a Shiny (or skinned) copy used to land it plain: the board unit gets a new id, and the look stayed behind with the card's id in your hand. The look now moves with the card when you play it (and when Auto-play plays it), so the board unit, its flight from your hand, its zoomed details and its death all wear it. The units it spawns are Shiny too again.
+- **No Pass after the match.** Once a match is won or lost, Pass (and Auto-play and the field kit) is gone from the results and from the board you stay to look over; the next match brings them back.
+
 ## 2026-10-17 (art)
 - **Field art for every field effect** (NightCafe, Flux 2 Klein 9B Fast, 16-bit pixel scenes like the rest of `art/fields/`):
   - New: Tide (Flood/Ebb), Landslide, Consternation, Crushing Depths, Rook's Row, Bishop's Path, Mirage, High Canopy, Undergrowth, Tall Grass, Leylines (I–III share it).

@@ -4929,7 +4929,8 @@ function fullCardHTML(defId, liveCard, opts){
   const visualDef = liveCard ? {...d, attack: effAtk, health: Math.max(0, liveCard.hp)} : d;
   // 2026-10-12 (user: "Why is the card in the tooltip greyed out?"): the big preview always shows the card in full colour; not
   // owning it isn't a reason to grey out the very card you asked to look at (enemy decks, rewards, the Codex).
-  const visualHTML = `<div class="card-pop-visual">${cardTileHTML(Object.assign({}, visualDef, {locked:false}), {extraClass:'card-pop-visual-tile'})}</div>`;
+  // 2026-10-17: in a fight the big preview wears the hovered copy's own look (opts.lookClass: is-shiny / a skin's tile class)
+  const visualHTML = `<div class="card-pop-visual">${cardTileHTML(Object.assign({}, visualDef, {locked:false}), {extraClass:'card-pop-visual-tile' + (opts.lookClass ? ' ' + opts.lookClass : '')})}</div>`;
   // CSRE (2026-09-20): same zero-cost/zero-wait hiding rule as the card tile itself — no bare
   // "🪙0" or "⏱0" chip in this stat row, and any Grace/Devilry cost is folded in here too
   // (costBadgeParts) instead of only ever showing gold.
@@ -5130,7 +5131,12 @@ function castleHoverHTML(hqSide){
       if(!el.isConnected) return; // re-rendered away while we waited
       const hqSide = el.getAttribute('data-hq');
       const isHandTile = !!el.closest('[data-handuid]') && !!matchState;
-      const html = /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile});
+      // 2026-10-17 (user: "When I play a shiny card, it should still look shiny on the board!"): the zoomed card in a fight shows the
+      // look the hovered copy wears (Shiny, a skin), read off its own tile, so hand, board and zoom agree.
+      let lookClass = '';
+      if(matchState){ const st = el.closest('.card-tile') || el.querySelector('.card-tile');
+        if(st){ lookClass = [st.classList.contains('is-shiny') ? 'is-shiny' : '', st.classList.contains('has-skin') && st.dataset.skin ? lookTileClass(null, 'skin:' + st.dataset.skin) : ''].filter(Boolean).join(' '); } }
+      const html = /^cond/.test(el.dataset.fieldhover || '') ? fieldCondHoverHTML(el.dataset.fieldhover.slice(5)) : el.dataset.fieldhover ? fieldHoverHTML() : hqSide ? castleHoverHTML(hqSide) : fullCardHTML(el.getAttribute('data-defid'), liveCardFromHoverEl(el), {showPitchYield: isHandTile, lookClass});
       if(!html) return;
       pop.innerHTML = html;
       pop.classList.toggle('show-levels', !!el.closest('.show-levels, #nestGrid, #forgePool'));
@@ -23980,6 +23986,31 @@ function cardLookOf(m, uid, defId){
   for(const key of Object.keys(l)){ if((used[key]||0) < l[key]){ look = key; break; } }
   m.cardLooks[k] = {d: defId, l: look}; return look;
 }
+// Played copies keep their look (2026-10-17, user: "When I play a shiny card, it should still look shiny on the board!"): the engine
+// gives a played card a new uid on the board (makeBoardCard), so the board unit asked cardLookOf under a uid it had never seen, while
+// the hand uid still held the copy's Shiny/skin. With one Shiny copy in the deck the board unit came out plain. The look now moves with
+// the card: the hand uid's look (worked out now if the hand never showed it) goes to the board uid, and the hand uid lets go of it.
+function carryCardLook(m, handUid, boardUid, defId){
+  if(!m || handUid == null || boardUid == null || !defId || !lookModeOk(m)) return '';
+  const look = cardLookOf(m, handUid, defId);
+  delete m.cardLooks[String(handUid)];
+  m.cardLooks[String(boardUid)] = {d: defId, l: look};
+  return look;
+}
+// For plays the engine makes from your hand by itself (Auto-play): match each of your 'play' events to a hand card that left, same card.
+function carryLooksAfterPlays(m, pid, handBefore, events){
+  if(!m || !lookModeOk(m) || pid !== localPid(m) || !Array.isArray(handBefore) || !Array.isArray(events)) return;
+  const pl = m.players && m.players[pid]; if(!pl) return;
+  const side = m.sideOf ? m.sideOf(pid) : (pid === 1 ? 'A' : 'B');
+  const still = new Set((pl.hand || []).map(h=> h.uid)), gone = handBefore.filter(h=> h && !still.has(h.uid));
+  events.forEach(ev=>{
+    if(!ev || ev.type !== 'play' || ev.leader || ev.side !== side || ev.uid == null) return;
+    const looks = m.cardLooks || {};
+    let i = gone.findIndex(h=> h.defId === ev.defId && looks[String(h.uid)]); if(i < 0) i = gone.findIndex(h=> h.defId === ev.defId);
+    if(i < 0) return;
+    const [h] = gone.splice(i, 1); carryCardLook(m, h.uid, ev.uid, ev.defId);
+  });
+}
 function copyGroupsOf(id){
   const copies = myCardCopies[id] || [], groups = new Map();
   copies.forEach(c=>{ const k = c && c.foil ? (c.finish || 'auto') : 'plain'; if(!groups.has(k)) groups.set(k, {key:k, copy:c, n:0}); groups.get(k).n++; });
@@ -25125,7 +25156,9 @@ function renderMatchUI(){
       <div class="discardzone graveyard-pile hq-tile ${holdingCard && pitchAllowedIn(m)?'is-holding':''}" id="dropDiscard" title="${escapeAttr(pitchAllowedIn(m) ? discardZoneTitle(holdingCard ? (me.hand.find(c=>c.uid===m.selectedUid)||{}).defId : null) : 'Your Graveyard: units that fall end up here.')}">${holdingCard && pitchAllowedIn(m) /* 2026-10-12 (user: "During the periods where I cannot Pitch for lumber, do not put the +1 lumber in the Graveyard and just call it graveyard") */
         ? `<span class="dz-ico">🗑</span><span>Discard</span><span class="dz-sub">${(()=>{ const hc = me.hand.find(c=>c.uid===m.selectedUid); return hc ? pitchYieldPreviewHTML(hc.defId) : ''; })()}</span>`
         : `<span class="dz-ico">💀</span><span>Graveyard</span><span class="dz-sub">${me.graveyard.length}</span>`}</div>
-      ${!showPassOverlay && !isSandbox ? `<!-- 2026-10-17 (user: "Pass on the right of Discard."): now after the Graveyard/Discard pile, at the row's right end.
+      ${!showPassOverlay && !isSandbox && !m.over ? `<!-- 2026-10-17 (user: "Pass on the right of Discard."): now after the Graveyard/Discard pile, at the row's right end.
+           2026-10-17 (user: "Remove the pass button when i do post-battle analysis. since i already won."): gone once the match is
+           over (won or lost), on the results and while you look over the board after; the next match renders it again.
            2026-10-16 (user: "Move the pass turn button to the same row as the deck, centered, then simplify to just "Pass". Then
            make it look more squarish - decrease the corner radius."): it sits in the deck's row, centred in the room before the
            Graveyard (on a phone, between the Deck and the Graveyard), and just says Pass. -->
@@ -28509,6 +28542,9 @@ async function playCardByUid(uid, side, dropPoint, popts){
   // 2026-10-16 (user: "Sometimes the battle gets stuck ..."): from here the card is on the board in the engine, so the turn must be
   // committed whatever a log line or effect below does (fightSafe), or "played this turn" is left set with no round coming.
   const isFieldPlay = events.some(ev=> ev.type==='fieldSet');
+  // 2026-10-17 (user: "When I play a shiny card, it should still look shiny on the board!"): the board unit's uid is new, so the copy's
+  // look moves from the hand uid to it before anything renders it (carryCardLook).
+  if(activePid === localPid(m)) try{ const pe = events.find(ev=> ev.type==='play' && !ev.leader); if(pe) carryCardLook(m, uid, pe.uid, pe.defId); }catch(e){}
   if(!isFieldPlay && m.players[activePid] && m.players[activePid].playedThisTurn){ m._needsCommit = true; m._needsCommitAt = performance.now(); }
   fightSafe(()=> SoundKit.play());
   if(m.selectedUid===uid) m.selectedUid = null;
@@ -28957,7 +28993,9 @@ async function autoplayStep(){
   if(document.querySelector('.coach-tip.is-blocking, #npcPromptOverlay:not([hidden]), .dialogue-overlay:not([hidden])')) return;
   m._autoBusy = true;
   try{ const me = m.players[1];
-    if(!me.playedThisTurn){ const ev = []; m.engine.aiTakeTurn(m.players, m.sideOf, 1, m.stats, ev); ev.forEach(e=>{ try{ pushLog(e); renderVfxForEvent(e); }catch(_){} }); renderBoard(); renderHand(); renderHUD(); await sleep(Math.round(500 / Math.max(1, m.speedMult||1))); }
+    if(!me.playedThisTurn){ const ev = [], handBefore = (me.hand || []).map(h=> ({uid:h.uid, defId:h.defId})); m.engine.aiTakeTurn(m.players, m.sideOf, 1, m.stats, ev);
+      try{ carryLooksAfterPlays(m, 1, handBefore, ev); }catch(e){} // 2026-10-17: an auto-played Shiny/skinned copy keeps its look (carryCardLook)
+      ev.forEach(e=>{ try{ pushLog(e); renderVfxForEvent(e); }catch(_){} }); renderBoard(); renderHand(); renderHUD(); await sleep(Math.round(500 / Math.max(1, m.speedMult||1))); }
     if(matchState === m && m.autoplay && !m.over && !m.resolving) await afterPlayerAction(1);
   }catch(e){} finally{ m._autoBusy = false; }
 }
@@ -33346,6 +33384,9 @@ function handFlightSec(leader){
 function handFlightProxy(el, uid, origin){
   if(!el || !origin || !hasGsap() || reducedMotion()) return false;
   const tile = el.querySelector('.card-tile'); if(!tile) return false;
+  // 2026-10-17: skins reach board tiles from applySkinClasses on the next frame, after this copy is taken; dress the tile first so the
+  // flying card wears the copy's skin too (its Shiny comes in boardCardHTML's markup).
+  try{ applySkinClasses(el); }catch(e){}
   const w0 = tile.offsetWidth, h0 = tile.offsetHeight; if(!w0 || !h0) return false;
   const leader = !!origin.leader, fl = handFlightSec(leader);
   const p = tile.cloneNode(true); p.removeAttribute('id'); p.querySelectorAll('[id]').forEach(n=> n.removeAttribute('id'));
