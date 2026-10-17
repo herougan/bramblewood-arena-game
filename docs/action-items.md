@@ -22,6 +22,25 @@ _Updated 2026-10-16, 07:00. Everything from your notes up to 04:58 today is buil
 | Rename | Cataphract Destrier → "Gilded Roadwarden"? And an optional "come back later" roadside fight (in the changelog notes) |
 | Dark Summon ⛧ badge | Removed from Devilry-framed cards with the archetype mark (the text still says it). Keep it off? |
 
+**Your calls from the 10-16 / 10-17 evening batches:**
+
+| Item | Question |
+|---|---|
+| Stomping Grounds filters | That page has no filter or card list, so the Armoury's card pool got the "keep filters" fix. Which page did you mean? |
+| Death fall | The card still tips backwards on its bottom edge, now one smooth ease-in motion. Say if the direction itself should change |
+| Voice lines default | "Leaders only", so most new Heroic+ barks stay quiet until set to On |
+| Swamp Fever | Placed on Maps 5–6 by me (from the old proposal); you never placed it |
+| Slippery | Set to 30% on 17-A-2 instead of 50% |
+| Leaders with no home | Gannet Queen and Old Snapjaw as leader rewards for 3-7 / 5-7? The Triumvirate for the Map 20 final boss? |
+| Map 19 volcano cycle | Ashen Spurn has the ash biome but not the 4-day/2-night cycle. Add it? |
+| Perma-tide name | High Water (pick), Floodplain or Endless Flood |
+| First Blood | Make it a Quick-hunter passive "Quickdraw N" instead of a field rule? |
+| Chess monsters | Rook Beetle (3/6 Armor 1 Pierce 1) and Bishop Mantis (2/4 Fork + Backstab 1) for Map 12? |
+| Reflect | Reworked to bounce shots (the old melee-reflect % is gone; Thorns/Spiteful cover melee) |
+| Crab Claws | Hits the castle when nobody is left or right (was: straight ahead) |
+| Nest prices | Nests #2–#7 at Maps 5/10/15/20/25/30, built for 150+40 … 4000+900 Maple+Dust (my numbers) |
+| Daily dungeon keys | Key taken on start, given back on a win; a loss loses it and restarts the climb at floor 1 |
+
 **Your picks:**
 
 | Item | Where |

@@ -98,7 +98,7 @@ ok(/\{key:'chilli', category:'evergreen', label:'Chilli', kind:'number', min:1, 
 ok(/const ONE_OFF_SKILLS = \['coffee', 'chilli', 'banana', 'bananarang', 'durian', 'rabid', 'supremeTide', 'smokeBomb', 'avalanche', 'earthquake', 'tornado', 'crepuscular', 'scatterbrained', 'meteor'\];/.test(src), '5. the one-offs');
 ok(!/key:'hurricane'/.test(src), '5. (there is no Hurricane skill yet)');
 ok(/oneOff:p\.oneOff,/.test(src) && !/\$\{x\.oneOff \? ' · one-off' : ''\}/.test(src) && /\$\{oneOffTagHTML\(s\)\}\$\{valueHtml\}/.test(src), '5. the skill picker tags one-offs (a tag beside the row, not in the name: 2026-10-16)');
-ok(/<b>\$\{escapeHtml\(p\.label\)\}<\/b>\$\{oneOffTagHTML\(p\)\}/.test(src), '5. ...and so does the Skills codex');
+ok(!/<b>\$\{escapeHtml\(p\.label\)\}<\/b>\$\{oneOffTagHTML\(p\)\}/.test(src), '5. ...but the Skills codex no longer shows it (2026-10-17, user: "Remove the one-off tag in Codex")');
 ok(/function ninthPassVfx\(ev\)/.test(src) && /try\{ ninthPassVfx\(ev\); \}catch\(e\)\{\}/.test(src), 'the Bolt and Chilli effects play in fights');
 const fx = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-skillfx.js'), 'utf8');
 ok(/Object\.assign\(root\.SkillFX, \{boltGlob, chilliHeat, bloodlustPulse, BOLT_LOOK\}\);/.test(fx) && ['fire', 'acid', 'poison', 'ice', 'shock'].every(k=> new RegExp(`\\n  ${k}: +\\{core:`).test(fx)), 'SkillFX.boltGlob (one look per element) and chilliHeat');

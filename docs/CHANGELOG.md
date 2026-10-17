@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-17 (21:45)
+- **Final check of the evening batches:** the full test suite was run once over everything merged today. Fixes from it: seven Map 22–24 fight decks now meet the Maps 21–40 rule (at least a quarter Rare or better), "Arrows (count)" is named Arrow Count, and the tests follow the Codex losing its one-off tag.
+
 ## 2026-10-17 (new skills on cards)
 - **Today's skills are on the Map 22–24 cards** (each still on its stat budget at Level 1):
   - **Vanguard 1:** War Elephant (51 ≤ 51.6), Testudo Tortoise (35 ≤ 38.6), Marshal Tuskwell (boss).
