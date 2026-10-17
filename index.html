@@ -10160,6 +10160,31 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .pack-item:hover:not(:disabled), .pack-item:focus-visible{border-color:var(--surface-border); background:rgba(127,127,127,.12);}
 .pack-item:disabled{opacity:.45; cursor:not-allowed;}
 .pack-ico{font-size:24px; text-align:center;} .pack-txt{display:flex; flex-direction:column; min-width:0;} .pack-txt small{opacity:.75; font-size:12px;} .pack-n{font-weight:800; font-variant-numeric:tabular-nums;}
+/* 2026-10-17 (user: "Using the field kit item should have some UIUX feedback"): the pack's count ticks down with a bounce and
+   it greys out with a ✓ once used; an item that can't be used is greyed with its reason (pressing it shakes and says why); the
+   item flies from the pack to its target(s), lands with a ring in its colour and a number, and a callout over the board says
+   what it did (useItem / itemFlight / itemLanded / itemCallout). */
+.hud-pack{position:relative;} .hud-pack-n{display:inline-block; font-variant-numeric:tabular-nums;}
+.hud-pack.is-used{opacity:.72;} .hud-pack.is-used .hud-pack-n{opacity:.6;}
+.hud-pack-used{position:absolute; right:-6px; top:-7px; width:17px; height:17px; border-radius:50%; background:#3fbf5a; color:#fff; font-size:10px; font-weight:900; line-height:1; display:flex; align-items:center; justify-content:center; box-shadow:0 1px 3px rgba(0,0,0,.45);}
+.hud-pack.is-bump{animation:packBump .5s cubic-bezier(.2,1.6,.4,1);} .hud-pack.is-bump .hud-pack-n{animation:packTick .45s ease-out;}
+@keyframes packBump{0%{transform:scale(1);} 30%{transform:scale(1.3) rotate(-7deg);} 62%{transform:scale(.94) rotate(3deg);} 100%{transform:none;}}
+@keyframes packTick{0%{transform:translateY(-9px); opacity:0;} 100%{transform:none; opacity:1;}}
+.pack-pop-why{margin:0; padding:6px 9px; border-radius:9px; background:rgba(63,191,90,.15); font-size:12.5px; line-height:1.35;}
+.pack-item.is-blocked{opacity:.62; cursor:not-allowed;} .pack-item.is-blocked .pack-ico{filter:grayscale(.85);}
+.pack-txt .pack-why{color:#d9573a; opacity:1; font-weight:700;}
+.pack-item.is-shake{animation:packShake .4s;}
+@keyframes packShake{20%,60%{transform:translateX(-4px);} 40%,80%{transform:translateX(4px);}}
+.item-fly{position:fixed; left:0; top:0; width:36px; height:36px; z-index:9500; pointer-events:none; font-size:28px; line-height:36px; text-align:center; will-change:transform; filter:drop-shadow(0 0 7px var(--ik)) drop-shadow(0 3px 3px rgba(0,0,0,.45));}
+.item-hit-ring{position:absolute; left:50%; top:50%; width:110%; aspect-ratio:1; border-radius:50%; transform:translate(-50%,-50%) scale(.2); border:3px solid var(--ik); box-shadow:0 0 18px var(--ik), inset 0 0 14px var(--ik); opacity:.95; pointer-events:none; animation:itemRing .65s ease-out forwards;}
+@keyframes itemRing{to{transform:translate(-50%,-50%) scale(1.15); opacity:0;}}
+.item-hit{animation:itemHitGlow .7s ease-out;}
+@keyframes itemHitGlow{0%{filter:brightness(1.55) drop-shadow(0 0 12px var(--ik));} 100%{filter:none;}}
+.item-callout{position:fixed; z-index:9400; display:flex; align-items:center; gap:10px; padding:8px 16px 8px 10px; border-radius:14px; background:rgba(28,20,14,.93); color:#fff6e0; border:2px solid var(--ik); box-shadow:0 0 0 3px rgba(0,0,0,.25), 0 0 24px var(--ik), 0 12px 26px rgba(0,0,0,.45); pointer-events:none; max-width:min(420px, calc(100vw - 16px)); animation:itemCalloutIn .38s cubic-bezier(.2,1.5,.4,1) backwards; transition:opacity .35s, transform .35s;}
+.item-callout .ic-ico{font-size:30px; line-height:1;} .item-callout .ic-txt{display:flex; flex-direction:column; min-width:0;} .item-callout b{font-family:'Baloo 2',system-ui,sans-serif; font-size:16px; line-height:1.15;} .item-callout small{font-size:13px; opacity:.92;}
+.item-callout.is-out{opacity:0; transform:translateY(-10px);}
+@keyframes itemCalloutIn{from{opacity:0; transform:scale(.7) translateY(8px);} to{opacity:1; transform:none;}}
+@media (prefers-reduced-motion: reduce){ .item-callout, .hud-pack.is-bump, .hud-pack.is-bump .hud-pack-n, .item-hit, .item-hit-ring, .pack-item.is-shake{animation:none;} .item-hit-ring{display:none;} }
 .se-deck-stacks .se-stack{width:58px;} .se-deck-stacks .card-tile{width:100% !important;}
   /* Dungeon waves (2026-10-11) */
   .dungeon-chip{position:fixed; top:10px; left:50%; transform:translateX(-50%); z-index:60; pointer-events:none;
@@ -10335,6 +10360,39 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   .inv-cell{display:grid; grid-template-columns:auto 1fr; grid-template-rows:auto auto; column-gap:8px; align-items:center; padding:8px 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2, rgba(0,0,0,.03));}
   .inv-ico{grid-row:1 / span 2; font-size:26px; display:flex; align-items:center;} .inv-ico svg{width:24px; height:24px;}
   .inv-n{font-size:18px; line-height:1;} .inv-label{grid-column:2; font-size:12.5px; opacity:.85; text-transform:none !important; letter-spacing:0 !important;} .inv-cell small{grid-column:2; opacity:.6; font-size:11px;}
+  /* The traveller's camp shelf (2026-10-17, user: "Any background we can use here?"): dark pixel planks, a vine of leaves and
+     berries along the top and warm lantern light from above (pixel art from tools/art/make_inventory_art.py), the page's sign
+     like the Nest's, and each shelf (panel) resting on a plank ledge. Drawn on ::before so image-rendering:pixelated stays off
+     the page's own art. */
+  :root{ --inv-satchel: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAABnklEQVR42mNgoDFgJEaRrJT0f1xyj589ZaTIAlkp6f9mmtJY5UJdjRlKJ23CawkTKYZLJmWgGM7AwMDQneeH14eMxBh+6vpTBod0D4abx28xPL90j4GBgYFBd/0SuNrLgTE4fcFEjOEMDAwMB2buYGBgYGDw725mYGBgYHBnYIGrN9OUxukLFmyGd+f5MVg7WqCIV+04xHDz+C2GjaW1WH0MddB/dJ/gjIOj+0+g8GE+cEj3YGBgYGDYyfAHLgfzJcEgQg4amA9wWYQOTl1/ijWomAglU/SgIjujyUpJ/681lqNK7m0++wieqjAi+cHbz1QtKphoXRah+GDnt78MDJxcDOrfv2EoLF2Vz8DAwMDw+vBFBgYGBoYFkw9gqLnJyQVlvcduQYebPMPZh58ZVt+E8JEten34IkPlnFMMDAwMDO0pZlgNDlUXwki2LFgLMahCbBbhM5ionIzPIGSXI4KDhDjA5RMGBgaGc4fv4JQb0FSE1QIjWxWyaII5eV++FcP+I0+ompMZ0Qs7SosLZMOx1mj4qj9iAKFGANUBABU/mkPpvoHEAAAAAElFTkSuQmCC); --inv-planks: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABIUlEQVR42mMMstP7zzCAgOX1+y8Ygs/efWGQEuKhjwOIUfTjF4TmYKOexTAzmfAp8gh0gluMy/IfvxCGkQJgZuINgR3r9xFlECUhx0LL+CUmypgYBhgwKkuLDWw21FeWGNAQYPn2/RdVDLr97B2DqpQQyfrITgNvP/1iePvpF8VqmUgxCBkI87ExCPNhJnNbTxui1TIwMDCw4JKAuRxmALHg8PYj1CuKSbGYXDBaDrCQk3Wo6gAuTrYBs/zi3RfEpYHHL78wPH75haqWP375hUGIhwfiAGMHM7yKZcV5GGTFeajqOFlxHoZ3X75AsuHZA6fI9gkuh8EcR0gNTdsD+CweLQeGbnuA3Hp/+LUHAsKdiK4tadIeILXeH20PDNpyAACuKnH/nQHoCAAAAABJRU5ErkJggg==); --inv-garland: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAMCAYAAAADFL+5AAAAw0lEQVR42mNgGIkgtjH5P4zNREgBtSyCgZyl81DEmMw8bP8jY3QFxDiMGItgYEp0EuPN47cYYPYxohty8/gtrJabxSYyfLxzlGFx/VxGdIuwiTMwMDCYedhidcSpHYfhalEcwK9izTAlOokRm+9wOezUjsOMxFgEMwfdoSwwBkRiLlZLnNddYnBmYGBIuHiaEUuw/ydk0QJ90/97GRgY+FWsGdDtYCKUkGAGIVsOA/wq1ii+RBbHZg566I6CUcDAwMAAANDSZyCa/yNVAAAAAElFTkSuQmCC); }
+  #view-inventory.satchel-scene{position:relative; padding:64px clamp(14px,3vw,36px) 30px; border-radius:22px; margin-top:4px; isolation:isolate;}
+  #view-inventory.satchel-scene::before{content:''; position:absolute; inset:0; z-index:0; border-radius:inherit; pointer-events:none; image-rendering:pixelated;
+    background:
+      var(--inv-garland) 0 4px / 128px 48px repeat-x,
+      radial-gradient(ellipse 55% 34% at 50% 0%, rgba(255,214,140,.26), transparent 75%),
+      radial-gradient(ellipse 120% 95% at 50% 40%, transparent 55%, rgba(18,10,6,.6) 100%),
+      var(--inv-planks) 0 0 / 128px 128px repeat,
+      #3d2d22;
+    box-shadow:inset 0 0 0 6px rgba(36,25,18,.92), inset 0 0 0 9px rgba(140,104,62,.42), 0 10px 30px rgba(0,0,0,.35);}
+  #view-inventory.satchel-scene::after{content:attr(data-sign); position:absolute; top:18px; left:50%; transform:translateX(-50%) rotate(-1deg); z-index:2; pointer-events:none; white-space:nowrap;
+    font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:15px; letter-spacing:.04em; color:#2a1d10; padding:4px 16px; border-radius:6px;
+    background:linear-gradient(180deg,#efe2c4,#d5bd8c); border:2px solid #7a5a30; box-shadow:0 6px 10px rgba(0,0,0,.35);}
+  #view-inventory.satchel-scene > *{position:relative; z-index:1;}
+  .satchel-scene .inv-page{gap:24px;}
+  .satchel-scene .inv-sec{margin-bottom:0; box-shadow:0 8px 0 -1px #7a5836, 0 11px 0 -1px #3a2a1c, 0 16px 14px -6px rgba(0,0,0,.55);}
+  /* The Field kit card and its satchel (2026-10-17, user: "The field kit card itself can also have a pack.") */
+  .inv-kit{display:grid; grid-template-columns:auto minmax(0,1fr); gap:4px 18px; align-items:start; outline:2px dashed rgba(122,90,50,.38); outline-offset:-7px;
+    background:radial-gradient(ellipse 50% 90% at 0% 50%, rgba(255,214,140,.22), transparent 70%), var(--surface);}
+  .inv-kit-pack{width:96px; height:96px; margin-top:2px; background:var(--inv-satchel) center / contain no-repeat; image-rendering:pixelated; transform:rotate(-5deg); filter:drop-shadow(0 6px 5px rgba(0,0,0,.35)); transition:transform .25s cubic-bezier(.2,1.6,.4,1);}
+  .inv-kit:hover .inv-kit-pack{transform:rotate(2deg) translateY(-2px);}
+  .inv-kit-body{min-width:0;}
+  .inv-kit .inv-kit-note{margin:12px 0 0 !important;}
+  .inv-kit-src{margin:4px 0 0 !important; font-size:12.5px;}
+  .inv-kit-left{display:inline-block; padding:1px 8px; border-radius:999px; background:rgba(63,191,90,.2); font-size:11.5px; font-weight:800;} .inv-kit-left.is-done{background:rgba(127,127,127,.2); opacity:.85;}
+  .rw-kit-bag{display:inline-block; width:20px; height:20px; background:var(--inv-satchel) center / contain no-repeat; image-rendering:pixelated;}
+  @media (max-width:560px){ #view-inventory.satchel-scene{padding:58px 10px 22px; border-radius:16px;} #view-inventory.satchel-scene::after{font-size:12.5px;}
+    .inv-kit{display:block; position:relative;} .inv-kit-pack{position:absolute; right:12px; top:10px; width:52px; height:52px; margin:0;} .inv-kit h3{padding-right:58px;} }
+  @media (prefers-reduced-motion: reduce){ .inv-kit-pack{transition:none;} }
   .scale-trail{margin:0; padding:0 0 0 4px; list-style:none; display:flex; flex-direction:column; gap:6px;}
   .scale-trail li{display:flex; gap:10px; align-items:flex-start; padding:6px 8px; border-radius:8px; background:rgba(0,0,0,.03);} .scale-trail li.got{background:rgba(200,60,40,.08);}
   .st-ico{font-size:20px;}
@@ -33706,6 +33764,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.none-of-your-units-is-hurt": "None of your units is hurt.",
   "toast.you-have-no-units-on-the": "You have no units on the field.",
   "toast.no-enemy-unit-is-still-waiting": "No enemy unit is still Waiting.",
+  "toast.wait-for-the-round-to-finish": "Wait for the round to finish.",
   "toast.not-enough-maple-leaves-yet": "Not enough Maple Leaves yet.",
   "toast.learned-works-from-your-next-fight": "✦ Learned. Works from your next fight.",
   "toast.learned-still-a-preview-not-in": "✦ Learned. Still a preview: not in fights yet.",
@@ -33787,7 +33846,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.errand-complete-claim-it-on-the": "📜 Errand complete: {title}. Claim it on the Notices.",
   "toast.errand": "📜 Errand: {title} — {v}/{g}",
   "toast.voice-lines": "Voice lines:",
-  "toast.npc-dialogue": "NPC dialogue:"
+  "toast.npc-dialogue": "NPC dialogue:",
+  "results.field-kit-your-first-conquest-wins": "Field kit: your first {of} Conquest wins each day bring an item ({nth} of {of} today). Use it from 🎒 in a skirmish."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -36398,7 +36458,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '2d3f3398d07d', BUILD_CARD_HASH = '0c29854f14e6b5386235913ac1a1b157e970825b4d1d5fb3be77ef9ae45902ce';
+const BUILD_ID = '4af994b0d1af', BUILD_CARD_HASH = '0c29854f14e6b5386235913ac1a1b157e970825b4d1d5fb3be77ef9ae45902ce';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -49184,6 +49244,29 @@ function grantKitItems(n){
   saveItems(o);
   if(got.length) setTimeout(()=>{ try{ showToast(TX('toast.field-kit', {v1: got.map(id=> ITEM_DEFS[id].icon + ' ' + ITEM_DEFS[id].name).join(', ')}), 'ok'); }catch(e){} }, 1200);
   return got;
+}
+// Field-kit items from the road (2026-10-17, user: "How do I earn field kit items as we travel? What about from the first few
+// skirmishes you play a day?"): each of your first SKIRMISH_KIT_PER_DAY Conquest wins on a local day (fights you play, not
+// Sweeps) brings one item, picked at random from the kit with the everyday ones more likely (SKIRMISH_KIT_WEIGHT). Only once
+// the traveller's kit is open; an item already at the cap isn't picked, and a win with every item capped doesn't use up a slot.
+// The day's tally lives in the kit's own save (winDay / winCount).
+const SKIRMISH_KIT_PER_DAY = 3;
+const SKIRMISH_KIT_WEIGHT = {draught:5, kindling:5, scoutmap:4, honeycake:4, whetstone:3, caltrops:3, firepot:2};
+function skirmishKitLeftToday(){
+  if(!featureUnlockedSafe('fieldkit')) return 0;
+  const o = loadItems(); return o.winDay === itemDay() ? Math.max(0, SKIRMISH_KIT_PER_DAY - (o.winCount||0)) : SKIRMISH_KIT_PER_DAY;
+}
+function grantSkirmishKitItem(){
+  if(!featureUnlockedSafe('fieldkit')) return null;
+  const o = loadItems(), today = itemDay();
+  if(o.winDay !== today){ o.winDay = today; o.winCount = 0; }
+  if((o.winCount||0) >= SKIRMISH_KIT_PER_DAY) return null;
+  const pool = Object.keys(ITEM_DEFS).filter(id=> (o.counts[id]||0) < ITEM_CAP);
+  if(!pool.length) return null;
+  const tot = pool.reduce((t, id)=> t + (SKIRMISH_KIT_WEIGHT[id] || 1), 0); let x = Math.random() * tot, pick = pool[pool.length - 1];
+  for(const id of pool){ x -= (SKIRMISH_KIT_WEIGHT[id] || 1); if(x < 0){ pick = id; break; } }
+  o.counts[pick] = (o.counts[pick]||0) + 1; o.winCount = (o.winCount||0) + 1; saveItems(o);
+  return {id: pick, nth: o.winCount, of: SKIRMISH_KIT_PER_DAY};
 }
 const DAILY_QUEST_SLOTS = [0, 0, 0, 6, 12, 18]; // the hour each notice goes up
 const DAILY_QUEST_KINDS = [
@@ -64776,6 +64859,7 @@ async function resolveRoundCore(opts){
           cs.forEach(ch=> addCastleDuplicate(ch.id, 1)); if(cs.length) m.conquestCastleSpare = cs.map(ch=> ch.name).join(', '); } }catch(e){}
       try{ const cd = rollCastleDrop(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node); if(cd){ const ch = CHARACTER_DEFS[cd.id]; m.conquestCastleSpare = (cd.kind === 'new' ? 'New castle: ' : 'Spare: ') + ch.name; } }catch(e){}
       try{ const kb = rollKibble((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, isFirstClear); if(kb){ myCurrencies.kibble = (myCurrencies.kibble||0) + kb; saveCurrencies(); m.conquestKibbleEarned = kb; } }catch(e){}
+      try{ const ki = grantSkirmishKitItem(); if(ki) m.conquestKitItem = ki; }catch(e){} // 🎒 first 3 Conquest wins a day (2026-10-17)
       // Faction packs and Food tokens (2026-10-11).
       try{ const bt = rollBabyRescue((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); if(bt) m.conquestBabyEarned = bt; }catch(e){}
       try{ const sc = rollDragonScale(m.conquestNode.mapId, m.conquestNode.nodeId, rank); if(sc){ m.conquestScaleEarned = sc; setTimeout(()=>{ try{ showToast(TX('toast.a-dragon-scale', {index: sc.index, total: sc.total, line: sc.line}), 'ok'); }catch(e){} }, 1600); } }catch(e){}
@@ -66792,6 +66876,9 @@ function rewardsPanelHTML(m){
   // 2026-10-17: everything else that was its own block (Kibble, Spare castle, Dungeon key, Found) is a chip in the Rewards block.
   const acts = [];
   if(m.conquestKibbleEarned) acts.push(`<span class="rw-act rw-kibble" data-tip="${escapeAttr(TX('results.trains-a-level-0-card-to'))}">${TX('results.kibble-2', {conquestKibbleEarned: m.conquestKibbleEarned})}</span>`);
+  // 2026-10-17: a field-kit item from one of the day's first 3 Conquest wins, with which of the 3 it was.
+  if(m.conquestKitItem && ITEM_DEFS[m.conquestKitItem.id]){ const kd = ITEM_DEFS[m.conquestKitItem.id];
+    acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.field-kit-your-first-conquest-wins', {of: m.conquestKitItem.of, nth: m.conquestKitItem.nth}))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
     acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(ek.name || TX('results.an-egg'))}</span>`); }
   // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
@@ -67353,6 +67440,7 @@ function logText(ev){
     // event) printed the bare word "earthquake"; the result had no line at all.
     case 'earthquake': return ev.landslide ? {cls:'', text:`⛰️ ${nm(ev.defId)} falls in a Landslide: ${ev.amount} damage to the enemy facing it and both its neighbours.`}
       : {cls:'', text:`🌋 ${nm(ev.defId)}'s Earthquake shakes the field: ${ev.amount} damage to every other unit on the ground (Flyers are spared).`};
+    case 'itemUsed': { const d = ITEM_DEFS[ev.item] || {icon:'🎒', name:'an item'}; return {cls: ev.item === 'firepot' || ev.item === 'caltrops' ? '' : 'heal', text:`🎒 You use ${d.icon} ${d.name}: ${itemResultText(ev.item, ev.r)}`}; } // field kit (2026-10-17)
     case 'matchResult': {
       const pc = matchState && matchState.mode === 'pc', why = {surrender:' The enemy surrenders.', cap:' The round limit is reached.', stalled:' Neither side can break through.', raidTime:' The raid’s time is up.'}[ev.reason] || '';
       if(ev.winner === 0) return {cls:'gold', text:`🤝 Draw.${why}`};
@@ -71922,45 +72010,151 @@ function itemCount(id){ return (loadItems().counts[id]||0); }
 function itemsUsableIn(m){ return !!m && !m.over && ITEM_PVE_MODES.has(m.mode) && !m.testKit && featureUnlockedSafe('fieldkit'); }
 function itemsHudHTML(m){
   if(!itemsUsableIn(m)) return '';
-  const c = loadItems().counts, n = Object.keys(ITEM_DEFS).reduce((t, id)=> t + (c[id]||0), 0); if(!n) return '';
+  const c = loadItems().counts, n = Object.keys(ITEM_DEFS).reduce((t, id)=> t + (c[id]||0), 0);
   const used = !!m.itemUsed;
-  return `<button type="button" class="hud-pill hud-pack${used ? ' is-used' : ''}" id="hudPackBtn" title="${used ? 'You have used your item this skirmish' : 'Your field kit: one item a skirmish'}" aria-label="Field kit, ${n} items">🎒 ${n}</button>`;
+  // 2026-10-17 (user: "Using the field kit item should have some UIUX feedback"): the pack stays on the HUD after you use your
+  // item (even the last one), greyed with a ✓, so it can say why it's closed until the next skirmish.
+  if(!n && !used) return '';
+  return `<button type="button" class="hud-pill hud-pack${used ? ' is-used' : ''}" id="hudPackBtn" title="${used ? 'You have used your item this skirmish. The kit opens again next skirmish.' : 'Your field kit: one item a skirmish'}" aria-label="Field kit, ${n} items${used ? ', used this skirmish' : ''}">🎒 <span class="hud-pack-n">${n}</span>${used ? '<span class="hud-pack-used" aria-hidden="true">✓</span>' : ''}</button>`;
 }
+// Why an item can't be used right now (2026-10-17), or '' when it can. The pack lists the reason under a greyed item, and
+// pressing it anyway says it in a toast. 'used' and 'none' are hard stops; the rest are "no target" stops.
+function itemBlockReason(id, m){
+  if(!m || !m.players) return 'used';
+  if(m.itemUsed) return TX('toast.one-item-a-skirmish');
+  if(!(itemCount(id) > 0)) return 'none';
+  if(m.resolving) return TX('toast.wait-for-the-round-to-finish');
+  const me = m.players[1], E = m.engine;
+  if(id === 'draught' && me.hq.hp >= me.hq.maxHp) return TX('toast.your-castle-is-already-at-full');
+  if(id === 'scoutmap' && (!me.deck || !me.deck.length)) return TX('toast.your-deck-is-empty');
+  if(id === 'firepot' && !E.allBoardCards(m.players[2]).some(c=> c.hp > 0 && !c.cageOf)) return TX('toast.there-is-nothing-to-throw-it');
+  if(id === 'honeycake' && !E.allBoardCards(me).some(c=> c.hp > 0 && c.hp < c.maxHp)) return TX('toast.none-of-your-units-is-hurt');
+  if(id === 'whetstone' && !E.allBoardCards(me).some(c=> c.hp > 0 && !c.cageOf)) return TX('toast.you-have-no-units-on-the');
+  if(id === 'caltrops' && !E.allBoardCards(m.players[2]).some(c=> c.hp > 0 && (c.wait||0) > 0)) return TX('toast.no-enemy-unit-is-still-waiting');
+  return '';
+}
+// What an item did, in a few words (the callout over the board and the battle log share it). r: {n, k, dead}.
+function itemResultText(id, r){
+  r = r || {}; const k = r.k || 0, s = k === 1 ? '' : 's';
+  switch(id){
+    case 'draught': return `Your castle heals ${r.n || 0}.`;
+    case 'kindling': return '+1 Lumber.';
+    case 'scoutmap': return `You draw ${r.n || 0} card${r.n === 1 ? '' : 's'}.`;
+    case 'firepot': return `3 fire damage to ${k} enemy unit${s}${r.dead ? ` (${r.dead} burn${r.dead === 1 ? 's' : ''} away)` : ''}.`;
+    case 'honeycake': return `${k} of your unit${s} heal${k === 1 ? 's' : ''} (+${r.n || 0} Health).`;
+    case 'whetstone': return `${k} unit${s} hit +1 on their next swing.`;
+    case 'caltrops': return `${k} enemy unit${s} wait${k === 1 ? 's' : ''} 1 round longer.`;
+  }
+  return (ITEM_DEFS[id] || {}).desc || '';
+}
+const ITEM_TINT = {draught:'#5fd18a', kindling:'#e0a050', scoutmap:'#6fb6e8', firepot:'#ff7a3a', honeycake:'#f2c14e', whetstone:'#cfd6e0', caltrops:'#e05a6a'};
+const ITEM_SOUND = {draught:'healTone', kindling:'woodKnock', scoutmap:'mapUnroll', firepot:'fireIgnite', honeycake:'healTone', whetstone:'buffUp', caltrops:'stunTone'};
 function useItem(id){
-  const m = matchState; if(!itemsUsableIn(m) || m.resolving) return false;
-  if(m.itemUsed){ showToast(TX('toast.one-item-a-skirmish'), 'warn'); return false; }
-  const o = loadItems(); if(!(o.counts[id] > 0)) return false;
-  const me = m.players[1], E = m.engine, defs = getCardDefs(), d = ITEM_DEFS[id];
-  if(id === 'draught'){ if(me.hq.hp >= me.hq.maxHp){ showToast(TX('toast.your-castle-is-already-at-full'), 'warn'); return false; } const h = Math.min(5, me.hq.maxHp - me.hq.hp); me.hq.hp += h; if(m.displayHqHp) m.displayHqHp.A = me.hq.hp; }
-  else if(id === 'kindling'){ if(E.addLumber) E.addLumber(me, 1); else me.lumber = (me.lumber||0) + 1; }
-  else if(id === 'scoutmap'){ if(!me.deck || !me.deck.length){ showToast(TX('toast.your-deck-is-empty'), 'warn'); return false; } E.draw(me, 2, 'A', m.stats, []); }
-  else if(id === 'firepot'){ const foes = E.allBoardCards(m.players[2]).filter(c=> c.hp > 0 && !c.cageOf); if(!foes.length){ showToast(TX('toast.there-is-nothing-to-throw-it'), 'warn'); return false; }
-    foes.forEach(t=>{ const el = boardCardEl(t.uid); E.damageCardFlat(t, 3, 'heat'); if(el){ try{ floatText(el, '🏺-3', 'dmg'); }catch(e){} } });
-    const evs = []; E.removeDeadCards(m.players, m.sideOf, {}, m.stats, evs); evs.forEach(ev=>{ try{ pushLog(ev); renderVfxForEvent(ev); }catch(e){} }); }
-  else if(id === 'honeycake'){ const mine = E.allBoardCards(me).filter(c=> c.hp > 0 && c.hp < c.maxHp); if(!mine.length){ showToast(TX('toast.none-of-your-units-is-hurt'), 'warn'); return false; }
-    mine.forEach(c=>{ const h = Math.min(2, c.maxHp - c.hp); c.hp += h; const el = boardCardEl(c.uid); if(el){ try{ floatText(el, '🍯+' + h, 'heal'); }catch(e){} } }); }
-  else if(id === 'whetstone'){ const mine = E.allBoardCards(me).filter(c=> c.hp > 0 && !c.cageOf); if(!mine.length){ showToast(TX('toast.you-have-no-units-on-the'), 'warn'); return false; }
-    mine.forEach(c=>{ c.inspired = (c.inspired||0) + 1; const el = boardCardEl(c.uid); if(el){ try{ floatText(el, '🪨+1', 'gold'); }catch(e){} } }); }
-  else if(id === 'caltrops'){ const w = E.allBoardCards(m.players[2]).filter(c=> c.hp > 0 && (c.wait||0) > 0); if(!w.length){ showToast(TX('toast.no-enemy-unit-is-still-waiting'), 'warn'); return false; }
-    w.forEach(c=>{ c.wait += 1; const el = boardCardEl(c.uid); if(el){ try{ floatText(el, '📌+1⏳', 'dmg'); }catch(e){} } }); }
+  const m = matchState; if(!itemsUsableIn(m)) return false;
+  const why = itemBlockReason(id, m);
+  if(why){ if(why !== 'none' && why !== 'used'){ showToast(why, 'warn'); try{ SoundKit.deny(); }catch(e){} } return false; }
+  const o = loadItems();
+  const me = m.players[1], E = m.engine, d = ITEM_DEFS[id];
+  // 2026-10-17 (UIUX feedback): the state changes at once (so nothing can slip in between), but the board, hand and castle
+  // number only catch up when the item lands. Where it flies is measured now, before anything is redrawn.
+  const packBtn = document.getElementById('hudPackBtn'), from = packBtn ? packBtn.getBoundingClientRect() : null;
+  const r = {n:0, k:0, dead:0}; let targetUids = [], targetEls = [], deaths = [];
+  if(id === 'draught'){ r.old = me.hq.hp; const h = Math.min(5, me.hq.maxHp - me.hq.hp); me.hq.hp += h; r.n = h; if(m.displayHqHp) m.displayHqHp.A = me.hq.hp; }
+  else if(id === 'kindling'){ if(E.addLumber) E.addLumber(me, 1); else me.lumber = (me.lumber||0) + 1; r.n = 1; }
+  else if(id === 'scoutmap'){ const h0 = me.hand.length; E.draw(me, 2, 'A', m.stats, []); r.n = Math.max(0, me.hand.length - h0); }
+  else if(id === 'firepot'){ const foes = E.allBoardCards(m.players[2]).filter(c=> c.hp > 0 && !c.cageOf);
+    targetUids = foes.map(t=> t.uid); r.k = foes.length;
+    foes.forEach(t=> E.damageCardFlat(t, 3, 'heat'));
+    E.removeDeadCards(m.players, m.sideOf, {}, m.stats, deaths); r.dead = deaths.filter(ev=> ev.type === 'death').length; }
+  else if(id === 'honeycake'){ const mine = E.allBoardCards(me).filter(c=> c.hp > 0 && c.hp < c.maxHp);
+    r.per = {}; mine.forEach(c=>{ const h = Math.min(2, c.maxHp - c.hp); c.hp += h; r.n += h; r.per[c.uid] = h; }); targetUids = mine.map(c=> c.uid); r.k = mine.length; }
+  else if(id === 'whetstone'){ const mine = E.allBoardCards(me).filter(c=> c.hp > 0 && !c.cageOf); mine.forEach(c=>{ c.inspired = (c.inspired||0) + 1; }); targetUids = mine.map(c=> c.uid); r.k = mine.length; }
+  else if(id === 'caltrops'){ const w = E.allBoardCards(m.players[2]).filter(c=> c.hp > 0 && (c.wait||0) > 0); w.forEach(c=>{ c.wait += 1; }); targetUids = w.map(c=> c.uid); r.k = w.length; }
   o.counts[id] -= 1; saveItems(o); m.itemUsed = true;
   try{ SoundKit.pickup(); }catch(e){}
-  showToast(`${d.icon} ${d.name}: ${d.desc}`, 'ok');
-  try{ renderBoard(); }catch(e){} try{ renderHUD(); }catch(e){} try{ renderHand && renderHand(); }catch(e){}
+  // the pack: its count ticks down with a little bounce, and it greys out with a ✓ (used this skirmish)
+  try{ renderHUD(); }catch(e){}
+  if(id === 'draught') try{ updateHqHpDisplay('A', r.old); }catch(e){} // the castle number waits for the draught to land
+  const pb = document.getElementById('hudPackBtn'); if(pb){ pb.classList.remove('is-bump'); void pb.offsetWidth; pb.classList.add('is-bump'); setTimeout(()=> pb.classList.remove('is-bump'), 520); }
+  // targets: the castle (draught), the Lumber pill (kindling), the hand (map), or each card it touches
+  if(targetUids.length) targetEls = targetUids.map(u=> boardCardEl(u)).filter(Boolean);
+  else if(id === 'draught') targetEls = [hqTileEl('A')].filter(Boolean);
+  else if(id === 'kindling') targetEls = [document.getElementById('hudLumberPill') || hqTileEl('A')].filter(Boolean);
+  else if(id === 'scoutmap') targetEls = [document.getElementById('handStrip')].filter(Boolean);
+  const targets = targetEls.map(el=> ({el, rect: el.getBoundingClientRect(), uid: el.dataset ? el.dataset.uid : null}));
+  const land = ()=>{ if(matchState !== m) return; itemLanded(m, id, r, targets, deaths); };
+  const flyMs = itemFlight(id, from, targets.map(t=> t.rect));
+  if(flyMs > 0) setTimeout(land, flyMs); else land();
   return true;
+}
+// The item leaves the pack and arcs to each target (2026-10-17). Returns how long until it lands (0: no flight).
+function itemFlight(id, from, rects){
+  if(!from || !rects.length || reducedMotion() || !fxAtLeast('low')) return 0;
+  const d = ITEM_DEFS[id], sx = from.left + from.width/2, sy = from.top + from.height/2, dur = 440;
+  rects.slice(0, 8).forEach((tr, i)=>{
+    const ex = tr.left + tr.width/2, ey = tr.top + tr.height/2, lift = Math.min(160, 60 + Math.abs(ex - sx) * .25);
+    const f = document.createElement('div'); f.className = 'item-fly'; f.setAttribute('aria-hidden', 'true'); f.textContent = d.icon;
+    f.style.setProperty('--ik', ITEM_TINT[id] || '#ffd36a');
+    document.body.appendChild(f);
+    const mx = (sx + ex)/2, my = Math.min(sy, ey) - lift;
+    const at = (x, y, s, rot)=> `translate(${(x - 18).toFixed(1)}px, ${(y - 18).toFixed(1)}px) scale(${s}) rotate(${rot}deg)`;
+    try{ f.animate([{transform: at(sx, sy, .6, 0), opacity:.0}, {transform: at(sx, sy - 10, 1.15, -8), opacity:1, offset:.12}, {transform: at(mx, my, 1.35, 140), opacity:1, offset:.55}, {transform: at(ex, ey, .9, 330), opacity:1}],
+      {duration: dur, delay: i * 55, easing: 'cubic-bezier(.35,.1,.45,1)', fill: 'both'}); }catch(e){}
+    setTimeout(()=> f.remove(), dur + i * 55 + 30);
+  });
+  return dur + Math.min(rects.length, 8) * 55 - 55;
+}
+// Where it lands (2026-10-17): a ring in the item's colour and a floating number on each target, the board catches up, a
+// callout over the board says what it did, and the battle log gets a line.
+function itemLanded(m, id, r, targets, deaths){
+  const d = ITEM_DEFS[id], tint = ITEM_TINT[id] || '#ffd36a';
+  try{ const s = ITEM_SOUND[id]; if(s && SoundKit[s]) SoundKit[s](); }catch(e){}
+  const floatFor = t=> id === 'draught' ? d.icon + '+' + r.n : id === 'kindling' ? d.icon + '+1' : id === 'scoutmap' ? d.icon + '+' + r.n : id === 'firepot' ? d.icon + '-3'
+    : id === 'honeycake' ? d.icon + '+' + ((r.per && r.per[t.uid]) || 2) : id === 'whetstone' ? '⚔️+1' : '⏳+1';
+  const cls = id === 'firepot' || id === 'caltrops' ? 'dmg' : id === 'whetstone' || id === 'kindling' || id === 'scoutmap' ? 'gold' : 'heal';
+  targets.forEach(t=>{ try{
+    const host = fxHostAt(t.el.isConnected ? t.el : document.body, 1900, t.el.isConnected ? null : t.rect);
+    host.style.setProperty('--ik', tint);
+    const ring = document.createElement('span'); ring.className = 'item-hit-ring'; host.appendChild(ring);
+    floatText(host, floatFor(t), cls);
+    if(t.el.isConnected){ t.el.classList.remove('item-hit'); void t.el.offsetWidth; t.el.style.setProperty('--ik', tint); t.el.classList.add('item-hit'); setTimeout(()=>{ try{ t.el.classList.remove('item-hit'); }catch(e){} }, 700); }
+  }catch(e){} });
+  try{ pushLog({type:'itemUsed', item:id, r:{n:r.n, k:r.k, dead:r.dead}}); }catch(e){}
+  try{ itemCallout(id, itemResultText(id, r)); }catch(e){}
+  const redraw = ()=>{ if(matchState !== m) return; try{ renderBoard(); }catch(e){} try{ renderHUD(); }catch(e){} try{ renderHand && renderHand(); }catch(e){} };
+  const died = (deaths || []);
+  if(died.length){ died.forEach(ev=>{ try{ pushLog(ev); renderVfxForEvent(ev); }catch(e){} }); setTimeout(redraw, 650); }
+  else redraw();
+}
+function itemCallout(id, text){
+  document.querySelectorAll('.item-callout').forEach(e=> e.remove());
+  const d = ITEM_DEFS[id], bf = document.getElementById('battlefieldEl'); if(!d) return;
+  const c = document.createElement('div'); c.className = 'item-callout'; c.setAttribute('role', 'status');
+  c.style.setProperty('--ik', ITEM_TINT[id] || '#ffd36a');
+  c.innerHTML = `<span class="ic-ico" aria-hidden="true">${d.icon}</span><span class="ic-txt"><b>${escapeHtml(d.name)}</b><small>${escapeHtml(text)}</small></span>`;
+  document.body.appendChild(c);
+  const r = bf ? bf.getBoundingClientRect() : {left:0, top:0, width:innerWidth, height:innerHeight};
+  c.style.left = Math.max(8, Math.min(innerWidth - c.offsetWidth - 8, r.left + r.width/2 - c.offsetWidth/2)) + 'px';
+  c.style.top = Math.max(8, r.top + r.height*.5 - c.offsetHeight/2) + 'px';
+  setTimeout(()=> c.classList.add('is-out'), 1700); setTimeout(()=> c.remove(), 2100);
 }
 function openPackPopover(btn){
   let pop = document.getElementById('packPop'); if(pop){ pop.remove(); return; }
   const m = matchState; if(!itemsUsableIn(m)) return;
   const c = loadItems().counts, used = !!m.itemUsed;
-  pop = document.createElement('div'); pop.id = 'packPop'; pop.className = 'pack-pop'; pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Field kit');
+  pop = document.createElement('div'); pop.id = 'packPop'; pop.className = 'pack-pop' + (used ? ' is-used' : ''); pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Field kit');
   // 2026-10-14: only items you hold or have held (see loadInvSeen); "New!" the first time one shows up.
   const seen = loadInvSeen(), vis = invVisible(Object.keys(ITEM_DEFS).map(id=> ({key:'kit:' + id, id, count:c[id]||0})), seen); if(vis.changed) saveInvSeen(seen);
-  pop.innerHTML = `<b class="pack-pop-h">🎒 Field kit <small>${used ? 'used this skirmish' : 'one a skirmish'}</small></b>${vis.list.map(it=>{ const id = it.id, d = ITEM_DEFS[id]; return `<button type="button" class="pack-item ${it.isNew ? 'is-new' : ''}" data-item="${id}" ${(c[id]||0) && !used ? '' : 'disabled'}><span class="pack-ico">${d.icon}</span><span class="pack-txt"><b>${escapeHtml(d.name)}${it.isNew ? ' <span class="inv-new is-inline">New!</span>' : ''}</b><small>${escapeHtml(d.desc)}</small></span><span class="pack-n">×${c[id]||0}</span></button>`; }).join('')}`;
+  // 2026-10-17 (UIUX feedback): an item that can't be used right now is greyed with the reason under it; pressing it says why.
+  // Once this skirmish's item is spent, a line at the top says so and every item is off.
+  pop.innerHTML = `<b class="pack-pop-h">🎒 Field kit <small>${used ? '✓ used this skirmish' : 'one a skirmish'}</small></b>${used ? '<p class="pack-pop-why">You have used your item this skirmish. The kit opens again next skirmish.</p>' : ''}${vis.list.map(it=>{ const id = it.id, d = ITEM_DEFS[id], why = used ? 'used' : itemBlockReason(id, matchState), hard = why === 'used' || why === 'none';
+    return `<button type="button" class="pack-item ${it.isNew ? 'is-new' : ''} ${why ? 'is-blocked' : ''}" data-item="${id}" ${hard ? 'disabled' : why ? 'aria-disabled="true"' : ''}><span class="pack-ico">${d.icon}</span><span class="pack-txt"><b>${escapeHtml(d.name)}${it.isNew ? ' <span class="inv-new is-inline">New!</span>' : ''}</b><small>${escapeHtml(d.desc)}</small>${why && !hard ? `<small class="pack-why">${escapeHtml(why)}</small>` : ''}</span><span class="pack-n">×${c[id]||0}</span></button>`; }).join('')}`;
   document.body.appendChild(pop);
   const r = btn.getBoundingClientRect(); pop.style.left = Math.max(8, Math.min(innerWidth - pop.offsetWidth - 8, r.left + r.width/2 - pop.offsetWidth/2)) + 'px'; pop.style.top = Math.max(8, r.top - pop.offsetHeight - 8) + 'px';
-  pop.addEventListener('click', e=>{ const b = e.target.closest('[data-item]'); if(b && useItem(b.dataset.item)) pop.remove(); });
-  setTimeout(()=> document.addEventListener('pointerdown', function off(e){ if(!pop.contains(e.target) && e.target !== btn){ pop.remove(); document.removeEventListener('pointerdown', off); } }), 0);
+  pop.addEventListener('click', e=>{ const b = e.target.closest('[data-item]'); if(!b) return;
+    if(useItem(b.dataset.item)){ pop.remove(); return; }
+    b.classList.remove('is-shake'); void b.offsetWidth; b.classList.add('is-shake'); setTimeout(()=> b.classList.remove('is-shake'), 420); });
+  setTimeout(()=> document.addEventListener('pointerdown', function off(e){ if(!pop.contains(e.target) && e.target !== btn && !(btn.contains && btn.contains(e.target))){ pop.remove(); document.removeEventListener('pointerdown', off); } }), 0);
 }
 document.addEventListener('click', e=>{ const b = e.target.closest && e.target.closest('#hudPackBtn'); if(b) openPackPopover(b); });
 // ---- Inventory (2026-10-11, user: "Inventory ... need to have a page for this"): everything you hold that isn't a card in a
@@ -72002,13 +72196,17 @@ function renderInventory(){
       // 2026-10-14 (user: "the field kit subtext 'in a fight against...' -> say skirmish instead, and leave some margin between it
       // and the item slots"): skirmish wording; the note sits under the slots with its own top margin (.inv-kit-note).
       const kit = shown(Object.entries(ITEM_DEFS).map(([id, d])=> ({key:id, icon:d.icon, count:ic[id]||0, name:d.name, sub:d.desc})), 'kit');
-      return `<section class="panel inv-sec inv-kit"><h3>🎒 Field kit <small>one item a skirmish · more from daily and weekly rewards · up to ${ITEM_CAP} of each</small></h3>
-      <div class="inv-slots">${slots(kit, 'Nothing in the kit yet. Items come from daily and weekly rewards.')}</div>
-      <p class="panel-sub inv-kit-note">In a skirmish, press 🎒 beside your Lumber to use one. One item a skirmish, and it doesn't use your play.</p></section>`; })() : ''}
+      // 2026-10-17 (user: "The field kit card itself can also have a pack."): the Field kit is a card with the traveller's satchel
+      // (pixel art, .inv-kit-pack) beside the slots, and it says where items come from, including the day's first 3 Conquest wins.
+      const left = skirmishKitLeftToday();
+      return `<section class="panel inv-sec inv-kit"><div class="inv-kit-pack" aria-hidden="true"></div><div class="inv-kit-body"><h3>🎒 Field kit <small>one item a skirmish · up to ${ITEM_CAP} of each</small></h3>
+      <div class="inv-slots">${slots(kit, 'Nothing in the kit yet. Win a Conquest fight to find one.')}</div>
+      <p class="panel-sub inv-kit-note">In a skirmish, press 🎒 beside your Lumber to use one. One item a skirmish, and it doesn't use your play.</p>
+      <p class="panel-sub inv-kit-src">Found on the road: your first ${SKIRMISH_KIT_PER_DAY} Conquest wins each day <b class="inv-kit-left ${left ? '' : 'is-done'}">${left ? `${left} left today` : 'done for today'}</b> · A notices and above · finished weekly tiers</p></div></section>`; })() : ''}
     ${(()=>{ const cap = shown([{key:'capsule', icon:'🔋', count:energyCapsules(), name:'Energy capsule', sub:'+' + ENERGY_CAPSULE_AMOUNT + ' Energy'}], 'en'); return cap.length ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slots(cap, '')}</div></section>` : ''; })()}
     <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-slots">${mat}</div></section>
-    <section class="panel inv-sec"><h3>🪺 In the Nest ${featureUnlockedSafe('nest') ? '<button type="button" class="btn small" data-inv-go="nest">Visit the Nest</button>' : `<small>🔒 the Nest opens on Map ${(FEATURE_SPOTS.find(x=> x.key === 'nest') || {mapNumber:4}).mapNumber}</small>`}</h3>${featureUnlockedSafe('nest') || !nestCells ? '' : `<p class="panel-sub">${escapeHtml(eggNeedsNestNote())}</p>`}<div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
-    <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">Enchant</button></h3><div class="inv-slots">${crystals}</div></section>
+    <section class="panel inv-sec"><h3>🪺 In the Nest ${featureUnlockedSafe('nest') ? '<button type="button" class="btn small" data-inv-go="nest">🪺 Nest</button>' /* 2026-10-17 (user): "🪺 Nest", like "⚒️ Blacksmith" */ : `<small>🔒 the Nest opens on Map ${(FEATURE_SPOTS.find(x=> x.key === 'nest') || {mapNumber:4}).mapNumber}</small>`}</h3>${featureUnlockedSafe('nest') || !nestCells ? '' : `<p class="panel-sub">${escapeHtml(eggNeedsNestNote())}</p>`}<div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
+    <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">💎 Enchant</button></h3><div class="inv-slots">${crystals}</div></section>
     <section class="panel inv-sec"><h3>👛 Wallet</h3><div class="inv-grid">${wallet}</div></section>
   </div>`;
   if(invSeenChanged) saveInvSeen(invSeen);
@@ -75707,6 +75905,7 @@ const PLACES = {
   deck: {cls:'tent-scene', icon:'⛺', sign:'Camp', ambience:'tent', enter: ()=> placeOverlay('tent-flaps', '<i></i><i></i>', 900)},
   shop: {cls:'cart-scene', icon:'🧳', get sign(){ return shopsTitle(); }, ambience:'cart', enter: ()=>{ placeOverlay('cart-awning', '', 900); try{ SoundKit.pitchChime && SoundKit.pitchChime(); }catch(e){} }},
   market: {cls:'flea-scene', icon:'🧺', sign:'Flea Market', ambience:'cart', enter: ()=>{}},
+  inventory: {cls:'satchel-scene', icon:'🎒', sign:'Inventory', ambience:'tent', enter: ()=>{}}, // the traveller's camp shelf (2026-10-17)
   nest: {cls:'nest-scene', icon:'🪺', sign:'The Nest', ambience:'nest', enter: ()=> placeOverlay('nest-down', Array.from({length:14}, (_, k)=> `<i style="left:${(k*53)%96 + 2}%; animation-delay:${(k*97)%600}ms; animation-duration:${1800 + (k*131)%1200}ms"></i>`).join(''), 3200)},
 };
 var tabSwitchSeq = 0; // counts screen changes (renderPlay tells a fresh arrival from a redraw)

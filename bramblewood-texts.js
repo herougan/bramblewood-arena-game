@@ -405,6 +405,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.none-of-your-units-is-hurt": "None of your units is hurt.",
   "toast.you-have-no-units-on-the": "You have no units on the field.",
   "toast.no-enemy-unit-is-still-waiting": "No enemy unit is still Waiting.",
+  "toast.wait-for-the-round-to-finish": "Wait for the round to finish.",
   "toast.not-enough-maple-leaves-yet": "Not enough Maple Leaves yet.",
   "toast.learned-works-from-your-next-fight": "✦ Learned. Works from your next fight.",
   "toast.learned-still-a-preview-not-in": "✦ Learned. Still a preview: not in fights yet.",
@@ -486,7 +487,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.errand-complete-claim-it-on-the": "📜 Errand complete: {title}. Claim it on the Notices.",
   "toast.errand": "📜 Errand: {title} — {v}/{g}",
   "toast.voice-lines": "Voice lines:",
-  "toast.npc-dialogue": "NPC dialogue:"
+  "toast.npc-dialogue": "NPC dialogue:",
+  "results.field-kit-your-first-conquest-wins": "Field kit: your first {of} Conquest wins each day bring an item ({nth} of {of} today). Use it from 🎒 in a skirmish."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
