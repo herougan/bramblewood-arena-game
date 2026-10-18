@@ -37796,6 +37796,10 @@ function renderVfxForEvent(ev){
     SoundKit.bubble(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'poison-tint-pulse');
     poisonBubbleBurstVfx(ev.uid);
     floatText(el, '☠️ -'+ev.dmg, 'poison-tick');
+    // 2026-10-18 (package P, owner: "When you naturally lose poison counters ... it doesn't say 'Cured!' It just drops a greyed out toxin
+    // counter from your toxin context label"): the 1-a-round wear-down drops a grey "☠−1" off the Poison badge (FX.D.poisonDrop, measured
+    // before the badge is redrawn below). The last counter's look fades off with its bubbles in FX.D.syncStatusLooks.
+    if(ev.decay && el && fxAtLeast('low') && !reducedMotion()) try{ if(window.FX && FX.D && FX.D.poisonDrop) FX.D.poisonDrop(el); }catch(e){}
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(ev.decay) rc.poison = Math.max(0, (rc.poison||0) - 1); }
     updateCardHpDisplay(ev.uid); try{ updateCardStatusDisplay(ev.uid); }catch(e){}
