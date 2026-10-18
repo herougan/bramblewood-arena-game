@@ -181,6 +181,13 @@ details.cl > summary:hover{color:var(--link);}
 .sc-seed{grid-column:1; grid-row:2; font-size:11px; color:var(--ink-muted); text-align:center;}
 .sc-rst{grid-column:2; grid-row:1; width:28px; height:28px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer; font-size:14px; line-height:1;}
 .sc-rst[hidden]{display:block; visibility:hidden;}
+/* 2026-10-19 (package SW): the measured value next to each entry, and Apply */
+.sc-ms{flex:0 0 64px; display:flex; flex-direction:column; align-items:center; gap:3px;}
+.sc-mv{display:flex; flex-direction:column; align-items:center; line-height:1.15;} .sc-mv small{font-size:10.5px; color:var(--ink-muted);}
+.sc-mv b{font:800 14px Nunito,system-ui,sans-serif; font-variant-numeric:tabular-nums;}
+.sc-ms.c-high .sc-mv b{color:var(--sc-ok);} .sc-ms.c-low .sc-mv b{color:var(--ink-muted); font-style:italic;} .sc-ms.is-none .sc-mv b{color:var(--ink-muted);}
+.sc-apply{font:700 12px Nunito,system-ui,sans-serif; padding:2px 9px; border-radius:999px; border:1px solid var(--line); background:var(--surface); color:var(--ink); cursor:pointer;}
+.sc-apply:disabled{opacity:.45; cursor:default;} .sc-apply:focus-visible{outline:2px solid var(--accent); outline-offset:1px;}
 .sc-cards{min-width:0;}
 .sc-sum{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:8px; margin-bottom:6px;}
 .sc-tile{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:8px 12px; display:flex; flex-direction:column; min-width:0;}
