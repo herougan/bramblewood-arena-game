@@ -1417,7 +1417,6 @@
  "Every round, one arrow, one target. The arrow is not the point — the eye is.": "Cada ronda, una flecha, un objetivo. Lo que importa no es la flecha, sino el ojo.",
  "Every scale turns a blade. Every one of them came from somewhere.": "Cada escama desvía una hoja. Cada una vino de alguna parte.",
  "Every scar it should have kept, it burns off by morning.": "Cada cicatriz que debería conservar, la quema antes del amanecer.",
- "Every skill you've met on a card{v1}: what it does, and what answers it.": "Cada habilidad que has visto en una carta{v1}: qué hace y qué la contrarresta.",
  "Every snake in the line makes it grin wider.": "Cada serpiente de la fila le hace sonreír más.",
  "Every sound down here comes back changed.": "Aquí abajo cada sonido vuelve cambiado.",
  "Every spawnling in the Hollow answers to her.": "Cada cría de la Hondonada le obedece a ella.",
@@ -2624,7 +2623,6 @@
  "No recipes yet. Collect Materia and cards on the road, and recipes that use them appear here.": "Aún no hay recetas. Reúne Materia y cartas por el camino, y aquí aparecerán las recetas que las usan.",
  "No reward cards yet": "Aún no hay cartas de recompensa",
  "No rush. I'll be around — find me when you're ready.": "Sin prisa. Andaré por aquí; búscame cuando estés listo.",
- "No skill matches that.": "Ninguna habilidad coincide.",
  "No skirmishes with a deck on this map.": "No hay escaramuzas con mazo en este mapa.",
  "No spare plain copy to feed. Foil, shiny and skinned copies are never used up.": "No hay copia normal sobrante que dar. Las brillantes, relucientes y con aspecto nunca se gastan.",
  "No special abilities — a plain stat card.": "Sin habilidades especiales — una simple carta de estadísticas.",
@@ -2649,7 +2647,6 @@
  "none left": "no queda ninguno",
  "None waiting": "Ninguno en espera",
  "None yet.": "Ninguno aún.",
- "None yet. Skills show here as you meet them.": "Aún ninguna. Las habilidades aparecen aquí a medida que las conoces.",
  "None yet: Unique cards and up (and the Wandering Traveller) can tend the nests. Their {v1} Nursing mastery makes eggs hatch and cards train faster.": "Aún ninguna: las cartas Únicas o superiores (y el Viajero Errante) pueden cuidar los nidos. Su maestría de cuidados {v1} hace que los huevos eclosionen y las cartas se entrenen más rápido.",
  "Normal attacks pass straight through it. Fire, frost, poison, acid, water and the like deal half (rounded down). Only magic deals full damage. It can't Bleed (except from Ichor).": "Los ataques normales la atraviesan. El fuego, la escarcha, el veneno, el ácido, el agua y similares hacen la mitad (redondeando hacia abajo). Solo la magia hace daño completo. No puede Sangrar (salvo por Icor).",
  "Normal attacks pass through it; other elements deal half, magic full. It can't Bleed.": "Los ataques normales la atraviesan; otros elementos hacen la mitad, la magia el total. No puede Sangrar.",
@@ -5070,5 +5067,7 @@
  "〰️ {v1} slams {v2} {v3} into the unit beside it!": "〰️ ¡{v1} estampa a {v2} {v3} contra la unidad de al lado!",
  "＋ Add": "＋ Añadir",
  "＋ Befriend": "＋ Hacerse amigos",
- "Field — {v1} for {v2} rounds: {v3}": "Campo — {v1} durante {v2} rondas: {v3}"
+ "Field — {v1} for {v2} rounds: {v3}": "Campo — {v1} durante {v2} rondas: {v3}",
+ "Its brood scuttles out first. The claws come after.": "Primero salen sus crías correteando. Luego llegan las pinzas.",
+ "Seven years under the roots, for one loud autumn in the branches.": "Siete años bajo las raíces, por un otoño ruidoso entre las ramas."
 }
