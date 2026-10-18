@@ -17224,7 +17224,7 @@ CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8',
 // 2026-10-18 (WP4): Map 22 is a real map, so the only thing holding the Long Burrow back is the owner's go-ahead. Until then players
 // see its slot as "Coming soon" (not a lock they could meet). Releasing it is this one switch: set LONG_BURROW_RELEASED to true and
 // it opens for players once they reach the Rimefire Caldera (Dungeons tab, World map and the key button all follow `preview`).
-const LONG_BURROW_RELEASED = false;
+const LONG_BURROW_RELEASED = true; // 2026-10-18 (user: "Release long_burrow.")
 CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'m22', axis:'x', preview:!LONG_BURROW_RELEASED, entry:{x:50, y:50, label:'The Long Burrow'},
   name:'The Long Burrow', icon:'🦡', bossName:'The Sett Lord', bossIcon:'👑', floors:50, baseHq:200,
   blurb:'A badger run that tunnels sideways under the high country, sett after sett, further than any map has drawn it.',

@@ -1,4 +1,4 @@
--- PROPOSED, NOT APPLIED (2026-10-17, the user, 23:49: "let an admin do damage to a raid (10%, 50% damage)"). Apply only on "apply it".
+-- APPLIED 2026-10-18 (the user: "Apply it for admin raid damage SQL"). Drafted 2026-10-17, the user, 23:49: "let an admin do damage to a raid (10%, 50% damage)"). Apply only on "apply it".
 -- The raid tab's Admin buttons (💥 Deal 10% / 💥 Deal 50%, arena_app.js adminRaidDamage) call this. Until it is applied the buttons
 -- fall back to a local attempt in that browser only.
 --
