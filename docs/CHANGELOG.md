@@ -2,6 +2,22 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package SW: what each skill is worth, measured)
+- **Owner (00:19): "defining the N-worth of skills. Only way is to run experiments with test units with each skill…"** `tools/skill_worth.js` measures every entry in `canonical/skill-costs.json` on the live engine:
+  - every skill, trigger, action, modifier and shorthand, plus GI's new skills (pool cards skipped);
+  - 1241 runs, 608k seeded games, 40 per point;
+  - **test units:** a vanilla 2/8 W1, 4/14 W2 or 6/22 W3 plus the skill, played against vanilla mirrors and calibrated glass cannons, tanks, flyers, swarms and a mix;
+  - **worth:** the Health and Attack a vanilla unit needs to match the skilled one, in Budget-v3 S.
+  - Field skills are measured under their field.
+- **Nothing in the game changed.** Each entry gets `measuredS`, a confidence, and either `measuredOff` (the result is only a bound) or `measuredWhy`. `value` is untouched.
+- **The hub's Skill costs tab** shows the measured number next to each value, with Apply and a "biggest gap to measured first" sort.
+- **Report:** `docs/skill-worth-2026-10-19.md` (+ `.xlsx`, `docs/balance/skill-worth-2026-10-19.json`).
+- **Headlines:**
+  - Arrow is strong against glass cannons and against everything else: 100% against the pool at b2, about S 10 at N 2 against S 2 today. Snipe is about right.
+  - Quick, Armor, Thorns, Regen and Poison are worth 2–4× their cost. Shadow, Blind and Stealth are worth less than they cost.
+  - Gain 1 Lumber and Bounty compound in a 20-copy deck. Exile and Mind Control are off the scale.
+- The run is resumable after a restart: it saves results to `docs/balance/skill-worth-partial.jsonl.s*` as it goes and reuses setups saved in `skill-worth-partial-setups/`.
+
 ## 2026-10-19 (package R2: the road curve)
 - **Owner (20:39): "The balance should be such that the constructed deck wins in the green zone for every map it's in… it starts at 90%, and drops to 60%. Then at the boss fight, <50%."** On every main map (0–24), the map's reference deck now wins its fights in road order on a straight line:
   - 90% for the first fight, down to 60% for the last before the boss; elites sit on the line;

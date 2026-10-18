@@ -75,6 +75,13 @@ ok(table.triggers.find(t=> t.id === 'onDeath').value === 1 && table.triggers.fin
 ok(/package SW/.test(table.measured || ''), 'the table says what measuredS is');
 ok(/measuredS/.test(src) && /value is unchanged/.test(src) && !/e\.value = x\.measuredS/.test(src), 'the tool writes measuredS, never value');
 
+// resumable runs (2026-10-19, after a container restart lost the first full run): checkpoint + setup cache + time budget + shards
+ok(/--budget-s=/.test(src) && /--shard=/.test(src) && /--setups-only/.test(src) && /appendFileSync\(ckOut/.test(src) && /function restore\(ctx, b, key\)/.test(src), 'the run checkpoints, caches setups, stops on a time budget and shards');
+// a solve off its range is a bound (measuredOff), a half-miss skill's measuredS is the S on top of the ×missMult
+['skills', 'triggers', 'actions', 'modifiers'].forEach(f=> table[f].forEach(e=>{ if(e.measuredOff) ok(['>', '<'].includes(e.measuredOff) && typeof e.measuredS === 'number', `${e.id}: measuredOff is a bound`); }));
+ok(/half-miss: value = \(S − /.test(src) && /\(missMult − 1\) × \(2A \+ H\)/.test(src), 'half-miss skills compare against (missMult − 1)(2A + H)');
+ok(/m\.off === '>' \? '≥'/.test(rd('tools/hub/skill_costs_tab.js')), 'the hub shows an off-the-scale value as a bound');
+
 // 4. outputs
 const J = path.join(ROOT, 'docs', 'balance', 'skill-worth-2026-10-19.json'), MD = path.join(ROOT, 'docs', 'skill-worth-2026-10-19.md'), XL = path.join(ROOT, 'docs', 'skill-worth-2026-10-19.xlsx');
 ok(fs.existsSync(J) && fs.existsSync(MD) && fs.existsSync(XL), 'the json, md and xlsx exist');
@@ -87,14 +94,17 @@ if(fs.existsSync(J)){ const data = JSON.parse(fs.readFileSync(J, 'utf8'));
   ok(data.gaps && data.gaps.length >= 20, 'the report lists the gaps'); }
 if(fs.existsSync(MD)){ const md = fs.readFileSync(MD, 'utf8');
   ok(/## Method/.test(md) && /## The 20 biggest gaps/.test(md) && (md.match(/^\| \d+ \|/gm) || []).length >= 20, 'the md has the method and the 20 biggest gaps');
-  ok(/Arrow and Snipe/.test(md), 'the md answers the owner\'s Arrow example'); }
+  ok(/Arrow and Snipe/.test(md), 'the md answers the owner\'s Arrow example');
+  ok(/biggest gaps at high or medium confidence/.test(md) && /Caveats/.test(md), 'the md has the confident gaps and the caveats');
+  ok(!table.skills.some(e=> e.measuredOff) || /\*\*Off the scale\*\*/.test(md), 'off-the-scale entries are listed apart'); }
 
 // 5. the hub
 const tab = rd('tools/hub/skill_costs_tab.js'), css = rd('tools/hub/hub_app.css');
 ok(/e\.measuredS/.test(tab) && /data-apply=/.test(tab) && /setValue\(ap\.dataset\.apply, m\.v, true\)/.test(tab), 'the tab shows measuredS and Apply sets the value (an ordinary saved edit)');
 ok(/biggest gap to measured first/.test(tab) && /measuredWhy/.test(tab), 'sort by the gap to measured; the reason when not measured');
 ok(/\.sc-ms\{/.test(css) && /\.sc-apply\{/.test(css), 'the measured column has its styles');
-const built = path.join(ROOT, 'hub', 'index.html');
-if(fs.existsSync(built)){ const h = fs.readFileSync(built, 'utf8'); ok(h.includes('"measuredS"') && h.includes('sc-apply'), 'hub/index.html carries measuredS and the Apply button'); }
+// the freshly built hub (.hub/, tools/hub/build_hub.py) or, without one, the published snapshot in hub/ once it has the column
+const built = [path.join(ROOT, '.hub', 'index.html'), path.join(ROOT, 'hub', 'index.html')].find(f=> fs.existsSync(f) && (f.includes('.hub') || fs.readFileSync(f, 'utf8').includes('sc-ms')));
+if(built){ const h = fs.readFileSync(built, 'utf8'); ok(h.includes('"measuredS"') && h.includes('sc-apply'), 'hub/index.html carries measuredS and the Apply button'); }
 console.log(`skill-worth: ${checks - fail}/${checks} passed`);
 process.exit(fail ? 1 : 0);

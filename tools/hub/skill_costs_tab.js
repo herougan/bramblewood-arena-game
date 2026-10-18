@@ -20,7 +20,7 @@
   // 2026-10-19 (package SW, owner 00:19: "defining the N-worth of skills ... run experiments with test units with each skill"): each
   // entry's measuredS from tools/skill_worth.js (docs/skill-worth-2026-10-19.md), in the entry's own units, next to its value; Apply
   // copies it into the value (an ordinary edit: it saves to the db like a typed one). No measuredS: measuredWhy says why.
-  const MEAS = {}; KINDS.forEach(([k])=> LIST[k].forEach(e=> MEAS[k + ':' + e.id] = {v: typeof e.measuredS === 'number' ? e.measuredS : null, conf: e.measuredConf || '', se: e.measuredSE, why: e.measuredWhy || ''}));
+  const MEAS = {}; KINDS.forEach(([k])=> LIST[k].forEach(e=> MEAS[k + ':' + e.id] = {v: typeof e.measuredS === 'number' ? e.measuredS : null, conf: e.measuredConf || '', se: e.measuredSE, why: e.measuredWhy || '', off: e.measuredOff || ''}));
   const measGap = key=>{ const m = MEAS[key]; return m && m.v != null ? Math.abs(m.v - valueOf(key)) : -1; };
   const edits = {}; // "<kind>:<id>" -> value, from the db (or this visit only, when read-only)
   const SKL = {}; (typeof CARDS !== 'undefined' ? CARDS.skills : []).forEach(s=> SKL[s.key] = s);
@@ -173,8 +173,9 @@
     const sorted = st.byGap ? list.slice().sort((a, b)=> measGap(st.kind + ':' + b.id) - measGap(st.kind + ':' + a.id) || label(st.kind, a).localeCompare(label(st.kind, b)))
       : st.kind === 'skill' ? list.slice().sort((a, b)=> nUsed('skill:' + b.id) - nUsed('skill:' + a.id) || label('skill', a).localeCompare(label('skill', b))) : list;
     $('scRows').innerHTML = sorted.map(e=>{ const key = st.kind + ':' + e.id, ed = key in edits, n = nUsed(key), m = MEAS[key] || {}, hasM = m.v != null;
-      const mTitle = hasM ? `Measured ${m.v}${m.se != null ? ' (±' + m.se + ')' : ''}, confidence ${m.conf || 'low'}` : 'Not measured' + (m.why ? ': ' + m.why : '');
-      const meas = `<div class="sc-ms${hasM ? ' c-' + esc(m.conf || 'low') : ' is-none'}" title="${esc(mTitle)}"><span class="sc-mv"><small>measured</small><b>${hasM ? m.v : '–'}</b>${hasM ? `<small>${esc(m.conf || 'low')}</small>` : ''}</span>`
+      const mTitle = hasM ? `Measured ${m.v}${m.se != null ? ' (±' + m.se + ')' : ''}, confidence ${m.conf || 'low'}${m.off ? ' · off the scale: only a bound (the solve ran off its range)' : ''}` : 'Not measured' + (m.why ? ': ' + m.why : '');
+      const mShow = hasM ? (m.off === '>' ? '≥' : m.off === '<' ? '≤' : '') + m.v : '–'; // 2026-10-19: an off-the-scale value is a bound
+      const meas = `<div class="sc-ms${hasM ? ' c-' + esc(m.conf || 'low') : ' is-none'}" title="${esc(mTitle)}"><span class="sc-mv"><small>measured</small><b>${mShow}</b>${hasM ? `<small>${esc(m.conf || 'low')}</small>` : ''}</span>`
         + (hasM ? `<button type="button" class="sc-apply" data-apply="${esc(key)}"${valueOf(key) === m.v ? ' disabled' : ''} aria-label="Use the measured value ${m.v} for ${esc(label(st.kind, e))}">Apply</button>` : '') + '</div>';
       return `<div class="sc-row${ed ? ' is-ed' : ''}" data-key="${esc(key)}"><div class="sc-lb"><b>${esc(label(st.kind, e))}</b><small><code>${esc(e.id)}</code> · ${esc(hint(st.kind, e))} · ${n ? n + ' card' + (n === 1 ? '' : 's') : 'unused'}${e.note ? ' · ' + esc(e.note) : ''}${!hasM && m.why ? ' · not measured: ' + esc(m.why) : ''}</small></div>`
         + `<div class="sc-in"><input type="number" step="0.1" inputmode="decimal" data-key="${esc(key)}" value="${valueOf(key)}" aria-label="${esc(label(st.kind, e))} value"><span class="sc-seed">seed ${SEED[key]}</span>`

@@ -27,7 +27,9 @@
 //                Spawn = 1 by construction), value per point for actions.
 //
 //   node tools/skill_worth.js [--games=40] [--only=armor,arrow] [--quick] [--checkpoint=file.jsonl]   run the experiments
-//   node tools/skill_worth.js --report [--apply]   write docs/skill-worth-2026-10-19.md (+ .xlsx via tools/skill_worth_xlsx.py)
+//        [--budget-s=540] [--shard=0/2] [--setups-only]   resumable chunks: the full run is
+//        node tools/skill_worth.js --checkpoint=docs/balance/skill-worth-partial.jsonl --shard=i/2 --budget-s=540   (repeat until exit 0)
+//   node tools/skill_worth.js --report [--apply] [--in=data.json]   write docs/skill-worth-2026-10-19.md (+ .xlsx via tools/skill_worth_xlsx.py)
 //                                                  from docs/balance/skill-worth-2026-10-19.json; --apply writes measuredS into
 //                                                  canonical/skill-costs.json (never `value`: the owner applies it in the hub)
 'use strict';
@@ -200,8 +202,27 @@ function makeLab(o){
   }
   // The opponents for a field and baseline: mirror + the reference pool.
   const setups = {};
+  // 2026-10-19 (the first full run was lost to a container restart): a built setup (calibrated opponents, the vanilla + Δ curves,
+  // the vanilla unit's metrics) is saved to o.setupDir and read back, so a resumed or parallel run doesn't rebuild it. It is
+  // deterministic (seeded), so a restored setup is the one the run would have built.
+  const setupFile = key=> o.setupDir ? path.join(o.setupDir, key.replace(':', '-') + `-g${G}.json`) : null;
+  function restore(ctx, b, key){
+    const f = setupFile(key); if(!f || !fs.existsSync(f)) return null;
+    let s; try{ s = JSON.parse(fs.readFileSync(f, 'utf8')); }catch(e){ return null; }
+    const kinds = Object.keys(s.cal).filter(k=> k !== 'mixed'), refs = {};
+    kinds.forEach(k=> refs[k] = deckOf(refDef(b, k, s.cal[k].health)));
+    const mixed = {}; ['glass', 'tank', 'flyer', 'swarm'].forEach(k=> mixed[refDef(b, k, Math.max(1, s.cal[k].health + s.cal.mixed.offset))] = 5); refs.mixed = mixed;
+    log(`  setup ${key}: restored from ${path.relative(ROOT, f)}`);
+    return (setups[key] = {ctx, b, v: vanilla(b, 0, 0), refs, pool: Object.keys(refs), curves: s.curves, vm: s.vm, gridH: s.gridH, gridA: s.gridA, cal: s.cal});
+  }
   function setup(ctx, b){
     const key = ctx + ':' + b.id; if(setups[key]) return setups[key];
+    const got = restore(ctx, b, key); if(got) return got;
+    const built = buildSetup(ctx, b, key), f = setupFile(key);
+    if(f){ fs.mkdirSync(path.dirname(f), {recursive:true}); fs.writeFileSync(f + '.tmp', JSON.stringify({cal: built.cal, curves: built.curves, vm: built.vm, gridH: built.gridH, gridA: built.gridA})); fs.renameSync(f + '.tmp', f); }
+    return built;
+  }
+  function buildSetup(ctx, b, key){
     const kinds = ['glass', 'tank', 'flyer', 'swarm'].concat(ctx === 'tide' ? ['swimmer'] : []);
     const refs = {}; kinds.forEach(k=>{ const c = calibrate(b, k, ctx); refs[k] = deckOf(c.id); });
     refs.mixed = calibrateMixed(b, ctx).deck;
@@ -354,7 +375,9 @@ function aggregate(table, results){
   const rowsOf = k=> (by[k] || []).filter(r=> !r.error);
   const conf = (list, S)=>{ const ses = list.map(r=> r.S.se).filter(x=> x != null), clamp = list.some(r=> r.h2h.clamp || r.ref.clamp);
     const spread = list.length > 1 ? Math.max(...list.map(r=> r.S.all)) - Math.min(...list.map(r=> r.S.all)) : 0, se = ses.length ? mean(ses) / Math.sqrt(ses.length) : null;
-    const noise = se == null ? 99 : se; return {se: se == null ? null : r2(se), spread: r2(spread), level: clamp ? 'low' : noise <= Math.max(0.6, Math.abs(S) * 0.25) ? 'high' : noise <= Math.max(1.5, Math.abs(S) * 0.5) ? 'medium' : 'low', clamp}; };
+    // off the scale (2026-10-19): every run's head-to-head and pool solves both ran off their range, so S is only the bound
+    const off = list.length > 0 && list.every(r=> r.h2h.clamp && r.ref.clamp) ? (list.every(r=> r.h2h.clamp === '>' || r.ref.clamp === '>') ? '>' : '<') : null;
+    const noise = se == null ? 99 : se; return {se: se == null ? null : r2(se), spread: r2(spread), level: clamp ? 'low' : noise <= Math.max(0.6, Math.abs(S) * 0.25) ? 'high' : noise <= Math.max(1.5, Math.abs(S) * 0.5) ? 'medium' : 'low', clamp, off}; };
   // trigger weights: S(trigger, deal 2) / S(On Spawn, deal 2), per baseline then averaged
   const onSpawnS = {}; rowsOf('trigger:onSpawn').forEach(r=> onSpawnS[r.b] = r.S.all);
   const trigW = {};
@@ -411,10 +434,18 @@ function aggregate(table, results){
     const ratios = fit.map(r=> r.S.all / fN(r)).sort((a, b)=> a - b), med = ratios.length ? (ratios.length % 2 ? ratios[(ratios.length - 1) / 2] : (ratios[ratios.length / 2 - 1] + ratios[ratios.length / 2]) / 2) : null;
     const numeric = fit.some(r=> typeof r.value === 'number');
     let v = med; if(e.scale === 'fixed' || !numeric) v = mean(main.map(r=> r.S.all));
-    const typS = mean(main.map(r=> r.S.all)), cur = SC.cardS({[e.id]: list[0].value}, {attack:4}).S;
+    // a half-miss skill (table.halfMiss) costs nothing in S: the budget multiplies 2A + H + S by missMult instead, so its S today is
+    // (missMult − 1) × (2A + H) of the baseline it ran on (2026-10-19)
+    const half = (table.halfMiss || []).includes(e.id), mm = (table.budget && table.budget.missMult) || 1.5;
+    const typS = mean(main.map(r=> r.S.all)), cur = SC.cardS({[e.id]: list[0].value}, {attack:4}).S + (half ? mean(main.map(r=>{ const b = BASELINES.find(x=> x.id === r.b); return (mm - 1) * (2 * b.attack + b.health); })) : 0);
+    // ... and its measuredS is the value that, added to S before the ×missMult, gives the measured worth:
+    // (2A + H + value) × m = 2A + H + W  =>  value = (W − (m − 1)(2A + H)) / m (per N as the fit, scaled by the typical run's f(N))
+    let how2 = '';
+    if(half && v != null){ const halfS = cur - SC.cardS({[e.id]: list[0].value}, {attack:4}).S, f0 = Math.max(1e-9, typS) / Math.max(1e-9, v);
+      v = (typS - halfS) / mm / (isFinite(f0) && f0 > 0 ? f0 : 1); how2 = `; half-miss: value = (S − ${r2(halfS)}) / ${mm}, the S on top of the ×${mm}`; }
     const noEffect = list.every(r=> r.S.all === 0 && r.wr.mirror === r.vanillaWr.mirror && r.wr.pool === r.vanillaWr.pool);
-    entries.skills[e.id] = {measuredS: v == null ? null : r2(v), Styp: r2(typS), Scur: r2(cur), at: list.map(r=> ({b:r.b, ctx:r.ctx, n:r.n, S:r.S.all})), conf: conf(main, typS), field: fld.length ? field : undefined,
-      plainS: fld.length && typ.length ? r2(mean(typ.map(r=> r.S.all))) : undefined, noEffect: noEffect || undefined, how: e.scale === 'fixed' || !numeric ? 'mean S of the typical value' : `median of S / ${e.scale === 'n' ? 'N' : '(1 + floor(N/2))'} over N = ${[...new Set(fit.map(r=> r.n))].sort((a, b)=> a - b).join(', ')}`,
+    entries.skills[e.id] = {measuredS: v == null ? null : r2(v), half: half || undefined, Styp: r2(typS), Scur: r2(cur), at: list.map(r=> ({b:r.b, ctx:r.ctx, n:r.n, S:r.S.all})), conf: conf(main, typS), field: fld.length ? field : undefined,
+      plainS: fld.length && typ.length ? r2(mean(typ.map(r=> r.S.all))) : undefined, noEffect: noEffect || undefined, how: e.scale === 'fixed' || !numeric ? 'mean S of the typical value' : `median of S / ${e.scale === 'n' ? 'N' : '(1 + floor(N/2))'} over N = ${[...new Set(fit.map(r=> r.n))].sort((a, b)=> a - b).join(', ')}` + how2,
       vs: e.id === 'hunter' ? Object.fromEntries(list.filter(r=> r.tag && String(r.tag).startsWith('vs-')).map(r=> [r.tag.slice(3), r.S.all]).concat([['poison', r2(mean(typ.filter(r=> r.b === 'b2').map(r=> r.S.all)))]])) : undefined,
       enabler: SKILL_ENABLER[e.id] ? JSON.stringify(SKILL_ENABLER[e.id]) : undefined,
       perN: numeric ? Object.fromEntries([...new Set(fit.map(r=> r.n))].sort((a, b)=> a - b).map(n=> [n, r2(mean(fit.filter(r=> r.n === n).map(r=> r.S.all)))])) : undefined};
@@ -440,14 +471,14 @@ function gapsOf(table, agg){
   Object.entries(KINDF).forEach(([kind, f])=> Object.entries(agg.entries[f]).forEach(([id, x])=>{ if(x.measuredS == null) return; const cur = currentS(table, kind, id);
     // compare in S at the typical value (skills), else in the entry's own units
     const curS = kind === 'skill' && x.Scur != null ? x.Scur : cur, mS = kind === 'skill' && x.Styp != null ? x.Styp : x.measuredS;
-    out.push({kind, id, value: cur, measuredS: x.measuredS, curS, mS, gap: r2(mS - curS), conf: x.conf && x.conf.level, field: x.field, noEffect: x.noEffect}); }));
-  Object.entries(agg.entries.shorthands || {}).forEach(([id, x])=>{ if(x.measuredS == null) return; out.push({kind:'shorthand', id, value: x.Scur, measuredS: x.measuredS, curS: x.Scur, mS: x.measuredS, gap: r2(x.measuredS - x.Scur), conf: x.conf && x.conf.level}); });
-  return out.sort((a, b)=> Math.abs(b.gap) - Math.abs(a.gap));
+    out.push({kind, id, value: cur, measuredS: x.measuredS, curS, mS, gap: r2(mS - curS), conf: x.conf && x.conf.level, field: x.field, noEffect: x.noEffect, off: (x.conf && x.conf.off) || undefined}); }));
+  Object.entries(agg.entries.shorthands || {}).forEach(([id, x])=>{ if(x.measuredS == null) return; out.push({kind:'shorthand', id, value: x.Scur, measuredS: x.measuredS, curS: x.Scur, mS: x.measuredS, gap: r2(x.measuredS - x.Scur), conf: x.conf && x.conf.level, off: (x.conf && x.conf.off) || undefined}); });
+  return out.sort((a, b)=> (a.off ? 1 : 0) - (b.off ? 1 : 0) || Math.abs(b.gap) - Math.abs(a.gap));
 }
 function applyMeasured(table, agg){
   Object.entries(KINDF).forEach(([kind, f])=> (table[f] || []).forEach(e=>{ const x = agg.entries[f][e.id];
-    delete e.measuredS; delete e.measuredWhy; delete e.measuredConf; delete e.measuredSE;
-    if(x && x.measuredS != null && isFinite(x.measuredS)){ e.measuredS = x.measuredS; e.measuredConf = (x.conf && x.conf.level) || 'low'; if(x.conf && x.conf.se != null) e.measuredSE = x.conf.se; }
+    delete e.measuredS; delete e.measuredWhy; delete e.measuredConf; delete e.measuredSE; delete e.measuredOff;
+    if(x && x.measuredS != null && isFinite(x.measuredS)){ e.measuredS = x.measuredS; e.measuredConf = (x.conf && x.conf.level) || 'low'; if(x.conf && x.conf.se != null) e.measuredSE = x.conf.se; if(x.conf && x.conf.off) e.measuredOff = x.conf.off; }
     else e.measuredWhy = (x && x.why) || 'not measured'; }));
   Object.entries(table.shorthands || {}).forEach(([k, sh])=>{ const x = (agg.entries.shorthands || {})[k]; delete sh.measuredS; delete sh.measuredWhy; delete sh.measuredConf;
     if(x && x.measuredS != null){ sh.measuredS = x.measuredS; sh.measuredConf = (x.conf && x.conf.level) || 'low'; } else sh.measuredWhy = (x && x.why) || 'not measured'; });
@@ -475,7 +506,7 @@ function sheetRows(data, table, agg){
   Object.entries(KINDF).forEach(([kind, f])=> (table[f] || []).forEach(e=>{ const x = agg.entries[f][e.id] || {};
     const cS = kind === 'skill' ? x.Scur : e.value, mS = kind === 'skill' ? (x.Styp != null ? x.Styp : x.S) : x.measuredS;
     ents.push([kind, e.id, e.scale || e.per || '', e.value, x.measuredS == null ? '' : x.measuredS, cS == null ? '' : cS, mS == null ? '' : mS, mS == null || cS == null ? '' : r2(mS - cS), x.conf ? x.conf.level : '', x.conf && x.conf.se != null ? x.conf.se : '', x.field || '', x.plainS == null ? '' : x.plainS, x.how || '', x.why || '']); }));
-  const gh = ['#', 'Kind', 'Entry', 'Current', 'Measured', 'Gap', 'Confidence', 'Field'], gaps = gapsOf(table, agg).slice(0, 20).map((g, i)=> [i + 1, g.kind, g.id, g.curS, g.mS, g.gap, g.conf || '', g.field || '']);
+  const gh = ['#', 'Kind', 'Entry', 'Current', 'Measured', 'Gap', 'Confidence', 'Field', 'Off the scale'], gaps = gapsOf(table, agg).filter(g=> !g.off).slice(0, 20).concat(gapsOf(table, agg).filter(g=> g.off)).map((g, i)=> [i + 1, g.kind, g.id, g.curS, g.mS, g.gap, g.conf || '', g.field || '', g.off || '']);
   const ch = ['Field', 'Baseline', 'Opponent', 'Attack', 'Health', 'Wait', 'Lumber', 'Vanilla win rate'], cal = [];
   Object.entries(data.setups || {}).forEach(([k, s])=>{ const [ctx, b] = k.split(':'); Object.entries(s.cal || {}).forEach(([o, c])=> cal.push([ctx, b, o, c.attack == null ? '' : c.attack, c.health == null ? 'offset ' + c.offset : c.health, c.wait == null ? '' : c.wait, c.cost == null ? '' : c.cost, c.vanillaWr])); });
   return {sheets:[{name:'Runs', head, rows:runs}, {name:'Entries', head:eh, rows:ents}, {name:'Top gaps', head:gh, rows:gaps}, {name:'Opponents', head:ch, rows:cal}]};
@@ -493,13 +524,19 @@ function writeReport(data, table, agg){
     '- **Worth**: head-to-head, the Health (then Attack) a vanilla opponent needs for the skilled deck to win 50% (bisection on integers, interpolated); pool, the skilled deck\'s mean pool win rate inverted on the vanilla + ΔHealth / + ΔAttack curves. In Budget v3 units (2A + H + S < N): S_H = ΔHealth, S_A = 2 ΔAttack, S = (S_H + S_A) / 2, the run\'s S = mean of head-to-head and pool. A skill\'s measuredS is fitted in its own units (× N for scale n, × (1 + floor(N/2)) for scale half).',
     '- **Confidence**: high / medium / low from the solve\'s standard error and the head-to-head vs pool disagreement; low whenever a solve hit its range (a skill worth more than +5× the baseline\'s stats, or a win rate the curves can\'t reach). The worth is a property of these decks: a skill that needs company (Prayer cards, resource spenders, tribes) reads near 0 here and says why.',
     '- Rules as shipped: Revive is a true death, triggers stop at 5 layers, Freeze / Confuse, no-op heals, True Strike vs Legendary dodges, Prayer tokens; nothing is copied, the runs call the live engine.', '');
-  L.push('## The 20 biggest gaps (current S vs measured S)', '', 'Skills compare S at the typical value; triggers, actions and modifiers compare the entry\'s own number (weight / value per point). Positive = under-costed today (worth more than it costs).', '',
+  const offs = gaps.filter(g=> g.off);
+  L.push('## The 20 biggest gaps (current S vs measured S)', '', 'Skills compare S at the typical value; triggers, actions and modifiers compare the entry\'s own number (weight / value per point). Positive = under-costed today (worth more than it costs). Entries off the scale (below) are left out: their measured S is only a bound.', '',
     '| # | Entry | Current | Measured | Gap | Confidence | Note |', '|---|---|---|---|---|---|---|');
-  gaps.slice(0, 20).forEach((g, i)=> L.push(`| ${i + 1} | ${g.kind} \`${g.id}\` | ${g.curS} | ${g.mS} | ${sgn(g.gap)} | ${g.conf || '–'} | ${g.noEffect ? 'no effect seen' : ''}${g.field ? 'under ' + g.field : ''}${g.kind === 'skill' && g.measuredS !== g.mS ? (g.field ? '; ' : '') + 'per-N ' + g.measuredS : ''} |`));
+  gaps.filter(g=> !g.off).slice(0, 20).forEach((g, i)=> L.push(`| ${i + 1} | ${g.kind} \`${g.id}\` | ${g.curS} | ${g.mS} | ${sgn(g.gap)} | ${g.conf || '–'} | ${g.noEffect ? 'no effect seen' : ''}${g.field ? 'under ' + g.field : ''}${g.kind === 'skill' && g.measuredS !== g.mS ? (g.field ? '; ' : '') + 'per-N ' + g.measuredS : ''} |`));
   L.push('');
+  if(offs.length){ L.push('**Off the scale** (' + offs.length + '): a deck of 20 still beats vanilla + 5× the baseline\'s Health and Attack (or loses to vanilla − all of it), so the measured S is only a bound — these want a scenario test, not a number: ' + offs.map(g=> `${g.id} (today ${g.curS}, ${g.off === '>' ? '≥' : '≤'} ${g.mS})`).join(', ') + '.', ''); }
+  // 2026-10-19: the same list at high / medium confidence only (the ones a cost could move on today)
+  const sure = gaps.filter(g=> !g.off && (g.conf === 'high' || g.conf === 'medium')).slice(0, 20);
+  if(sure.length){ L.push('**The 20 biggest gaps at high or medium confidence**:', '', '| # | Entry | Current | Measured | Gap | Confidence | Note |', '|---|---|---|---|---|---|---|');
+    sure.forEach((g, i)=> L.push(`| ${i + 1} | ${g.kind} \`${g.id}\` | ${g.curS} | ${g.mS} | ${sgn(g.gap)} | ${g.conf} | ${g.field ? 'under ' + g.field : ''} |`)); L.push(''); }
   // findings
   const sk = agg.entries.skills, top = (f, k, n)=> Object.entries(agg.entries[f]).filter(([, x])=> x.measuredS != null).sort((a, b)=> k(b[1], b[0]) - k(a[1], a[0])).slice(0, n);
-  const under = gaps.filter(g=> g.gap > 0).slice(0, 8), over = gaps.filter(g=> g.gap < 0).slice(0, 8);
+  const under = gaps.filter(g=> g.gap > 0 && !g.off).slice(0, 8), over = gaps.filter(g=> g.gap < 0 && !g.off).slice(0, 8);
   L.push('## Findings', '');
   L.push('**Most under-costed** (worth more than today\'s S): ' + under.map(g=> `${g.id} (${g.curS} → ${g.mS})`).join(', ') + '.', '');
   L.push('**Most over-costed** (worth less than today\'s S): ' + over.map(g=> `${g.id} (${g.curS} → ${g.mS})`).join(', ') + '.', '');
@@ -512,11 +549,11 @@ function writeReport(data, table, agg){
     L.push(`- vs ${({glass:'glass cannons', tank:'tanks', flyer:'flyers', swarm:'the 0-cost swarm', mixed:'the mix'})[k]}: ` + t.map(([id, d])=> `${id} +${Math.round(d * 100)} pts`).join(', ')); });
   L.push('');
   const arrowRows = res.filter(r=> (r.id === 'arrow' || r.id === 'snipe') && r.kind === 'skill');
-  if(arrowRows.length){ L.push('**Arrow and Snipe** (the owner\'s example):', '', '| Skill | N | Baseline | S head-to-head | S pool | vs glass | vs tank | vs flyer | kills / copy (Δ vs vanilla) | dmg to units (Δ) |', '|---|---|---|---|---|---|---|---|---|---|');
-    arrowRows.forEach(r=> L.push(`| ${r.id} | ${r.n} | ${r.b} | ${r.S.h2h} | ${r.S.ref} | ${r.ref.per.glass ? r.ref.per.glass.S + ' (' + pc(r.ref.per.glass.wr) + ')' : '–'} | ${r.ref.per.tank ? r.ref.per.tank.S : '–'} | ${r.ref.per.flyer ? r.ref.per.flyer.S : '–'} | ${r.metrics.pool.kills} (${sgn(r.delta.pool.kills)}) | ${r.metrics.pool.dealtUnits} (${sgn(r.delta.pool.dealtUnits)}) |`)); L.push(''); }
+  if(arrowRows.length){ L.push('**Arrow and Snipe** (the owner\'s example):', '', 'Win rate against each opponent (the vanilla unit\'s in brackets; each opponent is calibrated to about 50% for vanilla). A pool S at the top of its range (' + '5× the baseline\'s stats) means the deck wins (nearly) every pool game, so the run\'s S leans on head-to-head.', '', '| Skill | N | Baseline | S head-to-head | S pool | vs glass | vs tank | vs flyer | kills / copy (Δ vs vanilla) | dmg to units (Δ) |', '|---|---|---|---|---|---|---|---|---|---|');
+    arrowRows.forEach(r=> L.push(`| ${r.id} | ${r.n} | ${r.b} | ${r.S.h2h} | ${r.S.ref} | ${['glass', 'tank', 'flyer'].map(o=> r.ref.per[o] ? `${pc(r.ref.per[o].wr)} (${pc(r.ref.per[o].vanillaWr)})` : '–').join(' | ')} | ${r.metrics.pool.kills} (${sgn(r.delta.pool.kills)}) | ${r.metrics.pool.dealtUnits} (${sgn(r.delta.pool.dealtUnits)}) |`)); L.push(''); }
   // field-bound
   const fb = Object.entries(sk).filter(([, x])=> x.field && x.measuredS != null);
-  if(fb.length){ L.push('**Field-bound skills** (costed where they work; plain-field S in brackets): ' + fb.map(([id, x])=> `${id} ${x.Styp} under ${x.field} (${x.plainS != null ? x.plainS : '–'})`).join(', ') + '.', ''); }
+  if(fb.length){ L.push('**Field-bound skills** (costed where they work; plain-field S in brackets): ' + fb.map(([id, x])=> `${id} ${x.Styp != null ? x.Styp : x.S} under ${x.field} (${x.plainS != null ? x.plainS : '–'})`).join(', ') + '.', ''); }
   // package GI's new skills (their own needs)
   const GI = ['hunter', 'executioner', 'detonate', 'proliferate', 'brittle', 'prayerWard', 'fieldBreaker'].filter(id=> sk[id]);
   if(GI.length){ L.push('## Package GI\'s new skills', '', 'Measured with what each needs (S of the skill less S of its enabler alone, same baseline and field): Hunter on a Poison 2 unit (and per status on b2: Bleed 2, Expose 1, Wet in Spring Rain), Detonate / Proliferate with Poison 2, Brittle with Shatter 2, Prayer Ward with Prayer 1, Field Breaker under Thunderstorm, Spore Cloud, Tangled Roots and Scorching; Kin Rally and Pack Howl in tribe decks (Otter, Wolf) less the tribe deck\'s own S.', '',
@@ -545,6 +582,7 @@ function writeReport(data, table, agg){
   if(Object.keys(agg.entries.extra).length){ L.push('', '## Engine keywords with no entry in the table', '', Object.entries(agg.entries.extra).map(([k, x])=> `- \`${k}\`: measured S ${x.measuredS} (b2). Not added to the table (an entry would change every card that has it).`).join('\n')); }
   L.push('', '## Reading it', '', '- A measured S is how much Budget-v3 N the skill is worth on these units against these decks; on a 6/22 a flat skill (Armor 1) is a smaller share than on a 2/8, which the per-baseline columns show. Stats per copy, deltas and per-opponent worth are in the JSON and the sheet.',
     '- Noise: each point is ' + data.G + ' seeded games; a head-to-head solve\'s standard error is shown per run in the sheet. Low-confidence rows want a longer run (`node tools/skill_worth.js --only=<ids> --games=120`) before a cost moves.',
+    '- Caveats (2026-10-19, read before moving a cost): the test decks are 20 copies of one unit, so a skill that compounds across copies reads high — Gain 1 Lumber on a Lumber-1 card makes every copy free (Gain, Bounty), and Exile / Mind Control / the big-damage bolts snowball (several are off the scale). Swarm opponents (Wait 0) have a step in their win rate (one more Health takes a hit more to kill), so their calibration lands at 20-90% for vanilla rather than 50%; the curves still invert against the same decks. On Round Start and On Turn Start measure the same here (a test unit is Ready after its first Wait). A skill with no effect in a field still reads about −0.05 (the curve fit at Δ = 0), which is the noise floor.',
     '- Nothing in the game changed: card stats, `value` and every card\'s S stay as they were. The owner applies a measured value in the hub (Skill costs tab, the "measured" chip → Apply).', '');
   fs.writeFileSync(OUT_MD, L.join('\n'));
   return gaps;
@@ -555,36 +593,54 @@ if(require.main === module){
   const args = process.argv.slice(2), opt = k=>{ const a = args.find(x=> x.startsWith('--' + k + '=')); return a ? a.slice(k.length + 3) : null; };
   const table = JSON.parse(fs.readFileSync(COSTS, 'utf8'));
   if(args.includes('--report')){
-    const data = JSON.parse(fs.readFileSync(OUT_JSON, 'utf8')), agg = aggregate(table, data.results);
-    data.aggregate = agg; data.gaps = gapsOf(table, agg); fs.writeFileSync(OUT_JSON, JSON.stringify(data) + '\n');
+    const IN = opt('in') || OUT_JSON, data = JSON.parse(fs.readFileSync(IN, 'utf8')), agg = aggregate(table, data.results);
+    data.aggregate = agg; data.gaps = gapsOf(table, agg); fs.writeFileSync(IN, JSON.stringify(data) + '\n');
     const gaps = writeReport(data, table, agg), sheetFile = path.join(path.dirname(OUT_JSON), `skill-worth-${DAY}.sheet.json`);
     fs.writeFileSync(sheetFile, JSON.stringify(sheetRows(data, table, agg)));
     try{ require('child_process').execFileSync('python3', [path.join(__dirname, 'skill_worth_xlsx.py'), sheetFile, OUT_MD.replace(/\.md$/, '.xlsx')], {stdio:'inherit'}); }finally{ fs.unlinkSync(sheetFile); }
-    console.log('Top gaps:'); gaps.slice(0, 20).forEach((g, i)=> console.log(`  ${i + 1}. ${g.kind} ${g.id}: ${g.curS} -> ${g.mS} (${g.gap > 0 ? '+' : ''}${g.gap}, ${g.conf})`));
+    console.log('Top gaps:'); gaps.filter(g=> !g.off).slice(0, 20).forEach((g, i)=> console.log(`  ${i + 1}. ${g.kind} ${g.id}: ${g.curS} -> ${g.mS} (${g.gap > 0 ? '+' : ''}${g.gap}, ${g.conf})`));
     if(args.includes('--apply')){ fs.writeFileSync(COSTS, fmtTable(applyMeasured(table, agg))); console.log('measuredS written to canonical/skill-costs.json (value unchanged)'); }
     process.exit(0);
   }
-  const G = +(opt('games') || 40), only = (opt('only') || '').split(',').filter(Boolean), ckpt = opt('checkpoint');
-  const lab = makeLab({games: G, log: s=> console.log(s)});
+  // 2026-10-19 (resumable, after a container restart lost the first full run): --checkpoint=file.jsonl appends every finished run
+  // (a shard writes file.jsonl.s<i>; every sibling is read back), --budget-s=N stops starting runs after N seconds (exit code 3 =
+  // more to do, so a long run goes in foreground chunks), --shard=i/n takes every n-th run, --setups-only builds the
+  // (field, baseline) setups into the setup dir (docs/balance/skill-worth-partial-setups/, beside the checkpoint) and stops.
+  const G = +(opt('games') || 40), only = (opt('only') || '').split(',').filter(Boolean), ckpt = opt('checkpoint'), budget = +(opt('budget-s') || 0) * 1000;
+  const shard = (opt('shard') || '').split('/').map(Number), setupDir = opt('setup-dir') || (ckpt ? ckpt.replace(/\.jsonl$/, '') + '-setups' : null);
+  const lab = makeLab({games: G, log: s=> console.log(s), setupDir});
   let runs = plan(table, lab.defs, args.includes('--quick') ? {baselines:['b2'], combos:0} : {});
   if(only.length) runs = runs.filter(r=> only.includes(r.id) || only.includes(r.parent) || (r.kind === 'trigger' && r.id === 'onSpawn' && only.some(o=> /^on|^per/.test(o))));
-  const done = {}; if(ckpt && fs.existsSync(ckpt)) fs.readFileSync(ckpt, 'utf8').split('\n').filter(Boolean).forEach(l=>{ try{ const r = JSON.parse(l); done[r.key] = r; }catch(e){} });
+  const done = {};
+  if(ckpt){ const dir = path.dirname(ckpt), base = path.basename(ckpt);
+    (fs.existsSync(dir) ? fs.readdirSync(dir) : []).filter(f=> f === base || f.startsWith(base + '.s')).forEach(f=> fs.readFileSync(path.join(dir, f), 'utf8').split('\n').filter(Boolean).forEach(l=>{ try{ const r = JSON.parse(l); done[r.key] = r; }catch(e){} })); }
+  const ckOut = ckpt && shard.length === 2 ? ckpt + '.s' + shard[0] : ckpt;
   // order: per (field, baseline) so each setup is built once and in turn
   runs.sort((a, b)=> (a.ctx === 'plain' ? 0 : 1) - (b.ctx === 'plain' ? 0 : 1) || a.ctx.localeCompare(b.ctx) || a.b.localeCompare(b.b));
-  console.log(`${runs.length} runs (${Object.keys(done).length} from the checkpoint), ${G} games per point`);
-  const results = [];
+  const groups = [...new Set(runs.map(r=> r.ctx + ':' + r.b))];
+  // runs are dealt out one by one (setups are built first with --setups-only, which deals out the (field, baseline) groups)
+  const mine = r=> shard.length !== 2 || runs.indexOf(r) % shard[1] === shard[0];
+  console.log(`${runs.length} runs (${runs.filter(r=> done[r.key]).length} from the checkpoint), ${G} games per point${shard.length === 2 ? `, shard ${shard[0]}/${shard[1]}` : ''}`);
+  if(args.includes('--setups-only')){ groups.filter((g, i)=> shard.length !== 2 || i % shard[1] === shard[0]).forEach(g=>{ const [ctx, b] = g.split(':'); lab.setup(ctx, BASELINES.find(x=> x.id === b)); });
+    console.log(`setups built, ${lab.stats().games} games, ${Math.round(lab.stats().ms / 1000)} s`); process.exit(0); }
+  const results = []; let stopped = 0;
   runs.forEach((r, i)=>{
     if(done[r.key]){ results.push(done[r.key]); return; }
+    if(!mine(r)) return;
+    if(budget && lab.stats().ms > budget){ stopped++; return; }
     let out; try{ out = lab.measure(r); }catch(e){ out = {key:r.key, kind:r.kind, id:r.id, b:r.b, ctx:r.ctx, value:r.value, error: String(e && e.message || e).slice(0, 200)}; }
     if(r.tag) out.tag = r.tag; if(r.parent) out.parent = r.parent; if(r.per != null) out.per = r.per; if(r.uses) out.uses = r.uses; if(r.scale) out.scale = r.scale;
-    results.push(out); if(ckpt) fs.appendFileSync(ckpt, JSON.stringify(out) + '\n');
+    results.push(out); if(ckOut) fs.appendFileSync(ckOut, JSON.stringify(out) + '\n');
     const st = lab.stats(); console.log(`[${i + 1}/${runs.length}] ${r.kind} ${r.id}${r.tag ? ' ' + r.tag : ''} ${r.ctx} ${r.b}: ${out.error ? 'ERROR ' + out.error : `S ${out.S.all} (h2h ${out.S.h2h}, pool ${out.S.ref}) wr ${out.wr.mirror}/${out.wr.pool}`} · ${Math.round(st.ms / 1000)}s ${st.games} games`);
   });
+  const left = runs.filter(r=> !results.some(x=> x.key === r.key)).length;
+  if(left){ console.log(`${results.length}/${runs.length} runs done (${stopped} left for this shard), ${lab.stats().games} games, ${Math.round(lab.stats().ms / 1000)} s: run again to resume`); process.exit(stopped ? 3 : 0); }
   const st = lab.stats(), setups = {};
   results.forEach(r=>{ const k = r.ctx + ':' + r.b; if(!setups[k]){ try{ const s = lab.setup(r.ctx, BASELINES.find(b=> b.id === r.b)); setups[k] = {cal: s.cal, curves: s.curves, vanilla: s.vm && Object.fromEntries(Object.entries(s.vm).map(([q, v])=> [q, {wr: r3(v.wr), m: v.m}]))}; }catch(e){} } });
-  const data = {generated: DAY, G, games: st.games, ms: st.ms, baselines: BASELINES, contexts: CONTEXTS, setups, results};
+  // games and time over every chunk (each result counts its own games and ms)
+  const data = {generated: DAY, G, games: results.reduce((s, r)=> s + (r.games || 0), 0) || st.games, ms: results.reduce((s, r)=> s + (r.ms || 0), 0) || st.ms, baselines: BASELINES, contexts: CONTEXTS, setups, results};
   if(!only.length && !args.includes('--quick')){ fs.mkdirSync(path.dirname(OUT_JSON), {recursive:true}); fs.writeFileSync(OUT_JSON, JSON.stringify(data) + '\n'); console.log('wrote', path.relative(ROOT, OUT_JSON)); }
   else { const p = opt('out'); if(p){ fs.writeFileSync(p, JSON.stringify(data) + '\n'); console.log('wrote', p); } }
-  console.log(`${results.length} runs, ${st.games} games, ${Math.round(st.ms / 1000)} s`);
+  console.log(`${results.length} runs, ${data.games} games, ${Math.round(data.ms / 1000)} s`);
 }
 module.exports = {BASELINES, CONTEXTS, FIELD_OF, PARAM_OF, WHY, ACTION_REF, makeLab, plan, census, aggregate, applyMeasured, gapsOf, sheetRows, writeReport, fmtTable};
