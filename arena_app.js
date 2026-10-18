@@ -11146,48 +11146,46 @@ function refreshEnergyHud(){
 // than its own localStorage key like Energy — Online Raid is already a signed-in, backend-driven
 // feature, so this resource should follow a player across devices the same way gold/gems/dust/
 // metal already do, not reset per-device the way Energy deliberately does.
-const RAID_POINTS_MAX = 5;
-const RAID_POINTS_REGEN_MS = 6 * 60 * 60 * 1000; // +1 every 6 hours
+// 2026-10-19 (package RO, owner 00:22: "10 tickets per week to do raids, regenerate 1 per day (also takes 1-6 energy to participate in a
+// raid)"): Raid Points are the raid's 🎫 tickets now. At most 10, +1 a day while under 10, and each new weekly raid cycle tops them back
+// up to 10 (the rules are BramblewoodRaid.settleTickets). The number and its clock stay in myCurrencies (raid_points /
+// raid_points_updated_at, synced); the cycle of the last top-up is this browser's (RAID_TICKET_CYCLE_KEY), so a new device tops up once.
+const RAID_POINTS_MAX = 10;
+const RAID_POINTS_REGEN_MS = 24 * 60 * 60 * 1000; // +1 a day (was 1 every 6 h, cap 5)
 const RAID_POINTS_COST = 1;
-// Same "settle whole ticks since last check, driven by wall-clock deltas" shape as settleEnergy
-// above, just reading/writing myCurrencies.raidPoints(/raidPointsUpdatedAt) instead of its own
-// localStorage blob, since that's the field that actually gets persisted+synced.
+const RAID_TICKET_CYCLE_KEY = 'bramblewood_raid_ticket_cycle_v1';
+function raidTicketModel(){ return typeof BramblewoodRaid !== 'undefined' ? BramblewoodRaid : null; }
+function raidTicketBox(){ let cyc = null; try{ const v = localStorage.getItem(RAID_TICKET_CYCLE_KEY); cyc = v == null ? null : Number(v); }catch(e){}
+  return {n: myCurrencies.raidPoints, at: myCurrencies.raidPointsUpdatedAt ? new Date(myCurrencies.raidPointsUpdatedAt).getTime() : NaN, cycle: cyc}; }
+function storeRaidTicketBox(b){
+  const changed = b.n !== myCurrencies.raidPoints || (b.n < RAID_POINTS_MAX && new Date(b.at).toISOString() !== myCurrencies.raidPointsUpdatedAt);
+  myCurrencies.raidPoints = b.n; myCurrencies.raidPointsUpdatedAt = new Date(b.at).toISOString();
+  try{ localStorage.setItem(RAID_TICKET_CYCLE_KEY, String(b.cycle)); }catch(e){}
+  if(changed) saveCurrencies();
+}
 function settleRaidPoints(){
-  if(myCurrencies.raidPoints==null) myCurrencies.raidPoints = RAID_POINTS_MAX;
-  let lastMs = myCurrencies.raidPointsUpdatedAt ? new Date(myCurrencies.raidPointsUpdatedAt).getTime() : NaN;
-  if(!(lastMs>0)) lastMs = Date.now();
-  if(myCurrencies.raidPoints >= RAID_POINTS_MAX){
-    if(myCurrencies.raidPoints>RAID_POINTS_MAX) myCurrencies.raidPoints = RAID_POINTS_MAX;
-    return myCurrencies.raidPoints;
-  }
-  const elapsed = Date.now() - lastMs;
-  const ticks = Math.floor(elapsed / RAID_POINTS_REGEN_MS);
-  if(ticks > 0){
-    myCurrencies.raidPoints = Math.min(RAID_POINTS_MAX, myCurrencies.raidPoints + ticks);
-    lastMs = myCurrencies.raidPoints>=RAID_POINTS_MAX ? Date.now() : lastMs + ticks*RAID_POINTS_REGEN_MS;
-    myCurrencies.raidPointsUpdatedAt = new Date(lastMs).toISOString();
-    saveCurrencies();
-  }
+  const RM = raidTicketModel(); if(!RM){ if(myCurrencies.raidPoints==null) myCurrencies.raidPoints = RAID_POINTS_MAX; return myCurrencies.raidPoints; }
+  const box = raidTicketBox(), s = RM.settleTickets(box, Date.now(), {cap: RAID_POINTS_MAX, regenMs: RAID_POINTS_REGEN_MS});
+  if(s.n !== box.n || s.cycle !== box.cycle || (s.n < RAID_POINTS_MAX && s.at !== box.at)) storeRaidTicketBox(s); // a full stack's clock rests: no save
   return myCurrencies.raidPoints;
 }
 function currentRaidPoints(){ return settleRaidPoints(); }
 function msUntilNextRaidPointTick(){
-  settleRaidPoints();
-  if(myCurrencies.raidPoints>=RAID_POINTS_MAX) return null;
-  const lastMs = myCurrencies.raidPointsUpdatedAt ? new Date(myCurrencies.raidPointsUpdatedAt).getTime() : Date.now();
-  return Math.max(0, RAID_POINTS_REGEN_MS - (Date.now()-lastMs));
+  const RM = raidTicketModel(); if(!RM) return null; settleRaidPoints();
+  return RM.nextTicketIn(raidTicketBox(), Date.now(), {cap: RAID_POINTS_MAX, regenMs: RAID_POINTS_REGEN_MS});
 }
 function formatRaidPointCountdown(ms){
   const totalMin = Math.ceil(ms/60000);
   const h = Math.floor(totalMin/60), m = totalMin%60;
   return h>0 ? `${h}h ${m}m` : `${m}m`;
 }
+// Spending from a full stack starts the day's clock; spending below the cap leaves it running (it used to restart it on every spend).
 function spendRaidPoint(cost){
-  settleRaidPoints();
-  if(myCurrencies.raidPoints < cost) return false;
-  myCurrencies.raidPoints -= cost;
-  if(!myCurrencies.raidPointsUpdatedAt || myCurrencies.raidPoints<RAID_POINTS_MAX) myCurrencies.raidPointsUpdatedAt = new Date().toISOString();
-  saveCurrencies();
+  const RM = raidTicketModel(); settleRaidPoints();
+  if(!RM){ if(myCurrencies.raidPoints < cost) return false; myCurrencies.raidPoints -= cost; saveCurrencies(); return true; }
+  const s = RM.spendTickets(raidTicketBox(), cost, Date.now(), {cap: RAID_POINTS_MAX, regenMs: RAID_POINTS_REGEN_MS});
+  if(!s) return false;
+  storeRaidTicketBox(s);
   return true;
 }
 // Card leveling (0→10) (2026-09-18, Epic B). Stat curve: ACCELERATING, per the roadmap's own
@@ -21247,10 +21245,10 @@ function currentOfflineRaid(){
   return state;
 }
 // When a defeated raid comes back (2026-10-19, package RX, owner 23:19: "When the raid is dead, say when it respawns — not how much time
-// is left to defeat it."). For now: the end of its weekly cycle (cycleMs, the Goliath's RaidM.CYCLE_MS by default). The one place to
-// change it (an early respawn within 24 h of a kill, an admin restart). raidRespawnHTML: the "returns in 2d 4h" line, with the local
-// date and time on hover.
-function raidRespawnAt(def, state, cycleMs){ const c = Number(state && state.cycle) || 0; return (c + 1) * (cycleMs || RaidM.CYCLE_MS); }
+// is left to defeat it."). raidRespawnHTML: the "returns in 2d 4h" line, with the local date and time on hover.
+// 2026-10-19 (package RO, owner 21:48: "within 24h"): a raid with lives (RaidM.raidNow) returns at its state's respawnAt: respawnHours
+// (24) after the kill, or the cycle's end if that is sooner, or an admin's restart. Anything else (the old weekly boss): the cycle's end.
+function raidRespawnAt(def, state, cycleMs){ if(state && Number(state.respawnAt) > 0) return Number(state.respawnAt); const c = Number(state && state.cycle) || 0; return (c + 1) * (cycleMs || RaidM.CYCLE_MS); }
 function raidSpanText(ms){ ms = Math.max(0, ms); const d = Math.floor(ms / 86400000), h = Math.floor(ms % 86400000 / 3600000), mi = Math.floor(ms % 3600000 / 60000);
   return d ? `${d}d ${h}h` : h ? `${h}h ${mi}m` : `${Math.max(1, mi)}m`; }
 function raidRespawnHTML(def, state, cycleMs, cls){ const at = raidRespawnAt(def, state, cycleMs); let when = ''; try{ when = new Date(at).toLocaleString([], {weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}); }catch(e){ when = new Date(at).toString(); }
@@ -21342,13 +21340,14 @@ try{ raidDefEdits = JSON.parse(localStorage.getItem(RAID_DEFS_KEY)||'{}') || {};
 // 2026-10-18 (owner 11:46: 20-turn raids, super whales): bossHpBonusMax joins them, and an edit still on the retired 12-turn clock
 // (RAID_RETIRED_VALUES) takes the shipped fightRounds, unless it was saved since (the editor stamps roundsV: 2, so a 12 picked on
 // purpose stays).
-const RAID_NEW_KEYS = ['fieldRules', 'commonPool', 'ground', 'bossHpBonusMax'];
+const RAID_NEW_KEYS = ['fieldRules', 'commonPool', 'ground', 'bossHpBonusMax', 'respawnHours', 'instanceCap', 'participation']; // + the raid-ops keys (2026-10-19)
 const RAID_RETIRED_VALUES = {fightRounds: 12};
 function allRaidDefs(){ const base = RAID_DEFS_BASE.map(d=>{ const e = raidDefEdits[d.id]; if(!e) return d; const add = RAID_NEW_KEYS.filter(k=> !(k in e) && (k in d)).concat(e.roundsV >= 2 ? [] : Object.keys(RAID_RETIRED_VALUES).filter(k=> e[k] === RAID_RETIRED_VALUES[k] && (k in d) && d[k] !== e[k])); return add.length ? Object.assign({}, e, Object.fromEntries(add.map(k=> [k, d[k]]))) : e; }); Object.keys(raidDefEdits).forEach(id=>{ if(!RAID_DEFS_BASE.some(d=> d.id===id)) base.push(raidDefEdits[id]); }); return base; }
 // 2026-10-10 (user: "like the shop, its title is the first raid's title until you unlock the 2nd, then it's just called
 // 'Raids' and hosts all the raids you've unlocked"): with two or more live raids a row of raid buttons picks which one
 // the tab shows.
 let selectedRaidId = null;
+let raidView = 'hub'; // 2026-10-19 (package RO): 'hub' (every raid) or 'raid' (the one picked)
 function liveRaidDefs(){ return allRaidDefs().filter(d=> d.live!==false); }
 function activeRaidDef(){ const live = liveRaidDefs(); return live.find(d=> d.id === selectedRaidId) || live[0] || null; }
 function raidTabLabel(){ const live = liveRaidDefs(); return live.length >= 2 ? 'Raids' : (live[0] && live[0].name) || 'Raid'; }
@@ -21369,9 +21368,94 @@ async function liveRefreshRaidParts(raidId, cycle){
     const { data, error } = await sbClient.from('raid_week_attempts').select('boss_id, owner_id, display_name, damage, fought_at').like('boss_id', raidId+':%').eq('cycle', cycle).order('fought_at', {ascending:true}).limit(5000);
     if(error){ if(liveTableMissing(error)) LiveData.available = false; return false; }
     LiveData.available = true;
-    liveRaidParts[key] = {at: Date.now(), rows: (data||[]).map(r=> ({raidId, part: String(r.boss_id).split(':')[1], cycle, owner: r.owner_id, name: r.display_name, contribution: r.damage, at: Date.parse(r.fought_at)||0, live:true}))};
+    // 2026-10-19 (package RO): "raid:part@N" is instance N's attempt ("raid:part" instance 1)
+    liveRaidParts[key] = {at: Date.now(), rows: (data||[]).map(r=>{ const k = RaidM.parsePartKey(r.boss_id); return {raidId, part: k.part, instance: k.instance, cycle, owner: r.owner_id, name: r.display_name, contribution: r.damage, at: Date.parse(r.fought_at)||0, live:true}; })};
+    try{ await Promise.all([liveRefreshRaidRestarts(raidId, cycle), liveRaidInstance({id: raidId}, cycle, false)]); }catch(e){} // 2026-10-19: restarts and your instance
     return true;
   }catch(e){ return false; }
+}
+// ---- Raid ops (2026-10-19, package RO, owner 21:48 / 21:49 / 00:22 / 00:29; docs/raid-ops-2026-10-19.md): a fallen raid returns 24 h
+// after the kill as a fresh life (RaidM.raidGenerations), an admin can restart it, each cycle can hold several instances, rewards follow
+// participation, completing a raid opens its Auto, and fights cost tickets + 1-6 Energy. The server half is
+// supabase/proposed/20261019_raid_ops.sql (raid_restarts + admin_restart_raid, raid_instance_members + join_raid_instance); until it is
+// applied a restart is this browser's only and everyone is in instance 1.
+const RAID_RESTARTS_KEY = 'bramblewood_raid_restarts_v1';   // [{raidId, cycle, instance, at}] restarts made in this browser
+const RAID_INSTANCE_KEY = 'bramblewood_raid_instance_v1';   // {`${raidId}:${cycle}`: your instance}
+const RAID_AUTO_KEY = 'bramblewood_raid_auto_v1';           // {raidId: when you completed it}: its Auto is open (synced progress)
+try{ PROGRESS_KEYS.push(RAID_AUTO_KEY); PROGRESS_MERGE_KEYS[RAID_AUTO_KEY] = (a, b)=>{ let x = {}, y = {}; try{ x = JSON.parse(a || '{}') || {}; }catch(e){} try{ y = JSON.parse(b || '{}') || {}; }catch(e){} return JSON.stringify(Object.assign({}, y, x)); }; }catch(e){}
+function loadRaidLocalRestarts(){ try{ return JSON.parse(localStorage.getItem(RAID_RESTARTS_KEY) || '[]') || []; }catch(e){ return []; } }
+const liveRaidRestarts = {}; // `${raidId}:${cycle}` -> {at, rows:[{instance, at}], ok}
+async function liveRefreshRaidRestarts(raidId, cycle){
+  if(typeof sbClient === 'undefined' || !sbClient) return false;
+  const key = raidId + ':' + cycle, cur = liveRaidRestarts[key];
+  if(cur && Date.now() - cur.at < 60*1000) return false;
+  liveRaidRestarts[key] = {at: Date.now(), rows: cur ? cur.rows : [], ok: cur ? cur.ok : false};
+  try{
+    const { data, error } = await sbClient.from('raid_restarts').select('instance, restarted_at').eq('raid_id', raidId).eq('cycle', cycle).limit(200);
+    if(error) return false; // the table isn't there yet (needs "apply it")
+    const rows = (data || []).map(r=> ({instance: r.instance == null ? null : (r.instance | 0), at: Date.parse(r.restarted_at) || 0}));
+    const changed = JSON.stringify(rows) !== JSON.stringify(cur ? cur.rows : []);
+    liveRaidRestarts[key] = {at: Date.now(), rows, ok: true};
+    return changed;
+  }catch(e){ return false; }
+}
+function raidRestartsFor(def, cycle, inst){
+  const live = (liveRaidRestarts[def.id + ':' + cycle] || {}).rows || [], local = loadRaidLocalRestarts().filter(r=> r.raidId === def.id && r.cycle === cycle);
+  return live.concat(local).filter(r=> r.instance == null || (r.instance | 0) === (inst || 1)).map(r=> r.at);
+}
+function raidInstanceMap(){ try{ return JSON.parse(localStorage.getItem(RAID_INSTANCE_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function myRaidInstance(def, cycle){ const n = raidInstanceMap()[def.id + ':' + cycle] | 0; return n > 1 ? n : 1; }
+function setMyRaidInstance(def, cycle, n){ const m = raidInstanceMap(); m[def.id + ':' + cycle] = Math.max(1, n | 0);
+  Object.keys(m).forEach(k=>{ if(+k.split(':').pop() < cycle - 2) delete m[k]; }); try{ localStorage.setItem(RAID_INSTANCE_KEY, JSON.stringify(m)); }catch(e){} }
+// Your instance: read your row when the raid tab opens; your first fight of the cycle asks join_raid_instance to place you (join order,
+// guild-mates together while there is room). Both fail quietly until the SQL is applied (then: instance 1).
+const raidInstanceAsked = {};
+async function liveRaidInstance(def, cycle, join){
+  if(typeof sbClient === 'undefined' || !sbClient || !cloudUserId) return false;
+  const key = def.id + ':' + cycle + (join ? ':join' : ':read'); if(raidInstanceAsked[key]) return false; raidInstanceAsked[key] = true;
+  try{ let n = 0;
+    if(join){ const { data, error } = await sbClient.rpc('join_raid_instance', {p_raid_id: def.id, p_cycle: cycle}); if(error) return false; n = Number(data) || 0; }
+    else { const { data, error } = await sbClient.from('raid_instance_members').select('instance').eq('raid_id', def.id).eq('cycle', cycle).eq('owner_id', cloudUserId).limit(1);
+      if(error || !data || !data.length) return false; n = Number(data[0].instance) || 0; }
+    if(n >= 1 && n !== myRaidInstance(def, cycle)){ setMyRaidInstance(def, cycle, n); return true; }
+  }catch(e){}
+  return false;
+}
+function raidAutoDone(){ try{ return JSON.parse(localStorage.getItem(RAID_AUTO_KEY) || '{}') || {}; }catch(e){ return {}; } }
+function raidAutoOpen(def){ return !!(def && RaidM && RaidM.autoUnlocked(raidAutoDone(), def.id)); }
+function markRaidCompleted(def){ const d = raidAutoDone(); if(!def || d[def.id]) return false; d[def.id] = Date.now(); try{ localStorage.setItem(RAID_AUTO_KEY, JSON.stringify(d)); }catch(e){} return true; }
+// The reason a raid fight can't start for want of tickets ("No raid tickets left. The next comes in 9h 12m.")
+function raidNoTicketsText(){ const ms = msUntilNextRaidPointTick(); return TX('toast.raid-no-tickets', {span: raidSpanText(ms == null ? 0 : ms)}); }
+// One attempt's price: the raid's tickets and the part's Energy for the stage it is in (RaidM.attemptCost). Pays it, or says why not
+// (null). It also asks the server for your instance (the first fight of the cycle places you).
+function payRaidAttempt(def, partId, st){
+  const c = RaidM.attemptCost(def, partId, st && st.stage);
+  if(c.tickets && currentRaidPoints() < c.tickets){ showToast(raidNoTicketsText(), 'error'); return null; }
+  if(!spendEnergy(c.energy)){ energyShortToast(c.energy); return null; }
+  if(c.tickets) spendRaidPoint(c.tickets);
+  try{ liveRaidInstance(def, st ? st.cycle : RaidM.cycleOf(Date.now()), true).catch(()=>{}); }catch(e){}
+  return c;
+}
+// Admin "Restart raid" (owner 21:48: "I have admin access to restart the raid"): every instance of this cycle starts a fresh life now,
+// at full Health. Signed in as an app admin it goes through admin_restart_raid (the proposed SQL); until that is applied, or offline,
+// the restart is kept in this browser only, and the toast says so. A raid that was standing ends that life unbeaten (its fighters
+// get the held-raid rewards).
+async function adminRestartRaid(def){
+  const now = Date.now(), cycle = RaidM.cycleOf(now);
+  let live = false;
+  if(typeof sbClient !== 'undefined' && sbClient && cloudCardAdmin){
+    try{ const { error } = await sbClient.rpc('admin_restart_raid', {p_raid_id: def.id, p_instance: null}); live = !error; }catch(e){ live = false; } }
+  if(live){ delete liveRaidRestarts[def.id + ':' + cycle]; try{ await liveRefreshRaidRestarts(def.id, cycle); }catch(e){} }
+  else { const l = loadRaidLocalRestarts().filter(r=> r.cycle >= cycle - 1); l.push({raidId: def.id, cycle, instance: null, at: now}); try{ localStorage.setItem(RAID_RESTARTS_KEY, JSON.stringify(l.slice(-50))); }catch(e){} }
+  return {live, at: now};
+}
+async function confirmAdminRestartRaid(def){
+  if(!adminModeEnabled || !def) return false;
+  const go = await bwConfirm({title: TX('dialog.raid-restart-title', {name: def.name}), body: TX('dialog.raid-restart-body'), okLabel: TX('ui.raid-restart'), centre: true});
+  if(!go) return false;
+  const r = await adminRestartRaid(def);
+  showToast(r.live ? TX('toast.raid-restarted-live', {name: def.name}) : TX('toast.raid-restarted-local', {name: def.name}), 'ok');
+  return true;
 }
 // World call-out (2026-10-12, 11:26 list: "Defeating the raid gives a world-wide call out ... then everybody gets a toast. If
 // this is the hardest raid available right now, everyone online at that moment gets a small reward. Like <1% materia unit"):
@@ -21383,9 +21467,10 @@ async function checkRaidFalls(){
   try{ if(typeof sbClient === 'undefined' || !sbClient || LiveData.available === false) return;
     const live = liveRaidDefs(); if(!live.length) return; const hardest = live[live.length - 1];
     const flags = loadDialogueFlags();
-    for(const def of live){ const cycle = RaidM.cycleOf(Date.now()), key = 'raidFall:' + def.id + ':' + cycle; if(flags[key]) continue;
+    for(const def of live){ const cycle = RaidM.cycleOf(Date.now()), inst = myRaidInstance(def, cycle);
       await liveRefreshRaidParts(def.id, cycle);
       const st = currentRaidStateFor(def); if(!st.defeated) continue;
+      const key = 'raidFall:' + def.id + ':' + cycle + (st.gen ? ':g' + st.gen : '') + (inst > 1 ? ':i' + inst : ''); if(flags[key]) continue; // 2026-10-19: once per life of the raid
       setDialogueFlag(key, true);
       const rows = ((liveRaidParts[def.id + ':' + cycle] || {}).rows || []).slice().sort((a, b)=> (b.at||0) - (a.at||0)), last = rows[0];
       const fresh = last && Date.now() - (last.at||0) < 10*60*1000;
@@ -21418,14 +21503,24 @@ async function sendWorldEvent(kind, title, body, hours){
   return error ? {ok:false, why: /relation|does not exist|schema cache/i.test(error.message||'') ? 'The world_events table is not set up yet (needs "apply it").' : (error.message||'Error')} : {ok:true};
 }
 setTimeout(()=>{ checkRaidFalls(); checkWorldEvents(); setInterval(()=>{ checkRaidFalls(); checkWorldEvents(); }, 3*60*1000); }, 20000);
-function currentRaidAttempts(def, cycle){
+// 2026-10-19 (package RO): your instance's attempts only (an attempt without one is instance 1).
+function currentRaidAttempts(def, cycle, inst){
+  inst = inst || myRaidInstance(def, cycle);
   const live = (liveRaidParts[def.id+':'+cycle] || {}).rows || [];
-  return live.concat(loadRaidPartAttempts().filter(a=> a.raidId===def.id && a.cycle===cycle && !a.pushed));
+  return live.concat(loadRaidPartAttempts().filter(a=> a.raidId===def.id && a.cycle===cycle && !a.pushed)).filter(a=> (a.instance || 1) === inst);
 }
-function currentRaidStateFor(def, now){
-  now = now || Date.now();
-  const cycle = RaidM.cycleOf(now);
-  return RaidM.raidState(def, currentRaidAttempts(def, cycle), now, {cycle});
+// The raid now (2026-10-19, package RO): the current life of the raid in your instance (RaidM.raidNow: gen, genStart, killAt and
+// respawnAt, 24 h after a kill), with this cycle's restarts. opts: {cycle, extra: more attempts (the admin's damage plan)}.
+const _raidNowCache = {};
+function currentRaidStateFor(def, now, opts){
+  now = now || Date.now(); opts = opts || {};
+  const cycle = opts.cycle != null ? opts.cycle : RaidM.cycleOf(now), inst = myRaidInstance(def, cycle);
+  const attempts = currentRaidAttempts(def, cycle, inst).concat(opts.extra || []), restarts = raidRestartsFor(def, cycle, inst);
+  const key = [cycle, inst, attempts.length, attempts.reduce((t, a)=> t + (a.contribution | 0), 0), restarts.join(','), Math.floor(now / 30000), JSON.stringify([def.parts, def.standIns, def.respawnHours, def.stages])].join('|');
+  const c = _raidNowCache[def.id]; if(c && c.key === key) return c.st;
+  const st = Object.assign(RaidM.raidNow(def, attempts, now, {cycle, restarts}), {instance: inst});
+  _raidNowCache[def.id] = {key, st};
+  return st;
 }
 // Raid stages (2026-10-18, R3-WP2: Enraged and Thrashing did nothing): a stage's rules (bossAtk, bossHp, field, extraVolley,
 // castleHpPct, stripAbilities; RaidM.stageRules) land in the fight, and its one-line description shows wherever the stage does. A
@@ -21450,16 +21545,23 @@ function raidBarsHTML(ps){
   return `<div class="rp-bars is-single" role="meter" aria-label="${escapeAttr(p.name)} health" aria-valuemin="0" aria-valuemax="${total}" aria-valuenow="${left}"${tip ? ` title="${escapeAttr(tip)}"` : ''}><span class="rp-bar"><span style="width:${(frac*100).toFixed(2)}%"></span>${ticks}</span></div>
     <div class="rp-legend"><span class="rp-left">❤️ <b>${left.toLocaleString()}</b> / ${total.toLocaleString()} <small>HP left</small></span>${bars > 1 ? `<span class="rp-phase" title="${escapeAttr(tip)}">Phase ${phase} of ${bars}</span>` : ''}</div>`;
 }
+// 2026-10-19 (package RO, owner 00:29): a claim per life of the raid (it falls: the full rewards; it ends standing, by a restart or the
+// cycle's end: the held-raid share), in your instance, for this cycle and the last; only if you took part (RaidM.raidReward). The key
+// of a cycle's first life in instance 1 is the old one (raid:cycle), so nothing claimed before is offered again.
+function raidClaimKey(def, c, gen, inst){ return def.id + ':' + c + (gen ? ':g' + gen : '') + (inst > 1 ? ':i' + inst : ''); }
 function raidClaimsFor(def){
-  // a claim is possible for this cycle (if the raid fell) or the previous cycle (compensation)
   const now = Date.now(), cyc = RaidM.cycleOf(now), me = myGhostOwnerId();
   let claimed = {}; try{ claimed = JSON.parse(localStorage.getItem(RAID_CLAIMS_KEY)||'{}') || {}; }catch(e){}
   const out = [];
   [cyc, cyc-1].forEach(c=>{
-    const key = def.id+':'+c; if(claimed[key]) return;
-    const st = RaidM.raidState(def, currentRaidAttempts(def, c).concat(loadRaidPartAttempts().filter(a=> a.raidId===def.id && a.cycle===c && a.pushed && !currentRaidAttempts(def, c).some(x=> x.at===a.at))), c===cyc ? now : (c+1)*RaidM.CYCLE_MS - 1, {cycle:c});
-    const rw = RaidM.claimableReward(def, st, me, now);
-    if(rw) out.push({key, cycle:c, reward: rw, mine: st.contributors[me] || 0}); // mine: 2026-10-18 (package RW), the claim screen counts it up
+    const inst = myRaidInstance(def, c), cur = currentRaidAttempts(def, c, inst);
+    const atts = cur.concat(loadRaidPartAttempts().filter(a=> a.raidId===def.id && a.cycle===c && a.pushed && (a.instance || 1) === inst && !cur.some(x=> x.at===a.at)));
+    RaidM.raidGenerations(def, atts, now, {cycle: c, restarts: raidRestartsFor(def, c, inst)}).forEach(g=>{
+      const key = raidClaimKey(def, c, g.gen, inst); if(claimed[key]) return;
+      const st = RaidM.generationState(def, atts, g, c, now);
+      const rw = RaidM.raidReward(def, st, me, {over: g.over || g.end <= now});
+      if(rw){ out.push({key, cycle:c, reward: rw, mine: st.contributors[me] || 0}); Object.assign(out[out.length - 1], {gen: g.gen, instance: inst}); } // mine: 2026-10-18 (package RW), the claim screen counts it up
+    });
   });
   return out;
 }
@@ -21477,14 +21579,21 @@ function grantRaidCards(def, n, quiet){ // quiet (2026-10-18, package RW): the c
 }
 function claimRaidReward(def, claim){
   if(!claim || !claim.reward) return null;
-  const all = Object.assign({}, claim.reward.base);
-  Object.entries(claim.reward.extra||{}).forEach(([k,v])=>{ if(typeof v==='number') all[k] = (all[k]||0) + v; });
+  const rw = claim.reward, kill = rw.kind === 'kill';
+  const all = Object.assign({}, rw.base);
+  Object.entries(rw.extra||{}).forEach(([k,v])=>{ if(typeof v==='number') all[k] = (all[k]||0) + v; });
   Object.entries(all).forEach(([k,v])=>{ if(v>0 && CURRENCY_META[k]) grantCurrency(k, v); });
   const screen = raidClaimScreenReady();
-  const cardsGot = claim.reward.kind === 'kill' ? grantRaidCards(def, 1 + (/top1$|top10$/.test(claim.reward.tier || '') ? 1 : 0), screen) : [];
+  // 2026-10-19 (package RO): the reward says how many of the raid's cards (RaidM.raidReward: a fall gives them, a strong contributor
+  // has a chance at one more, a held raid only a small chance at one). A reward without `cards` is the older shape: 1, +1 for the top 10%.
+  let nCards = rw.cards != null ? Math.max(0, rw.cards | 0) : (kill ? 1 + (/top1$|top10$/.test(rw.tier || '') ? 1 : 0) : 0);
+  if(rw.cardChance > 0 && Math.random() < rw.cardChance) nCards++;
+  const cardsGot = nCards > 0 ? grantRaidCards(def, nCards, screen) : [];
   let claimed = {}; try{ claimed = JSON.parse(localStorage.getItem(RAID_CLAIMS_KEY)||'{}') || {}; }catch(e){}
   claimed[claim.key] = Date.now(); try{ localStorage.setItem(RAID_CLAIMS_KEY, JSON.stringify(claimed)); }catch(e){}
-  const xp = claim.reward.kind==='kill' ? 500 : 150;
+  const autoNew = kill && markRaidCompleted(def); // 2026-10-19 (package RO, owner 21:49): completing a raid opens its Auto
+  if(autoNew) setTimeout(()=>{ try{ showToast(TX('toast.raid-auto-unlocked', {name: def.name || ''}), 'ok'); }catch(e){} }, screen ? 600 : 2800);
+  const xp = rw.xp != null ? Math.max(0, Math.round(rw.xp)) : (kill ? 500 : 150);
   const spec = raidClaimScreenSpec(def, claim, all, cardsGot, xp);
   if(xpBarReady()){ const x0 = loadXp().xp; spec.xp = xpBarSpec(x0, x0 + xp); } // 2026-10-18 (RW follow-up): the claim screen's XP bar
   // 2026-10-18 (package RW): the claim screen opens first, so the XP level-up (FX.F.hooks.xpGain) waits for it to close
@@ -21513,7 +21622,7 @@ function raidClaimScreenSpec(def, claim, all, cardsGot, xp){
   const kill = rw.kind === 'kill';
   return {kind: kill ? 'kill' : 'compensation', tier: rw.tier, contribution: claim.mine || 0, boss:{name, art: raidBossArt(def), icon: def.icon || '🐙'}, rewards,
     text:{kicker:TX('results.raid-claim-kicker'), title: kill ? TX('results.raid-claim-fell', {name}) : TX('results.raid-claim-held', {name}),
-      sub: kill ? TX('results.raid-claim-sub-kill') : TX('results.raid-claim-sub-comp'), tier:raidClaimTierLabel(rw.tier), damage:TX('results.raid-claim-damage'),
+      sub: kill ? TX('results.raid-claim-sub-kill') : TX('results.raid-claim-sub-comp'), tier: raidClaimTierLabel(rw.tier) + (rw.strong ? ' · ' + TX('results.raid-strong') : ''), damage:TX('results.raid-claim-damage'), // + strong contributor (2026-10-19)
       collect:TX('results.raid-claim-collect'), skip:TX('results.tap-to-skip')}};
 }
 function showRaidClaimScreen(spec){
@@ -21533,6 +21642,58 @@ function raidFieldCardsHTML(rules){
       `<div class="env-line">${hidden ? '?' : escapeHtml(row.short || '')}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`);
     return `<figure class="ar2-rule">${card}<figcaption><b>${row.icon} ${escapeHtml(row.name)}</b><span>${hidden ? (fieldRowGateTip(row) ? `<i>? ${escapeHtml(fieldRowGateTip(row))}</i>` : '<i>? You learn what it does the first time it happens in a fight.</i>') : keywordizeHTML(escapeHtml(row.text))}</span></figcaption></figure>`; }).join('');
 }
+// ---- The Raid hub (2026-10-19, package RO, owner 21:49: "Improve the Raid access screen. When there are multiple raids, there is a main
+// raid screen showing the raids. Then you go into it, then you see this screen."): the Raid tab opens on every live raid as a card (its
+// art, alive with its Health % or down with when it returns, your part in it, your instance, Auto), with your tickets on top. A card
+// opens that raid's screen (raidPanelHTML), whose "All raids" button comes back. With one raid the hub still shows: it is where the
+// tickets and a raid's status are read at a glance, and where a claim waits.
+function raidTicketChipHTML(tickets, nextMs){
+  return `<span class="r3-chip r3-tickets${tickets <= 0 ? ' is-empty' : ''}" title="${escapeAttr(TX('ui.raid-tickets-tip', {cap: RAID_POINTS_MAX}))}"><small>${escapeHtml(TX('ui.raid-tickets'))}</small><b>${tickets}/${RAID_POINTS_MAX} 🎫</b>${nextMs != null ? `<small class="r3-next">${escapeHtml(TX('ui.raid-ticket-next', {span: raidSpanText(nextMs)}))}</small>` : ''}</span>`;
+}
+// "★ Strong contributor" / "✓ Taking part" / "2/3 fights · 640/1,000 damage"
+function raidParticipationText(p){
+  if(p.strong) return TX('ui.raid-strong');
+  if(p.participant) return TX('ui.raid-in');
+  return TX('ui.raid-part-progress', {fights: p.fights, nf: p.rules.fights, damage: p.damage.toLocaleString(), nd: p.rules.damage.toLocaleString()});
+}
+function raidClaimRowHTML(c, i, raidId){
+  const kill = c.reward.kind === 'kill';
+  return `<div class="r2-claim">🎁 ${escapeHtml(kill ? TX('ui.raid-claim-kill') : TX('ui.raid-claim-held'))}${c.reward.strong ? ` <span class="r2-strong">${escapeHtml(TX('ui.raid-strong'))}</span>` : ''} <button type="button" class="btn small primary" data-raid-claim="${i}"${raidId ? ` data-raid-id="${escapeAttr(raidId)}"` : ''}>${escapeHtml(TX('ui.raid-claim'))}</button></div>`;
+}
+function raidHubCardHTML(def){
+  const st = currentRaidStateFor(def), me = myGhostOwnerId(), p = RaidM.participationOf(def, st, me);
+  const pct = st.total ? Math.ceil(st.remaining / st.total * 100) : 0;
+  const status = st.defeated ? raidRespawnHTML(def, st, null, 'rh-status')
+    : `<span class="rh-status"><span class="rh-hp" aria-hidden="true"><span style="width:${Math.max(0, Math.min(100, st.fraction * 100)).toFixed(1)}%"></span></span><b>${pct}%</b> ${escapeHtml(TX('ui.raid-hub-hp-left'))}</span>`;
+  const mine = p.fights ? raidParticipationText(p) : TX('ui.raid-hub-not-yet');
+  return `<button type="button" class="rh-card${st.defeated ? ' is-down' : ''}${p.participant ? ' is-in' : ''}" data-raid-open="${escapeAttr(def.id)}" aria-label="${escapeAttr(TX('ui.raid-hub-open', {name: def.name || def.id}))}">
+    <span class="rh-art">${raidBossIconHTML(def, def.icon || '🐙')}</span>
+    <span class="rh-body">
+      <span class="rh-name"><b>${escapeHtml(def.name || def.id)}</b>${st.stage && !st.defeated ? ` <span class="r2-stage">${escapeHtml(st.stage.name)}</span>` : ''}</span>
+      ${status}
+      <span class="rh-me"><small>${escapeHtml(TX('ui.raid-taking-part'))}</small> ${escapeHtml(mine)}</span>
+      <span class="rh-tags">${st.instance > 1 ? `<span class="rh-tag">${escapeHtml(TX('ui.raid-instance', {n: st.instance}))}</span>` : ''}${raidAutoOpen(def) ? `<span class="rh-tag is-auto">🤖 ${escapeHtml(TX('ui.raid-auto-open'))}</span>` : ''}</span>
+    </span>
+    <span class="rh-go" aria-hidden="true">›</span></button>`;
+}
+function raidHubHTML(){
+  const live = liveRaidDefs(), tickets = currentRaidPoints(), next = msUntilNextRaidPointTick();
+  live.forEach(def=>{ const c = RaidM.cycleOf(Date.now()); liveRefreshRaidParts(def.id, c).then(ch=>{ if(ch && playSubTab==='raid' && !matchState && document.querySelector('.raid-hub')) renderRaidSubTab(document.getElementById('playSubBody')); }).catch(()=>{}); });
+  const claims = live.map(def=> ({def, list: raidClaimsFor(def)})).filter(x=> x.list.length);
+  return `<div class="panel raid-hub">
+    <div class="rh-head"><h2>🐙 ${escapeHtml(TX('ui.raid-hub-title'))}</h2>${raidTicketChipHTML(tickets, next)}</div>
+    <p class="panel-sub">${escapeHtml(TX('ui.raid-hub-sub', {cap: RAID_POINTS_MAX}))}</p>
+    ${tickets <= 0 ? `<p class="r3-hint r3-no-tickets" role="status">${escapeHtml(raidNoTicketsText())}</p>` : ''}
+    ${claims.map(x=> `<div class="rh-claims"><b>${escapeHtml(x.def.name || x.def.id)}</b>${x.list.map((c, i)=> raidClaimRowHTML(c, i, x.def.id)).join('')}</div>`).join('')}
+    <div class="rh-list">${live.map(raidHubCardHTML).join('')}</div>
+  </div>`;
+}
+function wireRaidHub(body){
+  (body || document).querySelectorAll('[data-raid-open]').forEach(b=> b.addEventListener('click', ()=>{ selectedRaidId = b.dataset.raidOpen; raidView = 'raid'; renderRaidSubTab(document.getElementById('playSubBody')); try{ window.scrollTo({top: 0}); }catch(e){} }));
+  (body || document).querySelectorAll('.raid-hub [data-raid-claim]').forEach(b=> b.addEventListener('click', ()=>{
+    const def = liveRaidDefs().find(d=> d.id === b.dataset.raidId) || activeRaidDef(); if(!def) return;
+    claimRaidReward(def, raidClaimsFor(def)[+b.dataset.raidClaim]); renderRaidSubTab(document.getElementById('playSubBody')); }));
+}
 function raidPanelHTML(){
   if(!RaidM) return '';
   const def = activeRaidDef(); if(!def) return '';
@@ -21544,12 +21705,18 @@ function raidPanelHTML(){
   const tierLabel = {top1:'Top 1%', top10:'Top 10%', top50:'Top 50%', participant:'Participant'}[tier] || '';
   const myTries = currentRaidAttempts(def, st.cycle).filter(a=> a.owner === me).length;
   const claims = raidClaimsFor(def);
+  // 2026-10-19 (package RO): tickets, this life's participation, your instance, Auto, and each part's own Energy
+  const tickets = currentRaidPoints(), tkNext = msUntilNextRaidPointTick(), part = RaidM.participationOf(def, st, me), pr = part.rules;
+  const costOf = id=> RaidM.attemptCost(def, id, st.stage), openCosts = st.parts.filter(ps=> !ps.locked && !ps.defeated).map(ps=> costOf(ps.id).energy);
+  const enLo = openCosts.length ? Math.min(...openCosts) : 0, enHi = openCosts.length ? Math.max(...openCosts) : 0, tkCost = costOf((st.parts[0] || {}).id).tickets;
+  const noTickets = tkCost > 0 && tickets < tkCost;
   const cost = def.cost || {}, sc = def.scoring || {}, rw = def.rewards || {}, G = CURRENCY_META.gold.glyph;
   const pct = st.total ? Math.ceil(st.remaining / st.total * 100) : 0, ground = raidGroundOf({raidDef: def});
   const kill = Object.entries(rw.kill || {}).filter(([k, v])=> typeof v === 'number' && v > 0).map(([k, v])=> `${v} ${(CURRENCY_META[k] || {}).glyph || k}`).join(' ');
   const tierTxt = t=> Object.entries((rw.tiers || {})[t] || {}).map(([k, v])=> k === 'title' ? `title “${escapeHtml(v)}”` : `+${v} ${(CURRENCY_META[k] || {}).glyph || k}`).join(' ');
   const allyNames = (def.allyDecks || []).map(a=> a.name).filter(Boolean);
   return `<div class="panel raid2-panel raid3 map-theme-${escapeAttr(ground)}">
+    <button type="button" class="btn small ghost r3-back" data-raid-hub>${escapeHtml(TX('ui.raid-all-raids'))}</button>
     <div class="r3-hero">
       <div class="r3-boss-card" aria-hidden="true">${raidBossIconHTML(def, '🐙')}<span class="r3-boss-glow"></span></div>
       <div class="r3-boss-info">
@@ -21559,21 +21726,26 @@ function raidPanelHTML(){
         <div class="r2-total"><div class="raid-boss-hp-bar r3-hp"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
           <span class="r2-total-line"><span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${pct}%)</small></span>${st.defeated ? raidRespawnHTML(def, st) /* 2026-10-19 (owner 23:19): down, it says when it returns */ : `<span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left this week</span>`}</span></div>
       </div>
-      ${adminModeEnabled ? `<div class="r3-admin"><button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button><button type="button" class="btn small" data-raid-admin-dmg="0.1" title="Admin: take 10% of the boss's total Health off its open parts">💥 Deal 10%</button><button type="button" class="btn small" data-raid-admin-dmg="0.5" title="Admin: take 50% of the boss's total Health off its open parts">💥 Deal 50%</button></div>` : ''}
+      ${adminModeEnabled ? `<div class="r3-admin"><button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button><button type="button" class="btn small" data-raid-admin-dmg="0.1" title="Admin: take 10% of the boss's total Health off its open parts">💥 Deal 10%</button><button type="button" class="btn small" data-raid-admin-dmg="0.5" title="Admin: take 50% of the boss's total Health off its open parts">💥 Deal 50%</button><button type="button" class="btn small" data-raid-restart title="${escapeAttr(TX('ui.raid-restart-tip'))}">${escapeHtml(TX('ui.raid-restart'))}</button></div>` : ''}
     </div>
-    ${claims.map((c,i)=> `<div class="r2-claim">🎁 ${c.reward.kind==='kill' ? 'The raid fell — claim your reward!' : 'Last week’s raid survived — claim your compensation.'} <button type="button" class="btn small primary" data-raid-claim="${i}">Claim</button></div>`).join('')}
+    ${claims.map((c,i)=> raidClaimRowHTML(c, i)).join('')}
     <div class="r3-me" role="group" aria-label="Your raid this week">
       <span class="r3-chip"><small>Your damage</small><b>${mine.toLocaleString()}</b></span>
       <span class="r3-chip"><small>Standing</small><b>${tierLabel || '—'}</b></span>
       <span class="r3-chip"><small>Your attempts</small><b>${myTries}</b></span>
-      <span class="r3-chip"><small>Raid Points</small><b>${currentRaidPoints()}/${RAID_POINTS_MAX} 🎫</b></span>
-      <span class="r3-chip"><small>A fight costs</small><b>${cost.raidPoints||0} 🎫 ${cost.energy||0} ⚡</b></span>
+      ${raidTicketChipHTML(tickets, tkNext)}
+      <span class="r3-chip"><small>${escapeHtml(TX('ui.raid-fight-costs'))}</small><b>${tkCost} 🎫 + ${enLo === enHi ? enLo : enLo + '–' + enHi} ⚡</b></span>
+      <span class="r3-chip r3-part${part.participant ? ' is-in' : ''}${part.strong ? ' is-strong' : ''}" title="${escapeAttr(TX('ui.raid-part-rules', {fights: pr.fights, damage: pr.damage.toLocaleString(), sfights: pr.strongFights, sdamage: pr.strongDamage.toLocaleString(), pct: pr.strongPct}))}"><small>${escapeHtml(TX('ui.raid-taking-part'))}</small><b>${escapeHtml(raidParticipationText(part))}</b></span>
+      ${st.instance > 1 ? `<span class="r3-chip r3-inst" title="${escapeAttr(TX('ui.raid-instance-tip'))}"><small>${escapeHtml(TX('ui.raid-instance-label'))}</small><b>${st.instance}</b></span>` : ''}
+      ${raidAutoOpen(def) ? `<span class="r3-chip r3-auto"><small>🤖</small><b>${escapeHtml(TX('ui.raid-auto-open'))}</b></span>` : ''}
       ${(()=>{ /* 2026-10-19 (guild skills): "Guild: +12% bramble Health" */ let t = ''; try{ t = guildRaidBonusText(); }catch(e){} return t ? `<span class="r3-chip gsk-raid" title="${escapeAttr(t)}"><small>🌳</small><b>${escapeHtml(t)}</b></span>` : ''; })()}
     </div>
     ${(()=>{ const cap = raidLeaderCapOf(def); if(!cap) return ''; // 2026-10-19 (package RX): the raid's leader cost cap, your leader against it
       const lid = matchLeaderId(), d = lid ? getCardDefs()[lid] : null, lc = raidLeaderCapCheck(def, lid);
       return `<p class="r3-hint r3-leader-cap${lc.ok ? '' : ' is-over'}">${TX('ui.raid-leader-cap', {cap})} ${d ? (lc.ok ? TX('ui.raid-leader-cost-ok', {name: escapeHtml(d.name), cost: lc.cost, cap}) : `<b>${escapeHtml(lc.text)}</b>`) : ''} <button type="button" class="btn small" data-raid-leader>${TX('ui.raid-change-leader')}</button></p>`; })()}
     ${tierLabel ? '' : '<p class="r3-hint">Fight any open part to join this week’s raid.</p>'}
+    ${raidAutoOpen(def) ? '' : `<p class="r3-hint r3-auto-hint">${escapeHtml(TX('ui.raid-auto-locked'))}</p>`}
+    ${noTickets ? `<p class="r3-hint r3-no-tickets" role="status">${escapeHtml(raidNoTicketsText())}</p>` : ''}
     <h3 class="r3-h">Pick a part to fight</h3>
     <div class="r2-parts">${st.parts.map(ps=>{ const p = ps.def;
       const waits = (p.lockedUntil||[]).map(id=> (def.parts.find(x=> x.id===id)||{}).name || id).join(', ');
@@ -21582,7 +21754,7 @@ function raidPanelHTML(){
         <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${ps.total ? Math.ceil(ps.remaining / ps.total * 100) : 0}%</span></div>
         ${raidBarsHTML(ps)}
         ${atk ? `<span class="r2-note r3-atk" title="${escapeAttr(TX('ui.raid-attacks-telegraph-title'))}">${atk}</span>` : ''}
-        <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary" data-raid-part="${escapeAttr(p.id)}">⚔️ Fight (${cost.raidPoints||0}🎫 ${cost.energy||0}⚡)</button>`}
+        <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary${noTickets ? ' is-blocked' : ''}" data-raid-part="${escapeAttr(p.id)}"${noTickets ? ` aria-disabled="true" title="${escapeAttr(raidNoTicketsText())}"` : ''}>⚔️ Fight (${costOf(p.id).tickets}🎫 ${costOf(p.id).energy}⚡)</button>`}
           <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString()} from other raiders` : ''}</span></div>
       </div>`; }).join('')}</div>
     <div class="r3-info">
@@ -21607,9 +21779,11 @@ function raidPanelHTML(){
         <ul class="r3-rw">${(def.stages || []).slice().sort((a, b)=> b.at - a.at).map(s=> `<li${st.stage === s ? ' aria-current="true"' : ''}><b>${st.stage === s ? '▶ ' : ''}${escapeHtml(s.name || 'Stage')} <small>below ${+(s.at * 100).toFixed(1)}%</small></b><span>${escapeHtml(raidStageText(s) || 'No change yet.')}</span></li>`).join('')}</ul></section>` : ''}
       <section class="r3-rewards"><h3>If it falls</h3>
         <ul class="r3-rw">
-          <li><b>Everyone who fought</b><span>${kill || '—'}${raidCardIds(def).length ? ' and one of its own cards' : ''}</span></li>
+          <li><b>${escapeHtml(TX('ui.raid-rw-participants', {fights: pr.fights, damage: pr.damage.toLocaleString()}))}</b><span>${kill || '—'}${raidCardIds(def).length ? ' and one of its own cards' : ''}</span></li>
+          <li><b>${escapeHtml(TX('ui.raid-rw-strong', {fights: pr.strongFights, damage: pr.strongDamage.toLocaleString()}))}</b><span>${escapeHtml(TX('ui.raid-rw-strong-what', {pct: pr.strongPct}))}</span></li>
           ${['top1', 'top10', 'top50'].filter(t=> tierTxt(t)).map(t=> `<li><b>${({top1:'Top 1%', top10:'Top 10%', top50:'Top 50%'})[t]}</b><span>${tierTxt(t)}${t !== 'top50' && raidCardIds(def).length ? ' and a second card' : ''}</span></li>`).join('')}
-          <li><b>If it survives the week</b><span>${rw.compensationPct != null ? rw.compensationPct : 40}% of the kill reward</span></li>
+          <li><b>${escapeHtml(TX('ui.raid-rw-held'))}</b><span>${escapeHtml(TX('ui.raid-rw-held-what', {pct: rw.failPct != null ? rw.failPct : 50, max: rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}))}</span></li>
+          <li><b>${escapeHtml(TX('ui.raid-rw-respawn-h'))}</b><span>${escapeHtml(TX('ui.raid-rw-respawn', {h: Math.round(RaidM.respawnMs(def) / 3600000)}))}</span></li>
         </ul></section>
     </div>
   </div>`;
@@ -21620,22 +21794,22 @@ function raidPanelHTML(){
 // table's own cap, written as 'Admin'); until that function is applied, or offline, it is a local attempt in this browser (owner
 // 'admin', so it never counts as your own damage).
 async function adminRaidDamage(def, frac){
-  const now = Date.now(), cycle = RaidM.cycleOf(now), plan = [], fake = [];
-  let st = currentRaidStateFor(def), left = Math.round(st.total * Math.max(0, Math.min(1, frac)));
+  const now = Date.now(), cycle = RaidM.cycleOf(now), plan = [], fake = [], inst = myRaidInstance(def, cycle); // 2026-10-19: your instance, this life
+  let st = currentRaidStateFor(def, now), left = Math.round(st.total * Math.max(0, Math.min(1, frac)));
   for(let guard = 0; left > 0 && guard < 20; guard++){
     const ps = st.parts.find(x=> !x.locked && !x.defeated); if(!ps) break;
     const n = Math.min(left, Math.ceil(ps.remaining)); if(!(n > 0)) break;
     plan.push({part: ps.id, n}); left -= n;
-    fake.push({raidId: def.id, part: ps.id, cycle, owner:'admin', contribution: n, at: now});
-    st = RaidM.raidState(def, currentRaidAttempts(def, cycle).concat(fake), now, {cycle});
+    fake.push({raidId: def.id, part: ps.id, cycle, instance: inst, owner:'admin', contribution: n, at: now});
+    st = currentRaidStateFor(def, now, {extra: fake});
   }
   let live = false, dealt = 0;
   for(const step of plan){
     let ok = false;
     if(typeof sbClient !== 'undefined' && sbClient && cloudCardAdmin){
-      try{ const { error } = await sbClient.rpc('admin_raid_damage', {p_boss_id: def.id + ':' + step.part, p_cycle: cycle, p_amount: step.n}); ok = !error; }catch(e){ ok = false; } }
+      try{ const { error } = await sbClient.rpc('admin_raid_damage', {p_boss_id: RaidM.partKey(def.id, step.part, inst), p_cycle: cycle, p_amount: step.n}); ok = !error; }catch(e){ ok = false; } }
     if(ok){ live = true; delete liveRaidParts[def.id + ':' + cycle]; }
-    else { const l = loadRaidPartAttempts(); l.push({raidId: def.id, part: step.part, cycle, owner:'admin', name:'Admin', contribution: step.n, dealt: 0, overwhelmed: false, at: Date.now(), admin: true}); saveRaidPartAttempts(l); }
+    else { const l = loadRaidPartAttempts(); l.push({raidId: def.id, part: step.part, cycle, instance: inst, owner:'admin', name:'Admin', contribution: step.n, dealt: 0, overwhelmed: false, at: Date.now(), admin: true}); saveRaidPartAttempts(l); }
     dealt += step.n;
   }
   if(live) try{ await liveRefreshRaidParts(def.id, cycle); }catch(e){}
@@ -21643,10 +21817,12 @@ async function adminRaidDamage(def, frac){
 }
 function wireRaidPanel(){
   const def = activeRaidDef(); if(!def) return;
-  document.querySelectorAll('[data-raid-part]').forEach(b=> b.addEventListener('click', ()=> startRaidPartMatch(def, b.dataset.raidPart)));
+  document.querySelectorAll('[data-raid-part]').forEach(b=> b.addEventListener('click', ()=>{ if(b.classList.contains('is-blocked')){ showToast(raidNoTicketsText(), 'error'); return; } startRaidPartMatch(def, b.dataset.raidPart); }));
+  document.querySelectorAll('.raid2-panel [data-raid-hub]').forEach(b=> b.addEventListener('click', ()=>{ raidView = 'hub'; renderRaidSubTab(document.getElementById('playSubBody')); })); // 2026-10-19: back to the raids
+  document.querySelectorAll('.raid2-panel [data-raid-restart]').forEach(b=> b.addEventListener('click', async ()=>{ if(await confirmAdminRestartRaid(def)) renderRaidSubTab(document.getElementById('playSubBody')); }));
   document.querySelectorAll('[data-raid-leader]').forEach(b=> b.addEventListener('click', ()=> openLoadoutPicker('leader', {raidDef: def}))); // 2026-10-19 (package RX)
   const claims = raidClaimsFor(def);
-  document.querySelectorAll('[data-raid-claim]').forEach(b=> b.addEventListener('click', ()=>{ claimRaidReward(def, claims[+b.dataset.raidClaim]); renderRaidSubTab(document.getElementById('playSubBody')); }));
+  document.querySelectorAll('.raid2-panel [data-raid-claim]').forEach(b=> b.addEventListener('click', ()=>{ claimRaidReward(def, claims[+b.dataset.raidClaim]); renderRaidSubTab(document.getElementById('playSubBody')); }));
   const eb = document.getElementById('raidEditBtn'); if(eb) eb.addEventListener('click', ()=> openRaidEditor(def.id));
   document.querySelectorAll('[data-raid-admin-dmg]').forEach(b=> b.addEventListener('click', async ()=>{ if(!adminModeEnabled) return; b.disabled = true;
     try{ const r = await adminRaidDamage(def, Number(b.dataset.raidAdminDmg)); showToast(TX('toast.admin-raid-damage-dealt', {toLocaleString: r.dealt.toLocaleString(), v2: r.live ? ' (live)' : ' (this browser only)'}), 'ok'); }catch(e){ showToast((TX('toast.admin-damage-failed') + ' ') + ((e && e.message) || e), 'error'); }
@@ -21714,16 +21890,38 @@ function openRaidEditor(raidId){
     const deck = P ? ((P.fight = P.fight || {}).deck = P.fight.deck || {}) : {};
     const matches = (!P || q.trim().length < 2) ? [] : Object.keys(defs).filter(id=> !defs[id].test && defs[id].name.toLowerCase().includes(q.trim().toLowerCase())).slice(0, 18);
     const rw = draft.rewards;
-    const tierRow = t=> `<label>${({top1:'Top 1%',top10:'Top 10%',top50:'Top 50%',participant:'Participant'})[t]} extra gold<input type="number" min="0" data-tier-gold="${t}" value="${(rw.tiers[t]||{}).gold||0}"></label><label>…title<input data-tier-title="${t}" value="${escapeAttr((rw.tiers[t]||{}).title||'')}"></label>`;
+    // 2026-10-19 (package RO): each tier's extra Gold, Dust and Metal, and its title
+    const tierRow = t=> `<div class="se-wide re-tier"><b>${({top1:'Top 1%',top10:'Top 10%',top50:'Top 50%',participant:'Participant'})[t]}</b>${['gold', 'dust', 'metal'].map(k=> `<label>+${k}<input type="number" min="0" data-tier-n="${t}" data-cur="${k}" value="${(rw.tiers[t]||{})[k]||0}"></label>`).join('')}<label>title<input data-tier-title="${t}" value="${escapeAttr((rw.tiers[t]||{}).title||'')}"></label></div>`;
+    const pr = RaidM.participationRules(draft);
+    const keepScroll = (overlay.querySelector('.se-body') || {}).scrollTop || 0; // 2026-10-19: a redraw keeps your place
     overlay.innerHTML = `<div class="modal skirmish-editor raid-editor" role="dialog" aria-label="Raid editor">
       <div class="modal-head-row"><h2>🛠️ ${escapeHtml(draft.icon||'')} ${escapeHtml(draft.name||'Raid')} <span class="se-key">${escapeHtml(draft.id)}${raidDefEdits[draft.id] ? ' · edited' : ''}</span></h2><button class="modal-close-btn" id="reClose" aria-label="Close">✕</button></div>
       ${errs.length ? `<div class="re-errs">⚠️ ${errs.map(escapeHtml).join(' · ')}</div>` : ''}
+      <div class="se-body">
+      <!-- 2026-10-19 (package RO, owner 00:22: "Furnish the Raid edit window more. Then make it scrollable"): the content scrolls in .se-body
+           (the .skirmish-editor shell hides overflow), grouped: general, tickets and respawn, tuning, field, parts, stages, scoring,
+           taking part and rewards, ally decks -->
+      <h3 class="se-h">General</h3>
       <div class="se-grid">
         <label>Name<input id="reName" value="${escapeAttr(draft.name||'')}"></label>
         <label>Icon<input id="reIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
-        <label>Raid Points per fight<input id="reCostRp" type="number" min="0" max="5" value="${draft.cost.raidPoints||0}"></label>
-        <label>Energy per fight<input id="reCostEn" type="number" min="0" max="20" value="${draft.cost.energy||0}"></label>
         <label>Turns per fight<input id="reRounds" type="number" min="3" max="40" value="${draft.fightRounds||RaidM.FIGHT_ROUNDS_DEFAULT||20}"></label>
+        <label>Art (image path)<input id="reArt" value="${escapeAttr(draft.art||'')}" placeholder="art/raids/<id>.png"></label>
+        <label class="se-chk"><input type="checkbox" id="reTrench" ${draft.trench?'checked':''}> Trench fights (3 rows a side)</label>
+        ${draft.trench ? `<label>Trench wall HP<input id="reWall" type="number" min="5" max="999" value="${draft.trench.wallHp||45}"></label>` : ''}
+        <label class="se-chk"><input type="checkbox" id="reLive" ${draft.live!==false?'checked':''}> Live this week</label>
+        <label class="se-wide">Blurb<input id="reBlurb" value="${escapeAttr(draft.blurb||'')}"></label>
+      </div>
+      <h3 class="se-h">Tickets, Energy, respawn and instances</h3>
+      <div class="se-grid">
+        <label title="Raid tickets one fight takes. Players hold up to ${RAID_POINTS_MAX}, +1 a day, topped up to ${RAID_POINTS_MAX} each week.">Tickets per fight<input id="reCostRp" type="number" min="0" max="5" value="${draft.cost.raidPoints != null ? draft.cost.raidPoints : 1}"></label>
+        <label title="Energy a fight takes on a part with no Energy of its own (1-6); each part and stage can change it below">Energy per fight (default)<input id="reCostEn" type="number" min="1" max="6" value="${draft.cost.energy||4}"></label>
+        <label title="Hours after a kill until the raid comes back at full Health, as a new life with its own rewards (1-168; the week's end still starts a new cycle)">Respawn after a kill (hours)<input id="reRespawn" type="number" min="1" max="168" value="${draft.respawnHours||RaidM.RESPAWN_HOURS_DEFAULT}"></label>
+        <label title="Players in one instance before the next opens, each with its own Health and rewards (10-1000). The server reads the published value.">Players per instance<input id="reInstCap" type="number" min="10" max="1000" value="${RaidM.instanceCap(draft)}"></label>
+        ${adminModeEnabled ? `<div class="se-wide re-restart"><button type="button" class="btn small" id="reRestart">${escapeHtml(TX('ui.raid-restart'))}</button><small class="panel-sub">Every instance starts a fresh life now, at full Health (live once the raid-ops SQL is applied; this browser only until then).</small></div>` : ''}
+      </div>
+      <h3 class="se-h">Tuning</h3>
+      <div class="se-grid">
         <label title="The boss unit's extra Health on a fresh raid, shrinking with the raid's remaining Health (2026-10-18)">Boss unit bonus Health<input id="reBossHpBonus" type="number" min="0" max="1000" value="${draft.bossHpBonusMax||0}"></label>
         <label title="Your leader's cost in points: each Lumber 1, each Stone 2, each Metal 3. A leader over it can't go into this raid. 0 = no cap (2026-10-19)">Leader cost cap (points)<input id="reLeaderCap" type="number" min="0" max="99" value="${draft.leaderCostCap||0}"></label>
         <label title="Below this much bramble damage an attempt pays a pittance (2026-10-19)">Paying damage (min)<input id="reMinDmg" type="number" min="1" max="9999" value="${draft.minDamage||120}"></label>
@@ -21734,10 +21932,6 @@ function openRaidEditor(raidId){
         <label title="How many of your two CPU allies play a card each turn">Allies playing a turn<input id="reTAllies" type="number" min="1" max="2" value="${t.alliesPerTurn || D.alliesPerTurn}"></label>
         <label title="The boss calls in Commons every N turns">Commons every N turns<input id="reTRfEvery" type="number" min="1" max="10" value="${rf.every || 1}"></label>
         <label title="The most Commons the boss calls in at once">Commons per call (max)<input id="reTRfMax" type="number" min="0" max="2" value="${rf.max != null ? rf.max : (RaidM.REINFORCE || {}).max || 2}"></label>`; })()}
-        <label class="se-chk"><input type="checkbox" id="reTrench" ${draft.trench?'checked':''}> Trench fights (3 rows, auto-played)</label>
-        ${draft.trench ? `<label>Trench wall HP<input id="reWall" type="number" min="5" max="999" value="${draft.trench.wallHp||45}"></label>` : ''}
-        <label class="se-wide">Blurb<input id="reBlurb" value="${escapeAttr(draft.blurb||'')}"></label>
-        <label class="se-chk"><input type="checkbox" id="reLive" ${draft.live!==false?'checked':''}> Live this week</label>
       </div>
       ${(()=>{ // Field effects and the boss's Commons (2026-10-17): the whole raid's fieldRules as chips (✕ takes one off), an "add" list from
         // FIELD_EFFECTS (Psychic Dampener among them), and the Commons the boss calls in each round (blank = picked from its decks' types).
@@ -21755,6 +21949,7 @@ function openRaidEditor(raidId){
         <label>HP per bar<input data-pf="barHp" type="number" min="1000" step="1000" value="${P.barHp||80000}"></label>
         <label>Fight bramble HP<input data-pf="castleHp" type="number" min="10" max="9999" value="${P.fight.castleHp||200}"></label>
         <label>Turns (blank = raid default)<input data-pf="rounds" type="number" min="3" max="40" value="${P.fight.rounds||''}"></label>
+        <label title="Energy a fight on this part takes (1-6; blank = the raid's)">Energy per fight (blank = raid)<input data-pf="energy" type="number" min="1" max="6" value="${(P.cost||{}).energy||''}"></label>
         <div class="se-wide se-req"><span>Locked until these fall:</span>${draft.parts.filter(o=> o.id!==P.id).map(o=> `<label class="se-chk"><input type="checkbox" data-lock="${escapeAttr(o.id)}" ${(P.lockedUntil||[]).includes(o.id)?'checked':''}> ${escapeHtml(o.name||o.id)}</label>`).join('') || '<i>no other parts</i>'}</div>
         <label>Raid damage per HP (blank = raid)<input data-pf="perHp" type="number" min="1" value="${(P.scoring||{}).perInFightHp||''}"></label>
       </div>
@@ -21784,6 +21979,7 @@ function openRaidEditor(raidId){
           <label title="Every boss card gains this much Health">boss +Health<input type="number" min="-50" max="200" data-st-bhp="${i}" value="${sr.bossHp||0}"></label>
           <label title="The boss's back two rows strike this many extra times as each round starts (half their Attack), on top of their strike in combat">extra back-row strikes<input type="number" min="0" max="3" data-st-volley="${i}" value="${sr.extraVolley||0}"></label>
           <label title="Your bramble's max Health changes by this % (-10 = 10% less)">your bramble %<input type="number" min="-90" max="200" data-st-castle="${i}" value="${sr.castleHpPct||0}"></label>
+          <label title="Extra Energy a fight takes in this stage (the part's Energy + this, kept to 1-6)">+Energy<input type="number" min="-5" max="5" data-st-energy="${i}" value="${s.energyAdd||0}"></label>
           <label>field<select data-st-field="${i}"><option value="">none</option>${keep ? `<option value="__keep" selected>${escapeHtml(typeof fv === 'string' ? fv : 'custom rules')} (kept)</option>` : ''}${fx.map(f=> `<option value="${escapeAttr(f.id)}" ${fv === f.id ? 'selected' : ''}>${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></label>
           <button type="button" class="btn small ghost" data-st-del="${i}" aria-label="Remove this stage" title="Remove this stage">✕</button>
           <small class="panel-sub re-stage-desc">${escapeHtml(raidStageText(s) || 'No rules: the stage is only a name.')}</small></div>`; }).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
@@ -21793,11 +21989,26 @@ function openRaidEditor(raidId){
         <label>Cap per fight<input id="reCap" type="number" min="100" step="100" value="${draft.scoring.cap||5000}"></label>
         <label>Overwhelm (bramble destroyed)<input id="reOver" type="number" min="100" step="100" value="${draft.scoring.overwhelmCap||10000}"></label>
         <label>Stand-in raiders % per day<input id="reStand" type="number" min="0" max="50" value="${draft.standIns.perDayPct||0}"></label>
+      </div>
+      <h3 class="se-h">Taking part and rewards <small>per life of the raid</small></h3>
+      <div class="se-grid">
+        <label title="A participant has at least this many fights and this much raid damage in that life of the raid; under it, no reward">Taking part: fights<input id="rePFights" type="number" min="0" max="99" value="${pr.fights}"></label>
+        <label>Taking part: damage<input id="rePDmg" type="number" min="0" step="100" value="${pr.damage}"></label>
+        <label title="A strong contributor gets the bonus % more of every reward">Strong: fights<input id="reSFights" type="number" min="0" max="99" value="${pr.strongFights}"></label>
+        <label>Strong: damage<input id="reSDmg" type="number" min="0" step="100" value="${pr.strongDamage}"></label>
+        <label>Strong: bonus %<input id="reSPct" type="number" min="0" max="200" value="${pr.strongPct}"></label>
         <label>Kill: gold<input id="reKGold" type="number" min="0" value="${rw.kill.gold||0}"></label>
         <label>Kill: dust<input id="reKDust" type="number" min="0" value="${rw.kill.dust||0}"></label>
         <label>Kill: metal<input id="reKMetal" type="number" min="0" value="${rw.kill.metal||0}"></label>
-        <label>Compensation % if it survives<input id="reComp" type="number" min="0" max="100" value="${rw.compensationPct!=null ? rw.compensationPct : 40}"></label>
+        <label>Kill: XP<input id="reKXp" type="number" min="0" max="5000" value="${rw.xp != null ? rw.xp : 500}"></label>
+        <label title="The raid's own cards a participant gets when it falls (the top 10% one more)">Kill: raid cards<input id="reKCards" type="number" min="0" max="5" value="${rw.cards != null ? rw.cards : 1}"></label>
+        <label title="If it survives: this % of the general rewards (Gold, Dust, Metal, XP)">Held: general %<input id="reComp" type="number" min="0" max="100" value="${rw.failPct != null ? rw.failPct : 50}"></label>
+        <label title="If it survives: the raid's own rewards (cards, tier extras) at most this %, scaled by how much of its Health went">Held: raid rewards max %<input id="reFailSpec" type="number" min="0" max="100" value="${rw.failSpecialMaxPct != null ? rw.failSpecialMaxPct : 10}"></label>
         ${['top1','top10','top50','participant'].map(tierRow).join('')}
+      </div>
+      <h3 class="se-h">Ally decks <small>the CPU allies' decks when no other raider's deck is at hand</small></h3>
+      <div class="re-list re-allies">${(draft.allyDecks || []).map((a, i)=>{ const ids = Object.keys(a.deck || {}), bad = ids.filter(id=> !defs[id]);
+        return `<div class="re-li"><input data-al-name="${i}" value="${escapeAttr(a.name||'')}" placeholder="Name"><input class="re-ally-deck" data-al-deck="${i}" value="${escapeAttr(ids.map(id=> id + ':' + a.deck[id]).join(', '))}" placeholder="card-id:3, other-id:2" aria-label="Deck (card id:count, comma-separated)"><small>${ids.reduce((t, id)=> t + (a.deck[id] | 0), 0)} cards${bad.length ? ` · <b class="re-warn">unknown: ${escapeHtml(bad.join(', '))}</b>` : ''}</small><button type="button" class="btn small ghost" data-al-del="${i}" aria-label="Remove this ally deck" title="Remove this ally deck">✕</button></div>`; }).join('')}<button type="button" class="btn small" id="reAddAlly">＋ Ally deck</button></div>
       </div>
       <div class="se-actions">
         ${RAID_DEFS_BASE.some(d=> d.id===draft.id) ? `<button type="button" class="btn ghost" id="reReset">↺ Reset to original</button>` : ''}
@@ -21806,6 +22017,7 @@ function openRaidEditor(raidId){
       </div>
     </div>`;
     overlay.hidden = false;
+    { const sb = overlay.querySelector('.se-body'); if(sb) sb.scrollTop = keepScroll; }
     wire();
   };
   const read = ()=>{
@@ -21823,20 +22035,33 @@ function openRaidEditor(raidId){
     const tr = overlay.querySelector('#reTrench');
     if(tr){ if(tr.checked) draft.trench = Object.assign({rows:3, wallHp:45}, draft.trench||{}); else delete draft.trench; }
     if(draft.trench && overlay.querySelector('#reWall')) draft.trench.wallHp = Math.max(5, num(v('reWall'), 45));
-    draft.cost.raidPoints = Math.max(0, num(v('reCostRp'), 1)); draft.cost.energy = Math.max(0, num(v('reCostEn'), 4));
+    draft.cost.raidPoints = Math.max(0, Math.min(5, Math.round(num(v('reCostRp'), 1)))); draft.cost.energy = Math.max(1, Math.min(6, Math.round(num(v('reCostEn'), 4)))); // 1-6 Energy (2026-10-19)
+    // 2026-10-19 (package RO): respawn, instances, art, participation and the new reward knobs, the ally decks
+    if(overlay.querySelector('#reRespawn')) draft.respawnHours = Math.max(1, Math.min(168, Math.round(num(v('reRespawn'), 24))));
+    if(overlay.querySelector('#reInstCap')) draft.instanceCap = Math.max(10, Math.min(1000, Math.round(num(v('reInstCap'), 100))));
+    if(overlay.querySelector('#reArt')){ const a = String(v('reArt') || '').trim(); if(a) draft.art = a; else delete draft.art; }
+    if(overlay.querySelector('#rePFights')){ const n = (id, d, hi)=> Math.max(0, Math.min(hi, Math.round(num(v(id), d))));
+      draft.participation = {fights: n('rePFights', 3, 99), damage: n('rePDmg', 1000, 1e7), strongFights: n('reSFights', 4, 99), strongDamage: n('reSDmg', 5000, 1e7), strongPct: n('reSPct', 20, 200)}; }
+    overlay.querySelectorAll('[data-al-name]').forEach(el=>{ const i = +el.dataset.alName, a = (draft.allyDecks || [])[i]; if(!a) return; a.name = el.value;
+      const d = overlay.querySelector(`[data-al-deck="${i}"]`); if(d){ const deck = {}; String(d.value).split(',').forEach(x=>{ const m = x.trim().match(/^([\w~-]+)\s*[:x×]\s*(\d+)$/); if(m && +m[2] > 0) deck[m[1]] = Math.min(9, +m[2]); }); a.deck = deck; } });
     const live = overlay.querySelector('#reLive'); if(live) draft.live = live.checked;
     const cp = overlay.querySelector('#reCommonPool'); if(cp){ const ids = cp.value.split(/[\s,]+/).map(x=> x.trim()).filter(Boolean); draft.commonPool = ids; } // 2026-10-17 (an empty list = picked from its decks' types)
     draft.scoring.perInFightHp = Math.max(1, num(v('reRate'), 50)); draft.scoring.cap = Math.max(1, num(v('reCap'), 5000)); draft.scoring.overwhelmCap = Math.max(1, num(v('reOver'), 10000));
     draft.standIns.perDayPct = Math.max(0, Math.min(50, num(v('reStand'), 0)));
     const rw = draft.rewards;
     rw.kill.gold = Math.max(0, num(v('reKGold'), 0)); rw.kill.dust = Math.max(0, num(v('reKDust'), 0)); rw.kill.metal = Math.max(0, num(v('reKMetal'), 0));
-    rw.compensationPct = Math.max(0, Math.min(100, num(v('reComp'), 40)));
-    overlay.querySelectorAll('[data-tier-gold]').forEach(el=>{ const t = el.dataset.tierGold; rw.tiers[t] = rw.tiers[t] || {}; const g = Math.max(0, num(el.value, 0)); if(g) rw.tiers[t].gold = g; else delete rw.tiers[t].gold; });
+    rw.failPct = Math.max(0, Math.min(100, num(v('reComp'), 50))); // the held raid's share of the general rewards (2026-10-19; was compensationPct 40)
+    if(overlay.querySelector('#reFailSpec')) rw.failSpecialMaxPct = Math.max(0, Math.min(100, num(v('reFailSpec'), 10)));
+    if(overlay.querySelector('#reKXp')) rw.xp = Math.max(0, Math.min(5000, Math.round(num(v('reKXp'), 500))));
+    if(overlay.querySelector('#reKCards')) rw.cards = Math.max(0, Math.min(5, Math.round(num(v('reKCards'), 1))));
+    overlay.querySelectorAll('[data-tier-n]').forEach(el=>{ const t = el.dataset.tierN, k = el.dataset.cur; rw.tiers[t] = rw.tiers[t] || {}; const g = Math.max(0, Math.round(num(el.value, 0))); if(g) rw.tiers[t][k] = g; else delete rw.tiers[t][k]; });
     overlay.querySelectorAll('[data-tier-title]').forEach(el=>{ const t = el.dataset.tierTitle; rw.tiers[t] = rw.tiers[t] || {}; if(el.value.trim()) rw.tiers[t].title = el.value.trim(); else delete rw.tiers[t].title; });
     const P = draft.parts.find(p=> p.id===openPart);
     if(P){
       overlay.querySelectorAll('[data-pf]').forEach(el=>{ const k = el.dataset.pf;
         if(k==='name' || k==='icon') P[k] = el.value; else if(k==='castleHp') P.fight.castleHp = Math.max(10, num(el.value, 200));
+        else if(k==='perHp') return; // read below
+        else if(k==='energy'){ if(el.value===''){ if(P.cost){ delete P.cost.energy; if(!Object.keys(P.cost).length) delete P.cost; } } else P.cost = Object.assign({}, P.cost||{}, {energy: Math.max(1, Math.min(6, Math.round(num(el.value, 4))))}); } // 2026-10-19
         else if(k==='rounds'){ if(el.value==='') delete P.fight.rounds; else P.fight.rounds = Math.max(3, Math.min(40, Math.round(num(el.value, 12)))); } else P[k] = Math.max(1, Math.round(num(el.value, 1))); });
       const ph = overlay.querySelector('[data-pf="perHp"]');
       if(ph){ if(ph.value==='') { if(P.scoring) delete P.scoring.perInFightHp; if(P.scoring && !Object.keys(P.scoring).length) delete P.scoring; } else { P.scoring = Object.assign({}, P.scoring||{}, {perInFightHp: Math.max(1, num(ph.value, 50))}); } }
@@ -21863,6 +22088,7 @@ function openRaidEditor(raidId){
       [['batk', 'bossAtk'], ['bhp', 'bossHp'], ['volley', 'extraVolley'], ['castle', 'castleHpPct']].forEach(([a, k])=>{ if(g(a)) vals[k] = g(a).value; });
       if(g('field') && g('field').value !== '__keep') vals.field = g('field').value;
       RaidM.setStageRules(s, vals);
+      if(g('energy')){ const en = Math.max(-5, Math.min(5, Math.round(num(g('energy').value, 0)))); if(en) s.energyAdd = en; else delete s.energyAdd; } // 2026-10-19
     });
   };
   const wire = ()=>{
@@ -21904,6 +22130,10 @@ function openRaidEditor(raidId){
       overlay.querySelectorAll('[data-en-del]').forEach(b=> b.onclick = ()=>{ read(); T().entities.splice(+b.dataset.enDel, 1); dirty = true; render(); });
     }
     $('reAddStage').onclick = ()=>{ read(); draft.stages.push({at:0.25, name:'New stage', rules:[]}); dirty = true; render(); };
+    // 2026-10-19 (package RO): ally decks, and the admin restart (an in-page confirm, bwConfirm)
+    $('reAddAlly').onclick = ()=>{ read(); draft.allyDecks = (draft.allyDecks || []).concat([{name:'New allies', deck:{}}]); dirty = true; render(); };
+    overlay.querySelectorAll('[data-al-del]').forEach(b=> b.onclick = ()=>{ read(); draft.allyDecks.splice(+b.dataset.alDel, 1); dirty = true; render(); });
+    { const rr = $('reRestart'); if(rr) rr.onclick = async ()=>{ const def = allRaidDefs().find(d=> d.id === draft.id) || draft; await confirmAdminRestartRaid(def); }; }
     overlay.querySelectorAll('[data-st-del]').forEach(b=> b.onclick = ()=>{ read(); draft.stages.splice(+b.dataset.stDel, 1); dirty = true; render(); });
     $('reSave').onclick = async ()=>{
       read(); if(RaidM.validateRaid(draft, getCardDefs()).length){ render(); return; }
@@ -21991,7 +22221,7 @@ function openTrenchSetup(def, partId){
       <span class="ts-row-hint">${i===0 ? 'Takes the hits' : i===1 ? 'Hit through front gaps' : 'Safest'}</span>
       <span class="ts-row-cta">Take the ${TrenchM.ROW_NAMES[i].toLowerCase()}</span></button>`).join('')}</div>
     <p class="ts-allies" id="tsAllies">${alliesHTML()}</p>
-    <p class="r2-rules">Costs ${cost.raidPoints||0}🎫 + ${cost.energy||0}⚡.</p>
+    <p class="r2-rules">Costs ${RaidM.attemptCost(def, partId, st.stage).tickets}🎫 + ${RaidM.attemptCost(def, partId, st.stage).energy}⚡.</p>
   </div>`;
   overlay.hidden = false;
   liveFetchRaidAllies(def, st.cycle).then(rows=>{ if(!rows.length) return; allies = trenchAllies(def, rows, seed); const el = document.getElementById('tsAllies'); if(el) el.innerHTML = alliesHTML(); });
@@ -21999,9 +22229,7 @@ function openTrenchSetup(def, partId){
   overlay.onclick = ev=>{ if(ev.target===overlay) close(); };
   overlay.querySelectorAll('[data-row]').forEach(b=> b.onclick = ()=>{
     if(!deckSizeOkOrWarn()) return;
-    if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ showToast(TX('toast.not-enough-raid-points-this-costs', {raidPoints: cost.raidPoints, currentRaidPoints: currentRaidPoints()}), 'error'); return; }
-    if(!spendEnergy(cost.energy||0)){ energyShortToast(cost.energy); return; }
-    if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
+    if(!payRaidAttempt(def, partId, st)) return; // 2026-10-19 (package RO): tickets + the part's Energy
     bumpQuestCounter('raidsJoined', 1);
     const myRow = +b.dataset.row;
     const me = {name: (myProfile && myProfile.name) || 'You', deck: Object.assign({}, myDeckCounts), mine:true};
@@ -22104,10 +22332,7 @@ function startRaidPartMatch(def, partId){
   if(def.trench && TrenchM){ let classic = false; try{ classic = adminModeEnabled && localStorage.getItem('bramblewood_classic_trench') === '1'; }catch(e){}
     if(classic) openTrenchSetup(def, partId); else startRaidFullBattle(def, partId, f, st); return; }
   if(!deckSizeOkOrWarn()) return;
-  const cost = def.cost || {};
-  if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ alert(TX('dialog.not-enough-raid-points-this-costs', {raidPoints: cost.raidPoints, currentRaidPoints: currentRaidPoints()})); return; }
-  if(!spendEnergy(cost.energy||0)){ energyShortToast(cost.energy); return; }
-  if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
+  if(!payRaidAttempt(def, partId, st)) return; // 2026-10-19 (package RO): tickets + the part's Energy, the reason in a toast
   bumpQuestCounter('raidsJoined', 1);
   // "Exposed" stage: the part's cards fight without their abilities (run-only copies).
   let defs = getCardDefs(), deck = f.deck;
@@ -22139,10 +22364,7 @@ function startRaidFullBattle(def, partId, f, st){
   // 2026-10-19 (package RX, owner 20:46: raids limit the resource cost of your leader): a leader over the raid's leaderCostCap can't
   // go in; the pre-fight screen greys it out with the reason, and the fight doesn't start (raidLeaderCapCheck).
   { const lc = raidLeaderCapCheck(def, matchLeaderId()); if(!lc.ok){ showToast(lc.text, 'error'); return; } }
-  const cost = def.cost || {};
-  if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ showToast(TX('toast.not-enough-raid-points-this-costs', {raidPoints: cost.raidPoints, currentRaidPoints: currentRaidPoints()}), 'error'); return; }
-  if(!spendEnergy(cost.energy||0)){ energyShortToast(cost.energy); return; }
-  if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
+  if(!payRaidAttempt(def, partId, st)) return; // 2026-10-19 (package RO): tickets + the part's Energy
   bumpQuestCounter('raidsJoined', 1);
   // Allies (2026-10-12, user: "Where are my allies? On the pre-screen it should show my allies and their levels, then during
   // the fight, my allies play first, and you can see their cards go down. The castle will be the combined health of 3 of us,
@@ -22468,10 +22690,10 @@ function settleRaidPartAfterMatch(m){
 function recordRaidAttempt(def, partId, cycle, dealt, overwhelmed){
   const part = (def.parts||[]).find(p=> p.id===partId);
   const contribution = RaidM.contributionFor(def, dealt, overwhelmed, part);
-  const m = {raidPart: partId, raidCycle: cycle};
-  const attempt = {raidId: def.id, part: m.raidPart, cycle: m.raidCycle, owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', contribution, dealt, overwhelmed, at: Date.now()};
+  const m = {raidPart: partId, raidCycle: cycle}, inst = myRaidInstance(def, cycle); // 2026-10-19 (package RO): your instance
+  const attempt = {raidId: def.id, part: m.raidPart, cycle: m.raidCycle, instance: inst, owner: myGhostOwnerId(), name: (myProfile && myProfile.name) || 'You', contribution, dealt, overwhelmed, at: Date.now()};
   const list = loadRaidPartAttempts(); list.push(attempt); saveRaidPartAttempts(list);
-  livePushRaidAttempt({bossId: def.id+':'+m.raidPart, cycle: m.raidCycle, name: attempt.name, avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), damage: contribution, won: overwhelmed}, ok=>{
+  livePushRaidAttempt({bossId: RaidM.partKey(def.id, m.raidPart, inst), cycle: m.raidCycle, name: attempt.name, avatar: loadAvatar(), deck: Object.assign({}, myDeckCounts), damage: contribution, won: overwhelmed}, ok=>{
     if(!ok) return; const l = loadRaidPartAttempts(); const x = l.find(a=> a.at===attempt.at); if(x){ x.pushed = true; saveRaidPartAttempts(l); }
     const k = def.id+':'+m.raidCycle; if(liveRaidParts[k]) liveRaidParts[k].rows.push(Object.assign({}, attempt, {owner: cloudUserId, live:true}));
   });
@@ -22503,8 +22725,7 @@ function renderRaidSubTab(body){
   // with this gone, Coming Up is now the section directly after Online Raid's own boss list.
   const liveRaids = RaidM ? liveRaidDefs() : [];
   body.innerHTML = `
-    ${liveRaids.length >= 2 ? `<div class="raid-picker community-seg" role="tablist" aria-label="Raids">${liveRaids.map(d=> `<button type="button" class="tk-speed-btn ${activeRaidDef() && activeRaidDef().id===d.id ? 'is-on' : ''}" data-raid-pick="${escapeAttr(d.id)}">${escapeHtml((d.icon||'') + ' ' + (d.name||d.id))}</button>`).join('')}</div>` : ''}
-    ${(RaidM && activeRaidDef()) ? raidPanelHTML() : offlineRaidPanelHTML()}
+    ${(RaidM && activeRaidDef()) ? (raidView === 'raid' ? raidPanelHTML() : raidHubHTML()) : offlineRaidPanelHTML() /* 2026-10-19 (package RO): the raids hub, then a raid */}
     ${ONLINE_RAID_VISIBLE ? `<details class="online-raid-details"><summary>🌐 Online Raid (needs sign-in)</summary><div id="onlineRaidBody"></div></details>` : ''}
     <div class="panel raid-preview-panel"><h2>🔮 Coming Up</h2><p class="panel-sub">More Raid Bosses are waiting further out in Conquest. Beat their map to unlock the real fight.</p>
       <div class="conquest-nodes">${RAID_PREVIEWS.map(p=>`
@@ -22523,8 +22744,7 @@ function renderRaidSubTab(body){
   if(onlineBody) renderOnlineRaidPanel(onlineBody);
   const orBtn = document.getElementById('offlineRaidFightBtn');
   if(orBtn) orBtn.addEventListener('click', startOfflineRaidMatch);
-  wireRaidPanel();
-  body.querySelectorAll('[data-raid-pick]').forEach(b=> b.onclick = ()=>{ selectedRaidId = b.dataset.raidPick; renderRaidSubTab(body); });
+  if(raidView === 'raid') wireRaidPanel(); else wireRaidHub(body);
 }
 /* ============================================================
    Mandatory onboarding: Otters/Hummingbirds faction choice + a 6-skirmish tutorial SERIES
@@ -31374,6 +31594,8 @@ function autoSNodes(){ try{ return new Set(JSON.parse(localStorage.getItem(AUTO_
 function noteAutoS(nid){ const s = autoSNodes(); if(s.has(nid)) return; s.add(nid); try{ localStorage.setItem(AUTO_S_KEY, JSON.stringify([...s])); }catch(e){} }
 function nodeBestRankS(mapId, nodeKey){ try{ return rankAtLeast(loadConquestProgress().ranks[conquestNodeId(mapId, nodeKey)], 'S'); }catch(e){ return false; } }
 function autoplayAllowed(m){
+  // 2026-10-19 (package RO, owner 21:49: "Completing a raid lets you auto it in the future"): the full raid, once you have completed it
+  if(m && m.mode === 'raidOffline' && m.raidFull && m.raidDef && !m.testKit) return !!(adminModeEnabled || raidAutoOpen(m.raidDef));
   if(!m || m.mode !== 'conquest' || !m.conquestNode || m.testKit) return false;
   if(adminModeEnabled) return true;
   return nodeBestRankS(m.conquestNode.mapId, m.conquestNode.nodeId) && autoTier('auto');

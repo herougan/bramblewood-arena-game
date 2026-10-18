@@ -2,6 +2,26 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package RO: raid respawns, the admin restart, the Raid hub, instances, rewards for taking part, Auto, raid tickets, the raid editor)
+- **A fallen raid returns 24 h after the kill** (owner 21:48: "within 24h"), not at the week's end. It comes back as a fresh life at full Health, with its own rewards. `respawnHours` (24) is editable, and a respawn never runs past the cycle's end. "🌊 The Goliath returns in 19h 4m" now counts to that moment (`raidRespawnAt` reads the state's `respawnAt`).
+- **Admin "🔄 Restart raid"** in the raid tab's admin row and in the raid editor. It confirms in-page and starts a fresh life of every instance now. A raid still standing ends that life unbeaten, and its raiders get the held share. Live through `admin_restart_raid` once the SQL is applied; until then the restart is this browser's only, and the toast says so.
+- **The Raid hub** (owner 21:49): the Raid tab opens on every live raid as a card, with its art, Health % or "returns in", your part in it, your instance and Auto. Your tickets sit on top, with any waiting claim. A card opens the raid's screen; "← All raids" comes back. With one raid the hub still shows (decision: it is where tickets and status are read).
+- **Instances** (owner 00:22): each cycle, a raid has instances of up to 100 players (`instanceCap`, editable), each with its own Health, lives and rewards. Your first fight places you: in a guild-mate's instance with room, else the lowest with room, else a new one. Attempts carry the instance in `boss_id` ("goliath:left@2"; instance 1 is unchanged). Until the SQL is applied, everyone is in instance 1.
+- **Rewards follow taking part** (owner 00:29), per life:
+  - taking part = 3+ fights and 1,000+ damage; under that, no claim;
+  - a fall gives the full rewards;
+  - a strong contributor (4+ fights, 5,000+ damage) gets +20% of everything, and a 20% chance of an extra raid card;
+  - a raid that holds gives ½ of the Maple Leaves, Dust, Metal and XP; its own cards and extras are scaled to 0–10% by how much of its Health went.
+- **Completing a raid opens 🤖 Auto-play in its fights** (owner 21:49). Completing means you took part in a fall; it is kept in the synced progress.
+- **Raid tickets** (owner 00:22): the 🎫 Raid Points are the raid's tickets now.
+  - Cap 10 (was 5), +1 a day (was 6 h), and each new week tops them up to 10 (decision: both rules).
+  - A fight costs 1 ticket + 1–6 Energy, set per part and stage: Goliath outer parts 3, Core 5; Thrashing +1, Exposed −1.
+  - At 0 the Fight buttons grey out and say when the next ticket comes; no Energy is taken.
+  - Spending below the cap no longer resets the day's clock.
+- **The raid editor scrolls** (it had no `.se-body`, so `.skirmish-editor`'s hidden overflow cut it off) and keeps its place on a redraw. It is grouped and furnished: art, tickets, default and per-part Energy, the stage's +Energy, respawn hours, players per instance, the participation and strong thresholds, the kill's XP and raid cards, the held shares, each tier's Leaves / Dust / Metal / title, the ally decks, and Restart.
+- **Needs "apply it":** `supabase/proposed/20261019_raid_ops.sql`. It adds `raid_restarts` + `admin_restart_raid` (admins only), `raid_instance_members` + `join_raid_instance` (an advisory lock, guild-mates together), and a trigger that keeps an attempt in your own instance. All are SECURITY DEFINER with `search_path ''`, public read, no client writes; nothing existing is loosened.
+- Docs: `docs/raid-ops-2026-10-19.md`. Texts: 38 TX keys (34 pack strings) in all 12 packs (`tools/i18n_2026_10_19_ro.py`); the two old "Not enough Raid Points" texts are retired, with their `lang/ui` rows. Test: `tests/raid-ops-2026-10-19.js` (in run-all).
+
 ## 2026-10-19 (package HN: nothing to heal, nothing happens)
 - **Owner (00:07): "Healing & the like: if there's nothing to heal, it doesn't occur, and no animation plays."** Most heal kinds already made no event at full Health. Two still showed something. A **Heal or Rebuild trigger** with nothing to heal (e.g. Forager Ant / Bee Forager's On Attack Heal 1 at full Health) still flashed its trigger rune and took a 0.3 s beat. A **Cure of 0** still made an event. Now neither does, and a "once" Heal trigger isn't used up until there is something to heal (one that paid a cost, Burn 1 Lumber, still counts as gone off). The engine counts the heals that changed something (`healWork` in `applyHeal` / `rebuildCastle`), so this works the same with or without recorded events.
 - **The board skips any 0-amount heal event** (`emptyHealEvent` in `arena_app.js`: heal, Leech, Rebuild, the bramble's regen, Herb Refinery, Carrion, Spring Rain, stanch, Cure): no look, no sound, no float, no beat, no battle-log line. This covers the live fight, the round replay, the match-history log and old saved fights. A Mend spell with no one hurt plays no green heal look (FX.A). A banana eaten only to stanch Bleed no longer says "(+0 Health)".

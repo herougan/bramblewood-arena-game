@@ -51,6 +51,9 @@
             }
           ],
           "castleHp": 1250
+        },
+        "cost": {
+          "energy": 3
         }
       },
       {
@@ -79,6 +82,9 @@
             }
           ],
           "castleHp": 1250
+        },
+        "cost": {
+          "energy": 3
         }
       },
       {
@@ -107,6 +113,9 @@
             }
           ],
           "castleHp": 1250
+        },
+        "cost": {
+          "energy": 3
         }
       },
       {
@@ -179,6 +188,9 @@
         },
         "scoring": {
           "perInFightHp": 140
+        },
+        "cost": {
+          "energy": 5
         }
       }
     ],
@@ -203,7 +215,8 @@
             "field": "landslide",
             "castleHpPct": -10
           }
-        ]
+        ],
+        "energyAdd": 1
       },
       {
         "at": 0.01,
@@ -212,7 +225,8 @@
           {
             "stripAbilities": true
           }
-        ]
+        ],
+        "energyAdd": -1
       }
     ],
     "scoring": {
@@ -243,7 +257,11 @@
           "dust": 20
         },
         "participant": {}
-      }
+      },
+      "failPct": 50,
+      "failSpecialMaxPct": 10,
+      "xp": 500,
+      "cards": 1
     },
     "fightRounds": 20,
     "bossHpBonusMax": 100,
@@ -315,6 +333,15 @@
         "from": 3
       }
     },
-    "leaderCostCap": 5
+    "leaderCostCap": 5,
+    "respawnHours": 24,
+    "instanceCap": 100,
+    "participation": {
+      "fights": 3,
+      "damage": 1000,
+      "strongFights": 4,
+      "strongDamage": 5000,
+      "strongPct": 20
+    }
   }
 ]

@@ -11415,6 +11415,42 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .raid-editor .re-fx .se-fx-chip{display:flex; align-items:center; gap:6px; padding:5px 6px 5px 10px; border-radius:12px; background:rgba(120,170,220,.12); border:1px solid rgba(140,190,240,.35); font-size:13px;}
 .raid-editor .re-fx .se-fx-x{border:0; background:transparent; color:inherit; cursor:pointer; font-size:13px;}
 .raid-editor .re-pool input{width:100%; box-sizing:border-box;}
+/* Raid ops (2026-10-19, package RO): the Raid hub, the raid screen's way back, tickets, participation, the editor's new rows */
+.raid-hub .rh-head{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;}
+.raid-hub .rh-head h2{margin:0;}
+.raid-hub .rh-list{display:grid; grid-template-columns:repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap:12px; margin-top:12px;}
+.raid-hub .rh-card{display:flex; align-items:center; gap:12px; width:100%; text-align:left; padding:12px; border-radius:16px; border:1.5px solid var(--surface-border); background:var(--surface-2); color:inherit; font:inherit; cursor:pointer; transition:transform .15s ease, border-color .15s ease;}
+.raid-hub .rh-card:hover, .raid-hub .rh-card:focus-visible{border-color:var(--accent); transform:translateY(-1px);}
+.raid-hub .rh-card.is-down{opacity:.86;}
+.raid-hub .rh-card.is-down .rh-art{filter:grayscale(.7) brightness(.8);}
+.raid-hub .rh-art{flex:none; width:84px; height:84px; border-radius:14px; overflow:hidden; display:grid; place-items:center; font-size:46px; background:rgba(0,0,0,.25);}
+.raid-hub .rh-art img{width:100%; height:100%; object-fit:cover;}
+.raid-hub .rh-body{flex:1 1 auto; min-width:0; display:flex; flex-direction:column; gap:4px;}
+.raid-hub .rh-name{font-size:17px;}
+.raid-hub .rh-status{display:flex; align-items:center; gap:6px; font-size:13px;}
+.raid-hub .rh-hp{flex:1 1 auto; max-width:160px; height:8px; border-radius:5px; background:rgba(0,0,0,.35); overflow:hidden;}
+.raid-hub .rh-hp > span{display:block; height:100%; background:linear-gradient(90deg, #8e1b1b, #d8432c 60%, #f08a4b);}
+.raid-hub .rh-me{font-size:12.5px;} .raid-hub .rh-me small{color:var(--ink-muted); font-weight:700;}
+.raid-hub .rh-tags{display:flex; flex-wrap:wrap; gap:4px;} .raid-hub .rh-tags:empty{display:none;}
+.raid-hub .rh-tag{font-size:11.5px; font-weight:800; padding:1px 8px; border-radius:999px; border:1px solid var(--surface-border);}
+.raid-hub .rh-tag.is-auto{border-color:var(--accent);}
+.raid-hub .rh-go{flex:none; font-size:26px; opacity:.6;}
+.raid-hub .rh-claims{display:flex; flex-direction:column; gap:6px; margin-top:10px;}
+.raid-hub .rh-claims .r2-claim{display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:8px 12px; border-radius:10px; background:var(--surface-2); border:1px solid var(--accent); font-weight:700;}
+.raid2-panel .r3-back{margin-bottom:8px;}
+.r3-chip .r3-next{font-size:11px; color:var(--ink-muted);}
+.r3-chip.r3-tickets.is-empty{border-color:var(--danger);}
+.r3-chip.r3-part.is-in{border-color:var(--accent);}
+.r2-strong{font-size:12px; font-weight:800; padding:1px 8px; border-radius:999px; border:1px solid var(--accent);}
+.r2-part .btn.is-blocked{opacity:.5; cursor:not-allowed;}
+.r3-no-tickets{color:var(--danger); font-weight:700;}
+.raid-editor .re-tier{display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; padding:6px 8px; border-radius:8px; background:var(--surface-2);}
+.raid-editor .re-tier label{flex-direction:row !important; align-items:center; gap:4px !important;}
+.raid-editor .re-tier input[type=number]{width:70px;}
+.raid-editor .re-ally-deck{flex:1 1 260px; min-width:0;}
+.raid-editor .re-warn{color:var(--danger);}
+.raid-editor .re-restart{display:flex; flex-wrap:wrap; align-items:center; gap:8px;}
+@media (max-width:600px){ .raid-hub .rh-art{width:64px; height:64px; font-size:36px;} }
 </style>
 
 <!-- Debug account-switch bar (2026-09-23, batch #29, per explicit request: "do a shift debug menu
