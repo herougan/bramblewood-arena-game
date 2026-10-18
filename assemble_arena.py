@@ -105,6 +105,40 @@ for _fp in sorted(_glob.glob(SCRATCH + "tools/emoji/sets/*.json")):
 if app_src.count("__EMOJI_SET_URLS__") != 1: raise SystemExit("Expected exactly 1 __EMOJI_SET_URLS__ in arena_app.js")
 app_src = app_src.replace("__EMOJI_SET_URLS__", json.dumps(_emoji_urls), 1)
 
+def emoji_atlases():
+    """2026-10-18 (Codex profiling: each emoji was its own SVG document to lay out and re-rasterise, about 8 per card): one
+    sprite sheet per emoji set, tools/emoji/atlas/<set>.webp + .json, drawn by tools/emoji/build_atlas.py from the bundled set.
+    A sheet whose hash no longer matches its set is rebuilt here (needs playwright + Chromium); if that can't run, the set
+    ships without a sheet and EmojiStyle draws it the old way (one SVG per emoji), so the build never breaks over it.
+    Returns {set: {url, cols, rows, pitch, cell, pad, w, h, keys, vs, miss}} for EMOJI_ATLAS in arena_app.js."""
+    import subprocess, sys as _sys, importlib.util as _iu
+    tool = SCRATCH + "tools/emoji/build_atlas.py"
+    sys_dir = SCRATCH + "tools/emoji/atlas/"
+    try:  # for set_hash() only (the module imports playwright inside build(), so loading it is cheap)
+        _spec = _iu.spec_from_file_location("bw_build_atlas", tool); _mod = _iu.module_from_spec(_spec); _spec.loader.exec_module(_mod)
+        _ns = {"set_hash": _mod.set_hash}
+    except Exception as e:
+        print("emoji atlas: cannot read %s (%s); emoji stay SVG" % (tool, e)); return {}
+    out = {}
+    for fp in sorted(_glob.glob(SCRATCH + "tools/emoji/sets/*.json")):
+        ed = json.load(open(fp, encoding="utf-8")); name = ed["set"]
+        meta_fp, img_fp = sys_dir + name + ".json", sys_dir + name + ".webp"
+        def current():
+            try: return os.path.exists(img_fp) and json.load(open(meta_fp, encoding="utf-8")).get("hash") == _ns["set_hash"](ed)
+            except Exception: return False
+        if not current():
+            print("emoji atlas: %s is out of date, rebuilding (tools/emoji/build_atlas.py)" % name)
+            try: subprocess.run([_sys.executable, tool, name], check=True, timeout=900)
+            except Exception as e: print("emoji atlas: rebuild failed (%s); %s stays SVG" % (e, name))
+        if not current(): continue
+        meta = json.load(open(meta_fp, encoding="utf-8"))
+        meta["url"] = asset_url("emoji/%s-atlas.webp" % name, open(img_fp, "rb").read(), "image/webp")
+        meta.pop("hash", None); meta.pop("set", None)
+        out[name] = meta
+    return out
+if app_src.count("__EMOJI_ATLAS__") != 1: raise SystemExit("Expected exactly 1 __EMOJI_ATLAS__ in arena_app.js")
+app_src = app_src.replace("__EMOJI_ATLAS__", json.dumps(emoji_atlases(), separators=(",", ":")), 1)
+
 canonical = json.load(open(SCRATCH + "canonical/cards.json", encoding="utf-8"))
 card_defs_obj = {}
 for c in canonical:

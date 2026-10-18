@@ -374,6 +374,15 @@ function iconHTML(key, fallbackEmoji, opts){
 // textareas, selects, <svg>/<canvas>, contenteditable or .no-emoji. An emoji the set doesn't have stays the system one. Tooltips,
 // title= and SKILL_ICON text stay plain emoji (screen readers need text); the <img>'s alt holds the emoji, so restore() and
 // EmojiStyle.textOf(el) give the text back.
+// 2026-10-18 (Codex profiling: each emoji <img> was its own small SVG document, about 8 per card, laid out, painted and
+// re-rasterised on every frame; the biggest render cost left in the Codex and on the board and hand): each set also ships as
+// ONE sprite sheet, assets/emoji/<set>-atlas.webp (64 px cells, drawn from the same SVGs by tools/emoji/build_atlas.py at
+// assemble time). An emoji in the sheet is still an <img class="emoji tw-emoji emo e-<key>" alt="<emoji>">, so screen readers,
+// copy, restore(), textOf() and the translator see what they did, but its src is one shared 1x1 transparent GIF and the picture
+// is the sheet as its background (one decoded bitmap for the whole game, no SVG to lay out or rasterise). The sheet's
+// positions come from one generated stylesheet (#bwEmojiAtlas). With no sheet, a sheet that fails to load, or an emoji the
+// sheet lacks ("miss"), that emoji is drawn the old way from the SVG set file. EMOJI_ATLAS is filled by assemble_arena.py.
+var EMOJI_ATLAS = __EMOJI_ATLAS__;
 var EMOJI_STYLE_KEY = 'bramblewood_emoji_style';
 var EMOJI_SET_URLS = __EMOJI_SET_URLS__;
 var EMOJI_SET_NAMES = {fluent:'Fluent', twemoji:'Twemoji', noto:'Noto Emoji', system:'System'};
@@ -383,11 +392,50 @@ var EMOJI_CREDITS = {
   noto: 'Noto Emoji graphics © Google, Apache 2.0; flags Twemoji CC-BY 4.0.',
 };
 var EmojiStyle = (function(){
-  const SETS = Object.keys(EMOJI_SET_NAMES).filter(k=> k !== 'system' && EMOJI_SET_URLS && EMOJI_SET_URLS[k]);
+  const SETS = Object.keys(EMOJI_SET_NAMES).filter(k=> k !== 'system' && ((EMOJI_SET_URLS && EMOJI_SET_URLS[k]) || (EMOJI_ATLAS && EMOJI_ATLAS[k])));
   const SKIP = 'script,style,textarea,input,select,option,title,noscript,svg,canvas,[contenteditable=""],[contenteditable="true"],.no-emoji';
   let pre = /(?!)/u;   // cheap first test, set by compile(): any first code point of an emoji the set has
   const XHTML = 'http://www.w3.org/1999/xhtml';
   let active = false, data = null, re = null, urls = {}, observer = null, loading = {};
+  // 2026-10-18 (sprite sheet, see EMOJI_ATLAS): sheet = {idx: {key: cell}} of the active set, or null (every emoji its SVG).
+  const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+  let sheet = null, sheetLoading = {}, sheetImgs = {};
+  const loadSheet = set=>{
+    const a = EMOJI_ATLAS && EMOJI_ATLAS[set];
+    if(!a || !a.url || !a.keys || !a.keys.length) return Promise.reject(new Error('no sheet'));
+    if(sheetLoading[set]) return sheetLoading[set];
+    return (sheetLoading[set] = new Promise((res, rej)=>{
+      const img = new Image(), t = setTimeout(()=> rej(new Error('timeout')), 15000);
+      img.onload = ()=>{ clearTimeout(t); (img.decode ? img.decode().catch(()=>{}) : Promise.resolve()).then(()=>{ sheetImgs[set] = img; res(a); }); }; // decoded before the first swap: no blank frame
+      img.onerror = ()=>{ clearTimeout(t); rej(new Error('load failed')); };
+      img.src = a.url;
+    }).catch(e=>{ sheetLoading[set] = null; throw e; }));
+  };
+  // The sheet's stylesheet: the picture and its size once, then one background-position per emoji (percentages, so the
+  // same rule fits a 12 px card chip and a 40 px shop icon: p = x / (sheetWidth - cell)).
+  const sheetCss = a=>{
+    const W = a.w, H = a.h, c = a.cell, f = v=> +v.toFixed(4);
+    let css = `img.emo{background-image:url("${String(a.url).replace(/["\\\n]/g, '')}");background-size:${f(W / c * 100)}% ${f(H / c * 100)}%}`;
+    a.keys.forEach((k, i)=>{ const x = (i % a.cols) * a.pitch + a.pad, y = Math.floor(i / a.cols) * a.pitch + a.pad; css += `.e-${k}{background-position:${f(x / (W - c) * 100)}% ${H > c ? f(y / (H - c) * 100) : 0}%}`; });
+    return css;
+  };
+  const setSheet = a=>{
+    let st = document.getElementById('bwEmojiAtlas');
+    if(!a){ if(st) st.remove(); sheet = null; return; }
+    if(!st){ st = document.createElement('style'); st.id = 'bwEmojiAtlas'; document.head.appendChild(st); }
+    st.textContent = sheetCss(a);
+    const miss = new Set(a.miss || []), idx = {};
+    a.keys.forEach((k, i)=>{ if(!miss.has(k)) idx[k] = i; });
+    sheet = {idx};
+  };
+  // The set to draw: the sheet when there is one (plus the SVG file only for emoji the sheet missed), else the SVG file.
+  const loadStyle = set=> loadSheet(set).then(a=>{
+    const emoji = {}; a.keys.forEach(k=> emoji[k] = 1);
+    const miss = (a.miss || []).filter(k=> k in emoji);
+    if(!miss.length) return {a, d: {vs: a.vs || [], emoji}};
+    miss.forEach(k=> delete emoji[k]);
+    return (EMOJI_SET_URLS && EMOJI_SET_URLS[set] ? load(set) : Promise.reject(new Error('no svg'))).then(svg=>{ miss.forEach(k=>{ if(svg.emoji[k]) emoji[k] = svg.emoji[k]; }); return {a, d: {vs: a.vs || svg.vs || [], emoji}}; }, ()=> ({a, d: {vs: a.vs || [], emoji}}));
+  }, ()=> load(set).then(d=> ({a: null, d})));
   const get = ()=>{ try{ const v = localStorage.getItem(EMOJI_STYLE_KEY); return v === 'system' || SETS.includes(v) ? v : (SETS[0] || 'system'); }catch(e){ return SETS[0] || 'system'; } };
   const load = set=>{
     const have = window.BW_EMOJI_SETS && window.BW_EMOJI_SETS[set];
@@ -416,7 +464,17 @@ var EmojiStyle = (function(){
     const svg = data.emoji[k];
     try{ return (urls[k] = URL.createObjectURL(new Blob([svg], {type:'image/svg+xml'}))); }catch(e){ return (urls[k] = 'data:image/svg+xml,' + encodeURIComponent(svg)); }
   };
-  const imgFor = m=>{ const img = document.createElement('img'); img.className = 'emoji tw-emoji emoji-' + active; img.alt = m; img.draggable = false; img.decoding = 'sync'; img.src = srcOf(keyOf(m)); return img; };
+  const imgFor = m=>{
+    const k = keyOf(m), img = document.createElement('img'); img.alt = m; img.draggable = false;
+    if(sheet && sheet.idx[k] != null){ img.className = 'emoji tw-emoji emoji-' + active + ' emo e-' + k; img.src = BLANK; return img; } // 2026-10-18: from the sprite sheet
+    img.className = 'emoji tw-emoji emoji-' + active; img.decoding = 'sync'; img.src = srcOf(k); return img;
+  };
+  // The same as a string, for html() / htmlBlock().
+  const imgHTML = m=>{
+    const k = keyOf(m);
+    if(sheet && sheet.idx[k] != null) return `<img class="emoji tw-emoji emoji-${active} emo e-${k}" alt="${m}" draggable="false" src="${BLANK}">`;
+    return `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(k)}">`;
+  };
   const swapText = t=>{
     const s = t.data; if(!s || !pre.test(s)) return;
     re.lastIndex = 0; if(!re.test(s)) return;
@@ -454,12 +512,12 @@ var EmojiStyle = (function(){
   const apply = ()=>{
     const style = get();
     document.documentElement.dataset.emoji = style;
-    if(active && active !== style){ unwatch(); restore(); active = false; drop(); }
-    if(style === 'system'){ unwatch(); restore(); active = false; data = null; re = null; drop(); refreshCredits(); return Promise.resolve(false); }
+    if(active && active !== style){ unwatch(); restore(); active = false; drop(); setSheet(null); }
+    if(style === 'system'){ unwatch(); restore(); active = false; data = null; re = null; drop(); setSheet(null); refreshCredits(); return Promise.resolve(false); }
     if(active === style) return Promise.resolve(true);
-    return load(style).then(d=>{
+    return loadStyle(style).then(({a, d})=>{
       if(get() !== style) return false;
-      data = d; re = compile(d); active = style;
+      setSheet(a); data = d; re = compile(d); active = style;
       if(document.body){ swapIn(document.body); watch(); }
       refreshCredits(); return true;
     }).catch(()=>{ active = false; document.documentElement.dataset.emoji = 'system'; refreshCredits(); return false; }); // file missing: stay on System
@@ -471,7 +529,7 @@ var EmojiStyle = (function(){
     s = s == null ? '' : String(s);
     if(!active || !s || s.indexOf('<') >= 0 || !pre.test(s)) return s;
     re.lastIndex = 0;
-    return s.replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`);
+    return s.replace(re, imgHTML);
   };
   // 2026-10-17 (user: "Playing a card and when a card dies consistently lags the game by 0.1s"): a whole block of HTML the game
   // is about to insert (the board rows) gets its emoji as <img> in the string, so the browser builds the pictures while parsing
@@ -486,7 +544,7 @@ var EmojiStyle = (function(){
     for(let i = 0; i < parts.length; i++){
       const p = parts[i]; if(!p) continue;
       if(p.charCodeAt(0) === 60){ const m = /^<(\/?)([a-zA-Z0-9-]+)/.exec(p); if(m && SKIP_TAGS.test(m[2]) && !/\/>$/.test(p)) skip += m[1] ? -1 : 1; if(skip < 0) skip = 0; continue; }
-      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = p.replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`); }
+      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = p.replace(re, imgHTML); }
     }
     return parts.join('');
   };
@@ -497,7 +555,8 @@ var EmojiStyle = (function(){
     let out = ''; const walk = n=>{ for(const c of n.childNodes){ if(c.nodeType === 3) out += c.data; else if(c.nodeType === 1) c.nodeName === 'IMG' && c.classList.contains('tw-emoji') ? out += (c.alt || '') : walk(c); } };
     walk(el); return out;
   };
-  return {get, set, apply, isActive: ()=> !!active, active: ()=> active || 'system', sets: ()=> SETS.slice(), refreshCredits, html, htmlBlock, textOf};
+  return {get, set, apply, isActive: ()=> !!active, active: ()=> active || 'system', sets: ()=> SETS.slice(), refreshCredits, html, htmlBlock, textOf,
+    usesSheet: ()=> !!sheet}; // 2026-10-18: true while the active set draws from its sprite sheet (tests/e2e/emoji_perf.py)
 })();
 try{ if(EmojiStyle.get() !== 'system'){ const go = ()=> EmojiStyle.apply(); document.body ? setTimeout(go, 0) : document.addEventListener('DOMContentLoaded', go); } }catch(e){}
 // Crabs fork (2026-10-14, user: "Ignore Crab claws. Crabs have fork - thematically. And the symbol can be a Crab claw."): on a crab
