@@ -7035,7 +7035,13 @@
   .de-actions{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
   /* Raid results (2026-10-12): every raid ends on the glory card; the damage pill is the headline; a won raid is gold. */
   .winloss-card.is-raid .raid-results{display:flex; flex-wrap:wrap; justify-content:center; gap:8px;}
-  .winloss-card.is-raid .raid-results .hud-pill{color:#3a2a10;}
+  /* 2026-10-19 (package RX, owner 20:46: "The raid reward text still isn't contrasted against its background"): the pills' ink was a fixed
+     dark brown (#3a2a10) on the theme's surface, 1.15:1 in dark mode. They take the theme's own ink on its own surface now (light 11.4:1,
+     dark 12.9:1), and the counting number with them. */
+  .winloss-card.is-raid .raid-results .hud-pill{color:var(--ink); background:var(--surface); border-color:var(--surface-border);}
+  .winloss-card.is-raid .raid-results .hud-pill .reward-count{color:inherit;}
+  /* the line under the title (why the raid ended) sat in the theme's muted ink on the purple glory card: 1.2:1 in light. Cream now. */
+  .winloss-card.is-glory.is-raid .winloss-reason{color:#fbf1dc; opacity:1;}
   .winloss-card.is-raid .raid-dmg-pill{flex-basis:100%; max-width:max-content; margin:0 auto 6px; font-size:clamp(16px, 2.6vh, 22px); padding:8px 22px;}
   .winloss-card.is-raid.is-absolute .wl-title{background:linear-gradient(180deg, #fff3b0, #f5c518 55%, #c8901d); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .winloss-card.is-raid.is-absolute{box-shadow:0 0 0 3px #f5c518, 0 0 60px rgba(245,197,24,.55);}
@@ -9586,6 +9592,9 @@
   .wl-ascent-txt small{font-size:12.5px; color:#d3e2f5;}
   :where(html[data-fx="none"], html[data-fx="low"]) .wl-ascent-beam, :where(html[data-fx="none"], html[data-fx="low"]) .wl-ascent-tower i.is-next{animation:none;}
   @media (prefers-reduced-motion:reduce){ .wl-ascent-beam, .wl-ascent-tower i.is-next{animation:none !important;} }
+  /* The XP bar at the top of a Victory card (2026-10-18, package RW follow-up, owner 23:32: "Should the reward screen show the exp bar
+     filling up on the top? Then we can remove the toast."; FX.F.xpBarHTML, rewardXpBarHTML): top left, clear of the 👀 / ✕ corner. */
+  .winloss-card .wl-xp{display:block; margin:0 0 4px;} .winloss-card .wl-xp .fxf-xp{margin:0; width:min(460px, calc(100% - 92px));}
   .hud-pill.cur-laurels{background:#e3f1d6; color:#24461a; border-color:#9cc584;}
 
   /* Notices (2026-10-10): rewards on each card, rank letters for A and up, a free swap, and a claimed note keeps its size. */
@@ -10704,6 +10713,27 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .cnp-tower-cost{margin:6px 0 0; font-size:12.5px; font-weight:800; color:#ffd36a;}
 .cnp-tower-cost.is-free, .dg-tower-cost.is-free, .wl-tower-replay{color:#b9cde0;}
 .dg-tower-cost{align-self:center; margin-left:8px; font-size:12px; font-weight:800; color:#ffd36a;}
+/* 2026-10-18 (package DK): each daily dungeon fight and Sweep run uses a 🗝️ key; with none, Fight / Sweep / Next are greyed and say why */
+.cnp-dungeon-keys{margin:6px 0 0; font-size:12.5px; font-weight:800; color:#ffd36a;}
+.cnp-dungeon-keys.is-empty, .dg-nokeys, .sm-nokeys, .conquest-headline .dungeon-ticket-line.is-empty{color:#ff9a7a;}
+.dg-nokeys{margin:6px 0 0; font-weight:700;}
+.dg-sweep.is-nokeys, .cnp-fight.is-nokeys, #wlNextBattleBtn.is-nokeys{filter:grayscale(.65) brightness(.85); cursor:not-allowed;}
+.sr-keys{margin:4px 0 0; font-weight:700;}
+/* 2026-10-18 (package DK, owner 00:08): each place's upgrades in a ⬆️ Upgrades tab (the Nest and the Tavern get a pill bar like the
+   Forge's modes); a dot on the tab when one can be bought; the Profile's one-row-per-place summary */
+.facility-tabs{display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin:10px auto 8px; padding:4px; width:fit-content; max-width:100%; border-radius:999px; background:rgba(0,0,0,.28);}
+.facility-tab{border:0; background:transparent; color:inherit; font:800 14px 'Baloo 2',system-ui,sans-serif; padding:6px 14px; border-radius:999px; cursor:pointer;}
+.facility-tab.on{background:linear-gradient(#ffd27a, #e9a23b); color:#2b1406; box-shadow:0 2px 8px rgba(233,162,59,.4);}
+.facility-tab:hover:not(.on){background:rgba(255,255,255,.1);}
+.facility-tab.has-ready, .forge-mode.has-ready{position:relative;}
+.facility-tab.has-ready::after, .forge-mode.has-ready::after{content:''; position:absolute; top:3px; right:5px; width:8px; height:8px; border-radius:50%; background:#ff5a3c; box-shadow:0 0 0 2px rgba(0,0,0,.35);}
+.facility-upgrades{margin:6px 0 10px;}
+.facility-upgrades .stamina-panel{margin:10px 0;}
+.pf-upgrades .pf-upg-row{display:flex; align-items:center; gap:8px; width:100%; margin:6px 0 0; padding:8px 10px; border-radius:10px; border:1px solid rgba(0,0,0,.12); background:rgba(255,255,255,.06); color:inherit; font:inherit; text-align:left; cursor:pointer;}
+.pf-upgrades .pf-upg-row:hover{background:rgba(255,255,255,.12);}
+.pf-upgrades .pf-upg-row small{opacity:.8;} .pf-upgrades .pf-upg-row em{font-style:normal; font-weight:800; color:#e0782a;}
+.pf-upgrades .pf-upg-row .pf-go{margin-left:auto;}
+.pf-upgrades .pf-upg-ico{font-size:20px;}
 .wl-tower-replay{margin:6px 0 0; font-size:13px; font-weight:700;}
 .pack-pop-why{margin:0; padding:6px 9px; border-radius:9px; background:rgba(63,191,90,.15); font-size:12.5px; line-height:1.35;}
 .pack-item.is-blocked{opacity:.62; cursor:not-allowed;} .pack-item.is-blocked .pack-ico{filter:grayscale(.85);}

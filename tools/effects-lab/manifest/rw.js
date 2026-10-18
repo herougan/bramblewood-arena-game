@@ -2,6 +2,7 @@
 // reward screen. btw, the boss reward screen should be more crimsony I think."). Contract: docs/effects-lab-contract.md.
 //   res-raid-claim-screen  FX.F.raidClaimScreen: the full raid claim screen (claimRaidReward in arena_app.js opens it). It fills the
 //                          window like in the game; tap to skip, Collect (or Esc) to close.
+//   res-xp-bar             the XP bar at the top of the reward screens (FX.F.xpBarFill), 2026-10-18 follow-up
 //   res-tower-ascent       the Babel Spire's Victory card for a new floor (.winloss-card.is-tower, FX.F.towerAscend), 2026-10-18 follow-up
 //   res-boss-crimson       the boss victory's crimson results card (CSS .winloss-card.is-glory.is-boss, arena_template.html) and its
 //                          ember burst (FX.F.bossVictory, from FX.F.hooks.resultsShown).
@@ -24,7 +25,8 @@ const TOP1 = {tier:'top1', dmg:48250, rewards:[cur('gold', 400, 'Maple Leaves', 
   {kind:'title', icon:'🏷️', amount:'“Goliath-Slayer”', label:'New title', weight:5}]};
 const TOP50 = {tier:'top50', dmg:9120, rewards:[cur('gold', 400, 'Maple Leaves', 1), cur('dust', 80, 'Magic Dust', 2), cur('metal', 3, 'Metal', 3), {kind:'card', rarity:'common', weight:2}]};
 const COMP = {kind:'compensation', tier:'participant', dmg:2310, rewards:[cur('gold', 160, 'Maple Leaves', 1), cur('dust', 24, 'Magic Dust', 2), cur('metal', 1, 'Metal', 3)]};
-const play = (o, calm)=> ctx=> X().raidClaimScreen(spec(ctx, o), {calm, sound:ctx.sound});
+const RCS_XP = {segs:[{level:6, from:.55, to:1, up:7}, {level:7, from:0, to:.4}], labels:{6:'Level 6', 7:'Level 7'}, ups:{7:'Level 7!'}, gainText:'+500 XP', aria:'Level 7'}; // the bar at its top (2026-10-18 follow-up)
+const play = (o, calm)=> ctx=> X().raidClaimScreen(Object.assign(spec(ctx, o), {xp:RCS_XP}), {calm, sound:ctx.sound});
 R({id:'res-raid-claim-screen', stage:'screen', duration:12000,
   inGameHook:'Raid tab → Claim → claimRaidReward (arena_app.js) → showRaidClaimScreen → FX.F.raidClaimScreen (calm under reduced motion, Effects Off / Low, no GSAP)',
   note:'Twice the skirmish results\' show: the boss looms from the deep, a pressure burst (flash, water shockwave, ink, a column of bubbles), the title slams in, the standing badge stamps down, the raid damage counts up, then each reward with a beat that grows with its rarity; the top one shakes the screen. Tap to skip, Collect or Esc to close.',
@@ -59,5 +61,20 @@ R({id:'res-tower-ascent', stage:'ui', duration:3200,
     {key:'B', label:'Floor 50 won: "the top of the Spire!"', play:ctx=>{ const c = tower(ctx, 50, true); return ctx.wait(250).then(()=> X().towerAscend(c.querySelector('.wl-ascent-tower'), {sound:ctx.sound})).then(()=> ctx.wait(1400)); }},
     {key:'C', label:'At Effects Low / reduced motion: the same card, still (no beam motion, no column)', play:ctx=>{ tower(ctx, 12, false, true); return ctx.wait(2400); }},
     {key:'D', label:'A free replay of a cleared floor: the ordinary Victory card', play:ctx=>{ ctx.ui.results.querySelector('.wl-title').insertAdjacentHTML('afterend', '<p class="wl-tower-replay">A cleared Spire floor: free to fight again, no reward.</p>'); return ctx.wait(2400); }},
+  ]});
+// The XP bar on the reward screens (2026-10-18 follow-up, owner 23:32: "Should the reward screen show the exp bar filling up on the top?
+// Then we can remove the toast."): FX.F.xpBarHTML / FX.F.xpBarFill on the fixture's Victory card (rewardXpBarHTML / syncRewardXpBar in
+// the game; the raid claim screen has the same bar, see res-raid-claim-screen).
+const xpSpec = (segs, gain)=>{ const labels = {}, ups = {}; segs.forEach(sg=>{ labels[sg.level] = 'Level ' + sg.level; if(sg.up){ labels[sg.up] = 'Level ' + sg.up; ups[sg.up] = 'Level ' + sg.up + '!'; } });
+  return {segs, labels, ups, gainText:'+' + gain + ' XP', aria:'Level'}; };
+const xpOn = (ctx, spec, calm)=>{ const c = ctx.ui.results; c.insertAdjacentHTML('afterbegin', `<div class="wl-xp">${X().xpBarHTML(spec)}</div>`);
+  return ctx.wait(300).then(()=> X().xpBarFill(c.querySelector('.wl-xp .fxf-xp'), spec, {calm, sound:ctx.sound})).then(()=> ctx.wait(1200)); };
+R({id:'res-xp-bar', stage:'ui', duration:4200,
+  inGameHook:'results: rewardXpBarHTML + syncRewardXpBar (arena_app.js, from m.xpBefore; awardXp feeds it and skips its toasts while it shows) → FX.F.xpBarFill; raid claim: spec.xp → the same bar',
+  note:'Your level and XP bar at the top of the reward screen, filling with what the fight gave: on a level crossed it bursts, "Level N!" pops on the bar and it fills on from empty. Replaces the XP and level-up toasts while it shows.',
+  variants:[
+    {key:'A', label:'+60 XP across a level: fills, bursts, "Level 5!", fills on', play:ctx=> xpOn(ctx, xpSpec([{level:4, from:.72, to:1, up:5}, {level:5, from:0, to:.3}], 60))},
+    {key:'B', label:'+28 XP, no level: a plain fill', play:ctx=> xpOn(ctx, xpSpec([{level:2, from:.2, to:.34}], 28))},
+    {key:'C', label:'Calm (reduced motion / Effects Low): the end state with a short fade', play:ctx=> xpOn(ctx, xpSpec([{level:4, from:.72, to:1, up:5}, {level:5, from:0, to:.3}], 60), true)},
   ]});
 })();

@@ -7759,6 +7759,8 @@ const inFlightFlipTimelines = [];
 // inFlightFlipTimelines), and `.kill()` it directly — not just killTweensOf the element — the
 // moment that uid is force-reset as a still-entering element, before Flip ever measures anything.
 const enteringTimelines = new Map();
+// When each entrance began on the wall clock (2026-10-19, package RX; see playAnimWatchdog): uid -> {tl, at, el}.
+const entranceBorn = new Map();
 // No-op render tracking (2026-09-17, per explicit request: "Every turn, all the cards phase
 // out and phase back in again - no need. if the battlefield doesn't need to change, nothing
 // changes."). renderBoard() used to unconditionally rebuild BOTH rows' innerHTML and run the
@@ -10880,6 +10882,47 @@ function staminaPanelHTML(where){
     <div class="wp-stam-row"><span class="wp-stam-pips" aria-label="${k} of ${steps}">${Array.from({length: steps}, (_, i)=> `<i class="${i < k ? 'on' : ''}"></i>`).join('')}</span>
     ${full ? `<small>${done}</small>` : lock ? `<small>Raise it to ${STAMINA_PLACES[lock].to} in the ${STAMINA_PLACES[lock].label} first.</small>` : `<button type="button" class="btn small primary" data-stamina-buy="${where}" ${staminaAffordable(c) ? '' : 'aria-disabled="true"'}>Raise to ${energyMax() + P.each}${btnCostHTML(c)}</button>`}</div></section>`;
 }
+// Facility upgrades (2026-10-18, package DK, owner 00:08: "The forge upgrades on your profile (and nest etc., tavern upgrades)
+// should be on another tab in each of their own respective pages."): the Forge, the Nest and the Tavern each keep their upgrades in
+// a ⬆️ Upgrades tab of their own page (the Forge: its tier, its Max Energy steps, the 🗝️ Key ring; the Nest: its Max Energy steps
+// and the next nest to build; the Tavern: its Max Energy steps). The Profile has one summary row per place that opens that tab.
+let nestTab = 'cards', tavernTab = 'recruit';
+function staminaReady(where){ const P = STAMINA_PLACES[where]; if(!P || placeStamina(where) >= P.costs.length || staminaLockedBy(where)) return false; return staminaAffordable(staminaCost(where)); }
+// {done, of, ready} for a place's upgrades: steps bought, steps there are, and whether one can be bought now
+function facilityUpgradeState(place){
+  const st = w=> ({done: placeStamina(w), of: (STAMINA_PLACES[w] || {costs:[]}).costs.length, ready: staminaReady(w)});
+  const sum = parts=> parts.reduce((a, b)=> ({done: a.done + b.done, of: a.of + b.of, ready: a.ready || b.ready}), {done:0, of:0, ready:false});
+  try{
+    if(place === 'forge'){ const parts = [st('forge'), {done: forgeTier() - 1, of: FORGE_TIERS.length - 1, ready: canUpgradeForge().ok}];
+      if(dungeonsTabOpen()) parts.push({done: dungeonKeyCap() - DUNGEON_TICKETS_CAP, of: DUNGEON_KEY_CAP_MAX - DUNGEON_TICKETS_CAP, ready: canRaiseDungeonKeyCap().ok});
+      return sum(parts); }
+    if(place === 'nest'){ const nx = nextNestUnlock(); return sum([st('nest'), {done: nestBuiltCount(), of: NEST_UNLOCKS.length - 1, ready: !!(nx && nx.reached && nx.affordable)}]); }
+    if(place === 'tavern') return st('tavern');
+  }catch(e){}
+  return {done:0, of:0, ready:false};
+}
+// The tab bar of the Nest and the Tavern (the Forge's ⬆️ Upgrades is one more of its own mode tabs)
+function facilityTabsHTML(place, current, tabs){
+  return `<div class="facility-tabs" role="tablist" aria-label="${escapeAttr(place)}">${tabs.map(([k, label])=> `<button type="button" role="tab" class="facility-tab ${current === k ? 'on' : ''} ${k === 'upgrades' && facilityUpgradeState(place).ready ? 'has-ready' : ''}" data-facility-tab="${escapeAttr(place)}:${k}" aria-selected="${current === k}">${escapeHtml(label)}</button>`).join('')}</div>`;
+}
+function openFacilityUpgrades(place){
+  if(place === 'forge'){ forgeMode = 'facility'; codexSubTab = 'forge'; switchTab('codex'); }
+  else if(place === 'nest'){ nestTab = 'upgrades'; switchTab('nest'); }
+  else if(place === 'tavern'){ tavernTab = 'upgrades'; openTavern(); }
+}
+// The Profile's summary: one row per place that is open (its icon and name, upgrades bought of all, "one is ready")
+const FACILITY_UPGRADE_PLACES = [{place:'forge', icon:'🔨', get label(){ return TX('ui.place-forge'); }}, {place:'nest', icon:'🪺', get label(){ return TX('ui.place-nest'); }}, {place:'tavern', icon:'🍺', get label(){ return TX('ui.place-tavern'); }}];
+function profileUpgradesHTML(){
+  const rows = FACILITY_UPGRADE_PLACES.filter(f=> featureUnlockedSafe(f.place)).map(f=>{ const u = facilityUpgradeState(f.place);
+    return `<button type="button" class="pf-upg-row ${u.ready ? 'is-ready' : ''}" data-facility-upgrades="${f.place}" title="${escapeAttr(TX('ui.upg-sum-open'))}"><span class="pf-upg-ico" aria-hidden="true">${f.icon}</span><b>${escapeHtml(f.label)}</b><small>${escapeHtml(TX('ui.upg-sum-steps', {n: u.done, of: u.of}))}</small>${u.ready ? `<em>${escapeHtml(TX('ui.upg-sum-ready'))}</em>` : ''}<span class="pf-go" aria-hidden="true">›</span></button>`; }).join('');
+  if(!rows) return '';
+  return `<div class="panel pf-upgrades"><h3>${escapeHtml(TX('ui.upg-sum-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.upg-sum-sub'))}</p>${rows}</div>`;
+}
+document.addEventListener('click', e=>{ const t = e.target && e.target.closest; if(!t) return;
+  const go = e.target.closest('[data-facility-upgrades]'); if(go){ e.preventDefault(); openFacilityUpgrades(go.dataset.facilityUpgrades); return; }
+  const tb = e.target.closest('[data-facility-tab]'); if(!tb) return; e.preventDefault();
+  const [place, k] = tb.dataset.facilityTab.split(':');
+  if(place === 'nest'){ nestTab = k; renderNest(); } else if(place === 'tavern'){ tavernTab = k; openTavern(); } });
 function wireStamina(root, rerender){ root.querySelectorAll('[data-stamina-buy]').forEach(b=> b.onclick = ()=>{ const r = buyStamina(b.dataset.staminaBuy);
   if(r === 'ok'){ showToast(TX('toast.max-energy-is-now', {energyMax: energyMax()}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ refreshEnergyHud(); }catch(e){} rerender(); }
   else if(r === 'cost'){ showToast(TX('toast.not-enough-to-raise-it-yet'), 'warn'); denyShake(b); } }); }
@@ -11049,6 +11092,7 @@ function playAgainEnergyAttrs(m){
   if(!m || m.mode !== 'conquest' || !m.conquestNode) return '';
   const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(!f) return '';
   const c = fightEnergyCost(f.map, f.node), short = currentEnergy() < c; // 2026-10-18 (package Z): 0 on a cleared Spire floor
+  if(!m.adminTest && isDailyDungeonMap(f.map) && dungeonTicketsLeft() <= 0) return `data-energy-cost="${c}" data-no-keys="1" aria-disabled="true" title="${escapeAttr(dungeonNoKeysText())}"`; // 2026-10-18 (package DK)
   return `data-energy-cost="${c}" ${short ? 'aria-disabled="true"' : ''} title="${escapeAttr(short ? `Needs ${c}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.` : `Fight ${f.node.name} again · ${c}⚡`)}"`;
 }
 // Not enough Energy (2026-10-12, user: "it should give a small error-sfx and a small central toast that says, you don't
@@ -11062,7 +11106,11 @@ function energyShortToast(cost){
   document.body.appendChild(t);
   setTimeout(()=>{ t.classList.add('is-out'); setTimeout(()=> t.remove(), 450); }, 2000);
 }
-function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ const short = e < (+b.dataset.energyCost||0); b.disabled = false; b.classList.toggle('is-energy-short', short); if(short) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled'); }); }
+function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ const short = e < (+b.dataset.energyCost||0); b.disabled = false; b.classList.toggle('is-energy-short', short); if(short || b.dataset.noKeys) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled'); }); } // + a daily dungeon fight with no key stays disabled (2026-10-18, package DK)
+document.addEventListener('click', e=>{ // 2026-10-18 (package DK): a daily dungeon fight with no key in hand says why instead of starting
+  const b = e.target && e.target.closest ? e.target.closest('button[data-no-keys]') : null; if(!b || dungeonTicketsLeft() > 0) return;
+  e.preventDefault(); e.stopImmediatePropagation(); dungeonNoKeys(b);
+}, true);
 document.addEventListener('click', e=>{
   const b = e.target && e.target.closest ? e.target.closest('button[data-energy-cost]') : null; if(!b) return;
   const c = +b.dataset.energyCost || 0; if(currentEnergy() >= c) return;
@@ -12290,7 +12338,9 @@ function wireDeckTop(){
 // Castle / Leader picker (2026-10-05, user: "I should be able to select castle and leader by
 // clicking into them, opening a sub window. Then the sections 'choose your bramble' and 'leader'
 // wouldn't need to exist anymore").
-function openLoadoutPicker(kind){
+function openLoadoutPicker(kind, popts){
+  popts = popts || {}; // 2026-10-19 (package RX): {raidDef}: leaders over that raid's leaderCostCap are greyed with the reason
+  const capOf = id=> popts.raidDef ? raidLeaderCapCheck(popts.raidDef, id) : {ok:true};
   document.querySelectorAll('.loadout-picker-overlay').forEach(e=> e.remove());
   const defs = getCardDefs();
   const ov = document.createElement('div'); ov.className = 'modal-overlay loadout-picker-overlay';
@@ -12307,7 +12357,8 @@ function openLoadoutPicker(kind){
         <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${castleLevelOf(ch.id) >= CASTLE_MAX_LEVEL ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
       <p class="lp-temper">🔨 Temper your brambles in the Forge (🏰 Brambles).</p>`
     : `<div class="lp-grid">${'' /* 2026-10-15 (user: "There is no need for the 'Remove' pill on the chosen leader."): no "✕ No leader / Clear the slot" tile; the chosen leader is just marked */}${leaderIds().slice(0, 120).map(id=> inDeck(id) ? `<button type="button" class="lp-item is-used" disabled aria-disabled="true" title="${escapeAttr(defs[id].name)} is in your deck. Take it out to make it your leader">
-        <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b><small>In your deck</small></button>` : `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
+        <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b><small>In your deck</small></button>` : !capOf(id).ok ? `<button type="button" class="lp-item is-used is-too-costly" disabled aria-disabled="true" title="${escapeAttr(capOf(id).text)}">
+        <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b><small>${escapeHtml(capOf(id).text)}</small></button>` : `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b></button>`).join('') || '<p class="panel-sub">No cards match.</p>'}</div>`;
   ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your bramble' : 'Choose your leader'}">
       <button type="button" class="modal-close-btn" aria-label="Close" data-close>✕</button>
@@ -12331,6 +12382,7 @@ function openLoadoutPicker(kind){
     else { myLeaderId = id || null; saveMyLeader(); }
     try{ SoundKit.pickup(); }catch(_){}
     close(); refreshDeckHeroBanner();
+    if(popts.raidDef && currentTab==='play' && playSubTab==='raid' && !matchState) try{ renderRaidSubTab(document.getElementById('playSubBody')); }catch(_){} // the raid's leader line (2026-10-19)
   });
   const srch = ov.querySelector('#lpSearch');
   if(srch){ srch.focus(); srch.addEventListener('input', ()=>{ q = srch.value.trim().toLowerCase(); ov.querySelector('.lp-body').innerHTML = body(); }); }
@@ -16387,9 +16439,48 @@ function awardXp(n, reason){
   const x = loadXp(), before = levelFromXp(x.xp).level;
   x.xp += Math.round(n); saveXp(x);
   const after = levelFromXp(x.xp).level;
+  // 2026-10-18 (package RW follow-up, owner 23:32: "Should the reward screen show the exp bar filling up on the top? Then we can remove the
+  // toast."): while a reward screen shows the XP bar, the XP fills that bar (and its level-up bursts there); no toast, no badge moment.
+  if(rewardXpBarUp()){ try{ syncRewardXpBar(); }catch(e){} refreshLevelBadge(); return; }
   try{ fxHook('xpGain', Math.round(n), before, after); }catch(e){} // 2026-10-15 batch F: the level-up moment / XP into the badge
   if(after > before) setTimeout(()=> showToast(TX('toast.level', {after, v2: reason ? ' — ' + reason : ''}), 'ok'), 400);
   refreshLevelBadge();
+}
+// The XP bar on the reward screens (2026-10-18, package RW follow-up): the Victory card (skirmish, boss crimson, Spire ascent; any won
+// fight but hot-seat and the tutorial) and the raid claim screen show your level and XP bar at the top, filling with this fight's XP
+// (FX.F.xpBarHTML / FX.F.xpBarFill in bramblewood-fx-f.js): level by level, a burst and "Level N!" on each level crossed. The fight's XP
+// counts from m.xpBefore (set as the result is decided), so the first-clear milestone that lands a moment later fills it too. The XP and
+// level-up toasts are skipped while the bar shows; they stay everywhere else. Reduced motion / Effects Low: the end state, a short fade.
+function xpBarSpec(from, to){
+  from = Math.max(0, from || 0); to = Math.max(from, to || 0);
+  const a = levelFromXp(from), b = levelFromXp(to), segs = [], labels = {}, ups = {};
+  let start = a.into / a.need;
+  for(let L = a.level; L < b.level && segs.length < 30; L++){ segs.push({level:L, from:start, to:1, up:L + 1}); start = 0; }
+  segs.push({level:b.level, from:start, to:b.into / b.need});
+  segs.forEach(sg=>{ labels[sg.level] = TX('results.xp-level', {n: sg.level}); if(sg.up){ labels[sg.up] = TX('results.xp-level', {n: sg.up}); ups[sg.up] = TX('results.xp-level-up', {n: sg.up}); } });
+  return {from, to, segs, labels, ups, gainText: to > from ? TX('results.xp-gain', {n: Math.round(to - from)}) : '', aria: TX('results.xp-aria', {n: b.level, into: Math.round(b.into), need: b.need})};
+}
+function xpBarReady(){ return !!(window.FX && window.FX.F && typeof window.FX.F.xpBarHTML === 'function' && typeof window.FX.F.xpBarFill === 'function'); }
+function resultsShowXpBar(m){ return !!(m && m.over && m.winner === 1 && m.xpBefore != null && m.mode !== 'pc' && m.mode !== 'tutorial' && m.mode !== 'sandbox' && !m.fxLib && xpBarReady()); }
+function rewardXpBarUp(){
+  if(document.querySelector('.fxf-rcs')) return true; // the raid claim screen
+  const m = typeof matchState !== 'undefined' ? matchState : null;
+  return !!(m && m.winner === 1 && m.xpBefore != null && !m.winModalDismissed && resultsShowXpBar(Object.assign({}, m, {over:true}))); // the results are up, or about to be
+}
+function rewardXpBarHTML(m){
+  if(!resultsShowXpBar(m)) return '';
+  const shown = m.xpShown != null ? m.xpShown : m.xpBefore, spec = xpBarSpec(m.xpBefore, shown);
+  const at = xpBarSpec(shown, shown); at.gainText = spec.gainText; at.gainShown = m.xpShown != null; // drawn where the fill last got to
+  return `<div class="wl-xp">${window.FX.F.xpBarHTML(at)}</div>`;
+}
+function syncRewardXpBar(){
+  const m = typeof matchState !== 'undefined' ? matchState : null; if(!resultsShowXpBar(m)) return;
+  const bar = document.querySelector('.winloss-card .wl-xp .fxf-xp'); if(!bar) return;
+  const from = m.xpShown != null ? m.xpShown : m.xpBefore, to = loadXp().xp; if(!(to > from) && m.xpShown != null) return;
+  const spec = xpBarSpec(from, to); spec.gainText = to > m.xpBefore ? TX('results.xp-gain', {n: Math.round(to - m.xpBefore)}) : '';
+  m.xpShown = to;
+  window.FX.F.xpBarFill(bar, spec, {calm: reducedMotion() || !fxAtLeast('med') || !hasGsap(), delay: m._xpBarFilled ? 0 : .7, sound: k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} }});
+  m._xpBarFilled = true;
 }
 function xpMilestones(){
   const out = [];
@@ -16426,7 +16517,7 @@ function checkXpMilestones(){
   x.milestones = Array.from(have); saveXp(x);
   const total = fresh.reduce((t,m)=> t+m.xp, 0);
   awardXp(total, fresh.length===1 ? fresh[0].label : `${fresh.length} milestones`);
-  if(!(fresh.length === 1 && fresh[0].id === 'tutorial')) showToast(TX('toast.xp', {total, v2: fresh.length===1 ? fresh[0].label : fresh.length + ' milestones'}), 'ok'); // the tutorial's own XP: the Level 1 toast says it (2026-10-12: fewer toasts)
+  if(!(fresh.length === 1 && fresh[0].id === 'tutorial') && !rewardXpBarUp()) showToast(TX('toast.xp', {total, v2: fresh.length===1 ? fresh[0].label : fresh.length + ' milestones'}), 'ok'); // the tutorial's own XP: the Level 1 toast says it (2026-10-12: fewer toasts)
 }
 function levelBadgeHTML(){
   const L = playerLevelInfo();
@@ -19938,6 +20029,15 @@ function compassDiamondSVG(mapId, locked){
 //     The best floor ever reached is remembered, so a floor's first-clear payout is still paid once.
 // Keys still come one a day (banking up to 3) plus a bonus one each Monday; Energy is still paid per floor. Quitting mid-fight
 // (to resume later) keeps the key in the lock until that fight ends. The Tower (map.tower) takes no keys and never resets.
+// 2026-10-18 (package DK, owner 23:54: "Playing a dungeon right now doesn't consume my key. It should. I can't sweep past the number
+// of keys I have. Forge lets you increase the number of keys to 5 (but requires Strange Materia)."): the cause was the 10-16 rule
+// above: the key went in the lock at the start, and a won floor handed it back, so a winning climb never used one. Now:
+//   - every floor fight uses a key when it starts (dungeonStakeKey), win or lose; nothing comes back;
+//   - a lost or forfeited floor still sends the climb back to floor 1;
+//   - each Sweep run uses a key too (runSweep), and the Sweep menu offers no more runs than the keys you hold;
+//   - with 0 keys the floor's Fight button is disabled and says why ("🗝️ N left" sits under it);
+//   - each new day the keys fill up to the cap (was +1 a day) and the Monday bonus can still sit one over it;
+//   - the cap is 3, raised to 4 and then 5 by the Forge's 🗝️ Key ring (Strange Materia + Maple Leaves + Magic Dust).
 const DAILY_DUNGEONS = [
   {mapId:'mm', mapNumber:6},
   {mapId:'mlb', mapNumber:22, slot:2, icon:'🦡', goldLeavesEveryClear:true}, // 2026-10-16: 🍂 20 + N Gold Leaves on every clear of floor N // 2026-10-16: the Long Burrow, Map 22 (was an empty slot at Map 20); admin preview only for now
@@ -19946,20 +20046,61 @@ const DAILY_DUNGEONS = [
 // A dungeon players can't see yet (map.preview, 2026-10-16): shown to them as a locked slot, to admins as the real thing.
 function dungeonHiddenFromPlayer(map){ return !!(map && map.preview) && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled); }
 const DUNGEON_TICKETS_KEY = 'bramblewood_dungeon_tickets_v1', DUNGEON_TICKETS_CAP = 3;
+// The key ring (2026-10-18, package DK): how many keys you can hold, DUNGEON_TICKETS_CAP to DUNGEON_KEY_CAP_MAX. Each step is bought
+// in the Forge. Saved on this device and in the progress blob (PROGRESS_KEYS), where the larger of two copies wins.
+const DUNGEON_KEY_CAP_KEY = 'bramblewood_dungeon_key_cap_v1', DUNGEON_KEY_CAP_MAX = 5;
+const DUNGEON_KEY_CAP_STEPS = [
+  {cap:4, cost:{gold:800, dust:400}, strange:1},
+  {cap:5, cost:{gold:2000, dust:1000}, strange:1},
+];
+try{ PROGRESS_KEYS.push(DUNGEON_KEY_CAP_KEY); PROGRESS_MERGE_KEYS[DUNGEON_KEY_CAP_KEY] = (a, b)=> String(Math.max(parseInt(a, 10) || 0, parseInt(b, 10) || 0)); }catch(e){}
+function dungeonKeyCap(){ let c = 0; try{ c = parseInt(localStorage.getItem(DUNGEON_KEY_CAP_KEY), 10) || 0; }catch(e){} return Math.max(DUNGEON_TICKETS_CAP, Math.min(DUNGEON_KEY_CAP_MAX, c)); }
+function dungeonKeyCapNext(){ const cap = dungeonKeyCap(); return DUNGEON_KEY_CAP_STEPS.find(x=> x.cap === cap + 1) || null; }
+function canRaiseDungeonKeyCap(){
+  const next = dungeonKeyCapNext(); if(!next) return {ok:false, why:'max'};
+  if((myCurrencies.gold||0) < next.cost.gold || (myCurrencies.dust||0) < next.cost.dust) return {ok:false, why:'cost', next};
+  if(!adminModeEnabled && next.strange && ownedCount('strange-materia') < next.strange) return {ok:false, why:'strange', next};
+  return {ok:true, next};
+}
+function raiseDungeonKeyCap(){
+  const c = canRaiseDungeonKeyCap(); if(!c.ok) return false;
+  myCurrencies.gold -= c.next.cost.gold; myCurrencies.dust -= c.next.cost.dust; try{ saveCurrencies(); }catch(e){}
+  if(c.next.strange && !adminModeEnabled) try{ spendCopies('strange-materia', c.next.strange); }catch(e){}
+  try{ localStorage.setItem(DUNGEON_KEY_CAP_KEY, String(c.next.cap)); }catch(e){}
+  try{ logTxn({action:'dungeonKeyCap', source:'Forge', before: c.next.cap - 1, after: c.next.cap}); }catch(e){}
+  try{ livePushProgress(true); }catch(e){}
+  return c.next;
+}
+// The Forge's 🗝️ Key ring row (shown once a daily dungeon is open, or in Admin Mode).
+function dungeonKeyRingHTML(){
+  try{ if(!dungeonsTabOpen()) return ''; }catch(e){ return ''; }
+  const cap = dungeonKeyCap(), next = dungeonKeyCapNext(), c = canRaiseDungeonKeyCap();
+  return `<div class="forge-upgrade forge-keyring" role="group" aria-label="${escapeAttr(TX('ui.keyring-title'))}">
+    <div class="fu-now" title="${escapeAttr(TX('ui.keyring-tip'))}"><b>${escapeHtml(TX('ui.keyring-title'))}</b> <small>${escapeHtml(TX('ui.keyring-holds', {cap}))}</small></div>
+    ${next ? `<div class="fu-next"><span>${escapeHtml(TX('ui.keyring-next', {cap: next.cap}))}</span>
+      <button type="button" class="btn small primary" id="forgeKeyCapBtn" ${c.ok ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.keyring-btn'))}${btnCostHTML(next.cost, next.strange ? [{icon:'🔮', need:next.strange, have:ownedCount('strange-materia'), label:strangeMateriaSourceText()}] : [])}</button></div>`
+      : `<div class="fu-next"><span>${escapeHtml(TX('ui.keyring-max', {cap}))}</span></div>`}
+  </div>`;
+}
+document.addEventListener('click', e=>{ const b = e.target && e.target.closest && e.target.closest('#forgeKeyCapBtn'); if(!b) return; e.preventDefault();
+  const t = raiseDungeonKeyCap(); if(!t){ try{ denyShake(b); }catch(_){} try{ SoundKit.deny && SoundKit.deny(); }catch(_){} showToast(TX('toast.keyring-short'), 'warn'); return; }
+  try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} try{ renderForge(); }catch(_){} try{ refreshTopbarDungeonKey(currentTab); }catch(_){}
+  showToast(TX('toast.keyring-up', {cap: t.cap}), 'ok'); });
 function dungeonDayIndex(t){ const d = new Date(t || Date.now()); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); } // the local calendar day
 function dungeonWeekIndex(t){ return Math.floor((dungeonDayIndex(t) + 3) / 7); } // weeks turn on Monday (day 0, 1 Jan 1970, was a Thursday)
 function saveDungeonTickets(s){ try{ localStorage.setItem(DUNGEON_TICKETS_KEY, JSON.stringify(s)); }catch(e){} }
 function loadDungeonTickets(){
   let s = null; try{ s = JSON.parse(localStorage.getItem(DUNGEON_TICKETS_KEY) || 'null'); }catch(e){}
   const day = dungeonDayIndex(), wk = dungeonWeekIndex();
-  if(!s || typeof s.n !== 'number'){ s = {n: 2, day, week: wk, best: {}}; saveDungeonTickets(s); return s; } // today's key and this week's bonus
+  if(!s || typeof s.n !== 'number'){ s = {n: dungeonKeyCap(), day, week: wk, best: {}}; saveDungeonTickets(s); return s; } // a full ring (2026-10-18, package DK; was 2)
   let ch = false;
   // 2026-10-16: runs are gone (a key is staked per fight now). A run still open under the old rule had its ticket spent up front,
   // so that ticket comes back.
   if(s.runs && typeof s.runs === 'object'){ s.n += Object.keys(s.runs).length; delete s.runs; ch = true; }
   if(!s.best || typeof s.best !== 'object'){ s.best = {}; ch = true; }
-  if(s.day < day){ s.n = Math.max(s.n, Math.min(DUNGEON_TICKETS_CAP, s.n + (day - s.day))); s.day = day; ch = true; }
-  if(s.week < wk){ s.n = Math.min(DUNGEON_TICKETS_CAP + 1, s.n + 1); s.week = wk; ch = true; } // the weekly bonus may sit one over the cap
+  // 2026-10-18 (package DK): a new day fills the keys up to the cap (was one more a day); keys over the cap are kept
+  if(s.day < day){ s.n = Math.max(s.n, dungeonKeyCap()); s.day = day; ch = true; }
+  if(s.week < wk){ s.n = Math.min(dungeonKeyCap() + 1, s.n + 1); s.week = wk; ch = true; } // the weekly bonus may sit one over the cap
   if(ch) saveDungeonTickets(s);
   return s;
 }
@@ -20009,17 +20150,22 @@ function dungeonSweepNode(map){ if(!isDailyDungeonMap(map)) return null; const b
 function dungeonSweepBtnHTML(map){
   const node = dungeonSweepNode(map); if(!node) return '';
   if(!isPremiumPlayer()) return `<button type="button" class="btn dg-sweep is-locked" data-dungeon-sweep="${escapeAttr(map.id)}" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`;
+  // 2026-10-18 (package DK): a Sweep run uses a key; with none it is disabled and says why
+  if(dungeonTicketsLeft() <= 0) return `<button type="button" class="btn dg-sweep is-nokeys" data-dungeon-sweep="${escapeAttr(map.id)}" data-nokeys="1" aria-disabled="true" title="${escapeAttr(dungeonNoKeysText())}">${escapeHtml(TX('ui.dungeon-sweep'))}</button>`;
   return `<button type="button" class="btn dg-sweep" data-dungeon-sweep="${escapeAttr(map.id)}" aria-haspopup="true" title="${escapeAttr(TX('ui.dungeon-sweep-tip', {floor: node.floor, e: nodeEnergyCost(map, node) || 1}))}">${escapeHtml(TX('ui.dungeon-sweep'))}</button>`;
 }
+// No key in hand (2026-10-18, package DK): the reason a floor can't be fought or swept, and when the keys come back.
+function dungeonNoKeysText(){ return TX('ui.dungeon-no-keys', {h: Math.max(1, Math.round(dungeonNextTicketMs() / 3600000)), cap: dungeonKeyCap()}); }
+function dungeonNoKeys(btn){ try{ denyShake(btn); }catch(e){} try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast('🗝️ ' + dungeonNoKeysText(), 'warn'); }
 function dungeonSweepLocked(btn){ try{ denyShake(btn); }catch(e){} try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('ui.dungeon-sweep-locked'), 'warn'); }
-// The fight starts: the key goes in the lock.
+// The fight starts: it uses a key (2026-10-18, package DK: kept, win or lose; a Sweep run uses one the same way).
 function dungeonStakeKey(mapId){ const s = loadDungeonTickets(); if(s.n <= 0) return false; s.n -= 1; saveDungeonTickets(s); return true; }
 // The best floor ever cleared in a dungeon (first-clear payouts go by it, since a lost climb wipes the cleared floors).
 function dungeonBestFloor(mapId){ const s = loadDungeonTickets(), map = CONQUEST_MAPS.find(m=> m.id === mapId);
   return Math.max((s.best && s.best[mapId]) | 0, map ? dungeonFloorProgress(map).done : 0); }
-// A floor won: the key comes back and the best floor moves up.
-function dungeonFloorWon(mapId, floor, staked){ const best = dungeonBestFloor(mapId), s = loadDungeonTickets(); s.best = s.best || {};
-  s.best[mapId] = Math.max(best, floor | 0); if(staked) s.n += 1; saveDungeonTickets(s); }
+// A floor won: the best floor moves up. 2026-10-18 (package DK): the key no longer comes back (the old third argument is ignored).
+function dungeonFloorWon(mapId, floor){ const best = dungeonBestFloor(mapId), s = loadDungeonTickets(); s.best = s.best || {};
+  s.best[mapId] = Math.max(best, floor | 0); saveDungeonTickets(s); }
 // A floor lost or forfeited: the key stays gone and the climb starts again from floor 1. Returns how many floors were wiped.
 function dungeonRunLost(mapId){
   const map = CONQUEST_MAPS.find(m=> m.id === mapId); if(!isDailyDungeonMap(map)) return 0;
@@ -20035,9 +20181,11 @@ function dungeonFloorProgress(map, progress){
 }
 function dungeonTicketLineHTML(map){
   const s = loadDungeonTickets(), f = dungeonFloorProgress(map), best = dungeonBestFloor(map.id), h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
-  return `<p class="dungeon-ticket-line" title="${escapeAttr(DUNGEON_KEY_RULE)}">🗝️ <b>${s.n}</b> Dungeon key${s.n === 1 ? '' : 's'} · ${f.done ? `<span class="dtl-run">Floor ${f.done + 1}: keep climbing</span>` : 'win and the key comes back'}${best ? ` · best: floor ${best}` : ''} · next key in ${h}h</p>`;
+  // 2026-10-18 (package DK): TX keys, one span each so the page translator sees each text whole; each floor uses a key, and the
+  // keys fill up to the cap each day
+  return `<p class="dungeon-ticket-line ${s.n > 0 ? '' : 'is-empty'}" title="${escapeAttr(dungeonKeyRuleText())}"><span>${escapeHtml(TX('ui.dungeon-keys-count', {n: s.n, cap: dungeonKeyCap()}))}</span> · ${f.done ? `<span class="dtl-run">${escapeHtml(TX('ui.dungeon-keep-climbing', {floor: f.done + 1}))}</span>` : `<span>${escapeHtml(TX('ui.dungeon-each-floor-key'))}</span>`}${best ? ` · <span>${escapeHtml(TX('ui.dungeon-best-floor', {floor: best}))}</span>` : ''} · <span>${escapeHtml(TX('ui.dungeon-refill-in', {h}))}</span></p>`;
 }
-const DUNGEON_KEY_RULE = `A floor takes a Dungeon key. Win and you get it back; lose or forfeit and it's gone, and the climb starts again from floor 1. One key a day (up to ${DUNGEON_TICKETS_CAP} banked) and a bonus one each Monday.`;
+function dungeonKeyRuleText(){ return TX('ui.dungeon-key-rule', {cap: dungeonKeyCap()}); }
 // 2026-10-16 (user: "Similar to raids - when you unlock the first daily dungeon, it just says the name aka Murgle. But once you
 // unlock the 2nd, it just says Daily Dungeons."): like raidTabLabel(), the tab (and the panel's heading, and the key button's
 // tooltip) reads the one dungeon's own name while only one is open, and "Daily Dungeons" from the second on. Only the ticketed
@@ -20087,14 +20235,15 @@ function renderDungeonsSubTab(body){
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map ${dd.mapNumber}${parent ? ' · ' + escapeHtml(parent.name) : ''}</span>
         <p class="dg-sub">${escapeHtml(map.blurb || '')}</p>
         ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${f.total ? Math.round(100 * f.done / f.total) : 0}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total}${best ? ` · best: floor ${best}` : ''}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : s.n > 0 ? (run ? '🗝️ Keep climbing' : '🗝️ Enter') : '🗺️ Look at the map'}</button>${dungeonSweepBtnHTML(map) /* 2026-10-18 (package Z): premium Sweep */}${run ? `<span class="dg-run">${f.done} cleared this climb</span>` : ''}</div>`
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : s.n > 0 ? (run ? '🗝️ Keep climbing' : '🗝️ Enter') : '🗺️ Look at the map'}</button>${dungeonSweepBtnHTML(map) /* 2026-10-18 (package Z): premium Sweep */}${run ? `<span class="dg-run">${f.done} cleared this climb</span>` : ''}</div>
+          ${s.n > 0 ? '' : `<p class="dg-sub dg-nokeys" role="note">🗝️ ${escapeHtml(dungeonNoKeysText()) /* 2026-10-18 (package DK): why there is no fighting today */}</p>`}`
         : `<p class="dg-sub">🔒 ${map.entry && map.entry.after ? 'Clear' : 'Reach' /* 2026-10-18: an entrance with no `after` opens as soon as its map does */} ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
   }).join('');
   body.innerHTML = `<div class="panel dungeons-panel">
-    <div class="dg-head"><h2>🗝️ ${escapeHtml(dungeonTabLabel(progress)) /* 2026-10-16 (user: "...once you unlock the 2nd, it just says Daily Dungeons") */}</h2><p class="panel-sub">Endless climbs, a little harder every floor. Each floor takes a key: win and it comes back; lose and it's gone, and the climb starts again from floor 1.</p></div>
-    <div class="dg-tickets" title="${escapeAttr(DUNGEON_KEY_RULE + ' Each floor costs Energy too, like any fight.')}">
-      <span class="dg-tix">${Array.from({length: Math.max(DUNGEON_TICKETS_CAP, s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🗝️</i>`).join('')}</span>
-      <span><b>${s.n}</b> Dungeon key${s.n === 1 ? '' : 's'} · one a day (up to ${DUNGEON_TICKETS_CAP}), next in ${h}h · a bonus one every Monday</span></div>
+    <div class="dg-head"><h2>🗝️ ${escapeHtml(dungeonTabLabel(progress)) /* 2026-10-16 (user: "...once you unlock the 2nd, it just says Daily Dungeons") */}</h2><p class="panel-sub">${escapeHtml(TX('ui.dungeons-sub')) /* 2026-10-18 (package DK) */}</p></div>
+    <div class="dg-tickets" title="${escapeAttr(dungeonKeyRuleText())}">
+      <span class="dg-tix">${Array.from({length: Math.max(dungeonKeyCap(), s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🗝️</i>`).join('')}</span>
+      <span>${escapeHtml(TX('ui.dungeon-keys-row', {n: s.n, cap: dungeonKeyCap(), h}))}</span></div>
     <div class="dg-list">${cards}</div>
     ${towerCardHTML(progress)}
   </div>`;
@@ -20104,6 +20253,7 @@ function renderDungeonsSubTab(body){
   body.querySelectorAll('[data-dungeon-sweep]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation();
     const map = CONQUEST_MAPS.find(x=> x.id === b.dataset.dungeonSweep), node = dungeonSweepNode(map); if(!node) return;
     if(!isPremiumPlayer()) return dungeonSweepLocked(b);
+    if(b.dataset.nokeys || dungeonTicketsLeft() <= 0) return dungeonNoKeys(b); // 2026-10-18 (package DK)
     openSweepMenu(b, map, node, nodeEnergyCost(map, node) || 1, body, {noIdle:true, after: ()=> renderDungeonsSubTab(body)}); }));
   // 2026-10-18 (audit R3-WP6: at 50/50 the Spire only offered "Keep climbing" into floor 50 again): from the summit you pick any
   // floor to fight again, and the map opens with that floor selected.
@@ -20548,13 +20698,16 @@ document.addEventListener('keydown', e=>{
 // 2026-10-14 (user: "This should say Auto-sweep if I don't even have to play the game."): every player-facing "Sweep" here,
 // on the node panel's split pill and in the toasts now reads Auto-sweep; Idle-Sweep reads "Keep auto-sweeping here".
 // 2026-10-18 (package Z): how {after, noIdle}: the daily dungeons' Sweep re-renders its own tab and has no keep-sweeping switch.
+// 2026-10-18 (package DK): on a daily dungeon each run also uses a 🗝️ key, so the count stops at the keys you hold; with none the
+// menu offers no runs and says why.
 function openSweepMenu(anchor, map, node, energyCost, body, how){
   document.getElementById('sweepMenu')?.remove();
-  const most = Math.max(0, Math.min(20, Math.floor(currentEnergy() / energyCost))), idle = idleSweepTarget(), idleHere = idle && idle.mapId === map.id && idle.nodeKey === node.key;
+  const dgKeys = isDailyDungeonMap(map) ? dungeonTicketsLeft() : null;
+  const most = Math.max(0, Math.min(20, Math.floor(currentEnergy() / energyCost), dgKeys != null ? dgKeys : Infinity)), idle = idleSweepTarget(), idleHere = idle && idle.mapId === map.id && idle.nodeKey === node.key;
   const opts = [...new Set([1, 3, 5, 10, most].filter(n=> n >= 1 && n <= most))].sort((a, b)=> a - b);
   const m = document.createElement('div'); m.id = 'sweepMenu'; m.className = 'sweep-menu'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-label', 'Auto-sweep');
-  m.innerHTML = `<div class="sm-q">🧹 Auto-sweep how many times?</div><div class="sm-opts">${opts.length ? opts.map(n=> `<button type="button" class="btn small ${n === most ? 'primary' : ''}" data-sweepn="${n}">${n === most && n > 1 ? `All ${n}` : n + '×'}</button>`).join('') : `<span class="panel-sub">Needs ${energyCost}⚡ a run.</span>`}</div>
-    <div class="sm-foot">${energyCost}⚡ a run${autoTier('idleSweep') && !(how && how.noIdle) ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Keep auto-sweeping here</label>` : ''}</div>`;
+  m.innerHTML = `<div class="sm-q">🧹 Auto-sweep how many times?</div><div class="sm-opts">${opts.length ? opts.map(n=> `<button type="button" class="btn small ${n === most ? 'primary' : ''}" data-sweepn="${n}">${n === most && n > 1 ? `All ${n}` : n + '×'}</button>`).join('') : dgKeys === 0 ? `<span class="panel-sub sm-nokeys">🗝️ ${escapeHtml(dungeonNoKeysText())}</span>` : `<span class="panel-sub">Needs ${energyCost}⚡ a run.</span>`}</div>
+    <div class="sm-foot">${energyCost}⚡ a run${dgKeys != null ? ` · <span>${escapeHtml(TX('ui.sweep-key-a-run', {n: dgKeys}))}</span>` : '' /* 2026-10-18 (package DK) */}${autoTier('idleSweep') && !(how && how.noIdle) ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Keep auto-sweeping here</label>` : ''}</div>`;
   document.body.appendChild(m);
   const r = anchor.getBoundingClientRect(); m.style.left = Math.max(8, Math.min(innerWidth - m.offsetWidth - 8, r.left + r.width/2 - m.offsetWidth/2)) + 'px'; m.style.top = (r.bottom + 8) + 'px';
   const close = ()=>{ m.remove(); document.removeEventListener('pointerdown', away, true); };
@@ -20994,6 +21147,7 @@ function renderConquestSubTab(body){
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
     const energyCost = selectedNode.virtual ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
+    const dgKeys = !selectedNode.virtual && isDailyDungeonMap(map) ? dungeonTicketsLeft() : null; // 2026-10-18 (package DK): a floor uses a key; 0 = no fight
     panelEl.hidden = false;
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
     // faintly green to represent defeated. Red if the fight outlevels me by a lot"): focus hides the Play tabs.
@@ -21009,7 +21163,7 @@ function renderConquestSubTab(body){
         const fightTip = selectedNode.tower ? (energyCost ? TX('ui.tower-cost-refund', {n: energyCost}) : TX('ui.tower-cost-free')) : `Costs ${energyCost}⚡`;
         // 2026-10-13 (user: "The sweep button should be beside the fight button. Do like a half pill ... After clicking Sweep - they
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
-        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
+        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight ${dgKeys === 0 ? 'is-nokeys' : ''}" id="cnpFightBtn" data-energy-cost="${energyCost}" ${dgKeys === 0 ? 'data-no-keys="1" ' : ''}${canAffordFight && dgKeys !== 0 ? '' : 'aria-disabled="true"'} title="${escapeAttr(dgKeys === 0 ? dungeonNoKeysText() : canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
           : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
       <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(selectedNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
@@ -21018,6 +21172,7 @@ function renderConquestSubTab(body){
       ${newSkillRibbonHTML(selectedNode)}
       ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
       ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
+      ${dgKeys != null ? `<p class="cnp-dungeon-keys ${dgKeys ? '' : 'is-empty'}"><span>${escapeHtml(TX('ui.dungeon-keys-left', {n: dgKeys}))}</span> · <span>${escapeHtml(dgKeys ? TX('ui.dungeon-fight-uses-key') : dungeonNoKeysText())}</span></p>` : '' /* 2026-10-18 (package DK) */}
       ${skirmishFieldHTML(map.id, selectedNode)}
       ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${journeysAdminOnly() ? '<small>🙈 Hidden from players (Admin only) · </small>' : ''}${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
@@ -21095,6 +21250,15 @@ function currentOfflineRaid(){
   _raidStateCache = {key, state};
   return state;
 }
+// When a defeated raid comes back (2026-10-19, package RX, owner 23:19: "When the raid is dead, say when it respawns — not how much time
+// is left to defeat it."). For now: the end of its weekly cycle (cycleMs, the Goliath's RaidM.CYCLE_MS by default). The one place to
+// change it (an early respawn within 24 h of a kill, an admin restart). raidRespawnHTML: the "returns in 2d 4h" line, with the local
+// date and time on hover.
+function raidRespawnAt(def, state, cycleMs){ const c = Number(state && state.cycle) || 0; return (c + 1) * (cycleMs || RaidM.CYCLE_MS); }
+function raidSpanText(ms){ ms = Math.max(0, ms); const d = Math.floor(ms / 86400000), h = Math.floor(ms % 86400000 / 3600000), mi = Math.floor(ms % 3600000 / 60000);
+  return d ? `${d}d ${h}h` : h ? `${h}h ${mi}m` : `${Math.max(1, mi)}m`; }
+function raidRespawnHTML(def, state, cycleMs, cls){ const at = raidRespawnAt(def, state, cycleMs); let when = ''; try{ when = new Date(at).toLocaleString([], {weekday:'short', day:'numeric', month:'short', hour:'2-digit', minute:'2-digit'}); }catch(e){ when = new Date(at).toString(); }
+  return `<span class="${cls || 'r2-days'} r2-respawn" title="${escapeAttr(TX('ui.raid-respawn-title', {when}))}">${escapeHtml(TX('ui.raid-returns-in', {name: (def && def.name) || 'The raid', span: raidSpanText(at - Date.now())}))}</span>`; }
 function offlineRaidPanelHTML(){
   const st = currentOfflineRaid();
   if(!st) return '';
@@ -21104,7 +21268,7 @@ function offlineRaidPanelHTML(){
   const party = st.party.slice().sort((a,b)=> b.damage - a.damage);
   const defs = getCardDefs();
   return `<div class="panel offline-raid-panel">
-    <h2>${raidBossIconHTML(b, b.icon)} ${escapeHtml(b.name)} <span class="or-week">This week's raid · ${daysLeft} day${daysLeft===1?'':'s'} left</span></h2>
+    <h2>${raidBossIconHTML(b, b.icon)} ${escapeHtml(b.name)} ${st.defeated ? raidRespawnHTML(b, st, Ghosts.RAID.CYCLE_DAYS*24*3600*1000, 'or-week') /* 2026-10-19: down, it says when it returns */ : `<span class="or-week">This week's raid · ${daysLeft} day${daysLeft===1?'':'s'} left</span>`}</h2>
     <p class="panel-sub">${escapeHtml(b.blurb||'')} Every deck that fights it this week chips down one shared health pool.</p>
     <div class="or-hp"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${pct}%"></div></div><span><b>${st.remaining}</b> / ${st.max} HP</span></div>
     <div class="or-actions">${st.defeated ? `<span class="conquest-rank-badge">🏆 Defeated this week — a new boss arrives in ${daysLeft} day${daysLeft===1?'':'s'}</span>`
@@ -21326,6 +21490,7 @@ function claimRaidReward(def, claim){
   claimed[claim.key] = Date.now(); try{ localStorage.setItem(RAID_CLAIMS_KEY, JSON.stringify(claimed)); }catch(e){}
   const xp = claim.reward.kind==='kill' ? 500 : 150;
   const spec = raidClaimScreenSpec(def, claim, all, cardsGot, xp);
+  if(xpBarReady()){ const x0 = loadXp().xp; spec.xp = xpBarSpec(x0, x0 + xp); } // 2026-10-18 (RW follow-up): the claim screen's XP bar
   // 2026-10-18 (package RW): the claim screen opens first, so the XP level-up (FX.F.hooks.xpGain) waits for it to close
   if(screen) showRaidClaimScreen(spec);
   awardXp(xp, 'raid reward');
@@ -21396,7 +21561,7 @@ function raidPanelHTML(){
         <p class="r3-blurb">${escapeHtml(def.blurb||'')}</p>
         ${st.stage && raidStageText(st.stage) ? `<p class="r3-hint r3-stage-now"><b>${escapeHtml(st.stage.name)}:</b> ${escapeHtml(raidStageText(st.stage))}</p>` : ''}
         <div class="r2-total"><div class="raid-boss-hp-bar r3-hp"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
-          <span class="r2-total-line"><span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${pct}%)</small></span><span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left this week</span></span></div>
+          <span class="r2-total-line"><span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${pct}%)</small></span>${st.defeated ? raidRespawnHTML(def, st) /* 2026-10-19 (owner 23:19): down, it says when it returns */ : `<span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left this week</span>`}</span></div>
       </div>
       ${adminModeEnabled ? `<div class="r3-admin"><button type="button" class="btn small" id="raidEditBtn">✏️ Edit raid</button><button type="button" class="btn small" data-raid-admin-dmg="0.1" title="Admin: take 10% of the boss's total Health off its open parts">💥 Deal 10%</button><button type="button" class="btn small" data-raid-admin-dmg="0.5" title="Admin: take 50% of the boss's total Health off its open parts">💥 Deal 50%</button></div>` : ''}
     </div>
@@ -21409,6 +21574,9 @@ function raidPanelHTML(){
       <span class="r3-chip"><small>A fight costs</small><b>${cost.raidPoints||0} 🎫 ${cost.energy||0} ⚡</b></span>
       ${(()=>{ /* 2026-10-19 (guild skills): "Guild: +12% bramble Health" */ let t = ''; try{ t = guildRaidBonusText(); }catch(e){} return t ? `<span class="r3-chip gsk-raid" title="${escapeAttr(t)}"><small>🌳</small><b>${escapeHtml(t)}</b></span>` : ''; })()}
     </div>
+    ${(()=>{ const cap = raidLeaderCapOf(def); if(!cap) return ''; // 2026-10-19 (package RX): the raid's leader cost cap, your leader against it
+      const lid = matchLeaderId(), d = lid ? getCardDefs()[lid] : null, lc = raidLeaderCapCheck(def, lid);
+      return `<p class="r3-hint r3-leader-cap${lc.ok ? '' : ' is-over'}">${TX('ui.raid-leader-cap', {cap})} ${d ? (lc.ok ? TX('ui.raid-leader-cost-ok', {name: escapeHtml(d.name), cost: lc.cost, cap}) : `<b>${escapeHtml(lc.text)}</b>`) : ''} <button type="button" class="btn small" data-raid-leader>${TX('ui.raid-change-leader')}</button></p>`; })()}
     ${tierLabel ? '' : '<p class="r3-hint">Fight any open part to join this week’s raid.</p>'}
     <h3 class="r3-h">Pick a part to fight</h3>
     <div class="r2-parts">${st.parts.map(ps=>{ const p = ps.def;
@@ -21429,7 +21597,10 @@ function raidPanelHTML(){
           <li><b>Back row · Ally 2</b><span>The other CPU ally, the same way, in its own row.</span></li>
         </ol>
         <p class="r3-note">Your three brambles are one: their Health added up, their skills merged. Allies are this week's raiders' decks${allyNames.length ? `, or stand-ins (${allyNames.map(escapeHtml).join(', ')})` : ''}.</p>
-        <p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${RaidM.REINFORCE ? RaidM.REINFORCE.max : 2} at most, only into a free slot with a card in front).</p>
+        <p class="r3-note">${escapeHtml(TX('ui.raid-closest-row-note')) /* 2026-10-19 (package RX): closest-row targeting */}</p>
+        ${(()=>{ const rf = Object.assign({}, RaidM.REINFORCE || {}, (def.tuning || {}).reinforce || {}); // 2026-10-19: the raid's own reinforce tuning
+          return (rf.every || 1) > 1 ? `<p class="r3-note">${escapeHtml(TX('ui.raid-commons-every', {every: rf.every, max: rf.max, s: rf.max === 1 ? '' : 's'}))}</p>`
+            : `<p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${rf.max != null ? rf.max : 2} at most, only into a free slot with a card in front).</p>`; })()}
         ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(def.name || 'The boss')}'s might: its great beasts carry <b>+${bh.bonus} Health</b> while the raid is at ${Math.ceil(bh.fraction * 100)}%.</p>` : ''; })()}
         <p class="r3-note">Each fight lasts ${RaidM.fightRounds(def)} turns (or until your bramble falls) and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's bramble (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
       </section>
@@ -21477,6 +21648,7 @@ async function adminRaidDamage(def, frac){
 function wireRaidPanel(){
   const def = activeRaidDef(); if(!def) return;
   document.querySelectorAll('[data-raid-part]').forEach(b=> b.addEventListener('click', ()=> startRaidPartMatch(def, b.dataset.raidPart)));
+  document.querySelectorAll('[data-raid-leader]').forEach(b=> b.addEventListener('click', ()=> openLoadoutPicker('leader', {raidDef: def}))); // 2026-10-19 (package RX)
   const claims = raidClaimsFor(def);
   document.querySelectorAll('[data-raid-claim]').forEach(b=> b.addEventListener('click', ()=>{ claimRaidReward(def, claims[+b.dataset.raidClaim]); renderRaidSubTab(document.getElementById('playSubBody')); }));
   const eb = document.getElementById('raidEditBtn'); if(eb) eb.addEventListener('click', ()=> openRaidEditor(def.id));
@@ -21557,6 +21729,15 @@ function openRaidEditor(raidId){
         <label>Energy per fight<input id="reCostEn" type="number" min="0" max="20" value="${draft.cost.energy||0}"></label>
         <label>Turns per fight<input id="reRounds" type="number" min="3" max="40" value="${draft.fightRounds||RaidM.FIGHT_ROUNDS_DEFAULT||20}"></label>
         <label title="The boss unit's extra Health on a fresh raid, shrinking with the raid's remaining Health (2026-10-18)">Boss unit bonus Health<input id="reBossHpBonus" type="number" min="0" max="1000" value="${draft.bossHpBonusMax||0}"></label>
+        <label title="Your leader's cost in points: each Lumber 1, each Stone 2, each Metal 3. A leader over it can't go into this raid. 0 = no cap (2026-10-19)">Leader cost cap (points)<input id="reLeaderCap" type="number" min="0" max="99" value="${draft.leaderCostCap||0}"></label>
+        <label title="Below this much bramble damage an attempt pays a pittance (2026-10-19)">Paying damage (min)<input id="reMinDmg" type="number" min="1" max="9999" value="${draft.minDamage||120}"></label>
+        ${(()=>{ const t = draft.tuning || {}, rf = t.reinforce || {}, D = RAID_TUNE_DEFAULTS; // 2026-10-19 (package RX): the full raid's tuning knobs (raidTune)
+          return `<label title="The boss's cards fight at this % of their printed Attack">Boss Attack %<input id="reTAtk" type="number" min="5" max="200" value="${Math.round((t.bossAtkPct != null ? t.bossAtkPct : D.bossAtkPct) * 100)}"></label>
+        <label title="The boss's cards fight at this % of their printed Health">Boss Health %<input id="reTHp" type="number" min="5" max="200" value="${Math.round((t.bossHpPct != null ? t.bossHpPct : D.bossHpPct) * 100)}"></label>
+        <label title="Extra Health on the raiders' merged bramble">Raiders' bramble +Health<input id="reTCastle" type="number" min="0" max="999" value="${t.raiderCastleBonus || 0}"></label>
+        <label title="How many of your two CPU allies play a card each turn">Allies playing a turn<input id="reTAllies" type="number" min="1" max="2" value="${t.alliesPerTurn || D.alliesPerTurn}"></label>
+        <label title="The boss calls in Commons every N turns">Commons every N turns<input id="reTRfEvery" type="number" min="1" max="10" value="${rf.every || 1}"></label>
+        <label title="The most Commons the boss calls in at once">Commons per call (max)<input id="reTRfMax" type="number" min="0" max="2" value="${rf.max != null ? rf.max : (RaidM.REINFORCE || {}).max || 2}"></label>`; })()}
         <label class="se-chk"><input type="checkbox" id="reTrench" ${draft.trench?'checked':''}> Trench fights (3 rows, auto-played)</label>
         ${draft.trench ? `<label>Trench wall HP<input id="reWall" type="number" min="5" max="999" value="${draft.trench.wallHp||45}"></label>` : ''}
         <label class="se-wide">Blurb<input id="reBlurb" value="${escapeAttr(draft.blurb||'')}"></label>
@@ -21636,6 +21817,13 @@ function openRaidEditor(raidId){
     draft.name = v('reName') || draft.name; draft.icon = v('reIcon') || draft.icon; draft.blurb = v('reBlurb') || '';
     draft.fightRounds = Math.max(3, Math.min(40, Math.round(num(v('reRounds'), RaidM.FIGHT_ROUNDS_DEFAULT || 20)))); draft.roundsV = 2; // 20 turns by default (2026-10-18)
     draft.bossHpBonusMax = Math.max(0, Math.min(1000, Math.round(num(v('reBossHpBonus'), 0))));
+    // 2026-10-19 (package RX): the leader cost cap, the paying damage and the full raid's tuning knobs
+    if(overlay.querySelector('#reLeaderCap')){ const lc = Math.max(0, Math.min(99, Math.round(num(v('reLeaderCap'), 0)))); if(lc) draft.leaderCostCap = lc; else delete draft.leaderCostCap; }
+    if(overlay.querySelector('#reMinDmg')) draft.minDamage = Math.max(1, Math.round(num(v('reMinDmg'), 120)));
+    if(overlay.querySelector('#reTAtk')){ const t = draft.tuning = Object.assign({}, draft.tuning || {});
+      t.bossAtkPct = Math.max(0.05, Math.min(2, num(v('reTAtk'), 60) / 100)); t.bossHpPct = Math.max(0.05, Math.min(2, num(v('reTHp'), 70) / 100));
+      t.raiderCastleBonus = Math.max(0, Math.min(999, Math.round(num(v('reTCastle'), 0)))); t.alliesPerTurn = Math.max(1, Math.min(2, Math.round(num(v('reTAllies'), 1))));
+      t.reinforce = Object.assign({}, t.reinforce || {}, {every: Math.max(1, Math.min(10, Math.round(num(v('reTRfEvery'), 1)))), max: Math.max(0, Math.min(2, Math.round(num(v('reTRfMax'), 2))))}); }
     const tr = overlay.querySelector('#reTrench');
     if(tr){ if(tr.checked) draft.trench = Object.assign({rows:3, wallHp:45}, draft.trench||{}); else delete draft.trench; }
     if(draft.trench && overlay.querySelector('#reWall')) draft.trench.wallHp = Math.max(5, num(v('reWall'), 45));
@@ -21952,12 +22140,48 @@ function startRaidPartMatch(def, partId){
 }
 function startRaidFullBattle(def, partId, f, st){
   if(!deckSizeOkOrWarn()) return;
+  // 2026-10-19 (package RX, owner 20:46: raids limit the resource cost of your leader): a leader over the raid's leaderCostCap can't
+  // go in; the pre-fight screen greys it out with the reason, and the fight doesn't start (raidLeaderCapCheck).
+  { const lc = raidLeaderCapCheck(def, matchLeaderId()); if(!lc.ok){ showToast(lc.text, 'error'); return; } }
   const cost = def.cost || {};
   if((cost.raidPoints||0) && currentRaidPoints() < cost.raidPoints){ showToast(TX('toast.not-enough-raid-points-this-costs', {raidPoints: cost.raidPoints, currentRaidPoints: currentRaidPoints()}), 'error'); return; }
   if(!spendEnergy(cost.energy||0)){ energyShortToast(cost.energy); return; }
   if(cost.raidPoints) spendRaidPoint(cost.raidPoints);
   bumpQuestCounter('raidsJoined', 1);
+  // Allies (2026-10-12, user: "Where are my allies? On the pre-screen it should show my allies and their levels, then during
+  // the fight, my allies play first, and you can see their cards go down. The castle will be the combined health of 3 of us,
+  // looking slightly bigger, with ALL our effects"): two allies (real raiders' decks when the cloud has them, the raid's
+  // ally decks otherwise). Each has a castle; the three castles are one: their Health added up and their passives merged.
+  const allies = (m0=> m0)(trenchAllies(def, [], (Math.random()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i));
+  const b = buildRaidFullFight(def, partId, f, st, {rng: nextMatchRng(), allies, myCastle: myCastleDef(), myDeck: myDeckCounts, leaderId: matchLeaderId()});
+  matchDefsOverlay = b.overlay;
+  const {engine, players, sideOf, stats, cfg, mine} = b, bossHpBonus = b.bossHpBonus;
+  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, battleMode:'open',
+    mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals: b.deckTotals, speedMult:1, raidFull:true,
+    raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
+    raidCastleStart: cfg.castleHp, raidRoundCap: f.rounds || cfg.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: b.leaderUid,
+    raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your bramble'].concat(allies.map(a=> a.castle.name)),
+    raidFieldRules: b.raidRules, raidCommonPool: b.commonPool, raidBossUnitId: b.bossUnitId, raidBossHpBonus: bossHpBonus,
+    raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0, // 2026-10-18 (R3-WP2)
+    raidSeed: currentMatchSeed}; // the Tentacle Smack's seeded rolls (raidSmackRoll: its row, its column; 2026-10-18)
+  (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidSmackTarget(matchState, 2, i, a); }); // a row or a column (2026-10-18)
+  lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
+  const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
+  const m0 = matchState;
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); raidScrollToHand(m0); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+}
+// The full raid's fight, built without the page (2026-10-19, package RX: split out of startRaidFullBattle so tools/raid_full_sim.js
+// plays exactly the fight the page builds). opts: {rng, allies (raidAllyOf), myCastle, myDeck, leaderId, rand (the boss's opening
+// draws; Math.random)}. Returns {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay (the run-only defs), raidRules,
+// commonPool, bossUnitId, bossHpBonus, leaderUid}.
+function buildRaidFullFight(def, partId, f, st, opts){
+  opts = opts || {}; const rand = opts.rand || Math.random, allies = opts.allies || [];
   const cfg = TrenchM.trenchConfig(def, f.part, st.stage);
+  // 2026-10-19 (package RX, owner 20:48 "The raid is too hard"): the boss's bramble is the part's fight castleHp (420 on the outer
+  // parts). trench.castleHp (1250) is "for the trench only" (trenchConfig's 2026-10-18 note), but this fight read it too, so a raider
+  // had to chip 1250 to reach anything.
+  cfg.castleHp = f.castleHp || cfg.castleHp;
+  const bAtk = raidTune(def, 'bossAtkPct'), bHp = raidTune(def, 'bossHpPct'); // the boss's cards' share of their printed Attack / Health (2026-10-19)
   // the boss's cards, run-only copies when the stage strips abilities or the rule makes them illusory (as in the trench)
   // A raid deck was built to face three decks at once (the trench). Alone, your one deck met it at full strength and lost
   // almost every time (CPU sims: ~0 damage dealt). Here its cards fight at 35% Attack and 45% Health, and your castle is
@@ -21965,7 +22189,7 @@ function startRaidFullBattle(def, partId, f, st){
   const defs = Object.assign({}, getCardDefs()), illusory = (cfg.rules && cfg.rules.illusory) || 0, bossDeck = {};
   Object.keys(cfg.deck).forEach(id=>{ if(!defs[id]) return;
     const nid = id + (cfg.strip ? '~exposed' : illusory ? '~illusory' : '~raid'), src = defs[id];
-    defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})}), f); // + the stage's bossAtk / bossHp (2026-10-18)
+    defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * bAtk)), health: Math.max(1, Math.round((src.health||1) * bHp)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})}), f); // + the stage's bossAtk / bossHp (2026-10-18)
     bossDeck[nid] = cfg.deck[id]; });
   const entIds = cfg.entities.map((e, i)=>{ const id = 'raid-ent-' + (e.id || i); const fx = {armor: e.armor || 0}; if(illusory) fx.illusory = illusory;
     defs[id] = RaidM.stageCard({id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}, f); return id; });
@@ -21973,7 +22197,7 @@ function startRaidFullBattle(def, partId, f, st){
   // The boss's Commons (2026-10-17, user: "For the enemy, can you enhance it by letting them playing commons on the back 2 rows every turn
   // as well?"): the raid's common pool (RaidM.raidCommonPool), scaled like its deck, called in by raidBossCommons each round.
   const commonPool = (RaidM.raidCommonPool ? RaidM.raidCommonPool(def, f.part, defs) : []).map(id=>{ const nid = id + '~raid', src = defs[id];
-    if(!defs[nid]) defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : (src.effects || {})}), f);
+    if(!defs[nid]) defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * bAtk)), health: Math.max(1, Math.round((src.health||1) * bHp)), effects: cfg.strip ? {} : (src.effects || {})}), f);
     return nid; });
   // The boss unit (2026-10-17, user: "I also noticed the raid has 2 variations of the same card. Then name them differently. Also the 100+
   // HP difference is too much."): it used to be the part's biggest card under its own name with its Health ×(2 + 10·r²) (a 24-Health
@@ -21986,29 +22210,23 @@ function startRaidFullBattle(def, partId, f, st){
   // 2026-10-18 (owner 11:46, the super whales): on top of that, +round(bossHpBonusMax × the raid's remaining share) Health (RaidM.bossHpBonus),
   // fixed here as the fight is built (st: the cloud's attempts, or only this device's offline) and added as each boss unit comes in.
   const bossHpBonus = (bossUnitId && RaidM.bossHpBonus) ? RaidM.bossHpBonus(def, st).bonus : 0;
-  matchDefsOverlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss)$/.test(id) || id.startsWith('raid-ent-')) matchDefsOverlay[id] = defs[id]; });
   // The raid's field (2026-10-17, user: "There should be all the related field effects but also some kind of psychic dampener"): the
   // raid's (and the part's) fieldRules run in the engine and show as Environment cards (matchFieldRules reads m.raidFieldRules).
   const raidRules = f.fieldRules || raidFieldRulesOf(def, f.part); // 2026-10-18 (R3-WP2): fightFor's, with the stage's field on top
   // 2026-10-18 (user: "all units, regardless of where they are take actions ... column by column. Then front row first then back row"):
   // reserveActs puts every middle- and back-row unit, both sides, into the round's main order (engine RESERVE_ACTS); the round-start
   // volley of your ally rows is gone (each unit's strike is its action in combat now).
-  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, reserveActs:true, suddenDeathCastles:false, rules: raidRules});
+  const engine = makeSimEngine(defs, opts.rng || seededRng(1), {recordEvents: opts.recordEvents !== false, aiAim:true, battleMode:'open', reserveRows:2, reserveActs:true, suddenDeathCastles:false, rules: raidRules});
   const sideOf = id=> id===1?'A':'B';
-  // Allies (2026-10-12, user: "Where are my allies? On the pre-screen it should show my allies and their levels, then during
-  // the fight, my allies play first, and you can see their cards go down. The castle will be the combined health of 3 of us,
-  // looking slightly bigger, with ALL our effects"): two allies (real raiders' decks when the cloud has them, the raid's
-  // ally decks otherwise). Each has a castle; the three castles are one: their Health added up and their passives merged.
-  const allies = (m0=> m0)(trenchAllies(def, [], (Math.random()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i));
-  const mine = myCastleDef(), merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
-  const myHp = guildScaledBramble(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct); // the stage's castleHpPct (2026-10-18) + the guild's Rooted Walls (2026-10-19)
-  const players = {1: engine.newPlayer(1, myDeckCounts, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
+  const mine = opts.myCastle || {}, merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
+  const myHp = guildScaledBramble(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct) + raidTune(def, 'raiderCastleBonus'); // the stage's castleHpPct (2026-10-18) + the guild's Rooted Walls (2026-10-19) + the raid's raiderCastleBonus (2026-10-19, package RX)
+  const players = {1: engine.newPlayer(1, opts.myDeck || {}, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
   players[2].loopCards = [];
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
   const order = [0, -1, 1, -2, 2, -3, 3], stats = {};
   entIds.forEach((id, i)=> engine.debugSpawnCard(players, sideOf, 2, id, order[i], stats, []));
   const pool = Object.keys(bossDeck).flatMap(id=> Array(Math.max(1, bossDeck[id]|0)).fill(id));
-  const take = ()=> pool.length ? pool.splice(Math.floor(Math.random()*pool.length), 1)[0] : null;
+  const take = ()=> pool.length ? pool.splice(Math.floor(rand()*pool.length), 1)[0] : null;
   if(!entIds.length){ [0, -1, 1].forEach(sl=>{ const id = take(); if(id) engine.debugSpawnCard(players, sideOf, 2, id, sl, stats, []); }); }
   // 2026-10-12 (user: "Why does the raid immediately have cards played? too much, maybe less"): its guards, and one card
   // waiting in the middle row; the rest it plays turn by turn.
@@ -22017,29 +22235,36 @@ function startRaidFullBattle(def, partId, f, st){
   if(cfg.shieldWhileEntities && entIds.length) players[2].onHqHit = ()=> engine.allBoardCards(players[2]).some(c=> c.hp > 0 && entIds.includes(c.defId)) ? 0 : undefined;
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   engine.draw(players[1], 3, 'A', stats, []); engine.draw(players[2], 3, 'B', stats, []);
-  matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, battleMode:'open',
-    mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, raidFull:true,
-    raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
-    raidCastleStart: cfg.castleHp, raidRoundCap: f.rounds || cfg.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
-    raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your bramble'].concat(allies.map(a=> a.castle.name)),
-    raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId, raidBossHpBonus: bossHpBonus,
-    raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0, // 2026-10-18 (R3-WP2)
-    raidSeed: currentMatchSeed}; // the Tentacle Smack's seeded rolls (raidSmackRoll: its row, its column; 2026-10-18)
-  (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidSmackTarget(matchState, 2, i, a); }); // a row or a column (2026-10-18)
   // 2026-10-12 (11:26 list: "During the raid, all 3 players' leaders come onto the battlefield, 1 on each of the centre 3
   // columns. Of course taking their own respective rows"): your leader opens in the front row's centre, the allies' leaders in
   // their own rows on either side (they step up into the front once nothing stands before them).
-  try{ const lid = matchLeaderId(), E = engine; if(lid && getCardDefs()[lid]){ const ev = []; E.debugSpawnCard(players, sideOf, 1, lid, 0, stats, ev); const c = E.allBoardCards(players[1]).find(x=> x.defId === lid);
-      if(c){ c.isLeader = true; matchState.leaderUid = c.uid; } }
+  let leaderUid = null;
+  try{ const lid = opts.leaderId, E = engine; if(lid && defs[lid]){ const ev = []; E.debugSpawnCard(players, sideOf, 1, lid, 0, stats, ev); const c = E.allBoardCards(players[1]).find(x=> x.defId === lid);
+      if(c){ c.isLeader = true; leaderUid = c.uid; } }
     allies.forEach((a, i)=>{ const id = raidAllyLeaderOf(a); if(!id) return; const c = E.fillReserve(players[1], a.row, i === 0 ? -1 : 1, id); if(c){ c.allyOf = a.name; c.isLeader = true; a.leaderId = id; } }); }catch(e){}
-  lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
-  const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
-  const m0 = matchState;
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+  const overlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss)$/.test(id) || id.startsWith('raid-ent-')) overlay[id] = defs[id]; });
+  return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid};
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
 const RAID_BOSS_ATK = 0.6, RAID_BOSS_HP = 0.7;
+// The raid's tuning knobs (2026-10-19, package RX, owner 20:48: "The raid is too hard. Make it easier. Make normal decks able to do
+// some damage."), raid-level fields in canonical/raids.json (the raid editor's Tuning row), each falling back to the value the raid
+// had before: bossAtkPct / bossHpPct (the boss's cards' share of their printed Attack / Health), raiderCastleBonus (+Health on the
+// raiders' merged bramble), reinforce ({max, every, from}: the Commons the boss calls in, see RaidM.bossReinforce), alliesPerTurn
+// (how many of your two CPU allies play a card each turn). Measured with tools/raid_full_sim.js.
+const RAID_TUNE_DEFAULTS = {bossAtkPct: RAID_BOSS_ATK, bossHpPct: RAID_BOSS_HP, raiderCastleBonus: 0, alliesPerTurn: 1};
+// Leader cost cap (2026-10-19, package RX, owner 20:46: "Raids get a setting limiting the resource cost of your leader"): a raid's
+// leaderCostCap, in points: each Lumber of the leader card's cost is 1, each Stone 2, each Metal 3. A leader over it is greyed in
+// the raid's leader picker with the reason, and the fight won't start with it (startRaidFullBattle). No cap (0 / unset): any leader.
+function leaderCostPoints(d){ return d ? Math.max(0, Number(d.cost) || 0) + 2 * Math.max(0, Number(d.stoneCost) || 0) + 3 * Math.max(0, Number(d.metalCost) || 0) : 0; }
+function raidLeaderCapOf(def){ const n = Math.round(Number(def && def.leaderCostCap) || 0); return n > 0 ? n : 0; }
+function raidLeaderCapCheck(def, leaderId){
+  const cap = raidLeaderCapOf(def), d = leaderId ? getCardDefs()[leaderId] : null, cost = leaderCostPoints(d);
+  if(!cap || !d || cost <= cap) return {ok:true, cap, cost};
+  return {ok:false, cap, cost, text: TX('ui.raid-leader-too-costly', {cost, cap})};
+}
+function raidTune(def, k){ const v = def && def.tuning && def.tuning[k]; return (typeof v === 'number' && isFinite(v)) ? v : RAID_TUNE_DEFAULTS[k]; }
 function raidAllyOf(a, i){
   const defs = getCardDefs(), ids = Object.entries(a.deck||{}).filter(([id])=> defs[id]).flatMap(([id, n])=> Array(Math.max(1, n|0)).fill(id));
   for(let k = ids.length - 1; k > 0; k--){ const j = Math.floor(Math.random()*(k + 1)); [ids[k], ids[j]] = [ids[j], ids[k]]; }
@@ -22083,7 +22308,7 @@ function raidBossUnitName(base, name){ return RAID_BOSS_UNIT_NAMES[base] || ('Gr
 // already hold 6. The rule itself is RaidM.bossReinforce (bramblewood-raid.js); the pool is the raid's commonPool.
 function raidBossCommons(m, events){
   if(!m || !m.raidFull || m.over || !(m.raidCommonPool||[]).length || !RaidM || !RaidM.bossReinforce) return;
-  const got = RaidM.bossReinforce(m.engine, m.players[2], m.raidCommonPool, Math.random, {round: m.round});
+  const got = RaidM.bossReinforce(m.engine, m.players[2], m.raidCommonPool, Math.random, Object.assign({}, ((m.raidDef || {}).tuning || {}).reinforce || {}, {round: m.round})); // + the raid's reinforce tuning (2026-10-19)
   if(!got.length) return;
   got.forEach(g=>{ g.card.bossCommon = true; });
   (events || []).push({type:'raidCommons', side:'B', defIds: got.map(g=> g.defId), rows: got.map(g=> g.row), uids: got.map(g=> g.card.uid)});
@@ -22109,8 +22334,13 @@ function mergeRaidCastles(list){
 // onto the front when there's nothing to stand behind. One of them plays each turn, in turn.
 function raidAlliesTurn(m, events, first){
   if(!m || !m.raidFull || m.over || !(m.raidAllies||[]).length) return;
+  // 2026-10-19 (package RX): tuning.alliesPerTurn of the allies play each turn (1 = one of them, in turn, as before; 2 = both).
+  const n = Math.max(1, Math.min(m.raidAllies.length, Math.round(raidTune(m.raidDef, 'alliesPerTurn')) || 1));
+  for(let k = 0; k < n; k++) raidAllyPlays(m, m.raidAllies[(m.round - 1 + k) % m.raidAllies.length], events);
+}
+function raidAllyPlays(m, a, events){
   const pl = m.players[1], E = m.engine, defs = getCardDefs();
-  const a = m.raidAllies[(m.round - 1) % m.raidAllies.length]; if(!a || a.played >= a.deck.length) return;
+  if(!a || a.played >= a.deck.length) return;
   const id = a.deck[a.played]; if(!defs[id]) { a.played++; return; }
   // 2026-10-17 (user: "for 3 lane raids, the CPU allies can only place on their own rows!"): an ally plays ONLY into its own row
   // (RaidM.allySlot). It used to fall back to the other ally's middle row and then to your front row; now, with its row full, it
@@ -22122,6 +22352,9 @@ function raidAlliesTurn(m, events, first){
   placed.allyOf = a.name; placed.allyRow = a.row; m.raidAllyNew = placed.uid;
   const ev = {type:'raidAlly', name:a.name, defId:id, where, row:a.row, slot:sl};
   if(events) events.push(ev); else { pushLog(ev); renderBoard(); }
+  // 2026-10-19 (package RX, owner 20:46: "Allies should look like they are playing their cards from hand"): the card flies in from
+  // the ally's side of its row and lands like a hand play, once its tile is on the board (allyPlayFx waits for it).
+  allyPlayFx(placed.uid, {row: a.row, mode: 'raid'});
 }
 // Raid specials in the full game (2026-10-12): the trench's telegraphed boss attacks. A smack is marked a round ahead (its row
 // or column glows red in your rows), then lands; a front-row attack ('frontRow', the Tail Sweep) hits every unit in your front row.
@@ -22190,6 +22423,32 @@ function raidSpecials(m, events){
 // What glows red this round: the columns and rows (0 front, 1 middle, 2 back) the next smacks will hit.
 function raidTelegraph(m){ const out = {cols:[], rows:[]}; if(m && m.raidPending) Object.values(m.raidPending).forEach(p=>{ if(!p) return;
   if(p.kind === 'row' && p.row != null) out.rows.push(p.row); else if(p.kind === 'column' && p.col != null) out.cols.push(p.col); }); return out; }
+// Scroll to your hand (2026-10-19, package RX, owner 20:49: "After the raid loads, the screen ease-scrolls down to your hand."): a raid's
+// board is tall (three rows a side), so once the fight is on screen the page eases down (~600ms) until your hand is in view. Once a
+// fight; a jump instead under reduced motion; nothing if your hand is already in view, and it stops the moment you scroll, touch
+// or press a key yourself (it never fights you). It scrolls the hand's own scrolling ancestor, or the page.
+function raidScrollToHand(m){
+  if(!m || m._handScrolled) return; m._handScrolled = true;
+  let userMoved = false; const evs = ['wheel', 'touchstart', 'keydown', 'mousedown'], onUser = ()=>{ userMoved = true; };
+  const done = ()=> evs.forEach(t=> window.removeEventListener(t, onUser, true));
+  evs.forEach(t=> window.addEventListener(t, onUser, {capture:true, passive:true}));
+  const y0 = window.scrollY;
+  setTimeout(()=>{
+    const hand = document.getElementById('handStrip') || document.querySelector('.hand-area');
+    if(!hand || matchState !== m || userMoved || Math.abs(window.scrollY - y0) > 4){ done(); return; }
+    let sc = hand.parentElement; while(sc && sc !== document.body && !(sc.scrollHeight > sc.clientHeight + 4 && /(auto|scroll)/.test(getComputedStyle(sc).overflowY))) sc = sc.parentElement;
+    const page = !sc || sc === document.body, el = page ? (document.scrollingElement || document.documentElement) : sc;
+    const view = page ? {top:0, bottom: window.innerHeight} : sc.getBoundingClientRect(), r = hand.getBoundingClientRect();
+    const need = r.bottom + 12 - view.bottom; if(need <= 1){ done(); return; } // already in view
+    const from = el.scrollTop, to = Math.min(el.scrollHeight - el.clientHeight, from + Math.min(need, Math.max(0, r.top - view.top - 8)));
+    if(to <= from + 1){ done(); return; }
+    m._handScrollTo = to;
+    if(reducedMotion()){ el.scrollTop = to; done(); return; }
+    const t0 = performance.now(), D = 600, ease = t=> t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t + 2, 3) / 2;
+    const step = now=>{ if(userMoved || matchState !== m){ done(); return; } const k = Math.min(1, (now - t0) / D); el.scrollTop = from + (to - from) * ease(k); if(k < 1) requestAnimationFrame(step); else done(); };
+    requestAnimationFrame(step);
+  }, 260);
+}
 // The raid's last turn (2026-10-18): a banner over the board as it starts ("the tide turns after this one"), so the end isn't a surprise.
 function raidLastTurnBanner(m){
   const bf = document.querySelector('.battlefield'); if(!bf || !m) return;
@@ -23531,7 +23790,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
   // Daily dungeons (2026-10-15; 2026-10-16: a key per floor, given back on a win): a floor needs a 🗝️ Dungeon key (see DAILY_DUNGEONS).
   const dungeonEntry = !(opts && opts.skipEnergyCost) && isDailyDungeonMap(CONQUEST_MAPS.find(m=> m.id === mapId));
-  if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('toast.no-dungeon-tickets-left-a-new'), 'warn'); return false; }
+  if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast('🗝️ ' + dungeonNoKeysText(), 'warn'); return false; } // 2026-10-18 (package DK)
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
   // 2026-10-18 (package Z): a cleared Babel Spire floor is free (towerReplay); a new floor's Energy is held (towerEnergyPaid) so a
@@ -23559,8 +23818,8 @@ function startConquestMatch(mapId, nodeKey, opts){
       playDialogue('boss_banter@birds');
     }catch(e){} }, 3200);
   }
-  const dungeonKeyStaked = dungeonEntry && dungeonStakeKey(mapId); // 2026-10-16: the key goes in the lock; a win gives it back
-  if(dungeonKeyStaked){ showToast(TX('toast.dungeon-key-in-the-lock-win', {dungeonTicketsLeft: dungeonTicketsLeft()}), 'ok'); try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
+  const dungeonKeyStaked = dungeonEntry && dungeonStakeKey(mapId); // 2026-10-18 (package DK): the fight uses a key, win or lose (was: a win gave it back)
+  if(dungeonKeyStaked){ showToast(TX('toast.dungeon-key-used', {n: dungeonTicketsLeft()}), 'ok'); try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
   try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
@@ -27433,7 +27692,7 @@ function renderMatchUI(){
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
         </div>`}
         ${!isPc && isBossResults(m) ? bossEmbersHTML() : ''}${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
-        <div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
+        ${!isPc && !isTutorial ? rewardXpBarHTML(m) : '' /* 2026-10-18 (RW follow-up): the XP bar, filling */}<div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.raidFull ? (m.winner===1 ? 'Absolute Victory!' : 'Raid complete!') /* 2026-10-12 (user: "Even failure and draw is success. It's about how much you deal. However, if you win the match somehow, the colour is yellow and it says Absolute Victory") */ : m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
         ${gloryBadgesHTML(m)}${!isPc && isTowerResults(m) ? towerAscentHTML(m) : ''}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
@@ -27441,7 +27700,7 @@ function renderMatchUI(){
         ${matchStatsHTML(m)}
         ${m.raidersTook ? raidersTookHTML(m) : '' /* the surprise challenge lost (2026-10-15) */}
         ${m.towerRefunded ? `<p class="wl-raiders wl-tower-refund">${escapeHtml(TX('results.tower-refunded', {n: m.towerRefunded}))}</p>` : ''}${m.towerReplay && m.winner===1 ? `<p class="wl-tower-replay">${escapeHtml(TX('results.tower-replay'))}</p>` : '' /* 2026-10-18 (package Z) */}
-        ${m.dungeonOutcome && m.dungeonOutcome.lost ? `<p class="wl-raiders wl-dkey-lost">${m.dungeonOutcome.keyLost ? TX('results.dungeon-key-lost-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best}) : TX('results.dungeon-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best})}</p>` : '' /* 2026-10-16: the key is gone, back to floor 1 */}
+        ${m.dungeonOutcome && m.dungeonOutcome.lost ? `<p class="wl-raiders wl-dkey-lost">${TX('results.dungeon-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best}) /* 2026-10-18 (package DK): the key was used at the start either way */}</p>` : '' /* 2026-10-16: the key is gone, back to floor 1 */}
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
@@ -27549,6 +27808,7 @@ function renderMatchUI(){
   // can't be wired inside the open-results block below.
   { const wlReopen = document.getElementById('wlReopenBtn'); if(wlReopen) wlReopen.addEventListener('click', ()=>{ m.winModalDismissed = false; renderMatchUI(); }); }
   if(showWinModal){
+    try{ syncRewardXpBar(); }catch(e){} // 2026-10-18 (package RW follow-up): fill the results' XP bar with what came in since it was drawn
     try{ window.hideCardPop && window.hideCardPop(); }catch(e){}
     // Task #203 (UX consultant pass): the win modal previously had a mount animation but no
     // actual celebratory payoff — for the youth audience this targets, that "win" beat is one of
@@ -28800,7 +29060,8 @@ function renderBoard(opts){
       const pid = +el.dataset.respid, r = +el.dataset.resrow, pl = m.players[pid]; if(!pl || !pl.reserve) return;
       // 2026-10-18 (owner 20:40: "for raids, i shouldnt be able to play cards on the other rows!"): in a raid the middle and back
       // rows belong to the CPU allies, so they never show play targets for you.
-      const legal = new Set(showTargets && pid === viewerPid && !m.raidFull && m.engine.legalReserveSlots ? m.engine.legalReserveSlots(pl, r) : []);
+      // 2026-10-19 (package RX): a match whose play rows are 'own' (matchPlayRows: a tag-team dungeon's "Your row only") the same way.
+      const legal = new Set(showTargets && pid === viewerPid && !m.raidFull && m.engine.legalReserveSlots && matchPlayRows(m) === 'any' ? m.engine.legalReserveSlots(pl, r) : []);
       let html = `<span class="reserve-label">${r === 1 ? 'Middle' : 'Back'}</span>`;
       for(let sl = -slotRange; sl <= slotRange; sl++){
         const c = pl.reserve[r-1][sl];
@@ -29297,6 +29558,7 @@ function renderBoard(opts){
         // the Timeline object itself is. Keyed by uid (not just the element) for the same
         // renderMatchUI()-wipe-survivability reason inFlightFlipTimelines/flippingEls are.
         enteringTimelines.set(uid, entranceTl);
+        entranceBorn.set(uid, {tl: entranceTl, at: performance.now(), el}); // 2026-10-19 (package RX): the wall-clock watchdog's record
       });
       // Single synchronized release for EVERY new card pinned this render. When Flip.from() is
       // ALSO running this render (gsapFlip true), releasing happens from INSIDE its own
@@ -30733,6 +30995,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   const events = [];
   const prePos = boardPosSnapshot(m); // 2026-10-17: see holdArrivalDead
   if(m.raidFull && popts && popts.reserve) return false; // raids: the middle and back rows are the allies' (owner 2026-10-18)
+  if(matchPlayRows(m) === 'own' && popts && popts.reserve) return false; // 2026-10-19 (package RX): "Your row only" (a tag-team dungeon's playRows)
   const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}) : undefined);
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
@@ -31126,17 +31389,20 @@ function sweepAllowed(mapId, nodeKey){ const nid = conquestNodeId(mapId, nodeKey
   return (autoTier('sweep') && autoSNodes().has(nid)) || autoTier('autoSweep'); }
 // Each run is played out by the CPU for both sides, as Auto would; a win pays the clear-again reward (with the rank bonus for
 // the castle you kept), a loss pays nothing. Energy is spent per run either way.
+// 2026-10-18 (package DK, owner: "I can't sweep past the number of keys I have"): a daily dungeon run also uses a 🗝️ key (checked
+// before the Energy is taken, so a run with no key costs nothing); the sweep stops when the keys run out.
 function runSweep(mapId, nodeKey, count){
   const f = findConquestNode(mapId, nodeKey); if(!f) return null; const node = f.node, map = f.map || CONQUEST_MAPS.find(x=> x.id === mapId);
-  const cost = nodeEnergyCost(map, node) || 1; let wins = 0, played = 0, gold = 0, dust = 0;
-  const tier = nodeRewardTier(node);
-  for(let i = 0; i < count; i++){ if(!spendEnergy(cost)) break; played++;
+  const cost = nodeEnergyCost(map, node) || 1; let wins = 0, played = 0, gold = 0, dust = 0, keys = 0;
+  const tier = nodeRewardTier(node), dg = isDailyDungeonMap(map);
+  for(let i = 0; i < count; i++){ if(dg && dungeonTicketsLeft() <= 0) break; if(!spendEnergy(cost)) break; if(dg){ dungeonStakeKey(mapId); keys++; } played++;
     const r = simulateSkirmishVsDeckSeeded(node, myDeckCounts, myCastleDef(), Math.floor(Math.random()*1e9));
     if(r.win){ wins++; const rank = r.castleLeft >= 0.9 ? 'S' : r.castleLeft >= 0.7 ? 'A' : r.castleLeft >= 0.5 ? 'B' : 'C'; const bm = (RANK_MULT[rank] || 1);
       if(tier){ gold += Math.round((tier.repeat.gold||0) * bm); dust += Math.round((tier.repeat.dust||0) * bm); }
       try{ bumpQuestCounter('conquestWins', 1); bumpQuestCounter('wins', 1); bumpQuestCounter('energyConquest', cost); }catch(e){} } }
   if(gold > 0) grantCurrency('gold', gold); if(dust > 0) grantCurrency('dust', dust);
-  return {played, wins, gold, dust};
+  if(keys){ try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
+  return {played, wins, gold, dust, keys};
 }
 // Sweep results (2026-10-16, user: "Auto Sweep should bring up the reward screen. not just a toast"): a results card like a fight's:
 // the fight, the runs and wins as a rank-style tally, the Maple Leaves and Magic Dust pills counting up from 0, and Collect.
@@ -31152,7 +31418,8 @@ function showSweepResults(r, mapId, nodeKey){
     <h2 class="sr-title">${r.wins ? 'Swept!' : 'No wins this time'}</h2>
     <div class="sr-sub">${node ? `${escapeHtml(node.icon || '')} ${escapeHtml(label || node.name)}` : escapeHtml(label || '')}</div>
     <div class="sr-tally"><b>${r.wins}</b><span>/ ${r.played} won</span></div>
-    ${pills ? `<div class="rw-sec rw-cheer winloss-conquest-rewards sr-rewards"><div class="rw-head">${escapeHtml(TX('results.rewards'))}</div><div class="rw-row rw-cur-row">${pills}</div></div>` : `<p class="panel-sub">${r.played ? 'A loss pays nothing.' : 'Not enough Energy for a run.'}</p>`}
+    ${r.keys ? `<p class="panel-sub sr-keys">${escapeHtml(TX('results.sweep-keys-used', {n: r.keys, left: dungeonTicketsLeft()}))}</p>` : '' /* 2026-10-18 (package DK) */}
+    ${pills ? `<div class="rw-sec rw-cheer winloss-conquest-rewards sr-rewards"><div class="rw-head">${escapeHtml(TX('results.rewards'))}</div><div class="rw-row rw-cur-row">${pills}</div></div>` : `<p class="panel-sub">${r.played ? 'A loss pays nothing.' : r.keys === 0 && dungeonTicketsLeft() <= 0 && isDailyDungeonMap(CONQUEST_MAPS.find(x=> x.id === mapId)) ? escapeHtml(dungeonNoKeysText()) : 'Not enough Energy for a run.'}</p>`}
     <button type="button" class="btn primary big sr-ok">${r.wins ? 'Collect' : 'OK'}</button></div>`;
   document.body.appendChild(ov);
   const close = ()=>{ if(hasGsap() && !reducedMotion()) gsap.to(ov, {opacity:0, duration:.18, onComplete:()=> ov.remove()}); else ov.remove(); };
@@ -31206,6 +31473,38 @@ function fightWatchdog(){
   afterPlayerAction(activePlayerId(m));
 }
 setInterval(()=>{ try{ fightWatchdog(); }catch(e){} }, 1000);
+// The play-animation watchdog (2026-10-19, package RX, owner 20:46: "In Raids, when you play a card, it gets stuck in the shortened
+// part of the anim. This sometimes happens in normal gameplay — very rarely."). Root cause: a card's arrival (its entrance timeline in
+// renderBoard, and your hand play's flying copy, handFlightProxy) runs on GSAP's clock, which only moves when the browser draws a
+// frame, and with lag smoothing on outside combat (syncFightTimeScale: lagSmoothing(500, 33)) any frame longer than half a second
+// counts as 33 ms. A raid board (40+ cards, their idle animations, three rows re-rendered on a play) draws its frames slowly on many
+// devices, so a played card's clock barely moved: it sat small and see-through at the start of its drop (scale ~0.4, opacity ~0) until
+// a later render reset it, while the game itself (on timers) went on. Reproduced in headless Chromium at about 1 frame a second:
+// entrance timelines read 0.03-0.07 s after 4+ s. This watchdog runs on a timer, not on frames: an entrance or a hand flight still
+// running past its own length (+ a grace) is finished on the spot (its onComplete runs: the landing, the bookkeeping), a board card
+// left hidden by a flight that is gone is shown, and a flight copy left on the page is removed. window.__bwPlayAnimWatchdog counts.
+const PLAY_ANIM_GRACE_MS = 450;
+function playAnimWatchdog(){
+  if(typeof document === 'undefined' || !hasGsap()) return;
+  const w = window.__bwPlayAnimWatchdog = window.__bwPlayAnimWatchdog || {runs: 0, fixed: 0, last: null};
+  w.runs++;
+  const now = performance.now();
+  entranceBorn.forEach((b, uid)=>{
+    const tl = b.tl;
+    if(!tl || enteringTimelines.get(uid) !== tl){ entranceBorn.delete(uid); return; } // done, or killed (a render reset it)
+    const due = b.at + ((tl.delay() || 0) + tl.totalDuration()) * 1000 + PLAY_ANIM_GRACE_MS;
+    if(now < due || tl.progress() >= 1) return;
+    entranceBorn.delete(uid);
+    try{ tl.progress(1); }catch(e){} // the end state and its onComplete (landing, enteringUids, the is-entering class)
+    try{ if(b.el && b.el.isConnected){ b.el.classList.remove('is-entering'); gsap.set(b.el, {opacity:1, x:0, y:0, rotate:0, scale:1}); } }catch(e){}
+    enteringUids.delete(uid); if(enteringTimelines.get(uid) === tl) enteringTimelines.delete(uid);
+    w.fixed++; w.last = {kind:'entrance', uid, lateMs: Math.round(now - due + PLAY_ANIM_GRACE_MS)};
+  });
+  handFlightDue.forEach((f, uid)=>{ if(now < f.due) return; handFlightDue.delete(uid); if(f.squash ? f.land() : handFlightsLive.has(uid) && (f.land(), true)){ w.fixed++; w.last = {kind: f.squash ? 'squash' : 'flight', uid}; } });
+  document.querySelectorAll('.board-card[data-uid]').forEach(el=>{ if(el.style.visibility === 'hidden' && !handFlightsLive.has(String(el.getAttribute('data-uid')))){ el.style.visibility = ''; w.fixed++; w.last = {kind:'hidden', uid: el.getAttribute('data-uid')}; } });
+  if(!handFlightsLive.size) document.querySelectorAll('.hand-flight-proxy').forEach(p=>{ p.remove(); w.fixed++; w.last = {kind:'proxy'}; });
+}
+setInterval(()=>{ try{ playAnimWatchdog(); }catch(e){} }, 200);
 // Full screen (2026-10-12, 10:57 list: "full-screen is not vertically centered"): the match sits in the middle of the screen.
 document.addEventListener('fullscreenchange', ()=>{ document.documentElement.classList.toggle('is-fs', !!document.fullscreenElement); });
 // 2026-10-12 (user: "On a full screen, try to capture the field in the centre of the screen (mobile and PC)"): in full screen
@@ -32801,6 +33100,7 @@ async function resolveRoundCore(opts){
   if(over){
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
     m.winner = (m.forcedWinner!=null) ? m.forcedWinner : ((p1dead&&p2dead)?0:(p1dead?2:1));
+    if(m.xpBefore == null) m.xpBefore = loadXp().xp; // 2026-10-18 (package RW follow-up): the results' XP bar fills from here
     // 2026-10-15 (user: "Earthquake and Player victory should be logs in the log."): the result is the log's last line.
     try{ if(!m.resultLogged){ m.resultLogged = true; pushLog({type:'matchResult', winner:m.winner, reason:m.endReason || null, castle: m.forcedWinner==null && (p1dead || p2dead)}); } }catch(e){}
     // 2026-10-15 (user: "As I described previously, don't wait for the crumble animation to finish before playing the Victory/Defeat
@@ -32863,7 +33163,8 @@ async function resolveRoundCore(opts){
     if(m.mode==='conquest' && m.fightSession) setTimeout(()=> handInFight(m), 0);
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ m.conquestRankEarned = lossRankFor(m); }catch(e){} } // F / FF / FFF (2026-10-11)
     // Daily dungeons (2026-10-16): a lost or forfeited floor keeps the key and sends the climb back to floor 1 (dungeonRunLost);
-    // a won floor hands the key back (dungeonFloorWon, below, after the first-clear check has read the best floor).
+    // a won floor moves the best floor up (dungeonFloorWon, below, after the first-clear check has read the best floor).
+    // 2026-10-18 (package DK): the key was used when the fight started, so neither gives one back.
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest && !m.dungeonOutcome){ try{ const dm = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId);
       if(isDailyDungeonMap(dm)){ const reached = dungeonFloorProgress(dm).done + 1; dungeonRunLost(dm.id); m.dungeonOutcome = {lost:true, keyLost: !!m.dungeonKeyStaked, floor: reached, best: dungeonBestFloor(dm.id)}; try{ refreshTopbarDungeonKey(currentTab); }catch(e){} } }catch(e){} }
     // The Babel Spire (2026-10-18, package Z: "Towers just take energy to do, refunding if you fail"): a new floor lost, forfeited
@@ -32893,7 +33194,7 @@ async function resolveRoundCore(opts){
       fightRewardBegin(m, isFirstClear);
       if(m.towerEnergyPaid > 0) bumpQuestCounter('energyConquest', m.towerEnergyPaid); // 2026-10-18 (package Z): a won Spire floor's Energy counts now (a lost one is refunded)
       if(dunNode && !m.dungeonOutcome){ try{ const gl = dungeonGoldLeavesFor(dunMap.id, dunNode.floor, isFirstClear); if(gl > 0){ fightGrant(m, 'gems', gl); m.conquestGemsEarned = gl; } }catch(e){} } // 🍂 Gold Leaves (2026-10-16)
-      if(dunNode && !m.dungeonOutcome){ try{ dungeonFloorWon(dunMap.id, dunNode.floor, !!m.dungeonKeyStaked); m.dungeonOutcome = {won:true, keyBack: !!m.dungeonKeyStaked, floor: dunNode.floor}; refreshTopbarDungeonKey(currentTab); }catch(e){} }
+      if(dunNode && !m.dungeonOutcome){ try{ dungeonFloorWon(dunMap.id, dunNode.floor); m.dungeonOutcome = {won:true, floor: dunNode.floor}; refreshTopbarDungeonKey(currentTab); }catch(e){} } // 2026-10-18 (package DK): no key back
       // 2026-10-15: start the card-reward ledger before this clear is recorded; on a brand-new save its first read seeds itself
       // from the cleared fights, which counted this fight's cards as already given (0-1's card was lost that way).
       try{ cardRewardsClaimed(); }catch(e){}
@@ -35319,7 +35620,7 @@ function rewardsPanelHTML(m){
   eggCards.forEach(id=>{ const d = getCardDefs()[id];
     acts.push(`<span class="rw-act rw-egg rw-egg-card" data-tip="${escapeAttr(eggCardRewardNote())}">${d.icon || '🥚'} ${escapeHtml(d.name)}</span>`); });
   // 2026-10-18 (package T): a bramble won is no longer a chip here ("New bramble: X", with a Forge tooltip); it is a card with the cards won.
-  if(m.dungeonOutcome && m.dungeonOutcome.keyBack) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(TX('results.a-win-gives-your-key-back'))}">${TX('results.dungeon-key-back', {n: dungeonTicketsLeft()})}</span>`); // 2026-10-16
+  if(m.dungeonOutcome && m.dungeonOutcome.won) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(dungeonKeyRuleText())}">${escapeHtml(TX('ui.dungeon-keys-left', {n: dungeonTicketsLeft()}))}</span>`); // 2026-10-18 (package DK): keys left (a win no longer gives one back)
   const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-spare-copy-of-a-base'))}">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join(''); })() : ''}`;
   const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
   if(cur.length || packRow || acts.length || itemsHTML){
@@ -35339,6 +35640,7 @@ function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
   const e = fightEnergyCost(nb.mapId, nb.node); // 2026-10-18 (package Z)
   if(m.mode==='tutorial') return ''; // 2026-10-13 (user: "On the buttons below only have the button 'Claim Rewards'"), both parts
+  if(isDailyDungeonMap(CONQUEST_MAPS.find(x=> x.id === nb.mapId)) && dungeonTicketsLeft() <= 0) return `<button class="btn primary big is-nokeys" id="wlNextBattleBtn" data-energy-cost="${e||0}" data-no-keys="1" aria-disabled="true" title="${escapeAttr(dungeonNoKeysText())}">${TX('results.next', {name: escapeHtml(nb.node.name)})}</button>`; // 2026-10-18 (package DK)
   return `<button class="btn primary big" id="wlNextBattleBtn" data-energy-cost="${e||0}" ${currentEnergy() < (e||0) ? 'aria-disabled="true"' : ''} title="${escapeAttr(nb.node.name + (currentEnergy() < (e||0) ? ` ${TX('results.needs-you-have', {e, currentEnergy: currentEnergy()})}` : ''))}">${TX('results.next', {name: escapeHtml(nb.node.name)})}</button>`; // the cost is the button's own ::after (2026-10-12: it showed twice)
 }
 // A small cheer when currency lands: sparkles burst out of the Rewards row.
@@ -36071,6 +36373,7 @@ function playLandingImpact(uid){
 // so a camera move mid-flight still lands it. A card flies in an accelerating curve; the leader winds back first and slams in
 // (back.in, the "reverse ease"). Returns false (and the old in-board tween plays) when it can't run.
 const handFlightsLive = new Set(); // uids whose hand flight is still in the air
+const handFlightDue = new Map(); // uid -> {due, land}: when each flight should be down on the wall clock (2026-10-19, playAnimWatchdog)
 function handFlightSec(leader){
   const mult = (matchState && matchState.speedMult) || 1, hd = Math.max(0.12, entranceCardTweenDur(mult)*0.62);
   return leader ? Math.max(.3, hd*1.25) : Math.max(.12, hd*.82);
@@ -36101,19 +36404,60 @@ function handFlightProxy(el, uid, origin){
     const ct = cur && cur.isConnected && cur.querySelector('.card-tile'); if(ct){ const q = ct.getBoundingClientRect(); if(q.width) last = {left:q.left + q.width/2 - q.width*land/2, top:q.top + q.height/2 - q.height*land/2, width:q.width*land, height:q.height*land}; }
     const k = st.k, tx = last.left + last.width/2, ty = last.top + last.height/2, s1 = last.width / w0;
     const x = origin.x + (tx - origin.x)*k, y = origin.y + (ty - origin.y)*k - (leader ? Math.sin(Math.max(0, Math.min(1, k))*Math.PI)*28 : 0);
-    gsap.set(p, {x: x - w0/2, y: y - h0/2, scale: s0 + (s1 - s0)*k, rotation: r0*(1 - Math.max(0, Math.min(1, k))), transformOrigin:'50% 50%'});
+    gsap.set(p, {x: x - w0/2, y: y - h0/2, scale: s0 + (s1 - s0)*k, rotation: r0*(1 - Math.max(0, Math.min(1, k))), transformOrigin:'50% 50%', opacity: origin.fadeIn ? Math.max(0, Math.min(1, k / origin.fadeIn)) : 1}); // fadeIn (2026-10-19, an ally's play): it fades in over the first part of the path
   };
   let done = false; const gone = landed=>{ if(done) return; done = true; try{ gsap.killTweensOf(st); }catch(e){} p.remove(); handFlightsLive.delete(key);
     const c = boardCardEl(uid) || cur; if(!c) return; c.style.visibility = '';
     if(!landed || !c.isConnected) return;
     // the landing: the face lands a touch big and squashes into place (the leader harder: its stomp), then the usual thud and glow
-    const t = c.querySelector('.card-tile'); if(t) gsap.fromTo(t, {scale:land}, {scale:1, duration: leader ? .32 : .2, ease: leader ? 'back.out(5)' : 'back.out(4)', clearProps:'scale'});
+    const t = c.querySelector('.card-tile'); if(t){ const sq = gsap.fromTo(t, {scale:land}, {scale:1, duration: leader ? .32 : .2, ease: leader ? 'back.out(5)' : 'back.out(4)', clearProps:'scale'});
+      handFlightDue.set(key + ':squash', {due: performance.now() + (leader ? 320 : 200) + 250, land: ()=>{ try{ if(sq.progress() < 1){ sq.progress(1); return true; } }catch(e){} return false; }, squash: true}); } // the watchdog settles it on time (2026-10-19)
     try{ playLandingImpact(uid); playHandSummonGlow(uid); if(leader) pushNeighborCards(c, {distance:16, durationMs:300}); }catch(e){} };
   place();
   gsap.to(st, {k:1, duration:fl, ease: leader ? 'back.in(1.6)' : (sharpBoard() ? 'power3.in' : 'power2.in'), onUpdate:place, onComplete:()=>{ place(); gone(true); }});
-  setTimeout(()=> gone(false), fl*1000 + 800); // never left behind
+  // 2026-10-19 (package RX): on the wall clock, the flight lands when it should even if frames stall (playAnimWatchdog lands it)
+  handFlightDue.set(key, {due: performance.now() + fl*1000 + 250, land: ()=>{ if(done) return; st.k = 1; try{ place(); }catch(e){} gone(true); }});
+  setTimeout(()=>{ handFlightDue.delete(key); gone(false); }, fl*1000 + 800); // never left behind
   return true;
 }
+// An ally plays a card (2026-10-19, package RX, owner 20:46: "Allies should look like they are playing their cards from hand, in Raid
+// and tag-team dungeons. They could probably fade-in midway, looking like they got played from hand!"): when a CPU ally puts a card on
+// the board (raidAllyPlays; a tag-team partner calls this with mode 'tagteam'), the card flies in from just below that ally's row
+// label (its "hand", off the row's left edge), fading in partway along the path, and lands with the normal hand-play landing
+// (handFlightProxy: the squash, the thud, the glow). It waits up to 3 s for the card's tile to be drawn (the turn's own render puts
+// it there). Reduced motion or Low effects: the card just fades in where it stands; Effects None: nothing. opts: {row (1 middle,
+// 2 back), mode ('raid' | 'tagteam'), from: {x, y} (a screen point to fly from instead)}. window.__bwAllyPlays counts the plays.
+function allyPlayFx(uid, opts){
+  opts = opts || {}; if(uid == null || typeof document === 'undefined') return;
+  try{ window.__bwAllyPlays = (window.__bwAllyPlays || 0) + 1; window.__bwAllyPlayLast = {uid, mode: opts.mode || 'raid', row: opts.row || 0, at: Date.now()}; }catch(e){}
+  const lvl = (typeof fxLevel === 'function') ? fxLevel() : 'high'; if(lvl === 'none') return;
+  const t0 = Date.now();
+  const go = ()=>{
+    const el = boardCardEl(uid);
+    if(!el){ if(Date.now() - t0 < 3000) return requestAnimationFrame(go); return; }
+    if(reducedMotion() || lvl === 'low' || !hasGsap()){ // no flight: a quick fade where it stands
+      const t = el.querySelector('.card-tile') || el; t.style.transition = 'opacity .22s ease-out'; t.style.opacity = '0';
+      requestAnimationFrame(()=> requestAnimationFrame(()=>{ t.style.opacity = ''; setTimeout(()=>{ t.style.transition = ''; }, 260); })); return; }
+    let from = opts.from;
+    if(!from){ const row = el.closest('.reserve-row') || el.closest('.board-row'), lab = row && row.querySelector('.reserve-label'), rr = (lab || row || el).getBoundingClientRect(), er = el.getBoundingClientRect();
+      from = {x: (lab ? rr.left + rr.width / 2 : rr.left) - er.width * 0.25, y: (row ? row.getBoundingClientRect().bottom : er.bottom) + er.height * 0.55}; }
+    const tile = el.querySelector('.card-tile'), w = tile ? tile.getBoundingClientRect().width * 0.6 : 0;
+    handFlightProxy(el, uid, {x: from.x, y: from.y, kind:'hand', w: w || null, rotate: -8, fadeIn: 0.45, ally: true});
+  };
+  requestAnimationFrame(go);
+}
+// Play rows (2026-10-19, package RX, owner 20:48: "Tag-team dungeons get a play-rows setting with 2 options: 'Your row only' ... or
+// 'Anywhere'"): where you may play in a match with rows behind the front: 'own' (only your own row: raids always, a tag-team dungeon
+// set to "Your row only") or 'any' (your partner's row too). A match carries it as m.playRows, set from the dungeon's playRows field
+// (PLAY_ROWS_DEFAULT when unset); a match without one keeps playing anywhere, as before. Enforced where the reserve rows draw their
+// play targets and in playCardByUid.
+const PLAY_ROWS = ['own', 'any'], PLAY_ROWS_DEFAULT = 'own';
+function playRowsOf(cfg){ const v = cfg && cfg.playRows; return PLAY_ROWS.includes(v) ? v : PLAY_ROWS_DEFAULT; }
+function matchPlayRows(m){ if(!m) return 'any'; if(m.raidFull) return 'own'; return PLAY_ROWS.includes(m.playRows) ? m.playRows : 'any'; }
+// The setting as the player reads it before the fight, and the editor's picker for it.
+function playRowsNoteText(v){ return v === 'any' ? TX('ui.play-rows-any-note') : TX('ui.play-rows-own-note'); }
+function playRowsSelectHTML(id, v){ v = PLAY_ROWS.includes(v) ? v : PLAY_ROWS_DEFAULT;
+  return `<select id="${escapeAttr(id)}"><option value="own"${v === 'own' ? ' selected' : ''}>${escapeHtml(TX('ui.play-rows-own'))}</option><option value="any"${v === 'any' ? ' selected' : ''}>${escapeHtml(TX('ui.play-rows-any'))}</option></select>`; }
 function playHandSummonGlow(uid){
   const el = boardCardEl(uid); if(!el) return;
   const ring = document.createElement('div');
@@ -39857,12 +40201,12 @@ function renderForge(){
         ${metal ? `<span class="forge-coin metal" title="Metal, from defeating Conquest leaders">🔩 ${metal}</span>` : ''}
       </div>
     </div>
-    ${forgeMode !== 'smith' ? forgeUpgradeHTML() + staminaPanelHTML('forge') : ''}
-    <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
+    <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''} ${k === 'facility' && facilityUpgradeState('forge').ready ? 'has-ready' : ''}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
+    ${forgeMode === 'facility' ? `<div class="facility-upgrades" id="forgeUpgradesTab">${forgeUpgradeHTML() + staminaPanelHTML('forge') + dungeonKeyRingHTML()}</div>` : '' /* 2026-10-18 (package DK, owner 00:08): the Forge's upgrades live in its ⬆️ Upgrades tab (were above the tabs) */}
     ${forgeMode==='enchant' ? forgeMateriaBenchHTML() : ''}
     ${forgeMode==='smith' ? blacksmithHTML() : ''}
     ${forgeMode==='castles' ? forgeCastlesHTML() : ''}
-    <div class="forge-layout" ${forgeMode==='smith' || forgeMode==='castles' ? 'hidden' : ''}>
+    <div class="forge-layout" ${forgeMode==='smith' || forgeMode==='castles' || forgeMode==='facility' ? 'hidden' : ''}>
       <div class="panel forge-pool-panel">
         <div class="forge-toolbar">
           <input data-text-filter autocomplete="off" type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
@@ -40253,9 +40597,11 @@ const FORGE_MODES = {
   smith:   {icon:'⚒️', label:'Blacksmith', blurb:'Craft equipment from Materia and cards, or fuse three spare copies into something rarer. Equipment goes in your deck like any card; in a fight you drag it onto one of your units.'},
   castles: {icon:'🏰', label:'Brambles', blurb:'Temper your brambles here: each level adds 1 starting Health. A bramble you get again is a duplicate (you only ever field one), and fusing it banks credit toward its next levels.'},
   enchant: {icon:'💎', label:'Enchant', blurb:'Socket a Materia crystal into a card for a small, permanent bonus. One crystal per card; a new one replaces the old. Craft crystals from Magic Dust on the bench.'},
+  // 2026-10-18 (package DK, owner 00:08): the Forge's own upgrades (tier, Max Energy, the 🗝️ Key ring) have their own tab
+  facility: {icon:'⬆️', get label(){ return TX('ui.upgrades-tab'); }, get blurb(){ return TX('ui.forge-upgrades-blurb'); }},
 };
 function forgeReadyFor(id){
-  if(forgeMode==='smith') return false;
+  if(forgeMode==='smith' || forgeMode==='facility') return false; // + the ⬆️ Upgrades tab (2026-10-18, package DK)
   if(forgeMode==='refine'){ const i = bestCopyIndex(id); if(i < 0) return false; const nx = REFINE_LADDER[copyRefineRank(myCardCopies[id][i]) + 1]; return !!(nx && canAffordCost(nx.cost)); }
   if(forgeMode==='enchant'){ const st = materiaStore(); return MATERIA_KINDS.some(k=> (st[k.id]||0) > 0) && !myCardEnchants[id]; }
   const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L, id) : (limitBreakState(id).ok || (nextPrestigeTier(id) ? canAffordPrestige(id) : false));
@@ -41230,16 +41576,18 @@ function tavernRecruitHTML(){
 function openTavern(){
   try{ settleWeeklyBeer(); }catch(e){}
   let ov = document.getElementById('tavernOverlay'); if(!ov){ ov = document.createElement('div'); ov.id = 'tavernOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
-  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; if(currentTab === 'home') try{ renderHome(); }catch(e){} else if(currentTab === 'deck') try{ renderDeckSection(); }catch(e){} };
+  const wasOpen = !ov.hidden && !!ov.innerHTML; // 2026-10-18 (package DK): a tab switch redraws an open Tavern without its hello
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; tavernTab = 'recruit'; if(currentTab === 'home') try{ renderHome(); }catch(e){} else if(currentTab === 'deck') try{ renderDeckSection(); }catch(e){} };
   const draw = ()=>{ ov.innerHTML = `<div class="modal tavern-modal" role="dialog" aria-label="The Tavern"><div class="modal-head-row"><h2>🍺 The Tavern</h2><button class="modal-close-btn" id="tvClose" aria-label="Close">✕</button></div>
-      ${tavernBeerHTML()}${tavernRecruitHTML()}${staminaPanelHTML('tavern')}</div>`;
+      ${facilityTabsHTML('tavern', tavernTab, [['recruit', TX('ui.tavern-tab-recruit')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08) */}
+      ${tavernTab === 'upgrades' ? `<div class="facility-upgrades" id="tavernUpgradesTab">${staminaPanelHTML('tavern')}</div>` : tavernBeerHTML() + tavernRecruitHTML()}</div>`;
     ov.hidden = false; ov.querySelector('#tvClose').onclick = close;
     wireStamina(ov, draw);
     ov.querySelectorAll('[data-tv-recruit]').forEach(b=> b.onclick = ()=>{ const id = b.dataset.tvRecruit, r = tavernRecruit(id);
       if(r === 'ok'){ const d = getCardDefs()[id] || {}; showToast(TX('toast.joins-you', {v1: d.name || 'A new card'}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} draw(); }
       else { denyShake(b); showToast(r === 'beer' ? TX('toast.you-need-a-beer-to-recruit') : r === 'gone' ? TX('toast.that-one-has-moved-on') : TX('toast.not-enough-to-recruit-yet'), 'warn'); } }); };
   draw(); ov.onclick = e=>{ if(e.target === ov) close(); };
-  fxHook('tavernOpen', ov.querySelector('.tavern-modal')); // the hearth glows, two mugs clink (FX.E, 2026-10-15)
+  if(!wasOpen) fxHook('tavernOpen', ov.querySelector('.tavern-modal')); // the hearth glows, two mugs clink (FX.E, 2026-10-15)
 }
 function adminEntryVisible(){
   if(LAUNCH_BUILD && !isDevHost()) return false;
@@ -42233,6 +42581,13 @@ function nextNestUnlock(n){
   const reached = nestMapReached(u.map), c = u.cost || {};
   return {i, map:u.map, cost:c, reached, affordable: (myCurrencies.gold||0) >= (c.gold||0) && (myCurrencies.dust||0) >= (c.dust||0)};
 }
+// The Nest's ⬆️ Upgrades tab: the next nest to build (the same build as the hay's 🔨 spot), or when it opens (2026-10-18, package DK)
+function nestBuildRowHTML(){
+  const n = nestState(), nx = nextNestUnlock(n), open = nestSlotsOpen(n), max = Math.min(NEST_SLOTS, NEST_UNLOCKS.length);
+  return `<div class="forge-upgrade upg-row nest-build-row" role="group" aria-label="${escapeAttr(TX('ui.nest-upg-title'))}"><div class="fu-now"><b>${escapeHtml(TX('ui.nest-upg-title'))}</b> <small>${escapeHtml(TX('ui.nest-upg-built', {open, max}))}</small></div>
+    <div class="fu-next">${!nx ? `<span>${escapeHtml(TX('ui.nest-upg-all'))}</span>` : !nx.reached ? `<span class="fu-gate">🗺️ ${escapeHtml(mapLockText(nx.map, TX('ui.nest-upg-next-map', {n: nx.map})))}</span>`
+      : `<button type="button" class="btn small primary" data-nest-build="1" ${nx.affordable ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.nest-upg-btn'))}${btnCostHTML(nx.cost)}</button>`}</div></div>`;
+}
 function buildNextNest(){
   const n = nestState(), nx = nextNestUnlock(n); if(!nx) return 'full'; if(!nx.reached) return 'locked'; if(!nx.affordable) return 'cost';
   myCurrencies.gold = (myCurrencies.gold||0) - (nx.cost.gold||0); myCurrencies.dust = (myCurrencies.dust||0) - (nx.cost.dust||0); saveCurrencies();
@@ -42515,16 +42870,19 @@ function renderNest(){
   root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
       <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
       <p class="panel-sub">${ownedIds.length} card${ownedIds.length===1?'':'s'} owned · ${totalCopies} cop${totalCopies===1?'y':'ies'} total${foilCopies?` · ✨ ${foilCopies} foil`:''}</p>
-      ${nestKeeperHTML()}
+      ${facilityTabsHTML('nest', nestTab, [['cards', TX('ui.nest-tab-cards')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08) */}
+      ${nestTab === 'upgrades' ? `<div class="facility-upgrades" id="nestUpgradesTab">${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}${nestBuildRowHTML()}</div>` : nestKeeperHTML()}
       <!-- 2026-10-12 (user: "The disenchant extras button shouldnt exist anywhere but the forge"): moved to the Forge. -->
-      ${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}
     </div>
-    <div class="grid-view" id="nestGrid">${
-      ownedIds.length ? nestGridHTML(ownedIds, defs)
+    <div class="grid-view" id="nestGrid" ${nestTab === 'upgrades' ? 'hidden' : ''}>${
+      nestTab === 'upgrades' ? '' : ownedIds.length ? nestGridHTML(ownedIds, defs)
       : `<div class="panel nest-empty"><p class="panel-sub" style="margin:0 0 10px;">You don't own any cards yet — win fights or open packs to start your collection.</p>
           <div class="nest-empty-actions"><button type="button" class="btn primary" data-nest-go="conquest">🗺️ Play Conquest</button><button type="button" class="btn" data-nest-go="shop">🛒 Open the Shop</button></div></div>`
     }</div>`;
   root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
+  if(nestTab === 'upgrades'){ wireStamina(root, renderNest); root.querySelectorAll('[data-nest-build]').forEach(b=> b.onclick = ()=>{ const r = buildNextNest();
+    if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderNest(); showToast(TX('toast.a-new-nest-is-built', {open: nestSlotsOpen()}), 'ok'); }
+    else { denyShake(b); showToast(TX('toast.not-enough-to-build-this-nest'), 'warn'); } }); startTipTicker(document.getElementById('nestTipTicker'), NEST_TIPS); return; } // 2026-10-18 (package DK): the Upgrades tab has no grid
   wireStamina(root, renderNest);
   { const nb = root.querySelector('#nestNurseBtn'); if(nb) nb.onclick = openNursePicker; }
   root.querySelectorAll('[data-nest-empty]').forEach(b=> b.onclick = openNestPicker);
@@ -44492,6 +44850,7 @@ function renderProfile(){
         <div class="panel pf-wallet"><h3>👛 Wallet</h3><div class="pf-wallet-row">${['gold','gems','dust','metal'].concat(featureUnlockedSafe('tavern') || (myCurrencies.beer||0) > 0 ? ['beer'] : []).map(k=> currencyPillHTML(k)).join('')}</div></div>
         ${profileCollectionCardHTML() /* 2026-10-18 (package C): the collection score, beside the achievements */}
         ${profileAchievementsCardHTML()}
+        ${profileUpgradesHTML() /* 2026-10-18 (package DK, owner 00:08): one row per place; each opens that place's ⬆️ Upgrades tab */}
         ${profileMedalsHTML() /* 2026-10-15: Medals moved here from the Notices */}
         ${playerPreviewHTML()}
       </div>

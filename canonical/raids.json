@@ -302,6 +302,19 @@
       "goliath-tentacle",
       "goliath-broodmother",
       "fathom-leviathan"
-    ]
+    ],
+    "minDamage": 40,
+    "tuning": {
+      "bossAtkPct": 0.35,
+      "bossHpPct": 0.25,
+      "raiderCastleBonus": 60,
+      "alliesPerTurn": 2,
+      "reinforce": {
+        "max": 1,
+        "every": 3,
+        "from": 3
+      }
+    },
+    "leaderCostCap": 5
   }
 ]

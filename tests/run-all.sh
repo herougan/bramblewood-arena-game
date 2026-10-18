@@ -84,6 +84,7 @@ run node tests/node-ids-2026-10-14.js
 run node tests/fx-a-resist.js
 run node tests/raid-arena-2026-10-17.js   # 2026-10-17: Psychic Dampener, the Arena's rules as cards, raid rows / Commons / volley
 run node tests/raid-rows-2026-10-19.js   # 2026-10-18 (owner 20:40): no playing into the raid allies' middle / back rows
+run node tests/raid-rx-2026-10-19.js   # 2026-10-19 (package RX): closest-row raid targeting, the play-anim watchdog, allies' hand plays, play rows, the leader cost cap
 run node tests/raid-stages-2026-10-18.js   # 2026-10-18 (R3-WP2): each raid stage's rules land in the fight; the raid editor round-trips them
 run node tests/raid-fixes-2026-10-18.js    # 2026-10-18 (package R): every row acts column by column, the raid's clock and end, castles can't be shocked, "& Co."
 run node tests/i18n-templates-2026-10-18.js   # 2026-10-18 (I1): placeholder texts translate as templates in all 12 packs
@@ -119,6 +120,7 @@ run node tests/legendary-2026-10-19.js   # 2026-10-18 (package LG): True Strike 
 run node tests/bp-2026-10-19.js   # 2026-10-18 (package BP): wind-lit wing (+ Tailwind boot, Headwind ×2), leader callout ×0.8 / queue ×0.75, night hover lines retry, Stampede number on the HP bar + its carry-on line, battle log pinned to the newest line
 run node tests/filters-2026-10-19.js   # 2026-10-18 (package F): every text filter box has autocomplete=off and empties on load / pageshow and on a page switch; sticky filters keep only non-text choices
 run node tests/mobile-nav-2026-10-19.js   # 2026-10-18 (package MB): on phones the map's ⛶ is on the 🧭 row with 🚨 under it (no overlap at 360-480 px, admin on/off), a 🏠 on the full-screen map that goes Home
+run node tests/dk-2026-10-19.js   # 2026-10-18 (package DK): a dungeon fight and each Sweep run use a key (no refund on a win), 0 keys blocks Fight / Sweep with the reason, the sweep count stops at the keys held, the Forge's Key ring (cap 3 -> 5, Strange Materia), refill to the cap, the Forge / Nest / Tavern Upgrades tabs + Profile summary, TX keys + 12 packs
 run node tests/fz-2026-10-19.js   # 2026-10-19 (package FZ): a unit frozen before its turn skips that action (the freeze spent); Confused = triggers, skills and actions each 1 in 2 (seeded), the fumble line, determinism
 run node tests/rv-2026-10-19.js   # 2026-10-19 (package RV): Revive is a true death (On Death, On Ally Die, On Kill, Bounty, Darkness, Ritual, graveyard, then it returns; no Relic / crystal / split), loops stop at the layer cap, Rescue (Shield Call) is no death; Quiet Contemplation on 21-6 (no doubling, no extra turns or second goes); texts in 12 packs; the stated rules
 run node tests/game-texts.js   # 2026-10-15: TX keys + the docs/game-texts.xlsx export/import round trip (~45 s)

@@ -17,6 +17,26 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **The board skips any 0-amount heal event** (`emptyHealEvent` in `arena_app.js`: heal, Leech, Rebuild, the bramble's regen, Herb Refinery, Carrion, Spring Rain, stanch, Cure): no look, no sound, no float, no beat, no battle-log line. This covers the live fight, the round replay, the match-history log and old saved fights. A Mend spell with no one hurt plays no green heal look (FX.A). A banana eaten only to stanch Bleed no longer says "(+0 Health)".
 - **Bleed counts as something to heal** (the recommended choice). A heal on a full-Health unit that Bleeds stanches it: you see only the Bleed coming off (🩹 -N 🩸), with no green heal, no "+0" and no heal triggers. Regeneration keeps the owner's 2026-10-14 rule: at full Health it doesn't stanch either.
 - Recorded as a stated rule in `docs/decisions.json` (2026-10-19), with `decisions.md` regenerated. `tests/hn-2026-10-19.js` checks every heal kind at full Health, partial heals, the Bleed case, real heal cards and the app side. `card-matrix`: 0 golden diffs.
+## 2026-10-18 late (package DK: dungeon keys are spent, Sweep uses keys, the Key ring, Upgrades tabs)
+- **Fix: playing a daily dungeon now uses your key** (owner 23:54: "Playing a dungeon right now doesn't consume my key. It should."). The cause was the 10-16 rule: the key was taken when the fight started, and a won floor gave it back, so a winning climb never used one.
+  - Now every floor fight uses a 🗝️ key when it starts, win or lose. Nothing comes back. A lost or forfeited floor still sends the climb back to floor 1.
+  - The toast says "A Dungeon key used: N left". The results no longer show "+1 Dungeon key".
+  - The admin skirmish test and "jump to progress" tools still skip the key and the Energy.
+- **0 keys:** the floor's Fight button, Play again and the next-floor button are greyed. Pressing one gives the reason: "No Dungeon keys left. They fill up to N in Hh." "🗝️ N left" sits under the Fight button. The map headline and the Dungeons tab show "Dungeon keys: N/cap".
+- **Sweep uses keys** (owner: "I can't sweep past the number of keys I have"). Package Z made Sweep keyless. Each Sweep run now uses a key, checked before its Energy. The Sweep menu offers no more runs than the keys you hold. With 0 keys it offers none and gives the reason. The Dungeons tab's 🧹 Sweep is greyed. The results say "Dungeon keys used: N (M left)".
+- **Key refill:** each new day fills your keys up to your cap. It was one more key a day, banking up to 3. Keys above the cap are kept, and the Monday bonus can still sit one over it.
+- **The Forge's 🗝️ Key ring** (owner: "Forge lets you increase the number of keys to 5 (but requires Strange Materia)"). The cap starts at 3. The Key ring raises it in two steps:
+  - to 4: 🔮 1 Strange Materia, 800 Maple Leaves, 400 Magic Dust;
+  - to 5: 🔮 1 Strange Materia, 2,000 Maple Leaves, 1,000 Magic Dust.
+  - The row shows once a daily dungeon is open. Admin Mode skips the Strange Materia, as it does for the Forge tiers.
+  - The cap is saved as `bramblewood_dungeon_key_cap_v1` and is in the synced progress blob, where the larger of two copies wins. No SQL is needed: `player_progress.data` is a blob.
+- **Upgrades tabs** (owner 00:08: "The forge upgrades on your profile (and nest etc., tavern upgrades) should be on another tab in each of their own respective pages"). The Profile never listed them: they sat at the top of each place's page. Now each place has its own ⬆️ Upgrades tab:
+  - **Forge:** a ⬆️ Upgrades mode tab beside Upgrade / Refine / Blacksmith / Brambles / Enchant. It holds the Forge tier, the Forge's Max Energy steps and the Key ring. They are no longer above every Forge tab.
+  - **Nest:** 🪺 Cards and eggs | ⬆️ Upgrades. The Upgrades tab holds its Max Energy steps and a "build the next nest" row. The hay's 🔨 build spot is still there too.
+  - **Tavern:** 🤝 Recruit | ⬆️ Upgrades, with its Max Energy steps.
+  - A red dot on a tab means an upgrade there can be bought now.
+  - **Profile:** a new ⬆️ Upgrades panel has one row per open place, e.g. "The Forge · 2/10 upgrades · one is ready". A row opens that place's Upgrades tab.
+- Texts are TX keys (39 new; 5 retired: the 10-16 "key in the lock / win gives it back / key back / key lost" lines and the old no-keys toast). They are in all 12 packs via `tools/i18n_2026_10_19_dungeon_keys.py`, which also drops the dead pack and `lang/ui` rows. Test: `tests/dk-2026-10-19.js` (161 checks, in run-all). `tests/z-2026-10-18.js` now checks that a Sweep uses a key.
 
 ## 2026-10-19 (package FZ: Freeze before its turn, Confuse on everything)
 - **Frozen before its turn = no action** (owner 23:32). A unit frozen earlier in the round (an earlier unit's Freeze or Ice Arrow) used to swing anyway, then lose the next round. Now it skips that action (swing or shot, with its On Attack and on-hit skills), logged once. The freeze is then spent: it melts at round end, so Freeze N costs N actions. Frozen after it acted, it still skips its next round. A freeze laid before the round (e.g. an Ambush during deploy) now costs 1 action, not 2.
@@ -25,6 +45,16 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - `docs/decisions.json` / `decisions.md`: stated rules for 2026-10-19 (Freeze, Confuse).
 - `card-matrix` golden re-accepted: 295 of 25,960 fights changed (142 Freeze timing, 103 Confuse fumbles, the rest freeze melt timing and 18 full matches), 63 with a different winner.
 - Tests: `tests/fz-2026-10-19.js` (in run-all) and an `engine-parity` check (the smartest CPU faces the Confused one of two killers).
+## 2026-10-18 late (RW follow-up: the XP bar on the reward screens)
+- **The reward screens show your XP bar filling up at the top, and the XP toasts are gone there** (owner 23:32: "Should the reward screen show the exp bar filling up on the top? Then we can remove the toast.").
+  - Where: every Victory card (skirmish, boss crimson, the Spire ascent, any won fight except hot-seat and the tutorial) and the raid claim screen.
+  - It shows "Level N", the bar and "+N XP", and fills with the fight's XP. That includes the first-clear milestone that lands a moment later.
+  - On each level crossed it bursts, "Level N!" pops on the bar (with the heroLevel sound), the number steps up and the bar fills on from empty.
+  - On the claim screen the bar fills as the XP reward comes up. A skip fills it to the end.
+  - Reduced motion or Effects Low: the end state with a short fade.
+- **No XP toast while the bar shows.** That covers the "Level N" toast, the "+25 XP — First clear" milestone toast and the level badge's own level-up moment. Everywhere else (quests, milestones away from a reward screen, closing the results to look at the board) they stay as before.
+- Code: `xpBarSpec`, `rewardXpBarHTML`, `syncRewardXpBar`, `rewardXpBarUp` and `m.xpBefore`, set when the result is decided; `awardXp` and `checkXpMilestones` (`arena_app.js`). `FX.F.xpBarHTML` and `FX.F.xpBarFill` (`bramblewood-fx-f.js`).
+- Effects Lab: `res-xp-bar` (A a level-up, B a plain fill, C calm); the raid claim entries now carry the bar. Four TX keys (`results.xp-*`) are in all 12 packs, and `tests/reward-screens-2026-10-19.js` covers it (132 checks).
 
 ## 2026-10-18 late (package LG: Legendary abilities; True Strike vs Legendary dodges)
 - **Legendary abilities** (owner 23:05: "typically not given to cards players can get (except dragons)"): True Strike, Supreme and Supreme Tide are marked `legendary: true` (PASSIVE_DEFS / SKILL_DEFS, `canonical/skill-costs.json`; costs unchanged). Each shows a gold **Legendary** tag after its name on the card's line, e.g. the White Dragon's True Strike, and in the Skills Codex (the filter finds "legendary"). The card's glossary adds: "Legendary ability: A legendary power. Rarely found on cards you can own — dragons are the exception."
@@ -32,6 +62,23 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - The True Strike Codex note now says "only a Legendary dodge can". 4 texts (3 new TX keys and the re-keyed note) are in all 12 packs.
 - `docs/decisions.json` (and the generated `decisions.md`) has a stated-rules section for 23:05. Shadow of the Valley of Death is a very far future map, so the Pall Wraith stays in the Eye of the Volcano (20-A-2) until it exists. It also records the Legendary rules.
 - Test: `tests/legendary-2026-10-19.js` (93 checks, in run-all).
+## 2026-10-19 (package RX: raid targeting, the stuck play animation, reward contrast, allies' hand plays, an easier raid)
+
+- **Raids target the closest row.** Every unit in all three rows, on both sides, strikes the nearest enemy in its own column: the front row first, then the middle, then the back. It hits the bramble only when no row in that column holds a unit it can hit. Cages and Invisible units are passed over, and Flying and the other dodges still roll. Sweep side hits and Wave pushes stay on front-row targets. A unit that falls in a middle or back row is cleared from the board with a death event. The trench already rolled through to the closest row, so it is unchanged. The engine change is limited to the reserve rows (`rowTargetAt`, `reserveStrike`, the RESERVE_ACTS swing fallback, `sweepDeadReserves`).
+- **A played card no longer gets stuck small and see-through mid-drop.** Root cause: card entrances and hand flights run on GSAP's frame clock, and lag smoothing (500 ms / 33 ms outside combat) counts any long frame as 33 ms. On a slow raid board the card stayed at the start of its drop. A 200 ms timer watchdog (`playAnimWatchdog`) now finishes any entrance, flight or landing squash that runs past its length, shows a card left hidden, and removes a leftover flight copy.
+- **The raid reward text can be read.** The reward pills on the raid results were fixed dark brown on the theme surface, 1.15:1 in dark mode. They now use the theme's ink: 12.6:1 in dark and 10.8:1 in light. The line under the title was 1.2:1 on the purple card in light mode and is now cream, about 16:1.
+- **Allies play from their hand.** A CPU ally's card now flies in from just below its row label and fades in partway along the path. It lands with the normal hand-play landing. Under reduced motion or Low effects it fades in where it stands, and with Effects None nothing plays. `allyPlayFx(uid, {mode:'raid'|'tagteam'})` is the hook for tag-team partners.
+- **The raid eases down to your hand** once it loads (600 ms, once per fight). It jumps instead under reduced motion and stops if you scroll yourself.
+- **A defeated raid says when it returns:** "🌊 The Goliath returns in 3d 8h", with the local date and time on hover. The respawn time comes from one helper, `raidRespawnAt`.
+- **Leader cost cap:** a raid's `leaderCostCap` counts each Lumber in the leader's cost as 1 point, each Stone as 2 and each Metal as 3. The Goliath's cap is 5. The raid tab shows your leader against the cap with a "Change leader" button, and the picker greys out leaders over the cap with the reason ("Leader cost 6/5 — too costly for this raid"). The fight won't start with an over-cap leader. The cap is editable in the raid editor.
+- **Play rows** (`playRows: 'own' | 'any'`, default 'own'): `matchPlayRows` / `playRowsOf` / `playRowsSelectHTML` are enforced in the reserve-row targets and in `playCardByUid`. There are no tag-team dungeons in the code yet, so no dungeon carries the field.
+- **The raid is easier** (owner: "Make normal decks able to do some damage"). Measured with the new `tools/raid_full_sim.js`, which plays the page's own fight build (`buildRaidFullFight`, split out of `startRaidFullBattle`):
+  - The fight's boss bramble is the part's own 420 again. It had been reading the trench's 1250.
+  - The Goliath's new `tuning`: boss cards at 35% Attack and 25% Health (were 60% / 70%), both allies play every turn, the raiders' bramble +60, and Commons are called in once every 3 turns, 1 at a time.
+  - `minDamage` (the first paying tier) went from 120 to 40.
+  - Results at 20 turns, outer parts: a Map 6 deck survives all 20 turns, deals 64–85, and reaches the tier 50–75% of the time. A Map 10 deck deals 71–124 and reaches it 65–95%. The starter deck deals 26–47 and reaches it 20–50%. A Map 20 deck deals 141–219 and overwhelms 0–5%.
+  - Before (fresh raid), every deck dealt 0–14 and died by turn 7–13.
+- Texts: 12 new TX keys, in all 12 packs (`tools/i18n_2026_10_19_rx.py`). Test: `tests/raid-rx-2026-10-19.js` (in run-all).
 
 ## 2026-10-18 late (package C follow-up: filter the Codex by skill)
 - **✨ Skills filter in Codex Browse** (owner 23:21: "add a way to filter by skills in codex"). It works in the album, Compressed and Full Art views.
