@@ -32540,19 +32540,43 @@ M.tentacleSmack = function(cells, opts){
   // every rect measured once, here; nothing is read from the layout while it plays
   const rs = cells.map(e=> e.getBoundingClientRect ? e.getBoundingClientRect() : e), ref = rs[0] || {left:VW()/2 - 40, width:80, top:VH()/2, bottom:VH()/2 + 100};
   const hr = opts.host && opts.host.getBoundingClientRect ? opts.host.getBoundingClientRect() : null;
-  const top0 = hr ? Math.max(0, hr.top) : 0, botLim = hr ? Math.min(VH(), hr.bottom) : VH();
-  const bottom = Math.min(botLim - 4, Math.max(...rs.map(r=> r.bottom))), cx = ref.left + ref.width / 2;
-  const w = Math.max(58, Math.min(124, ref.width * 1.05)), stripW = Math.round(w * 4.2), H = Math.max(80, Math.round(botLim - top0));
-  const left = Math.round(cx - stripW / 2), dpr = Math.min(2, root.devicePixelRatio || 1);
+  const dpr = Math.min(2, root.devicePixelRatio || 1);
   const h = lay('fxf-tent', '<i class="sh"></i><canvas class="tc"></canvas>', 8000), sh = h.children[0], cv = h.children[1];
   if(hr) clipTo(h, hr);
-  Object.assign(sh.style, {position:'absolute', left:(cx - w*1.1) + 'px', top:(bottom - 22) + 'px', width:(w*2.2) + 'px', height:'28px', borderRadius:'50%', background:'radial-gradient(ellipse, rgba(25,0,20,.55), transparent 70%)', opacity:'0', transform:'scale(.3)', willChange:'transform, opacity'});
-  Object.assign(cv.style, {position:'absolute', left:left + 'px', top:top0 + 'px', width:stripW + 'px', height:H + 'px'});
-  cv.width = Math.round(stripW * dpr); cv.height = Math.round(H * dpr);
+  const shadow = {position:'absolute', height:'28px', borderRadius:'50%', background:'radial-gradient(ellipse, rgba(25,0,20,.55), transparent 70%)', opacity:'0', transform:'scale(.3)', willChange:'transform, opacity'};
+  // The limb is drawn in its own frame: x across the strip (0..stripW), y along its reach (0..H). A column smack (the default) maps that
+  // straight onto a strip down the column, from the boss's edge. A row smack (opts.horizontal, 2026-10-18, owner 15:56: row and column
+  // smacks) turns the same frame on its side, so the arm whips in from the left or right edge of the board and sweeps along the row,
+  // knocking each card as its tip passes (knock[]), instead of slamming down.
+  const horiz = !!opts.horizontal;
+  let w, stripW, H, reach, hitX, hitY, knock = null;
+  if(!horiz){
+    const top0 = hr ? Math.max(0, hr.top) : 0, botLim = hr ? Math.min(VH(), hr.bottom) : VH();
+    const bottom = Math.min(botLim - 4, Math.max(...rs.map(r=> r.bottom))), cx = ref.left + ref.width / 2;
+    w = Math.max(58, Math.min(124, ref.width * 1.05)); stripW = Math.round(w * 4.2); H = Math.max(80, Math.round(botLim - top0));
+    reach = bottom - top0 + 6; hitX = cx; hitY = bottom - 18;
+    Object.assign(sh.style, shadow, {left:(cx - w*1.1) + 'px', top:(bottom - 22) + 'px', width:(w*2.2) + 'px'});
+    Object.assign(cv.style, {position:'absolute', left:Math.round(cx - stripW / 2) + 'px', top:top0 + 'px', width:stripW + 'px', height:H + 'px'});
+    cv.width = Math.round(stripW * dpr); cv.height = Math.round(H * dpr);
+  } else {
+    const left0 = hr ? Math.max(0, hr.left) : 0, rightLim = hr ? Math.min(VW(), hr.right) : VW();
+    const cy = rs.length ? rs.reduce((t, r)=> t + r.top + r.height / 2, 0) / rs.length : VH() / 2, rh = ref.height || 100;
+    const lo = rs.length ? Math.min(...rs.map(r=> r.left)) : left0 + 40, hi = rs.length ? Math.max(...rs.map(r=> r.right)) : rightLim - 40;
+    const fromLeft = opts.from ? opts.from === 'left' : Math.random() < 0.5, along = x=> fromLeft ? x - left0 : rightLim - x;
+    w = Math.max(58, Math.min(124, rh * 0.8)); stripW = Math.round(w * 4.2); H = Math.max(80, Math.round(rightLim - left0));
+    reach = Math.max(80, along(fromLeft ? hi : lo) + 6); hitX = fromLeft ? Math.min(rightLim - 8, hi) : Math.max(left0 + 8, lo); hitY = cy;
+    knock = rs.map((r, k)=> ({el: cells[k], at: along(r.left + r.width / 2), x: r.left + r.width / 2, y: r.top + r.height / 2, done: false}));
+    Object.assign(sh.style, shadow, {left:(lo - 10) + 'px', top:(cy + rh / 2 - 16) + 'px', width:(hi - lo + 20) + 'px'});
+    Object.assign(cv.style, {position:'absolute', left:left0 + 'px', top:Math.round(cy - stripW / 2) + 'px', width:H + 'px', height:stripW + 'px'});
+    cv.width = Math.round(H * dpr); cv.height = Math.round(stripW * dpr);
+    cv.dataset.from = fromLeft ? 'left' : 'right';
+  }
   const ctx = cv.getContext('2d'); if(!ctx){ h.remove(); return Promise.resolve(); }
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const dir = Math.random() < 0.5 ? 1 : -1, reach = bottom - top0 + 6, x0 = stripW / 2 - dir * w * 0.35;
-  const T = TENT_MS, t1 = T.rise, t2 = t1 + T.coil, t3 = t2 + T.slam, t4 = t3 + T.hold, t5 = t4 + T.back;
+  if(!horiz) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  else if(cv.dataset.from === 'left') ctx.setTransform(0, dpr, dpr, 0, 0, 0); // (x, y) -> (y, x): the reach runs left to right
+  else ctx.setTransform(0, dpr, -dpr, 0, H * dpr, 0);                          // (x, y) -> (H - y, x): right to left
+  const dir = Math.random() < 0.5 ? 1 : -1, x0 = stripW / 2 - dir * w * 0.35;
+  const T = horiz ? Object.assign({}, TENT_MS, {slam:340}) : TENT_MS, t1 = T.rise, t2 = t1 + T.coil, t3 = t2 + T.slam, t4 = t3 + T.hold, t5 = t4 + T.back;
   const ease = u=> u < 0 ? 0 : u > 1 ? 1 : u * u * (3 - 2 * u), easeIn = u=> Math.min(1, Math.max(0, u)) ** 3;
   let impacted = false, raf = 0, t0 = 0;
   return new Promise(res=>{
@@ -32567,10 +32591,14 @@ M.tentacleSmack = function(cells, opts){
       else if(t < t4){ const u = (t - t3) / T.hold; len = reach * (1 - 0.04 * Math.sin(u * Math.PI)); curl = 0.1 + 0.55 * ease(u * 1.4); sway = 0.05 + 0.07 * Math.sin(u * Math.PI); }
       else if(t < t5){ const u = ease((t - t4) / T.back); len = reach * (0.96 - 0.5 * u); curl = 0.65 + 0.5 * u; sway = 0.12 + 0.2 * u; baseY = -10 - u * reach * 0.85; }
       else { done(); return; }
+      // a row smack knocks each card as the tip sweeps past it (its tip runs about baseY + len along the reach)
+      if(knock && t >= t2) knock.forEach(k=>{ if(k.done || (t < t3 && k.at > baseY + len)) return; k.done = true;
+        burst(k.x, k.y, {n:6, colors:['#e7a3c0', '#d9f2ff', '#fff'], dist:[12, 40], spread:1.2, angle:-Math.PI / 2, dur:.45, size:5, gravity:18});
+        if(k.el && k.el.getBoundingClientRect && k.el.isConnected) shake(k.el, {amp:5, n:4, y:2}); });
       if(!impacted && t >= t3){ impacted = true;
-        ring(cx, bottom - 18, {color:'#e7a3c0', size:w * 2.4, width:4, dur:.55, glow:false});
-        burst(cx, bottom - 18, {n:10, colors:['#9fd6f5', '#d9f2ff', '#e7a3c0'], dist:[30, 90], spread:Math.PI * 1.2, angle:-Math.PI / 2, dur:.6, size:6, gravity:30});
-        cells.forEach(e=>{ if(e.getBoundingClientRect && e.isConnected) shake(e, {amp:4, n:4, y:3}); }); call(opts.onImpact); }
+        ring(hitX, hitY, {color:'#e7a3c0', size:w * 2.4, width:4, dur:.55, glow:false});
+        burst(hitX, hitY, {n:10, colors:['#9fd6f5', '#d9f2ff', '#e7a3c0'], dist:[30, 90], spread:Math.PI * 1.2, angle:-Math.PI / 2, dur:.6, size:6, gravity:30});
+        if(!knock) cells.forEach(e=>{ if(e.getBoundingClientRect && e.isConnected) shake(e, {amp:4, n:4, y:3}); }); call(opts.onImpact); }
       const shU = t < t3 ? ease(t / t3) : t < t4 ? 1 : 1 - ease((t - t4) / T.back);
       sh.style.opacity = String(0.95 * shU); sh.style.transform = `scale(${0.3 + 0.7 * shU})`;
       ctx.clearRect(0, 0, stripW, H);
@@ -32905,12 +32933,16 @@ M.onEvent = function(ev, env){
   if(t === 'raidSmack'){
     const row = rowOf('A', env); if(!row) return;
     if(ev.front){ M.tailSweep(cardsOn('A', env).filter(e=> e.querySelector('.card-tile')), {host:env.battlefield}); return; }
-    const all = $$(':scope > .board-card', row), tele = all.filter(e=> e.classList.contains('raid-tele'));
-    const col = tele.length ? tele : [all[Math.max(0, Math.min(all.length - 1, (ev.col | 0) + Math.floor(all.length/2)))]].filter(Boolean);
-    const reserve = $$('#battlefieldInner .reserve-row.mine').map(r=> $$(':scope > .board-card', r)[all.indexOf(col[0])]).filter(Boolean);
-    // 2026-10-18 (owner 15:37): a smack lands on the front row, or (ev.back, 1 time in 3) only on the middle and back rows
-    const frontHit = col.filter(e=> e.querySelector('.card-tile'));
-    M.tentacleSmack(ev.back ? reserve : !ev.hits ? col.concat(reserve) : frontHit.length ? frontHit : reserve, {host:env.battlefield});
+    // 2026-10-18 (owner 15:56: "there are row-based smacks and column-based smacks"): a row smack (ev.kind 'row', ev.row 0 front /
+    // 1 middle / 2 back) is the tentacle on its side, sweeping along that row; a column smack slams down the column through every row.
+    const all = $$(':scope > .board-card', row), resRows = $$('#battlefieldInner .reserve-row.mine');
+    if(ev.kind === 'row'){
+      const r = ev.row | 0, rr = r ? resRows.find(x=> +x.dataset.resrow === r) : null, cells = r ? (rr ? $$(':scope > .board-card', rr) : []) : all;
+      const units = cells.filter(e=> e.querySelector('.card-tile'));
+      M.tentacleSmack(units.length ? units : cells, {host:env.battlefield, horizontal:true}); return;
+    }
+    const i = Math.max(0, Math.min(all.length - 1, (ev.col | 0) + Math.floor(all.length/2)));
+    M.tentacleSmack([all[i]].concat(resRows.map(r=> $$(':scope > .board-card', r)[i])).filter(Boolean), {host:env.battlefield});
   }
 };
 
@@ -34385,7 +34417,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=4c6572e1b9", "es": "assets/lang/es.js?v=a4218c9a4a", "fr": "assets/lang/fr.js?v=b4ee02cefc", "id": "assets/lang/id.js?v=b7a1edf7ff", "it": "assets/lang/it.js?v=d6f5cc3043", "ja": "assets/lang/ja.js?v=1a08c8c4ac", "ko": "assets/lang/ko.js?v=b6b58b233a", "pt": "assets/lang/pt.js?v=82a01fb636", "ta": "assets/lang/ta.js?v=c7f577ee25", "tl": "assets/lang/tl.js?v=cb0bef7807", "zh-Hans": "assets/lang/zh-Hans.js?v=4cb0eaa30d", "zh-Hant": "assets/lang/zh-Hant.js?v=19063b1fe5"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=46cdbbaa5b", "es": "assets/lang/es.js?v=f0111b036e", "fr": "assets/lang/fr.js?v=16d409d8cb", "id": "assets/lang/id.js?v=713046821b", "it": "assets/lang/it.js?v=bf87dec0a3", "ja": "assets/lang/ja.js?v=ba9a39a262", "ko": "assets/lang/ko.js?v=1132ab55f5", "pt": "assets/lang/pt.js?v=78bece2066", "ta": "assets/lang/ta.js?v=5bffb13424", "tl": "assets/lang/tl.js?v=8b89e02b8c", "zh-Hans": "assets/lang/zh-Hans.js?v=015392904f", "zh-Hant": "assets/lang/zh-Hant.js?v=4c83176675"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -34554,7 +34586,12 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rename-ticket-you-carry": "You carry {n} of {cap}.",
   "ui.rename-ticket-full": "You already carry {cap}, the most you can hold.",
   "ui.rename-ticket-full-tag": "Full",
-  "ui.raid-smack-back-rows": "💥 {name} reaches past your front row and slams your back rows: {dmg} damage to {hits} of your units there.",
+  "ui.raid-smack-column": "💥 {name} slams down a column: {dmg} damage to each of your {hits} unit{s} in it.",
+  "ui.raid-smack-row-front": "💥 {name} sweeps across your front row: {dmg} damage to each of your {hits} unit{s} there.",
+  "ui.raid-smack-row-middle": "💥 {name} reaches past your front row and sweeps your middle row: {dmg} damage to each of your {hits} unit{s} there.",
+  "ui.raid-smack-row-back": "💥 {name} reaches past your front rows and sweeps your back row: {dmg} damage to each of your {hits} unit{s} there.",
+  "ui.raid-smack-bramble": "💥 {name} lands where none of your units stand: {dmg} damage to your bramble.",
+  "ui.raid-attacks-telegraph-title": "Its telegraphed attacks: the row or column about to be smacked glows red the round before",
   "net.guild-rename-sign-in": "Sign in to rename your guild.",
   "net.guild-rename-not-on": "Guild renaming isn't switched on yet. Your ticket is safe; try again later.",
   "net.guild-name-taken": "Another guild already has that name. Try a different one.",
@@ -37962,7 +37999,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'c81a292149cc', BUILD_CARD_HASH = 'dff73bdbca0ca3dd43c918da8a82456e9bbb044a1a2fc02b57ed38a3010d7548';
+const BUILD_ID = 'd9e2e5784375', BUILD_CARD_HASH = 'dff73bdbca0ca3dd43c918da8a82456e9bbb044a1a2fc02b57ed38a3010d7548';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -55867,7 +55904,7 @@ function raidPanelHTML(){
       return `<div class="r2-part ${ps.locked?'is-locked':''} ${ps.defeated?'is-down':''}">
         <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${ps.total ? Math.ceil(ps.remaining / ps.total * 100) : 0}%</span></div>
         ${raidBarsHTML(ps)}
-        ${atk ? `<span class="r2-note r3-atk" title="Its telegraphed attacks: a column glows red the round before it is smacked">${atk}</span>` : ''}
+        ${atk ? `<span class="r2-note r3-atk" title="${escapeAttr(TX('ui.raid-attacks-telegraph-title'))}">${atk}</span>` : ''}
         <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary" data-raid-part="${escapeAttr(p.id)}">⚔️ Fight (${cost.raidPoints||0}🎫 ${cost.energy||0}⚡)</button>`}
           <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString()} from other raiders` : ''}</span></div>
       </div>`; }).join('')}</div>
@@ -56467,8 +56504,8 @@ function startRaidFullBattle(def, partId, f, st){
     raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your bramble'].concat(allies.map(a=> a.castle.name)),
     raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId, raidBossHpBonus: bossHpBonus,
     raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0, // 2026-10-18 (R3-WP2)
-    raidSeed: currentMatchSeed}; // the Tentacle Smack's back-row roll (raidSmackBack, 2026-10-18)
-  (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
+    raidSeed: currentMatchSeed}; // the Tentacle Smack's seeded rolls (raidSmackRoll: its row, its column; 2026-10-18)
+  (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidSmackTarget(matchState, 2, i, a); }); // a row or a column (2026-10-18)
   // 2026-10-12 (11:26 list: "During the raid, all 3 players' leaders come onto the battlefield, 1 on each of the centre 3
   // columns. Of course taking their own respective rows"): your leader opens in the front row's centre, the allies' leaders in
   // their own rows on either side (they step up into the front once nothing stands before them).
@@ -56566,50 +56603,73 @@ function raidAlliesTurn(m, events, first){
   const ev = {type:'raidAlly', name:a.name, defId:id, where, row:a.row, slot:sl};
   if(events) events.push(ev); else { pushLog(ev); renderBoard(); }
 }
-// Raid specials in the full game (2026-10-12): the trench's telegraphed boss attacks. A column attack is marked a round
-// ahead (that column glows red in your rows), then hits every card of yours in that column, front and reserves alike, or
-// your castle if the column is empty. A front-row attack hits every unit in your front row.
-function raidPickColumn(m){
-  const pl = m.players[1], occ = new Set(); m.engine.allBoardCards(pl).forEach(c=>{ if(c.hp > 0) occ.add(c.slot); });
-  (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=> occ.add(+sl)));
-  const cols = occ.size ? [...occ] : [-1, 0, 1]; return cols[Math.floor(Math.random()*cols.length)];
+// Raid specials in the full game (2026-10-12): the trench's telegraphed boss attacks. A smack is marked a round ahead (its row
+// or column glows red in your rows), then lands; a front-row attack ('frontRow', the Tail Sweep) hits every unit in your front row.
+// The Tentacle Smack, two kinds (2026-10-18, owner 15:56: "there are row-based smacks and column-based smacks. Column-based smacks
+// weight columns by number of units in that column."). An attack with pattern 'column' alternates: its 1st, 3rd, 5th... smack is a
+// COLUMN smack, every unit of yours in one column (front, middle and back), the column picked at random weighted by how many of your
+// units stand in it (an empty column never; no units at all, your bramble); its 2nd, 4th, 6th... is a ROW smack, every unit in one
+// of your rows: the front row, or 1 time in 3 (raidSmackBack, the owner's 15:37 rule) the middle or back row. Every roll is seeded by
+// the match's seed, the round and the attack (raidSmackRoll), so the same fight smacks the same.
+function raidSmackRoll(m, round, i, salt){
+  const s = ((Number(m && m.raidSeed) >>> 0) ^ Math.imul((round|0) + 1, 0x9E3779B1) ^ Math.imul((i|0) + 1, 0x85EBCA77) ^ Math.imul(salt|0, 0xC2B2AE3D)) >>> 0;
+  return seededRng(s)();
 }
-// The Tentacle Smack reaches the back rows 1 time in 3 (2026-10-18, owner 15:37: "A. The tentacle slams hit them 1/3 of the time."):
-// one roll per attack per round, seeded by the match's seed, the round and the attack, so the same fight rolls the same.
 const RAID_SMACK_BACK_CHANCE = 1/3;
-function raidSmackBack(m, round, i){
-  const s = ((Number(m && m.raidSeed) >>> 0) ^ Math.imul((round|0) + 1, 0x9E3779B1) ^ Math.imul((i|0) + 1, 0x85EBCA77)) >>> 0;
-  return seededRng(s)() < RAID_SMACK_BACK_CHANCE;
+function raidSmackBack(m, round, i){ return raidSmackRoll(m, round, i, 0) < RAID_SMACK_BACK_CHANCE; }
+// Which kind the attack's smack on this round is: they alternate, a column smack first.
+function raidSmackKind(round, a){ const n = Math.floor((round|0) / Math.max(1, (a && a.every)|0 || 1)); return n % 2 === 1 ? 'column' : 'row'; }
+// Your living units in a row (0 front, 1 middle, 2 back) or in a column.
+function raidRowUnits(pl, eng, r){ return r === 0 ? eng.allBoardCards(pl).filter(c=> c.hp > 0) : Object.values((pl.reserve||[])[r-1] || {}).filter(c=> c && c.hp > 0); }
+function raidColUnits(pl, eng, col){ return eng.allBoardCards(pl).filter(c=> c.hp > 0 && c.slot === col).concat((pl.reserve||[]).map(row=> row[col]).filter(c=> c && c.hp > 0)); }
+// A column, weighted by the number of your units in it; null when you have none.
+function raidPickColumn(m, round, i){
+  const pl = m.players[1], w = new Map(), add = sl=> w.set(+sl, (w.get(+sl) || 0) + 1);
+  m.engine.allBoardCards(pl).forEach(c=>{ if(c.hp > 0) add(c.slot); });
+  (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=>{ if(row[sl] && row[sl].hp > 0) add(sl); }));
+  const cols = [...w.keys()].sort((x, y)=> x - y), tot = cols.reduce((t, c)=> t + w.get(c), 0); if(!tot) return null;
+  let u = raidSmackRoll(m, round, i, 1) * tot; for(const c of cols){ u -= w.get(c); if(u < 0) return c; } return cols[cols.length - 1];
 }
+// The row a row smack aims at: the front, or 1 time in 3 the middle or the back row (even odds).
+function raidSmackRow(m, round, i){ return raidSmackBack(m, round, i) ? (raidSmackRoll(m, round, i, 2) < 0.5 ? 1 : 2) : 0; }
+// What the attack's smack on this round will hit, chosen when it is telegraphed (the round before) and kept.
+function raidSmackTarget(m, round, i, a){ return raidSmackKind(round, a) === 'column' ? {kind:'column', col: raidPickColumn(m, round, i)} : {kind:'row', row: raidSmackRow(m, round, i)}; }
 function raidSpecials(m, events){
   // A stage's extraVolley (2026-10-18, R3-WP2; Enraged / Thrashing): the boss's back two rows strike too, as your ally rows do (engine
   // reserveVolley: half Attack at the unit facing them, or your castle when that column is empty), N times a round.
   // 2026-10-18: every reserve unit, both sides, also strikes once in each round's combat now (reserveActs), so these are extra strikes.
   for(let k = 0; k < Math.min(3, m.raidExtraVolley || 0) && m.engine.reserveVolley; k++){ m.engine.reserveVolley(m.players, m.sideOf, 2, m.stats, events); m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, events); }
   const atks = m.raidAttacks || []; if(!atks.length) return;
-  const pl = m.players[1], round = m.round; m.raidPending = m.raidPending || {};
+  const pl = m.players[1], E = m.engine, round = m.round; m.raidPending = m.raidPending || {};
   atks.forEach((a, i)=>{
     const every = Math.max(1, a.every||1); if(round % every !== 0) return;
     if(a.pattern === 'column'){
-      const col = m.raidPending[i] != null ? m.raidPending[i] : raidPickColumn(m); delete m.raidPending[i];
-      // 2026-10-18 (owner 15:37): it slams your front-row unit in that column; 1 time in 3 (raidSmackBack) it reaches past the front row
-      // and slams your middle and back rows in that column instead (it was every row at once). When the rows it aims at are empty in
-      // that column it lands on the others; a column empty in every row hits your bramble, as before.
-      const front = m.engine.allBoardCards(pl).filter(c=> c.hp > 0 && c.slot === col), res = (pl.reserve||[]).map(row=> row[col]).filter(c=> c && c.hp > 0);
-      const toBack = raidSmackBack(m, round, i), hit = (toBack ? [res, front] : [front, res]).find(h=> h.length) || [];
-      hit.forEach(c=> m.engine.damageCardFlat(c, a.dmg||0, 'physical', null));
+      const p = m.raidPending[i] && m.raidPending[i].kind ? m.raidPending[i] : raidSmackTarget(m, round, i, a); delete m.raidPending[i];
+      let hit = [], ev;
+      if(p.kind === 'row'){
+        // the row it was aimed at; when that row is empty it lands on the nearest row with units (front first), as the 15:37 smack did
+        const row = [p.row, 0, 1, 2].find(r=> raidRowUnits(pl, E, r).length); hit = row == null ? [] : raidRowUnits(pl, E, row);
+        ev = {type:'raidSmack', kind:'row', name:a.name || 'Smack', row: row == null ? p.row : row, col:null, dmg:a.dmg||0, hits:hit.length};
+      } else {
+        // the telegraphed column (picked now when you had no units then); a column that has emptied since hits your bramble
+        const col = p.col != null ? p.col : raidPickColumn(m, round, i); hit = col == null ? [] : raidColUnits(pl, E, col);
+        ev = {type:'raidSmack', kind:'column', name:a.name || 'Smack', col, row:null, dmg:a.dmg||0, hits:hit.length};
+      }
+      hit.forEach(c=> E.damageCardFlat(c, a.dmg||0, 'physical', null));
       if(!hit.length) pl.hq.hp = Math.max(0, pl.hq.hp - (a.dmg||0));
       (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=>{ if(row[sl].hp <= 0) delete row[sl]; }));
-      events.push({type:'raidSmack', name:a.name || 'Smack', col, dmg:a.dmg||0, hits:hit.length, back: (hit.length && hit === res) || undefined});
+      events.push(ev);
     } else if(a.pattern === 'frontRow'){
-      const hit = m.engine.allBoardCards(pl).filter(c=> c.hp > 0); hit.forEach(c=> m.engine.damageCardFlat(c, a.dmg||0, 'physical', null));
+      const hit = E.allBoardCards(pl).filter(c=> c.hp > 0); hit.forEach(c=> E.damageCardFlat(c, a.dmg||0, 'physical', null));
       events.push({type:'raidSmack', name:a.name || 'Sweep', col:null, dmg:a.dmg||0, hits:hit.length, front:true});
     }
   });
-  m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, events);
-  atks.forEach((a, i)=>{ if(a.pattern === 'column' && (round + 1) % Math.max(1, a.every||1) === 0) m.raidPending[i] = raidPickColumn(m); });
+  E.removeDeadCards(m.players, m.sideOf, {}, m.stats, events);
+  atks.forEach((a, i)=>{ if(a.pattern === 'column' && (round + 1) % Math.max(1, a.every||1) === 0) m.raidPending[i] = raidSmackTarget(m, round + 1, i, a); });
 }
-function raidTelegraphCols(m){ return m && m.raidPending ? Object.values(m.raidPending).filter(v=> v != null) : []; }
+// What glows red this round: the columns and rows (0 front, 1 middle, 2 back) the next smacks will hit.
+function raidTelegraph(m){ const out = {cols:[], rows:[]}; if(m && m.raidPending) Object.values(m.raidPending).forEach(p=>{ if(!p) return;
+  if(p.kind === 'row' && p.row != null) out.rows.push(p.row); else if(p.kind === 'column' && p.col != null) out.cols.push(p.col); }); return out; }
 // The raid's last turn (2026-10-18): a banner over the board as it starts ("the tide turns after this one"), so the end isn't a surprise.
 function raidLastTurnBanner(m){
   const bf = document.querySelector('.battlefield'); if(!bf || !m) return;
@@ -63141,10 +63201,13 @@ function renderBoard(opts){
       el.innerHTML = html;
     });
   }
-  if(m.raidFull){ const cols = raidTelegraphCols(m);
+  // 2026-10-18 (owner 15:56, row and column smacks): the next smack's column glows red down all your rows, or its row glows red across
+  if(m.raidFull){ const tg = raidTelegraph(m), resRows = [...document.querySelectorAll('#battlefieldInner .reserve-row.mine')];
     document.querySelectorAll('#rowMine > .board-card, #battlefieldInner .reserve-row.mine > .board-card').forEach(x=> x.classList.remove('raid-tele'));
-    cols.forEach(col=>{ const i = col + slotRange; const f = document.querySelectorAll('#rowMine > .board-card')[i]; if(f) f.classList.add('raid-tele');
-      document.querySelectorAll('#battlefieldInner .reserve-row.mine').forEach(r=>{ const c = r.querySelectorAll(':scope > .board-card')[i]; if(c) c.classList.add('raid-tele'); }); }); }
+    tg.cols.forEach(col=>{ const i = col + slotRange; const f = document.querySelectorAll('#rowMine > .board-card')[i]; if(f) f.classList.add('raid-tele');
+      resRows.forEach(r=>{ const c = r.querySelectorAll(':scope > .board-card')[i]; if(c) c.classList.add('raid-tele'); }); });
+    tg.rows.forEach(row=>{ const cells = row === 0 ? document.querySelectorAll('#rowMine > .board-card') : ((resRows.find(r=> +r.dataset.resrow === row) || {querySelectorAll:()=> []}).querySelectorAll(':scope > .board-card'));
+      cells.forEach(c=> c.classList.add('raid-tele')); }); }
   const mult = (matchState && matchState.speedMult) || 1;
   const dur = entranceCardTweenDur(mult);
   // "Genuinely new to the player" — see knownBoardUids' own declaration comment (near
@@ -70040,7 +70103,11 @@ function logText(ev){
     case 'raidCommons': return {cls:'', text:`🐙 The boss calls in ${(ev.defIds||[]).map(nm).join(' and ')} behind its lines.`}; // 2026-10-17
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
     case 'raidLastTurn': return {cls:'gold', text:`🌊 Last turn (${ev.round}): the tide turns after this one and the raid ends, whatever the brambles' Health.`}; // 2026-10-18
-    case 'raidSmack': return {cls:'', text: ev.back ? TX('ui.raid-smack-back-rows', {name: ev.name, dmg: ev.dmg, hits: ev.hits}) : ev.front ? `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.` : ev.hits ? `💥 ${ev.name} smashes the column, ${ev.dmg} to each of your ${ev.hits} unit${ev.hits===1?'':'s'} there.` : `💥 ${ev.name} hits an empty column: ${ev.dmg} to your bramble.`};
+    // 2026-10-18 (owner 15:56): a row smack names its row, a column smack its column; either one with nobody to hit lands on the bramble
+    case 'raidSmack': { if(ev.front) return {cls:'', text: `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.`};
+      const name = ev.name, dmg = ev.dmg, hits = ev.hits, s = ev.hits === 1 ? '' : 's';
+      return {cls:'', text: !hits ? TX('ui.raid-smack-bramble', {name, dmg}) : ev.kind !== 'row' ? TX('ui.raid-smack-column', {name, dmg, hits, s})
+        : ev.row === 2 ? TX('ui.raid-smack-row-back', {name, dmg, hits, s}) : ev.row === 1 ? TX('ui.raid-smack-row-middle', {name, dmg, hits, s}) : TX('ui.raid-smack-row-front', {name, dmg, hits, s})}; }
     case 'advance': return {cls:'', text:`⬆ ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.defId)} steps up to the ${ev.to === 0 ? 'front' : 'middle'} row.`};
     case 'boomerangWhiff': return {cls:'', text:`🪃 Whiff! ${nm(ev.defId)}'s boomerang finds nothing on the way back.`};
     case 'boomerangCaught': return {cls:'', text:`🪃 ${nm(ev.defId)} catches the boomerang.`};

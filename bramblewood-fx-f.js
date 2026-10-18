@@ -1141,19 +1141,43 @@ M.tentacleSmack = function(cells, opts){
   // every rect measured once, here; nothing is read from the layout while it plays
   const rs = cells.map(e=> e.getBoundingClientRect ? e.getBoundingClientRect() : e), ref = rs[0] || {left:VW()/2 - 40, width:80, top:VH()/2, bottom:VH()/2 + 100};
   const hr = opts.host && opts.host.getBoundingClientRect ? opts.host.getBoundingClientRect() : null;
-  const top0 = hr ? Math.max(0, hr.top) : 0, botLim = hr ? Math.min(VH(), hr.bottom) : VH();
-  const bottom = Math.min(botLim - 4, Math.max(...rs.map(r=> r.bottom))), cx = ref.left + ref.width / 2;
-  const w = Math.max(58, Math.min(124, ref.width * 1.05)), stripW = Math.round(w * 4.2), H = Math.max(80, Math.round(botLim - top0));
-  const left = Math.round(cx - stripW / 2), dpr = Math.min(2, root.devicePixelRatio || 1);
+  const dpr = Math.min(2, root.devicePixelRatio || 1);
   const h = lay('fxf-tent', '<i class="sh"></i><canvas class="tc"></canvas>', 8000), sh = h.children[0], cv = h.children[1];
   if(hr) clipTo(h, hr);
-  Object.assign(sh.style, {position:'absolute', left:(cx - w*1.1) + 'px', top:(bottom - 22) + 'px', width:(w*2.2) + 'px', height:'28px', borderRadius:'50%', background:'radial-gradient(ellipse, rgba(25,0,20,.55), transparent 70%)', opacity:'0', transform:'scale(.3)', willChange:'transform, opacity'});
-  Object.assign(cv.style, {position:'absolute', left:left + 'px', top:top0 + 'px', width:stripW + 'px', height:H + 'px'});
-  cv.width = Math.round(stripW * dpr); cv.height = Math.round(H * dpr);
+  const shadow = {position:'absolute', height:'28px', borderRadius:'50%', background:'radial-gradient(ellipse, rgba(25,0,20,.55), transparent 70%)', opacity:'0', transform:'scale(.3)', willChange:'transform, opacity'};
+  // The limb is drawn in its own frame: x across the strip (0..stripW), y along its reach (0..H). A column smack (the default) maps that
+  // straight onto a strip down the column, from the boss's edge. A row smack (opts.horizontal, 2026-10-18, owner 15:56: row and column
+  // smacks) turns the same frame on its side, so the arm whips in from the left or right edge of the board and sweeps along the row,
+  // knocking each card as its tip passes (knock[]), instead of slamming down.
+  const horiz = !!opts.horizontal;
+  let w, stripW, H, reach, hitX, hitY, knock = null;
+  if(!horiz){
+    const top0 = hr ? Math.max(0, hr.top) : 0, botLim = hr ? Math.min(VH(), hr.bottom) : VH();
+    const bottom = Math.min(botLim - 4, Math.max(...rs.map(r=> r.bottom))), cx = ref.left + ref.width / 2;
+    w = Math.max(58, Math.min(124, ref.width * 1.05)); stripW = Math.round(w * 4.2); H = Math.max(80, Math.round(botLim - top0));
+    reach = bottom - top0 + 6; hitX = cx; hitY = bottom - 18;
+    Object.assign(sh.style, shadow, {left:(cx - w*1.1) + 'px', top:(bottom - 22) + 'px', width:(w*2.2) + 'px'});
+    Object.assign(cv.style, {position:'absolute', left:Math.round(cx - stripW / 2) + 'px', top:top0 + 'px', width:stripW + 'px', height:H + 'px'});
+    cv.width = Math.round(stripW * dpr); cv.height = Math.round(H * dpr);
+  } else {
+    const left0 = hr ? Math.max(0, hr.left) : 0, rightLim = hr ? Math.min(VW(), hr.right) : VW();
+    const cy = rs.length ? rs.reduce((t, r)=> t + r.top + r.height / 2, 0) / rs.length : VH() / 2, rh = ref.height || 100;
+    const lo = rs.length ? Math.min(...rs.map(r=> r.left)) : left0 + 40, hi = rs.length ? Math.max(...rs.map(r=> r.right)) : rightLim - 40;
+    const fromLeft = opts.from ? opts.from === 'left' : Math.random() < 0.5, along = x=> fromLeft ? x - left0 : rightLim - x;
+    w = Math.max(58, Math.min(124, rh * 0.8)); stripW = Math.round(w * 4.2); H = Math.max(80, Math.round(rightLim - left0));
+    reach = Math.max(80, along(fromLeft ? hi : lo) + 6); hitX = fromLeft ? Math.min(rightLim - 8, hi) : Math.max(left0 + 8, lo); hitY = cy;
+    knock = rs.map((r, k)=> ({el: cells[k], at: along(r.left + r.width / 2), x: r.left + r.width / 2, y: r.top + r.height / 2, done: false}));
+    Object.assign(sh.style, shadow, {left:(lo - 10) + 'px', top:(cy + rh / 2 - 16) + 'px', width:(hi - lo + 20) + 'px'});
+    Object.assign(cv.style, {position:'absolute', left:left0 + 'px', top:Math.round(cy - stripW / 2) + 'px', width:H + 'px', height:stripW + 'px'});
+    cv.width = Math.round(H * dpr); cv.height = Math.round(stripW * dpr);
+    cv.dataset.from = fromLeft ? 'left' : 'right';
+  }
   const ctx = cv.getContext('2d'); if(!ctx){ h.remove(); return Promise.resolve(); }
-  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  const dir = Math.random() < 0.5 ? 1 : -1, reach = bottom - top0 + 6, x0 = stripW / 2 - dir * w * 0.35;
-  const T = TENT_MS, t1 = T.rise, t2 = t1 + T.coil, t3 = t2 + T.slam, t4 = t3 + T.hold, t5 = t4 + T.back;
+  if(!horiz) ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  else if(cv.dataset.from === 'left') ctx.setTransform(0, dpr, dpr, 0, 0, 0); // (x, y) -> (y, x): the reach runs left to right
+  else ctx.setTransform(0, dpr, -dpr, 0, H * dpr, 0);                          // (x, y) -> (H - y, x): right to left
+  const dir = Math.random() < 0.5 ? 1 : -1, x0 = stripW / 2 - dir * w * 0.35;
+  const T = horiz ? Object.assign({}, TENT_MS, {slam:340}) : TENT_MS, t1 = T.rise, t2 = t1 + T.coil, t3 = t2 + T.slam, t4 = t3 + T.hold, t5 = t4 + T.back;
   const ease = u=> u < 0 ? 0 : u > 1 ? 1 : u * u * (3 - 2 * u), easeIn = u=> Math.min(1, Math.max(0, u)) ** 3;
   let impacted = false, raf = 0, t0 = 0;
   return new Promise(res=>{
@@ -1168,10 +1192,14 @@ M.tentacleSmack = function(cells, opts){
       else if(t < t4){ const u = (t - t3) / T.hold; len = reach * (1 - 0.04 * Math.sin(u * Math.PI)); curl = 0.1 + 0.55 * ease(u * 1.4); sway = 0.05 + 0.07 * Math.sin(u * Math.PI); }
       else if(t < t5){ const u = ease((t - t4) / T.back); len = reach * (0.96 - 0.5 * u); curl = 0.65 + 0.5 * u; sway = 0.12 + 0.2 * u; baseY = -10 - u * reach * 0.85; }
       else { done(); return; }
+      // a row smack knocks each card as the tip sweeps past it (its tip runs about baseY + len along the reach)
+      if(knock && t >= t2) knock.forEach(k=>{ if(k.done || (t < t3 && k.at > baseY + len)) return; k.done = true;
+        burst(k.x, k.y, {n:6, colors:['#e7a3c0', '#d9f2ff', '#fff'], dist:[12, 40], spread:1.2, angle:-Math.PI / 2, dur:.45, size:5, gravity:18});
+        if(k.el && k.el.getBoundingClientRect && k.el.isConnected) shake(k.el, {amp:5, n:4, y:2}); });
       if(!impacted && t >= t3){ impacted = true;
-        ring(cx, bottom - 18, {color:'#e7a3c0', size:w * 2.4, width:4, dur:.55, glow:false});
-        burst(cx, bottom - 18, {n:10, colors:['#9fd6f5', '#d9f2ff', '#e7a3c0'], dist:[30, 90], spread:Math.PI * 1.2, angle:-Math.PI / 2, dur:.6, size:6, gravity:30});
-        cells.forEach(e=>{ if(e.getBoundingClientRect && e.isConnected) shake(e, {amp:4, n:4, y:3}); }); call(opts.onImpact); }
+        ring(hitX, hitY, {color:'#e7a3c0', size:w * 2.4, width:4, dur:.55, glow:false});
+        burst(hitX, hitY, {n:10, colors:['#9fd6f5', '#d9f2ff', '#e7a3c0'], dist:[30, 90], spread:Math.PI * 1.2, angle:-Math.PI / 2, dur:.6, size:6, gravity:30});
+        if(!knock) cells.forEach(e=>{ if(e.getBoundingClientRect && e.isConnected) shake(e, {amp:4, n:4, y:3}); }); call(opts.onImpact); }
       const shU = t < t3 ? ease(t / t3) : t < t4 ? 1 : 1 - ease((t - t4) / T.back);
       sh.style.opacity = String(0.95 * shU); sh.style.transform = `scale(${0.3 + 0.7 * shU})`;
       ctx.clearRect(0, 0, stripW, H);
@@ -1506,12 +1534,16 @@ M.onEvent = function(ev, env){
   if(t === 'raidSmack'){
     const row = rowOf('A', env); if(!row) return;
     if(ev.front){ M.tailSweep(cardsOn('A', env).filter(e=> e.querySelector('.card-tile')), {host:env.battlefield}); return; }
-    const all = $$(':scope > .board-card', row), tele = all.filter(e=> e.classList.contains('raid-tele'));
-    const col = tele.length ? tele : [all[Math.max(0, Math.min(all.length - 1, (ev.col | 0) + Math.floor(all.length/2)))]].filter(Boolean);
-    const reserve = $$('#battlefieldInner .reserve-row.mine').map(r=> $$(':scope > .board-card', r)[all.indexOf(col[0])]).filter(Boolean);
-    // 2026-10-18 (owner 15:37): a smack lands on the front row, or (ev.back, 1 time in 3) only on the middle and back rows
-    const frontHit = col.filter(e=> e.querySelector('.card-tile'));
-    M.tentacleSmack(ev.back ? reserve : !ev.hits ? col.concat(reserve) : frontHit.length ? frontHit : reserve, {host:env.battlefield});
+    // 2026-10-18 (owner 15:56: "there are row-based smacks and column-based smacks"): a row smack (ev.kind 'row', ev.row 0 front /
+    // 1 middle / 2 back) is the tentacle on its side, sweeping along that row; a column smack slams down the column through every row.
+    const all = $$(':scope > .board-card', row), resRows = $$('#battlefieldInner .reserve-row.mine');
+    if(ev.kind === 'row'){
+      const r = ev.row | 0, rr = r ? resRows.find(x=> +x.dataset.resrow === r) : null, cells = r ? (rr ? $$(':scope > .board-card', rr) : []) : all;
+      const units = cells.filter(e=> e.querySelector('.card-tile'));
+      M.tentacleSmack(units.length ? units : cells, {host:env.battlefield, horizontal:true}); return;
+    }
+    const i = Math.max(0, Math.min(all.length - 1, (ev.col | 0) + Math.floor(all.length/2)));
+    M.tentacleSmack([all[i]].concat(resRows.map(r=> $$(':scope > .board-card', r)[i])).filter(Boolean), {host:env.battlefield});
   }
 };
 

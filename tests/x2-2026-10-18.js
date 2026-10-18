@@ -4,6 +4,7 @@
 //       strike every round, reserveActs); +Attack, the field and the bramble % stay.
 //   13  "No Shocked status on Brambles.": lightning at a bramble deals its damage again (the morning's "grounded" rule is gone), but a
 //       bramble is never Shocked and never Wet.
+//   12b The Tentacle Smack (owner 15:56): row smacks and column smacks, alternating; a column weighted by your units in it.
 //   15  "Smartest. - if we progressively make a smarter CPU, use that one in the future.": the Babel Spire plays at AI_LEVEL_MAX.
 //   16  The Tide: a Flood wets every land unit (not a Swimmer / Tide unit, not Flying), in every row; Swimmers are Wet in Flood and Ebb;
 //       the look: Flood fills the whole board, the surface effects wait for it to settle, Ebb is a thin band at the bottom, the wet look
@@ -71,35 +72,77 @@ ok(/With no enemy unit it strikes the bramble, which is never Shocked\./.test(sr
   ok(!/back two rows/.test(R.describeStage(en)) && !/back two rows/.test(R.describeStage(th)), `the stage lines no longer mention the volley (${R.describeStage(en)} / ${R.describeStage(th)})`);
   ok(/extra time as each round starts/.test(R.describeStage({rules:{extraVolley:1}})), 'a custom stage can still set one (the editor field stays)'); }
 
-// ---- 12b (owner 15:37: "A. The tentacle slams hit them 1/3 of the time."): the Tentacle Smack reaches your back rows 1 time in 3
+// ---- 12b: the Tentacle Smack, row smacks and column smacks (2026-10-18, owner 15:56: "there are row-based smacks and column-based
+// smacks. Column-based smacks weight columns by number of units in that column."; the row smack keeps 15:37's "A. The tentacle slams
+// hit them 1/3 of the time.": the front row, 1 time in 3 the middle or back row). They alternate, a column smack first.
 { const seedSrc = src.slice(src.indexOf('function seededRng(seed){'), src.indexOf('let currentMatchSeed'));
-  const body = src.slice(src.indexOf('function raidPickColumn(m){'), src.indexOf('function raidTelegraphCols(m)'));
-  const F = new Function(seedSrc + body + '; return {raidSpecials, raidSmackBack, RAID_SMACK_BACK_CHANCE};')();
-  ok(F.RAID_SMACK_BACK_CHANCE === 1/3, 'the chance is 1 in 3');
-  const smack = (seed, round, opts)=>{ opts = opts || {};
-    const {e, P} = mk({}, {reserveRows:2}); const fr = opts.noFront ? null : put(e, P, 1, 'x2-land'); const col = fr ? fr.slot : 0;
-    const m1 = opts.noBack ? null : e.fillReserve(P[1], 1, col, 'x2-land'), b2 = opts.noBack ? null : e.fillReserve(P[1], 2, col, 'x2-land');
-    const m = {engine:e, players:P, sideOf:so, stats:{}, round, raidSeed:seed, raidAttacks:[{name:'Tentacle Smack', pattern:'column', dmg:6, every:1}], raidPending:{0:col}};
-    const ev = []; const hq = P[1].hq.hp; F.raidSpecials(m, ev); return {ev: ev.find(x=> x.type === 'raidSmack'), fr, m1, b2, hqLost: hq - P[1].hq.hp, back: F.raidSmackBack(m, round, 0)}; };
-  let backs = 0, okFront = true, okBack = true, det = true; const N = 300;
-  for(let r = 1; r <= N; r++){ const x = smack(12345, r);
-    if(x.back){ backs++; if(!(x.ev.back && x.fr.hp === 50 && x.m1.hp === 44 && x.b2.hp === 44 && x.ev.hits === 2)) okBack = false; }
-    else if(!(!x.ev.back && x.fr.hp === 44 && x.m1.hp === 50 && x.b2.hp === 50 && x.ev.hits === 1)) okFront = false;
-    if(smack(12345, r).back !== x.back) det = false; }
-  ok(backs / N > .25 && backs / N < .42, `about 1 smack in 3 reaches the back rows (${backs} of ${N})`);
-  ok(okFront, 'a front smack hits only your front-row unit in that column (it used to hit every row)');
-  ok(okBack, 'a back-row smack hits your middle and back rows in that column, not the front');
-  ok(det, 'seeded: the same fight and round always roll the same');
-  let fellFront = false, fellBack = false, wall = false;
-  for(let r = 1; r <= 40; r++){ const a = smack(777, r, {noBack:true}); if(a.back && a.fr.hp === 44 && !a.ev.back) fellFront = true;
-    const b = smack(777, r, {noFront:true}); if(!b.back && b.m1.hp === 44 && b.ev.back) fellBack = true;
-    const c = smack(777, r, {noFront:true, noBack:true}); if(c.hqLost === 6 && !c.ev.hits) wall = true; }
-  ok(fellFront, 'a back-row smack on a column with no back-row units lands on the front row');
-  ok(fellBack, 'a front smack on a column with no front-row unit lands on the back rows');
-  ok(wall, 'a column empty in every row hits your bramble');
-  ok(/case 'raidSmack': return \{cls:'', text: ev\.back \? TX\('ui\.raid-smack-back-rows', \{name: ev\.name, dmg: ev\.dmg, hits: ev\.hits\}\)/.test(src), 'its log line says it hit the back rows (a TX key)');
-  const TXT = require('../bramblewood-texts.js'); ok(/slams your back rows/.test(TXT.TEXT['ui.raid-smack-back-rows'] || ''), 'the text is in the TEXT table');
-  ok(/M\.tentacleSmack\(ev\.back \? reserve :/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-fx-f.js'), 'utf8')), 'the smack VFX lands on the back rows only'); }
+  const body = src.slice(src.indexOf('function raidSmackRoll('), src.indexOf('// The raid\'s last turn'));
+  const F = new Function(seedSrc + body + '; return {raidSpecials, raidSmackBack, raidSmackKind, raidSmackTarget, raidPickColumn, raidTelegraph, RAID_SMACK_BACK_CHANCE};')();
+  ok(F.RAID_SMACK_BACK_CHANCE === 1/3, 'the row smack leaves the front row 1 time in 3');
+  ok(['column', 'row', 'column', 'row'].every((k, j)=> F.raidSmackKind(3 * (j + 1), {every:3}) === k), 'every 3 rounds: column, row, column, row');
+  ok(F.raidSmackKind(1, {every:1}) === 'column' && F.raidSmackKind(2, {every:1}) === 'row', 'every round: they alternate too');
+  const at = (e, P, sl)=>{ e.debugSpawnCard(P, so, 1, 'x2-land', sl, {}, []); return all(P[1]).filter(x=> x.defId === 'x2-land').reduce((a, x)=> (!a || x.uid > a.uid) ? x : a, null); };
+  // a board: front units in columns 0 and -1 (the first card stands in the centre), the middle row's unit in column -1, the back row's in -1 and 0
+  const board = (layout)=>{ const {e, P} = mk({}, {reserveRows:2}); const u = {};
+    (layout.front || []).forEach(sl=> u['f' + sl] = at(e, P, sl));
+    (layout.mid || []).forEach(sl=> u['m' + sl] = e.fillReserve(P[1], 1, sl, 'x2-land'));
+    (layout.back || []).forEach(sl=> u['b' + sl] = e.fillReserve(P[1], 2, sl, 'x2-land'));
+    return {e, P, u}; };
+  const run = (seed, round, layout, pending)=>{ const b = board(layout);
+    const m = {engine:b.e, players:b.P, sideOf:so, stats:{}, round, raidSeed:seed, raidAttacks:[{name:'Tentacle Smack', pattern:'column', dmg:6, every:1}], raidPending: pending ? {0: pending} : {}};
+    const hq = b.P[1].hq.hp, ev = []; F.raidSpecials(m, ev); return Object.assign(b, {m, ev: ev.find(x=> x.type === 'raidSmack'), hqLost: hq - b.P[1].hq.hp}); };
+  const L = {front:[0, -1], mid:[-1], back:[-1, 0]};
+  const hp = (b, ks)=> ks.map(k=> b.u[k].hp);
+  // row smacks (even rounds)
+  const rows = [0, 0, 0]; let rowOk = true, det = true;
+  for(let r = 2; r <= 600; r += 2){ const b = run(4242, r, L);
+    if(!b.ev || b.ev.kind !== 'row'){ rowOk = false; continue; } rows[b.ev.row]++;
+    const want = {0:['f-1', 'f0'], 1:['m-1'], 2:['b-1', 'b0']}[b.ev.row], keys = ['f-1', 'f0', 'm-1', 'b-1', 'b0'];
+    if(!keys.every(k=> b.u[k].hp === (want.includes(k) ? 44 : 50)) || b.ev.hits !== want.length || b.hqLost) rowOk = false;
+    if(run(4242, r, L).ev.row !== b.ev.row) det = false; }
+  const N = rows[0] + rows[1] + rows[2];
+  ok(rowOk, 'a row smack hits every unit in its row and nothing else');
+  ok(rows[0] / N > .58 && rows[0] / N < .75, `about 2 in 3 row smacks hit the front row (${rows.join(' / ')})`);
+  ok(rows[1] > N * .1 && rows[2] > N * .1, `the other third is split between the middle and back rows (${rows[1]} / ${rows[2]})`);
+  ok(det, 'seeded: the same fight and round always pick the same row');
+  // column smacks (odd rounds): column -1 holds 3 units, column 0 holds 2, column 1 none
+  const cols = {}; let colOk = true, cdet = true;
+  for(let r = 1; r <= 999; r += 2){ const b = run(9001, r, L);
+    if(!b.ev || b.ev.kind !== 'column'){ colOk = false; continue; } cols[b.ev.col] = (cols[b.ev.col] || 0) + 1;
+    const want = b.ev.col === -1 ? ['f-1', 'm-1', 'b-1'] : b.ev.col === 0 ? ['f0', 'b0'] : null, keys = ['f-1', 'f0', 'm-1', 'b-1', 'b0'];
+    if(!want || !keys.every(k=> b.u[k].hp === (want.includes(k) ? 44 : 50)) || b.ev.hits !== want.length || b.hqLost) colOk = false;
+    if(run(9001, r, L).ev.col !== b.ev.col) cdet = false; }
+  const CN = (cols[-1] || 0) + (cols[0] || 0);
+  ok(colOk, 'a column smack hits every unit in its column, front, middle and back');
+  ok(!cols[1] && !cols[-2] && !cols[2], 'an empty column is never picked');
+  ok(cols[-1] / CN > .52 && cols[-1] / CN < .68, `columns are weighted by their units: 3 to 2 (${cols[-1]} / ${cols[0]})`);
+  ok(cdet, 'seeded: the same fight and round always pick the same column');
+  { const a = run(5, 1, {}), b = run(5, 2, {});
+    ok(a.ev.kind === 'column' && a.ev.col == null && !a.ev.hits && a.hqLost === 6, 'a column smack with no units on the board hits your bramble');
+    ok(b.ev.kind === 'row' && !b.ev.hits && b.hqLost === 6, 'a row smack with no units on the board hits your bramble'); }
+  { const b = run(5, 2, {front:[0]}, {kind:'row', row:2}); ok(b.ev.row === 0 && b.u.f0.hp === 44 && b.ev.hits === 1, 'a row smack aimed at an empty back row lands on the front row');
+    const c = run(5, 1, {front:[0]}, {kind:'column', col:-1}); ok(c.ev.col === -1 && !c.ev.hits && c.hqLost === 6 && c.u.f0.hp === 50, 'a telegraphed column that has emptied since hits your bramble'); }
+  // the telegraph: the round before a smack, its target is picked and shown
+  { const b = board(L), m = {engine:b.e, players:b.P, sideOf:so, stats:{}, round:2, raidSeed:77, raidAttacks:[{name:'Tentacle Smack', pattern:'column', dmg:6, every:3}], raidPending:{}};
+    F.raidSpecials(m, []); const p = m.raidPending[0], tg = F.raidTelegraph(m);
+    ok(p && p.kind === 'column' && (p.col === -1 || p.col === 0) && tg.cols.length === 1 && tg.cols[0] === p.col && !tg.rows.length, 'round 2: the round-3 column smack is telegraphed (its column)');
+    m.round = 3; const ev = []; F.raidSpecials(m, ev); ok(ev[0] && ev[0].col === p.col, 'round 3: it lands on the telegraphed column');
+    m.round = 5; F.raidSpecials(m, []); const q = m.raidPending[0], tq = F.raidTelegraph(m);
+    ok(q && q.kind === 'row' && [0, 1, 2].includes(q.row) && tq.rows[0] === q.row && !tq.cols.length, 'round 5: the round-6 row smack is telegraphed (its row)'); }
+  ok(/matchState\.raidPending\[i\] = raidSmackTarget\(matchState, 2, i, a\)/.test(src), 'a smack on round 2 is telegraphed from the start');
+  ok(/const tg = raidTelegraph\(m\)/.test(src) && /tg\.rows\.forEach/.test(src), 'the board glows the telegraphed row or column');
+  // its log lines, VFX and translations
+  ok(/TX\('ui\.raid-smack-column', \{name, dmg, hits, s\}\)/.test(src) && /TX\('ui\.raid-smack-row-middle'/.test(src) && /TX\('ui\.raid-smack-bramble', \{name, dmg\}\)/.test(src), 'its log lines are TX keys');
+  const TXT = require('../bramblewood-texts.js'); const keys = ['ui.raid-smack-column', 'ui.raid-smack-row-front', 'ui.raid-smack-row-middle', 'ui.raid-smack-row-back', 'ui.raid-smack-bramble', 'ui.raid-attacks-telegraph-title'];
+  ok(keys.every(k=> TXT.TEXT[k]) && !TXT.TEXT['ui.raid-smack-back-rows'], 'the texts are in the TEXT table (the old back-rows line is gone)');
+  ok(/TX\('ui\.raid-smack-row-back', \{name, dmg, hits, s\}\)/.test(src) && TXT.TX('ui.raid-smack-row-back', {name:'Smack', dmg:6, hits:1, s:''}) === '💥 Smack reaches past your front rows and sweeps your back row: 6 damage to each of your 1 unit there.', 'the row lines fill in');
+  const peel = s=> s.replace(/^[^\w{]+/u, '');
+  ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko'].forEach(code=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', code + '.json'), 'utf8'));
+    ok(keys.every(k=> pack[peel(TXT.TEXT[k])]), `the ${code} pack translates them`); });
+  const fxf = fs.readFileSync(path.join(ROOT, 'bramblewood-fx-f.js'), 'utf8');
+  ok(/if\(ev\.kind === 'row'\)\{/.test(fxf) && /horizontal:true\}\); return;/.test(fxf), 'a row smack plays the tentacle sweeping along the row');
+  ok(/const horiz = !!opts\.horizontal;/.test(fxf) && /ctx\.setTransform\(0, dpr, dpr, 0, 0, 0\)/.test(fxf), 'the tentacle VFX turns on its side for a row');
+  ok(/M\.tentacleSmack\(\[all\[i\]\]\.concat\(resRows\.map/.test(fxf), 'a column smack slams down the column through every row'); }
 
 // ---- 15: the Babel Spire plays at the highest CPU level
 ok(E.AI_LEVEL_MAX === 2, 'the engine names its highest CPU level (AI_LEVEL_MAX = 2, Smartest)');
