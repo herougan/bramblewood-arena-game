@@ -1783,6 +1783,9 @@
      enough that it doesn't look like a broken/missing background, deliberately with no radial
      highlight, no saturated color, nothing that competes with the cards for attention. */
   .battlefield.map-calm{background:linear-gradient(180deg, var(--surface) 0%, var(--bg) 100%);}
+  /* 2026-10-18 (owner: "Make the tutorial background a bit greener"): the tutorial's plain board, tinted toward fresh spring green
+     (mixed into the theme's own colours, so a dark theme stays dark). */
+  .battlefield.bf-tutorial{background:radial-gradient(ellipse at 50% 18%, color-mix(in srgb, #b9e48a 45%, transparent), transparent 65%), linear-gradient(180deg, color-mix(in srgb, var(--bg) 80%, #8fd16a) 0%, color-mix(in srgb, var(--bg) 72%, #5fae4a) 100%);}
   /* Immersion #2 (2026-10-05, "fights happen somewhere"): when the skirmish's map has pixel-art
      terrain, the battlefield floor IS that terrain, under a soft dark scrim so cards stay readable;
      the felt shader then only adds light (lamp pool + impact lights), no cloth weave. */
@@ -7241,6 +7244,13 @@
   .tut-reward .tr-name.is-gone{opacity:0;}
   @media (max-width:520px){ .tut-reward.is-topup .ss-card{width:104px;} .tut-reward .tr-grid{gap:14px;} }
   @media (prefers-reduced-motion: reduce){ .tut-reward .tr-rays, .tut-reward .ss-glow{animation:none;} }
+  /* 2026-10-18 (owner: "After adding cards to my deck based on the window, that window should fade out while shrinking a little"):
+     the window fades out as its panel shrinks to 94% (tutRewardClose). */
+  .tut-reward.is-closing{animation:trVeilOut .28s ease-in both; pointer-events:none;}
+  .tut-reward.is-closing .starter-modal{animation:trShrinkOut .28s cubic-bezier(.4,0,.7,.2) both;}
+  @keyframes trVeilOut{from{opacity:1;} to{opacity:0;}}
+  @keyframes trShrinkOut{from{transform:scale(1);} to{transform:scale(.94);}}
+  @media (prefers-reduced-motion: reduce){ .tut-reward.is-closing, .tut-reward.is-closing .starter-modal{animation:none;} }
   /* lightning on open ground + directional card light (2026-10-08) */
   .bf-bolt{position:absolute; inset:0; width:100%; height:100%; overflow:visible; pointer-events:none; z-index:7; animation:boltFlicker .5s steps(1) forwards;}
   .bf-bolt polyline{fill:none; stroke-linejoin:round; stroke-linecap:round;}
@@ -9883,12 +9893,15 @@ body.cq-opening .map-trail-svg{display:none !important;}
 @keyframes mapDropShadow{0%{transform:scale(.2); opacity:0;} 80%{transform:scale(1.15); opacity:.6;} 100%{transform:scale(1); opacity:0;}}
 @keyframes mapDrop{0%{translate:0 -260px; scale:1.25; opacity:0;} 15%{opacity:1;} 75%{translate:0 0; scale:1;} 85%{translate:0 -10px; scale:1.04 .94;} 100%{translate:0 0; scale:1;}}
 @keyframes tutReveal{from{opacity:0;} to{opacity:1;}}
+/* 2026-10-18: the Tutorial map opening up (tutMapOpenSlide): the locked markers' bramble rings fade in with their markers */
+.conquest-map-canvas .fxe-bramble, .conquest-map-canvas .fxe-wisps{transition:opacity .45s ease-out;}
+.conquest-map-canvas.tut-opening .fxe-bramble, .conquest-map-canvas.tut-opening .fxe-wisps{opacity:0;}
 @media (prefers-reduced-motion: reduce){ .conquest-map-canvas.tut-zoom-out{transition:none;} .conquest-map-canvas .tut-reveal, .conquest-map-canvas .map-node.map-drop{animation:none;} .conquest-map-canvas .map-node.map-drop-wait{opacity:1;} }
 .f2b-layer{position:fixed; inset:0; z-index:13000; pointer-events:none; transition:opacity .45s ease;}
 .f2b-layer.is-out{opacity:0;}
 .f2b-card{position:absolute; left:0; top:0; width:110px; opacity:0; will-change:transform;}
 .f2b-card .card-tile{width:110px !important; box-shadow:0 8px 16px rgba(0,0,0,.45);}
-.splash.fs-zoom{animation:fsZoom 1.3s cubic-bezier(.5,0,.3,1) forwards;}
+.splash.fs-zoom{animation:fsZoom 1.3s cubic-bezier(.5,0,.3,1) forwards; pointer-events:none;} /* 2026-10-18: the tutorial fight is already underneath it */
 @keyframes fsZoom{from{transform:scale(1); opacity:1;} 70%{opacity:.85;} to{transform:scale(1.35); opacity:0;}}
 #view-play.bf-fade-in{animation:bfFadeIn 1s ease both;}
 @keyframes bfFadeIn{from{opacity:0;} to{opacity:1;}}
@@ -10268,7 +10281,7 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 .sr-only{position:absolute !important; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap;}
 @media (prefers-reduced-motion: reduce){ .qf-ribbon{animation-duration:.01s;} }
 /* 2026-10-12: the tutorial's ghost card and hand while you hold a card */
-.coach-phantom{position:fixed; left:0; top:0; z-index:10050; pointer-events:none; filter:saturate(.7) drop-shadow(0 8px 14px rgba(0,0,0,.35));}
+.coach-phantom{position:fixed; left:0; top:0; z-index:10050; pointer-events:none; filter:drop-shadow(0 8px 14px rgba(0,0,0,.35));} /* 2026-10-18: no longer desaturated, so it looks like the highlighted card (shiny and all) */
 .coach-phantom .card-tile{width:100% !important; pointer-events:none;}
 .coach-phantom .cph-hand{position:absolute; left:58%; top:42%; font-size:34px; filter:drop-shadow(0 2px 3px rgba(0,0,0,.5));}
 /* 2026-10-12 field kit: the 🎒 pill in a fight and its pop-over */
@@ -37407,7 +37420,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'eaa68c3425d2', BUILD_CARD_HASH = '0d895345ed4ca62efd5512c769c8c686ef6e0c821a7acf3338be1e1e5aaee5c6';
+const BUILD_ID = 'e621164a9656', BUILD_CARD_HASH = '0d895345ed4ca62efd5512c769c8c686ef6e0c821a7acf3338be1e1e5aaee5c6';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -41128,6 +41141,7 @@ function battlefieldMapClass(m){
   // 2026-10-13 (UI audit: the Arena's board was a flat grey box): fights off the map borrow a map's ground, picked once per match.
   if(!mapId && m && m.mode !== 'tutorial'){ if(!m.bfMapId){ const ids = Object.keys(MAP_BATTLEFIELD_CLASS).filter(id=> MAP_ART_IDS.has(id) && id !== 'marena' && id !== 'mabyss'); m.bfMapId = ids.length ? ids[Math.floor(Math.random()*ids.length)] : null; } mapId = m.bfMapId; }
   const cls = (mapId && MAP_BATTLEFIELD_CLASS[mapId]) || '';
+  if(!cls && m && m.mode === 'tutorial') return 'bf-tutorial'; // 2026-10-18 (owner: "Make the tutorial background a bit greener"): a fresh-green tint (CSS)
   return cls && MAP_ART_IDS.has(mapId) ? cls + ' has-floor-art' : cls;
 }
 // 2026-09-29, per explicit request ("change its helper text from 'Not drafted, not bought' to a
@@ -53349,9 +53363,61 @@ function mapNodePositions(map){
   const auto = sec ? (()=>{ const pp = autoMapNodePositions(Object.assign({}, map, {nodes: map.nodes.filter(n=> !n.secret && !n.jumper)})); let k = 0; return map.nodes.map(n=> (n.secret || n.jumper) ? (n.fixedPos || {x:50, y:50}) : pp[k++]); })() : autoMapNodePositions(map);
   const base = auto.map((p, i)=> (map.nodes[i] && map.nodes[i].fixedPos) ? map.nodes[i].fixedPos : p);
   const ov = mapLayoutOverrides[map.id];
-  if(!ov) return base;
+  if(!ov) return tutSideCentred(map, base);
   const opening = map.id === 'm1' && !loadTutorial2Done();
-  return map.nodes.map((n,i)=> (!(opening && n.kind==='tutorial') && ov[n.key] && isFinite(ov[n.key].x) && isFinite(ov[n.key].y)) ? {x:+ov[n.key].x, y:+ov[n.key].y} : base[i]);
+  return tutSideCentred(map, map.nodes.map((n,i)=> (!(opening && n.kind==='tutorial') && ov[n.key] && isFinite(ov[n.key].x) && isFinite(ov[n.key].y)) ? {x:+ov[n.key].x, y:+ov[n.key].y} : base[i]));
+}
+// 2026-10-18 (owner: "We talked about showing T1 and T2 as central tutorials without considering the positions of T3-5 and only
+// shifting later, when you unlock the conquest maps"): while T-2…T-4 are off the Tutorial map (the two tutorials not both won yet),
+// T-0 and T-1 stand in the middle of the screen: the pair keeps its own shape (a little wider), centred, with no room kept for the
+// fights that aren't there. Once both are won the map opens up and every fight takes its real spot; the first visit after that
+// slides the two across (tutMapOpenSlide). The layout editor always shows the real spots.
+function tutSideCentred(map, pos){
+  try{
+    if(!map || map.id !== 'mtut' || (typeof conquestLayoutEdit !== 'undefined' && conquestLayoutEdit)) return pos;
+    if(!map.nodes.some(n=> tutSideNodeHidden(map, n))) return pos;
+    return tutPairCentred(map, pos);
+  }catch(e){ return pos; }
+}
+function tutPairCentred(map, pos){
+  const idx = map.nodes.map((n, i)=> n.kind === 'tutorial' ? i : -1).filter(i=> i >= 0 && pos[i]);
+  if(!idx.length) return pos;
+  const cx = idx.reduce((a, i)=> a + pos[i].x, 0)/idx.length, cy = idx.reduce((a, i)=> a + pos[i].y, 0)/idx.length;
+  const out = pos.slice();
+  idx.forEach(i=>{ out[i] = {x: +(50 + (pos[i].x - cx)*1.3).toFixed(2), y: +(52 + (pos[i].y - cy)*1.15).toFixed(2)}; });
+  return out;
+}
+// The first look at the opened-up Tutorial map (2026-10-18): T-0 and T-1 start where they stood (the middle) and glide to their real
+// spots; then the trail and T-2…T-4 fade in. It waits for the tutorial card window and the map's name card to go, plays once
+// (bramblewood_tut_map_opened_v1), and with reduced motion everything is simply in place.
+const TUT_MAP_OPEN_KEY = 'bramblewood_tut_map_opened_v1';
+function tutMapOpenSlide(map, positions){
+  try{
+    if(map.nodes.some(n=> tutSideNodeHidden(map, n)) || localStorage.getItem(TUT_MAP_OPEN_KEY)) return;
+    const cv = document.getElementById('conquestCanvas'); if(!cv) return;
+    if(reducedMotion()){ localStorage.setItem(TUT_MAP_OPEN_KEY, '1'); return; }
+    const from = tutPairCentred(map, positions);
+    const pair = map.nodes.map((n, i)=> n.kind === 'tutorial' ? {el: cv.querySelector(`.map-node[data-lkey="${n.key}"]`), a: from[i], b: positions[i]} : null).filter(x=> x && x.el && x.a && x.b);
+    if(!pair.length) return;
+    const rest = [...cv.querySelectorAll('.map-node, .map-trail-svg')].filter(el=> !pair.some(x=> x.el === el));
+    const restTo = rest.map(el=> getComputedStyle(el).opacity || '1'); // a locked marker stays dimmed (.is-gated)
+    pair.forEach(x=>{ x.el.style.left = x.a.x + '%'; x.el.style.top = x.a.y + '%'; });
+    rest.forEach(el=> el.style.opacity = '0');
+    cv.classList.add('tut-opening'); // the locked markers' bramble rings (fx siblings, added later) wait too (CSS)
+    let tries = 0;
+    const go = ()=>{
+      if(!cv.isConnected) return; // re-rendered or left: the next render tries again
+      const lay = document.getElementById('conquestLayout');
+      if((document.querySelector('.tut-reward') || tutorialRewardPopPending || (lay && lay.querySelector(':scope > .map-veil'))) && tries++ < 150){ setTimeout(go, 200); return; }
+      try{ localStorage.setItem(TUT_MAP_OPEN_KEY, '1'); }catch(e){}
+      pair.forEach(x=>{ const an = x.el.animate([{left: x.a.x + '%', top: x.a.y + '%'}, {left: x.b.x + '%', top: x.b.y + '%'}], {duration: 900, easing: 'cubic-bezier(.45,0,.2,1)', fill: 'forwards'});
+        an.onfinish = ()=>{ x.el.style.left = x.b.x + '%'; x.el.style.top = x.b.y + '%'; an.cancel(); }; });
+      rest.forEach((el, i)=>{ const an = el.animate([{opacity: 0}, {opacity: restTo[i]}], {duration: 450, delay: 700 + i*120, easing: 'ease-out', fill: 'forwards'});
+        an.onfinish = ()=>{ el.style.opacity = ''; an.cancel(); }; });
+      setTimeout(()=> cv.classList.remove('tut-opening'), 800);
+    };
+    setTimeout(go, 400);
+  }catch(e){}
 }
 function autoMapNodePositions(map){
   const tIdx = map.nodes.findIndex(n=>n.kind==='tutorial');
@@ -54513,6 +54579,7 @@ function renderConquestSubTab(body){
         setTimeout(()=>{ nodes.forEach(el=>{ el.classList.remove('map-drop-wait'); el.classList.add('map-drop'); }); setTimeout(()=> nodes.forEach(el=> el.classList.remove('map-drop')), reducedMotion() ? 0 : 900 + nodes.length * 90); }, reducedMotion() ? 0 : 1500); };
       let tries = 0; const waitVeil = ()=>{ const lay = document.getElementById('conquestLayout'); if(lay && lay.querySelector(':scope > .map-veil') && tries++ < 40){ setTimeout(waitVeil, 120); return; } begin(); };
       setTimeout(waitVeil, 150); } }
+  if(map.id === 'mtut' && !conquestLayoutEdit) tutMapOpenSlide(map, positions); // 2026-10-18: T-0 / T-1 slide from the middle to their spots, once
   const tooltipEl = document.getElementById('conquestTooltip');
   { const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body); }
   { const wb = document.getElementById('conquestWorldBtn'); if(wb) wb.onclick = ()=> openConquestWorld(body); }
@@ -56166,15 +56233,23 @@ function tutorialProgressText(p){
   return `${p.level ?? 0}/4 ${TUTORIAL_LEVELS[p.level] || ''}${p.faction ? ' · ' + p.faction : ''}${step}${tries}`;
 }
 function resolveFactionChoice(pick){
-  { const el0 = document.getElementById('factionScreen'); if(el0 && el0.hidden && matchState && matchState.mode === 'tutorial') return; } // a second tap
+  { const el0 = document.getElementById('factionScreen'); if(el0 && (el0.hidden || el0.classList.contains('fs-zoom')) && matchState && matchState.mode === 'tutorial') return; } // a second tap
   noteTutorialProgress({level:1, faction:pick, pickedAt:Date.now()});
   if(factionCountdownTimer){ clearInterval(factionCountdownTimer); clearTimeout(factionCountdownTimer); factionCountdownTimer = null; }
   saveFactionChoice(pick);
   const el = document.getElementById('factionScreen');
   saveTutorialStage(1);
-  const go = ()=>{ if(el){ el.hidden = true; el.classList.remove('fs-zoom'); } beginTutorialStage(1); fadeInBattlefield(); };
-  if(el && !el.hidden && !reducedMotion()){ try{ factionToBattleFx(pick, el, go); return; }catch(e){} }
-  go();
+  // 2026-10-18 (owner: "Skip the interim screen after clicking your faction. It should go straight in. That screen shows me my level
+  // and etc. Not a needed screen."): that screen was Home (level, XP, "Finish the tutorial to open the map"), rendered under the side
+  // picker on the way in and showing through while the picker zoomed and faded. The tutorial fight now starts at once, under the
+  // fading picker, so the picker opens straight onto the battlefield. Home is still rendered first (switchTab('home') on the way
+  // in), so nothing it sets up is lost.
+  const hide = ()=>{ if(el){ el.hidden = true; el.classList.remove('fs-zoom'); } };
+  const start = ()=>{ beginTutorialStage(1); fadeInBattlefield(); };
+  let fx = false;
+  if(el && !el.hidden && !reducedMotion()){ try{ factionToBattleFx(pick, el, hide); fx = true; }catch(e){} }
+  if(!fx) hide();
+  start();
 }
 // Into the first fight (2026-10-13, user: "After clicking the faction you want, it shows cards from the top right jumping to the
 // deck (bottom left) and at the same time, the screen 'zooms in', And then the battlefield fades in"): your tutorial cards arc
@@ -56620,6 +56695,16 @@ function tutRewardOverlay(cls){
   if(!reducedMotion()) ov.classList.add('is-popping');
   return ov;
 }
+// 2026-10-18 (owner: "Tutorial: After adding cards to my deck based on the window, that window should fade out while shrinking a
+// little"): the card windows close with the panel shrinking to 94% as the window fades (280 ms, CSS .is-closing); with reduced
+// motion they just go.
+function tutRewardClose(ov, done){
+  let fin = false; const end = ()=>{ if(fin) return; fin = true; ov.remove(); done && done(); };
+  if(reducedMotion() || !ov.isConnected){ end(); return; }
+  ov.classList.remove('is-popping'); ov.classList.add('is-closing');
+  ov.addEventListener('animationend', e=>{ if(e.target === ov) end(); });
+  setTimeout(end, 400); // in case the animation never reports back
+}
 function tutRewardCardHTML(d, i, extra){
   return `<div class="ss-card is-dealt ${extra||''}" style="--i:${i}"><span class="ss-glow" aria-hidden="true"></span>${cardTileHTML(d, {inPlay:true})}</div>`;
 }
@@ -56651,7 +56736,7 @@ function openStarterDeckStep(pick, onDone){
     let added = 0;
     // 2026-10-12 (10:57, user: "Dont reveal the deck size when you first 'add to deck'"): the box fills, but no count yet.
     const finish = ()=>{ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
-      btn.textContent = '✓ Deck ready'; setTimeout(()=>{ ov.remove(); onDone && onDone(); }, 700); };
+      btn.textContent = '✓ Deck ready'; setTimeout(()=> tutRewardClose(ov, onDone), 700); }; // 2026-10-18: fades out shrinking
     if(!hasGsap() || reducedMotion()){ finish(); return; }
     tiles.forEach((t, i)=>{
       const id = ids[i];
@@ -56688,7 +56773,7 @@ function openDeckTopUpStep(ids, onDone){
     let n = before; const tiles = [...ov.querySelectorAll('.ss-card')], br = box.getBoundingClientRect();
     ov.querySelectorAll('.tr-name').forEach(el=> el.classList.add('is-gone'));
     const finish = ()=>{ countEl.textContent = `${after}/${Math.max(DECK_SIZE, after)}`; const f = ov.querySelector('.ss-full'); if(f && after >= DECK_SIZE) f.hidden = false; try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){}
-      btn.textContent = '✓ Deck ready'; setTimeout(()=>{ ov.remove(); onDone && onDone(); }, 1500); };
+      btn.textContent = '✓ Deck ready'; setTimeout(()=> tutRewardClose(ov, onDone), 1500); }; // 2026-10-18: fades out shrinking
     if(!hasGsap() || reducedMotion()){ finish(); return; }
     tiles.forEach((t, i)=>{
       ssFlyTile(t, br, {scale:.25, opacity:0, duration:.5, delay:i*0.12, ease:'power2.in',
@@ -67365,7 +67450,7 @@ function coachBoardEl(pred, pid){
 // teaches initiative. A step only blocks the steps after it in its own part (`stage`).
 const GUIDED_STEPS = [
   {id:'g-hand', stage:1, block:true, text:TX('coach.these-are-your-cards'), anchor:()=> document.getElementById('handStrip')},
-  {id:'g-play', stage:1, action:true, text:TX('coach.drag-a-card-onto-the-field'), anchor:()=> document.querySelector('#handStrip .card-tile.playable'), done:m=> [1].some(p=> ['left','center','right'].some(s=> m.players[p].row[s].length))},
+  {id:'g-play', stage:1, action:true, text:TX('coach.drag-a-card-onto-the-field'), anchor:()=>{ const h = coachHighlightTile(); return (h && h.classList.contains('playable')) ? h : document.querySelector('#handStrip .card-tile.playable'); } /* 2026-10-18: the hint points at the highlighted card when it can be played */, done:m=> [1].some(p=> ['left','center','right'].some(s=> m.players[p].row[s].length))},
   {id:'g-castle', stage:1, block:true, text:TX('coach.the-enemy-castle-break-it-to'), anchor:()=> hqTileEl('B')},
   // g-mycastle removed 2026-10-12 (user: "In the tutorial, you talked about my castle health - skip that one").
   {id:'g-combat', stage:1, block:true, when:m=> m.round>=3, text:TX('coach.cards-hit-the-card-in-front'), anchor:()=> document.getElementById('battlefieldEl')},
@@ -67651,7 +67736,7 @@ function showCoachTip(tip, anchorEl){
     // holding the card - then it should show a phantom hand and card dragging that phantom card onto the battlefield position.
     // If they let go again, it's back to the original visual"): while a hand card is held, a ghost card and hand glide from it
     // to your row, over and over; letting go brings the pointer back.
-    if(tip.id === 'g-play') syncCoachPhantom(pointer);
+    if(tip.id === 'g-play') syncCoachPhantom(pointer, {prefer: coachHighlightTile}); // 2026-10-18: the highlighted card (see syncCoachPhantom)
     if(tip.id === 'pl-do') syncCoachPhantom(pointer, {to:'dropDiscard', always:true, pick:()=>{ const el = matchState && pitchLessonSpare(matchState); return el && el !== true ? el : null; }});
     b.style.setProperty('--arrow-x', Math.max(14, Math.min(bw-14, r.left + r.width/2 - x))+'px');
   };
@@ -67687,30 +67772,47 @@ let tutorialLock = null;
 let coachPhantom = null;
 // `opts.to` aims the phantom somewhere other than your row; `opts.always` shows it without a held card (the pitching lesson
 // drags a phantom card from your hand to the Graveyard on a loop, 2026-10-13, user: "players don't read").
+// 2026-10-18 (owner: "During the tutorial, they highlight a card for me to place on the field. The card drag animation they show is
+// not the same card"): `opts.prefer` names the card the tutorial wants played (the golden one); the phantom is a copy of THAT card,
+// gliding from where it really sits in the hand to the empty slot it should go in. The copy keeps its look (shiny, foil, frame):
+// it sits inside display:contents copies of the hand's ancestors (mountDragGhost) and is no longer desaturated. A different source
+// card rebuilds it (it used to keep the first card it was built from until it was let go).
+function coachHighlightTile(){
+  const m = typeof matchState !== 'undefined' ? matchState : null;
+  return (m && m._tutHlUid != null && !m._tutHlDone && document.querySelector(`#handStrip .card-tile[data-handuid="${m._tutHlUid}"]`)) || document.querySelector('#handStrip .card-tile.tut-highlight') || null;
+}
+function dropCoachPhantom(){ if(coachPhantom){ try{ removeDragGhost(coachPhantom); }catch(e){ coachPhantom.remove(); } coachPhantom = null; } }
 function syncCoachPhantom(pointer, opts){
   opts = opts || {};
   const m = typeof matchState !== 'undefined' ? matchState : null;
   let held = document.querySelector('#handStrip .card-tile.dragging') || (m && m.selectedUid != null ? document.querySelector(`#handStrip [data-handuid="${m.selectedUid}"]`) : null);
   if(!held && opts.always){ if(opts.pick) held = opts.pick(); else { const tiles = [...document.querySelectorAll('#handStrip .card-tile[data-handuid]')]; held = tiles.find(t=> !t.classList.contains('playable')) || tiles[0] || null; } }
+  // the card to show: the highlighted one when there is one (2026-10-18), else the one in your hand
+  const want = held && opts.prefer ? opts.prefer() : null, src = (want && want.isConnected && want.classList.contains('playable')) ? want : held;
   const row = document.getElementById(opts.to || 'rowMine');
-  if(!held || !row || reducedMotion()){ if(coachPhantom){ coachPhantom.remove(); coachPhantom = null; } if(pointer) pointer.style.opacity = ''; return; }
-  if(coachPhantom && coachPhantom.isConnected) return;
+  if(!src || !row || reducedMotion()){ dropCoachPhantom(); if(pointer) pointer.style.opacity = ''; return; }
+  if(coachPhantom && coachPhantom.isConnected && coachPhantom.__src === src) return;
+  dropCoachPhantom();
   // 2026-10-13 (user: "The card shadows are way too big. Reduce it to the same size as the card"): the held card is lifted and
   // scaled up, so its on-screen box is ~25% bigger than the card itself; the phantom uses the card's own (unscaled) width.
-  const hr = held.getBoundingClientRect(), rr = row.getBoundingClientRect(), w = Math.min(96, held.offsetWidth || (hr.width || 90) * 0.8);
+  const hr = src.getBoundingClientRect(), w = Math.min(96, src.offsetWidth || (hr.width || 90) * 0.8);
   const ph = document.createElement('div'); ph.className = 'coach-phantom'; ph.setAttribute('aria-hidden', 'true');
-  const ghost = held.cloneNode(true); ghost.classList.remove('dragging', 'coach-anchor', 'coach-locked', 'tut-highlight'); ghost.style.transform = 'none'; ghost.removeAttribute('id'); ghost.removeAttribute('draggable');
+  const ghost = src.cloneNode(true); ghost.classList.remove('dragging', 'armed', 'coach-anchor', 'coach-locked', 'tut-highlight', 'tut-hl-cand'); ghost.style.transform = 'none'; ghost.style.opacity = ''; ghost.style.visibility = '';
+  ['id', 'draggable', 'data-handuid', 'tabindex', 'role'].forEach(a=> ghost.removeAttribute(a));
   ph.appendChild(ghost); const hand = document.createElement('span'); hand.className = 'cph-hand'; hand.textContent = '👆'; ph.appendChild(hand);
-  ph.style.width = w + 'px'; document.body.appendChild(ph);
-  const sx = hr.left + hr.width/2 - w/2, sy = hr.top, ex = rr.left + rr.width/2 - w/2, ey = rr.top + rr.height/2 - (held.offsetHeight || hr.height || 120)/2;
+  ph.style.width = w + 'px'; mountDragGhost(ph, src);
+  // the end point: your row's open slot (the dashed ✦ box) when it has one, else the middle of the row (or of opts.to)
+  const slot = !opts.to ? row.querySelector('.slot-target, .center-slot-empty') : null, sr = slot && slot.getBoundingClientRect();
+  const tr = (sr && sr.width) ? sr : row.getBoundingClientRect(), phH = ph.offsetHeight || src.offsetHeight || hr.height || 120;
+  const sx = hr.left + hr.width/2 - w/2, sy = hr.top, ex = tr.left + tr.width/2 - w/2, ey = tr.top + tr.height/2 - phH/2;
   try{ ph.animate([
-      {transform:`translate(${sx}px, ${sy}px) scale(.9)`, opacity:0}, {transform:`translate(${sx}px, ${sy - 12}px) scale(1)`, opacity:.75, offset:.12},
-      {transform:`translate(${ex}px, ${ey}px) scale(1)`, opacity:.75, offset:.75}, {transform:`translate(${ex}px, ${ey + 6}px) scale(.96)`, opacity:0}],
+      {transform:`translate(${sx}px, ${sy}px) scale(.9)`, opacity:0}, {transform:`translate(${sx}px, ${sy - 12}px) scale(1)`, opacity:.85, offset:.12},
+      {transform:`translate(${ex}px, ${ey}px) scale(1)`, opacity:.85, offset:.75}, {transform:`translate(${ex}px, ${ey + 6}px) scale(.96)`, opacity:0}],
       {duration:1500, iterations:Infinity, easing:'ease-in-out'}); }catch(e){ ph.style.transform = `translate(${ex}px, ${ey}px)`; }
-  coachPhantom = ph; if(pointer) pointer.style.opacity = '0';
+  ph.__src = src; coachPhantom = ph; if(pointer) pointer.style.opacity = '0';
 }
 function hideCoachTip(){
-  if(coachPhantom){ coachPhantom.remove(); coachPhantom = null; }
+  dropCoachPhantom();
   tutorialLock = null;
   if(coachShield){ coachShield.remove(); coachShield = null; }
   if(!coachOpen) return;

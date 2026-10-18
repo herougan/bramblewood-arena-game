@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (Package T: tutorial and onboarding)
+- **The "drag a card onto the field" hint shows the highlighted card.** The step now points at the golden card (it pointed at the first playable one), and the phantom that glides to the field is a copy of that card (its art, name, frame, and its shiny look; it is no longer greyed out), moving from where it sits in your hand to the open ✦ slot. It used to copy whichever card you were holding and aim at the middle of the row.
+- **No in-between screen after picking a side.** The screen that showed your level ("Level 0 · 0/200 XP · Finish the tutorial to open the map") was Home showing through while the side picker zoomed and faded. The tutorial fight now starts at once under the fading picker, so the picker opens straight onto the battlefield (the cards still fly into your deck).
+- **The tutorial board is greener:** a fresh spring-green tint (`.battlefield.bf-tutorial`), mixed into the theme's colours.
+- **Tutorial map: T-0 and T-1 sit in the middle** while T-2…T-4 are off the map (until both tutorials are won), with no room kept for the others. When the map opens up, the first visit slides the two to their real spots and the trail and T-2…T-4 fade in (once, `bramblewood_tut_map_opened_v1`; it waits for the card window; no slide with reduced motion). The layout editor always shows the real spots.
+- **The tutorial's card windows ("Your first deck", "Two more cards!") close by fading out while shrinking a little** (to 94% over 280 ms) after Add to deck, instead of vanishing; with reduced motion they just go.
+- `tests/tutorial-2026-10-18.js` (in `tests/run-all.sh`).
+
 ## 2026-10-18 (Package V2: Wave and Awash are one, Wave N)
 - **One mechanic, Wave N** (the owner: "Wave and Awash refer to the same skill. We can call all of them wave for now"). The pushed unit rides N columns (the skill's way, or the inward-leaning pick for "Either way" and the field). If it **crashes into a unit** on the way (a pinned or Webbed one, or a cage, too), it stops beside it and **both take N**. The board's edge stops it; with no fixed way, an edge right beside it turns it the other way. **Nothing swaps any more**, and a unit in the way no longer turns a no-fixed-way Wave back. On packed (gravity) rows it crashes into its neighbour. A pinned or Webbed unit still isn't pushed.
 - **The Wave skill takes an N**: the editor's Wave row is a way plus a number (`effects.waveN`, left off the card at 1; a bare number in `effects.wave` also counts as N with no fixed way). Card text, tooltip and badge show "Wave N" and describe the crash.
