@@ -2,6 +2,9 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (i18n catch-up, part F)
+- **Today's new texts are translated in all 12 packs:** the guild, invite and network-error messages (couldn't load / leave / set up, Retry, Retrying…, matchmaking unreachable), the sign-in screen's guest line, the leaderboard's empty state and rating notes, "An egg! You'll need a place to hatch it.", "There's a Nest on Map {n}{where}." and the Creative / Creativity keyword texts, plus the guild screen's "Join a Guild" and "Join" so the half-done-guild message names words on screen (`tools/i18n_2026_10_18f.py`, 32 strings each). Coverage: 325/325 plain game texts and 171/171 templates per pack, no dead keys (13 texts stay English on purpose).
+
 ## 2026-10-18 (Package B: the base is the bramble)
 - **Each side's base is called the bramble in everything players read** (owner: "Call it bramble now, not castle, officially"): skill and Codex text, the battle log (it said "HQ"), tooltips, toasts, coach and tutorial tips, results and ranks, the Forge tab (🏰 Brambles), the deck and bramble pickers, the Autobattler, dungeons ("🗝️ Bramble 2/5", "A new bramble rises"), raids ("Your bramble & Co."), the Wildpaths, the Effects Lab labels, the splash line ("Burn their bramble to the ground"), and card, bramble and raid text in `canonical/`. Code names (`castle`, `hq`, `hitHQ`, `castleSkin`…), CSS classes, data keys and save keys are unchanged.
 - **Left as "castle" on purpose:** the world's castle (the Outskirts' "castle walls", map flavour, card flavour about the old castle, a rival's taunt), and the starting bramble, whose name is "Castle".
