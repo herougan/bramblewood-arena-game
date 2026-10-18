@@ -261,8 +261,13 @@ const bandOf = (f, win)=>{ const b = G.skirmishTargetBand(f.map, f.n), pc = x=> 
 // too hard, every movable card in turn (strongest first, not only the top two: the card that walls this deck is often not the one with
 // the best card-pass score) gives up to 2 copies to the weakest card of the map's own fights, then the top two lose copies.
 function curveMoves(f, deck, easy){
-  if(easy) return deckMoves(f, deck, true).slice(0, 8);
   const defs = CARD_DEFS_BASELINE, cap = id=> Math.min(4, G.maxCopiesForRarity(defs[id].rarity));
+  if(easy){ // + a small deck (the Quiet Summit's 12-13 card flocks) grows with any of the six strongest themed cards, not only the top three
+    const base = deckMoves(f, deck, true).slice(0, 8); if(deckSize(deck) >= 20) return base;
+    const seen = new Set(base.filter(m=> m.type === 'add').map(m=> m.inn));
+    const extra = themedPool(f).filter(id=> !RARE_UP.has(defs[id].rarity) && (deck[id]||0) < cap(id) && !seen.has(id)).sort((a, b)=> strengthOf(b) - strengthOf(a)).slice(0, 6)
+      .map(inn=> ({type:'add', inn, k: Math.min(2, cap(inn) - (deck[inn]||0), 20 - deckSize(deck))}));
+    return base.concat(extra).filter(mv=> mv.k > 0).slice(0, 12); }
   const ids = Object.keys(deck).filter(id=> defs[id]).sort((a, b)=> strengthOf(b) - strengthOf(a));
   const movable = ids.filter(id=> !RARE_UP.has(defs[id].rarity) && id !== f.n.showcase && !KEEP.has(id));
   const ownIds = new Set(MAPS.filter(mm=> mm === f.m || mm === mainOf(f.m) || (mm.sub && mm.parent === mainOf(f.m).id)).flatMap(mm=> mm.nodes.flatMap(x=> Object.keys(x.deck||{}))));
@@ -272,9 +277,13 @@ function curveMoves(f, deck, easy){
   if(deckSize(deck) > 12) movable.slice(0, 2).forEach(out=> moves.push({type:'remove', out, k: Math.min(2, deck[out])}));
   return moves.filter(mv=> mv.k > 0).slice(0, 9);
 }
+const SHIELD_CAP = +opt('shieldcap', 0); // --shieldcap=K: an easy fight's Shield goes no higher than the rule x K (at least 40); round 2 used 4
 function curveTune(f, band, steps){
   const want = band.t * 100, lo = band.lo * 100, hi = band.hi * 100, AIM = Math.min(4, (hi - lo) / 2 - 1), trail = [];
   const off = w=> Math.abs(w - want), good = w=> off(w) <= AIM && w >= lo && w <= hi;
+  // progress: the gap to the target, plus (10 points a whole bramble) how much your bramble is hurt, so a fight stuck at 100% (or 0%)
+  // still has a way down (up): a move that makes the CPU hit harder counts before it costs you a game
+  const P = (r, easy)=> off(r.win) + 10 * (easy ? 1 - r.hpLost / 100 : r.hpLost / 100);
   const T = (nn, what)=>{ const r = measure(f, nn, N, TUNE_SEED); trail.push({what, win: r.win}); return r; };
   let node = f.n, cur = T(node, 'start'); const moves = [];
   const deckRound = (maxSteps, coarse)=>{
@@ -283,10 +292,10 @@ function curveTune(f, band, steps){
       for(const mv of curveMoves(f, node.deck, easy)){
         const nd = applyMove(node.deck, mv); if(!rareQuarterOk(f, nd) || deckSize(nd) < Math.min(12, deckSize(node.deck))) continue; // never shrink a deck under 12 (a smaller one stays its size)
         const nn = Object.assign({}, node, {deck: nd}), r = T(nn, mv);
-        if(!best || off(r.win) < off(best.r.win)) best = {mv, nn, r};
+        if(!best || P(r, easy) < P(best.r, easy)) best = {mv, nn, r};
         if(good(best.r.win)) break;
       }
-      if(!best || off(best.r.win) > off(cur.win) - 2) break; // each move must close the gap by 2+ points
+      if(!best || P(best.r, easy) > P(cur, easy) - 2) break; // each move must close the gap by 2+ points (a saturated fight: by your bramble's damage, P)
       node = best.nn; cur = best.r; moves.push(best.mv);
     }
   };
@@ -295,7 +304,7 @@ function curveTune(f, band, steps){
     if(good(cur.win)) return;
     const base = cur.shield, easy = cur.win > want, rule = G.ruleShieldOf(node);
     if(!easy && base <= 0) return;
-    let a = easy ? base + 1 : 0, b = easy ? Math.max(40, rule * 5, base + 40) : base - 1, best = null;
+    let a = easy ? base + 1 : 0, b = easy ? (SHIELD_CAP ? Math.max(base, 40, rule * SHIELD_CAP) : Math.max(40, rule * 5, base + 40)) : base - 1, best = null;
     for(let it = 0; it < 8 && a <= b; it++){
       const sv = Math.floor((a + b) / 2), nn = Object.assign({}, node, {shieldOverride: sv}), r = T(nn, {shield: sv});
       if(!best || off(r.win) < off(best.r.win) || (off(r.win) === off(best.r.win) && Math.abs(sv - base) < Math.abs(best.sv - base))) best = {sv, r, nn};
