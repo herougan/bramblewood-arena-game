@@ -699,7 +699,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!attDef || !attDef.effects) return 1;
     let f = 1;
     if(attDef.effects.feeble) f *= 0.5;
-    if(attDef.effects.mighty) f *= 2;
+    if(attDef.effects.mighty && !quietOn()) f *= 2; // no Mighty ×2 under Quiet Contemplation (2026-10-19); Fragile, the target's own, stays
     return f;
   }
   function defenderDamageFactor(defId){
@@ -777,6 +777,23 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function confusedFumbles(c, side, events, what){
     if(!(c && c.confused > 0) || rnd() >= 0.5) return false;
     if(recordEvents && events) events.push({type:'confusedWhiff', side, defId:c.defId, uid:c.uid, what});
+    return true;
+  }
+  // Quiet Contemplation (2026-10-19, package RV, owner 00:19: "Quiet Contemplation on Map 21's boss: no 2x and re-enablement
+  // effects."): rules.quietContemplation, the field of the Cathedral Eagle's fight (21-6). While it is on, nothing doubles and
+  // nothing gets a second go. Doubling, blocked: Headwind (a Flyer's triggers and skills twice), Twin Strike and Frenzy's second
+  // swing, Twin Shot's second arrow, Twin (the copy on arrival), Echoing Wood's copy, Crit, an Expose counter's crit (the counter
+  // stays), Rage, Tall Grass's double Backstab / Pounce, Supreme Tide (plain Tide bonuses instead) and Double Time (1 play a turn).
+  // Re-enablement, blocked: extra turns (Fast Forward N, the Tailwind spell, a strong wind's Tailwind, a Swimmer's Quick Attack on
+  // a Flood) and Wildpath's Second Pitch (a second pitch in a turn). Not counted as either (they stay): plain Wait reductions
+  // (Hasten, Reduce Wait), multi-target skills (Volley, Sweep, Fork, a trigger's N targets), weakness (double damage of a type),
+  // Boomerang's return (it is that round's attack), Banana / Durian snacks, a Charge's cycle, and Revive (once, and a true death).
+  // Each blocked discrete event logs {type:'quiet', what, uid} ("🧘 Quiet Contemplation stills X."); the always-on ones (Rage, Tall
+  // Grass, Supreme Tide, Crit's roll) are just off, with no line.
+  function quietOn(){ return !!rules.quietContemplation; }
+  function quietStills(c, side, events, what){
+    if(!quietOn()) return false;
+    if(recordEvents && events) events.push({type:'quiet', side, defId:c ? c.defId : null, uid:c ? c.uid : null, what});
     return true;
   }
   // 2026-10-16 (user: "Should sandstorm also have windy rules? I think so." / "glass-storm: sandstorm + all units are buffeted for random 1-3
@@ -1018,7 +1035,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Supreme Tide (2026-10-14, user: "Blue Dragon - Has Supreme Tide!"): a Tide unit whose Tide bonuses are doubled (Flow +2 Attack,
   // Ebb +2 Armor) and always on, both at once, every round: before the tide starts, on Flow, on Ebb, under Perma-tide. Nothing that
   // moves the tide can take them away.
-  function supremeTideOf(card){ const e = card && (CARD_DEFS[card.defId]||{}).effects; return !!(e && e.supremeTide); }
+  function supremeTideOf(card){ const e = card && (CARD_DEFS[card.defId]||{}).effects; return !!(e && e.supremeTide) && !quietOn(); } // Quiet Contemplation (2026-10-19): plain Tide bonuses
   // Leylines I (2026-10-16, user: "Tide default becomes +3/+0 // Armor 3"): Flood +3 Attack, Ebb Armor 3, High Tide +3 and Armor 3; Supreme Tide 3 too.
   function tideAtk(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return leyZeit ? 3 : 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? (leyZeit ? 3 : 2) : t === 'flow' ? (leyZeit ? 3 : 1) : 0; } // Tide – {…}: its facets instead (2026-10-15)
   function tideArmor(card){ if(!isTide(card)) return 0; if(supremeTideOf(card)) return leyZeit ? 3 : 2; if(hasTideGrant(effectsOf(card))) return 0; const t = getTide(); return t === 'high' ? (leyZeit ? 3 : 2) : t === 'ebb' ? (leyZeit ? 3 : 1) : 0; }
@@ -1077,6 +1094,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function windSideOf(pid){ return !windNow ? null : (pid === windFrom ? 'tail' : 'head'); }
   function isFlyingCard(c){ const e = c && (CARD_DEFS[c.defId]||{}).effects; return !!(e && e.flying); }
   function headwindDouble(card, pid){ return windNow && isFlyingCard(card) && !ashyNow() && windSideOf(pid) === 'head'; } // Ashy grounds the flyers (2026-10-17)
+  // 2026-10-19 (package RV): Headwind's ×2, unless Quiet Contemplation stills it (logged once per doubling it stops).
+  function headwindTwice(card, pid, side, events){ return headwindDouble(card, pid) && !quietStills(card, side, events, 'headwind'); }
   // Seeing (2026-10-13, 10:57 list: "Sun-shyness ... Blind during the day. Night-blindness - blind at night. Perma-blind in cave.
   // ... normal units are only blind in complete darkness"): night alone no longer dims anyone. A unit swings blind (misses 1 in
   // 2, like Blind) when: the fight is in complete darkness (rules.dark: caves, the abyss) and it has no Darksight, or it is
@@ -1628,7 +1647,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Actions per turn (2026-10-11, user: "New game modifier - number of actions per turn"): rules.actions plays a turn
   // (1 by default). Each play counts; the turn's play is used up once the count reaches it. The count resets itself on a
   // new round, so every place that clears playedThisTurn keeps working.
-  const ACTIONS = Math.max(1, Math.round(Number(rules.actions)||1));
+  // Quiet Contemplation (2026-10-19, package RV): no Double Time, one play a turn (and so no second-player bonus for it, below).
+  const ACTIONS = rules.quietContemplation ? 1 : Math.max(1, Math.round(Number(rules.actions)||1));
   function markPlayed(pl){
     if(pl.playsTurn !== turnNo){ pl.playsTurn = turnNo; pl.playsThisTurn = 0; }
     pl.playsThisTurn += 1;
@@ -1637,6 +1657,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // What the side that plays second gets for it: N actions a turn → N extra cards, N-1 castle Health, N-2 Lumber.
   function secondPlayerBonus(n){ n = Math.max(1, Math.round(Number(n)||1)); return {cards:n, life:n-1, lumber:Math.max(0, n-2)}; }
   function applySecondPlayerBonus(pl, side, stats, events){
+    if(quietOn() && Number(rules.actions) > 1) return {cards:0, life:0, lumber:0}; // 2026-10-19: Double Time is off, so nothing to make up for
     const b = secondPlayerBonus(ACTIONS);
     draw(pl, b.cards, side, stats, events);
     if(b.life > 0){ pl.hq.maxHp += b.life; pl.hq.hp += b.life; }
@@ -1776,7 +1797,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function leaderOnBoard(pl, except){ return !!pl && allBoardCards(pl).some(c=> c && c !== except && c.hp > 0 && !c.cageOf && (c.isLeader || c.gladiatorLeader || (((CARD_DEFS[c.defId]||{}).effects)||{}).leader)); }
   // Every swing at the castle: the situational bonuses count (the day/night, aura and resource bonus, Inspired, Flow), and
   // Rage doubles it (user, 2026-10-12: "Rage doubles the unit's attack, including against castles").
-  function castleSwingAmt(att, base){ let n = Math.max(0, base + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att) - chokeOf(att)); if(isRaging(att)) n *= 2; return n; } // − Sulphur Fumes' choke (2026-10-17)
+  function castleSwingAmt(att, base){ let n = Math.max(0, base + phaseBonus(att) + (att.inspired||0) + tideAtk(att) + firstBloodBonus(att) - chokeOf(att)); if(isRaging(att) && !quietOn()) n *= 2; return n; } // − Sulphur Fumes' choke (2026-10-17); no Rage ×2 under Quiet Contemplation (2026-10-19)
   // First blood (2026-10-12, user: "In savannah, 1 random quick enemy per turn gets the first blood bonus of +1 and at the boss,
   // +2 damage. Only 1 unit on the field can get this bonus, so if you have a quick unit that goes first before theirs, they
   // dont get it"): rules.firstBlood N. The first Quick unit to swing in a round, on either side, hits +N; nobody else does.
@@ -2152,7 +2173,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // hit's damage) and uses up 1 counter, instead of +1. A swing that already rolled its own Crit isn't doubled twice (the
     // counter is still used). Attacks at it still can't miss, so every counter turns into a crit.
     let exposedCrit = false;
-    if(targetCard.exposed>0){ const already = !!(currentCritOn && attCard && attCard === currentAttacker); useExposed(targetCard, !already); if(!already){ amt = amt * 2; exposedCrit = true; } }
+    // Quiet Contemplation (2026-10-19): the counter is still used up, but the hit isn't doubled.
+    if(targetCard.exposed>0){ const already = !!(currentCritOn && attCard && attCard === currentAttacker) || quietOn(); useExposed(targetCard, !already); if(!already){ amt = amt * 2; exposedCrit = true; } }
     // Scar (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Mark"): unlike Expose, this
     // NEVER clears on its own -- every future hit this card takes gets the bonus, permanently
     // (until the card dies). Stacks additively each time an attacker with the Scar keyword
@@ -2160,7 +2182,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(targetCard.scar>0) amt += targetCard.scar;
     if(attCard){ const sb = swarmBonus(attCard) + defianceBonus(attCard) + phaseBonus(attCard) + (attCard.inspired||0) + tideAtk(attCard) + firstBloodBonus(attCard) - chokeOf(attCard); if(sb) amt = Math.max(0, amt + sb); } // − Sulphur Fumes' choke (2026-10-17)
     // (Ebb's old "1 less per hit" is now +1 Armour, in nominalArmor below; 2026-10-12)
-    if(attCard && isRaging(attCard)) amt = amt * 2;
+    if(attCard && isRaging(attCard) && !quietOn()) amt = amt * 2; // not under Quiet Contemplation (2026-10-19); Rage's half damage taken stays
     // Feeble/Mighty (2026-09-29): unconditional attacker-side multiplier, applied before the
     // target's own Resist/Weakness/Fragile/Sturdy factor below.
     const atkFactor = attackerDamageFactor(attDef);
@@ -2279,7 +2301,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // matching the pre-existing behavior — only melee combat runs the full pipeline).
   const EXPOSE_TICKS = new Set(['poison', 'bleed', 'decay', 'curse', 'chilli', 'recoil', 'strangle']); // + Strangle's squeeze (2026-10-16) // status ticks don't use up Exposed (2026-10-15)
   function damageCardFlat(card, amount, dmgType, attDefId, attUid){
-    if(card.exposed>0 && !EXPOSE_TICKS.has(dmgType)){ useExposed(card, true); amount = amount * 2; } // Exposed: ranged/flat hits too, one counter used up (a Poison/Bleed tick isn't a hit); 2026-10-16 (user: "that hit is guaranteed a crit"): a crit (double), not +1
+    if(card.exposed>0 && !EXPOSE_TICKS.has(dmgType)){ useExposed(card, !quietOn()); if(!quietOn()) amount = amount * 2; } // (no ×2 under Quiet Contemplation, 2026-10-19) // Exposed: ranged/flat hits too, one counter used up (a Poison/Bleed tick isn't a hit); 2026-10-16 (user: "that hit is guaranteed a crit"): a crit (double), not +1
     const attDef = attDefId ? CARD_DEFS[attDefId] : null;
     // King Slayer applies to ranged/flat hits too, same "applies everywhere, not just melee"
     // precedent Expose's own comment just above already sets. No dedicated VFX event fires from
@@ -3222,7 +3244,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(sp.do === 'hasten' || sp.do === 'tailwind') mine.forEach(c=>{ if(c.wait > 0){ const w = c.wait; c.wait = Math.max(0, c.wait - n); hit.push({uid:c.uid, amount:w - c.wait}); } });
     // Tailwind (2026-10-12, user: "Tailwind should do the same for Flyers"): Hasten, and every Flyer of yours also gets one
     // Fast Forward turn at the start of the next combat.
-    if(sp.do === 'tailwind') mine.forEach(c=>{ const e = (CARD_DEFS[c.defId]||{}).effects || {}; if(e.flying){ c.ffCounters = (c.ffCounters||0) + 1; if(recordEvents && events) events.push({type:'statusFx', kind:'tailwind', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } });
+    if(sp.do === 'tailwind') mine.forEach(c=>{ const e = (CARD_DEFS[c.defId]||{}).effects || {}; if(e.flying && quietStills(c, sideOf(pid), events, 'tailwind')) return; /* Quiet Contemplation (2026-10-19): Hasten only */ if(e.flying){ c.ffCounters = (c.ffCounters||0) + 1; if(recordEvents && events) events.push({type:'statusFx', kind:'tailwind', side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } });
     else if(sp.do === 'mend') mine.forEach(c=>{ const h = Math.min(n, c.maxHp - c.hp); if(h > 0){ c.hp += h; hit.push({uid:c.uid, amount:h}); } });
     else if(sp.do === 'sap') foes.forEach(c=>{ const a = Math.min(n, c.atk); if(a > 0){ c.atk -= a; c.baseAtk = Math.max(0, (c.baseAtk||0) - a); hit.push({uid:c.uid, amount:a}); } });
     if(recordEvents && events) events.push({type:'spell', side:sideOf(pid), defId:def.id, action:sp.do, amount:n, targets:hit});
@@ -3860,7 +3882,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       else if(t.do === 'rebuild' && pl.hq && pl.hq.hp > 0){ const h = Math.min(Math.max(0, Math.floor(Number(amt)||0)), pl.hq.maxHp - pl.hq.hp); // Rebuild castle (2026-10-17): never above max
         if(h > 0){ pl.hq.hp += h; rebuild.push({type:'rebuild', side:sideOf(pid), defId:card.defId, uid:null, amount:h, n:Math.floor(Number(amt)||0), trigger:true, hp:pl.hq.hp, maxHp:pl.hq.maxHp}); } }
     });
-    if(pl.perks && pl.perks.secondPitch) pl.perks.secondPitch = false; // Wildpath "Second Pitch": once a fight, a second pitch this turn
+    if(pl.perks && pl.perks.secondPitch && !quietStills(null, sideOf(pid), events, 'secondPitch')) pl.perks.secondPitch = false; // Wildpath "Second Pitch": once a fight, a second pitch this turn (not under Quiet Contemplation, 2026-10-19: the perk waits)
     else pl.discardUsedThisTurn = true;
     try{ firePitchTriggers(players, sideOf, pid, card.defId, stats, events); }catch(e){}
     return {defId:card.defId, resource:y.resource, amount:y.amount, gained, darkPoints, discardGains, rebuild};
@@ -4330,7 +4352,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const pScale = def.effects.pounce === 'attack' || def.effects.pounce === 'health' ? def.effects.pounce : null;
       let pAmt = pScale === 'attack' ? Math.max(0, effAtk(boardCard)) : pScale === 'health' ? Math.max(0, boardCard.hp|0) : (Number(def.effects.pounce)||0);
       // 2026-10-16: High Canopy / Undergrowth +2 ("Pounce does extra damage"), then Tall Grass doubles it ("Backstab and pounce does 2x damage").
-      if(pAmt > 0 || canopyPounceBonus()){ pAmt += canopyPounceBonus(); if(rules.tallGrass) pAmt *= 2; }
+      if(pAmt > 0 || canopyPounceBonus()){ pAmt += canopyPounceBonus(); if(rules.tallGrass && !quietOn()) pAmt *= 2; }
       boardCard.pounceN = pAmt;
       const pev = {type:'pounce', side:sideOf(playerId), defId:boardCard.defId, uid:boardCard.uid, amount:pAmt, scale:pScale, targetSide:sideOf(otherId(playerId))};
       if(recordEvents && events) events.push(pev);
@@ -4351,7 +4373,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     noteTideCard(def);
     // Twin (2026-10-14, user: "Summon a twin on play: For 2 creatures, an early game trickster (base set) and a mutated beast in late
     // game"): when it arrives, a token copy of it (same stats and skills, minus Twin) appears in the nearest free slot.
-    if(def.effects.twin && !boardCard.isTwin){ const t = spawnBeside(players, sideOf, playerId, boardCard, twinDefOf(boardCard.defId), stats, events, 'twin');
+    if(def.effects.twin && !boardCard.isTwin && !quietStills(boardCard, sideOf(playerId), events, 'twin')){ const t = spawnBeside(players, sideOf, playerId, boardCard, twinDefOf(boardCard.defId), stats, events, 'twin');
       if(t){ t.isTwin = true; t.atk = boardCard.atk; t.baseAtk = boardCard.baseAtk; t.hp = boardCard.hp; t.maxHp = boardCard.maxHp; t.wait = boardCard.wait; } }
     // Sprout N (2026-10-14, user: "Growth unit tokens - 1/3. Very strong - empowered by Swarm"): when it arrives, N Growth Sprouts
     // (1/3 tokens that count toward every ally's Swarm) sprout beside it.
@@ -4546,7 +4568,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(Number(fx.twinShot) > 0){ const foes = liveFoesOf(enemy); const pool = foes.slice(), picks = [];
           while(picks.length < 2 && pool.length) picks.push(pool.splice(Math.floor(rnd()*pool.length), 1)[0]);
           if(picks.length === 1) picks.push(picks[0]);
-          for(let k = 0; k < 2; k++) shots.push({amount: Number(fx.twinShot) + fl17, dmgType: 'physical', twin: true, at: picks[k] || 'hq'}); }
+          const nTw = quietStills(c, sideOf(pid), events, 'twinShot') ? 1 : 2; // Quiet Contemplation (2026-10-19): one arrow
+          for(let k = 0; k < nTw; k++) shots.push({amount: Number(fx.twinShot) + fl17, dmgType: 'physical', twin: true, at: picks[k] || 'hq'}); }
         if(Number(fx.volley) > 0){ c.volleyClock = (c.volleyClock||0) + 1;
           if(c.volleyClock % 2 === 1){ const foes = liveFoesOf(enemy);
             (foes.length ? foes : ['hq']).forEach(t=> shots.push({amount: Number(fx.volley) + fl17, dmgType: 'physical', volley: true, at: t})); } }
@@ -4566,7 +4589,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(foes.length){ const t = foes[Math.floor(rnd()*foes.length)]; const amt = Number(fx.snipe === true ? 1 : fx.snipe)||1;
             if(recordEvents && events) events.push({type:'arrow', snipe:true, side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: t.uid, targetDefId: t.defId, amount: amt});
             fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, killCredit, c.uid, true); } } } }
-        if(headwindDouble(c, pid)) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice
+        if(shots.length && headwindTwice(c, pid, sideOf(pid), events)) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice (not under Quiet Contemplation, 2026-10-19)
         shots.forEach(shot=>{
           if(!(c.hp > 0)) return;
           let target;
@@ -4672,7 +4695,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(events){ shieldEvents = events; shieldSideOf = sideOf; } // Shield Call logs into whichever event list is live
     const pl = players[playerId], enemy = players[otherId(playerId)];
     const mySide = sideOf(playerId);
-    const reps0 = headwindDouble(boardCard, playerId) ? 2 : 1; // Headwind: a Flyer's triggers go off twice (2026-10-13)
+    const reps0 = (def.effects.triggers.some(t=> t.on===hook) && headwindTwice(boardCard, playerId, mySide, events)) ? 2 : 1; // Headwind: a Flyer's triggers go off twice (2026-10-13); not under Quiet Contemplation (2026-10-19)
     for(let rep0 = 0; rep0 < reps0; rep0++) def.effects.triggers.filter(t=>t.on===hook).forEach((t, i)=>{
       // Generic "once" flag: this exact trigger fires at most once for this
       // specific board-card INSTANCE (not the card definition, so every copy
@@ -4981,7 +5004,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const side = flankOrShorter(pl, findCardSide(pl, boardCard.uid) || 'left');
           const newUids = [];
           const newCards = [];
-          const echoN = (pl.perks && pl.perks.echo) ? (pl.perks.echo = false, 1) : 0; // Wildpath "Echoing Wood": the first token comes with a copy
+          const echoN = (pl.perks && pl.perks.echo && !quietStills(boardCard, mySide, events, 'echo')) ? (pl.perks.echo = false, 1) : 0; // Wildpath "Echoing Wood": the first token comes with a copy (not under Quiet Contemplation, 2026-10-19: the perk waits)
           for(let i=0;i<(t.count||1)+echoN;i++){ const nc = makeBoardCard(t.defId); pl.row[side].push(nc); newUids.push(nc.uid); newCards.push(nc); }
           if(recordEvents && events && newUids.length) events.push({type:'spawn', side:mySide, defId:t.defId, count:newUids.length, cause:'triggerSpawn', uids:newUids, lane:side, nearUid:boardCard.uid});
           // On Ally/Enemy Spawn (2026-09-27, "Spawn triggers now refer to those spawned from
@@ -5991,32 +6014,42 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     });
     if(!deadEntries.length) return;
     const deadCards = new Set(deadEntries.map(d=> d.card)); // 2026-10-19: see the row filter below
-    const spawns = [], freed = [], retributions = [], splits = [], relics = [];
+    // Revive's return (2026-10-19, package RV): out of the graveyard (or the Removal Zone, wherever its entry is now), back at 1 Health
+    // in the slot it died in, every status cleared, its Prayer tokens gone, the Removal Counter on. The kill-credit book's entry is
+    // spent (that kill was credited above), so its final death is credited to whoever lands that blow.
+    function reviveReturn(rv){ const {pl, card} = rv, mySide = sideOf(pl.id);
+      for(const z of [pl.graveyard, pl.exile]){ const k = z.indexOf(rv.entry); if(k >= 0){ z.splice(k, 1); break; } }
+      delete killCredit[card.uid];
+      card.revivedOnce = true; card.hasRemovalCounter = true;
+      card.hp = 1; card.killedBy = null; card.killedByDef = null; card.killedByPid = null;
+      card.poison = 0; card.decay = 0; card.exposed = 0; card.scar = 0; card.stunned = false;
+      card.frozen = 0; card.asleep = 0; card.paralyzed = 0; card.bleed = 0; card.prayerTokens = 0;
+      card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null; card.shellQuiet = null;
+      if(slotMode && Number.isInteger(rv.slot)) card.slot = rv.slot;
+      if(recordEvents && events) events.push({type:'revive', side:mySide, defId:card.defId, uid:card.uid}); }
+    const spawns = [], freed = [], retributions = [], splits = [], relics = [], revives = []; // revives: 2026-10-19 (package RV)
     deadEntries.forEach(({pl, side, card})=>{
       const mySide = sideOf(pl.id);
       if(card.cageOf){ freed.push({owner: card.cageOwner, leaderDefId: card.cageOf, slot: card.slot, hostSide: mySide, uid: card.uid}); return; } // a broken cage frees its leader
       const cdef = CARD_DEFS[card.defId];
-      // Revive (once) — a "named skill" preset (2026-09-14): the FIRST time this card would
-      // die, it comes back instead — restored to 1 HP, every status cleared, no death/kill/
-      // bounty/onDeathSpawn/onDeath-trigger bookkeeping at all, because it didn't actually
-      // die. It's tagged with a Removal Counter (card.hasRemovalCounter): the NEXT time it
-      // would die after that, it skips the graveyard entirely and goes straight to the
-      // Removal Zone instead (see the graveyard-vs-exile decision below) — a real, final death.
-      if(cdef.effects && cdef.effects.revive && !card.revivedOnce && !card.nullified){ // a Nullify kill: no Revive (2026-10-14)
-        // 2026-10-18 (owner, 10:33: "Kill answered by revive still triggers On Kill"): the killer's On Kill still fires for a kill
-        // that Revive answers, as it did before R3-WP1 (still no kill stat, Crown or Midas: the unit didn't die). Its book entry is
-        // spent here, so the unit's real death later is credited to whoever lands that blow.
-        { const rc = killCredit[card.uid] || killerCreditOf(players, sideOf, pl, card);
-          if(rc && kills) rc.forEach(k=> kills.add(k)); delete killCredit[card.uid]; }
-        card.revivedOnce = true;
-        card.hasRemovalCounter = true;
-        card.hp = 1; card.killedBy = null; card.killedByDef = null; card.killedByPid = null;
-        card.poison = 0; card.decay = 0; card.exposed = 0; card.scar = 0; card.stunned = false;
-        card.frozen = 0; card.asleep = 0; card.paralyzed = 0; card.bleed = 0;
-        card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null; card.shellQuiet = null;
-        if(recordEvents && events) events.push({type:'revive', side:mySide, defId:card.defId, uid:card.uid});
-        return;
-      }
+      // Revive (once) — a "named skill" preset (2026-09-14): the FIRST time this card dies, it comes back — restored to 1 HP,
+      // every status cleared — tagged with a Removal Counter (card.hasRemovalCounter): the NEXT time it dies, it skips the
+      // graveyard and goes straight to the Removal Zone — a real, final death.
+      // 2026-10-19 (package RV, owner 00:19: "Revive is true death, but Rescue no."): that first death is a true death now, not a
+      // death that never happened. Everything a death does happens: the deaths stat, Darkness from the loss and the Ritual count,
+      // the kill credit (kill stat, Crown of Thorns, Midas Touch, the killer's On Kill), Bounty, the death event, Amore, Carrion,
+      // On Death: Spawn, Landslide, Nova, its own On Death triggers, the allies' On Ally Die / Berserk / Divine Retribution, Hive
+      // Mind, and the trip to the graveyard (or the Removal Zone). Then, once this pass's deaths have all resolved, it returns in its
+      // own slot (reviveReturn below), taken back out of the zone it went to. Claude's calls: what would REPLACE the body in its slot
+      // doesn't happen, since the unit itself comes back: no Relic 1/1 (its later, final death leaves the Relic), no Crystallise
+      // crystal, no Meiosis split; an On Death: Spawn token goes beside it instead of into its slot; its equipment stays on; its
+      // Prayer tokens are gone (they go with a unit that dies). Loops: Revive is once per unit (revivedOnce), and the On Death /
+      // On Ally Die / On Kill triggers its death sets off are ordinary trigger layers (this pass's layer, TRIGGER_LAYER_CAP), so a
+      // revive that sets off a death that sets off a revive... stops at layer 5 like any chain. Rescue (a unit taken out of harm
+      // before it would die) is NOT a death: nothing above happens (no engine effect rescues yet; see docs/decisions.json).
+      // (Was 2026-10-18: no death bookkeeping at all, only the killer's On Kill.)
+      const reviving = !!(cdef.effects && cdef.effects.revive && !card.revivedOnce && !card.nullified); // a Nullify kill: no Revive (2026-10-14)
+      const rv = reviving ? {pl, side, card, slot: card.slot, entry: null} : null; if(rv) revives.push(rv);
       ensureStat(stats, mySide, card.defId).deaths += 1;
       // Devilry (2026-10-10): every unit that perishes counts toward Rituals, and gives its owner 1 Darkness.
       // D20 (2026-10-12): Darkness from your own losses stops at 10, so a deck can't farm it with cheap chaff (cards that
@@ -6026,7 +6059,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       let credit = killCredit[card.uid];
       if(!credit){ credit = killerCreditOf(players, sideOf, pl, card); if(credit) killCredit[card.uid] = credit; } // 2026-10-18: any path that named its attacker
       const bounty = cdef.relicOf ? 0 : bountyOf(cdef); // Bounty N (2026-10-15); never for a Relic (2026-10-19)
-      const deathEv = {type:'death', side:mySide, defId:card.defId, uid:card.uid}; if(card.nullified) deathEv.nullified = true; // 2026-10-15: the replay shows a Nullify kill / exile its own way
+      const deathEv = {type:'death', side:mySide, defId:card.defId, uid:card.uid}; if(card.nullified) deathEv.nullified = true; if(rv) deathEv.revives = true; // revives (2026-10-19): the board keeps its tile for the 'revive' that follows // 2026-10-15: the replay shows a Nullify kill / exile its own way
       if(recordEvents && events) events.push(deathEv);
       amoreBreak(players, sideOf, card, events); // Amore (2026-10-16): its partner's heart turns brown
       carrionFeed(players, sideOf, card, events); // Carrion N (2026-10-17): the scavengers on the field eat
@@ -6056,7 +6089,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(recordEvents && events) events.push({type:'bounty', side:side2, amount:bounty, fromDefId:card.defId, uid:card.uid});
       }
       if(cdef.effects && cdef.effects.onDeathSpawn && !nulled){
-        spawns.push({pl, side, slot:card.slot, fromUid:card.uid, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
+        spawns.push({pl, side, slot: rv ? null : card.slot, beside: !!rv /* a reviving unit keeps its slot: the tokens go to a flank (2026-10-19) */, fromUid:card.uid, defId:cdef.effects.onDeathSpawn.defId, count:cdef.effects.onDeathSpawn.count||1});
         ensureStat(stats, mySide, card.defId).spawnedTokens += (cdef.effects.onDeathSpawn.count||1);
       }
       // move to graveyard (unless a custom onDeath trigger exiles it instead, OR this card
@@ -6066,27 +6099,28 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // card.forceExileZone (2026-09-30): set by the new instant "Exile [ally/enemy]" action just
       // above — a live removal tagged to land in the Removal Zone instead of the graveyard, same
       // decision this card's own On-Death-exile would make, just triggered by someone else's turn.
+      const zoneEntry = {defId:card.defId}; if(rv) rv.entry = zoneEntry; // Revive (2026-10-19): the entry it is taken back out of
       if(hasExileOnDeath || card.hasRemovalCounter || card.forceExileZone){
-        pl.exile.push({defId:card.defId}); pl.echoes = (pl.echoes||0) + 1;
-        deathEv.exiled = true; // 2026-10-15 (log only): it goes to the Removal Zone, not the graveyard
+        pl.exile.push(zoneEntry); pl.echoes = (pl.echoes||0) + 1;
+        if(!rv) deathEv.exiled = true; // 2026-10-15 (log only): it goes to the Removal Zone, not the graveyard
         ensureStat(stats, mySide, card.defId).exiled++;
         if(recordEvents && events) events.push({type:'exile', side:mySide, defId:card.defId, zone:'board'});
       } else {
-        pl.graveyard.push({defId:card.defId});
+        pl.graveyard.push(zoneEntry);
       }
-      if(card.equipment) pl.graveyard.push({defId:card.equipment}); // its equipment falls with it (2026-10-11)
+      if(card.equipment && !rv) pl.graveyard.push({defId:card.equipment}); // its equipment falls with it (2026-10-11); a reviving unit keeps it (2026-10-19)
       if(cdef.effects && cdef.effects.landslide && !nulled) fireLandslide(players, sideOf, pl.id, card, Number(cdef.effects.landslide === true ? 1 : cdef.effects.landslide)||1, stats, events);
       // Nova N and Crystallise N (2026-10-16): a burst of magic at every enemy unit; a 0/N crystal left in its slot.
       if(cdef.effects && cdef.effects.nova && !nulled) novaBurst(players, sideOf, pl.id, card, w2N(cdef, 'nova'), stats, events);
-      if(cdef.effects && cdef.effects.crystallise && !nulled && !card.cageOf){ const cn = w2N(cdef, 'crystallise'); if(cn > 0) spawns.push({pl, side, slot:card.slot, fromUid:card.uid, defId:crystalDefOf(card.defId, cn), count:1, kind:'crystal'}); }
+      if(cdef.effects && cdef.effects.crystallise && !nulled && !card.cageOf && !rv){ const cn = w2N(cdef, 'crystallise'); if(cn > 0) spawns.push({pl, side, slot:card.slot, fromUid:card.uid, defId:crystalDefOf(card.defId, cn), count:1, kind:'crystal'}); } // not on a Revive death (2026-10-19)
       // Relic (2026-10-19, package E): an Ecclesia card leaves its 1/1 ghost in its slot (relicDefOf). Its Prayer tokens are not passed on.
-      if(cdef.effects && cdef.effects.relic && !nulled && !card.cageOf && !card.sacrificed) relics.push({pl, side, slot:card.slot, fromUid:card.uid, defId:relicDefOf(card.defId)});
+      if(cdef.effects && cdef.effects.relic && !nulled && !card.cageOf && !card.sacrificed && !rv) relics.push({pl, side, slot:card.slot, fromUid:card.uid, defId:relicDefOf(card.defId)});
       // who:'killer' (2026-10-14, user: "On Death: Attacking unit gets 5 Poison. - it's as if it got ingested!"): the unit whose hit
       // killed it, if it still stands; nothing when it died some other way (poison, bleed, the weather...).
       const killerCard = card.killedBy != null ? [p1, p2].map(p=> allBoardCards(p).find(x=> x.uid === card.killedBy && x.hp > 0)).find(Boolean) || null : null;
       if(!nulled) runCustomTriggers(players, sideOf, pl.id, card, cdef, 'onDeath', stats, events, {killerCard});
       // Meiosis N (2026-10-14): it splits in two once the board has cleared its dead (see the splits pass below)
-      if(!nulled && meiosisOf(cdef) > 0 && !card.cageOf) splits.push({pl, side, slot:card.slot, card});
+      if(!nulled && meiosisOf(cdef) > 0 && !card.cageOf && !rv) splits.push({pl, side, slot:card.slot, card});
       // On Ally Die (2026-09-16): distinct from On Death (self-only) — fires on every OTHER
       // still-living card this same player controls, e.g. a "when a friend falls" avenger
       // effect. Evaluated against the board as it stands right now in this same dead-cards
@@ -6116,6 +6150,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(recordEvents && events) events.push({type:'statusFx', kind:'berserk', side:sideOf(pl.id), attDefId:h.defId, attUid:h.uid, amount:1, hiveMind:true}); }
       }
     });
+    revives.forEach(reviveReturn); // Revive (2026-10-19, package RV): this pass's deaths have resolved; now it comes back
     [p1,p2].forEach(pl=>{
       // 2026-10-19 (trigger layers): only this pass's dead leave here. A unit an On Death / On Ally Die trigger kills during the
       // pass stays at 0 Health and dies properly in the next pass (one layer deeper); it used to vanish here with no death at all.
@@ -6162,9 +6197,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // legitimately land in a DIFFERENT lane than the first one, per the comment above).
       const placements = [];
       const spawnedTokens = [];
-      const echoN = (!s.kind && s.pl.perks && s.pl.perks.echo) ? (s.pl.perks.echo = false, 1) : 0; // Wildpath "Echoing Wood" (not for a crystal, 2026-10-16)
+      const echoN = (!s.kind && s.pl.perks && s.pl.perks.echo && !quietStills(null, sideOf(s.pl.id), events, 'echo')) ? (s.pl.perks.echo = false, 1) : 0; // Wildpath "Echoing Wood" (not for a crystal, 2026-10-16; not under Quiet Contemplation, 2026-10-19)
       for(let i=0;i<s.count+echoN;i++){
-        const side = (i===0) ? s.side : flankOrShorter(s.pl, s.side);
+        const side = (i===0 && !s.beside) ? s.side : flankOrShorter(s.pl, s.side);
         const tok = makeBoardCard(s.defId);
         if(slotMode && i===0 && Number.isInteger(s.slot)) tok.slot = s.slot; // first token takes the fallen card's slot
         s.pl.row[side].push(tok);
@@ -6212,6 +6247,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Asleep unit loses its counters. Units with Fast Forward run in board order, the side with initiative first.
   function fastForwardPass(players, sideOf, stats, events, firstAttackerSide){
     const first = firstAttackerSide || 2, order = [first, otherId(first)];
+    // Quiet Contemplation (2026-10-19, package RV): no extra turns. Every waiting Fast Forward counter (Fast Forward N, the Tailwind
+    // spell) is spent with nothing done, one 'quiet' line per unit.
+    if(quietOn()){ for(const pid of order){ const pl = players[pid]; if(!pl) continue;
+        allBoardCards(pl).forEach(c=>{ if(!c || !(c.ffCounters > 0)) return; if(c.hp > 0) quietStills(c, sideOf(pid), events, 'fastForward'); c.ffCounters = 0; }); }
+      return false; }
     for(const pid of order){
       const pl = players[pid]; if(!pl) continue;
       for(const c of allBoardCards(pl).slice()){
@@ -6338,6 +6378,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(flow || wind) for(const pid of [1,2]){ const pl = players[pid]; if(!pl) continue;
         for(const c of allBoardCards(pl)){ if(!c || !(c.hp > 0) || c._speedCombat === combatNo) continue; const e = (CARD_DEFS[c.defId]||{}).effects || {};
           const why = (flow && e.swimmer && (e.swimmer === 'quickAttack' || (e.swimmerGrant && e.swimmerGrant.fastForward))) ? 'swimmer' : (wind && e.flying && !ashyNow() && windSideOf(pid) === 'tail') ? 'tailwind' : null; if(!why) continue; // no Tailwind while Ashy (2026-10-17)
+          if(quietStills(c, sideOf(pid), events, why)){ c._speedCombat = combatNo; continue; } // Quiet Contemplation (2026-10-19): no extra turn
           c.ffCounters = (c.ffCounters||0) + 1; c._speedCombat = combatNo;
           if(recordEvents && events) events.push({type:'statusFx', kind:why, side:sideOf(pid), attUid:c.uid, attDefId:c.defId, targetUid:c.uid, targetDefId:c.defId, amount:1}); } } }
     if(!pass){ let anyFF = false; for(const pid of [1,2]){ const pl = players[pid]; if(pl && allBoardCards(pl).some(c=> c && c.ffCounters > 0 && c.hp > 0)) anyFF = true; }
@@ -6603,7 +6644,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // not one per individual hit).
       let atkThisRound = effAtk(a.att);
       let critLanded = false;
-      if(attDef.effects && attDef.effects.crit){
+      if(attDef.effects && attDef.effects.crit && !quietOn()){ // Quiet Contemplation (2026-10-19): no Crit (no roll either)
         a.att.critUsed = a.att.critUsed || 0;
         if(a.att.critUsed < 1 && rnd() < 0.5){ a.att.critUsed = 1; critLanded = true; atkThisRound = atkThisRound * 2; }
       }
@@ -6663,7 +6704,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(near && !near.direct) backstabBonus = Number(attDef.effects.backstab);
       }
       // Tall Grass (2026-10-16, user: "Backstab and pounce does 2x damage"): a Backstab (a hit on a unit not directly in front) lands double.
-      const tallGrassStab = !!(rules.tallGrass && backstabBonus > 0);
+      const tallGrassStab = !!(rules.tallGrass && backstabBonus > 0) && !quietOn(); // no ×2 under Quiet Contemplation (2026-10-19)
       // Crab claws (2026-10-15 rework, user: "Crab claws can be, attack a random unit L or R. Very awkward for the crab, but very
       // fitting."): each swing pinches one random enemy unit in the column to its left or right (a coin flip when both have one).
       // Neither side has a unit: it attacks straight ahead as normal (the unit in front, or the castle). (Was: alternating
@@ -7209,7 +7250,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // twin strike and bleed 1"): while it suffers any status (Poison, Bleed, Decay, Corrode, Frozen, Shocked ...) it
       // strikes twice and each hit adds 1 Bleed.
       const frenzyNow = isFrenzied(a.att);
-      if(attDef.effects && (frenzyNow || attDef.effects.twinStrike) && a.att.hp>0 && !a.att._frenziedThisRound){
+      // Quiet Contemplation (2026-10-19, package RV): no second swing (Frenzy's Bleed on its hits stays).
+      if(attDef.effects && (frenzyNow || attDef.effects.twinStrike) && a.att.hp>0 && !a.att._frenziedThisRound && !quietStills(a.att, mySide, events, frenzyNow ? 'frenzy' : 'twinStrike')){
         a.att._frenziedThisRound = true;
         // VFX/SFX coverage audit (2026-09-21): Frenzy's bonus swing used to be a pure engine-
         // internal decision with no event at all — it replayed as an indistinguishable ordinary
