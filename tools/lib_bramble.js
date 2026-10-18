@@ -51,7 +51,8 @@ const NAMES = ['RARITY_MAX_COPIES', 'maxCopiesForRarity', 'ROAD_RARITY_STEPS', '
   'skirmishCurveSig', 'skirmishCurveErrText', 'checkSkirmishCurve'];
 const ms = src.indexOf('const CONQUEST_MAPS = ['), me = src.indexOf('\n];', ms) + 3;
 const dg = src.indexOf('function endlessDungeon(cfg){'), dgEnd = src.indexOf('\nconst TOWER_LEVEL_CAP', dg); // the endless dungeons; the Tower is left out
-const CARD_DEFS_BASELINE = {}; cardsRaw.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; CARD_DEFS_BASELINE[c.id] = d; });
+// 2026-10-19 (package AN): pool cards ("pool": true) are candidates, not live cards, so the deck tools never pick them (as in the game)
+const CARD_DEFS_BASELINE = {}; cardsRaw.filter(c=> !c.pool).forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; CARD_DEFS_BASELINE[c.id] = d; });
 const CHARACTER_DEFS = {}; (Array.isArray(charsRaw) ? charsRaw : Object.values(charsRaw)).forEach(c=> CHARACTER_DEFS[c.id] = c);
 const body = [
   'let matchDefsOverlay = {}, matchLeaderGrantMap = null; const liveCards = {}, liveDeletes = {}; const AI_LEVEL_MAX = E.AI_LEVEL_MAX;',

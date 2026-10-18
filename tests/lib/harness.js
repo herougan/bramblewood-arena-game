@@ -16,7 +16,9 @@ function loadCardDefs(){
   if(_defs) return _defs;
   const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'cards.json'), 'utf8'));
   _defs = {};
-  cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; _defs[c.id] = d; });
+  // 2026-10-19 (package AN): pool cards ("pool": true) are candidates the owner hasn't placed; the game never sees them (assemble_arena.py
+  // leaves them out of the build), so neither do the tests: the card matrix's sampled pairings and golden results stay as they were.
+  cards.filter(c=> !c.pool).forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; _defs[c.id] = d; });
   return _defs;
 }
 // Cards a player could actually field (not tokens/test cards, which only exist via other cards).

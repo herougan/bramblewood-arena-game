@@ -1,0 +1,1178 @@
+{
+ "river-mink": {
+  "attack": 4,
+  "health": 6,
+  "wr": 0.45,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.7916666666666666,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 6,
+    "wr": 0.45,
+    "ok": true
+   }
+  ]
+ },
+ "pine-marten": {
+  "attack": 3,
+  "health": 8,
+  "wr": 0.5583333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 8,
+    "wr": 0.925,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.925,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.5,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.5583333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "grass-snake": {
+  "attack": 6,
+  "health": 14,
+  "wr": 0.25833333333333336,
+  "out": true,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.058333333333333334,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 9,
+    "wr": 0.025,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 9,
+    "wr": 0.09166666666666666,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 10,
+    "wr": 0.10833333333333334,
+    "ok": true
+   },
+   {
+    "attack": 5,
+    "health": 10,
+    "wr": 0.15833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 5,
+    "health": 12,
+    "wr": 0.15,
+    "ok": true
+   },
+   {
+    "attack": 6,
+    "health": 12,
+    "wr": 0.2,
+    "ok": true
+   },
+   {
+    "attack": 6,
+    "health": 14,
+    "wr": 0.25833333333333336,
+    "ok": true
+   }
+  ]
+ },
+ "hedgerow-shrew": {
+  "attack": 2,
+  "health": 3,
+  "wr": 0.4083333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 3,
+    "wr": 0.4083333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "slow-worm": {
+  "attack": 2,
+  "health": 5,
+  "wr": 0.5666666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 6,
+    "wr": 0.65,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "wr": 0.5666666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "field-vole": {
+  "attack": 1,
+  "health": 5,
+  "wr": 0.425,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 4,
+    "wr": 0.3416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 5,
+    "wr": 0.425,
+    "ok": true
+   }
+  ]
+ },
+ "rock-pool-starfish": {
+  "attack": 1,
+  "health": 9,
+  "wr": 0.5333333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 9,
+    "wr": 0.5333333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "sanderling": {
+  "attack": 2,
+  "health": 3,
+  "wr": 0.5916666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 3,
+    "wr": 0.5916666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "limpet-clinger": {
+  "attack": 1,
+  "health": 8,
+  "wr": 0.44166666666666665,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 8,
+    "wr": 0.44166666666666665,
+    "ok": true
+   }
+  ]
+ },
+ "razorbill": {
+  "attack": 3,
+  "health": 6,
+  "wr": 0.6666666666666666,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 8,
+    "wr": 0.8833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.875,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.7583333333333333,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 6,
+    "wr": 0.6666666666666666,
+    "ok": true
+   }
+  ]
+ },
+ "peregrine-stooper": {
+  "attack": 2,
+  "health": 6,
+  "wr": 0.5666666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.9916666666666667,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 6,
+    "wr": 0.9916666666666667,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 6,
+    "wr": 0.8583333333333333,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 5,
+    "wr": 0.7666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "wr": 0.5166666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 6,
+    "wr": 0.5666666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "red-billed-chough": {
+  "attack": 2,
+  "health": 5,
+  "wr": 0.6166666666666667,
+  "out": true,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 6,
+    "wr": 0.75,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "wr": 0.6166666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 5,
+    "wr": 0.20833333333333334,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.20833333333333334,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 6,
+    "wr": 0.75,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "wr": 0.6166666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 5,
+    "wr": 0.20833333333333334,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.20833333333333334,
+    "ok": true
+   }
+  ]
+ },
+ "water-shrew": {
+  "attack": 2,
+  "health": 4,
+  "wr": 0.5916666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 4,
+    "wr": 0.5916666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "great-crested-grebe": {
+  "attack": 2,
+  "health": 8,
+  "wr": 0.325,
+  "out": true,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.65,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.6416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.2916666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.325,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.65,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.6416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.2916666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.325,
+    "ok": true
+   }
+  ]
+ },
+ "diving-bell-spider": {
+  "attack": 4,
+  "health": 8,
+  "wr": 0.6166666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.4083333333333333,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.375,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 8,
+    "wr": 0.6166666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "swamp-rabbit": {
+  "attack": 2,
+  "health": 3,
+  "wr": 0.5916666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 4,
+    "wr": 0.7666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 3,
+    "wr": 0.5916666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "fire-ant-raft": {
+  "attack": 3,
+  "health": 12,
+  "wr": 0.5,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 10,
+    "wr": 0.25,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 12,
+    "wr": 0.35,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 12,
+    "wr": 0.5,
+    "ok": true
+   }
+  ]
+ },
+ "roseate-spoonbill": {
+  "attack": 1,
+  "health": 8,
+  "wr": 0.39166666666666666,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 10,
+    "wr": 0.7666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.6083333333333333,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 8,
+    "wr": 0.39166666666666666,
+    "ok": true
+   }
+  ]
+ },
+ "giant-water-bug": {
+  "attack": 4,
+  "health": 7,
+  "wr": 0.65,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 8,
+    "wr": 0.6833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.65,
+    "ok": true
+   }
+  ]
+ },
+ "greater-siren": {
+  "attack": 3,
+  "health": 18,
+  "wr": 0.6333333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 18,
+    "wr": 0.6333333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "raft-spider": {
+  "attack": 4,
+  "health": 8,
+  "wr": 0.5916666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.23333333333333334,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.2,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 8,
+    "wr": 0.5916666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "wolf-spider-mother": {
+  "attack": 3,
+  "health": 7,
+  "wr": 0.75,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 8,
+    "wr": 0.9416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.9416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.75,
+    "ok": true
+   }
+  ]
+ },
+ "fungus-gnat-cloud": {
+  "attack": 1,
+  "health": 3,
+  "wr": 0.4583333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 3,
+    "wr": 0.4583333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "red-backed-salamander": {
+  "attack": 1,
+  "health": 6,
+  "wr": 0.4,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.8833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 6,
+    "wr": 0.85,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.4,
+    "ok": true
+   }
+  ]
+ },
+ "ghost-crayfish": {
+  "attack": 3,
+  "health": 18,
+  "wr": 0.6333333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 16,
+    "wr": 0.425,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 18,
+    "wr": 0.425,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 18,
+    "wr": 0.6333333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "cave-pseudoscorpion": {
+  "attack": 2,
+  "health": 5,
+  "wr": 0.575,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 4,
+    "wr": 0.25,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 5,
+    "wr": 0.25,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "wr": 0.575,
+    "ok": true
+   }
+  ]
+ },
+ "giant-cave-huntsman": {
+  "attack": 6,
+  "health": 12,
+  "wr": 0.7083333333333334,
+  "out": false,
+  "tried": [
+   {
+    "attack": 6,
+    "health": 14,
+    "wr": 0.775,
+    "ok": true
+   },
+   {
+    "attack": 6,
+    "health": 12,
+    "wr": 0.7083333333333334,
+    "ok": true
+   }
+  ]
+ },
+ "banded-sea-krait": {
+  "attack": 3,
+  "health": 8,
+  "wr": 0.49166666666666664,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.49166666666666664,
+    "ok": true
+   }
+  ]
+ },
+ "proboscis-monkey": {
+  "attack": 4,
+  "health": 12,
+  "wr": 0.49166666666666664,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 10,
+    "wr": 0.11666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 12,
+    "wr": 0.25,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 12,
+    "wr": 0.49166666666666664,
+    "ok": true
+   }
+  ]
+ },
+ "sea-hare": {
+  "attack": 2,
+  "health": 8,
+  "wr": 0.6,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 7,
+    "wr": 0.125,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 8,
+    "wr": 0.15833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.6,
+    "ok": true
+   }
+  ]
+ },
+ "yellow-bellied-sea-snake": {
+  "attack": 4,
+  "health": 8,
+  "wr": 0.6833333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 8,
+    "wr": 0.6833333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "parrotfish": {
+  "attack": 2,
+  "health": 7,
+  "wr": 0.4166666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.4166666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "giant-clam": {
+  "attack": 2,
+  "health": 23,
+  "wr": 0.4083333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 20,
+    "wr": 0.09166666666666666,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 23,
+    "wr": 0.09166666666666666,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 23,
+    "wr": 0.4083333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "whale-shark": {
+  "attack": 6,
+  "health": 35,
+  "wr": 0.38333333333333336,
+  "out": true,
+  "tried": [
+   {
+    "attack": 5,
+    "health": 30,
+    "wr": 0.36666666666666664,
+    "ok": true
+   },
+   {
+    "attack": 5,
+    "health": 35,
+    "wr": 0.36666666666666664,
+    "ok": true
+   },
+   {
+    "attack": 6,
+    "health": 35,
+    "wr": 0.38333333333333336,
+    "ok": true
+   },
+   {
+    "attack": 6,
+    "health": 40,
+    "wr": 0.375,
+    "ok": true
+   },
+   {
+    "attack": 7,
+    "health": 40,
+    "wr": 0.38333333333333336,
+    "ok": true
+   }
+  ]
+ },
+ "alpine-swift": {
+  "attack": 2,
+  "health": 2,
+  "wr": 0.6666666666666666,
+  "out": true,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 3,
+    "wr": 0.8,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 2,
+    "wr": 0.6666666666666666,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 2,
+    "wr": 0.19166666666666668,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 3,
+    "wr": 0.15833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 3,
+    "wr": 0.8,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 2,
+    "wr": 0.6666666666666666,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 2,
+    "wr": 0.19166666666666668,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 3,
+    "wr": 0.15833333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "alpine-salamander": {
+  "attack": 2,
+  "health": 12,
+  "wr": 0.4666666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 12,
+    "wr": 0.4666666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "mountain-hare": {
+  "attack": 2,
+  "health": 3,
+  "wr": 0.5916666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 4,
+    "wr": 0.7666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 3,
+    "wr": 0.5916666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "hedge-weasel": {
+  "attack": 3,
+  "health": 5,
+  "wr": 0.4666666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 5,
+    "wr": 0.4666666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "muntjac-barker": {
+  "attack": 3,
+  "health": 8,
+  "wr": 0.5,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 10,
+    "wr": 0.775,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.5,
+    "ok": true
+   }
+  ]
+ },
+ "garden-tiger-moth": {
+  "attack": 1,
+  "health": 4,
+  "wr": 0.475,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 4,
+    "wr": 0.475,
+    "ok": true
+   }
+  ]
+ },
+ "harp-seal-pup": {
+  "attack": 2,
+  "health": 6,
+  "wr": 0.6416666666666667,
+  "out": true,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.175,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 7,
+    "wr": 0.23333333333333334,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.7416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 6,
+    "wr": 0.6416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.175,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 7,
+    "wr": 0.23333333333333334,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.7416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 6,
+    "wr": 0.6416666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "arctic-tern": {
+  "attack": 1,
+  "health": 4,
+  "wr": 0.5583333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 5,
+    "wr": 0.9333333333333333,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 4,
+    "wr": 0.8333333333333334,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 4,
+    "wr": 0.5583333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "krill-swarm": {
+  "attack": 2,
+  "health": 3,
+  "wr": 0.425,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 3,
+    "wr": 0.2,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 4,
+    "wr": 0.24166666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 4,
+    "wr": 0.675,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 3,
+    "wr": 0.425,
+    "ok": true
+   }
+  ]
+ },
+ "ringed-seal": {
+  "attack": 3,
+  "health": 10,
+  "wr": 0.5666666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 10,
+    "wr": 0.21666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 12,
+    "wr": 0.25833333333333336,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 12,
+    "wr": 0.65,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 10,
+    "wr": 0.5666666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "musk-ox-calf": {
+  "attack": 3,
+  "health": 12,
+  "wr": 0.6666666666666666,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 12,
+    "wr": 0.325,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 14,
+    "wr": 0.35,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 14,
+    "wr": 0.7083333333333334,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 12,
+    "wr": 0.6666666666666666,
+    "ok": true
+   }
+  ]
+ }
+}

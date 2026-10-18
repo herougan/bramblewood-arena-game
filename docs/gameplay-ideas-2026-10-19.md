@@ -72,7 +72,7 @@ The sheet has 20 more, such as Herding into the Ambush, Many Hits on the Marked,
 - A unit's own death is not an ally death.
 - A heal of 0 fires nothing.
 - Nothing triggers on gaining resources.
-- Revive is not a death.
+- Revive is a true death; Rescue is not one (owner, 2026-10-19 00:19; was "Revive is not a death").
 
 **We differ on purpose:**
 - Positioning already exists.

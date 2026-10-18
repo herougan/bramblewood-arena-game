@@ -12,6 +12,7 @@
 //                   action's entries (damage, buff + buff.amount2, …) of value × its `per` field (missing: 1, or 0 when a sibling
 //                   field is set), × min(8, targets), × subAll for sub 'all'. Exile on Self = Exile self.
 //   shorthand       a keyword that is a trigger and an action: Bounty N = Bounty weight × Gain × N.
+//                   `both` (2026-10-19): the number fills both fields (Kin Rally N = On Ally Played × Buff +N/+N).
 //   CLI             node tools/skill_costs.js --diff [table.json]  cards whose S moved more than 2 from the 2026-10-18 model,
 //                   and every card whose budget pass/fail flips.
 (function(root, factory){ if(typeof module === 'object' && module.exports) module.exports = factory(); else root.SkillCosts = factory(); })(typeof self !== 'undefined' ? self : this, function(){
@@ -66,7 +67,7 @@
       const parts = [], missing = []; let S = 0;
       Object.entries(effects || {}).forEach(([k, v])=>{
         if(k === 'triggers'){ (Array.isArray(v) ? v : []).forEach(t=>{ if(!t) return; const c = triggerCost(t, card); missing.push(...c.missing); S += c.cost; parts.push(['trigger', t.on + ' → ' + t.do, c.cost, c.weight + ' × ' + c.value]); }); return; }
-        if(SH[k]){ const sh = SH[k], w = triggerWeight({on:sh.trigger}), a = actionValue({do:sh.action, amount:numOf(v) || 1}, card), c = r2(w.w * a.value);
+        if(SH[k]){ const sh = SH[k], N = numOf(v) || 1, w = triggerWeight({on:sh.trigger}), a = actionValue(sh.both ? {do:sh.action, amount:N, amount2:N} : {do:sh.action, amount:N}, card), c = r2(w.w * a.value); // both (2026-10-19, package GI): +N/+N, Kin Rally
           if(w.missing) missing.push(w.missing); if(a.missing) missing.push(a.missing); S += c; parts.push(['shorthand', k, c, w.w + ' × ' + r2(a.value)]); return; }
         let c = skillCost(k, v); if(c == null){ missing.push('skill:' + k); c = 1 + (numOf(v) > 1 ? Math.floor(numOf(v) / 2) : 0); }
         S += c; parts.push(['skill', k, c, '']);
