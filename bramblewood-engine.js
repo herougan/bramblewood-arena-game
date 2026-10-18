@@ -229,6 +229,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // reserve whose column in front of it is empty steps up a row (middle to front, back to middle), and arriving at the front
   // counts as arriving on the battlefield (its On Spawn effects fire then).
   const RESERVE_ROWS = slotMode ? Math.max(0, Math.min(2, Math.round(Number(opts.reserveRows)||0))) : 0;
+  // Every row acts (2026-10-18, user, on the raid: "all units, regardless of where they are take actions. The actions continue go
+  // column by column. Then front row first then back row."): with opts.reserveActs the reserve units take their action (reserveStrike)
+  // in the round's main order, both sides, column by column left to right, and in each column the front row first, then the middle
+  // row, then the back row (see pickNextAttacker). Without it (the default) reserves act only when the page calls reserveVolley.
+  const RESERVE_ACTS = RESERVE_ROWS > 0 && !!opts.reserveActs;
   const GAP = Object.freeze({hp:0, uid:null, gap:true});
   let suddenDeath = false;
   // Raid bosses opt out of the castle half (opts.suddenDeathCastles:false): otherwise simply
@@ -362,24 +367,33 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (damageCard). The rows are struck front to back, centre outward. Events: fieldTick volley / volleyHit / volleyCastle.
   function reserveVolley(players, sideOf, pid, stats, events){
     const pl = players[pid], foe = players[otherId(pid)]; if(!pl || !pl.reserve || !foe) return 0;
-    const ev = o=>{ if(recordEvents && events) events.push(o); }; let shots = 0, total = 0;
+    let shots = 0, total = 0;
     for(let r = 0; r < pl.reserve.length; r++){
       Object.keys(pl.reserve[r]).map(Number).sort((a, b)=> Math.abs(a) - Math.abs(b) || a - b).forEach(sl=>{
-        const c = pl.reserve[r][sl]; if(!c || !(c.hp > 0) || c.stunned || c.frozen > 0 || c.asleep > 0) return;
-        if(c.wait > 0){ c.wait -= 1; return; }
-        const atk = Math.max(0, Number(c.atk) || 0), n = Math.ceil(atk / 2); if(!(n > 0)) return;
-        if(!shots) ev({type:'fieldTick', field:'volley', side:sideOf(pid)});
-        shots++;
-        const t = frontCardAt(foe, sl);
-        if(t && !t.cageOf){ const res = damageCard(t, n, 'physical', c); const dmg = res ? res.dmg : 0; total += dmg;
-          ensureStat(stats, sideOf(pid), c.defId).dealt += dmg; ensureStat(stats, sideOf(otherId(pid)), t.defId).taken += dmg;
-          ev({type:'fieldTick', field:'volleyHit', side:sideOf(otherId(pid)), uid:t.uid, defId:t.defId, dmg, fromUid:c.uid, fromDefId:c.defId, row:r + 1, slot:sl}); }
-        else if(foe.hq && foe.hq.hp > 0){ let d = n; const ov = foe.onHqHit ? foe.onHqHit(d, c) : undefined; if(typeof ov === 'number') d = ov;
-          d = Math.max(0, Math.min(d, foe.hq.hp)); foe.hq.hp -= d; total += d; ensureStat(stats, sideOf(pid), c.defId).dealt += d;
-          ev({type:'fieldTick', field:'volleyCastle', side:sideOf(otherId(pid)), dmg:d, fromUid:c.uid, fromDefId:c.defId, row:r + 1, slot:sl, shielded: d < n || undefined}); }
+        const d = reserveStrike(players, sideOf, pid, pl.reserve[r][sl], r + 1, sl, stats, events, ()=>{ if(!shots && recordEvents && events) events.push({type:'fieldTick', field:'volley', side:sideOf(pid)}); shots++; });
+        if(d > 0) total += d;
       });
     }
     return total;
+  }
+  // One reserve unit's action (2026-10-18, split out of reserveVolley for the raid's column order, see RESERVE_ACTS): Waiting, it counts
+  // 1 down; Stunned, Frozen or Asleep, it does nothing; otherwise it strikes its column for half its Attack (rounded up) at the enemy's
+  // front unit there, or the enemy castle with that column empty. Returns the damage dealt, or -1 when it didn't strike. `before` runs
+  // just before a strike (reserveVolley's header event).
+  function reserveStrike(players, sideOf, pid, c, row, sl, stats, events, before){
+    const foe = players[otherId(pid)]; if(!foe || !c || !(c.hp > 0) || c.stunned || c.frozen > 0 || c.asleep > 0) return -1;
+    if(c.wait > 0){ c.wait -= 1; return -1; }
+    const atk = Math.max(0, Number(c.atk) || 0), n = Math.ceil(atk / 2); if(!(n > 0)) return -1;
+    const ev = o=>{ if(recordEvents && events) events.push(o); };
+    if(before) before();
+    const t = frontCardAt(foe, sl);
+    if(t && !t.cageOf){ const res = damageCard(t, n, 'physical', c); const dmg = res ? res.dmg : 0;
+      ensureStat(stats, sideOf(pid), c.defId).dealt += dmg; ensureStat(stats, sideOf(otherId(pid)), t.defId).taken += dmg;
+      ev({type:'fieldTick', field:'volleyHit', side:sideOf(otherId(pid)), uid:t.uid, defId:t.defId, dmg, fromUid:c.uid, fromDefId:c.defId, fromSide:sideOf(pid), row, slot:sl}); return dmg; }
+    if(foe.hq && foe.hq.hp > 0){ let d = n; const ov = foe.onHqHit ? foe.onHqHit(d, c) : undefined; if(typeof ov === 'number') d = ov;
+      d = Math.max(0, Math.min(d, foe.hq.hp)); foe.hq.hp -= d; ensureStat(stats, sideOf(pid), c.defId).dealt += d;
+      ev({type:'fieldTick', field:'volleyCastle', side:sideOf(otherId(pid)), dmg:d, fromUid:c.uid, fromDefId:c.defId, fromSide:sideOf(pid), row, slot:sl, shielded: d < n || undefined}); return d; }
+    return -1;
   }
   function putInSlot(pl, card, slot){
     card.slot = slot;
@@ -3342,6 +3356,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
 
   // shot (2026-10-17): this is a ranged shot (an arrow, a bolt, a missile...), so a Reflect unit it is aimed at bounces it (reflectShotOf).
   function fireDamageAction(players, sideOf, ownerId, attDefId, amount, dmgType, target, stats, events, killCredit, attUid, shot){
+    // A castle can't be shocked (2026-10-18, user: "You can't shock the bramble."): lightning (shock) damage aimed at a castle (the sky
+    // bolt, a Shock Bolt or any lightning skill with no unit to strike) is grounded: no damage, no Wet bonus, no Shocked. Both sides, every mode.
+    if(dmgType === 'shock' && target && target.kind !== 'card'){
+      if(recordEvents && events) events.push({type:'grounded', side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId))});
+      return null; }
     if(shot && target && target.kind === 'card' && target.card){ const rf = reflectShotOf(players, sideOf, ownerId, target.card, events);
       if(rf) return fireDamageAction(players, sideOf, rf.pid, rf.src.defId, amount, dmgType, rf.target, stats, events, killCredit, rf.src.uid); }
     const owner = players[ownerId], enemy = players[otherId(ownerId)];
@@ -6110,6 +6129,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const shotPool = new Map(); // uid -> {att, attId}
     [[p1,1],[p2,2]].forEach(([pl, ownId])=>{ if(!pl || (passAttackerIds && !passAttackerIds.includes(ownId))) return;
       allBoardCards(pl).forEach(c=>{ if(c && c.hp > 0 && !(c.wait > 0) && (!passOnlyUid || c.uid === passOnlyUid) && hasShotSkill(c)) shotPool.set(c.uid, {att:c, attId:ownId}); }); });
+    // The reserve rows' actions (2026-10-18, RESERVE_ACTS): every reserve unit on the board as the round starts gets one, in the main order.
+    const reservePool = new Map(); // uid -> {att, attId, row, slot}
+    if(RESERVE_ACTS && !passOnlyUid) [[p1,1],[p2,2]].forEach(([pl, ownId])=>{ if(!pl || !pl.reserve || (passAttackerIds && !passAttackerIds.includes(ownId))) return;
+      pl.reserve.forEach((rw, i)=> Object.keys(rw).forEach(sl=>{ const c = rw[sl]; if(c && c.hp > 0) reservePool.set(c.uid, {att:c, attId:ownId, row:i + 1, slot:Number(sl)}); })); });
     // 2026-09-20 (explicit bug report: "the battle log is missing some of the attack
     // transactions"): every reason below that keeps a card from taking its turn used to be a
     // silent `return` — the card just sat there, and nothing in the log explained why. A player
@@ -6236,6 +6259,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const pos = liveSharedPos(players[meta.attId], uid); if(pos===null){ shotPool.delete(uid); return; }
         candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos, spd: SHOT_SPEED, shot:true});
       });
+      reservePool.forEach((meta, uid)=>{ // 2026-10-18: a reserve unit acts at its own column, after that column's front row (resRow below)
+        const rw = players[meta.attId].reserve[meta.row - 1]; if(!rw || rw[meta.slot] !== meta.att || !(meta.att.hp > 0)){ reservePool.delete(uid); return; }
+        candidates.push({uid, att:meta.att, attId:meta.attId, enemyId:otherId(meta.attId), pos:meta.slot, spd: swingSpeedOf(meta.att), reserve:meta.row, slot:meta.slot});
+      });
       if(!candidates.length) return null;
       // Swift (2026-10-02): inside one Speed it acts before the rest (no card has it at the moment). Since 2026-10-17 Quick is
       // no longer a rank here: it is Speed 2 (swingSpeedOf).
@@ -6248,12 +6275,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const ra = speedRank(a), rb = speedRank(b);
         if(ra!==rb) return ra-rb;
         if(a.pos!==b.pos) return a.pos-b.pos;
+        if((a.reserve||0) !== (b.reserve||0)) return (a.reserve||0) - (b.reserve||0); // one column: the front row, then the middle, then the back (2026-10-18)
         if(a.uid===b.uid) return a.shot ? -1 : 1; // one unit at Speed 1 both ways: it shoots, then swings
         const winsTies = firstAttackerSide || 2;
         return a.attId===winsTies ? -1 : 1;
       });
       const chosen = candidates[0];
       if(chosen.shot){ shotPool.delete(chosen.uid); return chosen; }
+      if(chosen.reserve){ reservePool.delete(chosen.uid); return chosen; }
       poolMeta.delete(chosen.uid);
       handledUids.add(chosen.uid);
       return chosen;
@@ -6295,6 +6324,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(a.att.hp<=0){ pending = pickNextAttacker(); continue; }
       if(a.shot){ // 2026-10-17: this shooter's Speed 1 shot action; its kills are cleared away before the next action, like a swing's
         if(fireShotsOf(players, sideOf, a.attId, a.att, stats, events, killCredit)) reflowAfterKills(null); // 2026-10-18: its kills credited like a swing's (was an empty book)
+        pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
+      if(a.reserve){ // 2026-10-18 (RESERVE_ACTS): a reserve unit's action (its half-Attack strike at its column, or its Wait counting down)
+        if(reserveStrike(players, sideOf, a.attId, a.att, a.reserve, a.slot, stats, events) >= 0) reflowAfterKills(new Set(Object.keys(killCredit)));
         pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       // Snapshot taken BEFORE this iteration can credit any new kills, so reflowAfterKills()
       // can tell "died just now, this turn" apart from "was already dead/credited earlier

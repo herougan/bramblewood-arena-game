@@ -84,6 +84,7 @@ run node tests/node-ids-2026-10-14.js
 run node tests/fx-a-resist.js
 run node tests/raid-arena-2026-10-17.js   # 2026-10-17: Psychic Dampener, the Arena's rules as cards, raid rows / Commons / volley
 run node tests/raid-stages-2026-10-18.js   # 2026-10-18 (R3-WP2): each raid stage's rules land in the fight; the raid editor round-trips them
+run node tests/raid-fixes-2026-10-18.js    # 2026-10-18 (package R): every row acts column by column, the raid's clock and end, castles can't be shocked, "& Co."
 run node tests/i18n-templates-2026-10-18.js   # 2026-10-18 (I1): placeholder texts translate as templates in all 12 packs
 run node tests/steam-ach-2026-10-18.js   # 2026-10-18 (package C): Steam achievement ids pass steam.js's check, each is unlocked somewhere and listed in the platform roadmap
 run node tests/engine-parity-2026-10-18.js   # 2026-10-18 (R3-WP1): shot and skill kills credited (kills, On Kill, Midas, Crown), one pitchCard for both seats, the CPU's Sacrifice, field-card and slot heuristics

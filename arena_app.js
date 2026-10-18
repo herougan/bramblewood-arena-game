@@ -826,7 +826,7 @@ const PASSIVE_DEFS = [
   {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`It can see in darkness.`}, // 2026-10-15 (user: "Darksight explanation is TOO complicated. Just explain what it does - it can see in darkness.")
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
-  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit (the castle if there are none) for ${v} lightning damage, +1 for every 4 Prayer you have.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex
+  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it is grounded: a castle can't be shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18: castles can't be shocked (grounded)
   {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): Divine Retribution → Retribution,
   // Satiety → Well Fed. Labels only; the keys stay retribution and satiety.
@@ -2132,7 +2132,7 @@ const SKILL_TEXT = {
   prayer: v=> `Adds ${v} to your Prayer while it's on your board.`,
   worship: ()=> `+1 Attack for every 3 Prayer you have.`,
   healing: v=> `Heal your most wounded unit for ${v} every upkeep.`,
-  lightning: v=> `When played, deal ${v} lightning damage to a random enemy unit (the castle if there are none), +1 for every 4 Prayer.`, // 2026-10-16 skill audit; 2026-10-17: lightning damage
+  lightning: v=> `When played, deal ${v} lightning damage to a random enemy unit, +1 for every 4 Prayer (none to a castle: it can't be shocked).`, // 2026-10-16 skill audit; 2026-10-17: lightning damage; 2026-10-18: castles can't be shocked
   midas: v=> `When it kills a unit, gain ${v} Lumber.`,
   retribution: v=> `When one of your units dies, deal ${v} damage to a random enemy unit.`,
   satiety: v=> `At full Health, gains +${v} max Health every upkeep.`,
@@ -20530,7 +20530,7 @@ function openRaidEditor(raidId){
         return `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${sr.stripAbilities?'checked':''}> strips enemy abilities</label>
           <label title="Every boss card (its deck, boss unit, guards and Commons) gains this much Attack">boss +Attack<input type="number" min="-20" max="50" data-st-batk="${i}" value="${sr.bossAtk||0}"></label>
           <label title="Every boss card gains this much Health">boss +Health<input type="number" min="-50" max="200" data-st-bhp="${i}" value="${sr.bossHp||0}"></label>
-          <label title="The boss's back two rows strike this many times a round (half their Attack, like your ally rows)">back-row strikes<input type="number" min="0" max="3" data-st-volley="${i}" value="${sr.extraVolley||0}"></label>
+          <label title="The boss's back two rows strike this many extra times as each round starts (half their Attack), on top of their strike in combat">extra back-row strikes<input type="number" min="0" max="3" data-st-volley="${i}" value="${sr.extraVolley||0}"></label>
           <label title="Your castle's max Health changes by this % (-10 = 10% less)">your castle %<input type="number" min="-90" max="200" data-st-castle="${i}" value="${sr.castleHpPct||0}"></label>
           <label>field<select data-st-field="${i}"><option value="">none</option>${keep ? `<option value="__keep" selected>${escapeHtml(typeof fv === 'string' ? fv : 'custom rules')} (kept)</option>` : ''}${fx.map(f=> `<option value="${escapeAttr(f.id)}" ${fv === f.id ? 'selected' : ''}>${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></label>
           <button type="button" class="btn small ghost" data-st-del="${i}" aria-label="Remove this stage" title="Remove this stage">✕</button>
@@ -20904,7 +20904,10 @@ function startRaidFullBattle(def, partId, f, st){
   // The raid's field (2026-10-17, user: "There should be all the related field effects but also some kind of psychic dampener"): the
   // raid's (and the part's) fieldRules run in the engine and show as Environment cards (matchFieldRules reads m.raidFieldRules).
   const raidRules = f.fieldRules || raidFieldRulesOf(def, f.part); // 2026-10-18 (R3-WP2): fightFor's, with the stage's field on top
-  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, suddenDeathCastles:false, rules: raidRules});
+  // 2026-10-18 (user: "all units, regardless of where they are take actions ... column by column. Then front row first then back row"):
+  // reserveActs puts every middle- and back-row unit, both sides, into the round's main order (engine RESERVE_ACTS); the round-start
+  // volley of your ally rows is gone (each unit's strike is its action in combat now).
+  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, reserveActs:true, suddenDeathCastles:false, rules: raidRules});
   const sideOf = id=> id===1?'A':'B';
   // Allies (2026-10-12, user: "Where are my allies? On the pre-screen it should show my allies and their levels, then during
   // the fight, my allies play first, and you can see their cards go down. The castle will be the combined health of 3 of us,
@@ -21002,8 +21005,13 @@ function raidFieldRulesOf(def, part){
   Object.keys(r).forEach(k=>{ if(r[k] === false || r[k] == null) delete r[k]; });
   return r;
 }
+// 2026-10-18 (user: "The combined bramble on your side should have the background art and name of your bramble. But it would also say
+// e.g. "Fortified Nest & Co.""): the merged castle wears the first castle's (yours) art, icon and rarity, named "<yours> & Co.";
+// raidMerged marks it (the tile's raid-castles class). Health and passives are still all three added up.
 function mergeRaidCastles(list){
-  const out = {id:'raid-castles', name:'Three castles', icon:'🏰', health:0, effects:{}};
+  const first = list.find(Boolean) || {};
+  const out = {id: first.id || 'raid-castles', name: (first.name || 'Your castle') + ' & Co.', icon: first.icon || '🏰', art: first.art, rarity: first.rarity, raidMerged:true, health:0, effects:{}};
+  if(!out.art) delete out.art; if(!out.rarity) delete out.rarity;
   list.forEach(c=>{ if(!c) return; out.health += (c.health || c.hp || 30);
     Object.entries(c.effects||{}).forEach(([k, v])=>{ if(typeof v === 'number' && typeof out.effects[k] === 'number') out.effects[k] += v; else if(out.effects[k] === undefined) out.effects[k] = v; }); });
   return out;
@@ -21037,6 +21045,7 @@ function raidPickColumn(m){
 function raidSpecials(m, events){
   // A stage's extraVolley (2026-10-18, R3-WP2; Enraged / Thrashing): the boss's back two rows strike too, as your ally rows do (engine
   // reserveVolley: half Attack at the unit facing them, or your castle when that column is empty), N times a round.
+  // 2026-10-18: every reserve unit, both sides, also strikes once in each round's combat now (reserveActs), so these are extra strikes.
   for(let k = 0; k < Math.min(3, m.raidExtraVolley || 0) && m.engine.reserveVolley; k++){ m.engine.reserveVolley(m.players, m.sideOf, 2, m.stats, events); m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, events); }
   const atks = m.raidAttacks || []; if(!atks.length) return;
   const pl = m.players[1], round = m.round; m.raidPending = m.raidPending || {};
@@ -21058,6 +21067,13 @@ function raidSpecials(m, events){
   atks.forEach((a, i)=>{ if(a.pattern === 'column' && (round + 1) % Math.max(1, a.every||1) === 0) m.raidPending[i] = raidPickColumn(m); });
 }
 function raidTelegraphCols(m){ return m && m.raidPending ? Object.values(m.raidPending).filter(v=> v != null) : []; }
+// The raid's last turn (2026-10-18): a banner over the board as it starts ("the tide turns after this one"), so the end isn't a surprise.
+function raidLastTurnBanner(m){
+  const bf = document.querySelector('.battlefield'); if(!bf || !m) return;
+  const el = document.createElement('div'); el.className = 'next-turn-sign raid-last-turn'; el.setAttribute('role', 'status');
+  el.innerHTML = `🌊 Last turn<small>The tide turns after turn ${m.raidRoundCap}: the raid ends then, whatever the castles’ Health.</small>`;
+  bf.appendChild(el); setTimeout(()=>{ el.classList.add('next-turn-sign-out'); setTimeout(()=> el.remove(), 260); }, 2600);
+}
 function settleRaidPartAfterMatch(m){
   const def = m.raidDef;
   const dealt = Math.max(0, (m.raidCastleStart||0) - Math.max(0, m.players[2].hq.hp));
@@ -25809,8 +25825,13 @@ function hpRibbonHTML(m, side, label){
   return `<div class="bf-hp bf-hp-${side==='A'?'mine':'enemy'} ${pct<=30?'is-low':''}" data-hpribbon="${side}" role="img" aria-label="${escapeAttr((label||'Castle')+': '+hp+' of '+hq.maxHp+' health')}">
     <span class="bf-hp-label">🏰 ${escapeHtml(label||'Castle')}</span>
     <span class="bf-hp-track"><span class="bf-hp-fill" style="width:${pct.toFixed(1)}%"></span></span>
-    <span class="bf-hp-num">${hp}<small>/${hq.maxHp}</small></span>${side === 'B' && m.over && m.mode !== 'sandbox' ? finalTurnPillHTML(m) : ''}</div>`;
+    <span class="bf-hp-num">${hp}<small>/${hq.maxHp}</small></span>${side === 'B' && m.over && m.mode !== 'sandbox' ? finalTurnPillHTML(m) : side === 'B' && m.raidRoundCap && !m.over ? raidClockPillHTML(m) : ''}</div>`;
 }
+// The raid's clock (2026-10-18, user: "Why did my raid randomly end although my bramble's hp was not 0?"): a raid attempt lasts
+// m.raidRoundCap turns (the part's fight.rounds, else 12), then the part sinks back and you score what you dealt. It used to end with
+// no warning; the turn and the limit now sit on the boss's HP ribbon all fight, and the last turn is marked (and announced).
+function raidClockPillHTML(m){ const cap = m.raidRoundCap|0, n = Math.max(1, Math.min(cap, m.round || 1)), last = n >= cap;
+  return `<span class="bf-turn-pill raid-clock${last ? ' is-last' : ''}" title="${last ? 'The last turn: the raid ends after this one, whatever the castles’ Health' : `The raid ends after turn ${cap}, whatever the castles’ Health`}">${last ? '🌊 Last turn' : `🌊 Turn ${n} / ${cap}`}</span>`; }
 // 2026-10-15 (user: "When the match is over, and I view the post-battlefield, I want to see the turn#. It shows up as a pill on the
 // opponent's HP bar in the centre."): the turn the fight ended on, centred on the top HP ribbon once it's over.
 function finalTurnPillHTML(m){ const n = Math.max(1, m.round || 1); return `<span class="bf-turn-pill" title="The fight ended on turn ${n}">Turn ${n}</span>`; }
@@ -25941,7 +25962,7 @@ function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
     isCastle: true,
     liveHp: hp,
     sideLabel: sideLabel,
-    extraClass: 'match-castle-tile' + (def.id === 'raid-castles' ? ' raid-castles' : ''),
+    extraClass: 'match-castle-tile' + (def.id === 'raid-castles' || def.raidMerged ? ' raid-castles' : ''), // raidMerged: "<your castle> & Co." (2026-10-18)
     // No native `title` here (2026-09-30) -- castleHoverHTML now gives this tile the same rich
     // popover every other card gets; stacking a plain browser title tooltip on top of it is
     // exactly the double-tooltip bug already fixed once this session for the leader widget.
@@ -27206,7 +27227,9 @@ function renderBoard(opts){
     if(m.engine.legalSlots) [1,2].forEach(pid=>{ try{ m.engine.legalSlots(m.players[pid]).forEach(sl=> slotRange = Math.max(slotRange, Math.abs(sl))); }catch(e){} });
     legalForViewer.forEach(sl=> slotRange = Math.max(slotRange, Math.abs(sl)));
     [1,2].forEach(pid=>{ const rs = m.players[pid] && m.players[pid].reserve; if(rs) rs.forEach(row=> Object.keys(row).forEach(sl=> slotRange = Math.max(slotRange, Math.abs(+sl)))); });
-    slotRange = Math.max(1, slotRange, m._slotRange || 0);
+    // 2026-10-18 (user: "the raid shouldnt keep zooming in and out when i place a card"): the raid's board is its seven columns from the
+    // first frame (RaidM's BOARD_COLS, -3..3), so placing a card never widens it; only a unit pushed past the edge still can.
+    slotRange = Math.max(1, slotRange, m._slotRange || 0, m.raidFull ? 3 : 0);
     m._slotRange = slotRange;
   }
   function slotRowHTML(pl, rows, dance, scatter, nextDanceStyle){
@@ -28362,18 +28385,26 @@ function setBoardLean(lean, scale, panMax){
   const reduce = (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) || (typeof fxAtLeast==='function' && !fxAtLeast('med')); // low effects setting: no turn either
   battlefieldTilt = (reduce || Math.abs(skew) < 18) ? 0 : Math.max(-3, Math.min(3, (skew/half)*6));
 }
+// The raid's camera is fixed (2026-10-18, user: "the raid shouldnt keep zooming in and out when i place a card"): the three-row board is
+// framed once and keeps that scale for the whole fight; it is framed again only when the window changes size (or the board grows past
+// its seven columns). raidFrameKey is what a framing was made for.
+function raidFrameKey(m){ return (window.innerWidth|0) + 'x' + (window.innerHeight|0) + ':' + ((m && m._slotRange)|0); }
+if(typeof window !== 'undefined') window.addEventListener('resize', ()=>{ clearTimeout(raidFrameKey._t); raidFrameKey._t = setTimeout(()=>{ try{ if(matchState && matchState.raidFull && !matchState.over) fitBattlefieldZoom(); }catch(e){} }, 180); }, {passive:true});
 function fitBattlefieldZoom(){
   const inner = document.getElementById('battlefieldInner');
   if(!inner) return;
+  const mm = matchState, raid = !!(mm && mm.raidFull);
   // Only a NEW match frames instantly. A repaint mid-match rebuilds the wrapper with the current framing already on it
   // (see renderMatchUI's template), so it waits for the summon like any other render.
-  if(fitBattlefieldZoom._match !== matchState){ fitBattlefieldZoom._match = matchState; clearTimeout(fitBattlefieldZoom._settleT); fitBattlefieldZoom._waitStart = 0; fitBattlefieldZoomNow(true); return; }
+  if(fitBattlefieldZoom._match !== matchState){ fitBattlefieldZoom._match = matchState; clearTimeout(fitBattlefieldZoom._settleT); fitBattlefieldZoom._waitStart = 0; fitBattlefieldZoomNow(true); if(raid) mm._raidFrameKey = raidFrameKey(mm); return; }
+  if(raid && mm._raidFrameKey === raidFrameKey(mm)) return; // the raid keeps its framing (2026-10-18)
   clearTimeout(fitBattlefieldZoom._settleT);
   if(!fitBattlefieldZoom._waitStart) fitBattlefieldZoom._waitStart = performance.now();
   const tick = ()=>{
     if(boardAnimationsBusy() && performance.now() - fitBattlefieldZoom._waitStart < 2200){ fitBattlefieldZoom._settleT = setTimeout(tick, 110); return; }
     fitBattlefieldZoom._waitStart = 0;
     fitBattlefieldZoomNow(false);
+    if(raid && matchState === mm) mm._raidFrameKey = raidFrameKey(mm);
   };
   fitBattlefieldZoom._settleT = setTimeout(tick, 140);
 }
@@ -28511,7 +28542,10 @@ function fitBattlefieldZoomNow(instant){
   // drag placement-preview ghost) shares the same .board-card CSS box, so a plain child count
   // reproduces the same total width scrollWidth used to give, just without needing live flow.
   const widthForCount = (n)=> n<=0 ? 0 : (n*cardWidth + Math.max(0,n-1)*gap + padX);
-  const neededWidth = Math.max(widthForCount(rowEnemy.children.length), widthForCount(rowMine.children.length));
+  // The raid (2026-10-18): its fixed column count, not the rows' children (a dragged card's placement ghost is a child too, and it
+  // zoomed the board out and back in on every placement).
+  const raidCols = matchState && matchState.raidFull && matchState._slotRange ? 2*matchState._slotRange + 1 : 0;
+  const neededWidth = raidCols ? widthForCount(raidCols) : Math.max(widthForCount(rowEnemy.children.length), widthForCount(rowMine.children.length));
 
   // 2026-09-20 (explicit bug report: "Cards are not fitting in reduced PC screen size mode"):
   // this function used to ONLY ever measure horizontal overflow, so a browser window that was
@@ -28556,7 +28590,7 @@ function fitBattlefieldZoomNow(instant){
   if(appWrap) appWrap.classList.toggle('battlefield-zoomed', needsZoom);
   const m = needsZoom ? measure() : baseline;
 
-  const lean = measureBoardLean(inner, m.containerWidth);
+  const lean = raidCols ? null : measureBoardLean(inner, m.containerWidth); // the raid's camera doesn't lean toward the cards (2026-10-18)
   if(m.scale>=0.995){ // fits already (both dimensions, at whichever width this landed on) — stay at 1:1, no zoom
     smoothIfChanged(()=>{
       battlefieldScale = 1; battlefieldCenterY = 0; battlefieldPanX = 0; battlefieldPanMaxX = 0;
@@ -31264,7 +31298,7 @@ async function resolveRoundCore(opts){
     // 2026-10-03 ("When the enemy's castle reaches 0 health, pause the combat, and celebrate"):
     // the instant a castle visibly hits 0, stop replaying the rest of the round's animations (they
     // still go in the log) and go straight to the Victory/Defeat beat below.
-    if(over && ev.type==='hitHQ' && m.displayHqHp && (m.displayHqHp.A<=0 || m.displayHqHp.B<=0)){
+    if(over && (ev.type==='hitHQ' || (ev.type==='fieldTick' && ev.field==='volleyCastle')) && m.displayHqHp && (m.displayHqHp.A<=0 || m.displayHqHp.B<=0)){ // + a back-row strike on a castle (2026-10-18)
       const rest = mainEvents.slice(evIdx+1); rest.forEach(e=> pushLog(e));
       // 2026-10-12 (user: "the enemy just placed a new card, and it disappears after i win"): a card that died in the
       // skipped tail of the round used to vanish at the final sync render. Those deaths now play together, quickly.
@@ -31471,6 +31505,13 @@ async function resolveRoundCore(opts){
   // onDeathSpawn tokens mid-round, which don't carry a uid in their event) — every render from
   // here until the next resolveRound() call reflects the actual resolved state exactly.
   m.replayRows = null;
+  // 2026-10-18 (user: "Why did my raid randomly end although my bramble's hp was not 0?"): the castle bars read the replay's running
+  // numbers (displayHqHp) while m.resolving, and those only step down on hitHQ events. Castle damage that isn't a hitHQ (a back-row
+  // strike, a field tick, a raid smack) left the bar above the real Health, so a castle at 0 could fall with its bar still showing
+  // Health. The running numbers are the real ones from here on (the end sign and the upkeep read them).
+  if(m.displayHqHp){ m.displayHqHp.A = Math.max(0, m.players[1].hq.hp); m.displayHqHp.B = Math.max(0, m.players[2].hq.hp); }
+  if(m.displayHqShield){ m.displayHqShield.A = m.players[1].hq.shield||0; m.displayHqShield.B = m.players[2].hq.shield||0; }
+  if(m.displayHqHp) try{ updateHqHpDisplay('A'); updateHqHpDisplay('B'); }catch(e){}
   // Dungeons: a fallen castle (or a round past its limit) brings the next castle instead of ending the fight.
   let dungeonAdvanced = false;
   if(m.dungeon && m.players[1].hq.hp > 0 && m.dungeon.wave < m.dungeon.waves.length - 1 && m.forcedWinner == null){
@@ -31852,11 +31893,13 @@ async function resolveRoundCore(opts){
     if((m.round === SUDDEN_DEATH_ROUND || m.round === SUDDEN_DEATH_CASTLE_ROUND) && m.mode!=='tutorial' && !(m.raidRoundCap && m.raidRoundCap <= m.round)){ const st = m.round >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1; showSuddenDeathBanner(m, st);
       if(!(st >= 2 && (m.mode==='raidOnline' || m.mode==='raidOffline'))) try{ pushLog({type:'suddenDeath', stage:st, round:m.round}); }catch(e){} } // 2026-10-15: and a log line
     const drawEvents = [];
+    if(m.raidRoundCap && m.round === m.raidRoundCap && !m.raidLastTurnShown){ m.raidLastTurnShown = true; try{ pushLog({type:'raidLastTurn', round:m.round}); raidLastTurnBanner(m); }catch(e){} } // 2026-10-18: the raid's last turn is announced
     fieldEffectOf(m);
     if(m.engine.roundStart && m.mode!=='tutorial' && m.mode!=='liveRanked') m.engine.roundStart(m.players, m.round, m.sideOf || (id=> id===1?'A':'B'), m.stats, drawEvents);
     if(m.raidFull) try{ raidSpecials(m, drawEvents); }catch(e){}
-    // 2026-10-17 (user: "all 3 rows are active at hitting the enemy"): your two ally rows strike their columns (engine reserveVolley).
-    if(m.raidFull && m.engine.reserveVolley) try{ m.engine.reserveVolley(m.players, m.sideOf, 1, m.stats, drawEvents); m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, drawEvents); }catch(e){}
+    // 2026-10-17 (user: "all 3 rows are active at hitting the enemy"): your two ally rows struck their columns here (engine reserveVolley).
+    // 2026-10-18: every reserve unit, both sides, now strikes in the round's combat instead, column by column (reserveActs; the
+    // engine's RESERVE_ACTS), so there's no round-start volley for your rows any more.
   if(m.raidFull) try{ raidAlliesTurn(m, drawEvents); }catch(e){}
   if(m.raidFull) try{ raidBossUnit(m, drawEvents); }catch(e){}
   if(m.raidFull) try{ raidBossCommons(m, drawEvents); }catch(e){} // 2026-10-17
@@ -33355,7 +33398,8 @@ async function showEndSign(m){
   const battlefield = document.querySelector('.battlefield'); if(!battlefield) return;
   const mySeat = m.mode==='liveRanked' ? m.liveMySeat : 1;
   const kind = m.winner===0 ? 'draw' : (m.mode==='pc' ? 'victory' : (m.winner===mySeat ? 'victory' : 'defeat'));
-  const text = m.mode==='pc' && m.winner!==0 ? `PLAYER ${m.winner} WINS!` : ({victory:'VICTORY!', defeat:'DEFEAT', draw:'DRAW'})[kind];
+  let text = m.mode==='pc' && m.winner!==0 ? `PLAYER ${m.winner} WINS!` : ({victory:'VICTORY!', defeat:'DEFEAT', draw:'DRAW'})[kind];
+  if(m.endReason === 'raidTime') text = 'THE TIDE TURNS'; // 2026-10-18: a raid that ran out of turns says so (it read "DRAW")
   // Castle falls (effects catalogue "burn / dissolve", 2026-10-04): a destroyed castle shudders,
   // throws up dust and burns away under the Victory/Defeat sign.
   ['A','B'].forEach(side=>{
@@ -33374,6 +33418,7 @@ async function showEndSign(m){
   });
   const el = document.createElement('div');
   el.className = 'fight-sign end-sign end-'+kind; el.textContent = text;
+  if(m.endReason === 'raidTime'){ el.classList.add('end-raid-time'); const sub = document.createElement('small'); sub.className = 'end-sign-sub'; sub.textContent = `The raid ends after ${m.raidRoundCap} turns.`; el.appendChild(sub); }
   battlefield.appendChild(el);
   try{ if(kind==='victory') Songbook.sting('victory'); else if(kind==='defeat') Songbook.sting('defeat'); }catch(e){} // 2026-10-10: Songbook stings
   let tossMs = 0;
@@ -34307,6 +34352,7 @@ function logText(ev){
     case 'raidBossUnit': return {cls:'', text:`👑 The boss sends in ${nm(ev.defId)}: ${ev.hp} Health (less the more the raid has pounded it).`};
     case 'raidCommons': return {cls:'', text:`🐙 The boss calls in ${(ev.defIds||[]).map(nm).join(' and ')} behind its lines.`}; // 2026-10-17
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
+    case 'raidLastTurn': return {cls:'gold', text:`🌊 Last turn (${ev.round}): the tide turns after this one and the raid ends, whatever the castles' Health.`}; // 2026-10-18
     case 'raidSmack': return {cls:'', text: ev.front ? `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.` : ev.hits ? `💥 ${ev.name} smashes the column, ${ev.dmg} to each of your ${ev.hits} unit${ev.hits===1?'':'s'} there.` : `💥 ${ev.name} hits an empty column: ${ev.dmg} to your castle.`};
     case 'advance': return {cls:'', text:`⬆ ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.defId)} steps up to the ${ev.to === 0 ? 'front' : 'middle'} row.`};
     case 'boomerangWhiff': return {cls:'', text:`🪃 Whiff! ${nm(ev.defId)}'s boomerang finds nothing on the way back.`};
@@ -34354,6 +34400,7 @@ function logText(ev){
     case 'itemUsed': { const d = ITEM_DEFS[ev.item] || {icon:'🎒', name:'an item'}; return {cls: ev.item === 'firepot' || ev.item === 'caltrops' ? '' : 'heal', text:`🎒 You use ${d.icon} ${d.name}: ${itemResultText(ev.item, ev.r)}`}; } // field kit (2026-10-17)
     case 'matchResult': {
       const pc = matchState && matchState.mode === 'pc', why = {surrender:' The enemy surrenders.', cap:' The round limit is reached.', stalled:' Neither side can break through.', raidTime:' The raid’s time is up.'}[ev.reason] || '';
+      if(ev.reason === 'raidTime') return {cls:'gold', text:`🌊 The tide turns: the raid ends after ${(matchState && matchState.raidRoundCap) || ev.round || ''} turns. You score what you dealt.`}; // 2026-10-18: not a 'Draw'
       if(ev.winner === 0) return {cls:'gold', text:`🤝 Draw.${why}`};
       if(pc) return {cls:'gold', text:`🏆 ${ev.winner === 1 ? 'Player 1' : 'Player 2'} wins!${why}`};
       return ev.winner === 1 ? {cls:'gold', text:`🏆 Victory! ${ev.castle ? 'The enemy castle falls.' : 'You win.'}${why}`} : {cls:'', text:`💀 Defeat. ${ev.castle ? 'Your castle falls.' : 'The enemy wins.'}${why}`};
@@ -36131,6 +36178,7 @@ function field2LogText(ev, nm){
   if(ev.type === 'skipTurn' && ev.reason === 'frightened') return {cls:'', text:`${nm(ev.defId)} is too frightened to attack. 👻`};
   if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
   if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
+  if(ev.type === 'grounded') return {cls:'', text:`⚡ ${nm(ev.attDefId)}'s lightning is grounded: a castle can't be shocked.`}; // 2026-10-18
   return null;
 }
 function field2Vfx(ev){
@@ -36140,6 +36188,7 @@ function field2Vfx(ev){
   const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
   const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
   const at = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2}; };
+  if(ev.type === 'grounded'){ let el = null; try{ el = hqTileEl(ev.targetSide); }catch(e){} fl(el, '⚡ Grounded', 'quick'); return; } // castles can't be shocked (2026-10-18)
   if(ev.type === 'fieldTick'){
     const h = FIELD2_HIT[ev.field];
     if(h){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){}
@@ -36173,7 +36222,7 @@ function field2Vfx(ev){
       // The raid's back-row volley (2026-10-17): the striker bobs forward, the struck card (or castle) shows the number.
       case 'volleyHit': case 'volleyCastle': { const from = boardCardEl(ev.fromUid); if(from && fx()){ from.classList.remove('volley-lunge'); void from.offsetWidth; from.classList.add('volley-lunge'); setTimeout(()=> from.classList.remove('volley-lunge'), 500); }
         if(ev.field === 'volleyHit'){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){} if(el){ fl(el, `🏹-${ev.dmg}`, 'dmg'); try{ shakeEl(el); }catch(e){} } }
-        else { let el = null; try{ el = hqTileEl(ev.side); }catch(e){} if(el) fl(el, `🏹-${ev.dmg}`, 'dmg'); }
+        else { let el = null; try{ el = hqTileEl(ev.side); }catch(e){} if(el) fl(el, `🏹-${ev.dmg}`, 'dmg'); if(ev.dmg > 0) try{ displayHqDamage(m, ev.side, ev.dmg); }catch(e){} } // the bar steps down with it (2026-10-18)
         snd('swipeTone'); break; }
       case 'mirage': if(ev.illusionUid != null) setTimeout(()=>{ const el = boardCardEl(ev.illusionUid); if(!el) return; el.classList.add('mirage-shimmer'); fl(el, '🪞 Illusion', 'quick'); setTimeout(()=> el.classList.remove('mirage-shimmer'), 1200); }, 420); break;
     }
