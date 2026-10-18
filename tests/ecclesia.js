@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 // Ecclesia (2026-10-10, D23): Prayer value, the Prayer threshold, the once-a-turn offering, and the six keywords.
+// 2026-10-19 (package E): Prayer is now the Prayer tokens on the field (tests/prayer-2026-10-19.js has the full rework).
 'use strict';
 const H = require('./lib/harness.js');
 const E = H.Engine;
@@ -22,30 +23,33 @@ const defs = Object.assign({}, H.loadCardDefs(), {
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 const fresh = ()=>{ const e = E.makeSimEngine(defs, E.mulberry32(5), {recordEvents:true}); return {e, P:{1: e.newPlayer(1, {}), 2: e.newPlayer(2, {})}}; };
 const give = (pl, id)=>{ const h = {uid: 9000 + pl.hand.length + Math.floor(Math.random()*1e6), defId:id}; pl.hand.push(h); return h; };
-{ // Prayer = board Prayer + Removal Zone; threshold; offering
+{ // Prayer = the Prayer tokens on the field (2026-10-19, package E: the Removal Zone no longer counts); threshold; offering
   const {e, P} = fresh(); const me = P[1];
   ok(e.prayerOf(me) === 0, 'no prayer at the start');
   e.debugSpawnCard(P, so, 1, 'ec-pray', 'left', {}, []);
   me.exile.push({defId:'ec-filler'});
-  ok(e.prayerOf(me) === 3, `Prayer 2 on board + 1 exiled = 3 (got ${e.prayerOf(me)})`);
+  ok(e.prayerOf(me) === 0, `a Prayer 2 unit enters with no tokens, and the Removal Zone doesn't count (got ${e.prayerOf(me)})`);
+  e.debugSpawnCard(P, so, 2, 'ec-wall', 'left', {}, []);
+  e.resolveCombat(P, so, {}, [], 1);
+  ok(e.prayerOf(me) === 2, `after its first upkeep it has 2 tokens (got ${e.prayerOf(me)})`);
   me.exile.length = 0;
   const need = give(me, 'ec-need3'), food = give(me, 'ec-filler');
   ok(!e.canPlay(me, 'ec-need3', need.uid), 'Prayer 2 is not enough for a Prayer 3 card');
   ok(e.canPlay(me, 'ec-need3', need.uid, 0, 1), 'with the offering (+1) it is');
   ok(e.placeCard(P, so, 1, need.uid, 'right', {}, [], {prayerOffer: food.uid}), 'played with an offering');
   ok(me.exile.length === 1 && !me.hand.some(h=> h.uid===food.uid), 'the offered card is in the Removal Zone');
-  ok(e.prayerOf(me) === 3, 'and keeps counting');
-  ok(!e.prayerOfferReady(me), 'the offering is used for this turn');
+  ok(me.prayerTokens === 1 && e.prayerOf(me) === 3, `the offering's +1 is a Prayer token on the player (Prayer ${e.prayerOf(me)})`);
+  ok(!e.prayerOfferReady(me) && me.discardUsedThisTurn, 'the offering is used for this turn, and it was the turn\'s pitch');
 }
-{ // Worship
+{ // Worship: +1 Attack per 3 Prayer, read at the round's start (two Prayer 2 units: 0 tokens in round 1, 4 by round 2)
   const {e, P} = fresh(); const me = P[1];
   e.debugSpawnCard(P, so, 1, 'ec-worship', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'ec-pray', 'right', {}, []); e.debugSpawnCard(P, so, 1, 'ec-pray', 'right', {}, []);
   e.debugSpawnCard(P, so, 2, 'ec-wall', 'left', {}, []);
-  const w = all(me).find(c=> c.defId==='ec-worship'), wall = all(P[2])[0], hp0 = wall.hp;
-  e.debugAttack(P, so, w.uid, {}, []);
-  // debugAttack has no upkeep, so compute bonuses through a real round instead
+  const w = all(me).find(c=> c.defId==='ec-worship');
   e.resolveCombat(P, so, {}, [], 1);
-  ok(w.worshipBonus === 1, `Prayer 4 gives Worship +1 (got ${w.worshipBonus})`);
+  ok(w.worshipBonus === 0, `round 1: no tokens yet, Worship +0 (got ${w.worshipBonus})`);
+  e.resolveCombat(P, so, {}, [], 1);
+  ok(w.worshipBonus === 1, `round 2: Prayer 4 gives Worship +1 (got ${w.worshipBonus})`);
 }
 { // Healing + Satiety
   const {e, P} = fresh(); const me = P[1];
