@@ -2,6 +2,19 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package R2: the road curve)
+- **Owner (20:39): "The balance should be such that the constructed deck wins in the green zone for every map it's in… it starts at 90%, and drops to 60%. Then at the boss fight, <50%."** On every main map (0–24), the map's reference deck now wins its fights in road order on a straight line:
+  - 90% for the first fight, down to 60% for the last before the boss; elites sit on the line;
+  - a mid-map boss (20-9) 50%;
+  - the map's boss fight 40%, green 30–49%; Map 0's Frost Vanguard 45%.
+- **All 179 main-map fights are green** on the measure seeds, 120 games each, re-measured on today's rules (Freeze/Confuse, no-op heals, the new cards). Before, 38 were green. On a second seed set 157 are green, and 178 on the mean of both.
+  - **144 fights changed:** 138 CPU deck moves inside the map's theme and the road's rarity rules, 53 Shields (38 up, 15 down), and 2 lower Healths.
+  - No card stats changed. The Tutorial is untouched.
+  - The Quiet Summit (Map 21) was 93–100% at any Shield because its bird flocks barely hurt you. Its fights now mix the Summit's goats and ibex with Badger Berserkers.
+- **The skirmish editor's "This map, new-player win rate" pills** are coloured by this curve: green inside the band, blue above, red below. A pill's tooltip gives the target and band, e.g. "target ~75% (green 67–83%, fight 3 of 5 before the boss)".
+- Owner decision: 8 fights have a Shield over three times their map number, e.g. 16-6 Reaver's Hollow 105 against a rule of 24. The list is in the doc.
+- Doc `docs/road-curve-2026-10-19.md` + `.xlsx` (every fight: before, after, fresh seeds, what changed). The curve is also in `docs/winrate-reference-decks-2026-10-19.md`. Tools: `tools/skirmish_pass.js curve` / `snapshot`, `tools/road_curve_bands.js`, `tools/road_curve_merge.js`, `tools/road_curve_xlsx.py`. `tests/winrate-panel-2026-10-19.js` checks the new bands. `card-matrix`: 0 golden diffs.
+
 ## 2026-10-19 (package HN: nothing to heal, nothing happens)
 - **Owner (00:07): "Healing & the like: if there's nothing to heal, it doesn't occur, and no animation plays."** Most heal kinds already made no event at full Health. Two still showed something. A **Heal or Rebuild trigger** with nothing to heal (e.g. Forager Ant / Bee Forager's On Attack Heal 1 at full Health) still flashed its trigger rune and took a 0.3 s beat. A **Cure of 0** still made an event. Now neither does, and a "once" Heal trigger isn't used up until there is something to heal (one that paid a cost, Burn 1 Lumber, still counts as gone off). The engine counts the heals that changed something (`healWork` in `applyHeal` / `rebuildCastle`), so this works the same with or without recorded events.
 - **The board skips any 0-amount heal event** (`emptyHealEvent` in `arena_app.js`: heal, Leech, Rebuild, the bramble's regen, Herb Refinery, Carrion, Spring Rain, stanch, Cure): no look, no sound, no float, no beat, no battle-log line. This covers the live fight, the round replay, the match-history log and old saved fights. A Mend spell with no one hurt plays no green heal look (FX.A). A banana eaten only to stanch Bleed no longer says "(+0 Health)".

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Road curve workbook (2026-10-19, package R2): docs/road-curve-2026-10-19.xlsx from the pass's data files.
 
-    python3 tools/road_curve_xlsx.py     reads docs/balance/skirmish-pass-r2-{before,after,fresh}.jsonl (tools/skirmish_pass.js measure
+    python3 tools/road_curve_xlsx.py     reads docs/balance/skirmish-pass-r3-{before,after,fresh}.jsonl (tools/skirmish_pass.js measure
                                          --main), road-curve-nodes-{before,after}.json (every fight's CPU deck / Shield / Health before
                                          and after), road-curve-notes.json (why an outlier stays) and skirmish-pass-decks.json;
                                          writes docs/road-curve-2026-10-19.xlsx
@@ -22,9 +22,9 @@ def jsonl(name):
 def load(name, d=None):
     p = os.path.join(B, name)
     return json.load(open(p, encoding='utf-8')) if os.path.exists(p) else d
-before = {(r['map'], r['key']): r for r in jsonl('skirmish-pass-r2-before.jsonl')}
-after = {(r['map'], r['key']): r for r in jsonl('skirmish-pass-r2-after.jsonl')}
-fresh = {(r['map'], r['key']): r for r in jsonl('skirmish-pass-r2-fresh.jsonl')}
+before = {(r['map'], r['key']): r for r in jsonl('skirmish-pass-r3-before.jsonl')}  # 2026-10-19: r3 = re-measured on main after FZ / HN
+after = {(r['map'], r['key']): r for r in jsonl('skirmish-pass-r3-after.jsonl')}
+fresh = {(r['map'], r['key']): r for r in jsonl('skirmish-pass-r3-fresh.jsonl')}
 nb, na = load('road-curve-nodes-before.json', {}), load('road-curve-nodes-after.json', {})
 notes = load('road-curve-notes.json', {})
 decks = load('skirmish-pass-decks.json', {'road': {}})
@@ -92,4 +92,23 @@ for no, d in sorted(decks.get('road', {}).items(), key=lambda x: int(x[0])):
     drows.append([f'Road {no}', f'Map {no}', ', '.join(f"{c['n']}x {c['name']}" for c in d['cards'])])
 sheet(wb, 'Decks', ['Deck', 'Used on', 'Cards'], drows, [10, 10, 110])
 dst = os.path.join(ROOT, 'docs', 'road-curve-2026-10-19.xlsx'); wb.save(dst)
+# 2026-10-19 (R2): the same rows, in road order, as Markdown tables between the doc's <!-- fights --> markers
+DOC = os.path.join(ROOT, 'docs', 'road-curve-2026-10-19.md')
+MARK = {'easy': ' (blue)', 'hard': ' (red)', 'green': ''}
+def road(r):
+    if r[6] and r[6][0].isdigit(): return int(r[6].split(' ')[0])
+    return 98 if r[5] == 'miniboss' else 99
+if os.path.exists(DOC):
+    md = []
+    for no in sorted({r[1] for r in rows}):
+        rs = sorted([r for r in rows if r[1] == no], key=road)
+        md.append(f"\n### Map {no}: {rs[0][2]}\n\n| Fight | Kind | Place | Target (green) | Before | After | Fresh seeds | What changed |\n|---|---|---|---|---|---|---|---|")
+        for r in rs:
+            place = r[6] or ('mini-boss' if r[5] == 'miniboss' else '')
+            fr = '' if r[17] is None else f"{r[17]:.0f}%"
+            aft = '' if r[15] is None else f"{r[15]:.0f}%{MARK.get(r[16], '')}"
+            md.append(f"| {r[0]} {r[3]} | {r[4]} | {place} | {r[7]:.0f}% ({r[8]:.0f}–{r[9]:.0f}) | {r[13]:.0f}%{MARK.get(r[14], '')} | {aft} | {fr} | {r[22] or '–'} |")
+    doc = open(DOC, encoding='utf-8').read(); i, j = doc.find('<!-- fights -->'), doc.find('<!-- /fights -->')
+    if i >= 0 and j > i:
+        open(DOC, 'w', encoding='utf-8').write(doc[:i + len('<!-- fights -->')] + '\n'.join(md) + '\n' + doc[j:]); print('tables into', DOC)
 print('wrote', dst, len(rows), 'fights,', sum(1 for r in rows if r[16] == 'green'), 'green after,', len(ch), 'changed,', len(outl), 'outliers')

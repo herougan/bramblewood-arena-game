@@ -16,6 +16,23 @@ This covers the skirmish editor's **"This map, new-player win rate:"** panel. Ea
 - **Did the comparison deck get stronger along the road? No.** The panel used `expectedPlayerDeck`: the 20 top cards by stat score. That is all 0-Lumber chaff, and it stops improving after Map 3. It also played at *your own* card levels, with a CPU that didn't aim, against the enemy deck at its printed level. So it never matched `tools/skirmish_pass.js`.
 - **Now it does.** The panel, the editor's "📊 vs a new player's deck" and "🎯 Auto-tune Armour", and `tools/skirmish_pass.js` all play one function, `simulateReferenceFight` in `arena_app.js`, on the same seeds. The decks below grow map by map, and so do the card levels.
 
+## The road curve: what green means (2026-10-19, package R2)
+
+Owner (20:39): "The balance should be such that the constructed deck wins in the green zone for every map it's in. Maybe if there are 10 skirmishes, it starts at 90%, and drops to 60%. Then at the boss fight, <50%. (The deck consists of cards earned from the previous map)."
+
+The panel's pills are now coloured against this curve (`roadCurveTarget` / `skirmishTargetBand` in `arena_app.js`). On each main map, and each side map, the fights go in road order:
+
+| Fight | Target | Green |
+|---|---|---|
+| The fights before the boss (skirmishes **and elites**) | a straight line: **90%** for the first, down to **60%** for the last one before the boss. An elite sits on the line at its place. | target ±8 points |
+| A boss or mini-boss that isn't the map's last fight (20-9 The Ancient Sloth Titan) | **50%** | 42–58% |
+| The map's boss fight: its last fight, whatever kind the game gives it (an elite on Maps 1–4, a mini-boss, a boss, the Map 20 world boss) | **40%**; Map 0's Frost Vanguard **45%** | **30–49%** (the owner's "<50%") |
+
+- **Green** is inside the band. **Blue** is above it (too easy). **Red** is below it (too hard). The pill's tooltip gives the target, the band and the fight's place, for example "target ~75% (green 67–83%, fight 3 of 5 before the boss)".
+- **Example:** Map 3 has six fights before its boss. They go 90, 84, 78, 72, 66, 60%, and the boss is 40%.
+- **Not on the curve:** the Tutorial (untouched), its come-back-later fights T-2 to T-4, The Old Bramble, the Eye of the Volcano (20-A), the Volcano Lair (20-B), the endless dungeons and the Babel Spire. They keep the older targets (skirmishes 85% → 60%, elites 45%, bosses 35%, green ±12).
+- The 2026-10-19 retune against this curve is `docs/road-curve-2026-10-19.md`.
+
 ## The reference player (my guess, documented so it can be changed)
 
 | | Assumption |

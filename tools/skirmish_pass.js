@@ -248,7 +248,7 @@ function tune(f, before, top){
 // ---- the road curve (2026-10-19, package R2; owner 20:39: "The balance should be such that the constructed deck wins in the green zone
 // for every map it's in. Maybe if there are 10 skirmishes, it starts at 90%, and drops to 60%. Then at the boss fight, <50%."). The
 // target and its green band are the game's own (arena_app.js roadCurveTarget / skirmishTargetBand, the win-rate panel's colours): 90%
-// for a map's first fight down to 60% before its boss, elites 5 under the line, a mini-boss that isn't the map's last fight 50%, the
+// for a map's first fight down to 60% before its boss, elites on the line, a mini-boss that isn't the map's last fight 50%, the
 // boss fight 40% (green 30-49%; Map 0's 45%), green ±8 points.
 const bandOf = (f, win)=>{ const b = G.skirmishTargetBand(f.map, f.n), pc = x=> Math.round(x * 1000) / 10;
   return {target: pc(b.t), lo: pc(b.lo), hi: pc(b.hi), role: b.role, curve: !!b.curve, pos: b.pos || null, of: b.of || null,
@@ -263,11 +263,20 @@ const bandOf = (f, win)=>{ const b = G.skirmishTargetBand(f.map, f.n), pc = x=> 
 function curveMoves(f, deck, easy){
   const defs = CARD_DEFS_BASELINE, cap = id=> Math.min(4, G.maxCopiesForRarity(defs[id].rarity));
   if(easy){ // + a small deck (the Quiet Summit's 12-13 card flocks) grows with any of the six strongest themed cards, not only the top three
-    const base = deckMoves(f, deck, true).slice(0, 8); if(deckSize(deck) >= 20) return base;
+    const base = deckMoves(f, deck, true).slice(0, 8);
+    // + (2026-10-19, R2 round 4) the map's own cards that the deck lacks, by stat score, swapped in for its most-copied cards: the
+    // card pass ranks the Quiet Summit's birds over its goats, but a flock of birds there barely scratches your bramble (21-3: 100%
+    // with birds, 70% with Map 22's goat deck), so the trials get to try the map's other half too
+    const fam = new Set(MAPS.filter(mm=> mm === f.m || mm === mainOf(f.m) || (mm.sub && mm.parent === mainOf(f.m).id)).flatMap(mm=> mm.nodes.filter(x=> x.kind !== 'raidboss').flatMap(x=> Object.keys(x.deck||{}))));
+    const pool = themedPool(f), ownNew = pool.filter(id=> fam.has(id) && !deck[id] && !RARE_UP.has(defs[id].rarity)).sort((a, b)=> power(b) - power(a)).slice(0, 4);
+    const most = Object.keys(deck).filter(id=> defs[id] && !RARE_UP.has(defs[id].rarity) && id !== f.n.showcase && !KEEP.has(id)).sort((a, b)=> deck[b] - deck[a] || strengthOf(b) - strengthOf(a)).slice(0, 2);
+    const own = ownNew.flatMap(inn=> most.map(out=> ({type:'swap', out, inn, k: Math.min(2, deck[out], cap(inn))})));
+    if(deckSize(deck) >= 20) return base.slice(0, 6).concat(own).filter(mv=> mv.k > 0).slice(0, 14);
     const seen = new Set(base.filter(m=> m.type === 'add').map(m=> m.inn));
-    const extra = themedPool(f).filter(id=> !RARE_UP.has(defs[id].rarity) && (deck[id]||0) < cap(id) && !seen.has(id)).sort((a, b)=> strengthOf(b) - strengthOf(a)).slice(0, 6)
+    const extra = pool.filter(id=> !RARE_UP.has(defs[id].rarity) && (deck[id]||0) < cap(id) && !seen.has(id)).sort((a, b)=> strengthOf(b) - strengthOf(a)).slice(0, 6)
       .map(inn=> ({type:'add', inn, k: Math.min(2, cap(inn) - (deck[inn]||0), 20 - deckSize(deck))}));
-    return base.concat(extra).filter(mv=> mv.k > 0).slice(0, 12); }
+    const ownAdd = ownNew.map(inn=> ({type:'add', inn, k: Math.min(2, cap(inn), 20 - deckSize(deck))}));
+    return base.slice(0, 6).concat(ownAdd, own, extra).filter(mv=> mv.k > 0).slice(0, 16); }
   const ids = Object.keys(deck).filter(id=> defs[id]).sort((a, b)=> strengthOf(b) - strengthOf(a));
   const movable = ids.filter(id=> !RARE_UP.has(defs[id].rarity) && id !== f.n.showcase && !KEEP.has(id));
   const ownIds = new Set(MAPS.filter(mm=> mm === f.m || mm === mainOf(f.m) || (mm.sub && mm.parent === mainOf(f.m).id)).flatMap(mm=> mm.nodes.flatMap(x=> Object.keys(x.deck||{}))));

@@ -98,7 +98,7 @@ const withTimeout = (p, ms, what)=> Promise.race([p, new Promise((_, rej)=> setT
     ok(G.simulateReferenceFight(mid, d, 6).wins === G.simulateReferenceFight(mid, n, 6).wins, `${mid} ${key}: the draft plays like the node`); }
 
   // 7. the road curve (2026-10-19, R2; owner 20:39: "...it starts at 90%, and drops to 60%. Then at the boss fight, <50%."): every
-  //    main map's fights in road order go 90% -> 60% before the boss (elites 5 under the line), the map's last fight is its boss
+  //    main map's fights in road order go 90% -> 60% before the boss (elites on the line at their place), the map's last fight is its boss
   //    (30-49%, Map 0's 45%), and the chips are green inside the fight's band, blue above, red below
   { const mains = G.CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved && fightsOf(m).length); let lineOk = true, bossOk = true, monoOk = true;
     mains.forEach(m=>{ const list = fightsOf(m).filter(n=> !/raidboss/.test(n.kind || '')), ender = list.find(n=> n.ender) || list[list.length - 1];
@@ -107,10 +107,11 @@ const withTimeout = (p, ms, what)=> Promise.race([p, new Promise((_, rej)=> setT
       const eb = G.skirmishTargetBand(m.id, ender); if(!(eb.role === 'boss' && eb.lo === .30 && eb.hi === .49 && eb.t < .5 && eb.t >= .4)) bossOk = false;
       const line = bands.filter(([n, b])=> b.role === 'skirmish' || b.role === 'elite');
       if(line.length){ const [n0, b0] = line[0], [nL, bL] = line[line.length - 1];
-        if(Math.abs(b0.t - (b0.role === 'elite' ? .85 : .90)) > 1e-9 || Math.abs(bL.t - (bL.role === 'elite' ? .55 : .60)) > 1e-9) lineOk = false;
-        line.forEach(([n, b], i)=>{ if(i && b.t + (b.role === 'elite' ? .05 : 0) > line[i - 1][1].t + (line[i - 1][1].role === 'elite' ? .05 : 0) + 1e-9) monoOk = false;
+        if(Math.abs(b0.t - .90) > 1e-9 || Math.abs(bL.t - .60) > 1e-9) lineOk = false;
+        line.forEach(([n, b], i)=>{ if(i && b.t > line[i - 1][1].t + 1e-9) monoOk = false;
+          if(Math.abs(b.t - Math.round((.90 - .30 * i / Math.max(1, line.length - 1)) * 1000) / 1000) > 1e-9) lineOk = false; // a straight line, elites on it
           if(Math.abs(b.hi - Math.min(1, b.t + .08)) > 1e-9 || Math.abs(b.lo - (b.t - .08)) > 1e-9) lineOk = false; }); } });
-    ok(lineOk, 'every main-map fight is on the road curve: 90% for the first, 60% for the last before the boss (elites -5), green ±8');
+    ok(lineOk, 'every main-map fight is on the road curve: 90% for the first, 60% for the last before the boss (elites too), green ±8');
     ok(monoOk, 'the curve only falls along a map');
     ok(bossOk, 'every main map\'s last fight is its boss fight: target 40-45%, green 30-49%');
     ok(G.skirmishTargetBand('m1', B.byKey('m1', '0-4')).t === .45, 'Map 0\'s Frost Vanguard keeps a gentler 45%');
