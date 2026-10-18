@@ -35,6 +35,10 @@
 //        bramble Health; appends to docs/balance/<fixes>.jsonl
 //   node tools/skirmish_pass.js order [games] [--from=after] [--fixes=skirmish-pass-order]
 //        the same tune for an elite / boss that the stage deck beats more often than its map's skirmishes (ceiling: their mean - 5)
+//   node tools/skirmish_pass.js curve [games=60] [--from=r2-before] [--fixes=road-curve-fixes] [--main]   (2026-10-19, R2) tunes each fight
+//        outside its road-curve green band (arena_app.js skirmishTargetBand) toward its target: deck moves, then Shield, then Health
+//   node tools/skirmish_pass.js snapshot [--out=road-curve-nodes-after]   every fight's deck / overrides / bramble to docs/balance/<out>.json
+//   (measure --main: Maps 0-24's own fights only; each measured row carries its curve target, band and green / easy / hard)
 //   node tools/skirmish_pass.js apply [--fixes=skirmish-pass-fixes]   writes those fixes into arena_app.js
 //   node tools/skirmish_pass.js list           prints the fights and their stage decks
 // The 2026-10-18 pass: docs/skirmish-pass-2026-10-18.md; its rounds are in docs/balance/skirmish-pass-tune-log.jsonl.
@@ -241,8 +245,92 @@ function tune(f, before, top){
   return {moves, deck: moves.length ? node.deck : null, shieldOverride: shield, hqHp, after: cur, trail};
 }
 
+// ---- the road curve (2026-10-19, package R2; owner 20:39: "The balance should be such that the constructed deck wins in the green zone
+// for every map it's in. Maybe if there are 10 skirmishes, it starts at 90%, and drops to 60%. Then at the boss fight, <50%."). The
+// target and its green band are the game's own (arena_app.js roadCurveTarget / skirmishTargetBand, the win-rate panel's colours): 90%
+// for a map's first fight down to 60% before its boss, elites 5 under the line, a mini-boss that isn't the map's last fight 50%, the
+// boss fight 40% (green 30-49%; Map 0's 45%), green ±8 points.
+const bandOf = (f, win)=>{ const b = G.skirmishTargetBand(f.map, f.n), pc = x=> Math.round(x * 1000) / 10;
+  return {target: pc(b.t), lo: pc(b.lo), hi: pc(b.hi), role: b.role, curve: !!b.curve, pos: b.pos || null, of: b.of || null,
+    green: win == null ? null : win > b.hi * 100 + 1e-9 ? 'easy' : win < b.lo * 100 - 1e-9 ? 'hard' : 'green'}; };
+// One fight toward its curve target: CPU deck moves first (each of up to 2 copies, inside the map's theme and the road's rarity cap,
+// a fight's Epic+ namesake / showcase card kept; deckMoves above) while the fight is more than 6 points off, then the Shield
+// (shieldOverride, searched between 0 and the rule x 5 / +40), then (too hard with no Shield left) a lower bramble Health, then a
+// second, shorter round of deck moves if it is still outside its band. Trials play N games on the tune seeds (TUNE_SEED + 37g).
+// The curve's moves: too easy, deckMoves' own (a weak card makes way for a stronger themed one, more copies of the strongest, adds);
+// too hard, every movable card in turn (strongest first, not only the top two: the card that walls this deck is often not the one with
+// the best card-pass score) gives up to 2 copies to the weakest card of the map's own fights, then the top two lose copies.
+function curveMoves(f, deck, easy){
+  const defs = CARD_DEFS_BASELINE, cap = id=> Math.min(4, G.maxCopiesForRarity(defs[id].rarity));
+  if(easy){ // + a small deck (the Quiet Summit's 12-13 card flocks) grows with any of the six strongest themed cards, not only the top three
+    const base = deckMoves(f, deck, true).slice(0, 8); if(deckSize(deck) >= 20) return base;
+    const seen = new Set(base.filter(m=> m.type === 'add').map(m=> m.inn));
+    const extra = themedPool(f).filter(id=> !RARE_UP.has(defs[id].rarity) && (deck[id]||0) < cap(id) && !seen.has(id)).sort((a, b)=> strengthOf(b) - strengthOf(a)).slice(0, 6)
+      .map(inn=> ({type:'add', inn, k: Math.min(2, cap(inn) - (deck[inn]||0), 20 - deckSize(deck))}));
+    return base.concat(extra).filter(mv=> mv.k > 0).slice(0, 12); }
+  const ids = Object.keys(deck).filter(id=> defs[id]).sort((a, b)=> strengthOf(b) - strengthOf(a));
+  const movable = ids.filter(id=> !RARE_UP.has(defs[id].rarity) && id !== f.n.showcase && !KEEP.has(id));
+  const ownIds = new Set(MAPS.filter(mm=> mm === f.m || mm === mainOf(f.m) || (mm.sub && mm.parent === mainOf(f.m).id)).flatMap(mm=> mm.nodes.flatMap(x=> Object.keys(x.deck||{}))));
+  const pool = themedPool(f).filter(id=> !RARE_UP.has(defs[id].rarity) && ownIds.has(id)).sort((a, b)=> strengthOf(a) - strengthOf(b));
+  const moves = [];
+  movable.slice(0, 7).forEach(out=>{ const inn = pool.find(id=> id !== out && (deck[id]||0) < cap(id)); if(inn) moves.push({type:'swap', out, inn, k: Math.min(2, deck[out], cap(inn) - (deck[inn]||0))}); });
+  if(deckSize(deck) > 12) movable.slice(0, 2).forEach(out=> moves.push({type:'remove', out, k: Math.min(2, deck[out])}));
+  return moves.filter(mv=> mv.k > 0).slice(0, 9);
+}
+const SHIELD_CAP = +opt('shieldcap', 0); // --shieldcap=K: an easy fight's Shield goes no higher than the rule x K (at least 40); round 2 used 4
+function curveTune(f, band, steps){
+  const want = band.t * 100, lo = band.lo * 100, hi = band.hi * 100, AIM = Math.min(4, (hi - lo) / 2 - 1), trail = [];
+  const off = w=> Math.abs(w - want), good = w=> off(w) <= AIM && w >= lo && w <= hi;
+  // progress: the gap to the target, plus (10 points a whole bramble) how much your bramble is hurt, so a fight stuck at 100% (or 0%)
+  // still has a way down (up): a move that makes the CPU hit harder counts before it costs you a game
+  const P = (r, easy)=> off(r.win) + 10 * (easy ? 1 - r.hpLost / 100 : r.hpLost / 100);
+  const T = (nn, what)=>{ const r = measure(f, nn, N, TUNE_SEED); trail.push({what, win: r.win}); return r; };
+  let node = f.n, cur = T(node, 'start'); const moves = [];
+  const deckRound = (maxSteps, coarse)=>{
+    for(let step = 0; step < maxSteps && (coarse ? off(cur.win) > 6 : !good(cur.win)); step++){
+      const easy = cur.win > want; let best = null;
+      for(const mv of curveMoves(f, node.deck, easy)){
+        const nd = applyMove(node.deck, mv); if(!rareQuarterOk(f, nd) || deckSize(nd) < Math.min(12, deckSize(node.deck))) continue; // never shrink a deck under 12 (a smaller one stays its size)
+        const nn = Object.assign({}, node, {deck: nd}), r = T(nn, mv);
+        if(!best || P(r, easy) < P(best.r, easy)) best = {mv, nn, r};
+        if(good(best.r.win)) break;
+      }
+      if(!best || P(best.r, easy) > P(cur, easy) - 2) break; // each move must close the gap by 2+ points (a saturated fight: by your bramble's damage, P)
+      node = best.nn; cur = best.r; moves.push(best.mv);
+    }
+  };
+  let shield = null, hqHp = null;
+  const shieldRound = ()=>{
+    if(good(cur.win)) return;
+    const base = cur.shield, easy = cur.win > want, rule = G.ruleShieldOf(node);
+    if(!easy && base <= 0) return;
+    let a = easy ? base + 1 : 0, b = easy ? (SHIELD_CAP ? Math.max(base, 40, rule * SHIELD_CAP) : Math.max(40, rule * 5, base + 40)) : base - 1, best = null;
+    for(let it = 0; it < 8 && a <= b; it++){
+      const sv = Math.floor((a + b) / 2), nn = Object.assign({}, node, {shieldOverride: sv}), r = T(nn, {shield: sv});
+      if(!best || off(r.win) < off(best.r.win) || (off(r.win) === off(best.r.win) && Math.abs(sv - base) < Math.abs(best.sv - base))) best = {sv, r, nn};
+      if(r.win > want) a = sv + 1; else b = sv - 1;
+    }
+    if(best && off(best.r.win) < off(cur.win) - 1){ node = best.nn; cur = best.r; shield = best.sv; }
+  };
+  const hpRound = ()=>{
+    if(good(cur.win) || cur.win > want || cur.shield > 0) return;
+    let a = 6, b = cur.hp - 1, best = null;
+    for(let it = 0; it < 6 && a <= b; it++){
+      const h = Math.floor((a + b) / 2), nn = Object.assign({}, node, {hqHp: h}), r = T(nn, {hqHp: h});
+      if(!best || off(r.win) < off(best.r.win)) best = {h, r, nn};
+      if(r.win < want) b = h - 1; else a = h + 1;
+    }
+    if(best && off(best.r.win) < off(cur.win) - 1){ node = best.nn; cur = best.r; hqHp = best.h; }
+  };
+  deckRound(steps || 6, true); shieldRound(); hpRound();
+  if(!good(cur.win)){ deckRound(3, false); shieldRound(); }
+  return {moves, deck: moves.length ? node.deck : null, shieldOverride: shield, hqHp, after: cur, good: good(cur.win), trail};
+}
+
 // ---- commands
-const all = fights().filter(f=> !ONLY.length || ONLY.includes(f.map) || ONLY.includes(f.key) || ONLY.includes(f.code));
+// --main (2026-10-19, R2): the main maps' fights only (Maps 0-24, no side map, no endless floor, no come-back-later fight)
+const MAIN_ONLY = argv.includes('--main');
+const all = fights().filter(f=> !ONLY.length || ONLY.includes(f.map) || ONLY.includes(f.key) || ONLY.includes(f.code)).filter(f=> !MAIN_ONLY || (!f.side && !f.endless));
 const OUTDIR = path.join(ROOT, 'docs', 'balance');
 const readJsonl = file=>{ try{ return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map(l=> JSON.parse(l)); }catch(e){ return []; } };
 const rowOf = (f, extra)=>{ const {m, n, ...row} = f; return Object.assign(row, extra); };
@@ -268,7 +356,7 @@ if(CMD === 'list'){
   const OUT = path.join(OUTDIR, `skirmish-pass-${opt('tag', 'before')}.jsonl`), done = new Set(readJsonl(OUT).map(r=> r.map + ':' + r.key));
   const mine = all.filter((f, i)=> i % NSH === SHARD && !done.has(f.map + ':' + f.key));
   console.log('fights', all.length, 'mine', mine.length);
-  for(const f of mine){ const t = Date.now(), r = measure(f, null, N, opt('seed') ? TUNE_SEED : undefined); /* --seed=K: a fresh seed set (the verify run) */ fs.appendFileSync(OUT, JSON.stringify(rowOf(f, Object.assign(r, {verdict: verdict(r.win), games: N, ms: Date.now() - t}))) + '\n'); }
+  for(const f of mine){ const t = Date.now(), r = measure(f, null, N, opt('seed') ? TUNE_SEED : undefined); /* --seed=K: a fresh seed set (the verify run) */ fs.appendFileSync(OUT, JSON.stringify(rowOf(f, Object.assign(r, {verdict: verdict(r.win), games: N, ms: Date.now() - t}, bandOf(f, r.win)))) + '\n'); }
   console.log('done');
 } else if(CMD === 'tune'){
   const before = readJsonl(path.join(OUTDIR, `skirmish-pass-${opt('from', 'before')}.jsonl`));
@@ -292,6 +380,25 @@ if(CMD === 'list'){
   for(const f of todo){ const r = now.find(x=> x.map === f.map && x.key === f.key), top = Math.max(40, Math.round(mean(skMean[f.map]) - 5)), t = Date.now(), fx = tune(f, r, top);
     fs.appendFileSync(OUT, JSON.stringify(Object.assign(rowOf(f, {}), {before: r.win, verdict: 'order', top, ms: Date.now() - t}, fx)) + '\n');
     console.log(f.code, r.win, 'top', top, '->', fx.after.win, JSON.stringify(fx.moves), fx.shieldOverride, fx.hqHp); }
+} else if(CMD === 'curve'){
+  // node tools/skirmish_pass.js curve [games=60] --from=r2-before [--fixes=road-curve-fixes] [--steps=6] [--main] [shard nshards]
+  // (2026-10-19, R2): tunes every fight of the --from file that is outside its road-curve band toward its target (curveTune);
+  // `apply --fixes=road-curve-fixes` writes the fixes into arena_app.js.
+  const before = readJsonl(path.join(OUTDIR, `skirmish-pass-${opt('from', 'r2-before')}.jsonl`));
+  const OUT = path.join(OUTDIR, opt('fixes', 'road-curve-fixes') + '.jsonl'), done = new Set(readJsonl(OUT).map(r=> r.map + ':' + r.key));
+  const todo = all.filter(f=>{ const b = before.find(r=> r.map === f.map && r.key === f.key); if(!b) return false; const bd = bandOf(f, b.win); return bd.curve && bd.green !== 'green' && !f.endless; })
+    .filter((f, i)=> i % NSH === SHARD && !done.has(f.map + ':' + f.key));
+  console.log('fights off the road curve to tune', todo.length);
+  for(const f of todo){ const b = before.find(r=> r.map === f.map && r.key === f.key), t = Date.now(), band = G.skirmishTargetBand(f.map, f.n), fx = curveTune(f, band, +opt('steps', 6));
+    fs.appendFileSync(OUT, JSON.stringify(Object.assign(rowOf(f, {}), {before: b.win, target: band.t * 100, lo: band.lo * 100, hi: band.hi * 100, role: band.role, ms: Date.now() - t}, fx)) + '\n');
+    console.log(f.code, b.win, '-> target', Math.round(band.t * 100), ':', fx.after.win, fx.good ? 'green' : 'OFF', JSON.stringify(fx.moves), fx.shieldOverride, fx.hqHp); }
+} else if(CMD === 'snapshot'){
+  // node tools/skirmish_pass.js snapshot --out=road-curve-nodes-after (2026-10-19, R2): every fight's CPU deck, overrides and bramble as
+  // the game builds it, to docs/balance/<out>.json (tools/road_curve_xlsx.py diffs two of them for "what changed")
+  const out = {};
+  for(const m of MAPS){ if(m.reserved || m.tower) continue; for(const n of m.nodes){ if(!n.deck) continue; G.NODE_MAP_HINT.set(n, m.id); let sc = {}; try{ sc = G.skirmishCastle(n); }catch(e){}
+    out[m.id + ':' + n.key] = {deck: n.deck, shieldOverride: n.shieldOverride, hqHp: n.hqHp, hp: sc.hp, shield: sc.shield}; } }
+  fs.writeFileSync(path.join(OUTDIR, opt('out', 'road-curve-nodes-after') + '.json'), JSON.stringify(out) + '\n'); console.log(Object.keys(out).length, 'fights');
 } else if(CMD === 'apply'){
   const fixes = readJsonl(path.join(OUTDIR, opt('fixes', 'skirmish-pass-fixes') + '.jsonl')).filter(x=> x.apply !== false && (x.deck || x.shieldOverride != null || x.hqHp != null));
   let s = fs.readFileSync(APP, 'utf8'), n = 0;

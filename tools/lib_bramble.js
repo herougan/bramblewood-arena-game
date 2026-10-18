@@ -47,7 +47,7 @@ const NAMES = ['RARITY_MAX_COPIES', 'maxCopiesForRarity', 'ROAD_RARITY_STEPS', '
   'roadEnemyLevel', 'levelledEnemyDeck', 'hashStr', 'KIND_BASE', 'baseKind',
   // 2026-10-19 (W2): the map win-rate panel's reference player, so the tools play exactly what the skirmish editor's panel plays
   'seededRng', 'sleep', 'CONQUEST_DEFAULT_MODE', 'levelGateMap', 'WINRATE_REF_DECKS', 'referencePlayerLevel', 'referenceDeckFor', 'referenceBaseDefs', 'referencePlayerDeck',
-  'referenceFightSetup', 'playReferenceGame', 'simulateReferenceFight', 'skirmishTargetWinRate', 'SKIRMISH_CURVE_SIMS', 'skirmishCurveSimCache', 'SKIRMISH_CURVE_GAME_MS', /* + _FIGHT_MS, _BUDGET_MS: one declaration */ 'roadEnderKind', 'applyRoadKinds',
+  'referenceFightSetup', 'playReferenceGame', 'simulateReferenceFight', 'skirmishTargetWinRate', /* 2026-10-19 (R2): the road curve */ 'ROAD_CURVE_TOL', /* + _SKIP: one declaration */ 'ROAD_CURVE_BOSSY', 'roadCurveFights', 'roadCurveTarget', 'skirmishTargetBand', 'skirmishCurveCache', 'skirmishCurveNote', 'skirmishCurveChipHTML', 'SKIRMISH_CURVE_SIMS', 'skirmishCurveSimCache', 'SKIRMISH_CURVE_GAME_MS', /* + _FIGHT_MS, _BUDGET_MS: one declaration */ 'roadEnderKind', 'applyRoadKinds',
   'skirmishCurveSig', 'skirmishCurveErrText', 'checkSkirmishCurve'];
 const ms = src.indexOf('const CONQUEST_MAPS = ['), me = src.indexOf('\n];', ms) + 3;
 const dg = src.indexOf('function endlessDungeon(cfg){'), dgEnd = src.indexOf('\nconst TOWER_LEVEL_CAP', dg); // the endless dungeons; the Tower is left out
@@ -57,6 +57,8 @@ const body = [
   'let matchDefsOverlay = {}, matchLeaderGrantMap = null; const liveCards = {}, liveDeletes = {}; const AI_LEVEL_MAX = E.AI_LEVEL_MAX;',
   'const makeSimEngine = E.makeSimEngine, boardSignature = E.boardSignature, noActionsLeft = E.noActionsLeft, DRAW_ROUND_CAP = E.DRAW_ROUND_CAP, SUDDEN_DEATH_ROUND = E.SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND = E.SUDDEN_DEATH_CASTLE_ROUND, STALL_DRAW_FROM_ROUND = E.STALL_DRAW_FROM_ROUND;',
   'function invalidateCardDefs(){} function getCardDefs(){ return Object.assign({}, CARD_DEFS_BASELINE, matchDefsOverlay); }',
+  // 2026-10-19 (R2): the panel's chip HTML (skirmishCurveChipHTML) needs escapeAttr; its regex literal /"/ trips grab's string matching, so a copy
+  'function escapeAttr(s){ return (s==null || s===false ? \'\' : String(s)).replace(/"/g,\'&quot;\'); }',
   src.slice(ms, me), src.slice(dg, dgEnd),
   ...NAMES.map(grab),
   // 2026-10-19 (W2): the game gives each main map's last fight its kind at load (applyNodeEdits -> applyRoadKinds: Map 0 a skirmish,
@@ -65,7 +67,7 @@ const body = [
   'applyRoadKinds();',
   'return {CONQUEST_MAPS, mapNumberOf, nodeMapNumber, ruleShieldOf, skirmishCastle, prepareLeaderGrants, applySkirmishSetup, fightRules, levelledEnemyDeck, roadEnemyLevel, cpuAiLevelForNode,',
   '  expectedPlayerDeck, cardSourceOf, roadRarityOk, roadRarityCap, statsAtLevel, cardBaseLevel, maxCopiesForRarity, skirmishCardScore, NODE_MAP_HINT, baseKind, nodeRewardCardIds,',
-  '  roadEnderKind, WINRATE_REF_DECKS, referencePlayerLevel, referenceDeckFor, referenceFightSetup, playReferenceGame, simulateReferenceFight, skirmishTargetWinRate, checkSkirmishCurve, skirmishCurveSimCache, SKIRMISH_CURVE_SIMS,',
+  '  roadEnderKind, WINRATE_REF_DECKS, referencePlayerLevel, referenceDeckFor, referenceFightSetup, playReferenceGame, simulateReferenceFight, skirmishTargetWinRate, roadCurveTarget, skirmishTargetBand, skirmishCurveChipHTML, skirmishCurveCache, skirmishCurveNote, checkSkirmishCurve, skirmishCurveSimCache, SKIRMISH_CURVE_SIMS,',
   '  overlay: ()=> matchDefsOverlay, resetOverlay: ()=>{ matchDefsOverlay = {}; matchLeaderGrantMap = null; }, setGrantMap: m=>{ matchLeaderGrantMap = m; }, getCardDefs};',
 ].join('\n');
 const G = new Function('E', 'CARD_DEFS_BASELINE', 'CHARACTER_DEFS', body)(E, CARD_DEFS_BASELINE, CHARACTER_DEFS);
