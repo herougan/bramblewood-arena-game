@@ -5280,14 +5280,14 @@ function castleHoverHTML(hqSide){
   const m = matchState; if(!m) return '';
   const pid = hqSide==='A' ? 1 : 2;
   const pl = m.players[pid]; if(!pl) return '';
-  const def = pl.character || {id:'none-castle', name:'Castle', icon:'🏰', rarity:'common', health:pl.hq.maxHp, effects:{}};
+  const def = pl.character || {id:'none-castle', name:'Bramble', icon:'🏰', rarity:'common', health:pl.hq.maxHp, effects:{}};
   const visualDef = {...def, icon: def.icon || '🏰', health: pl.hq.maxHp};
   const visualHTML = `<div class="card-pop-visual">${cardTileHTML(visualDef, {isCastle:true, liveHp: pl.hq.hp, extraClass:'card-pop-visual-tile'})}</div>`;
   let passiveText = keywordizeHTML(characterDescHTML(def));
   if((def.effects||{}).firstUnitAtkBonus){
     passiveText += pl.firstUnitBonusUsed ? ' <span class="live-stat-val">(already used this match)</span>' : ' <span class="live-stat-val">(ready)</span>';
   }
-  return `${visualHTML}<h4>${def.icon||'🏰'} ${def.name||'Castle'}</h4>
+  return `${visualHTML}<h4>${def.icon||'🏰'} ${def.name||'Bramble'}</h4>
     <div class="statrow"><span class="hp" style="color:var(--health)">❤${Math.max(0,pl.hq.hp)}/${pl.hq.maxHp}</span></div>
     <p class="panel-sub">${passiveText}</p>
     ${def.flavor?`<div class="flavor">${def.flavor}</div>`:''}`;
@@ -6271,6 +6271,8 @@ function pipsHTML(glyph, n, kind){
   // 2026-10-15 (user: "5 Resource cost and above e.g. 5 lumber or 5 stone, it's just a lumber symbol with a black number w/ white
   // bg glow."): a resource cost of 5+ is one icon with its number set over it (black, white glow) — .pips.is-res-num in the CSS.
   // The Wait clock keeps its plain "⏳ 5".
+  // 2026-10-18 (owner: "5+ lumber shows a single lumber with a contrasted number in the centre"): the number is centred on the
+  // icon now, white with a dark outline (CSS). Every cost badge (tile, hand, Codex, detail, deck lists) is built here.
   if(n > 4) return `<span class="pips pips-${kind} is-num${kind === 'wait' ? '' : ' is-res-num'}" data-n="${n}" aria-label="${n}"><i>${glyph}</i><b>${n}</b></span>`;
   return `<span class="pips pips-${kind}${n>=3 ? ' can-num' : ''}" data-n="${n}" aria-label="${n}">${Array.from({length:n}, ()=> `<i>${glyph}</i>`).join('')}</span>`; // can-num (2026-10-10): compact on phones
 }
@@ -10207,7 +10209,9 @@ function hideSignInBanner(){ const b = document.getElementById('signInBanner'); 
 // the request's own example, "Lumber-1 to 5, Chicken-1 to 5" — read as the NUMBERING pattern, not
 // literal tier names; themed these as a woodland-growth ladder instead, matching the game's
 // existing forest vocabulary — easy to rename later, it's just this one array).
-const RANK_TIERS = ['Sprout','Sapling','Bramble','Heartwood','Elderwood','Starwood'];
+// 2026-10-18 (owner: "Both rank & mouse": "Bramble" only means the base): the middle tier is Thicket now (was Bramble); the tier is
+// worked out from the rating each time, never saved, so no save changes.
+const RANK_TIERS = ['Sprout','Sapling','Thicket','Heartwood','Elderwood','Starwood'];
 const RANK_MEAN = 1500, RANK_SD = 300;
 const RANK_Z_EDGES = [-1.5, -0.75, 0, 0.75, 1.5]; // 5 edges -> 6 tiers; bands are narrower near 0 by design, so a normally-distributed rating population clusters in the middle tiers
 function rankForRating(rating){
@@ -11686,11 +11690,11 @@ function deckHeroBannerHTML(){
   // 2026-10-08 (user): smaller cards; the castle and leader art smeared across the background, left
   // to right; Cost/Wait and Attack-by-Wait mini charts; card count, deck level and castle HP moved
   // into a tooltip (a short deck still shows a visible warning).
-  const info = `${total}/${DECK_SIZE} cards · Battle rating ${lvl} · ${castle ? escapeAttr(castle.name) : 'Castle'} ${castle ? castle.health : 30} HP${leader ? ' · Leader ' + escapeAttr(leader.name) : ''}`;
+  const info = `${total}/${DECK_SIZE} cards · Battle rating ${lvl} · ${castle ? escapeAttr(castle.name) : 'Bramble'} ${castle ? castle.health : 30} HP${leader ? ' · Leader ' + escapeAttr(leader.name) : ''}`;
   return `<div class="deck-top" id="deckHeroBanner">
     <div class="dt-smear" aria-hidden="true"><div class="l">${castleTile}</div>${leader ? `<div class="r">${cardTileHTML(leader, {inPlay:true})}</div>` : ''}</div>
     <div class="dt-pair">
-      <button type="button" class="dt-slot" data-loadout="castle" title="${escapeAttr((castle ? castle.name : 'Castle') + ' · ' + (castle ? castle.health : 30) + ' HP — choose your bramble')}"><span class="dt-tile">${castleTile}</span><span class="dt-cap"><b>${escapeHtml(castle ? castle.name : '—')}</b></span><span class="dt-change">Change</span></button>
+      <button type="button" class="dt-slot" data-loadout="castle" title="${escapeAttr((castle ? castle.name : 'Bramble') + ' · ' + (castle ? castle.health : 30) + ' HP — choose your bramble')}"><span class="dt-tile">${castleTile}</span><span class="dt-cap"><b>${escapeHtml(castle ? castle.name : '—')}</b></span><span class="dt-change">Change</span></button>
       <button type="button" class="dt-slot" data-loadout="leader" title="${escapeAttr(leader ? leader.name + ' — choose your leader' : 'Choose your leader')}"><span class="dt-tile">${leaderTile}</span><span class="dt-cap"><b>${leader ? escapeHtml(leader.name) : 'No leader'}</b></span><span class="dt-change">${leader ? 'Change' : 'Choose'}</span></button>
     </div>
     <div class="dt-info">
@@ -12212,7 +12216,7 @@ function deckMediumPreviewHTML(d){
   const leaderBg = leader && leader.art ? `background-image:url(${leader.art})` : '';
   return `<div class="deck-medium-preview ${d.id===mainDeckId?'is-main':''}" data-deckid="${d.id}">
     <div class="dmp-bg" aria-hidden="true">
-      <div class="dmp-castle ${castle && castle.art ? 'has-art' : ''}" title="${escapeAttr((castle ? castle.name : 'Castle') + ' · Lv ' + castleLevelOf(castle && castle.id))}"${castle && castle.art ? ` style="background-image:url(${castle.art})"` : ''}>${castle && castle.art ? '' : `<span>${castle ? castle.icon || '🏰' : '🏰'}</span>`}</div>
+      <div class="dmp-castle ${castle && castle.art ? 'has-art' : ''}" title="${escapeAttr((castle ? castle.name : 'Bramble') + ' · Lv ' + castleLevelOf(castle && castle.id))}"${castle && castle.art ? ` style="background-image:url(${castle.art})"` : ''}>${castle && castle.art ? '' : `<span>${castle ? castle.icon || '🏰' : '🏰'}</span>`}</div>
       <div class="dmp-leader ${leader && leader.art ? 'has-art' : ''}" title="${escapeAttr(leader ? 'Leader: ' + leader.name : 'No leader')}" style="${leaderBg}">${leader && !leader.art ? `<span>${leader.icon||'👑'}</span>` : ''}</div>
     </div>
     <div class="dmp-top"><b class="dmp-name">${escapeHtml(d.name)}</b>${d.id===mainDeckId?'<span class="deck-active-badge">★ MAIN</span>':''}</div>
@@ -12232,7 +12236,7 @@ function deckShowcaseHTML(d, opts){
   const leaderTile = leader ? cardTileHTML(leader, {inPlay:true}) : `<div class="ds-empty-leader">👑<small>No leader yet</small></div>`;
   return `<div class="deck-showcase ${opts.compact?'is-compact':''}">
     <div class="ds-pair">
-      <figure class="ds-slot"><div class="ds-tile">${castleTile}</div><figcaption>🏰 ${escapeHtml(castle ? castle.name : 'Castle')}</figcaption></figure>
+      <figure class="ds-slot"><div class="ds-tile">${castleTile}</div><figcaption>🏰 ${escapeHtml(castle ? castle.name : 'Bramble')}</figcaption></figure>
       <figure class="ds-slot"><div class="ds-tile">${leaderTile}</div><figcaption>👑 ${leader ? escapeHtml(leader.name) : 'Leader'}</figcaption></figure>
     </div>
     <div class="ds-info">
@@ -12252,7 +12256,7 @@ function deckPreviewPillsHTML(d){
   const leader = d.leaderId && defs[d.leaderId];
   const total = deckTotal(d.counts||{});
   return `<div class="deck-preview-pills">
-    <span class="deck-pill deck-pill-castle" title="Bramble">${castle?castle.icon:'🏰'} ${escapeHtml(castle?castle.name:'Castle')}</span>
+    <span class="deck-pill deck-pill-castle" title="Bramble">${castle?castle.icon:'🏰'} ${escapeHtml(castle?castle.name:'Bramble')}</span>
     <span class="deck-pill deck-pill-leader" title="Leader">👑 ${leader?escapeHtml(leader.name):'No Leader'}</span>
     <span class="deck-pill deck-pill-count ${total===DECK_SIZE?'ok':''}" title="Deck size">🃏 ${total}/${DECK_SIZE}</span>
     <span class="deck-pill deck-pill-level" title="Battle rating: each card's rarity weight × its level factor; the leader counts double. A starting deck is about 10, a full level-10 Ancient deck about 2,500">⚔ Rating ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>
@@ -13298,7 +13302,8 @@ const DIALOGUE_SPEAKERS = {
   // Errand givers (2026-10-12): folk met on the road who ask for small favours.
   mole:       {name:'Pip, a lost mole', icon:'🐹', art:'art/npc/mole.png'},
   heron:      {name:'Old Heron Wade', icon:'🪶', art:'art/npc/heron.png'},
-  mouse:      {name:'Bramble the courier mouse', icon:'🐭', art:'art/npc/mouse.png'},
+  mouse:      {name:'Burdock the courier mouse', // 2026-10-18 (owner: "Bramble" only means the base now; was Bramble)
+              icon:'🐭', art:'art/npc/mouse.png'},
   beetle:     {name:'Sister Carapace', icon:'🪲', art:'art/npc/beetle.png'},
   frog:       {name:'Croaker, a pond warden', icon:'🐸', art:'art/npc/frog.png'},
   hedgehog:   {name:'Thimble the hedgehog', icon:'🦔', art:'art/npc/hedgehog.png'},
@@ -14170,7 +14175,9 @@ function subMapEntrancesHTML(map, progress){
     // 2026-10-18 (owner: Lilypad Reach waits on Gatorback Swamp): an entrance gated on another map names that map ("Clear
     // Gatorback Swamp to open"); that map is always further down the road than the entrance's own fight.
     const gateMap = !open && sm.entry.afterMapCleared && !conquestMapCleared(sm.entry.afterMapCleared) ? CONQUEST_MAPS.find(m=> m.id===sm.entry.afterMapCleared) : null;
-    const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : gateMap ? `${sm.entry.label || 'A cave'} — Clear ${gateMap.name} to open` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
+    // 2026-10-18 (owner: Lilypad Reach waits on Map 6): a main map is named with its number, "Clear Sable Swampmire (Map 6) to open".
+    const gateName = gateMap ? gateMap.name + (!gateMap.sub && mapNumberOf(gateMap.id) != null ? ` (Map ${mapNumberOf(gateMap.id)})` : '') : '';
+    const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : gateMap ? `${sm.entry.label || 'A cave'} — Clear ${gateName} to open` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
     const p = decorPos(map.id, '~sub:'+sm.id, {x: sm.entry.x, y: sm.entry.y});
     // 2026-10-12 (user: "For those submaps whose maps are not caves - change the map icon/logo to be more representative.
     // Lilypad reach should be a lotus flower. and just that!"): only the real caves keep the rock and cave mouth; every other
@@ -14333,7 +14340,7 @@ function visitCuriosity(key, el){
   playDialogue(c.dialogue, {once:true, expand:true, onAfk: ()=>{ if(el && el.isConnected){ el.classList.add('is-new'); } }});
 }
 // Free pack couriers (2026-10-12, user: "I noticed I unlocked a pack ... these packs have to be represented by an icon on the
-// map. With a character"): while a map's free pack waits unopened, Bramble the courier mouse stands by the boss holding it.
+// map. With a character"): while a map's free pack waits unopened, Burdock the courier mouse (Bramble until 2026-10-18) stands by the boss holding it.
 // Click her and she hands it over (it opens right there).
 function freePackCourierHTML(map, positions){
   const idx = mainConquestMaps().findIndex(m=> m.id === map.id); if(idx < 0) return '';
@@ -14343,7 +14350,7 @@ function freePackCourierHTML(map, positions){
   const pack = getShopPacks().find(p=> p.id === pid); if(!pack) return '';
   const ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
   const p = decorPos(map.id, '~courier', {x: Math.max(6, Math.min(94, base.x + 7)), y: Math.max(10, Math.min(90, base.y + 12))});
-  return `<button type="button" class="map-courier" data-courier="${escapeAttr(pid)}" data-lkey="~courier" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr('Bramble the courier mouse has your free ' + pack.name)}" aria-label="${escapeAttr('Free ' + pack.name + ': open it')}"><span class="mco-who" aria-hidden="true">🐭</span><span class="mco-pack" aria-hidden="true">${pack.icon||'🎁'}</span><span class="map-spot-new">!</span></button>`;
+  return `<button type="button" class="map-courier" data-courier="${escapeAttr(pid)}" data-lkey="~courier" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr('Burdock the courier mouse has your free ' + pack.name)}" aria-label="${escapeAttr('Free ' + pack.name + ': open it')}"><span class="mco-who" aria-hidden="true">🐭</span><span class="mco-pack" aria-hidden="true">${pack.icon||'🎁'}</span><span class="map-spot-new">!</span></button>`;
 }
 function mapCaveHTML(){
   const m2 = CONQUEST_MAPS.find(m=> m.id==='m2'), gate = firstFightKey(m2);
@@ -16055,7 +16062,7 @@ const ERRANDS_KEY = 'bramblewood_errands_v1', ERRANDS_MAX = 3, ERRAND_OFFER_CHAN
 const ERRAND_TEMPLATES = [
   {id:'mole-ridge', title:'The Cousin Past the Ridge', who:'mole', ask:'My cousin is stuck past the next ridge. Could you clear the road for him?', counter:'conquestWins', goal:3, label:'Clear 3 Conquest fights for Pip’s cousin', mu:0.06, thanks:'He made it home! He says thank you. Well, he squeaked.'},
   {id:'heron-pests', title:'Pests in the Reeds', who:'heron', ask:'Pests in my reeds. Many, many small pests. Thin them out for an old bird?', counter:'unitsDefeated', goal:12, label:'Defeat 12 enemy units for Old Heron Wade', mu:0.05, thanks:'Quiet reeds at last. Here, for your trouble.'},
-  {id:'mouse-letter', title:'Letters for Three Camps', who:'mouse', ask:'I’ve got letters for three camps and wolves on every path. Walk with me?', counter:'wins', goal:3, label:'Win 3 matches escorting Bramble’s letters', mu:0.06, thanks:'Every letter delivered. Not one bite mark!'},
+  {id:'mouse-letter', title:'Letters for Three Camps', who:'mouse', ask:'I’ve got letters for three camps and wolves on every path. Walk with me?', counter:'wins', goal:3, label:'Win 3 matches escorting Burdock’s letters', mu:0.06, thanks:'Every letter delivered. Not one bite mark!'},
   {id:'beetle-packs', title:'Sealed Packs for the Hive', who:'beetle', ask:'The Hive trades in sealed packs. Open a couple and tell me what you find?', counter:'packsOpened', goal:2, label:'Open 2 card packs for Sister Carapace', mu:0.04, thanks:'Interesting. Very interesting. The Hive thanks you.'},
   {id:'frog-march', title:'The Pond Patrol', who:'frog', ask:'The pond needs a strong patrol. Spend some time on the road for us?', counter:'energyConquest', goal:25, label:'Use 25 ⚡ Energy on Conquest fights for Croaker', mu:0.05, thanks:'The pond sleeps easy tonight. Croak.'},
   {id:'hedgehog-bully', title:'The Bully on the Road', who:'hedgehog', ask:'There’s a big bully on this road. Beat a few of his friends so he backs off?', counter:'conquestWins', goal:2, label:'Clear 2 Conquest fights for Thimble', mu:0.04, thanks:'He backed off! I’m not scared of him anymore. Much.', shard:true},
@@ -16443,7 +16450,7 @@ function renderAutobattleSubTab(body){
   body.innerHTML = `<div class="panel ab-panel">${abStatusBarHTML(run)}
     <div class="ab-prep">
       <div class="ab-commanders">
-        <div class="ab-slot"><div class="ab-slot-l">Bramble <span class="ab-note">+${Math.round(AutoB.AB.CASTLE_GROWTH*100)}% health per fight</span></div>${castleTileHTML(Object.assign({}, CHARACTER_DEFS[run.castle]||{name:'Castle',health:30}, {health: AutoB.castleHealthFor((CHARACTER_DEFS[run.castle]||{health:30}).health, run.fights)}))}</div>
+        <div class="ab-slot"><div class="ab-slot-l">Bramble <span class="ab-note">+${Math.round(AutoB.AB.CASTLE_GROWTH*100)}% health per fight</span></div>${castleTileHTML(Object.assign({}, CHARACTER_DEFS[run.castle]||{name:'Bramble',health:30}, {health: AutoB.castleHealthFor((CHARACTER_DEFS[run.castle]||{health:30}).health, run.fights)}))}</div>
         <div class="ab-slot"><div class="ab-slot-l">👑 Leader</div>${L?cardTileHTML(L, {inPlay:true}):''}</div>
         <div class="ab-slot"><div class="ab-slot-l">🥈 Sub-leader <span class="ab-note">joins round ${AutoB.AB.SUB_LEADER_ROUND}</span></div>${S?cardTileHTML(S, {inPlay:true}):''}
           ${subOpts.length ? `<div class="ab-swap"><div class="ab-note">Swap for:</div>${subOpts.map(id=> `<button type="button" class="btn small" data-swap="${escapeAttr(id)}" title="${escapeAttr(defs[id].name+' — '+defs[id].attack+'/'+defs[id].health)}">${defs[id].icon} ${escapeHtml(defs[id].name)}</button>`).join('')}</div>` : `<div class="ab-note">Swapped this round</div>`}</div>
@@ -17090,7 +17097,8 @@ const CONQUEST_MAPS = [
       { key:"18-1", kind:"skirmish", name:"Dune Jackals", icon:"🐕", deck:{"dune-jackal":1,"dust-hyena":1,"komodo-warlord":2,"snapper-hatchling":2,"trapdoor-spider":2,"roadrunner-courier":2,"rabid-jackal":1,"cinder-gecko":2}, hqHp:229, rules:{"sandstorm":true}, flavor:"They laugh at you from the next dune over.", requires:[] },
       { key:"18-2", kind:"skirmish", name:"Scorpion Flats", icon:"🦂", deck:{"dust-hyena":3,"komodo-warlord":4,"trapdoor-spider":2,"snapper-hatchling":2,"grass-viper":1,"moon-jerboa":1}, hqHp:184, rules:{"sandstorm":true}, flavor:"Every stone you turn has a tail under it.", requires:["18-1"] },
       { key:"18-3", kind:"skirmish", name:"Widow's Web", icon:"🕷️", deck:{"caustic-scorpion":2,"dust-hyena":2,"komodo-warlord":3,"obsidian-scorpion":2,"tarantula-hawk":2}, hqHp:43, rules:{"sandstorm":true}, flavor:"Webs strung between the cacti, catching the wind and anything else.", requires:["18-1"] },
-      { key:"18-4", kind:"skirmish", name:"Sandstorm", icon:"🌪️", deck:{"komodo-warlord":3,"caustic-scorpion":2,"obsidian-scorpion":2,"armadillo-guard":2,"horned-lizard":2}, hqHp:82, rules:{"sandstorm":true}, flavor:"The storm has wings.", requires:["18-2","18-3"] },
+      // 2026-10-18 (owner: "New dromedary card"): one Dromedary walks the storm in 18-4; its card reward is 18-3 Widow's Web.
+      { key:"18-4", kind:"skirmish", name:"Sandstorm", icon:"🌪️", deck:{"komodo-warlord":3,"caustic-scorpion":2,"obsidian-scorpion":2,"armadillo-guard":2,"horned-lizard":2,"dromedary":1}, hqHp:82, rules:{"sandstorm":true}, flavor:"The storm has wings.", requires:["18-2","18-3"] },
       { key:"18-5", kind:"elite", name:"Obsidian Nest", icon:"🦂", deck:{"caustic-scorpion":2,"dust-hyena":2,"komodo-warlord":4,"obsidian-scorpion":2,"fennec-fox":2,"horned-lizard":2,"meerkat-burrower":2}, hqHp:89, rules:{"glassStorm":true}, flavor:"Black glass scorpions in a black glass nest.", requires:["18-4"] },
       { key:"18-6", kind:"elite", name:"Komodo Wallow", icon:"🦎", deck:{"komodo-warlord":3,"caustic-scorpion":2,"obsidian-scorpion":1,"meerkat-sentry":2,"thorny-devil":2,"antlion-pit":2,"snapper-hatchling":2}, hqHp:131, rules:{"sandstorm":true}, flavor:"The biggest lizard you have ever seen, and it has seen you.", requires:["18-4"] },
       { key:"18-7", kind:"boss", name:"The Sand Widow Queen", icon:"👑", deck:{"obsidian-scorpion":2,"komodo-warlord":3,"caustic-scorpion":2,"fennec-fox":2,"meerkat-sentry":2,"sand-widow":1,"horned-lizard":2,"thorny-devil":2}, hqHp:65, rules:{"sandstorm":true,"field":"heatwave","heatLevel":2}, flavor:"The dunes are her web.", requires:["18-5","18-6"] },
@@ -17216,7 +17224,9 @@ const CONQUEST_MAPS = [
   // Lilypad Reach (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   // 2026-10-18 (owner: "Just too many sub missions so early ... Lock it till Gatorback Swamp is completed"): the entrance stays
   // where it is on Pebble Beach but waits on Gatorback Swamp (afterMapCleared). A save that already fought here keeps it open.
-  { id:"mp", sub:true, parent:"mb", entry:{x:30, y:20, after:"2-1", afterMapCleared:"mw", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
+  // 2026-10-18 (owner: "lock it till Map 6 or 7 complete"): it waits on Map 6 by play order now, Sable Swampmire ("m8",
+  // mapIdAt(6); tests/maps-2026-10-18.js checks the two agree). Saves that already fought here still keep it open.
+  { id:"mp", sub:true, parent:"mb", entry:{x:30, y:20, after:"2-1", afterMapCleared:"m8", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
     nodes: [
       { key:"2-A-1", kind:"skirmish", name:"Lily Hop", icon:"🐸", deck:{"puddle-hopper":3,"minnow-skitter":3,"guppy":3,"quill-volley":2,"lotus-frog":2,"shallows-fry":2}, hqHp:19, rules:{"tide":true}, flavor:"Every lily pad has a frog on it, and every frog has an opinion.", requires:[] },
       { key:"2-A-2", kind:"skirmish", name:"Duck Row", icon:"🦆", deck:{"duckling":1,"pond-duck":3,"pond-paddler":2,"minnow-skitter":2,"silver-minnow":2}, hqHp:28, rules:{"tide":true}, flavor:"They paddle in a line, and they all turn at once.", requires:["2-A-1"] },
@@ -21851,6 +21861,18 @@ function tutorialDeckPreviewHTML(deck){
   const defs = getCardDefs(), ids = Object.keys(deck||{}).filter(id=> deck[id] > 0 && defs[id]);
   return ids.length ? `<div class="se-deck-stacks te-stacks">${ids.sort(deckSortFn('cost')).map(id=> `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), deck[id], '×' + deck[id])}</span>`).join('')}</div>` : '<p class="panel-sub">No cards yet.</p>';
 }
+// 2026-10-18 (owner: the drag hint animates the golden card): the deck is drawn from its end (engine.draw pops), so the opening
+// hand is its last `hand` ids. When no copy of the highlighted card (or its tutorial plain copy, derivedFrom) is among them, the
+// nearest copy below swaps places with the first card of that window; the rest of the seeded order stays as it was. A highlight
+// that is not in the deck (part 2's leader) changes nothing. Returns true when the card is in the opening hand.
+function tutorialDealHighlight(deck, hlId, hand){
+  if(!hlId || !Array.isArray(deck) || !deck.length) return false;
+  const defs = getCardDefs(), is = id=> id === hlId || !!(defs[id] && defs[id].derivedFrom === hlId);
+  const lo = Math.max(0, deck.length - hand);
+  for(let i = lo; i < deck.length; i++) if(is(deck[i])) return true;
+  for(let j = lo - 1; j >= 0; j--) if(is(deck[j])){ const t = deck[lo]; deck[lo] = deck[j]; deck[j] = t; return true; }
+  return false;
+}
 function startTutorialMatch(stage, arrangedIds, opts){
   try{ if(coachOpen) hideCoachTip(); }catch(e){}
   const pick = loadFactionChoice() || 'both';
@@ -21883,6 +21905,9 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
   const hand = Math.max(1, Math.min(5, cfg.handSize||3));
+  // 2026-10-18 (owner: "The golden card is the tutorial telling the player to [play] that card. so the animation should be on
+  // that card."): the highlighted (golden) card is always dealt into the opening hand, so the drag hint animates it.
+  tutorialDealHighlight(players[1].deck, tutorialHighlightId(st, pick), hand);
   engine.draw(players[1], hand, 'A', stats, []);
   engine.draw(players[2], hand, 'B', stats, []);
   if(!(opts && opts.adminTest)){ const tp = loadTutorialProgress(); noteTutorialProgress({level:2, faction:pick, attempts:(tp.attempts||0) + 1, startedAt: tp.startedAt || Date.now()}); }
@@ -22709,7 +22734,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
     <div class="vs-side vs-me">
       <div class="vs-portrait">${avatarHTML(loadAvatar(), 84)}</div>
       <div class="vs-name">${escapeHtml(myProfile ? myProfile.name : 'You')}</div>
-      <div class="vs-sub">🏰 ${escapeHtml(myChar && myChar.name || 'Castle')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
+      <div class="vs-sub">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
       ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${mainDeckLevel(myDeckCounts, myLeaderId)}</b></div>`; }catch(e){ return ''; } })()}
     </div>
     <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind">${map ? escapeHtml(map.icon||'') + ' ' : ''}${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</span></div>
@@ -25942,8 +25967,8 @@ function castleCharOf(m, pid){
 function hpRibbonHTML(m, side, label){
   const pid = side==='A' ? 1 : 2; const hq = m.players[pid].hq;
   const hp = Math.max(0, hq.hp), pct = hq.maxHp>0 ? Math.max(0, Math.min(100, hp/hq.maxHp*100)) : 0;
-  return `<div class="bf-hp bf-hp-${side==='A'?'mine':'enemy'} ${pct<=30?'is-low':''}" data-hpribbon="${side}" role="img" aria-label="${escapeAttr((label||'Castle')+': '+hp+' of '+hq.maxHp+' health')}">
-    <span class="bf-hp-label">🏰 ${escapeHtml(label||'Castle')}</span>
+  return `<div class="bf-hp bf-hp-${side==='A'?'mine':'enemy'} ${pct<=30?'is-low':''}" data-hpribbon="${side}" role="img" aria-label="${escapeAttr((label||'Bramble')+': '+hp+' of '+hq.maxHp+' health')}">
+    <span class="bf-hp-label">🏰 ${escapeHtml(label||'Bramble')}</span>
     <span class="bf-hp-track"><span class="bf-hp-fill" style="width:${pct.toFixed(1)}%"></span></span>
     <span class="bf-hp-num">${hp}<small>/${hq.maxHp}</small></span>${side === 'B' && m.over && m.mode !== 'sandbox' ? finalTurnPillHTML(m) : side === 'B' && m.raidRoundCap && !m.over ? raidClockPillHTML(m) : ''}</div>`;
 }
@@ -26069,7 +26094,7 @@ function wireFacingHover(){
   });
 }
 function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
-  const def = charDef || {id:'none-castle', name:'Castle', icon:'🏰', rarity:'common', health:maxHp};
+  const def = charDef || {id:'none-castle', name:'Bramble', icon:'🏰', rarity:'common', health:maxHp};
   // Some Conquest/Raid opponents are given a bare placeholder character with no real Bramble
   // pick behind them (see startConquestMatch's own enemyCharacter fallback: {id:'conquest-enemy',
   // name:node.name, health:node.hqHp, effects:{}} -- deliberately no `icon`, since there's no
@@ -31812,7 +31837,11 @@ async function resolveRoundCore(opts){
             const few = base.filter(id=> n(id) === n(base[0])), pickId = few[Math.floor(Math.random()*few.length)];
             if(unlockCardForPlayer(pickId, 'bossBaseGift')){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(pickId); m.conquestBaseGift = pickId; } } } }catch(e){}
       // Egg drops (2026-10-12, user's rates): see rollEggDrop.
-      try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; const egg = rollEggDrop(bn, m.conquestNode.mapId, isFirstClear); if(egg) m.conquestEggDrop = egg; }catch(e){}
+      // 2026-10-18 (owner: "The chance of an egg is very low. But guarantee one of the skirmishes of Map 1."): the first clear of
+      // EGG_MAP1_NODE on Map 1 always leaves one egg (once per save, flag 'egg:map1'), and that win rolls no random egg on top.
+      try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node;
+        const sure = guaranteedMap1Egg(bn, m.conquestNode.mapId, isFirstClear);
+        const egg = sure || rollEggDrop(bn, m.conquestNode.mapId, isFirstClear); if(egg) m.conquestEggDrop = egg; }catch(e){}
       // D48 (2026-10-12): a map boss beaten again at rank S or better gives a spare of that map's castle (fuse it in the Forge).
       try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, bk = bn && baseKind(bn.kind||'');
         if(!isFirstClear && bn && (bk === 'boss' || bk === 'finalboss' || bn.ender) && RANK_ORDER.indexOf(rank) >= RANK_ORDER.indexOf('S')){
@@ -33911,21 +33940,30 @@ function gloryBadgesHTML(m){
   </div>`;
 }
 // 2026-10-18 (package U, user: "Once my deck is above a certain rarity, don't show me "Put it in my deck" options in the reward menu.
-// E.g. if im holding many rares, dont ask me to put an uncommon inside. and so on"): the main deck's floor is the rarity tier that at
-// least half of its cards (every copy counts) are at or above, i.e. the lower median; a special rarity ranks as the tier it stands for
-// (RARITY_TIER_BANDS.indexOf). A won card below that floor would be a step down, so the results don't offer to put it in the deck; a
-// card at or above it still gets the offer. The card joins the collection either way. An empty deck has no floor (-1).
-function deckRarityFloor(counts){
-  const defs = getCardDefs(), tiers = [];
-  Object.keys(counts || {}).forEach(id=>{ const n = counts[id] | 0, d = defs[id]; if(n > 0 && d) for(let i = 0; i < n; i++) tiers.push(Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common'))); });
-  if(!tiers.length) return -1;
-  tiers.sort((a, b)=> b - a);
-  return tiers[Math.ceil(tiers.length / 2) - 1];
+// E.g. if im holding many rares, dont ask me to put an uncommon inside. and so on"). The card joins the collection either way.
+// 2026-10-18 (owner decision 18: "Based on collection level. At some point, all rarities will not even trigger this prompt."): the
+// floor follows the player's Collection level now (collectionStats().levelSum, the sum of every owned card's Forge level, as on the
+// Profile), not the deck's rarity. Each row: from that Collection level on, a won card needs at least `floor` (a RARITY_TIER_BANDS
+// tier; a special rarity ranks as the tier it stands for) to be offered. Commons stop first, then uncommons, rares, very/super
+// rares, epics; from the last row no rarity is offered at all (floor null = nothing qualifies). Tune the numbers here.
+const DECK_PROMPT_FLOORS = [
+  {level:0,    floor:'starter'},    // a new collection: every rarity is offered
+  {level:60,   floor:'uncommon'},   // Starter and Common cards stop asking
+  {level:180,  floor:'rare'},       // + Uncommon (and Quest)
+  {level:450,  floor:'veryrare'},   // + Rare
+  {level:900,  floor:'epic'},       // + Very Rare, Super Rare
+  {level:1600, floor:'heroic'},     // + Epic
+  {level:2600, floor:null},         // a big collection: no rarity asks any more
+];
+function collectionRarityFloor(level){
+  let row = DECK_PROMPT_FLOORS[0];
+  DECK_PROMPT_FLOORS.forEach(r=>{ if((level || 0) >= r.level) row = r; });
+  return row.floor == null ? Infinity : Math.max(0, RARITY_TIER_BANDS.indexOf(row.floor));
 }
-function rewardWorthDeckPrompt(id, counts){
+function rewardWorthDeckPrompt(id, level){
   const d = getCardDefs()[id]; if(!d || isEggRewardCard(d)) return false;
-  if(counts === undefined){ try{ const md = (myDecks || []).find(x=> x.id === mainDeckId) || getActiveDeck(); counts = md ? md.counts : myDeckCounts; }catch(e){ counts = null; } }
-  return Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common')) >= deckRarityFloor(counts);
+  if(level === undefined){ try{ level = collectionStats().levelSum; }catch(e){ level = 0; } }
+  return Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common')) >= collectionRarityFloor(level);
 }
 // 2026-10-18 (package U, user: "Shouldn't Cocoon be a card reward under the baby/egg category? The text should say "An egg! You'll need
 // a place to hatch it.""): an egg card (egg-woodland ... egg-bug "Cocoon" ... egg-red-dragon) won as a card reward is listed with the egg
@@ -33952,7 +33990,7 @@ function rewardsPanelHTML(m){
   const firstSeen = new Set(m.discoveredThisMatch || []);
   if(cards.length){
     const defs = getCardDefs();
-    const deckable = cards.filter(id=> rewardWorthDeckPrompt(id)); // 2026-10-18: no deck offer for a card below the main deck's rarity floor
+    const deckable = cards.filter(id=> rewardWorthDeckPrompt(id)); // 2026-10-18: no deck offer for a card below the Collection level's rarity floor (DECK_PROMPT_FLOORS)
     secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards" style="--n:${cards.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}</div>` : '').join('')}</div>
       ${tabOpen('deck') && deckable.length ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: deckable.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: deckable.length===1?'it':'them'})}</button>` : ''}</div>`);
   }
@@ -38540,7 +38578,7 @@ function renderForge(){
   if(disBtn) disBtn.onclick = ()=> openForgeBulk('dis', disBtn);
   const faBtn = document.getElementById('forgeFuseAllBtn');
   if(faBtn) faBtn.onclick = ()=> openForgeBulk('fuse', faBtn);
-  root.querySelectorAll('[data-forge-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.forgeCastle; if(!temperCastle(id)){ denyShake(b); return; } try{ SoundKit.clang(); }catch(e){} renderForge(); showToast(TX('toast.tempered-to-lv-2', {v1: (CHARACTER_DEFS[id]||{}).name||'Castle', v2: castleLevelOf(id)}), 'ok'); try{ refreshDeckHeroBanner(); }catch(e){} }));
+  root.querySelectorAll('[data-forge-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.forgeCastle; if(!temperCastle(id)){ denyShake(b); return; } try{ SoundKit.clang(); }catch(e){} renderForge(); showToast(TX('toast.tempered-to-lv-2', {v1: (CHARACTER_DEFS[id]||{}).name||'Bramble', v2: castleLevelOf(id)}), 'ok'); try{ refreshDeckHeroBanner(); }catch(e){} }));
   root.querySelectorAll('[data-fuse-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.fuseCastle, v = fuseCastleDuplicates(id); if(!v){ denyShake(b); return; } renderForge(); showToast(TX('toast.fused-spare-castle-of-credit', {n: v.n, s: v.n===1?'':'s', dust: v.dust}), 'ok'); }));
   { const fe = document.getElementById('forgeTierEditBtn'); if(fe) fe.addEventListener('click', openForgeTierEditor); }
   const fuBtn = document.getElementById('forgeUpgradeBtn');
@@ -40580,7 +40618,7 @@ function shopBackHTML(){
 // background"): two layers, both drawn in CSS (plus two NPC sprites), aria-hidden and click-through.
 //  - The street (#marketStreet, a fixed layer behind the page, shown only on the Shop): timber shopfronts with arched doors (one ajar
 //    with lamplight), lit windows that flicker, a striped stall, crates and barrels, cobbles, a string of lanterns swaying overhead,
-//    and two shopkeepers (Bramble the mouse at the stall, Thimble the hedgehog in a doorway) idly bobbing. On a wide screen it fills
+//    and two shopkeepers (Burdock the mouse at the stall, Thimble the hedgehog in a doorway) idly bobbing. On a wide screen it fills
 //    the space either side of the cart.
 //  - In the cart (.cart-doodads, first in #view-shop): two lanterns hanging from the awning by the sign, and along the bottom a plank
 //    floor with a crate, a barrel, a sack and the mouse peeking over them, so a phone (where the street is mostly hidden) gets it too.
@@ -40817,14 +40855,31 @@ function nestPoolFor(type){
 // 35% from bosses, 50% from world bosses - when defeating them the first time. But if fighting a mission that you have won
 // before the chance drops to 0.1% per energy you use ... For elites/minibosses/bosses/world-bosses, there is a
 // 1.5x/2x/3x/5x multiplier ... Raids in this case, only have a 1% chance flat"). The egg's kind follows the fight's animals.
-const EGG_FIRST_CHANCE = {skirmish:0.08, elite:0.16, champion:0.16, dungeon:0.16, miniboss:0.25, subboss:0.25, boss:0.35, finalboss:0.35, worldboss:0.50};
-const EGG_REPEAT_MULT = {elite:1.5, champion:1.5, dungeon:1.5, miniboss:2, subboss:2, boss:3, finalboss:3, worldboss:5};
+// 2026-10-18 (owner: "The chance of an egg is very low"): lowered a lot, about a quarter of the 10-12 rates. First clears:
+// skirmish 2%, elite 4%, mini-boss 6%, boss 10%, world boss 20%; a repeat win rolls 0.1% per energy times a smaller multiplier
+// (was 1.5/2/3/5). Raids stay at 1% flat. Map 1 guarantees one egg instead (EGG_MAP1_NODE), Map 3's first egg stays.
+const EGG_FIRST_CHANCE = {skirmish:0.02, elite:0.04, champion:0.04, dungeon:0.04, miniboss:0.06, subboss:0.06, boss:0.10, finalboss:0.10, worldboss:0.20};
+const EGG_REPEAT_MULT = {skirmish:0.5, elite:0.75, champion:0.75, dungeon:0.75, miniboss:1, subboss:1, boss:1.5, finalboss:1.5, worldboss:2.5};
 function eggChanceFor(node, mapId, firstClear){
   if(!node) return 0; const k = node.kind === 'raidWin' ? 'raidWin' : (EGG_FIRST_CHANCE[node.kind] != null ? node.kind : baseKind(node.kind || 'skirmish'));
   if(k === 'raidWin' || k === 'raidboss') return 0.01;
-  if(firstClear) return EGG_FIRST_CHANCE[k] != null ? EGG_FIRST_CHANCE[k] : 0.08;
+  if(firstClear) return EGG_FIRST_CHANCE[k] != null ? EGG_FIRST_CHANCE[k] : EGG_FIRST_CHANCE.skirmish;
   let energy = 1; try{ energy = nodeEnergyCost(mapId, node) || 1; }catch(e){}
   return Math.min(1, 0.001 * energy * (EGG_REPEAT_MULT[k] || 1));
+}
+// The egg's kind follows the fight's animals (the most common nest type in its deck; woodland if none).
+function eggKindForNode(node){
+  const defs = getCardDefs(), tally = {};
+  Object.entries((node && node.deck) || {}).forEach(([id, k])=>{ const d = defs[id]; if(d) Object.keys(EGG_KINDS).forEach(t=>{ if(t!=='woodland' && NEST_TYPES[t] && NEST_TYPES[t].test(d)) tally[t] = (tally[t]||0) + k; }); });
+  return Object.keys(tally).sort((a,b)=> tally[b]-tally[a])[0] || 'woodland';
+}
+// 2026-10-18 (owner: "guarantee one of the skirmishes of Map 1"): a mid-map ordinary skirmish of Map 1 (Thistlewood, 1-3 of
+// 1-1..1-4 and the boss) leaves one egg on its first clear, once per save. Returns the egg's kind, or null.
+const EGG_MAP1_NODE = '1-3';
+function guaranteedMap1Egg(node, mapId, firstClear){
+  if(!firstClear || !node || node.key !== EGG_MAP1_NODE || mapId !== mapIdAt(1) || baseKind(node.kind || 'skirmish') !== 'skirmish') return null;
+  if(loadDialogueFlags()['egg:map1']) return null;
+  setDialogueFlag('egg:map1', true); const kind = eggKindForNode(node); grantEgg(kind, node.key); return kind;
 }
 // Kibble from Conquest wins (2026-10-12, 21:01): a first clear gives 1 (elites and dungeons 2, bosses 3, the world boss 5);
 // a repeat win turns up 1 now and then (15%).
@@ -40836,9 +40891,7 @@ function rollKibble(node, firstClear){
 }
 function rollEggDrop(node, mapId, firstClear){
   const p = eggChanceFor(node, mapId, firstClear); if(!(p > 0) || Math.random() >= p) return null;
-  const defs = getCardDefs(), tally = {};
-  Object.entries((node && node.deck) || {}).forEach(([id, k])=>{ const d = defs[id]; if(d) Object.keys(EGG_KINDS).forEach(t=>{ if(t!=='woodland' && NEST_TYPES[t] && NEST_TYPES[t].test(d)) tally[t] = (tally[t]||0) + k; }); });
-  const kind = Object.keys(tally).sort((a,b)=> tally[b]-tally[a])[0] || 'woodland';
+  const kind = eggKindForNode(node);
   grantEgg(kind, (node && node.key) || 'raid'); return kind;
 }
 // Eggs before the Nest (2026-10-15, user: "I think its okay to find eggs before Map 4 (through normal drops) but leave a comment

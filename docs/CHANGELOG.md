@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (X1: owner decisions of 15:05)
+- **The starting bramble is called "Bramble"** (was "Castle"; its id `castle` and saves unchanged). Every UI fallback name says Bramble, and each language pack's "Castle" entry now reads as that pack's bramble word (Dornenhecke, Zarzal, Roncier, …).
+- **"Bramble" only means the base:** the courier mouse is now **Burdock** (errand "Win 3 matches escorting Burdock's letters", the map courier, docs/dialogues.json); the middle rank tier is now **Thicket** (Sprout, Sapling, Thicket, Heartwood, Elderwood, Starwood; worked out from the rating, nothing saved). Rival name lists swap Bramble → Briony and Burdock → Teasel.
+- **Eggs are rare:** first clears 2% (skirmish), 4% (elite), 6% (mini-boss), 10% (boss), 20% (world boss), was 8/16/25/35/50%; repeat wins 0.1% per energy × 0.5/0.75/1/1.5/2.5 (was ×1/1.5/2/3/5); raids still 1%. **Map 1 (Thistlewood) 1-3 always leaves one egg** on its first clear, once per save (flag `egg:map1`), shown on the results; Map 3's first egg stays.
+- **Lilypad Reach waits on Map 6** (Sable Swampmire) instead of Gatorback Swamp; a save that already fought there keeps it. The lock reads "Clear Sable Swampmire (Map 6) to open".
+- **A cost of 5+ is one log with its number in the centre**, white with a dark outline (was a black number in the corner).
+- **The tutorial always deals the golden card** into the opening hand, so the drag hint animates that card.
+- **"Put it in my deck" follows your Collection level** (the Profile's sum of card levels), not the deck's rarity: `DECK_PROMPT_FLOORS` — all rarities below 60, then commons stop (60), uncommons (180), rares (450), very/super rares (900), epics (1600), and from 2600 nothing asks.
+- **New card: Dromedary** 🐪 (Uncommon, 2 Lumber, Wait 2, 5/26, Dry, resists Heat, Regeneration 1) with the owner's pixel art; the card reward of 18-3 Widow's Web and one copy in 18-4 Sandstorm (The Glass Dunes); budget v3 38 < 47.6, 132 < 251.8; named in all 12 languages.
+- `tests/decisions-2026-10-18.js` (in run-all); `tests/maps-2026-10-18.js` and `tests/ui-2026-10-18.js` updated.
+
 ## 2026-10-18 (i18n catch-up, part F)
 - **Today's new texts are translated in all 12 packs:** the guild, invite and network-error messages (couldn't load / leave / set up, Retry, Retrying…, matchmaking unreachable), the sign-in screen's guest line, the leaderboard's empty state and rating notes, "An egg! You'll need a place to hatch it.", "There's a Nest on Map {n}{where}." and the Creative / Creativity keyword texts, plus the guild screen's "Join a Guild" and "Join" so the half-done-guild message names words on screen (`tools/i18n_2026_10_18f.py`, 32 strings each). Coverage: 325/325 plain game texts and 171/171 templates per pack, no dead keys (13 texts stay English on purpose).
 
