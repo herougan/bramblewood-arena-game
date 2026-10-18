@@ -17,6 +17,11 @@
     ['skill', 'skills', 'Skills', 'Keyword skills: a flat cost, × N, or × (1 + N/2)'], ['modifier', 'modifiers', 'Modifiers', 'Adjust a trigger or action']];
   const LIST = {}; KINDS.forEach(([k, f])=> LIST[k] = SC_SEED[f] || []);
   const SEED = {}; KINDS.forEach(([k])=> LIST[k].forEach(e=> SEED[k + ':' + e.id] = e.value));
+  // 2026-10-19 (package SW, owner 00:19: "defining the N-worth of skills ... run experiments with test units with each skill"): each
+  // entry's measuredS from tools/skill_worth.js (docs/skill-worth-2026-10-19.md), in the entry's own units, next to its value; Apply
+  // copies it into the value (an ordinary edit: it saves to the db like a typed one). No measuredS: measuredWhy says why.
+  const MEAS = {}; KINDS.forEach(([k])=> LIST[k].forEach(e=> MEAS[k + ':' + e.id] = {v: typeof e.measuredS === 'number' ? e.measuredS : null, conf: e.measuredConf || '', se: e.measuredSE, why: e.measuredWhy || '', off: e.measuredOff || ''}));
+  const measGap = key=>{ const m = MEAS[key]; return m && m.v != null ? Math.abs(m.v - valueOf(key)) : -1; };
   const edits = {}; // "<kind>:<id>" -> value, from the db (or this visit only, when read-only)
   const SKL = {}; (typeof CARDS !== 'undefined' ? CARDS.skills : []).forEach(s=> SKL[s.key] = s);
   const MAPS = {}; (typeof CARDS !== 'undefined' ? CARDS.maps : []).forEach(m=> MAPS[m.id] = m);
@@ -46,7 +51,7 @@
   const verdict = b=> !b.ok ? 'over' : b.wellUnder ? 'under' : 'ok';
 
   // ---------- state ----------
-  const st = {kind:'trigger', q:'', onlyEdited:false, v:'over', map:'*', r:'*', cq:'', key:'gap', dir:-1, open:null};
+  const st = {kind:'trigger', q:'', onlyEdited:false, byGap:false, v:'over', map:'*', r:'*', cq:'', key:'gap', dir:-1, open:null};
   let db = null, mode = 'pending'; // pending | on | off | ro
   const timers = {}, chains = {};
 
@@ -58,7 +63,7 @@
       <div class="sc-grid"><section class="sc-ed" aria-label="Cost table">
         <div class="dec-seg sc-kinds" role="group" aria-label="Kind" id="scKinds">${KINDS.map(([k, , l])=> `<button type="button" data-k="${k}" aria-pressed="${k === st.kind}">${l} <b>${LIST[k].length}</b></button>`).join('')}</div>
         <p class="sc-hint" id="scHint"></p>
-        <div class="sc-bar"><input type="search" id="scQ" placeholder="Filter by name or id…" aria-label="Filter entries"><label class="cd-chk"><input type="checkbox" id="scOnly"> edited only</label></div>
+        <div class="sc-bar"><input type="search" id="scQ" placeholder="Filter by name or id…" aria-label="Filter entries"><label class="cd-chk"><input type="checkbox" id="scOnly"> edited only</label><label class="cd-chk"><input type="checkbox" id="scGap"> biggest gap to measured first</label></div>
         <div class="sc-rows" id="scRows"></div></section>
       <section class="sc-cards" aria-label="Cards against the budget">
         <div class="sc-sum" id="scSum"></div>
@@ -75,6 +80,7 @@
     $('scV').addEventListener('click', e=>{ const b = e.target.closest('button[data-v]'); if(!b) return; st.v = b.dataset.v; $('scV').querySelectorAll('button').forEach(x=> x.setAttribute('aria-pressed', String(x === b))); renderCards(); });
     $('scQ').addEventListener('input', e=>{ st.q = e.target.value.trim().toLowerCase(); renderRows(); });
     $('scOnly').addEventListener('change', e=>{ st.onlyEdited = e.target.checked; renderRows(); });
+    $('scGap').addEventListener('change', e=>{ st.byGap = e.target.checked; renderRows(); });
     $('scMap').addEventListener('change', e=>{ st.map = e.target.value; renderCards(); });
     $('scR').addEventListener('change', e=>{ st.r = e.target.value; renderCards(); });
     $('scCq').addEventListener('input', e=>{ st.cq = e.target.value.trim().toLowerCase(); renderCards(); });
@@ -85,7 +91,8 @@
     const rows = $('scRows');
     rows.addEventListener('input', e=>{ const inp = e.target.closest('input[data-key]'); if(!inp) return; const v = inp.value.trim(); if(v === '' || !isFinite(+v)) return; setValue(inp.dataset.key, +v, false); });
     rows.addEventListener('change', e=>{ const inp = e.target.closest('input[data-key]'); if(!inp) return; if(inp.value.trim() === '' || !isFinite(+inp.value)) inp.value = valueOf(inp.dataset.key); renderRows(); });
-    rows.addEventListener('click', e=>{ const b = e.target.closest('button[data-reset]'); if(!b) return; setValue(b.dataset.reset, SEED[b.dataset.reset], true); });
+    rows.addEventListener('click', e=>{ const b = e.target.closest('button[data-reset]'); if(b){ setValue(b.dataset.reset, SEED[b.dataset.reset], true); return; }
+      const ap = e.target.closest('button[data-apply]'); if(ap){ const m = MEAS[ap.dataset.apply]; if(m && m.v != null){ setValue(ap.dataset.apply, m.v, true); const again = document.querySelector(`#scRows input[data-key="${CSS.escape(ap.dataset.apply)}"]`); if(again) again.focus(); } } });
     $('scStatus').addEventListener('click', e=>{ const b = e.target.closest('button[data-copy]'); if(b) copyJSON(b); });
     renderStatus(); renderRows(); renderCards();
     connect();
@@ -160,14 +167,19 @@
     return '';
   }
   function renderRows(){
-    const kd = KINDS.find(k=> k[0] === st.kind); $('scHint').textContent = kd[3];
+    const kd = KINDS.find(k=> k[0] === st.kind); $('scHint').textContent = kd[3] + ' · "measured": what tools/skill_worth.js measured on 2026-10-19 (docs/skill-worth-2026-10-19.md); Apply copies it into the value.';
     const list = LIST[st.kind].filter(e=>{ const key = st.kind + ':' + e.id; if(st.onlyEdited && !(key in edits)) return false;
       return !st.q || (e.id + ' ' + label(st.kind, e) + ' ' + (e.note || '')).toLowerCase().includes(st.q); });
-    const sorted = st.kind === 'skill' ? list.slice().sort((a, b)=> nUsed('skill:' + b.id) - nUsed('skill:' + a.id) || label('skill', a).localeCompare(label('skill', b))) : list;
-    $('scRows').innerHTML = sorted.map(e=>{ const key = st.kind + ':' + e.id, ed = key in edits, n = nUsed(key);
-      return `<div class="sc-row${ed ? ' is-ed' : ''}" data-key="${esc(key)}"><div class="sc-lb"><b>${esc(label(st.kind, e))}</b><small><code>${esc(e.id)}</code> · ${esc(hint(st.kind, e))} · ${n ? n + ' card' + (n === 1 ? '' : 's') : 'unused'}${e.note ? ' · ' + esc(e.note) : ''}</small></div>`
+    const sorted = st.byGap ? list.slice().sort((a, b)=> measGap(st.kind + ':' + b.id) - measGap(st.kind + ':' + a.id) || label(st.kind, a).localeCompare(label(st.kind, b)))
+      : st.kind === 'skill' ? list.slice().sort((a, b)=> nUsed('skill:' + b.id) - nUsed('skill:' + a.id) || label('skill', a).localeCompare(label('skill', b))) : list;
+    $('scRows').innerHTML = sorted.map(e=>{ const key = st.kind + ':' + e.id, ed = key in edits, n = nUsed(key), m = MEAS[key] || {}, hasM = m.v != null;
+      const mTitle = hasM ? `Measured ${m.v}${m.se != null ? ' (±' + m.se + ')' : ''}, confidence ${m.conf || 'low'}${m.off ? ' · off the scale: only a bound (the solve ran off its range)' : ''}` : 'Not measured' + (m.why ? ': ' + m.why : '');
+      const mShow = hasM ? (m.off === '>' ? '≥' : m.off === '<' ? '≤' : '') + m.v : '–'; // 2026-10-19: an off-the-scale value is a bound
+      const meas = `<div class="sc-ms${hasM ? ' c-' + esc(m.conf || 'low') : ' is-none'}" title="${esc(mTitle)}"><span class="sc-mv"><small>measured</small><b>${mShow}</b>${hasM ? `<small>${esc(m.conf || 'low')}</small>` : ''}</span>`
+        + (hasM ? `<button type="button" class="sc-apply" data-apply="${esc(key)}"${valueOf(key) === m.v ? ' disabled' : ''} aria-label="Use the measured value ${m.v} for ${esc(label(st.kind, e))}">Apply</button>` : '') + '</div>';
+      return `<div class="sc-row${ed ? ' is-ed' : ''}" data-key="${esc(key)}"><div class="sc-lb"><b>${esc(label(st.kind, e))}</b><small><code>${esc(e.id)}</code> · ${esc(hint(st.kind, e))} · ${n ? n + ' card' + (n === 1 ? '' : 's') : 'unused'}${e.note ? ' · ' + esc(e.note) : ''}${!hasM && m.why ? ' · not measured: ' + esc(m.why) : ''}</small></div>`
         + `<div class="sc-in"><input type="number" step="0.1" inputmode="decimal" data-key="${esc(key)}" value="${valueOf(key)}" aria-label="${esc(label(st.kind, e))} value"><span class="sc-seed">seed ${SEED[key]}</span>`
-        + `<button type="button" class="sc-rst" data-reset="${esc(key)}" aria-label="Back to the seed value"${ed ? '' : ' hidden'}>↺</button></div></div>`; }).join('') || '<p class="dec-empty">Nothing matches.</p>';
+        + `<button type="button" class="sc-rst" data-reset="${esc(key)}" aria-label="Back to the seed value"${ed ? '' : ' hidden'}>↺</button></div>${meas}</div>`; }).join('') || '<p class="dec-empty">Nothing matches.</p>';
   }
 
   // ---------- cards ----------
