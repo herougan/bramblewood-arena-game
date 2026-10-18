@@ -84,7 +84,7 @@ function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setF
   const st = ev.find(x=> x.type === 'statusFx' && x.kind === 'lightning'), h = ev.find(x=> x.type === 'hit' && x.skyBolt);
   ok(st && st.targetUid === w.uid && st.targetSide === 'B', 'Lightning: the statusFx names the unit it strikes');
   ok(h && h.dmgType === 'shock' && h.dmg === 3 && w.hp === 47, `Lightning 2 on a Tide unit: shock, 2 + 1 Wet (${h && h.dmg})`); }
-{ const {e, P} = mk(7); const ev = []; put(e, P, 1, 'lt-sky', 0, ev); const h = ev.find(x=> x.type === 'hitHQ' && x.skyBolt); ok(h && h.dmgType === 'shock', 'Lightning at the castle: the hitHQ is tagged skyBolt, shock'); }
+{ const {e, P} = mk(7); const ev = []; put(e, P, 1, 'lt-sky', 0, ev); const h = ev.find(x=> x.type === 'hitHQ' && x.skyBolt), g = ev.find(x=> x.type === 'grounded'); ok(!h && g, 'Lightning at the bramble is grounded (2026-10-18: "You can\'t shock the bramble.")'); }
 { const {e, P} = mk(9); const T = put(e, P, 2, 'lt-wall', 0), N = put(e, P, 2, 'lt-wall', 1); const D = put(e, P, 1, 'lt-dl', 0); const ev = []; e.debugAttack(P, so, D.uid, {}, ev);
   const hs = ev.filter(x=> x.type === 'hit' && x.dragonLightning); ok(hs.length === 2 && hs[0].jump === 0 && hs[1].jump === 1 && hs[1].viaUid === T.uid && hs.every(h=> h.dmgType === 'magic'), 'Dragon Lightning: strike 0 on the target, strike 1 from the target to the unit beside it (still magic)'); }
 

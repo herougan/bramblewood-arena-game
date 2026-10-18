@@ -101,7 +101,7 @@ ok(/if\(editingCard\.effects\.onReadyDamage && typeof editingCard\.effects\.onRe
 ok(fs.existsSync(path.join(__dirname, '..', 'supabase', 'oneoff', '2026-10-16_cataphract.sql')), 'the one-off SQL for the published row');
 ok(/const WIND_TEXT = \{/.test(src) && /at your back, in your face, or calm \(1 in 3 each\)/.test(src) && /at your back or in your face \(1 in 2 each\)/.test(src), 'the Windy / Gale texts say the wind is random, with the odds');
 ok(/\{key:'amore', category:'passive', label:'Amore', kind:'boolean'/.test(src) && /SKILL_ICON\.amore = '💕'/.test(src) && /function skills2Vfx\(ev\)/.test(src), 'Amore: skill, icon, looks');
-ok(/\{key:'onPitch', label:'On Pitch'/.test(src) && /♻️ Scavenge - \$\{detail\}/.test(src) && /m\.engine\.firePitchTriggers\(m\.players, m\.sideOf, activePid, dc\.defId/.test(src), 'On Pitch: trigger, "Scavenge - …" card text, fired by the pitch');
+ok(/\{key:'onPitch', label:'On Pitch'/.test(src) && /♻️ Scavenge - \$\{detail\}/.test(src) && /m\.engine\.pitchCard\(m\.players, m\.sideOf, activePid, dc/.test(src), 'On Pitch: trigger, "Scavenge - …" card text, fired by the pitch');
 ok(/\{key:'fireHit', label:'Fire on hit', fields:\['amount'\]/.test(src) && /<option value="burnLumber"/.test(src) && /if\(costEl && costEl\.value\) t\.cost = costEl\.value;/.test(src), 'Fire on hit and the Pay: Burn 1 Lumber field in the trigger editor');
 ok(/\{key:'stunOnHit', category:'passive', label:'Stun', kind:'number', min:1, defaultValue:1,/.test(src), 'Stun N defaults to 1');
 ok(/\{key:'pounce', category:'evergreen', label:'Pounce', kind:'selectNumber', numberWhen:\['n'\]/.test(src), 'Pounce: N, its Attack or its Health in the editor');
@@ -111,8 +111,8 @@ ok(/\{key:'pounce', category:'evergreen', label:'Pounce', kind:'selectNumber', n
   const names = [...doc.matchAll(/^\| \d+ \| \S+ ([^|]+?) \|/gm)].map(m=> m[1].trim());
   ok(names.length >= 90, `the list names the new cards (${names.length})`);
   // 2026-10-16 (placement and rarity): most are now placed on the road, so a source is a map reward or nothing
-  const bad = names.filter(n=> { const c = byName[n]; return !c || (c.source && c.source.kind !== 'map') || c.art || c.test || !(c.species && c.species.length) || !Object.keys(c.effects || {}).length || !c.locked; });
-  ok(!bad.length, `each is in cards.json: locked, no source or a map reward, no art yet, a species and its skill (${bad.slice(0, 5)})`);
+  const bad = names.filter(n=> { const c = byName[n]; return !c || (c.source && c.source.kind !== 'map') || c.test || !(c.species && c.species.length) || !Object.keys(c.effects || {}).length || !c.locked; });
+  ok(!bad.length, `each is in cards.json: locked, no source or a map reward (art came 10-18), a species and its skill (${bad.slice(0, 5)})`);
   const lc = names.map(n=> n.toLowerCase()); ok(new Set(lc).size === lc.length, 'no two share a name');
 }
 // ---- 4. clean names: no braces, no "one-off", no notes in brackets in the skill / trigger / action names
