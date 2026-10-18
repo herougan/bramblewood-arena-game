@@ -12,6 +12,7 @@
 //     Sentry (attack a unit entering the 3 facing slots), Hoard N (Attack from Lumber), Venom Master N, Fletcher N, Herbalist N, Shatter N.
 'use strict';
 const fs = require('fs'), path = require('path');
+const {TEXT: TEXT_D, TX: TX_D} = require(path.join(__dirname, '..', 'bramblewood-texts.js')); // 2026-10-18 (package D): the terse texts are TX keys
 const H = require('./lib/harness.js');
 const E = H.Engine;
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
@@ -190,7 +191,7 @@ ok(byId['piranha-shoal'].effects.bloodlust === true, 'cards: Piranha Shoal is Bl
 // ---- the app: skill list, short text, icons, keyword, codex note, Effects library
 ok(/\{key:'reflect', category:'passive', label:'Reflect', kind:'boolean'/.test(src) && /reflect: v=> `\$\{typeof v === 'number' && v < 100/.test(src), 'Reflect: a flag in "+ Add Skill", with its card line');
 ok(/\{key:'bloodlust', category:'evergreen', label:'Bloodlust', kind:'boolean'/.test(src) && /codexNote:'Its leap counts as entering: an enemy Ambush or Sentry facing its new slot strikes it\.'/.test(src), 'Bloodlust: a flag, with the Codex-only Ambush note');
-ok(/bloodlust: \(\)=> `When it kills the unit facing it, it leaps to face the nearest enemy creature\. Half damage to Structures and brambles\.`/.test(src) && !/Ambush/.test((src.match(/\n  bloodlust: \(\)=> `[^`]*`/) || ['Ambush'])[0]), 'Bloodlust card line (no Ambush note on the card)');
+ok(/\n  bloodlust: \(\)=> TX\('ui\.sk-bloodlust'\)/.test(src) && /leaps to the nearest enemy\. Half damage to Structures and brambles\./.test(TEXT_D['ui.sk-bloodlust']) && !/Ambush/.test(TEXT_D['ui.sk-bloodlust']), 'Bloodlust card line (no Ambush note on the card; 2026-10-18, package D: terse, a TX key)');
 ok(/if\(p\.codexNote\) txt \+= ' ' \+ p\.codexNote;/.test(src) && /codexNote:p\.codexNote/.test(src), 'the Skills Codex adds the note');
 ['sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'shatter'].forEach(k=>{
   ok(new RegExp(`\\{key:'${k}', category:'passive', label:'[A-Z][a-z]+( [A-Z][a-z]+)?'`).test(src), `${k}: in "+ Add Skill" with a simple name`);
@@ -203,7 +204,7 @@ ok(/SKILL_ICON, \{vanguard:'🎖️', web:'🕸️'/.test(src), 'Web: the 🕸�
 ['reflect', 'bloodlust', 'sentry', 'web', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'shatter', 'vanguard'].forEach(k=> ok(new RegExp(`\\n  ${k}: \\{`).test(src.slice(src.indexOf('const FXL_SKILL_SETUPS'))), `${k}: an Effects library setup`));
 ['reflectShot', 'bloodlustLeap', 'sentry', 'vanguard'].forEach(t=> ok(src.includes(`ev.type === '${t}'`), `${t}: a log line / look`));
 ok(/ambush: v=> `When an enemy unit enters the slot facing it \(played, spawned or moved in\)/.test(src), 'Ambush card line');
-ok(/crabClaws: \(\)=> `Each swing pinches a random enemy unit to its left or right, never the one in front\. With none there, it hits the bramble\.`/.test(src), 'Crab Claws card line');
+ok(/crabClaws: \(\)=> TX\('ui\.sk-crab-claws'\)/.test(src) && /random enemy to its left or right, never the one in front; with none, the bramble/.test(TEXT_D['ui.sk-crab-claws']), 'Crab Claws card line (2026-10-18, package D: terse)');
 ok(/function watchScan\(/.test(eng) && /function reflectShotOf\(/.test(eng) && /function bloodlustLeap\(/.test(eng) && /function vanguardOpening\(/.test(eng) && !/function bloodlustGain\(/.test(eng), 'engine: the new helpers; the old Bloodlust gain is gone');
 
 console.log(`skills-2026-10-17: ${fail ? fail + ' failure(s)' : 'all passed'} (${n} checks)`); process.exit(fail ? 1 : 0);

@@ -9,6 +9,7 @@
 // Landslide's three columns are in field-effects-2026-10-16.js.
 'use strict';
 const fs = require('fs'), path = require('path');
+const {TEXT: TEXT_D} = require(path.join(__dirname, '..', 'bramblewood-texts.js')); // 2026-10-18 (package D): the terse texts are TX keys
 const H = require('./lib/harness.js');
 const E = H.Engine;
 let fail = 0, n = 0; const ok = (c, m)=>{ n++; if(!c){ fail++; console.log('  ✗', m); } };
@@ -87,7 +88,7 @@ const same = (a, b)=> JSON.stringify(a) === JSON.stringify(b);
 
 // ---- texts and the budget
 const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
-ok(/fork: \(\)=> `One two-pronged swing: full Attack on the units to its left and right when both are there, or else just the one in front\.`/.test(src), 'Fork card line');
+ok(/fork: \(\)=> TX\('ui\.sk-fork'\)/.test(src) && /two enemies to its left and right; if either is missing, just the one in front/.test(TEXT_D['ui.sk-fork']) && /Full Attack on each prong/.test(TEXT_D['ui.skx-fork']), 'Fork card line (2026-10-18, package D: terse; full Attack in the Codex)');
 ok(/trident: \(\)=> `One three-pronged swing straight ahead: full Attack in front, half to the units on its left and right\.`/.test(src), 'Trident card line');
 ok(/pitchfork: \(\)=> `One four-pronged swing, aimed left or right at random: half Attack on each of 4 neighbouring columns\.`/.test(src), 'Pitchfork card line');
 ok(/\{key:'trident'[^\n]*half \(rounded down, at least 1\)/.test(src) && /\{key:'pitchfork'[^\n]*half its Attack/.test(src) && /\{key:'fork'[^\n]*never the one in front and a side together/.test(src), 'the editor texts');
