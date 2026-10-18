@@ -25,7 +25,8 @@ const wearOff = key=> async ctx=>{ const el = foe(ctx); const cls = STATUS_CLS[k
 const deathOf = (fn, pick)=> ctx=> X()[fn]((pick || foe)(ctx), {});
 
 // ===================================================== statuses =====================================================
-const WEAR = [['st-poison-expire', 'poison'], ['st-bleed-expire', 'bleed'], ['st-decay-expire', 'decay'], ['st-sleep-expire', 'asleep'], ['st-paralyze-expire', 'paralyzed'],
+// (st-poison-expire moved to d.js on 2026-10-18: Poison's end is its look fading through the game's hook, not FX.C.statusEnd.)
+const WEAR = [['st-bleed-expire', 'bleed'], ['st-decay-expire', 'decay'], ['st-sleep-expire', 'asleep'], ['st-paralyze-expire', 'paralyzed'],
   ['st-stun-expire', 'stunned'], ['st-stagger-expire', 'staggered'], ['st-blind-expire', 'blind'], ['st-tipsy-expire', 'tipsy'], ['st-confuse-expire', 'confused'], ['st-shock-expire', 'shocked'],
   ['st-corrode-expire', 'corrode'], ['st-expose-expire', 'exposed'], ['st-daunt-expire', 'daunt'], ['st-wither-expire', 'wither'], ['st-irradiation-expire', 'irradiation'], ['st-smoke-expire', 'smoke'],
   ['st-scar-expire', 'scar']];

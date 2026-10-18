@@ -9949,6 +9949,8 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .rr-new{--nt-size:20px; --nt-stroke:1.5px; rotate:-8deg;}
 .po2-new-tag{--nt-size:13px; --nt-stroke:0px; rotate:-6deg;}
 .rw-new{--nt-size:13px; --nt-stroke:0px;} .rw-card.shown .rw-new{transform:scale(1) rotate(-8deg);}
+/* 2026-10-18 (package T): a spare bramble won (a card in the Cards won row) wears a cooler SPARE tag in the same shape as NEW! */
+.rw-new.rw-spare{background:linear-gradient(135deg, #5d8cff, #7fc4ff 50%, #c9ecff) !important; color:#f4fbff !important; text-shadow:0 .12em 0 #1d3f7a !important; box-shadow:0 0 0 2px #1d3f7a, 0 4px 10px rgba(0,0,0,.4), 0 0 14px rgba(140,200,255,.6) !important;}
 .board-card .seen-new{--nt-size:13px; --nt-stroke:0px;}
 @keyframes seenNew{0%{transform:translateX(-50%) rotate(-8deg) scale(2.4); opacity:0;} 100%{transform:translateX(-50%) rotate(-8deg) scale(1); opacity:1;}}
 .board-card .seen-new{transform:translateX(-50%) rotate(-8deg);}
@@ -14461,7 +14463,9 @@ css('base', `
 // Each status that runs out gets its own small goodbye (about 0.8 s), in its theme colour, and a chip naming it.
 // mode picks the motion; c/c2 the colours; g the particle glyphs; label the chip.
 const STATUS_END = {
-  poison:      {mode:'bubbles', c:'rgba(86,170,40,.55)', c2:'#9be15d', label:'☠ cured', chip:'#3f7d1a'},                       // swamp glop
+  // 2026-10-18 (package P, owner: "When you naturally lose poison counters ... it doesn't say 'Cured!'"): no chip. In a fight FX.D's
+  // Poisoned look plays the end itself (the pool fades off, 3-4 last bubbles; see onEvent below); a real Cure still floats "💊 Cured N".
+  poison:      {mode:'bubbles', c:'rgba(86,170,40,.55)', c2:'#9be15d', label:'', chip:'#3f7d1a'},                               // swamp glop
   bleed:       {mode:'drip', c:'rgba(179,18,31,.45)', c2:'#e0303f', label:'🩸 stopped', chip:'#8e1420'},                        // beasts, blood red
   decay:       {mode:'flakes', c:'rgba(126,106,150,.5)', c2:'#a996c4', label:'🍄 cleared', chip:'#5d4f73'},                     // Morel Hollow mould
   frozen:      {mode:'shell', c:'rgba(170,220,255,.55)', c2:'#dff3ff', label:'❄ thawed', chip:'#2f7fb5', sound:'iceShatter'},    // Tundra / Ice Hollow
@@ -14560,7 +14564,7 @@ M.statusEnd = function(el, kind, opts){
         tl.fromTo(pl, {opacity:1}, {opacity:0, duration:.5, ease:'power1.in'}, .1);
         spray(tl, mk, .2, x, y, {n:4, glyphs:['✦'], size:[10, 14], dist:[10, 24], dur:[.4, .5]}); snd('healTone'); break; }
     }
-    chip(tl, mk, .12, t, S.label, S.chip);
+    if(S.label) chip(tl, mk, .12, t, S.label, S.chip); // 2026-10-18: a status without a label (Poison) ends without a chip
   });
 };
 // A unit that loses its turn shows why (log-only before): about 0.8 s on the card, nothing that blocks the replay.
@@ -16013,6 +16017,9 @@ M.onEvent = function(ev, env){
       // 2026-10-17 (user: "If there's no more exposure left, it fades as it magnifies!"): FX.D already faded / magnified the crosshair away
       // the moment its last counter went, so the round-end "wears off" doesn't play a second one.
       if(ev.status === 'exposed' && e){ const tl = e.querySelector('.card-tile') || e; if(tl.dataset && tl.dataset.fxdExposeLeft){ delete tl.dataset.fxdExposeLeft; break; } }
+      // 2026-10-18 (package P): Poison's end belongs to its look (FX.D.syncStatusLooks: the pool fades off with 3-4 last bubbles), the
+      // same code the Effects Lab plays, so this green drain no longer plays on top of it.
+      if(ev.status === 'poison') break;
       if(e && STATUS_END[ev.status]) M.statusEnd(e, ev.status, o); break; }
     case 'skipTurn': if(SKIP_OWN.has(ev.reason)){ const e = el(ev.uid); if(e) M.lostTurn(e, ev.reason, o); } break;
     case 'hit': {
@@ -27873,7 +27880,9 @@ css('base', `
 // Each status that runs out gets its own small goodbye (about 0.8 s), in its theme colour, and a chip naming it.
 // mode picks the motion; c/c2 the colours; g the particle glyphs; label the chip.
 const STATUS_END = {
-  poison:      {mode:'bubbles', c:'rgba(86,170,40,.55)', c2:'#9be15d', label:'☠ cured', chip:'#3f7d1a'},                       // swamp glop
+  // 2026-10-18 (package P, owner: "When you naturally lose poison counters ... it doesn't say 'Cured!'"): no chip. In a fight FX.D's
+  // Poisoned look plays the end itself (the pool fades off, 3-4 last bubbles; see onEvent below); a real Cure still floats "💊 Cured N".
+  poison:      {mode:'bubbles', c:'rgba(86,170,40,.55)', c2:'#9be15d', label:'', chip:'#3f7d1a'},                               // swamp glop
   bleed:       {mode:'drip', c:'rgba(179,18,31,.45)', c2:'#e0303f', label:'🩸 stopped', chip:'#8e1420'},                        // beasts, blood red
   decay:       {mode:'flakes', c:'rgba(126,106,150,.5)', c2:'#a996c4', label:'🍄 cleared', chip:'#5d4f73'},                     // Morel Hollow mould
   frozen:      {mode:'shell', c:'rgba(170,220,255,.55)', c2:'#dff3ff', label:'❄ thawed', chip:'#2f7fb5', sound:'iceShatter'},    // Tundra / Ice Hollow
@@ -27972,7 +27981,7 @@ M.statusEnd = function(el, kind, opts){
         tl.fromTo(pl, {opacity:1}, {opacity:0, duration:.5, ease:'power1.in'}, .1);
         spray(tl, mk, .2, x, y, {n:4, glyphs:['✦'], size:[10, 14], dist:[10, 24], dur:[.4, .5]}); snd('healTone'); break; }
     }
-    chip(tl, mk, .12, t, S.label, S.chip);
+    if(S.label) chip(tl, mk, .12, t, S.label, S.chip); // 2026-10-18: a status without a label (Poison) ends without a chip
   });
 };
 // A unit that loses its turn shows why (log-only before): about 0.8 s on the card, nothing that blocks the replay.
@@ -29425,6 +29434,9 @@ M.onEvent = function(ev, env){
       // 2026-10-17 (user: "If there's no more exposure left, it fades as it magnifies!"): FX.D already faded / magnified the crosshair away
       // the moment its last counter went, so the round-end "wears off" doesn't play a second one.
       if(ev.status === 'exposed' && e){ const tl = e.querySelector('.card-tile') || e; if(tl.dataset && tl.dataset.fxdExposeLeft){ delete tl.dataset.fxdExposeLeft; break; } }
+      // 2026-10-18 (package P): Poison's end belongs to its look (FX.D.syncStatusLooks: the pool fades off with 3-4 last bubbles), the
+      // same code the Effects Lab plays, so this green drain no longer plays on top of it.
+      if(ev.status === 'poison') break;
       if(e && STATUS_END[ev.status]) M.statusEnd(e, ev.status, o); break; }
     case 'skipTurn': if(SKIP_OWN.has(ev.reason)){ const e = el(ev.uid); if(e) M.lostTurn(e, ev.reason, o); } break;
     case 'hit': {
@@ -30028,12 +30040,23 @@ const STATUS_CSS = `
   .fxd-st{position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:4; overflow:hidden; container-type:size;}
   .fxd-st::before, .fxd-st::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background-repeat:no-repeat;}
   .fxd-st i{position:absolute; display:block; left:var(--x); font-style:normal; pointer-events:none;}
-  /* Poison: swamp-green ooze pools at the bottom and bubbles rise and pop */
-  .fxd-st-poison{background:linear-gradient(0deg, rgba(90,200,60,.42), rgba(90,200,60,0) 40%);}
-  .fxd-st-poison::before{top:auto; bottom:0; left:-10%; right:-10%; height:10%; /* 2026-10-16 (user: "Poisoned line effect should start from the south border."): was bottom:13% */ background:radial-gradient(ellipse 11px 7px at 50% 100%, rgba(130,235,70,.85) 62%, transparent 66%) 0 0/20px 100% repeat-x; filter:drop-shadow(0 0 2px #6cff3a); animation:fxdOoze 2.6s linear infinite;}
-  @keyframes fxdOoze{to{background-position:20px 0;}}
-  .fxd-st-poison i{bottom:3%; width:6px; height:6px; margin-left:-3px; border-radius:50%; border:1px solid rgba(200,255,150,.95); background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.75), rgba(110,220,60,.35)); animation:fxdBubble var(--d) ease-in infinite; animation-delay:var(--dl);}
-  @keyframes fxdBubble{0%{transform:translateY(0) scale(.35); opacity:0;} 12%{opacity:1;} 78%{transform:translateY(-46cqh) scale(1); opacity:1;} 86%{transform:translateY(-48cqh) scale(1.6); opacity:0;} 100%{opacity:0;}}
+  /* Poison (2026-10-18, package P; owner: "it should represent the surface of a boiling pool of poison"): a green pool along the south
+     border whose surface FX.D's poison driver (psnStep, below) redraws every frame from layered waves and swells, so it never loops.
+     Rare small bubbles (rings and filled dots) leave it at random spots. Was a CSS ooze stripe sliding at a constant speed plus four
+     bubbles on fixed loops. */
+  .fxd-st-poison{background:linear-gradient(0deg, rgba(90,200,60,.34), rgba(90,200,60,0) 34%);}
+  .fxd-psn-svg{position:absolute; left:0; bottom:0; width:100%; height:14%; overflow:visible; pointer-events:none; filter:drop-shadow(0 0 2px rgba(108,255,58,.65));}
+  .fxd-psn-svg .b{fill:rgba(52,140,28,.3);} /* see-through, so the Attack and Health under the pool stay readable */
+  .fxd-psn-svg .f{fill:rgba(104,206,56,.34); stroke:rgba(205,255,150,.95); stroke-width:1.1px; vector-effect:non-scaling-stroke; stroke-linejoin:round;}
+  .fxd-psn-bub{position:absolute; display:block; border-radius:50%; box-sizing:border-box; pointer-events:none; will-change:transform,opacity;}
+  .fxd-psn-bub.o{border:1px solid rgba(205,255,150,.95); background:radial-gradient(circle at 35% 35%, rgba(255,255,255,.5), rgba(110,220,60,.08) 62%);}
+  .fxd-psn-bub.f{background:radial-gradient(circle at 35% 32%, #eeffd0, #92e24c 52%, #3d9a1c); box-shadow:0 0 2px rgba(120,255,60,.6);}
+  .fxd-psn-fly{position:fixed; left:0; top:0; z-index:1200;}
+  .fxd-psn-drop{position:fixed; left:0; top:0; z-index:9992; display:flex; align-items:center; justify-content:center; gap:1px; line-height:1; font-weight:800; padding:0 3px;
+    color:#e4e7ea; background:rgba(112,118,124,.94); box-shadow:0 1px 2px rgba(0,0,0,.45); white-space:nowrap; pointer-events:none;}
+  .fxd-psn-drop b{filter:grayscale(1) brightness(1.25); font-weight:800;}
+  @keyframes fxdPsnTick{0%{transform:scale(1);} 35%{transform:scale(.8);} 100%{transform:scale(1);}}
+  .abadge.poison.fxd-psn-tick{animation:fxdPsnTick .32s ease-out;}
   /* Bleed: blood runs from the top edge; the edges throb like a heartbeat */
   .fxd-st-bleed{animation:fxdHeartV 1.5s ease-in-out infinite;}
   @keyframes fxdHeartV{0%,100%{box-shadow:inset 0 0 8px rgba(160,0,10,.35);} 12%{box-shadow:inset 0 0 18px rgba(210,0,16,.8);} 24%{box-shadow:inset 0 0 10px rgba(160,0,10,.45);} 36%{box-shadow:inset 0 0 16px rgba(210,0,16,.7);}}
@@ -30098,27 +30121,167 @@ const STATUS_CSS = `
   @keyframes fxdStrings{0%,100%{transform:rotate(-4deg) translateX(-2px);} 50%{transform:rotate(4deg) translateX(2px);}}
   html[data-fx="low"] .fxd-st, html[data-fx="low"] .fxd-st::before, html[data-fx="low"] .fxd-st::after, html[data-fx="low"] .fxd-st i{animation-play-state:paused;}
   @media (prefers-reduced-motion: reduce){ .fxd-st, .fxd-st::before, .fxd-st::after, .fxd-st i{animation:none !important;} }`;
-// How many particles each look gets, and their timing ranges.
-const ST_BITS = {poison:{n:4, d:[1.6, 2.6]}, bleed:{n:3, d:[2.2, 3.4], len:true}, decay:{n:4, d:[3, 5]}, confuse:{n:3, d:[2.2, 2.2], q:true}, corrode:{n:6, d:[.9, 1.6], y:true},
+// How many particles each look gets, and their timing ranges. (Poison left this table on 2026-10-18: its driver below makes its bubbles.)
+const ST_BITS = {bleed:{n:3, d:[2.2, 3.4], len:true}, decay:{n:4, d:[3, 5]}, confuse:{n:3, d:[2.2, 2.2], q:true}, corrode:{n:6, d:[.9, 1.6], y:true},
   daunt:{n:4, d:[1.4, 2.2]}, wither:{n:3, d:[2.6, 3.6]}, irradiation:{n:4, d:[.8, 1.6], y:true}};
+// ---- Poisoned: a boiling pool (2026-10-18, package P) ----
+// Owner: "The poison effect has various bubbles coming out from the bottom boundary here and there. Circles and filled-in circles. Rare,
+// and small. There is a small flurry of these circles (3-4) when poison is gone. There should be a flurry when poison is first applied.
+// ... It should be consistently moving (but not linear) it should represent the surface of a boiling pool of poison."
+// One driver for the game and the Effects Lab: FX.D.statusLook(el, 'poison', on, n, {fresh, ended}) mounts / fades the look, and
+// FX.D.syncStatusLooks(el, states, env) (the cardStatusShown / boardRowsBuilt hooks) works out whether the Poison is new (flurry on)
+// or gone (fade and flurry off). The surface is two SVG paths redrawn from layered sine waves with unrelated speeds, a slowly
+// breathing amplitude and short local swells, so it never repeats visibly. One shared loop on GSAP's ticker (the game's own frame
+// loop; requestAnimationFrame without GSAP) drives every poisoned unit at about 30 fps; it stops when no unit is poisoned, skips a
+// hidden tab, and holds still (a calm surface, no bubbles) with reduced motion or the Low effects level.
+const PSN = new Set(); let psnTick = null, psnDrawn = 0;
+const psnLevel = ()=>{ try{ return document.documentElement.dataset.fx || ''; }catch(e){ return ''; } };
+const psnCalm = ()=> reduceNow() || psnLevel() === 'low' || psnLevel() === 'none';
+const PSN_X = []; for(let x = -4; x <= 104.01; x += 6) PSN_X.push(x);
+const PSN_VB = 30; // the pool's viewBox height; the resting surface sits at y 12 (front) / 10 (back)
+function psnY(L, x, t, back){
+  const s = L.s, o = back ? 1.7 : 0, k = back ? .8 : 1;
+  const amp = 1 + .35*Math.sin(t*.37 + s[0]) + .15*Math.sin(t*.13 + s[5]); // the boil breathes, slower than any wave
+  let y = (back ? 10 : 12) + amp*(1.5*Math.sin(x*.085 + t*1.15*k + s[1] + o) + .95*Math.sin(x*.19 - t*1.93*k + s[2] + o)
+    + .5*Math.sin(x*.41 + t*3.31*k + s[3] - o) + .28*Math.sin(x*.77 - t*5.07*k + s[4] + o));
+  for(const w of L.swells){ const u = (t - w.t0)/w.d; if(u <= 0 || u >= 1) continue; const dx = (x - w.x)/w.r; y -= w.a*(back ? .5 : 1)*Math.sin(Math.PI*u)*Math.exp(-dx*dx); }
+  return y;
+}
+function psnPath(L, t, back){
+  const p = PSN_X.map(x=> [x, psnY(L, x, t, back)]);
+  let d = `M-4 ${PSN_VB} L${p[0][0]} ${p[0][1].toFixed(2)}`;
+  for(let i = 1; i < p.length; i++){ const a = p[i - 1], b = p[i]; d += ` Q${a[0]} ${a[1].toFixed(2)} ${((a[0] + b[0])/2).toFixed(1)} ${((a[1] + b[1])/2).toFixed(2)}`; }
+  const z = p[p.length - 1]; return d + ` L${z[0]} ${z[1].toFixed(2)} L104 ${PSN_VB} Z`;
+}
+function psnDraw(L){ L.pb.setAttribute('d', psnPath(L, L.t, true)); L.pf.setAttribute('d', psnPath(L, L.t, false)); }
+// One bubble. host = the look (absolute, in its own px) or null (a fixed layer on <body>, in screen px; outlives a row rebuild).
+function psnBubble(host, o){
+  const g = G(); if(!g) return null; const i = document.createElement('span'), z = o.z || 1, sz = o.size*z;
+  i.className = 'fxd-psn-bub ' + (o.filled ? 'f' : 'o') + (host ? '' : ' fxd-psn-fly'); i.setAttribute('aria-hidden', 'true');
+  i.style.width = i.style.height = sz.toFixed(1) + 'px';
+  if(host){ i.style.left = (o.x - sz/2).toFixed(1) + 'px'; i.style.top = (o.y - sz/2).toFixed(1) + 'px'; host.appendChild(i); }
+  else document.body.appendChild(i);
+  const rise = o.rise*z, dur = o.dur, dx = (Math.random() < .5 ? -1 : 1)*rnd(1.5, 4)*z, x0 = host ? 0 : o.x - sz/2, y0 = host ? 0 : o.y - sz/2;
+  const tl = g.timeline({delay:o.delay || 0, onComplete:()=> i.remove()});
+  g.set(i, {x:x0, y:y0, scale:.3, opacity:0});
+  tl.to(i, {scale:1, opacity:1, y:y0 - rise*.15, duration:.16, ease:'power1.out'})
+    .to(i, {y:y0 - rise, duration:dur, ease:'sine.out'}, .1)
+    .to(i, {x:x0 + dx, duration:dur*.5, yoyo:true, repeat:1, ease:'sine.inOut'}, .1);
+  // a ring pops; a filled drop shrinks back into the fumes
+  if(o.filled) tl.to(i, {scale:.4, opacity:0, duration:.28, ease:'power1.in'}, .1 + dur - .2);
+  else tl.to(i, {scale:1.7, opacity:0, duration:.13, ease:'power2.out'}, .1 + dur - .04);
+  return i;
+}
+// A spot on the surface, in the look's own px (the pool's y at x% → px from the top of the look).
+function psnSpot(L, xPct){ const W = L.b.offsetWidth || 100, H = L.b.offsetHeight || 140, u = psnY(L, xPct, L.t, false);
+  return {x:W*xPct/100, y:H - (PSN_VB - u)/PSN_VB*H*.14, W, H}; }
+function psnRare(L){ // one rare bubble, released by a swell that crests where it rises
+  const xPct = rnd(8, 92), sw = {x:xPct, t0:L.t, d:rnd(.45, .7), a:rnd(3.5, 6), r:rnd(3.5, 6)}; L.swells.push(sw);
+  later(()=>{ if(!L.b.isConnected || L.gone) return; const p = psnSpot(L, xPct);
+    psnBubble(L.b, {x:p.x, y:p.y, size:Math.max(2.4, p.H*rnd(.018, .036)), rise:p.H*rnd(.1, .3), dur:rnd(.9, 1.6), filled:Math.random() < .5}); }, sw.d*450);
+}
+function psnStep(){
+  const now = performance.now(); if(psnDrawn && now - psnDrawn < 32) return; const dt = psnDrawn ? Math.min(.1, (now - psnDrawn)/1000) : 0; psnDrawn = now;
+  if(!PSN.size){ psnStop(); return; }
+  if(typeof document !== 'undefined' && document.hidden) return;
+  const g = G(); let ts = 1; try{ ts = g && g.globalTimeline ? g.globalTimeline.timeScale() : 1; }catch(e){} // the lab's slow motion, the game's hit-stop
+  const calm = psnCalm();
+  PSN.forEach(L=>{
+    if(!L.b.isConnected){ if(!L.gone) PSN.delete(L); return; } // a fading pool may be carried onto its unit's rebuilt tile (psnCarry)
+    if(calm){ if(!L.still){ L.still = true; L.swells.length = 0; psnDraw(L); } return; } L.still = false;
+    L.t += dt*ts; L.swells = L.swells.filter(w=> L.t < w.t0 + w.d);
+    if(L.t >= L.nextSwell){ L.nextSwell = L.t + rnd(.35, .9); L.swells.push({x:rnd(0, 100), t0:L.t, d:rnd(.5, 1.1), a:rnd(1.2, 3), r:rnd(4, 9)}); } // the boil: small swells, no bubble
+    if(!L.gone && L.t >= L.nextBub){ L.nextBub = L.t + rnd(.9, 2.4); if(L.b.querySelectorAll('.fxd-psn-bub').length < 3) psnRare(L); }
+    psnDraw(L);
+  });
+}
+function psnStart(){ if(psnTick) return; const g = G();
+  if(g && g.ticker){ psnTick = ()=> psnStep(); g.ticker.add(psnTick); }
+  else { const loop = ()=>{ if(psnTick !== loop) return; psnStep(); requestAnimationFrame(loop); }; psnTick = loop; requestAnimationFrame(loop); } }
+function psnStop(){ const g = G(); if(psnTick && g && g.ticker) try{ g.ticker.remove(psnTick); }catch(e){} psnTick = null; psnDrawn = 0; }
+// A flurry: n bubbles burst up from the south border together (Poison first lands: 6; runs out: 3-4).
+M.poisonFlurry = function(el, opts){
+  opts = opts || {}; const t = tileOf(el); if(!t || !t.isConnected || psnCalm() || !G()) return 0;
+  css('status', STATUS_CSS);
+  const n = opts.n || (opts.end ? 3 + (Math.random() < .5 ? 1 : 0) : 6), look = !opts.end && t.querySelector(':scope > .fxd-st-poison:not(.fxd-st-leaving)');
+  const r = t.getBoundingClientRect(), H = t.offsetHeight || r.height || 140, z = look ? 1 : (r.height/(H || 1)) || 1;
+  for(let k = 0; k < n; k++){ const xf = (k + .5)/n + rnd(-.35, .35)/n, size = Math.max(2.6, H*rnd(.024, .042)), rise = H*rnd(.22, .42), dur = rnd(.5, .85), filled = (k + (opts.end ? 1 : 0)) % 2 === 0;
+    if(look){ const W = look.offsetWidth || r.width, LH = look.offsetHeight || H; psnBubble(look, {x:W*xf, y:LH*.93, size, rise, dur, filled, delay:k*rnd(.04, .08)}); }
+    else psnBubble(null, {x:r.left + r.width*xf, y:r.bottom - r.height*.06, size, rise, dur, filled, delay:k*rnd(.04, .08), z}); }
+  M.poisonFlurry.last = {n, end:!!opts.end}; // for tests
+  return n;
+};
+function psnMount(t, b, fresh){
+  b.innerHTML = `<svg class="fxd-psn-svg" viewBox="0 0 100 ${PSN_VB}" preserveAspectRatio="none" aria-hidden="true"><path class="b"/><path class="f"/></svg>`;
+  const L = {b, t:Math.random()*50, s:[0, 1, 2, 3, 4, 5].map(()=> Math.random()*6.283), swells:[], nextSwell:0, nextBub:0, still:false, gone:false};
+  L.pb = b.querySelector('path.b'); L.pf = b.querySelector('path.f'); L.nextSwell = L.t + rnd(.1, .4); L.nextBub = L.t + rnd(.35, .8); // the first bubble soon, then rare
+  b.__psn = L; psnDraw(L); PSN.add(L); psnStart();
+  if(fresh) later(()=> M.poisonFlurry(t), 120); // first applied: a flurry as the pool fills (FX.B.poisonApply's splat lands just before)
+}
+// Poison gone: the pool fades off (still boiling as it goes) and a last 3-4 bubbles leave from the border.
+// The round's re-render can rebuild the tile mid-fade; the fading pool (and its tween) then moves onto the new tile (psnCarry).
+const PSN_FADE = new Map();
+function psnLeave(t, b, flurry, uid){
+  if(flurry) M.poisonFlurry(t, {end:true});
+  if(!b) return; const L = b.__psn; if(L) L.gone = true; b.classList.add('fxd-st-leaving');
+  if(uid != null) PSN_FADE.set(String(uid), b);
+  const g = G(), done = ()=>{ b.remove(); if(L) PSN.delete(L); if(uid != null && PSN_FADE.get(String(uid)) === b) PSN_FADE.delete(String(uid)); };
+  if(!g || psnCalm()){ done(); return; } g.to(b, {opacity:0, duration:.8, ease:'power1.in', onComplete:done});
+}
+function psnCarry(el, uid){ const b = uid != null && PSN_FADE.get(String(uid)); if(!b || b.isConnected) return; const t = tileOf(el); if(!t) return;
+  const before = t.querySelector(':scope > .badges-bottom, :scope > .stats'); t.insertBefore(b, before || null); if(b.__psn) PSN.add(b.__psn); }
+// Natural decay (2026-10-18, owner: "When you naturally lose poison counters on the beginning of your turn or otherwise, it doesn't say
+// 'Cured!' It just drops a greyed out toxin counter from your toxin context label"): a grey "☠−1" counter falls off the Poison badge
+// and the badge gives a small tick. Call it BEFORE the badge is redrawn (it measures the badge as it stands). arena_app's poisonTick
+// (ev.decay) and the lab's st-poison-active / st-poison-tick both call this.
+M.poisonDrop = function(el, opts){
+  opts = opts || {}; const t = tileOf(el), g = G(); if(!t || !t.isConnected) return null;
+  css('status', STATUS_CSS);
+  const badge = t.querySelector('.abadge.poison'), br = (badge || t).getBoundingClientRect();
+  const re = ()=>{ const nb = t.isConnected && t.querySelector('.abadge.poison'); if(nb){ nb.classList.remove('fxd-psn-tick'); void nb.offsetWidth; nb.classList.add('fxd-psn-tick'); setTimeout(()=> nb.classList.remove('fxd-psn-tick'), 360); } };
+  if(!g || psnCalm()){ setTimeout(re, 0); return null; }
+  const bh = Math.max(10, Math.min(24, badge ? br.height : 14)), d = document.createElement('div');
+  d.className = 'fxd-psn-drop'; d.setAttribute('aria-hidden', 'true'); d.innerHTML = '<b>☠</b>−' + Math.max(1, (opts.n | 0) || 1);
+  d.style.cssText = `height:${bh.toFixed(1)}px; border-radius:${(bh*.32).toFixed(1)}px; font-size:${(bh*.66).toFixed(1)}px;`;
+  document.body.appendChild(d);
+  const x0 = badge ? br.left + br.width*.55 : br.left + br.width*.25, y0 = badge ? br.top + br.height/2 : br.bottom - 12, side = Math.random() < .5 ? -1 : 1;
+  g.set(d, {x:x0, y:y0, xPercent:-50, yPercent:-50, opacity:0, scale:.85});
+  g.timeline({onComplete:()=> d.remove()})
+    .to(d, {opacity:1, scale:1, y:y0 - 4, duration:.14, ease:'power2.out'})
+    .to(d, {y:y0 + bh*2.2 + rnd(6, 12), x:x0 + side*rnd(4, 10), rotation:side*rnd(15, 35), duration:.55, ease:'power2.in'})
+    .to(d, {opacity:0, duration:.3, ease:'power1.in'}, '-=.3');
+  setTimeout(re, 0);
+  return d;
+};
+M._psn = {set:PSN, calm:psnCalm, surface:psnY}; // for tests
 M.STATUS_KEYS = ['poison', 'bleed', 'decay', 'stagger', 'blind', 'confuse', 'corrode', 'expose', 'daunt', 'wither', 'irradiation', 'scar', 'chained', 'mind'];
 // Turn one status look on or off on a board card (or tile). `n` scales the looks that grow with stacks (irradiation).
-M.statusLook = function(el, key, on, n){
+// o (2026-10-18, Poison): {fresh:true} the status has just landed (its flurry plays), {ended:true} it has just run out.
+M.statusLook = function(el, key, on, n, o){
   css('status', STATUS_CSS); css('foil-base', FOIL_BASE);
   const t = tileOf(el); if(!t) return null;
   let b = t.querySelector(':scope > .fxd-st-' + key + ':not(.fxd-st-leaving)');
   // 2026-10-17 (user: "...the other side's expose counters are removed - effect fades off." / "If there's no more exposure left, it
   // fades as it magnifies!"): the Expose crosshair never just blinks off. It fades out, unless the crit that used its last counter
   // claims it (FX.D.onEvent exposedHit, a moment later in the same event), which magnifies it away instead.
-  if(!on){ if(b){ if(key === 'expose') exposeLeave(t, b); else b.remove(); } return null; }
+  if(!on){ if(key === 'poison'){ if(b || (o && o.ended)) psnLeave(t, b, true, o && o.uid); return null; } // 2026-10-18: Poison fades off with its last bubbles
+    if(b){ if(key === 'expose') exposeLeave(t, b); else b.remove(); } return null; }
   if(!b){ b = document.createElement('b'); b.className = 'fxd-st fxd-st-' + key; b.setAttribute('aria-hidden', 'true'); if(key === 'expose') try{ delete t.dataset.fxdExposeLeft; }catch(e){}
     const s = ST_BITS[key]; if(s){ let h = ''; for(let k = 0; k < s.n; k++){ const dur = s.d[0] + hr(k, 11)*(s.d[1] - s.d[0]);
       h += `<i style="--x:${f1(s.q ? 50 : 10 + ((k + .5)/s.n)*80 + (hr(k, 12) - .5)*10)}%; --y:${f1(8 + hr(k, 13)*84)}%; --d:${dur.toFixed(2)}s; --dl:${(s.q ? -k*dur/s.n : -hr(k, 14)*dur).toFixed(2)}s; --sx:${Math.round((hr(k, 15) - .5)*24)}px;${s.len ? ` --len:${Math.round(12 + hr(k, 16)*22)}cqh;` : ''}">${s.q ? '?' : ''}</i>`; } b.innerHTML = h; }
-    const before = t.querySelector(':scope > .badges-bottom, :scope > .stats'); t.insertBefore(b, before || null); }
+    const before = t.querySelector(':scope > .badges-bottom, :scope > .stats'); t.insertBefore(b, before || null);
+    if(key === 'poison') psnMount(t, b, !!(o && o.fresh)); }
   if(n != null) b.style.setProperty('--n', String(Math.max(1, Math.min(6, n|0))));
   return b;
 };
-M.syncStatusLooks = function(el, states){ if(!el) return; M.STATUS_KEYS.forEach(k=> M.statusLook(el, k, !!(states && states[k]), states && states[k + 'N'])); };
+// env (2026-10-18): the hook's env, so Poison can tell a new stack (flurry on) and a stack that ran out (flurry off) from a row rebuild,
+// per match and per unit. Without a uid every sync of a look that isn't there yet counts as new.
+M.syncStatusLooks = function(el, states, env){ if(!el) return;
+  M.STATUS_KEYS.forEach(k=>{ const on = !!(states && states[k]);
+    if(k !== 'poison'){ M.statusLook(el, k, on, states && states[k + 'N']); return; }
+    const uid = el.getAttribute ? el.getAttribute('data-uid') : null, S = uid != null ? seenSet(env, 'poison') : null;
+    if(on){ const fresh = S ? !S.has(uid) : !tileOf(el).querySelector(':scope > .fxd-st-poison:not(.fxd-st-leaving)'); if(S) S.add(uid); M.statusLook(el, k, true, null, {fresh}); }
+    else { const ended = !!(S && S.has(uid)); if(S) S.delete(uid); if(!ended) psnCarry(el, uid); M.statusLook(el, k, false, null, {ended, uid}); } }); };
 // ---- Expose counters at work (2026-10-17, user: "Exposed units expose vfx shines deep dark red when it triggers crit. If there's no
 // more exposure left, it fades as it magnifies! fun effect.") ----
 css('expose-crit', `.fxd-st-expose.fxd-x-crit{animation:fxdXCrit .6s ease-out;}
@@ -31059,7 +31222,7 @@ M.onEvent = function(ev, env){
 M.hooks.cardStatusShown = function(el, c, env){
   if(!el || !c || !env.fxAtLeast('low')) return;
   const uid = el.getAttribute('data-uid');
-  M.syncStatusLooks(el, statusStates(c, uid, env));
+  M.syncStatusLooks(el, statusStates(c, uid, env), env);
   // a new status chip pops (st-status-badges)
   const now = [...el.querySelectorAll('.badges-bottom .abadge')], keys = now.map(b=> b.className), prev = el.__fxdBadges;
   if(prev && env.fxAtLeast('med')) now.forEach((b, i)=>{ if(!prev.includes(keys[i])) M.badgePop(b); });
@@ -31075,7 +31238,7 @@ M.hooks.boardRowsBuilt = function(bf, env){
   let boss = false; try{ boss = typeof fightTreatmentKind === 'function' && fightTreatmentKind(2) === 'boss'; }catch(e){}
   bf.querySelectorAll('.board-card[data-uid]').forEach(el=>{
     const uid = el.getAttribute('data-uid'); let c = null; try{ c = look ? look(isNaN(+uid) ? uid : +uid) || look(uid) : null; }catch(e){}
-    if(c) M.syncStatusLooks(el, statusStates(c, uid, env));
+    if(c) M.syncStatusLooks(el, statusStates(c, uid, env), env);
     if(boss && el.closest('#rowEnemy')){ const t = el.querySelector('.card-tile.art-extended'); if(t) t.classList.add('fxd-boss'); }
     if(el.classList.contains('is-caged') && !seenSet(env, 'cage').has(uid)){ seenSet(env, 'cage').add(uid); if(env.fxAtLeast('med')) later(()=>{ if(el.isConnected) M.cageDrop(el); }, 250); }
     if(el.classList.contains('raging') && !seenSet(env, 'rage').has(uid)){ seenSet(env, 'rage').add(uid); if(env.fxAtLeast('med')) later(()=>{ if(el.isConnected) M.rageEnter(el); }, 120); }
@@ -34382,7 +34545,8 @@ H.resultsShown = (card, m, env)=>{
   add(c=> c.querySelector('.rw-materia'), el=> M.materiaDrop(el));
   // 2026-10-17: the egg and the castle are chips in the one Rewards block now (rewardsPanelHTML), found by their own class.
   add(c=> c.querySelector('.rw-act.rw-egg') || (()=>{ const s = sec(c, 'Found'); return s && s.querySelector('.rw-act'); })(), el=> M.nestEggDrop(el, {icon:el.textContent.trim().split(' ')[0] || '🥚'}));
-  add(c=> c.querySelector('.rw-act.rw-castle') || (()=>{ const s = sec(c, 'Spare bramble'); return s && s.querySelector('.rw-act'); })(), el=> M.castleDrop(el, {text:/New (?:bramble|castle)/.test(el.textContent) ? 'New bramble!' : 'Spare bramble'}));
+  // 2026-10-18 (package T): a bramble won is a card among the cards won (.rw-card.rw-castle, .is-spare for one you had); the old chip stays matched
+  add(c=> c.querySelector('.rw-card.rw-castle, .rw-act.rw-castle') || (()=>{ const s = sec(c, 'Spare bramble'); return s && s.querySelector('.rw-act'); })(), el=> M.castleDrop(el, {text:(el.classList.contains('rw-card') ? !el.classList.contains('is-spare') : /New (?:bramble|castle)/.test(el.textContent)) ? 'New bramble!' : 'Spare bramble'}));
   add(c=> [...c.querySelectorAll('.rw-act')].find(x=> /Your character/.test(x.getAttribute('data-tip') || '')), el=> M.avatarUnlock(el));
   add(c=> c.querySelector('.rw-card.is-seen'), (_, c)=> [...c.querySelectorAll('.rw-card.is-seen')].slice(0, 3).forEach((s, i)=> later(()=> M.codexNew(s), i*180)));
   add(c=> c.querySelector('.winloss-achv'), el=> M.achvUnlocked(el));
@@ -36252,10 +36416,16 @@ const old = 'Now in the game (before this pass)';
 
 /* ================================ STATUSES ================================ */
 R({id:'st-poison-apply', stage:'board', inGameHook:'onEvent: statusFx poison', variants:[
-  {key:'A', label:'Glop splats on, ooze rises, bubbles pop', play:ctx=>{ const t = ctx.board.foe[1]; ctx.sound('poisonApply'); return X().poisonApply(t, {onImpact:()=> fl(ctx, t, '+3☠', 'poison')}); }},
+  // 2026-10-18 (package P): and, as in a fight, the badge refresh that follows (FX.D's hook): the Poisoned pool fills with its flurry.
+  {key:'A', label:'Glop splats on, ooze rises, the pool fills with a flurry of bubbles', play:ctx=>{ const t = ctx.board.foe[1], P = window.FXLAB_POISON; ctx.sound('poisonApply');
+    const done = X().poisonApply(t, {onImpact:()=> fl(ctx, t, '+3☠', 'poison')}); if(P) P.show(t, {defId:'', poison:3, hp:6, maxHp:6}, P.env(ctx)); return Promise.all([done, ctx.wait(2200)]); }},
   {key:'B', label:old + ': the number only', play:ctx=>{ ctx.sound('poisonApply'); fl(ctx, ctx.board.foe[1], '+3☠', 'poison'); return ctx.wait(1000); }}]});
-R({id:'st-poison-tick', stage:'board', variants:[{key:'A', label:'Shake, green tint, bubbles and a cloud (live look)', play:ctx=>{ const t = ctx.board.foe[0]; ctx.sound('bubble'); shake(ctx, t); pulse(t, 'poison-tint-pulse', 460); bubbles(t);
-  if(S().poisonCloud) S().poisonCloud(t); fl(ctx, t, '☠️ -2', 'poison-tick'); return ctx.wait(1400); }}]});
+// 2026-10-18 (package P): the unit is Poisoned first (its look, through the game's hook), and the tick wears a counter off: a grey
+// "☠−1" drops off the badge (FX.D.poisonDrop, as arena_app's poisonTick does on ev.decay). No "cured" anywhere.
+R({id:'st-poison-tick', stage:'board', variants:[{key:'A', label:'Shake, green tint, bubbles, a cloud; a grey counter drops off the badge (live look)', play:async ctx=>{ const t = ctx.board.foe[0], P = window.FXLAB_POISON, env = P && P.env(ctx), c = {defId:'', poison:3, hp:6, maxHp:6};
+  if(P){ P.show(t, c, env); await ctx.wait(900); }
+  ctx.sound('bubble'); shake(ctx, t); pulse(t, 'poison-tint-pulse', 460); bubbles(t);
+  if(S().poisonCloud) S().poisonCloud(t); fl(ctx, t, '☠️ -3', 'poison-tick'); if(P){ window.FX.D.poisonDrop(t); c.poison -= 1; P.show(t, c, env); } return ctx.wait(1400); }}]});
 R({id:'st-bleed-apply', stage:'board', inGameHook:'onEvent: statusFx bleed', variants:[
   {key:'A', label:'A gash opens, drops fall from it', play:ctx=>{ const t = ctx.board.foe[2]; ctx.sound('bleedApply'); return X().bleedApply(t, {onImpact:()=> fl(ctx, t, '+2🩸', 'bleed')}); }},
   {key:'B', label:old + ': the number only', play:ctx=>{ ctx.sound('bleedApply'); fl(ctx, ctx.board.foe[2], '+2🩸', 'bleed'); return ctx.wait(1000); }}]});
@@ -36560,7 +36730,8 @@ const wearOff = key=> async ctx=>{ const el = foe(ctx); const cls = STATUS_CLS[k
 const deathOf = (fn, pick)=> ctx=> X()[fn]((pick || foe)(ctx), {});
 
 // ===================================================== statuses =====================================================
-const WEAR = [['st-poison-expire', 'poison'], ['st-bleed-expire', 'bleed'], ['st-decay-expire', 'decay'], ['st-sleep-expire', 'asleep'], ['st-paralyze-expire', 'paralyzed'],
+// (st-poison-expire moved to d.js on 2026-10-18: Poison's end is its look fading through the game's hook, not FX.C.statusEnd.)
+const WEAR = [['st-bleed-expire', 'bleed'], ['st-decay-expire', 'decay'], ['st-sleep-expire', 'asleep'], ['st-paralyze-expire', 'paralyzed'],
   ['st-stun-expire', 'stunned'], ['st-stagger-expire', 'staggered'], ['st-blind-expire', 'blind'], ['st-tipsy-expire', 'tipsy'], ['st-confuse-expire', 'confused'], ['st-shock-expire', 'shocked'],
   ['st-corrode-expire', 'corrode'], ['st-expose-expire', 'exposed'], ['st-daunt-expire', 'daunt'], ['st-wither-expire', 'wither'], ['st-irradiation-expire', 'irradiation'], ['st-smoke-expire', 'smoke'],
   ['st-scar-expire', 'scar']];
@@ -36787,8 +36958,31 @@ const topFrame = (r, v)=> ctx=>{ const ts = [ctx.cards[0], ctx.cards[1], ctx.car
 const withCls = (cls, o)=> ctx=>{ o = o || {}; const t = o.kind ? big(ctx, o.kind) : ctx.cards[o.i || 1]; cls.split(' ').filter(Boolean).forEach(c=> t.classList.add(c)); if(o.style) Object.entries(o.style).forEach(([k, v])=> t.style.setProperty(k, v)); if(o.after) o.after(t, ctx); return spot(ctx, t); };
 
 // ---------------- statuses (on the board) ----------------
-R({id:'st-poison-active', stage:'board', inGameHook:'cardStatusShown (end of updateCardStatusDisplay) + boardRowsBuilt (renderBoard)', note:'Batch B plays the moment it lands; this is the look that stays.', variants:[
-  {key:'A', label:'Ooze pools at the bottom, bubbles rise and pop', play:stNew('poison')}, {key:'B', label:'Before: tint and ☠ badge only', play:stOld('poison')}]});
+// 2026-10-18 (package P, owner: "In the test lab, there doesn't seem to be [a flurry], but in actual gameplay, i think there is an effect.
+// In the test lab, the ongoing poison vfx doesn't move as well."): the lab used to call FX.D.statusLook straight (no apply moment, and
+// the old look was a CSS stripe). Poison now plays through the game's own hook, FX.D.hooks.cardStatusShown → syncStatusLooks, with a
+// lab env standing in for the match, so the lab shows what a fight shows: the apply flurry, the boiling pool and its rare bubbles, the
+// 1-a-round wear-down dropping grey counters off the badge (FX.D.poisonDrop, as arena_app's poisonTick), and the fade with its last
+// bubbles. b.js / p1.js use it too (window.FXLAB_POISON).
+const psnEnv = ctx=> ({fxAtLeast:()=> true, match:ctx, defs:{}, el:()=> null, tile:()=> null, at:(ms, fn)=>{ ctx.wait(ms).then(fn); }, once:()=> true});
+// What updateCardStatusDisplay does on a poisoned unit: its class and ☠ badge, then the hook.
+const psnShow = (bc, c, env)=>{ let b = tileIn(bc).querySelector(':scope > .badges-bottom .abadge.poison');
+  if(c.poison > 0){ bc.classList.add('is-poisoned'); if(!b) b = addBadge(bc, 'poison', ''); b.textContent = '☠' + c.poison; }
+  else { bc.classList.remove('is-poisoned'); if(b) b.remove(); }
+  X().hooks.cardStatusShown(bc, c, env); };
+// One upkeep tick as arena_app plays it: the damage number, then the grey counter drops and the badge counts down.
+const psnTick = (ctx, bc, c, env)=>{ ctx.sound('bubble'); ctx.float(bc, '☠️ -' + c.poison, 'poison-tick'); X().poisonDrop(bc); c.poison -= 1; psnShow(bc, c, env); };
+window.FXLAB_POISON = {env:psnEnv, show:psnShow, tick:psnTick};
+const psnLife = async ctx=>{ const bc = ctx.board.foe[1], env = psnEnv(ctx), c = {defId:'', poison:3, hp:6, maxHp:6};
+  ctx.sound('poisonApply'); try{ if(window.FX.B && FX.B.poisonApply) FX.B.poisonApply(bc); }catch(e){} ctx.float(bc, '+3☠', 'poison'); psnShow(bc, c, env);
+  await ctx.wait(3600); for(let k = 0; k < 3; k++){ psnTick(ctx, bc, c, env); await ctx.wait(k < 2 ? 1300 : 1600); } };
+R({id:'st-poison-active', stage:'board', inGameHook:'cardStatusShown (end of updateCardStatusDisplay) + boardRowsBuilt (renderBoard) → FX.D.syncStatusLooks; poisonTick decay → FX.D.poisonDrop',
+  note:'The whole life of a Poison stack, through the game\'s own hook: lands (flurry), boils, wears down 1 a round (grey counters drop), fades off (last bubbles).', variants:[
+  {key:'A', label:'Boiling pool: flurry on, rare bubbles, grey counters drop, flurry off', play:psnLife}, {key:'B', label:'Before: tint and ☠ badge only', play:stOld('poison')}]});
+R({id:'st-poison-expire', stage:'board', inGameHook:"FX.D.syncStatusLooks (Poison turning off; FX.C no longer plays its statusEnd drain or a 'cured' chip)",
+  note:'The last counter wears off: it drops off the badge, the pool fades and 3-4 last bubbles leave. No "cured" chip (a real Cure still floats 💊 Cured N).', variants:[
+  {key:'A', label:'Last counter drops; the pool fades with 3-4 bubbles', play:async ctx=>{ const bc = ctx.board.foe[1], env = psnEnv(ctx), c = {defId:'', poison:1, hp:6, maxHp:6};
+    psnShow(bc, c, env); await ctx.wait(1800); psnTick(ctx, bc, c, env); await ctx.wait(1500); }}]});
 R({id:'st-bleed-active', stage:'board', inGameHook:'cardStatusShown + boardRowsBuilt', variants:[
   {key:'A', label:'Blood runs from the top edge; edges throb like a heartbeat', play:stNew('bleed')}, {key:'B', label:'Before: tint and 🩸 badge only', play:stOld('bleed')}]});
 R({id:'st-decay-active', stage:'board', inGameHook:'cardStatusShown + boardRowsBuilt (unit.decay > 0)', variants:[{key:'A', label:'Grey-violet mould creeps from the corners, spores lift', play:stNew('decay')}]});
@@ -37799,7 +37993,10 @@ R({id:'death-poison', stage:'board', inGameHook:'deathVfx (poison): bleedOutVfx(
   note:'2026-10-15 (user: "The poison animation has a blackening effect. Lessen that effect by 40%." and "The poison death animation should use the same particle as the poisoned effect.").',
   variants:[{key:'G', label:'Lighter green drain, Poisoned bubbles rising', play:ctx=>{ const el = foe(ctx)[1]; ctx.sound('bleedOut', 'poison'); W.bleedOutVfx(el, 670, 'poison'); return ctx.wait(1500); }}]});
 R({id:'st-poison-tick', stage:'board', inGameHook:'labSkillFx poisonTick → SkillFX.poisonCloud (the card\'s dip darkens 40% less)', variants:[
-  {key:'G', label:'Poison cloud, lighter dip', play:ctx=>{ const el = mine(ctx)[1]; ctx.sound('bubble'); S().poisonCloud(el); ctx.float(el, '☠️ -2', 'poison-tick'); return ctx.wait(1500); }}]});
+  // 2026-10-18 (package P): on a Poisoned unit (the game's hook), and the tick's wear-down drops a grey counter off the badge (FX.D.poisonDrop)
+  {key:'G', label:'Poison cloud, lighter dip; a grey counter drops off the badge', play:async ctx=>{ const el = mine(ctx)[1], P = W.FXLAB_POISON, env = P && P.env(ctx), c = {defId:'', poison:2, hp:6, maxHp:6};
+    if(P){ P.show(el, c, env); await ctx.wait(900); }
+    ctx.sound('bubble'); S().poisonCloud(el); ctx.float(el, '☠️ -2', 'poison-tick'); if(P){ W.FX.D.poisonDrop(el); c.poison -= 1; P.show(el, c, env); } return ctx.wait(1500); }}]});
 
 // 21: the frost rime rides inside the card
 R({id:'st-freeze-field', stage:'board', inGameHook:'labSkillFx fieldTick frozen → SkillFX.frostChill (the rime frame is inside the tile now)',

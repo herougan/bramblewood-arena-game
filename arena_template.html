@@ -5551,6 +5551,10 @@
   .grant-box{display:inline-flex; align-items:center; gap:4px; flex-wrap:wrap; font-weight:700;} .grant-box .grant-pick{max-width:120px;}
   .grant-facet{display:inline-flex; align-items:center; gap:4px; margin-right:8px;} .grant-facet > b{font-size:12px; color:var(--ink-muted);}
   .abadge.exposed{background:color-mix(in srgb, #e0412f 24%, var(--surface-2)); color:#c62f1f;} /* Exposed (2026-10-15) */
+  .abadge.prayer{background:color-mix(in srgb, #e3c26a 34%, var(--surface-2)); color:#7a5a10;} /* Prayer tokens (2026-10-19, package E) */
+  /* Relic (2026-10-19, package E): the dead Ecclesia card's art, faded and ghostly */
+  .board-card.is-relic .card-tile{filter:grayscale(.75) brightness(1.18) contrast(.85); opacity:.72; box-shadow:inset 0 0 16px rgba(255,244,214,.85), 0 0 10px rgba(255,236,190,.55);}
+  .board-card.is-relic .card-art, .board-card.is-relic .card-tile img{opacity:.6; mix-blend-mode:luminosity;}
   /* Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid) —
      one overlay animation + badge tint each, matching Stun's existing treatment above. */
   .board-card.is-frozen .card-tile{background:color-mix(in srgb, var(--status-freeze-tint) 30%, var(--bg)); filter:saturate(.7) brightness(1.05);}
@@ -7206,6 +7210,8 @@
   .se-curve-chip i{font-style:normal;}
   .se-curve-chip.ok{background:#d9f2dc; color:#1d5e2a;} .se-curve-chip.easy{background:#d8e8fb; color:#1d4a7a;} .se-curve-chip.hard{background:#fadada; color:#8a1f1f;}
   .se-curve-chip.is-here{border-color:var(--gold, #c9a227);}
+  /* 2026-10-19 (W2): a fight the check couldn't run ("!", the reason in the title) or ran out of time for (⏱) */
+  .se-curve-chip.err{background:#fde7c4; color:#7a4a00; cursor:help;} .se-curve-chip.skip{background:rgba(0,0,0,.05); color:inherit; opacity:.75; cursor:help;}
   .se-curve-key{font-size:11px; opacity:.6; flex-basis:100%;}
   .se-deck-peek{margin-top:4px; font-size:11.5px; opacity:.7;}
   /* Day and night, fields (2026-10-09) */
@@ -9924,6 +9930,8 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .rr-new{--nt-size:20px; --nt-stroke:1.5px; rotate:-8deg;}
 .po2-new-tag{--nt-size:13px; --nt-stroke:0px; rotate:-6deg;}
 .rw-new{--nt-size:13px; --nt-stroke:0px;} .rw-card.shown .rw-new{transform:scale(1) rotate(-8deg);}
+/* 2026-10-18 (package T): a spare bramble won (a card in the Cards won row) wears a cooler SPARE tag in the same shape as NEW! */
+.rw-new.rw-spare{background:linear-gradient(135deg, #5d8cff, #7fc4ff 50%, #c9ecff) !important; color:#f4fbff !important; text-shadow:0 .12em 0 #1d3f7a !important; box-shadow:0 0 0 2px #1d3f7a, 0 4px 10px rgba(0,0,0,.4), 0 0 14px rgba(140,200,255,.6) !important;}
 .board-card .seen-new{--nt-size:13px; --nt-stroke:0px;}
 @keyframes seenNew{0%{transform:translateX(-50%) rotate(-8deg) scale(2.4); opacity:0;} 100%{transform:translateX(-50%) rotate(-8deg) scale(1); opacity:1;}}
 .board-card .seen-new{transform:translateX(-50%) rotate(-8deg);}

@@ -83,6 +83,7 @@ run node tests/integrity.js
 run node tests/node-ids-2026-10-14.js
 run node tests/fx-a-resist.js
 run node tests/raid-arena-2026-10-17.js   # 2026-10-17: Psychic Dampener, the Arena's rules as cards, raid rows / Commons / volley
+run node tests/raid-rows-2026-10-19.js   # 2026-10-18 (owner 20:40): no playing into the raid allies' middle / back rows
 run node tests/raid-stages-2026-10-18.js   # 2026-10-18 (R3-WP2): each raid stage's rules land in the fight; the raid editor round-trips them
 run node tests/raid-fixes-2026-10-18.js    # 2026-10-18 (package R): every row acts column by column, the raid's clock and end, castles can't be shocked, "& Co."
 run node tests/i18n-templates-2026-10-18.js   # 2026-10-18 (I1): placeholder texts translate as templates in all 12 packs
@@ -91,6 +92,7 @@ run node tests/steam-ach-2026-10-18.js   # 2026-10-18 (package C): Steam achieve
 run node tests/engine-parity-2026-10-18.js   # 2026-10-18 (R3-WP1): shot and skill kills credited (kills, On Kill, Midas, Crown), one pitchCard for both seats, the CPU's Sacrifice, field-card and slot heuristics
 run node tests/polish-2026-10-18.js   # 2026-10-18 (R3-WP6): the Spire's summit card, the Spire / Long Burrow backdrops, dead keys gone, inventory rows live
 run node tests/maps-2026-10-18.js   # 2026-10-18 (V3): Lilypad Reach waits on Gatorback Swamp (old saves keep it); dark maps' screen layer leaves the canvas to the canvas layer
+run node tests/poison-fx-2026-10-19.js   # 2026-10-18 (package P): no "cured" on natural Poison decay, grey drop, boiling pool, flurries on/off, lab = game hook
 run node tests/visuals-2026-10-18.js   # 2026-10-18 (V1): the standing Tide, no tide chip, chilled flyers' frame and half hover, idle glance, smaller cliff gulls
 run node tests/tutorial-2026-10-18.js   # 2026-10-18 (package T): drag hint shows the highlighted card, faction pick goes straight in, green board, centred T-0/T-1, card windows fade out shrinking
 run node tests/x2-2026-10-18.js   # 2026-10-18 (package X2): raid stages without the extra volley, lightning at a bramble (no Shocked), the Spire at AI_LEVEL_MAX, the Flood wets land units, the full-board tide look
@@ -100,7 +102,11 @@ run node tests/shields-2026-10-18.js   # 2026-10-18 (package X3): enemy bramble 
 run node tests/decisions-2026-10-18.js   # 2026-10-18 (X1): Castle -> Bramble, Burdock the mouse, Thicket rank, rare eggs + a sure Map 1 egg, Lilypad Reach on Map 6, centred 5+ cost, golden card dealt, deck offer by Collection level, the Dromedary
 run node tests/y-2026-10-18.js   # 2026-10-18 (package Y, audit 4): Codex tile key + revealAfter, heal/Cure texts, gated "?" line, Wave crash credit, skirmish sim Difficulty, a11y observer, tutorial slide seed, Creative/cages, resume CPU level, Sacrifice Bleed
 run node tests/z-2026-10-18.js   # 2026-10-18 (package Z): two field-kit items a fight (+1 vs a grantsItem boss, greys and fades out), premium daily-dungeon Sweep, free Spire replays with 0 reward and refunded losses, TX keys + packs, the ads page
+run node tests/prayer-2026-10-19.js   # 2026-10-19 (package E): Prayer tokens (N a turn, Prayer = tokens on the field + the player's own offering tokens, gone with the unit), thresholds, Worship / Lightning, Relic, the CPU, texts + 12 packs
 run node tests/guild-rename-2026-10-18.js   # 2026-10-18 (X4): 🎫 Rename Ticket (shop, inventory, founders' gift), owner-only Rename guild, name rules, the not-applied fallback, the proposed rename_guild SQL
+run node tests/winrate-panel-2026-10-19.js   # 2026-10-19 (W2): the map win-rate panel checks every fight inside a budget, "!" on a broken fight, reference decks follow the road, panel = tools/skirmish_pass.js
+run node tests/t-2026-10-19.js   # 2026-10-18 (package T, owner list for 10-19): the tutorial's scripted CPU play and both attack lines, the Outskirts after the deck window, no Quarry Mole toast, brambles won as cards
+run node tests/skill-costs-2026-10-19.js   # 2026-10-18 (package H): canonical/skill-costs.json covers every trigger / action / skill in use, S = trigger weight × action value, keyword S and N unchanged, the hub's Skill costs tab (db, Copy JSON)
 run node tests/d-2026-10-19.js   # 2026-10-18 (package D): Cast Darkness (Pall Wraith) adds / lifts the field's Darkness, a map's own dark stays, True Strike (White Dragon), Sleep caps at N+1, Blind = eye + 🕶️, no short description of 20+ words
 run node tests/game-texts.js   # 2026-10-15: TX keys + the docs/game-texts.xlsx export/import round trip (~45 s)
 if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; run python3 tests/e2e/ui_smoke.py; run python3 tests/e2e/flows.py; run python3 tests/e2e/snaps.py; run python3 tests/e2e/i18n.py; run python3 tests/e2e/hero.py; run python3 tests/e2e/rarity_limit_craft.py; run python3 tests/e2e/a11y.py; run python3 tests/e2e/codex_perf.py; run python3 tests/e2e/emoji_perf.py; fi

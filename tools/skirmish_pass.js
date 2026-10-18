@@ -10,19 +10,22 @@
 //     +4% a floor;
 //   - aiAim on, the CPU at its real level (cpuAiLevelForNode: Map 21+ Smartest, Map 5+ elite / boss Smart, else Basic), your seat
 //     at Smart, as simulateSkirmishVsDeck(…, {level}) does in the skirmish editor.
-// The functions are read out of arena_app.js (tools/lib-free, like tests/shields-2026-10-18.js), so a rule change there is measured
-// here without a copy to keep in step.
+// The functions are read out of arena_app.js (by tools/lib_bramble.js), so a rule change there is measured here without a copy to keep
+// in step. Since 2026-10-19 (W2) one fight is simulateReferenceFight in arena_app.js itself: the skirmish editor's "This map, new-player
+// win rate" panel plays the very same games (the same seeds, 9100 + 37g), so the panel's 30 games are this tool's first 30.
 //
-// Your deck is the stage deck for that point of the road (docs/difficulty-curve-2026-10-03.md, 10-18 section):
-//   Map 0                 Starter   (the Otter starter + tutorial rewards, docs/balance/difficulty-curve.json)
-//   Maps 1-9 (+ sides)    Road      (expectedPlayerDeck: Base + every earlier reward, the deck the editor's 🎯 tunes against)
-//   Maps 10-17            Mid-road  (the curve's built deck: Base + rewards up to Map 9)
-//   Maps 18-24            Strong    (the curve's built deck: everything obtainable)
-// A come-back-later fight uses the stage of the map it counts as (nodeMapNumber: T-2/T-3/T-4 = 1/8/18, the Old Bramble = 17).
-// Your cards play at Level 1 (tools/card_balance.js: "Level 1 for everyone"; a Level 0 card gets its first +10% step); your
-// bramble is the plain 30 Health castle.
+// Your deck is the reference deck for that point of the road (arena_app.js referenceDeckFor / WINRATE_REF_DECKS,
+// docs/winrate-reference-decks-2026-10-19.md):
+//   Map 0                 the Otter starter (+ tutorial rewards)
+//   Map N (1-24)          the Road deck built for Map N by `decks` from Base + every earlier main map's rewards (no packs); a side map
+//                         plays its parent's deck; past the last built map, the last deck
+// A come-back-later fight uses the deck of the map it counts as (nodeMapNumber: T-2/T-3/T-4 = 1/8/18, the Old Bramble = 17).
+// (The 2026-10-18 pass used the curve's Mid-road deck on Maps 10-17 and its Strong deck, with pack cards and a Map 19 reward in it,
+// on Maps 18-24.) Your cards play at referencePlayerLevel(map): the road CPU's own skirmish level (Lv 1 to Map 4, Lv 2 from Map 5,
+// +1 every 5 maps) inside the Forge's level gates (the 2026-10-18 pass: Lv 1 everywhere). Your bramble is the plain 30 Health castle.
 //
-//   node tools/skirmish_pass.js decks          builds the Road decks (docs/balance/skirmish-pass-decks.json); run it first
+//   node tools/skirmish_pass.js decks [--from=1] [--to=24]   builds the Road decks for those maps (each starts from the one before) and
+//        writes them into arena_app.js (WINRATE_REF_DECKS) and docs/balance/skirmish-pass-decks.json (the report); rebuild index.html after
 //   node tools/skirmish_pass.js measure [games=40] [shard nshards] [--tag=before] [--only=a,b] [--seed=K]
 //        appends one JSON line per fight to docs/balance/skirmish-pass-<tag>.jsonl (resumable; delete a fight's line to re-measure
 //        it). Seeds 9100 + 37g, or K + 37g with --seed (the pass's "fresh seeds" check used 5100).
@@ -42,8 +45,6 @@ const ROOT = path.join(__dirname, '..');
 const E = require(path.join(ROOT, 'bramblewood-engine.js'));
 const APP = path.join(ROOT, 'arena_app.js');
 const src = fs.readFileSync(APP, 'utf8');
-const cardsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8'));
-const charsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/characters.json'), 'utf8'));
 const argv = process.argv.slice(2), CMD = argv[0] || 'list';
 const nums = argv.filter(a=> /^\d+$/.test(a)).map(Number);
 const N = nums[0] || 40, SHARD = nums[1] || 0, NSH = nums[2] || 1;
@@ -52,51 +53,9 @@ const ONLY = opt('only', '').split(',').filter(Boolean);
 const LO = 0.12, HI = 0.92; // the pass's band: not always losable, not auto-winnable
 const TUNE_SEED = +opt('seed', 7300); // tune's trials play other seeds than measure's (9100), so a fix isn't fitted to the seeds it is reported on
 
-// ---- read declarations out of arena_app.js (string / comment / template aware brace matching)
-function declEnd(s, i, isFn){
-  const stack = []; let j = i, seenBody = false;
-  for(; j < s.length; j++){
-    const c = s[j], top = stack[stack.length - 1];
-    if(top === '`'){ if(c === '\\'){ j++; continue; } if(c === '`'){ stack.pop(); continue; } if(c === '$' && s[j+1] === '{'){ stack.push('${'); j++; } continue; }
-    if(top === "'" || top === '"'){ if(c === '\\'){ j++; continue; } if(c === top) stack.pop(); else if(c === '\n') stack.pop(); continue; }
-    if(c === '/' && s[j+1] === '/'){ j = s.indexOf('\n', j); if(j < 0) j = s.length; j--; continue; }
-    if(c === '/' && s[j+1] === '*'){ j = s.indexOf('*/', j) + 1; continue; }
-    if(c === "'" || c === '"' || c === '`'){ stack.push(c); continue; }
-    if(c === '(' || c === '[' || c === '{'){ stack.push(c); if(c === '{') seenBody = true; continue; }
-    if(c === ')' || c === ']' || c === '}'){ const t = stack.pop(); if(t === '${') continue; if(!stack.length && isFn && c === '}' && seenBody) return j + 1; continue; }
-    if(!stack.length && !isFn && (c === ';' || c === '\n')) return j + 1;
-  }
-  return j;
-}
-function grab(name){
-  let m = new RegExp(`^function ${name}\\(`, 'm').exec(src);
-  if(m) return src.slice(m.index, declEnd(src, m.index, true));
-  m = new RegExp(`^(const|let|var) ${name} = `, 'm').exec(src);
-  if(m) return src.slice(m.index, declEnd(src, m.index + m[0].length, false));
-  throw new Error('arena_app.js: no declaration ' + name);
-}
-const NAMES = ['RARITY_MAX_COPIES', 'maxCopiesForRarity', 'ROAD_RARITY_STEPS', 'ROAD_RARITY_ALIAS', 'roadRarityStep', 'roadSkirmishCap', 'roadBossCap', 'roadRarityCap', 'roadRarityOk',
-  'TUTORIAL_REWARD_IDS', 'cardSourceOf', 'cardObtainableFrom', 'isUnattainable', 'isEquipmentDef', 'mapNumberOf', 'mainConquestMaps', 'TUT_SIDE_GATE', 'nodeRewardCardIds', 'cardBaseLevel', 'LEVEL_STEPS', 'LEVEL_STEP_GAIN', 'RARITY_MAX_LEVEL',
-  'cardMaxLevel', 'statsAtLevel', 'statsBeyondLevel', 'LIMIT_BREAK_LEVEL', 'castleLeveled', 'DECK_SIZE', 'CPU_AI_KEYS', 'CPU_SMART_FROM_MAP', 'CPU_SMART_KINDS',
-  'CPU_AI_MAX', 'cpuAiAutoLevel', 'cpuAiLevelForNode', 'MAP_CASTLE', 'KIND_CASTLE_LEVEL', 'NODE_MAP_HINT', 'mapOfNode', 'nodeCastleId', 'nodeCastleLevel', 'SHIELD_RULE_MULT',
-  'nodeMapNumber', 'shieldRuleMult', 'ruleShieldOf', 'shieldOverrideOf', 'BASE_BRAMBLE_HP', 'baseBrambleHp', 'ARMOUR_LAYER_MAX', 'skirmishCastle', 'prepareLeaderGrants', 'applySkirmishSetup',
-  'skirmishCardScore', 'expectedPlayerDeck', 'MAP_DAYNIGHT', 'mapDayNight', 'TIDESPOUT_NODES', 'MISTY_MAPS', 'PERMATIDE_MAPS', 'RAPIDS_MAPS', 'wetMap', 'mapIdOfNode', 'fightRules',
-  'TERRAIN_BIOMES', 'TERRAIN_TIER_STATS', 'terrainTierFor', 'terrainFor', 'terrainObj', 'DARK_MAPS', 'WINDY_MAPS', 'VOLCANO_MAPS', 'VOLCANO_GLOW', 'MAP_MUSIC', 'MAP_BIOME_OF',
-  'roadEnemyLevel', 'levelledEnemyDeck', 'hashStr', 'KIND_BASE', 'baseKind'];
-const ms = src.indexOf('const CONQUEST_MAPS = ['), me = src.indexOf('\n];', ms) + 3;
-const dg = src.indexOf('function endlessDungeon(cfg){'), dgEnd = src.indexOf('\nconst TOWER_LEVEL_CAP', dg); // the endless dungeons; the Tower is left out (see the header)
-const CARD_DEFS_BASELINE = {}; cardsRaw.forEach(c=>{ const d = Object.assign({effects:{}}, c); delete d.art; CARD_DEFS_BASELINE[c.id] = d; });
-const CHARACTER_DEFS = {}; (Array.isArray(charsRaw) ? charsRaw : Object.values(charsRaw)).forEach(c=> CHARACTER_DEFS[c.id] = c);
-const body = [
-  'let matchDefsOverlay = {}, matchLeaderGrantMap = null; const liveCards = {}; const AI_LEVEL_MAX = E.AI_LEVEL_MAX;',
-  'function invalidateCardDefs(){} function getCardDefs(){ return Object.assign({}, CARD_DEFS_BASELINE, matchDefsOverlay); }',
-  src.slice(ms, me), src.slice(dg, dgEnd),
-  ...NAMES.map(grab),
-  'return {CONQUEST_MAPS, mapNumberOf, nodeMapNumber, ruleShieldOf, skirmishCastle, prepareLeaderGrants, applySkirmishSetup, fightRules, levelledEnemyDeck, roadEnemyLevel, cpuAiLevelForNode,',
-  '  expectedPlayerDeck, cardSourceOf, roadRarityOk, roadRarityCap, statsAtLevel, cardBaseLevel, maxCopiesForRarity, skirmishCardScore, NODE_MAP_HINT, baseKind, nodeRewardCardIds,',
-  '  overlay: ()=> matchDefsOverlay, resetOverlay: ()=>{ matchDefsOverlay = {}; matchLeaderGrantMap = null; }, setGrantMap: m=>{ matchLeaderGrantMap = m; }, getCardDefs};',
-].join('\n');
-const G = new Function('E', 'CARD_DEFS_BASELINE', 'CHARACTER_DEFS', body)(E, CARD_DEFS_BASELINE, CHARACTER_DEFS);
+// ---- the game's own functions, read out of arena_app.js by tools/lib_bramble.js (2026-10-19, W2: this file had its own copy of the
+// reader; one copy now, and it carries the map win-rate panel's reference player, so this tool and the panel play the same fight)
+const B = require('./lib_bramble.js'), G = B.G, CARD_DEFS_BASELINE = B.CARD_DEFS_BASELINE, CHARACTER_DEFS = B.CHARACTER_DEFS;
 const MAPS = G.CONQUEST_MAPS;
 
 // ---- the fights
@@ -119,35 +78,18 @@ function fights(){
   }
   return out;
 }
-function stageOf(f){ const s = f.stageMap; return s <= 0 ? 'starter' : s <= 9 ? 'road' : s <= 17 ? 'mid' : 'strong'; }
-
+// The stage deck (2026-10-19, W2): the game's referenceDeckFor (arena_app.js), the same one the skirmish editor's win-rate panel plays.
+const stageOf = f=>{ const r = G.referenceDeckFor(f.map, f.n); return r.stage === 'starter' ? 'starter' : 'road ' + r.deckMap; };
 // ---- decks
-const CURVE = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/difficulty-curve.json'), 'utf8'));
-const REF = Object.fromEntries(Object.entries(CURVE.decks).map(([k, v])=> [k, Object.fromEntries(v.cards.map(c=> [c.id, c.n]))]));
-// your cards at Level 1: "<id>@lv1" copies like the game's levelled enemy cards (only where Level 1 differs from the print)
-const PLAYER_LV = 1, playerDefs = {};
-function playerDeck(deck){
-  const out = {};
-  for(const [id, k] of Object.entries(deck)){ const b = CARD_DEFS_BASELINE[id]; if(!b){ continue; }
-    if(G.cardBaseLevel(b) >= PLAYER_LV || (b.attack == null && b.health == null)){ out[id] = (out[id]||0) + k; continue; }
-    const did = id + '@p' + PLAYER_LV; if(!playerDefs[did]){ const st = G.statsAtLevel(b, PLAYER_LV); playerDefs[did] = Object.assign({}, b, {id: did, derivedFrom: id, attack: st.attack, health: st.health, level: PLAYER_LV, baseLevel: G.cardBaseLevel(b), locked: false}); }
-    out[did] = (out[did]||0) + k; }
-  return out;
-}
-// The Road decks (Maps 1-9): built the way tools/difficulty_curve.js builds Mid-road and Strong, from what the game says you own
+// The Road decks: built the way tools/difficulty_curve.js builds Mid-road and Strong, from what the game says you own
 // arriving at that map (expectedPlayerDeck's pool: Base + every earlier map's rewards, no packs): cards ranked by their measured
 // win rate (docs/balance/card-balance.json), Lumber makers in when the deck has 2+ Lumber cards, then a hill-climb that keeps a
 // one-card swap only if the deck wins more across that map's own fights. (expectedPlayerDeck's own top 20 by stat score is all
-// 0-Lumber chaff, 0% from Map 5 on, so it doesn't stand in for a player.) Built once: `node tools/skirmish_pass.js decks`
-// writes docs/balance/skirmish-pass-decks.json, which measure and tune read.
+// 0-Lumber chaff, 0% from Map 5 on, so it doesn't stand in for a player.) A trial deck plays at that map's reference card level.
+// 2026-10-19 (W2): the decks live in arena_app.js (WINRATE_REF_DECKS, read by the panel and by measure / tune here); `decks` writes them
+// there and keeps docs/balance/skirmish-pass-decks.json as the report (pool size, score on the map's own fights, card names).
 const DECKS_FILE = path.join(ROOT, 'docs', 'balance', 'skirmish-pass-decks.json');
-let ROAD = {}; try{ ROAD = JSON.parse(fs.readFileSync(DECKS_FILE, 'utf8')).road || {}; }catch(e){}
-function stageDeck(f){
-  const st = stageOf(f);
-  if(st !== 'road') return {stage: st, deck: REF[st]};
-  const d = ROAD[f.stageMap]; if(!d && CMD !== 'decks' && CMD !== 'list') throw new Error('no Road deck for Map ' + f.stageMap + ': run `node tools/skirmish_pass.js decks` first');
-  return {stage: st, deck: d ? Object.fromEntries(d.cards.map(c=> [c.id, c.n])) : {}};
-}
+const stageDeck = f=>{ const r = G.referenceDeckFor(f.map, f.n); return {stage: r.stage, deck: r.deck, deckMap: r.deckMap, level: r.level}; };
 const BAL = {}; try{ (JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/card-balance.json'), 'utf8')).rows || []).forEach(r=> BAL[r.id] = r.winRate); }catch(e){}
 const DCAP = {devlegendary:1, devancient:1, eventlegendary:1, legendary:1, mythic:1, ancient:1, unique:1, questunique:1, epic:2, heroic:2, veryrare:3, superrare:3, rare:4, uncommon:5};
 const playableCard = c=> c && !c.token && !c.test && !c.hallOfFame && !c.hero && c.cardType !== 'materia' && c.cardType !== 'equipment' && c.id !== 'wandering-traveller' && c.id !== 'missingno' && !(c.effects||{}).leader && !(c.archetypes||[]).includes('Leader') && !(c.source && c.source.kind === 'secret');
@@ -177,40 +119,13 @@ function buildRoadDeck(mapNo, fightsOfMap, seed, prev){
   return {pool: ids.length, score: Math.round(best / fightsOfMap.length * 10) / 10, cards: Object.entries(deck).map(([id, n])=> ({id, name: CARD_DEFS_BASELINE[id].name, n}))};
 }
 
-// ---- one fight, as startConquestMatch builds it, played as simulateSkirmishVsDeck(…, {level}) plays it
-const MY_CASTLE = CHARACTER_DEFS.castle || {id:'castle', health:30};
+// ---- one fight, as startConquestMatch builds it, played by the game's own simulateReferenceFight (2026-10-19, W2: the same function
+// as the skirmish editor's win-rate panel; it also gives the fight its leader grants, which this tool's copy had commented out)
 function measure(f, node, games, seed0, deckOverride){
   node = node || f.n; G.NODE_MAP_HINT.set(node, f.map);
-  const sd = deckOverride ? {stage: 'trial', deck: deckOverride} : stageDeck(f), mine = playerDeck(sd.deck);
-  G.resetOverlay();
-  const enemyDeck = G.levelledEnemyDeck(f.n, node.deck); // the real node: roadEnemyLevel finds its map by identity, so a trial copy would fight at Level 0 G.setGrantMap(G.prepareLeaderGrants(node));
-  const defs = Object.assign(G.getCardDefs(), playerDefs);
-  const rules = G.fightRules(f.map, node), cpu = G.cpuAiLevelForNode(f.map, node), mode = node.battleMode || 'open';
-  const sc = G.skirmishCastle(node);
-  let wins = 0, losses = 0, rounds = 0, lost = 0;
-  for(let g = 0; g < games; g++){
-    const e = E.makeSimEngine(defs, E.mulberry32((seed0 || 9100) + g * 37), {recordEvents:false, battleMode: mode, rules, aiAim:true, aiLevel: cpu});
-    const so = id=> id === 1 ? 'A' : 'B', stats = {};
-    const P = {1: e.newPlayer(1, mine, MY_CASTLE), 2: e.newPlayer(2, enemyDeck, sc.character)};
-    P[2].loopCards = []; G.applySkirmishSetup(P, node);
-    if(node.floor > 1 && !node.tower) P[2].perks = Object.assign({}, P[2].perks || {}, {floorPct: (node.floor - 1) * 0.04});
-    e.draw(P[1], 3, 'A', stats, null); e.draw(P[2], 3, 'B', stats, null);
-    let r = 1, over = false, lastSig = null, stalled = 0;
-    for(; r <= E.DRAW_ROUND_CAP && !over; r++){
-      e.setSuddenDeath(r >= E.SUDDEN_DEATH_ROUND, r >= E.SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
-      [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
-      if(r > 1) e.roundStart(P, r, so, stats, null);
-      e.setAiLevel(1); e.aiTakeTurn(P, so, 1, stats, null); e.setAiLevel(cpu); e.aiTakeTurn(P, so, 2, stats, null);
-      over = e.resolveCombat(P, so, stats, null, r % 2 === 0 ? 1 : 2); if(over) break;
-      const sig = E.boardSignature(P); stalled = (sig === lastSig && E.noActionsLeft(P)) ? stalled + 1 : 0; lastSig = sig; if(stalled >= 2 && r >= E.STALL_DRAW_FROM_ROUND) break;
-      e.draw(P[1], 1, 'A', stats, null); e.draw(P[2], 1, 'B', stats, null);
-    }
-    const a = P[1].hq.hp <= 0, b = P[2].hq.hp <= 0;
-    if(over && b && !a){ wins++; rounds += r; lost += 1 - Math.max(0, P[1].hq.hp) / P[1].hq.maxHp; } else { if(over && a && !b) losses++; lost += 1; }
-  }
-  G.resetOverlay();
-  return {win: Math.round(wins / games * 1000) / 10, loss: Math.round(losses / games * 1000) / 10, rounds: wins ? Math.round(rounds / wins * 10) / 10 : null,
-    hpLost: Math.round(lost / games * 1000) / 10, cpu, stage: sd.stage, hp: sc.hp, shield: sc.shield, overridden: sc.overridden};
+  const r = G.simulateReferenceFight(f.map, node, games, {seed0: seed0 || 9100, deck: deckOverride || null});
+  return {win: Math.round(r.wins / games * 1000) / 10, loss: Math.round(r.losses / games * 1000) / 10, rounds: r.avgRounds == null ? null : Math.round(r.avgRounds * 10) / 10,
+    hpLost: Math.round(r.hpLost * 1000) / 10, cpu: r.cpu, stage: r.stage === 'road' ? 'road ' + r.deckMap : r.stage, level: r.level, hp: r.hp, shield: r.shield, overridden: r.overridden};
 }
 const verdict = w=> w > HI * 100 ? 'easy' : w < LO * 100 ? 'hard' : 'ok';
 
@@ -332,13 +247,23 @@ const OUTDIR = path.join(ROOT, 'docs', 'balance');
 const readJsonl = file=>{ try{ return fs.readFileSync(file, 'utf8').split('\n').filter(Boolean).map(l=> JSON.parse(l)); }catch(e){ return []; } };
 const rowOf = (f, extra)=>{ const {m, n, ...row} = f; return Object.assign(row, extra); };
 if(CMD === 'list'){
-  all.forEach(f=>{ const sd = stageDeck(f); console.log(`${f.code.padEnd(9)} ${f.map.padEnd(4)} ${f.kind.padEnd(9)} stage ${sd.stage.padEnd(7)} cpu ${G.cpuAiLevelForNode(f.map, f.n)}  ${f.name}`); });
+  all.forEach(f=>{ const sd = stageDeck(f); console.log(`${f.code.padEnd(9)} ${f.map.padEnd(4)} ${f.kind.padEnd(9)} deck ${stageOf(f).padEnd(8)} Lv ${sd.level} cpu ${G.cpuAiLevelForNode(f.map, f.n)}  ${f.name}`); });
   console.log(all.length, 'fights'); console.log('road deck at Map 1:', JSON.stringify(stageDeck(all.find(f=> f.mapNo === 1)).deck));
 } else if(CMD === 'decks'){
-  const F = fights(), out = {generated: '2026-10-18', note: 'Road decks for Maps 1-9 (tools/skirmish_pass.js decks); Starter / Mid-road / Strong are docs/balance/difficulty-curve.json', road: {}};
-  for(let no = 1; no <= 9; no++){ const t = Date.now(), fm = F.filter(f=> f.mapNo === no && !f.side);
-    out.road[no] = buildRoadDeck(no, fm, 900 + no, out.road[no - 1]); console.log(`Map ${no}: ${out.road[no].score}% on its own fights, pool ${out.road[no].pool}, ${((Date.now()-t)/1000).toFixed(0)}s:`, out.road[no].cards.map(c=> `${c.n}x ${c.name}`).join(', '));
-    fs.writeFileSync(DECKS_FILE, JSON.stringify(out, null, 1) + '\n'); }
+  // 2026-10-19 (W2): any range of maps (each map's search starts from the deck before it); the result goes into arena_app.js
+  const FROM = +opt('from', 1), TO = +opt('to', 24), F = fights(), road = JSON.parse(JSON.stringify(G.WINRATE_REF_DECKS.road));
+  let rep = {}; try{ rep = JSON.parse(fs.readFileSync(DECKS_FILE, 'utf8')); }catch(e){}
+  rep.road = rep.road || {}; rep.note = 'Road decks (tools/skirmish_pass.js decks); the game reads them from arena_app.js WINRATE_REF_DECKS. Map 0 plays the Otter starter.';
+  const asCards = d=> ({cards: Object.entries(d).map(([id, n])=> ({id, name: (CARD_DEFS_BASELINE[id]||{}).name || id, n}))});
+  for(let no = FROM; no <= TO; no++){ const t = Date.now(), fm = F.filter(f=> f.mapNo === no && !f.side); if(!fm.length){ console.log('Map', no, 'has no fights'); continue; }
+    const prev = rep.road[no - 1] || (road[no - 1] ? asCards(road[no - 1]) : null);
+    const built = buildRoadDeck(no, fm, 900 + no, prev); built.level = G.referencePlayerLevel(no); built.generated = new Date().toISOString().slice(0, 10);
+    rep.road[no] = built; road[no] = Object.fromEntries(built.cards.map(c=> [c.id, c.n]));
+    console.log(`Map ${no}: ${built.score}% on its own fights at Lv ${built.level}, pool ${built.pool}, ${((Date.now()-t)/1000).toFixed(0)}s:`, built.cards.map(c=> `${c.n}x ${c.name}`).join(', '));
+    fs.writeFileSync(DECKS_FILE, JSON.stringify(rep, null, 1) + '\n');
+    const app = fs.readFileSync(APP, 'utf8'), line = 'const WINRATE_REF_DECKS = ' + JSON.stringify({starter: G.WINRATE_REF_DECKS.starter, road}) + ';';
+    if(!/^const WINRATE_REF_DECKS = .*;$/m.test(app)) throw new Error('arena_app.js: no WINRATE_REF_DECKS line');
+    fs.writeFileSync(APP, app.replace(/^const WINRATE_REF_DECKS = .*;$/m, ()=> line)); }
 } else if(CMD === 'measure'){
   const OUT = path.join(OUTDIR, `skirmish-pass-${opt('tag', 'before')}.jsonl`), done = new Set(readJsonl(OUT).map(r=> r.map + ':' + r.key));
   const mine = all.filter((f, i)=> i % NSH === SHARD && !done.has(f.map + ':' + f.key));

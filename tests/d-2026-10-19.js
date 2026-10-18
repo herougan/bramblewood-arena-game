@@ -95,8 +95,8 @@ ok(cards.filter(c=> c.numericId === (pw && pw.numericId)).length === 1, 'its num
 { // budget v3 (SB_V3_DEFAULTS + SB_DEFAULT_SKILLS, as the Test Lab reads them)
   const line = src.match(/^const SB_DEFAULT_SKILLS = (\{[^\n]*\});/m), costs = line ? new Function('return ' + line[1].replace(/\/\*[\s\S]*?\*\//g, ''))() : {};
   ok(costs.castDarkness === 2 && costs.trueStrike === 2, 'skill costs: Cast Darkness 2, True Strike 2');
-  const balTool = fs.readFileSync(path.join(ROOT, 'tools', 'card_balance.js'), 'utf8');
-  ok(/castDarkness:2, trueStrike:2/.test(balTool), 'tools/card_balance.js has the same costs');
+  const sc = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'skill-costs.json'), 'utf8')), flat = JSON.stringify(sc);
+  ok(/"id":"castDarkness","scale":"fixed","value":2/.test(flat) && /"id":"trueStrike","scale":"fixed","value":2/.test(flat), 'canonical/skill-costs.json (the balance tools and the hub) has the same costs');
   const rank = {starter:0, common:1, uncommon:2, rare:3, veryrare:4, superrare:5, epic:6, heroic:7, unique:8, legendary:9};
   const N = (d, L)=> 20 + 2 * L + rank[d.rarity] + 6 * d.wait + 0.5 * d.wait * d.wait + 4 * d.cost + 0.4 * d.cost * d.cost;
   const S = d=> Object.keys(d.effects).reduce((t, k)=> t + (typeof costs[k] === 'number' ? costs[k] : 1), 0);
