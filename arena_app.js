@@ -29563,49 +29563,24 @@ async function discardCardByUid(uid){
     if(activePid === viewerHandPid(m) && m.pitchNagRound !== m.round){ m.pitchNagRound = m.round; try{ playDialogue(loadFactionChoice() === 'hummingbirds' ? 'pitch_spent_h' : 'pitch_spent_o'); }catch(e){} }
     return;
   }
-  const [dc] = me.hand.splice(idx,1);
-  me.graveyard.push({defId:dc.defId});
-  const yieldInfo = pitchYieldOf(dc.defId);
-  const meta = PITCH_RESOURCE_META[yieldInfo.resource] || PITCH_RESOURCE_META.lumber;
-  if(meta.field==='lumber' && m.engine && m.engine.addLumber) m.engine.addLumber(me, yieldInfo.amount); // Lumberjack counts a pitch too (2026-10-12)
-  else me[meta.field] = (me[meta.field]||0) + yieldInfo.amount;
-  // Dark Points (2026-09-20, per explicit request: "when demons and devils are discarded, they
-  // give 1 dark point in addition to the lumber") -- a card under the Devilry mechanic line (this
-  // game's demon/devil/imp flavor; see the "😈 Devilry" reference-tab entry) grants a bonus +1
-  // Devilry ("Dark Point") on TOP of its normal pitch yield above when discarded, instead of
-  // replacing it.
+  // 2026-10-18 (engine parity, R3-WP1): the pitch's rules live in the engine now (pitchCard), shared with the CPU, which used to
+  // get a flat +1 Lumber. In the same order as before: hand to Graveyard; the pitch yield (Lumberjack counts, 2026-10-12); +1 Dark
+  // Point for a Devilry-line card (2026-09-20) and +1 for Core Evil (2026-09-21); On Discard's resource gains and Rebuild castle
+  // (2026-09-26 / 2026-10-17); Wildpath "Second Pitch"; then On Pitch (2026-10-16). Only the sound, chips and log stay here.
+  const dc = me.hand[idx];
   const dcDef = getCardDefs()[dc.defId];
-  // Core Evil (2026-09-21, per explicit request: "produces 1 dark point when pitched") -- a
-  // card-level passive, independent of (and additive with) the archetype-wide Devilry-line
-  // bonus just above: a card can carry Core Evil without belonging to the Devilry mechanic
-  // line at all, and a Devilry-line card that ALSO has Core Evil stacks both bonuses.
-  const coreEvilBonus = (dcDef && dcDef.effects && dcDef.effects.coreEvil) ? 1 : 0;
-  const darkPointBonus = ((dcDef && inferMechanicLine(dcDef)==='devilry') ? 1 : 0) + coreEvilBonus;
-  if(darkPointBonus) me.devilry = (me.devilry||0) + darkPointBonus;
-  // On Discard (2026-09-26, new basic trigger — "add a new set of basic abilities, triggers,
-  // and actions"): a card-authored custom trigger that fires right here, purely client-side —
-  // discardCardByUid() has no live board instance to hand to the engine's runCustomTriggers,
-  // same restricted-scope reasoning as On Exile (bramblewood-engine.js's fireOnExile), so only
-  // the plain resource-gain actions apply. Accumulated separately from onDiscardGainChips so
-  // it can be folded into the SAME gainChips array below and ride the existing "+N flying
-  // icon" VFX rather than needing a second VFX pass.
-  const onDiscardGains = [], onDiscardRebuild = []; // + Rebuild castle (2026-10-17)
-  if(dcDef && dcDef.effects && Array.isArray(dcDef.effects.triggers)){
-    dcDef.effects.triggers.filter(t=>t.on==='onDiscard').forEach(t=>{
-      const amt = t.amount||0; if(amt<=0) return;
-      if(t.do==='gainLumber' || t.do==='gainGold'){ me.lumber = (me.lumber||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.lumber.glyph, pillId:PITCH_RESOURCE_META.lumber.pillId}); }
-      else if(t.do==='gainGrace'){ me.grace = (me.grace||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.grace.glyph, pillId:PITCH_RESOURCE_META.grace.pillId}); }
-      else if(t.do==='gainStone'){ me.stone = (me.stone||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.stone.glyph, pillId:PITCH_RESOURCE_META.stone.pillId}); }
-      else if(t.do==='gainDevilry'){ me.devilry = (me.devilry||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.devilry.glyph, pillId:PITCH_RESOURCE_META.devilry.pillId}); }
-      // Rebuild castle (2026-10-17): On Discard mends your castle, never above max (a number; From the hand it has no Attack or Health).
-      else if(t.do==='rebuild' && me.hq && me.hq.hp > 0){ const h = Math.min(Math.max(0, Math.floor(Number(amt)||0)), me.hq.maxHp - me.hq.hp);
-        if(h > 0){ me.hq.hp += h; onDiscardRebuild.push({type:'rebuild', side:m.sideOf(activePid), defId:dc.defId, uid:null, amount:h, n:Math.floor(Number(amt)||0), trigger:true, hp:me.hq.hp, maxHp:me.hq.maxHp}); } }
-    });
-  }
-  if(me.perks && me.perks.secondPitch) me.perks.secondPitch = false; // Wildpath "Second Pitch": once a fight, a second pitch this turn
-  else me.discardUsedThisTurn = true;
-  // On Pitch / Scavenge (2026-10-16, user: "Whenever you pitch a card, this card does {}"): your units on the field react.
-  const pitchEv = []; try{ if(m.engine && m.engine.firePitchTriggers) m.engine.firePitchTriggers(m.players, m.sideOf, activePid, dc.defId, m.stats, pitchEv); }catch(e){}
+  const pitchEv = [];
+  let pr = null; try{ if(m.engine && m.engine.pitchCard) pr = m.engine.pitchCard(m.players, m.sideOf, activePid, dc, m.stats, pitchEv); }catch(e){ console.warn('pitchCard', e); }
+  if(!pr){ // no engine (shouldn't happen in a fight): the bare pitch, so the card still goes and pays
+    if(me.hand[idx] === dc) me.hand.splice(idx, 1); me.graveyard.push({defId:dc.defId});
+    const y0 = pitchYieldOf(dc.defId); me[(PITCH_RESOURCE_META[y0.resource] || PITCH_RESOURCE_META.lumber).field] = (me[(PITCH_RESOURCE_META[y0.resource] || PITCH_RESOURCE_META.lumber).field]||0) + y0.amount;
+    if(me.perks && me.perks.secondPitch) me.perks.secondPitch = false; else me.discardUsedThisTurn = true;
+    pr = {resource:y0.resource, amount:y0.amount, darkPoints:0, discardGains:[], rebuild:[]}; }
+  const yieldInfo = {resource:pr.resource, amount:pr.amount};
+  const meta = PITCH_RESOURCE_META[yieldInfo.resource] || PITCH_RESOURCE_META.lumber;
+  const darkPointBonus = pr.darkPoints || 0;
+  const onDiscardGains = (pr.discardGains || []).map(g=>{ const gm = PITCH_RESOURCE_META[g.resource] || PITCH_RESOURCE_META.lumber; return {amount:g.amount, glyph:gm.glyph, pillId:gm.pillId}; });
+  const onDiscardRebuild = pr.rebuild || [];
   if(m.selectedUid===uid) m.selectedUid = null;
   // Cashing in (2026-09-16, per explicit request): its own coin sound (was the generic
   // "play a card" tone) plus a "+1" that jumps out of the resource's own HUD pill, reusing the
