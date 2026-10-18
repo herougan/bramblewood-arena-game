@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (X3: enemy bramble Shield and Health)
+- **Enemy Shield follows one rule** (owner: "Shield = Map. For Elites, Map * 1.5, up to 3x for bosses"). A skirmish's Shield is its map number. Elites, Champions and Dungeons get round(map × 1.5), Mini- and Sub-bosses map × 2, and Bosses, the Campaign Boss, World Bosses and Raids map × 3. It is worked out when the fight is built (`ruleShieldOf`), and the VS screen, the node tooltip and panel, and the skirmish editor all show the same value. Old `hqHp` above the bramble's Health no longer becomes Shield. On Maps 18–24 that was 150–400; now it is 18–72. A few small bosses get more than before (14-8, 17-8).
+- **Map 0's road fights a Lv 0 base bramble:** 10 / 12 / 14 Health for 0-1…0-3 and 20 for the boss, with no Shield. The tutorial's rival keeps its 6 (then 8) Health.
+- Skirmish editor: the Bonus health box shows "Rule: Map N × k = S". Change a value and it becomes this fight's `shieldOverride`; "↺ Use the rule" clears it. The 🎯 tune sets the override. Old saved `armour` values are ignored, and the editor no longer rewrites `hqHp` as Health + Shield.
+- `tests/shields-2026-10-18.js` (in `tests/run-all.sh`) checks the rule on all 408 nodes, the overrides and Map 0's Health. Notes and before/after table: `docs/difficulty-curve-2026-10-03.md` (10-18 note).
+
 ## 2026-10-18 (i18n catch-up, part F)
 - **Today's new texts are translated in all 12 packs:** the guild, invite and network-error messages (couldn't load / leave / set up, Retry, Retrying…, matchmaking unreachable), the sign-in screen's guest line, the leaderboard's empty state and rating notes, "An egg! You'll need a place to hatch it.", "There's a Nest on Map {n}{where}." and the Creative / Creativity keyword texts, plus the guild screen's "Join a Guild" and "Join" so the half-done-guild message names words on screen (`tools/i18n_2026_10_18f.py`, 32 strings each). Coverage: 325/325 plain game texts and 171/171 templates per pack, no dead keys (13 texts stay English on purpose).
 

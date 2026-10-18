@@ -14569,7 +14569,34 @@ function nodeCastleId(node){
   const id = MAP_CASTLE[m.sub ? m.parent : m.id];
   return id && CHARACTER_DEFS[id] ? id : null;
 }
-function nodeCastleLevel(node){ if(node && node.castleLevel != null && node.castleLevel !== '') return Math.max(0, Math.min(20, Number(node.castleLevel)||0)); return KIND_CASTLE_LEVEL[baseKind((node && node.kind) || 'skirmish')] || 0; }
+function nodeCastleLevel(node){ if(node && node.castleLevel != null && node.castleLevel !== '') return Math.max(0, Math.min(20, Number(node.castleLevel)||0)); if(baseBrambleHp(node) != null) return 0; /* 2026-10-18 (X3): Map 0's road fights the base bramble at Lv 0 */ return KIND_CASTLE_LEVEL[baseKind((node && node.kind) || 'skirmish')] || 0; }
+// Enemy bramble Shield by rule (2026-10-18, owner 15:05: "For shields, lower the amount of shields in all skirmishes. About
+// Shield = Map. For Elites, Map * 1.5, up to 3x for bosses"): a fight's Shield is its map number times its kind's multiplier,
+// worked out when the fight is built, so every node follows it without baked values. Before today the Shield was whatever
+// hqHp had above the bramble's own Health (up to ~300 on the late maps); hqHp now only ever lowers the Health. An editor
+// override (node.shieldOverride: a number, or up to four layer amounts) is only written by the skirmish editor from today on;
+// older saved node.armour / node.armourLayers values are ignored.
+const SHIELD_RULE_MULT = {skirmish:1, elite:1.5, champion:1.5, dungeon:1.5, miniboss:2, subboss:2, boss:3, finalboss:3, worldboss:3, raidboss:3, megaraid:3, tutorial:0};
+function nodeMapNumber(node){ const m = mapOfNode(node); const n = m ? mapNumberOf(m.id) : null; return n == null ? 0 : n; }
+function shieldRuleMult(kind){ const k = kind || 'skirmish'; return SHIELD_RULE_MULT[k] != null ? SHIELD_RULE_MULT[k] : (SHIELD_RULE_MULT[baseKind(k)] != null ? SHIELD_RULE_MULT[baseKind(k)] : 1); }
+function ruleShieldOf(node){ return Math.max(0, Math.round(nodeMapNumber(node) * shieldRuleMult(node && node.kind))); }
+function shieldOverrideOf(node){
+  const o = node && node.shieldOverride; if(o == null || o === '') return null;
+  const raw = Array.isArray(o) ? o : [o], out = [];
+  for(const v of raw.slice(0, ARMOUR_LAYER_MAX)){ const n = Math.max(0, Math.round(Number(v)||0)); if(!(n > 0)) break; out.push(n); }
+  return out; // [] = an explicit "no Shield"
+}
+// The base bramble (2026-10-18, owner: "HP of brambles in Tutorial and Map 0 Skirmishes should be unnaturally low. Maybe there's
+// a base bramble we can use (starts at lvl 0 instead)"): on Map 0's own road (not its Tutorial or Old Bramble side maps, which are
+// meant to be come-back-later fights) the enemy bramble is the Lv 0 base one with a tiny Health, so the first fights end fast.
+// The tutorial's two fights already use the tutorial config's rival Health (6, then 8).
+const BASE_BRAMBLE_HP = {skirmish:[10, 12, 14, 15], elite:16, boss:20};
+function baseBrambleHp(node){
+  const m = mapOfNode(node); if(!m || m.sub || mapNumberOf(m.id) !== 0 || !node) return null;
+  const k = baseKind(node.kind || 'skirmish'); if(k === 'tutorial') return null;
+  if(k === 'skirmish'){ const sk = m.nodes.filter(n=> baseKind(n.kind || 'skirmish') === 'skirmish'), i = Math.max(0, sk.findIndex(n=> n === node || n.key === node.key)); return BASE_BRAMBLE_HP.skirmish[Math.min(i, BASE_BRAMBLE_HP.skirmish.length - 1)]; }
+  return k === 'elite' ? BASE_BRAMBLE_HP.elite : BASE_BRAMBLE_HP.boss;
+}
 // The skirmish's showcase card (2026-10-10, user: "show the highlighted unit of the deck - let me edit this in the
 // Skirmish"): node.showcase, or else the deck's strongest card.
 function nodeShowcaseId(node){
@@ -14600,12 +14627,14 @@ function skirmishCastle(node){
   const cid = nodeCastleId(node), lvl = cid ? nodeCastleLevel(node) : 0;
   const base = (cid && castleLeveled(CHARACTER_DEFS[cid], lvl)) || CHARACTER_DEFS.castle || {health:30};
   const baseHp = Number(base.health) || 30;
-  let hp, shield;
-  if(node.armour !== null && node.armour !== undefined && Number.isFinite(Number(node.armour))){ hp = baseHp; shield = Math.max(0, Math.round(Number(node.armour))); }
-  else { const total = Number(node.hqHp) || baseHp; hp = Math.min(baseHp, total); shield = Math.max(0, total - baseHp); }
+  // 2026-10-18 (X3): Health is the bramble's own (a lower hqHp lowers it; Map 0's road uses the base bramble); the Shield follows
+  // the rule above unless the editor set node.shieldOverride.
+  let hp = Number(node.hqHp) > 0 ? Math.min(baseHp, Math.round(Number(node.hqHp))) : baseHp;
+  const early = baseBrambleHp(node); if(early != null) hp = Math.min(hp, early);
+  const ov = shieldOverrideOf(node), rule = ruleShieldOf(node);
+  const layers = ov || (rule > 0 ? [rule] : []), shield = layers.reduce((a, b)=> a + b, 0);
   const character = cid ? Object.assign({}, base, {health:hp, level:lvl}) : {id:'conquest-enemy', name:node.name, health:hp, effects:{}};
-  const layers = armourLayersOf(node, shield);
-  return {character, hp, shield, total: hp + shield, layers};
+  return {character, hp, shield, total: hp + shield, layers, rule, overridden: !!ov};
 }
 function castleLineText(node){ const sc = skirmishCastle(node); return `🏰 ${sc.hp} HP${sc.shield ? ` · 🔷 ${sc.shield} ${_t('Armour')}` : ''}`; }
 // The panel's castle line (2026-10-12, user: "The health and armour can use this format 'N <Health Icon> M <Blue Diamond Icon>'
@@ -15325,7 +15354,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Name<input id="seName" value="${escapeAttr(draft.name||'')}"></label>
         <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
         <label>Kind<select id="seKind" ${draft.kind==='tutorial'?'disabled title="The tutorial marker keeps its kind"':''}>${(draft.kind==='tutorial' ? ['tutorial'] : SKIRMISH_KINDS).map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
-        ${(()=>{ const L = armourLayersOf(draft, skirmishCastle(draft).shield); return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
+        ${(()=>{ const scD = skirmishCastle(draft), L = scD.layers; overlay._shieldShown = L.slice(); /* 2026-10-18 (X3): the inputs show the Shield rule's value unless this fight overrides it */ return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend><p class="se-shield-rule panel-sub">Rule: Map ${nodeMapNumber(draft)} × ${shieldRuleMult(draft.kind)} = <b>${scD.rule}</b> Shield${scD.overridden ? ` · <b>overridden</b> <button type="button" class="btn small" id="seShieldRule">↺ Use the rule</button>` : ' (change a value to override it for this fight)'}</p>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
             return `<label class="se-armour-layer" data-layer="${k}" ${show ? '' : 'hidden'} style="--sh-a:${col[0]}; --sh-b:${col[1]}">L${k+1}<input id="${k === 0 ? 'seArmour' : 'seArmour' + (k+1)}" class="se-armour-in" data-k="${k}" type="number" min="0" max="9999" value="${val}"></label>`; }).join('')}</fieldset>`; })()}
         <label title="Level of the defending bramble: +1 Health per level. Blank = the default for this kind of fight">Bramble level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
         <label title="Worked out from this deck at the levels its cards fight at (change the deck or the card levels to move it)">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
@@ -15440,7 +15469,10 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       }
       if(document.getElementById('seArmour')){
         const ls = []; for(let k = 0; k < ARMOUR_LAYER_MAX; k++){ const el = document.getElementById(k === 0 ? 'seArmour' : 'seArmour' + (k+1)); const n = el ? Math.max(0, Math.min(9999, Math.round(Number(el.value)||0))) : 0; if(!(n > 0)) break; ls.push(n); }
-        draft.armour = ls.reduce((a, b)=> a + b, 0); if(ls.length > 1) draft.armourLayers = ls; else delete draft.armourLayers; draft.hqHp = skirmishCastle(draft).total; }
+        // 2026-10-18 (X3): a value changed from what was shown becomes this fight's shieldOverride (back on the rule's value = no
+        // override); the old armour / armourLayers fields are dropped, and hqHp is no longer rewritten as Health + Shield.
+        if(JSON.stringify(ls) !== JSON.stringify(overlay._shieldShown || [])){ const r = ruleShieldOf(draft); if(JSON.stringify(ls) === JSON.stringify(r > 0 ? [r] : [])) delete draft.shieldOverride; else draft.shieldOverride = ls.length > 1 ? ls : (ls[0] || 0); }
+        delete draft.armour; delete draft.armourLayers; }
       { const lv = {}; overlay.querySelectorAll('[data-cardlv]').forEach(inp=>{ const x = inp.value; if(x !== '' && isFinite(Number(x)) && draft.deck && draft.deck[inp.dataset.cardlv]) lv[inp.dataset.cardlv] = Math.max(0, Math.min(11, Math.round(Number(x)))); });
         if(overlay.querySelector('[data-cardlv]')){ if(Object.keys(lv).length) draft.cardLevels = lv; else delete draft.cardLevels; } }
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
@@ -15460,7 +15492,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       openSkirmishGallery({kind:'leader', slot:k, current: draft.leaders||[], pick: id=>{ const a = (draft.leaders||[]).slice(); while(a.length < k) a.push(null); const dup = a.indexOf(id); if(dup >= 0 && dup !== k) a[dup] = a[k] || null; a[k] = id; setLeaders(a); dirty = true; }, onClose: render}); });
     overlay.querySelectorAll('[data-leader-rm]').forEach(b=> b.onclick = ()=>{ read(); const a = (draft.leaders||[]).slice(); a.splice(+b.dataset.leaderRm, 1); setLeaders(a); dirty = true; render(); });
     { const cp = document.getElementById('seCastlePick'); if(cp) cp.onclick = ()=>{ read();
-        openSkirmishGallery({kind:'castle', current: draft.characterId||'', pick: id=>{ if(id) draft.characterId = id; else delete draft.characterId; if(document.getElementById('seArmour')) draft.hqHp = skirmishCastle(draft).total; dirty = true; }, onClose: render}); }; }
+        openSkirmishGallery({kind:'castle', current: draft.characterId||'', pick: id=>{ if(id) draft.characterId = id; else delete draft.characterId; dirty = true; }, onClose: render}); }; } // 2026-10-18 (X3): no hqHp rewrite (the Shield is the rule's)
+    { const sr = document.getElementById('seShieldRule'); if(sr) sr.onclick = ()=>{ read(); delete draft.shieldOverride; dirty = true; render(); }; }
     overlay.querySelectorAll('.se-armour-in').forEach(inp=> inp.oninput = ()=>{ dirty = true; // a layer above 0 opens the next one; a 0 closes everything above it
       const ins = [...overlay.querySelectorAll('.se-armour-in')]; let open = true; ins.forEach((el, k)=>{ const lab = el.closest('.se-armour-layer'); if(k > 0) open = open && (Number(ins[k-1].value)||0) > 0; if(lab) lab.hidden = !open; }); });
     { const te = document.getElementById('seTutEdit'); if(te) te.onclick = ()=> openTutorialEditor(); }
@@ -15496,7 +15529,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       const btn = document.getElementById('seTune'); btn.disabled = true; btn.textContent = '🎯 Tuning…';
       setTimeout(()=>{
         const deck = expectedPlayerDeck(mapId, draft.key), tgt = skirmishTargetWinRate(mapId, draft), G = 80;
-        const rate = a=>{ const t = Object.assign({}, draft, {armour:a}); return simulateSkirmishVsDeck(t, deck, G).wins / G; };
+        const rate = a=>{ const t = Object.assign({}, draft, {shieldOverride:a}); NODE_MAP_HINT.set(t, mapId); /* 2026-10-18 (X3): tunes the Shield override, on this map's bramble */ return simulateSkirmishVsDeck(t, deck, G).wins / G; };
         const before = skirmishCastle(draft).shield;
         let lo = 0, hi = Math.max(20, skirmishCastle(draft).total * 3), best = before, bestR = rate(before);
         for(let it=0; it<8 && lo<=hi; it++){
@@ -15504,7 +15537,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           if(Math.abs(r - tgt) < Math.abs(bestR - tgt)){ best = mid; bestR = r; }
           if(r > tgt) lo = mid + 1; else hi = mid - 1;
         }
-        draft.armour = best; draft.hqHp = skirmishCastle(draft).total; dirty = true;
+        if(best === ruleShieldOf(draft)) delete draft.shieldOverride; else draft.shieldOverride = best; delete draft.armour; delete draft.armourLayers; dirty = true; // 2026-10-18 (X3)
         skirmishCurveCache[mapId+':'+draft.key] = bestR;
         const capNote = (bestR < tgt - .1 && best === 0) ? ' Even with no Armour it is too hard: swap a strong card out of the enemy deck.' : (bestR > tgt + .1) ? ' Still too easy at the top of the range: add a stronger card to the enemy deck.' : '';
         simText = `🎯 Skirmish Armour ${before} → <b>${best}</b>: a new player's deck wins about <b>${Math.round(bestR*100)}%</b> (target ~${Math.round(tgt*100)}%).${capNote} Not saved yet.`;
@@ -15520,7 +15553,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         const list = map.nodes.filter(n=> n.deck && n.kind!=='tutorial'), N = SKIRMISH_CURVE_SIMS;
         for(let i = 0; i < list.length; i++){
           const n = list[i], nn = n.key===draft.key ? draft : n, deck = expectedPlayerDeck(mapId, n.key);
-          const sig = JSON.stringify([mapId, nn.deck, nn.rules || null, nn.battleMode || null, nn.hqHp, nn.characterId || null, nn.castle || null, nn.armour || nn.armor || null, nn.setup || null, deck, N]);
+          const sig = JSON.stringify([mapId, nn.deck, nn.rules || null, nn.battleMode || null, nn.hqHp, nn.characterId || null, nn.castle || null, nn.shieldOverride != null ? nn.shieldOverride : null, nn.kind || null, nn.setup || null, deck, N]);
           let v = skirmishCurveSimCache.get(sig);
           if(v == null){ cb.textContent = `Checking ${i + 1}/${list.length}…`; await sleep(0); v = simulateSkirmishVsDeck(nn, deck, N).wins / N; skirmishCurveSimCache.set(sig, v); }
           skirmishCurveCache[mapId+':'+n.key] = v;
@@ -18798,7 +18831,7 @@ function battleRecommendation(node){
   cards.forEach(c=> archetypesOf(c.d).forEach(a=>{ archCounts[a] = (archCounts[a]||0)+c.n; }));
   const topArch = Object.entries(archCounts).sort((a,b)=>b[1]-a[1])[0];
   if(topArch && topArch[1]/totalCopies >= 0.5) tips.push(`heavily ${topArch[0]}-themed — a deck built to punish that archetype's usual tricks will overperform here.`);
-  if(node.hqHp>=80) tips.push('a high-HP bramble behind them — expect a long grind; gold/economy cards help you outlast it.');
+  if(skirmishCastle(node).total>=80) tips.push('a high-HP bramble behind them — expect a long grind; gold/economy cards help you outlast it.');
   if(!tips.length) tips.push('a balanced mix — no single obvious lean to play around.');
   return tips.slice(0,2).join(' ');
 }
@@ -33964,7 +33997,7 @@ function rewardsPanelHTML(m){
     openRows.push(`<span class="rw-act">${t2 ? TX('results.conquest-map') : TX('results.tutorial-part-2')}</span>`);
   } else (m.unlockedActivities||[]).forEach(a=> openRows.push(`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`));
   const fightRow = (m.unlockedFights||[]).length && m.mode!=='tutorial' ? m.unlockedFights.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
-      return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: n.hqHp, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
+      return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: skirmishCastle(n).total, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
   if(seen.length || openRows.length || fightRow){
     const defs = getCardDefs();
     secs.push(`<div class="rw-sec rw-seen"><div class="rw-head">${seen.length ? TX('results.new-cards-seen') : TX('results.unlocked')}</div>${seen.length ? `<div class="rw-cards">${seen.map(id=> defs[id] ? `<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>` : '').join('')}</div>` : ''}${openRows.length || fightRow ? `<div class="rw-row rw-open-row">${openRows.join('')}${fightRow}</div>` : ''}</div>`); // 2026-10-18 (package U, user: "Put the title rewards in-line/in-group with skirmish unlocks."): one row, one chip look

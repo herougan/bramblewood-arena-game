@@ -116,3 +116,48 @@ Win rates, old → new:
 **Known quirk:** some early Map 3–4 castles now have low HP (16–19). The difficulty comes from their decks instead. If you'd rather castles always grow map to map, raise HP and soften the decks in the skirmish editor.
 
 **Next:** Maps 5–11, with the same tool, once you've played Maps 1–4.
+
+## 2026-10-18 note: Shield by rule, the base bramble on Map 0 (package X3)
+
+Owner (15:05): "For shields, lower the amount of shields in all skirmishes. About Shield = Map. For Elites, Map * 1.5, up to 3x for bosses. HP of brambles in Tutorial and Map 0 Skirmishes should be unnaturally low."
+
+**The rule** (`ruleShieldOf` in `arena_app.js`, worked out when the fight is built):
+
+| Kind | Shield |
+|---|---|
+| Skirmish | map number |
+| Elite, Champion, Dungeon | round(map × 1.5) |
+| Mini-boss, Sub-boss | map × 2 |
+| Boss, Campaign Boss, World Boss, Raid | map × 3 |
+| Tutorial | 0 |
+
+- Health is now the bramble's own Health (castle + level). A node's `hqHp` can only lower it; it no longer adds Shield on top. Before, everything above the bramble's Health was Shield, which reached 150–400 on Maps 18–24.
+- The skirmish editor's override is a new field, `shieldOverride` (a number or up to 4 layers). Old saved `armour` / `armourLayers` values are ignored.
+- **Map 0's road fights a Lv 0 base bramble:** 0-1 has 10 Health, 0-2 has 12, 0-3 has 14 (later skirmishes 15), elites 16, the boss 20, all with no Shield. The tutorial's rival keeps the tutorial config's 6 Health (8 in part 2). The Tutorial side map's T-2…T-4 and the Old Bramble keep their bramble's Health. They are on Map 0, so their Shield is now 0. See "Owner decisions" below.
+
+**Average enemy total per main map, before → after (Health + Shield):**
+
+| Map | Skirmish | Elite | Boss |
+|---|---|---|---|
+| 0 Outskirts | 22 → 12+0 | | 52 → 20+0 |
+| 1 Thistlewood | 15 → 15+1 | | 35 → 28+3 |
+| 2 Pebble Beach | 32 → 29+2 | | 167 → 38+6 |
+| 3 Gannet Cliffs | 47 → 28+3 | 59 → 30+5 | 56 → 30+9 |
+| 4 Sunken Hollow | 40 → 18+4 | 101 → 25+6 | 187 → 30+12 |
+| 5 Gatorback Swamp | 92 → 28+5 | 102 → 30+8 | 87 → 30+15 |
+| 6 Sable Swampmire | 168 → 26+6 | 74 → 27+9 | 34 → 34+18 |
+| 8 Caves & Alcoves | 38 → 21+8 | 29 → 23+12 | 81 → 30+24 |
+| 10 Coral Current | 60 → 24+10 | 60 → 25+15 | 93 → 32+30 |
+| 12 The Briar Maze | 24 → 24+12 | 28 → 28+18 | 45 → 30+36 |
+| 14 Savanna Reaches | 50 → 28+14 | 74 → 28+21 | 30 → 30+42 |
+| 17 Wolfsbane Tundra | 28 → 24+17 | 69 → 28+26 | 30 → 30+51 |
+| 18 The Glass Dunes | 135 → 30+18 | 110 → 30+27 | 65 → 30+54 |
+| 20 The Sundered Peak | 52 → 29+20 | 94 → 28+30 | 140 → 30+60 |
+| 22 The Rimefire Caldera | 278 → 30+22 | 310 → 30+33 | 340 → 30+66 |
+| 24 Goldfeather Keep | 352 → 30+24 | 385 → 30+36 | 420 → 30+72 |
+
+Most fights get shorter, and the late maps much shorter. A few bosses that had a small total now get more: 14-8, 17-8 and 6-8 had 30–34, and now have 72, 81 and 52. Bosses now rise smoothly with the map. The decks, the CPU level and the card levels carry the difficulty now. `tools/curve_tune.js`, `tools/autotune_map.js` and `tools/retune_all.js` still tune `hqHp` as a total, so they no longer move the Shield. Retune with the editor's 🎯 button instead, which sets `shieldOverride`.
+
+**Owner decisions:**
+- T-2…T-4 ("the last three fights here are not gentle") and the Old Bramble (0-B, opens after Map 17-A) are come-back-later fights on Map 0, so the rule gives them 0 Shield (T-4: 220 → 31). Give them a `shieldOverride` in the editor, or tell me to count them as a later map.
+- Your own bramble is unchanged (16 Health in the tutorial, your castle's own Health elsewhere). Map 0's enemy now has 10–20 Health against your 28–30.
