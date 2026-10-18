@@ -858,7 +858,6 @@
  "No card edits yet.": "Aún no hay cambios de cartas.",
  "No cards in this view yet.": "Todavía no hay cartas en esta vista.",
  "No currency reward for this win.": "Esta victoria no da recompensa en moneda.",
- "No Darkness, Blind or dodge stops it (Evasive, Flying, Smoke, Illusory…). It still can't hit what is Invisible.": "Ni la Oscuridad, ni la Ceguera, ni las esquivas la detienen (Evasiva, Volador, Humo, Ilusoria…). Sigue sin poder golpear lo Invisible.",
  "No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.": "No te quedan llaves de mazmorra. Mañana llega una nueva, y cada lunes una extra.",
  "No enchantment yet. Pick a crystal": "Aún sin encantamiento. Elige un cristal",
  "No enemy unit is still Waiting.": "Ninguna unidad enemiga sigue en Espera.",
@@ -1680,5 +1679,9 @@
  "— needs {e}⚡, you have {currentEnergy}⚡": "— necesita {e}⚡, tienes {currentEnergy}⚡",
  "— repeat-clear payout": "— pago por repetir",
  "日本語": "日本語",
- "🐞 Bug Hunters": "🐞 Cazadores de bugs"
+ "🐞 Bug Hunters": "🐞 Cazadores de bugs",
+ "Legendary": "Legendaria",
+ "Legendary ability": "Habilidad legendaria",
+ "A legendary power. Rarely found on cards you can own — dragons are the exception.": "Un poder legendario. Rara vez en cartas que puedes tener; los dragones son la excepción.",
+ "No Darkness, Blind or plain dodge stops it (Evasive, Flying, Smoke, Illusory…); only a Legendary dodge can. It still can't hit what is Invisible.": "Ni la Oscuridad, ni la Ceguera, ni las esquivas normales la detienen (Evasiva, Volador, Humo, Ilusoria…); solo una esquiva Legendaria puede. Sigue sin poder golpear lo Invisible."
 }

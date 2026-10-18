@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 late (package LG: Legendary abilities; True Strike vs Legendary dodges)
+- **Legendary abilities** (owner 23:05: "typically not given to cards players can get (except dragons)"): True Strike, Supreme and Supreme Tide are marked `legendary: true` (PASSIVE_DEFS / SKILL_DEFS, `canonical/skill-costs.json`; costs unchanged). Each shows a gold **Legendary** tag after its name on the card's line, e.g. the White Dragon's True Strike, and in the Skills Codex (the filter finds "legendary"). The card's glossary adds: "Legendary ability: A legendary power. Rarely found on cards you can own — dragons are the exception."
+- **True Strike vs Legendary dodges**: True Strike still ignores every plain miss and dodge, Illusory included (owner: "the illusory dodge is a token thing anyway"). A Legendary dodge still rolls against it. No dodge is Legendary yet. The hook is in `bramblewood-engine.js`: `legendaryDodge(reason, value)` is true for a source listed in `LEGENDARY_DODGES` or an effect value carrying `legendary: true` (e.g. `evasive: {legendary: true}`, `illusory: {chance, legendary: true}`), in melee (`combatHitLands`) and for shots and skills (`dodgeCheck`). The CPU's True Strike pick no longer counts Legendary dodgers. True Strike still draws no random numbers unless a Legendary dodge is in play, so `card-matrix` has 0 golden diffs.
+- The True Strike Codex note now says "only a Legendary dodge can". 4 texts (3 new TX keys and the re-keyed note) are in all 12 packs.
+- `docs/decisions.json` (and the generated `decisions.md`) has a stated-rules section for 23:05. Shadow of the Valley of Death is a very far future map, so the Pall Wraith stays in the Eye of the Volcano (20-A-2) until it exists. It also records the Legendary rules.
+- Test: `tests/legendary-2026-10-19.js` (93 checks, in run-all).
+
 ## 2026-10-18 late (package C follow-up: filter the Codex by skill)
 - **✨ Skills filter in Codex Browse** (owner 23:21: "add a way to filter by skills in codex"). It works in the album, Compressed and Full Art views.
   - The button sits with the other filters and opens a panel of every skill you have seen, each with its icon (admins see all).

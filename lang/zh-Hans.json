@@ -858,7 +858,6 @@
  "No card edits yet.": "还没有卡牌修改。",
  "No cards in this view yet.": "此视图中还没有卡。",
  "No currency reward for this win.": "这场胜利没有货币奖励。",
- "No Darkness, Blind or dodge stops it (Evasive, Flying, Smoke, Illusory…). It still can't hit what is Invisible.": "黑暗、致盲和任何闪避（闪避、飞行、烟雾、幻影……）都挡不住它。但它仍打不中隐身的目标。",
  "No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.": "地牢钥匙用完了。明天会来一把新的，每周一还有一把额外的。",
  "No enchantment yet. Pick a crystal": "尚未附魔。选择一颗魔晶",
  "No enemy unit is still Waiting.": "没有仍在等待的敌方单位。",
@@ -1681,5 +1680,9 @@
  "— needs {e}⚡, you have {currentEnergy}⚡": "——需要 {e}⚡，你有 {currentEnergy}⚡",
  "— repeat-clear payout": "——重复通关收益",
  "日本語": "日本語",
- "🐞 Bug Hunters": "🐞 漏洞猎人"
+ "🐞 Bug Hunters": "🐞 漏洞猎人",
+ "Legendary": "传说",
+ "Legendary ability": "传说能力",
+ "A legendary power. Rarely found on cards you can own — dragons are the exception.": "传说之力。你能拥有的卡牌上很少见——龙是例外。",
+ "No Darkness, Blind or plain dodge stops it (Evasive, Flying, Smoke, Illusory…); only a Legendary dodge can. It still can't hit what is Invisible.": "黑暗、致盲和普通闪避（闪避、飞行、烟雾、幻影……）都挡不住它，只有传说闪避可以。但它仍打不中隐身的目标。"
 }

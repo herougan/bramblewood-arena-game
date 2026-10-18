@@ -858,7 +858,6 @@
  "No card edits yet.": "Noch keine Kartenänderungen.",
  "No cards in this view yet.": "In dieser Ansicht gibt es noch keine Karten.",
  "No currency reward for this win.": "Für diesen Sieg gibt es keine Währung.",
- "No Darkness, Blind or dodge stops it (Evasive, Flying, Smoke, Illusory…). It still can't hit what is Invisible.": "Weder Dunkelheit noch Blenden noch Ausweichen hält sie auf (Ausweichend, Fliegend, Rauch, Illusorisch…). Was unsichtbar ist, trifft sie trotzdem nicht.",
  "No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.": "Keine Verliesschlüssel mehr. Morgen kommt ein neuer, und jeden Montag ein Bonusschlüssel.",
  "No enchantment yet. Pick a crystal": "Noch keine Verzauberung. Wähle einen Kristall",
  "No enemy unit is still Waiting.": "Keine gegnerische Einheit Wartet noch.",
@@ -1680,5 +1679,9 @@
  "— needs {e}⚡, you have {currentEnergy}⚡": "— braucht {e}⚡, du hast {currentEnergy}⚡",
  "— repeat-clear payout": "— Wiederholungsprämie",
  "日本語": "日本語",
- "🐞 Bug Hunters": "🐞 Bugjäger"
+ "🐞 Bug Hunters": "🐞 Bugjäger",
+ "Legendary": "Legendär",
+ "Legendary ability": "Legendäre Fähigkeit",
+ "A legendary power. Rarely found on cards you can own — dragons are the exception.": "Eine legendäre Kraft. Selten auf Karten, die du besitzen kannst — Drachen sind die Ausnahme.",
+ "No Darkness, Blind or plain dodge stops it (Evasive, Flying, Smoke, Illusory…); only a Legendary dodge can. It still can't hit what is Invisible.": "Weder Dunkelheit noch Blenden noch gewöhnliches Ausweichen hält sie auf (Ausweichend, Fliegend, Rauch, Illusorisch…); nur legendäres Ausweichen kann es. Was unsichtbar ist, trifft sie trotzdem nicht."
 }

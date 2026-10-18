@@ -858,7 +858,6 @@
  "No card edits yet.": "இன்னும் அட்டைத் திருத்தங்கள் இல்லை.",
  "No cards in this view yet.": "இந்தக் காட்சியில் இன்னும் அட்டைகள் இல்லை.",
  "No currency reward for this win.": "இந்த வெற்றிக்கு நாணயப் பரிசு இல்லை.",
- "No Darkness, Blind or dodge stops it (Evasive, Flying, Smoke, Illusory…). It still can't hit what is Invisible.": "இருள், குருடு, எந்தத் தவிர்ப்பும் (தப்பிக்கும், பறக்கும், புகை, மாயை…) இதைத் தடுக்காது. கண்ணுக்குத் தெரியாததை இது இன்னும் தாக்க முடியாது.",
  "No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.": "நிலவறைச் சாவிகள் தீர்ந்துவிட்டன. நாளை புதியது வரும், ஒவ்வொரு திங்களும் ஒரு போனஸ்.",
  "No enchantment yet. Pick a crystal": "இன்னும் மந்திரம் இல்லை. ஒரு படிகத்தைத் தேர்ந்தெடுங்கள்",
  "No enemy unit is still Waiting.": "எந்த எதிரி அலகும் இன்னும் காத்திருப்பில் இல்லை.",
@@ -1681,5 +1680,9 @@
  "— needs {e}⚡, you have {currentEnergy}⚡": "— {e}⚡ தேவை, உங்களிடம் {currentEnergy}⚡",
  "— repeat-clear payout": "— மீண்டும் வெல்லும் வெகுமதி",
  "日本語": "日本語",
- "🐞 Bug Hunters": "🐞 பிழை வேட்டையர்"
+ "🐞 Bug Hunters": "🐞 பிழை வேட்டையர்",
+ "Legendary": "புராணம்",
+ "Legendary ability": "புராணத் திறன்",
+ "A legendary power. Rarely found on cards you can own — dragons are the exception.": "ஒரு புராண சக்தி. நீங்கள் வைத்திருக்கக்கூடிய அட்டைகளில் அரிது — டிராகன்கள் விதிவிலக்கு.",
+ "No Darkness, Blind or plain dodge stops it (Evasive, Flying, Smoke, Illusory…); only a Legendary dodge can. It still can't hit what is Invisible.": "இருள், குருடு, சாதாரணத் தவிர்ப்பு (தப்பிக்கும், பறக்கும், புகை, மாயை…) எதுவும் இதைத் தடுக்காது; புராணத் தவிர்ப்பு மட்டுமே தடுக்கும். கண்ணுக்குத் தெரியாததை இது இன்னும் தாக்க முடியாது."
 }
