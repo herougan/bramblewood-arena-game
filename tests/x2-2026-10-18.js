@@ -71,6 +71,36 @@ ok(/With no enemy unit it strikes the bramble, which is never Shocked\./.test(sr
   ok(!/back two rows/.test(R.describeStage(en)) && !/back two rows/.test(R.describeStage(th)), `the stage lines no longer mention the volley (${R.describeStage(en)} / ${R.describeStage(th)})`);
   ok(/extra time as each round starts/.test(R.describeStage({rules:{extraVolley:1}})), 'a custom stage can still set one (the editor field stays)'); }
 
+// ---- 12b (owner 15:37: "A. The tentacle slams hit them 1/3 of the time."): the Tentacle Smack reaches your back rows 1 time in 3
+{ const seedSrc = src.slice(src.indexOf('function seededRng(seed){'), src.indexOf('let currentMatchSeed'));
+  const body = src.slice(src.indexOf('function raidPickColumn(m){'), src.indexOf('function raidTelegraphCols(m)'));
+  const F = new Function(seedSrc + body + '; return {raidSpecials, raidSmackBack, RAID_SMACK_BACK_CHANCE};')();
+  ok(F.RAID_SMACK_BACK_CHANCE === 1/3, 'the chance is 1 in 3');
+  const smack = (seed, round, opts)=>{ opts = opts || {};
+    const {e, P} = mk({}, {reserveRows:2}); const fr = opts.noFront ? null : put(e, P, 1, 'x2-land'); const col = fr ? fr.slot : 0;
+    const m1 = opts.noBack ? null : e.fillReserve(P[1], 1, col, 'x2-land'), b2 = opts.noBack ? null : e.fillReserve(P[1], 2, col, 'x2-land');
+    const m = {engine:e, players:P, sideOf:so, stats:{}, round, raidSeed:seed, raidAttacks:[{name:'Tentacle Smack', pattern:'column', dmg:6, every:1}], raidPending:{0:col}};
+    const ev = []; const hq = P[1].hq.hp; F.raidSpecials(m, ev); return {ev: ev.find(x=> x.type === 'raidSmack'), fr, m1, b2, hqLost: hq - P[1].hq.hp, back: F.raidSmackBack(m, round, 0)}; };
+  let backs = 0, okFront = true, okBack = true, det = true; const N = 300;
+  for(let r = 1; r <= N; r++){ const x = smack(12345, r);
+    if(x.back){ backs++; if(!(x.ev.back && x.fr.hp === 50 && x.m1.hp === 44 && x.b2.hp === 44 && x.ev.hits === 2)) okBack = false; }
+    else if(!(!x.ev.back && x.fr.hp === 44 && x.m1.hp === 50 && x.b2.hp === 50 && x.ev.hits === 1)) okFront = false;
+    if(smack(12345, r).back !== x.back) det = false; }
+  ok(backs / N > .25 && backs / N < .42, `about 1 smack in 3 reaches the back rows (${backs} of ${N})`);
+  ok(okFront, 'a front smack hits only your front-row unit in that column (it used to hit every row)');
+  ok(okBack, 'a back-row smack hits your middle and back rows in that column, not the front');
+  ok(det, 'seeded: the same fight and round always roll the same');
+  let fellFront = false, fellBack = false, wall = false;
+  for(let r = 1; r <= 40; r++){ const a = smack(777, r, {noBack:true}); if(a.back && a.fr.hp === 44 && !a.ev.back) fellFront = true;
+    const b = smack(777, r, {noFront:true}); if(!b.back && b.m1.hp === 44 && b.ev.back) fellBack = true;
+    const c = smack(777, r, {noFront:true, noBack:true}); if(c.hqLost === 6 && !c.ev.hits) wall = true; }
+  ok(fellFront, 'a back-row smack on a column with no back-row units lands on the front row');
+  ok(fellBack, 'a front smack on a column with no front-row unit lands on the back rows');
+  ok(wall, 'a column empty in every row hits your bramble');
+  ok(/case 'raidSmack': return \{cls:'', text: ev\.back \? TX\('ui\.raid-smack-back-rows', \{name: ev\.name, dmg: ev\.dmg, hits: ev\.hits\}\)/.test(src), 'its log line says it hit the back rows (a TX key)');
+  const TXT = require('../bramblewood-texts.js'); ok(/slams your back rows/.test(TXT.TEXT['ui.raid-smack-back-rows'] || ''), 'the text is in the TEXT table');
+  ok(/M\.tentacleSmack\(ev\.back \? reserve :/.test(fs.readFileSync(path.join(ROOT, 'bramblewood-fx-f.js'), 'utf8')), 'the smack VFX lands on the back rows only'); }
+
 // ---- 15: the Babel Spire plays at the highest CPU level
 ok(E.AI_LEVEL_MAX === 2, 'the engine names its highest CPU level (AI_LEVEL_MAX = 2, Smartest)');
 { const e = E.makeSimEngine(defs, E.mulberry32(1), {recordEvents:true, aiLevel:99}); ok(e.getAiLevel() === E.AI_LEVEL_MAX, 'aiLevel is capped at AI_LEVEL_MAX');

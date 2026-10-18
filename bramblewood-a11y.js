@@ -136,17 +136,41 @@
     for(const r of recs.values()) if(n.contains(r.host) || r.host.contains(n) && n.contains(r.root)) return true;
     return false;
   }
+  // 2026-10-18 (audit 4, perf): the battle flips classes on board cards many times a second, and each flip ran matches/querySelector
+  // here. Now a change inside the board (BOARD_SEL) only counts when the node itself is a dialog (or a managed dialog went away),
+  // and a class flip elsewhere only on an element that could be a dialog or an overlay (or one that holds an open dialog).
+  const BOARD_SEL = '#battlefieldEl, #handStrip';
+  const OVERLAY_HINT = /overlay|modal|screen|dialog|panel|popup|popover|sheet|splash|drawer/i;
+  const holdsRec = n=>{ for(const r of recs.values()) if(n === r.host || n.contains(r.host)) return true; return false; };
+  const recGone = t=>{ for(const r of recs.values()) if(!r.root.isConnected || r.host.contains(t)) return true; return false; };
+  const isDialog = n=> !!(n && n.nodeType === 1 && n.matches(DIALOG_SEL));
+  function couldOverlay(n){
+    if(!n || n.nodeType !== 1) return false;
+    if(isDialog(n) || holdsRec(n)) return true;
+    const c = typeof n.className === 'string' ? n.className : (n.getAttribute('class') || '');
+    return OVERLAY_HINT.test(c) || OVERLAY_HINT.test(n.id || '');
+  }
   const mo = new MutationObserver(list=>{
     if(scanQueued) return;
     for(const m of list){
+      const t = m.target && m.target.nodeType === 1 ? m.target : (m.target && m.target.parentElement);
+      if(t && t.closest(BOARD_SEL)){ // inside the board: only a dialog itself, or a managed dialog that went away
+        if(m.type === 'childList'){
+          for(const n of m.addedNodes) if(isDialog(n)) return queue();
+          for(const n of m.removedNodes) if(isDialog(n) || (n.nodeType === 1 && holdsRec(n))) return queue();
+          if(recGone(t)) return queue();
+        } else if(isDialog(t) || holdsRec(t)) return queue();
+        continue;
+      }
       if(m.type === 'childList'){
         for(const n of m.addedNodes) if(relevant(n)) return queue();
         for(const n of m.removedNodes) if(relevant(n)) return queue();
-        for(const r of recs.values()) if(!r.root.isConnected || r.host.contains(m.target)) return queue();
-      } else if(relevant(m.target)) return queue();
+        if(recGone(m.target)) return queue();
+      } else if(m.attributeName === 'class'){ if(couldOverlay(t) && relevant(t)) return queue(); }
+      else if(relevant(t)) return queue();
     }
   });
-  mo.observe(document.documentElement, {subtree: true, childList: true, attributes: true, attributeFilter: ['hidden', 'class', 'role', 'inert']});
+  mo.observe(document.documentElement, {subtree: true, childList: true, attributes: true, attributeFilter: ['hidden', 'class', 'role', 'inert', 'data-a11y-skip']}); // + data-a11y-skip (2026-10-18): a dialog that steps out of management
 
   document.addEventListener('focusin', e=>{
     const t = e.target; if(!t || t === document.body) return;

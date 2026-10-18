@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 // 2026-10-18 (V3, world-map fixes): static and logic checks that
-//   1. Lilypad Reach (mp) stays where it was (Pebble Beach, after 2-1, at 30/20) but waits on Gatorback Swamp (afterMapCleared "mw");
-//      it is locked until every Gatorback fight is won, opens then, and stays open for a save that already fought on it;
-//   2. its locked entrance is the normal locked emblem (is-locked, disabled, padlock badge) and reads "Clear Gatorback Swamp to open";
+//   1. Lilypad Reach (mp) stays where it was (Pebble Beach, after 2-1, at 30/20) but waits on Map 6, Sable Swampmire (afterMapCleared
+//      "m8"; 2026-10-18 owner: "lock it till Map 6 or 7 complete", was Gatorback Swamp "mw"); it is locked until every Map 6 fight is
+//      won, opens then, and stays open for a save that already fought on it;
+//   2. its locked entrance is the normal locked emblem (is-locked, disabled, padlock badge) and reads "Clear Sable Swampmire (Map 6) to open";
 //   3. the cleared-dark-map darkness covers the whole screen evenly: the screen layer's mask has a hole the size of the visible map
 //      canvas (four bands added, then intersected with the lantern and light pools), the canvas layer fills it square-cornered, and
 //      the screen layer sits over the layout's z-0 layers (the cleared map's warm glow and a backdrop shader).
@@ -20,12 +21,13 @@ const ms = src.indexOf('const CONQUEST_MAPS = ['), me = src.indexOf('\n];', ms) 
 const dg = src.indexOf('function endlessDungeon(cfg){'), de = src.indexOf('const CONQUEST_MAPS_BASELINE', dg);
 const CONQUEST_MAPS = new Function(src.slice(ms, me) + '\n' + src.slice(dg, de) + '\nreturn CONQUEST_MAPS;')();
 const byId = id=> CONQUEST_MAPS.find(m=> m.id === id);
-const mp = byId('mp'), mw = byId('mw'), mb = byId('mb');
+const mp = byId('mp'), mb = byId('mb');
+const mainsAll = CONQUEST_MAPS.filter(m=> !m.sub), mw = mainsAll[6];   // Map 6 by play order (mapIdAt(6)): the gate
 
 // --- 1. the entry
 ok(mp && mp.sub && mp.parent === 'mb' && mp.name === 'Lilypad Reach', 'Lilypad Reach is still a side map of Pebble Beach');
 ok(mp && mp.entry.after === '2-1' && mp.entry.x === 30 && mp.entry.y === 20, 'its entrance has not moved (after 2-1, at 30/20)');
-ok(mp && mp.entry.afterMapCleared === 'mw' && mw && mw.name === 'Gatorback Swamp', 'it waits on Gatorback Swamp (afterMapCleared "mw")');
+ok(mp && mw && mp.entry.afterMapCleared === mw.id && mw.id === 'm8' && mw.name === 'Sable Swampmire', 'it waits on Map 6, Sable Swampmire (afterMapCleared "m8" = mapIdAt(6))');
 
 // isMapUnlocked, run against a fake save
 const KIND_BASE = new Function(constLine('KIND_BASE') + '\nreturn KIND_BASE;')();
@@ -35,21 +37,21 @@ const H = new Function('CONQUEST_MAPS', 'KIND_BASE', 'getP', 'getFlags', [fn('co
   '\nreturn {isMapUnlocked, conquestMapCleared, conquestNodeId};')(CONQUEST_MAPS, KIND_BASE, ()=> progress, ()=> flags);
 const fights = m=> m.nodes.filter(n=> n.kind !== 'tutorial');
 const clearMap = (p, m)=> fights(m).forEach(n=> p.completed.push(H.conquestNodeId(m.id, n.key)));
-// every main map up to (not including) Gatorback Swamp cleared, so Pebble Beach's 2-1 is won
+// every main map up to (not including) Map 6 cleared, so Pebble Beach's 2-1 is won
 const mains = CONQUEST_MAPS.filter(m=> !m.sub && !m.reserved), iw = mains.indexOf(mw);
-ok(iw > mains.indexOf(mb), 'Gatorback Swamp comes after Pebble Beach on the road');
+ok(iw > mains.indexOf(mb), 'Map 6 comes after Pebble Beach on the road');
 const before = {completed: [], clearedAt: {}}; mains.slice(0, iw).forEach(m=> clearMap(before, m));
 ok(before.completed.includes('mb:2-1'), 'the fake save has Pebble Beach 2-1');
 progress = before;
-ok(H.isMapUnlocked(mw, progress), 'Gatorback Swamp is open in the fake save');
-ok(!H.isMapUnlocked(mp, progress), 'Lilypad Reach is locked while Gatorback Swamp is not cleared');
-progress = JSON.parse(JSON.stringify(before)); fights(mw).slice(0, -1).forEach(n=> progress.completed.push(H.conquestNodeId('mw', n.key)));
-ok(!H.isMapUnlocked(mp, progress), 'still locked with one Gatorback fight to go');
+ok(H.isMapUnlocked(mw, progress), 'Map 6 is open in the fake save');
+ok(!H.isMapUnlocked(mp, progress), 'Lilypad Reach is locked while Map 6 is not cleared');
+progress = JSON.parse(JSON.stringify(before)); fights(mw).slice(0, -1).forEach(n=> progress.completed.push(H.conquestNodeId(mw.id, n.key)));
+ok(!H.isMapUnlocked(mp, progress), 'still locked with one Map 6 fight to go');
 progress = JSON.parse(JSON.stringify(before)); clearMap(progress, mw);
-ok(H.conquestMapCleared('mw') && H.isMapUnlocked(mp, progress), 'Lilypad Reach opens once Gatorback Swamp is cleared');
+ok(H.conquestMapCleared(mw.id) && H.isMapUnlocked(mp, progress), 'Lilypad Reach opens once Map 6 is cleared');
 // a save that already fought on Lilypad Reach keeps it
 progress = JSON.parse(JSON.stringify(before)); progress.completed.push(H.conquestNodeId('mp', mp.nodes.find(n=> n.kind !== 'tutorial').key));
-ok(H.isMapUnlocked(mp, progress), 'a save with a Lilypad Reach win keeps it open before Gatorback Swamp is cleared');
+ok(H.isMapUnlocked(mp, progress), 'a save with a Lilypad Reach win keeps it open before Map 6 is cleared');
 // a fresh save: locked (and not because of the swamp only)
 progress = {completed: [], clearedAt: {}};
 ok(!H.isMapUnlocked(mp, progress), 'a fresh save has it locked');
@@ -57,17 +59,17 @@ ok(!H.isMapUnlocked(mp, progress), 'a fresh save has it locked');
 // --- 2. the locked entrance
 const SUBMAP_CAVES = new Function(constLine('SUBMAP_CAVES') + '\nreturn SUBMAP_CAVES;')();
 const entrances = new Function('CONQUEST_MAPS', 'H', 'SUBMAP_CAVES', 'getFlags', [fn('escapeAttr'), fn('escapeHtml'),
-  'const SUBMAP_EMBLEM_SVG = {}; let conquestLayoutEdit = false;', 'function decorPos(id, key, fb){ return fb; }', 'function loadDialogueFlags(){ return getFlags(); }',
+  'const SUBMAP_EMBLEM_SVG = {}; let conquestLayoutEdit = false;', fn('mainConquestMaps'), fn('mapNumberOf'), 'function decorPos(id, key, fb){ return fb; }', 'function loadDialogueFlags(){ return getFlags(); }',
   'const isMapUnlocked = H.isMapUnlocked, conquestMapCleared = H.conquestMapCleared, conquestNodeId = H.conquestNodeId;', fn('subMapEntrancesHTML')].join('\n') +
   '\nreturn subMapEntrancesHTML;')(CONQUEST_MAPS, H, SUBMAP_CAVES, ()=> flags);
 progress = JSON.parse(JSON.stringify(before));
 const html = entrances(mb, progress), btn = (html.match(/<button[^>]*data-lkey="~sub:mp"[\s\S]*?<\/button>/) || [''])[0];
 ok(btn, 'Pebble Beach draws the Lilypad Reach entrance');
 ok(/class="map-cave map-subcave map-subemblem is-locked/.test(btn) && /\sdisabled\s/.test(btn) && /mse-lock/.test(btn) && !/data-submap=/.test(btn), 'it is the normal locked emblem (is-locked, disabled, padlock, no way in)');
-ok(/title="The lily ponds — Clear Gatorback Swamp to open"/.test(btn) && /aria-label="The lily ponds — Clear Gatorback Swamp to open"/.test(btn), 'it reads "Clear Gatorback Swamp to open"');
+ok(/title="The lily ponds — Clear Sable Swampmire \(Map 6\) to open"/.test(btn) && /aria-label="The lily ponds — Clear Sable Swampmire \(Map 6\) to open"/.test(btn), 'it reads "Clear Sable Swampmire (Map 6) to open"');
 progress = JSON.parse(JSON.stringify(before)); clearMap(progress, mw);
 const open = (entrances(mb, progress).match(/<button[^>]*data-lkey="~sub:mp"[\s\S]*?<\/button>/) || [''])[0];
-ok(/data-submap="mp"/.test(open) && !/is-locked/.test(open) && /Lilypad Reach — 0\/\d+ cleared/.test(open), 'cleared swamp: the entrance opens with its name and count');
+ok(/data-submap="mp"/.test(open) && !/is-locked/.test(open) && /Lilypad Reach — 0\/\d+ cleared/.test(open), 'cleared Map 6: the entrance opens with its name and count');
 // the other entrances keep their old "clear X to find a way in" text
 progress = {completed: [], clearedAt: {}};
 const grotto = (entrances(mb, progress).match(/<button[^>]*data-lkey="~sub:mg"[\s\S]*?<\/button>/) || [''])[0];
