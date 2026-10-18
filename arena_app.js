@@ -2826,7 +2826,7 @@ function openStandardDeckBuilder(onDone){
       <div class="modal-head-row"><h2 id="stdTitle">🃏 Standard deck</h2><button class="modal-close-btn" id="stdClose" aria-label="Close">✕</button></div>
       <p class="panel-sub">Every card, all at Level 1. No foils or shinies. <b class="${tot===DECK_SIZE?'std-ok':'std-bad'}">${tot} / ${DECK_SIZE}</b></p>
       <div class="std-in">${inDeck.length ? inDeck.map(row).join('') : '<p class="panel-sub">Empty. Add cards below.</p>'}</div>
-      <input type="search" class="std-search" id="stdSearch" placeholder="Search all cards" value="${escapeHtml(q)}">
+      <input data-text-filter autocomplete="off" type="search" class="std-search" id="stdSearch" placeholder="Search all cards" value="${escapeHtml(q)}">
       <div class="std-pool">${list.filter(id=>!counts[id]).slice(0, 400).map(row).join('')}</div>
       <div class="auth-actions"><button type="button" class="btn" id="stdCopy">Copy my Collection deck</button><button type="button" class="btn primary" id="stdDone">Done</button></div></div>`;
     ov.hidden = false;
@@ -5517,11 +5517,43 @@ let codexSubTab = 'browse';
 // writes it, and stickyControls(page, ids) does both for a page whose filters live only in its controls (the Camp's card pool).
 const UI_FILTERS_KEY = 'bramblewood_ui_filters_v1';
 function uiStickyAll(){ try{ const o = JSON.parse(localStorage.getItem(UI_FILTERS_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; }catch(e){ return {}; } }
-function uiSticky(page){ const o = uiStickyAll()[page]; return o && typeof o === 'object' ? o : {}; }
-function uiStickySave(page, obj){ try{ const all = uiStickyAll(); all[page] = Object.assign({}, all[page] || {}, obj); localStorage.setItem(UI_FILTERS_KEY, JSON.stringify(all)); }catch(e){} }
+// 2026-10-18 (owner 21:18: "The text filters in all my texts ... don't reset when I refresh ... or when I move between pages"):
+// only the non-text choices stay sticky (sort, rarity, type, kind, level, view). The free-text query is never saved or read back.
+const UI_STICKY_TEXT_KEYS = ['q', 'deckSearch'];
+function uiStickyNoText(o){ const out = Object.assign({}, o || {}); UI_STICKY_TEXT_KEYS.forEach(k=> delete out[k]); return out; }
+function uiSticky(page){ const o = uiStickyAll()[page]; return o && typeof o === 'object' ? uiStickyNoText(o) : {}; }
+function uiStickySave(page, obj){ try{ const all = uiStickyAll(); all[page] = uiStickyNoText(Object.assign({}, all[page] || {}, obj)); localStorage.setItem(UI_FILTERS_KEY, JSON.stringify(all)); }catch(e){} }
+// Text filters reset (2026-10-18, same request). Every free-text filter / search box carries data-text-filter and
+// autocomplete="off" (Chrome restores form values after a reload or from the back/forward cache otherwise).
+// resetTextFilters(root) empties the query each page keeps in memory and every such box under root; unless {silent:true},
+// a box that held text gets an 'input' event so its own list redraws unfiltered. The page switch (switchTab, and the Codex /
+// Play sub-tabs through syncTextFilterPage) and `pageshow` call it.
+const TEXT_FILTER_SEL = 'input[data-text-filter]';
+function resetTextFilterState(){
+  const z = f=>{ try{ f(); }catch(e){} }; // each one is declared further down; a missing one is skipped
+  z(()=>{ codexFilter.q = ''; }); z(()=>{ skillCodexQuery = ''; }); z(()=>{ forgeSearch = ''; }); z(()=>{ Market.q = ''; });
+  z(()=>{ sandboxSearch = ''; }); z(()=>{ adminCardSearch = ''; }); z(()=>{ simFilter.A = ''; simFilter.B = ''; });
+  z(()=>{ if(testKit){ testKit.search = ''; testKit.skillSearch = ''; } }); z(()=>{ if(fxLib) fxLib.search = ''; });
+  z(()=>{ Social.searchTerm = ''; Social.searchResults = null; });
+}
+function resetTextFilters(root, opts){
+  resetTextFilterState();
+  const cleared = [];
+  try{ (root || document).querySelectorAll(TEXT_FILTER_SEL).forEach(el=>{ el.setAttribute('autocomplete', 'off'); if(el.value !== ''){ el.value = ''; cleared.push(el); } }); }catch(e){}
+  if(!(opts && opts.silent)) cleared.forEach(el=>{ try{ el.dispatchEvent(new Event('input', {bubbles:true})); }catch(e){} });
+  return cleared.length;
+}
+let textFilterPage = null;
+function syncTextFilterPage(){
+  let k = '';
+  try{ k = currentTab + ':' + (currentTab === 'codex' ? codexSubTab : currentTab === 'play' ? playSubTab : ''); }catch(e){ return; }
+  if(textFilterPage !== null && k !== textFilterPage) resetTextFilters(document, {silent:true}); // the new page draws itself unfiltered
+  textFilterPage = k;
+}
+if(typeof window !== 'undefined') window.addEventListener('pageshow', ()=>{ try{ resetTextFilters(document); }catch(e){} }); // a reload or a bfcache return
 function stickyControls(page, ids){
   const saved = uiSticky(page);
-  ids.forEach(id=>{ const el = document.getElementById(id); if(!el) return;
+  ids.forEach(id=>{ const el = document.getElementById(id); if(!el || el.matches(TEXT_FILTER_SEL)) return; // text boxes aren't sticky (2026-10-18)
     const v = saved[id];
     if(v != null){ if(el.type === 'checkbox') el.checked = !!v; else if(el.tagName === 'SELECT'){ if([...el.options].some(o=> o.value === String(v))) el.value = String(v); } else el.value = String(v); }
     const save = ()=> uiStickySave(page, {[id]: el.type === 'checkbox' ? el.checked : el.value});
@@ -5730,6 +5762,7 @@ function pixelReveal(ms){
   requestAnimationFrame(step);
 }
 function renderCodex(){
+  syncTextFilterPage(); // 2026-10-18: a new Codex sub-tab starts with empty search boxes
   try{ if(phylaUnlocked() && !adminModeEnabled) setTimeout(()=>{ try{ playDialogue('unlock_phyla', {once:true}); }catch(e){} }, 600); }catch(e){}
   try{ if(!loadDialogueFlags()[RARITY_LESSON_FLAG]) setTimeout(()=>{ try{ maybeRarityLesson(); }catch(e){} }, 900); }catch(e){} // 2026-10-14 rarity lesson
   // 2026-09-25 (task #352): Recently Deleted and the transaction Log are admin/debug-only views --
@@ -5774,7 +5807,7 @@ function renderCodex(){
   const archetypes = [...new Set(Object.values(defs).flatMap(d=>archetypesOf(d)))].sort();
   body.innerHTML = `
     <div class="codex-toolbar ${codexFiltersOpen?'filters-open':''}" id="codexToolbar">
-      <input id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
+      <input data-text-filter autocomplete="off" id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
       <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = [codexFilter.archetype, codexFilter.mechLine, (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
       ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
@@ -7065,7 +7098,7 @@ function skillCodexHTML(){
     return `<div class="sk-row" data-sk-find="${escapeAttr((p.label + ' ' + p.key + ' ' + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase())}"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${'' /* 2026-10-17 (user: "Remove the one-off tag in Codex"): the editor's skill picker still marks one-offs */}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
   // 2026-10-15 (user: "Codex: Skill: Text Filter"): a search box over the list; it matches the name, the text and the answers.
   return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>
-    ${rows ? `<div class="sk-filter"><input type="search" id="skFilterInput" placeholder="Filter skills…" aria-label="Filter skills" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>` : ''}
+    ${rows ? `<div class="sk-filter"><input data-text-filter autocomplete="off" type="search" id="skFilterInput" placeholder="Filter skills…" aria-label="Filter skills" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>` : ''}
     ${rows || '<p class="panel-sub">None yet. Skills show here as you meet them.</p>'}${statusCodexHTML() /* 2026-10-18 (package D) */}<p class="panel-sub sk-none" id="skFilterNone" hidden>No skill matches that.</p></div>`;
 }
 // 2026-10-18 (package D, owner: "Please make the explanation terse. The Codex can be bigger."): the detail each shortened card line
@@ -7915,7 +7948,7 @@ function openNodeRewardsEditor(mapId, nodeKey){
         <p class="panel-sub">A Faction Reward is a random card from the player's faction pool at their faction tier; a Faction Growth is the next card of the lowest rarity they don't have yet. With any placeholder set, this fight gives these instead of the default elite/boss faction card.</p></div>
       <div class="nr-tokens nr-danger"><b>⚠️ Danger cards</b> ${Object.keys(found.node.deck||{}).map(id=> defs[id] ? `<button type="button" class="nr-token nr-dg ${((found.node.dangerCards)||[]).includes(id) ? 'is-on' : ''}" data-id="${escapeAttr(id)}" aria-pressed="${((found.node.dangerCards)||[]).includes(id)}">${defs[id].icon||''} ${escapeHtml(defs[id].name)}</button>` : '').join('')}
         <p class="panel-sub">Ticked enemy cards always get a danger warning in this fight until the player has beaten them.</p></div>
-      <input type="text" id="nrSearch" placeholder="Search a card to add…" value="${escapeAttr(q)}" autocomplete="off">
+      <input data-text-filter autocomplete="off" type="text" id="nrSearch" placeholder="Search a card to add…" value="${escapeAttr(q)}">
       <div class="nr-results">${matches.map(id=>`<button type="button" class="nr-result" data-id="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${srcNote(id)}</span></button>`).join('')}</div>
     </div>`;
     overlay.hidden = false;
@@ -11887,7 +11920,7 @@ function openLoadoutPicker(kind){
       <button type="button" class="modal-close-btn" aria-label="Close" data-close>✕</button>
       <h2>${isCastle ? '🏰 Choose your bramble' : '👑 Choose your leader'}</h2>
       <p class="panel-sub">${isCastle ? 'Your bramble sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward battle rating. Leaders are Heroic or above, or have the Leader passive.'}</p>
-      ${isCastle ? '' : '<input type="search" class="lp-search" id="lpSearch" placeholder="Search your cards…" aria-label="Search your cards">'}
+      ${isCastle ? '' : '<input data-text-filter autocomplete="off" type="search" class="lp-search" id="lpSearch" placeholder="Search your cards…" aria-label="Search your cards">'}
       <div class="lp-body">${body()}</div>
     </div>`;
   document.body.appendChild(ov);
@@ -12623,6 +12656,7 @@ function deckBreakdownHTML(deckIds, defs){
 }
 function renderPlay(){
   const root = document.getElementById('view-play');
+  syncTextFilterPage(); // 2026-10-18: a new Play sub-tab starts with empty search boxes
   if(matchState) noteMatchReturnSpot(); // 2026-10-17: where you were, before the fight takes over the page
   document.body.classList.remove('conquest-full', 'play-full');
   if(!matchState){
@@ -12790,7 +12824,7 @@ function renderPlayerSubTab(body){
       <div class="deck-count-row"><p class="panel-sub deck-count-line"><span id="myDeckSizeBadge">${deckSizeBadgeHTML(myDeckCounts)}</span></p>${deckDraftOn ? deckSaveBarHTML() : ''}</div>
       <div class="deck-list-mini" id="myDeckList"></div>
       <div class="codex-toolbar deck-toolbar">
-        <input id="deckSearch" type="text" placeholder="🔍 Search card name…">
+        <input data-text-filter autocomplete="off" id="deckSearch" type="text" placeholder="🔍 Search card name…">
         <select id="playArchFilter" title="Type Tags (biome/animal) filter"><option value="">All types</option>${archetypes.map(a=>`<option>${a}</option>`).join('')}</select>
         <select id="deckKindFilter"><option value="">All kinds</option><option>Structure</option><option>Unit</option></select>
         <select id="deckLevelFilter" title="Card level — levels only show while this filter is on"><option value="">Any level</option><option value="1">Lv 1+</option><option value="3">Lv 3+</option><option value="5">Lv 5+</option><option value="10">Lv 10+</option><option value="sort">Sort by level</option></select>
@@ -13907,7 +13941,7 @@ function openDialogueEditor(){
       <div class="modal-head-row"><h2>💬 NPC speeches</h2><button class="modal-close-btn" data-de-close aria-label="Close">✕</button></div>
       <p class="panel-sub">Every conversation in the game. Change a line's words or who says it; ${cloudCardAdmin ? 'Save publishes it for every player.' : 'Save keeps it in this browser (sign in as a cloud admin to publish).'} Edited lines are marked ✎.</p>
       <datalist id="deWhoList">${speakers.map(sp=> `<option value="${escapeAttr(sp)}">${escapeHtml(DIALOGUE_SPEAKERS[sp].name)}</option>`).join('')}</datalist>
-      <div class="de-layout"><div class="de-list"><input type="search" id="deQ" placeholder="Search words or names…" value="${escapeAttr(q)}">
+      <div class="de-layout"><div class="de-list"><input data-text-filter autocomplete="off" type="search" id="deQ" placeholder="Search words or names…" value="${escapeAttr(q)}">
         ${list.map(k=> `<button type="button" class="de-item ${k===cur?'on':''}" data-de="${escapeAttr(k)}">${dialogueEdits[k] ? '✎ ' : ''}${escapeHtml(k)} <small>${DIALOGUES[k].lines.length}</small></button>`).join('')}</div>
       <div class="de-body">${sc ? `<h3>${escapeHtml(cur)}</h3>${sc.lines.map((l, i)=> `<div class="de-line ${(dialogueEdits[cur]||{})[i] ? 'is-edited' : ''}">
           <input type="text" class="de-who" list="deWhoList" data-de-who="${i}" value="${escapeAttr(l.who||'')}" title="A speaker, or any card's name (it speaks with its card art)">
@@ -15524,7 +15558,7 @@ function openSkirmishGallery(o){
     }
     el.innerHTML = `<div class="modal se-gallery" role="dialog" aria-label="${escapeAttr(title)}">
       <div class="modal-head-row"><h2>${escapeHtml(title)}</h2><button type="button" class="modal-close-btn" data-sg-close aria-label="Close">✕</button></div>
-      <div class="sg-tools"><input type="text" class="sg-search" placeholder="Search by name…" value="${escapeAttr(q)}" autocomplete="off">
+      <div class="sg-tools"><input data-text-filter autocomplete="off" type="text" class="sg-search" placeholder="Search by name…" value="${escapeAttr(q)}">
         ${o.kind === 'deck' ? `<div class="sg-seg" role="tablist"><button type="button" data-only="all" class="${only==='all'?'on':''}">All cards</button><button type="button" data-only="in" class="${only==='in'?'on':''}">In this deck</button></div>` : ''}
         ${o.kind === 'deck' ? '<button type="button" class="btn primary small" data-sg-close>Done</button>' : ''}</div>
       <p class="panel-sub sg-hint">${o.kind === 'deck' ? 'Tap a card to add a copy; − removes one.' : o.kind === 'leader' ? 'Tap a card to make it this leader.' : 'Tap a bramble to use it.'}</p>
@@ -15560,7 +15594,7 @@ function openDeckBuilderPopup(o){
   ov.innerHTML = `<div class="modal deck-popup" role="dialog" aria-label="${escapeAttr(o.title||'Deck')}">
     <div class="modal-head-row"><h2>🃏 ${escapeHtml(o.title||'Deck')} · <span id="dbpTotal">${total()}</span> cards</h2><button type="button" class="btn small primary dbp-done" data-close>✓ Done</button><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
     <div class="dbp-deck" id="dbpDeck">${deckHTML()}</div>
-    <div class="dbp-tools"><input type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards"><select id="dbpSort" aria-label="Sort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="wait">Sort: Wait</option><option value="rarity">Sort: Rarity</option><option value="name">Sort: Name</option></select></div>
+    <div class="dbp-tools"><input data-text-filter autocomplete="off" type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards"><select id="dbpSort" aria-label="Sort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="wait">Sort: Wait</option><option value="rarity">Sort: Rarity</option><option value="name">Sort: Name</option></select></div>
     <div class="dbp-pool" id="dbpPool">${poolHTML()}</div>
   </div>`;
   const refresh = (which)=>{ const dk = ov.querySelector('#dbpDeck'), pl = ov.querySelector('#dbpPool'), st = pl.scrollTop;
@@ -15748,7 +15782,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       <div class="se-h-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><h3 class="se-h">${escapeHtml(draft.name||'Skirmish')} deck · ${total} cards</h3><button type="button" class="btn small primary" id="seDeckPopup">🃏 Edit deck</button><button type="button" class="btn small ghost" id="seGallery">Card gallery</button></div>
       <div class="se-deck se-deck-stacks" ${draft.kind === 'tutorial' ? 'hidden' : ''}>${deckIds.length ? deckIds.sort(deckSortFn('cost')).map(id=> defs[id] ? `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), draft.deck[id], '×' + draft.deck[id])}</span>` : `<span class="se-missing">${escapeHtml(id)} (missing) ×${draft.deck[id]}</span>`).join('') : '<p class="panel-sub">Empty. Press Edit deck to add cards.</p>'}</div>
       ${deckIds.length ? `<details class="se-levels" ${draft.cardLevels && Object.keys(draft.cardLevels).length ? 'open' : ''}><summary>Card levels <small>every copy of a card shares its level; blank = its usual level</small></summary><div class="se-levels-grid">${deckIds.filter(id=> defs[id]).map(id=> `<label class="se-lv"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><input type="number" min="0" max="11" data-cardlv="${escapeAttr(id)}" placeholder="${cardBaseLevel(defs[id])}" value="${draft.cardLevels && draft.cardLevels[id] != null ? escapeAttr(draft.cardLevels[id]) : ''}"></label>`).join('')}</div></details>` : ''}
-      <div class="se-search-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><input type="text" id="seSearch" placeholder="Quick add: search a card…" value="${escapeAttr(q)}" autocomplete="off"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
+      <div class="se-search-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><input data-text-filter autocomplete="off" type="text" id="seSearch" placeholder="Quick add: search a card…" value="${escapeAttr(q)}"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
       ${simText ? `<div class="se-sim">${simText}</div>` : ''}
       ${skirmishCurveHTML(mapId, draft.key)}
@@ -21114,7 +21148,7 @@ function openRaidEditor(raidId){
       <h3 class="se-h">${escapeHtml(P.name||P.id)} deck · ${Object.values(deck).reduce((t,n)=> t+n, 0)} cards</h3>
       <div class="se-deck">${Object.keys(deck).length ? Object.keys(deck).map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health : ''}</span>
         <button type="button" class="btn small" data-dec="${escapeAttr(id)}" aria-label="One fewer ${escapeAttr(defs[id] ? defs[id].name : id)}">−</button><b class="se-n">${deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}" aria-label="One more ${escapeAttr(defs[id] ? defs[id].name : id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
-      <input type="text" id="reSearch" placeholder="Search a card to add to this part's deck…" value="${escapeAttr(q)}" autocomplete="off">
+      <input data-text-filter autocomplete="off" type="text" id="reSearch" placeholder="Search a card to add to this part's deck…" value="${escapeAttr(q)}">
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}</span></button>`).join('')}</div>
       <div class="re-part-actions"><button type="button" class="btn small" id="reSim">📊 Simulate 100 attempts vs my deck</button>${draft.stages.some(s=> RaidM.stageRules(s).stripAbilities) ? `<button type="button" class="btn small" id="reSimExposed">📊 …as Exposed</button>` : ''}<span style="flex:1"></span><button type="button" class="btn small ghost" id="reDelPart">🗑 Remove part</button></div>
       ${simText[P.id] ? `<div class="se-sim">${simText[P.id]}</div>` : ''}` : ''}
@@ -23651,7 +23685,7 @@ function sandboxPanelHTML(m){
   ];
   return `<div class="sandbox-panel" id="sandboxPanel">
     <div class="sbx-target-row">${targets.map(t=>`<button type="button" class="btn small ${sandboxTarget.pid===t.pid&&sandboxTarget.side===t.side?'primary':''}" data-sbxpid="${t.pid}" data-sbxside="${t.side}">${t.label}</button>`).join('')}</div>
-    <input id="sbxSearch" type="text" placeholder="Search any card to spawn…" value="${escapeAttr(sandboxSearch)}">
+    <input data-text-filter autocomplete="off" id="sbxSearch" type="text" placeholder="Search any card to spawn…" value="${escapeAttr(sandboxSearch)}">
     <div class="sandbox-results" id="sbxResults">${sandboxResultsHTML()}</div>
     <div class="sandbox-actions">
       <button class="btn" id="sbxClearBtn" type="button">🧹 Clear board</button>
@@ -23916,7 +23950,7 @@ function testKitPanelHTML(){
     <section class="tk-section">
       <h3>Card under test</h3>
       <div class="tk-combo">
-        <input type="search" id="tkSearch" placeholder="Filter cards…" value="${escapeAttr(testKit.search)}" role="combobox" aria-controls="tkOptions" aria-expanded="true" autocomplete="off">
+        <input data-text-filter autocomplete="off" type="search" id="tkSearch" placeholder="Filter cards…" value="${escapeAttr(testKit.search)}" role="combobox" aria-controls="tkOptions" aria-expanded="true">
         <div class="tk-options" id="tkOptions" role="listbox" aria-label="Cards">${testKitPickerRowsHTML()}</div>
       </div>
       <div id="tkSummary">${isTest ? '' : testKitSelectedSummaryHTML()}</div>
@@ -23932,7 +23966,7 @@ function testKitPanelHTML(){
       ${Object.keys(testKit.extraEffects||{}).length ? `<div class="tk-extra">+ copied extras: ${Object.keys(testKit.extraEffects).map(escapeHtml).join(', ')} <button type="button" class="tk-link" id="tkClearExtra">clear</button></div>` : ''}
       <div class="tk-skill-head"><span>Skills <small id="tkSkillCount">(${Object.keys(testKit.skills).length} on)</small></span>${Object.keys(testKit.skills).length?'<button type="button" class="tk-link" id="tkClearSkills">clear all</button>':''}</div>
       ${testKitTourHTML()}
-      <input type="search" id="tkSkillSearch" placeholder="Filter skills…" value="${escapeAttr(testKit.skillSearch)}" autocomplete="off">
+      <input data-text-filter autocomplete="off" type="search" id="tkSkillSearch" placeholder="Filter skills…" value="${escapeAttr(testKit.skillSearch)}">
       <div class="tk-skills" id="tkSkills">${testKitSkillListHTML()}</div>
       ${testKitTriggersHTML()}
     </section>` : ''}
@@ -24822,7 +24856,7 @@ async function fxlRunStep(m, step){
 function fxlBuildUi(){
   const list = document.createElement('aside'); list.className = 'fxl-list'; list.id = 'fxlList'; list.setAttribute('aria-label', 'Effects');
   list.innerHTML = `<div class="fxl-list-head"><h2>🔬 Effects library</h2><button type="button" class="btn small" id="fxlClose" title="Back to Admin">✕ Close</button></div>
-    <input type="search" id="fxlSearch" placeholder="Search skills, triggers, fields…" autocomplete="off" aria-label="Search effects">
+    <input data-text-filter autocomplete="off" type="search" id="fxlSearch" placeholder="Search skills, triggers, fields…" aria-label="Search effects">
     <div class="fxl-items" id="fxlItems" role="listbox" aria-label="Effects"></div>`;
   const info = document.createElement('section'); info.className = 'fxl-info'; info.id = 'fxlInfo'; info.setAttribute('aria-live', 'polite');
   const controls = document.createElement('div'); controls.className = 'fxl-controls'; controls.id = 'fxlControls';
@@ -25002,7 +25036,7 @@ function adminManageCardsHTML(){
       <h3>📇 Manage Cards</h3>
       <p class="panel-sub">Create a new card, or search below to edit an existing one. The Codex itself (every player's view) is read-only now — a click there opens a "learn more" detail view instead.</p>
       <button class="btn primary small" id="adminNewCardBtn" type="button">🆕 Create a Card</button>
-      <div style="margin-top:10px;"><input type="text" id="adminCardSearchInput" placeholder="Search card name to edit…" value="${escapeAttr(adminCardSearch)}"></div>
+      <div style="margin-top:10px;"><input data-text-filter autocomplete="off" type="text" id="adminCardSearchInput" placeholder="Search card name to edit…" value="${escapeAttr(adminCardSearch)}"></div>
       <div id="adminManageGrid">${adminManageCardsGridHTML()}</div>
     </div>`;
 }
@@ -38802,7 +38836,7 @@ function simDeckColHTML(side, label){
       <button class="btn small ghost" data-reset-deck="${side}" title="Clear this deck back to empty" style="margin-left:auto;">↺ Reset</button>
     </h3>
     <div class="deck-list-mini" id="deckList${side}"></div>
-    <input type="text" placeholder="Filter pool…" id="poolFilter${side}" style="width:100%; margin-bottom:8px; padding:6px 8px; border:1px solid var(--surface-border); border-radius:8px;">
+    <input data-text-filter autocomplete="off" type="text" placeholder="Filter pool…" id="poolFilter${side}" style="width:100%; margin-bottom:8px; padding:6px 8px; border:1px solid var(--surface-border); border-radius:8px;">
     <div class="pool-grid" id="pool${side}"></div>
   </div>`;
 }
@@ -39231,7 +39265,7 @@ function renderForge(){
     <div class="forge-layout" ${forgeMode==='smith' || forgeMode==='castles' ? 'hidden' : ''}>
       <div class="panel forge-pool-panel">
         <div class="forge-toolbar">
-          <input type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
+          <input data-text-filter autocomplete="off" type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
           <div class="forge-chips" role="group" aria-label="Filter">
             ${[['all','All'],['ready',`${FORGE_MODES[forgeMode].icon} Ready${readyCount?` (${readyCount})`:''}`]].concat(forgeMode==='upgrade' ? [['leveled','Levelled'],['max','Max']] : []).map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
           </div>
@@ -44105,7 +44139,7 @@ function renderFriends(){
       <div class="fr-head"><h2>👥 Friends</h2>
         <div class="fr-code" title="Share this so friends can add you">Your code <b id="frMyCode">${escapeHtml(Social.myCode||'——')}</b> <button type="button" class="btn small ghost" id="frCopyCode">Copy</button></div></div>
       <form class="fr-search" id="frSearchForm" role="search">
-        <input type="search" id="frSearchInput" placeholder="Friend code or player name" value="${escapeAttr(Social.searchTerm)}" aria-label="Friend code or player name" autocomplete="off">
+        <input data-text-filter autocomplete="off" type="search" id="frSearchInput" placeholder="Friend code or player name" value="${escapeAttr(Social.searchTerm)}" aria-label="Friend code or player name">
         <button type="submit" class="btn primary">Search</button>
       </form>
       <div id="frSearchResults">${searchResultsHTML()}</div>
@@ -44390,7 +44424,7 @@ function renderMarketInto(body){
       ${[['browse','🛍️ Browse'],['sell','🏷️ Sell'],['mine','📋 My listings']].map(([k,l])=>`<button type="button" class="tk-speed-btn ${Market.tab===k?'is-on':''}" role="tab" aria-selected="${Market.tab===k}" data-mk-tab="${k}">${l}</button>`).join('')}
     </div>
     ${Market.tab==='browse' ? `<div class="mk-filters">
-      <input type="search" id="mkQ" placeholder="Search cards…" value="${escapeAttr(Market.q)}" aria-label="Search cards">
+      <input data-text-filter autocomplete="off" type="search" id="mkQ" placeholder="Search cards…" value="${escapeAttr(Market.q)}" aria-label="Search cards">
       <select id="mkRarity" aria-label="Rarity"><option value="">All rarities</option>${Registry.rarities().map(r=>`<option value="${escapeAttr(r.key)}" ${Market.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join('')}</select>
       <select id="mkSort" aria-label="Sort"><option value="cheap" ${Market.sort==='cheap'?'selected':''}>Cheapest first</option><option value="dear" ${Market.sort==='dear'?'selected':''}>Priciest first</option><option value="new" ${Market.sort==='new'?'selected':''}>Newest first</option></select>
     </div><div id="mkBody">${marketBrowseHTML()}</div>` : Market.tab==='sell' ? `<div id="mkBody">${marketSellHTML()}</div>` : `<div id="mkBody">${marketMineHTML()}</div>`}
@@ -44570,6 +44604,7 @@ function switchTab(tab){
   if(tab!=='deck' && currentTabBeforeSwitch==='deck'){ try{ restoreMainDeck(); }catch(e){} }
   if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ if(!deckOpenBuilderOnce){ deckShowList = true; deckEditingId = null; } deckOpenBuilderOnce = false; }
   currentTab = tab;
+  syncTextFilterPage(); // 2026-10-18 (owner: text filters reset when you move between pages), before the page draws
   // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
   // menu-like tabs (Deck, Shop, Codex...) are indoors, so the outdoor sound fades away.
   // Places (immersion #4): some screens are places you walk into, each with its own look, sound
