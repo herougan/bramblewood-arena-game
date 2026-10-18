@@ -182,7 +182,7 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(/data-cxskillclear/.test(fnSrc('codexSkillPanelHTML')) && /data-cxskillclear/.test(fnSrc('codexSkillUI')) && /data-cxskilloff/.test(fnSrc('codexSkillUI')), '9. Clear in the picker and under the toolbar; each pick can be removed');
   ok(/id="cxSkillBtn"/.test(src) && /id="cxSkillActive"/.test(src) && /wireCodexSkillFilter\(\);/.test(fnSrc('renderCodex')), '9. the Skills button sits with the other filters');
   // the book's jump
-  const B = run(['bookEntryHTML'], {TX, escapeHtml: esc, escapeAttr: s=> String(s).replace(/"/g, '&quot;'), _t: s=> s});
+  const B = run(['bookEntryHTML'], {TX, escapeHtml: esc, escapeAttr: s=> String(s).replace(/"/g, '&quot;'), _t: s=> s, legendaryTagHTML: ()=> '', PASSIVE_BY_KEY: {}});
   ok(/data-bkskill="armor"/.test(B.bookEntryHTML({ch:'sk', key:'armor', name:'Armor', html:'x', icon:'🛡'})) && !/data-bkskill/.test(B.bookEntryHTML({ch:'sk', key:'flying', hint:true, name:'?', html:'x'})) && !/data-bkskill/.test(B.bookEntryHTML({ch:'fx', key:'tide', name:'Tide', html:'x'})), '9. each seen skill in the book offers "Show cards with this skill" (not the ? hints, statuses or field effects)');
   const ctx = {codexFilter:{skills:['x'], q:'otter', rarity:'rare'}, codexPage:4, codexSubTab:'skills', saved:0, rendered:0, saveCodexFilters(){ ctx.saved++; }, renderCodex(){ ctx.rendered++; }, codexPageTurn(){}};
   const J = run(['codexShowCardsWithSkill'], ctx); J.codexShowCardsWithSkill('armor');
