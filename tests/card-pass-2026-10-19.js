@@ -53,12 +53,17 @@ const crowd = Object.entries(per).filter(([k, v])=> v > 3 && (PLAN.sources || []
 ok(!crowd.length, '3. no fight the pass gave a card to gives more than 3: ' + crowd.map(([k, v])=> k + ' ' + v).join(', '));
 
 // ---- 4. rarity caps
-const mains = MAPS.filter(m=> !m.sub && !m.reserved && !m.tower), numOf = m=> mains.indexOf(m.sub ? MAPS.find(x=> x.id === m.parent) : m);
+// the fights as written in arena_app.js (the kinds tests/road-rarity-2026-10-16.js checks; the game's applyRoadKinds turns Map 0's last fight
+// into a skirmish at load, which the road-rarity test doesn't model either)
+const asrc = read('arena_app.js'), i0 = asrc.indexOf('const CONQUEST_MAPS = ['), j0 = asrc.indexOf('\n];', i0);
+// eslint-disable-next-line no-eval
+const RAWMAPS = eval(asrc.slice(i0 + 'const CONQUEST_MAPS = '.length, j0 + 2));
+const mains = RAWMAPS.filter(m=> !m.sub && !m.reserved), numOf = m=> mains.indexOf(m.sub ? RAWMAPS.find(x=> x.id === m.parent) : m);
 const isLeader = d=> (d.archetypes || []).includes('Leader') || !!(d.effects && d.effects.leader);
 const capBad = [];
-live.forEach(c=>{ const s = c.source; if(!s || s.kind !== 'map' || !s.node || isLeader(c)) return; const m = MAPS.find(x=> x.id === s.id), node = m && m.nodes.find(x=> x.key === s.node);
+live.forEach(c=>{ const s = c.source; if(!s || s.kind !== 'map' || !s.node || isLeader(c)) return; const m = RAWMAPS.find(x=> x.id === s.id), node = m && m.nodes.find(x=> x.key === s.node);
   if(node && !G.roadRarityOk(c.rarity, numOf(m), node.kind)) capBad.push(`${c.id} (${c.rarity}) reward of ${s.node}`); });
-MAPS.forEach(m=>{ if(m.reserved || m.tower) return; (m.nodes || []).forEach(x=> Object.keys(x.deck || {}).forEach(id=>{ const d = defs[id]; if(d && !G.roadRarityOk(d.rarity, numOf(m), x.kind)) capBad.push(`${x.key} fields ${id} (${d.rarity})`); })); });
+RAWMAPS.forEach(m=>{ if(m.reserved) return; (m.nodes || []).forEach(x=> Object.keys(x.deck || {}).forEach(id=>{ const d = defs[id]; if(d && !G.roadRarityOk(d.rarity, numOf(m), x.kind)) capBad.push(`${x.key} fields ${id} (${d.rarity})`); })); });
 ok(!capBad.length, '4. rewards and fights inside the road\'s rarity caps: ' + capBad.slice(0, 8).join('; '));
 
 // ---- 5. the docs
