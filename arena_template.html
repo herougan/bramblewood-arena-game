@@ -3749,8 +3749,10 @@
   #codexGrid.full-art{width:105%; margin-left:-2.5%;} /* 2026-10-13 (user: "When in full art mode in codex, widen the gallery by 5%") */
   .shop-back{float:left; margin:0 12px 8px 0;}
   /* Reserve rows (2026-10-12, raids as a full game): smaller, dimmer rows behind each front row */
-  .board-row.reserve-row{position:relative; min-height:0 !important; height:112px !important; overflow:visible !important; opacity:.95; margin:2px 0 !important; padding:0 !important;}
-  .board-row.reserve-row > .board-card{transform:scale(.7); transform-origin:50% 0; margin-bottom:-44px;}
+  /* 2026-10-18 (user: "the backrow cards are to be made 20% larger"): the middle and back rows' cards at .84 of a front card (were .7), the
+     rows as tall as the cards in them (were a fixed 112 px). */
+  .board-row.reserve-row{position:relative; min-height:0 !important; height:calc(var(--match-card-h, 149px) * .84 + 8px) !important; overflow:visible !important; opacity:.95; margin:2px 0 !important; padding:0 !important;}
+  .board-row.reserve-row > .board-card{transform:scale(.84); transform-origin:50% 0; margin-bottom:calc(var(--match-card-h, 149px) * -.16);}
   .board-row.reserve-row.enemy > .board-card{transform-origin:50% 0;}
   .board-row.reserve-row .board-card.is-reserve{filter:saturate(.8) brightness(.92);}
   .board-row.reserve-row .reserve-label{position:absolute; left:8px; top:50%; transform:translateY(-50%); font:800 11px 'Baloo 2',system-ui,sans-serif; letter-spacing:.05em; text-transform:uppercase; opacity:.7; white-space:nowrap;}
@@ -8671,6 +8673,16 @@
   @keyframes bfTurnPillIn{from{opacity:0; transform:translate(-50%, -50%) scale(.6);} to{opacity:1; transform:translate(-50%, -50%) scale(1);}}
   @media (max-width:699px){ .bf-hp .bf-turn-pill{height:18px; font-size:10.5px; padding:0 8px;} }
   @media (prefers-reduced-motion: reduce){ .bf-hp .bf-turn-pill{animation:none;} }
+  /* The raid's clock (2026-10-18): the turn and the limit on the boss's ribbon all fight; the last turn glows. */
+  .bf-hp .bf-turn-pill.raid-clock{background:linear-gradient(180deg, #dff4ff, #b9dcef); color:#0f3550; border-color:#4b87ad;}
+  .bf-hp .bf-turn-pill.raid-clock.is-last{background:linear-gradient(180deg, #ffe3d6, #f5b49a); color:#5a1b08; border-color:#c4502a; animation:bfTurnPillIn .45s cubic-bezier(.3,1.5,.5,1) both, raidClockPulse 1.4s ease-in-out .5s infinite;}
+  @keyframes raidClockPulse{50%{box-shadow:0 0 0 3px rgba(230,90,50,.35), 0 2px 6px rgba(0,0,0,.4);}}
+  @media (prefers-reduced-motion: reduce){ .bf-hp .bf-turn-pill.raid-clock.is-last{animation:none;} }
+  .next-turn-sign.raid-last-turn{flex-direction:column; gap:6px; text-align:center; color:#ffe2c9; text-shadow:0 0 18px rgba(255,120,60,.75), 0 3px 0 rgba(0,0,0,.6);
+    background:radial-gradient(ellipse at center, rgba(0,0,0,.5), transparent 62%);}
+  .next-turn-sign.raid-last-turn small{color:#f4ecd8; text-shadow:0 1px 3px rgba(0,0,0,.85);}
+  .next-turn-sign.raid-last-turn small, .fight-sign.end-sign .end-sign-sub{display:block; font-size:15px; letter-spacing:.02em; font-weight:700; opacity:.92; max-width:min(520px, 86%); line-height:1.25;}
+  .fight-sign.end-sign.end-raid-time{flex-direction:column; gap:8px; text-align:center;}
   /* The page behind a fight (user: "The general background during combat should not be the battle background but match the color
      scheme - with fade and gradient."): --fight-a / --fight-b come from the battlefield's own colours (syncFightBackdrop), darkened
      so the castles, decks and hand still sit on a calm ground; a soft glow of the field's colour fades out around the board. */

@@ -81,7 +81,7 @@ ok(!/E\.debugSpawnCard\(m\.players, m\.sideOf, 1, id, a\.row === 1 \? 'left' : '
   P[2].onHqHit = ()=> 0; const h1 = P[2].hq.hp; e.reserveVolley(P, so, 1, {}, []); ok(P[2].hq.hp === h1, 'a shielded castle (the stumps) takes nothing'); }
 { const {e, P} = mk(null, {reserveRows:2}); put(e, P, 2, 'ra-wall', 0); e.fillReserve(P[2], 1, 0, 'ra-hit'); const w = put(e, P, 1, 'ra-wall', 0);
   e.reserveVolley(P, so, 1, {}, []); ok(w.hp === 500, 'only the side asked for strikes (the boss\'s back rows wait)'); }
-ok(/m\.engine\.reserveVolley\(m\.players, m\.sideOf, 1, m\.stats, drawEvents\)/.test(src), 'a raid round: your back rows strike');
+ok(/reserveRows:2, reserveActs:true/.test(src), 'a raid round: your back rows strike (2026-10-18: in combat, column by column, engine reserveActs; tests/raid-fixes-2026-10-18.js)');
 
 // ---- The Goliath's data: its field, its Commons, its ground
 { const g = raids.find(r=> r.id === 'goliath');
@@ -97,7 +97,7 @@ ok(/function fieldRowHidden\(key\)\{ return fieldRowState\(key\) === 'unknown' &
 ok(/bossUnitId = base \+ '~boss'/.test(src) && /'kraken-spawnling':'Kraken Brute'/.test(src) && /\(1\.5 \+ 1\.5 \* r\)/.test(src) && !/2 \+ 10 \* r \* r/.test(src), 'the boss unit is the Kraken Brute and so on, at ×1.5–×3 Health');
 // ---- Admin damage, the Tentacle Smack
 ok(/async function adminRaidDamage\(def, frac\)/.test(src) && /data-raid-admin-dmg="0\.5"/.test(src), 'Admin: Deal 10% / Deal 50%');
-ok(fs.existsSync(path.join(__dirname, '..', 'supabase', 'proposed', '20261017_e_admin_raid_damage.sql')), 'the admin damage function is a proposed migration');
+ok(fs.existsSync(path.join(__dirname, '..', 'supabase', 'proposed', '20261017_e_admin_raid_damage.sql')) || fs.existsSync(path.join(__dirname, '..', 'supabase', 'migrations', '20261018_admin_raid_damage.sql')), 'the admin damage function is a migration (proposed, or applied since fc4a277)'); // 2026-10-18: it was applied
 ok(/function tentacleDraw\(ctx/.test(fxf) && !/TENTACLE_SVG/.test(fxf), 'the Tentacle Smack is drawn on one canvas');
 
 console.log(fail ? `raid-arena-2026-10-17: ${fail} failure(s)` : 'raid-arena-2026-10-17: all passed');
