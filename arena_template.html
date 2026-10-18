@@ -3747,6 +3747,9 @@
   #codexGrid .cx-tile-wrap{padding:8px 7px 16px; margin:-8px -7px 0;}
   #codexGrid .cx-tile-wrap .cx-lock{top:14px; left:13px;} #codexGrid .cx-tile-wrap .cx-tag{left:11px; bottom:20px;} #codexGrid .cx-tile-wrap .cx-tag-event{left:auto; right:11px; top:12px; bottom:auto;}
   #codexGrid.full-art{width:105%; margin-left:-2.5%;} /* 2026-10-13 (user: "When in full art mode in codex, widen the gallery by 5%") */
+  /* 2026-10-18 (Codex perf): the marker the rest of a page is drawn in front of (codexDrawRest), a full-width row with no height;
+     it goes once the page is complete */
+  #codexGrid > .cx-more{grid-column:1/-1; height:0; pointer-events:none;}
   .shop-back{float:left; margin:0 12px 8px 0;}
   /* Reserve rows (2026-10-12, raids as a full game): smaller, dimmer rows behind each front row */
   .board-row.reserve-row{position:relative; min-height:0 !important; height:112px !important; overflow:visible !important; opacity:.95; margin:2px 0 !important; padding:0 !important;}
