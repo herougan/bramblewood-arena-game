@@ -2681,13 +2681,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Spring Rain) goes through here. Returns the HP actually restored.
   // 2026-10-16 heals took Poison off first; 2026-10-18 (user: "Heal-likes doesn't decrease poison, only bleed."): reverted. Heals
   // stanch Bleed first (1 counter per 1 heal), and only what is left restores Health. Poison comes off only with Cure / Cleanse.
+  // 2026-10-19 (package HN, owner: "Healing & the like: if there's nothing to heal, it doesn't occur, and no animation plays."):
+  // a heal on a unit at full Health with no Bleed changes nothing and makes no event. A full-Health unit that Bleeds DOES have
+  // something to heal: the heal stanches (the 'stanch' event only, no 'heal' event, no heal triggers). healWork counts the heals
+  // that changed something (a stanch or Health; rebuildCastle too), so a heal or rebuild trigger can tell it did nothing,
+  // the same whether events are recorded or not.
+  let healWork = 0;
   function applyHeal(card, amount, side, events){
     let n = Math.max(0, amount|0); if(!card || card.hp<=0 || !n) return 0;
     if(card.wither > 0) return 0; // Wither (2026-10-14): nothing heals a withering unit
     { const hp = pidOfLive(card); if(hp) n += auraN(curPlayers[hp], 'herbalist'); } // Herbalist N (2026-10-17): every heal on your units heals N more
     const stanch = Math.min(n, card.bleed|0);
-    if(stanch > 0){ card.bleed -= stanch; n -= stanch; if(recordEvents && events) events.push({type:'statusFx', kind:'stanch', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:stanch}); }
-    const healed = Math.min(card.maxHp - card.hp, n); if(healed > 0) card.hp += healed;
+    if(stanch > 0){ healWork++; card.bleed -= stanch; n -= stanch; if(recordEvents && events) events.push({type:'statusFx', kind:'stanch', side, attDefId:card.defId, attUid:card.uid, targetSide:side, targetDefId:card.defId, targetUid:card.uid, amount:stanch}); }
+    const healed = Math.min(card.maxHp - card.hp, n); if(healed > 0){ healWork++; card.hp += healed; }
     return healed;
   }
   function cleanseCounters(players, pid, c, budget){
@@ -4660,7 +4666,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
       // 2026-10-08: announce the trigger itself (the app shows a small rune on the card and a soft
       // chime) before its effect's own events. Presentation only; nothing reads it for rules.
-      if(recordEvents && events) events.push({type:'triggerFired', side:mySide, defId:boardCard.defId, uid:boardCard.uid, hook, action:t.do});
+      const tfEv = {type:'triggerFired', side:mySide, defId:boardCard.defId, uid:boardCard.uid, hook, action:t.do};
+      if(recordEvents && events) events.push(tfEv);
+      // 2026-10-19 (package HN, owner: "if there's nothing to heal, it doesn't occur"): a Heal or Rebuild trigger that finds nothing
+      // to heal (every target at full Health with no Bleed, a full bramble) doesn't go off: its announcement comes back out and a
+      // "once" trigger isn't used up. One that paid a cost first (Burn 1 Lumber) did go off, so it keeps both.
+      const healLike = (t.do === 'heal' || t.do === 'rebuild') && !t.cost, work0 = healWork, onceKey = 'once:'+hook+':'+i;
+      const healNoop = ()=>{ if(!healLike || healWork !== work0) return;
+        if(recordEvents && events){ const k = events.lastIndexOf(tfEv); if(k >= 0) events.splice(k, 1); }
+        if(t.once && boardCard && boardCard.firedOnce) delete boardCard.firedOnce[onceKey]; };
       const runAction = t=>{ switch(t.do){
         case 'gainGold': addLumber(pl, t.amount||0); ensureStat(stats,mySide,boardCard.defId).lumberGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'lumber', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break; // 2026-09-22: gainGold pays Lumber now
         case 'gainGrace': pl.grace += (t.amount||0); ensureStat(stats,mySide,boardCard.defId).graceGenerated += (t.amount||0); if(recordEvents&&events) events.push({type:'grace', side:mySide, defId:boardCard.defId, uid:boardCard.uid, amount:t.amount||0}); break;
@@ -5031,13 +5045,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(t.who === 'killer'){ const k = extra && extra.killerCard; if(!k || !(k.hp > 0)) return;
         const kpid = allBoardCards(pl).includes(k) ? playerId : otherId(playerId);
         forcedTarget = k; try{ runAction(Object.assign({}, t, {who: kpid === playerId ? 'ally' : 'enemy', sub:'killer', targets:1})); } finally{ forcedTarget = null; }
-        return; }
+        healNoop(); return; }
       const reps = (t.who && t.who!=='self' && t.sub!=='all' && (t.targets|0) > 1) ? Math.min(8, t.targets|0) : 1;
       targetExclude = reps > 1 ? new Set() : null;
       // who:'kin' (2026-10-18): runs as who:'ally' with the pool narrowed to this unit's Kin (see kinSrc above resolveGeneralTarget).
       const kinT = t.who === 'kin', kinPrev = kinSrc; kinSrc = kinT ? boardCard : null;
       try{ for(let k=0; k<reps; k++) runAction(t.who==='any' ? Object.assign({}, t, {who: anySide(players, playerId, boardCard)}) : kinT ? Object.assign({}, t, {who:'ally'}) : t); }
       finally{ targetExclude = null; kinSrc = kinPrev; }
+      healNoop(); // 2026-10-19 (package HN)
     });
   }
   // fireSpawnFamilyTriggers (2026-09-27, per explicit request: "Spawn triggers now refer to
@@ -5573,7 +5588,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(c.hp>0 && def.effects && def.effects.cure && !c.stunned){
           const sick = allBoardCards(pl).filter(o=> o && !o.gap && o.hp>0 && (o.poison||0) > 0).sort((a,b)=> (b.poison||0) - (a.poison||0));
           if(sick.length){ const t = sick[0]; const p0 = Math.min(w2N(def, 'cure'), t.poison||0); t.poison -= p0;
-            if(recordEvents && events) events.push({type:'statusFx', kind:'cure', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:p0, poison:p0, bleed:0}); }
+            if(p0 > 0 && recordEvents && events) events.push({type:'statusFx', kind:'cure', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:p0, poison:p0, bleed:0}); } // 2026-10-19 (package HN): a Cure of 0 makes no event
         }
         // Satiety N (Ecclesia, 2026-10-10, my reading of the name): well fed. At the start of a round at full health it gains +N max HP.
         if(c.hp>0 && def.effects && def.effects.satiety && c.hp >= c.maxHp){
@@ -5650,7 +5665,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function rebuildCastle(players, sideOf, pid, src, n, stats, events, how){
     const pl = players && players[pid]; if(!pl || !pl.hq || !(pl.hq.hp > 0)) return 0;
     const h = Math.min(Math.max(0, Math.floor(Number(n)||0)), Math.max(0, pl.hq.maxHp - pl.hq.hp)); if(!(h > 0)) return 0;
-    pl.hq.hp += h;
+    pl.hq.hp += h; healWork++; // 2026-10-19 (package HN): a rebuild that restored something
     if(src && src.defId && stats){ const st = ensureStat(stats, sideOf(pid), src.defId); st.castleRebuilt = (st.castleRebuilt||0) + h; }
     if(recordEvents && events) events.push({type:'rebuild', side:sideOf(pid), defId: src ? src.defId : null, uid: src ? src.uid : null, amount:h, n:Math.floor(Number(n)||0), trigger: how === 'trigger', hp:pl.hq.hp, maxHp:pl.hq.maxHp});
     return h;

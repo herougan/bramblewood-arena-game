@@ -1472,6 +1472,7 @@ M.onEvent = function(ev, env){
       if(anchor) M.exileWisp(anchor, {prayer:!!ev.prayer}); } break;
     case 'remember': if(ev.uid != null){ const t = el(ev.uid); if(t) env.at(120, ()=> M.candleRise(el(ev.uid) || t)); } break;
     case 'spell': { const from = ev.side === 'A' ? document.getElementById('handStrip') : hq(ev.side), ts = (ev.targets || []).map(x=> el(x.uid)).filter(Boolean);
+      if(ev.action === 'mend' && !(ev.targets || []).length) break; // 2026-10-19 (package HN): a Mend with no one hurt shows no green heal
       M.spellCast(from, ts, ev.action === 'sap' ? {c1:'#f0e0ff', c2:'#a46bff'} : ev.action === 'mend' ? {c1:'#e6ffe0', c2:'#5fd36a'} : {}); break; }
     case 'devour': { const t = el(ev.uid); if(t) M.devourJaws(t); break; }
     case 'equip': { const t = el(ev.uid), d = defs[ev.equipDefId] || {}, ic = typeof d.icon === 'string' && d.icon.length <= 4 ? d.icon : '🗡️'; if(t) M.equipClank(t, {glyph:ic}); break; }

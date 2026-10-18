@@ -32452,7 +32452,7 @@ async function resolveRoundCore(opts){
   if(QUEST_COUNTING_MODES.has(m.mode)) bumpQuestCounter('unitsDefeated', events.filter(ev=> ev.type==='death' && ev.side==='B').length);
   if(QUEST_COUNTING_MODES.has(m.mode) && events.some(ev=> ev.type==='hatch' && ev.side==='A' && ev.fromDefId==='egg-red-dragon')) steamUnlock('RED_DRAGON_HATCHED'); // 2026-10-18 (package C)
   if(m.mode !== 'sandbox') (m._csEv || (m._csEv = [])).push(events); // 2026-10-17 (card stats): kept for the tally at match end (recordCardStatsForMatch), nothing read now
-  const mainEvents = settleDeathsEarly(groupForkLines(events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready' && ev.type!=='hatch'))); // + one Fork swing's lines together (2026-10-17) // 2026-10-17: each death right after its killing blow
+  const mainEvents = settleDeathsEarly(groupForkLines(events.filter(ev=> ev.type!=='waitTick' && ev.type!=='ready' && ev.type!=='hatch' && !emptyHealEvent(ev)))); // 2026-10-19 (package HN): 0 heals out // + one Fork swing's lines together (2026-10-17) // 2026-10-17: each death right after its killing blow
   clearArrivalHold(m); // 2026-10-17: anything held for an arrival replay is settled by now
   const waitEvents = events.filter(ev=> ev.type==='waitTick' || ev.type==='ready' || ev.type==='hatch'); // an egg cracks open right after its Ready (2026-10-14)
   // 2026-09-17 follow-up ("there should be a 'fight' sign before the combat anims begin"):
@@ -34972,6 +34972,7 @@ function lethalDeathFollows(events, i){
   return false;
 }
 function delayForEvent(ev, prevKind){
+  if(emptyHealEvent(ev)) return 0; // 2026-10-19 (package HN): a heal of 0 takes no beat
   let base;
   if(ev.type==='arrow' || ev.type==='bolt') base = 40; // + the Bolts (2026-10-15)
   else if(ev._arrowShot) base = 760; // set by renderVfxForEvent, which runs just before this
@@ -35633,6 +35634,7 @@ function prayerTokenTip(n){ return TX('ui.prayer-token-tip', {n}); } // 2026-10-
 function exposedTip(n){ return TX('ui.exposed-tip', {n, s: n === 1 ? '' : 's'}); } // 2026-10-18 (package D): terse // 2026-10-16: counters
 const STATUS_END_NAMES = {webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 function logText(ev){
+  if(emptyHealEvent(ev)) return null; // 2026-10-19 (package HN): no "+0" line
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
@@ -35898,7 +35900,7 @@ function logText(ev){
     case 'fireball': return {cls:'', text: ev.castle ? `🟠 ${nm(ev.attDefId)} hurls a fireball at the bramble!` : `🟠 ${nm(ev.attDefId)} hurls a fireball: it bursts over ${(ev.uids||[]).length} enemy unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} fire each!`};
     case 'meteor': return {cls:'', text: ev.castle ? `☄️ ${nm(ev.attDefId)} calls down a meteor on the bramble!` : `☄️ ${nm(ev.attDefId)} calls down a meteor: ${ev.n} to the unit it lands on${(ev.sideUids||[]).length ? `, ${ev.sideN} to ${(ev.sideUids||[]).length} beside it` : ''}. The crater burns.`};
     case 'meteorBurn': return {cls:'', text: ev.uid != null ? `☄️ The meteor's crater burns ${nm(ev.defId)} for ${ev.dmg}${ev.left ? '' : ' (the fire goes out)'}.` : `☄️ The meteor's crater smoulders${ev.left ? '' : ' out'}.`};
-    case 'banana': return {cls: ev.action === 'eat' ? 'heal' : '', text: ev.action === 'eat' ? `🍌 ${nm(ev.defId)} ${ev.bananarang ? 'catches its bananarang and eats it' : 'eats its banana'} (+${ev.amount} Health).` : `🍌 ${nm(ev.defId)} throws a banana at ${ev.castle ? 'the bramble' : nm(ev.targetDefId)} (${ev.n})!`};
+    case 'banana': return {cls: ev.action === 'eat' ? 'heal' : '', text: ev.action === 'eat' ? `🍌 ${nm(ev.defId)} ${ev.bananarang ? 'catches its bananarang and eats it' : 'eats its banana'}${ev.amount > 0 ? ` (+${ev.amount} Health)` : ''}.` : `🍌 ${nm(ev.defId)} throws a banana at ${ev.castle ? 'the bramble' : nm(ev.targetDefId)} (${ev.n})!`};
     case 'durian': return {cls:'', text:`${nm(ev.defId)} eats a durian: Thorns +1 (Thorns ${ev.thorns} now). 🌵`};
     // 2026-10-14 (seventh pass)
     case 'psychic': return {cls:'', text: ev.immune ? `💭 ${nm(ev.attDefId)}'s psychic blast finds no mind in ${nm(ev.targetDefId)}.` : `💭 ${nm(ev.attDefId)}'s mind lashes ${nm(ev.targetDefId)} for ${ev.dmg} psychic damage.`};
@@ -38055,7 +38057,23 @@ function fxHook(name, ...args){
   FX_BATCHES.forEach(k=>{ const h = FX[k] && FX[k].hooks && FX[k].hooks[name]; if(typeof h !== 'function') return;
     try{ h(...args, env || (env = fxEnv())); }catch(e){ if(window.__fxDebug) console.warn('FX.' + k + '.hooks.' + name, e); } });
 }
+// 2026-10-19 (package HN, owner: "Healing & the like: if there's nothing to heal, it doesn't occur, and no animation plays."):
+// a heal-like event that restored nothing (amount 0: Heal, Regeneration, Bloom, Leech, Rebuild, the bramble's regen, the Herb
+// Refinery, Carrion, Spring Rain, a stanch or Cure of 0). The engine no longer makes these; old saved fights and replays may
+// still carry them, so the board, the sounds, the beat and the battle log all skip them (renderVfxForEvent, delayForEvent,
+// logText, the replay's event list).
+function emptyHealEvent(ev){
+  if(!ev) return false;
+  const none = v=> !(Number(v) > 0);
+  switch(ev.type){
+    case 'heal': case 'sap': case 'rebuild': case 'castleRegen': return none(ev.amount);
+    case 'fieldTick': return ev.field === 'rain' && none(ev.heal) && none(ev.dmg);
+    case 'statusFx': return (ev.kind === 'herbHeal' || ev.kind === 'carrion' || ev.kind === 'stanch' || ev.kind === 'cure' || ev.kind === 'healPoison') && none(ev.amount);
+  }
+  return false;
+}
 function renderVfxForEvent(ev){
+  if(emptyHealEvent(ev)) return; // 2026-10-19 (package HN): nothing healed, nothing shown
   if(ev && ev.type === 'forkSwing'){ try{ forkSwingVfx(ev); }catch(e){} return; } // one Fork / Trident / Pitchfork swing (2026-10-17)
   try{ lightningBoltOf(ev); }catch(e){} // 2026-10-17: a lightning hit's bolt (ev._bolt), before any pass reads it
   try{ noteCastleShot(ev); }catch(e){} // 2026-10-16: which castle throw the next castle hit is (castleShotKind)

@@ -386,3 +386,13 @@ The owner's notes (21:26) on emoji with cultural meaning.
 
 - **Ward uses 🧿 Nazar.** When a Ward skill is made (e.g. Prayer Ward in docs/gameplay-ideas-2026-10-19.md, or a ward against Blind / curses), its icon is the nazar, or a white/yellow East Asian paper talisman (no emoji exists, so that would be a drawn icon).
 - **🪬 Hamsa is never a generic effect icon.** It carries real cultural and religious meaning, so it appears only inside one animal society's own identity (its cards, banner or rites), never as an effect any unit can get. Which society is still open.
+
+## Stated rules · 2026-10-19
+
+The owner's note (00:07): "Healing & the like: if there's nothing to heal, it doesn't occur, and no animation plays." Now a rule of the engine (`bramblewood-engine.js`) and the board (`arena_app.js`). Pinned by `tests/hn-2026-10-19.js`.
+
+- **A heal with nothing to heal doesn't happen.** Every heal-like effect (the Heal action, Regeneration, Bloom, Nursing, Healing N, Leech, Carrion, Banana, Cower (Flee), Spring Rain, the Herb Refinery, Herbalist's bonus, Rebuild and the Rebuild bramble action, the bramble's own regeneration, Cure) on a unit already at full Health (a bramble at full Health) heals nothing and shows nothing: no heal event, no battle-log line, no floating "+0", no heal look or sound, and no beat in the replay. (A Cower (Flee) unit still backs off, only without a heal number; a Mend spell is still cast, without the green heal look when no one is hurt.)
+- **0 healing fires no heal trigger** (kept from the trigger rules above): no On Heal, On Healed or On Ally Healed.
+- **A Heal or Rebuild trigger with nothing to heal doesn't go off.** Its trigger rune isn't shown, and a "once" Heal trigger isn't used up (it waits for a real wound). One that paid a cost first (Burn 1 Lumber) did go off.
+- **Bleed counts as something to heal** (Claude's choice, the recommended one). A heal on a full-Health unit that Bleeds happens: it stanches the Bleed (the Bleed-removal look only, 🩹 -N 🩸), with no green heal look, no "+0" and no heal triggers. Regeneration is the exception and keeps the owner's 2026-10-14 rule ("Do not regenerate when the unit is at full health"): at full Health it doesn't stanch either.
+- **Old fights and replays too.** The board skips any 0-amount heal event that still turns up (a saved fight or replay from before this rule): no look, no sound, no beat, no log line (`emptyHealEvent` in `arena_app.js`).

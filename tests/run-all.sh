@@ -93,6 +93,7 @@ run node tests/engine-parity-2026-10-18.js   # 2026-10-18 (R3-WP1): shot and ski
 run node tests/polish-2026-10-18.js   # 2026-10-18 (R3-WP6): the Spire's summit card, the Spire / Long Burrow backdrops, dead keys gone, inventory rows live
 run node tests/maps-2026-10-18.js   # 2026-10-18 (V3): Lilypad Reach waits on Gatorback Swamp (old saves keep it); dark maps' screen layer leaves the canvas to the canvas layer
 run node tests/poison-fx-2026-10-19.js   # 2026-10-18 (package P): no "cured" on natural Poison decay, grey drop, boiling pool, flurries on/off, lab = game hook
+run node tests/hn-2026-10-19.js   # 2026-10-19 (package HN): nothing to heal = no event, log, "+0", look, sound or heal trigger for every heal kind; partial heals; Bleed = stanch only; the app skips 0 heals (replays too)
 run node tests/visuals-2026-10-18.js   # 2026-10-18 (V1): the standing Tide, no tide chip, chilled flyers' frame and half hover, idle glance, smaller cliff gulls
 run node tests/tutorial-2026-10-18.js   # 2026-10-18 (package T): drag hint shows the highlighted card, faction pick goes straight in, green board, centred T-0/T-1, card windows fade out shrinking
 run node tests/x2-2026-10-18.js   # 2026-10-18 (package X2): raid stages without the extra volley, lightning at a bramble (no Shocked), the Spire at AI_LEVEL_MAX, the Flood wets land units, the full-board tide look
