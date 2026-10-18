@@ -1,6 +1,6 @@
 # Balance pass 2, 2026-10-18
 
-A second rough pass over every real card after today's rule changes: Bleed and Poison tick down 1 a round (heals only stanch Bleed, Cure only takes Poison), Wave N crashes (both take N), shooter and skill kills are credited (On Kill, Midas, Crown), both seats pitch by the same rules, the CPU sacrifices, lightning is grounded at brambles. The CPU levels don't touch these numbers: the sims run with `aiAim` off.
+A second rough pass over every real card after today's rule changes: Bleed and Poison tick down 1 a round (heals only stanch Bleed, Cure only takes Poison), Wave N crashes (both take N), shooter and skill kills are credited (On Kill, Midas, Crown), both seats pitch by the same rules, the CPU sacrifices, lightning grounded at brambles (reverted by X2 during this pass: a bolt at a bramble deals its damage again, but never Shocks it; the final numbers include that and X2's Flood-wets-land-units rule; section 7 also uses X3's bramble Shields). The CPU levels don't touch these numbers: the sims run with `aiAim` off.
 
 **The owner's answers that shaped it (15:05):** "General balance pass sticking religiously to N" (budget v3 is a hard rule for every card not on the skip list); "Yea, don't let high lumber cost be normal" (Lumber cuts approved for the slow 2+ Lumber cards); "Okay" (fit the Great Gate); Ritual "increases N".
 
@@ -222,7 +222,7 @@ Every 2+ Lumber card stuck below its band was measured at one Lumber less (and t
 
 ## 7. The CPU levels on the road (Map 5+)
 
-The owner asked (15:37, "B. Okay") how much harder the new CPU makes the late road. Every fight on Map 21+ (and, for context, every Map 5–20 fight whose CPU is Smart: elites, bosses, champions, world bosses) was played with the CPU at its real level (`cpuAiLevelForNode`: Map 21+ Smartest, Map 5+ elite / boss Smart, a node's own Difficulty when set) and again with the old CPU (Basic, `aiLevel` 0, the CPU before 2026-10-18), both with `aiAim` on as in the game. The player's seat is played by the engine at Smart in both, so only the CPU differs. Decks: the difficulty curve's Mid-road and Strong reference decks (`docs/balance/difficulty-curve.json`; Map 5–20 Strong only), 40 games a fight on the tool's seeds, your bramble 30 HP. "Sim" is the same fight with `aiAim` off, the way the balance tools have always measured. No map deck was changed.
+The owner asked (15:37, "B. Okay") how much harder the new CPU makes the late road. Every fight on Map 21+ (and, for context, every Map 5–20 fight whose CPU is Smart: elites, bosses, champions, world bosses) was played with the CPU at its real level (`cpuAiLevelForNode`: Map 21+ Smartest, Map 5+ elite / boss Smart, a node's own Difficulty when set) and again with the old CPU (Basic, `aiLevel` 0, the CPU before 2026-10-18), both with `aiAim` on as in the game. The player's seat is played by the engine at Smart in both, so only the CPU differs. Decks: the difficulty curve's Mid-road and Strong reference decks (`docs/balance/difficulty-curve.json`; Map 5–20 Strong only), 40 games a fight on the tool's seeds, your bramble 30 HP, the enemy bramble as the game builds it since X3 (its Health, at most `hqHp`, plus the Shield rule: map number × 1 / 1.5 / 2 / 3 by kind). "Sim" is the same fight with `aiAim` off, the way the balance tools have always measured. No map deck was changed.
 
 **Map 21+ by map** (mean win rate over the map's fights):
 
@@ -230,83 +230,83 @@ Win rates are yours (the reference deck's); a change below 0 means the Smartest 
 
 | Map | Fights | Mid: sim / Basic / Smartest | Mid change | Strong: sim / Basic / Smartest | Strong change | Strong HP lost, Basic → Smartest |
 |---|---|---|---|---|---|---|
-| 21 The Quiet Summit | 6 | 42.1% / 69.2% / 66.7% | -2.5 | 78.8% / 85.8% / 87.1% | +1.3 | 47.3% → 46.1% |
-| 22 The Rimefire Caldera | 8 | 55.0% / 63.8% / 63.4% | -0.4 | 79.1% / 82.2% / 82.2% | +0.0 | 52.3% → 52.0% |
-| 23 The Goldfeather Siege | 8 | 21.2% / 20.6% / 22.2% | +1.6 | 69.7% / 62.8% / 63.8% | +1.0 | 58.1% → 59.7% |
-| 24 Goldfeather Keep | 8 | 38.8% / 48.4% / 52.8% | +4.4 | 65.6% / 75.6% / 76.6% | +1.0 | 51.2% → 52.7% |
+| 21 The Quiet Summit | 6 | 72.1% / 84.2% / 77.9% | -6.3 | 83.8% / 89.6% / 88.3% | -1.3 | 42.4% → 44.2% |
+| 22 The Rimefire Caldera | 8 | 68.1% / 70.9% / 68.8% | -2.1 | 84.1% / 84.7% / 85.3% | +0.6 | 46.6% → 46.4% |
+| 23 The Goldfeather Siege | 8 | 60.9% / 52.5% / 55.0% | +2.5 | 75.6% / 71.2% / 70.9% | -0.3 | 51.9% → 54.3% |
+| 24 Goldfeather Keep | 8 | 54.7% / 56.2% / 60.3% | +4.1 | 69.1% / 77.5% / 78.8% | +1.3 | 49.4% → 50.7% |
 
-- **Mid-road deck, all 30 Map 21+ fights:** 49.2% with the Basic CPU → 50.2% with the Smartest (+1.0 points); 0 fights 10+ points harder, 2 10+ points easier.
-- **Strong deck, all 30 Map 21+ fights:** 76.0% with the Basic CPU → 76.8% with the Smartest (+0.8 points); 2 fights 10+ points harder, 2 10+ points easier.
+- **Mid-road deck, all 30 Map 21+ fights:** 64.8% with the Basic CPU → 64.7% with the Smartest (-0.1 points); 1 fights 10+ points harder, 2 10+ points easier.
+- **Strong deck, all 30 Map 21+ fights:** 80.2% with the Basic CPU → 80.3% with the Smartest (+0.1 points); 1 fights 10+ points harder, 1 10+ points easier.
 
 **Map 21+ fight by fight:**
 
 | Fight | Kind | CPU | Mid: Basic → Smartest | Strong: Basic → Smartest | Strong sim |
 |---|---|---|---|---|---|
-| 21-1 Thaw Path | skirmish | Smartest | 70% → 65% | 90% → 75% | 65% |
-| 21-2 Tarn Shore | skirmish | Smartest | 80% → 80% | 70% → 77.5% | 72.5% |
-| 21-3 Cloud Ledge | skirmish | Smartest | 100% → 95% | 100% → 100% | 85% |
-| 21-4 The Avalanche's Wake | elite | Smartest | 52.5% → 55% | 77.5% → 87.5% | 87.5% |
-| 21-5 Snow Owl Parliament | elite | Smartest | 62.5% → 62.5% | 87.5% → 90% | 72.5% |
-| 21-6 The Cathedral Eagle | boss | Smartest | 50% → 42.5% | 90% → 92.5% | 90% |
-| 22-1 Snowmelt Switchbacks | skirmish | Smartest | 95% → 97.5% | 92.5% → 87.5% | 75% |
-| 22-2 Steam Vents | skirmish | Smartest | 30% → 37.5% | 45% → 50% | 42.5% |
-| 22-3 Frozen Lava Flow | skirmish | Smartest | 77.5% → 72.5% | 87.5% → 82.5% | 72.5% |
-| 22-4 Hailstone Ridge | skirmish | Smartest | 87.5% → 90% | 100% → 100% | 100% |
-| 22-5 The Geyser Field | skirmish | Smartest | 97.5% → 90% | 95% → 97.5% | 100% |
-| 22-6 Ashfall Cornice | elite | Smartest | 75% → 77.5% | 92.5% → 90% | 95% |
-| 22-7 The Steam Wall | elite | Smartest | 0% → 0% | 45% → 50% | 47.5% |
+| 21-1 Thaw Path | skirmish | Smartest | 80% → 77.5% | 90% → 75% | 75% |
+| 21-2 Tarn Shore | skirmish | Smartest | 92.5% → 82.5% | 82.5% → 80% | 77.5% |
+| 21-3 Cloud Ledge | skirmish | Smartest | 100% → 97.5% | 100% → 100% | 87.5% |
+| 21-4 The Avalanche's Wake | elite | Smartest | 85% → 80% | 85% → 92.5% | 90% |
+| 21-5 Snow Owl Parliament | elite | Smartest | 77.5% → 75% | 90% → 90% | 82.5% |
+| 21-6 The Cathedral Eagle | boss | Smartest | 70% → 55% | 90% → 92.5% | 90% |
+| 22-1 Snowmelt Switchbacks | skirmish | Smartest | 97.5% → 97.5% | 95% → 90% | 80% |
+| 22-2 Steam Vents | skirmish | Smartest | 45% → 45% | 47.5% → 50% | 45% |
+| 22-3 Frozen Lava Flow | skirmish | Smartest | 100% → 95% | 90% → 97.5% | 87.5% |
+| 22-4 Hailstone Ridge | skirmish | Smartest | 90% → 90% | 100% → 100% | 100% |
+| 22-5 The Geyser Field | skirmish | Smartest | 97.5% → 92.5% | 95% → 97.5% | 100% |
+| 22-6 Ashfall Cornice | elite | Smartest | 90% → 87.5% | 95% → 90% | 95% |
+| 22-7 The Steam Wall | elite | Smartest | 0% → 0% | 55% → 57.5% | 65% |
 | 22-8 The Rimeheart Colossus | boss | Smartest | 47.5% → 42.5% | 100% → 100% | 100% |
-| 23-1 The Picket Line | skirmish | Smartest | 7.5% → 5% | 45% → 30% | 50% |
-| 23-2 Trench Works | skirmish | Smartest | 30% → 27.5% | 65% → 72.5% | 87.5% |
-| 23-3 Elephant Road | skirmish | Smartest | 10% → 12.5% | 35% → 40% | 37.5% |
-| 23-4 Siege Camp | skirmish | Smartest | 22.5% → 25% | 47.5% → 60% | 55% |
-| 23-5 Under the Walls | skirmish | Smartest | 57.5% → 62.5% | 100% → 97.5% | 97.5% |
-| 23-6 The Elephant Line | elite | Smartest | 2.5% → 0% | 47.5% → 50% | 75% |
-| 23-7 The Barbican | elite | Smartest | 27.5% → 42.5% | 90% → 85% | 82.5% |
-| 23-8 Marshal Tuskwell | boss | Smartest | 7.5% → 2.5% | 72.5% → 75% | 72.5% |
-| 24-1 Breach the Gate | skirmish | Smartest | 40% → 45% | 90% → 85% | 85% |
-| 24-2 The Bailey | skirmish | Smartest | 82.5% → 87.5% | 85% → 85% | 72.5% |
-| 24-3 The Counting House | skirmish | Smartest | 22.5% → 45% | 77.5% → 72.5% | 72.5% |
-| 24-4 The Courtyard Fountain | skirmish | Smartest | 95% → 92.5% | 85% → 82.5% | 72.5% |
-| 24-5 The Battlements | skirmish | Smartest | 25% → 35% | 67.5% → 82.5% | 52.5% |
-| 24-6 The Gilded Guard | elite | Smartest | 100% → 95% | 92.5% → 100% | 95% |
-| 24-7 The Treasury | elite | Smartest | 7.5% → 7.5% | 50% → 47.5% | 32.5% |
-| 24-8 The Magnate Duck | boss | Smartest | 15% → 15% | 57.5% → 57.5% | 42.5% |
+| 23-1 The Picket Line | skirmish | Smartest | 55% → 52.5% | 55% → 45% | 60% |
+| 23-2 Trench Works | skirmish | Smartest | 92.5% → 92.5% | 77.5% → 80% | 100% |
+| 23-3 Elephant Road | skirmish | Smartest | 50% → 52.5% | 47.5% → 45% | 37.5% |
+| 23-4 Siege Camp | skirmish | Smartest | 55% → 62.5% | 57.5% → 67.5% | 70% |
+| 23-5 Under the Walls | skirmish | Smartest | 90% → 82.5% | 100% → 97.5% | 100% |
+| 23-6 The Elephant Line | elite | Smartest | 30% → 32.5% | 70% → 67.5% | 80% |
+| 23-7 The Barbican | elite | Smartest | 32.5% → 47.5% | 90% → 90% | 82.5% |
+| 23-8 Marshal Tuskwell | boss | Smartest | 15% → 17.5% | 72.5% → 75% | 75% |
+| 24-1 Breach the Gate | skirmish | Smartest | 47.5% → 52.5% | 90% → 85% | 90% |
+| 24-2 The Bailey | skirmish | Smartest | 85% → 92.5% | 82.5% → 85% | 75% |
+| 24-3 The Counting House | skirmish | Smartest | 37.5% → 50% | 77.5% → 80% | 75% |
+| 24-4 The Courtyard Fountain | skirmish | Smartest | 95% → 92.5% | 87.5% → 85% | 82.5% |
+| 24-5 The Battlements | skirmish | Smartest | 40% → 42.5% | 67.5% → 82.5% | 55% |
+| 24-6 The Gilded Guard | elite | Smartest | 100% → 100% | 97.5% → 100% | 95% |
+| 24-7 The Treasury | elite | Smartest | 30% → 32.5% | 60% → 55% | 37.5% |
+| 24-8 The Magnate Duck | boss | Smartest | 15% → 20% | 57.5% → 57.5% | 42.5% |
 
 **Map 5–20, the Smart CPU's fights** (elite, boss and the like; ordinary skirmishes there stay Basic), Strong deck:
 
 | Map | Fights | Basic → Smart | Change |
 |---|---|---|---|
-| 5 Gatorback Swamp | 3 | 55.8% → 55.8% | +0.0 |
-| 6 Sable Swampmire | 4 | 56.2% → 56.2% | +0.0 |
-| 7 The Morel Hollow | 2 | 33.8% → 33.8% | +0.0 |
+| 5 Gatorback Swamp | 3 | 70.8% → 70.8% | +0.0 |
+| 6 Sable Swampmire | 4 | 66.9% → 66.9% | +0.0 |
+| 7 The Morel Hollow | 2 | 32.5% → 32.5% | +0.0 |
 | 8 Caves & Alcoves | 2 | 56.2% → 56.2% | +0.0 |
-| 9 The Kelp Mangroves | 3 | 45.0% → 45.0% | +0.0 |
-| 10 Coral Current | 4 | 28.8% → 28.8% | +0.0 |
-| 11 Eyrie Heights | 6 | 60.0% → 60.0% | +0.0 |
-| 12 The Briar Maze | 3 | 59.2% → 59.2% | +0.0 |
-| 13 The Redwood Deep | 4 | 35.6% → 35.6% | +0.0 |
-| 14 Savanna Reaches | 4 | 73.1% → 73.1% | +0.0 |
-| 15 The Long Grass | 3 | 42.5% → 42.5% | +0.0 |
-| 16 The Pinewood Taiga | 3 | 57.5% → 57.5% | +0.0 |
-| 17 Wolfsbane Tundra | 4 | 48.1% → 48.1% | +0.0 |
+| 9 The Kelp Mangroves | 3 | 42.5% → 42.5% | +0.0 |
+| 10 Coral Current | 4 | 29.4% → 29.4% | +0.0 |
+| 11 Eyrie Heights | 6 | 59.6% → 59.6% | +0.0 |
+| 12 The Briar Maze | 3 | 50.8% → 50.8% | +0.0 |
+| 13 The Redwood Deep | 4 | 23.1% → 23.1% | +0.0 |
+| 14 Savanna Reaches | 4 | 68.1% → 68.1% | +0.0 |
+| 15 The Long Grass | 3 | 54.2% → 54.2% | +0.0 |
+| 16 The Pinewood Taiga | 3 | 60.8% → 60.8% | +0.0 |
+| 17 Wolfsbane Tundra | 4 | 44.4% → 44.4% | +0.0 |
 | 18 The Glass Dunes | 3 | 67.5% → 67.5% | +0.0 |
-| 19 Ashen Spurn | 4 | 68.1% → 68.1% | +0.0 |
-| 20 The Sundered Peak | 6 | 76.7% → 76.7% | +0.0 |
-| 19-A Basalt Foundry | 4 | 64.4% → 64.4% | +0.0 |
-| 10-A The Sunken Depths | 2 | 82.5% → 80.0% | -2.5 |
-| 7-A The Mycelium Deep | 3 | 79.2% → 79.2% | +0.0 |
-| 14-A The Canopy | 2 | 46.2% → 46.2% | +0.0 |
-| 20-A Eye of the Volcano | 7 | 74.3% → 74.3% | +0.0 |
-| 20-B Volcano Lair | 1 | 50.0% → 50.0% | +0.0 |
-| 5-A The Sunken Grove | 1 | 87.5% → 87.5% | +0.0 |
+| 19 Ashen Spurn | 4 | 63.8% → 63.8% | +0.0 |
+| 20 The Sundered Peak | 6 | 77.9% → 77.9% | +0.0 |
+| 19-A Basalt Foundry | 4 | 66.9% → 66.9% | +0.0 |
+| 10-A The Sunken Depths | 2 | 85.0% → 82.5% | -2.5 |
+| 7-A The Mycelium Deep | 3 | 85.0% → 85.0% | +0.0 |
+| 14-A The Canopy | 2 | 60.0% → 60.0% | +0.0 |
+| 20-A Eye of the Volcano | 7 | 77.1% → 77.1% | +0.0 |
+| 20-B Volcano Lair | 1 | 52.5% → 52.5% | +0.0 |
+| 5-A The Sunken Grove | 1 | 95.0% → 95.0% | +0.0 |
 | 8-A The Glimmer Depths | 1 | 100.0% → 100.0% | +0.0 |
 | 11-A The Aerie Vault | 1 | 62.5% → 62.5% | +0.0 |
 | 17-A The Ice Hollow | 1 | 90.0% → 90.0% | +0.0 |
 
-All 81: 60.3% → 60.2% (-0.1 points). The Smart CPU plays exactly like the Basic one unless the fight has field rules it reads (darkness, Sun-shy / Night-blind sight, the Tide, wind, Landslide) or a field card in its hand: checked game by game on 5-5, 10-6 and 21-1 (levels 0 and 1 made identical moves in 10 of 10 games; level 2 differed in all 10). Few Map 5–20 fights have those rules, so Smart there is the old CPU in practice.
+All 81: 61.5% → 61.4% (-0.1 points). The Smart CPU plays exactly like the Basic one unless the fight has field rules it reads (darkness, Sun-shy / Night-blind sight, the Tide, wind, Landslide) or a field card in its hand: checked game by game on 5-5, 10-6 and 21-1 (levels 0 and 1 made identical moves in 10 of 10 games; level 2 differed in all 10). Few Map 5–20 fights have those rules, so Smart there is the old CPU in practice.
 
-**What it means for Map 21+:** the Smartest CPU does not make Map 21+ harder for these decks on the whole (your win rate moves +1.0 points for the Mid-road deck and +0.8 for the Strong one, inside the noise). Single fights swing both ways by up to 15–22 points (Strong: 21-1 Thaw Path 90% → 75%, 23-1 The Picket Line 45% → 30%; Mid: 23-7 The Barbican 27.5% → 42.5%, 24-3 The Counting House 22.5% → 45%), which is about what 40 games and a different line of play give. Turning the CPU's aim on at all (sim → Basic) moves fights more than the level does. Where Map 21+ is hard for the Mid-road deck (Map 23 about 21%, 22-7 The Steam Wall and 23-6 The Elephant Line near 0%), it is the decks, not the CPU; easing it would be a deck change, which this pass didn't make.
+**What it means for Map 21+:** the Smartest CPU does not make Map 21+ harder on the whole for these decks (your win rate moves -0.1 points for the Mid-road deck and +0.1 for the Strong one). The biggest single swings: harder Strong 21-1 Thaw Path 90% → 75%, Mid 21-6 The Cathedral Eagle 70% → 55%; easier Strong 24-5 The Battlements 67.5% → 82.5%, Mid 23-7 The Barbican 32.5% → 47.5%, about what 40 games and a different line of play can give. Turning the CPU's aim on at all (sim → Basic) moves fights about as much as the level does.
 
 Read with care: 40 games a fight, the engine plays your side, and the Strong deck is built from every card in the game, so it beats most fights whatever the CPU does; the Mid-road deck (Base plus map rewards up to Map 9) is the one that shows a harder CPU. Data: `docs/balance/cpu-levels.jsonl`, one line per fight; re-run with `node tools/cpu_levels.js 40` after deleting it (about 20 minutes on two cores).
 
