@@ -10298,6 +10298,107 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .mc-fx li{display:flex; flex-direction:column;} .mc-fx li.is-unknown{flex-direction:row; align-items:center; gap:8px;} .mc-fx li > span:first-child{font-weight:800;}
 /* Codex pages (2026-10-13) */
 .cx-pager{grid-column:1 / -1; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:16px 0 8px;}
+/* ---- Codex: card album, skills book, collection score (2026-10-18, package C, owner: "codex: skills - look like pages in a book.
+   bestiary - look like a card album. overall collection score listed at the btm and in profile w/ achievements") ----
+   Parchment and leather from the game's own tokens (--surface*, --ink*, --accent), so light and dark both follow the theme. */
+.pg-nav{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px; margin:12px 0 4px;}
+.pg-nav .pg-btn{min-width:44px; min-height:40px; font-size:20px; line-height:1; padding:0 12px;}
+.pg-nav .pg-of{font:700 13px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink); min-width:9em; text-align:center; font-variant-numeric:tabular-nums; padding:8px 12px; border-radius:999px; background:var(--surface); border:1px solid var(--surface-border);}
+.pg-nav .pg-jump{max-width:min(320px, 100%); height:40px; padding:0 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:inherit; font-size:13px;}
+/* the turning leaf: a copy of the page you leave, lifting off at the spine */
+.pg-leaf{position:absolute; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; backface-visibility:hidden; will-change:transform;
+  animation:pgLeafFwd 460ms cubic-bezier(.45,.05,.35,1) forwards;}
+.pg-leaf.pg-leaf-back{transform-origin:100% 50%; animation-name:pgLeafBack;}
+.pg-leaf::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.28)); opacity:0; animation:pgLeafShade 460ms ease-in forwards;}
+.pg-leaf.pg-leaf-back::after{background:linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,.28));}
+@keyframes pgLeafFwd{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(-96deg);}}
+@keyframes pgLeafBack{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(96deg);}}
+@keyframes pgLeafShade{to{opacity:1;}}
+.pg-in-back{transform-origin:0% 50%; animation:pgInBack 420ms cubic-bezier(.2,.7,.3,1) both;}
+@keyframes pgInBack{from{transform:perspective(1800px) rotateY(-80deg); opacity:.4;} to{transform:none; opacity:1;}}
+@media (prefers-reduced-motion: reduce){ .pg-leaf, .pg-leaf::after, .pg-in-back{animation:none !important;} .pg-leaf{display:none;} }
+
+/* the skills book */
+.bk-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:0 0 10px;}
+.bk-bar .bk-filter{flex:none; display:flex; align-items:center; gap:10px; width:min(560px, 100%); margin:0 auto;}
+.bk-bar .bk-filter small{color:var(--page-ink, #f5ecd2);}
+.bk-filter input{flex:1 1 auto; min-width:0; height:40px; padding:0 12px; border-radius:10px; border:1px solid var(--surface-border); font:inherit; background:var(--surface); color:var(--ink);}
+.bk-book{position:relative; touch-action:pan-y;}
+.bk-spread{display:flex; align-items:stretch; max-width:1180px; margin:0 auto; padding:10px; border-radius:16px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--accent-strong) 78%, #000), color-mix(in srgb, var(--accent-strong) 62%, #000));
+  box-shadow:0 14px 34px rgba(0,0,0,.28), inset 0 0 0 2px color-mix(in srgb, var(--accent) 55%, transparent);}
+.bk-page{position:relative; flex:1 1 0; min-width:0; display:flex; flex-direction:column; height:clamp(440px, calc(100vh - 290px), 760px); padding:14px 22px 10px;
+  color:var(--ink); background:var(--surface); border-radius:6px; box-shadow:inset 0 0 40px color-mix(in srgb, var(--surface-border) 45%, transparent);}
+.bk-page.pg-left{border-radius:10px 2px 2px 10px; background:linear-gradient(270deg, color-mix(in srgb, var(--surface-border) 55%, var(--surface)) 0, var(--surface) 7%, var(--surface) 100%);}
+.bk-page.pg-right{border-radius:2px 10px 10px 2px; background:linear-gradient(90deg, color-mix(in srgb, var(--surface-border) 55%, var(--surface)) 0, var(--surface) 7%, var(--surface) 100%);}
+.bk-page.pg-single{border-radius:4px 10px 10px 4px; background:linear-gradient(90deg, color-mix(in srgb, var(--surface-border) 60%, var(--surface)) 0, var(--surface) 4%, var(--surface) 100%);}
+.bk-page.is-blank{background:color-mix(in srgb, var(--surface) 82%, var(--surface-border));}
+.bk-spine{flex:0 0 6px; background:linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,.08) 50%, rgba(0,0,0,.35));}
+.bk-run{min-height:18px; font:400 13px/1.3 'MedievalSharp','Baloo 2',serif; letter-spacing:.04em; color:var(--ink-soft); text-align:center; border-bottom:1px solid color-mix(in srgb, var(--surface-border) 70%, transparent); padding-bottom:4px; margin-bottom:10px;}
+.bk-body{flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; gap:12px; scrollbar-width:thin;}
+.bk-measure{position:absolute; visibility:hidden; pointer-events:none; left:0; top:0; height:auto; overflow:visible; flex:none;}
+.bk-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px; min-height:20px;}
+.bk-title{margin:4px 0 6px; font:400 30px/1.1 'MedievalSharp','Baloo 2',serif; text-align:center; color:var(--ink);}
+.bk-intro{margin:0 0 6px; font-size:14px; color:var(--ink-muted); text-align:center;}
+.bk-toc{list-style:none; margin:6px 0 0; padding:0; display:flex; flex-direction:column; gap:4px;}
+.bk-toc-row{display:flex; align-items:baseline; gap:8px; width:100%; padding:8px 6px; border:0; border-radius:8px; background:transparent; color:var(--ink); font:700 16px/1.3 'Baloo 2',system-ui,sans-serif; text-align:left; cursor:pointer;}
+.bk-toc-row:hover, .bk-toc-row:focus-visible{background:color-mix(in srgb, var(--surface-border) 30%, transparent);}
+.bk-toc-row small{font-weight:600; color:var(--ink-muted); font-size:12.5px;}
+.bk-toc-row i{flex:1 1 auto; border-bottom:2px dotted color-mix(in srgb, var(--ink-soft) 60%, transparent); transform:translateY(-4px);}
+.bk-az-h{margin:14px 0 6px; font:400 16px/1.2 'MedievalSharp','Baloo 2',serif; text-align:center; color:var(--ink-muted);}
+.bk-az{display:flex; flex-wrap:wrap; justify-content:center; gap:6px;}
+.bk-az button{min-width:36px; min-height:36px; border-radius:8px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:800 14px/1 'Baloo 2',system-ui,sans-serif; cursor:pointer;}
+.bk-az button:hover, .bk-az button:focus-visible{background:var(--surface-3);}
+.bk-ch{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:0; padding-bottom:4px; font:400 21px/1.2 'MedievalSharp','Baloo 2',serif; color:var(--accent-strong); border-bottom:2px solid color-mix(in srgb, var(--accent) 40%, transparent);}
+.bk-ch small{font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
+.bk-entry{display:grid; grid-template-columns:44px minmax(0,1fr); gap:10px; align-items:start;}
+.bk-entry .bk-ico{width:44px; height:44px; display:grid; place-items:center; font-size:24px; line-height:1; border-radius:50%; background:var(--surface-2); box-shadow:inset 0 0 0 1px var(--surface-border);}
+.bk-entry h4{margin:2px 0 2px; font:800 16px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink);}
+.bk-entry p{margin:0; font-size:14px; line-height:1.45; color:var(--ink);}
+.bk-entry .bk-ans{margin-top:4px; font-size:13px; color:var(--ink-muted);}
+.bk-entry.is-hint .bk-ico{font-weight:900; color:var(--ink-soft); filter:grayscale(1); opacity:.75;}
+.bk-entry.is-hint h4, .bk-entry.is-hint p{color:var(--ink-soft); font-style:italic;}
+.bk-book .pg-nav{margin-top:12px;}
+@media (max-width:899px){ .bk-spread{padding:6px;} .bk-page{height:clamp(400px, calc(100vh - 250px), 720px); padding:12px 14px 8px;} }
+
+/* the card album */
+#codexGrid.al-host{display:block; position:relative; touch-action:pan-y;}
+.al-album{display:flex; align-items:stretch; max-width:1080px; margin:0 auto; padding:10px; border-radius:16px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--accent-strong) 70%, #111), color-mix(in srgb, var(--accent-strong) 50%, #111));
+  box-shadow:0 14px 34px rgba(0,0,0,.3), inset 0 0 0 2px color-mix(in srgb, var(--accent) 50%, transparent);}
+.al-album.al-one{max-width:560px;}
+.al-page{position:relative; flex:1 1 0; min-width:0; display:flex; flex-direction:column; padding:10px 14px 8px; border-radius:8px;
+  background:color-mix(in srgb, var(--surface-3) 55%, var(--bg-2)); box-shadow:inset 0 0 30px rgba(0,0,0,.18);}
+.al-page.pg-left{border-radius:10px 2px 2px 10px;} .al-page.pg-right{border-radius:2px 10px 10px 2px;}
+.al-page.is-blank{background:color-mix(in srgb, var(--surface-3) 40%, var(--bg-2)); opacity:.8;}
+.al-spine{flex:0 0 14px; margin:0 2px; border-radius:4px; background:repeating-linear-gradient(180deg, transparent 0 22px, rgba(0,0,0,.45) 22px 30px, transparent 30px 52px), linear-gradient(90deg, rgba(0,0,0,.35), rgba(255,255,255,.08) 50%, rgba(0,0,0,.35));}
+.al-head{display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; min-height:28px; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid color-mix(in srgb, var(--ink) 18%, transparent);}
+.al-head .al-sec{flex:1 1 auto; min-width:0; font:400 16px/1.2 'MedievalSharp','Baloo 2',serif; color:var(--ink); overflow-wrap:anywhere;}
+.al-head .al-count{font:700 12px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); white-space:nowrap;}
+.al-grid{display:grid; grid-template-columns:repeat(var(--al-cols, 3), minmax(0, 1fr)); gap:10px; flex:1 1 auto; align-content:start;}
+.al-sleeve{position:relative; padding:6px 6px 16px; border-radius:8px; background:linear-gradient(160deg, rgba(255,255,255,.22), rgba(255,255,255,.05) 40%, rgba(255,255,255,.12));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35), 0 2px 5px rgba(0,0,0,.18);}
+.al-sleeve::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:7; background:linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.16) 42%, rgba(255,255,255,0) 54%);}
+.al-slot{min-height:1px;}
+#codexGrid.al-host .al-sleeve .cx-tile-wrap{content-visibility:visible; contain-intrinsic-size:none; padding:0; margin:0;}
+#codexGrid.al-host .card-tile{width:100%;}
+#codexGrid.al-host .al-sleeve .cx-tile-wrap .cx-lock{top:-4px; left:-4px; font-size:12px; padding:2px 3px;}
+#codexGrid.al-host .card-tile.cx-editable{cursor:pointer;}
+.al-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px;}
+@media (max-width:559px){ .al-album{padding:6px;} .al-page{padding:8px 8px 6px;} .al-grid{gap:8px;} }
+
+/* the collection score, under every Codex tab */
+.cx-score-wrap:empty{display:none;}
+.cx-score{display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; margin:22px auto 6px; max-width:1180px; padding:14px 18px; border-radius:16px; background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 4px 12px rgba(0,0,0,.08); color:var(--ink);}
+.cx-score-ico{font-size:30px; line-height:1;}
+.cx-score-main{flex:1 1 260px; display:flex; flex-direction:column; gap:3px; min-width:0;}
+.cx-score-k{font:800 13px/1.2 'Baloo 2',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-muted);}
+.cx-score-n{font:600 14px/1.1 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);} .cx-score-n b{font:900 28px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink);}
+.cx-score-main .pf-tile-bar{flex:none; max-width:none; height:8px; margin:4px 0 2px; background:color-mix(in srgb, var(--ink) 12%, transparent);}
+.cx-score-main small{font-size:12px; color:var(--ink-muted);}
+.cx-score-facts{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 14px; font-weight:700; font-size:14px;}
+.cx-score-achv{border:0; background:none; padding:4px 0; font:inherit; color:var(--ink); cursor:pointer; text-decoration:underline; text-decoration-color:color-mix(in srgb, var(--ink) 30%, transparent); text-underline-offset:3px;}
+.cx-score-achv em{color:var(--accent); font-style:normal; font-weight:800;}
 /* 2026-10-13 (user: "Put the admin buttons to the side on the right, outside the card") */
 .cnp-admin-side{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
 @media (min-width:821px){ .conquest-node-panel > .cnp-admin-side{position:absolute; left:100%; top:44px; margin:0 0 0 12px; flex-direction:column; flex-wrap:nowrap; width:150px;}

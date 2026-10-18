@@ -104,6 +104,7 @@ run node tests/z-2026-10-18.js   # 2026-10-18 (package Z): two field-kit items a
 run node tests/guild-rename-2026-10-18.js   # 2026-10-18 (X4): 🎫 Rename Ticket (shop, inventory, founders' gift), owner-only Rename guild, name rules, the not-applied fallback, the proposed rename_guild SQL
 run node tests/t-2026-10-19.js   # 2026-10-18 (package T, owner list for 10-19): the tutorial's scripted CPU play and both attack lines, the Outskirts after the deck window, no Quarry Mole toast, brambles won as cards
 run node tests/skill-costs-2026-10-19.js   # 2026-10-18 (package H): canonical/skill-costs.json covers every trigger / action / skill in use, S = trigger weight × action value, keyword S and N unchanged, the hub's Skill costs tab (db, Copy JSON)
+run node tests/codex-book-2026-10-19.js   # 2026-10-18 (package C): Codex card album + skills book pages, reveal gating, seen tracking + migration, collection score (Codex + Profile), TX keys in all 12 packs
 run node tests/game-texts.js   # 2026-10-15: TX keys + the docs/game-texts.xlsx export/import round trip (~45 s)
 if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; run python3 tests/e2e/ui_smoke.py; run python3 tests/e2e/flows.py; run python3 tests/e2e/snaps.py; run python3 tests/e2e/i18n.py; run python3 tests/e2e/hero.py; run python3 tests/e2e/rarity_limit_craft.py; run python3 tests/e2e/a11y.py; run python3 tests/e2e/codex_perf.py; run python3 tests/e2e/emoji_perf.py; fi
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
