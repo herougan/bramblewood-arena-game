@@ -19,6 +19,7 @@ side in the key ("{v3}{v4}", which the translator can't tell apart) must stay si
 import glob, html, json, os, re, subprocess, sys, unicodedata
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, 'tools', 'text'))
+sys.path.insert(0, os.path.join(ROOT, 'tools'))
 import textlib  # noqa: E402
 
 CODES = ['fr', 'de', 'es', 'it', 'pt', 'tl', 'ta', 'id', 'zh-Hans', 'zh-Hant', 'ja', 'ko']
@@ -137,7 +138,16 @@ def main():
             with open(path, 'w', encoding='utf-8') as fh:
                 json.dump(dict(sorted(pack.items(), key=lambda kv: kv[0].lower())), fh, ensure_ascii=False, indent=1); fh.write('\n')
     print(f'{len(plain)} game texts without placeholders (+{len(SKIP)} kept in English); {len(held)} with placeholders (translated as templates)')
-    if problems: sys.exit(1)
+    # 2026-10-18 (package I3): the rest of the UI (fixed text, titles, NPC lines, errands, skill texts, card flavour) lives in
+    # lang/ui/<code>.json, harvested and checked by tools/i18n_ui.py; its coverage, by kind, with the main and card packs counted.
+    import i18n_ui
+    res, ui_problems, kinds = i18n_ui.coverage()
+    print('\nUI texts (tools/i18n_ui.py; lang/ui + lang/cards + main pack):')
+    print('%-8s ' % 'lang' + ' '.join('%13s' % kd for kd in kinds + ['all']))
+    for code in i18n_ui.CODES:
+        print('%-8s ' % code + ' '.join('%6d/%-6d' % res[code][kd] for kd in kinds + ['all']))
+    for code, k, msg in ui_problems[:30]: print('  ! lang/ui/%s.json: %s: %r' % (code, msg, k[:80]))
+    if problems or ui_problems: sys.exit(1)
 
 
 if __name__ == '__main__':

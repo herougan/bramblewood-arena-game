@@ -287,6 +287,15 @@ async function set(code){
 const api = {
   LANGS, i18, set, current: ()=> lang, onChange: fn=> listeners.push(fn),
   misses: ()=> [...misses].sort(), translateNow: ()=>{ applying = true; try{ walk(document.body); } finally { applying = false; } },
+  // 2026-10-18 (package I3): for code that splits a text before the page sees it whole — keyword marking (<b class="kw">) in card
+  // ability lines and emoji pictures (<img class="tw-emoji">) in the middle of a sentence leave pieces no pack key matches.
+  // translate(s): the translation of one visible string, or null (English, or no key). translateTextNode(n): translate a text
+  // node in place now, remembering its English as the observer would, so splitting it afterwards keeps the translation.
+  translate: s=> lang === 'en' ? null : translateText(s),
+  translateTextNode(n){
+    if(lang === 'en' || !n || n.nodeType !== 3 || skip(n.parentElement) || wrote.get(n) === n.nodeValue) return;
+    originals.set(n, n.nodeValue); const o = translateText(n.nodeValue); if(o){ n.nodeValue = o; wrote.set(n, o); }
+  },
   _boot(){ const c = load(); if(c !== 'en') set(c); else document.documentElement.lang = 'en'; },
 };
 root.BramblewoodI18n = api;

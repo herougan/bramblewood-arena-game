@@ -87,7 +87,9 @@ _pack_codes = sorted({os.path.basename(_p)[:-5] for _p in _glob.glob(SCRATCH + "
 for _code in _pack_codes:
     if _code == "en": continue
     _pack = {}
-    for _fp in (SCRATCH + "lang/cards/%s.json" % _code, SCRATCH + "lang/%s.json" % _code):
+    # 2026-10-18 (package I3: about 5,000 UI texts, NPC lines, errands, card flavour and skill texts were in no pack): the rest of
+    # the UI lives in lang/ui/<code>.json (made with tools/i18n_ui.py), merged first so lang/cards and the main pack win a clash.
+    for _fp in (SCRATCH + "lang/ui/%s.json" % _code, SCRATCH + "lang/cards/%s.json" % _code, SCRATCH + "lang/%s.json" % _code):
         if os.path.exists(_fp): _pack.update(json.load(open(_fp, encoding="utf-8")))
     _js = "(window.BW_LANG_PACKS=window.BW_LANG_PACKS||{})[%s]=%s;\n" % (json.dumps(_code), json.dumps(_pack, ensure_ascii=False, separators=(",", ":")))
     if INLINE: _inline_packs.append(_js)

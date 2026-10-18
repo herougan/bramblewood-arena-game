@@ -34339,7 +34339,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=4357783b05", "es": "assets/lang/es.js?v=8a27c999ca", "fr": "assets/lang/fr.js?v=f411f4d5f3", "id": "assets/lang/id.js?v=51a992ef4b", "it": "assets/lang/it.js?v=a1dc71daa1", "ja": "assets/lang/ja.js?v=a507e0f3ed", "ko": "assets/lang/ko.js?v=59692d62ee", "pt": "assets/lang/pt.js?v=e58ec25c2b", "ta": "assets/lang/ta.js?v=3400cfa7f1", "tl": "assets/lang/tl.js?v=425a38764f", "zh-Hans": "assets/lang/zh-Hans.js?v=cb6fbe1280", "zh-Hant": "assets/lang/zh-Hant.js?v=5352dd4442"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=8d43a718ce", "es": "assets/lang/es.js?v=ac13d111c5", "fr": "assets/lang/fr.js?v=50cf38ee68", "id": "assets/lang/id.js?v=51a992ef4b", "it": "assets/lang/it.js?v=a1dc71daa1", "ja": "assets/lang/ja.js?v=af0b481bf8", "ko": "assets/lang/ko.js?v=59692d62ee", "pt": "assets/lang/pt.js?v=e58ec25c2b", "ta": "assets/lang/ta.js?v=3400cfa7f1", "tl": "assets/lang/tl.js?v=425a38764f", "zh-Hans": "assets/lang/zh-Hans.js?v=0d873e138d", "zh-Hant": "assets/lang/zh-Hant.js?v=19daf5950a"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -34448,6 +34448,15 @@ async function set(code){
 const api = {
   LANGS, i18, set, current: ()=> lang, onChange: fn=> listeners.push(fn),
   misses: ()=> [...misses].sort(), translateNow: ()=>{ applying = true; try{ walk(document.body); } finally { applying = false; } },
+  // 2026-10-18 (package I3): for code that splits a text before the page sees it whole — keyword marking (<b class="kw">) in card
+  // ability lines and emoji pictures (<img class="tw-emoji">) in the middle of a sentence leave pieces no pack key matches.
+  // translate(s): the translation of one visible string, or null (English, or no key). translateTextNode(n): translate a text
+  // node in place now, remembering its English as the observer would, so splitting it afterwards keeps the translation.
+  translate: s=> lang === 'en' ? null : translateText(s),
+  translateTextNode(n){
+    if(lang === 'en' || !n || n.nodeType !== 3 || skip(n.parentElement) || wrote.get(n) === n.nodeValue) return;
+    originals.set(n, n.nodeValue); const o = translateText(n.nodeValue); if(o){ n.nodeValue = o; wrote.set(n, o); }
+  },
   _boot(){ const c = load(); if(c !== 'en') set(c); else document.documentElement.lang = 'en'; },
 };
 root.BramblewoodI18n = api;
@@ -35603,6 +35612,17 @@ function iconHTML(key, fallbackEmoji, opts){
   }
   return `<span class="${cls}" data-ik="${k}"${tip}>${typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(fb) : fb}</span>`; // 2026-10-17: in the chosen emoji set
 }
+// 2026-10-18 (package I3): the page translator matches whole text nodes, so a sentence that is cut up before it reaches the page
+// (keyword marks in card ability lines, emoji turned into pictures in a block of HTML) is translated here first, while it is
+// still whole: one stretch of HTML-escaped text between tags in, the same stretch translated (or untouched) out.
+function i18nHtmlText(seg){
+  try{
+    const I = window.BramblewoodI18n; if(!seg || !I || !I.translate || I.current() === 'en' || !/\p{L}{2}/u.test(seg)) return seg;
+    const raw = seg.replace(/&(amp|lt|gt|quot|#39|#x27|nbsp);/g, (m, e)=> ({amp:'&', lt:'<', gt:'>', quot:'"', '#39':"'", '#x27':"'", nbsp:'\u00a0'})[e]);
+    const t = I.translate(raw);
+    return t == null ? seg : t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }catch(e){ return seg; }
+}
 // Emoji style (2026-10-14; bundled 2026-10-17): Settings → "Emoji style: Fluent / Twemoji / Noto Emoji / System".
 // 2026-10-17 (user: "For Emoji - use the best and free one. If you prefer fluent flat, lets do that."): the sets ship with the
 // game, so they work offline, in the Steam build and under the CSP; nothing loads from jsDelivr any more. Microsoft's Fluent
@@ -35658,6 +35678,8 @@ var EmojiStyle = (function(){
   };
   const imgFor = m=>{ const img = document.createElement('img'); img.className = 'emoji tw-emoji emoji-' + active; img.alt = m; img.draggable = false; img.decoding = 'sync'; img.src = srcOf(keyOf(m)); return img; };
   const swapText = t=>{
+    if(!t.data || !pre.test(t.data)) return;
+    try{ if(window.BramblewoodI18n) window.BramblewoodI18n.translateTextNode(t); }catch(e){} // 2026-10-18 (I3): translate the whole sentence before the emoji split it
     const s = t.data; if(!s || !pre.test(s)) return;
     re.lastIndex = 0; if(!re.test(s)) return;
     const p = t.parentNode; if(!p || p.nodeType !== 1 || p.namespaceURI !== XHTML || p.closest(SKIP)) return;
@@ -35726,7 +35748,7 @@ var EmojiStyle = (function(){
     for(let i = 0; i < parts.length; i++){
       const p = parts[i]; if(!p) continue;
       if(p.charCodeAt(0) === 60){ const m = /^<(\/?)([a-zA-Z0-9-]+)/.exec(p); if(m && SKIP_TAGS.test(m[2]) && !/\/>$/.test(p)) skip += m[1] ? -1 : 1; if(skip < 0) skip = 0; continue; }
-      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = p.replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`); }
+      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = i18nHtmlText(p).replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`); }
     }
     return parts.join('');
   };
@@ -37280,6 +37302,7 @@ function keywordizeHTML(html, seen){
     if(!seg) return seg;
     if(seg[0] === '<'){ if(/^<b\b[^>]*class="[^"]*\bkw/.test(seg)) skip++; else if(skip && /^<\/b>/.test(seg)) skip--; return seg; }
     if(skip) return seg;
+    seg = i18nHtmlText(seg); // 2026-10-18 (I3): translated while whole; the English keyword marks then find nothing in other languages
     return seg.replace(re, (...args)=>{
       const groups = args[args.length - 1], m = args[0];
       const i = Object.keys(groups).findIndex(k=> groups[k] !== undefined); const kw = list[+Object.keys(groups)[i].slice(1)];
@@ -37866,7 +37889,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'b425c3962c19', BUILD_CARD_HASH = '7ca91d6a06d65463b28ed0410acddd829f6e03a132bc1cfddabb68fcd2701c8a';
+const BUILD_ID = '7545e20fdbbe', BUILD_CARD_HASH = '7ca91d6a06d65463b28ed0410acddd829f6e03a132bc1cfddabb68fcd2701c8a';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -41198,7 +41221,7 @@ function renderCodexGrid(keepPage){
   }
   if(codexFlatById){ groups.clear(); groups.set('all-by-id', {sec:{key:'all-by-id', order:[0], label:'All cards by number', bare:true}, ids:ids.slice()}); }
   const ordered = [...groups.values()].sort((a,b)=> cmpOrder(a.sec.order, b.sec.order));
-  let tileEnv = ''; try{ tileEnv = (adminModeEnabled ? 'A' : '-') + EmojiStyle.active() + '|' + [...hiddenSkillSet()].join(',') + '|'; }catch(e){ tileEnv = String(Math.random()); }
+  let tileEnv = ''; try{ tileEnv = (adminModeEnabled ? 'A' : '-') + EmojiStyle.active() + '|' + ((window.BramblewoodI18n && window.BramblewoodI18n.current()) || 'en') + '|' + [...hiddenSkillSet()].join(',') + '|'; }catch(e){ tileEnv = String(Math.random()); }
   const tileFor = id=>{
     const d = defs[id];
     // 2026-10-13 (user: "There's Hidden, Locked, Unlocked, In Possession ... shown together! Those Locked and Unlocked (0 copies)

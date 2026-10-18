@@ -363,6 +363,17 @@ function iconHTML(key, fallbackEmoji, opts){
   }
   return `<span class="${cls}" data-ik="${k}"${tip}>${typeof EmojiStyle !== 'undefined' && EmojiStyle ? EmojiStyle.html(fb) : fb}</span>`; // 2026-10-17: in the chosen emoji set
 }
+// 2026-10-18 (package I3): the page translator matches whole text nodes, so a sentence that is cut up before it reaches the page
+// (keyword marks in card ability lines, emoji turned into pictures in a block of HTML) is translated here first, while it is
+// still whole: one stretch of HTML-escaped text between tags in, the same stretch translated (or untouched) out.
+function i18nHtmlText(seg){
+  try{
+    const I = window.BramblewoodI18n; if(!seg || !I || !I.translate || I.current() === 'en' || !/\p{L}{2}/u.test(seg)) return seg;
+    const raw = seg.replace(/&(amp|lt|gt|quot|#39|#x27|nbsp);/g, (m, e)=> ({amp:'&', lt:'<', gt:'>', quot:'"', '#39':"'", '#x27':"'", nbsp:'\u00a0'})[e]);
+    const t = I.translate(raw);
+    return t == null ? seg : t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }catch(e){ return seg; }
+}
 // Emoji style (2026-10-14; bundled 2026-10-17): Settings → "Emoji style: Fluent / Twemoji / Noto Emoji / System".
 // 2026-10-17 (user: "For Emoji - use the best and free one. If you prefer fluent flat, lets do that."): the sets ship with the
 // game, so they work offline, in the Steam build and under the CSP; nothing loads from jsDelivr any more. Microsoft's Fluent
@@ -418,6 +429,8 @@ var EmojiStyle = (function(){
   };
   const imgFor = m=>{ const img = document.createElement('img'); img.className = 'emoji tw-emoji emoji-' + active; img.alt = m; img.draggable = false; img.decoding = 'sync'; img.src = srcOf(keyOf(m)); return img; };
   const swapText = t=>{
+    if(!t.data || !pre.test(t.data)) return;
+    try{ if(window.BramblewoodI18n) window.BramblewoodI18n.translateTextNode(t); }catch(e){} // 2026-10-18 (I3): translate the whole sentence before the emoji split it
     const s = t.data; if(!s || !pre.test(s)) return;
     re.lastIndex = 0; if(!re.test(s)) return;
     const p = t.parentNode; if(!p || p.nodeType !== 1 || p.namespaceURI !== XHTML || p.closest(SKIP)) return;
@@ -486,7 +499,7 @@ var EmojiStyle = (function(){
     for(let i = 0; i < parts.length; i++){
       const p = parts[i]; if(!p) continue;
       if(p.charCodeAt(0) === 60){ const m = /^<(\/?)([a-zA-Z0-9-]+)/.exec(p); if(m && SKIP_TAGS.test(m[2]) && !/\/>$/.test(p)) skip += m[1] ? -1 : 1; if(skip < 0) skip = 0; continue; }
-      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = p.replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`); }
+      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = i18nHtmlText(p).replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`); }
     }
     return parts.join('');
   };
@@ -2040,6 +2053,7 @@ function keywordizeHTML(html, seen){
     if(!seg) return seg;
     if(seg[0] === '<'){ if(/^<b\b[^>]*class="[^"]*\bkw/.test(seg)) skip++; else if(skip && /^<\/b>/.test(seg)) skip--; return seg; }
     if(skip) return seg;
+    seg = i18nHtmlText(seg); // 2026-10-18 (I3): translated while whole; the English keyword marks then find nothing in other languages
     return seg.replace(re, (...args)=>{
       const groups = args[args.length - 1], m = args[0];
       const i = Object.keys(groups).findIndex(k=> groups[k] !== undefined); const kw = list[+Object.keys(groups)[i].slice(1)];
@@ -5958,7 +5972,7 @@ function renderCodexGrid(keepPage){
   }
   if(codexFlatById){ groups.clear(); groups.set('all-by-id', {sec:{key:'all-by-id', order:[0], label:'All cards by number', bare:true}, ids:ids.slice()}); }
   const ordered = [...groups.values()].sort((a,b)=> cmpOrder(a.sec.order, b.sec.order));
-  let tileEnv = ''; try{ tileEnv = (adminModeEnabled ? 'A' : '-') + EmojiStyle.active() + '|' + [...hiddenSkillSet()].join(',') + '|'; }catch(e){ tileEnv = String(Math.random()); }
+  let tileEnv = ''; try{ tileEnv = (adminModeEnabled ? 'A' : '-') + EmojiStyle.active() + '|' + ((window.BramblewoodI18n && window.BramblewoodI18n.current()) || 'en') + '|' + [...hiddenSkillSet()].join(',') + '|'; }catch(e){ tileEnv = String(Math.random()); }
   const tileFor = id=>{
     const d = defs[id];
     // 2026-10-13 (user: "There's Hidden, Locked, Unlocked, In Possession ... shown together! Those Locked and Unlocked (0 copies)

@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (I3: the rest of the UI translated)
+- **Most of the UI that stayed English is now translated** (fixed labels and buttons, titles and tooltips, every NPC line and reply, errand writs, skill names and texts, card flavour, map and battle-log texts): their English is harvested into `lang/ui/<code>.json` and the page translator matches it like any pack key (texts with numbers as `{v1}` templates). Coverage per language: see I3-COVERAGE below and `python3 tools/i18n_ui.py`.
+- **Text that was cut up before the page saw it now translates whole:** card ability lines (keyword marks split them into pieces) and sentences with an emoji picture in the middle are translated while still one string (`i18nHtmlText` in `keywordizeHTML` and `EmojiStyle`; `BramblewoodI18n.translate` / `translateTextNode`). In other languages the English keyword highlighting is not drawn on those lines. The Codex tile cache keys on the language.
+- `tools/i18n_ui.py` harvests the texts (admin, editor, simulator and test-kit screens skipped), reports coverage by kind and lists the sentences split by inline tags that need TX() to translate (`--split`); `tools/i18n_refresh.py` prints the UI coverage too; `assemble_arena.py` merges `lang/ui` first (card names and the main pack win a clash). `tests/i18n-ui-2026-10-18.js` (in run-all): files parse, placeholders and emoji intact, keys exist in the source, built packs carry them, filled texts translate as templates.
+
 ## 2026-10-18 (i18n catch-up, part F)
 - **Today's new texts are translated in all 12 packs:** the guild, invite and network-error messages (couldn't load / leave / set up, Retry, Retrying…, matchmaking unreachable), the sign-in screen's guest line, the leaderboard's empty state and rating notes, "An egg! You'll need a place to hatch it.", "There's a Nest on Map {n}{where}." and the Creative / Creativity keyword texts, plus the guild screen's "Join a Guild" and "Join" so the half-done-guild message names words on screen (`tools/i18n_2026_10_18f.py`, 32 strings each). Coverage: 325/325 plain game texts and 171/171 templates per pack, no dead keys (13 texts stay English on purpose).
 
