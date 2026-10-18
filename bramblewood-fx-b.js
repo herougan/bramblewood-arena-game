@@ -998,8 +998,9 @@ M.tideHigh = function(host, opts){
   opts = Object.assign({}, opts, host && host.nodeType ? {host} : {}); const {r, box} = skyBox(opts);
   const w1 = bits(box, 1, ()=> ({cls:'fxb-water', style:'height:75%;'}))[0], w2 = bits(box, 1, ()=> ({cls:'fxb-water', style:'height:62%; opacity:.7;'}))[0];
   const sp = bits(box, 22, ()=> ({cls:'fxb-spray', style:`left:${rnd(5, 95)}%; top:30%;`}));
+  if(opts.sprayOnly){ w1.style.display = w2.style.display = 'none'; } // 2026-10-18: the game's standing Tide draws the water
   return run([box], opts, (t)=>{
-    t.fromTo(w1, {yPercent:110}, {yPercent:5, duration:.55, ease:'power2.out'}).to(w1, {yPercent:110, duration:.6, ease:'power2.in'}, '>+.1')
+    if(!opts.sprayOnly) t.fromTo(w1, {yPercent:110}, {yPercent:5, duration:.55, ease:'power2.out'}).to(w1, {yPercent:110, duration:.6, ease:'power2.in'}, '>+.1')
       .fromTo(w2, {yPercent:110}, {yPercent:-4, duration:.55, ease:'power2.out'}, .25).to(w2, {yPercent:110, duration:.6, ease:'power2.in'}, '>+.05');
     sp.forEach((s, i)=> t.fromTo(s, {y:0, x:0, opacity:0}, {y:-r.height*rnd(.15, .35), x:rnd(-20, 20), opacity:1, duration:.3, ease:'power2.out'}, .45 + i*.012).to(s, {y:'+=' + r.height*.25, opacity:0, duration:.4, ease:'power1.in'}, '>'));
   });
@@ -1502,8 +1503,9 @@ M.onEvent = function(ev, env){
   case 'moon': if(med && m && (typeof matchHasMoonCards !== 'function' || matchHasMoonCards(m))) M.moonPhase(bf, {phase:ev.phase}); break;
   case 'tide':
     if(ev.moonpull){ const t = el(ev.uid); if(t && med) M.moonpull(t); }
-    else if(ev.tide === 'ebb' && med) M.tideEbb(bf);
-    else if(ev.tide === 'high' && med) M.tideHigh(bf);
+    // 2026-10-18: the board's standing Tide (syncTideScene in arena_app.js) now rises and recedes itself, so the Ebb's drain and High
+    // Tide's double crest no longer play over it (both stay for the Effects Lab); High Tide keeps its burst of spray over the top row.
+    else if(ev.tide === 'high' && med) M.tideHigh(bf, {sprayOnly:true});
     break;
   case 'wind': {
     if(!ev.windy){ if(med) M.windCalm(bf); break; }

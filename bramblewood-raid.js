@@ -95,7 +95,8 @@ function claimableReward(def, state, owner, now){
 //   bossAtk / bossHp  +N Attack / +N Health on every boss card (its deck, its boss unit, its guards and the Commons it calls in)
 //   field           a field effect for this stage: a field-effect id or rule key ("landslide"), a list of them, or a rules object;
 //                   it goes on top of the raid's and the part's own field (a key it names replaces theirs)
-//   extraVolley     the boss's back two rows strike N times a round too (the volley your ally rows already make: half Attack)
+//   extraVolley     the boss's back two rows strike N extra times as each round starts (half Attack, on top of every reserve unit's
+//                   own strike in combat, 2026-10-18)
 //   castleHpPct     your (the raiders') castle's max Health changes by N% (-10 = 10% less)
 const STAGE_NUM_KEYS = {bossAtk:[-20, 50], bossHp:[-50, 200], extraVolley:[0, 3], castleHpPct:[-90, 200]};
 function stageFieldOf(v, resolve){
@@ -139,7 +140,8 @@ function describeStage(stage, opts){
   if(r.bossAtk && r.bossHp) bits.push(`every boss card ${sg(r.bossAtk)} Attack, ${sg(r.bossHp)} Health`);
   else if(r.bossAtk) bits.push(`every boss card ${sg(r.bossAtk)} Attack`);
   else if(r.bossHp) bits.push(`every boss card ${sg(r.bossHp)} Health`);
-  if(r.extraVolley) bits.push(r.extraVolley === 1 ? 'its back two rows strike too, once a round' : `its back two rows strike ${r.extraVolley} times a round`);
+  // 2026-10-18: every back-row unit already strikes once in each round's combat (the engine's reserveActs), so a stage's volley is extra
+  if(r.extraVolley) bits.push(r.extraVolley === 1 ? 'its back two rows strike an extra time as each round starts' : `its back two rows strike ${r.extraVolley} extra times as each round starts`);
   if(r.field){ const names = [...new Set(Object.keys(r.field).filter(k=> r.field[k] !== false).map(k=> nm(k)).filter(Boolean))]; if(names.length) bits.push(names.join(' and ') + ' on the field'); }
   if(r.castleHpPct) bits.push(`your castle ${r.castleHpPct > 0 ? '+' : '−'}${Math.abs(r.castleHpPct)}% Health`);
   if(!bits.length) return '';

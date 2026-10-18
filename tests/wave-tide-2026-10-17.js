@@ -144,9 +144,10 @@ ok(/case 'boomerangCaught': \{ const a = el\(ev\.uid\), F = S\(\); if\(a && !\(F
 ok(/boomNote\(o\.key, \{ux:dx\/L, uy:dy\/L/.test(sfx) && /function boomerangInFlight\(key\)/.test(sfx) && /boomerangReturn, boomerangInFlight, shieldDrop/.test(sfx), 'the throw is remembered and the return retraces it');
 ok(/SkillFX\.boomerangReturn\(el, null, \{flight:420, key, whiff:true\}\)/.test(src) && /\(SkillFX\.boomerangThrow \|\| SkillFX\.boomerang\)\(a, t, \{flight:420, key\}\)/.test(src), 'the game passes the throw key (and flies the whiff home)');
 // the tide and the hover heights
-ok(/SkillFX\.tideSway\(\[\.\.\.bf\.querySelectorAll\('#rowMine \.board-card, #rowEnemy \.board-card'\)\]/.test(src), 'the tide rocks every board card');
-ok(/@keyframes flySoar\{0%,100%\{translate:5px -10\.4px;/.test(tpl) && /is-flying \.fly-body\{translate:5px -10\.4px;/.test(tpl), 'flyers hover 15% higher (10.4px)');
-ok(/@keyframes tideFloat\{0%,100%\{translate:0 -5\.2px;/.test(tpl) && /\.is-floating \.fly-shadow\{display:block;/.test(tpl), 'Tide units and Swimmers float at half that, with a shadow');
+// 2026-10-18 (owner: "lifts up cards by too much ... really laggy ... from the left to right, 0.1s apart"): a CSS lift per column replaced the GSAP sway
+ok(/function tideLiftCards\(bf, kind\)/.test(src) && /tideLiftCards\(bf, kind\)/.test(src) && /\.board-card\.tide-lift \.card-tile\{animation:tideLift/.test(tpl), 'the tide lifts every board card a little, column by column');
+ok(/@keyframes flySoar\{0%,100%\{translate:calc\(5px\*var\(--fly-amp\)\) calc\(-10\.4px\*var\(--fly-amp\)\);/.test(tpl) && /is-flying \.fly-body\{translate:calc\(5px\*var\(--fly-amp\)\) calc\(-10\.4px\*var\(--fly-amp\)\);/.test(tpl), 'flyers hover 15% higher (10.4px; halved while chilled, 2026-10-18)');
+ok(/@keyframes tideFloat\{0%,100%\{translate:0 calc\(-5\.2px\*var\(--fly-amp\)\);/.test(tpl) && /\.is-floating \.fly-shadow\{display:block;/.test(tpl), 'Tide units and Swimmers float at half that, with a shadow');
 ok(/floats\?'<span class="fly-shadow is-float" aria-hidden="true"><\/span><div class="fly-body float-body">'/.test(src), 'floating cards get their shadow element');
 // the Effects Lab: every entry it registers is in the inventory
 { const inv = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'docs', 'effects-inventory-2026-10-15.json'), 'utf8')), ids = new Set(inv.filter(x=> x.status !== 'retired').map(x=> x.id));
