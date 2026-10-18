@@ -6,6 +6,7 @@
 //   Effects library, Effects Lab), the boomerang's single return flight, the tide's sway and the hover heights.
 'use strict';
 const fs = require('fs'), path = require('path');
+const {TEXT: TEXT_D, TX: TX_D} = require(path.join(__dirname, '..', 'bramblewood-texts.js')); // 2026-10-18 (package D): the terse texts are TX keys
 const H = require('./lib/harness.js');
 const E = H.Engine;
 let fail = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  ✗', m); } };
@@ -144,7 +145,7 @@ ok(/\['awash', \{awash:true\}/.test(src), 'the Effects library stages Awash');
 ok(!/〰️ Awash|name:'Awash'|`Awash /.test(src), 'no player-facing "Awash" left (the log, the float, the field card say Wave)');
 ok(/`〰️ Wave \$\{ev\.n\}: the water takes/.test(src), 'the field\'s log line: "Wave N: the water takes X"');
 ok(/key:'wave', category:'passive', label:'Wave', kind:'selectNumber'/.test(src) && /if\(n > 1\) e\.waveN = n; else delete e\.waveN;/.test(src), 'the skill editor: Wave picks a way and an N (effects.waveN)');
-ok(/wave: \(v, n, e\)=>\{ const w = waveParts\(v, e\)/.test(src) && /If it crashes into a unit, it stops and both take \$\{w\.n\}/.test(src), 'the Wave skill text describes the crash');
+ok(/wave: \(v, n, e\)=>\{ const w = waveParts\(v, e\)/.test(src) && ['either', 'alternate', 'left', 'right'].every(k=> /crashing into a unit deals \{n\} to both/.test(TEXT_D['ui.sk-wave-' + k])) && /stops beside the unit it crashes into/.test(TEXT_D['ui.skx-wave']), 'the Wave skill text describes the crash (2026-10-18, package D: terse; where it stops is in the Codex)');
 { const m = src.match(/function waveParts\(v, e\)\{[\s\S]*?\n\}/), wp = m ? eval('(' + m[0] + ')') : null;
   ok(wp && wp(['left', 2]).n === 2 && wp(undefined, {wave:'right', waveN:3}).n === 3 && wp(undefined, {wave:2}).way === 'either' && wp(undefined, {wave:2}).n === 2 && wp(undefined, {wave:true}).n === 1, 'waveParts reads [way, N], effects.waveN and a bare number'); }
 ok(/\['sulphurFumes', 'ashRain', 'arrowSlits', 'awash'\]\.includes\(ev\.field\)\) hit = markFieldRow\(ev\.field\)/.test(src), 'the Awash row is learned when it first washes');
