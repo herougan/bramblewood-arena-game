@@ -10904,7 +10904,12 @@ function maybeOpenPitching(){
   if(!held.length) return;
   try{ localStorage.removeItem(PITCH_HELD_KEY); }catch(e){}
   held.forEach(h=>{ try{ unlockCardForPlayer(h.id, h.source || 'reward'); }catch(e){} });
-  const defs = getCardDefs(); showToast(TX('toast.you-re-ready-for-bigger-cards', {v1: held.map(h=> (defs[h.id]||{}).name || h.id).join(', ')}), 6000);
+  // 2026-10-18 (package T, owner: "there's also a recommendation to put quarry mole in the deck (toast). Remove that. Let's use our main
+  // central UI popups to communicate this - we already have."): no toast any more. Each card that waited comes up in the central swap
+  // window instead (it shows when you're back on the map), as a "New card!" with the Lumber line under it (teach 'lumber': it costs
+  // Lumber; pitch a card for it), and it can be turned down with Cancel, as the Map 0 teaching swaps can. Was: toast.you-re-ready-for-bigger-cards.
+  const defs = getCardDefs();
+  held.forEach(h=>{ const d = defs[h.id]; if(d && swapEligibleDef(d)) try{ queueDeckSwap({id:h.id, forced:true, teach:'lumber'}); }catch(e){} });
 }
 function unlockCardForPlayer(id, source, copyOpts){
   if(!id || !CARD_DEFS_BASELINE[id] && !liveCards[id]) return false; // not a real card id
@@ -19948,7 +19953,7 @@ function maybeOfferDeckSwap(){
     const rest = deckIds.filter(k=> k !== inId && k !== rec && swapOutAllowed(k, inId)).sort((a, b)=> pw(a) - pw(b) || (defs[a].cost||0) - (defs[b].cost||0) || a.localeCompare(b));
     return (rec ? [rec] : []).concat(rest).slice(0, 3); };
   let inSel = id, outList = outListFor(id), outSel = out;
-  const whyFor = (dIn, dOut)=> item.teach && dIn.id === id ? (TEACH_SAY[item.teach] || '') : item.forced ? `${dIn.attack||0}/${dIn.health||0} in place of ${dOut.attack||0}/${dOut.health||0}.`
+  const whyFor = (dIn, dOut)=> item.teach && dIn.id === id ? (item.teach === 'lumber' ? TX('ui.swap-teach-lumber') : (TEACH_SAY[item.teach] || '')) : item.forced ? `${dIn.attack||0}/${dIn.health||0} in place of ${dOut.attack||0}/${dOut.health||0}.`
     : strictlyDominates(dIn, dOut) ? `⚔${dIn.attack||0} ❤${dIn.health||0}${(dIn.wait||0) < (dOut.wait||0) ? ` ⏳${dIn.wait||0}` : ''}${(dIn.cost||0) < (dOut.cost||0) ? ` 🪵${dIn.cost||0}` : ''} against ⚔${dOut.attack||0} ❤${dOut.health||0}${(dIn.wait||0) < (dOut.wait||0) ? ` ⏳${dOut.wait||0}` : ''}${(dIn.cost||0) < (dOut.cost||0) ? ` 🪵${dOut.cost||0}` : ''}: as good or better in every way.`
     : `⚔${dIn.attack||0} ❤${dIn.health||0} 🪵${dIn.cost||0} against ⚔${dOut.attack||0} ❤${dOut.health||0} 🪵${dOut.cost||0}.`;
   const colHTML = (side, list, sel)=>{ const many = list.length > 1;
@@ -22470,9 +22475,10 @@ function ssFlyTile(t, br, vars){
 // the map first; a beat later (once the results are gone) the window pops in: the dark veil fades up, the panel springs out of
 // the middle, and the cards are dealt into it one by one under a slow glow. Nothing else may open over the map in between.
 var tutorialRewardPopPending = false;
-function popTutorialRewardStep(open){
+function popTutorialRewardStep(open, onFail){
   tutorialRewardPopPending = true;
-  const go = ()=>{ tutorialRewardPopPending = false; try{ open(); }catch(e){ console.error('[Bramblewood] tutorial reward window', e); } };
+  // onFail (2026-10-18, package T): the window couldn't open, so whatever was to follow it (part 2: loading the Outskirts) still happens
+  const go = ()=>{ tutorialRewardPopPending = false; try{ open(); }catch(e){ console.error('[Bramblewood] tutorial reward window', e); if(onFail) try{ onFail(); }catch(_){} } };
   setTimeout(go, reducedMotion() ? 150 : 750);
 }
 function tutRewardOverlay(cls){
@@ -26439,8 +26445,24 @@ function clearFacing(){
   document.querySelectorAll('.bf-hp.is-faced').forEach(e=> e.classList.remove('is-faced'));
   const svg = document.getElementById('facingSvg'); if(svg) svg.innerHTML = '';
 }
-function showFacing(uid){
-  const m = matchState; clearFacing(); if(!m || m.resolving) return;
+// 2026-10-18 (package T, owner: "the tutorial would show these 2 creatures their 'attacking preview line'"): opts.keep adds this
+// unit's lines to the ones already drawn instead of clearing them first; showFacingAll draws several units' lines at once.
+function showFacingAll(uids){ clearFacing(); (uids || []).forEach(u=> showFacing(u, {keep:true})); }
+// The tutorial's combat step (g-combat) shows every one of your units' lines while it is up: one to the enemy unit in front of
+// it, one to the enemy bramble where its lane is open. Redrawn only when something on the board moved (the dashes keep flowing).
+let tutCombatLinesSig = '';
+function tutCombatLines(){
+  const m = matchState, bf = document.getElementById('battlefieldEl'); if(!m || !bf) return;
+  const uids = allCardsOnBoard(m.players[1]).filter(c=> c.hp > 0 && !c.gap).map(c=> c.uid);
+  const rr = el=>{ const r = el.getBoundingClientRect(); return `${Math.round(r.left)},${Math.round(r.top)},${Math.round(r.width)}`; };
+  const sig = uids.join('.') + '|' + rr(bf) + '|' + [...bf.querySelectorAll('.board-card[data-uid], [data-hpribbon]')].map(rr).join(';');
+  const svg = document.getElementById('facingSvg');
+  if(sig === tutCombatLinesSig && svg && svg.childElementCount) return;
+  tutCombatLinesSig = sig; showFacingAll(uids);
+}
+function showFacing(uid, opts){
+  const keep = !!(opts && opts.keep);
+  const m = matchState; if(!keep) clearFacing(); if(!m || m.resolving) return;
   // 2026-10-06 (user: "when holding a card over the battlefield it shows the attack preview line —
   // no need"): no attack lines while a card is held, dragged or being previewed on the board.
   if(m.selectedUid != null || placementPreview || document.querySelector('#handStrip .card-tile.dragging, #leaderWidget.dragging')) return;
@@ -26493,7 +26515,7 @@ function showFacing(uid){
     if(rib){ rib.classList.add('is-faced'); const rr = rib.getBoundingClientRect(); html += line(cx(sr), cy(rr)); }
   }
   if(f.foes.length===2) html += `<text x="${cx(sr).toFixed(1)}" y="${(cy(sr) + (f.pid===1?-sr.height*0.62:sr.height*0.7)).toFixed(1)}" text-anchor="middle">½ · ½</text>`;
-  svg.innerHTML = html;
+  svg.innerHTML = (keep ? svg.innerHTML : '') + html;
 }
 function wireFacingHover(){
   const bf = document.getElementById('battlefieldEl'); if(!bf || bf.dataset.facingWired) return;
@@ -26979,9 +27001,13 @@ function renderMatchUI(){
             setTimeout(()=>{ try{ playDialogue('both_peace'); }catch(e){} }, 4200); }catch(e){} }
           if(first) setTimeout(()=>{ try{ playDialogue('training_wheels_off'); }catch(e){} }, 900);
         };
-        toMap(null); // the training-wheels dialogue says it (2026-10-12: fewer toasts)
-        // 2026-10-16: out of the fight and onto the map first; the "two more cards" window pops in a moment later
-        if(first) popTutorialRewardStep(()=> openDeckTopUpStep(tutorialRewards2(pick), after)); else after();
+        // 2026-10-16: out of the fight first; the "two more cards" window pops in a moment later.
+        // 2026-10-18 (package T, owner: "The bramblewood outskirts map title should wait till the player puts their new cards into the
+        // deck through that UI. (Or only load that map after they click 'Put into deck')"): the window pops over the Tutorial map you
+        // came from (endMatch put it back, still without its title); the Outskirts, with their zoom-out and title card, only load once
+        // the cards are in the deck and the window has gone. Was: toMap first, so the Outskirts title played under the window.
+        const onToMap = ()=>{ toMap(null); after(); }; // the training-wheels dialogue says it (2026-10-12: fewer toasts)
+        if(first) popTutorialRewardStep(()=> openDeckTopUpStep(tutorialRewards2(pick), onToMap), onToMap); else onToMap();
         return;
       }
       if(mode==='dungeon'){
@@ -29858,7 +29884,8 @@ function aiActNow(){
   const events = [];
   const prePos = boardPosSnapshot(m); // 2026-10-17: where each unit stood, so one an arrival kills can stay drawn until its death plays
   try{ if(m.engine.setAiLevel) m.engine.setAiLevel(cpuAiLevelOfMatch(m)); }catch(e){} // the CPU's difficulty (2026-10-18): a resumed fight, the tutorial (Basic)
-  m.engine.aiTakeTurn(m.players, m.sideOf, 2, m.stats, events);
+  // 2026-10-18 (package T): the tutorial's combat lesson has the CPU's play scripted for one turn (tutorialScriptedCpuPlay)
+  if(!(()=>{ try{ return tutorialScriptedCpuPlay(m, events); }catch(e){ return false; } })()) m.engine.aiTakeTurn(m.players, m.sideOf, 2, m.stats, events);
   try{ events.filter(ev=> ev.type==='play' && ev.side==='B').forEach(ev=> maybeDangerWarn(ev.defId)); }catch(e){}
   // 2026-10-12 (user: "An opponent card with 0 wait deals damage immediately without animation"): whatever the new card
   // does on arrival (a Wait-0 swing, an on-spawn missile) used to fire in the same tick as the play, before the card was
@@ -32281,8 +32308,10 @@ async function resolveRoundCore(opts){
       try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, bk = bn && baseKind(bn.kind||'');
         if(!isFirstClear && bn && (bk === 'boss' || bk === 'finalboss' || bn.ender) && RANK_ORDER.indexOf(rank) >= RANK_ORDER.indexOf('S')){
           const cs = Object.values(CHARACTER_DEFS).filter(ch=> ch && ch.unlockMap === m.conquestNode.mapId);
-          cs.forEach(ch=> addCastleDuplicate(ch.id, 1)); if(cs.length) m.conquestCastleSpare = cs.map(ch=> ch.name).join(', '); } }catch(e){}
-      try{ const cd = rollCastleDrop(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node); if(cd){ const ch = CHARACTER_DEFS[cd.id]; m.conquestCastleSpare = (cd.kind === 'new' ? 'New bramble: ' : 'Spare: ') + ch.name; } }catch(e){}
+          cs.forEach(ch=> addCastleDuplicate(ch.id, 1)); if(cs.length) m.conquestCastleDrops = (m.conquestCastleDrops||[]).concat(cs.map(ch=> ({id:ch.id, kind:'spare'}))); } }catch(e){}
+      // 2026-10-18 (package T, owner: "show it instead of in a pill. It's treated as a card"): brambles won are kept as {id, kind} and shown
+      // as card tiles with the cards won (rewardsPanelHTML); was the m.conquestCastleSpare text pill ("New bramble: X" / "Spare: X").
+      try{ const cd = rollCastleDrop(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node); if(cd && CHARACTER_DEFS[cd.id]) m.conquestCastleDrops = (m.conquestCastleDrops||[]).concat([{id:cd.id, kind:cd.kind === 'new' ? 'new' : 'spare'}]); }catch(e){}
       try{ const kb = rollKibble((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, isFirstClear); if(kb){ myCurrencies.kibble = (myCurrencies.kibble||0) + kb; saveCurrencies(); m.conquestKibbleEarned = kb; } }catch(e){}
       try{ const ki = grantSkirmishKitItem(); if(ki) m.conquestKitItem = ki; }catch(e){} // 🎒 first 3 Conquest wins a day (2026-10-17)
       try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; if(isFirstClear && bn && bn.grantsItem){ const bi = grantBossKitItem(); if(bi) m.conquestBossKitItem = bi; } }catch(e){} // 🎒 a boss that grants an item (2026-10-18, package Z)
@@ -33378,7 +33407,12 @@ const GUIDED_STEPS = [
   {id:'g-play', stage:1, action:true, text:TX('coach.drag-a-card-onto-the-field'), anchor:()=>{ const h = coachHighlightTile(); return (h && h.classList.contains('playable')) ? h : document.querySelector('#handStrip .card-tile.playable'); } /* 2026-10-18: the hint points at the highlighted card when it can be played */, done:m=> [1].some(p=> ['left','center','right'].some(s=> m.players[p].row[s].length))},
   {id:'g-castle', stage:1, block:true, text:TX('coach.the-enemy-castle-break-it-to'), anchor:()=> hqTileEl('B')},
   // g-mycastle removed 2026-10-12 (user: "In the tutorial, you talked about my castle health - skip that one").
-  {id:'g-combat', stage:1, block:true, when:m=> m.round>=3, text:TX('coach.cards-hit-the-card-in-front'), anchor:()=> document.getElementById('battlefieldEl')},
+  // 2026-10-18 (package T, owner: "by then, the player would have played their 2nd card. The CPU MUST play a card in the opposite
+  // direction. So the tutorial would show these 2 creatures their 'attacking preview line'"): the step waits for the board that shows
+  // both rules at once (tutLessonBoard: two of your units, one facing an enemy unit and one facing an open lane), which the CPU's
+  // scripted play sets up (tutorialScriptedCpuPlay); it comes after the CPU's play and before that round's fight, with both units'
+  // lines drawn (tutCombatLines). Round 5 is the fallback, so the steps after it can't stall. Was: when round >= 3.
+  {id:'g-combat', stage:1, block:true, when:m=> tutLessonBoard(m) || m.round>=5, text:TX('coach.cards-hit-the-card-in-front'), anchor:()=> document.getElementById('battlefieldEl')},
   {id:'g-deck', stage:1, block:true, when:m=> m.round>=4, text:TX('coach.your-deck-you-draw-1-card'), anchor:()=> document.getElementById('deckWidgetBottom')},
   // Leader and Wait (2026-10-13, user: "Playing the leader shows a tutorial about Wait that pauses the battle until OK. Point at
   // the wait timer until it ticks -1 on the next upkeep"): optional steps, they wait for your leader to land.
@@ -33391,6 +33425,37 @@ const GUIDED_STEPS = [
   // Initiative (2026-10-12, user: "Talk about initiative"), in part 2. It waits a turn after another tip (2026-10-13).
   {id:'g-initiative', stage:2, block:true, when:m=> m.round>=2 && m.round > (m._lastGuidedRound||0), text:TX('coach.initiative-whoever-holds-the-coin-hits'), anchor:()=> document.querySelector('#battlefieldEl .init-coin') || document.getElementById('battlefieldEl')},
 ];
+// The combat lesson's board (2026-10-18, package T): in tutorial part 1, once the CPU has taken this round's turn, at least two of your
+// units are on the field, at least one with an enemy unit in front of it and at least one with nothing in front (it hits the bramble).
+function tutLessonBoard(m){
+  if(!m || m.mode !== 'tutorial' || (m.tutorialStage||1) >= 2 || m._aiActedRound !== m.round) return false;
+  const mine = allCardsOnBoard(m.players[1]).filter(c=> c.hp > 0 && !c.gap); if(mine.length < 2) return false;
+  let faced = 0, open = 0; mine.forEach(c=>{ const f = facingOf(m, c.uid); if(f && f.foes.length) faced++; else open++; });
+  return faced >= 1 && open >= 1;
+}
+// The CPU's scripted play for that lesson (2026-10-18, package T): in part 1, until the combat step has been seen, once you have two
+// units on the field the CPU's turn is a set play: with one of your lanes already blocked it plays away from your open lane ("the
+// opposite direction"), so that lane stays open; with none blocked it plays in front of one of your units. Its sturdiest playable unit.
+// Returns true when it played (aiActNow then skips the CPU's own turn); false leaves the turn to the CPU as usual.
+function tutorialScriptedCpuPlay(m, events){
+  if(!m || m.mode !== 'tutorial' || (m.tutorialStage||1) >= 2 || coachSeen.has('g-combat') || !isSlotMatch(m)) return false;
+  const eng = m.engine, ai = m.players[2], defs = getCardDefs(); if(!eng || !eng.legalSlots || !eng.placeCard) return false;
+  const mySlots = allCardsOnBoard(m.players[1]).filter(c=> c.hp > 0 && !c.gap && Number.isInteger(c.slot)).map(c=> c.slot);
+  if(mySlots.length < 2) return false;
+  const foeSlots = new Set(allCardsOnBoard(ai).filter(c=> c.hp > 0 && !c.gap).map(c=> c.slot));
+  const open = mySlots.filter(s=> !foeSlots.has(s)), faced = mySlots.filter(s=> foeSlots.has(s));
+  if(!open.length) return false; // every lane is blocked already: no play can show an open one
+  const legal = eng.legalSlots(ai); let want = null;
+  const gap = s=> Math.min(...open.map(o=> Math.abs(o - s)));
+  if(faced.length){ const away = legal.filter(s=> !open.includes(s)).sort((a, b)=> (mySlots.includes(a) - mySlots.includes(b)) || gap(b) - gap(a) || Math.abs(a) - Math.abs(b) || a - b); want = away[0]; }
+  else { const block = legal.filter(s=> mySlots.includes(s)).sort((a, b)=> Math.abs(a) - Math.abs(b) || a - b); want = block[0]; }
+  if(want == null) return false;
+  const units = ai.hand.filter(h=>{ const d = defs[h.defId]; return d && !d.field && (!d.cardType || d.cardType === 'unit') && eng.canPlay(ai, h.defId, h.uid); });
+  if(!units.length) return false;
+  const pw = h=> (defs[h.defId].health||0) + (defs[h.defId].attack||0);
+  const pick = units.slice().sort((a, b)=> pw(b) - pw(a))[0];
+  return !!eng.placeCard(m.players, m.sideOf, 2, pick.uid, want, m.stats, events);
+}
 function tutLeaderCard(m){ if(!m || m.leaderUid == null) return null; const r = m.players[1].row; return [...r.left, ...r.center, ...r.right].find(c=> c.uid === m.leaderUid && c.hp > 0) || null; }
 function tutLeaderWaitEl(){ const c = tutLeaderCard(matchState); const b = c && boardCardEl(c.uid); return (b && b.querySelector('.wait-ring, .waitbadge, [class*="wait"]')) || b || null; }
 function guidedStepsFor(m){ const st = Math.min(2, (m && m.tutorialStage) || 1); return GUIDED_STEPS.filter(g=> (g.stage||1) === st); }
@@ -33663,6 +33728,7 @@ function showCoachTip(tip, anchorEl){
     // to your row, over and over; letting go brings the pointer back.
     if(tip.id === 'g-play') syncCoachPhantom(pointer, {prefer: coachHighlightTile}); // 2026-10-18: the highlighted card (see syncCoachPhantom)
     if(tip.id === 'pl-do') syncCoachPhantom(pointer, {to:'dropDiscard', always:true, pick:()=>{ const el = matchState && pitchLessonSpare(matchState); return el && el !== true ? el : null; }});
+    if(tip.id === 'g-combat') tutCombatLines(); // 2026-10-18 (package T): both of your units' attack lines, while the step is up
     b.style.setProperty('--arrow-x', Math.max(14, Math.min(bw-14, r.left + r.width/2 - x))+'px');
   };
   place();
@@ -33742,6 +33808,7 @@ function hideCoachTip(){
   if(coachShield){ coachShield.remove(); coachShield = null; }
   if(!coachOpen) return;
   clearInterval(coachOpen.tick); coachOpen.el.remove();
+  if(coachOpen.tip && coachOpen.tip.id === 'g-combat'){ tutCombatLinesSig = ''; try{ clearFacing(); }catch(e){} } // 2026-10-18 (package T): its lines go with it
   if(coachOpen.spot) coachOpen.spot.remove(); if(coachOpen.pointer) coachOpen.pointer.remove();
   const a = coachOpen.anchorEl; if(a) a.classList.remove('coach-anchor','coach-locked');
   coachOpen = null;
@@ -34443,6 +34510,16 @@ function eggCardRewardNote(){
     where = ' ' + TX('results.egg-nest-on-map', {n: sp ? sp.mapNumber : 4, where: mp ? ` (${mp.name})` : ''}); } }catch(e){}
   return TX('results.egg-card-hatch') + where;
 }
+// Brambles won (2026-10-18, package T, owner: "That tooltip makes no sense. It's just another card. Anyway, show it instead of in a pill.
+// It's treated as a card."): each one is a card tile among the cards won, drawn like every other bramble card (cardTileHTML isCastle).
+// A new one wears NEW! and the usual "now in your collection" hover; a spare (one you already had) wears SPARE, and only it says, in
+// plain words, that a spare is fused in the Forge. Both get the tag the reveal shows on a first-seen card (is-first-seen).
+function rewardCastleDrops(m){ return ((m && m.conquestCastleDrops) || []).filter(x=> x && CHARACTER_DEFS[x.id]); }
+function rewardCastleCardHTML(x){
+  const ch = CHARACTER_DEFS[x.id], spare = x.kind !== 'new';
+  const tip = spare ? TX('results.spare-bramble-tip', {name: ch.name}) : TX('results.now-in-your-collection', {v1: ch.name});
+  return `<div class="rw-card is-unlock rw-castle is-first-seen${spare ? ' is-spare' : ''}" data-castle="${escapeAttr(ch.id)}" data-tip="${escapeAttr(tip)}">${cardTileHTML(Object.assign({}, ch, {icon: ch.icon || '🏰'}), {isCastle:true, inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span><span class="rw-new${spare ? ' rw-spare' : ''}" aria-hidden="true">${spare ? TX('results.spare') : TX('results.new')}</span></div>`;
+}
 function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
@@ -34456,10 +34533,11 @@ function rewardsPanelHTML(m){
   const eggCards = wonIds.filter(id=> isEggRewardCard(getCardDefs()[id])); // 2026-10-18: eggs go with the egg / baby rewards below
   const cards = wonIds.filter(id=> !eggCards.includes(id));
   const firstSeen = new Set(m.discoveredThisMatch || []);
-  if(cards.length){
+  const castles = rewardCastleDrops(m); // 2026-10-18 (package T): a bramble won is a card here too
+  if(cards.length || castles.length){
     const defs = getCardDefs();
     const deckable = cards.filter(id=> rewardWorthDeckPrompt(id)); // 2026-10-18: no deck offer for a card below the Collection level's rarity floor (DECK_PROMPT_FLOORS)
-    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards" style="--n:${cards.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}</div>` : '').join('')}</div>
+    secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards" style="--n:${cards.length + castles.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}</div>` : '').join('')}${castles.map(rewardCastleCardHTML).join('')}</div>
       ${tabOpen('deck') && deckable.length ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: deckable.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: deckable.length===1?'it':'them'})}</button>` : ''}</div>`);
   }
   // New cards seen, with what opened (2026-10-17): titles / characters / maps, then the new fights as map circles.
@@ -34512,8 +34590,7 @@ function rewardsPanelHTML(m){
   // 2026-10-18 (package U): egg cards won as card rewards (Cocoon and the rest), in the egg look, beside the egg and the baby
   eggCards.forEach(id=>{ const d = getCardDefs()[id];
     acts.push(`<span class="rw-act rw-egg rw-egg-card" data-tip="${escapeAttr(eggCardRewardNote())}">${d.icon || '🥚'} ${escapeHtml(d.name)}</span>`); });
-  // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
-  if(m.conquestCastleSpare) acts.push(`<span class="rw-act rw-castle" data-tip="${escapeAttr(TX('results.fuse-it-in-the-forge-castles'))}">🏰 ${escapeHtml(m.conquestCastleSpare)}</span>`);
+  // 2026-10-18 (package T): a bramble won is no longer a chip here ("New bramble: X", with a Forge tooltip); it is a card with the cards won.
   if(m.dungeonOutcome && m.dungeonOutcome.keyBack) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(TX('results.a-win-gives-your-key-back'))}">${TX('results.dungeon-key-back', {n: dungeonTicketsLeft()})}</span>`); // 2026-10-16
   const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-spare-copy-of-a-base'))}">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join(''); })() : ''}`;
   const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
@@ -37950,6 +38027,10 @@ function renderVfxForEvent(ev){
     SoundKit.bubble(); const el = boardCardEl(ev.uid); shakeEl(el); tintPulse(el, 'poison-tint-pulse');
     poisonBubbleBurstVfx(ev.uid);
     floatText(el, '☠️ -'+ev.dmg, 'poison-tick');
+    // 2026-10-18 (package P, owner: "When you naturally lose poison counters ... it doesn't say 'Cured!' It just drops a greyed out toxin
+    // counter from your toxin context label"): the 1-a-round wear-down drops a grey "☠−1" off the Poison badge (FX.D.poisonDrop, measured
+    // before the badge is redrawn below). The last counter's look fades off with its bubbles in FX.D.syncStatusLooks.
+    if(ev.decay && el && fxAtLeast('low') && !reducedMotion()) try{ if(window.FX && FX.D && FX.D.poisonDrop) FX.D.poisonDrop(el); }catch(e){}
     const rc = matchState && matchState.replayCards && matchState.replayCards[ev.uid];
     if(rc){ rc.hp = Math.max(0, rc.hp - ev.dmg); if(ev.decay) rc.poison = Math.max(0, (rc.poison||0) - 1); }
     updateCardHpDisplay(ev.uid); try{ updateCardStatusDisplay(ev.uid); }catch(e){}
