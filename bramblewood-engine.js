@@ -1242,8 +1242,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(hurt) removeDeadCards(players, sideOf, {}, stats, events);
     // Awash (2026-10-17, user: "New field effect: Awash 1-3 every turn to a random card."): rules.awash. Each round from round 2 the water
     // takes one random unit (either side; not a pinned or Webbed one, not a cage) and washes it 1–3 columns (rolled each round; a number
-    // on the flag caps the roll), by washPush's rules for a push with no fixed way: a slight lean inward, the other way when that way is
-    // blocked, a bob in place when both are. Logs fieldTick {field:'awash', uid, n} (or {none}), then the wave event {awash:true}.
+    // on the flag caps the roll), by washPush's rules for a push with no fixed way: a slight lean inward, a crash into a unit in the way.
+    // Logs fieldTick {field:'awash', uid, n} (or {none}), then the wave event {awash:true}.
+    // 2026-10-18 (user: "We can call all of them wave for now. "Awashed" will be for something else - reserved."): on screen this field
+    // is "Wave" (the same Wave N as the skill); the key stays rules.awash for saved games and data.
     if(rules.awash){ const cap = Math.max(1, Math.min(3, Math.round(fxN(rules.awash, 3)))), pool = [1,2].flatMap(pid=> liveUnits(players[pid]).filter(c=> !stuckFast(c)).map(c=> [pid, c]));
       if(pool.length){ const [pid, c] = pool[Math.floor(rnd()*pool.length)], n = 1 + Math.floor(rnd()*cap);
         ev({type:'fieldTick', field:'awash', round, side:sideOf(pid), uid:c.uid, defId:c.defId, n});
@@ -1449,90 +1451,64 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // Wave (2026-10-14, user: "Sea creatures might have more skills related to water. Such as pushing creatures left or right -
   // waves."): effects.wave 'left' | 'right' | 'alternate' | true. When its attack lands on a unit (and the unit lives), the unit is
-  // pushed one column that way: 'alternate' goes left on its first swing, then right, and so on; true has no fixed way (since
-  // 2026-10-17 a slight lean inward and no swap, see washPush below). If a unit stands in that column, the two swap. Open boards: the board's edge is the
-  // outermost column any unit on either side stands in, and a push never goes past it; a pinned unit or a cage can't be moved and
-  // blocks the push. Slotless rows are always packed, so there the unit swaps with its neighbour, if it has one that way.
+  // pushed that way: 'alternate' goes left on its first swing, then right, and so on; true has no fixed way (a slight lean inward).
+  // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now."): Wave N, the same push
+  // as the field (rules.awash, called "Wave" on screen now): the unit rides N columns (effects.waveN, 1 by default; a bare number in
+  // effects.wave is N with no fixed way), crashing into a unit in the way (both take N), and nothing swaps any more. See washPush.
+  // A pinned or Webbed unit, or a cage, can't be moved.
   function relayoutRow(pl){
     const all = allBoardCards(pl);
     pl.row.center = all.filter(c=> c.slot === 0);
     pl.row.left = all.filter(c=> c.slot < 0).sort((a, b)=> Math.abs(a.slot) - Math.abs(b.slot));
     pl.row.right = all.filter(c=> c.slot > 0).sort((a, b)=> a.slot - b.slot);
   }
+  function waveNOf(e){ const v = e && e.wave; return Math.max(1, Math.round(Number(e && e.waveN) || (typeof v === 'number' ? v : 1) || 1)); }
   function waveHit(players, sideOf, attPid, att, t, events, stats){
-    const tpid = otherId(attPid), pl = players[tpid], v = effectsOf(att).wave;
+    const tpid = otherId(attPid), pl = players[tpid], fx = effectsOf(att), v = fx.wave;
     if(!pl || !t || !(t.hp > 0) || stuckFast(t) || t.cageOf || !v) return null; // + Webbed can't be pushed (2026-10-17)
     let dir = v === 'left' ? -1 : v === 'right' ? 1 : 0;
     if(v === 'alternate'){ att.waveFlip = !att.waveFlip; dir = att.waveFlip ? -1 : 1; }
     const ev = {type:'wave', side:sideOf(attPid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:t.uid, targetDefId:t.defId, moves:[], blocked:false, slotMode};
-    return washPush(players, sideOf, tpid, t, 1, dir, ev, events, stats);
+    return washPush(players, sideOf, tpid, t, waveNOf(fx), dir, ev, events, stats);
   }
-  // 2026-10-17 (user: "Oh for Awash skills, there's always a slight bias towards awashing inwards - very slight. If it's awash 1 and
-  // there's another unit in the way, push the other way instead. If you're blocked on both sides, the unit just bobs up then down,
-  // while the wave rides past, touching and bobbing (slightly) the other card."): the push shared by Wave and the Awash field.
-  //   A fixed way (Wave left / right / alternate) is unchanged: one column that way, swapping with a unit standing there; the board's
-  //   edge, or a pinned / Webbed unit or a cage there, blocks it.
-  //   No fixed way (Wave true, which used to go "toward the side with more room", and the Awash field): inward (toward the middle of
-  //   the board) 55 in 100, outward 45 (a coin flip from the middle column). On an open board it never swaps: the unit rides up to n
-  //   free columns that way and stops at the first unit or at the edge. If it can't move a single column that way, it goes the other
-  //   way instead (ev.bounced). Blocked both ways it stays put and bobs: ev.blocked and ev.bob, with ev.touchUids the units beside it
-  //   that the wave touches on its way past. A packed (slotless) row has no free columns, so there it still trades places, up to n
-  //   places along the row (ev.order: the row's uids after the move), with the same lean and the same fallback the other way.
+  // Wave N, the one push shared by the Wave skill and the Wave field (rules.awash). 2026-10-17 (user: "there's always a slight bias
+  // towards awashing inwards - very slight"); 2026-10-18 (user: "Awash N: Move N. If crash into another unit, both take N damage.", then
+  // "Wave and Awash refer to the same skill"):
+  //   The way: a fixed one (Wave left / right / alternate), or none (Wave true and the field): inward (toward the middle of the board)
+  //   55 in 100, outward 45 (a coin flip from the middle column).
+  //   Open boards: the unit rides up to N free columns that way. A unit in the way (any unit: a pinned or Webbed one, or a cage, too)
+  //   is crashed into: it stops beside it and both take N (ev.crashUid, then a washCrash event; ev.cols 0 when it was right beside it).
+  //   The board's edge (the outermost column any unit on either side stands in) stops it; with no fixed way, an edge right beside it
+  //   turns it the other way instead (ev.bounced). A fixed way at the edge is blocked (ev.blocked). Nothing swaps any more.
+  //   Packed (slotless) rows have no free columns: it crashes into its neighbour that way (no fixed way: the other way at the end of
+  //   the row); alone, it bobs (ev.blocked, ev.bob, ev.touchUids).
+  // The word "Awashed" is reserved for a future mechanic (the user, 2026-10-18), so the internal keys (rules.awash, ev.awash, the
+  // 'awash' art key) stay as they are for saved games and data, but nothing on screen says "Awash".
   const WASH_INWARD = 0.55;
   function washDir(pos, mid){ if(pos === mid) return rnd() < .5 ? -1 : 1; const inward = pos > mid ? -1 : 1; return rnd() < WASH_INWARD ? inward : -inward; }
   function washPush(players, sideOf, tpid, t, n, dir, ev, events, stats){
-    const pl = players[tpid]; n = Math.max(1, Math.round(Number(n) || 1));
-    let other = null; const shifted = [];
-    // 2026-10-18 (user: "Awash N: Move N. If crash into another unit, both take N damage."): the Awash field crashes instead of bouncing.
-    const crash = !!ev.awash; let crashInto = null;
-    const blocks = c=> !!(c && c.hp > 0 && (stuckFast(c) || c.cageOf));
+    const pl = players[tpid]; n = Math.max(1, Math.round(Number(n) || 1)); ev.n = n;
+    let crashInto = null;
+    const live = c=> !!(c && c.hp > 0 && !c.gap);
     if(slotMode){
       syncSlots(players[1]); syncSlots(players[2]);
       const edge = Math.max(1, ...[1,2].flatMap(pid=> players[pid] ? allBoardCards(players[pid]).filter(c=> c.hp > 0 && !c.gap).map(c=> Math.abs(c.slot)) : []));
-      const s0 = t.slot;
-      if(dir){
-        const d = s0 + dir; ev.dir = dir < 0 ? 'left' : 'right';
-        other = allBoardCards(pl).find(c=> c !== t && c.slot === d) || null;
-        if(Math.abs(d) > edge || blocks(other)){ ev.blocked = true; other = null; }
-        else { t.slot = d; ev.moves.push({uid:t.uid, from:s0, to:d}); if(other){ other.slot = s0; ev.moves.push({uid:other.uid, from:d, to:s0}); ev.swapUid = other.uid; } relayoutRow(pl); }
-      } else {
-        const occ = new Map(allBoardCards(pl).filter(c=> c !== t && c.hp > 0 && !c.gap).map(c=> [c.slot, c]));
-        const reach = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > edge || occ.has(d)) break; s = d; } return s; };
-        const first = washDir(s0, 0); let way = first, to = reach(way);
-        if(!crash && to === s0){ way = -first; to = reach(way); if(to !== s0) ev.bounced = true; }
-        if(crash){ // Awash N (2026-10-18): ride up to N columns; a unit in the way is crashed into. Only the board's edge turns it back.
-          const hitAt = (w, from)=> occ.get(from + w) || null;
-          let hit = to - s0 !== n * way ? hitAt(way, to) : null;
-          if(to === s0 && !hit){ way = -first; to = reach(way); hit = to - s0 !== n * way ? hitAt(way, to) : null; if(to !== s0 || hit) ev.bounced = true; }
-          if(hit){ crashInto = hit; ev.crashUid = hit.uid; }
-          if(to === s0 && hit){ ev.dir = way < 0 ? 'left' : 'right'; ev.n = n; ev.cols = 0; }
-        }
-        ev.n = n;
-        if(crashInto && to === s0){ /* rammed the unit right beside it: no columns ridden */ }
-        else if(to === s0){ ev.dir = first < 0 ? 'left' : 'right'; ev.blocked = true; ev.bob = true; ev.touchUids = [s0 - 1, s0 + 1].map(s=> occ.get(s)).filter(Boolean).map(c=> c.uid); }
-        else { ev.dir = way < 0 ? 'left' : 'right'; t.slot = to; ev.moves.push({uid:t.uid, from:s0, to}); ev.cols = Math.abs(to - s0); relayoutRow(pl); }
-      }
+      const s0 = t.slot, occ = new Map(allBoardCards(pl).filter(c=> c !== t && live(c)).map(c=> [c.slot, c]));
+      const ride = w=>{ let s = s0; for(let k = 0; k < n; k++){ const d = s + w; if(Math.abs(d) > edge) return {to:s, hit:null}; const o = occ.get(d); if(o) return {to:s, hit:o}; s = d; } return {to:s, hit:null}; };
+      const first = dir || washDir(s0, 0); let way = first, r = ride(way);
+      if(!dir && r.to === s0 && !r.hit){ way = -first; r = ride(way); if(r.to !== s0 || r.hit) ev.bounced = true; else way = first; }
+      ev.dir = way < 0 ? 'left' : 'right';
+      if(r.hit){ crashInto = r.hit; ev.crashUid = r.hit.uid; }
+      if(r.to !== s0){ t.slot = r.to; ev.moves.push({uid:t.uid, from:s0, to:r.to}); ev.cols = Math.abs(r.to - s0); relayoutRow(pl); }
+      else if(crashInto) ev.cols = 0; // rammed the unit right beside it: no columns ridden
+      else { ev.blocked = true; if(!dir){ ev.bob = true; ev.touchUids = [s0 - 1, s0 + 1].map(s=> occ.get(s)).filter(Boolean).map(c=> c.uid); } }
     } else {
-      const order = physicalRowOrder(pl), i = order.indexOf(t), L = pl.row.left.length, C = pl.row.center.length;
-      const relay = ()=>{ pl.row.left = order.slice(0, L).reverse(); pl.row.center = order.slice(L, L + C); pl.row.right = order.slice(L + C); };
-      if(dir){
-        const j = i + dir; ev.dir = dir < 0 ? 'left' : 'right'; other = order[j] || null;
-        if(i < 0 || !other || blocks(other)){ ev.blocked = true; other = null; }
-        else { order[i] = other; order[j] = t; relay(); ev.swapUid = other.uid; ev.aUid = t.uid; ev.bUid = other.uid; }
-      } else {
-        const reach = w=>{ let j = i; for(let k = 0; k < n; k++){ const nx = order[j + w]; if(!nx || blocks(nx)) break; j += w; } return j; };
-        const first = i < 0 ? 1 : washDir(i, (order.length - 1) / 2); let way = first, j = i < 0 ? i : reach(way);
-        if(crash && i >= 0){ // Awash N on a packed row (2026-10-18): every neighbour is a unit, so it rams the one that way (or the other way at the end of the row)
-          let nb = order[i + first]; way = first; if(!nb){ nb = order[i - first]; way = -first; if(nb) ev.bounced = true; }
-          if(nb && nb.hp > 0){ crashInto = nb; ev.crashUid = nb.uid; j = i; } }
-        if(i >= 0 && j === i && !crashInto){ way = -first; j = reach(way); if(j !== i) ev.bounced = true; }
-        ev.n = n; ev.dir = (j === i && !crashInto ? first : way) < 0 ? 'left' : 'right';
-        if(crashInto){ ev.cols = 0; }
-        else if(i < 0 || j === i){ ev.blocked = true; ev.bob = true; ev.touchUids = i < 0 ? [] : [order[i - 1], order[i + 1]].filter(c=> c && c.hp > 0).map(c=> c.uid); }
-        else { const lo = Math.min(i, j), hi = Math.max(i, j); for(let k = lo; k <= hi; k++) if(order[k] !== t) shifted.push(order[k]);
-          order.splice(i, 1); order.splice(j, 0, t); relay(); ev.moves.push({uid:t.uid, from:i, to:j}); ev.cols = Math.abs(j - i); ev.order = order.map(c=> c.uid);
-          if(shifted.length === 1){ other = shifted[0]; ev.swapUid = other.uid; ev.aUid = t.uid; ev.bUid = other.uid; } }
-      }
+      const order = physicalRowOrder(pl), i = order.indexOf(t);
+      const first = dir || (i < 0 ? 1 : washDir(i, (order.length - 1) / 2)); let way = first, nb = i < 0 ? null : order[i + way];
+      if(!dir && i >= 0 && !live(nb)){ way = -first; nb = order[i + way]; if(live(nb)) ev.bounced = true; else way = first; }
+      ev.dir = way < 0 ? 'left' : 'right';
+      if(live(nb)){ crashInto = nb; ev.crashUid = nb.uid; ev.cols = 0; }
+      else { ev.blocked = true; if(!dir){ ev.bob = true; ev.touchUids = []; } }
     }
     if(recordEvents && events) events.push(ev);
     if(crashInto && t.hp > 0 && crashInto.hp > 0){ // both take N (a hit: Exposed doubles it, like any flat hit)
@@ -1540,9 +1516,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       ensureStat(stats || {}, sd, t.defId).taken += d1; ensureStat(stats || {}, sd, crashInto.defId).taken += d2;
       if(recordEvents && events) events.push({type:'washCrash', side:sd, uid:t.uid, defId:t.defId, otherUid:crashInto.uid, otherDefId:crashInto.defId, n, dmg:d1, otherDmg:d2});
       removeDeadCards(players, sideOf, {}, stats || {}, events); }
-    if(!ev.blocked && !(crashInto && !(ev.cols > 0))){ // a pushed unit has moved: its On Move triggers fire (as Scurry's do)
-      runCustomTriggers(players, sideOf, tpid, t, CARD_DEFS[t.defId], 'onMove', stats || {}, events, {movedCard: other || t});
-      (other ? [other] : shifted).forEach(o=>{ if(o && o.hp > 0) runCustomTriggers(players, sideOf, tpid, o, CARD_DEFS[o.defId], 'onMove', stats || {}, events, {movedCard: t}); }); }
+    if(ev.cols > 0 && t.hp > 0) runCustomTriggers(players, sideOf, tpid, t, CARD_DEFS[t.defId], 'onMove', stats || {}, events, {movedCard: t}); // a pushed unit has moved: its On Move triggers fire (as Scurry's do)
     return ev;
   }
   function deriveDef(card, grant){
@@ -1847,7 +1821,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Psychic Dampener (2026-10-17, raid field effect, rules.psychicDampener): psychic damage is halved, rounded down (Psychic 1 does nothing).
     const damp = !!rules.psychicDampener, n2 = damp ? Math.floor(n / 2) : n;
     const tpid = otherId(pid), mindless = isMindless(c), dmg = (mindless || c.invincible > 0) ? 0 : n2; // + Invincible (2026-10-16)
-    if(dmg > 0){ c.hp = Math.max(0, c.hp - dmg); if(c.asleep > 0){ c.asleep = 0; noteWoke(c); } if(c.hp <= 0) c.killedBy = att.uid;
+    if(dmg > 0){ c.hp = Math.max(0, c.hp - dmg); if(c.asleep > 0){ c.asleep = 0; noteWoke(c); } if(c.hp <= 0) noteKiller(c, att.uid, att.defId);
       ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg; }
     if(recordEvents && events) events.push({type:'psychic', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:c.uid, targetDefId:c.defId, dmg, n, immune:mindless || undefined, dampened: (damp && n2 < n) || undefined});
     return dmg;
@@ -2173,6 +2147,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (On Ally Die, Berserk, Divine Retribution), and the killer still collects a Bounty.
   function isNullifier(att){ return !!(att && effectsOf(att).nullify); }
   function nullifyKill(card){ card.nullified = true; card.forceExileZone = true; }
+  // 2026-10-18 (engine parity, R3-WP1): the killing blow remembers who struck it, its card and its side, so a kill from any
+  // path that names its attacker (a shot, a bolt, a missile, Fireball, Tsunami, an Ambush...) is credited the way a melee kill
+  // is, even when that path keeps no kill-credit book of its own (see killerCreditOf in removeDeadCardsPass).
+  function noteKiller(card, attUid, attDefId){
+    card.killedBy = attUid; card.killedByDef = attDefId || null; card.killedByPid = null;
+    if(curPlayers && attUid != null) for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && allBoardCards(pl).some(x=> x && x.uid === attUid)){ card.killedByPid = pid; if(!card.killedByDef){ const k = allBoardCards(pl).find(x=> x && x.uid === attUid); card.killedByDef = k ? k.defId : null; } break; } }
+  }
   function damageCard(card, amount, dmgType, attCard){
     const r0 = computeHitDamage(attCard, amount, dmgType, card); const {armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = r0;
     const crush = !!(attCard && effectsOf(attCard).supreme); // Supreme (2026-10-14): no shell, stone or temporary Health stops it
@@ -2187,7 +2168,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // sudden death: any hit that lands kills; from 2026-10-15 even one Armor / a Shell / stone soaked to 0 ("at least 1 dmg"),
     // unless the unit is Immune to it
     if(suddenDeath && (dmg>0 || (amount > 0 && resistFactor(card.defId, dmgType, attCard ? CARD_DEFS[attCard.defId] : null) !== 0))) card.hp = 0;
-    if(hp0 > 0 && card.hp <= 0 && attCard) card.killedBy = attCard.uid; // who:'killer' (2026-10-14): the unit whose hit killed it
+    if(hp0 > 0 && card.hp <= 0 && attCard) noteKiller(card, attCard.uid, attCard.defId); // who:'killer' (2026-10-14): the unit whose hit killed it
     if(dmg>0 && card.asleep>0){ card.asleep = 0; noteWoke(card); } // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
     if(!nul) shellUp(card);
     if(nul && card.hp <= 0) nullifyKill(card);
@@ -2230,7 +2211,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     card.hp = Math.max(0, card.hp - dmg);
     if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
     if(suddenDeath && amount > 0 && factor !== 0 && !EXPOSE_TICKS.has(dmgType)) card.hp = 0; // ...a hit soaked to 0 too (2026-10-15); status ticks still need to hurt
-    if(attUid != null && hp0 > 0 && card.hp <= 0) card.killedBy = attUid; // who:'killer' (2026-10-14)
+    if(attUid != null && hp0 > 0 && card.hp <= 0) noteKiller(card, attUid, attDefId); // who:'killer' (2026-10-14)
     if(dmg>0 && card.asleep>0){ card.asleep = 0; noteWoke(card); } // Asleep breaks on any flat/ranged damage too
     shellUp(card); // Shell triggers on arrows and every other hit too (2026-10-12)
     return dmg;
@@ -3662,6 +3643,42 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(d && d.effects && Array.isArray(d.effects.triggers) && d.effects.triggers.some(t=> t && t.on === 'onPitch')) runCustomTriggers(players, sideOf, pid, c, d, 'onPitch', stats || {}, events, {pitchedDefId}); });
     removeDeadCards(players, sideOf, {}, stats || {}, events);
   }
+  // Pitching a card (2026-10-18, engine parity R3-WP1): the one set of pitch rules both seats use. The player's pitch
+  // (discardCardByUid in arena_app.js) calls it for the rules and keeps its own sound, chips and log; the CPU's two pitches call it
+  // too (they used to give a flat +1 Lumber and nothing else). In order: the card leaves the hand for the Graveyard; its pitch
+  // yield (def.pitchYield {resource, amount}: stone, lumber or grace; 1 Lumber when unset, Lumberjack adding to Lumber); +1 Dark
+  // Point for a Devilry-line card and +1 more for Core Evil; its own On Discard triggers (gain Lumber / Grace / Stone / Devilry,
+  // Rebuild castle); the turn's pitch is used up (Wildpath "Second Pitch" spends itself first); then the On Pitch units react.
+  // events gets the On Pitch events; the Rebuild events come back in the result (the app logs them after its own lines).
+  const PITCH_RESOURCES = {stone:1, lumber:1, grace:1, devilry:1}; // the keys of PITCH_RESOURCE_META in arena_app.js
+  function pitchYieldOfDef(def){
+    if(def && def.pitchYield && PITCH_RESOURCES[def.pitchYield.resource]) return {resource:def.pitchYield.resource, amount:Math.max(0, Number(def.pitchYield.amount)||0)};
+    return {resource:'lumber', amount:1};
+  }
+  function isDevilryLine(def){ if(!def) return false; if(def.mechanicLine) return def.mechanicLine === 'devilry'; return !(def.graceCost || def.prayerReq) && !def.exileCost && !!def.devilryCost; } // inferMechanicLine in arena_app.js
+  function pitchCard(players, sideOf, pid, card, stats, events){
+    const pl = players && players[pid]; if(!pl || !card) return null;
+    const ix = pl.hand.findIndex(h=> h === card || (card.uid != null && h.uid === card.uid)); if(ix >= 0) pl.hand.splice(ix, 1);
+    pl.graveyard.push({defId:card.defId});
+    const def = CARD_DEFS[card.defId] || null, y = pitchYieldOfDef(def);
+    const gained = y.resource === 'lumber' ? addLumber(pl, y.amount) : (pl[y.resource] = (pl[y.resource]||0) + y.amount, y.amount);
+    const darkPoints = (isDevilryLine(def) ? 1 : 0) + ((def && def.effects && def.effects.coreEvil) ? 1 : 0);
+    if(darkPoints) pl.devilry = (pl.devilry||0) + darkPoints;
+    const discardGains = [], rebuild = [];
+    if(def && def.effects && Array.isArray(def.effects.triggers)) def.effects.triggers.filter(t=> t && t.on === 'onDiscard').forEach(t=>{
+      const amt = t.amount||0; if(amt <= 0) return;
+      if(t.do === 'gainLumber' || t.do === 'gainGold'){ pl.lumber = (pl.lumber||0) + amt; discardGains.push({resource:'lumber', amount:amt}); }
+      else if(t.do === 'gainGrace'){ pl.grace = (pl.grace||0) + amt; discardGains.push({resource:'grace', amount:amt}); }
+      else if(t.do === 'gainStone'){ pl.stone = (pl.stone||0) + amt; discardGains.push({resource:'stone', amount:amt}); }
+      else if(t.do === 'gainDevilry'){ pl.devilry = (pl.devilry||0) + amt; discardGains.push({resource:'devilry', amount:amt}); }
+      else if(t.do === 'rebuild' && pl.hq && pl.hq.hp > 0){ const h = Math.min(Math.max(0, Math.floor(Number(amt)||0)), pl.hq.maxHp - pl.hq.hp); // Rebuild castle (2026-10-17): never above max
+        if(h > 0){ pl.hq.hp += h; rebuild.push({type:'rebuild', side:sideOf(pid), defId:card.defId, uid:null, amount:h, n:Math.floor(Number(amt)||0), trigger:true, hp:pl.hq.hp, maxHp:pl.hq.maxHp}); } }
+    });
+    if(pl.perks && pl.perks.secondPitch) pl.perks.secondPitch = false; // Wildpath "Second Pitch": once a fight, a second pitch this turn
+    else pl.discardUsedThisTurn = true;
+    try{ firePitchTriggers(players, sideOf, pid, card.defId, stats, events); }catch(e){}
+    return {defId:card.defId, resource:y.resource, amount:y.amount, gained, darkPoints, discardGains, rebuild};
+  }
   // Penance N and Blood Tithe N (2026-10-16, Devilry; user: "Devilry 2 skills: hurting your own castle on play as payment. Also,
   // hurting a random ally on play as payment. Not sure of the name. Penance?"). Payments, not hits: no Bulwark, Armor, Shield or
   // Exposed counter takes part. Penance N: when played, your own castle loses N Health (never below 1: a payment can't lose you the
@@ -4297,15 +4314,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const SHOT_KEYS = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'spitfire', 'snipe'].concat(Object.keys(BOLT_ELEMENTS));
   function hasShotSkill(c){ const fx = effectsOf(c); return SHOT_KEYS.some(k=> fx[k] && !(Number(fx[k]) < 0)); }
   function fireArrowVolley(players, sideOf, stats, events){ // every shooter at once (kept for callers outside the round order)
-    let fired = false;
+    let fired = false; const kc = {}; // 2026-10-18: its kills are credited
     [1,2].forEach(pid=>{
       if(passAttackerIds && !passAttackerIds.includes(pid)) return;
       const pl = players[pid]; if(!pl) return;
-      [...pl.row.left, ...pl.row.center, ...pl.row.right].forEach(c=>{ if(fireShotsOf(players, sideOf, pid, c, stats, events)) fired = true; });
+      [...pl.row.left, ...pl.row.center, ...pl.row.right].forEach(c=>{ if(fireShotsOf(players, sideOf, pid, c, stats, events, kc)) fired = true; });
     });
-    if(fired) removeDeadCards(players, sideOf, {}, stats, events);
+    if(fired) removeDeadCards(players, sideOf, kc, stats, events);
   }
-  function fireShotsOf(players, sideOf, pid, c, stats, events){
+  // killCredit (2026-10-18, engine parity): the book its kills go in, as a melee swing's do (kills, MVP, Crown of Thorns, Midas,
+  // On Kill). It was always null, so ~30 shooters never counted a kill. On-hit skills on shots are unchanged (an owner decision).
+  function fireShotsOf(players, sideOf, pid, c, stats, events, killCredit){
+    killCredit = killCredit || {};
     let fired = false;
     {
       const pl = players[pid]; if(!pl) return false;
@@ -4350,7 +4370,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(fx.snipe){ const opp0 = opposingCardOf(players, pid, c); if(!(opp0 && opp0.card && opp0.card.hp>0)){ const foes = allBoardCards(enemy).filter(x=> x.hp>0 && !x.cageOf);
           if(foes.length){ const t = foes[Math.floor(rnd()*foes.length)]; const amt = Number(fx.snipe === true ? 1 : fx.snipe)||1;
             if(recordEvents && events) events.push({type:'arrow', snipe:true, side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: t.uid, targetDefId: t.defId, amount: amt});
-            fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, null, c.uid, true); } } } }
+            fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, killCredit, c.uid, true); } } } }
         if(headwindDouble(c, pid)) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice
         shots.forEach(shot=>{
           if(!(c.hp > 0)) return;
@@ -4366,10 +4386,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           fired = true;
           if(helmetDeflects(target, sideOf(otherId(pid)), events)) return;
           let hitCard = null; shotBounced = false;
-          if(shot.amount > 0 || target.kind !== 'card') hitCard = fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, null, c.uid, true); // true: a shot, Reflect bounces it (2026-10-17)
+          if(shot.amount > 0 || target.kind !== 'card') hitCard = fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, killCredit, c.uid, true); // true: a shot, Reflect bounces it (2026-10-17)
           else { // a no-damage spit (Poison Bolt): it can still be dodged, and a Guardian still steps in
             const rf = reflectShotOf(players, sideOf, pid, target.card, events); // Reflect (2026-10-17): the spit bounces back at the spitter's side
-            if(rf){ if(rf.target.kind === 'hq') fireDamageAction(players, sideOf, rf.pid, rf.src.defId, shot.n, shot.dmgType, rf.target, stats, events, null, rf.src.uid);
+            if(rf){ if(rf.target.kind === 'hq') fireDamageAction(players, sideOf, rf.pid, rf.src.defId, shot.n, shot.dmgType, rf.target, stats, events, killCredit, rf.src.uid);
               else if(dodgeCheck(rf.target.card, rf.src.defId)) hitCard = redirectToGuardian(players[pid], rf.target.card);
               else if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(rf.pid), attDefId:rf.src.defId, attUid:rf.src.uid, targetSide:sideOf(pid), targetDefId:rf.target.card.defId, targetUid:rf.target.card.uid, ranged:true}); }
             else if(!dodgeCheck(target.card, c.defId)){ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(otherId(pid)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true}); }
@@ -4974,12 +4994,73 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     }
     if(rnd() < 0.75){
+      // 2026-10-18 (engine parity, R3-WP1): the field's rules count, mildly. A swing that will often miss (the dark, Sun-shy, Night-
+      // blind; an Illuminate unit facing it lights it) or that a Tide unit dodges (the Tide-evade rule: a non-swimmer facing a
+      // swimmer while the tide is in) is worth less; a swimmer facing a non-swimmer dodges back, so it out-lasts more often.
+      const myTide = isTideDef(d), tideOn = tideEvadeOn() && getTide() !== null;
       const fights = legal.map(sl=>{ const f = across(sl); if(!f) return null;
-        const kills = atk >= (f.hp || 0), lives = hp > (f.atk || 0);
-        return (kills || lives) ? {sl, score: (kills ? 2 : 0) + (lives ? 1 : 0) + rnd() * 0.5} : null; }).filter(Boolean);
+        let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide) hit *= 0.5;
+        const kills = atk >= (f.hp || 0) && hit > 0.5, lives = hp > (f.atk || 0) || (tideOn && myTide && !isTide(f) && hp * 2 > (f.atk || 0));
+        return (kills || lives) ? {sl, score: (kills ? 2 * hit : 0) + (lives ? 1 : 0) + rnd() * 0.5} : null; }).filter(Boolean);
       if(fights.length) return fights.reduce((a, b)=> b.score > a.score ? b : a).sl;
     }
     return legal[Math.floor(rnd() * legal.length)];
+  }
+  // Which Dark Summon card to cast over which of its own Sacrifice N units (2026-10-18, see the call in aiTakeTurnOnce), or null.
+  function aiSacrificePick(ai, cardValue){
+    const dark = ai.hand.filter(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon); if(!dark.length) return null;
+    const fodder = allLive(ai).filter(c=> !c.cageOf && !c.isLeader && Number((CARD_DEFS[c.defId].effects||{}).sacrifice) > 0); if(!fodder.length) return null;
+    const expendable = (f, newVal)=>{ const fd = CARD_DEFS[f.defId] || {}, hp = f.hp || 0;
+      return !!fd.token || hp <= 2 || hp <= (f.maxHp || hp) / 3 || ((f.poison||0) + (f.bleed||0)) >= hp || cardValue(f.defId) <= newVal * 0.6; };
+    let best = null;
+    dark.forEach(hc=>{ const nv = cardValue(hc.defId), free = canPlay(ai, hc.defId, hc.uid);
+      fodder.forEach(f=>{ const n = Number(CARD_DEFS[f.defId].effects.sacrifice);
+        if(!canPlay(ai, hc.defId, hc.uid, n)) return;
+        const fv = cardValue(f.defId);
+        if(free ? !expendable(f, nv) : !(expendable(f, nv) || fv < nv)) return; // payable anyway: only an expendable unit is worth the saving
+        const key = [fv - (expendable(f, nv) ? 100 : 0), -nv, f.uid];
+        if(!best || key[0] < best.key[0] || (key[0] === best.key[0] && (key[1] < best.key[1] || (key[1] === best.key[1] && key[2] < best.key[2])))) best = {hc, fod: f, key}; }); });
+    return best;
+  }
+  // What a field card is worth to the CPU (2026-10-18, engine parity): its units that gain from it minus yours that do, plus yours
+  // that suffer minus its that do. > 0: play it. A field already up (or one this table doesn't know) is worth nothing.
+  function aiFieldWorth(players, aiId, defId){
+    const fid = ((CARD_DEFS[defId]||{}).field || {}).id; if(!fid || (field && field.id === fid)) return 0;
+    const me = allLive(players[aiId]).filter(c=> !c.cageOf), foe = allLive(players[otherId(aiId)]).filter(c=> !c.cageOf);
+    const sum = (arr, f)=> arr.reduce((t, c)=> t + (f(c) || 0), 0), flies = c=> !!effectsOf(c).flying;
+    if(fid === 'frozen'){ const hurt = c=> resistFactor(c.defId, 'cold') < 1 || climbs(c) ? 0 : (weaknessFactor(c.defId, 'cold') > 1 ? 2 : 1) * (c.wait > 0 ? 0.5 : 1); // a Ready unit loses a swing
+      return (foe.length ? sum(foe, hurt) / foe.length : 0) - (me.length ? sum(me, hurt) / me.length : 0); }
+    if(fid === 'heatwave'){ const hurt = c=> resistFactor(c.defId, 'heat') < 1 || climbs(c) ? 0 : (weaknessFactor(c.defId, 'heat') > 1 ? 2 : 1) + (c.hp <= 2 ? 1 : 0);
+      return sum(foe, hurt) - sum(me, hurt); }
+    if(fid === 'rain'){ const gain = c=> Math.min(2, (c.maxHp||0) - (c.hp||0)) + 0.5; return sum(me, gain) - sum(foe, gain); }
+    if(fid === 'fog'){ const swing = c=> flies(c) ? 0 : Math.max(0, c.atk||0); // fog makes the non-flyers miss 1 in 3
+      return (sum(foe, swing) - sum(me, swing)) / 3; }
+    if(fid === 'moon'){ const moon = c=>{ const e = effectsOf(c); return (e.moonborn || e.fullMoon || e.fullMoonGrant) ? 1 : 0; };
+      return sum(me, moon) + 0.5 * players[aiId].hand.filter(h=> moon({defId:h.defId})).length - sum(foe, moon); }
+    return 0;
+  }
+  // How often a unit of this card would swing blind at the slot facing f (2026-10-18; sightMiss's rules for a card not on the board
+  // yet: the dark, Sun-shy by day, Night-blind at night; an Illuminate unit on its side, or facing it, lights it).
+  function aiSightMissAt(defId, aiId, f){
+    const e = (CARD_DEFS[defId]||{}).effects || {}, pl = curPlayers && curPlayers[aiId];
+    const lit = illuminates(CARD_DEFS[defId]) || !!(pl && allLive(pl).some(c=> illuminates(CARD_DEFS[c.defId]))) || !!(f && illuminates(CARD_DEFS[f.defId]));
+    const ph = phaseActive() ? getPhase() : null, dk = rules.dark; let m = 0;
+    if(dk && !e.darksight && !lit) m = dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25;
+    if(ph === 'day' && e.sunshy) m = Math.max(m, 0.5);
+    if(ph === 'night' && e.nightblind && !lit) m = Math.max(m, 0.5);
+    return m;
+  }
+  // The CPU's pitch (2026-10-18, engine parity): pitchCard, the same rules as the player's, after the 'discard' event the board
+  // shows (now with what it gave), then the On Discard Rebuild events.
+  function aiPitch(players, sideOf, aiId, hc, stats, events){
+    const y = pitchYieldOfDef(CARD_DEFS[hc.defId]);
+    if(recordEvents && events) events.push({type:'discard', side:sideOf(aiId), defId:hc.defId, resource:y.resource, amount:y.amount});
+    const onPitch = (recordEvents && events) ? [] : null; // the player's log order: discard, Dark Points, On Pitch, Rebuild
+    const r = pitchCard(players, sideOf, aiId, hc, stats, onPitch);
+    if(r && onPitch){
+      if(r.darkPoints > 0) events.push({type:'devilry', side:sideOf(aiId), defId:hc.defId, amount:r.darkPoints, pitch:true});
+      onPitch.forEach(ev=> events.push(ev)); r.rebuild.forEach(ev=> events.push(ev)); }
+    return r;
   }
   // Saving reach (2026-10-09): 2 turns. Saving further (or refusing smaller costly cards while saving)
   // cost the CPU more tempo than the big card won back under today's discard-only Lumber (decision B4).
@@ -4998,7 +5079,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Skirmish leaders (2026-10-08): a skirmish can give the CPU optional leaders (reserveLeaders). Each can be
     // summoned once; the CPU brings one out now and then, or whenever it has nothing else it can play.
     const fieldCard = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field && canPlay(ai, hc.defId, hc.uid));
-    if(fieldCard && rnd() < 0.5) placeCard(players, sideOf, aiId, fieldCard.uid, 'left', stats, events);
+    // 2026-10-18 (engine parity, R3-WP1): in the game's own fights (aiAim) a field card goes down only when it helps the CPU's board
+    // more than yours (aiFieldWorth); the silent sims keep the old coin flip so their numbers stay comparable.
+    if(fieldCard && (aiAim ? aiFieldWorth(players, aiId, fieldCard.defId) > 0 : rnd() < 0.5)) placeCard(players, sideOf, aiId, fieldCard.uid, 'left', stats, events);
     if(ai.reserveLeaders && ai.reserveLeaders.length && !ai.playedThisTurn){
       const ready = ai.reserveLeaders.filter(id=> CARD_DEFS[id] && canPlay(ai, id, null));
       if(ready.length && (!affordable.length || rules.bossSurge || rnd() < 0.35)){ // a surging boss comes out the moment it can
@@ -5018,12 +5101,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const pitchable = ai.hand.filter(hc=> !saving.includes(hc) && costOfCard(hc.defId) === 0 && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field));
         if(pitchable.length && (ai.hand.length >= 3 || !affordable.length)){
           const worst = pitchable.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
-          ai.hand.splice(ai.hand.indexOf(worst), 1);
-          ai.graveyard.push({defId:worst.defId});
-          ai.lumber += 1;
-          ai.discardUsedThisTurn = true;
-          if(recordEvents && events) events.push({type:'discard', side:sideOf(aiId), defId:worst.defId});
-          firePitchTriggers(players, sideOf, aiId, worst.defId, stats, events); // On Pitch (2026-10-16)
+          aiPitch(players, sideOf, aiId, worst, stats, events); // 2026-10-18: the player's pitch rules (was a flat +1 Lumber)
         }
       }
     }
@@ -5037,9 +5115,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(near && rnd() < 0.8){ const others = ai.hand.filter(h=> h !== near); const food = others.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
         if(placeCard(players, sideOf, aiId, near.uid, rnd() < 0.5 ? 'left' : 'right', stats, events, {prayerOffer: food.uid})) return; }
     }
-    const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid) && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon));
-    const darkPick = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon && canPlay(ai, hc.defId, hc.uid));
-    if(darkPick) placeCard(players, sideOf, aiId, darkPick.uid, rnd() < 0.5 ? 'left' : 'right', stats, events);
+    // (aiAim, 2026-10-18: a field card is decided above, by aiFieldWorth, so the main play can't spend it anyway.)
+    const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid) && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon) && !(aiAim && CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field));
+    // Sacrifice (2026-10-18, engine parity R3-WP1): the CPU never sacrificed (only the player's drag did, sacrificeSummon). Now, with
+    // a Dark Summon card in hand, it gives up one of its own Sacrifice N units for it when the unit is expendable (a token, nearly
+    // dead, poisoned or bleeding to death, or worth much less than the new card) and the discount makes the play possible or saves
+    // what it costs; else, it plays the card as before. No dice: the cheapest unit to lose, then the best card to gain.
+    { const sac = aiSacrificePick(ai, cardValue); // (a Dark Summon has its own allowance, darkPerTurn: not the turn's play)
+      if(!(sac && sacrificeSummon(players, sideOf, aiId, sac.hc.uid, sac.fod.uid, stats, events))){
+        const darkPick = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon && canPlay(ai, hc.defId, hc.uid));
+        if(darkPick) placeCard(players, sideOf, aiId, darkPick.uid, rnd() < 0.5 ? 'left' : 'right', stats, events); } }
     const hadPlay = playable.length && !ai.playedThisTurn;
     if(hadPlay){
       // 2026-10-10 (user: "they shouldn't just always play the cheapest card. If they have 1 1-lumber cost and 1 2-lumber
@@ -5054,6 +5139,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(foeHq < 0.35) v += (d.attack||0)*1.2 + (e.quick ? 4 : 0) + ((e.puncture||0) + (e.perforate||0))*2 + (e.overwhelm ? 3 : 0); // closing out: damage now
         if(foeFliers) v += (e.flying ? 2 : 0) + (e.reach ? 3 : 0) + ((e.antiAir || e.boomerang || e.bananarang) ? 3 + 2*foeFliers : 0);
         if(d.wait) v -= d.wait * (foeHq < 0.35 || myHq < 0.4 ? 2.5 : 1); // slow cards are worth less when it's urgent
+        // The field's rules (2026-10-18, engine parity; the game's own fights only, aiAim): mild nudges, so the CPU leans toward cards
+        // the battlefield helps. The tide in: Tide units (+Attack on Flood, Armor on Ebb). Wind: flyers get a Tailwind or Headwind.
+        // Landslide: flyers are above it. The dark, day or night: a unit that will swing blind is worth less. Arrow Slits: the walls
+        // pick off small units on the attackers' side (player 1).
+        if(aiAim && !d.cardType){ if(getTide() !== null && isTideDef(d)) v += 1.5;
+          if(e.flying && (windMode() || rules.landslide)) v += 1;
+          v -= aiSightMissAt(id, aiId, null) * 3;
+          if(rules.arrowSlits && aiId === 1 && (d.health||0) <= fxN(rules.arrowSlits, 2)) v -= 1; }
         // Spells (2026-10-11): worth what they'd do right now; nothing to do means don't cast it.
         if(d.cardType === 'spell'){ const sp = d.spell || {}, n = Number(sp.amount)||0;
           const gain = (sp.do==='hasten' || sp.do==='tailwind') ? mine.reduce((t, c)=> t + Math.min(n, c.wait||0), 0) * 3 + (sp.do==='tailwind' ? mine.filter(c=> ((CARD_DEFS[c.defId]||{}).effects||{}).flying).length * 4 : 0)
@@ -5082,13 +5175,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const target = ai.hand.length > 1 ? ai.hand.reduce((a, b)=> (need(b) < need(a) || (need(b) === need(a) && cardValue(b.defId) > cardValue(a.defId))) ? b : a) : null;
       const pool = ai.hand.filter(hc=> hc !== target);
       const worst = pool.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
-      const idx = ai.hand.indexOf(worst);
-      const [dc] = ai.hand.splice(idx,1);
-      ai.graveyard.push({defId:dc.defId});
-      ai.lumber += 1; // 2026-09-22: this simple sim-AI discard income now matches the real Lumber-discard economy (was a stale hardcoded Gold grant)
-      ai.discardUsedThisTurn = true;
-      if(recordEvents && events) events.push({type:'discard', side:sideOf(aiId), defId:dc.defId});
-      firePitchTriggers(players, sideOf, aiId, dc.defId, stats, events); // On Pitch (2026-10-16)
+      aiPitch(players, sideOf, aiId, worst, stats, events); // 2026-10-18: the player's pitch rules (was a flat +1 Lumber)
     } else if(!ai.hand.length){
       // 2026-09-25 (explicit user request, "when he runs out of cards, he just plays Bee
       // Tanks"): a completely empty hand used to mean the AI did nothing at all that turn —
@@ -5525,12 +5612,36 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(fire) runCustomTriggers(players, sideOf, pid, c, {effects:{triggers:[Object.assign({}, ch.act, {on:'onCharge'})]}}, 'onCharge', stats || {}, events); }); });
   }
   // Repeats the pass while something is still at 0 HP (Divine Retribution can kill during a pass), at most 6 times.
+  // 2026-10-18 (engine parity, R3-WP1): On Kill fires here now, for every kill this sweep settles (once per killer card, as before),
+  // so a kill by a shot, a bolt, a missile, an area skill or an arrival strike fires its On Kill too, not only a melee swing's.
+  // It used to fire only from the round's reflowAfterKills, so every other sweep (the shot actions, the upkeep, the skills) let
+  // the kill pass with no On Kill and, with an empty book ({}), no kill counted either. Returns the killers' stat keys.
   function removeDeadCards(players, sideOf, killCredit, stats, events){
+    const kills = new Set(), book = killCredit || {};
     for(let guard=0; guard<6; guard++){
-      removeDeadCardsPass(players, sideOf, killCredit || {}, stats, events);
+      removeDeadCardsPass(players, sideOf, book, stats, events, kills);
       if(![players[1], players[2]].some(pl=> pl && allBoardCards(pl).some(c=> c.hp<=0))) break;
     }
     exposeLonely(players, sideOf, events); // 2026-10-17: the last enemy unit just fell, so Expose has nothing left to strike for
+    if(kills.size) fireOnKillTriggers(players, sideOf, kills, stats, events);
+    return kills;
+  }
+  // On Kill: every live card whose side|defId is among the keys just credited (the old reflowAfterKills loop, unchanged).
+  function fireOnKillTriggers(players, sideOf, keys, stats, events){
+    [players[1], players[2]].forEach(pl=> pl && ['left','center','right'].forEach(side=> pl.row[side].slice().forEach(c=>{
+      if(!c || !(c.hp > 0)) return;
+      if(keys.has(statKey(sideOf(pl.id), c.defId))) runCustomTriggers(players, sideOf, pl.id, c, CARD_DEFS[c.defId], 'onKill', stats || {}, events);
+    })));
+  }
+  // The killer of a unit no kill-credit book names (2026-10-18): the unit whose blow took it to 0 (noteKiller), when that unit is
+  // on the other side. A unit killed by its own side (friendly fire) or by nobody (poison, the weather) gives no kill.
+  function killerCreditOf(players, sideOf, pl, card){
+    if(card.killedBy == null) return null;
+    let pid = null, defId = card.killedByDef || null;
+    for(const q of [1,2]){ const k = players[q] && allBoardCards(players[q]).find(x=> x && x.uid === card.killedBy); if(k){ pid = q; defId = defId || k.defId; break; } }
+    if(pid == null) pid = card.killedByPid;
+    if(pid == null || pid === pl.id || !defId) return null;
+    return new Set([statKey(sideOf(pid), defId)]);
   }
   // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades
   // off."): Expose counters only mean something while someone across the board can cash them in. Whenever one side has no live
@@ -5541,7 +5652,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       allLive(me).forEach(c=>{ if(!(c.exposed > 0)) return; const had = c.exposed; c.exposed = 0;
         if(recordEvents && events){ const sd = sideOf ? sideOf(pid) : (pid===1 ? 'A' : 'B'); events.push({type:'statusFx', kind:'exposeFade', side:sd, targetSide:sd, targetUid:c.uid, targetDefId:c.defId, amount:had}); } }); });
   }
-  function removeDeadCardsPass(players, sideOf, killCredit, stats, events){
+  function removeDeadCardsPass(players, sideOf, killCredit, stats, events, kills){
     const p1=players[1], p2=players[2];
     const deadEntries = [];
     [p1,p2].forEach(pl=>{
@@ -5564,7 +5675,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(cdef.effects && cdef.effects.revive && !card.revivedOnce && !card.nullified){ // a Nullify kill: no Revive (2026-10-14)
         card.revivedOnce = true;
         card.hasRemovalCounter = true;
-        card.hp = 1; card.killedBy = null;
+        card.hp = 1; card.killedBy = null; card.killedByDef = null; card.killedByPid = null;
         card.poison = 0; card.decay = 0; card.exposed = 0; card.scar = 0; card.stunned = false;
         card.frozen = 0; card.asleep = 0; card.paralyzed = 0; card.bleed = 0;
         card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null; card.shellQuiet = null;
@@ -5576,7 +5687,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // D20 (2026-10-12): Darkness from your own losses stops at 10, so a deck can't farm it with cheap chaff (cards that
       // make Darkness on purpose still go past it).
       perishedTotal += 1; if((pl.devilry||0) < 10) pl.devilry = (pl.devilry||0) + 1;
-      const credit = killCredit[card.uid];
+      let credit = killCredit[card.uid];
+      if(!credit){ credit = killerCreditOf(players, sideOf, pl, card); if(credit) killCredit[card.uid] = credit; } // 2026-10-18: any path that named its attacker
       const bounty = bountyOf(cdef); // Bounty N (2026-10-15)
       const deathEv = {type:'death', side:mySide, defId:card.defId, uid:card.uid}; if(card.nullified) deathEv.nullified = true; // 2026-10-15: the replay shows a Nullify kill / exile its own way
       if(recordEvents && events) events.push(deathEv);
@@ -5586,6 +5698,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const sidesCredited = new Set();
         credit.forEach(key=>{
           const parts = key.split('|');
+          if(kills) kills.add(key); // 2026-10-18: removeDeadCards fires On Kill for these
           ensureStat(stats, parts[0], parts[1]).kills += 1;
           sidesCredited.add(parts[0]);
           { const kp = players[parts[0]==='A' ? 1 : 2]; if(kp && kp.perks && kp.perks.crown){ // Wildpath "Crown of Thorns": the killer gains +1 Attack
@@ -6081,16 +6194,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // resolution, which would make them invisible to a same-call snapshot), not the whole
     // round's worth at once, so "just got a kill" reads as immediate too, not deferred to
     // round-end.
+    // 2026-10-18 (engine parity): removeDeadCards fires On Kill itself now, for exactly the kills it settles (see its comment), so
+    // a kill cleared by an earlier sweep with another book can't fire it twice. beforeKeys is kept for the callers; unused.
     function reflowAfterKills(beforeKeys){
       removeDeadCards(players, sideOf, killCredit, stats, events);
-      const newlyCredited = new Set();
-      Object.entries(killCredit).forEach(([uid,set])=>{ if(!beforeKeys.has(uid)) set.forEach(k=>newlyCredited.add(k)); });
-      if(newlyCredited.size){
-        [players[1], players[2]].forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
-          const key = statKey(sideOf(pl.id), c.defId);
-          if(newlyCredited.has(key)) runCustomTriggers(players, sideOf, pl.id, c, CARD_DEFS[c.defId], 'onKill', stats, events);
-        })));
-      }
     }
     // Frenzy (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Flurry"): an attacker with
     // this keyword that's still alive after its swing gets one more full attack this same round,
@@ -6107,7 +6214,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       pending = null;
       if(a.att.hp<=0){ pending = pickNextAttacker(); continue; }
       if(a.shot){ // 2026-10-17: this shooter's Speed 1 shot action; its kills are cleared away before the next action, like a swing's
-        if(fireShotsOf(players, sideOf, a.attId, a.att, stats, events)) removeDeadCards(players, sideOf, {}, stats, events);
+        if(fireShotsOf(players, sideOf, a.attId, a.att, stats, events, killCredit)) reflowAfterKills(null); // 2026-10-18: its kills credited like a swing's (was an empty book)
         pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       // Snapshot taken BEFORE this iteration can credit any new kills, so reflowAfterKills()
       // can tell "died just now, this turn" apart from "was already dead/credited earlier
@@ -6800,7 +6907,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+  return { tideEvadeOn, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

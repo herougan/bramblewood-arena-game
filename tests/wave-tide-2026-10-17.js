@@ -14,6 +14,7 @@ const U = (id, effects, o)=> Object.assign({id, name:id, attack:1, health:500, w
 const defs = Object.assign({}, H.loadCardDefs(), {
   'wt-wall': U('wt-wall', {}, {attack:0}),
   'wt-waveL': U('wt-waveL', {wave:'left'}), 'wt-waveR': U('wt-waveR', {wave:'right'}), 'wt-waveA': U('wt-waveA', {wave:'alternate'}), 'wt-waveT': U('wt-waveT', {wave:true}),
+  'wt-waveL2': U('wt-waveL2', {wave:'left', waveN:2}), 'wt-wave2': U('wt-wave2', {wave:2}), // Wave N (2026-10-18)
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 function mk(rules, seed, mode){ const e = E.makeSimEngine(defs, E.mulberry32(seed||7), {recordEvents:true, battleMode: mode || 'open', rules: rules || {}}); return {e, P:{1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}}; }
@@ -24,48 +25,68 @@ function put(e, P, pid, id, slot){ const pl = P[pid]; e.debugSpawnCard(P, so, pi
 // one Wave push from a P1 unit (in the middle column, so it doesn't widen the board's edge) onto a P2 unit
 const push = (e, P, waveId, T)=>{ const W = put(e, P, 1, waveId, 0); const ev = []; const w = e.waveHit(P, so, 1, W, T, ev, {}); return {w, ev}; };
 
-// ---- 1. Fixed ways: unchanged (one column that way, swapping with a unit there; the edge blocks)
+// ---- 1. Fixed ways (2026-10-18, Wave N: "If crash into another unit, both take N damage"; no more swapping)
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0), N = put(e, P, 2, 'wt-wall', -1); put(e, P, 2, 'wt-wall', 3);
-  const {w} = push(e, P, 'wt-waveL', T); ok(T.slot === -1 && N.slot === 0 && w.swapUid === N.uid && !w.bob, `Wave left still swaps with the unit there (${T.slot}, ${N.slot})`); }
+  const {w, ev} = push(e, P, 'wt-waveL', T); const cr = ev.find(x=> x.type === 'washCrash');
+  ok(T.slot === 0 && N.slot === -1 && w.swapUid == null && w.crashUid === N.uid && w.cols === 0 && !w.blocked && !w.bob, `Wave left into a unit: it crashes, nobody swaps (${T.slot}, ${N.slot})`);
+  ok(cr && cr.n === 1 && T.hp === 499 && N.hp === 499, `...and both take 1 (${T.hp}, ${N.hp})`); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0); put(e, P, 2, 'wt-wall', -3);
-  const {w} = push(e, P, 'wt-waveR', T); ok(T.slot === 1 && w.dir === 'right' && !w.blocked, `Wave right: one column right (${T.slot})`); }
+  const {w, ev} = push(e, P, 'wt-waveR', T); ok(T.slot === 1 && w.dir === 'right' && !w.blocked && !ev.some(x=> x.type === 'washCrash'), `Wave right: one column right (${T.slot})`); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', -2); put(e, P, 2, 'wt-wall', 2);
-  const {w} = push(e, P, 'wt-waveL', T); ok(T.slot === -2 && w.blocked && !w.bob, 'Wave left at the edge: blocked, no bounce the other way'); }
+  const {w} = push(e, P, 'wt-waveL', T); ok(T.slot === -2 && w.blocked && !w.bob && T.hp === 500, 'Wave left at the edge: blocked, no bounce the other way, no damage'); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0); put(e, P, 2, 'wt-wall', -3); put(e, P, 2, 'wt-wall', 3); const W = put(e, P, 1, 'wt-waveA', 4);
   e.waveHit(P, so, 1, W, T, [], {}); const s1 = T.slot; e.waveHit(P, so, 1, W, T, [], {}); ok(s1 === -1 && T.slot === 0, `Wave alternate: left, then right (${s1}, ${T.slot})`); }
+{ const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0); put(e, P, 2, 'wt-wall', -3); put(e, P, 2, 'wt-wall', 3);
+  const {w} = push(e, P, 'wt-waveL2', T); ok(T.slot === -2 && w.cols === 2 && w.n === 2 && T.hp === 500, `Wave left 2 (effects.waveN): two free columns (${T.slot})`); }
+{ const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0), N = put(e, P, 2, 'wt-wall', -2); put(e, P, 2, 'wt-wall', 3);
+  const {w, ev} = push(e, P, 'wt-waveL2', T); const cr = ev.find(x=> x.type === 'washCrash');
+  ok(T.slot === -1 && w.cols === 1 && w.crashUid === N.uid && cr && cr.n === 2 && T.hp === 498 && N.hp === 498 && N.slot === -2, `Wave left 2 with a unit two columns over: it rides one and crashes, both take 2 (${T.slot}, ${T.hp}, ${N.hp})`); }
+{ const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0), N = put(e, P, 2, 'wt-wall', -1); N.pinned = true; put(e, P, 2, 'wt-wall', 3);
+  const {w} = push(e, P, 'wt-waveL', T); ok(T.slot === 0 && N.slot === -1 && w.crashUid === N.uid && T.hp === 499 && N.hp === 499, 'a pinned unit in the way: it is crashed into too, both hurt, nobody moves'); }
+{ const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0); T.pinned = true; put(e, P, 2, 'wt-wall', -1); put(e, P, 2, 'wt-wall', 3);
+  const {w} = push(e, P, 'wt-waveL', T); ok(!w && T.slot === 0 && T.hp === 500, 'a pinned unit is not pushed at all (no crash either)'); }
+{ let bad = 0; for(let s = 1; s <= 60; s++){ const {e, P} = mk({}, s); const T = put(e, P, 2, 'wt-wall', 0); put(e, P, 2, 'wt-wall', -3); put(e, P, 2, 'wt-wall', 3);
+    const {w} = push(e, P, 'wt-wave2', T); if(!w || w.n !== 2 || Math.abs(T.slot) !== 2) bad++; }
+  ok(!bad, `a bare number (wave: 2) is Wave 2 with no fixed way (${bad} wrong)`); }
 
-// ---- 2. No fixed way (Wave true): 55/45 inward, never a swap
+// ---- 2. No fixed way (Wave true): 55/45 inward; a unit in the way is crashed into; only the edge turns it back
 { let inward = 0, outward = 0, other = 0; const N = 2000;
   for(let s = 1; s <= N; s++){ const {e, P} = mk({}, s); const T = put(e, P, 2, 'wt-wall', -1); put(e, P, 2, 'wt-wall', 3); put(e, P, 2, 'wt-wall', -3);
-    const {w} = push(e, P, 'wt-waveT', T); if(T.slot === 0) inward++; else if(T.slot === -2) outward++; else other++; if(w.swapUid != null) other++; }
-  const r = inward / N; ok(!other, `Wave (no fixed way) moves one free column, no swap (${other} odd)`);
+    const {w} = push(e, P, 'wt-waveT', T); if(T.slot === 0) inward++; else if(T.slot === -2) outward++; else other++; if(w.swapUid != null || w.crashUid != null) other++; }
+  const r = inward / N; ok(!other, `Wave (no fixed way) moves one free column, no swap, no crash (${other} odd)`);
   ok(r > .52 && r < .58, `a slight lean inward: ${(r*100).toFixed(1)}% toward the middle (want about 55%)`); }
 { let l = 0; const N = 600; for(let s = 1; s <= N; s++){ const {e, P} = mk({}, s); const T = put(e, P, 2, 'wt-wall', 0); put(e, P, 2, 'wt-wall', 3); put(e, P, 2, 'wt-wall', -3);
     push(e, P, 'wt-waveT', T); if(T.slot === -1) l++; }
   ok(l / N > .44 && l / N < .56, `from the middle column it is a coin flip (${(l / N*100).toFixed(1)}% left)`); }
-{ let bad = 0, bounced = 0; for(let s = 1; s <= 200; s++){ const {e, P} = mk({}, s); const T = put(e, P, 2, 'wt-wall', 0), N1 = put(e, P, 2, 'wt-wall', 1); put(e, P, 2, 'wt-wall', -3);
-    const {w} = push(e, P, 'wt-waveT', T); if(T.slot !== -1 || N1.slot !== 1 || w.swapUid != null) bad++; if(w.bounced) bounced++; }
-  ok(!bad, `a unit in the way: it goes the other way instead, no swap (${bad} wrong)`); ok(bounced > 50 && bounced < 150, `...marked bounced when it had picked the blocked side (${bounced}/200)`); }
+{ let bad = 0, crashed = 0; for(let s = 1; s <= 200; s++){ const {e, P} = mk({}, s); const T = put(e, P, 2, 'wt-wall', 0), N1 = put(e, P, 2, 'wt-wall', 1); put(e, P, 2, 'wt-wall', -3);
+    const {w} = push(e, P, 'wt-waveT', T); if(N1.slot !== 1 || w.swapUid != null || w.bounced) bad++;
+    if(w.crashUid != null){ crashed++; if(T.slot !== 0 || T.hp !== 499 || N1.hp !== 499 || w.dir !== 'right') bad++; } else if(T.slot !== -1 || T.hp !== 500 || N1.hp !== 500) bad++; }
+  ok(!bad, `a unit in the way: it crashes into it (both take 1) instead of turning back, no swap (${bad} wrong)`); ok(crashed > 50 && crashed < 150, `...when it picked that side (${crashed}/200)`); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0), A = put(e, P, 2, 'wt-wall', -1), B = put(e, P, 2, 'wt-wall', 1);
-  const {w, ev} = push(e, P, 'wt-waveT', T); ok(T.slot === 0 && A.slot === -1 && B.slot === 1, 'boxed in on both sides: nobody moves');
-  ok(w.blocked && w.bob && (w.touchUids || []).sort().join() === [A.uid, B.uid].sort().join(), `...it bobs, touching both neighbours (${JSON.stringify(w.touchUids)})`);
-  ok(ev.filter(x=> x.type === 'wave').length === 1, 'one wave event'); }
-{ const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', -2), A = put(e, P, 2, 'wt-wall', -1); put(e, P, 2, 'wt-wall', 2);
-  const {w} = push(e, P, 'wt-waveT', T); ok(T.slot === -2 && w.bob && (w.touchUids || []).join() === String(A.uid), 'the edge on one side and a unit on the other: it bobs, touching the unit only'); }
-{ const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0), A = put(e, P, 2, 'wt-wall', -1); A.webbed = 3; put(e, P, 2, 'wt-wall', 3);
-  push(e, P, 'wt-waveT', T); ok(T.slot === 1, `a Webbed unit beside it is just a unit in the way: it goes the other way (${T.slot})`); }
+  const {w, ev} = push(e, P, 'wt-waveT', T); const hit = [A, B].find(x=> x.uid === w.crashUid);
+  ok(T.slot === 0 && A.slot === -1 && B.slot === 1, 'boxed in on both sides: nobody moves');
+  ok(!w.bob && hit && T.hp === 499 && hit.hp === 499 && [A, B].filter(x=> x.hp === 500).length === 1, 'it crashes into one of them, both take 1 (no bob)');
+  ok(ev.filter(x=> x.type === 'wave').length === 1 && ev.filter(x=> x.type === 'washCrash').length === 1, 'one wave event, one washCrash'); }
+{ let bad = 0, bounced = 0; for(let s = 1; s <= 100; s++){ const {e, P} = mk({}, s); const T = put(e, P, 2, 'wt-wall', -2), A = put(e, P, 2, 'wt-wall', -1); put(e, P, 2, 'wt-wall', 2);
+    const {w} = push(e, P, 'wt-waveT', T); if(T.slot !== -2 || w.crashUid !== A.uid || A.hp !== 499) bad++; if(w.bounced) bounced++; }
+  ok(!bad, `the edge on one side and a unit on the other: the edge turns it back, into the unit (${bad} wrong)`); ok(bounced > 20 && bounced < 80, `...marked bounced when it had picked the edge (${bounced}/100)`); }
+{ let crashes = 0, moves = 0, bad = 0; for(let s = 1; s <= 100; s++){ const {e, P} = mk({}, s); const T = put(e, P, 2, 'wt-wall', 0), A = put(e, P, 2, 'wt-wall', -1); A.webbed = 3; put(e, P, 2, 'wt-wall', 3);
+    push(e, P, 'wt-waveT', T); if(T.slot === 1) moves++; else if(T.slot === 0 && A.slot === -1 && A.hp === 499 && T.hp === 499) crashes++; else bad++; }
+  ok(!bad && crashes && moves, `a Webbed unit beside it is crashed into (it stays put); the other way it rides (${crashes} crashes, ${moves} rides, ${bad} wrong)`); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0); T.webbed = 2; put(e, P, 2, 'wt-wall', 3);
   const {w} = push(e, P, 'wt-waveT', T); ok(T.slot === 0 && !w, 'a Webbed unit is not pushed at all'); }
+{ const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0), A = put(e, P, 2, 'wt-wall', 1); put(e, P, 2, 'wt-wall', -3); A.hp = 1;
+  const W = put(e, P, 1, 'wt-waveR', 0), ev = []; e.waveHit(P, so, 1, W, T, ev, {}); ok(!e.allBoardCards(P[2]).some(c=> c === A) && T.hp === 499, 'a crash can kill: the dead unit leaves the board'); }
 
-// ---- 3. Packed rows (no free columns): it still trades places, with the same lean and fallback
+// ---- 3. Packed rows (no free columns): it crashes into its neighbour that way
 { const {e, P} = mk({}, 3, 'gravity'); ['wt-wall', 'wt-wall', 'wt-wall'].forEach(id=> e.debugSpawnCard(P, so, 2, id, 'left', {}, [])); e.debugSpawnCard(P, so, 1, 'wt-waveT', 'left', {}, []);
   const order = ()=> [...P[2].row.left].reverse().concat(P[2].row.center, P[2].row.right);
   const ends = order(), T = ends[0], W = all(P[1])[0], ev = []; const w = e.waveHit(P, so, 1, W, T, ev, {});
-  ok(w && !w.blocked && order().indexOf(T) === 1, `packed row, at the end: it goes the only way it can, one place (${order().indexOf(T)})`); }
+  ok(w && !w.blocked && order().indexOf(T) === 0 && w.crashUid === ends[1].uid && T.hp === 499 && ends[1].hp === 499, `packed row, at the end: it crashes into its only neighbour, nobody moves (${order().indexOf(T)})`); }
 { const {e, P} = mk({}, 3, 'gravity'); e.debugSpawnCard(P, so, 2, 'wt-wall', 'left', {}, []); e.debugSpawnCard(P, so, 1, 'wt-waveT', 'left', {}, []);
   const T = all(P[2])[0], w = e.waveHit(P, so, 1, all(P[1])[0], T, [], {}); ok(w && w.blocked && w.bob, 'packed row, alone: it bobs'); }
 
-// ---- 4. The Awash field
+// ---- 4. The Wave field (rules.awash; "Wave" on screen since 2026-10-18)
 { const ns = new Set(); let moved = 0, bobbed = 0, bad = 0;
   for(let s = 1; s <= 300; s++){ const {e, P} = mk({awash:true}, s);
     const T = put(e, P, 2, 'wt-wall', 0), L = put(e, P, 2, 'wt-wall', -3), R = put(e, P, 2, 'wt-wall', 2); L.pinned = true; R.pinned = true; // only T can be washed
@@ -101,8 +122,15 @@ const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
 const sfx = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-skillfx.js'), 'utf8');
 const fxa = fs.readFileSync(path.join(__dirname, '..', 'bramblewood-fx-a.js'), 'utf8');
 const tpl = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), 'utf8');
-{ const m = src.match(/const FIELD2 = \{([\s\S]*?)\n\};/); ok(m && /\n  awash:\s*\{icon:'〰️', name:'Awash', editor:'awash'/.test('\n' + m[1]), 'FIELD2 has Awash (the field card, Edit skirmish and the Environment row come from it)'); }
+{ const m = src.match(/const FIELD2 = \{([\s\S]*?)\n\};/); ok(m && /\n  awash:\s*\{icon:'〰️', name:'Wave', editor:'awash'/.test('\n' + m[1]), 'FIELD2 has the Wave field, named Wave (the field card, Edit skirmish and the Environment row come from it)'); }
 ok(/\['awash', \{awash:true\}/.test(src), 'the Effects library stages Awash');
+// 2026-10-18 (user: "We can call all of them wave for now. "Awashed" will be for something else - reserved."): nothing on screen says Awash
+ok(!/〰️ Awash|name:'Awash'|`Awash /.test(src), 'no player-facing "Awash" left (the log, the float, the field card say Wave)');
+ok(/`〰️ Wave \$\{ev\.n\}: the water takes/.test(src), 'the field\'s log line: "Wave N: the water takes X"');
+ok(/key:'wave', category:'passive', label:'Wave', kind:'selectNumber'/.test(src) && /if\(n > 1\) e\.waveN = n; else delete e\.waveN;/.test(src), 'the skill editor: Wave picks a way and an N (effects.waveN)');
+ok(/wave: \(v, n, e\)=>\{ const w = waveParts\(v, e\)/.test(src) && /If it crashes into a unit, it stops and both take \$\{w\.n\}/.test(src), 'the Wave skill text describes the crash');
+{ const m = src.match(/function waveParts\(v, e\)\{[\s\S]*?\n\}/), wp = m ? eval('(' + m[0] + ')') : null;
+  ok(wp && wp(['left', 2]).n === 2 && wp(undefined, {wave:'right', waveN:3}).n === 3 && wp(undefined, {wave:2}).way === 'either' && wp(undefined, {wave:2}).n === 2 && wp(undefined, {wave:true}).n === 1, 'waveParts reads [way, N], effects.waveN and a bare number'); }
 ok(/\['sulphurFumes', 'ashRain', 'arrowSlits', 'awash'\]\.includes\(ev\.field\)\) hit = markFieldRow\(ev\.field\)/.test(src), 'the Awash row is learned when it first washes');
 ok(/case 'awash': return \{cls:'', text:/.test(src) && /'arrowSlitHit', 'awash'[,\]]/.test(src), 'Awash has a battle-log line and its own tick handling');
 ok(/awash:\{art:'art\/fields\/(rapids|awash)\.png'\}/.test(src), 'Awash has an art key');

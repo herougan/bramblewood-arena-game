@@ -11,6 +11,9 @@ ghosts_src = open(SCRATCH + "bramblewood-ghosts.js", encoding="utf-8").read() + 
 # Game texts (2026-10-15, user: "offload it into a excel so I can edit the text from there"): the TEXT table and TX(), after the
 # translation layer it hands its strings to. Edited through docs/game-texts.xlsx (tools/text/import_texts.py).
 ghosts_src += "\n" + open(SCRATCH + "bramblewood-texts.js", encoding="utf-8").read()
+# 2026-10-18 (R3-WP5 accessibility): modal focus management (aria-modal, focus in / Tab trap / Escape / focus back) for every
+# role=dialog overlay, by one MutationObserver. DOM-only and self-guarding, so it rides in the same script block.
+ghosts_src += "\n" + open(SCRATCH + "bramblewood-a11y.js", encoding="utf-8").read()
 raid_bosses_literal = json.dumps(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8")), ensure_ascii=False)
 app_src = open(SCRATCH + "arena_app.js", encoding="utf-8").read()
 # GSAP (2026-09-16, "GSAP-quality" animation pass): a page published via the Artifact tool is
