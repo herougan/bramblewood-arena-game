@@ -11,6 +11,7 @@
 //  52. "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. ... One (unused) is Burn 1 Lumber, Heal ally N"
 'use strict';
 const fs = require('fs'), path = require('path');
+const {TEXT: TEXT_D, TX: TX_D} = require(path.join(__dirname, '..', 'bramblewood-texts.js')); // 2026-10-18 (package D): the terse texts are TX keys
 const H = require('./lib/harness.js');
 const E = H.Engine;
 let fail = 0; const ok = (c, m)=>{ if(!c){ fail++; console.log('  ✗', m); } };
@@ -99,7 +100,7 @@ const src = fs.readFileSync(path.join(__dirname, '..', 'arena_app.js'), 'utf8');
   ok(ctx.f('otter-centurion', row) === row, 'other cards are left alone'); }
 ok(/if\(editingCard\.effects\.onReadyDamage && typeof editingCard\.effects\.onReadyDamage === 'object'\)\{/.test(src) && /triggers\.push\(\{on:'onReady', do:'missile', amount:amt\}\)/.test(src), 'the editor opens an old onReadyDamage as an On Ready → Missile trigger (removable)');
 ok(fs.existsSync(path.join(__dirname, '..', 'supabase', 'oneoff', '2026-10-16_cataphract.sql')), 'the one-off SQL for the published row');
-ok(/const WIND_TEXT = \{/.test(src) && /at your back, in your face, or calm \(1 in 3 each\)/.test(src) && /at your back or in your face \(1 in 2 each\)/.test(src), 'the Windy / Gale texts say the wind is random, with the odds');
+ok(/const WIND_TEXT = \{windy: TX\('ui\.fx-windy'\), gale: TX\('ui\.fx-gale'\)\}/.test(src) && /at your back, in your face, or calm \(1 in 3 each\)/i.test(TEXT_D['ui.fxx-windy']) && /at your back or in your face \(1 in 2 each\)/.test(TEXT_D['ui.fxx-gale']) && /WIND_CODEX\.windy/.test(src), 'the Windy / Gale texts say the wind is random, with the odds (2026-10-18, package D: the odds in the Map Codex line)');
 ok(/\{key:'amore', category:'passive', label:'Amore', kind:'boolean'/.test(src) && /SKILL_ICON\.amore = '💕'/.test(src) && /function skills2Vfx\(ev\)/.test(src), 'Amore: skill, icon, looks');
 ok(/\{key:'onPitch', label:'On Pitch'/.test(src) && /♻️ Scavenge - \$\{detail\}/.test(src) && /m\.engine\.pitchCard\(m\.players, m\.sideOf, activePid, dc/.test(src), 'On Pitch: trigger, "Scavenge - …" card text, fired by the pitch');
 ok(/\{key:'fireHit', label:'Fire on hit', fields:\['amount'\]/.test(src) && /<option value="burnLumber"/.test(src) && /if\(costEl && costEl\.value\) t\.cost = costEl\.value;/.test(src), 'Fire on hit and the Pay: Burn 1 Lumber field in the trigger editor');

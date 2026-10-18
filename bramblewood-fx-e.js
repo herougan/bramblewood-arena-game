@@ -229,6 +229,15 @@ const AMB = {
     fog:{n:6, c:[235,242,248], a:.3, w:[.5,.9], h:[.1,.18], y:[.6,1.05], vx:[.03,.06]},
     parts:[{kind:'gull', n:2, c:[250,250,250], s:[.015,.0225]}, {kind:'streak', n:14, c:[230,240,255], s:[.15,.3], vx:[.6,.9], y:[.05,.95], a:.4, gust:true}],
     events:[{kind:'spray', every:[.6,1.4], c:[240,250,255]}]},
+  // The Pale Desert (mpd, 2026-10-18, package PD): a white sun's glare off the top corner, heat haze over the sand, fine pale grains
+  // drifting on a hot breath of wind; the B look is a sand gust. No glass glints (those are the Glass Dunes').
+  paledesert: {label:'Pale desert: white glare, heat haze, drifting grains', grade:{top:[255,250,236,.12], bottom:[150,130,90,.12]},
+    pools:[{x:.84, y:-.04, r:.95, c:[255,255,248], a:.26, pulse:[.08, .05]}],
+    parts:[{kind:'streak', n:7, c:[255,250,236], s:[.22,.42], vx:[.015,.04], y:[.35,.95], a:.12, haze:true},
+      {kind:'flake', n:22, c:[240,228,200], s:[.003,.006], vx:[.06,.14], vy:[-.004,.008], wob:.02, a:.55}]},
+  paledesertB: {label:'Sand gust over the pale dunes', grade:{top:[250,240,220,.14], bottom:[140,120,80,.14]},
+    pools:[{x:.8, y:-.05, r:.9, c:[255,255,246], a:.2}],
+    parts:[{kind:'streak', n:12, c:[245,232,205], s:[.12,.3], vx:[.35,.6], y:[.3,.98], a:.3, gust:true}, {kind:'flake', n:30, c:[236,222,190], s:[.003,.006], vx:[.2,.35], vy:[-.01,.01], wob:.03, a:.6}]},
 
   // ---- future lands (lab concepts, 2026-10-15) ----
   // The Abyssal Plains (Map 29): pitch black but for bioluminescence and a wandering lure.
@@ -514,8 +523,8 @@ function drawLamps(A, g, W, H, t, K){
 // Which maps get an ambience layer of their own (2026-10-15). The eight maps that had no shader look at all, plus the two
 // whose shader didn't match the place: misty Map 0 had the savanna's heat shimmer, and Gannet Cliffs the beach's foam.
 // On those two the old shader layer is hidden while ours plays (it stays in the lab as variant C).
-M.MAP_AMB = {m1:'mist', mo:'oldwood', mq:'clover', ms:'grove', mz:'fungal', mn:'crystal', mi:'icecave', mv:'aerie', mx:'lair', mc:'cliffs'};
-M.MAP_AMB_B = {m1:'mistThick', mo:'oldwoodB', mq:'cloverB', ms:'groveB', mz:'fungalB', mn:'crystalB', mi:'icecaveB', mv:'aerieB', mx:'lairB', mc:'cliffsB'};
+M.MAP_AMB = {m1:'mist', mo:'oldwood', mq:'clover', ms:'grove', mz:'fungal', mn:'crystal', mi:'icecave', mv:'aerie', mx:'lair', mc:'cliffs', mpd:'paledesert'}; // + the Pale Desert (2026-10-18, package PD)
+M.MAP_AMB_B = {m1:'mistThick', mo:'oldwoodB', mq:'cloverB', ms:'groveB', mz:'fungalB', mn:'crystalB', mi:'icecaveB', mv:'aerieB', mx:'lairB', mc:'cliffsB', mpd:'paledesertB'};
 M.REPLACES_SHADER = new Set(['m1', 'mc']);
 let curAmb = null;
 // Mount (or keep) the map's own ambience on the map frame. Returns the layer or null.

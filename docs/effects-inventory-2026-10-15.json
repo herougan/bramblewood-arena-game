@@ -20347,5 +20347,70 @@
   "added": "2026-10-17",
   "lab": "rebuild17.js",
   "inGameHook": "rebuildVfx (arena_app.js) on rebuild {side, uid, amount} → floatGlyphs 🪵🧱🪨 builder → castle, the castle thunks, \"🔨 +N\" (heal hq-big) on that side's HP bar (hqRibbonFloatAnchor); woodKnock + healTone"
+ },
+ {
+  "id": "res-raid-claim-screen",
+  "area": "rewards-results",
+  "name": "Raid claim reward screen",
+  "trigger": "Raid tab → Claim on a reward tier → claimRaidReward → showRaidClaimScreen",
+  "current": "FX.F.raidClaimScreen: the boss looms from the deep, a pressure burst (flash, water shockwave, ink, bubbles), title slam, the standing badge stamps in, the raid damage counts up, rewards one by one with beats by rarity (bubble / coins / chime / rare rise / legendary rise + fanfare + boom), screen shake on the top reward; tap to skip, Collect to close; calm fades under reduced motion or Effects Off / Low",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 1,
+  "themeNotes": "Owner 2026-10-18 20:52: \"doubly more exciting than the skirmish reward screen\". Deep sea: the Goliath is a kraken.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-f.js: M.raidClaimScreen",
+   "arena_app.js: claimRaidReward, raidClaimScreenSpec, showRaidClaimScreen"
+  ],
+  "batch": "RW",
+  "status": "live",
+  "added": "2026-10-18",
+  "lab": "rw.js",
+  "inGameHook": "Raid tab → Claim → claimRaidReward (arena_app.js) → showRaidClaimScreen → FX.F.raidClaimScreen (calm under reduced motion, Effects Off / Low, no GSAP)"
+ },
+ {
+  "id": "res-boss-crimson",
+  "area": "rewards-results",
+  "name": "Boss victory results (crimson)",
+  "trigger": "a won boss fight → winloss-card.is-glory.is-boss (isBossResults: boss, sub-boss, Campaign Boss, world / raid bosses on the map)",
+  "current": "crimson wash, crimson-and-ember frame, coal-glow title, crimson rays, CSS embers drifting up; FX.F.bossVictory (red pulse, ember ring and bursts) from FX.F.hooks.resultsShown",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 1,
+  "themeNotes": "Owner 2026-10-18 20:52: \"the boss reward screen should be more crimsony\". Elites / mini-bosses keep the gold card.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_template.html: .winloss-card.is-glory.is-boss",
+   "arena_app.js: isBossResults, bossEmbersHTML",
+   "bramblewood-fx-f.js: M.bossVictory"
+  ],
+  "batch": "RW",
+  "status": "live",
+  "added": "2026-10-18",
+  "lab": "rw.js",
+  "inGameHook": "results (a won boss / sub-boss / Campaign Boss / world or raid boss on the map): isBossResults → .winloss-card.is-boss + bossEmbersHTML (arena_app.js); FX.F.hooks.resultsShown → FX.F.bossVictory"
+ },
+ {
+  "id": "res-tower-ascent",
+  "area": "rewards-results",
+  "name": "Babel Spire floor won (ascent)",
+  "trigger": "a won NEW Babel Spire floor → winloss-card.is-glory.is-tower (isTowerResults; not a free replay)",
+  "current": "sky and stone-gold card, the ascent line (a little tower, the cleared floor lit, a beam climbing to the next, \"Floor N cleared → Floor N+1\"); FX.F.towerAscend (ring, light column, sparks, growthSwell + unlockChime) from FX.F.hooks.resultsShown",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Owner 2026-10-18 23:20: \"very slightly different ... triumphant to know that your deck has reached the next tier.\" A notch below the boss crimson.",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "arena_template.html: .winloss-card.is-glory.is-tower, .wl-ascent",
+   "arena_app.js: isTowerResults, towerAscentHTML",
+   "bramblewood-fx-f.js: M.towerAscend"
+  ],
+  "batch": "RW",
+  "status": "live",
+  "added": "2026-10-18",
+  "lab": "rw.js",
+  "inGameHook": "results (a won NEW Babel Spire floor, not a free replay): isTowerResults → .winloss-card.is-tower + towerAscentHTML (arena_app.js); FX.F.hooks.resultsShown → FX.F.towerAscend"
  }
 ]

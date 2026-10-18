@@ -426,6 +426,10 @@
   .fb-modal .fb-cats label:has(input:focus-visible){outline:2px solid #ffd76a; outline-offset:2px;}
   .fb-modal textarea{min-height:120px; resize:vertical; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.2); font:inherit; background:#fffdf7; color:#2b2117;}
   .fb-modal .fb-ctx{font-size:12px; opacity:.75; margin:0;}
+  /* 2026-10-18 (owner 21:57): the Bug Hunters box in the feedback window */
+  .fb-modal .fb-bughunt{border:1px solid currentColor; border-color:color-mix(in srgb, currentColor 22%, transparent); background:color-mix(in srgb, currentColor 6%, transparent); border-radius:10px; padding:8px 12px; display:grid; gap:4px;}
+  .fb-modal .fb-bughunt h3{margin:0; font-size:14px;}
+  .fb-modal .fb-bughunt p{margin:0; font-size:13px; line-height:1.4;}
   .fb-modal .fb-actions{display:flex; justify-content:flex-end; gap:8px; align-items:center;} .fb-modal .fb-actions small{margin-right:auto; font-size:12px; opacity:.75;}
   .fb-admin-list{display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow:auto;}
   .fb-admin-item{padding:8px 10px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border);}
@@ -1684,8 +1688,11 @@
      shows as (SKILL_REVEAL), on the card's skill strip and in its text. */
   .skill-q{display:inline-grid; place-items:center; min-width:1.15em; height:1.15em; padding:0 .15em; border-radius:999px; background:rgba(120,100,60,.22); color:inherit; font-weight:800; font-size:.92em; line-height:1; box-shadow:inset 0 0 0 1px rgba(120,100,60,.45); cursor:help;}
   .skill-q-line .skill-q{font-size:1em; min-width:1.4em; height:1.4em;}
-  .ab-tide.tide-live{color:#2a7fc0; background:rgba(90,180,255,.28); border-radius:999px; box-shadow:0 0 0 1.5px rgba(108,200,255,.9), 0 0 8px rgba(108,200,255,.6); padding:0 2px;}
+  .ab-tide.tide-live, .wind-live{color:#2a7fc0; background:rgba(90,180,255,.28); border-radius:999px; box-shadow:0 0 0 1.5px rgba(108,200,255,.9), 0 0 8px rgba(108,200,255,.6); padding:0 2px;}
   .ab-tide.tide-live.tide-high{box-shadow:0 0 0 2px #6cc8ff, 0 0 12px #6cc8ff;}
+  /* 2026-10-18 (package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)"): the same lit pill on a
+     Flyer's wing under a strong wind, and on the Quick boot a Tailwind gives it (.wind-live shares the .tide-live rule above); a Headwind adds a small ×2 (skills twice). */
+  .wind-live .wind-x2{font:900 .7em/1 'Baloo 2', system-ui, sans-serif; color:#fff; text-shadow:0 0 2px #0d4f86, 0 0 3px #0d4f86; margin-left:1px; vertical-align:super;}
   .granted-skill.tide-live{font-weight:800;}
   /* Environment cards (2026-10-14, user: "effect cards need to have a different frame - so we know its an environmental field
      effect" and "For field effects with many multiple effects, split into multiple field cards"): a mossy stone frame with a gold
@@ -1775,6 +1782,8 @@
   .battlefield.map-m23{background:radial-gradient(ellipse at 50% 12%, #ffe2a0, transparent 55%), linear-gradient(180deg, #b9a27a 0%, #8a7656 55%, #4a3e2c 100%);}
   .battlefield.map-m24{background:radial-gradient(ellipse at 50% 10%, #ffe9b0, transparent 55%), linear-gradient(180deg, #9a9488 0%, #6c675e 55%, #36322c 100%);}
   .battlefield.map-m11{background:radial-gradient(ellipse at 50% 12%, #b04f6b, transparent 55%), linear-gradient(180deg, #3a1d34 0%, #241426 55%, #130b17 100%);}
+  /* 2026-10-18 (package PD): the Pale Desert (side map 18-A), bleached sand under a white sun; drawn while its art (art/maps/mpd.png) is off */
+  .battlefield.map-mpd{background:radial-gradient(ellipse at 78% 0%, #fffdf6, transparent 55%), linear-gradient(180deg, #e6dcc4 0%, #cdbf9f 55%, #9f8f6c 100%);}
   /* 2026-09-30, battlefield background picker (queued backlog item, "extremely undistracting"
      calm option): unlike the 11 biome themes above, this one IS theme-adaptive (built from
      var(--bg)/var(--surface) tokens, not fixed hex) since the whole point is minimum visual noise
@@ -4783,6 +4792,7 @@
   .map-theme-ml{--mt-a:#bacf66; --mt-b:#9aaf4c; --mt-c:#7a8f3a;}
   .map-theme-mt{--mt-a:#dfe8ee; --mt-b:#3f523f; --mt-c:#2a3a2f;}
   .map-theme-md{--mt-a:#f2ca84; --mt-b:#cf9a56; --mt-c:#a8723a;}
+  .map-theme-mpd{--mt-a:#f4eedf; --mt-b:#d9ccb0; --mt-c:#9f8f6c;}  /* The Pale Desert (2026-10-18, package PD): bone, bleached sand, dry tan */
   .map-theme-my{--mt-a:#357a3a; --mt-b:#245a2c; --mt-c:#163a1f;}
   .map-theme-mg{--mt-a:#2f5f66; --mt-b:#1d3a44; --mt-c:#0c1a22;}  /* Smugglers' Grotto sub-map (2026-10-09) */
   /* m11 (2026-09-24 campaign redesign) is now "The Sundered Peak," the campaign's final map —
@@ -5166,6 +5176,20 @@
   .guild-actions-row{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
   .guild-browse-list{display:flex; flex-direction:column; gap:6px; max-height:320px; overflow-y:auto;}
   .guild-browse-row{display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:13px; padding:8px 12px; border-radius:10px; background:var(--surface-2);}
+  /* Guild skills (2026-10-19, package G): one row a skill; locked "coming soon" rows faded; the admin's local preview stepper */
+  .gsk-list{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .gsk{display:grid; grid-template-columns:34px 1fr auto; align-items:center; gap:10px; padding:9px 12px; border-radius:10px; background:var(--surface-2); font-size:13px;}
+  .gsk.is-soon{opacity:.6;}
+  .gsk-ico{font-size:22px; text-align:center;}
+  .gsk-body{display:flex; flex-direction:column; gap:2px; min-width:0;}
+  .gsk-body small{font-weight:400; color:var(--ink-muted);}
+  .gsk-now{color:var(--accent); font-weight:600;}
+  .gsk-act{display:flex; flex-direction:column; align-items:flex-end; gap:6px;}
+  .gsk-tag{font-size:11.5px; color:var(--ink-muted); white-space:nowrap;}
+  .gsk-admin{display:flex; align-items:center; gap:4px;}
+  .gsk-note{font-size:12.5px; color:var(--ink-muted); margin:8px 0 0;}
+  .gsk-seeds{font-size:13px;}
+  @media (max-width:520px){ .gsk{grid-template-columns:28px 1fr;} .gsk-act{grid-column:1 / -1; flex-direction:row; justify-content:flex-end; flex-wrap:wrap;} .gsk > .gsk-tag{grid-column:2; justify-self:start;} }
   /* Match History / Replay (#254) — a plain expandable row list on the Profile tab, same
      .panel/.panel-sub shell as everything else there. */
   .match-history-list{display:flex; flex-direction:column; gap:6px;}
@@ -5634,6 +5658,8 @@
   .board-card.is-shocked .card-tile{background:color-mix(in srgb, var(--status-shock-tint) 26%, var(--bg));}
   .board-card.is-corroded .card-tile{background:color-mix(in srgb, var(--status-corrode-tint) 20%, var(--bg));}
   .blind-overlay{font-size:22px; animation:blindDim 2.2s ease-in-out infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
+  /* 2026-10-18 (package D): when FX B's shut eye marks a Blind unit (sightSync 'blind'), it is the one eye; the 👁 overlay stays for FX off */
+  .board-card.fxb-why-blind .blind-overlay{display:none;}
   @keyframes blindDim{0%,100%{opacity:.5;}50%{opacity:1;}}
   .shock-overlay{font-size:22px; animation:paralyzeJitter .22s steps(2) infinite; filter:drop-shadow(0 2px 3px var(--shadow));}
   .abadge.blind{background:color-mix(in srgb, var(--status-blind-tint) 24%, var(--surface-2)); color:var(--status-blind-ink);}
@@ -6127,6 +6153,10 @@
   .facing-svg line.facing-sub{stroke-width:1.6; stroke-dasharray:4 4; opacity:.75;}
   .facing-svg line.facing-sub.is-empty{opacity:.5;}
   .facing-svg line.facing-fork{stroke:#ff9a8a; stroke-width:2.6;} .facing-svg line.facing-fork.is-empty{opacity:.7;}
+  /* Stampede's carry-on (2026-10-18, package BP): blocker -> enemy HP bar; faint always, lit with its 💥 +N when the swing would carry over (stampedeFacingHTML) */
+  .facing-svg line.facing-stampede{stroke:#ff8a4c; opacity:.28;}
+  .facing-svg line.facing-stampede.is-over{stroke:#ff6a2a; opacity:.95;}
+  .facing-svg text.facing-stampede-n{fill:#ffb08a; font-size:13px;}
   /* Initiative coin (2026-10-12) */
   #battlefieldEl{position:relative;}
   /* 2026-10-12 (user: "can it be 10% smaller? Then, when it changes side, it rolls to the other side. This movement is not flat
@@ -6549,24 +6579,49 @@
   .tide-scene .tw-wet{position:absolute; inset:0; opacity:0;
     background:radial-gradient(circle at 30% 40%, rgba(255,250,232,.5) 0 1px, transparent 1.6px) 0 0/37px 29px, radial-gradient(circle at 70% 60%, rgba(255,250,232,.38) 0 1px, transparent 1.6px) 9px 13px/53px 41px,
       linear-gradient(180deg, rgba(46,30,12,0) 6%, rgba(46,30,12,.28) 24%, rgba(38,24,10,.36) 100%);}
-  .tide-scene .tw-sheet{position:absolute; left:0; right:0; top:0; height:100%; transform:translateY(var(--tw-to, calc(100% + 40px))); will-change:transform;}
-  .tide-scene.is-moving .tw-sheet{animation:twMoveA 1.8s cubic-bezier(.42,.05,.28,1) var(--tw-delay, 0ms) both;}
-  .tide-scene.is-moving.mv-b .tw-sheet{animation-name:twMoveB;}
+  /* 2026-10-18 (package M follow-up, owner 21:59: "The ebb effect should grow into the tide effect; currently they cancel each other."): the
+     level is the sheet's translate (twMove*) and the tilt its own transform (twTilt*), which ramps in from level and back out, about the
+     board's RIGHT edge: the left side leads up as it rises and drains first as it falls, and the water never jumps below where it stood
+     (the old tilt, at full strength from the first frame about the left edge, threw the Ebb band's right part off the board at once). */
+  .tide-scene .tw-sheet{position:absolute; left:0; right:0; top:0; height:100%; translate:0 var(--tw-to, calc(100% + 40px)); will-change:transform, translate;}
+  .tide-scene.is-moving .tw-sheet{animation:twMoveA 1.8s cubic-bezier(.42,.05,.28,1) var(--tw-delay, 0ms) both, twTiltA 1.8s ease-in-out var(--tw-delay, 0ms) both;}
+  .tide-scene.is-moving.mv-b .tw-sheet{animation-name:twMoveB, twTiltB;}
   /* 2026-10-18 (owner, 10:27: "the wave is coming up from the btm, sure, but it starts coming in from the left"): the water's edge starts
      tilted (--tw-skew about the board's left edge: the left leads as it rises, and drains first as it falls) and levels out as it settles. */
-  .tide-scene .tw-sheet{transform-origin:0 0;}
-  @keyframes twMoveA{from{transform:translateY(var(--tw-from)) skewY(var(--tw-skew, 0deg));} to{transform:translateY(var(--tw-to)) skewY(0deg);}}
-  @keyframes twMoveB{from{transform:translateY(var(--tw-from)) skewY(var(--tw-skew, 0deg));} to{transform:translateY(var(--tw-to)) skewY(0deg);}}
+  .tide-scene .tw-sheet{transform-origin:100% 0;}
+  @keyframes twMoveA{from{translate:0 var(--tw-from);} to{translate:0 var(--tw-to);}}
+  @keyframes twMoveB{from{translate:0 var(--tw-from);} to{translate:0 var(--tw-to);}}
+  @keyframes twTiltA{0%{transform:skewY(0deg);} 30%{transform:skewY(var(--tw-skew, 0deg));} 100%{transform:skewY(0deg);}}
+  @keyframes twTiltB{0%{transform:skewY(0deg);} 30%{transform:skewY(var(--tw-skew, 0deg));} 100%{transform:skewY(0deg);}}
   .tide-scene .tw-body{position:absolute; inset:0; animation:twSlosh 6s ease-in-out infinite;}
-  @keyframes twSlosh{0%,100%{transform:translateY(0);} 50%{transform:translateY(5px);}}
+  /* 2026-10-18 (package M, owner 20:45: "during steady state, 70% more movement than now ... In Ebb ... 20% less"): the slosh's depth is
+     --tw-slosh, set by syncTideScene from TIDE_FLOOD_MOTION (8.5px, Flood and High Tide) / TIDE_EBB_MOTION (4px, Ebb); it was 5px. */
+  @keyframes twSlosh{0%,100%{transform:translateY(0);} 50%{transform:translateY(var(--tw-slosh, 5px));}}
+  /* ... and "The movement during flood should be a bit more obvious during transition": a Flood / High Tide coming in swells down into
+     view as it reaches the top and settles back (the independent translate property, so it adds to the slosh; --tw-swell is
+     TIDE_ARRIVE_SWELL), its crest surges higher and its back foam line brightens while it rises (twSurgeR*, twFoamR*). */
+  .tide-scene.is-moving.is-rising .tw-body{animation:twSlosh 6s ease-in-out infinite, twArriveA 1.4s ease-out calc(var(--tw-delay, 0ms) + 1500ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-body{animation-name:twSlosh, twArriveB;}
+  /* 2026-10-18 (package M follow-up, owner 21:59: "The ebb effect should move in and out, and a bit side to side. It's too static."): the
+     settled Ebb laps in and out (up to --tw-lap, TIDE_EBB_LAP) and drifts side to side (--tw-drift, TIDE_EBB_DRIFT) on the independent
+     translate, in uneven steps over 8.6 s against the 6 s slosh, so the two never settle into a plain back-and-forth. The water and its
+     edges reach past the board's sides so the drift never shows a gap. It starts once the drain has settled (the move's 1.8 s, resumed
+     by the same --tw-delay), from rest, so it joins on without a jump. */
+  .tide-scene[data-k="ebb"] .tw-body{animation:twSlosh 6s ease-in-out infinite, twLap 8.6s ease-in-out calc(var(--tw-delay, 0ms) + 1800ms) infinite;}
+  @keyframes twLap{0%,100%{translate:0 0;} 17%{translate:calc(var(--tw-drift, 10px)*.6) calc(var(--tw-lap, 6px)*-.7);} 31%{translate:var(--tw-drift, 10px) calc(var(--tw-lap, 6px)*-1);}
+    46%{translate:calc(var(--tw-drift, 10px)*.3) calc(var(--tw-lap, 6px)*.35);} 63%{translate:calc(var(--tw-drift, 10px)*-.5) calc(var(--tw-lap, 6px)*-.55);} 79%{translate:calc(var(--tw-drift, 10px)*-1) calc(var(--tw-lap, 6px)*.2);}}
+  @keyframes twArriveA{0%{translate:0 0;} 30%{translate:0 var(--tw-swell, 40px);} 62%{translate:0 calc(var(--tw-swell, 40px)*-.12);} 82%{translate:0 calc(var(--tw-swell, 40px)*.18);} 100%{translate:0 0;}}
+  @keyframes twArriveB{0%{translate:0 0;} 30%{translate:0 var(--tw-swell, 40px);} 62%{translate:0 calc(var(--tw-swell, 40px)*-.12);} 82%{translate:0 calc(var(--tw-swell, 40px)*.18);} 100%{translate:0 0;}}
   /* 2026-10-18 (owner 15:05: "the water vfx can come into play after the water settles"): the caustics and the sheen (.tw-surf) fade in
      once the move is over (the move's 1.8 s, resumed by the same --tw-delay) */
   .tide-scene .tw-surf{position:absolute; inset:0;}
-  .tide-scene.is-moving .tw-surf{animation:twSettleA .9s ease-out calc(var(--tw-delay, 0ms) + 1800ms) both;}
+  /* 2026-10-18 (package M follow-up): they fade out over the first half second as the water starts to move, and back in once it has settled (1.8 s, as before) (they used to blink out at once,
+     which read as the Ebb's water vanishing before the Flood's came) */
+  .tide-scene.is-moving .tw-surf{animation:twSettleA 2.7s ease-in-out var(--tw-delay, 0ms) both;}
   .tide-scene.is-moving.mv-b .tw-surf{animation-name:twSettleB;}
-  @keyframes twSettleA{from{opacity:0;} to{opacity:1;}}
-  @keyframes twSettleB{from{opacity:0;} to{opacity:1;}}
-  .tide-scene .tw-water{position:absolute; left:0; right:0; top:0; bottom:-14px; overflow:hidden;
+  @keyframes twSettleA{0%{opacity:1;} 18%,66%{opacity:0;} 100%{opacity:1;}}
+  @keyframes twSettleB{0%{opacity:1;} 18%,66%{opacity:0;} 100%{opacity:1;}}
+  .tide-scene .tw-water{position:absolute; left:-24px; right:-24px; top:0; bottom:-14px; overflow:hidden;
     background:linear-gradient(180deg, rgba(126,200,246,.34) 0, rgba(84,164,226,.25) 20%, rgba(44,118,196,.3) 100%);}
   .tide-scene[data-k="high"] .tw-water{background:linear-gradient(180deg, rgba(126,200,246,.34) 0, rgba(64,146,218,.34) 18%, rgba(26,92,172,.42) 100%);}
   .tide-scene .tw-caus{position:absolute; inset:-192px; background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAUO0lEQVR42uVdu3LjuBI960IExlQqxlLsSdfx7J/d/7kbz6bjWIrpVIyB1BsMenTYAkmQBB/yssrlscekQPTr9BN/fH5+/g/ABcAVQA3AAfB4vMrwdQbwCuAUfv5Q99/C/Q7DVxGeVQD4GZ61t6sE8AbgB4Bm5L1HAN8m3pvjOgZ6nQAcwu8c7X1pwgtWYYFMNM0E8n81/XwOH2LDA234qtU9XZcNn193MN0eLkvvOPa+AwnVFusuwv4egmA2JJwlgMqEX1a0yL7FuvAg+bejh53oQ5HIBIfw936jTUKiljrQe43RHK8A3jdct2htIT4LWgPAm6C+z+FLrksH8aG4yBEDyTN4o+oOrcLc6chs7PGS9bkJ0l9txACW1lAQ8bWWhwm2GxECxlQX4wMhPn+dwku/EsF9h/0rn0D9g5h+KhHshlqrJDr5CL67GVLpwgQVPaQmSUdEkrUmkA84ha8mPN+qD2b1dN2x+p9LhCLsZ01EWEv6S9r3G9HmQQOINNdEvIpAHRMo9gI+wmGifo708hr4VQH1P4MGKCeaDhfes1KaxK8k/dpkM80sAGfULx0RvCIX7T0QyvYwAX+IDfdW4XmF2kzZlB9PIv3FhHt82LNv4ec+N9lnlH7RrAVpYNdhAgoTflEorpVFVYTubYIqk5cWFf8tPONCCxS/9Pok0u/DWv0E4osLdg7/PirM5CK4agpDMKjWGsdHPuf3Z5gOV+1GrsORTMJ7IGYKE8hiSlqQ/OzpOXu/XIdXNOY+MavfFF5q1L9dj7T2Ed6S2i/Vs299+/zH5+cnPySm7kpy88REXAak14Z7vof7aoUpfjyJ9M/1WBjvCCY6qHiJ9qZuClC7DpNkCWiW9DuvntGHO2xMA3jlujjl5r3S/w9tiKdF1uFrSIPs9TpPWDcD5Jo0Y0nmwSrNWCuf3SqvAor4lhglxjy99DEdf+AifrB8vRI47JNkeckfSmO4JyQ+KOLpJjCBV9J5UGq7Im0hBP6IqHoXcb0xB0uYkUj0Qh98ooCPZoKSIovvEVfwGYlf4x4yn5K00oxgFTEZJ2nBu3WAua74TPJlRr4AVHAoxgSMRL8C8VmVy3v5Ge/kFdhmz6sIv2NT6SKflU2Dmokv8EEceVZMYElS6i8U5ZP3eSOPaKo58wprMfC+kuAsbi7NjHsb8o9PhAssBYCeCemnaoGaGD4HoPXEBI5A4CpYycy8n31XKRKBMhVf6Wpwz+6dyDWsMS3My0G4khhsNaBsMklGHf79qlw+j693CRMIEP5LMcGtB6Shw90WP/66totsMj6LwcpXlP6Y5rsROHzDY1ZUM0NfbYRFPPP6NAzALqCoNv+FmUDAcIPHaJ/U4MXct1gOgF1CPCsDSO77HF7+8sRBn6mMwHUOFR6TQezW1fRz0eHuPR0DcIFphecM+c5hBE9I/qqY4UxxhIoApGiQTUymyUz8koIYEse2/yEmYNvulbTXuKfCq/C9IADdbKExc2uAgrj/hse89H/t0uFfzoW8BrwgAPGyxR7lYgBLaLZGOwd9UOj5v8oIIGkXjSmxhM205EtmDcDNBwKO6vB/b2QmpjRafAUmENeR4yS2w018Gg1g6TtXuGifmSuGz2gninRRyjOnjVNMAqfXuUzsqUFgHxeLNgDuOYKGGCdWdXTDY9r0KzBErHDjgo2aY3IyQJHIxU3H7zikLBshaFn7zf7JtQDIQ5AGW//MGsCOYIA+1dglLQfSDmw/nx0POLS7sp+SAbg2zS6wURJlu6Hdw/jsTCDXZct3eckk/SW5e8VCEtPgHmCSqNqzehJSMyEZwM0SZy8ZXoTbkLACE9RqA5/tipXMbabJzAzC604UF3EL/UJMwLmGZwKF7O2wRsMzaADuOpUolpSIH/CY3lzSjWrISyifiPhcRLu59GsNoLtVtEov0U76cMvXTQWAuBZgCS0g1bSCPfYcYhahOZNLuwviCwNYpZ5i9ee6U4jVMTONVy++lHqTz+a2M79DwhcUy5Do58+dMKwVBuBihK5aNl2soHvTmEl8BAzmflk9n2hKx85aUi9a8v+E+Ldep5jNyqgF+RESqM2GXRmVi6ZiMLi1ZGmplwkolx1JPU8tqQ3m17R7Jf12IakfQtYSHNJdtX4DqT/hVwDrH6xc5p1AfNmnZo4b2KURYqraL/AilYoDVHicd6i/L8kM7A7vTeqZ+A/78Mfn5+diAGOBTecJI5wbaCLYhLGLbrD0CxD/hMf2buyM+D5XIGiqRshBfOlAqhFPpBSKEVgz3NCuWfAZNvZEz9/j7INeXLaUBliK+H8SgEnxpW0khuEzMAITX1zRPRK/RHtM3VMygNj8tyD9lwCudAGFG5AAzlswGLqNJJyWfNFEzQ73rcRAK7t5AulnZC2SP6Z6xilAesPjZA4kMoEm/hX7nX9QIGGOgXkC4ldB8j3mh1CdYoQK6VXLeuDTXonPvv7gdLM9M4Bs+Cvus4bmEL+LETzFEboqk5j4BTYu4kiQ/Cp1fWbnxD8rO+sG1PwUD6WmWAKPUtcgUsKne55yxgM9k/bE7JTwBdpTx689dn8O8bXEl6Qd9ADG1Yc3TFT9o5jT7GzxFdqp5mpA3c4hPpTt1wzIAa16xyqfeypGayazI6kXgp+JCNwjMJX4PnENUHggZ9Bojb27YuExcUuDFonyVaSK/+6QPJeJ8DHtY9HuQ9i71J8xo7TM7IiDJcTLNQQN4rUJOYlfKnewJh96z1IvE0jmjKvbnAF0YSknLeoIA7hMhJeNrEjyGeQddkx42bMsGsps/EKMsq3iZAZeuQnPKr9APKm0l+EW7IrKKWTZKov24gUUaOerLz3gLxfxK9wHM+juXE9xAb8DqRdgmr2Y1GzM1fpsGz6P4DIg/X4io6Wkb10i8y29R/p0lezeyNrZQJ2jPxEAu9GL1h0AEDM2gD+zTlCjlrDB2lqAewj+wYI5B7MS0UHIVZdPOdzPDa7RfcTJ3OINzo2npm/9RpJfkb1fjPhLM4A+z0YIzkGemtB316HTPpNE8fCJMcRfUwtYkv53rFBnYBZ+EVHvR7T7D65IOxsnF/ErApdjw8drpnsL3PsGVykyMQtJPat40AvpWbpYkPCaAeYMYh4zAWWu6j8Fu79K06hZSOortA8uTCH6EjbXqiDP1MMdCrTDxH4h6S+x8mmqJvNGSyKHI3nNANGXBFvCkO8zJYq7kf2CjLqq9OdiAJZ8Jv4Nw1G8Jbmc8+M5pFZiA6ViipzMqs8bSPWwishak/Y414ygA0mH+PFrqvqudVXIN4BJ5hXx0W4+81pTGVXHU2IMoM8sWKQxhIdGAPcjZ7cmvqzthPwzeBu0p6DkilGUicwqf/8N90AaE5tBKyKudovJTCbpL5WqdRsSnq/3hT7XK2LMdRdTzYp83hseK6X1gA7WEnKIRY12pNWbGapMS7/bgdRrFZlL/fcxAlcRNROJf0Ba5VERJP8V90kjfTmTIuKavxETXA1GlBD3+Md+QPrXviSg8mMF5tP1hGMSNpYCZUPTQjlO4JF+kjvIfb0QI7wCOBi0T/pqJhDfDty3VTx9zYnkPPB6zFQU7lt0CX9bkVs7pjxdn1vw+xRUGRBxwv1o92bkRhfIn7nLKZlrXV4RdQgXMPhzPXvIf3vEvC5kPae4eaGHSVFmmUh4PRJmT0MbPbYp42Z3qxzYS244STGdg52+I3GLQxgRw0CpIvQ81hzsSfqHJGoNTWB70D33PsgJaynEzxnY8uwG6jm8fWlTbes0APrKB0aO2VwOHzNO4vOVGTS6AaDIkcJse2w6bKZogiFMwG1UB6VetvYCip0wgewNlGkQ6efgWZ+pyKH+H9ZoOmynZgKnVL1V9qRQ9o6rerYyBXPc29xYpKL9hJL+1JZ04D46P2tRqD64CLRxHOBwHRqgRruZssLjARJbBIKOpDb3ogkqtOv7bwnElw7p7OpfmwC96Btxqx4xxrZesmR6OFOBx5PE1tz0D1K3WzMBf/5J7YuLaFgGfuKi10u8h6ENsz3m4KS4EBHwokHOAe25/muqY9FMr3js+d+SCThL13VgNLfHn4iBF5lLkJIMYiYo1e9iYU9PqLdQ9m8tJhDmlW4ai8cuoy2wgSeTKcUzByK8Bn1C/OtSbq0ZIU3s0tiEF2VzwS/jV5S4d9rsM9pZs5j7tRZzytpEOM4Rl4/PHWbbn7VdzSQQX77L2XbVyAUw16891ZtP5RK360TuF/f/rzkLgPsf+dyDUu271gzZJ55yZ1CsvMhFVHuhIlyptjW3L2uVr5x6D6+fG1VuuBdkLgK4BtbE0l9GsBQPuOQ1+pwM0FVb5jtclAPSe9b4+U2GzWKvo0/KXISZdcCoVL75Kk0ZHQytizk4Z3BAe4DFOx4P28zGAENgaQ4TTB3PWuGxw6joiVB69b2vNJ2R91ZM0KXdLB7b6hDM8vsc02UmqFENZrzi3pSyJjcCzOi5vFVkgwqlHWKE14dKuMim3XDvyhVztcWMAN/jVYnZfcW9i2gykDWK48YWOfoObNDHjZ60wJA3USiCiGT22VCrVPtRMeythxnYX+dSra0vHwnCWdxnKnF8ZhQTmIhd7YpgpTACerSBltBiwDZzUylwnxGMiNaK4QJG1sIMJ7SPa2eGEKbk73s8mVS8Kn2C22QTUOCxaxcqWjXG9+YiRLbJBdoHTEIxgpZqIf4R7aNX9OcV6nNj0cgS7Q5ljktY9YxnuYRxGby6qRqgwmPeempuX7dOiYuVKlGFYsqPRLdMA7xC2c+G4hjMCIUKuLBm2fOJpIUCrx7t8H0S2DRon2tX0CaM8fH7tEFNdhwJAJCJbzGcAfMKXELZy0KBQi7lPtLncJRt1LzdjYjP6l/29Yb04VYWQGFINZ5U5MlnCDTIZpf0bKsW4XuCNWMaLnRaO3aYZKzw4oh7PJ7R9jv2OSjSRtxBPhZnVHDOoJ2QkBeWkGmqf5+6cIvHSmLGHYUKgMwpgBhiAm2OeDbgFRsf6z4QCzmTxhZAeCDXtU6RftEApZK2hlQ2o2S/ABdrj4ClP/ekLqdMRaMYk8vaJO/hd0r8E/2+JpPGns9HikAatAcfNATYEPxMh18dNnOZoCFzoBmgK1y8RAqU6/cZEzQ7iACmEP+o9oVTxfL/lwQcUCB0BunxJ1zYWeFeVDH10GOrAiyMM7pCuVOIbztQcopmuJEQ7OZkb2XfOR4C3IdE12qvuITM96l/xgBaTTIzcFFFbKSq7yAAE6Gke24RxB0LMTfIO42jK2fAHb4/MWPy9sLE5wimuOx8loJTrncMv+kTUH4zgIv4/7rWr0T73L6uIc5FJKLHnbpOqWAbcd3G2v8+6bcdvnMssDJnkNSSxK/xWDugZwlxDEDyBEzXIhJgq4xSuRwbbwhkIKKyz8qO90kNc6NVxIYKC+tEzlji9wWXdL5Afj4EnHPZie23HVLO6451bzETcBVUV0bxaPA4obNvfl+jiFoqt81GIn6s0otItE4/dy7xY9JfMNeHjXDKDd2L3Wfi10ojpYyK13WHAgwL5SVYhMYQBncx4vdl9VxEvejWMY7QuZ7gDfCYqx9LkBjxDxTplE19V/ZUsmqXnaj+GJG513DIS+G6wxOZbq9MvDeEKnXuPLXvnAnpEa/WST3yJTfq5zoCcfEuCjU39Hf1xhiA8ZJeB0t/6qkpPjDL3wC+oz0v0QG/kkF1RPqmDlTUKrxCvFrFJhDdz7D5eizKDd0HLdSBKUq05+hs0c1UqpiJjqJOYVBdHc0mwpkOIDEnyMJ299CxmX7GJqWq/kL5zl1qk0fbvWGB/rsR5iu2X9xKNpUxGzJ77Fk0JgPRYxvKbWG58ghj/Hs9TmVIbUrzBWuBNcvXRcJjmc8+QRpLF9EgJwknvyBtIsgUVVZlCOWmNKGgQ/pLUu9DEi2bcw33vuIxc7mG9MdOMq2Qr0zdo91pdHoh5J4TxJSYn0RK9e+7VL/2oVNCwnJUzQm/xrFVKzBC13m/2u7nvORd8YL4qNE5nHyaKf12AvFjbtTYqdssHXXQAt9X0AZ8YJZXgrTUeQXy3PoF9/bjXAGM80S0amesg33+A9qngU2xkx+4D1X8DuAvinwu4fM3EeJjhaikNyqK52cS/4T2AYy5VH0q8JMNndNKLXmIG0UND8Sguc7si2VJmfhrJKScQXdl7ljQdya/emjz52icogd3lBh3KNSQiqzQ7owWZviJ+fhGn/g96xTwqXGbHNPCZXL1Ee1etZxETwGdVSbiI0h/TUwt0VIJq5bKvfSZiL/6MXVmhu3VY8v14YZLELxYgfheBYfE7otHUQVm/xPtmP3QGYRcG9Eo4nOP5apdyWYmMWS66EWBrjWIz/3018ybx8MZhOAXYgIe9XZCdxWRU66pTrZZLDcCLokJzET7L4cxvKJdSLFkoERLvT6UKnc0U0/X1tIuGkfHH7ifvyateGHbq+7ZgvgQDeAmEL/Cfcq49Oy5hQnPqeYGy2fuHNo5ggPahaTA4zh2iSNoDeA7XMAK22Ugf5eFT8m5S6HBmEjbFMLrnsVmxQ0TQl/QPgOxE1Fj3DkBdkPJ/70GM1H6ZYjCB/LPB441q6YAraW1wJxAVQwQbjlS97cpNROIw9G+nM0TBfnbnBevNyC81gKSQSsyM9eWJWglgMML4lMq+9w+OYljiRcQwCUBpUWGI04g1C0D8fUBEZsTf4oJKAkMuZ7onAZBqZqlQjuOv6fWrLmmrqB4yZbvxZ7U4WUsasTjNKuxxRroQcTA9nV5fW7hLMCFbRtOrSK+Be6hYCam77lZq7NDBmIx6NtbW5YGg36GxGUb7jjx87lY9zDVBDAwqtDO+jUTTYD4+LlBZe5ran2DVBi9b/RuHC6vlBbwekxclz/LDaMSeTviVx5Ab9IY4vPJo1v6xCnrnMKcoim36jfkTO0JkdmK/wLDKXANPNXRJAAAAABJRU5ErkJggg==) 0 0/128px 128px repeat; opacity:.24; animation:twCaus 16s linear infinite; will-change:transform;}
@@ -6576,9 +6631,9 @@
   @keyframes twCaus2{to{transform:translate(-192px, 192px);}}
   .tide-scene .tw-sheen{position:absolute; top:0; bottom:0; left:-60%; width:60%; background:linear-gradient(100deg, transparent, rgba(255,255,255,.08) 42%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.08) 58%, transparent); animation:twSheen 11s ease-in-out infinite;}
   @keyframes twSheen{0%{transform:translateX(0);} 60%,100%{transform:translateX(280%);}}
-  .tide-scene .tw-edge{position:absolute; left:0; top:-27px; width:calc(100% + 160px); height:28px; transform-origin:50% 100%;
+  .tide-scene .tw-edge{position:absolute; left:-24px; top:-27px; width:calc(100% + 208px); height:28px; transform-origin:50% 100%;
     background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 28' width='160' height='28' preserveAspectRatio='none'%3E%3Cpath d='M0 12.7 L4 11.9 L8 11.3 L12 10.8 L16 10.5 L20 10.4 L24 10.4 L28 10.5 L32 10.7 L36 11.0 L40 11.3 L44 11.5 L48 11.7 L52 11.8 L56 11.9 L60 12.0 L64 12.0 L68 12.1 L72 12.2 L76 12.4 L80 12.7 L84 13.2 L88 13.7 L92 14.4 L96 15.2 L100 16.0 L104 16.9 L108 17.7 L112 18.3 L116 18.9 L120 19.3 L124 19.4 L128 19.3 L132 19.0 L136 18.4 L140 17.6 L144 16.7 L148 15.7 L152 14.7 L156 13.7 L160 12.7 L160 28 L0 28 Z' fill='rgb(126,200,246)' fill-opacity='.34'/%3E%3Cpath d='M0 17.2 L4 16.4 L8 15.8 L12 15.3 L16 15.0 L20 14.9 L24 14.9 L28 15.0 L32 15.2 L36 15.5 L40 15.8 L44 16.0 L48 16.2 L52 16.3 L56 16.4 L60 16.5 L64 16.5 L68 16.6 L72 16.7 L76 16.9 L80 17.2 L84 17.7 L88 18.2 L92 18.9 L96 19.7 L100 20.5 L104 21.4 L108 22.2 L112 22.8 L116 23.4 L120 23.8 L124 23.9 L128 23.8 L132 23.5 L136 22.9 L140 22.1 L144 21.2 L148 20.2 L152 19.2 L156 18.2 L160 17.2' fill='none' stroke='white' stroke-opacity='.22' stroke-width='1.2'/%3E%3Cpath d='M0 12.7 L4 11.9 L8 11.3 L12 10.8 L16 10.5 L20 10.4 L24 10.4 L28 10.5 L32 10.7 L36 11.0 L40 11.3 L44 11.5 L48 11.7 L52 11.8 L56 11.9 L60 12.0 L64 12.0 L68 12.1 L72 12.2 L76 12.4 L80 12.7 L84 13.2 L88 13.7 L92 14.4 L96 15.2 L100 16.0 L104 16.9 L108 17.7 L112 18.3 L116 18.9 L120 19.3 L124 19.4 L128 19.3 L132 19.0 L136 18.4 L140 17.6 L144 16.7 L148 15.7 L152 14.7 L156 13.7 L160 12.7' fill='none' stroke='white' stroke-opacity='.85' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Ccircle cx='18' cy='12.2' r='1.3' fill='white' fill-opacity='.75'/%3E%3Ccircle cx='64' cy='13.0' r='1.0' fill='white' fill-opacity='.75'/%3E%3Ccircle cx='101' cy='19.6' r='1.4' fill='white' fill-opacity='.75'/%3E%3Ccircle cx='133' cy='17.0' r='1.0' fill='white' fill-opacity='.75'/%3E%3C/svg%3E") 0 0/160px 28px repeat-x; animation:twEdge 8s linear infinite;}
-  .tide-scene .tw-edge.tw-edge-b{top:-33px; width:calc(100% + 160px); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 28' width='160' height='28' preserveAspectRatio='none'%3E%3Cpath d='M0 9.4 L4 10.0 L8 10.7 L12 11.3 L16 11.9 L20 12.4 L24 12.9 L28 13.2 L32 13.4 L36 13.5 L40 13.6 L44 13.6 L48 13.6 L52 13.6 L56 13.6 L60 13.7 L64 13.8 L68 14.0 L72 14.2 L76 14.4 L80 14.5 L84 14.6 L88 14.7 L92 14.6 L96 14.3 L100 14.0 L104 13.5 L108 12.8 L112 12.1 L116 11.3 L120 10.5 L124 9.8 L128 9.1 L132 8.5 L136 8.1 L140 7.9 L144 7.9 L148 8.0 L152 8.3 L156 8.8 L160 9.4' fill='none' stroke='white' stroke-opacity='.55' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E"); opacity:.6; animation:twEdgeB 13s linear infinite;}
+  .tide-scene .tw-edge.tw-edge-b{top:-33px; width:calc(100% + 208px); background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 28' width='160' height='28' preserveAspectRatio='none'%3E%3Cpath d='M0 9.4 L4 10.0 L8 10.7 L12 11.3 L16 11.9 L20 12.4 L24 12.9 L28 13.2 L32 13.4 L36 13.5 L40 13.6 L44 13.6 L48 13.6 L52 13.6 L56 13.6 L60 13.7 L64 13.8 L68 14.0 L72 14.2 L76 14.4 L80 14.5 L84 14.6 L88 14.7 L92 14.6 L96 14.3 L100 14.0 L104 13.5 L108 12.8 L112 12.1 L116 11.3 L120 10.5 L124 9.8 L128 9.1 L132 8.5 L136 8.1 L140 7.9 L144 7.9 L148 8.0 L152 8.3 L156 8.8 L160 9.4' fill='none' stroke='white' stroke-opacity='.55' stroke-width='1.6' stroke-linecap='round'/%3E%3C/svg%3E"); opacity:.6; animation:twEdgeB 13s linear infinite;}
   @keyframes twEdge{from{transform:translateX(0);} to{transform:translateX(-160px);}}
   @keyframes twEdgeB{from{transform:translateX(-160px);} to{transform:translateX(0);}}
   /* the crest surges while the water moves (the independent scale property, so it adds to the drift) */
@@ -6586,8 +6641,18 @@
   .tide-scene.is-moving.mv-b .tw-edge{animation-name:twEdge, twSurgeB;}
   .tide-scene.is-moving .tw-edge.tw-edge-b{animation:twEdgeB 13s linear infinite, twSurgeA 1.8s ease-out var(--tw-delay, 0ms) both;}
   .tide-scene.is-moving.mv-b .tw-edge.tw-edge-b{animation-name:twEdgeB, twSurgeB;}
-  @keyframes twSurgeA{0%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
-  @keyframes twSurgeB{0%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
+  /* (package M follow-up, 2026-10-18: the surge builds up from the crest's rest height instead of starting tall) */
+  @keyframes twSurgeA{0%{scale:1 1;} 18%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
+  @keyframes twSurgeB{0%{scale:1 1;} 18%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
+  /* a Flood's rise (package M, 2026-10-18): a taller surge, and the back foam line bright while it climbs */
+  .tide-scene.is-moving.is-rising .tw-edge{animation:twEdge 8s linear infinite, twSurgeRA 1.8s ease-out var(--tw-delay, 0ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-edge{animation-name:twEdge, twSurgeRB;}
+  .tide-scene.is-moving.is-rising .tw-edge.tw-edge-b{animation:twEdgeB 13s linear infinite, twSurgeRA 1.8s ease-out var(--tw-delay, 0ms) both, twFoamRA 2.2s ease-out var(--tw-delay, 0ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-edge.tw-edge-b{animation-name:twEdgeB, twSurgeRB, twFoamRB;}
+  @keyframes twSurgeRA{0%{scale:1 1;} 18%{scale:1 2.9;} 55%{scale:1 1.9;} 100%{scale:1 1;}}
+  @keyframes twSurgeRB{0%{scale:1 1;} 18%{scale:1 2.9;} 55%{scale:1 1.9;} 100%{scale:1 1;}}
+  @keyframes twFoamRA{0%{opacity:.6;} 15%,70%{opacity:1;} 100%{opacity:.6;}}
+  @keyframes twFoamRB{0%{opacity:.6;} 15%,70%{opacity:1;} 100%{opacity:.6;}}
   /* an ebb (or the tide ending) leaves the sand wet and dark, drying out over about seven seconds */
   .tide-scene.is-drying .tw-wet{animation:twDryA 7s ease-out var(--tw-delay, 0ms) both;}
   .tide-scene.is-drying.mv-b .tw-wet{animation-name:twDryB;}
@@ -9356,7 +9421,7 @@
   @keyframes elBanner{0%{opacity:0; transform:translate(-50%,-80%) scale(.85);} 12%{opacity:1; transform:translate(-50%,-50%) scale(1.04);} 20%{transform:translate(-50%,-50%) scale(1);} 80%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-40%);}}
   /* The leader's moment (2026-10-14, user: "Whats the vfx when an enemy summons their leader?"): a callout for both sides (gold for
      yours, crimson for theirs), a ring shockwave and a flash where the leader lands. See leaderThroneVfx(). */
-  .leader-callout{position:fixed; z-index:1103; animation-duration:2.4s; max-width:min(92vw, 640px); white-space:normal; text-align:center; line-height:1.15;}
+  .leader-callout{position:fixed; z-index:1103; animation-duration:1.92s; /* ×0.8 (2026-10-18, BP: LEADER_CALLOUT_MS sets it inline too) */ max-width:min(92vw, 640px); white-space:normal; text-align:center; line-height:1.15;}
   .leader-callout.is-mine{color:#3a2604; background:linear-gradient(180deg,#ffe9a8,#e8b64a); border-color:#fff2c4; box-shadow:0 8px 24px rgba(0,0,0,.45), 0 0 26px rgba(255,205,90,.55);}
   .leader-ring{position:fixed; z-index:1102; pointer-events:none; border-radius:50%; transform:translate(-50%,-50%) scale(.3); border:4px solid rgba(255,214,110,.95); box-shadow:0 0 18px 4px rgba(255,200,80,.6), inset 0 0 14px rgba(255,236,170,.6); animation:leaderRing .9s cubic-bezier(.15,.7,.3,1) forwards;}
   .leader-ring.is-late{animation-delay:.14s; border-width:2px; opacity:0;}
@@ -9475,6 +9540,58 @@
   .vs-lvl small{font:700 11px/1.2 'Baloo 2',system-ui,sans-serif; opacity:.85;} .vs-lvl b{font:800 26px/1.05 'Baloo 2',system-ui,sans-serif;}
 
   .winloss-card.is-glory > .wl-rays-clip{position:absolute !important; inset:0; overflow:hidden; z-index:0 !important; pointer-events:none; border-radius:inherit;}
+  /* Boss victory results (2026-10-18, package RW, owner 20:52: "btw, the boss reward screen should be more crimsony I think"): a won
+     boss fight (isBossResults in arena_app.js: boss, sub-boss, Campaign Boss, world / raid bosses on the map) gets the Victory card
+     in crimson: a deep-red wash, a crimson-and-ember frame, the title glowing like a coal, crimson rays and embers drifting up.
+     Elites, champions, mini-bosses and raids keep their own look. The card is dark in both themes; every text on it stays light
+     (cream / peach on #22050a-#8f1d24, AA or better). FX.F.hooks.resultsShown adds the ember burst (FX.F.bossVictory). */
+  .pass-card.winloss-card.is-glory.is-boss{background:radial-gradient(ellipse 85% 58% at 50% 0%, #9a1f27 0%, #5a0c15 42%, #2a060c 78%, #160306 100%) !important; color:#fff1e6;
+    border:2px solid #ff6a4a !important; box-shadow:0 0 0 4px rgba(214,48,36,.32), 0 0 70px rgba(200,24,24,.42), inset 0 0 60px rgba(255,80,40,.12), 0 30px 80px rgba(0,0,0,.65) !important;}
+  .winloss-card.is-glory.is-boss .wl-rays{background:repeating-conic-gradient(from 0deg, rgba(255,96,64,.6) 0deg 6deg, transparent 6deg 18deg); opacity:.42;}
+  .winloss-card.is-glory.is-boss .wl-title{background:linear-gradient(180deg, #fff1dc 8%, #ffb27a 46%, #ff5238 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 4px 0 #3d0508) drop-shadow(0 0 20px rgba(255,64,40,.6)) drop-shadow(0 0 42px rgba(200,20,20,.45));}
+  .winloss-card.is-glory.is-boss .rw-panel{background:rgba(255,120,90,.08) !important; border-color:rgba(255,140,110,.32) !important; color:#fff1e6;}
+  .winloss-card.is-glory.is-boss .rw-head{color:#ffc7ad !important;}
+  .winloss-card.is-glory.is-boss .rw-cur, .winloss-card.is-glory.is-boss .rw-row .hud-pill:not(.rw-cur):not(.rank-bonus-pill){border-color:rgba(255,150,120,.42) !important;}
+  .winloss-card.is-glory.is-boss .rw-cur .cur-label{color:#ffd2bd !important;}
+  .winloss-card.is-glory.is-boss .wls-compact{color:rgba(255,236,226,.78);}
+  .winloss-card.is-glory.is-boss .pass-ico{filter:drop-shadow(0 0 14px rgba(255,80,40,.7));}
+  .winloss-card.is-glory.is-boss > .wl-embers{position:absolute !important; inset:0; overflow:hidden; z-index:0 !important; pointer-events:none; border-radius:inherit;
+    background:radial-gradient(ellipse 70% 30% at 50% 102%, rgba(255,70,30,.28), rgba(255,70,30,0) 70%);}
+  .winloss-card.is-glory.is-boss > .wl-embers i{position:absolute; bottom:-8px; width:5px; height:5px; border-radius:50%; background:#ffb067; box-shadow:0 0 6px 2px rgba(255,84,36,.8); opacity:0; animation:wlEmber linear infinite;}
+  .winloss-card.is-glory.is-boss > .wl-embers i:nth-child(3n){width:3px; height:3px; background:#ffe0a0;} .winloss-card.is-glory.is-boss > .wl-embers i:nth-child(4n){background:#ff5a3a;}
+  @keyframes wlEmber{0%{transform:translate(0, 0) scale(1); opacity:0;} 12%{opacity:.95;} 70%{opacity:.75;} 100%{transform:translate(var(--dx, 20px), -640px) scale(.4); opacity:0;}}
+  :where(html[data-fx="none"], html[data-fx="low"]) .winloss-card.is-boss > .wl-embers i{animation:none; display:none;}
+  @media (prefers-reduced-motion:reduce){ .winloss-card.is-boss > .wl-embers i{animation:none !important; display:none;} }
+  /* Babel Spire results (2026-10-18, package RW follow-up, owner 23:20: "The victory screen for Towers should be very slightly different
+     as well. It's triumphant to know that your deck has reached the next tier."): a won new Spire floor (isTowerResults) gets the Victory
+     card in a cool sky and stone-gold, a notch below the boss crimson, and the ascent line (.wl-ascent): a little tower whose cleared
+     floor is lit, a beam climbing to the next floor, "Floor N cleared → Floor N+1". Light text on dark blue (AA or better), both themes. */
+  .pass-card.winloss-card.is-glory.is-tower{background:radial-gradient(ellipse 85% 58% at 50% 0%, #4d7fae 0%, #284a6e 40%, #172a43 75%, #0e1828 100%) !important; color:#f2f6fc;
+    border:2px solid #d8c48c !important; box-shadow:0 0 0 4px rgba(216,196,140,.26), 0 0 50px rgba(120,170,230,.3), 0 30px 80px rgba(0,0,0,.6) !important;}
+  .winloss-card.is-glory.is-tower .wl-rays{background:repeating-conic-gradient(from 0deg, rgba(205,228,255,.5) 0deg 5deg, transparent 5deg 18deg); opacity:.3;}
+  .winloss-card.is-glory.is-tower .wl-title{background:linear-gradient(180deg, #ffffff 10%, #dbe8fb 50%, #ecd28c 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 4px 0 #1b2f4a) drop-shadow(0 0 20px rgba(170,205,255,.5));}
+  .winloss-card.is-glory.is-tower .rw-panel{background:rgba(190,215,255,.07) !important; border-color:rgba(216,196,140,.3) !important; color:#f2f6fc;}
+  .winloss-card.is-glory.is-tower .rw-head{color:#ecd9a0 !important;}
+  .winloss-card.is-glory.is-tower .wls-compact{color:rgba(232,240,252,.78);}
+  .wl-ascent{display:inline-flex; align-items:center; gap:14px; margin:2px auto 10px; padding:8px 18px 8px 12px; border-radius:14px; text-align:left;
+    background:rgba(8,18,34,.5); border:1px solid rgba(216,196,140,.45); box-shadow:inset 0 0 18px rgba(150,190,240,.12);}
+  .wl-ascent-tower{position:relative; flex:none; display:flex; flex-direction:column-reverse; align-items:center; gap:2px; width:34px; height:58px;}
+  .wl-ascent-tower i{display:block; height:10px; border-radius:3px 3px 0 0; background:#62758f; box-shadow:inset 0 -2px 0 rgba(0,0,0,.28);}
+  .wl-ascent-tower i:nth-child(1){width:32px;} .wl-ascent-tower i:nth-child(2){width:27px;} .wl-ascent-tower i:nth-child(3){width:22px;} .wl-ascent-tower i:nth-child(4){width:17px;} .wl-ascent-tower i:nth-child(5){width:12px;}
+  .wl-ascent-tower i.is-lit{background:linear-gradient(180deg, #fff6d2, #f0c860); box-shadow:0 0 10px 2px rgba(255,214,110,.75);}
+  .wl-ascent-tower i.is-next{background:#9dbde4; animation:wlNextGlow 2.4s ease-in-out infinite;}
+  @keyframes wlNextGlow{50%{background:#d7e8ff; box-shadow:0 0 10px 2px rgba(190,220,255,.6);}}
+  .wl-ascent-beam{position:absolute; left:50%; bottom:22px; width:4px; height:22px; margin-left:-2px; border-radius:2px; background:linear-gradient(0deg, rgba(255,232,160,.95), rgba(210,232,255,0));
+    transform-origin:50% 100%; animation:wlBeam 2.4s ease-out infinite;}
+  .wl-ascent.is-top .wl-ascent-beam{bottom:58px; height:16px;}
+  @keyframes wlBeam{0%{transform:scaleY(0); opacity:0;} 20%{opacity:1;} 60%{transform:scaleY(1); opacity:1;} 100%{transform:scaleY(1.5); opacity:0;}}
+  .wl-ascent-txt{display:flex; flex-direction:column; gap:2px; line-height:1.2;}
+  .wl-ascent-txt b{font:800 clamp(15px, 2.2vw, 18px)/1.2 'Baloo 2',system-ui,sans-serif; color:#ffffff; letter-spacing:.01em;}
+  .wl-ascent-txt small{font-size:12.5px; color:#d3e2f5;}
+  :where(html[data-fx="none"], html[data-fx="low"]) .wl-ascent-beam, :where(html[data-fx="none"], html[data-fx="low"]) .wl-ascent-tower i.is-next{animation:none;}
+  @media (prefers-reduced-motion:reduce){ .wl-ascent-beam, .wl-ascent-tower i.is-next{animation:none !important;} }
   .hud-pill.cur-laurels{background:#e3f1d6; color:#24461a; border-color:#9cc584;}
 
   /* Notices (2026-10-10): rewards on each card, rank letters for A and up, a free swap, and a claimed note keeps its size. */
@@ -10310,6 +10427,124 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .mc-fx li{display:flex; flex-direction:column;} .mc-fx li.is-unknown{flex-direction:row; align-items:center; gap:8px;} .mc-fx li > span:first-child{font-weight:800;}
 /* Codex pages (2026-10-13) */
 .cx-pager{grid-column:1 / -1; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:16px 0 8px;}
+/* ---- Codex: card album, skills book, collection score (2026-10-18, package C, owner: "codex: skills - look like pages in a book.
+   bestiary - look like a card album. overall collection score listed at the btm and in profile w/ achievements") ----
+   Parchment and leather from the game's own tokens (--surface*, --ink*, --accent), so light and dark both follow the theme. */
+.pg-nav{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px; margin:12px 0 4px;}
+.pg-nav .pg-btn{min-width:44px; min-height:40px; font-size:20px; line-height:1; padding:0 12px;}
+.pg-nav .pg-of{font:700 13px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink); min-width:9em; text-align:center; font-variant-numeric:tabular-nums; padding:8px 12px; border-radius:999px; background:var(--surface); border:1px solid var(--surface-border);}
+.pg-nav .pg-jump{max-width:min(320px, 100%); height:40px; padding:0 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:inherit; font-size:13px;}
+/* the turning leaf: a copy of the page you leave, lifting off at the spine */
+.pg-leaf{position:absolute; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; backface-visibility:hidden; will-change:transform;
+  animation:pgLeafFwd 460ms cubic-bezier(.45,.05,.35,1) forwards;}
+.pg-leaf.pg-leaf-back{transform-origin:100% 50%; animation-name:pgLeafBack;}
+.pg-leaf::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.28)); opacity:0; animation:pgLeafShade 460ms ease-in forwards;}
+.pg-leaf.pg-leaf-back::after{background:linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,.28));}
+@keyframes pgLeafFwd{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(-96deg);}}
+@keyframes pgLeafBack{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(96deg);}}
+@keyframes pgLeafShade{to{opacity:1;}}
+.pg-in-back{transform-origin:0% 50%; animation:pgInBack 420ms cubic-bezier(.2,.7,.3,1) both;}
+@keyframes pgInBack{from{transform:perspective(1800px) rotateY(-80deg); opacity:.4;} to{transform:none; opacity:1;}}
+@media (prefers-reduced-motion: reduce){ .pg-leaf, .pg-leaf::after, .pg-in-back{animation:none !important;} .pg-leaf{display:none;} }
+
+/* the skills book */
+.bk-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:0 0 10px;}
+.bk-bar .bk-filter{flex:none; display:flex; align-items:center; gap:10px; width:min(560px, 100%); margin:0 auto;}
+.bk-bar .bk-filter small{color:var(--page-ink, #f5ecd2);}
+.bk-filter input{flex:1 1 auto; min-width:0; height:40px; padding:0 12px; border-radius:10px; border:1px solid var(--surface-border); font:inherit; background:var(--surface); color:var(--ink);}
+.bk-book{position:relative; touch-action:pan-y;}
+.bk-spread{display:flex; align-items:stretch; max-width:1180px; margin:0 auto; padding:10px; border-radius:16px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--accent-strong) 78%, #000), color-mix(in srgb, var(--accent-strong) 62%, #000));
+  box-shadow:0 14px 34px rgba(0,0,0,.28), inset 0 0 0 2px color-mix(in srgb, var(--accent) 55%, transparent);}
+.bk-page{position:relative; flex:1 1 0; min-width:0; display:flex; flex-direction:column; height:clamp(440px, calc(100vh - 290px), 760px); padding:14px 22px 10px;
+  color:var(--ink); background:var(--surface); border-radius:6px; box-shadow:inset 0 0 40px color-mix(in srgb, var(--surface-border) 45%, transparent);}
+.bk-page.pg-left{border-radius:10px 2px 2px 10px; background:linear-gradient(270deg, color-mix(in srgb, var(--surface-border) 55%, var(--surface)) 0, var(--surface) 7%, var(--surface) 100%);}
+.bk-page.pg-right{border-radius:2px 10px 10px 2px; background:linear-gradient(90deg, color-mix(in srgb, var(--surface-border) 55%, var(--surface)) 0, var(--surface) 7%, var(--surface) 100%);}
+.bk-page.pg-single{border-radius:4px 10px 10px 4px; background:linear-gradient(90deg, color-mix(in srgb, var(--surface-border) 60%, var(--surface)) 0, var(--surface) 4%, var(--surface) 100%);}
+.bk-page.is-blank{background:color-mix(in srgb, var(--surface) 82%, var(--surface-border));}
+.bk-spine{flex:0 0 6px; background:linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,.08) 50%, rgba(0,0,0,.35));}
+.bk-run{min-height:18px; font:400 13px/1.3 'MedievalSharp','Baloo 2',serif; letter-spacing:.04em; color:var(--ink-soft); text-align:center; border-bottom:1px solid color-mix(in srgb, var(--surface-border) 70%, transparent); padding-bottom:4px; margin-bottom:10px;}
+.bk-body{flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; gap:12px; scrollbar-width:thin;}
+.bk-measure{position:absolute; visibility:hidden; pointer-events:none; left:0; top:0; height:auto; overflow:visible; flex:none;}
+.bk-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px; min-height:20px;}
+.bk-title{margin:4px 0 6px; font:400 30px/1.1 'MedievalSharp','Baloo 2',serif; text-align:center; color:var(--ink);}
+.bk-intro{margin:0 0 6px; font-size:14px; color:var(--ink-muted); text-align:center;}
+.bk-toc{list-style:none; margin:6px 0 0; padding:0; display:flex; flex-direction:column; gap:4px;}
+.bk-toc-row{display:flex; align-items:baseline; gap:8px; width:100%; padding:8px 6px; border:0; border-radius:8px; background:transparent; color:var(--ink); font:700 16px/1.3 'Baloo 2',system-ui,sans-serif; text-align:left; cursor:pointer;}
+.bk-toc-row:hover, .bk-toc-row:focus-visible{background:color-mix(in srgb, var(--surface-border) 30%, transparent);}
+.bk-toc-row small{font-weight:600; color:var(--ink-muted); font-size:12.5px;}
+.bk-toc-row i{flex:1 1 auto; border-bottom:2px dotted color-mix(in srgb, var(--ink-soft) 60%, transparent); transform:translateY(-4px);}
+.bk-az-h{margin:14px 0 6px; font:400 16px/1.2 'MedievalSharp','Baloo 2',serif; text-align:center; color:var(--ink-muted);}
+.bk-az{display:flex; flex-wrap:wrap; justify-content:center; gap:6px;}
+.bk-az button{min-width:36px; min-height:36px; border-radius:8px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:800 14px/1 'Baloo 2',system-ui,sans-serif; cursor:pointer;}
+.bk-az button:hover, .bk-az button:focus-visible{background:var(--surface-3);}
+.bk-ch{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:0; padding-bottom:4px; font:400 21px/1.2 'MedievalSharp','Baloo 2',serif; color:var(--accent-strong); border-bottom:2px solid color-mix(in srgb, var(--accent) 40%, transparent);}
+.bk-ch small{font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
+.bk-entry{display:grid; grid-template-columns:44px minmax(0,1fr); gap:10px; align-items:start;}
+.bk-entry .bk-ico{width:44px; height:44px; display:grid; place-items:center; font-size:24px; line-height:1; border-radius:50%; background:var(--surface-2); box-shadow:inset 0 0 0 1px var(--surface-border);}
+.bk-entry h4{margin:2px 0 2px; font:800 16px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink);}
+.bk-entry p{margin:0; font-size:14px; line-height:1.45; color:var(--ink);}
+.bk-entry .bk-ans{margin-top:4px; font-size:13px; color:var(--ink-muted);}
+.bk-entry .bk-dot{display:block; width:16px; height:16px; border-radius:50%; background:var(--kw); box-shadow:0 0 0 4px color-mix(in srgb, var(--kw) 28%, transparent);}
+.bk-ch-sub{margin:4px 0 0; font-size:13px; color:var(--ink-muted);}
+.bk-entry.is-hint .bk-ico{font-weight:900; color:var(--ink-soft); filter:grayscale(1); opacity:.75;}
+.bk-entry.is-hint h4, .bk-entry.is-hint p{color:var(--ink-soft); font-style:italic;}
+.bk-book .pg-nav{margin-top:12px;}
+@media (max-width:899px){ .bk-spread{padding:6px;} .bk-page{height:clamp(400px, calc(100vh - 250px), 720px); padding:12px 14px 8px;} }
+
+/* the card album */
+#codexGrid.al-host{display:block; position:relative; touch-action:pan-y;}
+.al-album{display:flex; align-items:stretch; max-width:1080px; margin:0 auto; padding:10px; border-radius:16px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--accent-strong) 70%, #111), color-mix(in srgb, var(--accent-strong) 50%, #111));
+  box-shadow:0 14px 34px rgba(0,0,0,.3), inset 0 0 0 2px color-mix(in srgb, var(--accent) 50%, transparent);}
+.al-album.al-one{max-width:560px;}
+.al-page{position:relative; flex:1 1 0; min-width:0; display:flex; flex-direction:column; padding:10px 14px 8px; border-radius:8px;
+  background:color-mix(in srgb, var(--surface-3) 55%, var(--bg-2)); box-shadow:inset 0 0 30px rgba(0,0,0,.18);}
+.al-page.pg-left{border-radius:10px 2px 2px 10px;} .al-page.pg-right{border-radius:2px 10px 10px 2px;}
+.al-page.is-blank{background:color-mix(in srgb, var(--surface-3) 40%, var(--bg-2)); opacity:.8;}
+.al-spine{flex:0 0 14px; margin:0 2px; border-radius:4px; background:repeating-linear-gradient(180deg, transparent 0 22px, rgba(0,0,0,.45) 22px 30px, transparent 30px 52px), linear-gradient(90deg, rgba(0,0,0,.35), rgba(255,255,255,.08) 50%, rgba(0,0,0,.35));}
+.al-head{display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; min-height:28px; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid color-mix(in srgb, var(--ink) 18%, transparent);}
+.al-head .al-sec{flex:1 1 auto; min-width:0; font:400 16px/1.2 'MedievalSharp','Baloo 2',serif; color:var(--ink); overflow-wrap:anywhere;}
+.al-head .al-count{font:700 12px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); white-space:nowrap;}
+.al-grid{display:grid; grid-template-columns:repeat(var(--al-cols, 3), minmax(0, 1fr)); gap:10px; flex:1 1 auto; align-content:start;}
+.al-sleeve{position:relative; padding:6px 6px 16px; border-radius:8px; background:linear-gradient(160deg, rgba(255,255,255,.22), rgba(255,255,255,.05) 40%, rgba(255,255,255,.12));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35), 0 2px 5px rgba(0,0,0,.18);}
+.al-sleeve::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:7; background:linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.16) 42%, rgba(255,255,255,0) 54%);}
+.al-slot{min-height:1px;}
+#codexGrid.al-host .al-sleeve .cx-tile-wrap{content-visibility:visible; contain-intrinsic-size:none; padding:0; margin:0;}
+#codexGrid.al-host .card-tile{width:100%;}
+#codexGrid.al-host .al-sleeve .cx-tile-wrap .cx-lock{top:-4px; left:-4px; font-size:12px; padding:2px 3px;}
+#codexGrid.al-host .card-tile.cx-editable{cursor:pointer;}
+.al-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px;}
+@media (max-width:559px){ .al-album{padding:6px;} .al-page{padding:8px 8px 6px;} .al-grid{gap:8px;} }
+
+/* the skill filter (2026-10-18, package C, owner 23:21: "add a way to filter by skills in codex") */
+#codexToolbar > .cx-skill-panel{flex:1 1 100%; order:99; padding:10px 12px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); color:var(--ink); box-shadow:0 6px 18px rgba(0,0,0,.18);}
+#codexToolbar > .cx-skill-panel[hidden]{display:none !important;}
+.cx-skill-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px;} .cx-skill-head small{color:var(--ink-muted);}
+.cx-skill-chips{display:flex; flex-wrap:wrap; gap:6px; max-height:min(46vh, 340px); overflow-y:auto;}
+.cx-sk-chip{display:inline-flex; align-items:center; gap:4px; min-height:34px; padding:4px 10px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:700 13px/1.2 'Nunito',system-ui,sans-serif; cursor:pointer;}
+.cx-sk-chip:hover, .cx-sk-chip:focus-visible{background:var(--surface-3);}
+.cx-sk-chip[aria-pressed="true"], .cx-sk-chip.is-on{background:var(--accent); border-color:var(--accent-strong); color:var(--accent-ink);}
+.cx-sk-chip i{font-style:normal; opacity:.8;}
+.cx-skill-none{margin:0; color:var(--ink-muted);}
+.cx-skill-active{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:6px 0 4px;} .cx-skill-active[hidden]{display:none;}
+.cx-skill-active > span{font-weight:800; font-size:13px; color:var(--page-ink, #f5ecd2);}
+.cx-skill-active > .btn{background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
+.bk-entry .bk-show{margin-top:6px; padding:3px 10px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:700 12px/1.3 'Nunito',system-ui,sans-serif; cursor:pointer;}
+.bk-entry .bk-show:hover, .bk-entry .bk-show:focus-visible{background:var(--surface-3);}
+/* the collection score, under every Codex tab */
+.cx-score-wrap:empty{display:none;}
+.cx-score{display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; margin:22px auto 6px; max-width:1180px; padding:14px 18px; border-radius:16px; background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 4px 12px rgba(0,0,0,.08); color:var(--ink);}
+.cx-score-ico{font-size:30px; line-height:1;}
+.cx-score-main{flex:1 1 260px; display:flex; flex-direction:column; gap:3px; min-width:0;}
+.cx-score-k{font:800 13px/1.2 'Baloo 2',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-muted);}
+.cx-score-n{font:600 14px/1.1 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);} .cx-score-n b{font:900 28px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink);}
+.cx-score-main .pf-tile-bar{flex:none; max-width:none; height:8px; margin:4px 0 2px; background:color-mix(in srgb, var(--ink) 12%, transparent);}
+.cx-score-main small{font-size:12px; color:var(--ink-muted);}
+.cx-score-facts{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 14px; font-weight:700; font-size:14px;}
+.cx-score-achv{border:0; background:none; padding:4px 0; font:inherit; color:var(--ink); cursor:pointer; text-decoration:underline; text-decoration-color:color-mix(in srgb, var(--ink) 30%, transparent); text-underline-offset:3px;}
+.cx-score-achv em{color:var(--accent); font-style:normal; font-weight:800;}
 /* 2026-10-13 (user: "Put the admin buttons to the side on the right, outside the card") */
 .cnp-admin-side{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
 @media (min-width:821px){ .conquest-node-panel > .cnp-admin-side{position:absolute; left:100%; top:44px; margin:0 0 0 12px; flex-direction:column; flex-wrap:nowrap; width:150px;}
@@ -11027,6 +11262,12 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
     conic-gradient(from 150deg at 50% 0, #e8c46a 0 60deg, transparent 0) 28px 2px / 112px 18px repeat-x,
     conic-gradient(from 150deg at 50% 0, #2e86c1 0 60deg, transparent 0) 56px 2px / 112px 18px repeat-x,
     conic-gradient(from 150deg at 50% 0, #1e8449 0 60deg, transparent 0) 84px 2px / 112px 18px repeat-x;}
+/* The Pale Desert (2026-10-18, package PD): a white sun's glare in the top corner that breathes slowly, and two faint heat-haze bands
+   sliding over the sand (transform / opacity only, three elements). The floor keeps the usual dark scrim so the cards read the same. */
+.scene-paledesert .pd-sun{position:absolute; right:-14%; top:-34%; width:62%; height:84%; border-radius:50%; background:radial-gradient(circle, rgba(255,255,250,.42) 0%, rgba(255,250,235,.14) 42%, transparent 70%); animation:pdSun 7s ease-in-out infinite alternate; will-change:transform, opacity;}
+.scene-paledesert .pd-haze{position:absolute; left:-20%; width:140%; height:12%; background:linear-gradient(180deg, transparent, rgba(255,250,240,.09), transparent); animation:pdHaze 11s ease-in-out infinite alternate; will-change:transform;}
+@keyframes pdSun{from{opacity:.7; transform:scale(1);} to{opacity:1; transform:scale(1.06);}}
+@keyframes pdHaze{from{transform:translate3d(-4%, 0, 0);} to{transform:translate3d(4%, 0, 0);}}
 @media (prefers-reduced-motion: reduce){ #battlefieldEl > .scene-fx *{animation:none !important;} }
 
 /* The Arena tab: a tourney-ground banner, today's rules as Environment cards, the modes with what a win pays. */
