@@ -520,7 +520,7 @@
     "drop": {
       "map": "mw"
     },
-    "flavor": "Anything that bites the bank gets bitten back: units that hit your castle take 1 damage.",
+    "flavor": "Anything that bites the bank gets bitten back: units that hit your bramble take 1 damage.",
     "archetypes": [
       "Castle"
     ],
@@ -574,7 +574,7 @@
     "drop": {
       "map": "m8"
     },
-    "flavor": "Nobody climbs in twice. Units that hit your castle take 1 damage.",
+    "flavor": "Nobody climbs in twice. Units that hit your bramble take 1 damage.",
     "archetypes": [
       "Castle"
     ],
@@ -682,7 +682,7 @@
     "drop": {
       "map": "mk"
     },
-    "flavor": "Every hole has a claw in it. Units that hit your castle take 1 damage.",
+    "flavor": "Every hole has a claw in it. Units that hit your bramble take 1 damage.",
     "archetypes": [
       "Castle"
     ],

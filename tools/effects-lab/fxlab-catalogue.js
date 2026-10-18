@@ -8,7 +8,7 @@ const $ = (s, r)=> (r || document).querySelector(s), $$ = (s, r)=> [...(r || doc
 const esc = s=> String(s == null ? '' : s).replace(/[&<>"]/g, c=> ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;'}[c]));
 const sec = $('#catalogue'); if(!sec) return;
 const AREAS = [['combat-attack', 'Combat: attacks', 'A'], ['combat-skill', 'Combat: skills', 'A'], ['status', 'Statuses', 'B C D'], ['field', 'Fields', 'B'],
-  ['weather-time', 'Weather and time', 'B'], ['darkness-light', 'Darkness and light', 'B'], ['death', 'Deaths', 'C'], ['castle', 'Castle', 'C'],
+  ['weather-time', 'Weather and time', 'B'], ['darkness-light', 'Darkness and light', 'B'], ['death', 'Deaths', 'C'], ['castle', 'Bramble', 'C'],
   ['summon-spawn', 'Summons and spawns', 'C'], ['card-treatment', 'Card treatments', 'D'], ['foil', 'Foils', 'D'], ['pack-card-open', 'Packs and card opening', 'D'],
   ['rewards-results', 'Rewards and results', 'F'], ['meta-progression', 'Progression', 'D F'], ['conquest-map', 'Conquest map', 'E'], ['world-ambience', 'World ambience', 'E'], ['map-grandeur', 'Map titles and grandeur', 'G'], ['fun', 'Fun VFX (new ideas)', 'G'],
   ['ui-feedback', 'UI feedback', 'F'], ['tutorial-dialogue', 'Tutorial and dialogue', 'F'], ['raid-dungeon-pvp', 'Raid, dungeon, PvP', 'F']];

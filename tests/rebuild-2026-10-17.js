@@ -71,15 +71,15 @@ ok(E.ACTION_KEYS.includes('rebuild'), "ACTION_KEYS has 'rebuild'");
 const src = fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8');
 const fnSrc = name=>{ const i = src.indexOf(`\nfunction ${name}(`); if(i < 0) return ''; let d = 0, j = src.indexOf('{', i); for(let k = j; k < src.length; k++){ const ch = src[k]; if(ch === '{') d++; else if(ch === '}'){ d--; if(!d) return src.slice(i, k + 1); } } return ''; };
 const line = k=> (src.match(new RegExp(`\\n  \\{key:'${k}', [^\\n]*`)) || [''])[0];
-{ const pd = line('rebuild'); ok(/category:'passive', label:'Rebuild', kind:'number', min:1, defaultValue:2/.test(pd) && /While Ready, it restores/.test(pd) && /every upkeep/.test(pd) && /never above the castle's max/.test(pd), 'PASSIVE_DEFS: Rebuild (number, default 2), the editor help');
-  ok(/codexNote:'Its action form, Rebuild castle N/.test(src), 'the Codex note names the action form'); }
+{ const pd = line('rebuild'); ok(/category:'passive', label:'Rebuild', kind:'number', min:1, defaultValue:2/.test(pd) && /While Ready, it restores/.test(pd) && /every upkeep/.test(pd) && /never above the bramble's max/.test(pd), 'PASSIVE_DEFS: Rebuild (number, default 2), the editor help');
+  ok(/codexNote:'Its action form, Rebuild bramble N/.test(src), 'the Codex note names the action form'); }
 { const m = src.match(/\n  rebuild: v=> `[^`]*`,/); let t = ''; try{ const ctx = {out:{}}; vm.runInNewContext(fnSrc('numOr') + '\nout.f = ' + m[0].trim().replace(/^rebuild: /, '').replace(/,$/, ''), ctx); t = ctx.out.f(3); }catch(e){}
-  ok(t === 'While Ready, restore 3 Health to your castle every upkeep.', `SKILL_TEXT: "${t}"`); }
+  ok(t === 'While Ready, restore 3 Health to your bramble every upkeep.', `SKILL_TEXT: "${t}"`); }
 ok(/SKILL_ICON\.rebuild = '🔨🏰';/.test(src), 'SKILL_ICON: 🔨🏰 (🧱 is Bulwark\'s)');
 ok(/const CHIP_FALLBACK_SKILLS = \[[^\]]*'rebuild'\]/.test(src), 'the chip on the skill strip (CHIP_FALLBACK_SKILLS)');
-{ const ad = line('rebuild').length ? (src.match(/\n  \{key:'rebuild', label:'Rebuild castle', fields:\['amount'\][^\n]*/) || [''])[0] : ''; ok(ad && /Any trigger/.test(ad), 'ACTION_DEFS: Rebuild castle, one amount field'); }
+{ const ad = line('rebuild').length ? (src.match(/\n  \{key:'rebuild', label:'Rebuild bramble', fields:\['amount'\][^\n]*/) || [''])[0] : ''; ok(ad && /Any trigger/.test(ad), 'ACTION_DEFS: Rebuild castle, one amount field'); }
 ok(/case 'rebuild': return '🔨';/.test(fnSrc('triggerActionEmoji')), 'the trigger badge: ⚡ → 🔨');
-ok(/case 'rebuild': doText = `restore \$\{amt\} Health to your castle`;/.test(fnSrc('triggerPreviewText')), 'the trigger sentence: "…, restore N Health to your castle."');
+ok(/case 'rebuild': doText = `restore \$\{amt\} Health to your bramble`;/.test(fnSrc('triggerPreviewText')), 'the trigger sentence: "…, restore N Health to your castle."');
 ok(/aDef\.key==='damage' \|\| aDef\.key==='heal' \|\| aDef\.key==='rebuild'/.test(fnSrc('actionFieldsHTML')), 'the editor row offers = My Attack / = My Health');
 // The stat budget: like a heal (its value).
 { const ctx = {out:{}}; vm.runInNewContext((src.match(/const SB_DEFAULT_SKILLS = \{[^\n]*/) || [''])[0] + '\nconst SB_PAY_DEF = {};\n' + fnSrc('sbSkillCost') + '\nout.c = sbSkillCost({rebuild:3}, {skills:{}}); out.h = sbSkillCost({heal:3}, {skills:{}});', ctx);
@@ -87,8 +87,8 @@ ok(/aDef\.key==='damage' \|\| aDef\.key==='heal' \|\| aDef\.key==='rebuild'/.tes
 // The log line.
 { const ctx = {matchState:{mode:'conquest'}, out:{}}; vm.runInNewContext(fnSrc('rebuildLogText') + '\nout.f = rebuildLogText;', ctx); const nm = id=> '🦫 ' + id;
   const a = ctx.out.f({type:'rebuild', side:'A', defId:'Beaver', amount:2, n:2}, nm), b = ctx.out.f({type:'rebuild', side:'B', defId:'Beaver', amount:1, n:2}, nm);
-  ok(a.cls === 'heal' && a.text === '🔨🏰 🦫 Beaver rebuilds your castle: +2 Health.', `log: "${a.text}"`);
-  ok(b.text === "🔨🏰 🦫 Beaver rebuilds the enemy's castle: +1 Health (1 of 2: it is back to full).", `log, capped: "${b.text}"`); }
+  ok(a.cls === 'heal' && a.text === '🔨🏰 🦫 Beaver rebuilds your bramble: +2 Health.', `log: "${a.text}"`);
+  ok(b.text === "🔨🏰 🦫 Beaver rebuilds the enemy's bramble: +1 Health (1 of 2: it is back to full).", `log, capped: "${b.text}"`); }
 ok(/if\(ev\.type === 'rebuild'\) return rebuildLogText\(ev, nm\);/.test(fnSrc('logText')), 'logText hands the rebuild event to rebuildLogText');
 ok(/try\{ rebuildVfx\(ev\); \}catch\(e\)\{\}/.test(fnSrc('renderVfxForEvent')), 'renderVfxForEvent plays rebuildVfx');
 ok(/else if\(ev\.type==='rebuild'\) base = 560;/.test(fnSrc('delayForEvent')), 'delayForEvent gives the planks their beat');

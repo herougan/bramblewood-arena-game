@@ -71,7 +71,7 @@ const tpl = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), '
   ok(P[2].hq.hp < h, `a Fire Bolt at the castle still lands (${h - P[2].hq.hp})`); }
 { const {e, P} = mk(); const t = put(e, P, 2, 'rf-wall', 0); e.debugSpawnCard(P, so, 1, 'rf-zap', 0, {}, []);
   ok(t.hp === 495, `Lightning on a unit still strikes it (${500 - t.hp})`); }
-ok(!/the castle if there are none\) for \$\{v\} lightning/.test(src) && /a castle can't be shocked/.test(src), 'the Lightning text no longer promises a castle hit');
+ok(!/the (?:castle|bramble) if there are none\) for \$\{v\} lightning/.test(src) && /a bramble can't be shocked/.test(src), 'the Lightning text no longer promises a castle hit');
 
 // ---- The raid in the page: rows act in combat (no round-start volley for your rows), the clock, the end, the castle name, the camera
 ok(/reserveRows:2, reserveActs:true/.test(src), 'the raid engine runs with reserveActs');

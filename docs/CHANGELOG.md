@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (Package B: the base is the bramble)
+- **Each side's base is called the bramble in everything players read** (owner: "Call it bramble now, not castle, officially"): skill and Codex text, the battle log (it said "HQ"), tooltips, toasts, coach and tutorial tips, results and ranks, the Forge tab (🏰 Brambles), the deck and bramble pickers, the Autobattler, dungeons ("🗝️ Bramble 2/5", "A new bramble rises"), raids ("Your bramble & Co."), the Wildpaths, the Effects Lab labels, the splash line ("Burn their bramble to the ground"), and card, bramble and raid text in `canonical/`. Code names (`castle`, `hq`, `hitHQ`, `castleSkin`…), CSS classes, data keys and save keys are unchanged.
+- **Left as "castle" on purpose:** the world's castle (the Outskirts' "castle walls", map flavour, card flavour about the old castle, a rival's taunt), and the starting bramble, whose name is "Castle".
+- **Translations:** the 24 changed lines keep their translation in all 12 packs under the new English, reworded with one word per language (fr roncier, de Dornenhecke, es zarzal, it rovo, pt silvado, tl dawag, ta முட்புதர், id semak, zh 荆棘丛/荊棘叢, ja いばら, ko 덤불), plus "Bramble" itself (`tools/i18n_2026_10_18_bramble.py`). Coverage is as before (no dead keys, placeholders intact).
+- Tests updated for the new wording: `tests/rebuild-2026-10-17.js`, `tests/skills-2026-10-16-devilry.js`, `tests/raid-fixes-2026-10-18.js`.
+
 ## 2026-10-18 (Package T: tutorial and onboarding)
 - **The "drag a card onto the field" hint shows the highlighted card.** The step now points at the golden card (it pointed at the first playable one), and the phantom that glides to the field is a copy of that card (its art, name, frame, and its shiny look; it is no longer greyed out), moving from where it sits in your hand to the open ✦ slot. It used to copy whichever card you were holding and aim at the middle of the row.
 - **No in-between screen after picking a side.** The screen that showed your level ("Level 0 · 0/200 XP · Finish the tutorial to open the map") was Home showing through while the side picker zoomed and faded. The tutorial fight now starts at once under the fading picker, so the picker opens straight onto the battlefield (the cards still fly into your deck).

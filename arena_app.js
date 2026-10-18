@@ -572,7 +572,7 @@ const PASSIVE_DEFS = [
   // incidental flank redirect). So a lone defender with empty flanks eats the castle hit twice.
   // 2026-10-12 (user: "Swipe should be renamed to Fork, it does a bi-fork attack"): the old Swipe is Fork now (an old
   // swipe:true still reads as Fork). Swipe is a new number skill: it steals Lumber.
-  {key:'fork', category:'passive', label:'Fork', kind:'boolean', desc:()=>`One swing with two prongs, full Attack on each: it strikes the enemy units to its left and right when both are there; otherwise only the unit in front (never the one in front and a side together); otherwise the one unit beside it; otherwise the castle.`, // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines.")
+  {key:'fork', category:'passive', label:'Fork', kind:'boolean', desc:()=>`One swing with two prongs, full Attack on each: it strikes the enemy units to its left and right when both are there; otherwise only the unit in front (never the one in front and a side together); otherwise the one unit beside it; otherwise the bramble.`, // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines.")
     get:e=> (e.fork || e.swipe === true) ? true : undefined, apply:(e)=>{ e.fork = true; }},
   {key:'swipe', category:'passive', label:'Swipe', kind:'number', min:0, desc:v=>`Every swing that lands swipes ${v} Lumber from the opponent: they lose it, you gain it.`,
     get:e=> (typeof e.swipe === 'number' && e.swipe > 0) ? e.swipe : undefined},
@@ -593,7 +593,7 @@ const PASSIVE_DEFS = [
   // Stun (on hit) %, and Reflect % below — those three were the only labels in this list that
   // weren't already a single clean word/short phrase, so they're what actually needed cleanup.
   {key:'sweep', category:'passive', label:'Cleave', kind:'number', min:1, defaultValue:1, desc:v=>`Cleaves through the line: hits the unit in front, and the enemy units on its left and right each take ${numOr(v, 1)} bonus damage.`}, // 2026-10-16 (user: "Cleave N: Default 1.") // renamed from Sweep (2026-10-13); key kept
-  {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: its Attack doubles (castles too), and it takes half damage.`},
+  {key:'rage', category:'passive', label:'Rage', kind:'boolean', desc:()=>`Below 50% health: its Attack doubles (brambles too), and it takes half damage.`},
   {key:'immolation', category:'passive', label:'Immolation', kind:'number', min:0, desc:v=>`At the start of every round it deals ${v} fire damage to the units next to it, yours and theirs, and to the enemy facing it.`}, // 2026-10-12, the world boss
   // Swarm keyword family (2026-10-09; not an archetype, 2026-10-13): strength in numbers; Cleave and Swipe are its answer.
   // Swarm N (2026-10-12, user: "Swarm N: Default 1 if not stated on the card"): N per ally, stored as swarmN.
@@ -655,15 +655,15 @@ const PASSIVE_DEFS = [
   // and published edits (it reads as Illuminate) but leaves the editor and the lists.
   {key:'illuminate', category:'passive', label:'Illuminate', kind:'boolean', desc:()=>`Lights up the dark. While it's on your board, none of your units miss because of Darkness, Pitch Black or Absolute darkness, and at Night your Diurnal units keep their daytime bonus. The catch: its light also reaches the enemy unit directly facing it, which doesn't miss for the dark either (nor for Night-blindness).`}, // 2026-10-16; 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate.")
   {key:'lantern', category:'passive', hidden:true, retired:true, label:'Lantern', kind:'boolean', desc:()=>`Now called Illuminate: while it's on your board, your units don't miss because of the dark.`},
-  {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the castle. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
+  {key:'backstab', category:'passive', label:'Backstab', kind:'number', desc:n=>`Always attacks the nearest enemy unit, never the bramble. Deals ${n} more damage when that unit isn't the one directly in front of it.`},
   {key:'shieldCall', category:'passive', label:'Shield Call', kind:'boolean', desc:()=>`Once per battle: the first time an enemy skill targets one of your units, a 0/10 Guardian shield (+1 Health per level of this card) drops into that unit's place and the unit steps to the nearest free slot. The skill hits the shield.`},
   // Boomerang (2026-10-12, was Anti-Air N): throw, then a priority return swing next round; never misses fliers.
   {key:'boomerang', category:'evergreen', label:'Boomerang', kind:'boolean', desc:()=>`Throws on attack. Next round it flies back fast and hits the same target again. Never misses Flying units. Don't fail to catch it!`, // 2026-10-12: "as few words as possible"; 09:11: "Add a warning in the description: Don't fail to catch it!"
     get:e=> (e.boomerang || Number(e.antiAir) > 0) ? true : undefined, apply:(e)=>{ e.boomerang = true; }},
   // Devilry (2026-10-10, user's Devilry list): Scare and Desecrate.
-  {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`One swing with three prongs, always aimed straight ahead: the unit in front takes its full Attack, the units to its left and right half (rounded down, at least 1). With nobody in front, the middle prong hits the castle.`}, // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines.")
-  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`One swing with four prongs, aimed left or right at random: two columns left to one right, or one left to two right. Every prong deals half its Attack (rounded down, at least 1). With nobody in front, the middle prong hits the castle for half.`}, // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines.")
-  {key:'octolash', category:'passive', label:'Octolash', kind:'boolean', desc:()=>`Lashes the 8 enemy units nearest it (the one in front first), full Attack each. It never lashes the castle; with no units, it just attacks normally.`},
+  {key:'trident', category:'passive', label:'Trident', kind:'boolean', desc:()=>`One swing with three prongs, always aimed straight ahead: the unit in front takes its full Attack, the units to its left and right half (rounded down, at least 1). With nobody in front, the middle prong hits the bramble.`}, // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines.")
+  {key:'pitchfork', category:'passive', label:'Pitchfork', kind:'boolean', desc:()=>`One swing with four prongs, aimed left or right at random: two columns left to one right, or one left to two right. Every prong deals half its Attack (rounded down, at least 1). With nobody in front, the middle prong hits the bramble for half.`}, // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines.")
+  {key:'octolash', category:'passive', label:'Octolash', kind:'boolean', desc:()=>`Lashes the 8 enemy units nearest it (the one in front first), full Attack each. It never lashes the bramble; with no units, it just attacks normally.`},
   // 2026-10-14 skills (for the cards on the maps after Map 20; engine: bramblewood-engine.js, "2026-10-14 skills").
   // Speed (user: "Swing Order. So Speed +N means that: When combat begins, all creatures of the highest speed go in turn order.
   // Then the next fastest, then the next fastest. Not extra attacks.").
@@ -696,7 +696,7 @@ const PASSIVE_DEFS = [
   {key:'shadow', category:'passive', label:'Shadow', kind:'boolean', desc:()=>`At night or in darkness, attacks at it miss 1 in 2. Magic never misses it.`},
   // Supreme (user: "Dragons and Sphinxes are supreme beasts. Leviathans too. (Dont use this type willynilly). Their attacks have a sparkle
   // on the icon. They crush armour and ward etc. Their armor (HP also sparkles) are magic. So non-magic damage deals 1/2, rounded down").
-  {key:'supreme', category:'passive', label:'Supreme', kind:'boolean', desc:()=>`A supreme beast (dragons, sphinxes, leviathans only). Its attacks are magic and crush every defence: Armor, Shell, Scare, a hiding Cower, stone, and a castle's Bulwark and Ward. It takes half damage (rounded down) from anything that isn't magic.`},
+  {key:'supreme', category:'passive', label:'Supreme', kind:'boolean', desc:()=>`A supreme beast (dragons, sphinxes, leviathans only). Its attacks are magic and crush every defence: Armor, Shell, Scare, a hiding Cower, stone, and a bramble's Bulwark and Ward. It takes half damage (rounded down) from anything that isn't magic.`},
   // Twin, Sprout and Growth (user: "Summon a twin on play" + "Growth unit tokens - 1/3. Very strong - empowered by Swarm").
   {key:'twin', category:'evergreen', label:'Twin', kind:'boolean', desc:()=>`When it arrives, a twin of it appears in the nearest free slot: a token with the same Attack, Health and skills (but no Twin).`},
   {key:'sprout', category:'evergreen', label:'Sprout', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, ${v||1} Growth Sprout${(v||1) === 1 ? '' : 's'} (1/3 tokens that count for every Swarm) sprout${(v||1) === 1 ? 's' : ''} beside it.`},
@@ -728,7 +728,7 @@ const PASSIVE_DEFS = [
   // card that still has it, but it is no longer offered in "+ Add Skill".
   // 2026-10-15 (user: "Crab claws can be, attack a random unit L or R. Very awkward for the crab, but very fitting."): back in
   // "+ Add Skill" with the new rule; no card has it yet (the crabs still Fork).
-  {key:'crabClaws', category:'passive', label:'Crab Claws', kind:'boolean', desc:()=>`Never attacks straight ahead: each swing pinches one random enemy unit in the column to its left or right (a coin flip when both have one). With no unit on either side, its claws reach past into the castle.`}, // 2026-10-17 (user: "Claws 🦀. Can only attack Left and Right. If both, hit randomly")
+  {key:'crabClaws', category:'passive', label:'Crab Claws', kind:'boolean', desc:()=>`Never attacks straight ahead: each swing pinches one random enemy unit in the column to its left or right (a coin flip when both have one). With no unit on either side, its claws reach past into the bramble.`}, // 2026-10-17 (user: "Claws 🦀. Can only attack Left and Right. If both, hit randomly")
   // Meiosis N (user: "Simple units only - this Passive skill means that the creature breaks into 2 smaller parts when it dies, with
   // half the stats, and skill numbers. Their Meiosis count drops by 1.").
   {key:'meiosis', category:'passive', label:'Meiosis', kind:'number', min:1, defaultValue:1, desc:v=>{ const n = v === true ? 1 : (Number(v)||1); return `Simple units only. When it dies it splits into 2 halves beside each other: tokens with half its Attack and Health (rounded up), every skill number halved (rounded down; a skill at 0 is lost) and ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
@@ -747,7 +747,7 @@ const PASSIVE_DEFS = [
   {key:'brood', category:'evergreen', label:'Brood', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, ${v||1} brood token${(v||1) === 1 ? '' : 's'} of its own kind hatch${(v||1) === 1 ? 'es' : ''} beside it: a 1/1 "Brood" with Wait 1, the same types (it counts for Swarm), only Swarm, and Flying if this card flies.`},
   // 2026-10-12 skills (the 22:40 list).
   {key:'rainmaker', category:'evergreen', label:'Rainmaker', kind:'number', min:1, defaultValue:3, desc:v=>`When it arrives, Spring Rain falls for ${v||3} rounds (every unit heals 2 each round).`},
-  {key:'rainrunner', category:'passive', label:'Rainrunner', kind:'number', min:0, desc:v=>`While it rains: +${v}/+${v}, and it can't be blocked (it goes straight for the castle).`},
+  {key:'rainrunner', category:'passive', label:'Rainrunner', kind:'number', min:0, desc:v=>`While it rains: +${v}/+${v}, and it can't be blocked (it goes straight for the bramble).`},
   {key:'moonborn', category:'passive', label:'Moonborn', kind:'number', min:0, desc:v=>`At night: up to +${v}/+${v}, as full as the moon is (new moon nothing, half moon half, full moon all of it). The moon moves one phase every night.`},
   {key:'frostbite', category:'passive', label:'Frostbite', kind:'number', min:0, desc:v=>`Each time the frost chills it, it gains +${v}/+${v} for good.`},
   // Swimmer (2026-10-12, 09:48: "Swimmer is too strong. Change it to be a If Tide -> { } is enabled ... {Extra Attack} or {Quick
@@ -814,7 +814,7 @@ const PASSIVE_DEFS = [
   {key:'kinship', category:'passive', label:'Kinship', kind:'typeTwoNumber', desc:(v, n, e)=>{ const k = (e && e.kinship) || (Array.isArray(v) ? {type:v[0], atk:v[1], hp:v[2]} : {}); return `All your ${k.type || '<Type>'} units get +${k.atk||0}/+${k.hp||0} (itself too, if it is one). Stacks.`; },
     get:e=> e.kinship ? [e.kinship.type, e.kinship.atk||0, e.kinship.hp||0] : undefined,
     apply:(e, vals)=>{ const t = String(vals && vals[0] || '').trim(), a = Math.max(0, Number(vals && vals[1])||0), h = Math.max(0, Number(vals && vals[2])||0); if(t && (a || h)) e.kinship = {type:t, atk:a, hp:h}; }},
-  {key:'rocket', category:'evergreen', label:'Rocket', kind:'number', min:1, defaultValue:1, desc:v=>`Once, when it's Ready (on arrival if it has no Wait): a rocket hits the strongest enemy unit (highest Attack) for ${v||1} Heat damage and 1 to each enemy beside it. The castle if they have no units.`},
+  {key:'rocket', category:'evergreen', label:'Rocket', kind:'number', min:1, defaultValue:1, desc:v=>`Once, when it's Ready (on arrival if it has no Wait): a rocket hits the strongest enemy unit (highest Attack) for ${v||1} Heat damage and 1 to each enemy beside it. The bramble if they have no units.`},
   {key:'loneWolf', category:'passive', label:'Lone Wolf', kind:'twoNumber', placeholders:['Attack','Health'], desc:v=>{ const [a, h] = phaseVals(v); return `Likes room: +${a}/+${h} for each empty slot within 2 of it (4 in all), and +${a}/+${h} more when all 4 are empty.`; },
     get:e=> e.loneWolf ? (Array.isArray(e.loneWolf) ? e.loneWolf : [e.loneWolf, 0]) : undefined,
     apply:(e, vals)=>{ const a = Math.max(0, Number(vals && vals[0])||0), h = Math.max(0, Number(vals && vals[1])||0); if(a>0 || h>0) e.loneWolf = [a, h]; }},
@@ -826,7 +826,7 @@ const PASSIVE_DEFS = [
   {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`It can see in darkness.`}, // 2026-10-15 (user: "Darksight explanation is TOO complicated. Just explain what it does - it can see in darkness.")
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
-  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it is grounded: a castle can't be shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18: castles can't be shocked (grounded)
+  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it is grounded: a bramble can't be shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18: castles can't be shocked (grounded)
   {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): Divine Retribution → Retribution,
   // Satiety → Well Fed. Labels only; the keys stay retribution and satiety.
@@ -847,7 +847,7 @@ const PASSIVE_DEFS = [
   {key:'swift', category:'passive', label:'Swift', kind:'boolean', desc:()=>`Always attacks first, before normal turn order (several Swift units go in normal order among themselves). Dodges combat attacks from non-Swift attackers 1 time in 2.`},
   {key:'reload', category:'evergreen', label:'Reload', kind:'number', min:0, desc:v=>`After attacking, sits out ${v} extra round${v===1?'':'s'} before attacking again.`},
   {key:'shell', category:'passive', label:'Shell', kind:'number', min:0, desc:v=>`When first hit: +${v} Armor and +${v} temporary Health until the end of next round. It can't attack for the rest of that round.`},
-  {key:'stealth', category:'passive', label:'Stealth', kind:'boolean', desc:()=>`Ignores targeting — always hits the enemy HQ directly.`},
+  {key:'stealth', category:'passive', label:'Stealth', kind:'boolean', desc:()=>`Ignores targeting — always hits the enemy bramble directly.`},
   {key:'evasive', category:'passive', label:'Evasive', kind:'boolean', desc:()=>`Every incoming single-target attack or ability (melee included) has a 1-in-2 chance to be dodged. Area effects, Cleave and Swipe extra hits can't be evaded.`},
   // Feeble/Mighty/Fragile/Sturdy (2026-09-29): unconditional damage multipliers, a deliberately
   // separate family from the existing Resistance/Weakness boxes (which only apply against a
@@ -891,16 +891,16 @@ const PASSIVE_DEFS = [
   // Ten new skills (2026-09-17 batch) — nine plain PASSIVE_DEFS entries (Corrode, the tenth
   // stacking status effect, lives right after these; Blind/Shock, the other two new statuses,
   // are chance+duration pairs and live down in SKILL_DEFS alongside Freeze/Sleep/Paralyze).
-  {key:'puncture', category:'passive', label:'Puncture', kind:'number', min:0, desc:v=>`Every landed melee hit also deals ${v} damage to the enemy castle, whatever it did to its target.`},
+  {key:'puncture', category:'passive', label:'Puncture', kind:'number', min:0, desc:v=>`Every landed melee hit also deals ${v} damage to the enemy bramble, whatever it did to its target.`},
   {key:'gash', category:'evergreen', label:'Gash', kind:'number', min:0, desc:v=>`On Spawn: immediately gashes the opposing creature for ${v} bleed stacks, once.`},
   // 2026-10-10 (user: "a 'Trample' skill where extra damage hits the Castle. But rename it"): this was it already, as
   // Overwhelm (Runeterra's word for trample). Now called Stampede; the data key stays `overwhelm`.
-  {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy castle.`},
+  {key:'overwhelm', category:'passive', label:'Stampede', kind:'boolean', desc:()=>`When it kills a unit, the damage left over carries on into the enemy bramble.`},
   {key:'berserk', category:'evergreen', label:'Berserk', kind:'number', min:0, desc:v=>`Gains +${v}/+0 whenever ANY ally of yours dies.`},
-  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:0, desc:v=>`While on the field, your Castle takes ${v} less damage from every hit it takes.`},
+  {key:'bulwark', category:'passive', label:'Bulwark', kind:'number', min:0, desc:v=>`While on the field, your Bramble takes ${v} less damage from every hit it takes.`},
   // 2026-10-17 (user: "Add a new skill Reflect: that reflects ranged skills back at a random enemy unit."): the engine's reflectShotOf.
   // A flag now (was Reflect N%: a melee hit's full damage thrown back); an old stored number reads as that % chance to bounce a shot.
-  {key:'reflect', category:'passive', label:'Reflect', kind:'boolean', desc:v=>`${typeof v === 'number' && v < 100 ? `${v}% of the time, a` : 'A'} shot aimed at it bounces off and hits a random enemy unit instead (their castle if they have none). Shots: Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire, Snipe, Fireball (the whole burst), Rocket, a thrown Banana, Missile and On Ready damage, a Damage trigger at a random enemy, and the castle's bolt. Melee, Pounce and what falls from the sky or bursts over an area (Skyfall, Meteor, Lightning, Earthquake…) aren't shots. A bounced shot can be dodged, but never bounces again.`},
+  {key:'reflect', category:'passive', label:'Reflect', kind:'boolean', desc:v=>`${typeof v === 'number' && v < 100 ? `${v}% of the time, a` : 'A'} shot aimed at it bounces off and hits a random enemy unit instead (their bramble if they have none). Shots: Arrow, Fire Arrow, Ice Arrow, Twin Shot, Volley, the Bolts, Spitfire, Snipe, Fireball (the whole burst), Rocket, a thrown Banana, Missile and On Ready damage, a Damage trigger at a random enemy, and the bramble's bolt. Melee, Pounce and what falls from the sky or bursts over an area (Skyfall, Meteor, Lightning, Earthquake…) aren't shots. A bounced shot can be dodged, but never bounces again.`},
   {key:'momentum', category:'evergreen', label:'Momentum', kind:'number', min:0, desc:v=>`Gains +${v}/+0 every time it lands a killing blow.`},
   {key:'bloom', category:'evergreen', label:'Bloom', kind:'number', min:0, desc:v=>`Heals ${v} HP to a random damaged ally at the start of every round this card is on the board.`},
   // 2026-10-16 (user: "Ambush: I think the effect should be - when opposing card played, deal N damage to it. (instead of the Crit)"):
@@ -908,7 +908,7 @@ const PASSIVE_DEFS = [
   // 2026-10-17 (user: "Ambush N - whenever a unit enters this unit's opposing side, deal N damage"): played, spawned or moved in (watchScan).
   {key:'ambush', category:'passive', label:'Ambush', kind:'number', min:1, defaultValue:3, desc:v=>`Whenever an enemy unit enters the slot facing it (played, spawned, or moved in by a push, a swap or a Bloodlust leap), it strikes that unit for ${numOr(v, 3)} damage (Ready or Waiting; it can't be dodged, and no Guardian steps in).`,
     get:e=> e.ambush ? numOr(e.ambush, 3) : undefined},
-  {key:'siege', category:'passive', label:'Siege', kind:'number', min:0, desc:v=>`Deals ${v} bonus flat damage whenever its attack lands directly on the enemy castle.`},
+  {key:'siege', category:'passive', label:'Siege', kind:'number', min:0, desc:v=>`Deals ${v} bonus flat damage whenever its attack lands directly on the enemy bramble.`},
   // Corrode (2026-09-17): the third of the three new status effects — a stacking debuff like
   // Poison/Bleed, but saps effective Attack instead of dealing damage, and decays 1 stack/round.
   {key:'corrode', category:'passive', label:'Corrode', kind:'number', min:0, desc:v=>`Every landed attack adds ${v} Corrode.`},
@@ -948,7 +948,7 @@ const PASSIVE_DEFS = [
   {key:'pierce', category:'passive', label:'Pierce', kind:'number', min:0, desc:v=>`Every melee hit ignores ${v} of the target's Armor (Shell's bonus Armor included).`},
   // Perforate N (2026-10-11, user: "Perforate is to Puncture, to Pierce, and to give Bleed and to lower armour permanently.
   // Just Perforate 1 is super dangerous"): all four on every landed melee hit.
-  {key:'perforate', category:'passive', label:'Perforate', kind:'number', min:0, desc:v=>`Every landed melee hit ignores ${v} Armor, strips ${v} Armor from the target for good, adds ${v} Bleed and deals ${v} damage to the enemy castle.`},
+  {key:'perforate', category:'passive', label:'Perforate', kind:'number', min:0, desc:v=>`Every landed melee hit ignores ${v} Armor, strips ${v} Armor from the target for good, adds ${v} Bleed and deals ${v} damage to the enemy bramble.`},
   // Flying (2026-09-21, task #304): a plain boolean trait, invented as the thing Earthquake
   // (right below) needs to check against — nothing else reads it yet, but it's a natural fit
   // for anything airborne (bees, birds, wyrms) and a sensible future hook for other "grounded
@@ -976,10 +976,10 @@ const PASSIVE_DEFS = [
   // Stored as a number, or 'attack' / 'health'.
   {key:'pounce', category:'evergreen', label:'Pounce', kind:'selectNumber', numberWhen:['n'], numberTitle:'How much damage',
     selectOptions:()=> [{value:'n', label:'N damage'}, {value:'attack', label:'its Attack'}, {value:'health', label:'its Health'}],
-    desc:v=>`On Play: pounces on the enemy unit facing it (the nearest one if none is) for ${pounceWords(v)} damage (the enemy castle, if no units are left). Fires the moment it lands, Waiting or not.`,
+    desc:v=>`On Play: pounces on the enemy unit facing it (the nearest one if none is) for ${pounceWords(v)} damage (the enemy bramble, if no units are left). Fires the moment it lands, Waiting or not.`,
     get:e=> e.pounce ? (e.pounce === 'attack' || e.pounce === 'health' ? [e.pounce, 1] : ['n', numOr(e.pounce, 1)]) : undefined,
     apply:(e, vals)=>{ const m = Array.isArray(vals) ? vals[0] : 'n'; if(m === 'attack' || m === 'health'){ e.pounce = m; return; } const n = Number(Array.isArray(vals) ? vals[1] : vals) || 0; if(n > 0) e.pounce = n; }},
-  {key:'skyfall', category:'evergreen', label:'Skyfall', kind:'number', min:0, desc:v=>`On Spawn: crashes down for ${v} damage on a random live enemy creature (the enemy castle, if none are left) — fires immediately, once.`},
+  {key:'skyfall', category:'evergreen', label:'Skyfall', kind:'number', min:0, desc:v=>`On Spawn: crashes down for ${v} damage on a random live enemy creature (the enemy bramble, if none are left) — fires immediately, once.`},
   // King Slayer (2026-09-22, per explicit request: "New type: King. New card: King Maker -
   // Passive: King Slayer N - does N extra damage to Kings on hit."). Category 'passive', not
   // 'evergreen' — this isn't a bundled trigger+action shorthand like Gash/Earthquake, it's a
@@ -992,7 +992,7 @@ const PASSIVE_DEFS = [
   // "King" (Rodent King, Glacial Ape-King) so this has real targets from day one.
   // Arrow / Fire Arrow (2026-10-04): see fireArrowVolley in bramblewood-engine.js.
   // 2026-10-16 skill audit: the arrows aim at the enemy facing it first, then the nearest (fireArrowVolley / arrowTargetOf).
-  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots an arrow for ${v} damage at the enemy facing it (with none there, the nearest enemy, a random one if two are as near; the castle if the board is empty). Never misses Flying units.`},
+  {key:'arrow', category:'evergreen', label:'Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots an arrow for ${v} damage at the enemy facing it (with none there, the nearest enemy, a random one if two are as near; the bramble if the board is empty). Never misses Flying units.`},
   {key:'fireArrow', category:'evergreen', label:'Fire Arrow', kind:'number', min:0, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots a flaming arrow for ${v} fire damage at the enemy facing it (or the nearest; fire resistance and weakness apply). Never misses Flying units.`},
   // Ice Arrow / Twin Shot / Volley (2026-10-15, user: "We need more creatures with 'Arrow'. Volley, Arrow, Twin Shot, Fire Arrow, Ice
   // Arrow etc. will be more normal."): see fireArrowVolley in bramblewood-engine.js.
@@ -1000,8 +1000,8 @@ const PASSIVE_DEFS = [
   // 2026-10-17 (user: "First creature to have 2x Arrow 2."): how many Arrow shots the card looses (a skill can't be on a card twice).
   // No line of its own: the Arrow line repeats (War Elephant reads "Arrow 2" twice). Set in the card editor as a number.
   {key:'arrowCount', category:'evergreen', hidden:true, label:'Arrow Count', kind:'number', min:1, defaultValue:2, desc:v=>`Its Arrow fires ${v||2} times a round, each arrow aimed on its own.`},
-  {key:'twinShot', category:'evergreen', label:'Twin Shot', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots two arrows for ${v||2} damage each, at two different random enemy units (both at one if there is only one; the castle if the board is empty). Never misses Flying units.`},
-  {key:'volley', category:'evergreen', label:'Volley', kind:'number', min:1, defaultValue:1, desc:v=>`Every other round while Ready (its first Ready round, then every 2nd), at Speed 1 (after Quick units, before the rest swing): looses a volley, an arrow for ${v||1} damage at every enemy unit (the castle if the board is empty). Never misses Flying units.`},
+  {key:'twinShot', category:'evergreen', label:'Twin Shot', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): shoots two arrows for ${v||2} damage each, at two different random enemy units (both at one if there is only one; the bramble if the board is empty). Never misses Flying units.`},
+  {key:'volley', category:'evergreen', label:'Volley', kind:'number', min:1, defaultValue:1, desc:v=>`Every other round while Ready (its first Ready round, then every 2nd), at Speed 1 (after Quick units, before the rest swing): looses a volley, an arrow for ${v||1} damage at every enemy unit (the bramble if the board is empty). Never misses Flying units.`},
   // The Bolts (2026-10-15, user: "We need bolts - these might be quite creature-specific. All elemental or status-y. They just
   // represents 'spits' of something at the enemy. Fire bolt, Acid bolt, Poison bolt etc."): one engine implementation with an
   // element table (BOLT_ELEMENTS in bramblewood-engine.js). Each spits every round while Ready, before melee, at the enemy opposite
@@ -1028,7 +1028,7 @@ const PASSIVE_DEFS = [
   // shield"); Electricity and Keen Sense (the "Planned, not built yet" list: "For moles: senses non-flying enemies even when blind;
   // unaffected by Blind").
   {key:'fencing', category:'passive', label:'Fencing', kind:'boolean', desc:()=>`A fine, precise blade: its attacks can't be dodged by Evasive or Swift units. (A Flyer is still out of reach half the time.)`},
-  {key:'fireball', category:'evergreen', label:'Fireball', kind:'number', min:1, defaultValue:15, desc:v=>`When it becomes Ready, it hurls a fireball at a random enemy unit. The blast is 3 columns wide: that unit and the enemy units beside it each take ${v||15} fire damage. No enemy units: it hits the castle.`},
+  {key:'fireball', category:'evergreen', label:'Fireball', kind:'number', min:1, defaultValue:15, desc:v=>`When it becomes Ready, it hurls a fireball at a random enemy unit. The blast is 3 columns wide: that unit and the enemy units beside it each take ${v||15} fire damage. No enemy units: it hits the bramble.`},
   {key:'meteor', category:'evergreen', label:'Meteor', kind:'number', min:1, defaultValue:20, desc:v=>`When it becomes Ready, a meteor crashes onto a random enemy column: the unit there takes ${v||20} damage (Armor doesn't stop it), the units beside it take ${Math.floor((v||20)/4)}, and the column burns: whoever stands there takes 2 fire at the start of the next 2 rounds.`},
   {key:'banana', category:'evergreen', label:'Banana', kind:'number', min:1, defaultValue:3, desc:v=>`Every round, after everyone else has swung (Speed -1): a coin flip. Heads, it eats the banana and heals ${v||3}. Tails, it throws it at a random enemy unit for ${v||3} damage. It never eats at full Health (then it always throws). Its normal attack still happens.`},
   {key:'bananarang', category:'evergreen', label:'Bananarang', kind:'number', min:1, defaultValue:3, desc:v=>`A Boomerang made of banana: it throws on attack, and next round it flies back and hits the same target again. Never misses Flying units. When it comes home, a 1 in 2 chance it eats it and heals ${v||3} (never at full Health).`},
@@ -1042,7 +1042,7 @@ const PASSIVE_DEFS = [
   // codexNote the Skills Codex adds). Chain Lightning (user: "Voltaic Eel should have chain lighting as well"): Electricity's longer cousin.
   {key:'electricity', category:'passive', label:'Electricity', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits arc: the spark jumps to one enemy unit beside the target for ${v||1} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
   {key:'chainLightning', category:'passive', label:'Chain Lightning', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits loose chain lightning: the bolt jumps from the target to an enemy unit beside it, then on to one more, never the same unit twice. Each unit it jumps to takes ${numOr(v, 2)} lightning damage.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'},
-  {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=>`It senses what it can't see: Darkness, Pitch Black and Blind don't make it miss a unit that isn't flying (or the castle), and nothing can Blind it. Its nose also finds grounded units through Thick Fog and Shadow.`},
+  {key:'keenSense', category:'passive', label:'Keen Sense', kind:'boolean', desc:()=>`It senses what it can't see: Darkness, Pitch Black and Blind don't make it miss a unit that isn't flying (or the bramble), and nothing can Blind it. Its nose also finds grounded units through Thick Fog and Shadow.`},
   // 2026-10-14 (seventh pass). Psychic (user: "Psychic Damage: it's a skill rather than a type like Normal and Magic."); Smoke Bomb
   // (user: "Throws a smoke bomb at an ally or enemy (random). If ally, then the ally has smoke-evade. If enemy, the enemy has blind.
   // This is an evergreen skill. It happens 50% of the time every turn. (The banana and bananarang and boomerang ones are all
@@ -1056,7 +1056,7 @@ const PASSIVE_DEFS = [
   // However, it deals 1/2 damage to structures and brambles. Bloodlust has the specific extra feat that it counts in triggering Ambush.
   // This description text part only is visible in the codex."): a flag now (was Bloodlust N, +N Attack for drawing blood); the engine's
   // bloodlustLeap. codexNote: the Skills Codex adds it after the card line.
-  {key:'bloodlust', category:'evergreen', label:'Bloodlust', kind:'boolean', desc:()=>`When it kills the unit facing it, it leaps to face the nearest enemy creature (not a Structure) that has a free slot in front of it (open boards). It deals half damage (rounded up) to Structures and castles.`,
+  {key:'bloodlust', category:'evergreen', label:'Bloodlust', kind:'boolean', desc:()=>`When it kills the unit facing it, it leaps to face the nearest enemy creature (not a Structure) that has a free slot in front of it (open boards). It deals half damage (rounded up) to Structures and brambles.`,
     codexNote:'Its leap counts as entering: an enemy Ambush or Sentry facing its new slot strikes it.'},
   {key:'chilli', category:'evergreen', label:'Chilli', kind:'number', min:1, defaultValue:2, desc:v=>`Eats a chilli when it first becomes Ready: for the rest of the fight its attacks deal fire damage and it has +${v||2} Attack, but it takes 1 damage at the start of every round (it's very hot).`},
   {key:'smokeBomb', category:'evergreen', label:'Smoke Bomb', kind:'boolean', desc:()=>`Every round, after everyone else has swung: a 1 in 2 chance it throws a smoke bomb at a random unit, ally or enemy (never itself). An ally is hidden in Smoke: attacks at it miss 1 in 2 until the end of the next round. An enemy is Blinded for a round.`},
@@ -1072,7 +1072,7 @@ const PASSIVE_DEFS = [
   {key:'toxin', category:'passive', label:'Toxin', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits add ${numOr(v, 1)} Toxin: a deadlier poison that deals its whole stack every round and never wears off. Nothing cures it (not Cure, Cleanse or Shedding).`},
   {key:'weaken', category:'passive', label:'Weaken', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits take ${numOr(v, 1)} Attack from the target for good.`},
   {key:'wilting', category:'passive', label:'Wilting', kind:'number', min:1, defaultValue:1, desc:v=>`A drawback: each time it is hit, it loses ${numOr(v, 1)} Attack for good.`},
-  {key:'bulldoze', category:'passive', label:'Bulldoze', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits shove a Ready target back: +${numOr(v, 1)} Wait, so it loses its next swing. A unit already waiting can't be shoved again. (Stampede is different: its leftover damage goes into the castle.)`},
+  {key:'bulldoze', category:'passive', label:'Bulldoze', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits shove a Ready target back: +${numOr(v, 1)} Wait, so it loses its next swing. A unit already waiting can't be shoved again. (Stampede is different: its leftover damage goes into the bramble.)`},
   {key:'tangle', category:'passive', label:'Tangleweed', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits Bind the target for ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'}: a Bound unit can't attack (its Wait still counts down).`},
   {key:'strangle', category:'passive', label:'Strangle', kind:'number', min:1, defaultValue:2, desc:v=>`Its hits Bind the target for a round, and squeeze it: ${numOr(v, 2)} damage at the start of the round it is Bound.`},
   {key:'invincible', category:'passive', label:'Invincible', kind:'number', min:1, defaultValue:1, desc:v=>`Takes no damage of any kind for its first ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'} on the field.`},
@@ -1080,14 +1080,14 @@ const PASSIVE_DEFS = [
   {key:'sonar', category:'passive', label:'Sonar', kind:'boolean', desc:()=>`Hunts by sound: Darkness, Blind, Smoke, Fog and Shadow never make it miss (flyers included), and it can't be Blinded.`},
   {key:'poisonGas', category:'evergreen', label:'Poison Gas', kind:'number', min:1, defaultValue:2, desc:v=>`When it arrives, every enemy unit gets ${numOr(v, 2)} Poison.`},
   {key:'absoluteZero', category:'evergreen', label:'Absolute Zero', kind:'boolean', desc:()=>`When it arrives, every enemy unit is Frozen for the round (units immune to cold are spared).`},
-  {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits ${numOr(v, 2)} fire at a random enemy unit (the castle if there are none). 1 in 2 the flames catch a unit beside it for 1. (Fire Bolt always aims at the enemy opposite.)`},
+  {key:'spitfire', category:'evergreen', label:'Spitfire', kind:'number', min:1, defaultValue:2, desc:v=>`Every round while Ready, at Speed 1 (after Quick units, before the rest swing): spits ${numOr(v, 2)} fire at a random enemy unit (the bramble if there are none). 1 in 2 the flames catch a unit beside it for 1. (Fire Bolt always aims at the enemy opposite.)`},
   {key:'slashBurn', category:'evergreen', label:'Slash & Burn', kind:'number', min:1, defaultValue:3, desc:v=>`When it kills a unit, the ground there burns: the next enemy card played into that slot takes ${numOr(v, 3)} fire damage.`},
   // Devilry payments (2026-10-16, user: "Devilry 2 skills: hurting your own castle on play as payment. Also, hurting a random ally on
   // play as payment. Not sure of the name. Penance?"): Penance N (your castle) and Blood Tithe N (a random ally; the castle if none).
   // Costs, so the stat budget counts them as a discount (SB_DEFAULT_SKILLS: '-v').
-  {key:'penance', category:'evergreen', label:'Penance', kind:'number', min:1, defaultValue:3, desc:v=>`A payment: when it is played, your own castle loses ${numOr(v, 3)} Health (never below 1, so it can't lose you the fight). Bulwark and the castle's Shield don't stop it.`,
+  {key:'penance', category:'evergreen', label:'Penance', kind:'number', min:1, defaultValue:3, desc:v=>`A payment: when it is played, your own bramble loses ${numOr(v, 3)} Health (never below 1, so it can't lose you the fight). Bulwark and the bramble's Shield don't stop it.`,
     get:e=> e.penance ? numOr(e.penance, 3) : undefined},
-  {key:'bloodTithe', category:'evergreen', label:'Blood Tithe', kind:'number', min:1, defaultValue:2, desc:v=>`A payment: when it is played, a random other ally of yours takes ${numOr(v, 2)} damage (Armor doesn't stop it). With no ally on the field, your castle pays it instead (never below 1).`,
+  {key:'bloodTithe', category:'evergreen', label:'Blood Tithe', kind:'number', min:1, defaultValue:2, desc:v=>`A payment: when it is played, a random other ally of yours takes ${numOr(v, 2)} damage (Armor doesn't stop it). With no ally on the field, your bramble pays it instead (never below 1).`,
     get:e=> e.bloodTithe ? numOr(e.bloodTithe, 2) : undefined},
   {key:'trap', category:'evergreen', label:'Trap', kind:'number', min:1, defaultValue:5, desc:v=>`When it arrives, if the enemy slot facing it is empty, it sets a trap there: the next enemy card played into that slot takes ${numOr(v, 5)} damage.`},
   {key:'predator', category:'passive', label:'Predator', kind:'number', min:1, defaultValue:1, desc:v=>`Deals ${numOr(v, 1)} more damage to units with less Attack than it.`},
@@ -1102,14 +1102,14 @@ const PASSIVE_DEFS = [
   {key:'atheist', category:'passive', label:'Atheist', kind:'boolean', desc:()=>`Takes half damage from magic and from Devilry and Ecclesia attackers. The Leylines' burn doesn't touch it, and it is never Frightened.`},
   // Taunt (user: "Add a sheep card (basic) - it has taunt."): not the same as Guardian. Guardian only takes the hits aimed at the units
   // beside it; Taunt pulls the attacks of the enemy units facing it or one column away, even ones that were going to the castle.
-  {key:'taunt', category:'passive', label:'Taunt', kind:'boolean', desc:()=>`Enemy units facing it, or one column to either side, must attack it (even ones that would hit the castle). Stealth slips past.`},
+  {key:'taunt', category:'passive', label:'Taunt', kind:'boolean', desc:()=>`Enemy units facing it, or one column to either side, must attack it (even ones that would hit the bramble). Stealth slips past.`},
   // Amore (2026-10-16, user: "If you play a creature with Amore on the field and there is another creature with Amore on the field that
   // shares a type, both creature's Amore skills we activate, giving them Regeneration 3 and +0/+3. This can only happen once. If the
   // other creature dies, the Amore becomes brown ..."): the engine's amoreOnArrive / amoreBreak. Your own units only.
   {key:'amore', category:'passive', label:'Amore', kind:'boolean', desc:()=>`When it arrives and one of your units already on the field has Amore and shares a Type with it, the two pair up (once in each one's life, only ever those two): +0/+3 and Regeneration 3 each. If one dies, the other's heart turns brown: it keeps the +0/+3 but loses the Regeneration 3. Enemy units never pair with yours.`},
   // ==== 2026-10-17 skills (user's notes, 20:19, and the skill-combo planning list). See the 2026-10-17 block in bramblewood-engine.js.
   // Leech (user: "Heal on hit = Leech"): the engine's old `sap` key (Barrow Leech, Vampire Bat), which had no "+ Add Skill" entry.
-  {key:'sap', category:'passive', label:'Leech', kind:'boolean', desc:()=>`Each of its hits heals it for the damage it dealt (castle hits too), up to its max Health.`},
+  {key:'sap', category:'passive', label:'Leech', kind:'boolean', desc:()=>`Each of its hits heals it for the damage it dealt (bramble hits too), up to its max Health.`},
   {key:'vanguard', category:'passive', label:'Vanguard', kind:'number', min:1, defaultValue:1, desc:v=>`At the start of the game it moves from your deck into your opening hand, and a random other card from that hand is discarded. Only once a game: with two Vanguards in the deck only one comes, and none if one is already in your hand. If it is the first card you play this game: +${numOr(v, 1)}/+${numOr(v, 1)}.`,
     get:e=> e.vanguard ? numOr(e.vanguard, 1) : undefined},
   {key:'web', category:'passive', label:'Web', kind:'number', min:1, defaultValue:1, desc:v=>`Its hits Web the target for ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'}: a Webbed unit can't dodge (no Evasive, Swift, Flying, Prey or Tide dodge) and can't move or be moved.`,
@@ -1124,8 +1124,8 @@ const PASSIVE_DEFS = [
   // Rebuild N (2026-10-17, user: "A new skill: Rebuild N: The unit regenerates the castle for N on ready. As an action, then on the
   // trigger, it regenerates the castle for N."): the engine's rebuildCastle. "On Ready" as with the On Ready income (onReadyGold):
   // every upkeep while Ready. Its action form is "Rebuild castle" in ACTION_DEFS.
-  {key:'rebuild', category:'passive', label:'Rebuild', kind:'number', min:1, defaultValue:2, desc:v=>`While Ready, it restores ${numOr(v, 2)} Health to your castle every upkeep (every round it is awake, from the upkeep its Wait runs out), never above the castle's max. It mends the castle, not a unit: Herbalist doesn't add to it.`, get:e=> e.rebuild ? numOr(e.rebuild, 2) : undefined,
-    codexNote:'Its action form, Rebuild castle N, mends your castle once whenever its trigger fires (any trigger).'},
+  {key:'rebuild', category:'passive', label:'Rebuild', kind:'number', min:1, defaultValue:2, desc:v=>`While Ready, it restores ${numOr(v, 2)} Health to your bramble every upkeep (every round it is awake, from the upkeep its Wait runs out), never above the bramble's max. It mends the bramble, not a unit: Herbalist doesn't add to it.`, get:e=> e.rebuild ? numOr(e.rebuild, 2) : undefined,
+    codexNote:'Its action form, Rebuild bramble N, mends your bramble once whenever its trigger fires (any trigger).'},
 ];
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
@@ -1178,7 +1178,7 @@ const TRIGGER_DEFS = [
   // On Ally/Enemy Played (2026-09-27, per explicit request: "For cards played, add On Ally
   // Played and On Enemy Played") — the "played from hand" half of the split described above.
   // Also fires for a leader summon and Sandbox's debug-spawn, same as a real hand play does.
-  {key:'onAllyPlayed', label:'On Ally Played', desc:"every time ANY OTHER card this player controls (including their Castle) is PLAYED FROM HAND (or leader-summoned) — doesn't fire for this card's own entry, and doesn't fire for a card another ability spawned onto the board (see On Ally Spawn)"},
+  {key:'onAllyPlayed', label:'On Ally Played', desc:"every time ANY OTHER card this player controls (including their Bramble) is PLAYED FROM HAND (or leader-summoned) — doesn't fire for this card's own entry, and doesn't fire for a card another ability spawned onto the board (see On Ally Spawn)"},
   {key:'onEnemyPlayed', label:'On Enemy Played', desc:'every time the OPPONENT plays a card from hand (or leader-summons one) — the cross-side mirror of On Ally Played'},
   // On Ally/Enemy Ready (2026-09-27, per explicit request: "Then On Ally Ready, On Enemy
   // Ready") — cross-side mirrors of On Ready: fires on every OTHER card (Ally) or every card
@@ -1320,7 +1320,7 @@ const ACTION_DEFS = [
   // damage" with Enemy/Random already dialed in. Reuses the engine's existing fireMissile helper
   // (already shipped for the legacy Arrow N preset). Skyfall (evergreen, see PASSIVE_DEFS) is the
   // fixed-shorthand equivalent of "On Spawn: Missile N."
-  {key:'missile', label:'Missile', fields:['amount'], desc:'Deal that much damage to a random live enemy unit (the enemy castle, if none are left).'},
+  {key:'missile', label:'Missile', fields:['amount'], desc:'Deal that much damage to a random live enemy unit (the enemy bramble, if none are left).'},
   // Exile (2026-09-30, per explicit request: "Same for exile, why does it assume itself. ... All
   // the actions should be general"): now takes a `who`. Themselves keeps the exact original
   // behavior — it only ever changes where THIS card's own death sends it (graveyard vs. Removal
@@ -1338,9 +1338,9 @@ const ACTION_DEFS = [
   {key:'shield', label:'Shield', fields:['amount','who','sub','targets'], whoOptions:['self','ally','kin'], subOptions:['adjacent','random','furthest','all'], desc:'Give Shield N: temporary Health that soaks damage before Health does and never comes back once spent (not Armor). This card by default; Ally + All shields every ally, Kin + All every one of your Kin.'},
   // Fire on hit (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. (Meant for Map 20)").
   // The Burn 1 Lumber step is the trigger's "Pay" field (t.cost = 'burnLumber'), open to every action ("Burn 1 Lumber, Heal ally N").
-  {key:'fireHit', label:'Fire on hit', fields:['amount'], desc:"Pair with On Attack: this attack's hit also deals N fire damage to what it hits (a unit, or the castle)."},
+  {key:'fireHit', label:'Fire on hit', fields:['amount'], desc:"Pair with On Attack: this attack's hit also deals N fire damage to what it hits (a unit, or the bramble)."},
   // Rebuild castle (2026-10-17, the Rebuild skill's action form: "As an action, then on the trigger, it regenerates the castle for N").
-  {key:'rebuild', label:'Rebuild castle', fields:['amount'], desc:"Restore N Health to this card's own castle (or its Attack or Health with the amount picker), never above the castle's max. Any trigger."},
+  {key:'rebuild', label:'Rebuild bramble', fields:['amount'], desc:"Restore N Health to this card's own bramble (or its Attack or Health with the amount picker), never above the bramble's max. Any trigger."},
   {key:'addWait', label:'Increase Wait', fields:['amount','who','sub','targets'], subOptions:['adjacent','random','furthest','all'], desc:'Delay a chosen target — self, an ally, your Kin or an enemy — by adding to its Wait counter — pushes back its next action without Stunning it outright.'},
 ];
 // Chained (Devilry, 2026-09-17) break conditions — the one place to add a new one later (the
@@ -1368,7 +1368,7 @@ const SKILL_DEFS = [
   })),
   {
     // 2026-10-16 skill audit: plain words, and the labels for its two numbers.
-    key:'explode', category:'evergreen', label:'Explode', kind:'twoNumber', placeholders:['Timer','Damage'], desc:()=>'A lit fuse that ticks down every upkeep, even while Waiting or Stunned. At 0 it deals Damage once to the enemy facing it (the castle if there is none).',
+    key:'explode', category:'evergreen', label:'Explode', kind:'twoNumber', placeholders:['Timer','Damage'], desc:()=>'A lit fuse that ticks down every upkeep, even while Waiting or Stunned. At 0 it deals Damage once to the enemy facing it (the bramble if there is none).',
     get:e=> e.explode ? [e.explode.time, e.explode.damage] : undefined,
     apply:(e,vals)=>{ const time=Number(vals&&vals[0])||0, damage=Number(vals&&vals[1])||0; if(time>0 && damage>0) e.explode = {time, damage}; },
   },
@@ -1809,7 +1809,7 @@ function isStructure(d){ return archetypesOf(d).includes('Structure') || d.type=
 // (the deck) shows the unit back, so the pile never tells you what's coming next.
 const CARD_BACKINGS = {
   unit:{art:'art/backings/unit.png', label:'Unit'}, structure:{art:'art/backings/structure.png', label:'Structure'},
-  castle:{art:'art/backings/castle.png', label:'Castle'}, field:{art:'art/backings/field.png', label:'Field effect'},
+  castle:{art:'art/backings/castle.png', label:'Bramble'}, field:{art:'art/backings/field.png', label:'Field effect'},
 };
 function cardBackingKind(d){
   if(typeof d === 'string'){ try{ d = getCardDefs()[d] || null; }catch(e){ d = null; } }
@@ -2080,7 +2080,7 @@ const SKILL_TEXT = {
   wave: (v, n, e)=>{ const w = waveParts(v, e), cols = w.n === 1 ? 'one column' : `${w.n} columns`; // Wave N (2026-10-18): it crashes, no swaps
     return `Its hits push the unit ${cols} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right, in turn' : w.way}. If it crashes into a unit, it stops and both take ${w.n}.`; },
   supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flood or Ebb. Tide effects can't take them away.`,
-  crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right, never the one in front. With none there, it hits the castle.`, // 2026-10-17
+  crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right, never the one in front. With none there, it hits the bramble.`, // 2026-10-17
   meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
   nullify: ()=> `Its hits get no reaction from the unit hit. A unit it kills skips its death effects and goes to the ${EXILE_ZONE_NAME}.`,
   restless: ()=> `Every upkeep it steps one column toward the nearest enemy.`,
@@ -2112,7 +2112,7 @@ const SKILL_TEXT = {
   illuminate: ()=> `Lights up the dark: your units don't miss in darkness, and nor does the enemy unit facing it.`, // 2026-10-15; the facing foe too (2026-10-17)
   darksight: ()=> `It can see in darkness.`, // 2026-10-15
   nursing: v=> `Heal your weakest wounded unit for ${numOr(v, 2)} every upkeep.`, // 2026-10-15
-  backstab: v=> `Attacks the nearest enemy unit, never the castle. +${v} damage when that unit isn't the one in front.`,
+  backstab: v=> `Attacks the nearest enemy unit, never the bramble. +${v} damage when that unit isn't the one in front.`,
   shieldCall: ()=> `Once a battle, the first enemy skill aimed at one of your units hits a 0/10 Guardian shield instead.`,
   boomerang: ()=> `Its throw comes back next round and hits the same target again. Catch it!`,
   trident: ()=> `One three-pronged swing straight ahead: full Attack in front, half to the units on its left and right.`, // 2026-10-17
@@ -2132,7 +2132,7 @@ const SKILL_TEXT = {
   prayer: v=> `Adds ${v} to your Prayer while it's on your board.`,
   worship: ()=> `+1 Attack for every 3 Prayer you have.`,
   healing: v=> `Heal your most wounded unit for ${v} every upkeep.`,
-  lightning: v=> `When played, deal ${v} lightning damage to a random enemy unit, +1 for every 4 Prayer (none to a castle: it can't be shocked).`, // 2026-10-16 skill audit; 2026-10-17: lightning damage; 2026-10-18: castles can't be shocked
+  lightning: v=> `When played, deal ${v} lightning damage to a random enemy unit, +1 for every 4 Prayer (none to a bramble: it can't be shocked).`, // 2026-10-16 skill audit; 2026-10-17: lightning damage; 2026-10-18: castles can't be shocked
   midas: v=> `When it kills a unit, gain ${v} Lumber.`,
   retribution: v=> `When one of your units dies, deal ${v} damage to a random enemy unit.`,
   satiety: v=> `At full Health, gains +${v} max Health every upkeep.`,
@@ -2148,34 +2148,34 @@ const SKILL_TEXT = {
   swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
   reload: v=> `After attacking, sits out ${v} round${v==1?'':'s'}.`,
   shell: v=> `When first hit: +${v} Armor and +${v} Health until the end of next round, but it can't attack that round.`,
-  stealth: ()=> `Always attacks the enemy castle.`,
+  stealth: ()=> `Always attacks the enemy bramble.`,
   evasive: ()=> `Dodges half of all single-target attacks and skills.`,
   feeble: ()=> `Deals half damage.`, mighty: ()=> `Deals double damage.`, fragile: ()=> `Takes double damage.`, sturdy: ()=> `Takes half damage.`,
   crit: ()=> `Each round, a 1-in-2 chance to deal double damage.`,
   fester: ()=> `Deals extra damage equal to its own Poison.`, rupture: ()=> `Deals extra damage equal to its own Bleed.`,
   regen: v=> `Heals ${v} every upkeep.`,
   stunOnHit: v=> `Its hits have a 1 in 3 chance to Stun the target for ${stunRounds(v)} round${stunRounds(v)===1 ? '' : 's'}.`, // 2026-10-16 (user: "Stun N: 1/3 chance to Stun a card for N turns")
-  puncture: v=> `Each melee hit also deals ${v} damage to the enemy castle.`,
+  puncture: v=> `Each melee hit also deals ${v} damage to the enemy bramble.`,
   gash: v=> `When played, add ${v} Bleed to the enemy facing it.`,
-  overwhelm: ()=> `Damage left over from a kill carries on into the enemy castle.`,
+  overwhelm: ()=> `Damage left over from a kill carries on into the enemy bramble.`,
   berserk: v=> `+${v} Attack whenever one of your units dies.`,
-  bulwark: v=> `Your castle takes ${v} less damage from every hit.`,
+  bulwark: v=> `Your bramble takes ${v} less damage from every hit.`,
   reflect: v=> `${typeof v === 'number' && v < 100 ? `${v}% of the time, a shot` : 'Shots'} aimed at it (arrows, bolts, missiles, fireballs) bounce${typeof v === 'number' && v < 100 ? 's' : ''} off and hit${typeof v === 'number' && v < 100 ? 's' : ''} a random enemy unit.`, // 2026-10-17 (user: "reflects ranged skills back at a random enemy unit")
   momentum: v=> `+${v} Attack every time it kills a unit.`,
   bloom: v=> `Heal a random wounded ally for ${v} every upkeep.`,
   ambush: v=> `When an enemy unit enters the slot facing it (played, spawned or moved in), deal ${numOr(v, 3)} damage to it.`, // 2026-10-17 (user: "whenever a unit enters this unit's opposing side, deal N damage")
-  siege: v=> `Deals ${v} more damage to the enemy castle.`,
+  siege: v=> `Deals ${v} more damage to the enemy bramble.`,
   daunt: v=> `Its hits lower the target's Attack by ${v} until the end of next round. Stacks.`,
   recoil: v=> `Each attack also deals ${v} damage to itself.`,
   inherentDarkness: v=> `While Ready, gain ${v} Darkness every upkeep.`,
   coreEvil: ()=> `When pitched, gain 1 Darkness.`,
   frenzy: ()=> `While it has any status, it attacks twice and each hit adds 1 Bleed.`,
   pierce: v=> v === true ? `Its melee hits ignore Armor.` : `Its melee hits ignore ${v} Armor.`,
-  perforate: v=> `Its melee hits ignore and strip ${v} Armor, add ${v} Bleed and deal ${v} damage to the enemy castle.`,
+  perforate: v=> `Its melee hits ignore and strip ${v} Armor, add ${v} Bleed and deal ${v} damage to the enemy bramble.`,
   flying: ()=> `Dodges half of all attacks from units without Flying.`,
   earthquake: v=> `When played, deal ${v} damage to every other unit without Flying, yours included.`,
-  pounce: v=> `When played, deal ${pounceWords(v)} damage to the enemy facing it (or the nearest), or the castle if there are no targets.`, // 2026-10-16: N, <Att> or <Hp> // 2026-10-16 skill audit: the engine aims at the unit opposite first (2026-10-15)
-  skyfall: v=> `When played, deal ${v} damage to a random enemy unit, or the castle if there are no targets.`,
+  pounce: v=> `When played, deal ${pounceWords(v)} damage to the enemy facing it (or the nearest), or the bramble if there are no targets.`, // 2026-10-16: N, <Att> or <Hp> // 2026-10-16 skill audit: the engine aims at the unit opposite first (2026-10-15)
+  skyfall: v=> `When played, deal ${v} damage to a random enemy unit, or the bramble if there are no targets.`,
   arrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${v} damage every upkeep.`, // 2026-10-16 skill audit
   fireArrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${v} fire damage every upkeep.`, // 2026-10-16 skill audit
   iceArrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${numOr(v, 2)} cold damage every upkeep; 1 in 2 it Freezes.`, // 2026-10-16 skill audit: it aims like Arrow
@@ -2186,7 +2186,7 @@ const SKILL_TEXT = {
   poisonBolt: v=> `While Ready, spit venom at the enemy facing it (or the nearest): ${numOr(v, 2)} Poison every upkeep.`,
   iceBolt: v=> `While Ready, spit ice at the enemy facing it (or the nearest) for ${numOr(v, 2)} cold damage every upkeep; 1 in 2 it Freezes.`,
   shockBolt: v=> `While Ready, spit a spark at the enemy facing it (or the nearest) for ${numOr(v, 2)} lightning damage; it is Shocked for a round. Every upkeep.`, // 2026-10-17: lightning damage
-  bloodlust: ()=> `When it kills the unit facing it, it leaps to face the nearest enemy creature. Half damage to Structures and castles.`, // 2026-10-17 rework (the Codex adds one more sentence: codexNote)
+  bloodlust: ()=> `When it kills the unit facing it, it leaps to face the nearest enemy creature. Half damage to Structures and brambles.`, // 2026-10-17 rework (the Codex adds one more sentence: codexNote)
   chilli: v=> `When first Ready, eats a chilli: +${numOr(v, 2)} Attack and its attacks deal fire damage, but it takes 1 damage every upkeep.`, // 2026-10-16 skill audit
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
 };
@@ -2228,8 +2228,8 @@ Object.assign(SKILL_TEXT, {
   spitfire: v=> `While Ready, spit ${numOr(v, 2)} fire damage at a random enemy unit every upkeep; 1 in 2 it also burns one beside it for 1.`, // 2026-10-16 skill audit
   slashBurn: v=> `When it kills a unit, the next enemy card played there takes ${numOr(v, 3)} fire damage.`,
   trap: v=> `When played, trap the empty enemy slot facing it: the next card played there takes ${numOr(v, 5)} damage.`, // 2026-10-16 skill audit
-  penance: v=> `When played, deal ${numOr(v, 3)} damage to your own castle.`, // 2026-10-16 (user: "hurting your own castle on play as payment")
-  bloodTithe: v=> `When played, deal ${numOr(v, 2)} damage to a random ally (your castle if there is none).`, // 2026-10-16 (user: "hurting a random ally on play as payment")
+  penance: v=> `When played, deal ${numOr(v, 3)} damage to your own bramble.`, // 2026-10-16 (user: "hurting your own castle on play as payment")
+  bloodTithe: v=> `When played, deal ${numOr(v, 2)} damage to a random ally (your bramble if there is none).`, // 2026-10-16 (user: "hurting a random ally on play as payment")
   predator: v=> `Deals ${numOr(v, 1)} more damage to units with less Attack.`,
   prey: ()=> `Evasive while an enemy Predator is on the field.`,
   nova: v=> `When it dies, every enemy unit takes ${numOr(v, 3)} magic damage.`,
@@ -2270,7 +2270,7 @@ Object.assign(SKILL_TEXT, {
   shedding: v=> `Every ${numOr(v, 3)} rounds: +1/+1 for good, and it sheds its Poison, Bleed, Corrode, Scar and Exposed.`,
   snipe: v=> `While Ready, if nothing faces it, shoot a random enemy unit for ${numOr(v, 1)} every upkeep.`,
   kinship: v=> { const k = Array.isArray(v) ? {type:v[0], atk:v[1], hp:v[2]} : (v && typeof v === 'object' ? v : {}); return k.type ? `All your ${k.type} units get +${Number(k.atk)||0}/+${Number(k.hp)||0} (itself too). Stacks.` : `All your units of its chosen type get +X/+Y (itself too). Stacks.`; },
-  rocket: v=> `Once, when Ready: a rocket hits the enemy unit with the most Attack for ${numOr(v, 1)} fire damage, and 1 to the units beside it (the castle if there are none).`,
+  rocket: v=> `Once, when Ready: a rocket hits the enemy unit with the most Attack for ${numOr(v, 1)} fire damage, and 1 to the units beside it (the bramble if there are none).`,
   loneWolf: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} for each empty slot within 2 of it, and +${a}/+${h} more when all 4 are empty.`; },
   sociable: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} for each ally within 2 slots of it, and +${a}/+${h} more when all 4 are filled.`; },
   coffee: v=> `When played, Wait −${numOr(v, 1)}. ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'} later it naps: Stunned for a round.`,
@@ -2280,7 +2280,7 @@ Object.assign(SKILL_TEXT, {
   loyal: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.loyalGrant ? grantText(e.loyalGrant) : ''; return `While one of your leaders is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
   usurper: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.usurperGrant ? grantText(e.usurperGrant) : ''; return `While the enemy leader is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
   esprit: (v, n, e)=> { const [a, h] = phaseVals(v); return `+${a}/+${h} whenever ${espritWhoOf(v, e) === 'any' ? 'another unit of yours' : 'another of your Kin'} enters play.`; }, // Kin / Any (2026-10-18)
-  explode: v=> { const t = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Number(v[1])||0 : 0; return t || d ? `In ${t} upkeep${t === 1 ? '' : 's'} it explodes once: ${d} damage to the enemy facing it, or the castle if there is none.` : `After its timer runs down it explodes once, hitting the enemy facing it (or the castle).`; },
+  explode: v=> { const t = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Number(v[1])||0 : 0; return t || d ? `In ${t} upkeep${t === 1 ? '' : 's'} it explodes once: ${d} damage to the enemy facing it, or the bramble if there is none.` : `After its timer runs down it explodes once, hitting the enemy facing it (or the bramble).`; },
   freeze: procSkillText('Freeze the target'), sleep: procSkillText('put the target to Sleep'), paralyze: procSkillText('Paralyze the target'),
   blind: procSkillText('Blind the target'), tipsy: procSkillText('make the target Tipsy'), confuse: procSkillText('Confuse the target'),
   shock: procSkillText('Shock the target'), stagger: procSkillText('Stagger the target'),
@@ -2301,7 +2301,7 @@ Object.assign(SKILL_TEXT, {
   fletcher: v=> `Your units' arrows deal ${numOr(v, 1)} more damage.`,
   herbalist: v=> `Every heal on your units heals ${numOr(v, 1)} more.`,
   shatter: v=> `Its hits deal ${numOr(v, 2)} more damage to Frozen units.`,
-  rebuild: v=> `While Ready, restore ${numOr(v, 2)} Health to your castle every upkeep.`, // 2026-10-17
+  rebuild: v=> `While Ready, restore ${numOr(v, 2)} Health to your bramble every upkeep.`, // 2026-10-17
 });
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 // Pounce's amount in words (2026-10-16): "5", "<Att>" (its Attack) or "<Hp>" (its Health); an editor row value [mode, n] too.
@@ -2380,7 +2380,7 @@ function describeEffects(def, liveCard){
   if(def.darkSummon) lines.push(`Dark Summon ⛧ — uses your Dark Summon for the turn (1 a turn), not your normal play.`);
   if(e.devour){ const g = e.devour.grant ? Object.entries(e.devour.grant).map(([k, v])=> { const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
     lines.push(`Devour — drag a card from your hand onto this one: it eats it (to your graveyard) and gains +${e.devour.attack||0}/+${e.devour.health||0}${g ? ' and ' + g : ''}. Once, and it uses your play for the turn.`); }
-  if(e.ritual){ const r = e.ritual; lines.push(`Ritual — no Wait, but it can't act until, after it arrives, ${r.perished||0} units have perished (either side), you've drawn ${r.drawn||0} cards and dealt ${r.castleDamage||0} castle damage.`); }
+  if(e.ritual){ const r = e.ritual; lines.push(`Ritual — no Wait, but it can't act until, after it arrives, ${r.perished||0} units have perished (either side), you've drawn ${r.drawn||0} cards and dealt ${r.castleDamage||0} bramble damage.`); }
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
   if(def.wait) lines.push(`⏳ Wait ${def.wait} — Can't attack for ${def.wait} round${def.wait===1?'':'s'} after it's played.`);
   { const bn = bountyN(e); if(bn) lines.push(`🏆 Bounty ${bn} — When played, gain ${bn} Lumber. When it dies, the opponent gains ${bn} Lumber.`); } // 2026-10-15
@@ -2413,7 +2413,7 @@ function describeEffects(def, liveCard){
     if(p.key==='pounce'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; // 2026-10-16 (user: "Pounce <Att> or <Hp>")
       const pm = pounceMode(e.pounce), now = lc ? (lc.pounceN != null ? lc.pounceN : pm === 'attack' ? (lc.atk||0) : (lc.hp||0)) : null;
       const amt = now != null ? `<b class="atk-bonus" title="Worked out from its ${pm === 'attack' ? 'Attack' : 'Health'} as it landed">${now}</b>` : (pm === 'attack' ? '&lt;Att&gt;' : '&lt;Hp&gt;');
-      lines.push(`${ic('pounce')}Pounce ${amt} — When played, deal ${amt} damage to the enemy facing it (or the nearest), or the castle if there are no targets.`); return; }
+      lines.push(`${ic('pounce')}Pounce ${amt} — When played, deal ${amt} damage to the enemy facing it (or the nearest), or the bramble if there are no targets.`); return; }
     if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span> — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
     if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
@@ -6434,7 +6434,7 @@ function cardTileHTML(d, opts){
     ${d.level > (d.baseLevel||0)?`<div class="levelbadge" title="Forged to Level ${d.level}">Lv${d.level}</div>`:''}
     ${d.prestigeTier?`<div class="prestigebadge" title="Prestige: ${d.prestigeLabel} — cosmetic only, no stat change">${d.prestigeIcon}</div>`:''}
     ${isCastle
-      ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Castle">${opts.sideLabel}</div>`:'')
+      ? (opts.sideLabel?`<div class="castle-side-label" title="${escapeAttr(opts.sideLabel)} Bramble">${opts.sideLabel}</div>`:'')
       : `${costParts.length?`<div class="costbadge" title="Cost to play">${costParts.join('/')}</div>`:''}
     ${d.wait>0?`<div class="waitbadge" title="Wait — turns before it can act after being played">${pipsHTML('⏳', d.wait, 'wait')}</div>`:''}${archMarkHTML(d, d.wait>0, false)}
     ${d.darkSummon && !cardFrameArch(d, cardBackingKind(d)) /* 2026-10-16 (user: "...remove the top right hand corner context symbol for those. like the 5 point star for devilry..."): the Devilry frame says it; the card text still says Dark Summon */?`<div class="darkbadge" title="Dark Summon — uses your Dark Summon for the turn (1 a turn), not your normal play">⛧</div>`:''}`}
@@ -6632,7 +6632,7 @@ function abilityBadges(d, bopts){
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
   if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb"><span class="ab-pair">${iconHTML('supreme-tide', '✨')}<i>🌊</i></span></span>`); // stacked (2026-10-17)
   // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
-  if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only (the castle when neither has a unit)">${iconHTML('crab-claws', '🦞')}</span>`);
+  if(e.crabClaws) out.push(`<span title="Crab Claws: attacks left or right only (the bramble when neither has a unit)">${iconHTML('crab-claws', '🦞')}</span>`);
   if(e.meiosis) out.push(`<span title="Meiosis ${e.meiosis === true ? 1 : e.meiosis}: splits in two when it dies">${iconHTML('meiosis', '🧫')}${n1(e.meiosis)}</span>`);
   if(e.nullify) out.push(`<span class="ab-nullify" title="Nullify: its hits get no reaction; what it kills goes to the ${EXILE_ZONE_NAME}">${iconHTML('nullify', '🚫')}</span>`);
   if(e.restless) out.push(`<span title="Restless: steps toward the nearest enemy every round">${iconHTML('restless', '👣')}</span>`);
@@ -6910,8 +6910,8 @@ function referenceHTML(){
        like On Death: Spawn read as "passive" here. Split into two panels driven by that same
        category field instead of re-tagging entries individually. -->
   <div class="panel"><h3 class="ref-heading">Elemental Damage Types</h3><p class="panel-sub">A card's Element (set on the main form) drives its Resist/Weakness math — and each of the five below has its own signature status, one clean skill per element, all still fully independent "+ Add Skill" entries (nothing here is automatic; a Cold card doesn't get Frozen for free, it has to carry the Freeze skill too). Poison and Decay are the two exceptions — see the two cards after this list for what makes them different.</p><div class="ref-grid">${ELEMENTAL_STATUS_MAP.map(e=>`<div class="ref-card"><span class="kind">${e.dmgType}</span><b>${e.icon} ${e.statusLabel}</b><p>${e.desc}</p></div>`).join('')}
-    <div class="ref-card"><span class="kind">poison (element)</span><b>☠ Damage → Poison stacks</b><p>Unlike the other four, a Poison-element attack is automatic and deterministic, not a chance roll: its ENTIRE damage number converts into Poison stacks on the target instead of landing as HP loss that instant — the stacks tick for real damage at the start of the next round instead (see the Poison passive skill below for a card that stacks extra Poison on top of this). A hit that reaches the castle instead of a card always deals its normal, unconverted damage.</p></div>
-    <div class="ref-card"><span class="kind">decay (element)</span><b>🦠 Damage + Attack drain</b><p>A Decay-element attack deals its normal HP damage AND reduces the target's own Attack by that same amount (floored at 0) — both happen on every landed hit, automatically. Like Poison, a hit that reaches the castle instead of a card deals normal, unconverted damage.</p></div>
+    <div class="ref-card"><span class="kind">poison (element)</span><b>☠ Damage → Poison stacks</b><p>Unlike the other four, a Poison-element attack is automatic and deterministic, not a chance roll: its ENTIRE damage number converts into Poison stacks on the target instead of landing as HP loss that instant — the stacks tick for real damage at the start of the next round instead (see the Poison passive skill below for a card that stacks extra Poison on top of this). A hit that reaches the bramble instead of a card always deals its normal, unconverted damage.</p></div>
+    <div class="ref-card"><span class="kind">decay (element)</span><b>🦠 Damage + Attack drain</b><p>A Decay-element attack deals its normal HP damage AND reduces the target's own Attack by that same amount (floored at 0) — both happen on every landed hit, automatically. Like Poison, a hit that reaches the bramble instead of a card deals normal, unconverted damage.</p></div>
   </div></div>
   <div class="panel"><h3 class="ref-heading">Evergreen abilities (the "+ Add Skill" list)</h3><p class="panel-sub">A bundled trigger + action shorthand — the same thing you could build by hand with Custom Triggers, just packaged as one named skill with fewer clicks.</p><div class="ref-grid">${SKILL_DEFS.filter(p=>p.category==='evergreen' && !p.retired).map(p=>`<div class="ref-card"><span class="kind">Evergreen</span><b>${p.label}</b><p>${p.desc(p.kind==='number'?'N':(p.kind==='twoNumber'?['N','N']:(p.kind==='cardCount'?['','N']:'N')))}</p>${p.longDesc ? `<p class="ref-long">${p.longDesc}</p>` : ''}</div>`).join('')}
   </div></div>
@@ -7270,7 +7270,7 @@ const CARD_STATS_FIELDS = [ // order is the storage format: append new numbers a
   {k:'dd', label:'Damage dealt', icon:'⚔️', stat:'dealt'},
   {k:'dt', label:'Damage taken', icon:'🛡️', stat:'taken'},
   {k:'k',  label:'Kills', icon:'🎯', stat:'kills'},
-  {k:'fd', label:'Castle damage', icon:'🏰', stat:'faceDamage'},
+  {k:'fd', label:'Bramble damage', icon:'🏰', stat:'faceDamage'},
   {k:'hl', label:'Health healed', icon:'💚'},
   {k:'lm', label:'Lumber generated', icon:'🪵', stat:'lumberGenerated'},
   {k:'gr', label:'Grace generated', icon:'🕊️', stat:'graceGenerated'},
@@ -8773,7 +8773,7 @@ function triggerPreviewText(t){
     case 'cleanse': { const w = t.who && t.who!=='self' ? whoTarget : 'itself'; doText = t.amount ? `cleanse ${t.amount} ailment${t.amount===1?'':'s'} from ${w} (curses first)` : `cleanse ${w} of every ailment`; break; }
     case 'addWait': doText = `delay ${whoTarget} by ${amt} Wait`; break;
     case 'fireHit': doText = `its hit also deals ${amt} fire damage`; break; // 2026-10-16
-    case 'rebuild': doText = `restore ${amt} Health to your castle`; break; // 2026-10-17
+    case 'rebuild': doText = `restore ${amt} Health to your bramble`; break; // 2026-10-17
     default: doText = aDef.label.toLowerCase();
   }
   if(t.cost === 'burnLumber') doText = `burn 1 Lumber (if you have it), then ${doText}`; // the cost step (2026-10-16)
@@ -11511,7 +11511,7 @@ function forgeCastlesHTML(){
     return `<div class="fc-row ${ch.id===myCharacterId ? 'is-on' : ''}"><span class="fc-tile">${matchCastleTileHTML(lc, lc.health, lc.health, 'preview', '')}</span>
       <div class="fc-body"><b>${escapeHtml(ch.name)}${ch.id===myCharacterId ? ' <small>(yours)</small>' : ''}</b><span class="fc-lv">Lv ${L}/${lb ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span>
         ${max ? `<p class="forge-note">Fully limit broken.</p>` : `<button type="button" class="btn small primary" data-forge-castle="${escapeAttr(ch.id)}" ${ok ? '' : 'aria-disabled="true"'}>${lb ? '💥 Break' : '🔨 Temper'} to Lv ${L+1}${btnCostHTML({dust:c.dust, gold:c.gold, mats:c.mats})}</button>${c.credit && (c.credit.dust || c.credit.gold) ? ` <small>credit −✨${c.credit.dust}</small>` : ''}`}
-        <button type="button" class="btn small" data-fuse-castle="${escapeAttr(ch.id)}" ${dups ? '' : 'disabled'} title="Every extra copy of a castle is a duplicate: you only field one">🧩 Fuse duplicates (${dups})</button></div></div>`; }).join('')}</div>`;
+        <button type="button" class="btn small" data-fuse-castle="${escapeAttr(ch.id)}" ${dups ? '' : 'disabled'} title="Every extra copy of a bramble is a duplicate: you only field one">🧩 Fuse duplicates (${dups})</button></div></div>`; }).join('')}</div>`;
 }
 function castleCanTemper(id){ const L = castleLevelOf(id); if(L >= CASTLE_LIMIT_MAX) return false; if(L >= 20 && levelGateNeed(LIMIT_BREAK_LEVEL)) return false; /* a castle's limit break waits for Map 50 too */ const c = castleNetCost(L, id); return (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold && Object.entries(c.mats||{}).every(([m, n])=> ownedCount(m) >= n); }
 function temperCastle(id){
@@ -11586,7 +11586,7 @@ function deckHeroBannerHTML(){
   return `<div class="deck-top" id="deckHeroBanner">
     <div class="dt-smear" aria-hidden="true"><div class="l">${castleTile}</div>${leader ? `<div class="r">${cardTileHTML(leader, {inPlay:true})}</div>` : ''}</div>
     <div class="dt-pair">
-      <button type="button" class="dt-slot" data-loadout="castle" title="${escapeAttr((castle ? castle.name : 'Castle') + ' · ' + (castle ? castle.health : 30) + ' HP — choose your castle')}"><span class="dt-tile">${castleTile}</span><span class="dt-cap"><b>${escapeHtml(castle ? castle.name : '—')}</b></span><span class="dt-change">Change</span></button>
+      <button type="button" class="dt-slot" data-loadout="castle" title="${escapeAttr((castle ? castle.name : 'Castle') + ' · ' + (castle ? castle.health : 30) + ' HP — choose your bramble')}"><span class="dt-tile">${castleTile}</span><span class="dt-cap"><b>${escapeHtml(castle ? castle.name : '—')}</b></span><span class="dt-change">Change</span></button>
       <button type="button" class="dt-slot" data-loadout="leader" title="${escapeAttr(leader ? leader.name + ' — choose your leader' : 'Choose your leader')}"><span class="dt-tile">${leaderTile}</span><span class="dt-cap"><b>${leader ? escapeHtml(leader.name) : 'No leader'}</b></span><span class="dt-change">${leader ? 'Change' : 'Choose'}</span></button>
     </div>
     <div class="dt-info">
@@ -11650,14 +11650,14 @@ function openLoadoutPicker(kind){
   const body = ()=> isCastle
     ? `<div class="lp-grid lp-castles">${Object.values(CHARACTER_DEFS).map(ch=> ({ch, open: castleUnlocked(ch) || (typeof adminModeEnabled!=='undefined' && adminModeEnabled)})).sort((a,b)=> (b.open - a.open)).map(({ch, open})=> `<button type="button" class="lp-item ${ch.id===myCharacterId?'is-on':''} ${open?'':'is-locked'}" ${open ? `data-pick="${escapeAttr(ch.id)}"` : 'disabled'} title="${open ? '' : escapeAttr(ch.drop ? 'Drops now and then from fights on Map ' + mapNumberOf(ch.drop.map) + ', or from a basic pack' : 'Beat the boss of Map ' + mapNumberOf(ch.unlockMap) + ' to unlock')}">
         <span class="lp-tile">${(()=>{ const lc = castleLeveled(ch, castleLevelOf(ch.id)); return matchCastleTileHTML(lc, lc.health, lc.health, 'preview', ''); })()}</span><b>${escapeHtml(ch.name)} <span class="lp-lv">Lv ${castleLevelOf(ch.id)}/${castleLevelOf(ch.id) >= CASTLE_MAX_LEVEL ? CASTLE_LIMIT_MAX : CASTLE_MAX_LEVEL}</span></b><small>${escapeHtml(characterDescHTML(ch))}</small></button>`).join('')}</div>
-      <p class="lp-temper">🔨 Temper your castles in the Forge (🏰 Castles).</p>`
+      <p class="lp-temper">🔨 Temper your brambles in the Forge (🏰 Brambles).</p>`
     : `<div class="lp-grid">${'' /* 2026-10-15 (user: "There is no need for the 'Remove' pill on the chosen leader."): no "✕ No leader / Clear the slot" tile; the chosen leader is just marked */}${leaderIds().slice(0, 120).map(id=> inDeck(id) ? `<button type="button" class="lp-item is-used" disabled aria-disabled="true" title="${escapeAttr(defs[id].name)} is in your deck. Take it out to make it your leader">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b><small>In your deck</small></button>` : `<button type="button" class="lp-item ${id===myLeaderId?'is-on':''}" data-pick="${escapeAttr(id)}">
         <span class="lp-tile">${cardTileHTML(defs[id], {inPlay:true})}</span><b>${escapeHtml(defs[id].name)}</b></button>`).join('') || '<p class="panel-sub">No cards match.</p>'}</div>`;
-  ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your castle' : 'Choose your leader'}">
+  ov.innerHTML = `<div class="modal loadout-picker" role="dialog" aria-label="${isCastle ? 'Choose your bramble' : 'Choose your leader'}">
       <button type="button" class="modal-close-btn" aria-label="Close" data-close>✕</button>
-      <h2>${isCastle ? '🏰 Choose your castle' : '👑 Choose your leader'}</h2>
-      <p class="panel-sub">${isCastle ? 'Your castle sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward battle rating. Leaders are Heroic or above, or have the Leader passive.'}</p>
+      <h2>${isCastle ? '🏰 Choose your bramble' : '👑 Choose your leader'}</h2>
+      <p class="panel-sub">${isCastle ? 'Your bramble sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward battle rating. Leaders are Heroic or above, or have the Leader passive.'}</p>
       ${isCastle ? '' : '<input type="search" class="lp-search" id="lpSearch" placeholder="Search your cards…" aria-label="Search your cards">'}
       <div class="lp-body">${body()}</div>
     </div>`;
@@ -11691,7 +11691,7 @@ function characterDescHTML(ch){
   if(e.enemyWaitBonus) bits.push(`The enemy's first 3 units arrive with +${e.enemyWaitBonus} ⏳ Wait`);
   if(e.castleBolt) bits.push(`Each round a ballista bolt hits a random enemy unit for ${e.castleBolt}`);
   if(e.castleLumberEvery) bits.push(`+1 🪵 every ${e.castleLumberEvery} rounds`);
-  if(e.castleThorns) bits.push(`A unit that hits this castle takes ${e.castleThorns}`);
+  if(e.castleThorns) bits.push(`A unit that hits this bramble takes ${e.castleThorns}`);
   if(e.herbRefinery) bits.push(`Each round, one of: heal your most wounded unit 3, 2 damage to a random enemy unit, or +1 🪵`);
   if(e.castleSpawn){ const sp = e.castleSpawn, d = getCardDefs()[sp.defId]; bits.push(`${(sp.count||1) > 1 ? (sp.count + '× ') : ''}${d ? d.name : sp.defId} join${(sp.count||1) > 1 ? '' : 's'} you on round ${sp.first||2}${sp.every ? ' and every ' + sp.every + ' rounds after' : ''}`); }
   return bits.length ? bits.join(' · ') : 'No passive — a plain, sturdy baseline.';
@@ -11717,7 +11717,7 @@ function characterPickerHTML(){
 // HP, passive, flavor) — separate from the actual in-deck PICKER, which now lives inline inside
 // the "Build your deck" panel (see renderPlayerSubTab) rather than its own standalone panel.
 function bramblesTabHTML(){
-  return `<div class="panel"><h2>🌿 Brambles</h2><p class="panel-sub">A Bramble is the HQ you bring into battle — it sets your castle's max HP and gives your whole team a passive for the match. Pick one from the Player tab, inside Build your deck.</p>
+  return `<div class="panel"><h2>🌿 Brambles</h2><p class="panel-sub">A Bramble is the base you bring into battle — it sets your max HP and gives your whole team a passive for the match. Pick one from the Player tab, inside Build your deck.</p>
     <div class="char-picker bramble-codex-grid">${Object.values(CHARACTER_DEFS).map(ch=>`
       <div class="char-card bramble-codex-card">
         ${cardTileHTML(ch, {isCastle:true, magnetic:true, extraClass:'castle-picker-tile'})}
@@ -12148,7 +12148,7 @@ function deckPreviewPillsHTML(d){
   const leader = d.leaderId && defs[d.leaderId];
   const total = deckTotal(d.counts||{});
   return `<div class="deck-preview-pills">
-    <span class="deck-pill deck-pill-castle" title="Castle (Bramble)">${castle?castle.icon:'🏰'} ${escapeHtml(castle?castle.name:'Castle')}</span>
+    <span class="deck-pill deck-pill-castle" title="Bramble">${castle?castle.icon:'🏰'} ${escapeHtml(castle?castle.name:'Castle')}</span>
     <span class="deck-pill deck-pill-leader" title="Leader">👑 ${leader?escapeHtml(leader.name):'No Leader'}</span>
     <span class="deck-pill deck-pill-count ${total===DECK_SIZE?'ok':''}" title="Deck size">🃏 ${total}/${DECK_SIZE}</span>
     <span class="deck-pill deck-pill-level" title="Battle rating: each card's rarity weight × its level factor; the leader counts double. A starting deck is about 10, a full level-10 Ancient deck about 2,500">⚔ Rating ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>
@@ -12240,7 +12240,7 @@ function decodeDeckCode(str){
   if(!payload || typeof payload!=='object') return {ok:false, reason:'Could not read that code — it looks corrupted or truncated.'};
   const warnings = [];
   const defs = getCardDefs();
-  const characterId = (payload.c && CHARACTER_DEFS[payload.c]) ? payload.c : (warnings.push('Unknown Castle/Bramble — defaulted to the starting Castle.'), 'castle');
+  const characterId = (payload.c && CHARACTER_DEFS[payload.c]) ? payload.c : (warnings.push('Unknown bramble — defaulted to the starting bramble.'), 'castle');
   let leaderId = null;
   if(payload.l){
     if(defs[payload.l]) leaderId = payload.l;
@@ -12786,7 +12786,7 @@ function startDungeonFight(){
   // 2026-10-17 (user: "It should show your BR in the pre-battle screen"): the Dungeon gets the VS screen too, your run's deck rated.
   let lv = null; try{ lv = mainDeckLevel(run.deckCounts, myLeaderId); }catch(e){}
   showVsScreen({name: (myProfile && myProfile.name) || 'You', deck: `Dungeon run · fight ${run.stage}/${DUNGEON_STAGE_COUNT}`, avatar: loadAvatar(), level: lv},
-    {name: enemyCharacter.name, deck: `🗝️ castle ${hqHp}`, avatar: randomOpponentAvatar(seededRng(run.stage * 977))}).then(()=> renderPlay());
+    {name: enemyCharacter.name, deck: `🗝️ bramble ${hqHp}`, avatar: randomOpponentAvatar(seededRng(run.stage * 977))}).then(()=> renderPlay());
 }
 // ============================================================================================
 // Ranked 1v1 Live (#277, 2026-09-25) — real-time two-device PvP, matched by rating.
@@ -14509,7 +14509,7 @@ function castleLineText(node){ const sc = skirmishCastle(node); return `🏰 ${s
 // coloured diamond)").
 function castleLineHTML(node){ const sc = skirmishCastle(node), L = sc.layers || [], k = L.length - 1;
   const gem = k >= 0 ? `<b class="cl-num">${L[k]}</b><i class="armour-gem" style="--g1:${ARMOUR_LAYER_COLOURS[k][0]}; --g2:${ARMOUR_LAYER_COLOURS[k][1]}" title="${escapeAttr(k > 0 ? `Armour layer ${k+1} (${sc.shield} in all)` : 'Armour')}" aria-label="Armour"></i>` : '';
-  return `<span class="castle-line"><b class="cl-num">${sc.hp}</b><span class="cl-heart" title="Castle Health" aria-label="Health">❤️</span>${gem}</span>`; }
+  return `<span class="castle-line"><b class="cl-num">${sc.hp}</b><span class="cl-heart" title="Bramble Health" aria-label="Health">❤️</span>${gem}</span>`; }
 // Granted skills (2026-10-12, user: "skills granted by external parties' keywords will be light blue ... the field effect
 // was to give immolation to the skirmish's leader"): a fight's leaderGrant ({skill: value}) gives its leaders those skills
 // for this match only. Each leader plays as a copy of its card ("<id>~grant") whose `granted` list names the given skills,
@@ -14805,13 +14805,13 @@ const FIELD2 = {
   lavaSpout:     {icon:'♨️', name:'Lava Spout', editor:'lavaspout', short:'A column bursts: 3 fire', text:'Each round from round 2, lava bursts up in one random column: the units there, on both sides, take 3 fire damage. Fire Resist halves it.'},
   leylines1:     {icon:'✴️', name:'Leylines I', editor:'leylines1', short:'Day, night, tide, moon stronger', text:'The old rhythms run strong: Diurnal, Nocturnal and Crepuscular bonuses are +2/+2 more (a plain one is +3/+3), the Tide gives +3 Attack on Flood and Armor 3 on Ebb, and Full Moon and Moonborn are +2/+2 more.'},
   leylines2:     {icon:'✴️', name:'Leylines II', editor:'leylines2', short:'+1 Lumber a round', text:'Each round from round 2, both sides gain 1 Lumber.'},
-  leylines3:     {icon:'✴️', name:'Leylines III', editor:'leylines3', short:'+1 Lumber, +1 Stone; 3 damage to all', text:'Each round from round 2, both sides gain 1 Lumber and 1 Stone, but every unit takes 3 magic damage and both castles take 3 (never below 1). Atheist units take none.'},
+  leylines3:     {icon:'✴️', name:'Leylines III', editor:'leylines3', short:'+1 Lumber, +1 Stone; 3 damage to all', text:'Each round from round 2, both sides gain 1 Lumber and 1 Stone, but every unit takes 3 magic damage and both brambles take 3 (never below 1). Atheist units take none.'},
   haunted:       {icon:'👻', name:'Haunted', editor:'haunted', short:'A unit a side is Frightened', text:"Each round from round 2, one random unit on each side is Frightened: it doesn't attack that round. Ghosts and Atheists aren't scared."},
   // Field effects 3 (2026-10-17, the user's notes 17 and 24): Sulphur Fumes by the vents (user: "'Hazardous Gas' ... Since poison is already
   // used, think of something else"), Ash Rain and Ashy from the volcano (user: "new ones like Ash Rain and Ashy (volcano explosion)"), and
   // Arrow Slits on the castle maps (user: "Fortified Castle map"). Rules in bramblewood-engine.js (fieldEffects2Tick, chokeOf, ashyNow).
   sulphurFumes:  {icon:'💨', name:'Sulphur Fumes', editor:'sulphurfumes', short:'Units choke: −1 Attack', text:"Each round from round 2, the vents breathe out: every unit that doesn't resist fire, isn't Dry and isn't Flying is Choking that round: −1 Attack on everything it deals. No damage, no poison."},
-  ashRain:       {icon:'🌋', name:'Ash Rain', editor:'ashrain', short:'Castles −1; the sun dims', text:'Each round from round 2, ash falls: both castles take 1 damage (never below 1), and the ash dims the sun: day bonuses are halved, as under Cloudy.'},
+  ashRain:       {icon:'🌋', name:'Ash Rain', editor:'ashrain', short:'Brambles −1; the sun dims', text:'Each round from round 2, ash falls: both brambles take 1 damage (never below 1), and the ash dims the sun: day bonuses are halved, as under Cloudy.'},
   ashy:          {icon:'🌫️', name:'Ashy', editor:'ashy', short:'Flyers grounded; misses 1 in 5', text:'Thick ash on the ground and in the air: Flying units are grounded (Flying gives no dodge, and no Tailwind or Headwind), and every attack at a unit misses 1 in 5. Darksight, Keen Sense and Sonar see through it.'},
   arrowSlits:    {icon:'🏹', name:'Arrow Slits', editor:'arrowslits', short:'The walls shoot 2 a round', text:"Each round from round 2, the defenders' walls loose an arrow at a random unit on the attackers' side: 2 damage. A Helmet can turn it."},
   // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card."): rules.awash; the push is Wave's (washPush in the engine).
@@ -15043,12 +15043,12 @@ function openSkirmishGallery(o){
   const close = ()=>{ el.remove(); document.removeEventListener('keydown', onKey); o.onClose && o.onClose(); };
   const onKey = e=>{ if(e.key === 'Escape'){ e.stopPropagation(); close(); } };
   document.addEventListener('keydown', onKey);
-  const title = o.kind === 'deck' ? `🃏 Deck · ${Object.values(o.counts).reduce((t,n)=> t+n, 0)} cards` : o.kind === 'leader' ? `👑 Choose leader ${o.slot + 1}` : '🏰 Choose a castle';
+  const title = o.kind === 'deck' ? `🃏 Deck · ${Object.values(o.counts).reduce((t,n)=> t+n, 0)} cards` : o.kind === 'leader' ? `👑 Choose leader ${o.slot + 1}` : '🏰 Choose a bramble';
   const render = ()=>{
     const ql = q.trim().toLowerCase();
     let body = '';
     if(o.kind === 'castle'){
-      const plain = {id:'', name:'Plain castle', icon:'🏰', rarity:'common', health:(CHARACTER_DEFS.castle||{health:30}).health, effects:{}};
+      const plain = {id:'', name:'Plain bramble', icon:'🏰', rarity:'common', health:(CHARACTER_DEFS.castle||{health:30}).health, effects:{}};
       const list = [plain, ...Object.values(CHARACTER_DEFS).filter(c=> c.id !== 'castle' || o.current === 'castle')].filter(c=> !ql || (c.name||'').toLowerCase().includes(ql));
       body = list.map(c=> `<button type="button" class="sg-item${(o.current||'') === c.id ? ' is-picked' : ''}" data-pick="${escapeAttr(c.id)}" title="${escapeAttr(c.name)} (${c.health} HP)">${matchCastleTileHTML(c.id ? c : null, c.health, c.health, 'preview', '')}<span class="sg-name">${escapeHtml(c.name)} · ${c.health} HP</span></button>`).join('');
     } else {
@@ -15064,7 +15064,7 @@ function openSkirmishGallery(o){
       <div class="sg-tools"><input type="text" class="sg-search" placeholder="Search by name…" value="${escapeAttr(q)}" autocomplete="off">
         ${o.kind === 'deck' ? `<div class="sg-seg" role="tablist"><button type="button" data-only="all" class="${only==='all'?'on':''}">All cards</button><button type="button" data-only="in" class="${only==='in'?'on':''}">In this deck</button></div>` : ''}
         ${o.kind === 'deck' ? '<button type="button" class="btn primary small" data-sg-close>Done</button>' : ''}</div>
-      <p class="panel-sub sg-hint">${o.kind === 'deck' ? 'Tap a card to add a copy; − removes one.' : o.kind === 'leader' ? 'Tap a card to make it this leader.' : 'Tap a castle to use it.'}</p>
+      <p class="panel-sub sg-hint">${o.kind === 'deck' ? 'Tap a card to add a copy; − removes one.' : o.kind === 'leader' ? 'Tap a card to make it this leader.' : 'Tap a bramble to use it.'}</p>
       <div class="sg-grid${o.kind === 'castle' ? ' is-castles' : ''}">${body}</div>
     </div>`;
     el.querySelectorAll('[data-sg-close]').forEach(b=> b.onclick = close);
@@ -15220,7 +15220,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Kind<select id="seKind" ${draft.kind==='tutorial'?'disabled title="The tutorial marker keeps its kind"':''}>${(draft.kind==='tutorial' ? ['tutorial'] : SKIRMISH_KINDS).map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
         ${(()=>{ const L = armourLayersOf(draft, skirmishCastle(draft).shield); return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
             return `<label class="se-armour-layer" data-layer="${k}" ${show ? '' : 'hidden'} style="--sh-a:${col[0]}; --sh-b:${col[1]}">L${k+1}<input id="${k === 0 ? 'seArmour' : 'seArmour' + (k+1)}" class="se-armour-in" data-k="${k}" type="number" min="0" max="9999" value="${val}"></label>`; }).join('')}</fieldset>`; })()}
-        <label title="Level of the defending castle: +1 Health per level. Blank = the default for this kind of fight">Castle level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
+        <label title="Level of the defending bramble: +1 Health per level. Blank = the default for this kind of fight">Bramble level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
         <label title="Worked out from this deck at the levels its cards fight at (change the deck or the card levels to move it)">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
         ${(()=>{ // 2026-10-14 (user: "Let me choose the showcase card (based on cards in the opponent's deck)"): a picker of the
           // enemy deck's own cards, drawn as cards, under the dropdown (kept: read() saves from it). Auto = the strongest card.
@@ -15239,7 +15239,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label title="Day all match unless the map is a night map (2026-10-12). Real time: the player's clock decides (7 PM to 7 AM is day), with a doubled twilight on the minute at 7">Day &amp; night<select id="sePhase">${(()=>{ const ph = (draft.rules||{}).phase || ''; return opt('', ph, 'Map default (day; night on night maps)') + opt('off', ph, 'Off') + opt('cycle', ph, 'Cycle, day first') + opt('nightFirst', ph, 'Cycle, night first') + opt('day', ph, 'Always day') + opt('night', ph, 'Always night') + opt('realtime', ph, 'Real time (7 PM–7 AM day)'); })()}</select></label>
           <label title="Rounds of day before night falls (and back again)">Switch every<input id="sePhaseLen" type="number" min="1" max="9" placeholder="3" value="${(draft.rules||{}).phaseLen != null ? escapeAttr((draft.rules||{}).phaseLen) : ''}"> rounds</label>
           <label title="An uneven cycle (2026-10-17, the volcano's glow: Day 4, Night 2). Blank: the map's own (the volcano maps 4 and 2), else Switch every">Day / Night<input id="sePhaseDay" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseDay != null ? escapeAttr((draft.rules||{}).phaseDay) : ''}"> / <input id="sePhaseNight" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseNight != null ? escapeAttr((draft.rules||{}).phaseNight) : ''}"> rounds</label>
-          <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 castle Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
+          <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 bramble Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never gives up')}</select></label>
           ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire Smart, Smartest from floor 25">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[CPU_AI_KEYS[cpuAiAutoLevel(mapId, draft)]] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
           <label title="What this fight keeps putting out once it has no cards left">Out of cards, summons<select id="seLoop">${Object.entries(LOOP_PRESETS).map(([k, p])=> opt(k === '-' ? '' : k, draft.loopUnits || '', p.label)).join('')}</select></label>
@@ -15252,26 +15252,26 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         ${draft.kind === 'dungeon' ? (()=>{ const c = dungeonConfig(draft), w = dungeonWaves(draft), raw = draft.dungeon || {};
           const n = (id, key, min, max, title)=> `<input id="${id}" type="number" min="${min}" max="${max}" placeholder="${DUNGEON_DEFAULTS[key] != null ? DUNGEON_DEFAULTS[key] : c[key]}" value="${raw[key] != null ? escapeAttr(raw[key]) : ''}" title="${escapeAttr(title)}">`;
           return `<fieldset class="se-wide se-dungeon"><legend>🗝️ Dungeon</legend>
-            <p class="se-dg-desc">${c.rounds} castles in a row. Castle 1 is a normal fight. When a castle falls, or a castle lasts ${c.roundLimit} rounds, the next one pops up: the enemy's field fills as if it had played ${c.setupTurns} turns (pitching up to ${c.pitches} cards for Lumber), it draws ${c.drawAfter}, and survivors are pushed to the sides. A castle that runs out the clock adds its remaining Health to the next. Best rank: <b>${['elite','boss'].includes(c.tier) ? 'SSS' : 'S'}</b>.</p>
-            <label>Castles (rounds)${n('seDgRounds','rounds',2,8,'How many castles, 2 to 8')}</label>
+            <p class="se-dg-desc">${c.rounds} brambles in a row. Bramble 1 is a normal fight. When a bramble falls, or a bramble lasts ${c.roundLimit} rounds, the next one pops up: the enemy's field fills as if it had played ${c.setupTurns} turns (pitching up to ${c.pitches} cards for Lumber), it draws ${c.drawAfter}, and survivors are pushed to the sides. A bramble that runs out the clock adds its remaining Health to the next. Best rank: <b>${['elite','boss'].includes(c.tier) ? 'SSS' : 'S'}</b>.</p>
+            <label>Brambles (rounds)${n('seDgRounds','rounds',2,8,'How many brambles, 2 to 8')}</label>
             <label>Dungeon tier<select id="seDgTier">${opt('normal', c.tier, 'Normal (up to S)')}${opt('elite', c.tier, 'Elite (up to SSS)')}${opt('boss', c.tier, 'Boss (up to SSS)')}</select></label>
-            <label>First castle Health %${n('seDgFrom','hpFrom',5,100,'Health of the first castle, as a % of the full castle')}</label>
-            <label>Second-to-last Health %${n('seDgTo','hpTo',5,100,'Health of the castle before the last; the ones between rise evenly. The last castle always has full Health')}</label>
-            <label>Setup turns${n('seDgTurns','setupTurns',0,6,'How many turns the enemy plays (off-screen) before each new castle')}</label>
+            <label>First bramble Health %${n('seDgFrom','hpFrom',5,100,'Health of the first bramble, as a % of the full bramble')}</label>
+            <label>Second-to-last Health %${n('seDgTo','hpTo',5,100,'Health of the bramble before the last; the ones between rise evenly. The last bramble always has full Health')}</label>
+            <label>Setup turns${n('seDgTurns','setupTurns',0,6,'How many turns the enemy plays (off-screen) before each new bramble')}</label>
             <label>Pitches per wave${n('seDgPitch','pitches',0,4,'Cards the enemy may pitch for Lumber during those turns')}</label>
-            <label>Cards drawn after${n('seDgDraw','drawAfter',0,8,'Cards the enemy draws when the new castle arrives')}</label>
-            <label>Round limit per castle${n('seDgLimit','roundLimit',2,30,'Rounds before the next castle arrives anyway')}</label>
-            <label>First castle shield 🔷<input id="seDgShieldFirst" type="number" min="0" max="9999" placeholder="${c.shieldFirst}" value="${raw.shieldFirst != null ? escapeAttr(raw.shieldFirst) : ''}" title="Usually small. Blank = a quarter of the Skirmish Armour"></label>
-            <label>Last castle shield 🔷<input id="seDgShieldLast" type="number" min="0" max="9999" placeholder="${c.shieldLast}" value="${raw.shieldLast != null ? escapeAttr(raw.shieldLast) : ''}" title="Usually the same as, or a bit under, a skirmish of this rank. Blank = the Skirmish Armour"></label>
+            <label>Cards drawn after${n('seDgDraw','drawAfter',0,8,'Cards the enemy draws when the new bramble arrives')}</label>
+            <label>Round limit per bramble${n('seDgLimit','roundLimit',2,30,'Rounds before the next bramble arrives anyway')}</label>
+            <label>First bramble shield 🔷<input id="seDgShieldFirst" type="number" min="0" max="9999" placeholder="${c.shieldFirst}" value="${raw.shieldFirst != null ? escapeAttr(raw.shieldFirst) : ''}" title="Usually small. Blank = a quarter of the Skirmish Armour"></label>
+            <label>Last bramble shield 🔷<input id="seDgShieldLast" type="number" min="0" max="9999" placeholder="${c.shieldLast}" value="${raw.shieldLast != null ? escapeAttr(raw.shieldLast) : ''}" title="Usually the same as, or a bit under, a skirmish of this rank. Blank = the Skirmish Armour"></label>
             <div class="se-dg-waves">${w.map((x, i)=> `<span class="se-dg-wave${i === w.length - 1 ? ' is-last' : ''}"><b>${i + 1}</b> ${x.hp}❤️${x.shield ? ` + ${x.shield}🔷` : ''}</span>`).join('<i>›</i>')}</div>
             ${(()=>{ // 2026-10-12 (user: "Dungeon editor - edit each round's deck"): castle 1 fights with the skirmish deck below; every
               // later castle can bring its own deck (blank = keeps drawing from the one before).
               const wd = raw.waveDecks || [], defs = getCardDefs();
-              return `<div class="se-dg-decks"><b class="se-dg-decks-h">Each castle's deck</b>${w.map((x, i)=>{ const dk = i === 0 ? draft.deck : wd[i], ids = dk ? Object.keys(dk).filter(id=> dk[id] > 0 && defs[id]) : [], n = ids.reduce((t, id)=> t + dk[id], 0);
-                return `<div class="se-dg-deck"><div class="se-dg-deck-head"><b>Castle ${i + 1}</b><small>${i === 0 ? `the deck below · ${n} cards` : n ? `${n} cards` : 'keeps the deck it already has'}</small>${i === 0 ? '' : `<button type="button" class="btn small" data-wave-deck="${i}">🃏 ${n ? 'Edit' : 'Give it a deck'}</button>${n ? `<button type="button" class="btn small ghost" data-wave-clear="${i}" title="Use the deck it already has">✕</button>` : ''}`}</div>
+              return `<div class="se-dg-decks"><b class="se-dg-decks-h">Each bramble's deck</b>${w.map((x, i)=>{ const dk = i === 0 ? draft.deck : wd[i], ids = dk ? Object.keys(dk).filter(id=> dk[id] > 0 && defs[id]) : [], n = ids.reduce((t, id)=> t + dk[id], 0);
+                return `<div class="se-dg-deck"><div class="se-dg-deck-head"><b>Bramble ${i + 1}</b><small>${i === 0 ? `the deck below · ${n} cards` : n ? `${n} cards` : 'keeps the deck it already has'}</small>${i === 0 ? '' : `<button type="button" class="btn small" data-wave-deck="${i}">🃏 ${n ? 'Edit' : 'Give it a deck'}</button>${n ? `<button type="button" class="btn small ghost" data-wave-clear="${i}" title="Use the deck it already has">✕</button>` : ''}`}</div>
                   ${n ? `<div class="se-deck-stacks se-dg-strip">${ids.sort(deckSortFn('cost')).map(id=> `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), dk[id], '×' + dk[id])}</span>`).join('')}</div>` : ''}</div>`; }).join('')}</div>`; })()}
           </fieldset>`; })() : ''}
-        <div class="se-pick-field"><span class="se-pick-label">Castle</span><input type="hidden" id="seChar" value="${escapeAttr(draft.characterId||'')}"><button type="button" class="se-pick-btn" id="seCastlePick" title="Choose from the castle gallery">${(()=>{ const c = draft.characterId && CHARACTER_DEFS[draft.characterId]; return `<span class="se-pick-ico">${escapeHtml((c && c.icon) || '🏰')}</span><span>${escapeHtml(c ? c.name : 'Plain castle')} <small>${(c || CHARACTER_DEFS.castle || {health:30}).health} HP</small></span><span class="se-pick-go">Change ›</span>`; })()}</button></div>${draft.kind === 'tutorial' ? `<label class="se-tut-hp" title="The rival castle's health in this tutorial (blank: the tutorial editor's number)">Castle HP<input id="seTutHp" type="number" min="1" max="500" placeholder="${(tutorialCfg.rivalHp||6) + (draft.stage === 2 ? 2 : 0)}" value="${draft.tutHp != null ? escapeAttr(draft.tutHp) : ''}"></label>` : ''}
+        <div class="se-pick-field"><span class="se-pick-label">Bramble</span><input type="hidden" id="seChar" value="${escapeAttr(draft.characterId||'')}"><button type="button" class="se-pick-btn" id="seCastlePick" title="Choose from the bramble gallery">${(()=>{ const c = draft.characterId && CHARACTER_DEFS[draft.characterId]; return `<span class="se-pick-ico">${escapeHtml((c && c.icon) || '🏰')}</span><span>${escapeHtml(c ? c.name : 'Plain bramble')} <small>${(c || CHARACTER_DEFS.castle || {health:30}).health} HP</small></span><span class="se-pick-go">Change ›</span>`; })()}</button></div>${draft.kind === 'tutorial' ? `<label class="se-tut-hp" title="The rival bramble's health in this tutorial (blank: the tutorial editor's number)">Bramble HP<input id="seTutHp" type="number" min="1" max="500" placeholder="${(tutorialCfg.rivalHp||6) + (draft.stage === 2 ? 2 : 0)}" value="${draft.tutHp != null ? escapeAttr(draft.tutHp) : ''}"></label>` : ''}
         <div class="se-wide se-leaders"><div class="se-leaders-head"><b>👑 Leaders</b><label class="se-inline">How many<select id="seLeaderCount" aria-label="Number of leaders">${[0,1,2,3,4,5].map(n=> `<option value="${n}" ${n===leaderSlots?'selected':''}>${n}</option>`).join('')}</select></label><small>the CPU may bring each one out once</small></div>
           <div class="se-leader-slots">${Array.from({length: leaderSlots}, (_, k)=>{ const id = (draft.leaders||[])[k], d = id && getCardDefs()[id]; return `<div class="se-slot${d ? '' : ' is-empty'}"><button type="button" class="se-slot-btn" data-leader-slot="${k}" title="${d ? 'Change' : 'Choose'} leader ${k+1}">${d ? cardTileHTML(d, {inPlay:true}) : `<span class="se-slot-plus">＋</span><small>Leader ${k+1}</small>`}</button>${d ? `<button type="button" class="se-x" data-leader-rm="${k}" aria-label="Remove leader ${k+1}">✕</button>` : ''}</div>`; }).join('') || '<small class="panel-sub">No leaders. Pick a number above to add slots.</small>'}</div></div>
 
@@ -15362,7 +15362,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     overlay.querySelectorAll('[data-fx-restore]').forEach(b=> b.onclick = ()=>{ read(); removeSkirmishFx(mapId, draft, b.dataset.fxRestore, true); dirty = true; render(); });
     overlay.querySelectorAll('[data-wave-deck]').forEach(b=> b.onclick = ()=>{ read(); const k = +b.dataset.waveDeck; draft.dungeon = draft.dungeon || {}; const wd = draft.dungeon.waveDecks = (draft.dungeon.waveDecks||[]).slice();
       while(wd.length <= k) wd.push(null); if(!wd[k]) wd[k] = {};
-      openDeckBuilderPopup({title: `${draft.icon ? draft.icon + ' ' : ''}${draft.name || 'Dungeon'} · castle ${k + 1}`, counts: wd[k], unlimited: true, onChange: ()=>{ dirty = true; }, onClose: ()=>{ if(!Object.keys(wd[k]).length) wd[k] = null; render(); }}); });
+      openDeckBuilderPopup({title: `${draft.icon ? draft.icon + ' ' : ''}${draft.name || 'Dungeon'} · bramble ${k + 1}`, counts: wd[k], unlimited: true, onChange: ()=>{ dirty = true; }, onClose: ()=>{ if(!Object.keys(wd[k]).length) wd[k] = null; render(); }}); });
     overlay.querySelectorAll('[data-wave-clear]').forEach(b=> b.onclick = ()=>{ read(); const k = +b.dataset.waveClear; if(draft.dungeon && draft.dungeon.waveDecks){ draft.dungeon.waveDecks[k] = null; if(!draft.dungeon.waveDecks.some(Boolean)) delete draft.dungeon.waveDecks; } dirty = true; render(); });
     { const dp = document.getElementById('seDeckPopup'); if(dp) dp.onclick = ()=>{ read();
         openDeckBuilderPopup({title: (draft.icon ? draft.icon + ' ' : '') + (draft.name || 'Skirmish') + ' deck', counts: draft.deck, unlimited: true, onChange: ()=>{ dirty = true; }, onClose: render}); }; }
@@ -15379,7 +15379,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     const search = document.getElementById('seSearch');
     search.addEventListener('input', ()=>{ read(); q = search.value; const pos = search.selectionStart; render(); const s2 = document.getElementById('seSearch'); s2.focus(); s2.setSelectionRange(pos, pos); });
     document.getElementById('seSim').onclick = ()=>{ read(); const r = simulateSkirmishVsMyDeck(draft, 200);
-      simText = `Your active deck vs this skirmish, 200 games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average${r.wins ? ` · ${Math.round(r.avgCastleLeft*100)}% castle left when you win` : ''}.`; render(); };
+      simText = `Your active deck vs this skirmish, 200 games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average${r.wins ? ` · ${Math.round(r.avgCastleLeft*100)}% bramble left when you win` : ''}.`; render(); };
     const simLine = (r, who)=> `${who}, ${r.n} games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average.`;
     document.getElementById('seSimNew').onclick = ()=>{ read(); const deck = expectedPlayerDeck(mapId, draft.key); const r = simulateSkirmishVsDeck(draft, deck, 200);
       skirmishCurveCache[mapId+':'+draft.key] = r.wins/r.n;
@@ -16265,7 +16265,7 @@ function renderAutobattleSubTab(body){
       <h2>🧩 Autobattler</h2>
       <p class="panel-sub">Build a deck from nothing and watch it fight other players' runs. You make the choices; the fights play themselves.</p>
       <ol class="ab-loop" aria-label="How a run works">
-        <li><span class="abl-ico">🏰</span><b>Draft</b><span>a castle, two leaders, then cards</span></li>
+        <li><span class="abl-ico">🏰</span><b>Draft</b><span>a bramble, two leaders, then cards</span></li>
         <li><span class="abl-ico">⚔️</span><b>Fight</b><span>another player's run with as many wins</span></li>
         <li><span class="abl-ico">✨</span><b>Boon</b><span>copy a card, +1/+1, or a new passive</span></li>
         <li><span class="abl-ico">🏆</span><b>${AutoB.AB.WIN_GOAL} wins</b><span>cash out, or go Endless</span></li>
@@ -16286,7 +16286,7 @@ function renderAutobattleSubTab(body){
   const rerender = ()=> renderAutobattleSubTab(body);
   if(run.phase==='draft'){
     const off = AutoB.draftOffers(defs, CHARACTER_DEFS, run);
-    const titles = {castle:'Pick your castle', leader:'Pick your leader — starts every fight on the board', subLeader:`Pick your sub-leader — joins on round ${AutoB.AB.SUB_LEADER_ROUND}`, card:'Pick a card'};
+    const titles = {castle:'Pick your bramble', leader:'Pick your leader — starts every fight on the board', subLeader:`Pick your sub-leader — joins on round ${AutoB.AB.SUB_LEADER_ROUND}`, card:'Pick a card'};
     const pickNo = off.kind==='card' ? ` (${run.step-2} of ${AutoB.AB.PICKS})` : '';
     body.innerHTML = `<div class="panel ab-panel">
       <div class="ab-draft-head"><h2>Draft · ${titles[off.kind]}${pickNo}</h2><span class="ab-step">Step ${run.step+1} / ${AutoB.DRAFT_STEPS}</span></div>
@@ -16336,7 +16336,7 @@ function renderAutobattleSubTab(body){
   body.innerHTML = `<div class="panel ab-panel">${abStatusBarHTML(run)}
     <div class="ab-prep">
       <div class="ab-commanders">
-        <div class="ab-slot"><div class="ab-slot-l">Castle <span class="ab-note">+${Math.round(AutoB.AB.CASTLE_GROWTH*100)}% health per fight</span></div>${castleTileHTML(Object.assign({}, CHARACTER_DEFS[run.castle]||{name:'Castle',health:30}, {health: AutoB.castleHealthFor((CHARACTER_DEFS[run.castle]||{health:30}).health, run.fights)}))}</div>
+        <div class="ab-slot"><div class="ab-slot-l">Bramble <span class="ab-note">+${Math.round(AutoB.AB.CASTLE_GROWTH*100)}% health per fight</span></div>${castleTileHTML(Object.assign({}, CHARACTER_DEFS[run.castle]||{name:'Castle',health:30}, {health: AutoB.castleHealthFor((CHARACTER_DEFS[run.castle]||{health:30}).health, run.fights)}))}</div>
         <div class="ab-slot"><div class="ab-slot-l">👑 Leader</div>${L?cardTileHTML(L, {inPlay:true}):''}</div>
         <div class="ab-slot"><div class="ab-slot-l">🥈 Sub-leader <span class="ab-note">joins round ${AutoB.AB.SUB_LEADER_ROUND}</span></div>${S?cardTileHTML(S, {inPlay:true}):''}
           ${subOpts.length ? `<div class="ab-swap"><div class="ab-note">Swap for:</div>${subOpts.map(id=> `<button type="button" class="btn small" data-swap="${escapeAttr(id)}" title="${escapeAttr(defs[id].name+' — '+defs[id].attack+'/'+defs[id].health)}">${defs[id].icon} ${escapeHtml(defs[id].name)}</button>`).join('')}</div>` : `<div class="ab-note">Swapped this round</div>`}</div>
@@ -16643,7 +16643,7 @@ function renderArenaSubTab(body){
     const connector = n<3 ? `<span class="dungeon-node-connector ${n<dungeonStageLabel?'cleared':''}"></span>` : '';
     return `<span class="dungeon-node ${cls}">${n}</span>${connector}`;
   }).join('');
-  const dungeonStatusHTML = dungeonRun ? `<div class="dungeon-status-line">Stage ${dungeonRun.stage}/${DUNGEON_STAGE_COUNT} · Castle: ${dungeonRun.castleHp!=null?Math.max(0,dungeonRun.castleHp):'Full'} HP · ${dungeonDeckCount(dungeonRun)} cards left in deck</div>` : '';
+  const dungeonStatusHTML = dungeonRun ? `<div class="dungeon-status-line">Stage ${dungeonRun.stage}/${DUNGEON_STAGE_COUNT} · Bramble: ${dungeonRun.castleHp!=null?Math.max(0,dungeonRun.castleHp):'Full'} HP · ${dungeonDeckCount(dungeonRun)} cards left in deck</div>` : '';
   // The Arena, redrawn (2026-10-17, user: "Improve the Arena UI UX and look and feel. Is there a thematic background and other elements we
   // can also use."): a tourney-ground banner (the same pixel ground the Arena's fights stand on, bunting and pennants) with your rank,
   // rating, Laurels and deck; today's rules as Environment cards (arenaRuleCardsHTML); the format switch; then every mode as a tile
@@ -17750,10 +17750,10 @@ function rankExplain(rank, m){
   const mult = RANK_MULT[rank] != null ? ` Repeat rewards ×${RANK_MULT[rank]}.` : '';
   if(rank === 'SSS') return `No damage taken, and none of your units fell.${mult}`;
   if(rank === 'SS') return `No damage taken.${mult}`;
-  if(rank === 'FFF') return 'Lost; their castle took 1 damage or less (Armour included).';
-  if(rank === 'FF') return 'Lost; their castle took 2 damage or less (Armour included).';
+  if(rank === 'FFF') return 'Lost; their bramble took 1 damage or less (Armour included).';
+  if(rank === 'FF') return 'Lost; their bramble took 2 damage or less (Armour included).';
   if(rank === 'F') return 'Lost.';
-  return pct != null ? `Won with ${pct}% of your castle's Health left.${mult}` : `Graded on your castle's Health left.${mult}`;
+  return pct != null ? `Won with ${pct}% of your bramble's Health left.${mult}` : `Graded on your bramble's Health left.${mult}`;
 }
 // 2026-10-14 (user: "why is there a discrepancy, I think fix it, then remove the pill. FF should include shield damage"):
 // the defeat screen showed "Rank F" in the lesson box (it folded FF/FFF into F) and "Rank FF" in a pill below, and FFF used
@@ -17773,7 +17773,7 @@ function lossRankFor(m){
 function lossRankHeadlineHTML(m){
   if(!m || m.mode !== 'conquest' || m.winner === 1 || !/^F+$/.test(m.conquestRankEarned || '')) return '';
   const d = (()=>{ try{ return lossCastleDamage(m); }catch(e){ return null; } })();
-  const note = d ? `Their castle took ${d.total} damage${d.shield ? ` (${d.shield} of it to its Armour)` : ''}.` : '';
+  const note = d ? `Their bramble took ${d.total} damage${d.shield ? ` (${d.shield} of it to its Armour)` : ''}.` : '';
   return `<div class="wl-loss-rank" title="${escapeAttr(rankExplain(m.conquestRankEarned, m))}"><b class="rank-${m.conquestRankEarned}">Rank ${m.conquestRankEarned}</b>${note ? `<small>${escapeHtml(note)}</small>` : ''}</div>`;
 }
 function conquestRankFor(m, node){
@@ -18409,7 +18409,7 @@ function mapLayoutToolbarHTML(map){
 // Map edits list (2026-10-07, editor audit: "no overview of what's been changed on a map"): every
 // skirmish edit, added skirmish and the custom layout, each revertible, plus Revert all. Deleted
 // keys stay retired after a revert so an old key's progress never carries over to a new skirmish.
-const SE_FIELD_LABEL = {armour:'Skirmish Armour', armourLayers:'bonus health layers', cardLevels:'card levels', leaders:'leaders', name:'name', icon:'icon', kind:'kind', hqHp:'castle Health', flavor:'flavour', deck:'enemy deck', requires:'requirements', characterId:'castle', battleMode:'battle mode', enemyBehaviour:'out-of-moves behaviour', ai:'CPU difficulty', revealDeck:'deck reveal', dialogue:'dialogue', rewards:'rewards'};
+const SE_FIELD_LABEL = {armour:'Skirmish Armour', armourLayers:'bonus health layers', cardLevels:'card levels', leaders:'leaders', name:'name', icon:'icon', kind:'kind', hqHp:'bramble Health', flavor:'flavour', deck:'enemy deck', requires:'requirements', characterId:'bramble', battleMode:'battle mode', enemyBehaviour:'out-of-moves behaviour', ai:'CPU difficulty', revealDeck:'deck reveal', dialogue:'dialogue', rewards:'rewards'};
 function mapEditList(map){
   const e = nodeEdits[map.id] || {}, out = [];
   const nodeName = k=> { const n = map.nodes.find(x=> x.key===k); return n ? `${n.icon||''} ${n.name}`.trim() : k; };
@@ -18691,7 +18691,7 @@ function battleRecommendation(node){
   cards.forEach(c=> archetypesOf(c.d).forEach(a=>{ archCounts[a] = (archCounts[a]||0)+c.n; }));
   const topArch = Object.entries(archCounts).sort((a,b)=>b[1]-a[1])[0];
   if(topArch && topArch[1]/totalCopies >= 0.5) tips.push(`heavily ${topArch[0]}-themed — a deck built to punish that archetype's usual tricks will overperform here.`);
-  if(node.hqHp>=80) tips.push('a high-HP HQ behind them — expect a long grind; gold/economy cards help you outlast it.');
+  if(node.hqHp>=80) tips.push('a high-HP bramble behind them — expect a long grind; gold/economy cards help you outlast it.');
   if(!tips.length) tips.push('a balanced mix — no single obvious lean to play around.');
   return tips.slice(0,2).join(' ');
 }
@@ -20076,7 +20076,7 @@ function offlineRaidPanelHTML(){
     <p class="panel-sub">${escapeHtml(b.blurb||'')} Every deck that fights it this week chips down one shared health pool.</p>
     <div class="or-hp"><div class="raid-boss-hp-bar"><div class="raid-boss-hp-bar-fill" style="width:${pct}%"></div></div><span><b>${st.remaining}</b> / ${st.max} HP</span></div>
     <div class="or-actions">${st.defeated ? `<span class="conquest-rank-badge">🏆 Defeated this week — a new boss arrives in ${daysLeft} day${daysLeft===1?'':'s'}</span>`
-      : `<button class="btn primary" id="offlineRaidFightBtn">⚔️ Fight (${ENERGY_COST.onlineRaid}⚡) — boss castle ${st.nextCastleHp} HP</button>`}</div>
+      : `<button class="btn primary" id="offlineRaidFightBtn">⚔️ Fight (${ENERGY_COST.onlineRaid}⚡) — boss bramble ${st.nextCastleHp} HP</button>`}</div>
     <h3 class="or-party-h">Raid party this week <span class="or-count">${party.length} decks</span></h3>
     <div class="or-party">${party.map(p=>{
       const top = Object.keys(p.deck||{}).sort((x,y)=> (p.deck[y]-p.deck[x])).slice(0,3).map(id=> defs[id] ? defs[id].icon : '').join('');
@@ -20355,9 +20355,9 @@ function raidPanelHTML(){
           <li><b>Middle row · Ally 1</b><span>A CPU ally. It plays only into its own row, one card on its turn; a card steps up when the column ahead is clear.</span></li>
           <li><b>Back row · Ally 2</b><span>The other CPU ally, the same way, in its own row.</span></li>
         </ol>
-        <p class="r3-note">Your three castles are one: their Health added up, their skills merged. Allies are this week's raiders' decks${allyNames.length ? `, or stand-ins (${allyNames.map(escapeHtml).join(', ')})` : ''}.</p>
+        <p class="r3-note">Your three brambles are one: their Health added up, their skills merged. Allies are this week's raiders' decks${allyNames.length ? `, or stand-ins (${allyNames.map(escapeHtml).join(', ')})` : ''}.</p>
         <p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${RaidM.REINFORCE ? RaidM.REINFORCE.max : 2} at most, only into a free slot with a card in front).</p>
-        <p class="r3-note">Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's castle (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
+        <p class="r3-note">Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's bramble (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
       </section>
       <section class="r3-field"><h3>${ground === 'mabyss' ? 'Down in the deep' : 'The field'}</h3>
         <div class="ar2-fields r3-fields">${raidFieldCardsHTML(RaidM.fieldRulesFor ? RaidM.fieldRulesFor(def, null, RaidM.stageRules(st.stage, raidStageOpts())) : raidFieldRulesOf(def, null))}</div></section>
@@ -20501,7 +20501,7 @@ function openRaidEditor(raidId){
         <label>Icon<input data-pf="icon" value="${escapeAttr(P.icon||'')}" maxlength="4"></label>
         <label>HP bars<input data-pf="bars" type="number" min="1" max="20" value="${P.bars||1}"></label>
         <label>HP per bar<input data-pf="barHp" type="number" min="1000" step="1000" value="${P.barHp||80000}"></label>
-        <label>Fight castle HP<input data-pf="castleHp" type="number" min="10" max="9999" value="${P.fight.castleHp||200}"></label>
+        <label>Fight bramble HP<input data-pf="castleHp" type="number" min="10" max="9999" value="${P.fight.castleHp||200}"></label>
         <label>Turns (blank = raid default)<input data-pf="rounds" type="number" min="3" max="40" value="${P.fight.rounds||''}"></label>
         <div class="se-wide se-req"><span>Locked until these fall:</span>${draft.parts.filter(o=> o.id!==P.id).map(o=> `<label class="se-chk"><input type="checkbox" data-lock="${escapeAttr(o.id)}" ${(P.lockedUntil||[]).includes(o.id)?'checked':''}> ${escapeHtml(o.name||o.id)}</label>`).join('') || '<i>no other parts</i>'}</div>
         <label>Raid damage per HP (blank = raid)<input data-pf="perHp" type="number" min="1" value="${(P.scoring||{}).perInFightHp||''}"></label>
@@ -20512,7 +20512,7 @@ function openRaidEditor(raidId){
           <label>Wall HP (blank = raid)<input data-pt="wallHp" type="number" min="5" max="999" value="${T.wallHp||''}"></label>
           <label>Your units: extra Wait<input data-pt="waitDelta" type="number" min="0" max="3" value="${rl.waitDelta||0}"></label>
           <label>Boss units dodge %<input data-pt="illusory" type="number" min="0" max="90" value="${Math.round((rl.illusory||0)*100)}"></label>
-          <label class="se-chk"><input type="checkbox" data-pt="shield" ${T.shieldWhileEntities?'checked':''}> Castle shielded while entities stand</label>
+          <label class="se-chk"><input type="checkbox" data-pt="shield" ${T.shieldWhileEntities?'checked':''}> Bramble shielded while entities stand</label>
         </div>
         <div class="re-list"><b>Special attacks</b>${(T.attacks||[]).map((a,i)=> `<div class="re-li"><input data-at-name="${i}" value="${escapeAttr(a.name||'')}" placeholder="Name"><select data-at-pat="${i}"><option value="column" ${a.pattern==='column'?'selected':''}>Whole column (telegraphed)</option><option value="frontRow" ${a.pattern==='frontRow'?'selected':''}>Whole front row</option></select><label>dmg<input type="number" min="0" max="99" data-at-dmg="${i}" value="${a.dmg||0}"></label><label>every<input type="number" min="1" max="12" data-at-every="${i}" value="${a.every||1}"></label><button type="button" class="btn small ghost" data-at-del="${i}" aria-label="Remove this special attack" title="Remove this special attack">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddAttack">＋ Attack</button></div>
         <div class="re-list"><b>Entities on the boss board</b>${(T.entities||[]).map((e,i)=> `<div class="re-li"><input data-en-icon="${i}" value="${escapeAttr(e.icon||'')}" maxlength="4" class="re-ico"><input data-en-name="${i}" value="${escapeAttr(e.name||'')}" placeholder="Name"><label>atk<input type="number" min="0" max="99" data-en-atk="${i}" value="${e.attack||0}"></label><label>hp<input type="number" min="1" max="999" data-en-hp="${i}" value="${e.health||20}"></label><label>armour<input type="number" min="0" max="20" data-en-armor="${i}" value="${e.armor||0}"></label><label>+armour per ally<input type="number" min="0" max="10" data-en-aura="${i}" value="${e.aura||0}"></label><button type="button" class="btn small ghost" data-en-del="${i}" aria-label="Remove this entity" title="Remove this entity">✕</button></div>`).join('')}${(T.entities||[]).length < 5 ? `<button type="button" class="btn small" id="reAddEntity">＋ Entity</button>` : ''}</div>`; })() : ''}
@@ -20531,15 +20531,15 @@ function openRaidEditor(raidId){
           <label title="Every boss card (its deck, boss unit, guards and Commons) gains this much Attack">boss +Attack<input type="number" min="-20" max="50" data-st-batk="${i}" value="${sr.bossAtk||0}"></label>
           <label title="Every boss card gains this much Health">boss +Health<input type="number" min="-50" max="200" data-st-bhp="${i}" value="${sr.bossHp||0}"></label>
           <label title="The boss's back two rows strike this many extra times as each round starts (half their Attack), on top of their strike in combat">extra back-row strikes<input type="number" min="0" max="3" data-st-volley="${i}" value="${sr.extraVolley||0}"></label>
-          <label title="Your castle's max Health changes by this % (-10 = 10% less)">your castle %<input type="number" min="-90" max="200" data-st-castle="${i}" value="${sr.castleHpPct||0}"></label>
+          <label title="Your bramble's max Health changes by this % (-10 = 10% less)">your bramble %<input type="number" min="-90" max="200" data-st-castle="${i}" value="${sr.castleHpPct||0}"></label>
           <label>field<select data-st-field="${i}"><option value="">none</option>${keep ? `<option value="__keep" selected>${escapeHtml(typeof fv === 'string' ? fv : 'custom rules')} (kept)</option>` : ''}${fx.map(f=> `<option value="${escapeAttr(f.id)}" ${fv === f.id ? 'selected' : ''}>${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></label>
           <button type="button" class="btn small ghost" data-st-del="${i}" aria-label="Remove this stage" title="Remove this stage">✕</button>
           <small class="panel-sub re-stage-desc">${escapeHtml(raidStageText(s) || 'No rules: the stage is only a name.')}</small></div>`; }).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
       <h3 class="se-h">Scoring &amp; rewards</h3>
       <div class="se-grid">
-        <label>Raid damage per castle HP<input id="reRate" type="number" min="1" value="${draft.scoring.perInFightHp||50}"></label>
+        <label>Raid damage per bramble HP<input id="reRate" type="number" min="1" value="${draft.scoring.perInFightHp||50}"></label>
         <label>Cap per fight<input id="reCap" type="number" min="100" step="100" value="${draft.scoring.cap||5000}"></label>
-        <label>Overwhelm (castle destroyed)<input id="reOver" type="number" min="100" step="100" value="${draft.scoring.overwhelmCap||10000}"></label>
+        <label>Overwhelm (bramble destroyed)<input id="reOver" type="number" min="100" step="100" value="${draft.scoring.overwhelmCap||10000}"></label>
         <label>Stand-in raiders % per day<input id="reStand" type="number" min="0" max="50" value="${draft.standIns.perDayPct||0}"></label>
         <label>Kill: gold<input id="reKGold" type="number" min="0" value="${rw.kill.gold||0}"></label>
         <label>Kill: dust<input id="reKDust" type="number" min="0" value="${rw.kill.dust||0}"></label>
@@ -20716,7 +20716,7 @@ function openTrenchSetup(def, partId){
   const cost = def.cost || {};
   const rules = [];
   cfg.attacks.forEach(a=> rules.push(trenchAttackText(a)));
-  if(cfg.entities.length) rules.push(`${cfg.entities.map(e=> escapeHtml(e.name)).join(' / ')} guard it${cfg.shieldWhileEntities ? ' — its castle can’t be hit until they fall' : ''}`);
+  if(cfg.entities.length) rules.push(`${cfg.entities.map(e=> escapeHtml(e.name)).join(' / ')} guard it${cfg.shieldWhileEntities ? ' — its bramble can’t be hit until they fall' : ''}`);
   if(cfg.rules.waitDelta) rules.push(`Your units enter with +${cfg.rules.waitDelta} Wait`);
   if(cfg.rules.illusory) rules.push(`Its units dodge ${Math.round(cfg.rules.illusory*100)}% of attacks`);
   if(cfg.strip) rules.push('EXPOSED: it has lost every ability');
@@ -20796,10 +20796,10 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
         <div class="tr-row-wrap is-boss-wrap ${danger.size ? 'is-charging' : ''}">${rowHTML(v.boss, -1).replace(/is-danger/g,'is-aim')}</div>
         ${v.rows.map((list, i)=> `<div class="tr-row-wrap ${i===myRow?'is-mine':''}"><span class="tr-row-label">${TrenchM.ROW_NAMES[i]} · ${i===myRow ? 'You' : escapeHtml(rowsInfo[i].name)}</span>${rowHTML(list, i)}</div>`).join('')}
       </div>
-      <div class="tr-notes">${(danger.size || v.frontRowHit) && !opts.anim ? `<div class="tr-warn">⚠️ ${v.frontRowHit ? 'A sweep hits the front row' : 'The red column gets smacked'} this turn</div>` : ''}${v.notes.map(noteText).filter(Boolean).slice(0,4).map(t=> `<div>${t}</div>`).join('')}${roundNote && (roundNote.castleDmg || roundNote.wallDmg) ? `<div class="tr-sum">Castle −${roundNote.castleDmg} · Wall −${roundNote.wallDmg}</div>` : ''}</div>
+      <div class="tr-notes">${(danger.size || v.frontRowHit) && !opts.anim ? `<div class="tr-warn">⚠️ ${v.frontRowHit ? 'A sweep hits the front row' : 'The red column gets smacked'} this turn</div>` : ''}${v.notes.map(noteText).filter(Boolean).slice(0,4).map(t=> `<div>${t}</div>`).join('')}${roundNote && (roundNote.castleDmg || roundNote.wallDmg) ? `<div class="tr-sum">Bramble −${roundNote.castleDmg} · Wall −${roundNote.wallDmg}</div>` : ''}</div>
       ${finished ? `<div class="tr-result ${r.res.overwhelmed?'is-win':''}">
           <h3>${r.res.overwhelmed ? '🏆 Overwhelmed!' : r.res.wallBroken ? '🧱 The wall broke' : '⏳ The boss sinks back'}</h3>
-          <p>Castle damage <b>${r.res.castleDealt}</b>${r.res.entityDealt ? ` · stump damage <b>${r.res.entityDealt}</b>` : ''} → <b>${r.contribution.toLocaleString()}</b> raid damage${r.gold||r.dust ? ` · +${r.gold} gold${r.dust ? `, +${r.dust} dust` : ''}` : ''}</p>
+          <p>Bramble damage <b>${r.res.castleDealt}</b>${r.res.entityDealt ? ` · stump damage <b>${r.res.entityDealt}</b>` : ''} → <b>${r.contribution.toLocaleString()}</b> raid damage${r.gold||r.dust ? ` · +${r.gold} gold${r.dust ? `, +${r.dust} dust` : ''}` : ''}</p>
           <p class="panel-sub">${escapeHtml(part.name)} has ${r.remainingAfter.toLocaleString()} HP left this week.</p>
           <button type="button" class="btn primary" id="trDone">Back to the raid</button></div>`
         : `<div class="tm-hand-bar"><span class="tm-lumber" title="Lumber — pays for cards">🪵 ${v.lumber}</span><div class="tm-hand">${hand || '<span class="panel-sub">No cards in hand</span>'}</div></div>
@@ -20865,7 +20865,7 @@ function startRaidPartMatch(def, partId){
     raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
     raidFieldRules: f.fieldRules, raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : ''}; // 2026-10-18 (R3-WP2)
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · castle ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · bramble ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
 }
 function startRaidFullBattle(def, partId, f, st){
   if(!deckSizeOkOrWarn()) return;
@@ -20935,7 +20935,7 @@ function startRaidFullBattle(def, partId, f, st){
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, raidFull:true,
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
     raidCastleStart: cfg.castleHp, raidRoundCap: cfg.rounds || f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
-    raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your castle'].concat(allies.map(a=> a.castle.name)),
+    raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your bramble'].concat(allies.map(a=> a.castle.name)),
     raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId,
     raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0}; // 2026-10-18 (R3-WP2)
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
@@ -20948,7 +20948,7 @@ function startRaidFullBattle(def, partId, f, st){
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
   const m0 = matchState;
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · bramble ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
@@ -21010,7 +21010,7 @@ function raidFieldRulesOf(def, part){
 // raidMerged marks it (the tile's raid-castles class). Health and passives are still all three added up.
 function mergeRaidCastles(list){
   const first = list.find(Boolean) || {};
-  const out = {id: first.id || 'raid-castles', name: (first.name || 'Your castle') + ' & Co.', icon: first.icon || '🏰', art: first.art, rarity: first.rarity, raidMerged:true, health:0, effects:{}};
+  const out = {id: first.id || 'raid-castles', name: (first.name || 'Your bramble') + ' & Co.', icon: first.icon || '🏰', art: first.art, rarity: first.rarity, raidMerged:true, health:0, effects:{}};
   if(!out.art) delete out.art; if(!out.rarity) delete out.rarity;
   list.forEach(c=>{ if(!c) return; out.health += (c.health || c.hp || 30);
     Object.entries(c.effects||{}).forEach(([k, v])=>{ if(typeof v === 'number' && typeof out.effects[k] === 'number') out.effects[k] += v; else if(out.effects[k] === undefined) out.effects[k] = v; }); });
@@ -21071,7 +21071,7 @@ function raidTelegraphCols(m){ return m && m.raidPending ? Object.values(m.raidP
 function raidLastTurnBanner(m){
   const bf = document.querySelector('.battlefield'); if(!bf || !m) return;
   const el = document.createElement('div'); el.className = 'next-turn-sign raid-last-turn'; el.setAttribute('role', 'status');
-  el.innerHTML = `🌊 Last turn<small>The tide turns after turn ${m.raidRoundCap}: the raid ends then, whatever the castles’ Health.</small>`;
+  el.innerHTML = `🌊 Last turn<small>The tide turns after turn ${m.raidRoundCap}: the raid ends then, whatever the brambles’ Health.</small>`;
   bf.appendChild(el); setTimeout(()=>{ el.classList.add('next-turn-sign-out'); setTimeout(()=> el.remove(), 260); }, 2600);
 }
 function settleRaidPartAfterMatch(m){
@@ -21583,8 +21583,8 @@ function openTutorialEditor(){
     <div class="modal-head-row"><h2>🎓 Tutorial editor</h2><button class="modal-close-btn" id="teClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">Changes apply to the next tutorial that starts. ${cloudCardAdmin ? 'Save publishes them for every new player.' : 'You are not signed in as a cloud admin, so Save only changes this browser.'}</p>
     <div class="te-grid">
-      <label>Your castle HP<input type="number" id="teMyHp" min="1" max="200" value="${c.myHp||30}"></label>
-      <label>Rival castle HP<input type="number" id="teRivalHp" min="1" max="200" value="${c.rivalHp||30}"></label>
+      <label>Your bramble HP<input type="number" id="teMyHp" min="1" max="200" value="${c.myHp||30}"></label>
+      <label>Rival bramble HP<input type="number" id="teRivalHp" min="1" max="200" value="${c.rivalHp||30}"></label>
       <label>Starting hand<input type="number" id="teHand" min="1" max="5" value="${c.handSize||3}"></label>
       <label>Seed<input type="number" id="teSeed" min="0" value="${c.seed||TUTORIAL_SEED}" title="The tutorial always plays the same draws for a given seed"></label>
     </div>
@@ -22063,7 +22063,7 @@ function tutorialWinLossSubtitleHTML(m){
 const BATTLE_MODES = {
   gravity:   {label:'Gravity',   icon:'🌀', blurb:'Classic: cards collapse in toward the centre when one falls.'},
   open:      {label:'Open',      icon:'🧱', blurb:'Fixed slots: place next to any of your cards, gaps stay, cards hit straight across.'},
-  gladiator: {label:'Gladiator', icon:'👑', live:false, blurb:'Your leader starts in the centre at 10× HP and 2× attack. No castle — lose your leader, lose the fight.'},
+  gladiator: {label:'Gladiator', icon:'👑', live:false, blurb:'Your leader starts in the centre at 10× HP and 2× attack. No bramble — lose your leader, lose the fight.'},
 };
 
 /* ============================================================
@@ -22321,7 +22321,7 @@ function advanceDungeonWave(m, carry){
   d.justSpawned = fresh.map(c=> c.uid);
   d.lastCarry = carry || 0;
 }
-function dungeonChipHTML(m){ const d = m && m.dungeon; if(!d) return ''; return `🗝️ ${_t('Castle')} ${d.wave + 1}/${d.waves.length}${d.wave < d.waves.length - 1 ? ` · ${Math.max(0, d.cfg.roundLimit - (m.round - d.startRound))} ${_t('rounds left')}` : ''}`; }
+function dungeonChipHTML(m){ const d = m && m.dungeon; if(!d) return ''; return `🗝️ ${_t('Bramble')} ${d.wave + 1}/${d.waves.length}${d.wave < d.waves.length - 1 ? ` · ${Math.max(0, d.cfg.roundLimit - (m.round - d.startRound))} ${_t('rounds left')}` : ''}`; }
 function syncDungeonChip(){
   const m = typeof matchState !== 'undefined' ? matchState : null; let chip = document.getElementById('dungeonChip');
   if(!m || m.over || !m.dungeon){ if(chip) chip.remove(); return; }
@@ -22331,7 +22331,7 @@ function syncDungeonChip(){
 setInterval(()=>{ try{ syncDungeonChip(); }catch(e){} }, 500);
 function dungeonWaveVfx(m){
   const d = m.dungeon; if(!d) return;
-  try{ showToast(`🗝️ ${_t('A new castle rises')}: ${d.wave + 1}/${d.waves.length}${d.lastCarry ? ` (+${d.lastCarry} ${_t('Health carried over')})` : ''}`, 'ok'); }catch(e){}
+  try{ showToast(`🗝️ ${_t('A new bramble rises')}: ${d.wave + 1}/${d.waves.length}${d.lastCarry ? ` (+${d.lastCarry} ${_t('Health carried over')})` : ''}`, 'ok'); }catch(e){}
   try{ SoundKit.bossRumble && SoundKit.bossRumble(); }catch(e){}
   const castle = document.querySelector('[data-hq="B"]'); if(castle){ castle.classList.remove('castle-pop'); void castle.offsetWidth; castle.classList.add('castle-pop'); }
   (d.justSpawned||[]).forEach((uid, i)=>{ const el = boardCardEl(uid); if(!el || typeof gsap === 'undefined' || reducedMotion()) return;
@@ -22939,7 +22939,7 @@ function sandboxResolveRound(){
 }
 function sandboxClearBoard(){
   const m = matchState; if(!m || m.mode!=='sandbox' || m.resolving || m.over) return;
-  if(!confirm('Clear every card off both boards? HQ health and the battle log stay as they are.')) return;
+  if(!confirm('Clear every card off both boards? Bramble health and the battle log stay as they are.')) return;
   [1,2].forEach(pid=>{ m.players[pid].row = {left:[], center:[], right:[]}; });
   lastBoardSig = {1:null, 2:null};
   renderBoard(); renderHUD();
@@ -23273,7 +23273,7 @@ function testKitPanelHTML(){
         <button type="button" class="tk-speed-btn ${testKit.others==='random'?'is-on':''}" role="radio" aria-checked="${testKit.others==='random'}" data-tkothers="random">🎲 Random cards</button>
         <button type="button" class="tk-speed-btn ${testKit.others==='dummy'?'is-on':''}" role="radio" aria-checked="${testKit.others==='dummy'}" data-tkothers="dummy">🎯 Training dummies</button>
       </div>
-      <p class="tk-hint">1 ally + 3 enemies around your card. Castles are practice walls (they never fall). The field resets when your card dies, everything else dies, nothing changes for ${TESTKIT_STALL_ROUNDS} rounds, or after ${TESTKIT_ROUND_CAP} rounds.</p>
+      <p class="tk-hint">1 ally + 3 enemies around your card. Brambles are practice walls (they never fall). The field resets when your card dies, everything else dies, nothing changes for ${TESTKIT_STALL_ROUNDS} rounds, or after ${TESTKIT_ROUND_CAP} rounds.</p>
     </section>
   </aside>`;
 }
@@ -23659,13 +23659,13 @@ const FXL_FIELDS = [
     ['lavaSpout', {lavaSpout:true}, {steps:['round', 'round', 'round'], note:'Three rounds, three bursts in random columns.'}],
     ['leylines1', {leylines1:true, phase:'day'}, {units:FXL_PHASE_UNITS, note:'By day the Sun Lark\'s Diurnal 2/2 is +4/+4.'}],
     ['leylines2', {leylines2:true}, {steps:['round', 'round'], note:'Watch the Lumber.'}],
-    ['leylines3', {leylines3:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Doubting Badger', icon:'🦡', effects:{atheist:true}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'Every unit and castle burns for 3; the Atheist badger doesn\'t.'}],
+    ['leylines3', {leylines3:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Doubting Badger', icon:'🦡', effects:{atheist:true}}}], foes:[{role:'foe', slot:0}]}, steps:['round', 'round'], note:'Every unit and bramble burns for 3; the Atheist badger doesn\'t.'}],
     ['haunted', {haunted:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Wisp', icon:'👻', effects:{ghost:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round'], note:'A unit on each side is Frightened and skips its attack; the Ghost is never scared.'}],
     // Field effects 3 (2026-10-17)
     ['sulphurFumes', {sulphurFumes:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Cinder Gecko', icon:'🦎', effects:{dry:true}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}]}, steps:['round', 'round'], note:'The Specimen chokes (−1 Attack); the Dry gecko and the flying Crow breathe easy.'}],
-    ['ashRain', {ashRain:true, phase:'day'}, {units:FXL_PHASE_UNITS, steps:['round', 'round'], note:'Watch both castles lose 1 a round; the Sun Lark\'s Diurnal 2/2 is halved to 1/1.'}],
+    ['ashRain', {ashRain:true, phase:'day'}, {units:FXL_PHASE_UNITS, steps:['round', 'round'], note:'Watch both brambles lose 1 a round; the Sun Lark\'s Diurnal 2/2 is halved to 1/1.'}],
     ['ashy', {ashy:true}, {units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'The Hawk and the Crow get no Flying dodge, and 1 swing in 5 is lost in the ash.'}],
-    ['arrowSlits', {arrowSlits:true}, {steps:['round', 'round', 'round'], note:'The enemy castle shoots one of your units for 2 each round.'}],
+    ['arrowSlits', {arrowSlits:true}, {steps:['round', 'round', 'round'], note:'The enemy bramble shoots one of your units for 2 each round.'}],
     // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card.")
     // 2026-10-17: the raid's Psychic Dampener: a Psychic 3 hit lands for 1, and its 1-round Confuse never lands.
     ['psychicDampener', {psychicDampener:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Mind Eel', icon:'🧠', effects:{psychic:3, confuse:{chance:100, duration:1}}}}], foes:[{role:'foe', slot:0}]}, steps:['round'], note:"The Mind Eel's Psychic 3 lands for 1, and its sure 1-round Confuse fizzles."}],
@@ -23692,7 +23692,7 @@ const FXL_SKILL_SETUPS = {
   // 2026-10-15: Trident / Pitchfork / Crab Claws (the new prong rules), the new arrows, the Bolts and Chilli.
   trident: {foes:FXL_FOES3, note:'Three dummies side by side: one swing, full Attack on the one in front, half on the two beside it.'}, // 2026-10-17
   pitchfork: {foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}, {role:'foe3', slot:1}, {role:'foe2', slot:-2}, {role:'foe3', slot:2}], note:'Five dummies: one swing along 4 columns, aimed left or right at random, half Attack on each.'}, // 2026-10-17
-  crabClaws: {foes:FXL_FOES3, steps:['round', 'round'], note:'Dummies either side of the one in front: each round it pinches left or right at random (never the one in front; with nobody beside it, the castle).'},
+  crabClaws: {foes:FXL_FOES3, steps:['round', 'round'], note:'Dummies either side of the one in front: each round it pinches left or right at random (never the one in front; with nobody beside it, the bramble).'},
   iceArrow: {steps:['round', 'round'], note:'Two rounds of icy arrows (1 in 2 freezes the dummy).'},
   twinShot: {foes:FXL_FOES3, note:'Three dummies: two arrows, at two different ones.'},
   volley: {foes:FXL_FOES3, steps:['round', 'round', 'round'], note:'Three dummies, three rounds: a volley on the 1st and 3rd.'},
@@ -23722,7 +23722,7 @@ const FXL_SKILL_SETUPS = {
   amore: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{effects:{amore:true}}}], withhold:'subject', steps:[{spawn:'subject'}, {kill:'ally'}], note:'The Sparring Partner beside it (same Type) has Amore: they pair as the Specimen arrives, then the partner dies and the heart turns brown.'}, // 2026-10-16
   ambush: {withhold:'foe', steps:[{spawn:'foe'}, 'round'], note:'The slot facing it is empty; then an enemy is played there and it strikes as the card arrives.'},
   expose: {steps:['round', 'round'], note:'Round 1 its hit puts the counters on the dummy; round 2 each hit on the dummy is a crit and takes one off.'},
-  penance: {withhold:'subject', steps:[{spawn:'subject'}], note:'It arrives and pays: your own castle loses the Health.'},
+  penance: {withhold:'subject', steps:[{spawn:'subject'}], note:'It arrives and pays: your own bramble loses the Health.'},
   bloodTithe: {withhold:'subject', steps:[{spawn:'subject'}], note:'It arrives and pays: the Sparring Partner beside it (the only ally) takes the damage.'},
   predator: {foeDef:{attack:1}, note:'The dummy in front has less Attack: the Predator hits it harder.'},
   prey: {foeFx:{predator:1}, steps:['round', 'round', 'round'], note:'The dummies are Predators: it dodges half of their attacks.'},
@@ -23745,7 +23745,7 @@ const FXL_SKILL_SETUPS = {
   fletcher: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Archer', icon:'🏹', effects:{arrow:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}], steps:['round'], note:'The Archer beside it shoots for 2; with Fletcher its arrows hit harder.'},
   herbalist: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Mender', icon:'💚', effects:{regen:2}}}], status:{ally:{hp:1}}, steps:['round', 'round'], note:'The Mender beside it regenerates 2 a round; with Herbalist every heal is bigger.'},
   shatter: {status:{foe:{frozen:3}}, steps:['round'], note:'The dummy in front is Frozen: its hit shatters for more.'},
-  rebuild: {hqHurt:12, steps:['round', 'round'], note:'Your castle starts 12 Health down; each upkeep the Specimen is Ready it puts 2 back (planks and stones fly in, a green +2 on the HP bar).'}, // 2026-10-17
+  rebuild: {hqHurt:12, steps:['round', 'round'], note:'Your bramble starts 12 Health down; each upkeep the Specimen is Ready it puts 2 back (planks and stones fly in, a green +2 on the HP bar).'}, // 2026-10-17
   vanguard: {unsupported:'It acts on the opening hand and the first card you play, which a staged board can\'t show. See it in a real fight.'},
   reach: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1}], note:'It faces a Flyer.'},
   boomerang: {foes:[{role:'foe', slot:0, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}, {role:'foe2', slot:1, def:{name:'Crow', icon:'🐦‍⬛', effects:{flying:true}}}], note:'It faces Flyers.'},
@@ -23766,7 +23766,7 @@ const FXL_SKILL_SETUPS = {
   shieldCall: {foes:[{role:'foe', slot:-1}, {role:'foe2', slot:0}], note:'An enemy faces its ally.'},
   healing: {steps:['round', 'round'], note:'Two rounds, so there are wounds to mend.'},
   rage: {status:{subject:{hp:8}}, note:'The Specimen starts below half Health.'},
-  siege: {foes:[{role:'foe', slot:1}, {role:'foe2', slot:2}], note:'Nothing stands in front of it, so it hits the castle.'},
+  siege: {foes:[{role:'foe', slot:1}, {role:'foe2', slot:2}], note:'Nothing stands in front of it, so it hits the bramble.'},
   pierce: {foeFx:{armor:2}, note:'The dummies wear Armor 2.'}, perforate: {foeFx:{armor:2}, note:'The dummies wear Armor 2.'}, puncture: {foeFx:{armor:2}, note:'The dummies wear Armor 2.'},
   momentum: {foeDef:{health:3, name:'Frail Dummy'}, steps:['round', 'round'], note:'The dummy in front has 3 Health, so it lands a killing blow.'},
   midas: {foeDef:{health:3, name:'Frail Dummy'}, note:'The dummy in front has 3 Health, so it lands a killing blow.'},
@@ -23861,7 +23861,7 @@ const FXL_ACTION_SETUPS = {
   cleanse: {t:{who:'ally', sub:'adjacent'}, status:{ally:{poison:3, bleed:2}}, note:'The Sparring Partner starts Poisoned and Bleeding.'},
   addWait: {t:{amount:2, who:'enemy', sub:'adjacent'}},
   shield: {t:{amount:4, who:'ally', sub:'all'}, steps:[{spawn:'subject'}, 'round'], note:'Every ally gets Shield 4, then a round of blows eats into it.'}, // 2026-10-14
-  rebuild: {t:{amount:4}, hqHurt:12, note:'Your castle starts 12 Health down: the Specimen arrives and mends 4 of it.'}, // 2026-10-17
+  rebuild: {t:{amount:4}, hqHurt:12, note:'Your bramble starts 12 Health down: the Specimen arrives and mends 4 of it.'}, // 2026-10-17
   fireHit: {on:'onAttack', t:{amount:3, cost:'burnLumber'}, lumber:2, steps:['round', 'round', 'round'], note:'On Attack, Burn 1 Lumber: its hit deals 3 extra fire damage. You hold 2 Lumber, so the third round has nothing to burn.'}, // 2026-10-16
 };
 const FXL_CHANCE_TWO = new Set(['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger']);
@@ -24211,7 +24211,7 @@ function fxlRenderLog(events){
   if(!events.length){ box.innerHTML = `<h3>Log</h3><p class="panel-sub">${fxLib.busy ? 'Playing…' : 'The engine reported nothing.'}</p>`; return; }
   const defs = getCardDefs(), nm = id=> id && defs[id] ? defs[id].name : (id || '');
   const hurt = {};
-  events.forEach(ev=>{ const n = Number(ev.dmg); if(!(n > 0)) return; const who = ev.type === 'hitHQ' ? (ev.targetSide === 'A' || ev.side === 'B' ? 'Your castle' : 'Enemy castle') : nm(ev.targetDefId || ev.defId) || 'a unit'; hurt[who] = (hurt[who]||0) + n; });
+  events.forEach(ev=>{ const n = Number(ev.dmg); if(!(n > 0)) return; const who = ev.type === 'hitHQ' ? (ev.targetSide === 'A' || ev.side === 'B' ? 'Your bramble' : 'Enemy bramble') : nm(ev.targetDefId || ev.defId) || 'a unit'; hurt[who] = (hurt[who]||0) + n; });
   const total = Object.values(hurt).reduce((a, b)=> a + b, 0);
   const rows = events.map(ev=>{
     if(ev.type === 'error') return `<li class="is-err"><b>error</b> ${escapeHtml(ev.text)}</li>`;
@@ -24514,7 +24514,7 @@ function renderAdmin(){
     ${adminModeEnabled ? testRulesPanelHTML() : ''}
     ${adminModeEnabled ? adminManageCardsHTML() : ''}
     ${adminModeEnabled ? renderRollTableAdminHTML() : ''}
-    <div class="panel admin-subpanel"><h3>🎓 Tutorial</h3><p class="panel-sub">Castle HP, starting hand, decks, the rival's name and every guided-step message. Publishes live for new players.</p>
+    <div class="panel admin-subpanel"><h3>🎓 Tutorial</h3><p class="panel-sub">Bramble HP, starting hand, decks, the rival's name and every guided-step message. Publishes live for new players.</p>
       <button type="button" class="btn small" id="adminTutorialEditorBtn">🎓 Edit the tutorial</button></div>
     <div class="panel admin-subpanel"><h3>🃏 Showcase cards</h3><p class="panel-sub">Every map's skirmishes with the card each one shows off, and a one-click picker from its enemy deck.</p>
       <button type="button" class="btn small" id="adminShowcaseBtn">🃏 Pick showcase cards</button></div>
@@ -25831,7 +25831,7 @@ function hpRibbonHTML(m, side, label){
 // m.raidRoundCap turns (the part's fight.rounds, else 12), then the part sinks back and you score what you dealt. It used to end with
 // no warning; the turn and the limit now sit on the boss's HP ribbon all fight, and the last turn is marked (and announced).
 function raidClockPillHTML(m){ const cap = m.raidRoundCap|0, n = Math.max(1, Math.min(cap, m.round || 1)), last = n >= cap;
-  return `<span class="bf-turn-pill raid-clock${last ? ' is-last' : ''}" title="${last ? 'The last turn: the raid ends after this one, whatever the castles’ Health' : `The raid ends after turn ${cap}, whatever the castles’ Health`}">${last ? '🌊 Last turn' : `🌊 Turn ${n} / ${cap}`}</span>`; }
+  return `<span class="bf-turn-pill raid-clock${last ? ' is-last' : ''}" title="${last ? 'The last turn: the raid ends after this one, whatever the brambles’ Health' : `The raid ends after turn ${cap}, whatever the brambles’ Health`}">${last ? '🌊 Last turn' : `🌊 Turn ${n} / ${cap}`}</span>`; }
 // 2026-10-15 (user: "When the match is over, and I view the post-battlefield, I want to see the turn#. It shows up as a pill on the
 // opponent's HP bar in the centre."): the turn the fight ended on, centred on the top HP ribbon once it's over.
 function finalTurnPillHTML(m){ const n = Math.max(1, m.round || 1); return `<span class="bf-turn-pill" title="The fight ended on turn ${n}">Turn ${n}</span>`; }
@@ -28685,7 +28685,7 @@ function ritualChipHTML(c, pid){
   try{ const m = matchState; if(!m || !m.engine.ritualProgress || c.ritualDone) return '';
     const pr = m.engine.ritualProgress(m.players[pid || 1], c); if(!pr) return '';
     const part = (ico, [have, need])=> need ? `<span class="${have>=need ? 'ok' : ''}">${ico}${Math.min(have, need)}/${need}</span>` : '';
-    return `<div class="ritual-chip" title="Ritual: it acts once these are met (counted since it arrived): units perished, cards drawn, castle damage dealt">${part('☠', pr.perished)}${part('🂠', pr.drawn)}${part('🏰', pr.castleDamage)}</div>`;
+    return `<div class="ritual-chip" title="Ritual: it acts once these are met (counted since it arrived): units perished, cards drawn, bramble damage dealt">${part('☠', pr.perished)}${part('🂠', pr.drawn)}${part('🏰', pr.castleDamage)}</div>`;
   }catch(e){ return ''; }
 }
 function waitBadgeHTML(waitRemaining, waitTotal, frost){
@@ -30224,7 +30224,7 @@ function castleShieldSync(side, shOverride){
   const lay = armourLayerNow(hq.shieldLayers, sh), col = ARMOUR_LAYER_COLOURS[Math.min(ARMOUR_LAYER_COLOURS.length - 1, lay.k)];
   badge.textContent = '🔷' + sh + ((hq.shieldLayers||[]).length > 1 && sh > 0 ? ` ·L${lay.k + 1}` : ''); badge.classList.toggle('is-broken', sh <= 0);
   badge.style.setProperty('--sh-a', col[0]); badge.style.setProperty('--sh-b', col[1]);
-  badge.title = sh > 0 ? `Skirmish Armour: ${sh} — soaks hits before the castle's Health` : 'Skirmish Armour broken';
+  badge.title = sh > 0 ? `Skirmish Armour: ${sh} — soaks hits before the bramble's Health` : 'Skirmish Armour broken';
   const track = tile.querySelector('.castle-hp-bar-oncard');
   if(track && !bar){ bar = document.createElement('div'); bar.className = 'castle-hp-bar-oncard-shield'; track.appendChild(bar); }
   if(bar){ const multi = (hq.shieldLayers||[]).length > 1; bar.style.width = (multi ? (lay.inLayer/Math.max(1, lay.size)) : (sh/max)) * 100 + '%'; bar.style.background = `linear-gradient(180deg, ${col[0]}, ${col[1]})`; }
@@ -31695,7 +31695,7 @@ async function resolveRoundCore(opts){
         if(!isFirstClear && bn && (bk === 'boss' || bk === 'finalboss' || bn.ender) && RANK_ORDER.indexOf(rank) >= RANK_ORDER.indexOf('S')){
           const cs = Object.values(CHARACTER_DEFS).filter(ch=> ch && ch.unlockMap === m.conquestNode.mapId);
           cs.forEach(ch=> addCastleDuplicate(ch.id, 1)); if(cs.length) m.conquestCastleSpare = cs.map(ch=> ch.name).join(', '); } }catch(e){}
-      try{ const cd = rollCastleDrop(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node); if(cd){ const ch = CHARACTER_DEFS[cd.id]; m.conquestCastleSpare = (cd.kind === 'new' ? 'New castle: ' : 'Spare: ') + ch.name; } }catch(e){}
+      try{ const cd = rollCastleDrop(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node); if(cd){ const ch = CHARACTER_DEFS[cd.id]; m.conquestCastleSpare = (cd.kind === 'new' ? 'New bramble: ' : 'Spare: ') + ch.name; } }catch(e){}
       try{ const kb = rollKibble((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, isFirstClear); if(kb){ myCurrencies.kibble = (myCurrencies.kibble||0) + kb; saveCurrencies(); m.conquestKibbleEarned = kb; } }catch(e){}
       try{ const ki = grantSkirmishKitItem(); if(ki) m.conquestKitItem = ki; }catch(e){} // 🎒 first 3 Conquest wins a day (2026-10-17)
       // Faction packs and Food tokens (2026-10-11).
@@ -32346,7 +32346,7 @@ function bfPillsHTML(m){
 function suddenDeathPillHTML(m){
   if(!m || m.over || !suddenDeathSky(m)) return '';
   const st = m.round >= SUDDEN_DEATH_CASTLE_ROUND && !(m.mode==='raidOnline' || m.mode==='raidOffline') ? 2 : 1;
-  const lines = [_t('Any hit on a unit kills it, even one Armor would stop.')].concat(st >= 2 ? [_t('Any damage to a castle destroys it.')] : [`From round ${SUDDEN_DEATH_CASTLE_ROUND}, any damage to a castle destroys it.`]);
+  const lines = [_t('Any hit on a unit kills it, even one Armor would stop.')].concat(st >= 2 ? [_t('Any damage to a bramble destroys it.')] : [`From round ${SUDDEN_DEATH_CASTLE_ROUND}, any damage to a bramble destroys it.`]);
   const name = st >= 2 ? _t('Sudden death II') : _t('Sudden death');
   return bfPillHTML('sd-pill sd-' + st, st >= 2 ? '☠️☠️' : '☠️', name, '', pillTipHTML(name, lines), name);
 }
@@ -32595,8 +32595,8 @@ function showSuddenDeathBanner(m, stage){
   try{ SoundKit.suddenDeathSting(); Ambience.duck(0.3, 1400); }catch(e){}
   if(raid && stage >= 2) return;
   // 2026-10-15 (user: "Sudden death: (20) - all units kill on hit (at least 1 dmg). Sudden death: (25) - any damage on the castle, destroys the castle.")
-  el.innerHTML = stage >= 2 ? `<div class="sds-title">☠️ Sudden death II</div><div class="sds-sub">Any damage to a castle now destroys it.</div>`
-    : `<div class="sds-title">☠️ Sudden death</div><div class="sds-sub">Any hit now kills a unit, even through Armor.${raid ? '' : ` From round ${SUDDEN_DEATH_CASTLE_ROUND}, any damage to a castle destroys it.`}</div>`;
+  el.innerHTML = stage >= 2 ? `<div class="sds-title">☠️ Sudden death II</div><div class="sds-sub">Any damage to a bramble now destroys it.</div>`
+    : `<div class="sds-title">☠️ Sudden death</div><div class="sds-sub">Any hit now kills a unit, even through Armor.${raid ? '' : ` From round ${SUDDEN_DEATH_CASTLE_ROUND}, any damage to a bramble destroys it.`}</div>`;
   document.body.appendChild(el);
   setTimeout(()=> el.classList.add('out'), 2600); setTimeout(()=> el.remove(), 3200);
 }
@@ -32811,7 +32811,7 @@ function passiveTipCandidates(){
   out.push({id:'wait', html:'⏳ <b class="kw-jargon">Wait</b>: rounds until this card can attack. It goes down by 1 each round.', text:TX('coach.wait-rounds-until-this-card-can'),
     anchor:()=>{ const b = coachBoardEl(d=> (d.wait||0)>0, 1); const bw = b && b.querySelector('.wait-ring, .waitbadge, [class*="wait"]'); if(bw) return bw; const h = coachHandEl(d=> (d.wait||0)>0); return (h && h.querySelector('.waitbadge')) || b || h; }});
   // Castle passives (2026-10-12): the first time an enemy castle with a passive shows up.
-  out.push({id:'castle-passive', html:'🗼 Their castle has a <b class="kw-jargon">passive</b> of its own. Rest your pointer on it (or press and hold) to read what it does.', text:TX('coach.their-castle-has-a-passive-of'),
+  out.push({id:'castle-passive', html:'🗼 Their bramble has a <b class="kw-jargon">passive</b> of its own. Rest your pointer on it (or press and hold) to read what it does.', text:TX('coach.their-castle-has-a-passive-of'),
     anchor:()=>{ const c = m.players[2] && m.players[2].character; return (c && c.effects && Object.keys(c.effects).length) ? hqTileEl('B') : null; }});
   out.push({id:'leader', text:TX('coach.your-leader-drag-it-onto-the'), anchor:()=> document.querySelector('#leaderWidget.summonable')});
   out.push({id:'handLimit', text:TX('coach.you-can-hold-5-cards-extra'), anchor:()=> me.hand.length>=5 ? document.getElementById('handStrip') : null});
@@ -32931,7 +32931,7 @@ function maybeShowCoachTip(){
   try{ if(m && !m.resolving && m.mode !== 'tutorial') lumberDrawNudges(m); }catch(e){}
   // The shield (2026-10-13, user: "On Map 0-4, teach the player about the shield value"): the first enemy castle with a shield.
   try{ if(m && !m.over && !m.resolving && !coachOpen && !coachSeen.has('castle-shield') && COACH_MODES.has(m.mode) && m.mode !== 'tutorial' && (m.players[2].hq.shield||0) > 0 && !(m.conquestNode && m.conquestNode.mapId === 'm1' && (()=>{ const f = CONQUEST_MAPS.find(x=> x.id==='m1').nodes.filter(n=> n.kind !== 'tutorial'); return m.conquestNode.nodeId !== (f[f.length-1]||{}).key; })())){ const el = hqTileEl('B');
-    if(el){ showCoachTip({id:'castle-shield', html:'🔷 This castle has a <b class="kw-jargon">Shield</b>: the blue number. Hits break the Shield first, then its Health.', text:TX('coach.this-castle-has-a-shield-hits'), anchor:()=> hqTileEl('B')}, el); return; } } }catch(e){}
+    if(el){ showCoachTip({id:'castle-shield', html:'🔷 This bramble has a <b class="kw-jargon">Shield</b>: the blue number. Hits break the Shield first, then its Health.', text:TX('coach.this-castle-has-a-shield-hits'), anchor:()=> hqTileEl('B')}, el); return; } } }catch(e){}
   // T-3's lesson (2026-10-13): tougher fights pay more; the less your Castle loses, the higher your rank; some cards need S.
   try{ if(m && !m.over && !m.resolving && !coachOpen && m.conquestNode){ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId), nd = fn && fn.node;
     if(nd && nd.lesson === 'rank'){
@@ -34175,7 +34175,7 @@ function logText(ev){
     case 'overdraw': return {cls:'', text: `${sideLabel(ev.side)} had a full hand — ${nm(ev.defId)} went to the graveyard for +${ev.lumber||1} 🪵.`};
     case 'hit': {
       if(ev.source) return {cls:'', text:`🧪 ${ev.source} dealt ${ev.dmg} to ${nm(ev.targetDefId)}.`};
-      if(ev.attDefId === 'castle') return {cls: ev.dmgType==='poison' ? 'poison' : '', text:`🏰 ${ev.side==='A' ? 'Your' : 'The enemy'} castle hit ${nm(ev.targetDefId)} for ${DMG_NAME[ev.dmgType] ? dmgLogText(ev.dmg, ev.dmgType) : ev.dmg + (ev.dmgType && ev.dmgType!=='physical' ? ' ' + ev.dmgType + ' damage' : '')}.`}; // 2026-10-16 (it read "castle hit …"); 2026-10-17: + the element's emoji
+      if(ev.attDefId === 'castle') return {cls: ev.dmgType==='poison' ? 'poison' : '', text:`🏰 ${ev.side==='A' ? 'Your' : 'The enemy'} bramble hit ${nm(ev.targetDefId)} for ${DMG_NAME[ev.dmgType] ? dmgLogText(ev.dmg, ev.dmgType) : ev.dmg + (ev.dmgType && ev.dmgType!=='physical' ? ' ' + ev.dmgType + ' damage' : '')}.`}; // 2026-10-16 (it read "castle hit …"); 2026-10-17: + the element's emoji
       // Elemental conversion note (2026-09-29): Poison zeroes ev.dmg out entirely (the whole
       // amount became poison stacks instead), so without this the log would just read "hit for
       // 0" with no explanation. Decay still shows its real ev.dmg plus the extra ATK-drain note.
@@ -34186,11 +34186,11 @@ function logText(ev){
       // unit's lightning hit says how many Wet counters added to it.
       return {cls:ev.armorBlocked?'armor':'', text:`${nm(ev.attDefId)} hit ${nm(ev.targetDefId)} for ${dmgLogText(ev.dmg, ev.dmgType)}${ev.wet ? ` (Wet ${ev.wet}: +${ev.wet} 💧)` : ''}${ev.armorBlocked?' — blocked to 0 by Armor! 🛡':''}${ev.rend?' (Pierce — Armor bypassed) 🗡':''}${ev.crit?' 💥 Crit!':''}${ev.backstab?` 🗡️ Backstab +${ev.backstab}`:''}${ev.festerBonus?` (+${ev.festerBonus} Fester ☠)`:''}${ev.ruptureBonus?` (+${ev.ruptureBonus} Rupture 🩸)`:''}${ev.swipe?' (swipe)':''}${ev.sweep?' (sweep)':''}${elemNote}.`};
     }
-    case 'hitHQ': return {cls:'', text:`${nm(ev.attDefId)} struck ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ for ${dmgLogText(ev.dmg, ev.dmgType)}${ev.swipe?' (swipe)':''}.`}; // 2026-10-17: + the element's emoji (a castle hit that carries a dmgType)
+    case 'hitHQ': return {cls:'', text:`${nm(ev.attDefId)} struck ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble for ${dmgLogText(ev.dmg, ev.dmgType)}${ev.swipe?' (swipe)':''}.`}; // 2026-10-17: + the element's emoji (a castle hit that carries a dmgType)
     case 'thorns': return {cls:'', text:`${nm(ev.fromDefId)}'s Thorns reflected ${ev.dmg} onto ${nm(ev.targetDefId)}. 🌵`};
     case 'reflect': return {cls:'', text:`${nm(ev.fromDefId)}'s Reflect threw ${ev.dmg} damage back at ${nm(ev.targetDefId)}. 🪞`};
-    case 'pierceHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Puncture went through for ${ev.dmg} bonus damage to ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 🗡`};
-    case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Stampede carried ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} HQ. 💥`};
+    case 'pierceHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Puncture went through for ${ev.dmg} bonus damage to ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble. 🗡`};
+    case 'overwhelmHQ': return {cls:'', text:`${nm(ev.attDefId)}'s Stampede carried ${ev.dmg} bonus damage into ${matchState&&matchState.mode==='pc' ? (ev.targetSide==='A'?"Player 1's":"Player 2's") : (ev.targetSide==='A'?'your':'the enemy')} bramble. 💥`};
     case 'gash': return {cls:'bleed', text:`${nm(ev.attDefId)}'s Gash tore into ${nm(ev.targetDefId)} for +${ev.amount} bleed. 🩸`};
     case 'dynamite': return {cls:'', text:`🧨 ${nm(ev.defId)}'s dynamite goes off: ${ev.amount} damage to ${ev.hits} card${ev.hits===1?'':'s'} around it!`};
     case 'deflect': return {cls:'', text:`🪖 The shot glances off ${nm(ev.defId)}'s helmet.`};
@@ -34200,12 +34200,12 @@ function logText(ev){
     case 'confusedWhiff': return {cls:'', text:`${nm(ev.defId)} is Confused: its skill fizzles ❓`};
     case 'poisonTick': return {cls:'poison', text:`${nm(ev.defId)} took ${ev.dmg} poison damage. 🫧`};
     // 2026-10-16 (user: "Status damage should be recorded in the log"): the Devilry payments had no line (they printed their raw type)
-    case 'penance': return {cls:'poison', text:`⛧ Penance for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} castle pays ${ev.dmg != null ? ev.dmg : ev.amount}.`};
-    case 'bloodTithe': return {cls:'bleed', text: ev.castle ? `⛧ Blood Tithe for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} castle pays ${ev.dmg != null ? ev.dmg : ev.amount}.` : `⛧ Blood Tithe for ${nm(ev.defId)}: ${nm(ev.targetDefId)} takes ${ev.dmg != null ? ev.dmg : ev.amount}.`};
+    case 'penance': return {cls:'poison', text:`⛧ Penance for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} bramble pays ${ev.dmg != null ? ev.dmg : ev.amount}.`};
+    case 'bloodTithe': return {cls:'bleed', text: ev.castle ? `⛧ Blood Tithe for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} bramble pays ${ev.dmg != null ? ev.dmg : ev.amount}.` : `⛧ Blood Tithe for ${nm(ev.defId)}: ${nm(ev.targetDefId)} takes ${ev.dmg != null ? ev.dmg : ev.amount}.`};
     case 'decayTick': return {cls:'poison', text:`${nm(ev.defId)} decayed for ${ev.dmg} damage and -${ev.atk} Attack. 🦠`};
     case 'bleedTick': return {cls:'bleed', text:`${nm(ev.defId)} took ${ev.dmg} bleed damage. 🩸`};
-    case 'arrow': return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the castle'}`};
-    case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'a poison bolt 🐍', ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the castle'}`}; // the Bolts (2026-10-15)
+    case 'arrow': return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};
+    case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'a poison bolt 🐍', ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
     case 'revive': return {cls:'gold', text:`${nm(ev.defId)} refused to die — revived at 1 HP! ✨`};
     case 'collapseIn': return {cls:'', text:`${nm(ev.defId)} falls into the center from the ${ev.fromSide}. ➡`};
     case 'death': return {cls:'', text:`${nm(ev.defId)} died.`};
@@ -34233,7 +34233,7 @@ function logText(ev){
     case 'heal': return {cls:'heal', text:`${ev.source ? '🧪 ' + ev.source : nm(ev.attDefId)} healed ${nm(ev.targetDefId)} for ${ev.amount} HP. 💚`};
     case 'chainBreak': return {cls:'gold', text:`${nm(ev.defId)}'s chains snapped — free to act again! ⛓`};
     case 'bounty': return {cls:'gold', text:`Bounty: ${nm(ev.fromDefId)} fell, ${sideLabel(ev.side)} gains +${ev.amount} 🪵.`}; // 2026-10-15: Bounty pays the opponent on any death
-    case 'suddenDeath': return {cls:'', text: ev.stage >= 2 ? `☠️ Sudden death II (round ${ev.round}): any damage to a castle destroys it.` : `☠️ Sudden death (round ${ev.round}): any hit on a unit kills it, even one Armor would stop.`}; // 2026-10-15
+    case 'suddenDeath': return {cls:'', text: ev.stage >= 2 ? `☠️ Sudden death II (round ${ev.round}): any damage to a bramble destroys it.` : `☠️ Sudden death (round ${ev.round}): any hit on a unit kills it, even one Armor would stop.`}; // 2026-10-15
     case 'fullMoonRise': return {cls:'', text:'🌕 The full moon rises.'}; // 2026-10-15
     case 'sap': return {cls:'heal', text:`${nm(ev.attDefId)} drained ${ev.amount} HP from the hit. 🩹`};
     case 'exile': return {cls:'exile', text:`${nm(ev.defId)} was exiled from ${ev.zone}. 🌫`};
@@ -34243,7 +34243,7 @@ function logText(ev){
       // castle passives (2026-10-12) read as the castle doing it
       { const castleTxt = {logjam: ()=> `🪵 The Logjam holds up ${nm(ev.targetDefId)}: +${ev.amount} Wait.`, castleBolt: ()=> `🏹 A ballista bolt flies at ${nm(ev.targetDefId)} (${ev.amount}).`,
           castleThorns: ()=> `🌿 The Thorn Cage cuts ${nm(ev.targetDefId)} (${ev.amount}).`, herbHeal: ()=> `⚗️ The Herb Refinery mends ${nm(ev.targetDefId)} (+${ev.amount}).`,
-          herbBane: ()=> `⚗️ The Herb Refinery's bitter brew splashes ${nm(ev.targetDefId)} (${ev.amount}).`, castleSpawn: ()=> `🏰 ${ev.amount > 1 ? ev.amount + '× ' : ''}${nm(ev.targetDefId)} ${ev.amount > 1 ? 'pour' : 'slips'} out of the castle.`}[ev.kind];
+          herbBane: ()=> `⚗️ The Herb Refinery's bitter brew splashes ${nm(ev.targetDefId)} (${ev.amount}).`, castleSpawn: ()=> `🏰 ${ev.amount > 1 ? ev.amount + '× ' : ''}${nm(ev.targetDefId)} ${ev.amount > 1 ? 'pour' : 'slips'} out of the bramble.`}[ev.kind];
         if(castleTxt) return {cls: ev.kind==='herbHeal' ? 'heal' : '', text: castleTxt()}; }
       if(ev.kind === 'exposedHit') return {cls:'', text:`🎯 ${nm(ev.targetDefId)} is Exposed: ${ev.crit === false ? 'the swing had crit already' : 'a crit'}, 1 counter used${ev.amount ? ` (${ev.amount} left)` : ' (none left)'}.`}; // 2026-10-15; a crit per counter (2026-10-16)
       if(ev.kind === 'exposeFade') return {cls:'', text:`🎯 No enemy units left to strike ${nm(ev.targetDefId)}: its Expose ${ev.amount > 1 ? ev.amount + ' counters fade' : 'counter fades'}.`}; // 2026-10-17
@@ -34322,7 +34322,7 @@ function logText(ev){
       const cls = ev.kind==='poison' || ev.kind==='corrode' ? 'poison' : ev.kind==='bleed' ? 'bleed' : (ev.kind==='cleanse' || ev.kind==='grit' || ev.kind==='berserk' || ev.kind==='momentum' || ev.kind==='esprit') ? 'heal' : '';
       return {cls, text:`${nm(ev.attDefId)} ${kindText}.`};
     }
-    case 'explode': return {cls:'exile', text:`${nm(ev.defId)}'s fuse ran out — 💥 ${ev.dmg} damage to ${ev.targetUid? nm(ev.targetDefId) : (ev.targetSide==='A'?'your HQ':'the enemy HQ')}!`};
+    case 'explode': return {cls:'exile', text:`${nm(ev.defId)}'s fuse ran out — 💥 ${ev.dmg} damage to ${ev.targetUid? nm(ev.targetDefId) : (ev.targetSide==='A'?'your bramble':'the enemy bramble')}!`};
     case 'namedBuff': return {cls:'gold', text:`${nm(ev.attDefId)} buffed ${nm(ev.targetDefId)} +${ev.amount}⚔${ev.amount2?`/+${ev.amount2}❤`:''}. 🐝`};
     case 'ready': return {cls:'', text:`${nm(ev.defId)} is ready to fight.`};
     case 'frenzy': return {cls:'quick', text:ev.twin ? `${nm(ev.attDefId)} strikes twice! ⚔⚔` : `${nm(ev.attDefId)} is in a frenzy: it strikes again! 🔥`};
@@ -34352,8 +34352,8 @@ function logText(ev){
     case 'raidBossUnit': return {cls:'', text:`👑 The boss sends in ${nm(ev.defId)}: ${ev.hp} Health (less the more the raid has pounded it).`};
     case 'raidCommons': return {cls:'', text:`🐙 The boss calls in ${(ev.defIds||[]).map(nm).join(' and ')} behind its lines.`}; // 2026-10-17
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
-    case 'raidLastTurn': return {cls:'gold', text:`🌊 Last turn (${ev.round}): the tide turns after this one and the raid ends, whatever the castles' Health.`}; // 2026-10-18
-    case 'raidSmack': return {cls:'', text: ev.front ? `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.` : ev.hits ? `💥 ${ev.name} smashes the column, ${ev.dmg} to each of your ${ev.hits} unit${ev.hits===1?'':'s'} there.` : `💥 ${ev.name} hits an empty column: ${ev.dmg} to your castle.`};
+    case 'raidLastTurn': return {cls:'gold', text:`🌊 Last turn (${ev.round}): the tide turns after this one and the raid ends, whatever the brambles' Health.`}; // 2026-10-18
+    case 'raidSmack': return {cls:'', text: ev.front ? `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.` : ev.hits ? `💥 ${ev.name} smashes the column, ${ev.dmg} to each of your ${ev.hits} unit${ev.hits===1?'':'s'} there.` : `💥 ${ev.name} hits an empty column: ${ev.dmg} to your bramble.`};
     case 'advance': return {cls:'', text:`⬆ ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.defId)} steps up to the ${ev.to === 0 ? 'front' : 'middle'} row.`};
     case 'boomerangWhiff': return {cls:'', text:`🪃 Whiff! ${nm(ev.defId)}'s boomerang finds nothing on the way back.`};
     case 'boomerangCaught': return {cls:'', text:`🪃 ${nm(ev.defId)} catches the boomerang.`};
@@ -34365,8 +34365,8 @@ function logText(ev){
     case 'swapPositions': return {cls:'', text:`${nm(ev.attDefId)} scurries ${nm(ev.aDefId)} and ${nm(ev.bDefId)} out of position! 🔀`};
     // 2026-10-17 (user: "It's a single attack. 2, 3, or 4 attack lines."): one log line for the swing; each line's hit logs as usual.
     case 'forkSwing': { const k = ev.kind === 'pitchfork' ? '🔱 Pitchfork' : ev.kind === 'trident' ? '🔱 Trident' : '⇔ Fork', n = (ev.lines||[]).filter(l=> l.targetUid != null).length;
-      return {cls:'', text:`${k}: ${nm(ev.attDefId)} swings once${ev.aim ? ` (aimed ${ev.aim})` : ''}, ${ev.kind === 'pitchfork' ? 4 : ev.kind === 'trident' ? 3 : 2} prongs${n ? `, ${n} striking a unit` : ''}${(ev.lines||[]).some(l=> l.castle) ? ', the middle one at the castle' : ''}.`}; }
-    case 'crabClaw': return {cls:'', text: ev.whiff ? `🦞 ${nm(ev.attDefId)} pinches at thin air: nobody beside the unit in front.` : ev.dir === 'castle' ? `🦞 ${nm(ev.attDefId)} has nobody to either side: its claws reach past into the castle!` : `🦞 ${nm(ev.attDefId)} pinches to the ${ev.dir}!`}; // + the castle (2026-10-17) // (whiff: no longer happens since 2026-10-15; kept for old logs) // Crab Claws (2026-10-14)
+      return {cls:'', text:`${k}: ${nm(ev.attDefId)} swings once${ev.aim ? ` (aimed ${ev.aim})` : ''}, ${ev.kind === 'pitchfork' ? 4 : ev.kind === 'trident' ? 3 : 2} prongs${n ? `, ${n} striking a unit` : ''}${(ev.lines||[]).some(l=> l.castle) ? ', the middle one at the bramble' : ''}.`}; }
+    case 'crabClaw': return {cls:'', text: ev.whiff ? `🦞 ${nm(ev.attDefId)} pinches at thin air: nobody beside the unit in front.` : ev.dir === 'castle' ? `🦞 ${nm(ev.attDefId)} has nobody to either side: its claws reach past into the bramble!` : `🦞 ${nm(ev.attDefId)} pinches to the ${ev.dir}!`}; // + the castle (2026-10-17) // (whiff: no longer happens since 2026-10-15; kept for old logs) // Crab Claws (2026-10-14)
     case 'charge': return {cls: ev.fired ? 'gold' : '', text: ev.start ? `⏲️ ${nm(ev.defId)} starts charging (${ev.left}).` : ev.fired ? `⏲️ ${nm(ev.defId)}'s charge goes off!` : `⏲️ ${nm(ev.defId)} charges… ${ev.left} to go.`}; // Charge N (2026-10-14)
     case 'restless': return {cls:'', text:`👣 ${nm(ev.defId)} can't keep still: it moves ${ev.to > ev.from ? 'right' : 'left'}${ev.swapUid != null ? ', swapping places' : ''}.`}; // Restless (2026-10-14)
     // 2026-10-14 (fifth pass)
@@ -34382,10 +34382,10 @@ function logText(ev){
         : `〰️ ${who} ${ev.awash ? 'washes' : 'pushes'} ${nm(ev.targetDefId)} ${ev.dir}${cols}${ev.bounced ? ' (the edge turned it back)' : ''}${ev.swapUid != null ? ' (they swap places)' : ''}${ev.crashUid != null ? ', into another unit' : ''}!`}; } // Wave (2026-10-14); 2026-10-18: Wave N crashes, no swaps (swapUid only in old replays)
     case 'washCrash': return {cls:'', text:`💥 Crash! ${nm(ev.defId)} and ${nm(ev.otherDefId)} each take ${ev.n} (${ev.dmg} and ${ev.otherDmg}).`}; // Wave N (2026-10-18; the skill and the field)
     // 2026-10-14 (sixth pass)
-    case 'fireball': return {cls:'', text: ev.castle ? `🟠 ${nm(ev.attDefId)} hurls a fireball at the castle!` : `🟠 ${nm(ev.attDefId)} hurls a fireball: it bursts over ${(ev.uids||[]).length} enemy unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} fire each!`};
-    case 'meteor': return {cls:'', text: ev.castle ? `☄️ ${nm(ev.attDefId)} calls down a meteor on the castle!` : `☄️ ${nm(ev.attDefId)} calls down a meteor: ${ev.n} to the unit it lands on${(ev.sideUids||[]).length ? `, ${ev.sideN} to ${(ev.sideUids||[]).length} beside it` : ''}. The crater burns.`};
+    case 'fireball': return {cls:'', text: ev.castle ? `🟠 ${nm(ev.attDefId)} hurls a fireball at the bramble!` : `🟠 ${nm(ev.attDefId)} hurls a fireball: it bursts over ${(ev.uids||[]).length} enemy unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} fire each!`};
+    case 'meteor': return {cls:'', text: ev.castle ? `☄️ ${nm(ev.attDefId)} calls down a meteor on the bramble!` : `☄️ ${nm(ev.attDefId)} calls down a meteor: ${ev.n} to the unit it lands on${(ev.sideUids||[]).length ? `, ${ev.sideN} to ${(ev.sideUids||[]).length} beside it` : ''}. The crater burns.`};
     case 'meteorBurn': return {cls:'', text: ev.uid != null ? `☄️ The meteor's crater burns ${nm(ev.defId)} for ${ev.dmg}${ev.left ? '' : ' (the fire goes out)'}.` : `☄️ The meteor's crater smoulders${ev.left ? '' : ' out'}.`};
-    case 'banana': return {cls: ev.action === 'eat' ? 'heal' : '', text: ev.action === 'eat' ? `🍌 ${nm(ev.defId)} ${ev.bananarang ? 'catches its bananarang and eats it' : 'eats its banana'} (+${ev.amount} Health).` : `🍌 ${nm(ev.defId)} throws a banana at ${ev.castle ? 'the castle' : nm(ev.targetDefId)} (${ev.n})!`};
+    case 'banana': return {cls: ev.action === 'eat' ? 'heal' : '', text: ev.action === 'eat' ? `🍌 ${nm(ev.defId)} ${ev.bananarang ? 'catches its bananarang and eats it' : 'eats its banana'} (+${ev.amount} Health).` : `🍌 ${nm(ev.defId)} throws a banana at ${ev.castle ? 'the bramble' : nm(ev.targetDefId)} (${ev.n})!`};
     case 'durian': return {cls:'', text:`${nm(ev.defId)} eats a durian: Thorns +1 (Thorns ${ev.thorns} now). 🌵`};
     // 2026-10-14 (seventh pass)
     case 'psychic': return {cls:'', text: ev.immune ? `💭 ${nm(ev.attDefId)}'s psychic blast finds no mind in ${nm(ev.targetDefId)}.` : `💭 ${nm(ev.attDefId)}'s mind lashes ${nm(ev.targetDefId)} for ${ev.dmg} psychic damage.`};
@@ -34403,7 +34403,7 @@ function logText(ev){
       if(ev.reason === 'raidTime') return {cls:'gold', text:`🌊 The tide turns: the raid ends after ${(matchState && matchState.raidRoundCap) || ev.round || ''} turns. You score what you dealt.`}; // 2026-10-18: not a 'Draw'
       if(ev.winner === 0) return {cls:'gold', text:`🤝 Draw.${why}`};
       if(pc) return {cls:'gold', text:`🏆 ${ev.winner === 1 ? 'Player 1' : 'Player 2'} wins!${why}`};
-      return ev.winner === 1 ? {cls:'gold', text:`🏆 Victory! ${ev.castle ? 'The enemy castle falls.' : 'You win.'}${why}`} : {cls:'', text:`💀 Defeat. ${ev.castle ? 'Your castle falls.' : 'The enemy wins.'}${why}`};
+      return ev.winner === 1 ? {cls:'gold', text:`🏆 Victory! ${ev.castle ? 'The enemy bramble falls.' : 'You win.'}${why}`} : {cls:'', text:`💀 Defeat. ${ev.castle ? 'Your bramble falls.' : 'The enemy wins.'}${why}`};
     }
     // 2026-10-16: an event with no sentence of its own that still hurt something says so, rather than printing its raw type
     default: return (ev.dmg > 0 && (ev.defId || ev.targetDefId)) ? {cls:'', text:`${nm(ev.targetDefId || ev.defId)} took ${ev.dmg} damage.`} : {cls:'', text: ev.type};
@@ -36149,22 +36149,22 @@ function field2LogText(ev, nm){
       case 'hail': return {cls:'', text:`🌨️ Hail: ${ev.amount} ice damage to every unit.`};
       case 'glassStorm': return {cls:'', text:'💎 The glass-storm buffets every unit (1–3 each).'};
       case 'lavaSpout': return {cls:'', text:`♨️ Lava bursts up through a column (${ev.amount} fire damage).`};
-      case 'leylines': return {cls:'', text:'✴️ The ley lines burn: 3 magic damage to every unit and to both castles.'};
-      case 'leylinesCastle': return {cls:'', text:`✴️ The ley lines burn ${who(ev.side)} castle: −${ev.dmg}.`};
+      case 'leylines': return {cls:'', text:'✴️ The ley lines burn: 3 magic damage to every unit and to both brambles.'};
+      case 'leylinesCastle': return {cls:'', text:`✴️ The ley lines burn ${who(ev.side)} bramble: −${ev.dmg}.`};
       case 'consternation': return {cls:'', text:`😰 Consternation: ${ev.count} card${ev.count === 1 ? '' : 's'} in ${who(ev.side)} hand lose ${ev.amount}/${ev.amount}.`};
       case 'mirage': return {cls:'', text: ev.none ? `🪞 A mirage flickers by ${nm(ev.defId)}, but there's no room for it.` : `🪞 A mirage: an Illusion of ${nm(ev.defId)} appears beside it (1/1).`};
       case 'haunted': return {cls:'', text:'👻 Something stirs in the haunted air…'};
       // Field effects 3 (2026-10-17)
       case 'sulphurFumes': return {cls:'', text: ev.count ? `💨 Sulphur fumes roll off the vents: ${ev.count} unit${ev.count === 1 ? '' : 's'} choke (−${ev.amount} Attack this round).` : '💨 Sulphur fumes roll off the vents, but nobody breathes them in.'};
-      case 'ashRain': return {cls:'', text:`🌋 Ash rains down: both castles take ${ev.amount}, and the sun dims.`};
-      case 'ashRainCastle': return {cls:'', text:`🌋 Ash settles on ${who(ev.side)} castle: −${ev.dmg}.`};
+      case 'ashRain': return {cls:'', text:`🌋 Ash rains down: both brambles take ${ev.amount}, and the sun dims.`};
+      case 'ashRainCastle': return {cls:'', text:`🌋 Ash settles on ${who(ev.side)} bramble: −${ev.dmg}.`};
       case 'ashy': return {cls:'', text:'🌫️ The eruption leaves the ground Ashy: flyers are grounded and the air is thick (4 rounds).'};
       case 'arrowSlits': return {cls:'', text: ev.none ? '🏹 An arrow from the walls thuds into empty ground.' : `🏹 The walls loose an arrow at ${nm(ev.defId)}.`};
       case 'awash': return {cls:'', text: ev.none ? '〰️ The water swirls over an empty field.' : `〰️ Wave ${ev.n}: the water takes ${nm(ev.defId)}.`}; // 2026-10-17; "Wave" on screen since 2026-10-18 (Awash and Wave are one)
       // The raid's back rows (2026-10-17)
       case 'volley': return {cls:'gold', text: ev.side === 'A' ? '🏹 Your allies\u2019 rows strike from behind the line.' : '🏹 The enemy\u2019s back rows strike.'};
       case 'volleyHit': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${nm(ev.defId)} for ${ev.dmg}.`};
-      case 'volleyCastle': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${ev.side === 'B' ? 'the enemy' : 'your'} castle for ${ev.dmg}${ev.shielded ? ' (shielded)' : ''}.`};
+      case 'volleyCastle': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${ev.side === 'B' ? 'the enemy' : 'your'} bramble for ${ev.dmg}${ev.shielded ? ' (shielded)' : ''}.`};
     }
     return null;
   }
@@ -36178,7 +36178,7 @@ function field2LogText(ev, nm){
   if(ev.type === 'skipTurn' && ev.reason === 'frightened') return {cls:'', text:`${nm(ev.defId)} is too frightened to attack. 👻`};
   if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
   if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
-  if(ev.type === 'grounded') return {cls:'', text:`⚡ ${nm(ev.attDefId)}'s lightning is grounded: a castle can't be shocked.`}; // 2026-10-18
+  if(ev.type === 'grounded') return {cls:'', text:`⚡ ${nm(ev.attDefId)}'s lightning is grounded: a bramble can't be shocked.`}; // 2026-10-18
   return null;
 }
 function field2Vfx(ev){
@@ -36320,7 +36320,7 @@ function w2SkillVfx(ev){
 function rebuildLogText(ev, nm){
   const pc = matchState && matchState.mode === 'pc', whose = pc ? (ev.side === 'A' ? "Player 1's" : "Player 2's") : (ev.side === 'A' ? 'your' : "the enemy's");
   const who = ev.defId ? nm(ev.defId) : 'A builder', part = ev.n > ev.amount ? ` (${ev.amount} of ${ev.n}: it is back to full)` : '';
-  return {cls:'heal', text:`🔨🏰 ${who} rebuilds ${whose} castle: +${ev.amount} Health${part}.`};
+  return {cls:'heal', text:`🔨🏰 ${who} rebuilds ${whose} bramble: +${ev.amount} Health${part}.`};
 }
 function rebuildVfx(ev){
   if(!ev || ev.type !== 'rebuild' || !matchState) return;
@@ -36344,7 +36344,7 @@ function rebuildVfx(ev){
 }
 // ==== 2026-10-17 skills: battle-log lines and looks for Reflect (a bounced shot), the Bloodlust leap, Sentry, Vanguard, Web, Carrion.
 function s17LogText(ev, nm){
-  if(ev.type === 'reflectShot') return {cls:'', text: ev.fireball ? `🪞 ${nm(ev.defId)} reflects the fireball back!` : ev.castle ? `🪞 ${nm(ev.defId)} reflects the shot into the castle!` : `🪞 ${nm(ev.defId)} reflects the shot at ${nm(ev.targetDefId)}!`};
+  if(ev.type === 'reflectShot') return {cls:'', text: ev.fireball ? `🪞 ${nm(ev.defId)} reflects the fireball back!` : ev.castle ? `🪞 ${nm(ev.defId)} reflects the shot into the bramble!` : `🪞 ${nm(ev.defId)} reflects the shot at ${nm(ev.targetDefId)}!`};
   if(ev.type === 'bloodlustLeap') return {cls:'', text:`🩸 ${nm(ev.defId)} smells blood and leaps ${ev.to > ev.from ? 'right' : 'left'} to face ${nm(ev.targetDefId)}!`};
   if(ev.type === 'sentry') return {cls:'', text:`🗼 ${nm(ev.defId)} is on watch: it strikes ${nm(ev.targetDefId)} as it comes in.`};
   if(ev.type === 'vanguard') return {cls:'', text:`🎖️ Vanguard: ${nm(ev.defId)} moves to the front of ${ev.side === 'A' ? 'your' : "the enemy's"} hand${ev.discardDefId ? ` (${nm(ev.discardDefId)} is discarded)` : ''}.`};
@@ -36389,14 +36389,14 @@ function s17SkillVfx(ev){
 function devilPayLogText(ev, nm){
   const yours = ev.side === 'A' ? 'your' : 'the enemy\'s', mode = matchState && matchState.mode === 'pc';
   const who = mode ? (ev.side === 'A' ? "Player 1's" : "Player 2's") : yours;
-  if(ev.type === 'penance') return {cls:'', text:`⛧ Penance: ${nm(ev.defId)} is paid for with ${who} castle (−${ev.dmg}${ev.dmg < ev.amount ? ` of ${ev.amount}: a castle never pays below 1` : ''}).`};
-  if(ev.type === 'bloodTithe') return {cls:'', text: ev.castle ? `⛧ Blood Tithe: no ally to pay for ${nm(ev.defId)}, so ${who} castle pays (−${ev.dmg}).` : `⛧ Blood Tithe: ${nm(ev.targetDefId)} pays for ${nm(ev.defId)} in blood (−${ev.dmg}).`};
+  if(ev.type === 'penance') return {cls:'', text:`⛧ Penance: ${nm(ev.defId)} is paid for with ${who} bramble (−${ev.dmg}${ev.dmg < ev.amount ? ` of ${ev.amount}: a bramble never pays below 1` : ''}).`};
+  if(ev.type === 'bloodTithe') return {cls:'', text: ev.castle ? `⛧ Blood Tithe: no ally to pay for ${nm(ev.defId)}, so ${who} bramble pays (−${ev.dmg}).` : `⛧ Blood Tithe: ${nm(ev.targetDefId)} pays for ${nm(ev.defId)} in blood (−${ev.dmg}).`};
   if(ev.type === 'ambush') return {cls:'', text:`👀 ${nm(ev.defId)} ambushes ${nm(ev.targetDefId)} as it ${ev.moved ? 'moves in' : 'arrives'} (${ev.amount}).`}; // + moved in (2026-10-17)
   // 2026-10-16 (skills 2): Amore, Fire on hit and its Burn 1 Lumber, On Pitch.
   if(ev.type === 'amore') return {cls:'heal', text:`💕 ${nm(ev.defId)} and ${nm(ev.mateDefId)} fall in love: +0/+${ev.hp} and Regeneration ${ev.regen} each.`};
   if(ev.type === 'amoreBroken') return {cls:'', text:`🤎 ${nm(ev.defId)} is heartbroken: ${nm(ev.deadDefId)} is gone. It keeps +0/+3, but loses Regeneration 3.`};
   if(ev.type === 'lumberBurn') return {cls:'', text:`🔥 ${nm(ev.defId)} burns 1 Lumber (${ev.left} left).`};
-  if(ev.type === 'fireHit') return {cls:'', text: ev.castle ? `🔥 ${nm(ev.attDefId)}'s hit burns ${ev.targetSide === 'A' ? 'your' : "the enemy's"} castle for ${ev.dmg} more.` :`🔥 ${nm(ev.attDefId)}'s hit burns ${nm(ev.targetDefId)} for ${ev.dmg} more fire damage.`};
+  if(ev.type === 'fireHit') return {cls:'', text: ev.castle ? `🔥 ${nm(ev.attDefId)}'s hit burns ${ev.targetSide === 'A' ? 'your' : "the enemy's"} bramble for ${ev.dmg} more.` :`🔥 ${nm(ev.attDefId)}'s hit burns ${nm(ev.targetDefId)} for ${ev.dmg} more fire damage.`};
   return null;
 }
 function devilPulse(el){
@@ -37634,7 +37634,7 @@ function renderSim(){
       </div>
     </div>
     <div class="panel"><h2>🥊 Solo Power Test</h2>
-      <p class="panel-sub">Tests every card on a typical 3v3 board. <b>Effective Score</b> = combat impact (damage dealt + damage soaked, plus lethality/castle-pressure/lumber bonuses) ÷ lumber cost — higher is better value.</p>
+      <p class="panel-sub">Tests every card on a typical 3v3 board. <b>Effective Score</b> = combat impact (damage dealt + damage soaked, plus lethality/bramble-pressure/lumber bonuses) ÷ lumber cost — higher is better value.</p>
       <div class="run-row">
         <label>Rounds/trial: <input type="number" id="ptRounds" value="10" min="5" max="50" class="w-56"></label>
         <label>Trials/card: <input type="number" id="ptTrials" value="15" min="1" max="200" class="w-56"></label>
@@ -37853,7 +37853,7 @@ function renderPowerResults(){
   // above, but were previously invisible, so there was no way to eyeball the cost-efficiency
   // story behind a given score without reading source. Score itself IS the gold-cost-adjusted
   // number (raw / cost, see effectiveScoreOf) — these two columns are what it was computed from.
-  const cols = [['name','Card'],['archetypes','Type'],['locked','Availability'],['score','Effective Score'],['cost','Lumber Cost'],['lumberGen','Lumber Generated'],['dmgDone','Effective Damage Done'],['dmgTaken','Effective Damage Taken'],['lethalityPct','Lethality Ratio%'],['castleDmgT5','Castle Damage (Turn 5)']];
+  const cols = [['name','Card'],['archetypes','Type'],['locked','Availability'],['score','Effective Score'],['cost','Lumber Cost'],['lumberGen','Lumber Generated'],['dmgDone','Effective Damage Done'],['dmgTaken','Effective Damage Taken'],['lethalityPct','Lethality Ratio%'],['castleDmgT5','Bramble Damage (Turn 5)']];
   const table = document.getElementById('ptResultsTable');
   table.innerHTML = `<thead><tr>${cols.map(([k,l])=>`<th data-sort="${k}">${l}</th>`).join('')}</tr></thead><tbody>${powerRowsHTML(rows)}</tbody>`;
   table.querySelectorAll('th').forEach(th=> th.addEventListener('click', ()=>{
@@ -38683,7 +38683,7 @@ const FORGE_MODES = {
   upgrade: {icon:'🔨', label:'Upgrade', blurb:'Temper a card to raise its attack and health, up to level 10. After that, Prestige gives it a mark of mastery; stats stay the same.'},
   refine:  {icon:'✨', label:'Refine', blurb:'Refine your best copy of a card into a finer foil: Plain → Foil → Hex → Etched → Cracked ice → Reverse → Prism → Gold leaf. Shiny can’t be made here; it only comes out of packs and rewards.'},
   smith:   {icon:'⚒️', label:'Blacksmith', blurb:'Craft equipment from Materia and cards, or fuse three spare copies into something rarer. Equipment goes in your deck like any card; in a fight you drag it onto one of your units.'},
-  castles: {icon:'🏰', label:'Castles', blurb:'Temper your castles here: each level adds 1 starting Health. A castle you get again is a duplicate (you only ever field one), and fusing it banks credit toward its next levels.'},
+  castles: {icon:'🏰', label:'Brambles', blurb:'Temper your brambles here: each level adds 1 starting Health. A bramble you get again is a duplicate (you only ever field one), and fusing it banks credit toward its next levels.'},
   enchant: {icon:'💎', label:'Enchant', blurb:'Socket a Materia crystal into a card for a small, permanent bonus. One crystal per card; a new one replaces the old. Craft crystals from Magic Dust on the bench.'},
 };
 function forgeReadyFor(id){
@@ -39147,7 +39147,7 @@ function wireHomeScene(root){
 // many others ... don't reveal till later in the game past Map 11 ... Only 1 item per skirmish is allowed"): a help for a fight
 // you can't otherwise win, not a daily boost. One item a fight; one of each refills a day, up to 5 of each.
 const ITEM_DEFS = {
-  draught: {icon:'🧪', name:'Healing Draught', desc:'Your castle heals 5 Health.'},
+  draught: {icon:'🧪', name:'Healing Draught', desc:'Your bramble heals 5 Health.'},
   kindling: {icon:'🪵', name:'Kindling Bundle', desc:'+1 Lumber now.'},
   scoutmap: {icon:'🗺️', name:'Scout\'s Map', desc:'Draw 2 cards.'},
   firepot: {icon:'🏺', name:'Fire Pot', desc:'3 fire damage to every enemy unit.'},
@@ -39201,7 +39201,7 @@ function itemBlockReason(id, m){
 function itemResultText(id, r){
   r = r || {}; const k = r.k || 0, s = k === 1 ? '' : 's';
   switch(id){
-    case 'draught': return `Your castle heals ${r.n || 0}.`;
+    case 'draught': return `Your bramble heals ${r.n || 0}.`;
     case 'kindling': return '+1 Lumber.';
     case 'scoutmap': return `You draw ${r.n || 0} card${r.n === 1 ? '' : 's'}.`;
     case 'firepot': return `3 fire damage to ${k} enemy unit${s}${r.dead ? ` (${r.dead} burn${r.dead === 1 ? 's' : ''} away)` : ''}.`;
@@ -39397,14 +39397,14 @@ function wildpathsLogoSVG(size){
 // 2026-10-15 (user: "Wildpaths, too verbose. Limit to half the text."): every blurb and mark is cut to about half, same meaning.
 // "Capstone." left the descriptions (the detail panel already tags a capstone).
 const WILDPATH_TREES = [
-  {id:'root', name:'The Root', icon:'🌳', tint:'#9fd07a', blurb:'Castle Health, Armour, the long game.', nodes:[
-    {id:'r1', x:150, y:395, icon:'🏰', name:'Deep Foundations', desc:'Castle starts with +2 Health per rank.', ranks:3},
+  {id:'root', name:'The Root', icon:'🌳', tint:'#9fd07a', blurb:'Bramble Health, Armour, the long game.', nodes:[
+    {id:'r1', x:150, y:395, icon:'🏰', name:'Deep Foundations', desc:'Bramble starts with +2 Health per rank.', ranks:3},
     {id:'r2', x:105, y:320, icon:'🛡', name:'Bark Skin', desc:'First unit each fight: Armor 1.', req:['r1']},
-    {id:'r3', x:190, y:300, icon:'💚', name:'Sap Mending', desc:'Castle heals 1 every third round.', req:['r1']},
+    {id:'r3', x:190, y:300, icon:'💚', name:'Sap Mending', desc:'Bramble heals 1 every third round.', req:['r1']},
     {id:'r4', x:80, y:230, icon:'🧱', name:'Hedge Wall', desc:'Guardians: +2 Health per rank.', req:['r2'], ranks:2},
     {id:'r5', x:175, y:205, icon:'🌲', name:'Old Growth', desc:'Wait 2+ units get +1/+2.', req:['r3', 'r2']},
-    {id:'r6', x:140, y:120, icon:'⛰️', name:'Unmoving', desc:'First hit on your castle deals 0.', req:['r5']},
-    {id:'r7', x:150, y:40, icon:'👑', name:'Heart of the Wood', desc:'Castle +1 Health each round it isn’t hit.', req:['r6', 'r4'], capstone:true},
+    {id:'r6', x:140, y:120, icon:'⛰️', name:'Unmoving', desc:'First hit on your bramble deals 0.', req:['r5']},
+    {id:'r7', x:150, y:40, icon:'👑', name:'Heart of the Wood', desc:'Bramble +1 Health each round it isn’t hit.', req:['r6', 'r4'], capstone:true},
   ]},
   {id:'thorn', name:'The Thorn', icon:'🌹', tint:'#f07a6a', blurb:'Attack, Quick, finishing blows.', nodes:[
     {id:'t1', x:150, y:395, icon:'⚔', name:'Sharpened Briars', desc:'+1 Attack to units with 3 or less.', ranks:2},

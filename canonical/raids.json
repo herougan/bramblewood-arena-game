@@ -194,7 +194,7 @@
       {
         "at": 0.5,
         "name": "Thrashing",
-        "note": "Default chosen 2026-10-18 (R3-WP2, owner to confirm): every boss card +4 Attack, its back rows keep striking, Landslide comes down, and the raiders' castle has 10% less Health.",
+        "note": "Default chosen 2026-10-18 (R3-WP2, owner to confirm): every boss card +4 Attack, its back rows keep striking, Landslide comes down, and the raiders' bramble has 10% less Health.",
         "rules": [
           {
             "bossAtk": 4,
