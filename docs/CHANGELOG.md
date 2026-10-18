@@ -13,6 +13,13 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Code: `xpBarSpec`, `rewardXpBarHTML`, `syncRewardXpBar`, `rewardXpBarUp` and `m.xpBefore`, set when the result is decided; `awardXp` and `checkXpMilestones` (`arena_app.js`). `FX.F.xpBarHTML` and `FX.F.xpBarFill` (`bramblewood-fx-f.js`).
 - Effects Lab: `res-xp-bar` (A a level-up, B a plain fill, C calm); the raid claim entries now carry the bar. Four TX keys (`results.xp-*`) are in all 12 packs, and `tests/reward-screens-2026-10-19.js` covers it (132 checks).
 
+## 2026-10-18 late (package LG: Legendary abilities; True Strike vs Legendary dodges)
+- **Legendary abilities** (owner 23:05: "typically not given to cards players can get (except dragons)"): True Strike, Supreme and Supreme Tide are marked `legendary: true` (PASSIVE_DEFS / SKILL_DEFS, `canonical/skill-costs.json`; costs unchanged). Each shows a gold **Legendary** tag after its name on the card's line, e.g. the White Dragon's True Strike, and in the Skills Codex (the filter finds "legendary"). The card's glossary adds: "Legendary ability: A legendary power. Rarely found on cards you can own — dragons are the exception."
+- **True Strike vs Legendary dodges**: True Strike still ignores every plain miss and dodge, Illusory included (owner: "the illusory dodge is a token thing anyway"). A Legendary dodge still rolls against it. No dodge is Legendary yet. The hook is in `bramblewood-engine.js`: `legendaryDodge(reason, value)` is true for a source listed in `LEGENDARY_DODGES` or an effect value carrying `legendary: true` (e.g. `evasive: {legendary: true}`, `illusory: {chance, legendary: true}`), in melee (`combatHitLands`) and for shots and skills (`dodgeCheck`). The CPU's True Strike pick no longer counts Legendary dodgers. True Strike still draws no random numbers unless a Legendary dodge is in play, so `card-matrix` has 0 golden diffs.
+- The True Strike Codex note now says "only a Legendary dodge can". 4 texts (3 new TX keys and the re-keyed note) are in all 12 packs.
+- `docs/decisions.json` (and the generated `decisions.md`) has a stated-rules section for 23:05. Shadow of the Valley of Death is a very far future map, so the Pall Wraith stays in the Eye of the Volcano (20-A-2) until it exists. It also records the Legendary rules.
+- Test: `tests/legendary-2026-10-19.js` (93 checks, in run-all).
+
 ## 2026-10-18 late (package C follow-up: filter the Codex by skill)
 - **✨ Skills filter in Codex Browse** (owner 23:21: "add a way to filter by skills in codex"). It works in the album, Compressed and Full Art views.
   - The button sits with the other filters and opens a panel of every skill you have seen, each with its icon (admins see all).
@@ -40,6 +47,36 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Stampede (Trample)**: its carry-over number pops on the field's HP bar, the same spot as every other bramble hit (Puncture's too); it used to pop on the bramble tile under the board. Its preview line now goes on from the blocker to the enemy HP bar: faint always, so the skill reads, and lit orange with `💥 +N` when the swing as it stands would kill the blocker with damage to spare (shown Attack − blocker Armor − blocker Health). It needs one blocker; with a half swing on two, the plain lines stay.
 - **Battle log opens at the bottom** ("should start from the bottom! the latest!"): opening the log used to scroll before the panel was shown, so it opened on the oldest line. It now opens on the newest line and stays pinned as lines arrive. If you scroll up to read, it leaves you there; scroll back to the bottom and it follows again. A board re-render keeps your place. A past match's log (Profile) opens on its last line too, and a card's own "Battle log" lines in its hover now read oldest first, newest at the bottom.
 - Tests: `tests/bp-2026-10-19.js` (60 checks: wind sides and rules, the ×0.8 / ×0.75 constants, no night checks in the hover path plus the retry, Stampede's math, anchor and line, the log pin).
+## 2026-10-18 (package PD: the Pale Desert, side map 18-A)
+- **New side map: The Pale Desert** (owner 20:55: "Add the submap that we and codex suggested, the pale desert. Locked till Map 18 is complete.").
+  - It is a side map of Map 18, the Glass Dunes. Its entrance, "The pale sands", sits after 18-7.
+  - It shows the standard lock, "Clear The Glass Dunes (Map 18) to open", until every Map 18 fight is won.
+  - The land is a bleached, bone-white sand sea under a white sun, with no glass or obsidian. Its field rules are existing ones only: Scorching 1–2 in every fight, Sandstorm and Mirage. Quicksand is the boss's own Trap and Tangle.
+- **Nine fights:** 7 skirmishes, the elite The Dry Well, and the boss The Quicksand Queen. The boss defends The Last Oasis, a new bramble (Regeneration 1), and her first win gives it to you.
+  - Each fight gives a card reward, Gold and Dust. Six of the reward cards had no source until now: Rabid Jackal, Dust-devil Kestrel, Meerkat Burrower, Stonedrop Vulture, Glowing Gecko and Dust Hyena.
+  - Balanced with `simulateReferenceFight` against the Map 18 reference deck (Lv 4) on the owner's new curve, 120 games a fight: 90.0 / 91.7 / 79.2 / 75.0 / 70.0 / 66.7 / 59.2 %, the elite 60.8 % and the boss 41.7 %. All are green (±8; the boss band is 30–49 %).
+  - Fresh seeds give 89–58 % and 43 %. The stored result is `docs/balance/pale-desert-2026-10-19.json`.
+- **Three new cards**, none with art yet (they show their emoji):
+  - 🦎 Sandfish: Common, 3/11, Dry, Invisible 2;
+  - 🦌 Pale Oryx: Uncommon, 3/17, Dry, Pierce;
+  - 🐜 Quicksand Queen: Very Rare, 3/28, Dry, Trap 6, Tangle 1.
+
+  All three are in budget v3 and their card-balance bands. Their skills read "?" until Map 18 is cleared (`revealAfter`).
+- **Look:**
+  - a pale-sand map background (`tools/make_map_backgrounds.py mpd`);
+  - the battlefield `map-mpd`, with a white-sun glare and heat haze;
+  - the map theme, its own emblem (sun, dune, skull), the desert music and sound, the map ambience (`FX.E` paledesert) and the heat-shimmer shader.
+- **Texts:** the map's words are 21 TX keys (`map.mpd-*`, applied by `applyPaleDesertTexts`). All texts and card names are in the 12 packs (`tools/i18n_2026_10_19_pale_desert.py`).
+- **Tests:**
+  - `tests/pale-desert-2026-10-19.js` (new, in run-all);
+  - `tests/node-ids-2026-10-14.js` accepts side-map keys born after the rename;
+  - the card-matrix golden is re-baselined.
+- Docs: `docs/pale-desert-2026-10-19.md`.
+## 2026-10-18 (MB: phone map buttons, Home on the full-screen map)
+- **Full-screen button back on its row (phones):** on the Conquest and Daily Dungeon maps, ⛶ sits on the 🧭 World row again, at the right end; 🚨 Admin is under it. A 2026-10-13 fix had moved ⛶ down onto the Admin button's spot, so with Admin Mode on the two were stacked. ⛶ steps down only while the map strip is hidden (world not open yet), where it would sit on the Energy pill; 🚨 then goes under it.
+- **Home on the full-screen map:** full screen (⛶) hides the header and the 🏠 / ⚙️ / Energy row, which left phones with no way Home. A 🏠 now sits left of 🧭 while the map is full screen. It goes where the header's Home goes and turns full screen off. Its label is the TX key `ui.back-to-home` ("Back to Home", already in all 12 packs).
+- Checked in Chromium at 360, 390, 414 and 480 px portrait and 640 to 896 px landscape, Admin Mode on and off. Every other screen already had a reachable Home on phones. New test `tests/mobile-nav-2026-10-19.js`.
+
 ## 2026-10-18 (package NA: Grotto Lobster and Amber Cicada, the owner's art)
 - **New card: Grotto Lobster** 🦞 (Rare, 1 Lumber, Wait 2, 3/12). Armor 1, Crab Claws, Darksight and Brood 1: its crablings hatch beside it. It is the second card reward of 2-B-3 The Glowing Pool (Smugglers' Grotto, the sea cave off Pebble Beach).
 - **New card: Amber Cicada** 🦗 (Uncommon, 1 Lumber, Wait 3, 3/20). It spends three rounds underground (Wait 3). On Ready, its song gives every ally 2 Shield. It also has Scare 1. It is the second card reward of 1-2 Cricket Chorus (Thistlewood, Map 1). There is no cicada emoji, so it uses the cricket.

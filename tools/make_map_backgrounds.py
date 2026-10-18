@@ -448,6 +448,45 @@ def md(rng):  # The Glass Dunes: hot sand, dune ridges, glassy patches, cacti, b
     return img
 
 
+# The Pale Desert (2026-10-18, package PD, side map 18-A of the Glass Dunes; owner: "Add the submap that we and codex suggested, the
+# pale desert"): a bleached, bone-white sand sea under a white sun. No glass and no cacti (that is the Glass Dunes): long soft dune
+# ridges, cracked salt pans, ribs and skulls, dark quicksand swirls, and a glare that whitens the top of the picture.
+SKULL = [".aaa.", "abbba", "acbca", ".aba."]
+RIBS = ["a.a.a", "a.a.a", ".aaa."]
+DRYTUFT = ["a..a", ".aa."]
+
+
+def mpd(rng):
+    img = dither_palette(fbm(rng, W, H, (64, 32, 12)), ['#d9ccb0', '#e2d6bc', '#eadfc8', '#f1e8d6', '#f7f1e4'])
+    ys, xs = np.mgrid[0:H, 0:W]
+    ridge = np.abs(np.sin(xs / W * math.pi * 3.2 + ys / H * 2.4 + fbm(rng, W, H, (48, 24), (0.7, 0.3)) * 3.0))
+    blend_mask(img, np.clip((ridge - 0.955) * 22, 0, 1), '#d2c3a0')       # the shaded lee of each dune ridge
+    blend_mask(img, np.clip((0.05 - ridge) * 18, 0, 1), '#fbf8f0')       # the sunlit crest
+    salt = fbm(rng, W, H, (40, 20), (0.6, 0.4))
+    pan = blend_mask(img, np.clip((salt - 0.74) * 9, 0, 1), '#fbfaf5')   # salt pans
+    crack = pan & (((xs * 7 + ys * 3) % 11 == 0) | ((xs * 2 + ys * 9) % 13 == 0))
+    img[crack] = hexrgb('#d4c8b0')
+    for _ in range(4):  # quicksand: a darker, wetter swirl that the trail keeps clear of
+        for _t in range(20):
+            cx, cy, r = int(rng.integers(16, W - 16)), int(rng.integers(12, H - 12)), int(rng.integers(6, 11))
+            if not (0.36 < cy / H < 0.64): break
+        d = np.sqrt(((xs - cx) / 1.4) ** 2 + (ys - cy) ** 2)
+        a = np.arctan2(ys - cy, xs - cx)
+        swirl = (np.sin(d * 1.3 - a * 2) > 0.2) & (d < r)
+        blend_mask(img, np.clip((r + 1.5 - d) / 2, 0, 1), '#c7b48c')
+        img[swirl] = hexrgb('#a99566')
+        img[d < 1.6] = hexrgb('#8e7a50')
+    scatter(img, rng, SKULL, {'a': '#fbf8ef', 'b': '#f1eadb', 'c': '#6b5a42'}, 10, shadow_w=lambda w: w)
+    scatter(img, rng, RIBS, {'a': '#f6f0e2'}, 14)
+    scatter(img, rng, ROCK, {'a': '#f0e6d2', 'b': '#c4b392'}, 22)
+    scatter(img, rng, DRYTUFT, {'a': '#b7a77a'}, 26)
+    glare = np.clip(1 - np.sqrt(((xs - W * 0.78) / (W * 0.55)) ** 2 + ((ys + H * 0.15) / (H * 0.75)) ** 2), 0, 1)
+    lift = (glare + BAYER[ys % 4, xs % 4] * 0.12) > 0.08
+    img[lift] = np.clip(img[lift].astype(np.int32) + (glare[lift][:, None] * np.array([40, 40, 34])).astype(np.int32), 0, 255).astype(np.uint8)
+    sparkle(img, rng, 90, '#ffffff')
+    return img
+
+
 def my(rng):  # The Canopy: deep rainforest roof, vines, bright flowers
     img = dither_palette(fbm(rng, W, H), ['#163a1f', '#1d4a26', '#245a2c', '#2c6a33', '#357a3a'])
     dens = fbm(rng, W, H, (48, 24), (0.7, 0.3))
@@ -673,7 +712,7 @@ def mabyss(rng):
     return img
 
 
-PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz', 'me', 'mtut', 'mj', 'marena', 'mabyss'))}
+PAINTERS = {k: v for k, v in globals().items() if k[0] == 'm' and (k[1:].isdigit() or k in ('mf', 'mb', 'mg', 'mu', 'mp', 'mc', 'mw', 'mk', 'mh', 'mr', 'ml', 'mt', 'md', 'my', 'mq', 'mz', 'me', 'mtut', 'mj', 'marena', 'mabyss', 'mpd'))}  # + mpd, the Pale Desert (2026-10-18, package PD)
 
 
 # 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds. I think the wetter one makes sense for the next map."):

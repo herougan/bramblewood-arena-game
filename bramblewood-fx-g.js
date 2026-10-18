@@ -107,7 +107,7 @@ const THEMES = {
 // Map → theme (a presentation choice, not game state). Anything missing falls back to its biome.
 const THEME_OF = {m1:'forest', mtut:'meadow', mf:'forest', mq:'meadow', mb:'beach', mp:'water', mg:'cave', mc:'alpine', m2:'water', mw:'swamp',
   m8:'mist', ms:'mist', mu:'fungal', mz:'fungal', m4:'cave', mn:'crystal', mk:'water', m7:'reef', mj:'reef', m10:'alpine', mv:'alpine', mh:'meadow',
-  mr:'forest', m5:'savanna', my:'forest', ml:'meadow', mt:'tundra', m6:'tundra', mi:'tundra', md:'desert', m3:'volcano', m11:'volcano', m9:'forge',
+  mr:'forest', m5:'savanna', my:'forest', ml:'meadow', mt:'tundra', m6:'tundra', mi:'tundra', md:'desert', mpd:'desert' /* the Pale Desert, 2026-10-18 (package PD) */, m3:'volcano', m11:'volcano', m9:'forge',
   me:'volcano', mx:'volcano', m21:'night', mo:'forest',
   m22:'frostfire', m23:'castle', m24:'castle', // 2026-10-17: the Rimefire Caldera, the Goldfeather Siege, Goldfeather Keep
   mm:'dungeon'}; // Murgle Mayhem, the first daily dungeon (2026-10-16, was 'swamp')
