@@ -466,6 +466,7 @@
  "Forge": "Tempa",
  "Forge currencies": "Mata uang tempa",
  "Forge Regular": "Langganan Tempaan",
+ "Found a bug? Pick 🐞 Bug and say what happened and how to make it happen again.": "Menemukan bug? Pilih 🐞 Bug dan ceritakan apa yang terjadi serta cara mengulanginya.",
  "Four score and seven turns ago, we had a plan.": "Delapan puluh tujuh giliran yang lalu, kita punya rencana.",
  "Fox Kit": "Anak Rubah",
  "Fox Warchief": "Rubah Panglima",
@@ -1135,6 +1136,7 @@
  "The Deep": "Laut Dalam",
  "The enemy Bramble. Break it to win.": "Semak musuh. Hancurkan untuk menang.",
  "The finest finish there is.": "Finishing terbaik yang ada.",
+ "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.": "Laporan pertama tiap bug yang kami pastikan mendapat 🍁 Daun Maple. Temuan besar mendapat lebih banyak.",
  "The first tree-line past the castle walls — mostly scouts and stragglers.": "Barisan pohon pertama di luar tembok kastil — kebanyakan pengintai dan pasukan tercecer.",
  "The Forge": "Bengkel Tempa",
  "The Forge is now the {name}: Lv {cap}, rarer cards too.": "Tempa kini menjadi {name}: Lv {cap}, kartu yang lebih langka juga.",
@@ -1209,6 +1211,7 @@
  "Tip": "Tips",
  "Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.": "Mabuk: kartu ini mengayun ke kiri, depan, atau kanan secara acak, dan meleset jika tak ada siapa pun.",
  "to find": "untuk ditemukan",
+ "Top hunters earn the 🐞 Bug Hunter title.": "Pemburu terbaik mendapat gelar 🐞 Pemburu Bug.",
  "Top level": "Level tertinggi",
  "Top rarity": "Kelangkaan tertinggi",
  "Total Damage Dealt": "Total kerusakan diberikan",
@@ -1465,5 +1468,6 @@
  "— live for every player.": "— langsung berlaku untuk semua pemain.",
  "— needs {e}⚡, you have {currentEnergy}⚡": "— perlu {e}⚡, kamu punya {currentEnergy}⚡",
  "— repeat-clear payout": "— bayaran tuntas ulang",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "🐞 Bug Hunters": "🐞 Pemburu Bug"
 }

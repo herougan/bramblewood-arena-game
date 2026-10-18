@@ -44641,6 +44641,7 @@ var Feedback = (function(){
     ov.innerHTML = `<div class="modal fb-modal" role="dialog" aria-modal="true" aria-labelledby="fbTitle"><div class="modal-head-row"><h2 id="fbTitle">💬 Tell us what you think</h2><button class="modal-close-btn" id="fbClose" aria-label="Close">✕</button></div>
       <form id="fbForm"><fieldset class="fb-cats"><legend>What is it about? (optional)</legend>${CATS.map(([k, l])=> `<label><input type="radio" name="fbCat" value="${k}">${l}</label>`).join('')}</fieldset>
         <textarea id="fbText" maxlength="4000" required placeholder="A bug, an idea, something that felt off… anything helps." aria-label="Your feedback"></textarea>
+        <aside class="fb-bughunt" aria-labelledby="fbBugTitle"><h3 id="fbBugTitle">${TX('fb.bughunt-title')}</h3><p>${TX('fb.bughunt-how')}</p><p>${TX('fb.bughunt-reward')} ${TX('fb.bughunt-title-reward')}</p></aside>
         <p class="fb-ctx">Sent with it: where you are (${escapeHtml(where || 'Home')}), the game version, your screen size, your player name and the time.</p>
         <div class="fb-actions"><small id="fbNote" aria-live="polite"></small><button type="button" class="btn ghost" id="fbCancel">Cancel</button><button type="submit" class="btn primary" id="fbSend">Send</button></div></form></div>`;
     ov.hidden = false;

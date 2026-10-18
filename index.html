@@ -426,6 +426,10 @@
   .fb-modal .fb-cats label:has(input:focus-visible){outline:2px solid #ffd76a; outline-offset:2px;}
   .fb-modal textarea{min-height:120px; resize:vertical; padding:10px 12px; border-radius:10px; border:1px solid rgba(0,0,0,.2); font:inherit; background:#fffdf7; color:#2b2117;}
   .fb-modal .fb-ctx{font-size:12px; opacity:.75; margin:0;}
+  /* 2026-10-18 (owner 21:57): the Bug Hunters box in the feedback window */
+  .fb-modal .fb-bughunt{border:1px solid currentColor; border-color:color-mix(in srgb, currentColor 22%, transparent); background:color-mix(in srgb, currentColor 6%, transparent); border-radius:10px; padding:8px 12px; display:grid; gap:4px;}
+  .fb-modal .fb-bughunt h3{margin:0; font-size:14px;}
+  .fb-modal .fb-bughunt p{margin:0; font-size:13px; line-height:1.4;}
   .fb-modal .fb-actions{display:flex; justify-content:flex-end; gap:8px; align-items:center;} .fb-modal .fb-actions small{margin-right:auto; font-size:12px; opacity:.75;}
   .fb-admin-list{display:flex; flex-direction:column; gap:8px; max-height:60vh; overflow:auto;}
   .fb-admin-item{padding:8px 10px; border-radius:10px; background:var(--surface-2); border:1px solid var(--surface-border);}
@@ -34748,7 +34752,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=a176026c0e", "es": "assets/lang/es.js?v=0795b6b310", "fr": "assets/lang/fr.js?v=c387da253a", "id": "assets/lang/id.js?v=0418efe7e4", "it": "assets/lang/it.js?v=4c34f9ecde", "ja": "assets/lang/ja.js?v=ce753598b7", "ko": "assets/lang/ko.js?v=6bfb6046c9", "pt": "assets/lang/pt.js?v=df77c760d3", "ta": "assets/lang/ta.js?v=66bde391eb", "tl": "assets/lang/tl.js?v=3533e66111", "zh-Hans": "assets/lang/zh-Hans.js?v=3793c1f20c", "zh-Hant": "assets/lang/zh-Hant.js?v=81b74227db"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=42df57b380", "es": "assets/lang/es.js?v=e9b4f0fb82", "fr": "assets/lang/fr.js?v=80ebd0b160", "id": "assets/lang/id.js?v=4633a9c50d", "it": "assets/lang/it.js?v=4e934084e2", "ja": "assets/lang/ja.js?v=c934f371c6", "ko": "assets/lang/ko.js?v=e1281653c7", "pt": "assets/lang/pt.js?v=65789a8e63", "ta": "assets/lang/ta.js?v=a3b0d56737", "tl": "assets/lang/tl.js?v=fce88a95d5", "zh-Hans": "assets/lang/zh-Hans.js?v=8e3b0758cf", "zh-Hant": "assets/lang/zh-Hant.js?v=c56490a6e8"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -35490,6 +35494,10 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.not-enough-to-recruit-yet": "Not enough to recruit yet.",
   "toast.thanks-it-will-be-sent-as": "💬 Thanks! It will be sent as soon as it can.",
   "toast.thanks-we-read-every-one": "💬 Thanks! We read every one.",
+  "fb.bughunt-title": "🐞 Bug Hunters",
+  "fb.bughunt-how": "Found a bug? Pick 🐞 Bug and say what happened and how to make it happen again.",
+  "fb.bughunt-reward": "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.",
+  "fb.bughunt-title-reward": "Top hunters earn the 🐞 Bug Hunter title.",
   "toast.jumps-you-on-the-road-beat": "{icon} {name} jumps you on the road! Beat it to go on.",
   "toast.errand-complete-claim-it-on-the": "📜 Errand complete: {title}. Claim it on the Notices.",
   "toast.errand": "📜 Errand: {title} — {v}/{g}",
@@ -38555,7 +38563,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '4fb2f8fb008a', BUILD_CARD_HASH = '4e424212654e900615daa4652b7dec9d1efd9478abf8d7525a8f0941b4a868b0';
+const BUILD_ID = '263a53294eb8', BUILD_CARD_HASH = '4e424212654e900615daa4652b7dec9d1efd9478abf8d7525a8f0941b4a868b0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -80491,6 +80499,7 @@ var Feedback = (function(){
     ov.innerHTML = `<div class="modal fb-modal" role="dialog" aria-modal="true" aria-labelledby="fbTitle"><div class="modal-head-row"><h2 id="fbTitle">💬 Tell us what you think</h2><button class="modal-close-btn" id="fbClose" aria-label="Close">✕</button></div>
       <form id="fbForm"><fieldset class="fb-cats"><legend>What is it about? (optional)</legend>${CATS.map(([k, l])=> `<label><input type="radio" name="fbCat" value="${k}">${l}</label>`).join('')}</fieldset>
         <textarea id="fbText" maxlength="4000" required placeholder="A bug, an idea, something that felt off… anything helps." aria-label="Your feedback"></textarea>
+        <aside class="fb-bughunt" aria-labelledby="fbBugTitle"><h3 id="fbBugTitle">${TX('fb.bughunt-title')}</h3><p>${TX('fb.bughunt-how')}</p><p>${TX('fb.bughunt-reward')} ${TX('fb.bughunt-title-reward')}</p></aside>
         <p class="fb-ctx">Sent with it: where you are (${escapeHtml(where || 'Home')}), the game version, your screen size, your player name and the time.</p>
         <div class="fb-actions"><small id="fbNote" aria-live="polite"></small><button type="button" class="btn ghost" id="fbCancel">Cancel</button><button type="submit" class="btn primary" id="fbSend">Send</button></div></form></div>`;
     ov.hidden = false;

@@ -466,6 +466,7 @@
  "Forge": "Fucina",
  "Forge currencies": "Valute della fucina",
  "Forge Regular": "Habitué della Forgia",
+ "Found a bug? Pick 🐞 Bug and say what happened and how to make it happen again.": "Trovato un bug? Scegli 🐞 Bug e racconta cosa è successo e come ripeterlo.",
  "Four score and seven turns ago, we had a plan.": "Ottantasette turni fa, avevamo un piano.",
  "Fox Kit": "Volpacchiotto",
  "Fox Warchief": "Volpe Capoguerra",
@@ -1135,6 +1136,7 @@
  "The Deep": "Gli Abissi",
  "The enemy Bramble. Break it to win.": "Il Rovo nemico. Distruggilo per vincere.",
  "The finest finish there is.": "La finitura più pregiata che ci sia.",
+ "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.": "La prima segnalazione di ogni bug confermato vale 🍁 Foglie d’acero. Le grandi scoperte valgono di più.",
  "The first tree-line past the castle walls — mostly scouts and stragglers.": "La prima linea d'alberi oltre le mura — perlopiù esploratori e ritardatari.",
  "The Forge": "La Fucina",
  "The Forge is now the {name}: Lv {cap}, rarer cards too.": "La Fucina ora è {name}: Liv. {cap}, e carte più rare.",
@@ -1209,6 +1211,7 @@
  "Tip": "Suggerimento",
  "Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.": "Alticcio: questa carta colpisce a caso a sinistra, davanti o a destra, e manca se non c’è nessuno.",
  "to find": "da scoprire",
+ "Top hunters earn the 🐞 Bug Hunter title.": "I migliori cacciatori ottengono il titolo 🐞 Cacciatore di bug.",
  "Top level": "Livello massimo",
  "Top rarity": "Rarità massima",
  "Total Damage Dealt": "Danni inflitti",
@@ -1465,5 +1468,6 @@
  "— live for every player.": "— attivo per tutti i giocatori.",
  "— needs {e}⚡, you have {currentEnergy}⚡": "— servono {e}⚡, ne hai {currentEnergy}⚡",
  "— repeat-clear payout": "— premio per ripetizione",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "🐞 Bug Hunters": "🐞 Cacciatori di bug"
 }

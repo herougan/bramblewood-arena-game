@@ -466,6 +466,7 @@
  "Forge": "锻造",
  "Forge currencies": "锻造货币",
  "Forge Regular": "熔炉常客",
+ "Found a bug? Pick 🐞 Bug and say what happened and how to make it happen again.": "发现漏洞？选择 🐞 漏洞，说说发生了什么，以及怎样让它再次出现。",
  "Four score and seven turns ago, we had a plan.": "八十七回合之前，我们还有个计划。",
  "Fox Kit": "小狐狸",
  "Fox Warchief": "狐狸战酋",
@@ -1135,6 +1136,7 @@
  "The Deep": "深渊",
  "The enemy Bramble. Break it to win.": "敌方荆棘丛。摧毁它就能获胜。",
  "The finest finish there is.": "已是最顶级的工艺。",
+ "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.": "每个经我们确认的漏洞，第一位报告者可获得 🍁 枫叶。重大发现奖励更多。",
  "The first tree-line past the castle walls — mostly scouts and stragglers.": "城墙外的第一道林线 — 多是斥候和掉队者。",
  "The Forge": "锻造坊",
  "The Forge is now the {name}: Lv {cap}, rarer cards too.": "锻造现在是 {name}：{cap} 级，也能处理更稀有的卡。",
@@ -1209,6 +1211,7 @@
  "Tip": "提示",
  "Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.": "微醺：这张卡随机攻击左边、正前方或右边，那里没人就会落空。",
  "to find": "待发现",
+ "Top hunters earn the 🐞 Bug Hunter title.": "顶尖猎人可获得 🐞 漏洞猎人称号。",
  "Top level": "已满级",
  "Top rarity": "最高稀有度",
  "Total Damage Dealt": "造成的总伤害",
@@ -1466,5 +1469,6 @@
  "— live for every player.": "——已对所有玩家生效。",
  "— needs {e}⚡, you have {currentEnergy}⚡": "——需要 {e}⚡，你有 {currentEnergy}⚡",
  "— repeat-clear payout": "——重复通关收益",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "🐞 Bug Hunters": "🐞 漏洞猎人"
 }

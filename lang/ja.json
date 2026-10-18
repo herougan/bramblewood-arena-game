@@ -466,6 +466,7 @@
  "Forge": "鍛冶",
  "Forge currencies": "鍛冶の通貨",
  "Forge Regular": "鍛冶場の常連",
+ "Found a bug? Pick 🐞 Bug and say what happened and how to make it happen again.": "バグを見つけた？ 🐞 バグを選んで、何が起きたか、どうすればまた起きるかを書いてください。",
  "Four score and seven turns ago, we had a plan.": "87ターン前、我々には作戦があった。",
  "Fox Kit": "子ギツネ",
  "Fox Warchief": "キツネの戦長",
@@ -1135,6 +1136,7 @@
  "The Deep": "深淵",
  "The enemy Bramble. Break it to win.": "敵のいばらです。壊せば勝ち。",
  "The finest finish there is.": "これ以上ない仕上げです。",
+ "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.": "確認されたバグの最初の報告者には 🍁 メープルリーフ。大きな発見ほど多くもらえます。",
  "The first tree-line past the castle walls — mostly scouts and stragglers.": "城壁の先にある最初の森の端 — 斥候や落伍者がほとんど。",
  "The Forge": "鍛冶場",
  "The Forge is now the {name}: Lv {cap}, rarer cards too.": "鍛冶は {name} になりました：Lv {cap}、よりレアなカードも扱えます。",
@@ -1209,6 +1211,7 @@
  "Tip": "ヒント",
  "Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.": "ほろ酔い：左・正面・右のどこかをランダムに攻撃し、誰もいなければ空振りします。",
  "to find": "未発見",
+ "Top hunters earn the 🐞 Bug Hunter title.": "トップハンターには 🐞 バグハンターの称号。",
  "Top level": "最大レベル",
  "Top rarity": "最高レア",
  "Total Damage Dealt": "与えた総ダメージ",
@@ -1466,5 +1469,6 @@
  "— live for every player.": "— 全プレイヤーに反映済み。",
  "— needs {e}⚡, you have {currentEnergy}⚡": "— 必要 {e}⚡、所持 {currentEnergy}⚡",
  "— repeat-clear payout": "— 再クリア報酬",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "🐞 Bug Hunters": "🐞 バグハンター"
 }

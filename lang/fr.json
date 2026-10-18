@@ -466,6 +466,7 @@
  "Forge": "Forge",
  "Forge currencies": "Monnaies de la forge",
  "Forge Regular": "Habitué de la Forge",
+ "Found a bug? Pick 🐞 Bug and say what happened and how to make it happen again.": "Un bug ? Choisissez 🐞 Bug et dites ce qui s’est passé et comment le reproduire.",
  "Four score and seven turns ago, we had a plan.": "Il y a quatre-vingt-sept tours, nous avions un plan.",
  "Fox Kit": "Renardeau",
  "Fox Warchief": "Chef de guerre renard",
@@ -1135,6 +1136,7 @@
  "The Deep": "Les Abysses",
  "The enemy Bramble. Break it to win.": "Le Roncier ennemi. Détruisez-le pour gagner.",
  "The finest finish there is.": "La plus belle finition qui soit.",
+ "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.": "Le premier signalement de chaque bug confirmé rapporte des 🍁 Feuilles d’érable. Les grosses trouvailles rapportent plus.",
  "The first tree-line past the castle walls — mostly scouts and stragglers.": "La première lisière au-delà des remparts — surtout des éclaireurs et des traînards.",
  "The Forge": "La Forge",
  "The Forge is now the {name}: Lv {cap}, rarer cards too.": "La Forge est maintenant {name} : niv. {cap}, et des cartes plus rares.",
@@ -1209,6 +1211,7 @@
  "Tip": "Astuce",
  "Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.": "Pompette : cette carte frappe au hasard à gauche, devant ou à droite, et rate s’il n’y a personne.",
  "to find": "à découvrir",
+ "Top hunters earn the 🐞 Bug Hunter title.": "Les meilleurs chasseurs gagnent le titre 🐞 Chasseur de bugs.",
  "Top level": "Niveau max",
  "Top rarity": "Rareté maximale",
  "Total Damage Dealt": "Dégâts infligés",
@@ -1466,5 +1469,6 @@
  "— live for every player.": "— en ligne pour tous les joueurs.",
  "— needs {e}⚡, you have {currentEnergy}⚡": "— il faut {e}⚡, vous en avez {currentEnergy}⚡",
  "— repeat-clear payout": "— gain de passage répété",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "🐞 Bug Hunters": "🐞 Chasseurs de bugs"
 }

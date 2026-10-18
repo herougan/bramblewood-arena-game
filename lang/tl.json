@@ -466,6 +466,7 @@
  "Forge": "Pandayan",
  "Forge currencies": "Pera ng pandayan",
  "Forge Regular": "Suki ng Pandayan",
+ "Found a bug? Pick 🐞 Bug and say what happened and how to make it happen again.": "May nakitang bug? Piliin ang 🐞 Bug at sabihin ang nangyari at paano ito mauulit.",
  "Four score and seven turns ago, we had a plan.": "Walumpu’t pitong turn na ang nakalipas, may plano tayo.",
  "Fox Kit": "Batang Soro",
  "Fox Warchief": "Sorong Datu ng Digmaan",
@@ -1134,6 +1135,7 @@
  "The Deep": "Ang Kailaliman",
  "The enemy Bramble. Break it to win.": "Ang Dawag ng kalaban. Wasakin ito para manalo.",
  "The finest finish there is.": "Ang pinakamagandang finish.",
+ "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.": "Ang unang ulat ng bawat bug na makumpirma namin ay may 🍁 Maple Leaves. Mas malaki ang gantimpala sa malalaking tuklas.",
  "The first tree-line past the castle walls — mostly scouts and stragglers.": "Ang unang hanay ng puno lampas sa pader ng kastilyo — karamihan ay mga tagamanman at naiwan.",
  "The Forge": "Ang Pandayan",
  "The Forge is now the {name}: Lv {cap}, rarer cards too.": "Ang Pandayan ay {name} na: Lv {cap}, pati mas bihirang card.",
@@ -1208,6 +1210,7 @@
  "Tip": "Tip",
  "Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.": "Lasing: tumatama ang card na ito sa kaliwa, harap o kanan nang random, at sablay kung walang tao roon.",
  "to find": "na hahanapin",
+ "Top hunters earn the 🐞 Bug Hunter title.": "Makukuha ng pinakamahuhusay ang titulong 🐞 Bug Hunter.",
  "Top level": "Pinakamataas na level",
  "Top rarity": "Pinakamataas na rarity",
  "Total Damage Dealt": "Kabuuang pinsalang naibigay",
@@ -1464,5 +1467,6 @@
  "— live for every player.": "— live para sa lahat ng manlalaro.",
  "— needs {e}⚡, you have {currentEnergy}⚡": "— kailangan ng {e}⚡, may {currentEnergy}⚡ ka",
  "— repeat-clear payout": "— bayad sa paulit-ulit na clear",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "🐞 Bug Hunters": "🐞 Mga Bug Hunter"
 }

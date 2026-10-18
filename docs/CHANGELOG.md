@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 evening: Bug Hunters in the feedback window
+
+- The 💬 feedback window has a 🐞 Bug Hunters box (owner 21:57): pick 🐞 Bug and say how to make it happen again; the first report of each confirmed bug earns 🍁 Maple Leaves, big finds earn more, and top hunters earn the 🐞 Bug Hunter title. Rewards are granted by hand for now (nothing automatic). TX keys `fb.bughunt-*`, translated in all 12 packs (`tools/i18n_2026_10_19_bughunt.py`).
+
 ## 2026-10-18 evening (Package M: the Tide's motion, Pounce at the bramble)
 - **The Flood comes in more clearly** (owner 20:45: "The movement during flood should be a bit more obvious during transition."): it tilts in steeper from the left (8°, was 5°), its crest surges higher (2.9×, was 1.9×) with the back foam line bright while it climbs, and as it reaches the top the water swells down into view (40px, under the top border's bunting) and settles back. The Ebb's drain is unchanged.
 - **The settled water moves more on Flood, less on Ebb** ("during steady state, 70% more movement than now ... In Ebb ... 20% less"): the slosh is 8.5px on Flood and High Tide (was 5px, ×1.7) and 4px on Ebb (×0.8). The knobs are named in arena_app.js: `TIDE_FLOOD_MOTION`, `TIDE_EBB_MOTION` (and `TIDE_RISE_SKEW`, `TIDE_ARRIVE_SWELL`), passed to the CSS as `--tw-slosh` / `--tw-swell`. Measured in headless Chromium at 1366×900 (board 1248×401, animations seeked frame by frame): Flood slosh 5.0 → 8.5px, Ebb 5.0 → 4.0px, the rise's tilt 5° → 8°, the crest 1.9× → 2.9×, the arrival swell 0 → 46px at its deepest. Transforms and opacity only; Low effects, Minimal and reduced motion still keep the water still.

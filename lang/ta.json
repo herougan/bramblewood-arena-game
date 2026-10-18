@@ -466,6 +466,7 @@
  "Forge": "உலை",
  "Forge currencies": "உலை நாணயங்கள்",
  "Forge Regular": "உலைக்கூட வழக்கமானவர்",
+ "Found a bug? Pick 🐞 Bug and say what happened and how to make it happen again.": "பிழை கண்டீர்களா? 🐞 பிழை என்பதைத் தேர்ந்தெடுத்து, என்ன நடந்தது, மீண்டும் எப்படி நிகழ்த்துவது என்று சொல்லுங்கள்.",
  "Four score and seven turns ago, we had a plan.": "எண்பத்தேழு முறைகளுக்கு முன், நம்மிடம் ஒரு திட்டம் இருந்தது.",
  "Fox Kit": "நரிக்குட்டி",
  "Fox Warchief": "நரிப் போர்த்தலைவன்",
@@ -1135,6 +1136,7 @@
  "The Deep": "ஆழ்கடல்",
  "The enemy Bramble. Break it to win.": "எதிரியின் முட்புதர். வெல்ல அதை உடையுங்கள்.",
  "The finest finish there is.": "இதைவிடச் சிறந்த மினுமினுப்பு இல்லை.",
+ "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.": "நாங்கள் உறுதிசெய்யும் ஒவ்வொரு பிழையின் முதல் அறிக்கைக்கும் 🍁 மேப்பிள் இலைகள் கிடைக்கும். பெரிய கண்டுபிடிப்புகளுக்கு அதிகம்.",
  "The first tree-line past the castle walls — mostly scouts and stragglers.": "கோட்டைச் சுவர்களுக்கு அப்பால் முதல் மரவரிசை — பெரும்பாலும் வேவுக்காரர்களும் பின்தங்கியவர்களும்.",
  "The Forge": "உலைக்கூடம்",
  "The Forge is now the {name}: Lv {cap}, rarer cards too.": "உலை இப்போது {name}: நிலை {cap}, அரிய அட்டைகளும் கூட.",
@@ -1209,6 +1211,7 @@
  "Tip": "குறிப்பு",
  "Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.": "போதை: இந்த அட்டை தற்செயலாக இடது, முன், அல்லது வலது பக்கம் தாக்கும்; அங்கே யாரும் இல்லையெனில் தவறும்.",
  "to find": "கண்டுபிடிக்க",
+ "Top hunters earn the 🐞 Bug Hunter title.": "சிறந்த வேட்டையர்களுக்கு 🐞 பிழை வேட்டையர் பட்டம் கிடைக்கும்.",
  "Top level": "உச்ச நிலை",
  "Top rarity": "உச்ச அரிதுநிலை",
  "Total Damage Dealt": "மொத்தம் ஏற்படுத்திய சேதம்",
@@ -1466,5 +1469,6 @@
  "— live for every player.": "— எல்லா ஆட்டக்காரர்களுக்கும் நேரலையில்.",
  "— needs {e}⚡, you have {currentEnergy}⚡": "— {e}⚡ தேவை, உங்களிடம் {currentEnergy}⚡",
  "— repeat-clear payout": "— மீண்டும் வெல்லும் வெகுமதி",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "🐞 Bug Hunters": "🐞 பிழை வேட்டையர்"
 }

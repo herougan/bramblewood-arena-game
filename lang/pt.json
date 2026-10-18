@@ -466,6 +466,7 @@
  "Forge": "Forja",
  "Forge currencies": "Moedas da forja",
  "Forge Regular": "Frequentador da Forja",
+ "Found a bug? Pick 🐞 Bug and say what happened and how to make it happen again.": "Encontraste um bug? Escolhe 🐞 Bug e diz o que aconteceu e como o repetir.",
  "Four score and seven turns ago, we had a plan.": "Há oitenta e sete turnos, tínhamos um plano.",
  "Fox Kit": "Filhote de Raposa",
  "Fox Warchief": "Raposa Chefe de Guerra",
@@ -1135,6 +1136,7 @@
  "The Deep": "As Profundezas",
  "The enemy Bramble. Break it to win.": "O Silvado inimigo. Destrói-o para ganhar.",
  "The finest finish there is.": "O melhor acabamento que existe.",
+ "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.": "O primeiro aviso de cada bug confirmado ganha 🍁 Folhas de ácer. Grandes descobertas ganham mais.",
  "The first tree-line past the castle walls — mostly scouts and stragglers.": "A primeira linha de árvores além das muralhas — quase só batedores e retardatários.",
  "The Forge": "A Forja",
  "The Forge is now the {name}: Lv {cap}, rarer cards too.": "A Forja agora é {name}: Nv. {cap}, e cartas mais raras.",
@@ -1209,6 +1211,7 @@
  "Tip": "Dica",
  "Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.": "Tocado: esta carta ataca ao acaso à esquerda, à frente ou à direita, e falha se não estiver lá ninguém.",
  "to find": "por descobrir",
+ "Top hunters earn the 🐞 Bug Hunter title.": "Os melhores caçadores ganham o título 🐞 Caçador de bugs.",
  "Top level": "Nível máximo",
  "Top rarity": "Raridade máxima",
  "Total Damage Dealt": "Dano causado",
@@ -1465,5 +1468,6 @@
  "— live for every player.": "— ativo para todos os jogadores.",
  "— needs {e}⚡, you have {currentEnergy}⚡": "— precisa de {e}⚡, tens {currentEnergy}⚡",
  "— repeat-clear payout": "— pagamento por repetir",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "🐞 Bug Hunters": "🐞 Caçadores de bugs"
 }

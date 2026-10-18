@@ -466,6 +466,7 @@
  "Forge": "Schmiede",
  "Forge currencies": "Schmiede-Währungen",
  "Forge Regular": "Stammgast der Schmiede",
+ "Found a bug? Pick 🐞 Bug and say what happened and how to make it happen again.": "Einen Bug gefunden? Wähle 🐞 Bug und schreib, was passiert ist und wie man es wiederholt.",
  "Four score and seven turns ago, we had a plan.": "Vor siebenundachtzig Zügen hatten wir einen Plan.",
  "Fox Kit": "Fuchswelpe",
  "Fox Warchief": "Fuchs-Kriegsfürst",
@@ -1135,6 +1136,7 @@
  "The Deep": "Die Tiefe",
  "The enemy Bramble. Break it to win.": "Die gegnerische Dornenhecke. Zerstöre sie, um zu gewinnen.",
  "The finest finish there is.": "Die edelste Veredelung überhaupt.",
+ "The first report of each bug we confirm earns 🍁 Maple Leaves. Big finds earn more.": "Die erste Meldung jedes bestätigten Bugs bringt 🍁 Ahornblätter. Große Funde bringen mehr.",
  "The first tree-line past the castle walls — mostly scouts and stragglers.": "Die erste Baumreihe hinter den Burgmauern — meist Späher und Nachzügler.",
  "The Forge": "Die Schmiede",
  "The Forge is now the {name}: Lv {cap}, rarer cards too.": "Die Schmiede ist jetzt {name}: Stufe {cap}, auch seltenere Karten.",
@@ -1209,6 +1211,7 @@
  "Tip": "Tipp",
  "Tipsy: this card swings left, ahead or right at random, and misses if nobody is there.": "Beschwipst: Diese Karte schlägt zufällig nach links, geradeaus oder rechts und verfehlt, wenn dort niemand ist.",
  "to find": "zu entdecken",
+ "Top hunters earn the 🐞 Bug Hunter title.": "Die besten Jäger erhalten den Titel 🐞 Bugjäger.",
  "Top level": "Höchste Stufe",
  "Top rarity": "Höchste Seltenheit",
  "Total Damage Dealt": "Verursachter Schaden",
@@ -1465,5 +1468,6 @@
  "— live for every player.": "— live für alle Spieler.",
  "— needs {e}⚡, you have {currentEnergy}⚡": "— braucht {e}⚡, du hast {currentEnergy}⚡",
  "— repeat-clear payout": "— Wiederholungsprämie",
- "日本語": "日本語"
+ "日本語": "日本語",
+ "🐞 Bug Hunters": "🐞 Bugjäger"
 }
