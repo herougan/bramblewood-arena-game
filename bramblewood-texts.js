@@ -24,6 +24,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "net.friends-failed": "Couldn't reach Friends right now. Check your connection and try again.",
   "net.friends-list-failed": "Couldn't load your friends list.",
   "net.market-mine-failed": "Couldn't load your listings.",
+  "ui.reveal-gate-mapnum": "Win a fight on Map {n} or further on to learn this.",
+  "ui.reveal-gate-map": "Clear Map {n} to learn this.",
   "ui.rating-moves-with-pvp-ranked": "Your rating goes up and down with your PvP and Ranked Live results in the Arena.",
   "ui.no-ranked-players-yet": "No ranked players yet. Be the first! Win PvP or Ranked Live fights in the Arena to get on the board.",
   "ui.guild-sign-in-syncs": "Sign in to create or join a guild. Membership syncs across devices, like your progress and the Shop.",

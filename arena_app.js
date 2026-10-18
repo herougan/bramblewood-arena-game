@@ -1096,7 +1096,7 @@ const PASSIVE_DEFS = [
   // Nova (user: "Nova - oo magic skill maybe"): built, but meant for Map 50 and later.
   {key:'nova', category:'evergreen', label:'Nova', kind:'number', min:1, defaultValue:3, desc:v=>`When it dies, it bursts: every enemy unit takes ${numOr(v, 3)} magic damage.`},
   {key:'crystallise', category:'evergreen', label:'Crystallise', kind:'number', min:1, defaultValue:5, desc:v=>`When it dies, it turns into a 0/${numOr(v, 5)} crystal that holds its slot.`},
-  {key:'cure', category:'evergreen', label:'Cure', kind:'number', min:1, defaultValue:2, desc:v=>`Every upkeep, cures your most afflicted unit (itself too): up to ${numOr(v, 2)} Poison, then Bleed, come off. Toxin can't be cured.`},
+  {key:'cure', category:'evergreen', label:'Cure', kind:'number', min:1, defaultValue:2, desc:v=>`Every upkeep, cures your most poisoned unit (itself too) of up to ${numOr(v, 2)} Poison. Toxin can't be cured.`}, // 2026-10-18 (audit 4): Poison only, as the engine does
   {key:'mountainClimber', category:'passive', label:'Mountain Climber', kind:'boolean', desc:()=>`Sure-footed: Frigid, Scorching, Scorched Ground, the volcano, Avalanche, Landslide and Earthquake pass it by.`},
   // Atheist (2026-10-16, user: "Unless Atheist (1/2 damage from magic sources, dark (some devilry attacks) or holy (some ecclesia attacks) damage) -
   // then take 0 damage from this [Leylines III]."): on no card yet.
@@ -5968,7 +5968,9 @@ function renderCodexGrid(keepPage){
     // is drawn from (the card itself, owned or not, an edited card, Admin Mode, the emoji style, the skills not met yet), so turning
     // back a page, flipping a sort or coming back to the Codex reuses it. Its emoji are turned into pictures in the string
     // (EmojiStyle.htmlBlock, as the board rows do), so the emoji observer has nothing to swap node by node after it lands.
-    let sig = ''; try{ sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
+    // 2026-10-18 (audit 4): the key also carries whether the card's revealAfter gate is met, so a masked "?" tile (Quarry Mole)
+    // is redrawn once Map 0 is cleared, without a reload.
+    let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
     const hit = sig && codexTileCache.get(id);
     if(hit && hit.sig === sig) return hit.html;
     const tags = [];
@@ -8872,7 +8874,7 @@ function triggerPreviewText(t){
     case 'exileSelf': doText = `exile itself instead of going to the graveyard`; break;
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
     case 'swapPositions': doText = `swap two random enemy units' positions`; break;
-    case 'heal': doText = `heal ${t.who && t.who!=='self' ? whoTarget : 'itself'} for ${amt} (Poison, then Bleed first, capped at max HP)`; break; // 2026-10-16
+    case 'heal': doText = `heal ${t.who && t.who!=='self' ? whoTarget : 'itself'} for ${amt} (stanching Bleed first, capped at max HP)`; break; // 2026-10-16; 2026-10-18 (audit 4): heals no longer touch Poison, only Bleed
     case 'shield': doText = `give ${t.who === 'ally' && t.sub === 'all' ? 'every ally' : t.who && t.who!=='self' ? whoTarget : 'itself'} ${amt} Shield (temporary Health)`; break; // 2026-10-14
     case 'mindControl': doText = `take control of a ${t.sub||'random'} enemy unit`; break;
     case 'stunPlayer': doText = `make the enemy player skip ${t.count>1 ? t.count + ' turns' : 'their turn'}`; break;
@@ -14544,7 +14546,10 @@ function cpuAiAutoLevel(mapId, node){
   return n >= CPU_SMART_FROM_MAP && CPU_SMART_KINDS.has(node.kind || 'skirmish') ? 1 : 0;
 }
 function cpuAiLevelForNode(mapId, node){ const k = node && CPU_AI_KEYS.indexOf(node.ai); return k >= 0 ? k : cpuAiAutoLevel(mapId, node); }
-function cpuAiLevelOfMatch(m){ if(!m) return 1; if(m.aiLevel != null) return m.aiLevel; return m.mode === 'tutorial' ? 0 : 1; }
+// 2026-10-18 (audit 4): a road fight saved before aiLevel was kept falls back to its node's rule (a Map 0–4 fight resumes on Basic, not Smart).
+function cpuAiLevelOfMatch(m){ if(!m) return 1; if(m.aiLevel != null) return m.aiLevel; if(m.mode === 'tutorial') return 0;
+  if(m.conquestNode){ try{ const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(f && f.node) return cpuAiLevelForNode(m.conquestNode.mapId, f.node); }catch(e){} }
+  return 1; }
 function cpuAiPillHTML(level){ const k = CPU_AI_KEYS[level] || 'smart'; return `<div class="vs-ai-pill is-${k}" title="How the CPU plays this fight">🧠 ${CPU_AI_LABEL[k]} CPU</div>`; }
 function nodePatchFor(mapId, key){ const e = nodeEdits[mapId] = nodeEdits[mapId] || {}; e.patches = e.patches || {}; e._localAt = Date.now(); return e; } // _localAt: see applyCloudNodeEdits
 function isAddedNode(mapId, key){ return ((nodeEdits[mapId]||{}).added||[]).some(n=> n.key===key); }
@@ -15001,7 +15006,12 @@ function fieldUnrevealedMap(mapId){ try{ return mapId != null && mapNumberOf(map
 function matchFieldUnrevealed(m){ return !!(m && m.conquestNode && fieldUnrevealedMap(m.conquestNode.mapId)); }
 // What an unlearned "?" says on hover: never what the effect does (Mist used to say "There is no day and night").
 const MISTY_Q_TIP = "Something hangs in the air here. You'll learn more soon.";
-function fieldRowQTip(row){ return (row && row.qTip) || 'Shows what it does once it first happens'; }
+// 2026-10-18 (audit 4): a revealAfter-gated row never reveals by happening, so its "?" says what opens it (built from the gate).
+function revealGateTip(ra){ try{ if(!ra) return '';
+  if(ra.mapNum != null) return TX('ui.reveal-gate-mapnum', {n: Number(ra.mapNum)});
+  if(ra.map){ const n = mapNumberOf(ra.map); return TX('ui.reveal-gate-map', {n: n != null ? n : ra.map}); } }catch(e){} return ''; }
+function fieldRowGateTip(row){ try{ return row && fieldRowGated(row.key) ? revealGateTip(FIELD2[row.key].revealAfter) : ''; }catch(e){ return ''; } }
+function fieldRowQTip(row){ return fieldRowGateTip(row) || (row && row.qTip) || 'Shows what it does once it first happens'; }
 // Misty (2026-10-15, user: "The mist effect ? now says 'There is no day and night'"): what rules.misty really does. It turns the
 // day/night cycle off (fightRules: phase 'off'), so Diurnal and Nocturnal bonuses never apply, and the fog's tint drifts instead.
 // 2026-10-15 (user: "In misty maps in later levels, they explicitly have a Mist pill in the battlefield AND a Mist effect card. And it
@@ -15096,13 +15106,17 @@ function simulateSkirmishVsDeckSeeded(node, deckCounts, playerChar, seed){
   const a = P[1].hq.hp<=0, b = P[2].hq.hp<=0;
   return {win: over && b && !a, castleLeft: P[1].hq.hp / P[1].hq.maxHp};
 }
-function simulateSkirmishVsMyDeck(node, n){ return simulateSkirmishVsDeck(node, myDeckCounts, n, myCastleDef()); }
-function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
+// 2026-10-18 (audit 4): ai = {level} plays the fight as the game does (aiAim): the CPU at that level (Edit skirmish's Difficulty, or
+// the map rule), your deck at Smart (it stands in for you). Without it the sims stay silent (no aiAim), as the curve tools expect.
+// (aiAim costs nothing extra here: 200 games took about as long as the silent ones in a Node timing, 2026-10-18.)
+function simulateSkirmishVsMyDeck(node, n, ai){ return simulateSkirmishVsDeck(node, myDeckCounts, n, myCastleDef(), ai); }
+function simulateSkirmishVsDeck(node, deckCounts, n, playerChar, ai){
+  const aimed = !!(ai && ai.level != null), cpuLv = aimed ? Math.max(0, Math.min(2, Number(ai.level) || 0)) : null;
   const defs = getCardDefs(); let wins = 0, losses = 0, draws = 0, rounds = 0, castleLeft = 0;
   const myChar = playerChar || CHARACTER_DEFS.castle;
   const enemyChar = skirmishCastle(node).character;
   for(let i=0;i<n;i++){
-    const engine = makeSimEngine(defs, seededRng(9100+i), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: fightRules(null, node)});
+    const engine = makeSimEngine(defs, seededRng(9100+i), Object.assign({recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: fightRules(null, node)}, aimed ? {aiAim:true, aiLevel:cpuLv} : {}));
     const sideOf = id=> id===1?'A':'B', stats = {};
     const P = {1: engine.newPlayer(1, deckCounts, myChar), 2: engine.newPlayer(2, node.deck||{}, enemyChar)};
     P[2].loopCards = []; applySkirmishSetup(P, node);
@@ -15112,7 +15126,7 @@ function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
       engine.setSuddenDeath(r >= SUDDEN_DEATH_ROUND, r >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
       [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
       if(r > 1) engine.roundStart(P, r, sideOf, stats, null); // day/night and the field, as in a real fight
-      engine.aiTakeTurn(P, sideOf, 1, stats, null); engine.aiTakeTurn(P, sideOf, 2, stats, null);
+      if(aimed) engine.setAiLevel(1); engine.aiTakeTurn(P, sideOf, 1, stats, null); if(aimed) engine.setAiLevel(cpuLv); engine.aiTakeTurn(P, sideOf, 2, stats, null);
       over = engine.resolveCombat(P, sideOf, stats, null, r%2===0 ? 1 : 2);
       if(over) break;
       const sig = boardSignature(P); stalled = (sig===lastSig && noActionsLeft(P)) ? stalled+1 : 0; lastSig = sig; if(stalled>=2 && r >= STALL_DRAW_FROM_ROUND) break; // 2026-10-15
@@ -15492,8 +15506,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         openCardEditor(null); }; }
     const search = document.getElementById('seSearch');
     search.addEventListener('input', ()=>{ read(); q = search.value; const pos = search.selectionStart; render(); const s2 = document.getElementById('seSearch'); s2.focus(); s2.setSelectionRange(pos, pos); });
-    document.getElementById('seSim').onclick = ()=>{ read(); const r = simulateSkirmishVsMyDeck(draft, 200);
-      simText = `Your active deck vs this skirmish, 200 games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average${r.wins ? ` · ${Math.round(r.avgCastleLeft*100)}% bramble left when you win` : ''}.`; render(); };
+    document.getElementById('seSim').onclick = ()=>{ read(); const simLv = cpuAiLevelForNode(mapId, draft), r = simulateSkirmishVsMyDeck(draft, 200, {level: simLv}); // 2026-10-18 (audit 4): against the Difficulty picked
+      simText = `Your active deck vs this skirmish (${CPU_AI_LABEL[CPU_AI_KEYS[simLv]] || 'Smart'} CPU), 200 games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average${r.wins ? ` · ${Math.round(r.avgCastleLeft*100)}% bramble left when you win` : ''}.`; render(); };
     const simLine = (r, who)=> `${who}, ${r.n} games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average.`;
     document.getElementById('seSimNew').onclick = ()=>{ read(); const deck = expectedPlayerDeck(mapId, draft.key); const r = simulateSkirmishVsDeck(draft, deck, 200);
       skirmishCurveCache[mapId+':'+draft.key] = r.wins/r.n;
@@ -18721,6 +18735,11 @@ const TUT_MAP_OPEN_KEY = 'bramblewood_tut_map_opened_v1';
 function tutMapOpenSlide(map, positions){
   try{
     if(map.nodes.some(n=> tutSideNodeHidden(map, n)) || localStorage.getItem(TUT_MAP_OPEN_KEY)) return;
+    // 2026-10-18 (audit 4): a save from before the slide that has already won T-2 or later (or a fight on Map 2+) is long past this
+    // moment: the key is set for it and nothing plays.
+    { const done = (loadConquestProgress().completed || []).map(String);
+      if(['T-2', 'T-3', 'T-4'].some(k=> done.includes(conquestNodeId('mtut', k))) || done.some(id=>{ const n = mapNumberOf(id.split(':')[0]); return n != null && n >= 2; })){
+        localStorage.setItem(TUT_MAP_OPEN_KEY, '1'); return; } }
     const cv = document.getElementById('conquestCanvas'); if(!cv) return;
     if(reducedMotion()){ localStorage.setItem(TUT_MAP_OPEN_KEY, '1'); return; }
     const from = tutPairCentred(map, positions);
@@ -20421,7 +20440,7 @@ function raidFieldCardsHTML(rules){
     const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, art: hidden ? '' : fieldArtOf(fieldArtKeyOfRow(row, rules)), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: hidden ? '?' : row.text}};
     const card = matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}`, `tabindex="0" role="img" style="--i:${i}" title="${escapeAttr(row.name + ': ' + (hidden ? fieldRowQTip(row) : row.text))}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (hidden ? fieldRowQTip(row) : row.text))}"`,
       `<div class="env-line">${hidden ? '?' : escapeHtml(row.short || '')}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`);
-    return `<figure class="ar2-rule">${card}<figcaption><b>${row.icon} ${escapeHtml(row.name)}</b><span>${hidden ? '<i>? You learn what it does the first time it happens in a fight.</i>' : keywordizeHTML(escapeHtml(row.text))}</span></figcaption></figure>`; }).join('');
+    return `<figure class="ar2-rule">${card}<figcaption><b>${row.icon} ${escapeHtml(row.name)}</b><span>${hidden ? (fieldRowGateTip(row) ? `<i>? ${escapeHtml(fieldRowGateTip(row))}</i>` : '<i>? You learn what it does the first time it happens in a fight.</i>') : keywordizeHTML(escapeHtml(row.text))}</span></figcaption></figure>`; }).join('');
 }
 function raidPanelHTML(){
   if(!RaidM) return '';
@@ -21600,7 +21619,7 @@ function resolveFactionChoice(pick){
   // picker on the way in and showing through while the picker zoomed and faded. The tutorial fight now starts at once, under the
   // fading picker, so the picker opens straight onto the battlefield. Home is still rendered first (switchTab('home') on the way
   // in), so nothing it sets up is lost.
-  const hide = ()=>{ if(el){ el.hidden = true; el.classList.remove('fs-zoom'); } };
+  const hide = ()=>{ if(el){ el.hidden = true; el.classList.remove('fs-zoom'); el.removeAttribute('data-a11y-skip'); } };
   const start = ()=>{ beginTutorialStage(1); fadeInBattlefield(); };
   let fx = false;
   if(el && !el.hidden && !reducedMotion()){ try{ factionToBattleFx(pick, el, hide); fx = true; }catch(e){} }
@@ -21616,7 +21635,7 @@ function factionToBattleFx(pick, screen, done){
   try{ const D = tutorialDecksFor(1, pick).mine; Object.keys(D).forEach(id=>{ for(let i = 0; i < Math.min(2, D[id]); i++) ids.push(id); }); }catch(e){}
   ids = ids.filter(id=> defs[id]).slice(0, 8);
   const layer = document.createElement('div'); layer.className = 'f2b-layer'; layer.setAttribute('aria-hidden', 'true');
-  document.body.appendChild(layer); screen.classList.add('fs-zoom');
+  document.body.appendChild(layer); screen.setAttribute('data-a11y-skip', ''); screen.classList.add('fs-zoom'); // 2026-10-18 (audit 4): the fight starts under the fading screen; it no longer traps or takes focus (bramblewood-a11y.js)
   const W = innerWidth, H = innerHeight, ex = Math.min(180, W * 0.14), ey = H - 170; // about where the deck sits
   ids.forEach((id, i)=>{ const c = document.createElement('div'); c.className = 'f2b-card'; c.innerHTML = cardTileHTML(defs[id], {inPlay:true}); layer.appendChild(c);
     const sx = W - 120, sy = 40;
