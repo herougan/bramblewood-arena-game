@@ -900,7 +900,24 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.wind-tail-wing": "Flying – Tailwind: a quick extra turn before combat",
   "ui.wind-head-wing": "Flying – Headwind: its skills and triggers go off twice",
   "ui.wind-tail-quick": "Tailwind: a quick extra turn before combat",
-  "ui.back-to-home": "Back to Home"
+  "ui.back-to-home": "Back to Home",
+  "toast.nf-copies-own-level": "Each copy of a card now has its own level: the Forge raises only the copy you pick. Your copies kept the level they had.",
+  "ui.nf-fuse-blurb": "Every copy beyond what a deck can hold feeds your best copy of its card (the highest level, then the finest foil, then the oldest): it becomes Forge credit on that copy, spent before your wallet the next time you temper it. Foil, Shiny and skinned copies are kept.",
+  "ui.nf-fuse-tip": "Feeds every copy beyond what a deck can hold into your best copy of that card: the highest level first, then the finest foil. Foil, Shiny and skinned copies are kept.",
+  "ui.nf-fuse-into": "The copy they feed",
+  "ui.nf-copy-level": "Lv {n}",
+  "ui.nf-copy-shiny": "Shiny",
+  "ui.nf-copy-plain": "Plain",
+  "ui.nf-copy-deck": "Your main deck fights with this copy",
+  "ui.nf-copy-has-credit": "This copy has duplicate credit",
+  "ui.nf-copies-title": "Your copies",
+  "ui.nf-copies-help": "Each copy is its own card: the Forge works only on the one you pick.",
+  "ui.nf-copy-credit": "Duplicate credit on this copy: ✨ {dust} and {gold} Maple Leaves. It pays for this copy's next levels first.",
+  "ui.nf-refines-this-copy": "Refines the copy you picked (you have {n}).",
+  "ui.nf-nest-taken": "That nest is taken. Tap an empty one.",
+  "ui.nf-nest-locked": "That nest isn't built yet.",
+  "ui.nf-nest-full": "Every nest is full",
+  "ui.nf-energy-forged": "⚡ Max Energy {n}!"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

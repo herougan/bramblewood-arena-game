@@ -2950,7 +2950,7 @@ function getDraftableIds(includeHidden){
   // never for a real deck, regardless of whether Developer Mode is currently on or off.
   // 2026-10-02: also never offers a card the player doesn't know exists yet (Hidden, undiscovered)
   // or a Hall of Fame draft / an Antique that fails its balance check.
-  return Object.keys(defs).filter(id=>!defs[id].token && !defs[id].test && !defs[id].hero && defs[id].cardType!=='materia' && (includeHidden || !isCardHiddenForPlayer(defs[id])) && !hofBlocked(defs[id], defs)); // materia is for crafting, never for a deck (2026-10-11)
+  return Object.keys(defs).filter(id=>!defs[id].token && !defs[id].test && !defs[id].hero && defs[id].cardType!=='materia' && !defs[id].derivedFrom && (includeHidden || !isCardHiddenForPlayer(defs[id])) && !hofBlocked(defs[id], defs)); // materia is for crafting, never for a deck (2026-10-11); 2026-10-18 (package NF): nor a fight-only copy (an enemy's "@lv" card, your "~cp" copy)
 }
 
 /* ============================================================
@@ -4153,6 +4153,18 @@ const SoundKit = (()=>{
     gadget(){ tone(1800,0.03,'square',0.035); tone(2600,0.04,'sine',0.03,0.04); noise(0.04,0.02); tone(900,0.08,'triangle',0.025,0.08); },
     // One hammer blow of forgeStrike (2026-10-15), so each can land on its own hammer impact; i = 0, 1, 2 (the last adds the ring-out).
     forgeHit(i, last){ i = i || 0; tone(1200 - i*90, 0.07, 'square', 0.09); tone(2400 - i*120, 0.25, 'sine', 0.03); noise(0.06, 0.08); tone(140, 0.12, 'sine', 0.08); if(last) setTimeout(()=> noise(0.6, 0.035), 100); },
+    // Forging Max Energy (2026-10-18, package NF, owner 23:37: "Forging your energy should have an amazing energy and animation."):
+    // three layered beats the effect plays in time with the bar. 'charge': a rising hum, a crackle climbing with it and a pulse;
+    // 'overflow': a bright run up over a sizzle as the bar spills; 'boom': a deep thump, a burst of noise and a ringing chord.
+    // 'calm' (reduced motion / Effects Low): one soft two-note chime.
+    energySurge(stage){
+      if(stage === 'charge'){ sweep(110, 660, 1.05, 'sawtooth', 0.03); sweep(220, 1320, 1.05, 'triangle', 0.025); fnoise(1.05, 0.05, {type:'bandpass', freq:700, freqEnd:3400, q:1.4, crackle:0.12, attack:0.2});
+        [0, 0.28, 0.52, 0.72, 0.88].forEach((d, k)=> tone(330 + k*110, 0.08, 'square', 0.025, d)); return; }
+      if(stage === 'overflow'){ [523, 659, 784, 1047, 1319, 1568].forEach((f, k)=> tone(f, 0.22, 'triangle', 0.05, k*0.045)); fnoise(0.6, 0.05, {type:'highpass', freq:3000, freqEnd:6000, q:0.7, crackle:0.2, attack:0.02}); return; }
+      if(stage === 'boom'){ sweep(90, 36, 0.7, 'sine', 0.16); fnoise(0.5, 0.1, {type:'lowpass', freq:900, freqEnd:120, attack:0.004}); noise(0.12, 0.06);
+        [784, 988, 1175, 1568].forEach((f, k)=> tone(f, 0.9, 'sine', 0.035, 0.05 + k*0.02)); tone(2349, 1.1, 'sine', 0.015, 0.12); return; }
+      tone(784, 0.3, 'triangle', 0.045); tone(1175, 0.45, 'sine', 0.035, 0.12);
+    },
     forgeStrike(){ [0, 320, 640].forEach((ms, i)=> setTimeout(()=>{ tone(1200 - i*90, 0.07, 'square', 0.09); tone(2400 - i*120, 0.25, 'sine', 0.03); noise(0.06, 0.08); tone(140, 0.12, 'sine', 0.08); }, ms)); setTimeout(()=> noise(0.6, 0.035), 1000); },
     // Hit-style cues (2026-10-08, "more sfx samples"): one per UnitFX hit style, plus fire breath.
     claw(){ for(let i = 0; i < 3; i++) fnoise(0.09, 0.07, {type:'highpass', freq:5200, freqEnd:1800, q:0.9, attack:0.004, delay:i*0.045}); tone(140, 0.07, 'triangle', 0.05, 0.02); },
@@ -10434,7 +10446,10 @@ async function cloudPullState(){
       settleRaidPoints();
       saveCurrencies(true);
     }
-    const { data: unlocks } = await sbClient.from('player_card_unlocks').select('card_id, level').eq('profile_id', cloudUserId);
+    // 2026-10-18 (package NF): each row may carry its copies' levels (the proposed `copies` column); without the column the read
+    // falls back to card_id + level as before.
+    let { data: unlocks, error: unlocksErr } = await sbClient.from('player_card_unlocks').select(cloudCopiesColumn === false ? 'card_id, level' : 'card_id, level, copies').eq('profile_id', cloudUserId);
+    if(unlocksErr && cloudCopiesColumn !== false && cloudCopiesColumnMissing(unlocksErr)){ cloudCopiesColumn = false; ({ data: unlocks } = await sbClient.from('player_card_unlocks').select('card_id, level').eq('profile_id', cloudUserId)); }
     if(unlocks && unlocks.length){
       // Each row is now a true unlock record (card_id + level, level possibly 0 for an
       // unlocked-but-not-yet-leveled card) rather than the old level>0-only proxy — see
@@ -10442,6 +10457,9 @@ async function cloudPullState(){
       myUnlockedCardIds = new Set(unlocks.map(row=>row.card_id));
       myCardLevels = {};
       unlocks.forEach(row=>{ if(row.level>0) myCardLevels[row.card_id] = row.level; });
+      // 2026-10-18 (package NF): the copies keep their own levels (a lower cloud level never lowers a copy: copyModelSync lifts
+      // myCardLevels back to the best copy), then the row's copy levels are applied
+      try{ copyModelSyncAll(); cloudApplyCopyLevels(unlocks); }catch(e){}
       saveUnlockedCardIds(true); saveCardLevels(true);
     }
     const { data: decks } = await sbClient.from('player_decks').select('*').eq('profile_id', cloudUserId);
@@ -10485,9 +10503,16 @@ function cloudPushCardLevels(){
   const ids = new Set(Array.from(myUnlockedCardIds||[]));
   Object.keys(myCardLevels).forEach(id=>{ if(myCardLevels[id]>0) ids.add(id); });
   if(!ids.size) return;
-  const rows = Array.from(ids).map(id=>({ profile_id: cloudUserId, card_id: id, level: myCardLevels[id]||0 }));
-  return sbClient.from('player_card_unlocks').upsert(rows).then(()=>{}, ()=>{});
+  // 2026-10-18 (package NF): `level` stays the best copy's level (older builds, the market and Admin read it); `copies` carries every
+  // copy's level ([{u: uid, l: level}], best first) once the owner has applied supabase/proposed/20261019_card_copy_levels.sql. Until
+  // then the server says the column is missing, and the rows go again without it (and without it from then on, this session).
+  const withCopies = cloudCopiesColumn !== false && copyModelReady;
+  const rows = Array.from(ids).map(id=> Object.assign({ profile_id: cloudUserId, card_id: id, level: myCardLevels[id]||0 }, withCopies ? {copies: cloudCopiesOf(id)} : {}));
+  return sbClient.from('player_card_unlocks').upsert(rows).then(r=>{ const error = r && r.error;
+    if(error && withCopies && cloudCopiesColumnMissing(error)){ cloudCopiesColumn = false; return cloudPushCardLevels(); } }, ()=>{});
 }
+var cloudCopiesColumn = null; // null: not known yet; false: the server has no player_card_unlocks.copies column (not applied yet)
+function cloudCopiesColumnMissing(error){ return !!error && (/copies/i.test(error.message || '') || error.code === 'PGRST204' || error.code === '42703'); }
 function cloudPushDecks(){
   if(!sbClient || !isSignedIn()) return;
   const rows = (myDecks||[]).map(d=>({ id: d.id, profile_id: cloudUserId, name: d.name, character_id: d.characterId||null, leader_id: d.leaderId||null, counts: d.counts||{} }));
@@ -10923,9 +10948,22 @@ document.addEventListener('click', e=>{ const t = e.target && e.target.closest; 
   const tb = e.target.closest('[data-facility-tab]'); if(!tb) return; e.preventDefault();
   const [place, k] = tb.dataset.facilityTab.split(':');
   if(place === 'nest'){ nestTab = k; renderNest(); } else if(place === 'tavern'){ tavernTab = k; openTavern(); } });
-function wireStamina(root, rerender){ root.querySelectorAll('[data-stamina-buy]').forEach(b=> b.onclick = ()=>{ const r = buyStamina(b.dataset.staminaBuy);
-  if(r === 'ok'){ showToast(TX('toast.max-energy-is-now', {energyMax: energyMax()}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ refreshEnergyHud(); }catch(e){} rerender(); }
+function wireStamina(root, rerender){ root.querySelectorAll('[data-stamina-buy]').forEach(b=> b.onclick = ()=>{ const where = b.dataset.staminaBuy, from = energyMax(), r = buyStamina(where);
+  if(r === 'ok'){ showToast(TX('toast.max-energy-is-now', {energyMax: energyMax()}), 'ok'); if(where !== 'forge') try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ refreshEnergyHud(); }catch(e){} rerender();
+    if(where === 'forge') energyForgeCelebrate(from, energyMax()); }
   else if(r === 'cost'){ showToast(TX('toast.not-enough-to-raise-it-yet'), 'warn'); denyShake(b); } }); }
+// Forging Max Energy (2026-10-18, package NF, owner 23:37: "Forging your energy should have an amazing energy and animation."): a
+// Forge step plays FX.D.energyForge on its panel: the energy gathers, a bar charges from the old max to the new one and overflows,
+// sparks and lightning crackle along it, a shockwave, a bolt to the ⚡ pill, the number counts up, with SoundKit.energySurge's
+// layered sound. Reduced motion, Effects Off / Low or no GSAP: the calm version (a soft glow and the new pip lighting, one chime).
+function energyForgeCelebrate(from, to){
+  const panel = document.querySelector('#forgeUpgradesTab .stamina-panel') || document.querySelector('#view-forge .stamina-panel');
+  const calm = reducedMotion() || !fxAtLeast('med') || !hasGsap();
+  const sound = (n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} };
+  if(!panel || !window.FX || !FX.D || !FX.D.energyForge){ sound('unlockChime'); return Promise.resolve(); }
+  const hud = ['energyPill', 'energyPillPlay'].map(k=> document.getElementById(k)).find(e=> e && e.offsetParent) || null;
+  try{ return FX.D.energyForge(panel, {from, to, max: STAMINA_PLACES.tavern.to, calm, hud, sound, label: TX('ui.nf-energy-forged', {n: to})}) || Promise.resolve(); }catch(e){ sound('unlockChime'); return Promise.resolve(); }
+}
 // D40 (2026-10-12, my default, yours to change): max Energy grows +1 for every 20 different skirmishes cleared, up to +10.
 function energyClears(){ try{ return (loadConquestProgress().completed||[]).filter(id=> !/:tutorial2?$/.test(id)).length; }catch(e){ return 0; } }
 // 2026-10-12 (22:04, user: "Improving your energy limits is not automatic. Its done in Wildpaths - not part of the tree, but
@@ -11590,7 +11628,7 @@ function loadCardDupsLifetime(){
   return seed;
 }
 let myCardDupsLifetime = loadCardDupsLifetime();
-function lifetimeDuplicates(id){ return Math.max(myCardDupsLifetime[id]|0, Math.max(0, (myCardCopies[id]||[]).length - 1)); }
+function lifetimeDuplicates(id){ return Math.max(myCardDupsLifetime[id]|0, Math.max(0, (myCardCopies[id]||[]).filter(c=> !(c && c.m)).length - 1)); } // 2026-10-18 (package NF): a Base copy made for a deck (m) isn't a duplicate
 function saveCardCopies(){ try{ localStorage.setItem('bramblewood_arena_card_copies', JSON.stringify(myCardCopies)); localStorage.setItem(CARD_DUPS_LIFETIME_KEY, JSON.stringify(myCardDupsLifetime)); }catch(e){} soonCheckMilestones(); }
 // One-time migration (2026-09-27): every card this player unlocked BEFORE the Nest existed has
 // no copy record at all yet — without this, those cards would show as owned x0 in the new
@@ -11626,11 +11664,184 @@ function grantCardCopy(id, opts){
   const copy = {foil: !!(opts && opts.foil)};
   if(copy.foil && opts.finish && opts.finish !== 'auto') copy.finish = opts.finish;
   if(shiny) copy.shiny = true;
+  // 2026-10-18 (package NF): a new copy is its own card, at the card's starting level (older saves are moved over first, so it
+  // never inherits another copy's level).
+  try{ ensureCopyModel(); }catch(e){}
+  if(copyModelReady){ copy.uid = newCopyUid(); copy.level = copyBaseLevelOf(id); }
   myCardCopies[id].push(copy);
   saveCardCopies();
   if(shiny && !forcedShiny) setTimeout(()=>{ try{ const d = getCardDefs()[id]; showToast(TX('toast.shiny-your-new-came-out-shiny', {v1: d ? d.name : 'card'}), 'ok'); SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} }, 900);
 }
 function ownsShiny(id){ return (myCardCopies[id]||[]).some(c=> c && c.shiny); }
+// CARD_COPIES_NF:BEGIN (tests/nf-2026-10-19.js evaluates this block)
+// Every copy is its own card (2026-10-18, package NF, owner 23:37: "Each card is unique. Forging one card doesn't mean all copies
+// become stronger!"). Each owned copy in myCardCopies[id] carries its own Forge state next to its foil / Shiny / skin:
+//   uid    a stable id for the copy (the Forge's copy picker and the cloud row point at it)
+//   level  its level: the card's starting level for a new copy; 0 for a fresh hatchling (marked hatch:1)
+//   cr     its Forge credit {dust, gold} (duplicates fed to it), spent before the wallet when that copy is tempered
+//   free   levels it inherited from the old shared level (the move below): melting them gives nothing back, and they don't keep
+//          the copy out of "Fuse all extras" or "Disenchant extras" (only levels paid for on a copy do)
+//   m      a copy of a Base card made for a deck or the Forge (Base cards are unlimited): never fed, fused or melted as a
+//          spare, and not a lifetime duplicate
+// Array order is age: index 0 is the oldest copy. myCardLevels[id] stays the level of your BEST copy (what the Codex, the Nest,
+// the deck builder, the card defs and the cloud row's `level` show); copyModelSync keeps the two in step, and a write to
+// myCardLevels by older code (a reward that levels a card, the Nest's training, the cloud pull) lifts the best copy to it, never
+// lowering anything. Decks still hold counts: k copies of a card in a deck fight as your k strongest copies (ownedDeckForMatch; the
+// highest level first, then the finest foil, then the oldest). The leader fights as your best copy. Prestige, the Materia
+// enchantment and the lifetime duplicate count stay per card.
+// The move (COPY_MODEL_KEY, version COPY_MODEL_VERSION), once per save: before this every copy fought at the card's one level L,
+// so every copy keeps L (no deck gets weaker, nobody's best copy drops; the owner's "one copy at L, the rest at level 1" would
+// have weakened every deck holding several copies of a levelled card). The best copy keeps the card's Forge credit and counts as
+// paid for; the others' levels are marked inherited (free), so melting several copies can never refund the same levels twice. A
+// Base card that a deck holds more of than you own gets the missing copies at L too: those copies fought at L before.
+const COPY_MODEL_KEY = 'bramblewood_card_copy_model_v', COPY_MODEL_VERSION = 1, COPY_MODEL_NOTE_KEY = 'bramblewood_card_copy_model_note';
+var copyModelReady = false, copyUidSeq = 0; // var: read by cloudPushCardLevels, which sits above
+function newCopyUid(){ return 'c' + Date.now().toString(36) + (copyUidSeq++).toString(36) + Math.floor(Math.random() * 1296).toString(36); }
+function copyBaseDef(id){ return (typeof CARD_DEFS_BASELINE !== 'undefined' && CARD_DEFS_BASELINE[id]) || (typeof liveCards !== 'undefined' && liveCards[id]) || null; } // the order getCardLevel reads
+function copyBaseLevelOf(id){ return cardBaseLevel(copyBaseDef(id)); }
+function isUnlimitedCard(id){ const d = copyBaseDef(id); try{ return !!d && cardSourceOf(d).kind === 'base'; }catch(e){ return false; } }
+// A copy's level: never below the card's starting level, except a hatchling copy (Level 0); 11 at most (a limit break).
+function copyLevel(id, c){ if(!c) return 0; const b = copyBaseLevelOf(id); let L = Number.isFinite(c.level) ? c.level : b; if(L < b && !c.hatch) L = b; return Math.max(0, Math.min(LIMIT_BREAK_LEVEL, Math.round(L))); }
+function copyFoilRank(c){ let r = 0; try{ r = c && c.foil ? copyRefineRank(c) : 0; }catch(e){ r = c && c.foil ? 1 : 0; } return r + (c && c.shiny ? 0.5 : 0); }
+// Levels the player paid for on this copy (inherited ones don't count).
+function copyPaidLevels(id, c){ return Math.max(0, copyLevel(id, c) - Math.max(copyBaseLevelOf(id), (c && c.free) | 0)); }
+function copyIsPlain(c){ return !(c && (c.foil || c.shiny || c.skin)); }
+// Strongest first: the highest level, then the finest foil treatment, then the oldest copy (owner, package NF item 4: "Fuse all
+// extras should go into the highest level card first, then if draw, into the highest foil treatment."). [0] is the card's best copy:
+// the one the Forge opens on, the one a deck fights with first and the one the spare copies are fused into.
+function copyOrder(id){ const a = myCardCopies[id] || []; return a.map((c, i)=> i).sort((x, y)=> copyLevel(id, a[y]) - copyLevel(id, a[x]) || copyFoilRank(a[y]) - copyFoilRank(a[x]) || x - y); }
+function bestCopyIdx(id){ const o = copyOrder(id); return o.length ? o[0] : -1; }
+function copyIndexByUid(id, uid){ const a = myCardCopies[id] || []; if(uid){ const i = a.findIndex(c=> c && c.uid === uid); if(i >= 0) return i; } return bestCopyIdx(id); }
+function copyByUid(id, uid){ const i = copyIndexByUid(id, uid); return i >= 0 ? myCardCopies[id][i] : null; }
+function topCopyLevel(id){ const a = myCardCopies[id] || []; let t = -1; a.forEach(c=>{ const L = copyLevel(id, c); if(L > t) t = L; }); return t; }
+// Fills in a copy's fields and keeps the best copy and myCardLevels[id] in step (myCardLevels higher: the best copy rises to it).
+function copyModelSync(id){
+  const a = myCardCopies[id]; if(!a || !a.length) return a || [];
+  for(let i = 0; i < a.length; i++){ if(!a[i] || typeof a[i] !== 'object') a[i] = {foil:false}; const c = a[i]; if(!c.uid) c.uid = newCopyUid(); if(!Number.isFinite(c.level)) c.level = copyBaseLevelOf(id); }
+  const want = Number(myCardLevels[id]) || 0, top = topCopyLevel(id);
+  if(want > top){ const c = a[bestCopyIdx(id)]; c.level = Math.min(LIMIT_BREAK_LEVEL, want); if(c.level > 0) delete c.hatch; }
+  else if(top > want && (top > 0 || myCardLevels[id] != null)) myCardLevels[id] = top;
+  return a;
+}
+function copyModelSyncAll(){ Object.keys(myCardCopies || {}).forEach(id=>{ try{ copyModelSync(id); }catch(e){} }); }
+// After a copy's level changed: myCardLevels[id] is the best copy's level again (it can go down: a melt, a promotion).
+function syncBestLevel(id){ const top = topCopyLevel(id); if(top < 0) return; if(top > 0 || myCardLevels[id] != null) myCardLevels[id] = top; }
+function setCopyLevel(id, uid, L){
+  copyModelSync(id); const c = copyByUid(id, uid); if(!c) return false;
+  c.level = Math.max(0, Math.min(LIMIT_BREAK_LEVEL, L|0)); if(c.level > 0) delete c.hatch;
+  if(c.free && c.free > c.level) c.free = c.level;
+  syncBestLevel(id); saveCardCopies(); saveCardLevels(); try{ invalidateCardDefs(); }catch(e){} return true;
+}
+function copyCreditOf(c){ const cr = (c && c.cr) || {}; return {dust: Math.max(0, cr.dust|0), gold: Math.max(0, cr.gold|0)}; }
+function addCopyCredit(c, v){ if(!c) return; const o = copyCreditOf(c); c.cr = {dust: o.dust + Math.max(0, v.dust|0), gold: o.gold + Math.max(0, v.gold|0)}; }
+function spendCopyCredit(c, used){ if(!c) return; const o = copyCreditOf(c), n = {dust: Math.max(0, o.dust - (used.dust|0)), gold: Math.max(0, o.gold - (used.gold|0))}; if(n.dust || n.gold) c.cr = n; else delete c.cr; }
+// The one-time move to per-copy levels. Runs on the first read after load (and from a 0 ms timer once everything has loaded);
+// until it has run nothing is written, so a half-loaded page can never leave a half-moved save.
+function ensureCopyModel(){
+  if(copyModelReady) return true;
+  let v = 0; try{ v = +localStorage.getItem(COPY_MODEL_KEY) || 0; }catch(e){}
+  if(v >= COPY_MODEL_VERSION){ copyModelReady = true; copyModelSyncAll(); return true; }
+  const credit = myForgeCredit, decks = [].concat(myDecks || [], [{counts: myDeckCounts}]); // (throws while still loading: tried again later)
+  const need = {}; decks.forEach(d=> Object.entries((d && d.counts) || {}).forEach(([id, n])=>{ need[id] = Math.max(need[id] || 0, n | 0); }));
+  let multi = 0;
+  const ids = new Set(Object.keys(myCardCopies || {}).concat(Object.keys(need).filter(id=> isUnlimitedCard(id) && ((myCardCopies[id] || []).length || getCardLevel(id) > copyBaseLevelOf(id)))));
+  ids.forEach(id=>{
+    if(id === HERO_ID) return;
+    const a = myCardCopies[id] = (myCardCopies[id] || []).map(c=> (c && typeof c === 'object') ? c : {foil:false});
+    const L = getCardLevel(id), b = copyBaseLevelOf(id);
+    if(isUnlimitedCard(id)) while(a.length < (need[id] || 0)) a.push({foil:false, m:1});
+    if(!a.length) return;
+    a.forEach(c=>{ if(!c.uid) c.uid = newCopyUid(); if(!Number.isFinite(c.level)){ c.level = L; if(L < b) c.hatch = 1; } });
+    const best = a[bestCopyIdx(id)];
+    a.forEach(c=>{ if(c !== best && c.level > b) c.free = c.level; });
+    const cr = credit && credit[id]; if(cr && (cr.dust || cr.gold)) addCopyCredit(best, cr);
+    if(credit) delete credit[id];
+    if(a.length > 1 && L > b) multi++;
+  });
+  copyModelReady = true;
+  copyModelSyncAll(); saveCardCopies(); try{ saveForgeCredit(); }catch(e){}
+  try{ localStorage.setItem(COPY_MODEL_KEY, String(COPY_MODEL_VERSION)); }catch(e){}
+  // A save that had levelled cards with spare copies hears about the change once.
+  if(multi){ try{ if(!localStorage.getItem(COPY_MODEL_NOTE_KEY)){ localStorage.setItem(COPY_MODEL_NOTE_KEY, '1'); setTimeout(()=>{ try{ showToast(TX('toast.nf-copies-own-level'), 'ok'); }catch(e){} }, 5000); } }catch(e){} }
+  return true;
+}
+function copyModelOn(){ try{ return ensureCopyModel(); }catch(e){ return false; } }
+if(typeof setTimeout === 'function') setTimeout(()=>{ try{ ensureCopyModel(); }catch(e){} }, 0);
+// The levels of the k copies a deck fights with: your strongest k (copies a deck holds beyond the ones you own, which only a Base
+// card can have, start at its starting level).
+function deckCopyLevels(id, n){
+  copyModelOn(); copyModelSync(id); const a = myCardCopies[id] || [], o = copyOrder(id), out = [];
+  for(let k = 0; k < n; k++) out.push(k < o.length ? copyLevel(id, a[o[k]]) : copyBaseLevelOf(id));
+  return out;
+}
+// A card with no copy on record yet (a Base or starter card, which are unlimited) gets real ones when a deck fights with them or the
+// Forge works on one, so each can be forged on its own. They start at its starting level (the best one rises to myCardLevels).
+function materializeCopies(id, n){
+  const a = myCardCopies[id] = myCardCopies[id] || []; if(a.length >= n) return false;
+  while(a.length < n) a.push({foil:false, m:1, uid: newCopyUid(), level: copyBaseLevelOf(id)});
+  copyModelSync(id); saveCardCopies(); return true;
+}
+// The card as one copy at level L: the card's own def (with its Materia and prestige) with that level's stats and level skills.
+// null when that is the card itself (L is the level its def already has) or it has no stats.
+function copyDefAt(id, L){
+  const full = getCardDefs()[id], b = copyBaseDef(id); if(!full || !b || (b.attack == null && b.health == null)) return null;
+  const fullL = Number.isFinite(full.level) ? full.level : cardBaseLevel(b); if(L === fullL) return null;
+  const now = statsAtLevel(b, fullL), at = statsAtLevel(b, L);
+  const o = Object.assign({}, full, {id: id + '~cp' + L, derivedFrom: id, copyOf: id, level: L, baseLevel: cardBaseLevel(b), locked: false});
+  if(full.attack != null && at.attack != null) o.attack = Math.max(0, full.attack - (now.attack || 0) + at.attack);
+  if(full.health != null && at.health != null) o.health = Math.max(1, full.health - (now.health || 0) + at.health);
+  if(L < cardBaseLevel(b)) o.hatchling = true; else delete o.hatchling;
+  if(b.levelSkills){ const fx = Object.assign({}, b.effects || {}); Object.keys(b.levelSkills).map(Number).filter(k=> k <= L).sort((x, y)=> x - y).forEach(k=> Object.assign(fx, b.levelSkills[k])); o.effects = fx; }
+  return o;
+}
+// Your deck for a fight: each card's copies at their own levels. The strongest copy keeps the card's id; a weaker one fights as
+// "<id>~cp<L>" (in matchDefsOverlay, like the CPU's "@lv" cards; the '~' lets the card-stats and rating code find the card, and
+// derivedFrom lets sightings and the board find it). engineDefs: a defs object an engine is (or will be) made with, so the copies
+// reach it too. Standard matches (every card at Level 1) are left alone.
+function ownedDeckForMatch(counts, engineDefs){
+  if(!counts || (typeof standardMatchActive !== 'undefined' && standardMatchActive)) return counts;
+  if(!copyModelOn()) return counts;
+  Object.keys(matchDefsOverlay || {}).forEach(k=>{ if(k.includes('~cp')) delete matchDefsOverlay[k]; }); // the last fight's copies
+  const out = {}; let any = false;
+  Object.keys(counts).forEach(id=>{ const n = counts[id] | 0;
+    if(n <= 0 || id === HERO_ID || /[~@]/.test(String(id))){ out[id] = (out[id] || 0) + (counts[id] || 0); return; }
+    if(isUnlimitedCard(id)) materializeCopies(id, n);
+    if(!(myCardCopies[id] || []).length){ out[id] = (out[id] || 0) + n; return; }
+    const lv = deckCopyLevels(id, n), top = lv[0];
+    lv.forEach(L=>{ const d = L === top ? null : copyDefAt(id, L);
+      if(!d){ out[id] = (out[id] || 0) + 1; return; }
+      matchDefsOverlay[d.id] = d; if(engineDefs) engineDefs[d.id] = d; out[d.id] = (out[d.id] || 0) + 1; any = true; }); });
+  try{ invalidateCardDefs(); }catch(e){}
+  return out;
+}
+// The spare copies of a card, weakest first (the lowest level, then the newest): plain copies (no foil, Shiny or skin) that are
+// neither its best copy nor `target` (the copy being fed), have no levels paid for on them and weren't made for a deck (m).
+function copySpareIdx(id, target){
+  const a = myCardCopies[id] || []; if(a.length < 2) return [];
+  const best = bestCopyIdx(id); if(target == null || target < 0) target = best;
+  return a.map((c, i)=> i).filter(i=> i !== best && i !== target && copyIsPlain(a[i]) && !(a[i] && a[i].m) && !copyPaidLevels(id, a[i]))
+    .sort((x, y)=> copyLevel(id, a[x]) - copyLevel(id, a[y]) || y - x);
+}
+// How many copies "Fuse all extras" takes from a card: its spares beyond what a deck can hold (cap).
+function fuseAllCountFor(id, cap){ const a = myCardCopies[id] || []; return Math.min(copySpareIdx(id).length, Math.max(0, a.length - Math.max(1, cap))); }
+// What the cloud row carries (proposed column player_card_unlocks.copies, supabase/proposed/20261019_card_copy_levels.sql): each
+// copy's uid and level, best first. null when the card has no copy.
+function cloudCopiesOf(id){ const a = myCardCopies[id] || []; if(!a.length) return null; return copyOrder(id).map(i=> ({u: a[i].uid, l: copyLevel(id, a[i])})); }
+// A pulled row's copies, never lowering a copy: the same copy (uid) takes the higher level; on a device whose copies have other uids
+// (the copies themselves live on each device), the cloud's levels go to this device's copies in strength order, as many as it has.
+function cloudApplyCopyLevels(rows){
+  if(!copyModelOn()) return 0; let changed = 0;
+  (rows || []).forEach(r=>{ const id = r && r.card_id, list = r && Array.isArray(r.copies) ? r.copies : null; if(!id || !list || !(myCardCopies[id] || []).length) return;
+    copyModelSync(id); const a = myCardCopies[id], used = new Set(), rest = [];
+    list.forEach(x=>{ const l = Math.max(0, Math.min(LIMIT_BREAK_LEVEL, x && x.l | 0)); const i = x && x.u ? a.findIndex(c=> c.uid === x.u) : -1;
+      if(i >= 0 && !used.has(i)){ used.add(i); if(l > copyLevel(id, a[i])){ a[i].level = l; if(l > 0) delete a[i].hatch; changed++; } } else rest.push(l); });
+    rest.sort((x, y)=> y - x);
+    copyOrder(id).filter(i=> !used.has(i)).forEach((i, k)=>{ if(k < rest.length && rest[k] > copyLevel(id, a[i])){ a[i].level = rest[k]; if(rest[k] > 0) delete a[i].hatch; a[i].free = Math.max(a[i].free | 0, rest[k]); changed++; } });
+    syncBestLevel(id); });
+  if(changed){ saveCardCopies(); try{ invalidateCardDefs(); }catch(e){} }
+  return changed;
+}
+// CARD_COPIES_NF:END
 // The holo classes for one owned copy: its own finish when the pack gave it one, else the
 // rarity default (pearl / rainbow / cosmos, see holoClass). '' for a plain copy.
 function copyFinishClass(d, copy){
@@ -11668,13 +11879,16 @@ function copyTreatmentBonus(d, copy){
 function disenchantValue(d, copy){ const pct = DISENCHANT_PCT[cardRarityTier(d)] || 0.25; return Math.max(1, Math.round(pct / 100 * MATERIA_UNIT.dust * (1 + copyTreatmentBonus(d, copy)))); }
 const DISENCHANT_DUST = Object.fromEntries(Object.keys(DISENCHANT_PCT).map(k=> [k, Math.max(1, Math.round(DISENCHANT_PCT[k] / 100 * MATERIA_UNIT.dust))])); // plain-copy value by rarity (kept for older readers)
 function canDisenchantCard(d){ if(!d || d.token || d.hero || d.cardType === 'materia') return false; const r = d.rarity || 'common'; return !(cardSourceOf(d).kind === 'base' || r === 'starter' || r === 'quest' || r === 'questunique' || isEventCard(d) || (d.source && d.source.kind === 'quest')); }
-function disenchantableCopies(id){
+function disenchantableCopies(id, keepUid){
   const d = getCardDefs()[id], copies = myCardCopies[id] || [];
   if(!d || copies.length < 2 || !canDisenchantCard(d)) return [];
   if(myCardPrestige[id]) return [];
   // keep one copy (the best one: a shiny or foil first), melt the other plain ones
-  const keepIdx = Math.max(0, copies.findIndex(c=> c && (c.shiny || c.foil)));
-  return copies.map((c, i)=> i).filter(i=> i !== keepIdx && !(copies[i].shiny || copies[i].foil || copies[i].skin));
+  // 2026-10-18 (package NF): every copy has its own level now. The copy kept is your best one (copyOrder: the highest level, then
+  // the finest foil), or the copy being melted down; a copy with levels you paid for on it is never melted away as a spare.
+  if(!copyModelOn()){ const keepIdx = Math.max(0, copies.findIndex(c=> c && (c.shiny || c.foil))); return copies.map((c, i)=> i).filter(i=> i !== keepIdx && !(copies[i].shiny || copies[i].foil || copies[i].skin)); }
+  copyModelSync(id);
+  return copySpareIdx(id, keepUid ? copyIndexByUid(id, keepUid) : -1);
 }
 function disenchantSummary(){
   const defs = getCardDefs(); let copies = 0, dust = 0; const per = [];
@@ -11685,21 +11899,27 @@ function disenchantSummary(){
 // card, at 3% discount, is given back"): its spare copies melt (treatments counted) and its levels come off, returning
 // 97% of the Dust and Maple Leaves put into them (and any banked duplicate credit). You keep one copy, the best, at its
 // starting level, so ownership (and cloud-synced unlocks) never change.
-function meltCardValue(id){
+// 2026-10-18 (package NF): melting works on one copy (the Forge's picked copy, your best by default): its paid levels come off
+// (97% back; levels it only inherited from the old shared level give nothing) with its own credit, and the plain spares melt with it.
+function meltCardValue(id, uid){
   const d = getCardDefs()[id]; if(!d || !canDisenchantCard(d) || myCardPrestige[id]) return null;
   const copies = myCardCopies[id] || []; if(!copies.length) return null;
-  const base = cardBaseLevel(forgeBaseDef(id)), L = getCardLevel(id);
-  const spent = forgeSpentOn(id, L), cr = forgeCreditOf(id), spare = disenchantableCopies(id);
+  const base = cardBaseLevel(forgeBaseDef(id));
+  if(!copyModelOn()) return null;
+  copyModelSync(id);
+  const c = copyByUid(id, uid), L = copyLevel(id, c), from = Math.max(base, (c && c.free) | 0);
+  const all = forgeSpentOn(id, L), inh = forgeSpentOn(id, from), cr = copyCreditOf(c), spare = disenchantableCopies(id, c && c.uid);
+  const spent = {dust: Math.max(0, all.dust - inh.dust), gold: Math.max(0, all.gold - inh.gold)};
   const copiesDust = spare.reduce((t, i)=> t + disenchantValue(d, copies[i]), 0);
-  const v = {dust: copiesDust + Math.round((spent.dust + cr.dust) * 0.97), gold: Math.round((spent.gold + cr.gold) * 0.97), copies: spare.length, level: L, base};
+  const v = {dust: copiesDust + Math.round((spent.dust + cr.dust) * 0.97), gold: Math.round((spent.gold + cr.gold) * 0.97), copies: spare.length, level: L, base, uid: c && c.uid};
   return (v.dust || v.gold) ? v : null;
 }
-function meltCard(id){
-  const v = meltCardValue(id); if(!v) return null;
-  const drop = new Set(disenchantableCopies(id));
-  myCardCopies[id] = (myCardCopies[id]||[]).filter((c, i)=> !drop.has(i)); saveCardCopies();
-  myCardLevels[id] = v.base; saveCardLevels();
-  delete myForgeCredit[id]; saveForgeCredit();
+function meltCard(id, uid){
+  const v = meltCardValue(id, uid); if(!v) return null;
+  const c = copyByUid(id, v.uid), drop = new Set(disenchantableCopies(id, v.uid));
+  if(c){ c.level = v.base; delete c.free; delete c.cr; }
+  myCardCopies[id] = (myCardCopies[id]||[]).filter((x, i)=> !drop.has(i)); syncBestLevel(id); saveCardCopies(); saveCardLevels();
+  try{ invalidateCardDefs(); }catch(e){}
   grantCurrency('dust', v.dust); if(v.gold) grantCurrency('gold', v.gold); saveCurrencies();
   return v;
 }
@@ -11841,17 +12061,23 @@ const DUPLICATE_DIVISOR = {starter:18.75, common:18.75, uncommon:18.75, rare:18.
 const FORGE_CREDIT_KEY = 'bramblewood_forge_credit_v1';
 let myForgeCredit = (()=>{ try{ return JSON.parse(localStorage.getItem(FORGE_CREDIT_KEY)||'{}') || {}; }catch(e){ return {}; } })();
 function saveForgeCredit(){ try{ localStorage.setItem(FORGE_CREDIT_KEY, JSON.stringify(myForgeCredit)); }catch(e){} }
-function forgeCreditOf(id){ const c = myForgeCredit[id] || {}; return {dust: Math.max(0, c.dust||0), gold: Math.max(0, c.gold||0)}; }
+// 2026-10-18 (package NF): credit sits on a copy now (uid; your best copy when none is given). Before the move to per-copy levels
+// it sat on the card (myForgeCredit, still read until the move has run).
+function forgeCreditOf(id, uid){ if(copyModelOn() && (myCardCopies[id] || []).length) return copyCreditOf(copyByUid(id, uid)); const c = myForgeCredit[id] || {}; return {dust: Math.max(0, c.dust||0), gold: Math.max(0, c.gold||0)}; }
 function duplicateValue(defId){ const full = forgeSpentOn(defId, 10), n = DUPLICATE_DIVISOR[cardRarityTier(forgeBaseDef(defId))] || 18.75; return {dust: Math.round(full.dust / n), gold: Math.round(full.gold / n)}; }
-function spareCopyIndex(id){ const copies = myCardCopies[id] || []; if(copies.length < 2) return -1; for(let i = copies.length - 1; i >= 0; i--){ const c = copies[i] || {}; if(!c.foil && !c.shiny && !c.skin) return i; } return -1; }
-function feedDuplicate(id){
+// The spare copy "Feed a duplicate" uses up (the weakest plain one, see copySpareIdx), feeding `uid` (your best copy by default).
+function spareCopyIndex(id, uid){ if(!copyModelOn()) return -1; copyModelSync(id); const s = copySpareIdx(id, uid ? copyIndexByUid(id, uid) : -1); return s.length ? s[0] : -1; }
+// Feeds one spare copy to a copy of the same card as Forge credit (owner, package NF item 4: the highest level copy first, then the
+// finest foil, then the oldest, unless the Forge's picker chose one).
+function feedDuplicate(id, uid){
   const d = forgeBaseDef(id); if(!d || d.token) return false;
-  const i = spareCopyIndex(id); if(i < 0) return false;
-  const v = duplicateValue(id), c = forgeCreditOf(id);
-  myCardCopies[id].splice(i, 1); saveCardCopies();
-  myForgeCredit[id] = {dust: c.dust + v.dust, gold: c.gold + v.gold}; saveForgeCredit();
+  const i = spareCopyIndex(id, uid); if(i < 0) return false;
+  const target = copyByUid(id, uid); if(!target || target === myCardCopies[id][i]) return false;
+  const v = duplicateValue(id);
+  myCardCopies[id].splice(i, 1);
+  addCopyCredit(target, v); saveCardCopies();
   noteDuplicateFed(id);
-  return v;
+  return Object.assign({}, v, {uid: target.uid, level: copyLevel(id, target)});
 }
 // Limit break (2026-10-12, user: "limit break a card to its last level, 11. It needs to have at least received 5 duplicates
 // as a pre-condition ... it takes the resources gathered from lvl 1 or 0 to 10. Castles can be limit broken much more, but
@@ -11872,7 +12098,9 @@ let myDupsFed = (()=>{ try{ return JSON.parse(localStorage.getItem(DUPS_FED_KEY)
 function noteDuplicateFed(id){ myDupsFed[id] = (myDupsFed[id]|0) + 1; try{ localStorage.setItem(DUPS_FED_KEY, JSON.stringify(myDupsFed)); }catch(e){} }
 function duplicatesFed(id){ return myDupsFed[id]|0; }
 function canLimitBreakDef(d){ return !!(d && !d.token && !d.hero && !d.test && d.cardType !== 'materia' && cardMaxLevel(d) === 10); }
-function limitBreakCost(defId){ const raw = forgeSpentOn(defId, 10), cr = forgeCreditOf(defId); return {dust: Math.max(0, raw.dust - cr.dust), gold: Math.max(0, raw.gold - cr.gold), raw, credit: {dust: Math.min(cr.dust, raw.dust), gold: Math.min(cr.gold, raw.gold)}}; }
+function limitBreakCost(defId, uid){ const raw = forgeSpentOn(defId, 10), cr = forgeCreditOf(defId, uid); return {dust: Math.max(0, raw.dust - cr.dust), gold: Math.max(0, raw.gold - cr.gold), raw, credit: {dust: Math.min(cr.dust, raw.dust), gold: Math.min(cr.gold, raw.gold)}}; }
+// The level of the copy the Forge works on (uid; your best copy when none is given or the card has no copy on record).
+function forgeCopyLevel(defId, uid){ if(copyModelOn() && (myCardCopies[defId] || []).length){ copyModelSync(defId); return copyLevel(defId, copyByUid(defId, uid)); } return getCardLevel(defId); } // 2026-10-18 (package NF)
 // Level gates (2026-10-12, user: "Limit break is only available at maps 50–60. Levels 5–8 only from map 16, level 9 from
 // map 26, level 10 at map 31+"; the Forge itself opens on Map 11). "From map N" = Map N is open to you. Admin skips them.
 function playerMapReach(){ try{ const p = loadConquestProgress(); let hi = 0; mainConquestMaps().forEach(m=>{ if(!m.reserved && isMapUnlocked(m, p)){ const n = mapNumberOf(m.id); if(n != null && n > hi) hi = n; } }); return hi; }catch(e){ return 999; } }
@@ -11881,31 +12109,38 @@ function levelGateNeed(toLevel){ if(adminModeEnabled) return 0; const need = lev
 // A mote of materia (2026-10-12, user: "Going from level 0 to 1 takes a mote of materia"): 1/45 of a Materia Unit, the
 // same for every card, whatever its rarity.
 const MATERIA_MOTE = {dust: Math.round(MATERIA_UNIT.dust/45), gold: Math.round(MATERIA_UNIT.gold/45)};
-function limitBreakState(defId){
-  const d = forgeBaseDef(defId), L = getCardLevel(defId), dups = lifetimeDuplicates(defId), dupsNeed = limitBreakDupsNeeded(d);
+function limitBreakState(defId, uid){
+  const d = forgeBaseDef(defId), L = forgeCopyLevel(defId, uid), dups = lifetimeDuplicates(defId), dupsNeed = limitBreakDupsNeeded(d); // 2026-10-18 (package NF): one copy breaks
   if(!canLimitBreakDef(d)) return {ok:false, why:'none'};
   const base = {dups, dupsNeed};
   if(L >= LIMIT_BREAK_LEVEL) return Object.assign({ok:false, why:'done'}, base);
   if(levelGateNeed(LIMIT_BREAK_LEVEL)) return Object.assign({ok:false, why:'map', need: levelGateNeed(LIMIT_BREAK_LEVEL)}, base);
   if(L < 10) return Object.assign({ok:false, why:'level'}, base);
   if(dups < dupsNeed) return Object.assign({ok:false, why:'dups'}, base);
-  const c = limitBreakCost(defId);
+  const c = limitBreakCost(defId, uid);
   return Object.assign({ok: (myCurrencies.dust||0) >= c.dust && (myCurrencies.gold||0) >= c.gold, why: 'cost', cost: c}, base);
 }
-function limitBreakCard(defId){
-  const st = limitBreakState(defId); if(!st.ok) return false;
+function limitBreakCard(defId, uid){
+  const st = limitBreakState(defId, uid); if(!st.ok) return false;
   const c = st.cost; myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
-  if(c.credit.dust || c.credit.gold) spendForgeCredit(defId, c.credit);
-  myCardLevels[defId] = LIMIT_BREAK_LEVEL; saveCardLevels();
+  if(c.credit.dust || c.credit.gold) spendForgeCredit(defId, c.credit, uid);
+  forgeSetCopyLevel(defId, uid, LIMIT_BREAK_LEVEL);
   try{ logTxn({action:'limitBreak', cardId:defId, cardName:(getCardDefs()[defId]||{}).name, source:'Forge limit break', before:10, after:LIMIT_BREAK_LEVEL}); }catch(e){}
   return true;
 }
 // The next level's price after this card's credit.
-function levelUpCost(currentLevel, defId){
-  const raw = levelUpCostRaw(currentLevel, defId), cr = forgeCreditOf(defId);
+function levelUpCost(currentLevel, defId, uid){
+  const raw = levelUpCostRaw(currentLevel, defId), cr = forgeCreditOf(defId, uid);
   return {dust: Math.max(0, raw.dust - cr.dust), gold: Math.max(0, raw.gold - cr.gold), mats: levelUpMats(currentLevel, defId), raw, credit: {dust: Math.min(cr.dust, raw.dust), gold: Math.min(cr.gold, raw.gold)}};
 }
-function spendForgeCredit(defId, used){ const c = forgeCreditOf(defId); myForgeCredit[defId] = {dust: Math.max(0, c.dust - (used.dust||0)), gold: Math.max(0, c.gold - (used.gold||0))}; if(!myForgeCredit[defId].dust && !myForgeCredit[defId].gold) delete myForgeCredit[defId]; saveForgeCredit(); }
+function spendForgeCredit(defId, used, uid){
+  if(copyModelOn() && (myCardCopies[defId] || []).length){ spendCopyCredit(copyByUid(defId, uid), used); saveCardCopies(); return; } // 2026-10-18 (package NF): the copy's own credit
+  const c = forgeCreditOf(defId); myForgeCredit[defId] = {dust: Math.max(0, c.dust - (used.dust||0)), gold: Math.max(0, c.gold - (used.gold||0))}; if(!myForgeCredit[defId].dust && !myForgeCredit[defId].gold) delete myForgeCredit[defId]; saveForgeCredit(); }
+// Sets the level of the copy the Forge works on (a card with no copy on record gets one first: Base and starter cards are unlimited).
+function forgeSetCopyLevel(defId, uid, L){
+  if(copyModelOn()){ if(!(myCardCopies[defId] || []).length) materializeCopies(defId, 1); if(setCopyLevel(defId, uid, L)) return true; }
+  myCardLevels[defId] = L; saveCardLevels(); return true;
+}
 // Forge upgrades (2026-10-12, user: "Forge needs to be upgraded to level cards further. At the start, it only supports leveling
 // them to 3. Then follow the progression we discussed. Also ranks, it doesn't allow us to upgrade high rarities until we
 // upgrade that feature"): the Forge has five tiers. Each raises the highest level it tempers to and the rarest card it will
@@ -12012,10 +12247,10 @@ function forgeUpgradeHTML(){
     ${adminModeEnabled ? `<button type="button" class="btn small ghost" id="forgeTierEditBtn">✏️ Edit tier prices</button>` : ''}
   </div>`;
 }
-function canAffordLevelUp(currentLevel, defId){
+function canAffordLevelUp(currentLevel, defId, uid){
   if(levelGateNeed((currentLevel||0) + 1)) return false;
   if(forgeTierFor(defId, (currentLevel||0) + 1)) return false;
-  const cost = levelUpCost(currentLevel, defId);
+  const cost = levelUpCost(currentLevel, defId, uid);
   return myCurrencies.dust>=cost.dust && myCurrencies.gold>=cost.gold && Object.entries(cost.mats||{}).every(([id, n])=> ownedCount(id) >= n);
 }
 let myDeckCounts = loadMyDeck();
@@ -12118,14 +12353,18 @@ function fuseCastleDuplicates(id){
   return v;
 }
 function castleNetCost(L, id){ const c = castleLevelUpCost(L, id), cr = castleCreditOf(id); return Object.assign({}, c, {dust: Math.max(0, c.dust - cr.dust), gold: Math.max(0, c.gold - cr.gold), credit:{dust: Math.min(cr.dust, c.dust), gold: Math.min(cr.gold, c.gold)}}); }
-function spareDuplicatesTotal(){ let n = 0; Object.keys(myCardCopies||{}).forEach(id=>{ const d = getCardDefs()[id]; if(!d || d.token) return; const cap = maxCopiesForRarity(d.rarity); const plain = (myCardCopies[id]||[]).filter(c=> !(c && (c.foil || c.shiny || c.skin))).length, total = (myCardCopies[id]||[]).length; n += Math.max(0, Math.min(plain, total - Math.max(1, cap))); }); return n; }
+// 2026-10-18 (package NF): the spares are copySpareIdx's (plain, no levels paid for on them, never the best copy), and they all go
+// into the card's best copy (fuseAllCountFor / feedDuplicate).
+function spareDuplicatesTotal(){ if(!copyModelOn()) return 0; let n = 0; const defs = getCardDefs(); Object.keys(myCardCopies||{}).forEach(id=>{ const d = defs[id]; if(!d || d.token) return; copyModelSync(id); n += fuseAllCountFor(id, maxCopiesForRarity(d.rarity)); }); return n; }
 // What "Fuse all extras" would do, without doing it (the same rule as spareDuplicatesTotal / fuseAllDuplicates): per card, the plain
-// copies beyond what a deck can hold, each worth duplicateValue(id) of Forge credit.
+// copies beyond what a deck can hold, each worth duplicateValue(id) of Forge credit, and the copy they go into (to: its level).
 function fuseAllPlan(){
   const defs = getCardDefs(), per = []; let copies = 0, dust = 0, gold = 0;
-  Object.keys(myCardCopies||{}).forEach(id=>{ const d = defs[id]; if(!d || d.token) return; const cap = Math.max(1, maxCopiesForRarity(d.rarity)), all = myCardCopies[id]||[];
-    const plain = all.filter(c=> !(c && (c.foil || c.shiny || c.skin))).length, n = Math.max(0, Math.min(plain, all.length - cap)); if(!n) return;
-    const v = duplicateValue(id); per.push({id, n, dust: v.dust*n, gold: v.gold*n}); copies += n; dust += v.dust*n; gold += v.gold*n; });
+  if(!copyModelOn()) return {copies, dust, gold, per};
+  Object.keys(myCardCopies||{}).forEach(id=>{ const d = defs[id]; if(!d || d.token) return; copyModelSync(id);
+    const n = fuseAllCountFor(id, maxCopiesForRarity(d.rarity)); if(!n) return;
+    const v = duplicateValue(id), to = myCardCopies[id][bestCopyIdx(id)];
+    per.push({id, n, dust: v.dust*n, gold: v.gold*n, to: copyLevel(id, to), toUid: to.uid}); copies += n; dust += v.dust*n; gold += v.gold*n; });
   per.sort((a, b)=> b.n - a.n || b.dust - a.dust);
   return {copies, dust, gold, per};
 }
@@ -12141,13 +12380,14 @@ function openForgeBulk(kind, btn){
   const per = plan.per.slice().sort((a, b)=> b.n - a.n), SHOW = 24, more = per.length - SHOW;
   const valHTML = (dust, gold)=> `${dust ? `<span>✨${dust}</span>` : ''}${gold ? ` <span>${mapleLeafIconHTML()}${gold}</span>` : ''}`;
   const title = fuse ? '🧩 Fuse all extras' : '♻️ Disenchant extras';
-  const blurb = fuse ? `Every copy beyond what a deck can hold feeds its own card: it becomes Forge credit on that card, spent before your wallet the next time you temper it. Foil, Shiny and skinned copies are kept.`
+  // 2026-10-18 (package NF): the spares feed the card's best copy (the highest level, then the finest foil), which each tile names
+  const blurb = fuse ? TX('ui.nf-fuse-blurb')
                      : `Extra plain copies melt into Magic Dust. One copy of every card stays, and Base, Quest and Event cards, levelled cards, foils and Shinies are never touched.`;
   const ov = document.createElement('div'); ov.className = 'modal-overlay bw-centre-dialog fbulk-ov';
   ov.innerHTML = `<div class="modal fbulk is-${kind}" role="dialog" aria-modal="true" aria-label="${escapeAttr(title.replace(/^\S+\s/, ''))}">
     <div class="modal-head-row"><h2>${title}</h2><button type="button" class="modal-close-btn" data-x aria-label="Close">✕</button></div>
     <p class="panel-sub fb-blurb">${blurb}</p>
-    <div class="fb-grid">${per.slice(0, SHOW).map(x=>{ const d = defs[x.id]; return d ? `<div class="fb-card" data-fbid="${escapeAttr(x.id)}"><span class="fb-tile">${cardTileHTML(d, {inPlay:true})}</span><b class="fb-n">×${x.n}</b><small class="fb-val">${fuse ? valHTML(x.dust, x.gold) : `✨${x.dust}`}</small></div>` : ''; }).join('')}${more > 0 ? `<div class="fb-more">+${more} more card${more === 1 ? '' : 's'}</div>` : ''}</div>
+    <div class="fb-grid">${per.slice(0, SHOW).map(x=>{ const d = defs[x.id]; return d ? `<div class="fb-card" data-fbid="${escapeAttr(x.id)}"><span class="fb-tile">${cardTileHTML(d, {inPlay:true})}</span><b class="fb-n">×${x.n}</b><small class="fb-val">${fuse ? valHTML(x.dust, x.gold) : `✨${x.dust}`}</small>${fuse && x.to != null ? `<small class="fb-val fb-to" title="${escapeAttr(TX('ui.nf-fuse-into'))}">→ ${escapeHtml(TX('ui.nf-copy-level', {n: x.to}))}</small>` : ''}</div>` : ''; }).join('')}${more > 0 ? `<div class="fb-more">+${more} more card${more === 1 ? '' : 's'}</div>` : ''}</div>
     <div class="fb-total" aria-live="polite"><span class="fb-total-lbl">${plan.copies} cop${plan.copies === 1 ? 'y' : 'ies'} of ${per.length} card${per.length === 1 ? '' : 's'} →</span> <b class="fb-total-val">${fuse ? valHTML(plan.dust, plan.gold) + ' <small>of credit</small>' : `✨${plan.dust} <small>Magic Dust</small>`}</b></div>
     <div class="modal-actions"><button type="button" class="btn ghost" data-x>Cancel</button><button type="button" class="btn primary" data-fbok>${fuse ? `🧩 Fuse ${plan.copies}` : `♻️ Disenchant ${plan.copies}`}</button></div></div>`;
   document.body.appendChild(ov);
@@ -12199,10 +12439,14 @@ function openForgeBulk(kind, btn){
     setTimeout(finish, T + 1500); // never stuck, even if frames stop (a hidden tab)
   };
 }
+// 2026-10-18 (package NF, owner 23:37: "Fuse all extras should go into the highest level card first, then if draw, into the highest
+// foil treatment."): every spare goes into the card's best copy (copyOrder: the highest level, then the finest foil, then the oldest).
 function fuseAllDuplicates(){
   const out = {count:0, cards:0, dust:0};
-  Object.keys(myCardCopies||{}).forEach(id=>{ const d = getCardDefs()[id]; if(!d || d.token) return; const cap = Math.max(1, maxCopiesForRarity(d.rarity)); let fed = 0;
-    while((myCardCopies[id]||[]).length > cap){ const v = feedDuplicate(id); if(!v) break; fed++; out.dust += v.dust; }
+  if(!copyModelOn()) return out;
+  Object.keys(myCardCopies||{}).forEach(id=>{ const d = getCardDefs()[id]; if(!d || d.token) return; copyModelSync(id); let n = fuseAllCountFor(id, maxCopiesForRarity(d.rarity)), fed = 0;
+    const uid = (myCardCopies[id][bestCopyIdx(id)] || {}).uid;
+    while(n-- > 0){ const v = feedDuplicate(id, uid); if(!v) break; fed++; out.dust += v.dust; }
     if(fed){ out.count += fed; out.cards++; } });
   return out;
 }
@@ -12753,8 +12997,8 @@ function bestCopyIndex(id){
   return best;
 }
 function canAffordCost(c){ return (myCurrencies.dust||0) >= (c.dust||0) && (myCurrencies.gold||0) >= (c.gold||0) && (myCurrencies.gems||0) >= (c.gems||0); }
-function refineCard(id){
-  const i = bestCopyIndex(id); if(i < 0) return null;
+function refineCard(id, idx){
+  const i = idx != null && idx >= 0 ? idx : bestCopyIndex(id); if(i < 0 || !(myCardCopies[id]||[])[i]) return null; // 2026-10-18 (package NF): the Forge's picked copy
   const c = myCardCopies[id][i], r = copyRefineRank(c), next = REFINE_LADDER[r+1];
   if(!next || !canAffordCost(next.cost)) return null;
   myCurrencies.dust -= next.cost.dust||0; myCurrencies.gold -= next.cost.gold||0; myCurrencies.gems -= next.cost.gems||0; saveCurrencies();
@@ -12900,6 +13144,12 @@ function enemyDeckLevel(node){
   return Math.round(body + lead);
 }
 function mainDeckLevel(counts, leaderId){
+  // 2026-10-18 (package NF): each copy counts at its own level (the deck's k copies of a card are your k strongest, as in a fight)
+  if(copyModelOn()){ const defs = getCardDefs(); let t = 0;
+    Object.keys(counts||{}).forEach(id=>{ const n = counts[id]|0, d = defs[String(id).split('~')[0]]; if(n <= 0 || !d) return; const w = ratingWeightOf(d);
+      const ls = (myCardCopies[id]||[]).length ? deckCopyLevels(id, n) : null; for(let k = 0; k < n; k++) t += w * ratingLevelFactor(ls ? ls[k] : getCardLevel(id)); });
+    if(leaderId && defs[leaderId]) t += 2 * ratingWeightOf(defs[leaderId]) * ratingLevelFactor(getCardLevel(leaderId));
+    return Math.max(0, Math.round(t)); }
   return deckLevelFrom(counts, id=> getCardLevel(id), leaderId ? [leaderId] : []);
 }
 // PvP matchmaking keeps the older power score (rarity × max(1, level)), so stored ghost decks stay comparable.
@@ -21289,12 +21539,13 @@ function startOfflineRaidMatch(){
   }
   const boss = st.boss;
   bumpQuestCounter('raidsJoined', 1);
+  const myFightDeck = ownedDeckForMatch(myDeckCounts); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = myCastleDef();
   const castle = st.nextCastleHp;
   const players = {
-    1: engine.newPlayer(1, myDeckCounts, myCharacter),
+    1: engine.newPlayer(1, myFightDeck, myCharacter),
     2: engine.newPlayer(2, boss.deck, {id:'raid-boss-'+boss.id, name:boss.name, health:castle, effects:{}}),
   };
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
@@ -22119,10 +22370,11 @@ function startRaidPartMatch(def, partId){
   if(f.bossAtk || f.bossHp){ defs = Object.assign({}, defs); const d2 = {};
     Object.keys(deck).forEach(id=>{ if(!defs[id]) return; const nid = f.stripAbilities ? id : id + '~raid'; defs[nid] = RaidM.stageCard(Object.assign({}, defs[id], {id:nid}), f); d2[nid] = deck[id]; }); deck = d2;
     matchDefsOverlay = {}; Object.keys(deck).forEach(id=>{ matchDefsOverlay[id] = defs[id]; }); }
+  if(defs === getCardDefs()) defs = Object.assign({}, defs); const myFightDeck = ownedDeckForMatch(myDeckCounts, defs); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
   const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false, rules: f.fieldRules});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = guildScaledBramble(myCharacter.health || 30, f.castleHpPct); // + the guild's Rooted Walls (2026-10-19)
-  const players = {1: engine.newPlayer(1, myDeckCounts, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
+  const players = {1: engine.newPlayer(1, myFightDeck, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
   engine.draw(players[1], 3, 'A', stats, []); engine.draw(players[2], 3, 'B', stats, []);
@@ -22149,7 +22401,7 @@ function startRaidFullBattle(def, partId, f, st){
   // looking slightly bigger, with ALL our effects"): two allies (real raiders' decks when the cloud has them, the raid's
   // ally decks otherwise). Each has a castle; the three castles are one: their Health added up and their passives merged.
   const allies = (m0=> m0)(trenchAllies(def, [], (Math.random()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i));
-  const b = buildRaidFullFight(def, partId, f, st, {rng: nextMatchRng(), allies, myCastle: myCastleDef(), myDeck: myDeckCounts, leaderId: matchLeaderId()});
+  const b = buildRaidFullFight(def, partId, f, st, {rng: nextMatchRng(), allies, myCastle: myCastleDef(), myDeck: ownedDeckForMatch(myDeckCounts), leaderId: matchLeaderId()}); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
   matchDefsOverlay = b.overlay;
   const {engine, players, sideOf, stats, cfg, mine} = b, bossHpBonus = b.bossHpBonus;
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, battleMode:'open',
@@ -22238,7 +22490,7 @@ function buildRaidFullFight(def, partId, f, st, opts){
   try{ const lid = opts.leaderId, E = engine; if(lid && defs[lid]){ const ev = []; E.debugSpawnCard(players, sideOf, 1, lid, 0, stats, ev); const c = E.allBoardCards(players[1]).find(x=> x.defId === lid);
       if(c){ c.isLeader = true; leaderUid = c.uid; } }
     allies.forEach((a, i)=>{ const id = raidAllyLeaderOf(a); if(!id) return; const c = E.fillReserve(players[1], a.row, i === 0 ? -1 : 1, id); if(c){ c.allyOf = a.name; c.isLeader = true; a.leaderId = id; } }); }catch(e){}
-  const overlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss)$/.test(id) || id.startsWith('raid-ent-')) overlay[id] = defs[id]; });
+  const overlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss|cp\d+)$/.test(id) || id.startsWith('raid-ent-')) overlay[id] = defs[id]; }); // + your copies (~cp, 2026-10-18 package NF)
   return {engine, players, sideOf, stats, deckTotals, cfg, mine, overlay, raidRules, commonPool, bossUnitId, bossHpBonus, leaderUid};
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
@@ -23819,12 +24071,13 @@ function startConquestMatch(mapId, nodeKey, opts){
   try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
+  const myOwnedDeck = ownedDeckForMatch(myDeckCounts); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
   const aiLevel = cpuAiLevelForNode(mapId, node); // the CPU's difficulty (2026-10-18): Edit skirmish's pick, else the map rule
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node), aiLevel}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = myCastleDef();
   const enemyCharacter = skirmishCastle(node).character;
-  let myDeck = myDeckCounts, enemyDeck = levelledDeck, myGlad = null, enemyGlad = null;
+  let myDeck = myOwnedDeck, enemyDeck = levelledDeck, myGlad = null, enemyGlad = null;
   if(battleMode==='gladiator'){
     myGlad = pickGladiatorLeader(myDeckCounts, matchLeaderId());
     const myGladDef = myGlad && getCardDefs()[myGlad.defId];
@@ -26183,6 +26436,7 @@ function startRaidMatch(bossId){
     saveCurrencies();
     return;
   }
+  const myFightDeck = ownedDeckForMatch(myDeckCounts); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = myCastleDef();
@@ -26190,7 +26444,7 @@ function startRaidMatch(bossId){
   const bossDeck = (boss.stats && boss.stats.deck) || {};
   const bossCharacter = {id:'raid-boss-'+boss.id, name:boss.name, health:bossHp, effects:{}};
   const players = {
-    1: engine.newPlayer(1, myDeckCounts, myCharacter),
+    1: engine.newPlayer(1, myFightDeck, myCharacter),
     2: engine.newPlayer(2, bossDeck, bossCharacter),
   };
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
@@ -26706,6 +26960,7 @@ function startMatchInner(mode, opts, standardDeck){
   }
   const arenaRuleset = todaysArenaRuleset();
   const arenaMode = opts.caged ? 'open' : (arenaRuleset.battleMode || 'open'); // Caged Fight needs fixed slots
+  const myFightDeck = standardDeck ? myDeckCounts : ownedDeckForMatch(myDeckCounts); // 2026-10-18 (package NF): your deck fights as its own copies, each at its own level (ownedDeckForMatch)
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, rules: arenaRuleset.rules, battleMode: arenaMode});
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = myCastleDef();
@@ -26718,7 +26973,7 @@ function startMatchInner(mode, opts, standardDeck){
   // ordinary Arena "vs AI" — the streak-run part is entirely in the win/loss handling
   // (resolveRound's mode==='gauntlet' branch below), not in how the opponent is built.
   const players = {
-    1: engine.newPlayer(1, myDeckCounts, myCharacter),
+    1: engine.newPlayer(1, myFightDeck, myCharacter),
     2: null,
   };
   let asyncGhost = null, asyncStage = null;
@@ -40047,6 +40302,24 @@ let currentTab = 'home';
 // roadmap's own sequencing note ("I'd sequence this right after the leveling data model
 // exists, so the dummy button has something real to increment").
 let forgeSelectedId = null;
+// 2026-10-18 (package NF, owner 23:37: "Each card is unique. Forging one card doesn't mean all copies become stronger!"): the Forge
+// works on one copy of the picked card: forgeCopyPick.uid while forgeCopyPick.id is that card, else your best copy (copyOrder).
+let forgeCopyPick = {id:null, uid:null};
+function forgeUid(id){ if(!id || forgeCopyPick.id !== id || !forgeCopyPick.uid) return null; return (myCardCopies[id]||[]).some(c=> c && c.uid === forgeCopyPick.uid) ? forgeCopyPick.uid : null; }
+// The picked card as the picked copy: its own level's stats (copyDefAt), under the card's own id so the tile looks the same.
+function forgeCopyDef(id, sel){ if(!sel || !copyModelOn() || !(myCardCopies[id]||[]).length) return sel; const L = forgeCopyLevel(id, forgeUid(id)), d = copyDefAt(id, L); return d ? Object.assign({}, d, {id}) : sel; }
+// The copy picker on the anvil (Upgrade and Refine): one chip per copy, strongest first, with its level and finish; the copies your
+// main deck fights with are marked. Shown when the card has more than one copy.
+function forgeCopyPickerHTML(id){
+  if(!copyModelOn()) return ''; const a = myCardCopies[id] || []; if(a.length < 2) return '';
+  copyModelSync(id); const cur = copyIndexByUid(id, forgeUid(id)), order = copyOrder(id);
+  let inDeck = 0; try{ inDeck = Math.max(0, ((myDecks||[]).find(d=> d.id === mainDeckId) || getActiveDeck() || {counts: myDeckCounts}).counts[id] | 0); }catch(e){ inDeck = (myDeckCounts||{})[id] | 0; }
+  const chips = order.map((i, k)=>{ const c = a[i], r = copyRefineRank(c), step = c.foil ? (REFINE_LADDER[r] || REFINE_LADDER[1]) : null;
+    const finish = c.shiny ? '✦ ' + TX('ui.nf-copy-shiny') : step ? '✨ ' + _t(step.label) : TX('ui.nf-copy-plain');
+    const tags = [k < inDeck ? `<em class="fcp-deck" title="${escapeAttr(TX('ui.nf-copy-deck'))}">⭐</em>` : '', (copyCreditOf(c).dust || copyCreditOf(c).gold) ? `<em class="fcp-cr" title="${escapeAttr(TX('ui.nf-copy-has-credit'))}">🧩</em>` : ''].join('');
+    return `<button type="button" class="fcp-chip ${i === cur ? 'on' : ''}" data-forge-copy="${escapeAttr(c.uid)}" aria-pressed="${i === cur}"><b>${escapeHtml(TX('ui.nf-copy-level', {n: copyLevel(id, c)}))}</b><small>${escapeHtml(finish)}</small>${tags}</button>`; }).join('');
+  return `<div class="forge-copy-picker" role="group" aria-label="${escapeAttr(TX('ui.nf-copies-title'))}"><div class="fcp-head"><b>${escapeHtml(TX('ui.nf-copies-title'))}</b> <small>${escapeHtml(TX('ui.nf-copies-help'))}</small></div><div class="fcp-row">${chips}</div></div>`;
+}
 // Forge (reworked 2026-10-03, "Furnish the forge more fully... animations prepared for on-forge"):
 // a hearth header with only the currencies the Forge spends (T4: show a currency only where it
 // matters), a searchable/filterable pool that marks cards you can temper right now, and an anvil
@@ -40176,8 +40449,8 @@ function renderForge(){
   const forgePages = Math.max(1, Math.ceil(shown.length / FORGE_PAGE_SIZE)); if(forgePage >= forgePages) forgePage = forgePages - 1; if(forgePage < 0) forgePage = 0;
   const forgePagerHTML = where=> forgePages > 1 ? `<div class="cx-pager cx-pager-${where} forge-pager" role="navigation" aria-label="Forge pages${where === 'top' ? ' (top)' : ''}"><button type="button" class="btn small" data-forgepage="${forgePage - 1}" ${forgePage === 0 ? 'disabled' : ''}>‹ Back</button>${Array.from({length: forgePages}, (_, i)=> `<button type="button" class="btn small ${i === forgePage ? 'primary' : 'ghost'}" data-forgepage="${i}" aria-current="${i === forgePage ? 'page' : 'false'}">${i + 1}</button>`).join('')}<button type="button" class="btn small" data-forgepage="${forgePage + 1}" ${forgePage >= forgePages - 1 ? 'disabled' : ''}>Next ›</button></div>` : '';
   const pageIds = shown.slice(forgePage * FORGE_PAGE_SIZE, (forgePage + 1) * FORGE_PAGE_SIZE);
-  const sel = forgeSelectedId ? defs[forgeSelectedId] : null;
-  const L = sel ? getCardLevel(forgeSelectedId) : 0;
+  const sel0 = forgeSelectedId ? defs[forgeSelectedId] : null, sel = sel0 && forgeMode === 'upgrade' ? forgeCopyDef(forgeSelectedId, sel0) : sel0; // 2026-10-18 (package NF): the picked copy
+  const L = sel ? forgeCopyLevel(forgeSelectedId, forgeUid(forgeSelectedId)) : 0;
   const maxed = L>=10;
   const metal = myCurrencies.metal||0;
   root.innerHTML = `
@@ -40205,7 +40478,7 @@ function renderForge(){
           <div class="forge-chips" role="group" aria-label="Filter">
             ${[['all','All'],['ready',`${FORGE_MODES[forgeMode].icon} Ready${readyCount?` (${readyCount})`:''}`]].concat(forgeMode==='upgrade' ? [['leveled','Levelled'],['max','Max']] : []).map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
           </div>
-          ${forgeMode==='upgrade' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'aria-disabled="true"'} title="Feeds every copy beyond what a deck can hold into its own card's credit. Foil, shiny and skinned copies are kept.">🧩 Fuse all extras${n ? ` (${n})` : ''}</button>${(()=>{ const ds = disenchantSummary(); return `<button type="button" class="btn small" id="forgeDisBtn" ${ds.copies ? '' : 'aria-disabled="true"'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button>`; })()}`; })() : ''}
+          ${forgeMode==='upgrade' ? (()=>{ const n = spareDuplicatesTotal(); return `<button type="button" class="btn small" id="forgeFuseAllBtn" ${n ? '' : 'aria-disabled="true"'} title="${escapeAttr(TX('ui.nf-fuse-tip'))}">🧩 Fuse all extras${n ? ` (${n})` : ''}</button>${(()=>{ const ds = disenchantSummary(); return `<button type="button" class="btn small" id="forgeDisBtn" ${ds.copies ? '' : 'aria-disabled="true"'} title="Turns extra plain copies into Magic Dust. Keeps one of every card, and never touches Base or Quest cards, levelled cards, foils or Shinies.">♻️ Disenchant extras${ds.copies ? ` · ${ds.copies} → ✨ ${ds.dust}` : ''}</button>`; })()}`; })() : ''}
           <select id="forgeDeckScope" class="forge-sort forge-deck-scope ${forgeDeckScope !== 'all' ? 'is-on' : ''}" aria-label="Show cards from">${FORGE_DECK_SCOPES.map(([k, l])=> `<option value="${k}" ${forgeDeckScope===k?'selected':''}>${k === 'all' ? '🗂️' : k === 'main' ? '⭐' : '🃏'} ${l}</option>`).join('')}</select>
           <select id="forgeSort" class="forge-sort" aria-label="Sort cards">${FORGE_SORTS.map(([k,l])=> `<option value="${k}" ${forgeSort===k?'selected':''}>Sort: ${l}</option>`).join('')}</select>
         </div>
@@ -40235,6 +40508,7 @@ function renderForge(){
   { const tn = document.getElementById('forgeToNestBtn'); if(tn) tn.onclick = ()=>{ nestNurturePrefill = forgeSelectedId; switchTab('nest'); }; }
   const lvlBtn = document.getElementById('forgeLevelUpBtn');
   if(lvlBtn) lvlBtn.addEventListener('click', ()=> forgeTemper(lvlBtn));
+  root.querySelectorAll('[data-forge-copy]').forEach(b=> b.addEventListener('click', ()=>{ if(forgeBusy) return; forgeCopyPick = {id: forgeSelectedId, uid: b.dataset.forgeCopy}; forgeMeltArmed = null; try{ SoundKit.gadget && SoundKit.gadget(); }catch(e){} renderForge(); })); // 2026-10-18 (package NF)
   // 2026-10-17 (user: "Clicking Fuse all extras AND disenchant extras has no UI."): both open a sheet (openForgeBulk): what goes, how
   // many, what you get; then the cards melt into the total with a burst, and a toast. With nothing to do they say so instead of
   // sitting there disabled (a disabled button swallowed the click: that was the "nothing happens").
@@ -40250,12 +40524,12 @@ function renderForge(){
   const lbBtn = document.getElementById('forgeLimitBreakBtn');
   if(lbBtn) lbBtn.addEventListener('click', ()=> forgeLimitBreak(lbBtn));
   const dupBtn = document.getElementById('forgeFeedDupBtn');
-  if(dupBtn) dupBtn.addEventListener('click', ()=>{ const v = feedDuplicate(forgeSelectedId); if(!v){ denyShake(dupBtn); return; } try{ SoundKit.materiaForm && SoundKit.materiaForm(); }catch(e){} renderForge(); showToast(TX('toast.a-duplicate-became-of-credit-on', {dust: v.dust, v2: getCardDefs()[forgeSelectedId].name}), 'ok'); });
+  if(dupBtn) dupBtn.addEventListener('click', ()=>{ const v = feedDuplicate(forgeSelectedId, forgeUid(forgeSelectedId)); if(!v){ denyShake(dupBtn); return; } try{ SoundKit.materiaForm && SoundKit.materiaForm(); }catch(e){} renderForge(); showToast(TX('toast.a-duplicate-became-of-credit-on', {dust: v.dust, v2: getCardDefs()[forgeSelectedId].name}), 'ok'); });
   const meltBtn = document.getElementById('forgeMeltBtn');
   if(meltBtn) meltBtn.addEventListener('click', ()=>{
     const id = forgeSelectedId;
     if(forgeMeltArmed !== id){ forgeMeltArmed = id; renderForge(); setTimeout(()=>{ if(forgeMeltArmed === id){ forgeMeltArmed = null; try{ renderForge(); }catch(e){} } }, 6000); return; }
-    forgeMeltArmed = null; const v = meltCard(id); if(!v){ denyShake(meltBtn); return; }
+    forgeMeltArmed = null; const v = meltCard(id, forgeUid(id)); if(!v){ denyShake(meltBtn); return; }
     fxHook('forgeMelt', document.querySelector('#anvilStage .forge-preview'), v); // batch D (2026-10-15, docs/effects-lab-contract.md)
     try{ SoundKit.burnAway && SoundKit.burnAway(); }catch(e){} renderForge(); showToast(TX('toast.melted-down-back', {dust: v.dust, v2: v.gold ? ' and ' + v.gold + ' Maple Leaves' : ''}), 'ok'); });
   const preBtn = document.getElementById('forgePrestigeBtn');
@@ -40615,8 +40889,9 @@ function costChipsHTML(cost){
   const chip = (glyph, need, have, label)=> need ? `<span class="forge-cost ${have>=need?'ok':'short'}" title="${escapeAttr(label)}: need ${need}, you have ${have}">${glyph} ${need}${have<need?` <small>(${have})</small>`:''}</span>` : '';
   return chip('✨', cost.dust, myCurrencies.dust||0, 'Magic Dust') + chip(mapleLeafIconHTML(), cost.gold, myCurrencies.gold||0, 'Maple Leaves') + chip('🍂', cost.gems, myCurrencies.gems||0, 'Gold Leaves');
 }
+function forgeRefineIdx(id){ const uid = forgeUid(id); return uid ? copyIndexByUid(id, uid) : bestCopyIndex(id); } // 2026-10-18 (package NF): the picked copy, else your finest
 function refineAnvilHTML(id, sel){
-  const i = bestCopyIndex(id), copy = (myCardCopies[id]||[])[i], r = copyRefineRank(copy), next = REFINE_LADDER[r+1];
+  const i = forgeRefineIdx(id), copy = (myCardCopies[id]||[])[i], r = copyRefineRank(copy), next = REFINE_LADDER[r+1];
   const nowCls = copyFinishClass(sel, copy) + (copy && copy.shiny ? ' is-shiny' : '');
   const ladder = REFINE_LADDER.map((st, k)=> `<span class="rf-step ${k<=r?'on':''} ${k===r+1?'next':''}" title="${escapeAttr(st.label)}">${escapeHtml(st.label)}</span>`).join('<i aria-hidden="true">›</i>');
   return `
@@ -40626,8 +40901,9 @@ function refineAnvilHTML(id, sel){
       ${next ? `<span class="rf-arrow" aria-hidden="true">→</span><div class="forge-preview-wrap rf-next">${cardTileHTML(sel, {extraClass:'forge-preview ' + copyFinishClass(sel, {foil:true, finish:next.key}) + (copy && copy.shiny ? ' is-shiny' : '')})}</div>` : ''}
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}${copy && copy.shiny ? ' <span class="forge-prestige-tag">✦ Shiny</span>' : ''}</h3>
+    ${forgeCopyPickerHTML(id)}
     <div class="rf-ladder" aria-label="Finish ladder">${ladder}</div>
-    <p class="forge-note">${(myCardCopies[id]||[]).length > 1 ? escapeHtml(_t('Refines your best copy (of {n}).', {n:(myCardCopies[id]||[]).length})) : 'Refines your only copy.'} ${copy && copy.shiny ? 'It stays Shiny.' : ''}</p>
+    <p class="forge-note">${(myCardCopies[id]||[]).length > 1 ? escapeHtml(TX('ui.nf-refines-this-copy', {n:(myCardCopies[id]||[]).length})) : 'Refines your only copy.'} ${copy && copy.shiny ? 'It stays Shiny.' : ''}</p>
     ${next ? `
       <button type="button" class="btn primary forge-act" id="forgeRefineBtn" ${canAffordCost(next.cost)?'':'aria-disabled="true"'}>✨ ${escapeHtml(_t('Refine to {finish}', {finish:_t(next.label)}))}${btnCostHTML(next.cost)}</button>
     ` : `<p class="forge-note forge-done">The finest finish there is. 🏆</p>`}`;
@@ -40646,9 +40922,9 @@ function enchantAnvilHTML(id, sel){
 async function forgeRefine(btn){
   if(forgeBusy || !forgeSelectedId) return;
   const id = forgeSelectedId, d = getCardDefs()[id];
-  const i = bestCopyIndex(id), copy = myCardCopies[id][i];
+  const i = forgeRefineIdx(id), copy = myCardCopies[id][i]; if(copy && copy.uid) forgeCopyPick = {id, uid: copy.uid}; // 2026-10-18 (package NF)
   const beforeHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, copy) + (copy.shiny?' is-shiny':'')});
-  const step = refineCard(id);
+  const step = refineCard(id, i);
   if(!step){ denyShake(btn); return; }
   forgeBusy = true; btn.disabled = true;
   const afterHTML = cardTileHTML(d, {extraClass:'forge-preview ' + copyFinishClass(d, myCardCopies[id][i]) + (copy.shiny?' is-shiny':'')});
@@ -40667,13 +40943,14 @@ function forgeEnchant(btn){
 }
 let forgeReadyUsed = false; // reset each time the Forge is entered (switchTab)
 function forgeAnvilHTML(id, sel, L, maxed){
+  const uid = forgeUid(id); // 2026-10-18 (package NF): the copy on the anvil (null: your best copy)
   const now = forgeStatsAt(id, L), next = forgeStatsAt(id, Math.min(10, L+1));
   const delta = (a, b, cls, glyph)=> a==null ? '' : `<div class="forge-stat ${cls}"><span class="fs-glyph">${glyph}</span><span class="fs-now">${a}</span>${!maxed ? `<span class="fs-arrow">→</span><span class="fs-next ${b>a?'up':''}">${b}${b>a?`<small>+${b-a}</small>`:''}</span>` : ''}</div>`;
-  const lbOK = canLimitBreakDef(forgeBaseDef(id)), lb = lbOK ? limitBreakState(id) : null;
+  const lbOK = canLimitBreakDef(forgeBaseDef(id)), lb = lbOK ? limitBreakState(id, uid) : null;
   const pips = Array.from({length:10}, (_,k)=> `<i class="${k<L?'on':''} ${k===L && !maxed?'next':''}"></i>`).join('') + (lbOK ? `<i class="lb ${L>=LIMIT_BREAK_LEVEL?'on':''} ${L===10?'next':''}" title="Level 11: limit break"></i>` : '');
   const prestige = getCardPrestige(id), tier = maxed ? nextPrestigeTier(id) : null;
-  const cost = !maxed ? levelUpCost(L, id) : (tier ? tier.cost : null);
-  const afford = !maxed ? canAffordLevelUp(L, id) : (tier ? canAffordPrestige(id) : false);
+  const cost = !maxed ? levelUpCost(L, id, uid) : (tier ? tier.cost : null);
+  const afford = !maxed ? canAffordLevelUp(L, id, uid) : (tier ? canAffordPrestige(id) : false);
   const noGain = !maxed && next.attack===now.attack && next.health===now.health;
   return `
     <div class="anvil-stage" id="anvilStage">
@@ -40683,6 +40960,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
       <span class="forge-hammer" aria-hidden="true">🔨</span>
     </div>
     <h3 class="forge-name">${escapeHtml(sel.name)}${sel.prestigeLabel?` <span class="forge-prestige-tag">${sel.prestigeIcon} ${escapeHtml(sel.prestigeLabel)}</span>`:''}</h3>
+    ${forgeCopyPickerHTML(id)}
     <div class="forge-level-row"><span class="forge-level-label">Lv ${L}${L>=LIMIT_BREAK_LEVEL?' · Limit broken':maxed?' · Max':''}</span><span class="forge-pips" role="img" aria-label="Level ${L} of 10">${pips}</span></div>
     <div class="forge-stats">${delta(now.attack, next.attack, 'atk', '⚔')}${delta(now.health, next.health, 'hp', '❤')}</div>
     ${noGain ? `<p class="forge-note">Small stats round to the same number this level; the gain shows up at a later level.</p>` : ''}
@@ -40700,7 +40978,7 @@ function forgeAnvilHTML(id, sel, L, maxed){
 }
 // The limit-break panel on a level-10 card (2026-10-12).
 function forgeLimitBreakHTML(id, lb){
-  const d = forgeBaseDef(id), c = lb.cost || limitBreakCost(id), next = forgeStatsAt(id, LIMIT_BREAK_LEVEL), now = forgeStatsAt(id, 10);
+  const d = forgeBaseDef(id), c = lb.cost || limitBreakCost(id, forgeUid(id)), next = forgeStatsAt(id, LIMIT_BREAK_LEVEL), now = forgeStatsAt(id, 10);
   const board = limitBreakDupBoardHTML(id, lb), short = Math.max(0, lb.dupsNeed - lb.dups);
   const gain = [now.attack!=null && next.attack>now.attack ? `⚔ ${now.attack} → ${next.attack}` : '', now.health!=null && next.health>now.health ? `❤ ${now.health} → ${next.health}` : ''].filter(Boolean).join(' · ');
   if(lb.why==='map') return `<div class="forge-limit is-locked"><div class="fl-head">💥 Limit break to Lv ${LIMIT_BREAK_LEVEL}</div>${board}<p class="forge-note">🗺️ ${mapIsCharted(lb.need) ? `Limit breaks open once you reach Map ${lb.need}, deep in the wilds.` : 'Limit breaks unlock beyond the charted maps, deep in the wilds.' /* 2026-10-18: Map 50 isn't charted yet */}</p></div>`;
@@ -40720,11 +40998,12 @@ function limitBreakDupBoardHTML(id, lb){
 }
 async function forgeLimitBreak(btn){
   if(forgeBusy || !forgeSelectedId) return;
-  const id = forgeSelectedId; if(!limitBreakState(id).ok){ denyShake(btn); cobbleSay('limit'); return; }
+  const id = forgeSelectedId, uid = forgeUid(id); if(!limitBreakState(id, uid).ok){ denyShake(btn); cobbleSay('limit'); return; }
   forgeBusy = true; btn.disabled = true;
-  const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
-  limitBreakCard(id);
-  const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  const keep = (copyByUid(id, uid) || {}).uid; // 2026-10-18 (package NF): the copy that breaks stays on the anvil
+  const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
+  limitBreakCard(id, uid); if(keep) forgeCopyPick = {id, uid: keep};
+  const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
   fxHook('forgeUpgrade', 'limitBreak', document.getElementById('anvilStage')); // batch D (2026-10-15, docs/effects-lab-contract.md)
   try{ await forgeSmithAnimation(beforeHTML, afterHTML, true); }catch(e){}
   forgeBusy = false; renderForge();
@@ -40734,10 +41013,10 @@ async function forgeLimitBreak(btn){
 let forgeMeltArmed = null;
 function forgeDupMeltHTML(id, L){
   const d = forgeBaseDef(id); if(!d || d.token || d.hero) return '';
-  const cr = forgeCreditOf(id), spare = spareCopyIndex(id) >= 0, dv = duplicateValue(id), melt = meltCardValue(id);
+  const uid = forgeUid(id), cr = forgeCreditOf(id, uid), spare = spareCopyIndex(id, uid) >= 0, dv = duplicateValue(id), melt = meltCardValue(id, uid); // 2026-10-18 (package NF): the copy on the anvil
   const n = DUPLICATE_DIVISOR[cardRarityTier(d)] || 18.75;
   return `<div class="forge-dup">
-    ${(cr.dust || cr.gold) ? `<p class="forge-note">🧩 Duplicate credit on this card: ✨ ${cr.dust} · ${mapleLeafIconHTML()} ${cr.gold}. It pays for the next levels first.</p>` : ''}
+    ${(cr.dust || cr.gold) ? `<p class="forge-note">🧩 ${escapeHtml(TX('ui.nf-copy-credit', {dust: cr.dust, gold: cr.gold}))}</p>` : ''}
     <div class="forge-dup-row">
       <button type="button" class="btn small" id="forgeFeedDupBtn" ${spare ? '' : 'disabled'} title="${escapeAttr(`About ${Math.round(n)} duplicates take this card from level 1 to 10. Each banks ✨ ${dv.dust} and ${dv.gold} Maple Leaves on it.`)}">🧩 Feed a duplicate <small>+✨${dv.dust}</small></button>
       ${melt ? `<button type="button" class="btn small ghost ${forgeMeltArmed===id?'is-armed':''}" id="forgeMeltBtn" title="${escapeAttr(`Melts ${melt.copies} spare cop${melt.copies===1?'y':'ies'} and takes it back to level ${melt.base}; 97% of what its levels cost comes back.`)}">${forgeMeltArmed===id ? `Confirm: melt for ✨ ${melt.dust}${melt.gold ? ' · ' + melt.gold + ' Leaves' : ''}` : `🔥 Melt down <small>✨${melt.dust}</small>`}</button>` : ''}
@@ -40773,12 +41052,13 @@ async function forgePromote(btn){
   if(forgeBusy || !forgeSelectedId) return;
   const id = forgeSelectedId, to = forgePromotePick, defs = getCardDefs(), d = defs[id];
   const at = Math.max(1, Number(d && d.promoteAt)||3);
-  if(!to || !promotionTargets(id).includes(to) || getCardLevel(id) < at || myCurrencies.gold < PROMOTE_COST.gold || myCurrencies.dust < PROMOTE_COST.dust){ denyShake(btn); if(to && getCardLevel(id) >= at){ if(myCurrencies.dust < PROMOTE_COST.dust) cobbleSay('dust'); else if(myCurrencies.gold < PROMOTE_COST.gold) cobbleSay('gold'); } return; }
+  const uid = forgeUid(id), cL = forgeCopyLevel(id, uid); // 2026-10-18 (package NF): the copy on the anvil is promoted
+  if(!to || !promotionTargets(id).includes(to) || cL < at || myCurrencies.gold < PROMOTE_COST.gold || myCurrencies.dust < PROMOTE_COST.dust){ denyShake(btn); if(to && cL >= at){ if(myCurrencies.dust < PROMOTE_COST.dust) cobbleSay('dust'); else if(myCurrencies.gold < PROMOTE_COST.gold) cobbleSay('gold'); } return; }
   forgeBusy = true; btn.disabled = true;
   const beforeHTML = cardTileHTML(d, {extraClass:'forge-preview'});
   myCurrencies.gold -= PROMOTE_COST.gold; myCurrencies.dust -= PROMOTE_COST.dust; saveCurrencies();
   unlockCardForPlayer(to, 'promotion');
-  myCardLevels[id] = 0; saveCardLevels();
+  forgeSetCopyLevel(id, uid, 0); // that copy goes back to its starting level (it used to be every copy of the card)
   const swap = counts=>{ if(!counts || !counts[id]) return false; counts[to] = (counts[to]||0) + counts[id]; delete counts[id]; return true; };
   let changed = false;
   try{ (myDecks||[]).forEach(dk=> { if(swap(dk.counts)) changed = true; }); }catch(e){}
@@ -40873,26 +41153,28 @@ function forgeTemperAnimation(beforeHTML, afterHTML){
 }
 // Cobble says why the Forge said no (2026-10-14): Dust, Leaves, Materia, the Forge's tier or the map gate.
 function cobbleSay(key){ try{ playDialogue('forge_cobble_' + key, {force:true}); }catch(e){} }
-function cobbleWhyNot(L, id){
+function cobbleWhyNot(L, id, uid){
   if(levelGateNeed((L||0) + 1)) return cobbleSay('gate');
   if(forgeTierFor(id, (L||0) + 1)) return cobbleSay('tier');
-  const c = levelUpCost(L, id);
+  const c = levelUpCost(L, id, uid);
   if((myCurrencies.dust||0) < c.dust) return cobbleSay('dust');
   if((myCurrencies.gold||0) < c.gold) return cobbleSay('gold');
   if(Object.entries(c.mats||{}).some(([m, n])=> ownedCount(m) < n)) return cobbleSay('mats');
 }
 async function forgeTemper(btn){
   if(forgeBusy || !forgeSelectedId) return;
-  const id = forgeSelectedId, L = getCardLevel(id);
-  if(L>=10 || L < 1 || !canAffordLevelUp(L, id)){ denyShake(btn); if(L >= 1 && L < 10) cobbleWhyNot(L, id); return; } // Level 0 → 1 is the Nest's (2026-10-12)
+  // 2026-10-18 (package NF, owner 23:37: "Forging one card doesn't mean all copies become stronger!"): only the copy on the anvil
+  // (the picker's, your best by default) goes up a level, paid partly by that copy's own credit.
+  const id = forgeSelectedId, uid = forgeUid(id), L = forgeCopyLevel(id, uid);
+  if(L>=10 || L < 1 || !canAffordLevelUp(L, id, uid)){ denyShake(btn); if(L >= 1 && L < 10) cobbleWhyNot(L, id, uid); return; } // Level 0 → 1 is the Nest's (2026-10-12)
   forgeBusy = true; btn.disabled = true; if(reducedMotion() || !hasGsap()) try{ SoundKit.forgeStrike(); }catch(e){} // with the animation, each blow sounds on its hammer impact (2026-10-15)
-  const c = levelUpCost(L, id);
-  const beforeHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  const c = levelUpCost(L, id, uid), keep = (copyByUid(id, uid) || {}).uid;
+  const beforeHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
   myCurrencies.dust -= c.dust; myCurrencies.gold -= c.gold; saveCurrencies();
-  if(c.credit && (c.credit.dust || c.credit.gold)) spendForgeCredit(id, c.credit);
+  if(c.credit && (c.credit.dust || c.credit.gold)) spendForgeCredit(id, c.credit, uid);
   Object.entries(c.mats||{}).forEach(([mid, n])=> spendCopies(mid, n));
-  myCardLevels[id] = L+1; saveCardLevels();
-  const afterHTML = cardTileHTML(getCardDefs()[id], {extraClass:'forge-preview'});
+  forgeSetCopyLevel(id, uid, L+1); if(keep) forgeCopyPick = {id, uid: keep}; // the tempered copy stays on the anvil
+  const afterHTML = cardTileHTML(forgeCopyDef(id, getCardDefs()[id]), {extraClass:'forge-preview'});
   try{ await forgeTemperAnimation(beforeHTML, afterHTML); }catch(e){}
   forgeBusy = false; renderForge();
   const pop = document.querySelector('#forgeDetail .forge-level-label');
@@ -42649,8 +42931,36 @@ function grantEgg(kind, from){ const n = nestState(); const k = EGG_KINDS[kind] 
   try{ showToast(noNest ? `${EGG_KINDS[k].icon} ${noNest}` : TX('toast.you-found-a-set-it-in', {v1: EGG_KINDS[k].icon, v2: EGG_KINDS[k].name, v3: NEST_TYPES[EGG_KINDS[k].type].name}), 'ok'); }catch(e){} }
 function nestPlaced(n){ return (n || nestState()).eggs.filter(e=> e.placed !== false); }
 function nestPackedEggs(n){ return (n || nestState()).eggs.filter(e=> e.placed === false); }
-function placeEggInNest(eggId){ const n = nestState(), e = n.eggs.find(x=> x.id === eggId); if(!e || e.placed !== false) return false; if(nestPlaced(n).length >= nestSlotsOpen(n)) return false;
+// NEST_SLOTS_NF:BEGIN (tests/nf-2026-10-19.js evaluates this block)
+// Nest spots (2026-10-18, package NF, owner 23:37: "Nest: when you insert an egg, it should go into the slot you chose."): each
+// egg, baby or card in training remembers its nest (item.slot, 0-6 in the hexagon's order). Before, the nests were filled in order,
+// so an egg set from the fourth nest landed in the first empty one, and everything moved up a nest when one hatched. An item with
+// no slot yet (an older save, a rescued baby) takes the first free nest and keeps it; items beyond the built nests wait in the basket.
+function nestSlotLayout(n){
+  n = n || nestState(); const open = nestSlotsOpen(n), slots = new Array(open).fill(null), rest = [], waiting = [];
+  nestPlaced(n).forEach(e=>{ const s = e.slot; if(Number.isInteger(s) && s >= 0 && s < open && !slots[s]) slots[s] = e; else rest.push(e); });
+  rest.forEach(e=>{ const i = slots.indexOf(null); if(i >= 0) slots[i] = e; else waiting.push(e); });
+  return {slots, waiting, open};
+}
+// Every item shown in a nest keeps that nest from now on (so setting a new egg never moves another one).
+function nestPinSlots(n){ const L = nestSlotLayout(n); L.slots.forEach((e, i)=>{ if(e) e.slot = i; }); return L; }
+// Where a new item may go. slot: the nest that was tapped (null: the first free one). {ok, slot} or {ok:false, why}: 'locked' (that
+// nest isn't built), 'taken' (something is in it) or 'full' (no free nest). A refused item is never put in another nest instead.
+function nestSlotFor(n, slot){
+  const L = nestSlotLayout(n);
+  if(slot == null || slot === ''){ const i = L.slots.indexOf(null); return i >= 0 ? {ok:true, slot:i} : {ok:false, why:'full'}; }
+  slot = Number(slot); if(!Number.isInteger(slot) || slot < 0 || slot >= NEST_SLOTS) return {ok:false, why:'locked'};
+  if(slot >= L.open) return {ok:false, why:'locked'};
+  if(L.slots[slot]) return {ok:false, why:'taken'};
+  return {ok:true, slot};
+}
+function nestRefusalText(why){ return why === 'taken' ? TX('ui.nf-nest-taken') : why === 'locked' ? TX('ui.nf-nest-locked') : TX('ui.nf-nest-full'); }
+// Sets an egg from the pack in a nest: true, or why not ('locked' / 'taken' / 'full'; false: no such egg in the pack).
+function placeEggInNest(eggId, slot){ const n = nestState(), e = n.eggs.find(x=> x.id === eggId); if(!e || e.placed !== false) return false;
+  const at = nestSlotFor(n, slot); if(!at.ok) return at.why;
+  nestPinSlots(n); e.slot = at.slot;
   const now = Date.now(); e.placed = true; e.laidAt = now; e.hatchAt = now + Math.round((EGG_KINDS[e.kind] || EGG_KINDS.woodland).hatchHours*3600e3*nurseTimeFactor()); saveNestState(n); /* the Nurse master's mastery speeds it (2026-10-15) */ if(e.kind !== 'baby') grantEggCardFor(e.kind); return true; }
+// NEST_SLOTS_NF:END
 // Egg cards (2026-10-14, user: "Eggs are now cards ... you can even put them in the deck. But it would suck ... You still have the egg out
 // of game"): the first time you set an egg of a kind in a nest, its egg card (e.g. Speckled Egg) joins your collection.
 function grantEggCardFor(kind){ const id = 'egg-' + (EGG_KINDS[kind] ? kind : 'woodland'); try{ if(!getCardDefs()[id] || myUnlockedCardIds.has(id)) return false; unlockCardForPlayer(id, 'nest'); try{ showToast(TX('toast.new-card-it-cracks-open-on', {v1: getCardDefs()[id].name, v2: eggKindLabel(getCardDefs()[id])}), 'ok'); }catch(e){} return true; }catch(e){ return false; } }
@@ -42671,13 +42981,19 @@ function nurtureShortfall(id){ const c = nurtureCostFor(id), names = {kibble:'Ki
 function canAffordNurture(id){ const c = nurtureCostFor(id); return Object.keys(c).every(k=> (myCurrencies[k]||0) >= c[k]); }
 const NURTURE_COST_TEXT = ()=> `🦴${NURTURE_COST.kibble} ✨${NURTURE_COST.dust} 🍁${NURTURE_COST.gold}`;
 function nurtureCandidates(){ const defs = getCardDefs(), busy = new Set(nestState().eggs.filter(e=> e.kind === 'nurture').map(e=> e.cardId));
-  return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && defs[id].cardType !== 'materia' && (myCardCopies[id]||[]).length && getCardLevel(id) === 0 && !busy.has(id)); }
-function startNurture(cardId){ const n = nestState(); if(nestPlaced(n).length >= nestSlotsOpen(n)) return 'full';
+  return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && defs[id].cardType !== 'materia' && (myCardCopies[id]||[]).length && nestHasLevel0Copy(id) && !busy.has(id)); }
+function nestHasLevel0Copy(id){ if(getCardLevel(id) === 0) return true; if(!copyModelOn()) return false; copyModelSync(id); return (myCardCopies[id]||[]).some(c=> copyLevel(id, c) === 0); } // 2026-10-18 (package NF): any Level-0 copy
+function startNurture(cardId, slot){ const n = nestState(); const at = nestSlotFor(n, slot); if(!at.ok) return at.why; // 2026-10-18 (package NF): the nest you tapped ('full' / 'locked' / 'taken')
   if(!canAffordNurture(cardId)) return 'cost';
   const cost = nurtureCostFor(cardId); Object.keys(cost).forEach(k=> myCurrencies[k] = (myCurrencies[k]||0) - cost[k]); saveCurrencies(); noteNestSpecies(cardId);
-  const now = Date.now(); n.eggs.push({id:'nur'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'nurture', cardId, laidAt:now, hatchAt: now + Math.round(NURTURE_HOURS*3600e3*nurseTimeFactor()), placed:true}); saveNestState(n); return 'ok'; } // mastery speeds it (2026-10-15)
+  nestPinSlots(n);
+  const now = Date.now(); n.eggs.push({id:'nur'+now.toString(36)+Math.floor(Math.random()*1e4), kind:'nurture', cardId, laidAt:now, hatchAt: now + Math.round(NURTURE_HOURS*3600e3*nurseTimeFactor()), placed:true, slot: at.slot}); saveNestState(n); return 'ok'; } // mastery speeds it (2026-10-15)
 function finishNurture(itemId){ const n = nestState(), e = n.eggs.find(x=> x.id === itemId); if(!e || e.kind !== 'nurture' || Date.now() < e.hatchAt) return null;
-  n.eggs = n.eggs.filter(x=> x.id !== itemId); saveNestState(n); myCardLevels[e.cardId] = Math.max(1, myCardLevels[e.cardId]||0); saveCardLevels(); if(hatchlingIds().delete(e.cardId)) saveHatchlings(); return e.cardId; }
+  n.eggs = n.eggs.filter(x=> x.id !== itemId); saveNestState(n);
+  // 2026-10-18 (package NF): one Level-0 copy (the oldest) trains to Level 1; the card's other copies keep their own levels
+  let done = false; if(copyModelOn()){ copyModelSync(e.cardId); const a = myCardCopies[e.cardId] || [], i = a.findIndex(c=> copyLevel(e.cardId, c) === 0); if(i >= 0){ a[i].level = 1; delete a[i].hatch; syncBestLevel(e.cardId); saveCardCopies(); done = true; } }
+  if(!done) myCardLevels[e.cardId] = Math.max(1, myCardLevels[e.cardId]||0);
+  saveCardLevels(); if(hatchlingIds().delete(e.cardId)) saveHatchlings(); return e.cardId; }
 let nestNurturePrefill = null;
 // The Nest picker (2026-10-14, user: "The nesting cost (0 -> 1) should be written only when you click the card. Cards whose cost is
 // too high are greyed out. But when you click them, they give a small central notification that fades 'Need 5 more Kibble' etc."):
@@ -42688,7 +43004,8 @@ function nestNeedToast(text){
   const t = document.createElement('div'); t.className = 'np-need-toast'; t.setAttribute('role', 'status'); t.textContent = text;
   document.body.appendChild(t); setTimeout(()=> t.remove(), 2000);
 }
-function openNestPicker(){
+function openNestPicker(slot){
+  if(slot != null && typeof slot === 'object') slot = null; // (called as a click handler: no slot)
   const defs = getCardDefs(), eggs = nestPackedEggs(), kids = nurtureCandidates();
   const ov = document.createElement('div'); ov.className = 'modal-overlay'; ov.setAttribute('role', 'dialog');
   ov.innerHTML = `<div class="modal nest-picker" aria-label="Fill a nest"><div class="modal-head-row"><h2>🪺 Fill a nest</h2><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
@@ -42700,15 +43017,15 @@ function openNestPicker(){
   document.body.appendChild(ov); nestNurturePrefill = null;
   const close = ()=> ov.remove();
   const conf = ov.querySelector('.np-confirm');
-  const train = id=>{ const r = startNurture(id); if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} close(); renderNest(); try{ fxHook('nestTrain', id); }catch(_){} showToast(TX('toast.is-in-training-back-in-h', {v1: defs[id].name, NURTURE_HOURS}), 'ok'); return true; } return false; };
+  const train = id=>{ const r = startNurture(id, slot); if(r === 'locked' || r === 'taken' || r === 'full'){ nestNeedToast(nestRefusalText(r)); return false; } if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} close(); renderNest(); try{ fxHook('nestTrain', id); }catch(_){} showToast(TX('toast.is-in-training-back-in-h', {v1: defs[id].name, NURTURE_HOURS}), 'ok'); return true; } return false; };
   ov.addEventListener('click', e=>{ if(e.target === ov || e.target.closest('[data-close]')) return close();
     const eg = e.target.closest('[data-np-egg]'), cd = e.target.closest('[data-np-card]'), go = e.target.closest('[data-np-train]'), no = e.target.closest('[data-np-cancel]');
-    if(eg){ if(placeEggInNest(eg.dataset.npEgg)){ try{ SoundKit.shelfPick(); }catch(_){} close(); renderNest(); try{ fxHook('nestEggPlaced', eg.dataset.npEgg); }catch(_){} } else denyShake(eg); }
+    if(eg){ const r = placeEggInNest(eg.dataset.npEgg, slot); if(r === true){ try{ SoundKit.shelfPick(); }catch(_){} close(); renderNest(); try{ fxHook('nestEggPlaced', eg.dataset.npEgg); }catch(_){} } else { denyShake(eg); if(r) nestNeedToast(nestRefusalText(r)); } }
     else if(go){ if(!train(go.dataset.npTrain)) denyShake(go); }
     else if(no){ conf.hidden = true; ov.querySelectorAll('.np-card.is-picked').forEach(x=> x.classList.remove('is-picked')); }
     else if(cd){ const id = cd.dataset.npCard;
       if(!canAffordNurture(id)){ denyShake(cd); nestNeedToast('Need ' + nurtureShortfall(id).join(' and ')); return; }
-      if(nestPlaced().length >= nestSlotsOpen()){ denyShake(cd); nestNeedToast('Every nest is full'); return; }
+      { const at = nestSlotFor(nestState(), slot); if(!at.ok){ denyShake(cd); nestNeedToast(nestRefusalText(at.why)); return; } } // 2026-10-18 (package NF): the tapped nest
       ov.querySelectorAll('.np-card.is-picked').forEach(x=> x.classList.remove('is-picked')); cd.classList.add('is-picked');
       conf.innerHTML = `<span class="np-conf-name">🌱 ${escapeHtml(defs[id].name)} <small>to Level 1 in ${NURTURE_HOURS}h</small></span><button type="button" class="btn ghost small" data-np-cancel>Cancel</button><button type="button" class="btn primary" data-np-train="${escapeAttr(id)}">🌱 Train${btnCostHTML(nurtureCostFor(id))}</button>`;
       conf.hidden = false; try{ conf.querySelector('[data-np-train]').focus({preventScroll:true}); conf.scrollIntoView({block:'nearest'}); }catch(_){} } });
@@ -42764,9 +43081,10 @@ function hatchEgg(eggId){
   const w = d=> ({common:6, uncommon:3, rare:1})[d.rarity || 'common'] || 1, tot = pool.reduce((a, d)=> a + w(d), 0);
   let r = Math.random()*tot, d = pool[pool.length-1]; for(const x of pool){ r -= w(x); if(r <= 0){ d = x; break; } }
   n.eggs = n.eggs.filter(e=> e.id!==eggId); saveNestState(n);
-  const isNew = !myUnlockedCardIds.has(d.id) && !(myCardCopies[d.id]||[]).length;
+  const isNew = !myUnlockedCardIds.has(d.id) && !(myCardCopies[d.id]||[]).length, wasLevelled = myCardLevels[d.id] > 0;
   unlockCardForPlayer(d.id, 'egg'); try{ noteNestSpecies(d.id); }catch(e){} // the egg line moves on (2026-10-14)
-  if(isNew && cardBaseLevel(d) > 0 && !(myCardLevels[d.id] > 0)){ hatchlingIds().add(d.id); saveHatchlings(); }
+  if(isNew && cardBaseLevel(d) > 0 && !wasLevelled){ if(myCardLevels[d.id] === cardBaseLevel(d)) delete myCardLevels[d.id]; // 2026-10-18 (package NF): (a sync may have set the new copy's level) hatchlingIds().add(d.id); saveHatchlings();
+    try{ const a = myCardCopies[d.id] || [], c = a[a.length - 1]; if(c && copyModelOn()){ c.level = 0; c.hatch = 1; saveCardCopies(); } }catch(e){} } // 2026-10-18 (package NF)
   if(egg.kind === 'baby'){ myCurrencies.kibble = (myCurrencies.kibble||0) + 2; saveCurrencies(); } // a grown baby brings its leftover Kibble
   return d.id;
 }
@@ -42785,7 +43103,7 @@ function nestKeeperHTML(){
   // seven hay nests in a hexagon (one in the middle, six around it); eggs and babies take them in order, extras wait in the basket
   const HEX = [[50,50],[50,16],[80,33],[80,67],[50,84],[20,67],[20,33]];
   const open = nestSlotsOpen(n), nx = nextNestUnlock(n);
-  const placed = nestPlaced(n), items = placed.slice(0, open), waiting = placed.slice(open), packed = nestPackedEggs(n);
+  const lay = nestSlotLayout(n), items = lay.slots, waiting = lay.waiting, packed = nestPackedEggs(n); // 2026-10-18 (package NF): each item in its own nest
   const nests = HEX.map(([x, y], i)=>{ const e = items[i];
     if(i >= open){ // 2026-10-16: a nest not built yet. The next one shows its map, or its price once that map is reached; the rest wait.
       const u = NEST_UNLOCKS[i], isNext = nx && nx.i === i, mapName = (CONQUEST_MAPS.find(m=> m.id === mapIdAt(u.map)) || {}).name || '';
@@ -42794,7 +43112,7 @@ function nestKeeperHTML(){
       if(!mapIsCharted(u.map)) return `<div class="hay-nest is-locked ${isNext ? 'is-next' : ''}" style="--x:${x}%; --y:${y}%" title="${escapeAttr(`${UNCHARTED_LOCK}, then it can be built`)}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔒</span>${isNext ? '<small class="nest-time">🧭</small>' : ''}<span class="sr-only">A nest that ${UNCHARTED_LOCK.toLowerCase()}</span></div>`;
       return `<div class="hay-nest is-locked ${isNext ? 'is-next' : ''}" style="--x:${x}%; --y:${y}%" title="${escapeAttr(`Opens on Map ${u.map}${mapName ? ' (' + mapName + ')' : ''}, then it can be built`)}"><span class="hay"></span><span class="nest-lock" aria-hidden="true">🔒</span>${isNext ? `<small class="nest-time">Map ${u.map}</small>` : ''}<span class="sr-only">A nest that opens on Map ${u.map}</span></div>`;
     }
-    if(!e) return `<button type="button" class="hay-nest is-empty" style="--x:${x}%; --y:${y}%" data-nest-empty="1" aria-label="An empty nest: set an egg or nurture a card"><span class="hay"></span><span class="nest-plus" aria-hidden="true">＋</span></button>`;
+    if(!e) return `<button type="button" class="hay-nest is-empty" style="--x:${x}%; --y:${y}%" data-nest-empty="${i}" aria-label="An empty nest: set an egg or nurture a card"><span class="hay"></span><span class="nest-plus" aria-hidden="true">＋</span></button>`;
     if(e.kind === 'nurture'){ const cd = defs[e.cardId] || {}, left = e.hatchAt - Date.now(), pct = Math.max(0, Math.min(100, Math.round((Date.now() - e.laidAt) / Math.max(1, e.hatchAt - e.laidAt) * 100)));
       return `<button type="button" class="hay-nest is-nurture ${left<=0 ? 'is-ready' : ''}" style="--x:${x}%; --y:${y}%; --p:${pct}" data-nurture="${escapeAttr(e.id)}" ${left>0 ? 'aria-disabled="true"' : ''} aria-label="${escapeAttr((cd.name||'A card') + (left>0 ? ' is being nurtured' : ' is ready'))}">
         <span class="hay"></span><span class="nest-thing">${escapeHtml(cd.icon || '🌱')}</span><span class="nest-type" title="Nurturing">🌱</span><small class="nest-time">${left>0 ? escapeHtml(fmt(left)) : 'Lv 1!'}</small><span class="nest-ring" aria-hidden="true"></span></button>`; }
@@ -42877,7 +43195,7 @@ function renderNest(){
     else { denyShake(b); showToast(TX('toast.not-enough-to-build-this-nest'), 'warn'); } }); startTipTicker(document.getElementById('nestTipTicker'), NEST_TIPS); return; } // 2026-10-18 (package DK): the Upgrades tab has no grid
   wireStamina(root, renderNest);
   { const nb = root.querySelector('#nestNurseBtn'); if(nb) nb.onclick = openNursePicker; }
-  root.querySelectorAll('[data-nest-empty]').forEach(b=> b.onclick = openNestPicker);
+  root.querySelectorAll('[data-nest-empty]').forEach(b=> b.onclick = ()=> openNestPicker(+b.dataset.nestEmpty)); // 2026-10-18 (package NF): into this nest
   root.querySelectorAll('[data-nest-build]').forEach(b=> b.onclick = ()=>{ const r = buildNextNest(); // 2026-10-16: nests are built one by one
     if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderNest(); showToast(TX('toast.a-new-nest-is-built', {open: nestSlotsOpen()}), 'ok'); }
     else { denyShake(b); showToast(TX('toast.not-enough-to-build-this-nest'), 'warn'); } });
@@ -44662,7 +44980,7 @@ setTimeout(()=>{ try{ checkBirthdayGift(); }catch(e){} }, 4000);
 function collectionStats(){
   const defs = getCardDefs();
   // One count everywhere (2026-10-13 UI audit: Home, Codex and Profile each counted cards differently): collectible cards only.
-  const ids = Object.keys(defs).filter(id=> { const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !isHofVariant(d) && !(SPELLS_SHELVED && d.cardType === 'spell'); });
+  const ids = Object.keys(defs).filter(id=> { const d = defs[id]; return d && !d.token && !d.test && !d.hero && d.cardType !== 'materia' && !isHofVariant(d) && !d.derivedFrom && !(SPELLS_SHELVED && d.cardType === 'spell'); }); // 2026-10-18 (package NF): not a fight-only copy
   const owned = ids.filter(id=> (!defs[id].locked && !isCardHiddenForPlayer(defs[id])) || (myCardCopies[id]||[]).length);
   const levelSum = owned.reduce((t, id)=> t + getCardLevel(id), 0);
   // Skins (for now): each card has its plain print and its foil. Owning the card unlocks the plain
