@@ -1,4 +1,4 @@
--- PROPOSED, NOT APPLIED (2026-10-18, R3-WP3 network feedback). Apply only on the owner's "apply it".
+-- APPLIED 2026-10-18 15:05 (owner: "19) okay"). Drafted by R3-WP3 network feedback.
 -- Why: createGuild (arena_app.js) inserts the guild row, then the founder's owner row in guild_members. If the second
 -- insert fails, the client now tries to delete the guild it just made, so no ownerless guild keeps the name. The live
 -- policies (read 2026-10-18) allow SELECT and INSERT on public.guilds but have NO delete policy, so that delete removes

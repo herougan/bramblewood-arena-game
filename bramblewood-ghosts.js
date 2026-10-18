@@ -24,7 +24,7 @@ const DAY = 24*3600*1000;
 // Same per-rarity copy limits as the deck builder (arena_app.js RARITY_MAX_COPIES).
 const RARITY_MAX_COPIES = {common:10, uncommon:5, rare:4, veryrare:3, superrare:3, epic:2, heroic:2, unique:1, legendary:1, mythic:1, ancient:1, starter:10, quest:5, questunique:1, special:4, devlegendary:1, devancient:1, eventlegendary:1, eventrare:4};
 const DECK_SIZE = 20;
-const GHOST_NAMES = ['Moss','Bramble','Pip','Thistle','Rook','Fern','Juniper','Wren','Hazel','Sorrel','Bracken','Tansy','Nettle','Clover','Sedge','Rowan','Burdock','Willow','Aster','Quill','Hollis','Marlow','Pebble','Kestrel'];
+const GHOST_NAMES = ['Moss','Briony','Pip','Thistle','Rook','Fern','Juniper','Wren','Hazel','Sorrel','Bracken','Tansy','Nettle','Clover','Sedge','Rowan','Teasel','Willow','Aster','Quill','Hollis','Marlow','Pebble','Kestrel'];
 const AVATAR_CHARS = ['otter','hummingbird','mouse'];
 const AVATAR_COLORS = ['acorn','berry','river','moss','violet','sun','blossom','frost','night'];
 

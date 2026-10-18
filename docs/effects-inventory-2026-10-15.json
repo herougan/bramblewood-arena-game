@@ -11647,7 +11647,7 @@
   "id": "pack-free-courier",
   "area": "pack-card-open",
   "name": "Free pack courier hands it over",
-  "trigger": "tap Bramble the courier mouse",
+  "trigger": "tap Burdock the courier mouse",
   "current": "courier bob → opener",
   "quality": "good — has its own look that plays at the right moment",
   "priority": 3,

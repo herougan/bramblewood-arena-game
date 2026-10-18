@@ -8710,10 +8710,13 @@
   /* Cost 5+ (user: "5 Resource cost and above e.g. 5 lumber or 5 stone, it's just a lumber symbol with a black number w/ white bg
      glow."): one resource icon with its number set over its lower half, black with a white glow. Four pips overlap a little more so
      they stay inside the badge on small tiles (the deck editor's pool overflowed at 4). */
-  .pips.is-res-num{position:relative; padding-right:.34em;}
-  .pips.is-res-num i{font-size:1.18em;}
-  .pips.is-res-num b{position:absolute; right:-.12em; bottom:-.2em; margin:0; color:#111; font:900 1.02em/1 'Baloo 2', system-ui, sans-serif; letter-spacing:-.04em;
-    text-shadow:0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px rgba(255,255,255,.9);}
+  /* 2026-10-18 (owner: "the 5+ lumber shows a single lumber with a contrasted number in the centre instead"): the number sits in
+     the middle of the one icon, white with a dark outline, so it reads on the log's brown and on any frame colour. */
+  .pips.is-res-num{position:relative; justify-content:center;}
+  .pips.is-res-num i{font-size:1.3em;}
+  .pips.is-res-num b{position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); margin:0; color:#fff; font:900 .98em/1 'Baloo 2', system-ui, sans-serif;
+    letter-spacing:-.04em; pointer-events:none; -webkit-text-stroke:.6px #1a1006; paint-order:stroke fill;
+    text-shadow:0 0 1px #1a1006, 1px 1px 0 #1a1006, -1px -1px 0 #1a1006, 1px -1px 0 #1a1006, -1px 1px 0 #1a1006, 0 0 3px rgba(0,0,0,.85);}
   .pips[data-n="4"] i + i{margin-left:-.42em;}
   /* An enemy unit whose only skill is Bounty (its 🏆 slot hides behind the Lumber bubble) shows no empty grey strip (user: "Why do
      those enemy cards have that slim weird & grey rectangle ... Is that 'Bounty'?"). */
