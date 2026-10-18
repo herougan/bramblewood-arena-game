@@ -94,7 +94,9 @@ for(const side of ['left', 'center', 'right']){
   e.debugSpawnCard(P, so, 1, 'mp-pouncer', 'center', {}, []);
   ok(P[2].hq.hp === hp0 - 4 && w.hp === 200, `e. only a caged enemy: the pounce hits the bramble (${hp0 - P[2].hq.hp})`); }
 // f. the card text says where it goes
-ok(/pounce: v=> `When played, deal \$\{pounceWords\(v\)\} damage to the enemy facing it \(or the nearest\), or the bramble if there are no targets\.`/.test(src), 'f. the card line names the bramble');
+// (package D made the card line the TX key ui.sk-pounce, 2026-10-18)
+const TEXTS = require(path.join(__dirname, '..', 'bramblewood-texts.js')).TEXT;
+ok(/pounce: v=> TX\('ui\.sk-pounce', \{n: pounceWords\(v\)\}\)/.test(src) && /bramble/.test(TEXTS['ui.sk-pounce'] || ''), 'f. the card line names the bramble');
 ok(/the enemy bramble, if no units are left/.test(src), 'f. the Codex keyword says so too');
 
 console.log(fail ? `m-2026-10-19: ${fail} of ${n} FAILED` : `m-2026-10-19: all ${n} passed`);
