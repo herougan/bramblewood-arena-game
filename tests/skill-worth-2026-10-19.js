@@ -65,6 +65,12 @@ ok(agg.entries.skills.prayer.why && agg.entries.skills.leader.why, 'entries that
   ok(has || why, `${f}: ${e.id} has measuredS or a reason`);
   if(has) ok(['high', 'medium', 'low'].includes(e.measuredConf), `${f}: ${e.id} has a confidence`);
   ok(typeof e.value === 'number', `${f}: ${e.id} keeps its value`); }));
+Object.entries(table.shorthands || {}).forEach(([k, sh])=> ok(typeof sh.measuredS === 'number' || (typeof sh.measuredWhy === 'string' && sh.measuredWhy), `shorthand ${k} has measuredS or a reason`));
+// package GI's skills (merged 2026-10-19) are measured with what they need
+['hunter', 'executioner', 'detonate', 'proliferate', 'brittle', 'prayerWard', 'fieldBreaker'].forEach(id=> ok(!table.skills.find(e=> e.id === id) || plan.some(r=> r.id === id), `GI skill ${id} is planned`));
+ok(plan.some(r=> r.id === 'hunter' && r.tag === 'vs-bleed') && plan.some(r=> r.id === 'hunter' && r.tag === 'vs-wet' && r.ctx === 'rain'), 'Hunter runs per status');
+ok(plan.some(r=> r.id === 'prayerWard' && r.effects.prayer) && plan.some(r=> r.id === 'fieldBreaker' && r.ctx === 'thunder'), 'Prayer Ward with Prayer, Field Breaker under a field');
+ok(!table.shorthands.kinRally || plan.some(r=> r.id === 'kinRally' && r.archetypes && r.tag === 'enabler'), 'Kin Rally in a tribe deck, with the tribe control');
 ok(table.triggers.find(t=> t.id === 'onDeath').value === 1 && table.triggers.find(t=> t.id === 'onAllyPlayed').value === 2.5, 'the owner\'s seeds are untouched (value)');
 ok(/package SW/.test(table.measured || ''), 'the table says what measuredS is');
 ok(/measuredS/.test(src) && /value is unchanged/.test(src) && !/e\.value = x\.measuredS/.test(src), 'the tool writes measuredS, never value');

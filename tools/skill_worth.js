@@ -46,10 +46,19 @@ const BASELINES = [
   {id:'b3', attack:6, health:22, wait:3, cost:1},
 ];
 // The fields a skill can depend on (engine rules flags; plain = the default: day all match, no field).
-const CONTEXTS = {plain:{}, night:{phase:'night'}, tide:{permaTide:true}, dark:{dark:true}, rain:{field:'rain'}, heat:{field:'heatwave'}, frost:{field:'frozen'}, moon:{phase:'night', field:'moon'}};
+const CONTEXTS = {plain:{}, night:{phase:'night'}, tide:{permaTide:true}, dark:{dark:true}, rain:{field:'rain'}, heat:{field:'heatwave'}, frost:{field:'frozen'}, moon:{phase:'night', field:'moon'},
+  // 2026-10-19 (package GI's three fields, for Field Breaker)
+  spore:{sporeCloud:true}, thunder:{thunderstorm:2}, roots:{tangledRoots:true}};
 const FIELD_OF = {nocturnal:'night', nocturnalHp:'night', nocturnalGrant:'night', nightblind:'night', moonborn:'moon', fullMoon:'moon', fullMoonGrant:'moon', illuminate:'night', lantern:'night',
   swimmer:'tide', swimmerGrant:'tide', tide:'tide', tideGrant:'tide', supremeTide:'tide', moonpull:'tide', wave:'tide', tsunami:'tide', bloomWhen:'night',
   darksight:'dark', keenSense:'dark', inherentDarkness:'dark', trueStrike:'dark', rainrunner:'rain', dry:'heat', mountainClimber:'frost'};
+// Skills that also run under more fields (each on b2; the skill's worth is their mean).
+const FIELDS_OF = {fieldBreaker:['thunder', 'spore', 'roots', 'heat']};
+// Package GI (2026-10-19) skills sit only on pool cards, so their typical value is set here; the ones that need company get an
+// enabler on the test unit and on its control (S = S(skill + enabler) − S(enabler)); Kin Rally / Pack Howl get a tribe deck.
+const TYPICAL = {hunter:2, executioner:2, brittle:2, proliferate:1, prayerWard:1, fieldBreaker:2, detonate:true};
+const SKILL_ENABLER = {hunter:{poison:2}, detonate:{poison:2}, proliferate:{poison:2}, brittle:{shatter:2}, prayerWard:{prayer:1}};
+const HUNTER_VS = [['bleed', {bleed:2}, 'plain'], ['exposed', {expose:1}, 'plain'], ['wet', {}, 'rain']];
 // Skills that are a parameter of another (measured as the difference: parent + parameter − parent, on b2 in the parent's field).
 const PARAM_OF = {crepuscularHp:'crepuscular', defianceN:'defiance', diurnalGrant:'diurnal', diurnalHp:'diurnal', espritHp:'esprit', fullMoonGrant:'fullMoon', loyalGrant:'loyal',
   nocturnalGrant:'nocturnal', nocturnalHp:'nocturnal', swarmN:'swarm', swimmerGrant:'swimmer', tideGrant:'tide', arrowCount:'arrow', bloomWhen:'bloom'};
@@ -59,6 +68,7 @@ const WHY = {
   leader:'Leader only matters for skirmish leaders (a fight setup), not a played unit',
   crepuscular:'Crepuscular acts only at twilight (the realtime clock maps)', crepuscularHp:'Crepuscular acts only at twilight (the realtime clock maps)',
   weakness:'Weakness (a damage type) needs a foe that deals that type; the plain decks deal physical damage only',
+  hunterVs:'a parameter of Hunter (which status, no cost of its own); Hunter runs once per status (Poisoned, Bleeding, Exposed, Wet)',
   onAnyPlayed:'On Any Played has no engine hook yet (a reference value)',
 };
 // Triggers measured with "deal 2 damage to a random enemy"; actions under a reference trigger with the parameters live cards use most.
@@ -78,6 +88,7 @@ const ACTION_REF = {
 const ENABLER = {onHealed:{regen:1}, onAllyHealed:{regen:1}};
 // Engine keywords with no entry in the table (reported, not added).
 const EXTRA = {antiAir:true};
+const TRIBE = {kinRally:['Otter'], packHowl:['Wolf']}; // Kin Rally / Pack Howl (package GI shorthands): a tribe deck, every copy shares the type
 
 const r2 = v=> Math.round(v * 100) / 100, r3 = v=> Math.round(v * 1000) / 1000;
 function hashStr(s){ let h = 2166136261; for(let i = 0; i < s.length; i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
@@ -163,28 +174,28 @@ function makeLab(o){
   };
   const refCache = {};
   function refDef(b, kind, h){ const k = KINDS[kind](b); return unit(`sw-${b.id}-${kind}-h${h}`, {attack:k.attack, health:h, wait:k.wait, cost:k.cost}, {effects:k.fx}); }
-  function calibrate(b, kind){
-    const key = b.id + ':' + kind; if(refCache[key]) return refCache[key];
-    const k = KINDS[kind](b), v = vanilla(b, 0, 0), ctx = k.ctx || 'plain', ev = {};
+  function calibrate(b, kind, inCtx){ // in its own field (each field calibrates its own pool)
+    const k = KINDS[kind](b), ctx = k.ctx || inCtx || 'plain', key = b.id + ':' + kind + ':' + ctx; if(refCache[key]) return refCache[key];
+    const v = vanilla(b, 0, 0), ev = {};
     const at = h=> ev[h] != null ? ev[h] : (ev[h] = batch(v, deckOf(v), deckOf(refDef(b, kind, h)), ctx, 'cal:' + key, 2 * G).wr);
     let lo = k.lo, hi = k.hi; // vanilla's win rate falls as the ref's Health rises
     if(at(lo) <= 0.5) hi = lo; else if(at(hi) >= 0.5) lo = hi;
     while(hi - lo > 1){ const mid = Math.floor((lo + hi) / 2); if(at(mid) > 0.5) lo = mid; else hi = mid; }
     const h = Math.abs(at(lo) - 0.5) <= Math.abs(at(hi) - 0.5) ? lo : hi;
-    log(`  calibrated ${b.id} ${kind}: ${k.attack}/${h} (vanilla ${Math.round(at(h) * 100)}%)`);
+    log(`  calibrated ${b.id} ${kind} (${ctx}): ${k.attack}/${h} (vanilla ${Math.round(at(h) * 100)}%)`);
     return (refCache[key] = {id: refDef(b, kind, h), attack:k.attack, health:h, wait:k.wait, cost:k.cost, vanillaWr: at(h), ctx});
   }
   // The mix (5 of each calibrated kind) is far stronger than its parts, so it gets its own calibration: one Health offset k on all four.
-  function calibrateMixed(b){
-    const key = b.id + ':mixed'; if(refCache[key]) return refCache[key];
-    const parts = ['glass', 'tank', 'flyer', 'swarm'].map(k=> [k, calibrate(b, k)]), v = vanilla(b, 0, 0), ev = {};
+  function calibrateMixed(b, ctx){
+    ctx = ctx || 'plain'; const key = b.id + ':mixed:' + ctx; if(refCache[key]) return refCache[key];
+    const parts = ['glass', 'tank', 'flyer', 'swarm'].map(k=> [k, calibrate(b, k, ctx)]), v = vanilla(b, 0, 0), ev = {};
     const deckAt = k=>{ const d = {}; parts.forEach(([kind, c])=> d[refDef(b, kind, Math.max(1, c.health + k))] = 5); return d; };
-    const at = k=> ev[k] != null ? ev[k] : (ev[k] = batch(v, deckOf(v), deckAt(k), 'plain', 'cal:' + key, 2 * G).wr);
+    const at = k=> ev[k] != null ? ev[k] : (ev[k] = batch(v, deckOf(v), deckAt(k), ctx, 'cal:' + key, 2 * G).wr);
     let lo = -(Math.min(...parts.map(([, c])=> c.health)) - 1), hi = 2 * b.health;
     if(at(lo) <= 0.5) hi = lo; else if(at(hi) >= 0.5) lo = hi;
     while(hi - lo > 1){ const mid = Math.floor((lo + hi) / 2); if(at(mid) > 0.5) lo = mid; else hi = mid; }
     const k = Math.abs(at(lo) - 0.5) <= Math.abs(at(hi) - 0.5) ? lo : hi;
-    log(`  calibrated ${b.id} mixed: Health ${k >= 0 ? '+' : ''}${k} on each kind (vanilla ${Math.round(at(k) * 100)}%)`);
+    log(`  calibrated ${b.id} mixed (${ctx}): Health ${k >= 0 ? '+' : ''}${k} on each kind (vanilla ${Math.round(at(k) * 100)}%)`);
     return (refCache[key] = {deck: deckAt(k), offset:k, vanillaWr: at(k)});
   }
   // The opponents for a field and baseline: mirror + the reference pool.
@@ -192,8 +203,8 @@ function makeLab(o){
   function setup(ctx, b){
     const key = ctx + ':' + b.id; if(setups[key]) return setups[key];
     const kinds = ['glass', 'tank', 'flyer', 'swarm'].concat(ctx === 'tide' ? ['swimmer'] : []);
-    const refs = {}; kinds.forEach(k=>{ const c = calibrate(b, k); refs[k] = deckOf(c.id); });
-    refs.mixed = calibrateMixed(b).deck;
+    const refs = {}; kinds.forEach(k=>{ const c = calibrate(b, k, ctx); refs[k] = deckOf(c.id); });
+    refs.mixed = calibrateMixed(b, ctx).deck;
     const v = vanilla(b, 0, 0), pool = Object.keys(refs);
     // vanilla + Δ curves against the mirror and each reference deck
     const H = b.health, A = b.attack;
@@ -207,7 +218,7 @@ function makeLab(o){
     // the vanilla unit's own metrics (rec) against the mirror and the pool, for the deltas
     const vm = {mirror: batch(v, deckOf(v), deckOf(v), ctx, `vs:mirror:${b.id}`, G, true)}; pool.forEach(r=> vm[r] = batch(v, deckOf(v), refs[r], ctx, `vs:${r}:${b.id}`, G, true));
     log(`  setup ${key}: pool ${pool.join(', ')}; vanilla vs pool ${pool.map(r=> Math.round(vm[r].wr * 100) + '%').join(' ')}`);
-    return (setups[key] = {ctx, b, v, refs, pool, curves, vm, gridH, gridA, cal: Object.assign(Object.fromEntries(kinds.map(k=> [k, (({attack, health, wait, cost, vanillaWr})=> ({attack, health, wait, cost, vanillaWr:r3(vanillaWr)}))(calibrate(b, k))])), {mixed: {offset: calibrateMixed(b).offset, vanillaWr: r3(calibrateMixed(b).vanillaWr)}})});
+    return (setups[key] = {ctx, b, v, refs, pool, curves, vm, gridH, gridA, cal: Object.assign(Object.fromEntries(kinds.map(k=> [k, (({attack, health, wait, cost, vanillaWr})=> ({attack, health, wait, cost, vanillaWr:r3(vanillaWr)}))(calibrate(b, k, ctx))])), {mixed: {offset: calibrateMixed(b, ctx).offset, vanillaWr: r3(calibrateMixed(b, ctx).vanillaWr)}})});
   }
   // Isotonic (non-decreasing) fit, then the Δ where the curve reaches wr. {d, clamp: '<' | '>' | null}
   function invert(curve, wr){
@@ -281,7 +292,7 @@ function typicalOf(cs, id){ const m = cs.vals[id]; if(!m) return null; return JS
 function plan(table, defs, o){
   o = o || {}; const cs = census(defs), runs = [], bs = o.baselines || BASELINES.map(b=> b.id), mid = o.mid || 'b2';
   const add = (r, onB)=> (onB || bs).forEach(b=>{ const x = Object.assign({}, r, {b}); x.key = [x.kind, x.id, x.n == null ? '' : x.n, x.ctx, b, x.tag || ''].join('|'); runs.push(x); });
-  const skillVal = (e)=>{ const t = typicalOf(cs, e.id); if(t != null) return t; return e.scale === 'n' ? (e.payDefault || 2) : true; };
+  const skillVal = (e)=>{ if(TYPICAL[e.id] != null) return TYPICAL[e.id]; const t = typicalOf(cs, e.id); if(t != null) return t; return e.scale === 'n' ? (e.payDefault || 2) : true; };
   const archOf = v=> v && typeof v === 'object' && !Array.isArray(v) && typeof v.type === 'string' ? [v.type] : undefined;
   (table.skills || []).forEach(e=>{
     if(PARAM_OF[e.id]){ // parent + parameter, from a live card that carries both (b2, the parent's field)
@@ -290,15 +301,22 @@ function plan(table, defs, o){
       add({kind:'param', id:e.id, parent, tag:'base', value:pv, effects:{[parent]:pv}, ctx}, [mid]);
       add({kind:'param', id:e.id, parent, tag:'with', value:v, n: numOf(v) || null, effects:{[parent]:pv, [e.id]:v}, ctx}, [mid]);
       return; }
-    const v = skillVal(e), legendary = !!e.legendary, base = {kind:'skill', id:e.id, scale:e.scale, value:v, n: numOf(v) || (v === true ? 1 : null), effects:{[e.id]:v}, archetypes: archOf(v), rarity: legendary ? 'legendary' : undefined};
-    add(Object.assign({ctx:'plain'}, base));
-    if(FIELD_OF[e.id]) add(Object.assign({}, base, {ctx: FIELD_OF[e.id]}), [mid]);
+    if(WHY[e.id]) return;
+    const v = skillVal(e), legendary = !!e.legendary, en = SKILL_ENABLER[e.id];
+    const base = {kind:'skill', id:e.id, scale:e.scale, value:v, n: numOf(v) || (v === true ? 1 : null), effects: Object.assign({}, en || {}, {[e.id]:v}), archetypes: archOf(v), rarity: legendary ? 'legendary' : undefined};
+    const ctl = (ctx, onB, tag, enab)=> add({kind:'skill', id:e.id, tag: tag || 'enabler', value: enab || en, effects: Object.assign({}, enab || en), ctx}, onB);
+    add(Object.assign({ctx:'plain'}, base)); if(en) ctl('plain');
+    if(FIELD_OF[e.id]){ add(Object.assign({}, base, {ctx: FIELD_OF[e.id]}), [mid]); if(en) ctl(FIELD_OF[e.id], [mid]); }
+    (FIELDS_OF[e.id] || []).forEach(ctx=>{ add(Object.assign({}, base, {ctx, tag:'field'}), [mid]); if(en) ctl(ctx, [mid]); });
+    if(e.id === 'hunter') HUNTER_VS.forEach(([vs, enab, ctx])=>{ add(Object.assign({}, base, {ctx, tag:'vs-' + vs, effects: Object.assign({}, enab, {hunter:v, hunterVs:vs})}), [mid]);
+      ctl(ctx, [mid], 'enabler-' + vs, enab); });
     // N scaling: numbers 1 / typical / the largest a live card prints (or 1, 2, 4), on b2
     if((e.scale === 'n' || e.scale === 'half') && (typeof v === 'number' || (v === true && e.scale === 'n'))){
       const seen = Object.keys(cs.vals[e.id] || {}).map(s=> JSON.parse(s)).filter(x=> typeof x === 'number');
       const tv = typeof v === 'number' ? v : (e.payDefault || 2), mx = seen.length ? Math.max(...seen) : 4;
       [...new Set([1, 2, tv, Math.max(mx, tv + 1)].map(x=> Math.abs(x)))].filter(x=> x !== tv).slice(0, 2).forEach(n=>{
-        const nv = n; add(Object.assign({}, base, {value:nv, n:nv, effects:{[e.id]:nv}, ctx: FIELD_OF[e.id] || 'plain', tag:'n' + nv}), [mid]); });
+        const nv = n; add(Object.assign({}, base, {value:nv, n:nv, effects: Object.assign({}, en || {}, {[e.id]:nv}), ctx: FIELD_OF[e.id] || 'plain', tag:'n' + nv}), [mid]); });
+      if(en && FIELD_OF[e.id]) ; // the field control above serves the variants
     }
   });
   (table.triggers || []).forEach(e=>{
@@ -317,7 +335,9 @@ function plan(table, defs, o){
   add({kind:'modifier', id:'turnOfOne', value:{on:'perTurn', turnOf:'self'}, effects:{triggers:[Object.assign({on:'perTurn', turnOf:'self'}, REF_DAMAGE)]}, ctx:'plain'});
   add({kind:'modifier', id:'onceCap', value:{on:'onAttack', once:true}, effects:{triggers:[Object.assign({on:'onAttack', once:true}, REF_DAMAGE)]}, ctx:'plain'});
   // shorthand: Bounty N
-  Object.keys(table.shorthands || {}).forEach(k=> [1, 2].forEach(n=> add({kind:'shorthand', id:k, value:n, n, effects:{[k]:n}, ctx:'plain', tag:'n' + n}, n === 1 ? bs : [mid])));
+  Object.keys(table.shorthands || {}).forEach(k=>{ [1, 2].forEach(n=> add({kind:'shorthand', id:k, value:n, n, effects:{[k]:n}, archetypes: TRIBE[k], ctx:'plain', tag:'n' + n}, n === 1 ? bs : [mid]));
+    // the tribe deck's own control (same type, no skill), so the skill's S is the skill's and not the type's
+    if(TRIBE[k]) add({kind:'shorthand', id:k, tag:'enabler', value:TRIBE[k], effects:{}, archetypes:TRIBE[k], ctx:'plain'}); });
   // the trigger entries live cards use most (trigger × action as printed), b2
   Object.entries(cs.trig).sort((a, b)=> b[1] - a[1]).slice(0, o.combos == null ? 10 : o.combos).forEach(([s, cnt])=>{ const t = JSON.parse(s);
     add({kind:'combo', id: t.on + '→' + t.do, value:t, effects:{triggers:[t]}, ctx:'plain', uses:cnt, tag: hashStr(s).toString(36)}, [mid]); });
@@ -376,11 +396,17 @@ function aggregate(table, results){
       if(!a || !z){ entries.skills[e.id] = {why:'parameter of ' + PARAM_OF[e.id] + ': not measured'}; return; }
       const S = z.S.all - a.S.all, n = z.n || 1, f = e.scale === 'n' ? Math.max(1, n) : e.scale === 'half' ? 1 + (n > 1 ? Math.floor(n / 2) : 0) : 1;
       entries.skills[e.id] = {measuredS: r2(S / f), S: r2(S), at:[{b:z.b, ctx:z.ctx, n, S:r2(S)}], conf: conf([a, z], S), field: z.ctx !== 'plain' ? z.ctx : undefined, how:`S(${PARAM_OF[e.id]} + ${e.id}) − S(${PARAM_OF[e.id]}) on ${z.b}${z.ctx !== 'plain' ? ', ' + z.ctx : ''}`}; return; }
-    const list = rowsOf('skill:' + e.id); if(!list.length){ entries.skills[e.id] = {why: (by['skill:' + e.id] || [])[0] ? 'the engine threw: ' + by['skill:' + e.id][0].error : 'not measured'}; return; }
-    const field = FIELD_OF[e.id], typ = list.filter(r=> !r.tag && r.ctx === 'plain'), fld = field ? list.filter(r=> r.ctx === field && !r.tag) : [];
+    const all = rowsOf('skill:' + e.id), ctls = all.filter(r=> r.tag && String(r.tag).startsWith('enabler'));
+    // a skill with an enabler: S − S(the enabler alone) in the same field and baseline
+    const list = all.filter(r=> !(r.tag && String(r.tag).startsWith('enabler'))).map(r=>{ if(!ctls.length) return r;
+      const want = r.tag && String(r.tag).startsWith('vs-') ? 'enabler-' + String(r.tag).slice(3) : 'enabler', c = ctls.find(x=> x.tag === want && x.b === r.b && x.ctx === r.ctx);
+      return c ? Object.assign({}, r, {S: Object.assign({}, r.S, {all: r2(r.S.all - c.S.all), h2h: r2(r.S.h2h - c.S.h2h), ref: r2(r.S.ref - c.S.ref)}), minus: c.S.all}) : r; });
+    if(!list.length){ entries.skills[e.id] = {why: (by['skill:' + e.id] || [])[0] ? 'the engine threw: ' + by['skill:' + e.id][0].error : 'not measured'}; return; }
+    const field = FIELD_OF[e.id] || (FIELDS_OF[e.id] ? 'fields' : null), typ = list.filter(r=> !r.tag && r.ctx === 'plain');
+    const fld = FIELDS_OF[e.id] ? list.filter(r=> r.tag === 'field') : field ? list.filter(r=> r.ctx === field && !r.tag) : [];
     const main = fld.length ? fld : typ; // a field-bound skill is costed where it works
     // fit: S = v × f(N), least squares through the origin over every run in the main field
-    const fit = list.filter(r=> r.ctx === (fld.length ? field : 'plain')), fN = r=>{ const n = r.n == null ? 1 : Math.abs(r.n); return e.scale === 'n' ? Math.max(1, n) : e.scale === 'half' ? 1 + (n > 1 ? Math.floor(n / 2) : 0) : 1; };
+    const fit = FIELDS_OF[e.id] ? fld : list.filter(r=> r.ctx === (fld.length ? field : 'plain') && !(r.tag && String(r.tag).startsWith('vs-')) && r.tag !== 'field'), fN = r=>{ const n = r.n == null ? 1 : Math.abs(r.n); return e.scale === 'n' ? Math.max(1, n) : e.scale === 'half' ? 1 + (n > 1 ? Math.floor(n / 2) : 0) : 1; };
     // the median of S / f(N) over the runs (robust: Armor 5 against Attack 4 is a wall, not 5 × Armor 1)
     const ratios = fit.map(r=> r.S.all / fN(r)).sort((a, b)=> a - b), med = ratios.length ? (ratios.length % 2 ? ratios[(ratios.length - 1) / 2] : (ratios[ratios.length / 2 - 1] + ratios[ratios.length / 2]) / 2) : null;
     const numeric = fit.some(r=> typeof r.value === 'number');
@@ -389,9 +415,17 @@ function aggregate(table, results){
     const noEffect = list.every(r=> r.S.all === 0 && r.wr.mirror === r.vanillaWr.mirror && r.wr.pool === r.vanillaWr.pool);
     entries.skills[e.id] = {measuredS: v == null ? null : r2(v), Styp: r2(typS), Scur: r2(cur), at: list.map(r=> ({b:r.b, ctx:r.ctx, n:r.n, S:r.S.all})), conf: conf(main, typS), field: fld.length ? field : undefined,
       plainS: fld.length && typ.length ? r2(mean(typ.map(r=> r.S.all))) : undefined, noEffect: noEffect || undefined, how: e.scale === 'fixed' || !numeric ? 'mean S of the typical value' : `median of S / ${e.scale === 'n' ? 'N' : '(1 + floor(N/2))'} over N = ${[...new Set(fit.map(r=> r.n))].sort((a, b)=> a - b).join(', ')}`,
+      vs: e.id === 'hunter' ? Object.fromEntries(list.filter(r=> r.tag && String(r.tag).startsWith('vs-')).map(r=> [r.tag.slice(3), r.S.all]).concat([['poison', r2(mean(typ.filter(r=> r.b === 'b2').map(r=> r.S.all)))]])) : undefined,
+      enabler: SKILL_ENABLER[e.id] ? JSON.stringify(SKILL_ENABLER[e.id]) : undefined,
       perN: numeric ? Object.fromEntries([...new Set(fit.map(r=> r.n))].sort((a, b)=> a - b).map(n=> [n, r2(mean(fit.filter(r=> r.n === n).map(r=> r.S.all)))])) : undefined};
   });
   Object.keys(EXTRA).forEach(k=>{ const list = rowsOf('extra:' + k); if(list.length) entries.extra[k] = {measuredS: r2(mean(list.map(r=> r.S.all))), at: list.map(r=> ({b:r.b, S:r.S.all}))}; });
+  // shorthands: S per N (Bounty, Kin Rally, Pack Howl; a tribe skill less its tribe deck's control, baseline by baseline)
+  entries.shorthands = {};
+  Object.keys(table.shorthands || {}).forEach(k=>{ const all = rowsOf('shorthand:' + k), ctl = all.filter(r=> r.tag === 'enabler'), list = all.filter(r=> r.tag !== 'enabler');
+    if(!list.length){ entries.shorthands[k] = {why:'not measured'}; return; }
+    const per = list.map(r=>{ const c = ctl.find(x=> x.b === r.b); return (r.S.all - (c ? c.S.all : 0)) / Math.max(1, r.n || 1); }), v = mean(per), cur = SC.cardS({[k]:1}, {attack:4}).S;
+    entries.shorthands[k] = {measuredS: r2(v), Scur: r2(cur), at: list.map(r=> ({b:r.b, n:r.n, S:r.S.all})), tribe: TRIBE[k], conf: conf(list, v), how: 'S per N' + (TRIBE[k] ? ` less the ${TRIBE[k][0]} tribe deck's own S` : '')}; });
   const combos = results.filter(r=> r.kind === 'combo' && !r.error).map(r=> ({id:r.id, value:r.value, uses:r.uses, S:r.S.all, Scur: SC.cardS({triggers:[r.value]}, {attack:4}).S}));
   return {entries, combos};
 }
@@ -407,6 +441,7 @@ function gapsOf(table, agg){
     // compare in S at the typical value (skills), else in the entry's own units
     const curS = kind === 'skill' && x.Scur != null ? x.Scur : cur, mS = kind === 'skill' && x.Styp != null ? x.Styp : x.measuredS;
     out.push({kind, id, value: cur, measuredS: x.measuredS, curS, mS, gap: r2(mS - curS), conf: x.conf && x.conf.level, field: x.field, noEffect: x.noEffect}); }));
+  Object.entries(agg.entries.shorthands || {}).forEach(([id, x])=>{ if(x.measuredS == null) return; out.push({kind:'shorthand', id, value: x.Scur, measuredS: x.measuredS, curS: x.Scur, mS: x.measuredS, gap: r2(x.measuredS - x.Scur), conf: x.conf && x.conf.level}); });
   return out.sort((a, b)=> Math.abs(b.gap) - Math.abs(a.gap));
 }
 function applyMeasured(table, agg){
@@ -414,6 +449,8 @@ function applyMeasured(table, agg){
     delete e.measuredS; delete e.measuredWhy; delete e.measuredConf; delete e.measuredSE;
     if(x && x.measuredS != null && isFinite(x.measuredS)){ e.measuredS = x.measuredS; e.measuredConf = (x.conf && x.conf.level) || 'low'; if(x.conf && x.conf.se != null) e.measuredSE = x.conf.se; }
     else e.measuredWhy = (x && x.why) || 'not measured'; }));
+  Object.entries(table.shorthands || {}).forEach(([k, sh])=>{ const x = (agg.entries.shorthands || {})[k]; delete sh.measuredS; delete sh.measuredWhy; delete sh.measuredConf;
+    if(x && x.measuredS != null){ sh.measuredS = x.measuredS; sh.measuredConf = (x.conf && x.conf.level) || 'low'; } else sh.measuredWhy = (x && x.why) || 'not measured'; });
   table.measured = `${DAY} (package SW): measuredS = the entry's value as measured by tools/skill_worth.js (docs/skill-worth-${DAY}.md); value is unchanged, the owner applies it in the hub`;
   return table;
 }
@@ -480,6 +517,16 @@ function writeReport(data, table, agg){
   // field-bound
   const fb = Object.entries(sk).filter(([, x])=> x.field && x.measuredS != null);
   if(fb.length){ L.push('**Field-bound skills** (costed where they work; plain-field S in brackets): ' + fb.map(([id, x])=> `${id} ${x.Styp} under ${x.field} (${x.plainS != null ? x.plainS : '–'})`).join(', ') + '.', ''); }
+  // package GI's new skills (their own needs)
+  const GI = ['hunter', 'executioner', 'detonate', 'proliferate', 'brittle', 'prayerWard', 'fieldBreaker'].filter(id=> sk[id]);
+  if(GI.length){ L.push('## Package GI\'s new skills', '', 'Measured with what each needs (S of the skill less S of its enabler alone, same baseline and field): Hunter on a Poison 2 unit (and per status on b2: Bleed 2, Expose 1, Wet in Spring Rain), Detonate / Proliferate with Poison 2, Brittle with Shatter 2, Prayer Ward with Prayer 1, Field Breaker under Thunderstorm, Spore Cloud, Tangled Roots and Scorching; Kin Rally and Pack Howl in tribe decks (Otter, Wolf) less the tribe deck\'s own S.', '',
+    '| Skill | value today | measuredS | S today | S measured | Detail |', '|---|---|---|---|---|---|');
+    GI.forEach(id=>{ const e = table.skills.find(x=> x.id === id), x = sk[id]; const det = id === 'hunter' && x.vs ? 'by status: ' + Object.entries(x.vs).map(([k, v])=> `${k} ${v}`).join(', ') : id === 'fieldBreaker' ? 'by field: ' + (x.at || []).filter(a=> a.ctx !== 'plain').map(a=> `${a.ctx} ${a.S}`).join(', ') : x.perN ? 'per N: ' + Object.entries(x.perN).map(([n, v])=> `${n}: ${v}`).join(', ') : '';
+      L.push(`| \`${id}\` | ${e.value} | ${x.measuredS != null ? x.measuredS : '–'} | ${x.Scur != null ? x.Scur : '–'} | ${x.Styp != null ? x.Styp : '–'} | ${det}${x.enabler ? ' (with ' + x.enabler + ')' : ''} |`); });
+    L.push(''); }
+  const SHR = agg.entries.shorthands || {};
+  if(Object.keys(SHR).length){ L.push('## Shorthands (S per N)', '', '| Shorthand | S per N today | Measured | Note |', '|---|---|---|---|');
+    Object.entries(SHR).forEach(([k, x])=> L.push(`| \`${k}\` | ${x.Scur != null ? x.Scur : '–'} | ${x.measuredS != null ? x.measuredS : '–'} | ${x.how || x.why || ''} |`)); L.push(''); }
   // triggers / actions
   L.push('## Triggers (weight; On Spawn = 1)', '', '| Trigger | Current | Measured | Fires / copy | Confidence | Note |', '|---|---|---|---|---|---|');
   (table.triggers || []).forEach(e=>{ const x = agg.entries.triggers[e.id] || {}; L.push(`| \`${e.id}\` | ${e.value} | ${x.measuredS != null ? x.measuredS : '–'} | ${x.fires != null ? x.fires : '–'} | ${x.conf ? x.conf.level : '–'} | ${x.why || ''} |`); });
