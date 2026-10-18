@@ -5699,7 +5699,7 @@ function renderCodex(){
     <span id="codexResultCount"></span>
     <div class="grid-view ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
     ${(codexStatsDefs = defs, codexStatsHTML(defs))}`;
-  { let t = null; document.getElementById('cxSearch').addEventListener('input', e=>{ codexFilter.q = e.target.value; clearTimeout(t); t = setTimeout(renderCodexGrid, 160); }); } // debounced (2026-10-12: "The codex is still a bit laggy")
+  { let t = null; document.getElementById('cxSearch').addEventListener('input', e=>{ codexFilter.q = e.target.value; clearTimeout(t); t = setTimeout(renderCodexGrid, 120); }); } // debounced (2026-10-12: "The codex is still a bit laggy"; 2026-10-18: 120 ms, a draw is cheaper now)
   { const sep = document.getElementById('cxSeparate'); if(sep) sep.onclick = ()=>{ codexSeparate = !codexSeparate; try{ localStorage.setItem('bramblewood_codex_separate', codexSeparate ? '1' : '0'); }catch(e){} sep.classList.toggle('primary', codexSeparate); sep.setAttribute('aria-pressed', codexSeparate); sep.textContent = codexSeparate ? '🗂️ Separated' : '🗂️ All together'; renderCodexGrid(); }; }
   const cxFT = document.getElementById('cxFiltersToggle');
   if(cxFT) cxFT.onclick = ()=>{ codexFiltersOpen = !codexFiltersOpen; document.getElementById('codexToolbar').classList.toggle('filters-open', codexFiltersOpen); cxFT.setAttribute('aria-expanded', codexFiltersOpen); };
@@ -5770,6 +5770,9 @@ const MECH_LINE_LABEL = {none:'None', grace:'Ecclesia', exile:'Scrapper', devilr
 function codexStatsHTML(defs){
   const list = Object.values(defs);
   const n = list.length || 1;
+  // 2026-10-18 (Codex perf, owner: "Codex is still abit laggy"): while the box is closed only the header shows, so the 13
+  // breakdowns (the skill count alone runs every card past every skill) are no longer worked out on every Codex open.
+  if(!codexStatsOpen) return codexStatsBoxHTML(n, '');
 
   // "Archetype" (2026-09-16, new chart, per explicit request — the mechanic line: Ecclesia/
   // Scrapper/Devilry/None, i.e. what the card editor's own "Archetype" dropdown sets).
@@ -5851,12 +5854,16 @@ function codexStatsHTML(defs){
     ['Flying', pctOf(d=> (d.effects||{}).flying)], ['With abilities', pctOf(d=> Object.keys(d.effects||{}).some(k=> k!=='triggers') || ((d.effects||{}).triggers||[]).length)],
     ['Unlocked by you', pctOf(d=> !d.locked && !isCardHiddenForPlayer(d))]];
   const pick = CHARTS.find(c=> c[0]===codexStatsChart) || CHARTS[0];
+  return codexStatsBoxHTML(n, `<div class="cx-facts">${facts.map(([k,v])=> `<div class="cx-fact"><b>${v}</b><span>${k}</span></div>`).join('')}</div>
+      <label class="cx-chart-pick">Chart <select onchange="setCodexStatsChart(this.value)" aria-label="Choose a chart">${CHARTS.map(c=> `<option value="${c[0]}" ${c===pick?'selected':''}>${escapeHtml(c[1])}</option>`).join('')}</select></label>
+      <div class="pie-one">${svgPieChart(pick[1], pick[2])}</div>`);
+}
+// The stats box around its body (2026-10-18: split out so the closed box is drawn without the breakdowns, see codexStatsHTML).
+function codexStatsBoxHTML(n, body){
   return `<div class="codex-stats ${codexStatsOpen?'is-open':''}" id="codexStatsBox">
     <div class="section-divider group-header" style="margin-top:22px;"><span class="st-label">Codex Stats</span><span class="st-sub">Breakdowns across the ${n} cards in the Codex.</span>
       <button type="button" class="btn small ${codexStatsOpen?'ghost':''}" onclick="toggleCodexStats()" aria-expanded="${codexStatsOpen}">${codexStatsOpen ? 'Hide' : '📊 Reveal stats'}</button></div>
-    ${codexStatsOpen ? `<div class="cx-facts">${facts.map(([k,v])=> `<div class="cx-fact"><b>${v}</b><span>${k}</span></div>`).join('')}</div>
-      <label class="cx-chart-pick">Chart <select onchange="setCodexStatsChart(this.value)" aria-label="Choose a chart">${CHARTS.map(c=> `<option value="${c[0]}" ${c===pick?'selected':''}>${escapeHtml(c[1])}</option>`).join('')}</select></label>
-      <div class="pie-one">${svgPieChart(pick[1], pick[2])}</div>` : ''}
+    ${codexStatsOpen ? body : ''}
   </div>`;
 }
 let codexStatsOpen = false, codexStatsChart = 'rarity', codexStatsDefs = null;
@@ -5869,8 +5876,10 @@ function setCodexStatsChart(v){ codexStatsChart = v; refreshCodexStats(); }
 // 2026-10-15 (user: "reduce the amount of cards shown in Codex, maybe max 40 cards at a time. (If the card group on its own >40,
 // its okay.) But if card group A = 10, B = 31, then only show A"): 40 a page; a page takes whole groups while they fit in 40, a
 // group that doesn't fit starts the next page, and only a group bigger than 40 on its own is cut into pages of 40.
-const CODEX_PAGE_SIZE = 80, CODEX_FIRST_CHUNK = 32; // 2026-10-17 (user: "Codex the page size is too small I think, increase the number of card display more"): was 40
+const CODEX_PAGE_SIZE = 80, CODEX_FIRST_CHUNK = 48; // 2026-10-17 (user: "Codex the page size is too small I think, increase the number of card display more"): was 40. 2026-10-18: the first chunk is what fits on screen (codexChunkSizes), at most 48
+const CODEX_AHEAD_PX = 150; // 2026-10-18: how far below the screen the Codex keeps cards drawn (codexDrawRest)
 let codexPage = 0, codexShowUnseen = false;
+const codexTileCache = new Map(); // Codex tile HTML by card id, with the key it was drawn for (2026-10-18, see tileFor in renderCodexGrid)
 function saveCodexFilters(){ const o = Object.assign({}, codexFilter); delete o.showTest; uiStickySave('codex', o); } // 2026-10-16: kept (uiSticky)
 // 2026-10-14 (user: "have a button to not partition the cards anymore, and arrange by ascending ID. - display 50 by 50"): one flat list by card number.
 let codexFlatById = (()=>{ try{ return localStorage.getItem('bramblewood_codex_flat_v1') === '1'; }catch(e){ return false; } })();
@@ -5886,7 +5895,7 @@ function renderCodexGrid(keepPage){
   // instead of merging them into the normal grid, so testing content stays clearly separated from
   // the real roster rather than cluttering it.
   ids = ids.filter(id=> !!defs[id].test === !!codexFilter.showTest);
-  if(codexFilter.q) ids = ids.filter(id=> defs[id].name.toLowerCase().includes(codexFilter.q.toLowerCase()));
+  if(codexFilter.q){ const q = codexFilter.q.toLowerCase(); ids = ids.filter(id=> defs[id].name.toLowerCase().includes(q)); } // 2026-10-18: lowercased once, not once per card
   if(codexFilter.archetype) ids = ids.filter(id=> archetypesOf(defs[id]).includes(codexFilter.archetype));
   if(codexFilter.mechLine) ids = ids.filter(id=> inferMechanicLine(defs[id])===codexFilter.mechLine);
   if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
@@ -5894,12 +5903,15 @@ function renderCodexGrid(keepPage){
   // order, common -> legendary etc., not alphabetically) and a dir flip. `base` always returns
   // the "natural" high-to-low/A-Z-first comparison; the dir flip below negates it uniformly
   // instead of every branch needing its own asc/desc variant.
+  // 2026-10-18 (Codex perf): the sort keys that take work (advancement, phylum) are worked out once per card per draw, not on
+  // every comparison of the sort.
+  const keyMemo = new Map(), memoKey = (kind, id, f)=>{ const k = kind + id; let v = keyMemo.get(k); if(v === undefined){ v = f(defs[id]); keyMemo.set(k, v); } return v; };
   function cmp(a,b){
     const A=defs[a], B=defs[b];
     let base;
     if(codexFilter.sort==='name') base = A.name.localeCompare(B.name);
-    else if(codexFilter.sort==='phylum') base = (phylumOf(A)||'~').localeCompare(phylumOf(B)||'~') || ((A.species||[])[0]||'').localeCompare((B.species||[])[0]||'') || A.name.localeCompare(B.name);
-    else if(codexFilter.sort==='advance') base = advancementKey(B).localeCompare(advancementKey(A)) || B.name.localeCompare(A.name); // desc = earliest first (flip for latest first)
+    else if(codexFilter.sort==='phylum') base = (memoKey('p', a, phylumOf)||'~').localeCompare(memoKey('p', b, phylumOf)||'~') || ((A.species||[])[0]||'').localeCompare((B.species||[])[0]||'') || A.name.localeCompare(B.name);
+    else if(codexFilter.sort==='advance') base = memoKey('a', b, advancementKey).localeCompare(memoKey('a', a, advancementKey)) || B.name.localeCompare(A.name); // desc = earliest first (flip for latest first)
     else if(codexFilter.sort==='attack') base = B.attack-A.attack;
     else if(codexFilter.sort==='health') base = B.health-A.health;
     else if(codexFilter.sort==='wait') base = ((A.wait||0)-(B.wait||0)) || (A.cost-B.cost) || A.name.localeCompare(B.name); // like Cost: quickest first (2026-10-15)
@@ -5916,7 +5928,8 @@ function renderCodexGrid(keepPage){
   // materia aren't cards but items in your inventory! Don't put them in the codex"): a player's Codex shows only cards
   // they own or have seen, plus the cards of a pack once its merchant is on the map (the map table's "Cards revealed").
   // Materia live in the Inventory, for everyone.
-  const codexVisible = id=> defs[id].cardType !== 'materia' && !(SPELLS_SHELVED && defs[id].cardType === 'spell') && ((adminModeEnabled && codexShowUnseen) || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id])));
+  const visMemo = new Map(); // 2026-10-18: asked twice per card below (the shown list and the total), worked out once
+  const codexVisible = id=>{ let v = visMemo.get(id); if(v === undefined){ v = defs[id].cardType !== 'materia' && !(SPELLS_SHELVED && defs[id].cardType === 'spell') && ((adminModeEnabled && codexShowUnseen) || (!isCardHiddenForPlayer(defs[id]) && codexRevealedForPlayer(id, defs[id]))); visMemo.set(id, v); } return v; };
   // 2026-10-13 (user: "The codex shouldn't show cards unseen. All cards are hidden by default"): admins too, unless they tick
   // "Show unseen" in the toolbar.
   ids = ids.filter(id=> !isHofVariant(defs[id]) && codexVisible(id));
@@ -5945,15 +5958,26 @@ function renderCodexGrid(keepPage){
   }
   if(codexFlatById){ groups.clear(); groups.set('all-by-id', {sec:{key:'all-by-id', order:[0], label:'All cards by number', bare:true}, ids:ids.slice()}); }
   const ordered = [...groups.values()].sort((a,b)=> cmpOrder(a.sec.order, b.sec.order));
+  let tileEnv = ''; try{ tileEnv = (adminModeEnabled ? 'A' : '-') + EmojiStyle.active() + '|' + [...hiddenSkillSet()].join(',') + '|'; }catch(e){ tileEnv = String(Math.random()); }
   const tileFor = id=>{
     const d = defs[id];
-    const tags = [];
-    if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob" title="Not obtainable yet: the card editor\'s Obtainable box">⛔ Not obtainable</span>');
-    const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
     // 2026-10-13 (user: "There's Hidden, Locked, Unlocked, In Possession ... shown together! Those Locked and Unlocked (0 copies)
     // will be greyed out. Those locked will have a locked symbol on them"): one list; no copies = greyed; locked = 🔒.
     const owned = (myCardCopies[id]||[]).length > 0;
-    return `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
+    // 2026-10-18 (Codex perf, owner: "Codex is still abit laggy"): a tile's HTML is kept (codexTileCache), keyed on everything it
+    // is drawn from (the card itself, owned or not, an edited card, Admin Mode, the emoji style, the skills not met yet), so turning
+    // back a page, flipping a sort or coming back to the Codex reuses it. Its emoji are turned into pictures in the string
+    // (EmojiStyle.htmlBlock, as the board rows do), so the emoji observer has nothing to swap node by node after it lands.
+    let sig = ''; try{ sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
+    const hit = sig && codexTileCache.get(id);
+    if(hit && hit.sig === sig) return hit.html;
+    const tags = [];
+    if(adminModeEnabled && isUnattainable(d)) tags.push('<span class="cx-tag cx-tag-unob" title="Not obtainable yet: the card editor\'s Obtainable box">⛔ Not obtainable</span>');
+    const src = d.source && d.source.kind==='event' && d.source.name ? `<span class="cx-tag cx-tag-event">${escapeHtml(d.source.name)}</span>` : '';
+    let html = `<div class="cx-tile-wrap${owned ? '' : ' cx-unowned'}${d.locked ? ' cx-locked' : ''}">${cardTileHTML(d, {editable:true, lazyArt:true, extraClass:'cx-editable'})}${d.locked ? '<span class="cx-lock" aria-label="Locked">🔒</span>' : ''}${tags.join('')}${src}</div>`;
+    try{ html = EmojiStyle.htmlBlock(html); }catch(e){}
+    if(sig) codexTileCache.set(id, {sig, html});
+    return html;
   };
   // Paging: split into pages first, then only the current page is drawn.
   const pages = [];
@@ -5967,21 +5991,29 @@ function renderCodexGrid(keepPage){
   if(codexPage >= pages.length) codexPage = Math.max(0, pages.length - 1);
   // 2026-10-17 (80 cards a page): the first CODEX_FIRST_CHUNK tiles (the ones on screen) are drawn at once; the rest of the page
   // follows on the next frame, so a page turn shows as quickly as the old 40-card page did.
-  let html = '', tail = '', nTiles = 0;
+  // 2026-10-18 (Codex perf, owner: "Codex is still abit laggy"): the rest no longer lands in one go. The first chunk is about one
+  // screenful (codexChunkSizes); the rest of the page is drawn two rows at a time, as it nears the
+  // screen (an IntersectionObserver on a marker before the bottom pager) or while the browser is idle. A tile's HTML is built
+  // only when its chunk is drawn, so a sort or search that is changed again at once never builds the cards below the fold.
+  const {first: firstN, step: stepN} = codexChunkSizes(document.getElementById('codexGrid'));
+  const items = []; // [{tiles: n, html: () => string}], in page order: section heads (0 tiles) and cards (1 each)
   (pages[codexPage] || []).forEach(({sec, ids:gIds, all, cont})=>{
-    const into = nTiles >= CODEX_FIRST_CHUNK ? 'tail' : 'html'; let part = '';
     const un = all.filter(id=>!defs[id].locked);
     const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
     // Admin: take every card of a section (a season, a pack, a skirmish) at once (2026-10-13).
     const getAll = adminModeEnabled && all.length ? `<button type="button" class="btn small ghost cx-get-all" data-getall="${escapeAttr(sec.key)}" title="Admin: add one copy of every card in this section to your collection">🎁 Get all</button>` : '';
-    if(!sec.bare) part += `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}${cont ? ' (cont.)' : ''}</span><span class="cx-section-right">${all.length ? `<span class="cx-section-count">${un.length}/${all.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}${getAll}</span></div>`;
-    if(into === 'tail'){ tail += part + gIds.map(tileFor).join(''); nTiles += gIds.length; return; }
-    const room = Math.max(0, CODEX_FIRST_CHUNK - nTiles);
-    html += part + gIds.slice(0, room).map(tileFor).join(''); tail += gIds.slice(room).map(tileFor).join(''); nTiles += gIds.length;
+    if(!sec.bare){ const head = `<div class="cx-section-head${sec.event?' cx-section-event':''}"><span>${escapeHtml(sec.label)}${cont ? ' (cont.)' : ''}</span><span class="cx-section-right">${all.length ? `<span class="cx-section-count">${un.length}/${all.length} unlocked</span>` : '<span class="cx-section-count">No reward cards yet</span>'}${editBtn}${getAll}</span></div>`; items.push({tiles:0, html:()=> head}); }
+    gIds.forEach(id=> items.push({tiles:1, html:()=> tileFor(id)}));
   });
+  const chunks = []; // arrays of items: chunks[0] is drawn at once, the rest later
+  { let cur = [], n = 0, lim = firstN;
+    items.forEach(it=>{ if(it.tiles && n >= lim){ chunks.push(cur); cur = []; n = 0; lim = stepN; } cur.push(it); n += it.tiles; });
+    if(cur.length) chunks.push(cur); }
+  const chunkHTML = c=> c.map(it=> it.html()).join('');
   // 2026-10-14 (user: "Pagination in the codex should also exist at the top of the page"): the same pager above the grid too.
   const pagerHTML = (where)=> pages.length > 1 ? `<div class="cx-pager cx-pager-${where}" role="navigation" aria-label="Codex pages${where === 'top' ? ' (top)' : ''}"><button type="button" class="btn small" data-cxpage="${codexPage - 1}" ${codexPage === 0 ? 'disabled' : ''}>‹ Back</button>${pages.map((_, i)=> `<button type="button" class="btn small ${i === codexPage ? 'primary' : 'ghost'}" data-cxpage="${i}" aria-current="${i === codexPage ? 'page' : 'false'}">${i + 1}</button>`).join('')}<button type="button" class="btn small" data-cxpage="${codexPage + 1}" ${codexPage >= pages.length - 1 ? 'disabled' : ''}>Next ›</button></div>` : '';
-  if(html || tail){ html = pagerHTML('top') + html; tail += pagerHTML('bottom'); }
+  let html = '';
+  if(items.length) html = pagerHTML('top') + chunkHTML(chunks[0]) + (chunks.length > 1 ? '<div class="cx-more" aria-hidden="true"></div>' : '') + pagerHTML('bottom');
   const groupIds = {}; ordered.forEach(g=>{ groupIds[g.sec.key] = g.ids; });
   const hints = {
     skirmish: 'Cards here are granted the first time a player clears that node. Edit a node with ✏️ Edit rewards, or set a card’s source in its detail view.',
@@ -5991,12 +6023,62 @@ function renderCodexGrid(keepPage){
   };
   const hint = adminModeEnabled && hints[view] ? `<div class="cx-view-hint">${hints[view]}</div>` : '';
   const gridEl = document.getElementById('codexGrid');
-  gridEl.innerHTML = hint + (html || tail ? html : `<div class="cx-view-hint">No cards in this view yet.</div>`);
+  if(gridEl._cxMore){ try{ gridEl._cxMore(); }catch(e){} gridEl._cxMore = null; } // the last draw's observer and idle fill stop
+  gridEl.innerHTML = hint + (html ? html : `<div class="cx-view-hint">No cards in this view yet.</div>`);
   const tok = gridEl._cxTok = (gridEl._cxTok || 0) + 1;
+  // One click handler on the grid for every card (2026-10-18; was one listener per tile, added after each chunk).
+  if(!gridEl._cxClick){ gridEl._cxClick = true; gridEl.addEventListener('click', e=>{ const t = e.target && e.target.closest && e.target.closest('.card-tile'); if(t && gridEl.contains(t)) openCardDetail(t.getAttribute('data-defid')); }); }
   wireCodexGrid(groupIds);
-  if(tail) requestAnimationFrame(()=>{ if(gridEl._cxTok !== tok || !gridEl.isConnected) return; gridEl.insertAdjacentHTML('beforeend', tail); wireCodexGrid(groupIds); });
+  if(chunks.length > 1) codexDrawRest(gridEl, tok, chunks.slice(1).map(c=> ()=> chunkHTML(c)), groupIds, Math.ceil(12 / stepN));
 }
-// Wires whatever in the Codex grid isn't wired yet (the grid is drawn in two parts, see CODEX_FIRST_CHUNK).
+// The rest of a Codex page after its first screenful (2026-10-18, see renderCodexGrid): each part goes in before the .cx-more marker
+// when the marker comes within CODEX_AHEAD_PX of the viewport (you scroll down), or, once the page has sat still for a moment, a
+// part at a time while the browser is idle, so the page is complete without the action itself paying for it. A new draw of the
+// grid (another page, sort, search) stops it (gridEl._cxMore).
+function codexDrawRest(gridEl, tok, parts, groupIds, perIdle){
+  const marker = gridEl.querySelector('.cx-more'); if(!marker) return;
+  perIdle = Math.max(1, perIdle || 1);
+  let io = null, idleId = null, waitId = null, stopped = false;
+  const live = ()=> !stopped && gridEl._cxTok === tok && gridEl.isConnected && marker.isConnected;
+  const ric = window.requestIdleCallback ? (f=> window.requestIdleCallback(f, {timeout: 1000})) : (f=> setTimeout(()=> f(null), 200));
+  const stop = ()=>{ stopped = true; try{ if(io) io.disconnect(); }catch(e){} try{ clearTimeout(waitId); if(idleId != null) (window.cancelIdleCallback || clearTimeout)(idleId); }catch(e){} };
+  gridEl._cxMore = stop;
+  const drawOne = ()=>{
+    if(!live()) return false;
+    const p = parts.shift(); if(p){ marker.insertAdjacentHTML('beforebegin', p()); wireCodexGrid(groupIds); }
+    if(!parts.length){ stop(); try{ marker.remove(); }catch(e){} return false; }
+    return true;
+  };
+  // A part goes in when there is real idle time (or after a second at most: the page's ambient animations leave few gaps).
+  const onIdle = deadline=>{ idleId = null; if(!live()) return;
+    if(deadline && !deadline.didTimeout && deadline.timeRemaining() < 10){ idleId = ric(onIdle); return; }
+    let more = drawOne(); for(let i = 1; more && i < perIdle; i++) more = drawOne(); // at least ~12 cards an idle turn (a phone's parts are 4)
+    if(more) idleId = ric(onIdle); };
+  if(typeof IntersectionObserver === 'function'){
+    io = new IntersectionObserver(ents=>{
+      if(!live() || !ents.some(e=> e.isIntersecting)) return;
+      if(drawOne()){ io.unobserve(marker); io.observe(marker); } // observing again reports at once if the marker is still near
+    }, {rootMargin: '0px 0px ' + CODEX_AHEAD_PX + 'px 0px'});
+    io.observe(marker);
+  }
+  // The idle parts wait a little, so a quick second change (typing, flipping sorts, paging on) never pays for them.
+  waitId = setTimeout(()=>{ if(live() && idleId == null) idleId = ric(onIdle); }, 900);
+}
+// How many cards the Codex draws at once and then per part (2026-10-18): the rows that fit on screen below the grid's top first,
+// two rows a part after that. The grid's columns are read from its own track list (auto-fill gives the tracks even while it is
+// empty), before it is redrawn, so the read costs one layout of what is already there.
+function codexChunkSizes(gridEl){
+  let cols = 6, trackW = 130, top = 250;
+  try{
+    const tr = getComputedStyle(gridEl).gridTemplateColumns.split(' ').filter(Boolean);
+    if(tr.length && parseFloat(tr[0]) > 0){ cols = tr.length; trackW = parseFloat(tr[0]); }
+    top = gridEl.getBoundingClientRect().top;
+  }catch(e){}
+  const rowH = Math.max(100, trackW * 1.32), h = window.innerHeight || 800;
+  const rows = Math.max(1, Math.ceil((h - Math.max(0, top) - 30 + CODEX_AHEAD_PX) / rowH)); // the rows on screen and the look-ahead strip below it
+  return {first: Math.max(cols, Math.min(CODEX_FIRST_CHUNK, cols * rows)), step: Math.max(4, Math.min(30, cols * 2))};
+}
+// Wires whatever in the Codex grid isn't wired yet (the grid is drawn in parts, see codexDrawRest).
 function wireCodexGrid(groupIds){
   const fresh = sel=> [...document.querySelectorAll('#codexGrid ' + sel)].filter(el=>{ if(el._cxw) return false; el._cxw = 1; return true; });
   fresh('.cx-edit-rewards').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation(); openNodeRewardsEditor(b.getAttribute('data-map'), b.getAttribute('data-node')); }));
@@ -6011,10 +6093,8 @@ function wireCodexGrid(groupIds){
   // the admin's functions like editing cards") — Admin Mode no longer changes what a Codex click
   // does at all; an admin who wants to edit a card now does it from the Admin tab, with the
   // detail view itself offering a shortcut there too (its own "Edit (Admin)" button, admin-only).
-  fresh('.card-tile').forEach(t=>{
-    t.addEventListener('click', ()=> openCardDetail(t.getAttribute('data-defid')));
-    t.classList.add('cx-editable'); // name predates this change but the "this is clickable" hover/cursor affordance is still exactly right
-  });
+  // 2026-10-18 (Codex perf): that click is one handler on the grid now (renderCodexGrid), and the tiles carry cx-editable (the
+  // pointer cursor) in their HTML, so nothing is added tile by tile here.
   fresh('.codexShopLink').forEach(shopLink=> shopLink.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); switchTab('shop'); }));
 }
 // Hall of Fame tab (2026-10-02): Classic and Antique variants, each tagged with what it's a variant
