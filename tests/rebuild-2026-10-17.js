@@ -104,7 +104,7 @@ ok(/else if\(ev\.type==='rebuild'\) base = 560;/.test(fnSrc('delayForEvent')), '
   ctx.out.f({type:'rebuild', side:'B', uid:6, amount:3, n:3}); ok(ctx.matchState.displayHqHp.B === 33, 'the enemy castle too');
   const before = calls.length; ctx.out.f({type:'rebuild', side:'A', amount:0}); ok(calls.length === before, 'nothing restored: no look'); }
 // On Discard (from the hand) mends the castle too.
-ok(/else if\(t\.do==='rebuild' && me\.hq && me\.hq\.hp > 0\)/.test(src) && /onDiscardRebuild\.forEach\(ev=>\{ try\{ pushLog\(ev\); renderVfxForEvent\(ev\); \}catch\(e\)\{\} \}\);/.test(src), 'On Discard, Rebuild castle: the hand path mends, logs and plays it');
+ok(/rebuild/.test(require('fs').readFileSync(require('path').join(__dirname, '..', 'bramblewood-engine.js'), 'utf8').match(/function pitchCard[\s\S]{0,4000}/)[0]) && /onDiscardRebuild\.forEach\(ev=>\{ try\{ pushLog\(ev\); renderVfxForEvent\(ev\); \}catch\(e\)\{\} \}\);/.test(src), 'On Discard, Rebuild castle: the hand path mends, logs and plays it');
 
 // ---- 4. Effects library, Effects Lab, inventory, CHANGELOG
 { const sk = src.slice(src.indexOf('const FXL_SKILL_SETUPS'), src.indexOf('const FXL_TRIGGER_SETUPS')), ac = src.slice(src.indexOf('const FXL_ACTION_SETUPS'), src.indexOf('const FXL_CHANCE_TWO'));

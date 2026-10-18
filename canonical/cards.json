@@ -10145,6 +10145,9 @@
       "darksight": true,
       "keenSense": true
     },
+    "revealAfter": {
+      "map": "m1"
+    },
     "species": [
       "Rodent"
     ],

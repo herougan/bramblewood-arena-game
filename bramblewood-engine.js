@@ -5663,6 +5663,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         }
         // Rebuild N (2026-10-17): every upkeep while Ready, like onReadyGold just above (so also the upkeep its Wait runs out).
         if(def.effects && def.effects.rebuild && c.hp > 0 && !c.cageOf) rebuildCastle(players, sideOf, pl.id, c, numN(def.effects.rebuild, REBUILD_DEF), stats, events, 'ready');
+        // Creative N (2026-10-18, package U, user: "New skills: Creative - not sure what it does yet, but it gives Creativity counters to
+        // cards somehow"): every upkeep while Ready, like Rebuild, N Creativity counters go on one random other living unit on its side.
+        // c.creativity does nothing else yet (reserved). Event: statusFx kind 'creativity' {attUid, targetUid, amount, total}.
+        if(def.effects && def.effects.creative && c.hp > 0 && !c.cageOf){
+          const mates = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(x=> x && x.uid !== c.uid && x.hp > 0);
+          if(mates.length){ const t = mates[Math.floor(rnd()*mates.length)], n = numN(def.effects.creative, 1); t.creativity = (t.creativity||0) + n;
+            if(recordEvents && events) events.push({type:'statusFx', kind:'creativity', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:n, total:t.creativity}); }
+        }
         if(def.effects && def.effects.onReadyGrace){
           pl.grace += def.effects.onReadyGrace;
           ensureStat(stats, sideOf(pl.id), c.defId).graceGenerated += def.effects.onReadyGrace;
