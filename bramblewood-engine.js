@@ -199,6 +199,11 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   // field when you pitch a card (firePitchTriggers). Its card text reads "Scavenge - <effect>" (a placeholder name).
   'onPitch'];
 const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // fire even while Waiting
+// 2026-10-19 (owner, 20:31: "Loop cap: okay — layers, not count."): how deep a trigger chain may nest. The original event's
+// triggers are layer 1; a trigger that goes off while another trigger is resolving is one layer deeper; layers 1-5 resolve and a
+// 6th-layer trigger does not fire. Siblings (any number of triggers at the same layer) are not limited. See runCustomTriggers and
+// removeDeadCards (each pass of a death sweep is one layer deeper).
+const TRIGGER_LAYER_CAP = 5;
 const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
@@ -1040,20 +1045,41 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   //   Pitch Black (rules.dark 'pitch'): 1 in 2, unless Darksight or a Lantern.
   //   Absolute darkness (rules.dark 'absolute'): every swing misses, unless Darksight (a Lantern brings it down to 1 in 2).
   //   Sun-shy by day and Night-blind at night: 1 in 2.
-  function sightMiss(card, ownerId){
+  // Cast Darkness (2026-10-18, package D; owner: "A card that casts 'Darkness' ... the map adds a field effect 'Darkness', on Play.
+  // It is gone when it dies."): while a unit with effects.castDarkness stands on either board, the fight has Darkness (level 1) as if
+  // the map had it. It is worked out from the board each time, so the dark lifts the moment the last caster dies or leaves (exiled,
+  // bounced, transformed) and no leave path can forget to lift it. A fight that already has its own darkness (rules.dark: Darkness,
+  // Pitch Black or Absolute) keeps it, caster or not: the caster never adds a second level and never takes the map's away.
+  function darkCasterLive(players){ const P = players || curPlayers; if(!P) return false;
+    return [1, 2].some(pid=> P[pid] && P[pid].row && allBoardCards(P[pid]).some(c=> c && !c.gap && c.hp > 0 && ((CARD_DEFS[c.defId]||{}).effects||{}).castDarkness)); }
+  function darkRule(players){ return rules.dark || (darkCasterLive(players) ? 'dark' : null); }
+  let darkCastShown = false; // the last thing the board was told: cast Darkness up (for the 'darkCast' on/off events)
+  function noteDarkCast(players, sideOf, events, card, pid){
+    const up = !rules.dark && darkCasterLive(players);
+    if(up === darkCastShown) return; darkCastShown = up;
+    if(recordEvents && events) events.push(Object.assign({type:'darkCast', on:up}, card && pid ? {side:sideOf(pid), defId:card.defId, uid:card.uid} : {}));
+  }
+  // True Strike (2026-10-18, package D; owner: "White Dragon has true strike - it never misses."): its attacks never miss: no Darkness,
+  // Blind, Sun-shy, Night-blind, Evasive, Swift, Flying, Smoke, Fog, Sandstorm, Ashy, Slippery, Shadow, Tide-evade or Illusory roll.
+  // What can't be targeted at all (Invisible) still can't be hit: there is nothing there to strike.
+  function trueStrikes(card){ return !!(card && ((CARD_DEFS[card.defId]||{}).effects||{}).trueStrike); }
+  // darkOnly (2026-10-18, package D): just the dark's share (Darkness, Pitch Black, Absolute), for the card detail's "misses 1/4" line.
+  function sightMiss(card, ownerId, darkOnly){
     if(!card) return 0;
+    if(trueStrikes(card)) return 0; // True Strike (2026-10-18)
     const e = (CARD_DEFS[card.defId]||{}).effects || {};
     const pl = curPlayers && curPlayers[ownerId];
     // Illuminate (2026-10-15, user: "Lantern Bearer should have 'Illuminate' - lights up in darkness. Removes darkness debuff for all
     // allies."): while a unit with Illuminate (Lantern's new name; an old `lantern` reads the same) stands on your side, none of your
     // units miss for the dark: Darkness, Pitch Black and Absolute darkness alike (Lantern used to leave Absolute at 1 in 2).
     const lit = ()=> !!(pl && allBoardCards(pl).some(c=> c.hp > 0 && illuminates(CARD_DEFS[c.defId])));
-    let miss = 0; const dk = rules.dark;
+    let miss = 0; const dk = darkRule(); // + a Cast Darkness unit (2026-10-18)
     const ph = phaseActive() ? getPhase() : null;
     // 2026-10-17 (user: "Illuminate should also illuminate the opposing unit. Just 1 minor bad thing with illuminate."): the enemy unit
     // facing an Illuminate unit stands in its light too (litByFoe, below), so it doesn't miss for the dark either: Darkness, Pitch Black,
     // Absolute darkness and Night-blind alike. Both sides, the same rule.
     if(dk && !e.darksight){ miss = (lit() || litByFoe()) ? 0 : dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25; }
+    if(darkOnly) return (e.keenSense || e.sonar) ? 0 : miss;
     // 2026-10-15 (user: "Remove nightblindness causing 1/4 miss. It should only be for dark environments only. It will be an explicit
     // field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): night alone no longer makes anyone miss. Only the
     // field does: Darkness (rules.dark 'dark', level 1: 1 in 4), Pitch Black (rules.dark 'pitch', level 2: 1 in 2), Absolute darkness.
@@ -1804,7 +1830,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     return null; }
   function attackDmgType(attDef){ const e = (attDef && attDef.effects) || {}; return (e.magic || e.supreme) ? 'magic' : ((attDef && attDef.dmgType) || 'physical'); }
   // Night or darkness (2026-10-14, for Shade and Shadow): it is night, or the map is dark (caves, the grotto, the abyss).
-  function darkNow(){ const ph = phaseActive() ? getPhase() : null; return ph === 'night' || !!rules.dark; }
+  function darkNow(){ const ph = phaseActive() ? getPhase() : null; return ph === 'night' || !!darkRule(); } // + Cast Darkness (2026-10-18)
   // Halving defences, applied after Resist and Weakness, rounding down (so a 1 can come to nothing):
   //   Ghost (2026-10-14, user: "Ghost - not just unaffected by physical, those creatures that deal elemental damage physically, deal
   //     half. Only magic damage deals equal"): physical damage already passes through (resistFactor); every other non-magic damage
@@ -2026,7 +2052,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       case 'twilight': return ph === 'twilight';
       case 'wind': return isWindy();
       case 'wet': return f === 'rain' || tideRising() || !!rules.wet;
-      case 'dark': return !!rules.dark || ph === 'night';
+      case 'dark': return !!darkRule() || ph === 'night'; // + Cast Darkness (2026-10-18)
       case 'heat': return f === 'heatwave';
       case 'frost': return f === 'frozen';
     }
@@ -2202,7 +2228,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // unless the unit is Immune to it
     if(suddenDeath && (dmg>0 || (amount > 0 && resistFactor(card.defId, dmgType, attCard ? CARD_DEFS[attCard.defId] : null) !== 0))) card.hp = 0;
     if(hp0 > 0 && card.hp <= 0 && attCard) noteKiller(card, attCard.uid, attCard.defId); // who:'killer' (2026-10-14): the unit whose hit killed it
-    if(dmg>0 && card.asleep>0){ card.asleep = 0; noteWoke(card); } // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
+    if(dmg>0 && card.asleep>0){ card._wokeBy = attCard ? {uid: attCard.uid, n: card.asleep, t: turnNo} : null; card.asleep = 0; noteWoke(card); } // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake" (2026-10-18: _wokeBy, so that same hit's own Sleep stacks on the tokens it had)
     if(!nul) shellUp(card);
     if(nul && card.hp <= 0) nullifyKill(card);
     return {dmg, armorBlocked, armorSoaked:r0.armorSoaked||0, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, tempSoak, exposedCrit};
@@ -2521,6 +2547,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function dodgeCheck(card, attDefId){
     lastMissReason = 'evasive';
     if(isInvisible(card)){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): skills can't find it
+    if(attDefId != null && ((CARD_DEFS[attDefId]||{}).effects||{}).trueStrike) return true; // True Strike (2026-10-18): its shots and skills never miss
     if(card && card.exposed > 0) return true; // Exposed (2026-10-15): attacks at it don't miss
     if(card && card.webbed > 0) return true; // Webbed (2026-10-17): stuck in the web, it can't dodge
     if(preyAlert(card) && rnd() < 0.5) return false; // Prey (2026-10-16): Evasive while an enemy Predator is on the field
@@ -2539,6 +2566,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
     if(isInvisible(defCard)){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): nothing to swing at
     if(defCard.exposed > 0) return true; // Exposed (2026-10-15): no Evasive / Swift / Flying / Smoke / Fog / Shadow dodge
+    if(ad.trueStrike) return true; // True Strike (2026-10-18): no dodge or miss roll at all (Illusory included); Invisible, above, still can't be hit
     const webbed = defCard.webbed > 0; // Webbed (2026-10-17): no Evasive, Prey, Tide, canopy, Swift or Flying dodge (Smoke, fog and the rest still count)
     // Fencing (2026-10-14, user: "fencing = cannot miss Evade creatures"): a precise blade isn't dodged: no Evade and no Swift roll.
     // A Flyer's dodge still applies (it is out of reach, not quick).
@@ -2711,10 +2739,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(kind==='stunOnHit'){ chance = 100/3; duration = stunRoundsOf(cfg); }
     if(chance<=0 || rnd()>=(chance/100)) return;
     if(kind==='freeze'){ defCard.frozen = Math.max(defCard.frozen||0, duration); defCard._frozenJustSet = true; }
-    else if(kind==='sleep'){ defCard.asleep = Math.max(defCard.asleep||0, duration); defCard._asleepJustSet = true; }
+    // Sleep N stacks, capped (2026-10-18, package D; owner: "A unit which is sleeping that gets hit with sleeping's total sleep tokens
+    // never exceeds the applied sleep + 1 ... if it already had 2 from last turn, now it'll be 3, and cap out there."): Sleep N adds N
+    // tokens, up to N+1 in all. A unit already deeper asleep (from a bigger Sleep) keeps its tokens: a smaller Sleep never wakes it early.
+    // (The Sleep unit's own hit wakes the target first, like any damage; its Sleep then counts the tokens that hit just broke, _wokeBy.)
+    else if(kind==='sleep'){ const wb = defCard._wokeBy, carried = wb && attCard && wb.uid === attCard.uid && wb.t === turnNo ? (wb.n || 0) : 0; defCard._wokeBy = null;
+      const had = Math.max(0, defCard.asleep||0, carried); defCard.asleep = Math.max(had, Math.min(had + duration, duration + 1)); defCard._asleepJustSet = true; }
     else if(kind==='paralyze'){ defCard.paralyzed = Math.max(defCard.paralyzed||0, duration); defCard._paralyzedJustSet = true; }
     else if(kind==='stunOnHit'){ defCard.stunned = Math.max(defCard.stunned|0, duration); defCard._stunnedJustSet = true; } // N stun counters (2026-10-16)
-    else if(kind==='blind'){ if(effectsOf(defCard).keenSense || effectsOf(defCard).sonar) return; defCard.blind = Math.max(defCard.blind||0, duration); defCard._blindJustSet = true; } // Keen Sense: never Blind
+    else if(kind==='blind'){ if(effectsOf(defCard).keenSense || effectsOf(defCard).sonar || effectsOf(defCard).trueStrike) return; /* + True Strike (2026-10-18): Blind would do nothing to it */ defCard.blind = Math.max(defCard.blind||0, duration); defCard._blindJustSet = true; } // Keen Sense: never Blind
     else if(kind==='tipsy'){ defCard.tipsy = Math.max(defCard.tipsy||0, duration); defCard._tipsyJustSet = true; }
     else if(kind==='confuse'){
       // Psychic Dampener (2026-10-17): a Confuse lands for 1 round less, so a 1-round Confuse doesn't land at all.
@@ -2723,7 +2756,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     else if(kind==='shock'){ defCard.shocked = Math.max(defCard.shocked||0, duration); defCard._shockedJustSet = true; }
     else if(kind==='stagger'){ defCard.staggered = Math.max(defCard.staggered||0, duration); defCard._staggeredJustSet = true; }
     else return;
-    if(recordEvents && events) events.push({type:'statusFx', kind, side:mySide, attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOfFn(enemyId), targetDefId:defCard.defId, targetUid:defCard.uid});
+    if(recordEvents && events) events.push({type:'statusFx', kind, side:mySide, attDefId:attCard.defId, attUid:attCard.uid, targetSide:sideOfFn(enemyId), targetDefId:defCard.defId, targetUid:defCard.uid, left: kind === 'sleep' ? defCard.asleep : undefined}); // left: the Sleep tokens now (2026-10-18)
   }
   // Column alignment (changed 2026-09-13, per explicit user request: "make sure to
   // align the cards... columns always align"). Both players now use the SAME column
@@ -4125,6 +4158,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(events){ shieldEvents = events; shieldSideOf = sideOf; } // 2026-10-15: a Pounce on an Exposed unit reports its exposedHit into this play's events
     { const rdef = CARD_DEFS[boardCard.defId]; if(rdef && rdef.effects && rdef.effects.ritual && !boardCard.ritualBase){ const rp = players[playerId]; boardCard.ritualBase = {p: perishedTotal, d: rp.drawnTotal||0, c: rp.castleDealt||0}; } }
     const def = CARD_DEFS[boardCard.defId];
+    if(def && def.effects && def.effects.castDarkness) noteDarkCast(players, sideOf, events, boardCard, playerId); // Cast Darkness (2026-10-18): the dark falls as it arrives
     // Freezing (2026-10-15): on a Freezing field every unit arrives frozen (one freeze counter), unless it resists cold.
     if(rules.freezing && boardCard.hp > 0 && !(boardCard.frozen > 0) && resistFactor(boardCard.defId, 'cold') >= 1){ boardCard.frozen = 1;
       if(recordEvents && events) events.push({type:'fieldTick', field:'freezing', side:sideOf(playerId), uid:boardCard.uid, defId:boardCard.defId, freeze:1}); }
@@ -4554,7 +4588,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       runCustomTriggers(players, sideOf, otherId(ownerId), opp.card, CARD_DEFS[opp.card.defId], 'onAttacked', stats, events);
     }
   }
+  // Trigger layers (2026-10-19, owner 20:31: "Loop cap: okay — layers, not count."): trigLayer is the number of trigger
+  // resolutions open on the stack right now (0 = none, the original event). Every trigger dispatch (On Death, On Kill, On Ally
+  // Die, On Spawn, On Attacked, On Heal ...) goes through this wrapper: a card's triggers for one hook resolve at layer
+  // trigLayer+1, and anything they set off nests one deeper. At TRIGGER_LAYER_CAP no further nested trigger fires (logged as
+  // {type:'triggerCapped'}, no text). Siblings at one layer each open and close their own layer, so they are never limited.
+  let trigLayer = 0;
   function runCustomTriggers(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
+    if(!def.effects || !Array.isArray(def.effects.triggers)) return;
+    if(trigLayer >= TRIGGER_LAYER_CAP){
+      if(recordEvents && events && def.effects.triggers.some(t=> t.on === hook)) events.push({type:'triggerCapped', side:sideOf(playerId), defId:boardCard ? boardCard.defId : null, uid:boardCard ? boardCard.uid : null, hook, layer:trigLayer + 1});
+      return;
+    }
+    trigLayer++;
+    try{ runCustomTriggersAt(players, sideOf, playerId, boardCard, def, hook, stats, events, extra); } finally{ trigLayer--; }
+  }
+  function runCustomTriggersAt(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
     if(!def.effects || !Array.isArray(def.effects.triggers)) return;
     if(events){ shieldEvents = events; shieldSideOf = sideOf; } // Shield Call logs into whichever event list is live
     const pl = players[playerId], enemy = players[otherId(playerId)];
@@ -5107,7 +5156,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // swimmer while the tide is in) is worth less; a swimmer facing a non-swimmer dodges back, so it out-lasts more often.
       const myTide = isTideDef(d), tideOn = tideEvadeOn() && getTide() !== null;
       const fights = legal.map(sl=>{ const f = across(sl); if(!f) return null;
-        let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide) hit *= 0.5;
+        let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide && !(d.effects||{}).trueStrike) hit *= 0.5; /* True Strike (2026-10-18): no Tide dodge */
         const kills = atk >= (f.hp || 0) && hit > 0.5, lives = hp > (f.atk || 0) || (tideOn && myTide && !isTide(f) && hp * 2 > (f.atk || 0));
         return (kills || lives) ? {sl, score: (kills ? 2 * hit : 0) + (lives ? 1 : 0) + rnd() * 0.5} : null; }).filter(Boolean);
       if(fights.length) return fights.reduce((a, b)=> b.score > a.score ? b : a).sl;
@@ -5132,7 +5181,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const myHq = ai.hq ? ai.hq.hp / Math.max(1, ai.hq.maxHp) : 1, blockW = myHq < 0.5 ? 0.6 : 0.3;
     const score = sl=>{ const f = frontCardAt(foe, sl);
       if(!f) return ready ? 0.8 + Math.min(atk, 8) * 0.1 : 0.4;
-      let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide) hit *= 0.5;
+      let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide && !(d.effects||{}).trueStrike) hit *= 0.5; /* True Strike (2026-10-18): no Tide dodge */
       const kills = atk >= (f.hp || 0) && atk > 0 && hit > 0.5, killNow = kills && ready;
       const theyHit = aiCanSwing(f), fAtk = Math.max(0, f.atk || 0) * (tideOn && myTide && !isTide(f) ? 0.5 : 1);
       const dies = theyHit && fAtk >= hp && !(killNow && quick);
@@ -5197,12 +5246,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       return sum(me, moon) + 0.5 * players[aiId].hand.filter(h=> moon({defId:h.defId})).length - sum(foe, moon); }
     return 0;
   }
+  // What a Cast Darkness card's dark is worth to the CPU (2026-10-18, package D): a quarter of the Attack of every unit that would miss in
+  // it, yours minus its own (Darksight and True Strike units, and a side an Illuminate unit lights, don't miss). 0 when it is dark already.
+  function aiDarkCastWorth(players, aiId, defId){
+    const e = (CARD_DEFS[defId]||{}).effects || {}; if(!e.castDarkness || darkRule(players)) return 0;
+    const lose = pid=>{ const pl = players[pid]; if(!pl) return 0; const live = allLive(pl).filter(c=> !c.cageOf); if(live.some(c=> illuminates(CARD_DEFS[c.defId]))) return 0;
+      return live.reduce((t, c)=>{ const ce = effectsOf(c); return t + (ce.darksight || ce.trueStrike ? 0 : Math.max(0, c.atk || 0)); }, 0) * 0.25; };
+    return lose(otherId(aiId)) - lose(aiId);
+  }
   // How often a unit of this card would swing blind at the slot facing f (2026-10-18; sightMiss's rules for a card not on the board
   // yet: the dark, Sun-shy by day, Night-blind at night; an Illuminate unit on its side, or facing it, lights it).
   function aiSightMissAt(defId, aiId, f){
     const e = (CARD_DEFS[defId]||{}).effects || {}, pl = curPlayers && curPlayers[aiId];
     const lit = illuminates(CARD_DEFS[defId]) || !!(pl && allLive(pl).some(c=> illuminates(CARD_DEFS[c.defId]))) || !!(f && illuminates(CARD_DEFS[f.defId]));
-    const ph = phaseActive() ? getPhase() : null, dk = rules.dark; let m = 0;
+    const ph = phaseActive() ? getPhase() : null, dk = darkRule(); let m = 0; // + Cast Darkness (2026-10-18)
+    if(e.trueStrike) return 0; // True Strike (2026-10-18): it never misses
     if(dk && !e.darksight && !lit) m = dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25;
     if(ph === 'day' && e.sunshy) m = Math.max(m, 0.5);
     if(ph === 'night' && e.nightblind && !lit) m = Math.max(m, 0.5);
@@ -5321,6 +5379,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(aiSmart() && !d.cardType){ if(getTide() !== null && isTideDef(d)) v += 1.5; // (2026-10-18: smart and smartest only)
           if(e.flying && (windMode() || rules.landslide)) v += 1;
           v -= aiSightMissAt(id, aiId, null) * 3;
+          v += aiDarkCastWorth(players, aiId, id); // Cast Darkness (2026-10-18): the dark it brings, theirs to lose minus its own
+          if(e.trueStrike) v += foes.filter(c=>{ const fe = effectsOf(c); return fe.evasive || fe.swift || fe.flying || fe.shadow || c.smoke > 0; }).length * 0.75; // True Strike (2026-10-18): worth more against dodgers
           if(rules.arrowSlits && aiId === 1 && (d.health||0) <= fxN(rules.arrowSlits, 2)) v -= 1; }
         // Spells (2026-10-11): worth what they'd do right now; nothing to do means don't cast it.
         if(d.cardType === 'spell'){ const sp = d.spell || {}, n = Number(sp.amount)||0;
@@ -5803,13 +5863,19 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // so a kill by a shot, a bolt, a missile, an area skill or an arrival strike fires its On Kill too, not only a melee swing's.
   // It used to fire only from the round's reflowAfterKills, so every other sweep (the shot actions, the upkeep, the skills) let
   // the kill pass with no On Kill and, with an empty book ({}), no kill counted either. Returns the killers' stat keys.
+  // 2026-10-19 (trigger layers, owner 20:31): each pass is one trigger layer deeper than the last. Pass 1's deaths are the event,
+  // so their On Death / On Ally Die / On Spawn triggers are layer 1 (counted from the sweep's own layer: a sweep opened inside a
+  // layer-2 trigger starts at layer 3); the deaths those triggers cause settle in the next pass, one layer deeper. The 6-pass limit
+  // is now TRIGGER_LAYER_CAP + 1: passes 1-5 fire layers 1-5, the 6th clears the bodies and fires no triggers.
   function removeDeadCards(players, sideOf, killCredit, stats, events){
-    const kills = new Set(), book = killCredit || {};
-    for(let guard=0; guard<6; guard++){
-      removeDeadCardsPass(players, sideOf, book, stats, events, kills);
+    const kills = new Set(), book = killCredit || {}, layer0 = trigLayer;
+    for(let guard=0; guard<TRIGGER_LAYER_CAP + 1; guard++){
+      trigLayer = layer0 + guard;
+      try{ removeDeadCardsPass(players, sideOf, book, stats, events, kills); } finally{ trigLayer = layer0; }
       if(![players[1], players[2]].some(pl=> pl && allBoardCards(pl).some(c=> c.hp<=0))) break;
     }
     exposeLonely(players, sideOf, events); // 2026-10-17: the last enemy unit just fell, so Expose has nothing left to strike for
+    noteDarkCast(players, sideOf, events); // Cast Darkness (2026-10-18): the last caster just fell, so the dark it cast lifts
     if(kills.size) fireOnKillTriggers(players, sideOf, kills, stats, events);
     return kills;
   }
@@ -5848,6 +5914,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       });
     });
     if(!deadEntries.length) return;
+    const deadCards = new Set(deadEntries.map(d=> d.card)); // 2026-10-19: see the row filter below
     const spawns = [], freed = [], retributions = [], splits = [], relics = [];
     deadEntries.forEach(({pl, side, card})=>{
       const mySide = sideOf(pl.id);
@@ -5948,6 +6015,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // still-living card this same player controls, e.g. a "when a friend falls" avenger
       // effect. Evaluated against the board as it stands right now in this same dead-cards
       // pass, so two simultaneous deaths each see the other as having just died.
+      // 2026-10-19 (stated rule): that is, both are gone, and neither fires On Ally Die for the other: only units still alive in
+      // this pass (hp > 0) are survivors. Simultaneous triggers go in board order: the first player's side, then the second's, lane by lane (left, center, right).
       const survivors = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(sc=>sc.hp>0 && sc.uid!==card.uid);
       survivors.forEach(sc=>{
         // Berserk (2026-09-17): permanently gains +N/+0 whenever ANY ally dies (no archetype
@@ -5972,7 +6041,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     });
     [p1,p2].forEach(pl=>{
-      ['left','center','right'].forEach(side=>{ pl.row[side] = pl.row[side].filter(c=>c.hp>0); });
+      // 2026-10-19 (trigger layers): only this pass's dead leave here. A unit an On Death / On Ally Die trigger kills during the
+      // pass stays at 0 Health and dies properly in the next pass (one layer deeper); it used to vanish here with no death at all.
+      ['left','center','right'].forEach(side=>{ pl.row[side] = pl.row[side].filter(c=>c.hp>0 || !deadCards.has(c)); });
     });
     freed.forEach(f=>{
       const owner = players[f.owner]; if(!owner) return;
@@ -6711,9 +6782,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Exposed (2026-10-15): an attack aimed at an Exposed unit can't miss, so Blind and the dark don't roll for it.
       const atExposed = !!(target && target.kind === 'card' && target.card && target.card.exposed > 0);
       const sMiss = (a.att.blind>0 || keenSense) ? 0 : sightMiss(a.att, otherId(a.enemyId)); const nightMiss = !atExposed && sMiss > 0 && (sMiss >= 1 || rnd() < sMiss);
-      const blindNow = (!atExposed && a.att.blind>0 && !keenSense && rnd() < 0.5) || nightMiss;
+      const blindNow = (!atExposed && a.att.blind>0 && !keenSense && !trueStrikes(a.att) && rnd() < 0.5) || nightMiss; // + True Strike (2026-10-18)
       // Each extra hit rolls its own miss (2026-10-15): the hits beside the target, and its lashes and prongs, don't share the main swing's.
-      const extraHitBlind = card=>{ if(!card || card.exposed > 0) return false; const ks = !!(attDef.effects && attDef.effects.keenSense) && !effectsOf(card).flying; if(ks) return false;
+      const extraHitBlind = card=>{ if(!card || card.exposed > 0 || trueStrikes(a.att)) return false; // + True Strike (2026-10-18) const ks = !!(attDef.effects && attDef.effects.keenSense) && !effectsOf(card).flying; if(ks) return false;
         if(a.att.blind > 0) return rnd() < 0.5; const sm = sightMiss(a.att, otherId(a.enemyId)); return sm > 0 && (sm >= 1 || rnd() < sm); };
       if(sweepN) sweepStrike(sweepCol - 1, 'left');
       if(blindNow){ // Blind (2026-10-11, user: "Blind means miss 1/2 the time")
@@ -7122,7 +7193,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, wetCountOf, setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+  return { tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth,
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
@@ -7185,5 +7257,5 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
 }
 
 if(typeof module !== 'undefined' && module.exports){
-  module.exports = { makeSimEngine, simulateOneMatch, mulberry32, AI_LEVEL_MAX, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
+  module.exports = { TRIGGER_LAYER_CAP /* 2026-10-19 */, makeSimEngine, simulateOneMatch, mulberry32, AI_LEVEL_MAX, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
 }
