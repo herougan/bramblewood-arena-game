@@ -24,7 +24,8 @@
 // on Maps 18-24.) Your cards play at referencePlayerLevel(map): the road CPU's own skirmish level (Lv 1 to Map 4, Lv 2 from Map 5,
 // +1 every 5 maps) inside the Forge's level gates (the 2026-10-18 pass: Lv 1 everywhere). Your bramble is the plain 30 Health castle.
 //
-//   node tools/skirmish_pass.js decks [--from=1] [--to=24]   builds the Road decks for those maps (each starts from the one before) and
+//   node tools/skirmish_pass.js decks [--from=1] [--to=24] [--keep]   (--keep, 2026-10-19 CB: the map's current deck is a candidate too)
+//        builds the Road decks for those maps (each starts from the one before) and
 //        writes them into arena_app.js (WINRATE_REF_DECKS) and docs/balance/skirmish-pass-decks.json (the report); rebuild index.html after
 //   node tools/skirmish_pass.js measure [games=40] [shard nshards] [--tag=before] [--only=a,b] [--seed=K]
 //        appends one JSON line per fight to docs/balance/skirmish-pass-<tag>.jsonl (resumable; delete a fight's line to re-measure
@@ -55,6 +56,7 @@ const N = nums[0] || 40, SHARD = nums[1] || 0, NSH = nums[2] || 1;
 const opt = (k, d)=>{ const a = argv.find(x=> x.startsWith('--' + k + '=')); return a ? a.slice(k.length + 3) : d; };
 const ONLY = opt('only', '').split(',').filter(Boolean);
 const LO = 0.12, HI = 0.92; // the pass's band: not always losable, not auto-winnable
+const KEEP_CURRENT = argv.includes('--keep'); // decks: the map's current deck is a candidate (2026-10-19, package CB)
 const TUNE_SEED = +opt('seed', 7300); // tune's trials play other seeds than measure's (9100), so a fix isn't fitted to the seeds it is reported on
 
 // ---- the game's own functions, read out of arena_app.js by tools/lib_bramble.js (2026-10-19, W2: this file had its own copy of the
@@ -116,7 +118,12 @@ function buildRoadDeck(mapNo, fightsOfMap, seed, prev){
   let deck = fill();
   if(Object.keys(deck).filter(id=> (CARD_DEFS_BASELINE[id].cost||0) >= 2).length >= 2){ const lum = ids.filter(isLumberMaker).slice(0, 2); deck = fill(Object.fromEntries(lum.map(id=> [id, Math.min(3, cap(id))]))); }
   const score = d=> fightsOfMap.reduce((t, f)=> t + measure(f, null, 12, 4100, d).win, 0);
-  let best = score(deck); if(prev){ const p = Object.fromEntries(prev.cards.map(c=> [c.id, c.n])), ps = score(p); if(ps > best){ best = ps; deck = p; } } /* the pool only grows, so last map's deck is a candidate */ const rnd = E.mulberry32(seed), top = ids.slice(0, 40);
+  let best = score(deck); if(prev){ const p = Object.fromEntries(prev.cards.map(c=> [c.id, c.n])), ps = score(p); if(ps > best){ best = ps; deck = p; } } /* the pool only grows, so last map's deck is a candidate */
+  // 2026-10-19 (package CB, --keep): the map's current deck is a candidate too (when every card of it is still owned there), so a rebuild
+  // after a card pass keeps a deck unless the search finds a better one, instead of reshuffling every map
+  if(KEEP_CURRENT && G.WINRATE_REF_DECKS.road[mapNo]){ const cur = Object.assign({}, G.WINRATE_REF_DECKS.road[mapNo]), own = new Set(ids);
+    if(Object.keys(cur).every(id=> own.has(id)) && deckSize(cur) === 20){ const cs = score(cur); if(cs >= best){ best = cs; deck = cur; } } }
+  const rnd = E.mulberry32(seed), top = ids.slice(0, 40);
   for(let it = 0; it < 40; it++){
     const cur = Object.keys(deck), out = cur[Math.floor(rnd() * cur.length)];
     const inn = top.filter(id=> !deck[id])[Math.floor(rnd() * Math.min(25, top.length))]; if(!inn) continue;

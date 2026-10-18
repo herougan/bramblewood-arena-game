@@ -1,0 +1,3829 @@
+{
+ "note": "Package CB (2026-10-19): the card pass. stats / rarity / sources are applied by `node tools/card_pass_2026_10_19.js apply`.",
+ "stats": {
+  "aye-aye-prowler": {
+   "name": "Aye-aye Prowler",
+   "rarity": "common",
+   "from": {
+    "attack": 4,
+    "health": 3,
+    "cost": 0
+   },
+   "attack": 4,
+   "health": 4,
+   "wrBefore": 25,
+   "gamesBefore": 400,
+   "wrAfter": 39.5,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its common band (35-60%)"
+  },
+  "bramblewood-lynx": {
+   "name": "Bramblewood Lynx",
+   "rarity": "rare",
+   "from": {
+    "attack": 6,
+    "health": 9,
+    "cost": 1
+   },
+   "attack": 6,
+   "health": 6,
+   "wrBefore": 90.8,
+   "gamesBefore": 400,
+   "wrAfter": 60,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "brimstone-hound": {
+   "name": "Brimstone Hound",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 3,
+    "health": 6,
+    "cost": 0
+   },
+   "attack": 3,
+   "health": 3,
+   "wrBefore": 82,
+   "gamesBefore": 100,
+   "wrAfter": 70.5,
+   "band": "45-68%",
+   "verdict": "TOWARD",
+   "nearest": true,
+   "src": "hand pick",
+   "why": "above its uncommon band (45-68%); the nearest budget-legal step, toward the band; 3/3 measured nearest (3/4 73.3%, 2/5 74.8%, 2/6 78.5%; 3/2 70.8%)"
+  },
+  "caustic-scorpion": {
+   "name": "Caustic Scorpion",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 3,
+    "health": 13,
+    "cost": 1
+   },
+   "attack": 2,
+   "health": 12,
+   "wrBefore": 76.3,
+   "gamesBefore": 400,
+   "wrAfter": 67.5,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "refine (every step at 400 games)",
+   "why": "above its uncommon band (45-68%)"
+  },
+  "chipmunk-stockpiler": {
+   "name": "Chipmunk Stockpiler",
+   "rarity": "common",
+   "from": {
+    "attack": 1,
+    "health": 9,
+    "cost": 0
+   },
+   "attack": 1,
+   "health": 13,
+   "wrBefore": 21,
+   "gamesBefore": 400,
+   "wrAfter": 45.3,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its common band (35-60%)"
+  },
+  "frillneck-duelist": {
+   "name": "Frillneck Duelist",
+   "rarity": "rare",
+   "from": {
+    "attack": 3,
+    "health": 11,
+    "cost": 2
+   },
+   "attack": 5,
+   "health": 11,
+   "wrBefore": 29.8,
+   "gamesBefore": 400,
+   "wrAfter": 41.3,
+   "band": "52-75%",
+   "verdict": "TOWARD",
+   "nearest": true,
+   "src": "search",
+   "why": "below its rare band (52-75%); the nearest budget-legal step, toward the band"
+  },
+  "glass-golem": {
+   "name": "Glass Golem",
+   "rarity": "rare",
+   "from": {
+    "attack": 8,
+    "health": 4,
+    "cost": 1
+   },
+   "attack": 8,
+   "health": 5,
+   "wrBefore": 42,
+   "gamesBefore": 400,
+   "wrAfter": 53.8,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its rare band (52-75%)"
+  },
+  "glowing-gecko": {
+   "name": "Glowing Gecko",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 6,
+    "health": 12,
+    "cost": 1
+   },
+   "attack": 7,
+   "health": 12,
+   "wrBefore": 30.5,
+   "gamesBefore": 400,
+   "wrAfter": 46,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its uncommon band (45-68%)"
+  },
+  "hedge-changeling": {
+   "name": "Hedge Changeling",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 3,
+    "health": 7,
+    "cost": 0
+   },
+   "attack": 2,
+   "health": 7,
+   "wrBefore": 85,
+   "gamesBefore": 100,
+   "wrAfter": 66,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its uncommon band (45-68%)"
+  },
+  "honeyjoe-brewer": {
+   "name": "Honeyjoe Brewer",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 1,
+    "health": 3,
+    "cost": 0
+   },
+   "attack": 1,
+   "health": 2,
+   "wrBefore": 87.5,
+   "gamesBefore": 400,
+   "wrAfter": 68.8,
+   "band": "45-68%",
+   "verdict": "TOWARD",
+   "nearest": true,
+   "src": "refine (every step at 400 games)",
+   "why": "above its uncommon band (45-68%); the nearest budget-legal step, toward the band"
+  },
+  "ice-petrel": {
+   "name": "Ice Petrel",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 3,
+    "health": 8,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 6,
+   "wrBefore": 77.8,
+   "gamesBefore": 400,
+   "wrAfter": 66.5,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its uncommon band (45-68%)"
+  },
+  "inside-out-hedgehog": {
+   "name": "Inside-Out Hedgehog",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 1,
+    "health": 5,
+    "cost": 0
+   },
+   "attack": 1,
+   "health": 2,
+   "wrBefore": 89.3,
+   "gamesBefore": 400,
+   "wrAfter": 56.3,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its uncommon band (45-68%)"
+  },
+  "leaf-chameleon": {
+   "name": "Leaf Chameleon",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 3,
+    "health": 8,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 10,
+   "wrBefore": 35.3,
+   "gamesBefore": 400,
+   "wrAfter": 51.5,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its uncommon band (45-68%)"
+  },
+  "lovebird": {
+   "name": "Lovebird",
+   "rarity": "common",
+   "from": {
+    "attack": 3,
+    "health": 5,
+    "cost": 1
+   },
+   "attack": 4,
+   "health": 5,
+   "wrBefore": 26,
+   "gamesBefore": 400,
+   "wrAfter": 52.8,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "refine (every step at 400 games)",
+   "why": "below its common band (35-60%)"
+  },
+  "mangrove-monitor": {
+   "name": "Mangrove Monitor",
+   "rarity": "common",
+   "from": {
+    "attack": 4,
+    "health": 10,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 9,
+   "wrBefore": 88.3,
+   "gamesBefore": 400,
+   "wrAfter": 43,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its common band (35-60%)"
+  },
+  "mudpuppy": {
+   "name": "Mudpuppy",
+   "rarity": "common",
+   "from": {
+    "attack": 2,
+    "health": 7,
+    "cost": 0
+   },
+   "attack": 2,
+   "health": 6,
+   "wrBefore": 69,
+   "gamesBefore": 400,
+   "wrAfter": 59.8,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its common band (35-60%)"
+  },
+  "pall-wraith": {
+   "name": "Pall Wraith",
+   "rarity": "rare",
+   "from": {
+    "attack": 5,
+    "health": 15,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 13,
+   "wrBefore": 97.5,
+   "gamesBefore": 400,
+   "wrAfter": 68.5,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "pika-hoarder": {
+   "name": "Pika Hoarder",
+   "rarity": "common",
+   "from": {
+    "attack": 2,
+    "health": 7,
+    "cost": 0
+   },
+   "attack": 3,
+   "health": 7,
+   "wrBefore": 21.3,
+   "gamesBefore": 400,
+   "wrAfter": 42,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its common band (35-60%)"
+  },
+  "planarian-splitter": {
+   "name": "Planarian Splitter",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 3,
+    "health": 8,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 10,
+   "wrBefore": 35.3,
+   "gamesBefore": 400,
+   "wrAfter": 56.3,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "refine (every step at 400 games)",
+   "why": "below its uncommon band (45-68%)"
+  },
+  "puddle-changeling": {
+   "name": "Puddle Changeling",
+   "rarity": "common",
+   "from": {
+    "attack": 2,
+    "health": 5,
+    "cost": 0
+   },
+   "attack": 2,
+   "health": 3,
+   "wrBefore": 85,
+   "gamesBefore": 100,
+   "wrAfter": 58.8,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "hand pick",
+   "why": "above its common band (35-60%); 2/3 (2/4 69.8%, 2/2 56.8%, 1/6 50.5%)"
+  },
+  "rafflesia": {
+   "name": "Rafflesia",
+   "rarity": "rare",
+   "from": {
+    "attack": 0,
+    "health": 13,
+    "cost": 1
+   },
+   "attack": 1,
+   "health": 15,
+   "wrBefore": 19,
+   "gamesBefore": 400,
+   "wrAfter": 49.8,
+   "band": "52-75%",
+   "verdict": "TOWARD",
+   "nearest": true,
+   "src": "search",
+   "why": "below its rare band (52-75%); the nearest budget-legal step, toward the band"
+  },
+  "snow-bunting-archer": {
+   "name": "Snow Bunting Archer",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 3,
+    "health": 8,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 6,
+   "wrBefore": 77.8,
+   "gamesBefore": 400,
+   "wrAfter": 66.5,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its uncommon band (45-68%)"
+  },
+  "squires-mount": {
+   "name": "Squire's Mount",
+   "rarity": "rare",
+   "from": {
+    "attack": 4,
+    "health": 12,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 12,
+   "wrBefore": 91.3,
+   "gamesBefore": 400,
+   "wrAfter": 68.3,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "sunspire-choirmother": {
+   "name": "Sunspire Choirmother",
+   "rarity": "veryrare",
+   "from": {
+    "attack": 5,
+    "health": 10,
+    "cost": 2
+   },
+   "attack": 2,
+   "health": 6,
+   "cost": 1,
+   "wrBefore": 42.5,
+   "gamesBefore": 400,
+   "wrAfter": 78.8,
+   "band": "56-80%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its veryrare band (56-80%); one Lumber less (owner 2026-10-18: high Lumber shouldn't be normal)"
+  },
+  "tunnel-ant": {
+   "name": "Tunnel Ant",
+   "rarity": "rare",
+   "from": {
+    "attack": 5,
+    "health": 5,
+    "cost": 1
+   },
+   "attack": 5,
+   "health": 7,
+   "wrBefore": 23.5,
+   "gamesBefore": 400,
+   "wrAfter": 73,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its rare band (52-75%)"
+  },
+  "werebadger": {
+   "name": "Werebadger",
+   "rarity": "rare",
+   "from": {
+    "attack": 4,
+    "health": 9,
+    "cost": 2
+   },
+   "attack": 5,
+   "health": 13,
+   "wrBefore": 28,
+   "gamesBefore": 400,
+   "wrAfter": 33.3,
+   "band": "52-75%",
+   "verdict": "TOWARD",
+   "nearest": true,
+   "src": "search",
+   "why": "below its rare band (52-75%); the nearest budget-legal step, toward the band"
+  },
+  "wolf-pack-runner": {
+   "name": "Wolf Pack Runner",
+   "rarity": "rare",
+   "from": {
+    "attack": 4,
+    "health": 11,
+    "cost": 1
+   },
+   "attack": 4,
+   "health": 9,
+   "wrBefore": 89,
+   "gamesBefore": 400,
+   "wrAfter": 75,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "woodland-brawler": {
+   "name": "Woodland Brawler",
+   "rarity": "rare",
+   "from": {
+    "attack": 4,
+    "health": 12,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 12,
+   "wrBefore": 91.3,
+   "gamesBefore": 400,
+   "wrAfter": 68.3,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "antlion-pit": {
+   "name": "Antlion Pit",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 3,
+    "health": 7,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 11,
+   "wrBefore": 33.5,
+   "gamesBefore": 400,
+   "wrAfter": 48,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its uncommon band (45-68%)"
+  },
+  "ashbone-ghoul": {
+   "name": "Ashbone Ghoul",
+   "rarity": "common",
+   "from": {
+    "attack": 3,
+    "health": 6,
+    "cost": 0
+   },
+   "attack": 2,
+   "health": 5,
+   "wrBefore": 90,
+   "gamesBefore": 100,
+   "wrAfter": 56,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its common band (35-60%)"
+  },
+  "badger-berserker": {
+   "name": "Badger Berserker",
+   "rarity": "rare",
+   "from": {
+    "attack": 5,
+    "health": 12,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 12,
+   "wrBefore": 94.8,
+   "gamesBefore": 400,
+   "wrAfter": 68.3,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "beaver-builder": {
+   "name": "Beaver Builder",
+   "rarity": "common",
+   "from": {
+    "attack": 1,
+    "health": 9,
+    "cost": 0
+   },
+   "attack": 1,
+   "health": 13,
+   "wrBefore": 21,
+   "gamesBefore": 400,
+   "wrAfter": 45.3,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its common band (35-60%)"
+  },
+  "beetle-battering-ram": {
+   "name": "Beetle Battering-Ram",
+   "rarity": "rare",
+   "from": {
+    "attack": 4,
+    "health": 14,
+    "cost": 1
+   },
+   "attack": 4,
+   "health": 9,
+   "wrBefore": 89.8,
+   "gamesBefore": 400,
+   "wrAfter": 69.5,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "boar-rampager": {
+   "name": "Boar Rampager",
+   "rarity": "rare",
+   "from": {
+    "attack": 4,
+    "health": 14,
+    "cost": 1
+   },
+   "attack": 4,
+   "health": 9,
+   "wrBefore": 89.8,
+   "gamesBefore": 400,
+   "wrAfter": 70.5,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "bramblewood-macaque": {
+   "name": "Bramblewood Macaque",
+   "rarity": "rare",
+   "from": {
+    "attack": 2,
+    "health": 10,
+    "cost": 0
+   },
+   "attack": 2,
+   "health": 4,
+   "wrBefore": 100,
+   "gamesBefore": 400,
+   "wrAfter": 75.5,
+   "band": "52-75%",
+   "verdict": "TOWARD",
+   "nearest": true,
+   "src": "hand pick",
+   "why": "above its rare band (52-75%); the nearest budget-legal step, toward the band; the owner's open call (action items: \"only fix found is 2/10 -> 2/4\"); 2/4 measured 75.5% at 400 games (1/5 78.8%, 2/5 85.5%, 1/6 88.3%)"
+  },
+  "chilli-parrot": {
+   "name": "Chilli Parrot",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 4,
+    "health": 9,
+    "cost": 1
+   },
+   "attack": 4,
+   "health": 11,
+   "wrBefore": 35.3,
+   "gamesBefore": 400,
+   "wrAfter": 53,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its uncommon band (45-68%)"
+  },
+  "cinder-gecko": {
+   "name": "Cinder Gecko",
+   "rarity": "common",
+   "from": {
+    "attack": 2,
+    "health": 4,
+    "cost": 0
+   },
+   "attack": 2,
+   "health": 3,
+   "wrBefore": 80.8,
+   "gamesBefore": 400,
+   "wrAfter": 55.8,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its common band (35-60%)"
+  },
+  "cinder-stoker": {
+   "name": "Cinder Stoker",
+   "rarity": "common",
+   "from": {
+    "attack": 1,
+    "health": 9,
+    "cost": 0
+   },
+   "attack": 1,
+   "health": 13,
+   "wrBefore": 21,
+   "gamesBefore": 400,
+   "wrAfter": 45.3,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its common band (35-60%)"
+  },
+  "dhole-runner": {
+   "name": "Dhole Runner",
+   "rarity": "common",
+   "from": {
+    "attack": 3,
+    "health": 6,
+    "cost": 1
+   },
+   "attack": 4,
+   "health": 6,
+   "wrBefore": 21.3,
+   "gamesBefore": 400,
+   "wrAfter": 35,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "refine (every step at 400 games)",
+   "why": "below its common band (35-60%)"
+  },
+  "hellbender": {
+   "name": "Hellbender",
+   "rarity": "common",
+   "from": {
+    "attack": 2,
+    "health": 7,
+    "cost": 0
+   },
+   "attack": 2,
+   "health": 6,
+   "wrBefore": 78.8,
+   "gamesBefore": 400,
+   "wrAfter": 54.3,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its common band (35-60%)"
+  },
+  "lurking-dread": {
+   "name": "Lurking Dread",
+   "rarity": "rare",
+   "from": {
+    "attack": 4,
+    "health": 9,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 8,
+   "wrBefore": 96.3,
+   "gamesBefore": 400,
+   "wrAfter": 66,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "magma-salamander": {
+   "name": "Magma Salamander",
+   "rarity": "rare",
+   "from": {
+    "attack": 4,
+    "health": 10,
+    "cost": 1
+   },
+   "attack": 4,
+   "health": 7,
+   "wrBefore": 91.5,
+   "gamesBefore": 400,
+   "wrAfter": 74,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "mallard-marauder": {
+   "name": "Mallard Marauder",
+   "rarity": "rare",
+   "from": {
+    "attack": 3,
+    "health": 7,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 5,
+   "wrBefore": 85.8,
+   "gamesBefore": 400,
+   "wrAfter": 61,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "marching-elephant": {
+   "name": "Marching Elephant",
+   "rarity": "rare",
+   "from": {
+    "attack": 6,
+    "health": 30,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 30,
+   "wrBefore": 84.8,
+   "gamesBefore": 400,
+   "wrAfter": 54.5,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "marsh-gas-toad": {
+   "name": "Marsh Gas Toad",
+   "rarity": "common",
+   "from": {
+    "attack": 0,
+    "health": 10,
+    "cost": 1
+   },
+   "attack": 2,
+   "health": 11,
+   "wrBefore": 18,
+   "gamesBefore": 400,
+   "wrAfter": 37.3,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its common band (35-60%)"
+  },
+  "millipede-hauler": {
+   "name": "Millipede Hauler",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 2,
+    "health": 16,
+    "cost": 1
+   },
+   "attack": 1,
+   "health": 16,
+   "wrBefore": 76.8,
+   "gamesBefore": 400,
+   "wrAfter": 54.3,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its uncommon band (45-68%)"
+  },
+  "monarch-wingblade": {
+   "name": "Monarch Wingblade",
+   "rarity": "rare",
+   "from": {
+    "attack": 3,
+    "health": 6,
+    "cost": 1
+   },
+   "attack": 2,
+   "health": 6,
+   "wrBefore": 90.3,
+   "gamesBefore": 400,
+   "wrAfter": 73.3,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "net-thrower": {
+   "name": "Net Thrower",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 4,
+    "health": 9,
+    "cost": 1
+   },
+   "attack": 4,
+   "health": 7,
+   "wrBefore": 76.8,
+   "gamesBefore": 400,
+   "wrAfter": 69.3,
+   "band": "45-68%",
+   "verdict": "TOWARD",
+   "nearest": true,
+   "src": "refine (every step at 400 games)",
+   "why": "above its uncommon band (45-68%); the nearest budget-legal step, toward the band"
+  },
+  "otter-shieldback": {
+   "name": "Otter Shieldback",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 3,
+    "health": 18,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 14,
+   "wrBefore": 76.8,
+   "gamesBefore": 400,
+   "wrAfter": 50.7,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its uncommon band (45-68%)"
+  },
+  "petal-fletcher": {
+   "name": "Petal Fletcher",
+   "rarity": "common",
+   "from": {
+    "attack": 1,
+    "health": 3,
+    "cost": 0
+   },
+   "attack": 1,
+   "health": 1,
+   "wrBefore": 93.3,
+   "gamesBefore": 400,
+   "wrAfter": 87.5,
+   "band": "35-60%",
+   "verdict": "TOWARD",
+   "nearest": true,
+   "src": "search",
+   "why": "above its common band (35-60%); the nearest budget-legal step, toward the band"
+  },
+  "platypus-spur": {
+   "name": "Platypus Spur",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 3,
+    "health": 7,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 9,
+   "wrBefore": 36,
+   "gamesBefore": 400,
+   "wrAfter": 46.5,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its uncommon band (45-68%)"
+  },
+  "riptide-eel": {
+   "name": "Riptide Eel",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 9,
+    "health": 5,
+    "cost": 1
+   },
+   "attack": 9,
+   "health": 6,
+   "wrBefore": 36.5,
+   "gamesBefore": 400,
+   "wrAfter": 48.8,
+   "band": "45-68%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its uncommon band (45-68%)"
+  },
+  "river-warden": {
+   "name": "River Warden",
+   "rarity": "rare",
+   "from": {
+    "attack": 4,
+    "health": 14,
+    "cost": 2
+   },
+   "attack": 7,
+   "health": 14,
+   "wrBefore": 34.5,
+   "gamesBefore": 400,
+   "wrAfter": 41.3,
+   "band": "52-75%",
+   "verdict": "TOWARD",
+   "nearest": true,
+   "src": "search",
+   "why": "below its rare band (52-75%); the nearest budget-legal step, toward the band"
+  },
+  "star-nosed-mole": {
+   "name": "Star-nosed Mole",
+   "rarity": "common",
+   "from": {
+    "attack": 4,
+    "health": 3,
+    "cost": 0
+   },
+   "attack": 4,
+   "health": 4,
+   "wrBefore": 25,
+   "gamesBefore": 400,
+   "wrAfter": 39.5,
+   "band": "35-60%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its common band (35-60%)"
+  },
+  "swarm-matriarch": {
+   "name": "Swarm Matriarch",
+   "rarity": "rare",
+   "from": {
+    "attack": 1,
+    "health": 10,
+    "cost": 1
+   },
+   "attack": 1,
+   "health": 7,
+   "wrBefore": 89.5,
+   "gamesBefore": 400,
+   "wrAfter": 75.3,
+   "band": "52-75%",
+   "verdict": "TOWARD",
+   "nearest": true,
+   "src": "hand pick",
+   "why": "above its rare band (52-75%); the nearest budget-legal step, toward the band"
+  },
+  "the-sixfold": {
+   "name": "The Sixfold",
+   "rarity": "epic",
+   "from": {
+    "attack": 8,
+    "health": 20,
+    "cost": 0
+   },
+   "attack": 9,
+   "health": 22,
+   "wrBefore": 50.5,
+   "gamesBefore": 400,
+   "wrAfter": 67,
+   "band": "62-87%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "below its epic band (62-87%)"
+  },
+  "upside-down-bat": {
+   "name": "Upside-Down Bat",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 2,
+    "health": 2,
+    "cost": 0
+   },
+   "attack": 1,
+   "health": 2,
+   "wrBefore": 77.8,
+   "gamesBefore": 400,
+   "wrAfter": 44.5,
+   "band": "45-68%",
+   "verdict": "EDGE",
+   "nearest": true,
+   "src": "hand pick",
+   "why": "above its uncommon band (45-68%); lands on the band's edge; 1/2 (2/1 78%, 1/1 44.8%)"
+  },
+  "war-hound": {
+   "name": "War Hound",
+   "rarity": "rare",
+   "from": {
+    "attack": 4,
+    "health": 12,
+    "cost": 1
+   },
+   "attack": 3,
+   "health": 12,
+   "wrBefore": 91.3,
+   "gamesBefore": 400,
+   "wrAfter": 68.3,
+   "band": "52-75%",
+   "verdict": "IN",
+   "nearest": false,
+   "src": "search",
+   "why": "above its rare band (52-75%)"
+  },
+  "raven-harbinger": {
+   "name": "Raven Harbinger",
+   "rarity": "common",
+   "from": {
+    "attack": 5,
+    "health": 19,
+    "cost": 2
+   },
+   "attack": 5,
+   "health": 18,
+   "fit": true,
+   "wrBefore": 42,
+   "wrAfter": 42,
+   "band": "35-60%",
+   "verdict": "FIT",
+   "why": "budget v3 fit: the 2026-10-19 skill-cost model put it just over (Bounty / On Kill Gain); one Health less passes"
+  },
+  "bone-diviner": {
+   "name": "Bone Diviner",
+   "rarity": "uncommon",
+   "from": {
+    "attack": 5,
+    "health": 20,
+    "cost": 2
+   },
+   "attack": 5,
+   "health": 19,
+   "fit": true,
+   "wrBefore": 46,
+   "wrAfter": 46,
+   "band": "45-68%",
+   "verdict": "FIT",
+   "why": "budget v3 fit: the 2026-10-19 skill-cost model put it just over (Bounty / On Kill Gain); one Health less passes"
+  },
+  "magnate-duck": {
+   "name": "The Magnate Duck",
+   "rarity": "legendary",
+   "from": {
+    "attack": 6,
+    "health": 60,
+    "cost": 4
+   },
+   "attack": 6,
+   "health": 59,
+   "fit": true,
+   "wrBefore": 34,
+   "wrAfter": 34,
+   "band": "70-97%",
+   "verdict": "FIT",
+   "why": "budget v3 fit: the 2026-10-19 skill-cost model put it just over (Bounty / On Kill Gain); one Health less passes"
+  }
+ },
+ "left": [
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "rarity": "rare",
+   "wr": 40,
+   "tried": "4/11: 40%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "dhole-matriarch",
+   "name": "Dhole Matriarch",
+   "rarity": "rare",
+   "wr": 28.2,
+   "tried": "8/7: 32.5%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "dread-bell",
+   "name": "Dread Bell",
+   "rarity": "uncommon",
+   "wr": 95,
+   "tried": "0/6: 91.3%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "ironmaw-warwolf",
+   "name": "Ironmaw Warwolf",
+   "rarity": "epic",
+   "wr": 40.5,
+   "tried": "6/18 at 2 Lumber: 47.3%",
+   "why": "a Lumber cut that misses the band (the 2026-10-18 rule: a Lumber cut only when it lands in the band)"
+  },
+  {
+   "id": "irradiated-couatl",
+   "name": "Irradiated Couatl",
+   "rarity": "epic",
+   "wr": 29.8,
+   "tried": "5/14 at 1 Lumber: 10.3%",
+   "why": "a Lumber cut that misses the band (the 2026-10-18 rule: a Lumber cut only when it lands in the band)"
+  },
+  {
+   "id": "mantis-shrimp",
+   "name": "Mantis Shrimp",
+   "rarity": "rare",
+   "wr": 26.8,
+   "tried": "3/12: 27.3%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "margay",
+   "name": "Margay",
+   "rarity": "rare",
+   "wr": 27.8,
+   "tried": "3/12: 28.7%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "marshal-of-rivergate",
+   "name": "Marshal of Rivergate",
+   "rarity": "epic",
+   "wr": 50.7,
+   "tried": "5/16 at 1 Lumber: 98%",
+   "why": "a Lumber cut that misses the band (the 2026-10-18 rule: a Lumber cut only when it lands in the band)"
+  },
+  {
+   "id": "marula-elephant",
+   "name": "Marula Elephant",
+   "rarity": "uncommon",
+   "wr": 26.8,
+   "tried": "7/8: 28.5%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "paper-wasp",
+   "name": "Paper Wasp",
+   "rarity": "common",
+   "wr": 25.5,
+   "tried": "2/10: 25.3%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "puppeteer-imp",
+   "name": "Puppeteer Imp",
+   "rarity": "rare",
+   "wr": 100,
+   "tried": "2/5: 99%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "shieldbearer-hound",
+   "name": "Shieldbearer Hound",
+   "rarity": "rare",
+   "wr": 28.5,
+   "tried": "4/7: 27.8%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "the-gannet-queen",
+   "name": "The Gannet Queen",
+   "rarity": "heroic",
+   "wr": 40.8,
+   "tried": "5/15: 43.5%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "thunder-lizard",
+   "name": "Thunder Lizard",
+   "rarity": "epic",
+   "wr": 39.5,
+   "tried": "5/12: 39.5%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "triumvirate",
+   "name": "Triumphvirate",
+   "rarity": "unique",
+   "wr": 40,
+   "tried": "3/29 at 2 Lumber: 43%",
+   "why": "a Lumber cut that misses the band (the 2026-10-18 rule: a Lumber cut only when it lands in the band)"
+  },
+  {
+   "id": "war-elephant",
+   "name": "War Elephant",
+   "rarity": "superrare",
+   "wr": 43.3,
+   "tried": "1/13 at 2 Lumber: 53.8%",
+   "why": "a Lumber cut that misses the band (the 2026-10-18 rule: a Lumber cut only when it lands in the band)"
+  },
+  {
+   "id": "ash-imp",
+   "name": "Ash Imp",
+   "rarity": "common",
+   "wr": 94,
+   "why": "a Sacrifice card: its strength is the sacrifice, a stat cut hardly moves it (1 Attack / Health less: 91-94%)"
+  },
+  {
+   "id": "chained-binturong",
+   "name": "Chained Binturong",
+   "rarity": "uncommon",
+   "wr": 8,
+   "tried": "3/7: 6.8%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "cinder-imp",
+   "name": "Cinder Imp",
+   "rarity": "common",
+   "wr": 97,
+   "why": "a Sacrifice card: its strength is the sacrifice, a stat cut hardly moves it (1 Attack / Health less: 91-94%)"
+  },
+  {
+   "id": "dynamite-packrat",
+   "name": "Dynamite Packrat",
+   "rarity": "uncommon",
+   "wr": 10.8,
+   "tried": "1/20: 10.8%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "ember-revenant",
+   "name": "Ember Revenant",
+   "rarity": "epic",
+   "wr": 48,
+   "tried": "4/13 at 1 Lumber: 98%",
+   "why": "a Lumber cut that misses the band (the 2026-10-18 rule: a Lumber cut only when it lands in the band)"
+  },
+  {
+   "id": "irradiated-glow-wyrm",
+   "name": "Irradiated Glow Wyrm",
+   "rarity": "rare",
+   "wr": 10.3,
+   "tried": "7/24: 10.3%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "malachite-golem",
+   "name": "Malachite Golem",
+   "rarity": "rare",
+   "wr": 29.8,
+   "tried": "9/34: 29.8%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "old-snapjaw",
+   "name": "Old Snapjaw",
+   "rarity": "heroic",
+   "wr": 37.3,
+   "tried": "3/17 at 1 Lumber: 46.5%",
+   "why": "a Lumber cut that misses the band (the 2026-10-18 rule: a Lumber cut only when it lands in the band)"
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "rarity": "common",
+   "wr": 9.3,
+   "tried": "2/4: 8.3%",
+   "why": "no budget-legal step moved it 5 points (a skill / role question)"
+  },
+  {
+   "id": "rivergate-tribune",
+   "name": "Rivergate Tribune",
+   "rarity": "heroic",
+   "wr": 40.3,
+   "tried": "5/36 at 2 Lumber: 42.8%",
+   "why": "a Lumber cut that misses the band (the 2026-10-18 rule: a Lumber cut only when it lands in the band)"
+  },
+  {
+   "id": "tiny-cave-dweller",
+   "name": "Tiny Cave Dweller",
+   "rarity": "uncommon",
+   "wr": 36,
+   "tried": "2/5: 76.8%",
+   "why": "the nearest step crosses the band"
+  }
+ ],
+ "rarity": {
+  "fawn-scout": {
+   "to": "rare",
+   "from": "uncommon",
+   "wr": 82,
+   "games": 100,
+   "why": "an Uncommon performing like a Rare or better (82% at 100 games, Uncommon band 45-68%); it is the yardstick filler, so its stats stay (changing them moves every number); Very Rare would break the Map 13 skirmish cap where it fights"
+  },
+  "warren-scout": {
+   "to": "rare",
+   "from": "uncommon",
+   "wr": 78,
+   "games": 100,
+   "why": "an Uncommon performing like a Rare (78% at 100 games, Uncommon band 45-68%, Rare 52-75%); it is the yardstick filler, so its stats stay"
+  }
+ },
+ "sources": [
+  {
+   "id": "adder-ambusher",
+   "name": "Adder Ambusher",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-7"
+   },
+   "from": null,
+   "where": "6-7 Adder Gauntlet (elite, Sable Swampmire)",
+   "why": "a reward on a Sable Swampmire fight: its theme has the card's type (Snake/Reptile), near its home map (Sable Swampmire)"
+  },
+  {
+   "id": "alpine-marmot",
+   "name": "Alpine Marmot",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-1"
+   },
+   "from": null,
+   "where": "22-1 Snowmelt Switchbacks (skirmish, The Rimefire Caldera)",
+   "why": "it fights there; 4 fight(s) field it"
+  },
+  {
+   "id": "anaconda-coil",
+   "name": "Anaconda Coil",
+   "rarity": "rare",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "no fight fields it and no map theme near its home fits"
+  },
+  {
+   "id": "ancient-sloth-titan",
+   "name": "Ancient Sloth Titan",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-9"
+   },
+   "from": null,
+   "where": "20-9 The Ancient Sloth Titan (boss, The Sundered Peak)",
+   "why": "it fights there (its namesake fight); 5 fight(s) field it"
+  },
+  {
+   "id": "ant-hill",
+   "name": "Ant Hill",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-2"
+   },
+   "from": null,
+   "where": "7-A-2 Glowcap Grotto (skirmish, The Mycelium Deep)",
+   "why": "a reward on a The Mycelium Deep fight: its theme has the card's type (Insect/Ants/Insect), near its home map (The Morel Hollow)"
+  },
+  {
+   "id": "ant-warrior",
+   "name": "Ant Warrior",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-2"
+   },
+   "from": null,
+   "where": "7-2 Grub Tunnels (skirmish, The Morel Hollow)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "antler-skirmisher",
+   "name": "Antler Skirmisher",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-3"
+   },
+   "from": null,
+   "where": "13-3 Antler Grove (skirmish, The Redwood Deep)",
+   "why": "a reward on a The Redwood Deep fight: its theme has the card's type (Deer), near its home map (The Redwood Deep)"
+  },
+  {
+   "id": "arc-bat",
+   "name": "Arc Bat",
+   "rarity": "rare",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "ash-cloud-condor",
+   "name": "Ash Cloud Condor",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-7"
+   },
+   "from": null,
+   "where": "20-A-7 Ash Condor Roost (elite, Eye of the Volcano)",
+   "why": "it fights there (its namesake fight); 3 fight(s) field it"
+  },
+  {
+   "id": "baby-bat",
+   "name": "Baby Bat",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-1"
+   },
+   "from": null,
+   "where": "8-1 Roost Flurry (skirmish, Caves & Alcoves)",
+   "why": "a reward on a Caves & Alcoves fight: its theme has the card's type (Cave/Bat), near its home map (Caves & Alcoves)"
+  },
+  {
+   "id": "badger-berserker",
+   "name": "Badger Berserker",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-3"
+   },
+   "from": null,
+   "where": "22-3 Frozen Lava Flow (skirmish, The Rimefire Caldera)",
+   "why": "it fights there; 7 fight(s) field it"
+  },
+  {
+   "id": "badger-lumberjack",
+   "name": "Badger Lumberjack",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "basalt-boar",
+   "name": "Basalt Boar",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-5"
+   },
+   "from": null,
+   "where": "20-A-5 Scorched Boars (elite, Eye of the Volcano)",
+   "why": "it fights there (its namesake fight); 6 fight(s) field it"
+  },
+  {
+   "id": "bear-cub",
+   "name": "Bear Cub",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-7"
+   },
+   "from": null,
+   "where": "20-7 The Blessed Avatar (elite, The Sundered Peak)",
+   "why": "it fights there; 9 fight(s) field it"
+  },
+  {
+   "id": "beetle-battering-ram",
+   "name": "Beetle Battering-Ram",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m23",
+    "node": "23-7"
+   },
+   "from": null,
+   "where": "23-7 The Barbican (elite, The Goldfeather Siege)",
+   "why": "it fights there; 24 fight(s) field it"
+  },
+  {
+   "id": "berserker-boar",
+   "name": "Berserker Boar",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-4"
+   },
+   "from": null,
+   "where": "13-4 Boar Wallow (skirmish, The Redwood Deep)",
+   "why": "it fights there (its namesake fight); 3 fight(s) field it"
+  },
+  {
+   "id": "blessed-avatar",
+   "name": "Blessed Avatar",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-5"
+   },
+   "from": null,
+   "where": "20-5 Cave Warlord's Guard (elite, The Sundered Peak)",
+   "why": "it fights there; 10 fight(s) field it"
+  },
+  {
+   "id": "blister-beetle",
+   "name": "Blister Beetle",
+   "rarity": "common",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "bramble-hoglet",
+   "name": "Bramble Hoglet",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mh",
+    "node": "12-7"
+   },
+   "from": null,
+   "where": "12-7 The Briar Queen (miniboss, The Briar Maze)",
+   "why": "a reward on a The Briar Maze fight: its theme has the card's type (Hedgehog), near its home map (The Briar Maze)"
+  },
+  {
+   "id": "bramblewood-bonebreaker",
+   "name": "Bonebreaker",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-1"
+   },
+   "from": null,
+   "where": "20-1 Silverback Watch (skirmish, The Sundered Peak)",
+   "why": "it fights there; 2 fight(s) field it"
+  },
+  {
+   "id": "caiman-hatchling",
+   "name": "Caiman Hatchling",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-4"
+   },
+   "from": null,
+   "where": "5-4 Snapping Reeds (skirmish, Gatorback Swamp)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "canopy-sloth-guardian",
+   "name": "Canopy Sloth Guardian",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-3"
+   },
+   "from": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-5"
+   },
+   "where": "14-A-3 Sloth Boughs (skirmish, The Canopy)",
+   "why": "moved from 19-5 (off its map's theme, not in that fight): a reward on a The Canopy fight: its theme has the card's type (Sloth), near its home map (The Canopy)"
+  },
+  {
+   "id": "carrion-fly-swarm",
+   "name": "Carrion Fly Swarm",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-3"
+   },
+   "from": null,
+   "where": "7-A-3 Silk Gallery (elite, The Mycelium Deep)",
+   "why": "it fights there; 2 fight(s) field it"
+  },
+  {
+   "id": "cave-warlord",
+   "name": "Cave Warlord",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-5"
+   },
+   "from": null,
+   "where": "20-5 Cave Warlord's Guard (elite, The Sundered Peak)",
+   "why": "it fights there (its namesake fight); 4 fight(s) field it"
+  },
+  {
+   "id": "chipmunk-hoarder",
+   "name": "Chipmunk Hoarder",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mv",
+    "node": "11-A-1"
+   },
+   "from": null,
+   "where": "11-A-1 Cliff Ledge (skirmish, The Aerie Vault)",
+   "why": "it fights there; 8 fight(s) field it"
+  },
+  {
+   "id": "chipmunk-skirmisher",
+   "name": "Chipmunk Skirmisher",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-3"
+   },
+   "from": null,
+   "where": "1-A-3 Puddle Hop (skirmish, Clovermead)",
+   "why": "a reward on a Clovermead fight: its theme has the card's type (Chipmunk), near its home map (Thistlewood)"
+  },
+  {
+   "id": "cinder-hornet",
+   "name": "Cinder Hornet",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-1"
+   },
+   "from": null,
+   "where": "20-B-1 Cinder Slopes (skirmish, Volcano Lair)",
+   "why": "it fights there (its namesake fight); 2 fight(s) field it"
+  },
+  {
+   "id": "clover-butterfly",
+   "name": "Clover Butterfly",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-1"
+   },
+   "from": null,
+   "where": "1-A-1 Clover Patch (skirmish, Clovermead)",
+   "why": "it fights there (its namesake fight); 1 fight(s) field it"
+  },
+  {
+   "id": "colossal-squid",
+   "name": "Colossal Squid",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mj",
+    "node": "10-A-1"
+   },
+   "from": null,
+   "where": "10-A-1 Bubble Trail (skirmish, The Sunken Depths)",
+   "why": "a reward on a The Sunken Depths fight: its theme has the card's type (Cephalopod), near its home map (The Sunken Depths)"
+  },
+  {
+   "id": "conch-crawler",
+   "name": "Conch Crawler",
+   "rarity": "common",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "conch-herald",
+   "name": "Conch Herald",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "constrictor-coil",
+   "name": "Constrictor Coil",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "ms",
+    "node": "5-A-2"
+   },
+   "from": null,
+   "where": "5-A-2 Gator Hollow (skirmish, The Sunken Grove)",
+   "why": "it fights there; 14 fight(s) field it"
+  },
+  {
+   "id": "coral-reef-shark",
+   "name": "Coral Reef Shark",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "mj",
+    "node": "10-A-4"
+   },
+   "from": null,
+   "where": "10-A-4 The Undertow (elite, The Sunken Depths)",
+   "why": "it fights there; 5 fight(s) field it"
+  },
+  {
+   "id": "cricket-drummer",
+   "name": "Cricket Drummer",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-1"
+   },
+   "from": null,
+   "where": "1-1 Hedgerow Scouts (skirmish, Thistlewood)",
+   "why": "it fights there; 2 fight(s) field it"
+  },
+  {
+   "id": "crown-pretender",
+   "name": "Crown Pretender",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "dam-wall",
+   "name": "Dam Wall",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-2"
+   },
+   "from": null,
+   "where": "2-A-2 Duck Row (skirmish, Lilypad Reach)",
+   "why": "a reward on a Lilypad Reach fight: its theme has the card's type (Beaver), near its home map (Lilypad Reach)"
+  },
+  {
+   "id": "deep-cave-troll",
+   "name": "Cave Bear",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-10"
+   },
+   "from": null,
+   "where": "20-10 The Cave Warlord (worldboss, The Sundered Peak)",
+   "why": "a reward on a The Sundered Peak fight: its theme has the card's type (Bear), near its home map (The Sundered Peak)"
+  },
+  {
+   "id": "duckling-squadron",
+   "name": "Duckling Squadron",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m24",
+    "node": "24-2"
+   },
+   "from": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-4"
+   },
+   "where": "24-2 The Bailey (skirmish, Goldfeather Keep)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "dung-beetle",
+   "name": "Dung Beetle",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-1"
+   },
+   "from": null,
+   "where": "7-1 Spore Drift (skirmish, The Morel Hollow)",
+   "why": "it fights there; 2 fight(s) field it"
+  },
+  {
+   "id": "dynamite-packrat",
+   "name": "Dynamite Packrat",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-3"
+   },
+   "from": {
+    "kind": "map",
+    "id": "m4"
+   },
+   "where": "8-3 Cinder Vents (skirmish, Caves & Alcoves)",
+   "why": "a reward on a Caves & Alcoves fight: its theme has the card's type (Cave), near its home map (Caves & Alcoves)"
+  },
+  {
+   "id": "eagle-sharpshooter",
+   "name": "Eagle Sharpshooter",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m21",
+    "node": "21-4"
+   },
+   "from": null,
+   "where": "21-4 The Avalanche's Wake (elite, The Quiet Summit)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "elder-tortoise",
+   "name": "Elder Tortoise",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-7"
+   },
+   "from": null,
+   "where": "2-A-7 The Lodge Matriarch (boss, Lilypad Reach)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "elder-willow",
+   "name": "Elder Willow",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mo",
+    "node": "0-B-4"
+   },
+   "from": null,
+   "where": "0-B-4 The Old Bramble (boss, The Old Bramble)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "electric-catfish",
+   "name": "Electric Catfish",
+   "rarity": "rare",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "no fight fields it and no map theme near its home fits"
+  },
+  {
+   "id": "elephant-nose-fish",
+   "name": "Elephant-nose Fish",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "no fight fields it and no map theme near its home fits"
+  },
+  {
+   "id": "ember-jackal",
+   "name": "Ember Jackal",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-4"
+   },
+   "from": null,
+   "where": "20-B-4 The Caldera Wyrm (worldboss, Volcano Lair)",
+   "why": "it fights there; 6 fight(s) field it"
+  },
+  {
+   "id": "ember-revenant",
+   "name": "Ember Revenant",
+   "rarity": "epic",
+   "source": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-10"
+   },
+   "from": null,
+   "where": "19-A-10 The Phoenix Ember King (boss, Basalt Foundry)",
+   "why": "a reward on a Basalt Foundry fight: its theme has the card's type (Volcanic), near its home map (Eye of the Volcano)"
+  },
+  {
+   "id": "eyrie-warden",
+   "name": "Eyrie Warden",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mv",
+    "node": "11-A-2"
+   },
+   "from": null,
+   "where": "11-A-2 Feather Drifts (skirmish, The Aerie Vault)",
+   "why": "it fights there; 7 fight(s) field it"
+  },
+  {
+   "id": "farm-dog",
+   "name": "Farm Dog",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-4"
+   },
+   "from": null,
+   "where": "1-A-4 Harvest Mice (skirmish, Clovermead)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "fawn-scout",
+   "name": "Fawn Scout",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-1"
+   },
+   "from": null,
+   "where": "13-1 Cub Clearing (skirmish, The Redwood Deep)",
+   "why": "it fights there; 2 fight(s) field it"
+  },
+  {
+   "id": "feral-tuskboar",
+   "name": "Feral Tuskboar",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-5"
+   },
+   "from": null,
+   "where": "13-5 Badger Setts (elite, The Redwood Deep)",
+   "why": "it fights there; 4 fight(s) field it"
+  },
+  {
+   "id": "field-mouse",
+   "name": "Field Mouse",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mh",
+    "node": "12-1"
+   },
+   "from": null,
+   "where": "12-1 Hedge Mice (skirmish, The Briar Maze)",
+   "why": "it fights there; 5 fight(s) field it"
+  },
+  {
+   "id": "fire-drake-hatchling",
+   "name": "Fire Drake Hatchling",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-4"
+   },
+   "from": null,
+   "where": "20-B-4 The Caldera Wyrm (worldboss, Volcano Lair)",
+   "why": "it fights there; 2 fight(s) field it"
+  },
+  {
+   "id": "fox-kit",
+   "name": "Fox Kit",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-7"
+   },
+   "from": null,
+   "where": "13-7 The King's Den (elite, The Redwood Deep)",
+   "why": "it fights there; 9 fight(s) field it"
+  },
+  {
+   "id": "fox-warchief",
+   "name": "Fox Warchief",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-2"
+   },
+   "from": null,
+   "where": "13-2 Fox Run (skirmish, The Redwood Deep)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "frostbitten-wolverine",
+   "name": "Frostbitten Wolverine",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "gangrenous-leech",
+   "name": "Gangrenous Leech",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-4"
+   },
+   "from": null,
+   "where": "7-A-4 The Rot Heart (elite, The Mycelium Deep)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "gatling-hog",
+   "name": "Gatling Hog",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-4"
+   },
+   "from": null,
+   "where": "1-4 Sapper Hedge (skirmish, Thistlewood)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "glacial-ape-king",
+   "name": "Glacial Ape-King",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mi",
+    "node": "17-A-1"
+   },
+   "from": null,
+   "where": "17-A-1 Frost Tunnel (skirmish, The Ice Hollow)",
+   "why": "it fights there; 6 fight(s) field it"
+  },
+  {
+   "id": "glacier-yak",
+   "name": "Glacier Yak",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m21",
+    "node": "21-5"
+   },
+   "from": null,
+   "where": "21-5 Snow Owl Parliament (elite, The Quiet Summit)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "glasswing-butterfly",
+   "name": "Glasswing Butterfly",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-6"
+   },
+   "from": null,
+   "where": "20-6 The Constrictor Sovereign (elite, The Sundered Peak)",
+   "why": "a reward on a The Sundered Peak fight: its theme has the card's type (Rainforest), near its home map (The Sundered Peak)"
+  },
+  {
+   "id": "gorge-wyrm",
+   "name": "Gorge Wyrm",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-3"
+   },
+   "from": null,
+   "where": "20-B-3 The Wyrm's Antechamber (skirmish, Volcano Lair)",
+   "why": "it fights there (its namesake fight); 3 fight(s) field it"
+  },
+  {
+   "id": "grass-viper",
+   "name": "Grass Viper",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "ms",
+    "node": "5-A-1"
+   },
+   "from": null,
+   "where": "5-A-1 Rotting Roots (skirmish, The Sunken Grove)",
+   "why": "it fights there; 7 fight(s) field it"
+  },
+  {
+   "id": "great-horned-owl",
+   "name": "Great Horned Owl",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "ml",
+    "node": "15-7"
+   },
+   "from": null,
+   "where": "15-7 The Horse-Lord (boss, The Long Grass)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "grindstone-boar",
+   "name": "Grindstone Boar",
+   "rarity": "common",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "hammerhead-shark",
+   "name": "Hammerhead Shark",
+   "rarity": "common",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "heartwood-treant",
+   "name": "Heartwood Treant",
+   "rarity": "rare",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "honeyjoe-brewer",
+   "name": "Honeyjoe Brewer",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "house-cat",
+   "name": "House Cat",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-4"
+   },
+   "from": null,
+   "where": "1-A-4 Harvest Mice (skirmish, Clovermead)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "humpback-elder",
+   "name": "Humpback Elder",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-3"
+   },
+   "from": null,
+   "where": "4-3 Cetacean Pod (elite, Sunken Hollow)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "ice-petrel",
+   "name": "Ice Petrel",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-4"
+   },
+   "from": null,
+   "where": "22-4 Hailstone Ridge (skirmish, The Rimefire Caldera)",
+   "why": "it fights there; 2 fight(s) field it"
+  },
+  {
+   "id": "iron-warden",
+   "name": "Iron Warden",
+   "rarity": "epic",
+   "source": {
+    "kind": "map",
+    "id": "m24",
+    "node": "24-6"
+   },
+   "from": {
+    "kind": "design",
+    "id": "2026-10-12"
+   },
+   "where": "24-6 The Gilded Guard (elite, Goldfeather Keep)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "ironback-gorilla",
+   "name": "Ironback Gorilla",
+   "rarity": "rare",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "irradiated-axolotl",
+   "name": "Irradiated Axolotl",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 99
+   },
+   "where": "the Mystery Booster (the wandering trader)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "irradiated-couatl",
+   "name": "Irradiated Couatl",
+   "rarity": "epic",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "irradiated-glow-wyrm",
+   "name": "Irradiated Glow Wyrm",
+   "rarity": "rare",
+   "source": {
+    "kind": "pack",
+    "tier": 99
+   },
+   "where": "the Mystery Booster (the wandering trader)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "jackrabbit-sprinter",
+   "name": "Jackrabbit Sprinter",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "ml",
+    "node": "15-3"
+   },
+   "from": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-1"
+   },
+   "where": "15-3 Stoat Ambush (skirmish, The Long Grass)",
+   "why": "moved from 4-1 (off its map's theme, not in that fight): a reward on a The Long Grass fight: its theme has the card's type (Rabbit), near its home map (The Long Grass)"
+  },
+  {
+   "id": "jay-pilferer",
+   "name": "Jay Pilferer",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-5"
+   },
+   "from": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-1"
+   },
+   "where": "1-A-5 The Old Hare (boss, Clovermead)",
+   "why": "moved from 4-1 (off its map's theme, not in that fight): a reward on a Clovermead fight: its theme has the card's type (Bird/Bird), near its home map (Thistlewood)"
+  },
+  {
+   "id": "kraken-spawnling",
+   "name": "Kraken Spawnling",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mj",
+    "node": "10-A-2"
+   },
+   "from": null,
+   "where": "10-A-2 The Drowned Deck (skirmish, The Sunken Depths)",
+   "why": "it fights there; 5 fight(s) field it"
+  },
+  {
+   "id": "lions-mane-jelly",
+   "name": "Lion's Mane Jelly",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "mj",
+    "node": "10-A-3"
+   },
+   "from": null,
+   "where": "10-A-3 Cargo Hold (skirmish, The Sunken Depths)",
+   "why": "a reward on a The Sunken Depths fight: its theme has the card's type (Ocean), near its home map (Coral Current)"
+  },
+  {
+   "id": "lucky-hopper",
+   "name": "Lucky Hopper",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-5"
+   },
+   "from": null,
+   "where": "1-A-5 The Old Hare (boss, Clovermead)",
+   "why": "it fights there; 5 fight(s) field it"
+  },
+  {
+   "id": "lunar-howler",
+   "name": "Lunar Howler",
+   "rarity": "rare",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "magma-salamander",
+   "name": "Magma Salamander",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "me",
+    "node": "20-A-6"
+   },
+   "from": null,
+   "where": "20-A-6 The Vent Crabs (elite, Eye of the Volcano)",
+   "why": "it fights there; 13 fight(s) field it"
+  },
+  {
+   "id": "magma-titan",
+   "name": "Magma Titan",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-8"
+   },
+   "from": null,
+   "where": "19-A-8 Titan's Shadow (elite, Basalt Foundry)",
+   "why": "it fights there (its namesake fight); 8 fight(s) field it"
+  },
+  {
+   "id": "malachite-golem",
+   "name": "Malachite Golem",
+   "rarity": "rare",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "mallard-marauder",
+   "name": "Mallard Marauder",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m24",
+    "node": "24-4"
+   },
+   "from": null,
+   "where": "24-4 The Courtyard Fountain (skirmish, Goldfeather Keep)",
+   "why": "it fights there; 11 fight(s) field it"
+  },
+  {
+   "id": "marching-elephant",
+   "name": "Marching Elephant",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m23",
+    "node": "23-3"
+   },
+   "from": null,
+   "where": "23-3 Elephant Road (skirmish, The Goldfeather Siege)",
+   "why": "it fights there (its namesake fight); 6 fight(s) field it"
+  },
+  {
+   "id": "margay",
+   "name": "Margay",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-6"
+   },
+   "from": null,
+   "where": "13-6 Grizzly Ridge (elite, The Redwood Deep)",
+   "why": "a reward on a The Redwood Deep fight: its theme has the card's type (Cat), near its home map (The Redwood Deep)"
+  },
+  {
+   "id": "mire-witch-heron",
+   "name": "Mire Witch-Heron",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-6"
+   },
+   "from": null,
+   "where": "6-6 Crocodile Run (elite, Sable Swampmire)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "monarch-wingblade",
+   "name": "Monarch Wingblade",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-6"
+   },
+   "from": null,
+   "where": "7-6 The Morel Monarch (miniboss, The Morel Hollow)",
+   "why": "it fights there (its namesake fight); 2 fight(s) field it"
+  },
+  {
+   "id": "moonlit-hare",
+   "name": "Moonlit Hare",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "narwhal-lancer",
+   "name": "Narwhal Lancer",
+   "rarity": "common",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "no fight fields it and no map theme near its home fits"
+  },
+  {
+   "id": "newt-doctor",
+   "name": "Newt Doctor",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-5"
+   },
+   "from": null,
+   "where": "2-A-5 Croaker Chorus (elite, Lilypad Reach)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "nightshade-moth",
+   "name": "Nightshade Moth",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-2"
+   },
+   "from": null,
+   "where": "7-A-2 Glowcap Grotto (skirmish, The Mycelium Deep)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "obsidian-lich",
+   "name": "Obsidian Lich",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-8"
+   },
+   "from": null,
+   "where": "20-8 The Iron Cataphract (elite, The Sundered Peak)",
+   "why": "a reward on a The Sundered Peak fight: its theme has the card's type (Volcanic), near its home map (Eye of the Volcano)"
+  },
+  {
+   "id": "old-growth-tortoise",
+   "name": "Old-Growth Tortoise",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-5"
+   },
+   "from": null,
+   "where": "14-A-5 The Jaguar's Path (boss, The Canopy)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "old-snapjaw",
+   "name": "Old Snapjaw",
+   "rarity": "heroic",
+   "source": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-7"
+   },
+   "from": null,
+   "where": "5-7 Old Snapjaw (boss, Gatorback Swamp)",
+   "why": "Gatorback Swamp's leader: its last fight gives him, as each map's boss gives its leader (Map 5 had none)"
+  },
+  {
+   "id": "orca-vanguard",
+   "name": "Orca Vanguard",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-5"
+   },
+   "from": null,
+   "where": "10-5 Current Split (skirmish, Coral Current)",
+   "why": "it fights there; 6 fight(s) field it"
+  },
+  {
+   "id": "ore-smelter-mole",
+   "name": "Ore-Smelter Mole",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "otter-angler",
+   "name": "Otter Angler",
+   "rarity": "common",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "pack-rat-looter",
+   "name": "Pack Rat Looter",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mh",
+    "node": "12-6"
+   },
+   "from": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-1"
+   },
+   "where": "12-6 Rodent Court (elite, The Briar Maze)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "permafrost-mammoth",
+   "name": "Permafrost Mammoth",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-5"
+   },
+   "from": null,
+   "where": "22-5 The Geyser Field (skirmish, The Rimefire Caldera)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "phoenix-fledgling",
+   "name": "Phoenix Fledgling",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m9",
+    "node": "19-A-1"
+   },
+   "from": null,
+   "where": "19-A-1 Cinder Swarm (skirmish, Basalt Foundry)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "pigeon-peon",
+   "name": "Pigeon Peon",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-1"
+   },
+   "from": null,
+   "where": "1-A-1 Clover Patch (skirmish, Clovermead)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "pill-bug",
+   "name": "Pill Bug",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-2"
+   },
+   "from": null,
+   "where": "1-A-2 Bee Lines (skirmish, Clovermead)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "puddle-hopper",
+   "name": "Puddle Hopper",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mq",
+    "node": "1-A-3"
+   },
+   "from": null,
+   "where": "1-A-3 Puddle Hop (skirmish, Clovermead)",
+   "why": "it fights there (its namesake fight); 9 fight(s) field it"
+  },
+  {
+   "id": "puddle-skimmer",
+   "name": "Puddle Skimmer",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "puffball-bombardier",
+   "name": "Puffball Bombardier",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "pyroclast-wyrm",
+   "name": "Pyroclast Wyrm",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mx",
+    "node": "20-B-3"
+   },
+   "from": null,
+   "where": "20-B-3 The Wyrm's Antechamber (skirmish, Volcano Lair)",
+   "why": "it fights there (its namesake fight); 5 fight(s) field it"
+  },
+  {
+   "id": "quarry-troll",
+   "name": "Quarry Troll",
+   "rarity": "rare",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "quill-volley",
+   "name": "Quill Volley",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-4"
+   },
+   "from": null,
+   "where": "19-4 Sky Marks (elite, Ashen Spurn)",
+   "why": "it fights there; 8 fight(s) field it"
+  },
+  {
+   "id": "raccoon-bandit",
+   "name": "Raccoon Bandit",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "ml",
+    "node": "15-5"
+   },
+   "from": null,
+   "where": "15-5 Charge of the Warhorses (elite, The Long Grass)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "raccoon-nightcrew",
+   "name": "Raccoon Nightcrew",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "ml",
+    "node": "15-3"
+   },
+   "from": null,
+   "where": "15-3 Stoat Ambush (skirmish, The Long Grass)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "raccoon-warlord",
+   "name": "Raccoon Warlord",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mh",
+    "node": "12-7"
+   },
+   "from": null,
+   "where": "12-7 The Briar Queen (miniboss, The Briar Maze)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "rafflesia",
+   "name": "Rafflesia",
+   "rarity": "rare",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "rainmaker-frog",
+   "name": "Rainmaker Frog",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "raven-scout",
+   "name": "Raven Scout",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-4"
+   },
+   "from": null,
+   "where": "6-4 Root Snare (skirmish, Sable Swampmire)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "ravenous-wolverine",
+   "name": "Ravenous Wolverine",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m6",
+    "node": "17-6"
+   },
+   "from": null,
+   "where": "17-6 Glacier Herd (elite, Wolfsbane Tundra)",
+   "why": "it fights there; 8 fight(s) field it"
+  },
+  {
+   "id": "reef-shark",
+   "name": "Reef Shark",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-2"
+   },
+   "from": null,
+   "where": "9-2 Monitor Roots (skirmish, The Kelp Mangroves)",
+   "why": "it fights there; 6 fight(s) field it"
+  },
+  {
+   "id": "rootworm-colony",
+   "name": "Rootworm Colony",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-5"
+   },
+   "from": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-4"
+   },
+   "where": "7-A-5 The Mycelium Mind (boss, The Mycelium Deep)",
+   "why": "moved from 4-4 (off its map's theme, not in that fight): a reward on a The Mycelium Deep fight: its theme has the card's type (Worm), near its home map (The Morel Hollow)"
+  },
+  {
+   "id": "rot-swollen-carcass",
+   "name": "Rot-Swollen Carcass",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-2"
+   },
+   "from": null,
+   "where": "6-2 Mire Ambush (skirmish, Sable Swampmire)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "scraper-of-skies",
+   "name": "Scraper of Skies",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-5"
+   },
+   "from": null,
+   "where": "19-5 Sky Scraper Sentinel (elite, Ashen Spurn)",
+   "why": "it fights there (its namesake fight); 2 fight(s) field it"
+  },
+  {
+   "id": "shallows-fry",
+   "name": "Shallows Fry",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mp",
+    "node": "2-A-1"
+   },
+   "from": null,
+   "where": "2-A-1 Lily Hop (skirmish, Lilypad Reach)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "shimmerwing-stag",
+   "name": "Shimmerwing Stag",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-8"
+   },
+   "from": null,
+   "where": "13-8 The Stag-Lord (miniboss, The Redwood Deep)",
+   "why": "it fights there (its namesake fight); 2 fight(s) field it"
+  },
+  {
+   "id": "shoal-shark",
+   "name": "Shoal Shark",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "shrine-acolyte",
+   "name": "Shrine Acolyte",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-4"
+   },
+   "from": null,
+   "where": "20-4 Shrine Steps (skirmish, The Sundered Peak)",
+   "why": "it fights there (its namesake fight); 1 fight(s) field it"
+  },
+  {
+   "id": "shrine-bell-ringer",
+   "name": "Shrine Bell-Ringer",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-4"
+   },
+   "from": null,
+   "where": "20-4 Shrine Steps (skirmish, The Sundered Peak)",
+   "why": "Shrine Steps, the 2026-10-16 placement's home, beside the Shrine Acolyte"
+  },
+  {
+   "id": "shrine-high-priest",
+   "name": "Shrine High Priest",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m21",
+    "node": "21-6"
+   },
+   "from": null,
+   "where": "21-6 The Cathedral Eagle (miniboss, The Quiet Summit)",
+   "why": "the Quiet Summit's chapel (Worship and Prayer, the 2026-10-16 placement's home): its boss gives the High Priest"
+  },
+  {
+   "id": "siege-rhino",
+   "name": "Siege Rhino",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m23",
+    "node": "23-4"
+   },
+   "from": null,
+   "where": "23-4 Siege Camp (skirmish, The Goldfeather Siege)",
+   "why": "it fights there (its namesake fight); 3 fight(s) field it"
+  },
+  {
+   "id": "silverback-brawler",
+   "name": "Silverback Brawler",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-6"
+   },
+   "from": null,
+   "where": "20-6 The Constrictor Sovereign (elite, The Sundered Peak)",
+   "why": "it fights there; 7 fight(s) field it"
+  },
+  {
+   "id": "slowpoke-sentinel",
+   "name": "Slowpoke Sentinel",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "my",
+    "node": "14-A-2"
+   },
+   "from": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-3"
+   },
+   "where": "14-A-2 Strangler Arch (skirmish, The Canopy)",
+   "why": "it fights there; 5 fight(s) field it"
+  },
+  {
+   "id": "smoke-raccoon",
+   "name": "Smokescreen Raccoon",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "snapstick-turtle",
+   "name": "Snapstick Turtle",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-1"
+   },
+   "from": null,
+   "where": "4-1 Reef Skirmishers (skirmish, Sunken Hollow)",
+   "why": "a reward on a Sunken Hollow fight: its theme has the card's type (Turtle), near its home map (Sunken Hollow)"
+  },
+  {
+   "id": "snow-ermine",
+   "name": "Snow Ermine",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mi",
+    "node": "17-A-2"
+   },
+   "from": null,
+   "where": "17-A-2 Glacier Gut (skirmish, The Ice Hollow)",
+   "why": "it fights there; 8 fight(s) field it"
+  },
+  {
+   "id": "snow-owl-sentinel",
+   "name": "Snow Owl Sentinel",
+   "rarity": "superrare",
+   "source": {
+    "kind": "map",
+    "id": "m21",
+    "node": "21-5"
+   },
+   "from": null,
+   "where": "21-5 Snow Owl Parliament (elite, The Quiet Summit)",
+   "why": "it fights there (its namesake fight); 5 fight(s) field it"
+  },
+  {
+   "id": "static-bat",
+   "name": "Static Bat",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "stone-turtle-warden",
+   "name": "Stone Turtle Warden",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-4"
+   },
+   "from": null,
+   "where": "4-4 The Kraken's Maw (elite, Sunken Hollow)",
+   "why": "it fights there; 5 fight(s) field it"
+  },
+  {
+   "id": "subterraneaner",
+   "name": "Subterraneaner",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-5"
+   },
+   "from": null,
+   "where": "8-5 Sulfur Vent Path (skirmish, Caves & Alcoves)",
+   "why": "a reward on a Caves & Alcoves fight: its theme has the card's type (Cave/Mole), near its home map (Caves & Alcoves)"
+  },
+  {
+   "id": "swarm-matriarch",
+   "name": "Swarm Matriarch",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-4"
+   },
+   "from": null,
+   "where": "7-A-4 The Rot Heart (elite, The Mycelium Deep)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "sworn-shieldbearer",
+   "name": "Sworn Shieldbearer",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-12 design card with no fight of its own"
+  },
+  {
+   "id": "termite-mound",
+   "name": "Termite Mound",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m5",
+    "node": "14-4"
+   },
+   "from": null,
+   "where": "14-4 Toucan Watch (skirmish, Savanna Reaches)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "the-gannet-queen",
+   "name": "The Gannet Queen",
+   "rarity": "heroic",
+   "source": {
+    "kind": "map",
+    "id": "mc",
+    "node": "3-7"
+   },
+   "from": null,
+   "where": "3-7 The Gannet Queen (elite, Gannet Cliffs)",
+   "why": "Gannet Cliffs' leader: its last fight gives her, as each map's boss gives its leader (Map 3 had none)"
+  },
+  {
+   "id": "thornvine-lasher",
+   "name": "Thornvine Lasher",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mh",
+    "node": "12-4"
+   },
+   "from": null,
+   "where": "12-4 Thornvine Arch (skirmish, The Briar Maze)",
+   "why": "it fights there (its namesake fight); 2 fight(s) field it"
+  },
+  {
+   "id": "trickster-fox",
+   "name": "Trickster Fox",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mt",
+    "node": "16-2"
+   },
+   "from": null,
+   "where": "16-2 Pinecone Drop (skirmish, The Pinewood Taiga)",
+   "why": "it fights there; 3 fight(s) field it"
+  },
+  {
+   "id": "triumvirate",
+   "name": "Triumphvirate",
+   "rarity": "unique",
+   "source": {
+    "kind": "map",
+    "id": "m23",
+    "node": "23-8"
+   },
+   "from": null,
+   "where": "23-8 Marshal Tuskwell (miniboss, The Goldfeather Siege)",
+   "why": "the Savanna's Unique Dictator leads the siege: the Map 23 boss gives him (a Unique fits the Map 21-35 boss cap)"
+  },
+  {
+   "id": "tundra-musk-ox",
+   "name": "Tundra Musk Ox",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m6",
+    "node": "17-5"
+   },
+   "from": null,
+   "where": "17-5 Musk Ox Bulwark (elite, Wolfsbane Tundra)",
+   "why": "it fights there (its namesake fight); 7 fight(s) field it"
+  },
+  {
+   "id": "turtle-bastion",
+   "name": "Turtle Bastion",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-8"
+   },
+   "from": null,
+   "where": "10-8 Sea Turtle Elder's Court (elite, Coral Current)",
+   "why": "it fights there (its namesake fight); 1 fight(s) field it"
+  },
+  {
+   "id": "tusked-vanguard",
+   "name": "Tusked Vanguard",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-5"
+   },
+   "from": null,
+   "where": "13-5 Badger Setts (elite, The Redwood Deep)",
+   "why": "a reward on a The Redwood Deep fight: its theme has the card's type (Boar), near its home map (The Redwood Deep)"
+  },
+  {
+   "id": "ur-elk",
+   "name": "Ür-Elk",
+   "rarity": "veryrare",
+   "source": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-7"
+   },
+   "from": null,
+   "where": "22-7 The Steam Wall (elite, The Rimefire Caldera)",
+   "why": "it fights there; 8 fight(s) field it"
+  },
+  {
+   "id": "vampire-bat",
+   "name": "Vampire Bat",
+   "rarity": "uncommon",
+   "source": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-1"
+   },
+   "from": null,
+   "where": "7-A-1 Root Cellar (skirmish, The Mycelium Deep)",
+   "why": "a reward on a The Mycelium Deep fight: its theme has the card's type (Swamp), near its home map (Sable Swampmire)"
+  },
+  {
+   "id": "venomlord-serpent",
+   "name": "Venomlord Serpent",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "ms",
+    "node": "5-A-3"
+   },
+   "from": null,
+   "where": "5-A-3 Moss Weir (skirmish, The Sunken Grove)",
+   "why": "it fights there; 12 fight(s) field it"
+  },
+  {
+   "id": "voltwing-bat",
+   "name": "Voltwing Bat",
+   "rarity": "common",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "where": "the basic pack pool (Hedgerow Pouch, Tidemire Chest, Highcrest Case)",
+   "why": "a 2026-10-14 design card with no fight of its own"
+  },
+  {
+   "id": "war-panther",
+   "name": "War Panther",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mr",
+    "node": "13-3"
+   },
+   "from": null,
+   "where": "13-3 Antler Grove (skirmish, The Redwood Deep)",
+   "why": "it fights there; 4 fight(s) field it"
+  },
+  {
+   "id": "warren-scout",
+   "name": "Warren Scout",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mh",
+    "node": "12-3"
+   },
+   "from": null,
+   "where": "12-3 Warren Run (skirmish, The Briar Maze)",
+   "why": "it fights there (its namesake fight); 2 fight(s) field it"
+  },
+  {
+   "id": "webspire-sentinel",
+   "name": "Webspire Sentinel",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "mz",
+    "node": "7-A-3"
+   },
+   "from": null,
+   "where": "7-A-3 Silk Gallery (elite, The Mycelium Deep)",
+   "why": "it fights there; 1 fight(s) field it"
+  },
+  {
+   "id": "werebadger",
+   "name": "Werebadger",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m23",
+    "node": "23-1"
+   },
+   "from": null,
+   "where": "23-1 The Picket Line (skirmish, The Goldfeather Siege)",
+   "why": "a reward on a The Goldfeather Siege fight: its theme has the card's type (Badger), near its home map (Goldfeather Keep)"
+  },
+  {
+   "id": "woodland-brawler",
+   "name": "Woodland Brawler",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "m11",
+    "node": "20-8"
+   },
+   "from": null,
+   "where": "20-8 The Iron Cataphract (elite, The Sundered Peak)",
+   "why": "it fights there; 7 fight(s) field it"
+  },
+  {
+   "id": "wound-reaver",
+   "name": "Wound Reaver",
+   "rarity": "rare",
+   "source": {
+    "kind": "map",
+    "id": "mv",
+    "node": "11-A-4"
+   },
+   "from": null,
+   "where": "11-A-4 The Roost Mother (boss, The Aerie Vault)",
+   "why": "it fights there; 2 fight(s) field it"
+  },
+  {
+   "id": "yeti",
+   "name": "Yeti",
+   "rarity": "common",
+   "source": {
+    "kind": "map",
+    "id": "m3",
+    "node": "19-1"
+   },
+   "from": null,
+   "where": "19-1 Badger Warband (skirmish, Ashen Spurn)",
+   "why": "it fights there; 5 fight(s) field it"
+  }
+ ],
+ "sourceless": [
+  {
+   "id": "black-dragon",
+   "name": "Black Dragon",
+   "rarity": "legendary",
+   "why": "one of the five hidden Dragons (Supreme): the Dragons long-quest is the owner's call",
+   "had": null
+  },
+  {
+   "id": "blue-dragon",
+   "name": "Blue Dragon",
+   "rarity": "legendary",
+   "why": "one of the five hidden Dragons (Supreme): the Dragons long-quest is the owner's call",
+   "had": null
+  },
+  {
+   "id": "bone-diviner",
+   "name": "Bone Diviner",
+   "rarity": "uncommon",
+   "why": "parked: an omen raven for a raven/omen fight (none on Maps 0-24)",
+   "had": null
+  },
+  {
+   "id": "caldera-wyrm",
+   "name": "The Caldera Wyrm",
+   "rarity": "legendary",
+   "why": "enemy only: the Map 20 world boss's leader (20-B-4), over the budget as a boss",
+   "had": null
+  },
+  {
+   "id": "colony",
+   "name": "Colony",
+   "rarity": "rare",
+   "why": "parked: an insect spawner structure for a hive map (none yet)",
+   "had": null
+  },
+  {
+   "id": "corpse-flower-beetle",
+   "name": "Corpse-flower Beetle",
+   "rarity": "rare",
+   "why": "held for its suggested map (Map 31)",
+   "had": null
+  },
+  {
+   "id": "ember-wisp",
+   "name": "Ember Wisp",
+   "rarity": "rare",
+   "why": "parked: the Elementals wait for Map 50+ (decided 2026-10-16)",
+   "had": null
+  },
+  {
+   "id": "gale-sprite",
+   "name": "Gale Sprite",
+   "rarity": "common",
+   "why": "parked: the Elementals wait for Map 50+",
+   "had": null
+  },
+  {
+   "id": "geode-scorpion",
+   "name": "Geode Scorpion",
+   "rarity": "rare",
+   "why": "held for its suggested map (Map 27)",
+   "had": null
+  },
+  {
+   "id": "gloom-gibbon",
+   "name": "Gloom Gibbon",
+   "rarity": "rare",
+   "why": "held for its suggested map (Map 26)",
+   "had": null
+  },
+  {
+   "id": "great-gate",
+   "name": "Great Gate",
+   "rarity": "common",
+   "why": "enemy only: the gate the player breaks in 23-7 and 24-1",
+   "had": null
+  },
+  {
+   "id": "green-dragon",
+   "name": "Green Dragon",
+   "rarity": "legendary",
+   "why": "one of the five hidden Dragons (Supreme): the Dragons long-quest is the owner's call",
+   "had": null
+  },
+  {
+   "id": "hagfish-silencer",
+   "name": "Hagfish Silencer",
+   "rarity": "rare",
+   "why": "held for its suggested map (Map 27)",
+   "had": null
+  },
+  {
+   "id": "ice-fish",
+   "name": "Ice Fish",
+   "rarity": "epic",
+   "why": "held for its suggested map (Map 36)",
+   "had": null
+  },
+  {
+   "id": "leopard-seal",
+   "name": "Leopard Seal",
+   "rarity": "rare",
+   "why": "held for its suggested map (Map 25)",
+   "had": null
+  },
+  {
+   "id": "lichen-tortoise",
+   "name": "Lichen Tortoise",
+   "rarity": "rare",
+   "why": "held for its suggested map (Map 25)",
+   "had": null
+  },
+  {
+   "id": "magnate-duck",
+   "name": "The Magnate Duck",
+   "rarity": "legendary",
+   "why": "enemy only: the Map 24 boss card (24-8), its note: \"Enemy only for now\"",
+   "had": null
+  },
+  {
+   "id": "marshal-tuskwell",
+   "name": "Marshal Tuskwell",
+   "rarity": "epic",
+   "why": "enemy only: the Map 23 boss card (23-8), its note: \"Enemy only for now\"",
+   "had": null
+  },
+  {
+   "id": "mirrorhide-mutant",
+   "name": "Mirrorhide Mutant",
+   "rarity": "rare",
+   "why": "parked: the late Twin card (the mutants' Maps 40-50 build-up)",
+   "had": null
+  },
+  {
+   "id": "missingno",
+   "name": "MissingNo.",
+   "rarity": "unique",
+   "why": "the secret card #0; its secret (a Map 21 find) isn't built, so its map pointer has no fight",
+   "had": {
+    "kind": "map",
+    "id": "m21"
+   }
+  },
+  {
+   "id": "moon-jelly",
+   "name": "Moon Jelly",
+   "rarity": "common",
+   "why": "parked: Moonpull waits (owner: \"dont do moonpull yet till >Map 10 or Map 20\"); no fitting ocean fight past Map 10 yet",
+   "had": null
+  },
+  {
+   "id": "nest",
+   "name": "Nest",
+   "rarity": "common",
+   "why": "parked: an insect spawner structure for a hive map (none yet)",
+   "had": null
+  },
+  {
+   "id": "raven-harbinger",
+   "name": "Raven Harbinger",
+   "rarity": "common",
+   "why": "parked: an omen raven for a raven/omen fight (none on Maps 0-24)",
+   "had": null
+  },
+  {
+   "id": "raven-hexcaller",
+   "name": "Raven Hexcaller",
+   "rarity": "common",
+   "why": "parked: an omen raven for a raven/omen fight (none on Maps 0-24)",
+   "had": null
+  },
+  {
+   "id": "red-dragon",
+   "name": "Red Dragon",
+   "rarity": "legendary",
+   "why": "one of the five hidden Dragons (Supreme): the Dragons long-quest is the owner's call (Map 50+, one every 25 maps)",
+   "had": null
+  },
+  {
+   "id": "rimeheart-colossus",
+   "name": "Rimeheart Colossus",
+   "rarity": "epic",
+   "why": "enemy only: the Map 22 boss card (22-8), its note: \"Enemy only for now\"",
+   "had": null
+  },
+  {
+   "id": "salamander-pyromancer",
+   "name": "Salamander Pyromancer",
+   "rarity": "epic",
+   "why": "held for its suggested map (Map 40)",
+   "had": null
+  },
+  {
+   "id": "snow-leopard",
+   "name": "Snow Leopard",
+   "rarity": "rare",
+   "why": "held for its suggested map (Map 29)",
+   "had": null
+  },
+  {
+   "id": "sperm-whale-elder",
+   "name": "Sperm Whale Elder",
+   "rarity": "epic",
+   "why": "held for its suggested map (Map 38)",
+   "had": null
+  },
+  {
+   "id": "starfall-owl",
+   "name": "Starfall Owl",
+   "rarity": "legendary",
+   "why": "held for its suggested map (Map 52, Legendary)",
+   "had": null
+  },
+  {
+   "id": "stoneheart-golem",
+   "name": "Stoneheart Golem",
+   "rarity": "common",
+   "why": "parked: the Elementals wait for Map 50+",
+   "had": null
+  },
+  {
+   "id": "stormcaller",
+   "name": "Stormcaller",
+   "rarity": "common",
+   "why": "parked: the Elementals wait for Map 50+",
+   "had": null
+  },
+  {
+   "id": "supernova-jelly",
+   "name": "Supernova Jelly",
+   "rarity": "rare",
+   "why": "held for its suggested map (Map 45)",
+   "had": null
+  },
+  {
+   "id": "tardigrade",
+   "name": "Tardigrade",
+   "rarity": "rare",
+   "why": "held for its suggested map (Map 30)",
+   "had": null
+  },
+  {
+   "id": "thunder-lizard",
+   "name": "Thunder Lizard",
+   "rarity": "epic",
+   "why": "held for its suggested map (Map 41)",
+   "had": null
+  },
+  {
+   "id": "wandering-mage",
+   "name": "Wandering Mage",
+   "rarity": "rare",
+   "why": "held: the free leader for Map 51 (its design note)",
+   "had": null
+  },
+  {
+   "id": "white-dragon",
+   "name": "White Dragon",
+   "rarity": "legendary",
+   "why": "one of the five hidden Dragons (Supreme): the Dragons long-quest is the owner's call",
+   "had": null
+  }
+ ],
+ "oddSources": [
+  {
+   "id": "balloon-archer",
+   "name": "Balloon Archer",
+   "why": "reward of 11-4 (Eyrie Heights) but not of its theme and not in that fight",
+   "types": [
+    "Mouse",
+    "Village",
+    "Rodent"
+   ]
+  },
+  {
+   "id": "candle-moth",
+   "name": "Candle Moth",
+   "why": "reward of 11-1 (Eyrie Heights) but not of its theme and not in that fight",
+   "types": [
+    "Insect",
+    "Ecclesia",
+    "Insect"
+   ]
+  },
+  {
+   "id": "feral-tomcat",
+   "name": "Tomcat",
+   "why": "reward of 0-1 (Bramblewood Outskirts) but not of its theme and not in that fight",
+   "types": [
+    "Cat",
+    "Felid"
+   ]
+  },
+  {
+   "id": "friar-badger",
+   "name": "Friar Badger",
+   "why": "reward of 11-5 (Eyrie Heights) but not of its theme and not in that fight",
+   "types": [
+    "Badger",
+    "Ecclesia",
+    "Mustelid"
+   ]
+  },
+  {
+   "id": "full-moon",
+   "name": "Full Moon",
+   "why": "reward of 2-B-2 (Smugglers' Grotto) but not of its theme and not in that fight",
+   "types": [
+    "Field"
+   ]
+  },
+  {
+   "id": "heatwave",
+   "name": "Heatwave",
+   "why": "reward of 14-1 (Savanna Reaches) but not of its theme and not in that fight",
+   "types": [
+    "Field"
+   ]
+  },
+  {
+   "id": "hedge-weasel",
+   "name": "Hedge Weasel",
+   "why": "reward of 12-6 (The Briar Maze) but not of its theme and not in that fight",
+   "types": [
+    "Field",
+    "Mustelid"
+   ]
+  },
+  {
+   "id": "migration-leader",
+   "name": "Migration Leader",
+   "why": "reward of 4-3 (Sunken Hollow) but not of its theme and not in that fight",
+   "types": [
+    "Duck",
+    "Bird"
+   ]
+  },
+  {
+   "id": "owl-nightwatch",
+   "name": "Owl Nightwatch",
+   "why": "reward of 0-3 (Bramblewood Outskirts) but not of its theme and not in that fight",
+   "types": [
+    "Owl",
+    "Bird"
+   ]
+  },
+  {
+   "id": "scree-goat",
+   "name": "Scree Goat",
+   "why": "reward of 19-3 (Ashen Spurn) but not of its theme and not in that fight",
+   "types": [
+    "Mountain",
+    "Bovine"
+   ]
+  },
+  {
+   "id": "shepherds-bark",
+   "name": "Shepherd",
+   "why": "reward of 0-4 (Bramblewood Outskirts) but not of its theme and not in that fight",
+   "types": [
+    "Dog",
+    "Canid"
+   ]
+  },
+  {
+   "id": "spitting-spider",
+   "name": "Spitting Spider",
+   "why": "reward of 17-A-3 (The Ice Hollow) but not of its theme and not in that fight",
+   "types": [
+    "Arachnid",
+    "Cave",
+    "Arachnid"
+   ]
+  },
+  {
+   "id": "star-nosed-mole",
+   "name": "Star-nosed Mole",
+   "why": "reward of 5-A-1 (The Sunken Grove) but not of its theme and not in that fight",
+   "types": [
+    "Mole",
+    "River",
+    "Rodent"
+   ]
+  },
+  {
+   "id": "thick-fog",
+   "name": "Thick Fog",
+   "why": "reward of 2-3 (Pebble Beach) but not of its theme and not in that fight",
+   "types": [
+    "Field"
+   ]
+  },
+  {
+   "id": "tide-spirit",
+   "name": "Tide Spirit",
+   "why": "reward of 9-4 (The Kelp Mangroves) but not of its theme and not in that fight",
+   "types": [
+    "Elemental",
+    "Elemental"
+   ]
+  }
+ ]
+}
