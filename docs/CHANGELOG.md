@@ -10,6 +10,20 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - Progress sync: a failed `player_progress` push now retries on the next 20 s tick instead of being treated as saved.
 - 23 new TX keys (`net.*`, `ui.*`, `toast.*`); `docs/game-texts.xlsx` re-exported.
 
+## 2026-10-18 (R3-WP2: raid stages do something)
+- **The Goliath's Enraged (below 75%) and Thrashing (below 50%) stages now change the fight** (they were names only). Defaults, waiting on the owner: **Enraged:** every boss card +2 Attack, and its back two rows strike once a round (the volley your ally rows already make). **Thrashing:** every boss card +4 Attack, the back-row volley, Landslide on the field, and your (the raiders') castle 10% less Health. Exposed (below 1%) still strips every ability.
+- **The Raid tab** shows the current stage's one-line effect under the boss, a "Stages" panel with every stage (the current one marked), and the field panel includes the stage's field. The VS screen names the stage.
+- **The raid editor's stages** each get boss +Attack, boss +Health, back-row strikes, your castle %, and a field effect picker, with the stage's line under them.
+- **How:** stage `rules` (an object or the older list) are read by `BramblewoodRaid.stageRules` (keys `bossAtk`, `bossHp`, `field`, `extraVolley`, `castleHpPct`, `stripAbilities`; others ignored); `fightFor` returns them with the merged field; `stageCard` / `scaleCastle` apply them; `setStageRules` is the editor's write side; `describeStage` the line. The benched trench minigame and the editor's Simulate still read only stripAbilities.
+- `tests/raid-stages-2026-10-18.js` (in `tests/run-all.sh`).
+
+## 2026-10-18 (R3-WP6: polish and dead code)
+- **The Babel Spire has a summit.** With all 50 floors cleared, its Dungeons-tab card shows "🏔️ Summit · all 50 floors" and "You stand atop The Babel Spire…" instead of "Floor 50 / 50 · ▶ Keep climbing"; a floor picker and **🔁 Fight it again** open the Spire with that floor selected (the map scrolls to it, not to the top). The card is headed with the map's name (it said "🗼 The Tower").
+- **Backdrops for the Babel Spire and the Long Burrow**, which drew only a gradient: derived at build time like the other side maps (`MAP_ART_DERIVED`): the Spire is Eyrie Heights' stone and sky pools, colder and bluer; the Long Burrow is the caves turned from violet to packed earth. The art loop in `assemble_arena.py` now takes whole map ids, so `tw` (no "m" prefix) fits, and its MAP_ART_IDS check reads any id.
+- **Dead code:** the never-read `bramblewood_tut_zoomout_v1` key (written after Tutorial part 2, cleared on the first map visit) and the deck list's Large/Medium handler with its never-read `bramblewood_deck_view` key (its buttons went on 10-13). The errand Iron Shard the audit listed is **not** dead: `hedgehog-bully` and `heron-feast` set `shard:true`, and the writ shows it; left as is.
+- **Effects inventory:** `meta-steam-achv`, `meta-dragon-egg-craft`, `dng-murgle`, `world-event` and `amb-arena` now read live (their manifests' `inGameHook` names what the game plays; the rows' trigger/current/quality say so). Now 951 live · 51 lab-only.
+- `tests/polish-2026-10-18.js` (in `tests/run-all.sh`).
+
 ## 2026-10-18 (I1: translations for texts with placeholders)
 - **The 159 game texts with a {placeholder} now translate** in all 12 languages ("📜 Errand: The Old Bramble — 2/5" → "📜 おつかい：古いいばら — 2/5"): toasts, results-screen pills, dialogs, tutorial lines. `TX()` still returns English, so code that compares its result is unaffected.
 - **How:** `bramblewood-i18n.js` compiles every pack key with a {placeholder} into a template (once per pack load: ~2 ms). When the exact lookup misses, a text is tried only against the templates whose rarest literal word it contains, and a match fills the translation with the captured values; each value is looked up too, so a map, card or item name inside the sentence translates, as do English tails such as " · published" or ". Journey complete!". Counts only match digits, plural endings a few letters, ranks a capital letter. ~3 µs a string on first sight, cached after.

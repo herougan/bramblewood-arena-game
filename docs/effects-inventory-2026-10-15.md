@@ -12,7 +12,7 @@ Every visual-effect moment in Bramblewood Arena, built and planned, in one check
 
 Every row now has a `status`, filled by `tools/effects-lab/refresh_inventory.py` from the lab manifests (`tools/effects-lab/manifest/*.js`; the batch docs `docs/fx-batch-*-status.md` as a second source): **live** the game plays it · **lab-only** built in the Effects Lab, not wired in the game · **future** planned, not built · **missing** nothing on screen and nothing in the lab · **retired** kept from before. Each row also carries `lab` (the manifest that registers it) and `inGameHook`. Rerun the script after a lab change; it rewrites this section, the counts and the entry tables.
 
-**Now:** 1035 entries · live 946 · lab-only 56 · future 22 · missing 0 · retired 11. Of the 142 rows the 10-15 sweep rated "missing", 140 are built now (140 live, 0 lab-only).
+**Now:** 1035 entries · live 951 · lab-only 51 · future 22 · missing 0 · retired 11. Of the 142 rows the 10-15 sweep rated "missing", 140 are built now (140 live, 0 lab-only).
 
 ## 2026-10-17: the Effects Lab catches up (batch L17)
 
@@ -144,14 +144,14 @@ Quality is the inventory's rating of the look (the 10-15 sweep, kept); status is
 | foil | D | 20 | 2 | 22 | 0 | 22 | 0 | 22 | 0 | 0 | 44 | 0 |
 | pack-card-open | D | 25 | 6 | 8 | 0 | 37 | 1 | 0 | 0 | 1 | 39 | 5 |
 | rewards-results | F | 15 | 9 | 0 | 0 | 21 | 0 | 0 | 0 | 3 | 24 | 4 |
-| meta-progression | D | 17 | 20 | 17 | 0 | 45 | 9 | 0 | 0 | 0 | 54 | 4 |
+| meta-progression | D | 18 | 21 | 15 | 0 | 47 | 7 | 0 | 0 | 0 | 54 | 4 |
 | conquest-map | E | 74 | 52 | 25 | 0 | 147 | 4 | 0 | 0 | 0 | 151 | 4 |
-| world-ambience | E | 13 | 4 | 5 | 0 | 15 | 7 | 0 | 0 | 0 | 22 | 0 |
+| world-ambience | E | 13 | 5 | 4 | 0 | 16 | 6 | 0 | 0 | 0 | 22 | 0 |
 | ui-feedback | F | 36 | 8 | 4 | 0 | 45 | 1 | 0 | 0 | 2 | 48 | 4 |
 | tutorial-dialogue | F | 12 | 4 | 1 | 0 | 16 | 0 | 0 | 0 | 1 | 17 | 1 |
-| raid-dungeon-pvp | F | 6 | 12 | 11 | 0 | 21 | 8 | 0 | 0 | 0 | 29 | 1 |
+| raid-dungeon-pvp | F | 6 | 14 | 9 | 0 | 23 | 6 | 0 | 0 | 0 | 29 | 1 |
 | map-grandeur | L17 | 3 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 0 | 3 | 0 |
-| **all** | | **517** | **287** | **230** | **1** | **946** | **56** | **22** | **0** | **11** | **1035** | **55** |
+| **all** | | **518** | **291** | **225** | **1** | **951** | **51** | **22** | **0** | **11** | **1035** | **55** |
 
 Areas `future` items live in their natural area with `future: true` (so a planned dragon death sits under **death**); "Future effects by theme" below gathers them.
 
@@ -1013,10 +1013,10 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `meta-daily-login` | Daily login reward / streak 🔮 | planned (not built) | none | missing — no daily login system exists | lab-only (f.js) | 2 |
 | `meta-monthly-bonus` | Monthly pack-opening bonus steps 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
 | `meta-bramble-pass` | Bramble Pass daily pouch 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
-| `meta-steam-achv` | Steam achievements / overlay 🔮 | planned (Steam build) | none | missing — planned | lab-only (f.js) | 3 |
+| `meta-steam-achv` | Steam achievements / overlay | a milestone reached in the desktop (Steam) build | steamUnlock(); Steam shows its own overlay | basic — Steam's overlay, no in-game toast | live (f.js) | 3 |
 | `meta-attunement` | Attunement instead of levels (every 100 maps) 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
 | `meta-alchemy` | Alchemy free top-ups (Map 65+) 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
-| `meta-dragon-egg-craft` | Craft a dragon egg 🔮 | planned (Map 50+, a month of farming) | none | missing — planned | lab-only (f.js) | 2 |
+| `meta-dragon-egg-craft` | Craft a dragon egg | the Scale Trail finale (all eight Dragon Scales) | scaleTrailEggFx: the scales orbit and fuse in a red glow into the egg card | good | live (f.js) | 2 |
 | `meta-materia-socket` | Socket Materia into the Hero (v2) 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
 | `meta-bring-effect` | Bring your own effect (Map 80+) 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
 
@@ -1189,7 +1189,7 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `amb-forge` | Forge | enter Forge | sparks rise, ember flare (forgeFlare, forgeSpark, emberRise), hearth roar | good — has its own look that plays at the right moment | live (e.js) | 3 |
 | `amb-codex` | Codex | enter Codex | page turn between sections, Margins harp theme | good — has its own look that plays at the right moment | live (e.js) | 3 |
 | `amb-quests` | Notice Board (Quests) | open quests | questBoardEntrance | basic — a generic or reused look that does not say what happened | live (e.js) | 3 |
-| `amb-arena` | The Arena as a real arena 🔮 | planned | menu only | missing — planned (immersion "next round") | lab-only (e.js) | 3 |
+| `amb-arena` | The Arena as a real arena | Arena fights and the Arena panel | tourney-ground backdrop (marena) with bunting | basic — the ground and bunting are in; full stands and crowd murmur are not | live (e.js) | 3 |
 | `amb-tavern` | The Tavern | enter Tavern (stamina) | tavernStaminaHTML | basic — a generic or reused look that does not say what happened | live (e.js) | 3 |
 | `amb-battle-felt` | Lit felt on the battlefield | every battle | felt shader: lamp, impact lights, card shadows | good — has its own look that plays at the right moment | live (e.js) | 2 |
 | `amb-battle-map-terrain` | Fight on the map's own terrain | battle background | map pixel terrain under a scrim + map shader kind | good — has its own look that plays at the right moment | live (e.js) | 3 |
@@ -1308,9 +1308,9 @@ Areas `future` items live in their natural area with `future: true` (so a planne
 | `coop-resolve` | Co-op: four plays land together 🔮 | planned | none | missing — planned | lab-only (f.js) | 2 |
 | `coop-cell-clash` | Co-op: two players pick the same cell 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
 | `coop-floor-mechanic` | Co-op floor mechanic (cursed shared cells, row-target) 🔮 | planned | none | missing — planned | lab-only (f.js) | 2 |
-| `dng-murgle` | Murgle daily dungeons 🔮 | planned | none | missing — planned | lab-only (f.js) | 2 |
+| `dng-murgle` | Murgle daily dungeons | entering Murgle Mayhem, the first daily dungeon | its map intro uses FX.G's dungeon title | basic — the dungeon and its title are in; the swamp-gate effect is lab-only | live (f.js) | 2 |
 | `pvp-map60` | Collection PvP gets wild (Map 60+) 🔮 | planned | none | missing — planned | lab-only (f.js) | 3 |
-| `world-event` | World events (community stage rally horn) 🔮 | planned | none | missing — planned | lab-only (f.js) | 2 |
+| `world-event` | World events (community stage rally horn) | an admin world event or GM message (world_events table), a raid falling | 🌍 / 📣 toasts from the 3-minute check | basic — toasts; the horn banner is lab-only | live (f.js) | 2 |
 
 ### map-grandeur (`map-grandeur`, 3)
 
