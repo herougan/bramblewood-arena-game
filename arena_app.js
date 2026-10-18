@@ -5343,7 +5343,9 @@ function cardActionLogHTML(uid){
     }
   }
   if(!lines.length) return '';
-  return `<div class="card-txn-log"><div class="card-txn-log-title">Battle log</div><ul>${lines.join('')}</ul></div>`;
+  // 2026-10-18 (package BP, owner: "The battle log should start from the bottom! the latest!"): the card's own last 5 lines read like the
+  // battle log too, oldest first and the newest at the bottom (they were collected newest-first).
+  return `<div class="card-txn-log"><div class="card-txn-log-title">Battle log</div><ul>${lines.reverse().join('')}</ul></div>`;
 }
 // Finds the LIVE board-card instance a hovered element belongs to, if any — walks up to the
 // nearest [data-uid] ancestor (the .board-card wrapper; hand/Codex/deck tiles never carry one)
@@ -6890,7 +6892,7 @@ function cardTileHTML(d, opts){
       <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${isMagicDef(d) ? ' atk-magic' : ''}">${isMagicDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🪄</i>') : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus}})}
+      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -7217,8 +7219,12 @@ function abilityBadges(d, bopts){
   // Flying / Earthquake (2026-09-21, task #304): 🪽 reads as "airborne" without reusing any
   // existing glyph on this card face; 🌎💥 (globe + burst) for Earthquake echoes 💣 (Explode)'s
   // "burst" shape while staying visually distinct from it.
-  if(e.flying) out.push(`<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
-  if(e.quick) out.push(`${iconHTML('quick', '👢')}`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
+  // 2026-10-18 (package BP): under a strong wind a Flyer's wing lights up like a Tide unit's wave (.wind-live, the .tide-live look); a
+  // Tailwind also lights a Quick boot beside it (its own Quick boot when it has one), so the card reads wing + quick; a Headwind marks
+  // the wing ×2 (skills twice). See liveWindState.
+  const lw = e.flying && bopts && bopts.live ? liveWindState(bopts.live.pid) : null;
+  if(e.flying) out.push(lw ? `<span class="ab-wing wind-live wind-${lw.k}" title="${escapeAttr((lw.k === 'tail' ? TX('ui.wind-tail-wing') : TX('ui.wind-head-wing')))}">${iconHTML('flying', '🪽')}${lw.k === 'head' ? '<b class="wind-x2">×2</b>' : ''}</span>` : `<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
+  if(e.quick || (lw && lw.k === 'tail')) out.push(lw && lw.k === 'tail' ? `<span class="ab-quick ab-wind-quick wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-quick'))}">${iconHTML('quick', '👢')}</span>` : `<span class="ab-quick">${iconHTML('quick', '👢')}</span>`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
   if(e.swift) out.push(`${iconHTML('swift', '💨')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
   if(e.amore){ const st = bopts && bopts.live ? amoreLiveState(bopts.live) : 'single'; // Amore (2026-10-16)
@@ -9872,7 +9878,7 @@ function wireMatchHistoryPanel(){
         try{ const {cls,text} = logText(ev); return `<div class="log-row ${cls}">${escapeHtml(text)}</div>`; }
         catch(e){ return ''; } // a future/unknown event shape shouldn't break the whole replay
       }).join('') || '<div class="log-row">No events recorded for this match.</div>';
-      logEl.hidden = false;
+      logEl.hidden = false; logEl.scrollTop = logEl.scrollHeight; // the newest line first (2026-10-18, BP)
       el.classList.add('expanded');
     });
   });
@@ -24371,7 +24377,7 @@ function testKitCaptureForRerender(m){
 }
 function testKitRestoreFocus(keep){
   const panel = document.getElementById('testKitPanel'); if(panel) panel.scrollTop = keep.scroll||0;
-  const log = document.getElementById('battleLog'); if(log) log.scrollTop = keep.logScroll||0;
+  const log = document.getElementById('battleLog'); if(log) log.scrollTop = battleLogPinned ? log.scrollHeight : (keep.logScroll||0); // pinned to the newest line (2026-10-18, BP)
   if(keep.focus){ const f = document.getElementById(keep.focus.id); if(f){ f.focus({preventScroll:true}); try{ if(keep.focus.start!=null) f.setSelectionRange(keep.focus.start, keep.focus.end); }catch(e){} } }
 }
 function testKitArrangeLayout(root, keep){
@@ -26778,7 +26784,7 @@ async function attemptSummonLeader(preferredLane){
     // 2026-10-17: flying in from your hand, the throne moment (ring, flash, crown, "👑 Leader" ribbon) starts as it lands, and its own
     // drop from above is skipped (fromHand); without the flight (reduced motion, no GSAP) it plays as before.
     const fromHand = !!leaderOrigin && hasGsap() && !reducedMotion(), at = fromHand ? Math.round(handFlightSec(true)*1000) : Math.round(animMs().strike || 380);
-    noteMatchFx(at + LEADER_THRONE_FX_MS, m); // 2026-10-14: the round waits for it
+    noteMatchFx(at + LEADER_THRONE_WAIT_MS, m); // 2026-10-14: the round waits for it (2026-10-18: ×0.75, LEADER_THRONE_WAIT_MS)
     setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId, fromHand}), at); }
   setTimeout(()=> settleStrayBoardCards(), 1600); setTimeout(()=> settleStrayBoardCards(), 3000); // the leader always ends its landing at full height
   await afterPlayerAction(activePid);
@@ -26971,6 +26977,34 @@ function tutCombatLines(){
   if(sig === tutCombatLinesSig && svg && svg.childElementCount) return;
   tutCombatLinesSig = sig; showFacingAll(uids);
 }
+// Stampede's line (2026-10-18, package BP, owner: "when looking at its damage line preview ... it should show the line hitting the
+// opposing card, then continuing towards the HP bar"): a Stampede (Trample, effects.overwhelm) unit with one unit in front gets a second
+// segment from that unit on to the enemy bramble's HP bar. It is always there, faint, so the skill reads; it lights up, with the
+// expected carry-over (💥 +N), when the swing as it stands would kill the blocker with damage to spare: the Attack on its card, minus
+// the blocker's Armor, past the blocker's Health. Misses (Blind, the dark, Evasive) and on-hit tricks aren't guessed at. Two units in
+// front (a half swing on each) keep the plain lines.
+function stampedeExpected(atk, hp, armor){ return Math.max(0, (Number(atk)||0) - Math.max(0, Number(armor)||0) - Math.max(0, Number(hp)||0)); }
+function stampedeFacingHTML(m, uid, f, src, sr, cx, cy){
+  try{ if(!f || f.foes.length !== 1) return '';
+    const defs = getCardDefs(), me = [1,2].map(p=> allCardsOnBoard(m.players[p]).find(c=> String(c.uid)===String(uid))).find(Boolean);
+    if(!me || !((defs[me.defId]||{}).effects||{}).overwhelm) return '';
+    const foe = allCardsOnBoard(m.players[f.pid===1 ? 2 : 1]).find(c=> String(c.uid)===String(f.foes[0])), fEl = boardCardEl(f.foes[0]);
+    const rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${f.pid===1 ? 'B' : 'A'}"]`);
+    if(!foe || !fEl || !rib || !rib.getClientRects().length) return '';
+    const atkShown = parseInt(String((src.querySelector('.stats .atk')||{}).textContent || '').replace(/[^\d]/g, ''), 10);
+    const hpShown = parseInt(String((fEl.querySelector('.stats .hp')||{}).textContent || '').replace(/[^\d]/g, ''), 10);
+    const atk = isFinite(atkShown) ? atkShown : (me.atk != null ? me.atk : (defs[me.defId]||{}).attack || 0);
+    const hp = (isFinite(hpShown) ? hpShown : foe.hp || 0) + (foe.tempHp || 0);
+    const armor = Number(((defs[foe.defId]||{}).effects||{}).armor) || 0;
+    const over = stampedeExpected(atk, hp, armor);
+    const fr = fEl.getBoundingClientRect(), rr = rib.getBoundingClientRect();
+    // from the blocker's centre straight on to the HP bar (the bar's own middle height, at the blocker's column, kept on the bar)
+    const x1 = cx(fr), y1 = cy(fr), X2 = cx({left: Math.max(rr.left + 12, Math.min(rr.right - 12, fr.left + fr.width/2)), width: 0}), y2 = cy(rr);
+    let h = `<line class="facing-stampede${over > 0 ? ' is-over' : ''}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${X2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+    if(over > 0){ const ty = f.pid===1 ? y2 + rr.height/2 + 14 : y2 - rr.height/2 - 6; h += `<text class="facing-stampede-n" x="${(X2 + 16).toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="start">💥 +${over}</text>`; }
+    return h;
+  }catch(err){ return ''; }
+}
 function showFacing(uid, opts){
   const keep = !!(opts && opts.keep);
   const m = matchState; if(!keep) clearFacing(); if(!m || m.resolving) return;
@@ -27020,6 +27054,7 @@ function showFacing(uid, opts){
           });
         }
       } }
+    html += stampedeFacingHTML(m, uid, f, src, sr, cx, cy);
   } else {
     const castleSide = f.pid===1 ? 'B' : 'A';
     const rib = document.querySelector(`[data-hpribbon="${castleSide}"]`);
@@ -27031,21 +27066,45 @@ function showFacing(uid, opts){
 function wireFacingHover(){
   const bf = document.getElementById('battlefieldEl'); if(!bf || bf.dataset.facingWired) return;
   bf.dataset.facingWired = '1';
+  // 2026-10-18 (package BP, owner: "When it's night, hovering over a card doesn't show its lines anymore."): the gate below ran once, on
+  // pointerover, and gave up for good while the card (or its tile) was still landing or being nudged; pointerover doesn't fire again
+  // while the pointer rests on the card, so the lines never came. At night far more is moving when the pointer arrives (the board
+  // under the night filter renders slower, so entrances and neighbour shoves run longer; night-blind and nocturnal cards get their
+  // own marks and bursts), which is why it showed at night. Now a busy card is retried (facingRetry: every 120 ms while the pointer is
+  // still on it, up to 4 s) and a move inside the card redraws lines that a board re-render wiped.
   bf.addEventListener('pointerover', e=>{
     if(e.pointerType==='touch') return;
     const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
-    // 2026-10-08 (user): no attack-line preview while the card is still dropping in; only once it's
-    // settled on the field (hover again, or move within it, to see it).
-    const t = c.querySelector('.card-tile');
-    if(c.matches('.landing-impact, .bee-landing, .is-entering, .entering, .ghost-preview') || c.style.position==='absolute'
-      || (window.gsap && (gsap.isTweening(c) || (t && gsap.isTweening(t))))) return;
-    showFacing(c.dataset.uid);
+    facingHoverUid = c.dataset.uid; tryFacingHover(c, 0);
+  });
+  bf.addEventListener('pointermove', e=>{
+    if(e.pointerType==='touch') return;
+    const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
+    const svg = document.getElementById('facingSvg');
+    if(facingHoverUid === c.dataset.uid && c.classList.contains('is-facing-src') && svg && svg.childElementCount) return; // drawn already
+    const now = performance.now(); if(facingHoverUid === c.dataset.uid && now - facingMoveAt < 100) return; facingMoveAt = now; // a light throttle
+    facingHoverUid = c.dataset.uid; tryFacingHover(c, 0);
   });
   bf.addEventListener('pointerout', e=>{
     const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
     if(e.relatedTarget && c.contains(e.relatedTarget)) return;
+    facingHoverUid = null; clearTimeout(facingRetryT);
     clearFacing();
   });
+}
+let facingHoverUid = null, facingRetryT = 0, facingMoveAt = 0;
+// 2026-10-08 (user): no attack-line preview while the card is still dropping in; only once it's settled on the field.
+function facingCardBusy(c){
+  const t = c.querySelector('.card-tile');
+  return c.matches('.landing-impact, .bee-landing, .is-entering, .entering, .ghost-preview') || c.style.position==='absolute'
+    || !!(window.gsap && (gsap.isTweening(c) || (t && gsap.isTweening(t))));
+}
+const FACING_RETRY_MS = 120, FACING_RETRY_MAX = 33; // 2026-10-18 (BP): ~4 s of retries while the pointer stays on a landing card
+function tryFacingHover(c, n){
+  clearTimeout(facingRetryT);
+  if(!c || !c.isConnected || facingHoverUid !== c.dataset.uid) return;
+  if(!facingCardBusy(c)){ showFacing(c.dataset.uid); return; }
+  if(n < FACING_RETRY_MAX) facingRetryT = setTimeout(()=>{ const cur = facingHoverUid != null ? boardCardEl(facingHoverUid) : null; tryFacingHover(cur && cur.matches(':hover') ? cur : null, n + 1); }, FACING_RETRY_MS);
 }
 function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
   const def = charDef || {id:'none-castle', name:'Bramble', icon:'🏰', rarity:'common', health:maxHp};
@@ -27580,7 +27639,8 @@ function renderMatchUI(){
   wireDropZones();
   if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox && !m.fxLib) wireSandboxPanel();
   updateControlsDisabled();
-  m.log.forEach(renderLogLine);
+  { const pin0 = battleLogPinned; m.log.forEach(renderLogLine); battleLogPinned = pin0; } // replaying the lines into the fresh log never changes the pin (2026-10-18, BP)
+  try{ if(!m._logPinInit){ m._logPinInit = true; battleLogPinned = true; } wireBattleLogScroll(); const lg = document.getElementById('battleLog'); if(lg){ if(battleLogPinned) pinBattleLog(lg); else lg.scrollTop = battleLogScrollTop; } }catch(e){} // the rebuilt log keeps its place (2026-10-18, BP)
   // Sandbox has no hand/turn concept (see its own comment above) -- maybeAutoSkip exists to
   // auto-pass an empty-handed turn in a real match, which would otherwise fire every single
   // render here (Sandbox's hand is ALWAYS empty) and spam skipTurn() nonstop.
@@ -27819,9 +27879,11 @@ function wireDropZones(){
   if(battleLogToggle) battleLogToggle.addEventListener('click', ()=>{
     battleLogOpen = !battleLogOpen;
     try{ localStorage.setItem('bramblewood_battlelog_open', battleLogOpen ? '1' : '0'); }catch(e){}
-    if(battleLogOpen){ const lg = document.getElementById('battleLog'); if(lg) lg.scrollTop = lg.scrollHeight; }
     const panel = battleLogToggle.closest('.battle-log-panel');
     if(panel) panel.classList.toggle('collapsed', !battleLogOpen);
+    // 2026-10-18 (package BP, owner: "The battle log should start from the bottom! the latest!"): it opens on the newest line. This used
+    // to scroll before the panel was shown, while the log was display:none (no height), so it opened at the top, on the oldest line.
+    if(battleLogOpen) pinBattleLog(null, true);
     const chevron = battleLogToggle.querySelector('.battle-log-chevron');
     if(chevron) chevron.textContent = battleLogOpen ? '▾' : '▸';
   });
@@ -30057,7 +30119,7 @@ function boardCardHTML(c, defs, opts){
     : `<span class="revive-mark" aria-hidden="true"><i class="rm-ring"></i><i class="rm-feather">${REVIVE_FEATHER_SVG}</i></span>`;
   return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
     }})}${(flies || floats)?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}
@@ -31738,10 +31800,16 @@ function waterRippleAt(el){
 // a "👑 <Leader> joins the fight!" callout crosses the field with a fanfare (yours) or a war drum (theirs), and a big leader
 // (20+ Health or Legendary and up) shakes the field with the screen-shake helper.
 const LEADER_THRONE_FX_MS = 1700; // the drop, the ring and the crown (the beam is gone by 1.55 s); see noteMatchFx
+// 2026-10-18 (package BP, owner: "After summoning your leader — the name title should fade 20% faster, and the next queued animation
+// shouldn't wait so long, maybe 25% faster"): the "👑 <Leader> joins the fight!" callout runs LEADER_CALLOUT_MS (×0.8 of its old 2.4 s,
+// fade included), and the round's queue now waits LEADER_THRONE_WAIT_MS (×0.75 of the throne moment) before the next animation; the
+// throne moment itself (drop, ring, crown, beam) still plays in full over the top.
+const LEADER_CALLOUT_BASE_MS = 2400, LEADER_CALLOUT_FADE = 0.8, LEADER_CALLOUT_MS = Math.round(LEADER_CALLOUT_BASE_MS * LEADER_CALLOUT_FADE);
+const LEADER_QUEUE_WAIT = 0.75, LEADER_THRONE_WAIT_MS = Math.round(LEADER_THRONE_FX_MS * LEADER_QUEUE_WAIT);
 function leaderThroneVfx(uid, opts){
   opts = opts || {};
   const el = (uid && uid.nodeType) ? uid : boardCardEl(uid); if(!el) return;
-  noteMatchFx(fxAtLeast('med') && hasGsap() && !reducedMotion() ? LEADER_THRONE_FX_MS : 500); // 2026-10-14: the round waits for it
+  noteMatchFx(fxAtLeast('med') && hasGsap() && !reducedMotion() ? LEADER_THRONE_WAIT_MS : 500); // 2026-10-14: the round waits for it (×0.75 since 2026-10-18)
   const enemy = !!opts.enemy;
   const defs = getCardDefs(), defId = opts.defId || (el.getAttribute('data-defid') || ((el.querySelector('[data-defid]') || {}).getAttribute ? el.querySelector('[data-defid]').getAttribute('data-defid') : null)), def = defs[defId] || {};
   const uidKey0 = (uid && uid.nodeType) ? uid.getAttribute('data-uid') : uid, rc = matchState && matchState.replayCards && matchState.replayCards[uidKey0];
@@ -31750,7 +31818,7 @@ function leaderThroneVfx(uid, opts){
   // the callout lives on the page, over the field, so a board re-render mid-moment doesn't cut it short
   try{ const bf = document.querySelector('.battlefield'); if(bf){ document.querySelectorAll('.leader-callout').forEach(x=> x.remove()); const q = bf.getBoundingClientRect(), b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status');
     b.style.left = (q.left + q.width/2) + 'px'; b.style.top = (enemy ? q.top + q.height*0.2 : q.bottom - q.height*0.16) + 'px';
-    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; document.body.appendChild(b); setTimeout(()=> b.remove(), 2400); } }catch(e){}
+    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; document.body.appendChild(b); setTimeout(()=> b.remove(), LEADER_CALLOUT_MS); } }catch(e){}
   if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
   // the drop: the card falls onto its spot from above, a touch too big, and settles
@@ -33392,6 +33460,35 @@ function tideTipLines(k){ return (skillHiddenNow('tide') ? TIDE_TIPS_HIDDEN : TI
 // The Tide skill, live (2026-10-14, user: "animals should just say 'Tide'. When in play, and there is a tide. That skill is blue -
 // meaning dynamic, morphing between Tide - ..., Ebb - ...., and High Tide - ....."): what this card's Tide gives right now, or null
 // when no tide is running (or we're not in a fight). Swimmers are Tide units; their own Flow extra joins the rising lines.
+// Wind on the Flyers (2026-10-18, package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)" and
+// "maybe a flying symbol + quick"): what a strong wind gives a Flyer of side pid right now, read the engine's way (rollWind, headwindDouble,
+// the Tailwind pass in resolveCombat): the side the wind blows FROM has a Tailwind (its Flyers get a quick extra turn before combat), the
+// side it blows INTO a Headwind (its Flyers' skills and triggers go off twice). Calm round, no wind field or Ashy (grounded): null.
+// Follows the replay (matchState._windNow, set by the 'wind' event) so the mark changes as the wind is announced; the engine otherwise.
+function liveWindState(pid){
+  try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || m.over || !m.engine || (pid !== 1 && pid !== 2)) return null;
+    if(m.engine.isAshy && m.engine.isAshy()) return null;
+    const w = m._windNow; let tail;
+    if(w) { if(!w.windy) return null; tail = (pid === 1) === !!w.mine; }
+    else { if(!m.engine.isWindy || !m.engine.isWindy()) return null; tail = m.engine.windSideOf(pid) === 'tail'; }
+    return {k: tail ? 'tail' : 'head'};
+  }catch(err){ return null; }
+}
+// The wind is announced mid-replay (the 'wind' event), before the next full board render: the Flyers already on the board get their
+// wing (and Tailwind boot) marks at once, the same marks abilityBadges draws. Seat 1 is always the bottom row (renderBoard).
+function syncWindBadges(){
+  try{ const bf = document.getElementById('battlefieldEl'); if(!bf) return; const defs = getCardDefs();
+    bf.querySelectorAll('.board-card[data-uid][data-defid]').forEach(el=>{ const e = (defs[el.dataset.defid] || {}).effects || {}; if(!e.flying) return;
+      const wing = el.querySelector('.badges .ab-wing'); if(!wing) return;
+      const pid = el.closest('#rowMine, [data-respid="1"]') ? 1 : el.closest('#rowEnemy, [data-respid="2"]') ? 2 : null, lw = liveWindState(pid);
+      wing.classList.remove('wind-live', 'wind-tail', 'wind-head'); wing.querySelectorAll('.wind-x2').forEach(x=> x.remove()); wing.removeAttribute('title');
+      if(lw){ wing.classList.add('wind-live', 'wind-' + lw.k); wing.title = (lw.k === 'tail' ? TX('ui.wind-tail-wing') : TX('ui.wind-head-wing')); if(lw.k === 'head') wing.insertAdjacentHTML('beforeend', '<b class="wind-x2">×2</b>'); }
+      const boot = el.querySelector('.badges .ab-quick'), slot = wing.closest('.abadge');
+      if(lw && lw.k === 'tail'){ if(boot){ boot.classList.add('ab-wind-quick', 'wind-live', 'wind-tail'); boot.title = TX('ui.wind-tail-quick'); }
+        else if(slot) slot.insertAdjacentHTML('afterend', `<span class="abadge"><span class="ab-quick ab-wind-quick wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-quick'))}">${iconHTML('quick', '👢')}</span></span>`); }
+      else if(boot){ if(e.quick){ boot.classList.remove('ab-wind-quick', 'wind-live', 'wind-tail'); boot.removeAttribute('title'); } else { const s = boot.closest('.abadge'); (s || boot).remove(); } } }); // its own Quick boot stays, unlit
+  }catch(err){}
+}
 function liveTideState(e){
   const s = liveTideState0(e); if(!s) return s;
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): with the Tide-evade rule test on, the Tide chip says it too.
@@ -35784,7 +35881,8 @@ function renderLogLine(ev){
   if(ev.type==='waitTick') return;
   // 2026-10-12 (user: "the battle log never shows everything, only maybe some, and not the latest few"): it reads top to
   // bottom in order now and follows the newest line (it used to stack newest-first but scroll to the oldest end).
-  const atEnd = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
+  // 2026-10-18 (package BP): following is battleLogPinned now, kept across the board re-renders that rebuild #battleLog (see pinBattleLog).
+  battleLogSync(log);
   if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); log.scrollTop = log.scrollHeight; return; }
   const lt = logText(ev); if(!lt || !lt.text) return; // 2026-10-16: an event with no line (a fuse tick) used to throw here
   const {cls,text} = lt;
@@ -35795,7 +35893,26 @@ function renderLogLine(ev){
   row.className = 'log-row '+cls+(logIsHeadline(ev) ? ' log-head' : ' log-sub');
   row.textContent = text;
   log.appendChild(row);
-  if(atEnd || !log.dataset.userScrolled) log.scrollTop = log.scrollHeight;
+  pinBattleLog(log);
+}
+// Battle log pinning (2026-10-18, package BP, owner: "The battle log should start from the bottom! the latest!"): the log follows the
+// newest line unless the player has scrolled up to read; scrolling back to the bottom (within 40 px) pins it again. The state lives here,
+// not on the element, because every full render rebuilds #battleLog and replays m.log into it. Opening the log always pins it.
+let battleLogPinned = true, battleLogScrollTop = 0;
+const BATTLE_LOG_PIN_PX = 40;
+function battleLogAtBottom(log){ return log.scrollHeight - log.scrollTop - log.clientHeight < BATTLE_LOG_PIN_PX; }
+function pinBattleLog(log, force){ log = log || document.getElementById('battleLog'); if(force) battleLogPinned = true; if(log && battleLogPinned){ log.scrollTop = log.scrollHeight; log._setTop = log.scrollTop; } }
+// Before a line goes in, read where the reader is now (a scroll event can lag a frame behind a burst of lines): moved up from where the log
+// last put itself (log._setTop, on this element: a re-render's fresh log starts at 0), unpinned; back at the bottom, pinned.
+function battleLogSync(log){
+  if(!log || !log.clientHeight) return;
+  if(battleLogPinned && log._setTop != null && log.scrollTop < log._setTop - 2 && !battleLogAtBottom(log)) battleLogPinned = false;
+  else if(!battleLogPinned && battleLogAtBottom(log)) battleLogPinned = true;
+  if(!battleLogPinned && log._setTop != null) battleLogScrollTop = log.scrollTop; // the reader's place, for the next re-render
+}
+function wireBattleLogScroll(){
+  const log = document.getElementById('battleLog'); if(!log || log.dataset.pinWired) return; log.dataset.pinWired = '1';
+  log.addEventListener('scroll', ()=>{ if(!log.clientHeight || !log.isConnected) return; battleLogPinned = battleLogAtBottom(log); battleLogScrollTop = log.scrollTop; if(battleLogPinned) log._setTop = log.scrollTop; }, {passive:true});
 }
 /* ---- attack "feel", GSAP-driven since 2026-09-16 ("improve the effects and gsap-like
    animations of the game"): every card that lands (or attempts) a hit reels back into a
@@ -38472,7 +38589,8 @@ function renderVfxForEvent(ev){
   if(ev.type==='pierceHQ'){
     const el = hqTileEl(ev.targetSide);
     SoundKit.pierceTone();
-    if(el){ flashHqDamage(el); floatText(el, '🗡 -'+ev.dmg, 'debuff'); }
+    if(el) flashHqDamage(el);
+    { const at = hqRibbonFloatAnchor(ev.targetSide) || el; if(at) floatText(at, '🗡 -'+ev.dmg, 'hq-big'); } // on the field's HP bar too (2026-10-18, BP)
     const mm = matchState;
     displayHqDamage(mm, ev.targetSide, ev.dmg);
   }
@@ -38482,7 +38600,10 @@ function renderVfxForEvent(ev){
   if(ev.type==='overwhelmHQ'){
     const el = hqTileEl(ev.targetSide);
     SoundKit.overwhelmTone();
-    if(el){ shakeEl(el); flashHqDamage(el); floatText(el, '💥 -'+ev.dmg, 'debuff'); }
+    // 2026-10-18 (package BP, owner: "Trample's damage number should be at the battlefield HP bar's centre — same as the rest"): the
+    // number pops on the field's HP bar (hqRibbonFloatAnchor, as a hitHQ's does), no longer on the bramble tile under the board.
+    if(el){ shakeEl(el); flashHqDamage(el); }
+    { const at = hqRibbonFloatAnchor(ev.targetSide) || el; if(at) floatText(at, '💥 -'+ev.dmg, 'hq-big'); }
     const mm = matchState;
     displayHqDamage(mm, ev.targetSide, ev.dmg);
   }
@@ -38745,7 +38866,7 @@ function renderVfxForEvent(ev){
   // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
   if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine};
       if(matchState && ev.windy) matchState._windLastMine = mine;
-      const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } syncWindField(matchState); }catch(e){} } // + the wind layer (2026-10-15)
+      const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } syncWindField(matchState); syncWindBadges(); }catch(e){} } // + the wind layer (2026-10-15); + the Flyers' wind marks (2026-10-18, BP)
   if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
   // 2026-10-15 (FX batch B): Twilight has its own toast (it used to be announced as "Day breaks").
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ showToast(ev.phase==='night' ? TX('toast.night-falls') : ev.phase==='twilight' ? TX('toast.twilight-day-and-night-creatures-are') : TX('toast.day-breaks'), 'ok'); }catch(e){}
@@ -38837,7 +38958,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='discard') try{ enemyPitchVfx(ev); }catch(e){} // 2026-10-15: the opponent's pitched card sinks into the ground, then their pill counts it
   // 2026-10-10 (user: "Enemy summoning their leader should mean something as well!"): the rival's leader gets its own,
   // ominous entrance on their half of the field.
-  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ noteMatchFx(380 + LEADER_THRONE_FX_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380); } // 2026-10-14: the round waits for it
+  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ noteMatchFx(380 + LEADER_THRONE_WAIT_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380); } // 2026-10-14: the round waits for it
   // Voice barks (2026-10-16): a card that arrives may speak once it has landed (a leader after its throne entrance).
   if(ev.type==='play' && !ev.reserve && ev.uid != null){ const u = ev.uid, dId = ev.defId, lead = !!ev.leader; setTimeout(()=>{ try{ maybeBark(u, 'play', {defId:dId, leader:lead}); }catch(e){} }, lead ? 380 + LEADER_THRONE_FX_MS + 200 : 650); }
 }
