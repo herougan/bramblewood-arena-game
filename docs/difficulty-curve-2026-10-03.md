@@ -133,7 +133,7 @@ Owner (15:05): "For shields, lower the amount of shields in all skirmishes. Abou
 
 - Health is now the bramble's own Health (castle + level). A node's `hqHp` can only lower it; it no longer adds Shield on top. Before, everything above the bramble's Health was Shield, which reached 150–400 on Maps 18–24.
 - The skirmish editor's override is a new field, `shieldOverride` (a number or up to 4 layers). Old saved `armour` / `armourLayers` values are ignored.
-- **Map 0's road fights a Lv 0 base bramble:** 0-1 has 10 Health, 0-2 has 12, 0-3 has 14 (later skirmishes 15), elites 16, the boss 20, all with no Shield. The tutorial's rival keeps the tutorial config's 6 Health (8 in part 2). The Tutorial side map's T-2…T-4 and the Old Bramble keep their bramble's Health. They are on Map 0, so their Shield is now 0. See "Owner decisions" below.
+- **Map 0's road fights a Lv 0 base bramble:** 0-1 has 10 Health, 0-2 has 12, 0-3 has 14 (later skirmishes 15), elites 16, the boss 20, all with no Shield. The tutorial's rival keeps the tutorial config's 6 Health (8 in part 2). The Tutorial side map's T-2…T-4 and the Old Bramble keep their bramble's Health.
 
 **Average enemy total per main map, before → after (Health + Shield):**
 
@@ -158,6 +158,19 @@ Owner (15:05): "For shields, lower the amount of shields in all skirmishes. Abou
 
 Most fights get shorter, and the late maps much shorter. A few bosses that had a small total now get more: 14-8, 17-8 and 6-8 had 30–34, and now have 72, 81 and 52. Bosses now rise smoothly with the map. The decks, the CPU level and the card levels carry the difficulty now. `tools/curve_tune.js`, `tools/autotune_map.js` and `tools/retune_all.js` still tune `hqHp` as a total, so they no longer move the Shield. Retune with the editor's 🎯 button instead, which sets `shieldOverride`.
 
-**Owner decisions:**
-- T-2…T-4 ("the last three fights here are not gentle") and the Old Bramble (0-B, opens after Map 17-A) are come-back-later fights on Map 0, so the rule gives them 0 Shield (T-4: 220 → 31). Give them a `shieldOverride` in the editor, or tell me to count them as a later map.
-- Your own bramble is unchanged (16 Health in the tutorial, your castle's own Health elsewhere). Map 0's enemy now has 10–20 Health against your 28–30.
+**Come-back-later fights** (coordinator, 10-18): the rule counts each one as the map that opens it, not Map 0 (`nodeMapNumber`). T-2 / T-3 / T-4 count as Maps 1 / 8 / 18 (`TUT_SIDE_GATE`). The Old Bramble counts as Map 17 (`shieldMap:17` on the map, since it opens after the Ice Hollow). Totals before → after (Health + Shield):
+- T-2: 90 → 28+1 = 29
+- T-3: 60 → 28+8 = 36
+- T-4 (elite): 220 → 31+27 = 58
+- 0-B-1…3: 43 / 53 / 63 → 28+17 = 45 each
+- 0-B-4 (boss): 80 → 36+51 = 87
+
+Any node or map can carry `shieldMap` to do the same.
+
+**Your own bramble** (owner 15:37, "D. Tutorial only"): your bramble has 8 Health in both tutorial fights. It was 16, and the rival has 6, then 8. It is capped at 8 (`TUTORIAL_MY_HP_MAX`) even if a saved tutorial config says more. In Map 0's skirmishes your bramble keeps its own Health (28–30) against the enemy's 10–20.
+
+The AI-vs-AI tutorial simulation pilots your side with the plain CPU (no guidance), so it is pessimistic. It is 60 seeds of part 1 / part 2, open rules. Your win rate at 16 Health → 8:
+- Hummingbirds: 83 / 82% → 58 / 62%
+- Otters and Both: 15 / 10% → 7 / 8%
+
+The fixed tutorial seed lost the simulation at 16 already, so `tests/e2e/ui_smoke.py` 7b (wants 70%+ and a fixed-seed win) did not pass before this change either. The guided steps are what make the tutorial winnable; worth a hand playthrough at 8.

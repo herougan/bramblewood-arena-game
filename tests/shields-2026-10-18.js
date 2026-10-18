@@ -20,23 +20,26 @@ const ms = src.indexOf('const CONQUEST_MAPS = ['), me = src.indexOf('\n];', ms) 
 const dg = src.indexOf('function endlessDungeon(cfg){'), de = src.indexOf('const CONQUEST_MAPS_BASELINE', dg);
 const CONQUEST_MAPS = new Function(src.slice(ms, me) + '\n' + src.slice(dg, de) + '\nreturn CONQUEST_MAPS;')();
 const CHARACTER_DEFS = {}; JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical', 'characters.json'), 'utf8')).forEach(c=> CHARACTER_DEFS[c.id] = c);
-const TUT = src.match(/^const TUTORIAL_CFG_DEFAULT = \{\.\.\.STARTER_CFG_DEFAULT, myHp:(\d+), rivalHp:(\d+),/m);
+const TUT = src.match(/^const TUTORIAL_CFG_DEFAULT = \{\.\.\.STARTER_CFG_DEFAULT, myHp:(\d+), rivalHp:(\d+),/m), TUT_MAX = src.match(/^const TUTORIAL_MY_HP_MAX = (\d+);/m);
 
 const H = new Function('CONQUEST_MAPS', 'CHARACTER_DEFS', [
   constLine('KIND_BASE'), fn('baseKind'), fn('mainConquestMaps'), fn('mapNumberOf'), constLine('MAP_CASTLE'), constLine('KIND_CASTLE_LEVEL'),
-  constLine('NODE_MAP_HINT'), fn('mapOfNode'), fn('nodeCastleId'), fn('nodeCastleLevel'), constLine('SHIELD_RULE_MULT'), fn('nodeMapNumber'),
+  constLine('NODE_MAP_HINT'), fn('mapOfNode'), constLine('TUT_SIDE_GATE'), fn('nodeCastleId'), fn('nodeCastleLevel'), constLine('SHIELD_RULE_MULT'), fn('nodeMapNumber'),
   fn('shieldRuleMult'), fn('ruleShieldOf'), fn('shieldOverrideOf'), constLine('BASE_BRAMBLE_HP'), fn('baseBrambleHp'), fn('castleLeveled'),
   constLine('ARMOUR_LAYER_MAX'), fn('armourLayersOf'), fn('skirmishCastle'), constLine('DUNGEON_DEFAULTS'), fn('dungeonConfig'), fn('dungeonWaves'),
   'const _t = s=> s;', fn('castleLineText'),
-].join('\n') + '\nreturn {mapNumberOf, ruleShieldOf, skirmishCastle, baseBrambleHp, nodeCastleLevel, dungeonWaves, castleLineText, NODE_MAP_HINT, SHIELD_RULE_MULT};')(CONQUEST_MAPS, CHARACTER_DEFS);
+].join('\n') + '\nreturn {mapNumberOf, nodeMapNumber, ruleShieldOf, skirmishCastle, baseBrambleHp, nodeCastleLevel, dungeonWaves, castleLineText, NODE_MAP_HINT, SHIELD_RULE_MULT};')(CONQUEST_MAPS, CHARACTER_DEFS);
 
 const MULT = {skirmish:1, elite:1.5, champion:1.5, dungeon:1.5, miniboss:2, subboss:2, boss:3, finalboss:3, worldboss:3, raidboss:3, megaraid:3, tutorial:0};
 ok(JSON.stringify(H.SHIELD_RULE_MULT) === JSON.stringify(MULT), 'the multipliers per kind');
 
-// --- 1. every node follows the rule
+// --- 1. every node follows the rule; the come-back-later fights on Map 0's side maps count as the map that opens them
+// (coordinator 2026-10-18): T-2 / T-3 / T-4 as Maps 1 / 8 / 18 (TUT_SIDE_GATE), the Old Bramble as Map 17 (shieldMap)
+const EFFECTIVE = {'T-2':1, 'T-3':8, 'T-4':18, '0-B-1':17, '0-B-2':17, '0-B-3':17, '0-B-4':17};
 let n = 0; const seen = {};
 for(const m of CONQUEST_MAPS){ const no = H.mapNumberOf(m.id); for(const node of m.nodes || []){
-  const k = node.kind || 'skirmish', want = Math.round((no || 0) * MULT[k]), sc = H.skirmishCastle(node); n++;
+  const eff = EFFECTIVE[node.key] != null ? EFFECTIVE[node.key] : (no || 0), k = node.kind || 'skirmish', want = Math.round(eff * MULT[k]), sc = H.skirmishCastle(node); n++;
+  ok(H.nodeMapNumber(node) === eff, `${node.key}: the rule counts Map ${H.nodeMapNumber(node)} (want ${eff})`);
   ok(sc.shield === want && sc.rule === want, `${m.id} ${node.key} (${k}, Map ${no}): Shield ${sc.shield} (want ${want})`);
   ok(sc.hp > 0 && sc.total === sc.hp + sc.shield, `${node.key}: Health ${sc.hp} + Shield ${sc.shield} = ${sc.total}`);
   if(!seen[k]) seen[k] = `${node.key}=${sc.shield}`; } }
@@ -48,6 +51,10 @@ ok(sh('m21', '21-1') === 21 && sh('m21', '21-4') === 32 && sh('m21', '21-6') ===
 ok(sh('mc', '3-1') === 3 && sh('mc', '3-5') === 5 && sh('mc', '3-7') === 9, 'Map 3: skirmish 3, elite round(4.5) = 5, boss 9');
 ok(sh('mm', '6-MM-10') === 12, 'a mini-boss on a Map 6 side map: 12');
 ok(sh('me', '20-A-4') === 30 && sh('mx', '20-B-4') === 60 && sh('m11', '20-10') === 60 && sh('m11', '20-R') === 60, 'Map 20: dungeon 30, world boss 60, campaign boss 60, raid 60');
+{ const tot = (m, k)=> H.skirmishCastle(byKey(m, k)).total, shv = (m, k)=> H.skirmishCastle(byKey(m, k)).shield;
+  ok(shv('mtut', 'T-2') === 1 && shv('mtut', 'T-3') === 8 && shv('mtut', 'T-4') === 27, `T-2 / T-3 / T-4 Shield ${shv('mtut', 'T-2')} / ${shv('mtut', 'T-3')} / ${shv('mtut', 'T-4')}`);
+  ok(shv('mo', '0-B-1') === 17 && shv('mo', '0-B-4') === 51, `the Old Bramble: skirmish 17, boss 51`);
+  console.log(`  come-back-later totals: T-2 ${tot('mtut', 'T-2')}, T-3 ${tot('mtut', 'T-3')}, T-4 ${tot('mtut', 'T-4')}, 0-B-1 ${tot('mo', '0-B-1')}, 0-B-2 ${tot('mo', '0-B-2')}, 0-B-3 ${tot('mo', '0-B-3')}, 0-B-4 ${tot('mo', '0-B-4')}`); }
 { const old = byKey('m21', '21-1'); ok(old.hqHp === 180 && H.skirmishCastle(old).total < 60, `an old hqHp no longer turns into Shield (21-1: hqHp ${old.hqHp} -> ${H.skirmishCastle(old).total})`); }
 
 // --- 2. overrides
@@ -69,7 +76,9 @@ ok(sh('me', '20-A-4') === 30 && sh('mx', '20-B-4') === 60 && sh('m11', '20-10') 
   ok(H.skirmishCastle(byKey('m1', '0-4')).character.id === 'plains-terrace', 'the Map 0 boss keeps its own bramble (and passive)');
   const tut = CONQUEST_MAPS.find(m=> m.id === 'mtut'), old = CONQUEST_MAPS.find(m=> m.id === 'mo');
   [...tut.nodes, ...old.nodes].forEach(x=> ok(H.baseBrambleHp(x) == null, `${x.key}: the side maps' come-back-later fights keep their bramble's Health`));
-  ok(TUT && +TUT[2] <= 8 && +TUT[1] === 16, `the tutorial's rival bramble starts at ${TUT && TUT[2]} Health (+2 in part 2); yours at ${TUT && TUT[1]}`);
+  ok(TUT && +TUT[2] <= 8 && +TUT[1] === 8 && TUT_MAX && +TUT_MAX[1] === 8, `the tutorial's rival bramble starts at ${TUT && TUT[2]} Health (+2 in part 2); yours at ${TUT && TUT[1]} (owner 15:37: "D. Tutorial only")`);
+  ok(/health: Math\.min\(TUTORIAL_MY_HP_MAX, cfg\.myHp \|\| TUTORIAL_MY_HP_MAX\)/.test(fn('startTutorialMatch')), 'your tutorial bramble is capped at TUTORIAL_MY_HP_MAX even if a saved config says more');
+  ok(!/TUTORIAL_MY_HP_MAX/.test(fn('startConquestMatch')), 'Map 0 skirmishes keep your own bramble');
   ok(/cfg\.rivalHp \? \{health: \(cfg\.rivalHp \+ \(st >= 2 \? 2 : 0\)\)\}/.test(fn('startTutorialMatch')), 'the tutorial fight still takes the rival Health from the tutorial config'); }
 { const t = Object.assign({}, byKey('mc', '3-1'), {hqHp: 9}); H.NODE_MAP_HINT.set(t, 'mc');
   ok(H.skirmishCastle(t).hp === 9, 'a hqHp below the bramble\'s Health lowers it');
