@@ -2,6 +2,16 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package F: text filters reset; emoji sets refreshed)
+- **Search and filter boxes now start empty** (owner 21:18: "The text filters ... don't reset when I refresh ... or when I move between pages"). A reload, a return from Chrome's back/forward cache (`pageshow`), a new tab or a new Codex / Play sub-tab empties every text filter and redraws its list unfiltered. Redrawing the same page keeps what you typed.
+  - Boxes: Codex search, Skill Codex filter, Forge search, Camp card-pool search, Flea Market search, Friends search, Sandbox spawn search, Admin card search, the sim pools, the Test Kit's two searches, the Effects library, and the editor / picker popups (deck picker, loadout, starter deck, node rewards, skirmish / raid editors, skirmish gallery, dialogue editor). Each one is marked `data-text-filter` with `autocomplete="off"`.
+  - **Kept on purpose:** the sticky filters the owner asked for on 2026-10-16 still remember the non-text choices: Codex sort / direction / type / line / view mode / separate / all-by-ID, Forge filter / sort / deck, Flea Market rarity / sort, and the Camp's type / kind / level / sort. Only the free-text query (`q`, `deckSearch`) is no longer saved or read back.
+  - Code: `resetTextFilters(root)`, `resetTextFilterState()` and `syncTextFilterPage()` next to `uiSticky` in arena_app.js. `switchTab`, `renderCodex` and `renderPlay` call `syncTextFilterPage()`.
+- **Emoji sets refreshed.** Added 10 emoji the game used but didn't ship, which drew as the system emoji: 🐪 (the Dromedary), 🐻‍❄️, 🍎, 🗓️, 🚧, 🥒, 🧀, 🧵, 🧶, 🫐. `used.json` now has 549, and the Fluent, Twemoji and Noto sets and sheets were rebuilt. The pictures already in the sets are byte-identical.
+  - `scan_emoji.js` now also reads `lang/cards` and `lang/ui`, and decodes `️`. cards.json writes 🐻‍❄️ escaped, and the ZWJ sequence was missed without its FE0F.
+  - `tests/emoji-atlas-2026-10-18.js` now fails when any card's emoji, or any emoji in the code, texts or lang packs, is missing from `used.json` or from a set.
+- Tests: `tests/filters-2026-10-19.js` (run-all) and `tests/e2e/filters_2026_10_19.py` (`--e2e`; Chromium: typed Codex / Skill Codex / Camp filters are gone after a reload and after a page switch, a non-text sort stays).
+
 ## 2026-10-19 (Gameplay ideas: Codex backlog review + our synergies, documents only)
 - **Renamed:** the Codex backlog review is now `docs/gameplay-ideas-2026-10-19.md` / `.xlsx` (was codex-backlog-review-2026-10-19).
 - **Codex's suggestions checked against the game:** every row of maps.tsv (22), skills.tsv (303) and fields.tsv (77) has a Status (Existing / Needs adjustment / Proposed / Duplicate / Future / Reject), what the game has now with card examples, a verdict and an action. Rows Codex missed are added as *Ours*: 7 skills (Hunter, Kin Rally, Pack Howl, Prayer Ward, Vigil Keeper, Brood Mother, Bolt Master), 5 fields (Blood in the Water, Pollen Drift, Spring Rain on The Canopy, Hallowed Ground, a two-fields-per-fight rule) and a suggestion for Maps 21–24 and the side maps.
