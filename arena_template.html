@@ -1688,8 +1688,11 @@
      shows as (SKILL_REVEAL), on the card's skill strip and in its text. */
   .skill-q{display:inline-grid; place-items:center; min-width:1.15em; height:1.15em; padding:0 .15em; border-radius:999px; background:rgba(120,100,60,.22); color:inherit; font-weight:800; font-size:.92em; line-height:1; box-shadow:inset 0 0 0 1px rgba(120,100,60,.45); cursor:help;}
   .skill-q-line .skill-q{font-size:1em; min-width:1.4em; height:1.4em;}
-  .ab-tide.tide-live{color:#2a7fc0; background:rgba(90,180,255,.28); border-radius:999px; box-shadow:0 0 0 1.5px rgba(108,200,255,.9), 0 0 8px rgba(108,200,255,.6); padding:0 2px;}
+  .ab-tide.tide-live, .wind-live{color:#2a7fc0; background:rgba(90,180,255,.28); border-radius:999px; box-shadow:0 0 0 1.5px rgba(108,200,255,.9), 0 0 8px rgba(108,200,255,.6); padding:0 2px;}
   .ab-tide.tide-live.tide-high{box-shadow:0 0 0 2px #6cc8ff, 0 0 12px #6cc8ff;}
+  /* 2026-10-18 (package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)"): the same lit pill on a
+     Flyer's wing under a strong wind, and on the Quick boot a Tailwind gives it (.wind-live shares the .tide-live rule above); a Headwind adds a small ×2 (skills twice). */
+  .wind-live .wind-x2{font:900 .7em/1 'Baloo 2', system-ui, sans-serif; color:#fff; text-shadow:0 0 2px #0d4f86, 0 0 3px #0d4f86; margin-left:1px; vertical-align:super;}
   .granted-skill.tide-live{font-weight:800;}
   /* Environment cards (2026-10-14, user: "effect cards need to have a different frame - so we know its an environmental field
      effect" and "For field effects with many multiple effects, split into multiple field cards"): a mossy stone frame with a gold
@@ -6147,6 +6150,10 @@
   .facing-svg line.facing-sub{stroke-width:1.6; stroke-dasharray:4 4; opacity:.75;}
   .facing-svg line.facing-sub.is-empty{opacity:.5;}
   .facing-svg line.facing-fork{stroke:#ff9a8a; stroke-width:2.6;} .facing-svg line.facing-fork.is-empty{opacity:.7;}
+  /* Stampede's carry-on (2026-10-18, package BP): blocker -> enemy HP bar; faint always, lit with its 💥 +N when the swing would carry over (stampedeFacingHTML) */
+  .facing-svg line.facing-stampede{stroke:#ff8a4c; opacity:.28;}
+  .facing-svg line.facing-stampede.is-over{stroke:#ff6a2a; opacity:.95;}
+  .facing-svg text.facing-stampede-n{fill:#ffb08a; font-size:13px;}
   /* Initiative coin (2026-10-12) */
   #battlefieldEl{position:relative;}
   /* 2026-10-12 (user: "can it be 10% smaller? Then, when it changes side, it rolls to the other side. This movement is not flat
@@ -9405,7 +9412,7 @@
   @keyframes elBanner{0%{opacity:0; transform:translate(-50%,-80%) scale(.85);} 12%{opacity:1; transform:translate(-50%,-50%) scale(1.04);} 20%{transform:translate(-50%,-50%) scale(1);} 80%{opacity:1;} 100%{opacity:0; transform:translate(-50%,-40%);}}
   /* The leader's moment (2026-10-14, user: "Whats the vfx when an enemy summons their leader?"): a callout for both sides (gold for
      yours, crimson for theirs), a ring shockwave and a flash where the leader lands. See leaderThroneVfx(). */
-  .leader-callout{position:fixed; z-index:1103; animation-duration:2.4s; max-width:min(92vw, 640px); white-space:normal; text-align:center; line-height:1.15;}
+  .leader-callout{position:fixed; z-index:1103; animation-duration:1.92s; /* ×0.8 (2026-10-18, BP: LEADER_CALLOUT_MS sets it inline too) */ max-width:min(92vw, 640px); white-space:normal; text-align:center; line-height:1.15;}
   .leader-callout.is-mine{color:#3a2604; background:linear-gradient(180deg,#ffe9a8,#e8b64a); border-color:#fff2c4; box-shadow:0 8px 24px rgba(0,0,0,.45), 0 0 26px rgba(255,205,90,.55);}
   .leader-ring{position:fixed; z-index:1102; pointer-events:none; border-radius:50%; transform:translate(-50%,-50%) scale(.3); border:4px solid rgba(255,214,110,.95); box-shadow:0 0 18px 4px rgba(255,200,80,.6), inset 0 0 14px rgba(255,236,170,.6); animation:leaderRing .9s cubic-bezier(.15,.7,.3,1) forwards;}
   .leader-ring.is-late{animation-delay:.14s; border-width:2px; opacity:0;}
@@ -9547,6 +9554,35 @@
   @keyframes wlEmber{0%{transform:translate(0, 0) scale(1); opacity:0;} 12%{opacity:.95;} 70%{opacity:.75;} 100%{transform:translate(var(--dx, 20px), -640px) scale(.4); opacity:0;}}
   :where(html[data-fx="none"], html[data-fx="low"]) .winloss-card.is-boss > .wl-embers i{animation:none; display:none;}
   @media (prefers-reduced-motion:reduce){ .winloss-card.is-boss > .wl-embers i{animation:none !important; display:none;} }
+  /* Babel Spire results (2026-10-18, package RW follow-up, owner 23:20: "The victory screen for Towers should be very slightly different
+     as well. It's triumphant to know that your deck has reached the next tier."): a won new Spire floor (isTowerResults) gets the Victory
+     card in a cool sky and stone-gold, a notch below the boss crimson, and the ascent line (.wl-ascent): a little tower whose cleared
+     floor is lit, a beam climbing to the next floor, "Floor N cleared → Floor N+1". Light text on dark blue (AA or better), both themes. */
+  .pass-card.winloss-card.is-glory.is-tower{background:radial-gradient(ellipse 85% 58% at 50% 0%, #4d7fae 0%, #284a6e 40%, #172a43 75%, #0e1828 100%) !important; color:#f2f6fc;
+    border:2px solid #d8c48c !important; box-shadow:0 0 0 4px rgba(216,196,140,.26), 0 0 50px rgba(120,170,230,.3), 0 30px 80px rgba(0,0,0,.6) !important;}
+  .winloss-card.is-glory.is-tower .wl-rays{background:repeating-conic-gradient(from 0deg, rgba(205,228,255,.5) 0deg 5deg, transparent 5deg 18deg); opacity:.3;}
+  .winloss-card.is-glory.is-tower .wl-title{background:linear-gradient(180deg, #ffffff 10%, #dbe8fb 50%, #ecd28c 100%); -webkit-background-clip:text; background-clip:text; color:transparent;
+    filter:drop-shadow(0 4px 0 #1b2f4a) drop-shadow(0 0 20px rgba(170,205,255,.5));}
+  .winloss-card.is-glory.is-tower .rw-panel{background:rgba(190,215,255,.07) !important; border-color:rgba(216,196,140,.3) !important; color:#f2f6fc;}
+  .winloss-card.is-glory.is-tower .rw-head{color:#ecd9a0 !important;}
+  .winloss-card.is-glory.is-tower .wls-compact{color:rgba(232,240,252,.78);}
+  .wl-ascent{display:inline-flex; align-items:center; gap:14px; margin:2px auto 10px; padding:8px 18px 8px 12px; border-radius:14px; text-align:left;
+    background:rgba(8,18,34,.5); border:1px solid rgba(216,196,140,.45); box-shadow:inset 0 0 18px rgba(150,190,240,.12);}
+  .wl-ascent-tower{position:relative; flex:none; display:flex; flex-direction:column-reverse; align-items:center; gap:2px; width:34px; height:58px;}
+  .wl-ascent-tower i{display:block; height:10px; border-radius:3px 3px 0 0; background:#62758f; box-shadow:inset 0 -2px 0 rgba(0,0,0,.28);}
+  .wl-ascent-tower i:nth-child(1){width:32px;} .wl-ascent-tower i:nth-child(2){width:27px;} .wl-ascent-tower i:nth-child(3){width:22px;} .wl-ascent-tower i:nth-child(4){width:17px;} .wl-ascent-tower i:nth-child(5){width:12px;}
+  .wl-ascent-tower i.is-lit{background:linear-gradient(180deg, #fff6d2, #f0c860); box-shadow:0 0 10px 2px rgba(255,214,110,.75);}
+  .wl-ascent-tower i.is-next{background:#9dbde4; animation:wlNextGlow 2.4s ease-in-out infinite;}
+  @keyframes wlNextGlow{50%{background:#d7e8ff; box-shadow:0 0 10px 2px rgba(190,220,255,.6);}}
+  .wl-ascent-beam{position:absolute; left:50%; bottom:22px; width:4px; height:22px; margin-left:-2px; border-radius:2px; background:linear-gradient(0deg, rgba(255,232,160,.95), rgba(210,232,255,0));
+    transform-origin:50% 100%; animation:wlBeam 2.4s ease-out infinite;}
+  .wl-ascent.is-top .wl-ascent-beam{bottom:58px; height:16px;}
+  @keyframes wlBeam{0%{transform:scaleY(0); opacity:0;} 20%{opacity:1;} 60%{transform:scaleY(1); opacity:1;} 100%{transform:scaleY(1.5); opacity:0;}}
+  .wl-ascent-txt{display:flex; flex-direction:column; gap:2px; line-height:1.2;}
+  .wl-ascent-txt b{font:800 clamp(15px, 2.2vw, 18px)/1.2 'Baloo 2',system-ui,sans-serif; color:#ffffff; letter-spacing:.01em;}
+  .wl-ascent-txt small{font-size:12.5px; color:#d3e2f5;}
+  :where(html[data-fx="none"], html[data-fx="low"]) .wl-ascent-beam, :where(html[data-fx="none"], html[data-fx="low"]) .wl-ascent-tower i.is-next{animation:none;}
+  @media (prefers-reduced-motion:reduce){ .wl-ascent-beam, .wl-ascent-tower i.is-next{animation:none !important;} }
   .hud-pill.cur-laurels{background:#e3f1d6; color:#24461a; border-color:#9cc584;}
 
   /* Notices (2026-10-10): rewards on each card, rank letters for A and up, a free swap, and a claimed note keeps its size. */
@@ -10384,6 +10420,124 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .mc-fx li{display:flex; flex-direction:column;} .mc-fx li.is-unknown{flex-direction:row; align-items:center; gap:8px;} .mc-fx li > span:first-child{font-weight:800;}
 /* Codex pages (2026-10-13) */
 .cx-pager{grid-column:1 / -1; display:flex; flex-wrap:wrap; justify-content:center; gap:6px; margin:16px 0 8px;}
+/* ---- Codex: card album, skills book, collection score (2026-10-18, package C, owner: "codex: skills - look like pages in a book.
+   bestiary - look like a card album. overall collection score listed at the btm and in profile w/ achievements") ----
+   Parchment and leather from the game's own tokens (--surface*, --ink*, --accent), so light and dark both follow the theme. */
+.pg-nav{display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:8px; margin:12px 0 4px;}
+.pg-nav .pg-btn{min-width:44px; min-height:40px; font-size:20px; line-height:1; padding:0 12px;}
+.pg-nav .pg-of{font:700 13px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink); min-width:9em; text-align:center; font-variant-numeric:tabular-nums; padding:8px 12px; border-radius:999px; background:var(--surface); border:1px solid var(--surface-border);}
+.pg-nav .pg-jump{max-width:min(320px, 100%); height:40px; padding:0 10px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:inherit; font-size:13px;}
+/* the turning leaf: a copy of the page you leave, lifting off at the spine */
+.pg-leaf{position:absolute; z-index:8; margin:0 !important; pointer-events:none; transform-origin:0% 50%; backface-visibility:hidden; will-change:transform;
+  animation:pgLeafFwd 460ms cubic-bezier(.45,.05,.35,1) forwards;}
+.pg-leaf.pg-leaf-back{transform-origin:100% 50%; animation-name:pgLeafBack;}
+.pg-leaf::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; background:linear-gradient(90deg, rgba(0,0,0,0), rgba(0,0,0,.28)); opacity:0; animation:pgLeafShade 460ms ease-in forwards;}
+.pg-leaf.pg-leaf-back::after{background:linear-gradient(270deg, rgba(0,0,0,0), rgba(0,0,0,.28));}
+@keyframes pgLeafFwd{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(-96deg);}}
+@keyframes pgLeafBack{from{transform:perspective(1800px) rotateY(0deg);} to{transform:perspective(1800px) rotateY(96deg);}}
+@keyframes pgLeafShade{to{opacity:1;}}
+.pg-in-back{transform-origin:0% 50%; animation:pgInBack 420ms cubic-bezier(.2,.7,.3,1) both;}
+@keyframes pgInBack{from{transform:perspective(1800px) rotateY(-80deg); opacity:.4;} to{transform:none; opacity:1;}}
+@media (prefers-reduced-motion: reduce){ .pg-leaf, .pg-leaf::after, .pg-in-back{animation:none !important;} .pg-leaf{display:none;} }
+
+/* the skills book */
+.bk-bar{display:flex; flex-wrap:wrap; align-items:center; gap:8px 16px; margin:0 0 10px;}
+.bk-bar .bk-filter{flex:none; display:flex; align-items:center; gap:10px; width:min(560px, 100%); margin:0 auto;}
+.bk-bar .bk-filter small{color:var(--page-ink, #f5ecd2);}
+.bk-filter input{flex:1 1 auto; min-width:0; height:40px; padding:0 12px; border-radius:10px; border:1px solid var(--surface-border); font:inherit; background:var(--surface); color:var(--ink);}
+.bk-book{position:relative; touch-action:pan-y;}
+.bk-spread{display:flex; align-items:stretch; max-width:1180px; margin:0 auto; padding:10px; border-radius:16px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--accent-strong) 78%, #000), color-mix(in srgb, var(--accent-strong) 62%, #000));
+  box-shadow:0 14px 34px rgba(0,0,0,.28), inset 0 0 0 2px color-mix(in srgb, var(--accent) 55%, transparent);}
+.bk-page{position:relative; flex:1 1 0; min-width:0; display:flex; flex-direction:column; height:clamp(440px, calc(100vh - 290px), 760px); padding:14px 22px 10px;
+  color:var(--ink); background:var(--surface); border-radius:6px; box-shadow:inset 0 0 40px color-mix(in srgb, var(--surface-border) 45%, transparent);}
+.bk-page.pg-left{border-radius:10px 2px 2px 10px; background:linear-gradient(270deg, color-mix(in srgb, var(--surface-border) 55%, var(--surface)) 0, var(--surface) 7%, var(--surface) 100%);}
+.bk-page.pg-right{border-radius:2px 10px 10px 2px; background:linear-gradient(90deg, color-mix(in srgb, var(--surface-border) 55%, var(--surface)) 0, var(--surface) 7%, var(--surface) 100%);}
+.bk-page.pg-single{border-radius:4px 10px 10px 4px; background:linear-gradient(90deg, color-mix(in srgb, var(--surface-border) 60%, var(--surface)) 0, var(--surface) 4%, var(--surface) 100%);}
+.bk-page.is-blank{background:color-mix(in srgb, var(--surface) 82%, var(--surface-border));}
+.bk-spine{flex:0 0 6px; background:linear-gradient(90deg, rgba(0,0,0,.35), rgba(0,0,0,.08) 50%, rgba(0,0,0,.35));}
+.bk-run{min-height:18px; font:400 13px/1.3 'MedievalSharp','Baloo 2',serif; letter-spacing:.04em; color:var(--ink-soft); text-align:center; border-bottom:1px solid color-mix(in srgb, var(--surface-border) 70%, transparent); padding-bottom:4px; margin-bottom:10px;}
+.bk-body{flex:1 1 auto; min-height:0; overflow-y:auto; overflow-x:hidden; display:flex; flex-direction:column; gap:12px; scrollbar-width:thin;}
+.bk-measure{position:absolute; visibility:hidden; pointer-events:none; left:0; top:0; height:auto; overflow:visible; flex:none;}
+.bk-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px; min-height:20px;}
+.bk-title{margin:4px 0 6px; font:400 30px/1.1 'MedievalSharp','Baloo 2',serif; text-align:center; color:var(--ink);}
+.bk-intro{margin:0 0 6px; font-size:14px; color:var(--ink-muted); text-align:center;}
+.bk-toc{list-style:none; margin:6px 0 0; padding:0; display:flex; flex-direction:column; gap:4px;}
+.bk-toc-row{display:flex; align-items:baseline; gap:8px; width:100%; padding:8px 6px; border:0; border-radius:8px; background:transparent; color:var(--ink); font:700 16px/1.3 'Baloo 2',system-ui,sans-serif; text-align:left; cursor:pointer;}
+.bk-toc-row:hover, .bk-toc-row:focus-visible{background:color-mix(in srgb, var(--surface-border) 30%, transparent);}
+.bk-toc-row small{font-weight:600; color:var(--ink-muted); font-size:12.5px;}
+.bk-toc-row i{flex:1 1 auto; border-bottom:2px dotted color-mix(in srgb, var(--ink-soft) 60%, transparent); transform:translateY(-4px);}
+.bk-az-h{margin:14px 0 6px; font:400 16px/1.2 'MedievalSharp','Baloo 2',serif; text-align:center; color:var(--ink-muted);}
+.bk-az{display:flex; flex-wrap:wrap; justify-content:center; gap:6px;}
+.bk-az button{min-width:36px; min-height:36px; border-radius:8px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:800 14px/1 'Baloo 2',system-ui,sans-serif; cursor:pointer;}
+.bk-az button:hover, .bk-az button:focus-visible{background:var(--surface-3);}
+.bk-ch{display:flex; align-items:baseline; justify-content:space-between; gap:10px; margin:0; padding-bottom:4px; font:400 21px/1.2 'MedievalSharp','Baloo 2',serif; color:var(--accent-strong); border-bottom:2px solid color-mix(in srgb, var(--accent) 40%, transparent);}
+.bk-ch small{font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);}
+.bk-entry{display:grid; grid-template-columns:44px minmax(0,1fr); gap:10px; align-items:start;}
+.bk-entry .bk-ico{width:44px; height:44px; display:grid; place-items:center; font-size:24px; line-height:1; border-radius:50%; background:var(--surface-2); box-shadow:inset 0 0 0 1px var(--surface-border);}
+.bk-entry h4{margin:2px 0 2px; font:800 16px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink);}
+.bk-entry p{margin:0; font-size:14px; line-height:1.45; color:var(--ink);}
+.bk-entry .bk-ans{margin-top:4px; font-size:13px; color:var(--ink-muted);}
+.bk-entry .bk-dot{display:block; width:16px; height:16px; border-radius:50%; background:var(--kw); box-shadow:0 0 0 4px color-mix(in srgb, var(--kw) 28%, transparent);}
+.bk-ch-sub{margin:4px 0 0; font-size:13px; color:var(--ink-muted);}
+.bk-entry.is-hint .bk-ico{font-weight:900; color:var(--ink-soft); filter:grayscale(1); opacity:.75;}
+.bk-entry.is-hint h4, .bk-entry.is-hint p{color:var(--ink-soft); font-style:italic;}
+.bk-book .pg-nav{margin-top:12px;}
+@media (max-width:899px){ .bk-spread{padding:6px;} .bk-page{height:clamp(400px, calc(100vh - 250px), 720px); padding:12px 14px 8px;} }
+
+/* the card album */
+#codexGrid.al-host{display:block; position:relative; touch-action:pan-y;}
+.al-album{display:flex; align-items:stretch; max-width:1080px; margin:0 auto; padding:10px; border-radius:16px;
+  background:linear-gradient(180deg, color-mix(in srgb, var(--accent-strong) 70%, #111), color-mix(in srgb, var(--accent-strong) 50%, #111));
+  box-shadow:0 14px 34px rgba(0,0,0,.3), inset 0 0 0 2px color-mix(in srgb, var(--accent) 50%, transparent);}
+.al-album.al-one{max-width:560px;}
+.al-page{position:relative; flex:1 1 0; min-width:0; display:flex; flex-direction:column; padding:10px 14px 8px; border-radius:8px;
+  background:color-mix(in srgb, var(--surface-3) 55%, var(--bg-2)); box-shadow:inset 0 0 30px rgba(0,0,0,.18);}
+.al-page.pg-left{border-radius:10px 2px 2px 10px;} .al-page.pg-right{border-radius:2px 10px 10px 2px;}
+.al-page.is-blank{background:color-mix(in srgb, var(--surface-3) 40%, var(--bg-2)); opacity:.8;}
+.al-spine{flex:0 0 14px; margin:0 2px; border-radius:4px; background:repeating-linear-gradient(180deg, transparent 0 22px, rgba(0,0,0,.45) 22px 30px, transparent 30px 52px), linear-gradient(90deg, rgba(0,0,0,.35), rgba(255,255,255,.08) 50%, rgba(0,0,0,.35));}
+.al-head{display:flex; flex-wrap:wrap; align-items:center; gap:4px 10px; min-height:28px; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid color-mix(in srgb, var(--ink) 18%, transparent);}
+.al-head .al-sec{flex:1 1 auto; min-width:0; font:400 16px/1.2 'MedievalSharp','Baloo 2',serif; color:var(--ink); overflow-wrap:anywhere;}
+.al-head .al-count{font:700 12px/1.2 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted); white-space:nowrap;}
+.al-grid{display:grid; grid-template-columns:repeat(var(--al-cols, 3), minmax(0, 1fr)); gap:10px; flex:1 1 auto; align-content:start;}
+.al-sleeve{position:relative; padding:6px 6px 16px; border-radius:8px; background:linear-gradient(160deg, rgba(255,255,255,.22), rgba(255,255,255,.05) 40%, rgba(255,255,255,.12));
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35), 0 2px 5px rgba(0,0,0,.18);}
+.al-sleeve::after{content:''; position:absolute; inset:0; border-radius:inherit; pointer-events:none; z-index:7; background:linear-gradient(115deg, rgba(255,255,255,0) 30%, rgba(255,255,255,.16) 42%, rgba(255,255,255,0) 54%);}
+.al-slot{min-height:1px;}
+#codexGrid.al-host .al-sleeve .cx-tile-wrap{content-visibility:visible; contain-intrinsic-size:none; padding:0; margin:0;}
+#codexGrid.al-host .card-tile{width:100%;}
+#codexGrid.al-host .al-sleeve .cx-tile-wrap .cx-lock{top:-4px; left:-4px; font-size:12px; padding:2px 3px;}
+#codexGrid.al-host .card-tile.cx-editable{cursor:pointer;}
+.al-foot{text-align:center; font:700 12px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink-soft); padding-top:8px;}
+@media (max-width:559px){ .al-album{padding:6px;} .al-page{padding:8px 8px 6px;} .al-grid{gap:8px;} }
+
+/* the skill filter (2026-10-18, package C, owner 23:21: "add a way to filter by skills in codex") */
+#codexToolbar > .cx-skill-panel{flex:1 1 100%; order:99; padding:10px 12px; border-radius:12px; background:var(--surface); border:1px solid var(--surface-border); color:var(--ink); box-shadow:0 6px 18px rgba(0,0,0,.18);}
+#codexToolbar > .cx-skill-panel[hidden]{display:none !important;}
+.cx-skill-head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:8px;} .cx-skill-head small{color:var(--ink-muted);}
+.cx-skill-chips{display:flex; flex-wrap:wrap; gap:6px; max-height:min(46vh, 340px); overflow-y:auto;}
+.cx-sk-chip{display:inline-flex; align-items:center; gap:4px; min-height:34px; padding:4px 10px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:700 13px/1.2 'Nunito',system-ui,sans-serif; cursor:pointer;}
+.cx-sk-chip:hover, .cx-sk-chip:focus-visible{background:var(--surface-3);}
+.cx-sk-chip[aria-pressed="true"], .cx-sk-chip.is-on{background:var(--accent); border-color:var(--accent-strong); color:var(--accent-ink);}
+.cx-sk-chip i{font-style:normal; opacity:.8;}
+.cx-skill-none{margin:0; color:var(--ink-muted);}
+.cx-skill-active{display:flex; flex-wrap:wrap; align-items:center; gap:6px; margin:6px 0 4px;} .cx-skill-active[hidden]{display:none;}
+.cx-skill-active > span{font-weight:800; font-size:13px; color:var(--page-ink, #f5ecd2);}
+.cx-skill-active > .btn{background:var(--surface-2); color:var(--ink); border:1px solid var(--surface-border);}
+.bk-entry .bk-show{margin-top:6px; padding:3px 10px; border-radius:999px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:700 12px/1.3 'Nunito',system-ui,sans-serif; cursor:pointer;}
+.bk-entry .bk-show:hover, .bk-entry .bk-show:focus-visible{background:var(--surface-3);}
+/* the collection score, under every Codex tab */
+.cx-score-wrap:empty{display:none;}
+.cx-score{display:flex; flex-wrap:wrap; align-items:center; gap:10px 18px; margin:22px auto 6px; max-width:1180px; padding:14px 18px; border-radius:16px; background:var(--surface); border:1px solid var(--surface-border); box-shadow:0 4px 12px rgba(0,0,0,.08); color:var(--ink);}
+.cx-score-ico{font-size:30px; line-height:1;}
+.cx-score-main{flex:1 1 260px; display:flex; flex-direction:column; gap:3px; min-width:0;}
+.cx-score-k{font:800 13px/1.2 'Baloo 2',system-ui,sans-serif; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-muted);}
+.cx-score-n{font:600 14px/1.1 'Baloo 2',system-ui,sans-serif; color:var(--ink-muted);} .cx-score-n b{font:900 28px/1 'Baloo 2',system-ui,sans-serif; color:var(--ink);}
+.cx-score-main .pf-tile-bar{flex:none; max-width:none; height:8px; margin:4px 0 2px; background:color-mix(in srgb, var(--ink) 12%, transparent);}
+.cx-score-main small{font-size:12px; color:var(--ink-muted);}
+.cx-score-facts{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:6px 14px; font-weight:700; font-size:14px;}
+.cx-score-achv{border:0; background:none; padding:4px 0; font:inherit; color:var(--ink); cursor:pointer; text-decoration:underline; text-decoration-color:color-mix(in srgb, var(--ink) 30%, transparent); text-underline-offset:3px;}
+.cx-score-achv em{color:var(--accent); font-style:normal; font-weight:800;}
 /* 2026-10-13 (user: "Put the admin buttons to the side on the right, outside the card") */
 .cnp-admin-side{display:flex; flex-wrap:wrap; gap:6px; margin-top:6px;}
 @media (min-width:821px){ .conquest-node-panel > .cnp-admin-side{position:absolute; left:100%; top:44px; margin:0 0 0 12px; flex-direction:column; flex-wrap:nowrap; width:150px;}

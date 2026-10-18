@@ -3010,13 +3010,27 @@ function codexRevealedForPlayer(id, d){
   try{ const pool = packPoolOf(d); if(pool === 99) return featureUnlocked('wanderer'); if(pool) return featureUnlocked('shop'); }catch(e){}
   return false;
 }
+// 2026-10-18 (package C, owner 20:36: "Skills and cards dont show up if you havent seen them before"): the seen list follows the
+// account now (PROGRESS_KEYS, merged as a union like the discoveries), and every save is brought up to date once
+// (SEEN_MIGRATED_KEY): the cards you own or have unlocked, your discoveries and every enemy deck of a fight you have cleared
+// (the tutorial's too) count as seen. A seen list pulled from the account is read back from storage (mySeenCardIds = null).
+const SEEN_MIGRATED_KEY = 'bramblewood_arena_seen_v2';
 function seenCardIds(){
-  if(mySeenCardIds) return mySeenCardIds;
-  mySeenCardIds = new Set(myDiscoveredCardIds);
-  try{ const prog = loadConquestProgress(); (prog.completed||[]).forEach(cid=>{ CONQUEST_MAPS.forEach(m=> m.nodes.forEach(n=>{ if(conquestNodeId(m.id, n.key)===cid) Object.keys(n.deck||{}).forEach(id=> mySeenCardIds.add(id)); })); }); }catch(e){}
-  try{ localStorage.setItem(SEEN_KEY, JSON.stringify([...mySeenCardIds])); }catch(e){}
-  return mySeenCardIds;
+  if(mySeenCardIds && seenMigrated) return mySeenCardIds;
+  if(!mySeenCardIds){ try{ const raw = localStorage.getItem(SEEN_KEY); if(raw) mySeenCardIds = new Set(JSON.parse(raw)); }catch(e){} }
+  if(!mySeenCardIds) mySeenCardIds = new Set();
+  let done = false; try{ done = localStorage.getItem(SEEN_MIGRATED_KEY) === '1'; }catch(e){}
+  seenMigrated = true;
+  if(done) return mySeenCardIds;
+  const seen = mySeenCardIds;
+  try{ myDiscoveredCardIds.forEach(id=> seen.add(id)); }catch(e){}
+  try{ Object.keys(myCardCopies || {}).forEach(id=>{ if((myCardCopies[id] || []).length) seen.add(id); }); }catch(e){}
+  try{ if(myUnlockedCardIds) myUnlockedCardIds.forEach(id=> seen.add(id)); }catch(e){}
+  try{ const done = new Set(loadConquestProgress().completed || []); CONQUEST_MAPS.forEach(m=> m.nodes.forEach(n=>{ if(done.has(conquestNodeId(m.id, n.key))) Object.keys(n.deck||{}).forEach(id=> seen.add(id)); })); }catch(e){}
+  try{ localStorage.setItem(SEEN_KEY, JSON.stringify([...seen])); localStorage.setItem(SEEN_MIGRATED_KEY, '1'); }catch(e){}
+  return seen;
 }
+var seenMigrated = false;
 function noteSighted(defIds){
   if(!defIds || (matchState && matchState.fxLib)) return; // the Effects library's stand-ins aren't sightings (2026-10-14)
   const defs = getCardDefs();
@@ -5336,7 +5350,9 @@ function cardActionLogHTML(uid){
     }
   }
   if(!lines.length) return '';
-  return `<div class="card-txn-log"><div class="card-txn-log-title">Battle log</div><ul>${lines.join('')}</ul></div>`;
+  // 2026-10-18 (package BP, owner: "The battle log should start from the bottom! the latest!"): the card's own last 5 lines read like the
+  // battle log too, oldest first and the newest at the bottom (they were collected newest-first).
+  return `<div class="card-txn-log"><div class="card-txn-log-title">Battle log</div><ul>${lines.reverse().join('')}</ul></div>`;
 }
 // Finds the LIVE board-card instance a hovered element belongs to, if any — walks up to the
 // nearest [data-uid] ancestor (the .board-card wrapper; hand/Codex/deck tiles never carry one)
@@ -5583,7 +5599,9 @@ function advancementKey(d){
 // display-density toggle for the Codex grid — 'compressed' is the existing small-tile grid,
 // 'full' shows the same tiles larger so the art itself reads as the point of browsing, not just
 // a small icon next to stats. Persisted so it survives switching sub-tabs/filters.
-let codexViewMode = uiSticky('codexView').mode === 'full' ? 'full' : 'compressed'; // 2026-10-16: kept between visits
+// 2026-10-18 (package C, owner: "bestiary - look like a card album"): the album is the Codex's default view now; the grid stays as
+// "Compressed" (saved as 'grid') and "Full Art". An old saved 'compressed' was the old default, so it opens on the album too.
+let codexViewMode = (()=>{ const m = uiSticky('codexView').mode; return m === 'full' ? 'full' : m === 'grid' ? 'compressed' : 'album'; })(); // 2026-10-16: kept between visits
 function codexShell(){
   // 2026-10-15 (user: "Forge is not a submenu of Codex"): the Forge is drawn in this view but is its own page (the Forge
   // shortcut in the top bar), so it gets no Codex sub-tab row at all.
@@ -5605,7 +5623,8 @@ function codexShell(){
          same flex row — see .codex-sub-tabs's plain display:flex, no restructuring needed). -->
     <button class="btn small ghost subnav-right-btn" id="codexToDeckBtn" title="Go to Deck">🃏 Deck</button>
   </div>
-  <div id="codexBody"></div>`;
+  <div id="codexBody"></div>
+  <div id="codexScore" class="cx-score-wrap"></div>`; /* 2026-10-18 (package C): the collection score, at the bottom of every Codex tab */
 }
 // Effects quality (2026-10-07, user: "The effects are getting laggy... put a gfx setting in settings
 // to turn off some of the effects? maybe Effects: None - Low - Med - High"). One level gates every
@@ -5793,6 +5812,8 @@ function renderCodex(){
   }));
   const toDeckBtn = document.getElementById('codexToDeckBtn');
   if(toDeckBtn) toDeckBtn.addEventListener('click', ()=> switchTab('deck'));
+  codexTurnFn = null; codexAlbumState = null; // 2026-10-18 (package C): the album / book set these again when they draw
+  { const sc = document.getElementById('codexScore'); if(sc) setTimeout(()=>{ try{ if(!sc.isConnected) return; sc.innerHTML = collectionScoreBarHTML(); wireCollectionScoreBar(sc); }catch(e){} }, 60); } // after the tab's first frame (it sits at the bottom)
   const body = document.getElementById('codexBody');
   if(codexSubTab==='brambles'){ body.innerHTML = bramblesTabHTML(); wireCardTileFlourish(body); return; }
   if(codexSubTab==='forge' && !tabOpen('forge')) codexSubTab = 'browse'; // the Forge opens on Map 11 (2026-10-12)
@@ -5800,7 +5821,7 @@ function renderCodex(){
   try{ if(Ambience.current()==='forge') Ambience.stop(); forgeEnteredAt = 0; }catch(e){}
   if(codexSubTab==='skills' && !tabOpen('skillcodex')) codexSubTab = 'browse';
   if(codexSubTab==='maps' && !tabOpen('mapcodex')) codexSubTab = 'browse';
-  if(codexSubTab==='skills'){ body.innerHTML = skillCodexHTML(); wireSkillCodexFilter(body); return; }
+  if(codexSubTab==='skills'){ renderSkillBook(body); return; } // 2026-10-18 (package C): the skills book (skillCodexHTML was the list)
   if(codexSubTab==='maps'){ body.innerHTML = mapCodexHTML(); return; }
   if(codexSubTab==='reference'){ body.innerHTML = referenceHTML(); return; }
   if(codexSubTab==='halloffame'){
@@ -5815,9 +5836,12 @@ function renderCodex(){
   body.innerHTML = `
     <div class="codex-toolbar ${codexFiltersOpen?'filters-open':''}" id="codexToolbar">
       <input data-text-filter autocomplete="off" id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
-      <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = [codexFilter.archetype, codexFilter.mechLine, (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
+      <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = codexFilterCount(); return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
       ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
+      <select id="cxRarity" aria-label="${escapeAttr(TX('ui.codex-all-rarities'))}"><option value="">${escapeHtml(TX('ui.codex-all-rarities'))}</option>${(()=>{ const have = new Set(Object.values(defs).map(d=> d.rarity || 'common')); return RARITY_DEFS.filter(r=> have.has(r.key)).map(r=> `<option value="${r.key}" ${codexFilter.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join(''); })()}</select>${'' /* 2026-10-18 (package C): the album's rarity filter */}
+      <button type="button" class="btn small cx-skill-btn" id="cxSkillBtn" aria-expanded="false" aria-controls="cxSkillPanel">✨ ${escapeHtml(TX('ui.codex-skill-filter'))}<b class="cx-fcount" ${codexSkillsChosen().length ? '' : 'hidden'}>${codexSkillsChosen().length}</b></button>
+      <div class="cx-skill-panel" id="cxSkillPanel" hidden></div>${'' /* 2026-10-18 (package C, owner 23:21): the skill filter */}
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
       <select id="cxSort" aria-label="Sort cards">${'' /* 2026-10-15: Cost, Wait, Attack, Health first, the same list the Forge sorts by */}<option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="wait" ${codexFilter.sort==='wait'?'selected':''}>Sort: Wait</option><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option>${phylaUnlocked() ? `<option value="phylum" ${codexFilter.sort==='phylum'?'selected':''}>Sort: Phylum</option>` : ''}<option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
       <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
@@ -5833,13 +5857,15 @@ function renderCodex(){
       ${adminModeEnabled ? `<label class="cx-test-toggle" title="Admin: also show cards this account hasn't seen yet"><input type="checkbox" id="cxShowUnseen" ${codexShowUnseen ? 'checked' : ''}> 👁 Show unseen</label>` : ''}
       <label class="cx-test-toggle" title="One list of every card, by card number, 40 a page (no sections)"><input type="checkbox" id="cxFlatById" ${codexFlatById ? 'checked' : ''}> 🔢 All by ID</label>
       <select id="cxViewMode" title="Grid display density">
+        <option value="album" ${codexViewMode==='album'?'selected':''}>${escapeHtml(TX('ui.codex-view-album'))}</option>
         <option value="compressed" ${codexViewMode==='compressed'?'selected':''}>View: Compressed</option>
         <option value="full" ${codexViewMode==='full'?'selected':''}>View: Full Art</option>
       </select>
       ${devModeEnabled ? `<label class="cx-test-toggle" title="Test cards are hidden from ordinary Codex browsing by default -- check this to see ONLY test cards instead of the normal roster."><input type="checkbox" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
     </div>
+    <div class="cx-skill-active" id="cxSkillActive" hidden></div>
     <span id="codexResultCount"></span>
-    <div class="grid-view ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
+    <div class="${codexViewMode==='album' ? 'al-host' : 'grid-view'} ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
     ${(codexStatsDefs = defs, codexStatsHTML(defs))}`;
   { let t = null; document.getElementById('cxSearch').addEventListener('input', e=>{ codexFilter.q = e.target.value; clearTimeout(t); t = setTimeout(renderCodexGrid, 120); }); } // debounced (2026-10-12: "The codex is still a bit laggy"; 2026-10-18: 120 ms, a draw is cheaper now)
   { const sep = document.getElementById('cxSeparate'); if(sep) sep.onclick = ()=>{ codexSeparate = !codexSeparate; try{ localStorage.setItem('bramblewood_codex_separate', codexSeparate ? '1' : '0'); }catch(e){} sep.classList.toggle('primary', codexSeparate); sep.setAttribute('aria-pressed', codexSeparate); sep.textContent = codexSeparate ? '🗂️ Separated' : '🗂️ All together'; renderCodexGrid(); }; }
@@ -5858,9 +5884,12 @@ function renderCodex(){
     renderCodexGrid();
   });
   document.getElementById('cxViewMode').addEventListener('change', e=>{
-    codexViewMode = e.target.value; uiStickySave('codexView', {mode: codexViewMode});
+    const was = codexViewMode; codexViewMode = e.target.value; uiStickySave('codexView', {mode: codexViewMode === 'compressed' ? 'grid' : codexViewMode});
     document.getElementById('codexGrid').classList.toggle('full-art', codexViewMode==='full');
+    if((was === 'album') !== (codexViewMode === 'album')) renderCodexGrid(); // 2026-10-18 (package C): album <-> grid redraws
   });
+  { const ra = document.getElementById('cxRarity'); if(ra) ra.addEventListener('change', e=>{ codexFilter.rarity = e.target.value; codexFilterBadge(); renderCodexGrid(); }); }
+  wireCodexSkillFilter();
   const cxShowTest = document.getElementById('cxShowTest');
   if(cxShowTest) cxShowTest.addEventListener('change', e=>{ codexFilter.showTest = e.target.checked; renderCodexGrid(); });
   renderCodexGrid();
@@ -6041,6 +6070,8 @@ function renderCodexGrid(keepPage){
   if(codexFilter.archetype) ids = ids.filter(id=> archetypesOf(defs[id]).includes(codexFilter.archetype));
   if(codexFilter.mechLine) ids = ids.filter(id=> inferMechanicLine(defs[id])===codexFilter.mechLine);
   if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
+  if(codexFilter.rarity) ids = ids.filter(id=> (defs[id].rarity || 'common') === codexFilter.rarity); // 2026-10-18 (package C): the album's rarity filter
+  { const want = codexSkillsChosen(); if(want.length){ const ps = want.map(skillDefOf); ids = ids.filter(id=> ps.every((p, i)=> cardHasSkill(defs[id], want[i], p))); } } // 2026-10-18 (package C): every skill picked
   // 2026-09-26 (#1, "add a sort view to codex"): added Rarity (by RARITY_DEFS' own defined
   // order, common -> legendary etc., not alphabetically) and a dir flip. `base` always returns
   // the "natural" high-to-low/A-Z-first comparison; the dir flip below negates it uniformly
@@ -6123,6 +6154,16 @@ function renderCodexGrid(keepPage){
     if(sig) codexTileCache.set(id, {sig, html});
     return html;
   };
+  // 2026-10-18 (package C): the card album draws its own pages (codexDrawAlbum); the grid views carry on below.
+  { const gEl = document.getElementById('codexGrid'), album = codexViewMode === 'album';
+    gEl.classList.toggle('grid-view', !album); gEl.classList.toggle('al-host', album);
+    if(album){
+      const sortG = g=> g.ids.slice().sort(codexFlatById ? ((x, y)=> (Number(defs[x].numericId)||1e9) - (Number(defs[y].numericId)||1e9) || x.localeCompare(y)) : cmp);
+      const gIds = {}; ordered.forEach(g=>{ gIds[g.sec.key] = g.ids; });
+      codexDrawAlbum(gEl, ordered.map(g=> ({sec:g.sec, ids:sortG(g), all:g.ids})), tileFor, gIds, keepPage === true);
+      return;
+    }
+    codexTurnFn = null; codexAlbumState = null; }
   // Paging: split into pages first, then only the current page is drawn.
   const pages = [];
   { let cur = [], n = 0;
@@ -6171,7 +6212,7 @@ function renderCodexGrid(keepPage){
   gridEl.innerHTML = hint + (html ? html : `<div class="cx-view-hint">No cards in this view yet.</div>`);
   const tok = gridEl._cxTok = (gridEl._cxTok || 0) + 1;
   // One click handler on the grid for every card (2026-10-18; was one listener per tile, added after each chunk).
-  if(!gridEl._cxClick){ gridEl._cxClick = true; gridEl.addEventListener('click', e=>{ const t = e.target && e.target.closest && e.target.closest('.card-tile'); if(t && gridEl.contains(t)) openCardDetail(t.getAttribute('data-defid')); }); }
+  codexWireGridClick(gridEl);
   wireCodexGrid(groupIds);
   if(chunks.length > 1) codexDrawRest(gridEl, tok, chunks.slice(1).map(c=> ()=> chunkHTML(c)), groupIds, Math.ceil(12 / stepN));
 }
@@ -6241,6 +6282,192 @@ function wireCodexGrid(groupIds){
   // pointer cursor) in their HTML, so nothing is added tile by tile here.
   fresh('.codexShopLink').forEach(shopLink=> shopLink.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); switchTab('shop'); }));
 }
+// One click handler on the grid for every card (2026-10-18; was one listener per tile, added after each chunk). 2026-10-18 (package
+// C): a click that ends a swipe (the page just turned) doesn't open the card.
+function codexWireGridClick(gridEl){
+  if(gridEl._cxClick) return; gridEl._cxClick = true;
+  gridEl.addEventListener('click', e=>{ if(Date.now() - codexSwipedAt < 400) return; const t = e.target && e.target.closest && e.target.closest('.card-tile'); if(t && gridEl.contains(t)) openCardDetail(t.getAttribute('data-defid')); });
+}
+// ---- The skill filter (2026-10-18, package C, owner 23:21: "add a way to filter by skills in codex") ----
+// Browse (album, Compressed and Full Art): a ✨ Skills button with the other filters opens a panel of the skills you have seen (the
+// skills book's list, skillBookEntries; admins: all), each with its icon. Pick one or more: the Codex shows only cards that have
+// EVERY skill picked (ALL, so each pick narrows). The picks are a sticky choice (codexFilter.skills, saved with the other
+// filters), count in the ⚙️ Filters badge, and show under the toolbar as chips you can remove, with Clear. A pick redraws the
+// open page only (the album's 18 tiles; tiles come from codexTileCache); the panel is built once, when first opened.
+// The skills book's "Show cards with this skill" opens Browse with just that skill picked (codexShowCardsWithSkill).
+function codexSkillsChosen(){ return Array.isArray(codexFilter.skills) ? codexFilter.skills.filter(k=> typeof k === 'string') : []; }
+function skillDefOf(key){ return SKILL_DEFS.find(x=> x.key === key) || PASSIVE_DEFS.find(x=> x.key === key) || null; }
+// Has the card this skill? The same test the skills book uses to call a skill seen on a card (skillBookSeen).
+function cardHasSkill(d, key, p){
+  const e = (d && d.effects) || {}; p = p === undefined ? skillDefOf(key) : p;
+  try{ return p && p.get ? p.get(e) !== undefined : (e[key] != null && e[key] !== false); }catch(_){ return false; }
+}
+function codexFilterCount(){ return [codexFilter.archetype, codexFilter.mechLine, codexFilter.rarity, codexSkillsChosen().length ? 1 : '', (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; }
+function codexFilterBadge(){
+  const t = document.getElementById('cxFiltersToggle'); if(!t) return; const n = codexFilterCount(); let b = t.querySelector('.cx-fcount');
+  if(!n){ if(b) b.remove(); return; } if(!b){ b = document.createElement('b'); b.className = 'cx-fcount'; t.append(' ', b); } b.textContent = n;
+}
+function codexSkillChoices(){ try{ return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:e.key, icon:e.icon, name:e.name})); }catch(e){ return []; } }
+function codexSkillName(key){ const p = skillDefOf(key); return (p && p.label) || key; }
+function codexSkillPanelHTML(){
+  const list = codexSkillChoices(), on = new Set(codexSkillsChosen());
+  return `<div class="cx-skill-head"><small>${escapeHtml(TX('ui.codex-skill-hint'))}</small><button type="button" class="btn small ghost" data-cxskillclear ${on.size ? '' : 'disabled'}>${escapeHtml(TX('ui.codex-skill-clear'))}</button></div>`
+    + (list.length ? `<div class="cx-skill-chips">${list.map(s=> `<button type="button" class="cx-sk-chip" data-cxskill="${escapeAttr(s.key)}" aria-pressed="${on.has(s.key)}">${s.icon} ${escapeHtml(s.name)}</button>`).join('')}</div>` : `<p class="cx-skill-none">${escapeHtml(TX('ui.codex-skill-none'))}</p>`);
+}
+// The button's count, the chips under the toolbar, the Filters badge: after any change of the picks.
+function codexSkillUI(){
+  const want = codexSkillsChosen(), btn = document.getElementById('cxSkillBtn'), act = document.getElementById('cxSkillActive'), panel = document.getElementById('cxSkillPanel');
+  if(btn){ const b = btn.querySelector('.cx-fcount'); if(b){ b.textContent = want.length; b.hidden = !want.length; } btn.classList.toggle('primary', !!want.length); }
+  if(panel && panel.dataset.built){ const on = new Set(want); panel.querySelectorAll('[data-cxskill]').forEach(c=> c.setAttribute('aria-pressed', on.has(c.dataset.cxskill))); const cl = panel.querySelector('[data-cxskillclear]'); if(cl) cl.disabled = !want.length; }
+  if(act){ act.hidden = !want.length;
+    act.innerHTML = want.length ? `<span>${escapeHtml(TX('ui.codex-skill-active'))}</span>${want.map(k=> `<button type="button" class="cx-sk-chip is-on" data-cxskilloff="${escapeAttr(k)}" aria-label="${escapeAttr(TX('ui.codex-skill-remove'))}: ${escapeAttr(codexSkillName(k))}">${SKILL_ICON[k] || '✨'} ${escapeHtml(codexSkillName(k))} <i aria-hidden="true">✕</i></button>`).join('')}<button type="button" class="btn small ghost" data-cxskillclear>${escapeHtml(TX('ui.codex-skill-clear'))}</button>` : ''; }
+  codexFilterBadge();
+}
+function codexSetSkills(list){ codexFilter.skills = [...new Set(list)]; codexSkillUI(); renderCodexGrid(); }
+function wireCodexSkillFilter(){
+  const btn = document.getElementById('cxSkillBtn'), panel = document.getElementById('cxSkillPanel'), act = document.getElementById('cxSkillActive');
+  if(btn && panel) btn.addEventListener('click', ()=>{
+    if(!panel.dataset.built){ panel.innerHTML = codexSkillPanelHTML(); panel.dataset.built = '1'; }
+    panel.hidden = !panel.hidden; btn.setAttribute('aria-expanded', !panel.hidden); });
+  const onClick = e=>{ const t = e.target && e.target.closest ? e.target : null; if(!t) return;
+    const chip = t.closest('[data-cxskill]'), off = t.closest('[data-cxskilloff]'), clr = t.closest('[data-cxskillclear]');
+    if(chip){ const k = chip.dataset.cxskill, cur = codexSkillsChosen(); codexSetSkills(cur.includes(k) ? cur.filter(x=> x !== k) : cur.concat(k)); }
+    else if(off) codexSetSkills(codexSkillsChosen().filter(x=> x !== off.dataset.cxskilloff));
+    else if(clr) codexSetSkills([]); };
+  if(panel) panel.addEventListener('click', onClick); if(act) act.addEventListener('click', onClick);
+  codexSkillUI();
+}
+// From the skills book: Browse, showing only the cards with this skill (the other filters as they were; the search box empties).
+function codexShowCardsWithSkill(key){
+  if(!key) return; codexFilter.skills = [key]; codexFilter.q = ''; codexPage = 0;
+  try{ saveCodexFilters(); }catch(e){}
+  codexSubTab = 'browse'; renderCodex(); try{ codexPageTurn('back'); }catch(e){}
+}
+// ---- The card album (2026-10-18, package C, owner 20:31: "bestiary - look like a card album"; 20:36: "cards dont show up if you
+// havent seen them before") ----
+// The Codex's Browse tab as a binder: album pages of card sleeves, 3 × 3 a page, two pages side by side on a wide screen and one
+// (2 × 3) on a phone. It holds the cards you have seen, the same list the grid had (codexVisible: seen, owned, or in a pack whose
+// seller is open; revealAfter "?" tiles as before): owned cards in full, seen-only ones dimmed (cx-unowned). Each section (the
+// "Separated" bands, or the admin's View by) starts on a new page with its name, "N seen · M owned" and the admin buttons.
+// Only the open spread is drawn (at most 18 tiles, from codexTileCache); the next spread's tiles are built while the browser is
+// idle, so a turn finds them ready. The search, filters, sorts and the rarity filter all still apply (renderCodexGrid filters,
+// this lays out). Turn with ‹ ›, the arrow keys, a swipe, or jump to a section.
+let codexAlbumState = null, codexTurnFn = null, codexSwipedAt = 0;
+function albumLayout(){
+  const host = document.getElementById('codexBody'), w = (host && host.clientWidth) || window.innerWidth || 1200;
+  return w >= 960 ? {pages:2, cols:3, rows:3, key:'2x9'} : w >= 560 ? {pages:1, cols:3, rows:3, key:'1x9'} : {pages:1, cols:2, rows:3, key:'1x6'};
+}
+// groups [{sec, ids (sorted), all}] -> album pages [{sec, ids, all, cont}]: a section starts a page; a long one runs on (cont).
+function albumPaginate(groups, per){
+  const pages = [];
+  groups.forEach(g=>{
+    if(!g.ids.length){ if(!g.sec.bare) pages.push({sec:g.sec, ids:[], all:g.all, cont:false}); return; } // (an admin's empty skirmish: its page has the Edit rewards button)
+    for(let i = 0; i < g.ids.length; i += per) pages.push({sec:g.sec, ids:g.ids.slice(i, i + per), all:g.all, cont:i > 0});
+  });
+  return pages;
+}
+function codexDrawAlbum(gridEl, groups, tileFor, groupIds, keepPage){
+  if(gridEl._cxMore){ try{ gridEl._cxMore(); }catch(e){} gridEl._cxMore = null; } // a grid draw's chunks stop
+  const L = albumLayout(), pages = albumPaginate(groups, L.cols * L.rows);
+  // a redraw for another layout (a resize) keeps the first card in view
+  const prev = codexAlbumState, firstId = keepPage && prev && prev.L.key !== L.key && prev.pages[codexPage] ? prev.pages[codexPage].ids[0] : null;
+  if(!keepPage) codexPage = 0;
+  if(firstId){ const i = pages.findIndex(p=> p.ids.includes(firstId)); if(i >= 0) codexPage = i; }
+  codexAlbumState = {pages, L, tileFor, groupIds, groups, gridEl};
+  codexWireGridClick(gridEl); codexWireSwipe(gridEl);
+  albumDraw();
+}
+function albumPageHTML(p, i, side){
+  if(!p) return `<section class="al-page pg-${side} is-blank" aria-hidden="true"></section>`;
+  const S = codexAlbumState, sec = p.sec, per = S.L.cols * S.L.rows;
+  const owned = p.all.filter(id=> (myCardCopies[id]||[]).length).length;
+  const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
+  const getAll = adminModeEnabled && p.all.length ? `<button type="button" class="btn small ghost cx-get-all" data-getall="${escapeAttr(sec.key)}" title="Admin: add one copy of every card in this section to your collection">🎁 Get all</button>` : '';
+  const title = sec.bare ? TX('ui.codex-album-title') : sec.label + (p.cont ? ' ' + TX('ui.codex-cont') : '');
+  const sleeves = p.ids.map(id=> `<div class="al-sleeve">${S.tileFor(id)}</div>`).join('') + '<div class="al-slot" aria-hidden="true"></div>'.repeat(Math.max(0, per - p.ids.length));
+  return `<section class="al-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S.pages.length}))}">
+    <header class="al-head"><span class="al-sec">${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
+    <div class="al-grid" style="--al-cols:${S.L.cols}">${sleeves}</div><footer class="al-foot">${i + 1}</footer></section>`;
+}
+function albumDraw(){
+  const S = codexAlbumState; if(!S || !S.gridEl.isConnected) return;
+  const {pages, L, gridEl} = S;
+  codexPage = Math.max(0, Math.min(codexPage, pages.length - 1)); codexPage -= codexPage % L.pages;
+  if(!pages.length){ gridEl.innerHTML = `<div class="cx-view-hint">${escapeHtml(TX('ui.codex-no-cards'))}</div>`; codexTurnFn = null; return; }
+  const sides = L.pages === 2 ? ['left', 'right'] : ['single'];
+  // the sections, for "Go to section": each one's first page
+  const sections = []; pages.forEach((p, i)=>{ if(!p.cont && !p.sec.bare && !sections.some(s=> s.key === p.sec.key)) sections.push({key:p.sec.key, label:p.sec.label, page:i}); });
+  gridEl.innerHTML = `<div class="al-album al-${sides.length === 2 ? 'two' : 'one'}">${sides.map((sd, k)=> albumPageHTML(pages[codexPage + k], codexPage + k, sd)).join(sides.length === 2 ? '<div class="al-spine" aria-hidden="true"></div>' : '')}</div>`
+    + codexPagerNavHTML('album', codexPage, L.pages, pages.length, sections);
+  gridEl.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> albumTurn(+b.dataset.turn)));
+  { const j = gridEl.querySelector('[data-pgjump]'); if(j) j.addEventListener('change', ()=>{ if(j.value !== '') albumGo(+j.value); }); }
+  wireCodexGrid(S.groupIds);
+  codexTurnFn = albumTurn;
+  // the next spread's tiles, built while the browser is idle (they land in codexTileCache)
+  const ahead = pages.slice(codexPage + L.pages, codexPage + 2 * L.pages), ric = window.requestIdleCallback || (f=> setTimeout(f, 200));
+  if(ahead.length) ric(()=>{ if(codexAlbumState !== S) return; ahead.forEach(p=> p.ids.forEach(id=>{ try{ S.tileFor(id); }catch(e){} })); });
+}
+function albumTurn(dir){
+  const S = codexAlbumState; if(!S || !S.gridEl.isConnected) return;
+  const next = codexPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
+  codexLeafTurn(S.gridEl, dir, ()=>{ codexPage = next; albumDraw(); codexKeepInView(S.gridEl); });
+}
+function albumGo(page){
+  const S = codexAlbumState; if(!S) return; const to = page - (page % S.L.pages); if(to === codexPage){ albumDraw(); return; }
+  codexLeafTurn(S.gridEl, to > codexPage ? 1 : -1, ()=>{ codexPage = to; albumDraw(); codexKeepInView(S.gridEl); });
+}
+// After a turn from the bottom buttons on a small screen, the page's top comes back into view.
+function codexKeepInView(el){ try{ const r = el.getBoundingClientRect(); if(r.top < 0) el.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(e){} }
+// The turn buttons under the album / the book: ‹ Page 3–4 of 12 ›, and for the album a "Go to section" list.
+function codexPagerNavHTML(kind, first, per, total, sections){
+  const last = Math.min(total, first + per);
+  const label = last - first > 1 ? TX('ui.codex-pages-of', {n: first + 1, to: last, total}) : TX('ui.codex-page-of', {n: first + 1, total});
+  const jump = sections && sections.length > 1 ? `<select class="pg-jump" data-pgjump aria-label="${escapeAttr(TX('ui.codex-go-to-section'))}"><option value="">${escapeHtml(TX('ui.codex-go-to-section'))}</option>${sections.map(s=> `<option value="${s.page}">${escapeHtml(s.label)}</option>`).join('')}</select>` : '';
+  return `<nav class="pg-nav pg-nav-${kind}" aria-label="${escapeAttr(TX('ui.codex-page-nav'))}"><button type="button" class="btn small pg-btn" data-turn="-1" ${first <= 0 ? 'disabled' : ''} aria-label="${escapeAttr(TX('ui.codex-prev-page'))}" title="${escapeAttr(TX('ui.codex-prev-page'))}">‹</button><span class="pg-of" aria-live="polite">${escapeHtml(label)}</span><button type="button" class="btn small pg-btn" data-turn="1" ${last >= total ? 'disabled' : ''} aria-label="${escapeAttr(TX('ui.codex-next-page'))}" title="${escapeAttr(TX('ui.codex-next-page'))}">›</button>${jump}</nav>`;
+}
+// A page turn (album and book): the page you leave lifts off at the spine and swings away (a copy of it, over the new pages), with
+// a shadow across it. Transform and opacity only. None with reduced motion or Low / None effects (like codexPageTurn): the new pages
+// are simply there. Turning back on a single page swings the new page in instead.
+function codexLeafTurn(host, dir, draw){
+  const motion = !!host && host.isConnected && !reducedMotion() && fxAtLeast('med');
+  let leaf = null;
+  if(motion){
+    const single = host.querySelector('.pg-single'), from = single || host.querySelector(dir > 0 ? '.pg-right' : '.pg-left');
+    if(from && !(single && dir < 0)){
+      leaf = from.cloneNode(true); leaf.querySelectorAll('[id]').forEach(x=> x.removeAttribute('id'));
+      leaf.classList.add('pg-leaf', dir > 0 ? 'pg-leaf-fwd' : 'pg-leaf-back'); leaf.setAttribute('aria-hidden', 'true'); leaf.removeAttribute('aria-label');
+      let x = 0, y = 0, n = from; while(n && n !== host){ x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } // layout px, relative to the host
+      Object.assign(leaf.style, {left: x + 'px', top: y + 'px', width: from.offsetWidth + 'px', height: from.offsetHeight + 'px'});
+    }
+  }
+  draw();
+  if(!motion) return;
+  try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){}
+  if(leaf){ host.appendChild(leaf); let gone = false; const done = ()=>{ if(gone) return; gone = true; try{ leaf.remove(); }catch(e){} }; leaf.addEventListener('animationend', done, {once:true}); setTimeout(done, 900); }
+  else { const pg = host.querySelector('.pg-single'); if(pg){ pg.classList.add('pg-in-back'); setTimeout(()=> pg.classList.remove('pg-in-back'), 700); } }
+}
+// A sideways swipe (touch, pen or a mouse drag) turns the page; up and down still scroll.
+function codexWireSwipe(el){
+  if(!el || el._cxSwipe) return; el._cxSwipe = 1;
+  let x0 = null, y0 = 0, t0 = 0;
+  el.addEventListener('pointerdown', e=>{ if(!e.isPrimary || (e.pointerType === 'mouse' && e.button !== 0)) return; if(e.target && e.target.closest && e.target.closest('input, select, textarea')) return; x0 = e.clientX; y0 = e.clientY; t0 = Date.now(); });
+  el.addEventListener('pointercancel', ()=>{ x0 = null; });
+  el.addEventListener('pointerup', e=>{ if(x0 == null) return; const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if(Math.abs(dx) >= 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && Date.now() - t0 < 900 && codexTurnFn){ codexSwipedAt = Date.now(); codexTurnFn(dx < 0 ? 1 : -1); } });
+}
+// ← / → turn the album or the book while the Codex is open (not while typing, or with a window open over it).
+document.addEventListener('keydown', e=>{
+  if(!codexTurnFn || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  try{ if(currentTab !== 'codex') return; }catch(_){ return; }
+  const t = e.target; if(t && t.closest && t.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])')) return;
+  if(document.querySelector('.modal-overlay:not([hidden])')) return;
+  e.preventDefault(); codexTurnFn(e.key === 'ArrowRight' ? 1 : -1);
+});
+// A resize that changes the layout (two pages / one, 3 or 2 across) packs the pages again.
+{ let t = null; window.addEventListener('resize', ()=>{ clearTimeout(t); t = setTimeout(()=>{ try{
+  if(typeof currentTab === 'undefined' || currentTab !== 'codex') return;
+  const A = codexAlbumState; if(A && A.gridEl.isConnected && albumLayout().key !== A.L.key){ codexDrawAlbum(A.gridEl, A.groups, A.tileFor, A.groupIds, true); return; }
+  const B = codexBookState; if(B && B.L && document.getElementById('bkBook') && (bookLayout().key !== B.L.key || Math.abs((window.innerWidth||0) - (B.vw||0)) > 40 || Math.abs((window.innerHeight||0) - (B.vh||0)) > 80)) bookBuild(true); }catch(e){} }, 180); }); }
 // Hall of Fame tab (2026-10-02): Classic and Antique variants, each tagged with what it's a variant
 // of; Antiques show their improvement and (admin) their balance-check result; drafts are
 // admin-only until approved.
@@ -6672,7 +6899,7 @@ function cardTileHTML(d, opts){
       <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${isMagicDef(d) ? ' atk-magic' : ''}">${isMagicDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🪄</i>') : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus}})}
+      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -6999,8 +7226,12 @@ function abilityBadges(d, bopts){
   // Flying / Earthquake (2026-09-21, task #304): 🪽 reads as "airborne" without reusing any
   // existing glyph on this card face; 🌎💥 (globe + burst) for Earthquake echoes 💣 (Explode)'s
   // "burst" shape while staying visually distinct from it.
-  if(e.flying) out.push(`<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
-  if(e.quick) out.push(`${iconHTML('quick', '👢')}`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
+  // 2026-10-18 (package BP): under a strong wind a Flyer's wing lights up like a Tide unit's wave (.wind-live, the .tide-live look); a
+  // Tailwind also lights a Quick boot beside it (its own Quick boot when it has one), so the card reads wing + quick; a Headwind marks
+  // the wing ×2 (skills twice). See liveWindState.
+  const lw = e.flying && bopts && bopts.live ? liveWindState(bopts.live.pid) : null;
+  if(e.flying) out.push(lw ? `<span class="ab-wing wind-live wind-${lw.k}" title="${escapeAttr((lw.k === 'tail' ? TX('ui.wind-tail-wing') : TX('ui.wind-head-wing')))}">${iconHTML('flying', '🪽')}${lw.k === 'head' ? '<b class="wind-x2">×2</b>' : ''}</span>` : `<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
+  if(e.quick || (lw && lw.k === 'tail')) out.push(lw && lw.k === 'tail' ? `<span class="ab-quick ab-wind-quick wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-quick'))}">${iconHTML('quick', '👢')}</span>` : `<span class="ab-quick">${iconHTML('quick', '👢')}</span>`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
   if(e.swift) out.push(`${iconHTML('swift', '💨')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
   if(e.amore){ const st = bopts && bopts.live ? amoreLiveState(bopts.live) : 'single'; // Amore (2026-10-16)
@@ -7088,43 +7319,194 @@ function skillsByMapHTML(){
   }).join('');
   return `<div class="panel sbm"><h3 class="ref-heading">Skills along the road</h3><p class="panel-sub">Where each skill first turns up. Hover one you've met to read it again.</p>${rows}</div>`;
 }
-// Skill Codex (2026-10-13, user: "The 'Answered by' - I like that, but keep it in the Codex of skills. This codex of skills will be
-// unlocked 2 maps after the codex"): every skill you've met on a card, what it does, and what answers it. Admins see them all.
-function skillCodexHTML(){
+// Skills book (2026-10-18, package C, owner 20:31: "codex: skills - look like pages in a book"; 20:36: "Skills and cards dont show up
+// if you havent seen them before ... Maybe some basic skills become '?' as you progress. But otherwise, skills are hidden till
+// seen"). Was skillCodexHTML, a flat list (2026-10-13: every skill you've met, what it does and what answers it; 2026-10-15: a text
+// filter). Now an open book: two facing parchment pages on a wide screen, one on a phone. Page 1 is the contents (chapters, an A to Z
+// index), then the Skills chapter, then the Field effects chapter, each entry laid out like a field guide (icon, name, the Codex text,
+// what answers it). Prev / next, the arrow keys and a swipe turn the page (codexLeafTurn; still with reduced motion or Low effects).
+//   Seen: a skill is in the book once it is on a card you have seen (codexRevealedForPlayer, the album's rule) or its coach tip has
+//   shown in a fight (coachSeen 'skill-<key>'); a field effect once you have seen it happen (fieldRowState). SKILL_REVEAL and
+//   revealAfter still hide what they hide. Admins read everything.
+//   BASIC_SKILL_HINTS: the core skills that show as a "?" entry before they are seen, once you reach the map that first brings them.
+//   Pages are packed by measuring each entry at the page's real width (bookMeasure), so long translations still fit; a page that
+//   would still overflow scrolls inside itself. Only the open spread is in the page; turning reuses the packed pages.
+const BASIC_SKILL_HINTS = ['flying', 'taunt', 'armor', 'shield', 'poison', 'bleed', 'thorns', 'stealth'];
+let skillCodexQuery = String(uiSticky('skills').q || ''); // 2026-10-16: kept between visits
+let skillBookPage = Math.max(0, Number(uiSticky('skills').page) || 0); // 2026-10-18: the page you left the book on
+let codexBookState = null;
+// The first map, in road order, whose enemy decks carry each of these skills (as skillsByMapHTML finds them).
+function skillIntroMaps(keys){
+  const defs = getCardDefs(), want = new Map(), out = {};
+  keys.forEach(k=>{ const sd = SKILL_DEFS.find(x=> x.key === k) || PASSIVE_DEFS.find(x=> x.key === k); if(sd) want.set(k, sd); });
+  for(const m of CONQUEST_MAPS){ if(m.reserved) continue;
+    for(const n of m.nodes) for(const id of Object.keys(n.deck || {})){ const d = defs[id]; if(!d || !d.effects) continue;
+      want.forEach((sd, k)=>{ if(out[k]) return; let v; try{ v = sd.get ? sd.get(d.effects) : d.effects[k]; }catch(e){} if(v !== undefined && v !== null && v !== false && v !== 0) out[k] = m; }); }
+    if(Object.keys(out).length === want.size) break; }
+  return out;
+}
+// Which skills the player has seen: on a card they have seen, or met in a fight (its coach tip showed).
+function skillBookSeen(){
   const defs = getCardDefs(), met = new Set();
   Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || d.test || d.token) return; if(!adminModeEnabled && (isCardHiddenForPlayer(d) || !codexRevealedForPlayer(id, d))) return;
     SKILL_DEFS.forEach(p=>{ try{ if(p.get ? p.get(d.effects||{}) !== undefined : (d.effects||{})[p.key] != null) met.add(p.key); }catch(e){} }); }); // 2026-10-16 skill audit: SKILL_DEFS, so Freeze, Explode, Revive … count too
+  try{ coachSeen.forEach(k=>{ if(typeof k === 'string' && k.startsWith('skill-')) met.add(k.slice(6)); }); }catch(e){}
+  return met;
+}
+// Every entry of the book, in order: {ch:'sk'|'fx', key, icon, name, html, ans, find, hint}. Kept while nothing it reads has changed
+// (what you've seen and met, the maps cleared, the field effects learned, Admin Mode, the language), so opening the book again is quick.
+let skillBookMemo = null;
+function skillBookEntries(){
+  let sig = ''; try{ sig = [adminModeEnabled ? 'A' : '-', seenCardIds().size, Object.keys(myCardCopies || {}).length, coachSeen.size, (loadConquestProgress().completed || []).length,
+    localStorage.getItem(FIELD_ROWS_KEY) || '', [...hiddenSkillSet()].join(','), (window.BramblewoodI18n && window.BramblewoodI18n.current()) || 'en', Object.keys(liveCards || {}).length].join('|'); }catch(e){ sig = String(Math.random()); }
+  if(skillBookMemo && skillBookMemo.sig === sig) return skillBookMemo.list;
+  const list = skillBookEntriesNow(); skillBookMemo = {sig, list}; return list;
+}
+function skillBookEntriesNow(){
+  const met = skillBookSeen(), shown = p=> p.label && !p.retired && !skillHiddenNow(p.key) && (adminModeEnabled || met.has(p.key));
   // 2026-10-16 skill audit: the skills that live only in SKILL_DEFS (Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock,
   // Stagger, Chained, Explode, Render, Revive, Progeny) are in the Codex too.
-  const list = PASSIVE_DEFS.filter(p=> met.has(p.key) && p.label && !p.retired && !skillHiddenNow(p.key)).concat(SKILL_DEFS.filter(s=> met.has(s.key) && s.label && !s.retired && !PASSIVE_DEFS.some(p=> p.key === s.key))).sort((a, b)=> a.label.localeCompare(b.label)); // 2026-10-15: not retired (Hive Mind), not still hidden (SKILL_REVEAL)
+  const list = PASSIVE_DEFS.filter(shown).concat(SKILL_DEFS.filter(s=> shown(s) && !PASSIVE_DEFS.some(p=> p.key === s.key))).sort((a, b)=> a.label.localeCompare(b.label)); // 2026-10-15: not retired (Hive Mind), not still hidden (SKILL_REVEAL)
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
-  const rows = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
+  const out = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
     if(p.codexNote) txt += ' ' + p.codexNote; // 2026-10-17: a sentence only the Codex shows (Bloodlust's Ambush note)
-    { const cx = SKILL_CODEX_NOTE[p.key]; if(cx) txt += ' ' + cx(); } // 2026-10-18 (package D): what the terse card line left out
-    return `<div class="sk-row" data-sk-find="${escapeAttr((p.label + ' ' + p.key + ' ' + (p.legendary ? TX('ui.legendary-ability') + ' ' : '') + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase())}"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${legendaryTagHTML(p) /* 2026-10-18 (owner 23:05): the gold Legendary tag */}${'' /* 2026-10-17 (user: "Remove the one-off tag in Codex"): the editor's skill picker still marks one-offs */}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
-  // 2026-10-15 (user: "Codex: Skill: Text Filter"): a search box over the list; it matches the name, the text and the answers.
-  return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>
-    ${rows ? `<div class="sk-filter"><input data-text-filter autocomplete="off" type="search" id="skFilterInput" placeholder="Filter skills…" aria-label="Filter skills" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>` : ''}
-    ${rows || '<p class="panel-sub">None yet. Skills show here as you meet them.</p>'}${statusCodexHTML() /* 2026-10-18 (package D) */}<p class="panel-sub sk-none" id="skFilterNone" hidden>No skill matches that.</p></div>`;
+    { const cx = typeof SKILL_CODEX_NOTE !== 'undefined' && SKILL_CODEX_NOTE[p.key]; if(cx) txt += ' ' + cx(); } // 2026-10-18 (package D): what the terse card line left out
+    return {ch:'sk', key:p.key, icon:SKILL_ICON[p.key] || '✨', name:p.label, legendary:!!p.legendary /* 2026-10-18 (owner 23:05): the gold Legendary tag */, html:keywordizeHTML(escapeHtml(txt)), ans:ans.join(', '),
+      find:(p.label + ' ' + p.key + ' ' + (p.legendary ? TX('ui.legendary-ability') + ' ' : '') + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase()}; });
+  // the basic skills not seen yet: a "?" once you reach the map that brings them (no icon while SKILL_REVEAL still hides the skill)
+  if(!adminModeEnabled){
+    const miss = BASIC_SKILL_HINTS.filter(k=> !out.some(e=> e.key === k)), intro = miss.length ? skillIntroMaps(miss) : {};
+    const pr = (()=>{ try{ return loadConquestProgress(); }catch(e){ return {completed:[]}; } })();
+    miss.forEach(k=>{ const m = intro[k]; let open = false; try{ open = !!(m && isMapUnlocked(m, pr)); }catch(e){} if(!open) return;
+      out.push({ch:'sk', key:k, hint:true, icon: skillHiddenNow(k) ? '' : (SKILL_ICON[k] || '✨'), name:'?', html:escapeHtml(TX('ui.book-hint-q')), ans:'', find:''}); });
+  }
+  // Statuses (package D's glossary, 2026-10-18): one you have seen, on a seen skill's text or put on a unit in a fight (its coach tip).
+  try{ const txts = out.filter(e=> !e.hint).map(e=> e.find).join(' ');
+    STATUS_KEYWORDS.forEach(k=>{ const met = adminModeEnabled || coachSeen.has('st-' + k.k) || coachSeen.has('st-' + k.name.toLowerCase()) || new RegExp(k.re.source, 'i').test(txts); if(!met) return;
+      const txt = k.text.charAt(0).toUpperCase() + k.text.slice(1) + (k.codex ? ' ' + k.codex : '');
+      out.push({ch:'st', key:'st-' + k.k, icon:`<span class="bk-dot" style="--kw:${k.c}"></span>`, name:k.name, html:keywordizeHTML(escapeHtml(txt)), ans:'', find:(k.name + ' ' + txt).toLowerCase()}); }); }catch(e){}
+  // Field effects you have seen happen, on the maps you have reached (as the Maps tab learns them).
+  const pr = loadConquestProgress(), rows = new Map();
+  CONQUEST_MAPS.filter(m=> !m.reserved && !m.endless && (adminModeEnabled || isMapUnlocked(m, pr))).forEach(m=> m.nodes.forEach(n=>{ if(n.kind === 'tutorial') return;
+    let r = null; try{ r = fightRules(m.id, n); }catch(e){} fieldConditionRows(r).forEach(row=>{ if(!rows.has(row.key) && (adminModeEnabled || fieldRowState(row.key) !== 'unknown')) rows.set(row.key, row); }); }));
+  [...rows.values()].sort((a, b)=> a.name.localeCompare(b.name)).forEach(row=> out.push({ch:'fx', key:row.key, icon:row.icon, name:row.name, html:keywordizeHTML(escapeHtml(row.text)), ans:'', find:(row.name + ' ' + row.text).toLowerCase()}));
+  return out;
+}
+// Packs measured heights into pages of at most `cap` px (gap between items); an item with brk starts a new page. Returns pages of indices.
+function bookPaginate(heights, cap, gap, brk){
+  const pages = []; let cur = [], h = 0;
+  heights.forEach((x, i)=>{
+    const add = (cur.length ? gap : 0) + x;
+    if(cur.length && ((brk && brk[i]) || h + add > cap)){ pages.push(cur); cur = []; h = 0; }
+    h += (cur.length ? gap : 0) + x; cur.push(i);
+  });
+  if(cur.length) pages.push(cur);
+  return pages;
+}
+function bookLayout(){ const host = document.getElementById('codexBody'), w = (host && host.clientWidth) || window.innerWidth || 1200; return w >= 900 ? {pages:2, key:'2'} : {pages:1, key:'1'}; }
+function bookEntryHTML(e){
+  const show = e.ch === 'sk' && !e.hint ? `<button type="button" class="bk-show" data-bkskill="${escapeAttr(e.key)}">🔎 ${escapeHtml(TX('ui.book-show-cards'))}</button>` : ''; // 2026-10-18 (package C, owner 23:21)
+  return `<article class="bk-entry${e.hint ? ' is-hint' : ''}"><div class="bk-ico" aria-hidden="true">${e.icon || '?'}</div><div class="bk-txt"><h4>${escapeHtml(e.name)}${legendaryTagHTML(e) /* 2026-10-18 (owner 23:05) */}</h4><p>${e.html}</p>${e.ans ? `<p class="bk-ans">${_t('Answered by')}: ${e.ans}</p>` : ''}${show}</div></article>`;
+}
+const BOOK_CHAPTERS = [{ch:'sk', icon:'📘', title:()=> TX('ui.book-skills')}, {ch:'st', icon:'🌀', title:()=> TX('ui.codex-statuses'), sub:()=> TX('ui.codex-statuses-sub')}, {ch:'fx', icon:'🗺️', title:()=> TX('ui.book-field-effects')}];
+function renderSkillBook(body){
+  body.innerHTML = `<div class="bk" id="bkWrap">
+    <div class="bk-bar">
+      <div class="sk-filter bk-filter"><input data-text-filter type="search" id="skFilterInput" placeholder="${escapeAttr(TX('ui.book-filter'))}" aria-label="${escapeAttr(TX('ui.book-filter'))}" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div></div>
+    <div class="bk-book" id="bkBook"></div></div>`;
+  const all = skillBookEntries();
+  codexBookState = {all, entries:null, pages:null, items:null, L:null};
+  const inp = body.querySelector('#skFilterInput'); let t = null;
+  inp.addEventListener('input', ()=>{ clearTimeout(t); t = setTimeout(()=>{ skillCodexQuery = inp.value; uiStickySave('skills', {q: inp.value}); skillBookPage = 0; bookBuild(); }, 120); });
+  codexWireSwipe(document.getElementById('bkBook'));
+  bookBuild(true);
+}
+// Filters the entries, measures them on a page of the real size and packs the pages; then draws the open spread.
+function bookBuild(keepPage){
+  const S = codexBookState, book = document.getElementById('bkBook'); if(!S || !book) return;
+  const words = skillCodexQuery.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  S.entries = words.length ? S.all.filter(e=> e.find && words.every(w=> e.find.includes(w))) : S.all;
+  const cnt = document.getElementById('skFilterCount'); if(cnt) cnt.textContent = words.length ? TX('ui.book-matches', {n: S.entries.filter(e=> !e.hint).length, total: S.all.filter(e=> !e.hint).length}) : '';
+  S.L = bookLayout(); S.vw = window.innerWidth || 0; S.vh = window.innerHeight || 0;
+  // the items: each chapter's heading, then its entries
+  const items = [], brk = [];
+  BOOK_CHAPTERS.forEach(c=>{ const list = S.entries.filter(e=> e.ch === c.ch); if(!list.length) return;
+    const seen = list.filter(e=> !e.hint).length;
+    items.push({ch:c.ch, head:true, html:`<div class="bk-chw"><h3 class="bk-ch"><span>${c.icon} ${escapeHtml(c.title())}</span><small>${escapeHtml(TX('ui.book-chapter-seen', {n: seen}))}</small></h3>${c.sub ? `<p class="bk-ch-sub">${escapeHtml(c.sub())}</p>` : ''}</div>`}); brk.push(true);
+    list.forEach(e=>{ items.push({ch:c.ch, e, html:bookEntryHTML(e)}); brk.push(false); }); });
+  S.items = items;
+  // measure on an empty page of the real size
+  book.innerHTML = bookSpreadHTML(S.L.pages === 2 ? [{blank:true}, {blank:true}] : [{blank:true}], 0, S.L.pages);
+  const pageBody = book.querySelector('.bk-body'); let cap = 520, gap = 12, heights = items.map(()=> 120);
+  if(pageBody && items.length){
+    cap = Math.max(200, pageBody.clientHeight);
+    const meas = document.createElement('div'); meas.className = 'bk-body bk-measure'; meas.style.width = pageBody.clientWidth + 'px';
+    meas.innerHTML = items.map(it=> it.html).join(''); pageBody.parentNode.appendChild(meas);
+    try{ const I = window.BramblewoodI18n; if(I && I.current && I.current() !== 'en'){ const w = document.createTreeWalker(meas, NodeFilter.SHOW_TEXT); let n; while((n = w.nextNode())) I.translateTextNode(n); } }catch(e){} // measured as it will read
+    try{ gap = parseFloat(getComputedStyle(meas).rowGap) || 0; }catch(e){}
+    heights = [...meas.children].map(c=> c.offsetHeight + 1); // layout px (a view's entrance transform would skew getBoundingClientRect)
+    meas.remove();
+  }
+  // a chapter heading never ends a page on its own: it is packed with the entry after it
+  const packed = bookPaginate(heights, cap, gap, brk);
+  for(let i = 0; i < packed.length - 1; i++){ const pg = packed[i], last = pg[pg.length - 1]; if(items[last] && items[last].head){ pg.pop(); packed[i + 1].unshift(last); if(!pg.length){ packed.splice(i, 1); i--; } } }
+  S.pages = [{toc:true}].concat(packed.map(idx=> ({items: idx})));
+  // where each chapter and letter starts, for the contents page
+  S.chStart = {}; S.az = {};
+  S.pages.forEach((pg, pi)=> (pg.items || []).forEach(i=>{ const it = items[i]; if(it.head && S.chStart[it.ch] == null) S.chStart[it.ch] = pi;
+    if(it.e && !it.e.hint && it.ch === 'sk'){ const L = (it.e.name[0] || '').toUpperCase(); if(L && S.az[L] == null) S.az[L] = pi; } }));
+  if(!keepPage) skillBookPage = (words.length && S.L.pages === 1 && S.pages.length > 1) ? 1 : 0; // a search opens on its first match
+  bookDraw();
+}
+function bookTocHTML(S){
+  const chapters = BOOK_CHAPTERS.filter(c=> S.chStart[c.ch] != null).map(c=>{ const n = S.entries.filter(e=> e.ch === c.ch && !e.hint).length;
+    return `<li><button type="button" class="bk-toc-row" data-bkgo="${S.chStart[c.ch]}" aria-label="${escapeAttr(TX('ui.book-go-page', {n: S.chStart[c.ch] + 1}))}"><span>${c.icon} ${escapeHtml(c.title())} <small>${escapeHtml(TX('ui.book-chapter-seen', {n}))}</small></span><i aria-hidden="true"></i><b>${S.chStart[c.ch] + 1}</b></button></li>`; }).join('');
+  const letters = Object.keys(S.az).sort();
+  const words = skillCodexQuery.trim();
+  return `<h3 class="bk-title">${escapeHtml(TX('ui.book-contents'))}</h3>
+    <p class="bk-intro">${escapeHtml(adminModeEnabled ? TX('ui.book-intro-admin') : TX('ui.book-intro'))}</p>
+    ${chapters ? `<ol class="bk-toc">${chapters}</ol>` : `<p class="bk-intro">${escapeHtml(words ? TX('ui.book-no-match') : TX('ui.book-empty'))}</p>`}
+    ${letters.length > 1 ? `<h4 class="bk-az-h">${escapeHtml(TX('ui.book-az'))}</h4><div class="bk-az">${letters.map(L=> `<button type="button" data-bkgo="${S.az[L]}" aria-label="${escapeAttr(TX('ui.book-go-page', {n: S.az[L] + 1}))}">${escapeHtml(L)}</button>`).join('')}</div>` : ''}`;
+}
+// The pages from `first` (one, or two side by side): pages[i] is {toc}, {items:[...]} or {blank}.
+function bookSpreadHTML(pages, first, per){
+  const S = codexBookState, sides = per === 2 ? ['left', 'right'] : ['single'];
+  const page = (pg, i, side)=>{
+    if(!pg) return `<section class="bk-page pg-${side} is-blank" aria-hidden="true"></section>`;
+    let head = '', inner = '';
+    if(pg.toc) inner = bookTocHTML(S);
+    else if(pg.items){ const it0 = S.items[pg.items[0]], ch = BOOK_CHAPTERS.find(c=> c.ch === it0.ch); head = ch ? ch.title() : ''; inner = pg.items.map(i=> S.items[i].html).join(''); }
+    return `<section class="bk-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S && S.pages ? S.pages.length : 1}))}"><header class="bk-run">${escapeHtml(head)}</header><div class="bk-body">${inner}</div><footer class="bk-foot">${pg.blank ? '' : i + 1}</footer></section>`;
+  };
+  const shown = []; for(let k = 0; k < sides.length; k++) shown.push(pages[first + k]);
+  return `<div class="bk-spread bk-${per === 2 ? 'two' : 'one'}">${shown.map((pg, k)=> page(pg, first + k, sides[k])).join(per === 2 ? '<div class="bk-spine" aria-hidden="true"></div>' : '')}</div>`;
+}
+function bookDraw(){
+  const S = codexBookState, book = document.getElementById('bkBook'); if(!S || !book || !S.pages) return;
+  const per = S.L.pages, total = S.pages.length;
+  skillBookPage = Math.max(0, Math.min(skillBookPage, total - 1)); skillBookPage -= skillBookPage % per;
+  try{ uiStickySave('skills', {page: skillBookPage}); }catch(e){}
+  book.innerHTML = bookSpreadHTML(S.pages, skillBookPage, per) + codexPagerNavHTML('book', skillBookPage, per, total, null);
+  book.querySelectorAll('[data-bkgo]').forEach(b=> b.addEventListener('click', ()=> bookGo(+b.dataset.bkgo)));
+  book.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> bookTurn(+b.dataset.turn)));
+  book.querySelectorAll('[data-bkskill]').forEach(b=> b.addEventListener('click', ()=> codexShowCardsWithSkill(b.dataset.bkskill)));
+  codexTurnFn = bookTurn;
+}
+function bookTurn(dir){
+  const S = codexBookState, book = document.getElementById('bkBook'); if(!S || !book || !S.pages) return;
+  const next = skillBookPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
+  codexLeafTurn(book, dir, ()=>{ skillBookPage = next; bookDraw(); });
+}
+function bookGo(page){
+  const S = codexBookState; if(!S || !S.pages) return; const per = S.L.pages, to = page - (page % per);
+  if(to === skillBookPage) return; codexLeafTurn(document.getElementById('bkBook'), to > skillBookPage ? 1 : -1, ()=>{ skillBookPage = to; bookDraw(); });
 }
 // 2026-10-18 (package D, owner: "Please make the explanation terse. The Codex can be bigger."): the detail each shortened card line
 // dropped, shown after it in the Skills Codex. And the statuses, each with its glossary line and, where it has one, a longer note.
 const SKILL_CODEX_NOTE = {smokeBomb: ()=> TX('ui.skx-smoke-bomb'), rocket: ()=> TX('ui.skx-rocket'), packLeader: ()=> TX('ui.skx-pack-leader'),
   shockBolt: ()=> TX('ui.skx-shock-bolt'), fork: ()=> TX('ui.skx-fork'), pack: ()=> TX('ui.skx-pack'), wave: ()=> TX('ui.skx-wave'), amore: ()=> TX('ui.skx-amore'),
   sleep: ()=> TX('ui.skx-sleep'), ritual: ()=> TX('ui.skx-ritual')};
-function statusCodexHTML(){
-  const rows = STATUS_KEYWORDS.map(k=> `<div class="sk-row" data-sk-find="${escapeAttr((k.name + ' ' + k.text + ' ' + (k.codex || '')).toLowerCase())}"><div class="sk-name"><b class="kw" style="--kw:${k.c}">${escapeHtml(k.name)}</b></div><div class="sk-text">${keywordizeHTML(escapeHtml(k.text.charAt(0).toUpperCase() + k.text.slice(1) + (k.codex ? ' ' + k.codex : '')))}</div></div>`).join('');
-  return `<h3 class="ref-heading">${TX('ui.codex-statuses')}</h3><p class="panel-sub">${TX('ui.codex-statuses-sub')}</p>${rows}`; }
-let skillCodexQuery = String(uiSticky('skills').q || ''); // 2026-10-16: kept between visits
-function wireSkillCodexFilter(root){
-  const inp = root.querySelector('#skFilterInput'); if(!inp) return;
-  const rows = [...root.querySelectorAll('.sk-row[data-sk-find]')], cnt = root.querySelector('#skFilterCount'), none = root.querySelector('#skFilterNone');
-  const run = ()=>{ skillCodexQuery = inp.value; uiStickySave('skills', {q: inp.value}); const words = inp.value.trim().toLowerCase().split(/\s+/).filter(Boolean); let n = 0;
-    rows.forEach(r=>{ const hit = words.every(w=> r.dataset.skFind.includes(w)); r.hidden = !hit; if(hit) n++; });
-    if(cnt) cnt.textContent = words.length ? `${n} of ${rows.length}` : ''; if(none) none.hidden = n > 0; };
-  inp.addEventListener('input', run); run();
-}
 // Map Codex (2026-10-13, user: "2 maps after the skill codex, add the map codex + list of field effects learned from each map").
 function mapCodexHTML(){
   const pr = loadConquestProgress();
@@ -9503,7 +9885,7 @@ function wireMatchHistoryPanel(){
         try{ const {cls,text} = logText(ev); return `<div class="log-row ${cls}">${escapeHtml(text)}</div>`; }
         catch(e){ return ''; } // a future/unknown event shape shouldn't break the whole replay
       }).join('') || '<div class="log-row">No events recorded for this match.</div>';
-      logEl.hidden = false;
+      logEl.hidden = false; logEl.scrollTop = logEl.scrollHeight; // the newest line first (2026-10-18, BP)
       el.classList.add('expanded');
     });
   });
@@ -13410,6 +13792,8 @@ const PROGRESS_MERGE_KEYS = {
       out[id] = cardStatsTrim(r); });
     return JSON.stringify(out); },
 };
+// 2026-10-18 (package C): the Codex's seen cards follow the account, merged as a union like the discoveries.
+PROGRESS_KEYS.push(SEEN_KEY); PROGRESS_MERGE_KEYS[SEEN_KEY] = PROGRESS_MERGE_KEYS['bramblewood_arena_discovered'];
 const PROGRESS_LOCAL_AT_KEY = 'bramblewood_progress_local_at';
 function progressSnapshot(){ const d = {}; PROGRESS_KEYS.forEach(k=>{ try{ const v = localStorage.getItem(k); if(v!=null) d[k] = v; }catch(e){} }); return d; }
 function snapshotHash(d){ return String(hashStr(JSON.stringify(d))); }
@@ -13425,6 +13809,7 @@ async function livePullProgress(){
         v = migrateStoredNodeValue(k, v); // 2026-10-14: a blob pushed by an older build still names fights by the old ids (f-1 → 1-1)
         const merge = PROGRESS_MERGE_KEYS[k]; localStorage.setItem(k, merge ? merge(localStorage.getItem(k), v) : v); }catch(e){} });
       try{ myDiscoveredCardIds = new Set(JSON.parse(localStorage.getItem(DISCOVERED_KEY)||'[]')); }catch(e){}
+      mySeenCardIds = null; // 2026-10-18 (package C): read the merged seen list back (seenCardIds)
       LiveData.progressPushedHash = snapshotHash(progressSnapshot());
       try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(Date.parse(data.updated_at))); }catch(e){}
       if(!matchState){ try{ if(currentTab==='home') renderHome(); else if(currentTab==='play') renderPlay(); }catch(e){} }
@@ -23999,7 +24384,7 @@ function testKitCaptureForRerender(m){
 }
 function testKitRestoreFocus(keep){
   const panel = document.getElementById('testKitPanel'); if(panel) panel.scrollTop = keep.scroll||0;
-  const log = document.getElementById('battleLog'); if(log) log.scrollTop = keep.logScroll||0;
+  const log = document.getElementById('battleLog'); if(log) log.scrollTop = battleLogPinned ? log.scrollHeight : (keep.logScroll||0); // pinned to the newest line (2026-10-18, BP)
   if(keep.focus){ const f = document.getElementById(keep.focus.id); if(f){ f.focus({preventScroll:true}); try{ if(keep.focus.start!=null) f.setSelectionRange(keep.focus.start, keep.focus.end); }catch(e){} } }
 }
 function testKitArrangeLayout(root, keep){
@@ -26406,7 +26791,7 @@ async function attemptSummonLeader(preferredLane){
     // 2026-10-17: flying in from your hand, the throne moment (ring, flash, crown, "👑 Leader" ribbon) starts as it lands, and its own
     // drop from above is skipped (fromHand); without the flight (reduced motion, no GSAP) it plays as before.
     const fromHand = !!leaderOrigin && hasGsap() && !reducedMotion(), at = fromHand ? Math.round(handFlightSec(true)*1000) : Math.round(animMs().strike || 380);
-    noteMatchFx(at + LEADER_THRONE_FX_MS, m); // 2026-10-14: the round waits for it
+    noteMatchFx(at + LEADER_THRONE_WAIT_MS, m); // 2026-10-14: the round waits for it (2026-10-18: ×0.75, LEADER_THRONE_WAIT_MS)
     setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId, fromHand}), at); }
   setTimeout(()=> settleStrayBoardCards(), 1600); setTimeout(()=> settleStrayBoardCards(), 3000); // the leader always ends its landing at full height
   await afterPlayerAction(activePid);
@@ -26599,6 +26984,34 @@ function tutCombatLines(){
   if(sig === tutCombatLinesSig && svg && svg.childElementCount) return;
   tutCombatLinesSig = sig; showFacingAll(uids);
 }
+// Stampede's line (2026-10-18, package BP, owner: "when looking at its damage line preview ... it should show the line hitting the
+// opposing card, then continuing towards the HP bar"): a Stampede (Trample, effects.overwhelm) unit with one unit in front gets a second
+// segment from that unit on to the enemy bramble's HP bar. It is always there, faint, so the skill reads; it lights up, with the
+// expected carry-over (💥 +N), when the swing as it stands would kill the blocker with damage to spare: the Attack on its card, minus
+// the blocker's Armor, past the blocker's Health. Misses (Blind, the dark, Evasive) and on-hit tricks aren't guessed at. Two units in
+// front (a half swing on each) keep the plain lines.
+function stampedeExpected(atk, hp, armor){ return Math.max(0, (Number(atk)||0) - Math.max(0, Number(armor)||0) - Math.max(0, Number(hp)||0)); }
+function stampedeFacingHTML(m, uid, f, src, sr, cx, cy){
+  try{ if(!f || f.foes.length !== 1) return '';
+    const defs = getCardDefs(), me = [1,2].map(p=> allCardsOnBoard(m.players[p]).find(c=> String(c.uid)===String(uid))).find(Boolean);
+    if(!me || !((defs[me.defId]||{}).effects||{}).overwhelm) return '';
+    const foe = allCardsOnBoard(m.players[f.pid===1 ? 2 : 1]).find(c=> String(c.uid)===String(f.foes[0])), fEl = boardCardEl(f.foes[0]);
+    const rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${f.pid===1 ? 'B' : 'A'}"]`);
+    if(!foe || !fEl || !rib || !rib.getClientRects().length) return '';
+    const atkShown = parseInt(String((src.querySelector('.stats .atk')||{}).textContent || '').replace(/[^\d]/g, ''), 10);
+    const hpShown = parseInt(String((fEl.querySelector('.stats .hp')||{}).textContent || '').replace(/[^\d]/g, ''), 10);
+    const atk = isFinite(atkShown) ? atkShown : (me.atk != null ? me.atk : (defs[me.defId]||{}).attack || 0);
+    const hp = (isFinite(hpShown) ? hpShown : foe.hp || 0) + (foe.tempHp || 0);
+    const armor = Number(((defs[foe.defId]||{}).effects||{}).armor) || 0;
+    const over = stampedeExpected(atk, hp, armor);
+    const fr = fEl.getBoundingClientRect(), rr = rib.getBoundingClientRect();
+    // from the blocker's centre straight on to the HP bar (the bar's own middle height, at the blocker's column, kept on the bar)
+    const x1 = cx(fr), y1 = cy(fr), X2 = cx({left: Math.max(rr.left + 12, Math.min(rr.right - 12, fr.left + fr.width/2)), width: 0}), y2 = cy(rr);
+    let h = `<line class="facing-stampede${over > 0 ? ' is-over' : ''}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${X2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+    if(over > 0){ const ty = f.pid===1 ? y2 + rr.height/2 + 14 : y2 - rr.height/2 - 6; h += `<text class="facing-stampede-n" x="${(X2 + 16).toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="start">💥 +${over}</text>`; }
+    return h;
+  }catch(err){ return ''; }
+}
 function showFacing(uid, opts){
   const keep = !!(opts && opts.keep);
   const m = matchState; if(!keep) clearFacing(); if(!m || m.resolving) return;
@@ -26648,6 +27061,7 @@ function showFacing(uid, opts){
           });
         }
       } }
+    html += stampedeFacingHTML(m, uid, f, src, sr, cx, cy);
   } else {
     const castleSide = f.pid===1 ? 'B' : 'A';
     const rib = document.querySelector(`[data-hpribbon="${castleSide}"]`);
@@ -26659,21 +27073,45 @@ function showFacing(uid, opts){
 function wireFacingHover(){
   const bf = document.getElementById('battlefieldEl'); if(!bf || bf.dataset.facingWired) return;
   bf.dataset.facingWired = '1';
+  // 2026-10-18 (package BP, owner: "When it's night, hovering over a card doesn't show its lines anymore."): the gate below ran once, on
+  // pointerover, and gave up for good while the card (or its tile) was still landing or being nudged; pointerover doesn't fire again
+  // while the pointer rests on the card, so the lines never came. At night far more is moving when the pointer arrives (the board
+  // under the night filter renders slower, so entrances and neighbour shoves run longer; night-blind and nocturnal cards get their
+  // own marks and bursts), which is why it showed at night. Now a busy card is retried (facingRetry: every 120 ms while the pointer is
+  // still on it, up to 4 s) and a move inside the card redraws lines that a board re-render wiped.
   bf.addEventListener('pointerover', e=>{
     if(e.pointerType==='touch') return;
     const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
-    // 2026-10-08 (user): no attack-line preview while the card is still dropping in; only once it's
-    // settled on the field (hover again, or move within it, to see it).
-    const t = c.querySelector('.card-tile');
-    if(c.matches('.landing-impact, .bee-landing, .is-entering, .entering, .ghost-preview') || c.style.position==='absolute'
-      || (window.gsap && (gsap.isTweening(c) || (t && gsap.isTweening(t))))) return;
-    showFacing(c.dataset.uid);
+    facingHoverUid = c.dataset.uid; tryFacingHover(c, 0);
+  });
+  bf.addEventListener('pointermove', e=>{
+    if(e.pointerType==='touch') return;
+    const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
+    const svg = document.getElementById('facingSvg');
+    if(facingHoverUid === c.dataset.uid && c.classList.contains('is-facing-src') && svg && svg.childElementCount) return; // drawn already
+    const now = performance.now(); if(facingHoverUid === c.dataset.uid && now - facingMoveAt < 100) return; facingMoveAt = now; // a light throttle
+    facingHoverUid = c.dataset.uid; tryFacingHover(c, 0);
   });
   bf.addEventListener('pointerout', e=>{
     const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
     if(e.relatedTarget && c.contains(e.relatedTarget)) return;
+    facingHoverUid = null; clearTimeout(facingRetryT);
     clearFacing();
   });
+}
+let facingHoverUid = null, facingRetryT = 0, facingMoveAt = 0;
+// 2026-10-08 (user): no attack-line preview while the card is still dropping in; only once it's settled on the field.
+function facingCardBusy(c){
+  const t = c.querySelector('.card-tile');
+  return c.matches('.landing-impact, .bee-landing, .is-entering, .entering, .ghost-preview') || c.style.position==='absolute'
+    || !!(window.gsap && (gsap.isTweening(c) || (t && gsap.isTweening(t))));
+}
+const FACING_RETRY_MS = 120, FACING_RETRY_MAX = 33; // 2026-10-18 (BP): ~4 s of retries while the pointer stays on a landing card
+function tryFacingHover(c, n){
+  clearTimeout(facingRetryT);
+  if(!c || !c.isConnected || facingHoverUid !== c.dataset.uid) return;
+  if(!facingCardBusy(c)){ showFacing(c.dataset.uid); return; }
+  if(n < FACING_RETRY_MAX) facingRetryT = setTimeout(()=>{ const cur = facingHoverUid != null ? boardCardEl(facingHoverUid) : null; tryFacingHover(cur && cur.matches(':hover') ? cur : null, n + 1); }, FACING_RETRY_MS);
 }
 function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
   const def = charDef || {id:'none-castle', name:'Bramble', icon:'🏰', rarity:'common', health:maxHp};
@@ -26933,7 +27371,7 @@ function renderMatchUI(){
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}">
+      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}${!isPc && isTowerResults(m) ? ' is-tower' : '' /* 2026-10-18 (RW): a new Spire floor */}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
@@ -26941,7 +27379,7 @@ function renderMatchUI(){
         ${!isPc && isBossResults(m) ? bossEmbersHTML() : ''}${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
         <div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.raidFull ? (m.winner===1 ? 'Absolute Victory!' : 'Raid complete!') /* 2026-10-12 (user: "Even failure and draw is success. It's about how much you deal. However, if you win the match somehow, the colour is yellow and it says Absolute Victory") */ : m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
-        ${gloryBadgesHTML(m)}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
+        ${gloryBadgesHTML(m)}${!isPc && isTowerResults(m) ? towerAscentHTML(m) : ''}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
@@ -27208,7 +27646,8 @@ function renderMatchUI(){
   wireDropZones();
   if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox && !m.fxLib) wireSandboxPanel();
   updateControlsDisabled();
-  m.log.forEach(renderLogLine);
+  { const pin0 = battleLogPinned; m.log.forEach(renderLogLine); battleLogPinned = pin0; } // replaying the lines into the fresh log never changes the pin (2026-10-18, BP)
+  try{ if(!m._logPinInit){ m._logPinInit = true; battleLogPinned = true; } wireBattleLogScroll(); const lg = document.getElementById('battleLog'); if(lg){ if(battleLogPinned) pinBattleLog(lg); else lg.scrollTop = battleLogScrollTop; } }catch(e){} // the rebuilt log keeps its place (2026-10-18, BP)
   // Sandbox has no hand/turn concept (see its own comment above) -- maybeAutoSkip exists to
   // auto-pass an empty-handed turn in a real match, which would otherwise fire every single
   // render here (Sandbox's hand is ALWAYS empty) and spam skipTurn() nonstop.
@@ -27447,9 +27886,11 @@ function wireDropZones(){
   if(battleLogToggle) battleLogToggle.addEventListener('click', ()=>{
     battleLogOpen = !battleLogOpen;
     try{ localStorage.setItem('bramblewood_battlelog_open', battleLogOpen ? '1' : '0'); }catch(e){}
-    if(battleLogOpen){ const lg = document.getElementById('battleLog'); if(lg) lg.scrollTop = lg.scrollHeight; }
     const panel = battleLogToggle.closest('.battle-log-panel');
     if(panel) panel.classList.toggle('collapsed', !battleLogOpen);
+    // 2026-10-18 (package BP, owner: "The battle log should start from the bottom! the latest!"): it opens on the newest line. This used
+    // to scroll before the panel was shown, while the log was display:none (no height), so it opened at the top, on the oldest line.
+    if(battleLogOpen) pinBattleLog(null, true);
     const chevron = battleLogToggle.querySelector('.battle-log-chevron');
     if(chevron) chevron.textContent = battleLogOpen ? '▾' : '▸';
   });
@@ -29685,7 +30126,7 @@ function boardCardHTML(c, defs, opts){
     : `<span class="revive-mark" aria-hidden="true"><i class="rm-ring"></i><i class="rm-feather">${REVIVE_FEATHER_SVG}</i></span>`;
   return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
     }})}${(flies || floats)?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}
@@ -31366,10 +31807,16 @@ function waterRippleAt(el){
 // a "👑 <Leader> joins the fight!" callout crosses the field with a fanfare (yours) or a war drum (theirs), and a big leader
 // (20+ Health or Legendary and up) shakes the field with the screen-shake helper.
 const LEADER_THRONE_FX_MS = 1700; // the drop, the ring and the crown (the beam is gone by 1.55 s); see noteMatchFx
+// 2026-10-18 (package BP, owner: "After summoning your leader — the name title should fade 20% faster, and the next queued animation
+// shouldn't wait so long, maybe 25% faster"): the "👑 <Leader> joins the fight!" callout runs LEADER_CALLOUT_MS (×0.8 of its old 2.4 s,
+// fade included), and the round's queue now waits LEADER_THRONE_WAIT_MS (×0.75 of the throne moment) before the next animation; the
+// throne moment itself (drop, ring, crown, beam) still plays in full over the top.
+const LEADER_CALLOUT_BASE_MS = 2400, LEADER_CALLOUT_FADE = 0.8, LEADER_CALLOUT_MS = Math.round(LEADER_CALLOUT_BASE_MS * LEADER_CALLOUT_FADE);
+const LEADER_QUEUE_WAIT = 0.75, LEADER_THRONE_WAIT_MS = Math.round(LEADER_THRONE_FX_MS * LEADER_QUEUE_WAIT);
 function leaderThroneVfx(uid, opts){
   opts = opts || {};
   const el = (uid && uid.nodeType) ? uid : boardCardEl(uid); if(!el) return;
-  noteMatchFx(fxAtLeast('med') && hasGsap() && !reducedMotion() ? LEADER_THRONE_FX_MS : 500); // 2026-10-14: the round waits for it
+  noteMatchFx(fxAtLeast('med') && hasGsap() && !reducedMotion() ? LEADER_THRONE_WAIT_MS : 500); // 2026-10-14: the round waits for it (×0.75 since 2026-10-18)
   const enemy = !!opts.enemy;
   const defs = getCardDefs(), defId = opts.defId || (el.getAttribute('data-defid') || ((el.querySelector('[data-defid]') || {}).getAttribute ? el.querySelector('[data-defid]').getAttribute('data-defid') : null)), def = defs[defId] || {};
   const uidKey0 = (uid && uid.nodeType) ? uid.getAttribute('data-uid') : uid, rc = matchState && matchState.replayCards && matchState.replayCards[uidKey0];
@@ -31378,7 +31825,7 @@ function leaderThroneVfx(uid, opts){
   // the callout lives on the page, over the field, so a board re-render mid-moment doesn't cut it short
   try{ const bf = document.querySelector('.battlefield'); if(bf){ document.querySelectorAll('.leader-callout').forEach(x=> x.remove()); const q = bf.getBoundingClientRect(), b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status');
     b.style.left = (q.left + q.width/2) + 'px'; b.style.top = (enemy ? q.top + q.height*0.2 : q.bottom - q.height*0.16) + 'px';
-    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; document.body.appendChild(b); setTimeout(()=> b.remove(), 2400); } }catch(e){}
+    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; document.body.appendChild(b); setTimeout(()=> b.remove(), LEADER_CALLOUT_MS); } }catch(e){}
   if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
   // the drop: the card falls onto its spot from above, a touch too big, and settles
@@ -33020,6 +33467,35 @@ function tideTipLines(k){ return (skillHiddenNow('tide') ? TIDE_TIPS_HIDDEN : TI
 // The Tide skill, live (2026-10-14, user: "animals should just say 'Tide'. When in play, and there is a tide. That skill is blue -
 // meaning dynamic, morphing between Tide - ..., Ebb - ...., and High Tide - ....."): what this card's Tide gives right now, or null
 // when no tide is running (or we're not in a fight). Swimmers are Tide units; their own Flow extra joins the rising lines.
+// Wind on the Flyers (2026-10-18, package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)" and
+// "maybe a flying symbol + quick"): what a strong wind gives a Flyer of side pid right now, read the engine's way (rollWind, headwindDouble,
+// the Tailwind pass in resolveCombat): the side the wind blows FROM has a Tailwind (its Flyers get a quick extra turn before combat), the
+// side it blows INTO a Headwind (its Flyers' skills and triggers go off twice). Calm round, no wind field or Ashy (grounded): null.
+// Follows the replay (matchState._windNow, set by the 'wind' event) so the mark changes as the wind is announced; the engine otherwise.
+function liveWindState(pid){
+  try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || m.over || !m.engine || (pid !== 1 && pid !== 2)) return null;
+    if(m.engine.isAshy && m.engine.isAshy()) return null;
+    const w = m._windNow; let tail;
+    if(w) { if(!w.windy) return null; tail = (pid === 1) === !!w.mine; }
+    else { if(!m.engine.isWindy || !m.engine.isWindy()) return null; tail = m.engine.windSideOf(pid) === 'tail'; }
+    return {k: tail ? 'tail' : 'head'};
+  }catch(err){ return null; }
+}
+// The wind is announced mid-replay (the 'wind' event), before the next full board render: the Flyers already on the board get their
+// wing (and Tailwind boot) marks at once, the same marks abilityBadges draws. Seat 1 is always the bottom row (renderBoard).
+function syncWindBadges(){
+  try{ const bf = document.getElementById('battlefieldEl'); if(!bf) return; const defs = getCardDefs();
+    bf.querySelectorAll('.board-card[data-uid][data-defid]').forEach(el=>{ const e = (defs[el.dataset.defid] || {}).effects || {}; if(!e.flying) return;
+      const wing = el.querySelector('.badges .ab-wing'); if(!wing) return;
+      const pid = el.closest('#rowMine, [data-respid="1"]') ? 1 : el.closest('#rowEnemy, [data-respid="2"]') ? 2 : null, lw = liveWindState(pid);
+      wing.classList.remove('wind-live', 'wind-tail', 'wind-head'); wing.querySelectorAll('.wind-x2').forEach(x=> x.remove()); wing.removeAttribute('title');
+      if(lw){ wing.classList.add('wind-live', 'wind-' + lw.k); wing.title = (lw.k === 'tail' ? TX('ui.wind-tail-wing') : TX('ui.wind-head-wing')); if(lw.k === 'head') wing.insertAdjacentHTML('beforeend', '<b class="wind-x2">×2</b>'); }
+      const boot = el.querySelector('.badges .ab-quick'), slot = wing.closest('.abadge');
+      if(lw && lw.k === 'tail'){ if(boot){ boot.classList.add('ab-wind-quick', 'wind-live', 'wind-tail'); boot.title = TX('ui.wind-tail-quick'); }
+        else if(slot) slot.insertAdjacentHTML('afterend', `<span class="abadge"><span class="ab-quick ab-wind-quick wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-quick'))}">${iconHTML('quick', '👢')}</span></span>`); }
+      else if(boot){ if(e.quick){ boot.classList.remove('ab-wind-quick', 'wind-live', 'wind-tail'); boot.removeAttribute('title'); } else { const s = boot.closest('.abadge'); (s || boot).remove(); } } }); // its own Quick boot stays, unlit
+  }catch(err){}
+}
 function liveTideState(e){
   const s = liveTideState0(e); if(!s) return s;
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): with the Tide-evade rule test on, the Tide chip says it too.
@@ -34641,7 +35117,24 @@ function rankLessonHTML(m){
 // play as a boss (boss, sub-boss), the Campaign Boss and the world / raid bosses on the map; elites, champions, mini-bosses and
 // dungeon floors keep the gold look, and a raid fight (m.raidFull) keeps its own.
 const CRIMSON_RESULT_KINDS = new Set(['boss', 'subboss', 'finalboss', 'worldboss', 'raidboss', 'megaraid']);
-function isBossResults(m){ return !!(m && m.winner === 1 && !m.raidFull && m.mode !== 'pc' && m.mode !== 'tutorial' && m.conquestNode && CRIMSON_RESULT_KINDS.has(m.conquestNode.kind)); }
+function isBossResults(m){ return !!(m && m.winner === 1 && !m.raidFull && m.mode !== 'pc' && m.mode !== 'tutorial' && m.conquestNode && CRIMSON_RESULT_KINDS.has(m.conquestNode.kind) && !towerResultsFloor(m)); } // + not a Spire floor (2026-10-18, its own look below)
+// Babel Spire results (2026-10-18, package RW follow-up, owner 23:20: "The victory screen for Towers should be very slightly different as
+// well. It's triumphant to know that your deck has reached the next tier."): a won NEW Spire floor (every tenth floor's Keeper too) gets
+// its own Victory card, a notch below the boss crimson: a cool sky and stone-gold palette (.winloss-card.is-glory.is-tower in
+// arena_template.html) and an ascent line under the title: a little tower whose cleared floor lights up, a beam climbing to the next
+// floor, and "Floor N cleared → Floor N+1" (the 50th: "the top of the Spire"). FX.F.hooks.resultsShown adds a light column (FX.F.towerAscend).
+// A free replay of a cleared floor (m.towerReplay, 0 reward) keeps the ordinary card.
+function towerResultsFloor(m){
+  if(!m || !m.conquestNode) return 0;
+  let r = null; try{ r = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); }catch(e){}
+  return r && r.node && r.node.tower ? (r.node.floor | 0) : 0;
+}
+function isTowerResults(m){ return !!(m && m.winner === 1 && !m.towerReplay && !m.raidFull && m.mode === 'conquest' && towerResultsFloor(m) > 0); }
+function towerAscentHTML(m){
+  const f = towerResultsFloor(m), top = f >= TOWER_FLOORS, lit = top ? 4 : 1;
+  const line = top ? TX('results.tower-step-top', {n: f}) : TX('results.tower-step-up', {n: f, next: f + 1});
+  return `<div class="wl-ascent${top ? ' is-top' : ''}" role="status"><span class="wl-ascent-tower" aria-hidden="true">${[0, 1, 2, 3, 4].map(i=> `<i class="${i === lit ? 'is-lit' : !top && i === 2 ? 'is-next' : ''}"></i>`).join('')}<b class="wl-ascent-beam"></b></span><span class="wl-ascent-txt"><b>${escapeHtml(line)}</b><small>${escapeHtml(TX('results.tower-step-sub'))}</small></span></div>`;
+}
 function bossEmbersHTML(){ return `<div class="wl-embers" aria-hidden="true">${Array.from({length:14}, (_, k)=> `<i style="left:${(k*31 + 5)%100}%; --dx:${((k%5) - 2)*14}px; animation-delay:-${(k*0.55).toFixed(2)}s; animation-duration:${(4.5 + (k*1.3)%3.5).toFixed(1)}s"></i>`).join('')}</div>`; }
 function gloryBadgesHTML(m){
   if(!m.conquestRankEarned || m.winner!==1) return '';
@@ -35395,7 +35888,8 @@ function renderLogLine(ev){
   if(ev.type==='waitTick') return;
   // 2026-10-12 (user: "the battle log never shows everything, only maybe some, and not the latest few"): it reads top to
   // bottom in order now and follows the newest line (it used to stack newest-first but scroll to the oldest end).
-  const atEnd = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
+  // 2026-10-18 (package BP): following is battleLogPinned now, kept across the board re-renders that rebuild #battleLog (see pinBattleLog).
+  battleLogSync(log);
   if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); log.scrollTop = log.scrollHeight; return; }
   const lt = logText(ev); if(!lt || !lt.text) return; // 2026-10-16: an event with no line (a fuse tick) used to throw here
   const {cls,text} = lt;
@@ -35406,7 +35900,26 @@ function renderLogLine(ev){
   row.className = 'log-row '+cls+(logIsHeadline(ev) ? ' log-head' : ' log-sub');
   row.textContent = text;
   log.appendChild(row);
-  if(atEnd || !log.dataset.userScrolled) log.scrollTop = log.scrollHeight;
+  pinBattleLog(log);
+}
+// Battle log pinning (2026-10-18, package BP, owner: "The battle log should start from the bottom! the latest!"): the log follows the
+// newest line unless the player has scrolled up to read; scrolling back to the bottom (within 40 px) pins it again. The state lives here,
+// not on the element, because every full render rebuilds #battleLog and replays m.log into it. Opening the log always pins it.
+let battleLogPinned = true, battleLogScrollTop = 0;
+const BATTLE_LOG_PIN_PX = 40;
+function battleLogAtBottom(log){ return log.scrollHeight - log.scrollTop - log.clientHeight < BATTLE_LOG_PIN_PX; }
+function pinBattleLog(log, force){ log = log || document.getElementById('battleLog'); if(force) battleLogPinned = true; if(log && battleLogPinned){ log.scrollTop = log.scrollHeight; log._setTop = log.scrollTop; } }
+// Before a line goes in, read where the reader is now (a scroll event can lag a frame behind a burst of lines): moved up from where the log
+// last put itself (log._setTop, on this element: a re-render's fresh log starts at 0), unpinned; back at the bottom, pinned.
+function battleLogSync(log){
+  if(!log || !log.clientHeight) return;
+  if(battleLogPinned && log._setTop != null && log.scrollTop < log._setTop - 2 && !battleLogAtBottom(log)) battleLogPinned = false;
+  else if(!battleLogPinned && battleLogAtBottom(log)) battleLogPinned = true;
+  if(!battleLogPinned && log._setTop != null) battleLogScrollTop = log.scrollTop; // the reader's place, for the next re-render
+}
+function wireBattleLogScroll(){
+  const log = document.getElementById('battleLog'); if(!log || log.dataset.pinWired) return; log.dataset.pinWired = '1';
+  log.addEventListener('scroll', ()=>{ if(!log.clientHeight || !log.isConnected) return; battleLogPinned = battleLogAtBottom(log); battleLogScrollTop = log.scrollTop; if(battleLogPinned) log._setTop = log.scrollTop; }, {passive:true});
 }
 /* ---- attack "feel", GSAP-driven since 2026-09-16 ("improve the effects and gsap-like
    animations of the game"): every card that lands (or attempts) a hit reels back into a
@@ -38083,7 +38596,8 @@ function renderVfxForEvent(ev){
   if(ev.type==='pierceHQ'){
     const el = hqTileEl(ev.targetSide);
     SoundKit.pierceTone();
-    if(el){ flashHqDamage(el); floatText(el, '🗡 -'+ev.dmg, 'debuff'); }
+    if(el) flashHqDamage(el);
+    { const at = hqRibbonFloatAnchor(ev.targetSide) || el; if(at) floatText(at, '🗡 -'+ev.dmg, 'hq-big'); } // on the field's HP bar too (2026-10-18, BP)
     const mm = matchState;
     displayHqDamage(mm, ev.targetSide, ev.dmg);
   }
@@ -38093,7 +38607,10 @@ function renderVfxForEvent(ev){
   if(ev.type==='overwhelmHQ'){
     const el = hqTileEl(ev.targetSide);
     SoundKit.overwhelmTone();
-    if(el){ shakeEl(el); flashHqDamage(el); floatText(el, '💥 -'+ev.dmg, 'debuff'); }
+    // 2026-10-18 (package BP, owner: "Trample's damage number should be at the battlefield HP bar's centre — same as the rest"): the
+    // number pops on the field's HP bar (hqRibbonFloatAnchor, as a hitHQ's does), no longer on the bramble tile under the board.
+    if(el){ shakeEl(el); flashHqDamage(el); }
+    { const at = hqRibbonFloatAnchor(ev.targetSide) || el; if(at) floatText(at, '💥 -'+ev.dmg, 'hq-big'); }
     const mm = matchState;
     displayHqDamage(mm, ev.targetSide, ev.dmg);
   }
@@ -38356,7 +38873,7 @@ function renderVfxForEvent(ev){
   // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
   if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine};
       if(matchState && ev.windy) matchState._windLastMine = mine;
-      const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } syncWindField(matchState); }catch(e){} } // + the wind layer (2026-10-15)
+      const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } syncWindField(matchState); syncWindBadges(); }catch(e){} } // + the wind layer (2026-10-15); + the Flyers' wind marks (2026-10-18, BP)
   if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
   // 2026-10-15 (FX batch B): Twilight has its own toast (it used to be announced as "Day breaks").
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ showToast(ev.phase==='night' ? TX('toast.night-falls') : ev.phase==='twilight' ? TX('toast.twilight-day-and-night-creatures-are') : TX('toast.day-breaks'), 'ok'); }catch(e){}
@@ -38448,7 +38965,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='discard') try{ enemyPitchVfx(ev); }catch(e){} // 2026-10-15: the opponent's pitched card sinks into the ground, then their pill counts it
   // 2026-10-10 (user: "Enemy summoning their leader should mean something as well!"): the rival's leader gets its own,
   // ominous entrance on their half of the field.
-  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ noteMatchFx(380 + LEADER_THRONE_FX_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380); } // 2026-10-14: the round waits for it
+  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ noteMatchFx(380 + LEADER_THRONE_WAIT_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380); } // 2026-10-14: the round waits for it
   // Voice barks (2026-10-16): a card that arrives may speak once it has landed (a leader after its throne entrance).
   if(ev.type==='play' && !ev.reserve && ev.uid != null){ const u = ev.uid, dId = ev.defId, lead = !!ev.leader; setTimeout(()=>{ try{ maybeBark(u, 'play', {defId:dId, leader:lead}); }catch(e){} }, lead ? 380 + LEADER_THRONE_FX_MS + 200 : 650); }
 }
@@ -43728,6 +44245,37 @@ function collectionStats(){
   const skins = owned.length + owned.filter(id=> (myCardCopies[id]||[]).some(c=> c && c.foil)).length;
   return {total: ids.length, owned: owned.length, levelSum, levelMax: ids.length*10, skins, skinTotal: ids.length*SKINS_PER_CARD};
 }
+// Collection score (2026-10-18, package C, owner 20:31: "overall collection score listed at the btm and in profile w/ achievements";
+// 20:36: "the collection score should only count what the player owns"). One number, the game's Collection level: every card you own
+// added up by its Forge level (collectionStats().levelSum, which the deck offer's rarity floor already reads), out of 10 a card. The
+// cards, brambles and achievements next to it are counts only. Shown under every Codex tab (collectionScoreBarHTML) and on the
+// Profile beside the achievements (profileCollectionCardHTML).
+function collectionScoreInfo(){
+  const c = collectionStats();
+  let brambles = 0, bramblesTotal = 0, achv = 0, achvTotal = 0, ready = 0;
+  try{ Object.values(CHARACTER_DEFS).forEach(ch=>{ if(!ch) return; bramblesTotal++; if(castleUnlocked(ch)) brambles++; }); }catch(e){}
+  try{ achvTotal = ACHIEVEMENT_DEFS.length; achv = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
+    const ctx = achievementContext(); ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; }catch(e){}
+  return {score: c.levelSum, max: c.levelMax, pct: c.levelMax ? Math.round(c.levelSum / c.levelMax * 100) : 0, owned: c.owned, total: c.total, brambles, bramblesTotal, achv, achvTotal, ready};
+}
+function collectionScoreBarHTML(){
+  const c = collectionScoreInfo();
+  return `<div class="cx-score" role="group" aria-label="${escapeAttr(TX('ui.score-title'))}"><span class="cx-score-ico" aria-hidden="true">📚</span>
+    <div class="cx-score-main"><span class="cx-score-k">${escapeHtml(TX('ui.score-title'))}</span><span class="cx-score-n"><b>${c.score}</b> / ${c.max}</span>
+      <span class="pf-tile-bar"><span style="width:${c.pct}%"></span></span><small>${escapeHtml(TX('ui.score-sub'))}</small></div>
+    <ul class="cx-score-facts"><li>🗂️ ${escapeHtml(TX('ui.score-cards', {n: c.owned, total: c.total}))}</li><li>🏰 ${escapeHtml(TX('ui.score-brambles', {n: c.brambles, total: c.bramblesTotal}))}</li>
+      <li><button type="button" class="cx-score-achv" data-goachv>🏆 ${escapeHtml(TX('ui.score-achievements', {n: c.achv, total: c.achvTotal}))}${c.ready ? ` · <em>${escapeHtml(TX('ui.score-ready', {n: c.ready}))}</em>` : ''}</button></li></ul></div>`;
+}
+function wireCollectionScoreBar(root){ const b = root.querySelector('[data-goachv]'); if(b) b.addEventListener('click', ()=> switchTab('achievements')); }
+function profileCollectionCardHTML(){
+  const c = collectionScoreInfo();
+  return `<button type="button" class="panel pf-achv-card pf-score-card" id="pfScoreBtn" title="${escapeAttr(TX('ui.score-open-codex'))}">
+    <span class="pf-achv-ico" aria-hidden="true">📚</span>
+    <span class="pf-achv-body"><b>${escapeHtml(TX('ui.score-title'))}: ${c.score} / ${c.max}</b><small>${escapeHtml(TX('ui.score-cards', {n: c.owned, total: c.total}))} · ${escapeHtml(TX('ui.score-brambles', {n: c.brambles, total: c.bramblesTotal}))}</small>
+      <span class="pf-tile-bar"><span style="width:${c.pct}%"></span></span><small>${escapeHtml(TX('ui.score-sub'))}</small></span>
+    <span class="pf-go" aria-hidden="true">›</span>
+  </button>`;
+}
 function profileHeroHTML(){
   const av = loadAvatar(), L = playerLevelInfo(), rank = rankForRating(myRating);
   const name = myProfile ? myProfile.name : 'Guest';
@@ -43866,6 +44414,7 @@ function renderProfile(){
     <div class="pf-grid">
       <div class="pf-col">
         <div class="panel pf-wallet"><h3>👛 Wallet</h3><div class="pf-wallet-row">${['gold','gems','dust','metal'].concat(featureUnlockedSafe('tavern') || (myCurrencies.beer||0) > 0 ? ['beer'] : []).map(k=> currencyPillHTML(k)).join('')}</div></div>
+        ${profileCollectionCardHTML() /* 2026-10-18 (package C): the collection score, beside the achievements */}
         ${profileAchievementsCardHTML()}
         ${profileMedalsHTML() /* 2026-10-15: Medals moved here from the Notices */}
         ${playerPreviewHTML()}
@@ -43881,6 +44430,7 @@ function renderProfile(){
   </div>`;
   document.getElementById('pfAvatarBtn').onclick = openCharacterEditor;
   document.getElementById('pfAchvBtn').onclick = ()=> switchTab('achievements');
+  { const sb = document.getElementById('pfScoreBtn'); if(sb) sb.onclick = ()=>{ let open = true; try{ open = tabOpen('codex'); }catch(e){} if(!open) return; codexSubTab = 'browse'; switchTab('codex'); }; } // 2026-10-18 (package C)
   wireAboutYou(); wireAdminProfileTools();
   const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); });
   wireMatchHistoryPanel();

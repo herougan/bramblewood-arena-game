@@ -116,8 +116,10 @@ for(const code of ['de', 'fr', 'es', 'ja', 'zh-Hans', 'it', 'pt', 'ko', 'zh-Hant
     ok(X.legendaryTagHTML({}) === '' && X.legendaryTagHTML({legendary:true}).includes('kw-legendary'), 'legendaryTagHTML');
   }
 }
-ok(/<div class="sk-name">\$\{ic\(p\.key\)\}<b>\$\{escapeHtml\(p\.label\)\}<\/b>\$\{legendaryTagHTML\(p\)/.test(src), 'the Skills Codex shows the tag after the skill name');
-ok(/\(p\.legendary \? TX\('ui\.legendary-ability'\) \+ ' ' : ''\)/.test(src), 'the Codex filter finds "legendary"');
+// the Codex's skills book (package C, 2026-10-18): each skill entry carries legendary, and its heading shows the tag
+ok(/return \{ch:'sk', key:p\.key, icon:SKILL_ICON\[p\.key\] \|\| '✨', name:p\.label, legendary:!!p\.legendary\b/.test(src), 'the skills book entry carries the Legendary marker');
+ok(/<h4>\$\{escapeHtml\(e\.name\)\}\$\{legendaryTagHTML\(e\)/.test(src), 'the Skills Codex shows the tag after the skill name');
+ok(/find:\(p\.label \+ ' ' \+ p\.key \+ ' ' \+ \(p\.legendary \? TX\('ui\.legendary-ability'\) \+ ' ' : ''\)/.test(src), 'the Codex filter finds "legendary"');
 ok(/\.kw\.kw-legendary\{[^}]*background:linear-gradient\(180deg,#f7dc7e,#c99a22\)/.test(fs.readFileSync(path.join(ROOT, 'arena_template.html'), 'utf8')), 'the tag is gold');
 
 // ---- 4. the decisions
