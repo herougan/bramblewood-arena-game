@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (Package Y: audit 4 fixes)
+- **Wave crash kills count for the Wave unit:** a unit killed by crashing into its neighbour is the Wave unit's kill (kill stat, Crown of Thorns, Midas, On Kill); in a swing the dead stay until the swing's own clean-up, so the swing's credit and its other on-hit effects no longer point at a unit already taken away. The Wave field's crashes are still nobody's kill.
+- **"Simulate 200 vs my deck" plays the Difficulty picked** in Edit skirmish (the CPU at that level, your deck at Smart); the result line names the CPU level. 200 games cost about the same as before.
+- **Texts:** heal triggers say they stanch Bleed first (heals no longer touch Poison); Cure reads "cures your most poisoned unit of up to N Poison". A field row hidden until a later map (Psychic Dampener) says "Win a fight on Map 41 or further on to learn this." instead of "you learn it the first time it happens".
+- **Codex:** Quarry Mole's "?" tile redraws once Map 0 is cleared (the tile cache key now carries the reveal state).
+- **Smaller:** Creative never gives Creativity to a cage or a structure; a road fight saved before today resumes on its node's CPU level (Map 0–4: Basic), not Smart; the CPU's Sacrifice "about to die" check counts Bleed only when the unit is about to act; the Tutorial map's opening slide no longer plays for saves past T-2 (or with a Map 2+ win).
+- **Accessibility/perf:** the dialog watcher (bramblewood-a11y.js) ignores class flips inside the board and on elements that can't be dialogs; the fading faction screen is skipped so the fight starting under it isn't trapped.
+- `tests/y-2026-10-18.js` (in `tests/run-all.sh`); `tests/wave-tide-2026-10-17.js` covers crash kills.
+
 ## 2026-10-18 (i18n catch-up, part F)
 - **Today's new texts are translated in all 12 packs:** the guild, invite and network-error messages (couldn't load / leave / set up, Retry, Retrying…, matchmaking unreachable), the sign-in screen's guest line, the leaderboard's empty state and rating notes, "An egg! You'll need a place to hatch it.", "There's a Nest on Map {n}{where}." and the Creative / Creativity keyword texts, plus the guild screen's "Join a Guild" and "Join" so the half-done-guild message names words on screen (`tools/i18n_2026_10_18f.py`, 32 strings each). Coverage: 325/325 plain game texts and 171/171 templates per pack, no dead keys (13 texts stay English on purpose).
 
