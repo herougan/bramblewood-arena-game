@@ -144,10 +144,23 @@ cards_md = ['\n| Map | Card | Rarity | Made for | Source now | Card # |', '|---|
 for p in placed:
     s = p['source']; no, mname = MAPN.get(p['poolMap'], (None, p['poolMap']))
     cards_md.append(f"| {no} {mname} | {p['name']} | {p['rarity']} | {p['poolSlot']} | {'the basic packs' if s.get('kind') == 'pack' else 'reward of ' + s['node']} | #{p['numericId']} |")
+# the map identities (tools/thematic_pass_2026_10_19.js THEMES) and the GI examples' tune
+import subprocess
+TH = json.loads(subprocess.check_output(['node', '-e', "process.stdout.write(JSON.stringify(require('./tools/thematic_pass_2026_10_19.js').THEMES))"], cwd=ROOT))
+themes_md = ['\n| Map | Identity | Theme types | Off theme here | Capped |', '|---|---|---|---|---|']
+for mid, t in TH.items():
+    no, mname = MAPN.get(mid, (None, mid))
+    themes_md.append(f"| {'' if no is None else no} `{mid}` | {t['name']} | {', '.join(t['tags'])}{(' + ' + ', '.join(nm(x) for x in t['allow'])) if t.get('allow') else ''} | {', '.join(nm(x) for x in t.get('ban', [])) or '–'} | {', '.join(f'{nm(k)} ({v[0]} copies, {v[1]} fights)' for k, v in (t.get('cap') or {}).items()) or '–'} |")
+gi = load('thematic-gi-tune-2026-10-19.json', [])
+gi_md = ['| Card | Rarity | Was | Measured | Now | Measured | Band |', '|---|---|---|---|---|---|---|']
+for g in gi:
+    gi_md.append(f"| {nm(g['id'])} | {g['rarity']} | {g['from'][0]}/{g['from'][1]} | {g['trail'][0][2]:g}% | {g['to'][0]}/{g['to'][1]} | {g['winRate']:g}% | {g['band'][0]:g}–{g['band'][1]:g}% |")
 md_path = os.path.join(ROOT, 'docs', 'thematic-pass-2026-10-19.md')
 if os.path.exists(md_path):
     md = open(md_path, encoding='utf-8').read()
     md = re.sub(r'<!-- fights -->.*<!-- /fights -->', lambda _: '<!-- fights -->\n' + '\n'.join(md_rows) + '\n<!-- /fights -->', md, flags=re.S)
+    md = re.sub(r'<!-- themes -->.*<!-- /themes -->', lambda _: '<!-- themes -->\n' + '\n'.join(themes_md) + '\n<!-- /themes -->', md, flags=re.S)
+    md = md.replace('{{GITABLE}}', '\n'.join(gi_md))
     md = re.sub(r'<!-- cards -->.*<!-- /cards -->', lambda _: '<!-- cards -->\n' + '\n'.join(cards_md) + '\n<!-- /cards -->', md, flags=re.S)
     open(md_path, 'w', encoding='utf-8').write(md)
 n_main = [r for r in rows if not r['side']]

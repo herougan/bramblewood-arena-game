@@ -216,7 +216,7 @@ const fights = [
   // Map 21: no badgers on the Quiet Summit (R2 put them in because the bird flocks barely hurt you); the Summit's big elk and the
   // rams take their place, and the chapel's tortoise stands by the Cathedral Eagle. (Snow leopards were tried first: too weak, the
   // fights went to 97-100% and the tuner wanted Shields of 100-250.)
-  F('m21', '21-2', 'badger-berserker:2', 'ur-elk:1,rockslide-ram:1', null, 'the Summit\'s Ür-Elk and a ram for the badgers'),
+  F('m21', '21-2', 'badger-berserker:2', 'ur-elk:1,fumarole-ibex:1', null, 'the Summit\'s Ür-Elk and an ibex for the badgers (a Rare, for the Map 21 quarter)'),
   F('m21', '21-3', 'badger-berserker:2', 'ur-elk:1,rockslide-ram:1', null, 'Ür-Elk and a ram for the badgers (its new reward: Chapel Tortoise)'),
   F('m21', '21-4', 'badger-berserker:1', 'ur-elk:1', null, 'an Ür-Elk for the badger'),
   F('m21', '21-5', 'badger-berserker:2', 'ur-elk:1,rockslide-ram:1', null, 'Ür-Elk and a ram for the badgers'),
