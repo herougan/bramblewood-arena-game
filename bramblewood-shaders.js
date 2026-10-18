@@ -265,10 +265,12 @@ void main(){
       vec4 C = u_cards[i];
       vec2 c = C.xy + C.zw*0.5;
       vec2 dir = (c - lampS) * vec2(aspect, 1.0);
-      vec2 off = normalize(dir + vec2(0.0001)) * 0.026 + vec2(0.0, 0.016);
+      // 2026-10-18 (package U, user: "Reduce the size of card shadows by 10%."): the throw (0.026 / 0.016) and the soft edge
+      // (0.05 .. -0.01) are both x0.9, so the shadow reaches 10% less far past the card.
+      vec2 off = normalize(dir + vec2(0.0001)) * 0.0234 + vec2(0.0, 0.0144);
       vec2 p = (uv - c) * vec2(aspect, 1.0) - off;
       float d = boxSdf(p, C.zw*0.5*vec2(aspect, 1.0), 0.012);
-      sh = max(sh, smoothstep(0.05, -0.01, d));
+      sh = max(sh, smoothstep(0.045, -0.009, d));
     }
     outc.a += sh * 0.55 * (1.0 - outc.a);
   }

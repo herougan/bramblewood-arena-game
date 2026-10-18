@@ -238,7 +238,8 @@ ok(fieldRun(0, 4) === false, 'Spring Rain: the CPU holds it when it would heal y
   ok(['elite', 'champion', 'miniboss', 'subboss', 'boss', 'finalboss', 'worldboss', 'dungeon'].every(k=> L('m5', k) === 1 && L('m20', k) === 1), 'Map 5+: elite missions and bosses get the smart CPU');
   ok(['skirmish', 'elite', 'boss'].every(k=> L('m21', k) === 2 && L('m40', k) === 2), 'Map 21+: the smartest CPU everywhere');
   ok(L('side5', 'elite') === 1 && L('side5', 'skirmish') === 0, 'a side map follows its parent map number');
-  ok(L('tw', 'elite', {tower:true, floor:1}) === 1 && L('tw', 'boss', {tower:true, floor:24}) === 1 && L('tw', 'elite', {tower:true, floor:25}) === 2, 'the Babel Spire: smart below floor 25, smartest from it');
+  ok([1, 24, 25, 60].every(fl=> L('tw', 'elite', {tower:true, floor:fl}) === 1 && L('tw', 'boss', {tower:true, floor:fl}) === 1), 'the Babel Spire: smart on every floor (2026-10-18, owner 11:46)');
+  ok(L('tw', 'boss', {tower:true, floor:30, ai:'smartest'}) === 2 && L('tw', 'elite', {tower:true, floor:3, ai:'basic'}) === 0, "the Babel Spire: Edit skirmish's pick still overrides it");
   ok(L('m40', 'boss', {ai:'basic'}) === 0 && L('m1', 'skirmish', {ai:'smartest'}) === 2 && L('m5', 'skirmish', {ai:'smart'}) === 1, "Edit skirmish's pick (node.ai) overrides Auto");
   ok(R.cpuAiLevelOfMatch({mode:'tutorial'}) === 0 && R.cpuAiLevelOfMatch({mode:'ai'}) === 1 && R.cpuAiLevelOfMatch({mode:'conquest', aiLevel:2}) === 2, 'matches: the tutorial basic, others smart unless the fight set a level');
   ok(/<select id="seAi">/.test(src) && /'loopUnits','ai'\]\.forEach\(\(k,i\)=>\{ const val = v\(\[[^\]]*'seAi'\]\[i\]\)/.test(src), 'Edit skirmish: a Difficulty select (seAi) read into node.ai');
