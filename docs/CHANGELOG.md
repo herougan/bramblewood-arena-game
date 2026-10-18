@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 late (RW follow-up: the Babel Spire's Victory card)
+- **A new Babel Spire floor won has its own Victory card** (owner 23:20: "The victory screen for Towers should be very slightly different as well. It's triumphant to know that your deck has reached the next tier.").
+  - The card is cool sky and stone-gold: a notch below the boss crimson, and different from the gold card.
+  - Under the title is the ascent line. A little tower shows the floor you cleared lit, and a beam climbs to the next one, which glows. It reads "Floor N cleared → Floor N+1" and "Your deck climbs to the next tier."; floor 50 says "the top of the Spire!".
+  - When it opens, a light column rises from the lit floor, with sparks and a rising swell (`FX.F.towerAscend`).
+  - Under reduced motion or Effects Low the beam stands still and there is no column. Every text is light on dark blue (AA or better) in both themes.
+  - Spire Keeper floors (every tenth) get this card too, not the boss crimson.
+  - **A free replay of a cleared floor** (0 reward) keeps the ordinary card with its replay line.
+- Code: `isTowerResults`, `towerResultsFloor` and `towerAscentHTML` (`arena_app.js`); `.winloss-card.is-glory.is-tower` and `.wl-ascent` (`arena_template.html`); `FX.F.towerAscend` (`bramblewood-fx-f.js`). `isBossResults` leaves Spire floors out.
+- Effects Lab: `res-tower-ascent` (A floor 12, B floor 50, C still, D the replay's ordinary card), with an inventory row. Three new TX keys (`results.tower-step-*`), in all 12 packs (`tools/i18n_2026_10_18rw.py`). `tests/reward-screens-2026-10-19.js` covers it.
+
 ## 2026-10-18 (package NA: Grotto Lobster and Amber Cicada, the owner's art)
 - **New card: Grotto Lobster** 🦞 (Rare, 1 Lumber, Wait 2, 3/12). Armor 1, Crab Claws, Darksight and Brood 1: its crablings hatch beside it. It is the second card reward of 2-B-3 The Glowing Pool (Smugglers' Grotto, the sea cave off Pebble Beach).
 - **New card: Amber Cicada** 🦗 (Uncommon, 1 Lumber, Wait 3, 3/20). It spends three rounds underground (Wait 3). On Ready, its song gives every ally 2 Shield. It also has Scare 1. It is the second card reward of 1-2 Cricket Chorus (Thistlewood, Map 1). There is no cicada emoji, so it uses the cricket.

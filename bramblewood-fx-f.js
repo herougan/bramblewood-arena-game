@@ -1639,6 +1639,7 @@ H.resultsShown = (card, m, env)=>{
   const sec = (c, head)=> [...c.querySelectorAll('.rw-sec')].find(s=> ((s.querySelector('.rw-head') || {}).textContent || '').trim() === head);
   const jobs = [], add = (find, run)=>{ if(find(card)) jobs.push(()=>{ const c = cur(), el = c && find(c); if(el) run(el === true ? c : el, c); }); };
   add(c=> c.classList.contains('is-boss') && m.winner === 1, el=> M.bossVictory(el, {sound:env.sound})); // 2026-10-18 (package RW): the boss win's crimson embers
+  add(c=> c.classList.contains('is-tower') && m.winner === 1 && c.querySelector('.wl-ascent-tower'), el=> M.towerAscend(el, {sound:env.sound})); // 2026-10-18 (RW): a new Spire floor's light column
   add(()=> m.winner === 0 && !m.raidFull && m.mode !== 'tutorial', (_, c)=> M.resDraw(c));
   add(()=> m.mode === 'tutorial', (_, c)=> M.tutorialResult(c, {won:m.winner === 1}));
   add(c=> c.querySelector('.wl-rank-lesson'), el=> M.rankLesson(el));
@@ -1859,6 +1860,21 @@ M.raidClaimScreen = function(spec, opts){
       .to(go, {opacity:1, y:0, duration:.35, ease:'back.out(2)'}, t + .1);
     sway = bossImg ? g.to(bossImg, {rotation:2.2, y:-10, duration:2.6, ease:'sine.inOut', yoyo:true, repeat:-1}) : null;
   });
+};
+// A new Babel Spire floor won (results: .winloss-card.is-tower, its .wl-ascent-tower): a pale-gold ring on the lit floor, a column of
+// light climbing from it, sparks drifting up and a rising swell. Gentler than the boss's embers. (2026-10-18, package RW follow-up)
+css('tower', `.fxf .fxf-col{position:absolute; left:0; top:0; width:22px; border-radius:11px; background:linear-gradient(0deg, rgba(255,232,160,.95), rgba(200,228,255,.55) 55%, rgba(200,228,255,0)); filter:blur(1px); mix-blend-mode:screen; transform-origin:50% 100%; will-change:transform,opacity;}`);
+M.towerAscend = function(towerEl, opts){
+  opts = opts || {}; const g = G(); if(!g || !towerEl) return Promise.resolve();
+  const lit = towerEl.querySelector('.is-lit') || towerEl, c = pt(lit), H = Math.min(220, Math.max(120, VH()*.28));
+  try{ opts.sound && opts.sound('growthSwell'); }catch(e){}
+  ring(c.x, c.y, {color:'#f3d98c', size:70, width:3, dur:.6});
+  const host = lay('fxf-colhost', '', 3000), col = document.createElement('i'); col.className = 'fxf-col'; host.appendChild(col);
+  col.style.height = H + 'px'; g.set(col, {x:c.x - 11, y:c.y - H, scaleY:0, opacity:1});
+  burst(c.x, c.y, {n:12, colors:['#fff3c4', '#cfe4ff', '#f0d58a'], glow:true, size:4, spread:.8, angle:-Math.PI/2, dist:[60, H], dur:1.3, ease:'power1.out'});
+  later(()=>{ try{ opts.sound && opts.sound('unlockChime'); }catch(e){} }, 380);
+  return new Promise(res=> g.timeline({onComplete:()=>{ host.remove(); call(opts.onDone); res(); }})
+    .to(col, {scaleY:1, duration:.55, ease:'power2.out'}).to(col, {opacity:0, duration:.6, ease:'power1.in'}, '+=.25'));
 };
 // The boss victory (results: .winloss-card.is-boss): a crimson pulse, an ember ring round the title and embers rising from the card's
 // lower corners. The card's own crimson look and its drifting embers are CSS (arena_template.html, .winloss-card.is-boss).

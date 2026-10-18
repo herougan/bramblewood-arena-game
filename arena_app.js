@@ -27243,7 +27243,7 @@ function renderMatchUI(){
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}">
+      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}${!isPc && isTowerResults(m) ? ' is-tower' : '' /* 2026-10-18 (RW): a new Spire floor */}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
@@ -27251,7 +27251,7 @@ function renderMatchUI(){
         ${!isPc && isBossResults(m) ? bossEmbersHTML() : ''}${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
         <div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.raidFull ? (m.winner===1 ? 'Absolute Victory!' : 'Raid complete!') /* 2026-10-12 (user: "Even failure and draw is success. It's about how much you deal. However, if you win the match somehow, the colour is yellow and it says Absolute Victory") */ : m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
-        ${gloryBadgesHTML(m)}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
+        ${gloryBadgesHTML(m)}${!isPc && isTowerResults(m) ? towerAscentHTML(m) : ''}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
@@ -34951,7 +34951,24 @@ function rankLessonHTML(m){
 // play as a boss (boss, sub-boss), the Campaign Boss and the world / raid bosses on the map; elites, champions, mini-bosses and
 // dungeon floors keep the gold look, and a raid fight (m.raidFull) keeps its own.
 const CRIMSON_RESULT_KINDS = new Set(['boss', 'subboss', 'finalboss', 'worldboss', 'raidboss', 'megaraid']);
-function isBossResults(m){ return !!(m && m.winner === 1 && !m.raidFull && m.mode !== 'pc' && m.mode !== 'tutorial' && m.conquestNode && CRIMSON_RESULT_KINDS.has(m.conquestNode.kind)); }
+function isBossResults(m){ return !!(m && m.winner === 1 && !m.raidFull && m.mode !== 'pc' && m.mode !== 'tutorial' && m.conquestNode && CRIMSON_RESULT_KINDS.has(m.conquestNode.kind) && !towerResultsFloor(m)); } // + not a Spire floor (2026-10-18, its own look below)
+// Babel Spire results (2026-10-18, package RW follow-up, owner 23:20: "The victory screen for Towers should be very slightly different as
+// well. It's triumphant to know that your deck has reached the next tier."): a won NEW Spire floor (every tenth floor's Keeper too) gets
+// its own Victory card, a notch below the boss crimson: a cool sky and stone-gold palette (.winloss-card.is-glory.is-tower in
+// arena_template.html) and an ascent line under the title: a little tower whose cleared floor lights up, a beam climbing to the next
+// floor, and "Floor N cleared → Floor N+1" (the 50th: "the top of the Spire"). FX.F.hooks.resultsShown adds a light column (FX.F.towerAscend).
+// A free replay of a cleared floor (m.towerReplay, 0 reward) keeps the ordinary card.
+function towerResultsFloor(m){
+  if(!m || !m.conquestNode) return 0;
+  let r = null; try{ r = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); }catch(e){}
+  return r && r.node && r.node.tower ? (r.node.floor | 0) : 0;
+}
+function isTowerResults(m){ return !!(m && m.winner === 1 && !m.towerReplay && !m.raidFull && m.mode === 'conquest' && towerResultsFloor(m) > 0); }
+function towerAscentHTML(m){
+  const f = towerResultsFloor(m), top = f >= TOWER_FLOORS, lit = top ? 4 : 1;
+  const line = top ? TX('results.tower-step-top', {n: f}) : TX('results.tower-step-up', {n: f, next: f + 1});
+  return `<div class="wl-ascent${top ? ' is-top' : ''}" role="status"><span class="wl-ascent-tower" aria-hidden="true">${[0, 1, 2, 3, 4].map(i=> `<i class="${i === lit ? 'is-lit' : !top && i === 2 ? 'is-next' : ''}"></i>`).join('')}<b class="wl-ascent-beam"></b></span><span class="wl-ascent-txt"><b>${escapeHtml(line)}</b><small>${escapeHtml(TX('results.tower-step-sub'))}</small></span></div>`;
+}
 function bossEmbersHTML(){ return `<div class="wl-embers" aria-hidden="true">${Array.from({length:14}, (_, k)=> `<i style="left:${(k*31 + 5)%100}%; --dx:${((k%5) - 2)*14}px; animation-delay:-${(k*0.55).toFixed(2)}s; animation-duration:${(4.5 + (k*1.3)%3.5).toFixed(1)}s"></i>`).join('')}</div>`; }
 function gloryBadgesHTML(m){
   if(!m.conquestRankEarned || m.winner!==1) return '';
