@@ -392,6 +392,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const foe = players[otherId(pid)]; if(!foe || !c || !(c.hp > 0) || c.stunned || c.frozen > 0 || c.asleep > 0) return -1;
     if(c.wait > 0){ c.wait -= 1; return -1; }
     const atk = Math.max(0, Number(c.atk) || 0), n = Math.ceil(atk / 2); if(!(n > 0)) return -1;
+    if(confusedFumbles(c, sideOf(pid), events, 'reserve')) return -1; // Confused (2026-10-19, package FZ): the action fumbles 1 in 2
     const ev = o=>{ if(recordEvents && events) events.push(o); };
     if(before) before();
     const t = frontCardAt(foe, sl);
@@ -563,7 +564,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       smoke:0, _smokeJustSet:false,         // Smoke (2026-10-14): attacks at it miss 1 in 2 while >0 (a Smoke Bomb ally), ticks down every upkeep
       blind:0, _blindJustSet:false,         // this card's own attacks miss half the time while >0 (2026-10-11; was: always), ticks down every upkeep
       tipsy:0, _tipsyJustSet:false,         // Tipsy (2026-10-11): swings at the unit to the left, in front or to the right at random; nobody there = a miss
-      confused:0, _confusedJustSet:false,   // Confused (2026-10-11): its triggers and on-hit skills fizzle half the time
+      confused:0, _confusedJustSet:false,   // Confused (2026-10-11; 2026-10-19 FZ): its triggers, skills and actions each fumble half the time (confusedFumbles)
       shocked:0, _shockedJustSet:false,     // every hit THIS card takes deals 50% bonus damage while >0, ticks down every upkeep
       corrode:0, _corrodeJustSet:false,     // stacking (like Poison/Bleed): each stack lowers this card's effective Attack by 1, decays by 1/round
       // Stagger (2026-09-24, task #109, "one status effect per elemental damage type" — the
@@ -737,6 +738,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (chance in %, default 50). That is a very heavy rule (every swing and every trigger is a coin flip), so the number can soften it.
   function slipOdds(){ return Math.min(100, fxN(rules.slippery, 50)) / 100; }
   function slips(){ return !!rules.slippery && rnd() < slipOdds(); }
+  // Confused (2026-10-19, package FZ, owner 23:32: "Confuse — 1/2 chance that its triggers, skills and actions fail to activate."):
+  // every time a Confused unit would set off a trigger, a skill or an action (its swing, its shots, a reserve strike, a counter, a
+  // Sentry or Ambush strike), one seeded coin flip (rnd(), so sims and replays repeat): 1 in 2 it fumbles and nothing happens. One
+  // event for all of them, {type:'confusedWhiff', what} ("😵 X is confused and fumbles."). A unit that isn't Confused draws no number.
+  function confusedFumbles(c, side, events, what){
+    if(!(c && c.confused > 0) || rnd() >= 0.5) return false;
+    if(recordEvents && events) events.push({type:'confusedWhiff', side, defId:c.defId, uid:c.uid, what});
+    return true;
+  }
   // 2026-10-16 (user: "Should sandstorm also have windy rules? I think so." / "glass-storm: sandstorm + all units are buffeted for random 1-3
   // damage"): a Sandstorm (and the Glass-storm, which is a Sandstorm) brings Windy's random wind unless the fight sets its own.
   function sandstormOn(){ return !!(rules.sandstorm || rules.glassStorm); }
@@ -2743,7 +2753,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function stunRoundsOf(v){ const n = v === true ? 1 : Number(v) || 0; return n > 5 ? 1 : Math.max(1, Math.round(n)); }
   function rollStatusOnHit(kind, cfg, defCard, mySide, attCard, sideOfFn, enemyId, events){
     if(!cfg || !defCard || defCard.hp<=0) return;
-    if(attCard && attCard.confused>0 && rnd() < 0.5){ if(recordEvents && events) events.push({type:'confusedWhiff', side:mySide, defId:attCard.defId, uid:attCard.uid, what:kind}); return; } // Confused: on-hit skills fizzle half the time
+    if(confusedFumbles(attCard, mySide, events, kind)) return; // Confused: on-hit skills fumble half the time (the same coin flip as before, 2026-10-19 one helper)
     if(attCard && slips()){ if(recordEvents && events) events.push({type:'slipFizzle', side:mySide, defId:attCard.defId, uid:attCard.uid, what:kind}); return; } // Slippery (2026-10-16): on-hit skills fizzle too
     let chance = (typeof cfg==='object') ? Number(cfg.chance)||0 : Number(cfg)||0;
     let duration = (typeof cfg==='object') ? Math.max(1, Number(cfg.duration)||1) : 1;
@@ -3007,6 +3017,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(!cd || !cd.effects || !cd.effects.counterattack || card.hp <= 0 || card.wait > 0 || card.stunned || card.frozen > 0 || card.asleep > 0) return;
     const opp = opposingCardOf(players, ownerId, card); if(!opp || !opp.card || opp.card.hp <= 0) return;
     const amt = effAtk(card); if(!(amt > 0)) return;
+    if(confusedFumbles(card, sideOf(ownerId), events, 'counter')) return; // Confused (2026-10-19, package FZ): the counter fumbles 1 in 2
     const r = damageCard(opp.card, amt, cd.dmgType || 'physical', card);
     ensureStat(stats, sideOf(ownerId), card.defId).dealt += r.dmg; ensureStat(stats, sideOf(otherId(ownerId)), opp.card.defId).taken += r.dmg;
     if(recordEvents && events){ events.push({type:'hit', side:sideOf(ownerId), attDefId:card.defId, attUid:card.uid, targetSide:sideOf(otherId(ownerId)), targetDefId:opp.card.defId, targetUid:opp.card.uid, dmg:r.dmg, dmgType:cd.dmgType || 'physical', armorBlocked:r.armorBlocked, armorSoaked:r.armorSoaked||0, counter:true});
@@ -3617,7 +3628,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           const e = effectsOf(a);
           if(e.ambush){ let opp = null; try{ opp = opposingCardOf(players, foeId, a); }catch(err){ opp = null; }
             const n = numN(e.ambush, AMBUSH_DEF);
-            if(opp && opp.card === x && n > 0){ anyHit = true;
+            if(opp && opp.card === x && n > 0 && !confusedFumbles(a, sideOf(foeId), events, 'ambush')){ anyHit = true; // Confused (2026-10-19, package FZ): 1 in 2 it fumbles
               if(recordEvents && events) events.push({type:'ambush', side:sideOf(foeId), uid:a.uid, defId:a.defId, targetSide:sideOf(pid), targetUid:x.uid, targetDefId:x.defId, amount:n, moved: !fresh.has(x) || undefined});
               const dmg = damageCardFlat(x, n, 'physical', a.defId, a.uid);
               ensureStat(stats, sideOf(foeId), a.defId).dealt += dmg; ensureStat(stats, sideOf(pid), x.defId).taken += dmg;
@@ -3625,7 +3636,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
               if(x.hp > 0){ bleedTick(sideOf, pid, x, stats, events, 'defend'); runCustomTriggers(players, sideOf, pid, x, CARD_DEFS[x.defId], 'onAttacked', stats, events); wiltOnHit(x, sideOf(pid), events); } } }
           if(e.sentry && x.hp > 0 && sentryCanAct(a) && sentryWatches(players, foeId, a, x)){
             const amt = effAtk(a); if(!(amt > 0)) continue;
-            a._sentryRound = turnNo; anyHit = true;
+            a._sentryRound = turnNo;
+            if(confusedFumbles(a, sideOf(foeId), events, 'sentry')) continue; // Confused (2026-10-19, package FZ): its once-a-round strike fumbles 1 in 2
+            anyHit = true;
             const dt = attackDmgType(CARD_DEFS[a.defId]);
             if(recordEvents && events) events.push({type:'sentry', side:sideOf(foeId), uid:a.uid, defId:a.defId, targetSide:sideOf(pid), targetUid:x.uid, targetDefId:x.defId});
             const r = damageCard(x, amt, dt, a);
@@ -4477,6 +4490,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(!c || c.hp<=0 || c.wait>0 || c.stunned || c.frozen>0 || c.asleep>0 || c.cageOf) return false;
         if(passOnlyUid && c.uid !== passOnlyUid) return false;
         const def = CARD_DEFS[c.defId]; const fx = def && def.effects; if(!fx) return false;
+        if(hasShotSkill(c) && confusedFumbles(c, sideOf(pid), events, 'shot')) return false; // Confused (2026-10-19, package FZ): the shot action fumbles 1 in 2
         const shots = [];
         const fletch = (pl.perks && pl.perks.fletcher) ? 1 : 0; // Wildpath "Fletcher's Eye"
         const fl17 = auraN(pl, 'fletcher'); // Fletcher N (2026-10-17): every arrow of your side deals N more
@@ -4635,7 +4649,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // earlier per-trigger flag) is now simply the default.
       // 2026-10-11 (16:56 list, item 9): also off while Stunned, Frozen or Asleep. Primed cards keep every trigger online.
       if(boardCard && !ALWAYS_ON_HOOKS.has(hook) && !t.whileWaiting && !(def.effects && def.effects.primed) && (boardCard.wait>0 || boardCard.stunned || boardCard.frozen>0 || boardCard.asleep>0)) return;
-      if(boardCard && boardCard.confused>0 && rnd() < 0.5){ if(recordEvents && events) events.push({type:'confusedWhiff', side:mySide, defId:boardCard.defId, uid:boardCard.uid, what:t.do}); return; } // Confused: the trigger fizzles
+      if(confusedFumbles(boardCard, mySide, events, t.do)) return; // Confused: the trigger fumbles half the time (2026-10-19: one helper, the same coin flip)
       if(boardCard && slips()){ if(recordEvents && events) events.push({type:'slipFizzle', side:mySide, defId:boardCard.defId, uid:boardCard.uid, what:t.do}); return; } // Slippery (2026-10-16): "triggers/effects to fail" 1 in 2
       // A cost step (2026-10-16, user: "New action: On Attack, Burn 1 Lumber, Deal N extra fire damage on hit. ... So the mid-action
       // is Burn 1 Lumber, the after-action is Deal N extra fire damage. One (unused) is Burn 1 Lumber, Heal ally N"): t.cost
@@ -5177,6 +5191,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   }
   // Can this board unit swing at whatever faces it this round? (2026-10-18, the smartest CPU's look across the board.)
   function aiCanSwing(c){ return !!c && (c.atk || 0) > 0 && !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !(c.asleep > 0) && !(c.paralyzed > 0) && !c.cageOf; }
+  // How likely that swing is (2026-10-19, package FZ): a Confused unit fumbles its action 1 in 2.
+  function aiSwingOdds(c){ return aiCanSwing(c) ? (c.confused > 0 ? 0.5 : 1) : 0; }
   // The smartest CPU's slot (2026-10-18, aiLevel 2). Every legal slot is scored, the best taken; ties go to the slot nearest the
   // centre, then the left one (deterministic). For a slot facing one of your units:
   //   focus: a Ready unit that kills it this round scores 3 plus a little for what the victim is worth (its Attack and Health), so
@@ -5195,11 +5211,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(!f) return ready ? 0.8 + Math.min(atk, 8) * 0.1 : 0.4;
       let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide && (!(d.effects||{}).trueStrike || legendaryDodge('tide'))) hit *= 0.5; /* True Strike (2026-10-18): no Tide dodge, unless Legendary (2026-10-18, owner 23:05) */
       const kills = atk >= (f.hp || 0) && atk > 0 && hit > 0.5, killNow = kills && ready;
-      const theyHit = aiCanSwing(f), fAtk = Math.max(0, f.atk || 0) * (tideOn && myTide && !isTide(f) ? 0.5 : 1);
+      const odds = aiSwingOdds(f), theyHit = odds > 0, fAtk = Math.max(0, f.atk || 0) * (tideOn && myTide && !isTide(f) ? 0.5 : 1);
       const dies = theyHit && fAtk >= hp && !(killNow && quick);
       let s = killNow ? 3 + ((f.atk || 0) + (f.hp || 0) * 0.45) * 0.1 : kills ? 1.5 : 0;
-      if(theyHit) s += Math.min(fAtk, 8) * blockW; // the castle hit it stops
-      if(dies) s -= 2.5 + prayerNOf({defId}) * 2; else s += 0.5; // a Prayer unit's tokens die with it (2026-10-19, package E)
+      if(theyHit) s += Math.min(fAtk, 8) * blockW * odds; // the castle hit it stops (a Confused unit's swing half counts, 2026-10-19 FZ)
+      if(dies) s += -(2.5 + prayerNOf({defId}) * 2) * odds + 0.5 * (1 - odds); else s += 0.5; // a Prayer unit's tokens die with it (2026-10-19, package E); a Confused killer only 1 in 2 (FZ)
       return s; };
     let best = null;
     legal.forEach(sl=>{ const s = score(sl);
@@ -5217,7 +5233,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // Would this unit of the CPU's die to what faces it this round? (2026-10-18, the smartest CPU's Sacrifice timing.)
   function aiDoomed(players, aiId, c){
     if(!slotMode || !c) return false; const f = frontCardAt(players[otherId(aiId)], c.slot);
-    return aiCanSwing(f) && (f.atk || 0) >= (c.hp || 0) + (c.tempHp || 0);
+    return aiSwingOdds(f) >= 1 && (f.atk || 0) >= (c.hp || 0) + (c.tempHp || 0); // a Confused killer may fumble: not doomed (2026-10-19, FZ)
   }
   // Which Dark Summon card to cast over which of its own Sacrifice N units (2026-10-18, see the call in aiTakeTurnOnce), or null.
   // (2026-10-18, aiLevel 2: a unit that dies to what faces it this round is expendable too, so it is spent before it is lost.)
@@ -6382,6 +6398,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // special-casing needed for which of those two cases actually applies.
     const handledUids = new Set(); // acted OR permanently skipped (reload/stun/etc.) this round — never reconsidered
     const zeroNoted = new Set();   // 0-Attack units already logged this round (they stay eligible for a later look)
+    const frozeNoted = new Set();  // units whose "frozen" skip is already logged this round (2026-10-19, package FZ: one line, not one per action)
     const swingAtkNow = card=> Math.max(0, effAtk(card) + swarmBonus(card) + defianceBonus(card) + phaseBonus(card) + (card.inspired||0) + tideAtk(card) - chokeOf(card)); // − Sulphur Fumes (2026-10-17)
     const poolMeta = new Map();    // uid -> {att, attId, enemyId} — currently eligible, not yet acted
     function discoverEligibleAttackers(){
@@ -6404,7 +6421,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             if(card._boomerangCombat === combatNo && !passOnlyUid){ handledUids.add(uid); return; } // its boomerang came back: that was its attack
             if(card.reloadRemaining>0){ skipTurn('reload', card, ownId); handledUids.add(uid); return; }
             if(card.stunned){ skipTurn('stunned', card, ownId); handledUids.add(uid); return; }
-            if(card.frozen>0){ skipTurn('frozen', card, ownId); handledUids.add(uid); return; }
+            if(card.frozen>0){ if(!frozeNoted.has(uid)){ frozeNoted.add(uid); skipTurn('frozen', card, ownId); } card._frozenJustSet = false; handledUids.add(uid); return; } // 2026-10-19 (FZ): a freeze laid this round before it acted is spent now, see the loop below
             if(card.asleep>0){ skipTurn('asleep', card, ownId); handledUids.add(uid); return; }
             if(card.paralyzed>0 && rnd()<0.5){ skipTurn('paralyzed', card, ownId); handledUids.add(uid); return; } // one fresh coin flip, right here, the only time this card is ever considered this round
             if(card.chained){ skipTurn('chained', card, ownId); handledUids.add(uid); return; }
@@ -6508,6 +6525,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const a = pending;
       pending = null;
       if(a.att.hp<=0){ pending = pickNextAttacker(); continue; }
+      // Frozen before its turn (2026-10-19, package FZ, owner 23:32: "When a card is frozen before its turn arrives — it fails to take
+      // an action."): a unit frozen earlier this round (an earlier unit's Freeze or Ice Arrow hit) was already in the queue and still
+      // swung. Now it loses this action (its swing or its shot, with every On Attack trigger and on-hit skill). That freeze is then
+      // spent: it melts at this round's end (the counter laid this round no longer waits an upkeep first), so a Freeze N costs N
+      // actions, as it does a unit that had already acted. (Reserve strikes check Frozen themselves, see reserveStrike.)
+      if(!a.reserve && a.att.frozen > 0){
+        if(!frozeNoted.has(a.uid)){ frozeNoted.add(a.uid); skipTurn('frozen', a.att, a.attId); }
+        a.att._frozenJustSet = false;
+        pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       if(a.shot){ // 2026-10-17: this shooter's Speed 1 shot action; its kills are cleared away before the next action, like a swing's
         if(fireShotsOf(players, sideOf, a.attId, a.att, stats, events, killCredit)) reflowAfterKills(null); // 2026-10-18: its kills credited like a swing's (was an empty book)
         pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
@@ -6517,6 +6543,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Snapshot taken BEFORE this iteration can credit any new kills, so reflowAfterKills()
       // can tell "died just now, this turn" apart from "was already dead/credited earlier
       // this round" — see reflowAfterKills' own comment for why this can't be taken inside it.
+      // Confused (2026-10-19, package FZ, owner 23:32): its swing is an action, so 1 in 2 it fumbles: no swing, no On Attack, no
+      // on-hit skill, no Bleed tick from swinging (Confuse had no other effect on the swing, so this is the whole rule for it).
+      if(confusedFumbles(a.att, sideOf(a.attId), events, 'attack')){ pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       const killCreditKeysAtTurnStart = new Set(Object.keys(killCredit));
       currentAttacker = a.att;
       const attDef = CARD_DEFS[a.att.defId];
@@ -7206,7 +7235,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
   return { tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
-    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+    darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, aiSwingOdds /* 2026-10-19 (package FZ): a Confused unit's swing counts 1 in 2 for the CPU */, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

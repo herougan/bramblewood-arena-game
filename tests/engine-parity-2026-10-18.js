@@ -207,6 +207,11 @@ ok(fieldRun(0, 4) === false, 'Spring Rain: the CPU holds it when it would heal y
     if(h && h.slot === -1){ if(level === 1) smartBad++; else smartestBad++; } });
   ok(smartestBad === 0, `smartest: never across from the unit that kills it outright (${smartestBad} of 40)`);
   ok(smartBad > 0, `smart: its dice still put it there sometimes (${smartBad} of 40), so the levels differ here`); }
+// Smartest slot reads Confuse (2026-10-19, package FZ): a Confused unit's swing fumbles 1 in 2, so of two units that would kill it,
+// the CPU faces the Confused one (either side), and a Confused killer is no sure doom (the engine's aiSwingOdds, the same for both sides)
+{ const confRun = confSlot=>{ const {e, P} = mk({level:2}); put(e, P, 2, 'pa-wall', 0); const L = put(e, P, 1, 'pa-brute', -1), R = put(e, P, 1, 'pa-brute', 1);
+    (confSlot < 0 ? L : R).confused = 2; P[2].hand = [{uid:9958, defId:'pa-hitter'}]; e.aiTakeTurn(P, so, 2, {}, []); const h = all(P[2]).find(c=> c.defId === 'pa-hitter'); return h ? h.slot : null; };
+  ok(confRun(1) === 1 && confRun(-1) === -1, `smartest: of two killers it faces the Confused one (right ${confRun(1)}, left ${confRun(-1)})`); }
 // Smartest focus: of two units it can kill now, it takes the better one (and blocks the bigger hit)
 { let good = 0; for(let s = 1; s <= 20; s++){ const {e, P} = mk({seed:s, level:2}); put(e, P, 2, 'pa-wall', 0); put(e, P, 1, 'pa-frail', -1); put(e, P, 1, 'pa-glass', 1);
     P[2].hand = [{uid:9950 + s, defId:'pa-hitter'}]; e.aiTakeTurn(P, so, 2, {}, []); const h = all(P[2]).find(c=> c.defId === 'pa-hitter'); if(h && h.slot === 1) good++; }

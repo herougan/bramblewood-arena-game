@@ -2056,7 +2056,7 @@ const STATUS_KEYWORDS = [
   {k:'stun', re:/\b(stun(?:ned|s)?)\b/gi, name:'Stunned', c:'#d08a1c', text:'skips its next attack, and its Wait doesn’t tick that round.'},
   {k:'blind', re:/\b(blind(?:ed)?)\b/gi, name:'Blind', c:'#7c8794', text:'each of its swings misses half the time.'},
   {k:'tipsy', re:/\b(tipsy)\b/gi, name:'Tipsy', c:'#d9822b', text:'swings left, ahead or right at random, and misses if nobody is there.'},
-  {k:'confuse', re:/\b(confuse[ds]?)\b/gi, name:'Confused', c:'#9b54c9', text:'half the time, its triggers and on-hit skills fizzle.'},
+  {k:'confuse', re:/\b(confuse[ds]?)\b/gi, name:'Confused', c:'#9b54c9', text:TX('ui.status-confused')}, // 2026-10-19 (package FZ, owner 23:32): triggers, skills and actions, 1 in 2
   {k:'shock', re:/\b(shock(?:ed|s)?)\b/gi, name:'Shocked', c:'#22a7b8', text:'takes 50% more damage from every hit.'},
   {k:'stagger', re:/\b(stagger(?:ed|s)?)\b/gi, name:'Staggered', c:'#a0664a', text:'deals 50% less damage with its attacks.'},
   // 2026-10-16 skill audit (user: "keywords are highlighted"): the statuses the newer skills give had no colour or gloss.
@@ -35704,7 +35704,7 @@ function logText(ev){
     case 'fuse': return null;
     case 'blindMiss': return {cls:'', text: ev.night ? `${nm(ev.attDefId)} can't see in the dark and misses! 🌙` : `${nm(ev.attDefId)} swings blindly and misses! 👁`};
     case 'tipsySwing': return {cls:'', text: ev.miss ? `${nm(ev.attDefId)} stumbles ${ev.drift<0?'left':'right'} into thin air 🍺` : `${nm(ev.attDefId)} lurches ${ev.drift<0?'left':'right'} and swings there instead 🍺`};
-    case 'confusedWhiff': return {cls:'', text:`${nm(ev.defId)} is Confused: its skill fizzles ❓`};
+    case 'confusedWhiff': return {cls:'', text:TX('ui.log-confused-fumbles', {name: nm(ev.defId)})}; // 2026-10-19 (package FZ): a trigger, skill or action fumbled
     case 'poisonTick': return {cls:'poison', text:`${nm(ev.defId)} took ${ev.dmg} poison damage. 🫧`};
     // 2026-10-16 (user: "Status damage should be recorded in the log"): the Devilry payments had no line (they printed their raw type)
     case 'penance': return {cls:'poison', text:`⛧ Penance for ${nm(ev.defId)}: ${ev.side==='A' ? 'your' : 'the enemy'} bramble pays ${ev.dmg != null ? ev.dmg : ev.amount}.`};
