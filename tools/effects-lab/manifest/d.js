@@ -32,8 +32,31 @@ const topFrame = (r, v)=> ctx=>{ const ts = [ctx.cards[0], ctx.cards[1], ctx.car
 const withCls = (cls, o)=> ctx=>{ o = o || {}; const t = o.kind ? big(ctx, o.kind) : ctx.cards[o.i || 1]; cls.split(' ').filter(Boolean).forEach(c=> t.classList.add(c)); if(o.style) Object.entries(o.style).forEach(([k, v])=> t.style.setProperty(k, v)); if(o.after) o.after(t, ctx); return spot(ctx, t); };
 
 // ---------------- statuses (on the board) ----------------
-R({id:'st-poison-active', stage:'board', inGameHook:'cardStatusShown (end of updateCardStatusDisplay) + boardRowsBuilt (renderBoard)', note:'Batch B plays the moment it lands; this is the look that stays.', variants:[
-  {key:'A', label:'Ooze pools at the bottom, bubbles rise and pop', play:stNew('poison')}, {key:'B', label:'Before: tint and ☠ badge only', play:stOld('poison')}]});
+// 2026-10-18 (package P, owner: "In the test lab, there doesn't seem to be [a flurry], but in actual gameplay, i think there is an effect.
+// In the test lab, the ongoing poison vfx doesn't move as well."): the lab used to call FX.D.statusLook straight (no apply moment, and
+// the old look was a CSS stripe). Poison now plays through the game's own hook, FX.D.hooks.cardStatusShown → syncStatusLooks, with a
+// lab env standing in for the match, so the lab shows what a fight shows: the apply flurry, the boiling pool and its rare bubbles, the
+// 1-a-round wear-down dropping grey counters off the badge (FX.D.poisonDrop, as arena_app's poisonTick), and the fade with its last
+// bubbles. b.js / p1.js use it too (window.FXLAB_POISON).
+const psnEnv = ctx=> ({fxAtLeast:()=> true, match:ctx, defs:{}, el:()=> null, tile:()=> null, at:(ms, fn)=>{ ctx.wait(ms).then(fn); }, once:()=> true});
+// What updateCardStatusDisplay does on a poisoned unit: its class and ☠ badge, then the hook.
+const psnShow = (bc, c, env)=>{ let b = tileIn(bc).querySelector(':scope > .badges-bottom .abadge.poison');
+  if(c.poison > 0){ bc.classList.add('is-poisoned'); if(!b) b = addBadge(bc, 'poison', ''); b.textContent = '☠' + c.poison; }
+  else { bc.classList.remove('is-poisoned'); if(b) b.remove(); }
+  X().hooks.cardStatusShown(bc, c, env); };
+// One upkeep tick as arena_app plays it: the damage number, then the grey counter drops and the badge counts down.
+const psnTick = (ctx, bc, c, env)=>{ ctx.sound('bubble'); ctx.float(bc, '☠️ -' + c.poison, 'poison-tick'); X().poisonDrop(bc); c.poison -= 1; psnShow(bc, c, env); };
+window.FXLAB_POISON = {env:psnEnv, show:psnShow, tick:psnTick};
+const psnLife = async ctx=>{ const bc = ctx.board.foe[1], env = psnEnv(ctx), c = {defId:'', poison:3, hp:6, maxHp:6};
+  ctx.sound('poisonApply'); try{ if(window.FX.B && FX.B.poisonApply) FX.B.poisonApply(bc); }catch(e){} ctx.float(bc, '+3☠', 'poison'); psnShow(bc, c, env);
+  await ctx.wait(3600); for(let k = 0; k < 3; k++){ psnTick(ctx, bc, c, env); await ctx.wait(k < 2 ? 1300 : 1600); } };
+R({id:'st-poison-active', stage:'board', inGameHook:'cardStatusShown (end of updateCardStatusDisplay) + boardRowsBuilt (renderBoard) → FX.D.syncStatusLooks; poisonTick decay → FX.D.poisonDrop',
+  note:'The whole life of a Poison stack, through the game\'s own hook: lands (flurry), boils, wears down 1 a round (grey counters drop), fades off (last bubbles).', variants:[
+  {key:'A', label:'Boiling pool: flurry on, rare bubbles, grey counters drop, flurry off', play:psnLife}, {key:'B', label:'Before: tint and ☠ badge only', play:stOld('poison')}]});
+R({id:'st-poison-expire', stage:'board', inGameHook:"FX.D.syncStatusLooks (Poison turning off; FX.C no longer plays its statusEnd drain or a 'cured' chip)",
+  note:'The last counter wears off: it drops off the badge, the pool fades and 3-4 last bubbles leave. No "cured" chip (a real Cure still floats 💊 Cured N).', variants:[
+  {key:'A', label:'Last counter drops; the pool fades with 3-4 bubbles', play:async ctx=>{ const bc = ctx.board.foe[1], env = psnEnv(ctx), c = {defId:'', poison:1, hp:6, maxHp:6};
+    psnShow(bc, c, env); await ctx.wait(1800); psnTick(ctx, bc, c, env); await ctx.wait(1500); }}]});
 R({id:'st-bleed-active', stage:'board', inGameHook:'cardStatusShown + boardRowsBuilt', variants:[
   {key:'A', label:'Blood runs from the top edge; edges throb like a heartbeat', play:stNew('bleed')}, {key:'B', label:'Before: tint and 🩸 badge only', play:stOld('bleed')}]});
 R({id:'st-decay-active', stage:'board', inGameHook:'cardStatusShown + boardRowsBuilt (unit.decay > 0)', variants:[{key:'A', label:'Grey-violet mould creeps from the corners, spores lift', play:stNew('decay')}]});

@@ -48,10 +48,16 @@ const old = 'Now in the game (before this pass)';
 
 /* ================================ STATUSES ================================ */
 R({id:'st-poison-apply', stage:'board', inGameHook:'onEvent: statusFx poison', variants:[
-  {key:'A', label:'Glop splats on, ooze rises, bubbles pop', play:ctx=>{ const t = ctx.board.foe[1]; ctx.sound('poisonApply'); return X().poisonApply(t, {onImpact:()=> fl(ctx, t, '+3☠', 'poison')}); }},
+  // 2026-10-18 (package P): and, as in a fight, the badge refresh that follows (FX.D's hook): the Poisoned pool fills with its flurry.
+  {key:'A', label:'Glop splats on, ooze rises, the pool fills with a flurry of bubbles', play:ctx=>{ const t = ctx.board.foe[1], P = window.FXLAB_POISON; ctx.sound('poisonApply');
+    const done = X().poisonApply(t, {onImpact:()=> fl(ctx, t, '+3☠', 'poison')}); if(P) P.show(t, {defId:'', poison:3, hp:6, maxHp:6}, P.env(ctx)); return Promise.all([done, ctx.wait(2200)]); }},
   {key:'B', label:old + ': the number only', play:ctx=>{ ctx.sound('poisonApply'); fl(ctx, ctx.board.foe[1], '+3☠', 'poison'); return ctx.wait(1000); }}]});
-R({id:'st-poison-tick', stage:'board', variants:[{key:'A', label:'Shake, green tint, bubbles and a cloud (live look)', play:ctx=>{ const t = ctx.board.foe[0]; ctx.sound('bubble'); shake(ctx, t); pulse(t, 'poison-tint-pulse', 460); bubbles(t);
-  if(S().poisonCloud) S().poisonCloud(t); fl(ctx, t, '☠️ -2', 'poison-tick'); return ctx.wait(1400); }}]});
+// 2026-10-18 (package P): the unit is Poisoned first (its look, through the game's hook), and the tick wears a counter off: a grey
+// "☠−1" drops off the badge (FX.D.poisonDrop, as arena_app's poisonTick does on ev.decay). No "cured" anywhere.
+R({id:'st-poison-tick', stage:'board', variants:[{key:'A', label:'Shake, green tint, bubbles, a cloud; a grey counter drops off the badge (live look)', play:async ctx=>{ const t = ctx.board.foe[0], P = window.FXLAB_POISON, env = P && P.env(ctx), c = {defId:'', poison:3, hp:6, maxHp:6};
+  if(P){ P.show(t, c, env); await ctx.wait(900); }
+  ctx.sound('bubble'); shake(ctx, t); pulse(t, 'poison-tint-pulse', 460); bubbles(t);
+  if(S().poisonCloud) S().poisonCloud(t); fl(ctx, t, '☠️ -3', 'poison-tick'); if(P){ window.FX.D.poisonDrop(t); c.poison -= 1; P.show(t, c, env); } return ctx.wait(1400); }}]});
 R({id:'st-bleed-apply', stage:'board', inGameHook:'onEvent: statusFx bleed', variants:[
   {key:'A', label:'A gash opens, drops fall from it', play:ctx=>{ const t = ctx.board.foe[2]; ctx.sound('bleedApply'); return X().bleedApply(t, {onImpact:()=> fl(ctx, t, '+2🩸', 'bleed')}); }},
   {key:'B', label:old + ': the number only', play:ctx=>{ ctx.sound('bleedApply'); fl(ctx, ctx.board.foe[2], '+2🩸', 'bleed'); return ctx.wait(1000); }}]});
