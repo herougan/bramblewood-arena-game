@@ -124,7 +124,7 @@ async def timing(b, rate):
     pg.on('pageerror', lambda e: errs.append(str(e)))
     await pg.add_init_script(INIT)
     await pg.goto(URL); await pg.wait_for_timeout(2500)
-    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); const ids = Object.keys(getCardDefs()); ids.forEach(id=>{ try{ unlockCardForPlayer(id, 'admin'); }catch(e){} }); noteSighted(ids); switchTab('codex'); 1")
+    await pg.evaluate("FEATURE_SPOTS.forEach(sp=> unlockFeature(sp.key)); const ids = Object.keys(getCardDefs()); ids.forEach(id=>{ try{ unlockCardForPlayer(id, 'admin'); }catch(e){} }); noteSighted(ids); codexViewMode = 'compressed'; switchTab('codex'); 1")  # 2026-10-18 (package C): the 80-card grid (the album shows 18)
     await pg.wait_for_timeout(1500)
     await pg.evaluate(HELP)
     cdp = await pg.context.new_cdp_session(pg)

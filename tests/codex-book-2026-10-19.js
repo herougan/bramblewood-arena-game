@@ -84,6 +84,8 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(/!skillHiddenNow\(p\.key\) && \(adminModeEnabled \|\| met\.has\(p\.key\)\)/.test(e), '3. a skill SKILL_REVEAL still hides stays out, and so does one not seen');
   ok(/fieldRowState\(row\.key\) !== 'unknown'/.test(e) && /isMapUnlocked\(m, pr\)/.test(e), '3. field effects only once seen happen (fieldRowState: revealAfter gates too), on maps reached');
   ok(/skillHiddenNow\(k\) \? '' : \(SKILL_ICON\[k\]/.test(e) && /name:'\?'/.test(e) && /isMapUnlocked\(m, pr\)/.test(e), '3. a basic skill not seen yet is a "?" once its map is reached (no icon while hidden)');
+  ok(/coachSeen\.has\('st-' \+ k\.k\) \|\| coachSeen\.has\('st-' \+ k\.name\.toLowerCase\(\)\) \|\| new RegExp\(k\.re\.source, 'i'\)\.test\(txts\)/.test(e) && /\{ch:'st', icon:'🌀', title:\(\)=> TX\('ui\.codex-statuses'\)/.test(src), '3. statuses: a chapter of their own, each once a seen skill names it or it was put on a unit in a fight');
+  ok(/SKILL_CODEX_NOTE\[p\.key\]; if\(cx\) txt \+= ' ' \+ cx\(\);/.test(e), '3. package D\'s longer Codex notes are in the book');
   const hints = (src.match(/const BASIC_SKILL_HINTS = \[([^\]]*)\]/) || [])[1] || '';
   const keys = hints.split(',').map(s=> s.trim().replace(/'/g, '')).filter(Boolean);
   ok(keys.length >= 6 && keys.length <= 10, `3. 6 to 10 basic skills hint (${keys.join(', ')})`);

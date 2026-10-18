@@ -83,6 +83,7 @@ run node tests/integrity.js
 run node tests/node-ids-2026-10-14.js
 run node tests/fx-a-resist.js
 run node tests/raid-arena-2026-10-17.js   # 2026-10-17: Psychic Dampener, the Arena's rules as cards, raid rows / Commons / volley
+run node tests/raid-rows-2026-10-19.js   # 2026-10-18 (owner 20:40): no playing into the raid allies' middle / back rows
 run node tests/raid-stages-2026-10-18.js   # 2026-10-18 (R3-WP2): each raid stage's rules land in the fight; the raid editor round-trips them
 run node tests/raid-fixes-2026-10-18.js    # 2026-10-18 (package R): every row acts column by column, the raid's clock and end, castles can't be shocked, "& Co."
 run node tests/i18n-templates-2026-10-18.js   # 2026-10-18 (I1): placeholder texts translate as templates in all 12 packs
@@ -101,10 +102,16 @@ run node tests/shields-2026-10-18.js   # 2026-10-18 (package X3): enemy bramble 
 run node tests/decisions-2026-10-18.js   # 2026-10-18 (X1): Castle -> Bramble, Burdock the mouse, Thicket rank, rare eggs + a sure Map 1 egg, Lilypad Reach on Map 6, centred 5+ cost, golden card dealt, deck offer by Collection level, the Dromedary
 run node tests/y-2026-10-18.js   # 2026-10-18 (package Y, audit 4): Codex tile key + revealAfter, heal/Cure texts, gated "?" line, Wave crash credit, skirmish sim Difficulty, a11y observer, tutorial slide seed, Creative/cages, resume CPU level, Sacrifice Bleed
 run node tests/z-2026-10-18.js   # 2026-10-18 (package Z): two field-kit items a fight (+1 vs a grantsItem boss, greys and fades out), premium daily-dungeon Sweep, free Spire replays with 0 reward and refunded losses, TX keys + packs, the ads page
+run node tests/prayer-2026-10-19.js   # 2026-10-19 (package E): Prayer tokens (N a turn, Prayer = tokens on the field + the player's own offering tokens, gone with the unit), thresholds, Worship / Lightning, Relic, the CPU, texts + 12 packs
+run node tests/guild-skills-2026-10-19.js   # 2026-10-19 (G): guild skills: Rooted Walls math, raid bramble Health bonus, no bonus while the table is missing, the proposed SQL (RLS, owner check, atomic spend)
 run node tests/guild-rename-2026-10-18.js   # 2026-10-18 (X4): 🎫 Rename Ticket (shop, inventory, founders' gift), owner-only Rename guild, name rules, the not-applied fallback, the proposed rename_guild SQL
+run node tests/winrate-panel-2026-10-19.js   # 2026-10-19 (W2): the map win-rate panel checks every fight inside a budget, "!" on a broken fight, reference decks follow the road, panel = tools/skirmish_pass.js
 run node tests/t-2026-10-19.js   # 2026-10-18 (package T, owner list for 10-19): the tutorial's scripted CPU play and both attack lines, the Outskirts after the deck window, no Quarry Mole toast, brambles won as cards
 run node tests/skill-costs-2026-10-19.js   # 2026-10-18 (package H): canonical/skill-costs.json covers every trigger / action / skill in use, S = trigger weight × action value, keyword S and N unchanged, the hub's Skill costs tab (db, Copy JSON)
 run node tests/codex-book-2026-10-19.js   # 2026-10-18 (package C): Codex card album + skills book pages, reveal gating, seen tracking + migration, collection score (Codex + Profile), TX keys in all 12 packs
+run node tests/trigger-layers-2026-10-19.js   # 2026-10-19 (package L): trigger chains stop at 5 layers (siblings free, a death sweep's passes are layers), tokens fire death triggers, Evasive dodges attacks and skills, the stated trigger rules
+run node tests/m-2026-10-19.js   # 2026-10-18 (package M): the Tide's slosh x1.7 on Flood / x0.8 on Ebb (TIDE_FLOOD_MOTION, TIDE_EBB_MOTION), a clearer Flood rise; Pounce at the bramble when no enemy unit can be hit
+run node tests/d-2026-10-19.js   # 2026-10-18 (package D): Cast Darkness (Pall Wraith) adds / lifts the field's Darkness, a map's own dark stays, True Strike (White Dragon), Sleep caps at N+1, Blind = eye + 🕶️, no short description of 20+ words
 run node tests/game-texts.js   # 2026-10-15: TX keys + the docs/game-texts.xlsx export/import round trip (~45 s)
 if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; run python3 tests/e2e/ui_smoke.py; run python3 tests/e2e/flows.py; run python3 tests/e2e/snaps.py; run python3 tests/e2e/i18n.py; run python3 tests/e2e/hero.py; run python3 tests/e2e/rarity_limit_craft.py; run python3 tests/e2e/a11y.py; run python3 tests/e2e/codex_perf.py; run python3 tests/e2e/emoji_perf.py; fi
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
