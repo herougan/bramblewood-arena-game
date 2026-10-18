@@ -335,7 +335,7 @@ Object.assign(SKILL_ICON, {psychic:'💭', smokeBomb:'💣💨'});
 // 2026-10-16 skill audit: every "+ Add Skill" skill opens its card line with a glyph now. The ones that already have a chip on the
 // card face reuse it (Explode 💣, Render 📉, Progeny 🐝, Daunt 😨, Recoil 💢, Inherent Darkness and Core Evil ★); the rest are new
 // and shared with no other skill (Stun uses 💫, the Stunned status's own mark; Arrow is ➶ because Reach has 🏹).
-Object.assign(SKILL_ICON, {decay:'🍂', sacrifice:'⚱️', prayer:'📿', desecrate:'🕳️', guardian:'🦺', reload:'🔄', stealth:'🥷', feeble:'🪶', mighty:'🦾', fragile:'🪟', sturdy:'🗿',
+Object.assign(SKILL_ICON, {decay:'🍂', sacrifice:'⚱️', prayer:'📿', relic:'🏺' /* Relic (2026-10-19, package E) */, desecrate:'🕳️', guardian:'🦺', reload:'🔄', stealth:'🥷', feeble:'🪶', mighty:'🦾', fragile:'🪟', sturdy:'🗿',
   crit:'❗', fester:'🤢', rupture:'🫀', stunOnHit:'💫', gash:'🔪', ambush:'👀', siege:'🏰', corrode:'🫠', daunt:'😨', recoil:'💢', inherentDarkness:'★', coreEvil:'★', skyfall:'🌠',
   arrow:'➶', fireArrow:'🔥🏹', explode:'💣', render:'📉', onDeathSpawn:'🐝', sleep:'💤', paralyze:'😵', blind:'🙈', stagger:'🥴', chained:'⛓️'});
 // Icons drawn in CSS where HTML is allowed (card chips, skill lines, the Effects library): a round orange core with a flame tail,
@@ -862,7 +862,12 @@ const PASSIVE_DEFS = [
   {key:'sacrifice', category:'passive', label:'Sacrifice', kind:'number', min:0, desc:v=>`Play a Dark Summon card onto this unit: this unit perishes, and the new card costs ${v} less (Darkness first, then Lumber).`},
   {key:'scare', category:'passive', label:'Scare', kind:'number', min:0, desc:v=>`Anything attacking this card hits for ${v} less.`},
   // Ecclesia (2026-10-10, D23). Prayer value = Prayer N on your board + cards in your Removal Zone.
-  {key:'prayer', category:'passive', label:'Prayer', kind:'number', min:0, desc:v=>`While on your board, adds ${v} to your Prayer value (your Prayer = every Prayer on your board + the cards in your Removal Zone).`},
+  // 2026-10-19 (package E, owner: "prayer cards give prayer per turn and it gets added as tokens onto it"): Prayer N = N Prayer tokens
+  // on the unit at the start of each of your turns; your Prayer = the tokens on your units on the field; they go when the unit does.
+  {key:'prayer', category:'passive', label:'Prayer', kind:'number', min:0, desc:v=> TX('ui.prayer-desc', {n: numOr(v, 1)}), codexNote:TX('ui.prayer-codex-note')},
+  // Relic (2026-10-19, package E, owner: "when an ecclesia card with this ecclesia specific skill dies, it leaves a 1/1 with basic
+  // effects of the card that died"): engine relicDefOf / RELIC_KEEPS.
+  {key:'relic', category:'passive', label:'Relic', kind:'boolean', desc:()=> TX('ui.relic-desc'), codexNote:TX('ui.relic-codex-note')},
   {key:'worship', category:'passive', label:'Worship', kind:'boolean', desc:()=>`+1 Attack for every 3 Prayer you have.`},
   {key:'healing', category:'passive', label:'Healing', kind:'number', min:0, desc:v=>`At the start of each round, heals your most wounded unit for ${v}.`},
   // Nature's Force (2026-10-12, 23:12): an anthem for Elementals. Default 1, shown without the number at 1.
@@ -2208,7 +2213,8 @@ const SKILL_TEXT = {
   timber: ()=> `+1/+1 for each Lumber you hold.`, rockSolid: ()=> `+2/+2 for each Stone you hold.`, ironWill: ()=> `+3/+3 for each Metal you hold.`,
   sacrifice: v=> `A Dark Summon played onto it costs ${v} less, and this unit perishes.`,
   scare: v=> `Attacks against it deal ${v} less damage.`,
-  prayer: v=> `Adds ${v} to your Prayer while it's on your board.`,
+  prayer: v=> TX('ui.prayer-text', {n: numOr(v, 1)}), // 2026-10-19 (package E): Prayer tokens
+  relic: ()=> TX('ui.relic-text'), // 2026-10-19 (package E)
   worship: ()=> `+1 Attack for every 3 Prayer you have.`,
   healing: v=> `Heal your most wounded unit for ${v} every upkeep.`,
   lightning: v=> `When played, deal ${v} lightning damage to a random enemy unit, +1 for every 4 Prayer (none to a bramble: it can't be shocked).`, // 2026-10-16 skill audit; 2026-10-17: lightning damage; 2026-10-18: castles can't be shocked
@@ -2471,7 +2477,7 @@ function describeEffects(def, liveCard){
   if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — when its Wait runs out it cracks open into the ${into ? into.name : 'creature inside'}, ready to fight. It has no Attack until then. Only a hatch on the battlefield: your egg card stays in your collection.`); }
   else if(def.hatchInto) lines.push(`🥚 Egg — when its Wait runs out it cracks open into a random ${eggKindLabel(def)} card (Common or Uncommon${['common','uncommon'].includes(def.rarity||'common') ? '' : ' or up to ' + (def.rarity)}), ready to fight. It has no Attack until then. Only a hatch on the battlefield: your egg card stays in your collection.`); // Egg cards (2026-10-14)
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
-  if(def.prayerReq) lines.push(`Needs Prayer ${def.prayerReq} 🙏 to play (not spent). Your Prayer = every Prayer on your board + the cards in your Removal Zone. Once a turn, when you summon an Ecclesia card, you may exile a card from your hand for +1.`);
+  if(def.prayerReq) lines.push(TX('ui.prayer-req', {n: def.prayerReq})); // 2026-10-19 (package E): Prayer tokens
   if(def.exileCost) lines.push(def.exileCost.zone==='hand' ? `Offering ${def.exileCost.count} — to play this, exile ${def.exileCost.count} random card${def.exileCost.count===1?'':'s'} from your hand.` : `Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`); // "Offering" (2026-10-10: the user's unnamed "____: Exile a random card in your hand as a cost")
   if(def.devilryCost) lines.push(`Costs ${def.devilryCost} Darkness ★ to play. You gain 1 Darkness whenever one of your units perishes.`);
   if(def.darkSummon) lines.push(`Dark Summon ⛧ — uses your Dark Summon for the turn (1 a turn), not your normal play.`);
@@ -2816,7 +2822,9 @@ function openStandardDeckBuilder(onDone){
 // derivedDefs; every lookup sees it, so the board, the details and the log show the unit as it really is.
 function getCardDefs(){
   const res = getCardDefs0();
-  try{ const dd = matchState && matchState.engine && matchState.engine.derivedDefs; if(dd) for(const k in dd){ if(res[k] !== dd[k]) res[k] = dd[k]; } }catch(e){}
+  try{ const dd = matchState && matchState.engine && matchState.engine.derivedDefs; if(dd) for(const k in dd){ if(res[k] !== dd[k]) res[k] = dd[k];
+    // Relic (2026-10-19, package E): the engine names the ghost "<Card> Relic" in English; the shown name comes from the text table.
+    const r = dd[k]; if(r && r.relicOf && !r._relicNamed){ const b = res[r.relicOf]; if(b && b.name){ r.name = TX('ui.relic-name', {name: b.name}); r._relicNamed = true; } } } }catch(e){}
   return res;
 }
 function getCardDefs0(){
@@ -6736,7 +6744,7 @@ function triggerBadges(d, live){
   });
 }
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
-  'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
+  'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'relic' /* 2026-10-19 */, 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -8349,7 +8357,7 @@ function renderEditorInner(){
           <option value="exile" ${inferMechanicLine(c)==='exile'?'selected':''}>Scrapper</option>
           <option value="evolution" ${inferMechanicLine(c)==='evolution'?'selected':''}>Evolution</option>
         </select></div>
-        <div class="field mech-field" data-mech="grace" title="Ecclesia (2026-10-10): the Prayer value needed to play this card. Never spent. Prayer = every Prayer on your board + the cards in your Removal Zone."><label>Ecclesia — Prayer needed 🙏</label><input id="fPrayerReq" type="number" min="0" value="${c.prayerReq||0}"></div>
+        <div class="field mech-field" data-mech="grace" title="Ecclesia (2026-10-10): the Prayer value needed to play this card. Never spent. Prayer = the Prayer tokens on your units on the field (2026-10-19: a Prayer N unit gains N a turn)."><label>Ecclesia — Prayer needed 🙏</label><input id="fPrayerReq" type="number" min="0" value="${c.prayerReq||0}"></div>
         <div class="field mech-field" data-mech="exile" title="Playing this card also requires exiling this many cards from the chosen zone."><label>Scrapper cost — zone</label><select id="fExileZone"><option value="">none</option><option value="graveyard" ${c.exileCost&&c.exileCost.zone==='graveyard'?'selected':''}>graveyard</option><option value="hand" ${c.exileCost&&c.exileCost.zone==='hand'?'selected':''}>hand</option></select></div>
         <div class="field mech-field" data-mech="exile" title="How many cards must be exiled from that zone to afford this card."><label>Scrapper cost — count</label><input id="fExileCount" type="number" min="0" value="${c.exileCost?c.exileCost.count:0}"></div>
         <div class="field mech-field" data-mech="devilry" title="Extra cost paid from the Devilry resource pool on top of the lumber cost above."><label>Devilry cost</label><input id="fDevilryCost" type="number" min="0" value="${c.devilryCost||0}"></div>
@@ -23334,7 +23342,7 @@ function runCardCheck(host){
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
 const SB_KEY = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2';
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
-const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, missMult:1.5};
@@ -24394,7 +24402,7 @@ const FXL_SKILL_SETUPS = {
   rainrunner: {rules:{field:'rain'}, rainy:true, note:'Fought in the rain.'},
   dry: {rules:{field:'heatwave'}, note:'Fought on a Scorching day.'},
   timber: {res:{lumber:3}, note:'You hold 3 Lumber.'}, rockSolid: {res:{stone:2}, note:'You hold 2 Stone.'}, ironWill: {res:{metal:1}, note:'You hold 1 Metal.'},
-  worship: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Acolyte', icon:'🙏', effects:{prayer:3}}}], note:'An ally with Prayer 3 stands beside it.'},
+  worship: {mine:[{role:'subject', slot:0}, {role:'ally', slot:-1, def:{name:'Acolyte', icon:'🙏', effects:{prayer:3}}}], note:'An ally with Prayer 3 stands beside it (3 Prayer tokens a round from its first upkeep).'}, // 2026-10-19: Prayer tokens
   snipe: {foes:[{role:'foe', slot:1}, {role:'foe2', slot:2}], note:'Nothing stands opposite it.'},
   backstab: {foes:[{role:'foe', slot:1}, {role:'foe2', slot:2}], note:'The nearest enemy is not the one in front.'},
   bloom: {steps:[{dmg:'ally', n:6}, 'round', 'round'], note:'The Sparring Partner is wounded first.'},
@@ -24418,7 +24426,8 @@ const FXL_SKILL_SETUPS = {
   psychic: {foeFx:{armor:3, ghost:true}, foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}], note:'The dummies wear Armor 3 and are Ghosts: the psychic damage goes through anyway.'},
   // 2026-10-15 (eighth pass): Prayer only counts toward your Prayer value, so the stage brings it in to show its arrival light.
   esprit: {steps:[{spawn:'ally'}, 'round'], note:'A second Sparring Partner arrives, so Esprit grows the Specimen.'},
-  prayer: {steps:[{spawn:'subject'}, 'round'], note:'It arrives (Prayer is a number your Prayer value counts; its light plays as it lands).'},
+  prayer: {steps:[{spawn:'subject'}, 'round', 'round'], note:'It arrives (its light plays as it lands), then gains its Prayer tokens each upkeep.'}, // 2026-10-19: Prayer tokens
+  relic: {status:{subject:{hp:1}}, steps:['round', 'round'], note:'It falls to the first hit and leaves its Relic, a 1/1 with its plain keywords.'}, // 2026-10-19 (package E)
   smokeBomb: {steps:['round', 'round', 'round'], note:'Three rounds, so you see a bomb or two (1 in 2 a round), at an ally or an enemy.'},
 };
 // Trigger events: the Specimen deals 3 damage to a random enemy when the event fires.
@@ -27810,7 +27819,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, creativity:rc.creativity||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -27946,7 +27955,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.creativity||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.creativity||0}:${c.prayerTokens||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -28200,7 +28209,9 @@ function renderBoard(opts){
     const showTargets = !m.over && !m.resolving && !m.awaitingPass;
     document.querySelectorAll('#battlefieldInner .reserve-row').forEach(el=>{
       const pid = +el.dataset.respid, r = +el.dataset.resrow, pl = m.players[pid]; if(!pl || !pl.reserve) return;
-      const legal = new Set(showTargets && pid === viewerPid && m.engine.legalReserveSlots ? m.engine.legalReserveSlots(pl, r) : []);
+      // 2026-10-18 (owner 20:40: "for raids, i shouldnt be able to play cards on the other rows!"): in a raid the middle and back
+      // rows belong to the CPU allies, so they never show play targets for you.
+      const legal = new Set(showTargets && pid === viewerPid && !m.raidFull && m.engine.legalReserveSlots ? m.engine.legalReserveSlots(pl, r) : []);
       let html = `<span class="reserve-label">${r === 1 ? 'Middle' : 'Back'}</span>`;
       for(let sl = -slotRange; sl <= slotRange; sl++){
         const c = pl.reserve[r-1][sl];
@@ -29480,6 +29491,7 @@ function boardCardHTML(c, defs, opts){
     c.allyOf ? 'is-ally-card' : '',
     c.staggered>0 ? 'is-staggered' : '',
     d.crystalOf ? 'is-crystal' : '', // Crystallise (2026-10-16)
+    d.relicOf ? 'is-relic' : '', // Relic (2026-10-19, package E): the dead card's art, faded and ghostly
     c.bound>0 ? 'is-bound' : '', c.invisible>0 ? 'is-invisible' : '', c.invincible>0 ? 'is-invincible' : '', c.toxin>0 ? 'is-toxic' : '', // W2 (2026-10-16)
     c.petrified ? 'is-petrified' : '', // Petrification (2026-10-14): grey stone for the round
     isLowHp(c) ? 'is-low-hp' : '', // Stagger (2026-09-24, task #109) — physical's elemental status, mirrors Shock's tint
@@ -29507,6 +29519,7 @@ function boardCardHTML(c, defs, opts){
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
   if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
   if(c.creativity>0) badges.push(`<span class="abadge creativity" title="${escapeAttr(creativityTip(c.creativity))}">🎨${c.creativity}</span>`); // Creativity (2026-10-18)
+  if(c.prayerTokens>0) badges.push(`<span class="abadge prayer" title="${escapeAttr(prayerTokenTip(c.prayerTokens))}">📿${c.prayerTokens}</span>`); // Prayer tokens (2026-10-19, package E)
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   // 2026-09-20 fix: blind/shocked/corrode badges existed in updateCardStatusDisplay's live-patch
@@ -30061,7 +30074,7 @@ function showPrayerOfferPicker(pl, uid, onPick){
   const others = pl.hand.filter(h=> h.uid!==uid);
   ov.innerHTML = `<div class="modal prayer-offer" role="dialog" aria-label="Offer a card">
     <div class="modal-head-row"><h2>🙏 Offer a card</h2><button class="modal-close-btn" data-po-close aria-label="Cancel">✕</button></div>
-    <p class="panel-sub">${escapeHtml(d.name)} needs Prayer ${d.prayerReq}; you have ${matchState.engine.prayerOf(pl)}. Exile one card from your hand to your Removal Zone for +1 Prayer (it stays counted). Once a turn.</p>
+    <p class="panel-sub">${escapeHtml(TX('ui.prayer-offer-sub', {name: d.name, need: d.prayerReq, have: matchState.engine.prayerOf(pl)}))}</p>
     <div class="pray-grid">${others.map(h=> `<button type="button" class="pray-card" data-po="${h.uid}" title="Exile ${escapeAttr((defs[h.defId]||{}).name||'')}">${cardTileHTML(defs[h.defId], {inPlay:true})}</button>`).join('')}</div>
   </div>`;
   ov.hidden = false;
@@ -30130,6 +30143,7 @@ async function playCardByUid(uid, side, dropPoint, popts){
   const activePid = activePlayerId(m);
   const events = [];
   const prePos = boardPosSnapshot(m); // 2026-10-17: see holdArrivalDead
+  if(m.raidFull && popts && popts.reserve) return false; // raids: the middle and back rows are the allies' (owner 2026-10-18)
   const ok = m.engine.placeCard(m.players, m.sideOf, activePid, uid, side, m.stats, events, (popts && (popts.prayerOffer!=null || popts.reserve)) ? Object.assign({}, popts.prayerOffer!=null ? {prayerOffer: popts.prayerOffer} : {}, popts.reserve ? {reserve: popts.reserve} : {}) : undefined);
   if(!ok){
     // Rejected play (2026-09-17, per explicit request: "when trying to summon a card without
@@ -30294,7 +30308,7 @@ const RESOURCE_TOOLTIP = {
   stone: 'Stone — dormant for now. Only a card\'s own "Gain stone" ability can produce any.',
   lumber: 'Lumber — earned by discarding a card from your hand. Some abilities (like Refine) consume it too.',
   grace: 'Grace — Ecclesia\'s currency. Earned by On Spawn/On Ready effects, spent on cards with a Grace Cost.',
-  prayer: 'Prayer 🙏 — every Prayer on your board + the cards in your Removal Zone. Ecclesia cards need a Prayer value to be played; it is never spent. Once a turn, when you summon an Ecclesia card, you may exile a card from your hand for +1 (it stays counted: it is in your Removal Zone).',
+  prayer: TX('ui.prayer-hud-tip'), // 2026-10-19 (package E): Prayer tokens
   devilry: 'Darkness ★ — you gain 1 whenever one of your units perishes (some Imps give more, and discarding a Devilry card gives 1). Spent on Devilry cards. ⛧ is your Dark Summon for this turn: 1 a turn, on top of your normal play.',
   elementalenergy: 'Elemental Energy — the advanced resource. Only produced by a card\'s Refine ability, which consumes Lumber.',
 };
@@ -30658,7 +30672,8 @@ function sideResourcePillsHTML(m, p, mine){
   if((p.metal||0) > 0) out.push(pill('metal', 'hudMetalPill', 'Metal: some cards cost it; Iron-will units grow with it', `${iconHTML('metal', '🔩')} ${p.metal}`));
   if((p.uranium||0) > 0) out.push(pill('uranium', 'hudUraniumPill', 'Uranium: only Irradiated cards make it and spend it', `${iconHTML('uranium', '☢️')} ${p.uranium}`));
   if((p.grace||0) > 0) out.push(pill('grace', 'hudGracePill', RESOURCE_TOOLTIP.grace, `${iconHTML('grace', '🕊️')} ${p.grace}`));
-  if(deckHasEcclesia(m, p)) out.push(pill('prayer', 'hudPrayerPill', RESOURCE_TOOLTIP.prayer, `${iconHTML('prayer', '🙏')} ${m.engine.prayerOf ? m.engine.prayerOf(p) : 0}${(mine && m.engine.prayerOfferReady && m.engine.prayerOfferReady(p)) ? '<small class="dark-left"> · offer ready</small>' : ''}`));
+  if(deckHasEcclesia(m, p)){ const rate = m.engine.prayerRateOf ? m.engine.prayerRateOf(p) : 0; // 2026-10-19 (package E): + the tokens it gains a turn, and 📿 the player's own (offerings)
+    out.push(pill('prayer', 'hudPrayerPill', RESOURCE_TOOLTIP.prayer, `${iconHTML('prayer', '🙏')} ${m.engine.prayerOf ? m.engine.prayerOf(p) : 0}${rate > 0 ? `<small class="dark-left"> ${escapeHtml(TX('ui.prayer-per-turn', {n: rate}))}</small>` : ''}${p.prayerTokens > 0 ? `<small class="dark-left"> · 📿${p.prayerTokens}</small>` : ''}${(mine && m.engine.prayerOfferReady && m.engine.prayerOfferReady(p)) ? '<small class="dark-left"> · offer ready</small>' : ''}`)); }
   if(deckHasDevilry(m, p)) out.push(pill('devilry', 'hudDevilryPill', RESOURCE_TOOLTIP.devilry, `${iconHTML('devilry', '★')} ${p.devilry||0}${mine ? `<small class="dark-left"> · ⛧ ${Math.max(0, (m.engine.darkPerTurn ? m.engine.darkPerTurn(p) : 1) - (p.darkUsed||0))}</small>` : ''}`));
   if((p.elementalEnergy||0) > 0) out.push(pill('elementalenergy', 'hudElementalEnergyPill', RESOURCE_TOOLTIP.elementalenergy, `${iconHTML('elemental-energy', '✨')} ${p.elementalEnergy}`));
   return out.join('');
@@ -30894,6 +30909,7 @@ function updateCardStatusDisplay(uid){
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
   if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
   if(c.creativity>0) badges.push(`<span class="abadge creativity" title="${escapeAttr(creativityTip(c.creativity))}">🎨${c.creativity}</span>`); // Creativity (2026-10-18)
+  if(c.prayerTokens>0) badges.push(`<span class="abadge prayer" title="${escapeAttr(prayerTokenTip(c.prayerTokens))}">📿${c.prayerTokens}</span>`); // Prayer tokens (2026-10-19, package E)
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
@@ -31820,7 +31836,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
       });
     });
   });
@@ -34946,7 +34962,8 @@ function lockShards(lock){
 }
 // 2026-10-15: names for the statusEnd log line (the engine logs a status running out).
 // Exposed (2026-10-15) (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss.")
-function creativityTip(n){ return TX('ui.creativity-tip', {n}); } // 2026-10-18 (package U): Creativity counters, reserved
+function creativityTip(n){ return TX('ui.creativity-tip', {n}); }
+function prayerTokenTip(n){ return TX('ui.prayer-token-tip', {n}); } // 2026-10-19 (package E): the 📿 badge // 2026-10-18 (package U): Creativity counters, reserved
 function exposedTip(n){ return `Exposed ${n}: the next ${n} hit${n===1 ? '' : 's'} on it ${n===1 ? 'is a crit' : 'are crits'} (double damage), 1 counter each, and attacks at it can't miss.`; } // 2026-10-16: counters
 const STATUS_END_NAMES = {webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 function logText(ev){
@@ -35070,6 +35087,7 @@ function logText(ev){
         if(castleTxt) return {cls: ev.kind==='herbHeal' ? 'heal' : '', text: castleTxt()}; }
       if(ev.kind === 'exposedHit') return {cls:'', text:`🎯 ${nm(ev.targetDefId)} is Exposed: ${ev.crit === false ? 'the swing had crit already' : 'a crit'}, 1 counter used${ev.amount ? ` (${ev.amount} left)` : ' (none left)'}.`}; // 2026-10-15; a crit per counter (2026-10-16)
       if(ev.kind === 'creativity') return {cls:'', text:TX('ui.creativity-log', {who: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount||1})}; // Creative N (2026-10-18)
+      if(ev.kind === 'prayer') return ev.offering ? {cls:'', text:TX('ui.prayer-offer-log', {name: nm(ev.targetDefId)})} : null; // Prayer tokens (2026-10-19): the badge shows the per-turn ones
       if(ev.kind === 'exposeFade') return {cls:'', text:`🎯 No enemy units left to strike ${nm(ev.targetDefId)}: its Expose ${ev.amount > 1 ? ev.amount + ' counters fade' : 'counter fades'}.`}; // 2026-10-17
       const kindText = {
         surge: `surges with the mountain's fire: +${ev.atk} Attack, +${ev.hp} Health 🌋`,
@@ -37091,7 +37109,7 @@ function w2LogText(ev, nm){
     case 'absoluteZero': return {cls:'', text:`🧊 Absolute Zero! ${nm(ev.defId)} freezes ${ev.hits.length} enemy unit${ev.hits.length === 1 ? '' : 's'} for the round.`};
     case 'nova': return {cls:'', text:`🔮 ${nm(ev.defId)} bursts into a Nova: ${ev.n} magic damage to every enemy unit.`};
     case 'evaded': if(ev.reason === 'invisible') return {cls:'', text:`${nm(ev.attDefId)} can't find the invisible ${nm(ev.targetDefId)}. 🫥`}; break;
-    case 'spawn': if(ev.kind === 'crystal') return {cls:'', text:`💎 ${nm(ev.defId)} forms where it fell.`}; break;
+    case 'spawn': if(ev.kind === 'crystal') return {cls:'', text:`💎 ${nm(ev.defId)} forms where it fell.`}; if(ev.kind === 'relic') return {cls:'', text:TX('ui.relic-log', {name: nm(ev.defId)})}; break; // + Relic (2026-10-19)
     case 'statusEnd': if(ev.status === 'invisible' && ev.attacked) return {cls:'', text:`${nm(ev.defId)} attacks and gives itself away. 🫥`}; break;
   }
   return null;
@@ -37131,7 +37149,8 @@ function w2SkillVfx(ev){
       w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); now.forEach(el=> fl(el, `+${ev.n}☠`, 'poison')); if(fx()) F.gasCloud(now); (ev.hits||[]).forEach(refresh); snd('poisonApply'); }); void els; break; }
     case 'absoluteZero': w2Later(m.replayRows ? 0 : 420, ()=>{ const now = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); if(fx()) F.absoluteZero(document.getElementById('battlefieldEl'), now); snd('iceShatter'); }); break;
     case 'nova': { const src = boardCardEl(ev.uid), els = (ev.hits||[]).map(u=> boardCardEl(u)).filter(Boolean); snd('curse'); if(fx()) F.nova(src, els); break; }
-    case 'spawn': if(ev.kind === 'crystal'){ const u = ev.placements && ev.placements[0] && ev.placements[0].uid; w2Later(380, ()=>{ const el = boardCardEl(u); if(el && fx()) F.crystalForm(el); }); } break;
+    case 'spawn': if(ev.kind === 'crystal'){ const u = ev.placements && ev.placements[0] && ev.placements[0].uid; w2Later(380, ()=>{ const el = boardCardEl(u); if(el && fx()) F.crystalForm(el); }); }
+      if(ev.kind === 'relic'){ const u = ev.placements && ev.placements[0] && ev.placements[0].uid; w2Later(380, ()=>{ const el = boardCardEl(u); if(el) fl(el, '🏺', 'quick'); }); } break; // Relic (2026-10-19)
     case 'evaded': if(ev.reason === 'invisible'){ const el = boardCardEl(ev.targetUid); fl(el, '🫥 Unseen', 'quick'); } break;
     case 'statusEnd': if(['invisible', 'invincible', 'bound'].includes(ev.status)){ const rc = rcOf(ev.uid); if(rc){ rc[ev.status] = 0; } refresh(ev.uid);
         if(ev.status === 'invisible' && ev.attacked){ const el = boardCardEl(ev.uid); if(el && fx()) F.unveil(el); } } break;
@@ -37794,6 +37813,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='firstBlood'){ if(el) floatText(el, `🩸 First blood +${ev.amount}`, 'debuff'); try{ SoundKit.backstabSlice ? SoundKit.backstabSlice() : null; }catch(e){} }
     else if(ev.kind==='octolash'){ if(el) floatText(el, `🐙 Octolash ×${ev.amount}`, 'quick'); }
     else if(ev.kind==='creativity'){ if(el) floatText(el, `🎨 +${ev.amount||1}`, 'buff'); if(rc){ rc.creativity = ev.total != null ? ev.total : (rc.creativity||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Creative N (2026-10-18)
+    else if(ev.kind==='prayer'){ if(el) floatText(el, `📿 +${ev.amount||1}`, 'buff'); if(rc){ rc.prayerTokens = ev.total != null ? ev.total : (rc.prayerTokens||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Prayer tokens (2026-10-19, package E)
     else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); if(rc){ rc.exposed = (rc.exposed||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Exposed (2026-10-15)
     else if(ev.kind==='exposedHit'){ if(rc){ rc.exposed = ev.amount||0; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // one Exposed hit used up (its "🎯 +1" chip is FX.B.exposeCash)
     // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades off."):

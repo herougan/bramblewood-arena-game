@@ -247,6 +247,7 @@
   {"id":"recoil","scale":"half","value":1},
   {"id":"reflect","scale":"half","value":1},
   {"id":"regen","scale":"n","value":1},
+  {"id":"relic","scale":"fixed","value":2,"note":"2026-10-19 (package E): a 1/1 left in its slot with plain keywords only"},
   {"id":"reload","scale":"half","value":1},
   {"id":"remember","scale":"half","value":1},
   {"id":"render","scale":"half","value":1},
