@@ -6970,7 +6970,13 @@
   .de-actions{display:flex; gap:8px; align-items:center; flex-wrap:wrap;}
   /* Raid results (2026-10-12): every raid ends on the glory card; the damage pill is the headline; a won raid is gold. */
   .winloss-card.is-raid .raid-results{display:flex; flex-wrap:wrap; justify-content:center; gap:8px;}
-  .winloss-card.is-raid .raid-results .hud-pill{color:#3a2a10;}
+  /* 2026-10-19 (package RX, owner 20:46: "The raid reward text still isn't contrasted against its background"): the pills' ink was a fixed
+     dark brown (#3a2a10) on the theme's surface, 1.15:1 in dark mode. They take the theme's own ink on its own surface now (light 11.4:1,
+     dark 12.9:1), and the counting number with them. */
+  .winloss-card.is-raid .raid-results .hud-pill{color:var(--ink); background:var(--surface); border-color:var(--surface-border);}
+  .winloss-card.is-raid .raid-results .hud-pill .reward-count{color:inherit;}
+  /* the line under the title (why the raid ended) sat in the theme's muted ink on the purple glory card: 1.2:1 in light. Cream now. */
+  .winloss-card.is-glory.is-raid .winloss-reason{color:#fbf1dc; opacity:1;}
   .winloss-card.is-raid .raid-dmg-pill{flex-basis:100%; max-width:max-content; margin:0 auto 6px; font-size:clamp(16px, 2.6vh, 22px); padding:8px 22px;}
   .winloss-card.is-raid.is-absolute .wl-title{background:linear-gradient(180deg, #fff3b0, #f5c518 55%, #c8901d); -webkit-background-clip:text; background-clip:text; color:transparent;}
   .winloss-card.is-raid.is-absolute{box-shadow:0 0 0 3px #f5c518, 0 0 60px rgba(245,197,24,.55);}

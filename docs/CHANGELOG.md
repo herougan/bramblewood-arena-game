@@ -2,6 +2,24 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package RX: raid targeting, the stuck play animation, reward contrast, allies' hand plays, an easier raid)
+
+- **Raids target the closest row.** Every unit in all three rows, on both sides, strikes the nearest enemy in its own column: the front row first, then the middle, then the back. It hits the bramble only when no row in that column holds a unit it can hit. Cages and Invisible units are passed over, and Flying and the other dodges still roll. Sweep side hits and Wave pushes stay on front-row targets. A unit that falls in a middle or back row is cleared from the board with a death event. The trench already rolled through to the closest row, so it is unchanged. The engine change is limited to the reserve rows (`rowTargetAt`, `reserveStrike`, the RESERVE_ACTS swing fallback, `sweepDeadReserves`).
+- **A played card no longer gets stuck small and see-through mid-drop.** Root cause: card entrances and hand flights run on GSAP's frame clock, and lag smoothing (500 ms / 33 ms outside combat) counts any long frame as 33 ms. On a slow raid board the card stayed at the start of its drop. A 200 ms timer watchdog (`playAnimWatchdog`) now finishes any entrance, flight or landing squash that runs past its length, shows a card left hidden, and removes a leftover flight copy.
+- **The raid reward text can be read.** The reward pills on the raid results were fixed dark brown on the theme surface, 1.15:1 in dark mode. They now use the theme's ink: 12.6:1 in dark and 10.8:1 in light. The line under the title was 1.2:1 on the purple card in light mode and is now cream, about 16:1.
+- **Allies play from their hand.** A CPU ally's card now flies in from just below its row label and fades in partway along the path. It lands with the normal hand-play landing. Under reduced motion or Low effects it fades in where it stands, and with Effects None nothing plays. `allyPlayFx(uid, {mode:'raid'|'tagteam'})` is the hook for tag-team partners.
+- **The raid eases down to your hand** once it loads (600 ms, once per fight). It jumps instead under reduced motion and stops if you scroll yourself.
+- **A defeated raid says when it returns:** "🌊 The Goliath returns in 3d 8h", with the local date and time on hover. The respawn time comes from one helper, `raidRespawnAt`.
+- **Leader cost cap:** a raid's `leaderCostCap` counts each Lumber in the leader's cost as 1 point, each Stone as 2 and each Metal as 3. The Goliath's cap is 5. The raid tab shows your leader against the cap with a "Change leader" button, and the picker greys out leaders over the cap with the reason ("Leader cost 6/5 — too costly for this raid"). The fight won't start with an over-cap leader. The cap is editable in the raid editor.
+- **Play rows** (`playRows: 'own' | 'any'`, default 'own'): `matchPlayRows` / `playRowsOf` / `playRowsSelectHTML` are enforced in the reserve-row targets and in `playCardByUid`. There are no tag-team dungeons in the code yet, so no dungeon carries the field.
+- **The raid is easier** (owner: "Make normal decks able to do some damage"). Measured with the new `tools/raid_full_sim.js`, which plays the page's own fight build (`buildRaidFullFight`, split out of `startRaidFullBattle`):
+  - The fight's boss bramble is the part's own 420 again. It had been reading the trench's 1250.
+  - The Goliath's new `tuning`: boss cards at 35% Attack and 25% Health (were 60% / 70%), both allies play every turn, the raiders' bramble +60, and Commons are called in once every 3 turns, 1 at a time.
+  - `minDamage` (the first paying tier) went from 120 to 40.
+  - Results at 20 turns, outer parts: a Map 6 deck survives all 20 turns, deals 64–85, and reaches the tier 50–75% of the time. A Map 10 deck deals 71–124 and reaches it 65–95%. The starter deck deals 26–47 and reaches it 20–50%. A Map 20 deck deals 141–219 and overwhelms 0–5%.
+  - Before (fresh raid), every deck dealt 0–14 and died by turn 7–13.
+- Texts: 12 new TX keys, in all 12 packs (`tools/i18n_2026_10_19_rx.py`). Test: `tests/raid-rx-2026-10-19.js` (in run-all).
+
 ## 2026-10-18 evening: raids, your row only
 
 - In a raid you can no longer play cards into your middle or back row: those are the CPU allies' rows. The rows show no "+" targets for you, and a drop there is refused (`playCardByUid`). Test: tests/raid-rows-2026-10-19.js.
