@@ -116,6 +116,38 @@ function makeCtx(opts){
     const one = E.html('🦦');
     ok(r === true && !E.usesSheet() && /^<img class="emoji tw-emoji emoji-fluent" alt="🦦" draggable="false" decoding="sync" src="blob:svg-\d+">$/.test(one), `${how}: the SVG picture draws instead: ${one}`);
   }
+  // ---- 2b. nothing the game uses is missing from the sets (2026-10-18, package F: the Dromedary's 🐪 and 8 more were in the
+  // game but not in used.json / the sets, so they drew as the system emoji). Every card's emoji (icon, name, flavour, barks,
+  // speeches: the card minus its art) and every emoji in the code, texts and lang packs must be in tools/emoji/used.json and in
+  // each set. If this fails: node tools/emoji/scan_emoji.js > tools/emoji/used.json && python3 tools/emoji/build_sets.py
+  // && python3 tools/emoji/build_atlas.py, then rebuild.
+  {
+    const keyOf = s=> [...s].map(ch=> ch.codePointAt(0).toString(16)).filter(h=> h !== 'fe0f').join('-');
+    const RGI = /\p{RGI_Emoji}/gv, need = new Map();
+    const add = (s, where)=>{ for(const m of String(s).matchAll(RGI)){ const k = keyOf(m[0]); if(!need.has(k)) need.set(k, m[0] + ' (' + where + ')'); } };
+    const cards = JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/cards.json'), 'utf8'));
+    let iconsSeen = 0;
+    for(const c of cards){ const o = Object.assign({}, c); delete o.art; delete o.artFull; delete o.artThumb;
+      if(c.icon && RGI.test(c.icon)) iconsSeen++; RGI.lastIndex = 0;
+      add(JSON.stringify(o, (k, v)=> typeof v === 'string' && v.startsWith('data:') ? '' : v), 'card ' + c.id); }
+    ok(iconsSeen > 600, `card icons read from canonical/cards.json (${iconsSeen})`);
+    const files = fs.readdirSync(ROOT).filter(f=> /^(arena_app\.js|arena_template\.html|bramblewood-.*\.js)$/.test(f)).map(f=> path.join(ROOT, f));
+    for(const d of ['lang', 'lang/cards', 'lang/ui']) if(fs.existsSync(path.join(ROOT, d))) fs.readdirSync(path.join(ROOT, d)).filter(f=> f.endsWith('.json')).forEach(f=> files.push(path.join(ROOT, d, f)));
+    for(const fp of files){
+      const t = fs.readFileSync(fp, 'utf8').replace(/\\u\{([0-9a-fA-F]{4,6})\}/g, (m, h)=> String.fromCodePoint(parseInt(h, 16)))
+        .replace(/\\u[dD][89abAB][0-9a-fA-F]{2}\\u[dD][c-fC-F][0-9a-fA-F]{2}|\\u(2[0-9a-fA-F]{3}|3[0-2][0-9a-fA-F]{2}|[fF][eE]0[fF])/g, m=>{ try{ return JSON.parse('"' + m + '"'); }catch(e){ return m; } });
+      add(t, path.relative(ROOT, fp));
+    }
+    const used = new Set(JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/emoji/used.json'), 'utf8')).map(e=> e.key));
+    const notUsed = [...need].filter(([k])=> !used.has(k)).map(([, v])=> v);
+    ok(notUsed.length === 0, `every emoji the game uses is in tools/emoji/used.json (rescan): ${notUsed.slice(0, 12).join(', ')}`);
+    for(const set of ['fluent', 'twemoji', 'noto']){
+      const sj = JSON.parse(fs.readFileSync(path.join(ROOT, 'tools/emoji/sets', set + '.json'), 'utf8'));
+      const miss = [...need].filter(([k])=> !(k in sj.emoji)).map(([, v])=> v);
+      ok(miss.length === 0, `${set}: every emoji the game uses is in the set (build_sets.py + build_atlas.py): ${miss.slice(0, 12).join(', ')}`);
+      ok([...used].every(k=> k in sj.emoji), `${set}: holds every emoji in used.json`);
+    }
+  }
   // ---- 3. the CSS
   ok(/img\.tw-emoji\.emo\{[^}]*background-repeat:no-repeat/.test(tpl), 'arena_template.html styles img.tw-emoji.emo');
   ok(/def emoji_atlases\(\):/.test(fs.readFileSync(path.join(ROOT, 'assemble_arena.py'), 'utf8')), 'assemble_arena.py builds the sheets in emoji_atlases()');

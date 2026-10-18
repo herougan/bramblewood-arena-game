@@ -283,6 +283,7 @@ const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'�
   // 2026-10-14 (third pass). Bloom (conditions) is 🌷 because the old Bloom N heal has 🌸 (the in-bloom chip on the board is 🌸);
   // Wave is 〰️ because Tide has 🌊 and Scatterbrained 🌀; Brood 🥚; Pack Leader 🐺👑; Supreme Tide ✨🌊.
   bloomWhen:'🌷', wave:'〰️', brood:'🥚', packLeader:'🐺👑', supremeTide:'✨🌊',
+  castDarkness:'🌘', trueStrike:'💯', // 2026-10-18 (package D): the Darkness field's own moon; True Strike never misses
   // 2026-10-14 (fourth pass). Crab Claws is 🦞 because Molting already has 🦀; Nullify 🚫 (only the Player Stun action's
   // trigger badge used it); Meiosis 🧫; Restless 👣; Charge ⏲️ (Primed has 🔋, and ⚡ is Frenzy/Lightning).
   crabClaws:'🦞', meiosis:'🧫', nullify:'🚫', restless:'👣', charge:'⏲️'};
@@ -902,6 +903,10 @@ const PASSIVE_DEFS = [
   {key:'coffee', category:'passive', label:'Coffee', kind:'number', min:1, defaultValue:1, desc:v=>`Comes in wired: Wait −${v||1}. ${v||1} round${(v||1)===1?'':'s'} later the cup wears off and it naps (Stunned for a round).`},
   {key:'dry', category:'passive', label:'Dry', kind:'boolean', desc:()=>`Built for the desert: takes half Heat damage, and Scorching days can't touch it.`},
   {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`It can see in darkness.`}, // 2026-10-15 (user: "Darksight explanation is TOO complicated. Just explain what it does - it can see in darkness.")
+  // Cast Darkness and True Strike (2026-10-18, package D). Owner: "A card that casts 'Darkness' ... the map adds a field effect 'Darkness',
+  // on Play. It is gone when it dies." and "White Dragon has true strike - it never misses." Rules: bramblewood-engine.js (darkRule, trueStrikes).
+  {key:'castDarkness', category:'passive', label:'Cast Darkness', kind:'boolean', desc:()=> TX('ui.sk-cast-darkness'), codexNote:TX('ui.sk-cast-darkness-codex')},
+  {key:'trueStrike', category:'passive', label:'True Strike', kind:'boolean', desc:()=> TX('ui.sk-true-strike'), codexNote:TX('ui.sk-true-strike-codex')},
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
   {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it strikes the bramble, which is never Shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has (a bramble never counts as Wet).'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18 (owner 15:05 "No Shocked status on Brambles."): the bramble takes the damage again, no status, no Wet bonus
@@ -2016,7 +2021,7 @@ function speciesLine(def){
 // Spells (2026-10-11): what a spell does, in a sentence.
 function spellText(d){ const sp = (d && d.spell) || {}, n = sp.amount || 0;
   if(sp.do==='hasten') return `Each of your units on the field loses ${n} Wait.`;
-  if(sp.do==='tailwind') return `Each of your units on the field loses ${n} Wait, and every Flyer of yours gets an extra turn at the start of the next combat.`;
+  if(sp.do==='tailwind') return TX('ui.spell-tailwind', {n}); // 2026-10-18 (package D): terse
   if(sp.do==='mend') return `Heals each of your units by ${n}.`;
   if(sp.do==='sap') return `Each enemy unit loses ${n} Attack.`;
   return 'Changes the field.'; }
@@ -2041,12 +2046,12 @@ const SKILL_COUNTER_EXTRA = {exileAns: '🌫 Exile'};
 // example. THEN after the skills are done, a small separating line, then more explanations for each keyword"). Skill
 // lines name the status in its colour; one short glossary under the skills explains each status that came up.
 const STATUS_KEYWORDS = [
-  {k:'poison', re:/\b(poison(?:ed|s)?)\b/gi, name:'Poison', c:'#3fa535', text:'takes damage equal to its stacks at the start of each round, then loses 1 stack. Only Cure removes it; heals don’t.'},
-  {k:'bleed', re:/\b(bleed(?:ing|s)?|bled)\b/gi, name:'Bleed', c:'#d0344a', text:'takes damage equal to its stacks whenever it attacks or uses a skill, and loses 1 stack each round. Heals remove it.'},
+  {k:'poison', re:/\b(poison(?:ed|s)?)\b/gi, name:'Poison', c:'#3fa535', text:TX('ui.st-poison'), codex:TX('ui.stx-poison')} /* 2026-10-18 (package D): terse */,
+  {k:'bleed', re:/\b(bleed(?:ing|s)?|bled)\b/gi, name:'Bleed', c:'#d0344a', text:TX('ui.st-bleed')} /* 2026-10-18 (package D): terse */,
   {k:'decay', re:/\b(decay(?:ing|s)?)\b/gi, name:'Decay', c:'#8d8a2e', text:'at the start of each round, takes damage and loses Attack equal to its stacks.'},
   {k:'corrode', re:/\b(corrode[ds]?)\b/gi, name:'Corrode', c:'#b8732c', text:'deals that much less Attack; loses 1 stack each round.'},
   {k:'freeze', re:/\b(freez(?:e|es|ing)|frozen)\b/gi, /* + Freezes (2026-10-16 skill audit) */ name:'Frozen', c:'#3d9fd8', text:'can’t attack, and its Wait doesn’t tick down.'},
-  {k:'sleep', re:/\b(sleep|asleep)\b/gi, name:'Asleep', c:'#8a78d0', text:'can’t act until it wakes; any damage wakes it.'},
+  {k:'sleep', re:/\b(sleep|asleep)\b/gi, name:'Asleep', c:'#8a78d0', text:TX('ui.st-sleep')} /* 2026-10-18 (package D): Sleep N stacks up to N+1 */,
   {k:'paralyze', re:/\b(paraly[sz]ed?)\b/gi, name:'Paralyzed', c:'#c9a417', text:'each round, a coin flip decides whether it can act.'},
   {k:'stun', re:/\b(stun(?:ned|s)?)\b/gi, name:'Stunned', c:'#d08a1c', text:'skips its next attack, and its Wait doesn’t tick that round.'},
   {k:'blind', re:/\b(blind(?:ed)?)\b/gi, name:'Blind', c:'#7c8794', text:'each of its swings misses half the time.'},
@@ -2056,17 +2061,17 @@ const STATUS_KEYWORDS = [
   {k:'stagger', re:/\b(stagger(?:ed|s)?)\b/gi, name:'Staggered', c:'#a0664a', text:'deals 50% less damage with its attacks.'},
   // 2026-10-16 skill audit (user: "keywords are highlighted"): the statuses the newer skills give had no colour or gloss.
   // cs: only when written as the game word (capitalised), so "a Guardian shield" or "bound to" in plain prose stay plain.
-  {k:'exposed', re:/\b(expose[ds]?)\b/gi, name:'Exposed', c:'#e07b39', text:'each hit on it is a crit (double damage) and removes 1 Expose counter; attacks at it can’t miss.'}, // 2026-10-16: counters
+  {k:'exposed', re:/\b(expose[ds]?)\b/gi, name:'Exposed', c:'#e07b39', text:TX('ui.st-exposed')}, // 2026-10-16: counters
   {k:'bound', re:/\b(bind(?:s)?|bound)\b/gi, cs:true, name:'Bound', c:'#5f8a3c', text:'can’t attack; its Wait still counts down.'},
   {k:'webbed', re:/\b(web(?:bed|s)?)\b/gi, cs:true, name:'Webbed', c:'#8f8aa8', text:'stuck in a web: it can’t dodge, and it can’t move or be moved.'}, // 2026-10-17 (Web N)
   {k:'toxin', re:/\b(toxin)\b/gi, name:'Toxin', c:'#6b2fa0', text:'takes damage equal to its stacks every round. It never wears off and can’t be cured.'},
   {k:'smoke', re:/\b(smoke)\b/gi, cs:true, name:'Smoke', c:'#8a929c', text:'attacks at it miss 1 in 2 until the end of next round.'},
   {k:'scar', re:/\b(scar(?:red|s)?)\b/gi, cs:true, name:'Scar', c:'#b5546a', text:'takes that much more damage from every hit.'},
-  {k:'irradiation', re:/\b(irradiation)\b/gi, name:'Irradiation', c:'#7cb518', text:'each round every token takes 1 point (max Health, Attack or a skill’s number), then the tokens drop by 1.'},
+  {k:'irradiation', re:/\b(irradiation)\b/gi, name:'Irradiation', c:'#7cb518', text:TX('ui.st-irradiation')},
   {k:'shield', re:/\b(shield)\b/gi, cs:true, name:'Shield', c:'#3d8fd1', text:'temporary Health that soaks damage first and doesn’t come back.'},
   // 2026-10-17 (user: "Wet units just take +N damage by default, for every wet counter. Can see this in codex instead."): the general Wet
   // rule (the engine's wetCountOf / wetShockBonus). cs: the game word only, so "wet ground" in plain prose stays plain.
-  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:'takes 1 more lightning damage from every lightning hit for each Wet counter it has. A unit has one counter for each of these: it is in the water (a Swimmer or Tide unit always is, in Flood or Ebb; while the Tide is in, Flood or High Tide, so is every unit that isn’t Flying); it is raining (the Rain field). A bramble is never Wet.'}, // 2026-10-18 (owner 15:05): the Flood wets every land unit, flyers stay dry
+  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:TX('ui.st-wet'), codex:TX('ui.stx-wet')} /* 2026-10-18 (package D): terse; where the water counts is in the Codex */, // 2026-10-18 (owner 15:05): the Flood wets every land unit, flyers stay dry
 ];
 // Keywords everywhere (2026-10-12, user: "Highlight keywords like pitch etc. Also, if the keyword has colour, give it some
 // colour. Do this as a standard for all descriptions. If it's possible dont hardcode this ... (except in flavour text)").
@@ -2079,6 +2084,7 @@ const KEYWORD_TERMS = [
   {name:'Upkeep', re:'upkeep', text:'the start of each round, before anyone attacks. Upkeep effects go in the same order units act.'},
   {name:'Adjacent', re:'adjacent', text:'the columns to its left, centre and right.'},
   {name:'Kin', re:'kin', cs:true, text:'your own units that share a Type with this one (never itself).'}, // 2026-10-18: the Kin target
+  {name:'Dark-blind', re:'dark-blind', text:TX('ui.term-dark-blind')}, // 2026-10-18 (package D): the Darkness card's word
   {name:'Graveyard', re:'graveyard'}, {name:'Wait', re:'wait(?:ing)?', cs:true}, {name:'Ready', re:'ready', cs:true},
   {name:'Leader', re:'leaders?', cs:true}, {name:'Removal Zone', re:'removal zone'}, {name:'Flood', re:'flood', cs:true}, {name:'Ebb', re:'ebb', cs:true},
   {name:'Field', re:'field card', cs:false}, {name:'Dark Summon', re:'dark summons?'}, {name:'Structure', re:'structures?', cs:true},
@@ -2155,18 +2161,18 @@ const SKILL_TEXT = {
   counterattack: ()=> `Never attacks on its own. Each time an enemy hits it, it strikes the enemy facing it.`, // 2026-10-16 skill audit: it hits the unit in front, not the attacker (counterStrike)
   spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,
   thorns: v=> `Melee attackers take ${v} damage.`,
-  fork: ()=> `One two-pronged swing: full Attack on the units to its left and right when both are there, or else just the one in front.`, // 2026-10-17
+  fork: ()=> TX('ui.sk-fork'), // 2026-10-17; 2026-10-18 (package D): terse
   swipe: v=> `Each hit steals ${v} Lumber.`,
   twinStrike: ()=> `Attacks twice.`,
-  pack: v=> `Pack units of its type standing side by side each get +1/+1 for every Pack point in the chain (two Pack ${numOr(v, 2)}s: +${2*numOr(v, 2)}/+${2*numOr(v, 2)} each).`, // 2026-10-16 skill audit: plain words, no "N = …"
-  packLeader: ()=> `Links every Pack unit of its type on your side into one chain, adjacent or not, and adds +2/+2 of its own and +2/+2 for the type.`,
+  pack: v=> TX('ui.sk-pack'), // 2026-10-16 skill audit: plain words, no "N = …"; 2026-10-18 (package D): terse, the example is in the Codex
+  packLeader: ()=> TX('ui.sk-pack-leader'), // 2026-10-18 (package D): terse; the rest in the Codex
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
-  wave: (v, n, e)=>{ const w = waveParts(v, e), cols = w.n === 1 ? 'one column' : `${w.n} columns`; // Wave N (2026-10-18): it crashes, no swaps
-    return `Its hits push the unit ${cols} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right, in turn' : w.way}. If it crashes into a unit, it stops and both take ${w.n}.`; },
+  wave: (v, n, e)=>{ const w = waveParts(v, e), s = w.n === 1 ? '' : 's'; // Wave N (2026-10-18): it crashes, no swaps; 2026-10-18 (package D): terse, one text per way
+    return w.way === 'left' ? TX('ui.sk-wave-left', {n: w.n, s}) : w.way === 'right' ? TX('ui.sk-wave-right', {n: w.n, s}) : w.way === 'alternate' ? TX('ui.sk-wave-alternate', {n: w.n, s}) : TX('ui.sk-wave-either', {n: w.n, s}); },
   supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flood or Ebb. Tide effects can't take them away.`,
-  crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right, never the one in front. With none there, it hits the bramble.`, // 2026-10-17
+  crabClaws: ()=> TX('ui.sk-crab-claws'), // 2026-10-17; 2026-10-18 (package D): terse
   meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
-  nullify: ()=> `Its hits get no reaction from the unit hit. A unit it kills skips its death effects and goes to the ${EXILE_ZONE_NAME}.`,
+  nullify: ()=> TX('ui.sk-nullify', {zone: EXILE_ZONE_NAME}), // 2026-10-18 (package D): terse
   restless: ()=> `Every upkeep it steps one column toward the nearest enemy.`,
   brood: v=> Number(v) > 1 ? `When it arrives, ${v} 1/1 Brood tokens of its kind (Swarm) hatch beside it.` : `When it arrives, a 1/1 Brood token of its kind (Swarm) hatches beside it.`,
   sweep: v=> `Also deals ${numOr(v, 1)} damage to the units beside its target.`, // Cleave N: default 1 (2026-10-16)
@@ -2232,7 +2238,7 @@ const SKILL_TEXT = {
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
   swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
   reload: v=> `After attacking, sits out ${v} round${v==1?'':'s'}.`,
-  shell: v=> `When first hit: +${v} Armor and +${v} Health until the end of next round, but it can't attack that round.`,
+  shell: v=> TX('ui.sk-shell', {n: v}), // 2026-10-18 (package D): terse
   stealth: ()=> `Always attacks the enemy bramble.`,
   evasive: ()=> `Dodges half of all single-target attacks and skills.`,
   feeble: ()=> `Deals half damage.`, mighty: ()=> `Deals double damage.`, fragile: ()=> `Takes double damage.`, sturdy: ()=> `Takes half damage.`,
@@ -2259,20 +2265,20 @@ const SKILL_TEXT = {
   perforate: v=> `Its melee hits ignore and strip ${v} Armor, add ${v} Bleed and deal ${v} damage to the enemy bramble.`,
   flying: ()=> `Dodges half of all attacks from units without Flying.`,
   earthquake: v=> `When played, deal ${v} damage to every other unit without Flying, yours included.`,
-  pounce: v=> `When played, deal ${pounceWords(v)} damage to the enemy facing it (or the nearest), or the bramble if there are no targets.`, // 2026-10-16: N, <Att> or <Hp> // 2026-10-16 skill audit: the engine aims at the unit opposite first (2026-10-15)
+  pounce: v=> TX('ui.sk-pounce', {n: pounceWords(v)}), // 2026-10-18 (package D): terse // 2026-10-16: N, <Att> or <Hp> // 2026-10-16 skill audit: the engine aims at the unit opposite first (2026-10-15)
   skyfall: v=> `When played, deal ${v} damage to a random enemy unit, or the bramble if there are no targets.`,
   arrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${v} damage every upkeep.`, // 2026-10-16 skill audit
   fireArrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${v} fire damage every upkeep.`, // 2026-10-16 skill audit
-  iceArrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${numOr(v, 2)} cold damage every upkeep; 1 in 2 it Freezes.`, // 2026-10-16 skill audit: it aims like Arrow
+  iceArrow: v=> TX('ui.sk-ice-arrow', {n: numOr(v, 2)}), // 2026-10-16 skill audit: it aims like Arrow; 2026-10-18 (package D): terse
   twinShot: v=> `While Ready, shoot two random enemy units for ${numOr(v, 2)} damage each every upkeep.`,
   volley: v=> `While Ready, every other upkeep, shoot every enemy unit for ${numOr(v, 1)} damage.`,
   fireBolt: v=> `While Ready, spit fire at the enemy facing it (or the nearest) for ${numOr(v, 2)} fire damage every upkeep.`, // 2026-10-16 skill audit: the shooting skills all say "every upkeep" and "facing it"
-  acidBolt: v=> `While Ready, spit acid at the enemy facing it (or the nearest) for ${numOr(v, 2)} acid damage and 1 Corrode every upkeep.`,
+  acidBolt: v=> TX('ui.sk-acid-bolt', {n: numOr(v, 2)}), // 2026-10-18 (package D): terse
   poisonBolt: v=> `While Ready, spit venom at the enemy facing it (or the nearest): ${numOr(v, 2)} Poison every upkeep.`,
-  iceBolt: v=> `While Ready, spit ice at the enemy facing it (or the nearest) for ${numOr(v, 2)} cold damage every upkeep; 1 in 2 it Freezes.`,
-  shockBolt: v=> `While Ready, spit a spark at the enemy facing it (or the nearest) for ${numOr(v, 2)} lightning damage; it is Shocked for a round. Every upkeep.`, // 2026-10-17: lightning damage
-  bloodlust: ()=> `When it kills the unit facing it, it leaps to face the nearest enemy creature. Half damage to Structures and brambles.`, // 2026-10-17 rework (the Codex adds one more sentence: codexNote)
-  chilli: v=> `When first Ready, eats a chilli: +${numOr(v, 2)} Attack and its attacks deal fire damage, but it takes 1 damage every upkeep.`, // 2026-10-16 skill audit
+  iceBolt: v=> TX('ui.sk-ice-bolt', {n: numOr(v, 2)}), // 2026-10-18 (package D): terse
+  shockBolt: v=> TX('ui.sk-shock-bolt', {n: numOr(v, 2)}), // 2026-10-17: lightning damage; 2026-10-18 (package D): terse
+  bloodlust: ()=> TX('ui.sk-bloodlust'), // 2026-10-17 rework (the Codex adds one more sentence: codexNote); 2026-10-18 (package D): terse
+  chilli: v=> TX('ui.sk-chilli', {n: numOr(v, 2)}), // 2026-10-16 skill audit; 2026-10-18 (package D): terse
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
 };
 // 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami, Dragon Lightning, Wither.
@@ -2287,8 +2293,8 @@ Object.assign(SKILL_TEXT, {
 Object.assign(SKILL_TEXT, {
   fencing: v=> `Its attacks can't be dodged by Evasive or Swift units.`,
   fireball: v=> `When Ready: a fireball hits a random enemy unit and the units beside it for ${numOr(v, 15)} fire damage each.`, // 2026-10-16 skill audit
-  meteor: v=> `When Ready: a meteor hits a random enemy column for ${numOr(v, 20)} (${Math.floor(numOr(v, 20)/4)} beside it); the crater burns for 2 rounds.`,
-  banana: v=> `Every round, last: eats its banana (+${numOr(v, 3)} Health, only if hurt) or throws it at a random enemy (${numOr(v, 3)} damage).`,
+  meteor: v=> TX('ui.sk-meteor', {n: numOr(v, 20), m: Math.floor(numOr(v, 20)/4)}), // 2026-10-18 (package D): terse
+  banana: v=> TX('ui.sk-banana', {n: numOr(v, 3)}), // 2026-10-18 (package D): terse
   bananarang: v=> `A Boomerang that may be eaten when it comes home (+${numOr(v, 3)} Health, 1 in 2, only if hurt).`,
   durian: v=> `Every round, last: 1 in 2 it eats a durian for Thorns +${numOr(v, 1)} (stacks).`, // 2026-10-16 skill audit: Durian N
   shield: v=> `Arrives with ${numOr(v, 1)} Shield: temporary Health that soaks damage first.`,
@@ -2310,7 +2316,7 @@ Object.assign(SKILL_TEXT, {
   sonar: ()=> `Never misses from Darkness, Blind, Smoke or Fog, and can't be Blinded.`,
   poisonGas: v=> `When played, every enemy unit gets ${numOr(v, 2)} Poison.`,
   absoluteZero: ()=> `When played, every enemy unit is Frozen for the round.`,
-  spitfire: v=> `While Ready, spit ${numOr(v, 2)} fire damage at a random enemy unit every upkeep; 1 in 2 it also burns one beside it for 1.`, // 2026-10-16 skill audit
+  spitfire: v=> TX('ui.sk-spitfire', {n: numOr(v, 2)}), // 2026-10-16 skill audit; 2026-10-18 (package D): terse
   slashBurn: v=> `When it kills a unit, the next enemy card played there takes ${numOr(v, 3)} fire damage.`,
   trap: v=> `When played, trap the empty enemy slot facing it: the next card played there takes ${numOr(v, 5)} damage.`, // 2026-10-16 skill audit
   penance: v=> `When played, deal ${numOr(v, 3)} damage to your own bramble.`, // 2026-10-16 (user: "hurting your own castle on play as payment")
@@ -2323,14 +2329,14 @@ Object.assign(SKILL_TEXT, {
   mountainClimber: ()=> `Field and terrain hazards pass it by.`,
   atheist: ()=> `Half damage from magic, Devilry and Ecclesia. Immune to the Leylines.`, // 2026-10-16
   taunt: ()=> `Enemies facing it or beside that column must attack it.`,
-  amore: ()=> `When it arrives with one of your Amore units on the field that shares a Type, the two fall in love (once): +0/+3 and Regeneration 3 each. If one dies, the other keeps the +0/+3 but loses the Regeneration.`, // 2026-10-16
+  amore: ()=> TX('ui.sk-amore'), // 2026-10-16; 2026-10-18 (package D): terse, the rest in the Codex
   molting: v=> `Every 2 rounds: +${numOr(v, 1)}/+${numOr(v, 1)} for good, but +1 Wait.`, // 2026-10-16
   bludgeon: ()=> `Its hits take 1 Attack and knock out one of the target's skills.`, // 2026-10-16
 });
 // 2026-10-14 (seventh pass): Psychic and Smoke Bomb.
 Object.assign(SKILL_TEXT, {
   psychic: v=> `Its hits also deal ${numOr(v, 1)} psychic damage, through Armor, Shield, Shell and Ghost. Elementals and Plants are immune.`,
-  smokeBomb: v=> `Every round, last: 1 in 2 it throws a smoke bomb at a random unit. An ally hides in Smoke (attacks at it miss 1 in 2); an enemy is Blinded.`,
+  smokeBomb: v=> TX('ui.sk-smoke-bomb'), // 2026-10-18 (package D, owner: "make the explanation terse ... 20+ words ... too much")
 });
 // 2026-10-16 skill audit (user: "Do skill audit - so the skills are as simply named and described as possible, keywords are
 // highlighted. And they have the right parameters for targeting and amount."): every skill in "+ Add Skill" has a short card
@@ -2338,6 +2344,9 @@ Object.assign(SKILL_TEXT, {
 // A status skill (Freeze …) reads its [chance %, rounds]; the Codex passes `true`, which reads as "can".
 function procSkillText(verb){ return v=>{ const c = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Math.max(1, Number(v[1])||1) : 1, rs = `${d} round${d === 1 ? '' : 's'}`;
   return !c ? `Its hits can ${verb}.` : c >= 100 ? `Its hits ${verb} for ${rs}.` : `Its hits have a ${c}% chance to ${verb} for ${rs}.`; }; }
+// Sleep N stacks up to N+1 (2026-10-18, package D; owner: "never exceeds the applied sleep + 1"): its line says so, tersely.
+function sleepSkillText(v){ const c = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Math.max(1, Number(v[1])||1) : 1, s = d === 1 ? '' : 's';
+  return !c ? procSkillText('put the target to Sleep')(v) : c >= 100 ? TX('ui.sk-sleep-sure', {n: d, s, m: d + 1}) : TX('ui.sk-sleep-chance', {c, n: d, s, m: d + 1}); }
 const SKILL_DEFS_ONLY_LINES = ['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger', 'chained', 'revive'];
 Object.assign(SKILL_TEXT, {
   converge: v=> `When it becomes Ready, ${v === 'ally' ? 'your units close' : v === 'both' ? 'the units on both sides close' : "the enemy's units close"} their gaps toward the centre.`,
@@ -2349,13 +2358,13 @@ Object.assign(SKILL_TEXT, {
   nocturnal: v=> { const [a, h] = phaseVals(v); return `At night: +${a}/+${h}.`; },
   diurnal: v=> { const [a, h] = phaseVals(v); return `By day: +${a}/+${h}.`; },
   tideGrant: v=> { if(!Array.isArray(v)) return `On Flood and on Ebb it has the skills in its braces; at High Tide, both.`; const [f, b] = v; return `On Flood it has ${grantText(parseGrantText(f)) || 'nothing'}; on Ebb, ${grantText(parseGrantText(b)) || 'nothing'}; at High Tide, both.`; },
-  charge: v=> { const c = typeof v === 'string' ? parseChargeText(v) : (v && typeof v === 'object' ? v : null); const cp = chargeParts(c); return cp && cp.act ? `${chargeLabel(c)}: once it is Ready, this happens every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.` : `Once it is Ready, a clock counts down every upkeep; at 0 its effect happens and the clock starts again.`; },
-  dynamite: v=> { const f = Array.isArray(v) ? (Number(v[0])||3) : numOr(v, 3), d = Array.isArray(v) ? (Number(v[1])||5) : 5; return `A fuse of ${f} burns down every upkeep; at 0 it blows up for ${d} fire damage on the units beside it and the 3 enemy units facing it.`; },
+  charge: v=> { const c = typeof v === 'string' ? parseChargeText(v) : (v && typeof v === 'object' ? v : null); const cp = chargeParts(c); return cp && cp.act ? `${chargeLabel(c)}: once it is Ready, this happens every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.` : TX('ui.sk-charge-clock'); }, // 2026-10-18 (package D): terse
+  dynamite: v=> { const f = Array.isArray(v) ? (Number(v[0])||3) : numOr(v, 3), d = Array.isArray(v) ? (Number(v[1])||5) : 5; return TX('ui.sk-dynamite', {f, d}); }, // 2026-10-18 (package D): terse
   helmet: ()=> `Half the arrows, missiles and bolts aimed at it glance off.`,
   shedding: v=> `Every ${numOr(v, 3)} rounds: +1/+1 for good, and it sheds its Poison, Bleed, Corrode, Scar and Exposed.`,
   snipe: v=> `While Ready, if nothing faces it, shoot a random enemy unit for ${numOr(v, 1)} every upkeep.`,
   kinship: v=> { const k = Array.isArray(v) ? {type:v[0], atk:v[1], hp:v[2]} : (v && typeof v === 'object' ? v : {}); return k.type ? `All your ${k.type} units get +${Number(k.atk)||0}/+${Number(k.hp)||0} (itself too). Stacks.` : `All your units of its chosen type get +X/+Y (itself too). Stacks.`; },
-  rocket: v=> `Once, when Ready: a rocket hits the enemy unit with the most Attack for ${numOr(v, 1)} fire damage, and 1 to the units beside it (the bramble if there are none).`,
+  rocket: v=> TX('ui.sk-rocket', {n: numOr(v, 1)}), // 2026-10-18 (package D): terse; the Codex says who "strongest" is
   loneWolf: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} for each empty slot within 2 of it, and +${a}/+${h} more when all 4 are empty.`; },
   sociable: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} for each ally within 2 slots of it, and +${a}/+${h} more when all 4 are filled.`; },
   coffee: v=> `When played, Wait −${numOr(v, 1)}. ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'} later it naps: Stunned for a round.`,
@@ -2365,8 +2374,8 @@ Object.assign(SKILL_TEXT, {
   loyal: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.loyalGrant ? grantText(e.loyalGrant) : ''; return `While one of your leaders is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
   usurper: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.usurperGrant ? grantText(e.usurperGrant) : ''; return `While the enemy leader is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
   esprit: (v, n, e)=> { const [a, h] = phaseVals(v); return `+${a}/+${h} whenever ${espritWhoOf(v, e) === 'any' ? 'another unit of yours' : 'another of your Kin'} enters play.`; }, // Kin / Any (2026-10-18)
-  explode: v=> { const t = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Number(v[1])||0 : 0; return t || d ? `In ${t} upkeep${t === 1 ? '' : 's'} it explodes once: ${d} damage to the enemy facing it, or the bramble if there is none.` : `After its timer runs down it explodes once, hitting the enemy facing it (or the bramble).`; },
-  freeze: procSkillText('Freeze the target'), sleep: procSkillText('put the target to Sleep'), paralyze: procSkillText('Paralyze the target'),
+  explode: v=> { const t = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Number(v[1])||0 : 0; return t || d ? TX('ui.sk-explode', {t, s: t === 1 ? '' : 's', d}) /* 2026-10-18 (package D): terse */ : `After its timer runs down it explodes once, hitting the enemy facing it (or the bramble).`; },
+  freeze: procSkillText('Freeze the target'), sleep: sleepSkillText, paralyze: procSkillText('Paralyze the target'),
   blind: procSkillText('Blind the target'), tipsy: procSkillText('make the target Tipsy'), confuse: procSkillText('Confuse the target'),
   shock: procSkillText('Shock the target'), stagger: procSkillText('Stagger the target'),
   chained: v=> { const [on, n] = Array.isArray(v) ? v : ['damage', 1]; return on === 'enemySpawn' ? `Can't attack until the opponent plays a card.` : `Can't attack until one hit deals it more than ${Number(n)||1} damage.`; },
@@ -2467,23 +2476,23 @@ function describeEffects(def, liveCard){
   if(def.field){ // Field cards (2026-10-09)
     const F = FIELD_TEXT;
     const f = F[def.field.id] || {};
-    lines.push(`Field — ${f.name||def.field.id} for ${def.field.rounds||3} rounds: ${f.text||''} Replaces any field already in play; a map's own field returns when it ends.`);
+    lines.push(`Field — ${f.name||def.field.id} for ${def.field.rounds||3} rounds: ${f.text||''}`); lines.push(TX('ui.de-field-replaces')); // 2026-10-18 (package D): two short lines
     lines.push(`A free extra action (one field card a turn): it doesn't use your play, and you draw a card.`);
   }
-  if(def.cardType==='spell') lines.push(`✨ Spell — ${spellText(def)} It never takes a place on the field; casting it uses your play for the turn.`);
+  if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
-    lines.push(`⚒️ Equipment — drag it onto one of your units to equip it: +${def.attack||0}/+${def.health||0}${g ? ' and ' + g : ''}. It never takes a place on the field, so it can't block attacks. One per unit; equipping uses your play for the turn, and it falls with the unit.`); }
-  if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — when its Wait runs out it cracks open into the ${into ? into.name : 'creature inside'}, ready to fight. It has no Attack until then. Only a hatch on the battlefield: your egg card stays in your collection.`); }
-  else if(def.hatchInto) lines.push(`🥚 Egg — when its Wait runs out it cracks open into a random ${eggKindLabel(def)} card (Common or Uncommon${['common','uncommon'].includes(def.rarity||'common') ? '' : ' or up to ' + (def.rarity)}), ready to fight. It has no Attack until then. Only a hatch on the battlefield: your egg card stays in your collection.`); // Egg cards (2026-10-14)
+    lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); } // 2026-10-18 (package D): two short lines
+  if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — ${TX('ui.de-egg-into', {name: into ? into.name : 'creature inside'})}`); lines.push(TX('ui.de-egg-note')); } // 2026-10-18 (package D): two short lines
+  else if(def.hatchInto){ lines.push(`🥚 Egg — ${['common','uncommon'].includes(def.rarity||'common') ? TX('ui.de-egg-random', {kind: eggKindLabel(def)}) : TX('ui.de-egg-random-up', {kind: eggKindLabel(def), rarity: def.rarity})}`); lines.push(TX('ui.de-egg-note')); } // Egg cards (2026-10-14); 2026-10-18 (package D): two short lines
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
   if(def.prayerReq) lines.push(TX('ui.prayer-req', {n: def.prayerReq})); // 2026-10-19 (package E): Prayer tokens
   if(def.exileCost) lines.push(def.exileCost.zone==='hand' ? `Offering ${def.exileCost.count} — to play this, exile ${def.exileCost.count} random card${def.exileCost.count===1?'':'s'} from your hand.` : `Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`); // "Offering" (2026-10-10: the user's unnamed "____: Exile a random card in your hand as a cost")
   if(def.devilryCost) lines.push(`Costs ${def.devilryCost} Darkness ★ to play. You gain 1 Darkness whenever one of your units perishes.`);
   if(def.darkSummon) lines.push(`Dark Summon ⛧ — uses your Dark Summon for the turn (1 a turn), not your normal play.`);
   if(e.devour){ const g = e.devour.grant ? Object.entries(e.devour.grant).map(([k, v])=> { const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
-    lines.push(`Devour — drag a card from your hand onto this one: it eats it (to your graveyard) and gains +${e.devour.attack||0}/+${e.devour.health||0}${g ? ' and ' + g : ''}. Once, and it uses your play for the turn.`); }
-  if(e.ritual){ const r = e.ritual; lines.push(`Ritual — no Wait, but it can't act until, after it arrives, ${r.perished||0} units have perished (either side), you've drawn ${r.drawn||0} cards and dealt ${r.castleDamage||0} bramble damage.`); }
+    lines.push(`Devour — ${g ? TX('ui.de-devour-grant', {a: e.devour.attack||0, h: e.devour.health||0, grant: g}) : TX('ui.de-devour', {a: e.devour.attack||0, h: e.devour.health||0})}`); } // 2026-10-18 (package D): terse
+  if(e.ritual){ const r = e.ritual; lines.push(`Ritual — ${TX('ui.de-ritual', {p: r.perished||0, d: r.drawn||0, c: r.castleDamage||0})}`); } // 2026-10-18 (package D): terse; the Codex adds the rest
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
   if(def.wait) lines.push(`⏳ Wait ${def.wait} — Can't attack for ${def.wait} round${def.wait===1?'':'s'} after it's played.`);
   { const bn = bountyN(e); if(bn) lines.push(`🏆 Bounty ${bn} — When played, gain ${bn} Lumber. When it dies, the opponent gains ${bn} Lumber.`); } // 2026-10-15
@@ -2516,7 +2525,7 @@ function describeEffects(def, liveCard){
     if(p.key==='pounce'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; // 2026-10-16 (user: "Pounce <Att> or <Hp>")
       const pm = pounceMode(e.pounce), now = lc ? (lc.pounceN != null ? lc.pounceN : pm === 'attack' ? (lc.atk||0) : (lc.hp||0)) : null;
       const amt = now != null ? `<b class="atk-bonus" title="Worked out from its ${pm === 'attack' ? 'Attack' : 'Health'} as it landed">${now}</b>` : (pm === 'attack' ? '&lt;Att&gt;' : '&lt;Hp&gt;');
-      lines.push(`${ic('pounce')}Pounce ${amt} — When played, deal ${amt} damage to the enemy facing it (or the nearest), or the bramble if there are no targets.`); return; }
+      lines.push(`${ic('pounce')}Pounce ${amt} — ${TX('ui.sk-pounce', {n: amt})}`); /* 2026-10-18 (package D): terse */ return; }
     if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span> — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
     if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
@@ -2605,7 +2614,19 @@ function describeEffects(def, liveCard){
   if(def._hiddenSkills) lines.push(`<span class="skill-q-line">${skillQChipHTML()}</span>`); // 2026-10-15: one neutral "?" for the skills not met yet
   if(def.token) lines.push(`Token card — spawn-only, never appears in the draftable pool.`);
   if(def.test) lines.push(`🧪 Dev-only`); // 2026-10-10 (user): test cards just say Dev-only
+  { const dl = darkMissLine(liveCard); if(dl) lines.push(dl); } // 2026-10-18 (package D): "misses 1/4 the time" in the dark
   return lines;
+}
+// The dark on a live unit's card detail (2026-10-18, package D; owner: "On affected units' own card details, show a line that they
+// miss 1/4 the time (from Darkness)"): the engine's share for this unit (no Darksight, not lit, not True Strike), from the map's own
+// darkness or a Cast Darkness unit. The board marks the same units with the shut eye (FX.B sightSync).
+function darkMissLine(liveCard){
+  const m = typeof matchState !== 'undefined' ? matchState : null; if(!liveCard || !m || m.over || !m.engine || !m.engine.darkMissOf || !m.players) return '';
+  const lc = currentCardByUidSafe(liveCard.uid) || liveCard; let pid = null;
+  [1, 2].forEach(p=>{ const pl = m.players[p]; if(pl && pl.row && [...pl.row.left, ...pl.row.center, ...pl.row.right].some(c=> c && c.uid === lc.uid)) pid = p; });
+  if(pid == null) return '';
+  const x = m.engine.darkMissOf(lc, pid, m.players); if(!(x > 0)) return '';
+  return x >= 1 ? TX('ui.dark-miss-all') : TX('ui.dark-miss-share', {share: x >= 0.5 ? '1/2' : '1/4'});
 }
 function cardName(id){ const d = getCardDefs()[id]; return d ? `${d.icon} ${d.name}` : id; }
 
@@ -2805,7 +2826,7 @@ function openStandardDeckBuilder(onDone){
       <div class="modal-head-row"><h2 id="stdTitle">🃏 Standard deck</h2><button class="modal-close-btn" id="stdClose" aria-label="Close">✕</button></div>
       <p class="panel-sub">Every card, all at Level 1. No foils or shinies. <b class="${tot===DECK_SIZE?'std-ok':'std-bad'}">${tot} / ${DECK_SIZE}</b></p>
       <div class="std-in">${inDeck.length ? inDeck.map(row).join('') : '<p class="panel-sub">Empty. Add cards below.</p>'}</div>
-      <input type="search" class="std-search" id="stdSearch" placeholder="Search all cards" value="${escapeHtml(q)}">
+      <input data-text-filter autocomplete="off" type="search" class="std-search" id="stdSearch" placeholder="Search all cards" value="${escapeHtml(q)}">
       <div class="std-pool">${list.filter(id=>!counts[id]).slice(0, 400).map(row).join('')}</div>
       <div class="auth-actions"><button type="button" class="btn" id="stdCopy">Copy my Collection deck</button><button type="button" class="btn primary" id="stdDone">Done</button></div></div>`;
     ov.hidden = false;
@@ -2982,13 +3003,27 @@ function codexRevealedForPlayer(id, d){
   try{ const pool = packPoolOf(d); if(pool === 99) return featureUnlocked('wanderer'); if(pool) return featureUnlocked('shop'); }catch(e){}
   return false;
 }
+// 2026-10-18 (package C, owner 20:36: "Skills and cards dont show up if you havent seen them before"): the seen list follows the
+// account now (PROGRESS_KEYS, merged as a union like the discoveries), and every save is brought up to date once
+// (SEEN_MIGRATED_KEY): the cards you own or have unlocked, your discoveries and every enemy deck of a fight you have cleared
+// (the tutorial's too) count as seen. A seen list pulled from the account is read back from storage (mySeenCardIds = null).
+const SEEN_MIGRATED_KEY = 'bramblewood_arena_seen_v2';
 function seenCardIds(){
-  if(mySeenCardIds) return mySeenCardIds;
-  mySeenCardIds = new Set(myDiscoveredCardIds);
-  try{ const prog = loadConquestProgress(); (prog.completed||[]).forEach(cid=>{ CONQUEST_MAPS.forEach(m=> m.nodes.forEach(n=>{ if(conquestNodeId(m.id, n.key)===cid) Object.keys(n.deck||{}).forEach(id=> mySeenCardIds.add(id)); })); }); }catch(e){}
-  try{ localStorage.setItem(SEEN_KEY, JSON.stringify([...mySeenCardIds])); }catch(e){}
-  return mySeenCardIds;
+  if(mySeenCardIds && seenMigrated) return mySeenCardIds;
+  if(!mySeenCardIds){ try{ const raw = localStorage.getItem(SEEN_KEY); if(raw) mySeenCardIds = new Set(JSON.parse(raw)); }catch(e){} }
+  if(!mySeenCardIds) mySeenCardIds = new Set();
+  let done = false; try{ done = localStorage.getItem(SEEN_MIGRATED_KEY) === '1'; }catch(e){}
+  seenMigrated = true;
+  if(done) return mySeenCardIds;
+  const seen = mySeenCardIds;
+  try{ myDiscoveredCardIds.forEach(id=> seen.add(id)); }catch(e){}
+  try{ Object.keys(myCardCopies || {}).forEach(id=>{ if((myCardCopies[id] || []).length) seen.add(id); }); }catch(e){}
+  try{ if(myUnlockedCardIds) myUnlockedCardIds.forEach(id=> seen.add(id)); }catch(e){}
+  try{ const done = new Set(loadConquestProgress().completed || []); CONQUEST_MAPS.forEach(m=> m.nodes.forEach(n=>{ if(done.has(conquestNodeId(m.id, n.key))) Object.keys(n.deck||{}).forEach(id=> seen.add(id)); })); }catch(e){}
+  try{ localStorage.setItem(SEEN_KEY, JSON.stringify([...seen])); localStorage.setItem(SEEN_MIGRATED_KEY, '1'); }catch(e){}
+  return seen;
 }
+var seenMigrated = false;
 function noteSighted(defIds){
   if(!defIds || (matchState && matchState.fxLib)) return; // the Effects library's stand-ins aren't sightings (2026-10-14)
   const defs = getCardDefs();
@@ -5122,11 +5157,11 @@ const LIVE_STATUS_ROWS = [
   // [field, STATUS_KEYWORDS k (colour) or null, name, text(n, c), shows its number]
   ['poison', 'poison', 'Poison', n=> `takes ${n} damage at upkeep, then loses 1 stack. Heals don’t touch it; Cure does.`, true],
   ['toxin', 'toxin', 'Toxin', n=> `takes ${n} damage every round. It never wears off and can’t be cured.`, true],
-  ['bleed', 'bleed', 'Bleed', n=> `takes ${n} damage whenever it attacks or uses a skill; loses 1 stack each round. Heals remove it first.`, true],
+  ['bleed', 'bleed', 'Bleed', n=> TX('ui.ls-bleed', {n}), true], // 2026-10-18 (package D): terse
   ['decay', 'decay', 'Decay', n=> `at upkeep, takes ${n} damage and loses ${n} Attack.`, true],
   ['corrode', 'corrode', 'Corrode', n=> `deals ${n} less Attack; loses 1 stack each round.`, true],
   ['wither', null, 'Wither', (n, c)=> `loses ${n} max Health at upkeep${c.witherLeft ? ` for ${c.witherLeft} more round${c.witherLeft === 1 ? '' : 's'}` : ''}, and can’t be healed.`, true],
-  ['exposed', 'exposed', 'Exposed', n=> `its next ${n} hit${n === 1 ? ' is a crit' : 's are crits'} (double damage), 1 Expose counter each; attacks at it can’t miss.`, true],
+  ['exposed', 'exposed', 'Exposed', n=> TX('ui.ls-exposed', {n, s: n === 1 ? '' : 's'}), true], // 2026-10-18 (package D): terse
   ['scar', 'scar', 'Scar', n=> `takes ${n} more damage from every hit.`, true],
   ['shocked', 'shock', 'Shocked', ()=> STATUS_KEYWORDS.find(k=> k.k === 'shock').text, false],
   ['staggered', 'stagger', 'Staggered', ()=> STATUS_KEYWORDS.find(k=> k.k === 'stagger').text, false],
@@ -5308,7 +5343,9 @@ function cardActionLogHTML(uid){
     }
   }
   if(!lines.length) return '';
-  return `<div class="card-txn-log"><div class="card-txn-log-title">Battle log</div><ul>${lines.join('')}</ul></div>`;
+  // 2026-10-18 (package BP, owner: "The battle log should start from the bottom! the latest!"): the card's own last 5 lines read like the
+  // battle log too, oldest first and the newest at the bottom (they were collected newest-first).
+  return `<div class="card-txn-log"><div class="card-txn-log-title">Battle log</div><ul>${lines.reverse().join('')}</ul></div>`;
 }
 // Finds the LIVE board-card instance a hovered element belongs to, if any — walks up to the
 // nearest [data-uid] ancestor (the .board-card wrapper; hand/Codex/deck tiles never carry one)
@@ -5496,11 +5533,43 @@ let codexSubTab = 'browse';
 // writes it, and stickyControls(page, ids) does both for a page whose filters live only in its controls (the Camp's card pool).
 const UI_FILTERS_KEY = 'bramblewood_ui_filters_v1';
 function uiStickyAll(){ try{ const o = JSON.parse(localStorage.getItem(UI_FILTERS_KEY) || '{}'); return o && typeof o === 'object' ? o : {}; }catch(e){ return {}; } }
-function uiSticky(page){ const o = uiStickyAll()[page]; return o && typeof o === 'object' ? o : {}; }
-function uiStickySave(page, obj){ try{ const all = uiStickyAll(); all[page] = Object.assign({}, all[page] || {}, obj); localStorage.setItem(UI_FILTERS_KEY, JSON.stringify(all)); }catch(e){} }
+// 2026-10-18 (owner 21:18: "The text filters in all my texts ... don't reset when I refresh ... or when I move between pages"):
+// only the non-text choices stay sticky (sort, rarity, type, kind, level, view). The free-text query is never saved or read back.
+const UI_STICKY_TEXT_KEYS = ['q', 'deckSearch'];
+function uiStickyNoText(o){ const out = Object.assign({}, o || {}); UI_STICKY_TEXT_KEYS.forEach(k=> delete out[k]); return out; }
+function uiSticky(page){ const o = uiStickyAll()[page]; return o && typeof o === 'object' ? uiStickyNoText(o) : {}; }
+function uiStickySave(page, obj){ try{ const all = uiStickyAll(); all[page] = uiStickyNoText(Object.assign({}, all[page] || {}, obj)); localStorage.setItem(UI_FILTERS_KEY, JSON.stringify(all)); }catch(e){} }
+// Text filters reset (2026-10-18, same request). Every free-text filter / search box carries data-text-filter and
+// autocomplete="off" (Chrome restores form values after a reload or from the back/forward cache otherwise).
+// resetTextFilters(root) empties the query each page keeps in memory and every such box under root; unless {silent:true},
+// a box that held text gets an 'input' event so its own list redraws unfiltered. The page switch (switchTab, and the Codex /
+// Play sub-tabs through syncTextFilterPage) and `pageshow` call it.
+const TEXT_FILTER_SEL = 'input[data-text-filter]';
+function resetTextFilterState(){
+  const z = f=>{ try{ f(); }catch(e){} }; // each one is declared further down; a missing one is skipped
+  z(()=>{ codexFilter.q = ''; }); z(()=>{ skillCodexQuery = ''; }); z(()=>{ forgeSearch = ''; }); z(()=>{ Market.q = ''; });
+  z(()=>{ sandboxSearch = ''; }); z(()=>{ adminCardSearch = ''; }); z(()=>{ simFilter.A = ''; simFilter.B = ''; });
+  z(()=>{ if(testKit){ testKit.search = ''; testKit.skillSearch = ''; } }); z(()=>{ if(fxLib) fxLib.search = ''; });
+  z(()=>{ Social.searchTerm = ''; Social.searchResults = null; });
+}
+function resetTextFilters(root, opts){
+  resetTextFilterState();
+  const cleared = [];
+  try{ (root || document).querySelectorAll(TEXT_FILTER_SEL).forEach(el=>{ el.setAttribute('autocomplete', 'off'); if(el.value !== ''){ el.value = ''; cleared.push(el); } }); }catch(e){}
+  if(!(opts && opts.silent)) cleared.forEach(el=>{ try{ el.dispatchEvent(new Event('input', {bubbles:true})); }catch(e){} });
+  return cleared.length;
+}
+let textFilterPage = null;
+function syncTextFilterPage(){
+  let k = '';
+  try{ k = currentTab + ':' + (currentTab === 'codex' ? codexSubTab : currentTab === 'play' ? playSubTab : ''); }catch(e){ return; }
+  if(textFilterPage !== null && k !== textFilterPage) resetTextFilters(document, {silent:true}); // the new page draws itself unfiltered
+  textFilterPage = k;
+}
+if(typeof window !== 'undefined') window.addEventListener('pageshow', ()=>{ try{ resetTextFilters(document); }catch(e){} }); // a reload or a bfcache return
 function stickyControls(page, ids){
   const saved = uiSticky(page);
-  ids.forEach(id=>{ const el = document.getElementById(id); if(!el) return;
+  ids.forEach(id=>{ const el = document.getElementById(id); if(!el || el.matches(TEXT_FILTER_SEL)) return; // text boxes aren't sticky (2026-10-18)
     const v = saved[id];
     if(v != null){ if(el.type === 'checkbox') el.checked = !!v; else if(el.tagName === 'SELECT'){ if([...el.options].some(o=> o.value === String(v))) el.value = String(v); } else el.value = String(v); }
     const save = ()=> uiStickySave(page, {[id]: el.type === 'checkbox' ? el.checked : el.value});
@@ -5523,7 +5592,9 @@ function advancementKey(d){
 // display-density toggle for the Codex grid — 'compressed' is the existing small-tile grid,
 // 'full' shows the same tiles larger so the art itself reads as the point of browsing, not just
 // a small icon next to stats. Persisted so it survives switching sub-tabs/filters.
-let codexViewMode = uiSticky('codexView').mode === 'full' ? 'full' : 'compressed'; // 2026-10-16: kept between visits
+// 2026-10-18 (package C, owner: "bestiary - look like a card album"): the album is the Codex's default view now; the grid stays as
+// "Compressed" (saved as 'grid') and "Full Art". An old saved 'compressed' was the old default, so it opens on the album too.
+let codexViewMode = (()=>{ const m = uiSticky('codexView').mode; return m === 'full' ? 'full' : m === 'grid' ? 'compressed' : 'album'; })(); // 2026-10-16: kept between visits
 function codexShell(){
   // 2026-10-15 (user: "Forge is not a submenu of Codex"): the Forge is drawn in this view but is its own page (the Forge
   // shortcut in the top bar), so it gets no Codex sub-tab row at all.
@@ -5545,7 +5616,8 @@ function codexShell(){
          same flex row — see .codex-sub-tabs's plain display:flex, no restructuring needed). -->
     <button class="btn small ghost subnav-right-btn" id="codexToDeckBtn" title="Go to Deck">🃏 Deck</button>
   </div>
-  <div id="codexBody"></div>`;
+  <div id="codexBody"></div>
+  <div id="codexScore" class="cx-score-wrap"></div>`; /* 2026-10-18 (package C): the collection score, at the bottom of every Codex tab */
 }
 // Effects quality (2026-10-07, user: "The effects are getting laggy... put a gfx setting in settings
 // to turn off some of the effects? maybe Effects: None - Low - Med - High"). One level gates every
@@ -5709,6 +5781,7 @@ function pixelReveal(ms){
   requestAnimationFrame(step);
 }
 function renderCodex(){
+  syncTextFilterPage(); // 2026-10-18: a new Codex sub-tab starts with empty search boxes
   try{ if(phylaUnlocked() && !adminModeEnabled) setTimeout(()=>{ try{ playDialogue('unlock_phyla', {once:true}); }catch(e){} }, 600); }catch(e){}
   try{ if(!loadDialogueFlags()[RARITY_LESSON_FLAG]) setTimeout(()=>{ try{ maybeRarityLesson(); }catch(e){} }, 900); }catch(e){} // 2026-10-14 rarity lesson
   // 2026-09-25 (task #352): Recently Deleted and the transaction Log are admin/debug-only views --
@@ -5732,6 +5805,8 @@ function renderCodex(){
   }));
   const toDeckBtn = document.getElementById('codexToDeckBtn');
   if(toDeckBtn) toDeckBtn.addEventListener('click', ()=> switchTab('deck'));
+  codexTurnFn = null; codexAlbumState = null; // 2026-10-18 (package C): the album / book set these again when they draw
+  { const sc = document.getElementById('codexScore'); if(sc) setTimeout(()=>{ try{ if(!sc.isConnected) return; sc.innerHTML = collectionScoreBarHTML(); wireCollectionScoreBar(sc); }catch(e){} }, 60); } // after the tab's first frame (it sits at the bottom)
   const body = document.getElementById('codexBody');
   if(codexSubTab==='brambles'){ body.innerHTML = bramblesTabHTML(); wireCardTileFlourish(body); return; }
   if(codexSubTab==='forge' && !tabOpen('forge')) codexSubTab = 'browse'; // the Forge opens on Map 11 (2026-10-12)
@@ -5739,7 +5814,7 @@ function renderCodex(){
   try{ if(Ambience.current()==='forge') Ambience.stop(); forgeEnteredAt = 0; }catch(e){}
   if(codexSubTab==='skills' && !tabOpen('skillcodex')) codexSubTab = 'browse';
   if(codexSubTab==='maps' && !tabOpen('mapcodex')) codexSubTab = 'browse';
-  if(codexSubTab==='skills'){ body.innerHTML = skillCodexHTML(); wireSkillCodexFilter(body); return; }
+  if(codexSubTab==='skills'){ renderSkillBook(body); return; } // 2026-10-18 (package C): the skills book (skillCodexHTML was the list)
   if(codexSubTab==='maps'){ body.innerHTML = mapCodexHTML(); return; }
   if(codexSubTab==='reference'){ body.innerHTML = referenceHTML(); return; }
   if(codexSubTab==='halloffame'){
@@ -5753,10 +5828,13 @@ function renderCodex(){
   const archetypes = [...new Set(Object.values(defs).flatMap(d=>archetypesOf(d)))].sort();
   body.innerHTML = `
     <div class="codex-toolbar ${codexFiltersOpen?'filters-open':''}" id="codexToolbar">
-      <input id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
-      <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = [codexFilter.archetype, codexFilter.mechLine, (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
+      <input data-text-filter autocomplete="off" id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
+      <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = codexFilterCount(); return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
       ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
+      <select id="cxRarity" aria-label="${escapeAttr(TX('ui.codex-all-rarities'))}"><option value="">${escapeHtml(TX('ui.codex-all-rarities'))}</option>${(()=>{ const have = new Set(Object.values(defs).map(d=> d.rarity || 'common')); return RARITY_DEFS.filter(r=> have.has(r.key)).map(r=> `<option value="${r.key}" ${codexFilter.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join(''); })()}</select>${'' /* 2026-10-18 (package C): the album's rarity filter */}
+      <button type="button" class="btn small cx-skill-btn" id="cxSkillBtn" aria-expanded="false" aria-controls="cxSkillPanel">✨ ${escapeHtml(TX('ui.codex-skill-filter'))}<b class="cx-fcount" ${codexSkillsChosen().length ? '' : 'hidden'}>${codexSkillsChosen().length}</b></button>
+      <div class="cx-skill-panel" id="cxSkillPanel" hidden></div>${'' /* 2026-10-18 (package C, owner 23:21): the skill filter */}
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
       <select id="cxSort" aria-label="Sort cards">${'' /* 2026-10-15: Cost, Wait, Attack, Health first, the same list the Forge sorts by */}<option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="wait" ${codexFilter.sort==='wait'?'selected':''}>Sort: Wait</option><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option>${phylaUnlocked() ? `<option value="phylum" ${codexFilter.sort==='phylum'?'selected':''}>Sort: Phylum</option>` : ''}<option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
       <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
@@ -5772,13 +5850,15 @@ function renderCodex(){
       ${adminModeEnabled ? `<label class="cx-test-toggle" title="Admin: also show cards this account hasn't seen yet"><input type="checkbox" id="cxShowUnseen" ${codexShowUnseen ? 'checked' : ''}> 👁 Show unseen</label>` : ''}
       <label class="cx-test-toggle" title="One list of every card, by card number, 40 a page (no sections)"><input type="checkbox" id="cxFlatById" ${codexFlatById ? 'checked' : ''}> 🔢 All by ID</label>
       <select id="cxViewMode" title="Grid display density">
+        <option value="album" ${codexViewMode==='album'?'selected':''}>${escapeHtml(TX('ui.codex-view-album'))}</option>
         <option value="compressed" ${codexViewMode==='compressed'?'selected':''}>View: Compressed</option>
         <option value="full" ${codexViewMode==='full'?'selected':''}>View: Full Art</option>
       </select>
       ${devModeEnabled ? `<label class="cx-test-toggle" title="Test cards are hidden from ordinary Codex browsing by default -- check this to see ONLY test cards instead of the normal roster."><input type="checkbox" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
     </div>
+    <div class="cx-skill-active" id="cxSkillActive" hidden></div>
     <span id="codexResultCount"></span>
-    <div class="grid-view ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
+    <div class="${codexViewMode==='album' ? 'al-host' : 'grid-view'} ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
     ${(codexStatsDefs = defs, codexStatsHTML(defs))}`;
   { let t = null; document.getElementById('cxSearch').addEventListener('input', e=>{ codexFilter.q = e.target.value; clearTimeout(t); t = setTimeout(renderCodexGrid, 120); }); } // debounced (2026-10-12: "The codex is still a bit laggy"; 2026-10-18: 120 ms, a draw is cheaper now)
   { const sep = document.getElementById('cxSeparate'); if(sep) sep.onclick = ()=>{ codexSeparate = !codexSeparate; try{ localStorage.setItem('bramblewood_codex_separate', codexSeparate ? '1' : '0'); }catch(e){} sep.classList.toggle('primary', codexSeparate); sep.setAttribute('aria-pressed', codexSeparate); sep.textContent = codexSeparate ? '🗂️ Separated' : '🗂️ All together'; renderCodexGrid(); }; }
@@ -5797,9 +5877,12 @@ function renderCodex(){
     renderCodexGrid();
   });
   document.getElementById('cxViewMode').addEventListener('change', e=>{
-    codexViewMode = e.target.value; uiStickySave('codexView', {mode: codexViewMode});
+    const was = codexViewMode; codexViewMode = e.target.value; uiStickySave('codexView', {mode: codexViewMode === 'compressed' ? 'grid' : codexViewMode});
     document.getElementById('codexGrid').classList.toggle('full-art', codexViewMode==='full');
+    if((was === 'album') !== (codexViewMode === 'album')) renderCodexGrid(); // 2026-10-18 (package C): album <-> grid redraws
   });
+  { const ra = document.getElementById('cxRarity'); if(ra) ra.addEventListener('change', e=>{ codexFilter.rarity = e.target.value; codexFilterBadge(); renderCodexGrid(); }); }
+  wireCodexSkillFilter();
   const cxShowTest = document.getElementById('cxShowTest');
   if(cxShowTest) cxShowTest.addEventListener('change', e=>{ codexFilter.showTest = e.target.checked; renderCodexGrid(); });
   renderCodexGrid();
@@ -5980,6 +6063,8 @@ function renderCodexGrid(keepPage){
   if(codexFilter.archetype) ids = ids.filter(id=> archetypesOf(defs[id]).includes(codexFilter.archetype));
   if(codexFilter.mechLine) ids = ids.filter(id=> inferMechanicLine(defs[id])===codexFilter.mechLine);
   if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
+  if(codexFilter.rarity) ids = ids.filter(id=> (defs[id].rarity || 'common') === codexFilter.rarity); // 2026-10-18 (package C): the album's rarity filter
+  { const want = codexSkillsChosen(); if(want.length){ const ps = want.map(skillDefOf); ids = ids.filter(id=> ps.every((p, i)=> cardHasSkill(defs[id], want[i], p))); } } // 2026-10-18 (package C): every skill picked
   // 2026-09-26 (#1, "add a sort view to codex"): added Rarity (by RARITY_DEFS' own defined
   // order, common -> legendary etc., not alphabetically) and a dir flip. `base` always returns
   // the "natural" high-to-low/A-Z-first comparison; the dir flip below negates it uniformly
@@ -6062,6 +6147,16 @@ function renderCodexGrid(keepPage){
     if(sig) codexTileCache.set(id, {sig, html});
     return html;
   };
+  // 2026-10-18 (package C): the card album draws its own pages (codexDrawAlbum); the grid views carry on below.
+  { const gEl = document.getElementById('codexGrid'), album = codexViewMode === 'album';
+    gEl.classList.toggle('grid-view', !album); gEl.classList.toggle('al-host', album);
+    if(album){
+      const sortG = g=> g.ids.slice().sort(codexFlatById ? ((x, y)=> (Number(defs[x].numericId)||1e9) - (Number(defs[y].numericId)||1e9) || x.localeCompare(y)) : cmp);
+      const gIds = {}; ordered.forEach(g=>{ gIds[g.sec.key] = g.ids; });
+      codexDrawAlbum(gEl, ordered.map(g=> ({sec:g.sec, ids:sortG(g), all:g.ids})), tileFor, gIds, keepPage === true);
+      return;
+    }
+    codexTurnFn = null; codexAlbumState = null; }
   // Paging: split into pages first, then only the current page is drawn.
   const pages = [];
   { let cur = [], n = 0;
@@ -6110,7 +6205,7 @@ function renderCodexGrid(keepPage){
   gridEl.innerHTML = hint + (html ? html : `<div class="cx-view-hint">No cards in this view yet.</div>`);
   const tok = gridEl._cxTok = (gridEl._cxTok || 0) + 1;
   // One click handler on the grid for every card (2026-10-18; was one listener per tile, added after each chunk).
-  if(!gridEl._cxClick){ gridEl._cxClick = true; gridEl.addEventListener('click', e=>{ const t = e.target && e.target.closest && e.target.closest('.card-tile'); if(t && gridEl.contains(t)) openCardDetail(t.getAttribute('data-defid')); }); }
+  codexWireGridClick(gridEl);
   wireCodexGrid(groupIds);
   if(chunks.length > 1) codexDrawRest(gridEl, tok, chunks.slice(1).map(c=> ()=> chunkHTML(c)), groupIds, Math.ceil(12 / stepN));
 }
@@ -6180,6 +6275,192 @@ function wireCodexGrid(groupIds){
   // pointer cursor) in their HTML, so nothing is added tile by tile here.
   fresh('.codexShopLink').forEach(shopLink=> shopLink.addEventListener('click', (e)=>{ e.preventDefault(); e.stopPropagation(); switchTab('shop'); }));
 }
+// One click handler on the grid for every card (2026-10-18; was one listener per tile, added after each chunk). 2026-10-18 (package
+// C): a click that ends a swipe (the page just turned) doesn't open the card.
+function codexWireGridClick(gridEl){
+  if(gridEl._cxClick) return; gridEl._cxClick = true;
+  gridEl.addEventListener('click', e=>{ if(Date.now() - codexSwipedAt < 400) return; const t = e.target && e.target.closest && e.target.closest('.card-tile'); if(t && gridEl.contains(t)) openCardDetail(t.getAttribute('data-defid')); });
+}
+// ---- The skill filter (2026-10-18, package C, owner 23:21: "add a way to filter by skills in codex") ----
+// Browse (album, Compressed and Full Art): a ✨ Skills button with the other filters opens a panel of the skills you have seen (the
+// skills book's list, skillBookEntries; admins: all), each with its icon. Pick one or more: the Codex shows only cards that have
+// EVERY skill picked (ALL, so each pick narrows). The picks are a sticky choice (codexFilter.skills, saved with the other
+// filters), count in the ⚙️ Filters badge, and show under the toolbar as chips you can remove, with Clear. A pick redraws the
+// open page only (the album's 18 tiles; tiles come from codexTileCache); the panel is built once, when first opened.
+// The skills book's "Show cards with this skill" opens Browse with just that skill picked (codexShowCardsWithSkill).
+function codexSkillsChosen(){ return Array.isArray(codexFilter.skills) ? codexFilter.skills.filter(k=> typeof k === 'string') : []; }
+function skillDefOf(key){ return SKILL_DEFS.find(x=> x.key === key) || PASSIVE_DEFS.find(x=> x.key === key) || null; }
+// Has the card this skill? The same test the skills book uses to call a skill seen on a card (skillBookSeen).
+function cardHasSkill(d, key, p){
+  const e = (d && d.effects) || {}; p = p === undefined ? skillDefOf(key) : p;
+  try{ return p && p.get ? p.get(e) !== undefined : (e[key] != null && e[key] !== false); }catch(_){ return false; }
+}
+function codexFilterCount(){ return [codexFilter.archetype, codexFilter.mechLine, codexFilter.rarity, codexSkillsChosen().length ? 1 : '', (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; }
+function codexFilterBadge(){
+  const t = document.getElementById('cxFiltersToggle'); if(!t) return; const n = codexFilterCount(); let b = t.querySelector('.cx-fcount');
+  if(!n){ if(b) b.remove(); return; } if(!b){ b = document.createElement('b'); b.className = 'cx-fcount'; t.append(' ', b); } b.textContent = n;
+}
+function codexSkillChoices(){ try{ return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:e.key, icon:e.icon, name:e.name})); }catch(e){ return []; } }
+function codexSkillName(key){ const p = skillDefOf(key); return (p && p.label) || key; }
+function codexSkillPanelHTML(){
+  const list = codexSkillChoices(), on = new Set(codexSkillsChosen());
+  return `<div class="cx-skill-head"><small>${escapeHtml(TX('ui.codex-skill-hint'))}</small><button type="button" class="btn small ghost" data-cxskillclear ${on.size ? '' : 'disabled'}>${escapeHtml(TX('ui.codex-skill-clear'))}</button></div>`
+    + (list.length ? `<div class="cx-skill-chips">${list.map(s=> `<button type="button" class="cx-sk-chip" data-cxskill="${escapeAttr(s.key)}" aria-pressed="${on.has(s.key)}">${s.icon} ${escapeHtml(s.name)}</button>`).join('')}</div>` : `<p class="cx-skill-none">${escapeHtml(TX('ui.codex-skill-none'))}</p>`);
+}
+// The button's count, the chips under the toolbar, the Filters badge: after any change of the picks.
+function codexSkillUI(){
+  const want = codexSkillsChosen(), btn = document.getElementById('cxSkillBtn'), act = document.getElementById('cxSkillActive'), panel = document.getElementById('cxSkillPanel');
+  if(btn){ const b = btn.querySelector('.cx-fcount'); if(b){ b.textContent = want.length; b.hidden = !want.length; } btn.classList.toggle('primary', !!want.length); }
+  if(panel && panel.dataset.built){ const on = new Set(want); panel.querySelectorAll('[data-cxskill]').forEach(c=> c.setAttribute('aria-pressed', on.has(c.dataset.cxskill))); const cl = panel.querySelector('[data-cxskillclear]'); if(cl) cl.disabled = !want.length; }
+  if(act){ act.hidden = !want.length;
+    act.innerHTML = want.length ? `<span>${escapeHtml(TX('ui.codex-skill-active'))}</span>${want.map(k=> `<button type="button" class="cx-sk-chip is-on" data-cxskilloff="${escapeAttr(k)}" aria-label="${escapeAttr(TX('ui.codex-skill-remove'))}: ${escapeAttr(codexSkillName(k))}">${SKILL_ICON[k] || '✨'} ${escapeHtml(codexSkillName(k))} <i aria-hidden="true">✕</i></button>`).join('')}<button type="button" class="btn small ghost" data-cxskillclear>${escapeHtml(TX('ui.codex-skill-clear'))}</button>` : ''; }
+  codexFilterBadge();
+}
+function codexSetSkills(list){ codexFilter.skills = [...new Set(list)]; codexSkillUI(); renderCodexGrid(); }
+function wireCodexSkillFilter(){
+  const btn = document.getElementById('cxSkillBtn'), panel = document.getElementById('cxSkillPanel'), act = document.getElementById('cxSkillActive');
+  if(btn && panel) btn.addEventListener('click', ()=>{
+    if(!panel.dataset.built){ panel.innerHTML = codexSkillPanelHTML(); panel.dataset.built = '1'; }
+    panel.hidden = !panel.hidden; btn.setAttribute('aria-expanded', !panel.hidden); });
+  const onClick = e=>{ const t = e.target && e.target.closest ? e.target : null; if(!t) return;
+    const chip = t.closest('[data-cxskill]'), off = t.closest('[data-cxskilloff]'), clr = t.closest('[data-cxskillclear]');
+    if(chip){ const k = chip.dataset.cxskill, cur = codexSkillsChosen(); codexSetSkills(cur.includes(k) ? cur.filter(x=> x !== k) : cur.concat(k)); }
+    else if(off) codexSetSkills(codexSkillsChosen().filter(x=> x !== off.dataset.cxskilloff));
+    else if(clr) codexSetSkills([]); };
+  if(panel) panel.addEventListener('click', onClick); if(act) act.addEventListener('click', onClick);
+  codexSkillUI();
+}
+// From the skills book: Browse, showing only the cards with this skill (the other filters as they were; the search box empties).
+function codexShowCardsWithSkill(key){
+  if(!key) return; codexFilter.skills = [key]; codexFilter.q = ''; codexPage = 0;
+  try{ saveCodexFilters(); }catch(e){}
+  codexSubTab = 'browse'; renderCodex(); try{ codexPageTurn('back'); }catch(e){}
+}
+// ---- The card album (2026-10-18, package C, owner 20:31: "bestiary - look like a card album"; 20:36: "cards dont show up if you
+// havent seen them before") ----
+// The Codex's Browse tab as a binder: album pages of card sleeves, 3 × 3 a page, two pages side by side on a wide screen and one
+// (2 × 3) on a phone. It holds the cards you have seen, the same list the grid had (codexVisible: seen, owned, or in a pack whose
+// seller is open; revealAfter "?" tiles as before): owned cards in full, seen-only ones dimmed (cx-unowned). Each section (the
+// "Separated" bands, or the admin's View by) starts on a new page with its name, "N seen · M owned" and the admin buttons.
+// Only the open spread is drawn (at most 18 tiles, from codexTileCache); the next spread's tiles are built while the browser is
+// idle, so a turn finds them ready. The search, filters, sorts and the rarity filter all still apply (renderCodexGrid filters,
+// this lays out). Turn with ‹ ›, the arrow keys, a swipe, or jump to a section.
+let codexAlbumState = null, codexTurnFn = null, codexSwipedAt = 0;
+function albumLayout(){
+  const host = document.getElementById('codexBody'), w = (host && host.clientWidth) || window.innerWidth || 1200;
+  return w >= 960 ? {pages:2, cols:3, rows:3, key:'2x9'} : w >= 560 ? {pages:1, cols:3, rows:3, key:'1x9'} : {pages:1, cols:2, rows:3, key:'1x6'};
+}
+// groups [{sec, ids (sorted), all}] -> album pages [{sec, ids, all, cont}]: a section starts a page; a long one runs on (cont).
+function albumPaginate(groups, per){
+  const pages = [];
+  groups.forEach(g=>{
+    if(!g.ids.length){ if(!g.sec.bare) pages.push({sec:g.sec, ids:[], all:g.all, cont:false}); return; } // (an admin's empty skirmish: its page has the Edit rewards button)
+    for(let i = 0; i < g.ids.length; i += per) pages.push({sec:g.sec, ids:g.ids.slice(i, i + per), all:g.all, cont:i > 0});
+  });
+  return pages;
+}
+function codexDrawAlbum(gridEl, groups, tileFor, groupIds, keepPage){
+  if(gridEl._cxMore){ try{ gridEl._cxMore(); }catch(e){} gridEl._cxMore = null; } // a grid draw's chunks stop
+  const L = albumLayout(), pages = albumPaginate(groups, L.cols * L.rows);
+  // a redraw for another layout (a resize) keeps the first card in view
+  const prev = codexAlbumState, firstId = keepPage && prev && prev.L.key !== L.key && prev.pages[codexPage] ? prev.pages[codexPage].ids[0] : null;
+  if(!keepPage) codexPage = 0;
+  if(firstId){ const i = pages.findIndex(p=> p.ids.includes(firstId)); if(i >= 0) codexPage = i; }
+  codexAlbumState = {pages, L, tileFor, groupIds, groups, gridEl};
+  codexWireGridClick(gridEl); codexWireSwipe(gridEl);
+  albumDraw();
+}
+function albumPageHTML(p, i, side){
+  if(!p) return `<section class="al-page pg-${side} is-blank" aria-hidden="true"></section>`;
+  const S = codexAlbumState, sec = p.sec, per = S.L.cols * S.L.rows;
+  const owned = p.all.filter(id=> (myCardCopies[id]||[]).length).length;
+  const editBtn = adminModeEnabled && sec.nodeKey ? `<button type="button" class="btn small ghost cx-edit-rewards" data-map="${escapeAttr(sec.mapId)}" data-node="${escapeAttr(sec.nodeKey)}">✏️ Edit rewards</button>` : '';
+  const getAll = adminModeEnabled && p.all.length ? `<button type="button" class="btn small ghost cx-get-all" data-getall="${escapeAttr(sec.key)}" title="Admin: add one copy of every card in this section to your collection">🎁 Get all</button>` : '';
+  const title = sec.bare ? TX('ui.codex-album-title') : sec.label + (p.cont ? ' ' + TX('ui.codex-cont') : '');
+  const sleeves = p.ids.map(id=> `<div class="al-sleeve">${S.tileFor(id)}</div>`).join('') + '<div class="al-slot" aria-hidden="true"></div>'.repeat(Math.max(0, per - p.ids.length));
+  return `<section class="al-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S.pages.length}))}">
+    <header class="al-head"><span class="al-sec">${escapeHtml(title)}</span><span class="al-count">${escapeHtml(TX('ui.codex-section-seen', {n: p.all.length, count: owned}))}</span>${editBtn}${getAll}</header>
+    <div class="al-grid" style="--al-cols:${S.L.cols}">${sleeves}</div><footer class="al-foot">${i + 1}</footer></section>`;
+}
+function albumDraw(){
+  const S = codexAlbumState; if(!S || !S.gridEl.isConnected) return;
+  const {pages, L, gridEl} = S;
+  codexPage = Math.max(0, Math.min(codexPage, pages.length - 1)); codexPage -= codexPage % L.pages;
+  if(!pages.length){ gridEl.innerHTML = `<div class="cx-view-hint">${escapeHtml(TX('ui.codex-no-cards'))}</div>`; codexTurnFn = null; return; }
+  const sides = L.pages === 2 ? ['left', 'right'] : ['single'];
+  // the sections, for "Go to section": each one's first page
+  const sections = []; pages.forEach((p, i)=>{ if(!p.cont && !p.sec.bare && !sections.some(s=> s.key === p.sec.key)) sections.push({key:p.sec.key, label:p.sec.label, page:i}); });
+  gridEl.innerHTML = `<div class="al-album al-${sides.length === 2 ? 'two' : 'one'}">${sides.map((sd, k)=> albumPageHTML(pages[codexPage + k], codexPage + k, sd)).join(sides.length === 2 ? '<div class="al-spine" aria-hidden="true"></div>' : '')}</div>`
+    + codexPagerNavHTML('album', codexPage, L.pages, pages.length, sections);
+  gridEl.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> albumTurn(+b.dataset.turn)));
+  { const j = gridEl.querySelector('[data-pgjump]'); if(j) j.addEventListener('change', ()=>{ if(j.value !== '') albumGo(+j.value); }); }
+  wireCodexGrid(S.groupIds);
+  codexTurnFn = albumTurn;
+  // the next spread's tiles, built while the browser is idle (they land in codexTileCache)
+  const ahead = pages.slice(codexPage + L.pages, codexPage + 2 * L.pages), ric = window.requestIdleCallback || (f=> setTimeout(f, 200));
+  if(ahead.length) ric(()=>{ if(codexAlbumState !== S) return; ahead.forEach(p=> p.ids.forEach(id=>{ try{ S.tileFor(id); }catch(e){} })); });
+}
+function albumTurn(dir){
+  const S = codexAlbumState; if(!S || !S.gridEl.isConnected) return;
+  const next = codexPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
+  codexLeafTurn(S.gridEl, dir, ()=>{ codexPage = next; albumDraw(); codexKeepInView(S.gridEl); });
+}
+function albumGo(page){
+  const S = codexAlbumState; if(!S) return; const to = page - (page % S.L.pages); if(to === codexPage){ albumDraw(); return; }
+  codexLeafTurn(S.gridEl, to > codexPage ? 1 : -1, ()=>{ codexPage = to; albumDraw(); codexKeepInView(S.gridEl); });
+}
+// After a turn from the bottom buttons on a small screen, the page's top comes back into view.
+function codexKeepInView(el){ try{ const r = el.getBoundingClientRect(); if(r.top < 0) el.scrollIntoView({block:'start', behavior: reducedMotion() ? 'auto' : 'smooth'}); }catch(e){} }
+// The turn buttons under the album / the book: ‹ Page 3–4 of 12 ›, and for the album a "Go to section" list.
+function codexPagerNavHTML(kind, first, per, total, sections){
+  const last = Math.min(total, first + per);
+  const label = last - first > 1 ? TX('ui.codex-pages-of', {n: first + 1, to: last, total}) : TX('ui.codex-page-of', {n: first + 1, total});
+  const jump = sections && sections.length > 1 ? `<select class="pg-jump" data-pgjump aria-label="${escapeAttr(TX('ui.codex-go-to-section'))}"><option value="">${escapeHtml(TX('ui.codex-go-to-section'))}</option>${sections.map(s=> `<option value="${s.page}">${escapeHtml(s.label)}</option>`).join('')}</select>` : '';
+  return `<nav class="pg-nav pg-nav-${kind}" aria-label="${escapeAttr(TX('ui.codex-page-nav'))}"><button type="button" class="btn small pg-btn" data-turn="-1" ${first <= 0 ? 'disabled' : ''} aria-label="${escapeAttr(TX('ui.codex-prev-page'))}" title="${escapeAttr(TX('ui.codex-prev-page'))}">‹</button><span class="pg-of" aria-live="polite">${escapeHtml(label)}</span><button type="button" class="btn small pg-btn" data-turn="1" ${last >= total ? 'disabled' : ''} aria-label="${escapeAttr(TX('ui.codex-next-page'))}" title="${escapeAttr(TX('ui.codex-next-page'))}">›</button>${jump}</nav>`;
+}
+// A page turn (album and book): the page you leave lifts off at the spine and swings away (a copy of it, over the new pages), with
+// a shadow across it. Transform and opacity only. None with reduced motion or Low / None effects (like codexPageTurn): the new pages
+// are simply there. Turning back on a single page swings the new page in instead.
+function codexLeafTurn(host, dir, draw){
+  const motion = !!host && host.isConnected && !reducedMotion() && fxAtLeast('med');
+  let leaf = null;
+  if(motion){
+    const single = host.querySelector('.pg-single'), from = single || host.querySelector(dir > 0 ? '.pg-right' : '.pg-left');
+    if(from && !(single && dir < 0)){
+      leaf = from.cloneNode(true); leaf.querySelectorAll('[id]').forEach(x=> x.removeAttribute('id'));
+      leaf.classList.add('pg-leaf', dir > 0 ? 'pg-leaf-fwd' : 'pg-leaf-back'); leaf.setAttribute('aria-hidden', 'true'); leaf.removeAttribute('aria-label');
+      let x = 0, y = 0, n = from; while(n && n !== host){ x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } // layout px, relative to the host
+      Object.assign(leaf.style, {left: x + 'px', top: y + 'px', width: from.offsetWidth + 'px', height: from.offsetHeight + 'px'});
+    }
+  }
+  draw();
+  if(!motion) return;
+  try{ SoundKit.pageTurn && SoundKit.pageTurn(); }catch(e){}
+  if(leaf){ host.appendChild(leaf); let gone = false; const done = ()=>{ if(gone) return; gone = true; try{ leaf.remove(); }catch(e){} }; leaf.addEventListener('animationend', done, {once:true}); setTimeout(done, 900); }
+  else { const pg = host.querySelector('.pg-single'); if(pg){ pg.classList.add('pg-in-back'); setTimeout(()=> pg.classList.remove('pg-in-back'), 700); } }
+}
+// A sideways swipe (touch, pen or a mouse drag) turns the page; up and down still scroll.
+function codexWireSwipe(el){
+  if(!el || el._cxSwipe) return; el._cxSwipe = 1;
+  let x0 = null, y0 = 0, t0 = 0;
+  el.addEventListener('pointerdown', e=>{ if(!e.isPrimary || (e.pointerType === 'mouse' && e.button !== 0)) return; if(e.target && e.target.closest && e.target.closest('input, select, textarea')) return; x0 = e.clientX; y0 = e.clientY; t0 = Date.now(); });
+  el.addEventListener('pointercancel', ()=>{ x0 = null; });
+  el.addEventListener('pointerup', e=>{ if(x0 == null) return; const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if(Math.abs(dx) >= 50 && Math.abs(dx) > Math.abs(dy) * 1.5 && Date.now() - t0 < 900 && codexTurnFn){ codexSwipedAt = Date.now(); codexTurnFn(dx < 0 ? 1 : -1); } });
+}
+// ← / → turn the album or the book while the Codex is open (not while typing, or with a window open over it).
+document.addEventListener('keydown', e=>{
+  if(!codexTurnFn || (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  try{ if(currentTab !== 'codex') return; }catch(_){ return; }
+  const t = e.target; if(t && t.closest && t.closest('input, textarea, select, [contenteditable]:not([contenteditable="false"])')) return;
+  if(document.querySelector('.modal-overlay:not([hidden])')) return;
+  e.preventDefault(); codexTurnFn(e.key === 'ArrowRight' ? 1 : -1);
+});
+// A resize that changes the layout (two pages / one, 3 or 2 across) packs the pages again.
+{ let t = null; window.addEventListener('resize', ()=>{ clearTimeout(t); t = setTimeout(()=>{ try{
+  if(typeof currentTab === 'undefined' || currentTab !== 'codex') return;
+  const A = codexAlbumState; if(A && A.gridEl.isConnected && albumLayout().key !== A.L.key){ codexDrawAlbum(A.gridEl, A.groups, A.tileFor, A.groupIds, true); return; }
+  const B = codexBookState; if(B && B.L && document.getElementById('bkBook') && (bookLayout().key !== B.L.key || Math.abs((window.innerWidth||0) - (B.vw||0)) > 40 || Math.abs((window.innerHeight||0) - (B.vh||0)) > 80)) bookBuild(true); }catch(e){} }, 180); }); }
 // Hall of Fame tab (2026-10-02): Classic and Antique variants, each tagged with what it's a variant
 // of; Antiques show their improvement and (admin) their balance-check result; drafts are
 // admin-only until approved.
@@ -6611,7 +6892,7 @@ function cardTileHTML(d, opts){
       <div class="rarity-band"></div>${CARD_FRAME_HTML}
       <div class="nm">${escapeHtml(d.name||live.fallbackName||'')}</div>
       <div class="stats"><span class="atk${live.atkLow ? ' is-atk-low' : ''}${isMagicDef(d) ? ' atk-magic' : ''}">${isMagicDef(d) ? String(live.atkLabel).replace('<i class="sg">⚔</i>', '<i class="sg">🪄</i>') : live.atkLabel}</span><span class="hp"><i class="sg">❤</i>${live.hp}</span></div>
-      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus}})}
+      ${abilityBadges(d, {compact:true, live: {wait: live.wait||0, uid: live.uid, firedOnce: live.firedOnce, stunned: live.stunned, frozen: live.frozen, asleep: live.asleep, speed: live.speed, inBloom: live.inBloom, packChain: live.packChain, packChainBonus: live.packChainBonus, pid: live.pid /* 2026-10-18 (package BP): its side, for the wind's Tailwind / Headwind marks */}})}
       ${live.bottomHTML||''}
     </div>`;
   }
@@ -6787,6 +7068,7 @@ function abilityBadges(d, bopts){
   if(e.loneWolf) out.push(`<span title="Lone Wolf">${iconHTML('lone-wolf', '🐺')}</span>`); if(e.sociable) out.push(`<span title="Sociable">${iconHTML('sociable', '🫂')}</span>`);
   if(e.coffee) out.push(`<span title="Coffee">${iconHTML('coffee', '☕')}${n1(e.coffee)}</span>`); if(e.dry) out.push(`<span title="Dry">${iconHTML('dry', '🏜️')}</span>`);
   if(e.darksight) out.push(`<span title="Darksight: it can see in darkness">${iconHTML('darksight', '👁️')}</span>`);
+  if(e.castDarkness) out.push(`<span title="${escapeAttr(TX('ui.sk-cast-darkness'))}">${iconHTML('cast-darkness', '🌘')}</span>`); if(e.trueStrike) out.push(`<span title="${escapeAttr(TX('ui.sk-true-strike'))}">${iconHTML('true-strike', '💯')}</span>`); // 2026-10-18 (package D)
   if(e.illuminate || e.lantern) out.push(`<span title="Illuminate: lights up the dark">${iconHTML('illuminate', '🏮')}</span>`); // 2026-10-15
   if(e.nursing) out.push(`<span title="Nursing: heals your weakest unit every upkeep">${iconHTML('nursing', '🍼')}${n1(e.nursing === true ? 2 : e.nursing)}</span>`); // 2026-10-15
   if(e.landslide) out.push(`<span title="Landslide">${iconHTML('landslide', '🪨')}${n1(e.landslide)}</span>`);
@@ -6937,8 +7219,12 @@ function abilityBadges(d, bopts){
   // Flying / Earthquake (2026-09-21, task #304): 🪽 reads as "airborne" without reusing any
   // existing glyph on this card face; 🌎💥 (globe + burst) for Earthquake echoes 💣 (Explode)'s
   // "burst" shape while staying visually distinct from it.
-  if(e.flying) out.push(`<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
-  if(e.quick) out.push(`${iconHTML('quick', '👢')}`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
+  // 2026-10-18 (package BP): under a strong wind a Flyer's wing lights up like a Tide unit's wave (.wind-live, the .tide-live look); a
+  // Tailwind also lights a Quick boot beside it (its own Quick boot when it has one), so the card reads wing + quick; a Headwind marks
+  // the wing ×2 (skills twice). See liveWindState.
+  const lw = e.flying && bopts && bopts.live ? liveWindState(bopts.live.pid) : null;
+  if(e.flying) out.push(lw ? `<span class="ab-wing wind-live wind-${lw.k}" title="${escapeAttr((lw.k === 'tail' ? TX('ui.wind-tail-wing') : TX('ui.wind-head-wing')))}">${iconHTML('flying', '🪽')}${lw.k === 'head' ? '<b class="wind-x2">×2</b>' : ''}</span>` : `<span class="ab-wing">${iconHTML('flying', '🪽')}</span>`); // 2026-10-06: 20% larger, it was easy to miss
+  if(e.quick || (lw && lw.k === 'tail')) out.push(lw && lw.k === 'tail' ? `<span class="ab-quick ab-wind-quick wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-quick'))}">${iconHTML('quick', '👢')}</span>` : `<span class="ab-quick">${iconHTML('quick', '👢')}</span>`); // Quick (2026-10-10, user: "use boots as a shorthand symbol")
   if(e.swift) out.push(`${iconHTML('swift', '💨')}`); // Swift (2026-10-02): first strike + dodges non-Swift attacks
   if(e.earthquake) out.push(`<span class="ab-pair">${iconHTML('earthquake', '🌎')}<i>💥</i></span>${n1(e.earthquake)}`);
   if(e.amore){ const st = bopts && bopts.live ? amoreLiveState(bopts.live) : 'single'; // Amore (2026-10-16)
@@ -7026,34 +7312,194 @@ function skillsByMapHTML(){
   }).join('');
   return `<div class="panel sbm"><h3 class="ref-heading">Skills along the road</h3><p class="panel-sub">Where each skill first turns up. Hover one you've met to read it again.</p>${rows}</div>`;
 }
-// Skill Codex (2026-10-13, user: "The 'Answered by' - I like that, but keep it in the Codex of skills. This codex of skills will be
-// unlocked 2 maps after the codex"): every skill you've met on a card, what it does, and what answers it. Admins see them all.
-function skillCodexHTML(){
+// Skills book (2026-10-18, package C, owner 20:31: "codex: skills - look like pages in a book"; 20:36: "Skills and cards dont show up
+// if you havent seen them before ... Maybe some basic skills become '?' as you progress. But otherwise, skills are hidden till
+// seen"). Was skillCodexHTML, a flat list (2026-10-13: every skill you've met, what it does and what answers it; 2026-10-15: a text
+// filter). Now an open book: two facing parchment pages on a wide screen, one on a phone. Page 1 is the contents (chapters, an A to Z
+// index), then the Skills chapter, then the Field effects chapter, each entry laid out like a field guide (icon, name, the Codex text,
+// what answers it). Prev / next, the arrow keys and a swipe turn the page (codexLeafTurn; still with reduced motion or Low effects).
+//   Seen: a skill is in the book once it is on a card you have seen (codexRevealedForPlayer, the album's rule) or its coach tip has
+//   shown in a fight (coachSeen 'skill-<key>'); a field effect once you have seen it happen (fieldRowState). SKILL_REVEAL and
+//   revealAfter still hide what they hide. Admins read everything.
+//   BASIC_SKILL_HINTS: the core skills that show as a "?" entry before they are seen, once you reach the map that first brings them.
+//   Pages are packed by measuring each entry at the page's real width (bookMeasure), so long translations still fit; a page that
+//   would still overflow scrolls inside itself. Only the open spread is in the page; turning reuses the packed pages.
+const BASIC_SKILL_HINTS = ['flying', 'taunt', 'armor', 'shield', 'poison', 'bleed', 'thorns', 'stealth'];
+let skillCodexQuery = String(uiSticky('skills').q || ''); // 2026-10-16: kept between visits
+let skillBookPage = Math.max(0, Number(uiSticky('skills').page) || 0); // 2026-10-18: the page you left the book on
+let codexBookState = null;
+// The first map, in road order, whose enemy decks carry each of these skills (as skillsByMapHTML finds them).
+function skillIntroMaps(keys){
+  const defs = getCardDefs(), want = new Map(), out = {};
+  keys.forEach(k=>{ const sd = SKILL_DEFS.find(x=> x.key === k) || PASSIVE_DEFS.find(x=> x.key === k); if(sd) want.set(k, sd); });
+  for(const m of CONQUEST_MAPS){ if(m.reserved) continue;
+    for(const n of m.nodes) for(const id of Object.keys(n.deck || {})){ const d = defs[id]; if(!d || !d.effects) continue;
+      want.forEach((sd, k)=>{ if(out[k]) return; let v; try{ v = sd.get ? sd.get(d.effects) : d.effects[k]; }catch(e){} if(v !== undefined && v !== null && v !== false && v !== 0) out[k] = m; }); }
+    if(Object.keys(out).length === want.size) break; }
+  return out;
+}
+// Which skills the player has seen: on a card they have seen, or met in a fight (its coach tip showed).
+function skillBookSeen(){
   const defs = getCardDefs(), met = new Set();
   Object.keys(defs).forEach(id=>{ const d = defs[id]; if(!d || d.test || d.token) return; if(!adminModeEnabled && (isCardHiddenForPlayer(d) || !codexRevealedForPlayer(id, d))) return;
     SKILL_DEFS.forEach(p=>{ try{ if(p.get ? p.get(d.effects||{}) !== undefined : (d.effects||{})[p.key] != null) met.add(p.key); }catch(e){} }); }); // 2026-10-16 skill audit: SKILL_DEFS, so Freeze, Explode, Revive … count too
+  try{ coachSeen.forEach(k=>{ if(typeof k === 'string' && k.startsWith('skill-')) met.add(k.slice(6)); }); }catch(e){}
+  return met;
+}
+// Every entry of the book, in order: {ch:'sk'|'fx', key, icon, name, html, ans, find, hint}. Kept while nothing it reads has changed
+// (what you've seen and met, the maps cleared, the field effects learned, Admin Mode, the language), so opening the book again is quick.
+let skillBookMemo = null;
+function skillBookEntries(){
+  let sig = ''; try{ sig = [adminModeEnabled ? 'A' : '-', seenCardIds().size, Object.keys(myCardCopies || {}).length, coachSeen.size, (loadConquestProgress().completed || []).length,
+    localStorage.getItem(FIELD_ROWS_KEY) || '', [...hiddenSkillSet()].join(','), (window.BramblewoodI18n && window.BramblewoodI18n.current()) || 'en', Object.keys(liveCards || {}).length].join('|'); }catch(e){ sig = String(Math.random()); }
+  if(skillBookMemo && skillBookMemo.sig === sig) return skillBookMemo.list;
+  const list = skillBookEntriesNow(); skillBookMemo = {sig, list}; return list;
+}
+function skillBookEntriesNow(){
+  const met = skillBookSeen(), shown = p=> p.label && !p.retired && !skillHiddenNow(p.key) && (adminModeEnabled || met.has(p.key));
   // 2026-10-16 skill audit: the skills that live only in SKILL_DEFS (Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock,
   // Stagger, Chained, Explode, Render, Revive, Progeny) are in the Codex too.
-  const list = PASSIVE_DEFS.filter(p=> met.has(p.key) && p.label && !p.retired && !skillHiddenNow(p.key)).concat(SKILL_DEFS.filter(s=> met.has(s.key) && s.label && !s.retired && !PASSIVE_DEFS.some(p=> p.key === s.key))).sort((a, b)=> a.label.localeCompare(b.label)); // 2026-10-15: not retired (Hive Mind), not still hidden (SKILL_REVEAL)
+  const list = PASSIVE_DEFS.filter(shown).concat(SKILL_DEFS.filter(s=> shown(s) && !PASSIVE_DEFS.some(p=> p.key === s.key))).sort((a, b)=> a.label.localeCompare(b.label)); // 2026-10-15: not retired (Hive Mind), not still hidden (SKILL_REVEAL)
   const ic = k=> SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : '';
-  const rows = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
+  const out = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
     if(p.codexNote) txt += ' ' + p.codexNote; // 2026-10-17: a sentence only the Codex shows (Bloodlust's Ambush note)
-    return `<div class="sk-row" data-sk-find="${escapeAttr((p.label + ' ' + p.key + ' ' + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase())}"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${'' /* 2026-10-17 (user: "Remove the one-off tag in Codex"): the editor's skill picker still marks one-offs */}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
-  // 2026-10-15 (user: "Codex: Skill: Text Filter"): a search box over the list; it matches the name, the text and the answers.
-  return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>
-    ${rows ? `<div class="sk-filter"><input type="search" id="skFilterInput" placeholder="Filter skills…" aria-label="Filter skills" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>` : ''}
-    ${rows || '<p class="panel-sub">None yet. Skills show here as you meet them.</p>'}<p class="panel-sub sk-none" id="skFilterNone" hidden>No skill matches that.</p></div>`;
+    { const cx = typeof SKILL_CODEX_NOTE !== 'undefined' && SKILL_CODEX_NOTE[p.key]; if(cx) txt += ' ' + cx(); } // 2026-10-18 (package D): what the terse card line left out
+    return {ch:'sk', key:p.key, icon:SKILL_ICON[p.key] || '✨', name:p.label, html:keywordizeHTML(escapeHtml(txt)), ans:ans.join(', '),
+      find:(p.label + ' ' + p.key + ' ' + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase()}; });
+  // the basic skills not seen yet: a "?" once you reach the map that brings them (no icon while SKILL_REVEAL still hides the skill)
+  if(!adminModeEnabled){
+    const miss = BASIC_SKILL_HINTS.filter(k=> !out.some(e=> e.key === k)), intro = miss.length ? skillIntroMaps(miss) : {};
+    const pr = (()=>{ try{ return loadConquestProgress(); }catch(e){ return {completed:[]}; } })();
+    miss.forEach(k=>{ const m = intro[k]; let open = false; try{ open = !!(m && isMapUnlocked(m, pr)); }catch(e){} if(!open) return;
+      out.push({ch:'sk', key:k, hint:true, icon: skillHiddenNow(k) ? '' : (SKILL_ICON[k] || '✨'), name:'?', html:escapeHtml(TX('ui.book-hint-q')), ans:'', find:''}); });
+  }
+  // Statuses (package D's glossary, 2026-10-18): one you have seen, on a seen skill's text or put on a unit in a fight (its coach tip).
+  try{ const txts = out.filter(e=> !e.hint).map(e=> e.find).join(' ');
+    STATUS_KEYWORDS.forEach(k=>{ const met = adminModeEnabled || coachSeen.has('st-' + k.k) || coachSeen.has('st-' + k.name.toLowerCase()) || new RegExp(k.re.source, 'i').test(txts); if(!met) return;
+      const txt = k.text.charAt(0).toUpperCase() + k.text.slice(1) + (k.codex ? ' ' + k.codex : '');
+      out.push({ch:'st', key:'st-' + k.k, icon:`<span class="bk-dot" style="--kw:${k.c}"></span>`, name:k.name, html:keywordizeHTML(escapeHtml(txt)), ans:'', find:(k.name + ' ' + txt).toLowerCase()}); }); }catch(e){}
+  // Field effects you have seen happen, on the maps you have reached (as the Maps tab learns them).
+  const pr = loadConquestProgress(), rows = new Map();
+  CONQUEST_MAPS.filter(m=> !m.reserved && !m.endless && (adminModeEnabled || isMapUnlocked(m, pr))).forEach(m=> m.nodes.forEach(n=>{ if(n.kind === 'tutorial') return;
+    let r = null; try{ r = fightRules(m.id, n); }catch(e){} fieldConditionRows(r).forEach(row=>{ if(!rows.has(row.key) && (adminModeEnabled || fieldRowState(row.key) !== 'unknown')) rows.set(row.key, row); }); }));
+  [...rows.values()].sort((a, b)=> a.name.localeCompare(b.name)).forEach(row=> out.push({ch:'fx', key:row.key, icon:row.icon, name:row.name, html:keywordizeHTML(escapeHtml(row.text)), ans:'', find:(row.name + ' ' + row.text).toLowerCase()}));
+  return out;
 }
-let skillCodexQuery = String(uiSticky('skills').q || ''); // 2026-10-16: kept between visits
-function wireSkillCodexFilter(root){
-  const inp = root.querySelector('#skFilterInput'); if(!inp) return;
-  const rows = [...root.querySelectorAll('.sk-row[data-sk-find]')], cnt = root.querySelector('#skFilterCount'), none = root.querySelector('#skFilterNone');
-  const run = ()=>{ skillCodexQuery = inp.value; uiStickySave('skills', {q: inp.value}); const words = inp.value.trim().toLowerCase().split(/\s+/).filter(Boolean); let n = 0;
-    rows.forEach(r=>{ const hit = words.every(w=> r.dataset.skFind.includes(w)); r.hidden = !hit; if(hit) n++; });
-    if(cnt) cnt.textContent = words.length ? `${n} of ${rows.length}` : ''; if(none) none.hidden = n > 0; };
-  inp.addEventListener('input', run); run();
+// Packs measured heights into pages of at most `cap` px (gap between items); an item with brk starts a new page. Returns pages of indices.
+function bookPaginate(heights, cap, gap, brk){
+  const pages = []; let cur = [], h = 0;
+  heights.forEach((x, i)=>{
+    const add = (cur.length ? gap : 0) + x;
+    if(cur.length && ((brk && brk[i]) || h + add > cap)){ pages.push(cur); cur = []; h = 0; }
+    h += (cur.length ? gap : 0) + x; cur.push(i);
+  });
+  if(cur.length) pages.push(cur);
+  return pages;
 }
+function bookLayout(){ const host = document.getElementById('codexBody'), w = (host && host.clientWidth) || window.innerWidth || 1200; return w >= 900 ? {pages:2, key:'2'} : {pages:1, key:'1'}; }
+function bookEntryHTML(e){
+  const show = e.ch === 'sk' && !e.hint ? `<button type="button" class="bk-show" data-bkskill="${escapeAttr(e.key)}">🔎 ${escapeHtml(TX('ui.book-show-cards'))}</button>` : ''; // 2026-10-18 (package C, owner 23:21)
+  return `<article class="bk-entry${e.hint ? ' is-hint' : ''}"><div class="bk-ico" aria-hidden="true">${e.icon || '?'}</div><div class="bk-txt"><h4>${escapeHtml(e.name)}</h4><p>${e.html}</p>${e.ans ? `<p class="bk-ans">${_t('Answered by')}: ${e.ans}</p>` : ''}${show}</div></article>`;
+}
+const BOOK_CHAPTERS = [{ch:'sk', icon:'📘', title:()=> TX('ui.book-skills')}, {ch:'st', icon:'🌀', title:()=> TX('ui.codex-statuses'), sub:()=> TX('ui.codex-statuses-sub')}, {ch:'fx', icon:'🗺️', title:()=> TX('ui.book-field-effects')}];
+function renderSkillBook(body){
+  body.innerHTML = `<div class="bk" id="bkWrap">
+    <div class="bk-bar">
+      <div class="sk-filter bk-filter"><input data-text-filter type="search" id="skFilterInput" placeholder="${escapeAttr(TX('ui.book-filter'))}" aria-label="${escapeAttr(TX('ui.book-filter'))}" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div></div>
+    <div class="bk-book" id="bkBook"></div></div>`;
+  const all = skillBookEntries();
+  codexBookState = {all, entries:null, pages:null, items:null, L:null};
+  const inp = body.querySelector('#skFilterInput'); let t = null;
+  inp.addEventListener('input', ()=>{ clearTimeout(t); t = setTimeout(()=>{ skillCodexQuery = inp.value; uiStickySave('skills', {q: inp.value}); skillBookPage = 0; bookBuild(); }, 120); });
+  codexWireSwipe(document.getElementById('bkBook'));
+  bookBuild(true);
+}
+// Filters the entries, measures them on a page of the real size and packs the pages; then draws the open spread.
+function bookBuild(keepPage){
+  const S = codexBookState, book = document.getElementById('bkBook'); if(!S || !book) return;
+  const words = skillCodexQuery.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  S.entries = words.length ? S.all.filter(e=> e.find && words.every(w=> e.find.includes(w))) : S.all;
+  const cnt = document.getElementById('skFilterCount'); if(cnt) cnt.textContent = words.length ? TX('ui.book-matches', {n: S.entries.filter(e=> !e.hint).length, total: S.all.filter(e=> !e.hint).length}) : '';
+  S.L = bookLayout(); S.vw = window.innerWidth || 0; S.vh = window.innerHeight || 0;
+  // the items: each chapter's heading, then its entries
+  const items = [], brk = [];
+  BOOK_CHAPTERS.forEach(c=>{ const list = S.entries.filter(e=> e.ch === c.ch); if(!list.length) return;
+    const seen = list.filter(e=> !e.hint).length;
+    items.push({ch:c.ch, head:true, html:`<div class="bk-chw"><h3 class="bk-ch"><span>${c.icon} ${escapeHtml(c.title())}</span><small>${escapeHtml(TX('ui.book-chapter-seen', {n: seen}))}</small></h3>${c.sub ? `<p class="bk-ch-sub">${escapeHtml(c.sub())}</p>` : ''}</div>`}); brk.push(true);
+    list.forEach(e=>{ items.push({ch:c.ch, e, html:bookEntryHTML(e)}); brk.push(false); }); });
+  S.items = items;
+  // measure on an empty page of the real size
+  book.innerHTML = bookSpreadHTML(S.L.pages === 2 ? [{blank:true}, {blank:true}] : [{blank:true}], 0, S.L.pages);
+  const pageBody = book.querySelector('.bk-body'); let cap = 520, gap = 12, heights = items.map(()=> 120);
+  if(pageBody && items.length){
+    cap = Math.max(200, pageBody.clientHeight);
+    const meas = document.createElement('div'); meas.className = 'bk-body bk-measure'; meas.style.width = pageBody.clientWidth + 'px';
+    meas.innerHTML = items.map(it=> it.html).join(''); pageBody.parentNode.appendChild(meas);
+    try{ const I = window.BramblewoodI18n; if(I && I.current && I.current() !== 'en'){ const w = document.createTreeWalker(meas, NodeFilter.SHOW_TEXT); let n; while((n = w.nextNode())) I.translateTextNode(n); } }catch(e){} // measured as it will read
+    try{ gap = parseFloat(getComputedStyle(meas).rowGap) || 0; }catch(e){}
+    heights = [...meas.children].map(c=> c.offsetHeight + 1); // layout px (a view's entrance transform would skew getBoundingClientRect)
+    meas.remove();
+  }
+  // a chapter heading never ends a page on its own: it is packed with the entry after it
+  const packed = bookPaginate(heights, cap, gap, brk);
+  for(let i = 0; i < packed.length - 1; i++){ const pg = packed[i], last = pg[pg.length - 1]; if(items[last] && items[last].head){ pg.pop(); packed[i + 1].unshift(last); if(!pg.length){ packed.splice(i, 1); i--; } } }
+  S.pages = [{toc:true}].concat(packed.map(idx=> ({items: idx})));
+  // where each chapter and letter starts, for the contents page
+  S.chStart = {}; S.az = {};
+  S.pages.forEach((pg, pi)=> (pg.items || []).forEach(i=>{ const it = items[i]; if(it.head && S.chStart[it.ch] == null) S.chStart[it.ch] = pi;
+    if(it.e && !it.e.hint && it.ch === 'sk'){ const L = (it.e.name[0] || '').toUpperCase(); if(L && S.az[L] == null) S.az[L] = pi; } }));
+  if(!keepPage) skillBookPage = (words.length && S.L.pages === 1 && S.pages.length > 1) ? 1 : 0; // a search opens on its first match
+  bookDraw();
+}
+function bookTocHTML(S){
+  const chapters = BOOK_CHAPTERS.filter(c=> S.chStart[c.ch] != null).map(c=>{ const n = S.entries.filter(e=> e.ch === c.ch && !e.hint).length;
+    return `<li><button type="button" class="bk-toc-row" data-bkgo="${S.chStart[c.ch]}" aria-label="${escapeAttr(TX('ui.book-go-page', {n: S.chStart[c.ch] + 1}))}"><span>${c.icon} ${escapeHtml(c.title())} <small>${escapeHtml(TX('ui.book-chapter-seen', {n}))}</small></span><i aria-hidden="true"></i><b>${S.chStart[c.ch] + 1}</b></button></li>`; }).join('');
+  const letters = Object.keys(S.az).sort();
+  const words = skillCodexQuery.trim();
+  return `<h3 class="bk-title">${escapeHtml(TX('ui.book-contents'))}</h3>
+    <p class="bk-intro">${escapeHtml(adminModeEnabled ? TX('ui.book-intro-admin') : TX('ui.book-intro'))}</p>
+    ${chapters ? `<ol class="bk-toc">${chapters}</ol>` : `<p class="bk-intro">${escapeHtml(words ? TX('ui.book-no-match') : TX('ui.book-empty'))}</p>`}
+    ${letters.length > 1 ? `<h4 class="bk-az-h">${escapeHtml(TX('ui.book-az'))}</h4><div class="bk-az">${letters.map(L=> `<button type="button" data-bkgo="${S.az[L]}" aria-label="${escapeAttr(TX('ui.book-go-page', {n: S.az[L] + 1}))}">${escapeHtml(L)}</button>`).join('')}</div>` : ''}`;
+}
+// The pages from `first` (one, or two side by side): pages[i] is {toc}, {items:[...]} or {blank}.
+function bookSpreadHTML(pages, first, per){
+  const S = codexBookState, sides = per === 2 ? ['left', 'right'] : ['single'];
+  const page = (pg, i, side)=>{
+    if(!pg) return `<section class="bk-page pg-${side} is-blank" aria-hidden="true"></section>`;
+    let head = '', inner = '';
+    if(pg.toc) inner = bookTocHTML(S);
+    else if(pg.items){ const it0 = S.items[pg.items[0]], ch = BOOK_CHAPTERS.find(c=> c.ch === it0.ch); head = ch ? ch.title() : ''; inner = pg.items.map(i=> S.items[i].html).join(''); }
+    return `<section class="bk-page pg-${side}" aria-label="${escapeAttr(TX('ui.codex-page-of', {n: i + 1, total: S && S.pages ? S.pages.length : 1}))}"><header class="bk-run">${escapeHtml(head)}</header><div class="bk-body">${inner}</div><footer class="bk-foot">${pg.blank ? '' : i + 1}</footer></section>`;
+  };
+  const shown = []; for(let k = 0; k < sides.length; k++) shown.push(pages[first + k]);
+  return `<div class="bk-spread bk-${per === 2 ? 'two' : 'one'}">${shown.map((pg, k)=> page(pg, first + k, sides[k])).join(per === 2 ? '<div class="bk-spine" aria-hidden="true"></div>' : '')}</div>`;
+}
+function bookDraw(){
+  const S = codexBookState, book = document.getElementById('bkBook'); if(!S || !book || !S.pages) return;
+  const per = S.L.pages, total = S.pages.length;
+  skillBookPage = Math.max(0, Math.min(skillBookPage, total - 1)); skillBookPage -= skillBookPage % per;
+  try{ uiStickySave('skills', {page: skillBookPage}); }catch(e){}
+  book.innerHTML = bookSpreadHTML(S.pages, skillBookPage, per) + codexPagerNavHTML('book', skillBookPage, per, total, null);
+  book.querySelectorAll('[data-bkgo]').forEach(b=> b.addEventListener('click', ()=> bookGo(+b.dataset.bkgo)));
+  book.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> bookTurn(+b.dataset.turn)));
+  book.querySelectorAll('[data-bkskill]').forEach(b=> b.addEventListener('click', ()=> codexShowCardsWithSkill(b.dataset.bkskill)));
+  codexTurnFn = bookTurn;
+}
+function bookTurn(dir){
+  const S = codexBookState, book = document.getElementById('bkBook'); if(!S || !book || !S.pages) return;
+  const next = skillBookPage + dir * S.L.pages; if(next < 0 || next >= S.pages.length) return;
+  codexLeafTurn(book, dir, ()=>{ skillBookPage = next; bookDraw(); });
+}
+function bookGo(page){
+  const S = codexBookState; if(!S || !S.pages) return; const per = S.L.pages, to = page - (page % per);
+  if(to === skillBookPage) return; codexLeafTurn(document.getElementById('bkBook'), to > skillBookPage ? 1 : -1, ()=>{ skillBookPage = to; bookDraw(); });
+}
+// 2026-10-18 (package D, owner: "Please make the explanation terse. The Codex can be bigger."): the detail each shortened card line
+// dropped, shown after it in the Skills Codex. And the statuses, each with its glossary line and, where it has one, a longer note.
+const SKILL_CODEX_NOTE = {smokeBomb: ()=> TX('ui.skx-smoke-bomb'), rocket: ()=> TX('ui.skx-rocket'), packLeader: ()=> TX('ui.skx-pack-leader'),
+  shockBolt: ()=> TX('ui.skx-shock-bolt'), fork: ()=> TX('ui.skx-fork'), pack: ()=> TX('ui.skx-pack'), wave: ()=> TX('ui.skx-wave'), amore: ()=> TX('ui.skx-amore'),
+  sleep: ()=> TX('ui.skx-sleep'), ritual: ()=> TX('ui.skx-ritual')};
 // Map Codex (2026-10-13, user: "2 maps after the skill codex, add the map codex + list of field effects learned from each map").
 function mapCodexHTML(){
   const pr = loadConquestProgress();
@@ -7064,7 +7510,7 @@ function mapCodexHTML(){
     // 2026-10-15 (user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): Map 0 no
     // longer shows its field effects plainly; like every map, an effect reads "?" until it has been learned (on Map 1 onward).
     const list = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldRowState(row.key) !== 'unknown';
-      return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text))}</small>` : `<span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span>`}</li>`; }).join('');
+      return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text + (row.codex ? ' ' + row.codex : '')))}</small>` /* 2026-10-18 (package D): + the Codex line */ : `<span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span>`}</li>`; }).join('');
     const num = mapNumberOf(m.id);
     return `<div class="mc-card map-theme-${m.id}"><div class="mc-head"><span class="mc-ico">${m.icon}</span><div><b>${escapeHtml(m.name)}</b><small>${m.sub ? 'Side map' : 'Map ' + (num ?? '?')} · ${done}/${fights.length} cleared</small></div></div>
       <p class="mc-blurb">${escapeHtml(m.blurb || '')}</p>${list ? `<ul class="mc-fx">${list}</ul>` : '<p class="panel-sub">No field effects.</p>'}</div>`; }).join('');
@@ -7884,7 +8330,7 @@ function openNodeRewardsEditor(mapId, nodeKey){
         <p class="panel-sub">A Faction Reward is a random card from the player's faction pool at their faction tier; a Faction Growth is the next card of the lowest rarity they don't have yet. With any placeholder set, this fight gives these instead of the default elite/boss faction card.</p></div>
       <div class="nr-tokens nr-danger"><b>⚠️ Danger cards</b> ${Object.keys(found.node.deck||{}).map(id=> defs[id] ? `<button type="button" class="nr-token nr-dg ${((found.node.dangerCards)||[]).includes(id) ? 'is-on' : ''}" data-id="${escapeAttr(id)}" aria-pressed="${((found.node.dangerCards)||[]).includes(id)}">${defs[id].icon||''} ${escapeHtml(defs[id].name)}</button>` : '').join('')}
         <p class="panel-sub">Ticked enemy cards always get a danger warning in this fight until the player has beaten them.</p></div>
-      <input type="text" id="nrSearch" placeholder="Search a card to add…" value="${escapeAttr(q)}" autocomplete="off">
+      <input data-text-filter autocomplete="off" type="text" id="nrSearch" placeholder="Search a card to add…" value="${escapeAttr(q)}">
       <div class="nr-results">${matches.map(id=>`<button type="button" class="nr-result" data-id="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${srcNote(id)}</span></button>`).join('')}</div>
     </div>`;
     overlay.hidden = false;
@@ -9432,7 +9878,7 @@ function wireMatchHistoryPanel(){
         try{ const {cls,text} = logText(ev); return `<div class="log-row ${cls}">${escapeHtml(text)}</div>`; }
         catch(e){ return ''; } // a future/unknown event shape shouldn't break the whole replay
       }).join('') || '<div class="log-row">No events recorded for this match.</div>';
-      logEl.hidden = false;
+      logEl.hidden = false; logEl.scrollTop = logEl.scrollHeight; // the newest line first (2026-10-18, BP)
       el.classList.add('expanded');
     });
   });
@@ -11856,7 +12302,7 @@ function openLoadoutPicker(kind){
       <button type="button" class="modal-close-btn" aria-label="Close" data-close>✕</button>
       <h2>${isCastle ? '🏰 Choose your bramble' : '👑 Choose your leader'}</h2>
       <p class="panel-sub">${isCastle ? 'Your bramble sets your starting health and gives your whole side a passive.' : 'Your leader waits beside the board; summon it once per match. It counts double toward battle rating. Leaders are Heroic or above, or have the Leader passive.'}</p>
-      ${isCastle ? '' : '<input type="search" class="lp-search" id="lpSearch" placeholder="Search your cards…" aria-label="Search your cards">'}
+      ${isCastle ? '' : '<input data-text-filter autocomplete="off" type="search" class="lp-search" id="lpSearch" placeholder="Search your cards…" aria-label="Search your cards">'}
       <div class="lp-body">${body()}</div>
     </div>`;
   document.body.appendChild(ov);
@@ -12592,6 +13038,7 @@ function deckBreakdownHTML(deckIds, defs){
 }
 function renderPlay(){
   const root = document.getElementById('view-play');
+  syncTextFilterPage(); // 2026-10-18: a new Play sub-tab starts with empty search boxes
   if(matchState) noteMatchReturnSpot(); // 2026-10-17: where you were, before the fight takes over the page
   document.body.classList.remove('conquest-full', 'play-full');
   if(!matchState){
@@ -12759,7 +13206,7 @@ function renderPlayerSubTab(body){
       <div class="deck-count-row"><p class="panel-sub deck-count-line"><span id="myDeckSizeBadge">${deckSizeBadgeHTML(myDeckCounts)}</span></p>${deckDraftOn ? deckSaveBarHTML() : ''}</div>
       <div class="deck-list-mini" id="myDeckList"></div>
       <div class="codex-toolbar deck-toolbar">
-        <input id="deckSearch" type="text" placeholder="🔍 Search card name…">
+        <input data-text-filter autocomplete="off" id="deckSearch" type="text" placeholder="🔍 Search card name…">
         <select id="playArchFilter" title="Type Tags (biome/animal) filter"><option value="">All types</option>${archetypes.map(a=>`<option>${a}</option>`).join('')}</select>
         <select id="deckKindFilter"><option value="">All kinds</option><option>Structure</option><option>Unit</option></select>
         <select id="deckLevelFilter" title="Card level — levels only show while this filter is on"><option value="">Any level</option><option value="1">Lv 1+</option><option value="3">Lv 3+</option><option value="5">Lv 5+</option><option value="10">Lv 10+</option><option value="sort">Sort by level</option></select>
@@ -13338,6 +13785,8 @@ const PROGRESS_MERGE_KEYS = {
       out[id] = cardStatsTrim(r); });
     return JSON.stringify(out); },
 };
+// 2026-10-18 (package C): the Codex's seen cards follow the account, merged as a union like the discoveries.
+PROGRESS_KEYS.push(SEEN_KEY); PROGRESS_MERGE_KEYS[SEEN_KEY] = PROGRESS_MERGE_KEYS['bramblewood_arena_discovered'];
 const PROGRESS_LOCAL_AT_KEY = 'bramblewood_progress_local_at';
 function progressSnapshot(){ const d = {}; PROGRESS_KEYS.forEach(k=>{ try{ const v = localStorage.getItem(k); if(v!=null) d[k] = v; }catch(e){} }); return d; }
 function snapshotHash(d){ return String(hashStr(JSON.stringify(d))); }
@@ -13353,6 +13802,7 @@ async function livePullProgress(){
         v = migrateStoredNodeValue(k, v); // 2026-10-14: a blob pushed by an older build still names fights by the old ids (f-1 → 1-1)
         const merge = PROGRESS_MERGE_KEYS[k]; localStorage.setItem(k, merge ? merge(localStorage.getItem(k), v) : v); }catch(e){} });
       try{ myDiscoveredCardIds = new Set(JSON.parse(localStorage.getItem(DISCOVERED_KEY)||'[]')); }catch(e){}
+      mySeenCardIds = null; // 2026-10-18 (package C): read the merged seen list back (seenCardIds)
       LiveData.progressPushedHash = snapshotHash(progressSnapshot());
       try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(Date.parse(data.updated_at))); }catch(e){}
       if(!matchState){ try{ if(currentTab==='home') renderHome(); else if(currentTab==='play') renderPlay(); }catch(e){} }
@@ -13876,7 +14326,7 @@ function openDialogueEditor(){
       <div class="modal-head-row"><h2>💬 NPC speeches</h2><button class="modal-close-btn" data-de-close aria-label="Close">✕</button></div>
       <p class="panel-sub">Every conversation in the game. Change a line's words or who says it; ${cloudCardAdmin ? 'Save publishes it for every player.' : 'Save keeps it in this browser (sign in as a cloud admin to publish).'} Edited lines are marked ✎.</p>
       <datalist id="deWhoList">${speakers.map(sp=> `<option value="${escapeAttr(sp)}">${escapeHtml(DIALOGUE_SPEAKERS[sp].name)}</option>`).join('')}</datalist>
-      <div class="de-layout"><div class="de-list"><input type="search" id="deQ" placeholder="Search words or names…" value="${escapeAttr(q)}">
+      <div class="de-layout"><div class="de-list"><input data-text-filter autocomplete="off" type="search" id="deQ" placeholder="Search words or names…" value="${escapeAttr(q)}">
         ${list.map(k=> `<button type="button" class="de-item ${k===cur?'on':''}" data-de="${escapeAttr(k)}">${dialogueEdits[k] ? '✎ ' : ''}${escapeHtml(k)} <small>${DIALOGUES[k].lines.length}</small></button>`).join('')}</div>
       <div class="de-body">${sc ? `<h3>${escapeHtml(cur)}</h3>${sc.lines.map((l, i)=> `<div class="de-line ${(dialogueEdits[cur]||{})[i] ? 'is-edited' : ''}">
           <input type="text" class="de-who" list="deWhoList" data-de-who="${i}" value="${escapeAttr(l.who||'')}" title="A speaker, or any card's name (it speaks with its card art)">
@@ -15061,81 +15511,86 @@ function volcanoOddsOf(r, round){ if(!volcanoRulesOn(r)) return null; const t = 
 // Scorched Ground (2026-10-14, user: "The damage effect of the volcanic ground - firstly has to be renamed"): the old fixed
 // "Eruptions" (rules.eruption with no volcano odds). The volcano's Eruption hazard keeps its name.
 const SCORCHED_NAME = 'Scorched Ground';
-function scorchedGroundText(n){ return `From round 2, the ground burns one random unit on each side for ${n} fire damage every round. Units that resist fire are spared.`; }
+function scorchedGroundText(n){ return TX('ui.fx-scorched', {n}); } // 2026-10-18 (package D): terse; "resist fire" is in the Codex
 const VOLCANO_HAZARDS = [
-  {key:'lavaTide', icon:'🌋', name:'Lava Tide', text:()=> `From round 2, lava may flood one random column on both sides: the units there that don't fly take 3 fire damage (fire-resistant units take half).`},
-  {key:'petrify', icon:'🪨', name:'Petrification', text:()=> `From round 2, one random unit on each side may turn to stone for the round: it can't attack, and it takes half damage.`},
-  {key:'eruption', icon:'🌋', name:'Eruption', text:r=> `From round 2, one random unit on each side may take ${Number(r.eruption) > 0 ? r.eruption : 2} fire damage. Then the odds reset, and for 3 rounds comets rain down: every unit takes 2–5 fire damage (fire-resistant units take half).`},
+  // 2026-10-18 (package D): terse, since the row adds "Chance each round: …"; the rest is the Map Codex's (codex)
+  {key:'lavaTide', icon:'🌋', name:'Lava Tide', text:()=> TX('ui.fx-lava-tide'), codex:TX('ui.fxx-lava-tide')},
+  {key:'petrify', icon:'🪨', name:'Petrification', text:()=> TX('ui.fx-petrify'), codex:TX('ui.fxx-petrify')},
+  {key:'eruption', icon:'🌋', name:'Eruption', text:r=> TX('ui.fx-eruption', {n: Number(r.eruption) > 0 ? r.eruption : 2}), codex:TX('ui.fxx-eruption')},
 ];
 function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return ''; return volcanoBand(o[key]) + (r.volcano === 'even' && r[key + 'Chance'] == null ? ', and rising' : ''); }
 // Field effects 2 (2026-10-16, the user's field-effect curriculum notes): one text per effect, shared by the Environment cards
 // (fieldConditionRows), Edit skirmish (FIELD_EFFECTS) and the Effects library (FXL_FIELDS). The rules live in bramblewood-engine.js
 // (fieldEffects2Tick and the helper block near `rules`). key = the rules flag; editor = the Edit skirmish id.
+// 2026-10-18 (package D, owner: terse descriptions): each text is under 20 words; a longer `codex` line goes to the Map Codex.
 const FIELD2 = {
-  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor. A Flood fills the whole board: every unit that isn’t Flying is Wet; Swimmers and Tide units are Wet in Ebb too.'}, // 2026-10-18 (owner 15:05): the Flood wets land units
-  landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:"Each round from round 2, a 1 in 4 chance that rocks come down on three neighbouring columns: 5 damage to every unit there that isn't flying, on both sides."}, // 2026-10-17 (user: "it should only affect the L/C/R cards")
-  consternation: {icon:'😰', name:'Consternation', editor:'consternation', short:'Hand cards lose 1/1 a round', text:'Each round from round 2, every card in each hand loses 1/1. The loss stays on the card when it is played (down to 0 Attack and 1 Health at most).'},
-  crushingDepths:{icon:'🫧', name:'Crushing Depths', editor:'crushingdepths', short:'5 water damage a round', text:'Each round from round 2, every unit takes 5 water damage. Tide units and Swimmers take half, and water Resist halves it again. No day or night reaches down here.'},
+  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:TX('ui.fx-tide'), codex:TX('ui.fxx-tide')}, // 2026-10-18 (owner 15:05): the Flood wets land units
+  landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:TX('ui.fx-landslide'), codex:TX('ui.fxx-landslide')}, // 2026-10-17 (user: "it should only affect the L/C/R cards")
+  consternation: {icon:'😰', name:'Consternation', editor:'consternation', short:'Hand cards lose 1/1 a round', text:TX('ui.fx-consternation'), codex:TX('ui.fxx-consternation')},
+  crushingDepths:{icon:'🫧', name:'Crushing Depths', editor:'crushingdepths', short:'5 water damage a round', text:TX('ui.fx-crushing-depths'), codex:TX('ui.fxx-crushing-depths')},
   rookRow:       {icon:'♜', name:"Rook's Row", editor:'rookrow', short:'Straight hits +2', text:'A hit on the unit standing square in front of the attacker deals +2 damage.'},
-  bishopPath:    {icon:'♝', name:"Bishop's Path", editor:'bishoppath', short:'Slanted hits +2', text:'A hit on a unit on the slant (half a step or one column to the side, as with interlocked ranks, Fork prongs, Backstab and Crab Claws) deals +2 damage.'},
-  mirage:        {icon:'🪞', name:'Mirage', editor:'mirage', short:'An Illusion appears each round', text:'Each round from round 2, a random unit gets a 1/1 Illusion in a free slot right beside it (none if both are taken). The Illusion copies only Flying, Tide, Swimmer, Haste and Speed.'},
-  canopy:        {icon:'🌳', name:'High Canopy', editor:'canopy', short:'Pounce +2, Swift dodge, no Flying dodge', text:'Up in the treetops: Pounce deals +2 damage, Swift and Quick units are Evasive, Flying gives no dodge, and Bounty creatures have Bounty +1.'},
+  bishopPath:    {icon:'♝', name:"Bishop's Path", editor:'bishoppath', short:'Slanted hits +2', text:TX('ui.fx-bishop-path'), codex:TX('ui.fxx-bishop-path')},
+  mirage:        {icon:'🪞', name:'Mirage', editor:'mirage', short:'An Illusion appears each round', text:TX('ui.fx-mirage'), codex:TX('ui.fxx-mirage')},
+  canopy:        {icon:'🌳', name:'High Canopy', editor:'canopy', short:'Pounce +2, Swift dodge, no Flying dodge', text:TX('ui.fx-canopy')},
   undergrowth:   {icon:'🌿', name:'Undergrowth', editor:'undergrowth', short:'Pounce +2, Swift dodge', text:'Thick cover: Pounce deals +2 damage, and Swift and Quick units are Evasive.'},
   tallGrass:     {icon:'🌾', name:'Tall Grass', editor:'tallgrass', short:'Stealth first; Backstab, Pounce ×2', text:'Stealth units attack first. Backstab hits and Pounce deal double damage.'},
-  slippery:      {icon:'⛸️', name:'Slippery', editor:'slippery', short:'Swings and triggers fail 1 in 2', text:'Ice everywhere: every attack at a unit misses 1 in 2, and every trigger and on-hit effect fails 1 in 2.'},
-  glassStorm:    {icon:'💎', name:'Glass-storm', editor:'glassstorm', short:'Sandstorm, plus 1–3 glass a round', text:'A Sandstorm full of glass: attacks miss 1 in 4 (not from Dry units), the wind is random each round, and from round 2 every unit is buffeted for a random 1–3 damage each round.'},
+  slippery:      {icon:'⛸️', name:'Slippery', editor:'slippery', short:'Swings and triggers fail 1 in 2', text:TX('ui.fx-slippery')},
+  glassStorm:    {icon:'💎', name:'Glass-storm', editor:'glassstorm', short:'Sandstorm, plus 1–3 glass a round', text:TX('ui.fx-glass-storm'), codex:TX('ui.fxx-glass-storm')},
   hail:          {icon:'🌨️', name:'Hail', editor:'hail', short:'3 ice damage a round', text:'Each round from round 2, every unit takes 3 ice damage. Cold Resist halves it.'},
-  lavaSpout:     {icon:'♨️', name:'Lava Spout', editor:'lavaspout', short:'A column bursts: 3 fire', text:'Each round from round 2, lava bursts up in one random column: the units there, on both sides, take 3 fire damage. Fire Resist halves it.'},
-  leylines1:     {icon:'✴️', name:'Leylines I', editor:'leylines1', short:'Day, night, tide, moon stronger', text:'The old rhythms run strong: Diurnal, Nocturnal and Crepuscular bonuses are +2/+2 more (a plain one is +3/+3), the Tide gives +3 Attack on Flood and Armor 3 on Ebb, and Full Moon and Moonborn are +2/+2 more.'},
+  lavaSpout:     {icon:'♨️', name:'Lava Spout', editor:'lavaspout', short:'A column bursts: 3 fire', text:TX('ui.fx-lava-spout'), codex:TX('ui.fxx-fire-resist-half')},
+  leylines1:     {icon:'✴️', name:'Leylines I', editor:'leylines1', short:'Day, night, tide, moon stronger', text:TX('ui.fx-leylines1'), codex:TX('ui.fxx-leylines1')},
   leylines2:     {icon:'✴️', name:'Leylines II', editor:'leylines2', short:'+1 Lumber a round', text:'Each round from round 2, both sides gain 1 Lumber.'},
-  leylines3:     {icon:'✴️', name:'Leylines III', editor:'leylines3', short:'+1 Lumber, +1 Stone; 3 damage to all', text:'Each round from round 2, both sides gain 1 Lumber and 1 Stone, but every unit takes 3 magic damage and both brambles take 3 (never below 1). Atheist units take none.'},
-  haunted:       {icon:'👻', name:'Haunted', editor:'haunted', short:'A unit a side is Frightened', text:"Each round from round 2, one random unit on each side is Frightened: it doesn't attack that round. Ghosts and Atheists aren't scared."},
+  leylines3:     {icon:'✴️', name:'Leylines III', editor:'leylines3', short:'+1 Lumber, +1 Stone; 3 damage to all', text:TX('ui.fx-leylines3'), codex:TX('ui.fxx-leylines3')},
+  haunted:       {icon:'👻', name:'Haunted', editor:'haunted', short:'A unit a side is Frightened', text:TX('ui.fx-haunted'), codex:TX('ui.fxx-haunted')},
   // Field effects 3 (2026-10-17, the user's notes 17 and 24): Sulphur Fumes by the vents (user: "'Hazardous Gas' ... Since poison is already
   // used, think of something else"), Ash Rain and Ashy from the volcano (user: "new ones like Ash Rain and Ashy (volcano explosion)"), and
   // Arrow Slits on the castle maps (user: "Fortified Castle map"). Rules in bramblewood-engine.js (fieldEffects2Tick, chokeOf, ashyNow).
-  sulphurFumes:  {icon:'💨', name:'Sulphur Fumes', editor:'sulphurfumes', short:'Units choke: −1 Attack', text:"Each round from round 2, the vents breathe out: every unit that doesn't resist fire, isn't Dry and isn't Flying is Choking that round: −1 Attack on everything it deals. No damage, no poison."},
-  ashRain:       {icon:'🌋', name:'Ash Rain', editor:'ashrain', short:'Brambles −1; the sun dims', text:'Each round from round 2, ash falls: both brambles take 1 damage (never below 1), and the ash dims the sun: day bonuses are halved, as under Cloudy.'},
-  ashy:          {icon:'🌫️', name:'Ashy', editor:'ashy', short:'Flyers grounded; misses 1 in 5', text:'Thick ash on the ground and in the air: Flying units are grounded (Flying gives no dodge, and no Tailwind or Headwind), and every attack at a unit misses 1 in 5. Darksight, Keen Sense and Sonar see through it.'},
-  arrowSlits:    {icon:'🏹', name:'Arrow Slits', editor:'arrowslits', short:'The walls shoot 2 a round', text:"Each round from round 2, the defenders' walls loose an arrow at a random unit on the attackers' side: 2 damage. A Helmet can turn it."},
+  sulphurFumes:  {icon:'💨', name:'Sulphur Fumes', editor:'sulphurfumes', short:'Units choke: −1 Attack', text:TX('ui.fx-sulphur-fumes'), codex:TX('ui.fxx-sulphur-fumes')},
+  ashRain:       {icon:'🌋', name:'Ash Rain', editor:'ashrain', short:'Brambles −1; the sun dims', text:TX('ui.fx-ash-rain'), codex:TX('ui.fxx-ash-rain')},
+  ashy:          {icon:'🌫️', name:'Ashy', editor:'ashy', short:'Flyers grounded; misses 1 in 5', text:TX('ui.fx-ashy'), codex:TX('ui.fxx-ashy')},
+  arrowSlits:    {icon:'🏹', name:'Arrow Slits', editor:'arrowslits', short:'The walls shoot 2 a round', text:TX('ui.fx-arrow-slits')},
   // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card."): rules.awash; the push is Wave's (washPush in the engine).
   // 2026-10-17 (user, on the raid: "There should be all the related field effects but also some kind of psychic dampener"): rules.psychicDampener,
   // in the engine's psychicHit (half, rounded down) and rollStatusOnHit's Confuse (1 round less). The Goliath raid fights under it.
-  psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', revealAfter:{mapNum:41} /* 2026-10-18 (package U): "?" until a Map 41+ win */, short:'Psychic halved; Confuse 1 round less', text:"The deep presses on every mind: Psychic damage is halved (rounded down), and a Confuse lasts 1 round less, so a 1-round Confuse doesn't land. Both sides."},
+  psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', revealAfter:{mapNum:41} /* 2026-10-18 (package U): "?" until a Map 41+ win */, short:'Psychic halved; Confuse 1 round less', text:TX('ui.fx-psychic-dampener'), codex:TX('ui.fxx-psychic-dampener')},
   // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now. "Awashed" will be for
   // something else - reserved."): on screen this field is "Wave" (Wave 1–3 on a random unit); the key stays awash for saves and data.
-  awash:         {icon:'〰️', name:'Wave', editor:'awash', short:'A unit rides a Wave 1–3 columns; crashes hurt', text:'Each round from round 2, a Wave takes one random unit N columns (1–3) along its row, leaning slightly toward the middle. If it crashes into another unit on the way, it stops beside it and both take N damage. Only the board\'s edge turns it back the other way. Pinned and Webbed units hold fast.'}, // 2026-10-18: crash damage
+  awash:         {icon:'〰️', name:'Wave', editor:'awash', short:'A unit rides a Wave 1–3 columns; crashes hurt', text:TX('ui.fx-awash'), codex:TX('ui.fxx-awash')}, // 2026-10-18: crash damage
 };
 // 2026-10-17 (user: "Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow of the volcanoes"): the row the volcano
 // maps' uneven cycle shows, and the "after an Eruption" form of Ashy.
-const VOLCANO_GLOW_TEXT = (d, n)=> `No true night here: the volcano's glow keeps it Day for ${d} rounds, then Night for ${n}, and round again.`;
-const ASHY_AFTER_TEXT = 'After an Eruption the ground is Ashy for 4 rounds: Flying units are grounded (no Flying dodge, no Tailwind or Headwind), and every attack at a unit misses 1 in 5. Darksight, Keen Sense and Sonar see through it.';
+const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-18 (package D): terse
+const ASHY_AFTER_TEXT = TX('ui.fx-ashy-after'); // 2026-10-18 (package D): terse; the rest is Ashy's Codex line
 // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the spout no longer brings the Tide in.
-const TIDESPOUT_TEXT = "Each round from round 2, a spout bursts in one random column: the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.";
+const TIDESPOUT_TEXT = TX('ui.fx-tide-spout'); // 2026-10-18 (package D): terse
 const FIELD2_SCORCHING3_TEXT ='Scorching, level 3: each round 4 random units on each side take 3 fire damage. Heat-resistant units are spared.';
 function fieldConditionRows(r){
   // 2026-10-14 (user: "For field effects with many multiple effects, split into multiple field cards"): every row also has a short
   // line (`short`) for its own Environment card on the board. The terrain row went with home ground (user: "Remove the Home ground
   // explanation").
-  r = r || {}; const rows = [], add = (key, icon, name, text, tip, short)=> rows.push({key, icon, name, text, tip, short: short || name});
+  // 2026-10-18 (package D): a row may carry a longer `codex` line, which the Map Codex shows after the short text.
+  r = r || {}; const rows = [], add = (key, icon, name, text, tip, short, codex)=>{ const row = {key, icon, name, text, tip, short: short || name}; if(codex) row.codex = codex; rows.push(row); return row; };
   if(volcanoRulesOn(r)){ const o = volcanoOddsOf(r, 2);
     const SH = {lavaTide:'Lava may flood a column', petrify:'A unit may turn to stone', eruption:'Eruptions, then comets'};
-    VOLCANO_HAZARDS.forEach(h=>{ if(!(o[h.key] > 0)) return; const w = volcanoChanceWord(r, h.key); add(h.key, h.icon, `${h.name} · ${w}`, `${h.text(r)} Chance each round: ${w}.`, `Chance each round: ${w}`, `${SH[h.key]} (${w})`); }); }
-  else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(r.eruption), '', `Burns a unit a side for ${r.eruption}`);
+    VOLCANO_HAZARDS.forEach(h=>{ if(!(o[h.key] > 0)) return; const w = volcanoChanceWord(r, h.key); add(h.key, h.icon, `${h.name} · ${w}`, `${h.text(r)} Chance each round: ${w}.`, `Chance each round: ${w}`, `${SH[h.key]} (${w})`, h.codex); }); }
+  else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(r.eruption), '', `Burns a unit a side for ${r.eruption}`, TX('ui.fxx-scorched'));
   // 2026-10-16 (user: "Should sandstorm also have windy rules? I think so."): a Sandstorm or Glass-storm brings Windy's wind (unless the fight sets one).
   const wind = r.wind || ((r.sandstorm || r.glassStorm) ? 'windy' : null);
-  if(wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale);
-  else if(wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy);
-  if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (none with an Illuminate unit on their side).', '', 'No Darksight: every attack misses');
+  if(wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale, WIND_CODEX.gale);
+  else if(wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy, WIND_CODEX.windy);
+  // 2026-10-18 (package D): the owner's plain line on the face and in the detail; a Cast Darkness unit's dark says it lifts with it.
+  const darkCast = r.darkCast ? ' ' + TX('ui.field-dark-cast') : '';
+  if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', DARK_LEVEL_TEXT.absolute, '', DARK_LEVEL_TEXT.absolute, DARK_CODEX_TEXT);
   // 2026-10-15 (user: "It will be an explicit field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): the two dark levels.
-  else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', 'No Darksight: miss 1 in 2');
-  else if(r.dark) add('dark', '🌘', DARK_LEVEL_NAME.dark, DARK_LEVEL_TEXT.dark, '', 'No Darksight: miss 1 in 4');
+  else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', DARK_LEVEL_TEXT.pitch, DARK_CODEX_TEXT);
+  else if(r.dark) add('dark', '🌘', DARK_LEVEL_NAME.dark, DARK_LEVEL_TEXT.dark + darkCast, '', DARK_LEVEL_TEXT.dark, DARK_CODEX_TEXT);
   if(r.cloudy) add('cloudy', '☁️', 'Cloudy', CLOUDY_TEXT, '', 'Clouds halve the day bonus'); // 2026-10-16
   if(r.misty){ add('misty', '🌫️', 'Mist', MISTY_TEXT, '', MISTY_SHORT); rows[rows.length - 1].qTip = MISTY_Q_TIP; } // 2026-10-14; real wording 2026-10-15; a neutral "?" tip (2026-10-15)
   if(r.phase === 'night') add('night', '🌙', 'Night', 'Night all match: Nocturnal units get their bonus. Night-blind units miss 1 attack in 2.', '', 'Always night'); // 2026-10-15: night has no 1-in-4 miss any more
   if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', '', 'Day, night, then twilight');
   if(r.permaTide) add('permaTide', '🌊', r.rapids ? 'River Rapids' : 'Perma-tide', r.rapids ? 'Always Flood: the Tide is in all match, and nothing can turn it.' : "Always Flooded. Tide effects can't change it.", '', r.rapids ? 'Always Flood' : 'Always Flooded'); // 2026-10-16 (user: "Perma-tide's effect should say \"Always Flooded\"") // 2026-10-14: Flow every round from round 1; River Rapids 2026-10-15
   // New field effects (2026-10-15)
-  if(r.swampFever) add('swampFever', '🤢', 'Swamp Fever', `From round 2, every unit has a ${r.swampFever === true || Number(r.swampFever) === 50 ? '1 in 2' : (Number(r.swampFever)||50) + '%'} chance each round to gain 1 Poison. Structures never catch it.`, '', 'Units may catch Poison');
+  if(r.swampFever) add('swampFever', '🤢', 'Swamp Fever', TX('ui.fx-swamp-fever', {odds: r.swampFever === true || Number(r.swampFever) === 50 ? '1 in 2' : (Number(r.swampFever)||50) + '%'}), '', 'Units may catch Poison', TX('ui.fxx-swamp-fever')); // 2026-10-18 (package D): terse
   if(r.freezing) add('freezing', '🧊', 'Freezing', 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', '', 'Units arrive frozen');
   if(r.sandstorm) add('sandstorm', '🏜️', 'Sandstorm', 'Attacks at units miss 1 in 4, except from Dry units.', '', 'Attacks miss 1 in 4');
   // 2026-10-14 (user: "Tideline II doesn't need to explain Tide & High Tide ... The effect of it just says, Periodic High Tides"):
@@ -15146,17 +15601,17 @@ function fieldConditionRows(r){
     const n = Math.max(1, Number(r.frostCount)||1, Number(r.frostWait)||1);
     add('frost', '❄️', 'Frost', `Each round ${n > 1 ? n + ' random units' : 'one random unit'} on each side ${n > 1 ? 'get' : 'gets'} +1 Wait. Units weak to cold also take 1 damage.`, '', `Chills ${n} a side each round`);
     // 2026-10-13 (user: 'Remove "Used to the cold" - what's that!'): units that ignore the frost are part of the Frost line now.
-    if((r.frostResist||[]).length){ const fr = rows[rows.length - 1]; fr.text += ` Their ${r.frostResist.join(', ')} units never feel it.`; }
+    if((r.frostResist||[]).length){ const fr = rows[rows.length - 1]; fr.codex = `Their ${r.frostResist.join(', ')} units never feel it.`; } // 2026-10-18 (package D): in the Map Codex, so the card's line stays short
     if(r.frostbite) add('frostbite', '🥶', 'Frostbite', `An enemy unit the frost chills gains +${r.frostbite}/+${r.frostbite}.`, '', `Chilled foes gain +${r.frostbite}/+${r.frostbite}`);
   }
   // Field effects 2 (2026-10-16): one row each, in FIELD2's order (the Tide's row sits with the other tides above).
   Object.keys(FIELD2).forEach(k=>{ if(k === 'tide' || !r[k]) return; if(k === 'undergrowth' && r.canopy) return; const f = FIELD2[k];
     // 2026-10-17: a number on Crushing Depths or Hail is its damage (the raid's Crushing Depths is 2), so the card says that number.
     const n = Number(r[k]), dflt = {crushingDepths:5, hail:3}[k];
-    if(dflt && n > 0 && n !== dflt){ add(k, f.icon, f.name, f.text.replace(dflt + ' water damage', n + ' water damage').replace(dflt + ' ice damage', n + ' ice damage'), '', f.short.replace(String(dflt), String(n))); return; }
-    add(k, f.icon, f.name, f.text, '', f.short); });
+    if(dflt && n > 0 && n !== dflt){ add(k, f.icon, f.name, f.text.replace(dflt + ' water damage', n + ' water damage').replace(dflt + ' ice damage', n + ' ice damage'), '', f.short.replace(String(dflt), String(n)), f.codex); return; }
+    add(k, f.icon, f.name, f.text, '', f.short, f.codex); });
   // 2026-10-17: Ashy after an Eruption (only where the volcano can erupt), and the volcano maps' uneven Day/Night.
-  if(!r.ashy && r.ashyAfterEruption && volcanoRulesOn(r)) add('ashyAfter', FIELD2.ashy.icon, 'Ashy (after an Eruption)', ASHY_AFTER_TEXT, '', 'An Eruption leaves the ground Ashy');
+  if(!r.ashy && r.ashyAfterEruption && volcanoRulesOn(r)) add('ashyAfter', FIELD2.ashy.icon, 'Ashy (after an Eruption)', ASHY_AFTER_TEXT, '', 'An Eruption leaves the ground Ashy', FIELD2.ashy.codex);
   if((r.phase === 'cycle' || r.phase === 'nightFirst') && (Number(r.phaseDay) > 0 || Number(r.phaseNight) > 0)){ const PL = Number(r.phaseLen) || 3, d = Number(r.phaseDay) || PL, n = Number(r.phaseNight) || PL;
     if(d !== n) add('volcanoGlow', '🌋', 'Volcano Glow', VOLCANO_GLOW_TEXT(d, n), '', `Day ${d} rounds, Night ${n}`); }
   if(r.bossSurge) add('bossSurge', '💢', 'Boss surge', `Their boss surges +${r.bossSurge.atk}/+${r.bossSurge.hp} when it's cast.`, '', `Their boss arrives +${r.bossSurge.atk}/+${r.bossSurge.hp}`);
@@ -15188,7 +15643,13 @@ function fieldRowsListHTML(rows){
     if(fieldRowHidden(row.key)) return `<li class="fcr is-unknown" aria-label="${escapeAttr(row.name + ': not seen yet')}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}</span><span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span></li>`;
     return `<li class="fcr ${st==='new' ? 'is-new' : ''}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}${st==='new' ? ' <b class="fcr-new">New!</b>' : ''}</span><span class="fcr-t">${keywordizeHTML(escapeHtml(row.text))}</span></li>`; }).join('');
 }
-function matchFieldRules(m){ try{ return m && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.raidFieldRules) || (m && m.arenaRuleset && m.arenaRuleset.rules) || null; }catch(e){ return null; } } // + the raid's field (2026-10-17)
+// Cast Darkness (2026-10-18, package D): while a caster stands on the board the fight reads as dark (rules.dark 'dark', darkCast: true),
+// so the Environment card, the board's darkness veil, the eye on units that can't see and the field pills all follow it; a fight dark
+// of its own is left as it is. The engine decides (darkCastNow), the same rule the combat uses.
+function matchFieldRules(m){ const r = matchFieldRulesBase(m);
+  let cast = false; try{ cast = !!(m && !m.over && m.engine && m.engine.darkCastNow && m.engine.darkCastNow(m.players)); }catch(e){}
+  return cast && !(r && r.dark) ? Object.assign({}, r || {}, {dark:'dark', darkCast:true}) : r; }
+function matchFieldRulesBase(m){ try{ return m && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.raidFieldRules) || (m && m.arenaRuleset && m.arenaRuleset.rules) || null; }catch(e){ return null; } } // + the raid's field (2026-10-17)
 function skirmishFieldHTML(mapId, node){
   if(!node || node.virtual) return ''; let r = null; try{ r = fightRules(mapId, node); }catch(e){ return ''; }
   const rows = fieldConditionRows(r); if(!rows.length) return '';
@@ -15204,6 +15665,7 @@ function noteFieldEvent(ev){
   else if(ev.type === 'fieldTick' && ev.field === 'scorched') hit = markFieldRow('eruption'); // Scorched Ground keeps the old row key (2026-10-14)
   else if(ev.type === 'wind' && ev.windy) hit = markFieldRow(r.wind === 'gale' ? 'gale' : 'wind');
   else if(ev.type === 'blindMiss' && r.dark) hit = markFieldRow('dark');
+  else if(ev.type === 'darkCast' && ev.on) hit = markFieldRow('dark'); // Cast Darkness (2026-10-18): its card lights up as the dark falls
   else if(ev.type === 'tide' && (ev.tide === 'high' || ev.to === 'high')) hit = markFieldRow('highTide');
   else if(ev.type === 'fieldTick' && ev.field === 'tideSpout') hit = markFieldRow('tideSpout');
   else if(ev.type === 'fieldTick' && (ev.field === 'swampFever' || ev.field === 'freezing')) hit = markFieldRow(ev.field); // 2026-10-15
@@ -15228,10 +15690,9 @@ function noteFieldEvent(ev){
 // 2026-10-16 (user: "Wind: The typical wind effect cards say that the wind change is random. Forward, Backward, No Wind, etc."): the
 // engine rolls the wind each round (rollWind). Windy: at your back, in your face or calm, 1 in 3 each. Gale: always strong, either
 // way 1 in 2. One text for the field card, its pill and the Effects library.
-const WIND_TEXT = {
-  windy: 'The wind is random each round: at your back, in your face, or calm (1 in 3 each). Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.',
-  gale: 'Strong wind every round, blowing a random way: at your back or in your face (1 in 2 each). Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.',
-};
+// 2026-10-18 (package D): terse; the odds are in the Map Codex (WIND_CODEX).
+const WIND_TEXT = {windy: TX('ui.fx-windy'), gale: TX('ui.fx-gale')};
+const WIND_CODEX = {windy: TX('ui.fxx-windy'), gale: TX('ui.fxx-gale')};
 const WIND_SHORT = {windy:'Random wind each round', gale:'Strong wind, random way'};
 // Darkness levels (D67/D73, 2026-10-13): Smugglers' Grotto is Pitchblack (1 in 2 miss), Caves & Alcoves is Darkness (1 in 4).
 // The Abyssal Plains will be Absolute darkness. Darksight sees through all of it.
@@ -15244,7 +15705,10 @@ const WIND_SHORT = {windy:'Random wind each round', gale:'Strong wind, random wa
 // under the reef, where no light reaches).
 const DARK_MAPS = new Map([['mg','dark'], ['m4','dark'], ['mz','dark'], ['mj','pitch']]);
 const DARK_LEVEL_NAME = {dark:'Darkness', pitch:'Pitch Black', absolute:'Absolute darkness'};
-const DARK_LEVEL_TEXT = {dark:'Level 1: units without Darksight miss 1 attack in 4. An Illuminate unit lights your side.', pitch:'Level 2: units without Darksight miss 1 attack in 2. An Illuminate unit lights your side.'};
+// 2026-10-18 (package D; owner: just "Dark-blind creatures miss 1/4 the time."): one plain line, the card's face and its detail alike;
+// who is dark-blind and what Illuminate does is in the Map Codex (DARK_CODEX_TEXT) and the Dark-blind keyword's gloss.
+const DARK_LEVEL_TEXT = {dark:TX('ui.field-dark'), pitch:TX('ui.field-pitch'), absolute:TX('ui.field-absolute')};
+const DARK_CODEX_TEXT = TX('ui.fxx-dark');
 const WINDY_MAPS = {mc:'windy', md:'windy', m3:'windy', m11:'windy', m10:'gale', mv:'gale'};
 const VOLCANO_MAPS = new Set(['m11', 'me', 'mx', 'm22']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart; + the Rimefire Caldera, Map 22 (2026-10-17)
 // 2026-10-17 (user: "I think there is no true night on the volcano. Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow
@@ -15517,7 +15981,7 @@ function openSkirmishGallery(o){
     }
     el.innerHTML = `<div class="modal se-gallery" role="dialog" aria-label="${escapeAttr(title)}">
       <div class="modal-head-row"><h2>${escapeHtml(title)}</h2><button type="button" class="modal-close-btn" data-sg-close aria-label="Close">✕</button></div>
-      <div class="sg-tools"><input type="text" class="sg-search" placeholder="Search by name…" value="${escapeAttr(q)}" autocomplete="off">
+      <div class="sg-tools"><input data-text-filter autocomplete="off" type="text" class="sg-search" placeholder="Search by name…" value="${escapeAttr(q)}">
         ${o.kind === 'deck' ? `<div class="sg-seg" role="tablist"><button type="button" data-only="all" class="${only==='all'?'on':''}">All cards</button><button type="button" data-only="in" class="${only==='in'?'on':''}">In this deck</button></div>` : ''}
         ${o.kind === 'deck' ? '<button type="button" class="btn primary small" data-sg-close>Done</button>' : ''}</div>
       <p class="panel-sub sg-hint">${o.kind === 'deck' ? 'Tap a card to add a copy; − removes one.' : o.kind === 'leader' ? 'Tap a card to make it this leader.' : 'Tap a bramble to use it.'}</p>
@@ -15553,7 +16017,7 @@ function openDeckBuilderPopup(o){
   ov.innerHTML = `<div class="modal deck-popup" role="dialog" aria-label="${escapeAttr(o.title||'Deck')}">
     <div class="modal-head-row"><h2>🃏 ${escapeHtml(o.title||'Deck')} · <span id="dbpTotal">${total()}</span> cards</h2><button type="button" class="btn small primary dbp-done" data-close>✓ Done</button><button class="modal-close-btn" data-close aria-label="Close">✕</button></div>
     <div class="dbp-deck" id="dbpDeck">${deckHTML()}</div>
-    <div class="dbp-tools"><input type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards"><select id="dbpSort" aria-label="Sort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="wait">Sort: Wait</option><option value="rarity">Sort: Rarity</option><option value="name">Sort: Name</option></select></div>
+    <div class="dbp-tools"><input data-text-filter autocomplete="off" type="search" id="dbpSearch" placeholder="Search a card…" aria-label="Search cards"><select id="dbpSort" aria-label="Sort"><option value="cost">Sort: Cost</option><option value="attack">Sort: Attack</option><option value="health">Sort: Health</option><option value="wait">Sort: Wait</option><option value="rarity">Sort: Rarity</option><option value="name">Sort: Name</option></select></div>
     <div class="dbp-pool" id="dbpPool">${poolHTML()}</div>
   </div>`;
   const refresh = (which)=>{ const dk = ov.querySelector('#dbpDeck'), pl = ov.querySelector('#dbpPool'), st = pl.scrollTop;
@@ -15741,7 +16205,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       <div class="se-h-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><h3 class="se-h">${escapeHtml(draft.name||'Skirmish')} deck · ${total} cards</h3><button type="button" class="btn small primary" id="seDeckPopup">🃏 Edit deck</button><button type="button" class="btn small ghost" id="seGallery">Card gallery</button></div>
       <div class="se-deck se-deck-stacks" ${draft.kind === 'tutorial' ? 'hidden' : ''}>${deckIds.length ? deckIds.sort(deckSortFn('cost')).map(id=> defs[id] ? `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), draft.deck[id], '×' + draft.deck[id])}</span>` : `<span class="se-missing">${escapeHtml(id)} (missing) ×${draft.deck[id]}</span>`).join('') : '<p class="panel-sub">Empty. Press Edit deck to add cards.</p>'}</div>
       ${deckIds.length ? `<details class="se-levels" ${draft.cardLevels && Object.keys(draft.cardLevels).length ? 'open' : ''}><summary>Card levels <small>every copy of a card shares its level; blank = its usual level</small></summary><div class="se-levels-grid">${deckIds.filter(id=> defs[id]).map(id=> `<label class="se-lv"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><input type="number" min="0" max="11" data-cardlv="${escapeAttr(id)}" placeholder="${cardBaseLevel(defs[id])}" value="${draft.cardLevels && draft.cardLevels[id] != null ? escapeAttr(draft.cardLevels[id]) : ''}"></label>`).join('')}</div></details>` : ''}
-      <div class="se-search-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><input type="text" id="seSearch" placeholder="Quick add: search a card…" value="${escapeAttr(q)}" autocomplete="off"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
+      <div class="se-search-row" ${draft.kind === 'tutorial' ? 'hidden' : ''}><input data-text-filter autocomplete="off" type="text" id="seSearch" placeholder="Quick add: search a card…" value="${escapeAttr(q)}"><button type="button" class="btn small" id="seNewCard" title="Make a brand-new card; saving it puts one copy in this deck">＋ New card</button></div>
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}${defs[id].token?' · token':''}</span></button>`).join('')}</div>
       ${simText ? `<div class="se-sim">${simText}</div>` : ''}
       ${skirmishCurveHTML(mapId, draft.key)}
@@ -17657,7 +18121,7 @@ const CONQUEST_MAPS = [
   { id:"me", sub:true, parent:"m11", entry:{x:50, y:18, after:"20-10", label:"The crater's edge"}, name:"Eye of the Volcano", icon:"🌋", blurb:"Down inside the crater, where the dead keep the fire company and the living learned not to need much.", sequential:true,
     nodes: [
       { key:"20-A-1", rating:400, kind:"elite", name:"The Ash Ossuary", icon:"🦴", deck:{"ashbone-ghoul":4,"cinder-skeleton":3,"ossuary-lammergeier":2,"blessed-avatar":1}, hqHp:170, flavor:"Bones stacked like firewood. Some of them are still deciding.", rewards:{first:{gold:200, dust:30}}, requires:[] },
-      { key:"20-A-2", rating:420, kind:"elite", name:"The Wraith Vents", icon:"👻", deck:{"ashbone-ghoul":3,"cinder-skeleton":3,"pit-glutton":1,"sulfur-vent-crab":2,"cinder-gecko":1}, hqHp:219, rules:{sulphurFumes:true} /* 2026-10-17: a vent-side fight, Sulphur Fumes */, flavor:"Every vent breathes out something that used to breathe in.", rewards:{first:{gold:210, dust:32}}, requires:["20-A-1"] },
+      { key:"20-A-2", rating:420, kind:"elite", name:"The Wraith Vents", icon:"👻", deck:{"ashbone-ghoul":2,"cinder-skeleton":2,"pall-wraith":2,"pit-glutton":1,"sulfur-vent-crab":2,"cinder-gecko":1}, hqHp:219, rules:{sulphurFumes:true} /* 2026-10-17: a vent-side fight, Sulphur Fumes */ /* 2026-10-18 (package D): + 2 Pall Wraiths (one Ghoul, one Skeleton out), who cast Darkness; the Wraith is this fight's card reward */, flavor:"Every vent breathes out something that used to breathe in.", rewards:{first:{gold:210, dust:32}}, requires:["20-A-1"] },
       { key:"20-A-3", rating:435, kind:"elite", name:"The Lich's Kiln", icon:"🧙", deck:{"cinder-skeleton":3,"ashbone-ghoul":2,"blessed-avatar":2,"echo-keeper":1,"cinder-stoker":2}, hqHp:157, flavor:"It fires its servants like pottery. They come out harder every time.", rewards:{first:{gold:220, dust:35}}, requires:["20-A-2"] },
       { key:"20-A-4", rating:450, kind:"dungeon", name:"Heart of the Mountain", icon:"🗝️", deck:{"cinder-skeleton":4,"ashbone-ghoul":4,"magma-wraith":2}, hqHp:260, flavor:"Four doors down to where the fire began. The Contradiction is waiting at the bottom, and it is not dead.",
         dungeon:{rounds:4, tier:'boss', waveDecks:[null, {"magma-wraith":4,"obsidian-lich":2,"cinder-skeleton":4}, {"obsidian-lich":3,"ember-revenant":2,"magma-wraith":3,"ashbone-ghoul":2}, {"ember-revenant":3,"obsidian-lich":3,"magma-titan":1,"pyroclast-wyrm":2,"ashmantle-fiend":1}]},
@@ -20812,7 +21276,7 @@ function raidClaimsFor(def){
     const key = def.id+':'+c; if(claimed[key]) return;
     const st = RaidM.raidState(def, currentRaidAttempts(def, c).concat(loadRaidPartAttempts().filter(a=> a.raidId===def.id && a.cycle===c && a.pushed && !currentRaidAttempts(def, c).some(x=> x.at===a.at))), c===cyc ? now : (c+1)*RaidM.CYCLE_MS - 1, {cycle:c});
     const rw = RaidM.claimableReward(def, st, me, now);
-    if(rw) out.push({key, cycle:c, reward: rw});
+    if(rw) out.push({key, cycle:c, reward: rw, mine: st.contributors[me] || 0}); // mine: 2026-10-18 (package RW), the claim screen counts it up
   });
   return out;
 }
@@ -20820,23 +21284,58 @@ function raidClaimsFor(def){
 // a raid's own cards (source {kind:'raid', id}) drop only when it falls: one for everyone who fought it, one more for the
 // top 10%. Commons are likelier than the Broodmother.
 function raidCardIds(def){ const defs = getCardDefs(); return Object.keys(defs).filter(id=>{ const s = (defs[id] || {}).source; return s && s.kind === 'raid' && s.id === def.id; }); }
-function grantRaidCards(def, n){
+function grantRaidCards(def, n, quiet){ // quiet (2026-10-18, package RW): the claim screen shows the cards, so no toast
   const defs = getCardDefs(), ids = raidCardIds(def); if(!ids.length) return [];
   const w = id=> ({common:8, uncommon:5, rare:3, epic:1.5, legendary:0.6})[defs[id].rarity || 'common'] || 1, got = [];
   for(let i = 0; i < n; i++){ const tot = ids.reduce((a, id)=> a + w(id), 0); let r = Math.random() * tot, pick = ids[ids.length - 1]; for(const id of ids){ r -= w(id); if(r <= 0){ pick = id; break; } }
     unlockCardForPlayer(pick, 'raid'); got.push(pick); }
-  if(got.length) setTimeout(()=>{ try{ showToast(TX('toast.raid-cards', {v1: got.map(id=> defs[id].name).join(', ')}), 'ok'); }catch(e){} }, 1200);
+  if(got.length && !quiet) setTimeout(()=>{ try{ showToast(TX('toast.raid-cards', {v1: got.map(id=> defs[id].name).join(', ')}), 'ok'); }catch(e){} }, 1200);
   return got;
 }
 function claimRaidReward(def, claim){
+  if(!claim || !claim.reward) return null;
   const all = Object.assign({}, claim.reward.base);
   Object.entries(claim.reward.extra||{}).forEach(([k,v])=>{ if(typeof v==='number') all[k] = (all[k]||0) + v; });
   Object.entries(all).forEach(([k,v])=>{ if(v>0 && CURRENCY_META[k]) grantCurrency(k, v); });
-  const cardsGot = claim.reward.kind === 'kill' ? grantRaidCards(def, 1 + (/top1$|top10$/.test(claim.reward.tier || '') ? 1 : 0)) : [];
+  const screen = raidClaimScreenReady();
+  const cardsGot = claim.reward.kind === 'kill' ? grantRaidCards(def, 1 + (/top1$|top10$/.test(claim.reward.tier || '') ? 1 : 0), screen) : [];
   let claimed = {}; try{ claimed = JSON.parse(localStorage.getItem(RAID_CLAIMS_KEY)||'{}') || {}; }catch(e){}
   claimed[claim.key] = Date.now(); try{ localStorage.setItem(RAID_CLAIMS_KEY, JSON.stringify(claimed)); }catch(e){}
-  awardXp(claim.reward.kind==='kill' ? 500 : 150, 'raid reward');
-  showToast(`🐙 ${claim.reward.kind==='kill' ? TX('toast.raid-felled') : TX('toast.raid-compensation')}: ${Object.entries(all).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}${claim.reward.extra && claim.reward.extra.title ? ` · title “${claim.reward.extra.title}”` : ''}`, 'ok');
+  const xp = claim.reward.kind==='kill' ? 500 : 150;
+  const spec = raidClaimScreenSpec(def, claim, all, cardsGot, xp);
+  // 2026-10-18 (package RW): the claim screen opens first, so the XP level-up (FX.F.hooks.xpGain) waits for it to close
+  if(screen) showRaidClaimScreen(spec);
+  awardXp(xp, 'raid reward');
+  if(!screen) showToast(`🐙 ${claim.reward.kind==='kill' ? TX('toast.raid-felled') : TX('toast.raid-compensation')}: ${Object.entries(all).map(([k,v])=> `+${v} ${(CURRENCY_META[k]||{label:k}).label}`).join(', ')}${claim.reward.extra && claim.reward.extra.title ? ` · title “${claim.reward.extra.title}”` : ''}`, 'ok');
+  return spec;
+}
+// The raid claim screen (2026-10-18, package RW, owner 20:52: "The Raid Claim button → screen should be doubly more exciting than the
+// skirmish reward screen"): Claim opens the raid's own reward screen, FX.F.raidClaimScreen (bramblewood-fx-f.js): the boss looming
+// from the deep, a pressure burst, the standing stamped in, your raid damage counted up, then every reward one by one, the rarest last
+// and loudest (the top one shakes the screen). A tap skips to the end; Collect closes it. Reduced motion, Effects Off / Low or no GSAP
+// get the calm version (fades only). The old toast is the fallback when the screen can't open. Each reward's weight (1-5) sets its beat.
+const RAID_CLAIM_CUR_WEIGHT = {gold:1, dust:2, metal:3, gems:3, kroon:3};
+const RAID_CLAIM_CARD_WEIGHT = {starter:2, common:2, uncommon:3, rare:3, veryrare:4, superrare:4, epic:4, heroic:5, legendary:5, mythic:5};
+function raidClaimScreenReady(){ return !!(typeof document !== 'undefined' && document.body && window.FX && window.FX.F && typeof window.FX.F.raidClaimScreen === 'function'); }
+function raidClaimTierLabel(t){ return t === 'top1' ? TX('results.raid-tier-top1') : t === 'top10' ? TX('results.raid-tier-top10') : t === 'top50' ? TX('results.raid-tier-top50') : TX('results.raid-tier-participant'); }
+function raidClaimScreenSpec(def, claim, all, cardsGot, xp){
+  const rw = claim.reward, defs = getCardDefs(), name = def.name || '', rewards = [];
+  rewards.push({kind:'xp', icon:'⭐', amount:'+' + xp, label:TX('results.raid-claim-xp'), weight:1});
+  Object.entries(all).forEach(([k, v])=>{ if(!(v > 0) || !CURRENCY_META[k]) return;
+    rewards.push({kind:'currency', id:k, icon:CURRENCY_META[k].glyph, amount:'+' + v.toLocaleString(), label:CURRENCY_META[k].label, weight:RAID_CLAIM_CUR_WEIGHT[k] || 2}); });
+  (cardsGot || []).forEach(id=>{ const d = defs[id]; if(!d) return;
+    rewards.push({kind:'card', id, icon:cardTileHTML(d, {inPlay:true}), amount:'', label:TX('results.raid-claim-card'), weight:RAID_CLAIM_CARD_WEIGHT[d.rarity || 'common'] || 3}); });
+  if(rw.extra && rw.extra.title) rewards.push({kind:'title', icon:'🏷️', amount:`“${rw.extra.title}”`, label:TX('results.raid-claim-title'), weight:5});
+  const kill = rw.kind === 'kill';
+  return {kind: kill ? 'kill' : 'compensation', tier: rw.tier, contribution: claim.mine || 0, boss:{name, art: raidBossArt(def), icon: def.icon || '🐙'}, rewards,
+    text:{kicker:TX('results.raid-claim-kicker'), title: kill ? TX('results.raid-claim-fell', {name}) : TX('results.raid-claim-held', {name}),
+      sub: kill ? TX('results.raid-claim-sub-kill') : TX('results.raid-claim-sub-comp'), tier:raidClaimTierLabel(rw.tier), damage:TX('results.raid-claim-damage'),
+      collect:TX('results.raid-claim-collect'), skip:TX('results.tap-to-skip')}};
+}
+function showRaidClaimScreen(spec){
+  if(!raidClaimScreenReady()) return Promise.resolve();
+  const calm = reducedMotion() || !fxAtLeast('med') || !hasGsap();
+  try{ return window.FX.F.raidClaimScreen(spec, {calm, sound:(n, ...a)=>{ try{ if(typeof SoundKit[n] === 'function') SoundKit[n](...a); }catch(e){} }}); }catch(e){ console.warn('raid claim screen', e); return Promise.resolve(); }
 }
 // The raid menu, redrawn (2026-10-17, user: "Anything we can improve raid menu and raid fights?"): the boss as a card with its art, stage
 // and one big health bar; your week at a glance (damage, standing, your attempts, Raid Points, the cost of a fight); the parts to fight;
@@ -20855,6 +21354,7 @@ function raidPanelHTML(){
   const def = activeRaidDef(); if(!def) return '';
   const st = currentRaidStateFor(def);
   liveRefreshRaidParts(def.id, st.cycle).then(ch=>{ if(ch && playSubTab==='raid' && !matchState && document.querySelector('.raid2-panel')) renderRaidSubTab(document.getElementById('playSubBody')); });
+  try{ ensureGuildSkillsForRaid().then(ch=>{ if(ch && playSubTab==='raid' && !matchState && document.querySelector('.raid2-panel')) renderRaidSubTab(document.getElementById('playSubBody')); }).catch(()=>{}); }catch(e){} // 2026-10-19 (guild skills)
   const daysLeft = Math.max(1, Math.ceil(((st.cycle+1)*RaidM.CYCLE_MS - Date.now()) / (24*3600*1000)));
   const me = myGhostOwnerId(), mine = st.contributors[me] || 0, tier = RaidM.contributionTier(st, me);
   const tierLabel = {top1:'Top 1%', top10:'Top 10%', top50:'Top 50%', participant:'Participant'}[tier] || '';
@@ -20884,6 +21384,7 @@ function raidPanelHTML(){
       <span class="r3-chip"><small>Your attempts</small><b>${myTries}</b></span>
       <span class="r3-chip"><small>Raid Points</small><b>${currentRaidPoints()}/${RAID_POINTS_MAX} 🎫</b></span>
       <span class="r3-chip"><small>A fight costs</small><b>${cost.raidPoints||0} 🎫 ${cost.energy||0} ⚡</b></span>
+      ${(()=>{ /* 2026-10-19 (guild skills): "Guild: +12% bramble Health" */ let t = ''; try{ t = guildRaidBonusText(); }catch(e){} return t ? `<span class="r3-chip gsk-raid" title="${escapeAttr(t)}"><small>🌳</small><b>${escapeHtml(t)}</b></span>` : ''; })()}
     </div>
     ${tierLabel ? '' : '<p class="r3-hint">Fight any open part to join this week’s raid.</p>'}
     <h3 class="r3-h">Pick a part to fight</h3>
@@ -21070,7 +21571,7 @@ function openRaidEditor(raidId){
       <h3 class="se-h">${escapeHtml(P.name||P.id)} deck · ${Object.values(deck).reduce((t,n)=> t+n, 0)} cards</h3>
       <div class="se-deck">${Object.keys(deck).length ? Object.keys(deck).map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health : ''}</span>
         <button type="button" class="btn small" data-dec="${escapeAttr(id)}" aria-label="One fewer ${escapeAttr(defs[id] ? defs[id].name : id)}">−</button><b class="se-n">${deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}" aria-label="One more ${escapeAttr(defs[id] ? defs[id].name : id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
-      <input type="text" id="reSearch" placeholder="Search a card to add to this part's deck…" value="${escapeAttr(q)}" autocomplete="off">
+      <input data-text-filter autocomplete="off" type="text" id="reSearch" placeholder="Search a card to add to this part's deck…" value="${escapeAttr(q)}">
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}</span></button>`).join('')}</div>
       <div class="re-part-actions"><button type="button" class="btn small" id="reSim">📊 Simulate 100 attempts vs my deck</button>${draft.stages.some(s=> RaidM.stageRules(s).stripAbilities) ? `<button type="button" class="btn small" id="reSimExposed">📊 …as Exposed</button>` : ''}<span style="flex:1"></span><button type="button" class="btn small ghost" id="reDelPart">🗑 Remove part</button></div>
       ${simText[P.id] ? `<div class="se-sim">${simText[P.id]}</div>` : ''}` : ''}
@@ -21260,6 +21761,7 @@ function openTrenchSetup(def, partId){
   const st = currentRaidStateFor(def);
   const f = RaidM.fightFor(def, st, partId);
   const cfg = TrenchM.trenchConfig(def, f.part, st.stage);
+  cfg.wallHp = guildScaledBramble(cfg.wallHp, 0); // 2026-10-19 (guild skills): Rooted Walls on the trench's shared wall
   const seed = (Math.floor(Math.random()*0xFFFFFFFF))>>>0;
   let allies = trenchAllies(def, [], seed);
   let overlay = document.getElementById('trenchOverlay');
@@ -21276,7 +21778,7 @@ function openTrenchSetup(def, partId){
   overlay.innerHTML = `<div class="modal trench-setup" role="dialog" aria-label="Choose your trench">
     <div class="modal-head-row"><h2>${escapeHtml(f.part.icon||'')} ${escapeHtml(f.part.name)} — the trenches</h2><button class="modal-close-btn" id="tsClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">You play your row; two raiders' decks hold the others. Boss hits land on the front row first and roll through gaps. ${cfg.rounds} turns · wall ${cfg.wallHp} HP.</p>
-    <ul class="ts-rules">${rules.map(r=> `<li>${r}</li>`).join('')}</ul>
+    <ul class="ts-rules">${rules.map(r=> `<li>${r}</li>`).join('')}${guildRaidBonusText() ? `<li class="gsk-raid">🌳 ${escapeHtml(guildRaidBonusText())}</li>` : '' /* 2026-10-19 (guild skills) */}</ul>
     <div class="ts-rows">${[0,1,2].map(i=> `<button type="button" class="ts-row" data-row="${i}">
       <span class="ts-row-name">${TrenchM.ROW_NAMES[i]}</span>
       <span class="ts-row-hint">${i===0 ? 'Takes the hits' : i===1 ? 'Hit through front gaps' : 'Safest'}</span>
@@ -21379,6 +21881,12 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
   };
   render(T.view());
 }
+// Guild skills in raid fights (2026-10-19, package G): your bramble's Health with the stage's castleHpPct and the guild's Rooted Walls
+// % added together (guildBrambleHpPct: 0 with no guild, or while supabase/proposed/20261019_guild_skills.sql isn't applied).
+function guildScaledBramble(hp, stagePct){
+  let g = 0; try{ g = guildBrambleHpPct(); }catch(e){ g = 0; }
+  return (typeof BramblewoodGuild !== 'undefined') ? BramblewoodGuild.scaleBramble(hp, stagePct, g) : RaidM.scaleCastle(hp, stagePct);
+}
 function startRaidPartMatch(def, partId){
   const st = currentRaidStateFor(def);
   const f = RaidM.fightFor(def, st, partId, raidStageOpts()); // 2026-10-18 (R3-WP2): with the stage's rules (raidStageOpts resolves its field)
@@ -21406,7 +21914,7 @@ function startRaidPartMatch(def, partId){
     matchDefsOverlay = {}; Object.keys(deck).forEach(id=>{ matchDefsOverlay[id] = defs[id]; }); }
   const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false, rules: f.fieldRules});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = RaidM.scaleCastle(myCharacter.health || 30, f.castleHpPct);
+  const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = guildScaledBramble(myCharacter.health || 30, f.castleHpPct); // + the guild's Rooted Walls (2026-10-19)
   const players = {1: engine.newPlayer(1, myDeckCounts, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
@@ -21470,7 +21978,7 @@ function startRaidFullBattle(def, partId, f, st){
   // ally decks otherwise). Each has a castle; the three castles are one: their Health added up and their passives merged.
   const allies = (m0=> m0)(trenchAllies(def, [], (Math.random()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i));
   const mine = myCastleDef(), merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
-  const myHp = RaidM.scaleCastle(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct); // the stage's castleHpPct (2026-10-18)
+  const myHp = guildScaledBramble(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct); // the stage's castleHpPct (2026-10-18) + the guild's Rooted Walls (2026-10-19)
   const players = {1: engine.newPlayer(1, myDeckCounts, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
   players[2].loopCards = [];
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
@@ -23342,7 +23850,7 @@ function runCardCheck(host){
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
 const SB_KEY = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2';
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
-const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, missMult:1.5};
@@ -23600,7 +24108,7 @@ function sandboxPanelHTML(m){
   ];
   return `<div class="sandbox-panel" id="sandboxPanel">
     <div class="sbx-target-row">${targets.map(t=>`<button type="button" class="btn small ${sandboxTarget.pid===t.pid&&sandboxTarget.side===t.side?'primary':''}" data-sbxpid="${t.pid}" data-sbxside="${t.side}">${t.label}</button>`).join('')}</div>
-    <input id="sbxSearch" type="text" placeholder="Search any card to spawn…" value="${escapeAttr(sandboxSearch)}">
+    <input data-text-filter autocomplete="off" id="sbxSearch" type="text" placeholder="Search any card to spawn…" value="${escapeAttr(sandboxSearch)}">
     <div class="sandbox-results" id="sbxResults">${sandboxResultsHTML()}</div>
     <div class="sandbox-actions">
       <button class="btn" id="sbxClearBtn" type="button">🧹 Clear board</button>
@@ -23865,7 +24373,7 @@ function testKitPanelHTML(){
     <section class="tk-section">
       <h3>Card under test</h3>
       <div class="tk-combo">
-        <input type="search" id="tkSearch" placeholder="Filter cards…" value="${escapeAttr(testKit.search)}" role="combobox" aria-controls="tkOptions" aria-expanded="true" autocomplete="off">
+        <input data-text-filter autocomplete="off" type="search" id="tkSearch" placeholder="Filter cards…" value="${escapeAttr(testKit.search)}" role="combobox" aria-controls="tkOptions" aria-expanded="true">
         <div class="tk-options" id="tkOptions" role="listbox" aria-label="Cards">${testKitPickerRowsHTML()}</div>
       </div>
       <div id="tkSummary">${isTest ? '' : testKitSelectedSummaryHTML()}</div>
@@ -23881,7 +24389,7 @@ function testKitPanelHTML(){
       ${Object.keys(testKit.extraEffects||{}).length ? `<div class="tk-extra">+ copied extras: ${Object.keys(testKit.extraEffects).map(escapeHtml).join(', ')} <button type="button" class="tk-link" id="tkClearExtra">clear</button></div>` : ''}
       <div class="tk-skill-head"><span>Skills <small id="tkSkillCount">(${Object.keys(testKit.skills).length} on)</small></span>${Object.keys(testKit.skills).length?'<button type="button" class="tk-link" id="tkClearSkills">clear all</button>':''}</div>
       ${testKitTourHTML()}
-      <input type="search" id="tkSkillSearch" placeholder="Filter skills…" value="${escapeAttr(testKit.skillSearch)}" autocomplete="off">
+      <input data-text-filter autocomplete="off" type="search" id="tkSkillSearch" placeholder="Filter skills…" value="${escapeAttr(testKit.skillSearch)}">
       <div class="tk-skills" id="tkSkills">${testKitSkillListHTML()}</div>
       ${testKitTriggersHTML()}
     </section>` : ''}
@@ -23907,7 +24415,7 @@ function testKitCaptureForRerender(m){
 }
 function testKitRestoreFocus(keep){
   const panel = document.getElementById('testKitPanel'); if(panel) panel.scrollTop = keep.scroll||0;
-  const log = document.getElementById('battleLog'); if(log) log.scrollTop = keep.logScroll||0;
+  const log = document.getElementById('battleLog'); if(log) log.scrollTop = battleLogPinned ? log.scrollHeight : (keep.logScroll||0); // pinned to the newest line (2026-10-18, BP)
   if(keep.focus){ const f = document.getElementById(keep.focus.id); if(f){ f.focus({preventScroll:true}); try{ if(keep.focus.start!=null) f.setSelectionRange(keep.focus.start, keep.focus.end); }catch(e){} } }
 }
 function testKitArrangeLayout(root, keep){
@@ -24294,7 +24802,7 @@ const FXL_FIELDS = [
   {key:'gale', icon:'🌪️', name:'Gale', text:()=> WIND_TEXT.gale, rules:{wind:'gale'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds, each with strong wind blowing a random way.'},
   {key:'dark', icon:'🌘', name:'Darkness', text:()=> DARK_LEVEL_TEXT.dark, rules:{dark:'dark'}, units:FXL_DARK_UNITS},
   {key:'pitch', icon:'🌑', name:'Pitch Black', text:()=> DARK_LEVEL_TEXT.pitch, rules:{dark:'pitch'}, units:FXL_DARK_UNITS},
-  {key:'absolute', icon:'⚫', name:'Absolute darkness', text:()=> 'Units without Darksight miss every attack (none with an Illuminate unit on their side).', rules:{dark:'absolute'}, units:FXL_DARK_UNITS},
+  {key:'absolute', icon:'⚫', name:'Absolute darkness', text:()=> DARK_LEVEL_TEXT.absolute, rules:{dark:'absolute'}, units:FXL_DARK_UNITS}, // 2026-10-18 (package D)
   {key:'lavaTide', icon:'🌋', name:'Volcano: Lava Tide', text:()=> VOLCANO_HAZARDS[0].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:100, petrifyChance:0, eruptionChance:0}},
   {key:'petrify', icon:'🪨', name:'Volcano: Petrification', text:()=> VOLCANO_HAZARDS[1].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:100, eruptionChance:0}, steps:['round', 'round'], note:'Two rounds: the stone sets at the start of round 2, then you see it fight.'},
   {key:'eruptionChance', icon:'🌋', name:'Volcano: Eruption', text:()=> VOLCANO_HAZARDS[2].text({eruption:3}) + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:0, eruptionChance:100, eruption:3}},
@@ -24771,7 +25279,7 @@ async function fxlRunStep(m, step){
 function fxlBuildUi(){
   const list = document.createElement('aside'); list.className = 'fxl-list'; list.id = 'fxlList'; list.setAttribute('aria-label', 'Effects');
   list.innerHTML = `<div class="fxl-list-head"><h2>🔬 Effects library</h2><button type="button" class="btn small" id="fxlClose" title="Back to Admin">✕ Close</button></div>
-    <input type="search" id="fxlSearch" placeholder="Search skills, triggers, fields…" autocomplete="off" aria-label="Search effects">
+    <input data-text-filter autocomplete="off" type="search" id="fxlSearch" placeholder="Search skills, triggers, fields…" aria-label="Search effects">
     <div class="fxl-items" id="fxlItems" role="listbox" aria-label="Effects"></div>`;
   const info = document.createElement('section'); info.className = 'fxl-info'; info.id = 'fxlInfo'; info.setAttribute('aria-live', 'polite');
   const controls = document.createElement('div'); controls.className = 'fxl-controls'; controls.id = 'fxlControls';
@@ -24951,7 +25459,7 @@ function adminManageCardsHTML(){
       <h3>📇 Manage Cards</h3>
       <p class="panel-sub">Create a new card, or search below to edit an existing one. The Codex itself (every player's view) is read-only now — a click there opens a "learn more" detail view instead.</p>
       <button class="btn primary small" id="adminNewCardBtn" type="button">🆕 Create a Card</button>
-      <div style="margin-top:10px;"><input type="text" id="adminCardSearchInput" placeholder="Search card name to edit…" value="${escapeAttr(adminCardSearch)}"></div>
+      <div style="margin-top:10px;"><input data-text-filter autocomplete="off" type="text" id="adminCardSearchInput" placeholder="Search card name to edit…" value="${escapeAttr(adminCardSearch)}"></div>
       <div id="adminManageGrid">${adminManageCardsGridHTML()}</div>
     </div>`;
 }
@@ -25754,8 +26262,8 @@ const FIELD_EFFECTS = [
   {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, the ground burns one random unit on each side for 2 fire damage every round.'},
   // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): one fight's hazard, and it no longer brings the tide.
   {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:TIDESPOUT_TEXT, editorOnly:true, oneOff:true}, // 2026-10-14
-  {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:'Level 1: units without Darksight miss 1 attack in 4. An Illuminate unit lights your side.', editorOnly:true}, // 2026-10-15
-  {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:'Level 2: units without Darksight miss 1 attack in 2. An Illuminate unit lights your side.', editorOnly:true}, // 2026-10-15
+  {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:DARK_LEVEL_TEXT.dark, editorOnly:true}, // 2026-10-15; 2026-10-18 (package D): the one Darkness line
+  {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:DARK_LEVEL_TEXT.pitch, editorOnly:true}, // 2026-10-15; 2026-10-18 (package D)
   // New field effects (2026-10-15, user: "Propose field effects for each map, up till Map 22 ... Swamp can give swamp fever - all cards
   // have a 50% to gain 1 poison."): built and offered here; no map carries them yet (docs/field-effects-and-map-gaps-2026-10-15.md).
   {id:'scorching2',group:'field', icon:'🔥', name:'Scorching II', weird:3, cost:1, rules:{field:'heatwave', heatLevel:2}, text:'Scorching, level 2: each round 3 random units on each side take 2 fire damage. Heat-resistant units are spared.', editorOnly:true},
@@ -26314,7 +26822,7 @@ async function attemptSummonLeader(preferredLane){
     // 2026-10-17: flying in from your hand, the throne moment (ring, flash, crown, "👑 Leader" ribbon) starts as it lands, and its own
     // drop from above is skipped (fromHand); without the flight (reduced motion, no GSAP) it plays as before.
     const fromHand = !!leaderOrigin && hasGsap() && !reducedMotion(), at = fromHand ? Math.round(handFlightSec(true)*1000) : Math.round(animMs().strike || 380);
-    noteMatchFx(at + LEADER_THRONE_FX_MS, m); // 2026-10-14: the round waits for it
+    noteMatchFx(at + LEADER_THRONE_WAIT_MS, m); // 2026-10-14: the round waits for it (2026-10-18: ×0.75, LEADER_THRONE_WAIT_MS)
     setTimeout(()=> leaderThroneVfx(lu, {defId: m.leaderDefId, fromHand}), at); }
   setTimeout(()=> settleStrayBoardCards(), 1600); setTimeout(()=> settleStrayBoardCards(), 3000); // the leader always ends its landing at full height
   await afterPlayerAction(activePid);
@@ -26507,6 +27015,34 @@ function tutCombatLines(){
   if(sig === tutCombatLinesSig && svg && svg.childElementCount) return;
   tutCombatLinesSig = sig; showFacingAll(uids);
 }
+// Stampede's line (2026-10-18, package BP, owner: "when looking at its damage line preview ... it should show the line hitting the
+// opposing card, then continuing towards the HP bar"): a Stampede (Trample, effects.overwhelm) unit with one unit in front gets a second
+// segment from that unit on to the enemy bramble's HP bar. It is always there, faint, so the skill reads; it lights up, with the
+// expected carry-over (💥 +N), when the swing as it stands would kill the blocker with damage to spare: the Attack on its card, minus
+// the blocker's Armor, past the blocker's Health. Misses (Blind, the dark, Evasive) and on-hit tricks aren't guessed at. Two units in
+// front (a half swing on each) keep the plain lines.
+function stampedeExpected(atk, hp, armor){ return Math.max(0, (Number(atk)||0) - Math.max(0, Number(armor)||0) - Math.max(0, Number(hp)||0)); }
+function stampedeFacingHTML(m, uid, f, src, sr, cx, cy){
+  try{ if(!f || f.foes.length !== 1) return '';
+    const defs = getCardDefs(), me = [1,2].map(p=> allCardsOnBoard(m.players[p]).find(c=> String(c.uid)===String(uid))).find(Boolean);
+    if(!me || !((defs[me.defId]||{}).effects||{}).overwhelm) return '';
+    const foe = allCardsOnBoard(m.players[f.pid===1 ? 2 : 1]).find(c=> String(c.uid)===String(f.foes[0])), fEl = boardCardEl(f.foes[0]);
+    const rib = document.querySelector(`.battlefield .bf-hp[data-hpribbon="${f.pid===1 ? 'B' : 'A'}"]`);
+    if(!foe || !fEl || !rib || !rib.getClientRects().length) return '';
+    const atkShown = parseInt(String((src.querySelector('.stats .atk')||{}).textContent || '').replace(/[^\d]/g, ''), 10);
+    const hpShown = parseInt(String((fEl.querySelector('.stats .hp')||{}).textContent || '').replace(/[^\d]/g, ''), 10);
+    const atk = isFinite(atkShown) ? atkShown : (me.atk != null ? me.atk : (defs[me.defId]||{}).attack || 0);
+    const hp = (isFinite(hpShown) ? hpShown : foe.hp || 0) + (foe.tempHp || 0);
+    const armor = Number(((defs[foe.defId]||{}).effects||{}).armor) || 0;
+    const over = stampedeExpected(atk, hp, armor);
+    const fr = fEl.getBoundingClientRect(), rr = rib.getBoundingClientRect();
+    // from the blocker's centre straight on to the HP bar (the bar's own middle height, at the blocker's column, kept on the bar)
+    const x1 = cx(fr), y1 = cy(fr), X2 = cx({left: Math.max(rr.left + 12, Math.min(rr.right - 12, fr.left + fr.width/2)), width: 0}), y2 = cy(rr);
+    let h = `<line class="facing-stampede${over > 0 ? ' is-over' : ''}" x1="${x1.toFixed(1)}" y1="${y1.toFixed(1)}" x2="${X2.toFixed(1)}" y2="${y2.toFixed(1)}"/>`;
+    if(over > 0){ const ty = f.pid===1 ? y2 + rr.height/2 + 14 : y2 - rr.height/2 - 6; h += `<text class="facing-stampede-n" x="${(X2 + 16).toFixed(1)}" y="${ty.toFixed(1)}" text-anchor="start">💥 +${over}</text>`; }
+    return h;
+  }catch(err){ return ''; }
+}
 function showFacing(uid, opts){
   const keep = !!(opts && opts.keep);
   const m = matchState; if(!keep) clearFacing(); if(!m || m.resolving) return;
@@ -26556,6 +27092,7 @@ function showFacing(uid, opts){
           });
         }
       } }
+    html += stampedeFacingHTML(m, uid, f, src, sr, cx, cy);
   } else {
     const castleSide = f.pid===1 ? 'B' : 'A';
     const rib = document.querySelector(`[data-hpribbon="${castleSide}"]`);
@@ -26567,21 +27104,45 @@ function showFacing(uid, opts){
 function wireFacingHover(){
   const bf = document.getElementById('battlefieldEl'); if(!bf || bf.dataset.facingWired) return;
   bf.dataset.facingWired = '1';
+  // 2026-10-18 (package BP, owner: "When it's night, hovering over a card doesn't show its lines anymore."): the gate below ran once, on
+  // pointerover, and gave up for good while the card (or its tile) was still landing or being nudged; pointerover doesn't fire again
+  // while the pointer rests on the card, so the lines never came. At night far more is moving when the pointer arrives (the board
+  // under the night filter renders slower, so entrances and neighbour shoves run longer; night-blind and nocturnal cards get their
+  // own marks and bursts), which is why it showed at night. Now a busy card is retried (facingRetry: every 120 ms while the pointer is
+  // still on it, up to 4 s) and a move inside the card redraws lines that a board re-render wiped.
   bf.addEventListener('pointerover', e=>{
     if(e.pointerType==='touch') return;
     const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
-    // 2026-10-08 (user): no attack-line preview while the card is still dropping in; only once it's
-    // settled on the field (hover again, or move within it, to see it).
-    const t = c.querySelector('.card-tile');
-    if(c.matches('.landing-impact, .bee-landing, .is-entering, .entering, .ghost-preview') || c.style.position==='absolute'
-      || (window.gsap && (gsap.isTweening(c) || (t && gsap.isTweening(t))))) return;
-    showFacing(c.dataset.uid);
+    facingHoverUid = c.dataset.uid; tryFacingHover(c, 0);
+  });
+  bf.addEventListener('pointermove', e=>{
+    if(e.pointerType==='touch') return;
+    const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
+    const svg = document.getElementById('facingSvg');
+    if(facingHoverUid === c.dataset.uid && c.classList.contains('is-facing-src') && svg && svg.childElementCount) return; // drawn already
+    const now = performance.now(); if(facingHoverUid === c.dataset.uid && now - facingMoveAt < 100) return; facingMoveAt = now; // a light throttle
+    facingHoverUid = c.dataset.uid; tryFacingHover(c, 0);
   });
   bf.addEventListener('pointerout', e=>{
     const c = e.target.closest('.board-card[data-uid]'); if(!c) return;
     if(e.relatedTarget && c.contains(e.relatedTarget)) return;
+    facingHoverUid = null; clearTimeout(facingRetryT);
     clearFacing();
   });
+}
+let facingHoverUid = null, facingRetryT = 0, facingMoveAt = 0;
+// 2026-10-08 (user): no attack-line preview while the card is still dropping in; only once it's settled on the field.
+function facingCardBusy(c){
+  const t = c.querySelector('.card-tile');
+  return c.matches('.landing-impact, .bee-landing, .is-entering, .entering, .ghost-preview') || c.style.position==='absolute'
+    || !!(window.gsap && (gsap.isTweening(c) || (t && gsap.isTweening(t))));
+}
+const FACING_RETRY_MS = 120, FACING_RETRY_MAX = 33; // 2026-10-18 (BP): ~4 s of retries while the pointer stays on a landing card
+function tryFacingHover(c, n){
+  clearTimeout(facingRetryT);
+  if(!c || !c.isConnected || facingHoverUid !== c.dataset.uid) return;
+  if(!facingCardBusy(c)){ showFacing(c.dataset.uid); return; }
+  if(n < FACING_RETRY_MAX) facingRetryT = setTimeout(()=>{ const cur = facingHoverUid != null ? boardCardEl(facingHoverUid) : null; tryFacingHover(cur && cur.matches(':hover') ? cur : null, n + 1); }, FACING_RETRY_MS);
 }
 function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
   const def = charDef || {id:'none-castle', name:'Bramble', icon:'🏰', rarity:'common', health:maxHp};
@@ -26841,15 +27402,15 @@ function renderMatchUI(){
     ${m.over && m.winModalDismissed && !isTutorial ? `<div class="wl-reopen"><button type="button" class="btn primary" id="wlReopenBtn">🏆 Back to the results</button></div>` : ''}
     ${showWinModal ? `
     <div class="pass-overlay winloss-overlay">
-      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}">
+      <div class="pass-card winloss-card ${(!isPc && (m.winner===1 || m.raidFull)) ? 'is-glory' : (!isPc && !isTutorial && m.winner===2) ? 'is-fallen' : ''} ${isTutorial ? 'is-tutorial' : ''} ${m.raidFull ? 'is-raid' + (m.winner===1 ? ' is-absolute' : '') : ''}${!isPc && isBossResults(m) ? ' is-boss' : '' /* 2026-10-18 (package RW): crimson */}${!isPc && isTowerResults(m) ? ' is-tower' : '' /* 2026-10-18 (RW): a new Spire floor */}">
         ${isTutorial ? '' : `<div class="wl-corner">
           <button class="wl-corner-btn" id="wlBackBtn" title="Close this and look at the final board" aria-label="See the board">👀</button>
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
         </div>`}
-        ${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
+        ${!isPc && isBossResults(m) ? bossEmbersHTML() : ''}${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
         <div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.raidFull ? (m.winner===1 ? 'Absolute Victory!' : 'Raid complete!') /* 2026-10-12 (user: "Even failure and draw is success. It's about how much you deal. However, if you win the match somehow, the colour is yellow and it says Absolute Victory") */ : m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
-        ${gloryBadgesHTML(m)}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
+        ${gloryBadgesHTML(m)}${!isPc && isTowerResults(m) ? towerAscentHTML(m) : ''}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
@@ -27116,7 +27677,8 @@ function renderMatchUI(){
   wireDropZones();
   if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox && !m.fxLib) wireSandboxPanel();
   updateControlsDisabled();
-  m.log.forEach(renderLogLine);
+  { const pin0 = battleLogPinned; m.log.forEach(renderLogLine); battleLogPinned = pin0; } // replaying the lines into the fresh log never changes the pin (2026-10-18, BP)
+  try{ if(!m._logPinInit){ m._logPinInit = true; battleLogPinned = true; } wireBattleLogScroll(); const lg = document.getElementById('battleLog'); if(lg){ if(battleLogPinned) pinBattleLog(lg); else lg.scrollTop = battleLogScrollTop; } }catch(e){} // the rebuilt log keeps its place (2026-10-18, BP)
   // Sandbox has no hand/turn concept (see its own comment above) -- maybeAutoSkip exists to
   // auto-pass an empty-handed turn in a real match, which would otherwise fire every single
   // render here (Sandbox's hand is ALWAYS empty) and spam skipTurn() nonstop.
@@ -27355,9 +27917,11 @@ function wireDropZones(){
   if(battleLogToggle) battleLogToggle.addEventListener('click', ()=>{
     battleLogOpen = !battleLogOpen;
     try{ localStorage.setItem('bramblewood_battlelog_open', battleLogOpen ? '1' : '0'); }catch(e){}
-    if(battleLogOpen){ const lg = document.getElementById('battleLog'); if(lg) lg.scrollTop = lg.scrollHeight; }
     const panel = battleLogToggle.closest('.battle-log-panel');
     if(panel) panel.classList.toggle('collapsed', !battleLogOpen);
+    // 2026-10-18 (package BP, owner: "The battle log should start from the bottom! the latest!"): it opens on the newest line. This used
+    // to scroll before the panel was shown, while the log was display:none (no height), so it opened at the top, on the oldest line.
+    if(battleLogOpen) pinBattleLog(null, true);
     const chevron = battleLogToggle.querySelector('.battle-log-chevron');
     if(chevron) chevron.textContent = battleLogOpen ? '▾' : '▸';
   });
@@ -29525,7 +30089,7 @@ function boardCardHTML(c, defs, opts){
   // 2026-09-20 fix: blind/shocked/corrode badges existed in updateCardStatusDisplay's live-patch
   // path but were missing from this fresh-render template entirely, same class of bug as the
   // is-frozen/etc tint classes above.
-  if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
+  if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">🕶️${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
   if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
@@ -29593,7 +30157,7 @@ function boardCardHTML(c, defs, opts){
     : `<span class="revive-mark" aria-hidden="true"><i class="rm-ring"></i><i class="rm-feather">${REVIVE_FEATHER_SVG}</i></span>`;
   return withOwnerEdgeInTile(`<div class="board-card ${cageCls} ${raging?'raging':''} ${flies?'is-flying':''} ${floats?'is-floating':''} ${guards?'has-guard':''} ${angelic?'has-wings':winged?'has-revive':''}${statusClasses} ${d.token?'is-token':''} ${opts.extraClass||''} ${(matchState && matchState.testKit && testKit && c.uid===testKit.subjectUid)?'tk-subject':''}" data-defid="${c.defId}" data-uid="${c.uid}" data-flip-id="${c.uid}"${opts.danceStyle||''}>
     ${c.fuse > 0 ? `<div class="fuse-badge${c.fuse === 1 ? ' is-last' : ''}" title="Dynamite: it blows up in ${c.fuse} round${c.fuse===1?'':'s'}" aria-label="Dynamite fuse ${c.fuse}">🧨${c.fuse}</div>` : ''}${lightHTML}${guardHTML}${wingHTML}${flies?'<span class="fly-shadow" aria-hidden="true"></span><div class="fly-body">':floats?'<span class="fly-shadow is-float" aria-hidden="true"></span><div class="fly-body float-body">':''}${cardTileHTML(fightTreatedDef(d.id ? d : Object.assign({id:c.defId}, d), opts.pid), {inPlay:true, extraClass: (shinyU ? 'is-shiny ' : '') + fightTreatmentClass(opts.pid), live:{
-      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
+      waitHTML: c.frozen>0 ? waitBadgeHTML((c.wait||0) + c.frozen, d.wait, c.frozen) : c.wait>0 ? waitBadgeHTML(c.wait, d.wait) : chargeBadgeHTML(c, d), wait: c.wait||0, /* freeze counters ride on the clock; a Ready Charge unit shows its charge clock (2026-10-14) */ uid: c.uid, firedOnce: c.firedOnce || null, stunned: !!c.stunned, frozen: c.frozen||0, asleep: c.asleep||0, speed: c.speed != null ? c.speed : null, inBloom: !!c.inBloom, packChain: c.packChain||0, packChainBonus: c.packChainBonus||0, pid: opts.pid, atkLabel, atkLow, hp: c.hp, fallbackName: c.defId,
       overlaysHTML,
       bottomHTML: badges.length ? `<div class="badges-bottom">${badges.join('')}</div>` : '',
     }})}${(flies || floats)?'</div>':''}${bountyBubbleHTML(c, d, opts.pid)}${(opts.pid===2 && matchState && matchState.newSeenUntil && matchState.newSeenUntil[c.defId] > Date.now()) ? (()=>{ const e = Math.max(0, (Date.now() - (matchState.newSeenUntil[c.defId] - 4500)) / 1000); return `<span class="seen-new" style="animation-delay:${(-e).toFixed(2)}s,${(3.9 - e).toFixed(2)}s" aria-label="First time seen">NEW!</span>`; })() : ''}${(c.phaseAtk || c.phaseHp) ? `<span class="phase-spores" aria-hidden="true">${'<i></i>'.repeat(7)}</span>` : ''}
@@ -30912,7 +31476,7 @@ function updateCardStatusDisplay(uid){
   if(c.prayerTokens>0) badges.push(`<span class="abadge prayer" title="${escapeAttr(prayerTokenTip(c.prayerTokens))}">📿${c.prayerTokens}</span>`); // Prayer tokens (2026-10-19, package E)
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
-  if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
+  if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">🕶️${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
   if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
@@ -31274,10 +31838,16 @@ function waterRippleAt(el){
 // a "👑 <Leader> joins the fight!" callout crosses the field with a fanfare (yours) or a war drum (theirs), and a big leader
 // (20+ Health or Legendary and up) shakes the field with the screen-shake helper.
 const LEADER_THRONE_FX_MS = 1700; // the drop, the ring and the crown (the beam is gone by 1.55 s); see noteMatchFx
+// 2026-10-18 (package BP, owner: "After summoning your leader — the name title should fade 20% faster, and the next queued animation
+// shouldn't wait so long, maybe 25% faster"): the "👑 <Leader> joins the fight!" callout runs LEADER_CALLOUT_MS (×0.8 of its old 2.4 s,
+// fade included), and the round's queue now waits LEADER_THRONE_WAIT_MS (×0.75 of the throne moment) before the next animation; the
+// throne moment itself (drop, ring, crown, beam) still plays in full over the top.
+const LEADER_CALLOUT_BASE_MS = 2400, LEADER_CALLOUT_FADE = 0.8, LEADER_CALLOUT_MS = Math.round(LEADER_CALLOUT_BASE_MS * LEADER_CALLOUT_FADE);
+const LEADER_QUEUE_WAIT = 0.75, LEADER_THRONE_WAIT_MS = Math.round(LEADER_THRONE_FX_MS * LEADER_QUEUE_WAIT);
 function leaderThroneVfx(uid, opts){
   opts = opts || {};
   const el = (uid && uid.nodeType) ? uid : boardCardEl(uid); if(!el) return;
-  noteMatchFx(fxAtLeast('med') && hasGsap() && !reducedMotion() ? LEADER_THRONE_FX_MS : 500); // 2026-10-14: the round waits for it
+  noteMatchFx(fxAtLeast('med') && hasGsap() && !reducedMotion() ? LEADER_THRONE_WAIT_MS : 500); // 2026-10-14: the round waits for it (×0.75 since 2026-10-18)
   const enemy = !!opts.enemy;
   const defs = getCardDefs(), defId = opts.defId || (el.getAttribute('data-defid') || ((el.querySelector('[data-defid]') || {}).getAttribute ? el.querySelector('[data-defid]').getAttribute('data-defid') : null)), def = defs[defId] || {};
   const uidKey0 = (uid && uid.nodeType) ? uid.getAttribute('data-uid') : uid, rc = matchState && matchState.replayCards && matchState.replayCards[uidKey0];
@@ -31286,7 +31856,7 @@ function leaderThroneVfx(uid, opts){
   // the callout lives on the page, over the field, so a board re-render mid-moment doesn't cut it short
   try{ const bf = document.querySelector('.battlefield'); if(bf){ document.querySelectorAll('.leader-callout').forEach(x=> x.remove()); const q = bf.getBoundingClientRect(), b = document.createElement('div'); b.className = 'enemy-leader-banner leader-callout' + (enemy ? '' : ' is-mine'); b.setAttribute('role', 'status');
     b.style.left = (q.left + q.width/2) + 'px'; b.style.top = (enemy ? q.top + q.height*0.2 : q.bottom - q.height*0.16) + 'px';
-    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; document.body.appendChild(b); setTimeout(()=> b.remove(), 2400); } }catch(e){}
+    b.textContent = `👑 ${def.name || (enemy ? 'Their leader' : 'Your leader')} joins the fight!`; b.style.animationDuration = LEADER_CALLOUT_MS + 'ms'; document.body.appendChild(b); setTimeout(()=> b.remove(), LEADER_CALLOUT_MS); } }catch(e){}
   if(!fxAtLeast('med') || !hasGsap() || (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
   const r = el.getBoundingClientRect();
   // the drop: the card falls onto its spot from above, a touch too big, and settles
@@ -32928,6 +33498,35 @@ function tideTipLines(k){ return (skillHiddenNow('tide') ? TIDE_TIPS_HIDDEN : TI
 // The Tide skill, live (2026-10-14, user: "animals should just say 'Tide'. When in play, and there is a tide. That skill is blue -
 // meaning dynamic, morphing between Tide - ..., Ebb - ...., and High Tide - ....."): what this card's Tide gives right now, or null
 // when no tide is running (or we're not in a fight). Swimmers are Tide units; their own Flow extra joins the rising lines.
+// Wind on the Flyers (2026-10-18, package BP, owner: "On wind, the flying icon on flyers should become highlighted (like tide)" and
+// "maybe a flying symbol + quick"): what a strong wind gives a Flyer of side pid right now, read the engine's way (rollWind, headwindDouble,
+// the Tailwind pass in resolveCombat): the side the wind blows FROM has a Tailwind (its Flyers get a quick extra turn before combat), the
+// side it blows INTO a Headwind (its Flyers' skills and triggers go off twice). Calm round, no wind field or Ashy (grounded): null.
+// Follows the replay (matchState._windNow, set by the 'wind' event) so the mark changes as the wind is announced; the engine otherwise.
+function liveWindState(pid){
+  try{ const m = (typeof matchState !== 'undefined') ? matchState : null; if(!m || m.over || !m.engine || (pid !== 1 && pid !== 2)) return null;
+    if(m.engine.isAshy && m.engine.isAshy()) return null;
+    const w = m._windNow; let tail;
+    if(w) { if(!w.windy) return null; tail = (pid === 1) === !!w.mine; }
+    else { if(!m.engine.isWindy || !m.engine.isWindy()) return null; tail = m.engine.windSideOf(pid) === 'tail'; }
+    return {k: tail ? 'tail' : 'head'};
+  }catch(err){ return null; }
+}
+// The wind is announced mid-replay (the 'wind' event), before the next full board render: the Flyers already on the board get their
+// wing (and Tailwind boot) marks at once, the same marks abilityBadges draws. Seat 1 is always the bottom row (renderBoard).
+function syncWindBadges(){
+  try{ const bf = document.getElementById('battlefieldEl'); if(!bf) return; const defs = getCardDefs();
+    bf.querySelectorAll('.board-card[data-uid][data-defid]').forEach(el=>{ const e = (defs[el.dataset.defid] || {}).effects || {}; if(!e.flying) return;
+      const wing = el.querySelector('.badges .ab-wing'); if(!wing) return;
+      const pid = el.closest('#rowMine, [data-respid="1"]') ? 1 : el.closest('#rowEnemy, [data-respid="2"]') ? 2 : null, lw = liveWindState(pid);
+      wing.classList.remove('wind-live', 'wind-tail', 'wind-head'); wing.querySelectorAll('.wind-x2').forEach(x=> x.remove()); wing.removeAttribute('title');
+      if(lw){ wing.classList.add('wind-live', 'wind-' + lw.k); wing.title = (lw.k === 'tail' ? TX('ui.wind-tail-wing') : TX('ui.wind-head-wing')); if(lw.k === 'head') wing.insertAdjacentHTML('beforeend', '<b class="wind-x2">×2</b>'); }
+      const boot = el.querySelector('.badges .ab-quick'), slot = wing.closest('.abadge');
+      if(lw && lw.k === 'tail'){ if(boot){ boot.classList.add('ab-wind-quick', 'wind-live', 'wind-tail'); boot.title = TX('ui.wind-tail-quick'); }
+        else if(slot) slot.insertAdjacentHTML('afterend', `<span class="abadge"><span class="ab-quick ab-wind-quick wind-live wind-tail" title="${escapeAttr(TX('ui.wind-tail-quick'))}">${iconHTML('quick', '👢')}</span></span>`); }
+      else if(boot){ if(e.quick){ boot.classList.remove('ab-wind-quick', 'wind-live', 'wind-tail'); boot.removeAttribute('title'); } else { const s = boot.closest('.abadge'); (s || boot).remove(); } } }); // its own Quick boot stays, unlit
+  }catch(err){}
+}
 function liveTideState(e){
   const s = liveTideState0(e); if(!s) return s;
   // 2026-10-16 (user: "Evade to non-swimmers for me to test."): with the Tide-evade rule test on, the Tide chip says it too.
@@ -33170,6 +33769,24 @@ function coldWaveVfx(m){
 const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'calc(100% - 12px)', flow:'0%', high:'0%'};
 const TIDE_BOARD_CARDS = '#battlefieldInner .board-row > .board-card'; // every row: yours, the enemy's, and the raid's middle / back rows (2026-10-18)
 const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {none:0, ebb:1, flow:2, high:3};
+// 2026-10-18 (package M, owner 20:45: "The movement during flood should be a bit more obvious during transition. Then during steady
+// state, 70% more movement than now (it moves like 2-3px only right now). In Ebb, it looks like what it is right now, but 20% less."):
+// the settled water's slosh (.tw-body's twSlosh, px down and back over 6 s) was 5px in every state; it is now TIDE_FLOOD_MOTION on
+// Flood and High Tide (5 x 1.7) and TIDE_EBB_MOTION on Ebb (5 x 0.8), passed to the CSS as --tw-slosh. A rising tide (into Flood or
+// High Tide) tilts in further from the left (TIDE_RISE_SKEW, was TIDE_BASE_SKEW), its crest surges higher (twSurgeR*) and, as it
+// reaches the top, the whole sheet swells down into view and settles back (twArrive*, TIDE_ARRIVE_SWELL px). Ebb and the tide going
+// out keep their old tilt and surge. Transforms only; Low effects, Minimal and reduced motion still stop all of it (CSS, .tide-scene).
+const TIDE_MOTION_BASE = 5, TIDE_FLOOD_MOTION = 8.5, TIDE_EBB_MOTION = 4; // px; the owner's knobs (x1.7 and x0.8 of the old 5px)
+const TIDE_RISE_SKEW = 8, TIDE_BASE_SKEW = 5, TIDE_ARRIVE_SWELL = 40; // deg, deg, px (the swell clears the top border's bunting, about 20px)
+function tideMotionPx(k){ return k === 'ebb' ? TIDE_EBB_MOTION : (k === 'flow' || k === 'high') ? TIDE_FLOOD_MOTION : TIDE_MOTION_BASE; }
+// 2026-10-18 (package M follow-up, owner 21:59: "1a) The ebb effect should grow into the tide effect; currently they cancel each other. 1b)
+// The ebb effect should move in and out, and a bit side to side. It's too static. And its centre position should be placed a little
+// lower than where it is now."): the Ebb band sits TIDE_EBB_OFFSET px lower (its shown strip was 12px of water under a 28px crest, so
+// about 10% of the band), and once settled it laps in and out by up to TIDE_EBB_LAP px and drifts side to side by up to TIDE_EBB_DRIFT
+// px (twLap, on top of the TIDE_EBB_MOTION slosh). The rise into a Flood and the drain back are one body of water now (the tilt ramps
+// in and out about the board's right edge, CSS twTilt*), so the Ebb's band grows into the Flood instead of vanishing first.
+const TIDE_EBB_OFFSET = 3, TIDE_EBB_LAP = 6, TIDE_EBB_DRIFT = 10; // px
+function tideSceneY(k){ return k === 'ebb' ? `calc(100% - ${12 - TIDE_EBB_OFFSET}px)` : TIDE_SCENE_Y[k]; } // TIDE_SCENE_Y.ebb, TIDE_EBB_OFFSET lower
 function tideSceneTarget(m){
   try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
 }
@@ -33190,11 +33807,16 @@ function syncTideScene(m){
   const key = st.k + '|' + st.at;
   if(w.dataset.key !== key){
     w.dataset.key = key; w.dataset.k = st.k;
-    w.style.setProperty('--tw-from', TIDE_SCENE_Y[st.from] || TIDE_SCENE_Y.none); w.style.setProperty('--tw-to', TIDE_SCENE_Y[st.k]);
+    w.style.setProperty('--tw-from', tideSceneY(st.from) || TIDE_SCENE_Y.none); w.style.setProperty('--tw-to', tideSceneY(st.k)); // (package M follow-up: the Ebb a little lower)
     w.style.setProperty('--tw-delay', (moving ? -el : -1e6) + 'ms');
-    w.style.setProperty('--tw-skew', (TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from] ? 5 : -5) + 'deg'); // in from the left (owner, 10:27)
+    const rising = TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from], flooding = rising && (st.k === 'flow' || st.k === 'high');
+    w.style.setProperty('--tw-skew', (flooding ? TIDE_RISE_SKEW : rising ? TIDE_BASE_SKEW : -TIDE_BASE_SKEW) + 'deg'); // in from the left (owner, 10:27); steeper on a Flood (package M)
+    w.style.setProperty('--tw-slosh', tideMotionPx(st.k) + 'px'); // the settled slosh: Flood x1.7, Ebb x0.8 (package M, owner 20:45)
+    w.style.setProperty('--tw-swell', TIDE_ARRIVE_SWELL + 'px');
+    w.style.setProperty('--tw-lap', TIDE_EBB_LAP + 'px'); w.style.setProperty('--tw-drift', TIDE_EBB_DRIFT + 'px'); // the settled Ebb's lap and drift (package M follow-up)
     w.classList.toggle('mv-b', !w.classList.contains('mv-b')); // a new animation name restarts the move (and the drying)
     w.classList.toggle('is-moving', moving);
+    w.classList.toggle('is-rising', moving && flooding);
     w.classList.toggle('is-drying', moving && (st.from === 'flow' || st.from === 'high') && (st.k === 'ebb' || st.k === 'none'));
   }
   bf.dataset.tide = st.k; bf.style.setProperty('--tw-wade-delay', (moving ? -el : -1e6) + 'ms');
@@ -34520,6 +35142,31 @@ function rankLessonHTML(m){
   // 2026-10-12 (10:12, user: "The grade medal appears twice! The one beside First Clear is the one that should remain"): no hex here.
   return `<div class="wl-rank-lesson ${L.cheer ? 'is-cheer' : ''}" role="status"><div><b>${L.cheer ? '🎉 ' : ''}${escapeHtml(L.t)}</b><p>${escapeHtml(L.d)}</p></div></div>`;
 }
+// Boss victory results (2026-10-18, package RW, owner 20:52: "btw, the boss reward screen should be more crimsony I think"): a won boss
+// fight's results card is crimson (.winloss-card.is-glory.is-boss in arena_template.html: a deep-red wash, a crimson frame, an ember
+// glow on the title, crimson rays and embers drifting up), and FX.F.hooks.resultsShown adds an ember burst. Bosses are the kinds that
+// play as a boss (boss, sub-boss), the Campaign Boss and the world / raid bosses on the map; elites, champions, mini-bosses and
+// dungeon floors keep the gold look, and a raid fight (m.raidFull) keeps its own.
+const CRIMSON_RESULT_KINDS = new Set(['boss', 'subboss', 'finalboss', 'worldboss', 'raidboss', 'megaraid']);
+function isBossResults(m){ return !!(m && m.winner === 1 && !m.raidFull && m.mode !== 'pc' && m.mode !== 'tutorial' && m.conquestNode && CRIMSON_RESULT_KINDS.has(m.conquestNode.kind) && !towerResultsFloor(m)); } // + not a Spire floor (2026-10-18, its own look below)
+// Babel Spire results (2026-10-18, package RW follow-up, owner 23:20: "The victory screen for Towers should be very slightly different as
+// well. It's triumphant to know that your deck has reached the next tier."): a won NEW Spire floor (every tenth floor's Keeper too) gets
+// its own Victory card, a notch below the boss crimson: a cool sky and stone-gold palette (.winloss-card.is-glory.is-tower in
+// arena_template.html) and an ascent line under the title: a little tower whose cleared floor lights up, a beam climbing to the next
+// floor, and "Floor N cleared → Floor N+1" (the 50th: "the top of the Spire"). FX.F.hooks.resultsShown adds a light column (FX.F.towerAscend).
+// A free replay of a cleared floor (m.towerReplay, 0 reward) keeps the ordinary card.
+function towerResultsFloor(m){
+  if(!m || !m.conquestNode) return 0;
+  let r = null; try{ r = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); }catch(e){}
+  return r && r.node && r.node.tower ? (r.node.floor | 0) : 0;
+}
+function isTowerResults(m){ return !!(m && m.winner === 1 && !m.towerReplay && !m.raidFull && m.mode === 'conquest' && towerResultsFloor(m) > 0); }
+function towerAscentHTML(m){
+  const f = towerResultsFloor(m), top = f >= TOWER_FLOORS, lit = top ? 4 : 1;
+  const line = top ? TX('results.tower-step-top', {n: f}) : TX('results.tower-step-up', {n: f, next: f + 1});
+  return `<div class="wl-ascent${top ? ' is-top' : ''}" role="status"><span class="wl-ascent-tower" aria-hidden="true">${[0, 1, 2, 3, 4].map(i=> `<i class="${i === lit ? 'is-lit' : !top && i === 2 ? 'is-next' : ''}"></i>`).join('')}<b class="wl-ascent-beam"></b></span><span class="wl-ascent-txt"><b>${escapeHtml(line)}</b><small>${escapeHtml(TX('results.tower-step-sub'))}</small></span></div>`;
+}
+function bossEmbersHTML(){ return `<div class="wl-embers" aria-hidden="true">${Array.from({length:14}, (_, k)=> `<i style="left:${(k*31 + 5)%100}%; --dx:${((k%5) - 2)*14}px; animation-delay:-${(k*0.55).toFixed(2)}s; animation-duration:${(4.5 + (k*1.3)%3.5).toFixed(1)}s"></i>`).join('')}</div>`; }
 function gloryBadgesHTML(m){
   if(!m.conquestRankEarned || m.winner!==1) return '';
   const reward = m.conquestRewardEarned;
@@ -34964,7 +35611,7 @@ function lockShards(lock){
 // Exposed (2026-10-15) (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss.")
 function creativityTip(n){ return TX('ui.creativity-tip', {n}); }
 function prayerTokenTip(n){ return TX('ui.prayer-token-tip', {n}); } // 2026-10-19 (package E): the 📿 badge // 2026-10-18 (package U): Creativity counters, reserved
-function exposedTip(n){ return `Exposed ${n}: the next ${n} hit${n===1 ? '' : 's'} on it ${n===1 ? 'is a crit' : 'are crits'} (double damage), 1 counter each, and attacks at it can't miss.`; } // 2026-10-16: counters
+function exposedTip(n){ return TX('ui.exposed-tip', {n, s: n === 1 ? '' : 's'}); } // 2026-10-18 (package D): terse // 2026-10-16: counters
 const STATUS_END_NAMES = {webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 function logText(ev){
   const defs = getCardDefs();
@@ -35009,6 +35656,7 @@ function logText(ev){
       return {cls:'', text:`☢️ Radiation eats at ${nm(ev.defId)}: ${pts.join(', ') || 'nothing'}. ${ev.left} token${ev.left===1?'':'s'} left.`}; }
     case 'pounce': return {cls:'', text:`🐾 ${nm(ev.defId)} pounces (${ev.amount}).`};
     case 'spell': return {cls:'gold', text:`${sideLabel(ev.side)} cast ${nm(ev.defId)}: ${spellText(getCardDefs()[ev.defId])}`};
+    case 'darkCast': return {cls:'', text: ev.on ? TX('ui.log-dark-cast', {name: nm(ev.defId)}) : TX('ui.log-dark-lift')}; // Cast Darkness (2026-10-18, package D)
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
     case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${ev.dmg}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? ev.dmg : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Poison.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
@@ -35271,7 +35919,8 @@ function renderLogLine(ev){
   if(ev.type==='waitTick') return;
   // 2026-10-12 (user: "the battle log never shows everything, only maybe some, and not the latest few"): it reads top to
   // bottom in order now and follows the newest line (it used to stack newest-first but scroll to the oldest end).
-  const atEnd = log.scrollHeight - log.scrollTop - log.clientHeight < 40;
+  // 2026-10-18 (package BP): following is battleLogPinned now, kept across the board re-renders that rebuild #battleLog (see pinBattleLog).
+  battleLogSync(log);
   if(ev.type==='tkDivider'){ const d = document.createElement('div'); d.className = 'log-row tk-log-divider'; d.textContent = ev.text; log.appendChild(d); log.scrollTop = log.scrollHeight; return; }
   const lt = logText(ev); if(!lt || !lt.text) return; // 2026-10-16: an event with no line (a fuse tick) used to throw here
   const {cls,text} = lt;
@@ -35282,7 +35931,26 @@ function renderLogLine(ev){
   row.className = 'log-row '+cls+(logIsHeadline(ev) ? ' log-head' : ' log-sub');
   row.textContent = text;
   log.appendChild(row);
-  if(atEnd || !log.dataset.userScrolled) log.scrollTop = log.scrollHeight;
+  pinBattleLog(log);
+}
+// Battle log pinning (2026-10-18, package BP, owner: "The battle log should start from the bottom! the latest!"): the log follows the
+// newest line unless the player has scrolled up to read; scrolling back to the bottom (within 40 px) pins it again. The state lives here,
+// not on the element, because every full render rebuilds #battleLog and replays m.log into it. Opening the log always pins it.
+let battleLogPinned = true, battleLogScrollTop = 0;
+const BATTLE_LOG_PIN_PX = 40;
+function battleLogAtBottom(log){ return log.scrollHeight - log.scrollTop - log.clientHeight < BATTLE_LOG_PIN_PX; }
+function pinBattleLog(log, force){ log = log || document.getElementById('battleLog'); if(force) battleLogPinned = true; if(log && battleLogPinned){ log.scrollTop = log.scrollHeight; log._setTop = log.scrollTop; } }
+// Before a line goes in, read where the reader is now (a scroll event can lag a frame behind a burst of lines): moved up from where the log
+// last put itself (log._setTop, on this element: a re-render's fresh log starts at 0), unpinned; back at the bottom, pinned.
+function battleLogSync(log){
+  if(!log || !log.clientHeight) return;
+  if(battleLogPinned && log._setTop != null && log.scrollTop < log._setTop - 2 && !battleLogAtBottom(log)) battleLogPinned = false;
+  else if(!battleLogPinned && battleLogAtBottom(log)) battleLogPinned = true;
+  if(!battleLogPinned && log._setTop != null) battleLogScrollTop = log.scrollTop; // the reader's place, for the next re-render
+}
+function wireBattleLogScroll(){
+  const log = document.getElementById('battleLog'); if(!log || log.dataset.pinWired) return; log.dataset.pinWired = '1';
+  log.addEventListener('scroll', ()=>{ if(!log.clientHeight || !log.isConnected) return; battleLogPinned = battleLogAtBottom(log); battleLogScrollTop = log.scrollTop; if(battleLogPinned) log._setTop = log.scrollTop; }, {passive:true});
 }
 /* ---- attack "feel", GSAP-driven since 2026-09-16 ("improve the effects and gsap-like
    animations of the game"): every card that lands (or attempts) a hit reels back into a
@@ -37841,7 +38509,7 @@ function renderVfxForEvent(ev){
     // Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid),
     // Stun-on-hit (heat, reuses the existing stunOnHit->'stun' visual below).
     else if(ev.kind==='freeze'){ SoundKit.freezeChime(); if(el){ shakeEl(el); floatText(el, '❄ Frozen', 'debuff'); } if(rc) rc.frozen = (rc.frozen||0) + 1; }
-    else if(ev.kind==='sleep'){ SoundKit.sleepTone(); if(el) floatText(el, '💤 Asleep', 'debuff'); if(rc) rc.asleep = (rc.asleep||0) + 1; }
+    else if(ev.kind==='sleep'){ SoundKit.sleepTone(); if(el) floatText(el, '💤 Asleep', 'debuff'); if(rc) rc.asleep = ev.left != null ? ev.left : (rc.asleep||0) + 1; } // ev.left: the capped Sleep stack (2026-10-18)
     else if(ev.kind==='paralyze'){ SoundKit.paralyzeBuzz(); if(el){ shakeEl(el); floatText(el, '⚡ Paralyzed', 'debuff'); } if(rc) rc.paralyzed = (rc.paralyzed||0) + 1; }
     else if(ev.kind==='stunOnHit'){ SoundKit.stunTone(); if(el){ shakeEl(el); floatText(el, '💫 Stunned!', 'debuff'); } if(rc) rc.stunned = true; }
     // 10 more skills + 3 more statuses (2026-09-17 batch): Blind and Shock are duration-gated
@@ -37959,7 +38627,8 @@ function renderVfxForEvent(ev){
   if(ev.type==='pierceHQ'){
     const el = hqTileEl(ev.targetSide);
     SoundKit.pierceTone();
-    if(el){ flashHqDamage(el); floatText(el, '🗡 -'+ev.dmg, 'debuff'); }
+    if(el) flashHqDamage(el);
+    { const at = hqRibbonFloatAnchor(ev.targetSide) || el; if(at) floatText(at, '🗡 -'+ev.dmg, 'hq-big'); } // on the field's HP bar too (2026-10-18, BP)
     const mm = matchState;
     displayHqDamage(mm, ev.targetSide, ev.dmg);
   }
@@ -37969,7 +38638,10 @@ function renderVfxForEvent(ev){
   if(ev.type==='overwhelmHQ'){
     const el = hqTileEl(ev.targetSide);
     SoundKit.overwhelmTone();
-    if(el){ shakeEl(el); flashHqDamage(el); floatText(el, '💥 -'+ev.dmg, 'debuff'); }
+    // 2026-10-18 (package BP, owner: "Trample's damage number should be at the battlefield HP bar's centre — same as the rest"): the
+    // number pops on the field's HP bar (hqRibbonFloatAnchor, as a hitHQ's does), no longer on the bramble tile under the board.
+    if(el){ shakeEl(el); flashHqDamage(el); }
+    { const at = hqRibbonFloatAnchor(ev.targetSide) || el; if(at) floatText(at, '💥 -'+ev.dmg, 'hq-big'); }
     const mm = matchState;
     displayHqDamage(mm, ev.targetSide, ev.dmg);
   }
@@ -38232,7 +38904,7 @@ function renderVfxForEvent(ev){
   // Wind (2026-10-13): a small 🌬️ Windy pill on the field for Windy rounds (only fights with a Tailwind or Headwind unit roll it).
   if(ev.type==='wind'){ try{ const mine = ev.from === (matchState && matchState.sideOf ? matchState.sideOf(1) : 'A'); if(matchState) matchState._windNow = {windy: !!ev.windy, mine};
       if(matchState && ev.windy) matchState._windLastMine = mine;
-      const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } syncWindField(matchState); }catch(e){} } // + the wind layer (2026-10-15)
+      const bf = document.getElementById('battlefieldEl'); if(bf){ bf.classList.toggle('is-windy', !!ev.windy); refreshBfPills(matchState); } syncWindField(matchState); syncWindBadges(); }catch(e){} } // + the wind layer (2026-10-15); + the Flyers' wind marks (2026-10-18, BP)
   if(ev.type==='moon' && matchState && matchHasMoonCards(matchState)){ try{ const mp = MOON_PHASES[ev.phase] || MOON_PHASES[0]; showToast(`${mp[0]} ${mp[1]} tonight.`, 'ok'); }catch(e){} }
   // 2026-10-15 (FX batch B): Twilight has its own toast (it used to be announced as "Day breaks").
   if(ev.type==='phase' && matchState && matchPhaseMatters(matchState)){ try{ showToast(ev.phase==='night' ? TX('toast.night-falls') : ev.phase==='twilight' ? TX('toast.twilight-day-and-night-creatures-are') : TX('toast.day-breaks'), 'ok'); }catch(e){}
@@ -38324,7 +38996,7 @@ function renderVfxForEvent(ev){
   if(ev.type==='discard') try{ enemyPitchVfx(ev); }catch(e){} // 2026-10-15: the opponent's pitched card sinks into the ground, then their pill counts it
   // 2026-10-10 (user: "Enemy summoning their leader should mean something as well!"): the rival's leader gets its own,
   // ominous entrance on their half of the field.
-  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ noteMatchFx(380 + LEADER_THRONE_FX_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380); } // 2026-10-14: the round waits for it
+  if(ev.type==='play' && ev.leader && !ev.gladiator && ev.side !== (viewerHandPid(matchState)===1 ? 'A' : 'B')){ noteMatchFx(380 + LEADER_THRONE_WAIT_MS); setTimeout(()=> leaderThroneVfx(ev.uid, {enemy:true, defId:ev.defId}), 380); } // 2026-10-14: the round waits for it
   // Voice barks (2026-10-16): a card that arrives may speak once it has landed (a leader after its throne entrance).
   if(ev.type==='play' && !ev.reserve && ev.uid != null){ const u = ev.uid, dId = ev.defId, lead = !!ev.leader; setTimeout(()=>{ try{ maybeBark(u, 'play', {defId:dId, leader:lead}); }catch(e){} }, lead ? 380 + LEADER_THRONE_FX_MS + 200 : 650); }
 }
@@ -38719,7 +39391,7 @@ function simDeckColHTML(side, label){
       <button class="btn small ghost" data-reset-deck="${side}" title="Clear this deck back to empty" style="margin-left:auto;">↺ Reset</button>
     </h3>
     <div class="deck-list-mini" id="deckList${side}"></div>
-    <input type="text" placeholder="Filter pool…" id="poolFilter${side}" style="width:100%; margin-bottom:8px; padding:6px 8px; border:1px solid var(--surface-border); border-radius:8px;">
+    <input data-text-filter autocomplete="off" type="text" placeholder="Filter pool…" id="poolFilter${side}" style="width:100%; margin-bottom:8px; padding:6px 8px; border:1px solid var(--surface-border); border-radius:8px;">
     <div class="pool-grid" id="pool${side}"></div>
   </div>`;
 }
@@ -39148,7 +39820,7 @@ function renderForge(){
     <div class="forge-layout" ${forgeMode==='smith' || forgeMode==='castles' ? 'hidden' : ''}>
       <div class="panel forge-pool-panel">
         <div class="forge-toolbar">
-          <input type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
+          <input data-text-filter autocomplete="off" type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
           <div class="forge-chips" role="group" aria-label="Filter">
             ${[['all','All'],['ready',`${FORGE_MODES[forgeMode].icon} Ready${readyCount?` (${readyCount})`:''}`]].concat(forgeMode==='upgrade' ? [['leveled','Levelled'],['max','Max']] : []).map(([k,l])=> `<button type="button" class="forge-chip ${forgeFilter===k?'on':''}" data-forgefilter="${k}" aria-pressed="${forgeFilter===k}">${l}</button>`).join('')}
           </div>
@@ -43107,6 +43779,7 @@ async function loadMyGuild(){
     if(memErr) throw memErr;
     if(!membership){
       myGuild = null; myGuildMembers = null;
+      resetGuildSkills(); // 2026-10-19 (guild skills): no guild, no guild bonus in raids
       loadGuildBrowseList();
     } else {
       const { data: guild, error: gErr } = await sbClient.from('guilds').select('*').eq('id', membership.guild_id).maybeSingle();
@@ -43118,6 +43791,8 @@ async function loadMyGuild(){
       // 2026-10-18 (guild rename): the founders' gift, one 🎫 Rename Ticket for an owner of a guild made before it shipped
       const me = myGuildMembers.find(m=> m.profile_id===cloudUserId);
       if(me && me.role==='owner' && giftFounderRenameTicket(guild)) setTimeout(()=>{ try{ showToast(TX('toast.rename-ticket-gift'), 'ok'); }catch(e){} }, 600);
+      // 2026-10-19 (guild skills): the guild's skill levels and Seeds, after the roster (it shows a loading line until then)
+      loadGuildSkills(guild.id).then(()=>{ if(currentTab==='guild' && myGuild && myGuild.id === guild.id) renderGuild(); });
     }
   }catch(e){ myGuild=null; myGuildMembers=null; guildLoadError = true; }
   guildDataLoaded = true;
@@ -43250,6 +43925,147 @@ function openGuildRenameDialog(){
     if(currentTab === 'guild') renderGuild();
   });
 }
+// ---- Guild skills (2026-10-19, package G; owner 20:45: "Guild skills. Starting with +raid HP to your bramble."). A guild's
+// skills have levels; its owner buys them with 🌱 Guild Seeds, which members earn in raid fights. The rules and numbers are
+// BramblewoodGuild (bramblewood-guild.js); the levels and Seeds live on the server (supabase/proposed/20261019_guild_skills.sql:
+// guild_skill_levels / guild_seeds, read by members; upgrade_guild_skill, the owner's only way to buy). Until that is applied the
+// read fails with "relation does not exist": the Guild tab shows the list as a preview and raid fights get no guild bonus.
+// Live: Rooted Walls, +4% bramble Health in raid fights a level (5 levels). Admin mode can preview levels in this browser only.
+const GuildM = (typeof BramblewoodGuild!=='undefined') ? BramblewoodGuild : null;
+// The locked "coming soon" skills. false hides them (the 2026-09-29 rule: the live game shouldn't announce features that aren't in).
+const GUILD_SKILLS_SHOW_SOON = true;
+const GUILD_SKILL_PREVIEW_KEY = 'bramblewood_guild_skill_preview_v1';
+const GUILD_SKILLS_STALE_MS = 5 * 60 * 1000;
+// status: idle (not asked) | loading | live (applied: levels + seeds are the server's) | missing (SQL not applied) | error
+let guildSkills = {guildId: null, status: 'idle', levels: {}, seeds: 0, at: 0};
+function resetGuildSkills(){ guildSkills = {guildId: null, status: 'idle', levels: {}, seeds: 0, at: Date.now()}; }
+async function loadGuildSkills(guildId){
+  if(!GuildM || !sbClient || !guildId){ guildSkills = {guildId: guildId || null, status: 'idle', levels: {}, seeds: 0, at: Date.now()}; return guildSkills; }
+  guildSkills = Object.assign({}, guildSkills, {guildId, status: 'loading'});
+  let next;
+  try{
+    const { data, error } = await sbClient.from('guild_skill_levels').select('skill, level').eq('guild_id', guildId);
+    if(error) next = {guildId, status: GuildM.notAppliedError(error) ? 'missing' : 'error', levels: {}, seeds: 0};
+    else {
+      const s = await sbClient.from('guild_seeds').select('seeds').eq('guild_id', guildId).maybeSingle();
+      next = {guildId, status: 'live', levels: GuildM.normaliseLevels(data || []), seeds: Math.max(0, Number(s && s.data && s.data.seeds) || 0)};
+    }
+  }catch(e){ next = {guildId, status: 'error', levels: {}, seeds: 0}; }
+  guildSkills = Object.assign(next, {at: Date.now()});
+  return guildSkills;
+}
+// For a raid fight opened before the Guild tab: which guild you're in, then its skills (at most every few minutes). Resolves to
+// true when the guild bonus changed, so the raid panel can redraw its chip.
+async function ensureGuildSkillsForRaid(){
+  if(!GuildM || !sbClient || !cloudUserId) return false;
+  if(guildSkills.status === 'loading' || (guildSkills.status !== 'idle' && Date.now() - guildSkills.at < GUILD_SKILLS_STALE_MS)) return false;
+  const before = guildBrambleHpPct();
+  try{
+    const { data, error } = await sbClient.from('guild_members').select('guild_id').eq('profile_id', cloudUserId).maybeSingle();
+    if(error) return false;
+    if(!data){ resetGuildSkills(); return guildBrambleHpPct() !== before; }
+    await loadGuildSkills(data.guild_id);
+  }catch(e){ return false; }
+  return guildBrambleHpPct() !== before;
+}
+// Admin preview: {skill: level} in this browser, used only while Admin mode is on (and then instead of the guild's own levels).
+function guildSkillPreview(){
+  if(!adminModeEnabled || !GuildM) return null;
+  try{ const raw = localStorage.getItem(GUILD_SKILL_PREVIEW_KEY); return raw ? GuildM.normaliseLevels(JSON.parse(raw)) : null; }catch(e){ return null; }
+}
+function setGuildSkillPreview(levels){ try{ if(levels) localStorage.setItem(GUILD_SKILL_PREVIEW_KEY, JSON.stringify(levels)); else localStorage.removeItem(GUILD_SKILL_PREVIEW_KEY); }catch(e){} }
+// The levels a raid fight uses: the admin preview, else your guild's server levels (none while the SQL isn't applied).
+function guildRaidLevels(){
+  const pv = guildSkillPreview(); if(pv) return {levels: pv, preview: true};
+  if(guildSkills.status === 'live' && guildSkills.guildId) return {levels: guildSkills.levels, preview: false};
+  return {levels: {}, preview: false};
+}
+// Rooted Walls: the % your bramble's Health goes up in raid fights (0 with no guild, no levels, or the SQL not applied).
+function guildBrambleHpPct(){ return GuildM ? GuildM.brambleHpPct(guildRaidLevels().levels) : 0; }
+// The raid pre-fight line ("Guild: +12% bramble Health"), or '' with no bonus.
+function guildRaidBonusText(){ const pct = guildBrambleHpPct(); if(!pct) return ''; return TX('ui.gskill-raid-bonus', {pct}) + (guildRaidLevels().preview ? ' ' + TX('ui.gskill-admin-tag') : ''); }
+function guildSkillText(s){
+  switch(s.id){
+    case 'rooted_walls': return {name: TX('ui.gskill-rooted-walls-name'), desc: TX('ui.gskill-rooted-walls-desc', {pct: s.perLevel})};
+    case 'sharp_thorns': return {name: TX('ui.gskill-sharp-thorns-name'), desc: TX('ui.gskill-sharp-thorns-desc')};
+    case 'second_wind': return {name: TX('ui.gskill-second-wind-name'), desc: TX('ui.gskill-second-wind-desc')};
+    case 'sap_return': return {name: TX('ui.gskill-sap-return-name'), desc: TX('ui.gskill-sap-return-desc')};
+    case 'guild_chest': return {name: TX('ui.gskill-guild-chest-name'), desc: TX('ui.gskill-guild-chest-desc')};
+    case 'ally_banners': return {name: TX('ui.gskill-ally-banners-name'), desc: TX('ui.gskill-ally-banners-desc')};
+    case 'seed_satchel': return {name: TX('ui.gskill-seed-satchel-name'), desc: TX('ui.gskill-seed-satchel-desc')};
+  }
+  return {name: s.id, desc: ''};
+}
+// The owner buys the next level (upgrade_guild_skill checks the owner, the level seen, the top level and the Seeds, and spends
+// them in one transaction). Nothing is spent on any error; "not applied" says guild skills aren't switched on yet.
+async function upgradeGuildSkill(guildId, skillId, fromLevel){
+  if(!sbClient || !cloudUserId) return {error: TX('net.gskill-sign-in')};
+  if(!GuildM) return {error: TX('net.gskill-not-on'), notOn: true};
+  let res;
+  try{ res = await sbClient.rpc('upgrade_guild_skill', {p_guild: guildId, p_skill: skillId, p_from_level: fromLevel}); }catch(e){ return {error: TX('net.gskill-failed', {err: netErrText(e)})}; }
+  const { data, error } = res || {};
+  if(error){
+    const m = String(error.message || '');
+    if(GuildM.notAppliedError(error)) return {error: TX('net.gskill-not-on'), notOn: true};
+    if(error.code === '42501' || /not_owner/i.test(m)) return {error: TX('net.gskill-not-owner')};
+    if(/not_enough_seeds/i.test(m)) return {error: TX('net.gskill-no-seeds', {cost: GuildM.nextCost(skillId, fromLevel) || 0, n: guildSkills.seeds})};
+    if(/level_changed/i.test(m)) return {error: TX('net.gskill-changed'), stale: true};
+    if(/max_level/i.test(m)) return {error: TX('net.gskill-maxed'), stale: true};
+    return {error: TX('net.gskill-failed', {err: netErrText(error)})};
+  }
+  const row = Array.isArray(data) ? data[0] : data;
+  if(!row || row.level == null) return {error: TX('net.gskill-failed', {err: TX('net.something-went-wrong')})};
+  return {ok: true, level: row.level | 0, seeds: Math.max(0, row.seeds | 0)};
+}
+function guildSkillsPanelHTML(guild, members){
+  if(!GuildM) return '';
+  const mine = members.find(m=> m.profile_id === cloudUserId);
+  const can = GuildM.canUpgrade(guild, mine, cloudUserId);
+  const st = guildSkills.guildId === guild.id ? guildSkills : {status: 'loading', levels: {}, seeds: 0};
+  const live = st.status === 'live', pv = guildSkillPreview();
+  const note = st.status === 'missing' ? `<p class="gsk-note">${escapeHtml(TX('ui.gskill-preview-note'))}</p>`
+    : st.status === 'error' ? netErrorHTML(TX('net.gskill-load-failed'), 'guildSkills', ()=>{ loadGuildSkills(guild.id).then(()=>{ if(currentTab === 'guild') renderGuild(); }); })
+    : st.status === 'loading' ? `<div class="empty-hint">${escapeHtml(TX('ui.gskill-loading'))}</div>` : '';
+  const rows = GuildM.SKILLS.filter(s=> !s.soon || GUILD_SKILLS_SHOW_SOON).map(s=>{
+    const t = guildSkillText(s);
+    if(s.soon) return `<li class="gsk is-soon" aria-disabled="true"><span class="gsk-ico" aria-hidden="true">${s.icon}</span><div class="gsk-body"><b>${escapeHtml(t.name)}</b><span>${escapeHtml(t.desc)}</span></div><span class="gsk-tag">🔒 ${escapeHtml(TX('ui.gskill-coming-soon'))}</span></li>`;
+    const lv = live ? (st.levels[s.id] || 0) : 0, cost = GuildM.nextCost(s.id, lv);
+    const now = lv ? TX('ui.gskill-rooted-walls-now', {pct: GuildM.effectAt(s.id, lv)}) : '';
+    const act = !live ? '' : cost == null ? `<span class="gsk-tag">${escapeHtml(TX('ui.gskill-maxed'))}</span>`
+      : can ? `<button type="button" class="btn small primary" data-gskill-up="${escapeAttr(s.id)}" data-gskill-from="${lv}"${st.seeds < cost ? ' aria-disabled="true"' : ''}>${escapeHtml(TX('ui.gskill-upgrade', {cost}))}</button>`
+      : `<span class="gsk-tag">${escapeHtml(TX('ui.gskill-next-cost', {cost}))}</span>`;
+    const pvl = pv ? (pv[s.id] || 0) : null;
+    const admin = adminModeEnabled ? `<span class="gsk-admin" role="group" aria-label="${escapeAttr(TX('ui.gskill-admin-preview'))}"><button type="button" class="btn small" data-gskill-prev="${escapeAttr(s.id)}" data-d="-1" aria-label="−1">−</button><small>${escapeHtml(TX('ui.gskill-admin-level', {n: pvl == null ? '–' : pvl}))}</small><button type="button" class="btn small" data-gskill-prev="${escapeAttr(s.id)}" data-d="1" aria-label="+1">+</button></span>` : '';
+    return `<li class="gsk"><span class="gsk-ico" aria-hidden="true">${s.icon}</span><div class="gsk-body"><b>${escapeHtml(t.name)} <small>${escapeHtml(TX('ui.gskill-level', {n: lv, max: s.maxLevel}))}</small></b><span>${escapeHtml(t.desc)}</span>${now ? `<span class="gsk-now">${escapeHtml(now)}</span>` : ''}</div><div class="gsk-act">${act}${admin}</div></li>`;
+  }).join('');
+  return `<div class="panel guild-skills">
+      <h2>🌱 ${escapeHtml(TX('ui.gskill-title'))}${live ? ` <span class="panel-sub-inline gsk-seeds">${escapeHtml(TX('ui.gskill-seeds', {n: st.seeds.toLocaleString()}))}</span>` : ''}</h2>
+      <p class="panel-sub">${escapeHtml(TX('ui.gskill-sub', {per: GuildM.SEEDS_PER_DAMAGE.toLocaleString(), cap: GuildM.SEED_WEEK_CAP}))}${live && !can ? ' ' + escapeHtml(TX('ui.gskill-owner-only')) : ''}</p>
+      ${note}
+      <ul class="gsk-list">${rows}</ul>
+      ${adminModeEnabled ? `<p class="gsk-note gsk-admin-note">🛠️ ${escapeHtml(TX('ui.gskill-admin-preview'))}${pv ? ` <button type="button" class="btn small" id="gskPrevClear">${escapeHtml(TX('ui.gskill-admin-clear'))}</button>` : ''}</p>` : ''}
+    </div>`;
+}
+function wireGuildSkills(root){
+  if(!GuildM || !myGuild) return;
+  root.querySelectorAll('[data-gskill-up]').forEach(b=> b.addEventListener('click', async ()=>{
+    const id = b.getAttribute('data-gskill-up'), from = +b.getAttribute('data-gskill-from') || 0, cost = GuildM.nextCost(id, from);
+    if(b.getAttribute('aria-disabled') === 'true'){ showToast(TX('net.gskill-no-seeds', {cost: cost || 0, n: guildSkills.seeds}), 'error'); denyShake(b); return; }
+    if(b.disabled) return; b.disabled = true;
+    const g = myGuild, res = await upgradeGuildSkill(g.id, id, from);
+    if(res.error){ b.disabled = false; showToast(res.error, 'error'); if(res.stale || res.notOn){ await loadGuildSkills(g.id); if(currentTab === 'guild') renderGuild(); } return; }
+    if(guildSkills.guildId === g.id){ guildSkills.levels = Object.assign({}, guildSkills.levels, {[id]: res.level}); guildSkills.seeds = res.seeds; guildSkills.at = Date.now(); }
+    showToast(TX('toast.gskill-upgraded', {name: guildSkillText(GuildM.byId(id)).name, n: res.level}), 'ok');
+    if(currentTab === 'guild') renderGuild();
+  }));
+  root.querySelectorAll('[data-gskill-prev]').forEach(b=> b.addEventListener('click', ()=>{
+    if(!adminModeEnabled) return;
+    const id = b.getAttribute('data-gskill-prev'), s = GuildM.byId(id); if(!s) return;
+    const pv = Object.assign({}, guildSkillPreview() || {}); pv[id] = Math.max(0, Math.min(s.maxLevel, (pv[id] || 0) + (+b.getAttribute('data-d') || 0)));
+    setGuildSkillPreview(pv); renderGuild();
+  }));
+  const clr = root.querySelector('#gskPrevClear'); if(clr) clr.addEventListener('click', ()=>{ setGuildSkillPreview(null); renderGuild(); });
+}
 function renderGuild(){
   const root = document.getElementById('view-guild');
   if(!isSignedIn()){
@@ -43278,10 +44094,11 @@ function renderGuild(){
   }
   root.innerHTML = `
     <div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
-    ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) : guildBrowseCreatePanelHTML()}`;
+    ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) + guildSkillsPanelHTML(myGuild, myGuildMembers||[]) /* 2026-10-19 (guild skills) */ : guildBrowseCreatePanelHTML()}`;
   document.getElementById('guildBackBtn').addEventListener('click', goHome);
   if(myGuild){
     const renameBtn = document.getElementById('guildRenameBtn'); // 2026-10-18 (guild rename): owners only
+    wireGuildSkills(root); // 2026-10-19 (guild skills): upgrade buttons, admin preview
     if(renameBtn) renameBtn.addEventListener('click', openGuildRenameDialog);
     const leaveBtn = document.getElementById('guildLeaveBtn');
     if(leaveBtn) leaveBtn.addEventListener('click', async ()=>{
@@ -43459,6 +44276,37 @@ function collectionStats(){
   const skins = owned.length + owned.filter(id=> (myCardCopies[id]||[]).some(c=> c && c.foil)).length;
   return {total: ids.length, owned: owned.length, levelSum, levelMax: ids.length*10, skins, skinTotal: ids.length*SKINS_PER_CARD};
 }
+// Collection score (2026-10-18, package C, owner 20:31: "overall collection score listed at the btm and in profile w/ achievements";
+// 20:36: "the collection score should only count what the player owns"). One number, the game's Collection level: every card you own
+// added up by its Forge level (collectionStats().levelSum, which the deck offer's rarity floor already reads), out of 10 a card. The
+// cards, brambles and achievements next to it are counts only. Shown under every Codex tab (collectionScoreBarHTML) and on the
+// Profile beside the achievements (profileCollectionCardHTML).
+function collectionScoreInfo(){
+  const c = collectionStats();
+  let brambles = 0, bramblesTotal = 0, achv = 0, achvTotal = 0, ready = 0;
+  try{ Object.values(CHARACTER_DEFS).forEach(ch=>{ if(!ch) return; bramblesTotal++; if(castleUnlocked(ch)) brambles++; }); }catch(e){}
+  try{ achvTotal = ACHIEVEMENT_DEFS.length; achv = ACHIEVEMENT_DEFS.filter(d=> myClaimedAchievements.has(d.id)).length;
+    const ctx = achievementContext(); ready = ACHIEVEMENT_DEFS.filter(d=>{ const st = achievementStatus(d, ctx); return st.claimable && !st.claimed; }).length; }catch(e){}
+  return {score: c.levelSum, max: c.levelMax, pct: c.levelMax ? Math.round(c.levelSum / c.levelMax * 100) : 0, owned: c.owned, total: c.total, brambles, bramblesTotal, achv, achvTotal, ready};
+}
+function collectionScoreBarHTML(){
+  const c = collectionScoreInfo();
+  return `<div class="cx-score" role="group" aria-label="${escapeAttr(TX('ui.score-title'))}"><span class="cx-score-ico" aria-hidden="true">📚</span>
+    <div class="cx-score-main"><span class="cx-score-k">${escapeHtml(TX('ui.score-title'))}</span><span class="cx-score-n"><b>${c.score}</b> / ${c.max}</span>
+      <span class="pf-tile-bar"><span style="width:${c.pct}%"></span></span><small>${escapeHtml(TX('ui.score-sub'))}</small></div>
+    <ul class="cx-score-facts"><li>🗂️ ${escapeHtml(TX('ui.score-cards', {n: c.owned, total: c.total}))}</li><li>🏰 ${escapeHtml(TX('ui.score-brambles', {n: c.brambles, total: c.bramblesTotal}))}</li>
+      <li><button type="button" class="cx-score-achv" data-goachv>🏆 ${escapeHtml(TX('ui.score-achievements', {n: c.achv, total: c.achvTotal}))}${c.ready ? ` · <em>${escapeHtml(TX('ui.score-ready', {n: c.ready}))}</em>` : ''}</button></li></ul></div>`;
+}
+function wireCollectionScoreBar(root){ const b = root.querySelector('[data-goachv]'); if(b) b.addEventListener('click', ()=> switchTab('achievements')); }
+function profileCollectionCardHTML(){
+  const c = collectionScoreInfo();
+  return `<button type="button" class="panel pf-achv-card pf-score-card" id="pfScoreBtn" title="${escapeAttr(TX('ui.score-open-codex'))}">
+    <span class="pf-achv-ico" aria-hidden="true">📚</span>
+    <span class="pf-achv-body"><b>${escapeHtml(TX('ui.score-title'))}: ${c.score} / ${c.max}</b><small>${escapeHtml(TX('ui.score-cards', {n: c.owned, total: c.total}))} · ${escapeHtml(TX('ui.score-brambles', {n: c.brambles, total: c.bramblesTotal}))}</small>
+      <span class="pf-tile-bar"><span style="width:${c.pct}%"></span></span><small>${escapeHtml(TX('ui.score-sub'))}</small></span>
+    <span class="pf-go" aria-hidden="true">›</span>
+  </button>`;
+}
 function profileHeroHTML(){
   const av = loadAvatar(), L = playerLevelInfo(), rank = rankForRating(myRating);
   const name = myProfile ? myProfile.name : 'Guest';
@@ -43597,6 +44445,7 @@ function renderProfile(){
     <div class="pf-grid">
       <div class="pf-col">
         <div class="panel pf-wallet"><h3>👛 Wallet</h3><div class="pf-wallet-row">${['gold','gems','dust','metal'].concat(featureUnlockedSafe('tavern') || (myCurrencies.beer||0) > 0 ? ['beer'] : []).map(k=> currencyPillHTML(k)).join('')}</div></div>
+        ${profileCollectionCardHTML() /* 2026-10-18 (package C): the collection score, beside the achievements */}
         ${profileAchievementsCardHTML()}
         ${profileMedalsHTML() /* 2026-10-15: Medals moved here from the Notices */}
         ${playerPreviewHTML()}
@@ -43612,6 +44461,7 @@ function renderProfile(){
   </div>`;
   document.getElementById('pfAvatarBtn').onclick = openCharacterEditor;
   document.getElementById('pfAchvBtn').onclick = ()=> switchTab('achievements');
+  { const sb = document.getElementById('pfScoreBtn'); if(sb) sb.onclick = ()=>{ let open = true; try{ open = tabOpen('codex'); }catch(e){} if(!open) return; codexSubTab = 'browse'; switchTab('codex'); }; } // 2026-10-18 (package C)
   wireAboutYou(); wireAdminProfileTools();
   const ppEdit = document.getElementById('ppEditDeckBtn'); if(ppEdit) ppEdit.addEventListener('click', ()=>{ deckOpenBuilderOnce = true; deckShowList = false; deckEditingId = null; switchTab('deck'); });
   wireMatchHistoryPanel();
@@ -43877,7 +44727,7 @@ function renderFriends(){
       <div class="fr-head"><h2>👥 Friends</h2>
         <div class="fr-code" title="Share this so friends can add you">Your code <b id="frMyCode">${escapeHtml(Social.myCode||'——')}</b> <button type="button" class="btn small ghost" id="frCopyCode">Copy</button></div></div>
       <form class="fr-search" id="frSearchForm" role="search">
-        <input type="search" id="frSearchInput" placeholder="Friend code or player name" value="${escapeAttr(Social.searchTerm)}" aria-label="Friend code or player name" autocomplete="off">
+        <input data-text-filter autocomplete="off" type="search" id="frSearchInput" placeholder="Friend code or player name" value="${escapeAttr(Social.searchTerm)}" aria-label="Friend code or player name">
         <button type="submit" class="btn primary">Search</button>
       </form>
       <div id="frSearchResults">${searchResultsHTML()}</div>
@@ -44162,7 +45012,7 @@ function renderMarketInto(body){
       ${[['browse','🛍️ Browse'],['sell','🏷️ Sell'],['mine','📋 My listings']].map(([k,l])=>`<button type="button" class="tk-speed-btn ${Market.tab===k?'is-on':''}" role="tab" aria-selected="${Market.tab===k}" data-mk-tab="${k}">${l}</button>`).join('')}
     </div>
     ${Market.tab==='browse' ? `<div class="mk-filters">
-      <input type="search" id="mkQ" placeholder="Search cards…" value="${escapeAttr(Market.q)}" aria-label="Search cards">
+      <input data-text-filter autocomplete="off" type="search" id="mkQ" placeholder="Search cards…" value="${escapeAttr(Market.q)}" aria-label="Search cards">
       <select id="mkRarity" aria-label="Rarity"><option value="">All rarities</option>${Registry.rarities().map(r=>`<option value="${escapeAttr(r.key)}" ${Market.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join('')}</select>
       <select id="mkSort" aria-label="Sort"><option value="cheap" ${Market.sort==='cheap'?'selected':''}>Cheapest first</option><option value="dear" ${Market.sort==='dear'?'selected':''}>Priciest first</option><option value="new" ${Market.sort==='new'?'selected':''}>Newest first</option></select>
     </div><div id="mkBody">${marketBrowseHTML()}</div>` : Market.tab==='sell' ? `<div id="mkBody">${marketSellHTML()}</div>` : `<div id="mkBody">${marketMineHTML()}</div>`}
@@ -44342,6 +45192,7 @@ function switchTab(tab){
   if(tab!=='deck' && currentTabBeforeSwitch==='deck'){ try{ restoreMainDeck(); }catch(e){} }
   if(tab==='deck' && currentTabBeforeSwitch!=='deck'){ if(!deckOpenBuilderOnce){ deckShowList = true; deckEditingId = null; } deckOpenBuilderOnce = false; }
   currentTab = tab;
+  syncTextFilterPage(); // 2026-10-18 (owner: text filters reset when you move between pages), before the page draws
   // Ambience: Home has its own meadow; Play sets the place's sound from its map/battle; the
   // menu-like tabs (Deck, Shop, Codex...) are indoors, so the outdoor sound fades away.
   // Places (immersion #4): some screens are places you walk into, each with its own look, sound
@@ -44511,6 +45362,7 @@ var Feedback = (function(){
     ov.innerHTML = `<div class="modal fb-modal" role="dialog" aria-modal="true" aria-labelledby="fbTitle"><div class="modal-head-row"><h2 id="fbTitle">💬 Tell us what you think</h2><button class="modal-close-btn" id="fbClose" aria-label="Close">✕</button></div>
       <form id="fbForm"><fieldset class="fb-cats"><legend>What is it about? (optional)</legend>${CATS.map(([k, l])=> `<label><input type="radio" name="fbCat" value="${k}">${l}</label>`).join('')}</fieldset>
         <textarea id="fbText" maxlength="4000" required placeholder="A bug, an idea, something that felt off… anything helps." aria-label="Your feedback"></textarea>
+        <aside class="fb-bughunt" aria-labelledby="fbBugTitle"><h3 id="fbBugTitle">${TX('fb.bughunt-title')}</h3><p>${TX('fb.bughunt-how')}</p><p>${TX('fb.bughunt-reward')} ${TX('fb.bughunt-title-reward')}</p></aside>
         <p class="fb-ctx">Sent with it: where you are (${escapeHtml(where || 'Home')}), the game version, your screen size, your player name and the time.</p>
         <div class="fb-actions"><small id="fbNote" aria-live="polite"></small><button type="button" class="btn ghost" id="fbCancel">Cancel</button><button type="submit" class="btn primary" id="fbSend">Send</button></div></form></div>`;
     ov.hidden = false;
