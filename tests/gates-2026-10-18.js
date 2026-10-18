@@ -67,9 +67,9 @@ const dgHTML = fn('renderDungeonsSubTab');
 ok(/\$\{map \? '🚧 Coming soon\.[^']*' : mapIsCharted\(dd\.mapNumber\) \? `🔒 Opens around Map \$\{dd\.mapNumber\}` : `🧭 \$\{UNCHARTED_LOCK\}`\}/.test(dgHTML), 'a held-back dungeon reads "Coming soon", an uncharted slot the uncharted lock');
 ok(!/Map 22 is not charted/.test(src), 'no text still calls Map 22 uncharted');
 ok(!/Map 22 is still a Reserved map/.test(src), 'the Long Burrow comment no longer calls Map 22 Reserved');
-ok(/^const LONG_BURROW_RELEASED = false;$/m.test(src), 'the Long Burrow release is one switch (LONG_BURROW_RELEASED), still off');
+ok(/^const LONG_BURROW_RELEASED = true;/m.test(src), 'the Long Burrow is released (2026-10-18, user: "Release long_burrow.")');
 const mlb = CONQUEST_MAPS.find(m=> m.id === 'mlb');
-ok(mlb && mlb.preview === true && mlb.parent === 'm22' && charted(main.indexOf(CONQUEST_MAPS.find(m=> m.id === 'm22'))), 'the Long Burrow is a preview on the charted Map 22');
+ok(mlb && !mlb.preview && mlb.parent === 'm22' && charted(main.indexOf(CONQUEST_MAPS.find(m=> m.id === 'm22'))), 'the Long Burrow is open on the charted Map 22');
 ok(/preview:!LONG_BURROW_RELEASED/.test(src), 'the switch drives the Long Burrow\'s preview flag');
 
 // the Flea Market sits on Map 31: nothing shows a lock for it
