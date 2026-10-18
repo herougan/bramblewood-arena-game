@@ -827,7 +827,7 @@ const PASSIVE_DEFS = [
   {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`It can see in darkness.`}, // 2026-10-15 (user: "Darksight explanation is TOO complicated. Just explain what it does - it can see in darkness.")
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
-  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it is grounded: a bramble can't be shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18: castles can't be shocked (grounded)
+  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it strikes the bramble, which is never Shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has (a bramble never counts as Wet).'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18 (owner 15:05 "No Shocked status on Brambles."): the bramble takes the damage again, no status, no Wet bonus
   {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): Divine Retribution → Retribution,
   // Satiety → Well Fed. Labels only; the keys stay retribution and satiety.
@@ -1989,7 +1989,7 @@ const STATUS_KEYWORDS = [
   {k:'shield', re:/\b(shield)\b/gi, cs:true, name:'Shield', c:'#3d8fd1', text:'temporary Health that soaks damage first and doesn’t come back.'},
   // 2026-10-17 (user: "Wet units just take +N damage by default, for every wet counter. Can see this in codex instead."): the general Wet
   // rule (the engine's wetCountOf / wetShockBonus). cs: the game word only, so "wet ground" in plain prose stays plain.
-  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:'takes 1 more lightning damage from every lightning hit for each Wet counter it has. A unit has one counter for each of these: it is a Swimmer or Tide unit; it is raining (the Rain field); the Tide is in (Flood or High Tide).'},
+  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:'takes 1 more lightning damage from every lightning hit for each Wet counter it has. A unit has one counter for each of these: it is in the water (a Swimmer or Tide unit always is, in Flood or Ebb; while the Tide is in, Flood or High Tide, so is every unit that isn’t Flying); it is raining (the Rain field). A bramble is never Wet.'}, // 2026-10-18 (owner 15:05): the Flood wets every land unit, flyers stay dry
 ];
 // Keywords everywhere (2026-10-12, user: "Highlight keywords like pitch etc. Also, if the keyword has colour, give it some
 // colour. Do this as a standard for all descriptions. If it's possible dont hardcode this ... (except in flavour text)").
@@ -14522,23 +14522,26 @@ const SKIRMISH_KINDS = ['skirmish','elite','champion','miniboss','subboss','boss
 // 2026-10-18), 1 Smart (it reads the battlefield), 2 Smartest (it also focuses kills, blocks, holds field cards, pitches better).
 // Auto, by the map number (mapNumberOf; a side map counts as its parent): Maps 0–4 Basic; Map 5+ Smart in every fight that isn't
 // an ordinary skirmish (elite, champion, mini-boss, sub-boss, boss, dungeon, world boss, raid, campaign boss), Basic in the
-// ordinary ones; Map 21+ Smartest everywhere. The Babel Spire: Smart on every floor (2026-10-18, owner 11:46: "Babel Spire is like
-// the ultimate difficulty. Smart by default."; it was Smartest from floor 25). Edit skirmish → Difficulty (node.ai: 'basic' | 'smart' | 'smartest') overrides Auto. Fights off the road keep the engine's
+// ordinary ones; Map 21+ Smartest everywhere. The Babel Spire: the smartest CPU there is on every floor (2026-10-18, owner 15:05:
+// "Smartest. - if we progressively make a smarter CPU, use that one in the future."; it was Smart since 11:46, Smartest from floor 25
+// before that): CPU_AI_MAX, the engine's AI_LEVEL_MAX, so a smarter level added later applies there automatically. Edit skirmish → Difficulty (node.ai: 'basic' | 'smart' | 'smartest') overrides Auto. Fights off the road keep the engine's
 // default, Smart (Arena vs AI, Gauntlet, PvP ghosts, raids, the old Dungeon run); the tutorial is Basic (cpuAiLevelOfMatch).
 const CPU_AI_KEYS = ['basic', 'smart', 'smartest'];
 const CPU_AI_LABEL = {basic:'Basic', smart:'Smart', smartest:'Smartest'};
 const CPU_SMART_FROM_MAP = 5, CPU_SMARTEST_FROM_MAP = 21;
 const CPU_SMART_KINDS = new Set(['elite','champion','miniboss','subboss','boss','dungeon','worldboss','raidboss','megaraid','finalboss']);
+const CPU_AI_MAX = typeof AI_LEVEL_MAX === 'number' ? AI_LEVEL_MAX : CPU_AI_KEYS.length - 1; // the highest level the engine has (2026-10-18)
+const cpuAiKeyOf = lv=> CPU_AI_KEYS[Math.max(0, Math.min(CPU_AI_KEYS.length - 1, lv | 0))]; // a level past the named ones reads as the top name
 function cpuAiAutoLevel(mapId, node){
   if(!node) return 1;
-  if(node.tower) return 1;
+  if(node.tower) return CPU_AI_MAX; // the Babel Spire: always the smartest CPU (2026-10-18, owner 15:05)
   const n = mapNumberOf(mapId); if(n == null) return 1;
   if(n >= CPU_SMARTEST_FROM_MAP) return 2;
   return n >= CPU_SMART_FROM_MAP && CPU_SMART_KINDS.has(node.kind || 'skirmish') ? 1 : 0;
 }
 function cpuAiLevelForNode(mapId, node){ const k = node && CPU_AI_KEYS.indexOf(node.ai); return k >= 0 ? k : cpuAiAutoLevel(mapId, node); }
 function cpuAiLevelOfMatch(m){ if(!m) return 1; if(m.aiLevel != null) return m.aiLevel; return m.mode === 'tutorial' ? 0 : 1; }
-function cpuAiPillHTML(level){ const k = CPU_AI_KEYS[level] || 'smart'; return `<div class="vs-ai-pill is-${k}" title="How the CPU plays this fight">🧠 ${CPU_AI_LABEL[k]} CPU</div>`; }
+function cpuAiPillHTML(level){ const k = level == null ? 'smart' : cpuAiKeyOf(level); return `<div class="vs-ai-pill is-${k}" title="How the CPU plays this fight">🧠 ${CPU_AI_LABEL[k]} CPU</div>`; }
 function nodePatchFor(mapId, key){ const e = nodeEdits[mapId] = nodeEdits[mapId] || {}; e.patches = e.patches || {}; e._localAt = Date.now(); return e; } // _localAt: see applyCloudNodeEdits
 function isAddedNode(mapId, key){ return ((nodeEdits[mapId]||{}).added||[]).some(n=> n.key===key); }
 function addSkirmishToMap(mapId){
@@ -14896,7 +14899,7 @@ function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return
 // (fieldConditionRows), Edit skirmish (FIELD_EFFECTS) and the Effects library (FXL_FIELDS). The rules live in bramblewood-engine.js
 // (fieldEffects2Tick and the helper block near `rules`). key = the rules flag; editor = the Edit skirmish id.
 const FIELD2 = {
-  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor.'},
+  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor. A Flood fills the whole board: every unit that isn’t Flying is Wet; Swimmers and Tide units are Wet in Ebb too.'}, // 2026-10-18 (owner 15:05): the Flood wets land units
   landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:"Each round from round 2, a 1 in 4 chance that rocks come down on three neighbouring columns: 5 damage to every unit there that isn't flying, on both sides."}, // 2026-10-17 (user: "it should only affect the L/C/R cards")
   consternation: {icon:'😰', name:'Consternation', editor:'consternation', short:'Hand cards lose 1/1 a round', text:'Each round from round 2, every card in each hand loses 1/1. The loss stays on the card when it is played (down to 0 Attack and 1 Health at most).'},
   crushingDepths:{icon:'🫧', name:'Crushing Depths', editor:'crushingdepths', short:'5 water damage a round', text:'Each round from round 2, every unit takes 5 water damage. Tide units and Swimmers take half, and water Resist halves it again. No day or night reaches down here.'},
@@ -15348,7 +15351,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label title="An uneven cycle (2026-10-17, the volcano's glow: Day 4, Night 2). Blank: the map's own (the volcano maps 4 and 2), else Switch every">Day / Night<input id="sePhaseDay" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseDay != null ? escapeAttr((draft.rules||{}).phaseDay) : ''}"> / <input id="sePhaseNight" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseNight != null ? escapeAttr((draft.rules||{}).phaseNight) : ''}"> rounds</label>
           <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 bramble Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never gives up')}</select></label>
-          ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire Smart, Smartest from floor 25">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[CPU_AI_KEYS[cpuAiAutoLevel(mapId, draft)]] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
+          ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire the smartest CPU on every floor">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[cpuAiKeyOf(cpuAiAutoLevel(mapId, draft))] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
           <label title="What this fight keeps putting out once it has no cards left">Out of cards, summons<select id="seLoop">${Object.entries(LOOP_PRESETS).map(([k, p])=> opt(k === '-' ? '' : k, draft.loopUnits || '', p.label)).join('')}</select></label>
         </fieldset>
         ${draft.kind === 'tutorial' ? '' : (()=>{ const chips = skirmishFieldChips(mapId, draft);
@@ -28221,7 +28224,7 @@ function renderBoard(opts){
   const hadNewEntrants = newBoardEls.length>0;
   fitBattlefieldZoom();
   try{ fxHook('boardRendered', matchState); }catch(e){} // FX batch B (2026-10-15): who can't see in the dark, the forecast pill
-  try{ syncTideScene(matchState); }catch(e){} // the standing Tide: waded rings on new cards (2026-10-18)
+  try{ syncTideScene(matchState); }catch(e){} // the standing Tide: the wet look on new cards (2026-10-18)
   try{ syncUnitLightPools(); }catch(e){} // unit light in the dark (2026-10-15)
   // Bugfix (2026-09-17, root cause of the residual small stuck-transform matrices test_v24
   // still caught after the scale-1.08/shove fixes above — e.g. a card left mid fall-in at
@@ -32609,11 +32612,18 @@ function coldWaveVfx(m){
 // The standing Tide (2026-10-18, owner: "The tide effect has not been updated to be better."): a water layer under the cards
 // (.tide-scene, first child of #battlefieldEl, CSS in arena_template.html) shows the tide as it is: Flood fills the board to near its top,
 // High Tide to the brim, Ebb leaves a shallow strip along the bottom, no tide no water. A change rises or recedes smoothly (1.8 s), an ebb
-// leaves wet sand that dries, land units stand waded in a ring of water (.tide-wade) and Swimmers bob in theirs. m._tideScene remembers what
+// leaves wet sand that dries, land units stood waded in a ring of water (retired below) and Swimmers bob. m._tideScene remembers what
 // is shown ({k, from, at}); renderMatchUI rebuilds the battlefield, so syncTideScene redraws the layer and resumes a move in progress
 // (negative animation delay) instead of replaying it. While a round replays, the shown state waits for the 'tide' event (the engine is
 // already a round ahead); otherwise it follows the engine.
-const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'84%', flow:'15%', high:'3%'};
+// 2026-10-18 (owner 15:05: "Flood should fill the whole board i think, then the water vfx can come into play after the water settles. In
+// Ebb, the water retreats to the bottom borders of the board. Units that can swim sometimes have a splash or water droplet effect under
+// them."): Flood and High Tide fill the whole board, top to bottom; the caustics and the sheen (.tw-surf) fade in only once the water has
+// settled; Ebb leaves a thin band along the bottom border. The waded ring under land units is gone: a wet unit (every unit that isn't
+// flying in a Flood, a Swimmer / Tide unit in Flood or Ebb: the engine's Wet rule, wetCountOf) wears a subtle wet look instead (.unit-wet),
+// and Swimmers now and then splash (SwimSplash below). Every board row counts, the raid's middle and back rows too.
+const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'calc(100% - 12px)', flow:'0%', high:'0%'};
+const TIDE_BOARD_CARDS = '#battlefieldInner .board-row > .board-card'; // every row: yours, the enemy's, and the raid's middle / back rows (2026-10-18)
 const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {none:0, ebb:1, flow:2, high:3};
 function tideSceneTarget(m){
   try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
@@ -32630,7 +32640,7 @@ function syncTideScene(m){
   let w = bf.querySelector(':scope > .tide-scene');
   if(st.k === 'none' && !moving){ if(w) w.remove(); delete bf.dataset.tide; return; }
   if(!w){ w = document.createElement('div'); w.className = 'tide-scene'; w.setAttribute('aria-hidden', 'true');
-    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
+    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><div class="tw-surf"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div></div><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
     bf.insertBefore(w, bf.firstChild); }
   const key = st.k + '|' + st.at;
   if(w.dataset.key !== key){
@@ -32643,9 +32653,12 @@ function syncTideScene(m){
     w.classList.toggle('is-drying', moving && (st.from === 'flow' || st.from === 'high') && (st.k === 'ebb' || st.k === 'none'));
   }
   bf.dataset.tide = st.k; bf.style.setProperty('--tw-wade-delay', (moving ? -el : -1e6) + 'ms');
-  bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(c=>{
-    if(c.querySelector(':scope > .tide-wade') || !c.querySelector('.card-tile')) return;
-    const i = document.createElement('i'); i.className = 'tide-wade'; i.setAttribute('aria-hidden', 'true'); c.appendChild(i); });
+  // the wet look (2026-10-18): on every unit that isn't flying, in every board row; a Swimmer's rides its bobbing body (.float-body)
+  bf.querySelectorAll(TIDE_BOARD_CARDS).forEach(c=>{
+    if(c.classList.contains('is-flying') || !c.querySelector('.card-tile')) return;
+    const host = c.querySelector(':scope > .float-body') || c;
+    if(host.querySelector(':scope > .unit-wet')) return;
+    const i = document.createElement('i'); i.className = 'unit-wet'; i.setAttribute('aria-hidden', 'true'); host.appendChild(i); });
 }
 function tideWaveVfx(kind){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
@@ -32664,7 +32677,7 @@ function tideWaveVfx(kind){
 // One layout read per card (its column), then class toggles; the lift itself is a CSS animation of the tile's translate / rotate
 // (.tide-lift / .tide-lift-ebb in arena_template.html). Flyers are above the water and stay still.
 function tideLiftCards(bf, kind){
-  const cards = [...bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card')].filter(c=> !c.classList.contains('is-flying') && c.querySelector('.card-tile'));
+  const cards = [...bf.querySelectorAll(TIDE_BOARD_CARDS)].filter(c=> !c.classList.contains('is-flying') && c.querySelector('.card-tile')); // every row (2026-10-18)
   if(!cards.length) return;
   const bl = bf.getBoundingClientRect().left, rs = cards.map(c=> c.getBoundingClientRect()), w = rs[0].width || 100;
   const cols = rs.map(r=> Math.max(0, Math.round((r.left - bl) / w))), c0 = Math.min(...cols), cls = kind === 'ebb' ? 'tide-lift-ebb' : 'tide-lift';
@@ -32672,6 +32685,28 @@ function tideLiftCards(bf, kind){
   const last = .25 + (Math.max(...cols) - c0)*.1;
   setTimeout(()=> cards.forEach(c=> c.classList.remove(cls)), Math.round((last + 1)*1000));
 }
+// Swimmer splashes (2026-10-18, owner 15:05: "Units that can swim sometimes have a splash or water droplet effect under them."): one
+// shared timer, every 1.6-4.2 s, may pick one Swimmer / Tide unit on the board (any row) while there is water (Flood, High Tide or Ebb)
+// and puts a small splash or a few droplets at its base (.swim-splash: transform / opacity only, gone in a second). Medium effects and
+// up, not under reduced motion or the Minimal style, only while the page is visible.
+const SwimSplash = (function(){
+  let timer = null;
+  function tick(){
+    timer = setTimeout(tick, 1600 + Math.random()*2600); if(timer && timer.unref) timer.unref(); // never holds a Node test run open
+    try{
+      const bf = document.getElementById('battlefieldEl'), t = bf && bf.dataset.tide;
+      if(!t || t === 'none' || document.hidden || reducedMotion() || !fxAtLeast('med') || fxStyle() === 'minimal' || Math.random() < .4) return;
+      const sw = [...bf.querySelectorAll(TIDE_BOARD_CARDS + '.is-floating')].filter(c=> !c.querySelector(':scope > .swim-splash'));
+      if(!sw.length) return;
+      const c = sw[Math.floor(Math.random()*sw.length)], s = document.createElement('i');
+      s.className = 'swim-splash' + (Math.random() < .5 ? ' ss-drops' : ''); s.setAttribute('aria-hidden', 'true');
+      s.style.left = (Math.random() < .5 ? 16 + Math.random()*18 : 66 + Math.random()*18).toFixed(0) + '%'; // beside the centred skill pill
+      c.appendChild(s); setTimeout(()=> s.remove(), 1100);
+    }catch(e){}
+  }
+  return {start(){ if(!timer){ timer = setTimeout(tick, 3000); if(timer && timer.unref) timer.unref(); } }, stop(){ clearTimeout(timer); timer = null; }};
+})();
+try{ if(typeof document !== 'undefined') SwimSplash.start(); }catch(e){}
 // Idle glance (2026-10-18, owner: "Idle land units on the board (rarely) but sometimes look left/right very slightly"): one shared timer,
 // every 3-7 s, may pick one land unit on the board (not a flyer or a Swimmer / Tide unit, not frozen, stunned, asleep, paralyzed or
 // caged) and its art glances a little left or right (.glance-l / .glance-r: ~0.6 s each way, a short hold, then back; CSS in
@@ -36379,7 +36414,6 @@ function field2LogText(ev, nm){
   if(ev.type === 'skipTurn' && ev.reason === 'frightened') return {cls:'', text:`${nm(ev.defId)} is too frightened to attack. 👻`};
   if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
   if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
-  if(ev.type === 'grounded') return {cls:'', text:`⚡ ${nm(ev.attDefId)}'s lightning is grounded: a bramble can't be shocked.`}; // 2026-10-18
   return null;
 }
 function field2Vfx(ev){
@@ -36389,7 +36423,6 @@ function field2Vfx(ev){
   const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
   const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
   const at = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2}; };
-  if(ev.type === 'grounded'){ let el = null; try{ el = hqTileEl(ev.targetSide); }catch(e){} fl(el, '⚡ Grounded', 'quick'); return; } // castles can't be shocked (2026-10-18)
   if(ev.type === 'fieldTick'){
     const h = FIELD2_HIT[ev.field];
     if(h){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){}

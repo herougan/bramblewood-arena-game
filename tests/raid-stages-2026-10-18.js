@@ -20,15 +20,15 @@ const part = g.parts[0].id;
 // ---- The data: three stages, each with rules, the chosen defaults labelled
 ['Enraged', 'Thrashing', 'Exposed'].forEach(n=> ok(stage(n), `the Goliath has a ${n} stage`));
 ok(Object.keys(R.stageRules(stage('Enraged'))).length && Object.keys(R.stageRules(stage('Thrashing'))).length, 'Enraged and Thrashing have rules now');
-ok(/owner to confirm/.test(stage('Enraged').note || '') && /owner to confirm/.test(stage('Thrashing').note || ''), 'the chosen defaults are labelled in the data');
+ok(/owner 15:05/.test(stage('Enraged').note || '') && /owner 15:05/.test(stage('Thrashing').note || ''), 'the chosen defaults are labelled in the data (owner 15:05: no extra volley)');
 
 // ---- Each stage's rules land in the built fight
 { const f = R.fightFor(g, stateAt(stage('Enraged')), part, {myCastleHp: 100});
-  ok(f.stage === 'Enraged' && f.bossAtk === 2 && f.extraVolley === 1 && !f.stripAbilities && f.castleHpPct === 0, `Enraged: +2 Attack, one back-row volley (${JSON.stringify(f.stageRules)})`);
+  ok(f.stage === 'Enraged' && f.bossAtk === 2 && f.extraVolley === 0 && !f.stripAbilities && f.castleHpPct === 0, `Enraged: +2 Attack, no extra back-row volley (2026-10-18 owner 15:05) (${JSON.stringify(f.stageRules)})`);
   ok(f.myCastleHp === 100, 'Enraged: your castle keeps its Health');
   ok(f.fieldRules.crushingDepths === 2 && f.fieldRules.tide === true && !f.fieldRules.landslide, 'Enraged: the raid\'s own field, no Landslide'); }
 { const f = R.fightFor(g, stateAt(stage('Thrashing')), part, {myCastleHp: 100});
-  ok(f.stage === 'Thrashing' && f.bossAtk === 4 && f.extraVolley === 1 && f.castleHpPct === -10, `Thrashing: +4 Attack, volley, castle -10% (${JSON.stringify(f.stageRules)})`);
+  ok(f.stage === 'Thrashing' && f.bossAtk === 4 && f.extraVolley === 0 && f.castleHpPct === -10, `Thrashing: +4 Attack, no extra volley, castle -10% (${JSON.stringify(f.stageRules)})`);
   ok(f.myCastleHp === 90, `Thrashing: your castle 100 -> 90 (${f.myCastleHp})`);
   ok(f.fieldRules.landslide === true && f.fieldRules.crushingDepths === 2 && f.fieldRules.psychicDampener === true, `Thrashing: Landslide on top of the raid's field (${JSON.stringify(f.fieldRules)})`); }
 { const f = R.fightFor(g, stateAt(stage('Exposed')), part);
@@ -51,7 +51,7 @@ ok(/owner to confirm/.test(stage('Enraged').note || '') && /owner to confirm/.te
 
 // ---- Descriptions: one line per stage
 { const e = R.describeStage(stage('Enraged')), t = R.describeStage(stage('Thrashing')), x = R.describeStage(stage('Exposed'));
-  ok(/\+2 Attack/.test(e) && /back two rows/.test(e), `Enraged reads: ${e}`);
+  ok(/\+2 Attack/.test(e) && !/back two rows/.test(e) && !/back two rows/.test(t), `Enraged reads: ${e} (2026-10-18 owner 15:05: no extra volley line)`);
   ok(/\+4 Attack/.test(t) && /Landslide/.test(t) && /10% Health/.test(t), `Thrashing reads: ${t}`);
   ok(/lose every ability/.test(x), `Exposed reads: ${x}`);
   ok(R.describeStage({name:'n'}) === '', 'a stage with no rules: no line');

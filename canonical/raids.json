@@ -183,22 +183,20 @@
       {
         "at": 0.75,
         "name": "Enraged",
-        "note": "Default chosen 2026-10-18 (R3-WP2, owner to confirm): every boss card +2 Attack, and its back two rows strike once a round.",
+        "note": "Default chosen 2026-10-18 (R3-WP2; owner 15:05 'your choice of balance': no extra round-start volley, since the boss's back rows already strike every round): every boss card +2 Attack.",
         "rules": [
           {
-            "bossAtk": 2,
-            "extraVolley": 1
+            "bossAtk": 2
           }
         ]
       },
       {
         "at": 0.5,
         "name": "Thrashing",
-        "note": "Default chosen 2026-10-18 (R3-WP2, owner to confirm): every boss card +4 Attack, its back rows keep striking, Landslide comes down, and the raiders' bramble has 10% less Health.",
+        "note": "Default chosen 2026-10-18 (R3-WP2; owner 15:05 'your choice of balance': no extra round-start volley, since the boss's back rows already strike every round): every boss card +4 Attack, Landslide comes down, and the raiders' bramble has 10% less Health.",
         "rules": [
           {
             "bossAtk": 4,
-            "extraVolley": 1,
             "field": "landslide",
             "castleHpPct": -10
           }
