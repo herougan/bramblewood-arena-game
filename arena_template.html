@@ -9934,6 +9934,12 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 /* Dark maps blot out (2026-10-15): with CSS masks the dark layers are one flat near-black, and the light is cut out of them by
    mountCaveDark's mask (the lantern at the pointer, the pawn, the open fights, the lit fires). Cleared maps keep the 0.78 veil. */
 .cave-dark.is-masked, .cave-screen-dark.is-masked{background:rgba(2,3,8,.95); -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;}
+/* 2026-10-18 (owner: "The cleared dark maps's darkness does not extend throughout"): the screen layer has a hole the canvas's size
+   (mountCaveDark) and the canvas layer fills it, square-cornered so the canvas's rounded corners don't leave lit nicks. The screen
+   layer sits at z-index 1, still under the map list and the map (also 1, later in the page) but now over the layout's other z-0
+   layers: the cleared map's warm glow (.dark-cleared::after) and a backdrop shader used to paint over it outside the canvas. */
+.cave-screen-dark{z-index:1;}
+body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 /* Fire pits in the dark (2026-10-15, user: "In caves, fireplaces (0-2) placed around, light up as you defeat skirmishes."): cold ones
    sit under the dark (seen only in the lantern), lit ones above it with a flickering flame and a warm glow. */
 .cave-fire{position:absolute; width:22px; height:22px; transform:translate(-50%,-50%); z-index:5; pointer-events:none;}

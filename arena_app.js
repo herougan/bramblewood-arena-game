@@ -14062,7 +14062,10 @@ function subMapEntrancesHTML(map, progress){
     const open = isMapUnlocked(sm, progress), after = sm.entry.after && map.nodes.find(n=> n.key===sm.entry.after);
     const fightable = sm.nodes.filter(n=> n.kind!=='tutorial'), done = fightable.filter(n=> progress.completed.includes(conquestNodeId(sm.id, n.key))).length;
     const seen = !!loadDialogueFlags()['submap_seen:'+sm.id];
-    const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
+    // 2026-10-18 (owner: Lilypad Reach waits on Gatorback Swamp): an entrance gated on another map names that map ("Clear
+    // Gatorback Swamp to open"); that map is always further down the road than the entrance's own fight.
+    const gateMap = !open && sm.entry.afterMapCleared && !conquestMapCleared(sm.entry.afterMapCleared) ? CONQUEST_MAPS.find(m=> m.id===sm.entry.afterMapCleared) : null;
+    const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : gateMap ? `${sm.entry.label || 'A cave'} — Clear ${gateMap.name} to open` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
     const p = decorPos(map.id, '~sub:'+sm.id, {x: sm.entry.x, y: sm.entry.y});
     // 2026-10-12 (user: "For those submaps whose maps are not caves - change the map icon/logo to be more representative.
     // Lilypad reach should be a lotus flower. and just that!"): only the real caves keep the rock and cave mouth; every other
@@ -17103,7 +17106,9 @@ const CONQUEST_MAPS = [
     ]},
   // Fused in as a side map (2026-10-12, user's map list: "Fuse mp in").
   // Lilypad Reach (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
-  { id:"mp", sub:true, parent:"mb", entry:{x:30, y:20, after:"2-1", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
+  // 2026-10-18 (owner: "Just too many sub missions so early ... Lock it till Gatorback Swamp is completed"): the entrance stays
+  // where it is on Pebble Beach but waits on Gatorback Swamp (afterMapCleared). A save that already fought here keeps it open.
+  { id:"mp", sub:true, parent:"mb", entry:{x:30, y:20, after:"2-1", afterMapCleared:"mw", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
     nodes: [
       { key:"2-A-1", kind:"skirmish", name:"Lily Hop", icon:"🐸", deck:{"puddle-hopper":3,"minnow-skitter":3,"guppy":3,"quill-volley":2,"lotus-frog":2,"shallows-fry":2}, hqHp:19, rules:{"tide":true}, flavor:"Every lily pad has a frog on it, and every frog has an opinion.", requires:[] },
       { key:"2-A-2", kind:"skirmish", name:"Duck Row", icon:"🦆", deck:{"duckling":1,"pond-duck":3,"pond-paddler":2,"minnow-skitter":2,"silver-minnow":2}, hqHp:28, rules:{"tide":true}, flavor:"They paddle in a line, and they all turn at once.", requires:["2-A-1"] },
@@ -43800,7 +43805,22 @@ function caveMaskImage(lamp, pools, pos){
   pools.forEach(q=> parts.push(`radial-gradient(circle at ${pos(q.x, q.y)}, transparent 0, transparent ${(q.r*.38).toFixed(1)}px, rgba(0,0,0,.62) ${(q.r*.85).toFixed(1)}px, #000 ${(q.r*1.35).toFixed(1)}px)`));
   return parts.join(', ');
 }
-function setCaveMask(el, img){ el.classList.add('is-masked'); el.style.webkitMaskImage = el.style.maskImage = img; el.style.webkitMaskComposite = 'source-in'; el.style.maskComposite = 'intersect'; }
+function setCaveMask(el, img, comp){ el.classList.add('is-masked'); el.style.webkitMaskImage = el.style.maskImage = img;
+  el.style.webkitMaskComposite = comp ? comp.split(', ').map(c=> c === 'add' ? 'source-over' : 'source-in').join(', ') : 'source-in'; el.style.maskComposite = comp || 'intersect'; }
+// The screen layer leaves the map canvas to the canvas layer (2026-10-18, owner: "The cleared dark maps's darkness does not
+// extend throughout"): the screen-wide layer used to darken the art under the canvas as well, so there the art got both layers
+// and outside the canvas (the strips round it, behind the map list and tab bar, past a scrolled edge) only one. Uncleared
+// (0.95 + 0.95) that hardly showed; cleared (0.78 each) the canvas sat in a visibly darker box. Now the screen layer's mask has a
+// hole the canvas's size (four bands, added together, then intersected with the lantern and pools), so every bit of the map gets
+// exactly one layer. The hole is only the part of the canvas its scroll box shows (the canvas layer is clipped there too).
+// Returns the extra mask layers and their composite operators, or null when no canvas is on screen.
+function caveScreenHole(cr, clip){
+  const r = clip ? {left: Math.max(cr.left, clip.left), top: Math.max(cr.top, clip.top), right: Math.min(cr.right, clip.right), bottom: Math.min(cr.bottom, clip.bottom)} : cr;
+  if(!r || !(r.right - r.left > 0) || !(r.bottom - r.top > 0)) return null;
+  const px = v=> v.toFixed(1) + 'px';
+  return {img: [`linear-gradient(to bottom, #000 ${px(r.top)}, transparent ${px(r.top)})`, `linear-gradient(to bottom, transparent ${px(r.bottom)}, #000 ${px(r.bottom)})`,
+    `linear-gradient(to right, #000 ${px(r.left)}, transparent ${px(r.left)})`, `linear-gradient(to right, transparent ${px(r.right)}, #000 ${px(r.right)})`], comp: ['add', 'add', 'add', 'add']};
+}
 function mountCaveDark(canvas, map){
   if(!canvas || !map || !mapBlotsOut(map)){ caveScreenOff(); return null; }
   const lit = caveMapCleared(map); if(caveLamp.r === 150 || caveLamp.r === 195) caveLamp.r = lit ? 195 : 150; // (a spread in progress keeps its radius)
@@ -43819,8 +43839,14 @@ function mountCaveDark(canvas, map){
     const pools = CAVE_MASK_OK ? caveLightPools(canvas, reducedMotion() ? 0 : performance.now()) : null;
     if(pools) setCaveMask(el, caveMaskImage(caveLamp, pools, (x, y)=> `${x.toFixed(2)}% ${y.toFixed(2)}%`));
     if(o){ if(!syncCaveScreen()) return; o.style.setProperty('--lx', (r.left + caveLamp.x*r.width) + 'px'); o.style.setProperty('--ly', (r.top + caveLamp.y*r.height) + 'px'); o.style.setProperty('--lr', caveLamp.r + 'px');
-      if(pools) setCaveMask(o, caveMaskImage(caveLamp, pools, (x, y)=> `${(r.left + x/100*r.width).toFixed(1)}px ${(r.top + y/100*r.height).toFixed(1)}px`)); } };
+      if(pools){ const base = caveMaskImage(caveLamp, pools, (x, y)=> `${(r.left + x/100*r.width).toFixed(1)}px ${(r.top + y/100*r.height).toFixed(1)}px`), scrollBox = canvas.closest('.conquest-main'), hole = caveScreenHole(r, scrollBox && scrollBox.getBoundingClientRect()); // 2026-10-18: no double dark under the canvas
+        setCaveMask(o, hole ? base + ', ' + hole.img.join(', ') : base, hole ? Array(pools.length + 1).fill('intersect').concat(hole.comp).join(', ') : null); } } };
   apply();
+  // 2026-10-18: the hole follows the canvas at once when the map scrolls (the phone's map scrolls up and down), not on the next tick.
+  if(window.__bwCaveScroll) document.removeEventListener('scroll', window.__bwCaveScroll, true);
+  let scrollRaf = 0;
+  window.__bwCaveScroll = ()=>{ if(!el.isConnected){ document.removeEventListener('scroll', window.__bwCaveScroll, true); return; } if(!scrollRaf) scrollRaf = requestAnimationFrame(()=>{ scrollRaf = 0; apply(); }); };
+  document.addEventListener('scroll', window.__bwCaveScroll, {capture:true, passive:true});
   // The pools follow the pawn while it walks, the fires flicker, and a scroll or resize moves the screen layer's holes.
   clearInterval(window.__bwCaveTick); window.__bwCaveTick = setInterval(()=>{ if(!el.isConnected){ clearInterval(window.__bwCaveTick); return; } if(!document.hidden) apply(); }, 120);
   const move = e=>{ const r = canvas.getBoundingClientRect(); if(!r.width) return; caveLamp.x = Math.max(0, Math.min(1, (e.clientX - r.left)/r.width)); caveLamp.y = Math.max(0, Math.min(1, (e.clientY - r.top)/r.height)); apply(); };
