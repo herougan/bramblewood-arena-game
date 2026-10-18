@@ -1646,7 +1646,8 @@ H.resultsShown = (card, m, env)=>{
   add(c=> c.querySelector('.rw-materia'), el=> M.materiaDrop(el));
   // 2026-10-17: the egg and the castle are chips in the one Rewards block now (rewardsPanelHTML), found by their own class.
   add(c=> c.querySelector('.rw-act.rw-egg') || (()=>{ const s = sec(c, 'Found'); return s && s.querySelector('.rw-act'); })(), el=> M.nestEggDrop(el, {icon:el.textContent.trim().split(' ')[0] || '🥚'}));
-  add(c=> c.querySelector('.rw-act.rw-castle') || (()=>{ const s = sec(c, 'Spare bramble'); return s && s.querySelector('.rw-act'); })(), el=> M.castleDrop(el, {text:/New (?:bramble|castle)/.test(el.textContent) ? 'New bramble!' : 'Spare bramble'}));
+  // 2026-10-18 (package T): a bramble won is a card among the cards won (.rw-card.rw-castle, .is-spare for one you had); the old chip stays matched
+  add(c=> c.querySelector('.rw-card.rw-castle, .rw-act.rw-castle') || (()=>{ const s = sec(c, 'Spare bramble'); return s && s.querySelector('.rw-act'); })(), el=> M.castleDrop(el, {text:(el.classList.contains('rw-card') ? !el.classList.contains('is-spare') : /New (?:bramble|castle)/.test(el.textContent)) ? 'New bramble!' : 'Spare bramble'}));
   add(c=> [...c.querySelectorAll('.rw-act')].find(x=> /Your character/.test(x.getAttribute('data-tip') || '')), el=> M.avatarUnlock(el));
   add(c=> c.querySelector('.rw-card.is-seen'), (_, c)=> [...c.querySelectorAll('.rw-card.is-seen')].slice(0, 3).forEach((s, i)=> later(()=> M.codexNew(s), i*180)));
   add(c=> c.querySelector('.winloss-achv'), el=> M.achvUnlocked(el));
