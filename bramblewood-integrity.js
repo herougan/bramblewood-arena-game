@@ -59,7 +59,9 @@ function gameplayView(def){
 // defs: {id: def} or [def]. Returns the full 64-hex hash; show the first 12 to humans.
 function cardDataHash(defs){
   const list = Array.isArray(defs) ? defs : Object.keys(defs || {}).map(id=> Object.assign({id}, defs[id]));
-  const rows = list.filter(Boolean).map(gameplayView).sort((a,b)=> String(a.id) < String(b.id) ? -1 : String(a.id) > String(b.id) ? 1 : 0);
+  // 2026-10-19 (package AN): pool cards ("pool": true, the owner's unplaced candidates) aren't in the build, so they aren't hashed:
+  // canonical/cards.json (pool rows included) and the page (pool rows left out) give the same fingerprint.
+  const rows = list.filter(d=> d && !d.pool).map(gameplayView).sort((a,b)=> String(a.id) < String(b.id) ? -1 : String(a.id) > String(b.id) ? 1 : 0);
   return sha256(stableStringify(rows));
 }
 

@@ -2653,6 +2653,10 @@ function nextMatchRng(){
 }
 let codexFiltersOpen = false; // UX A7: phone-only Codex filter disclosure
 const CARD_DEFS_BASELINE = __CARD_DEFS__;
+// Pool cards (2026-10-19, package AN, owner 23:04: "More thematic animals ... I'll pick and choose when balancing for a map"): the
+// candidates marked "pool": true in canonical/cards.json. The build keeps them OUT of CARD_DEFS_BASELINE, so no pack, reward, Codex,
+// CPU deck or card list sees them; only Admin's Manage Cards lists them (its "Pool cards" filter), tagged Pool, to browse and place.
+const POOL_CARD_DEFS = __POOL_CARD_DEFS__;
 // Character-select roster: small, fixed set of "background" cards (Castle/Collapsed Mine/Plains
 // Terrace/...) picked once before a match, each setting your HQ's max HP and granting a team-wide
 // passive. Not part of the card pool at all — no lock system, no live-db editing (yet).
@@ -8017,7 +8021,8 @@ function wireLevelStatsEditor(){
 function openCardEditor(defId, versionDef){
   // 2026-10-07 audit: start from the shared definition, not getCardDefs() — that one applies THIS
   // player's card level and personal unlocks, which a plain Save used to bake into the card for everyone.
-  editingCard = defId ? (rawCardDef(defId) || JSON.parse(JSON.stringify(getCardDefs()[defId]))) : blankCard();
+  // 2026-10-19 (package AN): a pool card (Admin's Pool cards filter) isn't in the live defs: it opens as a new card to place.
+  editingCard = defId ? (rawCardDef(defId) || (getCardDefs()[defId] ? JSON.parse(JSON.stringify(getCardDefs()[defId])) : poolCardForEditor(defId)) || blankCard()) : blankCard();
   // History → "Load": the earlier version goes into the form unsaved (art it can't restore stays as is).
   if(versionDef){ const art = editingCard.art; editingCard = JSON.parse(JSON.stringify(versionDef)); if(editingCard.art==='__uploaded__'){ if(art) editingCard.art = art; else delete editingCard.art; } editingCard.__fromHistory = true; const ov = document.getElementById('editorOverlay'); if(ov) ov.innerHTML = ''; }
   delete editingCard.level;
@@ -25017,9 +25022,35 @@ async function adminResetProgress(){
 // full ~300+ card grid) since this is a lookup tool for someone who already knows roughly what
 // they're after, not a browsing experience — that's what the Codex is for.
 let adminCardSearch = '';
+// Pool cards filter (2026-10-19, package AN): shows the unplaced candidates (POOL_CARD_DEFS) instead of the live cards, grouped by
+// the map each was made for, each tagged Pool. A click opens it in the card editor with its map filled in: pick the skirmish (or
+// a pack) under From and Save, and it goes live as a new card. One that is live already (placed) drops off the list.
+let adminPoolOnly = false;
+function adminPoolCardIds(){
+  const live = getCardDefs(), q = adminCardSearch.trim().toLowerCase(), maps = typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : [];
+  const order = id=>{ const m = (POOL_CARD_DEFS[id] || {}).poolMap, n = mapNumberOf(m); return (n == null ? 999 : n) * 10 + (maps.find(x=> x.id === m && x.sub) ? 1 : 0); };
+  return Object.keys(POOL_CARD_DEFS).filter(id=> !live[id] && (!q || (POOL_CARD_DEFS[id].name || '').toLowerCase().includes(q)))
+    .sort((a, b)=> order(a) - order(b) || String(POOL_CARD_DEFS[a].poolMap).localeCompare(String(POOL_CARD_DEFS[b].poolMap)) || POOL_CARD_DEFS[a].name.localeCompare(POOL_CARD_DEFS[b].name));
+}
+function adminPoolGridHTML(){
+  const ids = adminPoolCardIds(); if(!ids.length) return `<p class="panel-sub">${escapeHtml(TX('ui.admin-pool-none'))}</p>`;
+  const maps = typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : [], groups = [];
+  ids.forEach(id=>{ const m = POOL_CARD_DEFS[id].poolMap; let g = groups[groups.length - 1]; if(!g || g.m !== m){ g = {m, ids:[]}; groups.push(g); } g.ids.push(id); });
+  return groups.map(g=>{ const mp = maps.find(x=> x.id === g.m), n = mapNumberOf(g.m);
+    const head = `${mp ? escapeHtml(mp.icon || '') + ' ' : ''}${n == null ? '' : escapeHtml(TX('ui.admin-pool-map', {n})) + ' · '}${escapeHtml(mp ? mp.name : (g.m || '?'))} <small>(${g.ids.length})</small>`;
+    return `<h4 class="admin-pool-head">${head}</h4><div class="grid-view admin-manage-grid">${g.ids.map(id=>{ const d = POOL_CARD_DEFS[id];
+      return `<div class="admin-pool-wrap" title="${escapeAttr(d.creatorNote || '')}"><span class="admin-pool-tag">${escapeHtml(TX('ui.admin-pool-tag'))}${d.poolSlot ? ' · ' + escapeHtml(d.poolSlot === 'pack' ? TX('ui.admin-pool-slot-pack') : TX('ui.admin-pool-slot-skirmish')) : ''}</span>${cardTileHTML(d, {extraClass:'admin-manage-tile is-pool-card'})}</div>`; }).join('')}</div>`; }).join('');
+}
+function poolCardForEditor(id){ // the pool card as a new live card to place: its pool fields go, its map is pre-filled under From
+  const d = POOL_CARD_DEFS[id]; if(!d) return null;
+  const c = JSON.parse(JSON.stringify(d)); delete c.pool; delete c.poolMap; delete c.poolSlot;
+  if(d.poolMap && !c.source) c.source = {kind:'map', id:d.poolMap};
+  return c;
+}
 function adminManageCardsGridHTML(){
   const defs = getCardDefs();
   const q = adminCardSearch.trim().toLowerCase();
+  if(adminPoolOnly) return adminPoolGridHTML();
   if(!q) return '<p class="panel-sub">Type a card name above to find it, or use Create a Card.</p>';
   const matches = Object.keys(defs).filter(id=>defs[id].name.toLowerCase().includes(q)).sort((a,b)=>defs[a].name.localeCompare(defs[b].name)).slice(0,60);
   if(!matches.length) return '<p class="panel-sub">No cards match that search.</p>';
@@ -25037,6 +25068,7 @@ function adminManageCardsHTML(){
       <p class="panel-sub">Create a new card, or search below to edit an existing one. The Codex itself (every player's view) is read-only now — a click there opens a "learn more" detail view instead.</p>
       <button class="btn primary small" id="adminNewCardBtn" type="button">🆕 Create a Card</button>
       <div style="margin-top:10px;"><input data-text-filter autocomplete="off" type="text" id="adminCardSearchInput" placeholder="Search card name to edit…" value="${escapeAttr(adminCardSearch)}"></div>
+      <label class="admin-toggle-label admin-pool-filter" title="${escapeAttr(TX('ui.admin-pool-hint'))}"><input type="checkbox" id="adminPoolOnlyChk" ${adminPoolOnly ? 'checked' : ''}> ${escapeHtml(TX('ui.admin-pool-filter', {n: Object.keys(POOL_CARD_DEFS).length}))}</label>
       <div id="adminManageGrid">${adminManageCardsGridHTML()}</div>
     </div>`;
 }
@@ -25049,6 +25081,8 @@ function wireAdminManageCards(){
     const grid = document.getElementById('adminManageGrid');
     if(grid){ grid.innerHTML = adminManageCardsGridHTML(); wireAdminManageGrid(); }
   });
+  const poolChk = document.getElementById('adminPoolOnlyChk'); // 2026-10-19 (package AN): the Pool cards filter
+  if(poolChk) poolChk.addEventListener('change', e=>{ adminPoolOnly = e.target.checked; const grid = document.getElementById('adminManageGrid'); if(grid){ grid.innerHTML = adminManageCardsGridHTML(); wireAdminManageGrid(); } });
   wireAdminManageGrid();
 }
 // Roll Table editor (2026-09-24, per explicit request: "do the pack animation and table for

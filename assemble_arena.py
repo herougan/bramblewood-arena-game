@@ -145,7 +145,12 @@ app_src = app_src.replace("__EMOJI_ATLAS__", json.dumps(emoji_atlases(), separat
 
 canonical = json.load(open(SCRATCH + "canonical/cards.json", encoding="utf-8"))
 card_defs_obj = {}
+# Pool cards (2026-10-19, package AN, owner 23:04: "More thematic animals ... I'll pick and choose when balancing for a map"):
+# candidates marked "pool": true are not live cards. They never enter __CARD_DEFS__ (so no pack, reward, Codex, CPU deck or card
+# list of the game can see them, and the card-data hash is unchanged); Admin's Manage Cards lists them from __POOL_CARD_DEFS__.
+pool_defs_obj = {c["id"]: dict(c) for c in canonical if c.get("pool")}
 for c in canonical:
+    if c.get("pool"): continue
     d = dict(c)  # keep 'id' inside the object too (many call sites read d.id directly)
     if isinstance(d.get("art"), str) and d["art"].startswith("data:"):
         d["art"] = data_uri_to_asset("cards/" + _re.sub(r"[^a-z0-9_-]", "-", d["id"].lower()), d["art"])
@@ -302,6 +307,7 @@ out = sub_once(out, "__ENGINE_SRC__", engine_src + "\n" + ghosts_src)
 out = sub_once(out, "__ENGINE_SRC_STRING__", engine_src_string_literal)
 # app_src references __CARD_DEFS__ / __ARCHETYPE_ICON__ / __CHARACTER_DEFS__ inside itself
 app_src = sub_once(app_src, "__CARD_DEFS__", card_defs_literal)
+app_src = sub_once(app_src, "__POOL_CARD_DEFS__", json.dumps(pool_defs_obj, ensure_ascii=False))  # 2026-10-19 (package AN): Admin only
 app_src = sub_once(app_src, "__ARCHETYPE_ICON__", archetype_icon_literal)
 app_src = sub_once(app_src, "__CHARACTER_DEFS__", character_defs_literal)
 # Version + card-data check (2026-10-11, user: "a per-session card_data hash plus version check: if the client is

@@ -51,7 +51,7 @@ function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.im
 function hashStr(s){ let h = 2166136261; for(let i=0;i<s.length;i++){ h ^= s.charCodeAt(i); h = Math.imul(h, 16777619); } return h>>>0; }
 function rngFor(...parts){ return mulberry32(hashStr(parts.join('|'))); }
 function power(d){ const fx = Object.keys(d.effects||{}).length; return ((d.attack||0) + (d.health||0)*0.45 + fx*1.5) / (1 + 0.3*(d.wait||0)) - 0.6*(d.cost||0); }
-function pool(defs){ return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && !defs[id].hallOfFame && !String(id).includes('~')).sort((a,b)=> power(defs[a])-power(defs[b]) || (a<b?-1:1)); }
+function pool(defs){ return Object.keys(defs).filter(id=> defs[id] && !defs[id].token && !defs[id].test && !defs[id].hallOfFame && !defs[id].pool /* 2026-10-19 (package AN): pool cards aren't live */ &&!String(id).includes('~')).sort((a,b)=> power(defs[a])-power(defs[b]) || (a<b?-1:1)); }
 function pickN(r, arr, n, exclude){ const ex = new Set(exclude||[]); const out = []; let guard = 0; while(out.length<n && guard++<500){ const v = arr[Math.floor(r()*arr.length)]; if(!ex.has(v) && !out.includes(v)) out.push(v); } return out; }
 function baseId(id){ return String(id).split('~')[0]; }
 
