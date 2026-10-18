@@ -79,6 +79,16 @@ ok(E.TRIGGER_LAYER_CAP === 5, 'TRIGGER_LAYER_CAP is 5 (' + E.TRIGGER_LAYER_CAP +
   const got = [1,2,3,4,5,6].map(k=> count(P[1], 'tl-t' + k)).join(',');
   ok(got === '1,1,1,1,0,0', 'nested start: T0 arrives at layer 1, so T1..T4 follow and T5 is capped (' + got + ')'); }
 
+// ---- 1c. the death sweep: each pass is one layer deeper, the 6th pass clears the body and fires nothing
+{ const {e, P} = mk(); const ev = [];
+  const d = [0, 1, 2, 3, 4, 5, 6, 7].map(k=> k ? spawn(e, P, 1, 'tl-d' + k, ev) : null);
+  e.debugDamage(P, so, d[1].uid, 1, {}, ev);
+  const deaths = ev.filter(x=> x.type === 'death').map(x=> x.defId);
+  ok(['tl-d1','tl-d2','tl-d3','tl-d4','tl-d5','tl-d6'].every(id=> deaths.includes(id)), 'death chain: D1..D6 all die (' + deaths.join(' ') + ')');
+  ok(count(P[1], 'tl-d7') === 1 && d[7].hp === 1 && !deaths.includes('tl-d7'), 'death chain: D6 dies on the 6th pass (layer 6), its On Death does not fire, D7 is untouched');
+  ok(!all(P[1]).some(c=> c.hp <= 0), 'death chain: nothing is left on the board at 0 Health');
+  ok(ev.some(x=> x.type === 'triggerCapped' && x.defId === 'tl-d6' && x.hook === 'onDeath'), 'death chain: D6\'s On Death is logged as capped'); }
+
 // ---- 1d. an endless ping-pong is cut at 5 layers instead of running until a unit dies
 { const {e, P} = mk({mode:'open'}); const ev = [];
   const a = spawn(e, P, 1, 'tl-ping', ev); const b = spawn(e, P, 2, 'tl-ping', ev);

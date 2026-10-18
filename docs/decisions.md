@@ -362,6 +362,7 @@ The owner's answers (20:31) to the design review's questions on triggers, now ru
 
 - **Trigger chains stop at 5 layers (layers, not count).** The original event's triggers are layer 1. A trigger that goes off while another trigger is resolving is one layer deeper. Layers 1 to 5 resolve; a 6th-layer trigger does not fire (`TRIGGER_LAYER_CAP = 5`). Any number of triggers at the same layer (siblings) all resolve.
 - **A death sweep counts in layers too.** The deaths settled in a sweep's first pass fire layer-1 triggers (counted from where the sweep starts: a sweep opened inside a layer-2 trigger starts at layer 3). The deaths those triggers cause settle in the next pass, one layer deeper. The sweep's 6-pass limit is the cap plus one: the 6th pass clears the bodies and fires no triggers.
+- **A unit killed during a death sweep dies in the next pass** (Claude's fix, 2026-10-19). A unit killed by a death effect (Nova, Landslide, an On Death or On Ally Die trigger) dies properly, with its own death effects, graveyard and Darkness. It used to vanish with no death at all.
 - **Tokens fire death triggers.** A token's own On Death fires, and its allies fire On Ally Die for it, like any unit.
 - **Evasive covers both.** It dodges half of single-target attacks and skills.
 - **Simultaneous triggers resolve in board order:** the first player's units, then the second player's, lane by lane (left, centre, right).

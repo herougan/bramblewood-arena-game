@@ -5809,6 +5809,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       });
     });
     if(!deadEntries.length) return;
+    const deadCards = new Set(deadEntries.map(d=> d.card)); // 2026-10-19: see the row filter below
     const spawns = [], freed = [], retributions = [], splits = [];
     deadEntries.forEach(({pl, side, card})=>{
       const mySide = sideOf(pl.id);
@@ -5932,7 +5933,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       }
     });
     [p1,p2].forEach(pl=>{
-      ['left','center','right'].forEach(side=>{ pl.row[side] = pl.row[side].filter(c=>c.hp>0); });
+      // 2026-10-19 (trigger layers): only this pass's dead leave here. A unit an On Death / On Ally Die trigger kills during the
+      // pass stays at 0 Health and dies properly in the next pass (one layer deeper); it used to vanish here with no death at all.
+      ['left','center','right'].forEach(side=>{ pl.row[side] = pl.row[side].filter(c=>c.hp>0 || !deadCards.has(c)); });
     });
     freed.forEach(f=>{
       const owner = players[f.owner]; if(!owner) return;
