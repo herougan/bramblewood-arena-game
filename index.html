@@ -10123,6 +10123,13 @@ body.cq-opening .map-trail-svg{display:none !important;}
 .conquest-main > .is-ghost{opacity:.1 !important;}
 .conquest-main > .conquest-headline{transition:opacity .45s ease;} .conquest-main > .conquest-headline.is-away{opacity:0 !important; pointer-events:none;}
 .conquest-admin-btn{position:absolute; top:58px; right:12px; z-index:8; width:38px; height:38px; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; font-size:17px; cursor:pointer; display:flex; align-items:center; justify-content:center;} .conquest-admin-btn.is-on{background:rgba(200,40,40,.55); border-color:rgba(255,140,140,.8);}
+/* Home on the map's own button row (2026-10-18, package MB, owner: "In mobile, there's no way to go 'home'. No home button in the
+   conquest menu."): the full-screen map hides the header and the 🏠 / ⚙️ / Energy row, so 🏠 sits left of 🧭 while it is on. */
+.conquest-home-btn{display:none; position:absolute; top:12px; right:104px; z-index:8; width:38px; height:38px; padding:0; border-radius:10px; border:1px solid rgba(255,255,255,.35); background:rgba(0,0,0,.4); color:#fff; cursor:pointer; align-items:center; justify-content:center;}
+.conquest-home-btn .tab-emoji{font-size:18px; line-height:1; margin:0;}
+.conquest-home-btn:hover, .conquest-home-btn:focus-visible{background:rgba(0,0,0,.6);}
+body.conquest-immersive .conquest-home-btn{display:flex;}
+body.conquest-immersive.world-hidden .conquest-home-btn{right:58px;} /* no 🧭 yet: right beside ⛶ */
 /* World edges are off while editing the layout (2026-10-10) */
 .world-edge.is-editing{opacity:.35; filter:grayscale(1); cursor:not-allowed;}
 /* Cave darkness over the whole map, with a lantern hole at the pointer (2026-10-10) */
@@ -10176,7 +10183,16 @@ body.conquest-full #appWrap.cq-hud:not(.cq-no-tabs):not(.in-match) #view-play{pa
   .card-tile.card-tile .badges .abadge{font-size:clamp(9px, 11cqw, 13px) !important; padding:0 2px !important;}
 }
 @media (max-width:640px){
-  .conquest-fs-btn{top:58px !important;} /* 2026-10-13 UI audit: it hid behind the Energy pill */
+  /* 2026-10-18 (package MB, owner on mobile: "the admin and full screen button are stacked together. Put the full screen button on
+     the correct row."): the 10-13 top:58px pushed ⛶ onto the 🚨 Admin button's spot. ⛶ is back on the 🧭 World row (top:12px);
+     it only steps down, with 🚨 under it, while the map strip is hidden (world not open yet) and the Energy pill shares that line. */
+  .conquest-fs-btn{top:12px;} /* was top:58px !important (2026-10-13 UI audit: it hid behind the Energy pill) */
+}
+@media (max-width:820px){
+  body.world-hidden:not(.conquest-immersive) .conquest-fs-btn{top:58px;}
+  body.world-hidden:not(.conquest-immersive) .conquest-admin-btn{top:104px;}
+}
+@media (max-width:640px){
   .toast-host{top:auto !important; bottom:calc(92px + env(safe-area-inset-bottom, 0px)) !important;} /* toasts no longer cover the HUD and the map title */
 }
 /* Faction colours (2026-10-13, user: "Blue represents Hummingbirds, Red represents Otters. Neutral creatures are Green") */
@@ -35956,7 +35972,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fx-gale": "Strong wind every round, back or face. Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.",
   "ui.fxx-gale": "It blows a random way: at your back or in your face (1 in 2 each).",
   "ui.fx-swamp-fever": "From round 2, every unit may catch 1 Poison each round ({odds}).",
-  "ui.fxx-swamp-fever": "Structures never catch it."
+  "ui.fxx-swamp-fever": "Structures never catch it.",
+  "ui.back-to-home": "Back to Home"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
@@ -39029,7 +39046,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '501ecb97a2d5', BUILD_CARD_HASH = '4f5468def71c08d3f96b5edc9c26bce2d1e2a682ee5af9d079fdce33dd191af4';
+const BUILD_ID = '4cb7aa10dc46', BUILD_CARD_HASH = '4f5468def71c08d3f96b5edc9c26bce2d1e2a682ee5af9d079fdce33dd191af4';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -56581,7 +56598,7 @@ function renderConquestSubTab(body){
   mainEl.className = 'conquest-main' + (map.endless && map.axis === 'x' ? ' endless-x-main' : '') + (map.endless && map.axis !== 'x' ? ' endless-y-main' : ''); // a left-to-right dungeon scrolls sideways (2026-10-16)
   mainEl.dataset.mapId = map.id;
   { const lay = mainEl.parentElement; if(lay){ lay.querySelectorAll(':scope > .season-veil').forEach(v=> v.remove()); lay.insertAdjacentHTML('beforeend', `<div class="season-veil season-${currentSeason()}" aria-hidden="true"></div>`); if(getComputedStyle(lay).position==='static') lay.style.position = 'relative'; } }
-  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}<button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
+  mainEl.innerHTML = `<button type="button" class="conquest-world-btn" id="conquestWorldBtn" aria-label="World map" title="World map — every map at once">🧭</button>${adminModeEnabled ? `<button type="button" class="conquest-admin-btn ${conquestAdminBarOpen ? 'is-on' : ''}" id="conquestAdminBtn" aria-pressed="${conquestAdminBarOpen}" title="Admin tools for this map">🚨</button>` : ''}${'' /* 2026-10-18 (package MB, owner on mobile: "there's no way to go 'home'. No home button in the conquest menu."): full-screen map hides the header and the Home / Settings row, so a 🏠 sits on the map's own button row (CSS shows it only while body.conquest-immersive) */}<button type="button" class="conquest-home-btn" id="conquestHomeBtn" aria-label="${escapeAttr(TX('ui.back-to-home'))}" title="${escapeAttr(TX('ui.back-to-home'))}"><span class="tab-emoji" aria-hidden="true">🏠</span></button><button type="button" class="conquest-fs-btn" id="conquestFsBtn" aria-label="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen' : 'Full-screen map'}" title="${document.body.classList.contains('conquest-immersive') ? 'Exit full screen (Esc)' : 'Full-screen map'}">${document.body.classList.contains('conquest-immersive') ? '✕' : '⛶'}</button><div class="conquest-scrim conquest-headline"><h3>${map.icon} ${map.name}</h3><p class="panel-sub">${map.blurb}</p>${isDailyDungeonMap(map) ? dungeonTicketLineHTML(map) : ''}</div>
     ${adminModeEnabled && (conquestAdminBarOpen || conquestLayoutEdit || conquestLinkEdit) ? mapLayoutToolbarHTML(map) : ''}
     <div class="conquest-map-canvas ${conquestLayoutEdit&&adminModeEnabled?'layout-editing'+(mapLayoutGrid?' ml-grid':''):''} ${tutPhase || tutZoomOut ? 'tut-zoom' : ''} ${map.endless ? 'endless-map' + (map.axis === 'x' ? ' endless-x' : '') : ''}" id="conquestCanvas" style="${map.endless ? (map.axis === 'x' ? `width:${map.nodes.length * 96}px;` : `min-height:${map.nodes.length * 86}px; --endless-h:${map.nodes.length * 86}px;`) : ''}${conquestLayoutEdit&&adminModeEnabled&&mapLayoutGrid?`--grid-step:${mapLayoutGrid}%;`:''}${zoomAt && (tutPhase || tutZoomOut) ? `--tut-x:${zoomAt.x}%; --tut-y:${zoomAt.y}%;` : ''}">
       <svg class="map-trail-svg" viewBox="0 0 100 100" preserveAspectRatio="none">${trailGrads.length ? `<defs>${trailGrads.join('')}</defs>` : ''}${edgeLines.join('')}</svg>
@@ -56678,6 +56695,7 @@ function renderConquestSubTab(body){
   { const fb = document.getElementById('conquestFsBtn'); if(fb) fb.onclick = ()=> toggleConquestImmersive(body); }
   { const wb = document.getElementById('conquestWorldBtn'); if(wb) wb.onclick = ()=> openConquestWorld(body); }
   { const ab = document.getElementById('conquestAdminBtn'); if(ab) ab.onclick = ()=>{ conquestAdminBarOpen = !conquestAdminBarOpen; renderConquestSubTab(body); }; }
+  { const hb = document.getElementById('conquestHomeBtn'); if(hb) hb.onclick = ()=>{ try{ SoundKit.woodKnock(); }catch(e){} exitConquestImmersive(); switchTab('home'); }; } // 2026-10-18 (MB): same place as the header's Home
   placeConquestHud();
   if(conquestZoomIn){ mainEl.classList.add('world-zoom-in'); conquestZoomIn = false; }
   // D6 world edges: the neighbouring maps peek in at the canvas edges — click (or swipe) to pan there.

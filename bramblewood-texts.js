@@ -778,7 +778,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fx-gale": "Strong wind every round, back or face. Tailwind Flyers act first; Headwind Flyers trigger and shoot twice.",
   "ui.fxx-gale": "It blows a random way: at your back or in your face (1 in 2 each).",
   "ui.fx-swamp-fever": "From round 2, every unit may catch 1 Poison each round ({odds}).",
-  "ui.fxx-swamp-fever": "Structures never catch it."
+  "ui.fxx-swamp-fever": "Structures never catch it.",
+  "ui.back-to-home": "Back to Home"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
