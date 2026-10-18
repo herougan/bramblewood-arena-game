@@ -16,15 +16,26 @@ function standing(ctx, from, to, old){
   return ctx.wait(350).then(()=>{
     tideSceneSet(m, to); syncTideScene(m);
     const w = bf.querySelector(':scope > .tide-scene');
-    if(w && old){ w.style.setProperty('--tw-slosh', '5px'); w.style.setProperty('--tw-skew', (to === 'ebb' && from !== 'none' ? -5 : 5) + 'deg'); w.classList.remove('is-rising'); }
+    if(w && old){ w.style.setProperty('--tw-slosh', '5px'); w.style.setProperty('--tw-skew', (to === 'ebb' && from !== 'none' ? -5 : 5) + 'deg'); w.classList.remove('is-rising');
+      w.style.setProperty('--tw-lap', '0px'); w.style.setProperty('--tw-drift', '0px'); }
     return ctx.wait(7000); }).then(()=> clear(bf));
+}
+// 2026-10-18 (package M follow-up, owner 21:59: "The ebb effect should move in and out, and a bit side to side. It's too static."): the
+// settled Ebb on its own for a while: TIDE_EBB_LAP in and out, TIDE_EBB_DRIFT side to side, TIDE_EBB_OFFSET lower; still: lap and drift off.
+function settledEbb(ctx, still){
+  const bf = ctx.board.el; if(!has()) return ctx.wait(400);
+  clear(bf); const m = {resolving:true, _tideScene:{k:'ebb', from:'ebb', at:0}}; syncTideScene(m);
+  const w = bf.querySelector(':scope > .tide-scene'); if(w && still){ w.style.setProperty('--tw-lap', '0px'); w.style.setProperty('--tw-drift', '0px'); }
+  return ctx.wait(11000).then(()=> clear(bf));
 }
 R({id:'wt-tide-flow', stage:'board', inGameHook:'tideWaveVfx → tideSceneSet + syncTideScene (arena_app.js), .tide-scene CSS; knobs TIDE_FLOOD_MOTION, TIDE_RISE_SKEW, TIDE_ARRIVE_SWELL',
   variants:[
-    {key:'D', label:'2026-10-18 (M): the Flood rises steeper from the left, surges, swells down into view at the top, then sloshes 8.5px', play:ctx=> standing(ctx, 'ebb', 'flow')},
-    {key:'E', label:'Before M: the same layer with the old numbers (5px slosh, 5deg tilt, no swell)', play:ctx=> standing(ctx, 'ebb', 'flow', true)}]});
-R({id:'wt-tide-ebb', stage:'board', inGameHook:'tideWaveVfx → tideSceneSet + syncTideScene (arena_app.js), .tide-scene CSS; knob TIDE_EBB_MOTION',
+    {key:'D', label:'2026-10-18 (M): the Ebb band grows into the Flood, rising steeper from the left, surges, swells down into view at the top, then sloshes 8.5px', play:ctx=> standing(ctx, 'ebb', 'flow')},
+    {key:'E', label:'M numbers off: the same layer with the old slosh, tilt and no swell (5px, 5deg)', play:ctx=> standing(ctx, 'ebb', 'flow', true)}]});
+R({id:'wt-tide-ebb', stage:'board', inGameHook:'tideWaveVfx → tideSceneSet + syncTideScene (arena_app.js), .tide-scene CSS; knobs TIDE_EBB_MOTION, TIDE_EBB_LAP, TIDE_EBB_DRIFT, TIDE_EBB_OFFSET',
   variants:[
-    {key:'D', label:'2026-10-18 (M): the Flood drains to the bottom band (as before), which then sloshes 4px (was 5px)', play:ctx=> standing(ctx, 'flow', 'ebb')},
-    {key:'E', label:'Before M: the same drain with the old 5px slosh', play:ctx=> standing(ctx, 'flow', 'ebb', true)}]});
+    {key:'D', label:'2026-10-18 (M): the Flood recedes into the bottom band, which then laps in and out, drifts and sloshes 4px', play:ctx=> standing(ctx, 'flow', 'ebb')},
+    {key:'E', label:'M numbers off: the same drain with the old 5px slosh, no lap or drift', play:ctx=> standing(ctx, 'flow', 'ebb', true)},
+    {key:'F', label:'2026-10-18 (M follow-up): the settled Ebb, lapping 6px in and out and drifting 10px side to side, 3px lower', play:ctx=> settledEbb(ctx)},
+    {key:'G', label:'The settled Ebb as it was (still band, slosh only)', play:ctx=> settledEbb(ctx, true)}]});
 })();

@@ -35,8 +35,25 @@ ok(/@keyframes twSlosh\{0%,100%\{transform:translateY\(0\);\} 50%\{transform:tra
 ok(!/@keyframes twSlosh\{[^}]*translateY\(5px\)/.test(tpl), 'no fixed 5px slosh is left');
 ok(/\.tide-scene\.is-moving\.is-rising \.tw-body\{animation:twSlosh 6s ease-in-out infinite, twArriveA /.test(tpl) && /@keyframes twArriveA\{/.test(tpl) && /@keyframes twArriveB\{/.test(tpl), 'the arrival swell (A/B so a new move restarts it)');
 ok(/@keyframes twArriveA\{[^\n]*translate:0 var\(--tw-swell/.test(tpl) && !/@keyframes twArrive[AB]\{[^\n]*transform:/.test(tpl), 'the swell uses the independent translate (adds to the slosh), never transform');
-ok(/\.tide-scene\.is-moving\.is-rising \.tw-edge\{animation:twEdge 8s linear infinite, twSurgeRA /.test(tpl) && /@keyframes twSurgeRA\{0%\{scale:1 2\.9;\}/.test(tpl), 'a Flood\'s crest surges higher (2.9, was 1.9)');
-ok(/@keyframes twSurgeA\{0%\{scale:1 1\.9;\}/.test(tpl), 'the Ebb keeps its old surge');
+ok(/\.tide-scene\.is-moving\.is-rising \.tw-edge\{animation:twEdge 8s linear infinite, twSurgeRA /.test(tpl) && /@keyframes twSurgeRA\{0%\{scale:1 1;\} 18%\{scale:1 2\.9;\}/.test(tpl), 'a Flood\'s crest surges higher (2.9, was 1.9), building up from rest');
+ok(/@keyframes twSurgeA\{0%\{scale:1 1;\} 18%\{scale:1 1\.9;\}/.test(tpl), 'the Ebb keeps its old surge height, building up from rest');
+// ---- 1 (follow-up, owner 21:59): "1a) The ebb effect should grow into the tide effect; currently they cancel each other. 1b) The ebb effect
+//      should move in and out, and a bit side to side. It's too static. And its centre position should be placed a little lower."
+['TIDE_EBB_OFFSET'].forEach(k=>{ const l = constLine(k); ok(!!l, k + ' is declared'); if(l) vm.runInContext(l.replace(/^const /, 'var '), ctx); });
+ok(ctx.TIDE_EBB_OFFSET > 0 && ctx.TIDE_EBB_OFFSET <= 4, `the Ebb band sits a little lower (${ctx.TIDE_EBB_OFFSET}px, about 10% of its ~28px)`);
+ok(ctx.TIDE_EBB_LAP > 0 && ctx.TIDE_EBB_DRIFT > 0 && ctx.TIDE_EBB_DRIFT < 24, `the Ebb laps ${ctx.TIDE_EBB_LAP}px and drifts ${ctx.TIDE_EBB_DRIFT}px (less than the water's 24px overhang)`);
+const fnY = src.match(/^function tideSceneY\(k\)\{[^\n]*\}/m); ok(!!fnY, 'tideSceneY(k) exists');
+if(fnY){ vm.runInContext('var TIDE_SCENE_Y = {none:"calc(100% + 40px)", ebb:"calc(100% - 12px)", flow:"0%", high:"0%"};' + fnY[0], ctx);
+  ok(ctx.tideSceneY('ebb') === `calc(100% - ${12 - ctx.TIDE_EBB_OFFSET}px)` && ctx.tideSceneY('flow') === '0%', `the Ebb level is TIDE_EBB_OFFSET lower (${ctx.tideSceneY('ebb')})`); }
+ok(/w\.style\.setProperty\('--tw-from', tideSceneY\(st\.from\)/.test(src) && /w\.style\.setProperty\('--tw-to', tideSceneY\(st\.k\)\)/.test(src), 'the move runs between the offset levels');
+ok(/w\.style\.setProperty\('--tw-lap', TIDE_EBB_LAP \+ 'px'\); w\.style\.setProperty\('--tw-drift', TIDE_EBB_DRIFT \+ 'px'\)/.test(src), 'syncTideScene hands the lap and drift to the CSS');
+ok(/\.tide-scene \.tw-sheet\{transform-origin:100% 0;\}/.test(tpl) && /\.tide-scene\.is-moving \.tw-sheet\{animation:twMoveA [^}]*, twTiltA 1\.8s/.test(tpl), '1a: one sheet moves (translate) while its tilt ramps in and out about the right edge, so the Ebb band never drops off first');
+ok(!/@keyframes twMove[AB]\{from\{[^}]*skewY/.test(tpl), '1a: no tilt at full strength on the first frame');
+ok(/@keyframes twSettleA\{0%\{opacity:1;\}/.test(tpl), '1a: the caustics fade (no blink) as a move starts');
+ok(/\.tide-scene\[data-k="ebb"\] \.tw-body\{animation:twSlosh 6s ease-in-out infinite, twLap 8\.6s ease-in-out calc\(var\(--tw-delay, 0ms\) \+ 1800ms\) infinite;\}/.test(tpl), '1b: the settled Ebb laps (after the drain, on top of the slosh)');
+const lap = (tpl.match(/@keyframes twLap\{[\s\S]*?\}\}/) || [''])[0];
+ok(/translate:calc\(var\(--tw-drift/.test(lap) && /calc\(var\(--tw-lap, 6px\)\*-1\)/.test(lap) && (lap.match(/%\{/g) || []).length >= 6 && !/transform:/.test(lap), '1b: twLap moves in / out and side to side in uneven steps, on translate only');
+ok(/\.tide-scene \.tw-water\{position:absolute; left:-24px; right:-24px;/.test(tpl) && /\.tide-scene \.tw-edge\{position:absolute; left:-24px; top:-27px; width:calc\(100% \+ 208px\);/.test(tpl), '1b: the water reaches past the sides, so the drift shows no gap');
 ok(/html\[data-fx="low"\] \.tide-scene :is\(\.tw-body, \.tw-edge, \.tw-caus, \.tw-sheen\)\{animation:none !important;\}/.test(tpl), 'Low effects: no slosh, swell or surge');
 ok(/@media \(prefers-reduced-motion: reduce\)\{\n    \.tide-scene \*, \.board-card \.unit-wet\{animation:none !important;\}/.test(tpl), 'reduced motion: the water is still');
 // the twArrive / twSurgeR / twFoamR keyframes animate only translate, scale and opacity (compositor-only)

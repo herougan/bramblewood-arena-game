@@ -33151,6 +33151,14 @@ const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {no
 const TIDE_MOTION_BASE = 5, TIDE_FLOOD_MOTION = 8.5, TIDE_EBB_MOTION = 4; // px; the owner's knobs (x1.7 and x0.8 of the old 5px)
 const TIDE_RISE_SKEW = 8, TIDE_BASE_SKEW = 5, TIDE_ARRIVE_SWELL = 40; // deg, deg, px (the swell clears the top border's bunting, about 20px)
 function tideMotionPx(k){ return k === 'ebb' ? TIDE_EBB_MOTION : (k === 'flow' || k === 'high') ? TIDE_FLOOD_MOTION : TIDE_MOTION_BASE; }
+// 2026-10-18 (package M follow-up, owner 21:59: "1a) The ebb effect should grow into the tide effect; currently they cancel each other. 1b)
+// The ebb effect should move in and out, and a bit side to side. It's too static. And its centre position should be placed a little
+// lower than where it is now."): the Ebb band sits TIDE_EBB_OFFSET px lower (its shown strip was 12px of water under a 28px crest, so
+// about 10% of the band), and once settled it laps in and out by up to TIDE_EBB_LAP px and drifts side to side by up to TIDE_EBB_DRIFT
+// px (twLap, on top of the TIDE_EBB_MOTION slosh). The rise into a Flood and the drain back are one body of water now (the tilt ramps
+// in and out about the board's right edge, CSS twTilt*), so the Ebb's band grows into the Flood instead of vanishing first.
+const TIDE_EBB_OFFSET = 3, TIDE_EBB_LAP = 6, TIDE_EBB_DRIFT = 10; // px
+function tideSceneY(k){ return k === 'ebb' ? `calc(100% - ${12 - TIDE_EBB_OFFSET}px)` : TIDE_SCENE_Y[k]; } // TIDE_SCENE_Y.ebb, TIDE_EBB_OFFSET lower
 function tideSceneTarget(m){
   try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
 }
@@ -33171,12 +33179,13 @@ function syncTideScene(m){
   const key = st.k + '|' + st.at;
   if(w.dataset.key !== key){
     w.dataset.key = key; w.dataset.k = st.k;
-    w.style.setProperty('--tw-from', TIDE_SCENE_Y[st.from] || TIDE_SCENE_Y.none); w.style.setProperty('--tw-to', TIDE_SCENE_Y[st.k]);
+    w.style.setProperty('--tw-from', tideSceneY(st.from) || TIDE_SCENE_Y.none); w.style.setProperty('--tw-to', tideSceneY(st.k)); // (package M follow-up: the Ebb a little lower)
     w.style.setProperty('--tw-delay', (moving ? -el : -1e6) + 'ms');
     const rising = TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from], flooding = rising && (st.k === 'flow' || st.k === 'high');
     w.style.setProperty('--tw-skew', (flooding ? TIDE_RISE_SKEW : rising ? TIDE_BASE_SKEW : -TIDE_BASE_SKEW) + 'deg'); // in from the left (owner, 10:27); steeper on a Flood (package M)
     w.style.setProperty('--tw-slosh', tideMotionPx(st.k) + 'px'); // the settled slosh: Flood x1.7, Ebb x0.8 (package M, owner 20:45)
     w.style.setProperty('--tw-swell', TIDE_ARRIVE_SWELL + 'px');
+    w.style.setProperty('--tw-lap', TIDE_EBB_LAP + 'px'); w.style.setProperty('--tw-drift', TIDE_EBB_DRIFT + 'px'); // the settled Ebb's lap and drift (package M follow-up)
     w.classList.toggle('mv-b', !w.classList.contains('mv-b')); // a new animation name restarts the move (and the drying)
     w.classList.toggle('is-moving', moving);
     w.classList.toggle('is-rising', moving && flooding);

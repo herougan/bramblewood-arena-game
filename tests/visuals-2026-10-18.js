@@ -22,7 +22,8 @@ ok(/if\(!\(m\.resolving && m\._tideScene\)\)/.test(src), 'while a round replays,
 ok(/const rising = TIDE_SCENE_RANK\[st\.k\] > TIDE_SCENE_RANK\[st\.from\]/.test(src) && /'--tw-skew', \(flooding \? TIDE_RISE_SKEW : rising \? TIDE_BASE_SKEW : -TIDE_BASE_SKEW\)/.test(src), 'the water comes in from the left (skew by direction)');
 ['.tide-scene{', '.tw-sheet', '.tw-water', '.tw-caus', '.tw-edge', '.tw-wet', '.tw-sheen', '.board-card .unit-wet', '.board-card > .swim-splash', '@keyframes twMoveA', '@keyframes twMoveB', '@keyframes twDryA', '@keyframes twSurgeA', '@keyframes twWetIn', '@keyframes twSettleA', '@keyframes tideLift{']
   .forEach(k=> ok(tpl.includes(k), 'tide CSS: ' + k));
-ok(/@keyframes twMoveA\{from\{transform:translateY\(var\(--tw-from\)\) skewY\(var\(--tw-skew, 0deg\)\);\} to\{transform:translateY\(var\(--tw-to\)\) skewY\(0deg\);\}\}/.test(tpl), 'the rise / recede is one transform, tilted at the start');
+// 2026-10-18 (package M follow-up, "The ebb effect should grow into the tide effect"): the level is the translate, the tilt ramps in and out
+ok(/@keyframes twMoveA\{from\{translate:0 var\(--tw-from\);\} to\{translate:0 var\(--tw-to\);\}\}/.test(tpl) && /@keyframes twTiltA\{0%\{transform:skewY\(0deg\);\} 30%\{transform:skewY\(var\(--tw-skew, 0deg\)\);\} 100%\{transform:skewY\(0deg\);\}\}/.test(tpl), 'the rise / recede is one moving sheet, its tilt ramping in and out');
 ok(/html\[data-fx="low"\] \.tide-scene :is\(\.tw-body, \.tw-edge, \.tw-caus, \.tw-sheen\)/.test(tpl) && /html\[data-fx="none"\] \.tide-scene \*/.test(tpl), 'Low and Minimal effects levels quiet the water');
 ok(/@media \(prefers-reduced-motion: reduce\)\{\n    \.tide-scene \*/.test(tpl), 'reduced motion: the water is still');
 ok(/html\[data-fx-style="pixel"\] \.tide-scene \.tw-edge\{background-image:url\("data:image\/svg\+xml,/.test(tpl) && /html\[data-fx-style="minimal"\] \.tide-scene/.test(tpl), 'Pixel and Minimal styles have their looks');

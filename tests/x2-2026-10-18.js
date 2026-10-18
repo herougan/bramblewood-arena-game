@@ -163,7 +163,8 @@ ok(/tide: +\{icon:'🌊', name:'Tide'[^\n]*A Flood fills the whole board: every 
 ok(/const TIDE_SCENE_Y = \{none:'calc\(100% \+ 40px\)', ebb:'calc\(100% - 12px\)', flow:'0%', high:'0%'\}/.test(src), 'Flood and High Tide fill the whole board; Ebb is a thin band at the bottom');
 ok(/const TIDE_BOARD_CARDS = '#battlefieldInner \.board-row > \.board-card'/.test(src) && !/#rowMine \.board-card, #rowEnemy \.board-card/.test(src.slice(src.indexOf('function syncTideScene'), src.indexOf('const IdleGlance'))), 'every board row (the raid\'s reserve rows too) gets the wet look and the lift');
 ok(/<div class="tw-surf"><i class="tw-caus"><\/i><i class="tw-caus c2"><\/i><i class="tw-sheen"><\/i><\/div>/.test(src), 'the caustics and sheen sit in .tw-surf');
-ok(/\.tide-scene\.is-moving \.tw-surf\{animation:twSettleA \.9s ease-out calc\(var\(--tw-delay, 0ms\) \+ 1800ms\) both;\}/.test(tpl), '...which fades in only once the water has settled');
+// 2026-10-18 (package M follow-up): they fade out as a move starts (no longer blink out) and back in from 1.8 s, once settled
+ok(/\.tide-scene\.is-moving \.tw-surf\{animation:twSettleA 2\.7s ease-in-out var\(--tw-delay, 0ms\) both;\}/.test(tpl) && /@keyframes twSettleA\{0%\{opacity:1;\} 18%,66%\{opacity:0;\} 100%\{opacity:1;\}\}/.test(tpl), '...which fades in only once the water has settled');
 ok(!/tide-wade/.test(src) && !/tide-wade/.test(tpl), 'the waded ring is gone');
 ok(/\.battlefield:is\(\[data-tide="flow"\], \[data-tide="high"\]\) \.board-card \.unit-wet, \.battlefield\[data-tide="ebb"\] \.board-card\.is-floating \.unit-wet\{opacity:1;/.test(tpl)
   && /\.battlefield\[data-tide\] \.board-card:not\(\.is-flying\) \.unit-wet\{display:block;\}/.test(tpl), 'the wet look: land units in Flood, Swimmers in Flood and Ebb, never flyers');

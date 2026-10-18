@@ -63,3 +63,5 @@ TIDE_RISE_SKEW
 tideMotionPx
 tideSceneSet
 syncTideScene
+TIDE_EBB_OFFSET
+tideSceneY
