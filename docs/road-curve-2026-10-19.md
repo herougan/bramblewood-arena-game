@@ -28,6 +28,7 @@ These are the targets the skirmish editor's win-rate panel now colours by (`road
 
 - **Before:** main as of 2026-10-19 00:30, with Freeze/Confuse (FZ), the no-op heals (HN), the raid changes and the new cards, so the numbers reflect today's rules. The CPU decks were main's, unchanged.
 - **Fresh measurement:** all 179 fights were measured again on the current engine. Each fight played 120 games on the measure seeds (9100 + 37g), the same seeds whose first 30 games the in-game panel plays.
+- **After main moved:** the final numbers were measured again after merging main at `ce1d288` (GI skills and field effects, NF per-copy levels, RV Revive, RO raids, the AN pool). Only 21-6 moved, because of its new Quiet Contemplation (41% → 35%). Every other fight gave the same result, game for game.
 - **Fresh seeds:** every fight's final version was also played for another 120 games on a second seed set (5100 + 37g). Nothing was tuned on those seeds.
 - The WIP's rounds 1–3 were tuned on the old engine (before FZ / HN), so they were re-measured. 30 fights had drifted off the curve or were never fixed.
 
@@ -84,7 +85,7 @@ These are the targets the skirmish editor's win-rate panel now colours by (`road
   - Map 22's goat deck (Mountain Goat Climbers, Scree Goats, Fumarole Ibex, Badger Berserkers, an Alpine Marmot) won only 70–80% of the time on 21-3.
   - So by hand, 21-3 Cloud Ledge, 21-5 Snow Owl Parliament and 21-6 The Cathedral Eagle now mix the Summit's goats and ibex with Badger Berserkers. Each keeps its birds' namesakes: the condors and vultures, the Snow Owls, and the Cathedral Eagle with its Sharpshooters.
   - The tuner then set their Shields. 21-2 and 21-4 also took Badger Berserkers.
-  - The Summit now runs 93 / 82 / 75 / 68 / 60 / 41%.
+  - The Summit now runs 93 / 82 / 75 / 68 / 60 / 35%. The boss was 41% when tuned. Main's Quiet Contemplation field effect on 21-6 (package RV) then took it to 35%; fresh seeds give 31%.
 - **Elites moved up to the line.** The WIP tuned elites 5 points under it. The 11 elites left that way were eased back, mostly with one copy swap or a lighter Shield: for example 4-3 Cetacean Pod Shield 6 → 1, and 11-5 West Ledge Shield 17 → 4.
 - **Map enders that were 50% or more** came down to 37–43%. The changes below are the total over all rounds, WIP rounds included:
 
@@ -416,7 +417,7 @@ The **Place** column gives a fight's position on the line before the boss. **Bef
 | 21-3 Cloud Ledge | skirmish | 3 of 5 | 75% (67–83) | 100% (blue) | 75% | 78% | +1 Alpine Marmot; −1 Ash Cloud Condor; +2 Badger Berserker; −2 Eagle Diver; +2 Fumarole Ibex; −1 Golden Eagle Diver; −2 Hawk Arrowkeeper; +3 Mountain Goat Climber; −3 Peak Condor; +3 Scree Goat; +2 Snow Owl Sentinel |
 | 21-4 The Avalanche's Wake | elite | 4 of 5 | 68% (60–76) | 98% (blue) | 68% | 72% | −2 Alpine Avalanche; +1 Badger Berserker; +2 Eagle Diver; −2 Glacier Yak; +3 Snow Owl Sentinel; Shield 32 → 55 (override) |
 | 21-5 Snow Owl Parliament | elite | 5 of 5 | 60% (52–68) | 98% (blue) | 60% | 64% | +1 Alpine Marmot; +2 Badger Berserker; −2 Eagle Diver; −1 Golden Eagle Diver; +3 Mountain Goat Climber; +1 Scree Goat; Shield 32 → 56 (override) |
-| 21-6 The Cathedral Eagle | miniboss | last (boss) | 40% (30–49) | 100% (blue) | 41% | 39% | +2 Alpine Marmot; +4 Badger Berserker; −2 Eagle Diver; +3 Fumarole Ibex; −2 Golden Eagle Diver; +4 Mountain Goat Climber; −2 Peak Condor; +3 Scree Goat; −2 Snow Owl Sentinel; Shield 42 → 78 (override) |
+| 21-6 The Cathedral Eagle | miniboss | last (boss) | 40% (30–49) | 100% (blue) | 35% | 31% | +2 Alpine Marmot; +4 Badger Berserker; −2 Eagle Diver; +3 Fumarole Ibex; −2 Golden Eagle Diver; +4 Mountain Goat Climber; −2 Peak Condor; +3 Scree Goat; −2 Snow Owl Sentinel; Shield 42 → 78 (override) |
 
 ### Map 22: The Rimefire Caldera
 
