@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (V1: visual fixes — the Tide, chilled flyers, idle glance, cliff gulls)
+- **The Tide is water now.** While a tide runs, a layer of water lies under the cards: Flood fills the board to near its top, High Tide to the brim, Ebb leaves a shallow strip along the bottom. It rises from the bottom, coming in from the left (the left edge leads, then it levels), and on Ebb it drains the same way and leaves wet, darker sand that dries in a few seconds. The surface has a drifting foam edge that surges as it moves, two layers of caustic light and a slow sheen. Land units stand in a ring of water with ripples; Swimmers and Tide units bob in theirs; flyers stay dry. Transforms and opacity only; Low effects keep the water and its rise and fall but nothing drifts, the Minimal level and reduced motion show it still, Pixel style has a stepped edge and chunky caustics. (`syncTideScene` in arena_app.js, `.tide-scene` CSS.)
+- **The tide's card lift is small and cheap:** each card lifts 2px (1px on Ebb), column by column from the left, 0.1 s apart, as a CSS animation. The GSAP sway of every card is gone, and batch B no longer draws its own Ebb drain / High Tide crests over the water (High Tide keeps its spray). Measured on the Effects library's Flood (headless Chromium, 3 runs): script time during the tide coming in 315 ms → 91 ms, paints 277 → 186, and no non-composited animation left (the old foam animated background-position).
+- **No tide chip over the card.** The skill strip's blue Tide pill says it: a wave on Flood and High Tide, a shell on Ebb.
+- **Chilled flyers and swimmers:** the ice frame now sits on the part that hovers, so it stays on the card, and while frozen the hover and its sway are half as high (eased, not a jump).
+- **Idle glance:** now and then one land unit's art glances a touch left or right and back (one card at a time, every few seconds at most; not while a round plays, not at Low effects or with reduced motion).
+- **Gannet Cliffs:** the gulls in the map's ambience are half the size.
+- `tests/visuals-2026-10-18.js` (in `tests/run-all.sh`); `tests/wave-tide-2026-10-17.js` follows the new lift and hover rules.
+
 ## 2026-10-18 (R3-WP2: raid stages do something)
 - **The Goliath's Enraged (below 75%) and Thrashing (below 50%) stages now change the fight** (they were names only). Defaults, waiting on the owner: **Enraged:** every boss card +2 Attack, and its back two rows strike once a round (the volley your ally rows already make). **Thrashing:** every boss card +4 Attack, the back-row volley, Landslide on the field, and your (the raiders') castle 10% less Health. Exposed (below 1%) still strips every ability.
 - **The Raid tab** shows the current stage's one-line effect under the boss, a "Stages" panel with every stage (the current one marked), and the field panel includes the stage's field. The VS screen names the stage.

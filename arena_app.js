@@ -6565,7 +6565,7 @@ function abilityBadges(d, bopts){
   if(e.revive){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.revivedOnce; }catch(err){ return false; } })());
     out.push(lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${used ? 'Revive: used, it already came back once' : 'Revive: comes back once'}">${iconHTML('revive', '↺')}<b>Revive</b></span>` : `<span class="ab-revive" title="Revive: comes back once">${iconHTML('revive', '↺')}</span>`); }
   { const lt = (e.tide || e.swimmer) && bopts && bopts.live ? liveTideState(e) : null; // live: blue, and its title says what the tide gives now (2026-10-14)
-    if(e.tide) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}" title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${iconHTML('tide', '🌊')}</span>`);
+    if(e.tide) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}" title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${lt && lt.k === 'ebb' ? iconHTML('tide-ebb', '🐚') : iconHTML('tide', '🌊')}</span>`); // 2026-10-18 (owner: "So on flood, it's wave. On ebb, it's shell.")
     if(e.swimmer) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}" title="${escapeAttr('Swimmer – ' + (lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide') + ', ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span title="${escapeAttr(swimmerLine(e))}">${iconHTML('swimmer', '🏊')}</span>`); } // 2026-10-15: titled Swimmer, not Tide
   if(e.rainmaker) out.push(`${iconHTML('rainmaker', '🌧️')}`); if(e.rainrunner) out.push(`${iconHTML('rainrunner', '🌦️')}${n1(e.rainrunner)}`); if(e.moonborn) out.push(`${iconHTML('moonborn', '🌕')}${n1(e.moonborn)}`); if(e.frostbite) out.push(`${iconHTML('frostbite', '🥶')}${n1(e.frostbite)}`);
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
@@ -26311,6 +26311,7 @@ function renderMatchUI(){
   renderBoard();
   syncWindField(m); // 2026-10-15: the wind layer survives the repaint
   try{ fxHook('matchUI', m); }catch(e){} // FX batch B (2026-10-15): darkness falls / lifts, field layers, dusk, perma-tide
+  try{ syncTideScene(m); }catch(e){} // the standing Tide's water (2026-10-18)
   if(!showPassOverlay) renderHand();
   wireDropZones();
   if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox && !m.fxLib) wireSandboxPanel();
@@ -27938,6 +27939,7 @@ function renderBoard(opts){
   const hadNewEntrants = newBoardEls.length>0;
   fitBattlefieldZoom();
   try{ fxHook('boardRendered', matchState); }catch(e){} // FX batch B (2026-10-15): who can't see in the dark, the forecast pill
+  try{ syncTideScene(matchState); }catch(e){} // the standing Tide: waded rings on new cards (2026-10-18)
   try{ syncUnitLightPools(); }catch(e){} // unit light in the dark (2026-10-15)
   // Bugfix (2026-09-17, root cause of the residual small stuck-transform matrices test_v24
   // still caught after the scale-1.08/shove fixes above — e.g. a card left mid fall-in at
@@ -28737,7 +28739,7 @@ function boardCardHTML(c, defs, opts){
   if(c.shield > 0) badges.push(`<span class="abadge unit-shield" title="Shield: ${c.shield} temporary Health, spent before its Health">💠${c.shield}</span>`);
   if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
-  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${tideNow ? `<div class="tide-chip tide-${tideNow}" title="${tideNow==='flow' ? 'Flow: +1 Attack' : tideNow==='high' ? 'High tide: +2 Attack, +2 Armor' : 'Ebb: +1 Armor'}"><span class="sym-stack">${tideNow==='flow' ? '🌊<i>⚔</i>' : tideNow==='high' ? '🌊<i>⚔</i><i>🛡</i>' : '🐚<i>🛡</i>'}</span></div>` : ''}
+  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${c.chained?`<div class="status-overlay chain-overlay">⛓</div>`:''}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
@@ -32323,24 +32325,96 @@ function coldWaveVfx(m){
   try{ SoundKit.swipeTone && SoundKit.swipeTone(); }catch(e){}
   return 480;
 }
+// The standing Tide (2026-10-18, owner: "The tide effect has not been updated to be better."): a water layer under the cards
+// (.tide-scene, first child of #battlefieldEl, CSS in arena_template.html) shows the tide as it is: Flood fills the board to near its top,
+// High Tide to the brim, Ebb leaves a shallow strip along the bottom, no tide no water. A change rises or recedes smoothly (1.8 s), an ebb
+// leaves wet sand that dries, land units stand waded in a ring of water (.tide-wade) and Swimmers bob in theirs. m._tideScene remembers what
+// is shown ({k, from, at}); renderMatchUI rebuilds the battlefield, so syncTideScene redraws the layer and resumes a move in progress
+// (negative animation delay) instead of replaying it. While a round replays, the shown state waits for the 'tide' event (the engine is
+// already a round ahead); otherwise it follows the engine.
+const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'84%', flow:'15%', high:'3%'};
+const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {none:0, ebb:1, flow:2, high:3};
+function tideSceneTarget(m){
+  try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
+}
+function tideSceneSet(m, k){
+  if(!m || !TIDE_SCENE_Y[k]) return; const cur = m._tideScene; if(cur && cur.k === k) return;
+  m._tideScene = {k, from: cur ? cur.k : 'none', at: cur ? Date.now() : 0}; // the first sight of a running tide draws it in place
+}
+function syncTideScene(m){
+  m = m || matchState; const bf = document.getElementById('battlefieldEl'); if(!m || !bf) return;
+  if(!(m.resolving && m._tideScene)) tideSceneSet(m, tideSceneTarget(m));
+  const st = m._tideScene; if(!st) return;
+  const el = st.at ? Date.now() - st.at : 1e9, moving = st.from !== st.k && el < TIDE_SCENE_MOVE_MS + TIDE_SCENE_DRY_MS;
+  let w = bf.querySelector(':scope > .tide-scene');
+  if(st.k === 'none' && !moving){ if(w) w.remove(); delete bf.dataset.tide; return; }
+  if(!w){ w = document.createElement('div'); w.className = 'tide-scene'; w.setAttribute('aria-hidden', 'true');
+    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
+    bf.insertBefore(w, bf.firstChild); }
+  const key = st.k + '|' + st.at;
+  if(w.dataset.key !== key){
+    w.dataset.key = key; w.dataset.k = st.k;
+    w.style.setProperty('--tw-from', TIDE_SCENE_Y[st.from] || TIDE_SCENE_Y.none); w.style.setProperty('--tw-to', TIDE_SCENE_Y[st.k]);
+    w.style.setProperty('--tw-delay', (moving ? -el : -1e6) + 'ms');
+    w.style.setProperty('--tw-skew', (TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from] ? 5 : -5) + 'deg'); // in from the left (owner, 10:27)
+    w.classList.toggle('mv-b', !w.classList.contains('mv-b')); // a new animation name restarts the move (and the drying)
+    w.classList.toggle('is-moving', moving);
+    w.classList.toggle('is-drying', moving && (st.from === 'flow' || st.from === 'high') && (st.k === 'ebb' || st.k === 'none'));
+  }
+  bf.dataset.tide = st.k; bf.style.setProperty('--tw-wade-delay', (moving ? -el : -1e6) + 'ms');
+  bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(c=>{
+    if(c.querySelector(':scope > .tide-wade') || !c.querySelector('.card-tile')) return;
+    const i = document.createElement('i'); i.className = 'tide-wade'; i.setAttribute('aria-hidden', 'true'); c.appendChild(i); });
+}
 function tideWaveVfx(kind){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
-  const high = kind === 'high'; if(high) kind = 'flow'; // the high tide rides the flow's wave, bigger (2026-10-16: is-high)
-  bf.classList.toggle('tide-is-flow', kind === 'flow'); bf.classList.toggle('tide-is-ebb', kind === 'ebb');
-  let line = bf.querySelector(':scope > .tide-line'); if(!line){ line = document.createElement('div'); line.className = 'tide-line'; line.setAttribute('aria-hidden', 'true'); bf.appendChild(line); }
+  const high = kind === 'high';
+  // 2026-10-18: the water itself is the standing Tide above (it rises on Flood / High Tide and recedes on Ebb, also under reduced motion
+  // and Low effects, where it simply moves less); this adds the sound and the cards' small lift.
+  try{ if(matchState){ tideSceneSet(matchState, TIDE_SCENE_Y[kind] ? kind : 'flow'); syncTideScene(matchState); } }catch(e){}
+  if(high) kind = 'flow'; // High Tide sounds and lifts like a Flood
   if(reducedMotion() || !fxAtLeast('low')) return;
-  // 2026-10-16 (user: "Flood Ebb effects need to be improved."): a light tint washes over the board, the water rises (Flood) or drains
-  // away (Ebb) with a foam line on its edge, and the lasting water line at the board's foot has its own foam (Flood) or wet-sand glints (Ebb).
-  const w = document.createElement('div'); w.className = 'tide-wave is-' + kind + (high ? ' is-high' : ''); w.setAttribute('aria-hidden', 'true');
-  w.innerHTML = '<span></span><span></span>';
-  bf.appendChild(w); setTimeout(()=> w.remove(), 1600);
   try{ if(kind === 'flow' && SoundKit.splash) SoundKit.splash(); else if(SoundKit.swipeTone) SoundKit.swipeTone(); }catch(e){}
-  // 2026-10-17 (user: "Improve the tide animations. It should impact all of the cards very slightly, BUT all the tide and swimmer cards
-  // float up - half way like they are flying."): every card on the board rocks a little as the water passes it (the Tide units and
-  // Swimmers lift with it more); their resting hover, half a flyer's, is CSS (tideFloat).
-  try{ if(window.SkillFX && SkillFX.tideSway){ const c0 = bf.querySelector('.board-card'), sc = c0 && c0.offsetWidth ? (c0.getBoundingClientRect().width / c0.offsetWidth) || 1 : 1;
-    SkillFX.tideSway([...bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card')].filter(b=> b.querySelector('.card-tile')), {kind, high, scale:sc, speed:(matchState && matchState.speedMult) || 1}); } }catch(e){}
+  // 2026-10-18 (owner, 10:27: "The tide or ebb effects that lifts up cards lifts up cards by too much and also makes the game really
+  // laggy ... it starts coming in from the left. So the lift up anim should play from the left to right, 0.1s apart."): the GSAP sway of
+  // every card (SkillFX.tideSway, kept for the Effects Lab) is replaced by a small CSS lift of each tile, column by column from the left.
+  if(fxAtLeast('med')) try{ tideLiftCards(bf, kind); }catch(e){}
 }
+// One layout read per card (its column), then class toggles; the lift itself is a CSS animation of the tile's translate / rotate
+// (.tide-lift / .tide-lift-ebb in arena_template.html). Flyers are above the water and stay still.
+function tideLiftCards(bf, kind){
+  const cards = [...bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card')].filter(c=> !c.classList.contains('is-flying') && c.querySelector('.card-tile'));
+  if(!cards.length) return;
+  const bl = bf.getBoundingClientRect().left, rs = cards.map(c=> c.getBoundingClientRect()), w = rs[0].width || 100;
+  const cols = rs.map(r=> Math.max(0, Math.round((r.left - bl) / w))), c0 = Math.min(...cols), cls = kind === 'ebb' ? 'tide-lift-ebb' : 'tide-lift';
+  cards.forEach((c, i)=>{ c.classList.remove('tide-lift', 'tide-lift-ebb'); c.style.setProperty('--tl-d', (.25 + (cols[i] - c0)*.1).toFixed(2) + 's'); c.classList.add(cls); });
+  const last = .25 + (Math.max(...cols) - c0)*.1;
+  setTimeout(()=> cards.forEach(c=> c.classList.remove(cls)), Math.round((last + 1)*1000));
+}
+// Idle glance (2026-10-18, owner: "Idle land units on the board (rarely) but sometimes look left/right very slightly"): one shared timer,
+// every 3-7 s, may pick one land unit on the board (not a flyer or a Swimmer / Tide unit, not frozen, stunned, asleep, paralyzed or
+// caged) and its art glances a little left or right (.glance-l / .glance-r: ~0.6 s each way, a short hold, then back; CSS in
+// arena_template.html). One card at a time, never the same one twice running, so the board never moves in unison. Only while the player
+// plans (no round resolving), at Medium effects or above, without reduced motion, and while the page is visible.
+const IdleGlance = (function(){
+  let timer = null, last = null;
+  const BUSY = '.is-flying, .is-floating, .is-frozen, .is-stunned, .is-asleep, .is-paralyzed, .is-caged, .glance-l, .glance-r, .ghost-preview, .tide-lift, .tide-lift-ebb';
+  function tick(){
+    timer = setTimeout(tick, 3000 + Math.random()*4000); if(timer && timer.unref) timer.unref(); // never holds a Node test run open
+    try{
+      const m = (typeof matchState !== 'undefined') ? matchState : null;
+      if(!m || m.over || m.resolving || document.hidden || reducedMotion() || !fxAtLeast('med') || Math.random() < .25) return;
+      if(document.documentElement.classList.contains('bw-resolving') || document.body.classList.contains('bw-holding')) return;
+      const all = [...document.querySelectorAll('#appWrap.in-match #rowMine .board-card[data-uid], #appWrap.in-match #rowEnemy .board-card[data-uid]')];
+      const ok = all.filter(c=> c !== last && !c.matches(BUSY) && c.querySelector('.card-tile > .ico'));
+      if(!ok.length) return;
+      const c = ok[Math.floor(Math.random()*ok.length)], cls = Math.random() < .5 ? 'glance-l' : 'glance-r'; last = c;
+      c.classList.add(cls); setTimeout(()=> c.classList.remove(cls), 1900);
+    }catch(e){}
+  }
+  return {start(){ if(!timer){ timer = setTimeout(tick, 4000); if(timer && timer.unref) timer.unref(); } }, stop(){ clearTimeout(timer); timer = null; }};
+})();
+try{ if(typeof document !== 'undefined') IdleGlance.start(); }catch(e){}
 function icePulseVfx(uid){
   const el = boardCardEl(uid); if(!el) return;
   const tile = el.querySelector('.card-tile') || el;
