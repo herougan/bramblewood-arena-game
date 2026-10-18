@@ -28,6 +28,9 @@ Answered and built today: everything in the 10-18 daytime and overnight tables b
 | Tentacle smacks | Row/column alternate; or 50/50? |
 | Emoji atlas | Cell size OK? |
 | Tide | Water heights and Pixel style look |
+| Translations | it, pt, ko, id, tl, ta: screens are translated, but card flavour, skill text and long battle-log lines (~1,200) are still English. Run that as its own package? |
+| Split sentences | 56 sentences reach the page split by inline tags and stay English until wrapped in TX() (`python3 tools/i18n_ui.py --split`). Do them next? |
+| zh-Hant | Converted from zh-Hans with OpenCC, not translated separately. OK? |
 
 ## 10-18 daytime: answered
 
