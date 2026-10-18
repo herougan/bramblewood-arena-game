@@ -4,7 +4,7 @@ You asked (00:19): "continue with action items, and considering our gameplay-ide
 
 - **Built:** 9 skills (one of them gives a new status, Brittle) and 3 field effects. The rules live in `bramblewood-engine.js` (the Package GI block) and the CPU knows about them.
 - **In the game:** each has a short card line and a Codex entry, all through TX keys in the 12 packs.
-- **Where they are:** on nothing live yet. 10 example **POOL** cards show them (`pool: true`, `poolMap` set). Placing the skills on cards and the fields on maps is for the placement / balance phase.
+- **Where they are:** placed since by package TH (`docs/thematic-pass-2026-10-19.md`). The 10 examples are live rewards; they were measured and stepped into their rarity bands first. Spore Cloud, Tangled Roots and Thunderstorm sit on two fights each of Maps 7, 9 and 10. Before that: on nothing live yet. 10 example **POOL** cards show them (`pool: true`, `poolMap` set). Placing the skills on cards and the fields on maps is for the placement / balance phase.
 - **Tests:** `tests/gi-2026-10-19.js` (435 checks).
 
 ## Skills

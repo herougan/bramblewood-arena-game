@@ -2,6 +2,25 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package TH: the thematic pass)
+- **Owner (00:19): "reassign skirmishes based on thematics", "5–10 new cards per map — from skirmish-only rewards and pack".** Every fight's enemy deck was audited against its map's identity (biome, creatures, factions, field), and the drift was fixed:
+  - Badger Berserkers are off the Summit and Maps 0–1. They stay on the badger maps: Ashen Spurn, the Long Burrow and its parent, the Rimefire Caldera.
+  - Pelican Divers no longer flood Gannet Cliffs; its own seabirds took their place.
+  - Out of the places they don't belong: Goldfeather mallards and ocean crabs (beach and swamps), beavers (the swamp and the tundra), village dogs (the Redwood Deep and the Taiga), bees (the caves), narwhals (the warm mangroves) and Echo Keepers (the heights and the volcano).
+  - The audit (`tools/thematic_pass_2026_10_19.js`) now finds **no off-theme card in any of 260 fights**. The curve tuner asks it before every move.
+- **96 of the 100 pool cards are live:**
+  - 52 are skirmish-only rewards and 44 are in the basic pack pool. That is 5–9 new cards a map on Maps 0–12, plus the polar set on 16–17, and package GI's 10 examples where their notes put them (Savanna, Glass Dunes, Quiet Summit, Rimefire Caldera too).
+  - They are placed the Admin way: the pool fields drop and they take the next live numbers, #1235–#1330.
+  - Most also fight in their map's decks.
+  - 4 stay in the pool: Sanderling, Roseate Spoonbill, Water Scorpion and Wallcreeper.
+- **New fields on their maps, a few fights each:** 🍄 Spore Cloud (7-5, 7-6), 🪢 Tangled Roots (9-5, 9-6), 🌩️ Thunderstorm (10-7, 10-9), 🌋 Ash Rain (19-3, 19-5), 🌫️ Ashy (19-6).
+- **GI's examples were measured first:** 88–100% at their printed stats. Each stepped into its rarity band, e.g. Fen Mink 5/12 → 2/9 (55%).
+- **The reference decks were rebuilt** after the placement (Maps 1–24), then the road curve was retuned in four rounds within the themes:
+  - **All 179 main fights are green** on the measure seeds; 145 on fresh seeds, and 166 on the mean of both.
+  - The changed side fights and the Pale Desert are on their curve too.
+  - 13 Shields are now well over the rule, mostly on Wolfsbane Tundra. That is a decision for the owner.
+- Doc `docs/thematic-pass-2026-10-19.md` + `.xlsx` (every changed fight: off-theme out, in, rewards, field, retune, before / after). Tools: `tools/thematic_pass_2026_10_19.js` (audit / apply / tunegi), `tools/thematic_plan_2026_10_19.js` (the choices), `tools/thematic_pass_xlsx.py`. New test `tests/thematic-2026-10-19.js`; card-pool, GI, shields, skill-costs and pale-desert tests updated for the placed cards.
+
 ## 2026-10-19 (package R2: the road curve)
 - **Owner (20:39): "The balance should be such that the constructed deck wins in the green zone for every map it's in… it starts at 90%, and drops to 60%. Then at the boss fight, <50%."** On every main map (0–24), the map's reference deck now wins its fights in road order on a straight line:
   - 90% for the first fight, down to 60% for the last before the boss; elites sit on the line;

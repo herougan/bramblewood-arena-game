@@ -7,7 +7,7 @@
 //   2. every card a fight fields or gives exists and is live (no pool card in a deck or a reward);
 //   3. the road's rarity caps and copy limits on every fight and reward;
 //   4. the themes: tools/thematic_pass_2026_10_19.js finds no off-theme card in any fight, the Pelican Divers are capped on Gannet
-//      Cliffs, no Badger Berserker outside the badger maps;
+//      Cliffs, no Badger Berserker outside the badger maps (Ashen Spurn, the Long Burrow and its parent map, the Rimefire Caldera);
 //   5. the new fields sit on a few fights of their maps, not all: Spore Cloud (7), Tangled Roots (9), Thunderstorm (10), Ash Rain and
 //      Ashy (19);
 //   6. the road curve: the final measure (docs/balance/skirmish-pass-th-after.jsonl, 120 games on the measure seeds, the reference
@@ -81,8 +81,8 @@ const aud = TH.audit(), offs = aud.filter(f=> f.off.length);
 ok(aud.length > 200 && !offs.length, `4. no off-theme card in any of ${aud.length} fights: ` + offs.slice(0, 5).map(f=> f.key + ' ' + f.off.map(o=> o.id).join('/')).join('; '));
 const mc = MAPS.find(m=> m.id === 'mc'), pel = mc.nodes.filter(x=> (x.deck || {})['pelican-diver']);
 ok(pel.length <= 2 && pel.every(x=> x.deck['pelican-diver'] <= 2), `4. Gannet Cliffs: Pelican Divers in at most 2 fights, 2 copies each (${pel.map(x=> x.key)})`);
-const bb = []; MAPS.forEach(m=> (m.nodes || []).forEach(x=>{ if((x.deck || {})['badger-berserker'] && !['m3', 'mlb', 'mtut'].includes(m.id)) bb.push(x.key); }));
-ok(!bb.length, '4. Badger Berserkers only on the badger maps (Ashen Spurn, the Long Burrow; the Tutorial\'s mixed come-back fights): ' + bb);
+const bb = []; MAPS.forEach(m=> (m.nodes || []).forEach(x=>{ if((x.deck || {})['badger-berserker'] && !['m3', 'mlb', 'm22', 'mtut'].includes(m.id)) bb.push(x.key); }));
+ok(!bb.length, '4. Badger Berserkers only on the badger maps (Ashen Spurn, the Long Burrow and its parent the Rimefire Caldera; the Tutorial\'s mixed come-back fights): ' + bb);
 ok(Object.keys(TH.THEMES).length >= 40 && mains.every(m=> TH.THEMES[m.id] && TH.THEMES[m.id].name), '4. every main map has a theme');
 
 // ---- 5. the new fields: a few fights each, on their maps

@@ -61,7 +61,7 @@ ok(sh('me', '20-A-4') === 30 && sh('mx', '20-B-4') === 60 && sh('m11', '20-10') 
 { const old = byKey('m21', '21-1'); ok(old.hqHp === 180 && H.skirmishCastle(old).total < 60, `an old hqHp no longer turns into Shield (21-1: hqHp ${old.hqHp} -> ${H.skirmishCastle(old).total})`); }
 
 // --- 2. overrides
-{ const base = byKey('mc', '3-2');
+{ const base = Object.assign({}, byKey('mc', '3-2')); delete base.shieldOverride; // 2026-10-19 (TH): 3-2 has its own override now; the probes start from the rule
   const t = Object.assign({}, base, {shieldOverride: 7}); H.NODE_MAP_HINT.set(t, 'mc');
   ok(H.skirmishCastle(t).shield === 7 && H.skirmishCastle(t).overridden, 'shieldOverride 7 wins over the rule (3)');
   const L = Object.assign({}, base, {shieldOverride: [5, 4, 0, 2]}); H.NODE_MAP_HINT.set(L, 'mc');

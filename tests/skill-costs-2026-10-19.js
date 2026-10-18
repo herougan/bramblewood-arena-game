@@ -81,7 +81,7 @@ function oldBudget(d){ const e = d.effects || {}, k = d.rarity || 'common', rank
     if(rule === 'v') S += Math.max(1, num); else if(rule === '-v') S -= Math.max(1, v === true ? (OPAY[key] || 1) : num); else if(typeof rule === 'number') S += rule; else S += 1 + (num > 1 ? Math.floor(num / 2) : 0); });
   return {N, S}; }
 let same = 0, diff = [];
-cards.filter(c=> SC.measured(c) && !c.pool /* 2026-10-19 (package GI): an unplaced pool card may carry a skill newer than this frozen model */).forEach(c=>{ const o = oldBudget(c), b = T.budget(c), passive = b.parts.filter(p=> p[0] === 'skill').reduce((a, p)=> a + p[2], 0);
+cards.filter(c=> SC.measured(c) && !c.pool /* 2026-10-19 (package GI): an unplaced pool card may carry a skill newer than this frozen model */ && !['hunter', 'executioner', 'detonate', 'proliferate', 'brittle', 'kinRally', 'packHowl', 'prayerWard', 'fieldBreaker'].some(k=> (c.effects || {})[k] != null) /* 2026-10-19 (package TH): nor a placed GI example */).forEach(c=>{ const o = oldBudget(c), b = T.budget(c), passive = b.parts.filter(p=> p[0] === 'skill').reduce((a, p)=> a + p[2], 0);
   if(Math.abs(passive - o.S) < 1e-9 && b.N === o.N) same++; else diff.push(`${c.id} S ${o.S}→${passive} N ${o.N}→${b.N}`); });
 ok(!diff.length, 'keyword S and N unchanged for every measured card: ' + diff.slice(0, 8).join('; '));
 ok(same > 500, `compared ${same} cards`);
