@@ -827,7 +827,7 @@ const PASSIVE_DEFS = [
   {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`It can see in darkness.`}, // 2026-10-15 (user: "Darksight explanation is TOO complicated. Just explain what it does - it can see in darkness.")
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
-  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it is grounded: a bramble can't be shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18: castles can't be shocked (grounded)
+  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it strikes the bramble, which is never Shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has (a bramble never counts as Wet).'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18 (owner 15:05 "No Shocked status on Brambles."): the bramble takes the damage again, no status, no Wet bonus
   {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): Divine Retribution → Retribution,
   // Satiety → Well Fed. Labels only; the keys stay retribution and satiety.
@@ -1989,7 +1989,7 @@ const STATUS_KEYWORDS = [
   {k:'shield', re:/\b(shield)\b/gi, cs:true, name:'Shield', c:'#3d8fd1', text:'temporary Health that soaks damage first and doesn’t come back.'},
   // 2026-10-17 (user: "Wet units just take +N damage by default, for every wet counter. Can see this in codex instead."): the general Wet
   // rule (the engine's wetCountOf / wetShockBonus). cs: the game word only, so "wet ground" in plain prose stays plain.
-  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:'takes 1 more lightning damage from every lightning hit for each Wet counter it has. A unit has one counter for each of these: it is a Swimmer or Tide unit; it is raining (the Rain field); the Tide is in (Flood or High Tide).'},
+  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:'takes 1 more lightning damage from every lightning hit for each Wet counter it has. A unit has one counter for each of these: it is in the water (a Swimmer or Tide unit always is, in Flood or Ebb; while the Tide is in, Flood or High Tide, so is every unit that isn’t Flying); it is raining (the Rain field). A bramble is never Wet.'}, // 2026-10-18 (owner 15:05): the Flood wets every land unit, flyers stay dry
 ];
 // Keywords everywhere (2026-10-12, user: "Highlight keywords like pitch etc. Also, if the keyword has colour, give it some
 // colour. Do this as a standard for all descriptions. If it's possible dont hardcode this ... (except in flavour text)").
@@ -14531,16 +14531,19 @@ const SKIRMISH_KINDS = ['skirmish','elite','champion','miniboss','subboss','boss
 // 2026-10-18), 1 Smart (it reads the battlefield), 2 Smartest (it also focuses kills, blocks, holds field cards, pitches better).
 // Auto, by the map number (mapNumberOf; a side map counts as its parent): Maps 0–4 Basic; Map 5+ Smart in every fight that isn't
 // an ordinary skirmish (elite, champion, mini-boss, sub-boss, boss, dungeon, world boss, raid, campaign boss), Basic in the
-// ordinary ones; Map 21+ Smartest everywhere. The Babel Spire: Smart on every floor (2026-10-18, owner 11:46: "Babel Spire is like
-// the ultimate difficulty. Smart by default."; it was Smartest from floor 25). Edit skirmish → Difficulty (node.ai: 'basic' | 'smart' | 'smartest') overrides Auto. Fights off the road keep the engine's
+// ordinary ones; Map 21+ Smartest everywhere. The Babel Spire: the smartest CPU there is on every floor (2026-10-18, owner 15:05:
+// "Smartest. - if we progressively make a smarter CPU, use that one in the future."; it was Smart since 11:46, Smartest from floor 25
+// before that): CPU_AI_MAX, the engine's AI_LEVEL_MAX, so a smarter level added later applies there automatically. Edit skirmish → Difficulty (node.ai: 'basic' | 'smart' | 'smartest') overrides Auto. Fights off the road keep the engine's
 // default, Smart (Arena vs AI, Gauntlet, PvP ghosts, raids, the old Dungeon run); the tutorial is Basic (cpuAiLevelOfMatch).
 const CPU_AI_KEYS = ['basic', 'smart', 'smartest'];
 const CPU_AI_LABEL = {basic:'Basic', smart:'Smart', smartest:'Smartest'};
 const CPU_SMART_FROM_MAP = 5, CPU_SMARTEST_FROM_MAP = 21;
 const CPU_SMART_KINDS = new Set(['elite','champion','miniboss','subboss','boss','dungeon','worldboss','raidboss','megaraid','finalboss']);
+const CPU_AI_MAX = typeof AI_LEVEL_MAX === 'number' ? AI_LEVEL_MAX : CPU_AI_KEYS.length - 1; // the highest level the engine has (2026-10-18)
+const cpuAiKeyOf = lv=> CPU_AI_KEYS[Math.max(0, Math.min(CPU_AI_KEYS.length - 1, lv | 0))]; // a level past the named ones reads as the top name
 function cpuAiAutoLevel(mapId, node){
   if(!node) return 1;
-  if(node.tower) return 1;
+  if(node.tower) return CPU_AI_MAX; // the Babel Spire: always the smartest CPU (2026-10-18, owner 15:05)
   const n = mapNumberOf(mapId); if(n == null) return 1;
   if(n >= CPU_SMARTEST_FROM_MAP) return 2;
   return n >= CPU_SMART_FROM_MAP && CPU_SMART_KINDS.has(node.kind || 'skirmish') ? 1 : 0;
@@ -14550,7 +14553,7 @@ function cpuAiLevelForNode(mapId, node){ const k = node && CPU_AI_KEYS.indexOf(n
 function cpuAiLevelOfMatch(m){ if(!m) return 1; if(m.aiLevel != null) return m.aiLevel; if(m.mode === 'tutorial') return 0;
   if(m.conquestNode){ try{ const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(f && f.node) return cpuAiLevelForNode(m.conquestNode.mapId, f.node); }catch(e){} }
   return 1; }
-function cpuAiPillHTML(level){ const k = CPU_AI_KEYS[level] || 'smart'; return `<div class="vs-ai-pill is-${k}" title="How the CPU plays this fight">🧠 ${CPU_AI_LABEL[k]} CPU</div>`; }
+function cpuAiPillHTML(level){ const k = level == null ? 'smart' : cpuAiKeyOf(level); return `<div class="vs-ai-pill is-${k}" title="How the CPU plays this fight">🧠 ${CPU_AI_LABEL[k]} CPU</div>`; }
 function nodePatchFor(mapId, key){ const e = nodeEdits[mapId] = nodeEdits[mapId] || {}; e.patches = e.patches || {}; e._localAt = Date.now(); return e; } // _localAt: see applyCloudNodeEdits
 function isAddedNode(mapId, key){ return ((nodeEdits[mapId]||{}).added||[]).some(n=> n.key===key); }
 function addSkirmishToMap(mapId){
@@ -14581,7 +14584,43 @@ function nodeCastleId(node){
   const id = MAP_CASTLE[m.sub ? m.parent : m.id];
   return id && CHARACTER_DEFS[id] ? id : null;
 }
-function nodeCastleLevel(node){ if(node && node.castleLevel != null && node.castleLevel !== '') return Math.max(0, Math.min(20, Number(node.castleLevel)||0)); return KIND_CASTLE_LEVEL[baseKind((node && node.kind) || 'skirmish')] || 0; }
+function nodeCastleLevel(node){ if(node && node.castleLevel != null && node.castleLevel !== '') return Math.max(0, Math.min(20, Number(node.castleLevel)||0)); if(baseBrambleHp(node) != null) return 0; /* 2026-10-18 (X3): Map 0's road fights the base bramble at Lv 0 */ return KIND_CASTLE_LEVEL[baseKind((node && node.kind) || 'skirmish')] || 0; }
+// Enemy bramble Shield by rule (2026-10-18, owner 15:05: "For shields, lower the amount of shields in all skirmishes. About
+// Shield = Map. For Elites, Map * 1.5, up to 3x for bosses"): a fight's Shield is its map number times its kind's multiplier,
+// worked out when the fight is built, so every node follows it without baked values. Before today the Shield was whatever
+// hqHp had above the bramble's own Health (up to ~300 on the late maps); hqHp now only ever lowers the Health. An editor
+// override (node.shieldOverride: a number, or up to four layer amounts) is only written by the skirmish editor from today on;
+// older saved node.armour / node.armourLayers values are ignored.
+const SHIELD_RULE_MULT = {skirmish:1, elite:1.5, champion:1.5, dungeon:1.5, miniboss:2, subboss:2, boss:3, finalboss:3, worldboss:3, raidboss:3, megaraid:3, tutorial:0};
+// The map number the rule counts (2026-10-18, coordinator: "Don't let the rule make the come-back-later fights trivial"): a node's or
+// its map's shieldMap first (the Old Bramble: 17), then the Tutorial side map's T-2 / T-3 / T-4 as the map that opens them
+// (TUT_SIDE_GATE: 1, 8, 18), else the map's own number.
+function nodeMapNumber(node){
+  if(node && node.shieldMap != null && node.shieldMap !== '' && Number.isFinite(Number(node.shieldMap))) return Math.max(0, Math.round(Number(node.shieldMap)));
+  const m = mapOfNode(node); if(!m) return 0;
+  if(m.shieldMap != null && Number.isFinite(Number(m.shieldMap))) return Math.max(0, Math.round(Number(m.shieldMap)));
+  if(m.id === 'mtut' && node && typeof TUT_SIDE_GATE !== 'undefined' && TUT_SIDE_GATE[node.key] != null) return TUT_SIDE_GATE[node.key];
+  const n = mapNumberOf(m.id); return n == null ? 0 : n;
+}
+function shieldRuleMult(kind){ const k = kind || 'skirmish'; return SHIELD_RULE_MULT[k] != null ? SHIELD_RULE_MULT[k] : (SHIELD_RULE_MULT[baseKind(k)] != null ? SHIELD_RULE_MULT[baseKind(k)] : 1); }
+function ruleShieldOf(node){ return Math.max(0, Math.round(nodeMapNumber(node) * shieldRuleMult(node && node.kind))); }
+function shieldOverrideOf(node){
+  const o = node && node.shieldOverride; if(o == null || o === '') return null;
+  const raw = Array.isArray(o) ? o : [o], out = [];
+  for(const v of raw.slice(0, ARMOUR_LAYER_MAX)){ const n = Math.max(0, Math.round(Number(v)||0)); if(!(n > 0)) break; out.push(n); }
+  return out; // [] = an explicit "no Shield"
+}
+// The base bramble (2026-10-18, owner: "HP of brambles in Tutorial and Map 0 Skirmishes should be unnaturally low. Maybe there's
+// a base bramble we can use (starts at lvl 0 instead)"): on Map 0's own road (not its Tutorial or Old Bramble side maps, which are
+// meant to be come-back-later fights) the enemy bramble is the Lv 0 base one with a tiny Health, so the first fights end fast.
+// The tutorial's two fights already use the tutorial config's rival Health (6, then 8).
+const BASE_BRAMBLE_HP = {skirmish:[10, 12, 14, 15], elite:16, boss:20};
+function baseBrambleHp(node){
+  const m = mapOfNode(node); if(!m || m.sub || mapNumberOf(m.id) !== 0 || !node) return null;
+  const k = baseKind(node.kind || 'skirmish'); if(k === 'tutorial') return null;
+  if(k === 'skirmish'){ const sk = m.nodes.filter(n=> baseKind(n.kind || 'skirmish') === 'skirmish'), i = Math.max(0, sk.findIndex(n=> n === node || n.key === node.key)); return BASE_BRAMBLE_HP.skirmish[Math.min(i, BASE_BRAMBLE_HP.skirmish.length - 1)]; }
+  return k === 'elite' ? BASE_BRAMBLE_HP.elite : BASE_BRAMBLE_HP.boss;
+}
 // The skirmish's showcase card (2026-10-10, user: "show the highlighted unit of the deck - let me edit this in the
 // Skirmish"): node.showcase, or else the deck's strongest card.
 function nodeShowcaseId(node){
@@ -14612,12 +14651,14 @@ function skirmishCastle(node){
   const cid = nodeCastleId(node), lvl = cid ? nodeCastleLevel(node) : 0;
   const base = (cid && castleLeveled(CHARACTER_DEFS[cid], lvl)) || CHARACTER_DEFS.castle || {health:30};
   const baseHp = Number(base.health) || 30;
-  let hp, shield;
-  if(node.armour !== null && node.armour !== undefined && Number.isFinite(Number(node.armour))){ hp = baseHp; shield = Math.max(0, Math.round(Number(node.armour))); }
-  else { const total = Number(node.hqHp) || baseHp; hp = Math.min(baseHp, total); shield = Math.max(0, total - baseHp); }
+  // 2026-10-18 (X3): Health is the bramble's own (a lower hqHp lowers it; Map 0's road uses the base bramble); the Shield follows
+  // the rule above unless the editor set node.shieldOverride.
+  let hp = Number(node.hqHp) > 0 ? Math.min(baseHp, Math.round(Number(node.hqHp))) : baseHp;
+  const early = baseBrambleHp(node); if(early != null) hp = Math.min(hp, early);
+  const ov = shieldOverrideOf(node), rule = ruleShieldOf(node);
+  const layers = ov || (rule > 0 ? [rule] : []), shield = layers.reduce((a, b)=> a + b, 0);
   const character = cid ? Object.assign({}, base, {health:hp, level:lvl}) : {id:'conquest-enemy', name:node.name, health:hp, effects:{}};
-  const layers = armourLayersOf(node, shield);
-  return {character, hp, shield, total: hp + shield, layers};
+  return {character, hp, shield, total: hp + shield, layers, rule, overridden: !!ov};
 }
 function castleLineText(node){ const sc = skirmishCastle(node); return `🏰 ${sc.hp} HP${sc.shield ? ` · 🔷 ${sc.shield} ${_t('Armour')}` : ''}`; }
 // The panel's castle line (2026-10-12, user: "The health and armour can use this format 'N <Health Icon> M <Blue Diamond Icon>'
@@ -14908,7 +14949,7 @@ function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return
 // (fieldConditionRows), Edit skirmish (FIELD_EFFECTS) and the Effects library (FXL_FIELDS). The rules live in bramblewood-engine.js
 // (fieldEffects2Tick and the helper block near `rules`). key = the rules flag; editor = the Edit skirmish id.
 const FIELD2 = {
-  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor.'},
+  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor. A Flood fills the whole board: every unit that isn’t Flying is Wet; Swimmers and Tide units are Wet in Ebb too.'}, // 2026-10-18 (owner 15:05): the Flood wets land units
   landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:"Each round from round 2, a 1 in 4 chance that rocks come down on three neighbouring columns: 5 damage to every unit there that isn't flying, on both sides."}, // 2026-10-17 (user: "it should only affect the L/C/R cards")
   consternation: {icon:'😰', name:'Consternation', editor:'consternation', short:'Hand cards lose 1/1 a round', text:'Each round from round 2, every card in each hand loses 1/1. The loss stays on the card when it is played (down to 0 Attack and 1 Health at most).'},
   crushingDepths:{icon:'🫧', name:'Crushing Depths', editor:'crushingdepths', short:'5 water damage a round', text:'Each round from round 2, every unit takes 5 water damage. Tide units and Swimmers take half, and water Resist halves it again. No day or night reaches down here.'},
@@ -15346,7 +15387,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Name<input id="seName" value="${escapeAttr(draft.name||'')}"></label>
         <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
         <label>Kind<select id="seKind" ${draft.kind==='tutorial'?'disabled title="The tutorial marker keeps its kind"':''}>${(draft.kind==='tutorial' ? ['tutorial'] : SKIRMISH_KINDS).map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
-        ${(()=>{ const L = armourLayersOf(draft, skirmishCastle(draft).shield); return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
+        ${(()=>{ const scD = skirmishCastle(draft), L = scD.layers; overlay._shieldShown = L.slice(); /* 2026-10-18 (X3): the inputs show the Shield rule's value unless this fight overrides it */ return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend><p class="se-shield-rule panel-sub">Rule: Map ${nodeMapNumber(draft)} × ${shieldRuleMult(draft.kind)} = <b>${scD.rule}</b> Shield${scD.overridden ? ` · <b>overridden</b> <button type="button" class="btn small" id="seShieldRule">↺ Use the rule</button>` : ' (change a value to override it for this fight)'}</p>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
             return `<label class="se-armour-layer" data-layer="${k}" ${show ? '' : 'hidden'} style="--sh-a:${col[0]}; --sh-b:${col[1]}">L${k+1}<input id="${k === 0 ? 'seArmour' : 'seArmour' + (k+1)}" class="se-armour-in" data-k="${k}" type="number" min="0" max="9999" value="${val}"></label>`; }).join('')}</fieldset>`; })()}
         <label title="Level of the defending bramble: +1 Health per level. Blank = the default for this kind of fight">Bramble level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
         <label title="Worked out from this deck at the levels its cards fight at (change the deck or the card levels to move it)">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
@@ -15369,7 +15410,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label title="An uneven cycle (2026-10-17, the volcano's glow: Day 4, Night 2). Blank: the map's own (the volcano maps 4 and 2), else Switch every">Day / Night<input id="sePhaseDay" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseDay != null ? escapeAttr((draft.rules||{}).phaseDay) : ''}"> / <input id="sePhaseNight" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseNight != null ? escapeAttr((draft.rules||{}).phaseNight) : ''}"> rounds</label>
           <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 bramble Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never gives up')}</select></label>
-          ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire Smart, Smartest from floor 25">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[CPU_AI_KEYS[cpuAiAutoLevel(mapId, draft)]] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
+          ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire the smartest CPU on every floor">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[cpuAiKeyOf(cpuAiAutoLevel(mapId, draft))] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
           <label title="What this fight keeps putting out once it has no cards left">Out of cards, summons<select id="seLoop">${Object.entries(LOOP_PRESETS).map(([k, p])=> opt(k === '-' ? '' : k, draft.loopUnits || '', p.label)).join('')}</select></label>
         </fieldset>
         ${draft.kind === 'tutorial' ? '' : (()=>{ const chips = skirmishFieldChips(mapId, draft);
@@ -15461,7 +15502,10 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       }
       if(document.getElementById('seArmour')){
         const ls = []; for(let k = 0; k < ARMOUR_LAYER_MAX; k++){ const el = document.getElementById(k === 0 ? 'seArmour' : 'seArmour' + (k+1)); const n = el ? Math.max(0, Math.min(9999, Math.round(Number(el.value)||0))) : 0; if(!(n > 0)) break; ls.push(n); }
-        draft.armour = ls.reduce((a, b)=> a + b, 0); if(ls.length > 1) draft.armourLayers = ls; else delete draft.armourLayers; draft.hqHp = skirmishCastle(draft).total; }
+        // 2026-10-18 (X3): a value changed from what was shown becomes this fight's shieldOverride (back on the rule's value = no
+        // override); the old armour / armourLayers fields are dropped, and hqHp is no longer rewritten as Health + Shield.
+        if(JSON.stringify(ls) !== JSON.stringify(overlay._shieldShown || [])){ const r = ruleShieldOf(draft); if(JSON.stringify(ls) === JSON.stringify(r > 0 ? [r] : [])) delete draft.shieldOverride; else draft.shieldOverride = ls.length > 1 ? ls : (ls[0] || 0); }
+        delete draft.armour; delete draft.armourLayers; }
       { const lv = {}; overlay.querySelectorAll('[data-cardlv]').forEach(inp=>{ const x = inp.value; if(x !== '' && isFinite(Number(x)) && draft.deck && draft.deck[inp.dataset.cardlv]) lv[inp.dataset.cardlv] = Math.max(0, Math.min(11, Math.round(Number(x)))); });
         if(overlay.querySelector('[data-cardlv]')){ if(Object.keys(lv).length) draft.cardLevels = lv; else delete draft.cardLevels; } }
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
@@ -15481,7 +15525,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       openSkirmishGallery({kind:'leader', slot:k, current: draft.leaders||[], pick: id=>{ const a = (draft.leaders||[]).slice(); while(a.length < k) a.push(null); const dup = a.indexOf(id); if(dup >= 0 && dup !== k) a[dup] = a[k] || null; a[k] = id; setLeaders(a); dirty = true; }, onClose: render}); });
     overlay.querySelectorAll('[data-leader-rm]').forEach(b=> b.onclick = ()=>{ read(); const a = (draft.leaders||[]).slice(); a.splice(+b.dataset.leaderRm, 1); setLeaders(a); dirty = true; render(); });
     { const cp = document.getElementById('seCastlePick'); if(cp) cp.onclick = ()=>{ read();
-        openSkirmishGallery({kind:'castle', current: draft.characterId||'', pick: id=>{ if(id) draft.characterId = id; else delete draft.characterId; if(document.getElementById('seArmour')) draft.hqHp = skirmishCastle(draft).total; dirty = true; }, onClose: render}); }; }
+        openSkirmishGallery({kind:'castle', current: draft.characterId||'', pick: id=>{ if(id) draft.characterId = id; else delete draft.characterId; dirty = true; }, onClose: render}); }; } // 2026-10-18 (X3): no hqHp rewrite (the Shield is the rule's)
+    { const sr = document.getElementById('seShieldRule'); if(sr) sr.onclick = ()=>{ read(); delete draft.shieldOverride; dirty = true; render(); }; }
     overlay.querySelectorAll('.se-armour-in').forEach(inp=> inp.oninput = ()=>{ dirty = true; // a layer above 0 opens the next one; a 0 closes everything above it
       const ins = [...overlay.querySelectorAll('.se-armour-in')]; let open = true; ins.forEach((el, k)=>{ const lab = el.closest('.se-armour-layer'); if(k > 0) open = open && (Number(ins[k-1].value)||0) > 0; if(lab) lab.hidden = !open; }); });
     { const te = document.getElementById('seTutEdit'); if(te) te.onclick = ()=> openTutorialEditor(); }
@@ -15517,7 +15562,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       const btn = document.getElementById('seTune'); btn.disabled = true; btn.textContent = '🎯 Tuning…';
       setTimeout(()=>{
         const deck = expectedPlayerDeck(mapId, draft.key), tgt = skirmishTargetWinRate(mapId, draft), G = 80;
-        const rate = a=>{ const t = Object.assign({}, draft, {armour:a}); return simulateSkirmishVsDeck(t, deck, G).wins / G; };
+        const rate = a=>{ const t = Object.assign({}, draft, {shieldOverride:a}); NODE_MAP_HINT.set(t, mapId); /* 2026-10-18 (X3): tunes the Shield override, on this map's bramble */ return simulateSkirmishVsDeck(t, deck, G).wins / G; };
         const before = skirmishCastle(draft).shield;
         let lo = 0, hi = Math.max(20, skirmishCastle(draft).total * 3), best = before, bestR = rate(before);
         for(let it=0; it<8 && lo<=hi; it++){
@@ -15525,7 +15570,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           if(Math.abs(r - tgt) < Math.abs(bestR - tgt)){ best = mid; bestR = r; }
           if(r > tgt) lo = mid + 1; else hi = mid - 1;
         }
-        draft.armour = best; draft.hqHp = skirmishCastle(draft).total; dirty = true;
+        if(best === ruleShieldOf(draft)) delete draft.shieldOverride; else draft.shieldOverride = best; delete draft.armour; delete draft.armourLayers; dirty = true; // 2026-10-18 (X3)
         skirmishCurveCache[mapId+':'+draft.key] = bestR;
         const capNote = (bestR < tgt - .1 && best === 0) ? ' Even with no Armour it is too hard: swap a strong card out of the enemy deck.' : (bestR > tgt + .1) ? ' Still too easy at the top of the range: add a stronger card to the enemy deck.' : '';
         simText = `🎯 Skirmish Armour ${before} → <b>${best}</b>: a new player's deck wins about <b>${Math.round(bestR*100)}%</b> (target ~${Math.round(tgt*100)}%).${capNote} Not saved yet.`;
@@ -15541,7 +15586,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         const list = map.nodes.filter(n=> n.deck && n.kind!=='tutorial'), N = SKIRMISH_CURVE_SIMS;
         for(let i = 0; i < list.length; i++){
           const n = list[i], nn = n.key===draft.key ? draft : n, deck = expectedPlayerDeck(mapId, n.key);
-          const sig = JSON.stringify([mapId, nn.deck, nn.rules || null, nn.battleMode || null, nn.hqHp, nn.characterId || null, nn.castle || null, nn.armour || nn.armor || null, nn.setup || null, deck, N]);
+          const sig = JSON.stringify([mapId, nn.deck, nn.rules || null, nn.battleMode || null, nn.hqHp, nn.characterId || null, nn.castle || null, nn.shieldOverride != null ? nn.shieldOverride : null, nn.kind || null, nn.setup || null, deck, N]);
           let v = skirmishCurveSimCache.get(sig);
           if(v == null){ cb.textContent = `Checking ${i + 1}/${list.length}…`; await sleep(0); v = simulateSkirmishVsDeck(nn, deck, N).wins / N; skirmishCurveSimCache.set(sig, v); }
           skirmishCurveCache[mapId+':'+n.key] = v;
@@ -17240,7 +17285,7 @@ const CONQUEST_MAPS = [
   // where it is on Pebble Beach but waits on Gatorback Swamp (afterMapCleared). A save that already fought here keeps it open.
   // 2026-10-18 (owner: "lock it till Map 6 or 7 complete"): it waits on Map 6 by play order now, Sable Swampmire ("m8",
   // mapIdAt(6); tests/maps-2026-10-18.js checks the two agree). Saves that already fought here still keep it open.
-  { id:"mp", sub:true, parent:"mb", entry:{x:30, y:20, after:"2-1", afterMapCleared:"m8", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
+  { id:"mp", sub:true, parent:"mb", shieldMap:6, entry:{x:30, y:20, after:"2-1", afterMapCleared:"m8", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
     nodes: [
       { key:"2-A-1", kind:"skirmish", name:"Lily Hop", icon:"🐸", deck:{"puddle-hopper":3,"minnow-skitter":3,"guppy":3,"quill-volley":2,"lotus-frog":2,"shallows-fry":2}, hqHp:19, rules:{"tide":true}, flavor:"Every lily pad has a frog on it, and every frog has an opinion.", requires:[] },
       { key:"2-A-2", kind:"skirmish", name:"Duck Row", icon:"🦆", deck:{"duckling":1,"pond-duck":3,"pond-paddler":2,"minnow-skitter":2,"silver-minnow":2}, hqHp:28, rules:{"tide":true}, flavor:"They paddle in a line, and they all turn at once.", requires:["2-A-1"] },
@@ -17373,7 +17418,8 @@ const CONQUEST_MAPS = [
       { key:"17-A-4", kind:"boss", name:"The Hollow King", icon:"👑", deck:{"porcupine-roller":2,"arctic-fox-raider":2,"glacial-ape-king":2,"dynamite-packrat":2,"quill-volley":2}, hqHp:128, rewards:{first:{gold:200, dust:30}}, requires:["17-A-3"] },
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Opens once the Ice Hollow (the Tundra's side map) is cleared. Fights built from m1's own cards; tune in the editor.
-  { id:"mo", sub:true, parent:"m1", entry:{x:62, y:69, after:"0-4", afterMapCleared:"mi", label:"The Old Bramble"}, name:"The Old Bramble", icon:"🌿", blurb:"The thorns around the Outskirts are older than the village. Something waited in them for you to grow strong.", sequential:true,
+  // 2026-10-18 (X3, coordinator): shieldMap 17: the Shield rule counts these come-back-later fights as Map 17 (it opens after the Ice Hollow), not Map 0.
+  { id:"mo", sub:true, parent:"m1", shieldMap:17, entry:{x:62, y:69, after:"0-4", afterMapCleared:"mi", label:"The Old Bramble"}, name:"The Old Bramble", icon:"🌿", blurb:"The thorns around the Outskirts are older than the village. Something waited in them for you to grow strong.", sequential:true,
     nodes: [
       { key:"0-B-1", kind:"skirmish", name:"Thorn Path", icon:"🌿", deck:{"trash-panda-trickster":4,"glacier-wolf-pack":3,"meadow-rabbit":3,"pond-duck":2}, hqHp:43, rewards:{first:{gold:80, dust:10}}, requires:[] },
       { key:"0-B-2", kind:"skirmish", name:"The Briar Ring", icon:"🌿", deck:{"otter-paddler":4,"trash-panda-trickster":3,"otter-kit":3,"pond-duck":2}, hqHp:53, rewards:{first:{gold:100, dust:13}}, requires:["0-B-1"] },
@@ -18827,7 +18873,7 @@ function battleRecommendation(node){
   cards.forEach(c=> archetypesOf(c.d).forEach(a=>{ archCounts[a] = (archCounts[a]||0)+c.n; }));
   const topArch = Object.entries(archCounts).sort((a,b)=>b[1]-a[1])[0];
   if(topArch && topArch[1]/totalCopies >= 0.5) tips.push(`heavily ${topArch[0]}-themed — a deck built to punish that archetype's usual tricks will overperform here.`);
-  if(node.hqHp>=80) tips.push('a high-HP bramble behind them — expect a long grind; gold/economy cards help you outlast it.');
+  if(skirmishCastle(node).total>=80) tips.push('a high-HP bramble behind them — expect a long grind; gold/economy cards help you outlast it.');
   if(!tips.length) tips.push('a balanced mix — no single obvious lean to play around.');
   return tips.slice(0,2).join(' ');
 }
@@ -21084,7 +21130,8 @@ function startRaidFullBattle(def, partId, f, st){
     raidCastleStart: cfg.castleHp, raidRoundCap: f.rounds || cfg.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
     raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your bramble'].concat(allies.map(a=> a.castle.name)),
     raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId, raidBossHpBonus: bossHpBonus,
-    raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0}; // 2026-10-18 (R3-WP2)
+    raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0, // 2026-10-18 (R3-WP2)
+    raidSeed: currentMatchSeed}; // the Tentacle Smack's back-row roll (raidSmackBack, 2026-10-18)
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
   // 2026-10-12 (11:26 list: "During the raid, all 3 players' leaders come onto the battlefield, 1 on each of the centre 3
   // columns. Of course taking their own respective rows"): your leader opens in the front row's centre, the allies' leaders in
@@ -21191,6 +21238,13 @@ function raidPickColumn(m){
   (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=> occ.add(+sl)));
   const cols = occ.size ? [...occ] : [-1, 0, 1]; return cols[Math.floor(Math.random()*cols.length)];
 }
+// The Tentacle Smack reaches the back rows 1 time in 3 (2026-10-18, owner 15:37: "A. The tentacle slams hit them 1/3 of the time."):
+// one roll per attack per round, seeded by the match's seed, the round and the attack, so the same fight rolls the same.
+const RAID_SMACK_BACK_CHANCE = 1/3;
+function raidSmackBack(m, round, i){
+  const s = ((Number(m && m.raidSeed) >>> 0) ^ Math.imul((round|0) + 1, 0x9E3779B1) ^ Math.imul((i|0) + 1, 0x85EBCA77)) >>> 0;
+  return seededRng(s)() < RAID_SMACK_BACK_CHANCE;
+}
 function raidSpecials(m, events){
   // A stage's extraVolley (2026-10-18, R3-WP2; Enraged / Thrashing): the boss's back two rows strike too, as your ally rows do (engine
   // reserveVolley: half Attack at the unit facing them, or your castle when that column is empty), N times a round.
@@ -21202,11 +21256,15 @@ function raidSpecials(m, events){
     const every = Math.max(1, a.every||1); if(round % every !== 0) return;
     if(a.pattern === 'column'){
       const col = m.raidPending[i] != null ? m.raidPending[i] : raidPickColumn(m); delete m.raidPending[i];
-      const hit = m.engine.allBoardCards(pl).filter(c=> c.hp > 0 && c.slot === col).concat((pl.reserve||[]).map(row=> row[col]).filter(Boolean));
+      // 2026-10-18 (owner 15:37): it slams your front-row unit in that column; 1 time in 3 (raidSmackBack) it reaches past the front row
+      // and slams your middle and back rows in that column instead (it was every row at once). When the rows it aims at are empty in
+      // that column it lands on the others; a column empty in every row hits your bramble, as before.
+      const front = m.engine.allBoardCards(pl).filter(c=> c.hp > 0 && c.slot === col), res = (pl.reserve||[]).map(row=> row[col]).filter(c=> c && c.hp > 0);
+      const toBack = raidSmackBack(m, round, i), hit = (toBack ? [res, front] : [front, res]).find(h=> h.length) || [];
       hit.forEach(c=> m.engine.damageCardFlat(c, a.dmg||0, 'physical', null));
       if(!hit.length) pl.hq.hp = Math.max(0, pl.hq.hp - (a.dmg||0));
       (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=>{ if(row[sl].hp <= 0) delete row[sl]; }));
-      events.push({type:'raidSmack', name:a.name || 'Smack', col, dmg:a.dmg||0, hits:hit.length});
+      events.push({type:'raidSmack', name:a.name || 'Smack', col, dmg:a.dmg||0, hits:hit.length, back: (hit.length && hit === res) || undefined});
     } else if(a.pattern === 'frontRow'){
       const hit = m.engine.allBoardCards(pl).filter(c=> c.hp > 0); hit.forEach(c=> m.engine.damageCardFlat(c, a.dmg||0, 'physical', null));
       events.push({type:'raidSmack', name:a.name || 'Sweep', col:null, dmg:a.dmg||0, hits:hit.length, front:true});
@@ -21691,7 +21749,10 @@ const STARTER_CFG_DEFAULT = {
   rewards2: {otters: ['river-warden', 'otter-centurion'], hummingbirds: ['sunspire-envoy', 'crimson-wing-recruit'], both: ['riverwing-envoy', 'sunspire-envoy']}, // 2026-10-12 (user: "a reward for people who chose otter-hbird together that's not the dominion guy or centurion"): the Riverwing Envoy
   bothBonus: 'meerkat-wayfarer',
 };
-const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:16, rivalHp:6, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
+// 2026-10-18 (X3, owner 15:37 "D. Tutorial only"): your own bramble is very low in the two tutorial fights too: 8 Health (was 16),
+// against the rival's 6 (8 in part 2), and capped there even if a saved tutorial config says more. Map 0's fights keep your bramble's own Health.
+const TUTORIAL_MY_HP_MAX = 8;
+const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:8, rivalHp:6, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
 const TUTORIAL_CFG_KEY = 'bramblewood_tutorial_cfg_v2'; // v2 (2026-10-12): an older saved config kept the old, harder castle Health
 let tutorialCfg = (()=>{ try{ return Object.assign({}, TUTORIAL_CFG_DEFAULT, JSON.parse(localStorage.getItem(TUTORIAL_CFG_KEY)||'{}')||{}); }catch(e){ return Object.assign({}, TUTORIAL_CFG_DEFAULT); } })();
 function saveTutorialCfg(){ try{ localStorage.setItem(TUTORIAL_CFG_KEY, JSON.stringify(tutorialCfg)); }catch(e){} }
@@ -21732,7 +21793,7 @@ function openTutorialEditor(){
     <div class="modal-head-row"><h2>🎓 Tutorial editor</h2><button class="modal-close-btn" id="teClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">Changes apply to the next tutorial that starts. ${cloudCardAdmin ? 'Save publishes them for every new player.' : 'You are not signed in as a cloud admin, so Save only changes this browser.'}</p>
     <div class="te-grid">
-      <label>Your bramble HP<input type="number" id="teMyHp" min="1" max="200" value="${c.myHp||30}"></label>
+      <label title="At most ${TUTORIAL_MY_HP_MAX} (2026-10-18: the tutorial keeps your bramble very low)">Your bramble HP<input type="number" id="teMyHp" min="1" max="${TUTORIAL_MY_HP_MAX}" value="${Math.min(TUTORIAL_MY_HP_MAX, c.myHp||TUTORIAL_MY_HP_MAX)}"></label>
       <label>Rival bramble HP<input type="number" id="teRivalHp" min="1" max="200" value="${c.rivalHp||30}"></label>
       <label>Starting hand<input type="number" id="teHand" min="1" max="5" value="${c.handSize||3}"></label>
       <label>Seed<input type="number" id="teSeed" min="0" value="${c.seed||TUTORIAL_SEED}" title="The tutorial always plays the same draws for a given seed"></label>
@@ -21902,7 +21963,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const deckCounts = tutorialPlainDeck(tutDecks.mine, st), rivalCounts = tutorialPlainDeck(tutDecks.rival, st); invalidateCardDefs();
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode:'open'}); // 2026-10-12 (user: "Tutorial -> non collapse rules"): it was left on the engine's old default
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = Object.assign({}, myCastleDef(), cfg.myHp ? {health: cfg.myHp} : {});
+  const myCharacter = Object.assign({}, myCastleDef(), {health: Math.min(TUTORIAL_MY_HP_MAX, cfg.myHp || TUTORIAL_MY_HP_MAX)}); // 2026-10-18 (X3): at most 8
   const validDeck = d=> d && Object.keys(d).some(id=> getCardDefs()[id] && d[id]>0) ? Object.fromEntries(Object.entries(d).filter(([id,n])=> getCardDefs()[id] && n>0)) : null;
   // Part 2 (2026-10-12) plays your real starter deck (+ the tutorial reward cards), with your leader beside it.
   // Deliberately NOT persisted as the player's real deck (myDeckCounts/saveMyDeck) -- see this
@@ -28268,7 +28329,7 @@ function renderBoard(opts){
   const hadNewEntrants = newBoardEls.length>0;
   fitBattlefieldZoom();
   try{ fxHook('boardRendered', matchState); }catch(e){} // FX batch B (2026-10-15): who can't see in the dark, the forecast pill
-  try{ syncTideScene(matchState); }catch(e){} // the standing Tide: waded rings on new cards (2026-10-18)
+  try{ syncTideScene(matchState); }catch(e){} // the standing Tide: the wet look on new cards (2026-10-18)
   try{ syncUnitLightPools(); }catch(e){} // unit light in the dark (2026-10-15)
   // Bugfix (2026-09-17, root cause of the residual small stuck-transform matrices test_v24
   // still caught after the scale-1.08/shove fixes above — e.g. a card left mid fall-in at
@@ -32660,11 +32721,18 @@ function coldWaveVfx(m){
 // The standing Tide (2026-10-18, owner: "The tide effect has not been updated to be better."): a water layer under the cards
 // (.tide-scene, first child of #battlefieldEl, CSS in arena_template.html) shows the tide as it is: Flood fills the board to near its top,
 // High Tide to the brim, Ebb leaves a shallow strip along the bottom, no tide no water. A change rises or recedes smoothly (1.8 s), an ebb
-// leaves wet sand that dries, land units stand waded in a ring of water (.tide-wade) and Swimmers bob in theirs. m._tideScene remembers what
+// leaves wet sand that dries, land units stood waded in a ring of water (retired below) and Swimmers bob. m._tideScene remembers what
 // is shown ({k, from, at}); renderMatchUI rebuilds the battlefield, so syncTideScene redraws the layer and resumes a move in progress
 // (negative animation delay) instead of replaying it. While a round replays, the shown state waits for the 'tide' event (the engine is
 // already a round ahead); otherwise it follows the engine.
-const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'84%', flow:'15%', high:'3%'};
+// 2026-10-18 (owner 15:05: "Flood should fill the whole board i think, then the water vfx can come into play after the water settles. In
+// Ebb, the water retreats to the bottom borders of the board. Units that can swim sometimes have a splash or water droplet effect under
+// them."): Flood and High Tide fill the whole board, top to bottom; the caustics and the sheen (.tw-surf) fade in only once the water has
+// settled; Ebb leaves a thin band along the bottom border. The waded ring under land units is gone: a wet unit (every unit that isn't
+// flying in a Flood, a Swimmer / Tide unit in Flood or Ebb: the engine's Wet rule, wetCountOf) wears a subtle wet look instead (.unit-wet),
+// and Swimmers now and then splash (SwimSplash below). Every board row counts, the raid's middle and back rows too.
+const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'calc(100% - 12px)', flow:'0%', high:'0%'};
+const TIDE_BOARD_CARDS = '#battlefieldInner .board-row > .board-card'; // every row: yours, the enemy's, and the raid's middle / back rows (2026-10-18)
 const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {none:0, ebb:1, flow:2, high:3};
 function tideSceneTarget(m){
   try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
@@ -32681,7 +32749,7 @@ function syncTideScene(m){
   let w = bf.querySelector(':scope > .tide-scene');
   if(st.k === 'none' && !moving){ if(w) w.remove(); delete bf.dataset.tide; return; }
   if(!w){ w = document.createElement('div'); w.className = 'tide-scene'; w.setAttribute('aria-hidden', 'true');
-    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
+    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><div class="tw-surf"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div></div><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
     bf.insertBefore(w, bf.firstChild); }
   const key = st.k + '|' + st.at;
   if(w.dataset.key !== key){
@@ -32694,9 +32762,12 @@ function syncTideScene(m){
     w.classList.toggle('is-drying', moving && (st.from === 'flow' || st.from === 'high') && (st.k === 'ebb' || st.k === 'none'));
   }
   bf.dataset.tide = st.k; bf.style.setProperty('--tw-wade-delay', (moving ? -el : -1e6) + 'ms');
-  bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(c=>{
-    if(c.querySelector(':scope > .tide-wade') || !c.querySelector('.card-tile')) return;
-    const i = document.createElement('i'); i.className = 'tide-wade'; i.setAttribute('aria-hidden', 'true'); c.appendChild(i); });
+  // the wet look (2026-10-18): on every unit that isn't flying, in every board row; a Swimmer's rides its bobbing body (.float-body)
+  bf.querySelectorAll(TIDE_BOARD_CARDS).forEach(c=>{
+    if(c.classList.contains('is-flying') || !c.querySelector('.card-tile')) return;
+    const host = c.querySelector(':scope > .float-body') || c;
+    if(host.querySelector(':scope > .unit-wet')) return;
+    const i = document.createElement('i'); i.className = 'unit-wet'; i.setAttribute('aria-hidden', 'true'); host.appendChild(i); });
 }
 function tideWaveVfx(kind){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
@@ -32715,7 +32786,7 @@ function tideWaveVfx(kind){
 // One layout read per card (its column), then class toggles; the lift itself is a CSS animation of the tile's translate / rotate
 // (.tide-lift / .tide-lift-ebb in arena_template.html). Flyers are above the water and stay still.
 function tideLiftCards(bf, kind){
-  const cards = [...bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card')].filter(c=> !c.classList.contains('is-flying') && c.querySelector('.card-tile'));
+  const cards = [...bf.querySelectorAll(TIDE_BOARD_CARDS)].filter(c=> !c.classList.contains('is-flying') && c.querySelector('.card-tile')); // every row (2026-10-18)
   if(!cards.length) return;
   const bl = bf.getBoundingClientRect().left, rs = cards.map(c=> c.getBoundingClientRect()), w = rs[0].width || 100;
   const cols = rs.map(r=> Math.max(0, Math.round((r.left - bl) / w))), c0 = Math.min(...cols), cls = kind === 'ebb' ? 'tide-lift-ebb' : 'tide-lift';
@@ -32723,6 +32794,28 @@ function tideLiftCards(bf, kind){
   const last = .25 + (Math.max(...cols) - c0)*.1;
   setTimeout(()=> cards.forEach(c=> c.classList.remove(cls)), Math.round((last + 1)*1000));
 }
+// Swimmer splashes (2026-10-18, owner 15:05: "Units that can swim sometimes have a splash or water droplet effect under them."): one
+// shared timer, every 1.6-4.2 s, may pick one Swimmer / Tide unit on the board (any row) while there is water (Flood, High Tide or Ebb)
+// and puts a small splash or a few droplets at its base (.swim-splash: transform / opacity only, gone in a second). Medium effects and
+// up, not under reduced motion or the Minimal style, only while the page is visible.
+const SwimSplash = (function(){
+  let timer = null;
+  function tick(){
+    timer = setTimeout(tick, 1600 + Math.random()*2600); if(timer && timer.unref) timer.unref(); // never holds a Node test run open
+    try{
+      const bf = document.getElementById('battlefieldEl'), t = bf && bf.dataset.tide;
+      if(!t || t === 'none' || document.hidden || reducedMotion() || !fxAtLeast('med') || fxStyle() === 'minimal' || Math.random() < .4) return;
+      const sw = [...bf.querySelectorAll(TIDE_BOARD_CARDS + '.is-floating')].filter(c=> !c.querySelector(':scope > .swim-splash'));
+      if(!sw.length) return;
+      const c = sw[Math.floor(Math.random()*sw.length)], s = document.createElement('i');
+      s.className = 'swim-splash' + (Math.random() < .5 ? ' ss-drops' : ''); s.setAttribute('aria-hidden', 'true');
+      s.style.left = (Math.random() < .5 ? 16 + Math.random()*18 : 66 + Math.random()*18).toFixed(0) + '%'; // beside the centred skill pill
+      c.appendChild(s); setTimeout(()=> s.remove(), 1100);
+    }catch(e){}
+  }
+  return {start(){ if(!timer){ timer = setTimeout(tick, 3000); if(timer && timer.unref) timer.unref(); } }, stop(){ clearTimeout(timer); timer = null; }};
+})();
+try{ if(typeof document !== 'undefined') SwimSplash.start(); }catch(e){}
 // Idle glance (2026-10-18, owner: "Idle land units on the board (rarely) but sometimes look left/right very slightly"): one shared timer,
 // every 3-7 s, may pick one land unit on the board (not a flyer or a Swimmer / Tide unit, not frozen, stunned, asleep, paralyzed or
 // caged) and its art glances a little left or right (.glance-l / .glance-r: ~0.6 s each way, a short hold, then back; CSS in
@@ -34024,7 +34117,7 @@ function rewardsPanelHTML(m){
     openRows.push(`<span class="rw-act">${t2 ? TX('results.conquest-map') : TX('results.tutorial-part-2')}</span>`);
   } else (m.unlockedActivities||[]).forEach(a=> openRows.push(`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`));
   const fightRow = (m.unlockedFights||[]).length && m.mode!=='tutorial' ? m.unlockedFights.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
-      return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: n.hqHp, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
+      return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: skirmishCastle(n).total, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
   if(seen.length || openRows.length || fightRow){
     const defs = getCardDefs();
     secs.push(`<div class="rw-sec rw-seen"><div class="rw-head">${seen.length ? TX('results.new-cards-seen') : TX('results.unlocked')}</div>${seen.length ? `<div class="rw-cards">${seen.map(id=> defs[id] ? `<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>` : '').join('')}</div>` : ''}${openRows.length || fightRow ? `<div class="rw-row rw-open-row">${openRows.join('')}${fightRow}</div>` : ''}</div>`); // 2026-10-18 (package U, user: "Put the title rewards in-line/in-group with skirmish unlocks."): one row, one chip look
@@ -34614,7 +34707,7 @@ function logText(ev){
     case 'raidCommons': return {cls:'', text:`🐙 The boss calls in ${(ev.defIds||[]).map(nm).join(' and ')} behind its lines.`}; // 2026-10-17
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
     case 'raidLastTurn': return {cls:'gold', text:`🌊 Last turn (${ev.round}): the tide turns after this one and the raid ends, whatever the brambles' Health.`}; // 2026-10-18
-    case 'raidSmack': return {cls:'', text: ev.front ? `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.` : ev.hits ? `💥 ${ev.name} smashes the column, ${ev.dmg} to each of your ${ev.hits} unit${ev.hits===1?'':'s'} there.` : `💥 ${ev.name} hits an empty column: ${ev.dmg} to your bramble.`};
+    case 'raidSmack': return {cls:'', text: ev.back ? TX('ui.raid-smack-back-rows', {name: ev.name, dmg: ev.dmg, hits: ev.hits}) : ev.front ? `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.` : ev.hits ? `💥 ${ev.name} smashes the column, ${ev.dmg} to each of your ${ev.hits} unit${ev.hits===1?'':'s'} there.` : `💥 ${ev.name} hits an empty column: ${ev.dmg} to your bramble.`};
     case 'advance': return {cls:'', text:`⬆ ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.defId)} steps up to the ${ev.to === 0 ? 'front' : 'middle'} row.`};
     case 'boomerangWhiff': return {cls:'', text:`🪃 Whiff! ${nm(ev.defId)}'s boomerang finds nothing on the way back.`};
     case 'boomerangCaught': return {cls:'', text:`🪃 ${nm(ev.defId)} catches the boomerang.`};
@@ -36439,7 +36532,6 @@ function field2LogText(ev, nm){
   if(ev.type === 'skipTurn' && ev.reason === 'frightened') return {cls:'', text:`${nm(ev.defId)} is too frightened to attack. 👻`};
   if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
   if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
-  if(ev.type === 'grounded') return {cls:'', text:`⚡ ${nm(ev.attDefId)}'s lightning is grounded: a bramble can't be shocked.`}; // 2026-10-18
   return null;
 }
 function field2Vfx(ev){
@@ -36449,7 +36541,6 @@ function field2Vfx(ev){
   const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
   const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
   const at = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2}; };
-  if(ev.type === 'grounded'){ let el = null; try{ el = hqTileEl(ev.targetSide); }catch(e){} fl(el, '⚡ Grounded', 'quick'); return; } // castles can't be shocked (2026-10-18)
   if(ev.type === 'fieldTick'){
     const h = FIELD2_HIT[ev.field];
     if(h){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){}

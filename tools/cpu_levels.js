@@ -25,16 +25,32 @@ const SMART_KINDS = new Set(['elite','champion','miniboss','subboss','boss','dun
 const KEYS = ['basic', 'smart', 'smartest'];
 const mains = MAPS.filter(m=> !m.sub);
 const mapNo = m=> mains.indexOf(m.sub ? MAPS.find(x=> x.id===m.parent) : m);
-function autoLevel(m, n){ if(n.tower) return 1; const k = KEYS.indexOf(n.ai); if(k >= 0) return k; const no = mapNo(m); if(no >= 21) return 2; return no >= 5 && SMART_KINDS.has(n.kind || 'skirmish') ? 1 : 0; }
+function autoLevel(m, n){ if(n.tower) return 2; /* X2: the Spire plays AI_LEVEL_MAX */ const k = KEYS.indexOf(n.ai); if(k >= 0) return k; const no = mapNo(m); if(no >= 21) return 2; return no >= 5 && SMART_KINDS.has(n.kind || 'skirmish') ? 1 : 0; }
 const curve = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/difficulty-curve.json'), 'utf8'));
 const DECKS = Object.fromEntries(['mid', 'strong'].map(k=> [k, Object.fromEntries(curve.decks[k].cards.map(c=> [c.id, c.n]))]));
 let CURRENT_RULES = null, CURRENT_FIELD = null;
-function play(A, B, charB, hpB, mode, seed, cfg){
+// The enemy bramble as the game builds it since X3 (2026-10-18, skirmishCastle in arena_app.js): its own Health (the castle's
+// Health + its level by kind, never more than hqHp) plus a Shield of map number × the kind's multiplier, or the editor's override.
+const KIND_BASE = {champion:'elite', miniboss:'elite', subboss:'boss', dungeon:'elite', worldboss:'raidboss', megaraid:'raidboss'};
+const KIND_CASTLE_LEVEL = {skirmish:0, elite:3, boss:8, raidboss:12, finalboss:15};
+const SHIELD_RULE_MULT = {skirmish:1, elite:1.5, champion:1.5, dungeon:1.5, miniboss:2, subboss:2, boss:3, finalboss:3, worldboss:3, raidboss:3, megaraid:3, tutorial:0};
+const baseKind = k=> KIND_BASE[k] || k;
+function bramble(m, n){
+  const kind = n.kind || 'skirmish', base = (n.characterId && charById[n.characterId]) || charById.castle || {health: 30};
+  const baseHp = (Number(base.health) || 30) + (n.characterId ? (KIND_CASTLE_LEVEL[baseKind(kind)] || 0) : 0);
+  const hp = Number(n.hqHp) > 0 ? Math.min(baseHp, Math.round(Number(n.hqHp))) : baseHp;
+  const parent = m.sub ? MAPS.find(x=> x.id===m.parent) : m;
+  const no = n.shieldMap != null ? +n.shieldMap : (m.shieldMap != null ? +m.shieldMap : mains.indexOf(parent));
+  const mult = SHIELD_RULE_MULT[kind] != null ? SHIELD_RULE_MULT[kind] : (SHIELD_RULE_MULT[baseKind(kind)] != null ? SHIELD_RULE_MULT[baseKind(kind)] : 1);
+  const ov = n.shieldOverride != null && n.shieldOverride !== '' ? [].concat(n.shieldOverride).reduce((a, b)=> a + Math.max(0, Math.round(+b || 0)), 0) : null;
+  return {hp, shield: ov != null ? ov : Math.max(0, Math.round(no * mult))};
+}
+function play(A, B, charB, hpB, mode, seed, cfg, shield){
   const opts = {battleMode: mode || 'open', rules: CURRENT_RULES || undefined}; if(cfg.aim){ opts.aiAim = true; opts.aiLevel = cfg.cpu; }
   const e = E.makeSimEngine(defs, E.mulberry32(seed), opts); const so = p=> p===1 ? 'A' : 'B';
   if(CURRENT_FIELD) e.setField(CURRENT_FIELD, null, 'map');
   const P = {1: e.newPlayer(1, A, Object.assign({}, charById.castle, {health: MY_HP})), 2: e.newPlayer(2, B, Object.assign({}, charB || charById.castle, {health: hpB}))}; const st = {};
-  P[2].loopCards = [];
+  P[2].loopCards = []; if(shield){ P[2].hq.shield = shield; P[2].hq.maxShield = shield; }
   e.draw(P[1], 3, 'A', st, null); e.draw(P[2], 3, 'B', st, null);
   for(let r=1; r<=E.DRAW_ROUND_CAP; r++){ e.setSuddenDeath(r >= E.SUDDEN_DEATH_ROUND, r >= E.SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1); [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; }); if(r > 1) e.roundStart(P, r, so, st, null);
     if(cfg.aim) e.setAiLevel(1); e.aiTakeTurn(P, so, 1, st, null);
@@ -45,9 +61,9 @@ function play(A, B, charB, hpB, mode, seed, cfg){
 }
 function measure(deck, m, n, cfg){
   CURRENT_RULES = n.rules || null; CURRENT_FIELD = m.id==='m6' ? 'frozen' : null;
-  const ch = n.characterId && charById[n.characterId];
+  const ch = n.characterId && charById[n.characterId], b = bramble(m, n);
   let wins = 0, lost = 0;
-  for(let k=0; k<N; k++){ const g = play(deck, n.deck, ch, n.hqHp, n.battleMode || 'open', 500 + k*31, cfg);
+  for(let k=0; k<N; k++){ const g = play(deck, n.deck, ch, b.hp, n.battleMode || 'open', 500 + k*31, cfg, b.shield);
     if(g.w===1){ wins++; lost += (MY_HP - g.hp)/MY_HP; } else lost += 1; }
   return {win: Math.round(wins/N*1000)/10, hpLost: Math.round(lost/N*1000)/10};
 }
@@ -57,7 +73,7 @@ MAPS.forEach(m=>{ if(m.reserved) return; const no = mapNo(m); if(no < 5) return;
   fights.forEach((n, i)=>{ if(!n.deck) return; const lv = autoLevel(m, n); if(no < 21 && lv === 0) return;
     const sibs = MAPS.filter(x=> x.sub && x.parent===m.parent);
     const gm = m.sub ? `${no}-${String.fromCharCode(65 + sibs.indexOf(m))}` : String(no);
-    jobs.push({map: m.id, mapNo: no, gameMap: gm, mapName: m.name, code: n.code || `${gm}-${i+1}`, key: n.key, kind: n.kind || 'skirmish', name: n.name || n.key, level: lv, decks: no >= 21 ? ['mid', 'strong'] : ['strong'], m, n}); }); });
+    jobs.push({map: m.id, mapNo: no, gameMap: gm, mapName: m.name, code: n.code || `${gm}-${i+1}`, key: n.key, kind: n.kind || 'skirmish', name: n.name || n.key, level: lv, bramble: bramble(m, n), decks: no >= 21 ? ['mid', 'strong'] : ['strong'], m, n}); }); });
 const done = new Set(); try{ fs.readFileSync(OUT, 'utf8').split('\n').filter(Boolean).forEach(l=> done.add(JSON.parse(l).key)); }catch(e){}
 const mine = jobs.filter((j, i)=> i % nsh === shard && !done.has(j.key));
 console.log('jobs', jobs.length, 'mine', mine.length);

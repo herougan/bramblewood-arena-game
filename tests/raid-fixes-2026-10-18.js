@@ -61,17 +61,18 @@ const tpl = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), '
 { const {e, P} = mk({reserveActs:true}); P[2].hq.hp = 2; put(e, P, 1, 'rf-wall', 0); e.fillReserve(P[1], 1, 0, 'rf-hit');
   const over = e.resolveCombat(P, so, {}, [], 1); ok(over === true && P[2].hq.hp === 0, `a middle-row strike that takes the last Health ends the match (${over}, ${P[2].hq.hp})`); }
 
-// ---- A castle can't be shocked: the Lightning skill and a Shock Bolt with no unit to hit are grounded; a Fire Bolt still lands
+// ---- A castle and lightning (2026-10-18, owner 15:05 "No Shocked status on Brambles." reverts the morning's grounding): the
+// Lightning skill and a Shock Bolt with no unit to hit strike the castle for their damage again, but the castle is never Shocked
 { const {e, P} = mk(); const h = P[2].hq.hp, ev = []; e.debugSpawnCard(P, so, 1, 'rf-zap', 0, {}, ev);
-  ok(P[2].hq.hp === h, `Lightning 5 with no enemy unit: the castle takes nothing (${h - P[2].hq.hp})`);
-  ok(ev.some(x=> x.type === 'grounded' && x.targetSide === 'B'), 'a grounded event says so'); }
+  ok(h - P[2].hq.hp === 5, `Lightning 5 with no enemy unit: the castle takes 5 (${h - P[2].hq.hp})`);
+  ok(!ev.some(x=> x.type === 'grounded') && !(P[2].hq.shocked > 0), 'no grounded event, the castle is not Shocked'); }
 { const {e, P} = mk(); put(e, P, 1, 'rf-shockbolt', 0); const h = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1);
-  ok(P[2].hq.hp === h, `a Shock Bolt at the castle: grounded (${h - P[2].hq.hp})`); }
+  ok(P[2].hq.hp < h && !(P[2].hq.shocked > 0), `a Shock Bolt at the castle lands, no Shocked (${h - P[2].hq.hp})`); }
 { const {e, P} = mk(); put(e, P, 1, 'rf-firebolt', 0); const h = P[2].hq.hp; e.resolveCombat(P, so, {}, [], 1);
   ok(P[2].hq.hp < h, `a Fire Bolt at the castle still lands (${h - P[2].hq.hp})`); }
 { const {e, P} = mk(); const t = put(e, P, 2, 'rf-wall', 0); e.debugSpawnCard(P, so, 1, 'rf-zap', 0, {}, []);
   ok(t.hp === 495, `Lightning on a unit still strikes it (${500 - t.hp})`); }
-ok(!/the (?:castle|bramble) if there are none\) for \$\{v\} lightning/.test(src) && /a bramble can't be shocked/.test(src), 'the Lightning text no longer promises a castle hit');
+ok(/With no enemy unit it strikes the bramble, which is never Shocked/.test(src) && !/'grounded'/.test(src), 'the Lightning text: the bramble is struck, never Shocked; no grounded log/float (2026-10-18 owner 15:05)');
 
 // ---- The raid in the page: rows act in combat (no round-start volley for your rows), the clock, the end, the castle name, the camera
 ok(/reserveRows:2, reserveActs:true/.test(src), 'the raid engine runs with reserveActs');

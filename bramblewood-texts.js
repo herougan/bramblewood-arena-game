@@ -52,6 +52,7 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.rename-ticket-you-carry": "You carry {n} of {cap}.",
   "ui.rename-ticket-full": "You already carry {cap}, the most you can hold.",
   "ui.rename-ticket-full-tag": "Full",
+  "ui.raid-smack-back-rows": "💥 {name} reaches past your front row and slams your back rows: {dmg} damage to {hits} of your units there.",
   "net.guild-rename-sign-in": "Sign in to rename your guild.",
   "net.guild-rename-not-on": "Guild renaming isn't switched on yet. Your ticket is safe; try again later.",
   "net.guild-name-taken": "Another guild already has that name. Try a different one.",
