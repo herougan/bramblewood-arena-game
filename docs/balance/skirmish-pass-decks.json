@@ -1,0 +1,285 @@
+{
+ "generated": "2026-10-18",
+ "note": "Road decks for Maps 1-9 (tools/skirmish_pass.js decks); Starter / Mid-road / Strong are docs/balance/difficulty-curve.json",
+ "road": {
+  "1": {
+   "pool": 54,
+   "score": 65,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 4
+    },
+    {
+     "id": "riverwing-envoy",
+     "name": "Riverwing Envoy",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    }
+   ]
+  },
+  "2": {
+   "pool": 58,
+   "score": 85,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-guard",
+     "name": "Otter Guard",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "meadow-frog",
+     "name": "Meadow Frog",
+     "n": 4
+    },
+    {
+     "id": "bee-drone",
+     "name": "Bee Drone",
+     "n": 4
+    }
+   ]
+  },
+  "3": {
+   "pool": 63,
+   "score": 100,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    },
+    {
+     "id": "hedgehog-scout",
+     "name": "Hedgehog Scout",
+     "n": 4
+    },
+    {
+     "id": "bee-drone",
+     "name": "Bee Drone",
+     "n": 4
+    }
+   ]
+  },
+  "4": {
+   "pool": 70,
+   "score": 31.7,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    },
+    {
+     "id": "bee-drone",
+     "name": "Bee Drone",
+     "n": 4
+    },
+    {
+     "id": "gold-throated-acolyte",
+     "name": "Gold-throated Acolyte",
+     "n": 4
+    }
+   ]
+  },
+  "5": {
+   "pool": 78,
+   "score": 72.6,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "box-turtle",
+     "name": "Box Turtle",
+     "n": 4
+    },
+    {
+     "id": "chipmunk-cavalry",
+     "name": "Chipmunk Cavalry",
+     "n": 4
+    },
+    {
+     "id": "courier-pigeon",
+     "name": "Courier Pigeon",
+     "n": 4
+    }
+   ]
+  },
+  "6": {
+   "pool": 85,
+   "score": 67.7,
+   "cards": [
+    {
+     "id": "burrow-rabbit",
+     "name": "Burrow Rabbit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "courier-pigeon",
+     "name": "Courier Pigeon",
+     "n": 4
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    },
+    {
+     "id": "fleetfootd",
+     "name": "Fleetfoot'd",
+     "n": 4
+    }
+   ]
+  },
+  "7": {
+   "pool": 94,
+   "score": 40.3,
+   "cards": [
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "courier-pigeon",
+     "name": "Courier Pigeon",
+     "n": 4
+    },
+    {
+     "id": "pelican-diver",
+     "name": "Pelican Diver",
+     "n": 4
+    },
+    {
+     "id": "rockslide-ram",
+     "name": "Rockslide Ram",
+     "n": 4
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "name": "Meerkat Wayfarer",
+     "n": 4
+    }
+   ]
+  },
+  "8": {
+   "pool": 103,
+   "score": 60.4,
+   "cards": [
+    {
+     "id": "rockslide-ram",
+     "name": "Rockslide Ram",
+     "n": 4
+    },
+    {
+     "id": "meerkat-wayfarer",
+     "name": "Meerkat Wayfarer",
+     "n": 4
+    },
+    {
+     "id": "gull-thief",
+     "name": "Gull Thief",
+     "n": 4
+    },
+    {
+     "id": "mountain-goat-climber",
+     "name": "Mountain Goat Climber",
+     "n": 4
+    },
+    {
+     "id": "migration-leader",
+     "name": "Migration Leader",
+     "n": 4
+    }
+   ]
+  },
+  "9": {
+   "pool": 111,
+   "score": 46.4,
+   "cards": [
+    {
+     "id": "crimson-wing-recruit",
+     "name": "Crimson Recruit",
+     "n": 4
+    },
+    {
+     "id": "otter-centurion",
+     "name": "Otter Centurion",
+     "n": 4
+    },
+    {
+     "id": "eagle-diver",
+     "name": "Eagle Diver",
+     "n": 4
+    },
+    {
+     "id": "rockslide-ram",
+     "name": "Rockslide Ram",
+     "n": 4
+    },
+    {
+     "id": "mountain-goat-climber",
+     "name": "Mountain Goat Climber",
+     "n": 4
+    }
+   ]
+  }
+ }
+}

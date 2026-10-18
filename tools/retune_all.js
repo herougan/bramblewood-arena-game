@@ -8,6 +8,10 @@
 // times. Raid bosses are left to the Raid editor.
 //
 //   node tools/retune_all.js [games=60] [--apply]     prints a table; --apply writes arena_app.js
+//
+// 2026-10-18 (package SKB, after X3's Shield rule): "HP" here is the enemy bramble's total (Health + Shield as the game builds it,
+// tools/lib_bramble.js), not hqHp, which can now only lower the Health; --apply writes it as a shieldOverride (or, below the
+// bramble's own Health, a lower hqHp and no Shield). For a pass with the game's real fight build, see tools/skirmish_pass.js.
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -18,6 +22,7 @@ const defs = {}; cards.forEach(c=>{ const d = Object.assign({effects:{}}, c); de
 const charById = {}; (Array.isArray(chars) ? chars : Object.values(chars)).forEach(c=> charById[c.id] = c);
 const APP = path.join(ROOT, 'arena_app.js');
 let src = fs.readFileSync(APP, 'utf8');
+const B = require('./lib_bramble.js'); // 2026-10-18 (SKB)
 const i0 = src.indexOf('const CONQUEST_MAPS = ['), j0 = src.indexOf('\n];', i0);
 const MAPS = eval(src.slice(i0 + 'const CONQUEST_MAPS = '.length, j0 + 2));
 const N = +(process.argv.find(a=> /^\d+$/.test(a)) || 60), APPLY = process.argv.includes('--apply'), HP_ONLY = process.argv.includes('--hp-only'); // --hp-only: never swap cards (keeps a boss's namesake in its deck)
@@ -94,8 +99,9 @@ for(const map of order){
     if(ONLY.length && !ONLY.includes(map.id) && !ONLY.includes(n.key)){ if(!map.sub) rewardsOf(map.id, n.key).forEach(id=> owned.push(id)); continue; }
     CURRENT_RULES = n.rules || null;
     const deck = buildDeck(myOwned), ch = n.characterId && charById[n.characterId], tgt = target(map, n), mode = n.battleMode || 'open';
-    let nd = Object.assign({}, n.deck), before = rate(deck, nd, ch, n.hqHp, mode);
-    let t = tuneHp(deck, nd, ch, n.hqHp, mode, tgt, n.kind), swaps = 0;
+    const total0 = B.brambleOf(map.id, n).total; // 2026-10-18 (SKB): Health + Shield, not hqHp
+    let nd = Object.assign({}, n.deck), before = rate(deck, nd, ch, total0, mode);
+    let t = tuneHp(deck, nd, ch, total0, mode, tgt, n.kind), swaps = 0;
     // Too far off with HP alone: trade two copies at a time with cards from this map's other fights
     // (so the theme holds): out goes the enemy's strongest (too hard) or weakest (too easy) card, in
     // comes the weakest / strongest card of the map pool.
@@ -129,24 +135,16 @@ for(const map of order){
       const save = Object.assign({}, nd);
       const k = Math.min(2, nd[out]); nd[out] -= k; if(!nd[out]) delete nd[out]; nd[cand] = (nd[cand]||0) + k;
       if(Object.keys(nd).length < 2){ nd = save; break; }
-      const t2 = tuneHp(deck, nd, ch, n.hqHp, mode, tgt, n.kind);
+      const t2 = tuneHp(deck, nd, ch, total0, mode, tgt, n.kind);
       if(Math.abs(t2.r - tgt) < Math.abs(t.r - tgt) - 0.01){ t = t2; swaps++; } else nd = save;
     }
-    out.push({map: map.id, key: n.key, kind: n.kind, target: Math.round(tgt*100), before: Math.round(before*100), after: Math.round(t.r*100), hp: [n.hqHp, t.hp], swaps, deck: swaps ? nd : null});
-    console.log(`${map.id.padEnd(4)} ${n.key.padEnd(8)} ${n.kind.padEnd(9)} target ${String(Math.round(tgt*100)).padStart(3)}%  ${String(Math.round(before*100)).padStart(3)}% → ${String(Math.round(t.r*100)).padStart(3)}%  HP ${n.hqHp} → ${t.hp}${swaps ? `  (${swaps} swap${swaps>1?'s':''})` : ''}`);
+    out.push({map: map.id, key: n.key, kind: n.kind, target: Math.round(tgt*100), before: Math.round(before*100), after: Math.round(t.r*100), hp: [total0, t.hp], edit: B.retotal(map.id, n, t.hp), swaps, deck: swaps ? nd : null});
+    console.log(`${map.id.padEnd(4)} ${n.key.padEnd(8)} ${n.kind.padEnd(9)} target ${String(Math.round(tgt*100)).padStart(3)}%  ${String(Math.round(before*100)).padStart(3)}% → ${String(Math.round(t.r*100)).padStart(3)}%  bramble ${total0} → ${t.hp}${swaps ? `  (${swaps} swap${swaps>1?'s':''})` : ''}`);
     if(!map.sub) rewardsOf(map.id, n.key).forEach(id=> owned.push(id));
   }
 }
 fs.writeFileSync(path.join(ROOT, 'docs', 'balance', ONLY.length ? 'retune-partial.json' : 'retune-all.json'), JSON.stringify(out, null, 1) + '\n');
-if(APPLY){
-  let s = src;
-  for(const o of out){
-    const re = new RegExp(`(\\{ key:"${o.key.replace(/[-]/g, '\\-')}",[^\\n]*)`);
-    const m = s.match(re); if(!m) continue;
-    let line = m[1].replace(/hqHp:\d+/, 'hqHp:' + o.hp[1]);
-    if(o.deck) line = line.replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(o.deck).replace(/,/g, ','));
-    s = s.replace(m[1], line);
-  }
-  fs.writeFileSync(APP, s);
-  console.log('applied to arena_app.js');
+if(APPLY){ // 2026-10-18 (SKB): the total goes in as a shieldOverride / lower hqHp under the Shield rule
+  const n = B.writeNodeEdits(out.map(o=> Object.assign({key: o.key}, o.edit, o.deck ? {deck: o.deck} : {})), true);
+  console.log('applied', n, 'fights to arena_app.js');
 }
