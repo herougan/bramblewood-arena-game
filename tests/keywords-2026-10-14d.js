@@ -59,7 +59,7 @@ const css = fs.readFileSync(path.join(__dirname, '..', 'arena_template.html'), '
 { const cl = Object.keys(base).filter(id=> base[id].effects && base[id].effects.crabClaws).sort();
   // 2026-10-14 (seventh pass, user: "Ignore Crab claws. Crabs have fork"): no card carries Crab Claws now; those two crabs Fork.
   // 2026-10-17 (user: "for all crabs with fork - change them to crab claws"): the three crabs that Forked carry Crab Claws instead.
-  ok(cl.join() === 'fiddler-crab-swarm,open-ocean-hermit-crab,sulfur-vent-crab' && !cl.some(id=> base[id].effects.fork), `the crabs that Forked have Crab Claws now (${cl})`); }
+  ok(cl.filter(id=> id !== 'grotto-lobster').join() === 'fiddler-crab-swarm,open-ocean-hermit-crab,sulfur-vent-crab' /* 2026-10-19: + Grotto Lobster (new, has Crab Claws) */ && !cl.some(id=> base[id].effects.fork), `the crabs that Forked have Crab Claws now (${cl})`); }
 
 // ---- 2. Sacrifice - {} (user: "Sacrifice - {} aka On Sacrifice -> Do {}. But it's framed as Sacrifice - { }")
 { const {e, P} = mk(); const W = put(e, P, 2, 'kd-wall', 0); const imp = give(P, 1, 'kd-sacimp'); e.placeCard(P, so, 1, imp.uid, 'left', {}, []); e.resolveCombat(P, so, {}, [], 1);

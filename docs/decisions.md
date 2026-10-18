@@ -380,6 +380,15 @@ The owner's answers (20:31) to the design review's questions on triggers, now ru
 - **A unit's own death is not an ally death.** It fires its own On Death, never its own On Ally Die.
 - **0 healing fires no heal trigger.** Healing a unit already at full Health fires no On Heal, On Healed or On Ally Healed.
 
+## Stated rules · 2026-10-19
+
+The owner's rules (23:32) on Freeze and Confuse, now rules of the engine (`bramblewood-engine.js`, package FZ). Pinned by `tests/fz-2026-10-19.js`.
+
+- **A unit frozen before its turn arrives fails to take its action.** Frozen earlier in the round (an earlier unit's Freeze or Ice Arrow), it skips its place in that round's order: no swing, no shot, no On Attack, no on-hit skill. That freeze is then spent: it melts at this round's end, so Freeze N costs N actions (Claude's reading, 2026-10-19: it used to swing anyway and then lose the next round).
+- **Frozen after it acted** (a later hit that round, from the opponent's units) **it skips its next round**, then thaws, as before. Frozen before the round starts, it skips that round.
+- **Confused: 1 in 2 that each of its triggers, skills and actions fails to activate.** Every trigger, every on-hit chance skill, and every action (its swing, its shots, a reserve strike, a Counterattack, a Sentry or Ambush strike) rolls on its own; on a fail nothing happens and the log says "😵 X is confused and fumbles." The rolls use the match's seeded random, so sims and replays repeat.
+- **Confuse's swing (Claude's choice, 2026-10-19):** Confuse had no other effect on the attack, so the attack counts as an action: a fumbled swing is no swing at all (no On Attack, no on-hit skills, no Bleed tick). A swing that goes off still rolls each of its on-hit chance skills, as before.
+
 ## Stated rules · 2026-10-18
 
 The owner's notes (21:26) on emoji with cultural meaning.
