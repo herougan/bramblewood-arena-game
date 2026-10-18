@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 late (package C follow-up: filter the Codex by skill)
+- **✨ Skills filter in Codex Browse** (owner 23:21: "add a way to filter by skills in codex"). It works in the album, Compressed and Full Art views.
+  - The button sits with the other filters and opens a panel of every skill you have seen, each with its icon (admins see all).
+  - Pick one or more. The Codex then shows only cards that have **all** the skills picked, so each pick narrows the list.
+  - The picks show under the toolbar as removable chips with a Clear button. They count in the ⚙️ Filters badge and are kept between visits like rarity and sort.
+  - The panel is built only when first opened, and a pick redraws only the open page.
+- **The skills book's skill entries have "🔎 Show cards with this skill"**. It opens Browse with just that skill picked. The search box is emptied and the other filters are kept.
+- 7 new TX keys in all 12 packs (`tools/i18n_2026_10_18_codexbook.py`). `tests/codex-book-2026-10-19.js` section 9 covers it.
+
 ## 2026-10-18 (package NA: Grotto Lobster and Amber Cicada, the owner's art)
 - **New card: Grotto Lobster** 🦞 (Rare, 1 Lumber, Wait 2, 3/12). Armor 1, Crab Claws, Darksight and Brood 1: its crablings hatch beside it. It is the second card reward of 2-B-3 The Glowing Pool (Smugglers' Grotto, the sea cave off Pebble Beach).
 - **New card: Amber Cicada** 🦗 (Uncommon, 1 Lumber, Wait 3, 3/20). It spends three rounds underground (Wait 3). On Ready, its song gives every ally 2 Shield. It also has Scare 1. It is the second card reward of 1-2 Cricket Chorus (Thistlewood, Map 1). There is no cicada emoji, so it uses the cricket.

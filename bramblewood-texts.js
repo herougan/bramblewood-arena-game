@@ -12,6 +12,13 @@
 (function(root){
 'use strict';
 const TEXT = /*TEXT-TABLE-START*/{
+  "ui.codex-skill-filter": "Skills",
+  "ui.codex-skill-hint": "Shows the cards that have every skill you pick.",
+  "ui.codex-skill-none": "No skills seen yet.",
+  "ui.codex-skill-clear": "Clear",
+  "ui.codex-skill-active": "Showing cards with",
+  "ui.codex-skill-remove": "Remove from the filter",
+  "ui.book-show-cards": "Show cards with this skill",
   "ui.codex-view-album": "View: Album",
   "ui.codex-all-rarities": "All rarities",
   "ui.codex-album-title": "Card album",
