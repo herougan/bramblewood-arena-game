@@ -8,6 +8,8 @@
 //   4. every new text is a TX key with all 12 packs; the Effects Lab registers both looks
 //   5. (owner 23:20 follow-up) a won NEW Babel Spire floor gets its own Victory card (is-tower: sky and stone-gold, the ascent line
 //      "Floor N cleared → Floor N+1" with a little tower); a free replay of a cleared floor keeps the ordinary card; Spire Keepers aren't crimson
+//   6. (owner 23:32 follow-up) the reward screens show the XP bar at the top filling with the fight's XP (level-up bursts there), and the
+//      XP / level-up toasts are skipped while it shows; calm = the end state with a fade
 // Static checks always run; the browser part (Playwright, Chromium at /opt/pw-browsers) runs when index.html and Chromium are there.
 'use strict';
 const fs = require('fs'), path = require('path'), vm = require('vm');
@@ -93,10 +95,30 @@ ok(/\.pass-card\.winloss-card\.is-glory\.is-boss\{background:radial-gradient\([^
 ok(/@media \(prefers-reduced-motion:reduce\)\{ \.winloss-card\.is-boss > \.wl-embers i\{animation:none !important; display:none;\} \}/.test(tpl) && /html\[data-fx="low"\]\) \.winloss-card\.is-boss > \.wl-embers i\{animation:none; display:none;\}/.test(tpl), '3. no drifting embers under reduced motion or Effects Low');
 ok(/add\(c=> c\.classList\.contains\('is-boss'\) && m\.winner === 1, el=> M\.bossVictory\(el/.test(fxf), '3. resultsShown plays the ember burst on a boss win');
 
+// ---- 6. the XP bar (static)
+{ const ctx = {TX}; vm.createContext(ctx);
+  vm.runInContext(['xpToNext', 'levelFromXp', 'xpBarSpec'].map(fnSrc).join('\n') + '\nthis.X = {xpBarSpec, levelFromXp, xpToNext};', ctx);
+  const X = ctx.X, up = X.xpBarSpec(190, 290), need2 = X.xpToNext(2);
+  ok(up.segs.length === 2 && up.segs[0].level === 1 && Math.abs(up.segs[0].from - 190/200) < 1e-9 && up.segs[0].to === 1 && up.segs[0].up === 2, '6. +100 from 190: the bar fills Level 1 to the end, then levels up');
+  ok(up.segs[1].level === 2 && up.segs[1].from === 0 && Math.abs(up.segs[1].to - 90/need2) < 1e-9 && !up.segs[1].up, '6. ... and fills on into Level 2 from empty');
+  ok(up.labels[1] === TX('results.xp-level', {n:1}) && up.labels[2] === TX('results.xp-level', {n:2}) && up.ups[2] === TX('results.xp-level-up', {n:2}) && up.gainText === TX('results.xp-gain', {n:100}), '6. the labels: "Level 1", "Level 2", "Level 2!", "+100 XP"');
+  const flat = X.xpBarSpec(10, 38);
+  ok(flat.segs.length === 1 && !flat.segs[0].up && flat.segs[0].from === .05 && flat.segs[0].to === .19 && !Object.keys(flat.ups).length, '6. +28 inside a level: one plain fill');
+  ok(X.xpBarSpec(50, 50).gainText === '' && X.xpBarSpec(50, 20).segs[0].to === X.xpBarSpec(50, 50).segs[0].to, '6. no XP (a free Spire replay): no gain, never backwards');
+  const big = X.xpBarSpec(0, 5000); ok(big.segs.filter(x=> x.up).length === X.levelFromXp(5000).level - 1, '6. several levels at once: one burst per level'); }
+{ const aw = fnSrc('awardXp'), i = aw.indexOf('if(rewardXpBarUp()){ try{ syncRewardXpBar(); }catch(e){} refreshLevelBadge(); return; }');
+  ok(i > 0 && i < aw.indexOf("fxHook('xpGain'") && i < aw.indexOf("TX('toast.level'"), '6. awardXp: with the bar up, the XP fills it; no level-up toast, no badge moment'); }
+ok(/if\(!\(fresh\.length === 1 && fresh\[0\]\.id === 'tutorial'\) && !rewardXpBarUp\(\)\) showToast\(TX\('toast\.xp'/.test(fnSrc('checkXpMilestones')), '6. the milestone XP toast ("+25 XP — First clear") is skipped while the bar shows');
+ok(/m\.winner = \(m\.forcedWinner!=null\)[^\n]*\n\s*if\(m\.xpBefore == null\) m\.xpBefore = loadXp\(\)\.xp;/.test(src), '6. the fight\'s XP counts from when the result is decided');
+ok(/\$\{!isPc && !isTutorial \? rewardXpBarHTML\(m\) : ''/.test(src) && /if\(showWinModal\)\{\n\s*try\{ syncRewardXpBar\(\); \}catch\(e\)\{\}/.test(src), '6. the Victory card draws the bar at its top and fills it');
+ok(/if\(xpBarReady\(\)\)\{ const x0 = loadXp\(\)\.xp; spec\.xp = xpBarSpec\(x0, x0 \+ xp\); \}/.test(fnSrc('claimRaidReward')) && /spec\.xp \? `<div class="fxf-rcs-xp/.test(fxf), '6. the raid claim screen has the bar too');
+ok(/M\.xpBarFill = function\(bar, spec, opts\)/.test(fxf) && /if\(opts\.calm \|\| !g \|\| RM\(\)\)\{ final\(\); bar\.classList\.add\('is-fade'\); return Promise\.resolve\(\); \}/.test(fxf), '6. calm: the end state with a short fade');
+ok(/calm: reducedMotion\(\) \|\| !fxAtLeast\('med'\) \|\| !hasGsap\(\)/.test(fnSrc('syncRewardXpBar')), '6. calm under reduced motion and Effects Low');
+
 // ---- 4. texts, packs, the lab
 const KEYS = ['results.raid-claim-kicker', 'results.raid-claim-fell', 'results.raid-claim-held', 'results.raid-claim-sub-kill', 'results.raid-claim-sub-comp', 'results.raid-claim-damage',
   'results.raid-claim-xp', 'results.raid-claim-card', 'results.raid-claim-title', 'results.raid-claim-collect', 'results.raid-tier-top1', 'results.raid-tier-top10', 'results.raid-tier-top50', 'results.raid-tier-participant',
-  'results.tower-step-up', 'results.tower-step-top', 'results.tower-step-sub'];
+  'results.tower-step-up', 'results.tower-step-top', 'results.tower-step-sub', 'results.xp-level', 'results.xp-level-up', 'results.xp-gain', 'results.xp-aria'];
 KEYS.forEach(k=> ok(typeof TEXT[k] === 'string' && src.includes(`TX('${k}'`), `4. ${k} is a TX key the code uses`));
 const LEAD = /^[\s \p{Extended_Pictographic}\p{So}\p{Sk}️‍↻→←▸▾•·★☆✓✕✗⚡]*/u;
 const core = v=> v.trim().replace(LEAD, '').replace(/[\s:]+$/, '');
@@ -106,16 +128,18 @@ CODES.forEach(c=>{ const pack = JSON.parse(fs.readFileSync(path.join(ROOT, 'lang
 { const fr = createTranslator(JSON.parse(fs.readFileSync(path.join(ROOT, 'lang', 'fr.json'), 'utf8')));
   ok(/^(?:The|Le) Goliath est tombé !$/.test(fr(TX('results.raid-claim-fell', {name:'The Goliath'}))), `4. the title template translates: ${fr(TX('results.raid-claim-fell', {name:'The Goliath'}))}`);
   ok(fr(TX('results.raid-claim-collect')) === 'Récupérer', '4. Collect translates');
+  ok(fr(TX('results.xp-level-up', {n:7})) === 'Niveau 7 !' && fr(TX('results.xp-gain', {n:28})) === '+28 XP', `6. the bar's texts translate: ${fr(TX('results.xp-level-up', {n:7}))}`);
   ok(fr(TX('results.tower-step-up', {n:12, next:13})) === 'Étage 12 vaincu → Étage 13', `5. the Spire line translates: ${fr(TX('results.tower-step-up', {n:12, next:13}))}`); }
 ok(fs.existsSync(path.join(ROOT, 'tools', 'i18n_2026_10_18rw.py')), '4. tools/i18n_2026_10_18rw.py');
 { const reg = []; const ctx = {FXLAB:{register: s=> reg.push(s)}, window:{FX:{F:{}}}}; ctx.window.FXLAB = ctx.FXLAB; vm.createContext(ctx);
   vm.runInContext(fs.readFileSync(path.join(ROOT, 'tools', 'effects-lab', 'manifest', 'rw.js'), 'utf8'), ctx);
   const a = reg.find(r=> r.id === 'res-raid-claim-screen'), b = reg.find(r=> r.id === 'res-boss-crimson'), tw = reg.find(r=> r.id === 'res-tower-ascent');
   ok(tw && tw.variants.map(v=> v.key).join('') === 'ABCD' && tw.stage === 'ui', '5. lab: the Spire card, 4 variants (C still, D the replay)');
+  const xb = reg.find(r=> r.id === 'res-xp-bar'); ok(xb && xb.variants.map(v=> v.key).join('') === 'ABC' && xb.stage === 'ui', '6. lab: the XP bar, 3 variants (A a level-up, C calm)');
   ok(a && a.variants.map(v=> v.key).join('') === 'ABCD' && a.stage === 'screen', '4. lab: the raid claim screen, 4 variants (A–C full, D calm)');
   ok(b && b.variants.map(v=> v.key).join('') === 'ABC' && b.stage === 'ui', '4. lab: the boss crimson card, 3 variants (C the ordinary card)');
   const inv = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs', 'effects-inventory-2026-10-15.json'), 'utf8'));
-  ['res-raid-claim-screen', 'res-boss-crimson', 'res-tower-ascent'].forEach(id=>{ const e = inv.filter(x=> x.id === id); ok(e.length === 1 && e[0].lab === 'rw.js' && e[0].status === 'live', `4. inventory: one ${id} row, live, lab rw.js`); }); }
+  ['res-raid-claim-screen', 'res-boss-crimson', 'res-tower-ascent', 'res-xp-bar'].forEach(id=>{ const e = inv.filter(x=> x.id === id); ok(e.length === 1 && e[0].lab === 'rw.js' && e[0].status === 'live', `4. inventory: one ${id} row, live, lab rw.js`); }); }
 ok(/^## 2026-10-18 \(RW: /m.test(fs.readFileSync(path.join(ROOT, 'docs', 'CHANGELOG.md'), 'utf8')), '4. CHANGELOG entry');
 
 // ---- browser: the real page (Claim → screen → skip → Collect; reduced motion; boss results)
@@ -151,6 +175,8 @@ async function browser(){
     const s2 = await pg.evaluate(`(()=>{ const s = document.querySelector('.fxf-rcs'); return s && {done: s.classList.contains('is-done'), num: s.querySelector('.fxf-rcs-num').textContent, shown: [...s.querySelectorAll('.fxf-rcs-rw')].every(li=> getComputedStyle(li).opacity === '1'), focus: document.activeElement && document.activeElement.classList.contains('fxf-rcs-go')}; })()`);
     ok(s2 && s2.done && s2.num === (48250).toLocaleString('en-US') && s2.shown, `B2. a tap skips to the end: every reward shown, the damage counted (${JSON.stringify(s2)})`);
     ok(s2 && s2.focus, 'B2. Collect has the focus after the skip');
+    const x2 = await pg.evaluate(`(()=>{ const b = document.querySelector('.fxf-rcs .fxf-xp'); return b && {gain: b.querySelector('[data-xp-gain]').textContent, lv: b.querySelector('[data-xp-lv]').textContent, w: parseFloat(b.querySelector('.fxf-xp-fill').style.width), toasts: [...document.querySelectorAll('.toast')].map(t=> t.textContent).filter(t=> /XP|Level/.test(t))}; })()`);
+    ok(x2 && x2.gain === '+500 XP' && /^Level \d+$/.test(x2.lv) && x2.w > 0 && !x2.toasts.length, `B6. the claim screen's XP bar: "+500 XP", filled, no XP / level toast (${JSON.stringify(x2)})`);
     await pg.waitForTimeout(400); await pg.click('.fxf-rcs-go'); await pg.waitForTimeout(700);
     ok(await pg.evaluate("!document.querySelector('.fxf-rcs')"), 'B2. Collect closes the screen');
     await ctx.close();
@@ -161,6 +187,7 @@ async function browser(){
     ok(r1 && r1.calm && r1.bubbles === 0 && !r1.tl && r1.num === (48250).toLocaleString('en-US'), `B3. reduced motion: the calm screen, no bubbles, no timeline, the number already final (${JSON.stringify(r1)})`);
     await pg.keyboard.press('Escape'); await pg.waitForTimeout(200);
     ok(await pg.evaluate("document.querySelector('.fxf-rcs').classList.contains('is-done')"), 'B3. Esc shows everything');
+    ok(await pg.evaluate("!!document.querySelector('.fxf-rcs .fxf-xp.is-fade')"), 'B6. reduced motion: the XP bar shows its end state with a fade');
     await pg.waitForTimeout(400); await pg.keyboard.press('Escape'); await pg.waitForTimeout(500);
     ok(await pg.evaluate("!document.querySelector('.fxf-rcs')"), 'B3. Esc again closes it');
     // Effects Low: calm as well
@@ -177,9 +204,11 @@ async function browser(){
       await pg.waitForTimeout(1500);
       for(let i = 0; i < 60; i++){ await pg.evaluate("(()=>{ const vs = document.querySelector('.vs-screen'); if(vs) vs.click(); if(document.querySelector('.rr-stage')) document.querySelector('.rr-stage').dispatchEvent(new PointerEvent('pointerdown', {bubbles:true})); if(matchState && !matchState.over && !matchState.resolving) adminAutoWin(); return 1; })()");
         await pg.waitForTimeout(500); if(await pg.evaluate("!!document.querySelector('.winloss-card')")) break; }
-      return pg.evaluate("(()=>{ const c = document.querySelector('.winloss-card'); const a = c && c.querySelector('.wl-ascent'); return c ? {cls: c.className, embers: c.querySelectorAll('.wl-embers i').length, kind: matchState && matchState.conquestNode && matchState.conquestNode.kind, bg: getComputedStyle(c).backgroundImage.slice(0, 80), ascent: a ? a.textContent : '', replay: !!(matchState && matchState.towerReplay)} : null; })()"); };
+      await pg.waitForTimeout(2500);
+      return pg.evaluate("(()=>{ const c = document.querySelector('.winloss-card'); const a = c && c.querySelector('.wl-ascent'); const xb = c && c.querySelector('.wl-xp .fxf-xp'); return c ? {cls: c.className, embers: c.querySelectorAll('.wl-embers i').length, kind: matchState && matchState.conquestNode && matchState.conquestNode.kind, bg: getComputedStyle(c).backgroundImage.slice(0, 80), ascent: a ? a.textContent : '', replay: !!(matchState && matchState.towerReplay), xp: xb ? {gain: xb.querySelector('[data-xp-gain]').textContent, top: xb.getBoundingClientRect().top - c.getBoundingClientRect().top < 60} : null, xpToasts: [...document.querySelectorAll('.toast')].map(t=> t.textContent).filter(t=> /XP|Level \\d/.test(t))} : null; })()"); };
     const boss = await win('boss');
     ok(boss && /\bis-glory\b/.test(boss.cls) && /\bis-boss\b/.test(boss.cls) && boss.embers === 14 && /154, 31, 39/.test(boss.bg), `B4. a boss win: the crimson card with its embers (${JSON.stringify(boss)})`);
+    ok(boss && boss.xp && /^\+\d+ XP$/.test(boss.xp.gain) && boss.xp.top && !boss.xpToasts.length, `B6. the boss Victory card has the XP bar with this fight's XP, and no XP toast (${JSON.stringify(boss && {xp: boss.xp, t: boss.xpToasts})})`);
     const elite = await win('elite');
     ok(elite && /\bis-glory\b/.test(elite.cls) && !/\bis-boss\b/.test(elite.cls) && elite.embers === 0, `B4. an elite win keeps the gold card (${JSON.stringify(elite)})`);
     const fl1 = await win('', true);

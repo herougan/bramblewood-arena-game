@@ -1764,6 +1764,7 @@ M.raidClaimScreen = function(spec, opts){
   st.innerHTML = `<div class="fxf-rcs-deep${F}"></div><div class="fxf-rcs-rays" aria-hidden="true"></div><div class="fxf-rcs-boss${F}" aria-hidden="true"><div class="fxf-rcs-bossin">${bossHTML}<i class="fxf-rcs-dim"></i></div></div>
     <div class="fxf-rcs-bubbles" aria-hidden="true">${bubbles}</div><div class="fxf-rcs-ink" aria-hidden="true"></div><div class="fxf-rcs-shock" aria-hidden="true"></div>
     <div class="fxf-rcs-card${F}">
+      ${spec.xp ? `<div class="fxf-rcs-xp${F}">${M.xpBarHTML(spec.xp)}</div>` : ''}
       <div class="fxf-rcs-kicker${F}">${esc(T.kicker)}</div>
       <h2 class="fxf-rcs-title${F}">${esc(T.title)}</h2>
       ${T.sub ? `<p class="fxf-rcs-sub${F}">${esc(T.sub)}</p>` : ''}
@@ -1783,8 +1784,10 @@ M.raidClaimScreen = function(spec, opts){
   try{ st.focus({preventScroll:true}); }catch(e){}
   let done = false, closed = false, skippedAt = 0, tl = null, sway = null, calmTimers = [];
   return new Promise(res=>{
+    const xpBar = q('.fxf-rcs-xp .fxf-xp'); let xpRun = false; // 2026-10-18 (RW follow-up): the XP bar, filled once
+    const fillXp = (calmFill, delay)=>{ if(!xpBar || xpRun) return; xpRun = true; M.xpBarFill(xpBar, spec.xp, {calm:calmFill, delay, sound}); };
     const settle = ()=>{ // the end state, whatever was skipped
-      if(done) return; done = true; st.classList.add('is-done'); num.textContent = fmt(total);
+      if(done) return; done = true; st.classList.add('is-done'); num.textContent = fmt(total); fillXp(true);
       if(calm) qa('.fxf-rcs-fade').forEach(e=> e.classList.add('is-in'));
       try{ go.focus({preventScroll:true}); }catch(e){}
     };
@@ -1804,13 +1807,14 @@ M.raidClaimScreen = function(spec, opts){
     if(calm){ // fades only: the scene, the card, then each line, then each reward
       const fades = qa('.fxf-rcs-fade'); let t = 30;
       fades.forEach(e=>{ calmTimers.push(setTimeout(()=> e.classList.add('is-in'), t)); t += e.classList.contains('fxf-rcs-rw') ? 260 : 140; });
-      calmTimers.push(setTimeout(settle, t + 300)); sound('unlockChime');
+      calmTimers.push(setTimeout(settle, t + 300)); fillXp(true); sound('unlockChime');
       return;
     }
     // ---- the full show (one GSAP timeline, so a skip jumps every tween to its end) ----
     const bossIn = q('.fxf-rcs-bossin'), bossImg = bossIn.firstElementChild, dim = q('.fxf-rcs-dim'), shock = q('.fxf-rcs-shock'), ink = q('.fxf-rcs-ink'), flash = q('.fxf-rcs-flash');
     g.set(q('.fxf-rcs-deep'), {opacity:0}); g.set(bossEl, {opacity:0, scale:1.22}); g.set(dim, {opacity:.9}); g.set(card, {opacity:0, scale:.9, y:24});
     g.set([q('.fxf-rcs-kicker'), q('.fxf-rcs-sub')].filter(Boolean), {opacity:0, y:8}); g.set(q('.fxf-rcs-title'), {opacity:0, scale:1.7});
+    if(q('.fxf-rcs-xp')) g.set(q('.fxf-rcs-xp'), {opacity:0});
     g.set(tierEl, {opacity:0, scale:3, rotation:-18}); g.set(q('.fxf-rcs-dmg'), {opacity:0, y:10}); g.set(items, {opacity:0, y:34, scale:.55}); g.set(go, {opacity:0, y:12});
     const at = el=> pt(el);
     const pressure = ()=>{ const c = at(shock); sound('boom'); sound('splash'); later(()=> sound('bubble'), 120); later(()=> sound('bubble'), 260);
@@ -1841,6 +1845,7 @@ M.raidClaimScreen = function(spec, opts){
       .fromTo(ink, {opacity:.9, scale:.4}, {opacity:0, scale:6, duration:1.3, ease:'power2.out'}, .88)
       .to(card, {opacity:1, scale:1, y:0, duration:.5, ease:'back.out(1.5)'}, 1.0).to(bossEl, {opacity:.75, duration:.7}, 1.8)
       .to(q('.fxf-rcs-kicker'), {opacity:1, y:0, duration:.3}, 1.15)
+      .to(q('.fxf-rcs-xp') || {}, {opacity:1, duration:.3}, 1.1)
       .to(q('.fxf-rcs-title'), {opacity:1, scale:1, duration:.42, ease:'power4.in'}, 1.2)
       .add(()=>{ sound('roar'); const c = at(q('.fxf-rcs-title')); ring(c.x, c.y, {color:'#7fd8ff', size:Math.max(200, c.w), width:3, dur:.6}); }, 1.62);
     if(q('.fxf-rcs-sub')) tl.to(q('.fxf-rcs-sub'), {opacity:1, y:0, duration:.3}, 1.75);
@@ -1855,10 +1860,62 @@ M.raidClaimScreen = function(spec, opts){
     items.forEach((el, i)=>{ const w = list[i].weight, top = i === items.length - 1 && (items.length > 1 || w >= 3);
       if(top){ tl.add(()=>{ sound('bossRumble'); shake(bossIn, {amp:5, n:10, y:2}); }, t); t += .5; }
       tl.to(el, {opacity:1, y:0, scale:1, duration:.42 + w*.03, ease:`back.out(${(1.6 + w*.35).toFixed(2)})`}, t).add(()=> reveal(el, w, top), t + .18);
+      if(list[i].kind === 'xp') tl.add(()=> fillXp(false, .1), t + .2); // the bar fills as the XP reward comes up
       t += .32 + w*.12 + (top ? .3 : 0); });
+    if(!list.some(r=> r.kind === 'xp')) tl.add(()=> fillXp(false), t);
     tl.to(bossEl, {opacity:kind === 'kill' ? .45 : .7, scale:kind === 'kill' ? .92 : 1, duration:1.1, ease:'power1.inOut'}, t) // a felled boss sinks back into the deep
       .to(go, {opacity:1, y:0, duration:.35, ease:'back.out(2)'}, t + .1);
     sway = bossImg ? g.to(bossImg, {rotation:2.2, y:-10, duration:2.6, ease:'sine.inOut', yoyo:true, repeat:-1}) : null;
+  });
+};
+// The XP bar on the reward screens (2026-10-18, package RW follow-up, owner 23:32: "Should the reward screen show the exp bar filling up on
+// the top? Then we can remove the toast."): the Victory cards (skirmish, boss crimson, Spire ascent) and the raid claim screen show your
+// level and XP bar at the top; it fills with what this fight (or claim) gave, level by level: on crossing a level it bursts, "Level N!"
+// pops beside it, the number steps up and the bar fills on from empty. The XP / level-up toasts are skipped while it shows (awardXp).
+// spec (made by xpBarSpec in arena_app.js): {segs:[{level, from, to, up}] (from/to 0..1; up = the level reached at the segment's end),
+//   labels:{L:'Level L'}, ups:{L:'Level L!'}, gainText:'+N XP', aria}. Calm (reduced motion, Effects Off / Low): the end state, a short fade.
+css('xpbar', `
+.fxf-xp{position:relative; display:flex; align-items:center; gap:10px; width:min(440px, calc(100% - 110px)); margin:0 auto 6px; padding:5px 10px; box-sizing:border-box; border-radius:999px;
+  background:rgba(4,10,20,.55); border:1px solid rgba(255,225,150,.45); color:#fff; font:800 13px/1 'Baloo 2',system-ui,sans-serif; text-align:left;}
+.fxf-xp-lv{flex:none; white-space:nowrap; color:#ffe7a8;}
+.fxf-xp-track{position:relative; flex:1 1 auto; min-width:60px; height:10px; border-radius:6px; background:rgba(255,255,255,.16); overflow:hidden; box-shadow:inset 0 1px 2px rgba(0,0,0,.45);}
+.fxf-xp-fill{position:absolute; left:0; top:0; bottom:0; width:0; border-radius:6px; background:linear-gradient(90deg, #f2b63c, #ffe28a 70%, #fff6d0); box-shadow:0 0 8px rgba(255,214,110,.7);}
+.fxf-xp-gain{flex:none; white-space:nowrap; color:#c9f5b8; min-width:0;}
+.fxf-xp-up{position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); white-space:nowrap; padding:3px 10px; border-radius:999px; font:900 14px/1 'Baloo 2',system-ui,sans-serif;
+  color:#2a1a00; background:linear-gradient(180deg, #fff0b8, #f5c84a); box-shadow:0 2px 10px rgba(0,0,0,.4); opacity:0; pointer-events:none;}
+.fxf-xp.is-up .fxf-xp-up{opacity:1;}
+.fxf-xp.is-fade{animation:fxfXpFade .35s ease-out both;} @keyframes fxfXpFade{from{opacity:0;}}
+@media (max-width:480px){ .fxf-xp{width:calc(100% - 96px); gap:7px; padding:4px 8px; font-size:12px;} }
+`);
+const xpPct = v=> (Math.max(0, Math.min(1, v || 0))*100).toFixed(1) + '%';
+// The bar's markup at its first state (before any fill; spec.gainShown prints the gain too, for a redraw after the fill).
+M.xpBarHTML = function(spec){
+  spec = spec || {}; const s0 = (spec.segs || [])[0] || {level:1, from:0}, L = (spec.labels || {})[s0.level] || '';
+  return `<div class="fxf-xp" role="img" aria-label="${esc(spec.aria || L)}"><span class="fxf-xp-lv" data-xp-lv>${esc(L)}</span><span class="fxf-xp-track"><i class="fxf-xp-fill" style="width:${xpPct(s0.from)}"></i></span><span class="fxf-xp-gain" data-xp-gain>${spec.gainShown ? esc(spec.gainText || '') : ''}</span><span class="fxf-xp-up" data-xp-up aria-hidden="true"></span></div>`;
+};
+// Fill a bar made by xpBarHTML (opts: calm, delay (s), sound(name)). Resolves when it has filled.
+M.xpBarFill = function(bar, spec, opts){
+  opts = opts || {}; spec = spec || {}; const g = G(), segs = spec.segs || [], last = segs[segs.length - 1];
+  if(!bar || !last) return Promise.resolve();
+  const fill = bar.querySelector('.fxf-xp-fill'), lv = bar.querySelector('[data-xp-lv]'), gain = bar.querySelector('[data-xp-gain]'), up = bar.querySelector('[data-xp-up]');
+  const setLv = L=>{ const t = (spec.labels || {})[L]; if(lv && t) lv.textContent = t; };
+  const ups = segs.filter(x=> x.up), lastUp = ups.length ? ups[ups.length - 1].up : null;
+  const final = ()=>{ fill.style.width = xpPct(last.to); setLv(last.level); if(gain) gain.textContent = spec.gainText || '';
+    if(lastUp && up){ up.textContent = (spec.ups || {})[lastUp] || ''; bar.classList.add('is-up'); } };
+  if(opts.calm || !g || RM()){ final(); bar.classList.add('is-fade'); return Promise.resolve(); }
+  const sound = n=>{ try{ if(opts.sound) opts.sound(n); }catch(e){} };
+  return new Promise(res=>{
+    const t = g.timeline({delay:opts.delay || 0, onComplete:()=>{ final(); call(opts.onDone); res(); }});
+    t.add(()=>{ if(gain){ gain.textContent = spec.gainText || ''; g.fromTo(gain, {scale:.4, opacity:0}, {scale:1, opacity:1, duration:.3, ease:'back.out(3)'}); } sound('pitchChime'); });
+    segs.forEach(sg=>{
+      t.set(fill, {width:xpPct(sg.from)}).add(()=> setLv(sg.level))
+       .to(fill, {width:xpPct(sg.to), duration:.45 + .7*Math.max(0, sg.to - sg.from), ease:'power1.inOut'});
+      if(sg.up) t.add(()=>{ const r = bar.getBoundingClientRect(); setLv(sg.up); sound('heroLevel');
+          ring(r.right - 30, r.top + r.height/2, {color:'#ffe28a', size:80, width:3, dur:.55});
+          burst(r.right - 30, r.top + r.height/2, {n:16, shape:'star', colors:['#ffe28a', '#fff6d0', '#f2b63c'], glow:true, dist:[30, 90], dur:.7, size:7});
+          if(up){ up.textContent = (spec.ups || {})[sg.up] || ''; bar.classList.add('is-up'); g.fromTo(up, {scale:.3}, {scale:1, duration:.4, ease:'back.out(3)'}); }
+          bump(lv); }).to({}, {duration:.35});
+    });
   });
 };
 // A new Babel Spire floor won (results: .winloss-card.is-tower, its .wl-ascent-tower): a pale-gold ring on the lit floor, a column of

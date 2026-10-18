@@ -35,6 +35,16 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - `docs/decisions.json` / `decisions.md`: stated rules for 2026-10-19 (Freeze, Confuse).
 - `card-matrix` golden re-accepted: 295 of 25,960 fights changed (142 Freeze timing, 103 Confuse fumbles, the rest freeze melt timing and 18 full matches), 63 with a different winner.
 - Tests: `tests/fz-2026-10-19.js` (in run-all) and an `engine-parity` check (the smartest CPU faces the Confused one of two killers).
+## 2026-10-18 late (RW follow-up: the XP bar on the reward screens)
+- **The reward screens show your XP bar filling up at the top, and the XP toasts are gone there** (owner 23:32: "Should the reward screen show the exp bar filling up on the top? Then we can remove the toast.").
+  - Where: every Victory card (skirmish, boss crimson, the Spire ascent, any won fight except hot-seat and the tutorial) and the raid claim screen.
+  - It shows "Level N", the bar and "+N XP", and fills with the fight's XP. That includes the first-clear milestone that lands a moment later.
+  - On each level crossed it bursts, "Level N!" pops on the bar (with the heroLevel sound), the number steps up and the bar fills on from empty.
+  - On the claim screen the bar fills as the XP reward comes up. A skip fills it to the end.
+  - Reduced motion or Effects Low: the end state with a short fade.
+- **No XP toast while the bar shows.** That covers the "Level N" toast, the "+25 XP — First clear" milestone toast and the level badge's own level-up moment. Everywhere else (quests, milestones away from a reward screen, closing the results to look at the board) they stay as before.
+- Code: `xpBarSpec`, `rewardXpBarHTML`, `syncRewardXpBar`, `rewardXpBarUp` and `m.xpBefore`, set when the result is decided; `awardXp` and `checkXpMilestones` (`arena_app.js`). `FX.F.xpBarHTML` and `FX.F.xpBarFill` (`bramblewood-fx-f.js`).
+- Effects Lab: `res-xp-bar` (A a level-up, B a plain fill, C calm); the raid claim entries now carry the bar. Four TX keys (`results.xp-*`) are in all 12 packs, and `tests/reward-screens-2026-10-19.js` covers it (132 checks).
 
 ## 2026-10-18 late (package LG: Legendary abilities; True Strike vs Legendary dodges)
 - **Legendary abilities** (owner 23:05: "typically not given to cards players can get (except dragons)"): True Strike, Supreme and Supreme Tide are marked `legendary: true` (PASSIVE_DEFS / SKILL_DEFS, `canonical/skill-costs.json`; costs unchanged). Each shows a gold **Legendary** tag after its name on the card's line, e.g. the White Dragon's True Strike, and in the Skills Codex (the filter finds "legendary"). The card's glossary adds: "Legendary ability: A legendary power. Rarely found on cards you can own — dragons are the exception."

@@ -60,6 +60,14 @@ T = {
   "Votre deck monte d'un palier.", "Dein Deck steigt eine Stufe höher.", "Tu mazo sube al siguiente nivel.", "Il tuo mazzo sale al livello successivo.",
   "O teu baralho sobe ao nível seguinte.", "Umaakyat ang deck mo sa susunod na antas.", "உங்கள் அடுக்கு அடுத்த நிலைக்கு ஏறுகிறது.", "Dekmu naik ke tingkat berikutnya.",
   "你的卡组登上了新的层级。", "你的牌組登上了新的層級。", "デッキが次の段階へ登る。", "덱이 다음 단계로 올라선다."],
+# 2026-10-18 follow-up (owner 23:32): the XP bar on the reward screens. The XP word follows the "XP" row above.
+"Level {n}": ["Niveau {n}", "Stufe {n}", "Nivel {n}", "Livello {n}", "Nível {n}", "Antas {n}", "நிலை {n}", "Level {n}", "{n} 级", "{n} 級", "レベル{n}", "레벨 {n}"],
+"Level {n}!": ["Niveau {n} !", "Stufe {n}!", "¡Nivel {n}!", "Livello {n}!", "Nível {n}!", "Antas {n}!", "நிலை {n}!", "Level {n}!", "{n} 级！", "{n} 級！", "レベル{n}！", "레벨 {n}!"],
+"+{n} XP": ["+{n} XP", "+{n} EP", "+{n} XP", "+{n} PE", "+{n} XP", "+{n} XP", "+{n} அனுபவப் புள்ளி", "+{n} XP", "+{n} 经验", "+{n} 經驗", "+{n} 経験値", "+{n} 경험치"],
+"Level {n}: {into} of {need} XP": [
+  "Niveau {n} : {into} sur {need} XP", "Stufe {n}: {into} von {need} EP", "Nivel {n}: {into} de {need} XP", "Livello {n}: {into} su {need} PE", "Nível {n}: {into} de {need} XP",
+  "Antas {n}: {into} sa {need} XP", "நிலை {n}: {need} இல் {into} அனுபவப் புள்ளி", "Level {n}: {into} dari {need} XP", "{n} 级：{into}/{need} 经验", "{n} 級：{into}/{need} 經驗",
+  "レベル{n}：{need}中{into}経験値", "레벨 {n}: {need} 중 {into} 경험치"],
 }
 assert all(len(v) == len(CODES) for v in T.values()), [k for k, v in T.items() if len(v) != len(CODES)]
 ph = lambda s: sorted(set(re.findall(r'\{\w+\}', s)))
