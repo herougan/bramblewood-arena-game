@@ -8093,6 +8093,10 @@
   .vs-name{font-family:'Baloo 2',system-ui,sans-serif; font-weight:800; font-size:clamp(20px,3vw,34px); line-height:1.05; text-shadow:0 2px 0 rgba(0,0,0,.4); max-width:100%; overflow:hidden; text-overflow:ellipsis;}
   .vs-sub{font-size:clamp(12px,1.4vw,15px); opacity:.85;}
   .vs-people{font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; padding:3px 10px; border-radius:999px; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25);}
+  /* CPU difficulty pill (2026-10-18): how the CPU plays this fight (Basic / Smart / Smartest) */
+  .vs-ai-pill{font-size:11px; font-weight:800; letter-spacing:.04em; padding:2px 9px; border-radius:999px; background:rgba(120,170,255,.16); border:1px solid rgba(150,190,255,.45); color:#dfe9ff;}
+  .vs-ai-pill.is-basic{background:rgba(255,255,255,.08); border-color:rgba(255,255,255,.22); color:#e8e8e8;}
+  .vs-ai-pill.is-smartest{background:rgba(220,120,255,.2); border-color:rgba(230,160,255,.6); color:#f6e4ff;}
   .vs-taunt{font-style:italic; font-size:clamp(13px,1.6vw,17px); max-width:28ch; margin-top:4px; opacity:0; animation:vsTaunt .4s ease-out .45s forwards;}
   @keyframes vsTaunt{to{opacity:1;}}
   .vs-mid{display:flex; flex-direction:column; align-items:center; gap:6px;}
@@ -10040,6 +10044,12 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
 /* Dark maps blot out (2026-10-15): with CSS masks the dark layers are one flat near-black, and the light is cut out of them by
    mountCaveDark's mask (the lantern at the pointer, the pawn, the open fights, the lit fires). Cleared maps keep the 0.78 veil. */
 .cave-dark.is-masked, .cave-screen-dark.is-masked{background:rgba(2,3,8,.95); -webkit-mask-repeat:no-repeat; mask-repeat:no-repeat;}
+/* 2026-10-18 (owner: "The cleared dark maps's darkness does not extend throughout"): the screen layer has a hole the canvas's size
+   (mountCaveDark) and the canvas layer fills it, square-cornered so the canvas's rounded corners don't leave lit nicks. The screen
+   layer sits at z-index 1, still under the map list and the map (also 1, later in the page) but now over the layout's other z-0
+   layers: the cleared map's warm glow (.dark-cleared::after) and a backdrop shader used to paint over it outside the canvas. */
+.cave-screen-dark{z-index:1;}
+body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 /* Fire pits in the dark (2026-10-15, user: "In caves, fireplaces (0-2) placed around, light up as you defeat skirmishes."): cold ones
    sit under the dark (seen only in the lantern), lit ones above it with a flickering flame and a warm glow. */
 .cave-fire{position:absolute; width:22px; height:22px; transform:translate(-50%,-50%); z-index:5; pointer-events:none;}
