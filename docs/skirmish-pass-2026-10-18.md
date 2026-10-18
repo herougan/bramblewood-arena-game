@@ -1,5 +1,7 @@
 # Skirmish pass, 2026-10-18 (package SKB)
 
+> 2026-10-19 (W2): the reference decks for Maps 10–24, the card levels and the map enders' kinds have changed since this pass; see `docs/winrate-reference-decks-2026-10-19.md`. The skirmish editor's win-rate panel now plays the same fights as `tools/skirmish_pass.js`.
+
 Owner (15:56): "Have you done a card balance pass for all cards, then a skirmish rough balancing pass. as long it's not auto winnable or always loseable."
 
 The card pass is `docs/balance-pass-2026-10-18.md`. This is the fight pass that follows it. Every Conquest fight was played with the deck a player would have at that point of the road. The CPU played at its real level, against the enemy bramble the game builds today. Each fight with a win rate above 92% (auto-winnable) or below 12% (always losable) was then fixed with the lightest touch available.
