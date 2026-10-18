@@ -139,6 +139,9 @@ function buildDeckIdsFrom(cardCounts, rnd){
   Object.entries(cardCounts).forEach(([id,n])=>{ for(let i=0;i<n;i++) ids.push(id); });
   return shuffle(ids, rnd);
 }
+// The highest CPU level this engine has (2026-10-18, owner 15:05: "Smartest. - if we progressively make a smarter CPU, use that one in
+// the future."): opts.aiLevel 0 basic, 1 smart, 2 smartest. Raise it when a smarter level is added; the Babel Spire plays at it.
+const AI_LEVEL_MAX = 2;
 const HQ_MAX_HP = 100;
 // Sudden death & draws (2026-10-03, explicit: "On turn 20+, go to sudden death - 1 hit = die. If
 // no one has actions they can take, and nothing on the board state is changing - auto draw.").
@@ -220,7 +223,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // keep their behaviour whatever it says): 0 basic = the CPU before 2026-10-18 (Sacrifice and the shared pitchCard stay, they are
   // rules parity); 1 smart = the R3-WP1 battlefield reading (the default, so a caller that passes nothing plays as it did today);
   // 2 smartest = smart plus aiChooseSlotSmartest, a held field card, the smarter pitch and Sacrifice timing (see aiTakeTurnOnce).
-  let aiLevel = opts.aiLevel != null ? Math.max(0, Math.min(2, Math.round(Number(opts.aiLevel)) || 0)) : 1;
+  let aiLevel = opts.aiLevel != null ? Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(opts.aiLevel)) || 0)) : 1;
   const aiSmart = ()=> aiAim && aiLevel >= 1, aiSmartest = ()=> aiAim && aiLevel >= 2;
   const isGladiator = battleMode==='gladiator';
   // Reserve rows (2026-10-12, user: "for raids, I want a FULL proper game. Just that, there's multi rows! like maybe 3 rows v 3
@@ -1484,13 +1487,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     pl.row.right = all.filter(c=> c.slot > 0).sort((a, b)=> a.slot - b.slot);
   }
   function waveNOf(e){ const v = e && e.wave; return Math.max(1, Math.round(Number(e && e.waveN) || (typeof v === 'number' ? v : 1) || 1)); }
-  function waveHit(players, sideOf, attPid, att, t, events, stats){
+  // 2026-10-18 (audit 4): killCredit is the swing's kill-credit book, when a swing pushes (see washPush's crash).
+  function waveHit(players, sideOf, attPid, att, t, events, stats, killCredit){
     const tpid = otherId(attPid), pl = players[tpid], fx = effectsOf(att), v = fx.wave;
     if(!pl || !t || !(t.hp > 0) || stuckFast(t) || t.cageOf || !v) return null; // + Webbed can't be pushed (2026-10-17)
     let dir = v === 'left' ? -1 : v === 'right' ? 1 : 0;
     if(v === 'alternate'){ att.waveFlip = !att.waveFlip; dir = att.waveFlip ? -1 : 1; }
     const ev = {type:'wave', side:sideOf(attPid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:t.uid, targetDefId:t.defId, moves:[], blocked:false, slotMode};
-    return washPush(players, sideOf, tpid, t, waveNOf(fx), dir, ev, events, stats);
+    return washPush(players, sideOf, tpid, t, waveNOf(fx), dir, ev, events, stats, killCredit);
   }
   // Wave N, the one push shared by the Wave skill and the Wave field (rules.awash). 2026-10-17 (user: "there's always a slight bias
   // towards awashing inwards - very slight"); 2026-10-18 (user: "Awash N: Move N. If crash into another unit, both take N damage.", then
@@ -1507,7 +1511,12 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 'awash' art key) stay as they are for saved games and data, but nothing on screen says "Awash".
   const WASH_INWARD = 0.55;
   function washDir(pos, mid){ if(pos === mid) return rnd() < .5 ? -1 : 1; const inward = pos > mid ? -1 : 1; return rnd() < WASH_INWARD ? inward : -inward; }
-  function washPush(players, sideOf, tpid, t, n, dir, ev, events, stats){
+  // 2026-10-18 (audit 4): a crash kill is the Wave unit's kill (ev.attUid / ev.attDefId; the field's Wave has no attacker and
+  // credits nobody): it is noted on the dead (noteKiller) and written into the kill-credit book, so its kill stat, Crown, Midas and
+  // On Kill all come. From a swing (killCredit given) the dead stay on the board until the swing's own sweep (reflowAfterKills), so
+  // the swing's credit and the rest of its on-hit effects never point at a unit already taken away; called on its own (the field,
+  // a test), it sweeps here with that book.
+  function washPush(players, sideOf, tpid, t, n, dir, ev, events, stats, killCredit){
     const pl = players[tpid]; n = Math.max(1, Math.round(Number(n) || 1)); ev.n = n;
     let crashInto = null;
     const live = c=> !!(c && c.hp > 0 && !c.gap);
@@ -1533,10 +1542,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     if(recordEvents && events) events.push(ev);
     if(crashInto && t.hp > 0 && crashInto.hp > 0){ // both take N (a hit: Exposed doubles it, like any flat hit)
-      const sd = sideOf(tpid), d1 = damageCardFlat(t, n, 'impact'), d2 = damageCardFlat(crashInto, n, 'impact');
+      const sd = sideOf(tpid), h1 = t.hp, h2 = crashInto.hp, d1 = damageCardFlat(t, n, 'impact'), d2 = damageCardFlat(crashInto, n, 'impact');
       ensureStat(stats || {}, sd, t.defId).taken += d1; ensureStat(stats || {}, sd, crashInto.defId).taken += d2;
       if(recordEvents && events) events.push({type:'washCrash', side:sd, uid:t.uid, defId:t.defId, otherUid:crashInto.uid, otherDefId:crashInto.defId, n, dmg:d1, otherDmg:d2});
-      removeDeadCards(players, sideOf, {}, stats || {}, events); }
+      const book = killCredit || {};
+      if(ev.attUid != null && ev.attDefId) [[t, h1], [crashInto, h2]].forEach(([c, h0])=>{ if(h0 > 0 && c.hp <= 0){
+        noteKiller(c, ev.attUid, ev.attDefId); (book[c.uid] = book[c.uid] || new Set()).add(statKey(ev.side, ev.attDefId)); } });
+      if(!killCredit) removeDeadCards(players, sideOf, book, stats || {}, events); }
     if(ev.cols > 0 && t.hp > 0) runCustomTriggers(players, sideOf, tpid, t, CARD_DEFS[t.defId], 'onMove', stats || {}, events, {movedCard: t}); // a pushed unit has moved: its On Move triggers fire (as Scurry's do)
     return ev;
   }
@@ -3356,11 +3368,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
 
   // shot (2026-10-17): this is a ranged shot (an arrow, a bolt, a missile...), so a Reflect unit it is aimed at bounces it (reflectShotOf).
   function fireDamageAction(players, sideOf, ownerId, attDefId, amount, dmgType, target, stats, events, killCredit, attUid, shot){
-    // A castle can't be shocked (2026-10-18, user: "You can't shock the bramble."): lightning (shock) damage aimed at a castle (the sky
-    // bolt, a Shock Bolt or any lightning skill with no unit to strike) is grounded: no damage, no Wet bonus, no Shocked. Both sides, every mode.
-    if(dmgType === 'shock' && target && target.kind !== 'card'){
-      if(recordEvents && events) events.push({type:'grounded', side:sideOf(ownerId), attDefId, attUid, targetSide:sideOf(otherId(ownerId))});
-      return null; }
+    // A bramble (castle) and lightning (2026-10-18, owner 15:05: "No Shocked status on Brambles."; reverts the morning's "grounded"
+    // rule): lightning (shock) damage aimed at a castle (the sky bolt, a Shock Bolt or any lightning skill with no unit to strike) deals
+    // its damage as usual, but a castle is never Shocked (nor gets any status) and the Wet bonus never applies to it: the castle branch
+    // below adds nothing to the amount and returns no card, so the callers' status steps (applyShotStatus) skip it.
     if(shot && target && target.kind === 'card' && target.card){ const rf = reflectShotOf(players, sideOf, ownerId, target.card, events);
       if(rf) return fireDamageAction(players, sideOf, rf.pid, rf.src.defId, amount, dmgType, rf.target, stats, events, killCredit, rf.src.uid); }
     const owner = players[ownerId], enemy = players[otherId(ownerId)];
@@ -4017,8 +4028,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // WET_SHOCK_PER (1) more for each counter. It is added to the hit's amount (like Scar), so Resist, Shock and Armor still apply after.
   // Electricity's own +1 (the arc, and the extra zap on a wet target) is gone, so nothing counts twice. (Wet maps, the beach/river/sea
   // `rules.wet` Bloom reads, give no counter; nothing else in the game makes a unit wet yet.)
+  // 2026-10-18 (owner 15:05: "All non swimming, non flying are made 'wet' in flood. Swimming units are always wet in flood or ebb."):
+  // the counters are "in the water" and Rain now, so 0 to 2. In the water: a Swimmer or Tide unit always is (Flood, Ebb, or no tide at
+  // all, as before); while the Tide is in (Flood or High Tide) every other unit on the board is too, unless it is Flying (an Ashy sky
+  // grounds a flyer, so it wades in too). It is read live, so a land unit is Wet the moment the water comes in (or it arrives in a
+  // Flood) and dries the moment the tide goes out to Ebb; every row counts, the raid's middle and back rows too. A Swimmer in a Flood
+  // has one counter, not two (it was Swimmer + Tide in). Rain still gives every unit, flyers too, one more. A castle is never Wet.
   const WET_SHOCK_PER = 1;
-  function wetCountOf(c){ if(!c) return 0; return (isTide(c) ? 1 : 0) + (field && field.id === 'rain' ? 1 : 0) + (tideRising() ? 1 : 0); }
+  function inTheWater(c){ if(isTide(c)) return true; return tideRising() && !(isFlyingCard(c) && !ashyNow()); }
+  function wetCountOf(c){ if(!c || c.kind === 'hq') return 0; return (inTheWater(c) ? 1 : 0) + (field && field.id === 'rain' ? 1 : 0); }
   function wetShockBonus(c, dmgType){ return dmgType === 'shock' ? wetCountOf(c) * WET_SHOCK_PER : 0; }
   function isWetUnit(c){ return wetCountOf(c) > 0; }
   // Electricity N: its landed hits arc to one enemy unit beside the target (a seeded pick) for N lightning (shock) damage (+ the Wet
@@ -5089,8 +5107,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const dark = ai.hand.filter(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon); if(!dark.length) return null;
     const fodder = allLive(ai).filter(c=> !c.cageOf && !c.isLeader && Number((CARD_DEFS[c.defId].effects||{}).sacrifice) > 0); if(!fodder.length) return null;
     const doomedToo = !!(players && aiSmartest());
+    // 2026-10-18 (audit 4): Poison hurts every upkeep, but Bleed only on the unit's own actions (bleedTick), so its Bleed counts only
+    // while it is about to act (no Wait, not stunned, frozen or asleep).
     const expendable = (f, newVal)=>{ const fd = CARD_DEFS[f.defId] || {}, hp = f.hp || 0;
-      return !!fd.token || hp <= 2 || hp <= (f.maxHp || hp) / 3 || ((f.poison||0) + (f.bleed||0)) >= hp || cardValue(f.defId) <= newVal * 0.6 || (doomedToo && aiDoomed(players, ai.id, f)); };
+      const acts = !((f.wait||0) > 0) && !f.stunned && !(f.frozen > 0) && !(f.asleep > 0);
+      return !!fd.token || hp <= 2 || hp <= (f.maxHp || hp) / 3 || ((f.poison||0) + (acts ? (f.bleed||0) : 0)) >= hp || cardValue(f.defId) <= newVal * 0.6 || (doomedToo && aiDoomed(players, ai.id, f)); };
     let best = null;
     dark.forEach(hc=>{ const nv = cardValue(hc.defId), free = canPlay(ai, hc.defId, hc.uid);
       fodder.forEach(f=>{ const n = Number(CARD_DEFS[f.defId].effects.sacrifice);
@@ -5667,7 +5688,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // cards somehow"): every upkeep while Ready, like Rebuild, N Creativity counters go on one random other living unit on its side.
         // c.creativity does nothing else yet (reserved). Event: statusFx kind 'creativity' {attUid, targetUid, amount, total}.
         if(def.effects && def.effects.creative && c.hp > 0 && !c.cageOf){
-          const mates = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(x=> x && x.uid !== c.uid && x.hp > 0);
+          const mates = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(x=> x && x.uid !== c.uid && x.hp > 0 && !x.gap && !x.cageOf && !isStructureCard(x)); // 2026-10-18 (audit 4): not a cage or a structure
           if(mates.length){ const t = mates[Math.floor(rnd()*mates.length)], n = numN(def.effects.creative, 1); t.creativity = (t.creativity||0) + n;
             if(recordEvents && events) events.push({type:'statusFx', kind:'creativity', side:sideOf(pl.id), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(pl.id), targetDefId:t.defId, targetUid:t.uid, amount:n, total:t.creativity}); }
         }
@@ -6743,7 +6764,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         w2OnHit(a.att, attDef, defCard, dmg, mySide, sideOf(a.enemyId), events, aStat); // Venomous, Toxin, Weaken, Bulldoze, Tangleweed, Strangle (2026-10-16)
         if(attDef.effects && attDef.effects.web && defCard.hp > 0) webUnit(a.att, defCard, numN(attDef.effects.web, S17_DEF.web), mySide, sideOf(a.enemyId), events); // Web N (2026-10-17)
         if(!nullHit) wiltOnHit(defCard, sideOf(a.enemyId), events); // Wilting (2026-10-16): the unit that was hit
-        if(attDef.effects && attDef.effects.wave && defCard.hp>0) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats); // Wave (2026-10-14): push it a column
+        if(attDef.effects && attDef.effects.wave && defCard.hp>0) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats, killCredit); // Wave (2026-10-14): push it a column; 2026-10-18: its crash kills go in this swing's book, swept with the swing
         if(attDef.effects && attDef.effects.wither && defCard.hp>0) applyWither(otherId(a.enemyId), a.att, defCard, numN(attDef.effects.wither, 1), sideOf, events); // Wither N (2026-10-14)
         if(attDef.effects && attDef.effects.dragonLightning) dragonLightningStrike(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.dragonLightning, 1), stats, events, killCredit); // Dragon Lightning N (2026-10-14)
         if(attDef.effects && attDef.effects.electricity) electricityArc(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.electricity, 1), stats, events, killCredit); // Electricity N (2026-10-14)
@@ -7027,7 +7048,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(2, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+  return { tideEvadeOn, wetCountOf, setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
@@ -7090,5 +7111,5 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
 }
 
 if(typeof module !== 'undefined' && module.exports){
-  module.exports = { makeSimEngine, simulateOneMatch, mulberry32, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
+  module.exports = { makeSimEngine, simulateOneMatch, mulberry32, AI_LEVEL_MAX, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
 }

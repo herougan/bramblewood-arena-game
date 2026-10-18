@@ -47,7 +47,7 @@ function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setF
 { const r = elec('lt-tide'); ok(r.N.hp === 47, `a Tide unit has 1 Wet counter (${r.N.hp})`); }
 { const r = elec('lt-wall', {}, 'rain'); ok(r.T.hp === 49 && r.N.hp === 47, `the Rain: everyone 1 counter; the target's melee hit (physical) gets nothing (${r.T.hp}, ${r.N.hp})`); }
 { const r = elec('lt-swim', {}, 'rain'); ok(r.N.hp === 46, `a Swimmer in the Rain: 2 counters, 2 + 2 (${r.N.hp})`); }
-{ const r = elec('lt-swim', {permaTide:true}, 'rain'); ok(r.N.hp === 45, `a Swimmer in the Rain with the Tide in: 3 counters, 2 + 3 (${r.N.hp})`); }
+{ const r = elec('lt-swim', {permaTide:true}, 'rain'); ok(r.N.hp === 46, `a Swimmer in the Rain with the Tide in: 2 counters (in the water, Rain; 2026-10-18 owner 15:05), 2 + 2 (${r.N.hp})`); }
 { const r = elec('lt-wall', {permaTide:true}); ok(r.N.hp === 47, `the Tide in (Flood) wets everyone: 1 counter (${r.N.hp})`); }
 { const r = elec('lt-wall'); const el = r.ev.find(x=> x.type === 'electricity'); ok(el && !('wetTarget' in el) && !el.wetArc, 'the electricity event no longer carries wetTarget'); }
 // A melee attacker whose damage type is shock: the Wet rule reads computeHitDamage too.
@@ -84,7 +84,7 @@ function elec(side, rules, field){ const {e, P} = mk(4, rules); if(field) e.setF
   const st = ev.find(x=> x.type === 'statusFx' && x.kind === 'lightning'), h = ev.find(x=> x.type === 'hit' && x.skyBolt);
   ok(st && st.targetUid === w.uid && st.targetSide === 'B', 'Lightning: the statusFx names the unit it strikes');
   ok(h && h.dmgType === 'shock' && h.dmg === 3 && w.hp === 47, `Lightning 2 on a Tide unit: shock, 2 + 1 Wet (${h && h.dmg})`); }
-{ const {e, P} = mk(7); const ev = []; put(e, P, 1, 'lt-sky', 0, ev); const h = ev.find(x=> x.type === 'hitHQ' && x.skyBolt), g = ev.find(x=> x.type === 'grounded'); ok(!h && g, 'Lightning at the bramble is grounded (2026-10-18: "You can\'t shock the bramble.")'); }
+{ const {e, P} = mk(7); const ev = []; put(e, P, 1, 'lt-sky', 0, ev); const h = ev.find(x=> x.type === 'hitHQ' && x.skyBolt), g = ev.find(x=> x.type === 'grounded'); ok(h && h.dmg > 0 && !g && !(P[2].hq.shocked > 0), 'Lightning at the bramble lands, but the bramble is never Shocked (2026-10-18 owner 15:05: "No Shocked status on Brambles.")'); }
 { const {e, P} = mk(9); const T = put(e, P, 2, 'lt-wall', 0), N = put(e, P, 2, 'lt-wall', 1); const D = put(e, P, 1, 'lt-dl', 0); const ev = []; e.debugAttack(P, so, D.uid, {}, ev);
   const hs = ev.filter(x=> x.type === 'hit' && x.dragonLightning); ok(hs.length === 2 && hs[0].jump === 0 && hs[1].jump === 1 && hs[1].viaUid === T.uid && hs.every(h=> h.dmgType === 'magic'), 'Dragon Lightning: strike 0 on the target, strike 1 from the target to the unit beside it (still magic)'); }
 

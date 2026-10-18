@@ -44,7 +44,7 @@ function deckLevelOf(defs, counts, levelOf, leaders){
   return total;
 }
 function deckTotal(counts){ return Object.values(counts||{}).reduce((a,b)=> a+(b|0), 0); }
-const NAMES = ['Moss','Bramble','Pip','Thistle','Rook','Fern','Juniper','Wren','Hazel','Sorrel','Bracken','Tansy','Nettle','Clover','Sedge','Rowan','Burdock','Willow','Aster','Quill','Hollis','Marlow','Pebble','Kestrel'];
+const NAMES = ['Moss','Briony','Pip','Thistle','Rook','Fern','Juniper','Wren','Hazel','Sorrel','Bracken','Tansy','Nettle','Clover','Sedge','Rowan','Teasel','Willow','Aster','Quill','Hollis','Marlow','Pebble','Kestrel'];
 const AV_CHARS = ['otter','hummingbird','mouse'], AV_COLORS = ['acorn','berry','river','moss','violet','sun','blossom','frost','night'];
 
 function mulberry32(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }

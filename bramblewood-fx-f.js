@@ -1509,7 +1509,9 @@ M.onEvent = function(ev, env){
     const all = $$(':scope > .board-card', row), tele = all.filter(e=> e.classList.contains('raid-tele'));
     const col = tele.length ? tele : [all[Math.max(0, Math.min(all.length - 1, (ev.col | 0) + Math.floor(all.length/2)))]].filter(Boolean);
     const reserve = $$('#battlefieldInner .reserve-row.mine').map(r=> $$(':scope > .board-card', r)[all.indexOf(col[0])]).filter(Boolean);
-    M.tentacleSmack(col.concat(reserve), {host:env.battlefield});
+    // 2026-10-18 (owner 15:37): a smack lands on the front row, or (ev.back, 1 time in 3) only on the middle and back rows
+    const frontHit = col.filter(e=> e.querySelector('.card-tile'));
+    M.tentacleSmack(ev.back ? reserve : !ev.hits ? col.concat(reserve) : frontHit.length ? frontHit : reserve, {host:env.battlefield});
   }
 };
 
