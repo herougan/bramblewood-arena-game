@@ -6229,6 +6229,7 @@ const MAP_BATTLEFIELD_CLASS = {
   m10:'map-m10', // Eyrie Heights -- pale alpine sky
   m11:'map-m11', // The Sundered Peak -- dramatic dusk crimson
   m21:'map-m21', // The Quiet Summit -- snow and dawn
+  tw:'map-tw', mlb:'map-mlb', // 2026-10-18: the Babel Spire and the Long Burrow fight on their own (derived) backdrops
   m22:'map-m22', m23:'map-m23', m24:'map-m24', // 2026-10-17: the Rimefire Caldera (snow over a glowing crater), the Goldfeather Siege, Goldfeather Keep
   mf:'map-mf',   // Thistlewood -- wet forest, stream and pond (the Outskirts' old art since 2026-10-15)
   mb:'map-mb',   // Pebble Beach -- sand and shallows (2026-10-09)
@@ -13892,7 +13893,8 @@ function activateSpot(spot){
 // 2026-10-15 (user: "Are there any submaps with no background? fill them in."): the Old Bramble, Ice Hollow, Glimmer Depths,
 // Sunken Grove, Aerie Vault and Volcano Lair had art baked in but weren't listed here, so it never drew; Murgle Mayhem had none.
 // They now borrow a recoloured map (MAP_ART_DERIVED in assemble_arena.py), and the build fails if this list falls behind.
-const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm"]);
+// 2026-10-18: + the Babel Spire ("tw") and the Long Burrow ("mlb"), which drew only a gradient.
+const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm","mlb","tw"]);
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -18979,6 +18981,12 @@ function renderDungeonsSubTab(body){
   </div>`;
   body.querySelectorAll('[data-dungeon-go]').forEach(b=> b.addEventListener('click', ()=>{
     conquestWorldView = false; conquestSelectedMap = b.dataset.dungeonGo; conquestSelectedNodeKey = null; playSubTab = 'conquest'; renderPlay(); }));
+  // 2026-10-18 (audit R3-WP6: at 50/50 the Spire only offered "Keep climbing" into floor 50 again): from the summit you pick any
+  // floor to fight again, and the map opens with that floor selected.
+  body.querySelectorAll('[data-tower-replay]').forEach(b=> b.addEventListener('click', ()=>{
+    const sel = body.querySelector('[data-tower-floor]'), map = CONQUEST_MAPS.find(m=> m.id === 'tw'); if(!map) return;
+    const node = map.nodes[Math.max(0, Math.min(map.nodes.length - 1, (parseInt(sel && sel.value, 10) || map.nodes.length) - 1))];
+    conquestWorldView = false; conquestSelectedMap = 'tw'; conquestSelectedNodeKey = node ? node.key : null; playSubTab = 'conquest'; renderPlay(); }));
 }
 // The Tower in the Dungeons tab (2026-10-16): its own card under the daily dungeons. Locked until Map 20's last fight falls; admins can
 // always open it. No tickets: every floor costs Energy like any elite.
@@ -18986,12 +18994,21 @@ function towerCardHTML(progress){
   const map = CONQUEST_MAPS.find(m=> m.id === 'tw'); if(!map) return '';
   const admin = typeof adminModeEnabled !== 'undefined' && adminModeEnabled, unlocked = isMapUnlocked(map, progress), open = unlocked || admin, f = dungeonFloorProgress(map, progress);
   const next = map.nodes[Math.min(map.nodes.length - 1, f.done)], br = next ? enemyDeckLevel(next) : 0;
-  return `<div class="dg-tower-head"><h3>🗼 The Tower</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p></div>
+  // 2026-10-18 (audit R3-WP6): every floor cleared is the summit: no "Keep climbing", a floor picker to fight any of them again.
+  // The heading uses the map's own name (it said "The Tower" over a card titled "The Babel Spire").
+  const summit = unlocked && f.total > 0 && f.done >= f.total;
+  const climb = summit
+    ? `<div class="dg-floor dg-summit"><span class="wc-bar"><span style="width:100%"></span></span><span>🏔️ <b>Summit</b> · all ${f.total} floors</span></div>
+          <p class="dg-sub dg-summit-line">You stand atop ${escapeHtml(map.name)}. Nobody had seen the top until you did. The wind up here smells of every creature that ever tried.</p>
+          <div class="dg-acts"><label class="dg-floor-pick">Floor <select data-tower-floor aria-label="Floor to fight again">${map.nodes.map((n, i)=> `<option value="${i + 1}"${i === map.nodes.length - 1 ? ' selected' : ''}>${i + 1}${n.kind === 'boss' ? ' 👑' : ''}</option>`).join('')}</select></label>
+            <button type="button" class="btn primary" data-tower-replay>🔁 Fight it again</button></div>`
+    : `<div class="dg-floor"><span class="wc-bar"><span style="width:${Math.round(100 * f.done / f.total)}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total} · ⚔ ${br}</span></div>
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button></div>`;
+  return `<div class="dg-tower-head"><h3>${map.icon} ${escapeHtml(map.name)}</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p></div>
     <div class="dg-list"><div class="dg-card dg-tower ${open ? '' : 'is-locked'}">${!unlocked && admin ? '<span class="dg-admin-tag" title="Players open it by clearing Map 20">🛠️ Admin preview</span>' : ''}<div class="dg-diamond map-theme-tw">${compassDiamondSVG('dg-tw', !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map 20 · The Sundered Peak</span>
         <p class="dg-sub">${escapeHtml(map.blurb)}</p>
-        ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${Math.round(100 * f.done / f.total)}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total} · ⚔ ${br}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button></div>`
+        ${open ? climb
         : `<p class="dg-sub">🔒 Clear the Sundered Peak (Map 20) to open it.</p>`}</div></div></div>`;
 }
 // The World map's dungeon stops (2026-10-15): a smaller compass diamond beside its map's own, joined to it by a dotted branch.
@@ -19632,7 +19649,8 @@ function renderConquestSubTab(body){
   // so a click on a floor (which re-renders the pane) was followed 1.2 s later by a smooth scroll away to your next floor. Now it
   // only runs on a fresh visit, and only if your next floor isn't already in view (coming back from a fight keeps your place).
   if(map.endless && !sameMapRerender){ // start the long climb at your next floor
-    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
+    // 2026-10-18: a floor picked from the Spire's summit card (already selected) is the one to scroll to, not the top floor
+    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = (conquestSelectedNodeKey && map.nodes.find(n=> n.key === conquestSelectedNodeKey)) || map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
       const el = cv.querySelector(`.map-node[data-lkey="${next.key}"]`), main = document.getElementById('conquestMain');
       if(el && main){ const er = el.getBoundingClientRect(), mr = main.getBoundingClientRect();
         if(er.top >= mr.top + 40 && er.bottom <= mr.bottom - 40 && er.left >= mr.left && er.right <= mr.right) return; // already in view
@@ -19640,7 +19658,7 @@ function renderConquestSubTab(body){
         const top = el.offsetTop - main.clientHeight / 2; main.scrollTo({top: Math.max(0, top), behavior: reducedMotion() ? 'auto' : 'smooth'}); } }, 1200); }
   { const ast = ambushState(); if(ast.justPopped && map.id === (ambushMap()||{}).id){ delete ast.justPopped; saveAmbushState(ast); } }
   if(tutPhase) tutBgZoom(1.25, false); else if(!tutZoomOut) tutBgZoom(1, false, true);
-  if(tutZoomOut){ try{ localStorage.removeItem('bramblewood_tut_zoomout_v1'); }catch(e){}
+  if(tutZoomOut){ // 2026-10-18 (audit R3-WP6): dropped the bramblewood_tut_zoomout_v1 key; it was written and cleared but never read
     const cv = document.getElementById('conquestCanvas'); tutBgZoom(1.25, false);
     if(cv){ cv.querySelectorAll('.map-trail-svg, .map-spot, .map-decor').forEach(el=> el.classList.add('tut-reveal'));
       // skirmishes drop in from above, nearest first, once the zoom has settled
@@ -26222,7 +26240,7 @@ function renderMatchUI(){
         const first = !loadTutorial2Done() && !adminTest;
         // 2026-10-15 (user: "The pack award was abit anti-climatic cause i didnt expect to get it. Don't give it till I unlock the
         // armoury"): the Ally Pack that came with part 2 is gone; the first pack is Map 0-2's faction pack, next to the Armoury.
-        if(first){ saveTutorial2Done(); try{ localStorage.setItem('bramblewood_tut_zoomout_v1', '1'); }catch(e){} }
+        if(first) saveTutorial2Done(); // 2026-10-18: no more bramblewood_tut_zoomout_v1 (never read; the first-visit zoom keys off revealSet)
         const after = ()=>{
           // Both tribes (2026-10-12, 10:57 list): the Meerkat Wayfarer, another traveller on the road, joins your collection (not
           // your deck), and the otternarian has a word about how hard peace is.
@@ -39616,7 +39634,7 @@ function renderDeckListTab(body){
       </div>
     </div>`;
   const grid = document.getElementById('deckMenuGrid');
-  body.querySelectorAll('[data-deckview]').forEach(b=> b.addEventListener('click', ()=>{ deckListView = b.dataset.deckview; try{ localStorage.setItem('bramblewood_deck_view', deckListView); }catch(e){} renderDeckListTab(body); }));
+  // 2026-10-18 (audit R3-WP6): the Large/Medium buttons went on 2026-10-13; their handler (and its never-read bramblewood_deck_view key) went too.
   if(deckListView==='medium'){
     grid.innerHTML = myDecks.map(d=> `<button type="button" class="dmp-btn" data-editdeck="${d.id}" aria-label="Edit ${escapeAttr(d.name)}">${deckMediumPreviewHTML(d)}</button>`).join('');
     grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckHeroView = false; deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));

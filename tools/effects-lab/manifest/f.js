@@ -167,10 +167,10 @@ R({id:'meta-daily-login', stage:'ui', inGameHook:FUT, note:'No daily login exist
     {key:'B', label:'A 7-day strip: today is stamped, the streak flame grows', play:ctx=> dailyStrip(ctx)}]});
 R({id:'meta-monthly-bonus', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'The next step on the track lights and a pack pops on it', play:ctx=> stepTrack(ctx)}]});
 R({id:'meta-bramble-pass', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'The daily pouch bounces open and spills leaves', play:ctx=>{ const c = X().pt(ctx.ui.results); return X().glyph(c.x, c.y, '👝', {size:54, rise:0, hold:.9, onTl:(t, e)=> t.to(e, {y:'-=14', duration:.12, yoyo:true, repeat:3}, .2).add(()=>{ X().burst(c.x, c.y - 10, {n:16, glyphs:['🍁', '🍂', '✨', '🌰'], gsize:18, spread:1.6, angle:-Math.PI/2, dist:[60, 130], dur:1, spin:300, gravity:70}); X().label(c.x, c.y - 70, 'Bramble Pass · Day 4', 'gold'); }, .7)}); }}]});
-R({id:'meta-steam-achv', stage:'ui', inGameHook:FUT, note:'A generic store-overlay style toast (no store branding).', variants:[{key:'A', label:'An achievement overlay slides up in the corner', play:ctx=> X().achvUnlocked_B(null, {host:ctx.root, text:'Clear Map 10'})}]});
+R({id:'meta-steam-achv', stage:'ui', inGameHook:'live: steamUnlock() in the desktop build; Steam draws its own overlay, so this toast is not used' /* 2026-10-18 (audit R3-WP6) */, note:'A generic store-overlay style toast (no store branding).', variants:[{key:'A', label:'An achievement overlay slides up in the corner', play:ctx=> X().achvUnlocked_B(null, {host:ctx.root, text:'Clear Map 10'})}]});
 R({id:'meta-attunement', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'Rune rings turn and lock a gem in the middle', play:ctx=> attune(ctx)}]});
 R({id:'meta-alchemy', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'A bubbling flask tips and tops up the pill', play:ctx=> alchemy(ctx)}]});
-R({id:'meta-dragon-egg-craft', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'Scales orbit, fuse in a red glow into an egg', play:ctx=> dragonEgg(ctx)}]});
+R({id:'meta-dragon-egg-craft', stage:'ui', inGameHook:'live: scaleTrailEggFx() on the Scale Trail reward screen' /* 2026-10-18 (audit R3-WP6) */, variants:[{key:'A', label:'Scales orbit, fuse in a red glow into an egg', play:ctx=> dragonEgg(ctx)}]});
 R({id:'meta-materia-socket', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'A crystal flies into the hero’s slot and clicks', play:ctx=> socket(ctx)}]});
 R({id:'meta-bring-effect', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'A slot spins through effects and locks on yours', play:ctx=> bringFx(ctx)}]});
 
@@ -280,9 +280,9 @@ R({id:'coop-lock', stage:'board', inGameHook:FUT, variants:[{key:'A', label:'A w
 R({id:'coop-resolve', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'Four plays drop A, B, C, D in a ripple', play:ctx=> X().coopResolve(null, {host:ctx.root})}]});
 R({id:'coop-cell-clash', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'They collide; the second bounces back to hand', play:ctx=> X().coopCellClash(null, {host:ctx.root})}]});
 R({id:'coop-floor-mechanic', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'Cursed cells glow red, skulls flicker', play:ctx=> X().coopFloorMechanic(null, {host:ctx.root})}]});
-R({id:'dng-murgle', stage:'screen', inGameHook:FUT, variants:[{key:'A', label:'A murky swamp gate: fog, bubbles, the bars lift', play:ctx=> X().dngMurgle(ctx.root)}]});
+R({id:'dng-murgle', stage:'screen', inGameHook:'live: Murgle Mayhem is open in the Dungeons tab and enters with FX.G\'s dungeon map title; this swamp gate is not wired' /* 2026-10-18 (audit R3-WP6) */, variants:[{key:'A', label:'A murky swamp gate: fog, bubbles, the bars lift', play:ctx=> X().dngMurgle(ctx.root)}]});
 R({id:'pvp-map60', stage:'ui', inGameHook:FUT, variants:[{key:'A', label:'Cards whirl in a wild vortex of colour', play:ctx=> X().pvpMap60(ctx.root)}]});
-R({id:'world-event', stage:'screen', inGameHook:FUT, note:'The theme note: a horn banner across every screen.',
+R({id:'world-event', stage:'screen', inGameHook:'live: checkWorldEvents() shows the world_events call-outs as toasts; this horn banner is not wired' /* 2026-10-18 (audit R3-WP6) */, note:'The theme note: a horn banner across every screen.',
   variants:[{key:'A', label:'A rally-horn banner sweeps across', play:ctx=> X().worldEvent(ctx.root)},
     {key:'B', label:'A signal flare bursts and the name hangs under it', play:ctx=> X().worldEvent_B(ctx.root)}]});
 R({id:'ui-toast', stage:'ui', note:'A (manifest/_existing.js) is the toast today. B is hooked in game for every toast.', inGameHook:'showToast → fxHook(toast) (variant B)',
