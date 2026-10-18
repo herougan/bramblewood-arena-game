@@ -283,6 +283,7 @@ const SKILL_ICON = {shedding:'🐍', molting:'🦀', dynamite:'🧨', helmet:'�
   // 2026-10-14 (third pass). Bloom (conditions) is 🌷 because the old Bloom N heal has 🌸 (the in-bloom chip on the board is 🌸);
   // Wave is 〰️ because Tide has 🌊 and Scatterbrained 🌀; Brood 🥚; Pack Leader 🐺👑; Supreme Tide ✨🌊.
   bloomWhen:'🌷', wave:'〰️', brood:'🥚', packLeader:'🐺👑', supremeTide:'✨🌊',
+  castDarkness:'🌘', trueStrike:'💯', // 2026-10-18 (package D): the Darkness field's own moon; True Strike never misses
   // 2026-10-14 (fourth pass). Crab Claws is 🦞 because Molting already has 🦀; Nullify 🚫 (only the Player Stun action's
   // trigger badge used it); Meiosis 🧫; Restless 👣; Charge ⏲️ (Primed has 🔋, and ⚡ is Frenzy/Lightning).
   crabClaws:'🦞', meiosis:'🧫', nullify:'🚫', restless:'👣', charge:'⏲️'};
@@ -897,6 +898,10 @@ const PASSIVE_DEFS = [
   {key:'coffee', category:'passive', label:'Coffee', kind:'number', min:1, defaultValue:1, desc:v=>`Comes in wired: Wait −${v||1}. ${v||1} round${(v||1)===1?'':'s'} later the cup wears off and it naps (Stunned for a round).`},
   {key:'dry', category:'passive', label:'Dry', kind:'boolean', desc:()=>`Built for the desert: takes half Heat damage, and Scorching days can't touch it.`},
   {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`It can see in darkness.`}, // 2026-10-15 (user: "Darksight explanation is TOO complicated. Just explain what it does - it can see in darkness.")
+  // Cast Darkness and True Strike (2026-10-18, package D). Owner: "A card that casts 'Darkness' ... the map adds a field effect 'Darkness',
+  // on Play. It is gone when it dies." and "White Dragon has true strike - it never misses." Rules: bramblewood-engine.js (darkRule, trueStrikes).
+  {key:'castDarkness', category:'passive', label:'Cast Darkness', kind:'boolean', desc:()=> TX('ui.sk-cast-darkness'), codexNote:TX('ui.sk-cast-darkness-codex')},
+  {key:'trueStrike', category:'passive', label:'True Strike', kind:'boolean', desc:()=> TX('ui.sk-true-strike'), codexNote:TX('ui.sk-true-strike-codex')},
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
   {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it strikes the bramble, which is never Shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has (a bramble never counts as Wet).'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18 (owner 15:05 "No Shocked status on Brambles."): the bramble takes the damage again, no status, no Wet bonus
@@ -2011,7 +2016,7 @@ function speciesLine(def){
 // Spells (2026-10-11): what a spell does, in a sentence.
 function spellText(d){ const sp = (d && d.spell) || {}, n = sp.amount || 0;
   if(sp.do==='hasten') return `Each of your units on the field loses ${n} Wait.`;
-  if(sp.do==='tailwind') return `Each of your units on the field loses ${n} Wait, and every Flyer of yours gets an extra turn at the start of the next combat.`;
+  if(sp.do==='tailwind') return TX('ui.spell-tailwind', {n}); // 2026-10-18 (package D): terse
   if(sp.do==='mend') return `Heals each of your units by ${n}.`;
   if(sp.do==='sap') return `Each enemy unit loses ${n} Attack.`;
   return 'Changes the field.'; }
@@ -2036,12 +2041,12 @@ const SKILL_COUNTER_EXTRA = {exileAns: '🌫 Exile'};
 // example. THEN after the skills are done, a small separating line, then more explanations for each keyword"). Skill
 // lines name the status in its colour; one short glossary under the skills explains each status that came up.
 const STATUS_KEYWORDS = [
-  {k:'poison', re:/\b(poison(?:ed|s)?)\b/gi, name:'Poison', c:'#3fa535', text:'takes damage equal to its stacks at the start of each round, then loses 1 stack. Only Cure removes it; heals don’t.'},
-  {k:'bleed', re:/\b(bleed(?:ing|s)?|bled)\b/gi, name:'Bleed', c:'#d0344a', text:'takes damage equal to its stacks whenever it attacks or uses a skill, and loses 1 stack each round. Heals remove it.'},
+  {k:'poison', re:/\b(poison(?:ed|s)?)\b/gi, name:'Poison', c:'#3fa535', text:TX('ui.st-poison'), codex:TX('ui.stx-poison')} /* 2026-10-18 (package D): terse */,
+  {k:'bleed', re:/\b(bleed(?:ing|s)?|bled)\b/gi, name:'Bleed', c:'#d0344a', text:TX('ui.st-bleed')} /* 2026-10-18 (package D): terse */,
   {k:'decay', re:/\b(decay(?:ing|s)?)\b/gi, name:'Decay', c:'#8d8a2e', text:'at the start of each round, takes damage and loses Attack equal to its stacks.'},
   {k:'corrode', re:/\b(corrode[ds]?)\b/gi, name:'Corrode', c:'#b8732c', text:'deals that much less Attack; loses 1 stack each round.'},
   {k:'freeze', re:/\b(freez(?:e|es|ing)|frozen)\b/gi, /* + Freezes (2026-10-16 skill audit) */ name:'Frozen', c:'#3d9fd8', text:'can’t attack, and its Wait doesn’t tick down.'},
-  {k:'sleep', re:/\b(sleep|asleep)\b/gi, name:'Asleep', c:'#8a78d0', text:'can’t act until it wakes; any damage wakes it.'},
+  {k:'sleep', re:/\b(sleep|asleep)\b/gi, name:'Asleep', c:'#8a78d0', text:TX('ui.st-sleep')} /* 2026-10-18 (package D): Sleep N stacks up to N+1 */,
   {k:'paralyze', re:/\b(paraly[sz]ed?)\b/gi, name:'Paralyzed', c:'#c9a417', text:'each round, a coin flip decides whether it can act.'},
   {k:'stun', re:/\b(stun(?:ned|s)?)\b/gi, name:'Stunned', c:'#d08a1c', text:'skips its next attack, and its Wait doesn’t tick that round.'},
   {k:'blind', re:/\b(blind(?:ed)?)\b/gi, name:'Blind', c:'#7c8794', text:'each of its swings misses half the time.'},
@@ -2051,17 +2056,17 @@ const STATUS_KEYWORDS = [
   {k:'stagger', re:/\b(stagger(?:ed|s)?)\b/gi, name:'Staggered', c:'#a0664a', text:'deals 50% less damage with its attacks.'},
   // 2026-10-16 skill audit (user: "keywords are highlighted"): the statuses the newer skills give had no colour or gloss.
   // cs: only when written as the game word (capitalised), so "a Guardian shield" or "bound to" in plain prose stay plain.
-  {k:'exposed', re:/\b(expose[ds]?)\b/gi, name:'Exposed', c:'#e07b39', text:'each hit on it is a crit (double damage) and removes 1 Expose counter; attacks at it can’t miss.'}, // 2026-10-16: counters
+  {k:'exposed', re:/\b(expose[ds]?)\b/gi, name:'Exposed', c:'#e07b39', text:TX('ui.st-exposed')}, // 2026-10-16: counters
   {k:'bound', re:/\b(bind(?:s)?|bound)\b/gi, cs:true, name:'Bound', c:'#5f8a3c', text:'can’t attack; its Wait still counts down.'},
   {k:'webbed', re:/\b(web(?:bed|s)?)\b/gi, cs:true, name:'Webbed', c:'#8f8aa8', text:'stuck in a web: it can’t dodge, and it can’t move or be moved.'}, // 2026-10-17 (Web N)
   {k:'toxin', re:/\b(toxin)\b/gi, name:'Toxin', c:'#6b2fa0', text:'takes damage equal to its stacks every round. It never wears off and can’t be cured.'},
   {k:'smoke', re:/\b(smoke)\b/gi, cs:true, name:'Smoke', c:'#8a929c', text:'attacks at it miss 1 in 2 until the end of next round.'},
   {k:'scar', re:/\b(scar(?:red|s)?)\b/gi, cs:true, name:'Scar', c:'#b5546a', text:'takes that much more damage from every hit.'},
-  {k:'irradiation', re:/\b(irradiation)\b/gi, name:'Irradiation', c:'#7cb518', text:'each round every token takes 1 point (max Health, Attack or a skill’s number), then the tokens drop by 1.'},
+  {k:'irradiation', re:/\b(irradiation)\b/gi, name:'Irradiation', c:'#7cb518', text:TX('ui.st-irradiation')},
   {k:'shield', re:/\b(shield)\b/gi, cs:true, name:'Shield', c:'#3d8fd1', text:'temporary Health that soaks damage first and doesn’t come back.'},
   // 2026-10-17 (user: "Wet units just take +N damage by default, for every wet counter. Can see this in codex instead."): the general Wet
   // rule (the engine's wetCountOf / wetShockBonus). cs: the game word only, so "wet ground" in plain prose stays plain.
-  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:'takes 1 more lightning damage from every lightning hit for each Wet counter it has. A unit has one counter for each of these: it is in the water (a Swimmer or Tide unit always is, in Flood or Ebb; while the Tide is in, Flood or High Tide, so is every unit that isn’t Flying); it is raining (the Rain field). A bramble is never Wet.'}, // 2026-10-18 (owner 15:05): the Flood wets every land unit, flyers stay dry
+  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:TX('ui.st-wet'), codex:TX('ui.stx-wet')} /* 2026-10-18 (package D): terse; where the water counts is in the Codex */, // 2026-10-18 (owner 15:05): the Flood wets every land unit, flyers stay dry
 ];
 // Keywords everywhere (2026-10-12, user: "Highlight keywords like pitch etc. Also, if the keyword has colour, give it some
 // colour. Do this as a standard for all descriptions. If it's possible dont hardcode this ... (except in flavour text)").
@@ -2074,6 +2079,7 @@ const KEYWORD_TERMS = [
   {name:'Upkeep', re:'upkeep', text:'the start of each round, before anyone attacks. Upkeep effects go in the same order units act.'},
   {name:'Adjacent', re:'adjacent', text:'the columns to its left, centre and right.'},
   {name:'Kin', re:'kin', cs:true, text:'your own units that share a Type with this one (never itself).'}, // 2026-10-18: the Kin target
+  {name:'Dark-blind', re:'dark-blind', text:TX('ui.term-dark-blind')}, // 2026-10-18 (package D): the Darkness card's word
   {name:'Graveyard', re:'graveyard'}, {name:'Wait', re:'wait(?:ing)?', cs:true}, {name:'Ready', re:'ready', cs:true},
   {name:'Leader', re:'leaders?', cs:true}, {name:'Removal Zone', re:'removal zone'}, {name:'Flood', re:'flood', cs:true}, {name:'Ebb', re:'ebb', cs:true},
   {name:'Field', re:'field card', cs:false}, {name:'Dark Summon', re:'dark summons?'}, {name:'Structure', re:'structures?', cs:true},
@@ -2150,18 +2156,18 @@ const SKILL_TEXT = {
   counterattack: ()=> `Never attacks on its own. Each time an enemy hits it, it strikes the enemy facing it.`, // 2026-10-16 skill audit: it hits the unit in front, not the attacker (counterStrike)
   spiteful: v=> `Deal ${v} damage back to any enemy that damages it.`,
   thorns: v=> `Melee attackers take ${v} damage.`,
-  fork: ()=> `One two-pronged swing: full Attack on the units to its left and right when both are there, or else just the one in front.`, // 2026-10-17
+  fork: ()=> TX('ui.sk-fork'), // 2026-10-17; 2026-10-18 (package D): terse
   swipe: v=> `Each hit steals ${v} Lumber.`,
   twinStrike: ()=> `Attacks twice.`,
-  pack: v=> `Pack units of its type standing side by side each get +1/+1 for every Pack point in the chain (two Pack ${numOr(v, 2)}s: +${2*numOr(v, 2)}/+${2*numOr(v, 2)} each).`, // 2026-10-16 skill audit: plain words, no "N = …"
-  packLeader: ()=> `Links every Pack unit of its type on your side into one chain, adjacent or not, and adds +2/+2 of its own and +2/+2 for the type.`,
+  pack: v=> TX('ui.sk-pack'), // 2026-10-16 skill audit: plain words, no "N = …"; 2026-10-18 (package D): terse, the example is in the Codex
+  packLeader: ()=> TX('ui.sk-pack-leader'), // 2026-10-18 (package D): terse; the rest in the Codex
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
-  wave: (v, n, e)=>{ const w = waveParts(v, e), cols = w.n === 1 ? 'one column' : `${w.n} columns`; // Wave N (2026-10-18): it crashes, no swaps
-    return `Its hits push the unit ${cols} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right, in turn' : w.way}. If it crashes into a unit, it stops and both take ${w.n}.`; },
+  wave: (v, n, e)=>{ const w = waveParts(v, e), s = w.n === 1 ? '' : 's'; // Wave N (2026-10-18): it crashes, no swaps; 2026-10-18 (package D): terse, one text per way
+    return w.way === 'left' ? TX('ui.sk-wave-left', {n: w.n, s}) : w.way === 'right' ? TX('ui.sk-wave-right', {n: w.n, s}) : w.way === 'alternate' ? TX('ui.sk-wave-alternate', {n: w.n, s}) : TX('ui.sk-wave-either', {n: w.n, s}); },
   supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flood or Ebb. Tide effects can't take them away.`,
-  crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right, never the one in front. With none there, it hits the bramble.`, // 2026-10-17
+  crabClaws: ()=> TX('ui.sk-crab-claws'), // 2026-10-17; 2026-10-18 (package D): terse
   meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
-  nullify: ()=> `Its hits get no reaction from the unit hit. A unit it kills skips its death effects and goes to the ${EXILE_ZONE_NAME}.`,
+  nullify: ()=> TX('ui.sk-nullify', {zone: EXILE_ZONE_NAME}), // 2026-10-18 (package D): terse
   restless: ()=> `Every upkeep it steps one column toward the nearest enemy.`,
   brood: v=> Number(v) > 1 ? `When it arrives, ${v} 1/1 Brood tokens of its kind (Swarm) hatch beside it.` : `When it arrives, a 1/1 Brood token of its kind (Swarm) hatches beside it.`,
   sweep: v=> `Also deals ${numOr(v, 1)} damage to the units beside its target.`, // Cleave N: default 1 (2026-10-16)
@@ -2226,7 +2232,7 @@ const SKILL_TEXT = {
   fastForward: v=> `Takes ${v} extra turn${v==1?'':'s'} when it arrives.`,
   swift: ()=> `Always attacks first, and dodges attacks from units without Swift.`,
   reload: v=> `After attacking, sits out ${v} round${v==1?'':'s'}.`,
-  shell: v=> `When first hit: +${v} Armor and +${v} Health until the end of next round, but it can't attack that round.`,
+  shell: v=> TX('ui.sk-shell', {n: v}), // 2026-10-18 (package D): terse
   stealth: ()=> `Always attacks the enemy bramble.`,
   evasive: ()=> `Dodges half of all single-target attacks and skills.`,
   feeble: ()=> `Deals half damage.`, mighty: ()=> `Deals double damage.`, fragile: ()=> `Takes double damage.`, sturdy: ()=> `Takes half damage.`,
@@ -2253,20 +2259,20 @@ const SKILL_TEXT = {
   perforate: v=> `Its melee hits ignore and strip ${v} Armor, add ${v} Bleed and deal ${v} damage to the enemy bramble.`,
   flying: ()=> `Dodges half of all attacks from units without Flying.`,
   earthquake: v=> `When played, deal ${v} damage to every other unit without Flying, yours included.`,
-  pounce: v=> `When played, deal ${pounceWords(v)} damage to the enemy facing it (or the nearest), or the bramble if there are no targets.`, // 2026-10-16: N, <Att> or <Hp> // 2026-10-16 skill audit: the engine aims at the unit opposite first (2026-10-15)
+  pounce: v=> TX('ui.sk-pounce', {n: pounceWords(v)}), // 2026-10-18 (package D): terse // 2026-10-16: N, <Att> or <Hp> // 2026-10-16 skill audit: the engine aims at the unit opposite first (2026-10-15)
   skyfall: v=> `When played, deal ${v} damage to a random enemy unit, or the bramble if there are no targets.`,
   arrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${v} damage every upkeep.`, // 2026-10-16 skill audit
   fireArrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${v} fire damage every upkeep.`, // 2026-10-16 skill audit
-  iceArrow: v=> `While Ready, shoot the enemy facing it (or the nearest) for ${numOr(v, 2)} cold damage every upkeep; 1 in 2 it Freezes.`, // 2026-10-16 skill audit: it aims like Arrow
+  iceArrow: v=> TX('ui.sk-ice-arrow', {n: numOr(v, 2)}), // 2026-10-16 skill audit: it aims like Arrow; 2026-10-18 (package D): terse
   twinShot: v=> `While Ready, shoot two random enemy units for ${numOr(v, 2)} damage each every upkeep.`,
   volley: v=> `While Ready, every other upkeep, shoot every enemy unit for ${numOr(v, 1)} damage.`,
   fireBolt: v=> `While Ready, spit fire at the enemy facing it (or the nearest) for ${numOr(v, 2)} fire damage every upkeep.`, // 2026-10-16 skill audit: the shooting skills all say "every upkeep" and "facing it"
-  acidBolt: v=> `While Ready, spit acid at the enemy facing it (or the nearest) for ${numOr(v, 2)} acid damage and 1 Corrode every upkeep.`,
+  acidBolt: v=> TX('ui.sk-acid-bolt', {n: numOr(v, 2)}), // 2026-10-18 (package D): terse
   poisonBolt: v=> `While Ready, spit venom at the enemy facing it (or the nearest): ${numOr(v, 2)} Poison every upkeep.`,
-  iceBolt: v=> `While Ready, spit ice at the enemy facing it (or the nearest) for ${numOr(v, 2)} cold damage every upkeep; 1 in 2 it Freezes.`,
-  shockBolt: v=> `While Ready, spit a spark at the enemy facing it (or the nearest) for ${numOr(v, 2)} lightning damage; it is Shocked for a round. Every upkeep.`, // 2026-10-17: lightning damage
-  bloodlust: ()=> `When it kills the unit facing it, it leaps to face the nearest enemy creature. Half damage to Structures and brambles.`, // 2026-10-17 rework (the Codex adds one more sentence: codexNote)
-  chilli: v=> `When first Ready, eats a chilli: +${numOr(v, 2)} Attack and its attacks deal fire damage, but it takes 1 damage every upkeep.`, // 2026-10-16 skill audit
+  iceBolt: v=> TX('ui.sk-ice-bolt', {n: numOr(v, 2)}), // 2026-10-18 (package D): terse
+  shockBolt: v=> TX('ui.sk-shock-bolt', {n: numOr(v, 2)}), // 2026-10-17: lightning damage; 2026-10-18 (package D): terse
+  bloodlust: ()=> TX('ui.sk-bloodlust'), // 2026-10-17 rework (the Codex adds one more sentence: codexNote); 2026-10-18 (package D): terse
+  chilli: v=> TX('ui.sk-chilli', {n: numOr(v, 2)}), // 2026-10-16 skill audit; 2026-10-18 (package D): terse
   kingSlayer: v=> `Deals ${v} more damage to Kings.`,
 };
 // 2026-10-14 (fifth pass): Tornado, Avalanche, Tsunami, Dragon Lightning, Wither.
@@ -2281,8 +2287,8 @@ Object.assign(SKILL_TEXT, {
 Object.assign(SKILL_TEXT, {
   fencing: v=> `Its attacks can't be dodged by Evasive or Swift units.`,
   fireball: v=> `When Ready: a fireball hits a random enemy unit and the units beside it for ${numOr(v, 15)} fire damage each.`, // 2026-10-16 skill audit
-  meteor: v=> `When Ready: a meteor hits a random enemy column for ${numOr(v, 20)} (${Math.floor(numOr(v, 20)/4)} beside it); the crater burns for 2 rounds.`,
-  banana: v=> `Every round, last: eats its banana (+${numOr(v, 3)} Health, only if hurt) or throws it at a random enemy (${numOr(v, 3)} damage).`,
+  meteor: v=> TX('ui.sk-meteor', {n: numOr(v, 20), m: Math.floor(numOr(v, 20)/4)}), // 2026-10-18 (package D): terse
+  banana: v=> TX('ui.sk-banana', {n: numOr(v, 3)}), // 2026-10-18 (package D): terse
   bananarang: v=> `A Boomerang that may be eaten when it comes home (+${numOr(v, 3)} Health, 1 in 2, only if hurt).`,
   durian: v=> `Every round, last: 1 in 2 it eats a durian for Thorns +${numOr(v, 1)} (stacks).`, // 2026-10-16 skill audit: Durian N
   shield: v=> `Arrives with ${numOr(v, 1)} Shield: temporary Health that soaks damage first.`,
@@ -2304,7 +2310,7 @@ Object.assign(SKILL_TEXT, {
   sonar: ()=> `Never misses from Darkness, Blind, Smoke or Fog, and can't be Blinded.`,
   poisonGas: v=> `When played, every enemy unit gets ${numOr(v, 2)} Poison.`,
   absoluteZero: ()=> `When played, every enemy unit is Frozen for the round.`,
-  spitfire: v=> `While Ready, spit ${numOr(v, 2)} fire damage at a random enemy unit every upkeep; 1 in 2 it also burns one beside it for 1.`, // 2026-10-16 skill audit
+  spitfire: v=> TX('ui.sk-spitfire', {n: numOr(v, 2)}), // 2026-10-16 skill audit; 2026-10-18 (package D): terse
   slashBurn: v=> `When it kills a unit, the next enemy card played there takes ${numOr(v, 3)} fire damage.`,
   trap: v=> `When played, trap the empty enemy slot facing it: the next card played there takes ${numOr(v, 5)} damage.`, // 2026-10-16 skill audit
   penance: v=> `When played, deal ${numOr(v, 3)} damage to your own bramble.`, // 2026-10-16 (user: "hurting your own castle on play as payment")
@@ -2317,14 +2323,14 @@ Object.assign(SKILL_TEXT, {
   mountainClimber: ()=> `Field and terrain hazards pass it by.`,
   atheist: ()=> `Half damage from magic, Devilry and Ecclesia. Immune to the Leylines.`, // 2026-10-16
   taunt: ()=> `Enemies facing it or beside that column must attack it.`,
-  amore: ()=> `When it arrives with one of your Amore units on the field that shares a Type, the two fall in love (once): +0/+3 and Regeneration 3 each. If one dies, the other keeps the +0/+3 but loses the Regeneration.`, // 2026-10-16
+  amore: ()=> TX('ui.sk-amore'), // 2026-10-16; 2026-10-18 (package D): terse, the rest in the Codex
   molting: v=> `Every 2 rounds: +${numOr(v, 1)}/+${numOr(v, 1)} for good, but +1 Wait.`, // 2026-10-16
   bludgeon: ()=> `Its hits take 1 Attack and knock out one of the target's skills.`, // 2026-10-16
 });
 // 2026-10-14 (seventh pass): Psychic and Smoke Bomb.
 Object.assign(SKILL_TEXT, {
   psychic: v=> `Its hits also deal ${numOr(v, 1)} psychic damage, through Armor, Shield, Shell and Ghost. Elementals and Plants are immune.`,
-  smokeBomb: v=> `Every round, last: 1 in 2 it throws a smoke bomb at a random unit. An ally hides in Smoke (attacks at it miss 1 in 2); an enemy is Blinded.`,
+  smokeBomb: v=> TX('ui.sk-smoke-bomb'), // 2026-10-18 (package D, owner: "make the explanation terse ... 20+ words ... too much")
 });
 // 2026-10-16 skill audit (user: "Do skill audit - so the skills are as simply named and described as possible, keywords are
 // highlighted. And they have the right parameters for targeting and amount."): every skill in "+ Add Skill" has a short card
@@ -2332,6 +2338,9 @@ Object.assign(SKILL_TEXT, {
 // A status skill (Freeze …) reads its [chance %, rounds]; the Codex passes `true`, which reads as "can".
 function procSkillText(verb){ return v=>{ const c = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Math.max(1, Number(v[1])||1) : 1, rs = `${d} round${d === 1 ? '' : 's'}`;
   return !c ? `Its hits can ${verb}.` : c >= 100 ? `Its hits ${verb} for ${rs}.` : `Its hits have a ${c}% chance to ${verb} for ${rs}.`; }; }
+// Sleep N stacks up to N+1 (2026-10-18, package D; owner: "never exceeds the applied sleep + 1"): its line says so, tersely.
+function sleepSkillText(v){ const c = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Math.max(1, Number(v[1])||1) : 1, s = d === 1 ? '' : 's';
+  return !c ? procSkillText('put the target to Sleep')(v) : c >= 100 ? TX('ui.sk-sleep-sure', {n: d, s, m: d + 1}) : TX('ui.sk-sleep-chance', {c, n: d, s, m: d + 1}); }
 const SKILL_DEFS_ONLY_LINES = ['freeze', 'sleep', 'paralyze', 'blind', 'tipsy', 'confuse', 'shock', 'stagger', 'chained', 'revive'];
 Object.assign(SKILL_TEXT, {
   converge: v=> `When it becomes Ready, ${v === 'ally' ? 'your units close' : v === 'both' ? 'the units on both sides close' : "the enemy's units close"} their gaps toward the centre.`,
@@ -2343,13 +2352,13 @@ Object.assign(SKILL_TEXT, {
   nocturnal: v=> { const [a, h] = phaseVals(v); return `At night: +${a}/+${h}.`; },
   diurnal: v=> { const [a, h] = phaseVals(v); return `By day: +${a}/+${h}.`; },
   tideGrant: v=> { if(!Array.isArray(v)) return `On Flood and on Ebb it has the skills in its braces; at High Tide, both.`; const [f, b] = v; return `On Flood it has ${grantText(parseGrantText(f)) || 'nothing'}; on Ebb, ${grantText(parseGrantText(b)) || 'nothing'}; at High Tide, both.`; },
-  charge: v=> { const c = typeof v === 'string' ? parseChargeText(v) : (v && typeof v === 'object' ? v : null); const cp = chargeParts(c); return cp && cp.act ? `${chargeLabel(c)}: once it is Ready, this happens every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.` : `Once it is Ready, a clock counts down every upkeep; at 0 its effect happens and the clock starts again.`; },
-  dynamite: v=> { const f = Array.isArray(v) ? (Number(v[0])||3) : numOr(v, 3), d = Array.isArray(v) ? (Number(v[1])||5) : 5; return `A fuse of ${f} burns down every upkeep; at 0 it blows up for ${d} fire damage on the units beside it and the 3 enemy units facing it.`; },
+  charge: v=> { const c = typeof v === 'string' ? parseChargeText(v) : (v && typeof v === 'object' ? v : null); const cp = chargeParts(c); return cp && cp.act ? `${chargeLabel(c)}: once it is Ready, this happens every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.` : TX('ui.sk-charge-clock'); }, // 2026-10-18 (package D): terse
+  dynamite: v=> { const f = Array.isArray(v) ? (Number(v[0])||3) : numOr(v, 3), d = Array.isArray(v) ? (Number(v[1])||5) : 5; return TX('ui.sk-dynamite', {f, d}); }, // 2026-10-18 (package D): terse
   helmet: ()=> `Half the arrows, missiles and bolts aimed at it glance off.`,
   shedding: v=> `Every ${numOr(v, 3)} rounds: +1/+1 for good, and it sheds its Poison, Bleed, Corrode, Scar and Exposed.`,
   snipe: v=> `While Ready, if nothing faces it, shoot a random enemy unit for ${numOr(v, 1)} every upkeep.`,
   kinship: v=> { const k = Array.isArray(v) ? {type:v[0], atk:v[1], hp:v[2]} : (v && typeof v === 'object' ? v : {}); return k.type ? `All your ${k.type} units get +${Number(k.atk)||0}/+${Number(k.hp)||0} (itself too). Stacks.` : `All your units of its chosen type get +X/+Y (itself too). Stacks.`; },
-  rocket: v=> `Once, when Ready: a rocket hits the enemy unit with the most Attack for ${numOr(v, 1)} fire damage, and 1 to the units beside it (the bramble if there are none).`,
+  rocket: v=> TX('ui.sk-rocket', {n: numOr(v, 1)}), // 2026-10-18 (package D): terse; the Codex says who "strongest" is
   loneWolf: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} for each empty slot within 2 of it, and +${a}/+${h} more when all 4 are empty.`; },
   sociable: v=> { const [a, h] = phaseVals(v); return `+${a}/+${h} for each ally within 2 slots of it, and +${a}/+${h} more when all 4 are filled.`; },
   coffee: v=> `When played, Wait −${numOr(v, 1)}. ${numOr(v, 1)} round${numOr(v, 1) === 1 ? '' : 's'} later it naps: Stunned for a round.`,
@@ -2359,8 +2368,8 @@ Object.assign(SKILL_TEXT, {
   loyal: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.loyalGrant ? grantText(e.loyalGrant) : ''; return `While one of your leaders is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
   usurper: (v, n, e)=> { const [a, h] = phaseVals(v); const g = e && e.usurperGrant ? grantText(e.usurperGrant) : ''; return `While the enemy leader is on the field: +${a}/+${h}${g ? ' and ' + g : ''}.`; },
   esprit: (v, n, e)=> { const [a, h] = phaseVals(v); return `+${a}/+${h} whenever ${espritWhoOf(v, e) === 'any' ? 'another unit of yours' : 'another of your Kin'} enters play.`; }, // Kin / Any (2026-10-18)
-  explode: v=> { const t = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Number(v[1])||0 : 0; return t || d ? `In ${t} upkeep${t === 1 ? '' : 's'} it explodes once: ${d} damage to the enemy facing it, or the bramble if there is none.` : `After its timer runs down it explodes once, hitting the enemy facing it (or the bramble).`; },
-  freeze: procSkillText('Freeze the target'), sleep: procSkillText('put the target to Sleep'), paralyze: procSkillText('Paralyze the target'),
+  explode: v=> { const t = Array.isArray(v) ? Number(v[0])||0 : 0, d = Array.isArray(v) ? Number(v[1])||0 : 0; return t || d ? TX('ui.sk-explode', {t, s: t === 1 ? '' : 's', d}) /* 2026-10-18 (package D): terse */ : `After its timer runs down it explodes once, hitting the enemy facing it (or the bramble).`; },
+  freeze: procSkillText('Freeze the target'), sleep: sleepSkillText, paralyze: procSkillText('Paralyze the target'),
   blind: procSkillText('Blind the target'), tipsy: procSkillText('make the target Tipsy'), confuse: procSkillText('Confuse the target'),
   shock: procSkillText('Shock the target'), stagger: procSkillText('Stagger the target'),
   chained: v=> { const [on, n] = Array.isArray(v) ? v : ['damage', 1]; return on === 'enemySpawn' ? `Can't attack until the opponent plays a card.` : `Can't attack until one hit deals it more than ${Number(n)||1} damage.`; },
@@ -2461,23 +2470,23 @@ function describeEffects(def, liveCard){
   if(def.field){ // Field cards (2026-10-09)
     const F = FIELD_TEXT;
     const f = F[def.field.id] || {};
-    lines.push(`Field — ${f.name||def.field.id} for ${def.field.rounds||3} rounds: ${f.text||''} Replaces any field already in play; a map's own field returns when it ends.`);
+    lines.push(`Field — ${f.name||def.field.id} for ${def.field.rounds||3} rounds: ${f.text||''}`); lines.push(TX('ui.de-field-replaces')); // 2026-10-18 (package D): two short lines
     lines.push(`A free extra action (one field card a turn): it doesn't use your play, and you draw a card.`);
   }
-  if(def.cardType==='spell') lines.push(`✨ Spell — ${spellText(def)} It never takes a place on the field; casting it uses your play for the turn.`);
+  if(def.cardType==='spell'){ lines.push(`✨ Spell — ${spellText(def)}`); lines.push(TX('ui.de-spell')); } // 2026-10-18 (package D): two short lines
   if(def.cardType==='materia') lines.push(`💠 Materia — a crafting material for the Blacksmith (Forge → Blacksmith). It can't go in a deck.`);
   if(def.cardType==='equipment'){ const g = def.equip && def.equip.grant ? Object.entries(def.equip.grant).map(([k, v])=>{ const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${SKILL_ICON[k] ? SKILL_ICON[k] + ' ' : ''}${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
-    lines.push(`⚒️ Equipment — drag it onto one of your units to equip it: +${def.attack||0}/+${def.health||0}${g ? ' and ' + g : ''}. It never takes a place on the field, so it can't block attacks. One per unit; equipping uses your play for the turn, and it falls with the unit.`); }
-  if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — when its Wait runs out it cracks open into the ${into ? into.name : 'creature inside'}, ready to fight. It has no Attack until then. Only a hatch on the battlefield: your egg card stays in your collection.`); }
-  else if(def.hatchInto) lines.push(`🥚 Egg — when its Wait runs out it cracks open into a random ${eggKindLabel(def)} card (Common or Uncommon${['common','uncommon'].includes(def.rarity||'common') ? '' : ' or up to ' + (def.rarity)}), ready to fight. It has no Attack until then. Only a hatch on the battlefield: your egg card stays in your collection.`); // Egg cards (2026-10-14)
+    lines.push(`⚒️ Equipment — ${g ? TX('ui.de-equip-grant', {a: def.attack||0, h: def.health||0, grant: g}) : TX('ui.de-equip', {a: def.attack||0, h: def.health||0})}`); lines.push(TX('ui.de-equip-note')); } // 2026-10-18 (package D): two short lines
+  if(def.hatchInto && def.hatchInto.defId){ const into = getCardDefs()[def.hatchInto.defId]; lines.push(`🥚 Egg — ${TX('ui.de-egg-into', {name: into ? into.name : 'creature inside'})}`); lines.push(TX('ui.de-egg-note')); } // 2026-10-18 (package D): two short lines
+  else if(def.hatchInto){ lines.push(`🥚 Egg — ${['common','uncommon'].includes(def.rarity||'common') ? TX('ui.de-egg-random', {kind: eggKindLabel(def)}) : TX('ui.de-egg-random-up', {kind: eggKindLabel(def), rarity: def.rarity})}`); lines.push(TX('ui.de-egg-note')); } // Egg cards (2026-10-14); 2026-10-18 (package D): two short lines
   if(def.graceCost) lines.push(`Also costs ${def.graceCost} grace to play.`);
   if(def.prayerReq) lines.push(`Needs Prayer ${def.prayerReq} 🙏 to play (not spent). Your Prayer = every Prayer on your board + the cards in your Removal Zone. Once a turn, when you summon an Ecclesia card, you may exile a card from your hand for +1.`);
   if(def.exileCost) lines.push(def.exileCost.zone==='hand' ? `Offering ${def.exileCost.count} — to play this, exile ${def.exileCost.count} random card${def.exileCost.count===1?'':'s'} from your hand.` : `Also requires exiling ${def.exileCost.count} card${def.exileCost.count===1?'':'s'} from your ${def.exileCost.zone} to play.`); // "Offering" (2026-10-10: the user's unnamed "____: Exile a random card in your hand as a cost")
   if(def.devilryCost) lines.push(`Costs ${def.devilryCost} Darkness ★ to play. You gain 1 Darkness whenever one of your units perishes.`);
   if(def.darkSummon) lines.push(`Dark Summon ⛧ — uses your Dark Summon for the turn (1 a turn), not your normal play.`);
   if(e.devour){ const g = e.devour.grant ? Object.entries(e.devour.grant).map(([k, v])=> { const pd = PASSIVE_DEFS.find(p=> p.key===k); return `${pd ? pd.label : k}${valSuffix(v)}`; }).join(', ') : '';
-    lines.push(`Devour — drag a card from your hand onto this one: it eats it (to your graveyard) and gains +${e.devour.attack||0}/+${e.devour.health||0}${g ? ' and ' + g : ''}. Once, and it uses your play for the turn.`); }
-  if(e.ritual){ const r = e.ritual; lines.push(`Ritual — no Wait, but it can't act until, after it arrives, ${r.perished||0} units have perished (either side), you've drawn ${r.drawn||0} cards and dealt ${r.castleDamage||0} bramble damage.`); }
+    lines.push(`Devour — ${g ? TX('ui.de-devour-grant', {a: e.devour.attack||0, h: e.devour.health||0, grant: g}) : TX('ui.de-devour', {a: e.devour.attack||0, h: e.devour.health||0})}`); } // 2026-10-18 (package D): terse
+  if(e.ritual){ const r = e.ritual; lines.push(`Ritual — ${TX('ui.de-ritual', {p: r.perished||0, d: r.drawn||0, c: r.castleDamage||0})}`); } // 2026-10-18 (package D): terse; the Codex adds the rest
   if(e.beware) lines.push(`Beware ${e.beware} — while it's in your Removal Zone and you have ${e.beware}+ Darkness ★, you can cast it from there.`);
   if(def.wait) lines.push(`⏳ Wait ${def.wait} — Can't attack for ${def.wait} round${def.wait===1?'':'s'} after it's played.`);
   { const bn = bountyN(e); if(bn) lines.push(`🏆 Bounty ${bn} — When played, gain ${bn} Lumber. When it dies, the opponent gains ${bn} Lumber.`); } // 2026-10-15
@@ -2510,7 +2519,7 @@ function describeEffects(def, liveCard){
     if(p.key==='pounce'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; // 2026-10-16 (user: "Pounce <Att> or <Hp>")
       const pm = pounceMode(e.pounce), now = lc ? (lc.pounceN != null ? lc.pounceN : pm === 'attack' ? (lc.atk||0) : (lc.hp||0)) : null;
       const amt = now != null ? `<b class="atk-bonus" title="Worked out from its ${pm === 'attack' ? 'Attack' : 'Health'} as it landed">${now}</b>` : (pm === 'attack' ? '&lt;Att&gt;' : '&lt;Hp&gt;');
-      lines.push(`${ic('pounce')}Pounce ${amt} — When played, deal ${amt} damage to the enemy facing it (or the nearest), or the bramble if there are no targets.`); return; }
+      lines.push(`${ic('pounce')}Pounce ${amt} — ${TX('ui.sk-pounce', {n: amt})}`); /* 2026-10-18 (package D): terse */ return; }
     if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span> — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
     if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
@@ -2599,7 +2608,19 @@ function describeEffects(def, liveCard){
   if(def._hiddenSkills) lines.push(`<span class="skill-q-line">${skillQChipHTML()}</span>`); // 2026-10-15: one neutral "?" for the skills not met yet
   if(def.token) lines.push(`Token card — spawn-only, never appears in the draftable pool.`);
   if(def.test) lines.push(`🧪 Dev-only`); // 2026-10-10 (user): test cards just say Dev-only
+  { const dl = darkMissLine(liveCard); if(dl) lines.push(dl); } // 2026-10-18 (package D): "misses 1/4 the time" in the dark
   return lines;
+}
+// The dark on a live unit's card detail (2026-10-18, package D; owner: "On affected units' own card details, show a line that they
+// miss 1/4 the time (from Darkness)"): the engine's share for this unit (no Darksight, not lit, not True Strike), from the map's own
+// darkness or a Cast Darkness unit. The board marks the same units with the shut eye (FX.B sightSync).
+function darkMissLine(liveCard){
+  const m = typeof matchState !== 'undefined' ? matchState : null; if(!liveCard || !m || m.over || !m.engine || !m.engine.darkMissOf || !m.players) return '';
+  const lc = currentCardByUidSafe(liveCard.uid) || liveCard; let pid = null;
+  [1, 2].forEach(p=>{ const pl = m.players[p]; if(pl && pl.row && [...pl.row.left, ...pl.row.center, ...pl.row.right].some(c=> c && c.uid === lc.uid)) pid = p; });
+  if(pid == null) return '';
+  const x = m.engine.darkMissOf(lc, pid, m.players); if(!(x > 0)) return '';
+  return x >= 1 ? TX('ui.dark-miss-all') : TX('ui.dark-miss-share', {share: x >= 0.5 ? '1/2' : '1/4'});
 }
 function cardName(id){ const d = getCardDefs()[id]; return d ? `${d.icon} ${d.name}` : id; }
 
@@ -5114,11 +5135,11 @@ const LIVE_STATUS_ROWS = [
   // [field, STATUS_KEYWORDS k (colour) or null, name, text(n, c), shows its number]
   ['poison', 'poison', 'Poison', n=> `takes ${n} damage at upkeep, then loses 1 stack. Heals don’t touch it; Cure does.`, true],
   ['toxin', 'toxin', 'Toxin', n=> `takes ${n} damage every round. It never wears off and can’t be cured.`, true],
-  ['bleed', 'bleed', 'Bleed', n=> `takes ${n} damage whenever it attacks or uses a skill; loses 1 stack each round. Heals remove it first.`, true],
+  ['bleed', 'bleed', 'Bleed', n=> TX('ui.ls-bleed', {n}), true], // 2026-10-18 (package D): terse
   ['decay', 'decay', 'Decay', n=> `at upkeep, takes ${n} damage and loses ${n} Attack.`, true],
   ['corrode', 'corrode', 'Corrode', n=> `deals ${n} less Attack; loses 1 stack each round.`, true],
   ['wither', null, 'Wither', (n, c)=> `loses ${n} max Health at upkeep${c.witherLeft ? ` for ${c.witherLeft} more round${c.witherLeft === 1 ? '' : 's'}` : ''}, and can’t be healed.`, true],
-  ['exposed', 'exposed', 'Exposed', n=> `its next ${n} hit${n === 1 ? ' is a crit' : 's are crits'} (double damage), 1 Expose counter each; attacks at it can’t miss.`, true],
+  ['exposed', 'exposed', 'Exposed', n=> TX('ui.ls-exposed', {n, s: n === 1 ? '' : 's'}), true], // 2026-10-18 (package D): terse
   ['scar', 'scar', 'Scar', n=> `takes ${n} more damage from every hit.`, true],
   ['shocked', 'shock', 'Shocked', ()=> STATUS_KEYWORDS.find(k=> k.k === 'shock').text, false],
   ['staggered', 'stagger', 'Staggered', ()=> STATUS_KEYWORDS.find(k=> k.k === 'stagger').text, false],
@@ -6779,6 +6800,7 @@ function abilityBadges(d, bopts){
   if(e.loneWolf) out.push(`<span title="Lone Wolf">${iconHTML('lone-wolf', '🐺')}</span>`); if(e.sociable) out.push(`<span title="Sociable">${iconHTML('sociable', '🫂')}</span>`);
   if(e.coffee) out.push(`<span title="Coffee">${iconHTML('coffee', '☕')}${n1(e.coffee)}</span>`); if(e.dry) out.push(`<span title="Dry">${iconHTML('dry', '🏜️')}</span>`);
   if(e.darksight) out.push(`<span title="Darksight: it can see in darkness">${iconHTML('darksight', '👁️')}</span>`);
+  if(e.castDarkness) out.push(`<span title="${escapeAttr(TX('ui.sk-cast-darkness'))}">${iconHTML('cast-darkness', '🌘')}</span>`); if(e.trueStrike) out.push(`<span title="${escapeAttr(TX('ui.sk-true-strike'))}">${iconHTML('true-strike', '💯')}</span>`); // 2026-10-18 (package D)
   if(e.illuminate || e.lantern) out.push(`<span title="Illuminate: lights up the dark">${iconHTML('illuminate', '🏮')}</span>`); // 2026-10-15
   if(e.nursing) out.push(`<span title="Nursing: heals your weakest unit every upkeep">${iconHTML('nursing', '🍼')}${n1(e.nursing === true ? 2 : e.nursing)}</span>`); // 2026-10-15
   if(e.landslide) out.push(`<span title="Landslide">${iconHTML('landslide', '🪨')}${n1(e.landslide)}</span>`);
@@ -7031,12 +7053,21 @@ function skillCodexHTML(){
   const rows = list.map(p=>{ let txt = ''; try{ txt = skillText(p, p.kind === 'number' ? 1 : true, {}); }catch(e){ try{ txt = p.desc(1); }catch(_){ txt = ''; } }
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
     if(p.codexNote) txt += ' ' + p.codexNote; // 2026-10-17: a sentence only the Codex shows (Bloodlust's Ambush note)
+    { const cx = SKILL_CODEX_NOTE[p.key]; if(cx) txt += ' ' + cx(); } // 2026-10-18 (package D): what the terse card line left out
     return `<div class="sk-row" data-sk-find="${escapeAttr((p.label + ' ' + p.key + ' ' + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase())}"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${'' /* 2026-10-17 (user: "Remove the one-off tag in Codex"): the editor's skill picker still marks one-offs */}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
   // 2026-10-15 (user: "Codex: Skill: Text Filter"): a search box over the list; it matches the name, the text and the answers.
   return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>
     ${rows ? `<div class="sk-filter"><input type="search" id="skFilterInput" placeholder="Filter skills…" aria-label="Filter skills" autocomplete="off" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>` : ''}
-    ${rows || '<p class="panel-sub">None yet. Skills show here as you meet them.</p>'}<p class="panel-sub sk-none" id="skFilterNone" hidden>No skill matches that.</p></div>`;
+    ${rows || '<p class="panel-sub">None yet. Skills show here as you meet them.</p>'}${statusCodexHTML() /* 2026-10-18 (package D) */}<p class="panel-sub sk-none" id="skFilterNone" hidden>No skill matches that.</p></div>`;
 }
+// 2026-10-18 (package D, owner: "Please make the explanation terse. The Codex can be bigger."): the detail each shortened card line
+// dropped, shown after it in the Skills Codex. And the statuses, each with its glossary line and, where it has one, a longer note.
+const SKILL_CODEX_NOTE = {smokeBomb: ()=> TX('ui.skx-smoke-bomb'), rocket: ()=> TX('ui.skx-rocket'), packLeader: ()=> TX('ui.skx-pack-leader'),
+  shockBolt: ()=> TX('ui.skx-shock-bolt'), fork: ()=> TX('ui.skx-fork'), pack: ()=> TX('ui.skx-pack'), wave: ()=> TX('ui.skx-wave'), amore: ()=> TX('ui.skx-amore'),
+  sleep: ()=> TX('ui.skx-sleep'), ritual: ()=> TX('ui.skx-ritual')};
+function statusCodexHTML(){
+  const rows = STATUS_KEYWORDS.map(k=> `<div class="sk-row" data-sk-find="${escapeAttr((k.name + ' ' + k.text + ' ' + (k.codex || '')).toLowerCase())}"><div class="sk-name"><b class="kw" style="--kw:${k.c}">${escapeHtml(k.name)}</b></div><div class="sk-text">${keywordizeHTML(escapeHtml(k.text.charAt(0).toUpperCase() + k.text.slice(1) + (k.codex ? ' ' + k.codex : '')))}</div></div>`).join('');
+  return `<h3 class="ref-heading">${TX('ui.codex-statuses')}</h3><p class="panel-sub">${TX('ui.codex-statuses-sub')}</p>${rows}`; }
 let skillCodexQuery = String(uiSticky('skills').q || ''); // 2026-10-16: kept between visits
 function wireSkillCodexFilter(root){
   const inp = root.querySelector('#skFilterInput'); if(!inp) return;
@@ -7056,7 +7087,7 @@ function mapCodexHTML(){
     // 2026-10-15 (user: "Map 0 has no day/night system (only effects) - no howling. The effect is 'Mist' -> Shows a '?'."): Map 0 no
     // longer shows its field effects plainly; like every map, an effect reads "?" until it has been learned (on Map 1 onward).
     const list = [...rows.values()].map(row=>{ const seen = adminModeEnabled || fieldRowState(row.key) !== 'unknown';
-      return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text))}</small>` : `<span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span>`}</li>`; }).join('');
+      return `<li class="${seen ? '' : 'is-unknown'}"><span>${row.icon} ${escapeHtml(row.name)}</span>${seen ? `<small>${keywordizeHTML(escapeHtml(row.text + (row.codex ? ' ' + row.codex : '')))}</small>` /* 2026-10-18 (package D): + the Codex line */ : `<span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span>`}</li>`; }).join('');
     const num = mapNumberOf(m.id);
     return `<div class="mc-card map-theme-${m.id}"><div class="mc-head"><span class="mc-ico">${m.icon}</span><div><b>${escapeHtml(m.name)}</b><small>${m.sub ? 'Side map' : 'Map ' + (num ?? '?')} · ${done}/${fights.length} cleared</small></div></div>
       <p class="mc-blurb">${escapeHtml(m.blurb || '')}</p>${list ? `<ul class="mc-fx">${list}</ul>` : '<p class="panel-sub">No field effects.</p>'}</div>`; }).join('');
@@ -15013,81 +15044,86 @@ function volcanoOddsOf(r, round){ if(!volcanoRulesOn(r)) return null; const t = 
 // Scorched Ground (2026-10-14, user: "The damage effect of the volcanic ground - firstly has to be renamed"): the old fixed
 // "Eruptions" (rules.eruption with no volcano odds). The volcano's Eruption hazard keeps its name.
 const SCORCHED_NAME = 'Scorched Ground';
-function scorchedGroundText(n){ return `From round 2, the ground burns one random unit on each side for ${n} fire damage every round. Units that resist fire are spared.`; }
+function scorchedGroundText(n){ return TX('ui.fx-scorched', {n}); } // 2026-10-18 (package D): terse; "resist fire" is in the Codex
 const VOLCANO_HAZARDS = [
-  {key:'lavaTide', icon:'🌋', name:'Lava Tide', text:()=> `From round 2, lava may flood one random column on both sides: the units there that don't fly take 3 fire damage (fire-resistant units take half).`},
-  {key:'petrify', icon:'🪨', name:'Petrification', text:()=> `From round 2, one random unit on each side may turn to stone for the round: it can't attack, and it takes half damage.`},
-  {key:'eruption', icon:'🌋', name:'Eruption', text:r=> `From round 2, one random unit on each side may take ${Number(r.eruption) > 0 ? r.eruption : 2} fire damage. Then the odds reset, and for 3 rounds comets rain down: every unit takes 2–5 fire damage (fire-resistant units take half).`},
+  // 2026-10-18 (package D): terse, since the row adds "Chance each round: …"; the rest is the Map Codex's (codex)
+  {key:'lavaTide', icon:'🌋', name:'Lava Tide', text:()=> TX('ui.fx-lava-tide'), codex:TX('ui.fxx-lava-tide')},
+  {key:'petrify', icon:'🪨', name:'Petrification', text:()=> TX('ui.fx-petrify'), codex:TX('ui.fxx-petrify')},
+  {key:'eruption', icon:'🌋', name:'Eruption', text:r=> TX('ui.fx-eruption', {n: Number(r.eruption) > 0 ? r.eruption : 2}), codex:TX('ui.fxx-eruption')},
 ];
 function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return ''; return volcanoBand(o[key]) + (r.volcano === 'even' && r[key + 'Chance'] == null ? ', and rising' : ''); }
 // Field effects 2 (2026-10-16, the user's field-effect curriculum notes): one text per effect, shared by the Environment cards
 // (fieldConditionRows), Edit skirmish (FIELD_EFFECTS) and the Effects library (FXL_FIELDS). The rules live in bramblewood-engine.js
 // (fieldEffects2Tick and the helper block near `rules`). key = the rules flag; editor = the Edit skirmish id.
+// 2026-10-18 (package D, owner: terse descriptions): each text is under 20 words; a longer `codex` line goes to the Map Codex.
 const FIELD2 = {
-  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor. A Flood fills the whole board: every unit that isn’t Flying is Wet; Swimmers and Tide units are Wet in Ebb too.'}, // 2026-10-18 (owner 15:05): the Flood wets land units
-  landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:"Each round from round 2, a 1 in 4 chance that rocks come down on three neighbouring columns: 5 damage to every unit there that isn't flying, on both sides."}, // 2026-10-17 (user: "it should only affect the L/C/R cards")
-  consternation: {icon:'😰', name:'Consternation', editor:'consternation', short:'Hand cards lose 1/1 a round', text:'Each round from round 2, every card in each hand loses 1/1. The loss stays on the card when it is played (down to 0 Attack and 1 Health at most).'},
-  crushingDepths:{icon:'🫧', name:'Crushing Depths', editor:'crushingdepths', short:'5 water damage a round', text:'Each round from round 2, every unit takes 5 water damage. Tide units and Swimmers take half, and water Resist halves it again. No day or night reaches down here.'},
+  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:TX('ui.fx-tide'), codex:TX('ui.fxx-tide')}, // 2026-10-18 (owner 15:05): the Flood wets land units
+  landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:TX('ui.fx-landslide'), codex:TX('ui.fxx-landslide')}, // 2026-10-17 (user: "it should only affect the L/C/R cards")
+  consternation: {icon:'😰', name:'Consternation', editor:'consternation', short:'Hand cards lose 1/1 a round', text:TX('ui.fx-consternation'), codex:TX('ui.fxx-consternation')},
+  crushingDepths:{icon:'🫧', name:'Crushing Depths', editor:'crushingdepths', short:'5 water damage a round', text:TX('ui.fx-crushing-depths'), codex:TX('ui.fxx-crushing-depths')},
   rookRow:       {icon:'♜', name:"Rook's Row", editor:'rookrow', short:'Straight hits +2', text:'A hit on the unit standing square in front of the attacker deals +2 damage.'},
-  bishopPath:    {icon:'♝', name:"Bishop's Path", editor:'bishoppath', short:'Slanted hits +2', text:'A hit on a unit on the slant (half a step or one column to the side, as with interlocked ranks, Fork prongs, Backstab and Crab Claws) deals +2 damage.'},
-  mirage:        {icon:'🪞', name:'Mirage', editor:'mirage', short:'An Illusion appears each round', text:'Each round from round 2, a random unit gets a 1/1 Illusion in a free slot right beside it (none if both are taken). The Illusion copies only Flying, Tide, Swimmer, Haste and Speed.'},
-  canopy:        {icon:'🌳', name:'High Canopy', editor:'canopy', short:'Pounce +2, Swift dodge, no Flying dodge', text:'Up in the treetops: Pounce deals +2 damage, Swift and Quick units are Evasive, Flying gives no dodge, and Bounty creatures have Bounty +1.'},
+  bishopPath:    {icon:'♝', name:"Bishop's Path", editor:'bishoppath', short:'Slanted hits +2', text:TX('ui.fx-bishop-path'), codex:TX('ui.fxx-bishop-path')},
+  mirage:        {icon:'🪞', name:'Mirage', editor:'mirage', short:'An Illusion appears each round', text:TX('ui.fx-mirage'), codex:TX('ui.fxx-mirage')},
+  canopy:        {icon:'🌳', name:'High Canopy', editor:'canopy', short:'Pounce +2, Swift dodge, no Flying dodge', text:TX('ui.fx-canopy')},
   undergrowth:   {icon:'🌿', name:'Undergrowth', editor:'undergrowth', short:'Pounce +2, Swift dodge', text:'Thick cover: Pounce deals +2 damage, and Swift and Quick units are Evasive.'},
   tallGrass:     {icon:'🌾', name:'Tall Grass', editor:'tallgrass', short:'Stealth first; Backstab, Pounce ×2', text:'Stealth units attack first. Backstab hits and Pounce deal double damage.'},
-  slippery:      {icon:'⛸️', name:'Slippery', editor:'slippery', short:'Swings and triggers fail 1 in 2', text:'Ice everywhere: every attack at a unit misses 1 in 2, and every trigger and on-hit effect fails 1 in 2.'},
-  glassStorm:    {icon:'💎', name:'Glass-storm', editor:'glassstorm', short:'Sandstorm, plus 1–3 glass a round', text:'A Sandstorm full of glass: attacks miss 1 in 4 (not from Dry units), the wind is random each round, and from round 2 every unit is buffeted for a random 1–3 damage each round.'},
+  slippery:      {icon:'⛸️', name:'Slippery', editor:'slippery', short:'Swings and triggers fail 1 in 2', text:TX('ui.fx-slippery')},
+  glassStorm:    {icon:'💎', name:'Glass-storm', editor:'glassstorm', short:'Sandstorm, plus 1–3 glass a round', text:TX('ui.fx-glass-storm'), codex:TX('ui.fxx-glass-storm')},
   hail:          {icon:'🌨️', name:'Hail', editor:'hail', short:'3 ice damage a round', text:'Each round from round 2, every unit takes 3 ice damage. Cold Resist halves it.'},
-  lavaSpout:     {icon:'♨️', name:'Lava Spout', editor:'lavaspout', short:'A column bursts: 3 fire', text:'Each round from round 2, lava bursts up in one random column: the units there, on both sides, take 3 fire damage. Fire Resist halves it.'},
-  leylines1:     {icon:'✴️', name:'Leylines I', editor:'leylines1', short:'Day, night, tide, moon stronger', text:'The old rhythms run strong: Diurnal, Nocturnal and Crepuscular bonuses are +2/+2 more (a plain one is +3/+3), the Tide gives +3 Attack on Flood and Armor 3 on Ebb, and Full Moon and Moonborn are +2/+2 more.'},
+  lavaSpout:     {icon:'♨️', name:'Lava Spout', editor:'lavaspout', short:'A column bursts: 3 fire', text:TX('ui.fx-lava-spout'), codex:TX('ui.fxx-fire-resist-half')},
+  leylines1:     {icon:'✴️', name:'Leylines I', editor:'leylines1', short:'Day, night, tide, moon stronger', text:TX('ui.fx-leylines1'), codex:TX('ui.fxx-leylines1')},
   leylines2:     {icon:'✴️', name:'Leylines II', editor:'leylines2', short:'+1 Lumber a round', text:'Each round from round 2, both sides gain 1 Lumber.'},
-  leylines3:     {icon:'✴️', name:'Leylines III', editor:'leylines3', short:'+1 Lumber, +1 Stone; 3 damage to all', text:'Each round from round 2, both sides gain 1 Lumber and 1 Stone, but every unit takes 3 magic damage and both brambles take 3 (never below 1). Atheist units take none.'},
-  haunted:       {icon:'👻', name:'Haunted', editor:'haunted', short:'A unit a side is Frightened', text:"Each round from round 2, one random unit on each side is Frightened: it doesn't attack that round. Ghosts and Atheists aren't scared."},
+  leylines3:     {icon:'✴️', name:'Leylines III', editor:'leylines3', short:'+1 Lumber, +1 Stone; 3 damage to all', text:TX('ui.fx-leylines3'), codex:TX('ui.fxx-leylines3')},
+  haunted:       {icon:'👻', name:'Haunted', editor:'haunted', short:'A unit a side is Frightened', text:TX('ui.fx-haunted'), codex:TX('ui.fxx-haunted')},
   // Field effects 3 (2026-10-17, the user's notes 17 and 24): Sulphur Fumes by the vents (user: "'Hazardous Gas' ... Since poison is already
   // used, think of something else"), Ash Rain and Ashy from the volcano (user: "new ones like Ash Rain and Ashy (volcano explosion)"), and
   // Arrow Slits on the castle maps (user: "Fortified Castle map"). Rules in bramblewood-engine.js (fieldEffects2Tick, chokeOf, ashyNow).
-  sulphurFumes:  {icon:'💨', name:'Sulphur Fumes', editor:'sulphurfumes', short:'Units choke: −1 Attack', text:"Each round from round 2, the vents breathe out: every unit that doesn't resist fire, isn't Dry and isn't Flying is Choking that round: −1 Attack on everything it deals. No damage, no poison."},
-  ashRain:       {icon:'🌋', name:'Ash Rain', editor:'ashrain', short:'Brambles −1; the sun dims', text:'Each round from round 2, ash falls: both brambles take 1 damage (never below 1), and the ash dims the sun: day bonuses are halved, as under Cloudy.'},
-  ashy:          {icon:'🌫️', name:'Ashy', editor:'ashy', short:'Flyers grounded; misses 1 in 5', text:'Thick ash on the ground and in the air: Flying units are grounded (Flying gives no dodge, and no Tailwind or Headwind), and every attack at a unit misses 1 in 5. Darksight, Keen Sense and Sonar see through it.'},
-  arrowSlits:    {icon:'🏹', name:'Arrow Slits', editor:'arrowslits', short:'The walls shoot 2 a round', text:"Each round from round 2, the defenders' walls loose an arrow at a random unit on the attackers' side: 2 damage. A Helmet can turn it."},
+  sulphurFumes:  {icon:'💨', name:'Sulphur Fumes', editor:'sulphurfumes', short:'Units choke: −1 Attack', text:TX('ui.fx-sulphur-fumes'), codex:TX('ui.fxx-sulphur-fumes')},
+  ashRain:       {icon:'🌋', name:'Ash Rain', editor:'ashrain', short:'Brambles −1; the sun dims', text:TX('ui.fx-ash-rain'), codex:TX('ui.fxx-ash-rain')},
+  ashy:          {icon:'🌫️', name:'Ashy', editor:'ashy', short:'Flyers grounded; misses 1 in 5', text:TX('ui.fx-ashy'), codex:TX('ui.fxx-ashy')},
+  arrowSlits:    {icon:'🏹', name:'Arrow Slits', editor:'arrowslits', short:'The walls shoot 2 a round', text:TX('ui.fx-arrow-slits')},
   // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card."): rules.awash; the push is Wave's (washPush in the engine).
   // 2026-10-17 (user, on the raid: "There should be all the related field effects but also some kind of psychic dampener"): rules.psychicDampener,
   // in the engine's psychicHit (half, rounded down) and rollStatusOnHit's Confuse (1 round less). The Goliath raid fights under it.
-  psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', revealAfter:{mapNum:41} /* 2026-10-18 (package U): "?" until a Map 41+ win */, short:'Psychic halved; Confuse 1 round less', text:"The deep presses on every mind: Psychic damage is halved (rounded down), and a Confuse lasts 1 round less, so a 1-round Confuse doesn't land. Both sides."},
+  psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', revealAfter:{mapNum:41} /* 2026-10-18 (package U): "?" until a Map 41+ win */, short:'Psychic halved; Confuse 1 round less', text:TX('ui.fx-psychic-dampener'), codex:TX('ui.fxx-psychic-dampener')},
   // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now. "Awashed" will be for
   // something else - reserved."): on screen this field is "Wave" (Wave 1–3 on a random unit); the key stays awash for saves and data.
-  awash:         {icon:'〰️', name:'Wave', editor:'awash', short:'A unit rides a Wave 1–3 columns; crashes hurt', text:'Each round from round 2, a Wave takes one random unit N columns (1–3) along its row, leaning slightly toward the middle. If it crashes into another unit on the way, it stops beside it and both take N damage. Only the board\'s edge turns it back the other way. Pinned and Webbed units hold fast.'}, // 2026-10-18: crash damage
+  awash:         {icon:'〰️', name:'Wave', editor:'awash', short:'A unit rides a Wave 1–3 columns; crashes hurt', text:TX('ui.fx-awash'), codex:TX('ui.fxx-awash')}, // 2026-10-18: crash damage
 };
 // 2026-10-17 (user: "Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow of the volcanoes"): the row the volcano
 // maps' uneven cycle shows, and the "after an Eruption" form of Ashy.
-const VOLCANO_GLOW_TEXT = (d, n)=> `No true night here: the volcano's glow keeps it Day for ${d} rounds, then Night for ${n}, and round again.`;
-const ASHY_AFTER_TEXT = 'After an Eruption the ground is Ashy for 4 rounds: Flying units are grounded (no Flying dodge, no Tailwind or Headwind), and every attack at a unit misses 1 in 5. Darksight, Keen Sense and Sonar see through it.';
+const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-18 (package D): terse
+const ASHY_AFTER_TEXT = TX('ui.fx-ashy-after'); // 2026-10-18 (package D): terse; the rest is Ashy's Codex line
 // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the spout no longer brings the Tide in.
-const TIDESPOUT_TEXT = "Each round from round 2, a spout bursts in one random column: the units there are pushed back (+1 Wait), and the ones that can't swim take 1 water damage.";
+const TIDESPOUT_TEXT = TX('ui.fx-tide-spout'); // 2026-10-18 (package D): terse
 const FIELD2_SCORCHING3_TEXT ='Scorching, level 3: each round 4 random units on each side take 3 fire damage. Heat-resistant units are spared.';
 function fieldConditionRows(r){
   // 2026-10-14 (user: "For field effects with many multiple effects, split into multiple field cards"): every row also has a short
   // line (`short`) for its own Environment card on the board. The terrain row went with home ground (user: "Remove the Home ground
   // explanation").
-  r = r || {}; const rows = [], add = (key, icon, name, text, tip, short)=> rows.push({key, icon, name, text, tip, short: short || name});
+  // 2026-10-18 (package D): a row may carry a longer `codex` line, which the Map Codex shows after the short text.
+  r = r || {}; const rows = [], add = (key, icon, name, text, tip, short, codex)=>{ const row = {key, icon, name, text, tip, short: short || name}; if(codex) row.codex = codex; rows.push(row); return row; };
   if(volcanoRulesOn(r)){ const o = volcanoOddsOf(r, 2);
     const SH = {lavaTide:'Lava may flood a column', petrify:'A unit may turn to stone', eruption:'Eruptions, then comets'};
-    VOLCANO_HAZARDS.forEach(h=>{ if(!(o[h.key] > 0)) return; const w = volcanoChanceWord(r, h.key); add(h.key, h.icon, `${h.name} · ${w}`, `${h.text(r)} Chance each round: ${w}.`, `Chance each round: ${w}`, `${SH[h.key]} (${w})`); }); }
-  else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(r.eruption), '', `Burns a unit a side for ${r.eruption}`);
+    VOLCANO_HAZARDS.forEach(h=>{ if(!(o[h.key] > 0)) return; const w = volcanoChanceWord(r, h.key); add(h.key, h.icon, `${h.name} · ${w}`, `${h.text(r)} Chance each round: ${w}.`, `Chance each round: ${w}`, `${SH[h.key]} (${w})`, h.codex); }); }
+  else if(Number(r.eruption) > 0) add('eruption', '🔥', SCORCHED_NAME, scorchedGroundText(r.eruption), '', `Burns a unit a side for ${r.eruption}`, TX('ui.fxx-scorched'));
   // 2026-10-16 (user: "Should sandstorm also have windy rules? I think so."): a Sandstorm or Glass-storm brings Windy's wind (unless the fight sets one).
   const wind = r.wind || ((r.sandstorm || r.glassStorm) ? 'windy' : null);
-  if(wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale);
-  else if(wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy);
-  if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', 'Units without Darksight miss every attack (none with an Illuminate unit on their side).', '', 'No Darksight: every attack misses');
+  if(wind === 'gale') add('gale', '🌪️', 'Gale', WIND_TEXT.gale, '', WIND_SHORT.gale, WIND_CODEX.gale);
+  else if(wind) add('wind', '🌬️', 'Windy', WIND_TEXT.windy, '', WIND_SHORT.windy, WIND_CODEX.windy);
+  // 2026-10-18 (package D): the owner's plain line on the face and in the detail; a Cast Darkness unit's dark says it lifts with it.
+  const darkCast = r.darkCast ? ' ' + TX('ui.field-dark-cast') : '';
+  if(r.dark === 'absolute') add('dark', '⚫', 'Absolute darkness', DARK_LEVEL_TEXT.absolute, '', DARK_LEVEL_TEXT.absolute, DARK_CODEX_TEXT);
   // 2026-10-15 (user: "It will be an explicit field effect called 'Darkness'. 'Pitch Black' is the level 2 variant."): the two dark levels.
-  else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', 'No Darksight: miss 1 in 2');
-  else if(r.dark) add('dark', '🌘', DARK_LEVEL_NAME.dark, DARK_LEVEL_TEXT.dark, '', 'No Darksight: miss 1 in 4');
+  else if(r.dark === 'pitch') add('dark', '🌑', DARK_LEVEL_NAME.pitch, DARK_LEVEL_TEXT.pitch, '', DARK_LEVEL_TEXT.pitch, DARK_CODEX_TEXT);
+  else if(r.dark) add('dark', '🌘', DARK_LEVEL_NAME.dark, DARK_LEVEL_TEXT.dark + darkCast, '', DARK_LEVEL_TEXT.dark, DARK_CODEX_TEXT);
   if(r.cloudy) add('cloudy', '☁️', 'Cloudy', CLOUDY_TEXT, '', 'Clouds halve the day bonus'); // 2026-10-16
   if(r.misty){ add('misty', '🌫️', 'Mist', MISTY_TEXT, '', MISTY_SHORT); rows[rows.length - 1].qTip = MISTY_Q_TIP; } // 2026-10-14; real wording 2026-10-15; a neutral "?" tip (2026-10-15)
   if(r.phase === 'night') add('night', '🌙', 'Night', 'Night all match: Nocturnal units get their bonus. Night-blind units miss 1 attack in 2.', '', 'Always night'); // 2026-10-15: night has no 1-in-4 miss any more
   if(r.twilight) add('twilight', '🌆', 'Twilight', 'Day, Night, Day, Night, then Twilight. In Twilight, Nocturnal and Diurnal bonuses both apply.', '', 'Day, night, then twilight');
   if(r.permaTide) add('permaTide', '🌊', r.rapids ? 'River Rapids' : 'Perma-tide', r.rapids ? 'Always Flood: the Tide is in all match, and nothing can turn it.' : "Always Flooded. Tide effects can't change it.", '', r.rapids ? 'Always Flood' : 'Always Flooded'); // 2026-10-16 (user: "Perma-tide's effect should say \"Always Flooded\"") // 2026-10-14: Flow every round from round 1; River Rapids 2026-10-15
   // New field effects (2026-10-15)
-  if(r.swampFever) add('swampFever', '🤢', 'Swamp Fever', `From round 2, every unit has a ${r.swampFever === true || Number(r.swampFever) === 50 ? '1 in 2' : (Number(r.swampFever)||50) + '%'} chance each round to gain 1 Poison. Structures never catch it.`, '', 'Units may catch Poison');
+  if(r.swampFever) add('swampFever', '🤢', 'Swamp Fever', TX('ui.fx-swamp-fever', {odds: r.swampFever === true || Number(r.swampFever) === 50 ? '1 in 2' : (Number(r.swampFever)||50) + '%'}), '', 'Units may catch Poison', TX('ui.fxx-swamp-fever')); // 2026-10-18 (package D): terse
   if(r.freezing) add('freezing', '🧊', 'Freezing', 'Every unit arrives frozen (one freeze counter: +1 on its clock). Units that resist cold are spared.', '', 'Units arrive frozen');
   if(r.sandstorm) add('sandstorm', '🏜️', 'Sandstorm', 'Attacks at units miss 1 in 4, except from Dry units.', '', 'Attacks miss 1 in 4');
   // 2026-10-14 (user: "Tideline II doesn't need to explain Tide & High Tide ... The effect of it just says, Periodic High Tides"):
@@ -15098,17 +15134,17 @@ function fieldConditionRows(r){
     const n = Math.max(1, Number(r.frostCount)||1, Number(r.frostWait)||1);
     add('frost', '❄️', 'Frost', `Each round ${n > 1 ? n + ' random units' : 'one random unit'} on each side ${n > 1 ? 'get' : 'gets'} +1 Wait. Units weak to cold also take 1 damage.`, '', `Chills ${n} a side each round`);
     // 2026-10-13 (user: 'Remove "Used to the cold" - what's that!'): units that ignore the frost are part of the Frost line now.
-    if((r.frostResist||[]).length){ const fr = rows[rows.length - 1]; fr.text += ` Their ${r.frostResist.join(', ')} units never feel it.`; }
+    if((r.frostResist||[]).length){ const fr = rows[rows.length - 1]; fr.codex = `Their ${r.frostResist.join(', ')} units never feel it.`; } // 2026-10-18 (package D): in the Map Codex, so the card's line stays short
     if(r.frostbite) add('frostbite', '🥶', 'Frostbite', `An enemy unit the frost chills gains +${r.frostbite}/+${r.frostbite}.`, '', `Chilled foes gain +${r.frostbite}/+${r.frostbite}`);
   }
   // Field effects 2 (2026-10-16): one row each, in FIELD2's order (the Tide's row sits with the other tides above).
   Object.keys(FIELD2).forEach(k=>{ if(k === 'tide' || !r[k]) return; if(k === 'undergrowth' && r.canopy) return; const f = FIELD2[k];
     // 2026-10-17: a number on Crushing Depths or Hail is its damage (the raid's Crushing Depths is 2), so the card says that number.
     const n = Number(r[k]), dflt = {crushingDepths:5, hail:3}[k];
-    if(dflt && n > 0 && n !== dflt){ add(k, f.icon, f.name, f.text.replace(dflt + ' water damage', n + ' water damage').replace(dflt + ' ice damage', n + ' ice damage'), '', f.short.replace(String(dflt), String(n))); return; }
-    add(k, f.icon, f.name, f.text, '', f.short); });
+    if(dflt && n > 0 && n !== dflt){ add(k, f.icon, f.name, f.text.replace(dflt + ' water damage', n + ' water damage').replace(dflt + ' ice damage', n + ' ice damage'), '', f.short.replace(String(dflt), String(n)), f.codex); return; }
+    add(k, f.icon, f.name, f.text, '', f.short, f.codex); });
   // 2026-10-17: Ashy after an Eruption (only where the volcano can erupt), and the volcano maps' uneven Day/Night.
-  if(!r.ashy && r.ashyAfterEruption && volcanoRulesOn(r)) add('ashyAfter', FIELD2.ashy.icon, 'Ashy (after an Eruption)', ASHY_AFTER_TEXT, '', 'An Eruption leaves the ground Ashy');
+  if(!r.ashy && r.ashyAfterEruption && volcanoRulesOn(r)) add('ashyAfter', FIELD2.ashy.icon, 'Ashy (after an Eruption)', ASHY_AFTER_TEXT, '', 'An Eruption leaves the ground Ashy', FIELD2.ashy.codex);
   if((r.phase === 'cycle' || r.phase === 'nightFirst') && (Number(r.phaseDay) > 0 || Number(r.phaseNight) > 0)){ const PL = Number(r.phaseLen) || 3, d = Number(r.phaseDay) || PL, n = Number(r.phaseNight) || PL;
     if(d !== n) add('volcanoGlow', '🌋', 'Volcano Glow', VOLCANO_GLOW_TEXT(d, n), '', `Day ${d} rounds, Night ${n}`); }
   if(r.bossSurge) add('bossSurge', '💢', 'Boss surge', `Their boss surges +${r.bossSurge.atk}/+${r.bossSurge.hp} when it's cast.`, '', `Their boss arrives +${r.bossSurge.atk}/+${r.bossSurge.hp}`);
@@ -15140,7 +15176,13 @@ function fieldRowsListHTML(rows){
     if(fieldRowHidden(row.key)) return `<li class="fcr is-unknown" aria-label="${escapeAttr(row.name + ': not seen yet')}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}</span><span class="fcr-q" title="${escapeAttr(fieldRowQTip(row))}">?</span></li>`;
     return `<li class="fcr ${st==='new' ? 'is-new' : ''}"${row.tip ? ` title="${escapeAttr(row.tip)}"` : ''}><span class="fcr-h">${row.icon} ${escapeHtml(row.name)}${st==='new' ? ' <b class="fcr-new">New!</b>' : ''}</span><span class="fcr-t">${keywordizeHTML(escapeHtml(row.text))}</span></li>`; }).join('');
 }
-function matchFieldRules(m){ try{ return m && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.raidFieldRules) || (m && m.arenaRuleset && m.arenaRuleset.rules) || null; }catch(e){ return null; } } // + the raid's field (2026-10-17)
+// Cast Darkness (2026-10-18, package D): while a caster stands on the board the fight reads as dark (rules.dark 'dark', darkCast: true),
+// so the Environment card, the board's darkness veil, the eye on units that can't see and the field pills all follow it; a fight dark
+// of its own is left as it is. The engine decides (darkCastNow), the same rule the combat uses.
+function matchFieldRules(m){ const r = matchFieldRulesBase(m);
+  let cast = false; try{ cast = !!(m && !m.over && m.engine && m.engine.darkCastNow && m.engine.darkCastNow(m.players)); }catch(e){}
+  return cast && !(r && r.dark) ? Object.assign({}, r || {}, {dark:'dark', darkCast:true}) : r; }
+function matchFieldRulesBase(m){ try{ return m && m.conquestNode ? fightRules(m.conquestNode.mapId, findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId).node) : (m && m.raidFieldRules) || (m && m.arenaRuleset && m.arenaRuleset.rules) || null; }catch(e){ return null; } } // + the raid's field (2026-10-17)
 function skirmishFieldHTML(mapId, node){
   if(!node || node.virtual) return ''; let r = null; try{ r = fightRules(mapId, node); }catch(e){ return ''; }
   const rows = fieldConditionRows(r); if(!rows.length) return '';
@@ -15156,6 +15198,7 @@ function noteFieldEvent(ev){
   else if(ev.type === 'fieldTick' && ev.field === 'scorched') hit = markFieldRow('eruption'); // Scorched Ground keeps the old row key (2026-10-14)
   else if(ev.type === 'wind' && ev.windy) hit = markFieldRow(r.wind === 'gale' ? 'gale' : 'wind');
   else if(ev.type === 'blindMiss' && r.dark) hit = markFieldRow('dark');
+  else if(ev.type === 'darkCast' && ev.on) hit = markFieldRow('dark'); // Cast Darkness (2026-10-18): its card lights up as the dark falls
   else if(ev.type === 'tide' && (ev.tide === 'high' || ev.to === 'high')) hit = markFieldRow('highTide');
   else if(ev.type === 'fieldTick' && ev.field === 'tideSpout') hit = markFieldRow('tideSpout');
   else if(ev.type === 'fieldTick' && (ev.field === 'swampFever' || ev.field === 'freezing')) hit = markFieldRow(ev.field); // 2026-10-15
@@ -15180,10 +15223,9 @@ function noteFieldEvent(ev){
 // 2026-10-16 (user: "Wind: The typical wind effect cards say that the wind change is random. Forward, Backward, No Wind, etc."): the
 // engine rolls the wind each round (rollWind). Windy: at your back, in your face or calm, 1 in 3 each. Gale: always strong, either
 // way 1 in 2. One text for the field card, its pill and the Effects library.
-const WIND_TEXT = {
-  windy: 'The wind is random each round: at your back, in your face, or calm (1 in 3 each). Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.',
-  gale: 'Strong wind every round, blowing a random way: at your back or in your face (1 in 2 each). Flyers with the wind at their back act first; Flyers facing it trigger and shoot twice.',
-};
+// 2026-10-18 (package D): terse; the odds are in the Map Codex (WIND_CODEX).
+const WIND_TEXT = {windy: TX('ui.fx-windy'), gale: TX('ui.fx-gale')};
+const WIND_CODEX = {windy: TX('ui.fxx-windy'), gale: TX('ui.fxx-gale')};
 const WIND_SHORT = {windy:'Random wind each round', gale:'Strong wind, random way'};
 // Darkness levels (D67/D73, 2026-10-13): Smugglers' Grotto is Pitchblack (1 in 2 miss), Caves & Alcoves is Darkness (1 in 4).
 // The Abyssal Plains will be Absolute darkness. Darksight sees through all of it.
@@ -15196,7 +15238,10 @@ const WIND_SHORT = {windy:'Random wind each round', gale:'Strong wind, random wa
 // under the reef, where no light reaches).
 const DARK_MAPS = new Map([['mg','dark'], ['m4','dark'], ['mz','dark'], ['mj','pitch']]);
 const DARK_LEVEL_NAME = {dark:'Darkness', pitch:'Pitch Black', absolute:'Absolute darkness'};
-const DARK_LEVEL_TEXT = {dark:'Level 1: units without Darksight miss 1 attack in 4. An Illuminate unit lights your side.', pitch:'Level 2: units without Darksight miss 1 attack in 2. An Illuminate unit lights your side.'};
+// 2026-10-18 (package D; owner: just "Dark-blind creatures miss 1/4 the time."): one plain line, the card's face and its detail alike;
+// who is dark-blind and what Illuminate does is in the Map Codex (DARK_CODEX_TEXT) and the Dark-blind keyword's gloss.
+const DARK_LEVEL_TEXT = {dark:TX('ui.field-dark'), pitch:TX('ui.field-pitch'), absolute:TX('ui.field-absolute')};
+const DARK_CODEX_TEXT = TX('ui.fxx-dark');
 const WINDY_MAPS = {mc:'windy', md:'windy', m3:'windy', m11:'windy', m10:'gale', mv:'gale'};
 const VOLCANO_MAPS = new Set(['m11', 'me', 'mx', 'm22']); // The Sundered Peak, its Eye of the Volcano and the Caldera Heart; + the Rimefire Caldera, Map 22 (2026-10-17)
 // 2026-10-17 (user: "I think there is no true night on the volcano. Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow
@@ -17452,7 +17497,7 @@ const CONQUEST_MAPS = [
   { id:"me", sub:true, parent:"m11", entry:{x:50, y:18, after:"20-10", label:"The crater's edge"}, name:"Eye of the Volcano", icon:"🌋", blurb:"Down inside the crater, where the dead keep the fire company and the living learned not to need much.", sequential:true,
     nodes: [
       { key:"20-A-1", rating:400, kind:"elite", name:"The Ash Ossuary", icon:"🦴", deck:{"ashbone-ghoul":4,"cinder-skeleton":3,"ossuary-lammergeier":2,"blessed-avatar":1}, hqHp:170, flavor:"Bones stacked like firewood. Some of them are still deciding.", rewards:{first:{gold:200, dust:30}}, requires:[] },
-      { key:"20-A-2", rating:420, kind:"elite", name:"The Wraith Vents", icon:"👻", deck:{"ashbone-ghoul":3,"cinder-skeleton":3,"pit-glutton":1,"sulfur-vent-crab":2,"cinder-gecko":1}, hqHp:219, rules:{sulphurFumes:true} /* 2026-10-17: a vent-side fight, Sulphur Fumes */, flavor:"Every vent breathes out something that used to breathe in.", rewards:{first:{gold:210, dust:32}}, requires:["20-A-1"] },
+      { key:"20-A-2", rating:420, kind:"elite", name:"The Wraith Vents", icon:"👻", deck:{"ashbone-ghoul":2,"cinder-skeleton":2,"pall-wraith":2,"pit-glutton":1,"sulfur-vent-crab":2,"cinder-gecko":1}, hqHp:219, rules:{sulphurFumes:true} /* 2026-10-17: a vent-side fight, Sulphur Fumes */ /* 2026-10-18 (package D): + 2 Pall Wraiths (one Ghoul, one Skeleton out), who cast Darkness; the Wraith is this fight's card reward */, flavor:"Every vent breathes out something that used to breathe in.", rewards:{first:{gold:210, dust:32}}, requires:["20-A-1"] },
       { key:"20-A-3", rating:435, kind:"elite", name:"The Lich's Kiln", icon:"🧙", deck:{"cinder-skeleton":3,"ashbone-ghoul":2,"blessed-avatar":2,"echo-keeper":1,"cinder-stoker":2}, hqHp:157, flavor:"It fires its servants like pottery. They come out harder every time.", rewards:{first:{gold:220, dust:35}}, requires:["20-A-2"] },
       { key:"20-A-4", rating:450, kind:"dungeon", name:"Heart of the Mountain", icon:"🗝️", deck:{"cinder-skeleton":4,"ashbone-ghoul":4,"magma-wraith":2}, hqHp:260, flavor:"Four doors down to where the fire began. The Contradiction is waiting at the bottom, and it is not dead.",
         dungeon:{rounds:4, tier:'boss', waveDecks:[null, {"magma-wraith":4,"obsidian-lich":2,"cinder-skeleton":4}, {"obsidian-lich":3,"ember-revenant":2,"magma-wraith":3,"ashbone-ghoul":2}, {"ember-revenant":3,"obsidian-lich":3,"magma-titan":1,"pyroclast-wyrm":2,"ashmantle-fiend":1}]},
@@ -23136,7 +23181,7 @@ function runCardCheck(host){
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
 const SB_KEY = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2';
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
-const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, missMult:1.5};
@@ -24088,7 +24133,7 @@ const FXL_FIELDS = [
   {key:'gale', icon:'🌪️', name:'Gale', text:()=> WIND_TEXT.gale, rules:{wind:'gale'}, units:FXL_FLYER_UNITS, steps:['round', 'round'], note:'Two rounds, each with strong wind blowing a random way.'},
   {key:'dark', icon:'🌘', name:'Darkness', text:()=> DARK_LEVEL_TEXT.dark, rules:{dark:'dark'}, units:FXL_DARK_UNITS},
   {key:'pitch', icon:'🌑', name:'Pitch Black', text:()=> DARK_LEVEL_TEXT.pitch, rules:{dark:'pitch'}, units:FXL_DARK_UNITS},
-  {key:'absolute', icon:'⚫', name:'Absolute darkness', text:()=> 'Units without Darksight miss every attack (none with an Illuminate unit on their side).', rules:{dark:'absolute'}, units:FXL_DARK_UNITS},
+  {key:'absolute', icon:'⚫', name:'Absolute darkness', text:()=> DARK_LEVEL_TEXT.absolute, rules:{dark:'absolute'}, units:FXL_DARK_UNITS}, // 2026-10-18 (package D)
   {key:'lavaTide', icon:'🌋', name:'Volcano: Lava Tide', text:()=> VOLCANO_HAZARDS[0].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:100, petrifyChance:0, eruptionChance:0}},
   {key:'petrify', icon:'🪨', name:'Volcano: Petrification', text:()=> VOLCANO_HAZARDS[1].text() + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:100, eruptionChance:0}, steps:['round', 'round'], note:'Two rounds: the stone sets at the start of round 2, then you see it fight.'},
   {key:'eruptionChance', icon:'🌋', name:'Volcano: Eruption', text:()=> VOLCANO_HAZARDS[2].text({eruption:3}) + ' Forced to 100% here.', rules:{volcano:'verylow', lavaTideChance:0, petrifyChance:0, eruptionChance:100, eruption:3}},
@@ -25547,8 +25592,8 @@ const FIELD_EFFECTS = [
   {id:'eruption',  group:'eruption', icon:'🔥', name:'Scorched Ground', weird:3, cost:1, rules:{eruption:2}, text:'From round 2, the ground burns one random unit on each side for 2 fire damage every round.'},
   // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): one fight's hazard, and it no longer brings the tide.
   {id:'tidespout', group:'tideSpout', icon:'⛲', name:'Tide-spout',  weird:2, cost:1, rules:{tideSpout:true}, text:TIDESPOUT_TEXT, editorOnly:true, oneOff:true}, // 2026-10-14
-  {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:'Level 1: units without Darksight miss 1 attack in 4. An Illuminate unit lights your side.', editorOnly:true}, // 2026-10-15
-  {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:'Level 2: units without Darksight miss 1 attack in 2. An Illuminate unit lights your side.', editorOnly:true}, // 2026-10-15
+  {id:'darkness',  group:'dark', icon:'🌘', name:'Darkness',     weird:2, cost:1, rules:{dark:'dark'}, text:DARK_LEVEL_TEXT.dark, editorOnly:true}, // 2026-10-15; 2026-10-18 (package D): the one Darkness line
+  {id:'pitchblack',group:'dark', icon:'🌑', name:'Pitch Black',  weird:3, cost:1, rules:{dark:'pitch'}, text:DARK_LEVEL_TEXT.pitch, editorOnly:true}, // 2026-10-15; 2026-10-18 (package D)
   // New field effects (2026-10-15, user: "Propose field effects for each map, up till Map 22 ... Swamp can give swamp fever - all cards
   // have a 50% to gain 1 poison."): built and offered here; no map carries them yet (docs/field-effects-and-map-gaps-2026-10-15.md).
   {id:'scorching2',group:'field', icon:'🔥', name:'Scorching II', weird:3, cost:1, rules:{field:'heatwave', heatLevel:2}, text:'Scorching, level 2: each round 3 random units on each side take 2 fire damage. Heat-resistant units are spared.', editorOnly:true},
@@ -29294,7 +29339,7 @@ function boardCardHTML(c, defs, opts){
   // 2026-09-20 fix: blind/shocked/corrode badges existed in updateCardStatusDisplay's live-patch
   // path but were missing from this fresh-render template entirely, same class of bug as the
   // is-frozen/etc tint classes above.
-  if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
+  if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">🕶️${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
   if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
@@ -30677,7 +30722,7 @@ function updateCardStatusDisplay(uid){
   if(c.creativity>0) badges.push(`<span class="abadge creativity" title="${escapeAttr(creativityTip(c.creativity))}">🎨${c.creativity}</span>`); // Creativity (2026-10-18)
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
-  if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
+  if(c.blind>0) badges.push(`<span class="abadge blind" title="${escapeAttr(TX('ui.blind-pill', {n: c.blind}))}">🕶️${c.blind}</span>`); // 2026-10-18 (package D; owner: Blind shows the eye VFX AND the 🕶️ pill; the dark shows only the eye)
   if(c.smoke>0) badges.push(`<span class="abadge smoke" title="Smoke: attacks at it miss 1 in 2">🌫️</span>`); // Smoke Bomb (2026-10-14)
   if(c.tipsy>0) badges.push(`<span class="abadge tipsy" title="Tipsy">🍺</span>`);
   if(c.confused>0) badges.push(`<span class="abadge confused" title="Confused">❓</span>`);
@@ -34678,7 +34723,7 @@ function lockShards(lock){
 // 2026-10-15: names for the statusEnd log line (the engine logs a status running out).
 // Exposed (2026-10-15) (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss.")
 function creativityTip(n){ return TX('ui.creativity-tip', {n}); } // 2026-10-18 (package U): Creativity counters, reserved
-function exposedTip(n){ return `Exposed ${n}: the next ${n} hit${n===1 ? '' : 's'} on it ${n===1 ? 'is a crit' : 'are crits'} (double damage), 1 counter each, and attacks at it can't miss.`; } // 2026-10-16: counters
+function exposedTip(n){ return TX('ui.exposed-tip', {n, s: n === 1 ? '' : 's'}); } // 2026-10-18 (package D): terse // 2026-10-16: counters
 const STATUS_END_NAMES = {webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 function logText(ev){
   const defs = getCardDefs();
@@ -34723,6 +34768,7 @@ function logText(ev){
       return {cls:'', text:`☢️ Radiation eats at ${nm(ev.defId)}: ${pts.join(', ') || 'nothing'}. ${ev.left} token${ev.left===1?'':'s'} left.`}; }
     case 'pounce': return {cls:'', text:`🐾 ${nm(ev.defId)} pounces (${ev.amount}).`};
     case 'spell': return {cls:'gold', text:`${sideLabel(ev.side)} cast ${nm(ev.defId)}: ${spellText(getCardDefs()[ev.defId])}`};
+    case 'darkCast': return {cls:'', text: ev.on ? TX('ui.log-dark-cast', {name: nm(ev.defId)}) : TX('ui.log-dark-lift')}; // Cast Darkness (2026-10-18, package D)
     case 'fieldSet': return {cls:'gold', text:`${sideLabel(ev.side)} played ${nm(ev.defId)}: the field changes for ${ev.rounds} rounds.`};
     case 'fieldEnd': return {cls:'', text: ev.back ? 'The played field ends; the ground returns to how it was.' : 'The field clears.'};
     case 'fieldTick': return ev.field==='lavaTide' ? {cls:'', text:`🌋 A lava tide floods the column: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='petrify' ? {cls:'', text:`🪨 ${nm(ev.defId)} turns to stone: no attack this round, and it takes half damage.`} : ev.field==='irradiated' ? {cls:'', text: ev.self ? `☢️ ${nm(ev.defId)} soaks in its own glow: +${ev.tokens||1} Irradiation.` : `☢️ ${nm(ev.srcDefId)} irradiates ${nm(ev.defId)}: +${ev.tokens||0} Irradiation.`} : ev.field==='tideSpout' ? {cls:'', text:`⛲ A tide-spout bursts up through the column${ev.tideIn ? ', and the Tide comes in' : ''}.`} : ev.field==='eruption' ? {cls:'', text:`🌋 The mountain erupts: ${nm(ev.defId)} takes ${ev.dmg} fire damage.`} : ev.field==='scorched' ? {cls:'', text:`🔥 The scorched ground burns ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='comet' ? {cls:'', text:`☄️ A comet strikes ${nm(ev.defId)}: ${ev.dmg} fire damage.`} : ev.field==='cometRain' ? {cls:'', text:`☄️ Comets rain down${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the last of them)'}.`} : ev.field==='eruptionReset' ? {cls:'', text:`🌋 The mountain settles: its odds reset, and comets will fall for ${ev.comets||3} rounds.`} : ev.field==='immolation' ? {cls:'', text:`🔥 ${nm(ev.srcDefId)} burns ${nm(ev.defId)} for ${ev.dmg}.`} : ev.field==='frozen' ? {cls:'', text:`❄️ ${nm(ev.defId)} is chilled: a freeze counter, +${ev.freeze||ev.wait||1} on its clock.`} : ev.field==='heatwave' ? {cls:'', text:`🔥 ${nm(ev.defId)} wilts in the heat (${ev.dmg != null ? ev.dmg : 1}).`} : ev.field==='swampFever' ? {cls:'', text:`🤢 ${nm(ev.defId)} catches swamp fever: +1 Poison.`} : ev.field==='freezing' ? {cls:'', text:`🧊 ${nm(ev.defId)} arrives frozen: a freeze counter, +1 on its clock.`} : {cls:'heal', text:`🌧️ ${nm(ev.defId)} heals ${ev.heal}.`};
@@ -37552,7 +37598,7 @@ function renderVfxForEvent(ev){
     // Elemental status effects (2026-09-16): Frozen (cold), Asleep (poison), Paralyzed (acid),
     // Stun-on-hit (heat, reuses the existing stunOnHit->'stun' visual below).
     else if(ev.kind==='freeze'){ SoundKit.freezeChime(); if(el){ shakeEl(el); floatText(el, '❄ Frozen', 'debuff'); } if(rc) rc.frozen = (rc.frozen||0) + 1; }
-    else if(ev.kind==='sleep'){ SoundKit.sleepTone(); if(el) floatText(el, '💤 Asleep', 'debuff'); if(rc) rc.asleep = (rc.asleep||0) + 1; }
+    else if(ev.kind==='sleep'){ SoundKit.sleepTone(); if(el) floatText(el, '💤 Asleep', 'debuff'); if(rc) rc.asleep = ev.left != null ? ev.left : (rc.asleep||0) + 1; } // ev.left: the capped Sleep stack (2026-10-18)
     else if(ev.kind==='paralyze'){ SoundKit.paralyzeBuzz(); if(el){ shakeEl(el); floatText(el, '⚡ Paralyzed', 'debuff'); } if(rc) rc.paralyzed = (rc.paralyzed||0) + 1; }
     else if(ev.kind==='stunOnHit'){ SoundKit.stunTone(); if(el){ shakeEl(el); floatText(el, '💫 Stunned!', 'debuff'); } if(rc) rc.stunned = true; }
     // 10 more skills + 3 more statuses (2026-09-17 batch): Blind and Shock are duration-gated

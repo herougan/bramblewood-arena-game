@@ -720,7 +720,7 @@ M.sightSync = function(m, env){
   const mineOf = c=> !!c.closest('#rowMine, .bottom-play-row');
   const lit = {true:false, false:false}; cards.forEach(c=>{ if(alive(c) && eff(c).lantern) lit[mineOf(c)] = true; });
   cards.forEach(c=>{ const e = eff(c), side = mineOf(c); let k = null;
-    if(dk){ if(e.darksight) k = 'eyes'; else if(e.lantern) k = 'lantern'; else if(e.keenSense) k = null; else if(lit[side]) k = 'lit'; else k = 'dark'; }
+    if(dk){ if(e.darksight) k = 'eyes'; else if(e.lantern) k = 'lantern'; else if(e.keenSense || e.trueStrike) k = null; /* True Strike never misses (2026-10-18) */ else if(lit[side]) k = 'lit'; else k = 'dark'; }
     // 2026-10-16 (engine sightMiss): an enemy Illuminate unit directly facing a Night-blind one (same column) lights it too
     const facingLit = ()=>{ const r = c.getBoundingClientRect(), cx = r.left + r.width/2; return cards.some(o=> o !== c && mineOf(o) !== side && alive(o) && eff(o).lantern && (()=>{ const q = o.getBoundingClientRect(); return Math.abs(q.left + q.width/2 - cx) < r.width*.5; })()); };
     if(!k || k === 'lit'){ if(ph === 'day' && e.sunshy) k = 'sun'; else if(ph === 'night' && e.nightblind && !lit[side] && !facingLit()) k = 'night'; }

@@ -11421,7 +11421,8 @@
         "duration": 1
       },
       "scare": 3,
-      "supreme": true
+      "supreme": true,
+      "trueStrike": true
     },
     "flavor": "The blizzard isn't weather. It's the White Dragon turning over in its sleep.",
     "locked": true,
@@ -11456,7 +11457,8 @@
         "*snowflakes drift from its nose*"
       ]
     },
-    "creatureRank": 1
+    "creatureRank": 1,
+    "creatorNote": "2026-10-18 (package D, owner 20:01: \"White Dragon has true strike - it never misses.\"): + True Strike (its attacks never miss). Over budget v3 as before (Dragons are the owner's open call); stats unchanged."
   },
   {
     "id": "blue-dragon",
@@ -17397,6 +17399,79 @@
     "numericId": 486,
     "uuid": "55b1114b-b3c5-407f-8cc5-2e9a99fbc81c",
     "art": "data:image/png;base64,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"
+  },
+  {
+    "id": "pall-wraith",
+    "cost": 1,
+    "icon": "\ud83c\udf11",
+    "name": "Pall Wraith",
+    "tags": [],
+    "test": false,
+    "uuid": "c883e353-311d-5a8c-8f56-76016b9d1693",
+    "wait": 1,
+    "attack": 5,
+    "flavor": "It walks through the valley of the shadow, and brings the shadow with it.",
+    "health": 15,
+    "locked": true,
+    "rarity": "rare",
+    "resist": [],
+    "dmgType": "physical",
+    "effects": {
+      "castDarkness": true,
+      "darksight": true
+    },
+    "species": [
+      "Undead"
+    ],
+    "speeches": {
+      "idle": [
+        "",
+        "",
+        ""
+      ],
+      "onHit": [
+        "",
+        "",
+        ""
+      ],
+      "onDeath": [
+        "",
+        "",
+        ""
+      ],
+      "onSkill": [
+        "",
+        "",
+        ""
+      ],
+      "onSpawn": [
+        "",
+        "",
+        ""
+      ],
+      "onAttack": [
+        "",
+        "",
+        ""
+      ]
+    },
+    "exileCost": null,
+    "graceCost": 0,
+    "metalCost": 0,
+    "numericId": 1229,
+    "stoneCost": 0,
+    "archetypes": [
+      "Volcanic"
+    ],
+    "creatorNote": "2026-10-18 (package D, owner 19:54: \"A card that casts 'Darkness' from the Shadow of the Valley of Death ... on Play. It is gone when it dies.\"): Cast Darkness (On Play the field has Darkness while it lives) + Darksight. No map is called the Shadow of the Valley of Death, so it lives with the dead of the Eye of the Volcano (Map 20's side map): in the 20-A-2 Wraith Vents deck (x2) and that fight's card reward. Budget v3: Rare, Level 1, Wait 1, 1 Lumber: N 35.9; skills 3 (Cast Darkness 2, Darksight 1); 2x5+15+3 = 28 < 35.9, 5x15+3 = 78 < 143.2. No art yet (shows its emoji): NightCafe later.",
+    "devilryCost": 0,
+    "mechanicLine": "none",
+    "splashEffect": "none",
+    "source": {
+      "kind": "map",
+      "id": "me",
+      "node": "20-A-2"
+    }
   },
   {
     "id": "obsidian-lich",
