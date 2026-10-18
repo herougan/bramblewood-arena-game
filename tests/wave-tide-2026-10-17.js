@@ -15,6 +15,7 @@ const defs = Object.assign({}, H.loadCardDefs(), {
   'wt-wall': U('wt-wall', {}, {attack:0}),
   'wt-waveL': U('wt-waveL', {wave:'left'}), 'wt-waveR': U('wt-waveR', {wave:'right'}), 'wt-waveA': U('wt-waveA', {wave:'alternate'}), 'wt-waveT': U('wt-waveT', {wave:true}),
   'wt-waveL2': U('wt-waveL2', {wave:'left', waveN:2}), 'wt-wave2': U('wt-wave2', {wave:2}), // Wave N (2026-10-18)
+  'wt-waveRK': U('wt-waveRK', {wave:'right', triggers:[{on:'onKill', do:'gainLumber', amount:2}]}), // 2026-10-18 (audit 4): crash kills are the Wave unit's
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 function mk(rules, seed, mode){ const e = E.makeSimEngine(defs, E.mulberry32(seed||7), {recordEvents:true, battleMode: mode || 'open', rules: rules || {}}); return {e, P:{1:e.newPlayer(1,{}), 2:e.newPlayer(2,{})}}; }
@@ -77,6 +78,21 @@ const push = (e, P, waveId, T)=>{ const W = put(e, P, 1, waveId, 0); const ev = 
   const {w} = push(e, P, 'wt-waveT', T); ok(T.slot === 0 && !w, 'a Webbed unit is not pushed at all'); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0), A = put(e, P, 2, 'wt-wall', 1); put(e, P, 2, 'wt-wall', -3); A.hp = 1;
   const W = put(e, P, 1, 'wt-waveR', 0), ev = []; e.waveHit(P, so, 1, W, T, ev, {}); ok(!e.allBoardCards(P[2]).some(c=> c === A) && T.hp === 499, 'a crash can kill: the dead unit leaves the board'); }
+// 2026-10-18 (audit 4): a crash kill is the Wave unit's kill (kill stat, On Kill); from a swing the dead are swept with the swing
+const kills = (stats, side, id)=> (stats[side + '|' + id] || {}).kills || 0;
+{ const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0), A = put(e, P, 2, 'wt-wall', 1); put(e, P, 2, 'wt-wall', -3); A.hp = 1;
+  const W = put(e, P, 1, 'wt-waveRK', 0), stats = {}, l0 = P[1].lumber; e.waveHit(P, so, 1, W, T, [], stats);
+  ok(!e.allBoardCards(P[2]).includes(A) && kills(stats, 'A', 'wt-waveRK') === 1 && P[1].lumber - l0 === 2, `a crash kill on its own is credited to the Wave unit (kills ${kills(stats, 'A', 'wt-waveRK')}, +${P[1].lumber - l0} Lumber)`); }
+{ const {e, P} = mk(); const T = put(e, P, 2, 'wt-wall', 0), A = put(e, P, 2, 'wt-wall', 1); put(e, P, 2, 'wt-wall', -3); A.hp = 1;
+  const W = put(e, P, 1, 'wt-waveRK', 0), stats = {}, ev = [], l0 = P[1].lumber; e.debugAttack(P, so, W.uid, stats, ev);
+  const iCrash = ev.findIndex(x=> x.type === 'washCrash'), deaths = ev.filter(x=> x.type === 'death' && x.uid === A.uid);
+  ok(!e.allBoardCards(P[2]).includes(A) && T.hp === 498 && deaths.length === 1, `a swing's crash kill: the unit dies once (${deaths.length}), the target took the hit and the crash (${T.hp})`);
+  ok(kills(stats, 'A', 'wt-waveRK') === 1 && P[1].lumber - l0 === 2, `...and it is the Wave unit's kill, On Kill once (kills ${kills(stats, 'A', 'wt-waveRK')}, +${P[1].lumber - l0})`);
+  ok(iCrash >= 0 && ev.findIndex(x=> x.type === 'death' && x.uid === A.uid) > iCrash, 'the death comes after the crash'); }
+{ let bad = 0; for(let s = 1; s <= 20; s++){ const {e, P} = mk({awash:1}, s); const T = put(e, P, 2, 'wt-wall', 0), A = put(e, P, 2, 'wt-wall', -1), B = put(e, P, 2, 'wt-wall', 1);
+    A.pinned = B.pinned = true; A.hp = B.hp = 1; put(e, P, 1, 'wt-waveRK', 0).pinned = true; const stats = {}; e.roundStart(P, 1, so, stats, []); e.roundStart(P, 2, so, stats, []);
+    if(Object.values(stats).some(x=> x.kills > 0)) bad++; }
+  ok(!bad, `the Wave field's crash kills are nobody's (${bad} credited)`); }
 
 // ---- 3. Packed rows (no free columns): it crashes into its neighbour that way
 { const {e, P} = mk({}, 3, 'gravity'); ['wt-wall', 'wt-wall', 'wt-wall'].forEach(id=> e.debugSpawnCard(P, so, 2, id, 'left', {}, [])); e.debugSpawnCard(P, so, 1, 'wt-waveT', 'left', {}, []);
