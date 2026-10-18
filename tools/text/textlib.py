@@ -732,4 +732,5 @@ def tx_uses(root=ROOT, with_vars=False):
     return (out, vars_) if with_vars else out
 
 
-KEY_AREA = {'toast': 'Toasts', 'dialog': 'Dialogs', 'coach': 'Tutorial / coach', 'tutorial': 'Tutorial / coach', 'results': 'Results'}
+KEY_AREA = {'toast': 'Toasts', 'dialog': 'Dialogs', 'coach': 'Tutorial / coach', 'tutorial': 'Tutorial / coach', 'results': 'Results',
+            'map': 'Conquest map'}  # map.* (2026-10-18, package PD: the Pale Desert's names and flavour)

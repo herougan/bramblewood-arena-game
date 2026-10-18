@@ -267,7 +267,7 @@ def _derived_map_png(src, dh, ds, dv):
     buf = _io.BytesIO(); out.save(buf, format="PNG", optimize=True); return buf.getvalue()
 _art_ids = []
 # 2026-10-18: loops over whole map ids, so the Babel Spire ("tw", no "m" prefix) and the Long Burrow ("mlb") fit in.
-for _id in ["m" + _m for _m in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j", "m", "lb", "tut", "arena", "abyss"]] + ["tw"]:   # + the Arena's tourney ground and the raids' deep sea (2026-10-17)   # m1..m29 plus the 2026-10-09 field/beach maps
+for _id in ["m" + _m for _m in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j", "m", "lb", "tut", "arena", "abyss", "pd"]] + ["tw"]:   # + "pd", the Pale Desert (2026-10-18, package PD)   # + the Arena's tourney ground and the raids' deep sea (2026-10-17)   # m1..m29 plus the 2026-10-09 field/beach maps
     _fp = SCRATCH + "art/maps/%s.png" % _id
     if _id in MAP_ART_DERIVED:
         _data = _derived_map_png(*MAP_ART_DERIVED[_id])

@@ -4493,6 +4493,7 @@ const Ambience = (()=>{
     ml:{arrive:[sc=> puff(sc, 2.6, 0.04, 'bandpass', 2200, 0.6, 0, 1400)], events:[[chirps, 8, 18], [steps('grass'), 55, 90]]},
     mt:{arrive:[sc=> puff(sc, 3, 0.04, 'bandpass', 700, 2, 0, 1100)], events:[[hoot, 25, 45], [sc=> puff(sc, 0.4, 0.04, 'lowpass', 400, 0.7, 0, 120), 25, 45], [steps('snow'), 55, 90]]},
     md:{arrive:[hiss], events:[[chime, 12, 25], [steps('sand'), 55, 90]]},
+    mpd:{arrive:[hiss], events:[[steps('sand'), 50, 85], [hiss, 25, 45]]}, // 2026-10-18 (package PD): the Pale Desert: still, hot air and shifting sand, no glass chimes
   };
   const RECIPES = {
     home: {beds:[{freq:420, gain:0.035, lfo:0.07}, {type:'bandpass', freq:1700, q:0.6, gain:0.014}], events:[[bird, 2, 6]]},
@@ -4907,7 +4908,7 @@ const MAP_MUSIC = {
   m2:'map_water', mj:'map_water', mp:'map_water', mb:'map_water', mc:'map_water', m7:'map_water', mk:'map_water',
   m3:'map_fire', m9:'map_fire', m11:'map_fire', me:'map_fire', mx:'map_fire', m22:'map_snow', m23:'map_sand', m24:'conquest', // 2026-10-17: the ice volcano, the siege fields, the keep
   m4:'map_cave', mg:'map_cave', mu:'map_cave', mz:'map_cave',
-  m5:'map_sand', md:'map_sand',
+  m5:'map_sand', md:'map_sand', mpd:'map_sand', // + the Pale Desert (2026-10-18, package PD)
   m6:'map_snow', mt:'map_snow',
   m8:'map_swamp', mw:'map_swamp',
   m10:'map_sky', my:'map_sky',
@@ -6453,6 +6454,7 @@ const MAP_BATTLEFIELD_CLASS = {
   ml:'map-ml',
   mt:'map-mt',
   md:'map-md',
+  mpd:'map-mpd', // The Pale Desert (2026-10-18, package PD) -- bleached bone-white sand under a white sun
   my:'map-my',
   // 2026-10-15 ("Are there any submaps with no background? fill them in."): the side maps that had no fight floor.
   mtut:'map-mtut', mo:'map-mo', mi:'map-mi', mn:'map-mn', ms:'map-ms', mv:'map-mv', mx:'map-mx', mm:'map-mm',
@@ -6474,13 +6476,15 @@ function raidGroundOf(m){
 // The scene's own moving layers (2026-10-17): the Abyss's light shafts from far above and its drifting marine snow, and the Arena's
 // bunting. Transform/opacity-only CSS animations on a few elements (no per-frame script), still under reduced motion.
 function syncSceneFx(bf){
-  if(!bf) return; const want = bf.classList.contains('map-mabyss') ? 'abyss' : bf.classList.contains('map-marena') ? 'arena' : null;
+  // + the Pale Desert's white-sun glare and heat haze (2026-10-18, package PD)
+  if(!bf) return; const want = bf.classList.contains('map-mabyss') ? 'abyss' : bf.classList.contains('map-marena') ? 'arena' : bf.classList.contains('map-mpd') ? 'paledesert' : null;
   let el = bf.querySelector(':scope > .scene-fx'); if(el && el.dataset.k !== want){ el.remove(); el = null; }
   if(!want || el) return;
   el = document.createElement('div'); el.className = 'scene-fx scene-' + want; el.dataset.k = want; el.setAttribute('aria-hidden', 'true');
   // marine snow: 16 tiny dots, each falling the board's height on its own slow clock (a seeded spread, so a redraw looks the same)
   const fall = Math.round((bf.clientHeight || 600) + 16);
   el.innerHTML = want === 'abyss' ? '<i class="ab-murk"></i>' + Array.from({length:16}, (_, k)=> `<i class="ab-dot" style="left:${(k * 37 + 11) % 100}%; --fall:${fall}px; animation-duration:${14 + (k * 7) % 13}s; animation-delay:-${(k * 3.7) % 20}s; opacity:${(.35 + ((k * 13) % 6) / 10).toFixed(2)}"></i>`).join('')
+    : want === 'paledesert' ? '<i class="pd-sun"></i><i class="pd-haze" style="top:38%"></i><i class="pd-haze" style="top:68%; animation-delay:-5s"></i>'
     : '<i class="ar-bunting"></i>';
   bf.insertBefore(el, bf.firstChild);
 }
@@ -14129,7 +14133,7 @@ function activateSpot(spot){
 // Sunken Grove, Aerie Vault and Volcano Lair had art baked in but weren't listed here, so it never drew; Murgle Mayhem had none.
 // They now borrow a recoloured map (MAP_ART_DERIVED in assemble_arena.py), and the build fails if this list falls behind.
 // 2026-10-18: + the Babel Spire ("tw") and the Long Burrow ("mlb"), which drew only a gradient.
-const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm","mlb","tw"]);
+const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm","mlb","tw","mpd"]); // + "mpd", the Pale Desert (2026-10-18, package PD: tools/make_map_backgrounds.py mpd)
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -14245,6 +14249,11 @@ const SUBMAP_EMBLEM_SVG = {
     <path d="M14 34 L50 29 M16 38 L51 33" stroke="#4e3018" stroke-width="1.2"/><path d="M40 35 L44 31 L47 35 L44 39 Z" fill="#1d2b33"/>
     <path d="M28 27 L22 6" stroke="#5a3a1e" stroke-width="3" stroke-linecap="round"/><path d="M22 6 L30 10 L24 14" fill="#cfc4a8" opacity=".85"/>
     <g transform="translate(48 6)" fill="none" stroke="#c9d3d6" stroke-width="2.4" stroke-linecap="round"><circle cx="0" cy="2" r="2.2"/><path d="M0 4 L0 16"/><path d="M-4 8 L4 8"/><path d="M-6 12 C-5 17 5 17 6 12"/></g></svg>`,
+  // The Pale Desert (2026-10-18, package PD): a white sun over a bone-pale dune with a bleached horned skull on it.
+  mpd: `<svg viewBox="0 0 64 48" width="64" height="48"><circle cx="44" cy="12" r="11" fill="#fff8e6" opacity=".55"/><circle cx="44" cy="12" r="7" fill="#ffffff"/>
+    <ellipse cx="32" cy="44" rx="27" ry="3.5" fill="rgba(80,60,30,.25)"/><path d="M4 42 C14 30 26 27 38 31 C46 33 54 36 60 42 Z" fill="#eadfc6"/><path d="M4 42 C14 34 24 32 34 34 C42 36 50 39 60 42 Z" fill="#d8c8a6"/>
+    <path d="M14 30 C10 27 9 23 11 20 M30 30 C34 27 35 23 33 20" stroke="#f6f0e2" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M15 31 C15 26 29 26 29 31 C29 35 26 37 22 37 C18 37 15 35 15 31Z" fill="#fbf8ef"/><circle cx="19" cy="31" r="1.7" fill="#6b5a42"/><circle cx="25" cy="31" r="1.7" fill="#6b5a42"/><path d="M21 35 L23 35" stroke="#6b5a42" stroke-width="1"/></svg>`,
   mp: `<svg viewBox="0 0 64 48" width="64" height="48"><ellipse cx="32" cy="41" rx="27" ry="6" fill="#3f8f4a"/><ellipse cx="32" cy="40" rx="22" ry="4" fill="#5fb35c"/>
     <path d="M32 38 C14 37 6 26 8 20 C18 22 26 30 32 38Z" fill="#f2a6c4"/><path d="M32 38 C50 37 58 26 56 20 C46 22 38 30 32 38Z" fill="#f2a6c4"/>
     <path d="M32 38 C20 32 15 18 19 9 C27 15 31 27 32 38Z" fill="#f7bfd6"/><path d="M32 38 C44 32 49 18 45 9 C37 15 33 27 32 38Z" fill="#f7bfd6"/>
@@ -17681,7 +17690,45 @@ const CONQUEST_MAPS = [
       { key:"0-B-3", kind:"skirmish", name:"Root Gate", icon:"🌿", deck:{"tunnel-ant":4,"pond-duck":3,"meadow-rabbit":3,"otter-paddler":2,"thornwood-palisade":2}, hqHp:63, rewards:{"first":{"gold":120,"dust":16}}, requires:["0-B-2"] },
       { key:"0-B-4", kind:"boss", name:"The Old Bramble", icon:"👑", deck:{"glacier-wolf-pack":2,"ant-scout":2,"pond-trout":2,"pond-duck":2,"otter-paddler":2,"ent":1,"elder-willow":1,"burrow-rabbit":4}, hqHp:80, rewards:{"first":{"gold":200,"dust":30}}, requires:["0-B-3"] },
     ]},
+  // PALE_DESERT:BEGIN
+  // The Pale Desert (2026-10-18, package PD, owner 20:55: "Add the submap that we and codex suggested, the pale desert. Locked till Map 18
+  // is complete."): side map 18-A of the Glass Dunes. The entrance sits on Map 18 after its last fight and waits until every Map 18 fight
+  // is won (afterMapCleared "md": "Clear The Glass Dunes (Map 18) to open"). A bleached, bone-white sand sea under a white sun: heat
+  // (Scorching), mirages (Mirage) and sandstorms (Sandstorm), with quicksand in the boss's own card (Trap and Tangle); no glass or obsidian,
+  // which is the Glass Dunes'. Built from the desert's cards plus three of its own (Sandfish, Pale Oryx, Quicksand Queen); the fights play
+  // the Map 18 reference deck (a side map counts as its parent) on the owner's curve: skirmishes 90% down to 60% in trail order with the
+  // elite on it, the boss ~40% (docs/pale-desert-2026-10-19.md). The names, blurb and flavour are TX keys (applyPaleDesertTexts below).
+  { id:"mpd", sub:true, parent:"md", entry:{x:84, y:80, after:"18-7", afterMapCleared:"md", label:"The pale sands"}, name:"The Pale Desert", icon:"☀️", blurb:"Past the glass the sand turns white as bone, and so does the sun. No water, no shade, and the horizon never stays where you left it.", sequential:true,
+    nodes: [
+      { key:"18-A-1", kind:"skirmish", name:"Bleached Flats", icon:"🦴", deck:{"sandfish":2,"dune-jackal":2,"caustic-scorpion":4,"thorny-devil":3,"meerkat-sentry":1,"roadrunner-courier":2,"dune-jackal-scout":1,"sand-widow":1}, rules:{"field":"heatwave","heatLevel":1}, rewards:{first:{gold:90, dust:11}}, flavor:"Bones, sand and sun, and all three are the same colour.", requires:[] },
+      { key:"18-A-2", kind:"skirmish", name:"Mirage Jackals", icon:"🐕", deck:{"dune-jackal":3,"dune-jackal-scout":2,"rabid-jackal":2,"sandfish":1,"fennec-fox":2,"moon-jerboa":2,"caustic-scorpion":3,"dust-hyena":2}, rules:{"field":"heatwave","heatLevel":1,"mirage":true}, rewards:{first:{gold:100, dust:12}}, flavor:"There are three jackals. Now there are six. There were never any.", requires:["18-A-1"] },
+      { key:"18-A-3", kind:"skirmish", name:"Dust Devils", icon:"🌪️", deck:{"dust-devil-kestrel":1,"sandstorm-roc":2,"roadrunner-courier":2,"horned-lizard":2,"caustic-scorpion":4,"armadillo-guard":2,"sand-widow":1}, rules:{"field":"heatwave","heatLevel":1,"sandstorm":true}, rewards:{first:{gold:100, dust:12}}, flavor:"The wind spins the sand into a pillar and walks it straight at you.", requires:["18-A-1"] },
+      { key:"18-A-4", kind:"skirmish", name:"Meerkat Warrens", icon:"🕳️", deck:{"meerkat-burrower":3,"meerkat-sentry":3,"fennec-fox":3,"caustic-scorpion":3,"sand-widow":4}, rules:{"sandstorm":true,"field":"heatwave","heatLevel":1}, rewards:{first:{gold:110, dust:13}}, flavor:"A hundred holes, and a lookout on every one.", requires:["18-A-2","18-A-3"] },
+      { key:"18-A-5", kind:"skirmish", name:"Vulture Road", icon:"🪶", deck:{"stonedrop-vulture":2,"skull-vulture":2,"dust-hyena":3,"rabid-jackal":1,"caustic-scorpion":2,"sand-widow":3}, rules:{"field":"heatwave","heatLevel":2}, rewards:{first:{gold:120, dust:14}}, flavor:"The caravans left this road a long time ago. The vultures stayed.", requires:["18-A-4"] },
+      { key:"18-A-6", kind:"skirmish", name:"The Salt Pan", icon:"🧂", deck:{"glowing-gecko":1,"horned-lizard":2,"sandfish":3,"caustic-scorpion":3,"thorny-devil":3,"sand-widow":1}, rules:{"field":"heatwave","heatLevel":2,"mirage":true}, rewards:{first:{gold:130, dust:15}}, flavor:"A dry lake so white it hurts to look at, and something glows in the cracks.", requires:["18-A-5"] },
+      { key:"18-A-7", kind:"skirmish", name:"Oryx Crossing", icon:"🦌", deck:{"pale-oryx":3,"dromedary":2,"dune-jackal-scout":2,"meerkat-sentry":2,"sandstorm-roc":2,"armadillo-guard":2,"caustic-scorpion":1}, rules:{"sandstorm":true,"field":"heatwave","heatLevel":2}, rewards:{first:{gold:140, dust:16}}, flavor:"A white herd crossing a white desert. You hear the hooves long before you see a thing.", requires:["18-A-5"] },
+      { key:"18-A-8", kind:"elite", name:"The Dry Well", icon:"🪣", deck:{"dust-hyena":4,"komodo-warlord":2,"sand-widow":4,"pale-oryx":2,"antlion-pit":2,"dust-devil-kestrel":1,"thorny-devil":2}, rules:{"field":"heatwave","heatLevel":2,"sandstorm":true}, rewards:{first:{gold:180, dust:25}}, flavor:"The last well on the old road has been dry for years. The hyenas guard it anyway.", requires:["18-A-6","18-A-7"] },
+      { key:"18-A-9", kind:"boss", name:"The Quicksand Queen", icon:"👑", deck:{"quicksand-queen":1,"antlion-pit":3,"sand-widow":2,"caustic-scorpion":4,"pale-oryx":3,"sandfish":2,"horned-lizard":2,"glowing-gecko":1}, characterId:"last-oasis", rules:{"mirage":true,"field":"heatwave","heatLevel":2}, rewards:{first:{gold:240, dust:35}}, flavor:"Her pit looks like solid ground. Everything that has walked on it agrees, briefly.", requires:["18-A-8"] },
+    ]},
+  // PALE_DESERT:END
 ];
+// 2026-10-18 (package PD; owner policy 15:37: "every new player-facing string goes through a TX key"): the Pale Desert's words come from
+// the text table (bramblewood-texts.js, map.mpd-*), so the game-texts sheet edits them and the 12 packs translate them. The literals in
+// its CONQUEST_MAPS entry are the copy the balance tools and tests read (they evaluate that array without TX). Runs before the baseline
+// copy, so the skirmish editor sees the table's words too.
+function applyPaleDesertTexts(){
+  if(typeof TX !== 'function') return;
+  const m = CONQUEST_MAPS.find(x=> x.id === 'mpd'); if(!m) return;
+  m.name = TX('map.mpd-name'); m.blurb = TX('map.mpd-blurb'); if(m.entry) m.entry.label = TX('map.mpd-entry');
+  const T = {
+    '18-A-1': [TX('map.mpd-1-name'), TX('map.mpd-1-flavor')], '18-A-2': [TX('map.mpd-2-name'), TX('map.mpd-2-flavor')],
+    '18-A-3': [TX('map.mpd-3-name'), TX('map.mpd-3-flavor')], '18-A-4': [TX('map.mpd-4-name'), TX('map.mpd-4-flavor')],
+    '18-A-5': [TX('map.mpd-5-name'), TX('map.mpd-5-flavor')], '18-A-6': [TX('map.mpd-6-name'), TX('map.mpd-6-flavor')],
+    '18-A-7': [TX('map.mpd-7-name'), TX('map.mpd-7-flavor')], '18-A-8': [TX('map.mpd-8-name'), TX('map.mpd-8-flavor')],
+    '18-A-9': [TX('map.mpd-9-name'), TX('map.mpd-9-flavor')]};
+  m.nodes.forEach(n=>{ const t = T[n.key]; if(t){ n.name = t[0]; n.flavor = t[1]; } });
+}
+applyPaleDesertTexts();
 // ---- Skirmish editor overlay (2026-10-03): admin edits to nodes ride on top of the definitions
 // above. CONQUEST_MAPS_BASELINE keeps the original; applyNodeEdits() rebuilds every map's node list
 // from it plus the edits (patched fields, admin-added skirmishes, removed added ones). Edits live in
@@ -18322,13 +18369,15 @@ const MAP_BIOMES = {
   alpine:  {trees:['🌲','🏔️','🌲'], small:['🪨','🌿','🪶','❄️','🌼'], mover:{emoji:'🦅', kind:'bird', n:2}},
   meadow:  {trees:['🌳','🌻','🌳'], small:['🌼','🌾','🌷','🌱','🍀','🌼','🪨'], mover:{emoji:'🐝', kind:'butterfly', n:4}},
   beach:   {trees:['🌴','🪨','🌴'], small:['🐚','🦀','🪸','🫧','🪨','⭐'], mover:{emoji:'🦀', kind:'fish', n:3}},
+  // 2026-10-18 (package PD): the Pale Desert: no cacti or glass (the Glass Dunes'), only rocks, bones and dry tufts, and a vulture overhead.
+  paledesert:{trees:['🪨','🦴','🪨'], small:['🦴','🪨','💀','🌾','🪶','🦴'], mover:{emoji:'🦅', kind:'bird', n:2}},
   // 2026-10-17: Map 22 (the ice volcano: snow, frozen lava, steam) and Maps 23-24 (the siege fields outside the walls, the keep inside).
   frostfire:{trees:['🏔️','🌋','🏔️'], small:['❄️','🧊','♨️','🪨','💨','🌨️'], mover:{emoji:'🔥', kind:'firefly', n:3}},
   warfield:{trees:['⛺','🌳','🪵'], small:['🪨','🏹','🛡️','🌾','🪓','🚩'], mover:{emoji:'🐦‍⬛', kind:'bird', n:3}},
   castle:  {trees:['🏰','🗼','🏰'], small:['🪨','🛡️','⚔️','🪙','🌿','🚩'], mover:{emoji:'🕊️', kind:'bird', n:2}},
 };
 // 2026-10-15: m1 is 'meadow' and mf 'forest' now, following their swapped art ("I think the wetter one makes sense for the next map").
-const MAP_BIOME_OF = {mm:'swamp', mj:'reef', mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'forest', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'meadow', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m21:'alpine', m22:'frostfire', m23:'warfield', m24:'castle', mtut:'meadow', m12:'forest', m13:'savanna', m14:'ash'};
+const MAP_BIOME_OF = {mm:'swamp', mj:'reef', mx:'ash', me:'ash', ms:'swamp', mn:'cave', mv:'alpine', mi:'tundra', mo:'forest', mq:'meadow', mf:'forest', mb:'beach', mg:'cave', mu:'forest', mp:'water', mc:'alpine', mw:'swamp', mk:'reef', mh:'meadow', mr:'forest', ml:'meadow', mt:'tundra', md:'savanna', my:'forest', m1:'meadow', m2:'water', m3:'ash', m4:'cave', m5:'savanna', m6:'tundra', m7:'reef', m8:'swamp', m9:'forge', m10:'alpine', m11:'ash', m21:'alpine', m22:'frostfire', m23:'warfield', m24:'castle', mpd:'paledesert' /* 2026-10-18, package PD */, mtut:'meadow', m12:'forest', m13:'savanna', m14:'ash'};
 function distToSeg(px,py, ax,ay, bx,by){ const dx=bx-ax, dy=by-ay; const L=dx*dx+dy*dy||1; let t=((px-ax)*dx+(py-ay)*dy)/L; t=Math.max(0,Math.min(1,t)); const x=ax+t*dx, y=ay+t*dy; return Math.hypot(px-x, py-y); }
 function generatedMapDecor(map, positions){
   const biome = MAP_BIOMES[MAP_BIOME_OF[map.id]] || MAP_BIOMES.forest;

@@ -1775,6 +1775,8 @@
   .battlefield.map-m23{background:radial-gradient(ellipse at 50% 12%, #ffe2a0, transparent 55%), linear-gradient(180deg, #b9a27a 0%, #8a7656 55%, #4a3e2c 100%);}
   .battlefield.map-m24{background:radial-gradient(ellipse at 50% 10%, #ffe9b0, transparent 55%), linear-gradient(180deg, #9a9488 0%, #6c675e 55%, #36322c 100%);}
   .battlefield.map-m11{background:radial-gradient(ellipse at 50% 12%, #b04f6b, transparent 55%), linear-gradient(180deg, #3a1d34 0%, #241426 55%, #130b17 100%);}
+  /* 2026-10-18 (package PD): the Pale Desert (side map 18-A), bleached sand under a white sun; drawn while its art (art/maps/mpd.png) is off */
+  .battlefield.map-mpd{background:radial-gradient(ellipse at 78% 0%, #fffdf6, transparent 55%), linear-gradient(180deg, #e6dcc4 0%, #cdbf9f 55%, #9f8f6c 100%);}
   /* 2026-09-30, battlefield background picker (queued backlog item, "extremely undistracting"
      calm option): unlike the 11 biome themes above, this one IS theme-adaptive (built from
      var(--bg)/var(--surface) tokens, not fixed hex) since the whole point is minimum visual noise
@@ -4783,6 +4785,7 @@
   .map-theme-ml{--mt-a:#bacf66; --mt-b:#9aaf4c; --mt-c:#7a8f3a;}
   .map-theme-mt{--mt-a:#dfe8ee; --mt-b:#3f523f; --mt-c:#2a3a2f;}
   .map-theme-md{--mt-a:#f2ca84; --mt-b:#cf9a56; --mt-c:#a8723a;}
+  .map-theme-mpd{--mt-a:#f4eedf; --mt-b:#d9ccb0; --mt-c:#9f8f6c;}  /* The Pale Desert (2026-10-18, package PD): bone, bleached sand, dry tan */
   .map-theme-my{--mt-a:#357a3a; --mt-b:#245a2c; --mt-c:#163a1f;}
   .map-theme-mg{--mt-a:#2f5f66; --mt-b:#1d3a44; --mt-c:#0c1a22;}  /* Smugglers' Grotto sub-map (2026-10-09) */
   /* m11 (2026-09-24 campaign redesign) is now "The Sundered Peak," the campaign's final map —
@@ -11021,6 +11024,12 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
     conic-gradient(from 150deg at 50% 0, #e8c46a 0 60deg, transparent 0) 28px 2px / 112px 18px repeat-x,
     conic-gradient(from 150deg at 50% 0, #2e86c1 0 60deg, transparent 0) 56px 2px / 112px 18px repeat-x,
     conic-gradient(from 150deg at 50% 0, #1e8449 0 60deg, transparent 0) 84px 2px / 112px 18px repeat-x;}
+/* The Pale Desert (2026-10-18, package PD): a white sun's glare in the top corner that breathes slowly, and two faint heat-haze bands
+   sliding over the sand (transform / opacity only, three elements). The floor keeps the usual dark scrim so the cards read the same. */
+.scene-paledesert .pd-sun{position:absolute; right:-14%; top:-34%; width:62%; height:84%; border-radius:50%; background:radial-gradient(circle, rgba(255,255,250,.42) 0%, rgba(255,250,235,.14) 42%, transparent 70%); animation:pdSun 7s ease-in-out infinite alternate; will-change:transform, opacity;}
+.scene-paledesert .pd-haze{position:absolute; left:-20%; width:140%; height:12%; background:linear-gradient(180deg, transparent, rgba(255,250,240,.09), transparent); animation:pdHaze 11s ease-in-out infinite alternate; will-change:transform;}
+@keyframes pdSun{from{opacity:.7; transform:scale(1);} to{opacity:1; transform:scale(1.06);}}
+@keyframes pdHaze{from{transform:translate3d(-4%, 0, 0);} to{transform:translate3d(4%, 0, 0);}}
 @media (prefers-reduced-motion: reduce){ #battlefieldEl > .scene-fx *{animation:none !important;} }
 
 /* The Arena tab: a tourney-ground banner, today's rules as Environment cards, the modes with what a win pays. */

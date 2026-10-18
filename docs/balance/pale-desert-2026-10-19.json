@@ -1,0 +1,114 @@
+{
+ "note": "The Pale Desert (side map 18-A) against the Map 18 reference deck: simulateReferenceFight, 120 games on seeds 9100 + 37g (the skirmish pass's and the win-rate panel's) and on fresh seeds 5100 + 37g. Written by node tests/pale-desert-2026-10-19.js --measure.",
+ "generated": "2026-10-18",
+ "fights": [
+  {
+   "key": "18-A-1",
+   "kind": "skirmish",
+   "name": "Bleached Flats",
+   "target": 0.9,
+   "win": 0.9,
+   "fresh": 0.8916666666666667,
+   "shield": 18,
+   "hp": 30,
+   "avgRounds": 11,
+   "sig": "[\"18-A-1\",\"skirmish\",{\"sandfish\":2,\"dune-jackal\":2,\"caustic-scorpion\":4,\"thorny-devil\":3,\"meerkat-sentry\":1,\"roadrunner-courier\":2,\"dune-jackal-scout\":1,\"sand-widow\":1},{\"field\":\"heatwave\",\"heatLevel\":1},null,null,null,[[\"boar-rampager\",1,2,4,14,{\"sweep\":3,\"bounty\":1}],[\"bramblewood-lynx\",1,1,6,9,{\"bounty\":1}],[\"burrow-rabbit\",0,1,3,7,null],[\"caustic-scorpion\",1,2,3,13,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"crimson-wing-recruit\",0,0,2,1,{\"flying\":true,\"diurnal\":1}],[\"dune-jackal\",1,0,2,12,{\"quick\":true,\"dry\":true}],[\"dune-jackal-scout\",1,0,3,6,{\"armor\":1,\"dry\":true}],[\"lone-grey-wolf\",1,2,4,18,{\"loneWolf\":[1,1]}],[\"meerkat-sentry\",1,1,2,7,{\"sociable\":[1,1],\"dry\":true}],[\"nautilus-drifter\",1,3,3,24,{\"onReadyGold\":1,\"bounty\":1}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sand-widow\",2,2,6,22,{\"poison\":2,\"bounty\":1,\"dry\":true}],[\"sandfish\",1,1,3,11,{\"dry\":true,\"invisible\":2}],[\"thorny-devil\",1,2,2,14,{\"thorns\":2,\"dry\":true}]],18,4]"
+  },
+  {
+   "key": "18-A-2",
+   "kind": "skirmish",
+   "name": "Mirage Jackals",
+   "target": 0.857,
+   "win": 0.9166666666666666,
+   "fresh": 0.9083333333333333,
+   "shield": 18,
+   "hp": 30,
+   "avgRounds": 10.8,
+   "sig": "[\"18-A-2\",\"skirmish\",{\"dune-jackal\":3,\"dune-jackal-scout\":2,\"rabid-jackal\":2,\"sandfish\":1,\"fennec-fox\":2,\"moon-jerboa\":2,\"caustic-scorpion\":3,\"dust-hyena\":2},{\"field\":\"heatwave\",\"heatLevel\":1,\"mirage\":true},null,null,null,[[\"boar-rampager\",1,2,4,14,{\"sweep\":3,\"bounty\":1}],[\"bramblewood-lynx\",1,1,6,9,{\"bounty\":1}],[\"burrow-rabbit\",0,1,3,7,null],[\"caustic-scorpion\",1,2,3,13,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"crimson-wing-recruit\",0,0,2,1,{\"flying\":true,\"diurnal\":1}],[\"dune-jackal\",1,0,2,12,{\"quick\":true,\"dry\":true}],[\"dune-jackal-scout\",1,0,3,6,{\"armor\":1,\"dry\":true}],[\"dust-hyena\",0,0,2,6,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"fennec-fox\",1,1,4,10,{\"dry\":true,\"darksight\":true}],[\"lone-grey-wolf\",1,2,4,18,{\"loneWolf\":[1,1]}],[\"moon-jerboa\",1,1,4,7,{\"fullMoon\":3}],[\"nautilus-drifter\",1,3,3,24,{\"onReadyGold\":1,\"bounty\":1}],[\"rabid-jackal\",0,0,2,3,{\"rabid\":true,\"weakness\":[\"water\"]}],[\"sandfish\",1,1,3,11,{\"dry\":true,\"invisible\":2}]],18,4]"
+  },
+  {
+   "key": "18-A-3",
+   "kind": "skirmish",
+   "name": "Dust Devils",
+   "target": 0.814,
+   "win": 0.7916666666666666,
+   "fresh": 0.8583333333333333,
+   "shield": 18,
+   "hp": 30,
+   "avgRounds": 10.6,
+   "sig": "[\"18-A-3\",\"skirmish\",{\"dust-devil-kestrel\":1,\"sandstorm-roc\":2,\"roadrunner-courier\":2,\"horned-lizard\":2,\"caustic-scorpion\":4,\"armadillo-guard\":2,\"sand-widow\":1},{\"field\":\"heatwave\",\"heatLevel\":1,\"sandstorm\":true},null,null,null,[[\"armadillo-guard\",1,0,3,5,{\"shield\":3}],[\"boar-rampager\",1,2,4,14,{\"sweep\":3,\"bounty\":1}],[\"bramblewood-lynx\",1,1,6,9,{\"bounty\":1}],[\"burrow-rabbit\",0,1,3,7,null],[\"caustic-scorpion\",1,2,3,13,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"crimson-wing-recruit\",0,0,2,1,{\"flying\":true,\"diurnal\":1}],[\"dust-devil-kestrel\",1,2,5,9,{\"tornado\":1}],[\"horned-lizard\",1,1,5,6,{\"blind\":{\"chance\":50,\"duration\":2}}],[\"lone-grey-wolf\",1,2,4,18,{\"loneWolf\":[1,1]}],[\"nautilus-drifter\",1,3,3,24,{\"onReadyGold\":1,\"bounty\":1}],[\"roadrunner-courier\",1,0,3,5,{\"haste\":true}],[\"sand-widow\",2,2,6,22,{\"poison\":2,\"bounty\":1,\"dry\":true}],[\"sandstorm-roc\",2,2,6,18,{\"fork\":true,\"dry\":true}]],18,4]"
+  },
+  {
+   "key": "18-A-4",
+   "kind": "skirmish",
+   "name": "Meerkat Warrens",
+   "target": 0.771,
+   "win": 0.75,
+   "fresh": 0.7583333333333333,
+   "shield": 18,
+   "hp": 30,
+   "avgRounds": 10.9,
+   "sig": "[\"18-A-4\",\"skirmish\",{\"meerkat-burrower\":3,\"meerkat-sentry\":3,\"fennec-fox\":3,\"caustic-scorpion\":3,\"sand-widow\":4},{\"sandstorm\":true,\"field\":\"heatwave\",\"heatLevel\":1},null,null,null,[[\"boar-rampager\",1,2,4,14,{\"sweep\":3,\"bounty\":1}],[\"bramblewood-lynx\",1,1,6,9,{\"bounty\":1}],[\"burrow-rabbit\",0,1,3,7,null],[\"caustic-scorpion\",1,2,3,13,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"crimson-wing-recruit\",0,0,2,1,{\"flying\":true,\"diurnal\":1}],[\"fennec-fox\",1,1,4,10,{\"dry\":true,\"darksight\":true}],[\"lone-grey-wolf\",1,2,4,18,{\"loneWolf\":[1,1]}],[\"meerkat-burrower\",1,1,4,8,{\"dry\":true,\"darksight\":true}],[\"meerkat-sentry\",1,1,2,7,{\"sociable\":[1,1],\"dry\":true}],[\"nautilus-drifter\",1,3,3,24,{\"onReadyGold\":1,\"bounty\":1}],[\"sand-widow\",2,2,6,22,{\"poison\":2,\"bounty\":1,\"dry\":true}]],18,4]"
+  },
+  {
+   "key": "18-A-5",
+   "kind": "skirmish",
+   "name": "Vulture Road",
+   "target": 0.729,
+   "win": 0.7,
+   "fresh": 0.7333333333333333,
+   "shield": 18,
+   "hp": 30,
+   "avgRounds": 10.1,
+   "sig": "[\"18-A-5\",\"skirmish\",{\"stonedrop-vulture\":2,\"skull-vulture\":2,\"dust-hyena\":3,\"rabid-jackal\":1,\"caustic-scorpion\":2,\"sand-widow\":3},{\"field\":\"heatwave\",\"heatLevel\":2},null,null,null,[[\"boar-rampager\",1,2,4,14,{\"sweep\":3,\"bounty\":1}],[\"bramblewood-lynx\",1,1,6,9,{\"bounty\":1}],[\"burrow-rabbit\",0,1,3,7,null],[\"caustic-scorpion\",1,2,3,13,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"crimson-wing-recruit\",0,0,2,1,{\"flying\":true,\"diurnal\":1}],[\"dust-hyena\",0,0,2,6,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"lone-grey-wolf\",1,2,4,18,{\"loneWolf\":[1,1]}],[\"nautilus-drifter\",1,3,3,24,{\"onReadyGold\":1,\"bounty\":1}],[\"rabid-jackal\",0,0,2,3,{\"rabid\":true,\"weakness\":[\"water\"]}],[\"sand-widow\",2,2,6,22,{\"poison\":2,\"bounty\":1,\"dry\":true}],[\"skull-vulture\",1,1,3,4,{\"flying\":true,\"daunt\":1,\"nocturnal\":true}],[\"stonedrop-vulture\",1,1,3,6,{\"flying\":true,\"skyfall\":3}]],18,4]"
+  },
+  {
+   "key": "18-A-6",
+   "kind": "skirmish",
+   "name": "The Salt Pan",
+   "target": 0.686,
+   "win": 0.6666666666666666,
+   "fresh": 0.7583333333333333,
+   "shield": 18,
+   "hp": 30,
+   "avgRounds": 11.9,
+   "sig": "[\"18-A-6\",\"skirmish\",{\"glowing-gecko\":1,\"horned-lizard\":2,\"sandfish\":3,\"caustic-scorpion\":3,\"thorny-devil\":3,\"sand-widow\":1},{\"field\":\"heatwave\",\"heatLevel\":2,\"mirage\":true},null,null,null,[[\"boar-rampager\",1,2,4,14,{\"sweep\":3,\"bounty\":1}],[\"bramblewood-lynx\",1,1,6,9,{\"bounty\":1}],[\"burrow-rabbit\",0,1,3,7,null],[\"caustic-scorpion\",1,2,3,13,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"crimson-wing-recruit\",0,0,2,1,{\"flying\":true,\"diurnal\":1}],[\"glowing-gecko\",1,1,6,12,{\"irradiated\":2}],[\"horned-lizard\",1,1,5,6,{\"blind\":{\"chance\":50,\"duration\":2}}],[\"lone-grey-wolf\",1,2,4,18,{\"loneWolf\":[1,1]}],[\"nautilus-drifter\",1,3,3,24,{\"onReadyGold\":1,\"bounty\":1}],[\"sand-widow\",2,2,6,22,{\"poison\":2,\"bounty\":1,\"dry\":true}],[\"sandfish\",1,1,3,11,{\"dry\":true,\"invisible\":2}],[\"thorny-devil\",1,2,2,14,{\"thorns\":2,\"dry\":true}]],18,4]"
+  },
+  {
+   "key": "18-A-7",
+   "kind": "skirmish",
+   "name": "Oryx Crossing",
+   "target": 0.643,
+   "win": 0.5916666666666667,
+   "fresh": 0.6916666666666667,
+   "shield": 18,
+   "hp": 30,
+   "avgRounds": 11.2,
+   "sig": "[\"18-A-7\",\"skirmish\",{\"pale-oryx\":3,\"dromedary\":2,\"dune-jackal-scout\":2,\"meerkat-sentry\":2,\"sandstorm-roc\":2,\"armadillo-guard\":2,\"caustic-scorpion\":1},{\"sandstorm\":true,\"field\":\"heatwave\",\"heatLevel\":2},null,null,null,[[\"armadillo-guard\",1,0,3,5,{\"shield\":3}],[\"boar-rampager\",1,2,4,14,{\"sweep\":3,\"bounty\":1}],[\"bramblewood-lynx\",1,1,6,9,{\"bounty\":1}],[\"burrow-rabbit\",0,1,3,7,null],[\"caustic-scorpion\",1,2,3,13,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"crimson-wing-recruit\",0,0,2,1,{\"flying\":true,\"diurnal\":1}],[\"dromedary\",1,2,3,26,{\"dry\":true,\"regen\":1}],[\"dune-jackal-scout\",1,0,3,6,{\"armor\":1,\"dry\":true}],[\"lone-grey-wolf\",1,2,4,18,{\"loneWolf\":[1,1]}],[\"meerkat-sentry\",1,1,2,7,{\"sociable\":[1,1],\"dry\":true}],[\"nautilus-drifter\",1,3,3,24,{\"onReadyGold\":1,\"bounty\":1}],[\"pale-oryx\",1,1,3,17,{\"dry\":true,\"pierce\":true}],[\"sandstorm-roc\",2,2,6,18,{\"fork\":true,\"dry\":true}]],18,4]"
+  },
+  {
+   "key": "18-A-8",
+   "kind": "elite",
+   "name": "The Dry Well",
+   "target": 0.6,
+   "win": 0.6083333333333333,
+   "fresh": 0.5833333333333334,
+   "shield": 27,
+   "hp": 30,
+   "avgRounds": 11.4,
+   "sig": "[\"18-A-8\",\"elite\",{\"dust-hyena\":4,\"komodo-warlord\":2,\"sand-widow\":4,\"pale-oryx\":2,\"antlion-pit\":2,\"dust-devil-kestrel\":1,\"thorny-devil\":2},{\"field\":\"heatwave\",\"heatLevel\":2,\"sandstorm\":true},null,null,null,[[\"antlion-pit\",1,1,3,7,{\"trap\":5}],[\"boar-rampager\",1,2,4,14,{\"sweep\":3,\"bounty\":1}],[\"bramblewood-lynx\",1,1,6,9,{\"bounty\":1}],[\"burrow-rabbit\",0,1,3,7,null],[\"crimson-wing-recruit\",0,0,2,1,{\"flying\":true,\"diurnal\":1}],[\"dust-devil-kestrel\",1,2,5,9,{\"tornado\":1}],[\"dust-hyena\",0,0,2,6,{\"triggers\":[{\"on\":\"onKill\",\"do\":\"gain\",\"amount\":1,\"resource\":\"lumber\"}]}],[\"komodo-warlord\",3,4,9,38,{\"poison\":3,\"bounty\":1,\"gash\":3}],[\"lone-grey-wolf\",1,2,4,18,{\"loneWolf\":[1,1]}],[\"nautilus-drifter\",1,3,3,24,{\"onReadyGold\":1,\"bounty\":1}],[\"pale-oryx\",1,1,3,17,{\"dry\":true,\"pierce\":true}],[\"sand-widow\",2,2,6,22,{\"poison\":2,\"bounty\":1,\"dry\":true}],[\"thorny-devil\",1,2,2,14,{\"thorns\":2,\"dry\":true}]],18,4]"
+  },
+  {
+   "key": "18-A-9",
+   "kind": "boss",
+   "name": "The Quicksand Queen",
+   "target": 0.4,
+   "win": 0.4166666666666667,
+   "fresh": 0.43333333333333335,
+   "shield": 54,
+   "hp": 30,
+   "avgRounds": 14.1,
+   "sig": "[\"18-A-9\",\"boss\",{\"quicksand-queen\":1,\"antlion-pit\":3,\"sand-widow\":2,\"caustic-scorpion\":4,\"pale-oryx\":3,\"sandfish\":2,\"horned-lizard\":2,\"glowing-gecko\":1},{\"mirage\":true,\"field\":\"heatwave\",\"heatLevel\":2},null,null,\"last-oasis\",[[\"antlion-pit\",1,1,3,7,{\"trap\":5}],[\"boar-rampager\",1,2,4,14,{\"sweep\":3,\"bounty\":1}],[\"bramblewood-lynx\",1,1,6,9,{\"bounty\":1}],[\"burrow-rabbit\",0,1,3,7,null],[\"caustic-scorpion\",1,2,3,13,{\"poison\":2,\"bounty\":1,\"dry\":true,\"thorns\":1}],[\"crimson-wing-recruit\",0,0,2,1,{\"flying\":true,\"diurnal\":1}],[\"glowing-gecko\",1,1,6,12,{\"irradiated\":2}],[\"horned-lizard\",1,1,5,6,{\"blind\":{\"chance\":50,\"duration\":2}}],[\"lone-grey-wolf\",1,2,4,18,{\"loneWolf\":[1,1]}],[\"nautilus-drifter\",1,3,3,24,{\"onReadyGold\":1,\"bounty\":1}],[\"pale-oryx\",1,1,3,17,{\"dry\":true,\"pierce\":true}],[\"quicksand-queen\",1,2,3,28,{\"dry\":true,\"trap\":6,\"tangle\":1}],[\"sand-widow\",2,2,6,22,{\"poison\":2,\"bounty\":1,\"dry\":true}],[\"sandfish\",1,1,3,11,{\"dry\":true,\"invisible\":2}]],18,4]"
+  }
+ ]
+}

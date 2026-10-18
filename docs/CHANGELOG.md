@@ -2,6 +2,32 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (package PD: the Pale Desert, side map 18-A)
+- **New side map: The Pale Desert** (owner 20:55: "Add the submap that we and codex suggested, the pale desert. Locked till Map 18 is complete.").
+  - It is a side map of Map 18, the Glass Dunes. Its entrance, "The pale sands", sits after 18-7.
+  - It shows the standard lock, "Clear The Glass Dunes (Map 18) to open", until every Map 18 fight is won.
+  - The land is a bleached, bone-white sand sea under a white sun, with no glass or obsidian. Its field rules are existing ones only: Scorching 1–2 in every fight, Sandstorm and Mirage. Quicksand is the boss's own Trap and Tangle.
+- **Nine fights:** 7 skirmishes, the elite The Dry Well, and the boss The Quicksand Queen. The boss defends The Last Oasis, a new bramble (Regeneration 1), and her first win gives it to you.
+  - Each fight gives a card reward, Gold and Dust. Six of the reward cards had no source until now: Rabid Jackal, Dust-devil Kestrel, Meerkat Burrower, Stonedrop Vulture, Glowing Gecko and Dust Hyena.
+  - Balanced with `simulateReferenceFight` against the Map 18 reference deck (Lv 4) on the owner's new curve, 120 games a fight: 90.0 / 91.7 / 79.2 / 75.0 / 70.0 / 66.7 / 59.2 %, the elite 60.8 % and the boss 41.7 %. All are green (±8; the boss band is 30–49 %).
+  - Fresh seeds give 89–58 % and 43 %. The stored result is `docs/balance/pale-desert-2026-10-19.json`.
+- **Three new cards**, none with art yet (they show their emoji):
+  - 🦎 Sandfish: Common, 3/11, Dry, Invisible 2;
+  - 🦌 Pale Oryx: Uncommon, 3/17, Dry, Pierce;
+  - 🐜 Quicksand Queen: Very Rare, 3/28, Dry, Trap 6, Tangle 1.
+
+  All three are in budget v3 and their card-balance bands. Their skills read "?" until Map 18 is cleared (`revealAfter`).
+- **Look:**
+  - a pale-sand map background (`tools/make_map_backgrounds.py mpd`);
+  - the battlefield `map-mpd`, with a white-sun glare and heat haze;
+  - the map theme, its own emblem (sun, dune, skull), the desert music and sound, the map ambience (`FX.E` paledesert) and the heat-shimmer shader.
+- **Texts:** the map's words are 21 TX keys (`map.mpd-*`, applied by `applyPaleDesertTexts`). All texts and card names are in the 12 packs (`tools/i18n_2026_10_19_pale_desert.py`).
+- **Tests:**
+  - `tests/pale-desert-2026-10-19.js` (new, in run-all);
+  - `tests/node-ids-2026-10-14.js` accepts side-map keys born after the rename;
+  - the card-matrix golden is re-baselined.
+- Docs: `docs/pale-desert-2026-10-19.md`.
+
 ## 2026-10-18 evening: raids, your row only
 
 - In a raid you can no longer play cards into your middle or back row: those are the CPU allies' rows. The rows show no "+" targets for you, and a drop there is refused (`playCardByUid`). Test: tests/raid-rows-2026-10-19.js.

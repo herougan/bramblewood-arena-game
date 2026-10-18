@@ -589,7 +589,28 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.reward-paid": "Reward paid: {v1}",
   "toast.no-currency-reward-for-this-win": "No currency reward for this win.",
   "toast.packed-use-it-from-the-in": "🎒 {icon} {name} packed. Use it from the 🎒 in a fight against the computer.",
-  "toast.the-scale-trail-is-complete-the": "🐉 The Scale Trail is complete. The {rwName} is yours."
+  "toast.the-scale-trail-is-complete-the": "🐉 The Scale Trail is complete. The {rwName} is yours.",
+  "map.mpd-name": "The Pale Desert",
+  "map.mpd-blurb": "Past the glass the sand turns white as bone, and so does the sun. No water, no shade, and the horizon never stays where you left it.",
+  "map.mpd-entry": "The pale sands",
+  "map.mpd-1-name": "Bleached Flats",
+  "map.mpd-1-flavor": "Bones, sand and sun, and all three are the same colour.",
+  "map.mpd-2-name": "Mirage Jackals",
+  "map.mpd-2-flavor": "There are three jackals. Now there are six. There were never any.",
+  "map.mpd-3-name": "Dust Devils",
+  "map.mpd-3-flavor": "The wind spins the sand into a pillar and walks it straight at you.",
+  "map.mpd-4-name": "Meerkat Warrens",
+  "map.mpd-4-flavor": "A hundred holes, and a lookout on every one.",
+  "map.mpd-5-name": "Vulture Road",
+  "map.mpd-5-flavor": "The caravans left this road a long time ago. The vultures stayed.",
+  "map.mpd-6-name": "The Salt Pan",
+  "map.mpd-6-flavor": "A dry lake so white it hurts to look at, and something glows in the cracks.",
+  "map.mpd-7-name": "Oryx Crossing",
+  "map.mpd-7-flavor": "A white herd crossing a white desert. You hear the hooves long before you see a thing.",
+  "map.mpd-8-name": "The Dry Well",
+  "map.mpd-8-flavor": "The last well on the old road has been dry for years. The hyenas guard it anyway.",
+  "map.mpd-9-name": "The Quicksand Queen",
+  "map.mpd-9-flavor": "Her pit looks like solid ground. Everything that has walked on it agrees, briefly."
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){
