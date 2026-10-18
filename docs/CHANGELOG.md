@@ -11,6 +11,13 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Accessibility/perf:** the dialog watcher (bramblewood-a11y.js) ignores class flips inside the board and on elements that can't be dialogs; the fading faction screen is skipped so the fight starting under it isn't trapped.
 - `tests/y-2026-10-18.js` (in `tests/run-all.sh`); `tests/wave-tide-2026-10-17.js` covers crash kills.
 
+## 2026-10-18 (X4: guild rename, for a Rename Ticket)
+- **A guild's owner can rename it** (owner: "okay. + rename feature (but takes a rename ticket)"): "✏️ Rename guild · 1 🎫" in the guild panel, owners only. The dialog asks for the new name (same rules as making a guild: trimmed, 3-24 characters, unique; there is no word filter in the game), shows the ticket cost and how many you hold, and spends one ticket only once the server says the rename went through. With no ticket it says so and offers the Shop.
+- **🎫 Rename Ticket**, a new item (its own count, not a field-kit item): on the Shop's shelf for 250 Maple Leaves once the Guild tab is open (carry up to 9), shown in the Inventory once held, and one free ticket for the owner of every guild made before 2026-10-26 (once a save). The count travels in the progress blob (player_progress).
+- **Not switched on until the SQL is applied:** renaming goes through a new `rename_guild(p_guild, p_name)` function (`supabase/proposed/20261018_guild_rename.sql`, NOT applied; the live tables have no UPDATE policy on guilds). Until then the dialog says "Guild renaming isn't switched on yet" and the ticket is kept. The file also proposes closing the "join any guild as owner" hole in the live insert policy and an optional server-side ticket table.
+- Player names are unchanged: changing yours never cost anything, so it doesn't take a ticket.
+- `tests/guild-rename-2026-10-18.js` (in `tests/run-all.sh`): the item, shelf and inventory wiring, the founders' gift, owner-only button, name rules, the not-applied fallback (PGRST202 / 42883), refusals keep the ticket, success spends one, and the SQL's checks.
+
 ## 2026-10-18 (i18n catch-up, part F)
 - **Today's new texts are translated in all 12 packs:** the guild, invite and network-error messages (couldn't load / leave / set up, Retry, Retrying…, matchmaking unreachable), the sign-in screen's guest line, the leaderboard's empty state and rating notes, "An egg! You'll need a place to hatch it.", "There's a Nest on Map {n}{where}." and the Creative / Creativity keyword texts, plus the guild screen's "Join a Guild" and "Join" so the half-done-guild message names words on screen (`tools/i18n_2026_10_18f.py`, 32 strings each). Coverage: 325/325 plain game texts and 171/171 templates per pack, no dead keys (13 texts stay English on purpose).
 
