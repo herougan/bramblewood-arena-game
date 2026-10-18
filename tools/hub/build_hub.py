@@ -228,6 +228,10 @@ def _dec_md(d):
             if it.get('default'): out.append('- **Default:** ' + it['default'])
             if it.get('outcome'): out.append('- **Outcome:** ' + it['outcome'])
             out.append('')
+    for r in d.get('rules') or []:  # 2026-10-19 (package L): stated rules (the owner's rules answers), one dated section each, at the end
+        out += ['## Stated rules · ' + r.get('date', ''), '']
+        if r.get('intro'): out += [r['intro'], '']
+        out += ['- ' + x for x in r.get('items') or []] + ['']
     return '\n'.join(out)
 open(os.path.join(ROOT, 'docs', 'decisions.md'), 'w', encoding='utf-8').write(_dec_md(DECISIONS))
 decisions_json = _json.dumps(DECISIONS, ensure_ascii=False).replace('</', '<\\/')

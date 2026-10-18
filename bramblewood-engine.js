@@ -199,6 +199,11 @@ const TRIGGER_KEYS = ['onSpawn','onReady','onDeath','onAttacked','onAttack','onK
   // field when you pitch a card (firePitchTriggers). Its card text reads "Scavenge - <effect>" (a placeholder name).
   'onPitch'];
 const ALWAYS_ON_HOOKS = new Set(['onSpawn','onReady','onDeath','onExile','onAttack','onKill','onDiscard','onSacrifice','onCharge']); // fire even while Waiting
+// 2026-10-19 (owner, 20:31: "Loop cap: okay — layers, not count."): how deep a trigger chain may nest. The original event's
+// triggers are layer 1; a trigger that goes off while another trigger is resolving is one layer deeper; layers 1-5 resolve and a
+// 6th-layer trigger does not fire. Siblings (any number of triggers at the same layer) are not limited. See runCustomTriggers and
+// removeDeadCards (each pass of a death sweep is one layer deeper).
+const TRIGGER_LAYER_CAP = 5;
 const ACTION_KEYS = ['damage','gainGold','gainGrace','gainDevilry','gainStone','gainLumber','gain','refine','drawCard','exileGrave','spawnCard','buffAttack','debuffAttack','buffHealth','buff','debuff','poison','bleed','exile','exileSelf','expose','reduceWaitOfSpawned','stun','buffAlly','swapPositions','heal','cleanse','addWait','missile','mindControl','stunPlayer','shield','fireHit','rebuild']; // + Fire on hit (2026-10-16), Rebuild castle (2026-10-17)
 
 function makeSimEngine(CARD_DEFS, rnd, opts){
@@ -4501,7 +4506,22 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       runCustomTriggers(players, sideOf, otherId(ownerId), opp.card, CARD_DEFS[opp.card.defId], 'onAttacked', stats, events);
     }
   }
+  // Trigger layers (2026-10-19, owner 20:31: "Loop cap: okay — layers, not count."): trigLayer is the number of trigger
+  // resolutions open on the stack right now (0 = none, the original event). Every trigger dispatch (On Death, On Kill, On Ally
+  // Die, On Spawn, On Attacked, On Heal ...) goes through this wrapper: a card's triggers for one hook resolve at layer
+  // trigLayer+1, and anything they set off nests one deeper. At TRIGGER_LAYER_CAP no further nested trigger fires (logged as
+  // {type:'triggerCapped'}, no text). Siblings at one layer each open and close their own layer, so they are never limited.
+  let trigLayer = 0;
   function runCustomTriggers(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
+    if(!def.effects || !Array.isArray(def.effects.triggers)) return;
+    if(trigLayer >= TRIGGER_LAYER_CAP){
+      if(recordEvents && events && def.effects.triggers.some(t=> t.on === hook)) events.push({type:'triggerCapped', side:sideOf(playerId), defId:boardCard ? boardCard.defId : null, uid:boardCard ? boardCard.uid : null, hook, layer:trigLayer + 1});
+      return;
+    }
+    trigLayer++;
+    try{ runCustomTriggersAt(players, sideOf, playerId, boardCard, def, hook, stats, events, extra); } finally{ trigLayer--; }
+  }
+  function runCustomTriggersAt(players, sideOf, playerId, boardCard, def, hook, stats, events, extra){
     if(!def.effects || !Array.isArray(def.effects.triggers)) return;
     if(events){ shieldEvents = events; shieldSideOf = sideOf; } // Shield Call logs into whichever event list is live
     const pl = players[playerId], enemy = players[otherId(playerId)];
@@ -5739,10 +5759,15 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // so a kill by a shot, a bolt, a missile, an area skill or an arrival strike fires its On Kill too, not only a melee swing's.
   // It used to fire only from the round's reflowAfterKills, so every other sweep (the shot actions, the upkeep, the skills) let
   // the kill pass with no On Kill and, with an empty book ({}), no kill counted either. Returns the killers' stat keys.
+  // 2026-10-19 (trigger layers, owner 20:31): each pass is one trigger layer deeper than the last. Pass 1's deaths are the event,
+  // so their On Death / On Ally Die / On Spawn triggers are layer 1 (counted from the sweep's own layer: a sweep opened inside a
+  // layer-2 trigger starts at layer 3); the deaths those triggers cause settle in the next pass, one layer deeper. The 6-pass limit
+  // is now TRIGGER_LAYER_CAP + 1: passes 1-5 fire layers 1-5, the 6th clears the bodies and fires no triggers.
   function removeDeadCards(players, sideOf, killCredit, stats, events){
-    const kills = new Set(), book = killCredit || {};
-    for(let guard=0; guard<6; guard++){
-      removeDeadCardsPass(players, sideOf, book, stats, events, kills);
+    const kills = new Set(), book = killCredit || {}, layer0 = trigLayer;
+    for(let guard=0; guard<TRIGGER_LAYER_CAP + 1; guard++){
+      trigLayer = layer0 + guard;
+      try{ removeDeadCardsPass(players, sideOf, book, stats, events, kills); } finally{ trigLayer = layer0; }
       if(![players[1], players[2]].some(pl=> pl && allBoardCards(pl).some(c=> c.hp<=0))) break;
     }
     exposeLonely(players, sideOf, events); // 2026-10-17: the last enemy unit just fell, so Expose has nothing left to strike for
@@ -5881,6 +5906,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // still-living card this same player controls, e.g. a "when a friend falls" avenger
       // effect. Evaluated against the board as it stands right now in this same dead-cards
       // pass, so two simultaneous deaths each see the other as having just died.
+      // 2026-10-19 (stated rule): that is, both are gone, and neither fires On Ally Die for the other: only units still alive in
+      // this pass (hp > 0) are survivors. Simultaneous triggers go in board order: the first player's side, then the second's, lane by lane (left, center, right).
       const survivors = [...pl.row.left, ...pl.row.center, ...pl.row.right].filter(sc=>sc.hp>0 && sc.uid!==card.uid);
       survivors.forEach(sc=>{
         // Berserk (2026-09-17): permanently gains +N/+0 whenever ANY ally dies (no archetype
@@ -7111,5 +7138,5 @@ function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
 }
 
 if(typeof module !== 'undefined' && module.exports){
-  module.exports = { makeSimEngine, simulateOneMatch, mulberry32, AI_LEVEL_MAX, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
+  module.exports = { TRIGGER_LAYER_CAP /* 2026-10-19 */, makeSimEngine, simulateOneMatch, mulberry32, AI_LEVEL_MAX, TRIGGER_KEYS, ACTION_KEYS, ALWAYS_ON_HOOKS, SUDDEN_DEATH_ROUND, SUDDEN_DEATH_CASTLE_ROUND, DRAW_ROUND_CAP, STALL_ROUNDS_FOR_DRAW, STALL_DRAW_FROM_ROUND, boardSignature, noActionsLeft };
 }
