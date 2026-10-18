@@ -21,6 +21,23 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - No Auto-sweep on the Spire. The summit's floor picker says the replays are free.
 - **Ads:** `docs/ads-considerations-2026-10-18.md`, notes only, no code. It covers opt-in rewarded ads in five PvE spots, never in battles and never for premium players, the web, desktop and mobile options, Steam's ban on ad-based models, consent banners, and the trade-offs.
 - Texts are TX keys (22 new; `toast.one-item-a-skirmish` retired), translated in all 12 packs by `tools/i18n_2026_10_18z.py`. `tests/z-2026-10-18.js` is in `tests/run-all.sh`. `tests/polish-2026-10-18.js` now passes TX and nodeEnergyCost to the Spire card.
+## 2026-10-18 (SKB: skirmish pass)
+- **Rough balance pass over every Conquest fight** (owner 15:56: "as long it's not auto winnable or always loseable").
+  - **Before:** 63 of 262 fights were outside 12–92% for the deck you'd have at that point (39 auto-winnable, 24 always losable).
+  - **After:** 7 (21-3 Cloud Ledge, 24-6 The Gilded Guard, and 5 endless-dungeon floors), measured with the CPU at its real level and the enemy bramble as the game builds it.
+  - **90 fights changed,** nearly all in their CPU decks: up to 2 copies a move, themed, inside the road's rarity caps.
+  - 3-1, 3-5, 10-7 and 18-4 also got a `shieldOverride`, and 8-7 a lower Health.
+  - Elites and bosses now sit under their map's skirmishes on every main map. 13 maps had them easier before.
+  - Map 3 is no longer free (98% → 77%); Coral Current and the Sunken Depths are no longer walls (3–12% → 15–35%).
+  - Tables: `docs/skirmish-pass-2026-10-18.md` / `.xlsx`; summary in `docs/difficulty-curve-2026-10-03.md`.
+- **Dromedary:** 2 → 1 Lumber, 5/26 → 3/26 (budget v3: 34 < 42.4, 80 < 199.75). It measured 25% at 2 Lumber and measures 65.8% now (Uncommon band 45–68%).
+- **New tools:**
+  - `tools/skirmish_pass.js` plays the real fight build, read out of `arena_app.js` by the new `tools/lib_bramble.js`: `skirmishCastle`, `fightRules`, `levelledEnemyDeck` and `cpuAiLevelForNode`.
+  - It uses stage decks: Starter on Map 0; new per-map Road decks on Maps 1–9 (`docs/balance/skirmish-pass-decks.json`); Mid-road on 10–17; Strong on 18–24.
+  - `tools/skirmish_pass_xlsx.py` writes the workbook.
+- **Old tools:** `tools/curve_tune.js`, `tools/retune_all.js` and `tools/autotune_map.js` now tune the bramble's total (Health + Shield) under X3's rule. On `--apply` they write a `shieldOverride` (or a lower `hqHp`) instead of `hqHp`.
+- **Tests:** `tests/shields-2026-10-18.js` now allows a node's `shieldOverride` (rule still checked under it). `tests/golden/card-matrix.json` re-baselined: 96 of 25,720 fights changed, all Dromedary ones, no winner changes.
+
 ## 2026-10-18 (Goliath raid: row smacks and column smacks)
 - **The Tentacle Smack comes in two kinds** (owner 15:56: "there are row-based smacks and column-based smacks. Column-based smacks weight columns by number of units in that column."). They alternate, a column smack first: for a smack every 3 rounds (the Goliath's), rounds 3, 9, 15 are column smacks and rounds 6, 12, 18 are row smacks.
   - **Column smack:** hits every unit of yours in one column (front, middle and back). The column is picked at random, weighted by how many of your units stand in it, so a column of 3 is picked 3 times as often as a column of 1 and an empty column is never picked. With no units on the board it hits your bramble. The tentacle slams down the column through every row.

@@ -36,22 +36,25 @@ ok(JSON.stringify(H.SHIELD_RULE_MULT) === JSON.stringify(MULT), 'the multipliers
 // --- 1. every node follows the rule; the come-back-later fights on Map 0's side maps count as the map that opens them
 // (coordinator 2026-10-18): T-2 / T-3 / T-4 as Maps 1 / 8 / 18 (TUT_SIDE_GATE), the Old Bramble as Map 17 (shieldMap)
 const EFFECTIVE = {'T-2':1, 'T-3':8, 'T-4':18, '0-B-1':17, '0-B-2':17, '0-B-3':17, '0-B-4':17};
-let n = 0; const seen = {};
+let n = 0, nOverride = 0; const seen = {};
 for(const m of CONQUEST_MAPS){ const no = H.mapNumberOf(m.id); for(const node of m.nodes || []){
   const eff = EFFECTIVE[node.key] != null ? EFFECTIVE[node.key] : (m.shieldMap != null ? m.shieldMap : (no || 0)), /* + a map's own shieldMap (Lilypad Reach counts as Map 6, 2026-10-18) */ k = node.kind || 'skirmish', want = Math.round(eff * MULT[k]), sc = H.skirmishCastle(node); n++;
   ok(H.nodeMapNumber(node) === eff, `${node.key}: the rule counts Map ${H.nodeMapNumber(node)} (want ${eff})`);
-  ok(sc.shield === want && sc.rule === want, `${m.id} ${node.key} (${k}, Map ${no}): Shield ${sc.shield} (want ${want})`);
+  // 2026-10-18 (skirmish pass SKB): a fight the pass tuned carries its own shieldOverride; the rule still stands under it
+  const ovr = node.shieldOverride != null ? [].concat(node.shieldOverride).reduce((a, b)=> a + Math.max(0, Math.round(+b || 0)), 0) : null;
+  if(ovr != null){ nOverride++; ok(sc.shield === ovr && sc.rule === want && sc.overridden, `${m.id} ${node.key} (${k}, Map ${no}): override Shield ${sc.shield} (want ${ovr}; rule ${sc.rule}, want ${want})`); }
+  else ok(sc.shield === want && sc.rule === want, `${m.id} ${node.key} (${k}, Map ${no}): Shield ${sc.shield} (want ${want})`);
   ok(sc.hp > 0 && sc.total === sc.hp + sc.shield, `${node.key}: Health ${sc.hp} + Shield ${sc.shield} = ${sc.total}`);
   if(!seen[k]) seen[k] = `${node.key}=${sc.shield}`; } }
 ok(n > 400, `${n} nodes checked`);
 const byKey = (mapId, key)=> CONQUEST_MAPS.find(m=> m.id === mapId).nodes.find(x=> x.key === key);
-const sh = (mapId, key)=> H.skirmishCastle(byKey(mapId, key)).shield;
+const sh = (mapId, key)=> H.skirmishCastle(byKey(mapId, key)).rule; // the rule's value (a node the skirmish pass tuned shows its override, checked above)
 ok(sh('m1', '0-2') === 0 && sh('m1', '0-4') === 0, 'Map 0: no Shield (skirmish, boss)');
 ok(sh('m21', '21-1') === 21 && sh('m21', '21-4') === 32 && sh('m21', '21-6') === 63, 'Map 21: skirmish 21, elite round(31.5) = 32, boss 63');
 ok(sh('mc', '3-1') === 3 && sh('mc', '3-5') === 5 && sh('mc', '3-7') === 9, 'Map 3: skirmish 3, elite round(4.5) = 5, boss 9');
 ok(sh('mm', '6-MM-10') === 12, 'a mini-boss on a Map 6 side map: 12');
 ok(sh('me', '20-A-4') === 30 && sh('mx', '20-B-4') === 60 && sh('m11', '20-10') === 60 && sh('m11', '20-R') === 60, 'Map 20: dungeon 30, world boss 60, campaign boss 60, raid 60');
-{ const tot = (m, k)=> H.skirmishCastle(byKey(m, k)).total, shv = (m, k)=> H.skirmishCastle(byKey(m, k)).shield;
+{ const tot = (m, k)=> H.skirmishCastle(byKey(m, k)).total, shv = (m, k)=> H.skirmishCastle(byKey(m, k)).rule;
   ok(shv('mtut', 'T-2') === 1 && shv('mtut', 'T-3') === 8 && shv('mtut', 'T-4') === 27, `T-2 / T-3 / T-4 Shield ${shv('mtut', 'T-2')} / ${shv('mtut', 'T-3')} / ${shv('mtut', 'T-4')}`);
   ok(shv('mo', '0-B-1') === 17 && shv('mo', '0-B-4') === 51, `the Old Bramble: skirmish 17, boss 51`);
   console.log(`  come-back-later totals: T-2 ${tot('mtut', 'T-2')}, T-3 ${tot('mtut', 'T-3')}, T-4 ${tot('mtut', 'T-4')}, 0-B-1 ${tot('mo', '0-B-1')}, 0-B-2 ${tot('mo', '0-B-2')}, 0-B-3 ${tot('mo', '0-B-3')}, 0-B-4 ${tot('mo', '0-B-4')}`); }
@@ -88,11 +91,11 @@ ok(sh('me', '20-A-4') === 30 && sh('mx', '20-B-4') === 60 && sh('m11', '20-10') 
 // --- 4. where it is shown and used
 ok(/players\[2\]\.hq\.shield = sc\.shield; players\[2\]\.hq\.maxShield = sc\.shield; players\[2\]\.hq\.shieldLayers = sc\.layers;/.test(fn('applySkirmishSetup')), 'the fight build puts the Shield on the enemy bramble');
 { const d = byKey('me', '20-A-4'), w = H.dungeonWaves(d); ok(w[w.length - 1].shield === 30 && w[0].shield === Math.round(30 * 0.25), `the dungeon's castles: first ${w[0].shield}, last ${w[w.length - 1].shield}`); }
-ok(H.castleLineText(byKey('mc', '3-7')) === `🏰 ${H.skirmishCastle(byKey('mc', '3-7')).hp} HP · 🔷 9 Armour`, 'the VS / tooltip line shows the rule\'s Shield');
+ok(H.castleLineText(byKey('mc', '3-7')) === `🏰 ${H.skirmishCastle(byKey('mc', '3-7')).hp} HP · 🔷 ${H.skirmishCastle(byKey('mc', '3-7')).shield} Armour`, 'the VS / tooltip line shows the fight\'s Shield (the rule, or the skirmish pass\'s override)');
 ok(/castleLineText\(node\)/.test(fn('showVersusOpener')), 'the VS screen reads castleLineText');
 ok(/castleLineText\(node\)/.test(src.slice(src.indexOf('ctt-kind') - 200, src.indexOf('ctt-kind') + 200)), 'the node tooltip reads castleLineText');
 ok(/scD = skirmishCastle\(draft\), L = scD\.layers/.test(src) && /Rule: Map \$\{nodeMapNumber\(draft\)\}/.test(src), 'the skirmish editor shows the rule and its value');
 ok(/draft\.shieldOverride = ls\.length > 1 \? ls : \(ls\[0\] \|\| 0\)/.test(src) && !/draft\.armour = ls\.reduce/.test(src), 'the editor saves a changed Shield as shieldOverride, not armour');
 
-console.log(`shields-2026-10-18: ${checks - fail}/${checks} checks passed  (first per kind: ${Object.entries(seen).map(([k, v])=> k + ' ' + v).join(', ')})`);
+console.log(`shields-2026-10-18: ${checks - fail}/${checks} checks passed, ${nOverride} fights with a shieldOverride  (first per kind: ${Object.entries(seen).map(([k, v])=> k + ' ' + v).join(', ')})`);
 process.exit(fail ? 1 : 0);

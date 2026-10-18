@@ -174,3 +174,38 @@ The AI-vs-AI tutorial simulation pilots your side with the plain CPU (no guidanc
 - Otters and Both: 15 / 10% → 7 / 8%
 
 The fixed tutorial seed lost the simulation at 16 already, so `tests/e2e/ui_smoke.py` 7b (wants 70%+ and a fixed-seed win) did not pass before this change either. The guided steps are what make the tutorial winnable; worth a hand playthrough at 8.
+
+## 2026-10-18: the skirmish pass (package SKB)
+
+Owner (15:56): "a skirmish rough balancing pass. as long it's not auto winnable or always loseable." Full tables: `docs/skirmish-pass-2026-10-18.md` and `.xlsx`. Tool: `tools/skirmish_pass.js`, which reads the game's own fight build from `arena_app.js` through `tools/lib_bramble.js`.
+
+**How it was measured:**
+- Every Conquest fight was played: main maps, side maps, the dungeon and four floors of each endless dungeon. The tutorial, raids and the Babel Spire were left out.
+- 60 games a fight, with `aiAim` on and the CPU at its real level.
+- The enemy bramble and deck are built as the game builds them: the Shield rule or override, and the road levels.
+- Your deck is the stage deck:
+  - Starter on Map 0;
+  - a new **Road deck** per map on Maps 1–9, built from `expectedPlayerDeck`'s pool the way this tool builds Mid-road and Strong;
+  - Mid-road on Maps 10–17;
+  - Strong on Maps 18–24.
+
+**Results:**
+- **Before:** 63 fights outside 12–92% (39 auto-winnable, 24 always losable, 5 of them endless floors), and 13 maps whose elites or boss were easier than their skirmishes.
+- **After:**
+  - 7 outliers on the measure seeds: 21-3 Cloud Ledge, 24-6 The Gilded Guard, and the 5 endless floors;
+  - 8 over 120 games: the same plus 24-1 at 92.5%;
+  - 1 map whose elites or boss are easier than its skirmishes: the Sunken Depths.
+
+**What changed:**
+- 90 fights. Almost all of them changed only the CPU deck: up to 2 copies a move, themed, inside the road's rarity caps.
+- 4 fights also got a `shieldOverride`: 3-1, 3-5, 10-7 and 18-4.
+- 8-7 got a lower Health.
+- The Dromedary now costs 1 Lumber and is 3/26 (65.8%, band 45–68%).
+
+The curve's shape now:
+- Map 3 is no longer free (98% → 77%).
+- Maps 4, 10 and 13 are the stiff ones (27–30% mean).
+- The late maps settle at 55–86% for the Strong deck.
+- Every main map's bosses and elites sit under its skirmishes.
+
+**Tools:** `tools/curve_tune.js`, `tools/retune_all.js` and `tools/autotune_map.js` now tune the bramble's total under the rule. On `--apply` they write a `shieldOverride`, or a lower `hqHp` with no Shield, instead of `hqHp`.

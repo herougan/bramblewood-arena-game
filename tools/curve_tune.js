@@ -10,6 +10,11 @@
 // from any map up to two ahead), keeping a trade only when it helps. Epic-and-up cards and --keep cards stay.
 //
 //   node tools/curve_tune.js [games=24] [--from=18] [--to=62] [--only=m1,1-2] [--keep=a,b] [--apply]
+//
+// 2026-10-18 (package SKB, after X3's Shield rule): the "HP" this tool moves is the enemy bramble's total (its Health + Shield, as the
+// game builds it: tools/lib_bramble.js), not hqHp, which can now only lower the Health. --apply writes the result as a shieldOverride
+// (or, below the bramble's own Health, a lower hqHp with no Shield), and a total that lands on the rule's own Shield writes nothing.
+// For a pass against the stage decks with the game's real fight build, see tools/skirmish_pass.js.
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -31,6 +36,8 @@ const RARE_UP = new Set(['epic','heroic','unique','questunique','legendary','myt
 // puts a Very Rare in a Map 14 skirmish.
 const RR = (()=>{ const a = src.indexOf('// ROAD_RARITY:BEGIN'), b = src.indexOf('// ROAD_RARITY:END'); return eval(src.slice(a, b) + ';({roadRarityOk})'); })();
 const MY_HP = 30;
+const B = require('./lib_bramble.js'); // 2026-10-18 (SKB): the bramble's total under the Shield rule
+const totalOf = (m, n)=> B.brambleOf(m.id, n).total;
 const CURVE = JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/difficulty-curve.json'), 'utf8'));
 const DECKS = Object.fromEntries(Object.entries(CURVE.decks).map(([k, v])=> [k, Object.fromEntries(v.cards.map(c=> [c.id, c.n]))]));
 
@@ -98,8 +105,9 @@ for(const m of order){
     if(ONLY.length && !ONLY.includes(m.id) && !ONLY.includes(n.key)) continue;
     const tgt = Math.round(target(m, n)*10)/10;
     let deck = Object.assign({}, n.deck);
-    const before = index(m, n, deck, n.hqHp);
-    let t = tuneHp(m, n, deck, n.hqHp, tgt), swaps = 0;
+    const total0 = totalOf(m, n); // 2026-10-18 (SKB): Health + Shield, not hqHp
+    const before = index(m, n, deck, total0);
+    let t = tuneHp(m, n, deck, total0, tgt), swaps = 0;
     if(Math.abs(t.idx - tgt) > 5){
       const pool = themedPool(m), tried = new Set();
       for(let a=0; a<18 && swaps<6 && Math.abs(t.idx - tgt) > 5; a++){
@@ -111,22 +119,16 @@ for(const m of order){
         const cand = harder ? pool.find(id=> !tried.has(id) && !deck[id] && fits(id) && score(id) > score(outId)) : pool.slice().reverse().find(id=> !tried.has(id) && !deck[id] && fits(id) && score(id) < score(outId));
         if(!cand) break; tried.add(cand);
         const trial = Object.assign({}, deck); const k = Math.min(2, trial[outId]); trial[outId] -= k; if(!trial[outId]) delete trial[outId]; trial[cand] = (trial[cand]||0) + k;
-        const t2 = tuneHp(m, n, trial, n.hqHp, tgt);
+        const t2 = tuneHp(m, n, trial, total0, tgt);
         if(Math.abs(t2.idx - tgt) < Math.abs(t.idx - tgt) - 1){ deck = trial; t = t2; swaps++; }
       }
     }
-    out.push({map: m.id, key: n.key, kind: n.kind, target: tgt, before: Math.round(before*10)/10, after: Math.round(t.idx*10)/10, hp: [n.hqHp, t.hp], swaps, deck: swaps ? deck : null});
-    console.log(`${m.id.padEnd(4)} ${n.key.padEnd(8)} ${n.kind.padEnd(9)} target ${String(tgt).padStart(5)}  index ${String(Math.round(before)).padStart(3)} → ${String(Math.round(t.idx)).padStart(3)}  HP ${n.hqHp} → ${t.hp}${swaps ? `  (${swaps} swap${swaps>1?'s':''})` : ''}`);
+    out.push({map: m.id, key: n.key, kind: n.kind, target: tgt, before: Math.round(before*10)/10, after: Math.round(t.idx*10)/10, hp: [total0, t.hp], edit: B.retotal(m.id, n, t.hp), swaps, deck: swaps ? deck : null});
+    console.log(`${m.id.padEnd(4)} ${n.key.padEnd(8)} ${n.kind.padEnd(9)} target ${String(tgt).padStart(5)}  index ${String(Math.round(before)).padStart(3)} → ${String(Math.round(t.idx)).padStart(3)}  bramble ${total0} → ${t.hp}${swaps ? `  (${swaps} swap${swaps>1?'s':''})` : ''}`);
   }
 }
 fs.writeFileSync(path.join(ROOT, 'docs', 'balance', ONLY.length ? 'curve-tune-partial.json' : 'curve-tune.json'), JSON.stringify(out, null, 1) + '\n');
-if(APPLY){
-  let s = fs.readFileSync(APP, 'utf8');
-  for(const o of out){
-    const re = new RegExp(`(\\{ key:"${o.key.replace(/[-]/g, '\\-')}",[^\\n]*)`); const mm = s.match(re); if(!mm) continue;
-    let line = mm[1].replace(/hqHp:\d+/, 'hqHp:' + o.hp[1]);
-    if(o.deck) line = line.replace(/deck:\{[^}]*\}/, 'deck:' + JSON.stringify(o.deck));
-    s = s.replace(mm[1], line);
-  }
-  fs.writeFileSync(APP, s); console.log('applied to arena_app.js');
+if(APPLY){ // 2026-10-18 (SKB): writes the total as a shieldOverride / lower hqHp under the Shield rule
+  const n = B.writeNodeEdits(out.map(o=> Object.assign({key: o.key}, o.edit, o.deck ? {deck: o.deck} : {})), true);
+  console.log('applied', n, 'fights to arena_app.js');
 }
