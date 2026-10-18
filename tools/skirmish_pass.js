@@ -95,6 +95,10 @@ const stageOf = f=>{ const r = G.referenceDeckFor(f.map, f.n); return r.stage ==
 const DECKS_FILE = path.join(ROOT, 'docs', 'balance', 'skirmish-pass-decks.json');
 const stageDeck = f=>{ const r = G.referenceDeckFor(f.map, f.n); return {stage: r.stage, deck: r.deck, deckMap: r.deckMap, level: r.level}; };
 const BAL = {}; try{ (JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/card-balance.json'), 'utf8')).rows || []).forEach(r=> BAL[r.id] = r.winRate); }catch(e){}
+// 2026-10-19 (package TH): the pool cards placed by the thematic pass are live now but not in the card pass's report yet: their own
+// measures (package AN's pool report, the GI examples' tune) on the same yardstick
+try{ JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/card-pool-2026-10-19.json'), 'utf8')).forEach(r=>{ if(BAL[r.id] == null) BAL[r.id] = r.winRate; }); }catch(e){}
+try{ JSON.parse(fs.readFileSync(path.join(ROOT, 'docs/balance/thematic-gi-tune-2026-10-19.json'), 'utf8')).forEach(r=>{ if(BAL[r.id] == null) BAL[r.id] = r.winRate; }); }catch(e){}
 const DCAP = {devlegendary:1, devancient:1, eventlegendary:1, legendary:1, mythic:1, ancient:1, unique:1, questunique:1, epic:2, heroic:2, veryrare:3, superrare:3, rare:4, uncommon:5};
 const playableCard = c=> c && !c.token && !c.test && !c.hallOfFame && !c.hero && c.cardType !== 'materia' && c.cardType !== 'equipment' && c.id !== 'wandering-traveller' && c.id !== 'missingno' && !(c.effects||{}).leader && !(c.archetypes||[]).includes('Leader') && !(c.source && c.source.kind === 'secret');
 const isLumberMaker = id=>{ const e = (CARD_DEFS_BASELINE[id]||{}).effects || {}; return !!(e.onSpawnGold || e.onReadyGold || e.bounty || (e.triggers||[]).some(t=> t && (t.do === 'gainGold' || t.do === 'gainLumber' || (t.do === 'gain' && (t.resource||'lumber') === 'lumber')))); };
@@ -157,8 +161,12 @@ function themedPool(f){
   const sameBiome = cardsOf(MAPS.filter(mm=> !mm.reserved && !mm.tower && biome && (MAP_BIOME[mm.id] || MAP_BIOME[mainOf(mm).id]) === biome && near(mm, 2, 2)));
   const typed = cardsOf(MAPS.filter(mm=> !mm.reserved && !mm.tower && near(mm, 2, 1))).filter(id=> typesOf(id).some(t=> top.has(t)));
   return [...new Set([...own, ...sameBiome, ...typed])]
-    .filter(id=> CARD_DEFS_BASELINE[id] && !CARD_DEFS_BASELINE[id].token && G.roadRarityOk(CARD_DEFS_BASELINE[id].rarity, f.mapNo, f.kind)); // the cap counts the map the fight is on
+    .filter(id=> CARD_DEFS_BASELINE[id] && !CARD_DEFS_BASELINE[id].token && G.roadRarityOk(CARD_DEFS_BASELINE[id].rarity, f.mapNo, f.kind)) // the cap counts the map the fight is on
+    .filter(id=> !TH || !TH.offThemeFor(f.map, f.n, id)); // 2026-10-19 (package TH): never a card off the map's theme (tools/thematic_pass_2026_10_19.js THEMES)
 }
+// 2026-10-19 (package TH, the thematic pass): the map identities, so the tuner's moves stay on theme (the R2 retune had brought in e.g.
+// Badger Berserkers on nine maps and Pelican Divers in every Gannet Cliffs fight)
+let TH = null; try{ TH = require('./thematic_pass_2026_10_19.js'); }catch(e){ console.log('no thematic pass:', e.message); }
 const deckSize = d=> Object.values(d).reduce((a, b)=> a + b, 0);
 // Candidate moves of up to two copies, most promising first. A fight's namesake (Epic and up, or its showcase card) is never taken out.
 // Too easy: the deck's weakest card makes way for a stronger themed one, or the strongest card it has gets more copies, or (under 20

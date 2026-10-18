@@ -8039,8 +8039,8 @@
     "icon": "\ud83e\udda6",
     "cost": 0,
     "wait": 1,
-    "attack": 5,
-    "health": 12,
+    "attack": 2,
+    "health": 9,
     "rarity": "uncommon",
     "species": [
       "Mustelid"
@@ -8057,12 +8057,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mw",
-    "poolSlot": "skirmish",
-    "numericId": 9501,
+    "numericId": 1269,
     "uuid": "39db673f-a0bd-570d-95c5-79141b3c626a",
-    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Hunter 2 (Poisoned): a swamp predator for Swamp Fever and the Poison decks of Gatorback Swamp (5). Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 2 (hunter 2); 2A+H+S = 24 < 30.5 and A*H+S = 62 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase)."
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Hunter 2 (Poisoned): a swamp predator for Swamp Fever and the Poison decks of Gatorback Swamp (5). Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 2 (hunter 2); 2A+H+S = 24 < 30.5 and A*H+S = 62 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase). 2026-10-19 (package TH): measured before placing it, 100% at 5/12 (over the uncommon band 45-68%); now 2/9: Measured 55% over 120 games (card_balance.js yardstick). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9501) as the 5-5 reward: GI: Hunter (Poisoned) beside the gators and vipers.",
+    "source": {
+      "kind": "map",
+      "id": "mw",
+      "node": "5-5"
+    }
   },
   {
     "id": "tidepool-trapper-crab",
@@ -8070,7 +8072,7 @@
     "icon": "\ud83e\udd80",
     "cost": 0,
     "wait": 0,
-    "attack": 3,
+    "attack": 1,
     "health": 9,
     "rarity": "common",
     "species": [
@@ -8090,12 +8092,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mb",
-    "poolSlot": "skirmish",
-    "numericId": 9502,
+    "numericId": 1249,
     "uuid": "4871a2a6-501e-5fc8-985c-3594970ceac9",
-    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Hunter 1 (Wet) on Crab Claws: the \"Crab Trap\" idea as data, no new rule. Pebble Beach (2) Flood fights. Budget v3 at Level 1, common, Wait 0, Lumber 0: N = 23; S = 1 (hunter 1, hunterVs 0, crabClaws 0); 2A+H+S = 16 < 23 and A*H+S = 28 < (N/3)^2 = 58.78. Not measured in fights yet (the balance phase)."
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Hunter 1 (Wet) on Crab Claws: the \"Crab Trap\" idea as data, no new rule. Pebble Beach (2) Flood fights. Budget v3 at Level 1, common, Wait 0, Lumber 0: N = 23; S = 1 (hunter 1, hunterVs 0, crabClaws 0); 2A+H+S = 16 < 23 and A*H+S = 28 < (N/3)^2 = 58.78. Not measured in fights yet (the balance phase). 2026-10-19 (package TH): measured before placing it, 100% at 3/9 (over the common band 35-60%); now 1/9: Measured 54.2% over 120 games (card_balance.js yardstick). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9502) as the 2-3 reward: package GI's Crab Trap (Hunter vs Wet) on the Tide beach, with the hermit crabs.",
+    "source": {
+      "kind": "map",
+      "id": "mb",
+      "node": "2-3"
+    }
   },
   {
     "id": "grave-grin-hyena",
@@ -8103,8 +8107,8 @@
     "icon": "\ud83d\udc15",
     "cost": 0,
     "wait": 1,
-    "attack": 5,
-    "health": 13,
+    "attack": 2,
+    "health": 9,
     "rarity": "uncommon",
     "species": [
       "Hyaenid"
@@ -8121,12 +8125,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m5",
-    "poolSlot": "skirmish",
-    "numericId": 9503,
+    "numericId": 1316,
     "uuid": "0f2d2da5-dabe-5029-9eca-757151139368",
-    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Executioner 2: a finisher for Savanna Reaches (14); pairs with Bleed and Poison now that they fade. Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 2 (executioner 2); 2A+H+S = 25 < 30.5 and A*H+S = 67 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase)."
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Executioner 2: a finisher for Savanna Reaches (14); pairs with Bleed and Poison now that they fade. Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 2 (executioner 2); 2A+H+S = 25 < 30.5 and A*H+S = 67 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase). 2026-10-19 (package TH): measured before placing it, 100% at 5/13 (over the uncommon band 45-68%); now 2/9: Measured 58.3% over 120 games (card_balance.js yardstick). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9503) as the 14-2 reward: GI: Executioner, in the Hyena Chorus (Savanna Reaches).",
+    "source": {
+      "kind": "map",
+      "id": "m5",
+      "node": "14-2"
+    }
   },
   {
     "id": "bogfire-newt",
@@ -8134,7 +8140,7 @@
     "icon": "\ud83e\udd8e",
     "cost": 0,
     "wait": 1,
-    "attack": 4,
+    "attack": 1,
     "health": 13,
     "rarity": "uncommon",
     "species": [
@@ -8154,12 +8160,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m8",
-    "poolSlot": "skirmish",
-    "numericId": 9504,
+    "numericId": 1275,
     "uuid": "0cc09502-0acd-5d97-8c3e-aa9c0c07504d",
-    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Poison 1 + Detonate: each hit cashes in the Poison already there, then adds 1. Sable Swampmire (6). Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 2 (poison 1, detonate 1); 2A+H+S = 23 < 30.5 and A*H+S = 54 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase)."
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Poison 1 + Detonate: each hit cashes in the Poison already there, then adds 1. Sable Swampmire (6). Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 2 (poison 1, detonate 1); 2A+H+S = 23 < 30.5 and A*H+S = 54 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase). 2026-10-19 (package TH): measured before placing it, 100% at 4/13 (over the uncommon band 45-68%); now 1/13: Measured 60.8% over 120 games (card_balance.js yardstick). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9504) as the 6-5 reward: GI: Detonate on the Venomlord's poison.",
+    "source": {
+      "kind": "map",
+      "id": "m8",
+      "node": "6-5"
+    }
   },
   {
     "id": "plague-gnat-cloud",
@@ -8167,7 +8175,7 @@
     "icon": "\ud83e\udd9f",
     "cost": 0,
     "wait": 1,
-    "attack": 3,
+    "attack": 1,
     "health": 12,
     "rarity": "common",
     "species": [
@@ -8186,12 +8194,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mw",
-    "poolSlot": "skirmish",
-    "numericId": 9505,
+    "numericId": 1266,
     "uuid": "98f6c68c-7348-59b0-935c-d221b19d250d",
-    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Proliferate 1: Poison jumps along the enemy row. Gatorback Swamp (5), with Swamp Fever. Budget v3 at Level 1, common, Wait 1, Lumber 0: N = 29.5; S = 2 (proliferate 2); 2A+H+S = 20 < 29.5 and A*H+S = 38 < (N/3)^2 = 96.69. Not measured in fights yet (the balance phase)."
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Proliferate 1: Poison jumps along the enemy row. Gatorback Swamp (5), with Swamp Fever. Budget v3 at Level 1, common, Wait 1, Lumber 0: N = 29.5; S = 2 (proliferate 2); 2A+H+S = 20 < 29.5 and A*H+S = 38 < (N/3)^2 = 96.69. Not measured in fights yet (the balance phase). 2026-10-19 (package TH): measured before placing it, 99.2% at 3/12 (over the common band 35-60%); now 1/12: Measured 45% over 120 games (card_balance.js yardstick). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9505) as the 5-1 reward: GI: Proliferate with Swamp Fever and the leeches.",
+    "source": {
+      "kind": "map",
+      "id": "mw",
+      "node": "5-1"
+    }
   },
   {
     "id": "glasswing-moth",
@@ -8199,8 +8209,8 @@
     "icon": "\ud83e\udd8b",
     "cost": 0,
     "wait": 0,
-    "attack": 3,
-    "health": 9,
+    "attack": 2,
+    "health": 6,
     "rarity": "common",
     "species": [
       "Insect"
@@ -8218,12 +8228,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "md",
-    "poolSlot": "skirmish",
-    "numericId": 9506,
+    "numericId": 1317,
     "uuid": "fa87516a-72d7-5ee4-a319-c7c7577b2beb",
-    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Brittle 2: gives Shatter a desert job (the Glass Dunes, 18), next to the Glass-storm. Budget v3 at Level 1, common, Wait 0, Lumber 0: N = 23; S = 1 (brittle 1); 2A+H+S = 16 < 23 and A*H+S = 28 < (N/3)^2 = 58.78. Not measured in fights yet (the balance phase)."
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Brittle 2: gives Shatter a desert job (the Glass Dunes, 18), next to the Glass-storm. Budget v3 at Level 1, common, Wait 0, Lumber 0: N = 23; S = 1 (brittle 1); 2A+H+S = 16 < 23 and A*H+S = 28 < (N/3)^2 = 58.78. Not measured in fights yet (the balance phase). 2026-10-19 (package TH): measured before placing it, 100% at 3/9 (over the common band 35-60%); now 2/6: Measured 50.8% over 120 games (card_balance.js yardstick). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9506) as the 18-5 reward: GI: Brittle beside the Obsidian Scorpions and the Glass-storm (Glass job for Shatter).",
+    "source": {
+      "kind": "map",
+      "id": "md",
+      "node": "18-5"
+    }
   },
   {
     "id": "rivergate-drummer",
@@ -8231,8 +8243,8 @@
     "icon": "\ud83e\udda6",
     "cost": 0,
     "wait": 1,
-    "attack": 3,
-    "health": 13,
+    "attack": 1,
+    "health": 7,
     "rarity": "uncommon",
     "species": [
       "Mustelid"
@@ -8250,12 +8262,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mf",
-    "poolSlot": "skirmish",
-    "numericId": 9507,
+    "numericId": 1243,
     "uuid": "cdb984bb-d883-52f4-8148-ba9a0eb7fa0f",
-    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Kin Rally 1: every Otter (or River unit) you play after it lands +1/+1. Thistlewood (1), an Otter map. Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 3.75 (kinRally 3.75); 2A+H+S = 22.75 < 30.5 and A*H+S = 42.75 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase)."
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Kin Rally 1: every Otter (or River unit) you play after it lands +1/+1. Thistlewood (1), an Otter map. Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 3.75 (kinRally 3.75); 2A+H+S = 22.75 < 30.5 and A*H+S = 42.75 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase). 2026-10-19 (package TH): measured before placing it, 100% at 3/13 (over the uncommon band 45-68%); now 1/7: Measured 60.8% over 120 games (card_balance.js yardstick). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9507) as the 1-3 reward: package GI's Kin Rally Otter, on the Otter road (GI note: Thistlewood).",
+    "source": {
+      "kind": "map",
+      "id": "mf",
+      "node": "1-3"
+    }
   },
   {
     "id": "frostmoon-howler",
@@ -8263,8 +8277,8 @@
     "icon": "\ud83d\udc3a",
     "cost": 0,
     "wait": 1,
-    "attack": 4,
-    "health": 13,
+    "attack": 2,
+    "health": 9,
     "rarity": "rare",
     "species": [
       "Canid"
@@ -8282,12 +8296,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m6",
-    "poolSlot": "skirmish",
-    "numericId": 9508,
+    "numericId": 1320,
     "uuid": "d3761752-39c2-53e6-8be8-8be15738a8d2",
-    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Pack Howl 1: gives Wolfsbane Tundra (17) its wolf identity; each Wolf you play makes its foe Bleed 1. Budget v3 at Level 1, rare, Wait 1, Lumber 0: N = 31.5; S = 2.5 (packHowl 2.5); 2A+H+S = 23.5 < 31.5 and A*H+S = 54.5 < (N/3)^2 = 110.25. Not measured in fights yet (the balance phase)."
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Pack Howl 1: gives Wolfsbane Tundra (17) its wolf identity; each Wolf you play makes its foe Bleed 1. Budget v3 at Level 1, rare, Wait 1, Lumber 0: N = 31.5; S = 2.5 (packHowl 2.5); 2A+H+S = 23.5 < 31.5 and A*H+S = 54.5 < (N/3)^2 = 110.25. Not measured in fights yet (the balance phase). 2026-10-19 (package TH): measured before placing it, 100% at 4/13 (over the rare band 52-75%); now 2/9: Measured 69.2% over 120 games (card_balance.js yardstick). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9508) as the 17-7 reward: GI: Pack Howl, the wolves' identity, at the Alpha Howler's Den.",
+    "source": {
+      "kind": "map",
+      "id": "m6",
+      "node": "17-7"
+    }
   },
   {
     "id": "chapel-tortoise",
@@ -8295,7 +8311,7 @@
     "icon": "\ud83d\udc22",
     "cost": 0,
     "wait": 1,
-    "attack": 2,
+    "attack": 1,
     "health": 18,
     "rarity": "uncommon",
     "species": [
@@ -8315,13 +8331,15 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m21",
-    "poolSlot": "skirmish",
-    "numericId": 9509,
+    "numericId": 1318,
     "uuid": "570ff76e-6191-5bc8-a87c-06a47452144f",
     "mechanicLine": "grace",
-    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Prayer 1 + Prayer Ward 1: the Prayer Bastion idea; a wall that keeps its tokens. The Quiet Summit (21). Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 1.75 (prayer 1, prayerWard 0.75); 2A+H+S = 23.75 < 30.5 and A*H+S = 37.75 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase)."
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Prayer 1 + Prayer Ward 1: the Prayer Bastion idea; a wall that keeps its tokens. The Quiet Summit (21). Budget v3 at Level 1, uncommon, Wait 1, Lumber 0: N = 30.5; S = 1.75 (prayer 1, prayerWard 0.75); 2A+H+S = 23.75 < 30.5 and A*H+S = 37.75 < (N/3)^2 = 103.36. Not measured in fights yet (the balance phase). 2026-10-19 (package TH): measured before placing it, 98.3% at 2/18 (over the uncommon band 45-68%); now 1/18: Measured 60.8% over 120 games (card_balance.js yardstick). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9509) as the 21-3 reward: GI: Prayer Bastion on the Quiet Summit (the Cathedral Eagle's Worship is two fights on).",
+    "source": {
+      "kind": "map",
+      "id": "m21",
+      "node": "21-3"
+    }
   },
   {
     "id": "weathervane-swift",
@@ -8329,8 +8347,8 @@
     "icon": "\ud83d\udc26",
     "cost": 1,
     "wait": 1,
-    "attack": 5,
-    "health": 14,
+    "attack": 4,
+    "health": 9,
     "rarity": "rare",
     "species": [
       "Bird"
@@ -8347,12 +8365,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m22",
-    "poolSlot": "skirmish",
-    "numericId": 9510,
+    "numericId": 1319,
     "uuid": "d384dd29-3204-5907-b60c-62e74f3e85fe",
-    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Field Breaker 2: counterplay to the heaviest field maps; the Rimefire Caldera (22) has seven fields in eight fights. Budget v3 at Level 1, rare, Wait 1, Lumber 1: N = 35.9; S = 2 (fieldBreaker 2); 2A+H+S = 26 < 35.9 and A*H+S = 72 < (N/3)^2 = 143.2. Not measured in fights yet (the balance phase)."
+    "creatorNote": "2026-10-19 (package GI, owner 00:19: \"After running through the ideas, create what you want to create\"): POOL example for a new skill (docs/gameplay-ideas-built-2026-10-19.md), not live until placed from Admin's Pool cards filter. Field Breaker 2: counterplay to the heaviest field maps; the Rimefire Caldera (22) has seven fields in eight fights. Budget v3 at Level 1, rare, Wait 1, Lumber 1: N = 35.9; S = 2 (fieldBreaker 2); 2A+H+S = 26 < 35.9 and A*H+S = 72 < (N/3)^2 = 143.2. Not measured in fights yet (the balance phase). 2026-10-19 (package TH): measured before placing it, 88.3% at 5/14 (over the rare band 52-75%); now 4/9: Measured 59.2% over 120 games (card_balance.js yardstick). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9510) as the 22-7 reward: GI: Field Breaker as a late reward on the heaviest field fight (Heatwave + Hail).",
+    "source": {
+      "kind": "map",
+      "id": "m22",
+      "node": "22-7"
+    }
   },
   {
     "id": "otter-kit",
@@ -26945,12 +26965,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m1",
-    "poolSlot": "skirmish",
-    "numericId": 9001,
+    "numericId": 1235,
     "uuid": "a9ef1ebf-85c9-579f-a5b6-2c5b69731fab",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the bank vole that plops into the river (Evasive) and swims (Tide). Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (tide 1, evasive 0); 2A+H+S = 2 + 6 + 1 (x1.5 half-miss) = 13.5 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 39.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the bank vole that plops into the river (Evasive) and swims (Tide). Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (tide 1, evasive 0); 2A+H+S = 2 + 6 + 1 (x1.5 half-miss) = 13.5 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 39.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9001) as the 0-1 reward: the river bank vole on the Otter Patrol.",
+    "source": {
+      "kind": "map",
+      "id": "m1",
+      "node": "0-1"
+    }
   },
   {
     "id": "river-mink",
@@ -26978,12 +27000,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m1",
-    "poolSlot": "skirmish",
-    "numericId": 9002,
+    "numericId": 1236,
     "uuid": "5e377d8d-fd60-5a85-99cb-51b86709db5d",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: a small fierce mustelid that swims (Tide) and lunges at what it sees (Pounce 2). Not an Otter-faction card. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, pounce 2); 2A+H+S = 8 + 6 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 45% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: a small fierce mustelid that swims (Tide) and lunges at what it sees (Pounce 2). Not an Otter-faction card. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, pounce 2); 2A+H+S = 8 + 6 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 45% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9002) as the 0-2 reward: a hedge-and-river raider for the fight that had no reward.",
+    "source": {
+      "kind": "map",
+      "id": "m1",
+      "node": "0-2"
+    }
   },
   {
     "id": "signal-crayfish",
@@ -27010,12 +27034,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m1",
-    "poolSlot": "pack",
-    "numericId": 9003,
+    "numericId": 1239,
     "uuid": "5c967e07-3ed2-5876-ac39-a4016b123459",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a pack card), not live until placed from Admin's Pool cards filter. The invasive river crayfish with white claw patches: a shell (Armor 1) and pinching claws (Crab Claws). Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (armor 1, crabClaws 0); 2A+H+S = 4 + 12 + 1 = 17 < 33.9 and A*H+S = 24 + 1 = 25 < (N/3)^2 = 127.69. Measured 41.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a pack card), not live until placed from Admin's Pool cards filter. The invasive river crayfish with white claw patches: a shell (Armor 1) and pinching claws (Crab Claws). Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (armor 1, crabClaws 0); 2A+H+S = 4 + 12 + 1 = 17 < 33.9 and A*H+S = 24 + 1 = 25 < (N/3)^2 = 127.69. Measured 41.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9003) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "pine-marten",
@@ -27042,12 +27067,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m1",
-    "poolSlot": "skirmish",
-    "numericId": 9004,
+    "numericId": 1238,
     "uuid": "f266fe8c-3be2-5220-aac3-fdbc93e2a39f",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The squirrel hunter that runs down trunks: Quick, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (quick 2, pounce 2); 2A+H+S = 6 + 8 + 4 = 18 < 35.9 and A*H+S = 24 + 4 = 28 < (N/3)^2 = 143.2. Measured 55.8% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The squirrel hunter that runs down trunks: Quick, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (quick 2, pounce 2); 2A+H+S = 6 + 8 + 4 = 18 < 35.9 and A*H+S = 24 + 4 = 28 < (N/3)^2 = 143.2. Measured 55.8% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9004) as the 0-3 reward: the chipmunk hunter, beside the Chipmunk Cavalry reward.",
+    "source": {
+      "kind": "map",
+      "id": "m1",
+      "node": "0-3"
+    }
   },
   {
     "id": "woodcock-lookout",
@@ -27075,12 +27102,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m1",
-    "poolSlot": "pack",
-    "numericId": 9005,
+    "numericId": 1240,
     "uuid": "566ec1aa-702c-55ed-8d7f-a27ffab0a315",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a pack card), not live until placed from Admin's Pool cards filter. All-round eyes, out at dusk: Crepuscular 1 and Keen Eye. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (crepuscular 1, keenEye 1); 2A+H+S = 4 + 7 + 2 = 13 < 29.5 and A*H+S = 14 + 2 = 16 < (N/3)^2 = 96.69. Measured 41.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a pack card), not live until placed from Admin's Pool cards filter. All-round eyes, out at dusk: Crepuscular 1 and Keen Eye. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (crepuscular 1, keenEye 1); 2A+H+S = 4 + 7 + 2 = 13 < 29.5 and A*H+S = 14 + 2 = 16 < (N/3)^2 = 96.69. Measured 41.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9005) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "grass-snake",
@@ -27108,12 +27136,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m1",
-    "poolSlot": "skirmish",
-    "numericId": 9006,
+    "numericId": 1237,
     "uuid": "882ad8ba-82ec-5339-afe8-a6bb667df74a",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Britain's swimming snake that plays dead: Tide, and Revive (the first time it dies it comes back with 1 Health). Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (tide 1, revive 1); 2A+H+S = 6 + 8 + 2 = 16 < 34.9 and A*H+S = 24 + 2 = 26 < (N/3)^2 = 135.33. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Britain's swimming snake that plays dead: Tide, and Revive (the first time it dies it comes back with 1 Health). Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (tide 1, revive 1); 2A+H+S = 6 + 8 + 2 = 16 < 34.9 and A*H+S = 24 + 2 = 26 < (N/3)^2 = 135.33. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9006) as the 0-2 reward: the swimming snake that plays dead, in the ambush.",
+    "source": {
+      "kind": "map",
+      "id": "m1",
+      "node": "0-2"
+    }
   },
   {
     "id": "ladybird-guard",
@@ -27140,12 +27170,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mf",
-    "poolSlot": "skirmish",
-    "numericId": 9007,
+    "numericId": 1242,
     "uuid": "db34b7c7-0f2e-5a59-bcfa-013b8ea4ab54",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Warning colours that protect the row: Guardian. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (guardian 1); 2A+H+S = 2 + 6 + 1 = 9 < 23 and A*H+S = 6 + 1 = 7 < (N/3)^2 = 58.78. Measured 44.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Warning colours that protect the row: Guardian. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (guardian 1); 2A+H+S = 2 + 6 + 1 = 9 < 23 and A*H+S = 6 + 1 = 7 < (N/3)^2 = 58.78. Measured 44.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9007) as the 1-2 reward: an insect for the Cricket Chorus.",
+    "source": {
+      "kind": "map",
+      "id": "mf",
+      "node": "1-2"
+    }
   },
   {
     "id": "hedgerow-shrew",
@@ -27171,12 +27203,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mf",
-    "poolSlot": "pack",
-    "numericId": 9008,
+    "numericId": 1245,
     "uuid": "f08aed2d-44f6-5cc7-b8d6-f3a3ac7f2fbd",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a pack card), not live until placed from Admin's Pool cards filter. Always in a hurry: Quick. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (quick 2); 2A+H+S = 4 + 3 + 2 = 9 < 23 and A*H+S = 6 + 2 = 8 < (N/3)^2 = 58.78. Measured 40.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a pack card), not live until placed from Admin's Pool cards filter. Always in a hurry: Quick. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (quick 2); 2A+H+S = 4 + 3 + 2 = 9 < 23 and A*H+S = 6 + 2 = 8 < (N/3)^2 = 58.78. Measured 40.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9008) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "stag-beetle",
@@ -27205,12 +27238,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mf",
-    "poolSlot": "skirmish",
-    "numericId": 9009,
+    "numericId": 1244,
     "uuid": "9bd32ca7-7a66-58f3-90a3-6ce07d3f5bf6",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Antler jaws for wrestling: Armor 1, Cleave (Sweep) 1. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 2 (armor 1, sweep 1); 2A+H+S = 8 + 10 + 2 = 20 < 43.4 and A*H+S = 40 + 2 = 42 < (N/3)^2 = 209.28. Measured 67.5% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Antler jaws for wrestling: Armor 1, Cleave (Sweep) 1. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 2 (armor 1, sweep 1); 2A+H+S = 8 + 10 + 2 = 20 < 43.4 and A*H+S = 40 + 2 = 42 < (N/3)^2 = 209.28. Measured 67.5% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9009) as the 1-5 reward: the Thistle Baron's beetle: it fights in his deck too.",
+    "source": {
+      "kind": "map",
+      "id": "mf",
+      "node": "1-5"
+    }
   },
   {
     "id": "slow-worm",
@@ -27237,12 +27272,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mf",
-    "poolSlot": "pack",
-    "numericId": 9010,
+    "numericId": 1246,
     "uuid": "5e3787c8-9f66-5b83-ac9d-0c44fe223054",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a pack card), not live until placed from Admin's Pool cards filter. The legless lizard that drops its tail: Revive (comes back once with 1 Health). Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 1 (revive 1); 2A+H+S = 4 + 5 + 1 = 10 < 29.5 and A*H+S = 10 + 1 = 11 < (N/3)^2 = 96.69. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a pack card), not live until placed from Admin's Pool cards filter. The legless lizard that drops its tail: Revive (comes back once with 1 Health). Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 1 (revive 1); 2A+H+S = 4 + 5 + 1 = 10 < 29.5 and A*H+S = 10 + 1 = 11 < (N/3)^2 = 96.69. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9010) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "robin-redbreast",
@@ -27270,12 +27306,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mf",
-    "poolSlot": "skirmish",
-    "numericId": 9011,
+    "numericId": 1241,
     "uuid": "205ccef3-5af1-5910-a06d-8bba4a114055",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The fierce garden robin: Flying, Diurnal. Budget v3 at Level 1, Uncommon, Wait 0, Lumber 0: N = 20 + 2 + 2 + 0 + 0 + 0 + 0 = 24; S = 1 (flying 0, diurnal 1); 2A+H+S = 2 + 3 + 1 (x1.5 half-miss) = 9 < 24 and A*H+S = 3 + 1 (x1.5 half-miss) = 6 < (N/3)^2 = 64. Measured 52.5% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The fierce garden robin: Flying, Diurnal. Budget v3 at Level 1, Uncommon, Wait 0, Lumber 0: N = 20 + 2 + 2 + 0 + 0 + 0 + 0 = 24; S = 1 (flying 0, diurnal 1); 2A+H+S = 2 + 3 + 1 (x1.5 half-miss) = 9 < 24 and A*H+S = 3 + 1 (x1.5 half-miss) = 6 < (N/3)^2 = 64. Measured 52.5% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9011) as the 1-1 reward: the garden robin with the hedgerow scouts.",
+    "source": {
+      "kind": "map",
+      "id": "mf",
+      "node": "1-1"
+    }
   },
   {
     "id": "field-vole",
@@ -27302,12 +27340,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mf",
-    "poolSlot": "pack",
-    "numericId": 9012,
+    "numericId": 1247,
     "uuid": "e97fa09d-52ed-57b4-ab7f-bc080b1f9b0d",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a pack card), not live until placed from Admin's Pool cards filter. Never just one: Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (swarm 1); 2A+H+S = 2 + 5 + 1 = 8 < 23 and A*H+S = 5 + 1 = 6 < (N/3)^2 = 58.78. Measured 42.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a pack card), not live until placed from Admin's Pool cards filter. Never just one: Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (swarm 1); 2A+H+S = 2 + 5 + 1 = 8 < 23 and A*H+S = 5 + 1 = 6 < (N/3)^2 = 58.78. Measured 42.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9012) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "pincushion-urchin",
@@ -27335,12 +27374,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mb",
-    "poolSlot": "skirmish",
-    "numericId": 9013,
+    "numericId": 1248,
     "uuid": "d0ae7718-708d-550e-a84f-2390425e7be6",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner's example (\"pin cushions (uni = sea urchins)\"): a spiny rock-pool urchin, Thorns 2 and Tide. No urchin emoji exists: the spiky chestnut \ud83c\udf30 stands in. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 3 (thorns 2, tide 1); 2A+H+S = 2 + 6 + 3 = 11 < 29.5 and A*H+S = 6 + 3 = 9 < (N/3)^2 = 96.69. Measured 50.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner's example (\"pin cushions (uni = sea urchins)\"): a spiny rock-pool urchin, Thorns 2 and Tide. No urchin emoji exists: the spiky chestnut \ud83c\udf30 stands in. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 3 (thorns 2, tide 1); 2A+H+S = 2 + 6 + 3 = 11 < 29.5 and A*H+S = 6 + 3 = 9 < (N/3)^2 = 96.69. Measured 50.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9013) as the 2-1 reward: owner's example (sea urchin), in the rock pools.",
+    "source": {
+      "kind": "map",
+      "id": "mb",
+      "node": "2-1"
+    }
   },
   {
     "id": "rock-pool-starfish",
@@ -27367,12 +27408,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mb",
-    "poolSlot": "pack",
-    "numericId": 9014,
+    "numericId": 1251,
     "uuid": "477bd3ff-7c8e-5717-854c-9e0ab197c927",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a pack card), not live until placed from Admin's Pool cards filter. Regrows its arms: Regen 2, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 3 (regen 2, tide 1); 2A+H+S = 2 + 9 + 3 = 14 < 29.5 and A*H+S = 9 + 3 = 12 < (N/3)^2 = 96.69. Measured 53.3% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a pack card), not live until placed from Admin's Pool cards filter. Regrows its arms: Regen 2, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 3 (regen 2, tide 1); 2A+H+S = 2 + 9 + 3 = 14 < 29.5 and A*H+S = 9 + 3 = 12 < (N/3)^2 = 96.69. Measured 53.3% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9014) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "oystercatcher",
@@ -27400,12 +27442,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mb",
-    "poolSlot": "pack",
-    "numericId": 9015,
+    "numericId": 1252,
     "uuid": "6ee424a3-3ff4-59ff-bd96-eb7b00719dcc",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a pack card), not live until placed from Admin's Pool cards filter. The shell-opening bill: Flying, Pierce 2 (ignores 2 Armor). Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (flying 0, pierce 2); 2A+H+S = 6 + 6 + 2 (x1.5 half-miss) = 21 < 33.9 and A*H+S = 18 + 2 (x1.5 half-miss) = 30 < (N/3)^2 = 127.69. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a pack card), not live until placed from Admin's Pool cards filter. The shell-opening bill: Flying, Pierce 2 (ignores 2 Armor). Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (flying 0, pierce 2); 2A+H+S = 6 + 6 + 2 (x1.5 half-miss) = 21 < 33.9 and A*H+S = 18 + 2 (x1.5 half-miss) = 30 < (N/3)^2 = 127.69. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9015) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "sanderling",
@@ -27466,12 +27509,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mb",
-    "poolSlot": "skirmish",
-    "numericId": 9017,
+    "numericId": 1250,
     "uuid": "3ae8afe7-97e4-57ce-9afd-33d6f7e51243",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the big bull guarding his pups on the shingle: Tide, Guardian. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 2 (tide 1, guardian 1); 2A+H+S = 10 + 16 + 2 = 28 < 43.4 and A*H+S = 80 + 2 = 82 < (N/3)^2 = 209.28. Measured 67.5% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the big bull guarding his pups on the shingle: Tide, Guardian. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 2 (tide 1, guardian 1); 2A+H+S = 10 + 16 + 2 = 28 < 43.4 and A*H+S = 80 + 2 = 82 < (N/3)^2 = 209.28. Measured 67.5% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9017) as the 2-5 reward: the bull guarding the shingle, The Old Shell's guard.",
+    "source": {
+      "kind": "map",
+      "id": "mb",
+      "node": "2-5"
+    }
   },
   {
     "id": "limpet-clinger",
@@ -27498,12 +27543,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mb",
-    "poolSlot": "pack",
-    "numericId": 9018,
+    "numericId": 1253,
     "uuid": "e653ee01-c28c-5dba-b573-53af9b6c4c3b",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a pack card), not live until placed from Admin's Pool cards filter. Clamps down: Shell 2, Tide. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 3 (shell 2, tide 1); 2A+H+S = 2 + 8 + 3 = 13 < 23 and A*H+S = 8 + 3 = 11 < (N/3)^2 = 58.78. Measured 44.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a pack card), not live until placed from Admin's Pool cards filter. Clamps down: Shell 2, Tide. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 3 (shell 2, tide 1); 2A+H+S = 2 + 8 + 3 = 13 < 23 and A*H+S = 8 + 3 = 11 < (N/3)^2 = 58.78. Measured 44.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9018) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "puffin-diver",
@@ -27531,12 +27577,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mc",
-    "poolSlot": "skirmish",
-    "numericId": 9019,
+    "numericId": 1254,
     "uuid": "5164c49e-b2e1-59b3-a65a-71781546537e",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The sea parrot (\ud83e\udd9c) that flies and dives: Flying, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (flying 0, tide 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 33.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 127.69. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The sea parrot (\ud83e\udd9c) that flies and dives: Flying, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (flying 0, tide 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 33.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 127.69. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9019) as the 3-2 reward: the cliff's sea parrot.",
+    "source": {
+      "kind": "map",
+      "id": "mc",
+      "node": "3-2"
+    }
   },
   {
     "id": "razorbill",
@@ -27564,12 +27612,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mc",
-    "poolSlot": "pack",
-    "numericId": 9020,
+    "numericId": 1257,
     "uuid": "0b4118ef-89d3-54dc-94fa-ec0ab2c5c777",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a pack card), not live until placed from Admin's Pool cards filter. A bill like a razor: Flying, Bleed 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (flying 0, bleed 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 34.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 135.33. Measured 66.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a pack card), not live until placed from Admin's Pool cards filter. A bill like a razor: Flying, Bleed 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (flying 0, bleed 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 34.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 135.33. Measured 66.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9020) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "kittiwake-flock",
@@ -27597,12 +27646,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mc",
-    "poolSlot": "pack",
-    "numericId": 9021,
+    "numericId": 1258,
     "uuid": "64e13e5a-ccc4-5d84-b925-96c61d52b77f",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a pack card), not live until placed from Admin's Pool cards filter. A colony of gulls: Flying, Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (flying 0, swarm 1); 2A+H+S = 2 + 3 + 1 (x1.5 half-miss) = 9 < 23 and A*H+S = 3 + 1 (x1.5 half-miss) = 6 < (N/3)^2 = 58.78. Measured 45.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a pack card), not live until placed from Admin's Pool cards filter. A colony of gulls: Flying, Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (flying 0, swarm 1); 2A+H+S = 2 + 3 + 1 (x1.5 half-miss) = 9 < 23 and A*H+S = 3 + 1 (x1.5 half-miss) = 6 < (N/3)^2 = 58.78. Measured 45.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9021) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "peregrine-stooper",
@@ -27631,12 +27681,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mc",
-    "poolSlot": "skirmish",
-    "numericId": 9022,
+    "numericId": 1256,
     "uuid": "f958e8b2-b201-5fdc-8ca3-8441a9148fc6",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The fastest dive alive: Flying, Quick, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (flying 0, quick 2, pounce 2); 2A+H+S = 4 + 6 + 4 (x1.5 half-miss) = 21 < 35.9 and A*H+S = 12 + 4 (x1.5 half-miss) = 24 < (N/3)^2 = 143.2. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The fastest dive alive: Flying, Quick, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (flying 0, quick 2, pounce 2); 2A+H+S = 4 + 6 + 4 (x1.5 half-miss) = 21 < 35.9 and A*H+S = 12 + 4 (x1.5 half-miss) = 24 < (N/3)^2 = 143.2. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9022) as the 3-5 reward: the stoop itself (Eagle Stoop).",
+    "source": {
+      "kind": "map",
+      "id": "mc",
+      "node": "3-5"
+    }
   },
   {
     "id": "fulmar-spitter",
@@ -27664,12 +27716,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mc",
-    "poolSlot": "skirmish",
-    "numericId": 9023,
+    "numericId": 1255,
     "uuid": "1f8d5b6d-20b7-5b4f-9c4f-16b6e77898e2",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Spits stinking oil at anything that comes close: Flying, Thorns 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (flying 0, thorns 2); 2A+H+S = 4 + 9 + 2 (x1.5 half-miss) = 22.5 < 34.9 and A*H+S = 18 + 2 (x1.5 half-miss) = 30 < (N/3)^2 = 135.33. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Spits stinking oil at anything that comes close: Flying, Thorns 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (flying 0, thorns 2); 2A+H+S = 4 + 9 + 2 (x1.5 half-miss) = 22.5 < 34.9 and A*H+S = 18 + 2 (x1.5 half-miss) = 30 < (N/3)^2 = 135.33. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9023) as the 3-4 reward: rides the thermals with the condors.",
+    "source": {
+      "kind": "map",
+      "id": "mc",
+      "node": "3-4"
+    }
   },
   {
     "id": "red-billed-chough",
@@ -27698,12 +27752,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mc",
-    "poolSlot": "pack",
-    "numericId": 9024,
+    "numericId": 1259,
     "uuid": "7b8ae60b-1279-59e9-ad4c-0dbd9ab19d98",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a pack card), not live until placed from Admin's Pool cards filter. The cliff-tumbling crow: Flying, Mountain Climber. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 1 (flying 0, mountainClimber 1); 2A+H+S = 4 + 4 + 1 (x1.5 half-miss) = 13.5 < 29.5 and A*H+S = 8 + 1 (x1.5 half-miss) = 13.5 < (N/3)^2 = 96.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a pack card), not live until placed from Admin's Pool cards filter. The cliff-tumbling crow: Flying, Mountain Climber. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 1 (flying 0, mountainClimber 1); 2A+H+S = 4 + 4 + 1 (x1.5 half-miss) = 13.5 < 29.5 and A*H+S = 8 + 1 (x1.5 half-miss) = 13.5 < (N/3)^2 = 96.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9024) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "muskrat-lodgekeeper",
@@ -27731,12 +27786,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m2",
-    "poolSlot": "skirmish",
-    "numericId": 9025,
+    "numericId": 1261,
     "uuid": "221e4b1a-da06-5205-b777-28308920993a",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the reed lodge (Bulwark 1: your bramble takes 1 less per hit), Tide. Budget v3 at Level 1, Uncommon, Wait 2, Lumber 1: N = 20 + 2 + 2 + 12 + 2 + 4 + 0.4 = 42.4; S = 2 (tide 1, bulwark 1); 2A+H+S = 6 + 14 + 2 = 22 < 42.4 and A*H+S = 42 + 2 = 44 < (N/3)^2 = 199.75. Measured 60% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the reed lodge (Bulwark 1: your bramble takes 1 less per hit), Tide. Budget v3 at Level 1, Uncommon, Wait 2, Lumber 1: N = 20 + 2 + 2 + 12 + 2 + 4 + 0.4 = 42.4; S = 2 (tide 1, bulwark 1); 2A+H+S = 6 + 14 + 2 = 22 < 42.4 and A*H+S = 42 + 2 = 44 < (N/3)^2 = 199.75. Measured 60% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9025) as the 4-2 reward: the reed lodge, in the Beaver Builders' place.",
+    "source": {
+      "kind": "map",
+      "id": "m2",
+      "node": "4-2"
+    }
   },
   {
     "id": "water-shrew",
@@ -27763,12 +27820,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m2",
-    "poolSlot": "pack",
-    "numericId": 9026,
+    "numericId": 1263,
     "uuid": "5d411d8a-9de9-51a7-8905-1ac7dd620fb9",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a pack card), not live until placed from Admin's Pool cards filter. Temperate water mammal with a venomous bite: Tide, Venomous 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (tide 1, venomous 1); 2A+H+S = 4 + 4 + 2 = 10 < 23 and A*H+S = 8 + 2 = 10 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a pack card), not live until placed from Admin's Pool cards filter. Temperate water mammal with a venomous bite: Tide, Venomous 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (tide 1, venomous 1); 2A+H+S = 4 + 4 + 2 = 10 < 23 and A*H+S = 8 + 2 = 10 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9026) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "pyrenean-desman",
@@ -27795,12 +27853,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m2",
-    "poolSlot": "skirmish",
-    "numericId": 9027,
+    "numericId": 1260,
     "uuid": "aa470224-1f16-5dc9-a4ff-bd7fc45214b4",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the near-blind trunked swimmer that hunts by touch: Tide, Keen Sense. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 2 (tide 1, keenSense 1); 2A+H+S = 4 + 8 + 2 = 14 < 30.5 and A*H+S = 16 + 2 = 18 < (N/3)^2 = 103.36. Measured 45.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the near-blind trunked swimmer that hunts by touch: Tide, Keen Sense. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 2 (tide 1, keenSense 1); 2A+H+S = 4 + 8 + 2 = 14 < 30.5 and A*H+S = 16 + 2 = 18 < (N/3)^2 = 103.36. Measured 45.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9027) as the 4-1 reward: the trunked swimmer.",
+    "source": {
+      "kind": "map",
+      "id": "m2",
+      "node": "4-1"
+    }
   },
   {
     "id": "great-crested-grebe",
@@ -27828,12 +27888,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m2",
-    "poolSlot": "pack",
-    "numericId": 9028,
+    "numericId": 1264,
     "uuid": "5d9a0994-f772-5edf-9782-900b9f17138d",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a pack card), not live until placed from Admin's Pool cards filter. Sinks instead of flying: Tide, Evasive. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (tide 1, evasive 0); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 33.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 127.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a pack card), not live until placed from Admin's Pool cards filter. Sinks instead of flying: Tide, Evasive. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (tide 1, evasive 0); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 33.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 127.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9028) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "old-sturgeon",
@@ -27861,12 +27922,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m2",
-    "poolSlot": "skirmish",
-    "numericId": 9029,
+    "numericId": 1262,
     "uuid": "6e310d5a-47c4-5ef9-82c2-ee67a0e41afd",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Armoured plates, ancient and slow: Armor 2, Tide, Wait 3. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 3 (armor 2, tide 1); 2A+H+S = 8 + 24 + 3 = 35 < 51.9 and A*H+S = 96 + 3 = 99 < (N/3)^2 = 299.29. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Armoured plates, ancient and slow: Armor 2, Tide, Wait 3. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 3 (armor 2, tide 1); 2A+H+S = 8 + 24 + 3 = 35 < 51.9 and A*H+S = 96 + 3 = 99 < (N/3)^2 = 299.29. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9029) as the 4-4 reward: the ancient fish in the Kraken's Maw.",
+    "source": {
+      "kind": "map",
+      "id": "m2",
+      "node": "4-4"
+    }
   },
   {
     "id": "diving-bell-spider",
@@ -27894,12 +27957,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m2",
-    "poolSlot": "pack",
-    "numericId": 9030,
+    "numericId": 1265,
     "uuid": "b5051f29-9cac-5e23-a102-7cdeac5666f8",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a pack card), not live until placed from Admin's Pool cards filter. Waits in its underwater silk bell: Tide, Ambush 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, ambush 2); 2A+H+S = 8 + 8 + 3 = 19 < 34.9 and A*H+S = 32 + 3 = 35 < (N/3)^2 = 135.33. Measured 61.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a pack card), not live until placed from Admin's Pool cards filter. Waits in its underwater silk bell: Tide, Ambush 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, ambush 2); 2A+H+S = 8 + 8 + 3 = 19 < 34.9 and A*H+S = 32 + 3 = 35 < (N/3)^2 = 135.33. Measured 61.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9030) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "alligator-gar",
@@ -27928,12 +27992,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mw",
-    "poolSlot": "skirmish",
-    "numericId": 9031,
+    "numericId": 1270,
     "uuid": "b74c0fbe-095a-54d6-a6f2-f604d967c2b4",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Armoured scales and a gator's teeth: Tide, Armor 1, Bleed 1. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 3 (tide 1, armor 1, bleed 1); 2A+H+S = 8 + 12 + 3 = 23 < 43.4 and A*H+S = 48 + 3 = 51 < (N/3)^2 = 209.28. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Armoured scales and a gator's teeth: Tide, Armor 1, Bleed 1. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 3 (tide 1, armor 1, bleed 1); 2A+H+S = 8 + 12 + 3 = 23 < 43.4 and A*H+S = 48 + 3 = 51 < (N/3)^2 = 209.28. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9031) as the 5-6 reward: the gator-toothed fish of Behemoth Bog.",
+    "source": {
+      "kind": "map",
+      "id": "mw",
+      "node": "5-6"
+    }
   },
   {
     "id": "swamp-rabbit",
@@ -27961,12 +28027,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mw",
-    "poolSlot": "pack",
-    "numericId": 9032,
+    "numericId": 1271,
     "uuid": "9931e08e-f793-508d-8124-c11e025654be",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a pack card), not live until placed from Admin's Pool cards filter. The rabbit that dives to escape: Tide, Evasive. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (tide 1, evasive 0); 2A+H+S = 4 + 3 + 1 (x1.5 half-miss) = 12 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a pack card), not live until placed from Admin's Pool cards filter. The rabbit that dives to escape: Tide, Evasive. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (tide 1, evasive 0); 2A+H+S = 4 + 3 + 1 (x1.5 half-miss) = 12 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9032) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "mosquito-cloud",
@@ -27994,12 +28061,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mw",
-    "poolSlot": "pack",
-    "numericId": 9033,
+    "numericId": 1272,
     "uuid": "091b7cea-f53d-5caf-92c5-ad1e8082c5b3",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a pack card), not live until placed from Admin's Pool cards filter. A blood tax: Flying, Bleed 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (flying 0, bleed 1); 2A+H+S = 2 + 4 + 1 (x1.5 half-miss) = 10.5 < 23 and A*H+S = 4 + 1 (x1.5 half-miss) = 7.5 < (N/3)^2 = 58.78. Measured 51.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a pack card), not live until placed from Admin's Pool cards filter. A blood tax: Flying, Bleed 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (flying 0, bleed 1); 2A+H+S = 2 + 4 + 1 (x1.5 half-miss) = 10.5 < 23 and A*H+S = 4 + 1 (x1.5 half-miss) = 7.5 < (N/3)^2 = 58.78. Measured 51.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9033) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "fire-ant-raft",
@@ -28029,12 +28097,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mw",
-    "poolSlot": "skirmish",
-    "numericId": 9034,
+    "numericId": 1268,
     "uuid": "8f0b809b-9c83-5599-a6bd-46803e327235",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The floating colony that stings: Tide, Poison 1, Swarm. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, poison 1, swarm 1); 2A+H+S = 6 + 12 + 3 = 21 < 34.9 and A*H+S = 36 + 3 = 39 < (N/3)^2 = 135.33. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The floating colony that stings: Tide, Poison 1, Swarm. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, poison 1, swarm 1); 2A+H+S = 6 + 12 + 3 = 21 < 34.9 and A*H+S = 36 + 3 = 39 < (N/3)^2 = 135.33. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9034) as the 5-3 reward: the floating colony in the cypress roots.",
+    "source": {
+      "kind": "map",
+      "id": "mw",
+      "node": "5-3"
+    }
   },
   {
     "id": "anhinga-spearbird",
@@ -28062,12 +28132,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mw",
-    "poolSlot": "skirmish",
-    "numericId": 9035,
+    "numericId": 1267,
     "uuid": "839b18f2-10b4-5728-9762-9c01a1720207",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The snakebird that swims and spears: Tide, Pounce 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, pounce 2); 2A+H+S = 8 + 6 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 45% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The snakebird that swims and spears: Tide, Pounce 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, pounce 2); 2A+H+S = 8 + 6 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 45% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9035) as the 5-2 reward: the snakebird of Toad Hollow.",
+    "source": {
+      "kind": "map",
+      "id": "mw",
+      "node": "5-2"
+    }
   },
   {
     "id": "roseate-spoonbill",
@@ -28128,12 +28200,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m8",
-    "poolSlot": "skirmish",
-    "numericId": 9037,
+    "numericId": 1274,
     "uuid": "537c92f8-63ce-5a98-b8b0-71faab3be884",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Hides frozen in the reeds (Invisible 2) and booms (Daunt 1). Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (invisible 2, daunt 1); 2A+H+S = 6 + 8 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 65% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Hides frozen in the reeds (Invisible 2) and booms (Daunt 1). Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (invisible 2, daunt 1); 2A+H+S = 6 + 8 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 65% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9037) as the 6-4 reward: the reed-hider of the Root Snare.",
+    "source": {
+      "kind": "map",
+      "id": "m8",
+      "node": "6-4"
+    }
   },
   {
     "id": "giant-water-bug",
@@ -28161,12 +28235,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m8",
-    "poolSlot": "skirmish",
-    "numericId": 9038,
+    "numericId": 1273,
     "uuid": "c977ed9b-b3aa-59bf-8a2a-bfca08ba06cf",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The toe-biter: Tide, Venomous 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, venomous 2); 2A+H+S = 8 + 7 + 3 = 18 < 34.9 and A*H+S = 28 + 3 = 31 < (N/3)^2 = 135.33. Measured 65% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The toe-biter: Tide, Venomous 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, venomous 2); 2A+H+S = 8 + 7 + 3 = 18 < 34.9 and A*H+S = 28 + 3 = 31 < (N/3)^2 = 135.33. Measured 65% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9038) as the 6-3 reward: the toe-biter in the Toad Chorus.",
+    "source": {
+      "kind": "map",
+      "id": "m8",
+      "node": "6-3"
+    }
   },
   {
     "id": "water-scorpion",
@@ -28227,12 +28303,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m8",
-    "poolSlot": "skirmish",
-    "numericId": 9040,
+    "numericId": 1276,
     "uuid": "e431316b-1965-5145-a8c1-2d2f207c6871",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The eel-like salamander that waits out droughts in mud: Tide, Regen 3. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 4 (tide 1, regen 3); 2A+H+S = 6 + 18 + 4 = 28 < 43.4 and A*H+S = 54 + 4 = 58 < (N/3)^2 = 209.28. Measured 63.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The eel-like salamander that waits out droughts in mud: Tide, Regen 3. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 4 (tide 1, regen 3); 2A+H+S = 6 + 18 + 4 = 28 < 43.4 and A*H+S = 54 + 4 = 58 < (N/3)^2 = 209.28. Measured 63.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9040) as the 6-6 reward: the eel-salamander of the Crocodile Run.",
+    "source": {
+      "kind": "map",
+      "id": "m8",
+      "node": "6-6"
+    }
   },
   {
     "id": "marsh-harrier",
@@ -28260,12 +28338,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m8",
-    "poolSlot": "pack",
-    "numericId": 9041,
+    "numericId": 1277,
     "uuid": "a57b8d0b-af9e-54d3-bce1-83c70f437164",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a pack card), not live until placed from Admin's Pool cards filter. Quarters low and drops on the small: Flying, Predator 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (flying 0, predator 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 34.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 135.33. Measured 61.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a pack card), not live until placed from Admin's Pool cards filter. Quarters low and drops on the small: Flying, Predator 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (flying 0, predator 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 34.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 135.33. Measured 61.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9041) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "raft-spider",
@@ -28293,12 +28372,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m8",
-    "poolSlot": "pack",
-    "numericId": 9042,
+    "numericId": 1278,
     "uuid": "f388fb86-7115-52b5-8d04-60b27cd8fd07",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a pack card), not live until placed from Admin's Pool cards filter. Feels for ripples in the dark: Tide, Darksight. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (tide 1, darksight 1); 2A+H+S = 8 + 8 + 2 = 18 < 33.9 and A*H+S = 32 + 2 = 34 < (N/3)^2 = 127.69. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a pack card), not live until placed from Admin's Pool cards filter. Feels for ripples in the dark: Tide, Darksight. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (tide 1, darksight 1); 2A+H+S = 8 + 8 + 2 = 18 < 33.9 and A*H+S = 32 + 2 = 34 < (N/3)^2 = 127.69. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9042) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "leopard-slug",
@@ -28326,12 +28406,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mu",
-    "poolSlot": "pack",
-    "numericId": 9043,
+    "numericId": 1281,
     "uuid": "199a0bd9-231a-5b34-9fb8-713c9a584071",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. Slow, spotted, out at night: Regen 1, Nocturnal. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (regen 1, nocturnal 1); 2A+H+S = 2 + 12 + 2 = 16 < 29.5 and A*H+S = 12 + 2 = 14 < (N/3)^2 = 96.69. Measured 39.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. Slow, spotted, out at night: Regen 1, Nocturnal. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (regen 1, nocturnal 1); 2A+H+S = 2 + 12 + 2 = 16 < 29.5 and A*H+S = 12 + 2 = 14 < (N/3)^2 = 96.69. Measured 39.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9043) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "wolf-spider-mother",
@@ -28359,12 +28440,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mu",
-    "poolSlot": "skirmish",
-    "numericId": 9044,
+    "numericId": 1280,
     "uuid": "a52ee073-f35f-5fa7-9f2f-08ab37502ab5",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Carries her spiderlings and runs prey down: Brood 2, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (brood 2, pounce 2); 2A+H+S = 6 + 7 + 4 = 17 < 35.9 and A*H+S = 21 + 4 = 25 < (N/3)^2 = 143.2. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Carries her spiderlings and runs prey down: Brood 2, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (brood 2, pounce 2); 2A+H+S = 6 + 7 + 4 = 17 < 35.9 and A*H+S = 21 + 4 = 25 < (N/3)^2 = 143.2. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9044) as the 7-5 reward: the Oath Ring's hunter.",
+    "source": {
+      "kind": "map",
+      "id": "mu",
+      "node": "7-5"
+    }
   },
   {
     "id": "truffle-piglet",
@@ -28391,12 +28474,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mu",
-    "poolSlot": "skirmish",
-    "numericId": 9045,
+    "numericId": 1279,
     "uuid": "d7cb2b97-f99c-5e19-a564-3533b801a651",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Finds treasure: On Ready, +1 Lumber. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (onReadyGold 1); 2A+H+S = 4 + 8 + 1 = 13 < 34.9 and A*H+S = 16 + 1 = 17 < (N/3)^2 = 135.33. Measured 53.3% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Finds treasure: On Ready, +1 Lumber. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (onReadyGold 1); 2A+H+S = 4 + 8 + 1 = 13 < 34.9 and A*H+S = 16 + 1 = 17 < (N/3)^2 = 135.33. Measured 53.3% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9045) as the 7-1 reward: it finds what grows under the spores.",
+    "source": {
+      "kind": "map",
+      "id": "mu",
+      "node": "7-1"
+    }
   },
   {
     "id": "fungus-gnat-cloud",
@@ -28424,12 +28509,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mu",
-    "poolSlot": "pack",
-    "numericId": 9046,
+    "numericId": 1282,
     "uuid": "9510ecc3-8621-509f-b0da-78830fa3899b",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. A haze from the gills: Flying, Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (flying 0, swarm 1); 2A+H+S = 2 + 3 + 1 (x1.5 half-miss) = 9 < 23 and A*H+S = 3 + 1 (x1.5 half-miss) = 6 < (N/3)^2 = 58.78. Measured 45.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. A haze from the gills: Flying, Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (flying 0, swarm 1); 2A+H+S = 2 + 3 + 1 (x1.5 half-miss) = 9 < 23 and A*H+S = 3 + 1 (x1.5 half-miss) = 6 < (N/3)^2 = 58.78. Measured 45.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9046) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "springtail-hopper",
@@ -28456,12 +28542,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mu",
-    "poolSlot": "pack",
-    "numericId": 9047,
+    "numericId": 1283,
     "uuid": "ea764878-1481-5454-9caa-8addf9b0887c",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. The spring-loaded speck: Evasive, Quick. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (evasive 0, quick 2); 2A+H+S = 2 + 4 + 2 (x1.5 half-miss) = 12 < 23 and A*H+S = 4 + 2 (x1.5 half-miss) = 9 < (N/3)^2 = 58.78. Measured 40.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. The spring-loaded speck: Evasive, Quick. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (evasive 0, quick 2); 2A+H+S = 2 + 4 + 2 (x1.5 half-miss) = 12 < 23 and A*H+S = 4 + 2 (x1.5 half-miss) = 9 < (N/3)^2 = 58.78. Measured 40.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9047) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "red-backed-salamander",
@@ -28488,12 +28575,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mu",
-    "poolSlot": "pack",
-    "numericId": 9048,
+    "numericId": 1284,
     "uuid": "6428925c-9ad4-5bd1-bd92-138880cbe5c6",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. The lungless log-dweller: Regen 2. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (regen 2); 2A+H+S = 2 + 6 + 2 = 10 < 29.5 and A*H+S = 6 + 2 = 8 < (N/3)^2 = 96.69. Measured 40% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. The lungless log-dweller: Regen 2. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (regen 2); 2A+H+S = 2 + 6 + 2 = 10 < 29.5 and A*H+S = 6 + 2 = 8 < (N/3)^2 = 96.69. Measured 40% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9048) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "cave-cricket",
@@ -28521,12 +28609,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m4",
-    "poolSlot": "pack",
-    "numericId": 9049,
+    "numericId": 1288,
     "uuid": "29838ad0-ccfb-55d4-a9b9-f751cdd28cd4",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. All legs and listening: Darksight, Evasive. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (darksight 1, evasive 0); 2A+H+S = 4 + 3 + 1 (x1.5 half-miss) = 12 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. All legs and listening: Darksight, Evasive. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (darksight 1, evasive 0); 2A+H+S = 4 + 3 + 1 (x1.5 half-miss) = 12 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9049) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "ghost-crayfish",
@@ -28554,12 +28643,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m4",
-    "poolSlot": "skirmish",
-    "numericId": 9050,
+    "numericId": 1285,
     "uuid": "c841ff70-5564-5830-bbb2-63bfb7dde6bf",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The pale, blind, century-old cave crayfish: Darksight, Armor 1, Regen 1. Budget v3 at Level 1, Uncommon, Wait 2, Lumber 1: N = 20 + 2 + 2 + 12 + 2 + 4 + 0.4 = 42.4; S = 3 (darksight 1, armor 1, regen 1); 2A+H+S = 6 + 18 + 3 = 27 < 42.4 and A*H+S = 54 + 3 = 57 < (N/3)^2 = 199.75. Measured 63.3% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The pale, blind, century-old cave crayfish: Darksight, Armor 1, Regen 1. Budget v3 at Level 1, Uncommon, Wait 2, Lumber 1: N = 20 + 2 + 2 + 12 + 2 + 4 + 0.4 = 42.4; S = 3 (darksight 1, armor 1, regen 1); 2A+H+S = 6 + 18 + 3 = 27 < 42.4 and A*H+S = 54 + 3 = 57 < (N/3)^2 = 199.75. Measured 63.3% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9050) as the 8-2 reward: the pale crayfish of the Glowworm Grotto pools.",
+    "source": {
+      "kind": "map",
+      "id": "m4",
+      "node": "8-2"
+    }
   },
   {
     "id": "cave-swiftlet",
@@ -28587,12 +28678,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m4",
-    "poolSlot": "pack",
-    "numericId": 9051,
+    "numericId": 1289,
     "uuid": "c353a013-2f8a-5e7e-971c-36259a4c1142",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. Echolocates by clicks: Flying, Sonar. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 1 (flying 0, sonar 1); 2A+H+S = 4 + 4 + 1 (x1.5 half-miss) = 13.5 < 29.5 and A*H+S = 8 + 1 (x1.5 half-miss) = 13.5 < (N/3)^2 = 96.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. Echolocates by clicks: Flying, Sonar. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 1 (flying 0, sonar 1); 2A+H+S = 4 + 4 + 1 (x1.5 half-miss) = 13.5 < 29.5 and A*H+S = 8 + 1 (x1.5 half-miss) = 13.5 < (N/3)^2 = 96.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9051) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "cave-pseudoscorpion",
@@ -28620,12 +28712,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m4",
-    "poolSlot": "pack",
-    "numericId": 9052,
+    "numericId": 1290,
     "uuid": "99d53280-cd96-5fed-831f-00dddd1fa601",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. Venom-tipped claws: Darksight, Poison 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (darksight 1, poison 1); 2A+H+S = 4 + 5 + 2 = 11 < 23 and A*H+S = 10 + 2 = 12 < (N/3)^2 = 58.78. Measured 57.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. Venom-tipped claws: Darksight, Poison 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (darksight 1, poison 1); 2A+H+S = 4 + 5 + 2 = 11 < 23 and A*H+S = 10 + 2 = 12 < (N/3)^2 = 58.78. Measured 57.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9052) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "whip-spider",
@@ -28653,12 +28746,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m4",
-    "poolSlot": "skirmish",
-    "numericId": 9053,
+    "numericId": 1286,
     "uuid": "24e5dff1-7d95-573f-8236-13e8c6b78fe7",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Feels the dark with its whip legs, strikes with spiny arms: Sonar, Bleed 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (sonar 1, bleed 1); 2A+H+S = 8 + 9 + 2 = 19 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 65.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Feels the dark with its whip legs, strikes with spiny arms: Sonar, Bleed 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (sonar 1, bleed 1); 2A+H+S = 8 + 9 + 2 = 19 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 65.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9053) as the 8-4 reward: feels its way through the Echo Chamber.",
+    "source": {
+      "kind": "map",
+      "id": "m4",
+      "node": "8-4"
+    }
   },
   {
     "id": "giant-cave-huntsman",
@@ -28688,12 +28783,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m4",
-    "poolSlot": "skirmish",
-    "numericId": 9054,
+    "numericId": 1287,
     "uuid": "67b8b71d-6ba1-5705-b1f3-e5ee5cada2ef",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner request (23:32: \"We don't have a really scary spider. Not trapdoor or cute.\"): a huge hairy hunting spider, part Goliath birdeater, part huntsman, part funnel-web. It sees in the dark (Darksight), rushes the first thing it sees (Pounce 3), its bite is venom (Poison 2) and it is terrifying (Daunt 1: its hits lower the target's Attack). Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 6 (poison 2, pounce 2, darksight 1, daunt 1); 2A+H+S = 12 + 12 + 6 = 30 < 43.4 and A*H+S = 72 + 6 = 78 < (N/3)^2 = 209.28. Measured 70.8% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). Art: NightCafe prompt: \"A huge hairy hunting spider the size of a dinner plate, crouched on wet black cave rock, long thick banded legs, dense bristling brown hair, eight glossy black eyes catching a faint light, deep limestone cave background with dripping stalactites and a thin blue glow from a crack above, dark eerie atmosphere, detailed pixel art, full background\"."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner request (23:32: \"We don't have a really scary spider. Not trapdoor or cute.\"): a huge hairy hunting spider, part Goliath birdeater, part huntsman, part funnel-web. It sees in the dark (Darksight), rushes the first thing it sees (Pounce 3), its bite is venom (Poison 2) and it is terrifying (Daunt 1: its hits lower the target's Attack). Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 6 (poison 2, pounce 2, darksight 1, daunt 1); 2A+H+S = 12 + 12 + 6 = 30 < 43.4 and A*H+S = 72 + 6 = 78 < (N/3)^2 = 209.28. Measured 70.8% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). Art: NightCafe prompt: \"A huge hairy hunting spider the size of a dinner plate, crouched on wet black cave rock, long thick banded legs, dense bristling brown hair, eight glossy black eyes catching a faint light, deep limestone cave background with dripping stalactites and a thin blue glow from a crack above, dark eerie atmosphere, detailed pixel art, full background\". 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9054) as the 8-6 reward: owner request 23:32 (the scary spider), in the Glowworm Deep.",
+    "source": {
+      "kind": "map",
+      "id": "m4",
+      "node": "8-6"
+    }
   },
   {
     "id": "guano-beetle",
@@ -28722,12 +28819,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m4",
-    "poolSlot": "pack",
-    "numericId": 9055,
+    "numericId": 1291,
     "uuid": "0517830c-06a5-5d83-8552-6de7ee8a38e1",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. Lives on what falls from the roost: Darksight, Carrion 2. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 3 (darksight 1, carrion 2); 2A+H+S = 2 + 9 + 3 = 14 < 29.5 and A*H+S = 9 + 3 = 12 < (N/3)^2 = 96.69. Measured 40% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. Lives on what falls from the roost: Darksight, Carrion 2. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 3 (darksight 1, carrion 2); 2A+H+S = 2 + 9 + 3 = 14 < 29.5 and A*H+S = 9 + 3 = 12 < (N/3)^2 = 96.69. Measured 40% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9055) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "banded-sea-krait",
@@ -28757,12 +28855,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mk",
-    "poolSlot": "skirmish",
-    "numericId": 9056,
+    "numericId": 1292,
     "uuid": "532a1ab4-8ce0-5f0a-a4d6-835502b2c585",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner's example (sea snakes): hunts eels by night in the roots: Tide (the Swimmer), Venomous 2, Nocturnal. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 4 (tide 1, venomous 2, nocturnal 1); 2A+H+S = 6 + 8 + 4 = 18 < 34.9 and A*H+S = 24 + 4 = 28 < (N/3)^2 = 135.33. Measured 49.2% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner's example (sea snakes): hunts eels by night in the roots: Tide (the Swimmer), Venomous 2, Nocturnal. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 4 (tide 1, venomous 2, nocturnal 1); 2A+H+S = 6 + 8 + 4 = 18 < 34.9 and A*H+S = 24 + 4 = 28 < (N/3)^2 = 135.33. Measured 49.2% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9056) as the 9-4 reward: owner's example (sea snakes), night hunter in the Kelp Curtains.",
+    "source": {
+      "kind": "map",
+      "id": "mk",
+      "node": "9-4"
+    }
   },
   {
     "id": "fishing-cat",
@@ -28790,12 +28890,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mk",
-    "poolSlot": "skirmish",
-    "numericId": 9057,
+    "numericId": 1293,
     "uuid": "fdf57497-be6e-57f5-b072-9b8d8ae3dedd",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The cat that dives for fish: Tide, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 3 (tide 1, pounce 2); 2A+H+S = 6 + 10 + 3 = 19 < 35.9 and A*H+S = 30 + 3 = 33 < (N/3)^2 = 143.2. Measured 60.8% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The cat that dives for fish: Tide, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 3 (tide 1, pounce 2); 2A+H+S = 6 + 10 + 3 = 19 < 35.9 and A*H+S = 30 + 3 = 33 < (N/3)^2 = 143.2. Measured 60.8% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9057) as the 9-5 reward: dives for the fish of the Moray Den.",
+    "source": {
+      "kind": "map",
+      "id": "mk",
+      "node": "9-5"
+    }
   },
   {
     "id": "proboscis-monkey",
@@ -28823,12 +28925,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mk",
-    "poolSlot": "pack",
-    "numericId": 9058,
+    "numericId": 1295,
     "uuid": "b210c0e4-9681-5d81-ad2b-5b2470a7f127",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a pack card), not live until placed from Admin's Pool cards filter. Everyone looks at that nose: Tide, Taunt. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (tide 1, taunt 1); 2A+H+S = 8 + 12 + 2 = 22 < 34.9 and A*H+S = 48 + 2 = 50 < (N/3)^2 = 135.33. Measured 49.2% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a pack card), not live until placed from Admin's Pool cards filter. Everyone looks at that nose: Tide, Taunt. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (tide 1, taunt 1); 2A+H+S = 8 + 12 + 2 = 22 < 34.9 and A*H+S = 48 + 2 = 50 < (N/3)^2 = 135.33. Measured 49.2% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9058) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "horseshoe-crab",
@@ -28856,12 +28959,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mk",
-    "poolSlot": "pack",
-    "numericId": 9059,
+    "numericId": 1296,
     "uuid": "8cbf3a02-0204-541c-bd50-3d878059e795",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a pack card), not live until placed from Admin's Pool cards filter. Not a crab: a living fossil, closer kin to spiders: Armor 2, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 3 (armor 2, tide 1); 2A+H+S = 4 + 15 + 3 = 22 < 33.9 and A*H+S = 30 + 3 = 33 < (N/3)^2 = 127.69. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a pack card), not live until placed from Admin's Pool cards filter. Not a crab: a living fossil, closer kin to spiders: Armor 2, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 3 (armor 2, tide 1); 2A+H+S = 4 + 15 + 3 = 22 < 33.9 and A*H+S = 30 + 3 = 33 < (N/3)^2 = 127.69. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9059) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "sea-hare",
@@ -28889,12 +28993,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mk",
-    "poolSlot": "pack",
-    "numericId": 9060,
+    "numericId": 1297,
     "uuid": "cd218f36-543d-5f4a-9d19-24cba3c1ea83",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a pack card), not live until placed from Admin's Pool cards filter. Hides in a cloud of ink: Tide, Smoke Bomb. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (tide 1, smokeBomb 1); 2A+H+S = 4 + 8 + 2 = 14 < 29.5 and A*H+S = 16 + 2 = 18 < (N/3)^2 = 96.69. Measured 60% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a pack card), not live until placed from Admin's Pool cards filter. Hides in a cloud of ink: Tide, Smoke Bomb. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (tide 1, smokeBomb 1); 2A+H+S = 4 + 8 + 2 = 14 < 29.5 and A*H+S = 16 + 2 = 18 < (N/3)^2 = 96.69. Measured 60% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9060) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "mangrove-manatee",
@@ -28923,12 +29028,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mk",
-    "poolSlot": "skirmish",
-    "numericId": 9061,
+    "numericId": 1294,
     "uuid": "cebcb798-2d71-5fed-bbac-4d68354940d3",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Half a tonne of patience (no manatee emoji: the seal stands in): Tide, Regen 2, Guardian. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 4 (tide 1, regen 2, guardian 1); 2A+H+S = 6 + 28 + 4 = 38 < 51.9 and A*H+S = 84 + 4 = 88 < (N/3)^2 = 299.29. Measured 74.2% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Half a tonne of patience (no manatee emoji: the seal stands in): Tide, Regen 2, Guardian. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 4 (tide 1, regen 2, guardian 1); 2A+H+S = 6 + 28 + 4 = 38 < 51.9 and A*H+S = 84 + 4 = 88 < (N/3)^2 = 299.29. Measured 74.2% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9061) as the 9-7 reward: the Kelp Witch's great guardian.",
+    "source": {
+      "kind": "map",
+      "id": "mk",
+      "node": "9-7"
+    }
   },
   {
     "id": "yellow-bellied-sea-snake",
@@ -28957,12 +29064,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m7",
-    "poolSlot": "skirmish",
-    "numericId": 9062,
+    "numericId": 1299,
     "uuid": "81765d46-0edf-525c-8253-a43cf8bc7300",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner's example (sea snakes): the open-ocean drifter: Tide (the Swimmer), Poison 3. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (tide 1, poison 3); 2A+H+S = 8 + 8 + 4 = 20 < 35.9 and A*H+S = 32 + 4 = 36 < (N/3)^2 = 143.2. Measured 68.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner's example (sea snakes): the open-ocean drifter: Tide (the Swimmer), Poison 3. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (tide 1, poison 3); 2A+H+S = 8 + 8 + 4 = 20 < 35.9 and A*H+S = 32 + 4 = 36 < (N/3)^2 = 143.2. Measured 68.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9062) as the 10-5 reward: owner's example (sea snakes), for the fight that had no reward.",
+    "source": {
+      "kind": "map",
+      "id": "m7",
+      "node": "10-5"
+    }
   },
   {
     "id": "crown-of-thorns-star",
@@ -28990,12 +29099,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m7",
-    "poolSlot": "skirmish",
-    "numericId": 9063,
+    "numericId": 1298,
     "uuid": "3266bc23-7a1f-5c15-af18-f70d84d418fd",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The venom-spined reef eater: Thorns 2, Poison 1, Tide. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 4 (thorns 2, poison 1, tide 1); 2A+H+S = 4 + 10 + 4 = 18 < 34.9 and A*H+S = 20 + 4 = 24 < (N/3)^2 = 135.33. Measured 60.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The venom-spined reef eater: Thorns 2, Poison 1, Tide. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 4 (thorns 2, poison 1, tide 1); 2A+H+S = 4 + 10 + 4 = 18 < 34.9 and A*H+S = 20 + 4 = 24 < (N/3)^2 = 135.33. Measured 60.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9063) as the 10-2 reward: a second reward for the Moray Ambush.",
+    "source": {
+      "kind": "map",
+      "id": "m7",
+      "node": "10-2"
+    }
   },
   {
     "id": "parrotfish",
@@ -29023,12 +29134,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m7",
-    "poolSlot": "pack",
-    "numericId": 9064,
+    "numericId": 1302,
     "uuid": "394de29c-e1d8-5afc-a497-35d503d32da4",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a pack card), not live until placed from Admin's Pool cards filter. Bites coral to sand: Tide, Pierce 1. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (tide 1, pierce 1); 2A+H+S = 4 + 7 + 2 = 13 < 29.5 and A*H+S = 14 + 2 = 16 < (N/3)^2 = 96.69. Measured 41.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a pack card), not live until placed from Admin's Pool cards filter. Bites coral to sand: Tide, Pierce 1. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (tide 1, pierce 1); 2A+H+S = 4 + 7 + 2 = 13 < 29.5 and A*H+S = 14 + 2 = 16 < (N/3)^2 = 96.69. Measured 41.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9064) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "lionfish",
@@ -29056,12 +29168,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m7",
-    "poolSlot": "pack",
-    "numericId": 9065,
+    "numericId": 1303,
     "uuid": "81af6ec4-a52f-5795-b76b-2e9d13d598e4",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a pack card), not live until placed from Admin's Pool cards filter. Every fin a venomous spine: Tide, Thorns 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, thorns 2); 2A+H+S = 6 + 8 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 66.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a pack card), not live until placed from Admin's Pool cards filter. Every fin a venomous spine: Tide, Thorns 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, thorns 2); 2A+H+S = 6 + 8 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 66.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9065) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "giant-clam",
@@ -29089,12 +29202,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m7",
-    "poolSlot": "pack",
-    "numericId": 9066,
+    "numericId": 1304,
     "uuid": "6538014d-1ca4-50d2-86a5-228bb7a4e83c",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a pack card), not live until placed from Admin's Pool cards filter. Closes like a door and farms algae: Shell 2, Regen 1, Tide. Budget v3 at Level 1, Common, Wait 2, Lumber 1: N = 20 + 2 + 1 + 12 + 2 + 4 + 0.4 = 41.4; S = 4 (shell 2, regen 1, tide 1); 2A+H+S = 4 + 23 + 4 = 31 < 41.4 and A*H+S = 46 + 4 = 50 < (N/3)^2 = 190.44. Measured 40.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a pack card), not live until placed from Admin's Pool cards filter. Closes like a door and farms algae: Shell 2, Regen 1, Tide. Budget v3 at Level 1, Common, Wait 2, Lumber 1: N = 20 + 2 + 1 + 12 + 2 + 4 + 0.4 = 41.4; S = 4 (shell 2, regen 1, tide 1); 2A+H+S = 4 + 23 + 4 = 31 < 41.4 and A*H+S = 46 + 4 = 50 < (N/3)^2 = 190.44. Measured 40.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9066) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "great-barracuda",
@@ -29122,12 +29236,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m7",
-    "poolSlot": "skirmish",
-    "numericId": 9067,
+    "numericId": 1300,
     "uuid": "4ce5401f-f2df-509d-b519-f6d9d199ce18",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The silver blade: Tide, Quick. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 3 (tide 1, quick 2); 2A+H+S = 10 + 5 + 3 = 18 < 35.9 and A*H+S = 25 + 3 = 28 < (N/3)^2 = 143.2. Measured 57.5% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The silver blade: Tide, Quick. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 3 (tide 1, quick 2); 2A+H+S = 10 + 5 + 3 = 18 < 35.9 and A*H+S = 25 + 3 = 28 < (N/3)^2 = 143.2. Measured 57.5% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9067) as the 10-6 reward: with the Reef Shark Pack (no reward before).",
+    "source": {
+      "kind": "map",
+      "id": "m7",
+      "node": "10-6"
+    }
   },
   {
     "id": "whale-shark",
@@ -29156,12 +29272,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m7",
-    "poolSlot": "skirmish",
-    "numericId": 9068,
+    "numericId": 1301,
     "uuid": "29e640ca-7597-5e27-be5a-e4ed42f147ca",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The biggest fish: Tide, Armor 1, Scare 1. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 3 (tide 1, armor 1, scare 1); 2A+H+S = 6 + 28 + 3 = 37 < 51.9 and A*H+S = 84 + 3 = 87 < (N/3)^2 = 299.29. Measured 63.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The biggest fish: Tide, Armor 1, Scare 1. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 3 (tide 1, armor 1, scare 1); 2A+H+S = 6 + 28 + 3 = 37 < 51.9 and A*H+S = 84 + 3 = 87 < (N/3)^2 = 299.29. Measured 63.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9068) as the 10-8 reward: the Sea Turtle Elder's court (no reward before).",
+    "source": {
+      "kind": "map",
+      "id": "m7",
+      "node": "10-8"
+    }
   },
   {
     "id": "chamois-leaper",
@@ -29188,12 +29306,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m10",
-    "poolSlot": "skirmish",
-    "numericId": 9069,
+    "numericId": 1307,
     "uuid": "12f470f5-0360-5d82-8ede-5a5c7686210d",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Ledge to ledge: Mountain Climber, Pounce 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (mountainClimber 1, pounce 2); 2A+H+S = 6 + 9 + 3 = 18 < 34.9 and A*H+S = 27 + 3 = 30 < (N/3)^2 = 135.33. Measured 47.5% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Ledge to ledge: Mountain Climber, Pounce 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (mountainClimber 1, pounce 2); 2A+H+S = 6 + 9 + 3 = 18 < 34.9 and A*H+S = 27 + 3 = 30 < (N/3)^2 = 135.33. Measured 47.5% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9069) as the 11-9 reward: for the Condor Sovereign's fight, which had no reward.",
+    "source": {
+      "kind": "map",
+      "id": "m10",
+      "node": "11-9"
+    }
   },
   {
     "id": "alpine-swift",
@@ -29221,12 +29341,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m10",
-    "poolSlot": "pack",
-    "numericId": 9070,
+    "numericId": 1308,
     "uuid": "06fdf129-2796-552a-950a-55e19aad0963",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a pack card), not live until placed from Admin's Pool cards filter. Lives on the wing: Flying, Quick. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (flying 0, quick 2); 2A+H+S = 4 + 3 + 2 (x1.5 half-miss) = 13.5 < 29.5 and A*H+S = 6 + 2 (x1.5 half-miss) = 12 < (N/3)^2 = 96.69. Measured 44.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a pack card), not live until placed from Admin's Pool cards filter. Lives on the wing: Flying, Quick. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (flying 0, quick 2); 2A+H+S = 4 + 3 + 2 (x1.5 half-miss) = 13.5 < 29.5 and A*H+S = 6 + 2 (x1.5 half-miss) = 12 < (N/3)^2 = 96.69. Measured 44.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9070) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "wallcreeper",
@@ -29287,12 +29408,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m10",
-    "poolSlot": "pack",
-    "numericId": 9072,
+    "numericId": 1309,
     "uuid": "a5f7de9f-72d7-5dcd-871e-69b9b2c6b434",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a pack card), not live until placed from Admin's Pool cards filter. Black and hard to impress: Regen 1, Scare 1. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (regen 1, scare 1); 2A+H+S = 4 + 12 + 2 = 18 < 33.9 and A*H+S = 24 + 2 = 26 < (N/3)^2 = 127.69. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a pack card), not live until placed from Admin's Pool cards filter. Black and hard to impress: Regen 1, Scare 1. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (regen 1, scare 1); 2A+H+S = 4 + 12 + 2 = 18 < 33.9 and A*H+S = 24 + 2 = 26 < (N/3)^2 = 127.69. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9072) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "apollo-butterfly",
@@ -29320,12 +29442,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m10",
-    "poolSlot": "skirmish",
-    "numericId": 9073,
+    "numericId": 1306,
     "uuid": "89ee6b84-6bd5-5b50-90e1-75447b01c076",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Warning eyespots, bad to eat: Flying, Thorns 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 1 (flying 0, thorns 1); 2A+H+S = 2 + 6 + 1 (x1.5 half-miss) = 13.5 < 30.5 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 103.36. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Warning eyespots, bad to eat: Flying, Thorns 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 1 (flying 0, thorns 1); 2A+H+S = 2 + 6 + 1 (x1.5 half-miss) = 13.5 < 30.5 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 103.36. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9073) as the 11-3 reward: the alpine butterfly over the herd.",
+    "source": {
+      "kind": "map",
+      "id": "m10",
+      "node": "11-3"
+    }
   },
   {
     "id": "mountain-hare",
@@ -29354,12 +29478,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m10",
-    "poolSlot": "skirmish",
-    "numericId": 9074,
+    "numericId": 1305,
     "uuid": "23eea555-4e5c-5bb4-a04b-ab82935eb636",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Turns white for winter: Evasive, Frostbite 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (evasive 0, frostbite 1); 2A+H+S = 4 + 3 + 1 (x1.5 half-miss) = 12 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Turns white for winter: Evasive, Frostbite 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (evasive 0, frostbite 1); 2A+H+S = 4 + 3 + 1 (x1.5 half-miss) = 12 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9074) as the 11-1 reward: with the goat-trail runners.",
+    "source": {
+      "kind": "map",
+      "id": "m10",
+      "node": "11-1"
+    }
   },
   {
     "id": "thorn-shrike",
@@ -29387,12 +29513,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mh",
-    "poolSlot": "skirmish",
-    "numericId": 9075,
+    "numericId": 1310,
     "uuid": "ce8bf995-7ba5-550e-a5d4-9b6fa7d29a50",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The butcher bird that impales its prey on thorns: Flying, Bleed 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 2 (flying 0, bleed 2); 2A+H+S = 8 + 5 + 2 (x1.5 half-miss) = 22.5 < 35.9 and A*H+S = 20 + 2 (x1.5 half-miss) = 33 < (N/3)^2 = 143.2. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The butcher bird that impales its prey on thorns: Flying, Bleed 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 2 (flying 0, bleed 2); 2A+H+S = 8 + 5 + 2 (x1.5 half-miss) = 22.5 < 35.9 and A*H+S = 20 + 2 (x1.5 half-miss) = 33 < (N/3)^2 = 143.2. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9075) as the 12-4 reward: the butcher bird of the Thornvine Arch.",
+    "source": {
+      "kind": "map",
+      "id": "mh",
+      "node": "12-4"
+    }
   },
   {
     "id": "hedge-weasel",
@@ -29418,12 +29546,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mh",
-    "poolSlot": "skirmish",
-    "numericId": 9076,
+    "numericId": 1311,
     "uuid": "fcdee603-139d-5796-b8ba-e04408c282c4",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Follows the mouse into its hole: Predator 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 2 (predator 2); 2A+H+S = 6 + 5 + 2 = 13 < 30.5 and A*H+S = 15 + 2 = 17 < (N/3)^2 = 103.36. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Follows the mouse into its hole: Predator 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 2 (predator 2); 2A+H+S = 6 + 5 + 2 = 13 < 30.5 and A*H+S = 15 + 2 = 17 < (N/3)^2 = 103.36. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9076) as the 12-6 reward: follows the mice into the Rodent Court.",
+    "source": {
+      "kind": "map",
+      "id": "mh",
+      "node": "12-6"
+    }
   },
   {
     "id": "hawthorn-shieldbug",
@@ -29451,12 +29581,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mh",
-    "poolSlot": "pack",
-    "numericId": 9077,
+    "numericId": 1312,
     "uuid": "95cc160e-3e65-5d81-b728-05c8b5f919ad",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. A green shield and a stink: Armor 1, Daunt 1. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (armor 1, daunt 1); 2A+H+S = 4 + 12 + 2 = 18 < 33.9 and A*H+S = 24 + 2 = 26 < (N/3)^2 = 127.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. A green shield and a stink: Armor 1, Daunt 1. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (armor 1, daunt 1); 2A+H+S = 4 + 12 + 2 = 18 < 33.9 and A*H+S = 24 + 2 = 26 < (N/3)^2 = 127.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9077) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "muntjac-barker",
@@ -29483,12 +29614,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mh",
-    "poolSlot": "pack",
-    "numericId": 9078,
+    "numericId": 1313,
     "uuid": "71c3303c-3059-5231-8c10-be8611b30bb9",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. The barking deer: Sentry. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (sentry 1); 2A+H+S = 6 + 8 + 1 = 15 < 34.9 and A*H+S = 24 + 1 = 25 < (N/3)^2 = 135.33. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. The barking deer: Sentry. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (sentry 1); 2A+H+S = 6 + 8 + 1 = 15 < 34.9 and A*H+S = 24 + 1 = 25 < (N/3)^2 = 135.33. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9078) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "anvil-thrush",
@@ -29516,12 +29648,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mh",
-    "poolSlot": "pack",
-    "numericId": 9079,
+    "numericId": 1314,
     "uuid": "f493ef8f-68c2-50eb-99cb-9b719cdd6ff4",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. Smashes snail shells on its stone: Flying, Pierce 2. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (flying 0, pierce 2); 2A+H+S = 4 + 4 + 2 (x1.5 half-miss) = 15 < 29.5 and A*H+S = 8 + 2 (x1.5 half-miss) = 15 < (N/3)^2 = 96.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. Smashes snail shells on its stone: Flying, Pierce 2. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (flying 0, pierce 2); 2A+H+S = 4 + 4 + 2 (x1.5 half-miss) = 15 < 29.5 and A*H+S = 8 + 2 (x1.5 half-miss) = 15 < (N/3)^2 = 96.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9079) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "garden-tiger-moth",
@@ -29549,12 +29682,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mh",
-    "poolSlot": "pack",
-    "numericId": 9080,
+    "numericId": 1315,
     "uuid": "6b7b56c3-84f3-52be-8b69-f8412e6b1337",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. The woolly bear's bristles and the moth's bad taste: Flying, Nocturnal, Thorns 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (flying 0, nocturnal 1, thorns 1); 2A+H+S = 2 + 4 + 2 (x1.5 half-miss) = 12 < 23 and A*H+S = 4 + 2 (x1.5 half-miss) = 9 < (N/3)^2 = 58.78. Measured 47.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. The woolly bear's bristles and the moth's bad taste: Flying, Nocturnal, Thorns 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (flying 0, nocturnal 1, thorns 1); 2A+H+S = 2 + 4 + 2 (x1.5 half-miss) = 12 < 23 and A*H+S = 4 + 2 (x1.5 half-miss) = 9 < (N/3)^2 = 58.78. Measured 47.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9080) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "polar-bear",
@@ -29585,12 +29719,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m6",
-    "poolSlot": "skirmish",
-    "numericId": 9081,
+    "numericId": 1324,
     "uuid": "0dd46dc9-2045-5e20-89fe-bed6908e6682",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Waits at the seal's breathing hole: Ambush 4 (hits whatever enters the slot facing it), Tide. Budget v3 at Level 1, Very Rare, Wait 2, Lumber 1: N = 20 + 2 + 4 + 12 + 2 + 4 + 0.4 = 44.4; S = 4 (ambush 3, tide 1); 2A+H+S = 10 + 10 + 4 = 24 < 44.4 and A*H+S = 50 + 4 = 54 < (N/3)^2 = 219.04. Measured 77.5% over 120 games (tools/card_balance.js yardstick; Very Rare band 56.00000000000001-80%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Waits at the seal's breathing hole: Ambush 4 (hits whatever enters the slot facing it), Tide. Budget v3 at Level 1, Very Rare, Wait 2, Lumber 1: N = 20 + 2 + 4 + 12 + 2 + 4 + 0.4 = 44.4; S = 4 (ambush 3, tide 1); 2A+H+S = 10 + 10 + 4 = 24 < 44.4 and A*H+S = 50 + 4 = 54 < (N/3)^2 = 219.04. Measured 77.5% over 120 games (tools/card_balance.js yardstick; Very Rare band 56.00000000000001-80%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9081) as the 17-5 reward: for the Musk Ox Bulwark, which had no reward.",
+    "source": {
+      "kind": "map",
+      "id": "m6",
+      "node": "17-5"
+    }
   },
   {
     "id": "harp-seal-pup",
@@ -29620,12 +29756,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m6",
-    "poolSlot": "pack",
-    "numericId": 9082,
+    "numericId": 1326,
     "uuid": "b3ddc24a-49da-53d4-a556-26a506a53e74",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Grows fast on rich milk: Tide, Molting 1 (+1/+1 every 2 rounds). Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (tide 1, molting 1); 2A+H+S = 4 + 5 + 2 = 11 < 23 and A*H+S = 10 + 2 = 12 < (N/3)^2 = 58.78. Measured 52.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Grows fast on rich milk: Tide, Molting 1 (+1/+1 every 2 rounds). Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (tide 1, molting 1); 2A+H+S = 4 + 5 + 2 = 11 < 23 and A*H+S = 10 + 2 = 12 < (N/3)^2 = 58.78. Measured 52.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9082) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "beluga",
@@ -29656,12 +29793,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m6",
-    "poolSlot": "skirmish",
-    "numericId": 9083,
+    "numericId": 1323,
     "uuid": "81704302-3600-5d84-9ac8-5f6a988a8bc6",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The singing sea canary: Tide, Sonar, Inspiring 1. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 3 (tide 1, sonar 1, inspiring 1); 2A+H+S = 6 + 18 + 3 = 27 < 43.4 and A*H+S = 54 + 3 = 57 < (N/3)^2 = 209.28. Measured 74.2% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The singing sea canary: Tide, Sonar, Inspiring 1. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 3 (tide 1, sonar 1, inspiring 1); 2A+H+S = 6 + 18 + 3 = 27 < 43.4 and A*H+S = 54 + 3 = 57 < (N/3)^2 = 209.28. Measured 74.2% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9083) as the 17-4 reward: the sea canary by the seals.",
+    "source": {
+      "kind": "map",
+      "id": "m6",
+      "node": "17-4"
+    }
   },
   {
     "id": "arctic-tern",
@@ -29692,12 +29831,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m6",
-    "poolSlot": "pack",
-    "numericId": 9084,
+    "numericId": 1327,
     "uuid": "2ddb2a68-6e4d-5bc9-8d19-2419acef6b82",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Pole to pole, the most daylight of any animal: Flying, Diurnal. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 1 (flying 0, diurnal 1); 2A+H+S = 2 + 4 + 1 (x1.5 half-miss) = 10.5 < 30.5 and A*H+S = 4 + 1 (x1.5 half-miss) = 7.5 < (N/3)^2 = 103.36. Measured 55.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Pole to pole, the most daylight of any animal: Flying, Diurnal. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 1 (flying 0, diurnal 1); 2A+H+S = 2 + 4 + 1 (x1.5 half-miss) = 10.5 < 30.5 and A*H+S = 4 + 1 (x1.5 half-miss) = 7.5 < (N/3)^2 = 103.36. Measured 55.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9084) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "lemming-swarm",
@@ -29727,12 +29867,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m6",
-    "poolSlot": "pack",
-    "numericId": 9085,
+    "numericId": 1328,
     "uuid": "1970de5d-ff69-53d9-b617-fff3fbf559ea",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Millions in a boom year: Swarm, Brood 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (swarm 1, brood 1); 2A+H+S = 2 + 2 + 2 = 6 < 23 and A*H+S = 2 + 2 = 4 < (N/3)^2 = 58.78. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Millions in a boom year: Swarm, Brood 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (swarm 1, brood 1); 2A+H+S = 2 + 2 + 2 = 6 < 23 and A*H+S = 2 + 2 = 4 < (N/3)^2 = 58.78. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9085) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "krill-swarm",
@@ -29762,12 +29903,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "m6",
-    "poolSlot": "pack",
-    "numericId": 9086,
+    "numericId": 1329,
     "uuid": "432bd77d-f8ed-5f4f-9cdb-ba9e32de1753",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Feeds the cold sea: Tide, Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (tide 1, swarm 1); 2A+H+S = 4 + 3 + 2 = 9 < 23 and A*H+S = 6 + 2 = 8 < (N/3)^2 = 58.78. Measured 42.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Feeds the cold sea: Tide, Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (tide 1, swarm 1); 2A+H+S = 4 + 3 + 2 = 9 < 23 and A*H+S = 6 + 2 = 8 < (N/3)^2 = 58.78. Measured 42.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9086) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "greenland-shark",
@@ -29798,12 +29940,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mi",
-    "poolSlot": "skirmish",
-    "numericId": 9087,
+    "numericId": 1325,
     "uuid": "81b7632f-6d5f-5a12-addd-94311328bcb2",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mi (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Four hundred years under the ice, a scavenger: Tide, Carrion 2, Armor 1. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 4 (tide 1, carrion 2, armor 1); 2A+H+S = 8 + 26 + 4 = 38 < 51.9 and A*H+S = 104 + 4 = 108 < (N/3)^2 = 299.29. Measured 73.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mi (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Four hundred years under the ice, a scavenger: Tide, Carrion 2, Armor 1. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 4 (tide 1, carrion 2, armor 1); 2A+H+S = 8 + 26 + 4 = 38 < 51.9 and A*H+S = 104 + 4 = 108 < (N/3)^2 = 299.29. Measured 73.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9087) as the 17-A-4 reward: under the ice, the Hollow King's.",
+    "source": {
+      "kind": "map",
+      "id": "mi",
+      "node": "17-A-4"
+    }
   },
   {
     "id": "ringed-seal",
@@ -29833,12 +29977,13 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mi",
-    "poolSlot": "pack",
-    "numericId": 9088,
+    "numericId": 1330,
     "uuid": "91c92a65-17e8-5d57-a3df-7fccf06db9a0",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mi (a pack card), not live until placed from Admin's Pool cards filter. The polar bear's seal, hidden in its snow lair: Tide, Invisible 2. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 3 (tide 1, invisible 2); 2A+H+S = 6 + 10 + 3 = 19 < 33.9 and A*H+S = 30 + 3 = 33 < (N/3)^2 = 127.69. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mi (a pack card), not live until placed from Admin's Pool cards filter. The polar bear's seal, hidden in its snow lair: Tide, Invisible 2. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 3 (tide 1, invisible 2); 2A+H+S = 6 + 10 + 3 = 19 < 33.9 and A*H+S = 30 + 3 = 33 < (N/3)^2 = 127.69. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9088) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   },
   {
     "id": "woodland-caribou",
@@ -29868,12 +30013,14 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mt",
-    "poolSlot": "skirmish",
-    "numericId": 9089,
+    "numericId": 1321,
     "uuid": "77fb31a3-e01a-5f8c-9341-07a15fd15ad0",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mt (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Snowshoe hooves and a herd that never stops: Mountain Climber, Frostbite 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (mountainClimber 1, frostbite 1); 2A+H+S = 8 + 9 + 2 = 19 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 60.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mt (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Snowshoe hooves and a herd that never stops: Mountain Climber, Frostbite 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (mountainClimber 1, frostbite 1); 2A+H+S = 8 + 9 + 2 = 19 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 60.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9089) as the 16-3 reward: crosses with the elk.",
+    "source": {
+      "kind": "map",
+      "id": "mt",
+      "node": "16-3"
+    }
   },
   {
     "id": "musk-ox-calf",
@@ -29904,11 +30051,12 @@
     "tags": [],
     "locked": true,
     "test": false,
-    "pool": true,
-    "poolMap": "mt",
-    "poolSlot": "pack",
-    "numericId": 9090,
+    "numericId": 1322,
     "uuid": "d595e2f5-dc7c-5b8d-92de-ba85c61ee97e",
-    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mt (a pack card), not live until placed from Admin's Pool cards filter. In the middle of the ring: Armor 1, Frostbite 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (armor 1, frostbite 1); 2A+H+S = 6 + 12 + 2 = 20 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 66.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mt (a pack card), not live until placed from Admin's Pool cards filter. In the middle of the ring: Armor 1, Frostbite 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (armor 1, frostbite 1); 2A+H+S = 6 + 12 + 2 = 20 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 66.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%). 2026-10-19 (package TH, thematic pass): placed from the pool (pool #9090) as the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case).",
+    "source": {
+      "kind": "pack",
+      "tier": 1
+    }
   }
 ]

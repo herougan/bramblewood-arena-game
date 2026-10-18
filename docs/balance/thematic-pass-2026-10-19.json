@@ -1,0 +1,2027 @@
+{
+ "note": "Package TH (2026-10-19), the thematic pass: tools/thematic_plan_2026_10_19.js writes this; tools/thematic_pass_2026_10_19.js apply puts it in the game. Revert a choice by deleting it here and re-applying from main.",
+ "place": [
+  {
+   "id": "water-vole",
+   "slot": "skirmish",
+   "node": "0-1",
+   "why": "the river bank vole on the Otter Patrol"
+  },
+  {
+   "id": "river-mink",
+   "slot": "skirmish",
+   "node": "0-2",
+   "why": "a hedge-and-river raider for the fight that had no reward"
+  },
+  {
+   "id": "grass-snake",
+   "slot": "skirmish",
+   "node": "0-2",
+   "why": "the swimming snake that plays dead, in the ambush"
+  },
+  {
+   "id": "pine-marten",
+   "slot": "skirmish",
+   "node": "0-3",
+   "why": "the chipmunk hunter, beside the Chipmunk Cavalry reward"
+  },
+  {
+   "id": "signal-crayfish",
+   "slot": "pack"
+  },
+  {
+   "id": "woodcock-lookout",
+   "slot": "pack"
+  },
+  {
+   "id": "robin-redbreast",
+   "slot": "skirmish",
+   "node": "1-1",
+   "why": "the garden robin with the hedgerow scouts"
+  },
+  {
+   "id": "ladybird-guard",
+   "slot": "skirmish",
+   "node": "1-2",
+   "why": "an insect for the Cricket Chorus"
+  },
+  {
+   "id": "rivergate-drummer",
+   "slot": "skirmish",
+   "node": "1-3",
+   "why": "package GI's Kin Rally Otter, on the Otter road (GI note: Thistlewood)"
+  },
+  {
+   "id": "stag-beetle",
+   "slot": "skirmish",
+   "node": "1-5",
+   "why": "the Thistle Baron's beetle: it fights in his deck too"
+  },
+  {
+   "id": "hedgerow-shrew",
+   "slot": "pack"
+  },
+  {
+   "id": "slow-worm",
+   "slot": "pack"
+  },
+  {
+   "id": "field-vole",
+   "slot": "pack"
+  },
+  {
+   "id": "pincushion-urchin",
+   "slot": "skirmish",
+   "node": "2-1",
+   "why": "owner's example (sea urchin), in the rock pools"
+  },
+  {
+   "id": "tidepool-trapper-crab",
+   "slot": "skirmish",
+   "node": "2-3",
+   "why": "package GI's Crab Trap (Hunter vs Wet) on the Tide beach, with the hermit crabs"
+  },
+  {
+   "id": "grey-seal-bull",
+   "slot": "skirmish",
+   "node": "2-5",
+   "why": "the bull guarding the shingle, The Old Shell's guard"
+  },
+  {
+   "id": "rock-pool-starfish",
+   "slot": "pack"
+  },
+  {
+   "id": "oystercatcher",
+   "slot": "pack"
+  },
+  {
+   "id": "limpet-clinger",
+   "slot": "pack"
+  },
+  {
+   "id": "puffin-diver",
+   "slot": "skirmish",
+   "node": "3-2",
+   "why": "the cliff's sea parrot"
+  },
+  {
+   "id": "fulmar-spitter",
+   "slot": "skirmish",
+   "node": "3-4",
+   "why": "rides the thermals with the condors"
+  },
+  {
+   "id": "peregrine-stooper",
+   "slot": "skirmish",
+   "node": "3-5",
+   "why": "the stoop itself (Eagle Stoop)"
+  },
+  {
+   "id": "razorbill",
+   "slot": "pack"
+  },
+  {
+   "id": "kittiwake-flock",
+   "slot": "pack"
+  },
+  {
+   "id": "red-billed-chough",
+   "slot": "pack"
+  },
+  {
+   "id": "pyrenean-desman",
+   "slot": "skirmish",
+   "node": "4-1",
+   "why": "the trunked swimmer"
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "slot": "skirmish",
+   "node": "4-2",
+   "why": "the reed lodge, in the Beaver Builders' place"
+  },
+  {
+   "id": "old-sturgeon",
+   "slot": "skirmish",
+   "node": "4-4",
+   "why": "the ancient fish in the Kraken's Maw"
+  },
+  {
+   "id": "water-shrew",
+   "slot": "pack"
+  },
+  {
+   "id": "great-crested-grebe",
+   "slot": "pack"
+  },
+  {
+   "id": "diving-bell-spider",
+   "slot": "pack"
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "slot": "skirmish",
+   "node": "5-1",
+   "why": "GI: Proliferate with Swamp Fever and the leeches"
+  },
+  {
+   "id": "anhinga-spearbird",
+   "slot": "skirmish",
+   "node": "5-2",
+   "why": "the snakebird of Toad Hollow"
+  },
+  {
+   "id": "fire-ant-raft",
+   "slot": "skirmish",
+   "node": "5-3",
+   "why": "the floating colony in the cypress roots"
+  },
+  {
+   "id": "fen-mink",
+   "slot": "skirmish",
+   "node": "5-5",
+   "why": "GI: Hunter (Poisoned) beside the gators and vipers"
+  },
+  {
+   "id": "alligator-gar",
+   "slot": "skirmish",
+   "node": "5-6",
+   "why": "the gator-toothed fish of Behemoth Bog"
+  },
+  {
+   "id": "swamp-rabbit",
+   "slot": "pack"
+  },
+  {
+   "id": "mosquito-cloud",
+   "slot": "pack"
+  },
+  {
+   "id": "giant-water-bug",
+   "slot": "skirmish",
+   "node": "6-3",
+   "why": "the toe-biter in the Toad Chorus"
+  },
+  {
+   "id": "booming-bittern",
+   "slot": "skirmish",
+   "node": "6-4",
+   "why": "the reed-hider of the Root Snare"
+  },
+  {
+   "id": "bogfire-newt",
+   "slot": "skirmish",
+   "node": "6-5",
+   "why": "GI: Detonate on the Venomlord's poison"
+  },
+  {
+   "id": "greater-siren",
+   "slot": "skirmish",
+   "node": "6-6",
+   "why": "the eel-salamander of the Crocodile Run"
+  },
+  {
+   "id": "marsh-harrier",
+   "slot": "pack"
+  },
+  {
+   "id": "raft-spider",
+   "slot": "pack"
+  },
+  {
+   "id": "truffle-piglet",
+   "slot": "skirmish",
+   "node": "7-1",
+   "why": "it finds what grows under the spores"
+  },
+  {
+   "id": "wolf-spider-mother",
+   "slot": "skirmish",
+   "node": "7-5",
+   "why": "the Oath Ring's hunter"
+  },
+  {
+   "id": "leopard-slug",
+   "slot": "pack"
+  },
+  {
+   "id": "fungus-gnat-cloud",
+   "slot": "pack"
+  },
+  {
+   "id": "springtail-hopper",
+   "slot": "pack"
+  },
+  {
+   "id": "red-backed-salamander",
+   "slot": "pack"
+  },
+  {
+   "id": "ghost-crayfish",
+   "slot": "skirmish",
+   "node": "8-2",
+   "why": "the pale crayfish of the Glowworm Grotto pools"
+  },
+  {
+   "id": "whip-spider",
+   "slot": "skirmish",
+   "node": "8-4",
+   "why": "feels its way through the Echo Chamber"
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "slot": "skirmish",
+   "node": "8-6",
+   "why": "owner request 23:32 (the scary spider), in the Glowworm Deep"
+  },
+  {
+   "id": "cave-cricket",
+   "slot": "pack"
+  },
+  {
+   "id": "cave-swiftlet",
+   "slot": "pack"
+  },
+  {
+   "id": "cave-pseudoscorpion",
+   "slot": "pack"
+  },
+  {
+   "id": "guano-beetle",
+   "slot": "pack"
+  },
+  {
+   "id": "banded-sea-krait",
+   "slot": "skirmish",
+   "node": "9-4",
+   "why": "owner's example (sea snakes), night hunter in the Kelp Curtains"
+  },
+  {
+   "id": "fishing-cat",
+   "slot": "skirmish",
+   "node": "9-5",
+   "why": "dives for the fish of the Moray Den"
+  },
+  {
+   "id": "mangrove-manatee",
+   "slot": "skirmish",
+   "node": "9-7",
+   "why": "the Kelp Witch's great guardian"
+  },
+  {
+   "id": "proboscis-monkey",
+   "slot": "pack"
+  },
+  {
+   "id": "horseshoe-crab",
+   "slot": "pack"
+  },
+  {
+   "id": "sea-hare",
+   "slot": "pack"
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "slot": "skirmish",
+   "node": "10-2",
+   "why": "a second reward for the Moray Ambush"
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "slot": "skirmish",
+   "node": "10-5",
+   "why": "owner's example (sea snakes), for the fight that had no reward"
+  },
+  {
+   "id": "great-barracuda",
+   "slot": "skirmish",
+   "node": "10-6",
+   "why": "with the Reef Shark Pack (no reward before)"
+  },
+  {
+   "id": "whale-shark",
+   "slot": "skirmish",
+   "node": "10-8",
+   "why": "the Sea Turtle Elder's court (no reward before)"
+  },
+  {
+   "id": "parrotfish",
+   "slot": "pack"
+  },
+  {
+   "id": "lionfish",
+   "slot": "pack"
+  },
+  {
+   "id": "giant-clam",
+   "slot": "pack"
+  },
+  {
+   "id": "mountain-hare",
+   "slot": "skirmish",
+   "node": "11-1",
+   "why": "with the goat-trail runners"
+  },
+  {
+   "id": "apollo-butterfly",
+   "slot": "skirmish",
+   "node": "11-3",
+   "why": "the alpine butterfly over the herd"
+  },
+  {
+   "id": "chamois-leaper",
+   "slot": "skirmish",
+   "node": "11-9",
+   "why": "for the Condor Sovereign's fight, which had no reward"
+  },
+  {
+   "id": "alpine-swift",
+   "slot": "pack"
+  },
+  {
+   "id": "alpine-salamander",
+   "slot": "pack"
+  },
+  {
+   "id": "thorn-shrike",
+   "slot": "skirmish",
+   "node": "12-4",
+   "why": "the butcher bird of the Thornvine Arch"
+  },
+  {
+   "id": "hedge-weasel",
+   "slot": "skirmish",
+   "node": "12-6",
+   "why": "follows the mice into the Rodent Court"
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "slot": "pack"
+  },
+  {
+   "id": "muntjac-barker",
+   "slot": "pack"
+  },
+  {
+   "id": "anvil-thrush",
+   "slot": "pack"
+  },
+  {
+   "id": "garden-tiger-moth",
+   "slot": "pack"
+  },
+  {
+   "id": "grave-grin-hyena",
+   "slot": "skirmish",
+   "node": "14-2",
+   "why": "GI: Executioner, in the Hyena Chorus (Savanna Reaches)"
+  },
+  {
+   "id": "glasswing-moth",
+   "slot": "skirmish",
+   "node": "18-5",
+   "why": "GI: Brittle beside the Obsidian Scorpions and the Glass-storm (Glass job for Shatter)"
+  },
+  {
+   "id": "chapel-tortoise",
+   "slot": "skirmish",
+   "node": "21-3",
+   "why": "GI: Prayer Bastion on the Quiet Summit (the Cathedral Eagle's Worship is two fights on)"
+  },
+  {
+   "id": "weathervane-swift",
+   "slot": "skirmish",
+   "node": "22-7",
+   "why": "GI: Field Breaker as a late reward on the heaviest field fight (Heatwave + Hail)"
+  },
+  {
+   "id": "frostmoon-howler",
+   "slot": "skirmish",
+   "node": "17-7",
+   "why": "GI: Pack Howl, the wolves' identity, at the Alpha Howler's Den"
+  },
+  {
+   "id": "woodland-caribou",
+   "slot": "skirmish",
+   "node": "16-3",
+   "why": "crosses with the elk"
+  },
+  {
+   "id": "musk-ox-calf",
+   "slot": "pack"
+  },
+  {
+   "id": "beluga",
+   "slot": "skirmish",
+   "node": "17-4",
+   "why": "the sea canary by the seals"
+  },
+  {
+   "id": "polar-bear",
+   "slot": "skirmish",
+   "node": "17-5",
+   "why": "for the Musk Ox Bulwark, which had no reward"
+  },
+  {
+   "id": "greenland-shark",
+   "slot": "skirmish",
+   "node": "17-A-4",
+   "why": "under the ice, the Hollow King's"
+  },
+  {
+   "id": "harp-seal-pup",
+   "slot": "pack"
+  },
+  {
+   "id": "arctic-tern",
+   "slot": "pack"
+  },
+  {
+   "id": "lemming-swarm",
+   "slot": "pack"
+  },
+  {
+   "id": "krill-swarm",
+   "slot": "pack"
+  },
+  {
+   "id": "ringed-seal",
+   "slot": "pack"
+  }
+ ],
+ "fights": [
+  {
+   "map": "m1",
+   "key": "0-1",
+   "out": {
+    "pond-trout": 2
+   },
+   "in": {
+    "water-vole": 2
+   },
+   "why": "its new reward on the river bank"
+  },
+  {
+   "map": "m1",
+   "key": "0-4",
+   "out": {
+    "badger-berserker": 2
+   },
+   "in": {
+    "pine-marten": 2
+   },
+   "why": "Badger Berserker is a badger-map card (Ashen Spurn); the hedge's own hunter instead"
+  },
+  {
+   "map": "mf",
+   "key": "1-1",
+   "out": {
+    "burrow-rabbit": 2
+   },
+   "in": {
+    "robin-redbreast": 2
+   },
+   "why": "its new reward"
+  },
+  {
+   "map": "mf",
+   "key": "1-2",
+   "out": {
+    "duckling": 3,
+    "chipmunk-skirmisher": 2
+   },
+   "in": {
+    "harvest-mouse": 3,
+    "ladybird-guard": 2
+   },
+   "why": "no ducklings in the hedgerow (R2 filler): the field's mice, and its new reward"
+  },
+  {
+   "map": "mf",
+   "key": "1-3",
+   "out": {
+    "badger-berserker": 2,
+    "duckling": 2
+   },
+   "in": {
+    "stag-beetle": 2,
+    "harvest-mouse": 2
+   },
+   "why": "Badger Berserker and ducklings off; the woodland's Stag Beetle"
+  },
+  {
+   "map": "mf",
+   "key": "1-4",
+   "out": {
+    "duckling": 3
+   },
+   "in": {
+    "field-vole": 3
+   },
+   "why": "no ducklings: the hedge's voles"
+  },
+  {
+   "map": "mf",
+   "key": "1-5",
+   "out": {
+    "badger-berserker": 2
+   },
+   "in": {
+    "stag-beetle": 2
+   },
+   "why": "the Thistle Baron's beetles, not Ashen Spurn's badgers"
+  },
+  {
+   "map": "mb",
+   "key": "2-1",
+   "out": {
+    "tide-pool-crab": 2
+   },
+   "in": {
+    "pincushion-urchin": 2
+   },
+   "why": "its new reward in the rock pools"
+  },
+  {
+   "map": "mb",
+   "key": "2-3",
+   "out": {
+    "tide-pool-crab": 2
+   },
+   "in": {
+    "tidepool-trapper-crab": 2
+   },
+   "why": "its new reward (GI Crab Trap on the Tide)"
+  },
+  {
+   "map": "mb",
+   "key": "2-4",
+   "out": {
+    "mallard-marauder": 2
+   },
+   "in": {
+    "grey-seal-bull": 2
+   },
+   "why": "the shingle's seal, not the Goldfeather mallards"
+  },
+  {
+   "map": "mb",
+   "key": "2-5",
+   "out": {
+    "mallard-marauder": 2
+   },
+   "in": {
+    "grey-seal-bull": 2
+   },
+   "why": "The Old Shell's guard is a seal, not a mallard"
+  },
+  {
+   "map": "mc",
+   "key": "3-1",
+   "out": {
+    "pelican-diver": 4,
+    "duck-paddler": 2
+   },
+   "in": {
+    "puffin-diver": 2,
+    "red-billed-chough": 2,
+    "kittiwake-flock": 2
+   },
+   "why": "seabirds of the cliff for the Pelicans and ducks"
+  },
+  {
+   "map": "mc",
+   "key": "3-2",
+   "out": {
+    "pelican-diver": 4
+   },
+   "in": {
+    "razorbill": 2,
+    "puffin-diver": 2
+   },
+   "why": "seabirds for the Pelicans"
+  },
+  {
+   "map": "mc",
+   "key": "3-3",
+   "out": {
+    "pelican-diver": 4
+   },
+   "in": {
+    "fulmar-spitter": 2,
+    "razorbill": 2
+   },
+   "why": "seabirds for the Pelicans"
+  },
+  {
+   "map": "mc",
+   "key": "3-4",
+   "out": {
+    "pelican-diver": 4
+   },
+   "in": {
+    "fulmar-spitter": 2,
+    "razorbill": 2
+   },
+   "why": "seabirds for the Pelicans"
+  },
+  {
+   "map": "mc",
+   "key": "3-5",
+   "out": {
+    "sparrow-chick": 2
+   },
+   "in": {
+    "peregrine-stooper": 2
+   },
+   "why": "the Eagle Stoop's own falcon (keeps its 2 Pelicans)"
+  },
+  {
+   "map": "mc",
+   "key": "3-6",
+   "out": {
+    "pelican-diver": 4
+   },
+   "in": {
+    "razorbill": 2,
+    "fulmar-spitter": 2
+   },
+   "why": "seabirds for the Pelicans"
+  },
+  {
+   "map": "mc",
+   "key": "3-7",
+   "out": {
+    "pelican-diver": 2
+   },
+   "in": {
+    "peregrine-stooper": 2
+   },
+   "why": "the Gannet Queen keeps 2 Pelicans; a falcon for the other 2"
+  },
+  {
+   "map": "m2",
+   "key": "4-1",
+   "out": {
+    "pond-trout": 2
+   },
+   "in": {
+    "pyrenean-desman": 2
+   },
+   "why": "its new reward"
+  },
+  {
+   "map": "m2",
+   "key": "4-2",
+   "out": {
+    "beaver-builder": 2
+   },
+   "in": {
+    "muskrat-lodgekeeper": 2
+   },
+   "why": "its new reward, a lodge-builder for a lodge-builder"
+  },
+  {
+   "map": "m2",
+   "key": "4-4",
+   "out": {
+    "truce-heron": 1
+   },
+   "in": {
+    "old-sturgeon": 1
+   },
+   "why": "its new reward for a stray pack heron"
+  },
+  {
+   "map": "mw",
+   "key": "5-1",
+   "out": {
+    "open-ocean-hermit-crab": 2
+   },
+   "in": {
+    "plague-gnat-cloud": 2
+   },
+   "why": "swamp insects for the ocean crabs"
+  },
+  {
+   "map": "mw",
+   "key": "5-2",
+   "out": {
+    "puddle-hopper": 2
+   },
+   "in": {
+    "anhinga-spearbird": 2
+   },
+   "why": "its new reward"
+  },
+  {
+   "map": "mw",
+   "key": "5-3",
+   "out": {
+    "echo-keeper": 2
+   },
+   "in": {
+    "fire-ant-raft": 2
+   },
+   "why": "its new reward"
+  },
+  {
+   "map": "mw",
+   "key": "5-4",
+   "out": {
+    "open-ocean-hermit-crab": 2,
+    "mallard-marauder": 2
+   },
+   "in": {
+    "mosquito-cloud": 2,
+    "alligator-gar": 2
+   },
+   "why": "swamp cards for the ocean crabs and the mallards"
+  },
+  {
+   "map": "mw",
+   "key": "5-5",
+   "out": {
+    "mallard-marauder": 1
+   },
+   "in": {
+    "fen-mink": 1
+   },
+   "why": "GI Fen Mink for the mallard"
+  },
+  {
+   "map": "mw",
+   "key": "5-6",
+   "out": {
+    "open-ocean-hermit-crab": 1,
+    "mallard-marauder": 1
+   },
+   "in": {
+    "fire-ant-raft": 1,
+    "alligator-gar": 1
+   },
+   "why": "swamp cards for the ocean crab and the mallard"
+  },
+  {
+   "map": "mw",
+   "key": "5-7",
+   "out": {
+    "open-ocean-hermit-crab": 2,
+    "beaver-builder": 1
+   },
+   "in": {
+    "fire-ant-raft": 2,
+    "fen-mink": 1
+   },
+   "why": "swamp cards for the ocean crabs and the beaver"
+  },
+  {
+   "map": "m8",
+   "key": "6-2",
+   "out": {
+    "open-ocean-hermit-crab": 2,
+    "mallard-marauder": 2
+   },
+   "in": {
+    "raft-spider": 2,
+    "booming-bittern": 2
+   },
+   "why": "swamp cards for the ocean crabs and the mallards"
+  },
+  {
+   "map": "m8",
+   "key": "6-3",
+   "out": {
+    "beaver-builder": 2,
+    "mallard-marauder": 2
+   },
+   "in": {
+    "giant-water-bug": 2,
+    "marsh-harrier": 2
+   },
+   "why": "swamp cards for the beavers and the mallards"
+  },
+  {
+   "map": "m8",
+   "key": "6-5",
+   "out": {
+    "beaver-builder": 3
+   },
+   "in": {
+    "bogfire-newt": 2,
+    "marsh-wisp": 1
+   },
+   "why": "its new reward (GI Detonate) and a wisp for the beavers"
+  },
+  {
+   "map": "m8",
+   "key": "6-6",
+   "out": {
+    "beaver-builder": 2
+   },
+   "in": {
+    "greater-siren": 2
+   },
+   "why": "its new reward for the beavers"
+  },
+  {
+   "map": "m8",
+   "key": "6-7",
+   "out": {
+    "beaver-builder": 2
+   },
+   "in": {
+    "marsh-wisp": 2
+   },
+   "why": "wisps for the beavers"
+  },
+  {
+   "map": "m8",
+   "key": "6-8",
+   "out": {
+    "beaver-builder": 3,
+    "open-ocean-hermit-crab": 1,
+    "mallard-marauder": 2
+   },
+   "in": {
+    "greater-siren": 2,
+    "marsh-wisp": 1,
+    "raft-spider": 1,
+    "giant-water-bug": 2
+   },
+   "why": "the swamp's own for the beavers, the crab and the mallards"
+  },
+  {
+   "map": "mu",
+   "key": "7-1",
+   "out": {
+    "garden-snail": 2
+   },
+   "in": {
+    "truffle-piglet": 2
+   },
+   "why": "its new reward"
+  },
+  {
+   "map": "mu",
+   "key": "7-4",
+   "out": {
+    "compost-grub": 2
+   },
+   "in": {
+    "leopard-slug": 2
+   },
+   "why": "a night slug in the Moonlit Gills"
+  },
+  {
+   "map": "mu",
+   "key": "7-5",
+   "rules": {
+    "sporeCloud": true
+   },
+   "why": "Spore Cloud (the Morel Hollow's field, GI note: elites and boss)"
+  },
+  {
+   "map": "mu",
+   "key": "7-6",
+   "out": {
+    "raccoon-nightcrew": 1,
+    "trash-panda-trickster": 2
+   },
+   "in": {
+    "wolf-spider-mother": 2,
+    "truffle-piglet": 1
+   },
+   "rules": {
+    "sporeCloud": true
+   },
+   "why": "spiders and a piglet for the raccoons; Spore Cloud"
+  },
+  {
+   "map": "m4",
+   "key": "8-1",
+   "out": {
+    "honey-bee": 2,
+    "beetle-grunt": 2
+   },
+   "in": {
+    "guano-beetle": 2,
+    "cave-swiftlet": 2
+   },
+   "why": "cave dwellers for the bees and the Thistlewood beetles"
+  },
+  {
+   "map": "m4",
+   "key": "8-3",
+   "out": {
+    "honey-bee": 2
+   },
+   "in": {
+    "cave-cricket": 2
+   },
+   "why": "a cave cricket for the bees"
+  },
+  {
+   "map": "m4",
+   "key": "8-5",
+   "out": {
+    "honey-bee": 2,
+    "swarm-matriarch": 2
+   },
+   "in": {
+    "guano-beetle": 2,
+    "whip-spider": 2
+   },
+   "why": "cave dwellers for the bees"
+  },
+  {
+   "map": "m4",
+   "key": "8-6",
+   "out": {
+    "swarm-matriarch": 2
+   },
+   "in": {
+    "giant-cave-huntsman": 2
+   },
+   "why": "its new reward (the scary spider) for the bees"
+  },
+  {
+   "map": "m4",
+   "key": "8-7",
+   "out": {
+    "swarm-matriarch": 2
+   },
+   "in": {
+    "cave-bat-swarm": 2
+   },
+   "why": "bats for the bees in The Roost Above"
+  },
+  {
+   "map": "m4",
+   "key": "8-8",
+   "out": {
+    "beetle-grunt": 2,
+    "swarm-matriarch": 2
+   },
+   "in": {
+    "cave-pseudoscorpion": 2,
+    "whip-spider": 2
+   },
+   "why": "cave dwellers for the bees and the beetles"
+  },
+  {
+   "map": "mk",
+   "key": "9-1",
+   "out": {
+    "narwhal-lancer": 2
+   },
+   "in": {
+    "horseshoe-crab": 2
+   },
+   "why": "a mudflat crab for the arctic narwhals"
+  },
+  {
+   "map": "mk",
+   "key": "9-4",
+   "out": {
+    "narwhal-lancer": 2
+   },
+   "in": {
+    "banded-sea-krait": 2
+   },
+   "why": "its new reward (sea snakes) for the narwhals"
+  },
+  {
+   "map": "mk",
+   "key": "9-5",
+   "rules": {
+    "tangledRoots": true
+   },
+   "why": "Tangled Roots (GI note: Kelp Mangroves elites)"
+  },
+  {
+   "map": "mk",
+   "key": "9-6",
+   "rules": {
+    "tangledRoots": true
+   },
+   "why": "Tangled Roots"
+  },
+  {
+   "map": "mk",
+   "key": "9-7",
+   "out": {
+    "narwhal-lancer": 1
+   },
+   "in": {
+    "mangrove-manatee": 1
+   },
+   "why": "its new reward for the narwhal"
+  },
+  {
+   "map": "m7",
+   "key": "10-1",
+   "out": {
+    "tide-pool-crab": 2
+   },
+   "in": {
+    "parrotfish": 2
+   },
+   "why": "a reef fish for the beach crabs"
+  },
+  {
+   "map": "m7",
+   "key": "10-6",
+   "out": {
+    "abyss-lantern-squid": 2
+   },
+   "in": {
+    "great-barracuda": 2
+   },
+   "why": "its new reward"
+  },
+  {
+   "map": "m7",
+   "key": "10-7",
+   "rules": {
+    "thunderstorm": 2
+   },
+   "why": "Thunderstorm (GI note: Coral Current elites / boss), on the eels' nest"
+  },
+  {
+   "map": "m7",
+   "key": "10-8",
+   "out": {
+    "lions-mane-jelly": 1
+   },
+   "in": {
+    "whale-shark": 1
+   },
+   "why": "its new reward"
+  },
+  {
+   "map": "m7",
+   "key": "10-9",
+   "out": {
+    "gull-thief": 1
+   },
+   "in": {
+    "lionfish": 1
+   },
+   "rules": {
+    "thunderstorm": 2
+   },
+   "why": "a reef fish for the beach gull; Thunderstorm"
+  },
+  {
+   "map": "m10",
+   "key": "11-6",
+   "out": {
+    "quillguard": 1
+   },
+   "in": {
+    "chamois-leaper": 1
+   },
+   "why": "a ledge leaper for the hedge porcupine"
+  },
+  {
+   "map": "m10",
+   "key": "11-7",
+   "out": {
+    "quill-volley": 2
+   },
+   "in": {
+    "alpine-swift": 2
+   },
+   "why": "swifts for the porcupine volleys"
+  },
+  {
+   "map": "m10",
+   "key": "11-9",
+   "out": {
+    "chipmunk-hoarder": 2
+   },
+   "in": {
+    "chamois-leaper": 2
+   },
+   "why": "its new reward"
+  },
+  {
+   "map": "m10",
+   "key": "11-10",
+   "out": {
+    "echo-keeper": 2
+   },
+   "in": {
+    "alpine-salamander": 2
+   },
+   "why": "an alpine salamander for the swamp's Echo Keepers"
+  },
+  {
+   "map": "mh",
+   "key": "12-4",
+   "out": {
+    "bramble-sprout": 2
+   },
+   "in": {
+    "thorn-shrike": 2
+   },
+   "why": "its new reward, the butcher bird of the thorns"
+  },
+  {
+   "map": "mh",
+   "key": "12-7",
+   "out": {
+    "harvest-mouse": 2
+   },
+   "in": {
+    "hedge-weasel": 2
+   },
+   "why": "a weasel at the Briar Queen's court"
+  },
+  {
+   "map": "mr",
+   "key": "13-1",
+   "out": {
+    "shieldbearer-hound": 4
+   },
+   "in": {
+    "stag-knight": 2,
+    "berserker-boar": 2
+   },
+   "why": "forest beasts for the village hounds"
+  },
+  {
+   "map": "mr",
+   "key": "13-2",
+   "out": {
+    "shieldbearer-hound": 4,
+    "buzzed-chipmunk": 2
+   },
+   "in": {
+    "fox-kit": 2,
+    "swift-fox": 2,
+    "fox-sharpshot": 2
+   },
+   "why": "foxes for the Fox Run (village hounds and chipmunks out)"
+  },
+  {
+   "map": "mr",
+   "key": "13-3",
+   "out": {
+    "shieldbearer-hound": 2,
+    "border-collie": 1,
+    "buzzed-chipmunk": 1,
+    "bramblewood-macaque": 4
+   },
+   "in": {
+    "stag-knight": 2,
+    "fawn-scout": 1,
+    "fox-kit": 1,
+    "bramblewood-lynx": 2,
+    "shimmerwing-stag": 2
+   },
+   "why": "the Antler Grove's deer and lynx"
+  },
+  {
+   "map": "mr",
+   "key": "13-4",
+   "out": {
+    "shieldbearer-hound": 4,
+    "buzzed-chipmunk": 1
+   },
+   "in": {
+    "berserker-boar": 2,
+    "swift-fox": 2,
+    "fox-kit": 1
+   },
+   "why": "boars and foxes for the village folk"
+  },
+  {
+   "map": "mr",
+   "key": "13-5",
+   "out": {
+    "border-collie": 2,
+    "buzzed-chipmunk": 2,
+    "parish-sergeant": 2,
+    "bramblewood-macaque": 2,
+    "shieldbearer-hound": 2
+   },
+   "in": {
+    "badger-sapper": 2,
+    "fox-kit": 2,
+    "honey-badger-fury": 2,
+    "feral-tuskboar": 2,
+    "bear-cub": 2
+   },
+   "why": "the Badger Setts' badgers (its own reward) and forest beasts"
+  },
+  {
+   "map": "mr",
+   "key": "13-6",
+   "out": {
+    "shieldbearer-hound": 2,
+    "border-collie": 2,
+    "buzzed-chipmunk": 2,
+    "parish-sergeant": 1,
+    "bramblewood-macaque": 4
+   },
+   "in": {
+    "bear-cub": 2,
+    "grizzly-vanguard": 2,
+    "swift-fox": 2,
+    "honey-badger-fury": 1,
+    "feral-tuskboar": 2,
+    "bramblewood-lynx": 2
+   },
+   "why": "the Grizzly Ridge's bears (its own reward)"
+  },
+  {
+   "map": "mr",
+   "key": "13-7",
+   "out": {
+    "shieldbearer-hound": 2,
+    "border-collie": 2,
+    "buzzed-chipmunk": 2,
+    "parish-sergeant": 2,
+    "bramblewood-macaque": 2
+   },
+   "in": {
+    "bear-cub": 2,
+    "fox-kit": 2,
+    "swift-fox": 2,
+    "honey-badger-fury": 2,
+    "feral-tuskboar": 2
+   },
+   "why": "forest beasts at the King's Den"
+  },
+  {
+   "map": "mr",
+   "key": "13-8",
+   "out": {
+    "border-collie": 2,
+    "shieldbearer-hound": 2
+   },
+   "in": {
+    "stag-knight": 2,
+    "shimmerwing-stag": 2
+   },
+   "why": "the Stag-Lord's stags"
+  },
+  {
+   "map": "m5",
+   "key": "14-2",
+   "out": {
+    "dust-hyena": 2
+   },
+   "in": {
+    "grave-grin-hyena": 2
+   },
+   "why": "its new reward (GI Executioner) in the Hyena Chorus"
+  },
+  {
+   "map": "m5",
+   "key": "14-6",
+   "out": {
+    "alley-cat": 1
+   },
+   "in": {
+    "grave-grin-hyena": 1
+   },
+   "why": "a savanna hunter for the town's alley cat"
+  },
+  {
+   "map": "m5",
+   "key": "14-7",
+   "out": {
+    "alley-cat": 1,
+    "bramblewood-macaque": 2
+   },
+   "in": {
+    "spitting-cobra": 1,
+    "grave-grin-hyena": 2
+   },
+   "why": "savanna cards for the alley cat and the pack macaques"
+  },
+  {
+   "map": "m5",
+   "key": "14-8",
+   "out": {
+    "bramblewood-macaque": 2
+   },
+   "in": {
+    "marching-elephant": 2
+   },
+   "why": "the Warlord's elephants for the pack macaques"
+  },
+  {
+   "map": "ml",
+   "key": "15-5",
+   "out": {
+    "plains-zebra": 3
+   },
+   "in": {
+    "warhorse-charger": 3
+   },
+   "why": "the Charge of the Warhorses has warhorses, not savanna zebras"
+  },
+  {
+   "map": "mt",
+   "key": "16-1",
+   "out": {
+    "firetail-trickster": 2
+   },
+   "in": {
+    "trickster-fox": 2
+   },
+   "why": "the taiga's fox for the redwood one"
+  },
+  {
+   "map": "mt",
+   "key": "16-2",
+   "out": {
+    "firetail-trickster": 1
+   },
+   "in": {
+    "trickster-fox": 1
+   },
+   "why": "the taiga's fox"
+  },
+  {
+   "map": "mt",
+   "key": "16-3",
+   "out": {
+    "shieldbearer-hound": 2,
+    "war-hound": 2
+   },
+   "in": {
+    "woodland-caribou": 2,
+    "timber-wolf-pack": 2
+   },
+   "why": "its new reward and wolves for the village dogs"
+  },
+  {
+   "map": "mt",
+   "key": "16-4",
+   "out": {
+    "shieldbearer-hound": 1
+   },
+   "in": {
+    "musk-ox-calf": 1
+   },
+   "why": "a musk ox calf for the village hound"
+  },
+  {
+   "map": "mt",
+   "key": "16-5",
+   "out": {
+    "shieldbearer-hound": 1
+   },
+   "in": {
+    "musk-ox-calf": 1
+   },
+   "why": "a musk ox calf for the village hound"
+  },
+  {
+   "map": "mt",
+   "key": "16-6",
+   "out": {
+    "firetail-trickster": 2,
+    "warren-scout": 2,
+    "weredog": 1
+   },
+   "in": {
+    "trickster-fox": 2,
+    "snowshoe-hare": 2,
+    "pack-wolf-reaver": 1
+   },
+   "why": "the Reaver's Hollow gets its Pack Wolf Reaver (its reward); taiga fox and hares"
+  },
+  {
+   "map": "m6",
+   "key": "17-1",
+   "out": {
+    "golden-eagle-diver": 2,
+    "chipmunk-hoarder": 2
+   },
+   "in": {
+    "arctic-tern": 2,
+    "lemming-swarm": 2
+   },
+   "why": "terns and lemmings for the mountain eagles and the chipmunks"
+  },
+  {
+   "map": "m6",
+   "key": "17-2",
+   "out": {
+    "golden-eagle-diver": 2,
+    "beaver-builder": 2,
+    "harvest-mouse": 2
+   },
+   "in": {
+    "arctic-tern": 2,
+    "harp-seal-pup": 2,
+    "krill-swarm": 2
+   },
+   "why": "polar cards for the eagles, beavers and mice"
+  },
+  {
+   "map": "m6",
+   "key": "17-3",
+   "out": {
+    "beaver-builder": 2,
+    "dynamite-packrat": 2,
+    "star-nosed-mole": 2,
+    "harvest-mouse": 2
+   },
+   "in": {
+    "harp-seal-pup": 2,
+    "ringed-seal": 2,
+    "krill-swarm": 2,
+    "lemming-swarm": 2
+   },
+   "why": "polar cards for the beavers, packrats, moles and mice"
+  },
+  {
+   "map": "m6",
+   "key": "17-4",
+   "out": {
+    "beaver-builder": 3,
+    "golden-eagle-diver": 4,
+    "porcupine-roller": 2,
+    "dynamite-packrat": 2
+   },
+   "in": {
+    "beluga": 2,
+    "harp-seal-pup": 1,
+    "arctic-tern": 2,
+    "snow-bunting-archer": 2,
+    "snow-ermine": 2,
+    "ringed-seal": 2
+   },
+   "why": "its new reward (Beluga) by the seals; polar cards for the rest"
+  },
+  {
+   "map": "m6",
+   "key": "17-5",
+   "out": {
+    "beaver-builder": 3,
+    "porcupine-roller": 2,
+    "chipmunk-hoarder": 1
+   },
+   "in": {
+    "polar-bear": 2,
+    "harp-seal-pup": 1,
+    "tundra-musk-ox": 2,
+    "snow-ermine": 1
+   },
+   "why": "the Musk Ox Bulwark gets its musk oxen, and its new reward"
+  },
+  {
+   "map": "m6",
+   "key": "17-6",
+   "out": {
+    "beaver-builder": 1,
+    "porcupine-roller": 2,
+    "war-hound": 2
+   },
+   "in": {
+    "harp-seal-pup": 1,
+    "tundra-musk-ox": 2,
+    "frostmoon-howler": 2
+   },
+   "why": "the Glacier Herd's musk oxen; GI Pack Howl wolves for the war hounds"
+  },
+  {
+   "map": "m6",
+   "key": "17-7",
+   "out": {
+    "porcupine-roller": 2,
+    "chipmunk-hoarder": 2,
+    "dynamite-packrat": 2
+   },
+   "in": {
+    "frostmoon-howler": 2,
+    "timber-wolf-pack": 2,
+    "ice-crevasse-wolf": 2
+   },
+   "why": "wolves in the Alpha Howler's Den (its new reward: Frostmoon Howler)"
+  },
+  {
+   "map": "m6",
+   "key": "17-8",
+   "out": {
+    "porcupine-roller": 1,
+    "chipmunk-forager": 1,
+    "harvest-mouse": 1,
+    "buzzed-chipmunk": 1,
+    "star-nosed-mole": 2,
+    "beaver-builder": 2
+   },
+   "in": {
+    "lemming-swarm": 2,
+    "snow-ermine": 2,
+    "krill-swarm": 2,
+    "harp-seal-pup": 2
+   },
+   "why": "polar cards for the rodents"
+  },
+  {
+   "map": "md",
+   "key": "18-1",
+   "out": {
+    "snapper-hatchling": 2
+   },
+   "in": {
+    "thorny-devil": 2
+   },
+   "why": "its own desert lizard for the swamp turtle"
+  },
+  {
+   "map": "md",
+   "key": "18-2",
+   "out": {
+    "snapper-hatchling": 2,
+    "grass-viper": 1
+   },
+   "in": {
+    "thorny-devil": 2,
+    "horned-lizard": 1
+   },
+   "why": "desert lizards for the swamp turtle and the meadow viper"
+  },
+  {
+   "map": "md",
+   "key": "18-5",
+   "out": {
+    "trapdoor-spider": 2
+   },
+   "in": {
+    "glasswing-moth": 2
+   },
+   "why": "its new reward (GI Brittle) beside the Obsidian Scorpions"
+  },
+  {
+   "map": "m3",
+   "key": "19-2",
+   "out": {
+    "chipmunk-stockpiler": 1,
+    "beaver-builder": 2
+   },
+   "in": {
+    "porcupine-roller": 1,
+    "badger-trench-digger": 2
+   },
+   "why": "the bastion's porcupine and badgers for the chipmunk and the beavers"
+  },
+  {
+   "map": "m3",
+   "key": "19-3",
+   "out": {
+    "beetle-battering-ram": 1
+   },
+   "in": {
+    "badger-berserker": 1
+   },
+   "rules": {
+    "ashRain": true
+   },
+   "why": "a badger for the beetle; Ash Rain (Codex: Ashen Spurn's signature, GI placement)"
+  },
+  {
+   "map": "m3",
+   "key": "19-4",
+   "out": {
+    "beetle-battering-ram": 2
+   },
+   "in": {
+    "badger-berserker": 2
+   },
+   "why": "badgers for the beetles"
+  },
+  {
+   "map": "m3",
+   "key": "19-5",
+   "out": {
+    "beaver-builder": 2
+   },
+   "in": {
+    "badger-trench-digger": 2
+   },
+   "rules": {
+    "ashRain": true
+   },
+   "why": "badgers for the beavers; Ash Rain"
+  },
+  {
+   "map": "m3",
+   "key": "19-6",
+   "out": {
+    "beetle-battering-ram": 2
+   },
+   "in": {
+    "badger-berserker": 2
+   },
+   "rules": {
+    "ashy": true
+   },
+   "why": "badgers for the beetles; Ashy on the boss"
+  },
+  {
+   "map": "m11",
+   "key": "20-9",
+   "out": {
+    "beaver-lumberjack": 1
+   },
+   "in": {
+    "ancient-sloth-titan": 1
+   },
+   "why": "the fight's namesake back, for a stray beaver"
+  },
+  {
+   "map": "m21",
+   "key": "21-2",
+   "out": {
+    "badger-berserker": 2
+   },
+   "in": {
+    "caldera-snow-leopard": 2
+   },
+   "why": "snow leopards for the badgers"
+  },
+  {
+   "map": "m21",
+   "key": "21-3",
+   "out": {
+    "badger-berserker": 2
+   },
+   "in": {
+    "fumarole-ibex": 2
+   },
+   "why": "ibex for the badgers (its new reward: Chapel Tortoise)"
+  },
+  {
+   "map": "m21",
+   "key": "21-4",
+   "out": {
+    "badger-berserker": 1
+   },
+   "in": {
+    "caldera-snow-leopard": 1
+   },
+   "why": "a snow leopard for the badger"
+  },
+  {
+   "map": "m21",
+   "key": "21-5",
+   "out": {
+    "badger-berserker": 2
+   },
+   "in": {
+    "caldera-snow-leopard": 2
+   },
+   "why": "snow leopards for the badgers"
+  },
+  {
+   "map": "m21",
+   "key": "21-6",
+   "out": {
+    "badger-berserker": 4
+   },
+   "in": {
+    "chapel-tortoise": 2,
+    "caldera-snow-leopard": 2
+   },
+   "why": "the Prayer Bastion beside the Cathedral Eagle; snow leopards"
+  },
+  {
+   "map": "m22",
+   "key": "22-1",
+   "out": {
+    "badger-berserker": 2
+   },
+   "in": {
+    "ice-crevasse-wolf": 2
+   },
+   "why": "ice wolves for the badgers"
+  },
+  {
+   "map": "m22",
+   "key": "22-3",
+   "out": {
+    "badger-berserker": 4
+   },
+   "in": {
+    "ice-crevasse-wolf": 2,
+    "magma-salamander": 2
+   },
+   "why": "frost and fire for the badgers"
+  },
+  {
+   "map": "m22",
+   "key": "22-4",
+   "out": {
+    "badger-berserker": 4
+   },
+   "in": {
+    "ice-crevasse-wolf": 2,
+    "ice-petrel": 1,
+    "snow-bunting-archer": 1
+   },
+   "why": "the hail ridge's birds and wolves for the badgers"
+  },
+  {
+   "map": "m22",
+   "key": "22-6",
+   "out": {
+    "badger-berserker": 4
+   },
+   "in": {
+    "magma-salamander": 2,
+    "fumarole-ibex": 2
+   },
+   "why": "the cornice's salamanders and ibex for the badgers"
+  },
+  {
+   "map": "m22",
+   "key": "22-7",
+   "out": {
+    "cinder-stoker": 2
+   },
+   "in": {
+    "weathervane-swift": 2
+   },
+   "why": "its new reward (GI Field Breaker) in the field-heavy Steam Wall"
+  },
+  {
+   "map": "m24",
+   "key": "24-5",
+   "out": {
+    "howdah-archers": 2
+   },
+   "in": {
+    "goose-sentry": 2
+   },
+   "why": "the keep's own geese on its battlements (the howdahs are the besiegers')"
+  },
+  {
+   "map": "mq",
+   "key": "1-A-2",
+   "out": {
+    "badger-berserker": 2
+   },
+   "in": {
+    "stag-beetle": 2
+   },
+   "why": "a meadow beetle for the badgers"
+  },
+  {
+   "map": "mp",
+   "key": "2-A-1",
+   "out": {
+    "quill-volley": 2
+   },
+   "in": {
+    "great-crested-grebe": 2
+   },
+   "why": "a pond grebe for the hedge porcupines"
+  },
+  {
+   "map": "mp",
+   "key": "2-A-3",
+   "out": {
+    "quill-volley": 2
+   },
+   "in": {
+    "muskrat-lodgekeeper": 2
+   },
+   "why": "the lodge muskrats for the porcupines"
+  },
+  {
+   "map": "mp",
+   "key": "2-A-6",
+   "out": {
+    "quill-volley": 2
+   },
+   "in": {
+    "water-shrew": 2
+   },
+   "why": "water shrews for the porcupines"
+  },
+  {
+   "map": "mg",
+   "key": "2-B-3",
+   "out": {
+    "quill-volley": 2
+   },
+   "in": {
+    "pincushion-urchin": 2
+   },
+   "why": "the pool's urchins for the porcupines"
+  },
+  {
+   "map": "ms",
+   "key": "5-A-1",
+   "out": {
+    "open-ocean-hermit-crab": 3,
+    "mallard-marauder": 2
+   },
+   "in": {
+    "mosquito-cloud": 2,
+    "swamp-rabbit": 1,
+    "anhinga-spearbird": 2
+   },
+   "why": "swamp cards for the ocean crabs and the mallards"
+  },
+  {
+   "map": "ms",
+   "key": "5-A-4",
+   "out": {
+    "mallard-marauder": 2
+   },
+   "in": {
+    "alligator-gar": 2
+   },
+   "why": "gars for the mallards"
+  },
+  {
+   "map": "mv",
+   "key": "11-A-2",
+   "out": {
+    "echo-keeper": 2
+   },
+   "in": {
+    "alpine-swift": 2
+   },
+   "why": "swifts for the swamp's Echo Keepers"
+  },
+  {
+   "map": "mi",
+   "key": "17-A-1",
+   "out": {
+    "chipmunk-hoarder": 4,
+    "porcupine-roller": 3
+   },
+   "in": {
+    "ringed-seal": 2,
+    "lemming-swarm": 2,
+    "snow-ermine": 2,
+    "harp-seal-pup": 1
+   },
+   "why": "polar cards for the chipmunks and porcupines"
+  },
+  {
+   "map": "mi",
+   "key": "17-A-2",
+   "out": {
+    "beaver-builder": 4,
+    "chipmunk-hoarder": 2
+   },
+   "in": {
+    "greenland-shark": 2,
+    "harp-seal-pup": 2,
+    "krill-swarm": 2
+   },
+   "why": "the Greenland Shark under the ice for the beavers"
+  },
+  {
+   "map": "mi",
+   "key": "17-A-3",
+   "out": {
+    "chipmunk-hoarder": 3,
+    "golden-eagle-diver": 3,
+    "harvest-mouse": 2
+   },
+   "in": {
+    "lemming-swarm": 3,
+    "arctic-tern": 3,
+    "krill-swarm": 2
+   },
+   "why": "polar cards for the chipmunks, eagles and mice"
+  },
+  {
+   "map": "mi",
+   "key": "17-A-4",
+   "out": {
+    "porcupine-roller": 2,
+    "dynamite-packrat": 2,
+    "quill-volley": 2
+   },
+   "in": {
+    "ringed-seal": 2,
+    "greenland-shark": 2,
+    "ice-crevasse-wolf": 2
+   },
+   "why": "the Hollow King's seals, shark and ice wolves"
+  },
+  {
+   "map": "m9",
+   "key": "19-A-2",
+   "out": {
+    "echo-keeper": 2
+   },
+   "in": {
+    "fire-salamander": 2
+   },
+   "why": "salamanders for the swamp's Echo Keepers"
+  },
+  {
+   "map": "m9",
+   "key": "19-A-9",
+   "out": {
+    "echo-keeper": 2
+   },
+   "in": {
+    "cinder-gecko": 2
+   },
+   "why": "geckos for the Echo Keepers"
+  },
+  {
+   "map": "m9",
+   "key": "19-A-10",
+   "out": {
+    "echo-keeper": 1,
+    "trapdoor-spider": 1
+   },
+   "in": {
+    "fire-salamander": 1,
+    "obsidian-scorpion": 1
+   },
+   "why": "forge cards for the swamp and fungus-wood strays"
+  },
+  {
+   "map": "me",
+   "key": "20-A-3",
+   "out": {
+    "echo-keeper": 1
+   },
+   "in": {
+    "cinder-skeleton": 1
+   },
+   "why": "a skeleton for the Echo Keeper in the Lich's Kiln"
+  },
+  {
+   "map": "me",
+   "key": "20-A-5",
+   "out": {
+    "echo-keeper": 2
+   },
+   "in": {
+    "cinder-gecko": 2
+   },
+   "why": "geckos for the Echo Keepers"
+  },
+  {
+   "map": "me",
+   "key": "20-A-7",
+   "out": {
+    "fungal-colossus": 1
+   },
+   "in": {
+    "cinder-gecko": 1
+   },
+   "why": "a gecko for the Morel Hollow's fungus"
+  }
+ ]
+}
