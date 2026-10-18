@@ -70,7 +70,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
   ok(T.slot === -1, `Wave left: the unit it hits is pushed one column left (${T.slot})`); const w = ev.find(x=> x.type==='wave'); ok(w && !w.blocked && w.dir === 'left', 'a wave event is logged');
   ok(e.allBoardCards(P[2]).every(c=> P[2].row[c.slot === 0 ? 'center' : c.slot < 0 ? 'left' : 'right'].includes(c)), 'the rows follow the new columns'); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'kc-wall', 0); const N = put(e, P, 2, 'kc-hit', 1); const W = put(e, P, 1, 'kc-waveR', 0);
-  e.debugAttack(P, so, W.uid, {}, []); ok(T.slot === 1 && N.slot === 0, `Wave right into a taken column: they swap (${T.slot}, ${N.slot})`); }
+  e.debugAttack(P, so, W.uid, {}, []); ok(T.slot === 0 && N.slot === 1 && N.hp === 499, `Wave right into a taken column: it crashes into the unit there, no swap (${T.slot}, ${N.slot}; 2026-10-18 Wave N)`); }
 { const {e, P} = mk(); const T = put(e, P, 2, 'kc-wall', 0); const W = put(e, P, 1, 'kc-waveL', 0); put(e, P, 1, 'kc-wall', 1);
   const ev = []; e.debugAttack(P, so, W.uid, {}, ev); ok(T.slot === -1, 'with room to the left (the board reaches column 1), a lone unit moves');
   const {e:e2, P:P2} = mk(); const T2 = put(e2, P2, 2, 'kc-wall', -2); put(e2, P2, 2, 'kc-wall', 0); const W2 = put(e2, P2, 1, 'kc-waveL', -2); put(e2, P2, 1, 'kc-wall', 2);
@@ -83,7 +83,7 @@ const dealt = (e, P, attUid, tgt)=>{ const hp = tgt.hp; e.debugAttack(P, so, att
 { const {e, P} = mk({}, 3, 'gravity'); ['kc-wall','kc-hit','kc-hit'].forEach((id, i)=> e.debugSpawnCard(P, so, 2, id, i === 2 ? 'right' : 'left', {}, [])); e.debugSpawnCard(P, so, 1, 'kc-waveL', 'left', {}, []);
   const order = ()=> [...P[2].row.left].reverse().concat(P[2].row.center, P[2].row.right).map(c=> c.defId).join();
   const before = order(); const T = P[2].row.center[0]; const ev = []; e.debugAttack(P, so, byDef(P[1], 'kc-waveL').uid, {}, ev);
-  const w = ev.find(x=> x.type==='wave'); ok(w && (w.blocked || order() !== before), `gravity rows: it swaps with its neighbour that way (${before} -> ${order()})`); }
+  const w = ev.find(x=> x.type==='wave'); ok(w && (w.blocked || (order() === before && w.crashUid != null)), `gravity rows: it crashes into its neighbour that way, nobody moves (${before} -> ${order()}; 2026-10-18 Wave N)`); }
 { const cards = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'canonical', 'cards.json'), 'utf8'));
   const w = cards.filter(c=> c.effects && c.effects.wave).map(c=> c.id).sort(); ok(w.join() === 'dolphin-knight,fathom-leviathan,moray-ambusher,reef-manta-glider,tide-pool-crab', `Wave is on five sea cards (+ the Fathom Leviathan, 2026-10-18) (${w})`); }
 

@@ -710,10 +710,18 @@ const PASSIVE_DEFS = [
   // Wave (user: "Sea creatures might have more skills related to water. Such as pushing creatures left or right - waves.").
   // 2026-10-17 (user: "for Awash skills, there's always a slight bias towards awashing inwards - very slight. If it's awash 1 and there's
   // another unit in the way, push the other way instead."): the "no fixed way" option (value 'room', stored as true) is that rule now.
-  {key:'wave', category:'passive', label:'Wave', kind:'select', desc:v=> ['left', 'right', 'alternate'].includes(v) ? `When its attack lands on a unit, it pushes that unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : 'left, then right on its next swing, and so on'}. If a unit stands there, the two swap. Never past the edge of the board.`
-      : `When its attack lands on a unit, it pushes that unit one column, either way (leaning slightly toward the middle). If a unit is in the way, it goes the other way instead; boxed in on both sides, it just bobs. Never past the edge of the board.`,
+  // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now."; "Awash N: Move N. If crash
+  // into another unit, both take N damage."): Wave N. A way (as before) plus N (effects.waveN, 1 by default, kept off the card when 1):
+  // it pushes the unit N columns; a unit in the way is crashed into and both take N. No more swapping.
+  {key:'wave', category:'passive', label:'Wave', kind:'selectNumber', numberWhen:['left', 'right', 'alternate', 'room'], numberTitle:'Wave N: how many columns it pushes (and the crash damage)',
+    desc:(v, n, e)=>{ const w = waveParts(v, e), cols = w.n === 1 ? 'one column' : `${w.n} columns`;
+      return (w.way === 'either' ? `When its attack lands on a unit, it pushes that unit ${cols}, either way (leaning slightly toward the middle; the board's edge turns it back).`
+        : `When its attack lands on a unit, it pushes that unit ${cols} ${w.way === 'alternate' ? 'left, then right on its next swing, and so on' : w.way}. Never past the edge of the board.`)
+        + ` If it crashes into a unit on the way, it stops beside it and both take ${w.n} damage.`; },
     selectOptions:()=> [{value:'left', label:'Left'}, {value:'right', label:'Right'}, {value:'alternate', label:'Alternate'}, {value:'room', label:'Either way (leans inward)'}],
-    get:e=> e.wave ? (e.wave === true ? 'room' : e.wave) : undefined, apply:(e, v)=>{ e.wave = ['left','right','alternate'].includes(v) ? v : true; }},
+    get:e=> e.wave ? [(e.wave === true || typeof e.wave === 'number') ? 'room' : e.wave, waveParts(undefined, e).n] : undefined,
+    apply:(e, vals)=>{ const m = Array.isArray(vals) ? vals[0] : vals, n = Math.max(1, Math.round(Number(Array.isArray(vals) ? vals[1] : 1)) || 1);
+      e.wave = ['left','right','alternate'].includes(m) ? m : true; if(n > 1) e.waveN = n; else delete e.waveN; }},
   // Supreme Tide (user: "Blue Dragon - Has Supreme Tide!").
   // 2026-10-14 (fourth pass). Crab Claws (user: "Crab claws: Attacks left or right only.").
   // Crab Claws retired from the editor (2026-10-14, user: "Ignore Crab claws. Crabs have fork"): hidden:true keeps it working on any
@@ -1356,6 +1364,7 @@ const SKILL_DEFS = [
     key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, reserved:p.reserved, oneOff:p.oneOff,
     get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, codexNote:p.codexNote, whoPicker:p.whoPicker, // (2026-10-18: + whoPicker, Esprit's Kin / Any; 2026-10-15: + the grant pickers' hints, defaultValue; 2026-10-17: + codexNote, a Codex-only sentence)
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
+    numberWhen:p.numberWhen, numberTitle:p.numberTitle, // a passive selectNumber's N field (Wave N, 2026-10-18)
   })),
   {
     // 2026-10-16 skill audit: plain words, and the labels for its two numbers.
@@ -2049,6 +2058,13 @@ function abilityListHTML(lines){
 // targets'"). What players read on cards; the longer PASSIVE_DEFS desc stays as the editor's authoring help. Shared words:
 // upkeep = the start of each round (resolved in action order), adjacent = the columns left, centre and right of it.
 // A skill with no entry here falls back to its desc.
+// Wave N (2026-10-18): the way ('left' | 'right' | 'alternate' | 'either') and N (effects.waveN; a bare number in effects.wave is N with
+// no fixed way; 1 by default) from the editor's [way, N] pair, a stored value or the card's effects. The engine reads it the same way.
+function waveParts(v, e){
+  const pick = Array.isArray(v) ? v[0] : (e && e.wave != null ? e.wave : v), way = ['left', 'right', 'alternate'].includes(pick) ? pick : 'either';
+  const raw = Array.isArray(v) ? v[1] : (e && Number(e.waveN)) || (e && typeof e.wave === 'number' ? e.wave : 0) || 1;
+  return {way, n: raw === 'N' ? 'N' : Math.max(1, Math.round(Number(raw)) || 1)};
+}
 const SKILL_TEXT = {
   poison: v=> `Its hits add ${v} Poison.`, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> `Its hits add ${v} Bleed.`, corrode: v=> `Its hits add ${v} Corrode.`,
   armor: v=> `Takes ${v} less damage from every hit.`,
@@ -2061,8 +2077,8 @@ const SKILL_TEXT = {
   pack: v=> `Pack units of its type standing side by side each get +1/+1 for every Pack point in the chain (two Pack ${numOr(v, 2)}s: +${2*numOr(v, 2)}/+${2*numOr(v, 2)} each).`, // 2026-10-16 skill audit: plain words, no "N = …"
   packLeader: ()=> `Links every Pack unit of its type on your side into one chain, adjacent or not, and adds +2/+2 of its own and +2/+2 for the type.`,
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
-  wave: v=> ['left', 'right', 'alternate'].includes(v) ? `Its hits push the unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : 'left, then right, in turn'} (swapping with any unit there).`
-    : 'Its hits push the unit one column either way, leaning inward (the other way if a unit is in the way; boxed in, it bobs).', // 2026-10-17
+  wave: (v, n, e)=>{ const w = waveParts(v, e), cols = w.n === 1 ? 'one column' : `${w.n} columns`; // Wave N (2026-10-18): it crashes, no swaps
+    return `Its hits push the unit ${cols} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right, in turn' : w.way}. If it crashes into a unit, it stops and both take ${w.n}.`; },
   supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flood or Ebb. Tide effects can't take them away.`,
   crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right, never the one in front. With none there, it hits the castle.`, // 2026-10-17
   meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
@@ -2404,7 +2420,7 @@ function describeEffects(def, liveCard){
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
       const head0 = p.key==='pack' ? `${p.label}${valSuffix(v === true ? 2 : v)}` : p.label; lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
-    const head = p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
+    const head = p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
     lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; }); // "Answered by" lives in the Skill Codex now (2026-10-13)
@@ -6611,7 +6627,7 @@ function abilityBadges(d, bopts){
   if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
   if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
-  if(e.wave) out.push(`<span title="Wave: its hits push the unit one column ${e.wave === true ? 'either way, leaning inward' : e.wave === 'alternate' ? 'left, then right' : e.wave}">〰️</span>`);
+  if(e.wave){ const w = waveParts(undefined, e); out.push(`<span title="Wave${w.n > 1 ? ' ' + w.n : ''}: its hits push the unit ${w.n === 1 ? 'one column' : w.n + ' columns'} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right' : w.way}; a crash hurts both">〰️${w.n > 1 ? n1(w.n) : ''}</span>`); } // Wave N (2026-10-18)
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
   if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb"><span class="ab-pair">${iconHTML('supreme-tide', '✨')}<i>🌊</i></span></span>`); // stacked (2026-10-17)
   // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
@@ -14757,7 +14773,9 @@ const FIELD2 = {
   // 2026-10-17 (user, on the raid: "There should be all the related field effects but also some kind of psychic dampener"): rules.psychicDampener,
   // in the engine's psychicHit (half, rounded down) and rollStatusOnHit's Confuse (1 round less). The Goliath raid fights under it.
   psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', short:'Psychic halved; Confuse 1 round less', text:"The deep presses on every mind: Psychic damage is halved (rounded down), and a Confuse lasts 1 round less, so a 1-round Confuse doesn't land. Both sides."},
-  awash:         {icon:'〰️', name:'Awash', editor:'awash', short:'A unit is washed 1–3 columns; crashes hurt', text:'Each round from round 2, the water washes one random unit N columns (1–3) along its row, leaning slightly toward the middle. If it crashes into another unit on the way, both take N damage. Only the board\'s edge turns it back the other way. Pinned and Webbed units hold fast.'}, // 2026-10-18: crash damage
+  // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now. "Awashed" will be for
+  // something else - reserved."): on screen this field is "Wave" (Wave 1–3 on a random unit); the key stays awash for saves and data.
+  awash:         {icon:'〰️', name:'Wave', editor:'awash', short:'A unit rides a Wave 1–3 columns; crashes hurt', text:'Each round from round 2, a Wave takes one random unit N columns (1–3) along its row, leaning slightly toward the middle. If it crashes into another unit on the way, it stops beside it and both take N damage. Only the board\'s edge turns it back the other way. Pinned and Webbed units hold fast.'}, // 2026-10-18: crash damage
 };
 // 2026-10-17 (user: "Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow of the volcanoes"): the row the volcano
 // maps' uneven cycle shows, and the "after an Eruption" form of Ashy.
@@ -23514,7 +23532,7 @@ const FXL_FIELDS = [
     // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card.")
     // 2026-10-17: the raid's Psychic Dampener: a Psychic 3 hit lands for 1, and its 1-round Confuse never lands.
     ['psychicDampener', {psychicDampener:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Mind Eel', icon:'🧠', effects:{psychic:3, confuse:{chance:100, duration:1}}}}], foes:[{role:'foe', slot:0}]}, steps:['round'], note:"The Mind Eel's Psychic 3 lands for 1, and its sure 1-round Confuse fizzles."}],
-    ['awash', {awash:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-2}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, steps:['round', 'round', 'round'], note:'Each round one unit rides the water 1–3 columns; crashing into a unit hurts both for that many.'}],
+    ['awash', {awash:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-2}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, steps:['round', 'round', 'round'], note:'Each round one unit rides a Wave 1–3 columns; crashing into a unit hurts both for that many.'}], // the Wave field (rules.awash), 2026-10-18
   ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> WIND_TEXT.windy, rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: each one rolls its own wind (at your back, in your face or calm).'},
@@ -34124,11 +34142,11 @@ function logText(ev){
     case 'dragonLightning': return {cls:'', text:`🐉⚡ Red lightning from ${nm(ev.attDefId)} strikes ${(ev.uids||[]).length} unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} each!`};
     case 'witherTick': return {cls:'poison', text:`💀 ${nm(ev.defId)} withers: −${ev.n} max Health${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the Wither fades)'}.`};
     case 'hatch': return {cls:'', text:`🥚 ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.fromDefId)} cracks open: out comes ${nm(ev.defId)}!`};
-    case 'wave': { const who = ev.awash ? 'The water' : `${nm(ev.attDefId)}'s wave`, cols = ev.cols > 1 ? ` ${ev.cols} columns` : ''; // + Awash, the bob and the bounce (2026-10-17)
+    case 'wave': { const who = ev.awash ? 'The Wave' : `${nm(ev.attDefId)}'s Wave`, cols = ev.cols > 1 ? ` ${ev.cols} columns` : ''; // + Awash, the bob and the bounce (2026-10-17)
       return {cls:'', text: ev.bob ? `〰️ ${who} lifts ${nm(ev.targetDefId)}, but it's boxed in: it bobs in place.` : ev.blocked ? `〰️ ${who} breaks on ${nm(ev.targetDefId)}: no room to push it ${ev.dir}.`
         : ev.crashUid != null && !(ev.cols > 0) ? `〰️ ${who} slams ${nm(ev.targetDefId)} ${ev.dir} into the unit beside it!`
-        : `〰️ ${who} ${ev.awash ? 'washes' : 'pushes'} ${nm(ev.targetDefId)} ${ev.dir}${cols}${ev.bounced ? ' (the other way was blocked)' : ''}${ev.swapUid != null ? ' (they swap places)' : ''}${ev.crashUid != null ? ', into another unit' : ''}!`}; } // Wave (2026-10-14)
-    case 'washCrash': return {cls:'', text:`💥 Crash! ${nm(ev.defId)} and ${nm(ev.otherDefId)} each take ${ev.n} (${ev.dmg} and ${ev.otherDmg}).`}; // Awash N (2026-10-18)
+        : `〰️ ${who} ${ev.awash ? 'washes' : 'pushes'} ${nm(ev.targetDefId)} ${ev.dir}${cols}${ev.bounced ? ' (the edge turned it back)' : ''}${ev.swapUid != null ? ' (they swap places)' : ''}${ev.crashUid != null ? ', into another unit' : ''}!`}; } // Wave (2026-10-14); 2026-10-18: Wave N crashes, no swaps (swapUid only in old replays)
+    case 'washCrash': return {cls:'', text:`💥 Crash! ${nm(ev.defId)} and ${nm(ev.otherDefId)} each take ${ev.n} (${ev.dmg} and ${ev.otherDmg}).`}; // Wave N (2026-10-18; the skill and the field)
     // 2026-10-14 (sixth pass)
     case 'fireball': return {cls:'', text: ev.castle ? `🟠 ${nm(ev.attDefId)} hurls a fireball at the castle!` : `🟠 ${nm(ev.attDefId)} hurls a fireball: it bursts over ${(ev.uids||[]).length} enemy unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} fire each!`};
     case 'meteor': return {cls:'', text: ev.castle ? `☄️ ${nm(ev.attDefId)} calls down a meteor on the castle!` : `☄️ ${nm(ev.attDefId)} calls down a meteor: ${ev.n} to the unit it lands on${(ev.sideUids||[]).length ? `, ${ev.sideN} to ${(ev.sideUids||[]).length} beside it` : ''}. The crater burns.`};
@@ -35907,7 +35925,7 @@ function field2LogText(ev, nm){
       case 'ashRainCastle': return {cls:'', text:`🌋 Ash settles on ${who(ev.side)} castle: −${ev.dmg}.`};
       case 'ashy': return {cls:'', text:'🌫️ The eruption leaves the ground Ashy: flyers are grounded and the air is thick (4 rounds).'};
       case 'arrowSlits': return {cls:'', text: ev.none ? '🏹 An arrow from the walls thuds into empty ground.' : `🏹 The walls loose an arrow at ${nm(ev.defId)}.`};
-      case 'awash': return {cls:'', text: ev.none ? '〰️ The water swirls over an empty field.' : `〰️ Awash ${ev.n}: the water takes ${nm(ev.defId)}.`}; // 2026-10-17
+      case 'awash': return {cls:'', text: ev.none ? '〰️ The water swirls over an empty field.' : `〰️ Wave ${ev.n}: the water takes ${nm(ev.defId)}.`}; // 2026-10-17; "Wave" on screen since 2026-10-18 (Awash and Wave are one)
       // The raid's back rows (2026-10-17)
       case 'volley': return {cls:'gold', text: ev.side === 'A' ? '🏹 Your allies\u2019 rows strike from behind the line.' : '🏹 The enemy\u2019s back rows strike.'};
       case 'volleyHit': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${nm(ev.defId)} for ${ev.dmg}.`};
@@ -35963,7 +35981,7 @@ function field2Vfx(ev){
       case 'ashRain': snd('boom'); if(fx()) boardSweepVfx('hail', 'A'); break;
       case 'ashy': snd('boom'); if(bf && fx()){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } break;
       case 'arrowSlits': if(!ev.none) snd('swipeTone'); break;
-      case 'awash': if(!ev.none){ const el = boardCardEl(ev.uid); fl(el, `〰️ Awash ${ev.n}`, 'quick'); } break; // 2026-10-17: the ride itself is the wave event that follows
+      case 'awash': if(!ev.none){ const el = boardCardEl(ev.uid); fl(el, `〰️ Wave ${ev.n}`, 'quick'); } break; // 2026-10-17: the ride itself is the wave event that follows (2026-10-18: "Wave", not "Awash")
       // The raid's back-row volley (2026-10-17): the striker bobs forward, the struck card (or castle) shows the number.
       case 'volleyHit': case 'volleyCastle': { const from = boardCardEl(ev.fromUid); if(from && fx()){ from.classList.remove('volley-lunge'); void from.offsetWidth; from.classList.add('volley-lunge'); setTimeout(()=> from.classList.remove('volley-lunge'), 500); }
         if(ev.field === 'volleyHit'){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){} if(el){ fl(el, `🏹-${ev.dmg}`, 'dmg'); try{ shakeEl(el); }catch(e){} } }
@@ -36906,7 +36924,7 @@ function renderVfxForEvent(ev){
         if(aL && bL){ const t = rr[aL][aI]; rr[aL][aI] = rr[bL][bI]; rr[bL][bI] = t; } }
       try{ renderBoard({collapseLandingUids:[]}); }catch(e){}
       const e2 = boardCardEl(ev.targetUid);
-      if(e2 && fromRect && rideFx) SkillFX.waveRide(e2, {from:fromRect, dir:ev.dir, scale:sc, speed:(matchState && matchState.speedMult) || 1, touch:ev.swapUid != null ? [boardCardEl(ev.swapUid)].filter(Boolean) : []}); }
+      if(e2 && fromRect && rideFx) SkillFX.waveRide(e2, {from:fromRect, dir:ev.dir, scale:sc, speed:(matchState && matchState.speedMult) || 1, touch:[ev.swapUid, ev.crashUid].filter(u=> u != null).map(u=> boardCardEl(u)).filter(Boolean)}); } // + the unit it crashes into rocks (Wave N, 2026-10-18)
   }
   // Crab Claws (2026-10-14): a sideways pinch, or a snap at thin air.
   if(ev.type==='crabClaw'){ const el = boardCardEl(ev.attUid); if(el){ floatText(el, ev.whiff ? '🦞 Whiff' : ev.dir === 'castle' ? '🦞 🏰' : (ev.dir === 'left' ? '🦞 ←' : '🦞 →'), 'quick'); el.style.setProperty('--crab-dx', ev.dir === 'right' ? '8px' : '-8px'); el.classList.remove('crab-pinch'); void el.offsetWidth; el.classList.add('crab-pinch'); setTimeout(()=> el.classList.remove('crab-pinch'), 500); } }

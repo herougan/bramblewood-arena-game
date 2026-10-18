@@ -2,6 +2,12 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (Package V2: Wave and Awash are one, Wave N)
+- **One mechanic, Wave N** (the owner: "Wave and Awash refer to the same skill. We can call all of them wave for now"). The pushed unit rides N columns (the skill's way, or the inward-leaning pick for "Either way" and the field). If it **crashes into a unit** on the way (a pinned or Webbed one, or a cage, too), it stops beside it and **both take N**. The board's edge stops it; with no fixed way, an edge right beside it turns it the other way. **Nothing swaps any more**, and a unit in the way no longer turns a no-fixed-way Wave back. On packed (gravity) rows it crashes into its neighbour. A pinned or Webbed unit still isn't pushed.
+- **The Wave skill takes an N**: the editor's Wave row is a way plus a number (`effects.waveN`, left off the card at 1; a bare number in `effects.wave` also counts as N with no fixed way). Card text, tooltip and badge show "Wave N" and describe the crash.
+- **The Awash field is called "Wave" everywhere on screen**: the field card, Codex, Edit skirmish, Environment card, Effects library, the log ("〰️ Wave 2: the water takes X") and the float. The internal keys (`rules.awash`, the `awash` art key, `ev.awash`) stay the same for saves and data. The word "Awashed" is kept free for a future mechanic.
+- Effects Lab (`manifest/wave17.js`): a new crash look for `sk-wave` (E) and `fld2-awash` (D, which replaces the old boxed-in bob); "Wave" labels; inventory rows renamed. `tests/wave-tide-2026-10-17.js` and `tests/keywords-2026-10-14c.js` updated; card-matrix golden re-baselined (14 diffs, all fights with Wave cards).
+
 ## 2026-10-18 (R3-WP2: raid stages do something)
 - **The Goliath's Enraged (below 75%) and Thrashing (below 50%) stages now change the fight** (they were names only). Defaults, waiting on the owner: **Enraged:** every boss card +2 Attack, and its back two rows strike once a round (the volley your ally rows already make). **Thrashing:** every boss card +4 Attack, the back-row volley, Landslide on the field, and your (the raiders') castle 10% less Health. Exposed (below 1%) still strips every ability.
 - **The Raid tab** shows the current stage's one-line effect under the boss, a "Stages" panel with every stage (the current one marked), and the field panel includes the stage's field. The VS screen names the stage.
