@@ -94,7 +94,9 @@ const NEW = ['sporeCloud', 'tangledRoots', 'thunderstorm'];
 ok(MAPS.every(m=> m.id === 'mu' || m.id === 'mk' || m.id === 'm7' || m.nodes.every(x=> !x.rules || !NEW.some(k=> x.rules[k]))), '5. the GI fields only on their own maps');
 
 // ---- 6. the road curve
-const rows = read('docs/balance/skirmish-pass-th-after.jsonl').split('\n').filter(Boolean).map(l=> JSON.parse(l));
+// 2026-10-19 (package CB): the card pass changed card stats, rebuilt the reference decks and retuned the curve after TH, so the latest
+// road-curve measure is the card pass's (TH's own final is docs/balance/skirmish-pass-th-after.jsonl)
+const rows = read('docs/balance/skirmish-pass-cb-after.jsonl').split('\n').filter(Boolean).map(l=> JSON.parse(l));
 const mainFights = []; mains.forEach(m=>{ if(m.id === 'mtut') return; m.nodes.forEach(x=>{ if(x.deck && Object.keys(x.deck).length && x.kind !== 'tutorial' && !/raidboss/.test(x.kind || '')) mainFights.push([m.id, x]); }); });
 ok(mainFights.length >= 179, `6. the main maps' fights (${mainFights.length})`);
 const miss = [], off = [], stale = [];

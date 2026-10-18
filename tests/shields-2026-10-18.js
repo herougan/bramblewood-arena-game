@@ -58,7 +58,9 @@ ok(sh('me', '20-A-4') === 30 && sh('mx', '20-B-4') === 60 && sh('m11', '20-10') 
   ok(shv('mtut', 'T-2') === 1 && shv('mtut', 'T-3') === 8 && shv('mtut', 'T-4') === 27, `T-2 / T-3 / T-4 Shield ${shv('mtut', 'T-2')} / ${shv('mtut', 'T-3')} / ${shv('mtut', 'T-4')}`);
   ok(shv('mo', '0-B-1') === 17 && shv('mo', '0-B-4') === 51, `the Old Bramble: skirmish 17, boss 51`);
   console.log(`  come-back-later totals: T-2 ${tot('mtut', 'T-2')}, T-3 ${tot('mtut', 'T-3')}, T-4 ${tot('mtut', 'T-4')}, 0-B-1 ${tot('mo', '0-B-1')}, 0-B-2 ${tot('mo', '0-B-2')}, 0-B-3 ${tot('mo', '0-B-3')}, 0-B-4 ${tot('mo', '0-B-4')}`); }
-{ const old = byKey('m21', '21-1'); ok(old.hqHp === 180 && H.skirmishCastle(old).total < 60, `an old hqHp no longer turns into Shield (21-1: hqHp ${old.hqHp} -> ${H.skirmishCastle(old).total})`); }
+// 2026-10-19 (package CB): the card pass's curve retune gave 21-1 a Shield of its own (shieldOverride 63), so the canary reads the fight
+// without it: its old hqHp 180 still must not turn into Shield
+{ const old = byKey('m21', '21-1'), bare = Object.assign({}, old); delete bare.shieldOverride; ok(old.hqHp === 180 && H.skirmishCastle(bare).total < 60, `an old hqHp no longer turns into Shield (21-1: hqHp ${old.hqHp} -> ${H.skirmishCastle(bare).total})`); }
 
 // --- 2. overrides
 { const base = Object.assign({}, byKey('mc', '3-2')); delete base.shieldOverride; // 2026-10-19 (TH): 3-2 has its own override now; the probes start from the rule

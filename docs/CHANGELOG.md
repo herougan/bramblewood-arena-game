@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-19 (package CB: the card pass)
+- **Owner (00:19): "balance the cards themselves (L1) + balance rarity, choose where the cards come from".** Every live card measured at Level 1 on card_balance.js's yardstick: 733 at 100 games, the 133 more than 3 points out again at 400.
+- **61 cards changed** (47 now in their band, 11 toward it, 3 budget fits), all within budget v3 at today's `value` S. Toned down: the Bounty fighters at 89–95% (Badger Berserker 5/12 → 3/12, War Hound, Squire's Mount, Woodland Brawler 4/12 → 3/12, Bramblewood Lynx 6/9 → 6/6, Boar Rampager 4/14 → 4/9 …), Pall Wraith 5/15 → 3/13, Lurking Dread 4/9 → 3/8, Bramblewood Macaque 2/10 → 2/4 (100% → 75.5%). Lifted: Tunnel Ant 5/5 → 5/7 (23.5% → 73%), Beaver Builder / Chipmunk Stockpiler / Cinder Stoker 1/9 → 1/13, The Sixfold 8/20 → 9/22, Sunspire Choirmother 5/10 at 2 Lumber → 2/6 at 1. Fitted: Raven Harbinger 5/18, Bone Diviner 5/19, The Magnate Duck 6/59. In band (measured cards): 400 → 444; more than 8 points out: 77 → 27.
+- **Rarity:** Fawn Scout and Warren Scout Uncommon → Rare (the yardstick's own filler, 78–82%; their stats can't move). The 27 cards still out are listed for the owner (2+ Lumber cards, Sacrifice, skills).
+- **Sources:** 159 cards got one: 118 fight rewards (a fight they fight in, inside the road's cap, no fight over 3), 7 off-theme rewards moved, 34 into packs (2 to the Mystery Booster); the three homeless map leaders now come from their map's last fight (Gannet Queen 3-7, Old Snapjaw 5-7, the Triumvirate 23-8). 37 stay sourceless on an allowed list (Dragons, enemy-only bosses, cards held for maps past 24, parked designs).
+- **Road curve:** reference decks rebuilt (`decks --keep`), 88 of 179 main fights green, then two retune rounds (91 fights): **179 of 179 green**, 151 on fresh seeds. The Pale Desert got two hand swaps. Five new Shields over 3× the rule (owner call); 22-6's 182 is gone.
+- Doc `docs/card-pass-2026-10-19.md` + `.xlsx`. Tools: `tools/card_pass_2026_10_19.js`, `tools/card_pass_docs_2026_10_19.js`, `tools/card_pass_xlsx.py`; `skirmish_pass.js decks --keep`. New test `tests/card-pass-2026-10-19.js`; thematic (latest curve file), shields (21-1 canary) updated; card-matrix golden re-baselined.
+
 ## 2026-10-19 (package TH: the thematic pass)
 - **Owner (00:19): "reassign skirmishes based on thematics", "5–10 new cards per map — from skirmish-only rewards and pack".** Every fight's enemy deck was audited against its map's identity (biome, creatures, factions, field), and the drift was fixed:
   - Badger Berserkers are off the Summit and Maps 0–1. They stay on the badger maps: Ashen Spurn, the Long Burrow and its parent, the Rimefire Caldera.
