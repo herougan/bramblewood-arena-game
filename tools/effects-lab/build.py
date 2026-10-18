@@ -13,6 +13,10 @@ idx=open(f'{ROOT}/index.html').read()
 gamecss='\n'.join(m.group(1) for m in re.finditer(r'<style[^>]*>(.*?)</style>', idx, re.S))
 cards=json.load(open(f'{ROOT}/.fxcat/cards.json'))
 fx=open(f'{ROOT}/.fxcat/fx-src.js').read()
+# 2026-10-18: copied game code now calls TX() (the text table, e.g. the field-effect rows' text:TX('ui.fx-tide')); the lab has no
+# text table, so give it a stand-in that returns the English text from bramblewood-texts.js, or the key.
+_texts_js = open(f'{ROOT}/bramblewood-texts.js', encoding='utf-8').read().replace('</script', '<\\/script')
+fx = "if(typeof TX === 'undefined'){ var TX = (function(){ var module; " + _texts_js + "\n; return TX; })(); }\n" + fx
 shaders=open(f'{ROOT}/bramblewood-shaders.js').read()
 skillfx=open(f'{ROOT}/bramblewood-skillfx.js').read()
 # 2026-10-14: procedural damage, Cards of old and the GSAP experiments (ProcFX), loaded like SkillFX
