@@ -68,25 +68,17 @@ const BANDS = {
 };
 const bandOf = d=> BANDS[d.rarity || 'common'] || BANDS.common;
 
-// Stat budget v3 per card (2026-10-18, owner: "General balance pass sticking religiously to N" and Ritual "increases N"), the
-// same defaults as arena_app.js (sbSkillCost / sbBudgetAt / sbCheck, no browser overrides), at the level the card starts at:
+// Stat budget v3 per card (2026-10-18, owner: "General balance pass sticking religiously to N" and Ritual "increases N"), at the
+// level the card starts at:
 //   N = 20 + 2×Level + Rarity + 6×Wait + 0.5×Wait² + 4×Lumber + 0.4×Lumber² + 1×Ritual points (the sum of the Ritual's counts)
 //   pass = (2A + H + S)×m < N and (A×H + S)×m < (N/3)², m = ×1.5 per half-miss skill. Reported in each row's `budget`.
-const SB_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v', creative:0, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, relic:2}; // relic: 2026-10-19 (package E), as arena_app.js SB_DEFAULT_SKILLS
-const SB_PAY = {penance:3, bloodTithe:2}, SB_HALF = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
-const SB_LADDER = ['starter','common','uncommon','rare','veryrare','superrare','epic','heroic','unique','legendary','mythic','ancient','divine','void','daemonic'];
-const SB_AS = {quest:'uncommon', questunique:'unique', special:'rare', devlegendary:'legendary', devancient:'ancient', eventlegendary:'legendary', eventrare:'rare'};
+// 2026-10-18 (owner: "Triggers and actions are costed by How often x How strong"): S comes from canonical/skill-costs.json through
+// tools/skill_costs.js, the same code the master hub's Skill costs tab runs. Keyword costs are the old SB_SKILLS table unchanged;
+// each trigger entry now costs its trigger weight × its action value (was 1 for the whole list) and Bounty N costs 0.5 × N (was 0).
+const SkillCosts = require(path.join(__dirname, 'skill_costs.js'));
+const SC = SkillCosts.make(JSON.parse(fs.readFileSync(path.join(ROOT, 'canonical/skill-costs.json'), 'utf8')));
 function budgetV3(d){ // d = the card as printed (canonical/cards.json)
-  const e = d.effects || {}, k = d.rarity || 'common', rank = Math.max(0, SB_LADDER.indexOf(SB_AS[k] || k));
-  const qs = d.source && (d.source.kind==='quest' || d.source.kind==='errand' || d.source.kind==='base');
-  const L = (d.faction || d.id==='wandering-traveller') ? 1 : ((d.basic || d.rarity==='starter' || d.tutorial || d.quest || qs) ? 0 : 1);
-  const W = +d.wait||0, C = +d.cost||0, rit = e.ritual && typeof e.ritual === 'object' ? Object.values(e.ritual).reduce((a, b)=> a + (+b||0), 0) : 0;
-  const N = Math.round((20 + 2*L + rank + 6*W + 0.5*W*W + 4*C + 0.4*C*C + rit) * 100) / 100;
-  let S = 0; Object.entries(e).forEach(([key, v])=>{ const rule = SB_SKILLS[key], num = typeof v === 'number' ? v : (Array.isArray(v) ? v.reduce((a, b)=> a + (+b||0), 0) : 0);
-    if(rule === 'v') S += Math.max(1, num); else if(rule === '-v') S -= Math.max(1, v === true ? (SB_PAY[key] || 1) : num); else if(typeof rule === 'number') S += rule; else S += 1 + (num > 1 ? Math.floor(num / 2) : 0); });
-  let m = 1; SB_HALF.forEach(h=>{ if(e[h]) m *= 1.5; });
-  const r2 = v=> Math.round(v*100)/100, A = d.attack||0, H = d.health||0, x1 = r2((2*A + H + S)*m), x2 = r2((A*H + S)*m), N2 = r2((N/3)*(N/3));
-  return {N, S, x1, x2, N2, ok: x1 < N && x2 < N2};
+  const b = SC.budget(d); return {N:b.N, S:b.S, x1:b.x1, x2:b.x2, N2:b.N2, ok:b.ok};
 }
 
 const t0 = Date.now();

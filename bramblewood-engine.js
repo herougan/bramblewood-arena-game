@@ -5848,7 +5848,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       });
     });
     if(!deadEntries.length) return;
-    const spawns = [], freed = [], retributions = [], splits = [];
+    const spawns = [], freed = [], retributions = [], splits = [], relics = [];
     deadEntries.forEach(({pl, side, card})=>{
       const mySide = sideOf(pl.id);
       if(card.cageOf){ freed.push({owner: card.cageOwner, leaderDefId: card.cageOf, slot: card.slot, hostSide: mySide, uid: card.uid}); return; } // a broken cage frees its leader
@@ -5878,10 +5878,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // Devilry (2026-10-10): every unit that perishes counts toward Rituals, and gives its owner 1 Darkness.
       // D20 (2026-10-12): Darkness from your own losses stops at 10, so a deck can't farm it with cheap chaff (cards that
       // make Darkness on purpose still go past it).
-      perishedTotal += 1; if((pl.devilry||0) < 10) pl.devilry = (pl.devilry||0) + 1;
+      // Relic (2026-10-19, owner 20:31): a Relic dying pays nothing extra: no Darkness, no Ritual count (and no Bounty, below).
+      if(!cdef.relicOf){ perishedTotal += 1; if((pl.devilry||0) < 10) pl.devilry = (pl.devilry||0) + 1; }
       let credit = killCredit[card.uid];
       if(!credit){ credit = killerCreditOf(players, sideOf, pl, card); if(credit) killCredit[card.uid] = credit; } // 2026-10-18: any path that named its attacker
-      const bounty = bountyOf(cdef); // Bounty N (2026-10-15)
+      const bounty = cdef.relicOf ? 0 : bountyOf(cdef); // Bounty N (2026-10-15); never for a Relic (2026-10-19)
       const deathEv = {type:'death', side:mySide, defId:card.defId, uid:card.uid}; if(card.nullified) deathEv.nullified = true; // 2026-10-15: the replay shows a Nullify kill / exile its own way
       if(recordEvents && events) events.push(deathEv);
       amoreBreak(players, sideOf, card, events); // Amore (2026-10-16): its partner's heart turns brown
@@ -5936,7 +5937,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(cdef.effects && cdef.effects.nova && !nulled) novaBurst(players, sideOf, pl.id, card, w2N(cdef, 'nova'), stats, events);
       if(cdef.effects && cdef.effects.crystallise && !nulled && !card.cageOf){ const cn = w2N(cdef, 'crystallise'); if(cn > 0) spawns.push({pl, side, slot:card.slot, fromUid:card.uid, defId:crystalDefOf(card.defId, cn), count:1, kind:'crystal'}); }
       // Relic (2026-10-19, package E): an Ecclesia card leaves its 1/1 ghost in its slot (relicDefOf). Its Prayer tokens are not passed on.
-      if(cdef.effects && cdef.effects.relic && !nulled && !card.cageOf && !card.sacrificed) spawns.push({pl, side, slot:card.slot, fromUid:card.uid, defId:relicDefOf(card.defId), count:1, kind:'relic'});
+      if(cdef.effects && cdef.effects.relic && !nulled && !card.cageOf && !card.sacrificed) relics.push({pl, side, slot:card.slot, fromUid:card.uid, defId:relicDefOf(card.defId)});
       // who:'killer' (2026-10-14, user: "On Death: Attacking unit gets 5 Poison. - it's as if it got ingested!"): the unit whose hit
       // killed it, if it still stands; nothing when it died some other way (poison, bleed, the weather...).
       const killerCard = card.killedBy != null ? [p1, p2].map(p=> allBoardCards(p).find(x=> x.uid === card.killedBy && x.hp > 0)).find(Boolean) || null : null;
@@ -5991,6 +5992,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(t.hp<=0){ killCredit[t.uid] = killCredit[t.uid] || new Set(); killCredit[t.uid].add(statKey(sideOf(r.pid), r.card.defId)); }
       });
     }
+    // Relic (2026-10-19, owner 20:31: "the leftover is NOT a spawn"): it stands in its unit's slot in this same death sweep, before any
+    // other token, and is no spawn: no On Ally / Enemy Spawn, no Ambush, Sentry or trap (it is marked as already seen by watchScan),
+    // no Echoing Wood copy. The event is a 'spawn' (kind 'relic') only so the board's replay draws it appearing where its unit fell.
+    relics.forEach(r=>{ const tok = makeBoardCard(r.defId); tok.relicLeftover = true;
+      let lane = r.side; if(slotMode && Number.isInteger(r.slot) && !allBoardCards(r.pl).some(c=> c.slot === r.slot)) tok.slot = r.slot; else if(slotMode) lane = flankOrShorter(r.pl, r.side);
+      r.pl.row[lane].push(tok); syncSlots(r.pl); tok._seenAt = slotMode ? tok.slot : 0;
+      if(recordEvents && events) events.push({type:'spawn', side:sideOf(r.pl.id), defId:r.defId, count:1, cause:'onDeathSpawn' /* the board's replay draws it like a death token */, kind:'relic', relic:true, placements:[{uid:tok.uid, lane: findCardSide(r.pl, tok.uid) || lane}], fromUid:r.fromUid}); });
     spawns.forEach(s=>{
       // The dying card's own slot was just vacated by the filter pass above, so an
       // onDeathSpawn token naturally refills it (center included, one token exactly). Any

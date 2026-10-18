@@ -31,6 +31,9 @@ const defs = Object.assign({}, base, {
   'pr-relic-rev': T('pr-relic-rev', {mechanicLine:'grace', health:5, effects:{relic:true, revive:true}}),
   'pr-relic-sac': T('pr-relic-sac', {mechanicLine:'grace', health:5, effects:{relic:true, sacrifice:2}}),
   'pr-dark': T('pr-dark', {attack:4, health:4, devilryCost:2, darkSummon:true}),
+  'pr-relic-b': T('pr-relic-b', {mechanicLine:'grace', health:5, effects:{relic:true, bounty:2, flying:true}}),
+  'pr-watch': T('pr-watch', {health:500, effects:{triggers:[{on:'onAllySpawn', do:'gainLumber', amount:5}, {on:'onAllyDie', do:'gainLumber', amount:1}]}}),
+  'pr-foewatch': T('pr-foewatch', {attack:0, health:500, effects:{ambush:3, triggers:[{on:'onEnemySpawn', do:'gainLumber', amount:7}]}}),
 });
 const all = pl=> [...pl.row.left, ...pl.row.center, ...pl.row.right];
 const mk = o=>{ o = o || {}; const e = E.makeSimEngine(defs, E.mulberry32(o.seed || 11), {recordEvents: o.record !== false, battleMode: o.mode || 'open', aiAim: o.aiAim, aiLevel: o.level});
@@ -130,6 +133,27 @@ const kill = (e, P, c, ev)=>{ c.hp = 0; e.removeDeadCards(P, so, {}, {}, ev || [
   const ev2 = []; kill(e, P, rel, ev2);
   ok(!all(me).some(c=> /~relic/.test(c.defId)) && !ev2.some(x=> x.type === 'spawn'), '5. the Relic dies for good: no Relic of a Relic (no loop)');
   round(e, P); ok(!(all(me)[0].prayerTokens > 0), '5. (and a plain unit never prays)');
+  // owner 20:31: the leftover is not a spawn, and pays nothing extra
+  { const t = mk(); const me = t.P[1], foe = t.P[2]; const rb = put(t.e, t.P, 1, 'pr-relic-b', 0); put(t.e, t.P, 1, 'pr-watch', 1); put(t.e, t.P, 2, 'pr-foewatch', 0);
+    t.e.removeDeadCards(t.P, so, {}, {}, []); // (nothing dead: lets watchScan-free state settle)
+    const l1 = me.lumber || 0, l2 = foe.lumber || 0, d1 = me.devilry || 0, ev = [];
+    kill(t.e, t.P, rb, ev); const rl = all(me).find(c=> c.defId === 'pr-relic-b~relic');
+    ok(!!rl && rl.slot === 0 && rl.relicLeftover, '5. the Relic stands in the dead unit\'s slot at once, in the same death sweep');
+    ok((me.lumber || 0) === l1 + 1, `5. no On Ally Spawn for the Relic (the ally's On Ally Die fired once: +${(me.lumber || 0) - l1})`);
+    ok((foe.lumber || 0) === l2 + 2, `5. the dead unit's own Bounty 2 is paid once, none for the Relic (+${(foe.lumber || 0) - l2})`);
+    ok((me.devilry || 0) === d1 + 1, `5. one Darkness for the unit that perished, none for the Relic (+${(me.devilry || 0) - d1})`);
+    ok(!ev.some(x=> x.type === 'triggerFired' && x.hook === 'onEnemySpawn'), '5. no On Enemy Spawn for the Relic');
+    const h0 = rl.hp; round(t.e, t.P);
+    ok(!ev.concat([]).some(x=> x.type === 'ambush') && (rl.hp === h0 || rl.hp <= 0) && (foe.lumber || 0) === l2 + 2, '5. no Ambush springs on it, no On Enemy Spawn pays the foe');
+    const l3 = me.lumber || 0, l4 = foe.lumber || 0, d3 = me.devilry || 0, ev2 = [];
+    if(rl.hp > 0) kill(t.e, t.P, rl, ev2);
+    ok(ev2.some(x=> x.type === 'death' && x.uid === rl.uid) && (me.lumber || 0) === l3 + 1, '5. the Relic\'s own death is a token death: On Ally Die still fires');
+    ok((foe.lumber || 0) === l4 && (me.devilry || 0) === d3, '5. and it gives no Bounty and no Darkness');
+    ok(!all(me).some(c=> /~relic/.test(c.defId)), '5. and leaves nothing behind'); }
+  // the Ambush check, on its own: an Ambush unit facing the slot the Relic takes doesn't strike
+  { const t = mk(); const rb = put(t.e, t.P, 1, 'pr-relic-b', 0); const am = put(t.e, t.P, 2, 'pr-foewatch', 0); round(t.e, t.P);
+    const ev = []; kill(t.e, t.P, rb, ev); round(t.e, t.P, ev); const rl = all(t.P[1]).find(c=> c.defId === 'pr-relic-b~relic');
+    ok(rl && !ev.some(x=> x.type === 'ambush' && x.targetUid === rl.uid), '5. Ambush ignores the Relic (it never "enters" the slot)'); }
   // Revive answers the first death: no Relic then
   const s = mk(); const rv = put(s.e, s.P, 1, 'pr-relic-rev', 0); kill(s.e, s.P, rv);
   ok(all(s.P[1]).length === 1 && all(s.P[1])[0] === rv && rv.hp === 1, '5. Revive: it comes back, no Relic');
@@ -144,12 +168,13 @@ const kill = (e, P, c, ev)=>{ c.hp = 0; e.removeDeadCards(P, so, {}, {}, ev || [
   ok(['shrine-high-priest', 'shrine-bell-ringer', 'friar-badger', 'vigil-owl', 'cathedral-eagle'].every(id=> relics.some(c=> c.id === id)) && relics.length === 5, `6. the five Relic cards (${relics.map(c=> c.id).join(', ')})`);
   const eng = E.makeSimEngine(base, E.mulberry32(1), {});
   ok(relics.every(c=> eng.isEcclesiaDef(c.id)), '6. Relic is an Ecclesia skill: every card with it is Ecclesia');
-  const src = fs.readFileSync(path.join(H.ROOT, 'tools', 'card_balance.js'), 'utf8');
-  const m = src.match(/const SB_SKILLS[\s\S]*?\nfunction budgetV3[\s\S]*?\n}\n/); const box = {}; new Function('box', m[0] + '\nbox.b = budgetV3;')(box);
+  const table = JSON.parse(fs.readFileSync(path.join(H.ROOT, 'canonical', 'skill-costs.json'), 'utf8'));
+  const SC = require(path.join(H.ROOT, 'tools', 'skill_costs.js')).make(table);
   const ecc = cards.filter(c=> eng.isEcclesiaDef(c.id));
-  const over = ecc.filter(c=> !box.b(c).ok);
+  const over = ecc.filter(c=> !SC.budget(c).ok);
   ok(ecc.length >= 14 && !over.length, `6. every Ecclesia card fits budget v3 (over: ${over.map(c=> c.id).join(', ') || 'none'})`);
-  ok(/relic:2\b/.test(src) && /relic:2 \/\* 2026-10-19/.test(fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8')), '6. Relic costs 2 in both budget tables');
+  const rel = table.skills.find(x=> x.id === 'relic');
+  ok(rel && rel.scale === 'fixed' && rel.value === 2 && SC.cardS({relic:true}, {}).S === 2 && /relic:2 \/\* 2026-10-19/.test(fs.readFileSync(path.join(H.ROOT, 'arena_app.js'), 'utf8')), '6. Relic costs 2 (canonical/skill-costs.json and the Test Lab default)');
   const eagle = cards.find(c=> c.id === 'cathedral-eagle'); ok(eagle.attack === 4 && eagle.health === 12 && eagle.prayerReq === 4, '6. Cathedral Eagle 4/12, Prayer 4');
   ok(ecc.filter(c=> c.prayerReq).every(c=> c.prayerReq >= 1 && c.prayerReq <= 5), '6. every Prayer need is 1..5');
   const req = id=> (cards.find(c=> c.id === id) || {}).prayerReq;

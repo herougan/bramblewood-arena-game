@@ -363,6 +363,7 @@ LINKS = [('🎯', 'actions', 'Action items', 'Everything done and waiting, newes
   ('🗳️', 'decisions', 'Decisions', 'Waiting on you, and decided'), ('📐', 'design', 'Design', 'Design sheets and audits'),
   ('🗒️', 'changelog', 'Changelog', 'What changed, newest first'), ('✨', 'lab', 'Effects Lab', 'Skill effects on a live stage'),
   ('🧪', 'playground', 'VFX Playground', 'GSAP and shader experiments'), ('🖼️', 'library', 'Visual Library', 'Screenshots taken while building'),
+  ('🧮', 'costs', 'Skill costs', 'Edit what skills, triggers and actions cost; see who goes over budget'),
   ('🧠', 'guide', "Claude's guide", 'Standing rules, skills, docs to read first')]
 LINKS = [(i, 'curve' if t == 'difficulty' else t, n, d) for i, t, n, d in LINKS]
 _built = datetime.date.today().isoformat()  # date only: the build machine's clock is UTC, the docs use your local time
@@ -386,6 +387,23 @@ cards_panel = ('<section class="panel" id="p-cards" role="tabpanel" aria-labelle
   '<div class="cd-sheet" id="cdSheet" hidden><div class="cd-scrim" data-close></div><div class="cd-card" role="dialog" aria-modal="true" aria-labelledby="cdTitle"><button class="cd-x" data-close aria-label="Close">✕</button><div id="cdBody"></div></div></div></section>')
 HUB_CSS = open(os.path.join(ROOT, 'tools', 'hub', 'hub_app.css'), encoding='utf-8').read()
 HUB_JS = open(os.path.join(ROOT, 'tools', 'hub', 'hub_app.js'), encoding='utf-8').read()
+# 2026-10-18 (owner, 19:54: "Your bramble master hub should let me edit N values of all skills, triggers and actions"): the 🧮 Skill
+# costs tab. canonical/skill-costs.json (the seeds), the cards the balance tools measure, tools/skill_costs.js (the same S / N code
+# as tools/card_balance.js) and the tab's own script, all inlined: no extra files. Edits live in the artifact's db, so the hub
+# must be published with capabilities {db: {}}; tools/hub/pull_skill_costs.md says how Claude applies them.
+_sc_seed = json.load(open(os.path.join(ROOT, 'canonical', 'skill-costs.json'), encoding='utf-8'))
+def _sc_card(d):
+    x = {'id': d['id'], 'n': d.get('name', d['id']), 'r': d.get('rarity') or None, 'c': d.get('cost') or 0, 'w': d.get('wait') or 0,
+         'a': d.get('attack') or 0, 'h': d.get('health') or 0, 'e': d.get('effects') or {}}
+    for f in ('faction', 'basic', 'tutorial', 'quest'):
+        if d.get(f): x[f] = 1
+    if (d.get('source') or {}).get('kind'): x['k'] = d['source']['kind']
+    return x
+_sc_cards = [_sc_card(d) for d in CANON if not (d.get('token') or d.get('test') or d.get('hallOfFame') or d.get('baseId') or d.get('field'))]
+_js = lambda o: json.dumps(o, ensure_ascii=False, separators=(',', ':')).replace('</', '<\\/')
+SC_LIB = re.sub(r'^#!.*\n', '', open(os.path.join(ROOT, 'tools', 'skill_costs.js'), encoding='utf-8').read())
+SC_TAB = open(os.path.join(ROOT, 'tools', 'hub', 'skill_costs_tab.js'), encoding='utf-8').read()
+SC_INLINE = f'const SC_SEED = {_js(_sc_seed)};\nconst SC_CARDS = {_js(_sc_cards)};\n{SC_LIB}\n{SC_TAB}'
 _fonts = os.path.exists(os.path.join(OUT, 'fonts', 'fonts.css'))  # self-hosted fonts shipped with the Effects Lab
 FONT_LINK = '<link rel="stylesheet" href="fonts/fonts.css">' if _fonts else '<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">'
 index = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
@@ -498,6 +516,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <button role="tab" id="t-actions" aria-controls="p-actions" data-tab="actions">🎯 Action items</button>
 <button role="tab" id="t-cards" aria-controls="p-cards" data-tab="cards">🎴 Cards</button>
 <button role="tab" id="t-balance" aria-controls="p-balance" data-tab="balance">⚖️ Balance</button>
+<button role="tab" id="t-costs" aria-controls="p-costs" data-tab="costs">🧮 Skill costs</button>
 <button role="tab" id="t-curve" aria-controls="p-curve" data-tab="curve">📈 Difficulty</button>
 <button role="tab" id="t-decks" aria-controls="p-decks" data-tab="decks">🃏 Decks</button>
 <button role="tab" id="t-dialogues" aria-controls="p-dialogues" data-tab="dialogues">💬 Dialogues</button>
@@ -529,6 +548,7 @@ details.card .doc h1{{font-size:22px;}} details.card .doc h2{{font-size:18px;}}
 <div class="dec-bar"><div class="dec-seg" role="group" aria-label="Verdict" id="balSeg"><button data-v="" aria-pressed="true">All</button><button data-v="strong" aria-pressed="false">Too strong</button><button data-v="weak" aria-pressed="false">Too weak</button><button data-v="ok" aria-pressed="false">In band</button><button data-v="norar" aria-pressed="false">No rarity</button><button data-v="fix" aria-pressed="false">Has a fix</button></div>
 <input type="search" id="balQ" placeholder="Search cards…" aria-label="Search cards"></div>
 <div class="bal-wrap"><table class="bal-t"><thead><tr><th data-k="name">Card</th><th data-k="rarity">Rarity</th><th data-k="cost">Cost</th><th data-k="wait">Wait</th><th data-k="attack">Atk</th><th data-k="health">HP</th><th data-k="winRate">Win %</th><th data-k="band">Band</th><th data-k="fix">Suggestion</th></tr></thead><tbody id="balBody"></tbody></table></div></div></section>
+<section class="panel" id="p-costs" role="tabpanel" aria-labelledby="t-costs" hidden><div class="bal sc" id="scHost"><p class="dec-empty">Loading the cost table…</p></div></section>
 {curve_panel}
 {decks_panel}
 {dialogues_panel}
@@ -615,6 +635,7 @@ document.querySelector('[role=tablist]').addEventListener('keydown', e=>{{
 <script>const CARDS = {CARDS_JSON};
 const SEARCH = {SEARCH_JSON};
 {HUB_JS}
+{SC_INLINE}
 show((location.hash.slice(1)) || (()=>{{ try{{ return localStorage.getItem('hub.tab'); }}catch(e){{ return ''; }} }})() || 'master');
 </script></body></html>'''
 open(os.path.join(OUT, 'index.html'), 'w', encoding='utf-8').write(index)
