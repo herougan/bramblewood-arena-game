@@ -38,7 +38,7 @@ ok(JSON.stringify(H.SHIELD_RULE_MULT) === JSON.stringify(MULT), 'the multipliers
 const EFFECTIVE = {'T-2':1, 'T-3':8, 'T-4':18, '0-B-1':17, '0-B-2':17, '0-B-3':17, '0-B-4':17};
 let n = 0; const seen = {};
 for(const m of CONQUEST_MAPS){ const no = H.mapNumberOf(m.id); for(const node of m.nodes || []){
-  const eff = EFFECTIVE[node.key] != null ? EFFECTIVE[node.key] : (no || 0), k = node.kind || 'skirmish', want = Math.round(eff * MULT[k]), sc = H.skirmishCastle(node); n++;
+  const eff = EFFECTIVE[node.key] != null ? EFFECTIVE[node.key] : (m.shieldMap != null ? m.shieldMap : (no || 0)), /* + a map's own shieldMap (Lilypad Reach counts as Map 6, 2026-10-18) */ k = node.kind || 'skirmish', want = Math.round(eff * MULT[k]), sc = H.skirmishCastle(node); n++;
   ok(H.nodeMapNumber(node) === eff, `${node.key}: the rule counts Map ${H.nodeMapNumber(node)} (want ${eff})`);
   ok(sc.shield === want && sc.rule === want, `${m.id} ${node.key} (${k}, Map ${no}): Shield ${sc.shield} (want ${want})`);
   ok(sc.hp > 0 && sc.total === sc.hp + sc.shield, `${node.key}: Health ${sc.hp} + Shield ${sc.shield} = ${sc.total}`);
