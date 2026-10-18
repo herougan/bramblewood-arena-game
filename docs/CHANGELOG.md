@@ -2,6 +2,13 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (package NA: Grotto Lobster and Amber Cicada, the owner's art)
+- **New card: Grotto Lobster** 🦞 (Rare, 1 Lumber, Wait 2, 3/12). Armor 1, Crab Claws, Darksight and Brood 1: its crablings hatch beside it. It is the second card reward of 2-B-3 The Glowing Pool (Smugglers' Grotto, the sea cave off Pebble Beach).
+- **New card: Amber Cicada** 🦗 (Uncommon, 1 Lumber, Wait 3, 3/20). It spends three rounds underground (Wait 3). On Ready, its song gives every ally 2 Shield. It also has Scare 1. It is the second card reward of 1-2 Cricket Chorus (Thistlewood, Map 1). There is no cicada emoji, so it uses the cricket.
+- Both fit budget v3 (Lobster: N 43.4, S 3, 21 < 43.4 and 39 < 209.3; Cicada: N 50.9, S 3, 29 < 50.9 and 63 < 287.9). Both are inside their rarity band in `tools/card_balance.js` at 120 games: Lobster 64.2% (Rare 52–75%), Cicada 60.0% (Uncommon 45–68%).
+- Names are translated in all 12 card packs (`lang/cards`), flavour lines in all 12 `lang/ui` packs. Art: `art/cards/grotto-lobster.png`, `art/cards/amber-cicada.png` (256 px, 256 colours), embedded in cards.json, plus the built `assets/cards/*.webp`.
+- Neither card is in an enemy deck yet, because the map decks are being retuned. Suggested placements: the Lobster in 2-B-3 / 2-B-4, the Cicada in 1-2.
+
 ## 2026-10-19 (Gameplay ideas: Codex backlog review + our synergies, documents only)
 - **Renamed:** the Codex backlog review is now `docs/gameplay-ideas-2026-10-19.md` / `.xlsx` (was codex-backlog-review-2026-10-19).
 - **Codex's suggestions checked against the game:** every row of maps.tsv (22), skills.tsv (303) and fields.tsv (77) has a Status (Existing / Needs adjustment / Proposed / Duplicate / Future / Reject), what the game has now with card examples, a verdict and an action. Rows Codex missed are added as *Ours*: 7 skills (Hunter, Kin Rally, Pack Howl, Prayer Ward, Vigil Keeper, Brood Mother, Bolt Master), 5 fields (Blood in the Water, Pollen Drift, Spring Rain on The Canopy, Hallowed Ground, a two-fields-per-fight rule) and a suggestion for Maps 21–24 and the side maps.
