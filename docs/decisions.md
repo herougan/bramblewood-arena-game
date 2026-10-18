@@ -356,7 +356,24 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
 - **Default:** Rarity pass, then stat fixes
 - **Outcome:** Taken as default on 'continue' (revertible): the 199 unrated cards got a rarity from measured strength, capped at Rare for now (114 Common, 11 Uncommon, 74 Rare), and 39 extreme outliers moved half-way toward their suggested stat (e.g. Feral Tomcat 3/5 → 3/3, Honey Badger Fury 5 → 3 Attack, Raccoon Nightcrew 5 → 7 Attack). Cards in band: 124 → 162 of 288. Walls, 3+ cost cards (B4) and the Wandering Traveller were left alone.
 
-## 2026-10-18 evening: emoji with cultural meaning (owner 21:26)
+## Stated rules · 2026-10-19
 
-- **Ward → 🧿 Nazar.** When a Ward skill is made (e.g. Prayer Ward in docs/gameplay-ideas-2026-10-19.md, or a ward against Blind / curses), its icon is the nazar, or a white/yellow East Asian paper charm (a talisman; no emoji exists, so that would be a drawn icon).
-- **🪬 Hamsa is not a generic effect icon.** It carries real cultural and religious meaning, so it is used only inside one animal society's own identity (its cards, banner or rites), never as an effect any unit can get. Which society is still open.
+The owner's answers (20:31) to the design review's questions on triggers, now rules of the engine (`bramblewood-engine.js`). Pinned by `tests/trigger-layers-2026-10-19.js`.
+
+- **Trigger chains stop at 5 layers (layers, not count).** The original event's triggers are layer 1. A trigger that goes off while another trigger is resolving is one layer deeper. Layers 1 to 5 resolve; a 6th-layer trigger does not fire (`TRIGGER_LAYER_CAP = 5`). Any number of triggers at the same layer (siblings) all resolve.
+- **A death sweep counts in layers too.** The deaths settled in a sweep's first pass fire layer-1 triggers (counted from where the sweep starts: a sweep opened inside a layer-2 trigger starts at layer 3). The deaths those triggers cause settle in the next pass, one layer deeper. The sweep's 6-pass limit is the cap plus one: the 6th pass clears the bodies and fires no triggers.
+- **A unit killed during a death sweep dies in the next pass** (Claude's fix, 2026-10-19). A unit killed by a death effect (Nova, Landslide, an On Death or On Ally Die trigger) dies properly, with its own death effects, graveyard and Darkness. It used to vanish with no death at all.
+- **Tokens fire death triggers.** A token's own On Death fires, and its allies fire On Ally Die for it, like any unit.
+- **Evasive covers both.** It dodges half of single-target attacks and skills.
+- **Simultaneous triggers resolve in board order:** the first player's units, then the second player's, lane by lane (left, centre, right).
+- **Units dying in the same sweep don't see each other's On Ally Die.** Units that die in the same pass of a sweep are all gone together: only units still alive in that pass fire it.
+- **Summoned and token units fire On Ally Spawn, not On Ally Played.** A unit an effect puts on the board (a token, a summon, a split, a hatch) is spawned. On Ally Played is for a card played from hand (leaders included).
+- **A unit's own death is not an ally death.** It fires its own On Death, never its own On Ally Die.
+- **0 healing fires no heal trigger.** Healing a unit already at full Health fires no On Heal, On Healed or On Ally Healed.
+
+## Stated rules · 2026-10-18
+
+The owner's notes (21:26) on emoji with cultural meaning.
+
+- **Ward uses 🧿 Nazar.** When a Ward skill is made (e.g. Prayer Ward in docs/gameplay-ideas-2026-10-19.md, or a ward against Blind / curses), its icon is the nazar, or a white/yellow East Asian paper talisman (no emoji exists, so that would be a drawn icon).
+- **🪬 Hamsa is never a generic effect icon.** It carries real cultural and religious meaning, so it appears only inside one animal society's own identity (its cards, banner or rites), never as an effect any unit can get. Which society is still open.
