@@ -14789,11 +14789,46 @@ function expectedPlayerDeck(mapId, nodeKey){
 }
 // The win rate a node should give that expected deck: the first skirmish of a map ~85%, falling to
 // ~60% by its last skirmish; elites ~45%, bosses ~35%, raid bosses ~20% (the targets the map tuning used).
+// 2026-10-19 (R2): on a map the road curve covers, the target is roadCurveTarget's; the old targets below stay for the fights it
+// doesn't cover (the come-back-later fights, the endless floors, the Babel Spire).
 function skirmishTargetWinRate(mapId, node){
+  const rc = roadCurveTarget(mapId, node); if(rc) return rc.t;
   const bk = baseKind(node.kind); if(bk==='elite') return .45; if(bk==='boss' || bk==='finalboss') return .35; if(bk==='raidboss') return .2;
   const map = CONQUEST_MAPS.find(m=> m.id===mapId), sk = map ? map.nodes.filter(n=> n.kind==='skirmish') : [];
   const i = Math.max(0, sk.findIndex(n=> n.key===node.key));
   return .85 - .25 * (i / Math.max(1, sk.length - 1));
+}
+// The road curve (2026-10-19, package R2; owner 20:39: "The balance should be such that the constructed deck wins in the green zone
+// for every map it's in. Maybe if there are 10 skirmishes, it starts at 90%, and drops to 60%. Then at the boss fight, <50%. (The deck
+// consists of cards earned from the previous map)"). The deck is the map's reference deck (referenceDeckFor: Base + every earlier main
+// map's rewards). On each map, its fights in road order:
+//   - the fights before the boss: 90% for the first, down a straight line to 60% for the last one before the boss; an elite sits
+//     5 points under the line at its place;
+//   - a boss or mini-boss that isn't the map's last fight (The Sundered Peak's Sloth Titan, before the Cave Warlord): ~50%;
+//   - the map's boss fight, its last fight (applyRoadKinds' ender, whatever its kind: an elite on Maps 1-4, a mini-boss, a boss or the
+//     Map 20 world boss): ~40%, green 30-49% (the owner's "<50%"); Map 0's Frost Vanguard 45% (the first boss stays gentle).
+// Green is the target ±8 points (ROAD_CURVE_TOL), the boss fight 30-49%. Side maps follow the same curve (their own fights, their own
+// last fight as the boss). Not on the curve (they keep the older targets above): the Tutorial's come-back-later fights (T-2 to T-4),
+// The Old Bramble (a Map 17 come-back fight off Map 0), the Eye of the Volcano (20-A: elites around a dungeon, no road to a boss),
+// the Volcano Lair (20-B: its end is the Caldera Wyrm world boss), the endless dungeons and the Babel Spire.
+const ROAD_CURVE_TOL = .08, ROAD_CURVE_SKIP = new Set(['mtut', 'mo', 'me', 'mx']);
+const ROAD_CURVE_BOSSY = new Set(['boss', 'miniboss', 'subboss', 'finalboss', 'worldboss']);
+function roadCurveFights(map){ return (map.nodes || []).filter(n=> n.deck && Object.keys(n.deck).length && n.kind !== 'tutorial' && !/raidboss|megaraid/.test(n.kind || '')); }
+function roadCurveTarget(mapId, node){
+  const map = CONQUEST_MAPS.find(m=> m.id === mapId);
+  if(!map || !node || map.endless || map.tower || map.reserved || ROAD_CURVE_SKIP.has(map.id)) return null;
+  const list = roadCurveFights(map); if(!list.some(n=> n.key === node.key)) return null;
+  const ender = list.find(n=> n.ender) || list[list.length - 1];
+  if(node.key === ender.key){ const t = mapNumberOf(map.id) === 0 && !map.sub ? .45 : .40; return {t, lo: .30, hi: .49, role: 'boss'}; }
+  if(ROAD_CURVE_BOSSY.has(node.kind)) return {t: .50, lo: .50 - ROAD_CURVE_TOL, hi: .50 + ROAD_CURVE_TOL, role: 'miniboss'};
+  const line = list.filter(n=> n.key !== ender.key && !ROAD_CURVE_BOSSY.has(n.kind)), j = Math.max(0, line.findIndex(n=> n.key === node.key));
+  const elite = baseKind(node.kind) === 'elite', t = Math.round((.90 - .30 * (j / Math.max(1, line.length - 1)) - (elite ? .05 : 0)) * 1000) / 1000;
+  return {t, lo: t - ROAD_CURVE_TOL, hi: Math.min(1, t + ROAD_CURVE_TOL), role: elite ? 'elite' : 'skirmish', pos: j + 1, of: line.length};
+}
+// The green band of a fight (the win-rate panel's colours, the tools' "on target"): the road curve's, else the old target ±12 points.
+function skirmishTargetBand(mapId, node){
+  const rc = roadCurveTarget(mapId, node); if(rc) return Object.assign({curve: true}, rc);
+  const t = skirmishTargetWinRate(mapId, node); return {t, lo: Math.max(0, t - .12), hi: Math.min(1, t + .12), role: baseKind(node.kind) || 'skirmish', curve: false};
 }
 // D33 (2026-10-12): Conquest fights are day all match, except on the night maps; a fight's own phase rule wins.
 const NIGHT_MAPS = new Set(['m4', 'mg', 'm8', 'mt', 'mj']); // Caves & Alcoves, Smugglers' Grotto, Sable Swampmire, The Pinewood Taiga
@@ -15402,9 +15437,12 @@ async function checkSkirmishCurve(mapId, nodes, o){
   return out;
 }
 function skirmishCurveChipHTML(mapId, n, currentKey){
-  const k = mapId + ':' + n.key, v = skirmishCurveCache[k], note = skirmishCurveNote[k], t = skirmishTargetWinRate(mapId, n);
-  const mark = note && note.mark, cls = mark === '!' ? 'err' : mark ? 'skip' : v == null ? '' : Math.abs(v - t) <= .12 ? 'ok' : v > t ? 'easy' : 'hard';
-  const title = `${n.name || n.key} · target ~${Math.round(t*100)}%${note && note.why ? ' · ' + note.why : ''}`;
+  // 2026-10-19 (R2): coloured against the fight's band on the road curve (skirmishTargetBand: 90% -> 60% along the map, the boss 30-49%),
+  // green inside it, blue above (too easy), red below (too hard); the old ±12 around the old target where the curve doesn't apply.
+  const k = mapId + ':' + n.key, v = skirmishCurveCache[k], note = skirmishCurveNote[k], b = skirmishTargetBand(mapId, n), t = b.t, pc = x=> Math.round(x * 100);
+  const mark = note && note.mark, cls = mark === '!' ? 'err' : mark ? 'skip' : v == null ? '' : v > b.hi + 1e-9 ? 'easy' : v < b.lo - 1e-9 ? 'hard' : 'ok';
+  const where = b.curve ? (b.role === 'boss' ? 'the boss fight' : b.role === 'miniboss' ? 'a mini-boss' : `${b.role === 'elite' ? 'an elite, ' : ''}fight ${b.pos} of ${b.of} before the boss`) : 'off the road curve';
+  const title = `${n.name || n.key} · target ~${pc(t)}% (green ${pc(b.lo)}–${pc(b.hi)}%, ${where})${note && note.why ? ' · ' + note.why : ''}`;
   return `<span class="se-curve-chip ${cls} ${n.key===currentKey?'is-here':''}" data-curve-key="${escapeAttr(n.key)}" title="${escapeAttr(title)}"><i>${n.icon||'⚔️'}</i><b>${mark || (v==null ? '–' : Math.round(v*100)+'%')}</b></span>`;
 }
 function skirmishCurveHTML(mapId, currentKey){
@@ -15412,7 +15450,7 @@ function skirmishCurveHTML(mapId, currentKey){
   const nodes = map.nodes.filter(n=> n.deck && n.kind!=='tutorial');
   const here = map.nodes.find(n=> n.key === currentKey) || nodes[0], ref = here ? referenceDeckFor(mapId, here) : null;
   const refTip = ref ? `Played by the reference deck for Map ${ref.mapNo} (${ref.stage === 'starter' ? 'the starter deck' : 'the Map ' + ref.deckMap + ' road deck'}, cards at Level ${ref.level}) against the CPU at its real level, ${SKIRMISH_CURVE_SIMS} games a fight.` : '';
-  return `<div class="se-curve"><span class="se-curve-lbl" title="${escapeAttr(refTip)}">This map, new-player win rate:</span>${nodes.map(n=> skirmishCurveChipHTML(mapId, n, currentKey)).join('')}<button type="button" class="btn small ghost" id="seCurveRun">Check the whole map</button><small class="se-curve-key">green on target · blue too easy · red too hard</small></div>`;
+  return `<div class="se-curve"><span class="se-curve-lbl" title="${escapeAttr(refTip)}">This map, new-player win rate:</span>${nodes.map(n=> skirmishCurveChipHTML(mapId, n, currentKey)).join('')}<button type="button" class="btn small ghost" id="seCurveRun">Check the whole map</button><small class="se-curve-key">road curve: 90% for the first fight down to 60% before the boss, the boss 30–49% · green on the curve (±8) · blue too easy · red too hard</small></div>`;
 }
 let skirmishCurveRunId = 0;
 async function runSkirmishCurveCheck(mapId, draft){
@@ -15800,8 +15838,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
     document.getElementById('seSimNew').onclick = ()=>{ read(); let r;
       try{ r = simulateReferenceFight(mapId, draft, 200); }catch(e){ simText = escapeHtml(skirmishCurveErrText(e)); render(); return; }
       skirmishCurveCache[mapId+':'+draft.key] = r.win; delete skirmishCurveNote[mapId+':'+draft.key];
-      const tgt = skirmishTargetWinRate(mapId, draft), defs0 = referenceBaseDefs();
-      simText = simLine(Object.assign({}, r, {avgRounds: r.avgRounds || 0}), `The reference deck for Map ${r.deckMap || 0} (cards at Level ${r.level})`) + ` Target for a ${escapeHtml(draft.kind)} here: ~${Math.round(tgt*100)}%.<div class="se-deck-peek">${Object.entries(r.deck).map(([id,k])=> `${escapeHtml((defs0[id]||{}).name||id)} ×${k}`).join(' · ')}</div>`; render(); };
+      const tgt = skirmishTargetWinRate(mapId, draft), band = skirmishTargetBand(mapId, draft), defs0 = referenceBaseDefs(); // 2026-10-19 (R2): + its green band
+      simText = simLine(Object.assign({}, r, {avgRounds: r.avgRounds || 0}), `The reference deck for Map ${r.deckMap || 0} (cards at Level ${r.level})`) + ` Target for a ${escapeHtml(draft.kind)} here: ~${Math.round(tgt*100)}% (green ${Math.round(band.lo*100)}–${Math.round(band.hi*100)}%).<div class="se-deck-peek">${Object.entries(r.deck).map(([id,k])=> `${escapeHtml((defs0[id]||{}).name||id)} ×${k}`).join(' · ')}</div>`; render(); };
     document.getElementById('seTune').onclick = ()=>{ read();
       const btn = document.getElementById('seTune'); btn.disabled = true; btn.textContent = '🎯 Tuning…';
       setTimeout(()=>{ try{
