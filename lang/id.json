@@ -829,7 +829,6 @@
  "No account needed to play. Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync your progress and Shop packs across devices.": "Tidak perlu akun untuk bermain. Masuki Hutan Kecil untuk langsung bermain sebagai tamu. Sudah punya akun? Masuk di atas untuk menyinkronkan progres dan paket Toko di semua perangkat.",
  "No card edits yet.": "Belum ada edit kartu.",
  "No currency reward for this win.": "Tidak ada hadiah mata uang untuk kemenangan ini.",
- "No Darkness, Blind or dodge stops it (Evasive, Flying, Smoke, Illusory…). It still can't hit what is Invisible.": "Tak ada Kegelapan, Buta, atau hindaran yang menghentikannya (Mengelak, Terbang, Asap, Ilusi…). Ia tetap tak bisa mengenai yang Tak Terlihat.",
  "No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.": "Kunci ruang bawah tanah habis. Yang baru datang besok, dan bonus setiap Senin.",
  "No enchantment yet. Pick a crystal": "Belum ada pesona. Pilih kristal",
  "No enemy unit is still Waiting.": "Tidak ada unit musuh yang masih Menunggu.",
@@ -1614,5 +1613,9 @@
  "— needs {e}⚡, you have {currentEnergy}⚡": "— perlu {e}⚡, kamu punya {currentEnergy}⚡",
  "— repeat-clear payout": "— bayaran tuntas ulang",
  "日本語": "日本語",
- "🐞 Bug Hunters": "🐞 Pemburu Bug"
+ "🐞 Bug Hunters": "🐞 Pemburu Bug",
+ "Legendary": "Legendaris",
+ "Legendary ability": "Kemampuan legendaris",
+ "A legendary power. Rarely found on cards you can own — dragons are the exception.": "Kekuatan legendaris. Jarang ada di kartu yang bisa kamu miliki — naga adalah pengecualian.",
+ "No Darkness, Blind or plain dodge stops it (Evasive, Flying, Smoke, Illusory…); only a Legendary dodge can. It still can't hit what is Invisible.": "Tak ada Kegelapan, Buta, atau hindaran biasa yang menghentikannya (Mengelak, Terbang, Asap, Ilusi…); hanya hindaran Legendaris yang bisa. Ia tetap tak bisa mengenai yang Tak Terlihat."
 }

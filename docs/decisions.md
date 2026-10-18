@@ -356,6 +356,15 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
 - **Default:** Rarity pass, then stat fixes
 - **Outcome:** Taken as default on 'continue' (revertible): the 199 unrated cards got a rarity from measured strength, capped at Rare for now (114 Common, 11 Uncommon, 74 Rare), and 39 extreme outliers moved half-way toward their suggested stat (e.g. Feral Tomcat 3/5 → 3/3, Honey Badger Fury 5 → 3 Attack, Raccoon Nightcrew 5 → 7 Attack). Cards in band: 124 → 162 of 288. Walls, 3+ cost cards (B4) and the Wandering Traveller were left alone.
 
+## Stated rules · 2026-10-18
+
+The owner's notes (23:05) on a far-future map and the Legendary ability tier. Pinned by `tests/legendary-2026-10-19.js`.
+
+- **Shadow of the Valley of Death is a very far future map.** It is not on the road yet and nothing is planned for it now. The Pall Wraith (`pall-wraith`, Cast Darkness + Darksight) lives in the Eye of the Volcano (20-A, the 20-A-2 Wraith Vents deck and card reward) until that map exists.
+- **Legendary abilities are a tier of their own.** A skill or passive marked `legendary: true` (PASSIVE_DEFS / SKILL_DEFS in `arena_app.js`, and `canonical/skill-costs.json`) shows a gold Legendary tag on the card's line, in the Skills Codex and in the card's glossary: "A legendary power. Rarely found on cards you can own — dragons are the exception." They are typically not given to cards players can get, except dragons. Legendary now: True Strike ("White Dragon's True Strike is legendary in itself"), Supreme and Supreme Tide.
+- **True Strike is affected by Legendary dodges.** It still ignores every plain miss or dodge: Darkness, Blind, Sun-shy, Night-blind, Evasive, Swift, Flying, Prey, Tide-evade, canopy, Smoke, Fog, Sandstorm, Ashy, Slippery, Shadow and Illusory. A Legendary dodge still rolls against it as against anyone. It still can't hit Invisible.
+- **Illusory is not Legendary** ("the illusory dodge is a token thing anyway, so it's not particularly legendary"). No dodge is Legendary yet. The engine hook is ready: a dodge source is Legendary when its reason is in `LEGENDARY_DODGES` or the defender's effect value carries `legendary: true` (e.g. `evasive: {legendary: true}`, `illusory: {chance: 0.5, legendary: true}`) (`legendaryDodge` in `bramblewood-engine.js`).
+
 ## Stated rules · 2026-10-19
 
 The owner's answers (20:31) to the design review's questions on triggers, now rules of the engine (`bramblewood-engine.js`). Pinned by `tests/trigger-layers-2026-10-19.js`.

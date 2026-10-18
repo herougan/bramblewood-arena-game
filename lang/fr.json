@@ -829,7 +829,6 @@
  "No account needed to play. Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync your progress and Shop packs across devices.": "Pas besoin de compte pour jouer. Entrez dans le Bosquet pour commencer tout de suite en invité. Vous avez déjà un compte ? Connectez-vous ci-dessus pour synchroniser votre progression et vos paquets de la Boutique entre vos appareils.",
  "No card edits yet.": "Aucune modif de carte pour l'instant.",
  "No currency reward for this win.": "Pas de récompense en monnaie pour cette victoire.",
- "No Darkness, Blind or dodge stops it (Evasive, Flying, Smoke, Illusory…). It still can't hit what is Invisible.": "Ni Ténèbres, ni Aveuglement, ni esquive ne l’arrêtent (Insaisissable, Vol, Fumée, Illusoire…). Elle ne peut toujours pas toucher ce qui est Invisible.",
  "No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.": "Plus de clé de donjon. Une nouvelle arrive demain, et une en bonus chaque lundi.",
  "No enchantment yet. Pick a crystal": "Pas encore d’enchantement. Choisissez un cristal",
  "No enemy unit is still Waiting.": "Aucune unité ennemie n’est encore en Attente.",
@@ -1615,5 +1614,9 @@
  "— needs {e}⚡, you have {currentEnergy}⚡": "— il faut {e}⚡, vous en avez {currentEnergy}⚡",
  "— repeat-clear payout": "— gain de passage répété",
  "日本語": "日本語",
- "🐞 Bug Hunters": "🐞 Chasseurs de bugs"
+ "🐞 Bug Hunters": "🐞 Chasseurs de bugs",
+ "Legendary": "Légendaire",
+ "Legendary ability": "Capacité légendaire",
+ "A legendary power. Rarely found on cards you can own — dragons are the exception.": "Un pouvoir légendaire. Rare sur les cartes que vous pouvez posséder — les dragons font exception.",
+ "No Darkness, Blind or plain dodge stops it (Evasive, Flying, Smoke, Illusory…); only a Legendary dodge can. It still can't hit what is Invisible.": "Ni Ténèbres, ni Aveuglement, ni esquive ordinaire ne l’arrêtent (Insaisissable, Vol, Fumée, Illusoire…) ; seule une esquive Légendaire le peut. Elle ne peut toujours pas toucher ce qui est Invisible."
 }

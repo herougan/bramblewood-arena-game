@@ -829,7 +829,6 @@
  "No account needed to play. Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync your progress and Shop packs across devices.": "プレイにアカウントは不要です。「森へ入る」でゲストとしてすぐに始められます。アカウントをお持ちなら、上でログインすると進行状況とショップのパックを端末間で同期できます。",
  "No card edits yet.": "カードの編集はまだありません。",
  "No currency reward for this win.": "この勝利に通貨の報酬はありません。",
- "No Darkness, Blind or dodge stops it (Evasive, Flying, Smoke, Illusory…). It still can't hit what is Invisible.": "闇も盲目も回避（回避・飛行・煙・幻影…）も止められない。ただし透明なものには当たらない。",
  "No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.": "ダンジョンの鍵がありません。明日また1本、毎週月曜にはボーナスで1本届きます。",
  "No enchantment yet. Pick a crystal": "まだ付与なし。結晶を選んでください",
  "No enemy unit is still Waiting.": "待機中の敵ユニットはもういません。",
@@ -1615,5 +1614,9 @@
  "— needs {e}⚡, you have {currentEnergy}⚡": "— 必要 {e}⚡、所持 {currentEnergy}⚡",
  "— repeat-clear payout": "— 再クリア報酬",
  "日本語": "日本語",
- "🐞 Bug Hunters": "🐞 バグハンター"
+ "🐞 Bug Hunters": "🐞 バグハンター",
+ "Legendary": "レジェンダリー",
+ "Legendary ability": "レジェンダリー能力",
+ "A legendary power. Rarely found on cards you can own — dragons are the exception.": "伝説の力。手に入るカードにはまず無い——ドラゴンは例外。",
+ "No Darkness, Blind or plain dodge stops it (Evasive, Flying, Smoke, Illusory…); only a Legendary dodge can. It still can't hit what is Invisible.": "闇も盲目も通常の回避（回避・飛行・煙・幻影…）も止められない。止められるのはレジェンダリーの回避だけ。ただし透明なものには当たらない。"
 }

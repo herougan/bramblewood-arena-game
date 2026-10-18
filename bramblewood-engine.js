@@ -2543,18 +2543,27 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // lastMissReason (2026-10-03): which passive caused the most recent dodge — copied onto every
   // 'evaded' event so the front end can play a distinct miss animation for Evade / Swift / Flying.
   let lastMissReason = 'evasive';
+  // Legendary dodges (2026-10-18, owner 23:05: "True Strike is affected by legendary dodges."): True Strike skips every dodge and
+  // miss roll except a Legendary one. A dodge source is Legendary when its reason is listed here (a whole source, e.g. a future
+  // boss-only evasion) or when the defender's own effect value carries legendary:true (e.g. effects.evasive = {legendary:true}).
+  // None is Legendary yet; Illusory stays a plain dodge (owner: "the illusory dodge is a token thing anyway").
+  const LEGENDARY_DODGES = {};
+  function legendaryDodge(reason, val){ return !!LEGENDARY_DODGES[reason] || !!(val && typeof val === 'object' && val.legendary); }
+  const dodgeChance = v=> v && typeof v === 'object' ? Number(v.chance) || 0 : Number(v) || 0; // Illusory 0.667 or {chance, legendary}
   // attDefId (2026-10-16, optional): who shot it, for the Tide-evade test rule (a unit's ranged shot at a Tide unit).
   function dodgeCheck(card, attDefId){
     lastMissReason = 'evasive';
     if(isInvisible(card)){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): skills can't find it
-    if(attDefId != null && ((CARD_DEFS[attDefId]||{}).effects||{}).trueStrike) return true; // True Strike (2026-10-18): its shots and skills never miss
+    // True Strike (2026-10-18): its shots and skills never miss; + 2026-10-18 (owner 23:05): a Legendary dodge still rolls (legendaryDodge)
+    const ts = attDefId != null && !!((CARD_DEFS[attDefId]||{}).effects||{}).trueStrike, dfx = (card && CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects) || {};
+    const L = r=> !ts || legendaryDodge(r, dfx[r]);
     if(card && card.exposed > 0) return true; // Exposed (2026-10-15): attacks at it don't miss
     if(card && card.webbed > 0) return true; // Webbed (2026-10-17): stuck in the web, it can't dodge
-    if(preyAlert(card) && rnd() < 0.5) return false; // Prey (2026-10-16): Evasive while an enemy Predator is on the field
+    if(L('prey') && preyAlert(card) && rnd() < 0.5) return false; // Prey (2026-10-16): Evasive while an enemy Predator is on the field
     // 2026-10-16 (user: "Evade to non-swimmers for me to test."): a Tide unit in the tide dodges a non-Tide unit's shot like Evasive
     // (one roll: a card that is Evasive already doesn't get a second one).
-    if(attDefId != null && !(CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects && CARD_DEFS[card.defId].effects.evasive) && tideEvades(card, CARD_DEFS[attDefId])) return rnd() >= 0.5;
-    return evasiveGate(card);
+    if(L('tide') && attDefId != null && !(CARD_DEFS[card.defId] && CARD_DEFS[card.defId].effects && CARD_DEFS[card.defId].effects.evasive) && tideEvades(card, CARD_DEFS[attDefId])) return rnd() >= 0.5;
+    return L('evasive') ? evasiveGate(card) : true;
   }
   // Combat dodges (2026-10-02), each an independent 1-in-2 roll, so they stack multiplicatively:
   //   Swift  — dodges combat attacks from non-Swift attackers
@@ -2566,31 +2575,34 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const dd = (CARD_DEFS[defCard.defId] && CARD_DEFS[defCard.defId].effects) || {};
     if(isInvisible(defCard)){ lastMissReason = 'invisible'; return false; } // Invisible N (2026-10-16): nothing to swing at
     if(defCard.exposed > 0) return true; // Exposed (2026-10-15): no Evasive / Swift / Flying / Smoke / Fog / Shadow dodge
-    if(ad.trueStrike) return true; // True Strike (2026-10-18): no dodge or miss roll at all (Illusory included); Invisible, above, still can't be hit
+    // True Strike (2026-10-18): no dodge or miss roll at all (Illusory included); Invisible, above, still can't be hit.
+    // + 2026-10-18 (owner 23:05): except a Legendary dodge (legendaryDodge): L(reason) is false only for True Strike at a plain dodge,
+    // and is checked before that dodge's roll, so True Strike draws no random numbers unless a Legendary dodge is in play.
+    const L = r=> !ad.trueStrike || legendaryDodge(r, dd[r]);
     const webbed = defCard.webbed > 0; // Webbed (2026-10-17): no Evasive, Prey, Tide, canopy, Swift or Flying dodge (Smoke, fog and the rest still count)
     // Fencing (2026-10-14, user: "fencing = cannot miss Evade creatures"): a precise blade isn't dodged: no Evade and no Swift roll.
     // A Flyer's dodge still applies (it is out of reach, not quick).
     // + Tide evade (2026-10-16, user: "Evade to non-swimmers for me to test."): the test rule makes a Tide unit in the tide Evasive
     // against a non-Tide attacker (tideEvades); off unless switched on.
     // + High Canopy / Undergrowth (2026-10-16): Swift (and Quick) units are Evasive among the branches.
-    if(singleTarget && !webbed && (dd.evasive || preyAlert(defCard) || tideEvades(defCard, CARD_DEFS[attCard.defId]) || canopySwift(dd)) && !ad.fencing && rnd() < 0.5){ lastMissReason = canopySwift(dd) && !dd.evasive ? 'canopy' : 'evasive'; return false; } // + Prey (2026-10-16)
-    if(dd.swift && !webbed && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
+    if(singleTarget && !webbed && ((dd.evasive && L('evasive')) || (L('prey') && preyAlert(defCard)) || (L('tide') && tideEvades(defCard, CARD_DEFS[attCard.defId])) || (L('canopy') && canopySwift(dd))) && !ad.fencing && rnd() < 0.5){ lastMissReason = canopySwift(dd) && !dd.evasive ? 'canopy' : 'evasive'; return false; } // + Prey (2026-10-16)
+    if(dd.swift && L('swift') && !webbed && !ad.swift && !ad.fencing && rnd() < 0.5){ lastMissReason = 'swift'; return false; }
     // High Canopy (2026-10-16, user: "Flying loses its benefit"): under the treetops a Flyer has nowhere to fly off to: no Flying dodge.
-    if(dd.flying && !webbed && canopyMode() !== 'canopy' && !ashyNow() /* Ashy grounds the flyers (2026-10-17) */ && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
+    if(dd.flying && L('flying') && !webbed && canopyMode() !== 'canopy' && !ashyNow() /* Ashy grounds the flyers (2026-10-17) */ && !ad.flying && !ad.reach && !ad.antiAir && !ad.boomerang && !ad.bananarang && rnd() < 0.5){ lastMissReason = 'flying'; return false; } // Reach (2026-10-09): ground units that can hit flyers
     // Slippery (2026-10-16, user: "all units have 1/2 to miss"): every swing at a unit can skid off (1 in 2 by default).
-    if(slips()){ lastMissReason = 'slippery'; return false; }
+    if(L('slippery') && slips()){ lastMissReason = 'slippery'; return false; }
     // Smoke (2026-10-14, Smoke Bomb): an ally hidden in smoke makes attacks at it miss 1 in 2 until the end of the next round.
-    if(defCard.smoke > 0 && !ad.sonar && rnd() < 0.5){ lastMissReason = 'smoke'; return false; } // Sonar (2026-10-16) hears through smoke
+    if(defCard.smoke > 0 && L('smoke') && !ad.sonar && rnd() < 0.5){ lastMissReason = 'smoke'; return false; } // Sonar (2026-10-16) hears through smoke
     // Illusory (raid bosses only): dodges this share of combat attacks, e.g. 0.667 = 2 in 3.
-    if(dd.illusory && rnd() < dd.illusory){ lastMissReason = 'illusory'; return false; }
+    if(dd.illusory && L('illusory') && rnd() < dodgeChance(dd.illusory)){ lastMissReason = 'illusory'; return false; }
     // Keen Sense (2026-10-14): it smells out a grounded target: Thick Fog and Shadow don't make it miss one.
     const keenNose = (!!ad.keenSense && !dd.flying) || !!ad.sonar; // Sonar (2026-10-16): Keen Sense that hears flyers too
-    if(!keenNose && fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
-    if(ashyNow() && !ad.darksight && !keenNose && rnd() < 0.2){ lastMissReason = 'ashy'; return false; } // Ashy (2026-10-17): the ash cloud, 1 in 5
-    if(sandstormOn() && !ad.dry && !keenNose && rnd() < 0.25){ lastMissReason = 'sandstorm'; return false; } // Sandstorm (2026-10-15): Dry units see through it; + the Glass-storm (2026-10-16)
+    if(!keenNose && L('fog') && fogMiss(attCard)){ lastMissReason = 'fog'; return false; } // Thick Fog field (2026-10-09)
+    if(ashyNow() && L('ashy') && !ad.darksight && !keenNose && rnd() < 0.2){ lastMissReason = 'ashy'; return false; } // Ashy (2026-10-17): the ash cloud, 1 in 5
+    if(sandstormOn() && L('sandstorm') && !ad.dry && !keenNose && rnd() < 0.25){ lastMissReason = 'sandstorm'; return false; } // Sandstorm (2026-10-15): Dry units see through it; + the Glass-storm (2026-10-16)
     // Shadow (2026-10-14, user: "Effects like Shade and Ghost and Shadow"): at night or in darkness, attacks at it miss 1 in 2.
     // Magic always finds it.
-    if(!keenNose && dd.shadow && darkNow() && attackDmgType(CARD_DEFS[attCard.defId]) !== 'magic' && rnd() < 0.5){ lastMissReason = 'shadow'; return false; }
+    if(!keenNose && dd.shadow && L('shadow') && darkNow() && attackDmgType(CARD_DEFS[attCard.defId]) !== 'magic' && rnd() < 0.5){ lastMissReason = 'shadow'; return false; }
     return true;
   }
   // Rally N (anthem, item #14): "While this unit is on the field, all your units get +N/+0."
@@ -5156,7 +5168,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // swimmer while the tide is in) is worth less; a swimmer facing a non-swimmer dodges back, so it out-lasts more often.
       const myTide = isTideDef(d), tideOn = tideEvadeOn() && getTide() !== null;
       const fights = legal.map(sl=>{ const f = across(sl); if(!f) return null;
-        let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide && !(d.effects||{}).trueStrike) hit *= 0.5; /* True Strike (2026-10-18): no Tide dodge */
+        let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide && (!(d.effects||{}).trueStrike || legendaryDodge('tide'))) hit *= 0.5; /* True Strike (2026-10-18): no Tide dodge, unless Legendary (2026-10-18, owner 23:05) */
         const kills = atk >= (f.hp || 0) && hit > 0.5, lives = hp > (f.atk || 0) || (tideOn && myTide && !isTide(f) && hp * 2 > (f.atk || 0));
         return (kills || lives) ? {sl, score: (kills ? 2 * hit : 0) + (lives ? 1 : 0) + rnd() * 0.5} : null; }).filter(Boolean);
       if(fights.length) return fights.reduce((a, b)=> b.score > a.score ? b : a).sl;
@@ -5181,7 +5193,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const myHq = ai.hq ? ai.hq.hp / Math.max(1, ai.hq.maxHp) : 1, blockW = myHq < 0.5 ? 0.6 : 0.3;
     const score = sl=>{ const f = frontCardAt(foe, sl);
       if(!f) return ready ? 0.8 + Math.min(atk, 8) * 0.1 : 0.4;
-      let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide && !(d.effects||{}).trueStrike) hit *= 0.5; /* True Strike (2026-10-18): no Tide dodge */
+      let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide && (!(d.effects||{}).trueStrike || legendaryDodge('tide'))) hit *= 0.5; /* True Strike (2026-10-18): no Tide dodge, unless Legendary (2026-10-18, owner 23:05) */
       const kills = atk >= (f.hp || 0) && atk > 0 && hit > 0.5, killNow = kills && ready;
       const theyHit = aiCanSwing(f), fAtk = Math.max(0, f.atk || 0) * (tideOn && myTide && !isTide(f) ? 0.5 : 1);
       const dies = theyHit && fAtk >= hp && !(killNow && quick);
@@ -5380,7 +5392,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(e.flying && (windMode() || rules.landslide)) v += 1;
           v -= aiSightMissAt(id, aiId, null) * 3;
           v += aiDarkCastWorth(players, aiId, id); // Cast Darkness (2026-10-18): the dark it brings, theirs to lose minus its own
-          if(e.trueStrike) v += foes.filter(c=>{ const fe = effectsOf(c); return fe.evasive || fe.swift || fe.flying || fe.shadow || c.smoke > 0; }).length * 0.75; // True Strike (2026-10-18): worth more against dodgers
+          if(e.trueStrike) v += foes.filter(c=>{ const fe = effectsOf(c); const pl = k=> fe[k] && !legendaryDodge(k, fe[k]); return pl('evasive') || pl('swift') || pl('flying') || pl('shadow') || (c.smoke > 0 && !legendaryDodge('smoke')); }).length * 0.75; // True Strike (2026-10-18): worth more against dodgers; a Legendary dodge doesn't count (2026-10-18, owner 23:05)
           if(rules.arrowSlits && aiId === 1 && (d.health||0) <= fxN(rules.arrowSlits, 2)) v -= 1; }
         // Spells (2026-10-11): worth what they'd do right now; nothing to do means don't cast it.
         if(d.cardType === 'spell'){ const sp = d.spell || {}, n = Number(sp.amount)||0;
@@ -7193,7 +7205,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth,
+  return { tideEvadeOn, wetCountOf, darkCastNow: players=> !rules.dark && darkCasterLive(players), darkRule, trueStrikes, aiDarkCastWorth, legendaryDodge, LEGENDARY_DODGES /* 2026-10-18 (owner 23:05): the Legendary dodge hook */,
     darkMissOf: (card, ownerId, players)=>{ const prev = curPlayers; if(players) curPlayers = players; try{ return sightMiss(card, ownerId, true); }catch(e){ return 0; } finally{ curPlayers = prev; } }, /* 2026-10-18 (package D) */ setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(AI_LEVEL_MAX, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, prayerTokensOf, prayerNOf, prayerRateOf, removePrayerTokens, relicDefOf, RELIC_KEEPS, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 

@@ -829,7 +829,6 @@
  "No account needed to play. Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync your progress and Shop packs across devices.": "Hindi kailangan ng account para maglaro. Pumasok sa Kakahuyan para agad maglaro bilang bisita. May account ka na? Mag-sign in sa itaas para ma-sync ang progreso mo at ang mga pack mula sa Tindahan sa lahat ng device.",
  "No card edits yet.": "Wala pang edit sa card.",
  "No currency reward for this win.": "Walang gantimpalang pera para sa panalong ito.",
- "No Darkness, Blind or dodge stops it (Evasive, Flying, Smoke, Illusory…). It still can't hit what is Invisible.": "Walang Dilim, Pagkabulag o iwas na pumipigil dito (Mailap, Lumilipad, Usok, Ilusyon…). Hindi pa rin nito matatamaan ang Hindi Nakikita.",
  "No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.": "Wala nang Susi ng Piitan. May bago bukas, at may bonus tuwing Lunes.",
  "No enchantment yet. Pick a crystal": "Wala pang engkanto. Pumili ng crystal",
  "No enemy unit is still Waiting.": "Walang yunit ng kalaban na Naghihintay pa.",
@@ -1613,5 +1612,9 @@
  "— needs {e}⚡, you have {currentEnergy}⚡": "— kailangan ng {e}⚡, may {currentEnergy}⚡ ka",
  "— repeat-clear payout": "— bayad sa paulit-ulit na clear",
  "日本語": "日本語",
- "🐞 Bug Hunters": "🐞 Mga Bug Hunter"
+ "🐞 Bug Hunters": "🐞 Mga Bug Hunter",
+ "Legendary": "Maalamat",
+ "Legendary ability": "Maalamat na kakayahan",
+ "A legendary power. Rarely found on cards you can own — dragons are the exception.": "Isang maalamat na kapangyarihan. Bihira sa mga kard na maaari mong makuha — eksepsiyon ang mga dragon.",
+ "No Darkness, Blind or plain dodge stops it (Evasive, Flying, Smoke, Illusory…); only a Legendary dodge can. It still can't hit what is Invisible.": "Walang Dilim, Pagkabulag o karaniwang iwas na pumipigil dito (Mailap, Lumilipad, Usok, Ilusyon…); tanging Maalamat na iwas ang kaya. Hindi pa rin nito matatamaan ang Hindi Nakikita."
 }

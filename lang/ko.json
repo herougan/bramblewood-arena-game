@@ -829,7 +829,6 @@
  "No account needed to play. Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync your progress and Shop packs across devices.": "플레이하는 데 계정은 필요 없어요. 숲으로 들어가 게스트로 바로 시작하세요. 이미 계정이 있나요? 위에서 로그인하면 진행 상황과 상점 팩이 여러 기기에서 동기화돼요.",
  "No card edits yet.": "아직 카드 수정이 없습니다.",
  "No currency reward for this win.": "이번 승리엔 재화 보상이 없어요.",
- "No Darkness, Blind or dodge stops it (Evasive, Flying, Smoke, Illusory…). It still can't hit what is Invisible.": "어둠도, 실명도, 회피(회피, 비행, 연기, 환영…)도 막지 못한다. 투명한 대상은 여전히 맞힐 수 없다.",
  "No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.": "던전 열쇠가 없어요. 내일 새 열쇠가 오고, 매주 월요일엔 보너스 열쇠가 와요.",
  "No enchantment yet. Pick a crystal": "아직 마법 부여 없음. 결정을 고르세요",
  "No enemy unit is still Waiting.": "아직 대기 중인 적 유닛이 없어요.",
@@ -1615,5 +1614,9 @@
  "— needs {e}⚡, you have {currentEnergy}⚡": "— {e}⚡ 필요, 보유 {currentEnergy}⚡",
  "— repeat-clear payout": "— 반복 클리어 보상",
  "日本語": "日本語",
- "🐞 Bug Hunters": "🐞 버그 헌터"
+ "🐞 Bug Hunters": "🐞 버그 헌터",
+ "Legendary": "전설",
+ "Legendary ability": "전설 능력",
+ "A legendary power. Rarely found on cards you can own — dragons are the exception.": "전설적인 힘. 가질 수 있는 카드에는 드물다. 드래곤은 예외다.",
+ "No Darkness, Blind or plain dodge stops it (Evasive, Flying, Smoke, Illusory…); only a Legendary dodge can. It still can't hit what is Invisible.": "어둠도, 실명도, 일반 회피(회피, 비행, 연기, 환영…)도 막지 못한다. 전설 회피만이 막을 수 있다. 투명한 대상은 여전히 맞힐 수 없다."
 }

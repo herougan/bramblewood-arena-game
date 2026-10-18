@@ -770,7 +770,7 @@ const PASSIVE_DEFS = [
   {key:'shadow', category:'passive', label:'Shadow', kind:'boolean', desc:()=>`At night or in darkness, attacks at it miss 1 in 2. Magic never misses it.`},
   // Supreme (user: "Dragons and Sphinxes are supreme beasts. Leviathans too. (Dont use this type willynilly). Their attacks have a sparkle
   // on the icon. They crush armour and ward etc. Their armor (HP also sparkles) are magic. So non-magic damage deals 1/2, rounded down").
-  {key:'supreme', category:'passive', label:'Supreme', kind:'boolean', desc:()=>`A supreme beast (dragons, sphinxes, leviathans only). Its attacks are magic and crush every defence: Armor, Shell, Scare, a hiding Cower, stone, and a bramble's Bulwark and Ward. It takes half damage (rounded down) from anything that isn't magic.`},
+  {key:'supreme', category:'passive', label:'Supreme', kind:'boolean', legendary:true /* 2026-10-18 (owner 23:05): a Legendary ability (dragons, sphinxes, leviathans only) */, desc:()=>`A supreme beast (dragons, sphinxes, leviathans only). Its attacks are magic and crush every defence: Armor, Shell, Scare, a hiding Cower, stone, and a bramble's Bulwark and Ward. It takes half damage (rounded down) from anything that isn't magic.`},
   // Twin, Sprout and Growth (user: "Summon a twin on play" + "Growth unit tokens - 1/3. Very strong - empowered by Swarm").
   {key:'twin', category:'evergreen', label:'Twin', kind:'boolean', desc:()=>`When it arrives, a twin of it appears in the nearest free slot: a token with the same Attack, Health and skills (but no Twin).`},
   {key:'sprout', category:'evergreen', label:'Sprout', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, ${v||1} Growth Sprout${(v||1) === 1 ? '' : 's'} (1/3 tokens that count for every Swarm) sprout${(v||1) === 1 ? 's' : ''} beside it.`},
@@ -816,7 +816,7 @@ const PASSIVE_DEFS = [
   {key:'charge', category:'evergreen', label:'Charge', kind:'text', placeholder:'2, damage 3 enemy random',
     desc:(v, n, e)=>{ const c = (e && e.charge) || parseChargeText(v); const cp = chargeParts(c) || {n:'N'}; return `${c ? chargeLabel(c) : 'Charge N - {effect}'}. Once it is Ready, a yellow clock starts at ${cp.n} and counts down every upkeep; at 0 the effect happens and the clock starts again. Write it as "N, action amount who sub" (e.g. "2, damage 3 enemy random").`; },
     get:e=> e.charge ? chargeToText(e.charge) : undefined, apply:(e, v)=>{ const c = parseChargeText(v); if(c) e.charge = c; }},
-  {key:'supremeTide', category:'passive', label:'Supreme Tide', kind:'boolean', desc:()=>`A Tide unit whose Tide bonuses are doubled and always on, both at once: +2 Attack and +2 Armor every round, Flood or Ebb. Nothing that moves the tide can take them away.`},
+  {key:'supremeTide', category:'passive', label:'Supreme Tide', kind:'boolean', legendary:true /* 2026-10-18 (owner 23:05): Legendary, the Blue Dragon's own */, desc:()=>`A Tide unit whose Tide bonuses are doubled and always on, both at once: +2 Attack and +2 Armor every round, Flood or Ebb. Nothing that moves the tide can take them away.`},
   // Brood N (user: "Swarm units tend to like summoning more units of their type").
   {key:'brood', category:'evergreen', label:'Brood', kind:'number', min:1, defaultValue:1, desc:v=>`When it arrives, ${v||1} brood token${(v||1) === 1 ? '' : 's'} of its own kind hatch${(v||1) === 1 ? 'es' : ''} beside it: a 1/1 "Brood" with Wait 1, the same types (it counts for Swarm), only Swarm, and Flying if this card flies.`},
   // 2026-10-12 skills (the 22:40 list).
@@ -906,7 +906,7 @@ const PASSIVE_DEFS = [
   // Cast Darkness and True Strike (2026-10-18, package D). Owner: "A card that casts 'Darkness' ... the map adds a field effect 'Darkness',
   // on Play. It is gone when it dies." and "White Dragon has true strike - it never misses." Rules: bramblewood-engine.js (darkRule, trueStrikes).
   {key:'castDarkness', category:'passive', label:'Cast Darkness', kind:'boolean', desc:()=> TX('ui.sk-cast-darkness'), codexNote:TX('ui.sk-cast-darkness-codex')},
-  {key:'trueStrike', category:'passive', label:'True Strike', kind:'boolean', desc:()=> TX('ui.sk-true-strike'), codexNote:TX('ui.sk-true-strike-codex')},
+  {key:'trueStrike', category:'passive', label:'True Strike', kind:'boolean', legendary:true /* 2026-10-18 (owner 23:05: "White Dragon's True Strike is legendary in itself") */, desc:()=> TX('ui.sk-true-strike'), codexNote:TX('ui.sk-true-strike-codex')},
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
   {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it strikes the bramble, which is never Shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has (a bramble never counts as Wet).'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18 (owner 15:05 "No Shocked status on Brambles."): the bramble takes the damage again, no status, no Wet bonus
@@ -1449,7 +1449,7 @@ function CHAIN_BREAK_OPTIONS(){
 // to write a chosen value back into a fresh `effects` object on save.
 const SKILL_DEFS = [
   ...PASSIVE_DEFS.map(p=>({
-    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, reserved:p.reserved, oneOff:p.oneOff,
+    key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, reserved:p.reserved, oneOff:p.oneOff, legendary:p.legendary, /* 2026-10-18 (owner 23:05): the Legendary ability tier */
     get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, codexNote:p.codexNote, whoPicker:p.whoPicker, // (2026-10-18: + whoPicker, Esprit's Kin / Any; 2026-10-15: + the grant pickers' hints, defaultValue; 2026-10-17: + codexNote, a Codex-only sentence)
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
     numberWhen:p.numberWhen, numberTitle:p.numberTitle, // a passive selectNumber's N field (Wave N, 2026-10-18)
@@ -2137,8 +2137,15 @@ function keywordizeHTML(html, seen){
 function keywordizeLines(lines){
   const seen = new Map();
   const out = lines.map(l=> keywordizeHTML(l, seen));
+  if(out.some(l=> /\bkw-legendary\b/.test(l))) seen.set('legendary', {name: TX('ui.legendary-ability'), c: LEGENDARY_GOLD, text: TX('ui.legendary-ability-desc')}); // 2026-10-18 (owner 23:05)
   return {lines: out, gloss: [...seen.values()]};
 }
+// Legendary abilities (2026-10-18, owner 23:05: "Legendary abilities — new desc — typically not given to cards players can get
+// (except dragons)"): a skill or passive def with legendary:true (True Strike, Supreme, Supreme Tide) shows a gold "Legendary" tag
+// after its name on the card's line and in the Skills Codex; the card's glossary explains it. The tag is a kw mark, so
+// keywordizeHTML leaves its word alone. The engine's matching rule: a Legendary dodge still works against True Strike.
+const LEGENDARY_GOLD = '#c99a22';
+function legendaryTagHTML(p){ return p && p.legendary ? ` <b class="kw kw-legendary" title="${escapeAttr(TX('ui.legendary-ability-desc'))}">${TX('ui.legendary-tag')}</b>` : ''; }
 function abilityListHTML(lines){
   const {lines: ls, gloss} = keywordizeLines(lines);
   return `<ul>${ls.map(l=>`<li>${l}</li>`).join('')}</ul>` + (gloss.length ? `<div class="kw-gloss" role="note">${gloss.map(kw=> `<div>${kw.c ? `<b class="kw" style="--kw:${kw.c}">${kw.name}</b>` : `<b class="kw kw-term">${kw.name}</b>`}: ${kw.text}</div>`).join('')}</div>` : '');
@@ -2526,7 +2533,7 @@ function describeEffects(def, liveCard){
       const pm = pounceMode(e.pounce), now = lc ? (lc.pounceN != null ? lc.pounceN : pm === 'attack' ? (lc.atk||0) : (lc.hp||0)) : null;
       const amt = now != null ? `<b class="atk-bonus" title="Worked out from its ${pm === 'attack' ? 'Attack' : 'Health'} as it landed">${now}</b>` : (pm === 'attack' ? '&lt;Att&gt;' : '&lt;Hp&gt;');
       lines.push(`${ic('pounce')}Pounce ${amt} — ${TX('ui.sk-pounce', {n: amt})}`); /* 2026-10-18 (package D): terse */ return; }
-    if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span> — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
+    if(p.key==='supremeTide'){ lines.push(`${ic('supremeTide')}<span class="sk-supreme" title="A Supreme skill">Supreme Tide</span>${legendaryTagHTML(p)} — ${skillText(p, v, e)}`); return; } // 2026-10-14: the Supreme sparkle
     if(p.key==='charge'){ const cp = chargeParts(e.charge) || {n:1}; lines.push(`${ic('charge')}${chargeLabel(e.charge)} — once it is Ready, every ${cp.n === 1 ? 'upkeep' : cp.n + ' upkeeps'}.`); return; } // Charge N - {} (2026-10-14)
     if(p.key==='meiosis'){ const w = meiosisWarning(e); lines.push(`${ic('meiosis')}Meiosis${valSuffix(v)} — ${skillText(p, v, e)}${w ? ` <small class="sk-warn">⚠ ${w}</small>` : ''}`); return; }
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
@@ -2535,7 +2542,7 @@ function describeEffects(def, liveCard){
     const head = p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
-    lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; }); // "Answered by" lives in the Skill Codex now (2026-10-13)
+    lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head}${legendaryTagHTML(p) /* 2026-10-18 (owner 23:05) */} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; }); // "Answered by" lives in the Skill Codex now (2026-10-13)
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): the "+ Add Skill" skills that live
   // only in SKILL_DEFS (Freeze, Sleep, Paralyze, Blind, Make Tipsy, Confuse, Shock, Stagger, Chained, Revive) had no line on the
   // card at all. Each gets its short text now, like every other skill.
@@ -7095,7 +7102,7 @@ function skillCodexHTML(){
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${escapeHtml(pd.label)}` : escapeHtml(SKILL_COUNTER_EXTRA[k] || k); });
     if(p.codexNote) txt += ' ' + p.codexNote; // 2026-10-17: a sentence only the Codex shows (Bloodlust's Ambush note)
     { const cx = SKILL_CODEX_NOTE[p.key]; if(cx) txt += ' ' + cx(); } // 2026-10-18 (package D): what the terse card line left out
-    return `<div class="sk-row" data-sk-find="${escapeAttr((p.label + ' ' + p.key + ' ' + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase())}"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${'' /* 2026-10-17 (user: "Remove the one-off tag in Codex"): the editor's skill picker still marks one-offs */}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
+    return `<div class="sk-row" data-sk-find="${escapeAttr((p.label + ' ' + p.key + ' ' + (p.legendary ? TX('ui.legendary-ability') + ' ' : '') + txt + ' ' + ans.join(' ')).replace(/<[^>]*>/g, ' ').toLowerCase())}"><div class="sk-name">${ic(p.key)}<b>${escapeHtml(p.label)}</b>${legendaryTagHTML(p) /* 2026-10-18 (owner 23:05): the gold Legendary tag */}${'' /* 2026-10-17 (user: "Remove the one-off tag in Codex"): the editor's skill picker still marks one-offs */}</div><div class="sk-text">${keywordizeHTML(escapeHtml(txt))}${ans.length ? `<div class="skill-counter">${_t('Answered by')}: ${ans.join(', ')}</div>` : ''}</div></div>`; }).join('');
   // 2026-10-15 (user: "Codex: Skill: Text Filter"): a search box over the list; it matches the name, the text and the answers.
   return `<div class="panel sk-codex"><h2>📘 Skills</h2><p class="panel-sub">Every skill you've met on a card${adminModeEnabled ? ' (admin: all of them)' : ''}: what it does, and what answers it.</p>
     ${rows ? `<div class="sk-filter"><input data-text-filter autocomplete="off" type="search" id="skFilterInput" placeholder="Filter skills…" aria-label="Filter skills" value="${escapeAttr(skillCodexQuery)}"><small id="skFilterCount" aria-live="polite"></small></div>` : ''}

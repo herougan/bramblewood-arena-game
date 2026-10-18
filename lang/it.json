@@ -829,7 +829,6 @@
  "No account needed to play. Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync your progress and Shop packs across devices.": "Non serve un account per giocare. Entra nel Boschetto per iniziare subito come ospite. Hai già un account? Accedi qui sopra per sincronizzare i progressi e le bustine del Negozio tra i dispositivi.",
  "No card edits yet.": "Ancora nessuna modifica alle carte.",
  "No currency reward for this win.": "Nessuna ricompensa in valuta per questa vittoria.",
- "No Darkness, Blind or dodge stops it (Evasive, Flying, Smoke, Illusory…). It still can't hit what is Invisible.": "Né Oscurità, né Cecità, né schivate la fermano (Evasiva, Volante, Fumo, Illusoria…). Non può comunque colpire ciò che è Invisibile.",
  "No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.": "Nessuna chiave del dungeon rimasta. Domani ne arriva una nuova, e ogni lunedì una bonus.",
  "No enchantment yet. Pick a crystal": "Nessun incantesimo. Scegli un cristallo",
  "No enemy unit is still Waiting.": "Nessuna unità nemica è ancora in Attesa.",
@@ -1614,5 +1613,9 @@
  "— needs {e}⚡, you have {currentEnergy}⚡": "— servono {e}⚡, ne hai {currentEnergy}⚡",
  "— repeat-clear payout": "— premio per ripetizione",
  "日本語": "日本語",
- "🐞 Bug Hunters": "🐞 Cacciatori di bug"
+ "🐞 Bug Hunters": "🐞 Cacciatori di bug",
+ "Legendary": "Leggendaria",
+ "Legendary ability": "Abilità leggendaria",
+ "A legendary power. Rarely found on cards you can own — dragons are the exception.": "Un potere leggendario. Raro sulle carte che puoi avere: i draghi sono l’eccezione.",
+ "No Darkness, Blind or plain dodge stops it (Evasive, Flying, Smoke, Illusory…); only a Legendary dodge can. It still can't hit what is Invisible.": "Né Oscurità, né Cecità, né schivate comuni la fermano (Evasiva, Volante, Fumo, Illusoria…); solo una schivata Leggendaria può. Non può comunque colpire ciò che è Invisibile."
 }
