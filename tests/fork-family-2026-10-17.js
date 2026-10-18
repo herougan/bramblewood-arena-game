@@ -92,7 +92,7 @@ ok(/fork: \(\)=> TX\('ui\.sk-fork'\)/.test(src) && /two enemies to its left and 
 ok(/trident: \(\)=> `One three-pronged swing straight ahead: full Attack in front, half to the units on its left and right\.`/.test(src), 'Trident card line');
 ok(/pitchfork: \(\)=> `One four-pronged swing, aimed left or right at random: half Attack on each of 4 neighbouring columns\.`/.test(src), 'Pitchfork card line');
 ok(/\{key:'trident'[^\n]*half \(rounded down, at least 1\)/.test(src) && /\{key:'pitchfork'[^\n]*half its Attack/.test(src) && /\{key:'fork'[^\n]*never the one in front and a side together/.test(src), 'the editor texts');
-ok(/arrows:'v', crabClaws:0[,}]/.test(src), 'the stat budget: Crab Claws costs 0'); // (2026-10-18: package D added entries after it)
+ok(/arrows:'v', crabClaws:0[,}]/.test(src), 'the stat budget: Crab Claws costs 0');
 ok(/function forkSwingVfx\(ev\)/.test(src) && /function groupForkLines\(events\)/.test(src), 'the replay plays one swing (forkSwingVfx, groupForkLines)');
 ok(/function forkSwing\(attacker, points, o\)/.test(fs.readFileSync(path.join(__dirname, '..', 'bramblewood-skillfx.js'), 'utf8')), 'SkillFX.forkSwing draws every prong at once');
 
