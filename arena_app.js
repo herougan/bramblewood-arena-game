@@ -25744,7 +25744,7 @@ function adminPoolGridHTML(){
 }
 function poolCardForEditor(id){ // the pool card as a new live card to place: its pool fields go, its map is pre-filled under From
   const d = POOL_CARD_DEFS[id]; if(!d) return null;
-  const c = JSON.parse(JSON.stringify(d)); delete c.pool; delete c.poolMap; delete c.poolSlot;
+  const c = JSON.parse(JSON.stringify(d)); delete c.pool; delete c.poolMap; delete c.poolSlot; delete c.numericId; // its pool number (9001+) gives way to the next live card number on Save
   if(d.poolMap && !c.source) c.source = {kind:'map', id:d.poolMap};
   return c;
 }

@@ -1,0 +1,244 @@
+{
+ "puffin-diver": {
+  "attack": 3,
+  "health": 6,
+  "wr": 0.5416666666666666,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 8,
+    "ok": true,
+    "wr": 0.65
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "ok": true,
+    "wr": 0.275
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "ok": true,
+    "wr": 0.65
+   },
+   {
+    "attack": 3,
+    "health": 6,
+    "ok": true,
+    "wr": 0.5416666666666666
+   }
+  ]
+ },
+ "red-billed-chough": {
+  "attack": 2,
+  "health": 4,
+  "wr": 0.5,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 6,
+    "ok": true,
+    "wr": 0.75
+   },
+   {
+    "attack": 1,
+    "health": 6,
+    "ok": true,
+    "wr": 0.20833333333333334
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "ok": true,
+    "wr": 0.6166666666666667
+   },
+   {
+    "attack": 2,
+    "health": 4,
+    "ok": true,
+    "wr": 0.5
+   }
+  ]
+ },
+ "leopard-slug": {
+  "attack": 1,
+  "health": 12,
+  "wr": 0.39166666666666666,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 9,
+    "ok": true,
+    "wr": 0.21666666666666667
+   },
+   {
+    "attack": 2,
+    "health": 9,
+    "ok": true,
+    "wr": 0.875
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "ok": true,
+    "wr": 0.85
+   },
+   {
+    "attack": 2,
+    "health": 7,
+    "ok": true,
+    "wr": 0.6916666666666667
+   },
+   {
+    "attack": 2,
+    "health": 6,
+    "ok": true,
+    "wr": 0.6083333333333333
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "ok": true,
+    "wr": 0.2
+   },
+   {
+    "attack": 1,
+    "health": 10,
+    "ok": true,
+    "wr": 0.275
+   },
+   {
+    "attack": 1,
+    "health": 11,
+    "ok": true,
+    "wr": 0.3
+   },
+   {
+    "attack": 1,
+    "health": 12,
+    "ok": true,
+    "wr": 0.39166666666666666
+   }
+  ]
+ },
+ "whale-shark": {
+  "attack": 3,
+  "health": 28,
+  "wr": 0.6333333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 5,
+    "health": 28,
+    "ok": true,
+    "wr": 0.8083333333333333
+   },
+   {
+    "attack": 4,
+    "health": 28,
+    "ok": true,
+    "wr": 0.7833333333333333
+   },
+   {
+    "attack": 3,
+    "health": 28,
+    "ok": true,
+    "wr": 0.6333333333333333
+   }
+  ]
+ },
+ "anvil-thrush": {
+  "attack": 2,
+  "health": 4,
+  "wr": 0.5,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 6,
+    "ok": true,
+    "wr": 0.75
+   },
+   {
+    "attack": 1,
+    "health": 6,
+    "ok": true,
+    "wr": 0.20833333333333334
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "ok": true,
+    "wr": 0.6166666666666667
+   },
+   {
+    "attack": 2,
+    "health": 4,
+    "ok": true,
+    "wr": 0.5
+   }
+  ]
+ },
+ "harp-seal-pup": {
+  "attack": 2,
+  "health": 5,
+  "wr": 0.525,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 6,
+    "ok": true,
+    "wr": 0.175
+   },
+   {
+    "attack": 2,
+    "health": 6,
+    "ok": true,
+    "wr": 0.6416666666666667
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "ok": true,
+    "wr": 0.525
+   }
+  ]
+ },
+ "woodland-caribou": {
+  "attack": 4,
+  "health": 9,
+  "wr": 0.6083333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 11,
+    "ok": true,
+    "wr": 0.3
+   },
+   {
+    "attack": 4,
+    "health": 11,
+    "ok": true,
+    "wr": 0.7833333333333333
+   },
+   {
+    "attack": 4,
+    "health": 10,
+    "ok": true,
+    "wr": 0.725
+   },
+   {
+    "attack": 4,
+    "health": 9,
+    "ok": true,
+    "wr": 0.6083333333333333
+   }
+  ]
+ }
+}

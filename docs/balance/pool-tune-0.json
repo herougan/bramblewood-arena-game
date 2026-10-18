@@ -1,0 +1,1136 @@
+{
+ "water-vole": {
+  "attack": 1,
+  "health": 6,
+  "wr": 0.39166666666666666,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 5,
+    "wr": 0.30833333333333335,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.39166666666666666,
+    "ok": true
+   }
+  ]
+ },
+ "signal-crayfish": {
+  "attack": 2,
+  "health": 12,
+  "wr": 0.4166666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 10,
+    "wr": 0.325,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 12,
+    "wr": 0.4166666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "woodcock-lookout": {
+  "attack": 2,
+  "health": 7,
+  "wr": 0.4166666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.06666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 7,
+    "wr": 0.08333333333333333,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.4166666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "ladybird-guard": {
+  "attack": 1,
+  "health": 6,
+  "wr": 0.44166666666666665,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.44166666666666665,
+    "ok": true
+   }
+  ]
+ },
+ "stag-beetle": {
+  "attack": 4,
+  "health": 10,
+  "wr": 0.675,
+  "out": false,
+  "tried": [
+   {
+    "attack": 5,
+    "health": 14,
+    "wr": 0.8833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 5,
+    "health": 12,
+    "wr": 0.8833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 12,
+    "wr": 0.875,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 10,
+    "wr": 0.675,
+    "ok": true
+   }
+  ]
+ },
+ "robin-redbreast": {
+  "attack": 1,
+  "health": 3,
+  "wr": 0.525,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 4,
+    "wr": 0.975,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 3,
+    "wr": 0.925,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 3,
+    "wr": 0.525,
+    "ok": true
+   }
+  ]
+ },
+ "pincushion-urchin": {
+  "attack": 1,
+  "health": 8,
+  "wr": 0.7583333333333333,
+  "out": true,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 10,
+    "wr": 0.9166666666666666,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 8,
+    "wr": 0.7583333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "oystercatcher": {
+  "attack": 3,
+  "health": 6,
+  "wr": 0.5416666666666666,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.65,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 6,
+    "wr": 0.5416666666666666,
+    "ok": true
+   }
+  ]
+ },
+ "grey-seal-bull": {
+  "attack": 5,
+  "health": 16,
+  "wr": 0.675,
+  "out": false,
+  "tried": [
+   {
+    "attack": 5,
+    "health": 16,
+    "wr": 0.675,
+    "ok": true
+   }
+  ]
+ },
+ "puffin-diver": {
+  "attack": 2,
+  "health": 7,
+  "wr": 0.3416666666666667,
+  "out": true,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.65,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.65,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.3416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.275,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.65,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.65,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.3416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.275,
+    "ok": true
+   }
+  ]
+ },
+ "kittiwake-flock": {
+  "attack": 1,
+  "health": 3,
+  "wr": 0.4583333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 4,
+    "wr": 0.725,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 3,
+    "wr": 0.4583333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "fulmar-spitter": {
+  "attack": 2,
+  "health": 9,
+  "wr": 0.5666666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 9,
+    "wr": 0.5666666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "muskrat-lodgekeeper": {
+  "attack": 3,
+  "health": 14,
+  "wr": 0.6,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 16,
+    "wr": 0.7916666666666666,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 14,
+    "wr": 0.6,
+    "ok": true
+   }
+  ]
+ },
+ "pyrenean-desman": {
+  "attack": 2,
+  "health": 8,
+  "wr": 0.4583333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.4166666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.4583333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "old-sturgeon": {
+  "attack": 4,
+  "health": 24,
+  "wr": 0.75,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 24,
+    "wr": 0.75,
+    "ok": true
+   }
+  ]
+ },
+ "alligator-gar": {
+  "attack": 4,
+  "health": 12,
+  "wr": 0.75,
+  "out": false,
+  "tried": [
+   {
+    "attack": 5,
+    "health": 14,
+    "wr": 0.825,
+    "ok": true
+   },
+   {
+    "attack": 5,
+    "health": 12,
+    "wr": 0.8,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 12,
+    "wr": 0.75,
+    "ok": true
+   }
+  ]
+ },
+ "mosquito-cloud": {
+  "attack": 1,
+  "health": 4,
+  "wr": 0.5166666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 3,
+    "wr": 0.2916666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 4,
+    "wr": 0.5166666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "anhinga-spearbird": {
+  "attack": 4,
+  "health": 6,
+  "wr": 0.45,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.7916666666666666,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 6,
+    "wr": 0.45,
+    "ok": true
+   }
+  ]
+ },
+ "booming-bittern": {
+  "attack": 3,
+  "health": 8,
+  "wr": 0.65,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 9,
+    "wr": 0.725,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.65,
+    "ok": true
+   }
+  ]
+ },
+ "water-scorpion": {
+  "attack": 2,
+  "health": 7,
+  "wr": 0.3416666666666667,
+  "out": true,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.6833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.6333333333333333,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.3416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.3333333333333333,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.6833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.6333333333333333,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 7,
+    "wr": 0.3416666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.3333333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "marsh-harrier": {
+  "attack": 3,
+  "health": 6,
+  "wr": 0.6166666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.875,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 6,
+    "wr": 0.8333333333333334,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 6,
+    "wr": 0.6166666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "leopard-slug": {
+  "attack": 1,
+  "health": 10,
+  "wr": 0.275,
+  "out": true,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 9,
+    "wr": 0.21666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 10,
+    "wr": 0.275,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 10,
+    "wr": 0.9,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.85,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 8,
+    "wr": 0.24166666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 9,
+    "wr": 0.21666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 9,
+    "wr": 0.875,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.85,
+    "ok": true
+   }
+  ]
+ },
+ "truffle-piglet": {
+  "attack": 2,
+  "health": 8,
+  "wr": 0.5333333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 9,
+    "wr": 0.85,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.6833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 8,
+    "wr": 0.5333333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "springtail-hopper": {
+  "attack": 1,
+  "health": 4,
+  "wr": 0.4083333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 3,
+    "wr": 0.24166666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 4,
+    "wr": 0.4083333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "cave-cricket": {
+  "attack": 2,
+  "health": 3,
+  "wr": 0.5916666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 3,
+    "wr": 0.5916666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "cave-swiftlet": {
+  "attack": 2,
+  "health": 4,
+  "wr": 0.5,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 5,
+    "wr": 0.6166666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 4,
+    "wr": 0.5,
+    "ok": true
+   }
+  ]
+ },
+ "whip-spider": {
+  "attack": 4,
+  "health": 9,
+  "wr": 0.6583333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.36666666666666664,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 9,
+    "wr": 0.35833333333333334,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 9,
+    "wr": 0.6583333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "guano-beetle": {
+  "attack": 1,
+  "health": 9,
+  "wr": 0.4,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 8,
+    "wr": 0.3333333333333333,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 9,
+    "wr": 0.4,
+    "ok": true
+   }
+  ]
+ },
+ "fishing-cat": {
+  "attack": 4,
+  "health": 8,
+  "wr": 0.7916666666666666,
+  "out": true,
+  "tried": [
+   {
+    "attack": 5,
+    "health": 9,
+    "wr": 0.8583333333333333,
+    "ok": true
+   },
+   {
+    "attack": 5,
+    "health": 8,
+    "wr": 0.875,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 8,
+    "wr": 0.7916666666666666,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.7916666666666666,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 7,
+    "wr": 0.38333333333333336,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.425,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 8,
+    "wr": 0.7916666666666666,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.7916666666666666,
+    "ok": true
+   }
+  ]
+ },
+ "horseshoe-crab": {
+  "attack": 2,
+  "health": 15,
+  "wr": 0.4666666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 13,
+    "wr": 0.13333333333333333,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 15,
+    "wr": 0.11666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 15,
+    "wr": 0.4666666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "mangrove-manatee": {
+  "attack": 3,
+  "health": 28,
+  "wr": 0.7416666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 28,
+    "wr": 0.7416666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "crown-of-thorns-star": {
+  "attack": 2,
+  "health": 10,
+  "wr": 0.6083333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 12,
+    "wr": 0.6916666666666667,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 10,
+    "wr": 0.6083333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "lionfish": {
+  "attack": 3,
+  "health": 8,
+  "wr": 0.6666666666666666,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 8,
+    "wr": 0.6666666666666666,
+    "ok": true
+   }
+  ]
+ },
+ "great-barracuda": {
+  "attack": 5,
+  "health": 5,
+  "wr": 0.575,
+  "out": false,
+  "tried": [
+   {
+    "attack": 6,
+    "health": 7,
+    "wr": 0.8666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 6,
+    "health": 6,
+    "wr": 0.8333333333333334,
+    "ok": true
+   },
+   {
+    "attack": 5,
+    "health": 6,
+    "wr": 0.8,
+    "ok": true
+   },
+   {
+    "attack": 5,
+    "health": 5,
+    "wr": 0.575,
+    "ok": true
+   }
+  ]
+ },
+ "chamois-leaper": {
+  "attack": 3,
+  "health": 9,
+  "wr": 0.475,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 9,
+    "wr": 0.475,
+    "ok": true
+   }
+  ]
+ },
+ "wallcreeper": {
+  "attack": 2,
+  "health": 6,
+  "wr": 0.38333333333333336,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 6,
+    "wr": 0.38333333333333336,
+    "ok": true
+   }
+  ]
+ },
+ "apollo-butterfly": {
+  "attack": 1,
+  "health": 6,
+  "wr": 0.5,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.5,
+    "ok": true
+   }
+  ]
+ },
+ "thorn-shrike": {
+  "attack": 4,
+  "health": 5,
+  "wr": 0.75,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 7,
+    "wr": 0.8916666666666667,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 6,
+    "wr": 0.8666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 6,
+    "wr": 0.7666666666666667,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 5,
+    "wr": 0.5,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 5,
+    "wr": 0.75,
+    "ok": true
+   }
+  ]
+ },
+ "hawthorn-shieldbug": {
+  "attack": 2,
+  "health": 12,
+  "wr": 0.5,
+  "out": false,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 12,
+    "wr": 0.5,
+    "ok": true
+   }
+  ]
+ },
+ "anvil-thrush": {
+  "attack": 2,
+  "health": 5,
+  "wr": 0.6166666666666667,
+  "out": true,
+  "tried": [
+   {
+    "attack": 2,
+    "health": 6,
+    "wr": 0.75,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "wr": 0.6166666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 5,
+    "wr": 0.20833333333333334,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.20833333333333334,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 6,
+    "wr": 0.75,
+    "ok": true
+   },
+   {
+    "attack": 2,
+    "health": 5,
+    "wr": 0.6166666666666667,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 5,
+    "wr": 0.20833333333333334,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 6,
+    "wr": 0.20833333333333334,
+    "ok": true
+   }
+  ]
+ },
+ "polar-bear": {
+  "attack": 8,
+  "health": 29,
+  "wr": 0.44166666666666665,
+  "out": true,
+  "tried": [
+   {
+    "attack": 7,
+    "health": 22,
+    "wr": 0.43333333333333335,
+    "ok": true
+   },
+   {
+    "attack": 7,
+    "health": 25,
+    "wr": 0.43333333333333335,
+    "ok": true
+   },
+   {
+    "attack": 8,
+    "health": 25,
+    "wr": 0.43333333333333335,
+    "ok": true
+   },
+   {
+    "attack": 8,
+    "health": 29,
+    "wr": 0.44166666666666665,
+    "ok": true
+   }
+  ]
+ },
+ "beluga": {
+  "attack": 3,
+  "health": 18,
+  "wr": 0.7416666666666667,
+  "out": false,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 18,
+    "wr": 0.7416666666666667,
+    "ok": true
+   }
+  ]
+ },
+ "lemming-swarm": {
+  "attack": 1,
+  "health": 2,
+  "wr": 0.5416666666666666,
+  "out": false,
+  "tried": [
+   {
+    "attack": 1,
+    "health": 3,
+    "wr": 0.6583333333333333,
+    "ok": true
+   },
+   {
+    "attack": 1,
+    "health": 2,
+    "wr": 0.5416666666666666,
+    "ok": true
+   }
+  ]
+ },
+ "greenland-shark": {
+  "attack": 4,
+  "health": 26,
+  "wr": 0.7333333333333333,
+  "out": false,
+  "tried": [
+   {
+    "attack": 4,
+    "health": 26,
+    "wr": 0.7333333333333333,
+    "ok": true
+   }
+  ]
+ },
+ "woodland-caribou": {
+  "attack": 3,
+  "health": 13,
+  "wr": 0.43333333333333335,
+  "out": true,
+  "tried": [
+   {
+    "attack": 3,
+    "health": 11,
+    "wr": 0.3,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 13,
+    "wr": 0.43333333333333335,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 13,
+    "wr": 0.825,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 11,
+    "wr": 0.7833333333333333,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 11,
+    "wr": 0.3,
+    "ok": true
+   },
+   {
+    "attack": 3,
+    "health": 13,
+    "wr": 0.43333333333333335,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 13,
+    "wr": 0.825,
+    "ok": true
+   },
+   {
+    "attack": 4,
+    "health": 11,
+    "wr": 0.7833333333333333,
+    "ok": true
+   }
+  ]
+ }
+}

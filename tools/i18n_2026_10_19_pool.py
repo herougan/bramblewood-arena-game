@@ -115,6 +115,7 @@ NAMES = {
 "Woodland Caribou": ["Caribou des bois", "Waldkaribu", "Caribú de bosque", "Caribù dei boschi", "Caribu-da-floresta", "Caribou ng Gubat", "காட்டுக் கரிபு", "Karibu Hutan", "林地驯鹿", "林地馴鹿", "モリカリブー", "숲순록"],
 "Krill Swarm": ["Essaim de krill", "Krillschwarm", "Enjambre de kril", "Sciame di krill", "Enxame de krill", "Kawan ng Krill", "கிரில் கூட்டம்", "Kawanan Krill", "磷虾群", "磷蝦群", "オキアミの群れ", "크릴 떼"],
 "Musk Ox Calf": ["Veau de bœuf musqué", "Moschusochsen-Kalb", "Cría de buey almizclero", "Vitello di bue muschiato", "Cria de boi-almiscarado", "Guya ng Musk Ox", "கஸ்தூரி எருதுக் கன்று", "Anak Lembu Kesturi", "麝牛幼崽", "麝牛幼崽", "ジャコウウシの子", "사향소 송아지"],
+"Ringed Seal": ["Phoque annelé", "Ringelrobbe", "Foca anillada", "Foca dagli anelli", "Foca-anelada", "Seal na may Singsing", "வளையக் கடல்நாய்", "Anjing Laut Bercincin", "环斑海豹", "環斑海豹", "ワモンアザラシ", "고리무늬물범"],
 }
 
 FLAVOR = {
@@ -666,6 +667,12 @@ FLAVOR = {
   "Quando chegam os lobos, a manada forma um círculo e as crias vão para o meio.", "Kapag dumating ang mga lobo, bumubuo ng bilog ang kawan, at nasa gitna ang mga guya.",
   "ஓநாய்கள் வந்தால், மந்தை வட்டமாக நிற்கும்; கன்றுகள் நடுவில் செல்லும்.", "Saat serigala datang, kawanan membentuk lingkaran, dan anak-anaknya masuk ke tengah.",
   "狼群一来，牛群就围成一圈，小牛待在中间。", "狼群一來，牛群就圍成一圈，小牛待在中間。", "オオカミが来ると群れは輪になり、子どもたちは真ん中に入る。", "늑대가 오면 무리는 둥글게 원을 만들고, 송아지들은 한가운데로 들어간다."],
+"It scratches a breathing hole through the ice with its claws, and keeps it open all winter.": [
+  "Il gratte un trou de respiration dans la glace avec ses griffes et le garde ouvert tout l'hiver.", "Sie kratzt mit den Krallen ein Atemloch ins Eis und hält es den ganzen Winter offen.",
+  "Rasca con sus garras un respiradero en el hielo y lo mantiene abierto todo el invierno.", "Gratta con gli artigli un foro di respirazione nel ghiaccio e lo tiene aperto tutto l'inverno.",
+  "Raspa com as garras um buraco de respiração no gelo e mantém-no aberto todo o inverno.", "Kinakalmot nito ng kuko ang isang butas-hingahan sa yelo, at pinananatili itong bukas buong taglamig.",
+  "நகங்களால் பனியில் ஒரு சுவாசத் துளையைச் சுரண்டி, குளிர்காலம் முழுவதும் அதைத் திறந்தே வைத்திருக்கும்.", "Ia mengeruk lubang napas di es dengan cakarnya, dan menjaganya tetap terbuka sepanjang musim dingin.",
+  "它用爪子在冰上刨出一个呼吸孔，整个冬天都让它保持畅通。", "牠用爪子在冰上刨出一個呼吸孔，整個冬天都讓它保持暢通。", "爪で氷に呼吸穴を掘り、冬のあいだずっと開けておく。", "발톱으로 얼음에 숨구멍을 긁어 내고, 겨울 내내 그것을 열어 둔다."],
 }
 
 # The Admin "Pool cards" filter (bramblewood-texts.js ui.admin-pool-*): main packs.

@@ -26597,5 +26597,2997 @@
       "id": "mpd",
       "node": "18-A-9"
     }
+  },
+  {
+    "id": "water-vole",
+    "name": "Water Vole",
+    "icon": "\ud83d\udc00",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 6,
+    "rarity": "common",
+    "species": [
+      "Rodent"
+    ],
+    "archetypes": [
+      "River",
+      "Mouse"
+    ],
+    "effects": {
+      "tide": true,
+      "evasive": true
+    },
+    "flavor": "Plop! Gone under the bank before the heron has even turned its head.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m1",
+    "poolSlot": "skirmish",
+    "numericId": 9001,
+    "uuid": "a9ef1ebf-85c9-579f-a5b6-2c5b69731fab",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the bank vole that plops into the river (Evasive) and swims (Tide). Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (tide 1, evasive 0); 2A+H+S = 2 + 6 + 1 (x1.5 half-miss) = 13.5 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 39.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "river-mink",
+    "name": "River Mink",
+    "icon": "\ud83e\udda6",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 6,
+    "rarity": "uncommon",
+    "species": [
+      "Mustelid"
+    ],
+    "archetypes": [
+      "River",
+      "Forest"
+    ],
+    "effects": {
+      "tide": true,
+      "pounce": 2
+    },
+    "flavor": "Swims like an otter, bites like a stoat, and answers to neither.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m1",
+    "poolSlot": "skirmish",
+    "numericId": 9002,
+    "uuid": "5e377d8d-fd60-5a85-99cb-51b86709db5d",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: a small fierce mustelid that swims (Tide) and lunges at what it sees (Pounce 2). Not an Otter-faction card. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, pounce 2); 2A+H+S = 8 + 6 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 45% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "signal-crayfish",
+    "name": "Signal Crayfish",
+    "icon": "\ud83e\udd9e",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 12,
+    "rarity": "common",
+    "species": [
+      "Crustacean"
+    ],
+    "archetypes": [
+      "River"
+    ],
+    "effects": {
+      "armor": 1,
+      "crabClaws": true
+    },
+    "flavor": "It waves its white-flagged claws at everything, which is not the same as surrendering.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m1",
+    "poolSlot": "pack",
+    "numericId": 9003,
+    "uuid": "5c967e07-3ed2-5876-ac39-a4016b123459",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a pack card), not live until placed from Admin's Pool cards filter. The invasive river crayfish with white claw patches: a shell (Armor 1) and pinching claws (Crab Claws). Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (armor 1, crabClaws 0); 2A+H+S = 4 + 12 + 1 = 17 < 33.9 and A*H+S = 24 + 1 = 25 < (N/3)^2 = 127.69. Measured 41.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "pine-marten",
+    "name": "Pine Marten",
+    "icon": "\ud83e\udda1",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 8,
+    "rarity": "rare",
+    "species": [
+      "Mustelid"
+    ],
+    "archetypes": [
+      "Forest"
+    ],
+    "effects": {
+      "quick": true,
+      "pounce": 2
+    },
+    "flavor": "Down the trunk headfirst, and the squirrel never hears it coming.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m1",
+    "poolSlot": "skirmish",
+    "numericId": 9004,
+    "uuid": "f266fe8c-3be2-5220-aac3-fdbc93e2a39f",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The squirrel hunter that runs down trunks: Quick, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (quick 2, pounce 2); 2A+H+S = 6 + 8 + 4 = 18 < 35.9 and A*H+S = 24 + 4 = 28 < (N/3)^2 = 143.2. Measured 55.8% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "woodcock-lookout",
+    "name": "Woodcock Lookout",
+    "icon": "\ud83d\udc26",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 7,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Forest",
+      "Bird"
+    ],
+    "effects": {
+      "crepuscular": 1,
+      "keenEye": true
+    },
+    "flavor": "Eyes on the sides of its head, and out only at dusk, when the light lies.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m1",
+    "poolSlot": "pack",
+    "numericId": 9005,
+    "uuid": "566ec1aa-702c-55ed-8d7f-a27ffab0a315",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a pack card), not live until placed from Admin's Pool cards filter. All-round eyes, out at dusk: Crepuscular 1 and Keen Eye. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (crepuscular 1, keenEye 1); 2A+H+S = 4 + 7 + 2 = 13 < 29.5 and A*H+S = 14 + 2 = 16 < (N/3)^2 = 96.69. Measured 41.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "grass-snake",
+    "name": "Grass Snake",
+    "icon": "\ud83d\udc0d",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 8,
+    "rarity": "uncommon",
+    "species": [
+      "Reptile"
+    ],
+    "archetypes": [
+      "River",
+      "Snake"
+    ],
+    "effects": {
+      "tide": true,
+      "revive": true
+    },
+    "flavor": "Corner it and it rolls over, tongue out, and plays dead. Very convincingly.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m1",
+    "poolSlot": "skirmish",
+    "numericId": 9006,
+    "uuid": "882ad8ba-82ec-5339-afe8-a6bb667df74a",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m1 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Britain's swimming snake that plays dead: Tide, and Revive (the first time it dies it comes back with 1 Health). Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (tide 1, revive 1); 2A+H+S = 6 + 8 + 2 = 16 < 34.9 and A*H+S = 24 + 2 = 26 < (N/3)^2 = 135.33. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "ladybird-guard",
+    "name": "Ladybird Guard",
+    "icon": "\ud83d\udc1e",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 6,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Insect",
+      "Field"
+    ],
+    "effects": {
+      "guardian": true
+    },
+    "flavor": "Seven spots, one bad taste, and a promise that you will only bite once.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mf",
+    "poolSlot": "skirmish",
+    "numericId": 9007,
+    "uuid": "db34b7c7-0f2e-5a59-bcfa-013b8ea4ab54",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Warning colours that protect the row: Guardian. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (guardian 1); 2A+H+S = 2 + 6 + 1 = 9 < 23 and A*H+S = 6 + 1 = 7 < (N/3)^2 = 58.78. Measured 44.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "hedgerow-shrew",
+    "name": "Hedgerow Shrew",
+    "icon": "\ud83d\udc01",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 3,
+    "rarity": "common",
+    "species": [
+      "Mammal"
+    ],
+    "archetypes": [
+      "Field"
+    ],
+    "effects": {
+      "quick": true
+    },
+    "flavor": "It must eat every few hours or starve, so it is always, always in a hurry.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mf",
+    "poolSlot": "pack",
+    "numericId": 9008,
+    "uuid": "f08aed2d-44f6-5cc7-b8d6-f3a3ac7f2fbd",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a pack card), not live until placed from Admin's Pool cards filter. Always in a hurry: Quick. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (quick 2); 2A+H+S = 4 + 3 + 2 = 9 < 23 and A*H+S = 6 + 2 = 8 < (N/3)^2 = 58.78. Measured 40.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "stag-beetle",
+    "name": "Stag Beetle",
+    "icon": "\ud83e\udeb2",
+    "cost": 1,
+    "wait": 2,
+    "attack": 4,
+    "health": 10,
+    "rarity": "rare",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Insect",
+      "Forest",
+      "Beetle"
+    ],
+    "effects": {
+      "armor": 1,
+      "sweep": 1
+    },
+    "flavor": "All that jaw is for wrestling rivals. Your little units will do.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mf",
+    "poolSlot": "skirmish",
+    "numericId": 9009,
+    "uuid": "9bd32ca7-7a66-58f3-90a3-6ce07d3f5bf6",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Antler jaws for wrestling: Armor 1, Cleave (Sweep) 1. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 2 (armor 1, sweep 1); 2A+H+S = 8 + 10 + 2 = 20 < 43.4 and A*H+S = 40 + 2 = 42 < (N/3)^2 = 209.28. Measured 67.5% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "slow-worm",
+    "name": "Slow-worm",
+    "icon": "\ud83e\udd8e",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 5,
+    "rarity": "common",
+    "species": [
+      "Reptile"
+    ],
+    "archetypes": [
+      "Field",
+      "Reptile"
+    ],
+    "effects": {
+      "revive": true
+    },
+    "flavor": "Not a worm, not slow, and not finished just because you grabbed its tail.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mf",
+    "poolSlot": "pack",
+    "numericId": 9010,
+    "uuid": "5e3787c8-9f66-5b83-ac9d-0c44fe223054",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a pack card), not live until placed from Admin's Pool cards filter. The legless lizard that drops its tail: Revive (comes back once with 1 Health). Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 1 (revive 1); 2A+H+S = 4 + 5 + 1 = 10 < 29.5 and A*H+S = 10 + 1 = 11 < (N/3)^2 = 96.69. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "robin-redbreast",
+    "name": "Robin Redbreast",
+    "icon": "\ud83d\udc26",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 3,
+    "rarity": "uncommon",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Bird",
+      "Field"
+    ],
+    "effects": {
+      "flying": true,
+      "diurnal": true
+    },
+    "flavor": "The friendliest bird in the garden, until another robin lands on its patch.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mf",
+    "poolSlot": "skirmish",
+    "numericId": 9011,
+    "uuid": "205ccef3-5af1-5910-a06d-8bba4a114055",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The fierce garden robin: Flying, Diurnal. Budget v3 at Level 1, Uncommon, Wait 0, Lumber 0: N = 20 + 2 + 2 + 0 + 0 + 0 + 0 = 24; S = 1 (flying 0, diurnal 1); 2A+H+S = 2 + 3 + 1 (x1.5 half-miss) = 9 < 24 and A*H+S = 3 + 1 (x1.5 half-miss) = 6 < (N/3)^2 = 64. Measured 52.5% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "field-vole",
+    "name": "Field Vole",
+    "icon": "\ud83d\udc01",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 5,
+    "rarity": "common",
+    "species": [
+      "Rodent"
+    ],
+    "archetypes": [
+      "Field",
+      "Mouse"
+    ],
+    "effects": {
+      "swarm": true
+    },
+    "flavor": "There is never just one field vole. By autumn there are hundreds.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mf",
+    "poolSlot": "pack",
+    "numericId": 9012,
+    "uuid": "e97fa09d-52ed-57b4-ab7f-bc080b1f9b0d",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mf (a pack card), not live until placed from Admin's Pool cards filter. Never just one: Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (swarm 1); 2A+H+S = 2 + 5 + 1 = 8 < 23 and A*H+S = 5 + 1 = 6 < (N/3)^2 = 58.78. Measured 42.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "pincushion-urchin",
+    "name": "Pincushion Urchin",
+    "icon": "\ud83c\udf30",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 6,
+    "rarity": "common",
+    "species": [
+      "Echinoderm"
+    ],
+    "archetypes": [
+      "Coastal",
+      "Ocean"
+    ],
+    "effects": {
+      "thorns": 2,
+      "tide": true
+    },
+    "flavor": "The rock pool's pin cushion. Step on it once and you will always know where it lives.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mb",
+    "poolSlot": "skirmish",
+    "numericId": 9013,
+    "uuid": "d0ae7718-708d-550e-a84f-2390425e7be6",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner's example (\"pin cushions (uni = sea urchins)\"): a spiny rock-pool urchin, Thorns 2 and Tide. No urchin emoji exists: the spiky chestnut \ud83c\udf30 stands in. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 3 (thorns 2, tide 1); 2A+H+S = 2 + 6 + 3 = 11 < 29.5 and A*H+S = 6 + 3 = 9 < (N/3)^2 = 96.69. Measured 50.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "rock-pool-starfish",
+    "name": "Rock Pool Starfish",
+    "icon": "\u2b50",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 9,
+    "rarity": "common",
+    "species": [
+      "Echinoderm"
+    ],
+    "archetypes": [
+      "Coastal"
+    ],
+    "effects": {
+      "regen": 2,
+      "tide": true
+    },
+    "flavor": "Pull off an arm and it simply grows another. It has five to spare.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mb",
+    "poolSlot": "pack",
+    "numericId": 9014,
+    "uuid": "477bd3ff-7c8e-5717-854c-9e0ab197c927",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a pack card), not live until placed from Admin's Pool cards filter. Regrows its arms: Regen 2, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 3 (regen 2, tide 1); 2A+H+S = 2 + 9 + 3 = 14 < 29.5 and A*H+S = 9 + 3 = 12 < (N/3)^2 = 96.69. Measured 53.3% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "oystercatcher",
+    "name": "Oystercatcher",
+    "icon": "\ud83d\udc26",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 6,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Coastal",
+      "Bird"
+    ],
+    "effects": {
+      "flying": true,
+      "pierce": 2
+    },
+    "flavor": "A bill like an orange chisel, made for opening what wants to stay shut.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mb",
+    "poolSlot": "pack",
+    "numericId": 9015,
+    "uuid": "6ee424a3-3ff4-59ff-bd96-eb7b00719dcc",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a pack card), not live until placed from Admin's Pool cards filter. The shell-opening bill: Flying, Pierce 2 (ignores 2 Armor). Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (flying 0, pierce 2); 2A+H+S = 6 + 6 + 2 (x1.5 half-miss) = 21 < 33.9 and A*H+S = 18 + 2 (x1.5 half-miss) = 30 < (N/3)^2 = 127.69. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "sanderling",
+    "name": "Sanderling",
+    "icon": "\ud83d\udc26",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 3,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Coastal",
+      "Bird"
+    ],
+    "effects": {
+      "tide": true,
+      "evasive": true
+    },
+    "flavor": "Chases the wave out, flees it back in, all day long, on clockwork legs.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mb",
+    "poolSlot": "pack",
+    "numericId": 9016,
+    "uuid": "1da506f3-9bf1-5321-b719-c41d5b169965",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a pack card), not live until placed from Admin's Pool cards filter. Runs with the waves: Tide, Evasive. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (tide 1, evasive 0); 2A+H+S = 4 + 3 + 1 (x1.5 half-miss) = 12 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "grey-seal-bull",
+    "name": "Grey Seal Bull",
+    "icon": "\ud83e\uddad",
+    "cost": 1,
+    "wait": 2,
+    "attack": 5,
+    "health": 16,
+    "rarity": "rare",
+    "species": [
+      "Pinniped"
+    ],
+    "archetypes": [
+      "Coastal",
+      "Ocean"
+    ],
+    "effects": {
+      "tide": true,
+      "guardian": true
+    },
+    "flavor": "Hauls out on the shingle every autumn and lets nothing near his pups.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mb",
+    "poolSlot": "skirmish",
+    "numericId": 9017,
+    "uuid": "3ae8afe7-97e4-57ce-9afd-33d6f7e51243",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the big bull guarding his pups on the shingle: Tide, Guardian. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 2 (tide 1, guardian 1); 2A+H+S = 10 + 16 + 2 = 28 < 43.4 and A*H+S = 80 + 2 = 82 < (N/3)^2 = 209.28. Measured 67.5% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "limpet-clinger",
+    "name": "Limpet Clinger",
+    "icon": "\ud83d\udc1a",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 8,
+    "rarity": "common",
+    "species": [
+      "Mollusc"
+    ],
+    "archetypes": [
+      "Coastal"
+    ],
+    "effects": {
+      "shell": 2,
+      "tide": true
+    },
+    "flavor": "When the tide goes out it clamps down. Nothing short of a chisel shifts it.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mb",
+    "poolSlot": "pack",
+    "numericId": 9018,
+    "uuid": "e653ee01-c28c-5dba-b573-53af9b6c4c3b",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mb (a pack card), not live until placed from Admin's Pool cards filter. Clamps down: Shell 2, Tide. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 3 (shell 2, tide 1); 2A+H+S = 2 + 8 + 3 = 13 < 23 and A*H+S = 8 + 3 = 11 < (N/3)^2 = 58.78. Measured 44.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "puffin-diver",
+    "name": "Puffin Diver",
+    "icon": "\ud83e\udd9c",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 6,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Coastal",
+      "Bird"
+    ],
+    "effects": {
+      "flying": true,
+      "tide": true
+    },
+    "flavor": "Ten sand eels in its beak, and always room for one more.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mc",
+    "poolSlot": "skirmish",
+    "numericId": 9019,
+    "uuid": "5164c49e-b2e1-59b3-a65a-71781546537e",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The sea parrot (\ud83e\udd9c) that flies and dives: Flying, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (flying 0, tide 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 33.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 127.69. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "razorbill",
+    "name": "Razorbill",
+    "icon": "\ud83d\udc26",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 6,
+    "rarity": "uncommon",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Coastal",
+      "Bird"
+    ],
+    "effects": {
+      "flying": true,
+      "bleed": 1
+    },
+    "flavor": "Its name is a warning about the bill, not the beard.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mc",
+    "poolSlot": "pack",
+    "numericId": 9020,
+    "uuid": "0b4118ef-89d3-54dc-94fa-ec0ab2c5c777",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a pack card), not live until placed from Admin's Pool cards filter. A bill like a razor: Flying, Bleed 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (flying 0, bleed 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 34.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 135.33. Measured 66.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "kittiwake-flock",
+    "name": "Kittiwake Flock",
+    "icon": "\ud83d\udd4a\ufe0f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 3,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Coastal",
+      "Bird"
+    ],
+    "effects": {
+      "flying": true,
+      "swarm": true
+    },
+    "flavor": "Kitti-waaake! A thousand ledges, a thousand nests, one deafening chorus.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mc",
+    "poolSlot": "pack",
+    "numericId": 9021,
+    "uuid": "64e13e5a-ccc4-5d84-b925-96c61d52b77f",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a pack card), not live until placed from Admin's Pool cards filter. A colony of gulls: Flying, Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (flying 0, swarm 1); 2A+H+S = 2 + 3 + 1 (x1.5 half-miss) = 9 < 23 and A*H+S = 3 + 1 (x1.5 half-miss) = 6 < (N/3)^2 = 58.78. Measured 45.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "peregrine-stooper",
+    "name": "Peregrine Stooper",
+    "icon": "\ud83e\udd85",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 6,
+    "rarity": "rare",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Mountain",
+      "Bird"
+    ],
+    "effects": {
+      "flying": true,
+      "quick": true,
+      "pounce": 2
+    },
+    "flavor": "The fastest thing alive, falling on purpose.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mc",
+    "poolSlot": "skirmish",
+    "numericId": 9022,
+    "uuid": "f958e8b2-b201-5fdc-8ca3-8441a9148fc6",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The fastest dive alive: Flying, Quick, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (flying 0, quick 2, pounce 2); 2A+H+S = 4 + 6 + 4 (x1.5 half-miss) = 21 < 35.9 and A*H+S = 12 + 4 (x1.5 half-miss) = 24 < (N/3)^2 = 143.2. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "fulmar-spitter",
+    "name": "Fulmar Spitter",
+    "icon": "\ud83e\udeb6",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 9,
+    "rarity": "uncommon",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Coastal",
+      "Bird"
+    ],
+    "effects": {
+      "flying": true,
+      "thorns": 2
+    },
+    "flavor": "Get too close to its nest and it spits stinking oil all over your feathers.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mc",
+    "poolSlot": "skirmish",
+    "numericId": 9023,
+    "uuid": "1f8d5b6d-20b7-5b4f-9c4f-16b6e77898e2",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Spits stinking oil at anything that comes close: Flying, Thorns 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (flying 0, thorns 2); 2A+H+S = 4 + 9 + 2 (x1.5 half-miss) = 22.5 < 34.9 and A*H+S = 18 + 2 (x1.5 half-miss) = 30 < (N/3)^2 = 135.33. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "red-billed-chough",
+    "name": "Red-billed Chough",
+    "icon": "\ud83d\udc26\u200d\u2b1b",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 4,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Mountain",
+      "Bird",
+      "Raven"
+    ],
+    "effects": {
+      "flying": true,
+      "mountainClimber": true
+    },
+    "flavor": "A crow in red stockings, tumbling off the cliff for the fun of it.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mc",
+    "poolSlot": "pack",
+    "numericId": 9024,
+    "uuid": "7b8ae60b-1279-59e9-ad4c-0dbd9ab19d98",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mc (a pack card), not live until placed from Admin's Pool cards filter. The cliff-tumbling crow: Flying, Mountain Climber. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 1 (flying 0, mountainClimber 1); 2A+H+S = 4 + 4 + 1 (x1.5 half-miss) = 13.5 < 29.5 and A*H+S = 8 + 1 (x1.5 half-miss) = 13.5 < (N/3)^2 = 96.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "muskrat-lodgekeeper",
+    "name": "Muskrat Lodgekeeper",
+    "icon": "\ud83e\uddab",
+    "cost": 1,
+    "wait": 2,
+    "attack": 3,
+    "health": 14,
+    "rarity": "uncommon",
+    "species": [
+      "Rodent"
+    ],
+    "archetypes": [
+      "River",
+      "Pond"
+    ],
+    "effects": {
+      "tide": true,
+      "bulwark": 1
+    },
+    "flavor": "Its reed lodge rises from the flood like a haystack with its front door underwater.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m2",
+    "poolSlot": "skirmish",
+    "numericId": 9025,
+    "uuid": "221e4b1a-da06-5205-b777-28308920993a",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the reed lodge (Bulwark 1: your bramble takes 1 less per hit), Tide. Budget v3 at Level 1, Uncommon, Wait 2, Lumber 1: N = 20 + 2 + 2 + 12 + 2 + 4 + 0.4 = 42.4; S = 2 (tide 1, bulwark 1); 2A+H+S = 6 + 14 + 2 = 22 < 42.4 and A*H+S = 42 + 2 = 44 < (N/3)^2 = 199.75. Measured 60% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "water-shrew",
+    "name": "Water Shrew",
+    "icon": "\ud83d\udc01",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 4,
+    "rarity": "common",
+    "species": [
+      "Mammal"
+    ],
+    "archetypes": [
+      "River"
+    ],
+    "effects": {
+      "tide": true,
+      "venomous": 1
+    },
+    "flavor": "Silver with bubbles as it dives, and its bite carries venom.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m2",
+    "poolSlot": "pack",
+    "numericId": 9026,
+    "uuid": "5d411d8a-9de9-51a7-8905-1ac7dd620fb9",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a pack card), not live until placed from Admin's Pool cards filter. Temperate water mammal with a venomous bite: Tide, Venomous 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (tide 1, venomous 1); 2A+H+S = 4 + 4 + 2 = 10 < 23 and A*H+S = 8 + 2 = 10 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "pyrenean-desman",
+    "name": "Pyrenean Desman",
+    "icon": "\ud83d\udc00",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 8,
+    "rarity": "uncommon",
+    "species": [
+      "Mammal"
+    ],
+    "archetypes": [
+      "River"
+    ],
+    "effects": {
+      "tide": true,
+      "keenSense": true
+    },
+    "flavor": "A trunked, near-blind swimmer that finds its supper by the touch of its whiskers.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m2",
+    "poolSlot": "skirmish",
+    "numericId": 9027,
+    "uuid": "aa470224-1f16-5dc9-a4ff-bd7fc45214b4",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Temperate water mammal: the near-blind trunked swimmer that hunts by touch: Tide, Keen Sense. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 2 (tide 1, keenSense 1); 2A+H+S = 4 + 8 + 2 = 14 < 30.5 and A*H+S = 16 + 2 = 18 < (N/3)^2 = 103.36. Measured 45.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "great-crested-grebe",
+    "name": "Great Crested Grebe",
+    "icon": "\ud83e\udd86",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 6,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "River",
+      "Bird"
+    ],
+    "effects": {
+      "tide": true,
+      "evasive": true
+    },
+    "flavor": "When trouble comes it does not fly. It sinks, and surfaces somewhere else.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m2",
+    "poolSlot": "pack",
+    "numericId": 9028,
+    "uuid": "5d9a0994-f772-5edf-9782-900b9f17138d",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a pack card), not live until placed from Admin's Pool cards filter. Sinks instead of flying: Tide, Evasive. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (tide 1, evasive 0); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 33.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 127.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "old-sturgeon",
+    "name": "Old Sturgeon",
+    "icon": "\ud83d\udc1f",
+    "cost": 1,
+    "wait": 3,
+    "attack": 4,
+    "health": 24,
+    "rarity": "rare",
+    "species": [
+      "Fish"
+    ],
+    "archetypes": [
+      "River",
+      "Fish"
+    ],
+    "effects": {
+      "armor": 2,
+      "tide": true
+    },
+    "flavor": "Older than the castle, armoured like a knight, and in no hurry at all.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m2",
+    "poolSlot": "skirmish",
+    "numericId": 9029,
+    "uuid": "6e310d5a-47c4-5ef9-82c2-ee67a0e41afd",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Armoured plates, ancient and slow: Armor 2, Tide, Wait 3. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 3 (armor 2, tide 1); 2A+H+S = 8 + 24 + 3 = 35 < 51.9 and A*H+S = 96 + 3 = 99 < (N/3)^2 = 299.29. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "diving-bell-spider",
+    "name": "Diving Bell Spider",
+    "icon": "\ud83d\udd77\ufe0f",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 8,
+    "rarity": "uncommon",
+    "species": [
+      "Arachnid"
+    ],
+    "archetypes": [
+      "River",
+      "Arachnid"
+    ],
+    "effects": {
+      "tide": true,
+      "ambush": 2
+    },
+    "flavor": "It lives underwater in a bubble of silk and air, and waits there for you.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m2",
+    "poolSlot": "pack",
+    "numericId": 9030,
+    "uuid": "b5051f29-9cac-5e23-a102-7cdeac5666f8",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m2 (a pack card), not live until placed from Admin's Pool cards filter. Waits in its underwater silk bell: Tide, Ambush 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, ambush 2); 2A+H+S = 8 + 8 + 3 = 19 < 34.9 and A*H+S = 32 + 3 = 35 < (N/3)^2 = 135.33. Measured 61.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "alligator-gar",
+    "name": "Alligator Gar",
+    "icon": "\ud83d\udc1f",
+    "cost": 1,
+    "wait": 2,
+    "attack": 4,
+    "health": 12,
+    "rarity": "rare",
+    "species": [
+      "Fish"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Fish"
+    ],
+    "effects": {
+      "tide": true,
+      "armor": 1,
+      "bleed": 1
+    },
+    "flavor": "Half fish, half alligator, all teeth, and a hundred million years of practice.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mw",
+    "poolSlot": "skirmish",
+    "numericId": 9031,
+    "uuid": "b74c0fbe-095a-54d6-a6f2-f604d967c2b4",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Armoured scales and a gator's teeth: Tide, Armor 1, Bleed 1. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 3 (tide 1, armor 1, bleed 1); 2A+H+S = 8 + 12 + 3 = 23 < 43.4 and A*H+S = 48 + 3 = 51 < (N/3)^2 = 209.28. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "swamp-rabbit",
+    "name": "Swamp Rabbit",
+    "icon": "\ud83d\udc07",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 3,
+    "rarity": "common",
+    "species": [
+      "Lagomorph"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Rabbit"
+    ],
+    "effects": {
+      "tide": true,
+      "evasive": true
+    },
+    "flavor": "The only rabbit that dives in to escape the hounds. It has never met a gator.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mw",
+    "poolSlot": "pack",
+    "numericId": 9032,
+    "uuid": "9931e08e-f793-508d-8124-c11e025654be",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a pack card), not live until placed from Admin's Pool cards filter. The rabbit that dives to escape: Tide, Evasive. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (tide 1, evasive 0); 2A+H+S = 4 + 3 + 1 (x1.5 half-miss) = 12 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "mosquito-cloud",
+    "name": "Mosquito Cloud",
+    "icon": "\ud83e\udd9f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 4,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Insect"
+    ],
+    "effects": {
+      "flying": true,
+      "bleed": 1
+    },
+    "flavor": "One is a nuisance. The whole cloud is a blood tax.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mw",
+    "poolSlot": "pack",
+    "numericId": 9033,
+    "uuid": "091b7cea-f53d-5caf-92c5-ad1e8082c5b3",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a pack card), not live until placed from Admin's Pool cards filter. A blood tax: Flying, Bleed 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (flying 0, bleed 1); 2A+H+S = 2 + 4 + 1 (x1.5 half-miss) = 10.5 < 23 and A*H+S = 4 + 1 (x1.5 half-miss) = 7.5 < (N/3)^2 = 58.78. Measured 51.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "fire-ant-raft",
+    "name": "Fire Ant Raft",
+    "icon": "\ud83d\udc1c",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 12,
+    "rarity": "uncommon",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Ants",
+      "Insect"
+    ],
+    "effects": {
+      "tide": true,
+      "poison": 1,
+      "swarm": true
+    },
+    "flavor": "When the flood comes they link legs and float: a living raft that stings.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mw",
+    "poolSlot": "skirmish",
+    "numericId": 9034,
+    "uuid": "8f0b809b-9c83-5599-a6bd-46803e327235",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The floating colony that stings: Tide, Poison 1, Swarm. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, poison 1, swarm 1); 2A+H+S = 6 + 12 + 3 = 21 < 34.9 and A*H+S = 36 + 3 = 39 < (N/3)^2 = 135.33. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "anhinga-spearbird",
+    "name": "Anhinga Spearbird",
+    "icon": "\ud83d\udc26\u200d\u2b1b",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 6,
+    "rarity": "uncommon",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Bird"
+    ],
+    "effects": {
+      "tide": true,
+      "pounce": 2
+    },
+    "flavor": "Swims with only its neck above water, then spears whatever swims past.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mw",
+    "poolSlot": "skirmish",
+    "numericId": 9035,
+    "uuid": "839b18f2-10b4-5728-9762-9c01a1720207",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The snakebird that swims and spears: Tide, Pounce 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, pounce 2); 2A+H+S = 8 + 6 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 45% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "roseate-spoonbill",
+    "name": "Roseate Spoonbill",
+    "icon": "\ud83e\udda9",
+    "cost": 1,
+    "wait": 1,
+    "attack": 1,
+    "health": 8,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Bird"
+    ],
+    "effects": {
+      "flying": true,
+      "sweep": 1
+    },
+    "flavor": "Sweeps its spoon side to side through the mud and eats whatever it bumps.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mw",
+    "poolSlot": "pack",
+    "numericId": 9036,
+    "uuid": "ea136c05-53e3-5035-98a3-9ffa0bfd5ab9",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mw (a pack card), not live until placed from Admin's Pool cards filter. Sweeps its spoon side to side: Flying, Cleave (Sweep) 1. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 1 (flying 0, sweep 1); 2A+H+S = 2 + 8 + 1 (x1.5 half-miss) = 16.5 < 33.9 and A*H+S = 8 + 1 (x1.5 half-miss) = 13.5 < (N/3)^2 = 127.69. Measured 39.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "booming-bittern",
+    "name": "Booming Bittern",
+    "icon": "\ud83e\udda4",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 8,
+    "rarity": "uncommon",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Bird"
+    ],
+    "effects": {
+      "invisible": 2,
+      "daunt": 1
+    },
+    "flavor": "Freezes among the reeds by day. At night it booms like a drum underwater.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m8",
+    "poolSlot": "skirmish",
+    "numericId": 9037,
+    "uuid": "537c92f8-63ce-5a98-b8b0-71faab3be884",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Hides frozen in the reeds (Invisible 2) and booms (Daunt 1). Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (invisible 2, daunt 1); 2A+H+S = 6 + 8 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 65% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "giant-water-bug",
+    "name": "Giant Water Bug",
+    "icon": "\ud83e\udeb2",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 7,
+    "rarity": "uncommon",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Insect"
+    ],
+    "effects": {
+      "tide": true,
+      "venomous": 2
+    },
+    "flavor": "The toe-biter. It waits on the bottom with its arms wide open.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m8",
+    "poolSlot": "skirmish",
+    "numericId": 9038,
+    "uuid": "c977ed9b-b3aa-59bf-8a2a-bfca08ba06cf",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The toe-biter: Tide, Venomous 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, venomous 2); 2A+H+S = 8 + 7 + 3 = 18 < 34.9 and A*H+S = 28 + 3 = 31 < (N/3)^2 = 135.33. Measured 65% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "water-scorpion",
+    "name": "Water Scorpion",
+    "icon": "\ud83e\udd82",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 6,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Insect"
+    ],
+    "effects": {
+      "tide": true,
+      "sentry": true
+    },
+    "flavor": "Breathes through its tail like a snorkel and grabs whatever swims by.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m8",
+    "poolSlot": "pack",
+    "numericId": 9039,
+    "uuid": "4fe428a5-0230-57f5-b51e-dda56518e141",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a pack card), not live until placed from Admin's Pool cards filter. Snorkel tail, grabs what swims by: Tide, Sentry. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (tide 1, sentry 1); 2A+H+S = 6 + 6 + 2 = 14 < 33.9 and A*H+S = 18 + 2 = 20 < (N/3)^2 = 127.69. Measured 36.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "greater-siren",
+    "name": "Greater Siren",
+    "icon": "\ud83e\udd8e",
+    "cost": 1,
+    "wait": 2,
+    "attack": 3,
+    "health": 18,
+    "rarity": "rare",
+    "species": [
+      "Amphibian"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Newt"
+    ],
+    "effects": {
+      "tide": true,
+      "regen": 3
+    },
+    "flavor": "When the swamp dries it seals itself in mud and waits, for years if it must.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m8",
+    "poolSlot": "skirmish",
+    "numericId": 9040,
+    "uuid": "e431316b-1965-5145-a8c1-2d2f207c6871",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The eel-like salamander that waits out droughts in mud: Tide, Regen 3. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 4 (tide 1, regen 3); 2A+H+S = 6 + 18 + 4 = 28 < 43.4 and A*H+S = 54 + 4 = 58 < (N/3)^2 = 209.28. Measured 63.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "marsh-harrier",
+    "name": "Marsh Harrier",
+    "icon": "\ud83e\udd85",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 6,
+    "rarity": "uncommon",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Bird"
+    ],
+    "effects": {
+      "flying": true,
+      "predator": 1
+    },
+    "flavor": "Quarters low over the reeds, wings in a V, and drops on anything that squeaks.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m8",
+    "poolSlot": "pack",
+    "numericId": 9041,
+    "uuid": "a57b8d0b-af9e-54d3-bce1-83c70f437164",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a pack card), not live until placed from Admin's Pool cards filter. Quarters low and drops on the small: Flying, Predator 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (flying 0, predator 1); 2A+H+S = 6 + 6 + 1 (x1.5 half-miss) = 19.5 < 34.9 and A*H+S = 18 + 1 (x1.5 half-miss) = 28.5 < (N/3)^2 = 135.33. Measured 61.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "raft-spider",
+    "name": "Raft Spider",
+    "icon": "\ud83d\udd77\ufe0f",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 8,
+    "rarity": "common",
+    "species": [
+      "Arachnid"
+    ],
+    "archetypes": [
+      "Swamp",
+      "Arachnid"
+    ],
+    "effects": {
+      "tide": true,
+      "darksight": true
+    },
+    "flavor": "Rests its feet on the water and feels for ripples in the dark.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m8",
+    "poolSlot": "pack",
+    "numericId": 9042,
+    "uuid": "f388fb86-7115-52b5-8d04-60b27cd8fd07",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m8 (a pack card), not live until placed from Admin's Pool cards filter. Feels for ripples in the dark: Tide, Darksight. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (tide 1, darksight 1); 2A+H+S = 8 + 8 + 2 = 18 < 33.9 and A*H+S = 32 + 2 = 34 < (N/3)^2 = 127.69. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "leopard-slug",
+    "name": "Leopard Slug",
+    "icon": "\ud83d\udc0c",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 12,
+    "rarity": "common",
+    "species": [
+      "Mollusc"
+    ],
+    "archetypes": [
+      "Forest",
+      "Snail"
+    ],
+    "effects": {
+      "regen": 1,
+      "nocturnal": true
+    },
+    "flavor": "Spotted like a big cat, slow as a slug, and very fond of mushrooms.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mu",
+    "poolSlot": "pack",
+    "numericId": 9043,
+    "uuid": "199a0bd9-231a-5b34-9fb8-713c9a584071",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. Slow, spotted, out at night: Regen 1, Nocturnal. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (regen 1, nocturnal 1); 2A+H+S = 2 + 12 + 2 = 16 < 29.5 and A*H+S = 12 + 2 = 14 < (N/3)^2 = 96.69. Measured 39.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "wolf-spider-mother",
+    "name": "Wolf Spider Mother",
+    "icon": "\ud83d\udd77\ufe0f",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 7,
+    "rarity": "rare",
+    "species": [
+      "Arachnid"
+    ],
+    "archetypes": [
+      "Forest",
+      "Arachnid"
+    ],
+    "effects": {
+      "brood": 2,
+      "pounce": 2
+    },
+    "flavor": "She carries her spiderlings on her back, and still runs you down.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mu",
+    "poolSlot": "skirmish",
+    "numericId": 9044,
+    "uuid": "a52ee073-f35f-5fa7-9f2f-08ab37502ab5",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Carries her spiderlings and runs prey down: Brood 2, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (brood 2, pounce 2); 2A+H+S = 6 + 7 + 4 = 17 < 35.9 and A*H+S = 21 + 4 = 25 < (N/3)^2 = 143.2. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "truffle-piglet",
+    "name": "Truffle Piglet",
+    "icon": "\ud83d\udc17",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 8,
+    "rarity": "uncommon",
+    "species": [
+      "Suid"
+    ],
+    "archetypes": [
+      "Forest",
+      "Boar"
+    ],
+    "effects": {
+      "onReadyGold": 1
+    },
+    "flavor": "Nose to the leaf litter, it finds the treasure you were standing on.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mu",
+    "poolSlot": "skirmish",
+    "numericId": 9045,
+    "uuid": "d7cb2b97-f99c-5e19-a564-3533b801a651",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Finds treasure: On Ready, +1 Lumber. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (onReadyGold 1); 2A+H+S = 4 + 8 + 1 = 13 < 34.9 and A*H+S = 16 + 1 = 17 < (N/3)^2 = 135.33. Measured 53.3% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "fungus-gnat-cloud",
+    "name": "Fungus Gnat Cloud",
+    "icon": "\ud83e\udd9f",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 3,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Insect",
+      "Forest"
+    ],
+    "effects": {
+      "flying": true,
+      "swarm": true
+    },
+    "flavor": "Born in the gills, they rise in a haze wherever a mushroom is cut.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mu",
+    "poolSlot": "pack",
+    "numericId": 9046,
+    "uuid": "9510ecc3-8621-509f-b0da-78830fa3899b",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. A haze from the gills: Flying, Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (flying 0, swarm 1); 2A+H+S = 2 + 3 + 1 (x1.5 half-miss) = 9 < 23 and A*H+S = 3 + 1 (x1.5 half-miss) = 6 < (N/3)^2 = 58.78. Measured 45.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "springtail-hopper",
+    "name": "Springtail Hopper",
+    "icon": "\ud83e\udd97",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 4,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Insect"
+    ],
+    "effects": {
+      "evasive": true,
+      "quick": true
+    },
+    "flavor": "Smaller than a seed, with a spring folded under its belly. Blink and it is gone.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mu",
+    "poolSlot": "pack",
+    "numericId": 9047,
+    "uuid": "ea764878-1481-5454-9caa-8addf9b0887c",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. The spring-loaded speck: Evasive, Quick. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (evasive 0, quick 2); 2A+H+S = 2 + 4 + 2 (x1.5 half-miss) = 12 < 23 and A*H+S = 4 + 2 (x1.5 half-miss) = 9 < (N/3)^2 = 58.78. Measured 40.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "red-backed-salamander",
+    "name": "Red-backed Salamander",
+    "icon": "\ud83e\udd8e",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 6,
+    "rarity": "common",
+    "species": [
+      "Amphibian"
+    ],
+    "archetypes": [
+      "Forest",
+      "Newt"
+    ],
+    "effects": {
+      "regen": 2
+    },
+    "flavor": "Breathes through its damp skin and lives under the same log for years.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mu",
+    "poolSlot": "pack",
+    "numericId": 9048,
+    "uuid": "6428925c-9ad4-5bd1-bd92-138880cbe5c6",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mu (a pack card), not live until placed from Admin's Pool cards filter. The lungless log-dweller: Regen 2. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (regen 2); 2A+H+S = 2 + 6 + 2 = 10 < 29.5 and A*H+S = 6 + 2 = 8 < (N/3)^2 = 96.69. Measured 40% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "cave-cricket",
+    "name": "Cave Cricket",
+    "icon": "\ud83e\udd97",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 3,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Cave",
+      "Insect"
+    ],
+    "effects": {
+      "darksight": true,
+      "evasive": true
+    },
+    "flavor": "Legs twice as long as its body, and every one of them listening.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m4",
+    "poolSlot": "pack",
+    "numericId": 9049,
+    "uuid": "29838ad0-ccfb-55d4-a9b9-f751cdd28cd4",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. All legs and listening: Darksight, Evasive. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (darksight 1, evasive 0); 2A+H+S = 4 + 3 + 1 (x1.5 half-miss) = 12 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "ghost-crayfish",
+    "name": "Ghost Crayfish",
+    "icon": "\ud83e\udd9e",
+    "cost": 1,
+    "wait": 2,
+    "attack": 3,
+    "health": 18,
+    "rarity": "uncommon",
+    "species": [
+      "Crustacean"
+    ],
+    "archetypes": [
+      "Cave"
+    ],
+    "effects": {
+      "darksight": true,
+      "armor": 1,
+      "regen": 1
+    },
+    "flavor": "Pale as candle wax, blind as a stone, and it lives a hundred years in the dark.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m4",
+    "poolSlot": "skirmish",
+    "numericId": 9050,
+    "uuid": "c841ff70-5564-5830-bbb2-63bfb7dde6bf",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The pale, blind, century-old cave crayfish: Darksight, Armor 1, Regen 1. Budget v3 at Level 1, Uncommon, Wait 2, Lumber 1: N = 20 + 2 + 2 + 12 + 2 + 4 + 0.4 = 42.4; S = 3 (darksight 1, armor 1, regen 1); 2A+H+S = 6 + 18 + 3 = 27 < 42.4 and A*H+S = 54 + 3 = 57 < (N/3)^2 = 199.75. Measured 63.3% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "cave-swiftlet",
+    "name": "Cave Swiftlet",
+    "icon": "\ud83d\udc26",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 4,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Cave",
+      "Bird"
+    ],
+    "effects": {
+      "flying": true,
+      "sonar": true
+    },
+    "flavor": "Clicks its way through the pitch dark, and builds its nest from its own spit.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m4",
+    "poolSlot": "pack",
+    "numericId": 9051,
+    "uuid": "c353a013-2f8a-5e7e-971c-36259a4c1142",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. Echolocates by clicks: Flying, Sonar. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 1 (flying 0, sonar 1); 2A+H+S = 4 + 4 + 1 (x1.5 half-miss) = 13.5 < 29.5 and A*H+S = 8 + 1 (x1.5 half-miss) = 13.5 < (N/3)^2 = 96.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "cave-pseudoscorpion",
+    "name": "Cave Pseudoscorpion",
+    "icon": "\ud83e\udd82",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 5,
+    "rarity": "common",
+    "species": [
+      "Arachnid"
+    ],
+    "archetypes": [
+      "Cave",
+      "Arachnid"
+    ],
+    "effects": {
+      "darksight": true,
+      "poison": 1
+    },
+    "flavor": "A scorpion with no tail and no sting, just two venom-tipped claws the size of grains.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m4",
+    "poolSlot": "pack",
+    "numericId": 9052,
+    "uuid": "99d53280-cd96-5fed-831f-00dddd1fa601",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. Venom-tipped claws: Darksight, Poison 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (darksight 1, poison 1); 2A+H+S = 4 + 5 + 2 = 11 < 23 and A*H+S = 10 + 2 = 12 < (N/3)^2 = 58.78. Measured 57.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "whip-spider",
+    "name": "Whip Spider",
+    "icon": "\ud83d\udd77\ufe0f",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 9,
+    "rarity": "uncommon",
+    "species": [
+      "Arachnid"
+    ],
+    "archetypes": [
+      "Cave",
+      "Arachnid"
+    ],
+    "effects": {
+      "sonar": true,
+      "bleed": 1
+    },
+    "flavor": "It feels the dark with two whip-long legs, then strikes with the spiny pair.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m4",
+    "poolSlot": "skirmish",
+    "numericId": 9053,
+    "uuid": "24e5dff1-7d95-573f-8236-13e8c6b78fe7",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Feels the dark with its whip legs, strikes with spiny arms: Sonar, Bleed 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (sonar 1, bleed 1); 2A+H+S = 8 + 9 + 2 = 19 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 65.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "giant-cave-huntsman",
+    "name": "Giant Cave Huntsman",
+    "icon": "\ud83d\udd77\ufe0f",
+    "cost": 1,
+    "wait": 2,
+    "attack": 6,
+    "health": 12,
+    "rarity": "rare",
+    "species": [
+      "Arachnid"
+    ],
+    "archetypes": [
+      "Cave",
+      "Arachnid"
+    ],
+    "effects": {
+      "poison": 2,
+      "pounce": 3,
+      "darksight": true,
+      "daunt": 1
+    },
+    "flavor": "Wider than your face, faster than your scream, and it has already seen you.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m4",
+    "poolSlot": "skirmish",
+    "numericId": 9054,
+    "uuid": "67b8b71d-6ba1-5705-b1f3-e5ee5cada2ef",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner request (23:32: \"We don't have a really scary spider. Not trapdoor or cute.\"): a huge hairy hunting spider, part Goliath birdeater, part huntsman, part funnel-web. It sees in the dark (Darksight), rushes the first thing it sees (Pounce 3), its bite is venom (Poison 2) and it is terrifying (Daunt 1: its hits lower the target's Attack). Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 6 (poison 2, pounce 2, darksight 1, daunt 1); 2A+H+S = 12 + 12 + 6 = 30 < 43.4 and A*H+S = 72 + 6 = 78 < (N/3)^2 = 209.28. Measured 70.8% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%). Art: NightCafe prompt: \"A huge hairy hunting spider the size of a dinner plate, crouched on wet black cave rock, long thick banded legs, dense bristling brown hair, eight glossy black eyes catching a faint light, deep limestone cave background with dripping stalactites and a thin blue glow from a crack above, dark eerie atmosphere, detailed pixel art, full background\"."
+  },
+  {
+    "id": "guano-beetle",
+    "name": "Guano Beetle",
+    "icon": "\ud83e\udeb2",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 9,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Cave",
+      "Insect",
+      "Beetle"
+    ],
+    "effects": {
+      "darksight": true,
+      "carrion": 2
+    },
+    "flavor": "Under every bat roost there is a heap, and under every heap, a thousand of these.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m4",
+    "poolSlot": "pack",
+    "numericId": 9055,
+    "uuid": "0517830c-06a5-5d83-8552-6de7ee8a38e1",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m4 (a pack card), not live until placed from Admin's Pool cards filter. Lives on what falls from the roost: Darksight, Carrion 2. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 3 (darksight 1, carrion 2); 2A+H+S = 2 + 9 + 3 = 14 < 29.5 and A*H+S = 9 + 3 = 12 < (N/3)^2 = 96.69. Measured 40% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "banded-sea-krait",
+    "name": "Banded Sea Krait",
+    "icon": "\ud83d\udc0d",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 8,
+    "rarity": "uncommon",
+    "species": [
+      "Reptile"
+    ],
+    "archetypes": [
+      "Mangrove",
+      "Snake",
+      "Ocean"
+    ],
+    "effects": {
+      "tide": true,
+      "venomous": 2,
+      "nocturnal": true
+    },
+    "flavor": "Hunts eels in the roots by night, then crawls ashore to lay its eggs.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mk",
+    "poolSlot": "skirmish",
+    "numericId": 9056,
+    "uuid": "532a1ab4-8ce0-5f0a-a4d6-835502b2c585",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner's example (sea snakes): hunts eels by night in the roots: Tide (the Swimmer), Venomous 2, Nocturnal. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 4 (tide 1, venomous 2, nocturnal 1); 2A+H+S = 6 + 8 + 4 = 18 < 34.9 and A*H+S = 24 + 4 = 28 < (N/3)^2 = 135.33. Measured 49.2% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "fishing-cat",
+    "name": "Fishing Cat",
+    "icon": "\ud83d\udc08",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 10,
+    "rarity": "rare",
+    "species": [
+      "Felid"
+    ],
+    "archetypes": [
+      "Mangrove",
+      "Cat"
+    ],
+    "effects": {
+      "tide": true,
+      "pounce": 2
+    },
+    "flavor": "A cat that loves the water: it taps the surface like a lure, then dives.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mk",
+    "poolSlot": "skirmish",
+    "numericId": 9057,
+    "uuid": "fdf57497-be6e-57f5-b072-9b8d8ae3dedd",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The cat that dives for fish: Tide, Pounce 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 3 (tide 1, pounce 2); 2A+H+S = 6 + 10 + 3 = 19 < 35.9 and A*H+S = 30 + 3 = 33 < (N/3)^2 = 143.2. Measured 60.8% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "proboscis-monkey",
+    "name": "Proboscis Monkey",
+    "icon": "\ud83d\udc12",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 12,
+    "rarity": "uncommon",
+    "species": [
+      "Primate"
+    ],
+    "archetypes": [
+      "Mangrove",
+      "Ape"
+    ],
+    "effects": {
+      "tide": true,
+      "taunt": true
+    },
+    "flavor": "That nose honks across the whole mangrove. Everyone looks. That is the point.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mk",
+    "poolSlot": "pack",
+    "numericId": 9058,
+    "uuid": "b210c0e4-9681-5d81-ad2b-5b2470a7f127",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a pack card), not live until placed from Admin's Pool cards filter. Everyone looks at that nose: Tide, Taunt. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (tide 1, taunt 1); 2A+H+S = 8 + 12 + 2 = 22 < 34.9 and A*H+S = 48 + 2 = 50 < (N/3)^2 = 135.33. Measured 49.2% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "horseshoe-crab",
+    "name": "Horseshoe Crab",
+    "icon": "\ud83e\udd80",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 15,
+    "rarity": "common",
+    "species": [
+      "Arachnid"
+    ],
+    "archetypes": [
+      "Mangrove",
+      "Ocean"
+    ],
+    "effects": {
+      "armor": 2,
+      "tide": true
+    },
+    "flavor": "Not a crab at all, but older than the dinosaurs, with blue blood to prove it.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mk",
+    "poolSlot": "pack",
+    "numericId": 9059,
+    "uuid": "8cbf3a02-0204-541c-bd50-3d878059e795",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a pack card), not live until placed from Admin's Pool cards filter. Not a crab: a living fossil, closer kin to spiders: Armor 2, Tide. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 3 (armor 2, tide 1); 2A+H+S = 4 + 15 + 3 = 22 < 33.9 and A*H+S = 30 + 3 = 33 < (N/3)^2 = 127.69. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "sea-hare",
+    "name": "Sea Hare",
+    "icon": "\ud83d\udc0c",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 8,
+    "rarity": "common",
+    "species": [
+      "Mollusc"
+    ],
+    "archetypes": [
+      "Mangrove",
+      "Ocean"
+    ],
+    "effects": {
+      "tide": true,
+      "smokeBomb": true
+    },
+    "flavor": "A sea slug with rabbit ears that hides behind a cloud of purple ink.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mk",
+    "poolSlot": "pack",
+    "numericId": 9060,
+    "uuid": "cd218f36-543d-5f4a-9d19-24cba3c1ea83",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a pack card), not live until placed from Admin's Pool cards filter. Hides in a cloud of ink: Tide, Smoke Bomb. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (tide 1, smokeBomb 1); 2A+H+S = 4 + 8 + 2 = 14 < 29.5 and A*H+S = 16 + 2 = 18 < (N/3)^2 = 96.69. Measured 60% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "mangrove-manatee",
+    "name": "Mangrove Manatee",
+    "icon": "\ud83e\uddad",
+    "cost": 1,
+    "wait": 3,
+    "attack": 3,
+    "health": 28,
+    "rarity": "rare",
+    "species": [
+      "Mammal"
+    ],
+    "archetypes": [
+      "Mangrove",
+      "Ocean"
+    ],
+    "effects": {
+      "tide": true,
+      "regen": 2,
+      "guardian": true
+    },
+    "flavor": "Half a tonne of seagrass and patience, drifting through the roots at walking pace.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mk",
+    "poolSlot": "skirmish",
+    "numericId": 9061,
+    "uuid": "cebcb798-2d71-5fed-bbac-4d68354940d3",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mk (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Half a tonne of patience (no manatee emoji: the seal stands in): Tide, Regen 2, Guardian. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 4 (tide 1, regen 2, guardian 1); 2A+H+S = 6 + 28 + 4 = 38 < 51.9 and A*H+S = 84 + 4 = 88 < (N/3)^2 = 299.29. Measured 74.2% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "yellow-bellied-sea-snake",
+    "name": "Yellow-bellied Sea Snake",
+    "icon": "\ud83d\udc0d",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 8,
+    "rarity": "rare",
+    "species": [
+      "Reptile"
+    ],
+    "archetypes": [
+      "Ocean",
+      "Snake",
+      "Coral Reef"
+    ],
+    "effects": {
+      "tide": true,
+      "poison": 3
+    },
+    "flavor": "It drifts with the slicks in the open ocean and never comes ashore at all.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m7",
+    "poolSlot": "skirmish",
+    "numericId": 9062,
+    "uuid": "81765d46-0edf-525c-8253-a43cf8bc7300",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Owner's example (sea snakes): the open-ocean drifter: Tide (the Swimmer), Poison 3. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 4 (tide 1, poison 3); 2A+H+S = 8 + 8 + 4 = 20 < 35.9 and A*H+S = 32 + 4 = 36 < (N/3)^2 = 143.2. Measured 68.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "crown-of-thorns-star",
+    "name": "Crown-of-thorns Star",
+    "icon": "\u2b50",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 10,
+    "rarity": "uncommon",
+    "species": [
+      "Echinoderm"
+    ],
+    "archetypes": [
+      "Coral Reef"
+    ],
+    "effects": {
+      "thorns": 2,
+      "poison": 1,
+      "tide": true
+    },
+    "flavor": "It eats the reef from the top down, and every one of its spines is venomous.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m7",
+    "poolSlot": "skirmish",
+    "numericId": 9063,
+    "uuid": "3266bc23-7a1f-5c15-af18-f70d84d418fd",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The venom-spined reef eater: Thorns 2, Poison 1, Tide. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 4 (thorns 2, poison 1, tide 1); 2A+H+S = 4 + 10 + 4 = 18 < 34.9 and A*H+S = 20 + 4 = 24 < (N/3)^2 = 135.33. Measured 60.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "parrotfish",
+    "name": "Parrotfish",
+    "icon": "\ud83d\udc20",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 7,
+    "rarity": "common",
+    "species": [
+      "Fish"
+    ],
+    "archetypes": [
+      "Coral Reef",
+      "Fish"
+    ],
+    "effects": {
+      "tide": true,
+      "pierce": 1
+    },
+    "flavor": "It bites the coral to bits, and every white beach began in its gut.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m7",
+    "poolSlot": "pack",
+    "numericId": 9064,
+    "uuid": "394de29c-e1d8-5afc-a497-35d503d32da4",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a pack card), not live until placed from Admin's Pool cards filter. Bites coral to sand: Tide, Pierce 1. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (tide 1, pierce 1); 2A+H+S = 4 + 7 + 2 = 13 < 29.5 and A*H+S = 14 + 2 = 16 < (N/3)^2 = 96.69. Measured 41.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "lionfish",
+    "name": "Lionfish",
+    "icon": "\ud83d\udc21",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 8,
+    "rarity": "uncommon",
+    "species": [
+      "Fish"
+    ],
+    "archetypes": [
+      "Coral Reef",
+      "Fish"
+    ],
+    "effects": {
+      "tide": true,
+      "thorns": 2
+    },
+    "flavor": "Its fins spread like a fan of feathers. Every feather is a venomous spine.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m7",
+    "poolSlot": "pack",
+    "numericId": 9065,
+    "uuid": "81af6ec4-a52f-5795-b76b-2e9d13d598e4",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a pack card), not live until placed from Admin's Pool cards filter. Every fin a venomous spine: Tide, Thorns 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (tide 1, thorns 2); 2A+H+S = 6 + 8 + 3 = 17 < 34.9 and A*H+S = 24 + 3 = 27 < (N/3)^2 = 135.33. Measured 66.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "giant-clam",
+    "name": "Giant Clam",
+    "icon": "\ud83e\uddaa",
+    "cost": 1,
+    "wait": 2,
+    "attack": 2,
+    "health": 23,
+    "rarity": "common",
+    "species": [
+      "Mollusc"
+    ],
+    "archetypes": [
+      "Coral Reef"
+    ],
+    "effects": {
+      "shell": 2,
+      "regen": 1,
+      "tide": true
+    },
+    "flavor": "It farms algae in its own lips, and closes like a door.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m7",
+    "poolSlot": "pack",
+    "numericId": 9066,
+    "uuid": "6538014d-1ca4-50d2-86a5-228bb7a4e83c",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a pack card), not live until placed from Admin's Pool cards filter. Closes like a door and farms algae: Shell 2, Regen 1, Tide. Budget v3 at Level 1, Common, Wait 2, Lumber 1: N = 20 + 2 + 1 + 12 + 2 + 4 + 0.4 = 41.4; S = 4 (shell 2, regen 1, tide 1); 2A+H+S = 4 + 23 + 4 = 31 < 41.4 and A*H+S = 46 + 4 = 50 < (N/3)^2 = 190.44. Measured 40.8% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "great-barracuda",
+    "name": "Great Barracuda",
+    "icon": "\ud83d\udc1f",
+    "cost": 1,
+    "wait": 1,
+    "attack": 5,
+    "health": 5,
+    "rarity": "rare",
+    "species": [
+      "Fish"
+    ],
+    "archetypes": [
+      "Ocean",
+      "Fish"
+    ],
+    "effects": {
+      "tide": true,
+      "quick": true
+    },
+    "flavor": "It hangs in the current like a silver blade. Then it is not there any more.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m7",
+    "poolSlot": "skirmish",
+    "numericId": 9067,
+    "uuid": "4ce5401f-f2df-509d-b519-f6d9d199ce18",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The silver blade: Tide, Quick. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 3 (tide 1, quick 2); 2A+H+S = 10 + 5 + 3 = 18 < 35.9 and A*H+S = 25 + 3 = 28 < (N/3)^2 = 143.2. Measured 57.5% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "whale-shark",
+    "name": "Whale Shark",
+    "icon": "\ud83e\udd88",
+    "cost": 1,
+    "wait": 3,
+    "attack": 3,
+    "health": 28,
+    "rarity": "rare",
+    "species": [
+      "Fish"
+    ],
+    "archetypes": [
+      "Ocean",
+      "Fish"
+    ],
+    "effects": {
+      "tide": true,
+      "armor": 1,
+      "scare": 1
+    },
+    "flavor": "The biggest fish in the sea lives on the smallest things in it.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m7",
+    "poolSlot": "skirmish",
+    "numericId": 9068,
+    "uuid": "29e640ca-7597-5e27-be5a-e4ed42f147ca",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m7 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The biggest fish: Tide, Armor 1, Scare 1. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 3 (tide 1, armor 1, scare 1); 2A+H+S = 6 + 28 + 3 = 37 < 51.9 and A*H+S = 84 + 3 = 87 < (N/3)^2 = 299.29. Measured 63.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "chamois-leaper",
+    "name": "Chamois Leaper",
+    "icon": "\ud83d\udc10",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 9,
+    "rarity": "uncommon",
+    "species": [
+      "Bovine"
+    ],
+    "archetypes": [
+      "Mountain"
+    ],
+    "effects": {
+      "mountainClimber": true,
+      "pounce": 2
+    },
+    "flavor": "Leaps from ledge to ledge where even the ibex think twice.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m10",
+    "poolSlot": "skirmish",
+    "numericId": 9069,
+    "uuid": "12f470f5-0360-5d82-8ede-5a5c7686210d",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Ledge to ledge: Mountain Climber, Pounce 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 3 (mountainClimber 1, pounce 2); 2A+H+S = 6 + 9 + 3 = 18 < 34.9 and A*H+S = 27 + 3 = 30 < (N/3)^2 = 135.33. Measured 47.5% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "alpine-swift",
+    "name": "Alpine Swift",
+    "icon": "\ud83d\udc26",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 3,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Mountain",
+      "Bird"
+    ],
+    "effects": {
+      "flying": true,
+      "quick": true
+    },
+    "flavor": "It eats, drinks and sleeps on the wing, and may not land for half a year.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m10",
+    "poolSlot": "pack",
+    "numericId": 9070,
+    "uuid": "06fdf129-2796-552a-950a-55e19aad0963",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a pack card), not live until placed from Admin's Pool cards filter. Lives on the wing: Flying, Quick. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (flying 0, quick 2); 2A+H+S = 4 + 3 + 2 (x1.5 half-miss) = 13.5 < 29.5 and A*H+S = 6 + 2 (x1.5 half-miss) = 12 < (N/3)^2 = 96.69. Measured 44.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "wallcreeper",
+    "name": "Wallcreeper",
+    "icon": "\ud83d\udc26",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 6,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Mountain",
+      "Bird"
+    ],
+    "effects": {
+      "mountainClimber": true,
+      "invisible": 1
+    },
+    "flavor": "A grey mouse of a bird on the cliff face, until it opens its crimson wings.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m10",
+    "poolSlot": "pack",
+    "numericId": 9071,
+    "uuid": "ce2612c4-9ee7-5b48-b32c-7643a1188668",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a pack card), not live until placed from Admin's Pool cards filter. A grey speck on the rock: Mountain Climber, Invisible 1. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (mountainClimber 1, invisible 1); 2A+H+S = 4 + 6 + 2 = 12 < 29.5 and A*H+S = 12 + 2 = 14 < (N/3)^2 = 96.69. Measured 38.3% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "alpine-salamander",
+    "name": "Alpine Salamander",
+    "icon": "\ud83e\udd8e",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 12,
+    "rarity": "common",
+    "species": [
+      "Amphibian"
+    ],
+    "archetypes": [
+      "Mountain",
+      "Newt"
+    ],
+    "effects": {
+      "regen": 1,
+      "scare": 1
+    },
+    "flavor": "Jet black, born live after two years inside its mother, and very hard to impress.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m10",
+    "poolSlot": "pack",
+    "numericId": 9072,
+    "uuid": "a5f7de9f-72d7-5dcd-871e-69b9b2c6b434",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a pack card), not live until placed from Admin's Pool cards filter. Black and hard to impress: Regen 1, Scare 1. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (regen 1, scare 1); 2A+H+S = 4 + 12 + 2 = 18 < 33.9 and A*H+S = 24 + 2 = 26 < (N/3)^2 = 127.69. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "apollo-butterfly",
+    "name": "Apollo Butterfly",
+    "icon": "\ud83e\udd8b",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 6,
+    "rarity": "uncommon",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Mountain",
+      "Insect"
+    ],
+    "effects": {
+      "flying": true,
+      "thorns": 1
+    },
+    "flavor": "Red eyespots on white wings: a warning the thin mountain air carries a long way.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m10",
+    "poolSlot": "skirmish",
+    "numericId": 9073,
+    "uuid": "89ee6b84-6bd5-5b50-90e1-75447b01c076",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Warning eyespots, bad to eat: Flying, Thorns 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 1 (flying 0, thorns 1); 2A+H+S = 2 + 6 + 1 (x1.5 half-miss) = 13.5 < 30.5 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 103.36. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "mountain-hare",
+    "name": "Mountain Hare",
+    "icon": "\ud83d\udc07",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 3,
+    "rarity": "common",
+    "species": [
+      "Lagomorph"
+    ],
+    "archetypes": [
+      "Mountain",
+      "Rabbit",
+      "Frost"
+    ],
+    "effects": {
+      "evasive": true,
+      "frostbite": 1
+    },
+    "flavor": "Brown in summer, white in winter, and always one leap ahead of the eagle.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m10",
+    "poolSlot": "skirmish",
+    "numericId": 9074,
+    "uuid": "23eea555-4e5c-5bb4-a04b-ab82935eb636",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m10 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Turns white for winter: Evasive, Frostbite 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 1 (evasive 0, frostbite 1); 2A+H+S = 4 + 3 + 1 (x1.5 half-miss) = 12 < 23 and A*H+S = 6 + 1 (x1.5 half-miss) = 10.5 < (N/3)^2 = 58.78. Measured 59.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "thorn-shrike",
+    "name": "Thorn Shrike",
+    "icon": "\ud83d\udc26",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 5,
+    "rarity": "rare",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Bird",
+      "Field"
+    ],
+    "effects": {
+      "flying": true,
+      "bleed": 2
+    },
+    "flavor": "The butcher bird: it keeps a larder of beetles and mice, hung up on the thorns.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mh",
+    "poolSlot": "skirmish",
+    "numericId": 9075,
+    "uuid": "ce8bf995-7ba5-550e-a5d4-9b6fa7d29a50",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The butcher bird that impales its prey on thorns: Flying, Bleed 2. Budget v3 at Level 1, Rare, Wait 1, Lumber 1: N = 20 + 2 + 3 + 6 + 0.5 + 4 + 0.4 = 35.9; S = 2 (flying 0, bleed 2); 2A+H+S = 8 + 5 + 2 (x1.5 half-miss) = 22.5 < 35.9 and A*H+S = 20 + 2 (x1.5 half-miss) = 33 < (N/3)^2 = 143.2. Measured 75% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "hedge-weasel",
+    "name": "Hedge Weasel",
+    "icon": "\ud83e\udda1",
+    "cost": 0,
+    "wait": 1,
+    "attack": 3,
+    "health": 5,
+    "rarity": "uncommon",
+    "species": [
+      "Mustelid"
+    ],
+    "archetypes": [
+      "Field"
+    ],
+    "effects": {
+      "predator": 2
+    },
+    "flavor": "Thin enough to follow a mouse down its own hole, and it does.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mh",
+    "poolSlot": "skirmish",
+    "numericId": 9076,
+    "uuid": "fcdee603-139d-5796-b8ba-e04408c282c4",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Follows the mouse into its hole: Predator 2. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 2 (predator 2); 2A+H+S = 6 + 5 + 2 = 13 < 30.5 and A*H+S = 15 + 2 = 17 < (N/3)^2 = 103.36. Measured 46.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "hawthorn-shieldbug",
+    "name": "Hawthorn Shieldbug",
+    "icon": "\ud83e\udeb2",
+    "cost": 1,
+    "wait": 1,
+    "attack": 2,
+    "health": 12,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Insect",
+      "Field"
+    ],
+    "effects": {
+      "armor": 1,
+      "daunt": 1
+    },
+    "flavor": "A green shield with red trim, and a smell that clears the hedge.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mh",
+    "poolSlot": "pack",
+    "numericId": 9077,
+    "uuid": "95cc160e-3e65-5d81-b728-05c8b5f919ad",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. A green shield and a stink: Armor 1, Daunt 1. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 2 (armor 1, daunt 1); 2A+H+S = 4 + 12 + 2 = 18 < 33.9 and A*H+S = 24 + 2 = 26 < (N/3)^2 = 127.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "muntjac-barker",
+    "name": "Muntjac Barker",
+    "icon": "\ud83e\udd8c",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 8,
+    "rarity": "uncommon",
+    "species": [
+      "Cervid"
+    ],
+    "archetypes": [
+      "Deer",
+      "Field"
+    ],
+    "effects": {
+      "sentry": true
+    },
+    "flavor": "A deer no bigger than a dog, and it barks like one at anything in the hedge.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mh",
+    "poolSlot": "pack",
+    "numericId": 9078,
+    "uuid": "71c3303c-3059-5231-8c10-be8611b30bb9",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. The barking deer: Sentry. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 1 (sentry 1); 2A+H+S = 6 + 8 + 1 = 15 < 34.9 and A*H+S = 24 + 1 = 25 < (N/3)^2 = 135.33. Measured 50% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "anvil-thrush",
+    "name": "Anvil Thrush",
+    "icon": "\ud83d\udc26",
+    "cost": 0,
+    "wait": 1,
+    "attack": 2,
+    "health": 4,
+    "rarity": "common",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Bird",
+      "Field"
+    ],
+    "effects": {
+      "flying": true,
+      "pierce": 2
+    },
+    "flavor": "It sings the hedge awake each dawn, then smashes snails on its favourite stone.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mh",
+    "poolSlot": "pack",
+    "numericId": 9079,
+    "uuid": "f493ef8f-68c2-50eb-99cb-9b719cdd6ff4",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. Smashes snail shells on its stone: Flying, Pierce 2. Budget v3 at Level 1, Common, Wait 1, Lumber 0: N = 20 + 2 + 1 + 6 + 0.5 + 0 + 0 = 29.5; S = 2 (flying 0, pierce 2); 2A+H+S = 4 + 4 + 2 (x1.5 half-miss) = 15 < 29.5 and A*H+S = 8 + 2 (x1.5 half-miss) = 15 < (N/3)^2 = 96.69. Measured 50% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "garden-tiger-moth",
+    "name": "Garden Tiger Moth",
+    "icon": "\ud83e\udd8b",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 4,
+    "rarity": "common",
+    "species": [
+      "Insect"
+    ],
+    "archetypes": [
+      "Insect"
+    ],
+    "effects": {
+      "flying": true,
+      "nocturnal": true,
+      "thorns": 1
+    },
+    "flavor": "Its woolly-bear caterpillar is all bristles, and the moth tastes even worse.",
+    "dmgType": "physical",
+    "resist": [],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mh",
+    "poolSlot": "pack",
+    "numericId": 9080,
+    "uuid": "6b7b56c3-84f3-52be-8b69-f8412e6b1337",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mh (a pack card), not live until placed from Admin's Pool cards filter. The woolly bear's bristles and the moth's bad taste: Flying, Nocturnal, Thorns 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (flying 0, nocturnal 1, thorns 1); 2A+H+S = 2 + 4 + 2 (x1.5 half-miss) = 12 < 23 and A*H+S = 4 + 2 (x1.5 half-miss) = 9 < (N/3)^2 = 58.78. Measured 47.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "polar-bear",
+    "name": "Polar Bear",
+    "icon": "\ud83d\udc3b\u200d\u2744\ufe0f",
+    "cost": 1,
+    "wait": 2,
+    "attack": 5,
+    "health": 10,
+    "rarity": "veryrare",
+    "species": [
+      "Ursid"
+    ],
+    "archetypes": [
+      "Tundra",
+      "Frost",
+      "Bear"
+    ],
+    "effects": {
+      "ambush": 4,
+      "tide": true
+    },
+    "flavor": "It waits at the breathing hole for hours. The seal only has to come up once.",
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m6",
+    "poolSlot": "skirmish",
+    "numericId": 9081,
+    "uuid": "0dd46dc9-2045-5e20-89fe-bed6908e6682",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Waits at the seal's breathing hole: Ambush 4 (hits whatever enters the slot facing it), Tide. Budget v3 at Level 1, Very Rare, Wait 2, Lumber 1: N = 20 + 2 + 4 + 12 + 2 + 4 + 0.4 = 44.4; S = 4 (ambush 3, tide 1); 2A+H+S = 10 + 10 + 4 = 24 < 44.4 and A*H+S = 50 + 4 = 54 < (N/3)^2 = 219.04. Measured 77.5% over 120 games (tools/card_balance.js yardstick; Very Rare band 56.00000000000001-80%)."
+  },
+  {
+    "id": "harp-seal-pup",
+    "name": "Harp Seal Pup",
+    "icon": "\ud83e\uddad",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 5,
+    "rarity": "common",
+    "species": [
+      "Pinniped"
+    ],
+    "archetypes": [
+      "Tundra",
+      "Frost"
+    ],
+    "effects": {
+      "tide": true,
+      "molting": 1
+    },
+    "flavor": "A white bundle on the pack ice, drinking the richest milk in the sea.",
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m6",
+    "poolSlot": "pack",
+    "numericId": 9082,
+    "uuid": "b3ddc24a-49da-53d4-a556-26a506a53e74",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Grows fast on rich milk: Tide, Molting 1 (+1/+1 every 2 rounds). Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (tide 1, molting 1); 2A+H+S = 4 + 5 + 2 = 11 < 23 and A*H+S = 10 + 2 = 12 < (N/3)^2 = 58.78. Measured 52.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "beluga",
+    "name": "Beluga",
+    "icon": "\ud83d\udc0b",
+    "cost": 1,
+    "wait": 2,
+    "attack": 3,
+    "health": 18,
+    "rarity": "rare",
+    "species": [
+      "Cetacean"
+    ],
+    "archetypes": [
+      "Tundra",
+      "Ocean"
+    ],
+    "effects": {
+      "tide": true,
+      "sonar": true,
+      "inspiring": 1
+    },
+    "flavor": "The sea canary: it whistles and chirps under the ice, and the pod sings back.",
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m6",
+    "poolSlot": "skirmish",
+    "numericId": 9083,
+    "uuid": "81704302-3600-5d84-9ac8-5f6a988a8bc6",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a skirmish-only reward), not live until placed from Admin's Pool cards filter. The singing sea canary: Tide, Sonar, Inspiring 1. Budget v3 at Level 1, Rare, Wait 2, Lumber 1: N = 20 + 2 + 3 + 12 + 2 + 4 + 0.4 = 43.4; S = 3 (tide 1, sonar 1, inspiring 1); 2A+H+S = 6 + 18 + 3 = 27 < 43.4 and A*H+S = 54 + 3 = 57 < (N/3)^2 = 209.28. Measured 74.2% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "arctic-tern",
+    "name": "Arctic Tern",
+    "icon": "\ud83d\udd4a\ufe0f",
+    "cost": 0,
+    "wait": 1,
+    "attack": 1,
+    "health": 4,
+    "rarity": "uncommon",
+    "species": [
+      "Bird"
+    ],
+    "archetypes": [
+      "Tundra",
+      "Bird",
+      "Coastal"
+    ],
+    "effects": {
+      "flying": true,
+      "diurnal": true
+    },
+    "flavor": "Pole to pole and back every year: it sees more daylight than anything alive.",
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m6",
+    "poolSlot": "pack",
+    "numericId": 9084,
+    "uuid": "2ddb2a68-6e4d-5bc9-8d19-2419acef6b82",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Pole to pole, the most daylight of any animal: Flying, Diurnal. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 0: N = 20 + 2 + 2 + 6 + 0.5 + 0 + 0 = 30.5; S = 1 (flying 0, diurnal 1); 2A+H+S = 2 + 4 + 1 (x1.5 half-miss) = 10.5 < 30.5 and A*H+S = 4 + 1 (x1.5 half-miss) = 7.5 < (N/3)^2 = 103.36. Measured 55.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "lemming-swarm",
+    "name": "Lemming Swarm",
+    "icon": "\ud83d\udc01",
+    "cost": 0,
+    "wait": 0,
+    "attack": 1,
+    "health": 2,
+    "rarity": "common",
+    "species": [
+      "Rodent"
+    ],
+    "archetypes": [
+      "Tundra",
+      "Mouse"
+    ],
+    "effects": {
+      "swarm": true,
+      "brood": 1
+    },
+    "flavor": "Every few years there are millions, and every owl in the tundra eats well.",
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m6",
+    "poolSlot": "pack",
+    "numericId": 9085,
+    "uuid": "1970de5d-ff69-53d9-b617-fff3fbf559ea",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Millions in a boom year: Swarm, Brood 1. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (swarm 1, brood 1); 2A+H+S = 2 + 2 + 2 = 6 < 23 and A*H+S = 2 + 2 = 4 < (N/3)^2 = 58.78. Measured 54.2% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "krill-swarm",
+    "name": "Krill Swarm",
+    "icon": "\ud83e\udd90",
+    "cost": 0,
+    "wait": 0,
+    "attack": 2,
+    "health": 3,
+    "rarity": "common",
+    "species": [
+      "Crustacean"
+    ],
+    "archetypes": [
+      "Tundra",
+      "Ocean"
+    ],
+    "effects": {
+      "tide": true,
+      "swarm": true
+    },
+    "flavor": "Each one is nothing. Together they feed the whole cold sea.",
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "m6",
+    "poolSlot": "pack",
+    "numericId": 9086,
+    "uuid": "432bd77d-f8ed-5f4f-9cdb-ba9e32de1753",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for m6 (a pack card), not live until placed from Admin's Pool cards filter. Feeds the cold sea: Tide, Swarm. Budget v3 at Level 1, Common, Wait 0, Lumber 0: N = 20 + 2 + 1 + 0 + 0 + 0 + 0 = 23; S = 2 (tide 1, swarm 1); 2A+H+S = 4 + 3 + 2 = 9 < 23 and A*H+S = 6 + 2 = 8 < (N/3)^2 = 58.78. Measured 42.5% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "greenland-shark",
+    "name": "Greenland Shark",
+    "icon": "\ud83e\udd88",
+    "cost": 1,
+    "wait": 3,
+    "attack": 4,
+    "health": 26,
+    "rarity": "rare",
+    "species": [
+      "Fish"
+    ],
+    "archetypes": [
+      "Tundra",
+      "Ocean"
+    ],
+    "effects": {
+      "tide": true,
+      "carrion": 2,
+      "armor": 1
+    },
+    "flavor": "Four hundred years old, slow as the ice, and it has never once hurried.",
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mi",
+    "poolSlot": "skirmish",
+    "numericId": 9087,
+    "uuid": "81b7632f-6d5f-5a12-addd-94311328bcb2",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mi (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Four hundred years under the ice, a scavenger: Tide, Carrion 2, Armor 1. Budget v3 at Level 1, Rare, Wait 3, Lumber 1: N = 20 + 2 + 3 + 18 + 4.5 + 4 + 0.4 = 51.9; S = 4 (tide 1, carrion 2, armor 1); 2A+H+S = 8 + 26 + 4 = 38 < 51.9 and A*H+S = 104 + 4 = 108 < (N/3)^2 = 299.29. Measured 73.3% over 120 games (tools/card_balance.js yardstick; Rare band 52-75%)."
+  },
+  {
+    "id": "ringed-seal",
+    "name": "Ringed Seal",
+    "icon": "\ud83e\uddad",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 10,
+    "rarity": "common",
+    "species": [
+      "Pinniped"
+    ],
+    "archetypes": [
+      "Tundra",
+      "Frost"
+    ],
+    "effects": {
+      "tide": true,
+      "invisible": 2
+    },
+    "flavor": "It scratches a breathing hole through the ice with its claws, and keeps it open all winter.",
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mi",
+    "poolSlot": "pack",
+    "numericId": 9088,
+    "uuid": "91c92a65-17e8-5d57-a3df-7fccf06db9a0",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mi (a pack card), not live until placed from Admin's Pool cards filter. The polar bear's seal, hidden in its snow lair: Tide, Invisible 2. Budget v3 at Level 1, Common, Wait 1, Lumber 1: N = 20 + 2 + 1 + 6 + 0.5 + 4 + 0.4 = 33.9; S = 3 (tide 1, invisible 2); 2A+H+S = 6 + 10 + 3 = 19 < 33.9 and A*H+S = 30 + 3 = 33 < (N/3)^2 = 127.69. Measured 56.7% over 120 games (tools/card_balance.js yardstick; Common band 35-60%)."
+  },
+  {
+    "id": "woodland-caribou",
+    "name": "Woodland Caribou",
+    "icon": "\ud83e\udd8c",
+    "cost": 1,
+    "wait": 1,
+    "attack": 4,
+    "health": 9,
+    "rarity": "uncommon",
+    "species": [
+      "Cervid"
+    ],
+    "archetypes": [
+      "Taiga",
+      "Deer"
+    ],
+    "effects": {
+      "mountainClimber": true,
+      "frostbite": 1
+    },
+    "flavor": "Wide hooves for snow, a nose for lichen, and a herd that never stops walking.",
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mt",
+    "poolSlot": "skirmish",
+    "numericId": 9089,
+    "uuid": "77fb31a3-e01a-5f8c-9341-07a15fd15ad0",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mt (a skirmish-only reward), not live until placed from Admin's Pool cards filter. Snowshoe hooves and a herd that never stops: Mountain Climber, Frostbite 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (mountainClimber 1, frostbite 1); 2A+H+S = 8 + 9 + 2 = 19 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 60.8% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
+  },
+  {
+    "id": "musk-ox-calf",
+    "name": "Musk Ox Calf",
+    "icon": "\ud83d\udc02",
+    "cost": 1,
+    "wait": 1,
+    "attack": 3,
+    "health": 12,
+    "rarity": "uncommon",
+    "species": [
+      "Bovine"
+    ],
+    "archetypes": [
+      "Taiga",
+      "Tundra",
+      "Frost"
+    ],
+    "effects": {
+      "armor": 1,
+      "frostbite": 1
+    },
+    "flavor": "When the wolves come, the herd forms a ring, and the calves go in the middle.",
+    "dmgType": "physical",
+    "resist": [
+      "cold"
+    ],
+    "tags": [],
+    "locked": true,
+    "test": false,
+    "pool": true,
+    "poolMap": "mt",
+    "poolSlot": "pack",
+    "numericId": 9090,
+    "uuid": "d595e2f5-dc7c-5b8d-92de-ba85c61ee97e",
+    "creatorNote": "2026-10-19 (package AN, owner 23:04: \"More thematic animals ... I'll pick and choose when balancing for a map\"): POOL candidate for mt (a pack card), not live until placed from Admin's Pool cards filter. In the middle of the ring: Armor 1, Frostbite 1. Budget v3 at Level 1, Uncommon, Wait 1, Lumber 1: N = 20 + 2 + 2 + 6 + 0.5 + 4 + 0.4 = 34.9; S = 2 (armor 1, frostbite 1); 2A+H+S = 6 + 12 + 2 = 20 < 34.9 and A*H+S = 36 + 2 = 38 < (N/3)^2 = 135.33. Measured 66.7% over 120 games (tools/card_balance.js yardstick; Uncommon band 45-68%)."
   }
 ]

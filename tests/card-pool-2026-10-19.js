@@ -90,7 +90,7 @@ ok(/function pool\(defs\)\{[^\n]*!defs\[id\]\.pool/.test(read('bramblewood-autob
 ok(/function eggPoolFor[\s\S]{0,600}!d\.pool/.test(read('bramblewood-engine.js')), '3. no egg hatches a pool card');
 ok(/cardsRaw\.filter\(c=> !c\.pool\)/.test(read('tools/lib_bramble.js')), '3. the deck tools (lib_bramble.js, skirmish_pass.js) skip pool cards');
 ok(/!defs\[id\]\.pool \|\| ONLY\.includes\(id\)/.test(read('tools/card_balance.js')) && read('tools/card_balance.js').includes("'--pool'"), '3. card_balance.js measures pool cards only with --only / --pool');
-ok(/if\(c\.get\("pool"\)\): continue/.test(read('assemble_arena.py')), '3. assemble_arena.py leaves pool cards out of __CARD_DEFS__');
+ok(/if c\.get\("pool"\): continue/.test(read('assemble_arena.py')), '3. assemble_arena.py leaves pool cards out of __CARD_DEFS__');
 
 // ---- 4. Admin
 const TXT = require(path.join(ROOT, 'bramblewood-texts.js'));
@@ -101,8 +101,9 @@ ok(/poolCardForEditor\(defId\)/.test(slice('function openCardEditor(', '\n}')), 
 { // run the Admin list with stubs
   const fn = name=>{ const a = src.indexOf('function ' + name + '('); let d = 0, k = src.indexOf('{', a); for(; k < src.length; k++){ if(src[k] === '{') d++; else if(src[k] === '}' && !--d) break; } return src.slice(a, k + 1); };
   const ctx = {POOL_CARD_DEFS: builtPool || {}, CONQUEST_MAPS: MAPS, adminCardSearch: '', adminPoolOnly: true, placed: {},
-    getCardDefs(){ return Object.assign({}, this.placed); }, mapNumberOf: numOf, TX: (k, v)=> TXT.TX(k, v), escapeHtml: s=> String(s), escapeAttr: s=> String(s),
+    getCardDefs: null, mapNumberOf: numOf, TX: (k, v)=> TXT.TX(k, v), escapeHtml: s=> String(s), escapeAttr: s=> String(s),
     cardTileHTML: (d, o)=> `<div class="card-tile ${o.extraClass}" data-defid="${d.id}"></div>`, JSON, Object, String};
+  ctx.getCardDefs = ()=> Object.assign({}, ctx.placed); // the live cards: only what a test "places"
   vm.createContext(ctx);
   vm.runInContext(['adminPoolCardIds', 'adminPoolGridHTML', 'poolCardForEditor'].map(fn).join('\n') + '\nthis.f = {adminPoolCardIds, adminPoolGridHTML, poolCardForEditor};', ctx);
   const ids = ctx.f.adminPoolCardIds(), grid = ctx.f.adminPoolGridHTML();
