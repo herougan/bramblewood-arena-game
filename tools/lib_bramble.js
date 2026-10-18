@@ -99,4 +99,4 @@ function writeNodeEdits(edits, write){
   if(write) fs.writeFileSync(APP, s);
   return n;
 }
-module.exports = {G, E, MAPS: G.CONQUEST_MAPS, CARD_DEFS_BASELINE, CHARACTER_DEFS, byKey, brambleOf, retotal, writeNodeEdits, src};
+module.exports = {G, E, MAPS: G.CONQUEST_MAPS, CARD_DEFS_BASELINE, CHARACTER_DEFS, byKey, brambleOf, retotal, writeNodeEdits, src, grab}; // + grab (2026-10-19, package RX: tools/raid_full_sim.js)

@@ -132,7 +132,7 @@ ok(fnSrc('guildScaledBramble') && fnSrc('guildSkillsPanelHTML') && fnSrc('loadGu
 
   // the fights build your bramble through guildScaledBramble
   ok(/myCharacter\.health = guildScaledBramble\(myCharacter\.health \|\| 30, f\.castleHpPct\)/.test(fnSrc('startRaidPartMatch')), 'single-row raid: bramble Health with the guild bonus');
-  ok(/const myHp = guildScaledBramble\(Math\.max\(merged\.health \|\| 30, \(cfg\.wallHp \|\| 45\) \* 2\), f\.castleHpPct\)/.test(fnSrc('startRaidFullBattle')), 'raidFull: bramble Health with the guild bonus');
+  ok(/const myHp = guildScaledBramble\(Math\.max\(merged\.health \|\| 30, \(cfg\.wallHp \|\| 45\) \* 2\), f\.castleHpPct\)/.test(fnSrc('buildRaidFullFight') /* 2026-10-19 (package RX): the fight is built there now */), 'raidFull: bramble Health with the guild bonus');
   ok(/cfg\.wallHp = guildScaledBramble\(cfg\.wallHp, 0\)/.test(fnSrc('openTrenchSetup')) && /guildRaidBonusText\(\)/.test(fnSrc('openTrenchSetup')), 'classic trench: the wall with the guild bonus, and the line in its setup');
   const panel = fnSrc('raidPanelHTML');
   ok(/guildRaidBonusText\(\)/.test(panel) && /ensureGuildSkillsForRaid\(\)/.test(panel), 'the raid pre-fight panel shows the guild line and fetches the skills');

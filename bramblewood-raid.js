@@ -231,10 +231,11 @@ function raidCommonPool(def, part, defs){
 // rows (middle first, then back), each into an EMPTY slot with a card right in front of it (so it waits there, it never jumps the
 // queue), centre-most; at most `max` (2) a round, and none while its two back rows already hold `cap` (6) cards. `toId` maps a pool id
 // to the id that goes on the board (the raid's scaled copy). Returns [{row, slot, defId, card}].
-const REINFORCE = {perRow:1, max:2, cap:6, from:2};
+const REINFORCE = {perRow:1, max:2, cap:6, from:2, every:1}; // + every (2026-10-19): a call-in every N rounds from `from`
 function bossReinforce(E, pl, pool, rnd, opts){
   opts = Object.assign({}, REINFORCE, opts || {}); const out = [];
   if(!pl || !pl.reserve || !(pool || []).length || (opts.round != null && opts.round < opts.from)) return out;
+  if(opts.every > 1 && opts.round != null && (opts.round - opts.from) % Math.round(opts.every) !== 0) return out; // every N rounds only (2026-10-19, package RX: a raid's tuning.reinforce)
   const held = ()=> pl.reserve.reduce((t, r)=> t + Object.keys(r).length, 0);
   for(let row = 1; row <= Math.min(2, pl.reserve.length); row++){
     for(let k = 0; k < opts.perRow; k++){

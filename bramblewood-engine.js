@@ -388,6 +388,35 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // 1 down; Stunned, Frozen or Asleep, it does nothing; otherwise it strikes its column for half its Attack (rounded up) at the enemy's
   // front unit there, or the enemy castle with that column empty. Returns the damage dealt, or -1 when it didn't strike. `before` runs
   // just before a strike (reserveVolley's header event).
+  // 2026-10-19 (owner 20:45, package RX: "In raids, the 3 rows all attack what they can of the opposing 3 rows, targeting the closest
+  // row first. Only if nothing, does it hit the opposing bramble."): what a strike from column sl finds on the foe's side: the front
+  // row's unit there, else the middle row's, else the back row's ({card, row} with row 0 front, 1 middle, 2 back), or null (the
+  // bramble). A unit it can't hit is passed over: a cage, or an Invisible unit (nothing to swing at). Flying, Evasive and the other
+  // dodges still roll on the strike itself (combatHitLands), as they do for any swing.
+  function rowTargetAt(foe, sl){
+    if(!foe) return null;
+    const hittable = c=> !!(c && !c.gap && c.hp > 0 && !c.cageOf && !isInvisible(c));
+    const f = allBoardCards(foe).find(c=> c.slot === sl && hittable(c)); if(f) return {card:f, row:0};
+    for(let r = 0; r < (foe.reserve || []).length; r++){ const c = foe.reserve[r][sl]; if(hittable(c)) return {card:c, row:r + 1}; }
+    return null;
+  }
+  // Dead reserve units (2026-10-19, package RX): now that the middle and back rows can be struck, a unit that falls there is swept
+  // out of its row with the same bookkeeping a front-row death gets at its simplest: the death event and stat, the kill credited
+  // (so On Kill fires for the killer), and the card to the graveyard. Its own On Death / Revive don't fire: a reserve unit hasn't
+  // arrived on the battlefield yet (its On Spawn fires only when it steps up to the front).
+  function sweepDeadReserves(players, sideOf, killCredit, stats, events, kills){
+    [players[1], players[2]].forEach(pl=>{ if(!pl || !pl.reserve) return;
+      pl.reserve.forEach(rw=> Object.keys(rw).forEach(sl=>{ const card = rw[sl]; if(!card || card.hp > 0) return;
+        delete rw[sl];
+        const mySide = sideOf(pl.id);
+        ensureStat(stats, mySide, card.defId).deaths += 1;
+        let credit = killCredit[card.uid] || killerCreditOf(players, sideOf, pl, card);
+        if(recordEvents && events) events.push({type:'death', side:mySide, defId:card.defId, uid:card.uid, reserve:true});
+        if(credit) credit.forEach(key=>{ if(kills) kills.add(key); const parts = key.split('|'); ensureStat(stats, parts[0], parts[1]).kills += 1; });
+        delete killCredit[card.uid];
+        if(!card.token && pl.graveyard) pl.graveyard.push({defId:card.defId});
+      })); });
+  }
   function reserveStrike(players, sideOf, pid, c, row, sl, stats, events, before){
     const foe = players[otherId(pid)]; if(!foe || !c || !(c.hp > 0) || c.stunned || c.frozen > 0 || c.asleep > 0) return -1;
     if(c.wait > 0){ c.wait -= 1; return -1; }
@@ -395,10 +424,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(confusedFumbles(c, sideOf(pid), events, 'reserve')) return -1; // Confused (2026-10-19, package FZ): the action fumbles 1 in 2
     const ev = o=>{ if(recordEvents && events) events.push(o); };
     if(before) before();
-    const t = frontCardAt(foe, sl);
-    if(t && !t.cageOf){ const res = damageCard(t, n, 'physical', c); const dmg = res ? res.dmg : 0;
+    // 2026-10-19 (package RX): the closest row in its column with a unit it can hit (rowTargetAt), not only the front row's unit.
+    const tg = rowTargetAt(foe, sl), t = tg ? tg.card : null;
+    if(t){
+      if(!combatHitLands(c, t, true)){ ev({type:'evaded', reason:lastMissReason, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(otherId(pid)), targetDefId:t.defId, targetUid:t.uid, volley:true, row, targetRow:tg.row}); return 0; }
+      const res = damageCard(t, n, 'physical', c); const dmg = res ? res.dmg : 0;
       ensureStat(stats, sideOf(pid), c.defId).dealt += dmg; ensureStat(stats, sideOf(otherId(pid)), t.defId).taken += dmg;
-      ev({type:'fieldTick', field:'volleyHit', side:sideOf(otherId(pid)), uid:t.uid, defId:t.defId, dmg, fromUid:c.uid, fromDefId:c.defId, fromSide:sideOf(pid), row, slot:sl}); return dmg; }
+      ev({type:'fieldTick', field:'volleyHit', side:sideOf(otherId(pid)), uid:t.uid, defId:t.defId, dmg, fromUid:c.uid, fromDefId:c.defId, fromSide:sideOf(pid), row, slot:sl, targetRow:tg.row}); return dmg; }
     if(foe.hq && foe.hq.hp > 0){ let d = n; const ov = foe.onHqHit ? foe.onHqHit(d, c) : undefined; if(typeof ov === 'number') d = ov;
       d = Math.max(0, Math.min(d, foe.hq.hp)); foe.hq.hp -= d; ensureStat(stats, sideOf(pid), c.defId).dealt += d;
       ev({type:'fieldTick', field:'volleyCastle', side:sideOf(otherId(pid)), dmg:d, fromUid:c.uid, fromDefId:c.defId, fromSide:sideOf(pid), row, slot:sl, shielded: d < n || undefined}); return d; }
@@ -5917,6 +5949,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       try{ removeDeadCardsPass(players, sideOf, book, stats, events, kills); } finally{ trigLayer = layer0; }
       if(![players[1], players[2]].some(pl=> pl && allBoardCards(pl).some(c=> c.hp<=0))) break;
     }
+    if(RESERVE_ROWS) sweepDeadReserves(players, sideOf, book, stats, events, kills); // 2026-10-19 (package RX): the middle and back rows can be struck now
     exposeLonely(players, sideOf, events); // 2026-10-17: the last enemy unit just fell, so Expose has nothing left to strike for
     noteDarkCast(players, sideOf, events); // Cast Darkness (2026-10-18): the last caster just fell, so the dark it cast lifts
     if(kills.size) fireOnKillTriggers(players, sideOf, kills, stats, events);
@@ -6719,6 +6752,16 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           if(e && e.kind==='card' && e.card.hp>0){ e.col = col; target = e; } else tipsyMiss = true;
           if(recordEvents && events) events.push({type:'tipsySwing', side:sideOf(a.attId), attDefId:a.att.defId, attUid:a.att.uid, drift:d, miss:tipsyMiss}); }
       }
+      // 2026-10-19 (package RX, owner 20:45: "the 3 rows all attack what they can of the opposing 3 rows, targeting the closest row
+      // first. Only if nothing, does it hit the opposing bramble."): in a raid (RESERVE_ACTS), a front-row swing with nothing to hit in
+      // the enemy's front row in its column goes on to the middle row's unit there, then the back row's (rowTargetAt), and reaches the
+      // bramble only when no row holds one. Stealth / Rainrunner (unblockable) and Crab claws (never straight ahead) keep their castle.
+      // A Sweep's side hits and a Wave's push only work on a front-row target (resTarget turns them off).
+      let resTarget = false;
+      if(RESERVE_ACTS && target && target.kind === 'hq' && !tipsyMiss && !(attDef.effects && (attDef.effects.stealth || attDef.effects.crabClaws || (attDef.effects.rainrunner && field && field.id === 'rain')))){
+        const rt = rowTargetAt(players[a.enemyId], liveSelf.col);
+        if(rt && rt.row > 0){ target = {kind:'card', card:rt.card, col:liveSelf.col, reserveRow:rt.row}; resTarget = true; }
+      }
       if(!target || tipsyMiss){ pending = pickNextAttacker(); continue; }
       if(a.att.invisible > 0){ a.att.invisible = 0; if(recordEvents && events) events.push({type:'statusEnd', status:'invisible', side:sideOf(a.attId), uid:a.att.uid, defId:a.att.defId, attacked:true}); } // Invisible (2026-10-16): attacking gives it away
       const dmgType = (a.att.chilli > 0 && attackDmgType(attDef) !== 'magic') ? 'heat' : attackDmgType(attDef); // Magic (2026-10-14): effects.magic swings magic damage; Chilli (2026-10-15): fire
@@ -6752,7 +6795,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // The sides take N each (armour counts, no on-hit effects); an empty side is a swing at thin air (sweepWhiff), never
       // redirected. Nothing in front: it just hits the castle.
       let swingLanded = false;
-      const sweepN = (attDef.effects && Number(attDef.effects.sweep) > 0 && target.kind==='card') ? Number(attDef.effects.sweep) + (((perksOfSide(mySide)||{}).brambleStorm) ? 1 : 0) : 0; // + Wildpath "Bramble Storm"
+      const sweepN = (attDef.effects && Number(attDef.effects.sweep) > 0 && target.kind==='card' && !resTarget) ? Number(attDef.effects.sweep) + (((perksOfSide(mySide)||{}).brambleStorm) ? 1 : 0) : 0; // + Wildpath "Bramble Storm"
       const sweepNear = sweepN ? target.card : null, sweepCol = sweepN ? target.col : null;
       const sweepStrike = (col, dir)=>{
         const entry = liveEnemyCols[col];
@@ -6965,7 +7008,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         w2OnHit(a.att, attDef, defCard, dmg, mySide, sideOf(a.enemyId), events, aStat); // Venomous, Toxin, Weaken, Bulldoze, Tangleweed, Strangle (2026-10-16)
         if(attDef.effects && attDef.effects.web && defCard.hp > 0) webUnit(a.att, defCard, numN(attDef.effects.web, S17_DEF.web), mySide, sideOf(a.enemyId), events); // Web N (2026-10-17)
         if(!nullHit) wiltOnHit(defCard, sideOf(a.enemyId), events); // Wilting (2026-10-16): the unit that was hit
-        if(attDef.effects && attDef.effects.wave && defCard.hp>0) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats, killCredit); // Wave (2026-10-14): push it a column; 2026-10-18: its crash kills go in this swing's book, swept with the swing
+        if(attDef.effects && attDef.effects.wave && defCard.hp>0 && !resTarget) waveHit(players, sideOf, otherId(a.enemyId), a.att, defCard, events, stats, killCredit); // Wave (2026-10-14): push it a column; 2026-10-18: its crash kills go in this swing's book, swept with the swing
         if(attDef.effects && attDef.effects.wither && defCard.hp>0) applyWither(otherId(a.enemyId), a.att, defCard, numN(attDef.effects.wither, 1), sideOf, events); // Wither N (2026-10-14)
         if(attDef.effects && attDef.effects.dragonLightning) dragonLightningStrike(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.dragonLightning, 1), stats, events, killCredit); // Dragon Lightning N (2026-10-14)
         if(attDef.effects && attDef.effects.electricity) electricityArc(players, sideOf, otherId(a.enemyId), a.att, defCard, numN(attDef.effects.electricity, 1), stats, events, killCredit); // Electricity N (2026-10-14)
