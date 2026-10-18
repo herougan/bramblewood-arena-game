@@ -2,6 +2,11 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (V3: world-map fixes)
+- **A cleared dark map is evenly dark to the screen's edges.** On the Caves & Alcoves, Smugglers' Grotto, the Sunken Depths, the Mycelium Deep and the Volcano Lair, the map's canvas used to sit in a visibly darker box once the map was cleared: the art under it got both dark layers, the strips round it (behind the map list and the tab bar, past the canvas edge, below a phone's scrolled map) only one, and the cleared map's warm glow painted over that one. The screen-wide layer now leaves a hole the size of the visible canvas for the canvas layer to fill (square-cornered), follows a scroll at once, and sits above the glow and any backdrop shader. Checked at 1366×768, 1920×1080 and 390×844.
+- **Lilypad Reach waits for Gatorback Swamp.** Its lotus stays where it is on Pebble Beach, locked (padlock, "The lily ponds — Clear Gatorback Swamp to open") until every Gatorback Swamp fight is won. A save that already fought there keeps it open.
+- `tests/maps-2026-10-18.js` (in `tests/run-all.sh`).
+
 ## 2026-10-18 (R3-WP2: raid stages do something)
 - **The Goliath's Enraged (below 75%) and Thrashing (below 50%) stages now change the fight** (they were names only). Defaults, waiting on the owner: **Enraged:** every boss card +2 Attack, and its back two rows strike once a round (the volley your ally rows already make). **Thrashing:** every boss card +4 Attack, the back-row volley, Landslide on the field, and your (the raiders') castle 10% less Health. Exposed (below 1%) still strips every ability.
 - **The Raid tab** shows the current stage's one-line effect under the boss, a "Stages" panel with every stage (the current one marked), and the field panel includes the stage's field. The VS screen names the stage.
