@@ -8,6 +8,13 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
 - **Pounce and the bramble** ("Pounce doesn't hit Bramble, methinks."): checked, and it does. A Pounce hits the unit facing it, else the nearest enemy unit, and the enemy bramble when the enemy has no unit it can hit (also with Pounce ⚔, High Canopy and Tall Grass). In a match: Raven Scout onto an empty board, enemy bramble 30 → 28, "Raven Scout struck the enemy bramble for 2." What it does not do is go for the bramble through an open lane while enemy units stand elsewhere (the 2026-10-15 rule, "Otherwise, next nearest"); that rule is unchanged and the card text already says so. One engine for the game, the CPU and the sims; no rule change, the card matrix is unchanged.
 - Effects Lab: `wt-tide-flow` D / E and `wt-tide-ebb` D / E play the standing Tide itself, now and with the old numbers (`manifest/m19.js`; the Tide's functions are in `fx-src-extra.txt`).
 - `tests/m-2026-10-19.js` (in `tests/run-all.sh`); `tests/visuals-2026-10-18.js` reads the named tilt.
+## 2026-10-19 (package G: guild skills, starting with Rooted Walls)
+- **Guild skills** (owner 20:45: "Guild skills. Starting with +raid HP to your bramble."). The Guild tab has a 🌱 Guild skills panel. The guild's owner buys levels with **🌱 Guild Seeds**, which members earn in raid fights: 1 per 500 raid damage, at most 250 a player a week.
+- **Rooted Walls** (live): +4% bramble Health in raid fights a level, 5 levels (+20%), costing 30/60/100/150/220 Seeds (560 in all). It adds to the stage's own % (Thrashing −10% + 20% = +10%) in the three-row raid, the single-row raid and the classic trench. The raid panel shows "🌳 Guild: +12% bramble Health".
+- Six locked "🔒 Coming soon" skills: Sharpened Thorns, Second Wind, Sap Return, Guild Chest, Ally Banners, Seed Satchel. They do nothing; `GUILD_SKILLS_SHOW_SOON = false` hides them.
+- **Needs "apply it":** `supabase/proposed/20261019_guild_skills.sql` adds the tables (member-only reads, no client writes), the Seeds trigger on `raid_week_attempts` and the owner-only `upgrade_guild_skill` RPC (SECURITY DEFINER, spends atomically). Until it is applied the panel is a preview, raid fights get no bonus and nothing can be bought.
+- Admin mode can preview levels in its own browser.
+- Docs: `docs/guild-skills-2026-10-19.md`. Test: `tests/guild-skills-2026-10-19.js` (in run-all).
 
 ## 2026-10-19 (Gameplay ideas: Codex backlog review + our synergies, documents only)
 - **Renamed:** the Codex backlog review is now `docs/gameplay-ideas-2026-10-19.md` / `.xlsx` (was codex-backlog-review-2026-10-19).
