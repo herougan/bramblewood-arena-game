@@ -31,6 +31,8 @@
     + '.starter-step, .tut-reward, .starter-modal, .hatch-ov, .po2, .pack-open-overlay';
   // Buttons Escape must never press even if they look like a close button (leaving a live trench fight).
   const NEVER_ESC_BTN = '.tr-leave-btn, [data-no-esc]';
+  // Floating layers outside any dialog that may legitimately hold focus while a dialog is open.
+  const FLOATING_SEL = '.bw-sel-menu, .toast, .coach-tip, ' + SKIP_SEL;
   const FOCUSABLE = 'a[href], area[href], button, input:not([type=hidden]), select, textarea, iframe, summary, [tabindex], [contenteditable=""], [contenteditable="true"]';
 
   const recs = new Map(); // host element → {host, root, opener, seq, light}
@@ -95,6 +97,8 @@
         recs.set(host, r);
         // Let the game's own focus code run first (several builders focus a button after ~30 ms).
         setTimeout(()=>{ if(recs.get(host) === r && top() === r) initialFocus(r); }, 60);
+        // …and once more if something put focus back on the opener (or dropped it) right after.
+        setTimeout(()=>{ const a = document.activeElement; if(recs.get(host) === r && top() === r && (!a || a === document.body || a === r.opener)) initialFocus(r); }, 300);
       } else if(r.root !== root){
         const lostId = r.lastFocusId;
         labelRoot(root);
@@ -111,7 +115,7 @@
   function initialFocus(r){
     const a = document.activeElement;
     if(a && a !== document.body && r.root.contains(a)) return; // the game already put focus inside
-    if(a && a !== document.body && a.closest && a.closest('.bw-sel-menu')) return;
+    if(a && a !== document.body && a.closest && a.closest('.bw-sel-menu')) return; // a select menu opened from inside
     const auto = r.root.querySelector('[autofocus]');
     const list = focusables(r.root);
     const first = (auto && usable(auto)) ? auto : list.find(el=> !isTextEntry(el));
@@ -157,7 +161,7 @@
     const r = top(); if(!r) return;
     const a = document.activeElement;
     const inside = a && r.root.contains(a);
-    if(!inside && a && a !== document.body && a.isConnected) return; // e.g. the in-page <select> menu, a toast: leave it alone
+    if(!inside && a && a !== document.body && a.isConnected && a.closest(FLOATING_SEL)) return; // the in-page <select> menu, a toast: leave it alone
     const list = focusables(r.root);
     if(!list.length){ e.preventDefault(); focusRoot(r.root); return; }
     const first = list[0], last = list[list.length - 1];

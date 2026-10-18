@@ -6229,6 +6229,7 @@ const MAP_BATTLEFIELD_CLASS = {
   m10:'map-m10', // Eyrie Heights -- pale alpine sky
   m11:'map-m11', // The Sundered Peak -- dramatic dusk crimson
   m21:'map-m21', // The Quiet Summit -- snow and dawn
+  tw:'map-tw', mlb:'map-mlb', // 2026-10-18: the Babel Spire and the Long Burrow fight on their own (derived) backdrops
   m22:'map-m22', m23:'map-m23', m24:'map-m24', // 2026-10-17: the Rimefire Caldera (snow over a glowing crater), the Goldfeather Siege, Goldfeather Keep
   mf:'map-mf',   // Thistlewood -- wet forest, stream and pond (the Outskirts' old art since 2026-10-15)
   mb:'map-mb',   // Pebble Beach -- sand and shallows (2026-10-09)
@@ -13897,7 +13898,8 @@ function activateSpot(spot){
 // 2026-10-15 (user: "Are there any submaps with no background? fill them in."): the Old Bramble, Ice Hollow, Glimmer Depths,
 // Sunken Grove, Aerie Vault and Volcano Lair had art baked in but weren't listed here, so it never drew; Murgle Mayhem had none.
 // They now borrow a recoloured map (MAP_ART_DERIVED in assemble_arena.py), and the build fails if this list falls behind.
-const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm"]);
+// 2026-10-18: + the Babel Spire ("tw") and the Long Burrow ("mlb"), which drew only a gradient.
+const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm","mlb","tw"]);
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -17227,7 +17229,7 @@ CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8',
 // 2026-10-18 (WP4): Map 22 is a real map, so the only thing holding the Long Burrow back is the owner's go-ahead. Until then players
 // see its slot as "Coming soon" (not a lock they could meet). Releasing it is this one switch: set LONG_BURROW_RELEASED to true and
 // it opens for players once they reach the Rimefire Caldera (Dungeons tab, World map and the key button all follow `preview`).
-const LONG_BURROW_RELEASED = false;
+const LONG_BURROW_RELEASED = true; // 2026-10-18 (user: "Release long_burrow.")
 CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'m22', axis:'x', preview:!LONG_BURROW_RELEASED, entry:{x:50, y:50, label:'The Long Burrow'},
   name:'The Long Burrow', icon:'🦡', bossName:'The Sett Lord', bossIcon:'👑', floors:50, baseHq:200,
   blurb:'A badger run that tunnels sideways under the high country, sett after sett, further than any map has drawn it.',
@@ -18984,6 +18986,12 @@ function renderDungeonsSubTab(body){
   </div>`;
   body.querySelectorAll('[data-dungeon-go]').forEach(b=> b.addEventListener('click', ()=>{
     conquestWorldView = false; conquestSelectedMap = b.dataset.dungeonGo; conquestSelectedNodeKey = null; playSubTab = 'conquest'; renderPlay(); }));
+  // 2026-10-18 (audit R3-WP6: at 50/50 the Spire only offered "Keep climbing" into floor 50 again): from the summit you pick any
+  // floor to fight again, and the map opens with that floor selected.
+  body.querySelectorAll('[data-tower-replay]').forEach(b=> b.addEventListener('click', ()=>{
+    const sel = body.querySelector('[data-tower-floor]'), map = CONQUEST_MAPS.find(m=> m.id === 'tw'); if(!map) return;
+    const node = map.nodes[Math.max(0, Math.min(map.nodes.length - 1, (parseInt(sel && sel.value, 10) || map.nodes.length) - 1))];
+    conquestWorldView = false; conquestSelectedMap = 'tw'; conquestSelectedNodeKey = node ? node.key : null; playSubTab = 'conquest'; renderPlay(); }));
 }
 // The Tower in the Dungeons tab (2026-10-16): its own card under the daily dungeons. Locked until Map 20's last fight falls; admins can
 // always open it. No tickets: every floor costs Energy like any elite.
@@ -18991,12 +18999,21 @@ function towerCardHTML(progress){
   const map = CONQUEST_MAPS.find(m=> m.id === 'tw'); if(!map) return '';
   const admin = typeof adminModeEnabled !== 'undefined' && adminModeEnabled, unlocked = isMapUnlocked(map, progress), open = unlocked || admin, f = dungeonFloorProgress(map, progress);
   const next = map.nodes[Math.min(map.nodes.length - 1, f.done)], br = next ? enemyDeckLevel(next) : 0;
-  return `<div class="dg-tower-head"><h3>🗼 The Tower</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p></div>
+  // 2026-10-18 (audit R3-WP6): every floor cleared is the summit: no "Keep climbing", a floor picker to fight any of them again.
+  // The heading uses the map's own name (it said "The Tower" over a card titled "The Babel Spire").
+  const summit = unlocked && f.total > 0 && f.done >= f.total;
+  const climb = summit
+    ? `<div class="dg-floor dg-summit"><span class="wc-bar"><span style="width:100%"></span></span><span>🏔️ <b>Summit</b> · all ${f.total} floors</span></div>
+          <p class="dg-sub dg-summit-line">You stand atop ${escapeHtml(map.name)}. Nobody had seen the top until you did. The wind up here smells of every creature that ever tried.</p>
+          <div class="dg-acts"><label class="dg-floor-pick">Floor <select data-tower-floor aria-label="Floor to fight again">${map.nodes.map((n, i)=> `<option value="${i + 1}"${i === map.nodes.length - 1 ? ' selected' : ''}>${i + 1}${n.kind === 'boss' ? ' 👑' : ''}</option>`).join('')}</select></label>
+            <button type="button" class="btn primary" data-tower-replay>🔁 Fight it again</button></div>`
+    : `<div class="dg-floor"><span class="wc-bar"><span style="width:${Math.round(100 * f.done / f.total)}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total} · ⚔ ${br}</span></div>
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button></div>`;
+  return `<div class="dg-tower-head"><h3>${map.icon} ${escapeHtml(map.name)}</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p></div>
     <div class="dg-list"><div class="dg-card dg-tower ${open ? '' : 'is-locked'}">${!unlocked && admin ? '<span class="dg-admin-tag" title="Players open it by clearing Map 20">🛠️ Admin preview</span>' : ''}<div class="dg-diamond map-theme-tw">${compassDiamondSVG('dg-tw', !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map 20 · The Sundered Peak</span>
         <p class="dg-sub">${escapeHtml(map.blurb)}</p>
-        ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${Math.round(100 * f.done / f.total)}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total} · ⚔ ${br}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button></div>`
+        ${open ? climb
         : `<p class="dg-sub">🔒 Clear the Sundered Peak (Map 20) to open it.</p>`}</div></div></div>`;
 }
 // The World map's dungeon stops (2026-10-15): a smaller compass diamond beside its map's own, joined to it by a dotted branch.
@@ -19637,7 +19654,8 @@ function renderConquestSubTab(body){
   // so a click on a floor (which re-renders the pane) was followed 1.2 s later by a smooth scroll away to your next floor. Now it
   // only runs on a fresh visit, and only if your next floor isn't already in view (coming back from a fight keeps your place).
   if(map.endless && !sameMapRerender){ // start the long climb at your next floor
-    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
+    // 2026-10-18: a floor picked from the Spire's summit card (already selected) is the one to scroll to, not the top floor
+    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = (conquestSelectedNodeKey && map.nodes.find(n=> n.key === conquestSelectedNodeKey)) || map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
       const el = cv.querySelector(`.map-node[data-lkey="${next.key}"]`), main = document.getElementById('conquestMain');
       if(el && main){ const er = el.getBoundingClientRect(), mr = main.getBoundingClientRect();
         if(er.top >= mr.top + 40 && er.bottom <= mr.bottom - 40 && er.left >= mr.left && er.right <= mr.right) return; // already in view
@@ -19645,7 +19663,7 @@ function renderConquestSubTab(body){
         const top = el.offsetTop - main.clientHeight / 2; main.scrollTo({top: Math.max(0, top), behavior: reducedMotion() ? 'auto' : 'smooth'}); } }, 1200); }
   { const ast = ambushState(); if(ast.justPopped && map.id === (ambushMap()||{}).id){ delete ast.justPopped; saveAmbushState(ast); } }
   if(tutPhase) tutBgZoom(1.25, false); else if(!tutZoomOut) tutBgZoom(1, false, true);
-  if(tutZoomOut){ try{ localStorage.removeItem('bramblewood_tut_zoomout_v1'); }catch(e){}
+  if(tutZoomOut){ // 2026-10-18 (audit R3-WP6): dropped the bramblewood_tut_zoomout_v1 key; it was written and cleared but never read
     const cv = document.getElementById('conquestCanvas'); tutBgZoom(1.25, false);
     if(cv){ cv.querySelectorAll('.map-trail-svg, .map-spot, .map-decor').forEach(el=> el.classList.add('tut-reveal'));
       // skirmishes drop in from above, nearest first, once the zoom has settled
@@ -20099,6 +20117,16 @@ function currentRaidStateFor(def, now){
   const cycle = RaidM.cycleOf(now);
   return RaidM.raidState(def, currentRaidAttempts(def, cycle), now, {cycle});
 }
+// Raid stages (2026-10-18, R3-WP2: Enraged and Thrashing did nothing): a stage's rules (bossAtk, bossHp, field, extraVolley,
+// castleHpPct, stripAbilities; RaidM.stageRules) land in the fight, and its one-line description shows wherever the stage does. A
+// stage's field is a FIELD_EFFECTS id (or a rule key), resolved to that effect's rules; it is named as its Environment card names it.
+function raidStageFieldRules(k){
+  const f = fieldEffectById(k) || FIELD_EFFECTS.find(x=> x.rules && Object.keys(x.rules)[0] === k);
+  return f && f.rules ? Object.assign({}, f.rules) : null;
+}
+function raidStageFieldName(k){ try{ const row = fieldConditionRows({[k]: true})[0]; return row ? String(row.name).replace(/ · .*$/, '') : ''; }catch(e){ return ''; } }
+function raidStageOpts(extra){ return Object.assign({fieldRules: raidStageFieldRules, fieldName: raidStageFieldName}, extra || {}); }
+function raidStageText(stage){ return RaidM && RaidM.describeStage ? RaidM.describeStage(stage, raidStageOpts()) : ''; }
 // One health bar per raid part (2026-10-15, user: "It's not clear what the 3 hp bars represent. Is it the 3 hp bars of the 3 entities
 // we can fight? or each has 3 hp bars. It should say health left like X/Y. So players feel the epic progress."): a part's health is
 // one bar with its "X / Y HP left" under it. Its phases (p.bars health bars of p.barHp each) are faint marks on that bar, and a
@@ -20178,8 +20206,9 @@ function raidPanelHTML(){
     <div class="r3-hero">
       <div class="r3-boss-card" aria-hidden="true">${raidBossIconHTML(def, '🐙')}<span class="r3-boss-glow"></span></div>
       <div class="r3-boss-info">
-        <h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
+        <h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage" title="${escapeAttr(raidStageText(st.stage) || st.stage.name)}">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
         <p class="r3-blurb">${escapeHtml(def.blurb||'')}</p>
+        ${st.stage && raidStageText(st.stage) ? `<p class="r3-hint r3-stage-now"><b>${escapeHtml(st.stage.name)}:</b> ${escapeHtml(raidStageText(st.stage))}</p>` : ''}
         <div class="r2-total"><div class="raid-boss-hp-bar r3-hp"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
           <span class="r2-total-line"><span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${pct}%)</small></span><span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left this week</span></span></div>
       </div>
@@ -20217,7 +20246,10 @@ function raidPanelHTML(){
         <p class="r3-note">Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's castle (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
       </section>
       <section class="r3-field"><h3>${ground === 'mabyss' ? 'Down in the deep' : 'The field'}</h3>
-        <div class="ar2-fields r3-fields">${raidFieldCardsHTML(raidFieldRulesOf(def, null))}</div></section>
+        <div class="ar2-fields r3-fields">${raidFieldCardsHTML(RaidM.fieldRulesFor ? RaidM.fieldRulesFor(def, null, RaidM.stageRules(st.stage, raidStageOpts())) : raidFieldRulesOf(def, null))}</div></section>
+      ${(def.stages || []).length ? `<section class="r3-stages"><h3>Stages</h3>
+        <p class="r3-note">As the boss's total Health falls, it changes. Every fight is under the stage it is in now.</p>
+        <ul class="r3-rw">${(def.stages || []).slice().sort((a, b)=> b.at - a.at).map(s=> `<li${st.stage === s ? ' aria-current="true"' : ''}><b>${st.stage === s ? '▶ ' : ''}${escapeHtml(s.name || 'Stage')} <small>below ${+(s.at * 100).toFixed(1)}%</small></b><span>${escapeHtml(raidStageText(s) || 'No change yet.')}</span></li>`).join('')}</ul></section>` : ''}
       <section class="r3-rewards"><h3>If it falls</h3>
         <ul class="r3-rw">
           <li><b>Everyone who fought</b><span>${kill || '—'}${raidCardIds(def).length ? ' and one of its own cards' : ''}</span></li>
@@ -20375,10 +20407,20 @@ function openRaidEditor(raidId){
         <button type="button" class="btn small" data-dec="${escapeAttr(id)}" aria-label="One fewer ${escapeAttr(defs[id] ? defs[id].name : id)}">−</button><b class="se-n">${deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}" aria-label="One more ${escapeAttr(defs[id] ? defs[id].name : id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
       <input type="text" id="reSearch" placeholder="Search a card to add to this part's deck…" value="${escapeAttr(q)}" autocomplete="off">
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}</span></button>`).join('')}</div>
-      <div class="re-part-actions"><button type="button" class="btn small" id="reSim">📊 Simulate 100 attempts vs my deck</button>${draft.stages.some(s=> (s.rules||[]).some(r=> r.stripAbilities)) ? `<button type="button" class="btn small" id="reSimExposed">📊 …as Exposed</button>` : ''}<span style="flex:1"></span><button type="button" class="btn small ghost" id="reDelPart">🗑 Remove part</button></div>
+      <div class="re-part-actions"><button type="button" class="btn small" id="reSim">📊 Simulate 100 attempts vs my deck</button>${draft.stages.some(s=> RaidM.stageRules(s).stripAbilities) ? `<button type="button" class="btn small" id="reSimExposed">📊 …as Exposed</button>` : ''}<span style="flex:1"></span><button type="button" class="btn small ghost" id="reDelPart">🗑 Remove part</button></div>
       ${simText[P.id] ? `<div class="se-sim">${simText[P.id]}</div>` : ''}` : ''}
       <h3 class="se-h">Stages (as total HP falls)</h3>
-      <div class="re-stages">${draft.stages.map((s,i)=> `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${(s.rules||[]).some(r=> r.stripAbilities)?'checked':''}> strips enemy abilities</label><button type="button" class="btn small ghost" data-st-del="${i}" aria-label="Remove this stage" title="Remove this stage">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
+      <div class="re-stages">${draft.stages.map((s,i)=>{ const sr = RaidM.stageRules(s), raw = Object.assign({}, ...[].concat(s.rules || []).filter(r=> r && typeof r === 'object')), fv = raw.field;
+        // 2026-10-18 (R3-WP2): each stage's rules as simple inputs (RaidM.setStageRules writes them back); a field the list can't show (a rules object) is kept as it is.
+        const fx = FIELD_EFFECTS.filter(f=> f.rules && !f.arenaOnly && f.group !== 'gift'), keep = fv && (typeof fv !== 'string' || !fx.some(f=> f.id === fv));
+        return `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${sr.stripAbilities?'checked':''}> strips enemy abilities</label>
+          <label title="Every boss card (its deck, boss unit, guards and Commons) gains this much Attack">boss +Attack<input type="number" min="-20" max="50" data-st-batk="${i}" value="${sr.bossAtk||0}"></label>
+          <label title="Every boss card gains this much Health">boss +Health<input type="number" min="-50" max="200" data-st-bhp="${i}" value="${sr.bossHp||0}"></label>
+          <label title="The boss's back two rows strike this many times a round (half their Attack, like your ally rows)">back-row strikes<input type="number" min="0" max="3" data-st-volley="${i}" value="${sr.extraVolley||0}"></label>
+          <label title="Your castle's max Health changes by this % (-10 = 10% less)">your castle %<input type="number" min="-90" max="200" data-st-castle="${i}" value="${sr.castleHpPct||0}"></label>
+          <label>field<select data-st-field="${i}"><option value="">none</option>${keep ? `<option value="__keep" selected>${escapeHtml(typeof fv === 'string' ? fv : 'custom rules')} (kept)</option>` : ''}${fx.map(f=> `<option value="${escapeAttr(f.id)}" ${fv === f.id ? 'selected' : ''}>${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></label>
+          <button type="button" class="btn small ghost" data-st-del="${i}" aria-label="Remove this stage" title="Remove this stage">✕</button>
+          <small class="panel-sub re-stage-desc">${escapeHtml(raidStageText(s) || 'No rules: the stage is only a name.')}</small></div>`; }).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
       <h3 class="se-h">Scoring &amp; rewards</h3>
       <div class="se-grid">
         <label>Raid damage per castle HP<input id="reRate" type="number" min="1" value="${draft.scoring.perInFightHp||50}"></label>
@@ -20441,7 +20483,12 @@ function openRaidEditor(raidId){
     draft.stages.forEach((s,i)=>{
       const n = overlay.querySelector(`[data-st-name="${i}"]`), a = overlay.querySelector(`[data-st-at="${i}"]`), x = overlay.querySelector(`[data-st-strip="${i}"]`);
       if(n) s.name = n.value; if(a) s.at = Math.max(0, Math.min(0.999, num(a.value, 50)/100));
-      if(x){ s.rules = (s.rules||[]).filter(r=> !r.stripAbilities); if(x.checked) s.rules.push({stripAbilities:true}); }
+      // 2026-10-18 (R3-WP2): the stage's rules through RaidM.setStageRules (keys the editor doesn't show are kept)
+      const g = k=> overlay.querySelector(`[data-st-${k}="${i}"]`), vals = {};
+      if(x) vals.stripAbilities = x.checked;
+      [['batk', 'bossAtk'], ['bhp', 'bossHp'], ['volley', 'extraVolley'], ['castle', 'castleHpPct']].forEach(([a, k])=>{ if(g(a)) vals[k] = g(a).value; });
+      if(g('field') && g('field').value !== '__keep') vals.field = g('field').value;
+      RaidM.setStageRules(s, vals);
     });
   };
   const wire = ()=>{
@@ -20668,7 +20715,7 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
 }
 function startRaidPartMatch(def, partId){
   const st = currentRaidStateFor(def);
-  const f = RaidM.fightFor(def, st, partId);
+  const f = RaidM.fightFor(def, st, partId, raidStageOpts()); // 2026-10-18 (R3-WP2): with the stage's rules (raidStageOpts resolves its field)
   if(!f || f.locked || f.defeated) return;
   // 2026-10-12 (user: "I love that you made a whole entire minigame simulator of the full game. Lets bench that ... but for raids,
   // I want a FULL proper game. Just that, there's multi rows! like maybe 3 rows v 3 rows"): a trench raid is now a real match with
@@ -20687,9 +20734,13 @@ function startRaidPartMatch(def, partId){
     defs = Object.assign({}, defs); deck = {};
     Object.keys(f.deck).forEach(id=>{ if(!defs[id]) return; const nid = id+'~exposed'; defs[nid] = Object.assign({}, defs[id], {id:nid, effects:{}, name: defs[id].name+' (exposed)'}); deck[nid] = f.deck[id]; });
   }
-  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
+  // 2026-10-18 (R3-WP2): the stage's +Attack / +Health on run-only copies, its field, and your castle's Health (castleHpPct)
+  if(f.bossAtk || f.bossHp){ defs = Object.assign({}, defs); const d2 = {};
+    Object.keys(deck).forEach(id=>{ if(!defs[id]) return; const nid = f.stripAbilities ? id : id + '~raid'; defs[nid] = RaidM.stageCard(Object.assign({}, defs[id], {id:nid}), f); d2[nid] = deck[id]; }); deck = d2;
+    matchDefsOverlay = {}; Object.keys(deck).forEach(id=>{ matchDefsOverlay[id] = defs[id]; }); }
+  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false, rules: f.fieldRules});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = myCastleDef();
+  const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = RaidM.scaleCastle(myCharacter.health || 30, f.castleHpPct);
   const players = {1: engine.newPlayer(1, myDeckCounts, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
@@ -20697,9 +20748,10 @@ function startRaidPartMatch(def, partId){
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
-    raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null};
+    raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
+    raidFieldRules: f.fieldRules, raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : ''}; // 2026-10-18 (R3-WP2)
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stripAbilities ? ' · EXPOSED' : ''} · castle ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · castle ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
 }
 function startRaidFullBattle(def, partId, f, st){
   if(!deckSizeOkOrWarn()) return;
@@ -20716,15 +20768,15 @@ function startRaidFullBattle(def, partId, f, st){
   const defs = Object.assign({}, getCardDefs()), illusory = (cfg.rules && cfg.rules.illusory) || 0, bossDeck = {};
   Object.keys(cfg.deck).forEach(id=>{ if(!defs[id]) return;
     const nid = id + (cfg.strip ? '~exposed' : illusory ? '~illusory' : '~raid'), src = defs[id];
-    defs[nid] = Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})});
+    defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})}), f); // + the stage's bossAtk / bossHp (2026-10-18)
     bossDeck[nid] = cfg.deck[id]; });
   const entIds = cfg.entities.map((e, i)=>{ const id = 'raid-ent-' + (e.id || i); const fx = {armor: e.armor || 0}; if(illusory) fx.illusory = illusory;
-    defs[id] = {id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}; return id; });
+    defs[id] = RaidM.stageCard({id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}, f); return id; });
   // the run-only copies must be visible to the board and tooltips too (they read getCardDefs, which folds in the overlay)
   // The boss's Commons (2026-10-17, user: "For the enemy, can you enhance it by letting them playing commons on the back 2 rows every turn
   // as well?"): the raid's common pool (RaidM.raidCommonPool), scaled like its deck, called in by raidBossCommons each round.
   const commonPool = (RaidM.raidCommonPool ? RaidM.raidCommonPool(def, f.part, defs) : []).map(id=>{ const nid = id + '~raid', src = defs[id];
-    if(!defs[nid]) defs[nid] = Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : (src.effects || {})});
+    if(!defs[nid]) defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : (src.effects || {})}), f);
     return nid; });
   // The boss unit (2026-10-17, user: "I also noticed the raid has 2 variations of the same card. Then name them differently. Also the 100+
   // HP difference is too much."): it used to be the part's biggest card under its own name with its Health ×(2 + 10·r²) (a 24-Health
@@ -20737,7 +20789,7 @@ function startRaidFullBattle(def, partId, f, st){
   matchDefsOverlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss)$/.test(id) || id.startsWith('raid-ent-')) matchDefsOverlay[id] = defs[id]; });
   // The raid's field (2026-10-17, user: "There should be all the related field effects but also some kind of psychic dampener"): the
   // raid's (and the part's) fieldRules run in the engine and show as Environment cards (matchFieldRules reads m.raidFieldRules).
-  const raidRules = raidFieldRulesOf(def, f.part);
+  const raidRules = f.fieldRules || raidFieldRulesOf(def, f.part); // 2026-10-18 (R3-WP2): fightFor's, with the stage's field on top
   const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, suddenDeathCastles:false, rules: raidRules});
   const sideOf = id=> id===1?'A':'B';
   // Allies (2026-10-12, user: "Where are my allies? On the pre-screen it should show my allies and their levels, then during
@@ -20746,7 +20798,7 @@ function startRaidFullBattle(def, partId, f, st){
   // ally decks otherwise). Each has a castle; the three castles are one: their Health added up and their passives merged.
   const allies = (m0=> m0)(trenchAllies(def, [], (Math.random()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i));
   const mine = myCastleDef(), merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
-  const myHp = Math.max(merged.health || 30, (cfg.wallHp || 45) * 2);
+  const myHp = RaidM.scaleCastle(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct); // the stage's castleHpPct (2026-10-18)
   const players = {1: engine.newPlayer(1, myDeckCounts, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
   players[2].loopCards = [];
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
@@ -20767,7 +20819,8 @@ function startRaidFullBattle(def, partId, f, st){
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
     raidCastleStart: cfg.castleHp, raidRoundCap: cfg.rounds || f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
     raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your castle'].concat(allies.map(a=> a.castle.name)),
-    raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId};
+    raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId,
+    raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0}; // 2026-10-18 (R3-WP2)
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
   // 2026-10-12 (11:26 list: "During the raid, all 3 players' leaders come onto the battlefield, 1 on each of the centre 3
   // columns. Of course taking their own respective rows"): your leader opens in the front row's centre, the allies' leaders in
@@ -20778,7 +20831,7 @@ function startRaidFullBattle(def, partId, f, st){
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
   const m0 = matchState;
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
@@ -20868,6 +20921,9 @@ function raidPickColumn(m){
   const cols = occ.size ? [...occ] : [-1, 0, 1]; return cols[Math.floor(Math.random()*cols.length)];
 }
 function raidSpecials(m, events){
+  // A stage's extraVolley (2026-10-18, R3-WP2; Enraged / Thrashing): the boss's back two rows strike too, as your ally rows do (engine
+  // reserveVolley: half Attack at the unit facing them, or your castle when that column is empty), N times a round.
+  for(let k = 0; k < Math.min(3, m.raidExtraVolley || 0) && m.engine.reserveVolley; k++){ m.engine.reserveVolley(m.players, m.sideOf, 2, m.stats, events); m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, events); }
   const atks = m.raidAttacks || []; if(!atks.length) return;
   const pl = m.players[1], round = m.round; m.raidPending = m.raidPending || {};
   atks.forEach((a, i)=>{
@@ -26189,7 +26245,7 @@ function renderMatchUI(){
         const first = !loadTutorial2Done() && !adminTest;
         // 2026-10-15 (user: "The pack award was abit anti-climatic cause i didnt expect to get it. Don't give it till I unlock the
         // armoury"): the Ally Pack that came with part 2 is gone; the first pack is Map 0-2's faction pack, next to the Armoury.
-        if(first){ saveTutorial2Done(); try{ localStorage.setItem('bramblewood_tut_zoomout_v1', '1'); }catch(e){} }
+        if(first) saveTutorial2Done(); // 2026-10-18: no more bramblewood_tut_zoomout_v1 (never read; the first-visit zoom keys off revealSet)
         const after = ()=>{
           // Both tribes (2026-10-12, 10:57 list): the Meerkat Wayfarer, another traveller on the road, joins your collection (not
           // your deck), and the otternarian has a word about how hard peace is.
@@ -39583,7 +39639,7 @@ function renderDeckListTab(body){
       </div>
     </div>`;
   const grid = document.getElementById('deckMenuGrid');
-  body.querySelectorAll('[data-deckview]').forEach(b=> b.addEventListener('click', ()=>{ deckListView = b.dataset.deckview; try{ localStorage.setItem('bramblewood_deck_view', deckListView); }catch(e){} renderDeckListTab(body); }));
+  // 2026-10-18 (audit R3-WP6): the Large/Medium buttons went on 2026-10-13; their handler (and its never-read bramblewood_deck_view key) went too.
   if(deckListView==='medium'){
     grid.innerHTML = myDecks.map(d=> `<button type="button" class="dmp-btn" data-editdeck="${d.id}" aria-label="Edit ${escapeAttr(d.name)}">${deckMediumPreviewHTML(d)}</button>`).join('');
     grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckHeroView = false; deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));

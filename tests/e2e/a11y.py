@@ -35,11 +35,16 @@ TOP = "(()=>{ const s = window.BWA11y && BWA11y.stack(); return s && s.length ? 
 async def exercise(pg, name, opener_sel, open_js, closed_js, modal=True):
     """Focus the opener, open the dialog, then check focus in / Tab trap / Escape / focus back."""
     await pg.focus(opener_sel)
-    await pg.evaluate(open_js); await pg.wait_for_timeout(250)
+    await pg.evaluate(open_js)
+    # Focus moves in ~60 ms after the dialog appears (after the game's own focus code); allow for a busy machine.
+    try: await pg.wait_for_function(f"(()=>{{ const d = {TOP}; return !!d && d.contains(document.activeElement); }})()", timeout=2000, polling=50)
+    except Exception: pass
+    await pg.wait_for_timeout(100)
     info = await pg.evaluate(f"(()=>{{ const d = {TOP}; return d ? {{inside: d.contains(document.activeElement), role: d.getAttribute('role'), modal: d.getAttribute('aria-modal'), label: d.getAttribute('aria-label') || d.getAttribute('aria-labelledby') || ''}} : null; }})()")
     check(info is not None, f'{name}: the dialog is tracked')
     if not info: return
-    check(info['inside'], f'{name}: focus moved inside on open')
+    where = '' if info['inside'] else await pg.evaluate("(()=>{ const a = document.activeElement; return (a ? a.tagName + '#' + a.id + '.' + a.className : 'none') + ' stack=' + BWA11y.stack().map(d=> d.className || d.id).join(','); })()")
+    check(info['inside'], f'{name}: focus moved inside on open {where}')
     check(info['role'] in ('dialog', 'alertdialog') and bool(info['label']), f'{name}: role=dialog with a label ({info})')
     if modal: check(info['modal'] == 'true', f'{name}: aria-modal="true"')
     n = await pg.evaluate(f"(()=>{{ const d = {TOP}; return [...d.querySelectorAll('button, input, select, textarea, a[href], [tabindex]')].filter(e=> e.tabIndex >= 0 && e.getClientRects().length).length; }})()")
@@ -107,9 +112,12 @@ async def main():
         secs = await pg.evaluate("(()=>{ const b = document.querySelector('.dlg-replies .dlg-timer b'); return b ? +b.textContent : null; })()")
         check(secs is not None and secs > 30, f'NPC replies: Slow speed gives more than 30 s (shows {secs})')
         if secs is not None:
-            await pg.hover('.dlg-replies .dlg-reply'); await pg.wait_for_timeout(2300)
-            after = await pg.evaluate("(()=>{ const r = document.querySelector('.dlg-replies'); return r ? {n: +r.querySelector('.dlg-timer b').textContent, paused: r.classList.contains('is-paused')} : null; })()")
-            check(after and after['paused'] and after['n'] >= secs - 1, f'NPC replies: the clock waits under the pointer ({secs} → {after})')
+            await pg.hover('.dlg-replies .dlg-reply'); await pg.wait_for_timeout(400)
+            STATE = "(()=>{ const r = document.querySelector('.dlg-replies'); return r ? {n: +r.querySelector('.dlg-timer b').textContent, paused: r.classList.contains('is-paused')} : null; })()"
+            held = await pg.evaluate(STATE)
+            await pg.wait_for_timeout(2300)
+            after = await pg.evaluate(STATE)
+            check(held and after and after['paused'] and after['n'] >= held['n'], f'NPC replies: the clock waits under the pointer ({held} → {after})')
             await pg.click('.dlg-replies .dlg-reply')
         await pg.evaluate("setDialogueSpeed('medium'); 1")
 

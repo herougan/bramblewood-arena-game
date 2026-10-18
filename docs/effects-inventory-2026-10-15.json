@@ -14877,20 +14877,20 @@
   "id": "amb-arena",
   "area": "world-ambience",
   "name": "The Arena as a real arena",
-  "trigger": "planned",
-  "current": "menu only",
-  "quality": "missing — planned (immersion \"next round\")",
+  "trigger": "Arena fights and the Arena panel",
+  "current": "tourney-ground backdrop (marena) with bunting",
+  "quality": "basic — the ground and bunting are in; full stands and crowd murmur are not",
   "priority": 3,
   "themeNotes": "Sand floor, banners, crowd murmur.",
   "variantsSuggested": false,
-  "future": true,
+  "future": false,
   "sources": [
    "docs/immersion-2026-10-05.md:79"
   ],
   "batch": "E",
-  "status": "lab-only",
+  "status": "live",
   "lab": "e.js",
-  "inGameHook": "future"
+  "inGameHook": "live: Arena fights stand on the tourney ground (map art marena) under bunting (syncSceneFx); this full-stands concept is not wired"
  },
  {
   "id": "amb-tavern",
@@ -16903,20 +16903,20 @@
   "id": "meta-steam-achv",
   "area": "meta-progression",
   "name": "Steam achievements / overlay",
-  "trigger": "planned (Steam build)",
-  "current": "none",
-  "quality": "missing — planned",
+  "trigger": "a milestone reached in the desktop (Steam) build",
+  "current": "steamUnlock(); Steam shows its own overlay",
+  "quality": "basic — Steam's overlay, no in-game toast",
   "priority": 3,
   "themeNotes": "",
   "variantsSuggested": false,
-  "future": true,
+  "future": false,
   "sources": [
    "docs/steam-launch-plan-2026-10-13.md:40"
   ],
   "batch": "F",
-  "status": "lab-only",
+  "status": "live",
   "lab": "f.js",
-  "inGameHook": "future"
+  "inGameHook": "live: steamUnlock() in the desktop build; Steam draws its own overlay, so this toast is not used"
  },
  {
   "id": "meta-attunement",
@@ -16960,20 +16960,20 @@
   "id": "meta-dragon-egg-craft",
   "area": "meta-progression",
   "name": "Craft a dragon egg",
-  "trigger": "planned (Map 50+, a month of farming)",
-  "current": "none",
-  "quality": "missing — planned",
+  "trigger": "the Scale Trail finale (all eight Dragon Scales)",
+  "current": "scaleTrailEggFx: the scales orbit and fuse in a red glow into the egg card",
+  "quality": "good",
   "priority": 2,
   "themeNotes": "Egg forms from scales in a red glow.",
   "variantsSuggested": false,
-  "future": true,
+  "future": false,
   "sources": [
    "docs/design-2026-10-14-late-game.md:37"
   ],
   "batch": "F",
-  "status": "lab-only",
+  "status": "live",
   "lab": "f.js",
-  "inGameHook": "future"
+  "inGameHook": "live: scaleTrailEggFx() on the Scale Trail reward screen"
  },
  {
   "id": "meta-materia-socket",
@@ -18280,20 +18280,20 @@
   "id": "dng-murgle",
   "area": "raid-dungeon-pvp",
   "name": "Murgle daily dungeons",
-  "trigger": "planned",
-  "current": "none",
-  "quality": "missing — planned",
+  "trigger": "entering Murgle Mayhem, the first daily dungeon",
+  "current": "its map intro uses FX.G's dungeon title",
+  "quality": "basic — the dungeon and its title are in; the swamp-gate effect is lab-only",
   "priority": 2,
   "themeNotes": "Murky swamp-goblin dungeon gate.",
   "variantsSuggested": false,
-  "future": true,
+  "future": false,
   "sources": [
    "docs/coop-dungeon-design-2026-10-13.md"
   ],
   "batch": "F",
-  "status": "lab-only",
+  "status": "live",
   "lab": "f.js",
-  "inGameHook": "future"
+  "inGameHook": "live: Murgle Mayhem is open in the Dungeons tab and enters with FX.G's dungeon map title; this swamp gate is not wired"
  },
  {
   "id": "pvp-map60",
@@ -18318,20 +18318,20 @@
   "id": "world-event",
   "area": "raid-dungeon-pvp",
   "name": "World events (community stage rally horn)",
-  "trigger": "planned",
-  "current": "none",
-  "quality": "missing — planned",
+  "trigger": "an admin world event or GM message (world_events table), a raid falling",
+  "current": "🌍 / 📣 toasts from the 3-minute check",
+  "quality": "basic — toasts; the horn banner is lab-only",
   "priority": 2,
   "themeNotes": "Horn banner across every screen.",
   "variantsSuggested": false,
-  "future": true,
+  "future": false,
   "sources": [
    "docs/raid-design.md:120"
   ],
   "batch": "F",
-  "status": "lab-only",
+  "status": "live",
   "lab": "f.js",
-  "inGameHook": "future"
+  "inGameHook": "live: checkWorldEvents() shows the world_events call-outs as toasts; this horn banner is not wired"
  },
  {
   "id": "fld-unit-light",
