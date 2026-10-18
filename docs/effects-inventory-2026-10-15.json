@@ -20412,5 +20412,26 @@
   "added": "2026-10-18",
   "lab": "rw.js",
   "inGameHook": "results (a won NEW Babel Spire floor, not a free replay): isTowerResults → .winloss-card.is-tower + towerAscentHTML (arena_app.js); FX.F.hooks.resultsShown → FX.F.towerAscend"
+ },
+ {
+  "id": "res-xp-bar",
+  "area": "rewards-results",
+  "name": "XP bar on the reward screens",
+  "trigger": "a won fight's Victory card (skirmish, boss crimson, Spire ascent) and the raid claim screen: the XP since m.xpBefore / the claim's XP",
+  "current": "FX.F.xpBarHTML / FX.F.xpBarFill: level + bar at the top, fills level by level, a burst and \"Level N!\" on each level crossed (heroLevel), \"+N XP\"; replaces the XP / level-up toasts while it shows; calm = end state with a fade",
+  "quality": "good — has its own look that plays at the right moment",
+  "priority": 2,
+  "themeNotes": "Owner 2026-10-18 23:32: \"Should the reward screen show the exp bar filling up on the top? Then we can remove the toast.\"",
+  "variantsSuggested": false,
+  "future": false,
+  "sources": [
+   "bramblewood-fx-f.js: M.xpBarHTML, M.xpBarFill",
+   "arena_app.js: xpBarSpec, rewardXpBarHTML, syncRewardXpBar, rewardXpBarUp, awardXp"
+  ],
+  "batch": "RW",
+  "status": "live",
+  "added": "2026-10-18",
+  "lab": "rw.js",
+  "inGameHook": "results: rewardXpBarHTML + syncRewardXpBar (arena_app.js, from m.xpBefore; awardXp feeds it and skips its toasts while it shows) → FX.F.xpBarFill; raid claim: spec.xp → the same bar"
  }
 ]

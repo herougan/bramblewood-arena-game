@@ -2,6 +2,17 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 late (RW follow-up: the XP bar on the reward screens)
+- **The reward screens show your XP bar filling up at the top, and the XP toasts are gone there** (owner 23:32: "Should the reward screen show the exp bar filling up on the top? Then we can remove the toast.").
+  - Where: every Victory card (skirmish, boss crimson, the Spire ascent, any won fight except hot-seat and the tutorial) and the raid claim screen.
+  - It shows "Level N", the bar and "+N XP", and fills with the fight's XP. That includes the first-clear milestone that lands a moment later.
+  - On each level crossed it bursts, "Level N!" pops on the bar (with the heroLevel sound), the number steps up and the bar fills on from empty.
+  - On the claim screen the bar fills as the XP reward comes up. A skip fills it to the end.
+  - Reduced motion or Effects Low: the end state with a short fade.
+- **No XP toast while the bar shows.** That covers the "Level N" toast, the "+25 XP — First clear" milestone toast and the level badge's own level-up moment. Everywhere else (quests, milestones away from a reward screen, closing the results to look at the board) they stay as before.
+- Code: `xpBarSpec`, `rewardXpBarHTML`, `syncRewardXpBar`, `rewardXpBarUp` and `m.xpBefore`, set when the result is decided; `awardXp` and `checkXpMilestones` (`arena_app.js`). `FX.F.xpBarHTML` and `FX.F.xpBarFill` (`bramblewood-fx-f.js`).
+- Effects Lab: `res-xp-bar` (A a level-up, B a plain fill, C calm); the raid claim entries now carry the bar. Four TX keys (`results.xp-*`) are in all 12 packs, and `tests/reward-screens-2026-10-19.js` covers it (132 checks).
+
 ## 2026-10-18 late (package C follow-up: filter the Codex by skill)
 - **✨ Skills filter in Codex Browse** (owner 23:21: "add a way to filter by skills in codex"). It works in the album, Compressed and Full Art views.
   - The button sits with the other filters and opens a panel of every skill you have seen, each with its icon (admins see all).

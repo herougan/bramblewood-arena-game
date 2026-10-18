@@ -16367,9 +16367,48 @@ function awardXp(n, reason){
   const x = loadXp(), before = levelFromXp(x.xp).level;
   x.xp += Math.round(n); saveXp(x);
   const after = levelFromXp(x.xp).level;
+  // 2026-10-18 (package RW follow-up, owner 23:32: "Should the reward screen show the exp bar filling up on the top? Then we can remove the
+  // toast."): while a reward screen shows the XP bar, the XP fills that bar (and its level-up bursts there); no toast, no badge moment.
+  if(rewardXpBarUp()){ try{ syncRewardXpBar(); }catch(e){} refreshLevelBadge(); return; }
   try{ fxHook('xpGain', Math.round(n), before, after); }catch(e){} // 2026-10-15 batch F: the level-up moment / XP into the badge
   if(after > before) setTimeout(()=> showToast(TX('toast.level', {after, v2: reason ? ' — ' + reason : ''}), 'ok'), 400);
   refreshLevelBadge();
+}
+// The XP bar on the reward screens (2026-10-18, package RW follow-up): the Victory card (skirmish, boss crimson, Spire ascent; any won
+// fight but hot-seat and the tutorial) and the raid claim screen show your level and XP bar at the top, filling with this fight's XP
+// (FX.F.xpBarHTML / FX.F.xpBarFill in bramblewood-fx-f.js): level by level, a burst and "Level N!" on each level crossed. The fight's XP
+// counts from m.xpBefore (set as the result is decided), so the first-clear milestone that lands a moment later fills it too. The XP and
+// level-up toasts are skipped while the bar shows; they stay everywhere else. Reduced motion / Effects Low: the end state, a short fade.
+function xpBarSpec(from, to){
+  from = Math.max(0, from || 0); to = Math.max(from, to || 0);
+  const a = levelFromXp(from), b = levelFromXp(to), segs = [], labels = {}, ups = {};
+  let start = a.into / a.need;
+  for(let L = a.level; L < b.level && segs.length < 30; L++){ segs.push({level:L, from:start, to:1, up:L + 1}); start = 0; }
+  segs.push({level:b.level, from:start, to:b.into / b.need});
+  segs.forEach(sg=>{ labels[sg.level] = TX('results.xp-level', {n: sg.level}); if(sg.up){ labels[sg.up] = TX('results.xp-level', {n: sg.up}); ups[sg.up] = TX('results.xp-level-up', {n: sg.up}); } });
+  return {from, to, segs, labels, ups, gainText: to > from ? TX('results.xp-gain', {n: Math.round(to - from)}) : '', aria: TX('results.xp-aria', {n: b.level, into: Math.round(b.into), need: b.need})};
+}
+function xpBarReady(){ return !!(window.FX && window.FX.F && typeof window.FX.F.xpBarHTML === 'function' && typeof window.FX.F.xpBarFill === 'function'); }
+function resultsShowXpBar(m){ return !!(m && m.over && m.winner === 1 && m.xpBefore != null && m.mode !== 'pc' && m.mode !== 'tutorial' && m.mode !== 'sandbox' && !m.fxLib && xpBarReady()); }
+function rewardXpBarUp(){
+  if(document.querySelector('.fxf-rcs')) return true; // the raid claim screen
+  const m = typeof matchState !== 'undefined' ? matchState : null;
+  return !!(m && m.winner === 1 && m.xpBefore != null && !m.winModalDismissed && resultsShowXpBar(Object.assign({}, m, {over:true}))); // the results are up, or about to be
+}
+function rewardXpBarHTML(m){
+  if(!resultsShowXpBar(m)) return '';
+  const shown = m.xpShown != null ? m.xpShown : m.xpBefore, spec = xpBarSpec(m.xpBefore, shown);
+  const at = xpBarSpec(shown, shown); at.gainText = spec.gainText; at.gainShown = m.xpShown != null; // drawn where the fill last got to
+  return `<div class="wl-xp">${window.FX.F.xpBarHTML(at)}</div>`;
+}
+function syncRewardXpBar(){
+  const m = typeof matchState !== 'undefined' ? matchState : null; if(!resultsShowXpBar(m)) return;
+  const bar = document.querySelector('.winloss-card .wl-xp .fxf-xp'); if(!bar) return;
+  const from = m.xpShown != null ? m.xpShown : m.xpBefore, to = loadXp().xp; if(!(to > from) && m.xpShown != null) return;
+  const spec = xpBarSpec(from, to); spec.gainText = to > m.xpBefore ? TX('results.xp-gain', {n: Math.round(to - m.xpBefore)}) : '';
+  m.xpShown = to;
+  window.FX.F.xpBarFill(bar, spec, {calm: reducedMotion() || !fxAtLeast('med') || !hasGsap(), delay: m._xpBarFilled ? 0 : .7, sound: k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} }});
+  m._xpBarFilled = true;
 }
 function xpMilestones(){
   const out = [];
@@ -16406,7 +16445,7 @@ function checkXpMilestones(){
   x.milestones = Array.from(have); saveXp(x);
   const total = fresh.reduce((t,m)=> t+m.xp, 0);
   awardXp(total, fresh.length===1 ? fresh[0].label : `${fresh.length} milestones`);
-  if(!(fresh.length === 1 && fresh[0].id === 'tutorial')) showToast(TX('toast.xp', {total, v2: fresh.length===1 ? fresh[0].label : fresh.length + ' milestones'}), 'ok'); // the tutorial's own XP: the Level 1 toast says it (2026-10-12: fewer toasts)
+  if(!(fresh.length === 1 && fresh[0].id === 'tutorial') && !rewardXpBarUp()) showToast(TX('toast.xp', {total, v2: fresh.length===1 ? fresh[0].label : fresh.length + ' milestones'}), 'ok'); // the tutorial's own XP: the Level 1 toast says it (2026-10-12: fewer toasts)
 }
 function levelBadgeHTML(){
   const L = playerLevelInfo();
@@ -21265,6 +21304,7 @@ function claimRaidReward(def, claim){
   claimed[claim.key] = Date.now(); try{ localStorage.setItem(RAID_CLAIMS_KEY, JSON.stringify(claimed)); }catch(e){}
   const xp = claim.reward.kind==='kill' ? 500 : 150;
   const spec = raidClaimScreenSpec(def, claim, all, cardsGot, xp);
+  if(xpBarReady()){ const x0 = loadXp().xp; spec.xp = xpBarSpec(x0, x0 + xp); } // 2026-10-18 (RW follow-up): the claim screen's XP bar
   // 2026-10-18 (package RW): the claim screen opens first, so the XP level-up (FX.F.hooks.xpGain) waits for it to close
   if(screen) showRaidClaimScreen(spec);
   awardXp(xp, 'raid reward');
@@ -27370,7 +27410,7 @@ function renderMatchUI(){
           <button class="wl-corner-btn" id="wlQuitBtn" title="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}" aria-label="${m.mode==='conquest' ? 'Back to the map' : (m.mode==='raidOnline'||m.mode==='raidOffline') ? 'Back to the raid' : 'Leave'}">✕</button>
         </div>`}
         ${!isPc && isBossResults(m) ? bossEmbersHTML() : ''}${(!isPc && (m.winner===1 || m.raidFull)) ? '<div class="wl-rays-clip" aria-hidden="true"><div class="wl-rays"></div></div>' : (!isPc && !isTutorial && m.winner===2) ? `<div class="wl-dusk" aria-hidden="true">${Array.from({length:10}, (_, k)=> `<i style="left:${(k*29+7)%100}%; animation-delay:-${(k*0.9).toFixed(1)}s; animation-duration:${(7 + (k*1.7)%5).toFixed(1)}s"></i>`).join('')}</div>` : ''}
-        <div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
+        ${!isPc && !isTutorial ? rewardXpBarHTML(m) : '' /* 2026-10-18 (RW follow-up): the XP bar, filling */}<div class="pass-ico">${m.raidFull ? (m.winner===1 ? '👑' : '⚔️') : m.winner===0?'🤝':(isPc?'🏆':(m.winner===1?'🎉':'💀'))}</div>
         <h2 class="wl-title">${m.raidFull ? (m.winner===1 ? 'Absolute Victory!' : 'Raid complete!') /* 2026-10-12 (user: "Even failure and draw is success. It's about how much you deal. However, if you win the match somehow, the colour is yellow and it says Absolute Victory") */ : m.winner===0?'Draw!':isPc?`Player ${m.winner} Wins!`:isTutorial?tutorialWinLossTitle(m):(m.winner===1?winTitle(m):lossTitle(m))}</h2>
         ${gloryBadgesHTML(m)}${!isPc && isTowerResults(m) ? towerAscentHTML(m) : ''}${lossRankHeadlineHTML(m)}${rankLessonHTML(m)}
         ${isTutorial?tutorialWinLossSubtitleHTML(m):''}
@@ -27486,6 +27526,7 @@ function renderMatchUI(){
   // can't be wired inside the open-results block below.
   { const wlReopen = document.getElementById('wlReopenBtn'); if(wlReopen) wlReopen.addEventListener('click', ()=>{ m.winModalDismissed = false; renderMatchUI(); }); }
   if(showWinModal){
+    try{ syncRewardXpBar(); }catch(e){} // 2026-10-18 (package RW follow-up): fill the results' XP bar with what came in since it was drawn
     try{ window.hideCardPop && window.hideCardPop(); }catch(e){}
     // Task #203 (UX consultant pass): the win modal previously had a mount animation but no
     // actual celebratory payoff — for the youth audience this targets, that "win" beat is one of
@@ -32737,6 +32778,7 @@ async function resolveRoundCore(opts){
   if(over){
     const p1dead = m.players[1].hq.hp<=0, p2dead = m.players[2].hq.hp<=0;
     m.winner = (m.forcedWinner!=null) ? m.forcedWinner : ((p1dead&&p2dead)?0:(p1dead?2:1));
+    if(m.xpBefore == null) m.xpBefore = loadXp().xp; // 2026-10-18 (package RW follow-up): the results' XP bar fills from here
     // 2026-10-15 (user: "Earthquake and Player victory should be logs in the log."): the result is the log's last line.
     try{ if(!m.resultLogged){ m.resultLogged = true; pushLog({type:'matchResult', winner:m.winner, reason:m.endReason || null, castle: m.forcedWinner==null && (p1dead || p2dead)}); } }catch(e){}
     // 2026-10-15 (user: "As I described previously, don't wait for the crumble animation to finish before playing the Victory/Defeat
