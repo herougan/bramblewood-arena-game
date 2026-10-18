@@ -33132,6 +33132,16 @@ function coldWaveVfx(m){
 const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'calc(100% - 12px)', flow:'0%', high:'0%'};
 const TIDE_BOARD_CARDS = '#battlefieldInner .board-row > .board-card'; // every row: yours, the enemy's, and the raid's middle / back rows (2026-10-18)
 const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {none:0, ebb:1, flow:2, high:3};
+// 2026-10-18 (package M, owner 20:45: "The movement during flood should be a bit more obvious during transition. Then during steady
+// state, 70% more movement than now (it moves like 2-3px only right now). In Ebb, it looks like what it is right now, but 20% less."):
+// the settled water's slosh (.tw-body's twSlosh, px down and back over 6 s) was 5px in every state; it is now TIDE_FLOOD_MOTION on
+// Flood and High Tide (5 x 1.7) and TIDE_EBB_MOTION on Ebb (5 x 0.8), passed to the CSS as --tw-slosh. A rising tide (into Flood or
+// High Tide) tilts in further from the left (TIDE_RISE_SKEW, was TIDE_BASE_SKEW), its crest surges higher (twSurgeR*) and, as it
+// reaches the top, the whole sheet swells down into view and settles back (twArrive*, TIDE_ARRIVE_SWELL px). Ebb and the tide going
+// out keep their old tilt and surge. Transforms only; Low effects, Minimal and reduced motion still stop all of it (CSS, .tide-scene).
+const TIDE_MOTION_BASE = 5, TIDE_FLOOD_MOTION = 8.5, TIDE_EBB_MOTION = 4; // px; the owner's knobs (x1.7 and x0.8 of the old 5px)
+const TIDE_RISE_SKEW = 8, TIDE_BASE_SKEW = 5, TIDE_ARRIVE_SWELL = 40; // deg, deg, px (the swell clears the top border's bunting, about 20px)
+function tideMotionPx(k){ return k === 'ebb' ? TIDE_EBB_MOTION : (k === 'flow' || k === 'high') ? TIDE_FLOOD_MOTION : TIDE_MOTION_BASE; }
 function tideSceneTarget(m){
   try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
 }
@@ -33154,9 +33164,13 @@ function syncTideScene(m){
     w.dataset.key = key; w.dataset.k = st.k;
     w.style.setProperty('--tw-from', TIDE_SCENE_Y[st.from] || TIDE_SCENE_Y.none); w.style.setProperty('--tw-to', TIDE_SCENE_Y[st.k]);
     w.style.setProperty('--tw-delay', (moving ? -el : -1e6) + 'ms');
-    w.style.setProperty('--tw-skew', (TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from] ? 5 : -5) + 'deg'); // in from the left (owner, 10:27)
+    const rising = TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from], flooding = rising && (st.k === 'flow' || st.k === 'high');
+    w.style.setProperty('--tw-skew', (flooding ? TIDE_RISE_SKEW : rising ? TIDE_BASE_SKEW : -TIDE_BASE_SKEW) + 'deg'); // in from the left (owner, 10:27); steeper on a Flood (package M)
+    w.style.setProperty('--tw-slosh', tideMotionPx(st.k) + 'px'); // the settled slosh: Flood x1.7, Ebb x0.8 (package M, owner 20:45)
+    w.style.setProperty('--tw-swell', TIDE_ARRIVE_SWELL + 'px');
     w.classList.toggle('mv-b', !w.classList.contains('mv-b')); // a new animation name restarts the move (and the drying)
     w.classList.toggle('is-moving', moving);
+    w.classList.toggle('is-rising', moving && flooding);
     w.classList.toggle('is-drying', moving && (st.from === 'flow' || st.from === 'high') && (st.k === 'ebb' || st.k === 'none'));
   }
   bf.dataset.tide = st.k; bf.style.setProperty('--tw-wade-delay', (moving ? -el : -1e6) + 'ms');

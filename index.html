@@ -6603,7 +6603,16 @@
   @keyframes twMoveA{from{transform:translateY(var(--tw-from)) skewY(var(--tw-skew, 0deg));} to{transform:translateY(var(--tw-to)) skewY(0deg);}}
   @keyframes twMoveB{from{transform:translateY(var(--tw-from)) skewY(var(--tw-skew, 0deg));} to{transform:translateY(var(--tw-to)) skewY(0deg);}}
   .tide-scene .tw-body{position:absolute; inset:0; animation:twSlosh 6s ease-in-out infinite;}
-  @keyframes twSlosh{0%,100%{transform:translateY(0);} 50%{transform:translateY(5px);}}
+  /* 2026-10-18 (package M, owner 20:45: "during steady state, 70% more movement than now ... In Ebb ... 20% less"): the slosh's depth is
+     --tw-slosh, set by syncTideScene from TIDE_FLOOD_MOTION (8.5px, Flood and High Tide) / TIDE_EBB_MOTION (4px, Ebb); it was 5px. */
+  @keyframes twSlosh{0%,100%{transform:translateY(0);} 50%{transform:translateY(var(--tw-slosh, 5px));}}
+  /* ... and "The movement during flood should be a bit more obvious during transition": a Flood / High Tide coming in swells down into
+     view as it reaches the top and settles back (the independent translate property, so it adds to the slosh; --tw-swell is
+     TIDE_ARRIVE_SWELL), its crest surges higher and its back foam line brightens while it rises (twSurgeR*, twFoamR*). */
+  .tide-scene.is-moving.is-rising .tw-body{animation:twSlosh 6s ease-in-out infinite, twArriveA 1.4s ease-out calc(var(--tw-delay, 0ms) + 1500ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-body{animation-name:twSlosh, twArriveB;}
+  @keyframes twArriveA{0%{translate:0 0;} 30%{translate:0 var(--tw-swell, 40px);} 62%{translate:0 calc(var(--tw-swell, 40px)*-.12);} 82%{translate:0 calc(var(--tw-swell, 40px)*.18);} 100%{translate:0 0;}}
+  @keyframes twArriveB{0%{translate:0 0;} 30%{translate:0 var(--tw-swell, 40px);} 62%{translate:0 calc(var(--tw-swell, 40px)*-.12);} 82%{translate:0 calc(var(--tw-swell, 40px)*.18);} 100%{translate:0 0;}}
   /* 2026-10-18 (owner 15:05: "the water vfx can come into play after the water settles"): the caustics and the sheen (.tw-surf) fade in
      once the move is over (the move's 1.8 s, resumed by the same --tw-delay) */
   .tide-scene .tw-surf{position:absolute; inset:0;}
@@ -6633,6 +6642,15 @@
   .tide-scene.is-moving.mv-b .tw-edge.tw-edge-b{animation-name:twEdgeB, twSurgeB;}
   @keyframes twSurgeA{0%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
   @keyframes twSurgeB{0%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
+  /* a Flood's rise (package M, 2026-10-18): a taller surge, and the back foam line bright while it climbs */
+  .tide-scene.is-moving.is-rising .tw-edge{animation:twEdge 8s linear infinite, twSurgeRA 1.8s ease-out var(--tw-delay, 0ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-edge{animation-name:twEdge, twSurgeRB;}
+  .tide-scene.is-moving.is-rising .tw-edge.tw-edge-b{animation:twEdgeB 13s linear infinite, twSurgeRA 1.8s ease-out var(--tw-delay, 0ms) both, twFoamRA 2.2s ease-out var(--tw-delay, 0ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-edge.tw-edge-b{animation-name:twEdgeB, twSurgeRB, twFoamRB;}
+  @keyframes twSurgeRA{0%{scale:1 2.9;} 55%{scale:1 1.9;} 100%{scale:1 1;}}
+  @keyframes twSurgeRB{0%{scale:1 2.9;} 55%{scale:1 1.9;} 100%{scale:1 1;}}
+  @keyframes twFoamRA{0%,70%{opacity:1;} 100%{opacity:.6;}}
+  @keyframes twFoamRB{0%,70%{opacity:1;} 100%{opacity:.6;}}
   /* an ebb (or the tide ending) leaves the sand wet and dark, drying out over about seven seconds */
   .tide-scene.is-drying .tw-wet{animation:twDryA 7s ease-out var(--tw-delay, 0ms) both;}
   .tide-scene.is-drying.mv-b .tw-wet{animation-name:twDryB;}
@@ -38422,7 +38440,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '8cced1cfbb51', BUILD_CARD_HASH = '4e424212654e900615daa4652b7dec9d1efd9478abf8d7525a8f0941b4a868b0';
+const BUILD_ID = 'b2c71498017a', BUILD_CARD_HASH = '4e424212654e900615daa4652b7dec9d1efd9478abf8d7525a8f0941b4a868b0';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -68849,6 +68867,16 @@ function coldWaveVfx(m){
 const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'calc(100% - 12px)', flow:'0%', high:'0%'};
 const TIDE_BOARD_CARDS = '#battlefieldInner .board-row > .board-card'; // every row: yours, the enemy's, and the raid's middle / back rows (2026-10-18)
 const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {none:0, ebb:1, flow:2, high:3};
+// 2026-10-18 (package M, owner 20:45: "The movement during flood should be a bit more obvious during transition. Then during steady
+// state, 70% more movement than now (it moves like 2-3px only right now). In Ebb, it looks like what it is right now, but 20% less."):
+// the settled water's slosh (.tw-body's twSlosh, px down and back over 6 s) was 5px in every state; it is now TIDE_FLOOD_MOTION on
+// Flood and High Tide (5 x 1.7) and TIDE_EBB_MOTION on Ebb (5 x 0.8), passed to the CSS as --tw-slosh. A rising tide (into Flood or
+// High Tide) tilts in further from the left (TIDE_RISE_SKEW, was TIDE_BASE_SKEW), its crest surges higher (twSurgeR*) and, as it
+// reaches the top, the whole sheet swells down into view and settles back (twArrive*, TIDE_ARRIVE_SWELL px). Ebb and the tide going
+// out keep their old tilt and surge. Transforms only; Low effects, Minimal and reduced motion still stop all of it (CSS, .tide-scene).
+const TIDE_MOTION_BASE = 5, TIDE_FLOOD_MOTION = 8.5, TIDE_EBB_MOTION = 4; // px; the owner's knobs (x1.7 and x0.8 of the old 5px)
+const TIDE_RISE_SKEW = 8, TIDE_BASE_SKEW = 5, TIDE_ARRIVE_SWELL = 40; // deg, deg, px (the swell clears the top border's bunting, about 20px)
+function tideMotionPx(k){ return k === 'ebb' ? TIDE_EBB_MOTION : (k === 'flow' || k === 'high') ? TIDE_FLOOD_MOTION : TIDE_MOTION_BASE; }
 function tideSceneTarget(m){
   try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
 }
@@ -68871,9 +68899,13 @@ function syncTideScene(m){
     w.dataset.key = key; w.dataset.k = st.k;
     w.style.setProperty('--tw-from', TIDE_SCENE_Y[st.from] || TIDE_SCENE_Y.none); w.style.setProperty('--tw-to', TIDE_SCENE_Y[st.k]);
     w.style.setProperty('--tw-delay', (moving ? -el : -1e6) + 'ms');
-    w.style.setProperty('--tw-skew', (TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from] ? 5 : -5) + 'deg'); // in from the left (owner, 10:27)
+    const rising = TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from], flooding = rising && (st.k === 'flow' || st.k === 'high');
+    w.style.setProperty('--tw-skew', (flooding ? TIDE_RISE_SKEW : rising ? TIDE_BASE_SKEW : -TIDE_BASE_SKEW) + 'deg'); // in from the left (owner, 10:27); steeper on a Flood (package M)
+    w.style.setProperty('--tw-slosh', tideMotionPx(st.k) + 'px'); // the settled slosh: Flood x1.7, Ebb x0.8 (package M, owner 20:45)
+    w.style.setProperty('--tw-swell', TIDE_ARRIVE_SWELL + 'px');
     w.classList.toggle('mv-b', !w.classList.contains('mv-b')); // a new animation name restarts the move (and the drying)
     w.classList.toggle('is-moving', moving);
+    w.classList.toggle('is-rising', moving && flooding);
     w.classList.toggle('is-drying', moving && (st.from === 'flow' || st.from === 'high') && (st.k === 'ebb' || st.k === 'none'));
   }
   bf.dataset.tide = st.k; bf.style.setProperty('--tw-wade-delay', (moving ? -el : -1e6) + 'ms');
