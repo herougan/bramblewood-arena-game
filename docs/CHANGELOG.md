@@ -2,6 +2,14 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (R3-WP3: network feedback and stale Online Raid copy)
+- **A failed load no longer looks like an empty one.** The leaderboard, your guild, the guild list, match history, Friends (connection and list) and the Flea Market's listings / My listings now say "Couldn't load …" with a **Retry** button, instead of "No ranked players yet", "You're not in a guild yet", "No matches recorded yet" or "No friends yet". One shared helper, `netErrorHTML(what, name, retryFn)` (+ `netErrText(err)` for toasts).
+- **Writes the player asked for report failure.** Leaving a guild checks its error (toast, and you stay in it); a name change that didn't reach the account says so; cancelling or declining a match invite that didn't reach the server says so (a failed cancel keeps watching the invite); an accepted invite whose match can't be read tells the inviter; Ranked Live tells you once after 3 failed matchmaking polls in a row.
+- **No more ownerless guilds left silently.** If the founder's owner row fails, `createGuild` retries it once, then deletes the new guild. The live policies have no delete on `guilds`, so until `supabase/proposed/20261018_guild_creator_delete_empty.sql` is applied the founder is told to re-join it from the list, and joining a guild you founded makes you its owner.
+- **Online Raid is only named while it's visible** (`ONLINE_RAID_VISIBLE`): the rank panel, the empty leaderboard, the profile rank tooltip, the guild sign-in line and the entrance note now point at Arena PvP / Ranked Live.
+- Progress sync: a failed `player_progress` push now retries on the next 20 s tick instead of being treated as saved.
+- 23 new TX keys (`net.*`, `ui.*`, `toast.*`); `docs/game-texts.xlsx` re-exported.
+
 ## 2026-10-18 (I1: translations for texts with placeholders)
 - **The 159 game texts with a {placeholder} now translate** in all 12 languages ("📜 Errand: The Old Bramble — 2/5" → "📜 おつかい：古いいばら — 2/5"): toasts, results-screen pills, dialogs, tutorial lines. `TX()` still returns English, so code that compares its result is unaffected.
 - **How:** `bramblewood-i18n.js` compiles every pack key with a {placeholder} into a template (once per pack load: ~2 ms). When the exact lookup misses, a text is tried only against the templates whose rarest literal word it contains, and a match fills the translation with the captured values; each value is looked up too, so a map, card or item name inside the sentence translates, as do English tails such as " · published" or ". Journey complete!". Counts only match digits, plural endings a few letters, ranks a capital letter. ~3 µs a string on first sight, cached after.

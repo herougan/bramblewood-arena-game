@@ -9173,15 +9173,20 @@ async function trimMatchHistory(){
 async function loadMatchHistory(){
   if(!sbClient || !isSignedIn()){ matchHistoryList = []; return; }
   try{
-    const { data } = await sbClient.from('match_history').select('*').eq('profile_id', cloudUserId).order('played_at', {ascending:false}).limit(30);
-    matchHistoryList = data || [];
-  }catch(e){ matchHistoryList = []; }
+    const { data, error } = await sbClient.from('match_history').select('*').eq('profile_id', cloudUserId).order('played_at', {ascending:false}).limit(30);
+    if(error) throw error;
+    matchHistoryList = data || []; matchHistoryError = false;
+  }catch(e){ matchHistoryList = []; matchHistoryError = true; }
   if(currentTab==='profile') renderProfile();
 }
+// 2026-10-18 (R3-WP3): a failed load showed "No matches recorded yet"; it now says it couldn't load, with Retry.
+// var, not let: read by matchHistoryPanelHTML, which can run before this line on an early render.
+var matchHistoryError = false;
 const MATCH_HISTORY_MODE_LABEL = {ai:'Quick Battle', pvp:'PvP', async:'Async Arena', gauntlet:'Gauntlet', raidOnline:'Online Raid', raidOffline:'Raid', liveRanked:'Ranked 1v1 (Live)'};
 function matchHistoryPanelHTML(){
   if(!isSignedIn()) return ''; // same gate as logMatchHistory/loadMatchHistory — nothing to show a guest
   if(matchHistoryList===null) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">Loading…</p></div>`;
+  if(matchHistoryError) return `<div class="panel"><h2>📜 Match History</h2>${netErrorHTML(TX('net.match-history-failed'), 'matchHistory', ()=>{ matchHistoryList = null; matchHistoryError = false; if(currentTab==='profile') renderProfile(); else loadMatchHistory(); })}</div>`; // renderProfile starts the load itself
   if(matchHistoryList.length===0) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">No matches recorded yet — play a match and it shows up here.</p></div>`;
   return `<div class="panel">
     <h2>📜 Match History</h2>
@@ -9650,8 +9655,12 @@ function openNamePrompt(){
   inp.addEventListener('input', ()=> showNameLenMsg(inp, ov.querySelector('#npNameMsg'), false));
   ov.querySelector('form').addEventListener('submit', async e=>{ e.preventDefault(); const name = inp.value.trim().slice(0,24); if(!nameLongEnough(name)){ showNameLenMsg(inp, ov.querySelector('#npNameMsg'), true); inp.focus(); return; }
     saveMyProfile(Object.assign({}, myProfile||{}, {name})); markNameChosen(); ov.remove();
-    try{ if(sbClient && cloudUserId) await sbClient.from('profiles').update({display_name: name}).eq('id', cloudUserId); }catch(err){}
-    try{ renderEntranceAuth(); }catch(err){} showToast(TX('toast.welcome-to-the-grove', {name}), 'ok'); });
+    // 2026-10-18 (R3-WP3): the account write's error was ignored, so other players kept seeing the old name with no word to
+    // the player. The name is kept on this device either way; a failed account write now says so.
+    let nameErr = null;
+    try{ if(sbClient && cloudUserId){ const { error } = await sbClient.from('profiles').update({display_name: name}).eq('id', cloudUserId); nameErr = error || null; } }catch(err){ nameErr = err; }
+    try{ renderEntranceAuth(); }catch(err){} showToast(TX('toast.welcome-to-the-grove', {name}), 'ok');
+    if(nameErr) showToast(TX('toast.name-saved-here-not-online', {err: netErrText(nameErr)}), 'error'); });
 }
 async function initCloudSync(){
   // Coming back from Google (2026-10-02): Supabase hands the result back in the URL — tokens on
@@ -12824,7 +12833,7 @@ async function findLiveRankedMatch(){
     showToast(TX('toast.your-main-deck-has-cards-it-2', {v1: deckTotal(myDeckCounts), DECK_SIZE}), 'warn');
     return;
   }
-  liveQueueing = true;
+  liveQueueing = true; pollLiveQueue.fails = 0;
   renderArenaSubTabIfOpen();
   pollLiveQueue();
 }
@@ -12835,14 +12844,17 @@ async function pollLiveQueue(){
     const { data, error } = await sbClient.rpc('find_ranked_match', {
       p_rating: myRating, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: matchLeaderId() || null,
     });
-    if(error){ console.warn('find_ranked_match error', error); }
-    else if(data){ await enterLiveMatch(data); return; } // matched — stop polling
-  }catch(e){ console.warn('find_ranked_match threw', e); }
+    if(error){ console.warn('find_ranked_match error', error); pollLiveQueue.fails = (pollLiveQueue.fails||0) + 1; }
+    else { pollLiveQueue.fails = 0; if(data){ await enterLiveMatch(data); return; } } // matched — stop polling
+  }catch(e){ console.warn('find_ranked_match threw', e); pollLiveQueue.fails = (pollLiveQueue.fails||0) + 1; }
+  // 2026-10-18 (R3-WP3): a queue that can't reach matchmaking used to spin "searching" with no word; after 3 failed polls
+  // in a row say so once (it keeps trying; Cancel still works)
+  if(pollLiveQueue.fails===3) showToast(TX('toast.can-t-reach-matchmaking-still-trying'), 'error');
   if(liveQueueing) liveQueuePollTimer = setTimeout(pollLiveQueue, 2200);
 }
 
 function cancelLiveRankedQueue(){
-  liveQueueing = false;
+  liveQueueing = false; pollLiveQueue.fails = 0;
   if(liveQueuePollTimer){ clearTimeout(liveQueuePollTimer); liveQueuePollTimer = null; }
   if(sbClient) sbClient.rpc('cancel_ranked_queue', {}).then(()=>{}, ()=>{});
   renderArenaSubTabIfOpen();
@@ -13138,8 +13150,10 @@ function livePushProgress(force){
   LiveData.progressPushedHash = h;
   const now = Date.now();
   try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(now)); }catch(e){}
+  // 2026-10-18 (R3-WP3): a failed push forgets its hash, so the 20 s tick sends it again instead of treating it as saved
   sbClient.from('player_progress').upsert({profile_id: cloudUserId, data: snap, updated_at: new Date(now).toISOString()})
-    .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; }, ()=>{});
+    .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; else if(error && LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; },
+      ()=>{ if(LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; });
 }
 setInterval(()=>{ try{ livePushProgress(false); }catch(e){} }, 20000);
 window.addEventListener('pagehide', ()=>{ try{ livePushProgress(false); }catch(e){} });
@@ -41758,13 +41772,35 @@ function openPackAnimation(pack, opened, opts){
    added a "leaderboard read" policy opening SELECT to everyone, since profiles carries nothing
    private (email lives in auth.users, never here) — see the migration this batch.
    ============================================================ */
+// Network feedback (2026-10-18, R3-WP3): a load that FAILED used to land in the same empty state as a load that found
+// nothing ("No ranked players yet", "You're not in a guild yet", "No matches recorded yet"), so a dropped connection read
+// as lost progress. Player-facing loads now tell the two apart: on failure this box says what couldn't load, plus Retry.
+// One delegated click listener runs the retries; each caller registers its retry under a short name. A function
+// declaration (hoisted, its state kept on itself) so any render can use it, early or late in the file.
+function netErrorHTML(what, retryName, retryFn){
+  if(!netErrorHTML.retry){
+    netErrorHTML.retry = {};
+    document.addEventListener('click', e=>{
+      const b = e.target && e.target.closest ? e.target.closest('[data-net-retry]') : null; if(!b) return;
+      const fn = netErrorHTML.retry[b.getAttribute('data-net-retry')]; if(!fn) return;
+      b.disabled = true; b.textContent = TX('net.retrying');
+      try{ fn(); }catch(err){ console.warn('retry', err); }
+    });
+  }
+  if(retryName && retryFn) netErrorHTML.retry[retryName] = retryFn;
+  return `<div class="empty-hint net-error" role="alert"><div>⚠️ ${escapeHtml(what)}</div>${retryName ? `<button type="button" class="btn small" data-net-retry="${escapeAttr(retryName)}" style="margin-top:8px">${escapeHtml(TX('net.retry'))}</button>` : ''}</div>`;
+}
+// The message an error carries, for the toast after a failed write the player asked for (else a plain "try again").
+function netErrText(err){ const raw = String((err && (err.message || err.details)) || ''); return raw || TX('net.something-went-wrong'); }
 let cloudLeaderboard = null; // top 50 profiles by rating, newest fetch wins; null = not loaded yet
+let cloudLeaderboardError = false; // 2026-10-18 (R3-WP3): the last load failed: shown as an error + Retry, not "no players yet"
 async function loadLeaderboard(){
   if(!sbClient){ setTimeout(()=>{ if(sbClient) loadLeaderboard(); }, 1500); return; } // initCloudSync() may not have finished yet
   try{
-    const { data } = await sbClient.from('profiles').select('id, display_name, rating').order('rating', {ascending:false}).limit(50);
-    cloudLeaderboard = data || [];
-  }catch(e){ cloudLeaderboard = []; }
+    const { data, error } = await sbClient.from('profiles').select('id, display_name, rating').order('rating', {ascending:false}).limit(50);
+    if(error) throw error;
+    cloudLeaderboard = data || []; cloudLeaderboardError = false;
+  }catch(e){ cloudLeaderboard = []; cloudLeaderboardError = true; }
   if(currentTab==='ranking') renderRanking();
 }
 function renderRanking(){
@@ -41774,7 +41810,7 @@ function renderRanking(){
     <div class="play-subtabs" role="tablist"><button class="btn small" id="rankingBackBtn">← Back</button></div>
     <div class="panel">
       <h2>🏆 Your Rank</h2>
-      <p class="panel-sub">Your rating goes up and down with your Online Raid and Ranked 1v1 results.</p>
+      <p class="panel-sub">${ONLINE_RAID_VISIBLE ? 'Your rating goes up and down with your Online Raid and Ranked 1v1 results.' : escapeHtml(TX('ui.rating-moves-with-pvp-ranked'))}</p>
       <div class="rank-me-row">
         <div class="rank-me-tile"><div class="rank-me-label">Tier</div><div class="rank-me-value">${myRank.label}</div></div>
         <div class="rank-me-tile"><div class="rank-me-label">Rating</div><div class="rank-me-value">${Math.round(myRating)}</div></div>
@@ -41783,13 +41819,16 @@ function renderRanking(){
     </div>
     <div class="panel">
       <h2>🌍 Leaderboard <span class="panel-sub-inline">(top 50 signed-in players)</span></h2>
-      <div id="leaderboardBody">${cloudLeaderboard===null ? '<div class="empty-hint">Loading leaderboard…</div>' : leaderboardTableHTML(cloudLeaderboard)}</div>
+      <div id="leaderboardBody">${cloudLeaderboard===null ? '<div class="empty-hint">Loading leaderboard…</div>'
+        : cloudLeaderboardError ? netErrorHTML(TX('net.leaderboard-failed'), 'leaderboard', ()=>{ cloudLeaderboard = null; cloudLeaderboardError = false; renderRanking(); })
+        : leaderboardTableHTML(cloudLeaderboard)}</div>
     </div>`;
   document.getElementById('rankingBackBtn').addEventListener('click', goHome);
   if(cloudLeaderboard===null) loadLeaderboard();
 }
 function leaderboardTableHTML(rows){
-  if(!rows.length) return '<div class="empty-hint">No ranked players yet — be the first! Fight an Online Raid boss to get on the board.</div>';
+  // 2026-10-18 (R3-WP3): Online Raid is hidden (ONLINE_RAID_VISIBLE), so point at the rated fights that exist: Arena PvP and Ranked Live.
+  if(!rows.length) return `<div class="empty-hint">${ONLINE_RAID_VISIBLE ? 'No ranked players yet — be the first! Fight an Online Raid boss to get on the board.' : escapeHtml(TX('ui.no-ranked-players-yet'))}</div>`;
   return `<div class="rank-table">
     <div class="rank-row rank-row-head"><span>#</span><span>Player</span><span>Tier</span><span>Rating</span></div>
     ${rows.map((r,i)=>{
@@ -41819,49 +41858,77 @@ let myGuild = null;         // {id,name,tag,icon,created_by} once loaded, or nul
 let myGuildMembers = null;  // [{profile_id, role, joined_at, profiles:{display_name,rating}}], null = not loaded yet
 let guildBrowseList = null; // all guilds, shown when you have none to join; null = not loaded yet
 let guildDataLoaded = false; // distinguishes "haven't asked yet" from "asked, and you're in no guild"
+let guildLoadError = false;  // 2026-10-18 (R3-WP3): the last load FAILED; shown as an error + Retry, not as "you're in no guild"
+let guildBrowseError = false; // same, for the list of guilds to join
 async function loadMyGuild(){
-  guildDataLoaded = false;
+  guildDataLoaded = false; guildLoadError = false;
   if(!sbClient || !cloudUserId){ myGuild=null; myGuildMembers=null; guildDataLoaded=true; if(currentTab==='guild') renderGuild(); return; }
   try{
-    const { data: membership } = await sbClient.from('guild_members').select('guild_id').eq('profile_id', cloudUserId).maybeSingle();
+    // 2026-10-18 (R3-WP3): each query's error is checked; before, a failed read came back as "no membership" and the
+    // screen offered to create a guild to a player who already has one.
+    const { data: membership, error: memErr } = await sbClient.from('guild_members').select('guild_id').eq('profile_id', cloudUserId).maybeSingle();
+    if(memErr) throw memErr;
     if(!membership){
       myGuild = null; myGuildMembers = null;
       loadGuildBrowseList();
     } else {
-      const { data: guild } = await sbClient.from('guilds').select('*').eq('id', membership.guild_id).maybeSingle();
+      const { data: guild, error: gErr } = await sbClient.from('guilds').select('*').eq('id', membership.guild_id).maybeSingle();
+      if(gErr) throw gErr;
+      const { data: members, error: mErr } = await sbClient.from('guild_members').select('profile_id, role, joined_at, profiles(display_name, rating)').eq('guild_id', membership.guild_id).order('joined_at', {ascending:true});
+      if(mErr) throw mErr;
       myGuild = guild;
-      const { data: members } = await sbClient.from('guild_members').select('profile_id, role, joined_at, profiles(display_name, rating)').eq('guild_id', membership.guild_id).order('joined_at', {ascending:true});
       myGuildMembers = members || [];
     }
-  }catch(e){ myGuild=null; myGuildMembers=null; }
+  }catch(e){ myGuild=null; myGuildMembers=null; guildLoadError = true; }
   guildDataLoaded = true;
   if(currentTab==='guild') renderGuild();
 }
 async function loadGuildBrowseList(){
   if(!sbClient) return;
   try{
-    const { data } = await sbClient.from('guilds').select('id,name,tag,icon').order('name', {ascending:true}).limit(50);
-    guildBrowseList = data || [];
-  }catch(e){ guildBrowseList = []; }
+    // created_by too (2026-10-18): lets a founder whose owner row didn't save re-join their own guild as its owner (createGuild)
+    const { data, error } = await sbClient.from('guilds').select('id,name,tag,icon,created_by').order('name', {ascending:true}).limit(50);
+    if(error) throw error;
+    guildBrowseList = data || []; guildBrowseError = false;
+  }catch(e){ guildBrowseList = []; guildBrowseError = true; }
   if(currentTab==='guild' && !myGuild) renderGuild();
 }
 async function createGuild(name, tag, icon){
   if(!sbClient || !cloudUserId) return {error:'Not signed in.'};
   const { data, error } = await sbClient.from('guilds').insert({name, tag, icon: icon||'🛡️', created_by: cloudUserId}).select().maybeSingle();
   if(error) return {error: /duplicate|unique/i.test(error.message) ? 'That guild name or tag is already taken.' : error.message};
-  const { error: memberErr } = await sbClient.from('guild_members').insert({guild_id: data.id, profile_id: cloudUserId, role:'owner'});
-  if(memberErr) return {error: memberErr.message};
+  if(!data) return {error: TX('net.something-went-wrong')};
+  // 2026-10-18 (R3-WP3): the guild row and the owner row are two inserts. If the second fails, try it once more, then take
+  // the guild back out so no ownerless guild is left holding the name. The live policies (read 2026-10-18) have NO delete
+  // policy on guilds, so that delete removes nothing until supabase/proposed/20261018_guild_creator_delete_empty.sql is
+  // applied; .select() tells the two cases apart, and the founder is told what happened either way.
+  let { error: memberErr } = await sbClient.from('guild_members').insert({guild_id: data.id, profile_id: cloudUserId, role:'owner'});
+  if(memberErr) ({ error: memberErr } = await sbClient.from('guild_members').insert({guild_id: data.id, profile_id: cloudUserId, role:'owner'}));
+  if(memberErr){
+    let removed = false;
+    try{ const { data: gone, error: delErr } = await sbClient.from('guilds').delete().eq('id', data.id).eq('created_by', cloudUserId).select('id'); removed = !delErr && !!(gone && gone.length); }catch(e){}
+    if(removed) return {error: TX('net.guild-create-rolled-back', {err: netErrText(memberErr)})};
+    guildBrowseList = null; // so the list below re-loads and shows the new guild with its Join button
+    return {error: TX('net.guild-create-half-done', {name: data.name, err: netErrText(memberErr)}), halfDone: true};
+  }
   return {data};
 }
 async function joinGuild(guildId){
   if(!sbClient || !cloudUserId) return {error:'Not signed in.'};
-  const { error } = await sbClient.from('guild_members').insert({guild_id: guildId, profile_id: cloudUserId, role:'member'});
+  // A founder joining their own guild (one whose owner row failed to save, see createGuild) joins as its owner.
+  const g = (guildBrowseList||[]).find(x=> x.id===guildId);
+  const role = g && g.created_by===cloudUserId ? 'owner' : 'member';
+  const { error } = await sbClient.from('guild_members').insert({guild_id: guildId, profile_id: cloudUserId, role});
   if(error) return {error: /duplicate/i.test(error.message) ? 'You\'re already in a guild — leave it first.' : error.message};
   return {ok:true};
 }
+// 2026-10-18 (R3-WP3): returns {error} instead of ignoring it, so a failed leave doesn't show the player as guildless.
 async function leaveGuild(){
-  if(!sbClient || !cloudUserId) return;
-  await sbClient.from('guild_members').delete().eq('profile_id', cloudUserId);
+  if(!sbClient || !cloudUserId) return {error: 'Not signed in.'};
+  try{
+    const { error } = await sbClient.from('guild_members').delete().eq('profile_id', cloudUserId);
+    return error ? {error: netErrText(error)} : {ok:true};
+  }catch(e){ return {error: netErrText(e)}; }
 }
 function renderGuild(){
   const root = document.getElementById('view-guild');
@@ -41869,7 +41936,7 @@ function renderGuild(){
     root.innerHTML = `
       <div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
       <div class="panel"><h2>🛡️ Guilds</h2>
-        <p class="panel-sub">Sign in to create or join a guild — membership syncs across devices, same as Online Raid and the Shop.</p>
+        <p class="panel-sub">${ONLINE_RAID_VISIBLE ? 'Sign in to create or join a guild — membership syncs across devices, same as Online Raid and the Shop.' : escapeHtml(TX('ui.guild-sign-in-syncs'))}</p>
         <button class="btn primary" id="guildSignInBtn">🔑 Sign in</button>
       </div>`;
     document.getElementById('guildBackBtn').addEventListener('click', goHome);
@@ -41882,6 +41949,13 @@ function renderGuild(){
     loadMyGuild();
     return;
   }
+  // 2026-10-18 (R3-WP3): a failed load says so (with Retry) instead of offering to create a guild
+  if(guildLoadError){
+    root.innerHTML = `<div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
+      <div class="panel"><h2>🛡️ Guilds</h2>${netErrorHTML(TX('net.guild-failed'), 'guild', ()=>{ guildLoadError = false; guildDataLoaded = false; guildBrowseList = null; renderGuild(); })}</div>`;
+    document.getElementById('guildBackBtn').addEventListener('click', goHome);
+    return;
+  }
   root.innerHTML = `
     <div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
     ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) : guildBrowseCreatePanelHTML()}`;
@@ -41890,7 +41964,10 @@ function renderGuild(){
     const leaveBtn = document.getElementById('guildLeaveBtn');
     if(leaveBtn) leaveBtn.addEventListener('click', async ()=>{
       if(!confirm(TX('dialog.leave-you-can-rejoin-or-found', {name: myGuild.name}))) return;
-      await leaveGuild();
+      leaveBtn.disabled = true;
+      const res = await leaveGuild();
+      // 2026-10-18 (R3-WP3): on failure the player is still in the guild: say so and keep the roster as it is
+      if(res.error){ leaveBtn.disabled = false; showToast(TX('toast.couldn-t-leave-the-guild', {err: res.error}), 'error'); return; }
       myGuild=null; myGuildMembers=null;
       loadMyGuild();
     });
@@ -41903,8 +41980,14 @@ function renderGuild(){
       const icon = document.getElementById('guildIconInput').value.trim() || '🛡️';
       const msgEl = document.getElementById('guildCreateMsg');
       msgEl.textContent = 'Creating…'; msgEl.classList.remove('is-err');
-      const res = await createGuild(name, tag, icon);
-      if(res.error){ msgEl.textContent = res.error; msgEl.classList.add('is-err'); return; }
+      let res;
+      try{ res = await createGuild(name, tag, icon); }catch(err){ res = {error: netErrText(err)}; }
+      if(res.error){
+        msgEl.textContent = res.error; msgEl.classList.add('is-err');
+        showToast(res.error, 'error'); // 2026-10-18 (R3-WP3): toast too, since a half-made guild re-renders the list below
+        if(res.halfDone) loadGuildBrowseList();
+        return;
+      }
       myGuild=null; myGuildMembers=null;
       loadMyGuild();
     });
@@ -41958,7 +42041,9 @@ function guildBrowseCreatePanelHTML(){
     </div>
     <div class="panel">
       <h2>🔍 Join a Guild</h2>
-      <div id="guildBrowseList">${guildBrowseList===null ? '<div class="empty-hint">Loading guilds…</div>' : guildBrowseListHTML(guildBrowseList)}</div>
+      <div id="guildBrowseList">${guildBrowseList===null ? '<div class="empty-hint">Loading guilds…</div>'
+        : guildBrowseError ? netErrorHTML(TX('net.guild-list-failed'), 'guildList', ()=>{ guildBrowseList = null; guildBrowseError = false; renderGuild(); })
+        : guildBrowseListHTML(guildBrowseList)}</div>
     </div>`;
 }
 function guildBrowseListHTML(list){
@@ -42065,7 +42150,7 @@ function profileHeroHTML(){
       <div class="pf-status">${isSignedIn() ? '<span class="pf-dot ok"></span>Synced to your account' : '<span class="pf-dot"></span>Guest · saved on this device'}${cloudCardAdmin ? ' · <span class="admin-badge">🛡 Admin</span>' : ''}</div>
       <div class="pf-level"><b>⭐ Level ${L.level}</b><span class="pf-bar"><span style="width:${Math.round(L.into/L.need*100)}%"></span></span><small>${L.into}/${L.need} XP</small></div>
     </div>
-    <div class="pf-rank" title="From Online Raid and Ranked results">
+    <div class="pf-rank" title="${ONLINE_RAID_VISIBLE ? 'From Online Raid and Ranked results' : escapeAttr(TX('ui.rank-from-pvp-ranked'))}">
       <span class="conquest-rank-badge">${rank.label}</span>
       <small>Rating ${Math.round(myRating)}</small>
     </div>
@@ -42280,8 +42365,13 @@ async function socialInit(){
     const { data, error } = await sbClient.from('profiles').select('friend_code').eq('id', cloudUserId).maybeSingle();
     if(error) throw error;
     Social.myCode = data && data.friend_code || null;
-    Social.ready = true;
-  }catch(e){ Social.ready = false; Social.checked = true; return; }
+    Social.ready = true; Social.initError = null;
+  }catch(e){
+    // 2026-10-18 (R3-WP3): only a missing column/table means "not switched on yet"; anything else is a failed load (Retry)
+    const raw = String((e && (e.message || e.details)) || '');
+    Social.initError = /relation .* does not exist|could not find the function|schema cache|column .* does not exist/i.test(raw) ? 'missing' : 'network';
+    Social.ready = false; Social.checked = true; return;
+  }
   Social.checked = true;
   await socialRefresh();
   // Presence: who's online right now (keyed by profile id).
@@ -42313,13 +42403,16 @@ async function socialInit(){
 function socialTeardown(){
   ['presence','friendSub','inviteSub'].forEach(k=>{ try{ if(Social[k] && sbClient) sbClient.removeChannel(Social[k]); }catch(e){} Social[k] = null; });
   if(Social.heartbeat){ clearInterval(Social.heartbeat); Social.heartbeat = null; }
-  Social.rows = []; Social.online = new Set(); Social.incomingInvites = []; Social.myCode = null; Social.outgoingInvite = null;
+  Social.rows = []; Social.online = new Set(); Social.incomingInvites = []; Social.myCode = null; Social.outgoingInvite = null; Social.listError = false;
   hideInviteBanner();
 }
 async function socialRefresh(){
   if(!Social.ready) return;
-  const { data, error } = await sbClient.from('friendships').select('*');
-  if(error){ console.warn('friendships', error); return; }
+  let data, error;
+  try{ ({ data, error } = await sbClient.from('friendships').select('*')); }catch(e){ error = e; }
+  // 2026-10-18 (R3-WP3): remembered, so the Friends list shows "couldn't load" + Retry instead of "No friends yet"
+  if(error){ console.warn('friendships', error); Social.listError = true; if(currentTab==='friends') renderFriendsListOnly(); return; }
+  Social.listError = false;
   Social.rows = data || [];
   const ids = Social.rows.map(r=> r.requester_id===cloudUserId ? r.addressee_id : r.requester_id);
   await Registry.users.get(ids);
@@ -42361,6 +42454,7 @@ function friendRowHTML(item, kind){
   </div>`;
 }
 function friendsListHTML(){
+  if(Social.listError) return netErrorHTML(TX('net.friends-list-failed'), 'friendsList', ()=>{ socialRefresh(); }); // socialRefresh re-renders either way
   const b = socialBuckets();
   const sec = (title, items, kind, empty)=> items.length || empty ? `<section class="fr-section"><h3>${title}${items.length?` <span class="fr-count">${items.length}</span>`:''}</h3>${items.length ? items.map(i=>friendRowHTML(i, kind)).join('') : `<p class="fr-empty">${empty}</p>`}</section>` : '';
   return sec('Requests', b.incoming, 'incoming', '')
@@ -42447,7 +42541,11 @@ function renderFriends(){
     return;
   }
   if(!Social.ready){
-    root.innerHTML = `<div class="panel fr-panel"><h2>👥 Friends</h2><p class="panel-sub">${Social.checked ? 'Friends aren’t switched on yet — the database update still needs to be applied.' : 'Connecting…'}</p><div id="frExtras">${friendsExtrasHTML(0)}</div></div>`;
+    // 2026-10-18 (R3-WP3): a failed connection gets an error + Retry; only a missing table keeps the "not switched on" line
+    const notReady = !Social.checked ? '<p class="panel-sub">Connecting…</p>'
+      : Social.initError==='network' ? netErrorHTML(TX('net.friends-failed'), 'friends', ()=>{ Social.checked = false; Social.initError = null; renderFriends(); })
+      : '<p class="panel-sub">Friends aren’t switched on yet — the database update still needs to be applied.</p>';
+    root.innerHTML = `<div class="panel fr-panel"><h2>👥 Friends</h2>${notReady}<div id="frExtras">${friendsExtrasHTML(0)}</div></div>`;
     wireFriendsExtras(root);
     if(!Social.checked) socialInit().then(()=>{ if(currentTab==='friends') renderFriends(); });
     return;
@@ -42561,8 +42659,12 @@ async function onMyInviteUpdated(inv){
   Social.outgoingInvite = null; clearTimeout(myInvitePoll);
   const name = ((Registry.users._cache.get(inv.to_id)||{}).display_name) || 'Your friend';
   if(inv.status==='accepted' && inv.match_id){
-    const { data: row } = await sbClient.from('live_matches').select('*').eq('id', inv.match_id).maybeSingle();
+    // 2026-10-18 (R3-WP3): a failed read of the match left the inviter with no word while the friend waited in it; try
+    // twice, then say what happened
+    let row = null;
+    for(let i = 0; i < 2 && !row; i++){ try{ ({ data: row } = await sbClient.from('live_matches').select('*').eq('id', inv.match_id).maybeSingle()); }catch(e){ row = null; } }
     if(row){ showToast(TX('toast.accepted-match-starting', {name}), 'ok'); switchTab('play'); await enterLiveMatch(row); return; }
+    showToast(TX('toast.accepted-but-match-failed', {name}), 'error');
   }
   if(inv.status==='declined') showToast(TX('toast.declined-the-invite', {name}));
   if(inv.status==='expired') showToast(TX('toast.your-invite-expired'));
@@ -42571,7 +42673,10 @@ async function onMyInviteUpdated(inv){
 async function cancelMyInvite(){
   const inv = Social.outgoingInvite; if(!inv) return;
   Social.outgoingInvite = null; clearTimeout(myInvitePoll);
-  try{ await sbClient.rpc('cancel_match_invite', {p_id: inv.id}); }catch(e){}
+  // 2026-10-18 (R3-WP3): if the cancel didn't reach the server the friend can still accept, so keep waiting on it and say so
+  let err = null;
+  try{ ({ error: err } = await sbClient.rpc('cancel_match_invite', {p_id: inv.id})); }catch(e){ err = e; }
+  if(err){ Social.outgoingInvite = inv; pollMyInvite(); showToast(TX('toast.couldn-t-cancel-the-invite', {err: netErrText(err)}), 'error'); }
   if(currentTab==='friends') renderFriends();
 }
 async function socialLoadInvites(){
@@ -42593,7 +42698,13 @@ function showInviteBanner(){
   el.innerHTML = `<span class="ib-text">⚔️ <b>${escapeHtml(from)}</b> invites you to a friendly match · ${mode?mode.icon+' '+escapeHtml(mode.label):''}${(inv.settings||{}).format==='standard'?' · 🃏 Standard':''}</span>
     <span class="ib-actions"><button type="button" class="btn small primary" id="ibAccept">Accept</button><button type="button" class="btn small" id="ibDecline">Decline</button></span>`;
   el.hidden = false;
-  document.getElementById('ibDecline').onclick = async ()=>{ try{ await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: false, p_deck: {}, p_character: null, p_leader: null}); }catch(e){} Social.incomingInvites.shift(); showInviteBanner(); refreshFriendsBadge(); };
+  document.getElementById('ibDecline').onclick = async ()=>{
+    // 2026-10-18 (R3-WP3): a decline that didn't reach the server leaves the friend waiting; keep the banner and say so
+    let err = null;
+    try{ ({ error: err } = await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: false, p_deck: {}, p_character: null, p_leader: null})); }catch(e){ err = e; }
+    // (a reply from the server itself, e.g. the invite already expired, has a code: then the invite is gone and the banner goes too)
+    if(err){ showToast(TX('toast.couldn-t-decline-the-invite', {err: netErrText(err)}), 'error'); if(!err.code) return; }
+    Social.incomingInvites.shift(); showInviteBanner(); refreshFriendsBadge(); };
   document.getElementById('ibAccept').onclick = async ()=>{
     const invStd = (inv.settings||{}).format==='standard', accDeck = invStd ? loadStandardDeck() : myDeckCounts;
     if(deckTotal(accDeck)!==DECK_SIZE){ showToast(TX('toast.your-deck-needs-exactly-cards-to', {v1: invStd?'Standard ':'', DECK_SIZE}), 'error'); if(invStd) openStandardDeckBuilder(); return; }
@@ -42622,8 +42733,9 @@ async function marketLoad(){
     Market.listings = data || []; Market.error = null;
     await Registry.users.get(Market.listings.map(l=>l.seller_id));
     if(isSignedIn()){
-      const { data: mine } = await sbClient.from('market_listings').select('*').eq('seller_id', cloudUserId).order('created_at', {ascending:false}).limit(60);
-      Market.mine = mine || [];
+      // 2026-10-18 (R3-WP3): a failed read of your own listings showed "You haven't listed anything yet"; now an error + Retry
+      const { data: mine, error: mineErr } = await sbClient.from('market_listings').select('*').eq('seller_id', cloudUserId).order('created_at', {ascending:false}).limit(60);
+      Market.mine = mine || []; Market.mineError = !!mineErr;
       await marketClaimProceeds();
     }
   }catch(err){ Market.listings = []; Market.error = socialErrText(err); }
@@ -42661,7 +42773,7 @@ async function marketClaimProceeds(){
   }catch(e){}
 }
 function marketBrowseHTML(){
-  if(Market.error) return `<p class="fr-empty">${escapeHtml(Market.error)}</p>`;
+  if(Market.error) return netErrorHTML(Market.error, 'market', marketRetry); // 2026-10-18 (R3-WP3): + Retry
   if(Market.loading || Market.listings===null) return '<p class="fr-empty">Loading the market…</p>';
   const q = Market.q.trim().toLowerCase();
   const rows = Market.listings.filter(l=>{ const d = Registry.card(l.card_id); return d && (!q || d.name.toLowerCase().includes(q)) && (!Market.rarity || d.rarity===Market.rarity); });
@@ -42699,6 +42811,7 @@ function marketSellHTML(){
 }
 function marketMineHTML(){
   if(!isSignedIn()) return '<p class="fr-empty">Sign in to see your listings.</p>';
+  if(Market.error || Market.mineError) return netErrorHTML(Market.error || TX('net.market-mine-failed'), 'marketMine', marketRetry);
   const mine = Market.mine||[];
   if(!mine.length) return '<p class="fr-empty">You haven’t listed anything yet.</p>';
   const label = {active:'For sale', sold:'Sold', cancelled:'Cancelled'};
@@ -42706,6 +42819,10 @@ function marketMineHTML(){
     return `<div class="fr-row"><div class="fr-avatar">${cardIcoHTML(d)}</div><div class="fr-main"><div class="fr-name">${escapeHtml(d.name)}${l.foil?' ✨':''}</div><div class="fr-sub">${label[l.status]||l.status} · ${priceHTML(l.price, l.currency)}${l.status==='sold'?' · '+relTime(l.sold_at):''}</div></div>
       <div class="fr-actions">${l.status==='active'?`<button type="button" class="btn small" data-mk-cancel="${l.id}">Cancel</button>`:''}</div></div>`; }).join('');
 }
+// Retry for the market's error boxes (2026-10-18, R3-WP3): re-load into the mount that is on screen.
+function marketRetry(){ const mount = document.getElementById('marketMount'); Market.error = null; Market.mineError = false; Market.listings = null;
+  if(mount) renderMarketInto(mount);
+  marketLoad().then(()=>{ const m = document.getElementById('marketMount'); if(m) renderMarketInto(m); }); }
 function renderFleaMarket(){
   const root = document.getElementById('view-market'); if(!root) return;
   root.innerHTML = `<div class="panel mk-panel"><h2>🧺 Flea Market</h2>
@@ -43164,7 +43281,7 @@ function renderEntranceAuth(){
       </form>
       <button type="button" class="btn ghost small entrance-signin-btn" id="entranceSignInBtn">🔑 Sign in</button>
       <p class="entrance-account-line" id="entranceAccountLine" hidden></p>
-      <p class="entrance-login-note">No account needed to play — Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync progress, Online Raid, and Shop packs across devices.</p>`;
+      <p class="entrance-login-note">${ONLINE_RAID_VISIBLE ? 'No account needed to play — Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync progress, Online Raid, and Shop packs across devices.' : escapeHtml(TX('ui.entrance-login-note'))}</p>`; // 2026-10-18 (R3-WP3): Online Raid named only while it is visible
     const form = document.getElementById('loginForm');
     // Reliability hardening (2026-09-24, "im stuck. i cant enter." bug report): wrapped in
     // try/catch so a throw here (e.g. saveMyProfile or the re-render hitting something
