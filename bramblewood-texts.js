@@ -844,7 +844,8 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.fxx-swamp-fever": "Structures never catch it.",
   "ui.wind-tail-wing": "Flying – Tailwind: a quick extra turn before combat",
   "ui.wind-head-wing": "Flying – Headwind: its skills and triggers go off twice",
-  "ui.wind-tail-quick": "Tailwind: a quick extra turn before combat"
+  "ui.wind-tail-quick": "Tailwind: a quick extra turn before combat",
+  "ui.back-to-home": "Back to Home"
 }/*TEXT-TABLE-END*/;
 function fill(s, v){ return v ? String(s).replace(/\{(\w+)\}/g, (m, k)=> v[k] != null ? v[k] : m) : s; }
 function TX(key, vars){

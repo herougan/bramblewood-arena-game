@@ -54,6 +54,10 @@ Headline changes only, newest first. The detail lives in git history, `MASTER.md
   - `tests/node-ids-2026-10-14.js` accepts side-map keys born after the rename;
   - the card-matrix golden is re-baselined.
 - Docs: `docs/pale-desert-2026-10-19.md`.
+## 2026-10-18 (MB: phone map buttons, Home on the full-screen map)
+- **Full-screen button back on its row (phones):** on the Conquest and Daily Dungeon maps, ⛶ sits on the 🧭 World row again, at the right end; 🚨 Admin is under it. A 2026-10-13 fix had moved ⛶ down onto the Admin button's spot, so with Admin Mode on the two were stacked. ⛶ steps down only while the map strip is hidden (world not open yet), where it would sit on the Energy pill; 🚨 then goes under it.
+- **Home on the full-screen map:** full screen (⛶) hides the header and the 🏠 / ⚙️ / Energy row, which left phones with no way Home. A 🏠 now sits left of 🧭 while the map is full screen. It goes where the header's Home goes and turns full screen off. Its label is the TX key `ui.back-to-home` ("Back to Home", already in all 12 packs).
+- Checked in Chromium at 360, 390, 414 and 480 px portrait and 640 to 896 px landscape, Admin Mode on and off. Every other screen already had a reachable Home on phones. New test `tests/mobile-nav-2026-10-19.js`.
 
 ## 2026-10-18 (package NA: Grotto Lobster and Amber Cicada, the owner's art)
 - **New card: Grotto Lobster** 🦞 (Rare, 1 Lumber, Wait 2, 3/12). Armor 1, Crab Claws, Darksight and Brood 1: its crablings hatch beside it. It is the second card reward of 2-B-3 The Glowing Pool (Smugglers' Grotto, the sea cave off Pebble Beach).
