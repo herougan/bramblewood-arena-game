@@ -88,7 +88,8 @@ g.stages.forEach(s=>{ let cfg = null; try{ cfg = T.trenchConfig(g, g.parts[0], s
 ok(/RaidM\.fightFor\(def, st, partId, raidStageOpts\(\)\)/.test(src), 'startRaidPartMatch builds the fight with the stage (raidStageOpts)');
 ok((src.match(/RaidM\.stageCard\(/g) || []).length >= 4, 'the boss deck, guards, Commons (and the single-row deck) get the stage\'s Attack / Health');
 ok(/const raidRules = f\.fieldRules \|\|/.test(src), 'the full raid fight runs under fightFor\'s field (the stage\'s on top)');
-ok(/RaidM\.scaleCastle\(Math\.max\(merged\.health/.test(src), 'your merged castle takes the stage\'s castleHpPct');
+// 2026-10-19 (guild skills): guildScaledBramble passes the stage's castleHpPct on, plus the guild's Rooted Walls %
+ok(/(RaidM\.scaleCastle|guildScaledBramble)\(Math\.max\(merged\.health[^\n]*, f\.castleHpPct\)/.test(src), 'your merged castle takes the stage\'s castleHpPct');
 ok(/raidExtraVolley: f\.extraVolley/.test(src) && /m\.engine\.reserveVolley\(m\.players, m\.sideOf, 2, m\.stats, events\)/.test(src), 'extraVolley: the boss\'s back rows strike in raidSpecials');
 ok(/r3-stage-now/.test(src) && /<section class="r3-stages"><h3>Stages<\/h3>/.test(src), 'the raid tab shows the current stage\'s line and every stage');
 ok(/data-st-batk/.test(src) && /data-st-volley/.test(src) && /data-st-castle/.test(src) && /data-st-field/.test(src) && /RaidM\.setStageRules\(s, vals\)/.test(src), 'the raid editor edits each stage\'s rules');

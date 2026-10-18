@@ -5211,6 +5211,20 @@
   .guild-actions-row{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
   .guild-browse-list{display:flex; flex-direction:column; gap:6px; max-height:320px; overflow-y:auto;}
   .guild-browse-row{display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:13px; padding:8px 12px; border-radius:10px; background:var(--surface-2);}
+  /* Guild skills (2026-10-19, package G): one row a skill; locked "coming soon" rows faded; the admin's local preview stepper */
+  .gsk-list{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .gsk{display:grid; grid-template-columns:34px 1fr auto; align-items:center; gap:10px; padding:9px 12px; border-radius:10px; background:var(--surface-2); font-size:13px;}
+  .gsk.is-soon{opacity:.6;}
+  .gsk-ico{font-size:22px; text-align:center;}
+  .gsk-body{display:flex; flex-direction:column; gap:2px; min-width:0;}
+  .gsk-body small{font-weight:400; color:var(--ink-muted);}
+  .gsk-now{color:var(--accent); font-weight:600;}
+  .gsk-act{display:flex; flex-direction:column; align-items:flex-end; gap:6px;}
+  .gsk-tag{font-size:11.5px; color:var(--ink-muted); white-space:nowrap;}
+  .gsk-admin{display:flex; align-items:center; gap:4px;}
+  .gsk-note{font-size:12.5px; color:var(--ink-muted); margin:8px 0 0;}
+  .gsk-seeds{font-size:13px;}
+  @media (max-width:520px){ .gsk{grid-template-columns:28px 1fr;} .gsk-act{grid-column:1 / -1; flex-direction:row; justify-content:flex-end; flex-wrap:wrap;} .gsk > .gsk-tag{grid-column:2; justify-self:start;} }
   /* Match History / Replay (#254) — a plain expandable row list on the Profile tab, same
      .panel/.panel-sub shell as everything else there. */
   .match-history-list{display:flex; flex-direction:column; gap:6px;}
@@ -6605,7 +6619,16 @@
   @keyframes twMoveA{from{transform:translateY(var(--tw-from)) skewY(var(--tw-skew, 0deg));} to{transform:translateY(var(--tw-to)) skewY(0deg);}}
   @keyframes twMoveB{from{transform:translateY(var(--tw-from)) skewY(var(--tw-skew, 0deg));} to{transform:translateY(var(--tw-to)) skewY(0deg);}}
   .tide-scene .tw-body{position:absolute; inset:0; animation:twSlosh 6s ease-in-out infinite;}
-  @keyframes twSlosh{0%,100%{transform:translateY(0);} 50%{transform:translateY(5px);}}
+  /* 2026-10-18 (package M, owner 20:45: "during steady state, 70% more movement than now ... In Ebb ... 20% less"): the slosh's depth is
+     --tw-slosh, set by syncTideScene from TIDE_FLOOD_MOTION (8.5px, Flood and High Tide) / TIDE_EBB_MOTION (4px, Ebb); it was 5px. */
+  @keyframes twSlosh{0%,100%{transform:translateY(0);} 50%{transform:translateY(var(--tw-slosh, 5px));}}
+  /* ... and "The movement during flood should be a bit more obvious during transition": a Flood / High Tide coming in swells down into
+     view as it reaches the top and settles back (the independent translate property, so it adds to the slosh; --tw-swell is
+     TIDE_ARRIVE_SWELL), its crest surges higher and its back foam line brightens while it rises (twSurgeR*, twFoamR*). */
+  .tide-scene.is-moving.is-rising .tw-body{animation:twSlosh 6s ease-in-out infinite, twArriveA 1.4s ease-out calc(var(--tw-delay, 0ms) + 1500ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-body{animation-name:twSlosh, twArriveB;}
+  @keyframes twArriveA{0%{translate:0 0;} 30%{translate:0 var(--tw-swell, 40px);} 62%{translate:0 calc(var(--tw-swell, 40px)*-.12);} 82%{translate:0 calc(var(--tw-swell, 40px)*.18);} 100%{translate:0 0;}}
+  @keyframes twArriveB{0%{translate:0 0;} 30%{translate:0 var(--tw-swell, 40px);} 62%{translate:0 calc(var(--tw-swell, 40px)*-.12);} 82%{translate:0 calc(var(--tw-swell, 40px)*.18);} 100%{translate:0 0;}}
   /* 2026-10-18 (owner 15:05: "the water vfx can come into play after the water settles"): the caustics and the sheen (.tw-surf) fade in
      once the move is over (the move's 1.8 s, resumed by the same --tw-delay) */
   .tide-scene .tw-surf{position:absolute; inset:0;}
@@ -6635,6 +6658,15 @@
   .tide-scene.is-moving.mv-b .tw-edge.tw-edge-b{animation-name:twEdgeB, twSurgeB;}
   @keyframes twSurgeA{0%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
   @keyframes twSurgeB{0%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
+  /* a Flood's rise (package M, 2026-10-18): a taller surge, and the back foam line bright while it climbs */
+  .tide-scene.is-moving.is-rising .tw-edge{animation:twEdge 8s linear infinite, twSurgeRA 1.8s ease-out var(--tw-delay, 0ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-edge{animation-name:twEdge, twSurgeRB;}
+  .tide-scene.is-moving.is-rising .tw-edge.tw-edge-b{animation:twEdgeB 13s linear infinite, twSurgeRA 1.8s ease-out var(--tw-delay, 0ms) both, twFoamRA 2.2s ease-out var(--tw-delay, 0ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-edge.tw-edge-b{animation-name:twEdgeB, twSurgeRB, twFoamRB;}
+  @keyframes twSurgeRA{0%{scale:1 2.9;} 55%{scale:1 1.9;} 100%{scale:1 1;}}
+  @keyframes twSurgeRB{0%{scale:1 2.9;} 55%{scale:1 1.9;} 100%{scale:1 1;}}
+  @keyframes twFoamRA{0%,70%{opacity:1;} 100%{opacity:.6;}}
+  @keyframes twFoamRB{0%,70%{opacity:1;} 100%{opacity:.6;}}
   /* an ebb (or the tide ending) leaves the sand wet and dark, drying out over about seven seconds */
   .tide-scene.is-drying .tw-wet{animation:twDryA 7s ease-out var(--tw-delay, 0ms) both;}
   .tide-scene.is-drying.mv-b .tw-wet{animation-name:twDryB;}
@@ -34760,7 +34792,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=fbc26534fe", "es": "assets/lang/es.js?v=0d651570f7", "fr": "assets/lang/fr.js?v=a30aea8866", "id": "assets/lang/id.js?v=5400f9692d", "it": "assets/lang/it.js?v=faeb1e188b", "ja": "assets/lang/ja.js?v=7bd207cc27", "ko": "assets/lang/ko.js?v=d1df780cf9", "pt": "assets/lang/pt.js?v=8f2862c363", "ta": "assets/lang/ta.js?v=03f9f91e1b", "tl": "assets/lang/tl.js?v=65480c0188", "zh-Hans": "assets/lang/zh-Hans.js?v=dcf31f6af2", "zh-Hant": "assets/lang/zh-Hant.js?v=a6ece49ea2"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=eec26918f7", "es": "assets/lang/es.js?v=34ea2c96fb", "fr": "assets/lang/fr.js?v=2502a68ec5", "id": "assets/lang/id.js?v=f272392586", "it": "assets/lang/it.js?v=28b088648a", "ja": "assets/lang/ja.js?v=355ff3eca6", "ko": "assets/lang/ko.js?v=a72248718e", "pt": "assets/lang/pt.js?v=4cb9b0b6bf", "ta": "assets/lang/ta.js?v=8dc7db5dba", "tl": "assets/lang/tl.js?v=263b24076f", "zh-Hans": "assets/lang/zh-Hans.js?v=6ad34fd957", "zh-Hant": "assets/lang/zh-Hant.js?v=87fe4cc003"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -34967,6 +34999,46 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.guild-renamed": "Your guild is now “{name}”. 🎫 Rename Tickets left: {n}.",
   "toast.rename-ticket-bought": "🎫 Rename Ticket bought. You have {n}.",
   "toast.rename-ticket-gift": "🎫 A gift for guild founders: a free Rename Ticket. Rename your guild from the guild panel.",
+  "ui.gskill-title": "Guild skills",
+  "ui.gskill-sub": "Skills help every member. The guild's owner buys levels with 🌱 Guild Seeds, which members earn in raid fights: 1 Seed for every {per} raid damage, up to {cap} each a week.",
+  "ui.gskill-seeds": "🌱 {n} Guild Seeds",
+  "ui.gskill-preview-note": "Preview: guild skills aren't switched on yet. Levels can't be bought, and raid fights get no guild bonus.",
+  "ui.gskill-loading": "Loading guild skills…",
+  "ui.gskill-level": "Level {n} of {max}",
+  "ui.gskill-maxed": "Top level",
+  "ui.gskill-next-cost": "Next level: {cost} 🌱",
+  "ui.gskill-upgrade": "Upgrade for {cost} 🌱",
+  "ui.gskill-owner-only": "Only the guild's owner can buy levels.",
+  "ui.gskill-coming-soon": "Coming soon",
+  "ui.gskill-rooted-walls-name": "Rooted Walls",
+  "ui.gskill-rooted-walls-desc": "Each level gives your bramble +{pct}% Health in raid fights.",
+  "ui.gskill-rooted-walls-now": "Now: +{pct}% bramble Health in raid fights.",
+  "ui.gskill-sharp-thorns-name": "Sharpened Thorns",
+  "ui.gskill-sharp-thorns-desc": "More raid damage from every fight.",
+  "ui.gskill-second-wind-name": "Second Wind",
+  "ui.gskill-second-wind-desc": "Hold one more Raid Point.",
+  "ui.gskill-sap-return-name": "Sap Return",
+  "ui.gskill-sap-return-desc": "Some Energy back after a raid fight.",
+  "ui.gskill-guild-chest-name": "Guild Chest",
+  "ui.gskill-guild-chest-desc": "A bigger reward when a raid falls.",
+  "ui.gskill-ally-banners-name": "Ally Banners",
+  "ui.gskill-ally-banners-desc": "Stronger allies in your raid rows.",
+  "ui.gskill-seed-satchel-name": "Seed Satchel",
+  "ui.gskill-seed-satchel-desc": "More Guild Seeds from raid fights.",
+  "ui.gskill-raid-bonus": "Guild: +{pct}% bramble Health",
+  "ui.gskill-admin-tag": "(admin preview)",
+  "ui.gskill-admin-preview": "Admin preview, this browser only: set levels to try them in raid fights.",
+  "ui.gskill-admin-level": "Preview {n}",
+  "ui.gskill-admin-clear": "Clear preview",
+  "net.gskill-sign-in": "Sign in to buy guild skills.",
+  "net.gskill-not-on": "Guild skills aren't switched on yet. No Seeds were spent.",
+  "net.gskill-not-owner": "Only the guild's owner can buy skill levels.",
+  "net.gskill-no-seeds": "Not enough Guild Seeds: this level costs {cost} and the guild has {n}.",
+  "net.gskill-changed": "This skill's level just changed. Check it and try again.",
+  "net.gskill-maxed": "That skill is already at its top level.",
+  "net.gskill-failed": "Couldn't buy the level ({err}). No Seeds were spent.",
+  "net.gskill-load-failed": "Couldn't load your guild's skills.",
+  "toast.gskill-upgraded": "🌱 {name} is now level {n}.",
   "toast.name-saved-here-not-online": "Your name is saved on this device, but your account didn't get it ({err}). Other players may still see your old name.",
   "toast.accepted-but-match-failed": "{name} accepted, but the match couldn't be loaded. Invite them again.",
   "toast.couldn-t-cancel-the-invite": "Couldn't cancel the invite ({err}). Your friend can still accept it.",
@@ -35842,6 +35914,67 @@ if(typeof module !== 'undefined' && module.exports) module.exports = {TEXT, TX};
   if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else setTimeout(start, 0);
   window.BWA11y = {scan, stack: ()=> [...recs.values()].sort((a, b)=> a.seq - b.seq).map(r=> r.root), closeButton};
 })();
+
+// ============================================================================
+// Bramblewood guild skills (2026-10-19, package G; owner 20:45: "Guild skills. Starting with +raid HP to your bramble.").
+// DOM-free: inlined into the page (global `BramblewoodGuild`) and require()'d by tests/guild-skills-2026-10-19.js.
+// See docs/guild-skills-2026-10-19.md.
+//
+// A guild holds a list of skills, each with a level (0 = not bought). Levels are bought by the guild's owner with
+// 🌱 Guild Seeds, a guild-wide resource its members earn in raid fights (SEEDS_PER_DAMAGE raid damage = 1 Seed, at most
+// SEED_WEEK_CAP a member a week). The server keeps the levels and the Seeds (supabase/proposed/20261019_guild_skills.sql): the
+// numbers here are the client's copy of guild_skill_defs, and the test checks the two agree.
+//
+// Live today: Rooted Walls (+4% bramble Health in raid fights a level, 5 levels). The rest are `soon`: shown locked, they do
+// nothing and can't be bought (the server's catalogue doesn't list them).
+// ============================================================================
+(function(root){
+'use strict';
+const SEEDS_PER_DAMAGE = 500;   // 1 Seed per 500 raid damage in one fight (a fight scores at most 10,000, so 20 Seeds)
+const SEED_WEEK_CAP = 250;      // Seeds one player can earn a week, whichever guild they are in
+const SKILLS = [
+  {id:'rooted_walls', key:'rooted-walls', icon:'🌳', maxLevel:5, perLevel:4, costs:[30, 60, 100, 150, 220], effect:'raidBrambleHpPct'},
+  {id:'sharp_thorns', key:'sharp-thorns', icon:'🌵', soon:true},
+  {id:'second_wind',  key:'second-wind',  icon:'🍃', soon:true},
+  {id:'sap_return',   key:'sap-return',   icon:'🍯', soon:true},
+  {id:'guild_chest',  key:'guild-chest',  icon:'🧰', soon:true},
+  {id:'ally_banners', key:'ally-banners', icon:'🚩', soon:true},
+  {id:'seed_satchel', key:'seed-satchel', icon:'🌰', soon:true},
+];
+const byId = id=> SKILLS.find(s=> s.id === id) || null;
+const clampLevel = (s, n)=> Math.max(0, Math.min(s && !s.soon ? s.maxLevel : 0, Math.floor(Number(n) || 0)));
+// Rows from guild_skill_levels ([{skill, level}]) or a plain {skill: level} object -> {skill: level}, live skills only, clamped.
+function normaliseLevels(rows){
+  const out = {};
+  const put = (id, n)=>{ const s = byId(id); if(s && !s.soon){ const v = clampLevel(s, n); if(v) out[id] = v; } };
+  if(Array.isArray(rows)) rows.forEach(r=>{ if(r) put(r.skill, r.level); });
+  else if(rows && typeof rows === 'object') Object.keys(rows).forEach(id=> put(id, rows[id]));
+  return out;
+}
+// Seeds the next level costs (null at the top level, or for a skill that isn't live).
+function nextCost(id, level){ const s = byId(id); if(!s || s.soon) return null; const l = clampLevel(s, level); return l >= s.maxLevel ? null : s.costs[l]; }
+function totalCost(id){ const s = byId(id); return s && !s.soon ? s.costs.reduce((t, c)=> t + c, 0) : 0; }
+// What a skill does at a level (Rooted Walls: the % of bramble Health).
+function effectAt(id, level){ const s = byId(id); return s && !s.soon ? clampLevel(s, level) * s.perLevel : 0; }
+// Rooted Walls: +% Health on your bramble in raid fights, from a {skill: level} object.
+function brambleHpPct(levels){ return effectAt('rooted_walls', (normaliseLevels(levels || {}))['rooted_walls'] || 0); }
+// A raid castle's Health with the stage's castleHpPct and the guild's % added together (+20 guild and −10 stage = +10%).
+// Same rounding and floor as BramblewoodRaid.scaleCastle.
+function scaleBramble(hp, stagePct, guildPct){ hp = Number(hp) || 0; const pct = (Number(stagePct) || 0) + (Number(guildPct) || 0); return pct ? Math.max(1, Math.round(hp * (1 + pct / 100))) : hp; }
+// Seeds one raid fight earns (the server's trigger does the same sum; the weekly cap is the server's).
+function seedsForDamage(damage){ return Math.floor(Math.max(0, Math.min(10000, Number(damage) || 0)) / SEEDS_PER_DAMAGE); }
+// The upgrade is allowed for the guild's owner: role 'owner' AND the guild's creator (the server's rule; see the SQL for why).
+function canUpgrade(guild, member, uid){ return !!(guild && member && uid && member.role === 'owner' && member.profile_id === uid && guild.created_by === uid); }
+// PostgREST / Postgres errors that mean "the table or function isn't there yet" (the SQL isn't applied).
+function notAppliedError(err){
+  if(!err) return false;
+  const c = String(err.code || ''), m = String(err.message || err.details || err.hint || '');
+  return c === 'PGRST205' || c === 'PGRST202' || c === '42P01' || c === '42883' || /does not exist|schema cache|could not find the (table|function)/i.test(m);
+}
+const api = {SKILLS, SEEDS_PER_DAMAGE, SEED_WEEK_CAP, byId, normaliseLevels, nextCost, totalCost, effectAt, brambleHpPct, scaleBramble, seedsForDamage, canUpgrade, notAppliedError};
+if(typeof module !== 'undefined' && module.exports) module.exports = api;
+if(root) root.BramblewoodGuild = api;
+})(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));
 
 </script>
 <script>
@@ -38618,7 +38751,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '1be16c5af815', BUILD_CARD_HASH = '6334784c51d8150782d560c7ff4dbfd956d6aa44b11945908e30d6ad3b5c3219';
+const BUILD_ID = '2e869665dde8', BUILD_CARD_HASH = '6334784c51d8150782d560c7ff4dbfd956d6aa44b11945908e30d6ad3b5c3219';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -56754,6 +56887,7 @@ function raidPanelHTML(){
   const def = activeRaidDef(); if(!def) return '';
   const st = currentRaidStateFor(def);
   liveRefreshRaidParts(def.id, st.cycle).then(ch=>{ if(ch && playSubTab==='raid' && !matchState && document.querySelector('.raid2-panel')) renderRaidSubTab(document.getElementById('playSubBody')); });
+  try{ ensureGuildSkillsForRaid().then(ch=>{ if(ch && playSubTab==='raid' && !matchState && document.querySelector('.raid2-panel')) renderRaidSubTab(document.getElementById('playSubBody')); }).catch(()=>{}); }catch(e){} // 2026-10-19 (guild skills)
   const daysLeft = Math.max(1, Math.ceil(((st.cycle+1)*RaidM.CYCLE_MS - Date.now()) / (24*3600*1000)));
   const me = myGhostOwnerId(), mine = st.contributors[me] || 0, tier = RaidM.contributionTier(st, me);
   const tierLabel = {top1:'Top 1%', top10:'Top 10%', top50:'Top 50%', participant:'Participant'}[tier] || '';
@@ -56783,6 +56917,7 @@ function raidPanelHTML(){
       <span class="r3-chip"><small>Your attempts</small><b>${myTries}</b></span>
       <span class="r3-chip"><small>Raid Points</small><b>${currentRaidPoints()}/${RAID_POINTS_MAX} 🎫</b></span>
       <span class="r3-chip"><small>A fight costs</small><b>${cost.raidPoints||0} 🎫 ${cost.energy||0} ⚡</b></span>
+      ${(()=>{ /* 2026-10-19 (guild skills): "Guild: +12% bramble Health" */ let t = ''; try{ t = guildRaidBonusText(); }catch(e){} return t ? `<span class="r3-chip gsk-raid" title="${escapeAttr(t)}"><small>🌳</small><b>${escapeHtml(t)}</b></span>` : ''; })()}
     </div>
     ${tierLabel ? '' : '<p class="r3-hint">Fight any open part to join this week’s raid.</p>'}
     <h3 class="r3-h">Pick a part to fight</h3>
@@ -57159,6 +57294,7 @@ function openTrenchSetup(def, partId){
   const st = currentRaidStateFor(def);
   const f = RaidM.fightFor(def, st, partId);
   const cfg = TrenchM.trenchConfig(def, f.part, st.stage);
+  cfg.wallHp = guildScaledBramble(cfg.wallHp, 0); // 2026-10-19 (guild skills): Rooted Walls on the trench's shared wall
   const seed = (Math.floor(Math.random()*0xFFFFFFFF))>>>0;
   let allies = trenchAllies(def, [], seed);
   let overlay = document.getElementById('trenchOverlay');
@@ -57175,7 +57311,7 @@ function openTrenchSetup(def, partId){
   overlay.innerHTML = `<div class="modal trench-setup" role="dialog" aria-label="Choose your trench">
     <div class="modal-head-row"><h2>${escapeHtml(f.part.icon||'')} ${escapeHtml(f.part.name)} — the trenches</h2><button class="modal-close-btn" id="tsClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">You play your row; two raiders' decks hold the others. Boss hits land on the front row first and roll through gaps. ${cfg.rounds} turns · wall ${cfg.wallHp} HP.</p>
-    <ul class="ts-rules">${rules.map(r=> `<li>${r}</li>`).join('')}</ul>
+    <ul class="ts-rules">${rules.map(r=> `<li>${r}</li>`).join('')}${guildRaidBonusText() ? `<li class="gsk-raid">🌳 ${escapeHtml(guildRaidBonusText())}</li>` : '' /* 2026-10-19 (guild skills) */}</ul>
     <div class="ts-rows">${[0,1,2].map(i=> `<button type="button" class="ts-row" data-row="${i}">
       <span class="ts-row-name">${TrenchM.ROW_NAMES[i]}</span>
       <span class="ts-row-hint">${i===0 ? 'Takes the hits' : i===1 ? 'Hit through front gaps' : 'Safest'}</span>
@@ -57278,6 +57414,12 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
   };
   render(T.view());
 }
+// Guild skills in raid fights (2026-10-19, package G): your bramble's Health with the stage's castleHpPct and the guild's Rooted Walls
+// % added together (guildBrambleHpPct: 0 with no guild, or while supabase/proposed/20261019_guild_skills.sql isn't applied).
+function guildScaledBramble(hp, stagePct){
+  let g = 0; try{ g = guildBrambleHpPct(); }catch(e){ g = 0; }
+  return (typeof BramblewoodGuild !== 'undefined') ? BramblewoodGuild.scaleBramble(hp, stagePct, g) : RaidM.scaleCastle(hp, stagePct);
+}
 function startRaidPartMatch(def, partId){
   const st = currentRaidStateFor(def);
   const f = RaidM.fightFor(def, st, partId, raidStageOpts()); // 2026-10-18 (R3-WP2): with the stage's rules (raidStageOpts resolves its field)
@@ -57305,7 +57447,7 @@ function startRaidPartMatch(def, partId){
     matchDefsOverlay = {}; Object.keys(deck).forEach(id=>{ matchDefsOverlay[id] = defs[id]; }); }
   const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false, rules: f.fieldRules});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = RaidM.scaleCastle(myCharacter.health || 30, f.castleHpPct);
+  const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = guildScaledBramble(myCharacter.health || 30, f.castleHpPct); // + the guild's Rooted Walls (2026-10-19)
   const players = {1: engine.newPlayer(1, myDeckCounts, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
@@ -57369,7 +57511,7 @@ function startRaidFullBattle(def, partId, f, st){
   // ally decks otherwise). Each has a castle; the three castles are one: their Health added up and their passives merged.
   const allies = (m0=> m0)(trenchAllies(def, [], (Math.random()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i));
   const mine = myCastleDef(), merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
-  const myHp = RaidM.scaleCastle(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct); // the stage's castleHpPct (2026-10-18)
+  const myHp = guildScaledBramble(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct); // the stage's castleHpPct (2026-10-18) + the guild's Rooted Walls (2026-10-19)
   const players = {1: engine.newPlayer(1, myDeckCounts, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
   players[2].loopCards = [];
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
@@ -69069,6 +69211,16 @@ function coldWaveVfx(m){
 const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'calc(100% - 12px)', flow:'0%', high:'0%'};
 const TIDE_BOARD_CARDS = '#battlefieldInner .board-row > .board-card'; // every row: yours, the enemy's, and the raid's middle / back rows (2026-10-18)
 const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {none:0, ebb:1, flow:2, high:3};
+// 2026-10-18 (package M, owner 20:45: "The movement during flood should be a bit more obvious during transition. Then during steady
+// state, 70% more movement than now (it moves like 2-3px only right now). In Ebb, it looks like what it is right now, but 20% less."):
+// the settled water's slosh (.tw-body's twSlosh, px down and back over 6 s) was 5px in every state; it is now TIDE_FLOOD_MOTION on
+// Flood and High Tide (5 x 1.7) and TIDE_EBB_MOTION on Ebb (5 x 0.8), passed to the CSS as --tw-slosh. A rising tide (into Flood or
+// High Tide) tilts in further from the left (TIDE_RISE_SKEW, was TIDE_BASE_SKEW), its crest surges higher (twSurgeR*) and, as it
+// reaches the top, the whole sheet swells down into view and settles back (twArrive*, TIDE_ARRIVE_SWELL px). Ebb and the tide going
+// out keep their old tilt and surge. Transforms only; Low effects, Minimal and reduced motion still stop all of it (CSS, .tide-scene).
+const TIDE_MOTION_BASE = 5, TIDE_FLOOD_MOTION = 8.5, TIDE_EBB_MOTION = 4; // px; the owner's knobs (x1.7 and x0.8 of the old 5px)
+const TIDE_RISE_SKEW = 8, TIDE_BASE_SKEW = 5, TIDE_ARRIVE_SWELL = 40; // deg, deg, px (the swell clears the top border's bunting, about 20px)
+function tideMotionPx(k){ return k === 'ebb' ? TIDE_EBB_MOTION : (k === 'flow' || k === 'high') ? TIDE_FLOOD_MOTION : TIDE_MOTION_BASE; }
 function tideSceneTarget(m){
   try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
 }
@@ -69091,9 +69243,13 @@ function syncTideScene(m){
     w.dataset.key = key; w.dataset.k = st.k;
     w.style.setProperty('--tw-from', TIDE_SCENE_Y[st.from] || TIDE_SCENE_Y.none); w.style.setProperty('--tw-to', TIDE_SCENE_Y[st.k]);
     w.style.setProperty('--tw-delay', (moving ? -el : -1e6) + 'ms');
-    w.style.setProperty('--tw-skew', (TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from] ? 5 : -5) + 'deg'); // in from the left (owner, 10:27)
+    const rising = TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from], flooding = rising && (st.k === 'flow' || st.k === 'high');
+    w.style.setProperty('--tw-skew', (flooding ? TIDE_RISE_SKEW : rising ? TIDE_BASE_SKEW : -TIDE_BASE_SKEW) + 'deg'); // in from the left (owner, 10:27); steeper on a Flood (package M)
+    w.style.setProperty('--tw-slosh', tideMotionPx(st.k) + 'px'); // the settled slosh: Flood x1.7, Ebb x0.8 (package M, owner 20:45)
+    w.style.setProperty('--tw-swell', TIDE_ARRIVE_SWELL + 'px');
     w.classList.toggle('mv-b', !w.classList.contains('mv-b')); // a new animation name restarts the move (and the drying)
     w.classList.toggle('is-moving', moving);
+    w.classList.toggle('is-rising', moving && flooding);
     w.classList.toggle('is-drying', moving && (st.from === 'flow' || st.from === 'high') && (st.k === 'ebb' || st.k === 'none'));
   }
   bf.dataset.tide = st.k; bf.style.setProperty('--tw-wade-delay', (moving ? -el : -1e6) + 'ms');
@@ -79007,6 +79163,7 @@ async function loadMyGuild(){
     if(memErr) throw memErr;
     if(!membership){
       myGuild = null; myGuildMembers = null;
+      resetGuildSkills(); // 2026-10-19 (guild skills): no guild, no guild bonus in raids
       loadGuildBrowseList();
     } else {
       const { data: guild, error: gErr } = await sbClient.from('guilds').select('*').eq('id', membership.guild_id).maybeSingle();
@@ -79018,6 +79175,8 @@ async function loadMyGuild(){
       // 2026-10-18 (guild rename): the founders' gift, one 🎫 Rename Ticket for an owner of a guild made before it shipped
       const me = myGuildMembers.find(m=> m.profile_id===cloudUserId);
       if(me && me.role==='owner' && giftFounderRenameTicket(guild)) setTimeout(()=>{ try{ showToast(TX('toast.rename-ticket-gift'), 'ok'); }catch(e){} }, 600);
+      // 2026-10-19 (guild skills): the guild's skill levels and Seeds, after the roster (it shows a loading line until then)
+      loadGuildSkills(guild.id).then(()=>{ if(currentTab==='guild' && myGuild && myGuild.id === guild.id) renderGuild(); });
     }
   }catch(e){ myGuild=null; myGuildMembers=null; guildLoadError = true; }
   guildDataLoaded = true;
@@ -79150,6 +79309,147 @@ function openGuildRenameDialog(){
     if(currentTab === 'guild') renderGuild();
   });
 }
+// ---- Guild skills (2026-10-19, package G; owner 20:45: "Guild skills. Starting with +raid HP to your bramble."). A guild's
+// skills have levels; its owner buys them with 🌱 Guild Seeds, which members earn in raid fights. The rules and numbers are
+// BramblewoodGuild (bramblewood-guild.js); the levels and Seeds live on the server (supabase/proposed/20261019_guild_skills.sql:
+// guild_skill_levels / guild_seeds, read by members; upgrade_guild_skill, the owner's only way to buy). Until that is applied the
+// read fails with "relation does not exist": the Guild tab shows the list as a preview and raid fights get no guild bonus.
+// Live: Rooted Walls, +4% bramble Health in raid fights a level (5 levels). Admin mode can preview levels in this browser only.
+const GuildM = (typeof BramblewoodGuild!=='undefined') ? BramblewoodGuild : null;
+// The locked "coming soon" skills. false hides them (the 2026-09-29 rule: the live game shouldn't announce features that aren't in).
+const GUILD_SKILLS_SHOW_SOON = true;
+const GUILD_SKILL_PREVIEW_KEY = 'bramblewood_guild_skill_preview_v1';
+const GUILD_SKILLS_STALE_MS = 5 * 60 * 1000;
+// status: idle (not asked) | loading | live (applied: levels + seeds are the server's) | missing (SQL not applied) | error
+let guildSkills = {guildId: null, status: 'idle', levels: {}, seeds: 0, at: 0};
+function resetGuildSkills(){ guildSkills = {guildId: null, status: 'idle', levels: {}, seeds: 0, at: Date.now()}; }
+async function loadGuildSkills(guildId){
+  if(!GuildM || !sbClient || !guildId){ guildSkills = {guildId: guildId || null, status: 'idle', levels: {}, seeds: 0, at: Date.now()}; return guildSkills; }
+  guildSkills = Object.assign({}, guildSkills, {guildId, status: 'loading'});
+  let next;
+  try{
+    const { data, error } = await sbClient.from('guild_skill_levels').select('skill, level').eq('guild_id', guildId);
+    if(error) next = {guildId, status: GuildM.notAppliedError(error) ? 'missing' : 'error', levels: {}, seeds: 0};
+    else {
+      const s = await sbClient.from('guild_seeds').select('seeds').eq('guild_id', guildId).maybeSingle();
+      next = {guildId, status: 'live', levels: GuildM.normaliseLevels(data || []), seeds: Math.max(0, Number(s && s.data && s.data.seeds) || 0)};
+    }
+  }catch(e){ next = {guildId, status: 'error', levels: {}, seeds: 0}; }
+  guildSkills = Object.assign(next, {at: Date.now()});
+  return guildSkills;
+}
+// For a raid fight opened before the Guild tab: which guild you're in, then its skills (at most every few minutes). Resolves to
+// true when the guild bonus changed, so the raid panel can redraw its chip.
+async function ensureGuildSkillsForRaid(){
+  if(!GuildM || !sbClient || !cloudUserId) return false;
+  if(guildSkills.status === 'loading' || (guildSkills.status !== 'idle' && Date.now() - guildSkills.at < GUILD_SKILLS_STALE_MS)) return false;
+  const before = guildBrambleHpPct();
+  try{
+    const { data, error } = await sbClient.from('guild_members').select('guild_id').eq('profile_id', cloudUserId).maybeSingle();
+    if(error) return false;
+    if(!data){ resetGuildSkills(); return guildBrambleHpPct() !== before; }
+    await loadGuildSkills(data.guild_id);
+  }catch(e){ return false; }
+  return guildBrambleHpPct() !== before;
+}
+// Admin preview: {skill: level} in this browser, used only while Admin mode is on (and then instead of the guild's own levels).
+function guildSkillPreview(){
+  if(!adminModeEnabled || !GuildM) return null;
+  try{ const raw = localStorage.getItem(GUILD_SKILL_PREVIEW_KEY); return raw ? GuildM.normaliseLevels(JSON.parse(raw)) : null; }catch(e){ return null; }
+}
+function setGuildSkillPreview(levels){ try{ if(levels) localStorage.setItem(GUILD_SKILL_PREVIEW_KEY, JSON.stringify(levels)); else localStorage.removeItem(GUILD_SKILL_PREVIEW_KEY); }catch(e){} }
+// The levels a raid fight uses: the admin preview, else your guild's server levels (none while the SQL isn't applied).
+function guildRaidLevels(){
+  const pv = guildSkillPreview(); if(pv) return {levels: pv, preview: true};
+  if(guildSkills.status === 'live' && guildSkills.guildId) return {levels: guildSkills.levels, preview: false};
+  return {levels: {}, preview: false};
+}
+// Rooted Walls: the % your bramble's Health goes up in raid fights (0 with no guild, no levels, or the SQL not applied).
+function guildBrambleHpPct(){ return GuildM ? GuildM.brambleHpPct(guildRaidLevels().levels) : 0; }
+// The raid pre-fight line ("Guild: +12% bramble Health"), or '' with no bonus.
+function guildRaidBonusText(){ const pct = guildBrambleHpPct(); if(!pct) return ''; return TX('ui.gskill-raid-bonus', {pct}) + (guildRaidLevels().preview ? ' ' + TX('ui.gskill-admin-tag') : ''); }
+function guildSkillText(s){
+  switch(s.id){
+    case 'rooted_walls': return {name: TX('ui.gskill-rooted-walls-name'), desc: TX('ui.gskill-rooted-walls-desc', {pct: s.perLevel})};
+    case 'sharp_thorns': return {name: TX('ui.gskill-sharp-thorns-name'), desc: TX('ui.gskill-sharp-thorns-desc')};
+    case 'second_wind': return {name: TX('ui.gskill-second-wind-name'), desc: TX('ui.gskill-second-wind-desc')};
+    case 'sap_return': return {name: TX('ui.gskill-sap-return-name'), desc: TX('ui.gskill-sap-return-desc')};
+    case 'guild_chest': return {name: TX('ui.gskill-guild-chest-name'), desc: TX('ui.gskill-guild-chest-desc')};
+    case 'ally_banners': return {name: TX('ui.gskill-ally-banners-name'), desc: TX('ui.gskill-ally-banners-desc')};
+    case 'seed_satchel': return {name: TX('ui.gskill-seed-satchel-name'), desc: TX('ui.gskill-seed-satchel-desc')};
+  }
+  return {name: s.id, desc: ''};
+}
+// The owner buys the next level (upgrade_guild_skill checks the owner, the level seen, the top level and the Seeds, and spends
+// them in one transaction). Nothing is spent on any error; "not applied" says guild skills aren't switched on yet.
+async function upgradeGuildSkill(guildId, skillId, fromLevel){
+  if(!sbClient || !cloudUserId) return {error: TX('net.gskill-sign-in')};
+  if(!GuildM) return {error: TX('net.gskill-not-on'), notOn: true};
+  let res;
+  try{ res = await sbClient.rpc('upgrade_guild_skill', {p_guild: guildId, p_skill: skillId, p_from_level: fromLevel}); }catch(e){ return {error: TX('net.gskill-failed', {err: netErrText(e)})}; }
+  const { data, error } = res || {};
+  if(error){
+    const m = String(error.message || '');
+    if(GuildM.notAppliedError(error)) return {error: TX('net.gskill-not-on'), notOn: true};
+    if(error.code === '42501' || /not_owner/i.test(m)) return {error: TX('net.gskill-not-owner')};
+    if(/not_enough_seeds/i.test(m)) return {error: TX('net.gskill-no-seeds', {cost: GuildM.nextCost(skillId, fromLevel) || 0, n: guildSkills.seeds})};
+    if(/level_changed/i.test(m)) return {error: TX('net.gskill-changed'), stale: true};
+    if(/max_level/i.test(m)) return {error: TX('net.gskill-maxed'), stale: true};
+    return {error: TX('net.gskill-failed', {err: netErrText(error)})};
+  }
+  const row = Array.isArray(data) ? data[0] : data;
+  if(!row || row.level == null) return {error: TX('net.gskill-failed', {err: TX('net.something-went-wrong')})};
+  return {ok: true, level: row.level | 0, seeds: Math.max(0, row.seeds | 0)};
+}
+function guildSkillsPanelHTML(guild, members){
+  if(!GuildM) return '';
+  const mine = members.find(m=> m.profile_id === cloudUserId);
+  const can = GuildM.canUpgrade(guild, mine, cloudUserId);
+  const st = guildSkills.guildId === guild.id ? guildSkills : {status: 'loading', levels: {}, seeds: 0};
+  const live = st.status === 'live', pv = guildSkillPreview();
+  const note = st.status === 'missing' ? `<p class="gsk-note">${escapeHtml(TX('ui.gskill-preview-note'))}</p>`
+    : st.status === 'error' ? netErrorHTML(TX('net.gskill-load-failed'), 'guildSkills', ()=>{ loadGuildSkills(guild.id).then(()=>{ if(currentTab === 'guild') renderGuild(); }); })
+    : st.status === 'loading' ? `<div class="empty-hint">${escapeHtml(TX('ui.gskill-loading'))}</div>` : '';
+  const rows = GuildM.SKILLS.filter(s=> !s.soon || GUILD_SKILLS_SHOW_SOON).map(s=>{
+    const t = guildSkillText(s);
+    if(s.soon) return `<li class="gsk is-soon" aria-disabled="true"><span class="gsk-ico" aria-hidden="true">${s.icon}</span><div class="gsk-body"><b>${escapeHtml(t.name)}</b><span>${escapeHtml(t.desc)}</span></div><span class="gsk-tag">🔒 ${escapeHtml(TX('ui.gskill-coming-soon'))}</span></li>`;
+    const lv = live ? (st.levels[s.id] || 0) : 0, cost = GuildM.nextCost(s.id, lv);
+    const now = lv ? TX('ui.gskill-rooted-walls-now', {pct: GuildM.effectAt(s.id, lv)}) : '';
+    const act = !live ? '' : cost == null ? `<span class="gsk-tag">${escapeHtml(TX('ui.gskill-maxed'))}</span>`
+      : can ? `<button type="button" class="btn small primary" data-gskill-up="${escapeAttr(s.id)}" data-gskill-from="${lv}"${st.seeds < cost ? ' aria-disabled="true"' : ''}>${escapeHtml(TX('ui.gskill-upgrade', {cost}))}</button>`
+      : `<span class="gsk-tag">${escapeHtml(TX('ui.gskill-next-cost', {cost}))}</span>`;
+    const pvl = pv ? (pv[s.id] || 0) : null;
+    const admin = adminModeEnabled ? `<span class="gsk-admin" role="group" aria-label="${escapeAttr(TX('ui.gskill-admin-preview'))}"><button type="button" class="btn small" data-gskill-prev="${escapeAttr(s.id)}" data-d="-1" aria-label="−1">−</button><small>${escapeHtml(TX('ui.gskill-admin-level', {n: pvl == null ? '–' : pvl}))}</small><button type="button" class="btn small" data-gskill-prev="${escapeAttr(s.id)}" data-d="1" aria-label="+1">+</button></span>` : '';
+    return `<li class="gsk"><span class="gsk-ico" aria-hidden="true">${s.icon}</span><div class="gsk-body"><b>${escapeHtml(t.name)} <small>${escapeHtml(TX('ui.gskill-level', {n: lv, max: s.maxLevel}))}</small></b><span>${escapeHtml(t.desc)}</span>${now ? `<span class="gsk-now">${escapeHtml(now)}</span>` : ''}</div><div class="gsk-act">${act}${admin}</div></li>`;
+  }).join('');
+  return `<div class="panel guild-skills">
+      <h2>🌱 ${escapeHtml(TX('ui.gskill-title'))}${live ? ` <span class="panel-sub-inline gsk-seeds">${escapeHtml(TX('ui.gskill-seeds', {n: st.seeds.toLocaleString()}))}</span>` : ''}</h2>
+      <p class="panel-sub">${escapeHtml(TX('ui.gskill-sub', {per: GuildM.SEEDS_PER_DAMAGE.toLocaleString(), cap: GuildM.SEED_WEEK_CAP}))}${live && !can ? ' ' + escapeHtml(TX('ui.gskill-owner-only')) : ''}</p>
+      ${note}
+      <ul class="gsk-list">${rows}</ul>
+      ${adminModeEnabled ? `<p class="gsk-note gsk-admin-note">🛠️ ${escapeHtml(TX('ui.gskill-admin-preview'))}${pv ? ` <button type="button" class="btn small" id="gskPrevClear">${escapeHtml(TX('ui.gskill-admin-clear'))}</button>` : ''}</p>` : ''}
+    </div>`;
+}
+function wireGuildSkills(root){
+  if(!GuildM || !myGuild) return;
+  root.querySelectorAll('[data-gskill-up]').forEach(b=> b.addEventListener('click', async ()=>{
+    const id = b.getAttribute('data-gskill-up'), from = +b.getAttribute('data-gskill-from') || 0, cost = GuildM.nextCost(id, from);
+    if(b.getAttribute('aria-disabled') === 'true'){ showToast(TX('net.gskill-no-seeds', {cost: cost || 0, n: guildSkills.seeds}), 'error'); denyShake(b); return; }
+    if(b.disabled) return; b.disabled = true;
+    const g = myGuild, res = await upgradeGuildSkill(g.id, id, from);
+    if(res.error){ b.disabled = false; showToast(res.error, 'error'); if(res.stale || res.notOn){ await loadGuildSkills(g.id); if(currentTab === 'guild') renderGuild(); } return; }
+    if(guildSkills.guildId === g.id){ guildSkills.levels = Object.assign({}, guildSkills.levels, {[id]: res.level}); guildSkills.seeds = res.seeds; guildSkills.at = Date.now(); }
+    showToast(TX('toast.gskill-upgraded', {name: guildSkillText(GuildM.byId(id)).name, n: res.level}), 'ok');
+    if(currentTab === 'guild') renderGuild();
+  }));
+  root.querySelectorAll('[data-gskill-prev]').forEach(b=> b.addEventListener('click', ()=>{
+    if(!adminModeEnabled) return;
+    const id = b.getAttribute('data-gskill-prev'), s = GuildM.byId(id); if(!s) return;
+    const pv = Object.assign({}, guildSkillPreview() || {}); pv[id] = Math.max(0, Math.min(s.maxLevel, (pv[id] || 0) + (+b.getAttribute('data-d') || 0)));
+    setGuildSkillPreview(pv); renderGuild();
+  }));
+  const clr = root.querySelector('#gskPrevClear'); if(clr) clr.addEventListener('click', ()=>{ setGuildSkillPreview(null); renderGuild(); });
+}
 function renderGuild(){
   const root = document.getElementById('view-guild');
   if(!isSignedIn()){
@@ -79178,10 +79478,11 @@ function renderGuild(){
   }
   root.innerHTML = `
     <div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
-    ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) : guildBrowseCreatePanelHTML()}`;
+    ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) + guildSkillsPanelHTML(myGuild, myGuildMembers||[]) /* 2026-10-19 (guild skills) */ : guildBrowseCreatePanelHTML()}`;
   document.getElementById('guildBackBtn').addEventListener('click', goHome);
   if(myGuild){
     const renameBtn = document.getElementById('guildRenameBtn'); // 2026-10-18 (guild rename): owners only
+    wireGuildSkills(root); // 2026-10-19 (guild skills): upgrade buttons, admin preview
     if(renameBtn) renameBtn.addEventListener('click', openGuildRenameDialog);
     const leaveBtn = document.getElementById('guildLeaveBtn');
     if(leaveBtn) leaveBtn.addEventListener('click', async ()=>{

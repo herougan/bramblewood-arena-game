@@ -5166,6 +5166,20 @@
   .guild-actions-row{display:flex; gap:8px; margin-top:10px; flex-wrap:wrap;}
   .guild-browse-list{display:flex; flex-direction:column; gap:6px; max-height:320px; overflow-y:auto;}
   .guild-browse-row{display:flex; align-items:center; justify-content:space-between; gap:8px; font-size:13px; padding:8px 12px; border-radius:10px; background:var(--surface-2);}
+  /* Guild skills (2026-10-19, package G): one row a skill; locked "coming soon" rows faded; the admin's local preview stepper */
+  .gsk-list{list-style:none; margin:10px 0 0; padding:0; display:flex; flex-direction:column; gap:6px;}
+  .gsk{display:grid; grid-template-columns:34px 1fr auto; align-items:center; gap:10px; padding:9px 12px; border-radius:10px; background:var(--surface-2); font-size:13px;}
+  .gsk.is-soon{opacity:.6;}
+  .gsk-ico{font-size:22px; text-align:center;}
+  .gsk-body{display:flex; flex-direction:column; gap:2px; min-width:0;}
+  .gsk-body small{font-weight:400; color:var(--ink-muted);}
+  .gsk-now{color:var(--accent); font-weight:600;}
+  .gsk-act{display:flex; flex-direction:column; align-items:flex-end; gap:6px;}
+  .gsk-tag{font-size:11.5px; color:var(--ink-muted); white-space:nowrap;}
+  .gsk-admin{display:flex; align-items:center; gap:4px;}
+  .gsk-note{font-size:12.5px; color:var(--ink-muted); margin:8px 0 0;}
+  .gsk-seeds{font-size:13px;}
+  @media (max-width:520px){ .gsk{grid-template-columns:28px 1fr;} .gsk-act{grid-column:1 / -1; flex-direction:row; justify-content:flex-end; flex-wrap:wrap;} .gsk > .gsk-tag{grid-column:2; justify-self:start;} }
   /* Match History / Replay (#254) — a plain expandable row list on the Profile tab, same
      .panel/.panel-sub shell as everything else there. */
   .match-history-list{display:flex; flex-direction:column; gap:6px;}
@@ -6560,7 +6574,16 @@
   @keyframes twMoveA{from{transform:translateY(var(--tw-from)) skewY(var(--tw-skew, 0deg));} to{transform:translateY(var(--tw-to)) skewY(0deg);}}
   @keyframes twMoveB{from{transform:translateY(var(--tw-from)) skewY(var(--tw-skew, 0deg));} to{transform:translateY(var(--tw-to)) skewY(0deg);}}
   .tide-scene .tw-body{position:absolute; inset:0; animation:twSlosh 6s ease-in-out infinite;}
-  @keyframes twSlosh{0%,100%{transform:translateY(0);} 50%{transform:translateY(5px);}}
+  /* 2026-10-18 (package M, owner 20:45: "during steady state, 70% more movement than now ... In Ebb ... 20% less"): the slosh's depth is
+     --tw-slosh, set by syncTideScene from TIDE_FLOOD_MOTION (8.5px, Flood and High Tide) / TIDE_EBB_MOTION (4px, Ebb); it was 5px. */
+  @keyframes twSlosh{0%,100%{transform:translateY(0);} 50%{transform:translateY(var(--tw-slosh, 5px));}}
+  /* ... and "The movement during flood should be a bit more obvious during transition": a Flood / High Tide coming in swells down into
+     view as it reaches the top and settles back (the independent translate property, so it adds to the slosh; --tw-swell is
+     TIDE_ARRIVE_SWELL), its crest surges higher and its back foam line brightens while it rises (twSurgeR*, twFoamR*). */
+  .tide-scene.is-moving.is-rising .tw-body{animation:twSlosh 6s ease-in-out infinite, twArriveA 1.4s ease-out calc(var(--tw-delay, 0ms) + 1500ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-body{animation-name:twSlosh, twArriveB;}
+  @keyframes twArriveA{0%{translate:0 0;} 30%{translate:0 var(--tw-swell, 40px);} 62%{translate:0 calc(var(--tw-swell, 40px)*-.12);} 82%{translate:0 calc(var(--tw-swell, 40px)*.18);} 100%{translate:0 0;}}
+  @keyframes twArriveB{0%{translate:0 0;} 30%{translate:0 var(--tw-swell, 40px);} 62%{translate:0 calc(var(--tw-swell, 40px)*-.12);} 82%{translate:0 calc(var(--tw-swell, 40px)*.18);} 100%{translate:0 0;}}
   /* 2026-10-18 (owner 15:05: "the water vfx can come into play after the water settles"): the caustics and the sheen (.tw-surf) fade in
      once the move is over (the move's 1.8 s, resumed by the same --tw-delay) */
   .tide-scene .tw-surf{position:absolute; inset:0;}
@@ -6590,6 +6613,15 @@
   .tide-scene.is-moving.mv-b .tw-edge.tw-edge-b{animation-name:twEdgeB, twSurgeB;}
   @keyframes twSurgeA{0%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
   @keyframes twSurgeB{0%{scale:1 1.9;} 60%{scale:1 1.35;} 100%{scale:1 1;}}
+  /* a Flood's rise (package M, 2026-10-18): a taller surge, and the back foam line bright while it climbs */
+  .tide-scene.is-moving.is-rising .tw-edge{animation:twEdge 8s linear infinite, twSurgeRA 1.8s ease-out var(--tw-delay, 0ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-edge{animation-name:twEdge, twSurgeRB;}
+  .tide-scene.is-moving.is-rising .tw-edge.tw-edge-b{animation:twEdgeB 13s linear infinite, twSurgeRA 1.8s ease-out var(--tw-delay, 0ms) both, twFoamRA 2.2s ease-out var(--tw-delay, 0ms) both;}
+  .tide-scene.is-moving.is-rising.mv-b .tw-edge.tw-edge-b{animation-name:twEdgeB, twSurgeRB, twFoamRB;}
+  @keyframes twSurgeRA{0%{scale:1 2.9;} 55%{scale:1 1.9;} 100%{scale:1 1;}}
+  @keyframes twSurgeRB{0%{scale:1 2.9;} 55%{scale:1 1.9;} 100%{scale:1 1;}}
+  @keyframes twFoamRA{0%,70%{opacity:1;} 100%{opacity:.6;}}
+  @keyframes twFoamRB{0%,70%{opacity:1;} 100%{opacity:.6;}}
   /* an ebb (or the tide ending) leaves the sand wet and dark, drying out over about seven seconds */
   .tide-scene.is-drying .tw-wet{animation:twDryA 7s ease-out var(--tw-delay, 0ms) both;}
   .tide-scene.is-drying.mv-b .tw-wet{animation-name:twDryB;}

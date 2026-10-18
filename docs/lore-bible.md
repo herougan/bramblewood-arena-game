@@ -120,6 +120,10 @@ Only a handful of creatures live in true societies: **ants, bees, termites and o
 ### Subfactions to grow into (sketch, 2026-10-12)
 You said we'll build these out as we go. These are starting points to react to; nothing here is decided.
 
+**Owner notes (2026-10-18, no action yet):**
+- Sub-faction packs will unlock the same way the two main factions' packs unlock today.
+- Further out: **the Silver Citadel** (working name), the most metallic faction, and the first crystalline one. Metal stays rare elsewhere, so this is where Metal and the new Crystal cards live.
+
 | Subfaction | Who they might be | Where they live | Board identity (fits a skill we have) |
 |---|---|---|---|
 | **The Ashen Choir** (cultists) | Moths, beetles and a few lost Hummingbirds who worship the dragons' old fire | The Ashen Peak, the Basalt Foundry | Devilry and Ritual: they sacrifice their own to call something bigger |
