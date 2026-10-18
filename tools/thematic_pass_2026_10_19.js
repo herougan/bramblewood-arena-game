@@ -48,7 +48,8 @@ const THEMES = {
   m3:  {name: 'Ashen Spurn: the badger and porcupine bastions, yetis and the ash', tags: ['Badger', 'Porcupine', 'Frost', 'Volcanic', 'Imp', 'Devil', 'Ape'], allow: ['echidna-quillshot', 'scraper-of-skies'], ban: ['beaver-builder', 'chipmunk-stockpiler']},
   m11: {name: 'The Sundered Peak: the Cave Warlord\'s bears and cavalry, the shrine and the volcano', tags: ['Bear', 'Ape', 'Volcanic', 'Horse', 'Imp', 'Mountain', 'Ecclesia', 'Rainforest'], allow: ['blessed-avatar', 'shrine-acolyte', 'fire-hawk', 'ancient-sloth-titan'], ban: ['beaver-lumberjack']},
   m21: {name: 'The Quiet Summit: goats, eagles, owls and the chapel, after the storm', tags: ['Mountain', 'Eagle', 'Owl', 'Bird', 'Ecclesia', 'Tundra', 'Taiga', 'Turtle'], allow: ['ash-cloud-condor'], ban: ['badger-berserker']},
-  m22: {name: 'The Rimefire Caldera: snow on black glass (frost and fire)', tags: ['Mountain', 'Volcanic', 'Frost', 'Tundra', 'Newt', 'Elemental', 'Deer', 'Bird'], ban: ['badger-berserker']},
+  // the Long Burrow (the badgers' endless sett) is the Caldera's side map and opens here: its badgers belong
+  m22: {name: 'The Rimefire Caldera: snow on black glass (frost and fire), and the Long Burrow\'s badgers', tags: ['Mountain', 'Volcanic', 'Frost', 'Tundra', 'Newt', 'Elemental', 'Deer', 'Bird', 'Badger']},
   m23: {name: 'The Goldfeather Siege: the Magnate\'s army before the walls', tags: ['Horse', 'Elephant', 'Savanna', 'Badger', 'Mouse', 'Structure', 'Turtle', 'Insect', 'Duck', 'Village', 'Bird', 'Chipmunk', 'Rhino', 'Beaver']},
   m24: {name: 'Goldfeather Keep: the Magnate\'s ducks, geese and herons', tags: ['Duck', 'Village', 'Bird', 'Ecclesia', 'King', 'Beaver', 'Owl', 'Structure'], allow: ['elderhorn-monarch'] /* the Treasury's trophy */},
   // side maps

@@ -1686,9 +1686,10 @@
     "badger-berserker": 2
    },
    "in": {
-    "caldera-snow-leopard": 2
+    "ur-elk": 1,
+    "rockslide-ram": 1
    },
-   "why": "snow leopards for the badgers"
+   "why": "the Summit's Ür-Elk and a ram for the badgers"
   },
   {
    "map": "m21",
@@ -1697,9 +1698,10 @@
     "badger-berserker": 2
    },
    "in": {
-    "fumarole-ibex": 2
+    "ur-elk": 1,
+    "rockslide-ram": 1
    },
-   "why": "ibex for the badgers (its new reward: Chapel Tortoise)"
+   "why": "Ür-Elk and a ram for the badgers (its new reward: Chapel Tortoise)"
   },
   {
    "map": "m21",
@@ -1708,9 +1710,9 @@
     "badger-berserker": 1
    },
    "in": {
-    "caldera-snow-leopard": 1
+    "ur-elk": 1
    },
-   "why": "a snow leopard for the badger"
+   "why": "an Ür-Elk for the badger"
   },
   {
    "map": "m21",
@@ -1719,69 +1721,24 @@
     "badger-berserker": 2
    },
    "in": {
-    "caldera-snow-leopard": 2
+    "ur-elk": 1,
+    "rockslide-ram": 1
    },
-   "why": "snow leopards for the badgers"
+   "why": "Ür-Elk and a ram for the badgers"
   },
   {
    "map": "m21",
    "key": "21-6",
    "out": {
-    "badger-berserker": 4
+    "badger-berserker": 4,
+    "alpine-marmot": 2
    },
    "in": {
-    "chapel-tortoise": 2,
-    "caldera-snow-leopard": 2
+    "ur-elk": 2,
+    "rockslide-ram": 2,
+    "chapel-tortoise": 2
    },
-   "why": "the Prayer Bastion beside the Cathedral Eagle; snow leopards"
-  },
-  {
-   "map": "m22",
-   "key": "22-1",
-   "out": {
-    "badger-berserker": 2
-   },
-   "in": {
-    "ice-crevasse-wolf": 2
-   },
-   "why": "ice wolves for the badgers"
-  },
-  {
-   "map": "m22",
-   "key": "22-3",
-   "out": {
-    "badger-berserker": 4
-   },
-   "in": {
-    "ice-crevasse-wolf": 2,
-    "magma-salamander": 2
-   },
-   "why": "frost and fire for the badgers"
-  },
-  {
-   "map": "m22",
-   "key": "22-4",
-   "out": {
-    "badger-berserker": 4
-   },
-   "in": {
-    "ice-crevasse-wolf": 2,
-    "ice-petrel": 1,
-    "snow-bunting-archer": 1
-   },
-   "why": "the hail ridge's birds and wolves for the badgers"
-  },
-  {
-   "map": "m22",
-   "key": "22-6",
-   "out": {
-    "badger-berserker": 4
-   },
-   "in": {
-    "magma-salamander": 2,
-    "fumarole-ibex": 2
-   },
-   "why": "the cornice's salamanders and ibex for the badgers"
+   "why": "the Prayer Bastion beside the Cathedral Eagle; Ür-Elk and rams for the badgers"
   },
   {
    "map": "m22",

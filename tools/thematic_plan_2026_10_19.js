@@ -213,17 +213,16 @@ const fights = [
   F('m3', '19-6', 'beetle-battering-ram:2', 'badger-berserker:2', {ashy: true}, 'badgers for the beetles; Ashy on the boss'),
   // Map 20: The Ancient Sloth Titan gets its Sloth Titan back (R2 had taken the only copy out)
   F('m11', '20-9', 'beaver-lumberjack:1', 'ancient-sloth-titan:1', null, 'the fight\'s namesake back, for a stray beaver'),
-  // Map 21: no badgers on the Quiet Summit; snow leopards, ibex and the chapel's tortoise
-  F('m21', '21-2', 'badger-berserker:2', 'caldera-snow-leopard:2', null, 'snow leopards for the badgers'),
-  F('m21', '21-3', 'badger-berserker:2', 'fumarole-ibex:2', null, 'ibex for the badgers (its new reward: Chapel Tortoise)'),
-  F('m21', '21-4', 'badger-berserker:1', 'caldera-snow-leopard:1', null, 'a snow leopard for the badger'),
-  F('m21', '21-5', 'badger-berserker:2', 'caldera-snow-leopard:2', null, 'snow leopards for the badgers'),
-  F('m21', '21-6', 'badger-berserker:4', 'chapel-tortoise:2,caldera-snow-leopard:2', null, 'the Prayer Bastion beside the Cathedral Eagle; snow leopards'),
-  // Map 22: no badgers in the caldera
-  F('m22', '22-1', 'badger-berserker:2', 'ice-crevasse-wolf:2', null, 'ice wolves for the badgers'),
-  F('m22', '22-3', 'badger-berserker:4', 'ice-crevasse-wolf:2,magma-salamander:2', null, 'frost and fire for the badgers'),
-  F('m22', '22-4', 'badger-berserker:4', 'ice-crevasse-wolf:2,ice-petrel:1,snow-bunting-archer:1', null, 'the hail ridge\'s birds and wolves for the badgers'),
-  F('m22', '22-6', 'badger-berserker:4', 'magma-salamander:2,fumarole-ibex:2', null, 'the cornice\'s salamanders and ibex for the badgers'),
+  // Map 21: no badgers on the Quiet Summit (R2 put them in because the bird flocks barely hurt you); the Summit's big elk and the
+  // rams take their place, and the chapel's tortoise stands by the Cathedral Eagle. (Snow leopards were tried first: too weak, the
+  // fights went to 97-100% and the tuner wanted Shields of 100-250.)
+  F('m21', '21-2', 'badger-berserker:2', 'ur-elk:1,rockslide-ram:1', null, 'the Summit\'s Ür-Elk and a ram for the badgers'),
+  F('m21', '21-3', 'badger-berserker:2', 'ur-elk:1,rockslide-ram:1', null, 'Ür-Elk and a ram for the badgers (its new reward: Chapel Tortoise)'),
+  F('m21', '21-4', 'badger-berserker:1', 'ur-elk:1', null, 'an Ür-Elk for the badger'),
+  F('m21', '21-5', 'badger-berserker:2', 'ur-elk:1,rockslide-ram:1', null, 'Ür-Elk and a ram for the badgers'),
+  F('m21', '21-6', 'badger-berserker:4,alpine-marmot:2', 'ur-elk:2,rockslide-ram:2,chapel-tortoise:2', null, 'the Prayer Bastion beside the Cathedral Eagle; Ür-Elk and rams for the badgers'),
+  // Map 22: the Badger Berserkers stay. The Long Burrow, the badgers' endless sett, is a side map of the Rimefire Caldera and opens
+  // here, so its badgers belong (THEMES: m22 takes Badger)
   F('m22', '22-7', 'cinder-stoker:2', 'weathervane-swift:2', null, 'its new reward (GI Field Breaker) in the field-heavy Steam Wall'),
   // Map 24
   F('m24', '24-5', 'howdah-archers:2', 'goose-sentry:2', null, 'the keep\'s own geese on its battlements (the howdahs are the besiegers\')'),
