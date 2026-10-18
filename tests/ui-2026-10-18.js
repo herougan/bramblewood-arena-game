@@ -8,6 +8,7 @@
 //   11. "Psychic Dampener is ? until you win Map 41+."
 //   16. "New skills: Creative - not sure what it does yet, but it gives Creativity counters to cards somehow"
 //   +   "Once my deck is above a certain rarity, don't show me "Put it in my deck" options in the reward menu."
+//       (2026-10-18, owner: by Collection level now, DECK_PROMPT_FLOORS)
 //   +   "Shouldn't Cocoon be a card reward under the baby/egg category? The text should say "An egg! You'll need a place to hatch it.""
 //   +   "The Swap UI popping up after 0-2 should wait for my pack opening animation first"
 'use strict';
@@ -67,20 +68,29 @@ ok(/function describeEffects\(def, liveCard\)\{\n  def = maskHiddenSkills\(def\)
 // ---- 10. the swap window's two sides are further apart
 ok(/\.ds2-stage\{position:relative; display:flex; justify-content:center; align-items:flex-start; gap:54px;\}/.test(tpl) && /\n    \.ds2-stage\{gap:30px;\}/.test(tpl), '10. swap window gap 34 -> 54px (phones 18 -> 30px)');
 
-// ---- deck rarity floor: no "Put it in my deck" for a downgrade
-{ const RT = ['starter','common','uncommon','quest','rare','veryrare','superrare','epic'];
+// ---- "Put it in my deck" by Collection level (2026-10-18, owner decision 18: "Based on collection level. At some point, all rarities
+//      will not even trigger this prompt."; was the deck's own rarity floor)
+{ const RT = ['starter','common','uncommon','quest','rare','veryrare','superrare','epic','heroic','unique','questunique','legendary'];
   const defs = {c:{id:'c', rarity:'common'}, u:{id:'u', rarity:'uncommon'}, r:{id:'r', rarity:'rare'}, v:{id:'v', rarity:'veryrare'}, s:{id:'s', rarity:'starter'},
-    'egg-bug':{id:'egg-bug', rarity:'uncommon', hatchInto:{species:['Insect']}, source:{kind:'nest', egg:'bug'}}};
-  const ctx = {getCardDefs: ()=> defs, RARITY_TIER_BANDS: RT, myDecks: [], mainDeckId: null, getActiveDeck: ()=> null, myDeckCounts: {}, Math, Object};
+    e:{id:'e', rarity:'epic'}, l:{id:'l', rarity:'legendary'}, 'egg-bug':{id:'egg-bug', rarity:'uncommon', hatchInto:{species:['Insect']}, source:{kind:'nest', egg:'bug'}}};
+  const tbl = (src.match(/\nconst DECK_PROMPT_FLOORS = \[[\s\S]*?\n\];/) || [''])[0];
+  ok(tbl, 'DECK_PROMPT_FLOORS: one table of Collection level -> rarity floor');
+  let lvl = 0; const ctx = {getCardDefs: ()=> defs, RARITY_TIER_BANDS: RT, collectionStats: ()=> ({levelSum: lvl}), Math, Object, Infinity};
   vm.createContext(ctx);
-  vm.runInContext(fnSrc('deckRarityFloor') + fnSrc('rewardWorthDeckPrompt') + fnSrc('isEggRewardCard') + '\nthis.F = {deckRarityFloor, rewardWorthDeckPrompt, isEggRewardCard};', ctx);
-  const F = ctx.F, rares = {r:12, c:8}, mixed = {r:6, c:14}, empty = {};
-  ok(F.deckRarityFloor(rares) === RT.indexOf('rare') && F.deckRarityFloor(mixed) === RT.indexOf('common') && F.deckRarityFloor(empty) === -1, 'floor: the tier at least half the deck is at or above');
-  ok(!F.rewardWorthDeckPrompt('u', rares) && !F.rewardWorthDeckPrompt('c', rares), 'a deck of mostly rares: no deck offer for an uncommon or a common');
-  ok(F.rewardWorthDeckPrompt('r', rares) && F.rewardWorthDeckPrompt('v', rares), '...a rare or better still gets it');
-  ok(F.rewardWorthDeckPrompt('u', mixed) && F.rewardWorthDeckPrompt('c', mixed) && !F.rewardWorthDeckPrompt('s', mixed), 'a mostly-common deck: commons and up are offered, a Starter card is not');
-  ok(F.rewardWorthDeckPrompt('c', empty), 'an empty deck: everything is offered');
-  ok(!F.rewardWorthDeckPrompt('egg-bug', empty) && F.isEggRewardCard(defs['egg-bug']) && !F.isEggRewardCard(defs.u), 'an egg card is never offered for the deck'); }
+  vm.runInContext(tbl + fnSrc('collectionRarityFloor') + fnSrc('rewardWorthDeckPrompt') + fnSrc('isEggRewardCard') + '\nthis.F = {DECK_PROMPT_FLOORS, collectionRarityFloor, rewardWorthDeckPrompt, isEggRewardCard};', ctx);
+  const F = ctx.F, T = F.DECK_PROMPT_FLOORS || [];
+  ok(T.length >= 5 && T.every((r, i)=> !i || r.level > T[i - 1].level) && T[0].level === 0, 'the table rises with the level, from 0');
+  ok(T.slice(0, -1).every((r, i)=> !i || RT.indexOf(r.floor) > RT.indexOf(T[i - 1].floor)) && T[T.length - 1].floor === null, '...each row a higher floor, the last one none at all');
+  ok(['s', 'c', 'u', 'r', 'v', 'e', 'l'].every(id=> F.rewardWorthDeckPrompt(id, 0)), 'a new collection (level 0): every rarity is offered');
+  const at = n=> T[n] ? T[n].level : 0;
+  ok(!F.rewardWorthDeckPrompt('c', at(1)) && !F.rewardWorthDeckPrompt('s', at(1)) && F.rewardWorthDeckPrompt('u', at(1)) && F.rewardWorthDeckPrompt('c', at(1) - 1), 'commons stop first (and only from that level)');
+  ok(!F.rewardWorthDeckPrompt('u', at(2)) && F.rewardWorthDeckPrompt('r', at(2)), '...then uncommons');
+  ok(!F.rewardWorthDeckPrompt('r', at(3)) && F.rewardWorthDeckPrompt('v', at(3)) && F.rewardWorthDeckPrompt('e', at(3)), '...then rares');
+  ok(['s', 'c', 'u', 'r', 'v', 'e', 'l'].every(id=> !F.rewardWorthDeckPrompt(id, at(T.length - 1))) && !F.rewardWorthDeckPrompt('l', 99999), 'a big collection: no rarity is offered at all');
+  lvl = 0; ok(F.rewardWorthDeckPrompt('c'), "without a level it reads collectionStats().levelSum (the Profile's Collection level)");
+  lvl = 99999; ok(!F.rewardWorthDeckPrompt('l'), '...a huge one turns every offer off');
+  ok(!F.rewardWorthDeckPrompt('egg-bug', 0) && F.isEggRewardCard(defs['egg-bug']) && !F.isEggRewardCard(defs.u), 'an egg card is never offered for the deck');
+  ok(!/function deckRarityFloor\(/.test(src), 'the deck-rarity floor is gone'); }
 { const rp = fnSrc('rewardsPanelHTML');
   ok(/const deckable = cards\.filter\(id=> rewardWorthDeckPrompt\(id\)\)/.test(rp) && /tabOpen\('deck'\) && deckable\.length \? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn"/.test(rp), 'the results button only appears for cards worth it (and counts only those)'); }
 

@@ -26,9 +26,12 @@ ok(towerSrc.length > 200, 'arena_app.js has towerCardHTML');
 ok(!/<h3>🗼 The Tower<\/h3>/.test(towerSrc), 'the Spire card is no longer headed "The Tower"');
 const nodes = Array.from({length:50}, (_, i)=> ({key:'20-TW-' + (i + 1), kind:(i + 1) % 10 ? 'elite' : 'boss'}));
 const MAP = {id:'tw', name:'The Babel Spire', icon:'🗼', blurb:'A tower.', nodes};
+// 2026-10-18 (package Z): the card now prints TX texts and the next floor's Energy (refunded if you lose), so TX, escapeAttr and
+// nodeEnergyCost are passed in too
+const {TX} = require(path.join(ROOT, 'bramblewood-texts.js'));
 const card = done=> new Function('CONQUEST_MAPS', 'isMapUnlocked', 'dungeonFloorProgress', 'enemyDeckLevel', 'compassDiamondSVG', 'escapeHtml',
-  'TOWER_BR_START', 'TOWER_BR_STEP', 'TOWER_LEVEL_CAP', 'adminModeEnabled', towerSrc + '\nreturn towerCardHTML({});')(
-  [MAP], ()=> true, ()=> ({done, total:50}), ()=> 99, ()=> '<svg></svg>', s=> String(s), 100, 10, 15, false);
+  'TOWER_BR_START', 'TOWER_BR_STEP', 'TOWER_LEVEL_CAP', 'adminModeEnabled', 'TX', 'escapeAttr', 'nodeEnergyCost', towerSrc + '\nreturn towerCardHTML({});')(
+  [MAP], ()=> true, ()=> ({done, total:50}), ()=> 99, ()=> '<svg></svg>', s=> String(s), 100, 10, 15, false, TX, s=> String(s), ()=> 7);
 let top = '', mid = '';
 try{ top = card(50); mid = card(10); }catch(e){ ok(false, 'towerCardHTML runs with stubs: ' + e.message); }
 ok(/<h3>🗼 The Babel Spire<\/h3>/.test(top), 'the card is headed with the map name');

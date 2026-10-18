@@ -5,6 +5,8 @@
 // for its weakest — until the AI-piloted win rate lands near a target for the node's place in the
 // map (first ≈85%, last skirmish ≈60%, elites ≈45%, boss ≈35%). Prints a proposal; it never writes.
 //   node tools/autotune_map.js m3 [games=80]
+// 2026-10-18 (package SKB, after X3's Shield rule): "HP" is the enemy bramble's total (Health + Shield, tools/lib_bramble.js), not
+// hqHp; each proposal line also gives the edit that makes it under the rule (a shieldOverride, or a lower hqHp with no Shield).
 'use strict';
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
@@ -16,6 +18,7 @@ const charById = {}; (Array.isArray(chars) ? chars : Object.values(chars)).forEa
 const src = fs.readFileSync(path.join(ROOT, 'arena_app.js'), 'utf8');
 const i = src.indexOf('const CONQUEST_MAPS = ['); const j = src.indexOf('\n];', i);
 const MAPS = eval(src.slice(i + 'const CONQUEST_MAPS = '.length, j + 2));
+const B = require('./lib_bramble.js'); // 2026-10-18 (SKB)
 const MAP = process.argv[2] || 'm3', N = +process.argv[3] || 80;
 const score = id=>{ const d = defs[id]; return ((d.attack||0)*1.6 + (d.health||0)*0.6 + Object.keys(d.effects||{}).length*2) / (1 + (d.cost||0)*0.9 + (d.devilryCost||0)*1.2 + (d.prayerReq||0)*0.4 + (d.wait||0)*0.5) * ((d.effects||{}).ritual ? 0.35 : 1); } // a Ritual card is slow to wake;
 const CAP = {devlegendary:1, devancient:1, eventlegendary:1, legendary:1, mythic:1, ancient:1, unique:1, questunique:1, epic:2, heroic:2, veryrare:3, superrare:3, rare:4};
@@ -48,18 +51,18 @@ nodes.forEach(n=>{
   const deck = buildDeck(owned);
   let target = n.kind==='boss' || n.kind==='finalboss' ? 0.35 : n.kind==='raidboss' ? 0.2 : n.kind==='elite' ? 0.45 : 0.85 - 0.25 * (skirm.indexOf(n) / Math.max(1, skirm.length-1));
   const ch = n.characterId && charById[n.characterId];
-  let nd = Object.assign({}, n.deck), hp = n.hqHp, r = rate(deck, nd, ch, hp), swaps = 0;
+  const total0 = B.brambleOf(MAP, n).total; let nd = Object.assign({}, n.deck), hp = total0, r = rate(deck, nd, ch, hp), swaps = 0;
   const before = r;
   if(r < target - 0.08){
     for(let guard=0; guard<14 && r < target - 0.08; guard++){
       // binary search HP down to a floor of 40% of the original (min 12)
-      let lo = Math.max(12, Math.round(n.hqHp*0.4)), hi = hp, best = hp, bestR = r;
+      let lo = Math.max(12, Math.round(total0*0.4)), hi = hp, best = hp, bestR = r;
       while(lo <= hi){ const mid = Math.floor((lo+hi)/2); const rr = rate(deck, nd, ch, mid); if(rr >= target){ best = mid; bestR = rr; lo = mid+1; } else hi = mid-1; if(Math.abs(rr-target) < Math.abs(bestR-target)){ best = mid; bestR = rr; } }
       hp = best; r = bestR;
       if(r >= target - 0.08) break;
       const ids = Object.keys(nd).sort((a,b)=> score(b)-score(a)); const strong = ids[0], weak = ids[ids.length-1];
       if(strong===weak || nd[strong] <= 1 && ids.length <= 2) break;
-      nd[strong]--; if(!nd[strong]) delete nd[strong]; nd[weak] = (nd[weak]||0) + 1; swaps++; hp = n.hqHp; r = rate(deck, nd, ch, hp);
+      nd[strong]--; if(!nd[strong]) delete nd[strong]; nd[weak] = (nd[weak]||0) + 1; swaps++; hp = total0; r = rate(deck, nd, ch, hp);
     }
   }
   for(let guard=0; guard<8 && r > target + 0.15; guard++){
@@ -70,10 +73,10 @@ nodes.forEach(n=>{
   }
   if(r > target + 0.12){
     // too easy: raise castle HP (up to 2× the original) until it lands near the target
-    let lo = hp, hi = Math.round(n.hqHp*2), best = hp, bestR = r;
+    let lo = hp, hi = Math.round(total0*2), best = hp, bestR = r;
     while(lo <= hi){ const mid = Math.floor((lo+hi)/2); const rr = rate(deck, nd, ch, mid); if(Math.abs(rr-target) < Math.abs(bestR-target)){ best = mid; bestR = rr; } if(rr > target) lo = mid+1; else hi = mid-1; }
     hp = best; r = bestR;
   }
-  console.log(JSON.stringify({key:n.key, kind:n.kind, target:Math.round(target*100), before:Math.round(before*100), after:Math.round(r*100), hp:[n.hqHp, hp], swaps, deck:nd}));
+  console.log(JSON.stringify({key:n.key, kind:n.kind, target:Math.round(target*100), before:Math.round(before*100), after:Math.round(r*100), hp:[total0, hp], edit: B.retotal(MAP, n, hp), swaps, deck:nd}));
   cards.filter(c=> c.source && c.source.kind==='map' && c.source.id===MAP && c.source.node===n.key).forEach(c=> owned.push(c.id));
 });

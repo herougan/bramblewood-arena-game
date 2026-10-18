@@ -385,6 +385,15 @@ function i18nHtmlText(seg){
 // textareas, selects, <svg>/<canvas>, contenteditable or .no-emoji. An emoji the set doesn't have stays the system one. Tooltips,
 // title= and SKILL_ICON text stay plain emoji (screen readers need text); the <img>'s alt holds the emoji, so restore() and
 // EmojiStyle.textOf(el) give the text back.
+// 2026-10-18 (Codex profiling: each emoji <img> was its own small SVG document, about 8 per card, laid out, painted and
+// re-rasterised on every frame; the biggest render cost left in the Codex and on the board and hand): each set also ships as
+// ONE sprite sheet, assets/emoji/<set>-atlas.webp (64 px cells, drawn from the same SVGs by tools/emoji/build_atlas.py at
+// assemble time). An emoji in the sheet is still an <img class="emoji tw-emoji emo e-<key>" alt="<emoji>">, so screen readers,
+// copy, restore(), textOf() and the translator see what they did, but its src is one shared 1x1 transparent GIF and the picture
+// is the sheet as its background (one decoded bitmap for the whole game, no SVG to lay out or rasterise). The sheet's
+// positions come from one generated stylesheet (#bwEmojiAtlas). With no sheet, a sheet that fails to load, or an emoji the
+// sheet lacks ("miss"), that emoji is drawn the old way from the SVG set file. EMOJI_ATLAS is filled by assemble_arena.py.
+var EMOJI_ATLAS = __EMOJI_ATLAS__;
 var EMOJI_STYLE_KEY = 'bramblewood_emoji_style';
 var EMOJI_SET_URLS = __EMOJI_SET_URLS__;
 var EMOJI_SET_NAMES = {fluent:'Fluent', twemoji:'Twemoji', noto:'Noto Emoji', system:'System'};
@@ -394,11 +403,50 @@ var EMOJI_CREDITS = {
   noto: 'Noto Emoji graphics © Google, Apache 2.0; flags Twemoji CC-BY 4.0.',
 };
 var EmojiStyle = (function(){
-  const SETS = Object.keys(EMOJI_SET_NAMES).filter(k=> k !== 'system' && EMOJI_SET_URLS && EMOJI_SET_URLS[k]);
+  const SETS = Object.keys(EMOJI_SET_NAMES).filter(k=> k !== 'system' && ((EMOJI_SET_URLS && EMOJI_SET_URLS[k]) || (EMOJI_ATLAS && EMOJI_ATLAS[k])));
   const SKIP = 'script,style,textarea,input,select,option,title,noscript,svg,canvas,[contenteditable=""],[contenteditable="true"],.no-emoji';
   let pre = /(?!)/u;   // cheap first test, set by compile(): any first code point of an emoji the set has
   const XHTML = 'http://www.w3.org/1999/xhtml';
   let active = false, data = null, re = null, urls = {}, observer = null, loading = {};
+  // 2026-10-18 (sprite sheet, see EMOJI_ATLAS): sheet = {idx: {key: cell}} of the active set, or null (every emoji its SVG).
+  const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+  let sheet = null, sheetLoading = {}, sheetImgs = {};
+  const loadSheet = set=>{
+    const a = EMOJI_ATLAS && EMOJI_ATLAS[set];
+    if(!a || !a.url || !a.keys || !a.keys.length) return Promise.reject(new Error('no sheet'));
+    if(sheetLoading[set]) return sheetLoading[set];
+    return (sheetLoading[set] = new Promise((res, rej)=>{
+      const img = new Image(), t = setTimeout(()=> rej(new Error('timeout')), 15000);
+      img.onload = ()=>{ clearTimeout(t); (img.decode ? img.decode().catch(()=>{}) : Promise.resolve()).then(()=>{ sheetImgs[set] = img; res(a); }); }; // decoded before the first swap: no blank frame
+      img.onerror = ()=>{ clearTimeout(t); rej(new Error('load failed')); };
+      img.src = a.url;
+    }).catch(e=>{ sheetLoading[set] = null; throw e; }));
+  };
+  // The sheet's stylesheet: the picture and its size once, then one background-position per emoji (percentages, so the
+  // same rule fits a 12 px card chip and a 40 px shop icon: p = x / (sheetWidth - cell)).
+  const sheetCss = a=>{
+    const W = a.w, H = a.h, c = a.cell, f = v=> +v.toFixed(4);
+    let css = `img.emo{background-image:url("${String(a.url).replace(/["\\\n]/g, '')}");background-size:${f(W / c * 100)}% ${f(H / c * 100)}%}`;
+    a.keys.forEach((k, i)=>{ const x = (i % a.cols) * a.pitch + a.pad, y = Math.floor(i / a.cols) * a.pitch + a.pad; css += `.e-${k}{background-position:${f(x / (W - c) * 100)}% ${H > c ? f(y / (H - c) * 100) : 0}%}`; });
+    return css;
+  };
+  const setSheet = a=>{
+    let st = document.getElementById('bwEmojiAtlas');
+    if(!a){ if(st) st.remove(); sheet = null; return; }
+    if(!st){ st = document.createElement('style'); st.id = 'bwEmojiAtlas'; document.head.appendChild(st); }
+    st.textContent = sheetCss(a);
+    const miss = new Set(a.miss || []), idx = {};
+    a.keys.forEach((k, i)=>{ if(!miss.has(k)) idx[k] = i; });
+    sheet = {idx};
+  };
+  // The set to draw: the sheet when there is one (plus the SVG file only for emoji the sheet missed), else the SVG file.
+  const loadStyle = set=> loadSheet(set).then(a=>{
+    const emoji = {}; a.keys.forEach(k=> emoji[k] = 1);
+    const miss = (a.miss || []).filter(k=> k in emoji);
+    if(!miss.length) return {a, d: {vs: a.vs || [], emoji}};
+    miss.forEach(k=> delete emoji[k]);
+    return (EMOJI_SET_URLS && EMOJI_SET_URLS[set] ? load(set) : Promise.reject(new Error('no svg'))).then(svg=>{ miss.forEach(k=>{ if(svg.emoji[k]) emoji[k] = svg.emoji[k]; }); return {a, d: {vs: a.vs || svg.vs || [], emoji}}; }, ()=> ({a, d: {vs: a.vs || [], emoji}}));
+  }, ()=> load(set).then(d=> ({a: null, d})));
   const get = ()=>{ try{ const v = localStorage.getItem(EMOJI_STYLE_KEY); return v === 'system' || SETS.includes(v) ? v : (SETS[0] || 'system'); }catch(e){ return SETS[0] || 'system'; } };
   const load = set=>{
     const have = window.BW_EMOJI_SETS && window.BW_EMOJI_SETS[set];
@@ -427,7 +475,17 @@ var EmojiStyle = (function(){
     const svg = data.emoji[k];
     try{ return (urls[k] = URL.createObjectURL(new Blob([svg], {type:'image/svg+xml'}))); }catch(e){ return (urls[k] = 'data:image/svg+xml,' + encodeURIComponent(svg)); }
   };
-  const imgFor = m=>{ const img = document.createElement('img'); img.className = 'emoji tw-emoji emoji-' + active; img.alt = m; img.draggable = false; img.decoding = 'sync'; img.src = srcOf(keyOf(m)); return img; };
+  const imgFor = m=>{
+    const k = keyOf(m), img = document.createElement('img'); img.alt = m; img.draggable = false;
+    if(sheet && sheet.idx[k] != null){ img.className = 'emoji tw-emoji emoji-' + active + ' emo e-' + k; img.src = BLANK; return img; } // 2026-10-18: from the sprite sheet
+    img.className = 'emoji tw-emoji emoji-' + active; img.decoding = 'sync'; img.src = srcOf(k); return img;
+  };
+  // The same as a string, for html() / htmlBlock().
+  const imgHTML = m=>{
+    const k = keyOf(m);
+    if(sheet && sheet.idx[k] != null) return `<img class="emoji tw-emoji emoji-${active} emo e-${k}" alt="${m}" draggable="false" src="${BLANK}">`;
+    return `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(k)}">`;
+  };
   const swapText = t=>{
     if(!t.data || !pre.test(t.data)) return;
     try{ if(window.BramblewoodI18n) window.BramblewoodI18n.translateTextNode(t); }catch(e){} // 2026-10-18 (I3): translate the whole sentence before the emoji split it
@@ -467,12 +525,12 @@ var EmojiStyle = (function(){
   const apply = ()=>{
     const style = get();
     document.documentElement.dataset.emoji = style;
-    if(active && active !== style){ unwatch(); restore(); active = false; drop(); }
-    if(style === 'system'){ unwatch(); restore(); active = false; data = null; re = null; drop(); refreshCredits(); return Promise.resolve(false); }
+    if(active && active !== style){ unwatch(); restore(); active = false; drop(); setSheet(null); }
+    if(style === 'system'){ unwatch(); restore(); active = false; data = null; re = null; drop(); setSheet(null); refreshCredits(); return Promise.resolve(false); }
     if(active === style) return Promise.resolve(true);
-    return load(style).then(d=>{
+    return loadStyle(style).then(({a, d})=>{
       if(get() !== style) return false;
-      data = d; re = compile(d); active = style;
+      setSheet(a); data = d; re = compile(d); active = style;
       if(document.body){ swapIn(document.body); watch(); }
       refreshCredits(); return true;
     }).catch(()=>{ active = false; document.documentElement.dataset.emoji = 'system'; refreshCredits(); return false; }); // file missing: stay on System
@@ -484,7 +542,7 @@ var EmojiStyle = (function(){
     s = s == null ? '' : String(s);
     if(!active || !s || s.indexOf('<') >= 0 || !pre.test(s)) return s;
     re.lastIndex = 0;
-    return s.replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`);
+    return s.replace(re, imgHTML);
   };
   // 2026-10-17 (user: "Playing a card and when a card dies consistently lags the game by 0.1s"): a whole block of HTML the game
   // is about to insert (the board rows) gets its emoji as <img> in the string, so the browser builds the pictures while parsing
@@ -499,7 +557,7 @@ var EmojiStyle = (function(){
     for(let i = 0; i < parts.length; i++){
       const p = parts[i]; if(!p) continue;
       if(p.charCodeAt(0) === 60){ const m = /^<(\/?)([a-zA-Z0-9-]+)/.exec(p); if(m && SKIP_TAGS.test(m[2]) && !/\/>$/.test(p)) skip += m[1] ? -1 : 1; if(skip < 0) skip = 0; continue; }
-      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = i18nHtmlText(p).replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`); }
+      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = (typeof i18nHtmlText === 'function' ? i18nHtmlText(p) : p).replace(re, imgHTML); } // 2026-10-18 (I3): guarded so EmojiStyle still runs when lifted out alone (tests/emoji-atlas)
     }
     return parts.join('');
   };
@@ -510,7 +568,8 @@ var EmojiStyle = (function(){
     let out = ''; const walk = n=>{ for(const c of n.childNodes){ if(c.nodeType === 3) out += c.data; else if(c.nodeType === 1) c.nodeName === 'IMG' && c.classList.contains('tw-emoji') ? out += (c.alt || '') : walk(c); } };
     walk(el); return out;
   };
-  return {get, set, apply, isActive: ()=> !!active, active: ()=> active || 'system', sets: ()=> SETS.slice(), refreshCredits, html, htmlBlock, textOf};
+  return {get, set, apply, isActive: ()=> !!active, active: ()=> active || 'system', sets: ()=> SETS.slice(), refreshCredits, html, htmlBlock, textOf,
+    usesSheet: ()=> !!sheet}; // 2026-10-18: true while the active set draws from its sprite sheet (tests/e2e/emoji_perf.py)
 })();
 try{ if(EmojiStyle.get() !== 'system'){ const go = ()=> EmojiStyle.apply(); document.body ? setTimeout(go, 0) : document.addEventListener('DOMContentLoaded', go); } }catch(e){}
 // Crabs fork (2026-10-14, user: "Ignore Crab claws. Crabs have fork - thematically. And the symbol can be a Crab claw."): on a crab
@@ -840,7 +899,7 @@ const PASSIVE_DEFS = [
   {key:'darksight', category:'passive', label:'Darksight', kind:'boolean', desc:()=>`It can see in darkness.`}, // 2026-10-15 (user: "Darksight explanation is TOO complicated. Just explain what it does - it can see in darkness.")
   {key:'landslide', category:'evergreen', label:'Landslide', kind:'number', min:1, defaultValue:1, desc:v=>`When it falls: rocks crash on the enemy facing it and the enemy on each side of that one, ${v||1} damage each. Flying units are above it.`},
   {key:'natureForce', category:'passive', label:"Nature's Force", kind:'number', min:1, defaultValue:1, desc:v=>`All your Elementals on the field get +${v||1}/+${v||1}. Stacks with every other source.`},
-  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it is grounded: a bramble can't be shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has.'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18: castles can't be shocked (grounded)
+  {key:'lightning', category:'passive', label:'Lightning', kind:'number', min:0, desc:v=>`On arrival, a bolt strikes a random enemy unit for ${v} lightning damage, +1 for every 4 Prayer you have. With no enemy unit it strikes the bramble, which is never Shocked.`, codexNote:'A Wet unit takes 1 more lightning damage from it for every Wet counter it has (a bramble never counts as Wet).'}, // 2026-10-16 skill audit: + the castle fallback; 2026-10-17: lightning (shock) damage, the Wet note in the Codex; 2026-10-18 (owner 15:05 "No Shocked status on Brambles."): the bramble takes the damage again, no status, no Wet bonus
   {key:'midas', category:'passive', label:'Midas Touch', kind:'number', min:0, desc:v=>`When this card kills a unit, you gain ${v} Lumber.`},
   // 2026-10-16 skill audit (user: "so the skills are as simply named and described as possible"): Divine Retribution → Retribution,
   // Satiety → Well Fed. Labels only; the keys stay retribution and satiety.
@@ -1109,7 +1168,7 @@ const PASSIVE_DEFS = [
   // Nova (user: "Nova - oo magic skill maybe"): built, but meant for Map 50 and later.
   {key:'nova', category:'evergreen', label:'Nova', kind:'number', min:1, defaultValue:3, desc:v=>`When it dies, it bursts: every enemy unit takes ${numOr(v, 3)} magic damage.`},
   {key:'crystallise', category:'evergreen', label:'Crystallise', kind:'number', min:1, defaultValue:5, desc:v=>`When it dies, it turns into a 0/${numOr(v, 5)} crystal that holds its slot.`},
-  {key:'cure', category:'evergreen', label:'Cure', kind:'number', min:1, defaultValue:2, desc:v=>`Every upkeep, cures your most afflicted unit (itself too): up to ${numOr(v, 2)} Poison, then Bleed, come off. Toxin can't be cured.`},
+  {key:'cure', category:'evergreen', label:'Cure', kind:'number', min:1, defaultValue:2, desc:v=>`Every upkeep, cures your most poisoned unit (itself too) of up to ${numOr(v, 2)} Poison. Toxin can't be cured.`}, // 2026-10-18 (audit 4): Poison only, as the engine does
   {key:'mountainClimber', category:'passive', label:'Mountain Climber', kind:'boolean', desc:()=>`Sure-footed: Frigid, Scorching, Scorched Ground, the volcano, Avalanche, Landslide and Earthquake pass it by.`},
   // Atheist (2026-10-16, user: "Unless Atheist (1/2 damage from magic sources, dark (some devilry attacks) or holy (some ecclesia attacks) damage) -
   // then take 0 damage from this [Leylines III]."): on no card yet.
@@ -2002,7 +2061,7 @@ const STATUS_KEYWORDS = [
   {k:'shield', re:/\b(shield)\b/gi, cs:true, name:'Shield', c:'#3d8fd1', text:'temporary Health that soaks damage first and doesn’t come back.'},
   // 2026-10-17 (user: "Wet units just take +N damage by default, for every wet counter. Can see this in codex instead."): the general Wet
   // rule (the engine's wetCountOf / wetShockBonus). cs: the game word only, so "wet ground" in plain prose stays plain.
-  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:'takes 1 more lightning damage from every lightning hit for each Wet counter it has. A unit has one counter for each of these: it is a Swimmer or Tide unit; it is raining (the Rain field); the Tide is in (Flood or High Tide).'},
+  {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:'takes 1 more lightning damage from every lightning hit for each Wet counter it has. A unit has one counter for each of these: it is in the water (a Swimmer or Tide unit always is, in Flood or Ebb; while the Tide is in, Flood or High Tide, so is every unit that isn’t Flying); it is raining (the Rain field). A bramble is never Wet.'}, // 2026-10-18 (owner 15:05): the Flood wets every land unit, flyers stay dry
 ];
 // Keywords everywhere (2026-10-12, user: "Highlight keywords like pitch etc. Also, if the keyword has colour, give it some
 // colour. Do this as a standard for all descriptions. If it's possible dont hardcode this ... (except in flavour text)").
@@ -5294,14 +5353,14 @@ function castleHoverHTML(hqSide){
   const m = matchState; if(!m) return '';
   const pid = hqSide==='A' ? 1 : 2;
   const pl = m.players[pid]; if(!pl) return '';
-  const def = pl.character || {id:'none-castle', name:'Castle', icon:'🏰', rarity:'common', health:pl.hq.maxHp, effects:{}};
+  const def = pl.character || {id:'none-castle', name:'Bramble', icon:'🏰', rarity:'common', health:pl.hq.maxHp, effects:{}};
   const visualDef = {...def, icon: def.icon || '🏰', health: pl.hq.maxHp};
   const visualHTML = `<div class="card-pop-visual">${cardTileHTML(visualDef, {isCastle:true, liveHp: pl.hq.hp, extraClass:'card-pop-visual-tile'})}</div>`;
   let passiveText = keywordizeHTML(characterDescHTML(def));
   if((def.effects||{}).firstUnitAtkBonus){
     passiveText += pl.firstUnitBonusUsed ? ' <span class="live-stat-val">(already used this match)</span>' : ' <span class="live-stat-val">(ready)</span>';
   }
-  return `${visualHTML}<h4>${def.icon||'🏰'} ${def.name||'Castle'}</h4>
+  return `${visualHTML}<h4>${def.icon||'🏰'} ${def.name||'Bramble'}</h4>
     <div class="statrow"><span class="hp" style="color:var(--health)">❤${Math.max(0,pl.hq.hp)}/${pl.hq.maxHp}</span></div>
     <p class="panel-sub">${passiveText}</p>
     ${def.flavor?`<div class="flavor">${def.flavor}</div>`:''}`;
@@ -5982,7 +6041,9 @@ function renderCodexGrid(keepPage){
     // is drawn from (the card itself, owned or not, an edited card, Admin Mode, the emoji style, the skills not met yet), so turning
     // back a page, flipping a sort or coming back to the Codex reuses it. Its emoji are turned into pictures in the string
     // (EmojiStyle.htmlBlock, as the board rows do), so the emoji observer has nothing to swap node by node after it lands.
-    let sig = ''; try{ sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
+    // 2026-10-18 (audit 4): the key also carries whether the card's revealAfter gate is met, so a masked "?" tile (Quarry Mole)
+    // is redrawn once Map 0 is cleared, without a reload.
+    let sig = ''; try{ const ra = cardRevealAfter(d); sig = tileEnv + (owned ? 'o' : '-') + (liveCards[id] ? 'e' : '-') + (ra ? (revealAfterMet(ra) ? 'R' : 'r') : '-') + '|' + JSON.stringify(d); }catch(e){ sig = ''; }
     const hit = sig && codexTileCache.get(id);
     if(hit && hit.sig === sig) return hit.html;
     const tags = [];
@@ -6285,6 +6346,8 @@ function pipsHTML(glyph, n, kind){
   // 2026-10-15 (user: "5 Resource cost and above e.g. 5 lumber or 5 stone, it's just a lumber symbol with a black number w/ white
   // bg glow."): a resource cost of 5+ is one icon with its number set over it (black, white glow) — .pips.is-res-num in the CSS.
   // The Wait clock keeps its plain "⏳ 5".
+  // 2026-10-18 (owner: "5+ lumber shows a single lumber with a contrasted number in the centre"): the number is centred on the
+  // icon now, white with a dark outline (CSS). Every cost badge (tile, hand, Codex, detail, deck lists) is built here.
   if(n > 4) return `<span class="pips pips-${kind} is-num${kind === 'wait' ? '' : ' is-res-num'}" data-n="${n}" aria-label="${n}"><i>${glyph}</i><b>${n}</b></span>`;
   return `<span class="pips pips-${kind}${n>=3 ? ' can-num' : ''}" data-n="${n}" aria-label="${n}">${Array.from({length:n}, ()=> `<i>${glyph}</i>`).join('')}</span>`; // can-num (2026-10-10): compact on phones
 }
@@ -8884,7 +8947,7 @@ function triggerPreviewText(t){
     case 'exileSelf': doText = `exile itself instead of going to the graveyard`; break;
     case 'buffAlly': doText = `give an ally +${amt}/+${amt2}`; break;
     case 'swapPositions': doText = `swap two random enemy units' positions`; break;
-    case 'heal': doText = `heal ${t.who && t.who!=='self' ? whoTarget : 'itself'} for ${amt} (Poison, then Bleed first, capped at max HP)`; break; // 2026-10-16
+    case 'heal': doText = `heal ${t.who && t.who!=='self' ? whoTarget : 'itself'} for ${amt} (stanching Bleed first, capped at max HP)`; break; // 2026-10-16; 2026-10-18 (audit 4): heals no longer touch Poison, only Bleed
     case 'shield': doText = `give ${t.who === 'ally' && t.sub === 'all' ? 'every ally' : t.who && t.who!=='self' ? whoTarget : 'itself'} ${amt} Shield (temporary Health)`; break; // 2026-10-14
     case 'mindControl': doText = `take control of a ${t.sub||'random'} enemy unit`; break;
     case 'stunPlayer': doText = `make the enemy player skip ${t.count>1 ? t.count + ' turns' : 'their turn'}`; break;
@@ -9735,6 +9798,7 @@ async function applySessionIdentity(user){
   // ever carry is_anonymous:true in the first place).
   cloudIsAnonymous = user.is_anonymous === true;
   const { data: existingProfile } = await sbClient.from('profiles').select('id, rating').eq('id', cloudUserId).maybeSingle();
+  refreshPremiumFlag(); // 2026-10-18 (package Z): the supporter flag, if the server has one (read only; see isPremiumPlayer)
   if(!existingProfile){
     // Brand-new cloud account (anonymous OR a fresh real signup with no prior anonymous session —
     // see cloudLinkEmail's fallback below): seed it from this browser's CURRENT local state rather
@@ -9864,6 +9928,7 @@ function resetCloudIdentity(){
   cloudSessionUser = null;
   if(typeof socialTeardown==='function') socialTeardown();
   cloudCardAdmin = false; try{ syncAdminModeToAccount(); }catch(e){}
+  try{ cloudPremium = false; }catch(e){} // 2026-10-18 (package Z)
   if(typeof matchHistoryList!=='undefined') matchHistoryList = null;
   setCloudPill(true, 'Playing as guest — progress saved on this device');
 }
@@ -10221,7 +10286,9 @@ function hideSignInBanner(){ const b = document.getElementById('signInBanner'); 
 // the request's own example, "Lumber-1 to 5, Chicken-1 to 5" — read as the NUMBERING pattern, not
 // literal tier names; themed these as a woodland-growth ladder instead, matching the game's
 // existing forest vocabulary — easy to rename later, it's just this one array).
-const RANK_TIERS = ['Sprout','Sapling','Bramble','Heartwood','Elderwood','Starwood'];
+// 2026-10-18 (owner: "Both rank & mouse": "Bramble" only means the base): the middle tier is Thicket now (was Bramble); the tier is
+// worked out from the rating each time, never saved, so no save changes.
+const RANK_TIERS = ['Sprout','Sapling','Thicket','Heartwood','Elderwood','Starwood'];
 const RANK_MEAN = 1500, RANK_SD = 300;
 const RANK_Z_EDGES = [-1.5, -0.75, 0, 0.75, 1.5]; // 5 edges -> 6 tiers; bands are narrower near 0 by design, so a normally-distributed rating population clusters in the middle tiers
 function rankForRating(rating){
@@ -10516,7 +10583,7 @@ function formatEnergyCountdown(ms){
 function playAgainEnergyAttrs(m){
   if(!m || m.mode !== 'conquest' || !m.conquestNode) return '';
   const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(!f) return '';
-  const c = nodeEnergyCost(f.map, f.node) || 1, short = currentEnergy() < c;
+  const c = fightEnergyCost(f.map, f.node), short = currentEnergy() < c; // 2026-10-18 (package Z): 0 on a cleared Spire floor
   return `data-energy-cost="${c}" ${short ? 'aria-disabled="true"' : ''} title="${escapeAttr(short ? `Needs ${c}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.` : `Fight ${f.node.name} again · ${c}⚡`)}"`;
 }
 // Not enough Energy (2026-10-12, user: "it should give a small error-sfx and a small central toast that says, you don't
@@ -11700,11 +11767,11 @@ function deckHeroBannerHTML(){
   // 2026-10-08 (user): smaller cards; the castle and leader art smeared across the background, left
   // to right; Cost/Wait and Attack-by-Wait mini charts; card count, deck level and castle HP moved
   // into a tooltip (a short deck still shows a visible warning).
-  const info = `${total}/${DECK_SIZE} cards · Battle rating ${lvl} · ${castle ? escapeAttr(castle.name) : 'Castle'} ${castle ? castle.health : 30} HP${leader ? ' · Leader ' + escapeAttr(leader.name) : ''}`;
+  const info = `${total}/${DECK_SIZE} cards · Battle rating ${lvl} · ${castle ? escapeAttr(castle.name) : 'Bramble'} ${castle ? castle.health : 30} HP${leader ? ' · Leader ' + escapeAttr(leader.name) : ''}`;
   return `<div class="deck-top" id="deckHeroBanner">
     <div class="dt-smear" aria-hidden="true"><div class="l">${castleTile}</div>${leader ? `<div class="r">${cardTileHTML(leader, {inPlay:true})}</div>` : ''}</div>
     <div class="dt-pair">
-      <button type="button" class="dt-slot" data-loadout="castle" title="${escapeAttr((castle ? castle.name : 'Castle') + ' · ' + (castle ? castle.health : 30) + ' HP — choose your bramble')}"><span class="dt-tile">${castleTile}</span><span class="dt-cap"><b>${escapeHtml(castle ? castle.name : '—')}</b></span><span class="dt-change">Change</span></button>
+      <button type="button" class="dt-slot" data-loadout="castle" title="${escapeAttr((castle ? castle.name : 'Bramble') + ' · ' + (castle ? castle.health : 30) + ' HP — choose your bramble')}"><span class="dt-tile">${castleTile}</span><span class="dt-cap"><b>${escapeHtml(castle ? castle.name : '—')}</b></span><span class="dt-change">Change</span></button>
       <button type="button" class="dt-slot" data-loadout="leader" title="${escapeAttr(leader ? leader.name + ' — choose your leader' : 'Choose your leader')}"><span class="dt-tile">${leaderTile}</span><span class="dt-cap"><b>${leader ? escapeHtml(leader.name) : 'No leader'}</b></span><span class="dt-change">${leader ? 'Change' : 'Choose'}</span></button>
     </div>
     <div class="dt-info">
@@ -12226,7 +12293,7 @@ function deckMediumPreviewHTML(d){
   const leaderBg = leader && leader.art ? `background-image:url(${leader.art})` : '';
   return `<div class="deck-medium-preview ${d.id===mainDeckId?'is-main':''}" data-deckid="${d.id}">
     <div class="dmp-bg" aria-hidden="true">
-      <div class="dmp-castle ${castle && castle.art ? 'has-art' : ''}" title="${escapeAttr((castle ? castle.name : 'Castle') + ' · Lv ' + castleLevelOf(castle && castle.id))}"${castle && castle.art ? ` style="background-image:url(${castle.art})"` : ''}>${castle && castle.art ? '' : `<span>${castle ? castle.icon || '🏰' : '🏰'}</span>`}</div>
+      <div class="dmp-castle ${castle && castle.art ? 'has-art' : ''}" title="${escapeAttr((castle ? castle.name : 'Bramble') + ' · Lv ' + castleLevelOf(castle && castle.id))}"${castle && castle.art ? ` style="background-image:url(${castle.art})"` : ''}>${castle && castle.art ? '' : `<span>${castle ? castle.icon || '🏰' : '🏰'}</span>`}</div>
       <div class="dmp-leader ${leader && leader.art ? 'has-art' : ''}" title="${escapeAttr(leader ? 'Leader: ' + leader.name : 'No leader')}" style="${leaderBg}">${leader && !leader.art ? `<span>${leader.icon||'👑'}</span>` : ''}</div>
     </div>
     <div class="dmp-top"><b class="dmp-name">${escapeHtml(d.name)}</b>${d.id===mainDeckId?'<span class="deck-active-badge">★ MAIN</span>':''}</div>
@@ -12246,7 +12313,7 @@ function deckShowcaseHTML(d, opts){
   const leaderTile = leader ? cardTileHTML(leader, {inPlay:true}) : `<div class="ds-empty-leader">👑<small>No leader yet</small></div>`;
   return `<div class="deck-showcase ${opts.compact?'is-compact':''}">
     <div class="ds-pair">
-      <figure class="ds-slot"><div class="ds-tile">${castleTile}</div><figcaption>🏰 ${escapeHtml(castle ? castle.name : 'Castle')}</figcaption></figure>
+      <figure class="ds-slot"><div class="ds-tile">${castleTile}</div><figcaption>🏰 ${escapeHtml(castle ? castle.name : 'Bramble')}</figcaption></figure>
       <figure class="ds-slot"><div class="ds-tile">${leaderTile}</div><figcaption>👑 ${leader ? escapeHtml(leader.name) : 'Leader'}</figcaption></figure>
     </div>
     <div class="ds-info">
@@ -12266,7 +12333,7 @@ function deckPreviewPillsHTML(d){
   const leader = d.leaderId && defs[d.leaderId];
   const total = deckTotal(d.counts||{});
   return `<div class="deck-preview-pills">
-    <span class="deck-pill deck-pill-castle" title="Bramble">${castle?castle.icon:'🏰'} ${escapeHtml(castle?castle.name:'Castle')}</span>
+    <span class="deck-pill deck-pill-castle" title="Bramble">${castle?castle.icon:'🏰'} ${escapeHtml(castle?castle.name:'Bramble')}</span>
     <span class="deck-pill deck-pill-leader" title="Leader">👑 ${leader?escapeHtml(leader.name):'No Leader'}</span>
     <span class="deck-pill deck-pill-count ${total===DECK_SIZE?'ok':''}" title="Deck size">🃏 ${total}/${DECK_SIZE}</span>
     <span class="deck-pill deck-pill-level" title="Battle rating: each card's rarity weight × its level factor; the leader counts double. A starting deck is about 10, a full level-10 Ancient deck about 2,500">⚔ Rating ${mainDeckLevel(d.counts||{}, d.leaderId)}</span>
@@ -13312,7 +13379,8 @@ const DIALOGUE_SPEAKERS = {
   // Errand givers (2026-10-12): folk met on the road who ask for small favours.
   mole:       {name:'Pip, a lost mole', icon:'🐹', art:'art/npc/mole.png'},
   heron:      {name:'Old Heron Wade', icon:'🪶', art:'art/npc/heron.png'},
-  mouse:      {name:'Bramble the courier mouse', icon:'🐭', art:'art/npc/mouse.png'},
+  mouse:      {name:'Burdock the courier mouse', // 2026-10-18 (owner: "Bramble" only means the base now; was Bramble)
+              icon:'🐭', art:'art/npc/mouse.png'},
   beetle:     {name:'Sister Carapace', icon:'🪲', art:'art/npc/beetle.png'},
   frog:       {name:'Croaker, a pond warden', icon:'🐸', art:'art/npc/frog.png'},
   hedgehog:   {name:'Thimble the hedgehog', icon:'🦔', art:'art/npc/hedgehog.png'},
@@ -13408,7 +13476,7 @@ const DIALOGUES = {
   ]},
   unlock_fieldkit: {lines:[
     {who:'traveller', text:'The road gets mean from here. I packed you a field kit: draughts, kindling, a scout\'s map, a fire pot and a few odds and ends.'},
-    {who:'traveller', text:'Save it for a fight you can\'t win any other way. One item a fight, and I\'ll top you up a little each day.', options:[{label:'Show me.', goto:'go', act:'tab:inventory'}], silent:'go'},
+    {who:'traveller', text:'Save it for a fight you can\'t win any other way. Two items a fight, and I\'ll top you up a little each day.', options:[{label:'Show me.', goto:'go', act:'tab:inventory'}], silent:'go'},
     {label:'go', who:'traveller', text:'In a fight, look for the 🎒 beside your Lumber.'},
   ]},
   unlock_nest: {lines:[
@@ -14184,7 +14252,9 @@ function subMapEntrancesHTML(map, progress){
     // 2026-10-18 (owner: Lilypad Reach waits on Gatorback Swamp): an entrance gated on another map names that map ("Clear
     // Gatorback Swamp to open"); that map is always further down the road than the entrance's own fight.
     const gateMap = !open && sm.entry.afterMapCleared && !conquestMapCleared(sm.entry.afterMapCleared) ? CONQUEST_MAPS.find(m=> m.id===sm.entry.afterMapCleared) : null;
-    const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : gateMap ? `${sm.entry.label || 'A cave'} — Clear ${gateMap.name} to open` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
+    // 2026-10-18 (owner: Lilypad Reach waits on Map 6): a main map is named with its number, "Clear Sable Swampmire (Map 6) to open".
+    const gateName = gateMap ? gateMap.name + (!gateMap.sub && mapNumberOf(gateMap.id) != null ? ` (Map ${mapNumberOf(gateMap.id)})` : '') : '';
+    const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : gateMap ? `${sm.entry.label || 'A cave'} — Clear ${gateName} to open` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
     const p = decorPos(map.id, '~sub:'+sm.id, {x: sm.entry.x, y: sm.entry.y});
     // 2026-10-12 (user: "For those submaps whose maps are not caves - change the map icon/logo to be more representative.
     // Lilypad reach should be a lotus flower. and just that!"): only the real caves keep the rock and cave mouth; every other
@@ -14347,7 +14417,7 @@ function visitCuriosity(key, el){
   playDialogue(c.dialogue, {once:true, expand:true, onAfk: ()=>{ if(el && el.isConnected){ el.classList.add('is-new'); } }});
 }
 // Free pack couriers (2026-10-12, user: "I noticed I unlocked a pack ... these packs have to be represented by an icon on the
-// map. With a character"): while a map's free pack waits unopened, Bramble the courier mouse stands by the boss holding it.
+// map. With a character"): while a map's free pack waits unopened, Burdock the courier mouse (Bramble until 2026-10-18) stands by the boss holding it.
 // Click her and she hands it over (it opens right there).
 function freePackCourierHTML(map, positions){
   const idx = mainConquestMaps().findIndex(m=> m.id === map.id); if(idx < 0) return '';
@@ -14357,7 +14427,7 @@ function freePackCourierHTML(map, positions){
   const pack = getShopPacks().find(p=> p.id === pid); if(!pack) return '';
   const ni = map.nodes.findIndex(n=> n.key === key), base = (positions && positions[ni]) || {x:50, y:50};
   const p = decorPos(map.id, '~courier', {x: Math.max(6, Math.min(94, base.x + 7)), y: Math.max(10, Math.min(90, base.y + 12))});
-  return `<button type="button" class="map-courier" data-courier="${escapeAttr(pid)}" data-lkey="~courier" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr('Bramble the courier mouse has your free ' + pack.name)}" aria-label="${escapeAttr('Free ' + pack.name + ': open it')}"><span class="mco-who" aria-hidden="true">🐭</span><span class="mco-pack" aria-hidden="true">${pack.icon||'🎁'}</span><span class="map-spot-new">!</span></button>`;
+  return `<button type="button" class="map-courier" data-courier="${escapeAttr(pid)}" data-lkey="~courier" style="left:${p.x}%; top:${p.y}%;" title="${escapeAttr('Burdock the courier mouse has your free ' + pack.name)}" aria-label="${escapeAttr('Free ' + pack.name + ': open it')}"><span class="mco-who" aria-hidden="true">🐭</span><span class="mco-pack" aria-hidden="true">${pack.icon||'🎁'}</span><span class="map-spot-new">!</span></button>`;
 }
 function mapCaveHTML(){
   const m2 = CONQUEST_MAPS.find(m=> m.id==='m2'), gate = firstFightKey(m2);
@@ -14536,23 +14606,29 @@ const SKIRMISH_KINDS = ['skirmish','elite','champion','miniboss','subboss','boss
 // 2026-10-18), 1 Smart (it reads the battlefield), 2 Smartest (it also focuses kills, blocks, holds field cards, pitches better).
 // Auto, by the map number (mapNumberOf; a side map counts as its parent): Maps 0–4 Basic; Map 5+ Smart in every fight that isn't
 // an ordinary skirmish (elite, champion, mini-boss, sub-boss, boss, dungeon, world boss, raid, campaign boss), Basic in the
-// ordinary ones; Map 21+ Smartest everywhere. The Babel Spire: Smart on every floor (2026-10-18, owner 11:46: "Babel Spire is like
-// the ultimate difficulty. Smart by default."; it was Smartest from floor 25). Edit skirmish → Difficulty (node.ai: 'basic' | 'smart' | 'smartest') overrides Auto. Fights off the road keep the engine's
+// ordinary ones; Map 21+ Smartest everywhere. The Babel Spire: the smartest CPU there is on every floor (2026-10-18, owner 15:05:
+// "Smartest. - if we progressively make a smarter CPU, use that one in the future."; it was Smart since 11:46, Smartest from floor 25
+// before that): CPU_AI_MAX, the engine's AI_LEVEL_MAX, so a smarter level added later applies there automatically. Edit skirmish → Difficulty (node.ai: 'basic' | 'smart' | 'smartest') overrides Auto. Fights off the road keep the engine's
 // default, Smart (Arena vs AI, Gauntlet, PvP ghosts, raids, the old Dungeon run); the tutorial is Basic (cpuAiLevelOfMatch).
 const CPU_AI_KEYS = ['basic', 'smart', 'smartest'];
 const CPU_AI_LABEL = {basic:'Basic', smart:'Smart', smartest:'Smartest'};
 const CPU_SMART_FROM_MAP = 5, CPU_SMARTEST_FROM_MAP = 21;
 const CPU_SMART_KINDS = new Set(['elite','champion','miniboss','subboss','boss','dungeon','worldboss','raidboss','megaraid','finalboss']);
+const CPU_AI_MAX = typeof AI_LEVEL_MAX === 'number' ? AI_LEVEL_MAX : CPU_AI_KEYS.length - 1; // the highest level the engine has (2026-10-18)
+const cpuAiKeyOf = lv=> CPU_AI_KEYS[Math.max(0, Math.min(CPU_AI_KEYS.length - 1, lv | 0))]; // a level past the named ones reads as the top name
 function cpuAiAutoLevel(mapId, node){
   if(!node) return 1;
-  if(node.tower) return 1;
+  if(node.tower) return CPU_AI_MAX; // the Babel Spire: always the smartest CPU (2026-10-18, owner 15:05)
   const n = mapNumberOf(mapId); if(n == null) return 1;
   if(n >= CPU_SMARTEST_FROM_MAP) return 2;
   return n >= CPU_SMART_FROM_MAP && CPU_SMART_KINDS.has(node.kind || 'skirmish') ? 1 : 0;
 }
 function cpuAiLevelForNode(mapId, node){ const k = node && CPU_AI_KEYS.indexOf(node.ai); return k >= 0 ? k : cpuAiAutoLevel(mapId, node); }
-function cpuAiLevelOfMatch(m){ if(!m) return 1; if(m.aiLevel != null) return m.aiLevel; return m.mode === 'tutorial' ? 0 : 1; }
-function cpuAiPillHTML(level){ const k = CPU_AI_KEYS[level] || 'smart'; return `<div class="vs-ai-pill is-${k}" title="How the CPU plays this fight">🧠 ${CPU_AI_LABEL[k]} CPU</div>`; }
+// 2026-10-18 (audit 4): a road fight saved before aiLevel was kept falls back to its node's rule (a Map 0–4 fight resumes on Basic, not Smart).
+function cpuAiLevelOfMatch(m){ if(!m) return 1; if(m.aiLevel != null) return m.aiLevel; if(m.mode === 'tutorial') return 0;
+  if(m.conquestNode){ try{ const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(f && f.node) return cpuAiLevelForNode(m.conquestNode.mapId, f.node); }catch(e){} }
+  return 1; }
+function cpuAiPillHTML(level){ const k = level == null ? 'smart' : cpuAiKeyOf(level); return `<div class="vs-ai-pill is-${k}" title="How the CPU plays this fight">🧠 ${CPU_AI_LABEL[k]} CPU</div>`; }
 function nodePatchFor(mapId, key){ const e = nodeEdits[mapId] = nodeEdits[mapId] || {}; e.patches = e.patches || {}; e._localAt = Date.now(); return e; } // _localAt: see applyCloudNodeEdits
 function isAddedNode(mapId, key){ return ((nodeEdits[mapId]||{}).added||[]).some(n=> n.key===key); }
 function addSkirmishToMap(mapId){
@@ -14583,7 +14659,43 @@ function nodeCastleId(node){
   const id = MAP_CASTLE[m.sub ? m.parent : m.id];
   return id && CHARACTER_DEFS[id] ? id : null;
 }
-function nodeCastleLevel(node){ if(node && node.castleLevel != null && node.castleLevel !== '') return Math.max(0, Math.min(20, Number(node.castleLevel)||0)); return KIND_CASTLE_LEVEL[baseKind((node && node.kind) || 'skirmish')] || 0; }
+function nodeCastleLevel(node){ if(node && node.castleLevel != null && node.castleLevel !== '') return Math.max(0, Math.min(20, Number(node.castleLevel)||0)); if(baseBrambleHp(node) != null) return 0; /* 2026-10-18 (X3): Map 0's road fights the base bramble at Lv 0 */ return KIND_CASTLE_LEVEL[baseKind((node && node.kind) || 'skirmish')] || 0; }
+// Enemy bramble Shield by rule (2026-10-18, owner 15:05: "For shields, lower the amount of shields in all skirmishes. About
+// Shield = Map. For Elites, Map * 1.5, up to 3x for bosses"): a fight's Shield is its map number times its kind's multiplier,
+// worked out when the fight is built, so every node follows it without baked values. Before today the Shield was whatever
+// hqHp had above the bramble's own Health (up to ~300 on the late maps); hqHp now only ever lowers the Health. An editor
+// override (node.shieldOverride: a number, or up to four layer amounts) is only written by the skirmish editor from today on;
+// older saved node.armour / node.armourLayers values are ignored.
+const SHIELD_RULE_MULT = {skirmish:1, elite:1.5, champion:1.5, dungeon:1.5, miniboss:2, subboss:2, boss:3, finalboss:3, worldboss:3, raidboss:3, megaraid:3, tutorial:0};
+// The map number the rule counts (2026-10-18, coordinator: "Don't let the rule make the come-back-later fights trivial"): a node's or
+// its map's shieldMap first (the Old Bramble: 17), then the Tutorial side map's T-2 / T-3 / T-4 as the map that opens them
+// (TUT_SIDE_GATE: 1, 8, 18), else the map's own number.
+function nodeMapNumber(node){
+  if(node && node.shieldMap != null && node.shieldMap !== '' && Number.isFinite(Number(node.shieldMap))) return Math.max(0, Math.round(Number(node.shieldMap)));
+  const m = mapOfNode(node); if(!m) return 0;
+  if(m.shieldMap != null && Number.isFinite(Number(m.shieldMap))) return Math.max(0, Math.round(Number(m.shieldMap)));
+  if(m.id === 'mtut' && node && typeof TUT_SIDE_GATE !== 'undefined' && TUT_SIDE_GATE[node.key] != null) return TUT_SIDE_GATE[node.key];
+  const n = mapNumberOf(m.id); return n == null ? 0 : n;
+}
+function shieldRuleMult(kind){ const k = kind || 'skirmish'; return SHIELD_RULE_MULT[k] != null ? SHIELD_RULE_MULT[k] : (SHIELD_RULE_MULT[baseKind(k)] != null ? SHIELD_RULE_MULT[baseKind(k)] : 1); }
+function ruleShieldOf(node){ return Math.max(0, Math.round(nodeMapNumber(node) * shieldRuleMult(node && node.kind))); }
+function shieldOverrideOf(node){
+  const o = node && node.shieldOverride; if(o == null || o === '') return null;
+  const raw = Array.isArray(o) ? o : [o], out = [];
+  for(const v of raw.slice(0, ARMOUR_LAYER_MAX)){ const n = Math.max(0, Math.round(Number(v)||0)); if(!(n > 0)) break; out.push(n); }
+  return out; // [] = an explicit "no Shield"
+}
+// The base bramble (2026-10-18, owner: "HP of brambles in Tutorial and Map 0 Skirmishes should be unnaturally low. Maybe there's
+// a base bramble we can use (starts at lvl 0 instead)"): on Map 0's own road (not its Tutorial or Old Bramble side maps, which are
+// meant to be come-back-later fights) the enemy bramble is the Lv 0 base one with a tiny Health, so the first fights end fast.
+// The tutorial's two fights already use the tutorial config's rival Health (6, then 8).
+const BASE_BRAMBLE_HP = {skirmish:[10, 12, 14, 15], elite:16, boss:20};
+function baseBrambleHp(node){
+  const m = mapOfNode(node); if(!m || m.sub || mapNumberOf(m.id) !== 0 || !node) return null;
+  const k = baseKind(node.kind || 'skirmish'); if(k === 'tutorial') return null;
+  if(k === 'skirmish'){ const sk = m.nodes.filter(n=> baseKind(n.kind || 'skirmish') === 'skirmish'), i = Math.max(0, sk.findIndex(n=> n === node || n.key === node.key)); return BASE_BRAMBLE_HP.skirmish[Math.min(i, BASE_BRAMBLE_HP.skirmish.length - 1)]; }
+  return k === 'elite' ? BASE_BRAMBLE_HP.elite : BASE_BRAMBLE_HP.boss;
+}
 // The skirmish's showcase card (2026-10-10, user: "show the highlighted unit of the deck - let me edit this in the
 // Skirmish"): node.showcase, or else the deck's strongest card.
 function nodeShowcaseId(node){
@@ -14614,12 +14726,14 @@ function skirmishCastle(node){
   const cid = nodeCastleId(node), lvl = cid ? nodeCastleLevel(node) : 0;
   const base = (cid && castleLeveled(CHARACTER_DEFS[cid], lvl)) || CHARACTER_DEFS.castle || {health:30};
   const baseHp = Number(base.health) || 30;
-  let hp, shield;
-  if(node.armour !== null && node.armour !== undefined && Number.isFinite(Number(node.armour))){ hp = baseHp; shield = Math.max(0, Math.round(Number(node.armour))); }
-  else { const total = Number(node.hqHp) || baseHp; hp = Math.min(baseHp, total); shield = Math.max(0, total - baseHp); }
+  // 2026-10-18 (X3): Health is the bramble's own (a lower hqHp lowers it; Map 0's road uses the base bramble); the Shield follows
+  // the rule above unless the editor set node.shieldOverride.
+  let hp = Number(node.hqHp) > 0 ? Math.min(baseHp, Math.round(Number(node.hqHp))) : baseHp;
+  const early = baseBrambleHp(node); if(early != null) hp = Math.min(hp, early);
+  const ov = shieldOverrideOf(node), rule = ruleShieldOf(node);
+  const layers = ov || (rule > 0 ? [rule] : []), shield = layers.reduce((a, b)=> a + b, 0);
   const character = cid ? Object.assign({}, base, {health:hp, level:lvl}) : {id:'conquest-enemy', name:node.name, health:hp, effects:{}};
-  const layers = armourLayersOf(node, shield);
-  return {character, hp, shield, total: hp + shield, layers};
+  return {character, hp, shield, total: hp + shield, layers, rule, overridden: !!ov};
 }
 function castleLineText(node){ const sc = skirmishCastle(node); return `🏰 ${sc.hp} HP${sc.shield ? ` · 🔷 ${sc.shield} ${_t('Armour')}` : ''}`; }
 // The panel's castle line (2026-10-12, user: "The health and armour can use this format 'N <Health Icon> M <Blue Diamond Icon>'
@@ -14910,7 +15024,7 @@ function volcanoChanceWord(r, key){ const o = volcanoOddsOf(r, 2); if(!o) return
 // (fieldConditionRows), Edit skirmish (FIELD_EFFECTS) and the Effects library (FXL_FIELDS). The rules live in bramblewood-engine.js
 // (fieldEffects2Tick and the helper block near `rules`). key = the rules flag; editor = the Edit skirmish id.
 const FIELD2 = {
-  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor.'},
+  tide:          {icon:'🌊', name:'Tide', editor:'tide', short:'Flood, then Ebb', text:'The Tide is in: from round 2 it floods and ebbs, round by round. On Flood, Tide units get +1 Attack; on Ebb, +1 Armor. A Flood fills the whole board: every unit that isn’t Flying is Wet; Swimmers and Tide units are Wet in Ebb too.'}, // 2026-10-18 (owner 15:05): the Flood wets land units
   landslide:     {icon:'🪨', name:'Landslide', editor:'landslide', short:'Rocks may fall (1 in 4)', text:"Each round from round 2, a 1 in 4 chance that rocks come down on three neighbouring columns: 5 damage to every unit there that isn't flying, on both sides."}, // 2026-10-17 (user: "it should only affect the L/C/R cards")
   consternation: {icon:'😰', name:'Consternation', editor:'consternation', short:'Hand cards lose 1/1 a round', text:'Each round from round 2, every card in each hand loses 1/1. The loss stays on the card when it is played (down to 0 Attack and 1 Health at most).'},
   crushingDepths:{icon:'🫧', name:'Crushing Depths', editor:'crushingdepths', short:'5 water damage a round', text:'Each round from round 2, every unit takes 5 water damage. Tide units and Swimmers take half, and water Resist halves it again. No day or night reaches down here.'},
@@ -15008,7 +15122,12 @@ function fieldUnrevealedMap(mapId){ try{ return mapId != null && mapNumberOf(map
 function matchFieldUnrevealed(m){ return !!(m && m.conquestNode && fieldUnrevealedMap(m.conquestNode.mapId)); }
 // What an unlearned "?" says on hover: never what the effect does (Mist used to say "There is no day and night").
 const MISTY_Q_TIP = "Something hangs in the air here. You'll learn more soon.";
-function fieldRowQTip(row){ return (row && row.qTip) || 'Shows what it does once it first happens'; }
+// 2026-10-18 (audit 4): a revealAfter-gated row never reveals by happening, so its "?" says what opens it (built from the gate).
+function revealGateTip(ra){ try{ if(!ra) return '';
+  if(ra.mapNum != null) return TX('ui.reveal-gate-mapnum', {n: Number(ra.mapNum)});
+  if(ra.map){ const n = mapNumberOf(ra.map); return TX('ui.reveal-gate-map', {n: n != null ? n : ra.map}); } }catch(e){} return ''; }
+function fieldRowGateTip(row){ try{ return row && fieldRowGated(row.key) ? revealGateTip(FIELD2[row.key].revealAfter) : ''; }catch(e){ return ''; } }
+function fieldRowQTip(row){ return fieldRowGateTip(row) || (row && row.qTip) || 'Shows what it does once it first happens'; }
 // Misty (2026-10-15, user: "The mist effect ? now says 'There is no day and night'"): what rules.misty really does. It turns the
 // day/night cycle off (fightRules: phase 'off'), so Diurnal and Nocturnal bonuses never apply, and the fog's tint drifts instead.
 // 2026-10-15 (user: "In misty maps in later levels, they explicitly have a Mist pill in the battlefield AND a Mist effect card. And it
@@ -15103,13 +15222,17 @@ function simulateSkirmishVsDeckSeeded(node, deckCounts, playerChar, seed){
   const a = P[1].hq.hp<=0, b = P[2].hq.hp<=0;
   return {win: over && b && !a, castleLeft: P[1].hq.hp / P[1].hq.maxHp};
 }
-function simulateSkirmishVsMyDeck(node, n){ return simulateSkirmishVsDeck(node, myDeckCounts, n, myCastleDef()); }
-function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
+// 2026-10-18 (audit 4): ai = {level} plays the fight as the game does (aiAim): the CPU at that level (Edit skirmish's Difficulty, or
+// the map rule), your deck at Smart (it stands in for you). Without it the sims stay silent (no aiAim), as the curve tools expect.
+// (aiAim costs nothing extra here: 200 games took about as long as the silent ones in a Node timing, 2026-10-18.)
+function simulateSkirmishVsMyDeck(node, n, ai){ return simulateSkirmishVsDeck(node, myDeckCounts, n, myCastleDef(), ai); }
+function simulateSkirmishVsDeck(node, deckCounts, n, playerChar, ai){
+  const aimed = !!(ai && ai.level != null), cpuLv = aimed ? Math.max(0, Math.min(2, Number(ai.level) || 0)) : null;
   const defs = getCardDefs(); let wins = 0, losses = 0, draws = 0, rounds = 0, castleLeft = 0;
   const myChar = playerChar || CHARACTER_DEFS.castle;
   const enemyChar = skirmishCastle(node).character;
   for(let i=0;i<n;i++){
-    const engine = makeSimEngine(defs, seededRng(9100+i), {recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: fightRules(null, node)});
+    const engine = makeSimEngine(defs, seededRng(9100+i), Object.assign({recordEvents:false, battleMode: node.battleMode || CONQUEST_DEFAULT_MODE, rules: fightRules(null, node)}, aimed ? {aiAim:true, aiLevel:cpuLv} : {}));
     const sideOf = id=> id===1?'A':'B', stats = {};
     const P = {1: engine.newPlayer(1, deckCounts, myChar), 2: engine.newPlayer(2, node.deck||{}, enemyChar)};
     P[2].loopCards = []; applySkirmishSetup(P, node);
@@ -15119,7 +15242,7 @@ function simulateSkirmishVsDeck(node, deckCounts, n, playerChar){
       engine.setSuddenDeath(r >= SUDDEN_DEATH_ROUND, r >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
       [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
       if(r > 1) engine.roundStart(P, r, sideOf, stats, null); // day/night and the field, as in a real fight
-      engine.aiTakeTurn(P, sideOf, 1, stats, null); engine.aiTakeTurn(P, sideOf, 2, stats, null);
+      if(aimed) engine.setAiLevel(1); engine.aiTakeTurn(P, sideOf, 1, stats, null); if(aimed) engine.setAiLevel(cpuLv); engine.aiTakeTurn(P, sideOf, 2, stats, null);
       over = engine.resolveCombat(P, sideOf, stats, null, r%2===0 ? 1 : 2);
       if(over) break;
       const sig = boardSignature(P); stalled = (sig===lastSig && noActionsLeft(P)) ? stalled+1 : 0; lastSig = sig; if(stalled>=2 && r >= STALL_DRAW_FROM_ROUND) break; // 2026-10-15
@@ -15339,7 +15462,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         <label>Name<input id="seName" value="${escapeAttr(draft.name||'')}"></label>
         <label>Icon<input id="seIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
         <label>Kind<select id="seKind" ${draft.kind==='tutorial'?'disabled title="The tutorial marker keeps its kind"':''}>${(draft.kind==='tutorial' ? ['tutorial'] : SKIRMISH_KINDS).map(k=> opt(k, draft.kind, KIND_LABEL[k]||k)).join('')}</select></label>
-        ${(()=>{ const L = armourLayersOf(draft, skirmishCastle(draft).shield); return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
+        ${(()=>{ const scD = skirmishCastle(draft), L = scD.layers; overlay._shieldShown = L.slice(); /* 2026-10-18 (X3): the inputs show the Shield rule's value unless this fight overrides it */ return `<fieldset class="se-wide se-armour"><legend>Bonus health 🔷 <small>layers soak hits top-down; a layer above 0 opens the next</small></legend><p class="se-shield-rule panel-sub">Rule: Map ${nodeMapNumber(draft)} × ${shieldRuleMult(draft.kind)} = <b>${scD.rule}</b> Shield${scD.overridden ? ` · <b>overridden</b> <button type="button" class="btn small" id="seShieldRule">↺ Use the rule</button>` : ' (change a value to override it for this fight)'}</p>${Array.from({length: ARMOUR_LAYER_MAX}, (_, k)=>{ const val = L[k] || 0, show = k === 0 || (L[k-1] || 0) > 0; const col = ARMOUR_LAYER_COLOURS[k];
             return `<label class="se-armour-layer" data-layer="${k}" ${show ? '' : 'hidden'} style="--sh-a:${col[0]}; --sh-b:${col[1]}">L${k+1}<input id="${k === 0 ? 'seArmour' : 'seArmour' + (k+1)}" class="se-armour-in" data-k="${k}" type="number" min="0" max="9999" value="${val}"></label>`; }).join('')}</fieldset>`; })()}
         <label title="Level of the defending bramble: +1 Health per level. Blank = the default for this kind of fight">Bramble level<input id="seCastleLv" type="number" min="0" max="20" placeholder="${KIND_CASTLE_LEVEL[baseKind(draft.kind||'skirmish')]||0}" value="${draft.castleLevel != null ? escapeAttr(draft.castleLevel) : ''}"></label>
         <label title="Worked out from this deck at the levels its cards fight at (change the deck or the card levels to move it)">Battle rating<input id="seRatingShow" type="text" readonly value="⚔ ${escapeAttr(String(enemyDeckLevel(draft)))}"></label>
@@ -15362,7 +15485,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label title="An uneven cycle (2026-10-17, the volcano's glow: Day 4, Night 2). Blank: the map's own (the volcano maps 4 and 2), else Switch every">Day / Night<input id="sePhaseDay" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseDay != null ? escapeAttr((draft.rules||{}).phaseDay) : ''}"> / <input id="sePhaseNight" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseNight != null ? escapeAttr((draft.rules||{}).phaseNight) : ''}"> rounds</label>
           <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 bramble Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never gives up')}</select></label>
-          ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire Smart, Smartest from floor 25">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[CPU_AI_KEYS[cpuAiAutoLevel(mapId, draft)]] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
+          ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire the smartest CPU on every floor">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[cpuAiKeyOf(cpuAiAutoLevel(mapId, draft))] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
           <label title="What this fight keeps putting out once it has no cards left">Out of cards, summons<select id="seLoop">${Object.entries(LOOP_PRESETS).map(([k, p])=> opt(k === '-' ? '' : k, draft.loopUnits || '', p.label)).join('')}</select></label>
         </fieldset>
         ${draft.kind === 'tutorial' ? '' : (()=>{ const chips = skirmishFieldChips(mapId, draft);
@@ -15454,7 +15577,10 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       }
       if(document.getElementById('seArmour')){
         const ls = []; for(let k = 0; k < ARMOUR_LAYER_MAX; k++){ const el = document.getElementById(k === 0 ? 'seArmour' : 'seArmour' + (k+1)); const n = el ? Math.max(0, Math.min(9999, Math.round(Number(el.value)||0))) : 0; if(!(n > 0)) break; ls.push(n); }
-        draft.armour = ls.reduce((a, b)=> a + b, 0); if(ls.length > 1) draft.armourLayers = ls; else delete draft.armourLayers; draft.hqHp = skirmishCastle(draft).total; }
+        // 2026-10-18 (X3): a value changed from what was shown becomes this fight's shieldOverride (back on the rule's value = no
+        // override); the old armour / armourLayers fields are dropped, and hqHp is no longer rewritten as Health + Shield.
+        if(JSON.stringify(ls) !== JSON.stringify(overlay._shieldShown || [])){ const r = ruleShieldOf(draft); if(JSON.stringify(ls) === JSON.stringify(r > 0 ? [r] : [])) delete draft.shieldOverride; else draft.shieldOverride = ls.length > 1 ? ls : (ls[0] || 0); }
+        delete draft.armour; delete draft.armourLayers; }
       { const lv = {}; overlay.querySelectorAll('[data-cardlv]').forEach(inp=>{ const x = inp.value; if(x !== '' && isFinite(Number(x)) && draft.deck && draft.deck[inp.dataset.cardlv]) lv[inp.dataset.cardlv] = Math.max(0, Math.min(11, Math.round(Number(x)))); });
         if(overlay.querySelector('[data-cardlv]')){ if(Object.keys(lv).length) draft.cardLevels = lv; else delete draft.cardLevels; } }
       draft.requires = [...overlay.querySelectorAll('[data-req]')].filter(c=> c.checked).map(c=> c.dataset.req);
@@ -15474,7 +15600,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       openSkirmishGallery({kind:'leader', slot:k, current: draft.leaders||[], pick: id=>{ const a = (draft.leaders||[]).slice(); while(a.length < k) a.push(null); const dup = a.indexOf(id); if(dup >= 0 && dup !== k) a[dup] = a[k] || null; a[k] = id; setLeaders(a); dirty = true; }, onClose: render}); });
     overlay.querySelectorAll('[data-leader-rm]').forEach(b=> b.onclick = ()=>{ read(); const a = (draft.leaders||[]).slice(); a.splice(+b.dataset.leaderRm, 1); setLeaders(a); dirty = true; render(); });
     { const cp = document.getElementById('seCastlePick'); if(cp) cp.onclick = ()=>{ read();
-        openSkirmishGallery({kind:'castle', current: draft.characterId||'', pick: id=>{ if(id) draft.characterId = id; else delete draft.characterId; if(document.getElementById('seArmour')) draft.hqHp = skirmishCastle(draft).total; dirty = true; }, onClose: render}); }; }
+        openSkirmishGallery({kind:'castle', current: draft.characterId||'', pick: id=>{ if(id) draft.characterId = id; else delete draft.characterId; dirty = true; }, onClose: render}); }; } // 2026-10-18 (X3): no hqHp rewrite (the Shield is the rule's)
+    { const sr = document.getElementById('seShieldRule'); if(sr) sr.onclick = ()=>{ read(); delete draft.shieldOverride; dirty = true; render(); }; }
     overlay.querySelectorAll('.se-armour-in').forEach(inp=> inp.oninput = ()=>{ dirty = true; // a layer above 0 opens the next one; a 0 closes everything above it
       const ins = [...overlay.querySelectorAll('.se-armour-in')]; let open = true; ins.forEach((el, k)=>{ const lab = el.closest('.se-armour-layer'); if(k > 0) open = open && (Number(ins[k-1].value)||0) > 0; if(lab) lab.hidden = !open; }); });
     { const te = document.getElementById('seTutEdit'); if(te) te.onclick = ()=> openTutorialEditor(); }
@@ -15499,8 +15626,8 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         openCardEditor(null); }; }
     const search = document.getElementById('seSearch');
     search.addEventListener('input', ()=>{ read(); q = search.value; const pos = search.selectionStart; render(); const s2 = document.getElementById('seSearch'); s2.focus(); s2.setSelectionRange(pos, pos); });
-    document.getElementById('seSim').onclick = ()=>{ read(); const r = simulateSkirmishVsMyDeck(draft, 200);
-      simText = `Your active deck vs this skirmish, 200 games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average${r.wins ? ` · ${Math.round(r.avgCastleLeft*100)}% bramble left when you win` : ''}.`; render(); };
+    document.getElementById('seSim').onclick = ()=>{ read(); const simLv = cpuAiLevelForNode(mapId, draft), r = simulateSkirmishVsMyDeck(draft, 200, {level: simLv}); // 2026-10-18 (audit 4): against the Difficulty picked
+      simText = `Your active deck vs this skirmish (${CPU_AI_LABEL[CPU_AI_KEYS[simLv]] || 'Smart'} CPU), 200 games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average${r.wins ? ` · ${Math.round(r.avgCastleLeft*100)}% bramble left when you win` : ''}.`; render(); };
     const simLine = (r, who)=> `${who}, ${r.n} games: <b>${Math.round(r.wins/r.n*100)}% wins</b> · ${Math.round(r.losses/r.n*100)}% losses · ${Math.round(r.draws/r.n*100)}% draws · ${r.avgRounds.toFixed(1)} rounds on average.`;
     document.getElementById('seSimNew').onclick = ()=>{ read(); const deck = expectedPlayerDeck(mapId, draft.key); const r = simulateSkirmishVsDeck(draft, deck, 200);
       skirmishCurveCache[mapId+':'+draft.key] = r.wins/r.n;
@@ -15510,7 +15637,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       const btn = document.getElementById('seTune'); btn.disabled = true; btn.textContent = '🎯 Tuning…';
       setTimeout(()=>{
         const deck = expectedPlayerDeck(mapId, draft.key), tgt = skirmishTargetWinRate(mapId, draft), G = 80;
-        const rate = a=>{ const t = Object.assign({}, draft, {armour:a}); return simulateSkirmishVsDeck(t, deck, G).wins / G; };
+        const rate = a=>{ const t = Object.assign({}, draft, {shieldOverride:a}); NODE_MAP_HINT.set(t, mapId); /* 2026-10-18 (X3): tunes the Shield override, on this map's bramble */ return simulateSkirmishVsDeck(t, deck, G).wins / G; };
         const before = skirmishCastle(draft).shield;
         let lo = 0, hi = Math.max(20, skirmishCastle(draft).total * 3), best = before, bestR = rate(before);
         for(let it=0; it<8 && lo<=hi; it++){
@@ -15518,7 +15645,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           if(Math.abs(r - tgt) < Math.abs(bestR - tgt)){ best = mid; bestR = r; }
           if(r > tgt) lo = mid + 1; else hi = mid - 1;
         }
-        draft.armour = best; draft.hqHp = skirmishCastle(draft).total; dirty = true;
+        if(best === ruleShieldOf(draft)) delete draft.shieldOverride; else draft.shieldOverride = best; delete draft.armour; delete draft.armourLayers; dirty = true; // 2026-10-18 (X3)
         skirmishCurveCache[mapId+':'+draft.key] = bestR;
         const capNote = (bestR < tgt - .1 && best === 0) ? ' Even with no Armour it is too hard: swap a strong card out of the enemy deck.' : (bestR > tgt + .1) ? ' Still too easy at the top of the range: add a stronger card to the enemy deck.' : '';
         simText = `🎯 Skirmish Armour ${before} → <b>${best}</b>: a new player's deck wins about <b>${Math.round(bestR*100)}%</b> (target ~${Math.round(tgt*100)}%).${capNote} Not saved yet.`;
@@ -15534,7 +15661,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         const list = map.nodes.filter(n=> n.deck && n.kind!=='tutorial'), N = SKIRMISH_CURVE_SIMS;
         for(let i = 0; i < list.length; i++){
           const n = list[i], nn = n.key===draft.key ? draft : n, deck = expectedPlayerDeck(mapId, n.key);
-          const sig = JSON.stringify([mapId, nn.deck, nn.rules || null, nn.battleMode || null, nn.hqHp, nn.characterId || null, nn.castle || null, nn.armour || nn.armor || null, nn.setup || null, deck, N]);
+          const sig = JSON.stringify([mapId, nn.deck, nn.rules || null, nn.battleMode || null, nn.hqHp, nn.characterId || null, nn.castle || null, nn.shieldOverride != null ? nn.shieldOverride : null, nn.kind || null, nn.setup || null, deck, N]);
           let v = skirmishCurveSimCache.get(sig);
           if(v == null){ cb.textContent = `Checking ${i + 1}/${list.length}…`; await sleep(0); v = simulateSkirmishVsDeck(nn, deck, N).wins / N; skirmishCurveSimCache.set(sig, v); }
           skirmishCurveCache[mapId+':'+n.key] = v;
@@ -15867,6 +15994,16 @@ function grantSkirmishKitItem(){
   o.counts[pick] = (o.counts[pick]||0) + 1; o.winCount = (o.winCount||0) + 1; saveItems(o);
   return {id: pick, nth: o.winCount, of: SKIRMISH_KIT_PER_DAY};
 }
+// A boss that grants an item (2026-10-18, package Z; node.grantsItem, see GRANTS_ITEM_FROM_MAP): its first clear gives one item,
+// picked like the daily-win ones (SKIRMISH_KIT_WEIGHT, skipping items at the cap). It doesn't use up one of the day's 3 win items.
+function grantBossKitItem(){
+  if(!featureUnlockedSafe('fieldkit')) return null;
+  const o = loadItems(), pool = Object.keys(ITEM_DEFS).filter(id=> (o.counts[id]||0) < ITEM_CAP); if(!pool.length) return null;
+  const tot = pool.reduce((t, id)=> t + (SKIRMISH_KIT_WEIGHT[id] || 1), 0); let x = Math.random() * tot, pick = pool[pool.length - 1];
+  for(const id of pool){ x -= (SKIRMISH_KIT_WEIGHT[id] || 1); if(x < 0){ pick = id; break; } }
+  o.counts[pick] = (o.counts[pick]||0) + 1; saveItems(o);
+  return {id: pick, boss: true};
+}
 const DAILY_QUEST_SLOTS = [0, 0, 0, 6, 12, 18]; // the hour each notice goes up
 const DAILY_QUEST_KINDS = [
   {counter:'energyConquest', goals:[10,20,30,50,80,120,160], label:g=> `Use ${g} ⚡ Energy on Conquest fights`},
@@ -16069,7 +16206,7 @@ const ERRANDS_KEY = 'bramblewood_errands_v1', ERRANDS_MAX = 3, ERRAND_OFFER_CHAN
 const ERRAND_TEMPLATES = [
   {id:'mole-ridge', title:'The Cousin Past the Ridge', who:'mole', ask:'My cousin is stuck past the next ridge. Could you clear the road for him?', counter:'conquestWins', goal:3, label:'Clear 3 Conquest fights for Pip’s cousin', mu:0.06, thanks:'He made it home! He says thank you. Well, he squeaked.'},
   {id:'heron-pests', title:'Pests in the Reeds', who:'heron', ask:'Pests in my reeds. Many, many small pests. Thin them out for an old bird?', counter:'unitsDefeated', goal:12, label:'Defeat 12 enemy units for Old Heron Wade', mu:0.05, thanks:'Quiet reeds at last. Here, for your trouble.'},
-  {id:'mouse-letter', title:'Letters for Three Camps', who:'mouse', ask:'I’ve got letters for three camps and wolves on every path. Walk with me?', counter:'wins', goal:3, label:'Win 3 matches escorting Bramble’s letters', mu:0.06, thanks:'Every letter delivered. Not one bite mark!'},
+  {id:'mouse-letter', title:'Letters for Three Camps', who:'mouse', ask:'I’ve got letters for three camps and wolves on every path. Walk with me?', counter:'wins', goal:3, label:'Win 3 matches escorting Burdock’s letters', mu:0.06, thanks:'Every letter delivered. Not one bite mark!'},
   {id:'beetle-packs', title:'Sealed Packs for the Hive', who:'beetle', ask:'The Hive trades in sealed packs. Open a couple and tell me what you find?', counter:'packsOpened', goal:2, label:'Open 2 card packs for Sister Carapace', mu:0.04, thanks:'Interesting. Very interesting. The Hive thanks you.'},
   {id:'frog-march', title:'The Pond Patrol', who:'frog', ask:'The pond needs a strong patrol. Spend some time on the road for us?', counter:'energyConquest', goal:25, label:'Use 25 ⚡ Energy on Conquest fights for Croaker', mu:0.05, thanks:'The pond sleeps easy tonight. Croak.'},
   {id:'hedgehog-bully', title:'The Bully on the Road', who:'hedgehog', ask:'There’s a big bully on this road. Beat a few of his friends so he backs off?', counter:'conquestWins', goal:2, label:'Clear 2 Conquest fights for Thimble', mu:0.04, thanks:'He backed off! I’m not scared of him anymore. Much.', shard:true},
@@ -16457,7 +16594,7 @@ function renderAutobattleSubTab(body){
   body.innerHTML = `<div class="panel ab-panel">${abStatusBarHTML(run)}
     <div class="ab-prep">
       <div class="ab-commanders">
-        <div class="ab-slot"><div class="ab-slot-l">Bramble <span class="ab-note">+${Math.round(AutoB.AB.CASTLE_GROWTH*100)}% health per fight</span></div>${castleTileHTML(Object.assign({}, CHARACTER_DEFS[run.castle]||{name:'Castle',health:30}, {health: AutoB.castleHealthFor((CHARACTER_DEFS[run.castle]||{health:30}).health, run.fights)}))}</div>
+        <div class="ab-slot"><div class="ab-slot-l">Bramble <span class="ab-note">+${Math.round(AutoB.AB.CASTLE_GROWTH*100)}% health per fight</span></div>${castleTileHTML(Object.assign({}, CHARACTER_DEFS[run.castle]||{name:'Bramble',health:30}, {health: AutoB.castleHealthFor((CHARACTER_DEFS[run.castle]||{health:30}).health, run.fights)}))}</div>
         <div class="ab-slot"><div class="ab-slot-l">👑 Leader</div>${L?cardTileHTML(L, {inPlay:true}):''}</div>
         <div class="ab-slot"><div class="ab-slot-l">🥈 Sub-leader <span class="ab-note">joins round ${AutoB.AB.SUB_LEADER_ROUND}</span></div>${S?cardTileHTML(S, {inPlay:true}):''}
           ${subOpts.length ? `<div class="ab-swap"><div class="ab-note">Swap for:</div>${subOpts.map(id=> `<button type="button" class="btn small" data-swap="${escapeAttr(id)}" title="${escapeAttr(defs[id].name+' — '+defs[id].attack+'/'+defs[id].health)}">${defs[id].icon} ${escapeHtml(defs[id].name)}</button>`).join('')}</div>` : `<div class="ab-note">Swapped this round</div>`}</div>
@@ -16721,7 +16858,7 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks'];
+const RESUME_FIELDS = ['aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks','itemsUsed','towerReplay','towerEnergyPaid','towerRefunded']; // + the field kit's count and the Spire's free replay / refund (2026-10-18, package Z)
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -16886,6 +17023,9 @@ ${tabOpen('gauntlet') ? `        <button class="btn primary big arena-mode-btn g
 // Swamp Fever on the swamps, Landslide in the caves, Crushing Depths, the Briar Maze's lines and Mirage, High Canopy, Undergrowth
 // and Tall Grass, Consternation, Hail, Slippery, Glass-storm, Lava Spout, Scorching I-III, Frigid, Freezing, Sandstorm); Map 0 retuned by hand and Maps 9-20 with tools/curve_tune.js (--to=56) toward a
 // smoothly rising curve (the world boss and the 20-A dungeon keep their castle Health).
+// 2026-10-18 (skirmish pass SKB, owner 15:56: "as long it's not auto winnable or always loseable"): 90 fights' decks (and 3-1, 3-5,
+// 10-7, 18-4's shieldOverride, 8-7's hqHp) were tuned by tools/skirmish_pass.js so the stage deck wins 12-92%; see
+// docs/skirmish-pass-2026-10-18.md for each fight's before / after.
 const CONQUEST_MAPS = [
 
 
@@ -16908,18 +17048,18 @@ const CONQUEST_MAPS = [
       { key:"0-1", kind:"skirmish", name:"Otter Patrol", icon:"🦦", deck:{"otter-kit":2,"otter-paddler":2,"meadow-rabbit":3,"pond-trout":2,"pond-duck":2}, hqHp:20, flavor:"A river patrol that wandered too far from the water.", requires:[], firstOneCard:true },
       { key:"0-2", kind:"skirmish", name:"Scorpion Ambush", icon:"🦂", deck:{"worker-ant":2,"tunnel-ant":4,"ant-scout":2,"caustic-scorpion":1,"otter-kit":2,"earthworm":2}, hqHp:25, flavor:"Sand blows in off the outskirts long before the raiders do.", requires:[], firstFactionPack:"mine" },
       { key:"0-3", kind:"skirmish", name:"Raccoon Heist", icon:"🦝", deck:{"trash-panda-trickster":5,"meadow-rabbit":4,"pond-trout":2}, hqHp:22, flavor:"They're not here for the castle. They're here for whatever's in it.", requires:["0-1","0-2"] },
-      { key:"0-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"pond-duck":4,"otter-kit":1,"otter-royal-guard":1}, hqHp:52, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["0-3"] },
+      { key:"0-4", kind:"boss", name:"Frost Vanguard", icon:"❄️", deck:{"glacier-wolf-pack":3,"pond-duck":4,"otter-kit":1,"otter-royal-guard":3}, hqHp:52, flavor:"A cold snap this far south means something bigger is coming down from the peak.", characterId:"plains-terrace", revealDeck:"win", requires:["0-3"] },
     ]},
   // 2026-10-15 (user: "could we swap out Map 0 and Map 1's backgrounds. I think the wetter one makes sense for the next map."):
   // Thistlewood now has the stream-and-pond art along its lower edge, and its auto-scattered trail put 1-4 and the boss in the
   // water. The default trail (fixedPos) is now the published layout's, all above the stream; a published layout still wins.
   { id:"mf", unlockAfter:"m1", name:"Thistlewood", icon:"🌼", blurb:"Thistle and fern under the first big trees — hedgerows, burrows and a lot of small, busy things.", sequential:true,
     nodes: [
-      { key:"1-1", kind:"skirmish", name:"Hedgerow Scouts", icon:"🐇", deck:{"fox-kit":2,"cricket-drummer":3,"beetle-grunt":3,"dormouse":2}, hqHp:14, flavor:"Every hedge here has ears in it.", requires:[], fixedPos:{x:15, y:45} },
+      { key:"1-1", kind:"skirmish", name:"Hedgerow Scouts", icon:"🐇", deck:{"fox-kit":2,"cricket-drummer":3,"beetle-grunt":1,"dormouse":2,"burrow-rabbit":2}, hqHp:14, flavor:"Every hedge here has ears in it.", requires:[], fixedPos:{x:15, y:45} },
       { key:"1-2", kind:"skirmish", name:"Cricket Chorus", icon:"🦗", deck:{"cricket-drummer":4,"meadow-frog":3,"antler-skirmisher":3,"mouse-sapper":2,"chipmunk-skirmisher":2}, hqHp:15, flavor:"The drumming stops the moment you step into the grass.", requires:["1-1"], fixedPos:{"x":40,"y":60} },
       { key:"1-3", kind:"skirmish", name:"Burrow Line", icon:"🕳️", deck:{"burrow-rabbit":4,"quarry-mole":4,"mouse-sapper":2,"badger-berserker":2}, hqHp:15, flavor:"The field looks flat. Underneath it is not.", requires:["1-1"], fixedPos:{x:40, y:30} },
       { key:"1-4", kind:"skirmish", name:"Sapper Hedge", icon:"🦔", deck:{"mouse-sapper":3,"burrow-rabbit":3,"badger-berserker":3,"hedgehog-scout":1,"beetle-battering-ram":1,"gatling-hog":1}, hqHp:14, flavor:"Someone has been digging trenches under the thistles.", requires:["1-2","1-3"], fixedPos:{x:65, y:45} },
-      { key:"1-5", kind:"boss", name:"The Thistle Baron", icon:"🌼", deck:{"beetle-battering-ram":1,"beetle-grunt":4,"burrow-rabbit":2,"fox-kit":1,"mouse-sapper":3,"field-mouse":1}, hqHp:35, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["1-4"], fixedPos:{x:85, y:45} },
+      { key:"1-5", kind:"boss", name:"The Thistle Baron", icon:"🌼", deck:{"beetle-battering-ram":1,"beetle-grunt":4,"burrow-rabbit":4,"fox-kit":1,"mouse-sapper":3,"field-mouse":1,"badger-berserker":2}, hqHp:35, flavor:"He owns every stalk from here to the dunes, and he counts them.", characterId:"plains-terrace", requires:["1-4"], fixedPos:{x:85, y:45} },
     ]},
   { id:"mb", unlockAfter:"mf", name:"Pebble Beach", icon:"🏖️", blurb:"Where the fields run out into sand — rock pools, gulls and things in shells.", sequential:true,
     nodes: [
@@ -16927,18 +17067,18 @@ const CONQUEST_MAPS = [
       { key:"2-2", kind:"skirmish", name:"Gull Gang", icon:"🐦", deck:{"gull-thief":3,"fiddler-crab-swarm":2,"pelican-diver":3,"open-ocean-hermit-crab":2,"sea-turtle-elder":2}, hqHp:26, rules:{"tide":true}, flavor:"They are not after you. They are after your lunch.", requires:["2-1"] },
       { key:"2-3", kind:"skirmish", name:"Hermit Row", icon:"🐚", deck:{"open-ocean-hermit-crab":4,"tide-pool-crab":3,"sulfur-vent-crab":3,"pelican-diver":1}, hqHp:33, rules:{"tide":true}, flavor:"A whole street of shells, and every one of them is occupied.", requires:["2-1"] },
       { key:"2-4", kind:"skirmish", name:"Pelican Point", icon:"🪶", deck:{"pelican-diver":3,"gull-thief":2,"otter-riverguard":2,"open-ocean-hermit-crab":4}, hqHp:39, rules:{"tideSpout":true,"tide":true}, flavor:"Watch the sky. Then watch it again.", requires:["2-2","2-3"] },
-      { key:"2-5", kind:"boss", name:"The Old Shell", icon:"🐢", deck:{"sea-turtle-elder":2,"pelican-diver":3,"otter-riverguard":3,"open-ocean-hermit-crab":4}, hqHp:167, rules:{"tide":true}, flavor:"It came up the beach before the castle was built, and it is in no hurry to leave.", requires:["2-4"] },
+      { key:"2-5", kind:"boss", name:"The Old Shell", icon:"🐢", deck:{"sea-turtle-elder":2,"pelican-diver":3,"otter-riverguard":3,"open-ocean-hermit-crab":4,"mallard-marauder":2}, hqHp:167, rules:{"tide":true}, flavor:"It came up the beach before the castle was built, and it is in no hurry to leave.", requires:["2-4"] },
     ]},
   // Gannet Cliffs (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mc", unlockAfter:"mb", name:"Gannet Cliffs", icon:"🦅", blurb:"Where the beach climbs into sheer white cliffs, and every ledge belongs to a bird.", sequential:true,
     nodes: [
-      { key:"3-1", kind:"skirmish", name:"Goat Ledge", icon:"🐐", deck:{"mountain-goat-climber":3,"sparrow-chick":1,"crossed-eyes":2,"duck-paddler":2,"hawk-arrowkeeper":2}, hqHp:21, flavor:"A path only a goat could love.", requires:[] },
-      { key:"3-2", kind:"skirmish", name:"Hawk Watch", icon:"🦅", deck:{"hawk-arrowkeeper":1,"sparrow-chick":3,"mountain-goat-climber":2,"gull-thief":2,"alpine-avalanche":2}, hqHp:63, flavor:"They saw you three ledges ago.", requires:["3-1"] },
-      { key:"3-3", kind:"skirmish", name:"Rockfall", icon:"🪨", deck:{"rockslide-ram":2,"mountain-goat-climber":3,"hawk-arrowkeeper":2,"alpine-avalanche":2}, hqHp:37, flavor:"Something up there keeps kicking stones down.", requires:["3-1"] },
-      { key:"3-4", kind:"skirmish", name:"Condor Thermals", icon:"🪶", deck:{"peak-condor":3,"gull-thief":1,"pelican-diver":2,"rockslide-ram":2,"stonedrop-vulture":2}, hqHp:66, flavor:"Big shadows circle over the cliff path.", requires:["3-2","3-3"] },
-      { key:"3-5", kind:"elite", name:"Eagle Stoop", icon:"🦅", deck:{"golden-eagle-diver":2,"peak-condor":2,"hawk-arrowkeeper":3,"alpine-avalanche":2}, hqHp:69, flavor:"They fold their wings and drop.", requires:["3-4"] },
-      { key:"3-6", kind:"elite", name:"Avalanche Pass", icon:"⛰️", deck:{"alpine-avalanche":3,"rockslide-ram":2,"mountain-goat-climber":3,"hawk-arrowkeeper":2}, hqHp:49, flavor:"The pass is narrow, and the snow above it is restless.", requires:["3-4"] },
-      { key:"3-7", kind:"boss", name:"The Gannet Queen", icon:"👑", deck:{"eyrie-warden":1,"golden-eagle-diver":2,"peak-condor":2,"gull-thief":2,"mountain-goat-climber":2,"alpine-avalanche":2}, hqHp:56, flavor:"She rules the cliffs from the highest nest, and she sees everything.", requires:["3-5","3-6"] },
+      { key:"3-1", kind:"skirmish", name:"Goat Ledge", icon:"🐐", shieldOverride:5, deck:{"mountain-goat-climber":4,"sparrow-chick":1,"crossed-eyes":2,"duck-paddler":2,"hawk-arrowkeeper":2,"pelican-diver":4}, hqHp:21, flavor:"A path only a goat could love.", requires:[] },
+      { key:"3-2", kind:"skirmish", name:"Hawk Watch", icon:"🦅", deck:{"sparrow-chick":1,"mountain-goat-climber":2,"gull-thief":2,"pelican-diver":4,"rockslide-ram":1}, hqHp:63, flavor:"They saw you three ledges ago.", requires:["3-1"] },
+      { key:"3-3", kind:"skirmish", name:"Rockfall", icon:"🪨", deck:{"rockslide-ram":2,"mountain-goat-climber":3,"pelican-diver":4}, hqHp:37, flavor:"Something up there keeps kicking stones down.", requires:["3-1"] },
+      { key:"3-4", kind:"skirmish", name:"Condor Thermals", icon:"🪶", deck:{"gull-thief":1,"pelican-diver":4,"rockslide-ram":4,"stonedrop-vulture":2,"golden-eagle-diver":1}, hqHp:66, flavor:"Big shadows circle over the cliff path.", requires:["3-2","3-3"] },
+      { key:"3-5", kind:"elite", name:"Eagle Stoop", icon:"🦅", shieldOverride:31, deck:{"golden-eagle-diver":2,"hawk-arrowkeeper":3,"pelican-diver":4}, hqHp:69, flavor:"They fold their wings and drop.", requires:["3-4"] },
+      { key:"3-6", kind:"elite", name:"Avalanche Pass", icon:"⛰️", deck:{"rockslide-ram":3,"mountain-goat-climber":3,"pelican-diver":4}, hqHp:49, flavor:"The pass is narrow, and the snow above it is restless.", requires:["3-4"] },
+      { key:"3-7", kind:"boss", name:"The Gannet Queen", icon:"👑", deck:{"eyrie-warden":1,"golden-eagle-diver":2,"gull-thief":2,"mountain-goat-climber":2,"pelican-diver":2,"rockslide-ram":2}, hqHp:56, flavor:"She rules the cliffs from the highest nest, and she sees everything.", requires:["3-5","3-6"] },
     ]},
   // Map 2 retuned 2026-10-04 (D18 draft, tools/difficulty_curve.js): aimed at a deck built from Map 1's
   // new skirmish rewards — first node ~90%, 2-2 ~60%, elites ~45%, boss ~30-40%.
@@ -16948,7 +17088,7 @@ const CONQUEST_MAPS = [
       { key:"4-2", kind:"skirmish", name:"Tidal Ring", icon:"🦞", deck:{"open-ocean-hermit-crab":3,"kraken-spawnling":2,"humpback-elder":2,"beaver-builder":3,"box-turtle":2}, hqHp:65, flavor:"A ring of bell-shrines that never stopped ringing.", requires:["4-1"] },
       { key:"4-3", kind:"elite", name:"Cetacean Pod", icon:"🐋", deck:{"open-ocean-hermit-crab":4,"kraken-spawnling":2,"humpback-elder":2,"beaver-builder":3,"platypus-spur":2}, hqHp:72, flavor:"They surface in formation. That is the last warning you get.", requires:["4-2"] },
       { key:"4-4", kind:"elite", name:"The Kraken's Maw", icon:"🐙", deck:{"kraken-spawnling":1,"open-ocean-hermit-crab":4,"orca-vanguard":2,"beaver-builder":3,"humpback-elder":1,"truce-heron":1}, hqHp:129, flavor:"The Hollow has a floor. Nobody has found it.", revealDeck:"B", requires:["4-3"] },
-      { key:"4-5", kind:"boss", name:"The Drowned Colossus", icon:"🌀", deck:{"kraken-spawnling":1,"open-ocean-hermit-crab":4,"beaver-builder":3,"orca-vanguard":1,"humpback-elder":1,"stone-turtle-warden":1}, hqHp:187, flavor:"Every spawnling in the Hollow answers to one, much older, shape.", requires:["4-4"] },
+      { key:"4-5", kind:"boss", name:"The Drowned Colossus", icon:"🌀", deck:{"open-ocean-hermit-crab":2,"beaver-builder":3,"orca-vanguard":1,"humpback-elder":1,"stone-turtle-warden":1,"pond-trout":3}, hqHp:187, flavor:"Every spawnling in the Hollow answers to one, much older, shape.", requires:["4-4"] },
     ]},
   // Gatorback Swamp (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mw", unlockAfter:"m2", name:"Gatorback Swamp", icon:"🐊", blurb:"A warm, green, very much alive swamp — toads, leeches and logs that open their eyes.", sequential:true,
@@ -16964,7 +17104,7 @@ const CONQUEST_MAPS = [
   { id:"m8", unlockAfter:"mw", name:"Sable Swampmire", icon:"🐊", blurb:"A second, blacker wetland — everything here bites first and asks later.", sequential:true,
     nodes: [
       { key:"6-1", kind:"skirmish", name:"Leech Bog", icon:"🩸", deck:{"bog-leech":3,"gangrenous-leech":4,"marsh-wisp":1,"echo-keeper":2,"lamprey":2}, hqHp:95, flavor:"The water is shallow. What lives in it is not shy about that.", requires:[] },
-      { key:"6-2", kind:"skirmish", name:"Mire Ambush", icon:"🐊", deck:{"swamp-alligator":3,"cypress-root-lurker":3,"echo-keeper":2,"open-ocean-hermit-crab":2,"rot-swollen-carcass":2}, hqHp:234, flavor:"The roots move only when you stop watching them.", requires:["6-1"] },
+      { key:"6-2", kind:"skirmish", name:"Mire Ambush", icon:"🐊", deck:{"swamp-alligator":3,"cypress-root-lurker":3,"echo-keeper":2,"open-ocean-hermit-crab":2,"rot-swollen-carcass":2,"mallard-marauder":2}, hqHp:234, flavor:"The roots move only when you stop watching them.", requires:["6-1"] },
       { key:"6-3", kind:"skirmish", name:"Toad Chorus", icon:"🐸", deck:{"bog-leech":4,"willow-o-wisp":2,"constrictor-coil":2,"echo-keeper":2,"beaver-builder":2,"vampire-bat":2}, hqHp:235, flavor:"The chorus times its calls to whenever your line is thinnest.", requires:["6-2"] },
       { key:"6-4", kind:"skirmish", name:"Root Snare", icon:"🌿", deck:{"adder-ambusher":3,"echo-keeper":2,"beaver-builder":1,"venomlord-serpent":2,"constrictor-coil":2,"raven-scout":1}, hqHp:107, flavor:"The mire does not attack. It waits for you to step wrong.", requires:["6-3"] },
       { key:"6-5", kind:"elite", name:"Venomlord's Coil", icon:"🐍", deck:{"venomlord-serpent":2,"constrictor-coil":1,"beaver-builder":3,"echo-keeper":1,"bog-leech":2,"carrion-beetle":2}, hqHp:90, rules:{"swampFever":50}, flavor:"It only needs to catch you once.", characterId:"plains-terrace", requires:["6-4"] },
@@ -16980,7 +17120,7 @@ const CONQUEST_MAPS = [
       { key:"7-3", kind:"skirmish", name:"Web Hollow", icon:"🕸️", deck:{"trapdoor-spider":2,"garden-snail":1,"cricket-drummer":1,"honey-bee":2,"beetle-battering-ram":1,"raccoon-nightcrew":2,"dung-beetle":2}, hqHp:14, flavor:"Mind the silk. Mind the trapdoors under the silk.", requires:["7-1"] },
       { key:"7-4", kind:"skirmish", name:"Moonlit Gills", icon:"🌙", deck:{"honey-bee":1,"bee-forager":2,"trapdoor-spider":2,"fungal-colossus":2,"compost-grub":2,"beetle-battering-ram":1,"nightshade-moth":2,"nightjar-drifter":2}, hqHp:95, flavor:"The gills glow faintly after dark. So do the moths.", requires:["7-2","7-3"] },
       { key:"7-5", kind:"elite", name:"The Oath Ring", icon:"🪨", deck:{"hollow-oath-keeper":3,"bramble-sprout":3,"compost-grub":2,"trapdoor-spider":2,"beetle-battering-ram":2,"swarm-matriarch":1}, hqHp:55, flavor:"A ring of standing stones, and something keeping its promises inside it.", requires:["7-4"] },
-      { key:"7-6", kind:"boss", name:"The Morel Monarch", icon:"👑", deck:{"fungal-colossus":2,"trapdoor-spider":2,"honey-bee":1,"bee-forager":2,"raccoon-nightcrew":1,"trash-panda-trickster":2,"beetle-battering-ram":2,"monarch-wingblade":1}, hqHp:43, flavor:"It has been growing here since before the oaks. It is not done growing.", requires:["7-5"] },
+      { key:"7-6", kind:"boss", name:"The Morel Monarch", icon:"👑", deck:{"fungal-colossus":2,"trapdoor-spider":2,"honey-bee":1,"bee-forager":2,"raccoon-nightcrew":1,"trash-panda-trickster":2,"monarch-wingblade":1,"garden-snail":2}, hqHp:43, flavor:"It has been growing here since before the oaks. It is not done growing.", requires:["7-5"] },
     ]},
   { id:"m4", unlockAfter:"mu", name:"Caves & Alcoves", icon:"🦇", blurb:"Deep beneath the Peak, where sound carries further than light does.", sequential:true,
     nodes: [
@@ -16990,8 +17130,8 @@ const CONQUEST_MAPS = [
       { key:"8-4", kind:"skirmish", name:"Echo Chamber", icon:"🦇", deck:{"echo-screecher":3,"vampire-roost":2,"stalactite-golem":2,"subterraneaner":2}, hqHp:73, rules:{"landslide":true}, flavor:"Every sound down here comes back changed.", requires:["8-3"] },
       { key:"8-5", kind:"skirmish", name:"Sulfur Vent Path", icon:"🔥", deck:{"sulfur-cinder-moth":4,"barrow-leech-bat":2,"cave-flitter":2,"bat-swarmling":2}, hqHp:36, flavor:"The left tunnel is hotter. That is the only warning you get.", requires:["8-4"] },
       { key:"8-6", kind:"skirmish", name:"Glowworm Deep", icon:"🪱", deck:{"glowworm-cluster":2,"blind-cave-fish":4,"barrow-leech-bat":2,"cave-bat-swarm":2}, hqHp:31, rules:{"landslide":true}, flavor:"The right tunnel glows. That is not a comfort.", requires:["8-4"] },
-      { key:"8-7", kind:"elite", name:"The Roost Above", icon:"🧛", deck:{"echo-screecher":3,"stalactite-golem":2,"bat-swarmling":2,"subterraneaner":2}, hqHp:29, rules:{"landslide":true}, flavor:"Knock down the roost and the whole colony answers at once.", characterId:"collapsed-mine", requires:["8-5","8-6"] },
-      { key:"8-8", kind:"boss", name:"The Stalactite Warden", icon:"🗿", deck:{"echo-screecher":1,"barrow-leech-bat":2,"bat-swarmling":1,"beetle-grunt":2,"vampire-roost":2}, hqHp:81, flavor:"It has been falling and landing in the same spot for longer than the castle has stood.", requires:["8-7"] },
+      { key:"8-7", kind:"elite", name:"The Roost Above", icon:"🧛", shieldOverride:0, deck:{"echo-screecher":3,"stalactite-golem":2,"bat-swarmling":2,"subterraneaner":2}, hqHp:19, rules:{"landslide":true}, flavor:"Knock down the roost and the whole colony answers at once.", characterId:"collapsed-mine", requires:["8-5","8-6"] },
+      { key:"8-8", kind:"boss", name:"The Stalactite Warden", icon:"🗿", deck:{"echo-screecher":1,"barrow-leech-bat":2,"bat-swarmling":1,"beetle-grunt":2,"vampire-roost":2,"swarm-matriarch":2}, hqHp:81, flavor:"It has been falling and landing in the same spot for longer than the castle has stood.", requires:["8-7"] },
     ]},
   // The Kelp Mangroves (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mk", unlockAfter:"m4", name:"The Kelp Mangroves", icon:"🌿", blurb:"Salt water creeps into the swamp — mangrove roots, kelp curtains and smugglers' channels.", sequential:true,
@@ -17000,9 +17140,9 @@ const CONQUEST_MAPS = [
       { key:"9-2", kind:"skirmish", name:"Monitor Roots", icon:"🦎", deck:{"fiddler-crab-swarm":1,"gull-thief":2,"moray-ambusher":2,"reef-shark":2,"piranha-shoal":2,"silver-minnow":1,"swordfish-spearman":2,"shallows-fry":1}, hqHp:15, rules:{"tide":true}, flavor:"Something long basks on every root.", requires:["9-1"] },
       { key:"9-3", kind:"skirmish", name:"Kingfisher Dive", icon:"🐦", deck:{"gull-thief":3,"mangrove-mudskipper":3,"reef-shark":2,"coral-current-eel":2,"pike-lancer":2,"sunbittern-strider":2}, hqHp:16, rules:{"tide":true}, flavor:"A flash of blue, and one fewer fish.", requires:["9-1"] },
       { key:"9-4", kind:"skirmish", name:"Kelp Curtains", icon:"🌊", deck:{"gull-thief":2,"tide-pool-crab":2,"mangrove-mudskipper":1,"reef-shark":2,"narwhal-lancer":2,"coral-current-eel":2}, hqHp:48, rules:{"tide":true}, flavor:"The kelp sways with the tide, and the tide has a spirit in it.", requires:["9-2","9-3"] },
-      { key:"9-5", kind:"elite", name:"Moray Den", icon:"🐍", deck:{"nautilus-drifter":1,"reef-shark":2,"coral-reef-shark":2,"silver-minnow":1,"sawfish":2,"electric-ray":2,"cleaner-wrasse":2}, hqHp:146, flavor:"Every hole in the roots has a pair of eyes in it.", requires:["9-4"] },
+      { key:"9-5", kind:"elite", name:"Moray Den", icon:"🐍", deck:{"nautilus-drifter":3,"reef-shark":2,"coral-reef-shark":2,"silver-minnow":1,"sawfish":2,"electric-ray":2,"cleaner-wrasse":2}, hqHp:146, flavor:"Every hole in the roots has a pair of eyes in it.", requires:["9-4"] },
       { key:"9-6", kind:"elite", name:"Drifting Shell", icon:"🐚", deck:{"fiddler-crab-swarm":2,"nautilus-drifter":2,"reef-shark":2,"coral-reef-shark":2,"archerfish":2,"silver-minnow":2,"swordfish-spearman":1,"shallows-fry":2}, hqHp:26, flavor:"An old shell drifts in on every tide and never leaves.", requires:["9-4"] },
-      { key:"9-7", kind:"boss", name:"The Kelp Witch", icon:"🧜", deck:{"nautilus-drifter":2,"mangrove-monitor":2,"gull-thief":1,"reef-shark":2,"coral-reef-shark":2,"narwhal-lancer":1,"silver-minnow":2,"guppy":2}, hqHp:30, flavor:"She speaks for the tide, and the tide is not friendly today.", requires:["9-5","9-6"] },
+      { key:"9-7", kind:"boss", name:"The Kelp Witch", icon:"🧜", deck:{"mangrove-monitor":2,"gull-thief":1,"reef-shark":2,"coral-reef-shark":2,"narwhal-lancer":1,"silver-minnow":4,"guppy":2}, hqHp:30, flavor:"She speaks for the tide, and the tide is not friendly today.", requires:["9-5","9-6"] },
     ]},
   { id:"m7", unlockAfter:"mk", name:"Coral Current", icon:"🐠", blurb:"Past the last cliffs, the open sea — deep water, fast currents and the teeth that live in them.", sequential:true,
     nodes: [
@@ -17010,11 +17150,11 @@ const CONQUEST_MAPS = [
       { key:"10-2", kind:"skirmish", name:"Moray Ambush", icon:"🐍", deck:{"riptide-eel":4,"coral-current-eel":2,"clownfish-scout":2,"gull-thief":2,"electric-ray":2}, hqHp:142, rules:{"tide":true}, flavor:"The current here is faster than it has any right to be.", requires:["10-1"] },
       { key:"10-3", people:"deep", kind:"skirmish", name:"Tide Pool Line", icon:"🦀", deck:{"gull-thief":2,"riptide-eel":2,"coral-polyp-colony":2,"clownfish-scout":2,"sea-cucumber":2,"cone-snail":2}, hqHp:31, /* 2026-10-17: Coral Current Eel ×2 → Sea Cucumber ×2, the fight's new card reward */ rules:{"tide":true}, flavor:"Every pool along this stretch hides something with claws.", requires:["10-2"] },
       { key:"10-4", kind:"skirmish", name:"Riptide Channel", icon:"🌊", deck:{"riptide-eel":2,"gull-thief":2,"clownfish-scout":2,"tide-pool-crab":2,"coral-current-eel":2,"sawfish":2}, hqHp:61, rules:{"tide":true}, flavor:"The channel pulls harder than the current should allow.", requires:["10-3"] },
-      { key:"10-5", people:"deep", kind:"skirmish", name:"Current Split", icon:"🐠", deck:{"coral-polyp-colony":3,"clownfish-scout":3,"tide-pool-crab":1,"orca-vanguard":2,"dolphin-knight":1}, hqHp:22, rules:{"tide":true}, flavor:"The reef forks here — two currents, two dangers.", requires:["10-4"] },
-      { key:"10-6", kind:"elite", name:"Reef Shark Pack", icon:"🦈", deck:{"coral-reef-shark":3,"orca-vanguard":2,"moray-ambusher":1,"coral-polyp-colony":1,"blue-ringed-octopus":2}, hqHp:26, flavor:"They circle twice before the first one ever commits.", characterId:"collapsed-mine", requires:["10-5"] },
-      { key:"10-7", kind:"elite", name:"Eel Nest", icon:"🐍", deck:{"riptide-eel":3,"coral-current-eel":2,"moray-ambusher":2,"mantis-shrimp":1,"silver-minnow":1,"blue-ringed-octopus":2}, hqHp:130, flavor:"The other current is calmer. That is not the same as safer.", requires:["10-5"] },
-      { key:"10-8", people:"deep", kind:"elite", name:"Sea Turtle Elder's Court", icon:"🐢", deck:{"sea-turtle-elder":1,"coral-polyp-colony":3,"coral-reef-shark":3,"lions-mane-jelly":1,"turtle-bastion":1,"silver-minnow":2}, hqHp:25, flavor:"Older than the reef itself, and it shows no interest in leaving.", requires:["10-6","10-7"] },
-      { key:"10-9", kind:"boss", name:"The Orca Vanguard King", icon:"🐋", deck:{"coral-reef-shark":1,"coral-polyp-colony":3,"clownfish-scout":2,"riptide-eel":2,"gull-thief":1}, hqHp:93, flavor:"The whole Current clears out the moment his pod surfaces.", requires:["10-8"] },
+      { key:"10-5", people:"deep", kind:"skirmish", name:"Current Split", icon:"🐠", deck:{"coral-polyp-colony":3,"clownfish-scout":3,"orca-vanguard":2,"silver-minnow":2}, hqHp:22, rules:{"tide":true}, flavor:"The reef forks here — two currents, two dangers.", requires:["10-4"] },
+      { key:"10-6", kind:"elite", name:"Reef Shark Pack", icon:"🦈", deck:{"coral-polyp-colony":1,"blue-ringed-octopus":2,"abyss-lantern-squid":4,"silver-minnow":2,"nautilus-drifter":2}, hqHp:26, flavor:"They circle twice before the first one ever commits.", characterId:"collapsed-mine", requires:["10-5"] },
+      { key:"10-7", kind:"elite", name:"Eel Nest", icon:"🐍", shieldOverride:13, deck:{"riptide-eel":3,"moray-ambusher":1,"mantis-shrimp":1,"silver-minnow":4,"abyss-lantern-squid":2}, hqHp:130, flavor:"The other current is calmer. That is not the same as safer.", requires:["10-5"] },
+      { key:"10-8", people:"deep", kind:"elite", name:"Sea Turtle Elder's Court", icon:"🐢", deck:{"sea-turtle-elder":1,"coral-polyp-colony":3,"coral-reef-shark":1,"lions-mane-jelly":1,"turtle-bastion":1,"silver-minnow":4}, hqHp:25, flavor:"Older than the reef itself, and it shows no interest in leaving.", requires:["10-6","10-7"] },
+      { key:"10-9", kind:"boss", name:"The Orca Vanguard King", icon:"🐋", deck:{"coral-polyp-colony":3,"clownfish-scout":2,"riptide-eel":2,"gull-thief":1,"glass-octopus":1}, hqHp:93, flavor:"The whole Current clears out the moment his pod surfaces.", requires:["10-8"] },
     ]},
   { id:"m10", unlockAfter:"m7", name:"Eyrie Heights", icon:"🏔️", blurb:"Sheer alpine cliffs above the Foundry’s smoke — the air here belongs to whatever can still fly in it.", sequential:true,
     nodes: [
@@ -17025,7 +17165,7 @@ const CONQUEST_MAPS = [
       { key:"11-5", people:"folk", kind:"elite", name:"West Ledge", icon:"🦅", deck:{"mountain-goat-climber":3,"eyrie-warden":2,"chipmunk-stockpiler":2,"rockslide-ram":1,"chipmunk-hoarder":2}, hqHp:40, flavor:"The wind alone tries to take you off the west path.", requires:["11-4"] },
       { key:"11-6", kind:"elite", name:"East Ledge", icon:"🐐", deck:{"rockslide-ram":4,"mountain-goat-climber":1,"alpine-avalanche":1,"chipmunk-hoarder":2,"stonedrop-vulture":2}, hqHp:25, flavor:"The east path is quieter. That is the problem with it.", requires:["11-4"] },
       { key:"11-7", kind:"elite", name:"Eyrie Wardens", icon:"🦅", deck:{"eyrie-warden":3,"chipmunk-stockpiler":3,"mountain-goat-climber":1,"alpine-avalanche":2}, hqHp:84, flavor:"They nest where nothing without wings can ever reach them.", characterId:"plains-terrace", requires:["11-4"] },
-      { key:"11-8", kind:"elite", name:"Summit Approach", icon:"🏔️", deck:{"rockslide-ram":2,"chipmunk-stockpiler":1,"eyrie-warden":2,"mountain-goat-climber":2,"eagle-owl-quartermaster":2,"alpine-avalanche":1}, hqHp:63, flavor:"All three trails end at the same wall of snow.", requires:["11-5", "11-6", "11-7"] },
+      { key:"11-8", kind:"elite", name:"Summit Approach", icon:"🏔️", deck:{"rockslide-ram":2,"chipmunk-stockpiler":1,"eyrie-warden":2,"mountain-goat-climber":2,"eagle-owl-quartermaster":4,"alpine-avalanche":1}, hqHp:63, flavor:"All three trails end at the same wall of snow.", requires:["11-5", "11-6", "11-7"] },
       { key:"11-9", kind:"elite", name:"The Condor Sovereign", icon:"👑", deck:{"peak-condor":1,"eyrie-warden":1,"chipmunk-stockpiler":3,"rockslide-ram":1,"mountain-goat-climber":2,"chipmunk-hoarder":2}, hqHp:45, flavor:"Every eyrie on the Heights answers to one set of wings.", requires:["11-8"] },
       { key:"11-10", kind:"boss", name:"The Avalanche Colossus", icon:"🗻", deck:{"eyrie-warden":2,"chipmunk-stockpiler":3,"mountain-goat-climber":2,"rockslide-ram":2,"chipmunk-hoarder":1,"ibex-rockcaller":1}, hqHp:85, flavor:"The mountain itself decided it had had enough visitors.", requires:["11-9"] },
       { key:"11-R", kind:"raidboss", name:"Wound Reaver's Domain", icon:"💀", deck:{"wound-reaver":3,"gangrenous-leech":4,"swamp-alligator":3}, hqHp:230, flavor:"The Swampmire does not heal. It just remembers where you bled.", requires:["11-10"] }
@@ -17039,7 +17179,7 @@ const CONQUEST_MAPS = [
       { key:"12-4", kind:"skirmish", name:"Thornvine Arch", icon:"🌿", deck:{"thornvine-lasher":2,"bramble-sprout":3,"quill-thorn-boar":2,"hedgehog-scout":3,"quillback-elder":2,"puddle-changeling":2}, hqHp:15, rules:{"bishopPath":true}, flavor:"The arch closes behind you.", requires:["12-2","12-3"] },
       { key:"12-5", kind:"elite", name:"Quillback Hold", icon:"🦔", deck:{"quill-volley":2,"porcupine-roller":3,"rabbit-kit":2,"lucky-hopper":2,"quillback-elder":2,"badger-sapper":2,"lyrebird-mimic":2}, hqHp:26, flavor:"The oldest porcupines hold the centre of the maze.", requires:["12-4"] },
       { key:"12-6", kind:"elite", name:"Rodent Court", icon:"🐀", deck:{"rodent-king":1,"pack-rat-looter":1,"field-mouse":2,"quill-volley":2,"porcupine-roller":1,"rabbit-kit":2,"lucky-hopper":2,"quillback-elder":2,"badger-sapper":2}, hqHp:30, rules:{"mirage":true}, flavor:"Court is in session. You are the accused.", requires:["12-4"] },
-      { key:"12-7", kind:"boss", name:"The Briar Queen", icon:"👑", deck:{"quillguard":2,"porcupine-roller":1,"rabbit-kit":2,"lucky-hopper":2,"quillback-elder":2,"badger-sapper":2,"raccoon-warlord":2,"harvest-mouse":2}, hqHp:45, flavor:"She grew the maze herself, one thorn at a time.", requires:["12-5","12-6"] },
+      { key:"12-7", kind:"boss", name:"The Briar Queen", icon:"👑", deck:{"porcupine-roller":1,"rabbit-kit":2,"lucky-hopper":2,"quillback-elder":2,"badger-sapper":2,"raccoon-warlord":2,"harvest-mouse":4}, hqHp:45, flavor:"She grew the maze herself, one thorn at a time.", requires:["12-5","12-6"] },
     ]},
   // The Redwood Deep (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"mr", unlockAfter:"mh", name:"The Redwood Deep", icon:"🌲", blurb:"Trees as wide as castles and as old as the hills — bears, stags and boars rule the red shade.", sequential:true,
@@ -17049,9 +17189,9 @@ const CONQUEST_MAPS = [
       { key:"13-3", kind:"skirmish", name:"Antler Grove", icon:"🦌", deck:{"stag-knight":2,"shimmerwing-stag":1,"shieldbearer-hound":2,"border-collie":1,"war-panther":2,"honey-badger-fury":2,"buzzed-chipmunk":1}, hqHp:54, rules:{"canopy":true}, flavor:"The stags hold the grove in rutting season. It is always rutting season.", requires:["13-1"] },
       { key:"13-4", kind:"skirmish", name:"Boar Wallow", icon:"🐗", deck:{"boar-rampager":2,"berserker-boar":2,"firetail-trickster":2,"silverback-brawler":2,"tasmanian-devil":2,"feral-tuskboar":1,"shieldbearer-hound":2,"buzzed-chipmunk":1}, hqHp:16, rules:{"canopy":true}, flavor:"The mud is churned deep. Something heavy charges through here often.", requires:["13-2","13-3"] },
       { key:"13-5", kind:"elite", name:"Badger Setts", icon:"🦡", deck:{"boar-rampager":2,"war-panther":2,"honey-badger-fury":2,"shieldbearer-hound":2,"border-collie":2,"buzzed-chipmunk":2,"parish-sergeant":2}, hqHp:45, rules:{"canopy":true}, flavor:"The ground is riddled with tunnels, and the badgers do not like visitors.", requires:["13-4"] },
-      { key:"13-6", kind:"elite", name:"Grizzly Ridge", icon:"🐻", deck:{"firetail-trickster":2,"boar-rampager":2,"silverback-brawler":2,"shieldbearer-hound":2,"border-collie":2,"buzzed-chipmunk":2,"parish-sergeant":1}, hqHp:26, rules:{"canopy":true}, flavor:"There's the mother.", requires:["13-4"] },
+      { key:"13-6", kind:"elite", name:"Grizzly Ridge", icon:"🐻", deck:{"firetail-trickster":2,"silverback-brawler":2,"shieldbearer-hound":4,"border-collie":2,"buzzed-chipmunk":2,"parish-sergeant":1}, hqHp:26, rules:{"canopy":true}, flavor:"There's the mother.", requires:["13-4"] },
       { key:"13-7", kind:"elite", name:"The King's Den", icon:"🦊", deck:{"boar-rampager":2,"war-panther":2,"shieldbearer-hound":2,"border-collie":2,"buzzed-chipmunk":2,"parish-sergeant":2}, hqHp:59, rules:{"canopy":true}, flavor:"A fox who crowns kings, and unmakes them.", requires:["13-5","13-6"] },
-      { key:"13-8", kind:"boss", name:"The Stag-Lord", icon:"🦌", deck:{"boar-rampager":2,"firetail-trickster":1,"fox-kit":2,"bear-cub":2,"silverback-brawler":2,"border-collie":2,"swift-fox":2,"war-panther":2,"honey-badger-fury":1}, hqHp:32, rules:{"canopy":true}, flavor:"His antlers brush the lowest branches of the redwoods.", requires:["13-7"] },
+      { key:"13-8", kind:"boss", name:"The Stag-Lord", icon:"🦌", deck:{"firetail-trickster":1,"fox-kit":2,"silverback-brawler":2,"border-collie":2,"swift-fox":2,"war-panther":2,"honey-badger-fury":1,"shieldbearer-hound":4}, hqHp:32, rules:{"canopy":true}, flavor:"His antlers brush the lowest branches of the redwoods.", requires:["13-7"] },
     ]},
   { id:"m5", unlockAfter:"mr", name:"Savanna Reaches", icon:"🌾", blurb:"Open grassland past the Peak — nothing here hides for long.", sequential:true,
     nodes: [
@@ -17059,10 +17199,10 @@ const CONQUEST_MAPS = [
       { key:"14-2", kind:"skirmish", name:"Hyena Chorus", icon:"🐆", deck:{"jaguar-stalker":1,"toucan-courier":3,"acacia-giraffe":2,"savanna-cheetah":2,"dust-hyena":2,"mongoose-duelist":2,"lovebird":2}, hqHp:40, flavor:"They call to each other long before they close in.", rules:{"firstBlood":1}, requires:["14-1"] },
       { key:"14-3", kind:"skirmish", name:"Howler Canopy", icon:"🐒", deck:{"howler-monkey":4,"jaguar-stalker":2,"acacia-giraffe":1,"war-drum-mandrill":2,"marching-elephant":1,"marula-elephant":1,"marula-monkey":2}, hqHp:63, flavor:"The trees carry the warning further than any scout could.", rules:{"firstBlood":1}, requires:["14-2"] },
       { key:"14-4", kind:"skirmish", name:"Toucan Watch", icon:"🦜", deck:{"toucan-courier":4,"jaguar-stalker":3,"plains-zebra":1,"hoopoe-herald":2,"marula-elephant":2}, hqHp:45, flavor:"Every flock overhead is reporting straight back to the pride.", rules:{"firstBlood":1}, requires:["14-3"] },
-      { key:"14-5", people:"folk", kind:"elite", name:"Giraffe Vanguard", icon:"🦒", deck:{"savanna-cheetah":4,"plains-zebra":1,"howler-monkey":1,"acacia-giraffe":2,"dust-hyena":2,"weaver-bird":2,"termite-mound":1}, hqHp:90, flavor:"Tall enough to spot you coming from the far tree line.", characterId:"plains-terrace", rules:{"firstBlood":1,"field":"heatwave","heatLevel":1}, requires:["14-4"] },
+      { key:"14-5", people:"folk", kind:"elite", name:"Giraffe Vanguard", icon:"🦒", deck:{"savanna-cheetah":4,"plains-zebra":1,"howler-monkey":1,"acacia-giraffe":2,"dust-hyena":4,"weaver-bird":2,"termite-mound":1}, hqHp:90, flavor:"Tall enough to spot you coming from the far tree line.", characterId:"plains-terrace", rules:{"firstBlood":1,"field":"heatwave","heatLevel":1}, requires:["14-4"] },
       { key:"14-6", kind:"elite", name:"Jaguar Run", icon:"🐆", deck:{"jaguar-stalker":2,"savanna-cheetah":3,"plains-zebra":1,"siege-rhino":1,"alley-cat":1,"howler-monkey":2}, hqHp:56, flavor:"The run starts long before the pounce.", rules:{"firstBlood":1,"field":"heatwave","heatLevel":1}, requires:["14-5"] },
       { key:"14-7", kind:"elite", name:"The Cheetah Matriarch", icon:"🐾", deck:{"savanna-cheetah":4,"jaguar-stalker":2,"dust-hyena":2,"alley-cat":1,"plains-zebra":2,"spitting-cobra":1}, hqHp:75, flavor:"Nothing on the Reaches outruns her, so nothing tries twice.", rules:{"firstBlood":1,"field":"heatwave","heatLevel":1}, requires:["14-6"] },
-      { key:"14-8", kind:"boss", name:"The Savanna Warlord", icon:"👑", deck:{"savanna-cheetah":2,"toucan-courier":2,"howler-monkey":2,"dust-hyena":2,"marching-elephant":1,"siege-rhino":1}, hqHp:30, flavor:"Every pack on the grassland answers to one crown.", rules:{firstBlood:2}, requires:["14-7"] },
+      { key:"14-8", kind:"boss", name:"The Savanna Warlord", icon:"👑", deck:{"toucan-courier":2,"howler-monkey":2,"dust-hyena":2,"marching-elephant":1,"siege-rhino":1,"termite-mound":2}, hqHp:30, flavor:"Every pack on the grassland answers to one crown.", rules:{firstBlood:2}, requires:["14-7"] },
     ]},
   // The Long Grass (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"ml", unlockAfter:"m5", name:"The Long Grass", icon:"🐎", blurb:"Rolling plains and farm country — horses, hounds and village militia on every road.", sequential:true,
@@ -17071,7 +17211,7 @@ const CONQUEST_MAPS = [
       { key:"15-2", kind:"skirmish", name:"Squire Road", icon:"🛡️", deck:{"squires-mount":2,"stable-colt":3,"land-tiller":3,"warhorse-charger":2,"border-collie":2,"buzzed-chipmunk":2,"shieldbearer-hound":2}, hqHp:20, rules:{"undergrowth":true}, flavor:"The village sends its squires out to meet you.", requires:["15-1"] },
       { key:"15-3", kind:"skirmish", name:"Stoat Ambush", icon:"🗡️", deck:{"trash-panda-trickster":1,"stable-colt":2,"cataphract-destrier":2,"squires-mount":2,"raccoon-nightcrew":2,"shieldbearer-hound":1,"buzzed-chipmunk":2,"bison-bulldozer":2}, hqHp:15, rules:{"undergrowth":true,"tallGrass":true}, flavor:"The tall grass hides more than mice.", requires:["15-1"] },
       { key:"15-4", kind:"skirmish", name:"Archer Hill", icon:"🏹", deck:{"talon-archer":2,"hawk-arrowkeeper":1,"squires-mount":2,"stable-colt":2,"warhorse-charger":2,"bison-bulldozer":2,"shieldbearer-hound":2}, hqHp:38, rules:{"undergrowth":true,"tallGrass":true}, flavor:"Arrows from a hill you can't see the top of.", requires:["15-2","15-3"] },
-      { key:"15-5", kind:"elite", name:"Charge of the Warhorses", icon:"🐎", deck:{"stable-colt":3,"cataphract-destrier":2,"squires-mount":2,"raccoon-bandit":2,"parish-sergeant":1,"shieldbearer-hound":1,"buzzed-chipmunk":2,"bison-bulldozer":2}, hqHp:106, rules:{"undergrowth":true}, flavor:"You hear them before you see them.", requires:["15-4"] },
+      { key:"15-5", kind:"elite", name:"Charge of the Warhorses", icon:"🐎", deck:{"stable-colt":3,"squires-mount":4,"raccoon-bandit":2,"parish-sergeant":1,"bison-bulldozer":2,"war-hound":3,"talon-archer":2}, hqHp:106, rules:{"undergrowth":true}, flavor:"You hear them before you see them.", requires:["15-4"] },
       { key:"15-6", kind:"elite", name:"The Kennels", icon:"🐕", deck:{"cataphract-destrier":1,"raccoon-bandit":2,"warhorse-charger":4,"armored-mastiff":2,"terrier-pup":2,"war-hound":1,"shieldbearer-hound":2,"buzzed-chipmunk":2}, hqHp:57, rules:{"undergrowth":true}, flavor:"Every farm on the plain keeps dogs, and every dog is here.", requires:["15-4"] },
       { key:"15-7", kind:"boss", name:"The Horse-Lord", icon:"👑", deck:{"cataphract-destrier":1,"raccoon-bandit":2,"warhorse-charger":4,"armored-mastiff":2,"great-horned-owl":2,"shieldbearer-hound":2,"buzzed-chipmunk":2}, hqHp:120, rules:{"undergrowth":true}, flavor:"Armoured from muzzle to tail, and the plains bow to him.", requires:["15-5","15-6"] },
     ]},
@@ -17090,23 +17230,24 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"17-1", kind:"skirmish", name:"Ice Fang Patrol", icon:"🦊", deck:{"ice-crevasse-wolf":2,"arctic-fox-raider":4,"golden-eagle-diver":2,"chipmunk-hoarder":2}, hqHp:51, flavor:"The snow keeps every track fresh, including the ones circling back.", requires:[] },
       { key:"17-2", kind:"skirmish", name:"Frostbitten Pack", icon:"🐺", deck:{"boreal-elk":1,"taiga-lynx":3,"golden-eagle-diver":2,"beaver-builder":2,"snow-ermine":2,"lone-grey-wolf":1,"harvest-mouse":2}, hqHp:14, flavor:"A pack this far south of the treeline means the treeline moved.", rules:{"frostResist":["Tundra","Frost","Taiga"]}, requires:["17-1"] },
-      { key:"17-3", people:"folk", kind:"skirmish", name:"Snowshoe Line", icon:"🐇", deck:{"beaver-builder":2,"dynamite-packrat":2,"quill-volley":2,"star-nosed-mole":2,"glacial-ape-king":2,"permafrost-mammoth":2,"snow-bunting-archer":1}, hqHp:14, flavor:"They scatter, regroup, and scatter again — always uphill of you.", rules:{"frostResist":["Tundra","Frost","Taiga"],"hail":true}, requires:["17-2"] },
+      { key:"17-3", people:"folk", kind:"skirmish", name:"Snowshoe Line", icon:"🐇", deck:{"beaver-builder":2,"dynamite-packrat":2,"star-nosed-mole":2,"glacial-ape-king":2,"permafrost-mammoth":2,"snow-bunting-archer":1,"harvest-mouse":2}, hqHp:14, flavor:"They scatter, regroup, and scatter again — always uphill of you.", rules:{"frostResist":["Tundra","Frost","Taiga"],"hail":true}, requires:["17-2"] },
       { key:"17-4", kind:"skirmish", name:"Lynx Ambush", icon:"🐆", deck:{"glacial-ape-king":2,"beaver-builder":3,"golden-eagle-diver":2,"porcupine-roller":2,"alpha-howler":1,"harbor-seal":2}, hqHp:34, flavor:"You never see the lynx. You only see the elk break formation.", rules:{"frostResist":["Tundra","Frost","Taiga"]}, requires:["17-3"] },
-      { key:"17-5", kind:"elite", name:"Musk Ox Bulwark", icon:"🐂", deck:{"beaver-builder":3,"porcupine-roller":2,"glacial-ape-king":1,"taiga-lynx":2,"chipmunk-hoarder":1}, hqHp:30, flavor:"A wall of horns that simply refuses to move.", characterId:"collapsed-mine", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"freezing":true}, requires:["17-4"] },
-      { key:"17-6", kind:"elite", name:"Glacier Herd", icon:"🦬", deck:{"beaver-builder":3,"porcupine-roller":2,"glacial-ape-king":2,"frost-hare-sprinter":1,"walrus-icebreaker":2}, hqHp:152, flavor:"The herd does not run from the cold. It carries it.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"freezing":true}, requires:["17-5"] },
-      { key:"17-7", kind:"elite", name:"Alpha Howler's Den", icon:"🐾", deck:{"porcupine-roller":2,"beaver-builder":2,"glacial-ape-king":2,"taiga-lynx":2,"chipmunk-hoarder":2}, hqHp:25, flavor:"The howl reaches every den on the tundra at once.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"frostWait":2,"freezing":true}, requires:["17-6"] },
-      { key:"17-8", kind:"boss", name:"The Glacial Ape-King", icon:"👑", deck:{"glacial-ape-king":2,"permafrost-mammoth":2,"porcupine-roller":1,"ravenous-wolverine":2,"chipmunk-forager":1,"ur-elk":1,"harvest-mouse":2,"buzzed-chipmunk":1}, hqHp:30, flavor:"Old enough to remember when the ice was thicker.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"frostWait":3,"frostCount":3,"freezing":true}, requires:["17-7"] },
+      { key:"17-5", kind:"elite", name:"Musk Ox Bulwark", icon:"🐂", deck:{"beaver-builder":3,"porcupine-roller":2,"taiga-lynx":2,"chipmunk-hoarder":1,"arctic-fox-raider":3}, hqHp:30, flavor:"A wall of horns that simply refuses to move.", characterId:"collapsed-mine", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"freezing":true}, requires:["17-4"] },
+      { key:"17-6", kind:"elite", name:"Glacier Herd", icon:"🦬", deck:{"beaver-builder":1,"porcupine-roller":2,"glacial-ape-king":2,"frost-hare-sprinter":1,"walrus-icebreaker":2,"arctic-fox-raider":4,"war-hound":2}, hqHp:152, flavor:"The herd does not run from the cold. It carries it.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"freezing":true}, requires:["17-5"] },
+      { key:"17-7", kind:"elite", name:"Alpha Howler's Den", icon:"🐾", deck:{"porcupine-roller":2,"glacial-ape-king":2,"taiga-lynx":2,"chipmunk-hoarder":2,"arctic-fox-raider":4,"lone-grey-wolf":2}, hqHp:25, flavor:"The howl reaches every den on the tundra at once.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"frostWait":2,"freezing":true}, requires:["17-6"] },
+      { key:"17-8", kind:"boss", name:"The Glacial Ape-King", icon:"👑", deck:{"glacial-ape-king":2,"permafrost-mammoth":2,"porcupine-roller":1,"ravenous-wolverine":2,"chipmunk-forager":1,"harvest-mouse":3,"buzzed-chipmunk":1,"arctic-fox-raider":2}, hqHp:30, flavor:"Old enough to remember when the ice was thicker.", rules:{"frostResist":["Tundra","Frost","Taiga"],"frostbite":1,"frostWait":3,"frostCount":3,"freezing":true}, requires:["17-7"] },
     ]},
   // The Glass Dunes (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"md", unlockAfter:"m6", name:"The Glass Dunes", icon:"🏜️", // 2026-10-13: Desert theme: Swift, Thorns and Dry throughout
     blurb:"Heat so fierce the sand turns to glass — scorpions, jackals and things that wait under the dunes.", sequential:true,
     nodes: [
-      { key:"18-1", kind:"skirmish", name:"Dune Jackals", icon:"🐕", deck:{"dune-jackal":1,"dust-hyena":1,"komodo-warlord":2,"snapper-hatchling":2,"trapdoor-spider":2,"roadrunner-courier":2,"rabid-jackal":1,"cinder-gecko":2}, hqHp:229, rules:{"sandstorm":true}, flavor:"They laugh at you from the next dune over.", requires:[] },
+      { key:"18-1", kind:"skirmish", name:"Dune Jackals", icon:"🐕", deck:{"dune-jackal":1,"dust-hyena":1,"komodo-warlord":2,"snapper-hatchling":2,"trapdoor-spider":2,"roadrunner-courier":2,"rabid-jackal":1,"cinder-gecko":2,"caustic-scorpion":4}, hqHp:229, rules:{"sandstorm":true}, flavor:"They laugh at you from the next dune over.", requires:[] },
       { key:"18-2", kind:"skirmish", name:"Scorpion Flats", icon:"🦂", deck:{"dust-hyena":3,"komodo-warlord":4,"trapdoor-spider":2,"snapper-hatchling":2,"grass-viper":1,"moon-jerboa":1}, hqHp:184, rules:{"sandstorm":true}, flavor:"Every stone you turn has a tail under it.", requires:["18-1"] },
       { key:"18-3", kind:"skirmish", name:"Widow's Web", icon:"🕷️", deck:{"caustic-scorpion":2,"dust-hyena":2,"komodo-warlord":3,"obsidian-scorpion":2,"tarantula-hawk":2}, hqHp:43, rules:{"sandstorm":true}, flavor:"Webs strung between the cacti, catching the wind and anything else.", requires:["18-1"] },
-      { key:"18-4", kind:"skirmish", name:"Sandstorm", icon:"🌪️", deck:{"komodo-warlord":3,"caustic-scorpion":2,"obsidian-scorpion":2,"armadillo-guard":2,"horned-lizard":2}, hqHp:82, rules:{"sandstorm":true}, flavor:"The storm has wings.", requires:["18-2","18-3"] },
-      { key:"18-5", kind:"elite", name:"Obsidian Nest", icon:"🦂", deck:{"caustic-scorpion":2,"dust-hyena":2,"komodo-warlord":4,"obsidian-scorpion":2,"fennec-fox":2,"horned-lizard":2,"meerkat-burrower":2}, hqHp:89, rules:{"glassStorm":true}, flavor:"Black glass scorpions in a black glass nest.", requires:["18-4"] },
-      { key:"18-6", kind:"elite", name:"Komodo Wallow", icon:"🦎", deck:{"komodo-warlord":3,"caustic-scorpion":2,"obsidian-scorpion":1,"meerkat-sentry":2,"thorny-devil":2,"antlion-pit":2,"snapper-hatchling":2}, hqHp:131, rules:{"sandstorm":true}, flavor:"The biggest lizard you have ever seen, and it has seen you.", requires:["18-4"] },
+      // 2026-10-18 (owner: "New dromedary card"): one Dromedary walks the storm in 18-4; its card reward is 18-3 Widow's Web.
+      { key:"18-4", kind:"skirmish", name:"Sandstorm", icon:"🌪️", shieldOverride:34, deck:{"komodo-warlord":1,"caustic-scorpion":4,"obsidian-scorpion":2,"armadillo-guard":2,"horned-lizard":2,"dromedary":1}, hqHp:82, rules:{"sandstorm":true}, flavor:"The storm has wings.", requires:["18-2","18-3"] },
+      { key:"18-5", kind:"elite", name:"Obsidian Nest", icon:"🦂", deck:{"caustic-scorpion":2,"dust-hyena":4,"komodo-warlord":2,"obsidian-scorpion":2,"fennec-fox":2,"horned-lizard":2,"meerkat-burrower":2}, hqHp:89, rules:{"glassStorm":true}, flavor:"Black glass scorpions in a black glass nest.", requires:["18-4"] },
+      { key:"18-6", kind:"elite", name:"Komodo Wallow", icon:"🦎", deck:{"komodo-warlord":1,"caustic-scorpion":2,"obsidian-scorpion":1,"meerkat-sentry":2,"thorny-devil":2,"antlion-pit":2,"snapper-hatchling":2,"dust-hyena":4}, hqHp:131, rules:{"sandstorm":true}, flavor:"The biggest lizard you have ever seen, and it has seen you.", requires:["18-4"] },
       { key:"18-7", kind:"boss", name:"The Sand Widow Queen", icon:"👑", deck:{"obsidian-scorpion":2,"komodo-warlord":3,"caustic-scorpion":2,"fennec-fox":2,"meerkat-sentry":2,"sand-widow":1,"horned-lizard":2,"thorny-devil":2}, hqHp:65, rules:{"sandstorm":true,"field":"heatwave","heatLevel":2}, flavor:"The dunes are her web.", requires:["18-5","18-6"] },
     ]},
   // 2026-10-11 (16:20, user: old maps first, new maps after): the Ashen Peak is a main map again, Map 5.
@@ -17115,10 +17256,10 @@ const CONQUEST_MAPS = [
     nodes: [
       { key:"19-1", kind:"skirmish", name:"Badger Warband", icon:"🦡", deck:{"badger-trench-digger":2,"porcupine-roller":2,"yeti":2,"frost-hare-sprinter":2,"quill-volley":2,"echidna-quillshot":1}, hqHp:43, flavor:"They dug in before you even reached the tree line.", requires:[] },
       { key:"19-2", kind:"skirmish", name:"Quill Line", icon:"🦔", deck:{"porcupine-roller":2,"frost-hare-sprinter":2,"yeti":2,"chipmunk-stockpiler":1,"quill-volley":1,"beaver-builder":2}, hqHp:73, flavor:"Every approach here has already been staked out.", requires:["19-1"] },
-      { key:"19-3", kind:"elite", name:"Porcupine Bastion", icon:"🦔", deck:{"porcupine-roller":2,"frost-hare-sprinter":2,"yeti":2,"quill-volley":1,"beaver-builder":2,"lodge-engineer":1}, hqHp:60, flavor:"Every approach to the Bastion is already covered in quills.", characterId:"plains-terrace", requires:["19-2"] },
-      { key:"19-4", kind:"elite", name:"Sky Marks", icon:"🦅", deck:{"porcupine-roller":2,"yeti":2,"frost-hare-sprinter":2,"quill-volley":2,"beaver-builder":2}, hqHp:45, flavor:"You hear the marks called before you ever see the wings.", requires:["19-3"] },
+      { key:"19-3", kind:"elite", name:"Porcupine Bastion", icon:"🦔", deck:{"porcupine-roller":2,"frost-hare-sprinter":2,"quill-volley":1,"beaver-builder":2,"lodge-engineer":1,"cinder-imp":4,"ashbone-ghoul":4}, hqHp:60, flavor:"Every approach to the Bastion is already covered in quills.", characterId:"plains-terrace", requires:["19-2"] },
+      { key:"19-4", kind:"elite", name:"Sky Marks", icon:"🦅", deck:{"porcupine-roller":2,"yeti":2,"frost-hare-sprinter":2,"quill-volley":2,"beaver-builder":2,"cinder-imp":4,"ashbone-ghoul":2}, hqHp:45, flavor:"You hear the marks called before you ever see the wings.", requires:["19-3"] },
       { key:"19-5", kind:"elite", name:"Sky Scraper Sentinel", icon:"🦅", deck:{"porcupine-roller":2,"yeti":2,"frost-hare-sprinter":2,"quill-volley":2,"beaver-builder":2,"scraper-of-skies":1}, hqHp:44, flavor:"You'll hear it before you see it. That's the point.", revealDeck:"A", requires:["19-4"] },
-      { key:"19-6", kind:"boss", name:"The Frost Yeti King", icon:"👑", deck:{"yeti":4,"porcupine-roller":1,"quill-volley":2,"glacial-ape-king":1,"land-tiller":2}, hqHp:97, flavor:"The summit belongs to whatever can survive the cold longest.", requires:["19-5"] },
+      { key:"19-6", kind:"boss", name:"The Frost Yeti King", icon:"👑", deck:{"yeti":4,"porcupine-roller":1,"quill-volley":2,"glacial-ape-king":1,"land-tiller":2,"cinder-imp":2}, hqHp:97, flavor:"The summit belongs to whatever can survive the cold longest.", requires:["19-5"] },
     ]},
   { id:"m11", unlockAfter:"m3", name:"The Sundered Peak", icon:"🌋", blurb:"The campaign’s final approach — apex predators, no scouts left to send ahead of you. Ten regions down. One throne left.", sequential:true,
     nodes: [
@@ -17126,11 +17267,11 @@ const CONQUEST_MAPS = [
       { key:"20-2", kind:"skirmish", name:"Grizzly Frontier", icon:"🐻", deck:{"woodland-brawler":4,"bear-cub":2,"pack-mule":2,"fire-hawk":1,"bramblewood-bonebreaker":2,"ash-moth":2}, hqHp:25, flavor:"Even the cubs here have already learned to hold ground.", requires:["20-1"] },
       { key:"20-3", kind:"skirmish", name:"Panther Ledge", icon:"🐆", deck:{"bramblewood-lynx":1,"jaguar-stalker":2,"cave-warlord":2,"pack-mule":2,"warhorse-charger":2,"blessed-avatar":1,"stable-colt":2}, hqHp:38, flavor:"Three cats, one ledge, and no agreement about who owns it.", requires:["20-1"] },
       { key:"20-4", kind:"skirmish", name:"Shrine Steps", icon:"🛕", deck:{"stable-colt":1,"cave-warlord":2,"cataphract-destrier":1,"woodland-brawler":2,"bear-cub":2,"pack-mule":2,"ash-moth":2,"shrine-acolyte":2,"shrine-bell-ringer":1}, hqHp:92, flavor:"Every step is a prayer. Every prayer is answered with a shove.", requires:["20-2"] },
-      { key:"20-5", kind:"elite", name:"Cave Warlord's Guard", icon:"🛡️", deck:{"cave-warlord":2,"cataphract-destrier":1,"woodland-brawler":2,"grizzly-vanguard":2,"blessed-avatar":1}, hqHp:74, rules:{"field":"heatwave","heatLevel":3}, flavor:"Nobody guards a warlord who cannot already win alone.", characterId:"collapsed-mine", requires:["20-2"] },
-      { key:"20-6", kind:"elite", name:"The Constrictor Sovereign", icon:"🐍", deck:{"cataphract-destrier":1,"woodland-brawler":2,"bear-cub":1,"silverback-brawler":2,"cave-warlord":1,"fire-hawk":1,"firefly-swarm":2}, hqHp:94, rules:{"field":"heatwave","heatLevel":3}, flavor:"The canopy floor below the Peak is, in a sense, one very patient animal.", requires:["20-5"] },
-      { key:"20-7", kind:"elite", name:"The Blessed Avatar", icon:"😇", deck:{"stable-colt":2,"cave-warlord":2,"cataphract-destrier":2,"woodland-brawler":1,"bear-cub":2,"warhorse-charger":1,"pack-mule":2}, hqHp:84, rules:{"field":"heatwave","heatLevel":3}, flavor:"It answers every prayer at once, including the ones nobody meant to make.", requires:["20-6"] },
-      { key:"20-8", kind:"elite", name:"The Iron Cataphract", icon:"🛡️", deck:{"cataphract-destrier":4,"stable-colt":2,"cave-warlord":2,"woodland-brawler":1,"pack-mule":2,"silverback-brawler":1}, hqHp:124, rules:{"field":"heatwave","heatLevel":3}, flavor:"Fully armored, front to back — there is no soft angle to try.", requires:["20-7"] },
-      { key:"20-9", kind:"boss", name:"The Ancient Sloth Titan", icon:"🦥", deck:{"ancient-sloth-titan":1,"cave-warlord":2,"blessed-avatar":2,"beaver-lumberjack":1,"pack-mule":2}, hqHp:239, rules:{"field":"heatwave","heatLevel":3}, flavor:"It has not hurried in centuries. It has never needed to.", requires:["20-8"] },
+      { key:"20-5", kind:"elite", name:"Cave Warlord's Guard", icon:"🛡️", deck:{"cave-warlord":2,"cataphract-destrier":1,"woodland-brawler":2,"grizzly-vanguard":2,"blessed-avatar":1,"cinder-imp":2,"ashbone-ghoul":2}, hqHp:74, rules:{"field":"heatwave","heatLevel":3}, flavor:"Nobody guards a warlord who cannot already win alone.", characterId:"collapsed-mine", requires:["20-2"] },
+      { key:"20-6", kind:"elite", name:"The Constrictor Sovereign", icon:"🐍", deck:{"cataphract-destrier":1,"woodland-brawler":4,"bear-cub":1,"silverback-brawler":2,"cave-warlord":1,"fire-hawk":1,"firefly-swarm":2,"cinder-imp":4}, hqHp:94, rules:{"field":"heatwave","heatLevel":3}, flavor:"The canopy floor below the Peak is, in a sense, one very patient animal.", requires:["20-5"] },
+      { key:"20-7", kind:"elite", name:"The Blessed Avatar", icon:"😇", deck:{"stable-colt":2,"cave-warlord":2,"cataphract-destrier":2,"woodland-brawler":1,"bear-cub":2,"warhorse-charger":1,"pack-mule":2,"cinder-imp":2}, hqHp:84, rules:{"field":"heatwave","heatLevel":3}, flavor:"It answers every prayer at once, including the ones nobody meant to make.", requires:["20-6"] },
+      { key:"20-8", kind:"elite", name:"The Iron Cataphract", icon:"🛡️", deck:{"cataphract-destrier":4,"stable-colt":2,"woodland-brawler":3,"silverback-brawler":1,"cinder-imp":4,"ashbone-ghoul":2}, hqHp:124, rules:{"field":"heatwave","heatLevel":3}, flavor:"Fully armored, front to back — there is no soft angle to try.", requires:["20-7"] },
+      { key:"20-9", kind:"boss", name:"The Ancient Sloth Titan", icon:"🦥", deck:{"ancient-sloth-titan":1,"cave-warlord":2,"beaver-lumberjack":1,"pack-mule":2,"ashbone-ghoul":4,"cinder-imp":4}, hqHp:239, rules:{"field":"heatwave","heatLevel":3}, flavor:"It has not hurried in centuries. It has never needed to.", requires:["20-8"] },
       { key:"20-10", kind:"finalboss", rating:400, name:"The Cave Warlord", icon:"👑", deck:{"grizzly-vanguard":1,"cave-warlord":1,"stable-colt":2,"cataphract-destrier":2,"woodland-brawler":2,"bear-cub":2,"pack-mule":2,"fire-hawk":2}, hqHp:30, rules:{"field":"heatwave","heatLevel":3}, flavor:"Everything on the Sundered Peak, in the end, answers to him.", revealDeck:"win", requires:["20-9"] },
       { key:"20-R", kind:"raidboss", name:"The Deep Troll King", icon:"👹", deck:{"deep-cave-troll":6,"stalactite-golem":2,"vampire-roost":1}, hqHp:150, flavor:"Every tunnel in the dark eventually leads back to him.", requires:["20-10"] },
       // The world boss (2026-10-12, 10:23 list): the Caldera Wyrm leads (2 Stone + 1 Metal, which its side digs each round),
@@ -17147,8 +17288,8 @@ const CONQUEST_MAPS = [
       { key:"21-1", kind:"skirmish", name:"Thaw Path", icon:"🐐", deck:{"mountain-goat-climber":3,"rockslide-ram":2,"scree-goat":2,"snowshoe-hare":2,"ash-cloud-condor":2,"golden-eagle-diver":2}, hqHp:180, flavor:"Meltwater runs down a path the goats have walked since before the storm.", requires:[] },
       { key:"21-2", kind:"skirmish", name:"Tarn Shore", icon:"🧊", deck:{"glacier-yak":2,"snow-owl-sentinel":1,"snowshoe-hare":2,"alpine-avalanche":1,"peak-condor":2,"scree-goat":2,"pika-hoarder":2,"golden-eagle-diver":2,"eagle-diver":1}, hqHp:200, flavor:"The tarn is so still the sky sits in it twice.", requires:["21-1"] },
       { key:"21-3", kind:"skirmish", name:"Cloud Ledge", icon:"☁️", deck:{"eagle-diver":2,"golden-eagle-diver":2,"peak-condor":3,"stonedrop-vulture":2,"ash-cloud-condor":1,"hawk-arrowkeeper":2}, hqHp:210, flavor:"Step off the ledge and you land on cloud. Probably.", requires:["21-1"] },
-      { key:"21-4", kind:"elite", name:"The Avalanche's Wake", icon:"🏔️", deck:{"alpine-avalanche":2,"rockslide-ram":2,"glacier-yak":2,"scree-goat":2,"eagle-sharpshooter":2,"mountain-goat-climber":2}, hqHp:240, flavor:"The snow came down last night. The rams are still standing on top of it.", requires:["21-2"] },
-      { key:"21-5", kind:"elite", name:"Snow Owl Parliament", icon:"🦉", deck:{"snow-owl-sentinel":3,"hawk-arrowkeeper":2,"eagle-sharpshooter":2,"golden-eagle-diver":2,"snowshoe-hare":2,"shrine-high-priest":1}, hqHp:230, flavor:"They have been debating your arrival since dawn. They have reached no decision, only a verdict.", requires:["21-3"] },
+      { key:"21-4", kind:"elite", name:"The Avalanche's Wake", icon:"🏔️", deck:{"alpine-avalanche":2,"rockslide-ram":2,"glacier-yak":2,"scree-goat":2,"eagle-sharpshooter":2,"mountain-goat-climber":2,"eagle-diver":2}, hqHp:240, flavor:"The snow came down last night. The rams are still standing on top of it.", requires:["21-2"] },
+      { key:"21-5", kind:"elite", name:"Snow Owl Parliament", icon:"🦉", deck:{"snow-owl-sentinel":3,"golden-eagle-diver":1,"snowshoe-hare":2,"eagle-diver":4,"fumarole-ibex":2}, hqHp:230, flavor:"They have been debating your arrival since dawn. They have reached no decision, only a verdict.", requires:["21-3"] },
       { key:"21-6", kind:"boss", name:"The Cathedral Eagle", icon:"🦅", deck:{"cathedral-eagle":1,"eagle-diver":2,"peak-condor":2,"golden-eagle-diver":2,"snow-owl-sentinel":2,"alpine-avalanche":1,"eagle-sharpshooter":2}, hqHp:280, flavor:"It nests on the very top of the world, and it saw you coming three maps ago.", requires:["21-4","21-5"] },
     ]},
   // Map 22, the Rimefire Caldera (2026-10-17, user: "Ice volcano stage, in 22 or 23. Story is, you're still very high up, traveling around"):
@@ -17158,14 +17299,14 @@ const CONQUEST_MAPS = [
   // elites and the boss, and Ashy ground after an Eruption. The Long Burrow (22-LB, the daily dungeon) still opens from here.
   { id:"m22", unlockAfter:"m21", name:"The Rimefire Caldera", icon:"🌨️", blurb:"Still above the clouds, the road crosses a crater that never went cold: snow on black glass, steam from every crack, and things that learned to live in both.", sequential:true,
     nodes: [
-      { key:"22-1", kind:"skirmish", name:"Snowmelt Switchbacks", icon:"🐐", deck:{"mountain-goat-climber":3,"scree-goat":3,"glacier-yak":2,"fumarole-ibex":2,"ashwing-ptarmigan":1,"alpine-marmot":1}, hqHp:260, flavor:"The snow here melts from underneath. The goats don't seem to mind.", requires:[], fixedPos:{x:10, y:78} },
+      { key:"22-1", kind:"skirmish", name:"Snowmelt Switchbacks", icon:"🐐", deck:{"mountain-goat-climber":3,"scree-goat":3,"fumarole-ibex":2,"ashwing-ptarmigan":1,"alpine-marmot":1,"badger-berserker":2}, hqHp:260, flavor:"The snow here melts from underneath. The goats don't seem to mind.", requires:[], fixedPos:{x:10, y:78} },
       { key:"22-2", kind:"skirmish", name:"Steam Vents", icon:"♨️", deck:{"fire-salamander":2,"magma-salamander":2,"rimefire-salamander":1,"cinder-gecko":2,"ember-centipede":3,"ice-petrel":2}, hqHp:270, rules:{sulphurFumes:true}, flavor:"Yellow steam, warm stones, and a smell like a thousand bad eggs. The geckos love it.", requires:["22-1"], fixedPos:{x:24, y:50} },
-      { key:"22-3", kind:"skirmish", name:"Frozen Lava Flow", icon:"🧊", deck:{"basalt-boar":3,"tundra-musk-ox":2,"obsidian-scorpion":2,"fumarole-ibex":1,"snow-ermine":2,"frostbitten-wolverine":2}, hqHp:280, rules:{slippery:25}, flavor:"Black glass under a skin of ice. Every step is a guess.", requires:["22-1"], fixedPos:{x:30, y:84} },
-      { key:"22-4", kind:"skirmish", name:"Hailstone Ridge", icon:"🌨️", deck:{"snow-owl-sentinel":2,"snow-bunting-archer":3,"ice-petrel":3,"glacier-yak":2,"ashwing-ptarmigan":1,"frost-hare-sprinter":1}, hqHp:285, rules:{hail:2}, flavor:"The storm up here doesn't snow. It throws.", requires:["22-2"], fixedPos:{x:38, y:24} },
-      { key:"22-5", kind:"skirmish", name:"The Geyser Field", icon:"⛲", deck:{"permafrost-mammoth":1,"fire-drake-hatchling":2,"magma-salamander":2,"ice-crevasse-wolf":3,"ash-moth":2,"rimefire-salamander":2}, hqHp:295, rules:{field:"frozen", lavaSpout:2}, flavor:"The ground freezes, the geysers thaw it, the ground freezes again. Twice a minute.", requires:["22-3"], fixedPos:{x:58, y:80} },
-      { key:"22-6", kind:"elite", name:"Ashfall Cornice", icon:"🌋", deck:{"ash-cloud-condor":2,"phoenix-fledgling":2,"cinder-hornet":2,"peak-condor":2,"ashwing-ptarmigan":2,"stonedrop-vulture":2}, hqHp:305, rules:{ashRain:true, volcano:"low"}, flavor:"Grey snow falls on white snow. The birds ride the heat until the crater coughs.", requires:["22-4"], fixedPos:{x:62, y:20} },
-      { key:"22-7", kind:"elite", name:"The Steam Wall", icon:"🌫️", deck:{"ur-elk":2,"permafrost-mammoth":2,"magma-titan":2,"fumarole-ibex":2,"glacier-wolf-pack":2,"cinder-stoker":2}, hqHp:315, /* 2026-10-17 lumber audit: Tundra Musk Ox ×2 → Cinder Stoker ×2 (Bounty) */ rules:{field:"heatwave", hail:2}, flavor:"Where the lava meets the glacier, a wall of steam a mile high. Big shapes walk inside it.", requires:["22-5"], fixedPos:{x:78, y:62} },
-      { key:"22-8", kind:"boss", name:"The Rimeheart Colossus", icon:"👑", deck:{"rimeheart-colossus":1,"magma-titan":2,"glacial-ape-king":1,"yeti":2,"rimefire-salamander":2,"fumarole-ibex":2,"caldera-snow-leopard":1,"snow-owl-sentinel":2}, hqHp:340, rules:{volcano:"low", hail:2, lavaSpout:2}, flavor:"Half glacier, half magma, all of it angry. It is the reason the crater never cooled.", requires:["22-6","22-7"], fixedPos:{x:90, y:36} },
+      { key:"22-3", kind:"skirmish", name:"Frozen Lava Flow", icon:"🧊", deck:{"basalt-boar":3,"tundra-musk-ox":2,"obsidian-scorpion":2,"fumarole-ibex":1,"snow-ermine":2,"badger-berserker":2}, hqHp:280, rules:{slippery:25}, flavor:"Black glass under a skin of ice. Every step is a guess.", requires:["22-1"], fixedPos:{x:30, y:84} },
+      { key:"22-4", kind:"skirmish", name:"Hailstone Ridge", icon:"🌨️", deck:{"snow-owl-sentinel":2,"snow-bunting-archer":3,"ice-petrel":3,"ashwing-ptarmigan":1,"frost-hare-sprinter":1,"ur-elk":2}, hqHp:285, rules:{hail:2}, flavor:"The storm up here doesn't snow. It throws.", requires:["22-2"], fixedPos:{x:38, y:24} },
+      { key:"22-5", kind:"skirmish", name:"The Geyser Field", icon:"⛲", deck:{"permafrost-mammoth":1,"magma-salamander":2,"ice-crevasse-wolf":3,"ash-moth":2,"rimefire-salamander":2,"ur-elk":2}, hqHp:295, rules:{field:"frozen", lavaSpout:2}, flavor:"The ground freezes, the geysers thaw it, the ground freezes again. Twice a minute.", requires:["22-3"], fixedPos:{x:58, y:80} },
+      { key:"22-6", kind:"elite", name:"Ashfall Cornice", icon:"🌋", deck:{"ash-cloud-condor":2,"phoenix-fledgling":2,"peak-condor":2,"ashwing-ptarmigan":2,"stonedrop-vulture":2,"badger-berserker":4}, hqHp:305, rules:{ashRain:true, volcano:"low"}, flavor:"Grey snow falls on white snow. The birds ride the heat until the crater coughs.", requires:["22-4"], fixedPos:{x:62, y:20} },
+      { key:"22-7", kind:"elite", name:"The Steam Wall", icon:"🌫️", deck:{"ur-elk":2,"permafrost-mammoth":2,"magma-titan":2,"fumarole-ibex":2,"glacier-wolf-pack":2,"cinder-stoker":2,"magma-salamander":2,"badger-berserker":2}, hqHp:315, /* 2026-10-17 lumber audit: Tundra Musk Ox ×2 → Cinder Stoker ×2 (Bounty) */ rules:{field:"heatwave", hail:2}, flavor:"Where the lava meets the glacier, a wall of steam a mile high. Big shapes walk inside it.", requires:["22-5"], fixedPos:{x:78, y:62} },
+      { key:"22-8", kind:"boss", name:"The Rimeheart Colossus", icon:"👑", deck:{"rimeheart-colossus":1,"magma-titan":2,"glacial-ape-king":1,"rimefire-salamander":2,"fumarole-ibex":2,"caldera-snow-leopard":1,"snow-owl-sentinel":2,"ur-elk":2,"badger-berserker":2}, hqHp:340, rules:{volcano:"low", hail:2, lavaSpout:2}, flavor:"Half glacier, half magma, all of it angry. It is the reason the crater never cooled.", requires:["22-6","22-7"], fixedPos:{x:90, y:36} },
     ]},
   // Maps 23 and 24, the Fortified Castle (2026-10-17, user: "Interesting map and their units (Map 23, 24) e.g. Fortified Castle map,- breach the
   // gates to fight a magnate duck, and the warfield partially outside, with war units like war elephants with arrow animals inside shooting.
@@ -17179,17 +17320,17 @@ const CONQUEST_MAPS = [
       { key:"23-2", kind:"skirmish", name:"Trench Works", icon:"🪏", deck:{"badger-sapper":2,"badger-trench-digger":2,"mouse-sapper":3,"testudo-tortoise":2,"trebuchet-crew":1,"chipmunk-hoarder":1}, hqHp:310, flavor:"Every trench leads somewhere. Most of them lead to more trench.", requires:["23-1"], fixedPos:{x:22, y:26} },
       { key:"23-3", kind:"skirmish", name:"Elephant Road", icon:"🐘", deck:{"war-elephant":1,"howdah-archers":3,"marching-elephant":2,"pack-mule":2,"stable-colt":2}, hqHp:320, flavor:"The ground shakes before you see it. Then you see the bows.", requires:["23-1"], fixedPos:{x:24, y:76} },
       { key:"23-4", kind:"skirmish", name:"Siege Camp", icon:"⛺", deck:{"trebuchet-crew":2,"testudo-tortoise":2,"beetle-battering-ram":2,"siege-rhino":1,"mouse-sapper":3}, hqHp:330, flavor:"Tents, cook-fires and a trebuchet with a name painted on it.", requires:["23-2","23-3"], fixedPos:{x:42, y:46} },
-      { key:"23-5", kind:"skirmish", name:"Under the Walls", icon:"🏹", deck:{"howdah-archers":2,"balloon-archer":2,"talon-archer":2,"badger-trench-digger":2,"testudo-tortoise":2}, hqHp:335, rules:{arrowSlits:true}, flavor:"From here the arrow slits can see you. Shields up.", requires:["23-4"], fixedPos:{x:58, y:22} },
-      { key:"23-6", kind:"elite", name:"The Elephant Line", icon:"🐘", deck:{"war-elephant":2,"howdah-archers":3,"marching-elephant":2,"cataphract-destrier":2,"warhorse-charger":2}, hqHp:350, rules:{arrowSlits:true}, flavor:"Six elephants abreast, and every howdah bristling.", requires:["23-4"], fixedPos:{x:60, y:74} },
-      { key:"23-7", kind:"elite", name:"The Barbican", icon:"🏯", deck:{"great-gate":1,"goose-sentry":3,"battlement-heron":2,"mallard-halberdier":2,"trebuchet-crew":2}, hqHp:360, rules:{arrowSlits:3}, flavor:"The gate's own little fortress. The geese have been told nobody gets in. They took it personally.", requires:["23-5","23-6"], fixedPos:{x:76, y:46} },
-      { key:"23-8", kind:"boss", name:"Marshal Tuskwell", icon:"👑", deck:{"marshal-tuskwell":1,"war-elephant":2,"howdah-archers":2,"siege-rhino":1,"trebuchet-crew":2,"pack-mule":2,"grovebearer-dragon-turtle":1}, hqHp:380, /* 2026-10-17 lumber audit: Testudo Tortoise ×2 → Pack Mule ×2 (Bounty: the army's baggage train) */ /* 2026-10-18: Howdah Archers ×3 → ×2 + the Grovebearer Dragon-Turtle (Legendary, the fight's second card reward; a Map 21+ boss may field a Legendary) */ rules:{arrowSlits:true}, flavor:"The Magnate's marshal has never lost a siege. He has never been on the outside of one before.", requires:["23-7"], fixedPos:{x:90, y:50} },
+      { key:"23-5", kind:"skirmish", name:"Under the Walls", icon:"🏹", deck:{"howdah-archers":2,"balloon-archer":2,"talon-archer":2,"testudo-tortoise":2,"beetle-battering-ram":2}, hqHp:335, rules:{arrowSlits:true}, flavor:"From here the arrow slits can see you. Shields up.", requires:["23-4"], fixedPos:{x:58, y:22} },
+      { key:"23-6", kind:"elite", name:"The Elephant Line", icon:"🐘", deck:{"war-elephant":2,"howdah-archers":3,"marching-elephant":2,"cataphract-destrier":2,"warhorse-charger":2,"beetle-battering-ram":4}, hqHp:350, rules:{arrowSlits:true}, flavor:"Six elephants abreast, and every howdah bristling.", requires:["23-4"], fixedPos:{x:60, y:74} },
+      { key:"23-7", kind:"elite", name:"The Barbican", icon:"🏯", deck:{"great-gate":1,"goose-sentry":3,"battlement-heron":2,"mallard-halberdier":2,"beetle-battering-ram":2,"marching-elephant":2}, hqHp:360, rules:{arrowSlits:3}, flavor:"The gate's own little fortress. The geese have been told nobody gets in. They took it personally.", requires:["23-5","23-6"], fixedPos:{x:76, y:46} },
+      { key:"23-8", kind:"boss", name:"Marshal Tuskwell", icon:"👑", deck:{"marshal-tuskwell":1,"war-elephant":2,"howdah-archers":2,"siege-rhino":1,"trebuchet-crew":2,"pack-mule":2,"grovebearer-dragon-turtle":1,"beetle-battering-ram":2}, hqHp:380, /* 2026-10-17 lumber audit: Testudo Tortoise ×2 → Pack Mule ×2 (Bounty: the army's baggage train) */ /* 2026-10-18: Howdah Archers ×3 → ×2 + the Grovebearer Dragon-Turtle (Legendary, the fight's second card reward; a Map 21+ boss may field a Legendary) */ rules:{arrowSlits:true}, flavor:"The Magnate's marshal has never lost a siege. He has never been on the outside of one before.", requires:["23-7"], fixedPos:{x:90, y:50} },
     ]},
   { id:"m24", unlockAfter:"m23", name:"Goldfeather Keep", icon:"🏰", blurb:"Through the gate at last. Inside the walls everything is gilded, guarded and counted, and the Magnate Duck is waiting at the top of the keep.", sequential:true,
     nodes: [
       { key:"24-1", kind:"skirmish", name:"Breach the Gate", icon:"🚪", deck:{"great-gate":1,"goose-sentry":3,"battlement-heron":2,"mallard-halberdier":2,"pond-paddler":2}, hqHp:340, rules:{arrowSlits:true}, flavor:"Break the gate and the keep is open. The geese behind it disagree.", requires:[], fixedPos:{x:8, y:56} },
-      { key:"24-2", kind:"skirmish", name:"The Bailey", icon:"🦆", deck:{"mallard-halberdier":3,"goose-sentry":2,"mallard-marauder":2,"migration-leader":2,"duckling-squadron":3}, hqHp:350, flavor:"The whole garrison drills here. They are very good at drilling.", requires:["24-1"], fixedPos:{x:24, y:34} },
+      { key:"24-2", kind:"skirmish", name:"The Bailey", icon:"🦆", deck:{"mallard-halberdier":3,"goose-sentry":2,"mallard-marauder":2,"duckling-squadron":3,"gilded-swan-knight":2}, hqHp:350, flavor:"The whole garrison drills here. They are very good at drilling.", requires:["24-1"], fixedPos:{x:24, y:34} },
       { key:"24-3", kind:"skirmish", name:"The Counting House", icon:"💰", deck:{"tax-collector-teal":3,"golden-magpie":2,"rodent-king":1,"mallard-halberdier":2,"lodge-engineer":1,"goose-sentry":1}, hqHp:350, flavor:"Every coin in the valley comes through this room, and every one is counted twice.", requires:["24-1"], fixedPos:{x:26, y:80} },
-      { key:"24-4", kind:"skirmish", name:"The Courtyard Fountain", icon:"⛲", deck:{"gilded-swan-knight":1,"mallard-halberdier":2,"pond-paddler":3,"truce-heron":2,"migration-leader":2}, hqHp:360, flavor:"A fountain of real gold coins. Don't drink from it.", requires:["24-2","24-3"], fixedPos:{x:44, y:56} },
+      { key:"24-4", kind:"skirmish", name:"The Courtyard Fountain", icon:"⛲", deck:{"gilded-swan-knight":3,"mallard-halberdier":2,"pond-paddler":3,"truce-heron":2}, hqHp:360, flavor:"A fountain of real gold coins. Don't drink from it.", requires:["24-2","24-3"], fixedPos:{x:44, y:56} },
       { key:"24-5", kind:"skirmish", name:"The Battlements", icon:"🏹", deck:{"battlement-heron":3,"howdah-archers":2,"balloon-archer":2,"goose-sentry":2,"owl-fletcher":2}, hqHp:360, rules:{arrowSlits:2}, flavor:"Up on the wall walk, everyone has a bow and a better view than you.", requires:["24-4"], fixedPos:{x:58, y:22} },
       { key:"24-6", kind:"elite", name:"The Gilded Guard", icon:"🦢", deck:{"gilded-swan-knight":2,"goose-sentry":3,"mallard-halberdier":3,"iron-warden":1,"truce-heron":2}, hqHp:380, flavor:"Swans in gold plate. Beautiful, loyal, and very, very bad-tempered.", requires:["24-4"], fixedPos:{x:64, y:80} },
       { key:"24-7", kind:"elite", name:"The Treasury", icon:"🪙", deck:{"tax-collector-teal":3,"golden-magpie":2,"rodent-king":2,"elderhorn-monarch":1,"goose-sentry":2,"gilded-swan-knight":1}, hqHp:390, flavor:"The vault door is open. That should worry you more than it does.", requires:["24-6"], fixedPos:{x:80, y:58} },
@@ -17215,25 +17356,27 @@ const CONQUEST_MAPS = [
       { key:"tutorial", kind:"tutorial", stage:1, name:"Tutorial", icon:"🎓", hqHp:20, flavor:"One guided fight that teaches the basics.", requires:[], fixedPos:{x:16, y:64} },
       { key:"tutorial2", kind:"tutorial", stage:2, name:"Tutorial II", icon:"🎓", hqHp:20, flavor:"Your leader joins you. Clear it to open the Outskirts.", requires:["tutorial"], fixedPos:{x:34, y:40} },
       { key:"T-2", code:"T-2", kind:"skirmish", name:"The Odd Lot", icon:"🃏", deck:{"bee-knight":2,"dynamite-packrat":2,"helmeted-otter":2,"caustic-scorpion":2,"gull-thief":2,"rockslide-ram":2,"pufferfish-bulwark":2,"toucan-courier":2}, hqHp:90, firstPack:"bronze", flavor:"A travelling show of the strangest cards on the road. Win and they pay you in a pack.", requires:["tutorial2"], fixedPos:{x:52, y:62} },
-      { key:"T-3", code:"T-3", kind:"skirmish", lesson:"rank", name:"Ranks and Challenges", icon:"🏅", deck:{"otter-kit":3,"otter-paddler":3,"meadow-rabbit":3,"pond-trout":3,"worker-ant":3,"ant-scout":3}, hqHp:60, flavor:"Win without a scratch. The cleaner the win, the better the rank.", requires:["T-2"], fixedPos:{x:68, y:38} },
-      { key:"T-4", code:"T-4", kind:"elite", name:"The Final Exam", icon:"🎓", deck:{"alpine-avalanche":2,"rockslide-ram":2,"glacier-yak":2,"scree-goat":2,"eagle-sharpshooter":2,"peak-condor":2,"ash-cloud-condor":1,"golden-eagle-diver":2}, hqHp:220, flavor:"Nobody passes this one by accident.", requires:["T-3"], fixedPos:{"x":86,"y":58} },
+      { key:"T-3", code:"T-3", kind:"skirmish", lesson:"rank", name:"Ranks and Challenges", icon:"🏅", deck:{"otter-kit":1,"otter-paddler":3,"meadow-rabbit":3,"pond-trout":3,"worker-ant":3,"ant-scout":3,"badger-berserker":2}, hqHp:60, flavor:"Win without a scratch. The cleaner the win, the better the rank.", requires:["T-2"], fixedPos:{x:68, y:38} },
+      { key:"T-4", code:"T-4", kind:"elite", name:"The Final Exam", icon:"🎓", deck:{"rockslide-ram":2,"scree-goat":2,"eagle-sharpshooter":2,"ash-cloud-condor":1,"golden-eagle-diver":2,"burrow-rabbit":4,"badger-berserker":4}, hqHp:220, flavor:"Nobody passes this one by accident.", requires:["T-3"], fixedPos:{"x":86,"y":58} },
     ]},
   { id:"mq", sub:true, parent:"mf", entry:{x:36, y:26, after:"1-1", label:"Clover meadows"}, name:"Clovermead", icon:"🍀", blurb:"A wide clover meadow past the Outskirts — rabbits, bees and mice, and nobody in a hurry.", sequential:true,
     nodes: [
-      { key:"1-A-1", kind:"skirmish", name:"Clover Patch", icon:"🍀", deck:{"rabbit-kit":3,"meadow-rabbit":3,"harvest-mouse":2,"pigeon-peon":2,"field-crow":1,"clover-butterfly":2}, hqHp:10, flavor:"Every clover here has a rabbit sitting on it.", requires:[] },
-      { key:"1-A-2", kind:"skirmish", name:"Bee Lines", icon:"🐝", deck:{"honey-bee":3,"bee-forager":3,"bee-sentry":2,"pill-bug":2,"paper-wasp":2,"bee-drone":1,"creeper":2}, hqHp:13, flavor:"The bees fly in straight lines. Straight at you.", requires:["1-A-1"] },
-      { key:"1-A-3", kind:"skirmish", name:"Puddle Hop", icon:"🐸", deck:{"meadow-frog":3,"puddle-hopper":3,"duckling":2,"garden-snail":2}, hqHp:13, flavor:"Last night's rain left a puddle for every frog.", requires:["1-A-1"] },
-      { key:"1-A-4", kind:"skirmish", name:"Harvest Mice", icon:"🐭", deck:{"harvest-mouse":3,"field-mouse":2,"chipmunk-forager":3,"house-cat":1,"farm-dog":1,"village-miller":2}, hqHp:15, flavor:"They are bringing in the harvest. Yours, mostly.", requires:["1-A-2","1-A-3"] },
+      { key:"1-A-1", kind:"skirmish", name:"Clover Patch", icon:"🍀", deck:{"rabbit-kit":3,"meadow-rabbit":3,"pigeon-peon":2,"field-crow":1,"clover-butterfly":2,"beetle-battering-ram":2}, hqHp:10, flavor:"Every clover here has a rabbit sitting on it.", requires:[] },
+      { key:"1-A-2", kind:"skirmish", name:"Bee Lines", icon:"🐝", deck:{"honey-bee":1,"bee-forager":3,"bee-sentry":2,"pill-bug":2,"paper-wasp":2,"bee-drone":1,"creeper":2,"badger-berserker":2}, hqHp:13, flavor:"The bees fly in straight lines. Straight at you.", requires:["1-A-1"] },
+      { key:"1-A-3", kind:"skirmish", name:"Puddle Hop", icon:"🐸", deck:{"meadow-frog":3,"puddle-hopper":3,"duckling":2,"burrow-rabbit":2}, hqHp:13, flavor:"Last night's rain left a puddle for every frog.", requires:["1-A-1"] },
+      { key:"1-A-4", kind:"skirmish", name:"Harvest Mice", icon:"🐭", deck:{"harvest-mouse":1,"field-mouse":2,"chipmunk-forager":1,"house-cat":1,"farm-dog":1,"village-miller":2,"burrow-rabbit":4}, hqHp:15, flavor:"They are bringing in the harvest. Yours, mostly.", requires:["1-A-2","1-A-3"] },
       { key:"1-A-5", kind:"boss", name:"The Old Hare", icon:"🐇", deck:{"buck-brawler":1,"cottontail":3,"burrow-rabbit":3,"meadow-rabbit":3,"lucky-hopper":1}, hqHp:28, flavor:"The oldest hare in the meadow, and still the fastest.", characterId:"plains-terrace", requires:["1-A-4"] },
     ]},
   // Fused in as a side map (2026-10-12, user's map list: "Fuse mp in").
   // Lilypad Reach (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   // 2026-10-18 (owner: "Just too many sub missions so early ... Lock it till Gatorback Swamp is completed"): the entrance stays
   // where it is on Pebble Beach but waits on Gatorback Swamp (afterMapCleared). A save that already fought here keeps it open.
-  { id:"mp", sub:true, parent:"mb", entry:{x:30, y:20, after:"2-1", afterMapCleared:"mw", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
+  // 2026-10-18 (owner: "lock it till Map 6 or 7 complete"): it waits on Map 6 by play order now, Sable Swampmire ("m8",
+  // mapIdAt(6); tests/maps-2026-10-18.js checks the two agree). Saves that already fought here still keep it open.
+  { id:"mp", sub:true, parent:"mb", shieldMap:6, entry:{x:30, y:20, after:"2-1", afterMapCleared:"m8", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
     nodes: [
       { key:"2-A-1", kind:"skirmish", name:"Lily Hop", icon:"🐸", deck:{"puddle-hopper":3,"minnow-skitter":3,"guppy":3,"quill-volley":2,"lotus-frog":2,"shallows-fry":2}, hqHp:19, rules:{"tide":true}, flavor:"Every lily pad has a frog on it, and every frog has an opinion.", requires:[] },
-      { key:"2-A-2", kind:"skirmish", name:"Duck Row", icon:"🦆", deck:{"duckling":1,"pond-duck":3,"pond-paddler":2,"minnow-skitter":2,"silver-minnow":2}, hqHp:28, rules:{"tide":true}, flavor:"They paddle in a line, and they all turn at once.", requires:["2-A-1"] },
+      { key:"2-A-2", kind:"skirmish", name:"Duck Row", icon:"🦆", deck:{"duckling":1,"pond-duck":3,"pond-paddler":2,"minnow-skitter":2,"mallard-marauder":2}, hqHp:28, rules:{"tide":true}, flavor:"They paddle in a line, and they all turn at once.", requires:["2-A-1"] },
       { key:"2-A-3", kind:"skirmish", name:"Beaver Dam", icon:"🦫", deck:{"beaver-builder":2,"river-carp":1,"puddle-hopper":2,"pond-duck":2,"riverworks-bastion":2,"quill-volley":2,"beaver-lumberjack":1}, hqHp:18, rules:{"tide":true}, flavor:"The dam goes up a little higher every night.", requires:["2-A-1"] },
       { key:"2-A-4", kind:"skirmish", name:"Pike Shallows", icon:"🐟", deck:{"pike-lancer":2,"river-carp":3,"minnow-skitter":3,"ford-kingfisher":2,"mayfly-dancer":2}, hqHp:15, rules:{"tide":true}, flavor:"Something long and quick waits in the reeds.", requires:["2-A-2","2-A-3"] },
       { key:"2-A-5", kind:"elite", name:"Croaker Chorus", icon:"🐸", deck:{"poison-dart-croaker":3,"puddle-hopper":3,"camouflage-frog":2,"guppy":2,"newt-doctor":2}, hqHp:158, rules:{"tide":true}, flavor:"Pretty colours. Don't lick anything.", requires:["2-A-4"] },
@@ -17251,8 +17394,8 @@ const CONQUEST_MAPS = [
       { key:"19-A-4", kind:"skirmish", name:"Vent Skitter", icon:"🦂", deck:{"obsidian-scorpion":2,"pyroclast-wyrm":2,"beaver-lumberjack":3,"phoenix-fledgling":1,"chained-binturong":2,"sulfur-vent-crab":2}, hqHp:93, flavor:"The rock ticks and clicks long before anything crawls out of it.", requires:["19-A-2"] },
       { key:"19-A-5", kind:"skirmish", name:"Ashfall Line", icon:"🦅", deck:{"ember-jackal":3,"obsidian-scorpion":2,"sulfur-vent-crab":1,"magma-titan":2,"flagellant-vulture":2,"beetle-battering-ram":2}, hqHp:71, flavor:"The ash never really settles here. Neither does anything else.", requires:["19-A-4"] },
       { key:"19-A-6", kind:"skirmish", name:"Furnace Mouth", icon:"🦎", deck:{"magma-salamander":1,"obsidian-scorpion":2,"magma-titan":1,"basalt-boar":2,"ember-jackal":2,"fruit-bat-familiar":2,"beetle-battering-ram":2}, hqHp:81, flavor:"The hottest door in the Foundry, and someone keeps it open.", requires:["19-A-5"] },
-      { key:"19-A-7", kind:"elite", name:"Basalt Vanguard", icon:"🐗", deck:{"basalt-boar":2,"magma-titan":2,"obsidian-scorpion":1,"cinder-stoker":2,"tide-spirit":1,"beetle-battering-ram":2,"hercules-beetle":2,"vampire-finch":1}, hqHp:176, rules:{"lavaSpout":true}, flavor:"Stone this hot should not be able to charge, and yet.", characterId:"plains-terrace", requires:["19-A-5"] },
-      { key:"19-A-8", kind:"elite", name:"Titan's Shadow", icon:"🔥", deck:{"basalt-boar":1,"ember-jackal":3,"magma-titan":2,"sulfur-vent-crab":2,"obsidian-scorpion":2,"beetle-battering-ram":1}, hqHp:111, rules:{"lavaSpout":true}, flavor:"The heat reaches you a full second before the shadow does.", requires:["19-A-7"] },
+      { key:"19-A-7", kind:"elite", name:"Basalt Vanguard", icon:"🐗", deck:{"basalt-boar":2,"magma-titan":2,"obsidian-scorpion":1,"cinder-stoker":2,"tide-spirit":1,"beetle-battering-ram":2,"hercules-beetle":2,"vampire-finch":1,"ashbone-ghoul":2}, hqHp:176, rules:{"lavaSpout":true}, flavor:"Stone this hot should not be able to charge, and yet.", characterId:"plains-terrace", requires:["19-A-5"] },
+      { key:"19-A-8", kind:"elite", name:"Titan's Shadow", icon:"🔥", deck:{"ember-jackal":3,"magma-titan":2,"sulfur-vent-crab":2,"obsidian-scorpion":2,"beetle-battering-ram":1,"cinder-imp":3,"ashbone-ghoul":4}, hqHp:111, rules:{"lavaSpout":true}, flavor:"The heat reaches you a full second before the shadow does.", requires:["19-A-7"] },
       { key:"19-A-9", kind:"elite", name:"The Pyroclast Wyrm", icon:"🐉", deck:{"beetle-battering-ram":1,"echo-keeper":2,"cinder-gecko":1,"hellbender":2,"ashbone-ghoul":2,"hercules-beetle":2}, hqHp:42, rules:{"lavaSpout":true}, flavor:"It surfaces once, does what it came to do, and sinks back into the rock.", requires:["19-A-8"] },
       { key:"19-A-10", kind:"boss", name:"The Phoenix Ember King", icon:"👑", deck:{"obsidian-scorpion":1,"sulfur-vent-crab":2,"echo-keeper":1,"cinder-stoker":2,"trapdoor-spider":1,"beetle-battering-ram":2,"ashbone-ghoul":1}, hqHp:84, rules:{"lavaSpout":true}, flavor:"Kill it and the Foundry only gets brighter.", requires:["19-A-9"] },
     ]},
@@ -17269,28 +17412,28 @@ const CONQUEST_MAPS = [
   // each round hits +2). Electric eels and the Goliath's brood live in the wreck.
   { id:"mj", sub:true, parent:"m7", entry:{x:78, y:74, after:"10-9", label:"A mast below the reef"}, name:"The Sunken Depths", icon:"⚓", blurb:"An otter ferry went down past the reef wall years ago. The current through its hull is faster than anything above.", sequential:true,
     nodes: [
-      { key:"10-A-1", people:"deep", kind:"skirmish", name:"Bubble Trail", icon:"🫧", deck:{"clownfish-scout":2,"tide-pool-crab":2,"mangrove-mudskipper":2,"orca-vanguard":1,"kraken-spawnling":2,"moray-ambusher":1}, hqHp:129, rules:{"crushingDepths":true}, flavor:"Follow the bubbles down. Something below is still breathing.", requires:[] },
-      { key:"10-A-2", people:"deep", kind:"skirmish", name:"The Drowned Deck", icon:"⚓", deck:{"inkcloud-squid":2,"tide-pool-crab":2,"orca-vanguard":2,"kraken-spawnling":2,"minnow-skitter":2}, hqHp:141, rules:{"crushingDepths":true}, flavor:"The ferry's bell still swings. Nobody rings it.", requires:["10-A-1"] },
-      { key:"10-A-3", people:"deep", kind:"skirmish", name:"Cargo Hold", icon:"📦", deck:{"open-ocean-hermit-crab":1,"kraken-spawnling":1,"blind-cave-fish":2,"orca-vanguard":1,"moray-ambusher":2,"silver-minnow":1,"blue-ringed-octopus":2}, hqHp:143, rules:{"crushingDepths":true}, flavor:"Crates of otter cargo, and every one of them has a new tenant.", requires:["10-A-2"] },
-      { key:"10-A-4", people:"deep", kind:"elite", name:"The Undertow", icon:"🌀", deck:{"voltaic-eel":3,"coral-reef-shark":2,"abyss-lantern-squid":2,"riptide-eel":3,"swordfish-spearman":1,"pufferfish-bulwark":1}, hqHp:169, rules:{"highTide":true,"crushingDepths":true}, flavor:"The current through the hull pulls at everything, and lightning crawls along the eels.", requires:["10-A-3"] },
-      { key:"10-A-5", people:"deep", kind:"boss", name:"The Ferry's Last Passenger", icon:"🐙", deck:{"glass-octopus":2,"vampire-squid":2,"kraken-spawnling":1,"coral-reef-shark":2,"inkcloud-squid":2,"tide-pool-crab":1,"blind-cave-fish":1,"orca-vanguard":2,"blue-ringed-octopus":1}, hqHp:156, rules:{"highTide":true,"crushingDepths":true}, flavor:"Something rode the ferry all the way down, and it has been waiting for the next stop.", requires:["10-A-4"] },
+      { key:"10-A-1", people:"deep", kind:"skirmish", name:"Bubble Trail", icon:"🫧", deck:{"clownfish-scout":2,"orca-vanguard":1,"kraken-spawnling":2,"moray-ambusher":1,"silver-minnow":4}, hqHp:129, rules:{"crushingDepths":true}, flavor:"Follow the bubbles down. Something below is still breathing.", requires:[] },
+      { key:"10-A-2", people:"deep", kind:"skirmish", name:"The Drowned Deck", icon:"⚓", deck:{"tide-pool-crab":2,"orca-vanguard":2,"kraken-spawnling":2,"minnow-skitter":2,"silver-minnow":2}, hqHp:141, rules:{"crushingDepths":true}, flavor:"The ferry's bell still swings. Nobody rings it.", requires:["10-A-1"] },
+      { key:"10-A-3", people:"deep", kind:"skirmish", name:"Cargo Hold", icon:"📦", deck:{"kraken-spawnling":1,"orca-vanguard":1,"moray-ambusher":2,"silver-minnow":4,"blue-ringed-octopus":2}, hqHp:143, rules:{"crushingDepths":true}, flavor:"Crates of otter cargo, and every one of them has a new tenant.", requires:["10-A-2"] },
+      { key:"10-A-4", people:"deep", kind:"elite", name:"The Undertow", icon:"🌀", deck:{"voltaic-eel":1,"coral-reef-shark":2,"abyss-lantern-squid":2,"riptide-eel":3,"pufferfish-bulwark":1,"silver-minnow":3}, hqHp:169, rules:{"highTide":true,"crushingDepths":true}, flavor:"The current through the hull pulls at everything, and lightning crawls along the eels.", requires:["10-A-3"] },
+      { key:"10-A-5", people:"deep", kind:"boss", name:"The Ferry's Last Passenger", icon:"🐙", deck:{"glass-octopus":2,"vampire-squid":2,"kraken-spawnling":1,"coral-reef-shark":2,"orca-vanguard":2,"blue-ringed-octopus":1,"silver-minnow":4}, hqHp:156, rules:{"highTide":true,"crushingDepths":true}, flavor:"Something rode the ferry all the way down, and it has been waiting for the next stop.", requires:["10-A-4"] },
     ]},
   { id:"mg", sub:true, parent:"mb", entry:{x:86, y:24, after:"2-2", label:"A sea cave"}, name:"Smugglers' Grotto", icon:"🕳️", blurb:"A sea cave under Pebble Beach. Whatever the smugglers left down here, something else has moved in.", sequential:true,
     nodes: [
-      { key:"2-B-1", kind:"skirmish", name:"Drip Tunnel", icon:"💧", deck:{"sulfur-vent-crab":3,"tide-pool-crab":4,"blind-cave-fish":3}, hqHp:48, flavor:"Every drop echoes three times before it lands.", rewards:{first:{gold:60, dust:6}}, requires:[] },
-      { key:"2-B-2", kind:"elite", name:"Smugglers' Stash", icon:"🦝", deck:{"trash-panda-trickster":4,"gull-thief":3,"otter-riverguard":1,"reef-manta-glider":2}, hqHp:89, flavor:"The crates are still here. So are the people who were paid to watch them.", rewards:{first:{gold:100, dust:15}}, requires:["2-B-1"] },
-      { key:"2-B-3", kind:"elite", name:"The Glowing Pool", icon:"🪼", deck:{"reef-manta-glider":2,"open-ocean-hermit-crab":4,"sulfur-vent-crab":2,"blind-cave-fish":2,"otter-riverguard":2}, hqHp:146, flavor:"Light from below is never a good sign in a cave.", rewards:{first:{gold:100, dust:15}}, requires:["2-B-1"] },
+      { key:"2-B-1", kind:"skirmish", name:"Drip Tunnel", icon:"💧", deck:{"sulfur-vent-crab":3,"tide-pool-crab":4,"blind-cave-fish":1,"mallard-marauder":4}, hqHp:48, flavor:"Every drop echoes three times before it lands.", rewards:{first:{gold:60, dust:6}}, requires:[] },
+      { key:"2-B-2", kind:"elite", name:"Smugglers' Stash", icon:"🦝", deck:{"trash-panda-trickster":4,"gull-thief":3,"otter-riverguard":1,"reef-manta-glider":2,"mallard-marauder":2}, hqHp:89, flavor:"The crates are still here. So are the people who were paid to watch them.", rewards:{first:{gold:100, dust:15}}, requires:["2-B-1"] },
+      { key:"2-B-3", kind:"elite", name:"The Glowing Pool", icon:"🪼", deck:{"open-ocean-hermit-crab":4,"sulfur-vent-crab":2,"blind-cave-fish":2,"mallard-marauder":2,"quill-volley":2}, hqHp:146, flavor:"Light from below is never a good sign in a cave.", rewards:{first:{gold:100, dust:15}}, requires:["2-B-1"] },
       { key:"2-B-4", kind:"elite", name:"The Grotto Keeper", icon:"🐙", deck:{"octopus-tactician":1,"otter-riverguard":2,"sulfur-vent-crab":3,"open-ocean-hermit-crab":3,"blind-cave-fish":2}, hqHp:47, flavor:"It has eight arms and has been counting the smugglers' coins with all of them.", characterId:"collapsed-mine", rewards:{first:{gold:150, dust:25}}, requires:["2-B-2","2-B-3"] },
     ]},
   // 14A, The Mycelium Deep (2026-10-12, D41 — my recommendation, built to try: "14A–D one at a time, two days apart, after
   // Map 14's boss"): a side dungeon under The Morel Hollow that turns up two days after the Morel Monarch is first beaten.
   { id:"mz", sub:true, parent:"mu", entry:{x:84, y:70, after:"7-6", afterDays:2, label:"A crack in the roots"}, name:"The Mycelium Deep", icon:"🍄", blurb:"Under the Morel Hollow, the roots go down a long way, and every root is listening.", sequential:true,
     nodes: [
-      { key:"7-A-1", kind:"skirmish", name:"Root Cellar", icon:"🪱", deck:{"compost-grub":3,"worker-ant":2,"tunnel-ant":2,"gorge-wyrm":1,"honey-bee":2,"planarian-splitter":2}, hqHp:171, flavor:"The roots here are hollow. Something has been eating them from the inside.", rewards:{"first":{"gold":90,"dust":10}}, requires:[] },
-      { key:"7-A-2", kind:"skirmish", name:"Glowcap Grotto", icon:"🍄", deck:{"fungal-colossus":2,"honey-bee":2,"nightshade-moth":2,"compost-grub":2,"trapdoor-spider":2}, hqHp:220, flavor:"The caps give off just enough light to see what's watching.", rewards:{first:{gold:100, dust:12}}, requires:["7-A-1"] },
-      { key:"7-A-3", kind:"elite", name:"Silk Gallery", icon:"🕸️", deck:{"trapdoor-spider":3,"webspire-sentinel":2,"carrion-fly-swarm":2,"gallery-orb-weaver":2,"garden-snail":1}, hqHp:52, flavor:"Every thread is a doorbell.", rewards:{first:{gold:120, dust:15}}, requires:["7-A-2"] },
-      { key:"7-A-4", kind:"elite", name:"The Rot Heart", icon:"🦠", deck:{"gangrenous-leech":2,"compost-grub":3,"fungal-colossus":2,"beetle-battering-ram":2}, hqHp:216, flavor:"It beats once a minute. Everything down here beats with it.", rewards:{"first":{"gold":120,"dust":15}}, requires:["7-A-3"] },
-      { key:"7-A-5", kind:"boss", name:"The Mycelium Mind", icon:"👑", deck:{"fungal-colossus":3,"hollow-oath-keeper":2,"trapdoor-spider":2,"gorge-wyrm":2,"strangler-vine":1}, hqHp:217, flavor:"Every mushroom in the Hollow is one of its thoughts.", characterId:"plains-terrace", rewards:{first:{gold:180, dust:25}}, requires:["7-A-4"] },
+      { key:"7-A-1", kind:"skirmish", name:"Root Cellar", icon:"🪱", deck:{"compost-grub":3,"worker-ant":2,"tunnel-ant":2,"gorge-wyrm":1,"planarian-splitter":2,"beetle-battering-ram":2}, hqHp:171, flavor:"The roots here are hollow. Something has been eating them from the inside.", rewards:{"first":{"gold":90,"dust":10}}, requires:[] },
+      { key:"7-A-2", kind:"skirmish", name:"Glowcap Grotto", icon:"🍄", deck:{"fungal-colossus":2,"honey-bee":2,"nightshade-moth":2,"compost-grub":2,"trapdoor-spider":2,"beetle-battering-ram":2}, hqHp:220, flavor:"The caps give off just enough light to see what's watching.", rewards:{first:{gold:100, dust:12}}, requires:["7-A-1"] },
+      { key:"7-A-3", kind:"elite", name:"Silk Gallery", icon:"🕸️", deck:{"trapdoor-spider":3,"webspire-sentinel":2,"carrion-fly-swarm":2,"gallery-orb-weaver":2,"garden-snail":1,"beetle-battering-ram":2}, hqHp:52, flavor:"Every thread is a doorbell.", rewards:{first:{gold:120, dust:15}}, requires:["7-A-2"] },
+      { key:"7-A-4", kind:"elite", name:"The Rot Heart", icon:"🦠", deck:{"gangrenous-leech":2,"compost-grub":3,"beetle-battering-ram":2,"swarm-matriarch":4}, hqHp:216, flavor:"It beats once a minute. Everything down here beats with it.", rewards:{"first":{"gold":120,"dust":15}}, requires:["7-A-3"] },
+      { key:"7-A-5", kind:"boss", name:"The Mycelium Mind", icon:"👑", deck:{"fungal-colossus":3,"hollow-oath-keeper":2,"trapdoor-spider":4,"gorge-wyrm":2,"strangler-vine":1,"beetle-battering-ram":2}, hqHp:217, flavor:"Every mushroom in the Hollow is one of its thoughts.", characterId:"plains-terrace", rewards:{first:{gold:180, dust:25}}, requires:["7-A-4"] },
     ]},
   // The Canopy (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
   { id:"my", sub:true, parent:"m5", entry:{x:12, y:76, after:"14-2", label:"Into the rainforest"}, name:"The Canopy", icon:"🐆", blurb:"Up in the rainforest roof past the savanna's edge — frogs, sloths, drums and a jaguar's path.", sequential:true,
@@ -17299,7 +17442,7 @@ const CONQUEST_MAPS = [
       { key:"14-A-2", kind:"skirmish", name:"Strangler Arch", icon:"🌿", deck:{"toucan-courier":2,"slowpoke-sentinel":2,"ancient-sloth-titan":1,"howler-monkey":2,"jaguar-stalker":2,"aye-aye-prowler":2,"bramblewood-macaque":1}, hqHp:30, flavor:"The vines hold the arch together. They would like to hold you too.", requires:["14-A-1"] },
       { key:"14-A-3", kind:"skirmish", name:"Sloth Boughs", icon:"🦥", deck:{"slowpoke-sentinel":2,"toucan-courier":2,"jaguar-stalker":2,"ancient-sloth-titan":2,"strangler-vine":2,"kinkajou-lurker":2}, hqHp:146, flavor:"Nothing here is in a hurry, including the fight.", requires:["14-A-1"] },
       { key:"14-A-4", kind:"elite", name:"Drum Circle", icon:"🥁", deck:{"howler-monkey":1,"toucan-courier":2,"jaguar-stalker":1,"slowpoke-sentinel":2,"ancient-sloth-titan":2,"strangler-vine":2,"war-drum-mandrill":2,"hercules-beetle":1,"chilli-parrot":2}, hqHp:148, flavor:"The drums have been going for three days.", requires:["14-A-2","14-A-3"] },
-      { key:"14-A-5", kind:"boss", name:"The Jaguar's Path", icon:"🐆", deck:{"jaguar-stalker":2,"ancient-sloth-titan":3,"strangler-vine":4,"toucan-courier":2,"slowpoke-sentinel":2,"howler-monkey":2,"slow-loris":2,"old-growth-tortoise":1}, hqHp:98, flavor:"Spots in the leaves, and then no leaves at all.", requires:["14-A-4"] },
+      { key:"14-A-5", kind:"boss", name:"The Jaguar's Path", icon:"🐆", deck:{"ancient-sloth-titan":3,"strangler-vine":4,"toucan-courier":2,"slowpoke-sentinel":2,"howler-monkey":2,"slow-loris":2,"old-growth-tortoise":1,"termite-mound":2}, hqHp:98, flavor:"Spots in the leaves, and then no leaves at all.", requires:["14-A-4"] },
     ]},
   // Eye of the Volcano (2026-10-12, user: "In the final volcano map, there is a submap called 'Eye of the Volcano' containing more
   // skirmishes, all elite, and very difficult. Undead creatures as the main line, leading to a difficult dungeon. But also skirmishes
@@ -17318,7 +17461,7 @@ const CONQUEST_MAPS = [
         rewards:{first:{gold:320, dust:50}}, requires:["20-A-3"] },
       { key:"20-A-5", rating:410, kind:"elite", name:"Scorched Boars", icon:"🐗", chance:0.35, deck:{"basalt-boar":2,"cinder-stoker":2,"sulfur-vent-crab":2,"echo-keeper":2,"ashbone-ghoul":2}, hqHp:229, flavor:"They root for beetles in ground that would cook an egg.", rewards:{first:{gold:180, dust:28}}, requires:["20-A-1"] },
       { key:"20-A-6", rating:425, kind:"elite", name:"The Vent Crabs", icon:"🦀", chance:0.35, deck:{"sulfur-vent-crab":4,"obsidian-scorpion":1,"magma-salamander":3,"blessed-avatar":2}, hqHp:190, rules:{sulphurFumes:true} /* 2026-10-17: a vent-side fight, Sulphur Fumes */, flavor:"The shells are black glass now. The tempers were always like that.", rewards:{first:{gold:190, dust:30}}, requires:["20-A-2"] },
-      { key:"20-A-7", rating:440, kind:"elite", name:"Ash Condor Roost", icon:"🦅", chance:0.35, deck:{"ash-cloud-condor":4,"blessed-avatar":2,"sulfur-vent-crab":1,"cinder-gecko":2,"fungal-colossus":1}, hqHp:200, flavor:"They ride the heat off the lava and never seem to land.", rewards:{first:{gold:200, dust:30}}, requires:["20-A-3"] },
+      { key:"20-A-7", rating:440, kind:"elite", name:"Ash Condor Roost", icon:"🦅", chance:0.35, deck:{"ash-cloud-condor":4,"blessed-avatar":2,"sulfur-vent-crab":3,"cinder-gecko":2,"fungal-colossus":1}, hqHp:200, flavor:"They ride the heat off the lava and never seem to land.", rewards:{first:{gold:200, dust:30}}, requires:["20-A-3"] },
     ]},
   // The Caldera Heart (2026-10-12, user D60: "The boss caps at 400 exactly. Defeating the boss unlocks the World boss submap and
   // another submap. The world boss submap's skirmishes are 350-400 ... The world boss himself is 500"): the world boss moved
@@ -17333,7 +17476,7 @@ const CONQUEST_MAPS = [
   // New side map (2026-10-12, user's map list: "New Submap"). Fights built from mw's own cards; tune in the editor.
   { id:"ms", sub:true, parent:"mw", entry:{x:70, y:76, after:"5-7", label:"The Sunken Grove"}, name:"The Sunken Grove", icon:"🌳", blurb:"Where the swamp swallowed an old forest. The trees still stand, up to their necks.", sequential:true,
     nodes: [
-      { key:"5-A-1", kind:"skirmish", name:"Rotting Roots", icon:"🌳", deck:{"puddle-hopper":4,"open-ocean-hermit-crab":3,"grass-viper":3,"echo-keeper":2,"star-nosed-mole":2}, hqHp:105, rewards:{"first":{"gold":80,"dust":10}}, requires:[], rules:{"swampFever":25} },
+      { key:"5-A-1", kind:"skirmish", name:"Rotting Roots", icon:"🌳", deck:{"puddle-hopper":4,"open-ocean-hermit-crab":3,"grass-viper":3,"echo-keeper":2,"mallard-marauder":2}, hqHp:105, rewards:{"first":{"gold":80,"dust":10}}, requires:[], rules:{"swampFever":25} },
       { key:"5-A-2", kind:"skirmish", name:"Gator Hollow", icon:"🌳", deck:{"mangrove-mudskipper":4,"constrictor-coil":3,"snapper-hatchling":3,"puddle-hopper":2,"baby-horned-capybara":2}, hqHp:115, rewards:{"first":{"gold":100,"dust":13}}, requires:["5-A-1"], rules:{"swampFever":25} },
       { key:"5-A-3", kind:"skirmish", name:"Moss Weir", icon:"🌳", deck:{"venomlord-serpent":4,"constrictor-coil":3,"puddle-hopper":3,"echo-keeper":2,"mudpuppy":2}, hqHp:125, rewards:{"first":{"gold":120,"dust":16}}, requires:["5-A-2"], rules:{"swampFever":25} },
       { key:"5-A-4", kind:"boss", name:"The Grove Warden", icon:"👑", deck:{"mallard-marauder":2,"venomlord-serpent":2,"bog-leech":2,"hedgehog-herbalist":2,"constrictor-coil":2}, hqHp:108, rewards:{"first":{"gold":200,"dust":30}}, requires:["5-A-3"], rules:{"swampFever":25} },
@@ -17360,15 +17503,16 @@ const CONQUEST_MAPS = [
       { key:"17-A-1", kind:"skirmish", name:"Frost Tunnel", icon:"🧊", deck:{"chipmunk-hoarder":4,"porcupine-roller":3,"glacial-ape-king":3,"taiga-lynx":2}, hqHp:93, rewards:{first:{gold:80, dust:10}}, requires:[] },
       { key:"17-A-2", kind:"skirmish", name:"Glacier Gut", icon:"🧊", deck:{"beaver-builder":4,"glacial-ape-king":3,"arctic-fox-raider":3,"chipmunk-hoarder":2}, hqHp:164, rewards:{"first":{"gold":100,"dust":13}}, requires:["17-A-1"], rules:{"slippery":30} },
       { key:"17-A-3", kind:"skirmish", name:"The Rime Hall", icon:"🧊", deck:{"taiga-lynx":4,"chipmunk-hoarder":3,"golden-eagle-diver":3,"spitting-spider":2,"harvest-mouse":2}, hqHp:34, rewards:{"first":{"gold":120,"dust":16}}, requires:["17-A-2"] },
-      { key:"17-A-4", kind:"boss", name:"The Hollow King", icon:"👑", deck:{"porcupine-roller":2,"arctic-fox-raider":2,"glacial-ape-king":2,"dynamite-packrat":2,"quill-volley":2}, hqHp:128, rewards:{first:{gold:200, dust:30}}, requires:["17-A-3"] },
+      { key:"17-A-4", kind:"boss", name:"The Hollow King", icon:"👑", deck:{"porcupine-roller":2,"arctic-fox-raider":4,"glacial-ape-king":2,"dynamite-packrat":2,"quill-volley":2}, hqHp:128, rewards:{first:{gold:200, dust:30}}, requires:["17-A-3"] },
     ]},
   // New side map (2026-10-12, user's map list: "New Submap"). Opens once the Ice Hollow (the Tundra's side map) is cleared. Fights built from m1's own cards; tune in the editor.
-  { id:"mo", sub:true, parent:"m1", entry:{x:62, y:69, after:"0-4", afterMapCleared:"mi", label:"The Old Bramble"}, name:"The Old Bramble", icon:"🌿", blurb:"The thorns around the Outskirts are older than the village. Something waited in them for you to grow strong.", sequential:true,
+  // 2026-10-18 (X3, coordinator): shieldMap 17: the Shield rule counts these come-back-later fights as Map 17 (it opens after the Ice Hollow), not Map 0.
+  { id:"mo", sub:true, parent:"m1", shieldMap:17, entry:{x:62, y:69, after:"0-4", afterMapCleared:"mi", label:"The Old Bramble"}, name:"The Old Bramble", icon:"🌿", blurb:"The thorns around the Outskirts are older than the village. Something waited in them for you to grow strong.", sequential:true,
     nodes: [
       { key:"0-B-1", kind:"skirmish", name:"Thorn Path", icon:"🌿", deck:{"trash-panda-trickster":4,"glacier-wolf-pack":3,"meadow-rabbit":3,"pond-duck":2}, hqHp:43, rewards:{first:{gold:80, dust:10}}, requires:[] },
-      { key:"0-B-2", kind:"skirmish", name:"The Briar Ring", icon:"🌿", deck:{"otter-paddler":4,"trash-panda-trickster":3,"otter-kit":3,"pond-duck":2}, hqHp:53, rewards:{first:{gold:100, dust:13}}, requires:["0-B-1"] },
+      { key:"0-B-2", kind:"skirmish", name:"The Briar Ring", icon:"🌿", deck:{"otter-paddler":4,"trash-panda-trickster":3,"otter-kit":1,"thornwood-palisade":2,"burrow-rabbit":2}, hqHp:53, rewards:{first:{gold:100, dust:13}}, requires:["0-B-1"] },
       { key:"0-B-3", kind:"skirmish", name:"Root Gate", icon:"🌿", deck:{"tunnel-ant":4,"pond-duck":3,"meadow-rabbit":3,"otter-paddler":2,"thornwood-palisade":2}, hqHp:63, rewards:{"first":{"gold":120,"dust":16}}, requires:["0-B-2"] },
-      { key:"0-B-4", kind:"boss", name:"The Old Bramble", icon:"👑", deck:{"glacier-wolf-pack":2,"ant-scout":2,"pond-trout":2,"pond-duck":2,"otter-paddler":2,"ent":1,"elder-willow":1}, hqHp:80, rewards:{"first":{"gold":200,"dust":30}}, requires:["0-B-3"] },
+      { key:"0-B-4", kind:"boss", name:"The Old Bramble", icon:"👑", deck:{"glacier-wolf-pack":2,"ant-scout":2,"pond-trout":2,"pond-duck":2,"otter-paddler":2,"ent":1,"elder-willow":1,"burrow-rabbit":4}, hqHp:80, rewards:{"first":{"gold":200,"dust":30}}, requires:["0-B-3"] },
     ]},
 ];
 // ---- Skirmish editor overlay (2026-10-03): admin edits to nodes ride on top of the definitions
@@ -17511,6 +17655,18 @@ function buildTower(){
     blurb:'A tower older than the Peak, built by every creature that ever wanted to be the strongest. Each floor is stronger than the last, and nobody has seen the top.', sequential:true, nodes};
 }
 CONQUEST_MAPS.push(buildTower());
+// Bosses that grant an item (2026-10-18, package Z, owner 17:28: "Some bosses grant an item! In those circumstances, you can use +1
+// item."): no fight's reward had a field-kit item yet, so the node field grantsItem:true marks the ones that do: each main map's
+// own boss (its ender, else its last boss) from Map GRANTS_ITEM_FROM_MAP on, where the traveller's kit opens (the 'fieldkit' spot).
+// Such a boss gives one field-kit item on its first clear (grantBossKitItem) and lets you use KIT_USES_PER_FIGHT + 1 items in its
+// fight (kitUsesMax). A node can opt out with grantsItem:false. Set before the baseline copy, so Edit skirmish sees it as data.
+// (No baseKind / mapRewardNodeKey here: KIND_BASE is declared further down.)
+const GRANTS_ITEM_FROM_MAP = 12;
+CONQUEST_MAPS.filter(mp=> !mp.sub).forEach((mp, i)=>{
+  if(i < GRANTS_ITEM_FROM_MAP || !mp.nodes) return;
+  const n = mp.nodes.find(x=> x.ender) || mp.nodes.slice().reverse().find(x=> /^(boss|finalboss)$/.test(x.kind || ''));
+  if(n && n.grantsItem == null) n.grantsItem = true;
+});
 const CONQUEST_MAPS_BASELINE = JSON.parse(JSON.stringify(CONQUEST_MAPS));
 const NODE_EDITS_KEY = 'bramblewood_node_edits_v1';
 let nodeEdits = {};
@@ -18223,6 +18379,7 @@ function nodeRewardTier(node){
   const base = node && (CONQUEST_NODE_REWARDS[node.kind] || CONQUEST_NODE_REWARDS[baseKind(node.kind)]); if(!base) return null;
   const o = (node && node.rewards) || {};
   const pick = (k, f)=> (o[k] && o[k][f] != null && o[k][f] !== '') ? Math.max(0, Number(o[k][f])||0) : base[k][f];
+  if(node.tower) return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold:0, dust:0}}; // 2026-10-18 (package Z): a cleared Spire floor pays nothing
   return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold:pick('repeat','gold'), dust:pick('repeat','dust')}};
 }
 // Reward strip beside the skirmish title (2026-10-08, user: "The first clear rewards should instead
@@ -18725,6 +18882,11 @@ const TUT_MAP_OPEN_KEY = 'bramblewood_tut_map_opened_v1';
 function tutMapOpenSlide(map, positions){
   try{
     if(map.nodes.some(n=> tutSideNodeHidden(map, n)) || localStorage.getItem(TUT_MAP_OPEN_KEY)) return;
+    // 2026-10-18 (audit 4): a save from before the slide that has already won T-2 or later (or a fight on Map 2+) is long past this
+    // moment: the key is set for it and nothing plays.
+    { const done = (loadConquestProgress().completed || []).map(String);
+      if(['T-2', 'T-3', 'T-4'].some(k=> done.includes(conquestNodeId('mtut', k))) || done.some(id=>{ const n = mapNumberOf(id.split(':')[0]); return n != null && n >= 2; })){
+        localStorage.setItem(TUT_MAP_OPEN_KEY, '1'); return; } }
     const cv = document.getElementById('conquestCanvas'); if(!cv) return;
     if(reducedMotion()){ localStorage.setItem(TUT_MAP_OPEN_KEY, '1'); return; }
     const from = tutPairCentred(map, positions);
@@ -18812,7 +18974,7 @@ function battleRecommendation(node){
   cards.forEach(c=> archetypesOf(c.d).forEach(a=>{ archCounts[a] = (archCounts[a]||0)+c.n; }));
   const topArch = Object.entries(archCounts).sort((a,b)=>b[1]-a[1])[0];
   if(topArch && topArch[1]/totalCopies >= 0.5) tips.push(`heavily ${topArch[0]}-themed — a deck built to punish that archetype's usual tricks will overperform here.`);
-  if(node.hqHp>=80) tips.push('a high-HP bramble behind them — expect a long grind; gold/economy cards help you outlast it.');
+  if(skirmishCastle(node).total>=80) tips.push('a high-HP bramble behind them — expect a long grind; gold/economy cards help you outlast it.');
   if(!tips.length) tips.push('a balanced mix — no single obvious lean to play around.');
   return tips.slice(0,2).join(' ');
 }
@@ -19132,6 +19294,33 @@ function dungeonGoldLeavesPreview(mapId, node){
 }
 // May this floor be fought? (a key is in hand)
 function dungeonGateOk(mapId){ return loadDungeonTickets().n > 0; }
+// Premium (2026-10-18, package Z, owner 17:28: "Daily Dungeons - once you complete them, you can sweep them if you are a premium
+// player (p2w - spent at least >10 USD on my game)"): a supporter is a player whose lifetime spend is over PREMIUM_SPEND_USD. There
+// are no real payments yet, so nothing grants it: the flag is read from the player's own profiles row when the server has one
+// (a `premium` boolean, or `lifetime_spend_usd` over 10; selected with '*' so a column that doesn't exist is no error) and is false
+// otherwise. No column is added here. Admins (Admin Mode, an admin account, a dev host) count as premium, for testing.
+const PREMIUM_SPEND_USD = 10;
+let cloudPremium = false;
+function premiumFromProfile(row){ if(!row || typeof row !== 'object') return false; if(row.premium === true) return true; const v = Number(row.lifetime_spend_usd); return isFinite(v) && v > PREMIUM_SPEND_USD; }
+async function refreshPremiumFlag(){
+  try{ cloudPremium = false; if(typeof sbClient === 'undefined' || !sbClient || !cloudUserId) return; const { data, error } = await sbClient.from('profiles').select('*').eq('id', cloudUserId).maybeSingle(); if(!error) cloudPremium = premiumFromProfile(data); }catch(e){}
+}
+function isPremiumPlayer(){
+  if((typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || (typeof adminAllowed === 'function' && adminAllowed())) return true;
+  try{ return cloudPremium === true; }catch(e){ return false; }
+}
+// Sweeping a daily dungeon (2026-10-18, package Z): a floor you have cleared (up to your best floor ever, so a lost climb doesn't take
+// it away) can be swept, premium players only. It is the Conquest Sweep (openSweepMenu / runSweep): Energy per run, the CPU plays it
+// for you, a win pays the floor's clear-again reward. It takes no key and leaves the climb as it is. The Dungeons tab sweeps your
+// best floor; the floor's own panel sweeps that floor. Non-premium players see it locked, with a Premium badge.
+function dungeonSweepableFloor(map, node){ return !!(map && node && isDailyDungeonMap(map) && node.floor > 0 && node.floor <= dungeonBestFloor(map.id)); }
+function dungeonSweepNode(map){ if(!isDailyDungeonMap(map)) return null; const best = Math.min(map.nodes.length, dungeonBestFloor(map.id)); return best > 0 ? map.nodes[best - 1] : null; }
+function dungeonSweepBtnHTML(map){
+  const node = dungeonSweepNode(map); if(!node) return '';
+  if(!isPremiumPlayer()) return `<button type="button" class="btn dg-sweep is-locked" data-dungeon-sweep="${escapeAttr(map.id)}" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`;
+  return `<button type="button" class="btn dg-sweep" data-dungeon-sweep="${escapeAttr(map.id)}" aria-haspopup="true" title="${escapeAttr(TX('ui.dungeon-sweep-tip', {floor: node.floor, e: nodeEnergyCost(map, node) || 1}))}">${escapeHtml(TX('ui.dungeon-sweep'))}</button>`;
+}
+function dungeonSweepLocked(btn){ try{ denyShake(btn); }catch(e){} try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('ui.dungeon-sweep-locked'), 'warn'); }
 // The fight starts: the key goes in the lock.
 function dungeonStakeKey(mapId){ const s = loadDungeonTickets(); if(s.n <= 0) return false; s.n -= 1; saveDungeonTickets(s); return true; }
 // The best floor ever cleared in a dungeon (first-clear payouts go by it, since a lost climb wipes the cleared floors).
@@ -19207,7 +19396,7 @@ function renderDungeonsSubTab(body){
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map ${dd.mapNumber}${parent ? ' · ' + escapeHtml(parent.name) : ''}</span>
         <p class="dg-sub">${escapeHtml(map.blurb || '')}</p>
         ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${f.total ? Math.round(100 * f.done / f.total) : 0}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total}${best ? ` · best: floor ${best}` : ''}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : s.n > 0 ? (run ? '🗝️ Keep climbing' : '🗝️ Enter') : '🗺️ Look at the map'}</button>${run ? `<span class="dg-run">${f.done} cleared this climb</span>` : ''}</div>`
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : s.n > 0 ? (run ? '🗝️ Keep climbing' : '🗝️ Enter') : '🗺️ Look at the map'}</button>${dungeonSweepBtnHTML(map) /* 2026-10-18 (package Z): premium Sweep */}${run ? `<span class="dg-run">${f.done} cleared this climb</span>` : ''}</div>`
         : `<p class="dg-sub">🔒 ${map.entry && map.entry.after ? 'Clear' : 'Reach' /* 2026-10-18: an entrance with no `after` opens as soon as its map does */} ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
   }).join('');
   body.innerHTML = `<div class="panel dungeons-panel">
@@ -19220,12 +19409,34 @@ function renderDungeonsSubTab(body){
   </div>`;
   body.querySelectorAll('[data-dungeon-go]').forEach(b=> b.addEventListener('click', ()=>{
     conquestWorldView = false; conquestSelectedMap = b.dataset.dungeonGo; conquestSelectedNodeKey = null; playSubTab = 'conquest'; renderPlay(); }));
+  // 2026-10-18 (package Z): Sweep your best floor (premium); locked, it says why
+  body.querySelectorAll('[data-dungeon-sweep]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation();
+    const map = CONQUEST_MAPS.find(x=> x.id === b.dataset.dungeonSweep), node = dungeonSweepNode(map); if(!node) return;
+    if(!isPremiumPlayer()) return dungeonSweepLocked(b);
+    openSweepMenu(b, map, node, nodeEnergyCost(map, node) || 1, body, {noIdle:true, after: ()=> renderDungeonsSubTab(body)}); }));
   // 2026-10-18 (audit R3-WP6: at 50/50 the Spire only offered "Keep climbing" into floor 50 again): from the summit you pick any
   // floor to fight again, and the map opens with that floor selected.
   body.querySelectorAll('[data-tower-replay]').forEach(b=> b.addEventListener('click', ()=>{
     const sel = body.querySelector('[data-tower-floor]'), map = CONQUEST_MAPS.find(m=> m.id === 'tw'); if(!map) return;
     const node = map.nodes[Math.max(0, Math.min(map.nodes.length - 1, (parseInt(sel && sel.value, 10) || map.nodes.length) - 1))];
     conquestWorldView = false; conquestSelectedMap = 'tw'; conquestSelectedNodeKey = node ? node.key : null; playSubTab = 'conquest'; renderPlay(); }));
+}
+// The Babel Spire's Energy (2026-10-18, package Z, owner 17:28: "Tower - no use doing it again. You may blue-grey out completed tower
+// floors as there will be 0 reward. Towers just take energy to do, refunding if you fail. But you can still redo older tower floors -
+// their different coloring is just to show that you can redo them for 0 cost."): a floor you have cleared is free to fight again and
+// pays nothing (no Leaves, Dust, drops, eggs, kit items, XP or quest progress; a better rank is still kept). A floor not cleared yet
+// costs its Energy as before, and losing, forfeiting or drawing it gives the Energy back (m.towerEnergyPaid / m.towerRefunded).
+function towerFloorCleared(node, progress){
+  if(!node || !node.tower) return false;
+  try{ return (progress || loadConquestProgress()).completed.includes(conquestNodeId('tw', node.key)); }catch(e){ return false; }
+}
+// What a Conquest fight takes from your Energy right now: 0 for a cleared Spire floor, else nodeEnergyCost (at least 1).
+function fightEnergyCost(mapOrId, node){ if(towerFloorCleared(node)) return 0; return nodeEnergyCost(mapOrId, node) || 1; }
+// The node panel's cost line on a Spire floor: "⚡ 0 · free · 0 reward" once cleared, "⚡ N · refunded if you lose" before.
+function towerCostNoteHTML(map, node){
+  if(!node || !node.tower || node.virtual) return '';
+  if(towerFloorCleared(node)) return `<p class="cnp-tower-cost is-free">${escapeHtml(TX('ui.tower-cost-free'))}</p>`;
+  return `<p class="cnp-tower-cost">${escapeHtml(TX('ui.tower-cost-refund', {n: nodeEnergyCost(map, node) || 1}))}</p>`;
 }
 // The Tower in the Dungeons tab (2026-10-16): its own card under the daily dungeons. Locked until Map 20's last fight falls; admins can
 // always open it. No tickets: every floor costs Energy like any elite.
@@ -19239,11 +19450,12 @@ function towerCardHTML(progress){
   const climb = summit
     ? `<div class="dg-floor dg-summit"><span class="wc-bar"><span style="width:100%"></span></span><span>🏔️ <b>Summit</b> · all ${f.total} floors</span></div>
           <p class="dg-sub dg-summit-line">You stand atop ${escapeHtml(map.name)}. Nobody had seen the top until you did. The wind up here smells of every creature that ever tried.</p>
+          <p class="dg-sub dg-tower-free">${escapeHtml(TX('ui.tower-summit-free')) /* 2026-10-18 (package Z): every floor is a free replay now */}</p>
           <div class="dg-acts"><label class="dg-floor-pick">Floor <select data-tower-floor aria-label="Floor to fight again">${map.nodes.map((n, i)=> `<option value="${i + 1}"${i === map.nodes.length - 1 ? ' selected' : ''}>${i + 1}${n.kind === 'boss' ? ' 👑' : ''}</option>`).join('')}</select></label>
-            <button type="button" class="btn primary" data-tower-replay>🔁 Fight it again</button></div>`
+            <button type="button" class="btn primary" data-tower-replay title="${escapeAttr(TX('ui.tower-cost-free'))}">🔁 Fight it again</button><span class="dg-tower-cost is-free">${escapeHtml(TX('ui.tower-free-tag'))}</span></div>`
     : `<div class="dg-floor"><span class="wc-bar"><span style="width:${Math.round(100 * f.done / f.total)}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total} · ⚔ ${br}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button></div>`;
-  return `<div class="dg-tower-head"><h3>${map.icon} ${escapeHtml(map.name)}</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p></div>
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button>${next ? `<span class="dg-tower-cost">${escapeHtml(TX('ui.tower-cost-refund', {n: nodeEnergyCost(map, next) || 1}))}</span>` : '' /* 2026-10-18 (package Z) */}</div>`;
+  return `<div class="dg-tower-head"><h3>${map.icon} ${escapeHtml(map.name)}</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p><p class="panel-sub dg-tower-rule">${escapeHtml(TX('ui.tower-rule')) /* 2026-10-18 (package Z) */}</p></div>
     <div class="dg-list"><div class="dg-card dg-tower ${open ? '' : 'is-locked'}">${!unlocked && admin ? '<span class="dg-admin-tag" title="Players open it by clearing Map 20">🛠️ Admin preview</span>' : ''}<div class="dg-diamond map-theme-tw">${compassDiamondSVG('dg-tw', !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map 20 · The Sundered Peak</span>
         <p class="dg-sub">${escapeHtml(map.blurb)}</p>
@@ -19644,20 +19856,21 @@ document.addEventListener('keydown', e=>{
 // The Auto-sweep menu: how many runs, and the keep-auto-sweeping (Idle-Sweep) switch.
 // 2026-10-14 (user: "This should say Auto-sweep if I don't even have to play the game."): every player-facing "Sweep" here,
 // on the node panel's split pill and in the toasts now reads Auto-sweep; Idle-Sweep reads "Keep auto-sweeping here".
-function openSweepMenu(anchor, map, node, energyCost, body){
+// 2026-10-18 (package Z): how {after, noIdle}: the daily dungeons' Sweep re-renders its own tab and has no keep-sweeping switch.
+function openSweepMenu(anchor, map, node, energyCost, body, how){
   document.getElementById('sweepMenu')?.remove();
   const most = Math.max(0, Math.min(20, Math.floor(currentEnergy() / energyCost))), idle = idleSweepTarget(), idleHere = idle && idle.mapId === map.id && idle.nodeKey === node.key;
   const opts = [...new Set([1, 3, 5, 10, most].filter(n=> n >= 1 && n <= most))].sort((a, b)=> a - b);
   const m = document.createElement('div'); m.id = 'sweepMenu'; m.className = 'sweep-menu'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-label', 'Auto-sweep');
   m.innerHTML = `<div class="sm-q">🧹 Auto-sweep how many times?</div><div class="sm-opts">${opts.length ? opts.map(n=> `<button type="button" class="btn small ${n === most ? 'primary' : ''}" data-sweepn="${n}">${n === most && n > 1 ? `All ${n}` : n + '×'}</button>`).join('') : `<span class="panel-sub">Needs ${energyCost}⚡ a run.</span>`}</div>
-    <div class="sm-foot">${energyCost}⚡ a run${autoTier('idleSweep') ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Keep auto-sweeping here</label>` : ''}</div>`;
+    <div class="sm-foot">${energyCost}⚡ a run${autoTier('idleSweep') && !(how && how.noIdle) ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Keep auto-sweeping here</label>` : ''}</div>`;
   document.body.appendChild(m);
   const r = anchor.getBoundingClientRect(); m.style.left = Math.max(8, Math.min(innerWidth - m.offsetWidth - 8, r.left + r.width/2 - m.offsetWidth/2)) + 'px'; m.style.top = (r.bottom + 8) + 'px';
   const close = ()=>{ m.remove(); document.removeEventListener('pointerdown', away, true); };
   const away = e=>{ if(!m.contains(e.target) && e.target !== anchor) close(); };
   setTimeout(()=> document.addEventListener('pointerdown', away, true), 0);
   m.querySelectorAll('[data-sweepn]').forEach(b=> b.onclick = ()=>{ const n = +b.dataset.sweepn; close(); anchor.disabled = true; anchor.textContent = 'Auto-sweeping…';
-    setTimeout(()=>{ const r2 = runSweep(map.id, node.key, n); renderConquestSubTab(body); if(r2) showSweepResults(r2, map.id, node.key); }, 30); }); // 2026-10-16: a results screen, not a toast
+    setTimeout(()=>{ const r2 = runSweep(map.id, node.key, n); if(how && how.after) how.after(); else renderConquestSubTab(body); if(r2) showSweepResults(r2, map.id, node.key); }, 30); }); // 2026-10-16: a results screen, not a toast
   const ib = m.querySelector('#smIdle'); if(ib) ib.onchange = ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, node.key); showToast(ib.checked ? TX('toast.keep-auto-sweeping-here-spare-energy') : TX('toast.stopped-auto-sweeping-here'), 'ok'); };
 }
 function renderConquestSubTab(body){
@@ -19879,8 +20092,8 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="Something glints here. An S rank might find it." aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+          <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="Something glints here. An S rank might find it." aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
         </button>`;
       }).join('')}
     </div>
@@ -20022,9 +20235,9 @@ function renderConquestSubTab(body){
     // keyed the same way KIND_LABEL is) -- this tooltip just never surfaced that cost before you
     // committed to it. Skipped for the two virtual tutorial markers (kind:'tutorial') -- they're
     // not fightable nodes and cost nothing.
-    const energyCost = nodeEnergyCost(map, node);
+    const towerFree = towerFloorCleared(node, progress), energyCost = towerFree ? 0 : nodeEnergyCost(map, node); // 2026-10-18 (package Z): a cleared Spire floor is free
     return `<div class="ctt-title"><span class="sk-code">${skirmishCode(map.id, node.key)}</span> ${node.icon} ${node.name}</div>
-      <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node)}${energyCost?` · ${energyCost}⚡`:''}</div>
+      <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node)}${energyCost?` · ${energyCost}⚡`:''}${towerFree ? ` · ${escapeHtml(TX('ui.tower-free-tag'))}` : ''}</div>
       ${node.flavor?`<div class="ctt-flavor">${node.flavor}</div>`:''}
       <div class="ctt-squad">${squad}</div>`;
   }
@@ -20088,7 +20301,7 @@ function renderConquestSubTab(body){
     // 2026-10-12 (user: "'Deck Hidden' - don't say anything. Just a deck area, blacked out, with a locked icon with the B rank
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
-    const energyCost = selectedNode.virtual ? 0 : (nodeEnergyCost(map, selectedNode) || 1), canAffordFight = currentEnergy() >= energyCost;
+    const energyCost = selectedNode.virtual ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
     panelEl.hidden = false;
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
     // faintly green to represent defeated. Red if the fight outlevels me by a lot"): focus hides the Play tabs.
@@ -20099,15 +20312,20 @@ function renderConquestSubTab(body){
     panelEl.innerHTML = `
       ${'' /* 2026-10-12 (22:04, user: "The green tick is unecessary ... just put the S emblem on the top right hand corner"): the best rank sits on the panel's top-right edge */}
       ${done && progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]} cnp-rank-corner" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
-      ${selectedNode.virtual ? '' : (()=>{ const canSweep = done && sweepAllowed(map.id, selectedNode.key);
+      ${selectedNode.virtual ? '' : (()=>{ const dgSweep = dungeonSweepableFloor(map, selectedNode), dgLocked = dgSweep && !isPremiumPlayer(); // 2026-10-18 (package Z): a daily dungeon floor you have cleared: premium Sweep
+        const canSweep = dgSweep || (done && !selectedNode.tower && !isDailyDungeonMap(map) && sweepAllowed(map.id, selectedNode.key)); // 2026-10-18 (package Z): no Auto-sweep on the Spire (a cleared floor pays nothing)
+        const fightTip = selectedNode.tower ? (energyCost ? TX('ui.tower-cost-refund', {n: energyCost}) : TX('ui.tower-cost-free')) : `Costs ${energyCost}⚡`;
         // 2026-10-13 (user: "The sweep button should be beside the fight button. Do like a half pill ... After clicking Sweep - they
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
-        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>` : ''}</div>`; })()}
+        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
+          : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
       <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(selectedNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
       ${newSkillRibbonHTML(selectedNode)}
+      ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
+      ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
       ${skirmishFieldHTML(map.id, selectedNode)}
       ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${journeysAdminOnly() ? '<small>🙈 Hidden from players (Admin only) · </small>' : ''}${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
@@ -20121,7 +20339,7 @@ function renderConquestSubTab(body){
     panelEl.querySelectorAll('[data-sqdef]').forEach(b=> b.addEventListener('click', ()=> openCardDetail(b.dataset.sqdef)));
     const fb = document.getElementById('cnpFightBtn');
     if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
-    { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); openSweepMenu(so, map, selectedNode, energyCost, body); }); }
+    { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); if(so.dataset.locked) return dungeonSweepLocked(so); openSweepMenu(so, map, selectedNode, energyCost, body, isDailyDungeonMap(map) ? {noIdle:true} : undefined); }); } // 2026-10-18 (package Z): a locked dungeon Sweep says why
     // 2026-10-18 (WP4): the panel's own sweep count, Sweep button and idle checkbox (#cnpSweepN/#cnpSweepBtn/#cnpIdleSweep) went; the
     // ⚡ menu (openSweepMenu) has done all three since it replaced them.
     const seBtn = document.getElementById('cnpEditSkirmish');
@@ -20425,7 +20643,7 @@ function raidFieldCardsHTML(rules){
     const def = {id:'__fieldcond', name: row.name.replace(/ · .*$/, ''), icon: row.icon, art: hidden ? '' : fieldArtOf(fieldArtKeyOfRow(row, rules)), rarity:'common', field:{label:'🌿 <span class="fl-w">Environment</span>', title: hidden ? '?' : row.text}};
     const card = matchFieldTileHTML(def, `field-cond env-card biome-${fieldEnvBiome(row.key)}`, `tabindex="0" role="img" style="--i:${i}" title="${escapeAttr(row.name + ': ' + (hidden ? fieldRowQTip(row) : row.text))}" aria-label="${escapeAttr('Environment: ' + row.name + '. ' + (hidden ? fieldRowQTip(row) : row.text))}"`,
       `<div class="env-line">${hidden ? '?' : escapeHtml(row.short || '')}</div><div class="env-ribbon" aria-hidden="true">Environment</div>`);
-    return `<figure class="ar2-rule">${card}<figcaption><b>${row.icon} ${escapeHtml(row.name)}</b><span>${hidden ? '<i>? You learn what it does the first time it happens in a fight.</i>' : keywordizeHTML(escapeHtml(row.text))}</span></figcaption></figure>`; }).join('');
+    return `<figure class="ar2-rule">${card}<figcaption><b>${row.icon} ${escapeHtml(row.name)}</b><span>${hidden ? (fieldRowGateTip(row) ? `<i>? ${escapeHtml(fieldRowGateTip(row))}</i>` : '<i>? You learn what it does the first time it happens in a fight.</i>') : keywordizeHTML(escapeHtml(row.text))}</span></figcaption></figure>`; }).join('');
 }
 function raidPanelHTML(){
   if(!RaidM) return '';
@@ -20470,7 +20688,7 @@ function raidPanelHTML(){
       return `<div class="r2-part ${ps.locked?'is-locked':''} ${ps.defeated?'is-down':''}">
         <div class="r2-part-head"><span class="r2-part-ico">${p.icon||'🎯'}</span><b>${escapeHtml(p.name)}</b><span class="r2-part-num">${ps.total ? Math.ceil(ps.remaining / ps.total * 100) : 0}%</span></div>
         ${raidBarsHTML(ps)}
-        ${atk ? `<span class="r2-note r3-atk" title="Its telegraphed attacks: a column glows red the round before it is smacked">${atk}</span>` : ''}
+        ${atk ? `<span class="r2-note r3-atk" title="${escapeAttr(TX('ui.raid-attacks-telegraph-title'))}">${atk}</span>` : ''}
         <div class="r2-part-foot">${ps.defeated ? '💀 Down' : ps.locked ? `🔒 Opens when ${escapeHtml(waits)} fall${(p.lockedUntil||[]).length>1?'':'s'}` : `<button type="button" class="btn small primary" data-raid-part="${escapeAttr(p.id)}">⚔️ Fight (${cost.raidPoints||0}🎫 ${cost.energy||0}⚡)</button>`}
           <span class="r2-note">${ps.attempts} attempt${ps.attempts===1?'':'s'}${ps.standIn ? ` · ${Math.round(ps.standIn).toLocaleString()} from other raiders` : ''}</span></div>
       </div>`; }).join('')}</div>
@@ -21069,8 +21287,9 @@ function startRaidFullBattle(def, partId, f, st){
     raidCastleStart: cfg.castleHp, raidRoundCap: f.rounds || cfg.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
     raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your bramble'].concat(allies.map(a=> a.castle.name)),
     raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId, raidBossHpBonus: bossHpBonus,
-    raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0}; // 2026-10-18 (R3-WP2)
-  (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
+    raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0, // 2026-10-18 (R3-WP2)
+    raidSeed: currentMatchSeed}; // the Tentacle Smack's seeded rolls (raidSmackRoll: its row, its column; 2026-10-18)
+  (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidSmackTarget(matchState, 2, i, a); }); // a row or a column (2026-10-18)
   // 2026-10-12 (11:26 list: "During the raid, all 3 players' leaders come onto the battlefield, 1 on each of the centre 3
   // columns. Of course taking their own respective rows"): your leader opens in the front row's centre, the allies' leaders in
   // their own rows on either side (they step up into the front once nothing stands before them).
@@ -21168,39 +21387,73 @@ function raidAlliesTurn(m, events, first){
   const ev = {type:'raidAlly', name:a.name, defId:id, where, row:a.row, slot:sl};
   if(events) events.push(ev); else { pushLog(ev); renderBoard(); }
 }
-// Raid specials in the full game (2026-10-12): the trench's telegraphed boss attacks. A column attack is marked a round
-// ahead (that column glows red in your rows), then hits every card of yours in that column, front and reserves alike, or
-// your castle if the column is empty. A front-row attack hits every unit in your front row.
-function raidPickColumn(m){
-  const pl = m.players[1], occ = new Set(); m.engine.allBoardCards(pl).forEach(c=>{ if(c.hp > 0) occ.add(c.slot); });
-  (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=> occ.add(+sl)));
-  const cols = occ.size ? [...occ] : [-1, 0, 1]; return cols[Math.floor(Math.random()*cols.length)];
+// Raid specials in the full game (2026-10-12): the trench's telegraphed boss attacks. A smack is marked a round ahead (its row
+// or column glows red in your rows), then lands; a front-row attack ('frontRow', the Tail Sweep) hits every unit in your front row.
+// The Tentacle Smack, two kinds (2026-10-18, owner 15:56: "there are row-based smacks and column-based smacks. Column-based smacks
+// weight columns by number of units in that column."). An attack with pattern 'column' alternates: its 1st, 3rd, 5th... smack is a
+// COLUMN smack, every unit of yours in one column (front, middle and back), the column picked at random weighted by how many of your
+// units stand in it (an empty column never; no units at all, your bramble); its 2nd, 4th, 6th... is a ROW smack, every unit in one
+// of your rows: the front row, or 1 time in 3 (raidSmackBack, the owner's 15:37 rule) the middle or back row. Every roll is seeded by
+// the match's seed, the round and the attack (raidSmackRoll), so the same fight smacks the same.
+function raidSmackRoll(m, round, i, salt){
+  const s = ((Number(m && m.raidSeed) >>> 0) ^ Math.imul((round|0) + 1, 0x9E3779B1) ^ Math.imul((i|0) + 1, 0x85EBCA77) ^ Math.imul(salt|0, 0xC2B2AE3D)) >>> 0;
+  return seededRng(s)();
 }
+const RAID_SMACK_BACK_CHANCE = 1/3;
+function raidSmackBack(m, round, i){ return raidSmackRoll(m, round, i, 0) < RAID_SMACK_BACK_CHANCE; }
+// Which kind the attack's smack on this round is: they alternate, a column smack first.
+function raidSmackKind(round, a){ const n = Math.floor((round|0) / Math.max(1, (a && a.every)|0 || 1)); return n % 2 === 1 ? 'column' : 'row'; }
+// Your living units in a row (0 front, 1 middle, 2 back) or in a column.
+function raidRowUnits(pl, eng, r){ return r === 0 ? eng.allBoardCards(pl).filter(c=> c.hp > 0) : Object.values((pl.reserve||[])[r-1] || {}).filter(c=> c && c.hp > 0); }
+function raidColUnits(pl, eng, col){ return eng.allBoardCards(pl).filter(c=> c.hp > 0 && c.slot === col).concat((pl.reserve||[]).map(row=> row[col]).filter(c=> c && c.hp > 0)); }
+// A column, weighted by the number of your units in it; null when you have none.
+function raidPickColumn(m, round, i){
+  const pl = m.players[1], w = new Map(), add = sl=> w.set(+sl, (w.get(+sl) || 0) + 1);
+  m.engine.allBoardCards(pl).forEach(c=>{ if(c.hp > 0) add(c.slot); });
+  (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=>{ if(row[sl] && row[sl].hp > 0) add(sl); }));
+  const cols = [...w.keys()].sort((x, y)=> x - y), tot = cols.reduce((t, c)=> t + w.get(c), 0); if(!tot) return null;
+  let u = raidSmackRoll(m, round, i, 1) * tot; for(const c of cols){ u -= w.get(c); if(u < 0) return c; } return cols[cols.length - 1];
+}
+// The row a row smack aims at: the front, or 1 time in 3 the middle or the back row (even odds).
+function raidSmackRow(m, round, i){ return raidSmackBack(m, round, i) ? (raidSmackRoll(m, round, i, 2) < 0.5 ? 1 : 2) : 0; }
+// What the attack's smack on this round will hit, chosen when it is telegraphed (the round before) and kept.
+function raidSmackTarget(m, round, i, a){ return raidSmackKind(round, a) === 'column' ? {kind:'column', col: raidPickColumn(m, round, i)} : {kind:'row', row: raidSmackRow(m, round, i)}; }
 function raidSpecials(m, events){
   // A stage's extraVolley (2026-10-18, R3-WP2; Enraged / Thrashing): the boss's back two rows strike too, as your ally rows do (engine
   // reserveVolley: half Attack at the unit facing them, or your castle when that column is empty), N times a round.
   // 2026-10-18: every reserve unit, both sides, also strikes once in each round's combat now (reserveActs), so these are extra strikes.
   for(let k = 0; k < Math.min(3, m.raidExtraVolley || 0) && m.engine.reserveVolley; k++){ m.engine.reserveVolley(m.players, m.sideOf, 2, m.stats, events); m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, events); }
   const atks = m.raidAttacks || []; if(!atks.length) return;
-  const pl = m.players[1], round = m.round; m.raidPending = m.raidPending || {};
+  const pl = m.players[1], E = m.engine, round = m.round; m.raidPending = m.raidPending || {};
   atks.forEach((a, i)=>{
     const every = Math.max(1, a.every||1); if(round % every !== 0) return;
     if(a.pattern === 'column'){
-      const col = m.raidPending[i] != null ? m.raidPending[i] : raidPickColumn(m); delete m.raidPending[i];
-      const hit = m.engine.allBoardCards(pl).filter(c=> c.hp > 0 && c.slot === col).concat((pl.reserve||[]).map(row=> row[col]).filter(Boolean));
-      hit.forEach(c=> m.engine.damageCardFlat(c, a.dmg||0, 'physical', null));
+      const p = m.raidPending[i] && m.raidPending[i].kind ? m.raidPending[i] : raidSmackTarget(m, round, i, a); delete m.raidPending[i];
+      let hit = [], ev;
+      if(p.kind === 'row'){
+        // the row it was aimed at; when that row is empty it lands on the nearest row with units (front first), as the 15:37 smack did
+        const row = [p.row, 0, 1, 2].find(r=> raidRowUnits(pl, E, r).length); hit = row == null ? [] : raidRowUnits(pl, E, row);
+        ev = {type:'raidSmack', kind:'row', name:a.name || 'Smack', row: row == null ? p.row : row, col:null, dmg:a.dmg||0, hits:hit.length};
+      } else {
+        // the telegraphed column (picked now when you had no units then); a column that has emptied since hits your bramble
+        const col = p.col != null ? p.col : raidPickColumn(m, round, i); hit = col == null ? [] : raidColUnits(pl, E, col);
+        ev = {type:'raidSmack', kind:'column', name:a.name || 'Smack', col, row:null, dmg:a.dmg||0, hits:hit.length};
+      }
+      hit.forEach(c=> E.damageCardFlat(c, a.dmg||0, 'physical', null));
       if(!hit.length) pl.hq.hp = Math.max(0, pl.hq.hp - (a.dmg||0));
       (pl.reserve||[]).forEach(row=> Object.keys(row).forEach(sl=>{ if(row[sl].hp <= 0) delete row[sl]; }));
-      events.push({type:'raidSmack', name:a.name || 'Smack', col, dmg:a.dmg||0, hits:hit.length});
+      events.push(ev);
     } else if(a.pattern === 'frontRow'){
-      const hit = m.engine.allBoardCards(pl).filter(c=> c.hp > 0); hit.forEach(c=> m.engine.damageCardFlat(c, a.dmg||0, 'physical', null));
+      const hit = E.allBoardCards(pl).filter(c=> c.hp > 0); hit.forEach(c=> E.damageCardFlat(c, a.dmg||0, 'physical', null));
       events.push({type:'raidSmack', name:a.name || 'Sweep', col:null, dmg:a.dmg||0, hits:hit.length, front:true});
     }
   });
-  m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, events);
-  atks.forEach((a, i)=>{ if(a.pattern === 'column' && (round + 1) % Math.max(1, a.every||1) === 0) m.raidPending[i] = raidPickColumn(m); });
+  E.removeDeadCards(m.players, m.sideOf, {}, m.stats, events);
+  atks.forEach((a, i)=>{ if(a.pattern === 'column' && (round + 1) % Math.max(1, a.every||1) === 0) m.raidPending[i] = raidSmackTarget(m, round + 1, i, a); });
 }
-function raidTelegraphCols(m){ return m && m.raidPending ? Object.values(m.raidPending).filter(v=> v != null) : []; }
+// What glows red this round: the columns and rows (0 front, 1 middle, 2 back) the next smacks will hit.
+function raidTelegraph(m){ const out = {cols:[], rows:[]}; if(m && m.raidPending) Object.values(m.raidPending).forEach(p=>{ if(!p) return;
+  if(p.kind === 'row' && p.row != null) out.rows.push(p.row); else if(p.kind === 'column' && p.col != null) out.cols.push(p.col); }); return out; }
 // The raid's last turn (2026-10-18): a banner over the board as it starts ("the tide turns after this one"), so the end isn't a surprise.
 function raidLastTurnBanner(m){
   const bf = document.querySelector('.battlefield'); if(!bf || !m) return;
@@ -21604,7 +21857,7 @@ function resolveFactionChoice(pick){
   // picker on the way in and showing through while the picker zoomed and faded. The tutorial fight now starts at once, under the
   // fading picker, so the picker opens straight onto the battlefield. Home is still rendered first (switchTab('home') on the way
   // in), so nothing it sets up is lost.
-  const hide = ()=>{ if(el){ el.hidden = true; el.classList.remove('fs-zoom'); } };
+  const hide = ()=>{ if(el){ el.hidden = true; el.classList.remove('fs-zoom'); el.removeAttribute('data-a11y-skip'); } };
   const start = ()=>{ beginTutorialStage(1); fadeInBattlefield(); };
   let fx = false;
   if(el && !el.hidden && !reducedMotion()){ try{ factionToBattleFx(pick, el, hide); fx = true; }catch(e){} }
@@ -21620,7 +21873,7 @@ function factionToBattleFx(pick, screen, done){
   try{ const D = tutorialDecksFor(1, pick).mine; Object.keys(D).forEach(id=>{ for(let i = 0; i < Math.min(2, D[id]); i++) ids.push(id); }); }catch(e){}
   ids = ids.filter(id=> defs[id]).slice(0, 8);
   const layer = document.createElement('div'); layer.className = 'f2b-layer'; layer.setAttribute('aria-hidden', 'true');
-  document.body.appendChild(layer); screen.classList.add('fs-zoom');
+  document.body.appendChild(layer); screen.setAttribute('data-a11y-skip', ''); screen.classList.add('fs-zoom'); // 2026-10-18 (audit 4): the fight starts under the fading screen; it no longer traps or takes focus (bramblewood-a11y.js)
   const W = innerWidth, H = innerHeight, ex = Math.min(180, W * 0.14), ey = H - 170; // about where the deck sits
   ids.forEach((id, i)=>{ const c = document.createElement('div'); c.className = 'f2b-card'; c.innerHTML = cardTileHTML(defs[id], {inPlay:true}); layer.appendChild(c);
     const sx = W - 120, sy = 40;
@@ -21676,7 +21929,10 @@ const STARTER_CFG_DEFAULT = {
   rewards2: {otters: ['river-warden', 'otter-centurion'], hummingbirds: ['sunspire-envoy', 'crimson-wing-recruit'], both: ['riverwing-envoy', 'sunspire-envoy']}, // 2026-10-12 (user: "a reward for people who chose otter-hbird together that's not the dominion guy or centurion"): the Riverwing Envoy
   bothBonus: 'meerkat-wayfarer',
 };
-const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:16, rivalHp:6, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
+// 2026-10-18 (X3, owner 15:37 "D. Tutorial only"): your own bramble is very low in the two tutorial fights too: 8 Health (was 16),
+// against the rival's 6 (8 in part 2), and capped there even if a saved tutorial config says more. Map 0's fights keep your bramble's own Health.
+const TUTORIAL_MY_HP_MAX = 8;
+const TUTORIAL_CFG_DEFAULT = {...STARTER_CFG_DEFAULT, myHp:8, rivalHp:6, handSize:3, seed:TUTORIAL_SEED, rivalNames:{otters:'Sunfeather Fledgling Guard', hummingbirds:'Rivergate Otter Scout', both:'Sunfeather Fledgling Guard'}, myDeck:null, rivalDeck:null, steps:{}};
 const TUTORIAL_CFG_KEY = 'bramblewood_tutorial_cfg_v2'; // v2 (2026-10-12): an older saved config kept the old, harder castle Health
 let tutorialCfg = (()=>{ try{ return Object.assign({}, TUTORIAL_CFG_DEFAULT, JSON.parse(localStorage.getItem(TUTORIAL_CFG_KEY)||'{}')||{}); }catch(e){ return Object.assign({}, TUTORIAL_CFG_DEFAULT); } })();
 function saveTutorialCfg(){ try{ localStorage.setItem(TUTORIAL_CFG_KEY, JSON.stringify(tutorialCfg)); }catch(e){} }
@@ -21717,7 +21973,7 @@ function openTutorialEditor(){
     <div class="modal-head-row"><h2>🎓 Tutorial editor</h2><button class="modal-close-btn" id="teClose" aria-label="Close">✕</button></div>
     <p class="panel-sub">Changes apply to the next tutorial that starts. ${cloudCardAdmin ? 'Save publishes them for every new player.' : 'You are not signed in as a cloud admin, so Save only changes this browser.'}</p>
     <div class="te-grid">
-      <label>Your bramble HP<input type="number" id="teMyHp" min="1" max="200" value="${c.myHp||30}"></label>
+      <label title="At most ${TUTORIAL_MY_HP_MAX} (2026-10-18: the tutorial keeps your bramble very low)">Your bramble HP<input type="number" id="teMyHp" min="1" max="${TUTORIAL_MY_HP_MAX}" value="${Math.min(TUTORIAL_MY_HP_MAX, c.myHp||TUTORIAL_MY_HP_MAX)}"></label>
       <label>Rival bramble HP<input type="number" id="teRivalHp" min="1" max="200" value="${c.rivalHp||30}"></label>
       <label>Starting hand<input type="number" id="teHand" min="1" max="5" value="${c.handSize||3}"></label>
       <label>Seed<input type="number" id="teSeed" min="0" value="${c.seed||TUTORIAL_SEED}" title="The tutorial always plays the same draws for a given seed"></label>
@@ -21865,6 +22121,18 @@ function tutorialDeckPreviewHTML(deck){
   const defs = getCardDefs(), ids = Object.keys(deck||{}).filter(id=> deck[id] > 0 && defs[id]);
   return ids.length ? `<div class="se-deck-stacks te-stacks">${ids.sort(deckSortFn('cost')).map(id=> `<span class="se-stack" data-defid="${escapeAttr(id)}">${stackHTML(cardTileHTML(defs[id], {inPlay:true}), deck[id], '×' + deck[id])}</span>`).join('')}</div>` : '<p class="panel-sub">No cards yet.</p>';
 }
+// 2026-10-18 (owner: the drag hint animates the golden card): the deck is drawn from its end (engine.draw pops), so the opening
+// hand is its last `hand` ids. When no copy of the highlighted card (or its tutorial plain copy, derivedFrom) is among them, the
+// nearest copy below swaps places with the first card of that window; the rest of the seeded order stays as it was. A highlight
+// that is not in the deck (part 2's leader) changes nothing. Returns true when the card is in the opening hand.
+function tutorialDealHighlight(deck, hlId, hand){
+  if(!hlId || !Array.isArray(deck) || !deck.length) return false;
+  const defs = getCardDefs(), is = id=> id === hlId || !!(defs[id] && defs[id].derivedFrom === hlId);
+  const lo = Math.max(0, deck.length - hand);
+  for(let i = lo; i < deck.length; i++) if(is(deck[i])) return true;
+  for(let j = lo - 1; j >= 0; j--) if(is(deck[j])){ const t = deck[lo]; deck[lo] = deck[j]; deck[j] = t; return true; }
+  return false;
+}
 function startTutorialMatch(stage, arrangedIds, opts){
   try{ if(coachOpen) hideCoachTip(); }catch(e){}
   const pick = loadFactionChoice() || 'both';
@@ -21875,7 +22143,7 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const deckCounts = tutorialPlainDeck(tutDecks.mine, st), rivalCounts = tutorialPlainDeck(tutDecks.rival, st); invalidateCardDefs();
   const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode:'open'}); // 2026-10-12 (user: "Tutorial -> non collapse rules"): it was left on the engine's old default
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = Object.assign({}, myCastleDef(), cfg.myHp ? {health: cfg.myHp} : {});
+  const myCharacter = Object.assign({}, myCastleDef(), {health: Math.min(TUTORIAL_MY_HP_MAX, cfg.myHp || TUTORIAL_MY_HP_MAX)}); // 2026-10-18 (X3): at most 8
   const validDeck = d=> d && Object.keys(d).some(id=> getCardDefs()[id] && d[id]>0) ? Object.fromEntries(Object.entries(d).filter(([id,n])=> getCardDefs()[id] && n>0)) : null;
   // Part 2 (2026-10-12) plays your real starter deck (+ the tutorial reward cards), with your leader beside it.
   // Deliberately NOT persisted as the player's real deck (myDeckCounts/saveMyDeck) -- see this
@@ -21897,6 +22165,9 @@ function startTutorialMatch(stage, arrangedIds, opts){
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
   const hand = Math.max(1, Math.min(5, cfg.handSize||3));
+  // 2026-10-18 (owner: "The golden card is the tutorial telling the player to [play] that card. so the animation should be on
+  // that card."): the highlighted (golden) card is always dealt into the opening hand, so the drag hint animates it.
+  tutorialDealHighlight(players[1].deck, tutorialHighlightId(st, pick), hand);
   engine.draw(players[1], hand, 'A', stats, []);
   engine.draw(players[2], hand, 'B', stats, []);
   if(!(opts && opts.adminTest)){ const tp = loadTutorialProgress(); noteTutorialProgress({level:2, faction:pick, attempts:(tp.attempts||0) + 1, startedAt: tp.startedAt || Date.now()}); }
@@ -22526,13 +22797,16 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('toast.no-dungeon-tickets-left-a-new'), 'warn'); return false; }
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
-  if(!(opts && opts.skipEnergyCost)){
+  // 2026-10-18 (package Z): a cleared Babel Spire floor is free (towerReplay); a new floor's Energy is held (towerEnergyPaid) so a
+  // loss can give it back, and it only counts for the "Use N Energy" notice once the floor is won.
+  const towerReplay = !!node.tower && towerFloorCleared(node); let towerEnergyPaid = 0;
+  if(!(opts && opts.skipEnergyCost) && !towerReplay){
     const cost = nodeEnergyCost(mapId, node) || 1;
     if(!spendEnergy(cost)){
       energyShortToast(cost);
       return false;
     }
-    bumpQuestCounter('energyConquest', cost);
+    if(node.tower) towerEnergyPaid = cost; else bumpQuestCounter('energyConquest', cost);
   }
   // Boss banter (2026-10-18, audit E5: the boss_banter dialogue was written but never played; a one-line copy of its first line
   // stood in): the two-line exchange plays once per boss per save, after the fight is paid for (a refused start no longer uses it
@@ -22586,6 +22860,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, aiLevel,
     conquestNode:{mapId, nodeId:nodeKey, kind:node.kind, name:node.name},
     fightSession, transcript: [], dungeonKeyStaked: !!dungeonKeyStaked,
+    towerReplay, towerEnergyPaid, // 2026-10-18 (package Z)
     battleMode,
     gladiatorLeaderDefs: battleMode==='gladiator' ? {1: myGlad && myGlad.defId, 2: enemyGlad && enemyGlad.defId} : null,
     // Epic A (2026-09-18): the leader you've set in the deck editor rides along into Conquest
@@ -22723,7 +22998,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
     <div class="vs-side vs-me">
       <div class="vs-portrait">${avatarHTML(loadAvatar(), 84)}</div>
       <div class="vs-name">${escapeHtml(myProfile ? myProfile.name : 'You')}</div>
-      <div class="vs-sub">🏰 ${escapeHtml(myChar && myChar.name || 'Castle')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
+      <div class="vs-sub">🏰 ${escapeHtml(myChar && myChar.name || 'Bramble')}${deck ? ' · ' + escapeHtml(deck.name) : ''}</div>
       ${(()=>{ try{ return `<div class="vs-lvl is-mine" title="Your battle rating"><small>Your BR</small><b>⚔ ${mainDeckLevel(myDeckCounts, myLeaderId)}</b></div>`; }catch(e){ return ''; } })()}
     </div>
     <div class="vs-mid"><span class="vs-mark">VS</span><span class="vs-kind">${map ? escapeHtml(map.icon||'') + ' ' : ''}${map ? escapeHtml(skirmishCode(map.id, node.key)) + ' · ' : ''}${kindLabel}</span></div>
@@ -22864,7 +23139,10 @@ const SB_KEY = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budge
 const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
-const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, missMult:1.5};
+const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, missMult:1.5};
+// 2026-10-18 (owner: "[Ritual] increases N."): a Ritual is a cost, like Wait: N += perRitual (1) per Ritual point, the sum of
+// its counts (The Sixfold's 6 perished / 6 drawn / 6 bramble damage = 18, so N 28 -> 46 and its 8/20 fits).
+function sbRitualPts(d){ const r = d && d.effects && d.effects.ritual; return r && typeof r === 'object' ? Object.values(r).reduce((a, b)=> a + (Number(b)||0), 0) : 0; }
 // The v3 numbers start fresh (a v2 save's N numbers would be wrong for v3); the skill costs a browser saved under v2 carry over.
 function sbLoad(){ const def = Object.assign({}, SB_V3_DEFAULTS, {skills:SB_DEFAULT_SKILLS, halfMiss:SB_HALF_MISS});
   let saved = null; try{ saved = JSON.parse(localStorage.getItem(SB_KEY)||'null'); }catch(e){}
@@ -22883,7 +23161,7 @@ function sbRarityRank(k){ const ladder = RARITY_DEFS.filter(r=> !r.as).map(r=> r
 // N for a card at a level (v3, 2026-10-17).
 function sbBudgetAt(d, cfg, lv){
   const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k], W = Number(d.wait)||0, C = Number(d.cost)||0, L = Math.max(0, Number(lv)||0);
-  return Math.round((g('base') + g('perLevel')*L + g('perRarity')*sbRarityRank(d.rarity) + g('perWait')*W + g('perWait2')*W*W + g('perLumber')*C + g('perLumber2')*C*C) * 100) / 100;
+  return Math.round((g('base') + g('perLevel')*L + g('perRarity')*sbRarityRank(d.rarity) + g('perWait')*W + g('perWait2')*W*W + g('perLumber')*C + g('perLumber2')*C*C + g('perRitual')*sbRitualPts(d)) * 100) / 100;
 }
 function sbBudget(d, cfg){ return sbBudgetAt(d, cfg, cardBaseLevel(d)); }
 // v3 check (2026-10-17): x1 = added score (2×Attack + Health + Skills) < N; x2 = multiplied score (Attack × Health + Skills)
@@ -22896,7 +23174,7 @@ function sbFit(d, S, N, M){ let A = d.attack||0, D = d.health||1; let guard = 20
 function sbColour(c){ return !c.ok ? 'var(--danger, #c0392b)' : (c.wellUnder ? '#d0569a' : '#2e8b57'); }
 function sbVerdict(c){ return !c.ok ? 'over' : (c.wellUnder ? 'well under' : 'within'); }
 function sbFormulaText(cfg){ const g = k=> cfg[k] == null ? SB_V3_DEFAULTS[k] : cfg[k];
-  return `N = ${g('base')} + ${g('perLevel')}×Level + ${g('perRarity') === 1 ? '' : g('perRarity') + '×'}Rarity + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber²`; }
+  return `N = ${g('base')} + ${g('perLevel')}×Level + ${g('perRarity') === 1 ? '' : g('perRarity') + '×'}Rarity + ${g('perWait')}×Wait + ${g('perWait2')}×Wait² + ${g('perLumber')}×Lumber + ${g('perLumber2')}×Lumber² + ${g('perRitual')}×Ritual points`; }
 // Budget line in the card editor (2026-10-14, user: "In the card editor in the game, show the N value versus the optimal N
 // value for the map, level, and rarity"). 2026-10-17 (v3): no Map picker any more (the formula has no map term); Level 1 as
 // before; both checks shown, coloured green within both, red over either, pink well under on the first.
@@ -22923,7 +23201,7 @@ function renderStatBudget(host){
   host.innerHTML = `<h2>⚖️ Stat budget</h2>
     <p class="panel-sub">Budget v3 (2026-10-17). A card passes when <b>both</b> hold: <b>2×Attack + Health + Skills &lt; N</b> and <b>Attack × Health + Skills &lt; (N/3)²</b>. ${escapeHtml(sbFormulaText(cfg))}. Level = the level the card starts at (Base and quest cards 0, rewards 1). Rarity: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11 …; Quest counts as Uncommon. Both scores ×${g('missMult')} for every skill that makes attacks miss about half the time (${escapeHtml((cfg.halfMiss || SB_HALF_MISS).join(', '))}; they cost 0 themselves). Bounty costs 0. <span style="color:#2e8b57; font-weight:700">Green</span> within both, <span style="color:#c0392b; font-weight:700">red</span> over either, <span style="color:#d0569a; font-weight:700">pink</span> well under (first score ≤ ${Math.round(SB_WELL_UNDER*100)}% of N).</p>
     <div class="cc-controls"><label>Base N ${inp('sbBase', 'base')}</label><label>Per Level ${inp('sbPerLevel', 'perLevel')}</label><label>Per rarity step ${inp('sbPerRarity', 'perRarity', '0.1')}</label>
-      <label>Per Wait ${inp('sbPerWait', 'perWait')}</label><label>Per Wait² ${inp('sbPerWait2', 'perWait2', '0.05')}</label><label>Per Lumber ${inp('sbLumber', 'perLumber')}</label><label>Per Lumber² ${inp('sbLumber2', 'perLumber2', '0.05')}</label><label>Half-miss × ${inp('sbMissMult', 'missMult', '0.05')}</label>
+      <label>Per Wait ${inp('sbPerWait', 'perWait')}</label><label>Per Wait² ${inp('sbPerWait2', 'perWait2', '0.05')}</label><label>Per Lumber ${inp('sbLumber', 'perLumber')}</label><label>Per Lumber² ${inp('sbLumber2', 'perLumber2', '0.05')}</label><label title="Ritual points = the sum of the Ritual's counts">Per Ritual point ${inp('sbRitual', 'perRitual', '0.1')}</label><label>Half-miss × ${inp('sbMissMult', 'missMult', '0.05')}</label>
       <button type="button" class="btn small ghost" id="sbResetV3" title="Back to the v3 numbers">Reset to v3</button>
       <label>Up to Map <input type="number" id="sbUpTo" min="0" max="60" value="${sbState.upTo}" class="w-60"></label><label><input type="checkbox" id="sbOnlyFail" ${sbState.onlyFail?'checked':''}> Only over budget</label></div>
     <details><summary>Skill costs (a number; v = its value; -v = a payment, minus its value)</summary><textarea id="sbSkills" rows="4" style="width:100%; font-family:monospace">${escapeHtml(Object.entries(cfg.skills).map(([k, v])=> k + ': ' + v).join(', '))}</textarea><button type="button" class="btn small" id="sbSkillsSave">Save costs</button><span class="panel-sub"> Any other skill costs 1, plus half its number.</span></details>
@@ -22932,7 +23210,7 @@ function renderStatBudget(host){
     ${shown.map(r=> `<tr><td>${escapeHtml(r.d.name)}</td><td>${escapeHtml(r.d.rarity||'common')}</td><td>${r.lv}</td><td>${r.d.wait||0}/${r.d.cost||0}</td><td>${r.A}/${r.D}</td><td>${r.S}${r.M !== 1 ? ` <small title="Half-miss multiplier">×${Math.round(r.M*1000)/1000}</small>` : ''}</td><td>${r.N}</td><td>${r.c.x1} ${r.c.r1 ? '✓' : '✗'} &lt; ${r.N}</td><td>${r.c.x2} ${r.c.r2 ? '✓' : '✗'} &lt; ${r.c.N2}</td><td style="color:${sbColour(r.c)}; font-weight:800">${sbVerdict(r.c)}</td><td>${r.fit ? r.fit.A + '/' + r.fit.D : '—'}</td><td>${r.fit ? `<button type="button" class="btn small ghost" data-sbfit="${escapeAttr(r.id)}">Fit</button>` : ''}</td></tr>`).join('')}
     </tbody></table></div>`;
   const re = ()=> renderStatBudget(host), num = (id, k)=>{ const el = host.querySelector(id); if(el) el.onchange = ()=>{ const c = sbLoad(); c[k] = Number(el.value)||0; sbSave(c); re(); }; };
-  num('#sbBase', 'base'); num('#sbPerLevel', 'perLevel'); num('#sbPerRarity', 'perRarity'); num('#sbPerWait', 'perWait'); num('#sbPerWait2', 'perWait2'); num('#sbLumber', 'perLumber'); num('#sbLumber2', 'perLumber2'); num('#sbMissMult', 'missMult');
+  num('#sbBase', 'base'); num('#sbPerLevel', 'perLevel'); num('#sbPerRarity', 'perRarity'); num('#sbPerWait', 'perWait'); num('#sbPerWait2', 'perWait2'); num('#sbLumber', 'perLumber'); num('#sbLumber2', 'perLumber2'); num('#sbRitual', 'perRitual'); num('#sbMissMult', 'missMult');
   { const rb = host.querySelector('#sbResetV3'); if(rb) rb.onclick = ()=>{ const c = sbLoad(); Object.assign(c, SB_V3_DEFAULTS); sbSave(c); re(); }; }
   host.querySelector('#sbUpTo').onchange = e=>{ sbState.upTo = Math.max(0, Number(e.target.value)||0); re(); };
   host.querySelector('#sbOnlyFail').onchange = e=>{ sbState.onlyFail = e.target.checked; re(); };
@@ -25956,8 +26234,8 @@ function castleCharOf(m, pid){
 function hpRibbonHTML(m, side, label){
   const pid = side==='A' ? 1 : 2; const hq = m.players[pid].hq;
   const hp = Math.max(0, hq.hp), pct = hq.maxHp>0 ? Math.max(0, Math.min(100, hp/hq.maxHp*100)) : 0;
-  return `<div class="bf-hp bf-hp-${side==='A'?'mine':'enemy'} ${pct<=30?'is-low':''}" data-hpribbon="${side}" role="img" aria-label="${escapeAttr((label||'Castle')+': '+hp+' of '+hq.maxHp+' health')}">
-    <span class="bf-hp-label">🏰 ${escapeHtml(label||'Castle')}</span>
+  return `<div class="bf-hp bf-hp-${side==='A'?'mine':'enemy'} ${pct<=30?'is-low':''}" data-hpribbon="${side}" role="img" aria-label="${escapeAttr((label||'Bramble')+': '+hp+' of '+hq.maxHp+' health')}">
+    <span class="bf-hp-label">🏰 ${escapeHtml(label||'Bramble')}</span>
     <span class="bf-hp-track"><span class="bf-hp-fill" style="width:${pct.toFixed(1)}%"></span></span>
     <span class="bf-hp-num">${hp}<small>/${hq.maxHp}</small></span>${side === 'B' && m.over && m.mode !== 'sandbox' ? finalTurnPillHTML(m) : side === 'B' && m.raidRoundCap && !m.over ? raidClockPillHTML(m) : ''}</div>`;
 }
@@ -26083,7 +26361,7 @@ function wireFacingHover(){
   });
 }
 function matchCastleTileHTML(charDef, hp, maxHp, hqSide, sideLabel){
-  const def = charDef || {id:'none-castle', name:'Castle', icon:'🏰', rarity:'common', health:maxHp};
+  const def = charDef || {id:'none-castle', name:'Bramble', icon:'🏰', rarity:'common', health:maxHp};
   // Some Conquest/Raid opponents are given a bare placeholder character with no real Bramble
   // pick behind them (see startConquestMatch's own enemyCharacter fallback: {id:'conquest-enemy',
   // name:node.name, health:node.hqHp, effects:{}} -- deliberately no `icon`, since there's no
@@ -26353,6 +26631,7 @@ function renderMatchUI(){
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
         ${m.raidersTook ? raidersTookHTML(m) : '' /* the surprise challenge lost (2026-10-15) */}
+        ${m.towerRefunded ? `<p class="wl-raiders wl-tower-refund">${escapeHtml(TX('results.tower-refunded', {n: m.towerRefunded}))}</p>` : ''}${m.towerReplay && m.winner===1 ? `<p class="wl-tower-replay">${escapeHtml(TX('results.tower-replay'))}</p>` : '' /* 2026-10-18 (package Z) */}
         ${m.dungeonOutcome && m.dungeonOutcome.lost ? `<p class="wl-raiders wl-dkey-lost">${m.dungeonOutcome.keyLost ? TX('results.dungeon-key-lost-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best}) : TX('results.dungeon-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best})}</p>` : '' /* 2026-10-16: the key is gone, back to floor 1 */}
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
@@ -27714,10 +27993,13 @@ function renderBoard(opts){
       el.innerHTML = html;
     });
   }
-  if(m.raidFull){ const cols = raidTelegraphCols(m);
+  // 2026-10-18 (owner 15:56, row and column smacks): the next smack's column glows red down all your rows, or its row glows red across
+  if(m.raidFull){ const tg = raidTelegraph(m), resRows = [...document.querySelectorAll('#battlefieldInner .reserve-row.mine')];
     document.querySelectorAll('#rowMine > .board-card, #battlefieldInner .reserve-row.mine > .board-card').forEach(x=> x.classList.remove('raid-tele'));
-    cols.forEach(col=>{ const i = col + slotRange; const f = document.querySelectorAll('#rowMine > .board-card')[i]; if(f) f.classList.add('raid-tele');
-      document.querySelectorAll('#battlefieldInner .reserve-row.mine').forEach(r=>{ const c = r.querySelectorAll(':scope > .board-card')[i]; if(c) c.classList.add('raid-tele'); }); }); }
+    tg.cols.forEach(col=>{ const i = col + slotRange; const f = document.querySelectorAll('#rowMine > .board-card')[i]; if(f) f.classList.add('raid-tele');
+      resRows.forEach(r=>{ const c = r.querySelectorAll(':scope > .board-card')[i]; if(c) c.classList.add('raid-tele'); }); });
+    tg.rows.forEach(row=>{ const cells = row === 0 ? document.querySelectorAll('#rowMine > .board-card') : ((resRows.find(r=> +r.dataset.resrow === row) || {querySelectorAll:()=> []}).querySelectorAll(':scope > .board-card'));
+      cells.forEach(c=> c.classList.add('raid-tele')); }); }
   const mult = (matchState && matchState.speedMult) || 1;
   const dur = entranceCardTweenDur(mult);
   // "Genuinely new to the player" — see knownBoardUids' own declaration comment (near
@@ -28235,7 +28517,7 @@ function renderBoard(opts){
   const hadNewEntrants = newBoardEls.length>0;
   fitBattlefieldZoom();
   try{ fxHook('boardRendered', matchState); }catch(e){} // FX batch B (2026-10-15): who can't see in the dark, the forecast pill
-  try{ syncTideScene(matchState); }catch(e){} // the standing Tide: waded rings on new cards (2026-10-18)
+  try{ syncTideScene(matchState); }catch(e){} // the standing Tide: the wet look on new cards (2026-10-18)
   try{ syncUnitLightPools(); }catch(e){} // unit light in the dark (2026-10-15)
   // Bugfix (2026-09-17, root cause of the residual small stuck-transform matrices test_v24
   // still caught after the scale-1.08/shove fixes above — e.g. a card left mid fall-in at
@@ -31711,11 +31993,11 @@ async function resolveRoundCore(opts){
     // onboarding fight against a fixed Basics-tier opponent isn't a real result and shouldn't
     // pollute the player's actual win/loss ledger.
     if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') recordMatchResult(m.winner, m.mode);
-    try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest) heroAwardBattle(m); }catch(e){}
+    try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest && !m.towerReplay) heroAwardBattle(m); }catch(e){} // 2026-10-18 (package Z): a free Spire replay gives nothing
     if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
       try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw')}); }catch(e){}
     }
-    if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode)){
+    if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode) && !m.towerReplay){ // 2026-10-18 (package Z): not on a free Spire replay
       awardXp(3);
       bumpQuestCounter('wins', 1);
       if(m.mode==='conquest') bumpQuestCounter('conquestWins', 1);
@@ -31753,11 +32035,20 @@ async function resolveRoundCore(opts){
     // a won floor hands the key back (dungeonFloorWon, below, after the first-clear check has read the best floor).
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest && !m.dungeonOutcome){ try{ const dm = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId);
       if(isDailyDungeonMap(dm)){ const reached = dungeonFloorProgress(dm).done + 1; dungeonRunLost(dm.id); m.dungeonOutcome = {lost:true, keyLost: !!m.dungeonKeyStaked, floor: reached, best: dungeonBestFloor(dm.id)}; try{ refreshTopbarDungeonKey(currentTab); }catch(e){} } }catch(e){} }
+    // The Babel Spire (2026-10-18, package Z: "Towers just take energy to do, refunding if you fail"): a new floor lost, forfeited
+    // or drawn gives its Energy back.
+    if(m.mode==='conquest' && m.winner!==1 && m.towerEnergyPaid > 0 && !m.towerRefunded){ m.towerRefunded = m.towerEnergyPaid;
+      try{ const st = settleEnergy(); st.current += m.towerEnergyPaid; saveEnergyState(st); refreshEnergyHud(); }catch(e){} }
     // The surprise challenge lost (2026-10-15): the raiders run off with some Maple Leaves (see ambushTheftRoll).
     if(m.mode==='conquest' && m.winner===2 && m.conquestNode && !m.adminTest && !m.raidersTook){ try{ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId);
       if(fn && fn.node && fn.node.ambush){ const want = ambushTheftRoll(), have = Math.max(0, Math.floor(myCurrencies.gold || 0)), n = Math.min(have, want);
         if(n > 0){ myCurrencies.gold = have - n; saveCurrencies(); } m.raidersTook = {n, want}; } }catch(e){} }
-    if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest){
+    // A cleared Babel Spire floor fought again (2026-10-18, package Z): no reward of any kind; a better rank is still kept.
+    if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest && m.towerReplay){
+      try{ const rank = conquestRankFor(m, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); completeConquestNode(m.conquestNode, rank); m.conquestRankEarned = rank; }catch(e){}
+      m.unlockedFights = []; m.unlockedActivities = []; m.nextBattle = null;
+    }
+    if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest && !m.towerReplay){
       // Reward payouts (2026-09-20) — see CONQUEST_NODE_REWARDS' own comment. isFirstClear MUST
       // be read before completeConquestNode() below mutates progress.completed, or every clear
       // would look like a repeat.
@@ -31769,6 +32060,7 @@ async function resolveRoundCore(opts){
       // Server-paid rewards (2026-10-17, security): with a fight session, this win's Leaves / Gold Leaves / Dust / Metal wait for
       // claim_fight_reward (settleFightReward, after the hand-in); everything else (cards, packs, eggs...) is given here as before.
       fightRewardBegin(m, isFirstClear);
+      if(m.towerEnergyPaid > 0) bumpQuestCounter('energyConquest', m.towerEnergyPaid); // 2026-10-18 (package Z): a won Spire floor's Energy counts now (a lost one is refunded)
       if(dunNode && !m.dungeonOutcome){ try{ const gl = dungeonGoldLeavesFor(dunMap.id, dunNode.floor, isFirstClear); if(gl > 0){ fightGrant(m, 'gems', gl); m.conquestGemsEarned = gl; } }catch(e){} } // 🍂 Gold Leaves (2026-10-16)
       if(dunNode && !m.dungeonOutcome){ try{ dungeonFloorWon(dunMap.id, dunNode.floor, !!m.dungeonKeyStaked); m.dungeonOutcome = {won:true, keyBack: !!m.dungeonKeyStaked, floor: dunNode.floor}; refreshTopbarDungeonKey(currentTab); }catch(e){} }
       // 2026-10-15: start the card-reward ledger before this clear is recorded; on a brand-new save its first read seeds itself
@@ -31826,7 +32118,11 @@ async function resolveRoundCore(opts){
             const few = base.filter(id=> n(id) === n(base[0])), pickId = few[Math.floor(Math.random()*few.length)];
             if(unlockCardForPlayer(pickId, 'bossBaseGift')){ m.conquestCardsEarned = (m.conquestCardsEarned||[]).concat(pickId); m.conquestBaseGift = pickId; } } } }catch(e){}
       // Egg drops (2026-10-12, user's rates): see rollEggDrop.
-      try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; const egg = rollEggDrop(bn, m.conquestNode.mapId, isFirstClear); if(egg) m.conquestEggDrop = egg; }catch(e){}
+      // 2026-10-18 (owner: "The chance of an egg is very low. But guarantee one of the skirmishes of Map 1."): the first clear of
+      // EGG_MAP1_NODE on Map 1 always leaves one egg (once per save, flag 'egg:map1'), and that win rolls no random egg on top.
+      try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node;
+        const sure = guaranteedMap1Egg(bn, m.conquestNode.mapId, isFirstClear);
+        const egg = sure || rollEggDrop(bn, m.conquestNode.mapId, isFirstClear); if(egg) m.conquestEggDrop = egg; }catch(e){}
       // D48 (2026-10-12): a map boss beaten again at rank S or better gives a spare of that map's castle (fuse it in the Forge).
       try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, bk = bn && baseKind(bn.kind||'');
         if(!isFirstClear && bn && (bk === 'boss' || bk === 'finalboss' || bn.ender) && RANK_ORDER.indexOf(rank) >= RANK_ORDER.indexOf('S')){
@@ -31835,6 +32131,7 @@ async function resolveRoundCore(opts){
       try{ const cd = rollCastleDrop(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node); if(cd){ const ch = CHARACTER_DEFS[cd.id]; m.conquestCastleSpare = (cd.kind === 'new' ? 'New bramble: ' : 'Spare: ') + ch.name; } }catch(e){}
       try{ const kb = rollKibble((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, isFirstClear); if(kb){ myCurrencies.kibble = (myCurrencies.kibble||0) + kb; saveCurrencies(); m.conquestKibbleEarned = kb; } }catch(e){}
       try{ const ki = grantSkirmishKitItem(); if(ki) m.conquestKitItem = ki; }catch(e){} // 🎒 first 3 Conquest wins a day (2026-10-17)
+      try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; if(isFirstClear && bn && bn.grantsItem){ const bi = grantBossKitItem(); if(bi) m.conquestBossKitItem = bi; } }catch(e){} // 🎒 a boss that grants an item (2026-10-18, package Z)
       // Faction packs and Food tokens (2026-10-11).
       try{ const bt = rollBabyRescue((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); if(bt) m.conquestBabyEarned = bt; }catch(e){}
       try{ const sc = rollDragonScale(m.conquestNode.mapId, m.conquestNode.nodeId, rank); if(sc){ m.conquestScaleEarned = sc; setTimeout(()=>{ try{ showToast(TX('toast.a-dragon-scale', {index: sc.index, total: sc.total, line: sc.line}), 'ok'); }catch(e){} }, 1600); } }catch(e){}
@@ -32623,11 +32920,18 @@ function coldWaveVfx(m){
 // The standing Tide (2026-10-18, owner: "The tide effect has not been updated to be better."): a water layer under the cards
 // (.tide-scene, first child of #battlefieldEl, CSS in arena_template.html) shows the tide as it is: Flood fills the board to near its top,
 // High Tide to the brim, Ebb leaves a shallow strip along the bottom, no tide no water. A change rises or recedes smoothly (1.8 s), an ebb
-// leaves wet sand that dries, land units stand waded in a ring of water (.tide-wade) and Swimmers bob in theirs. m._tideScene remembers what
+// leaves wet sand that dries, land units stood waded in a ring of water (retired below) and Swimmers bob. m._tideScene remembers what
 // is shown ({k, from, at}); renderMatchUI rebuilds the battlefield, so syncTideScene redraws the layer and resumes a move in progress
 // (negative animation delay) instead of replaying it. While a round replays, the shown state waits for the 'tide' event (the engine is
 // already a round ahead); otherwise it follows the engine.
-const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'84%', flow:'15%', high:'3%'};
+// 2026-10-18 (owner 15:05: "Flood should fill the whole board i think, then the water vfx can come into play after the water settles. In
+// Ebb, the water retreats to the bottom borders of the board. Units that can swim sometimes have a splash or water droplet effect under
+// them."): Flood and High Tide fill the whole board, top to bottom; the caustics and the sheen (.tw-surf) fade in only once the water has
+// settled; Ebb leaves a thin band along the bottom border. The waded ring under land units is gone: a wet unit (every unit that isn't
+// flying in a Flood, a Swimmer / Tide unit in Flood or Ebb: the engine's Wet rule, wetCountOf) wears a subtle wet look instead (.unit-wet),
+// and Swimmers now and then splash (SwimSplash below). Every board row counts, the raid's middle and back rows too.
+const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'calc(100% - 12px)', flow:'0%', high:'0%'};
+const TIDE_BOARD_CARDS = '#battlefieldInner .board-row > .board-card'; // every row: yours, the enemy's, and the raid's middle / back rows (2026-10-18)
 const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {none:0, ebb:1, flow:2, high:3};
 function tideSceneTarget(m){
   try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
@@ -32644,7 +32948,7 @@ function syncTideScene(m){
   let w = bf.querySelector(':scope > .tide-scene');
   if(st.k === 'none' && !moving){ if(w) w.remove(); delete bf.dataset.tide; return; }
   if(!w){ w = document.createElement('div'); w.className = 'tide-scene'; w.setAttribute('aria-hidden', 'true');
-    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
+    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><div class="tw-surf"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div></div><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
     bf.insertBefore(w, bf.firstChild); }
   const key = st.k + '|' + st.at;
   if(w.dataset.key !== key){
@@ -32657,9 +32961,12 @@ function syncTideScene(m){
     w.classList.toggle('is-drying', moving && (st.from === 'flow' || st.from === 'high') && (st.k === 'ebb' || st.k === 'none'));
   }
   bf.dataset.tide = st.k; bf.style.setProperty('--tw-wade-delay', (moving ? -el : -1e6) + 'ms');
-  bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(c=>{
-    if(c.querySelector(':scope > .tide-wade') || !c.querySelector('.card-tile')) return;
-    const i = document.createElement('i'); i.className = 'tide-wade'; i.setAttribute('aria-hidden', 'true'); c.appendChild(i); });
+  // the wet look (2026-10-18): on every unit that isn't flying, in every board row; a Swimmer's rides its bobbing body (.float-body)
+  bf.querySelectorAll(TIDE_BOARD_CARDS).forEach(c=>{
+    if(c.classList.contains('is-flying') || !c.querySelector('.card-tile')) return;
+    const host = c.querySelector(':scope > .float-body') || c;
+    if(host.querySelector(':scope > .unit-wet')) return;
+    const i = document.createElement('i'); i.className = 'unit-wet'; i.setAttribute('aria-hidden', 'true'); host.appendChild(i); });
 }
 function tideWaveVfx(kind){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
@@ -32678,7 +32985,7 @@ function tideWaveVfx(kind){
 // One layout read per card (its column), then class toggles; the lift itself is a CSS animation of the tile's translate / rotate
 // (.tide-lift / .tide-lift-ebb in arena_template.html). Flyers are above the water and stay still.
 function tideLiftCards(bf, kind){
-  const cards = [...bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card')].filter(c=> !c.classList.contains('is-flying') && c.querySelector('.card-tile'));
+  const cards = [...bf.querySelectorAll(TIDE_BOARD_CARDS)].filter(c=> !c.classList.contains('is-flying') && c.querySelector('.card-tile')); // every row (2026-10-18)
   if(!cards.length) return;
   const bl = bf.getBoundingClientRect().left, rs = cards.map(c=> c.getBoundingClientRect()), w = rs[0].width || 100;
   const cols = rs.map(r=> Math.max(0, Math.round((r.left - bl) / w))), c0 = Math.min(...cols), cls = kind === 'ebb' ? 'tide-lift-ebb' : 'tide-lift';
@@ -32686,6 +32993,28 @@ function tideLiftCards(bf, kind){
   const last = .25 + (Math.max(...cols) - c0)*.1;
   setTimeout(()=> cards.forEach(c=> c.classList.remove(cls)), Math.round((last + 1)*1000));
 }
+// Swimmer splashes (2026-10-18, owner 15:05: "Units that can swim sometimes have a splash or water droplet effect under them."): one
+// shared timer, every 1.6-4.2 s, may pick one Swimmer / Tide unit on the board (any row) while there is water (Flood, High Tide or Ebb)
+// and puts a small splash or a few droplets at its base (.swim-splash: transform / opacity only, gone in a second). Medium effects and
+// up, not under reduced motion or the Minimal style, only while the page is visible.
+const SwimSplash = (function(){
+  let timer = null;
+  function tick(){
+    timer = setTimeout(tick, 1600 + Math.random()*2600); if(timer && timer.unref) timer.unref(); // never holds a Node test run open
+    try{
+      const bf = document.getElementById('battlefieldEl'), t = bf && bf.dataset.tide;
+      if(!t || t === 'none' || document.hidden || reducedMotion() || !fxAtLeast('med') || fxStyle() === 'minimal' || Math.random() < .4) return;
+      const sw = [...bf.querySelectorAll(TIDE_BOARD_CARDS + '.is-floating')].filter(c=> !c.querySelector(':scope > .swim-splash'));
+      if(!sw.length) return;
+      const c = sw[Math.floor(Math.random()*sw.length)], s = document.createElement('i');
+      s.className = 'swim-splash' + (Math.random() < .5 ? ' ss-drops' : ''); s.setAttribute('aria-hidden', 'true');
+      s.style.left = (Math.random() < .5 ? 16 + Math.random()*18 : 66 + Math.random()*18).toFixed(0) + '%'; // beside the centred skill pill
+      c.appendChild(s); setTimeout(()=> s.remove(), 1100);
+    }catch(e){}
+  }
+  return {start(){ if(!timer){ timer = setTimeout(tick, 3000); if(timer && timer.unref) timer.unref(); } }, stop(){ clearTimeout(timer); timer = null; }};
+})();
+try{ if(typeof document !== 'undefined') SwimSplash.start(); }catch(e){}
 // Idle glance (2026-10-18, owner: "Idle land units on the board (rarely) but sometimes look left/right very slightly"): one shared timer,
 // every 3-7 s, may pick one land unit on the board (not a flyer or a Swimmer / Tide unit, not frozen, stunned, asleep, paralyzed or
 // caged) and its art glances a little left or right (.glance-l / .glance-r: ~0.6 s each way, a short hold, then back; CSS in
@@ -33925,21 +34254,30 @@ function gloryBadgesHTML(m){
   </div>`;
 }
 // 2026-10-18 (package U, user: "Once my deck is above a certain rarity, don't show me "Put it in my deck" options in the reward menu.
-// E.g. if im holding many rares, dont ask me to put an uncommon inside. and so on"): the main deck's floor is the rarity tier that at
-// least half of its cards (every copy counts) are at or above, i.e. the lower median; a special rarity ranks as the tier it stands for
-// (RARITY_TIER_BANDS.indexOf). A won card below that floor would be a step down, so the results don't offer to put it in the deck; a
-// card at or above it still gets the offer. The card joins the collection either way. An empty deck has no floor (-1).
-function deckRarityFloor(counts){
-  const defs = getCardDefs(), tiers = [];
-  Object.keys(counts || {}).forEach(id=>{ const n = counts[id] | 0, d = defs[id]; if(n > 0 && d) for(let i = 0; i < n; i++) tiers.push(Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common'))); });
-  if(!tiers.length) return -1;
-  tiers.sort((a, b)=> b - a);
-  return tiers[Math.ceil(tiers.length / 2) - 1];
+// E.g. if im holding many rares, dont ask me to put an uncommon inside. and so on"). The card joins the collection either way.
+// 2026-10-18 (owner decision 18: "Based on collection level. At some point, all rarities will not even trigger this prompt."): the
+// floor follows the player's Collection level now (collectionStats().levelSum, the sum of every owned card's Forge level, as on the
+// Profile), not the deck's rarity. Each row: from that Collection level on, a won card needs at least `floor` (a RARITY_TIER_BANDS
+// tier; a special rarity ranks as the tier it stands for) to be offered. Commons stop first, then uncommons, rares, very/super
+// rares, epics; from the last row no rarity is offered at all (floor null = nothing qualifies). Tune the numbers here.
+const DECK_PROMPT_FLOORS = [
+  {level:0,    floor:'starter'},    // a new collection: every rarity is offered
+  {level:60,   floor:'uncommon'},   // Starter and Common cards stop asking
+  {level:180,  floor:'rare'},       // + Uncommon (and Quest)
+  {level:450,  floor:'veryrare'},   // + Rare
+  {level:900,  floor:'epic'},       // + Very Rare, Super Rare
+  {level:1600, floor:'heroic'},     // + Epic
+  {level:2600, floor:null},         // a big collection: no rarity asks any more
+];
+function collectionRarityFloor(level){
+  let row = DECK_PROMPT_FLOORS[0];
+  DECK_PROMPT_FLOORS.forEach(r=>{ if((level || 0) >= r.level) row = r; });
+  return row.floor == null ? Infinity : Math.max(0, RARITY_TIER_BANDS.indexOf(row.floor));
 }
-function rewardWorthDeckPrompt(id, counts){
+function rewardWorthDeckPrompt(id, level){
   const d = getCardDefs()[id]; if(!d || isEggRewardCard(d)) return false;
-  if(counts === undefined){ try{ const md = (myDecks || []).find(x=> x.id === mainDeckId) || getActiveDeck(); counts = md ? md.counts : myDeckCounts; }catch(e){ counts = null; } }
-  return Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common')) >= deckRarityFloor(counts);
+  if(level === undefined){ try{ level = collectionStats().levelSum; }catch(e){ level = 0; } }
+  return Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common')) >= collectionRarityFloor(level);
 }
 // 2026-10-18 (package U, user: "Shouldn't Cocoon be a card reward under the baby/egg category? The text should say "An egg! You'll need
 // a place to hatch it.""): an egg card (egg-woodland ... egg-bug "Cocoon" ... egg-red-dragon) won as a card reward is listed with the egg
@@ -33966,7 +34304,7 @@ function rewardsPanelHTML(m){
   const firstSeen = new Set(m.discoveredThisMatch || []);
   if(cards.length){
     const defs = getCardDefs();
-    const deckable = cards.filter(id=> rewardWorthDeckPrompt(id)); // 2026-10-18: no deck offer for a card below the main deck's rarity floor
+    const deckable = cards.filter(id=> rewardWorthDeckPrompt(id)); // 2026-10-18: no deck offer for a card below the Collection level's rarity floor (DECK_PROMPT_FLOORS)
     secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards" style="--n:${cards.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}</div>` : '').join('')}</div>
       ${tabOpen('deck') && deckable.length ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: deckable.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: deckable.length===1?'it':'them'})}</button>` : ''}</div>`);
   }
@@ -33978,7 +34316,7 @@ function rewardsPanelHTML(m){
     openRows.push(`<span class="rw-act">${t2 ? TX('results.conquest-map') : TX('results.tutorial-part-2')}</span>`);
   } else (m.unlockedActivities||[]).forEach(a=> openRows.push(`<span class="rw-act" tabindex="0" data-tip="${escapeAttr(a.tip)}">${a.icon} ${escapeHtml(a.label)}</span>`));
   const fightRow = (m.unlockedFights||[]).length && m.mode!=='tutorial' ? m.unlockedFights.map(f=>{ const n = f.node; const e = nodeEnergyCost(f.mapId, n);
-      return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: n.hqHp, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
+      return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: skirmishCastle(n).total, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
   if(seen.length || openRows.length || fightRow){
     const defs = getCardDefs();
     secs.push(`<div class="rw-sec rw-seen"><div class="rw-head">${seen.length ? TX('results.new-cards-seen') : TX('results.unlocked')}</div>${seen.length ? `<div class="rw-cards">${seen.map(id=> defs[id] ? `<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>` : '').join('')}</div>` : ''}${openRows.length || fightRow ? `<div class="rw-row rw-open-row">${openRows.join('')}${fightRow}</div>` : ''}</div>`); // 2026-10-18 (package U, user: "Put the title rewards in-line/in-group with skirmish unlocks."): one row, one chip look
@@ -34013,6 +34351,8 @@ function rewardsPanelHTML(m){
   // 2026-10-17: a field-kit item from one of the day's first 3 Conquest wins, with which of the 3 it was.
   if(m.conquestKitItem && ITEM_DEFS[m.conquestKitItem.id]){ const kd = ITEM_DEFS[m.conquestKitItem.id];
     acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.field-kit-your-first-conquest-wins', {of: m.conquestKitItem.of, nth: m.conquestKitItem.nth}))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
+  if(m.conquestBossKitItem && ITEM_DEFS[m.conquestBossKitItem.id]){ const kd = ITEM_DEFS[m.conquestBossKitItem.id]; // 2026-10-18 (package Z): a boss that grants an item
+    acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.kit-boss-item'))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
     acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(ek.name || TX('results.an-egg'))}</span>`); }
   // 2026-10-18 (package U): egg cards won as card rewards (Cocoon and the rest), in the egg look, beside the egg and the baby
@@ -34038,7 +34378,7 @@ function rewardsPanelHTML(m){
 }
 function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
-  const e = nodeEnergyCost(nb.mapId, nb.node) || 1;
+  const e = fightEnergyCost(nb.mapId, nb.node); // 2026-10-18 (package Z)
   if(m.mode==='tutorial') return ''; // 2026-10-13 (user: "On the buttons below only have the button 'Claim Rewards'"), both parts
   return `<button class="btn primary big" id="wlNextBattleBtn" data-energy-cost="${e||0}" ${currentEnergy() < (e||0) ? 'aria-disabled="true"' : ''} title="${escapeAttr(nb.node.name + (currentEnergy() < (e||0) ? ` ${TX('results.needs-you-have', {e, currentEnergy: currentEnergy()})}` : ''))}">${TX('results.next', {name: escapeHtml(nb.node.name)})}</button>`; // the cost is the button's own ::after (2026-10-12: it showed twice)
 }
@@ -34568,7 +34908,11 @@ function logText(ev){
     case 'raidCommons': return {cls:'', text:`🐙 The boss calls in ${(ev.defIds||[]).map(nm).join(' and ')} behind its lines.`}; // 2026-10-17
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
     case 'raidLastTurn': return {cls:'gold', text:`🌊 Last turn (${ev.round}): the tide turns after this one and the raid ends, whatever the brambles' Health.`}; // 2026-10-18
-    case 'raidSmack': return {cls:'', text: ev.front ? `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.` : ev.hits ? `💥 ${ev.name} smashes the column, ${ev.dmg} to each of your ${ev.hits} unit${ev.hits===1?'':'s'} there.` : `💥 ${ev.name} hits an empty column: ${ev.dmg} to your bramble.`};
+    // 2026-10-18 (owner 15:56): a row smack names its row, a column smack its column; either one with nobody to hit lands on the bramble
+    case 'raidSmack': { if(ev.front) return {cls:'', text: `💥 ${ev.name} sweeps your front row for ${ev.dmg} each.`};
+      const name = ev.name, dmg = ev.dmg, hits = ev.hits, s = ev.hits === 1 ? '' : 's';
+      return {cls:'', text: !hits ? TX('ui.raid-smack-bramble', {name, dmg}) : ev.kind !== 'row' ? TX('ui.raid-smack-column', {name, dmg, hits, s})
+        : ev.row === 2 ? TX('ui.raid-smack-row-back', {name, dmg, hits, s}) : ev.row === 1 ? TX('ui.raid-smack-row-middle', {name, dmg, hits, s}) : TX('ui.raid-smack-row-front', {name, dmg, hits, s})}; }
     case 'advance': return {cls:'', text:`⬆ ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.defId)} steps up to the ${ev.to === 0 ? 'front' : 'middle'} row.`};
     case 'boomerangWhiff': return {cls:'', text:`🪃 Whiff! ${nm(ev.defId)}'s boomerang finds nothing on the way back.`};
     case 'boomerangCaught': return {cls:'', text:`🪃 ${nm(ev.defId)} catches the boomerang.`};
@@ -36393,7 +36737,6 @@ function field2LogText(ev, nm){
   if(ev.type === 'skipTurn' && ev.reason === 'frightened') return {cls:'', text:`${nm(ev.defId)} is too frightened to attack. 👻`};
   if(ev.type === 'play' && ev.consterned > 0) return {cls:'', text:`${sideLabel(ev.side)} played ${nm(ev.defId)} (😰 −${ev.consterned}/−${ev.consterned} from Consternation).`};
   if(ev.type === 'spawn' && ev.kind === 'mirage') return {cls:'', text:`🪞 ${nm(ev.defId)} shimmers into being.`};
-  if(ev.type === 'grounded') return {cls:'', text:`⚡ ${nm(ev.attDefId)}'s lightning is grounded: a bramble can't be shocked.`}; // 2026-10-18
   return null;
 }
 function field2Vfx(ev){
@@ -36403,7 +36746,6 @@ function field2Vfx(ev){
   const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
   const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
   const at = el=>{ const r = el.getBoundingClientRect(); return {x:r.left + r.width/2, y:r.top + r.height/2}; };
-  if(ev.type === 'grounded'){ let el = null; try{ el = hqTileEl(ev.targetSide); }catch(e){} fl(el, '⚡ Grounded', 'quick'); return; } // castles can't be shocked (2026-10-18)
   if(ev.type === 'fieldTick'){
     const h = FIELD2_HIT[ev.field];
     if(h){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){}
@@ -38554,7 +38896,7 @@ function renderForge(){
   if(disBtn) disBtn.onclick = ()=> openForgeBulk('dis', disBtn);
   const faBtn = document.getElementById('forgeFuseAllBtn');
   if(faBtn) faBtn.onclick = ()=> openForgeBulk('fuse', faBtn);
-  root.querySelectorAll('[data-forge-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.forgeCastle; if(!temperCastle(id)){ denyShake(b); return; } try{ SoundKit.clang(); }catch(e){} renderForge(); showToast(TX('toast.tempered-to-lv-2', {v1: (CHARACTER_DEFS[id]||{}).name||'Castle', v2: castleLevelOf(id)}), 'ok'); try{ refreshDeckHeroBanner(); }catch(e){} }));
+  root.querySelectorAll('[data-forge-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.forgeCastle; if(!temperCastle(id)){ denyShake(b); return; } try{ SoundKit.clang(); }catch(e){} renderForge(); showToast(TX('toast.tempered-to-lv-2', {v1: (CHARACTER_DEFS[id]||{}).name||'Bramble', v2: castleLevelOf(id)}), 'ok'); try{ refreshDeckHeroBanner(); }catch(e){} }));
   root.querySelectorAll('[data-fuse-castle]').forEach(b=> b.addEventListener('click', ()=>{ const id = b.dataset.fuseCastle, v = fuseCastleDuplicates(id); if(!v){ denyShake(b); return; } renderForge(); showToast(TX('toast.fused-spare-castle-of-credit', {n: v.n, s: v.n===1?'':'s', dust: v.dust}), 'ok'); }));
   { const fe = document.getElementById('forgeTierEditBtn'); if(fe) fe.addEventListener('click', openForgeTierEditor); }
   const fuBtn = document.getElementById('forgeUpgradeBtn');
@@ -39362,6 +39704,7 @@ function wireHomeScene(root){
 // Field kit v2 (2026-10-12, user: "Definitely nerf the items: +5 hp, +1 lumber, +2 cards, do 3 damage to all enemy units. and
 // many others ... don't reveal till later in the game past Map 11 ... Only 1 item per skirmish is allowed"): a help for a fight
 // you can't otherwise win, not a daily boost. One item a fight; one of each refills a day, up to 5 of each.
+// (2026-10-18, package Z: two items a fight now, three against a boss that grants an item; see KIT_USES_PER_FIGHT.)
 const ITEM_DEFS = {
   draught: {icon:'🧪', name:'Healing Draught', desc:'Your bramble heals 5 Health.'},
   kindling: {icon:'🪵', name:'Kindling Bundle', desc:'+1 Lumber now.'},
@@ -39387,21 +39730,79 @@ function loadItems(){
 function saveItems(o){ try{ localStorage.setItem(ITEMS_KEY, JSON.stringify(o)); }catch(e){} }
 function featureUnlockedSafe(k){ try{ return featureUnlocked(k); }catch(e){ return false; } }
 function itemCount(id){ return (loadItems().counts[id]||0); }
+// ---- Rename Ticket (2026-10-18, owner 15:05: "okay. + rename feature (but takes a rename ticket)"): a 🎫 item in the Inventory,
+// spent to rename your guild (renameGuild, in the Guilds section). It is not a field-kit item (it never goes in the 🎒 pack,
+// the kit rewards or the cart's daily kit stock), so it keeps its own count. Where it comes from: the Shop's shelf, for
+// RENAME_TICKET_PRICE Maple Leaves, and one free ticket for every guild owner whose guild was made before the feature shipped
+// (giftFounderRenameTicket). The count travels in the progress blob (player_progress), which a player can edit by hand: the
+// server can't check it until the optional ticket table in supabase/proposed/20261018_guild_rename.sql is applied.
+// Player names are left as they were: the name prompt never cost anything, so it doesn't take a ticket.
+const RENAME_TICKET = {icon:'🎫', name:'Rename Ticket', desc:'Spend one to rename your guild.'};
+const RENAME_TICKET_KEY = 'bramblewood_rename_tickets_v1', RENAME_TICKET_GIFT_KEY = 'bramblewood_rename_ticket_gift_v1';
+const RENAME_TICKET_PRICE = 250, RENAME_TICKET_CAP = 9;
+// The founders' gift goes to owners of guilds made before this date (the week the feature ships); later founders buy theirs.
+const RENAME_TICKET_GIFT_BEFORE = Date.parse('2026-10-26T00:00:00Z');
+PROGRESS_KEYS.push(RENAME_TICKET_KEY, RENAME_TICKET_GIFT_KEY); // so the tickets (and the gift flag) follow the account
+function renameTickets(){ try{ return Math.max(0, Math.floor(Number(localStorage.getItem(RENAME_TICKET_KEY)) || 0)); }catch(e){ return 0; } }
+function addRenameTickets(n){ const v = Math.max(0, Math.min(RENAME_TICKET_CAP, renameTickets() + n)); try{ localStorage.setItem(RENAME_TICKET_KEY, String(v)); }catch(e){} return v; }
+function spendRenameTicket(){ if(renameTickets() < 1) return false; addRenameTickets(-1); return true; }
+// once a save (the flag travels with the progress blob, so a second device doesn't pay it again)
+function giftFounderRenameTicket(guild){
+  if(!guild || !(Date.parse(guild.created_at) < RENAME_TICKET_GIFT_BEFORE)) return false;
+  try{ if(localStorage.getItem(RENAME_TICKET_GIFT_KEY) === '1') return false; localStorage.setItem(RENAME_TICKET_GIFT_KEY, '1'); }catch(e){ return false; }
+  addRenameTickets(1); return true;
+}
+// On the Shop's shelf once the Guild tab is open (the Arena spot); one a buy, up to RENAME_TICKET_CAP held.
+function shopTicketOnShelf(){ return adminModeEnabled || tabOpen('guild'); }
+function shopTicketFull(){ return renameTickets() >= RENAME_TICKET_CAP; }
+function shopTicketShelfHTML(i, selected){
+  const k = 'ticket:1', full = shopTicketFull(), tilt = ((i*37) % 7) - 3;
+  return `<button type="button" class="shelf-item is-kit ${full?'is-off':''} ${k===selected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===selected}" aria-label="${escapeAttr(RENAME_TICKET.name)}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${RENAME_TICKET.icon}</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(RENAME_TICKET.name)}</span><span class="shelf-tag">${full ? escapeHtml(TX('ui.rename-ticket-full-tag')) : shelfPriceHTML({gold:RENAME_TICKET_PRICE, gems:0})}</span></button>`;
+}
+function shopTicketDetailHTML(){
+  return `<b class="sd-name">${RENAME_TICKET.icon} ${escapeHtml(RENAME_TICKET.name)}</b><span class="sd-line">${escapeHtml(TX('ui.rename-ticket-shop-line'))}</span><span class="sd-line">${escapeHtml(TX('ui.rename-ticket-you-carry', {n: renameTickets(), cap: RENAME_TICKET_CAP}))}</span><span class="sd-price">${shelfPriceHTML({gold:RENAME_TICKET_PRICE, gems:0})}</span>${shopTicketFull() ? `<span class="sd-why">${escapeHtml(TX('ui.rename-ticket-full', {cap: RENAME_TICKET_CAP}))}</span>` : ''}`;
+}
+function shopTicketCounter(el){
+  const full = shopTicketFull(), afford = (myCurrencies.gold||0) >= RENAME_TICKET_PRICE;
+  el.innerHTML = `<div class="counter-goods"><span class="shelf-kit is-big" aria-hidden="true"><span class="sk-ico">${RENAME_TICKET.icon}</span></span></div><div class="counter-info">${shopTicketDetailHTML()}</div><div class="counter-act">${full ? '' : `<button class="btn primary" id="shopBuyTicket" ${afford?'':'aria-disabled="true"'}>${afford ? 'Buy' : `Need ${RENAME_TICKET_PRICE - (myCurrencies.gold||0)} more 🍁`}</button>`}</div>`;
+  const b = el.querySelector('#shopBuyTicket'); if(b) b.onclick = ()=>{
+    if(shopTicketFull() || (myCurrencies.gold||0) < RENAME_TICKET_PRICE){ denyShake(b); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} return; }
+    myCurrencies.gold -= RENAME_TICKET_PRICE; saveCurrencies(); addRenameTickets(1);
+    try{ SoundKit.shelfPick(); SoundKit.gold && SoundKit.gold(); }catch(e){}
+    showToast(TX('toast.rename-ticket-bought', {n: renameTickets()}), 'ok');
+    renderShop(); };
+}
 function itemsUsableIn(m){ return !!m && !m.over && ITEM_PVE_MODES.has(m.mode) && !m.testKit && featureUnlockedSafe('fieldkit'); }
+// Two items a fight (2026-10-18, package Z, owner 17:28: "Item bag limit: use two item(s) per map only. then it's grayed then faded
+// out. Some bosses grant an item! In those circumstances, you can use +1 item. - players would only use these item(s) if they were
+// stuck on a floor."): "per map" is per fight (each skirmish attempt), as the kit always counted. KIT_USES_PER_FIGHT items, +1 in a
+// fight whose node has grantsItem (see GRANTS_ITEM_FROM_MAP). m.itemsUsed counts them (it was the one-shot m.itemUsed). Once the
+// last one is used the 🎒 pill greys with "2/2" and fades out of the HUD over KIT_FADE_MS (m.kitSpentAt); the next fight brings it
+// back. How items are earned (the daily wins, notices, weeklies, the cart) is unchanged.
+const KIT_USES_PER_FIGHT = 2, KIT_FADE_MS = 1800;
+function kitGrantsItemNode(m){ try{ const f = m && m.mode === 'conquest' && m.conquestNode && findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); return !!(f && f.node && f.node.grantsItem); }catch(e){ return false; } }
+function kitUsesMax(m){ return KIT_USES_PER_FIGHT + (kitGrantsItemNode(m) ? 1 : 0); }
+function kitUsesUsed(m){ return m ? (m.itemsUsed|0) : 0; }
+function kitSpent(m){ return kitUsesUsed(m) >= kitUsesMax(m); }
 function itemsHudHTML(m){
   if(!itemsUsableIn(m)) return '';
   const c = loadItems().counts, n = Object.keys(ITEM_DEFS).reduce((t, id)=> t + (c[id]||0), 0);
-  const used = !!m.itemUsed;
-  // 2026-10-17 (user: "Using the field kit item should have some UIUX feedback"): the pack stays on the HUD after you use your
-  // item (even the last one), greyed with a ✓, so it can say why it's closed until the next skirmish.
+  const used = kitUsesUsed(m), max = kitUsesMax(m), spent = used >= max;
+  // 2026-10-17 (user: "Using the field kit item should have some UIUX feedback"): the pack stays on the HUD after you use an item
+  // (even the last one), with how many of this fight's items are used.
+  // 2026-10-18 (package Z): all of them used, it shows greyed "2/2" and fades away (the fade picks up where it was on a redraw);
+  // once faded, or in a fight resumed after it was spent, it is gone until the next fight.
   if(!n && !used) return '';
-  return `<button type="button" class="hud-pill hud-pack${used ? ' is-used' : ''}" id="hudPackBtn" title="${used ? 'You have used your item this skirmish. The kit opens again next skirmish.' : 'Your field kit: one item a skirmish'}" aria-label="Field kit, ${n} items${used ? ', used this skirmish' : ''}">🎒 <span class="hud-pack-n">${n}</span>${used ? '<span class="hud-pack-used" aria-hidden="true">✓</span>' : ''}</button>`;
+  let fade = '';
+  if(spent){ const t = m.kitSpentAt ? Date.now() - m.kitSpentAt : Infinity; if(!(t < KIT_FADE_MS)) return ''; fade = ` style="animation-delay:-${Math.max(0, Math.round(t))}ms"`; }
+  const title = spent ? TX('ui.kit-spent', {max}) : TX('ui.kit-pill-title', {max});
+  return `<button type="button" class="hud-pill hud-pack${used ? ' has-used' : ''}${spent ? ' is-used is-spent' : ''}" id="hudPackBtn"${fade} title="${escapeAttr(title)}" aria-label="${escapeAttr(TX('ui.kit-pill-aria', {n, nth: used, of: max}))}">🎒 <span class="hud-pack-n">${n}</span>${used ? `<span class="hud-pack-used" aria-hidden="true">${used}/${max}</span>` : ''}</button>`;
 }
 // Why an item can't be used right now (2026-10-17), or '' when it can. The pack lists the reason under a greyed item, and
 // pressing it anyway says it in a toast. 'used' and 'none' are hard stops; the rest are "no target" stops.
 function itemBlockReason(id, m){
   if(!m || !m.players) return 'used';
-  if(m.itemUsed) return TX('toast.one-item-a-skirmish');
+  if(kitSpent(m)) return TX('toast.kit-limit', {max: kitUsesMax(m)}); // 2026-10-18 (package Z): two a fight, three in a grantsItem fight
   if(!(itemCount(id) > 0)) return 'none';
   if(m.resolving) return TX('toast.wait-for-the-round-to-finish');
   const me = m.players[1], E = m.engine;
@@ -39450,12 +39851,14 @@ function useItem(id){
     r.per = {}; mine.forEach(c=>{ const h = Math.min(2, c.maxHp - c.hp); c.hp += h; r.n += h; r.per[c.uid] = h; }); targetUids = mine.map(c=> c.uid); r.k = mine.length; }
   else if(id === 'whetstone'){ const mine = E.allBoardCards(me).filter(c=> c.hp > 0 && !c.cageOf); mine.forEach(c=>{ c.inspired = (c.inspired||0) + 1; }); targetUids = mine.map(c=> c.uid); r.k = mine.length; }
   else if(id === 'caltrops'){ const w = E.allBoardCards(m.players[2]).filter(c=> c.hp > 0 && (c.wait||0) > 0); w.forEach(c=>{ c.wait += 1; }); targetUids = w.map(c=> c.uid); r.k = w.length; }
-  o.counts[id] -= 1; saveItems(o); m.itemUsed = true;
+  o.counts[id] -= 1; saveItems(o); m.itemsUsed = kitUsesUsed(m) + 1;
+  // 2026-10-18 (package Z): the last of this fight's items: the pill greys ("2/2") and fades out; a redraw after the fade drops it
+  if(kitSpent(m)){ m.kitSpentAt = Date.now(); setTimeout(()=>{ if(matchState === m){ try{ document.getElementById('packPop')?.remove(); renderHUD(); }catch(e){} } }, KIT_FADE_MS + 60); }
   try{ SoundKit.pickup(); }catch(e){}
-  // the pack: its count ticks down with a little bounce, and it greys out with a ✓ (used this skirmish)
+  // the pack: its count ticks down with a little bounce, and its badge shows how many of this fight's items are used
   try{ renderHUD(); }catch(e){}
   if(id === 'draught') try{ updateHqHpDisplay('A', r.old); }catch(e){} // the castle number waits for the draught to land
-  const pb = document.getElementById('hudPackBtn'); if(pb){ pb.classList.remove('is-bump'); void pb.offsetWidth; pb.classList.add('is-bump'); setTimeout(()=> pb.classList.remove('is-bump'), 520); }
+  const pb = document.getElementById('hudPackBtn'); if(pb && !kitSpent(m)){ pb.classList.remove('is-bump'); /* 2026-10-18 (package Z): a spent pack fades instead */ void pb.offsetWidth; pb.classList.add('is-bump'); setTimeout(()=> pb.classList.remove('is-bump'), 520); }
   // targets: the castle (draught), the Lumber pill (kindling), the hand (map), or each card it touches
   if(targetUids.length) targetEls = targetUids.map(u=> boardCardEl(u)).filter(Boolean);
   else if(id === 'draught') targetEls = [hqTileEl('A')].filter(Boolean);
@@ -39521,13 +39924,14 @@ function itemCallout(id, text){
 function openPackPopover(btn){
   let pop = document.getElementById('packPop'); if(pop){ pop.remove(); return; }
   const m = matchState; if(!itemsUsableIn(m)) return;
-  const c = loadItems().counts, used = !!m.itemUsed;
+  const c = loadItems().counts, nUsed = kitUsesUsed(m), max = kitUsesMax(m), used = nUsed >= max; // 2026-10-18 (package Z): `used` = all of this fight's items spent
   pop = document.createElement('div'); pop.id = 'packPop'; pop.className = 'pack-pop' + (used ? ' is-used' : ''); pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Field kit');
   // 2026-10-14: only items you hold or have held (see loadInvSeen); "New!" the first time one shows up.
   const seen = loadInvSeen(), vis = invVisible(Object.keys(ITEM_DEFS).map(id=> ({key:'kit:' + id, id, count:c[id]||0})), seen); if(vis.changed) saveInvSeen(seen);
   // 2026-10-17 (UIUX feedback): an item that can't be used right now is greyed with the reason under it; pressing it says why.
   // Once this skirmish's item is spent, a line at the top says so and every item is off.
-  pop.innerHTML = `<b class="pack-pop-h">🎒 Field kit <small>${used ? '✓ used this skirmish' : 'one a skirmish'}</small></b>${used ? '<p class="pack-pop-why">You have used your item this skirmish. The kit opens again next skirmish.</p>' : ''}${vis.list.map(it=>{ const id = it.id, d = ITEM_DEFS[id], why = used ? 'used' : itemBlockReason(id, matchState), hard = why === 'used' || why === 'none';
+  // 2026-10-18 (package Z): the heading counts this fight's items ("1/2 used this skirmish"); a grantsItem boss says it gives +1
+  pop.innerHTML = `<b class="pack-pop-h">🎒 Field kit <small class="pack-pop-uses${nUsed ? ' has-used' : ''}">${escapeHtml(TX('ui.kit-head-sub', {n: nUsed, max}))}</small></b>${kitGrantsItemNode(m) ? `<p class="pack-pop-boss">${escapeHtml(TX('ui.kit-boss-bonus'))}</p>` : ''}${used ? `<p class="pack-pop-why">${escapeHtml(TX('ui.kit-spent', {max}))}</p>` : ''}${vis.list.map(it=>{ const id = it.id, d = ITEM_DEFS[id], why = used ? 'used' : itemBlockReason(id, matchState), hard = why === 'used' || why === 'none';
     return `<button type="button" class="pack-item ${it.isNew ? 'is-new' : ''} ${why ? 'is-blocked' : ''}" data-item="${id}" ${hard ? 'disabled' : why ? 'aria-disabled="true"' : ''}><span class="pack-ico">${d.icon}</span><span class="pack-txt"><b>${escapeHtml(d.name)}${it.isNew ? ' <span class="inv-new is-inline">New!</span>' : ''}</b><small>${escapeHtml(d.desc)}</small>${why && !hard ? `<small class="pack-why">${escapeHtml(why)}</small>` : ''}</span><span class="pack-n">×${c[id]||0}</span></button>`; }).join('')}`;
   document.body.appendChild(pop);
   const r = btn.getBoundingClientRect(); pop.style.left = Math.max(8, Math.min(innerWidth - pop.offsetWidth - 8, r.left + r.width/2 - pop.offsetWidth/2)) + 'px'; pop.style.top = Math.max(8, r.top - pop.offsetHeight - 8) + 'px';
@@ -39579,11 +39983,12 @@ function renderInventory(){
       // 2026-10-17 (user: "The field kit card itself can also have a pack."): the Field kit is a card with the traveller's satchel
       // (pixel art, .inv-kit-pack) beside the slots, and it says where items come from, including the day's first 3 Conquest wins.
       const left = skirmishKitLeftToday();
-      return `<section class="panel inv-sec inv-kit"><div class="inv-kit-pack" aria-hidden="true"></div><div class="inv-kit-body"><h3>🎒 Field kit <small>one item a skirmish · up to ${ITEM_CAP} of each</small></h3>
+      return `<section class="panel inv-sec inv-kit"><div class="inv-kit-pack" aria-hidden="true"></div><div class="inv-kit-body"><h3>🎒 Field kit <small>${escapeHtml(TX('ui.kit-inv-head', {max: KIT_USES_PER_FIGHT, cap: ITEM_CAP})) /* 2026-10-18 (package Z): two a skirmish */}</small></h3>
       <div class="inv-slots">${slots(kit, 'Nothing in the kit yet. Win a Conquest fight to find one.')}</div>
-      <p class="panel-sub inv-kit-note">In a skirmish, press 🎒 beside your Lumber to use one. One item a skirmish, and it doesn't use your play.</p>
+      <p class="panel-sub inv-kit-note">${escapeHtml(TX('ui.kit-inv-note', {max: KIT_USES_PER_FIGHT}))}</p>
       <p class="panel-sub inv-kit-src">Found on the road: your first ${SKIRMISH_KIT_PER_DAY} Conquest wins each day <b class="inv-kit-left ${left ? '' : 'is-done'}">${left ? `${left} left today` : 'done for today'}</b> · A notices and above · finished weekly tiers</p></div></section>`; })() : ''}
     ${(()=>{ const cap = shown([{key:'capsule', icon:'🔋', count:energyCapsules(), name:'Energy capsule', sub:'+' + ENERGY_CAPSULE_AMOUNT + ' Energy'}], 'en'); return cap.length ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slots(cap, '')}</div></section>` : ''; })()}
+    ${(()=>{ /* 2026-10-18 (guild rename): Rename Tickets, once you've held one */ const tk = shown([{key:'rename', icon:RENAME_TICKET.icon, count:renameTickets(), name:RENAME_TICKET.name, sub:RENAME_TICKET.desc}], 'tk'); return tk.length ? `<section class="panel inv-sec"><h3>🎫 Tickets <small>${escapeHtml(TX('ui.rename-ticket-inv-note'))}</small></h3><div class="inv-slots">${slots(tk, '')}</div></section>` : ''; })()}
     <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-slots">${mat}</div></section>
     <section class="panel inv-sec"><h3>🪺 In the Nest ${featureUnlockedSafe('nest') ? '<button type="button" class="btn small" data-inv-go="nest">🪺 Nest</button>' /* 2026-10-17 (user): "🪺 Nest", like "⚒️ Blacksmith" */ : `<small>🔒 the Nest opens on Map ${(FEATURE_SPOTS.find(x=> x.key === 'nest') || {mapNumber:4}).mapNumber}</small>`}</h3>${featureUnlockedSafe('nest') || !nestCells ? '' : `<p class="panel-sub">${escapeHtml(eggNeedsNestNote())}</p>`}<div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
     <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">💎 Enchant</button></h3><div class="inv-slots">${crystals}</div></section>
@@ -40443,7 +40848,7 @@ function shelfRows(){
   const chunk = (items, n, kinds)=>{ const out = []; for(let i = 0; i < items.length; i += n) out.push({kind:kinds[(i/n) % kinds.length], items:items.slice(i, i + n)}); return out; };
   const narrow = window.matchMedia && matchMedia('(max-width:620px)').matches;
   return [
-    ...chunk([...packs.map(p=> ({pack:p, qty:1})), ...(shopKitToday() ? [{kit:shopKitToday(), qty:1}] : []), {bread:true, qty:1}], narrow ? 2 : 5, ['straight', 'crooked-r']),
+    ...chunk([...packs.map(p=> ({pack:p, qty:1})), ...(shopKitToday() ? [{kit:shopKitToday(), qty:1}] : []), ...(shopTicketOnShelf() ? [{ticket:true, qty:1}] : []) /* 2026-10-18: 🎫 Rename Ticket */, {bread:true, qty:1}], narrow ? 2 : 5, ['straight', 'crooked-r']),
     ...(onSale.length === 1 ? [
       ...chunk(onSale.flatMap(p=> [10, 25].filter(q=> packQtyOptions(p).includes(q) || adminModeEnabled).map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, ['crooked', 'straight']),
       ...chunk(onSale.flatMap(p=> [50, 100].filter(q=> packQtyOptions(p).includes(q) || adminModeEnabled).map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, narrow ? ['straight', 'crooked-r'] : ['stepped'])] : []),
@@ -40476,10 +40881,11 @@ function shelfDetailHTML(p, qty){
 }
 function renderShopShelves(grid, signedIn){
   const rows = shelfRows(), all = rows.flatMap(r=> r.items);
-  const keyOf = it=> it.bread ? 'bread:1' : it.kit ? 'kit:' + it.kit.id : it.pack.id + ':' + it.qty;
+  const keyOf = it=> it.bread ? 'bread:1' : it.ticket ? 'ticket:1' : it.kit ? 'kit:' + it.kit.id : it.pack.id + ':' + it.qty;
   if(!shopSelected || !all.some(it=> keyOf(it)===shopSelected)){ const first = all.find(it=> it.pack && packOnSale(it.pack)) || all[0]; shopSelected = first ? keyOf(first) : null; }
   let propN = 0; const prop = ()=> `<span class="shelf-prop" aria-hidden="true">${SHELF_PROPS[(propN++ * 5 + rows.length) % SHELF_PROPS.length]}</span>`;
   const itemHTML = (it, i)=>{
+    if(it.ticket) return shopTicketShelfHTML(i, shopSelected); // 2026-10-18 (guild rename)
     if(it.kit){ const K = it.kit, sold = shopKitSold(K.day), full = shopKitFull(K.id), k = 'kit:' + K.id, tilt = ((i*37) % 7) - 3; // field-kit stock (2026-10-17)
       return `<button type="button" class="shelf-item is-kit ${sold||full?'is-off':''} ${k===shopSelected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===shopSelected}" aria-label="${escapeAttr(K.def.name + (sold ? ', sold out' : ''))}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${K.def.icon}</span><span class="sk-today">Today</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(K.def.name)}</span><span class="shelf-tag">${sold ? 'Sold out' : full ? 'Pack full' : shelfPriceHTML({gold:K.price, gems:0})}</span></button>`; }
     if(it.bread){ const sold = shopBreadSold(), k = 'bread:1', tilt = ((i*37) % 7) - 3;
@@ -40510,17 +40916,18 @@ function renderShopShelves(grid, signedIn){
   const breadHTML = ()=> `<b class="sd-name">Bread</b><span class="sd-line">A warm loaf from the baker next door. It does nothing at all.</span><span class="sd-price">${shelfPriceHTML({gold:1, gems:0})}</span>${shopBreadSold() ? '<span class="sd-why">Sold out. The baker only makes one.</span>' : ''}`;
   const showHover = btn=>{
     const it = find(btn.dataset.shelfitem); if(!it) return;
-    hover.innerHTML = it.bread ? breadHTML() : it.kit ? kitHTML(it.kit) : shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
+    hover.innerHTML = it.bread ? breadHTML() : it.ticket ? shopTicketDetailHTML() : it.kit ? kitHTML(it.kit) : shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
     const wr = wall.getBoundingClientRect(), br = btn.getBoundingClientRect();
     const x = Math.max(8, Math.min(wr.width - hover.offsetWidth - 8, br.left - wr.left + br.width/2 - hover.offsetWidth/2));
     const above = br.top - wr.top + wall.scrollTop - hover.offsetHeight - 10;
     hover.style.left = x + 'px'; hover.style.top = (above < wall.scrollTop + 4 ? br.bottom - wr.top + wall.scrollTop + 8 : above) + 'px';
   };
   const hideHover = ()=>{ hover.hidden = true; };
-  const kitHTML = K=> `<b class="sd-name">${K.def.icon} ${escapeHtml(K.def.name)}</b><span class="sd-line">🎒 Field kit item: ${escapeHtml(K.def.desc)} One item a fight, against the computer.</span><span class="sd-line">You carry ${itemCount(K.id)} of ${ITEM_CAP}.</span><span class="sd-price">${shelfPriceHTML({gold:K.price, gems:0})}</span>${shopKitSold(K.day) ? '<span class="sd-why">Sold out. The cart only brings one a day, and not every day.</span>' : shopKitFull(K.id) ? `<span class="sd-why">Your pack already holds ${ITEM_CAP}, the most it carries.</span>` : '<span class="sd-why">In stock today only.</span>'}${K.adminOnly ? '<span class="sd-why">🚨 Admin preview: not on sale to players today.</span>' : ''}`;
+  const kitHTML = K=> `<b class="sd-name">${K.def.icon} ${escapeHtml(K.def.name)}</b><span class="sd-line">🎒 Field kit item: ${escapeHtml(K.def.desc)} ${escapeHtml(TX('ui.kit-shop-rule', {max: KIT_USES_PER_FIGHT})) /* 2026-10-18 (package Z) */}</span><span class="sd-line">You carry ${itemCount(K.id)} of ${ITEM_CAP}.</span><span class="sd-price">${shelfPriceHTML({gold:K.price, gems:0})}</span>${shopKitSold(K.day) ? '<span class="sd-why">Sold out. The cart only brings one a day, and not every day.</span>' : shopKitFull(K.id) ? `<span class="sd-why">Your pack already holds ${ITEM_CAP}, the most it carries.</span>` : '<span class="sd-why">In stock today only.</span>'}${K.adminOnly ? '<span class="sd-why">🚨 Admin preview: not on sale to players today.</span>' : ''}`;
   const renderCounter = ()=>{
     const el = grid.querySelector('#shopCounter'), it = find(shopSelected);
     if(!el || !it) return;
+    if(it.ticket){ shopTicketCounter(el); return; } // 2026-10-18 (guild rename)
     if(it.kit){ const K = it.kit, sold = shopKitSold(K.day), full = shopKitFull(K.id), afford = (myCurrencies.gold||0) >= K.price;
       el.innerHTML = `<div class="counter-goods"><span class="shelf-kit is-big" aria-hidden="true"><span class="sk-ico">${K.def.icon}</span></span></div><div class="counter-info">${kitHTML(K)}</div><div class="counter-act">${sold || full ? '' : `<button class="btn primary" id="shopBuyKit" ${afford?'':'aria-disabled="true"'}>${afford ? 'Buy' : `Need ${K.price - (myCurrencies.gold||0)} more 🍁`}</button>`}</div>`;
       const kb = el.querySelector('#shopBuyKit'); if(kb) kb.onclick = ()=>{
@@ -40594,7 +41001,7 @@ function shopBackHTML(){
 // background"): two layers, both drawn in CSS (plus two NPC sprites), aria-hidden and click-through.
 //  - The street (#marketStreet, a fixed layer behind the page, shown only on the Shop): timber shopfronts with arched doors (one ajar
 //    with lamplight), lit windows that flicker, a striped stall, crates and barrels, cobbles, a string of lanterns swaying overhead,
-//    and two shopkeepers (Bramble the mouse at the stall, Thimble the hedgehog in a doorway) idly bobbing. On a wide screen it fills
+//    and two shopkeepers (Burdock the mouse at the stall, Thimble the hedgehog in a doorway) idly bobbing. On a wide screen it fills
 //    the space either side of the cart.
 //  - In the cart (.cart-doodads, first in #view-shop): two lanterns hanging from the awning by the sign, and along the bottom a plank
 //    floor with a crate, a barrel, a sack and the mouse peeking over them, so a phone (where the street is mostly hidden) gets it too.
@@ -40831,14 +41238,31 @@ function nestPoolFor(type){
 // 35% from bosses, 50% from world bosses - when defeating them the first time. But if fighting a mission that you have won
 // before the chance drops to 0.1% per energy you use ... For elites/minibosses/bosses/world-bosses, there is a
 // 1.5x/2x/3x/5x multiplier ... Raids in this case, only have a 1% chance flat"). The egg's kind follows the fight's animals.
-const EGG_FIRST_CHANCE = {skirmish:0.08, elite:0.16, champion:0.16, dungeon:0.16, miniboss:0.25, subboss:0.25, boss:0.35, finalboss:0.35, worldboss:0.50};
-const EGG_REPEAT_MULT = {elite:1.5, champion:1.5, dungeon:1.5, miniboss:2, subboss:2, boss:3, finalboss:3, worldboss:5};
+// 2026-10-18 (owner: "The chance of an egg is very low"): lowered a lot, about a quarter of the 10-12 rates. First clears:
+// skirmish 2%, elite 4%, mini-boss 6%, boss 10%, world boss 20%; a repeat win rolls 0.1% per energy times a smaller multiplier
+// (was 1.5/2/3/5). Raids stay at 1% flat. Map 1 guarantees one egg instead (EGG_MAP1_NODE), Map 3's first egg stays.
+const EGG_FIRST_CHANCE = {skirmish:0.02, elite:0.04, champion:0.04, dungeon:0.04, miniboss:0.06, subboss:0.06, boss:0.10, finalboss:0.10, worldboss:0.20};
+const EGG_REPEAT_MULT = {skirmish:0.5, elite:0.75, champion:0.75, dungeon:0.75, miniboss:1, subboss:1, boss:1.5, finalboss:1.5, worldboss:2.5};
 function eggChanceFor(node, mapId, firstClear){
   if(!node) return 0; const k = node.kind === 'raidWin' ? 'raidWin' : (EGG_FIRST_CHANCE[node.kind] != null ? node.kind : baseKind(node.kind || 'skirmish'));
   if(k === 'raidWin' || k === 'raidboss') return 0.01;
-  if(firstClear) return EGG_FIRST_CHANCE[k] != null ? EGG_FIRST_CHANCE[k] : 0.08;
+  if(firstClear) return EGG_FIRST_CHANCE[k] != null ? EGG_FIRST_CHANCE[k] : EGG_FIRST_CHANCE.skirmish;
   let energy = 1; try{ energy = nodeEnergyCost(mapId, node) || 1; }catch(e){}
   return Math.min(1, 0.001 * energy * (EGG_REPEAT_MULT[k] || 1));
+}
+// The egg's kind follows the fight's animals (the most common nest type in its deck; woodland if none).
+function eggKindForNode(node){
+  const defs = getCardDefs(), tally = {};
+  Object.entries((node && node.deck) || {}).forEach(([id, k])=>{ const d = defs[id]; if(d) Object.keys(EGG_KINDS).forEach(t=>{ if(t!=='woodland' && NEST_TYPES[t] && NEST_TYPES[t].test(d)) tally[t] = (tally[t]||0) + k; }); });
+  return Object.keys(tally).sort((a,b)=> tally[b]-tally[a])[0] || 'woodland';
+}
+// 2026-10-18 (owner: "guarantee one of the skirmishes of Map 1"): a mid-map ordinary skirmish of Map 1 (Thistlewood, 1-3 of
+// 1-1..1-4 and the boss) leaves one egg on its first clear, once per save. Returns the egg's kind, or null.
+const EGG_MAP1_NODE = '1-3';
+function guaranteedMap1Egg(node, mapId, firstClear){
+  if(!firstClear || !node || node.key !== EGG_MAP1_NODE || mapId !== mapIdAt(1) || baseKind(node.kind || 'skirmish') !== 'skirmish') return null;
+  if(loadDialogueFlags()['egg:map1']) return null;
+  setDialogueFlag('egg:map1', true); const kind = eggKindForNode(node); grantEgg(kind, node.key); return kind;
 }
 // Kibble from Conquest wins (2026-10-12, 21:01): a first clear gives 1 (elites and dungeons 2, bosses 3, the world boss 5);
 // a repeat win turns up 1 now and then (15%).
@@ -40850,9 +41274,7 @@ function rollKibble(node, firstClear){
 }
 function rollEggDrop(node, mapId, firstClear){
   const p = eggChanceFor(node, mapId, firstClear); if(!(p > 0) || Math.random() >= p) return null;
-  const defs = getCardDefs(), tally = {};
-  Object.entries((node && node.deck) || {}).forEach(([id, k])=>{ const d = defs[id]; if(d) Object.keys(EGG_KINDS).forEach(t=>{ if(t!=='woodland' && NEST_TYPES[t] && NEST_TYPES[t].test(d)) tally[t] = (tally[t]||0) + k; }); });
-  const kind = Object.keys(tally).sort((a,b)=> tally[b]-tally[a])[0] || 'woodland';
+  const kind = eggKindForNode(node);
   grantEgg(kind, (node && node.key) || 'raid'); return kind;
 }
 // Eggs before the Nest (2026-10-15, user: "I think its okay to find eggs before Map 4 (through normal drops) but leave a comment
@@ -42400,6 +42822,9 @@ async function loadMyGuild(){
       if(mErr) throw mErr;
       myGuild = guild;
       myGuildMembers = members || [];
+      // 2026-10-18 (guild rename): the founders' gift, one 🎫 Rename Ticket for an owner of a guild made before it shipped
+      const me = myGuildMembers.find(m=> m.profile_id===cloudUserId);
+      if(me && me.role==='owner' && giftFounderRenameTicket(guild)) setTimeout(()=>{ try{ showToast(TX('toast.rename-ticket-gift'), 'ok'); }catch(e){} }, 600);
     }
   }catch(e){ myGuild=null; myGuildMembers=null; guildLoadError = true; }
   guildDataLoaded = true;
@@ -42452,6 +42877,86 @@ async function leaveGuild(){
     return error ? {error: netErrText(error)} : {ok:true};
   }catch(e){ return {error: netErrText(e)}; }
 }
+// ---- Guild rename (2026-10-18, owner 15:05: "okay. + rename feature (but takes a rename ticket)"). The owner renames from the
+// guild panel for one 🎫 Rename Ticket. The live policies have no UPDATE on public.guilds, so the rename goes through the
+// rename_guild(p_guild, p_name) function in supabase/proposed/20261018_guild_rename.sql, which checks the caller owns the guild
+// and checks the name again. Until that file is applied the call comes back "function does not exist": the player is told
+// renaming isn't switched on yet, and the ticket is kept. A ticket is only spent once the server says the rename went through.
+const GUILD_NAME_MIN = 3, GUILD_NAME_MAX = 24; // the live guilds_name_len check (and the create form's minlength/maxlength)
+// The same rules as making a guild (trimmed, 3-24 characters; there is no word filter in the game), plus "not the same name".
+// Inner runs of spaces fold to one, as the server function does. Returns {name, err}; err is '' when the name is fine.
+function guildNameProblem(raw, current){
+  const name = String(raw == null ? '' : raw).trim().replace(/\s+/g, ' '), n = Array.from(name).length;
+  if(n < GUILD_NAME_MIN || n > GUILD_NAME_MAX) return {name, err: TX('ui.guild-name-length', {min: GUILD_NAME_MIN, max: GUILD_NAME_MAX, n})};
+  if(current != null && name === String(current)) return {name, err: TX('ui.guild-name-unchanged')};
+  return {name, err: ''};
+}
+// The function isn't there yet (not applied): PostgREST says PGRST202 / "Could not find the function", Postgres 42883 /
+// "function ... does not exist".
+function guildRenameRpcMissing(err){
+  const code = String((err && err.code) || ''), msg = String((err && (err.message || err.details || err.hint)) || '');
+  return code === 'PGRST202' || code === '42883' || /could not find the function|function\b[^]*\bdoes not exist/i.test(msg);
+}
+async function renameGuild(guildId, rawName, currentName){
+  if(!sbClient || !cloudUserId) return {error: TX('net.guild-rename-sign-in')};
+  const chk = guildNameProblem(rawName, currentName); if(chk.err) return {error: chk.err};
+  if(renameTickets() < 1) return {error: TX('ui.guild-rename-no-ticket', {price: RENAME_TICKET_PRICE})};
+  let res;
+  try{ res = await sbClient.rpc('rename_guild', {p_guild: guildId, p_name: chk.name}); }catch(e){ return {error: TX('net.guild-rename-failed', {err: netErrText(e)})}; }
+  const { data, error } = res || {};
+  if(error){
+    if(guildRenameRpcMissing(error)) return {error: TX('net.guild-rename-not-on'), notOn: true};
+    const m = String(error.message || '');
+    if(error.code === '23505' || /name_taken|duplicate|unique/i.test(m)) return {error: TX('net.guild-name-taken')};
+    if(error.code === '42501' || /not_owner/i.test(m)) return {error: TX('net.guild-rename-not-owner')};
+    if(/bad_length|guilds_name_len/i.test(m)) return {error: TX('ui.guild-name-length', {min: GUILD_NAME_MIN, max: GUILD_NAME_MAX, n: Array.from(chk.name).length})};
+    return {error: TX('net.guild-rename-failed', {err: netErrText(error)})};
+  }
+  spendRenameTicket();
+  return {ok: true, name: (typeof data === 'string' && data) ? data : chk.name};
+}
+// The rename dialog (the name prompt's look): the new name, the ticket it costs and how many you hold, Rename / Cancel.
+function openGuildRenameDialog(){
+  if(!myGuild || document.getElementById('guildRenameOverlay')) return;
+  const g = myGuild, have = renameTickets();
+  const ov = document.createElement('div'); ov.id = 'guildRenameOverlay'; ov.className = 'name-prompt-overlay';
+  ov.innerHTML = `<form class="name-prompt" role="dialog" aria-modal="true" aria-labelledby="grTitle" autocomplete="off" novalidate>
+    <div class="np-ico" aria-hidden="true">${escapeHtml(g.icon || '🛡️')}</div>
+    <h2 id="grTitle">${escapeHtml(TX('ui.guild-rename-title'))}</h2>
+    <p>${escapeHtml(TX('ui.guild-rename-rules', {min: GUILD_NAME_MIN, max: GUILD_NAME_MAX}))}</p>
+    <input id="grInput" type="text" maxlength="${GUILD_NAME_MAX}" minlength="${GUILD_NAME_MIN}" value="${escapeAttr(g.name || '')}" aria-label="${escapeAttr(TX('ui.guild-rename-title'))}" aria-describedby="grMsg grCost">
+    <p id="grCost">${escapeHtml(have ? TX('ui.guild-rename-cost', {n: have}) : TX('ui.guild-rename-no-ticket', {price: RENAME_TICKET_PRICE}))}</p>
+    <p class="name-len-msg" id="grMsg" role="alert" aria-live="polite" hidden></p>
+    <button type="submit" class="btn primary big" id="grOk" ${have ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.guild-rename-ok'))}</button>
+    ${have ? '' : `<button type="button" class="btn" id="grShop">${escapeHtml(TX('ui.guild-rename-to-shop'))}</button>`}
+    <button type="button" class="btn" id="grCancel">${escapeHtml(TX('ui.guild-rename-cancel'))}</button></form>`;
+  document.body.appendChild(ov);
+  const inp = ov.querySelector('#grInput'), msg = ov.querySelector('#grMsg'), okBtn = ov.querySelector('#grOk');
+  const say = t=>{ msg.textContent = t; msg.hidden = !t; if(t) inp.setAttribute('aria-invalid', 'true'); else inp.removeAttribute('aria-invalid'); };
+  const close = ()=>{ ov.remove(); document.removeEventListener('keydown', onKey); };
+  const onKey = e=>{ if(e.key === 'Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  setTimeout(()=>{ inp.focus(); inp.select(); }, 50);
+  inp.addEventListener('input', ()=> say(''));
+  ov.querySelector('#grCancel').addEventListener('click', close);
+  ov.addEventListener('pointerdown', e=>{ if(e.target === ov) close(); });
+  const shopBtn = ov.querySelector('#grShop'); if(shopBtn) shopBtn.addEventListener('click', ()=>{ close(); shopSelected = 'ticket:1'; switchTab('shop'); });
+  ov.querySelector('form').addEventListener('submit', async e=>{
+    e.preventDefault(); if(okBtn.disabled) return;
+    if(renameTickets() < 1){ say(TX('ui.guild-rename-no-ticket', {price: RENAME_TICKET_PRICE})); denyShake(okBtn); return; }
+    const chk = guildNameProblem(inp.value, g.name); if(chk.err){ say(chk.err); denyShake(inp); inp.focus(); return; }
+    okBtn.disabled = true; say('');
+    const res = await renameGuild(g.id, chk.name, g.name);
+    okBtn.disabled = false;
+    if(res.error){ say(res.error); if(!res.notOn){ denyShake(inp); inp.focus(); } return; }
+    close();
+    if(myGuild && myGuild.id === g.id) myGuild.name = res.name;
+    guildBrowseList = null;
+    try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e2){}
+    showToast(TX('toast.guild-renamed', {name: res.name, n: renameTickets()}), 'ok');
+    if(currentTab === 'guild') renderGuild();
+  });
+}
 function renderGuild(){
   const root = document.getElementById('view-guild');
   if(!isSignedIn()){
@@ -42483,6 +42988,8 @@ function renderGuild(){
     ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) : guildBrowseCreatePanelHTML()}`;
   document.getElementById('guildBackBtn').addEventListener('click', goHome);
   if(myGuild){
+    const renameBtn = document.getElementById('guildRenameBtn'); // 2026-10-18 (guild rename): owners only
+    if(renameBtn) renameBtn.addEventListener('click', openGuildRenameDialog);
     const leaveBtn = document.getElementById('guildLeaveBtn');
     if(leaveBtn) leaveBtn.addEventListener('click', async ()=>{
       if(!confirm(TX('dialog.leave-you-can-rejoin-or-found', {name: myGuild.name}))) return;
@@ -42534,6 +43041,7 @@ function guildRosterPanelHTML(guild, members){
              per explicit directive, the live game should never tell a player a feature isn't live
              yet. The mechanic still isn't designed, so it simply doesn't appear here until it is;
              no not-wired button or "coming soon" alert should ship in its place. -->
+        ${isOwner ? `<button class="btn" id="guildRenameBtn" title="${escapeAttr(TX('ui.guild-rename-btn-tip'))}">✏️ Rename guild <small>· 1 🎫 (${renameTickets()})</small></button>` : '' /* 2026-10-18 (guild rename) */}
         <button class="btn" id="guildLeaveBtn">🚪 Leave Guild</button>
       </div>
     </div>

@@ -87,9 +87,10 @@ LEG = [('Budget v3', 'What N is made of (the same numbers as the game\'s Test La
        ('Rarity', f'+{v3g("perRarity", 1)} per rarity step: Starter (Base) 0, Common 1, Uncommon 2, Rare 3, Very Rare 4, Super Rare 5, Epic 6, Heroic 7, Unique 8, Legendary 9, Mythic 10, Ancient 11, Divine 12, Void 13, Daemonic 14. Quest and special rarities count as the tier they stand for'),
        ('Wait', f'+{v3g("perWait", 6)}×Wait + {v3g("perWait2", 0.5)}×Wait²'),
        ('Lumber', f'+{v3g("perLumber", 4)}×Lumber + {v3g("perLumber2", 0.4)}×Lumber²'),
+       ('Ritual', f'+{v3g("perRitual", 1)} per Ritual point, the sum of its counts (2026-10-18, owner: Ritual "increases N")'),
        ('Half-miss ×', f'Both scores are ×{v3g("missMult", 1.5)} for each of: {", ".join(HALF_MISS)} (they cost 0 themselves)'),
        ('Bounty', 'Costs 0: it pays the player who plays it and, when it dies, the other side'),
-       ('Formula', f'N = {b} + {v3g("perLevel", 2)}×Level + Rarity + {v3g("perWait", 6)}×Wait + {v3g("perWait2", 0.5)}×Wait² + {v3g("perLumber", 4)}×Lumber + {v3g("perLumber2", 0.4)}×Lumber². Pass: 2A+H+S < N and A×H+S < (N/3)²')]
+       ('Formula', f'N = {b} + {v3g("perLevel", 2)}×Level + Rarity + {v3g("perWait", 6)}×Wait + {v3g("perWait2", 0.5)}×Wait² + {v3g("perLumber", 4)}×Lumber + {v3g("perLumber2", 0.4)}×Lumber² + {v3g("perRitual", 1)}×Ritual points. Pass: 2A+H+S < N and A×H+S < (N/3)²')]
 for k, v in LEG: ws.append([k, None, v])
 LEG0 = ws.max_row - len(LEG) + 1
 ws.append([])

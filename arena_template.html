@@ -6534,11 +6534,11 @@
   @keyframes tideFoamDrift{to{background-position:44px 0;}}
   @media (prefers-reduced-motion:reduce){ .tide-wave span::after, .tide-is-flow > .tide-line::after{animation:none;} }
   /* The standing Tide (2026-10-18, owner: "The tide effect has not been updated to be better."): one layer under the cards
-     (.tide-scene, built by syncTideScene in arena_app.js) holds the water. Flood fills the board to near its top, High Tide to the brim,
-     Ebb leaves a shallow strip along the bottom; between states the sheet rises or recedes smoothly (one transform, from --tw-from to
+     (.tide-scene, built by syncTideScene in arena_app.js) holds the water. Flood and High Tide fill the whole board (2026-10-18, owner
+     15:05), Ebb leaves a thin band along the bottom border; between states the sheet rises or recedes smoothly (one transform, from --tw-from to
      --tw-to; a negative --tw-delay resumes it when the board is redrawn mid-move), its wave edge drifts and surges, two caustic layers and
-     a slow sheen move over it, and an ebb leaves wet, darker sand that dries in a few seconds. Land units stand waded in a ring of water
-     (.tide-wade) and Swimmers / Tide units bob in theirs; flyers stay dry. Only transforms and opacity animate. Low effects keep the
+     a slow sheen fade in once it has settled, and an ebb leaves wet, darker sand that dries in a few seconds. Wet units wear a wet look
+     (.unit-wet) and Swimmers now and then splash (.swim-splash); flyers stay dry. Only transforms and opacity animate. Low effects keep the
      water and its rise and fall but nothing drifts; Minimal and reduced motion show it still. Pixel style: a stepped edge, chunky
      caustics, stepped motion. */
   .tide-scene{position:absolute; inset:0; z-index:0; pointer-events:none; overflow:hidden; border-radius:inherit; contain:strict;}
@@ -6555,6 +6555,13 @@
   @keyframes twMoveB{from{transform:translateY(var(--tw-from)) skewY(var(--tw-skew, 0deg));} to{transform:translateY(var(--tw-to)) skewY(0deg);}}
   .tide-scene .tw-body{position:absolute; inset:0; animation:twSlosh 6s ease-in-out infinite;}
   @keyframes twSlosh{0%,100%{transform:translateY(0);} 50%{transform:translateY(5px);}}
+  /* 2026-10-18 (owner 15:05: "the water vfx can come into play after the water settles"): the caustics and the sheen (.tw-surf) fade in
+     once the move is over (the move's 1.8 s, resumed by the same --tw-delay) */
+  .tide-scene .tw-surf{position:absolute; inset:0;}
+  .tide-scene.is-moving .tw-surf{animation:twSettleA .9s ease-out calc(var(--tw-delay, 0ms) + 1800ms) both;}
+  .tide-scene.is-moving.mv-b .tw-surf{animation-name:twSettleB;}
+  @keyframes twSettleA{from{opacity:0;} to{opacity:1;}}
+  @keyframes twSettleB{from{opacity:0;} to{opacity:1;}}
   .tide-scene .tw-water{position:absolute; left:0; right:0; top:0; bottom:-14px; overflow:hidden;
     background:linear-gradient(180deg, rgba(126,200,246,.34) 0, rgba(84,164,226,.25) 20%, rgba(44,118,196,.3) 100%);}
   .tide-scene[data-k="high"] .tw-water{background:linear-gradient(180deg, rgba(126,200,246,.34) 0, rgba(64,146,218,.34) 18%, rgba(26,92,172,.42) 100%);}
@@ -6582,16 +6589,31 @@
   .tide-scene.is-drying.mv-b .tw-wet{animation-name:twDryB;}
   @keyframes twDryA{0%{opacity:0;} 12%{opacity:1;} 100%{opacity:0;}}
   @keyframes twDryB{0%{opacity:0;} 12%{opacity:1;} 100%{opacity:0;}}
-  /* waded: a ring of water round each land unit's base, behind the card (and round a Swimmer's, which bobs in it); flyers stay dry */
-  .board-card > .tide-wade{display:none; position:absolute; left:-9%; right:-9%; bottom:-10px; height:24px; z-index:-1; pointer-events:none; border-radius:50%;
-    background:radial-gradient(closest-side, rgba(40,120,200,.0) 62%, rgba(70,160,230,.32) 74%, rgba(225,246,255,.85) 84%, rgba(130,205,250,.3) 92%, transparent 100%);}
-  .board-card > .tide-wade::before{content:''; position:absolute; inset:0; border-radius:50%; opacity:0;
-    background:radial-gradient(closest-side, transparent 80%, rgba(235,250,255,.7) 90%, transparent 100%); animation:twRipple 3.4s ease-out infinite;}
-  .board-card:nth-child(2n) > .tide-wade::before{animation-delay:-1.2s;} .board-card:nth-child(3n) > .tide-wade::before{animation-delay:-2.3s;}
-  @keyframes twRipple{0%{transform:scale(.94); opacity:.75;} 100%{transform:scale(1.28); opacity:0;}}
-  .battlefield[data-tide] .board-card:not(.is-flying) > .tide-wade{display:block;}
-  .battlefield:is([data-tide="flow"], [data-tide="high"]) .board-card > .tide-wade{opacity:1; animation:twWadeIn .9s ease-out calc(var(--tw-wade-delay, -9s) + .5s + var(--tl-d, .25s)) both;}
-  .battlefield:is([data-tide="ebb"], [data-tide="none"]) .board-card > .tide-wade{opacity:0; animation:twWadeOut .7s ease-in calc(var(--tw-wade-delay, -9s) - .1s + var(--tl-d, .25s)) both;}
+  /* The wet look (2026-10-18, owner 15:05: "All non swimming, non flying are made 'wet' in flood. Swimming units are always wet in flood or
+     ebb."; replaces the waded ring under each land unit, which the full-board Flood made redundant): .unit-wet (syncTideScene adds it to every
+     unit that isn't flying, in every row; a Swimmer's sits on its bobbing body) darkens the card's lower edge with a faint blue and three
+     droplet glints. It shows on every land unit once the Flood has reached it, on a Swimmer / Tide unit in Flood and Ebb, and dries away
+     when the water goes out. One opacity animation, resumed with --tw-wade-delay so a redraw doesn't replay it; static paint otherwise. */
+  .board-card .unit-wet{display:none; position:absolute; inset:0; z-index:1; pointer-events:none; border-radius:12px; opacity:0;
+    background:radial-gradient(circle at 21% 72%, rgba(236,250,255,.85) 0 1.7px, transparent 2.8px), radial-gradient(circle at 76% 84%, rgba(236,250,255,.75) 0 1.5px, transparent 2.6px),
+      radial-gradient(circle at 57% 61%, rgba(236,250,255,.6) 0 1.2px, transparent 2.2px), radial-gradient(circle at 36% 90%, rgba(236,250,255,.6) 0 1.2px, transparent 2.2px),
+      linear-gradient(180deg, transparent 52%, rgba(90,170,235,.14) 72%, rgba(56,130,210,.24) 88%, rgba(36,104,190,.34) 100%);}
+  .battlefield[data-tide] .board-card:not(.is-flying) .unit-wet{display:block;}
+  .battlefield:is([data-tide="flow"], [data-tide="high"]) .board-card .unit-wet, .battlefield[data-tide="ebb"] .board-card.is-floating .unit-wet{opacity:1; animation:twWetIn .8s ease-out calc(var(--tw-wade-delay, -9s) + 1s + var(--tl-d, .25s)) both;}
+  .battlefield[data-tide="ebb"] .board-card:not(.is-floating) .unit-wet, .battlefield[data-tide="none"] .board-card .unit-wet{opacity:0; animation:twWetOut 2.4s ease-in calc(var(--tw-wade-delay, -9s) + .3s) both;}
+  /* a Swimmer's splash (SwimSplash in arena_app.js): a ripple at its base, or (.ss-drops) three droplets that hop and fall back */
+  .board-card > .swim-splash{position:absolute; bottom:-9px; width:60px; height:20px; margin-left:-30px; z-index:3; pointer-events:none;}
+  .board-card > .swim-splash::before{content:''; position:absolute; inset:0; border-radius:50%; border:2px solid rgba(232,248,255,.95); box-shadow:0 0 6px rgba(150,215,255,.6); opacity:0; animation:ssRing .9s ease-out both;}
+  .board-card > .swim-splash::after{content:''; position:absolute; left:50%; top:2px; width:5px; height:7px; margin-left:-2.5px; border-radius:50% 50% 50% 50% / 60% 60% 40% 40%; background:rgba(222,245,255,.98);
+    box-shadow:-12px 4px 0 -.5px rgba(222,245,255,.95), 12px 3px 0 -.5px rgba(222,245,255,.95), -5px -3px 0 -1.5px rgba(222,245,255,.9); opacity:0; animation:ssDrops .9s cubic-bezier(.3,.6,.5,1) both;}
+  .board-card > .swim-splash:not(.ss-drops)::after{animation-duration:.7s; animation-delay:.05s;}
+  .board-card > .swim-splash.ss-drops::before{animation-delay:.45s;}
+  @keyframes ssRing{0%{transform:scale(.35); opacity:.9;} 100%{transform:scale(1.15); opacity:0;}}
+  @keyframes ssDrops{0%{transform:translateY(6px) scale(.6); opacity:0;} 20%{opacity:1;} 50%{transform:translateY(-12px) scale(1);} 85%{opacity:.9;} 100%{transform:translateY(4px) scale(.8); opacity:0;}}
+  html[data-fx-style="pixel"] .board-card > .swim-splash::before{border-radius:0; animation-timing-function:steps(4);}
+  html[data-fx-style="pixel"] .board-card > .swim-splash::after{border-radius:0; animation-timing-function:steps(5);}
+  html[data-fx-style="minimal"] .board-card > .swim-splash, html[data-fx="low"] .board-card > .swim-splash, html[data-fx="none"] .board-card > .swim-splash{display:none;}
+  @media (prefers-reduced-motion: reduce){ .board-card > .swim-splash{display:none;} }
   /* the cards lift a touch as the water reaches them, column by column from the left, 0.1 s apart (--tl-d, set by tideLiftCards; owner
      10:27: "lifts up cards by too much and also makes the game really laggy ... play from the left to right, 0.1s apart"): a CSS
      animation of the tile's own translate / rotate, nothing else. */
@@ -6601,17 +6623,16 @@
   @keyframes tideLiftEbb{0%,100%{translate:0 0; rotate:0deg;} 45%{translate:0 1px; rotate:-.25deg;}}
   html[data-fx-style="pixel"] #appWrap.in-match .board-card:is(.tide-lift, .tide-lift-ebb) .card-tile{animation-timing-function:steps(3);}
   @media (prefers-reduced-motion: reduce){ #appWrap.in-match .board-card:is(.tide-lift, .tide-lift-ebb) .card-tile{animation:none;} }
-  @keyframes twWadeIn{from{opacity:0; transform:scale(.8);} to{opacity:1; transform:scale(1);}}
-  @keyframes twWadeOut{from{opacity:1;} to{opacity:0;}}
-  .battlefield:is([data-tide="flow"], [data-tide="high"]) .board-card.is-floating > .fly-shadow{visibility:hidden;} /* the water ring is its shadow now */
+  @keyframes twWetIn{from{opacity:0;} to{opacity:1;}}
+  @keyframes twWetOut{from{opacity:1;} to{opacity:0;}}
   /* Effects level and style */
-  html[data-fx="low"] .tide-scene :is(.tw-body, .tw-edge, .tw-caus, .tw-sheen), html[data-fx="low"] .board-card > .tide-wade::before{animation:none !important;}
+  html[data-fx="low"] .tide-scene :is(.tw-body, .tw-edge, .tw-caus, .tw-sheen){animation:none !important;}
   html[data-fx="low"] .tide-scene :is(.tw-caus.c2, .tw-sheen, .tw-edge-b){display:none;}
-  html[data-fx="none"] .tide-scene *, html[data-fx="none"] .board-card > .tide-wade, html[data-fx="none"] .board-card > .tide-wade::before{animation:none !important;}
+  html[data-fx="none"] .tide-scene *, html[data-fx="none"] .board-card .unit-wet{animation:none !important;}
   html[data-fx="none"] .tide-scene :is(.tw-wet, .tw-caus, .tw-sheen, .tw-edge-b){display:none;}
   html[data-fx-style="minimal"] .tide-scene :is(.tw-caus, .tw-sheen, .tw-edge-b){display:none;}
   @media (prefers-reduced-motion: reduce){
-    .tide-scene *, .board-card > .tide-wade, .board-card > .tide-wade::before{animation:none !important;}
+    .tide-scene *, .board-card .unit-wet{animation:none !important;}
     .tide-scene :is(.tw-wet, .tw-sheen, .tw-caus.c2){display:none;}
   }
   html[data-fx-style="pixel"] .tide-scene .tw-edge{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 160 28' width='160' height='28' shape-rendering='crispEdges'%3E%3Cpath d='M0 12 H8 V12 H16 V10 H24 V10 H32 V10 H40 V12 H48 V12 H56 V12 H64 V12 H72 V12 H80 V12 H88 V14 H96 V16 H104 V16 H112 V18 H120 V20 H128 V20 H136 V18 H144 V16 H152 V14 H160 V28 H0 Z' fill='rgb(126,200,246)' fill-opacity='.34'/%3E%3Cpath d='M0 12 H8 V12 H16 V10 H24 V10 H32 V10 H40 V12 H48 V12 H56 V12 H64 V12 H72 V12 H80 V12 H88 V14 H96 V16 H104 V16 H112 V18 H120 V20 H128 V20 H136 V18 H144 V16 H152 V14 H160' fill='none' stroke='white' stroke-opacity='.9' stroke-width='2'/%3E%3C/svg%3E"); animation-timing-function:steps(20);}
@@ -6620,8 +6641,7 @@
   @keyframes twCausP{to{transform:translate(144px, 144px);}}
   html[data-fx-style="pixel"] .tide-scene.is-moving .tw-sheet{animation-timing-function:steps(12);}
   html[data-fx-style="pixel"] .tide-scene .tw-body{animation-timing-function:steps(4);}
-  html[data-fx-style="pixel"] .board-card > .tide-wade{border-radius:0; background:linear-gradient(rgba(225,246,255,.8), rgba(225,246,255,.8)) 50% 50%/100% 3px no-repeat, rgba(70,160,230,.28); clip-path:polygon(8% 0, 92% 0, 100% 50%, 92% 100%, 8% 100%, 0 50%);}
-  html[data-fx-style="pixel"] .board-card > .tide-wade::before{display:none;}
+  html[data-fx-style="pixel"] .board-card .unit-wet{border-radius:0; background:linear-gradient(180deg, transparent 72%, rgba(70,150,225,.2) 72%, rgba(70,150,225,.2) 86%, rgba(40,112,196,.3) 86%);} /* 2026-10-18: a stepped waterline, no glints */
   /* Field effects 2 (2026-10-16): the board-wide looks. Crushing Depths presses a dark-blue weight down on the board; Leylines III runs a
      violet line across it; Hail and the Glass-storm sweep (bw-sweep); a Mirage's Illusion shimmers as it appears; a Frightened unit shivers. */
   .battlefield.crush-press{animation:crushPress .8s ease-out;}
@@ -8710,10 +8730,13 @@
   /* Cost 5+ (user: "5 Resource cost and above e.g. 5 lumber or 5 stone, it's just a lumber symbol with a black number w/ white bg
      glow."): one resource icon with its number set over its lower half, black with a white glow. Four pips overlap a little more so
      they stay inside the badge on small tiles (the deck editor's pool overflowed at 4). */
-  .pips.is-res-num{position:relative; padding-right:.34em;}
-  .pips.is-res-num i{font-size:1.18em;}
-  .pips.is-res-num b{position:absolute; right:-.12em; bottom:-.2em; margin:0; color:#111; font:900 1.02em/1 'Baloo 2', system-ui, sans-serif; letter-spacing:-.04em;
-    text-shadow:0 0 1px #fff, 0 0 2px #fff, 0 0 3px #fff, 0 0 4px rgba(255,255,255,.9);}
+  /* 2026-10-18 (owner: "the 5+ lumber shows a single lumber with a contrasted number in the centre instead"): the number sits in
+     the middle of the one icon, white with a dark outline, so it reads on the log's brown and on any frame colour. */
+  .pips.is-res-num{position:relative; justify-content:center;}
+  .pips.is-res-num i{font-size:1.3em;}
+  .pips.is-res-num b{position:absolute; left:50%; top:50%; transform:translate(-50%, -50%); margin:0; color:#fff; font:900 .98em/1 'Baloo 2', system-ui, sans-serif;
+    letter-spacing:-.04em; pointer-events:none; -webkit-text-stroke:.6px #1a1006; paint-order:stroke fill;
+    text-shadow:0 0 1px #1a1006, 1px 1px 0 #1a1006, -1px -1px 0 #1a1006, 1px -1px 0 #1a1006, -1px 1px 0 #1a1006, 0 0 3px rgba(0,0,0,.85);}
   .pips[data-n="4"] i + i{margin-left:-.42em;}
   /* An enemy unit whose only skill is Bounty (its 🏆 slot hides behind the Lumber bubble) shows no empty grey strip (user: "Why do
      those enemy cards have that slim weird & grey rectangle ... Is that 'Bounty'?"). */
@@ -10397,6 +10420,30 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .hud-pack.is-bump{animation:packBump .5s cubic-bezier(.2,1.6,.4,1);} .hud-pack.is-bump .hud-pack-n{animation:packTick .45s ease-out;}
 @keyframes packBump{0%{transform:scale(1);} 30%{transform:scale(1.3) rotate(-7deg);} 62%{transform:scale(.94) rotate(3deg);} 100%{transform:none;}}
 @keyframes packTick{0%{transform:translateY(-9px); opacity:0;} 100%{transform:none; opacity:1;}}
+/* 2026-10-18 (package Z, owner: "use two item(s) per map only. then it's grayed then faded out"): the badge counts this fight's items
+   ("1/2"); once all are used the pack greys and fades out of the HUD (KIT_FADE_MS, the redraw keeps its place via animation-delay). */
+.hud-pack .hud-pack-used{width:auto; min-width:17px; padding:0 4px; border-radius:9px; font-size:9.5px; font-variant-numeric:tabular-nums;}
+.hud-pack.has-used:not(.is-spent) .hud-pack-used{background:#d9a634;}
+.hud-pack.is-spent{animation:kitSpentFade 1.8s ease-in forwards; pointer-events:none;}
+.hud-pack.is-spent .hud-pack-used{background:#7d8590;}
+@keyframes kitSpentFade{0%{opacity:.85; filter:grayscale(0);} 30%{opacity:.62; filter:grayscale(1);} 65%{opacity:.55; filter:grayscale(1); transform:none;} 100%{opacity:0; filter:grayscale(1); transform:scale(.82);}}
+.pack-pop-uses.has-used{color:#ffd36a;}
+.pack-pop-boss{margin:2px 0 6px; font-size:12px; font-weight:700; color:#ffd36a;}
+.cnp-grants-item{margin:6px 0 0; font-size:12.5px; font-weight:700; color:#ffd36a;}
+/* 2026-10-18 (package Z): the daily dungeons' Sweep, premium only; locked it is slate with a gold Premium badge */
+.dg-sweep{margin-left:6px;}
+.dg-sweep.is-locked, .cnp-sweep-half.is-locked{background:#5a6270 !important; border-color:#474e59 !important; color:#d6dbe2 !important; box-shadow:none !important; cursor:not-allowed;}
+.premium-badge{display:inline-block; margin-left:4px; padding:1px 6px; border-radius:999px; font-size:10px; font-weight:900; line-height:1.4; letter-spacing:.02em; background:linear-gradient(180deg,#ffe08a,#e0a43a); color:#3a2500; vertical-align:middle;}
+/* 2026-10-18 (package Z, owner: "You may blue-grey out completed tower floors as there will be 0 reward"): a cleared Babel Spire floor
+   is blue-grey (not the green of a cleared fight, nor the locked look) with a "0 reward · free" tag under its code. */
+.map-node.done.is-free-replay{background-color:#8fa3b8; border-color:#56697d;
+  background-image:radial-gradient(circle at 32% 26%, rgba(255,255,255,.5) 0, rgba(255,255,255,.1) 34%, transparent 60%), linear-gradient(180deg, #b6c5d4, #6c8198);}
+.map-node.done.is-free-replay.kind-base-elite, .map-node.done.is-free-replay.kind-base-boss{box-shadow:0 0 0 3px #56697d, 0 3px 0 rgba(0,0,0,.25);}
+.map-node .map-node-free{position:absolute; left:50%; bottom:-23px; transform:translateX(-50%); font:800 9px/1 'Baloo 2',system-ui,sans-serif; padding:2px 5px; border-radius:999px; background:rgba(52,68,86,.92); color:#dfe9f3; white-space:nowrap; pointer-events:none;}
+.cnp-tower-cost{margin:6px 0 0; font-size:12.5px; font-weight:800; color:#ffd36a;}
+.cnp-tower-cost.is-free, .dg-tower-cost.is-free, .wl-tower-replay{color:#b9cde0;}
+.dg-tower-cost{align-self:center; margin-left:8px; font-size:12px; font-weight:800; color:#ffd36a;}
+.wl-tower-replay{margin:6px 0 0; font-size:13px; font-weight:700;}
 .pack-pop-why{margin:0; padding:6px 9px; border-radius:9px; background:rgba(63,191,90,.15); font-size:12.5px; line-height:1.35;}
 .pack-item.is-blocked{opacity:.62; cursor:not-allowed;} .pack-item.is-blocked .pack-ico{filter:grayscale(.85);}
 .pack-txt .pack-why{color:#d9573a; opacity:1; font-weight:700;}
@@ -10709,6 +10756,10 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   /* 2026-10-17: 1.2em, the size an emoji font glyph shows at (at 1em the bundled sets looked a size smaller than System) */
   img.tw-emoji{display:inline-block; width:1.2em; height:1.2em; margin:0 .02em; vertical-align:-.22em; pointer-events:none;}
   .card-tile .ico > img.tw-emoji, .card-tile .ico .ico-emoji-fallback img.tw-emoji{width:1em; height:1em; margin:0;}
+  /* 2026-10-18 (emoji speed): an emoji from the set's sprite sheet. Its src is a shared 1x1 transparent GIF; the picture is the
+     sheet as the background, placed by the generated #bwEmojiAtlas stylesheet (background-image/-size on img.emo, one
+     background-position per .e-<key>). Percent sizes, so it scales with the img like the SVG did. */
+  img.tw-emoji.emo{background-repeat:no-repeat; background-color:transparent; background-origin:border-box; background-clip:border-box; padding:0; border:0;}
   .ico-fireball{display:inline-block; position:relative; width:.86em; height:.86em; margin:0 .1em 0 .18em; vertical-align:-.08em; border-radius:50%;
     background:radial-gradient(circle at 40% 38%, #fffbe0 0, #ffd54a 26%, #ff8a1e 55%, #d8380e 85%); box-shadow:0 0 .25em rgba(255,130,30,.8);}
   .ico-fireball::before{content:''; position:absolute; right:68%; top:8%; width:.62em; height:.5em; border-radius:60% 0 0 60% / 50% 0 0 50%;

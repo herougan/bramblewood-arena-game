@@ -231,14 +231,15 @@ ok(fieldRun(0, 4) === false, 'Spring Rain: the CPU holds it when it would heal y
   const i = src.indexOf('const CPU_AI_KEYS'), j = src.indexOf('function cpuAiPillHTML');
   ok(i > 0 && j > i, 'arena_app.js has the CPU level rule block');
   const mapNo = {m1:0, m4:4, m5:5, m20:20, m21:21, m40:40, side5:5};
-  const R = new Function('mapNumberOf', src.slice(i, j) + '; return {cpuAiAutoLevel, cpuAiLevelForNode, cpuAiLevelOfMatch};')(id=> id in mapNo ? mapNo[id] : null);
+  const AIMAX = require('../bramblewood-engine.js').AI_LEVEL_MAX;
+  const R = new Function('mapNumberOf', 'AI_LEVEL_MAX', src.slice(i, j) + '; return {cpuAiAutoLevel, cpuAiLevelForNode, cpuAiLevelOfMatch};')(id=> id in mapNo ? mapNo[id] : null, AIMAX);
   const L = (m, kind, extra)=> R.cpuAiLevelForNode(m, Object.assign({kind}, extra || {}));
   ok(['skirmish', 'elite', 'boss', 'miniboss'].every(k=> L('m1', k) === 0 && L('m4', k) === 0), 'Maps 0–4: basic in every fight');
   ok(L('m5', 'skirmish') === 0 && L('m20', 'skirmish') === 0, 'Map 5+: ordinary skirmishes stay basic');
   ok(['elite', 'champion', 'miniboss', 'subboss', 'boss', 'finalboss', 'worldboss', 'dungeon'].every(k=> L('m5', k) === 1 && L('m20', k) === 1), 'Map 5+: elite missions and bosses get the smart CPU');
   ok(['skirmish', 'elite', 'boss'].every(k=> L('m21', k) === 2 && L('m40', k) === 2), 'Map 21+: the smartest CPU everywhere');
   ok(L('side5', 'elite') === 1 && L('side5', 'skirmish') === 0, 'a side map follows its parent map number');
-  ok([1, 24, 25, 60].every(fl=> L('tw', 'elite', {tower:true, floor:fl}) === 1 && L('tw', 'boss', {tower:true, floor:fl}) === 1), 'the Babel Spire: smart on every floor (2026-10-18, owner 11:46)');
+  ok(AIMAX === 2 && [1, 24, 25, 60].every(fl=> L('tw', 'elite', {tower:true, floor:fl}) === AIMAX && L('tw', 'boss', {tower:true, floor:fl}) === AIMAX), 'the Babel Spire: the highest CPU level (AI_LEVEL_MAX) on every floor (2026-10-18, owner 15:05)');
   ok(L('tw', 'boss', {tower:true, floor:30, ai:'smartest'}) === 2 && L('tw', 'elite', {tower:true, floor:3, ai:'basic'}) === 0, "the Babel Spire: Edit skirmish's pick still overrides it");
   ok(L('m40', 'boss', {ai:'basic'}) === 0 && L('m1', 'skirmish', {ai:'smartest'}) === 2 && L('m5', 'skirmish', {ai:'smart'}) === 1, "Edit skirmish's pick (node.ai) overrides Auto");
   ok(R.cpuAiLevelOfMatch({mode:'tutorial'}) === 0 && R.cpuAiLevelOfMatch({mode:'ai'}) === 1 && R.cpuAiLevelOfMatch({mode:'conquest', aiLevel:2}) === 2, 'matches: the tutorial basic, others smart unless the fight set a level');

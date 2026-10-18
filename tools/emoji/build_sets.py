@@ -17,6 +17,7 @@ is picked.
 Steps (all reproducible; sources are pinned):
     node tools/emoji/scan_emoji.js > tools/emoji/used.json      # what the game uses (~540 sequences)
     python3 tools/emoji/build_sets.py                           # fetch (cached in tools/emoji/.src/), svgo, write sets/
+    python3 tools/emoji/build_atlas.py                          # 2026-10-18: one sprite sheet per set (assemble_arena.py reruns it when a set changed)
 Fetching uses git (a blobless, sparse clone of microsoft/fluentui-emoji at FLUENT_REF) and raw.githubusercontent.com for
 Twemoji and Noto. svgo runs through npx (svgo@3.3.2).
 """

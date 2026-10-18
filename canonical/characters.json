@@ -1,7 +1,7 @@
 [
   {
     "id": "castle",
-    "name": "Castle",
+    "name": "Bramble",
     "icon": "🏰",
     "health": 30,
     "rarity": "common",

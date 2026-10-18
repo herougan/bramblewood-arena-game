@@ -93,8 +93,15 @@ run node tests/polish-2026-10-18.js   # 2026-10-18 (R3-WP6): the Spire's summit 
 run node tests/maps-2026-10-18.js   # 2026-10-18 (V3): Lilypad Reach waits on Gatorback Swamp (old saves keep it); dark maps' screen layer leaves the canvas to the canvas layer
 run node tests/visuals-2026-10-18.js   # 2026-10-18 (V1): the standing Tide, no tide chip, chilled flyers' frame and half hover, idle glance, smaller cliff gulls
 run node tests/tutorial-2026-10-18.js   # 2026-10-18 (package T): drag hint shows the highlighted card, faction pick goes straight in, green board, centred T-0/T-1, card windows fade out shrinking
+run node tests/x2-2026-10-18.js   # 2026-10-18 (package X2): raid stages without the extra volley, lightning at a bramble (no Shocked), the Spire at AI_LEVEL_MAX, the Flood wets land units, the full-board tide look
 run node tests/ui-2026-10-18.js   # 2026-10-18 (package U): why-not label on hover-out, card shadows, revealAfter "?" (Quarry Mole, Psychic Dampener), one unlock row, swap gap, Creative N, deck rarity floor, egg rewards, swap after the pack
+run node tests/emoji-atlas-2026-10-18.js   # 2026-10-18 (package EMO): each emoji set's sprite sheet is built, current and complete; EmojiStyle draws from it (stub DOM), SVG fallback
+run node tests/shields-2026-10-18.js   # 2026-10-18 (package X3): enemy bramble Shield by rule (map x kind), shieldOverride, Map 0's base bramble Health
+run node tests/decisions-2026-10-18.js   # 2026-10-18 (X1): Castle -> Bramble, Burdock the mouse, Thicket rank, rare eggs + a sure Map 1 egg, Lilypad Reach on Map 6, centred 5+ cost, golden card dealt, deck offer by Collection level, the Dromedary
+run node tests/y-2026-10-18.js   # 2026-10-18 (package Y, audit 4): Codex tile key + revealAfter, heal/Cure texts, gated "?" line, Wave crash credit, skirmish sim Difficulty, a11y observer, tutorial slide seed, Creative/cages, resume CPU level, Sacrifice Bleed
+run node tests/z-2026-10-18.js   # 2026-10-18 (package Z): two field-kit items a fight (+1 vs a grantsItem boss, greys and fades out), premium daily-dungeon Sweep, free Spire replays with 0 reward and refunded losses, TX keys + packs, the ads page
+run node tests/guild-rename-2026-10-18.js   # 2026-10-18 (X4): 🎫 Rename Ticket (shop, inventory, founders' gift), owner-only Rename guild, name rules, the not-applied fallback, the proposed rename_guild SQL
 run node tests/game-texts.js   # 2026-10-15: TX keys + the docs/game-texts.xlsx export/import round trip (~45 s)
-if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; run python3 tests/e2e/ui_smoke.py; run python3 tests/e2e/flows.py; run python3 tests/e2e/snaps.py; run python3 tests/e2e/i18n.py; run python3 tests/e2e/hero.py; run python3 tests/e2e/rarity_limit_craft.py; run python3 tests/e2e/a11y.py; run python3 tests/e2e/codex_perf.py; fi
+if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; run python3 tests/e2e/ui_smoke.py; run python3 tests/e2e/flows.py; run python3 tests/e2e/snaps.py; run python3 tests/e2e/i18n.py; run python3 tests/e2e/hero.py; run python3 tests/e2e/rarity_limit_craft.py; run python3 tests/e2e/a11y.py; run python3 tests/e2e/codex_perf.py; run python3 tests/e2e/emoji_perf.py; fi
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi
 exit $fail

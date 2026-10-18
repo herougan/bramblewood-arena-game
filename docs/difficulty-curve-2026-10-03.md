@@ -116,3 +116,96 @@ Win rates, old → new:
 **Known quirk:** some early Map 3–4 castles now have low HP (16–19). The difficulty comes from their decks instead. If you'd rather castles always grow map to map, raise HP and soften the decks in the skirmish editor.
 
 **Next:** Maps 5–11, with the same tool, once you've played Maps 1–4.
+
+## 2026-10-18 note: Shield by rule, the base bramble on Map 0 (package X3)
+
+Owner (15:05): "For shields, lower the amount of shields in all skirmishes. About Shield = Map. For Elites, Map * 1.5, up to 3x for bosses. HP of brambles in Tutorial and Map 0 Skirmishes should be unnaturally low."
+
+**The rule** (`ruleShieldOf` in `arena_app.js`, worked out when the fight is built):
+
+| Kind | Shield |
+|---|---|
+| Skirmish | map number |
+| Elite, Champion, Dungeon | round(map × 1.5) |
+| Mini-boss, Sub-boss | map × 2 |
+| Boss, Campaign Boss, World Boss, Raid | map × 3 |
+| Tutorial | 0 |
+
+- Health is now the bramble's own Health (castle + level). A node's `hqHp` can only lower it; it no longer adds Shield on top. Before, everything above the bramble's Health was Shield, which reached 150–400 on Maps 18–24.
+- The skirmish editor's override is a new field, `shieldOverride` (a number or up to 4 layers). Old saved `armour` / `armourLayers` values are ignored.
+- **Map 0's road fights a Lv 0 base bramble:** 0-1 has 10 Health, 0-2 has 12, 0-3 has 14 (later skirmishes 15), elites 16, the boss 20, all with no Shield. The tutorial's rival keeps the tutorial config's 6 Health (8 in part 2). The Tutorial side map's T-2…T-4 and the Old Bramble keep their bramble's Health.
+
+**Average enemy total per main map, before → after (Health + Shield):**
+
+| Map | Skirmish | Elite | Boss |
+|---|---|---|---|
+| 0 Outskirts | 22 → 12+0 | | 52 → 20+0 |
+| 1 Thistlewood | 15 → 15+1 | | 35 → 28+3 |
+| 2 Pebble Beach | 32 → 29+2 | | 167 → 38+6 |
+| 3 Gannet Cliffs | 47 → 28+3 | 59 → 30+5 | 56 → 30+9 |
+| 4 Sunken Hollow | 40 → 18+4 | 101 → 25+6 | 187 → 30+12 |
+| 5 Gatorback Swamp | 92 → 28+5 | 102 → 30+8 | 87 → 30+15 |
+| 6 Sable Swampmire | 168 → 26+6 | 74 → 27+9 | 34 → 34+18 |
+| 8 Caves & Alcoves | 38 → 21+8 | 29 → 23+12 | 81 → 30+24 |
+| 10 Coral Current | 60 → 24+10 | 60 → 25+15 | 93 → 32+30 |
+| 12 The Briar Maze | 24 → 24+12 | 28 → 28+18 | 45 → 30+36 |
+| 14 Savanna Reaches | 50 → 28+14 | 74 → 28+21 | 30 → 30+42 |
+| 17 Wolfsbane Tundra | 28 → 24+17 | 69 → 28+26 | 30 → 30+51 |
+| 18 The Glass Dunes | 135 → 30+18 | 110 → 30+27 | 65 → 30+54 |
+| 20 The Sundered Peak | 52 → 29+20 | 94 → 28+30 | 140 → 30+60 |
+| 22 The Rimefire Caldera | 278 → 30+22 | 310 → 30+33 | 340 → 30+66 |
+| 24 Goldfeather Keep | 352 → 30+24 | 385 → 30+36 | 420 → 30+72 |
+
+Most fights get shorter, and the late maps much shorter. A few bosses that had a small total now get more: 14-8, 17-8 and 6-8 had 30–34, and now have 72, 81 and 52. Bosses now rise smoothly with the map. The decks, the CPU level and the card levels carry the difficulty now. `tools/curve_tune.js`, `tools/autotune_map.js` and `tools/retune_all.js` still tune `hqHp` as a total, so they no longer move the Shield. Retune with the editor's 🎯 button instead, which sets `shieldOverride`.
+
+**Come-back-later fights** (coordinator, 10-18): the rule counts each one as the map that opens it, not Map 0 (`nodeMapNumber`). T-2 / T-3 / T-4 count as Maps 1 / 8 / 18 (`TUT_SIDE_GATE`). The Old Bramble counts as Map 17 (`shieldMap:17` on the map, since it opens after the Ice Hollow). Totals before → after (Health + Shield):
+- T-2: 90 → 28+1 = 29
+- T-3: 60 → 28+8 = 36
+- T-4 (elite): 220 → 31+27 = 58
+- 0-B-1…3: 43 / 53 / 63 → 28+17 = 45 each
+- 0-B-4 (boss): 80 → 36+51 = 87
+
+Any node or map can carry `shieldMap` to do the same.
+
+**Your own bramble** (owner 15:37, "D. Tutorial only"): your bramble has 8 Health in both tutorial fights. It was 16, and the rival has 6, then 8. It is capped at 8 (`TUTORIAL_MY_HP_MAX`) even if a saved tutorial config says more. In Map 0's skirmishes your bramble keeps its own Health (28–30) against the enemy's 10–20.
+
+The AI-vs-AI tutorial simulation pilots your side with the plain CPU (no guidance), so it is pessimistic. It is 60 seeds of part 1 / part 2, open rules. Your win rate at 16 Health → 8:
+- Hummingbirds: 83 / 82% → 58 / 62%
+- Otters and Both: 15 / 10% → 7 / 8%
+
+The fixed tutorial seed lost the simulation at 16 already, so `tests/e2e/ui_smoke.py` 7b (wants 70%+ and a fixed-seed win) did not pass before this change either. The guided steps are what make the tutorial winnable; worth a hand playthrough at 8.
+
+## 2026-10-18: the skirmish pass (package SKB)
+
+Owner (15:56): "a skirmish rough balancing pass. as long it's not auto winnable or always loseable." Full tables: `docs/skirmish-pass-2026-10-18.md` and `.xlsx`. Tool: `tools/skirmish_pass.js`, which reads the game's own fight build from `arena_app.js` through `tools/lib_bramble.js`.
+
+**How it was measured:**
+- Every Conquest fight was played: main maps, side maps, the dungeon and four floors of each endless dungeon. The tutorial, raids and the Babel Spire were left out.
+- 60 games a fight, with `aiAim` on and the CPU at its real level.
+- The enemy bramble and deck are built as the game builds them: the Shield rule or override, and the road levels.
+- Your deck is the stage deck:
+  - Starter on Map 0;
+  - a new **Road deck** per map on Maps 1–9, built from `expectedPlayerDeck`'s pool the way this tool builds Mid-road and Strong;
+  - Mid-road on Maps 10–17;
+  - Strong on Maps 18–24.
+
+**Results:**
+- **Before:** 63 fights outside 12–92% (39 auto-winnable, 24 always losable, 5 of them endless floors), and 13 maps whose elites or boss were easier than their skirmishes.
+- **After:**
+  - 7 outliers on the measure seeds: 21-3 Cloud Ledge, 24-6 The Gilded Guard, and the 5 endless floors;
+  - 8 over 120 games: the same plus 24-1 at 92.5%;
+  - 1 map whose elites or boss are easier than its skirmishes: the Sunken Depths.
+
+**What changed:**
+- 90 fights. Almost all of them changed only the CPU deck: up to 2 copies a move, themed, inside the road's rarity caps.
+- 4 fights also got a `shieldOverride`: 3-1, 3-5, 10-7 and 18-4.
+- 8-7 got a lower Health.
+- The Dromedary now costs 1 Lumber and is 3/26 (65.8%, band 45–68%).
+
+The curve's shape now:
+- Map 3 is no longer free (98% → 77%).
+- Maps 4, 10 and 13 are the stiff ones (27–30% mean).
+- The late maps settle at 55–86% for the Strong deck.
+- Every main map's bosses and elites sit under its skirmishes.
+
+**Tools:** `tools/curve_tune.js`, `tools/retune_all.js` and `tools/autotune_map.js` now tune the bramble's total under the rule. On `--apply` they write a `shieldOverride`, or a lower `hqHp` with no Shield, instead of `hqHp`.

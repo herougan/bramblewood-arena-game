@@ -115,7 +115,7 @@ ok(/\{key:'shield', label:'Shield', fields:\['amount','who','sub','targets'\], w
   ok(f({do:'buff', who:'kin', sub:'random', amount:2}) === 'On Round Start, give a random Kin unit +2 Attack.', `"${f({do:'buff', who:'kin', sub:'random', amount:2})}"`);
   ok(f({do:'buff', who:'kin', sub:'adjacent', amount:2}) === 'On Round Start, give an adjacent Kin unit +2 Attack.', `"${f({do:'buff', who:'kin', sub:'adjacent', amount:2})}"`);
   ok(f({do:'poison', who:'kin', sub:'all', amount:1}) === 'On Round Start, apply 1 poison to all your Kin.', `"${f({do:'poison', who:'kin', sub:'all', amount:1})}"`);
-  ok(f({do:'heal', who:'kin', sub:'furthest', amount:3, targets:2}) === 'On Round Start, heal 2 furthest Kin units for 3 (Poison, then Bleed first, capped at max HP).', `"${f({do:'heal', who:'kin', sub:'furthest', amount:3, targets:2})}"`);
+  ok(f({do:'heal', who:'kin', sub:'furthest', amount:3, targets:2}) === 'On Round Start, heal 2 furthest Kin units for 3 (stanching Bleed first, capped at max HP).', `"${f({do:'heal', who:'kin', sub:'furthest', amount:3, targets:2})}"`);
   ok(f({do:'shield', who:'kin', sub:'all', amount:3}) === 'On Round Start, give all your Kin 3 Shield (temporary Health).', `"${f({do:'shield', who:'kin', sub:'all', amount:3})}"`); }
 { const ctx = {out:{}, ACTION_DEFS:[{key:'buff', label:'Buff'}]}; vm.runInNewContext(fnSrc('parseChargeText') + '\nout.f = parseChargeText;', ctx); const c = ctx.out.f('2, buff 3 kin random');
   ok(c && c.do.who === 'kin' && c.do.sub === 'random' && c.do.amount === 3, 'Charge text "2, buff 3 kin random" reads who:kin'); }
