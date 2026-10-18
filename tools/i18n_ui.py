@@ -54,6 +54,9 @@ SKILL_SCOPES = {'PASSIVE_DEFS', 'TRIGGER_DEFS', 'ACTION_DEFS', 'SKILL_DEFS', 'ST
 
 # Hand-added keys: CPU_AI_LABEL's words inside the VS screen's "🧠 {v1} CPU" pill, and the raid's merged castle "<your bramble> & Co."
 EXTRA = {'Basic': 'text', 'Smart': 'text', 'Smartest': 'text', '{v1} & Co.': 'text'}
+# 2026-10-18 (I3): the owner words the battle log drops into "{v1} bramble" / "on {v2} board" ('your' / 'Your' / 'the enemy');
+# the translator looks a captured value up as a key, so each language words them to fit its own "<owner> bramble" template
+EXTRA.update({'your': 'text', 'Your': 'text', 'the enemy': 'text'})
 
 
 def runtime_core(s):
