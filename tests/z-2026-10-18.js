@@ -5,6 +5,7 @@
 //      the boss's first clear gives a kit item; the daily earning rules are untouched
 //   2. the daily dungeons' Sweep: premium players only (isPremiumPlayer: a server flag if any, admins count), locked with a
 //      Premium badge and the supporters tooltip otherwise; reuses openSweepMenu / runSweep
+//      (2026-10-18, package DK: a Sweep run is no longer keyless: each uses a 🗝️ key, see tests/dk-2026-10-19.js)
 //   3. the Babel Spire: a cleared floor is blue-grey, free (0 Energy) and pays nothing; a new floor's Energy comes back on a loss
 //   4. TX keys for every new text, with all 12 packs; docs/ads-considerations-2026-10-18.md
 'use strict';
@@ -67,7 +68,8 @@ ok(/const SKIRMISH_KIT_PER_DAY = 3;/.test(src) && /const QUEST_KIT_ITEMS = \{dai
 // ---- 2. premium Sweep of the daily dungeons
 ['premiumFromProfile', 'isPremiumPlayer', 'refreshPremiumFlag', 'dungeonSweepableFloor', 'dungeonSweepNode', 'dungeonSweepBtnHTML'].forEach(f=> ok(fnSrc(f), `arena_app.js has ${f}`));
 { const ctx = {TX, escapeAttr: esc, escapeHtml: esc, adminModeEnabled: false, adminAllowed: ()=> false, cloudPremium: false,
-    isDailyDungeonMap: m=> !!(m && m.endless && !m.tower), dungeonBestFloor: ()=> 4, nodeEnergyCost: ()=> 6};
+    isDailyDungeonMap: m=> !!(m && m.endless && !m.tower), dungeonBestFloor: ()=> 4, nodeEnergyCost: ()=> 6,
+    dungeonTicketsLeft: ()=> 2, dungeonNoKeysText: ()=> 'No Dungeon keys left.'}; // 2026-10-18 (package DK): the button reads the keys in hand
   vm.createContext(ctx);
   vm.runInContext(lineOf('const PREMIUM_SPEND_USD') + '\n' + ['premiumFromProfile', 'isPremiumPlayer', 'dungeonSweepableFloor', 'dungeonSweepNode', 'dungeonSweepBtnHTML'].map(fnSrc).join('\n') +
     '\nthis.P = {premiumFromProfile, isPremiumPlayer, dungeonSweepableFloor, dungeonSweepNode, dungeonSweepBtnHTML};', ctx);
@@ -90,6 +92,8 @@ ok(/const SKIRMISH_KIT_PER_DAY = 3;/.test(src) && /const QUEST_KIT_ITEMS = \{dai
 ok(/sbClient\.from\('profiles'\)\.select\('\*'\)\.eq\('id', cloudUserId\)\.maybeSingle\(\)/.test(fnSrc('refreshPremiumFlag')) && !/\.(update|upsert|insert)\(/.test(fnSrc('refreshPremiumFlag')), '2. the flag is only read from the player\'s own profile row');
 ok(/refreshPremiumFlag\(\); \/\/ 2026-10-18 \(package Z\)/.test(src), '2. it is read at sign-in');
 ok(/\$\{dungeonSweepBtnHTML\(map\)/.test(src) && /querySelectorAll\('\[data-dungeon-sweep\]'\)/.test(src) && /openSweepMenu\(b, map, node, nodeEnergyCost\(map, node\) \|\| 1, body, \{noIdle:true, after: \(\)=> renderDungeonsSubTab\(body\)\}\)/.test(src), '2. the Dungeons tab Sweep reuses openSweepMenu');
+// 2026-10-18 (package DK, owner 23:54: "I can't sweep past the number of keys I have"): was "A Sweep takes no key"
+ok(/costs \{e\}⚡ and a Dungeon key/.test(TEXT['ui.dungeon-sweep-tip']) && /if\(dg\)\{ dungeonStakeKey\(mapId\); keys\+\+; \}/.test(fnSrc('runSweep')), '2. a dungeon Sweep run uses a key (no longer keyless)');
 ok(/function openSweepMenu\(anchor, map, node, energyCost, body, how\)/.test(src) && /if\(how && how\.after\) how\.after\(\); else renderConquestSubTab\(body\);/.test(src) && /runSweep\(map\.id, node\.key, n\)/.test(src), '2. the sweep menu runs runSweep and can re-render its own tab');
 ok(/const canSweep = dgSweep \|\| \(done && !selectedNode\.tower && !isDailyDungeonMap\(map\) && sweepAllowed/.test(src) && /if\(so\.dataset\.locked\) return dungeonSweepLocked\(so\);/.test(src), '2. a floor\'s own panel: premium Sweep, locked for others');
 ok(/\.premium-badge\{/.test(tpl) && /\.dg-sweep\.is-locked/.test(tpl), '2. the badge and locked CSS');
