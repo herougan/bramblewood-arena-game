@@ -10750,6 +10750,27 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .cnp-tower-cost{margin:6px 0 0; font-size:12.5px; font-weight:800; color:#ffd36a;}
 .cnp-tower-cost.is-free, .dg-tower-cost.is-free, .wl-tower-replay{color:#b9cde0;}
 .dg-tower-cost{align-self:center; margin-left:8px; font-size:12px; font-weight:800; color:#ffd36a;}
+/* 2026-10-18 (package DK): each daily dungeon fight and Sweep run uses a 🗝️ key; with none, Fight / Sweep / Next are greyed and say why */
+.cnp-dungeon-keys{margin:6px 0 0; font-size:12.5px; font-weight:800; color:#ffd36a;}
+.cnp-dungeon-keys.is-empty, .dg-nokeys, .sm-nokeys, .conquest-headline .dungeon-ticket-line.is-empty{color:#ff9a7a;}
+.dg-nokeys{margin:6px 0 0; font-weight:700;}
+.dg-sweep.is-nokeys, .cnp-fight.is-nokeys, #wlNextBattleBtn.is-nokeys{filter:grayscale(.65) brightness(.85); cursor:not-allowed;}
+.sr-keys{margin:4px 0 0; font-weight:700;}
+/* 2026-10-18 (package DK, owner 00:08): each place's upgrades in a ⬆️ Upgrades tab (the Nest and the Tavern get a pill bar like the
+   Forge's modes); a dot on the tab when one can be bought; the Profile's one-row-per-place summary */
+.facility-tabs{display:flex; flex-wrap:wrap; gap:6px; justify-content:center; margin:10px auto 8px; padding:4px; width:fit-content; max-width:100%; border-radius:999px; background:rgba(0,0,0,.28);}
+.facility-tab{border:0; background:transparent; color:inherit; font:800 14px 'Baloo 2',system-ui,sans-serif; padding:6px 14px; border-radius:999px; cursor:pointer;}
+.facility-tab.on{background:linear-gradient(#ffd27a, #e9a23b); color:#2b1406; box-shadow:0 2px 8px rgba(233,162,59,.4);}
+.facility-tab:hover:not(.on){background:rgba(255,255,255,.1);}
+.facility-tab.has-ready, .forge-mode.has-ready{position:relative;}
+.facility-tab.has-ready::after, .forge-mode.has-ready::after{content:''; position:absolute; top:3px; right:5px; width:8px; height:8px; border-radius:50%; background:#ff5a3c; box-shadow:0 0 0 2px rgba(0,0,0,.35);}
+.facility-upgrades{margin:6px 0 10px;}
+.facility-upgrades .stamina-panel{margin:10px 0;}
+.pf-upgrades .pf-upg-row{display:flex; align-items:center; gap:8px; width:100%; margin:6px 0 0; padding:8px 10px; border-radius:10px; border:1px solid rgba(0,0,0,.12); background:rgba(255,255,255,.06); color:inherit; font:inherit; text-align:left; cursor:pointer;}
+.pf-upgrades .pf-upg-row:hover{background:rgba(255,255,255,.12);}
+.pf-upgrades .pf-upg-row small{opacity:.8;} .pf-upgrades .pf-upg-row em{font-style:normal; font-weight:800; color:#e0782a;}
+.pf-upgrades .pf-upg-row .pf-go{margin-left:auto;}
+.pf-upgrades .pf-upg-ico{font-size:20px;}
 .wl-tower-replay{margin:6px 0 0; font-size:13px; font-weight:700;}
 .pack-pop-why{margin:0; padding:6px 9px; border-radius:9px; background:rgba(63,191,90,.15); font-size:12.5px; line-height:1.35;}
 .pack-item.is-blocked{opacity:.62; cursor:not-allowed;} .pack-item.is-blocked .pack-ico{filter:grayscale(.85);}
@@ -35316,7 +35337,7 @@ if(location.protocol === 'app:' || /\bElectron\//.test(navigator.userAgent || ''
     if(l.tagName === 'LINK' && f && l.href.indexOf(f.web) < 0) l.href = f.web; }, true);
 }
 const KEY = 'bramblewood_lang_v1';
-const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=d7a13e7e7e", "es": "assets/lang/es.js?v=45b516f4a3", "fr": "assets/lang/fr.js?v=5fa46d67ae", "id": "assets/lang/id.js?v=92e27db6e1", "it": "assets/lang/it.js?v=c401f4ac13", "ja": "assets/lang/ja.js?v=16117dde6f", "ko": "assets/lang/ko.js?v=2ed6ef5a27", "pt": "assets/lang/pt.js?v=84b1584cd3", "ta": "assets/lang/ta.js?v=dd5ed8b9ec", "tl": "assets/lang/tl.js?v=b460b6e119", "zh-Hans": "assets/lang/zh-Hans.js?v=ebc5bc9f66", "zh-Hant": "assets/lang/zh-Hant.js?v=ff51acaeaa"}'); }catch(e){ return {}; } })();
+const PACK_URLS = (()=>{ try{ return JSON.parse('{"de": "assets/lang/de.js?v=5f1b2b2d8c", "es": "assets/lang/es.js?v=9723b22c24", "fr": "assets/lang/fr.js?v=4472a3c5ec", "id": "assets/lang/id.js?v=d3d7179935", "it": "assets/lang/it.js?v=256d200983", "ja": "assets/lang/ja.js?v=73f81664dd", "ko": "assets/lang/ko.js?v=806f2afa2e", "pt": "assets/lang/pt.js?v=09f168184b", "ta": "assets/lang/ta.js?v=1f90c907ab", "tl": "assets/lang/tl.js?v=17dd2e61a2", "zh-Hans": "assets/lang/zh-Hans.js?v=4bf02a601e", "zh-Hant": "assets/lang/zh-Hant.js?v=e9593a47e2"}'); }catch(e){ return {}; } })();
 window.BW_LANG_PACKS = window.BW_LANG_PACKS || {};
 
 let lang = 'en', pack = null;
@@ -35664,7 +35685,46 @@ const TEXT = /*TEXT-TABLE-START*/{
   "ui.dungeon-sweep": "🧹 Sweep",
   "ui.premium-badge": "Premium",
   "ui.dungeon-sweep-locked": "Sweeping daily dungeons is a perk for supporters",
-  "ui.dungeon-sweep-tip": "Sweep floor {floor}, your best: the CPU plays it for you. Each run costs {e}⚡; a win pays the clear-again reward.",
+  "ui.dungeon-sweep-tip": "Sweep floor {floor}, your best: the CPU plays it for you. Each run costs {e}⚡ and a Dungeon key; a win pays the clear-again reward.",
+  "ui.upgrades-tab": "Upgrades",
+  "ui.forge-upgrades-blurb": "Upgrade the Forge itself: its tier (how far it can temper), your max Energy and the Dungeon key ring.",
+  "ui.nest-tab-cards": "🪺 Cards and eggs",
+  "ui.tavern-tab-recruit": "🤝 Recruit",
+  "ui.nest-upg-title": "🪺 Nests",
+  "ui.nest-upg-built": "{open} of {max} built",
+  "ui.nest-upg-next-map": "The next nest opens at Map {n}",
+  "ui.nest-upg-btn": "🔨 Build the next nest",
+  "ui.nest-upg-all": "All nests are built.",
+  "ui.upg-sum-title": "⬆️ Upgrades",
+  "ui.upg-sum-sub": "Each place keeps its upgrades in its own Upgrades tab.",
+  "ui.upg-sum-steps": "{n}/{of} upgrades",
+  "ui.upg-sum-ready": "one is ready",
+  "ui.upg-sum-open": "Open its Upgrades tab",
+  "ui.place-forge": "The Forge",
+  "ui.place-nest": "Nest",
+  "ui.place-tavern": "The Tavern",
+  "ui.keyring-title": "🗝️ Key ring",
+  "ui.keyring-tip": "Your Dungeon keys fill up to this many each day.",
+  "ui.keyring-holds": "Holds {cap} Dungeon keys",
+  "ui.keyring-next": "Next: holds {cap} keys",
+  "ui.keyring-btn": "⬆️ Widen the key ring",
+  "ui.keyring-max": "Fully widened: {cap} keys.",
+  "toast.keyring-short": "🗝️ Not enough for the key ring yet: the button shows what it needs.",
+  "toast.keyring-up": "🗝️ The key ring now holds {cap} Dungeon keys.",
+  "ui.dungeon-no-keys": "No Dungeon keys left. They fill up to {cap} in {h}h.",
+  "ui.dungeon-keys-count": "🗝️ Dungeon keys: {n}/{cap}",
+  "ui.dungeon-keep-climbing": "Floor {floor}: keep climbing",
+  "ui.dungeon-each-floor-key": "each floor uses a key",
+  "ui.dungeon-best-floor": "best: floor {floor}",
+  "ui.dungeon-refill-in": "keys refill in {h}h",
+  "ui.dungeon-key-rule": "Each floor you fight uses a Dungeon key and its Energy, win or lose, and so does each Sweep run. Lose or forfeit a floor and the climb starts again from floor 1. Your keys fill up to {cap} each day, and a bonus one comes every Monday.",
+  "ui.dungeons-sub": "Endless climbs, a little harder every floor. Each floor uses a Dungeon key, win or lose; lose and the climb starts again from floor 1.",
+  "ui.dungeon-keys-row": "Dungeon keys: {n}/{cap} · they fill up again in {h}h · a bonus one every Monday",
+  "ui.dungeon-keys-left": "🗝️ {n} left",
+  "ui.dungeon-fight-uses-key": "each fight here uses a Dungeon key, win or lose",
+  "toast.dungeon-key-used": "🗝️ A Dungeon key used: {n} left.",
+  "ui.sweep-key-a-run": "🗝️ 1 a run ({n} left)",
+  "results.sweep-keys-used": "🗝️ Dungeon keys used: {n} ({left} left)",
   "ui.tower-free-tag": "0 reward · free",
   "ui.tower-cost-refund": "⚡ {n} · refunded if you lose",
   "ui.tower-cost-free": "⚡ 0 · free · 0 reward: you have cleared this floor",
@@ -35904,9 +35964,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "results.your-base-cards-had-nothing-left": "Your Base cards had nothing left to grow, so it came as Dust",
   "results.spare-bramble-tip": "{name}: you already have this bramble. Fuse the spare in the Forge to level it up.",
   "results.spare": "SPARE",
-  "results.a-win-gives-your-key-back": "A won floor gives your Dungeon key back, so you can keep climbing",
-  "results.dungeon-key-back": "🗝️ +1 Dungeon key ({n} in hand)",
-  "results.dungeon-key-lost-climb-resets": "🗝️ Your Dungeon key is lost, and the climb starts again from floor 1 (you fell on floor {floor}; best: floor {best}).",
   "results.dungeon-climb-resets": "The climb starts again from floor 1 (you fell on floor {floor}; best: floor {best}).",
   "results.trains-a-level-0-card-to": "Trains a Level-0 card to Level 1 in the Nest",
   "results.kibble-2": "🦴 {conquestKibbleEarned} Kibble",
@@ -36108,8 +36165,6 @@ const TEXT = /*TEXT-TABLE-START*/{
   "toast.twilight-day-and-night-creatures-are": "🌆 Twilight: day and night creatures are both awake.",
   "toast.a-new-nest-is-built": "🪺 A new nest is built: {open} of 7 now.",
   "toast.not-enough-to-build-this-nest": "Not enough to build this nest yet.",
-  "toast.no-dungeon-tickets-left-a-new": "🗝️ No Dungeon keys left. A new one comes tomorrow, and a bonus one every Monday.",
-  "toast.dungeon-key-in-the-lock-win": "🗝️ Your Dungeon key is in the lock: win and it comes back; lose and it's gone ({dungeonTicketsLeft} left in hand).",
   "toast.joins-you": "🤝 {v1} joins you!",
   "toast.you-need-a-beer-to-recruit": "You need a Beer to recruit. One comes every Monday.",
   "toast.that-one-has-moved-on": "That one has moved on.",
@@ -39372,7 +39427,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = '23aa6ba3cc0e', BUILD_CARD_HASH = '9e1abb2f78286a73818b1defe3779a4bbaa47a8b90247e8e0212ab213de10aeb';
+const BUILD_ID = 'a33a235ffc86', BUILD_CARD_HASH = '9e1abb2f78286a73818b1defe3779a4bbaa47a8b90247e8e0212ab213de10aeb';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
@@ -47519,6 +47574,47 @@ function staminaPanelHTML(where){
     <div class="wp-stam-row"><span class="wp-stam-pips" aria-label="${k} of ${steps}">${Array.from({length: steps}, (_, i)=> `<i class="${i < k ? 'on' : ''}"></i>`).join('')}</span>
     ${full ? `<small>${done}</small>` : lock ? `<small>Raise it to ${STAMINA_PLACES[lock].to} in the ${STAMINA_PLACES[lock].label} first.</small>` : `<button type="button" class="btn small primary" data-stamina-buy="${where}" ${staminaAffordable(c) ? '' : 'aria-disabled="true"'}>Raise to ${energyMax() + P.each}${btnCostHTML(c)}</button>`}</div></section>`;
 }
+// Facility upgrades (2026-10-18, package DK, owner 00:08: "The forge upgrades on your profile (and nest etc., tavern upgrades)
+// should be on another tab in each of their own respective pages."): the Forge, the Nest and the Tavern each keep their upgrades in
+// a ⬆️ Upgrades tab of their own page (the Forge: its tier, its Max Energy steps, the 🗝️ Key ring; the Nest: its Max Energy steps
+// and the next nest to build; the Tavern: its Max Energy steps). The Profile has one summary row per place that opens that tab.
+let nestTab = 'cards', tavernTab = 'recruit';
+function staminaReady(where){ const P = STAMINA_PLACES[where]; if(!P || placeStamina(where) >= P.costs.length || staminaLockedBy(where)) return false; return staminaAffordable(staminaCost(where)); }
+// {done, of, ready} for a place's upgrades: steps bought, steps there are, and whether one can be bought now
+function facilityUpgradeState(place){
+  const st = w=> ({done: placeStamina(w), of: (STAMINA_PLACES[w] || {costs:[]}).costs.length, ready: staminaReady(w)});
+  const sum = parts=> parts.reduce((a, b)=> ({done: a.done + b.done, of: a.of + b.of, ready: a.ready || b.ready}), {done:0, of:0, ready:false});
+  try{
+    if(place === 'forge'){ const parts = [st('forge'), {done: forgeTier() - 1, of: FORGE_TIERS.length - 1, ready: canUpgradeForge().ok}];
+      if(dungeonsTabOpen()) parts.push({done: dungeonKeyCap() - DUNGEON_TICKETS_CAP, of: DUNGEON_KEY_CAP_MAX - DUNGEON_TICKETS_CAP, ready: canRaiseDungeonKeyCap().ok});
+      return sum(parts); }
+    if(place === 'nest'){ const nx = nextNestUnlock(); return sum([st('nest'), {done: nestBuiltCount(), of: NEST_UNLOCKS.length - 1, ready: !!(nx && nx.reached && nx.affordable)}]); }
+    if(place === 'tavern') return st('tavern');
+  }catch(e){}
+  return {done:0, of:0, ready:false};
+}
+// The tab bar of the Nest and the Tavern (the Forge's ⬆️ Upgrades is one more of its own mode tabs)
+function facilityTabsHTML(place, current, tabs){
+  return `<div class="facility-tabs" role="tablist" aria-label="${escapeAttr(place)}">${tabs.map(([k, label])=> `<button type="button" role="tab" class="facility-tab ${current === k ? 'on' : ''} ${k === 'upgrades' && facilityUpgradeState(place).ready ? 'has-ready' : ''}" data-facility-tab="${escapeAttr(place)}:${k}" aria-selected="${current === k}">${escapeHtml(label)}</button>`).join('')}</div>`;
+}
+function openFacilityUpgrades(place){
+  if(place === 'forge'){ forgeMode = 'facility'; codexSubTab = 'forge'; switchTab('codex'); }
+  else if(place === 'nest'){ nestTab = 'upgrades'; switchTab('nest'); }
+  else if(place === 'tavern'){ tavernTab = 'upgrades'; openTavern(); }
+}
+// The Profile's summary: one row per place that is open (its icon and name, upgrades bought of all, "one is ready")
+const FACILITY_UPGRADE_PLACES = [{place:'forge', icon:'🔨', get label(){ return TX('ui.place-forge'); }}, {place:'nest', icon:'🪺', get label(){ return TX('ui.place-nest'); }}, {place:'tavern', icon:'🍺', get label(){ return TX('ui.place-tavern'); }}];
+function profileUpgradesHTML(){
+  const rows = FACILITY_UPGRADE_PLACES.filter(f=> featureUnlockedSafe(f.place)).map(f=>{ const u = facilityUpgradeState(f.place);
+    return `<button type="button" class="pf-upg-row ${u.ready ? 'is-ready' : ''}" data-facility-upgrades="${f.place}" title="${escapeAttr(TX('ui.upg-sum-open'))}"><span class="pf-upg-ico" aria-hidden="true">${f.icon}</span><b>${escapeHtml(f.label)}</b><small>${escapeHtml(TX('ui.upg-sum-steps', {n: u.done, of: u.of}))}</small>${u.ready ? `<em>${escapeHtml(TX('ui.upg-sum-ready'))}</em>` : ''}<span class="pf-go" aria-hidden="true">›</span></button>`; }).join('');
+  if(!rows) return '';
+  return `<div class="panel pf-upgrades"><h3>${escapeHtml(TX('ui.upg-sum-title'))}</h3><p class="panel-sub">${escapeHtml(TX('ui.upg-sum-sub'))}</p>${rows}</div>`;
+}
+document.addEventListener('click', e=>{ const t = e.target && e.target.closest; if(!t) return;
+  const go = e.target.closest('[data-facility-upgrades]'); if(go){ e.preventDefault(); openFacilityUpgrades(go.dataset.facilityUpgrades); return; }
+  const tb = e.target.closest('[data-facility-tab]'); if(!tb) return; e.preventDefault();
+  const [place, k] = tb.dataset.facilityTab.split(':');
+  if(place === 'nest'){ nestTab = k; renderNest(); } else if(place === 'tavern'){ tavernTab = k; openTavern(); } });
 function wireStamina(root, rerender){ root.querySelectorAll('[data-stamina-buy]').forEach(b=> b.onclick = ()=>{ const r = buyStamina(b.dataset.staminaBuy);
   if(r === 'ok'){ showToast(TX('toast.max-energy-is-now', {energyMax: energyMax()}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} try{ refreshEnergyHud(); }catch(e){} rerender(); }
   else if(r === 'cost'){ showToast(TX('toast.not-enough-to-raise-it-yet'), 'warn'); denyShake(b); } }); }
@@ -47688,6 +47784,7 @@ function playAgainEnergyAttrs(m){
   if(!m || m.mode !== 'conquest' || !m.conquestNode) return '';
   const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(!f) return '';
   const c = fightEnergyCost(f.map, f.node), short = currentEnergy() < c; // 2026-10-18 (package Z): 0 on a cleared Spire floor
+  if(!m.adminTest && isDailyDungeonMap(f.map) && dungeonTicketsLeft() <= 0) return `data-energy-cost="${c}" data-no-keys="1" aria-disabled="true" title="${escapeAttr(dungeonNoKeysText())}"`; // 2026-10-18 (package DK)
   return `data-energy-cost="${c}" ${short ? 'aria-disabled="true"' : ''} title="${escapeAttr(short ? `Needs ${c}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.` : `Fight ${f.node.name} again · ${c}⚡`)}"`;
 }
 // Not enough Energy (2026-10-12, user: "it should give a small error-sfx and a small central toast that says, you don't
@@ -47701,7 +47798,11 @@ function energyShortToast(cost){
   document.body.appendChild(t);
   setTimeout(()=>{ t.classList.add('is-out'); setTimeout(()=> t.remove(), 450); }, 2000);
 }
-function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ const short = e < (+b.dataset.energyCost||0); b.disabled = false; b.classList.toggle('is-energy-short', short); if(short) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled'); }); }
+function refreshEnergyButtons(){ const e = currentEnergy(); document.querySelectorAll('button[data-energy-cost]').forEach(b=>{ const short = e < (+b.dataset.energyCost||0); b.disabled = false; b.classList.toggle('is-energy-short', short); if(short || b.dataset.noKeys) b.setAttribute('aria-disabled', 'true'); else b.removeAttribute('aria-disabled'); }); } // + a daily dungeon fight with no key stays disabled (2026-10-18, package DK)
+document.addEventListener('click', e=>{ // 2026-10-18 (package DK): a daily dungeon fight with no key in hand says why instead of starting
+  const b = e.target && e.target.closest ? e.target.closest('button[data-no-keys]') : null; if(!b || dungeonTicketsLeft() > 0) return;
+  e.preventDefault(); e.stopImmediatePropagation(); dungeonNoKeys(b);
+}, true);
 document.addEventListener('click', e=>{
   const b = e.target && e.target.closest ? e.target.closest('button[data-energy-cost]') : null; if(!b) return;
   const c = +b.dataset.energyCost || 0; if(currentEnergy() >= c) return;
@@ -56573,6 +56674,15 @@ function compassDiamondSVG(mapId, locked){
 //     The best floor ever reached is remembered, so a floor's first-clear payout is still paid once.
 // Keys still come one a day (banking up to 3) plus a bonus one each Monday; Energy is still paid per floor. Quitting mid-fight
 // (to resume later) keeps the key in the lock until that fight ends. The Tower (map.tower) takes no keys and never resets.
+// 2026-10-18 (package DK, owner 23:54: "Playing a dungeon right now doesn't consume my key. It should. I can't sweep past the number
+// of keys I have. Forge lets you increase the number of keys to 5 (but requires Strange Materia)."): the cause was the 10-16 rule
+// above: the key went in the lock at the start, and a won floor handed it back, so a winning climb never used one. Now:
+//   - every floor fight uses a key when it starts (dungeonStakeKey), win or lose; nothing comes back;
+//   - a lost or forfeited floor still sends the climb back to floor 1;
+//   - each Sweep run uses a key too (runSweep), and the Sweep menu offers no more runs than the keys you hold;
+//   - with 0 keys the floor's Fight button is disabled and says why ("🗝️ N left" sits under it);
+//   - each new day the keys fill up to the cap (was +1 a day) and the Monday bonus can still sit one over it;
+//   - the cap is 3, raised to 4 and then 5 by the Forge's 🗝️ Key ring (Strange Materia + Maple Leaves + Magic Dust).
 const DAILY_DUNGEONS = [
   {mapId:'mm', mapNumber:6},
   {mapId:'mlb', mapNumber:22, slot:2, icon:'🦡', goldLeavesEveryClear:true}, // 2026-10-16: 🍂 20 + N Gold Leaves on every clear of floor N // 2026-10-16: the Long Burrow, Map 22 (was an empty slot at Map 20); admin preview only for now
@@ -56581,20 +56691,61 @@ const DAILY_DUNGEONS = [
 // A dungeon players can't see yet (map.preview, 2026-10-16): shown to them as a locked slot, to admins as the real thing.
 function dungeonHiddenFromPlayer(map){ return !!(map && map.preview) && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled); }
 const DUNGEON_TICKETS_KEY = 'bramblewood_dungeon_tickets_v1', DUNGEON_TICKETS_CAP = 3;
+// The key ring (2026-10-18, package DK): how many keys you can hold, DUNGEON_TICKETS_CAP to DUNGEON_KEY_CAP_MAX. Each step is bought
+// in the Forge. Saved on this device and in the progress blob (PROGRESS_KEYS), where the larger of two copies wins.
+const DUNGEON_KEY_CAP_KEY = 'bramblewood_dungeon_key_cap_v1', DUNGEON_KEY_CAP_MAX = 5;
+const DUNGEON_KEY_CAP_STEPS = [
+  {cap:4, cost:{gold:800, dust:400}, strange:1},
+  {cap:5, cost:{gold:2000, dust:1000}, strange:1},
+];
+try{ PROGRESS_KEYS.push(DUNGEON_KEY_CAP_KEY); PROGRESS_MERGE_KEYS[DUNGEON_KEY_CAP_KEY] = (a, b)=> String(Math.max(parseInt(a, 10) || 0, parseInt(b, 10) || 0)); }catch(e){}
+function dungeonKeyCap(){ let c = 0; try{ c = parseInt(localStorage.getItem(DUNGEON_KEY_CAP_KEY), 10) || 0; }catch(e){} return Math.max(DUNGEON_TICKETS_CAP, Math.min(DUNGEON_KEY_CAP_MAX, c)); }
+function dungeonKeyCapNext(){ const cap = dungeonKeyCap(); return DUNGEON_KEY_CAP_STEPS.find(x=> x.cap === cap + 1) || null; }
+function canRaiseDungeonKeyCap(){
+  const next = dungeonKeyCapNext(); if(!next) return {ok:false, why:'max'};
+  if((myCurrencies.gold||0) < next.cost.gold || (myCurrencies.dust||0) < next.cost.dust) return {ok:false, why:'cost', next};
+  if(!adminModeEnabled && next.strange && ownedCount('strange-materia') < next.strange) return {ok:false, why:'strange', next};
+  return {ok:true, next};
+}
+function raiseDungeonKeyCap(){
+  const c = canRaiseDungeonKeyCap(); if(!c.ok) return false;
+  myCurrencies.gold -= c.next.cost.gold; myCurrencies.dust -= c.next.cost.dust; try{ saveCurrencies(); }catch(e){}
+  if(c.next.strange && !adminModeEnabled) try{ spendCopies('strange-materia', c.next.strange); }catch(e){}
+  try{ localStorage.setItem(DUNGEON_KEY_CAP_KEY, String(c.next.cap)); }catch(e){}
+  try{ logTxn({action:'dungeonKeyCap', source:'Forge', before: c.next.cap - 1, after: c.next.cap}); }catch(e){}
+  try{ livePushProgress(true); }catch(e){}
+  return c.next;
+}
+// The Forge's 🗝️ Key ring row (shown once a daily dungeon is open, or in Admin Mode).
+function dungeonKeyRingHTML(){
+  try{ if(!dungeonsTabOpen()) return ''; }catch(e){ return ''; }
+  const cap = dungeonKeyCap(), next = dungeonKeyCapNext(), c = canRaiseDungeonKeyCap();
+  return `<div class="forge-upgrade forge-keyring" role="group" aria-label="${escapeAttr(TX('ui.keyring-title'))}">
+    <div class="fu-now" title="${escapeAttr(TX('ui.keyring-tip'))}"><b>${escapeHtml(TX('ui.keyring-title'))}</b> <small>${escapeHtml(TX('ui.keyring-holds', {cap}))}</small></div>
+    ${next ? `<div class="fu-next"><span>${escapeHtml(TX('ui.keyring-next', {cap: next.cap}))}</span>
+      <button type="button" class="btn small primary" id="forgeKeyCapBtn" ${c.ok ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.keyring-btn'))}${btnCostHTML(next.cost, next.strange ? [{icon:'🔮', need:next.strange, have:ownedCount('strange-materia'), label:strangeMateriaSourceText()}] : [])}</button></div>`
+      : `<div class="fu-next"><span>${escapeHtml(TX('ui.keyring-max', {cap}))}</span></div>`}
+  </div>`;
+}
+document.addEventListener('click', e=>{ const b = e.target && e.target.closest && e.target.closest('#forgeKeyCapBtn'); if(!b) return; e.preventDefault();
+  const t = raiseDungeonKeyCap(); if(!t){ try{ denyShake(b); }catch(_){} try{ SoundKit.deny && SoundKit.deny(); }catch(_){} showToast(TX('toast.keyring-short'), 'warn'); return; }
+  try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(_){} try{ renderForge(); }catch(_){} try{ refreshTopbarDungeonKey(currentTab); }catch(_){}
+  showToast(TX('toast.keyring-up', {cap: t.cap}), 'ok'); });
 function dungeonDayIndex(t){ const d = new Date(t || Date.now()); return Math.floor(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) / 86400000); } // the local calendar day
 function dungeonWeekIndex(t){ return Math.floor((dungeonDayIndex(t) + 3) / 7); } // weeks turn on Monday (day 0, 1 Jan 1970, was a Thursday)
 function saveDungeonTickets(s){ try{ localStorage.setItem(DUNGEON_TICKETS_KEY, JSON.stringify(s)); }catch(e){} }
 function loadDungeonTickets(){
   let s = null; try{ s = JSON.parse(localStorage.getItem(DUNGEON_TICKETS_KEY) || 'null'); }catch(e){}
   const day = dungeonDayIndex(), wk = dungeonWeekIndex();
-  if(!s || typeof s.n !== 'number'){ s = {n: 2, day, week: wk, best: {}}; saveDungeonTickets(s); return s; } // today's key and this week's bonus
+  if(!s || typeof s.n !== 'number'){ s = {n: dungeonKeyCap(), day, week: wk, best: {}}; saveDungeonTickets(s); return s; } // a full ring (2026-10-18, package DK; was 2)
   let ch = false;
   // 2026-10-16: runs are gone (a key is staked per fight now). A run still open under the old rule had its ticket spent up front,
   // so that ticket comes back.
   if(s.runs && typeof s.runs === 'object'){ s.n += Object.keys(s.runs).length; delete s.runs; ch = true; }
   if(!s.best || typeof s.best !== 'object'){ s.best = {}; ch = true; }
-  if(s.day < day){ s.n = Math.max(s.n, Math.min(DUNGEON_TICKETS_CAP, s.n + (day - s.day))); s.day = day; ch = true; }
-  if(s.week < wk){ s.n = Math.min(DUNGEON_TICKETS_CAP + 1, s.n + 1); s.week = wk; ch = true; } // the weekly bonus may sit one over the cap
+  // 2026-10-18 (package DK): a new day fills the keys up to the cap (was one more a day); keys over the cap are kept
+  if(s.day < day){ s.n = Math.max(s.n, dungeonKeyCap()); s.day = day; ch = true; }
+  if(s.week < wk){ s.n = Math.min(dungeonKeyCap() + 1, s.n + 1); s.week = wk; ch = true; } // the weekly bonus may sit one over the cap
   if(ch) saveDungeonTickets(s);
   return s;
 }
@@ -56644,17 +56795,22 @@ function dungeonSweepNode(map){ if(!isDailyDungeonMap(map)) return null; const b
 function dungeonSweepBtnHTML(map){
   const node = dungeonSweepNode(map); if(!node) return '';
   if(!isPremiumPlayer()) return `<button type="button" class="btn dg-sweep is-locked" data-dungeon-sweep="${escapeAttr(map.id)}" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`;
+  // 2026-10-18 (package DK): a Sweep run uses a key; with none it is disabled and says why
+  if(dungeonTicketsLeft() <= 0) return `<button type="button" class="btn dg-sweep is-nokeys" data-dungeon-sweep="${escapeAttr(map.id)}" data-nokeys="1" aria-disabled="true" title="${escapeAttr(dungeonNoKeysText())}">${escapeHtml(TX('ui.dungeon-sweep'))}</button>`;
   return `<button type="button" class="btn dg-sweep" data-dungeon-sweep="${escapeAttr(map.id)}" aria-haspopup="true" title="${escapeAttr(TX('ui.dungeon-sweep-tip', {floor: node.floor, e: nodeEnergyCost(map, node) || 1}))}">${escapeHtml(TX('ui.dungeon-sweep'))}</button>`;
 }
+// No key in hand (2026-10-18, package DK): the reason a floor can't be fought or swept, and when the keys come back.
+function dungeonNoKeysText(){ return TX('ui.dungeon-no-keys', {h: Math.max(1, Math.round(dungeonNextTicketMs() / 3600000)), cap: dungeonKeyCap()}); }
+function dungeonNoKeys(btn){ try{ denyShake(btn); }catch(e){} try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast('🗝️ ' + dungeonNoKeysText(), 'warn'); }
 function dungeonSweepLocked(btn){ try{ denyShake(btn); }catch(e){} try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('ui.dungeon-sweep-locked'), 'warn'); }
-// The fight starts: the key goes in the lock.
+// The fight starts: it uses a key (2026-10-18, package DK: kept, win or lose; a Sweep run uses one the same way).
 function dungeonStakeKey(mapId){ const s = loadDungeonTickets(); if(s.n <= 0) return false; s.n -= 1; saveDungeonTickets(s); return true; }
 // The best floor ever cleared in a dungeon (first-clear payouts go by it, since a lost climb wipes the cleared floors).
 function dungeonBestFloor(mapId){ const s = loadDungeonTickets(), map = CONQUEST_MAPS.find(m=> m.id === mapId);
   return Math.max((s.best && s.best[mapId]) | 0, map ? dungeonFloorProgress(map).done : 0); }
-// A floor won: the key comes back and the best floor moves up.
-function dungeonFloorWon(mapId, floor, staked){ const best = dungeonBestFloor(mapId), s = loadDungeonTickets(); s.best = s.best || {};
-  s.best[mapId] = Math.max(best, floor | 0); if(staked) s.n += 1; saveDungeonTickets(s); }
+// A floor won: the best floor moves up. 2026-10-18 (package DK): the key no longer comes back (the old third argument is ignored).
+function dungeonFloorWon(mapId, floor){ const best = dungeonBestFloor(mapId), s = loadDungeonTickets(); s.best = s.best || {};
+  s.best[mapId] = Math.max(best, floor | 0); saveDungeonTickets(s); }
 // A floor lost or forfeited: the key stays gone and the climb starts again from floor 1. Returns how many floors were wiped.
 function dungeonRunLost(mapId){
   const map = CONQUEST_MAPS.find(m=> m.id === mapId); if(!isDailyDungeonMap(map)) return 0;
@@ -56670,9 +56826,11 @@ function dungeonFloorProgress(map, progress){
 }
 function dungeonTicketLineHTML(map){
   const s = loadDungeonTickets(), f = dungeonFloorProgress(map), best = dungeonBestFloor(map.id), h = Math.max(1, Math.round(dungeonNextTicketMs() / 3600000));
-  return `<p class="dungeon-ticket-line" title="${escapeAttr(DUNGEON_KEY_RULE)}">🗝️ <b>${s.n}</b> Dungeon key${s.n === 1 ? '' : 's'} · ${f.done ? `<span class="dtl-run">Floor ${f.done + 1}: keep climbing</span>` : 'win and the key comes back'}${best ? ` · best: floor ${best}` : ''} · next key in ${h}h</p>`;
+  // 2026-10-18 (package DK): TX keys, one span each so the page translator sees each text whole; each floor uses a key, and the
+  // keys fill up to the cap each day
+  return `<p class="dungeon-ticket-line ${s.n > 0 ? '' : 'is-empty'}" title="${escapeAttr(dungeonKeyRuleText())}"><span>${escapeHtml(TX('ui.dungeon-keys-count', {n: s.n, cap: dungeonKeyCap()}))}</span> · ${f.done ? `<span class="dtl-run">${escapeHtml(TX('ui.dungeon-keep-climbing', {floor: f.done + 1}))}</span>` : `<span>${escapeHtml(TX('ui.dungeon-each-floor-key'))}</span>`}${best ? ` · <span>${escapeHtml(TX('ui.dungeon-best-floor', {floor: best}))}</span>` : ''} · <span>${escapeHtml(TX('ui.dungeon-refill-in', {h}))}</span></p>`;
 }
-const DUNGEON_KEY_RULE = `A floor takes a Dungeon key. Win and you get it back; lose or forfeit and it's gone, and the climb starts again from floor 1. One key a day (up to ${DUNGEON_TICKETS_CAP} banked) and a bonus one each Monday.`;
+function dungeonKeyRuleText(){ return TX('ui.dungeon-key-rule', {cap: dungeonKeyCap()}); }
 // 2026-10-16 (user: "Similar to raids - when you unlock the first daily dungeon, it just says the name aka Murgle. But once you
 // unlock the 2nd, it just says Daily Dungeons."): like raidTabLabel(), the tab (and the panel's heading, and the key button's
 // tooltip) reads the one dungeon's own name while only one is open, and "Daily Dungeons" from the second on. Only the ticketed
@@ -56722,14 +56880,15 @@ function renderDungeonsSubTab(body){
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map ${dd.mapNumber}${parent ? ' · ' + escapeHtml(parent.name) : ''}</span>
         <p class="dg-sub">${escapeHtml(map.blurb || '')}</p>
         ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${f.total ? Math.round(100 * f.done / f.total) : 0}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total}${best ? ` · best: floor ${best}` : ''}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : s.n > 0 ? (run ? '🗝️ Keep climbing' : '🗝️ Enter') : '🗺️ Look at the map'}</button>${dungeonSweepBtnHTML(map) /* 2026-10-18 (package Z): premium Sweep */}${run ? `<span class="dg-run">${f.done} cleared this climb</span>` : ''}</div>`
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : s.n > 0 ? (run ? '🗝️ Keep climbing' : '🗝️ Enter') : '🗺️ Look at the map'}</button>${dungeonSweepBtnHTML(map) /* 2026-10-18 (package Z): premium Sweep */}${run ? `<span class="dg-run">${f.done} cleared this climb</span>` : ''}</div>
+          ${s.n > 0 ? '' : `<p class="dg-sub dg-nokeys" role="note">🗝️ ${escapeHtml(dungeonNoKeysText()) /* 2026-10-18 (package DK): why there is no fighting today */}</p>`}`
         : `<p class="dg-sub">🔒 ${map.entry && map.entry.after ? 'Clear' : 'Reach' /* 2026-10-18: an entrance with no `after` opens as soon as its map does */} ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
   }).join('');
   body.innerHTML = `<div class="panel dungeons-panel">
-    <div class="dg-head"><h2>🗝️ ${escapeHtml(dungeonTabLabel(progress)) /* 2026-10-16 (user: "...once you unlock the 2nd, it just says Daily Dungeons") */}</h2><p class="panel-sub">Endless climbs, a little harder every floor. Each floor takes a key: win and it comes back; lose and it's gone, and the climb starts again from floor 1.</p></div>
-    <div class="dg-tickets" title="${escapeAttr(DUNGEON_KEY_RULE + ' Each floor costs Energy too, like any fight.')}">
-      <span class="dg-tix">${Array.from({length: Math.max(DUNGEON_TICKETS_CAP, s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🗝️</i>`).join('')}</span>
-      <span><b>${s.n}</b> Dungeon key${s.n === 1 ? '' : 's'} · one a day (up to ${DUNGEON_TICKETS_CAP}), next in ${h}h · a bonus one every Monday</span></div>
+    <div class="dg-head"><h2>🗝️ ${escapeHtml(dungeonTabLabel(progress)) /* 2026-10-16 (user: "...once you unlock the 2nd, it just says Daily Dungeons") */}</h2><p class="panel-sub">${escapeHtml(TX('ui.dungeons-sub')) /* 2026-10-18 (package DK) */}</p></div>
+    <div class="dg-tickets" title="${escapeAttr(dungeonKeyRuleText())}">
+      <span class="dg-tix">${Array.from({length: Math.max(dungeonKeyCap(), s.n)}, (_, i)=> `<i class="${i < s.n ? 'on' : ''}">🗝️</i>`).join('')}</span>
+      <span>${escapeHtml(TX('ui.dungeon-keys-row', {n: s.n, cap: dungeonKeyCap(), h}))}</span></div>
     <div class="dg-list">${cards}</div>
     ${towerCardHTML(progress)}
   </div>`;
@@ -56739,6 +56898,7 @@ function renderDungeonsSubTab(body){
   body.querySelectorAll('[data-dungeon-sweep]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation();
     const map = CONQUEST_MAPS.find(x=> x.id === b.dataset.dungeonSweep), node = dungeonSweepNode(map); if(!node) return;
     if(!isPremiumPlayer()) return dungeonSweepLocked(b);
+    if(b.dataset.nokeys || dungeonTicketsLeft() <= 0) return dungeonNoKeys(b); // 2026-10-18 (package DK)
     openSweepMenu(b, map, node, nodeEnergyCost(map, node) || 1, body, {noIdle:true, after: ()=> renderDungeonsSubTab(body)}); }));
   // 2026-10-18 (audit R3-WP6: at 50/50 the Spire only offered "Keep climbing" into floor 50 again): from the summit you pick any
   // floor to fight again, and the map opens with that floor selected.
@@ -57183,13 +57343,16 @@ document.addEventListener('keydown', e=>{
 // 2026-10-14 (user: "This should say Auto-sweep if I don't even have to play the game."): every player-facing "Sweep" here,
 // on the node panel's split pill and in the toasts now reads Auto-sweep; Idle-Sweep reads "Keep auto-sweeping here".
 // 2026-10-18 (package Z): how {after, noIdle}: the daily dungeons' Sweep re-renders its own tab and has no keep-sweeping switch.
+// 2026-10-18 (package DK): on a daily dungeon each run also uses a 🗝️ key, so the count stops at the keys you hold; with none the
+// menu offers no runs and says why.
 function openSweepMenu(anchor, map, node, energyCost, body, how){
   document.getElementById('sweepMenu')?.remove();
-  const most = Math.max(0, Math.min(20, Math.floor(currentEnergy() / energyCost))), idle = idleSweepTarget(), idleHere = idle && idle.mapId === map.id && idle.nodeKey === node.key;
+  const dgKeys = isDailyDungeonMap(map) ? dungeonTicketsLeft() : null;
+  const most = Math.max(0, Math.min(20, Math.floor(currentEnergy() / energyCost), dgKeys != null ? dgKeys : Infinity)), idle = idleSweepTarget(), idleHere = idle && idle.mapId === map.id && idle.nodeKey === node.key;
   const opts = [...new Set([1, 3, 5, 10, most].filter(n=> n >= 1 && n <= most))].sort((a, b)=> a - b);
   const m = document.createElement('div'); m.id = 'sweepMenu'; m.className = 'sweep-menu'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-label', 'Auto-sweep');
-  m.innerHTML = `<div class="sm-q">🧹 Auto-sweep how many times?</div><div class="sm-opts">${opts.length ? opts.map(n=> `<button type="button" class="btn small ${n === most ? 'primary' : ''}" data-sweepn="${n}">${n === most && n > 1 ? `All ${n}` : n + '×'}</button>`).join('') : `<span class="panel-sub">Needs ${energyCost}⚡ a run.</span>`}</div>
-    <div class="sm-foot">${energyCost}⚡ a run${autoTier('idleSweep') && !(how && how.noIdle) ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Keep auto-sweeping here</label>` : ''}</div>`;
+  m.innerHTML = `<div class="sm-q">🧹 Auto-sweep how many times?</div><div class="sm-opts">${opts.length ? opts.map(n=> `<button type="button" class="btn small ${n === most ? 'primary' : ''}" data-sweepn="${n}">${n === most && n > 1 ? `All ${n}` : n + '×'}</button>`).join('') : dgKeys === 0 ? `<span class="panel-sub sm-nokeys">🗝️ ${escapeHtml(dungeonNoKeysText())}</span>` : `<span class="panel-sub">Needs ${energyCost}⚡ a run.</span>`}</div>
+    <div class="sm-foot">${energyCost}⚡ a run${dgKeys != null ? ` · <span>${escapeHtml(TX('ui.sweep-key-a-run', {n: dgKeys}))}</span>` : '' /* 2026-10-18 (package DK) */}${autoTier('idleSweep') && !(how && how.noIdle) ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Keep auto-sweeping here</label>` : ''}</div>`;
   document.body.appendChild(m);
   const r = anchor.getBoundingClientRect(); m.style.left = Math.max(8, Math.min(innerWidth - m.offsetWidth - 8, r.left + r.width/2 - m.offsetWidth/2)) + 'px'; m.style.top = (r.bottom + 8) + 'px';
   const close = ()=>{ m.remove(); document.removeEventListener('pointerdown', away, true); };
@@ -57629,6 +57792,7 @@ function renderConquestSubTab(body){
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
     const energyCost = selectedNode.virtual ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
+    const dgKeys = !selectedNode.virtual && isDailyDungeonMap(map) ? dungeonTicketsLeft() : null; // 2026-10-18 (package DK): a floor uses a key; 0 = no fight
     panelEl.hidden = false;
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
     // faintly green to represent defeated. Red if the fight outlevels me by a lot"): focus hides the Play tabs.
@@ -57644,7 +57808,7 @@ function renderConquestSubTab(body){
         const fightTip = selectedNode.tower ? (energyCost ? TX('ui.tower-cost-refund', {n: energyCost}) : TX('ui.tower-cost-free')) : `Costs ${energyCost}⚡`;
         // 2026-10-13 (user: "The sweep button should be beside the fight button. Do like a half pill ... After clicking Sweep - they
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
-        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
+        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight ${dgKeys === 0 ? 'is-nokeys' : ''}" id="cnpFightBtn" data-energy-cost="${energyCost}" ${dgKeys === 0 ? 'data-no-keys="1" ' : ''}${canAffordFight && dgKeys !== 0 ? '' : 'aria-disabled="true"'} title="${escapeAttr(dgKeys === 0 ? dungeonNoKeysText() : canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
           : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
       <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(selectedNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
@@ -57653,6 +57817,7 @@ function renderConquestSubTab(body){
       ${newSkillRibbonHTML(selectedNode)}
       ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
       ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
+      ${dgKeys != null ? `<p class="cnp-dungeon-keys ${dgKeys ? '' : 'is-empty'}"><span>${escapeHtml(TX('ui.dungeon-keys-left', {n: dgKeys}))}</span> · <span>${escapeHtml(dgKeys ? TX('ui.dungeon-fight-uses-key') : dungeonNoKeysText())}</span></p>` : '' /* 2026-10-18 (package DK) */}
       ${skirmishFieldHTML(map.id, selectedNode)}
       ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${journeysAdminOnly() ? '<small>🙈 Hidden from players (Admin only) · </small>' : ''}${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
@@ -60166,7 +60331,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(node.dialogue && DIALOGUES[node.dialogue]) setTimeout(()=> playDialogue(node.dialogue), 3200);
   // Daily dungeons (2026-10-15; 2026-10-16: a key per floor, given back on a win): a floor needs a 🗝️ Dungeon key (see DAILY_DUNGEONS).
   const dungeonEntry = !(opts && opts.skipEnergyCost) && isDailyDungeonMap(CONQUEST_MAPS.find(m=> m.id === mapId));
-  if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('toast.no-dungeon-tickets-left-a-new'), 'warn'); return false; }
+  if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast('🗝️ ' + dungeonNoKeysText(), 'warn'); return false; } // 2026-10-18 (package DK)
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
   // 2026-10-18 (package Z): a cleared Babel Spire floor is free (towerReplay); a new floor's Energy is held (towerEnergyPaid) so a
@@ -60194,8 +60359,8 @@ function startConquestMatch(mapId, nodeKey, opts){
       playDialogue('boss_banter@birds');
     }catch(e){} }, 3200);
   }
-  const dungeonKeyStaked = dungeonEntry && dungeonStakeKey(mapId); // 2026-10-16: the key goes in the lock; a win gives it back
-  if(dungeonKeyStaked){ showToast(TX('toast.dungeon-key-in-the-lock-win', {dungeonTicketsLeft: dungeonTicketsLeft()}), 'ok'); try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
+  const dungeonKeyStaked = dungeonEntry && dungeonStakeKey(mapId); // 2026-10-18 (package DK): the fight uses a key, win or lose (was: a win gave it back)
+  if(dungeonKeyStaked){ showToast(TX('toast.dungeon-key-used', {n: dungeonTicketsLeft()}), 'ok'); try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
   try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
@@ -64074,7 +64239,7 @@ function renderMatchUI(){
         ${matchStatsHTML(m)}
         ${m.raidersTook ? raidersTookHTML(m) : '' /* the surprise challenge lost (2026-10-15) */}
         ${m.towerRefunded ? `<p class="wl-raiders wl-tower-refund">${escapeHtml(TX('results.tower-refunded', {n: m.towerRefunded}))}</p>` : ''}${m.towerReplay && m.winner===1 ? `<p class="wl-tower-replay">${escapeHtml(TX('results.tower-replay'))}</p>` : '' /* 2026-10-18 (package Z) */}
-        ${m.dungeonOutcome && m.dungeonOutcome.lost ? `<p class="wl-raiders wl-dkey-lost">${m.dungeonOutcome.keyLost ? TX('results.dungeon-key-lost-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best}) : TX('results.dungeon-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best})}</p>` : '' /* 2026-10-16: the key is gone, back to floor 1 */}
+        ${m.dungeonOutcome && m.dungeonOutcome.lost ? `<p class="wl-raiders wl-dkey-lost">${TX('results.dungeon-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best}) /* 2026-10-18 (package DK): the key was used at the start either way */}</p>` : '' /* 2026-10-16: the key is gone, back to floor 1 */}
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
           ${nextBattleButtonHTML(m)}
@@ -67759,17 +67924,20 @@ function sweepAllowed(mapId, nodeKey){ const nid = conquestNodeId(mapId, nodeKey
   return (autoTier('sweep') && autoSNodes().has(nid)) || autoTier('autoSweep'); }
 // Each run is played out by the CPU for both sides, as Auto would; a win pays the clear-again reward (with the rank bonus for
 // the castle you kept), a loss pays nothing. Energy is spent per run either way.
+// 2026-10-18 (package DK, owner: "I can't sweep past the number of keys I have"): a daily dungeon run also uses a 🗝️ key (checked
+// before the Energy is taken, so a run with no key costs nothing); the sweep stops when the keys run out.
 function runSweep(mapId, nodeKey, count){
   const f = findConquestNode(mapId, nodeKey); if(!f) return null; const node = f.node, map = f.map || CONQUEST_MAPS.find(x=> x.id === mapId);
-  const cost = nodeEnergyCost(map, node) || 1; let wins = 0, played = 0, gold = 0, dust = 0;
-  const tier = nodeRewardTier(node);
-  for(let i = 0; i < count; i++){ if(!spendEnergy(cost)) break; played++;
+  const cost = nodeEnergyCost(map, node) || 1; let wins = 0, played = 0, gold = 0, dust = 0, keys = 0;
+  const tier = nodeRewardTier(node), dg = isDailyDungeonMap(map);
+  for(let i = 0; i < count; i++){ if(dg && dungeonTicketsLeft() <= 0) break; if(!spendEnergy(cost)) break; if(dg){ dungeonStakeKey(mapId); keys++; } played++;
     const r = simulateSkirmishVsDeckSeeded(node, myDeckCounts, myCastleDef(), Math.floor(Math.random()*1e9));
     if(r.win){ wins++; const rank = r.castleLeft >= 0.9 ? 'S' : r.castleLeft >= 0.7 ? 'A' : r.castleLeft >= 0.5 ? 'B' : 'C'; const bm = (RANK_MULT[rank] || 1);
       if(tier){ gold += Math.round((tier.repeat.gold||0) * bm); dust += Math.round((tier.repeat.dust||0) * bm); }
       try{ bumpQuestCounter('conquestWins', 1); bumpQuestCounter('wins', 1); bumpQuestCounter('energyConquest', cost); }catch(e){} } }
   if(gold > 0) grantCurrency('gold', gold); if(dust > 0) grantCurrency('dust', dust);
-  return {played, wins, gold, dust};
+  if(keys){ try{ refreshTopbarDungeonKey(currentTab); }catch(e){} }
+  return {played, wins, gold, dust, keys};
 }
 // Sweep results (2026-10-16, user: "Auto Sweep should bring up the reward screen. not just a toast"): a results card like a fight's:
 // the fight, the runs and wins as a rank-style tally, the Maple Leaves and Magic Dust pills counting up from 0, and Collect.
@@ -67785,7 +67953,8 @@ function showSweepResults(r, mapId, nodeKey){
     <h2 class="sr-title">${r.wins ? 'Swept!' : 'No wins this time'}</h2>
     <div class="sr-sub">${node ? `${escapeHtml(node.icon || '')} ${escapeHtml(label || node.name)}` : escapeHtml(label || '')}</div>
     <div class="sr-tally"><b>${r.wins}</b><span>/ ${r.played} won</span></div>
-    ${pills ? `<div class="rw-sec rw-cheer winloss-conquest-rewards sr-rewards"><div class="rw-head">${escapeHtml(TX('results.rewards'))}</div><div class="rw-row rw-cur-row">${pills}</div></div>` : `<p class="panel-sub">${r.played ? 'A loss pays nothing.' : 'Not enough Energy for a run.'}</p>`}
+    ${r.keys ? `<p class="panel-sub sr-keys">${escapeHtml(TX('results.sweep-keys-used', {n: r.keys, left: dungeonTicketsLeft()}))}</p>` : '' /* 2026-10-18 (package DK) */}
+    ${pills ? `<div class="rw-sec rw-cheer winloss-conquest-rewards sr-rewards"><div class="rw-head">${escapeHtml(TX('results.rewards'))}</div><div class="rw-row rw-cur-row">${pills}</div></div>` : `<p class="panel-sub">${r.played ? 'A loss pays nothing.' : r.keys === 0 && dungeonTicketsLeft() <= 0 && isDailyDungeonMap(CONQUEST_MAPS.find(x=> x.id === mapId)) ? escapeHtml(dungeonNoKeysText()) : 'Not enough Energy for a run.'}</p>`}
     <button type="button" class="btn primary big sr-ok">${r.wins ? 'Collect' : 'OK'}</button></div>`;
   document.body.appendChild(ov);
   const close = ()=>{ if(hasGsap() && !reducedMotion()) gsap.to(ov, {opacity:0, duration:.18, onComplete:()=> ov.remove()}); else ov.remove(); };
@@ -69495,7 +69664,8 @@ async function resolveRoundCore(opts){
     if(m.mode==='conquest' && m.fightSession) setTimeout(()=> handInFight(m), 0);
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest){ try{ m.conquestRankEarned = lossRankFor(m); }catch(e){} } // F / FF / FFF (2026-10-11)
     // Daily dungeons (2026-10-16): a lost or forfeited floor keeps the key and sends the climb back to floor 1 (dungeonRunLost);
-    // a won floor hands the key back (dungeonFloorWon, below, after the first-clear check has read the best floor).
+    // a won floor moves the best floor up (dungeonFloorWon, below, after the first-clear check has read the best floor).
+    // 2026-10-18 (package DK): the key was used when the fight started, so neither gives one back.
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest && !m.dungeonOutcome){ try{ const dm = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId);
       if(isDailyDungeonMap(dm)){ const reached = dungeonFloorProgress(dm).done + 1; dungeonRunLost(dm.id); m.dungeonOutcome = {lost:true, keyLost: !!m.dungeonKeyStaked, floor: reached, best: dungeonBestFloor(dm.id)}; try{ refreshTopbarDungeonKey(currentTab); }catch(e){} } }catch(e){} }
     // The Babel Spire (2026-10-18, package Z: "Towers just take energy to do, refunding if you fail"): a new floor lost, forfeited
@@ -69525,7 +69695,7 @@ async function resolveRoundCore(opts){
       fightRewardBegin(m, isFirstClear);
       if(m.towerEnergyPaid > 0) bumpQuestCounter('energyConquest', m.towerEnergyPaid); // 2026-10-18 (package Z): a won Spire floor's Energy counts now (a lost one is refunded)
       if(dunNode && !m.dungeonOutcome){ try{ const gl = dungeonGoldLeavesFor(dunMap.id, dunNode.floor, isFirstClear); if(gl > 0){ fightGrant(m, 'gems', gl); m.conquestGemsEarned = gl; } }catch(e){} } // 🍂 Gold Leaves (2026-10-16)
-      if(dunNode && !m.dungeonOutcome){ try{ dungeonFloorWon(dunMap.id, dunNode.floor, !!m.dungeonKeyStaked); m.dungeonOutcome = {won:true, keyBack: !!m.dungeonKeyStaked, floor: dunNode.floor}; refreshTopbarDungeonKey(currentTab); }catch(e){} }
+      if(dunNode && !m.dungeonOutcome){ try{ dungeonFloorWon(dunMap.id, dunNode.floor); m.dungeonOutcome = {won:true, floor: dunNode.floor}; refreshTopbarDungeonKey(currentTab); }catch(e){} } // 2026-10-18 (package DK): no key back
       // 2026-10-15: start the card-reward ledger before this clear is recorded; on a brand-new save its first read seeds itself
       // from the cleared fights, which counted this fight's cards as already given (0-1's card was lost that way).
       try{ cardRewardsClaimed(); }catch(e){}
@@ -71951,7 +72121,7 @@ function rewardsPanelHTML(m){
   eggCards.forEach(id=>{ const d = getCardDefs()[id];
     acts.push(`<span class="rw-act rw-egg rw-egg-card" data-tip="${escapeAttr(eggCardRewardNote())}">${d.icon || '🥚'} ${escapeHtml(d.name)}</span>`); });
   // 2026-10-18 (package T): a bramble won is no longer a chip here ("New bramble: X", with a Forge tooltip); it is a card with the cards won.
-  if(m.dungeonOutcome && m.dungeonOutcome.keyBack) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(TX('results.a-win-gives-your-key-back'))}">${TX('results.dungeon-key-back', {n: dungeonTicketsLeft()})}</span>`); // 2026-10-16
+  if(m.dungeonOutcome && m.dungeonOutcome.won) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(dungeonKeyRuleText())}">${escapeHtml(TX('ui.dungeon-keys-left', {n: dungeonTicketsLeft()}))}</span>`); // 2026-10-18 (package DK): keys left (a win no longer gives one back)
   const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-spare-copy-of-a-base'))}">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join(''); })() : ''}`;
   const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
   if(cur.length || packRow || acts.length || itemsHTML){
@@ -71971,6 +72141,7 @@ function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
   const e = fightEnergyCost(nb.mapId, nb.node); // 2026-10-18 (package Z)
   if(m.mode==='tutorial') return ''; // 2026-10-13 (user: "On the buttons below only have the button 'Claim Rewards'"), both parts
+  if(isDailyDungeonMap(CONQUEST_MAPS.find(x=> x.id === nb.mapId)) && dungeonTicketsLeft() <= 0) return `<button class="btn primary big is-nokeys" id="wlNextBattleBtn" data-energy-cost="${e||0}" data-no-keys="1" aria-disabled="true" title="${escapeAttr(dungeonNoKeysText())}">${TX('results.next', {name: escapeHtml(nb.node.name)})}</button>`; // 2026-10-18 (package DK)
   return `<button class="btn primary big" id="wlNextBattleBtn" data-energy-cost="${e||0}" ${currentEnergy() < (e||0) ? 'aria-disabled="true"' : ''} title="${escapeAttr(nb.node.name + (currentEnergy() < (e||0) ? ` ${TX('results.needs-you-have', {e, currentEnergy: currentEnergy()})}` : ''))}">${TX('results.next', {name: escapeHtml(nb.node.name)})}</button>`; // the cost is the button's own ::after (2026-10-12: it showed twice)
 }
 // A small cheer when currency lands: sparkles burst out of the Rewards row.
@@ -76488,12 +76659,12 @@ function renderForge(){
         ${metal ? `<span class="forge-coin metal" title="Metal, from defeating Conquest leaders">🔩 ${metal}</span>` : ''}
       </div>
     </div>
-    ${forgeMode !== 'smith' ? forgeUpgradeHTML() + staminaPanelHTML('forge') : ''}
-    <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
+    <div class="forge-modes" role="tablist" aria-label="Forge">${Object.keys(FORGE_MODES).map(k=> `<button type="button" role="tab" class="forge-mode ${forgeMode===k?'on':''} ${k === 'facility' && facilityUpgradeState('forge').ready ? 'has-ready' : ''}" data-forgemode="${k}" aria-selected="${forgeMode===k}">${FORGE_MODES[k].icon} ${FORGE_MODES[k].label}</button>`).join('')}</div>
+    ${forgeMode === 'facility' ? `<div class="facility-upgrades" id="forgeUpgradesTab">${forgeUpgradeHTML() + staminaPanelHTML('forge') + dungeonKeyRingHTML()}</div>` : '' /* 2026-10-18 (package DK, owner 00:08): the Forge's upgrades live in its ⬆️ Upgrades tab (were above the tabs) */}
     ${forgeMode==='enchant' ? forgeMateriaBenchHTML() : ''}
     ${forgeMode==='smith' ? blacksmithHTML() : ''}
     ${forgeMode==='castles' ? forgeCastlesHTML() : ''}
-    <div class="forge-layout" ${forgeMode==='smith' || forgeMode==='castles' ? 'hidden' : ''}>
+    <div class="forge-layout" ${forgeMode==='smith' || forgeMode==='castles' || forgeMode==='facility' ? 'hidden' : ''}>
       <div class="panel forge-pool-panel">
         <div class="forge-toolbar">
           <input data-text-filter autocomplete="off" type="search" id="forgeSearch" class="forge-search" placeholder="Search cards…" value="${escapeAttr(forgeSearch)}" aria-label="Search cards">
@@ -76884,9 +77055,11 @@ const FORGE_MODES = {
   smith:   {icon:'⚒️', label:'Blacksmith', blurb:'Craft equipment from Materia and cards, or fuse three spare copies into something rarer. Equipment goes in your deck like any card; in a fight you drag it onto one of your units.'},
   castles: {icon:'🏰', label:'Brambles', blurb:'Temper your brambles here: each level adds 1 starting Health. A bramble you get again is a duplicate (you only ever field one), and fusing it banks credit toward its next levels.'},
   enchant: {icon:'💎', label:'Enchant', blurb:'Socket a Materia crystal into a card for a small, permanent bonus. One crystal per card; a new one replaces the old. Craft crystals from Magic Dust on the bench.'},
+  // 2026-10-18 (package DK, owner 00:08): the Forge's own upgrades (tier, Max Energy, the 🗝️ Key ring) have their own tab
+  facility: {icon:'⬆️', get label(){ return TX('ui.upgrades-tab'); }, get blurb(){ return TX('ui.forge-upgrades-blurb'); }},
 };
 function forgeReadyFor(id){
-  if(forgeMode==='smith') return false;
+  if(forgeMode==='smith' || forgeMode==='facility') return false; // + the ⬆️ Upgrades tab (2026-10-18, package DK)
   if(forgeMode==='refine'){ const i = bestCopyIndex(id); if(i < 0) return false; const nx = REFINE_LADDER[copyRefineRank(myCardCopies[id][i]) + 1]; return !!(nx && canAffordCost(nx.cost)); }
   if(forgeMode==='enchant'){ const st = materiaStore(); return MATERIA_KINDS.some(k=> (st[k.id]||0) > 0) && !myCardEnchants[id]; }
   const L = getCardLevel(id); return L < 10 ? canAffordLevelUp(L, id) : (limitBreakState(id).ok || (nextPrestigeTier(id) ? canAffordPrestige(id) : false));
@@ -77861,16 +78034,18 @@ function tavernRecruitHTML(){
 function openTavern(){
   try{ settleWeeklyBeer(); }catch(e){}
   let ov = document.getElementById('tavernOverlay'); if(!ov){ ov = document.createElement('div'); ov.id = 'tavernOverlay'; ov.className = 'modal-overlay'; document.body.appendChild(ov); }
-  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; if(currentTab === 'home') try{ renderHome(); }catch(e){} else if(currentTab === 'deck') try{ renderDeckSection(); }catch(e){} };
+  const wasOpen = !ov.hidden && !!ov.innerHTML; // 2026-10-18 (package DK): a tab switch redraws an open Tavern without its hello
+  const close = ()=>{ ov.hidden = true; ov.innerHTML = ''; tavernTab = 'recruit'; if(currentTab === 'home') try{ renderHome(); }catch(e){} else if(currentTab === 'deck') try{ renderDeckSection(); }catch(e){} };
   const draw = ()=>{ ov.innerHTML = `<div class="modal tavern-modal" role="dialog" aria-label="The Tavern"><div class="modal-head-row"><h2>🍺 The Tavern</h2><button class="modal-close-btn" id="tvClose" aria-label="Close">✕</button></div>
-      ${tavernBeerHTML()}${tavernRecruitHTML()}${staminaPanelHTML('tavern')}</div>`;
+      ${facilityTabsHTML('tavern', tavernTab, [['recruit', TX('ui.tavern-tab-recruit')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08) */}
+      ${tavernTab === 'upgrades' ? `<div class="facility-upgrades" id="tavernUpgradesTab">${staminaPanelHTML('tavern')}</div>` : tavernBeerHTML() + tavernRecruitHTML()}</div>`;
     ov.hidden = false; ov.querySelector('#tvClose').onclick = close;
     wireStamina(ov, draw);
     ov.querySelectorAll('[data-tv-recruit]').forEach(b=> b.onclick = ()=>{ const id = b.dataset.tvRecruit, r = tavernRecruit(id);
       if(r === 'ok'){ const d = getCardDefs()[id] || {}; showToast(TX('toast.joins-you', {v1: d.name || 'A new card'}), 'ok'); try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} draw(); }
       else { denyShake(b); showToast(r === 'beer' ? TX('toast.you-need-a-beer-to-recruit') : r === 'gone' ? TX('toast.that-one-has-moved-on') : TX('toast.not-enough-to-recruit-yet'), 'warn'); } }); };
   draw(); ov.onclick = e=>{ if(e.target === ov) close(); };
-  fxHook('tavernOpen', ov.querySelector('.tavern-modal')); // the hearth glows, two mugs clink (FX.E, 2026-10-15)
+  if(!wasOpen) fxHook('tavernOpen', ov.querySelector('.tavern-modal')); // the hearth glows, two mugs clink (FX.E, 2026-10-15)
 }
 function adminEntryVisible(){
   if(LAUNCH_BUILD && !isDevHost()) return false;
@@ -78864,6 +79039,13 @@ function nextNestUnlock(n){
   const reached = nestMapReached(u.map), c = u.cost || {};
   return {i, map:u.map, cost:c, reached, affordable: (myCurrencies.gold||0) >= (c.gold||0) && (myCurrencies.dust||0) >= (c.dust||0)};
 }
+// The Nest's ⬆️ Upgrades tab: the next nest to build (the same build as the hay's 🔨 spot), or when it opens (2026-10-18, package DK)
+function nestBuildRowHTML(){
+  const n = nestState(), nx = nextNestUnlock(n), open = nestSlotsOpen(n), max = Math.min(NEST_SLOTS, NEST_UNLOCKS.length);
+  return `<div class="forge-upgrade upg-row nest-build-row" role="group" aria-label="${escapeAttr(TX('ui.nest-upg-title'))}"><div class="fu-now"><b>${escapeHtml(TX('ui.nest-upg-title'))}</b> <small>${escapeHtml(TX('ui.nest-upg-built', {open, max}))}</small></div>
+    <div class="fu-next">${!nx ? `<span>${escapeHtml(TX('ui.nest-upg-all'))}</span>` : !nx.reached ? `<span class="fu-gate">🗺️ ${escapeHtml(mapLockText(nx.map, TX('ui.nest-upg-next-map', {n: nx.map})))}</span>`
+      : `<button type="button" class="btn small primary" data-nest-build="1" ${nx.affordable ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.nest-upg-btn'))}${btnCostHTML(nx.cost)}</button>`}</div></div>`;
+}
 function buildNextNest(){
   const n = nestState(), nx = nextNestUnlock(n); if(!nx) return 'full'; if(!nx.reached) return 'locked'; if(!nx.affordable) return 'cost';
   myCurrencies.gold = (myCurrencies.gold||0) - (nx.cost.gold||0); myCurrencies.dust = (myCurrencies.dust||0) - (nx.cost.dust||0); saveCurrencies();
@@ -79146,16 +79328,19 @@ function renderNest(){
   root.innerHTML = `<div class="panel"><h2>🪺 The Nest</h2>
       <p class="panel-sub tip-ticker" id="nestTipTicker" aria-live="polite"></p>
       <p class="panel-sub">${ownedIds.length} card${ownedIds.length===1?'':'s'} owned · ${totalCopies} cop${totalCopies===1?'y':'ies'} total${foilCopies?` · ✨ ${foilCopies} foil`:''}</p>
-      ${nestKeeperHTML()}
+      ${facilityTabsHTML('nest', nestTab, [['cards', TX('ui.nest-tab-cards')], ['upgrades', '⬆️ ' + TX('ui.upgrades-tab')]]) /* 2026-10-18 (package DK, owner 00:08) */}
+      ${nestTab === 'upgrades' ? `<div class="facility-upgrades" id="nestUpgradesTab">${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}${nestBuildRowHTML()}</div>` : nestKeeperHTML()}
       <!-- 2026-10-12 (user: "The disenchant extras button shouldnt exist anywhere but the forge"): moved to the Forge. -->
-      ${staminaPanelHTML('nest') /* 2026-10-15: max Energy 20 → 30 lives here now */}
     </div>
-    <div class="grid-view" id="nestGrid">${
-      ownedIds.length ? nestGridHTML(ownedIds, defs)
+    <div class="grid-view" id="nestGrid" ${nestTab === 'upgrades' ? 'hidden' : ''}>${
+      nestTab === 'upgrades' ? '' : ownedIds.length ? nestGridHTML(ownedIds, defs)
       : `<div class="panel nest-empty"><p class="panel-sub" style="margin:0 0 10px;">You don't own any cards yet — win fights or open packs to start your collection.</p>
           <div class="nest-empty-actions"><button type="button" class="btn primary" data-nest-go="conquest">🗺️ Play Conquest</button><button type="button" class="btn" data-nest-go="shop">🛒 Open the Shop</button></div></div>`
     }</div>`;
   root.querySelectorAll('[data-nest-go]').forEach(b=> b.onclick = ()=>{ if(b.dataset.nestGo==='conquest'){ playSubTab='conquest'; switchTab('play'); } else switchTab('shop'); });
+  if(nestTab === 'upgrades'){ wireStamina(root, renderNest); root.querySelectorAll('[data-nest-build]').forEach(b=> b.onclick = ()=>{ const r = buildNextNest();
+    if(r === 'ok'){ try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e){} renderNest(); showToast(TX('toast.a-new-nest-is-built', {open: nestSlotsOpen()}), 'ok'); }
+    else { denyShake(b); showToast(TX('toast.not-enough-to-build-this-nest'), 'warn'); } }); startTipTicker(document.getElementById('nestTipTicker'), NEST_TIPS); return; } // 2026-10-18 (package DK): the Upgrades tab has no grid
   wireStamina(root, renderNest);
   { const nb = root.querySelector('#nestNurseBtn'); if(nb) nb.onclick = openNursePicker; }
   root.querySelectorAll('[data-nest-empty]').forEach(b=> b.onclick = openNestPicker);
@@ -81123,6 +81308,7 @@ function renderProfile(){
         <div class="panel pf-wallet"><h3>👛 Wallet</h3><div class="pf-wallet-row">${['gold','gems','dust','metal'].concat(featureUnlockedSafe('tavern') || (myCurrencies.beer||0) > 0 ? ['beer'] : []).map(k=> currencyPillHTML(k)).join('')}</div></div>
         ${profileCollectionCardHTML() /* 2026-10-18 (package C): the collection score, beside the achievements */}
         ${profileAchievementsCardHTML()}
+        ${profileUpgradesHTML() /* 2026-10-18 (package DK, owner 00:08): one row per place; each opens that place's ⬆️ Upgrades tab */}
         ${profileMedalsHTML() /* 2026-10-15: Medals moved here from the Notices */}
         ${playerPreviewHTML()}
       </div>
