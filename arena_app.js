@@ -8573,7 +8573,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     ${'' /* 2026-10-13 (user: "In the future, i want to be able to add skills at different levels. To not clump up the UI, just have a + button per row"): a row can arrive at a level; ＋ adds a row for the same skill one level up */}
     ${row.lv ? `<label class="sk-lv" title="This skill arrives at this level">Lv <select data-sk="lv" data-i="${i}">${Array.from({length:11}, (_, k)=> k + 1).map(L=> `<option value="${L}" ${row.lv===L?'selected':''}>${L}</option>`).join('')}</select></label>` : ''}
     <button class="btn small ghost sk-add-lv" data-addskillrow="${i}" title="Add a row for this skill at a later level">＋</button>
-    <button class="btn small danger rm" data-rmskill="${i}">✕</button>
+    <button class="btn small danger rm" data-rmskill="${i}" aria-label="Remove this skill" title="Remove this skill">✕</button>
   </div>`;
 }
 // Which triggers hand a specific OTHER card through `extra` (see runCustomTriggers in the
@@ -8605,7 +8605,7 @@ function triggerRowHTML(t,i){
     <span>Pay</span><select data-t="cost" data-i="${i}" title="A cost paid first. With nothing to pay, the trigger doesn't go off."><option value="" ${!t.cost?'selected':''}>nothing</option><option value="burnLumber" ${t.cost==='burnLumber'?'selected':''}>Burn 1 Lumber</option></select>
     <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${actionFieldsHTML(t,i)}
-    <button class="btn small danger rm" data-rm="${i}">✕</button>
+    <button class="btn small danger rm" data-rm="${i}" aria-label="Remove this trigger" title="Remove this trigger">✕</button>
   </div>
   <div class="trigger-preview" data-preview-i="${i}">${escapeHtml(triggerPreviewText(t))}</div>
   </div>`;
@@ -10285,7 +10285,7 @@ function openEnergyPanel(anchor){
     <button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>
     ${energyCapsules() ? `<button type="button" class="btn small" id="epCapsule">🔋 Use an Energy capsule (+${ENERGY_CAPSULE_AMOUNT}) · ${energyCapsules()} left</button>` : ''}
     ${isAdmin ? `<div class="ep-admin" role="group" aria-label="Admin Energy controls"><span class="ep-admin-h">🚨 Admin</span>
-      <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5">−5</button><button type="button" class="btn small" data-ep="-1">−1</button><button type="button" class="btn small" data-ep="1">+1</button><button type="button" class="btn small" data-ep="5">+5</button></div>
+      <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5" aria-label="Take 5 Energy">−5</button><button type="button" class="btn small" data-ep="-1" aria-label="Take 1 Energy">−1</button><button type="button" class="btn small" data-ep="1" aria-label="Give 1 Energy">+1</button><button type="button" class="btn small" data-ep="5" aria-label="Give 5 Energy">+5</button></div>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="empty">Empty</button><button type="button" class="btn small primary" id="epRefill">Fill</button><input type="number" min="0" max="999" class="w-60" id="epSet" value="${s.current}" aria-label="Set Energy"><button type="button" class="btn small" data-ep="set">Set</button></div>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="tick">Next refill now</button></div></div>` : ''}`;
   document.body.appendChild(pop);
@@ -13704,11 +13704,16 @@ function playDialogue(id, opts){
       if(line.options){
         const choice = await new Promise(resolve=>{
           const row = document.createElement('div'); row.className = 'dlg-replies';
-          row.innerHTML = line.options.map((o,k)=> `<button type="button" class="btn small dlg-reply" data-k="${k}">${escapeHtml(o.label)}</button>`).join('') + `<span class="dlg-timer" title="Answer within 30 seconds"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"></circle></svg><b>30</b></span>`;
+          // 2026-10-18 (a11y, WCAG 2.2.1 Timing Adjustable): the reply window follows the NPC dialogue speed (Slow = 45 s) and
+          // the clock stands still while the pointer is over the choices or keyboard focus is inside them.
+          const replyMs = Math.round(DIALOGUE_REPLY_MS * dialogueSpeedMul()), replyS = Math.ceil(replyMs/1000);
+          row.innerHTML = line.options.map((o,k)=> `<button type="button" class="btn small dlg-reply" data-k="${k}">${escapeHtml(o.label)}</button>`).join('') + `<span class="dlg-timer" title="Answer within ${replyS} seconds (the clock waits while you point at or focus the replies)"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"></circle></svg><b>${replyS}</b></span>`;
           b.querySelector('.dlg-body').appendChild(row);
           const ring = row.querySelector('circle'), num = row.querySelector('.dlg-timer b');
-          const started = Date.now();
-          const tick = setInterval(()=>{ const left = Math.max(0, DIALOGUE_REPLY_MS - (Date.now()-started)); num.textContent = Math.ceil(left/1000); ring.style.strokeDashoffset = String(94.2 * (1 - left/DIALOGUE_REPLY_MS)); if(!left){ clearInterval(tick); resolve(null); } }, 250);
+          let used = 0, last = Date.now(), hover = false;
+          row.addEventListener('pointerenter', ()=>{ hover = true; }); row.addEventListener('pointerleave', ()=>{ hover = false; });
+          const tick = setInterval(()=>{ const now = Date.now(), paused = hover || row.contains(document.activeElement); if(!paused) used += now - last; last = now; row.classList.toggle('is-paused', paused);
+            const left = Math.max(0, replyMs - used); num.textContent = Math.ceil(left/1000); ring.style.strokeDashoffset = String(94.2 * (1 - left/replyMs)); if(!left){ clearInterval(tick); resolve(null); } }, 250);
           row.querySelectorAll('.dlg-reply').forEach(btn=> btn.onclick = ()=>{ clearInterval(tick); resolve(line.options[+btn.dataset.k]); });
         });
         // 2026-10-12 (user: "If the player doesn't interact, the NPC says they'll go for now and come back later. Don't penalise
@@ -20363,17 +20368,17 @@ function openRaidEditor(raidId){
           <label>Boss units dodge %<input data-pt="illusory" type="number" min="0" max="90" value="${Math.round((rl.illusory||0)*100)}"></label>
           <label class="se-chk"><input type="checkbox" data-pt="shield" ${T.shieldWhileEntities?'checked':''}> Castle shielded while entities stand</label>
         </div>
-        <div class="re-list"><b>Special attacks</b>${(T.attacks||[]).map((a,i)=> `<div class="re-li"><input data-at-name="${i}" value="${escapeAttr(a.name||'')}" placeholder="Name"><select data-at-pat="${i}"><option value="column" ${a.pattern==='column'?'selected':''}>Whole column (telegraphed)</option><option value="frontRow" ${a.pattern==='frontRow'?'selected':''}>Whole front row</option></select><label>dmg<input type="number" min="0" max="99" data-at-dmg="${i}" value="${a.dmg||0}"></label><label>every<input type="number" min="1" max="12" data-at-every="${i}" value="${a.every||1}"></label><button type="button" class="btn small ghost" data-at-del="${i}">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddAttack">＋ Attack</button></div>
-        <div class="re-list"><b>Entities on the boss board</b>${(T.entities||[]).map((e,i)=> `<div class="re-li"><input data-en-icon="${i}" value="${escapeAttr(e.icon||'')}" maxlength="4" class="re-ico"><input data-en-name="${i}" value="${escapeAttr(e.name||'')}" placeholder="Name"><label>atk<input type="number" min="0" max="99" data-en-atk="${i}" value="${e.attack||0}"></label><label>hp<input type="number" min="1" max="999" data-en-hp="${i}" value="${e.health||20}"></label><label>armour<input type="number" min="0" max="20" data-en-armor="${i}" value="${e.armor||0}"></label><label>+armour per ally<input type="number" min="0" max="10" data-en-aura="${i}" value="${e.aura||0}"></label><button type="button" class="btn small ghost" data-en-del="${i}">✕</button></div>`).join('')}${(T.entities||[]).length < 5 ? `<button type="button" class="btn small" id="reAddEntity">＋ Entity</button>` : ''}</div>`; })() : ''}
+        <div class="re-list"><b>Special attacks</b>${(T.attacks||[]).map((a,i)=> `<div class="re-li"><input data-at-name="${i}" value="${escapeAttr(a.name||'')}" placeholder="Name"><select data-at-pat="${i}"><option value="column" ${a.pattern==='column'?'selected':''}>Whole column (telegraphed)</option><option value="frontRow" ${a.pattern==='frontRow'?'selected':''}>Whole front row</option></select><label>dmg<input type="number" min="0" max="99" data-at-dmg="${i}" value="${a.dmg||0}"></label><label>every<input type="number" min="1" max="12" data-at-every="${i}" value="${a.every||1}"></label><button type="button" class="btn small ghost" data-at-del="${i}" aria-label="Remove this special attack" title="Remove this special attack">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddAttack">＋ Attack</button></div>
+        <div class="re-list"><b>Entities on the boss board</b>${(T.entities||[]).map((e,i)=> `<div class="re-li"><input data-en-icon="${i}" value="${escapeAttr(e.icon||'')}" maxlength="4" class="re-ico"><input data-en-name="${i}" value="${escapeAttr(e.name||'')}" placeholder="Name"><label>atk<input type="number" min="0" max="99" data-en-atk="${i}" value="${e.attack||0}"></label><label>hp<input type="number" min="1" max="999" data-en-hp="${i}" value="${e.health||20}"></label><label>armour<input type="number" min="0" max="20" data-en-armor="${i}" value="${e.armor||0}"></label><label>+armour per ally<input type="number" min="0" max="10" data-en-aura="${i}" value="${e.aura||0}"></label><button type="button" class="btn small ghost" data-en-del="${i}" aria-label="Remove this entity" title="Remove this entity">✕</button></div>`).join('')}${(T.entities||[]).length < 5 ? `<button type="button" class="btn small" id="reAddEntity">＋ Entity</button>` : ''}</div>`; })() : ''}
       <h3 class="se-h">${escapeHtml(P.name||P.id)} deck · ${Object.values(deck).reduce((t,n)=> t+n, 0)} cards</h3>
       <div class="se-deck">${Object.keys(deck).length ? Object.keys(deck).map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health : ''}</span>
-        <button type="button" class="btn small" data-dec="${escapeAttr(id)}">−</button><b class="se-n">${deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
+        <button type="button" class="btn small" data-dec="${escapeAttr(id)}" aria-label="One fewer ${escapeAttr(defs[id] ? defs[id].name : id)}">−</button><b class="se-n">${deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}" aria-label="One more ${escapeAttr(defs[id] ? defs[id].name : id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
       <input type="text" id="reSearch" placeholder="Search a card to add to this part's deck…" value="${escapeAttr(q)}" autocomplete="off">
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}</span></button>`).join('')}</div>
       <div class="re-part-actions"><button type="button" class="btn small" id="reSim">📊 Simulate 100 attempts vs my deck</button>${draft.stages.some(s=> (s.rules||[]).some(r=> r.stripAbilities)) ? `<button type="button" class="btn small" id="reSimExposed">📊 …as Exposed</button>` : ''}<span style="flex:1"></span><button type="button" class="btn small ghost" id="reDelPart">🗑 Remove part</button></div>
       ${simText[P.id] ? `<div class="se-sim">${simText[P.id]}</div>` : ''}` : ''}
       <h3 class="se-h">Stages (as total HP falls)</h3>
-      <div class="re-stages">${draft.stages.map((s,i)=> `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${(s.rules||[]).some(r=> r.stripAbilities)?'checked':''}> strips enemy abilities</label><button type="button" class="btn small ghost" data-st-del="${i}">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
+      <div class="re-stages">${draft.stages.map((s,i)=> `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${(s.rules||[]).some(r=> r.stripAbilities)?'checked':''}> strips enemy abilities</label><button type="button" class="btn small ghost" data-st-del="${i}" aria-label="Remove this stage" title="Remove this stage">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
       <h3 class="se-h">Scoring &amp; rewards</h3>
       <div class="se-grid">
         <label>Raid damage per castle HP<input id="reRate" type="number" min="1" value="${draft.scoring.perInFightHp||50}"></label>
@@ -23192,10 +23197,10 @@ function testKitManualHTML(){
       <button type="button" class="tk-speed-btn ${tgt==='enemy'?'is-on':''}" data-tktarget="enemy" role="radio" aria-checked="${tgt==='enemy'}">On the enemy facing it</button>
     </div>
     <div class="tk-manual-row">
-      <button type="button" class="btn small" data-tkact="dmg" data-n="1">−1</button>
-      <button type="button" class="btn small" data-tkact="dmg" data-n="5">−5</button>
-      <button type="button" class="btn small" data-tkact="heal" data-n="1">＋1</button>
-      <button type="button" class="btn small" data-tkact="heal" data-n="5">＋5</button>
+      <button type="button" class="btn small" data-tkact="dmg" data-n="1" aria-label="Deal 1 damage" title="Deal 1 damage">−1</button>
+      <button type="button" class="btn small" data-tkact="dmg" data-n="5" aria-label="Deal 5 damage" title="Deal 5 damage">−5</button>
+      <button type="button" class="btn small" data-tkact="heal" data-n="1" aria-label="Heal 1" title="Heal 1">＋1</button>
+      <button type="button" class="btn small" data-tkact="heal" data-n="5" aria-label="Heal 5" title="Heal 5">＋5</button>
       <button type="button" class="btn small" data-tkact="kill" title="Deal enough damage to kill it (death triggers fire)">☠ Kill</button>
     </div>
     <div class="tk-manual-row">
@@ -37308,9 +37313,9 @@ function renderSim(){
       <p class="panel-sub" id="simDeckSummary">Deck A: ${deckTotal(simDecks.A)} cards vs Deck B: ${deckTotal(simDecks.B)} cards</p>
       <div class="run-row">
         <label>Games: <input type="number" id="nInput" value="10000" min="1" max="2000000"></label>
-        <button class="btn small" data-preset="1000">1k</button>
-        <button class="btn small" data-preset="10000">10k</button>
-        <button class="btn small" data-preset="100000">100k</button>
+        <button class="btn small" data-preset="1000" aria-label="1,000 games">1k</button>
+        <button class="btn small" data-preset="10000" aria-label="10,000 games">10k</button>
+        <button class="btn small" data-preset="100000" aria-label="100,000 games">100k</button>
         <button class="btn primary" id="runBtn">▶ Run</button>
       </div>
       <p class="run-error" id="simRunError" hidden></p>
