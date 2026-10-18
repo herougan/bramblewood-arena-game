@@ -10420,6 +10420,30 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
 .hud-pack.is-bump{animation:packBump .5s cubic-bezier(.2,1.6,.4,1);} .hud-pack.is-bump .hud-pack-n{animation:packTick .45s ease-out;}
 @keyframes packBump{0%{transform:scale(1);} 30%{transform:scale(1.3) rotate(-7deg);} 62%{transform:scale(.94) rotate(3deg);} 100%{transform:none;}}
 @keyframes packTick{0%{transform:translateY(-9px); opacity:0;} 100%{transform:none; opacity:1;}}
+/* 2026-10-18 (package Z, owner: "use two item(s) per map only. then it's grayed then faded out"): the badge counts this fight's items
+   ("1/2"); once all are used the pack greys and fades out of the HUD (KIT_FADE_MS, the redraw keeps its place via animation-delay). */
+.hud-pack .hud-pack-used{width:auto; min-width:17px; padding:0 4px; border-radius:9px; font-size:9.5px; font-variant-numeric:tabular-nums;}
+.hud-pack.has-used:not(.is-spent) .hud-pack-used{background:#d9a634;}
+.hud-pack.is-spent{animation:kitSpentFade 1.8s ease-in forwards; pointer-events:none;}
+.hud-pack.is-spent .hud-pack-used{background:#7d8590;}
+@keyframes kitSpentFade{0%{opacity:.85; filter:grayscale(0);} 30%{opacity:.62; filter:grayscale(1);} 65%{opacity:.55; filter:grayscale(1); transform:none;} 100%{opacity:0; filter:grayscale(1); transform:scale(.82);}}
+.pack-pop-uses.has-used{color:#ffd36a;}
+.pack-pop-boss{margin:2px 0 6px; font-size:12px; font-weight:700; color:#ffd36a;}
+.cnp-grants-item{margin:6px 0 0; font-size:12.5px; font-weight:700; color:#ffd36a;}
+/* 2026-10-18 (package Z): the daily dungeons' Sweep, premium only; locked it is slate with a gold Premium badge */
+.dg-sweep{margin-left:6px;}
+.dg-sweep.is-locked, .cnp-sweep-half.is-locked{background:#5a6270 !important; border-color:#474e59 !important; color:#d6dbe2 !important; box-shadow:none !important; cursor:not-allowed;}
+.premium-badge{display:inline-block; margin-left:4px; padding:1px 6px; border-radius:999px; font-size:10px; font-weight:900; line-height:1.4; letter-spacing:.02em; background:linear-gradient(180deg,#ffe08a,#e0a43a); color:#3a2500; vertical-align:middle;}
+/* 2026-10-18 (package Z, owner: "You may blue-grey out completed tower floors as there will be 0 reward"): a cleared Babel Spire floor
+   is blue-grey (not the green of a cleared fight, nor the locked look) with a "0 reward · free" tag under its code. */
+.map-node.done.is-free-replay{background-color:#8fa3b8; border-color:#56697d;
+  background-image:radial-gradient(circle at 32% 26%, rgba(255,255,255,.5) 0, rgba(255,255,255,.1) 34%, transparent 60%), linear-gradient(180deg, #b6c5d4, #6c8198);}
+.map-node.done.is-free-replay.kind-base-elite, .map-node.done.is-free-replay.kind-base-boss{box-shadow:0 0 0 3px #56697d, 0 3px 0 rgba(0,0,0,.25);}
+.map-node .map-node-free{position:absolute; left:50%; bottom:-23px; transform:translateX(-50%); font:800 9px/1 'Baloo 2',system-ui,sans-serif; padding:2px 5px; border-radius:999px; background:rgba(52,68,86,.92); color:#dfe9f3; white-space:nowrap; pointer-events:none;}
+.cnp-tower-cost{margin:6px 0 0; font-size:12.5px; font-weight:800; color:#ffd36a;}
+.cnp-tower-cost.is-free, .dg-tower-cost.is-free, .wl-tower-replay{color:#b9cde0;}
+.dg-tower-cost{align-self:center; margin-left:8px; font-size:12px; font-weight:800; color:#ffd36a;}
+.wl-tower-replay{margin:6px 0 0; font-size:13px; font-weight:700;}
 .pack-pop-why{margin:0; padding:6px 9px; border-radius:9px; background:rgba(63,191,90,.15); font-size:12.5px; line-height:1.35;}
 .pack-item.is-blocked{opacity:.62; cursor:not-allowed;} .pack-item.is-blocked .pack-ico{filter:grayscale(.85);}
 .pack-txt .pack-why{color:#d9573a; opacity:1; font-weight:700;}

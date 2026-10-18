@@ -2,6 +2,25 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 (package Z: field kit limit, premium dungeon Sweep, free Spire replays, ads notes)
+- **Two field-kit items a fight** (owner 17:28: "use two item(s) per map only. then it's grayed then faded out. Some bosses grant an item! In those circumstances, you can use +1 item."). "Per map" is per fight, as the kit always counted.
+  - The 🎒 pill shows a "1/2" badge. After the second item it greys ("2/2") and fades out of the HUD. The next fight brings it back.
+  - The pop-over heading reads "1/2 used this skirmish". A third item is refused with "2 items a skirmish."
+  - **Bosses that grant an item:** no fight's reward had a kit item, so a new node field `grantsItem:true` marks them. It is set on each main map's own boss from Map 12, where the kit opens (`GRANTS_ITEM_FROM_MAP`).
+    - In that fight you can use 3 items. The pop-over and the node panel say so.
+    - Its first clear gives one kit item, shown in the results' Rewards.
+  - The day's 3 win items, notices, weeklies and the cart are unchanged. The Inventory, Shop and traveller lines say two a fight.
+- **Daily dungeons: Sweep for premium players** (owner: "once you complete them, you can sweep them if you are a premium player (p2w - spent at least >10 USD on my game)").
+  - Each dungeon card in the Dungeons tab has a 🧹 Sweep for your best floor, and a floor's own panel has one for that floor. Both reuse the Conquest Sweep menu (runs × Energy, the CPU plays, a win pays the clear-again reward).
+  - A Sweep takes no key and leaves the climb as it is.
+  - Non-premium players see it locked with a gold **Premium** badge and "Sweeping daily dungeons is a perk for supporters".
+  - `isPremiumPlayer()` reads the player's own profiles row at sign-in (`select('*')`: a `premium` flag or `lifetime_spend_usd` over 10). It is false otherwise. No column was added and there are no payments. Admins count as premium.
+- **The Babel Spire: cleared floors are free and pay nothing** (owner: "blue-grey out completed tower floors as there will be 0 reward. Towers just take energy to do, refunding if you fail").
+  - Cleared floors are blue-grey on the map with a "0 reward · free" tag. Fighting one again costs 0 Energy and gives no reward of any kind (Leaves, Dust, drops, eggs, kit items, XP, quests). A better rank is still kept.
+  - A new floor costs Energy as before, "⚡ N · refunded if you lose". A loss, forfeit or draw gives the Energy back, and the results say so.
+  - No Auto-sweep on the Spire. The summit's floor picker says the replays are free.
+- **Ads:** `docs/ads-considerations-2026-10-18.md`, notes only, no code. It covers opt-in rewarded ads in five PvE spots, never in battles and never for premium players, the web, desktop and mobile options, Steam's ban on ad-based models, consent banners, and the trade-offs.
+- Texts are TX keys (22 new; `toast.one-item-a-skirmish` retired), translated in all 12 packs by `tools/i18n_2026_10_18z.py`. `tests/z-2026-10-18.js` is in `tests/run-all.sh`. `tests/polish-2026-10-18.js` now passes TX and nodeEnergyCost to the Spire card.
 ## 2026-10-18 (Goliath raid: row smacks and column smacks)
 - **The Tentacle Smack comes in two kinds** (owner 15:56: "there are row-based smacks and column-based smacks. Column-based smacks weight columns by number of units in that column."). They alternate, a column smack first: for a smack every 3 rounds (the Goliath's), rounds 3, 9, 15 are column smacks and rounds 6, 12, 18 are row smacks.
   - **Column smack:** hits every unit of yours in one column (front, middle and back). The column is picked at random, weighted by how many of your units stand in it, so a column of 3 is picked 3 times as often as a column of 1 and an empty column is never picked. With no units on the board it hits your bramble. The tentacle slams down the column through every row.

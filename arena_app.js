@@ -9784,6 +9784,7 @@ async function applySessionIdentity(user){
   // ever carry is_anonymous:true in the first place).
   cloudIsAnonymous = user.is_anonymous === true;
   const { data: existingProfile } = await sbClient.from('profiles').select('id, rating').eq('id', cloudUserId).maybeSingle();
+  refreshPremiumFlag(); // 2026-10-18 (package Z): the supporter flag, if the server has one (read only; see isPremiumPlayer)
   if(!existingProfile){
     // Brand-new cloud account (anonymous OR a fresh real signup with no prior anonymous session —
     // see cloudLinkEmail's fallback below): seed it from this browser's CURRENT local state rather
@@ -9913,6 +9914,7 @@ function resetCloudIdentity(){
   cloudSessionUser = null;
   if(typeof socialTeardown==='function') socialTeardown();
   cloudCardAdmin = false; try{ syncAdminModeToAccount(); }catch(e){}
+  try{ cloudPremium = false; }catch(e){} // 2026-10-18 (package Z)
   if(typeof matchHistoryList!=='undefined') matchHistoryList = null;
   setCloudPill(true, 'Playing as guest — progress saved on this device');
 }
@@ -10567,7 +10569,7 @@ function formatEnergyCountdown(ms){
 function playAgainEnergyAttrs(m){
   if(!m || m.mode !== 'conquest' || !m.conquestNode) return '';
   const f = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); if(!f) return '';
-  const c = nodeEnergyCost(f.map, f.node) || 1, short = currentEnergy() < c;
+  const c = fightEnergyCost(f.map, f.node), short = currentEnergy() < c; // 2026-10-18 (package Z): 0 on a cleared Spire floor
   return `data-energy-cost="${c}" ${short ? 'aria-disabled="true"' : ''} title="${escapeAttr(short ? `Needs ${c}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.` : `Fight ${f.node.name} again · ${c}⚡`)}"`;
 }
 // Not enough Energy (2026-10-12, user: "it should give a small error-sfx and a small central toast that says, you don't
@@ -13460,7 +13462,7 @@ const DIALOGUES = {
   ]},
   unlock_fieldkit: {lines:[
     {who:'traveller', text:'The road gets mean from here. I packed you a field kit: draughts, kindling, a scout\'s map, a fire pot and a few odds and ends.'},
-    {who:'traveller', text:'Save it for a fight you can\'t win any other way. One item a fight, and I\'ll top you up a little each day.', options:[{label:'Show me.', goto:'go', act:'tab:inventory'}], silent:'go'},
+    {who:'traveller', text:'Save it for a fight you can\'t win any other way. Two items a fight, and I\'ll top you up a little each day.', options:[{label:'Show me.', goto:'go', act:'tab:inventory'}], silent:'go'},
     {label:'go', who:'traveller', text:'In a fight, look for the 🎒 beside your Lumber.'},
   ]},
   unlock_nest: {lines:[
@@ -15978,6 +15980,16 @@ function grantSkirmishKitItem(){
   o.counts[pick] = (o.counts[pick]||0) + 1; o.winCount = (o.winCount||0) + 1; saveItems(o);
   return {id: pick, nth: o.winCount, of: SKIRMISH_KIT_PER_DAY};
 }
+// A boss that grants an item (2026-10-18, package Z; node.grantsItem, see GRANTS_ITEM_FROM_MAP): its first clear gives one item,
+// picked like the daily-win ones (SKIRMISH_KIT_WEIGHT, skipping items at the cap). It doesn't use up one of the day's 3 win items.
+function grantBossKitItem(){
+  if(!featureUnlockedSafe('fieldkit')) return null;
+  const o = loadItems(), pool = Object.keys(ITEM_DEFS).filter(id=> (o.counts[id]||0) < ITEM_CAP); if(!pool.length) return null;
+  const tot = pool.reduce((t, id)=> t + (SKIRMISH_KIT_WEIGHT[id] || 1), 0); let x = Math.random() * tot, pick = pool[pool.length - 1];
+  for(const id of pool){ x -= (SKIRMISH_KIT_WEIGHT[id] || 1); if(x < 0){ pick = id; break; } }
+  o.counts[pick] = (o.counts[pick]||0) + 1; saveItems(o);
+  return {id: pick, boss: true};
+}
 const DAILY_QUEST_SLOTS = [0, 0, 0, 6, 12, 18]; // the hour each notice goes up
 const DAILY_QUEST_KINDS = [
   {counter:'energyConquest', goals:[10,20,30,50,80,120,160], label:g=> `Use ${g} ⚡ Energy on Conquest fights`},
@@ -16832,7 +16844,7 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks'];
+const RESUME_FIELDS = ['aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks','itemsUsed','towerReplay','towerEnergyPaid','towerRefunded']; // + the field kit's count and the Spire's free replay / refund (2026-10-18, package Z)
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -17626,6 +17638,18 @@ function buildTower(){
     blurb:'A tower older than the Peak, built by every creature that ever wanted to be the strongest. Each floor is stronger than the last, and nobody has seen the top.', sequential:true, nodes};
 }
 CONQUEST_MAPS.push(buildTower());
+// Bosses that grant an item (2026-10-18, package Z, owner 17:28: "Some bosses grant an item! In those circumstances, you can use +1
+// item."): no fight's reward had a field-kit item yet, so the node field grantsItem:true marks the ones that do: each main map's
+// own boss (its ender, else its last boss) from Map GRANTS_ITEM_FROM_MAP on, where the traveller's kit opens (the 'fieldkit' spot).
+// Such a boss gives one field-kit item on its first clear (grantBossKitItem) and lets you use KIT_USES_PER_FIGHT + 1 items in its
+// fight (kitUsesMax). A node can opt out with grantsItem:false. Set before the baseline copy, so Edit skirmish sees it as data.
+// (No baseKind / mapRewardNodeKey here: KIND_BASE is declared further down.)
+const GRANTS_ITEM_FROM_MAP = 12;
+CONQUEST_MAPS.filter(mp=> !mp.sub).forEach((mp, i)=>{
+  if(i < GRANTS_ITEM_FROM_MAP || !mp.nodes) return;
+  const n = mp.nodes.find(x=> x.ender) || mp.nodes.slice().reverse().find(x=> /^(boss|finalboss)$/.test(x.kind || ''));
+  if(n && n.grantsItem == null) n.grantsItem = true;
+});
 const CONQUEST_MAPS_BASELINE = JSON.parse(JSON.stringify(CONQUEST_MAPS));
 const NODE_EDITS_KEY = 'bramblewood_node_edits_v1';
 let nodeEdits = {};
@@ -18338,6 +18362,7 @@ function nodeRewardTier(node){
   const base = node && (CONQUEST_NODE_REWARDS[node.kind] || CONQUEST_NODE_REWARDS[baseKind(node.kind)]); if(!base) return null;
   const o = (node && node.rewards) || {};
   const pick = (k, f)=> (o[k] && o[k][f] != null && o[k][f] !== '') ? Math.max(0, Number(o[k][f])||0) : base[k][f];
+  if(node.tower) return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold:0, dust:0}}; // 2026-10-18 (package Z): a cleared Spire floor pays nothing
   return {first:{gold:pick('first','gold'), dust:pick('first','dust')}, repeat:{gold:pick('repeat','gold'), dust:pick('repeat','dust')}};
 }
 // Reward strip beside the skirmish title (2026-10-08, user: "The first clear rewards should instead
@@ -19252,6 +19277,33 @@ function dungeonGoldLeavesPreview(mapId, node){
 }
 // May this floor be fought? (a key is in hand)
 function dungeonGateOk(mapId){ return loadDungeonTickets().n > 0; }
+// Premium (2026-10-18, package Z, owner 17:28: "Daily Dungeons - once you complete them, you can sweep them if you are a premium
+// player (p2w - spent at least >10 USD on my game)"): a supporter is a player whose lifetime spend is over PREMIUM_SPEND_USD. There
+// are no real payments yet, so nothing grants it: the flag is read from the player's own profiles row when the server has one
+// (a `premium` boolean, or `lifetime_spend_usd` over 10; selected with '*' so a column that doesn't exist is no error) and is false
+// otherwise. No column is added here. Admins (Admin Mode, an admin account, a dev host) count as premium, for testing.
+const PREMIUM_SPEND_USD = 10;
+let cloudPremium = false;
+function premiumFromProfile(row){ if(!row || typeof row !== 'object') return false; if(row.premium === true) return true; const v = Number(row.lifetime_spend_usd); return isFinite(v) && v > PREMIUM_SPEND_USD; }
+async function refreshPremiumFlag(){
+  try{ cloudPremium = false; if(typeof sbClient === 'undefined' || !sbClient || !cloudUserId) return; const { data, error } = await sbClient.from('profiles').select('*').eq('id', cloudUserId).maybeSingle(); if(!error) cloudPremium = premiumFromProfile(data); }catch(e){}
+}
+function isPremiumPlayer(){
+  if((typeof adminModeEnabled !== 'undefined' && adminModeEnabled) || (typeof adminAllowed === 'function' && adminAllowed())) return true;
+  try{ return cloudPremium === true; }catch(e){ return false; }
+}
+// Sweeping a daily dungeon (2026-10-18, package Z): a floor you have cleared (up to your best floor ever, so a lost climb doesn't take
+// it away) can be swept, premium players only. It is the Conquest Sweep (openSweepMenu / runSweep): Energy per run, the CPU plays it
+// for you, a win pays the floor's clear-again reward. It takes no key and leaves the climb as it is. The Dungeons tab sweeps your
+// best floor; the floor's own panel sweeps that floor. Non-premium players see it locked, with a Premium badge.
+function dungeonSweepableFloor(map, node){ return !!(map && node && isDailyDungeonMap(map) && node.floor > 0 && node.floor <= dungeonBestFloor(map.id)); }
+function dungeonSweepNode(map){ if(!isDailyDungeonMap(map)) return null; const best = Math.min(map.nodes.length, dungeonBestFloor(map.id)); return best > 0 ? map.nodes[best - 1] : null; }
+function dungeonSweepBtnHTML(map){
+  const node = dungeonSweepNode(map); if(!node) return '';
+  if(!isPremiumPlayer()) return `<button type="button" class="btn dg-sweep is-locked" data-dungeon-sweep="${escapeAttr(map.id)}" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`;
+  return `<button type="button" class="btn dg-sweep" data-dungeon-sweep="${escapeAttr(map.id)}" aria-haspopup="true" title="${escapeAttr(TX('ui.dungeon-sweep-tip', {floor: node.floor, e: nodeEnergyCost(map, node) || 1}))}">${escapeHtml(TX('ui.dungeon-sweep'))}</button>`;
+}
+function dungeonSweepLocked(btn){ try{ denyShake(btn); }catch(e){} try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('ui.dungeon-sweep-locked'), 'warn'); }
 // The fight starts: the key goes in the lock.
 function dungeonStakeKey(mapId){ const s = loadDungeonTickets(); if(s.n <= 0) return false; s.n -= 1; saveDungeonTickets(s); return true; }
 // The best floor ever cleared in a dungeon (first-clear payouts go by it, since a lost climb wipes the cleared floors).
@@ -19327,7 +19379,7 @@ function renderDungeonsSubTab(body){
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map ${dd.mapNumber}${parent ? ' · ' + escapeHtml(parent.name) : ''}</span>
         <p class="dg-sub">${escapeHtml(map.blurb || '')}</p>
         ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${f.total ? Math.round(100 * f.done / f.total) : 0}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total}${best ? ` · best: floor ${best}` : ''}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : s.n > 0 ? (run ? '🗝️ Keep climbing' : '🗝️ Enter') : '🗺️ Look at the map'}</button>${run ? `<span class="dg-run">${f.done} cleared this climb</span>` : ''}</div>`
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="${map.id}">${preview ? '🛠️ Open (admin)' : s.n > 0 ? (run ? '🗝️ Keep climbing' : '🗝️ Enter') : '🗺️ Look at the map'}</button>${dungeonSweepBtnHTML(map) /* 2026-10-18 (package Z): premium Sweep */}${run ? `<span class="dg-run">${f.done} cleared this climb</span>` : ''}</div>`
         : `<p class="dg-sub">🔒 ${map.entry && map.entry.after ? 'Clear' : 'Reach' /* 2026-10-18: an entrance with no `after` opens as soon as its map does */} ${parent ? escapeHtml(parent.name) : 'its map'} to open it.</p>`}</div></div>`;
   }).join('');
   body.innerHTML = `<div class="panel dungeons-panel">
@@ -19340,12 +19392,34 @@ function renderDungeonsSubTab(body){
   </div>`;
   body.querySelectorAll('[data-dungeon-go]').forEach(b=> b.addEventListener('click', ()=>{
     conquestWorldView = false; conquestSelectedMap = b.dataset.dungeonGo; conquestSelectedNodeKey = null; playSubTab = 'conquest'; renderPlay(); }));
+  // 2026-10-18 (package Z): Sweep your best floor (premium); locked, it says why
+  body.querySelectorAll('[data-dungeon-sweep]').forEach(b=> b.addEventListener('click', e=>{ e.stopPropagation();
+    const map = CONQUEST_MAPS.find(x=> x.id === b.dataset.dungeonSweep), node = dungeonSweepNode(map); if(!node) return;
+    if(!isPremiumPlayer()) return dungeonSweepLocked(b);
+    openSweepMenu(b, map, node, nodeEnergyCost(map, node) || 1, body, {noIdle:true, after: ()=> renderDungeonsSubTab(body)}); }));
   // 2026-10-18 (audit R3-WP6: at 50/50 the Spire only offered "Keep climbing" into floor 50 again): from the summit you pick any
   // floor to fight again, and the map opens with that floor selected.
   body.querySelectorAll('[data-tower-replay]').forEach(b=> b.addEventListener('click', ()=>{
     const sel = body.querySelector('[data-tower-floor]'), map = CONQUEST_MAPS.find(m=> m.id === 'tw'); if(!map) return;
     const node = map.nodes[Math.max(0, Math.min(map.nodes.length - 1, (parseInt(sel && sel.value, 10) || map.nodes.length) - 1))];
     conquestWorldView = false; conquestSelectedMap = 'tw'; conquestSelectedNodeKey = node ? node.key : null; playSubTab = 'conquest'; renderPlay(); }));
+}
+// The Babel Spire's Energy (2026-10-18, package Z, owner 17:28: "Tower - no use doing it again. You may blue-grey out completed tower
+// floors as there will be 0 reward. Towers just take energy to do, refunding if you fail. But you can still redo older tower floors -
+// their different coloring is just to show that you can redo them for 0 cost."): a floor you have cleared is free to fight again and
+// pays nothing (no Leaves, Dust, drops, eggs, kit items, XP or quest progress; a better rank is still kept). A floor not cleared yet
+// costs its Energy as before, and losing, forfeiting or drawing it gives the Energy back (m.towerEnergyPaid / m.towerRefunded).
+function towerFloorCleared(node, progress){
+  if(!node || !node.tower) return false;
+  try{ return (progress || loadConquestProgress()).completed.includes(conquestNodeId('tw', node.key)); }catch(e){ return false; }
+}
+// What a Conquest fight takes from your Energy right now: 0 for a cleared Spire floor, else nodeEnergyCost (at least 1).
+function fightEnergyCost(mapOrId, node){ if(towerFloorCleared(node)) return 0; return nodeEnergyCost(mapOrId, node) || 1; }
+// The node panel's cost line on a Spire floor: "⚡ 0 · free · 0 reward" once cleared, "⚡ N · refunded if you lose" before.
+function towerCostNoteHTML(map, node){
+  if(!node || !node.tower || node.virtual) return '';
+  if(towerFloorCleared(node)) return `<p class="cnp-tower-cost is-free">${escapeHtml(TX('ui.tower-cost-free'))}</p>`;
+  return `<p class="cnp-tower-cost">${escapeHtml(TX('ui.tower-cost-refund', {n: nodeEnergyCost(map, node) || 1}))}</p>`;
 }
 // The Tower in the Dungeons tab (2026-10-16): its own card under the daily dungeons. Locked until Map 20's last fight falls; admins can
 // always open it. No tickets: every floor costs Energy like any elite.
@@ -19359,11 +19433,12 @@ function towerCardHTML(progress){
   const climb = summit
     ? `<div class="dg-floor dg-summit"><span class="wc-bar"><span style="width:100%"></span></span><span>🏔️ <b>Summit</b> · all ${f.total} floors</span></div>
           <p class="dg-sub dg-summit-line">You stand atop ${escapeHtml(map.name)}. Nobody had seen the top until you did. The wind up here smells of every creature that ever tried.</p>
+          <p class="dg-sub dg-tower-free">${escapeHtml(TX('ui.tower-summit-free')) /* 2026-10-18 (package Z): every floor is a free replay now */}</p>
           <div class="dg-acts"><label class="dg-floor-pick">Floor <select data-tower-floor aria-label="Floor to fight again">${map.nodes.map((n, i)=> `<option value="${i + 1}"${i === map.nodes.length - 1 ? ' selected' : ''}>${i + 1}${n.kind === 'boss' ? ' 👑' : ''}</option>`).join('')}</select></label>
-            <button type="button" class="btn primary" data-tower-replay>🔁 Fight it again</button></div>`
+            <button type="button" class="btn primary" data-tower-replay title="${escapeAttr(TX('ui.tower-cost-free'))}">🔁 Fight it again</button><span class="dg-tower-cost is-free">${escapeHtml(TX('ui.tower-free-tag'))}</span></div>`
     : `<div class="dg-floor"><span class="wc-bar"><span style="width:${Math.round(100 * f.done / f.total)}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total} · ⚔ ${br}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button></div>`;
-  return `<div class="dg-tower-head"><h3>${map.icon} ${escapeHtml(map.name)}</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p></div>
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button>${next ? `<span class="dg-tower-cost">${escapeHtml(TX('ui.tower-cost-refund', {n: nodeEnergyCost(map, next) || 1}))}</span>` : '' /* 2026-10-18 (package Z) */}</div>`;
+  return `<div class="dg-tower-head"><h3>${map.icon} ${escapeHtml(map.name)}</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p><p class="panel-sub dg-tower-rule">${escapeHtml(TX('ui.tower-rule')) /* 2026-10-18 (package Z) */}</p></div>
     <div class="dg-list"><div class="dg-card dg-tower ${open ? '' : 'is-locked'}">${!unlocked && admin ? '<span class="dg-admin-tag" title="Players open it by clearing Map 20">🛠️ Admin preview</span>' : ''}<div class="dg-diamond map-theme-tw">${compassDiamondSVG('dg-tw', !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map 20 · The Sundered Peak</span>
         <p class="dg-sub">${escapeHtml(map.blurb)}</p>
@@ -19764,20 +19839,21 @@ document.addEventListener('keydown', e=>{
 // The Auto-sweep menu: how many runs, and the keep-auto-sweeping (Idle-Sweep) switch.
 // 2026-10-14 (user: "This should say Auto-sweep if I don't even have to play the game."): every player-facing "Sweep" here,
 // on the node panel's split pill and in the toasts now reads Auto-sweep; Idle-Sweep reads "Keep auto-sweeping here".
-function openSweepMenu(anchor, map, node, energyCost, body){
+// 2026-10-18 (package Z): how {after, noIdle}: the daily dungeons' Sweep re-renders its own tab and has no keep-sweeping switch.
+function openSweepMenu(anchor, map, node, energyCost, body, how){
   document.getElementById('sweepMenu')?.remove();
   const most = Math.max(0, Math.min(20, Math.floor(currentEnergy() / energyCost))), idle = idleSweepTarget(), idleHere = idle && idle.mapId === map.id && idle.nodeKey === node.key;
   const opts = [...new Set([1, 3, 5, 10, most].filter(n=> n >= 1 && n <= most))].sort((a, b)=> a - b);
   const m = document.createElement('div'); m.id = 'sweepMenu'; m.className = 'sweep-menu'; m.setAttribute('role', 'dialog'); m.setAttribute('aria-label', 'Auto-sweep');
   m.innerHTML = `<div class="sm-q">🧹 Auto-sweep how many times?</div><div class="sm-opts">${opts.length ? opts.map(n=> `<button type="button" class="btn small ${n === most ? 'primary' : ''}" data-sweepn="${n}">${n === most && n > 1 ? `All ${n}` : n + '×'}</button>`).join('') : `<span class="panel-sub">Needs ${energyCost}⚡ a run.</span>`}</div>
-    <div class="sm-foot">${energyCost}⚡ a run${autoTier('idleSweep') ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Keep auto-sweeping here</label>` : ''}</div>`;
+    <div class="sm-foot">${energyCost}⚡ a run${autoTier('idleSweep') && !(how && how.noIdle) ? ` · <label class="cnp-idle"><input type="checkbox" id="smIdle" ${idleHere ? 'checked' : ''}> Keep auto-sweeping here</label>` : ''}</div>`;
   document.body.appendChild(m);
   const r = anchor.getBoundingClientRect(); m.style.left = Math.max(8, Math.min(innerWidth - m.offsetWidth - 8, r.left + r.width/2 - m.offsetWidth/2)) + 'px'; m.style.top = (r.bottom + 8) + 'px';
   const close = ()=>{ m.remove(); document.removeEventListener('pointerdown', away, true); };
   const away = e=>{ if(!m.contains(e.target) && e.target !== anchor) close(); };
   setTimeout(()=> document.addEventListener('pointerdown', away, true), 0);
   m.querySelectorAll('[data-sweepn]').forEach(b=> b.onclick = ()=>{ const n = +b.dataset.sweepn; close(); anchor.disabled = true; anchor.textContent = 'Auto-sweeping…';
-    setTimeout(()=>{ const r2 = runSweep(map.id, node.key, n); renderConquestSubTab(body); if(r2) showSweepResults(r2, map.id, node.key); }, 30); }); // 2026-10-16: a results screen, not a toast
+    setTimeout(()=>{ const r2 = runSweep(map.id, node.key, n); if(how && how.after) how.after(); else renderConquestSubTab(body); if(r2) showSweepResults(r2, map.id, node.key); }, 30); }); // 2026-10-16: a results screen, not a toast
   const ib = m.querySelector('#smIdle'); if(ib) ib.onchange = ()=>{ setIdleSweepTarget(ib.checked ? map.id : null, node.key); showToast(ib.checked ? TX('toast.keep-auto-sweeping-here-spare-energy') : TX('toast.stopped-auto-sweeping-here'), 'ok'); };
 }
 function renderConquestSubTab(body){
@@ -19999,8 +20075,8 @@ function renderConquestSubTab(body){
         // through trail of nodes reads as a row of identical blank dots instead of still showing
         // which skirmish was which). Icon always shows now; ✓ layers on top as its own badge,
         // same spot/treatment as the locked 🔒 badge just above.
-        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
-          <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="Something glints here. An S rank might find it." aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>
+        return `<button type="button" data-lkey="${node.key}" aria-label="${escapeAttr(node.name+' — '+KIND_LABEL[node.kind]+(done?', cleared':''))}" class="map-node kind-${node.kind} kind-base-${baseKind(node.kind)} ${node.secret ? 'is-secret' + (hiddenPopNow.has(node.key) ? ' secret-pop' : '') : ''} ${node.ambush ? 'is-ambush foe-' + (node.faction === 'hummingbirds' ? 'humming' : 'otter') + (ambushState().justPopped ? ' ambush-pop' : '') : ''} ${node.jumper ? 'is-jumper jumper-' + (node.entrance || 'meteor') : ''} ${done?'done':''}${done && node.tower ? ' is-free-replay' : '' /* 2026-10-18 (package Z): a cleared Spire floor, blue-grey */} ${node.key===conquestSelectedNodeKey?'selected':''}" style="${style}" data-nodekey="${node.key}">
+          <span class="map-node-ico">${node.icon}</span>${(()=>{ const sn = scaleNodeAt(map.id, node.key); if(!sn) return ''; const f = loadDialogueFlags(); if(f[scaleFlagKey(sn)]) return '<span class="map-node-scale is-found" title="You found the Dragon Scale here" aria-hidden="true">🐉</span>'; return scalesFound().length ? '<span class="map-node-scale" title="Something glints here. An S rank might find it." aria-hidden="true"></span>' : ''; })()}${KIND_GLYPH[node.kind] ? `<span class="map-node-kind" title="${escapeAttr(KIND_LABEL[node.kind]||'')}" aria-hidden="true">${KIND_GLYPH[node.kind]}</span>` : ''}<span class="map-node-code" aria-hidden="true">${skirmishCode(map.id, node.key)}</span>${done && node.tower ? `<span class="map-node-free">${escapeHtml(TX('ui.tower-free-tag'))}</span>` : ''}
         </button>`;
       }).join('')}
     </div>
@@ -20142,9 +20218,9 @@ function renderConquestSubTab(body){
     // keyed the same way KIND_LABEL is) -- this tooltip just never surfaced that cost before you
     // committed to it. Skipped for the two virtual tutorial markers (kind:'tutorial') -- they're
     // not fightable nodes and cost nothing.
-    const energyCost = nodeEnergyCost(map, node);
+    const towerFree = towerFloorCleared(node, progress), energyCost = towerFree ? 0 : nodeEnergyCost(map, node); // 2026-10-18 (package Z): a cleared Spire floor is free
     return `<div class="ctt-title"><span class="sk-code">${skirmishCode(map.id, node.key)}</span> ${node.icon} ${node.name}</div>
-      <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node)}${energyCost?` · ${energyCost}⚡`:''}</div>
+      <div class="ctt-kind">${KIND_LABEL[node.kind]} · ${castleLineText(node)}${energyCost?` · ${energyCost}⚡`:''}${towerFree ? ` · ${escapeHtml(TX('ui.tower-free-tag'))}` : ''}</div>
       ${node.flavor?`<div class="ctt-flavor">${node.flavor}</div>`:''}
       <div class="ctt-squad">${squad}</div>`;
   }
@@ -20208,7 +20284,7 @@ function renderConquestSubTab(body){
     // 2026-10-12 (user: "'Deck Hidden' - don't say anything. Just a deck area, blacked out, with a locked icon with the B rank
     // symbol on it ... Once you get B and above, don't give the player a show/hide button"): no words, no toggle.
     const reqText = `beat it with Rank ${conquestDeckNeed(selectedNode)} or better to see it`;
-    const energyCost = selectedNode.virtual ? 0 : (nodeEnergyCost(map, selectedNode) || 1), canAffordFight = currentEnergy() >= energyCost;
+    const energyCost = selectedNode.virtual ? 0 : fightEnergyCost(map, selectedNode), canAffordFight = currentEnergy() >= energyCost; // 2026-10-18 (package Z): 0 on a cleared Spire floor
     panelEl.hidden = false;
     // 2026-10-11 (user: "remove those nav buttons if skirmish is focused on"; "the boundaries of this card can be very
     // faintly green to represent defeated. Red if the fight outlevels me by a lot"): focus hides the Play tabs.
@@ -20219,15 +20295,20 @@ function renderConquestSubTab(body){
     panelEl.innerHTML = `
       ${'' /* 2026-10-12 (22:04, user: "The green tick is unecessary ... just put the S emblem on the top right hand corner"): the best rank sits on the panel's top-right edge */}
       ${done && progress.ranks[nid] ? `<span class="rank-hex rank-${progress.ranks[nid]} cnp-rank-corner" aria-label="Best rank ${progress.ranks[nid]}"><i aria-hidden="true"></i><b>${progress.ranks[nid]}</b></span>` : ''}
-      ${selectedNode.virtual ? '' : (()=>{ const canSweep = done && sweepAllowed(map.id, selectedNode.key);
+      ${selectedNode.virtual ? '' : (()=>{ const dgSweep = dungeonSweepableFloor(map, selectedNode), dgLocked = dgSweep && !isPremiumPlayer(); // 2026-10-18 (package Z): a daily dungeon floor you have cleared: premium Sweep
+        const canSweep = dgSweep || (done && !selectedNode.tower && !isDailyDungeonMap(map) && sweepAllowed(map.id, selectedNode.key)); // 2026-10-18 (package Z): no Auto-sweep on the Spire (a cleared floor pays nothing)
+        const fightTip = selectedNode.tower ? (energyCost ? TX('ui.tower-cost-refund', {n: energyCost}) : TX('ui.tower-cost-free')) : `Costs ${energyCost}⚡`;
         // 2026-10-13 (user: "The sweep button should be beside the fight button. Do like a half pill ... After clicking Sweep - they
         // ask you how many times"): one pill split down the middle, Fight on the left, Sweep on the right.
-        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? `Costs ${energyCost}⚡` : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>` : ''}</div>`; })()}
+        return `<div class="cnp-fight-wrap ${canSweep ? 'has-sweep' : ''}"><button type="button" class="btn primary cnp-fight" id="cnpFightBtn" data-energy-cost="${energyCost}" ${canAffordFight ? '' : 'aria-disabled="true"'} title="${escapeAttr(canAffordFight ? fightTip : `Needs ${energyCost}⚡ — you have ${currentEnergy()}⚡. Energy refills 1 every 5 minutes.`)}">${done ? 'Fight again' : 'Fight'} ⚔️</button>${canSweep ? (dgLocked ? `<button type="button" class="btn primary cnp-sweep-half is-locked" id="cnpSweepOpen" data-locked="1" aria-disabled="true" title="${escapeAttr(TX('ui.dungeon-sweep-locked'))}">${escapeHtml(TX('ui.dungeon-sweep'))} <span class="premium-badge">${escapeHtml(TX('ui.premium-badge'))}</span></button>`
+          : `<button type="button" class="btn primary cnp-sweep-half" id="cnpSweepOpen" aria-haspopup="true" title="Auto-sweep: the CPU plays this fight for you, no need to play. Each run costs ${energyCost}⚡; a win pays the clear-again reward.">🧹 Auto-sweep</button>`) : ''}</div>`; })()}
       <div class="cnp-head">${(()=>{ const sid = nodeShowcaseId(selectedNode); return sid && defs[sid] ? `<span class="cnp-showcase" data-defid="${escapeAttr(sid)}" aria-label="${escapeAttr(defs[sid].name)}">${(()=>{ const tk = nodeTreatmentKind(selectedNode), sd = defs[sid]; return cardTileHTML(tk==='boss' && sd.art ? Object.assign({}, sd, {artExtended:true}) : sd, {inPlay:true, extraClass: tk==='elite' ? 'elite-polish' : ''}); })()}</span>` : `<span class="cnp-ico">${selectedNode.icon}</span>`; })()}<div class="cnp-title"><div class="cnp-name"><span class="sk-code">${skirmishCode(map.id, selectedNode.key)}</span> ${selectedNode.name}</div><div class="cnp-kind">${castleLineHTML(selectedNode)}${selectedNode.virtual ? '' : (()=>{ const ev = enemyDeckLevel(selectedNode), mine = mainDeckLevel(myDeckCounts, myLeaderId), cls = deckLevelGapClass(ev, mine);
           return `<span class="cnp-lvl-inline ${cls}" aria-label="${escapeAttr(_t('Battle rating {n}', {n:ev}))}" title="${escapeAttr(_t('Battle rating') + ' · ' + deckLevelGapTip(cls))}">⚔ ${ev}</span>`; })()}</div></div>
         ${cnpRewardStripHTML(map.id, selectedNode, done, null)}
       </div>
       ${newSkillRibbonHTML(selectedNode)}
+      ${selectedNode.grantsItem && featureUnlockedSafe('fieldkit') ? `<p class="cnp-grants-item">${escapeHtml(TX('ui.node-grants-item', {max: KIT_USES_PER_FIGHT + 1}))}</p>` : '' /* 2026-10-18 (package Z) */}
+      ${towerCostNoteHTML(map, selectedNode, done) /* 2026-10-18 (package Z): ⚡ N · refunded if you lose / ⚡ 0 · free */}
       ${skirmishFieldHTML(map.id, selectedNode)}
       ${(()=>{ try{ if(!journeysOpen()) return ''; const k = journeyStepFor(map.id, selectedNode.key); if(!k) return ''; const J = SUBFACTION_JOURNEYS[k], n = loadJourneys()[k]|0; return `<div class="cnp-journey" role="note">${journeysAdminOnly() ? '<small>🙈 Hidden from players (Admin only) · </small>' : ''}${J.icon} <b>${escapeHtml(J.name)}</b>, step ${n+1} of ${J.steps.length}: ${escapeHtml(J.steps[n][2])}</div>`; }catch(e){ return ''; } })()}
       ${earned ? `
@@ -20241,7 +20322,7 @@ function renderConquestSubTab(body){
     panelEl.querySelectorAll('[data-sqdef]').forEach(b=> b.addEventListener('click', ()=> openCardDetail(b.dataset.sqdef)));
     const fb = document.getElementById('cnpFightBtn');
     if(fb) fb.addEventListener('click', ()=> startConquestMatch(map.id, selectedNode.key));
-    { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); openSweepMenu(so, map, selectedNode, energyCost, body); }); }
+    { const so = document.getElementById('cnpSweepOpen'); if(so) so.addEventListener('click', e=>{ e.stopPropagation(); if(so.dataset.locked) return dungeonSweepLocked(so); openSweepMenu(so, map, selectedNode, energyCost, body, isDailyDungeonMap(map) ? {noIdle:true} : undefined); }); } // 2026-10-18 (package Z): a locked dungeon Sweep says why
     // 2026-10-18 (WP4): the panel's own sweep count, Sweep button and idle checkbox (#cnpSweepN/#cnpSweepBtn/#cnpIdleSweep) went; the
     // ⚡ menu (openSweepMenu) has done all three since it replaced them.
     const seBtn = document.getElementById('cnpEditSkirmish');
@@ -22699,13 +22780,16 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(dungeonEntry && !dungeonGateOk(mapId)){ try{ SoundKit.deny && SoundKit.deny(); }catch(e){} showToast(TX('toast.no-dungeon-tickets-left-a-new'), 'warn'); return false; }
   // Energy gate (2026-09-22): skipped only by the admin "jump to progress" tool (opts.skipEnergyCost)
   // -- a normal player always pays here, cost scaled by node kind (see ENERGY_COST).
-  if(!(opts && opts.skipEnergyCost)){
+  // 2026-10-18 (package Z): a cleared Babel Spire floor is free (towerReplay); a new floor's Energy is held (towerEnergyPaid) so a
+  // loss can give it back, and it only counts for the "Use N Energy" notice once the floor is won.
+  const towerReplay = !!node.tower && towerFloorCleared(node); let towerEnergyPaid = 0;
+  if(!(opts && opts.skipEnergyCost) && !towerReplay){
     const cost = nodeEnergyCost(mapId, node) || 1;
     if(!spendEnergy(cost)){
       energyShortToast(cost);
       return false;
     }
-    bumpQuestCounter('energyConquest', cost);
+    if(node.tower) towerEnergyPaid = cost; else bumpQuestCounter('energyConquest', cost);
   }
   // Boss banter (2026-10-18, audit E5: the boss_banter dialogue was written but never played; a one-line copy of its first line
   // stood in): the two-line exchange plays once per boss per save, after the fight is paid for (a refused start no longer uses it
@@ -22759,6 +22843,7 @@ function startConquestMatch(mapId, nodeKey, opts){
     mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, aiLevel,
     conquestNode:{mapId, nodeId:nodeKey, kind:node.kind, name:node.name},
     fightSession, transcript: [], dungeonKeyStaked: !!dungeonKeyStaked,
+    towerReplay, towerEnergyPaid, // 2026-10-18 (package Z)
     battleMode,
     gladiatorLeaderDefs: battleMode==='gladiator' ? {1: myGlad && myGlad.defId, 2: enemyGlad && enemyGlad.defId} : null,
     // Epic A (2026-09-18): the leader you've set in the deck editor rides along into Conquest
@@ -26529,6 +26614,7 @@ function renderMatchUI(){
         ${m.endReason ? `<p class="winloss-reason">${({surrender:`🏳️ ${escapeHtml(m.opponentName || (m.conquestNode && m.conquestNode.name) || 'The enemy')} surrendered — out of moves.`, drawOffer:'🤝 You accepted the draw offer.', forfeit:'🏳️ You forfeited.', stalled:'Nobody had anything left to play and the board stopped changing.', cap:`Turn ${DRAW_ROUND_CAP} reached — the match is a draw.`, raidTime:`⏳ Turn ${m.raidRoundCap}: the ${escapeHtml(m.opponentName||'boss')} sinks back into the deep.`})[m.endReason]||''}</p>` : ''}
         ${matchStatsHTML(m)}
         ${m.raidersTook ? raidersTookHTML(m) : '' /* the surprise challenge lost (2026-10-15) */}
+        ${m.towerRefunded ? `<p class="wl-raiders wl-tower-refund">${escapeHtml(TX('results.tower-refunded', {n: m.towerRefunded}))}</p>` : ''}${m.towerReplay && m.winner===1 ? `<p class="wl-tower-replay">${escapeHtml(TX('results.tower-replay'))}</p>` : '' /* 2026-10-18 (package Z) */}
         ${m.dungeonOutcome && m.dungeonOutcome.lost ? `<p class="wl-raiders wl-dkey-lost">${m.dungeonOutcome.keyLost ? TX('results.dungeon-key-lost-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best}) : TX('results.dungeon-climb-resets', {floor: m.dungeonOutcome.floor, best: m.dungeonOutcome.best})}</p>` : '' /* 2026-10-16: the key is gone, back to floor 1 */}
         ${(!isPc && !isTutorial && m.winner===2) ? lossTipHTML(m) + defeatQuoteHTML(m) : ''}
         <div class="winloss-actions">
@@ -31890,11 +31976,11 @@ async function resolveRoundCore(opts){
     // onboarding fight against a fixed Basics-tier opponent isn't a real result and shouldn't
     // pollute the player's actual win/loss ledger.
     if(m.mode!=='pc' && m.mode!=='conquest' && m.mode!=='sandbox' && m.mode!=='tutorial') recordMatchResult(m.winner, m.mode);
-    try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest) heroAwardBattle(m); }catch(e){}
+    try{ if(!['pc','sandbox','tutorial','liveRanked'].includes(m.mode) && !m.adminTest && !m.towerReplay) heroAwardBattle(m); }catch(e){} // 2026-10-18 (package Z): a free Spire replay gives nothing
     if(QUEST_COUNTING_MODES.has(m.mode) && m.mode!=='liveRanked'){
       try{ recordRecentOpponent({name: m.opponentName || (m.conquestNode && m.conquestNode.name) || (m.raidBoss && m.raidBoss.name) || 'Computer', mode: m.mode, deck: opponentDeckFromMatch(m), result: m.winner===1 ? 'win' : (m.winner===2 ? 'loss' : 'draw')}); }catch(e){}
     }
-    if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode)){
+    if(m.winner===1 && QUEST_COUNTING_MODES.has(m.mode) && !m.towerReplay){ // 2026-10-18 (package Z): not on a free Spire replay
       awardXp(3);
       bumpQuestCounter('wins', 1);
       if(m.mode==='conquest') bumpQuestCounter('conquestWins', 1);
@@ -31932,11 +32018,20 @@ async function resolveRoundCore(opts){
     // a won floor hands the key back (dungeonFloorWon, below, after the first-clear check has read the best floor).
     if(m.mode==='conquest' && m.winner!==1 && m.conquestNode && !m.adminTest && !m.dungeonOutcome){ try{ const dm = CONQUEST_MAPS.find(x=> x.id === m.conquestNode.mapId);
       if(isDailyDungeonMap(dm)){ const reached = dungeonFloorProgress(dm).done + 1; dungeonRunLost(dm.id); m.dungeonOutcome = {lost:true, keyLost: !!m.dungeonKeyStaked, floor: reached, best: dungeonBestFloor(dm.id)}; try{ refreshTopbarDungeonKey(currentTab); }catch(e){} } }catch(e){} }
+    // The Babel Spire (2026-10-18, package Z: "Towers just take energy to do, refunding if you fail"): a new floor lost, forfeited
+    // or drawn gives its Energy back.
+    if(m.mode==='conquest' && m.winner!==1 && m.towerEnergyPaid > 0 && !m.towerRefunded){ m.towerRefunded = m.towerEnergyPaid;
+      try{ const st = settleEnergy(); st.current += m.towerEnergyPaid; saveEnergyState(st); refreshEnergyHud(); }catch(e){} }
     // The surprise challenge lost (2026-10-15): the raiders run off with some Maple Leaves (see ambushTheftRoll).
     if(m.mode==='conquest' && m.winner===2 && m.conquestNode && !m.adminTest && !m.raidersTook){ try{ const fn = findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId);
       if(fn && fn.node && fn.node.ambush){ const want = ambushTheftRoll(), have = Math.max(0, Math.floor(myCurrencies.gold || 0)), n = Math.min(have, want);
         if(n > 0){ myCurrencies.gold = have - n; saveCurrencies(); } m.raidersTook = {n, want}; } }catch(e){} }
-    if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest){
+    // A cleared Babel Spire floor fought again (2026-10-18, package Z): no reward of any kind; a better rank is still kept.
+    if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest && m.towerReplay){
+      try{ const rank = conquestRankFor(m, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); completeConquestNode(m.conquestNode, rank); m.conquestRankEarned = rank; }catch(e){}
+      m.unlockedFights = []; m.unlockedActivities = []; m.nextBattle = null;
+    }
+    if(m.mode==='conquest' && m.winner===1 && m.conquestNode && !m.adminTest && !m.towerReplay){
       // Reward payouts (2026-09-20) — see CONQUEST_NODE_REWARDS' own comment. isFirstClear MUST
       // be read before completeConquestNode() below mutates progress.completed, or every clear
       // would look like a repeat.
@@ -31948,6 +32043,7 @@ async function resolveRoundCore(opts){
       // Server-paid rewards (2026-10-17, security): with a fight session, this win's Leaves / Gold Leaves / Dust / Metal wait for
       // claim_fight_reward (settleFightReward, after the hand-in); everything else (cards, packs, eggs...) is given here as before.
       fightRewardBegin(m, isFirstClear);
+      if(m.towerEnergyPaid > 0) bumpQuestCounter('energyConquest', m.towerEnergyPaid); // 2026-10-18 (package Z): a won Spire floor's Energy counts now (a lost one is refunded)
       if(dunNode && !m.dungeonOutcome){ try{ const gl = dungeonGoldLeavesFor(dunMap.id, dunNode.floor, isFirstClear); if(gl > 0){ fightGrant(m, 'gems', gl); m.conquestGemsEarned = gl; } }catch(e){} } // 🍂 Gold Leaves (2026-10-16)
       if(dunNode && !m.dungeonOutcome){ try{ dungeonFloorWon(dunMap.id, dunNode.floor, !!m.dungeonKeyStaked); m.dungeonOutcome = {won:true, keyBack: !!m.dungeonKeyStaked, floor: dunNode.floor}; refreshTopbarDungeonKey(currentTab); }catch(e){} }
       // 2026-10-15: start the card-reward ledger before this clear is recorded; on a brand-new save its first read seeds itself
@@ -32018,6 +32114,7 @@ async function resolveRoundCore(opts){
       try{ const cd = rollCastleDrop(m.conquestNode.mapId, (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node); if(cd){ const ch = CHARACTER_DEFS[cd.id]; m.conquestCastleSpare = (cd.kind === 'new' ? 'New bramble: ' : 'Spare: ') + ch.name; } }catch(e){}
       try{ const kb = rollKibble((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node, isFirstClear); if(kb){ myCurrencies.kibble = (myCurrencies.kibble||0) + kb; saveCurrencies(); m.conquestKibbleEarned = kb; } }catch(e){}
       try{ const ki = grantSkirmishKitItem(); if(ki) m.conquestKitItem = ki; }catch(e){} // 🎒 first 3 Conquest wins a day (2026-10-17)
+      try{ const bn = (findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node; if(isFirstClear && bn && bn.grantsItem){ const bi = grantBossKitItem(); if(bi) m.conquestBossKitItem = bi; } }catch(e){} // 🎒 a boss that grants an item (2026-10-18, package Z)
       // Faction packs and Food tokens (2026-10-11).
       try{ const bt = rollBabyRescue((findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId)||{}).node || m.conquestNode); if(bt) m.conquestBabyEarned = bt; }catch(e){}
       try{ const sc = rollDragonScale(m.conquestNode.mapId, m.conquestNode.nodeId, rank); if(sc){ m.conquestScaleEarned = sc; setTimeout(()=>{ try{ showToast(TX('toast.a-dragon-scale', {index: sc.index, total: sc.total, line: sc.line}), 'ok'); }catch(e){} }, 1600); } }catch(e){}
@@ -34237,6 +34334,8 @@ function rewardsPanelHTML(m){
   // 2026-10-17: a field-kit item from one of the day's first 3 Conquest wins, with which of the 3 it was.
   if(m.conquestKitItem && ITEM_DEFS[m.conquestKitItem.id]){ const kd = ITEM_DEFS[m.conquestKitItem.id];
     acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.field-kit-your-first-conquest-wins', {of: m.conquestKitItem.of, nth: m.conquestKitItem.nth}))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
+  if(m.conquestBossKitItem && ITEM_DEFS[m.conquestBossKitItem.id]){ const kd = ITEM_DEFS[m.conquestBossKitItem.id]; // 2026-10-18 (package Z): a boss that grants an item
+    acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.kit-boss-item'))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
     acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(ek.name || TX('results.an-egg'))}</span>`); }
   // 2026-10-18 (package U): egg cards won as card rewards (Cocoon and the rest), in the egg look, beside the egg and the baby
@@ -34262,7 +34361,7 @@ function rewardsPanelHTML(m){
 }
 function nextBattleButtonHTML(m){
   const nb = m.nextBattle; if(!nb || m.winner!==1) return '';
-  const e = nodeEnergyCost(nb.mapId, nb.node) || 1;
+  const e = fightEnergyCost(nb.mapId, nb.node); // 2026-10-18 (package Z)
   if(m.mode==='tutorial') return ''; // 2026-10-13 (user: "On the buttons below only have the button 'Claim Rewards'"), both parts
   return `<button class="btn primary big" id="wlNextBattleBtn" data-energy-cost="${e||0}" ${currentEnergy() < (e||0) ? 'aria-disabled="true"' : ''} title="${escapeAttr(nb.node.name + (currentEnergy() < (e||0) ? ` ${TX('results.needs-you-have', {e, currentEnergy: currentEnergy()})}` : ''))}">${TX('results.next', {name: escapeHtml(nb.node.name)})}</button>`; // the cost is the button's own ::after (2026-10-12: it showed twice)
 }
@@ -39588,6 +39687,7 @@ function wireHomeScene(root){
 // Field kit v2 (2026-10-12, user: "Definitely nerf the items: +5 hp, +1 lumber, +2 cards, do 3 damage to all enemy units. and
 // many others ... don't reveal till later in the game past Map 11 ... Only 1 item per skirmish is allowed"): a help for a fight
 // you can't otherwise win, not a daily boost. One item a fight; one of each refills a day, up to 5 of each.
+// (2026-10-18, package Z: two items a fight now, three against a boss that grants an item; see KIT_USES_PER_FIGHT.)
 const ITEM_DEFS = {
   draught: {icon:'🧪', name:'Healing Draught', desc:'Your bramble heals 5 Health.'},
   kindling: {icon:'🪵', name:'Kindling Bundle', desc:'+1 Lumber now.'},
@@ -39656,20 +39756,36 @@ function shopTicketCounter(el){
     renderShop(); };
 }
 function itemsUsableIn(m){ return !!m && !m.over && ITEM_PVE_MODES.has(m.mode) && !m.testKit && featureUnlockedSafe('fieldkit'); }
+// Two items a fight (2026-10-18, package Z, owner 17:28: "Item bag limit: use two item(s) per map only. then it's grayed then faded
+// out. Some bosses grant an item! In those circumstances, you can use +1 item. - players would only use these item(s) if they were
+// stuck on a floor."): "per map" is per fight (each skirmish attempt), as the kit always counted. KIT_USES_PER_FIGHT items, +1 in a
+// fight whose node has grantsItem (see GRANTS_ITEM_FROM_MAP). m.itemsUsed counts them (it was the one-shot m.itemUsed). Once the
+// last one is used the 🎒 pill greys with "2/2" and fades out of the HUD over KIT_FADE_MS (m.kitSpentAt); the next fight brings it
+// back. How items are earned (the daily wins, notices, weeklies, the cart) is unchanged.
+const KIT_USES_PER_FIGHT = 2, KIT_FADE_MS = 1800;
+function kitGrantsItemNode(m){ try{ const f = m && m.mode === 'conquest' && m.conquestNode && findConquestNode(m.conquestNode.mapId, m.conquestNode.nodeId); return !!(f && f.node && f.node.grantsItem); }catch(e){ return false; } }
+function kitUsesMax(m){ return KIT_USES_PER_FIGHT + (kitGrantsItemNode(m) ? 1 : 0); }
+function kitUsesUsed(m){ return m ? (m.itemsUsed|0) : 0; }
+function kitSpent(m){ return kitUsesUsed(m) >= kitUsesMax(m); }
 function itemsHudHTML(m){
   if(!itemsUsableIn(m)) return '';
   const c = loadItems().counts, n = Object.keys(ITEM_DEFS).reduce((t, id)=> t + (c[id]||0), 0);
-  const used = !!m.itemUsed;
-  // 2026-10-17 (user: "Using the field kit item should have some UIUX feedback"): the pack stays on the HUD after you use your
-  // item (even the last one), greyed with a ✓, so it can say why it's closed until the next skirmish.
+  const used = kitUsesUsed(m), max = kitUsesMax(m), spent = used >= max;
+  // 2026-10-17 (user: "Using the field kit item should have some UIUX feedback"): the pack stays on the HUD after you use an item
+  // (even the last one), with how many of this fight's items are used.
+  // 2026-10-18 (package Z): all of them used, it shows greyed "2/2" and fades away (the fade picks up where it was on a redraw);
+  // once faded, or in a fight resumed after it was spent, it is gone until the next fight.
   if(!n && !used) return '';
-  return `<button type="button" class="hud-pill hud-pack${used ? ' is-used' : ''}" id="hudPackBtn" title="${used ? 'You have used your item this skirmish. The kit opens again next skirmish.' : 'Your field kit: one item a skirmish'}" aria-label="Field kit, ${n} items${used ? ', used this skirmish' : ''}">🎒 <span class="hud-pack-n">${n}</span>${used ? '<span class="hud-pack-used" aria-hidden="true">✓</span>' : ''}</button>`;
+  let fade = '';
+  if(spent){ const t = m.kitSpentAt ? Date.now() - m.kitSpentAt : Infinity; if(!(t < KIT_FADE_MS)) return ''; fade = ` style="animation-delay:-${Math.max(0, Math.round(t))}ms"`; }
+  const title = spent ? TX('ui.kit-spent', {max}) : TX('ui.kit-pill-title', {max});
+  return `<button type="button" class="hud-pill hud-pack${used ? ' has-used' : ''}${spent ? ' is-used is-spent' : ''}" id="hudPackBtn"${fade} title="${escapeAttr(title)}" aria-label="${escapeAttr(TX('ui.kit-pill-aria', {n, nth: used, of: max}))}">🎒 <span class="hud-pack-n">${n}</span>${used ? `<span class="hud-pack-used" aria-hidden="true">${used}/${max}</span>` : ''}</button>`;
 }
 // Why an item can't be used right now (2026-10-17), or '' when it can. The pack lists the reason under a greyed item, and
 // pressing it anyway says it in a toast. 'used' and 'none' are hard stops; the rest are "no target" stops.
 function itemBlockReason(id, m){
   if(!m || !m.players) return 'used';
-  if(m.itemUsed) return TX('toast.one-item-a-skirmish');
+  if(kitSpent(m)) return TX('toast.kit-limit', {max: kitUsesMax(m)}); // 2026-10-18 (package Z): two a fight, three in a grantsItem fight
   if(!(itemCount(id) > 0)) return 'none';
   if(m.resolving) return TX('toast.wait-for-the-round-to-finish');
   const me = m.players[1], E = m.engine;
@@ -39718,12 +39834,14 @@ function useItem(id){
     r.per = {}; mine.forEach(c=>{ const h = Math.min(2, c.maxHp - c.hp); c.hp += h; r.n += h; r.per[c.uid] = h; }); targetUids = mine.map(c=> c.uid); r.k = mine.length; }
   else if(id === 'whetstone'){ const mine = E.allBoardCards(me).filter(c=> c.hp > 0 && !c.cageOf); mine.forEach(c=>{ c.inspired = (c.inspired||0) + 1; }); targetUids = mine.map(c=> c.uid); r.k = mine.length; }
   else if(id === 'caltrops'){ const w = E.allBoardCards(m.players[2]).filter(c=> c.hp > 0 && (c.wait||0) > 0); w.forEach(c=>{ c.wait += 1; }); targetUids = w.map(c=> c.uid); r.k = w.length; }
-  o.counts[id] -= 1; saveItems(o); m.itemUsed = true;
+  o.counts[id] -= 1; saveItems(o); m.itemsUsed = kitUsesUsed(m) + 1;
+  // 2026-10-18 (package Z): the last of this fight's items: the pill greys ("2/2") and fades out; a redraw after the fade drops it
+  if(kitSpent(m)){ m.kitSpentAt = Date.now(); setTimeout(()=>{ if(matchState === m){ try{ document.getElementById('packPop')?.remove(); renderHUD(); }catch(e){} } }, KIT_FADE_MS + 60); }
   try{ SoundKit.pickup(); }catch(e){}
-  // the pack: its count ticks down with a little bounce, and it greys out with a ✓ (used this skirmish)
+  // the pack: its count ticks down with a little bounce, and its badge shows how many of this fight's items are used
   try{ renderHUD(); }catch(e){}
   if(id === 'draught') try{ updateHqHpDisplay('A', r.old); }catch(e){} // the castle number waits for the draught to land
-  const pb = document.getElementById('hudPackBtn'); if(pb){ pb.classList.remove('is-bump'); void pb.offsetWidth; pb.classList.add('is-bump'); setTimeout(()=> pb.classList.remove('is-bump'), 520); }
+  const pb = document.getElementById('hudPackBtn'); if(pb && !kitSpent(m)){ pb.classList.remove('is-bump'); /* 2026-10-18 (package Z): a spent pack fades instead */ void pb.offsetWidth; pb.classList.add('is-bump'); setTimeout(()=> pb.classList.remove('is-bump'), 520); }
   // targets: the castle (draught), the Lumber pill (kindling), the hand (map), or each card it touches
   if(targetUids.length) targetEls = targetUids.map(u=> boardCardEl(u)).filter(Boolean);
   else if(id === 'draught') targetEls = [hqTileEl('A')].filter(Boolean);
@@ -39789,13 +39907,14 @@ function itemCallout(id, text){
 function openPackPopover(btn){
   let pop = document.getElementById('packPop'); if(pop){ pop.remove(); return; }
   const m = matchState; if(!itemsUsableIn(m)) return;
-  const c = loadItems().counts, used = !!m.itemUsed;
+  const c = loadItems().counts, nUsed = kitUsesUsed(m), max = kitUsesMax(m), used = nUsed >= max; // 2026-10-18 (package Z): `used` = all of this fight's items spent
   pop = document.createElement('div'); pop.id = 'packPop'; pop.className = 'pack-pop' + (used ? ' is-used' : ''); pop.setAttribute('role', 'dialog'); pop.setAttribute('aria-label', 'Field kit');
   // 2026-10-14: only items you hold or have held (see loadInvSeen); "New!" the first time one shows up.
   const seen = loadInvSeen(), vis = invVisible(Object.keys(ITEM_DEFS).map(id=> ({key:'kit:' + id, id, count:c[id]||0})), seen); if(vis.changed) saveInvSeen(seen);
   // 2026-10-17 (UIUX feedback): an item that can't be used right now is greyed with the reason under it; pressing it says why.
   // Once this skirmish's item is spent, a line at the top says so and every item is off.
-  pop.innerHTML = `<b class="pack-pop-h">🎒 Field kit <small>${used ? '✓ used this skirmish' : 'one a skirmish'}</small></b>${used ? '<p class="pack-pop-why">You have used your item this skirmish. The kit opens again next skirmish.</p>' : ''}${vis.list.map(it=>{ const id = it.id, d = ITEM_DEFS[id], why = used ? 'used' : itemBlockReason(id, matchState), hard = why === 'used' || why === 'none';
+  // 2026-10-18 (package Z): the heading counts this fight's items ("1/2 used this skirmish"); a grantsItem boss says it gives +1
+  pop.innerHTML = `<b class="pack-pop-h">🎒 Field kit <small class="pack-pop-uses${nUsed ? ' has-used' : ''}">${escapeHtml(TX('ui.kit-head-sub', {n: nUsed, max}))}</small></b>${kitGrantsItemNode(m) ? `<p class="pack-pop-boss">${escapeHtml(TX('ui.kit-boss-bonus'))}</p>` : ''}${used ? `<p class="pack-pop-why">${escapeHtml(TX('ui.kit-spent', {max}))}</p>` : ''}${vis.list.map(it=>{ const id = it.id, d = ITEM_DEFS[id], why = used ? 'used' : itemBlockReason(id, matchState), hard = why === 'used' || why === 'none';
     return `<button type="button" class="pack-item ${it.isNew ? 'is-new' : ''} ${why ? 'is-blocked' : ''}" data-item="${id}" ${hard ? 'disabled' : why ? 'aria-disabled="true"' : ''}><span class="pack-ico">${d.icon}</span><span class="pack-txt"><b>${escapeHtml(d.name)}${it.isNew ? ' <span class="inv-new is-inline">New!</span>' : ''}</b><small>${escapeHtml(d.desc)}</small>${why && !hard ? `<small class="pack-why">${escapeHtml(why)}</small>` : ''}</span><span class="pack-n">×${c[id]||0}</span></button>`; }).join('')}`;
   document.body.appendChild(pop);
   const r = btn.getBoundingClientRect(); pop.style.left = Math.max(8, Math.min(innerWidth - pop.offsetWidth - 8, r.left + r.width/2 - pop.offsetWidth/2)) + 'px'; pop.style.top = Math.max(8, r.top - pop.offsetHeight - 8) + 'px';
@@ -39847,9 +39966,9 @@ function renderInventory(){
       // 2026-10-17 (user: "The field kit card itself can also have a pack."): the Field kit is a card with the traveller's satchel
       // (pixel art, .inv-kit-pack) beside the slots, and it says where items come from, including the day's first 3 Conquest wins.
       const left = skirmishKitLeftToday();
-      return `<section class="panel inv-sec inv-kit"><div class="inv-kit-pack" aria-hidden="true"></div><div class="inv-kit-body"><h3>🎒 Field kit <small>one item a skirmish · up to ${ITEM_CAP} of each</small></h3>
+      return `<section class="panel inv-sec inv-kit"><div class="inv-kit-pack" aria-hidden="true"></div><div class="inv-kit-body"><h3>🎒 Field kit <small>${escapeHtml(TX('ui.kit-inv-head', {max: KIT_USES_PER_FIGHT, cap: ITEM_CAP})) /* 2026-10-18 (package Z): two a skirmish */}</small></h3>
       <div class="inv-slots">${slots(kit, 'Nothing in the kit yet. Win a Conquest fight to find one.')}</div>
-      <p class="panel-sub inv-kit-note">In a skirmish, press 🎒 beside your Lumber to use one. One item a skirmish, and it doesn't use your play.</p>
+      <p class="panel-sub inv-kit-note">${escapeHtml(TX('ui.kit-inv-note', {max: KIT_USES_PER_FIGHT}))}</p>
       <p class="panel-sub inv-kit-src">Found on the road: your first ${SKIRMISH_KIT_PER_DAY} Conquest wins each day <b class="inv-kit-left ${left ? '' : 'is-done'}">${left ? `${left} left today` : 'done for today'}</b> · A notices and above · finished weekly tiers</p></div></section>`; })() : ''}
     ${(()=>{ const cap = shown([{key:'capsule', icon:'🔋', count:energyCapsules(), name:'Energy capsule', sub:'+' + ENERGY_CAPSULE_AMOUNT + ' Energy'}], 'en'); return cap.length ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slots(cap, '')}</div></section>` : ''; })()}
     ${(()=>{ /* 2026-10-18 (guild rename): Rename Tickets, once you've held one */ const tk = shown([{key:'rename', icon:RENAME_TICKET.icon, count:renameTickets(), name:RENAME_TICKET.name, sub:RENAME_TICKET.desc}], 'tk'); return tk.length ? `<section class="panel inv-sec"><h3>🎫 Tickets <small>${escapeHtml(TX('ui.rename-ticket-inv-note'))}</small></h3><div class="inv-slots">${slots(tk, '')}</div></section>` : ''; })()}
@@ -40787,7 +40906,7 @@ function renderShopShelves(grid, signedIn){
     hover.style.left = x + 'px'; hover.style.top = (above < wall.scrollTop + 4 ? br.bottom - wr.top + wall.scrollTop + 8 : above) + 'px';
   };
   const hideHover = ()=>{ hover.hidden = true; };
-  const kitHTML = K=> `<b class="sd-name">${K.def.icon} ${escapeHtml(K.def.name)}</b><span class="sd-line">🎒 Field kit item: ${escapeHtml(K.def.desc)} One item a fight, against the computer.</span><span class="sd-line">You carry ${itemCount(K.id)} of ${ITEM_CAP}.</span><span class="sd-price">${shelfPriceHTML({gold:K.price, gems:0})}</span>${shopKitSold(K.day) ? '<span class="sd-why">Sold out. The cart only brings one a day, and not every day.</span>' : shopKitFull(K.id) ? `<span class="sd-why">Your pack already holds ${ITEM_CAP}, the most it carries.</span>` : '<span class="sd-why">In stock today only.</span>'}${K.adminOnly ? '<span class="sd-why">🚨 Admin preview: not on sale to players today.</span>' : ''}`;
+  const kitHTML = K=> `<b class="sd-name">${K.def.icon} ${escapeHtml(K.def.name)}</b><span class="sd-line">🎒 Field kit item: ${escapeHtml(K.def.desc)} ${escapeHtml(TX('ui.kit-shop-rule', {max: KIT_USES_PER_FIGHT})) /* 2026-10-18 (package Z) */}</span><span class="sd-line">You carry ${itemCount(K.id)} of ${ITEM_CAP}.</span><span class="sd-price">${shelfPriceHTML({gold:K.price, gems:0})}</span>${shopKitSold(K.day) ? '<span class="sd-why">Sold out. The cart only brings one a day, and not every day.</span>' : shopKitFull(K.id) ? `<span class="sd-why">Your pack already holds ${ITEM_CAP}, the most it carries.</span>` : '<span class="sd-why">In stock today only.</span>'}${K.adminOnly ? '<span class="sd-why">🚨 Admin preview: not on sale to players today.</span>' : ''}`;
   const renderCounter = ()=>{
     const el = grid.querySelector('#shopCounter'), it = find(shopSelected);
     if(!el || !it) return;

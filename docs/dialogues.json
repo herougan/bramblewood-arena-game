@@ -2333,7 +2333,7 @@
      "who": "traveller",
      "name": "The Wandering Traveller",
      "portrait": "card art: Wandering Traveller",
-     "text": "Save it for a fight you can't win any other way. One item a fight, and I'll top you up a little each day.",
+     "text": "Save it for a fight you can't win any other way. Two items a fight, and I'll top you up a little each day.",
      "replies": "Show me. [tab:inventory]",
      "act": "",
      "label": "",
