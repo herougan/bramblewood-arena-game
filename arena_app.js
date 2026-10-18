@@ -318,6 +318,7 @@ Object.assign(SKILL_ICON, {tornado:'🌪️💨', avalanche:'🏔️', tsunami:'
 // just the plug now, no spark beside it, on the card chip, in the Codex, the effects library and the battle log. Keen Sense 👃.
 // 2026-10-15: the new arrows, the Bolts and Chilli.
 SKILL_ICON.bloodlust = '🩸⚔️'; // Bloodlust (2026-10-15)
+Object.assign(SKILL_ICON, {hunter:'🐆', executioner:'🪦', detonate:'🎆', proliferate:'🧫', brittle:'🫙', kinRally:'📯', packHowl:'📣', prayerWard:'🧿', fieldBreaker:'🧹'}); // 2026-10-19 (package GI); 🧿 Nazar for a Ward (owner, 2026-10-18 21:26)
 Object.assign(SKILL_ICON, {vanguard:'🎖️', web:'🕸️', webbed:'🕸️', sentry:'🗼', carrion:'🦴', hoard:'🐿️', venomMaster:'⚗️', fletcher:'🪶', herbalist:'🌿', shatter:'💥'}); // 2026-10-17 skills (Leech keeps sap's 🧛, Reflect its 🪞)
 // W2 skills (2026-10-16), none shared with another skill's chip.
 Object.assign(SKILL_ICON, {venomous:'🦂', toxin:'☣️', weaken:'💔', wilting:'🥀', bulldoze:'🚜', tangle:'🪢', strangle:'🪢💢', invincible:'🌟', invisible:'🫥', sonar:'📡', poisonGas:'😷',
@@ -1214,7 +1215,30 @@ const PASSIVE_DEFS = [
   // The counters show (🎨 N) and do nothing yet: the Codex says the effect is to come. On no card; stat budget 0 (SB_DEFAULT_SKILLS).
   {key:'creative', category:'passive', label:'Creative', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.creative-desc', {n: numOr(v, 1)}), get:e=> e.creative ? numOr(e.creative, 1) : undefined,
     codexNote:TX('ui.creative-codex-note')},
+  // ---- Package GI (2026-10-19, owner 00:19: "continue with action items, and considering our gameplay-ideas ... create what you want to
+  // create"; docs/gameplay-ideas-built-2026-10-19.md). Rules in bramblewood-engine.js (the Package GI block). On pool cards only so far.
+  {key:'hunter', category:'passive', label:TX('ui.skn-hunter'), kind:'selectNumber', numberWhen:['poison', 'bleed', 'wet', 'exposed'], numberTitle:'Hunter N: how much more damage',
+    selectOptions:()=> [{value:'poison', label:'Poisoned'}, {value:'bleed', label:'Bleeding'}, {value:'wet', label:'Wet'}, {value:'exposed', label:'Exposed'}],
+    desc:(v, n, e)=> giHunterText(v, e), codexNote:TX('ui.sk-hunter-codex'),
+    get:e=> e.hunter ? [GI_HUNTER_VS.includes(e.hunterVs) ? e.hunterVs : 'poison', numOr(e.hunter, 1)] : undefined,
+    apply:(e, vals)=>{ const vs = Array.isArray(vals) ? vals[0] : 'poison', n = Number(Array.isArray(vals) ? vals[1] : vals) || 0; if(n > 0){ e.hunter = n; if(vs && vs !== 'poison') e.hunterVs = vs; } }},
+  {key:'executioner', category:'passive', label:TX('ui.skn-executioner'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-executioner', {n: numOr(v, 1)}), codexNote:TX('ui.sk-executioner-codex'), get:e=> e.executioner ? numOr(e.executioner, 1) : undefined},
+  {key:'detonate', category:'passive', label:TX('ui.skn-detonate'), kind:'boolean', desc:()=> TX('ui.sk-detonate'), codexNote:TX('ui.sk-detonate-codex')},
+  {key:'proliferate', category:'passive', label:TX('ui.skn-proliferate'), kind:'number', min:1, defaultValue:1, desc:v=> numOr(v, 1) === 1 ? TX('ui.sk-proliferate-1') : TX('ui.sk-proliferate', {n: numOr(v, 1)}), codexNote:TX('ui.sk-proliferate-codex'), get:e=> e.proliferate ? numOr(e.proliferate, 1) : undefined},
+  {key:'brittle', category:'passive', label:TX('ui.skn-brittle'), kind:'number', min:1, defaultValue:1, desc:v=> numOr(v, 1) === 1 ? TX('ui.sk-brittle-1') : TX('ui.sk-brittle', {n: numOr(v, 1)}), get:e=> e.brittle ? numOr(e.brittle, 1) : undefined},
+  {key:'kinRally', category:'passive', label:TX('ui.skn-kin-rally'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-kin-rally', {n: numOr(v, 1)}), codexNote:TX('ui.sk-kin-rally-codex'), get:e=> e.kinRally ? numOr(e.kinRally, 1) : undefined},
+  {key:'packHowl', category:'passive', label:TX('ui.skn-pack-howl'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-pack-howl', {n: numOr(v, 1)}), codexNote:TX('ui.sk-pack-howl-codex'), get:e=> e.packHowl ? numOr(e.packHowl, 1) : undefined},
+  {key:'prayerWard', category:'passive', label:TX('ui.skn-prayer-ward'), kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.sk-prayer-ward', {n: numOr(v, 1)}), codexNote:TX('ui.sk-prayer-ward-codex'), get:e=> e.prayerWard ? numOr(e.prayerWard, 1) : undefined},
+  {key:'fieldBreaker', category:'evergreen', label:TX('ui.skn-field-breaker'), kind:'number', min:1, defaultValue:2, desc:v=> numOr(v, 2) === 1 ? TX('ui.sk-field-breaker-1') : TX('ui.sk-field-breaker', {n: numOr(v, 2)}), codexNote:TX('ui.sk-field-breaker-codex'), get:e=> e.fieldBreaker ? numOr(e.fieldBreaker, 2) : undefined},
 ];
+// Package GI (2026-10-19): Hunter's line names its status (one TX key each, so every language gets a whole sentence).
+const GI_HUNTER_VS = ['poison', 'bleed', 'wet', 'exposed'];
+const GI_HUNTER_TX = {poison: n=> TX('ui.sk-hunter-poison', {n}), bleed: n=> TX('ui.sk-hunter-bleed', {n}), wet: n=> TX('ui.sk-hunter-wet', {n}), exposed: n=> TX('ui.sk-hunter-exposed', {n})};
+const GI_HUNTER_WORD = {poison: ()=> TX('ui.hunter-vs-poison'), bleed: ()=> TX('ui.hunter-vs-bleed'), wet: ()=> TX('ui.hunter-vs-wet'), exposed: ()=> TX('ui.hunter-vs-exposed')};
+function giHunterParts(v, e){ const vs = e && e.hunter ? e.hunterVs : (Array.isArray(v) ? v[0] : null), n = e && e.hunter ? numOr(e.hunter, 1) : (Array.isArray(v) ? numOr(v[1], 1) : 1);
+  return {vs: GI_HUNTER_VS.includes(vs) ? vs : 'poison', n}; }
+function giHunterText(v, e){ const h = giHunterParts(v, e); return GI_HUNTER_TX[h.vs](h.n); }
+function giHunterHead(p, e){ const h = giHunterParts(null, e); return `${p.label} ${h.n} (${GI_HUNTER_WORD[h.vs]()})`; }
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
 // Scatterbrained, Meteor, ..."): oneOff:true on those registry entries; the skill picker and the Skills codex tag them. Durian joins
@@ -2071,6 +2095,7 @@ const STATUS_KEYWORDS = [
   {k:'shield', re:/\b(shield)\b/gi, cs:true, name:'Shield', c:'#3d8fd1', text:'temporary Health that soaks damage first and doesn’t come back.'},
   // 2026-10-17 (user: "Wet units just take +N damage by default, for every wet counter. Can see this in codex instead."): the general Wet
   // rule (the engine's wetCountOf / wetShockBonus). cs: the game word only, so "wet ground" in plain prose stays plain.
+  {k:'brittle', re:/\b(brittle)\b/gi, cs:true, name:TX('ui.skn-brittle'), c:'#7fa7bf', text:TX('ui.st-brittle'), codex:TX('ui.stx-brittle')}, // 2026-10-19 (package GI): Frozen for Shatter
   {k:'wet', re:/\b(wet)\b/gi, cs:true, name:'Wet', c:'#2b8fcf', text:TX('ui.st-wet'), codex:TX('ui.stx-wet')} /* 2026-10-18 (package D): terse; where the water counts is in the Codex */, // 2026-10-18 (owner 15:05): the Flood wets every land unit, flyers stay dry
 ];
 // Keywords everywhere (2026-10-12, user: "Highlight keywords like pitch etc. Also, if the keyword has colour, give it some
@@ -2405,6 +2430,18 @@ Object.assign(SKILL_TEXT, {
   rebuild: v=> `While Ready, restore ${numOr(v, 2)} Health to your bramble every upkeep.`, // 2026-10-17
   creative: v=> TX('ui.creative-text', {n: numOr(v, 1)}), // 2026-10-18 (package U): Creative N
 });
+// Package GI (2026-10-19): the short card lines (each under 20 words; the rest is the Codex note).
+Object.assign(SKILL_TEXT, {
+  hunter: (v, n, e)=> giHunterText(v, e),
+  executioner: v=> TX('ui.sk-executioner', {n: numOr(v, 1)}),
+  detonate: ()=> TX('ui.sk-detonate'),
+  proliferate: v=> numOr(v, 1) === 1 ? TX('ui.sk-proliferate-1') : TX('ui.sk-proliferate', {n: numOr(v, 1)}),
+  brittle: v=> numOr(v, 1) === 1 ? TX('ui.sk-brittle-1') : TX('ui.sk-brittle', {n: numOr(v, 1)}),
+  kinRally: v=> TX('ui.sk-kin-rally', {n: numOr(v, 1)}),
+  packHowl: v=> TX('ui.sk-pack-howl', {n: numOr(v, 1)}),
+  prayerWard: v=> TX('ui.sk-prayer-ward', {n: numOr(v, 1)}),
+  fieldBreaker: v=> numOr(v, 2) === 1 ? TX('ui.sk-field-breaker-1') : TX('ui.sk-field-breaker', {n: numOr(v, 2)}),
+});
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 // Pounce's amount in words (2026-10-16): "5", "<Att>" (its Attack) or "<Hp>" (its Health); an editor row value [mode, n] too.
 // Amore's state on a live unit (2026-10-16): 'love' (paired), 'broken' (partner gone) or 'single'.
@@ -2539,7 +2576,7 @@ function describeEffects(def, liveCard){
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
       const head0 = p.key==='pack' ? `${p.label}${valSuffix(v === true ? 2 : v)}` : p.label; lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
-    const head = p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
+    const head = p.key==='hunter' ? giHunterHead(p, e) /* Hunter N (Poisoned) (2026-10-19, GI) */ : p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
     lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head}${legendaryTagHTML(p) /* 2026-10-18 (owner 23:05) */} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; }); // "Answered by" lives in the Skill Codex now (2026-10-13)
@@ -15595,6 +15632,13 @@ const FIELD2 = {
 };
 // 2026-10-17 (user: "Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow of the volcanoes"): the row the volcano
 // maps' uneven cycle shows, and the "after an Eruption" form of Ashy.
+// Package GI (2026-10-19, docs/gameplay-ideas-2026-10-19.md): Spore Cloud (The Morel Hollow), Thunderstorm (Coral Current), Tangled Roots
+// (Kelp Mangroves). Built and offered in Edit skirmish; no map carries them yet (the placement phase). Rules: the engine's fieldEffects2Tick.
+Object.assign(FIELD2, {
+  sporeCloud:   {icon:'🍄', name:TX('ui.fx-name-spore-cloud'), editor:'sporecloud', short:TX('ui.fx-spore-cloud-short'), text:TX('ui.fx-spore-cloud'), codex:TX('ui.fxx-spore-cloud')},
+  thunderstorm: {icon:'🌩️', name:TX('ui.fx-name-thunderstorm'), editor:'thunderstorm', short:TX('ui.fx-thunderstorm-short', {n: 2}), text:TX('ui.fx-thunderstorm', {n: 2}), codex:TX('ui.fxx-thunderstorm')},
+  tangledRoots: {icon:'🪢', name:TX('ui.fx-name-tangled-roots'), editor:'tangledroots', short:TX('ui.fx-tangled-roots-short'), text:TX('ui.fx-tangled-roots'), codex:TX('ui.fxx-tangled-roots')},
+});
 const VOLCANO_GLOW_TEXT = (d, n)=> TX('ui.fx-volcano-glow', {d, n}); // 2026-10-18 (package D): terse
 const ASHY_AFTER_TEXT = TX('ui.fx-ashy-after'); // 2026-10-18 (package D): terse; the rest is Ashy's Codex line
 // 2026-10-16 (user: "Tide-spout should be one-off. Without Tide, there won't be flood or ebb."): the spout no longer brings the Tide in.
@@ -15708,7 +15752,7 @@ function noteFieldEvent(ev){
   else if(ev.type === 'evaded' && ev.reason === 'sandstorm') hit = markFieldRow('sandstorm'); // 2026-10-15
   else if(ev.type === 'phase' && (ev.phase === 'twilight' || ev.to === 'twilight')) hit = markFieldRow('twilight');
   // Field effects 2 (2026-10-16): each row is learned the first time it does something.
-  else if(ev.type === 'fieldTick' && ['landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'mirage', 'haunted'].includes(ev.field)) hit = markFieldRow(ev.field);
+  else if(ev.type === 'fieldTick' && ['landslide', 'crushingDepths', 'hail', 'glassStorm', 'lavaSpout', 'consternation', 'mirage', 'haunted', 'sporeCloud', 'thunderstorm', 'tangledRoots'].includes(ev.field)) hit = markFieldRow(ev.field); // + package GI (2026-10-19)
   else if(ev.type === 'fieldTick' && ev.field === 'leylines') hit = markFieldRow('leylines3');
   else if(ev.type === 'lumber' && ev.leylines && r.leylines2) hit = markFieldRow('leylines2');
   else if(ev.type === 'tide' && r.tide) hit = markFieldRow('tide');
@@ -24132,7 +24176,7 @@ function runCardCheck(host){
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
 const SB_KEY = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2';
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
-const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, hunterVs:0 /* 2026-10-19 (GI): a parameter of Hunter */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0, castDarkness:2 /* 2026-10-18 (package D): the dark hits both sides; its Darksight costs its own 1 */, trueStrike:2 /* 2026-10-18 (package D): never misses */, relic:2 /* 2026-10-19 (package E): a 1/1 left behind, like 2A+H of a 1/1 less a point for keywords only */}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, perRitual:1, missMult:1.5};
@@ -28668,7 +28712,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, creativity:rc.creativity||0, prayerTokens:rc.prayerTokens||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, brittle:rc.brittle||0 /* 2026-10-19 (GI) */, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -32730,7 +32774,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, prayerTokens:c.prayerTokens||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, brittle:c.brittle||0 /* 2026-10-19 (GI) */, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
       });
     });
   });
@@ -35941,11 +35985,12 @@ function lockShards(lock){
 function creativityTip(n){ return TX('ui.creativity-tip', {n}); }
 function prayerTokenTip(n){ return TX('ui.prayer-token-tip', {n}); } // 2026-10-19 (package E): the 📿 badge // 2026-10-18 (package U): Creativity counters, reserved
 function exposedTip(n){ return TX('ui.exposed-tip', {n, s: n === 1 ? '' : 's'}); } // 2026-10-18 (package D): terse // 2026-10-16: counters
-const STATUS_END_NAMES = {webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
+const STATUS_END_NAMES = {brittle:TX('ui.skn-brittle') /* 2026-10-19 (GI) */, webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 function logText(ev){
   if(emptyHealEvent(ev)) return null; // 2026-10-19 (package HN): no "+0" line
   const defs = getCardDefs();
   const nm = id=> defs[id] ? `${defs[id].icon} ${defs[id].name}` : id;
+  { const g = giLogText(ev, nm); if(g) return g; } // package GI skills and fields (2026-10-19)
   { const w = w2LogText(ev, nm); if(w) return w; } // W2 skills (2026-10-16)
   { const w = s17LogText(ev, nm); if(w) return w; } // 2026-10-17 skills
   if(ev.type === 'rebuild') return rebuildLogText(ev, nm); // Rebuild (2026-10-17)
@@ -38002,6 +38047,7 @@ function ninthPassVfx(ev){
 // badges, battle-log lines and looks (SkillFX.* in bramblewood-skillfx.js), the trap / burning-ground marks on empty slots, and the
 // Cloudy field's drifting cloud shadows. ----
 function w2StatusBadges(c, badges){
+  try{ giStatusBadges(c, badges); }catch(e){} // Brittle, Prayer Ward (2026-10-19, package GI)
   if(c.bound>0) badges.push(`<span class="abadge bound" title="Bound: can't attack for ${c.bound} more round${c.bound === 1 ? '' : 's'}">🪢${c.bound}</span>`);
   if(c.webbed>0) badges.push(`<span class="abadge webbed" title="Webbed: can't dodge or move for ${c.webbed} more round${c.webbed === 1 ? '' : 's'}">🕸️${c.webbed}</span>`); // Web N (2026-10-17)
   if(c.toxin>0) badges.push(`<span class="abadge toxin" title="Toxin: ${c.toxin} damage every round; it never wears off and can't be cured">☣️${c.toxin}</span>`);
@@ -38122,6 +38168,48 @@ function field2Vfx(ev){
   if(ev.type === 'hit' && (ev.laneBonus > 0 || ev.tallGrass)){ const el = boardCardEl(ev.targetUid); const fr = matchFieldRules(m) || {};
     const t = ev.tallGrass ? '🌾 ×2' : ''; const ln = ev.laneBonus > 0 ? `${ev.lane === 'bishop' ? '♝' : ev.lane === 'rook' ? '♜' : (fr.bishopPath ? '♝' : '♜')} +${ev.laneBonus}` : '';
     setTimeout(()=> fl(el, [ln, t].filter(Boolean).join(' '), 'quick'), 160); return; }
+}
+// ==== Package GI (2026-10-19): the board's side of the new skills and field effects (rules in bramblewood-engine.js, the Package GI
+// block): battle-log lines, floats, the Brittle and Prayer Ward badges, the field's hit numbers. Every string is a TX key.
+Object.assign(FIELD2_HIT, {thunderHit:['🌩️', 'lightning']});
+['sporeCloud', 'thunderstorm', 'thunderHit', 'tangledRoots'].forEach(k=> FIELD2_OWN_TICKS.add(k));
+function giLogText(ev, nm){
+  if(!ev) return null;
+  if(ev.type === 'fieldTick'){
+    if(ev.field === 'sporeCloud') return {cls:'', text:TX('ui.log-spore-cloud')};
+    if(ev.field === 'thunderstorm') return {cls:'', text:TX('ui.log-thunderstorm', {n: ev.amount})};
+    if(ev.field === 'thunderHit') return {cls:'', text: ev.wet ? TX('ui.log-thunder-hit-wet', {name: nm(ev.defId), dmg: ev.dmg}) : TX('ui.log-thunder-hit', {name: nm(ev.defId), dmg: ev.dmg})};
+    if(ev.field === 'tangledRoots') return {cls:'', text:TX('ui.log-tangled-roots')};
+    return null; }
+  if(ev.type === 'statusFx' && ev.field === 'sporeCloud' && ev.kind === 'sleep') return {cls:'', text:TX('ui.log-spore-sleep', {name: nm(ev.targetDefId)})};
+  if(ev.type === 'statusFx' && ev.field === 'tangledRoots' && ev.kind === 'webbed') return {cls:'', text:TX('ui.log-roots-grab', {name: nm(ev.targetDefId)})};
+  if(ev.type === 'statusFx' && ev.kind === 'detonate') return {cls:'', text:TX('ui.log-detonate', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount})};
+  if(ev.type === 'statusFx' && ev.kind === 'proliferate') return {cls:'', text:TX('ui.log-proliferate', {from: nm(ev.fromDefId), name: nm(ev.targetDefId)})};
+  if(ev.type === 'statusFx' && ev.kind === 'brittle') return {cls:'', text:TX('ui.log-brittle', {att: nm(ev.attDefId), name: nm(ev.targetDefId), n: ev.amount})};
+  if(ev.type === 'fieldBreak') return {cls:'gold', text: ev.rounds === 1 ? TX('ui.log-field-break-1', {name: nm(ev.defId)}) : TX('ui.log-field-break', {name: nm(ev.defId), n: ev.rounds})};
+  if(ev.type === 'fieldPaused') return {cls:'', text:TX('ui.log-field-paused')};
+  return null;
+}
+function giVfx(ev){
+  if(!ev || !matchState) return; const m = matchState;
+  const fl = (el, txt, cls)=>{ if(el) try{ floatText(el, txt, cls); }catch(e){} };
+  const snd = k=>{ try{ SoundKit[k] && SoundKit[k](); }catch(e){} };
+  const rcOf = u=> m.replayCards && u != null ? m.replayCards[u] : null;
+  const refresh = u=>{ try{ updateCardStatusDisplay(u); }catch(e){} };
+  if(ev.type === 'statusFx' && ev.kind === 'detonate'){ const rc = rcOf(ev.targetUid); if(rc) rc.poison = 0; fl(boardCardEl(ev.targetUid), `🎆 +${ev.amount}`, 'poison'); snd('boom'); refresh(ev.targetUid); return; }
+  if(ev.type === 'statusFx' && ev.kind === 'proliferate'){ const rc = rcOf(ev.targetUid); if(rc) rc.poison = ev.total != null ? ev.total : (rc.poison||0) + 1; fl(boardCardEl(ev.targetUid), '🧫 +1☠', 'poison'); snd('poisonApply'); refresh(ev.targetUid); return; }
+  if(ev.type === 'statusFx' && ev.kind === 'brittle'){ const rc = rcOf(ev.targetUid); if(rc) rc.brittle = Math.max(rc.brittle||0, ev.amount||1); fl(boardCardEl(ev.targetUid), TX('ui.float-brittle'), 'debuff'); snd('freezeChime'); refresh(ev.targetUid); return; }
+  if(ev.type === 'statusEnd' && ev.status === 'brittle'){ const rc = rcOf(ev.uid); if(rc) rc.brittle = 0; refresh(ev.uid); return; }
+  if(ev.type === 'fieldBreak'){ fl(boardCardEl(ev.uid), TX('ui.float-field-break'), 'quick'); snd('swipeTone'); return; }
+  if(ev.type === 'fieldTick' && ev.field === 'sporeCloud'){ snd('sleepTone'); return; }
+  if(ev.type === 'fieldTick' && ev.field === 'thunderstorm'){ snd('boom'); const bf = document.getElementById('battlefieldEl'); if(bf && !reducedMotion() && fxAtLeast('low')){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } return; }
+  if(ev.type === 'fieldTick' && ev.field === 'tangledRoots'){ snd('curse'); return; }
+}
+// The Brittle badge, and Prayer Ward's 🧿 while its ward is up (it holds Prayer tokens).
+function giStatusBadges(c, badges){
+  if(c.brittle > 0) badges.push(`<span class="abadge brittle" title="${escapeAttr(TX('ui.brittle-tip', {n: c.brittle}))}">🫙${c.brittle}</span>`);
+  const e = ((getCardDefs()[c.defId] || {}).effects) || {};
+  if(e.prayerWard && (c.prayerTokens||0) > 0) badges.push(`<span class="abadge prayer-ward" title="${escapeAttr(TX('ui.prayer-ward-tip', {n: numOr(e.prayerWard, 1)}))}">🧿${numOr(e.prayerWard, 1)}</span>`);
 }
 function w2LogText(ev, nm){
   { const d = devilPayLogText(ev, nm); if(d) return d; } // Penance, Blood Tithe, Ambush (2026-10-16)
@@ -38439,6 +38527,7 @@ function renderVfxForEvent(ev){
   try{ w2SkillVfx(ev); }catch(e){} // W2 skills (2026-10-16)
   try{ s17SkillVfx(ev); }catch(e){} // 2026-10-17 skills
   try{ rebuildVfx(ev); }catch(e){} // Rebuild (2026-10-17)
+  try{ giVfx(ev); }catch(e){} // package GI skills and fields (2026-10-19)
   try{ field2Vfx(ev); }catch(e){} // field effects 2 (2026-10-16)
   try{ eighthPassVfx(ev); }catch(e){} // 29 more skill looks: Flying swoop, Armor, Fork, Pierce, the statuses, Sap, Bloom... (2026-10-15)
   try{ fxBatchVfx(ev); }catch(e){} // the six effect batches, FX.A … FX.F (2026-10-15, docs/effects-lab-contract.md)

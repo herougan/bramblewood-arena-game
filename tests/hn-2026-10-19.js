@@ -123,5 +123,5 @@ ok(idx.includes('function emptyHealEvent(ev){') && idx.includes("if(ev.action ==
 const dj = JSON.parse(R('docs/decisions.json')), sec = (dj.rules || []).find(r=> r.date === '2026-10-19' && /nothing to heal/.test(r.intro || ''));
 ok(sec && sec.items.length >= 3, 'docs/decisions.json has the 2026-10-19 stated rule');
 ok(/nothing to heal/.test(R('docs/decisions.md')), 'decisions.md is regenerated');
-ok(/## 2026-10-19 \(package HN/.test(R('docs/CHANGELOG.md').slice(0, 4000)), 'CHANGELOG entry at the top');
+ok(/## 2026-10-19 \(package HN/.test(R('docs/CHANGELOG.md').slice(0, 12000)), 'CHANGELOG entry near the top'); // 2026-10-19 (package GI): 4000 -> 12000, newer entries sit above it
 console.log(fail ? `hn: ${fail} of ${n} failed` : `hn: all ${n} passed`); process.exit(fail ? 1 : 0);

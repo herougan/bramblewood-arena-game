@@ -145,7 +145,12 @@ app_src = app_src.replace("__EMOJI_ATLAS__", json.dumps(emoji_atlases(), separat
 
 canonical = json.load(open(SCRATCH + "canonical/cards.json", encoding="utf-8"))
 card_defs_obj = {}
+# Pool cards (2026-10-19, package AN, owner 23:04: "More thematic animals ... I'll pick and choose when balancing for a map"):
+# candidates marked "pool": true are not live cards. They never enter __CARD_DEFS__ (so no pack, reward, Codex, CPU deck or card
+# list of the game can see them, and the card-data hash is unchanged); Admin's Manage Cards lists them from __POOL_CARD_DEFS__.
+pool_defs_obj = {c["id"]: dict(c) for c in canonical if c.get("pool")}
 for c in canonical:
+    if c.get("pool"): continue
     d = dict(c)  # keep 'id' inside the object too (many call sites read d.id directly)
     if isinstance(d.get("art"), str) and d["art"].startswith("data:"):
         d["art"] = data_uri_to_asset("cards/" + _re.sub(r"[^a-z0-9_-]", "-", d["id"].lower()), d["art"])
