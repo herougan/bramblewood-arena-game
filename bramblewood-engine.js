@@ -4029,7 +4029,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     if(def.hatchInto && def.hatchInto.defId) return CARD_DEFS[def.hatchInto.defId] ? [CARD_DEFS[def.hatchInto.defId]] : []; // a fixed hatch, e.g. the Red Dragon Egg (2026-10-14)
     const h = def.hatchInto || {}, cap = Math.max(EGG_RARITY_ORDER.indexOf('uncommon'), EGG_RARITY_ORDER.indexOf(def.rarity||'common'));
     const sp = h.species || [], ar = h.archetypes || [];
-    return Object.keys(CARD_DEFS).sort().map(k=> CARD_DEFS[k]).filter(d=> d && !d.token && !d.test && !d.hidden && !d.hero && !d.cardType && !d.field && !d.equip && !d.raid && !d.worldBoss
+    return Object.keys(CARD_DEFS).sort().map(k=> CARD_DEFS[k]).filter(d=> d && !d.token && !d.test && !d.pool /* 2026-10-19 (package AN): never an unplaced pool card */ && !d.hidden && !d.hero &&!d.cardType && !d.field && !d.equip && !d.raid && !d.worldBoss
       && !d.derivedFrom && !d.hatchInto && !(d.effects && d.effects.leader) && (d.attack|0) > 0
       && EGG_RARITY_ORDER.indexOf(d.rarity) >= 0 && EGG_RARITY_ORDER.indexOf(d.rarity) <= cap
       && (h.any || (d.species||[]).some(x=> sp.includes(x)) || (d.archetypes||[]).some(x=> ar.includes(x))));

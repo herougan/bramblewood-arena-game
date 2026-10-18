@@ -1371,6 +1371,11 @@
      (see adminManageCardsGridHTML) since rendering all 300+ cards on every keystroke would be
      wasteful when a search narrows to a handful almost immediately. */
   .admin-manage-grid .card-tile{transform:scale(.8); transform-origin:top left; margin:-8px -12px -18px 0;}
+  /* Pool cards (2026-10-19, package AN): the Admin filter's unplaced candidates, each tagged Pool, grouped by their map */
+  .admin-pool-filter{display:inline-flex; gap:6px; align-items:center; margin-top:8px;}
+  .admin-pool-head{margin:14px 0 4px; font-size:14px;}
+  .admin-pool-wrap{position:relative;}
+  .admin-pool-tag{position:absolute; top:2px; left:2px; z-index:5; background:#6a4bb0; color:#fff; font:700 10.5px/1.5 'Nunito', sans-serif; padding:0 7px; border-radius:9px; pointer-events:none; text-transform:capitalize;}
   #adminCardSearchInput{font-family:'Nunito'; font-size:13.5px; padding:7px 9px; border:1px solid var(--surface-border); border-radius:8px; background:var(--bg); color:var(--ink); width:100%; max-width:320px;}
   .field-row{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin-bottom:12px;}
   .field{display:flex; flex-direction:column; gap:4px;}
