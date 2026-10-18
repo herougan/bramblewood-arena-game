@@ -94,7 +94,7 @@ def run_pieces(run):
     # markup-valued placeholders: cut off at the ends, a split in the middle
     kinds = {}
     for k, e in enumerate(exprs, 1):
-        kinds[k] = 'markup' if (not run.attr and is_markup(e)) else ('plural' if PLURAL_EXPR.match(e) else 'value')
+        kinds[k] = 'markup' if (not run.attr and is_markup(e)) else ('plural' if PLURAL_EXPR.match(e) or re.fullmatch(r'\s*s\d?\s*', e) else 'value')
     lines = re.split(r'\s*<br\s*/?>\s*', text) if not run.attr else [text]
     lettered = lambda p: re.search(r'[^\W\d_]{2,}', re.sub(r'\{\d+\}', '', p))
     def edges(line):   # markup placeholders at both ends are cut off
