@@ -17749,6 +17749,36 @@
    }
   },
   {
+   "id": "dromedary",
+   "name": "Dromedary",
+   "rarity": "uncommon",
+   "cost": 2,
+   "wait": 2,
+   "attack": 5,
+   "health": 26,
+   "skills": [
+    "dry",
+    "regen"
+   ],
+   "winRate": 25,
+   "band": [
+    45,
+    68
+   ],
+   "verdict": "weak",
+   "locked": true,
+   "source": "map",
+   "startsAt0": false,
+   "budget": {
+    "N": 47.6,
+    "S": 2,
+    "x1": 38,
+    "x2": 132,
+    "N2": 251.75,
+    "ok": true
+   }
+  },
+  {
    "id": "marula-monkey",
    "name": "Marula Monkey",
    "rarity": "common",
