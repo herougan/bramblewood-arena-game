@@ -63,7 +63,10 @@ R({id:'death-poison', stage:'board', inGameHook:'deathVfx (poison): bleedOutVfx(
   note:'2026-10-15 (user: "The poison animation has a blackening effect. Lessen that effect by 40%." and "The poison death animation should use the same particle as the poisoned effect.").',
   variants:[{key:'G', label:'Lighter green drain, Poisoned bubbles rising', play:ctx=>{ const el = foe(ctx)[1]; ctx.sound('bleedOut', 'poison'); W.bleedOutVfx(el, 670, 'poison'); return ctx.wait(1500); }}]});
 R({id:'st-poison-tick', stage:'board', inGameHook:'labSkillFx poisonTick → SkillFX.poisonCloud (the card\'s dip darkens 40% less)', variants:[
-  {key:'G', label:'Poison cloud, lighter dip', play:ctx=>{ const el = mine(ctx)[1]; ctx.sound('bubble'); S().poisonCloud(el); ctx.float(el, '☠️ -2', 'poison-tick'); return ctx.wait(1500); }}]});
+  // 2026-10-18 (package P): on a Poisoned unit (the game's hook), and the tick's wear-down drops a grey counter off the badge (FX.D.poisonDrop)
+  {key:'G', label:'Poison cloud, lighter dip; a grey counter drops off the badge', play:async ctx=>{ const el = mine(ctx)[1], P = W.FXLAB_POISON, env = P && P.env(ctx), c = {defId:'', poison:2, hp:6, maxHp:6};
+    if(P){ P.show(el, c, env); await ctx.wait(900); }
+    ctx.sound('bubble'); S().poisonCloud(el); ctx.float(el, '☠️ -2', 'poison-tick'); if(P){ W.FX.D.poisonDrop(el); c.poison -= 1; P.show(el, c, env); } return ctx.wait(1500); }}]});
 
 // 21: the frost rime rides inside the card
 R({id:'st-freeze-field', stage:'board', inGameHook:'labSkillFx fieldTick frozen → SkillFX.frostChill (the rime frame is inside the tile now)',

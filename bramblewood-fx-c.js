@@ -212,7 +212,9 @@ css('base', `
 // Each status that runs out gets its own small goodbye (about 0.8 s), in its theme colour, and a chip naming it.
 // mode picks the motion; c/c2 the colours; g the particle glyphs; label the chip.
 const STATUS_END = {
-  poison:      {mode:'bubbles', c:'rgba(86,170,40,.55)', c2:'#9be15d', label:'☠ cured', chip:'#3f7d1a'},                       // swamp glop
+  // 2026-10-18 (package P, owner: "When you naturally lose poison counters ... it doesn't say 'Cured!'"): no chip. In a fight FX.D's
+  // Poisoned look plays the end itself (the pool fades off, 3-4 last bubbles; see onEvent below); a real Cure still floats "💊 Cured N".
+  poison:      {mode:'bubbles', c:'rgba(86,170,40,.55)', c2:'#9be15d', label:'', chip:'#3f7d1a'},                               // swamp glop
   bleed:       {mode:'drip', c:'rgba(179,18,31,.45)', c2:'#e0303f', label:'🩸 stopped', chip:'#8e1420'},                        // beasts, blood red
   decay:       {mode:'flakes', c:'rgba(126,106,150,.5)', c2:'#a996c4', label:'🍄 cleared', chip:'#5d4f73'},                     // Morel Hollow mould
   frozen:      {mode:'shell', c:'rgba(170,220,255,.55)', c2:'#dff3ff', label:'❄ thawed', chip:'#2f7fb5', sound:'iceShatter'},    // Tundra / Ice Hollow
@@ -311,7 +313,7 @@ M.statusEnd = function(el, kind, opts){
         tl.fromTo(pl, {opacity:1}, {opacity:0, duration:.5, ease:'power1.in'}, .1);
         spray(tl, mk, .2, x, y, {n:4, glyphs:['✦'], size:[10, 14], dist:[10, 24], dur:[.4, .5]}); snd('healTone'); break; }
     }
-    chip(tl, mk, .12, t, S.label, S.chip);
+    if(S.label) chip(tl, mk, .12, t, S.label, S.chip); // 2026-10-18: a status without a label (Poison) ends without a chip
   });
 };
 // A unit that loses its turn shows why (log-only before): about 0.8 s on the card, nothing that blocks the replay.
@@ -1764,6 +1766,9 @@ M.onEvent = function(ev, env){
       // 2026-10-17 (user: "If there's no more exposure left, it fades as it magnifies!"): FX.D already faded / magnified the crosshair away
       // the moment its last counter went, so the round-end "wears off" doesn't play a second one.
       if(ev.status === 'exposed' && e){ const tl = e.querySelector('.card-tile') || e; if(tl.dataset && tl.dataset.fxdExposeLeft){ delete tl.dataset.fxdExposeLeft; break; } }
+      // 2026-10-18 (package P): Poison's end belongs to its look (FX.D.syncStatusLooks: the pool fades off with 3-4 last bubbles), the
+      // same code the Effects Lab plays, so this green drain no longer plays on top of it.
+      if(ev.status === 'poison') break;
       if(e && STATUS_END[ev.status]) M.statusEnd(e, ev.status, o); break; }
     case 'skipTurn': if(SKIP_OWN.has(ev.reason)){ const e = el(ev.uid); if(e) M.lostTurn(e, ev.reason, o); } break;
     case 'hit': {
