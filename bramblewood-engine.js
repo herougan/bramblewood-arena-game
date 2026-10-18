@@ -215,6 +215,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // CPU slot choice (2026-10-16, see aiChooseSlot): on in the game's own fights (they record events), off in the silent sims
   // (tools/difficulty_curve.js and friends) unless they pass aiAim:true, so their numbers stay comparable with earlier runs.
   const aiAim = opts.aiAim != null ? !!opts.aiAim : recordEvents;
+  // CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor. The Smarter CPU can act in Map5+, in
+  // elite missions and bosses. At Map 21+, all maps use the smartest CPU."). opts.aiLevel, read only while aiAim is on (the sims
+  // keep their behaviour whatever it says): 0 basic = the CPU before 2026-10-18 (Sacrifice and the shared pitchCard stay, they are
+  // rules parity); 1 smart = the R3-WP1 battlefield reading (the default, so a caller that passes nothing plays as it did today);
+  // 2 smartest = smart plus aiChooseSlotSmartest, a held field card, the smarter pitch and Sacrifice timing (see aiTakeTurnOnce).
+  let aiLevel = opts.aiLevel != null ? Math.max(0, Math.min(2, Math.round(Number(opts.aiLevel)) || 0)) : 1;
+  const aiSmart = ()=> aiAim && aiLevel >= 1, aiSmartest = ()=> aiAim && aiLevel >= 2;
   const isGladiator = battleMode==='gladiator';
   // Reserve rows (2026-10-12, user: "for raids, I want a FULL proper game. Just that, there's multi rows! like maybe 3 rows v 3
   // rows"): opts.reserveRows (0–2) gives each side that many rows behind its front row, in Open (slot) battles. A card can be
@@ -1835,7 +1842,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Psychic Dampener (2026-10-17, raid field effect, rules.psychicDampener): psychic damage is halved, rounded down (Psychic 1 does nothing).
     const damp = !!rules.psychicDampener, n2 = damp ? Math.floor(n / 2) : n;
     const tpid = otherId(pid), mindless = isMindless(c), dmg = (mindless || c.invincible > 0) ? 0 : n2; // + Invincible (2026-10-16)
-    if(dmg > 0){ c.hp = Math.max(0, c.hp - dmg); if(c.asleep > 0){ c.asleep = 0; noteWoke(c); } if(c.hp <= 0) c.killedBy = att.uid;
+    if(dmg > 0){ c.hp = Math.max(0, c.hp - dmg); if(c.asleep > 0){ c.asleep = 0; noteWoke(c); } if(c.hp <= 0) noteKiller(c, att.uid, att.defId);
       ensureStat(stats, sideOf(pid), att.defId).dealt += dmg; ensureStat(stats, sideOf(tpid), c.defId).taken += dmg; }
     if(recordEvents && events) events.push({type:'psychic', side:sideOf(pid), attUid:att.uid, attDefId:att.defId, targetSide:sideOf(tpid), targetUid:c.uid, targetDefId:c.defId, dmg, n, immune:mindless || undefined, dampened: (damp && n2 < n) || undefined});
     return dmg;
@@ -2161,6 +2168,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // (On Ally Die, Berserk, Divine Retribution), and the killer still collects a Bounty.
   function isNullifier(att){ return !!(att && effectsOf(att).nullify); }
   function nullifyKill(card){ card.nullified = true; card.forceExileZone = true; }
+  // 2026-10-18 (engine parity, R3-WP1): the killing blow remembers who struck it, its card and its side, so a kill from any
+  // path that names its attacker (a shot, a bolt, a missile, Fireball, Tsunami, an Ambush...) is credited the way a melee kill
+  // is, even when that path keeps no kill-credit book of its own (see killerCreditOf in removeDeadCardsPass).
+  function noteKiller(card, attUid, attDefId){
+    card.killedBy = attUid; card.killedByDef = attDefId || null; card.killedByPid = null;
+    if(curPlayers && attUid != null) for(const pid of [1,2]){ const pl = curPlayers[pid]; if(pl && allBoardCards(pl).some(x=> x && x.uid === attUid)){ card.killedByPid = pid; if(!card.killedByDef){ const k = allBoardCards(pl).find(x=> x && x.uid === attUid); card.killedByDef = k ? k.defId : null; } break; } }
+  }
   function damageCard(card, amount, dmgType, attCard){
     const r0 = computeHitDamage(attCard, amount, dmgType, card); const {armorBlocked, rendBypass, kingSlayerBonus, elementalConvert, elementalAmount, exposedCrit} = r0;
     const crush = !!(attCard && effectsOf(attCard).supreme); // Supreme (2026-10-14): no shell, stone or temporary Health stops it
@@ -2175,7 +2189,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // sudden death: any hit that lands kills; from 2026-10-15 even one Armor / a Shell / stone soaked to 0 ("at least 1 dmg"),
     // unless the unit is Immune to it
     if(suddenDeath && (dmg>0 || (amount > 0 && resistFactor(card.defId, dmgType, attCard ? CARD_DEFS[attCard.defId] : null) !== 0))) card.hp = 0;
-    if(hp0 > 0 && card.hp <= 0 && attCard) card.killedBy = attCard.uid; // who:'killer' (2026-10-14): the unit whose hit killed it
+    if(hp0 > 0 && card.hp <= 0 && attCard) noteKiller(card, attCard.uid, attCard.defId); // who:'killer' (2026-10-14): the unit whose hit killed it
     if(dmg>0 && card.asleep>0){ card.asleep = 0; noteWoke(card); } // Asleep (2026-09-16): breaks the instant real damage lands, classic "hit to wake"
     if(!nul) shellUp(card);
     if(nul && card.hp <= 0) nullifyKill(card);
@@ -2218,7 +2232,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     card.hp = Math.max(0, card.hp - dmg);
     if(suddenDeath && dmg>0) card.hp = 0; // sudden death: any hit that lands kills
     if(suddenDeath && amount > 0 && factor !== 0 && !EXPOSE_TICKS.has(dmgType)) card.hp = 0; // ...a hit soaked to 0 too (2026-10-15); status ticks still need to hurt
-    if(attUid != null && hp0 > 0 && card.hp <= 0) card.killedBy = attUid; // who:'killer' (2026-10-14)
+    if(attUid != null && hp0 > 0 && card.hp <= 0) noteKiller(card, attUid, attDefId); // who:'killer' (2026-10-14)
     if(dmg>0 && card.asleep>0){ card.asleep = 0; noteWoke(card); } // Asleep breaks on any flat/ranged damage too
     shellUp(card); // Shell triggers on arrows and every other hit too (2026-10-12)
     return dmg;
@@ -3655,6 +3669,42 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(d && d.effects && Array.isArray(d.effects.triggers) && d.effects.triggers.some(t=> t && t.on === 'onPitch')) runCustomTriggers(players, sideOf, pid, c, d, 'onPitch', stats || {}, events, {pitchedDefId}); });
     removeDeadCards(players, sideOf, {}, stats || {}, events);
   }
+  // Pitching a card (2026-10-18, engine parity R3-WP1): the one set of pitch rules both seats use. The player's pitch
+  // (discardCardByUid in arena_app.js) calls it for the rules and keeps its own sound, chips and log; the CPU's two pitches call it
+  // too (they used to give a flat +1 Lumber and nothing else). In order: the card leaves the hand for the Graveyard; its pitch
+  // yield (def.pitchYield {resource, amount}: stone, lumber or grace; 1 Lumber when unset, Lumberjack adding to Lumber); +1 Dark
+  // Point for a Devilry-line card and +1 more for Core Evil; its own On Discard triggers (gain Lumber / Grace / Stone / Devilry,
+  // Rebuild castle); the turn's pitch is used up (Wildpath "Second Pitch" spends itself first); then the On Pitch units react.
+  // events gets the On Pitch events; the Rebuild events come back in the result (the app logs them after its own lines).
+  const PITCH_RESOURCES = {stone:1, lumber:1, grace:1, devilry:1}; // the keys of PITCH_RESOURCE_META in arena_app.js
+  function pitchYieldOfDef(def){
+    if(def && def.pitchYield && PITCH_RESOURCES[def.pitchYield.resource]) return {resource:def.pitchYield.resource, amount:Math.max(0, Number(def.pitchYield.amount)||0)};
+    return {resource:'lumber', amount:1};
+  }
+  function isDevilryLine(def){ if(!def) return false; if(def.mechanicLine) return def.mechanicLine === 'devilry'; return !(def.graceCost || def.prayerReq) && !def.exileCost && !!def.devilryCost; } // inferMechanicLine in arena_app.js
+  function pitchCard(players, sideOf, pid, card, stats, events){
+    const pl = players && players[pid]; if(!pl || !card) return null;
+    const ix = pl.hand.findIndex(h=> h === card || (card.uid != null && h.uid === card.uid)); if(ix >= 0) pl.hand.splice(ix, 1);
+    pl.graveyard.push({defId:card.defId});
+    const def = CARD_DEFS[card.defId] || null, y = pitchYieldOfDef(def);
+    const gained = y.resource === 'lumber' ? addLumber(pl, y.amount) : (pl[y.resource] = (pl[y.resource]||0) + y.amount, y.amount);
+    const darkPoints = (isDevilryLine(def) ? 1 : 0) + ((def && def.effects && def.effects.coreEvil) ? 1 : 0);
+    if(darkPoints) pl.devilry = (pl.devilry||0) + darkPoints;
+    const discardGains = [], rebuild = [];
+    if(def && def.effects && Array.isArray(def.effects.triggers)) def.effects.triggers.filter(t=> t && t.on === 'onDiscard').forEach(t=>{
+      const amt = t.amount||0; if(amt <= 0) return;
+      if(t.do === 'gainLumber' || t.do === 'gainGold'){ pl.lumber = (pl.lumber||0) + amt; discardGains.push({resource:'lumber', amount:amt}); }
+      else if(t.do === 'gainGrace'){ pl.grace = (pl.grace||0) + amt; discardGains.push({resource:'grace', amount:amt}); }
+      else if(t.do === 'gainStone'){ pl.stone = (pl.stone||0) + amt; discardGains.push({resource:'stone', amount:amt}); }
+      else if(t.do === 'gainDevilry'){ pl.devilry = (pl.devilry||0) + amt; discardGains.push({resource:'devilry', amount:amt}); }
+      else if(t.do === 'rebuild' && pl.hq && pl.hq.hp > 0){ const h = Math.min(Math.max(0, Math.floor(Number(amt)||0)), pl.hq.maxHp - pl.hq.hp); // Rebuild castle (2026-10-17): never above max
+        if(h > 0){ pl.hq.hp += h; rebuild.push({type:'rebuild', side:sideOf(pid), defId:card.defId, uid:null, amount:h, n:Math.floor(Number(amt)||0), trigger:true, hp:pl.hq.hp, maxHp:pl.hq.maxHp}); } }
+    });
+    if(pl.perks && pl.perks.secondPitch) pl.perks.secondPitch = false; // Wildpath "Second Pitch": once a fight, a second pitch this turn
+    else pl.discardUsedThisTurn = true;
+    try{ firePitchTriggers(players, sideOf, pid, card.defId, stats, events); }catch(e){}
+    return {defId:card.defId, resource:y.resource, amount:y.amount, gained, darkPoints, discardGains, rebuild};
+  }
   // Penance N and Blood Tithe N (2026-10-16, Devilry; user: "Devilry 2 skills: hurting your own castle on play as payment. Also,
   // hurting a random ally on play as payment. Not sure of the name. Penance?"). Payments, not hits: no Bulwark, Armor, Shield or
   // Exposed counter takes part. Penance N: when played, your own castle loses N Health (never below 1: a payment can't lose you the
@@ -4290,15 +4340,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   const SHOT_KEYS = ['arrow', 'fireArrow', 'iceArrow', 'twinShot', 'volley', 'spitfire', 'snipe'].concat(Object.keys(BOLT_ELEMENTS));
   function hasShotSkill(c){ const fx = effectsOf(c); return SHOT_KEYS.some(k=> fx[k] && !(Number(fx[k]) < 0)); }
   function fireArrowVolley(players, sideOf, stats, events){ // every shooter at once (kept for callers outside the round order)
-    let fired = false;
+    let fired = false; const kc = {}; // 2026-10-18: its kills are credited
     [1,2].forEach(pid=>{
       if(passAttackerIds && !passAttackerIds.includes(pid)) return;
       const pl = players[pid]; if(!pl) return;
-      [...pl.row.left, ...pl.row.center, ...pl.row.right].forEach(c=>{ if(fireShotsOf(players, sideOf, pid, c, stats, events)) fired = true; });
+      [...pl.row.left, ...pl.row.center, ...pl.row.right].forEach(c=>{ if(fireShotsOf(players, sideOf, pid, c, stats, events, kc)) fired = true; });
     });
-    if(fired) removeDeadCards(players, sideOf, {}, stats, events);
+    if(fired) removeDeadCards(players, sideOf, kc, stats, events);
   }
-  function fireShotsOf(players, sideOf, pid, c, stats, events){
+  // killCredit (2026-10-18, engine parity): the book its kills go in, as a melee swing's do (kills, MVP, Crown of Thorns, Midas,
+  // On Kill). It was always null, so ~30 shooters never counted a kill. On-hit skills on shots are unchanged (an owner decision).
+  function fireShotsOf(players, sideOf, pid, c, stats, events, killCredit){
+    killCredit = killCredit || {};
     let fired = false;
     {
       const pl = players[pid]; if(!pl) return false;
@@ -4343,7 +4396,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(fx.snipe){ const opp0 = opposingCardOf(players, pid, c); if(!(opp0 && opp0.card && opp0.card.hp>0)){ const foes = allBoardCards(enemy).filter(x=> x.hp>0 && !x.cageOf);
           if(foes.length){ const t = foes[Math.floor(rnd()*foes.length)]; const amt = Number(fx.snipe === true ? 1 : fx.snipe)||1;
             if(recordEvents && events) events.push({type:'arrow', snipe:true, side: sideOf(pid), defId: c.defId, uid: c.uid, targetSide: sideOf(otherId(pid)), targetUid: t.uid, targetDefId: t.defId, amount: amt});
-            fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, null, c.uid, true); } } } }
+            fired = true; { const tg = {kind:'card', card: shieldCall(enemy, t) || t}; if(!helmetDeflects(tg, sideOf(otherId(pid)), events)) fireDamageAction(players, sideOf, pid, c.defId, amt, 'physical', tg, stats, events, killCredit, c.uid, true); } } } }
         if(headwindDouble(c, pid)) shots.push(...shots.map(x=> Object.assign({}, x))); // Headwind: skills twice
         shots.forEach(shot=>{
           if(!(c.hp > 0)) return;
@@ -4359,10 +4412,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
           fired = true;
           if(helmetDeflects(target, sideOf(otherId(pid)), events)) return;
           let hitCard = null; shotBounced = false;
-          if(shot.amount > 0 || target.kind !== 'card') hitCard = fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, null, c.uid, true); // true: a shot, Reflect bounces it (2026-10-17)
+          if(shot.amount > 0 || target.kind !== 'card') hitCard = fireDamageAction(players, sideOf, pid, c.defId, shot.amount > 0 ? shot.amount : shot.n, shot.dmgType, target, stats, events, killCredit, c.uid, true); // true: a shot, Reflect bounces it (2026-10-17)
           else { // a no-damage spit (Poison Bolt): it can still be dodged, and a Guardian still steps in
             const rf = reflectShotOf(players, sideOf, pid, target.card, events); // Reflect (2026-10-17): the spit bounces back at the spitter's side
-            if(rf){ if(rf.target.kind === 'hq') fireDamageAction(players, sideOf, rf.pid, rf.src.defId, shot.n, shot.dmgType, rf.target, stats, events, null, rf.src.uid);
+            if(rf){ if(rf.target.kind === 'hq') fireDamageAction(players, sideOf, rf.pid, rf.src.defId, shot.n, shot.dmgType, rf.target, stats, events, killCredit, rf.src.uid);
               else if(dodgeCheck(rf.target.card, rf.src.defId)) hitCard = redirectToGuardian(players[pid], rf.target.card);
               else if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(rf.pid), attDefId:rf.src.defId, attUid:rf.src.uid, targetSide:sideOf(pid), targetDefId:rf.target.card.defId, targetUid:rf.target.card.uid, ranged:true}); }
             else if(!dodgeCheck(target.card, c.defId)){ if(recordEvents && events) events.push({type:'evaded', reason:lastMissReason, side:sideOf(pid), attDefId:c.defId, attUid:c.uid, targetSide:sideOf(otherId(pid)), targetDefId:target.card.defId, targetUid:target.card.uid, ranged:true}); }
@@ -4966,13 +5019,127 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         return ends[Math.floor(rnd() * ends.length)];
       }
     }
-    if(rnd() < 0.75){
+    if(aiSmartest()) return aiChooseSlotSmartest(players, aiId, defId, legal); // 2026-10-18: the smartest CPU weighs every slot, no dice
+    if(!aiSmart()){ if(rnd() < 0.75){ // the basic CPU (aiLevel 0, 2026-10-18): the 2026-10-16 trade check, as it was
       const fights = legal.map(sl=>{ const f = across(sl); if(!f) return null;
         const kills = atk >= (f.hp || 0), lives = hp > (f.atk || 0);
         return (kills || lives) ? {sl, score: (kills ? 2 : 0) + (lives ? 1 : 0) + rnd() * 0.5} : null; }).filter(Boolean);
+      if(fights.length) return fights.reduce((a, b)=> b.score > a.score ? b : a).sl; }
+      return legal[Math.floor(rnd() * legal.length)]; }
+    if(rnd() < 0.75){
+      // 2026-10-18 (engine parity, R3-WP1): the field's rules count, mildly. A swing that will often miss (the dark, Sun-shy, Night-
+      // blind; an Illuminate unit facing it lights it) or that a Tide unit dodges (the Tide-evade rule: a non-swimmer facing a
+      // swimmer while the tide is in) is worth less; a swimmer facing a non-swimmer dodges back, so it out-lasts more often.
+      const myTide = isTideDef(d), tideOn = tideEvadeOn() && getTide() !== null;
+      const fights = legal.map(sl=>{ const f = across(sl); if(!f) return null;
+        let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide) hit *= 0.5;
+        const kills = atk >= (f.hp || 0) && hit > 0.5, lives = hp > (f.atk || 0) || (tideOn && myTide && !isTide(f) && hp * 2 > (f.atk || 0));
+        return (kills || lives) ? {sl, score: (kills ? 2 * hit : 0) + (lives ? 1 : 0) + rnd() * 0.5} : null; }).filter(Boolean);
       if(fights.length) return fights.reduce((a, b)=> b.score > a.score ? b : a).sl;
     }
     return legal[Math.floor(rnd() * legal.length)];
+  }
+  // Can this board unit swing at whatever faces it this round? (2026-10-18, the smartest CPU's look across the board.)
+  function aiCanSwing(c){ return !!c && (c.atk || 0) > 0 && !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !(c.asleep > 0) && !(c.paralyzed > 0) && !c.cageOf; }
+  // The smartest CPU's slot (2026-10-18, aiLevel 2). Every legal slot is scored, the best taken; ties go to the slot nearest the
+  // centre, then the left one (deterministic). For a slot facing one of your units:
+  //   focus: a Ready unit that kills it this round scores 3 plus a little for what the victim is worth (its Attack and Health), so
+  //     it takes the unit it can kill now, the best one first; a kill it can make later (it has Wait) still counts 1.5;
+  //   block: facing a unit that would otherwise hit its castle unopposed, it stops that hit: + the unit's Attack (more when its
+  //     castle is low), so it covers its weakest column, the one bleeding the most;
+  //   survival: a slot where the unit facing it kills it outright this round, while it can't kill first, costs 2.5, so it walks
+  //     into a slot like that only when nothing equal is left.
+  // An open column (nothing across) is worth its swing at the castle. The field's sight and Tide-evade rules count as for smart.
+  function aiChooseSlotSmartest(players, aiId, defId, legal){
+    const d = CARD_DEFS[defId] || {}, ai = players[aiId], foe = players[otherId(aiId)];
+    const atk = Number(d.attack) || 0, hp = Number(d.health) || 0, ready = !(Number(d.wait) > 0);
+    const myTide = isTideDef(d), tideOn = tideEvadeOn() && getTide() !== null, quick = !!((d.effects||{}).quick);
+    const myHq = ai.hq ? ai.hq.hp / Math.max(1, ai.hq.maxHp) : 1, blockW = myHq < 0.5 ? 0.6 : 0.3;
+    const score = sl=>{ const f = frontCardAt(foe, sl);
+      if(!f) return ready ? 0.8 + Math.min(atk, 8) * 0.1 : 0.4;
+      let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide) hit *= 0.5;
+      const kills = atk >= (f.hp || 0) && atk > 0 && hit > 0.5, killNow = kills && ready;
+      const theyHit = aiCanSwing(f), fAtk = Math.max(0, f.atk || 0) * (tideOn && myTide && !isTide(f) ? 0.5 : 1);
+      const dies = theyHit && fAtk >= hp && !(killNow && quick);
+      let s = killNow ? 3 + ((f.atk || 0) + (f.hp || 0) * 0.45) * 0.1 : kills ? 1.5 : 0;
+      if(theyHit) s += Math.min(fAtk, 8) * blockW; // the castle hit it stops
+      if(dies) s -= 2.5; else s += 0.5;
+      return s; };
+    let best = null;
+    legal.forEach(sl=>{ const s = score(sl);
+      if(!best || s > best.s + 1e-9 || (Math.abs(s - best.s) <= 1e-9 && (Math.abs(sl) < Math.abs(best.sl) || (Math.abs(sl) === Math.abs(best.sl) && sl < best.sl)))) best = {sl, s}; });
+    return best ? best.sl : null;
+  }
+  // The best of your units a Ready unit of this card could kill this round from a slot the CPU may take (its worth), else 0.
+  function aiBestKillNow(players, aiId, defId){
+    if(!slotMode) return 0; const d = CARD_DEFS[defId] || {}, atk = Number(d.attack) || 0; if(d.cardType || Number(d.wait) > 0 || atk <= 0) return 0;
+    const foe = players[otherId(aiId)]; let best = 0;
+    legalSlots(players[aiId]).forEach(sl=>{ const f = frontCardAt(foe, sl);
+      if(f && atk >= (f.hp || 0) && aiSightMissAt(defId, aiId, f) < 0.5){ const v = (f.atk || 0) + (f.hp || 0) * 0.45; if(v > best) best = v; } });
+    return best;
+  }
+  // Would this unit of the CPU's die to what faces it this round? (2026-10-18, the smartest CPU's Sacrifice timing.)
+  function aiDoomed(players, aiId, c){
+    if(!slotMode || !c) return false; const f = frontCardAt(players[otherId(aiId)], c.slot);
+    return aiCanSwing(f) && (f.atk || 0) >= (c.hp || 0) + (c.tempHp || 0);
+  }
+  // Which Dark Summon card to cast over which of its own Sacrifice N units (2026-10-18, see the call in aiTakeTurnOnce), or null.
+  // (2026-10-18, aiLevel 2: a unit that dies to what faces it this round is expendable too, so it is spent before it is lost.)
+  function aiSacrificePick(ai, cardValue, players){
+    const dark = ai.hand.filter(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon); if(!dark.length) return null;
+    const fodder = allLive(ai).filter(c=> !c.cageOf && !c.isLeader && Number((CARD_DEFS[c.defId].effects||{}).sacrifice) > 0); if(!fodder.length) return null;
+    const doomedToo = !!(players && aiSmartest());
+    const expendable = (f, newVal)=>{ const fd = CARD_DEFS[f.defId] || {}, hp = f.hp || 0;
+      return !!fd.token || hp <= 2 || hp <= (f.maxHp || hp) / 3 || ((f.poison||0) + (f.bleed||0)) >= hp || cardValue(f.defId) <= newVal * 0.6 || (doomedToo && aiDoomed(players, ai.id, f)); };
+    let best = null;
+    dark.forEach(hc=>{ const nv = cardValue(hc.defId), free = canPlay(ai, hc.defId, hc.uid);
+      fodder.forEach(f=>{ const n = Number(CARD_DEFS[f.defId].effects.sacrifice);
+        if(!canPlay(ai, hc.defId, hc.uid, n)) return;
+        const fv = cardValue(f.defId);
+        if(free ? !expendable(f, nv) : !(expendable(f, nv) || fv < nv)) return; // payable anyway: only an expendable unit is worth the saving
+        const key = [fv - (expendable(f, nv) ? 100 : 0), -nv, f.uid];
+        if(!best || key[0] < best.key[0] || (key[0] === best.key[0] && (key[1] < best.key[1] || (key[1] === best.key[1] && key[2] < best.key[2])))) best = {hc, fod: f, key}; }); });
+    return best;
+  }
+  // What a field card is worth to the CPU (2026-10-18, engine parity): its units that gain from it minus yours that do, plus yours
+  // that suffer minus its that do. > 0: play it. A field already up (or one this table doesn't know) is worth nothing.
+  function aiFieldWorth(players, aiId, defId){
+    const fid = ((CARD_DEFS[defId]||{}).field || {}).id; if(!fid || (field && field.id === fid)) return 0;
+    const me = allLive(players[aiId]).filter(c=> !c.cageOf), foe = allLive(players[otherId(aiId)]).filter(c=> !c.cageOf);
+    const sum = (arr, f)=> arr.reduce((t, c)=> t + (f(c) || 0), 0), flies = c=> !!effectsOf(c).flying;
+    if(fid === 'frozen'){ const hurt = c=> resistFactor(c.defId, 'cold') < 1 || climbs(c) ? 0 : (weaknessFactor(c.defId, 'cold') > 1 ? 2 : 1) * (c.wait > 0 ? 0.5 : 1); // a Ready unit loses a swing
+      return (foe.length ? sum(foe, hurt) / foe.length : 0) - (me.length ? sum(me, hurt) / me.length : 0); }
+    if(fid === 'heatwave'){ const hurt = c=> resistFactor(c.defId, 'heat') < 1 || climbs(c) ? 0 : (weaknessFactor(c.defId, 'heat') > 1 ? 2 : 1) + (c.hp <= 2 ? 1 : 0);
+      return sum(foe, hurt) - sum(me, hurt); }
+    if(fid === 'rain'){ const gain = c=> Math.min(2, (c.maxHp||0) - (c.hp||0)) + 0.5; return sum(me, gain) - sum(foe, gain); }
+    if(fid === 'fog'){ const swing = c=> flies(c) ? 0 : Math.max(0, c.atk||0); // fog makes the non-flyers miss 1 in 3
+      return (sum(foe, swing) - sum(me, swing)) / 3; }
+    if(fid === 'moon'){ const moon = c=>{ const e = effectsOf(c); return (e.moonborn || e.fullMoon || e.fullMoonGrant) ? 1 : 0; };
+      return sum(me, moon) + 0.5 * players[aiId].hand.filter(h=> moon({defId:h.defId})).length - sum(foe, moon); }
+    return 0;
+  }
+  // How often a unit of this card would swing blind at the slot facing f (2026-10-18; sightMiss's rules for a card not on the board
+  // yet: the dark, Sun-shy by day, Night-blind at night; an Illuminate unit on its side, or facing it, lights it).
+  function aiSightMissAt(defId, aiId, f){
+    const e = (CARD_DEFS[defId]||{}).effects || {}, pl = curPlayers && curPlayers[aiId];
+    const lit = illuminates(CARD_DEFS[defId]) || !!(pl && allLive(pl).some(c=> illuminates(CARD_DEFS[c.defId]))) || !!(f && illuminates(CARD_DEFS[f.defId]));
+    const ph = phaseActive() ? getPhase() : null, dk = rules.dark; let m = 0;
+    if(dk && !e.darksight && !lit) m = dk === 'absolute' ? 1 : dk === 'pitch' ? 0.5 : 0.25;
+    if(ph === 'day' && e.sunshy) m = Math.max(m, 0.5);
+    if(ph === 'night' && e.nightblind && !lit) m = Math.max(m, 0.5);
+    return m;
+  }
+  // The CPU's pitch (2026-10-18, engine parity): pitchCard, the same rules as the player's, after the 'discard' event the board
+  // shows (now with what it gave), then the On Discard Rebuild events.
+  function aiPitch(players, sideOf, aiId, hc, stats, events){
+    const y = pitchYieldOfDef(CARD_DEFS[hc.defId]);
+    if(recordEvents && events) events.push({type:'discard', side:sideOf(aiId), defId:hc.defId, resource:y.resource, amount:y.amount});
+    const onPitch = (recordEvents && events) ? [] : null; // the player's log order: discard, Dark Points, On Pitch, Rebuild
+    const r = pitchCard(players, sideOf, aiId, hc, stats, onPitch);
+    if(r && onPitch){
+      if(r.darkPoints > 0) events.push({type:'devilry', side:sideOf(aiId), defId:hc.defId, amount:r.darkPoints, pitch:true});
+      onPitch.forEach(ev=> events.push(ev)); r.rebuild.forEach(ev=> events.push(ev)); }
+    return r;
   }
   // Saving reach (2026-10-09): 2 turns. Saving further (or refusing smaller costly cards while saving)
   // cost the CPU more tempo than the big card won back under today's discard-only Lumber (decision B4).
@@ -4991,7 +5158,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // Skirmish leaders (2026-10-08): a skirmish can give the CPU optional leaders (reserveLeaders). Each can be
     // summoned once; the CPU brings one out now and then, or whenever it has nothing else it can play.
     const fieldCard = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field && canPlay(ai, hc.defId, hc.uid));
-    if(fieldCard && rnd() < 0.5) placeCard(players, sideOf, aiId, fieldCard.uid, 'left', stats, events);
+    // 2026-10-18 (engine parity, R3-WP1): in the game's own fights (aiAim) a field card goes down only when it helps the CPU's board
+    // more than yours (aiFieldWorth); the silent sims keep the old coin flip so their numbers stay comparable.
+    // 2026-10-18 (CPU difficulty): the basic CPU (aiLevel 0) keeps the old coin flip too; the smartest wants the field to be worth it
+    // (> 0.5), so a card that would barely help, or hurt it, waits in hand for its moment.
+    if(fieldCard && (aiSmart() ? aiFieldWorth(players, aiId, fieldCard.defId) > (aiSmartest() ? 0.5 : 0) : rnd() < 0.5)) placeCard(players, sideOf, aiId, fieldCard.uid, 'left', stats, events);
     if(ai.reserveLeaders && ai.reserveLeaders.length && !ai.playedThisTurn){
       const ready = ai.reserveLeaders.filter(id=> CARD_DEFS[id] && canPlay(ai, id, null));
       if(ready.length && (!affordable.length || rules.bossSurge || rnd() < 0.35)){ // a surging boss comes out the moment it can
@@ -5005,18 +5176,21 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // weakest other card to the Graveyard first (+1 Lumber, once a turn, same as a player), and once
     // a saved-for card is affordable it usually plays that instead of a random free one.
     const cardValue = id=>{ const d = CARD_DEFS[id] || {}; return (d.attack||0) + (d.health||0)*0.45 + Object.keys(d.effects||{}).length*1.5 + costOfCard(id)*2; };
+    // The pitch (2026-10-18, CPU difficulty): the basic and smart CPUs pitch their weakest card (cardValue); the smartest pitches the
+    // one least useful to it on this battlefield: a field card is kept for its moment (more so when it would help now), a unit that
+    // would swing blind here is worth less, a Tide unit with the tide in or a flyer in the wind more. No dice.
+    const useOf = hc=>{ const d = CARD_DEFS[hc.defId] || {}, e = d.effects || {}; let u = cardValue(hc.defId);
+      if(d.field) u += aiFieldWorth(players, aiId, hc.defId) > 0 ? 6 : 3;
+      else if(!d.cardType){ u -= aiSightMissAt(hc.defId, aiId, null) * 3; if(getTide() !== null && isTideDef(d)) u += 1.5; if(e.flying && (windMode() || rules.landslide)) u += 1; }
+      return u; };
+    const pitchPick = list=> aiSmartest() ? list.reduce((a, b)=> useOf(b) < useOf(a) ? b : a) : list.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
     if(!ai.discardUsedThisTurn && ai.hand.length > 1){
       const saving = ai.hand.filter(hc=> !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field) && costOfCard(hc.defId) > ai.lumber && costOfCard(hc.defId) <= ai.lumber + SAVE_REACH); // within two turns' reach: saving longer costs more tempo than the card gives back (tested 2026-10-09)
       if(saving.length){
         const pitchable = ai.hand.filter(hc=> !saving.includes(hc) && costOfCard(hc.defId) === 0 && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field));
         if(pitchable.length && (ai.hand.length >= 3 || !affordable.length)){
-          const worst = pitchable.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
-          ai.hand.splice(ai.hand.indexOf(worst), 1);
-          ai.graveyard.push({defId:worst.defId});
-          ai.lumber += 1;
-          ai.discardUsedThisTurn = true;
-          if(recordEvents && events) events.push({type:'discard', side:sideOf(aiId), defId:worst.defId});
-          firePitchTriggers(players, sideOf, aiId, worst.defId, stats, events); // On Pitch (2026-10-16)
+          const worst = pitchPick(pitchable);
+          aiPitch(players, sideOf, aiId, worst, stats, events); // 2026-10-18: the player's pitch rules (was a flat +1 Lumber)
         }
       }
     }
@@ -5030,9 +5204,18 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       if(near && rnd() < 0.8){ const others = ai.hand.filter(h=> h !== near); const food = others.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
         if(placeCard(players, sideOf, aiId, near.uid, rnd() < 0.5 ? 'left' : 'right', stats, events, {prayerOffer: food.uid})) return; }
     }
-    const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid) && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon));
-    const darkPick = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon && canPlay(ai, hc.defId, hc.uid));
-    if(darkPick) placeCard(players, sideOf, aiId, darkPick.uid, rnd() < 0.5 ? 'left' : 'right', stats, events);
+    // (aiAim, 2026-10-18: a field card is decided above, by aiFieldWorth, so the main play can't spend it anyway.)
+    const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid) && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon) && !(aiSmart() && CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field)); // (the basic CPU may still spend one as its play, as before)
+    // Sacrifice (2026-10-18, engine parity R3-WP1): the CPU never sacrificed (only the player's drag did, sacrificeSummon). Now, with
+    // a Dark Summon card in hand, it gives up one of its own Sacrifice N units for it when the unit is expendable (a token, nearly
+    // dead, poisoned or bleeding to death, or worth much less than the new card) and the discount makes the play possible or saves
+    // what it costs; else, it plays the card as before. No dice: the cheapest unit to lose, then the best card to gain.
+    { const sac = aiSacrificePick(ai, cardValue, players); // (a Dark Summon has its own allowance, darkPerTurn: not the turn's play)
+      if(!(sac && sacrificeSummon(players, sideOf, aiId, sac.hc.uid, sac.fod.uid, stats, events))){
+        const darkPick = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon && canPlay(ai, hc.defId, hc.uid));
+        if(darkPick){ let side = rnd() < 0.5 ? 'left' : 'right';
+          if(aiSmartest()){ const aim = aiChooseSlot(players, aiId, darkPick.defId); if(aim != null) side = aim; } // 2026-10-18: the smartest CPU aims it too
+          placeCard(players, sideOf, aiId, darkPick.uid, side, stats, events); } } }
     const hadPlay = playable.length && !ai.playedThisTurn;
     if(hadPlay){
       // 2026-10-10 (user: "they shouldn't just always play the cheapest card. If they have 1 1-lumber cost and 1 2-lumber
@@ -5047,13 +5230,24 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(foeHq < 0.35) v += (d.attack||0)*1.2 + (e.quick ? 4 : 0) + ((e.puncture||0) + (e.perforate||0))*2 + (e.overwhelm ? 3 : 0); // closing out: damage now
         if(foeFliers) v += (e.flying ? 2 : 0) + (e.reach ? 3 : 0) + ((e.antiAir || e.boomerang || e.bananarang) ? 3 + 2*foeFliers : 0);
         if(d.wait) v -= d.wait * (foeHq < 0.35 || myHq < 0.4 ? 2.5 : 1); // slow cards are worth less when it's urgent
+        // The field's rules (2026-10-18, engine parity; the game's own fights only, aiAim): mild nudges, so the CPU leans toward cards
+        // the battlefield helps. The tide in: Tide units (+Attack on Flood, Armor on Ebb). Wind: flyers get a Tailwind or Headwind.
+        // Landslide: flyers are above it. The dark, day or night: a unit that will swing blind is worth less. Arrow Slits: the walls
+        // pick off small units on the attackers' side (player 1).
+        if(aiSmart() && !d.cardType){ if(getTide() !== null && isTideDef(d)) v += 1.5; // (2026-10-18: smart and smartest only)
+          if(e.flying && (windMode() || rules.landslide)) v += 1;
+          v -= aiSightMissAt(id, aiId, null) * 3;
+          if(rules.arrowSlits && aiId === 1 && (d.health||0) <= fxN(rules.arrowSlits, 2)) v -= 1; }
         // Spells (2026-10-11): worth what they'd do right now; nothing to do means don't cast it.
         if(d.cardType === 'spell'){ const sp = d.spell || {}, n = Number(sp.amount)||0;
           const gain = (sp.do==='hasten' || sp.do==='tailwind') ? mine.reduce((t, c)=> t + Math.min(n, c.wait||0), 0) * 3 + (sp.do==='tailwind' ? mine.filter(c=> ((CARD_DEFS[c.defId]||{}).effects||{}).flying).length * 4 : 0)
             : sp.do==='mend' ? mine.reduce((t, c)=> t + Math.min(n, (c.maxHp||0) - (c.hp||0)), 0) * 0.8
             : sp.do==='sap' ? foes.reduce((t, c)=> t + Math.min(n, c.atk||0), 0) * 2 : 0;
           v = gain > 0 ? gain : -99; }
-        return v + rnd()*1.5;
+        // Focus (2026-10-18, the smartest CPU): a Ready unit that can kill one of your units this round from a slot it may take is
+        // worth more (the better the victim, the more), and its pick is steadier (less noise).
+        if(aiSmartest() && !d.cardType){ const kv = aiBestKillNow(players, aiId, id); if(kv > 0) v += 1.5 + kv * 0.1; }
+        return v + rnd()*(aiSmartest() ? 0.5 : 1.5);
       };
       const scored = playable.map(hc=> [hc, situational(hc.defId)]);
       const best = scored.reduce((a, b)=> b[1] > a[1] ? b : a);
@@ -5074,14 +5268,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const need = hc=> costOfCard(hc.defId) - (ai.lumber||0);
       const target = ai.hand.length > 1 ? ai.hand.reduce((a, b)=> (need(b) < need(a) || (need(b) === need(a) && cardValue(b.defId) > cardValue(a.defId))) ? b : a) : null;
       const pool = ai.hand.filter(hc=> hc !== target);
-      const worst = pool.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
-      const idx = ai.hand.indexOf(worst);
-      const [dc] = ai.hand.splice(idx,1);
-      ai.graveyard.push({defId:dc.defId});
-      ai.lumber += 1; // 2026-09-22: this simple sim-AI discard income now matches the real Lumber-discard economy (was a stale hardcoded Gold grant)
-      ai.discardUsedThisTurn = true;
-      if(recordEvents && events) events.push({type:'discard', side:sideOf(aiId), defId:dc.defId});
-      firePitchTriggers(players, sideOf, aiId, dc.defId, stats, events); // On Pitch (2026-10-16)
+      const worst = pitchPick(pool);
+      aiPitch(players, sideOf, aiId, worst, stats, events); // 2026-10-18: the player's pitch rules (was a flat +1 Lumber)
     } else if(!ai.hand.length){
       // 2026-09-25 (explicit user request, "when he runs out of cards, he just plays Bee
       // Tanks"): a completely empty hand used to mean the AI did nothing at all that turn —
@@ -5518,12 +5706,36 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(fire) runCustomTriggers(players, sideOf, pid, c, {effects:{triggers:[Object.assign({}, ch.act, {on:'onCharge'})]}}, 'onCharge', stats || {}, events); }); });
   }
   // Repeats the pass while something is still at 0 HP (Divine Retribution can kill during a pass), at most 6 times.
+  // 2026-10-18 (engine parity, R3-WP1): On Kill fires here now, for every kill this sweep settles (once per killer card, as before),
+  // so a kill by a shot, a bolt, a missile, an area skill or an arrival strike fires its On Kill too, not only a melee swing's.
+  // It used to fire only from the round's reflowAfterKills, so every other sweep (the shot actions, the upkeep, the skills) let
+  // the kill pass with no On Kill and, with an empty book ({}), no kill counted either. Returns the killers' stat keys.
   function removeDeadCards(players, sideOf, killCredit, stats, events){
+    const kills = new Set(), book = killCredit || {};
     for(let guard=0; guard<6; guard++){
-      removeDeadCardsPass(players, sideOf, killCredit || {}, stats, events);
+      removeDeadCardsPass(players, sideOf, book, stats, events, kills);
       if(![players[1], players[2]].some(pl=> pl && allBoardCards(pl).some(c=> c.hp<=0))) break;
     }
     exposeLonely(players, sideOf, events); // 2026-10-17: the last enemy unit just fell, so Expose has nothing left to strike for
+    if(kills.size) fireOnKillTriggers(players, sideOf, kills, stats, events);
+    return kills;
+  }
+  // On Kill: every live card whose side|defId is among the keys just credited (the old reflowAfterKills loop, unchanged).
+  function fireOnKillTriggers(players, sideOf, keys, stats, events){
+    [players[1], players[2]].forEach(pl=> pl && ['left','center','right'].forEach(side=> pl.row[side].slice().forEach(c=>{
+      if(!c || !(c.hp > 0)) return;
+      if(keys.has(statKey(sideOf(pl.id), c.defId))) runCustomTriggers(players, sideOf, pl.id, c, CARD_DEFS[c.defId], 'onKill', stats || {}, events);
+    })));
+  }
+  // The killer of a unit no kill-credit book names (2026-10-18): the unit whose blow took it to 0 (noteKiller), when that unit is
+  // on the other side. A unit killed by its own side (friendly fire) or by nobody (poison, the weather) gives no kill.
+  function killerCreditOf(players, sideOf, pl, card){
+    if(card.killedBy == null) return null;
+    let pid = null, defId = card.killedByDef || null;
+    for(const q of [1,2]){ const k = players[q] && allBoardCards(players[q]).find(x=> x && x.uid === card.killedBy); if(k){ pid = q; defId = defId || k.defId; break; } }
+    if(pid == null) pid = card.killedByPid;
+    if(pid == null || pid === pl.id || !defId) return null;
+    return new Set([statKey(sideOf(pid), defId)]);
   }
   // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades
   // off."): Expose counters only mean something while someone across the board can cash them in. Whenever one side has no live
@@ -5534,7 +5746,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       allLive(me).forEach(c=>{ if(!(c.exposed > 0)) return; const had = c.exposed; c.exposed = 0;
         if(recordEvents && events){ const sd = sideOf ? sideOf(pid) : (pid===1 ? 'A' : 'B'); events.push({type:'statusFx', kind:'exposeFade', side:sd, targetSide:sd, targetUid:c.uid, targetDefId:c.defId, amount:had}); } }); });
   }
-  function removeDeadCardsPass(players, sideOf, killCredit, stats, events){
+  function removeDeadCardsPass(players, sideOf, killCredit, stats, events, kills){
     const p1=players[1], p2=players[2];
     const deadEntries = [];
     [p1,p2].forEach(pl=>{
@@ -5555,9 +5767,14 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // would die after that, it skips the graveyard entirely and goes straight to the
       // Removal Zone instead (see the graveyard-vs-exile decision below) — a real, final death.
       if(cdef.effects && cdef.effects.revive && !card.revivedOnce && !card.nullified){ // a Nullify kill: no Revive (2026-10-14)
+        // 2026-10-18 (owner, 10:33: "Kill answered by revive still triggers On Kill"): the killer's On Kill still fires for a kill
+        // that Revive answers, as it did before R3-WP1 (still no kill stat, Crown or Midas: the unit didn't die). Its book entry is
+        // spent here, so the unit's real death later is credited to whoever lands that blow.
+        { const rc = killCredit[card.uid] || killerCreditOf(players, sideOf, pl, card);
+          if(rc && kills) rc.forEach(k=> kills.add(k)); delete killCredit[card.uid]; }
         card.revivedOnce = true;
         card.hasRemovalCounter = true;
-        card.hp = 1; card.killedBy = null;
+        card.hp = 1; card.killedBy = null; card.killedByDef = null; card.killedByPid = null;
         card.poison = 0; card.decay = 0; card.exposed = 0; card.scar = 0; card.stunned = false;
         card.frozen = 0; card.asleep = 0; card.paralyzed = 0; card.bleed = 0;
         card.shellArmor = 0; card.shellSkip = false; card.shellNext = 0; card.tempHp = 0; card.shellUntil = null; card.shellQuiet = null;
@@ -5569,7 +5786,8 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // D20 (2026-10-12): Darkness from your own losses stops at 10, so a deck can't farm it with cheap chaff (cards that
       // make Darkness on purpose still go past it).
       perishedTotal += 1; if((pl.devilry||0) < 10) pl.devilry = (pl.devilry||0) + 1;
-      const credit = killCredit[card.uid];
+      let credit = killCredit[card.uid];
+      if(!credit){ credit = killerCreditOf(players, sideOf, pl, card); if(credit) killCredit[card.uid] = credit; } // 2026-10-18: any path that named its attacker
       const bounty = bountyOf(cdef); // Bounty N (2026-10-15)
       const deathEv = {type:'death', side:mySide, defId:card.defId, uid:card.uid}; if(card.nullified) deathEv.nullified = true; // 2026-10-15: the replay shows a Nullify kill / exile its own way
       if(recordEvents && events) events.push(deathEv);
@@ -5579,6 +5797,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         const sidesCredited = new Set();
         credit.forEach(key=>{
           const parts = key.split('|');
+          if(kills) kills.add(key); // 2026-10-18: removeDeadCards fires On Kill for these
           ensureStat(stats, parts[0], parts[1]).kills += 1;
           sidesCredited.add(parts[0]);
           { const kp = players[parts[0]==='A' ? 1 : 2]; if(kp && kp.perks && kp.perks.crown){ // Wildpath "Crown of Thorns": the killer gains +1 Attack
@@ -6084,16 +6303,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // resolution, which would make them invisible to a same-call snapshot), not the whole
     // round's worth at once, so "just got a kill" reads as immediate too, not deferred to
     // round-end.
+    // 2026-10-18 (engine parity): removeDeadCards fires On Kill itself now, for exactly the kills it settles (see its comment), so
+    // a kill cleared by an earlier sweep with another book can't fire it twice. beforeKeys is kept for the callers; unused.
     function reflowAfterKills(beforeKeys){
       removeDeadCards(players, sideOf, killCredit, stats, events);
-      const newlyCredited = new Set();
-      Object.entries(killCredit).forEach(([uid,set])=>{ if(!beforeKeys.has(uid)) set.forEach(k=>newlyCredited.add(k)); });
-      if(newlyCredited.size){
-        [players[1], players[2]].forEach(pl=> ['left','center','right'].forEach(side=> pl.row[side].forEach(c=>{
-          const key = statKey(sideOf(pl.id), c.defId);
-          if(newlyCredited.has(key)) runCustomTriggers(players, sideOf, pl.id, c, CARD_DEFS[c.defId], 'onKill', stats, events);
-        })));
-      }
     }
     // Frenzy (2026-09-16, Bramblewood's take on Tyrant Unleashed's "Flurry"): an attacker with
     // this keyword that's still alive after its swing gets one more full attack this same round,
@@ -6110,7 +6323,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       pending = null;
       if(a.att.hp<=0){ pending = pickNextAttacker(); continue; }
       if(a.shot){ // 2026-10-17: this shooter's Speed 1 shot action; its kills are cleared away before the next action, like a swing's
-        if(fireShotsOf(players, sideOf, a.attId, a.att, stats, events)) removeDeadCards(players, sideOf, {}, stats, events);
+        if(fireShotsOf(players, sideOf, a.attId, a.att, stats, events, killCredit)) reflowAfterKills(null); // 2026-10-18: its kills credited like a swing's (was an empty book)
         pending = (p1.hq.hp<=0 || p2.hq.hp<=0) ? null : pickNextAttacker(); continue; }
       if(a.reserve){ // 2026-10-18 (RESERVE_ACTS): a reserve unit's action (its half-Attack strike at its column, or its Wait counting down)
         if(reserveStrike(players, sideOf, a.attId, a.att, a.reserve, a.slot, stats, events) >= 0) reflowAfterKills(new Set(Object.keys(killCredit)));
@@ -6806,7 +7019,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+  return { tideEvadeOn, setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(2, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){

@@ -87,7 +87,10 @@ run node tests/raid-stages-2026-10-18.js   # 2026-10-18 (R3-WP2): each raid stag
 run node tests/raid-fixes-2026-10-18.js    # 2026-10-18 (package R): every row acts column by column, the raid's clock and end, castles can't be shocked, "& Co."
 run node tests/i18n-templates-2026-10-18.js   # 2026-10-18 (I1): placeholder texts translate as templates in all 12 packs
 run node tests/steam-ach-2026-10-18.js   # 2026-10-18 (package C): Steam achievement ids pass steam.js's check, each is unlocked somewhere and listed in the platform roadmap
+run node tests/engine-parity-2026-10-18.js   # 2026-10-18 (R3-WP1): shot and skill kills credited (kills, On Kill, Midas, Crown), one pitchCard for both seats, the CPU's Sacrifice, field-card and slot heuristics
 run node tests/polish-2026-10-18.js   # 2026-10-18 (R3-WP6): the Spire's summit card, the Spire / Long Burrow backdrops, dead keys gone, inventory rows live
+run node tests/maps-2026-10-18.js   # 2026-10-18 (V3): Lilypad Reach waits on Gatorback Swamp (old saves keep it); dark maps' screen layer leaves the canvas to the canvas layer
+run node tests/visuals-2026-10-18.js   # 2026-10-18 (V1): the standing Tide, no tide chip, chilled flyers' frame and half hover, idle glance, smaller cliff gulls
 run node tests/game-texts.js   # 2026-10-15: TX keys + the docs/game-texts.xlsx export/import round trip (~45 s)
 if [[ "${1:-}" == "--e2e" ]]; then run python3 tests/e2e/live_two_player.py; run python3 tests/e2e/ui_smoke.py; run python3 tests/e2e/flows.py; run python3 tests/e2e/snaps.py; run python3 tests/e2e/i18n.py; run python3 tests/e2e/hero.py; run python3 tests/e2e/rarity_limit_craft.py; run python3 tests/e2e/a11y.py; fi
 if [[ $fail == 0 ]]; then echo "ALL PASSED"; else echo "SOME SUITES FAILED"; fi

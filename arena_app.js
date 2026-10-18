@@ -6581,7 +6581,7 @@ function abilityBadges(d, bopts){
   if(e.revive){ const lv = bopts && bopts.live, used = !!(lv && lv.uid != null && (()=>{ try{ const lc = currentCardByUidSafe(lv.uid); return lc && lc.revivedOnce; }catch(err){ return false; } })());
     out.push(lv ? `<span class="ab-revive ab-revive-label${used ? ' is-used' : ''}" title="${used ? 'Revive: used, it already came back once' : 'Revive: comes back once'}">${iconHTML('revive', '↺')}<b>Revive</b></span>` : `<span class="ab-revive" title="Revive: comes back once">${iconHTML('revive', '↺')}</span>`); }
   { const lt = (e.tide || e.swimmer) && bopts && bopts.live ? liveTideState(e) : null; // live: blue, and its title says what the tide gives now (2026-10-14)
-    if(e.tide) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}" title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${iconHTML('tide', '🌊')}</span>`);
+    if(e.tide) out.push(`<span class="ab-tide${lt ? ' tide-live tide-' + lt.k : ''}" title="${lt ? escapeAttr(lt.name + ' – ' + lt.bonus) : 'Tide'}">${lt && lt.k === 'ebb' ? iconHTML('tide-ebb', '🐚') : iconHTML('tide', '🌊')}</span>`); // 2026-10-18 (owner: "So on flood, it's wave. On ebb, it's shell.")
     if(e.swimmer) out.push(lt ? `<span class="ab-tide tide-live tide-${lt.k}" title="${escapeAttr('Swimmer – ' + (lt.k === 'ebb' ? 'Ebb' : lt.k === 'high' ? 'High Tide' : 'On Tide') + ', ' + lt.bonus)}">${iconHTML('swimmer', '🏊')}</span>` : `<span title="${escapeAttr(swimmerLine(e))}">${iconHTML('swimmer', '🏊')}</span>`); } // 2026-10-15: titled Swimmer, not Tide
   if(e.rainmaker) out.push(`${iconHTML('rainmaker', '🌧️')}`); if(e.rainrunner) out.push(`${iconHTML('rainrunner', '🌦️')}${n1(e.rainrunner)}`); if(e.moonborn) out.push(`${iconHTML('moonborn', '🌕')}${n1(e.moonborn)}`); if(e.frostbite) out.push(`${iconHTML('frostbite', '🥶')}${n1(e.frostbite)}`);
   // 2026-10-12 (23:12, user: "The espirit and rally symbols should be shown on the bottom of the card too").
@@ -14062,7 +14062,10 @@ function subMapEntrancesHTML(map, progress){
     const open = isMapUnlocked(sm, progress), after = sm.entry.after && map.nodes.find(n=> n.key===sm.entry.after);
     const fightable = sm.nodes.filter(n=> n.kind!=='tutorial'), done = fightable.filter(n=> progress.completed.includes(conquestNodeId(sm.id, n.key))).length;
     const seen = !!loadDialogueFlags()['submap_seen:'+sm.id];
-    const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
+    // 2026-10-18 (owner: Lilypad Reach waits on Gatorback Swamp): an entrance gated on another map names that map ("Clear
+    // Gatorback Swamp to open"); that map is always further down the road than the entrance's own fight.
+    const gateMap = !open && sm.entry.afterMapCleared && !conquestMapCleared(sm.entry.afterMapCleared) ? CONQUEST_MAPS.find(m=> m.id===sm.entry.afterMapCleared) : null;
+    const tip = open ? `${sm.name} — ${done}/${fightable.length} cleared` : gateMap ? `${sm.entry.label || 'A cave'} — Clear ${gateMap.name} to open` : `${sm.entry.label || 'A cave'} — clear ${after ? after.name : 'more of this map'} to find a way in`;
     const p = decorPos(map.id, '~sub:'+sm.id, {x: sm.entry.x, y: sm.entry.y});
     // 2026-10-12 (user: "For those submaps whose maps are not caves - change the map icon/logo to be more representative.
     // Lilypad reach should be a lotus flower. and just that!"): only the real caves keep the rock and cave mouth; every other
@@ -14409,6 +14412,28 @@ function leavesRevealToMap(){
 // Save publishes live for everyone (card_overrides) when you're a cloud admin. ➕ New skirmish adds
 // a node to the map (place it with 📐 Edit layout). ----
 const SKIRMISH_KINDS = ['skirmish','elite','champion','miniboss','subboss','boss','dungeon','worldboss','raidboss','megaraid','finalboss'];
+// CPU difficulty (2026-10-18, owner 10:33: "Let me select the difficulty in the skirmish editor. The Smarter CPU can act in Map5+,
+// in elite missions and bosses. At Map 21+, all maps use the smartest CPU."). The engine's opts.aiLevel: 0 Basic (the CPU before
+// 2026-10-18), 1 Smart (it reads the battlefield), 2 Smartest (it also focuses kills, blocks, holds field cards, pitches better).
+// Auto, by the map number (mapNumberOf; a side map counts as its parent): Maps 0–4 Basic; Map 5+ Smart in every fight that isn't
+// an ordinary skirmish (elite, champion, mini-boss, sub-boss, boss, dungeon, world boss, raid, campaign boss), Basic in the
+// ordinary ones; Map 21+ Smartest everywhere. The Babel Spire (owner decision, a default): Smart below floor 25, Smartest from
+// it. Edit skirmish → Difficulty (node.ai: 'basic' | 'smart' | 'smartest') overrides Auto. Fights off the road keep the engine's
+// default, Smart (Arena vs AI, Gauntlet, PvP ghosts, raids, the old Dungeon run); the tutorial is Basic (cpuAiLevelOfMatch).
+const CPU_AI_KEYS = ['basic', 'smart', 'smartest'];
+const CPU_AI_LABEL = {basic:'Basic', smart:'Smart', smartest:'Smartest'};
+const CPU_SMART_FROM_MAP = 5, CPU_SMARTEST_FROM_MAP = 21, SPIRE_SMARTEST_FROM_FLOOR = 25;
+const CPU_SMART_KINDS = new Set(['elite','champion','miniboss','subboss','boss','dungeon','worldboss','raidboss','megaraid','finalboss']);
+function cpuAiAutoLevel(mapId, node){
+  if(!node) return 1;
+  if(node.tower) return (Number(node.floor) || 0) >= SPIRE_SMARTEST_FROM_FLOOR ? 2 : 1;
+  const n = mapNumberOf(mapId); if(n == null) return 1;
+  if(n >= CPU_SMARTEST_FROM_MAP) return 2;
+  return n >= CPU_SMART_FROM_MAP && CPU_SMART_KINDS.has(node.kind || 'skirmish') ? 1 : 0;
+}
+function cpuAiLevelForNode(mapId, node){ const k = node && CPU_AI_KEYS.indexOf(node.ai); return k >= 0 ? k : cpuAiAutoLevel(mapId, node); }
+function cpuAiLevelOfMatch(m){ if(!m) return 1; if(m.aiLevel != null) return m.aiLevel; return m.mode === 'tutorial' ? 0 : 1; }
+function cpuAiPillHTML(level){ const k = CPU_AI_KEYS[level] || 'smart'; return `<div class="vs-ai-pill is-${k}" title="How the CPU plays this fight">🧠 ${CPU_AI_LABEL[k]} CPU</div>`; }
 function nodePatchFor(mapId, key){ const e = nodeEdits[mapId] = nodeEdits[mapId] || {}; e.patches = e.patches || {}; e._localAt = Date.now(); return e; } // _localAt: see applyCloudNodeEdits
 function isAddedNode(mapId, key){ return ((nodeEdits[mapId]||{}).added||[]).some(n=> n.key===key); }
 function addSkirmishToMap(mapId){
@@ -15215,6 +15240,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
           <label title="An uneven cycle (2026-10-17, the volcano's glow: Day 4, Night 2). Blank: the map's own (the volcano maps 4 and 2), else Switch every">Day / Night<input id="sePhaseDay" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseDay != null ? escapeAttr((draft.rules||{}).phaseDay) : ''}"> / <input id="sePhaseNight" type="number" min="1" max="9" placeholder="–" style="width:46px" value="${(draft.rules||{}).phaseNight != null ? escapeAttr((draft.rules||{}).phaseNight) : ''}"> rounds</label>
           <label title="Cards each side may play a turn. The side playing second gets N extra cards, N-1 castle Health and N-2 Lumber">Actions per turn<input id="seActions" type="number" min="1" max="5" placeholder="1" value="${(draft.rules||{}).actions != null ? escapeAttr((draft.rules||{}).actions) : ''}"></label>
           <label>When out of moves<select id="seBehaviour">${opt('', draft.enemyBehaviour, 'Auto')}${opt('surrender', draft.enemyBehaviour, 'Surrenders')}${opt('offerDraw', draft.enemyBehaviour, 'Offers a draw')}${opt('neverSurrender', draft.enemyBehaviour, 'Never gives up')}</select></label>
+          ${'' /* CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor"): Auto follows the map rule (cpuAiAutoLevel) */}<label title="How the CPU plays this fight. Auto: Basic on Maps 0–4; from Map 5 Smart in elite and boss fights (Basic in ordinary skirmishes); from Map 21 Smartest everywhere; the Babel Spire Smart, Smartest from floor 25">Difficulty<select id="seAi">${opt('', draft.ai, 'Auto (' + CPU_AI_LABEL[CPU_AI_KEYS[cpuAiAutoLevel(mapId, draft)]] + ')')}${CPU_AI_KEYS.map(k=> opt(k, draft.ai, CPU_AI_LABEL[k] + ' CPU')).join('')}</select></label>
           <label title="What this fight keeps putting out once it has no cards left">Out of cards, summons<select id="seLoop">${Object.entries(LOOP_PRESETS).map(([k, p])=> opt(k === '-' ? '' : k, draft.loopUnits || '', p.label)).join('')}</select></label>
         </fieldset>
         ${draft.kind === 'tutorial' ? '' : (()=>{ const chips = skirmishFieldChips(mapId, draft);
@@ -15283,7 +15309,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
       const v = id=> (document.getElementById(id)||{}).value;
       draft.name = v('seName') || draft.name; draft.icon = v('seIcon') || draft.icon; if(draft.kind !== 'tutorial') draft.kind = v('seKind');
       draft.flavor = v('seFlavor')||'';
-      ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue','seLoop'][i]); if(val) draft[k] = val; else delete draft[k]; });
+      ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','ai'].forEach((k,i)=>{ const val = v(['seChar','seMode','seBehaviour','seReveal','seDialogue','seLoop','seAi'][i]); if(val) draft[k] = val; else delete draft[k]; }); // + ai, the CPU difficulty (2026-10-18)
       { const ph = v('sePhase'), pl = v('sePhaseLen'); const r = Object.assign({}, draft.rules||{}); delete r.phase; delete r.phaseLen;
         if(ph){ r.phase = ph; if(pl !== '' && pl != null && (ph==='cycle' || ph==='nightFirst')) r.phaseLen = Math.max(1, Math.min(9, Math.round(Number(pl)||3))); }
         { delete r.phaseDay; delete r.phaseNight; const pd = v('sePhaseDay'), pn = v('sePhaseNight'); // uneven Day/Night (2026-10-17)
@@ -15407,7 +15433,7 @@ function openSkirmishEditor(mapId, nodeKey, draftOverride){
         // the map sets on it as it stands (secret, fixedPos, the resolved links' stash…) are never saved into the edit.
         const base = designedNodeBase(mapId, draft.key), secret = !!secretEntryOf(mapId, draft.key);
         const patch = {}; Object.keys(draft).forEach(k=>{ if(k.charAt(0) === '_' || (secret && SECRET_RUNTIME_FIELDS.includes(k))) return; if(JSON.stringify(draft[k])!==JSON.stringify(base[k])) patch[k] = draft[k]; });
-        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
+        ['characterId','battleMode','enemyBehaviour','revealDeck','dialogue','loopUnits','rewards','requiresAny','leaders','armour','armourLayers','cardLevels','rules','rating','leaderGrant','ai'].forEach(k=>{ if(!(k in draft) && (k in base)) patch[k] = null; });
         if(Object.keys(patch).length) e.patches[draft.key] = patch; else delete e.patches[draft.key];
       }
       nodeEdits[mapId]._localAt = Date.now(); persistNodeEdits(); applyNodeEdits();
@@ -16573,7 +16599,7 @@ function saveAndExitAsyncMatch(){ SoundKit.stopAll(); saveAsyncMatchState(); mat
    Quitting on purpose (or finishing) clears it. Async Arena keeps its own separate save. ---- */
 const RESUME_KEY = 'bramblewood_resume_match_v1';
 const RESUMABLE_MODES = new Set(['ai','conquest','gauntlet','tutorial','pvp']);
-const RESUME_FIELDS = ['players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks'];
+const RESUME_FIELDS = ['aiLevel','players','stats','round','selectedUid','deckTotals','leaderDefId','leaderUid','mode','conquestNode','battleMode','gladiatorLeaderDefs','tutorialStage','tutorialFaction','tutorialArrangedIds','gauntletWins','opponentName','speedMult','pvpGhost','pvpStage','asyncGhost','asyncStage','enemyBehaviour','drawOffered','discoveredThisMatch','caged','arenaRuleset','standard','dungeonKeyStaked','cardLooks'];
 function saveResumeSnapshot(){
   const m = matchState;
   if(!m || !RESUMABLE_MODES.has(m.mode) || m.resolving) return;
@@ -17080,7 +17106,9 @@ const CONQUEST_MAPS = [
     ]},
   // Fused in as a side map (2026-10-12, user's map list: "Fuse mp in").
   // Lilypad Reach (2026-10-11, the 0–20 road: built from existing cards; rewards are cards that had no home; castle HP set by tools/retune_all.js)
-  { id:"mp", sub:true, parent:"mb", entry:{x:30, y:20, after:"2-1", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
+  // 2026-10-18 (owner: "Just too many sub missions so early ... Lock it till Gatorback Swamp is completed"): the entrance stays
+  // where it is on Pebble Beach but waits on Gatorback Swamp (afterMapCleared). A save that already fought here keeps it open.
+  { id:"mp", sub:true, parent:"mb", entry:{x:30, y:20, after:"2-1", afterMapCleared:"mw", label:"The lily ponds"}, name:"Lilypad Reach", icon:"🪷", blurb:"A wide, still pond full of lily pads, beaver dams and very territorial ducks.", sequential:true,
     nodes: [
       { key:"2-A-1", kind:"skirmish", name:"Lily Hop", icon:"🐸", deck:{"puddle-hopper":3,"minnow-skitter":3,"guppy":3,"quill-volley":2,"lotus-frog":2,"shallows-fry":2}, hqHp:19, rules:{"tide":true}, flavor:"Every lily pad has a frog on it, and every frog has an opinion.", requires:[] },
       { key:"2-A-2", kind:"skirmish", name:"Duck Row", icon:"🦆", deck:{"duckling":1,"pond-duck":3,"pond-paddler":2,"minnow-skitter":2,"silver-minnow":2}, hqHp:28, rules:{"tide":true}, flavor:"They paddle in a line, and they all turn at once.", requires:["2-A-1"] },
@@ -18380,7 +18408,7 @@ function mapLayoutToolbarHTML(map){
 // Map edits list (2026-10-07, editor audit: "no overview of what's been changed on a map"): every
 // skirmish edit, added skirmish and the custom layout, each revertible, plus Revert all. Deleted
 // keys stay retired after a revert so an old key's progress never carries over to a new skirmish.
-const SE_FIELD_LABEL = {armour:'Skirmish Armour', armourLayers:'bonus health layers', cardLevels:'card levels', leaders:'leaders', name:'name', icon:'icon', kind:'kind', hqHp:'castle Health', flavor:'flavour', deck:'enemy deck', requires:'requirements', characterId:'castle', battleMode:'battle mode', enemyBehaviour:'out-of-moves behaviour', revealDeck:'deck reveal', dialogue:'dialogue', rewards:'rewards'};
+const SE_FIELD_LABEL = {armour:'Skirmish Armour', armourLayers:'bonus health layers', cardLevels:'card levels', leaders:'leaders', name:'name', icon:'icon', kind:'kind', hqHp:'castle Health', flavor:'flavour', deck:'enemy deck', requires:'requirements', characterId:'castle', battleMode:'battle mode', enemyBehaviour:'out-of-moves behaviour', ai:'CPU difficulty', revealDeck:'deck reveal', dialogue:'dialogue', rewards:'rewards'};
 function mapEditList(map){
   const e = nodeEdits[map.id] || {}, out = [];
   const nodeName = k=> { const n = map.nodes.find(x=> x.key===k); return n ? `${n.icon||''} ${n.name}`.trim() : k; };
@@ -22319,7 +22347,8 @@ function startConquestMatch(mapId, nodeKey, opts){
   try{ noteMapEnteredForReveal(mapId); }catch(e){} // 2026-10-15: entering Map N reveals the skills gated there (SKILL_REVEAL)
   const fightSession = takeFightTicket('conquest', mapId + ':' + nodeKey);
   matchDefsOverlay = {}; const levelledDeck = levelledEnemyDeck(node, node.deck); matchLeaderGrantMap = prepareLeaderGrants(node);
-  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node)}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
+  const aiLevel = cpuAiLevelForNode(mapId, node); // the CPU's difficulty (2026-10-18): Edit skirmish's pick, else the map rule
+  const engine = makeSimEngine(getCardDefs(), nextMatchRng(), {recordEvents:true, battleMode, rules: fightRules(mapId, node), aiLevel}); // node.rules (2026-10-10): a fight can set its own phase / Lumber / field rules
   const sideOf = id=> id===1?'A':'B';
   const myCharacter = myCastleDef();
   const enemyCharacter = skirmishCastle(node).character;
@@ -22348,7 +22377,7 @@ function startConquestMatch(mapId, nodeKey, opts){
   if(node.floor > 1 && !node.tower) players[2].perks = Object.assign({}, players[2].perks || {}, {floorPct: (node.floor - 1) * 0.04}); // endless dungeon floors (the Tower's strength is its levels instead, 2026-10-16)
   if(node.rules && node.rules.actions > 1 && engine.applySecondPlayerBonus) engine.applySecondPlayerBonus(players[2], 'B', stats, []); // Actions per turn (2026-10-11): the side playing second is compensated
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
-    mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
+    mode:'conquest', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, aiLevel,
     conquestNode:{mapId, nodeId:nodeKey, kind:node.kind, name:node.name},
     fightSession, transcript: [], dungeonKeyStaked: !!dungeonKeyStaked,
     battleMode,
@@ -22497,6 +22526,7 @@ function showVersusOpener(map, node, myChar, enemyChar){
       <div class="vs-name">${escapeHtml(node.name)}</div>
       <div class="vs-people">${(()=>{ const pp = PEOPLES[node.people || peopleOfDeck(node.deck)] || PEOPLES.folk; return pp.icon + ' ' + escapeHtml(pp.name); })()}</div>
       <div class="vs-sub">${castleLineText(node)}</div>
+      ${(()=>{ try{ const lv = cpuAiLevelForNode(map && map.id, node); return (isBoss || isElite || lv > 0) ? cpuAiPillHTML(lv) : ''; }catch(e){ return ''; } })()}${'' /* the CPU's difficulty (2026-10-18): always for elite / boss fights, else only when it isn't Basic */}
       ${(()=>{ try{ const ev = enemyDeckLevel(node), mine = mainDeckLevel(myDeckCounts, myLeaderId); return `<div class="vs-lvl ${deckLevelGapClass(ev, mine)}" title="Enemy battle rating"><small>Their BR</small><b>⚔ ${ev}</b></div>`; }catch(e){ return ''; } })()}
       <div class="vs-taunt">“${escapeHtml(tauntLine)}”</div>
     </div>
@@ -26369,6 +26399,7 @@ function renderMatchUI(){
   renderBoard();
   syncWindField(m); // 2026-10-15: the wind layer survives the repaint
   try{ fxHook('matchUI', m); }catch(e){} // FX batch B (2026-10-15): darkness falls / lifts, field layers, dusk, perma-tide
+  try{ syncTideScene(m); }catch(e){} // the standing Tide's water (2026-10-18)
   if(!showPassOverlay) renderHand();
   wireDropZones();
   if(isSandbox && m.testKit){ if(!tkKeep.panel) wireTestKitPanel(); else testKitRestoreFocus(tkKeep); } else if(isSandbox && !m.fxLib) wireSandboxPanel();
@@ -27998,6 +28029,7 @@ function renderBoard(opts){
   const hadNewEntrants = newBoardEls.length>0;
   fitBattlefieldZoom();
   try{ fxHook('boardRendered', matchState); }catch(e){} // FX batch B (2026-10-15): who can't see in the dark, the forecast pill
+  try{ syncTideScene(matchState); }catch(e){} // the standing Tide: waded rings on new cards (2026-10-18)
   try{ syncUnitLightPools(); }catch(e){} // unit light in the dark (2026-10-15)
   // Bugfix (2026-09-17, root cause of the residual small stuck-transform matrices test_v24
   // still caught after the scale-1.08/shove fixes above — e.g. a card left mid fall-in at
@@ -28808,7 +28840,7 @@ function boardCardHTML(c, defs, opts){
   if(c.shield > 0) badges.push(`<span class="abadge unit-shield" title="Shield: ${c.shield} temporary Health, spent before its Health">💠${c.shield}</span>`);
   if(c.thornsBonus > 0) badges.push(`<span class="abadge durian-thorns" title="Durian: Thorns +${c.thornsBonus} from the durians it ate">🌵+${c.thornsBonus}</span>`);
   if(c.irradiation > 0) badges.push(`<span class="abadge irradiation" title="Irradiated: ${c.irradiation} token${c.irradiation===1?'':'s'}. Each takes 1 Health, Attack or skill point at the next upkeep, then one wears off.">☢️${c.irradiation}</span>`); // Irradiation tokens (2026-10-14)
-  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${tideNow ? `<div class="tide-chip tide-${tideNow}" title="${tideNow==='flow' ? 'Flow: +1 Attack' : tideNow==='high' ? 'High tide: +2 Attack, +2 Armor' : 'Ebb: +1 Armor'}"><span class="sym-stack">${tideNow==='flow' ? '🌊<i>⚔</i>' : tideNow==='high' ? '🌊<i>⚔</i><i>🛡</i>' : '🐚<i>🛡</i>'}</span></div>` : ''}
+  const overlaysHTML = `      ${c.shellUntil!=null ? `<div class="shell-up" title="Shell: +${c.shellArmor||0} Armor and ${c.tempHp||0} temporary Health until the end of next round">${'<i></i>'.repeat(Math.max(1, Math.min(6, c.shellArmor||0)))}</div>` : ''}${raging ? `<div class="rage-shield" title="Raging: Attack doubled, and it takes half damage">🛡<small>½</small></div>` : ''}${'' /* 2026-10-18 (owner: "remove the top context labels, the one with shell+armour or tide+attack. The bottom is enough"): no tide chip over the card; the skill strip's blue Tide pill says it (🌊 on Flood, 🐚 on Ebb) */}
       ${c.stunned?`<div class="status-overlay stun-overlay stun-halo">${STUN_HALO_INNER}</div>`:''}
       ${c.chained?`<div class="status-overlay chain-overlay">⛓</div>`:''}
       ${c.frozen>0?FROST_FLAKES_HTML:''}
@@ -29182,6 +29214,7 @@ function aiActNow(){
   const m = matchState; if(!m) return;
   const events = [];
   const prePos = boardPosSnapshot(m); // 2026-10-17: where each unit stood, so one an arrival kills can stay drawn until its death plays
+  try{ if(m.engine.setAiLevel) m.engine.setAiLevel(cpuAiLevelOfMatch(m)); }catch(e){} // the CPU's difficulty (2026-10-18): a resumed fight, the tutorial (Basic)
   m.engine.aiTakeTurn(m.players, m.sideOf, 2, m.stats, events);
   try{ events.filter(ev=> ev.type==='play' && ev.side==='B').forEach(ev=> maybeDangerWarn(ev.defId)); }catch(e){}
   // 2026-10-12 (user: "An opponent card with 0 wait deals damage immediately without animation"): whatever the new card
@@ -29690,49 +29723,24 @@ async function discardCardByUid(uid){
     if(activePid === viewerHandPid(m) && m.pitchNagRound !== m.round){ m.pitchNagRound = m.round; try{ playDialogue(loadFactionChoice() === 'hummingbirds' ? 'pitch_spent_h' : 'pitch_spent_o'); }catch(e){} }
     return;
   }
-  const [dc] = me.hand.splice(idx,1);
-  me.graveyard.push({defId:dc.defId});
-  const yieldInfo = pitchYieldOf(dc.defId);
-  const meta = PITCH_RESOURCE_META[yieldInfo.resource] || PITCH_RESOURCE_META.lumber;
-  if(meta.field==='lumber' && m.engine && m.engine.addLumber) m.engine.addLumber(me, yieldInfo.amount); // Lumberjack counts a pitch too (2026-10-12)
-  else me[meta.field] = (me[meta.field]||0) + yieldInfo.amount;
-  // Dark Points (2026-09-20, per explicit request: "when demons and devils are discarded, they
-  // give 1 dark point in addition to the lumber") -- a card under the Devilry mechanic line (this
-  // game's demon/devil/imp flavor; see the "😈 Devilry" reference-tab entry) grants a bonus +1
-  // Devilry ("Dark Point") on TOP of its normal pitch yield above when discarded, instead of
-  // replacing it.
+  // 2026-10-18 (engine parity, R3-WP1): the pitch's rules live in the engine now (pitchCard), shared with the CPU, which used to
+  // get a flat +1 Lumber. In the same order as before: hand to Graveyard; the pitch yield (Lumberjack counts, 2026-10-12); +1 Dark
+  // Point for a Devilry-line card (2026-09-20) and +1 for Core Evil (2026-09-21); On Discard's resource gains and Rebuild castle
+  // (2026-09-26 / 2026-10-17); Wildpath "Second Pitch"; then On Pitch (2026-10-16). Only the sound, chips and log stay here.
+  const dc = me.hand[idx];
   const dcDef = getCardDefs()[dc.defId];
-  // Core Evil (2026-09-21, per explicit request: "produces 1 dark point when pitched") -- a
-  // card-level passive, independent of (and additive with) the archetype-wide Devilry-line
-  // bonus just above: a card can carry Core Evil without belonging to the Devilry mechanic
-  // line at all, and a Devilry-line card that ALSO has Core Evil stacks both bonuses.
-  const coreEvilBonus = (dcDef && dcDef.effects && dcDef.effects.coreEvil) ? 1 : 0;
-  const darkPointBonus = ((dcDef && inferMechanicLine(dcDef)==='devilry') ? 1 : 0) + coreEvilBonus;
-  if(darkPointBonus) me.devilry = (me.devilry||0) + darkPointBonus;
-  // On Discard (2026-09-26, new basic trigger — "add a new set of basic abilities, triggers,
-  // and actions"): a card-authored custom trigger that fires right here, purely client-side —
-  // discardCardByUid() has no live board instance to hand to the engine's runCustomTriggers,
-  // same restricted-scope reasoning as On Exile (bramblewood-engine.js's fireOnExile), so only
-  // the plain resource-gain actions apply. Accumulated separately from onDiscardGainChips so
-  // it can be folded into the SAME gainChips array below and ride the existing "+N flying
-  // icon" VFX rather than needing a second VFX pass.
-  const onDiscardGains = [], onDiscardRebuild = []; // + Rebuild castle (2026-10-17)
-  if(dcDef && dcDef.effects && Array.isArray(dcDef.effects.triggers)){
-    dcDef.effects.triggers.filter(t=>t.on==='onDiscard').forEach(t=>{
-      const amt = t.amount||0; if(amt<=0) return;
-      if(t.do==='gainLumber' || t.do==='gainGold'){ me.lumber = (me.lumber||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.lumber.glyph, pillId:PITCH_RESOURCE_META.lumber.pillId}); }
-      else if(t.do==='gainGrace'){ me.grace = (me.grace||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.grace.glyph, pillId:PITCH_RESOURCE_META.grace.pillId}); }
-      else if(t.do==='gainStone'){ me.stone = (me.stone||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.stone.glyph, pillId:PITCH_RESOURCE_META.stone.pillId}); }
-      else if(t.do==='gainDevilry'){ me.devilry = (me.devilry||0)+amt; onDiscardGains.push({amount:amt, glyph:PITCH_RESOURCE_META.devilry.glyph, pillId:PITCH_RESOURCE_META.devilry.pillId}); }
-      // Rebuild castle (2026-10-17): On Discard mends your castle, never above max (a number; From the hand it has no Attack or Health).
-      else if(t.do==='rebuild' && me.hq && me.hq.hp > 0){ const h = Math.min(Math.max(0, Math.floor(Number(amt)||0)), me.hq.maxHp - me.hq.hp);
-        if(h > 0){ me.hq.hp += h; onDiscardRebuild.push({type:'rebuild', side:m.sideOf(activePid), defId:dc.defId, uid:null, amount:h, n:Math.floor(Number(amt)||0), trigger:true, hp:me.hq.hp, maxHp:me.hq.maxHp}); } }
-    });
-  }
-  if(me.perks && me.perks.secondPitch) me.perks.secondPitch = false; // Wildpath "Second Pitch": once a fight, a second pitch this turn
-  else me.discardUsedThisTurn = true;
-  // On Pitch / Scavenge (2026-10-16, user: "Whenever you pitch a card, this card does {}"): your units on the field react.
-  const pitchEv = []; try{ if(m.engine && m.engine.firePitchTriggers) m.engine.firePitchTriggers(m.players, m.sideOf, activePid, dc.defId, m.stats, pitchEv); }catch(e){}
+  const pitchEv = [];
+  let pr = null; try{ if(m.engine && m.engine.pitchCard) pr = m.engine.pitchCard(m.players, m.sideOf, activePid, dc, m.stats, pitchEv); }catch(e){ console.warn('pitchCard', e); }
+  if(!pr){ // no engine (shouldn't happen in a fight): the bare pitch, so the card still goes and pays
+    if(me.hand[idx] === dc) me.hand.splice(idx, 1); me.graveyard.push({defId:dc.defId});
+    const y0 = pitchYieldOf(dc.defId); me[(PITCH_RESOURCE_META[y0.resource] || PITCH_RESOURCE_META.lumber).field] = (me[(PITCH_RESOURCE_META[y0.resource] || PITCH_RESOURCE_META.lumber).field]||0) + y0.amount;
+    if(me.perks && me.perks.secondPitch) me.perks.secondPitch = false; else me.discardUsedThisTurn = true;
+    pr = {resource:y0.resource, amount:y0.amount, darkPoints:0, discardGains:[], rebuild:[]}; }
+  const yieldInfo = {resource:pr.resource, amount:pr.amount};
+  const meta = PITCH_RESOURCE_META[yieldInfo.resource] || PITCH_RESOURCE_META.lumber;
+  const darkPointBonus = pr.darkPoints || 0;
+  const onDiscardGains = (pr.discardGains || []).map(g=>{ const gm = PITCH_RESOURCE_META[g.resource] || PITCH_RESOURCE_META.lumber; return {amount:g.amount, glyph:gm.glyph, pillId:gm.pillId}; });
+  const onDiscardRebuild = pr.rebuild || [];
   if(m.selectedUid===uid) m.selectedUid = null;
   // Cashing in (2026-09-16, per explicit request): its own coin sound (was the generic
   // "play a card" tone) plus a "+1" that jumps out of the resource's own HUD pill, reusing the
@@ -32403,24 +32411,96 @@ function coldWaveVfx(m){
   try{ SoundKit.swipeTone && SoundKit.swipeTone(); }catch(e){}
   return 480;
 }
+// The standing Tide (2026-10-18, owner: "The tide effect has not been updated to be better."): a water layer under the cards
+// (.tide-scene, first child of #battlefieldEl, CSS in arena_template.html) shows the tide as it is: Flood fills the board to near its top,
+// High Tide to the brim, Ebb leaves a shallow strip along the bottom, no tide no water. A change rises or recedes smoothly (1.8 s), an ebb
+// leaves wet sand that dries, land units stand waded in a ring of water (.tide-wade) and Swimmers bob in theirs. m._tideScene remembers what
+// is shown ({k, from, at}); renderMatchUI rebuilds the battlefield, so syncTideScene redraws the layer and resumes a move in progress
+// (negative animation delay) instead of replaying it. While a round replays, the shown state waits for the 'tide' event (the engine is
+// already a round ahead); otherwise it follows the engine.
+const TIDE_SCENE_Y = {none:'calc(100% + 40px)', ebb:'84%', flow:'15%', high:'3%'};
+const TIDE_SCENE_MOVE_MS = 1800, TIDE_SCENE_DRY_MS = 7000, TIDE_SCENE_RANK = {none:0, ebb:1, flow:2, high:3};
+function tideSceneTarget(m){
+  try{ if(!m || !m.engine || !m.engine.getTide || m.mode === 'tutorial' || m.mode === 'liveRanked' || !matchHasTide(m)) return 'none'; const t = m.engine.getTide(); return TIDE_SCENE_Y[t] ? t : 'none'; }catch(e){ return 'none'; }
+}
+function tideSceneSet(m, k){
+  if(!m || !TIDE_SCENE_Y[k]) return; const cur = m._tideScene; if(cur && cur.k === k) return;
+  m._tideScene = {k, from: cur ? cur.k : 'none', at: cur ? Date.now() : 0}; // the first sight of a running tide draws it in place
+}
+function syncTideScene(m){
+  m = m || matchState; const bf = document.getElementById('battlefieldEl'); if(!m || !bf) return;
+  if(!(m.resolving && m._tideScene)) tideSceneSet(m, tideSceneTarget(m));
+  const st = m._tideScene; if(!st) return;
+  const el = st.at ? Date.now() - st.at : 1e9, moving = st.from !== st.k && el < TIDE_SCENE_MOVE_MS + TIDE_SCENE_DRY_MS;
+  let w = bf.querySelector(':scope > .tide-scene');
+  if(st.k === 'none' && !moving){ if(w) w.remove(); delete bf.dataset.tide; return; }
+  if(!w){ w = document.createElement('div'); w.className = 'tide-scene'; w.setAttribute('aria-hidden', 'true');
+    w.innerHTML = '<div class="tw-wet"></div><div class="tw-sheet"><div class="tw-body"><div class="tw-water"><i class="tw-caus"></i><i class="tw-caus c2"></i><i class="tw-sheen"></i></div><i class="tw-edge tw-edge-b"></i><i class="tw-edge"></i></div></div>';
+    bf.insertBefore(w, bf.firstChild); }
+  const key = st.k + '|' + st.at;
+  if(w.dataset.key !== key){
+    w.dataset.key = key; w.dataset.k = st.k;
+    w.style.setProperty('--tw-from', TIDE_SCENE_Y[st.from] || TIDE_SCENE_Y.none); w.style.setProperty('--tw-to', TIDE_SCENE_Y[st.k]);
+    w.style.setProperty('--tw-delay', (moving ? -el : -1e6) + 'ms');
+    w.style.setProperty('--tw-skew', (TIDE_SCENE_RANK[st.k] > TIDE_SCENE_RANK[st.from] ? 5 : -5) + 'deg'); // in from the left (owner, 10:27)
+    w.classList.toggle('mv-b', !w.classList.contains('mv-b')); // a new animation name restarts the move (and the drying)
+    w.classList.toggle('is-moving', moving);
+    w.classList.toggle('is-drying', moving && (st.from === 'flow' || st.from === 'high') && (st.k === 'ebb' || st.k === 'none'));
+  }
+  bf.dataset.tide = st.k; bf.style.setProperty('--tw-wade-delay', (moving ? -el : -1e6) + 'ms');
+  bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card').forEach(c=>{
+    if(c.querySelector(':scope > .tide-wade') || !c.querySelector('.card-tile')) return;
+    const i = document.createElement('i'); i.className = 'tide-wade'; i.setAttribute('aria-hidden', 'true'); c.appendChild(i); });
+}
 function tideWaveVfx(kind){
   const bf = document.getElementById('battlefieldEl'); if(!bf) return;
-  const high = kind === 'high'; if(high) kind = 'flow'; // the high tide rides the flow's wave, bigger (2026-10-16: is-high)
-  bf.classList.toggle('tide-is-flow', kind === 'flow'); bf.classList.toggle('tide-is-ebb', kind === 'ebb');
-  let line = bf.querySelector(':scope > .tide-line'); if(!line){ line = document.createElement('div'); line.className = 'tide-line'; line.setAttribute('aria-hidden', 'true'); bf.appendChild(line); }
+  const high = kind === 'high';
+  // 2026-10-18: the water itself is the standing Tide above (it rises on Flood / High Tide and recedes on Ebb, also under reduced motion
+  // and Low effects, where it simply moves less); this adds the sound and the cards' small lift.
+  try{ if(matchState){ tideSceneSet(matchState, TIDE_SCENE_Y[kind] ? kind : 'flow'); syncTideScene(matchState); } }catch(e){}
+  if(high) kind = 'flow'; // High Tide sounds and lifts like a Flood
   if(reducedMotion() || !fxAtLeast('low')) return;
-  // 2026-10-16 (user: "Flood Ebb effects need to be improved."): a light tint washes over the board, the water rises (Flood) or drains
-  // away (Ebb) with a foam line on its edge, and the lasting water line at the board's foot has its own foam (Flood) or wet-sand glints (Ebb).
-  const w = document.createElement('div'); w.className = 'tide-wave is-' + kind + (high ? ' is-high' : ''); w.setAttribute('aria-hidden', 'true');
-  w.innerHTML = '<span></span><span></span>';
-  bf.appendChild(w); setTimeout(()=> w.remove(), 1600);
   try{ if(kind === 'flow' && SoundKit.splash) SoundKit.splash(); else if(SoundKit.swipeTone) SoundKit.swipeTone(); }catch(e){}
-  // 2026-10-17 (user: "Improve the tide animations. It should impact all of the cards very slightly, BUT all the tide and swimmer cards
-  // float up - half way like they are flying."): every card on the board rocks a little as the water passes it (the Tide units and
-  // Swimmers lift with it more); their resting hover, half a flyer's, is CSS (tideFloat).
-  try{ if(window.SkillFX && SkillFX.tideSway){ const c0 = bf.querySelector('.board-card'), sc = c0 && c0.offsetWidth ? (c0.getBoundingClientRect().width / c0.offsetWidth) || 1 : 1;
-    SkillFX.tideSway([...bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card')].filter(b=> b.querySelector('.card-tile')), {kind, high, scale:sc, speed:(matchState && matchState.speedMult) || 1}); } }catch(e){}
+  // 2026-10-18 (owner, 10:27: "The tide or ebb effects that lifts up cards lifts up cards by too much and also makes the game really
+  // laggy ... it starts coming in from the left. So the lift up anim should play from the left to right, 0.1s apart."): the GSAP sway of
+  // every card (SkillFX.tideSway, kept for the Effects Lab) is replaced by a small CSS lift of each tile, column by column from the left.
+  if(fxAtLeast('med')) try{ tideLiftCards(bf, kind); }catch(e){}
 }
+// One layout read per card (its column), then class toggles; the lift itself is a CSS animation of the tile's translate / rotate
+// (.tide-lift / .tide-lift-ebb in arena_template.html). Flyers are above the water and stay still.
+function tideLiftCards(bf, kind){
+  const cards = [...bf.querySelectorAll('#rowMine .board-card, #rowEnemy .board-card')].filter(c=> !c.classList.contains('is-flying') && c.querySelector('.card-tile'));
+  if(!cards.length) return;
+  const bl = bf.getBoundingClientRect().left, rs = cards.map(c=> c.getBoundingClientRect()), w = rs[0].width || 100;
+  const cols = rs.map(r=> Math.max(0, Math.round((r.left - bl) / w))), c0 = Math.min(...cols), cls = kind === 'ebb' ? 'tide-lift-ebb' : 'tide-lift';
+  cards.forEach((c, i)=>{ c.classList.remove('tide-lift', 'tide-lift-ebb'); c.style.setProperty('--tl-d', (.25 + (cols[i] - c0)*.1).toFixed(2) + 's'); c.classList.add(cls); });
+  const last = .25 + (Math.max(...cols) - c0)*.1;
+  setTimeout(()=> cards.forEach(c=> c.classList.remove(cls)), Math.round((last + 1)*1000));
+}
+// Idle glance (2026-10-18, owner: "Idle land units on the board (rarely) but sometimes look left/right very slightly"): one shared timer,
+// every 3-7 s, may pick one land unit on the board (not a flyer or a Swimmer / Tide unit, not frozen, stunned, asleep, paralyzed or
+// caged) and its art glances a little left or right (.glance-l / .glance-r: ~0.6 s each way, a short hold, then back; CSS in
+// arena_template.html). One card at a time, never the same one twice running, so the board never moves in unison. Only while the player
+// plans (no round resolving), at Medium effects or above, without reduced motion, and while the page is visible.
+const IdleGlance = (function(){
+  let timer = null, last = null;
+  const BUSY = '.is-flying, .is-floating, .is-frozen, .is-stunned, .is-asleep, .is-paralyzed, .is-caged, .glance-l, .glance-r, .ghost-preview, .tide-lift, .tide-lift-ebb';
+  function tick(){
+    timer = setTimeout(tick, 3000 + Math.random()*4000); if(timer && timer.unref) timer.unref(); // never holds a Node test run open
+    try{
+      const m = (typeof matchState !== 'undefined') ? matchState : null;
+      if(!m || m.over || m.resolving || document.hidden || reducedMotion() || !fxAtLeast('med') || Math.random() < .25) return;
+      if(document.documentElement.classList.contains('bw-resolving') || document.body.classList.contains('bw-holding')) return;
+      const all = [...document.querySelectorAll('#appWrap.in-match #rowMine .board-card[data-uid], #appWrap.in-match #rowEnemy .board-card[data-uid]')];
+      const ok = all.filter(c=> c !== last && !c.matches(BUSY) && c.querySelector('.card-tile > .ico'));
+      if(!ok.length) return;
+      const c = ok[Math.floor(Math.random()*ok.length)], cls = Math.random() < .5 ? 'glance-l' : 'glance-r'; last = c;
+      c.classList.add(cls); setTimeout(()=> c.classList.remove(cls), 1900);
+    }catch(e){}
+  }
+  return {start(){ if(!timer){ timer = setTimeout(tick, 4000); if(timer && timer.unref) timer.unref(); } }, stop(){ clearTimeout(timer); timer = null; }};
+})();
+try{ if(typeof document !== 'undefined') IdleGlance.start(); }catch(e){}
 function icePulseVfx(uid){
   const el = boardCardEl(uid); if(!el) return;
   const tile = el.querySelector('.card-tile') || el;
@@ -43848,7 +43928,22 @@ function caveMaskImage(lamp, pools, pos){
   pools.forEach(q=> parts.push(`radial-gradient(circle at ${pos(q.x, q.y)}, transparent 0, transparent ${(q.r*.38).toFixed(1)}px, rgba(0,0,0,.62) ${(q.r*.85).toFixed(1)}px, #000 ${(q.r*1.35).toFixed(1)}px)`));
   return parts.join(', ');
 }
-function setCaveMask(el, img){ el.classList.add('is-masked'); el.style.webkitMaskImage = el.style.maskImage = img; el.style.webkitMaskComposite = 'source-in'; el.style.maskComposite = 'intersect'; }
+function setCaveMask(el, img, comp){ el.classList.add('is-masked'); el.style.webkitMaskImage = el.style.maskImage = img;
+  el.style.webkitMaskComposite = comp ? comp.split(', ').map(c=> c === 'add' ? 'source-over' : 'source-in').join(', ') : 'source-in'; el.style.maskComposite = comp || 'intersect'; }
+// The screen layer leaves the map canvas to the canvas layer (2026-10-18, owner: "The cleared dark maps's darkness does not
+// extend throughout"): the screen-wide layer used to darken the art under the canvas as well, so there the art got both layers
+// and outside the canvas (the strips round it, behind the map list and tab bar, past a scrolled edge) only one. Uncleared
+// (0.95 + 0.95) that hardly showed; cleared (0.78 each) the canvas sat in a visibly darker box. Now the screen layer's mask has a
+// hole the canvas's size (four bands, added together, then intersected with the lantern and pools), so every bit of the map gets
+// exactly one layer. The hole is only the part of the canvas its scroll box shows (the canvas layer is clipped there too).
+// Returns the extra mask layers and their composite operators, or null when no canvas is on screen.
+function caveScreenHole(cr, clip){
+  const r = clip ? {left: Math.max(cr.left, clip.left), top: Math.max(cr.top, clip.top), right: Math.min(cr.right, clip.right), bottom: Math.min(cr.bottom, clip.bottom)} : cr;
+  if(!r || !(r.right - r.left > 0) || !(r.bottom - r.top > 0)) return null;
+  const px = v=> v.toFixed(1) + 'px';
+  return {img: [`linear-gradient(to bottom, #000 ${px(r.top)}, transparent ${px(r.top)})`, `linear-gradient(to bottom, transparent ${px(r.bottom)}, #000 ${px(r.bottom)})`,
+    `linear-gradient(to right, #000 ${px(r.left)}, transparent ${px(r.left)})`, `linear-gradient(to right, transparent ${px(r.right)}, #000 ${px(r.right)})`], comp: ['add', 'add', 'add', 'add']};
+}
 function mountCaveDark(canvas, map){
   if(!canvas || !map || !mapBlotsOut(map)){ caveScreenOff(); return null; }
   const lit = caveMapCleared(map); if(caveLamp.r === 150 || caveLamp.r === 195) caveLamp.r = lit ? 195 : 150; // (a spread in progress keeps its radius)
@@ -43867,8 +43962,14 @@ function mountCaveDark(canvas, map){
     const pools = CAVE_MASK_OK ? caveLightPools(canvas, reducedMotion() ? 0 : performance.now()) : null;
     if(pools) setCaveMask(el, caveMaskImage(caveLamp, pools, (x, y)=> `${x.toFixed(2)}% ${y.toFixed(2)}%`));
     if(o){ if(!syncCaveScreen()) return; o.style.setProperty('--lx', (r.left + caveLamp.x*r.width) + 'px'); o.style.setProperty('--ly', (r.top + caveLamp.y*r.height) + 'px'); o.style.setProperty('--lr', caveLamp.r + 'px');
-      if(pools) setCaveMask(o, caveMaskImage(caveLamp, pools, (x, y)=> `${(r.left + x/100*r.width).toFixed(1)}px ${(r.top + y/100*r.height).toFixed(1)}px`)); } };
+      if(pools){ const base = caveMaskImage(caveLamp, pools, (x, y)=> `${(r.left + x/100*r.width).toFixed(1)}px ${(r.top + y/100*r.height).toFixed(1)}px`), scrollBox = canvas.closest('.conquest-main'), hole = caveScreenHole(r, scrollBox && scrollBox.getBoundingClientRect()); // 2026-10-18: no double dark under the canvas
+        setCaveMask(o, hole ? base + ', ' + hole.img.join(', ') : base, hole ? Array(pools.length + 1).fill('intersect').concat(hole.comp).join(', ') : null); } } };
   apply();
+  // 2026-10-18: the hole follows the canvas at once when the map scrolls (the phone's map scrolls up and down), not on the next tick.
+  if(window.__bwCaveScroll) document.removeEventListener('scroll', window.__bwCaveScroll, true);
+  let scrollRaf = 0;
+  window.__bwCaveScroll = ()=>{ if(!el.isConnected){ document.removeEventListener('scroll', window.__bwCaveScroll, true); return; } if(!scrollRaf) scrollRaf = requestAnimationFrame(()=>{ scrollRaf = 0; apply(); }); };
+  document.addEventListener('scroll', window.__bwCaveScroll, {capture:true, passive:true});
   // The pools follow the pawn while it walks, the fires flicker, and a scroll or resize moves the screen layer's holes.
   clearInterval(window.__bwCaveTick); window.__bwCaveTick = setInterval(()=>{ if(!el.isConnected){ clearInterval(window.__bwCaveTick); return; } if(!document.hidden) apply(); }, 120);
   const move = e=>{ const r = canvas.getBoundingClientRect(); if(!r.width) return; caveLamp.x = Math.max(0, Math.min(1, (e.clientX - r.left)/r.width)); caveLamp.y = Math.max(0, Math.min(1, (e.clientY - r.top)/r.height)); apply(); };
