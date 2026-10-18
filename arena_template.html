@@ -1290,6 +1290,7 @@
   .fbulk .fb-n{position:absolute; top:-6px; right:-6px; z-index:8; font:800 11px/1 'Baloo 2',system-ui,sans-serif; padding:3px 6px; border-radius:999px; background:#2b2117; color:#fff8e6; box-shadow:0 0 0 2px #e0b85a;}
   .fbulk .fb-val{font-size:10.5px; font-weight:700; text-align:center; line-height:1.2; margin-top:12px; display:block; white-space:nowrap;}
   .fbulk .fb-val > span{display:block;}
+  .fbulk .fb-val.fb-to{margin-top:0; opacity:.8;} /* 2026-10-18 (package NF): the copy the spares go into */
   .fbulk.is-done .fb-grid{max-height:0; padding:0; margin:0; overflow:hidden;}
   .fbulk .fb-more{align-self:center; font-size:12px; opacity:.8; padding:6px 10px; border-radius:999px; background:rgba(0,0,0,.08);}
   .fbulk .fb-total{position:relative; text-align:center; font-size:15px; padding:10px 12px; border-radius:12px; background:rgba(0,0,0,.08);}
@@ -8337,6 +8338,15 @@
   .forge-name{margin:8px 0 4px; font-size:17px;}
   .forge-prestige-tag{font-size:12px; padding:2px 8px; border-radius:999px; background:var(--gold-soft); color:var(--accent-strong);}
   .forge-level-row{display:flex; align-items:center; justify-content:center; gap:10px; margin-bottom:10px;}
+  /* 2026-10-18 (package NF): the copy picker: one chip per copy of the card on the anvil, strongest first */
+  .forge-copy-picker{margin:2px auto 10px; max-width:100%;}
+  .forge-copy-picker .fcp-head{font-size:12px; color:var(--ink-muted); margin-bottom:5px; text-align:center;} .forge-copy-picker .fcp-head b{color:var(--ink);}
+  .forge-copy-picker .fcp-row{display:flex; flex-wrap:wrap; gap:5px; justify-content:center; max-height:96px; overflow-y:auto;}
+  .fcp-chip{position:relative; display:inline-flex; flex-direction:column; align-items:center; min-width:58px; padding:4px 8px 3px; border-radius:10px; border:1px solid var(--surface-border); background:var(--surface-2); color:var(--ink); font:inherit; cursor:pointer; line-height:1.15;}
+  .fcp-chip b{font:800 13px 'Baloo 2',system-ui,sans-serif;} .fcp-chip small{font-size:10.5px; color:var(--ink-muted); white-space:nowrap;}
+  .fcp-chip.on{border-color:var(--accent-strong, #c77a1c); box-shadow:0 0 0 2px var(--gold-soft, rgba(255,200,80,.45)); background:var(--surface-1, #fff);}
+  .fcp-chip:focus-visible{outline:2px solid var(--accent-strong, #c77a1c); outline-offset:2px;}
+  .fcp-chip em{position:absolute; top:-6px; font-style:normal; font-size:11px; line-height:1;} .fcp-chip .fcp-deck{left:-4px;} .fcp-chip .fcp-cr{right:-4px;}
   .forge-level-label{font:800 14px 'Baloo 2',system-ui,sans-serif;}
   .forge-level-label.pop{animation:forgeLvlPop .6s ease;}
   @keyframes forgeLvlPop{0%{transform:scale(1);} 40%{transform:scale(1.5); color:#ff8a3d;} 100%{transform:scale(1);}}
