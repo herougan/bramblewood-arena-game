@@ -182,11 +182,27 @@
     "stages": [
       {
         "at": 0.75,
-        "name": "Enraged"
+        "name": "Enraged",
+        "note": "Default chosen 2026-10-18 (R3-WP2, owner to confirm): every boss card +2 Attack, and its back two rows strike once a round.",
+        "rules": [
+          {
+            "bossAtk": 2,
+            "extraVolley": 1
+          }
+        ]
       },
       {
         "at": 0.5,
-        "name": "Thrashing"
+        "name": "Thrashing",
+        "note": "Default chosen 2026-10-18 (R3-WP2, owner to confirm): every boss card +4 Attack, its back rows keep striking, Landslide comes down, and the raiders' castle has 10% less Health.",
+        "rules": [
+          {
+            "bossAtk": 4,
+            "extraVolley": 1,
+            "field": "landslide",
+            "castleHpPct": -10
+          }
+        ]
       },
       {
         "at": 0.01,

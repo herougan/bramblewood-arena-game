@@ -710,10 +710,18 @@ const PASSIVE_DEFS = [
   // Wave (user: "Sea creatures might have more skills related to water. Such as pushing creatures left or right - waves.").
   // 2026-10-17 (user: "for Awash skills, there's always a slight bias towards awashing inwards - very slight. If it's awash 1 and there's
   // another unit in the way, push the other way instead."): the "no fixed way" option (value 'room', stored as true) is that rule now.
-  {key:'wave', category:'passive', label:'Wave', kind:'select', desc:v=> ['left', 'right', 'alternate'].includes(v) ? `When its attack lands on a unit, it pushes that unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : 'left, then right on its next swing, and so on'}. If a unit stands there, the two swap. Never past the edge of the board.`
-      : `When its attack lands on a unit, it pushes that unit one column, either way (leaning slightly toward the middle). If a unit is in the way, it goes the other way instead; boxed in on both sides, it just bobs. Never past the edge of the board.`,
+  // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now."; "Awash N: Move N. If crash
+  // into another unit, both take N damage."): Wave N. A way (as before) plus N (effects.waveN, 1 by default, kept off the card when 1):
+  // it pushes the unit N columns; a unit in the way is crashed into and both take N. No more swapping.
+  {key:'wave', category:'passive', label:'Wave', kind:'selectNumber', numberWhen:['left', 'right', 'alternate', 'room'], numberTitle:'Wave N: how many columns it pushes (and the crash damage)',
+    desc:(v, n, e)=>{ const w = waveParts(v, e), cols = w.n === 1 ? 'one column' : `${w.n} columns`;
+      return (w.way === 'either' ? `When its attack lands on a unit, it pushes that unit ${cols}, either way (leaning slightly toward the middle; the board's edge turns it back).`
+        : `When its attack lands on a unit, it pushes that unit ${cols} ${w.way === 'alternate' ? 'left, then right on its next swing, and so on' : w.way}. Never past the edge of the board.`)
+        + ` If it crashes into a unit on the way, it stops beside it and both take ${w.n} damage.`; },
     selectOptions:()=> [{value:'left', label:'Left'}, {value:'right', label:'Right'}, {value:'alternate', label:'Alternate'}, {value:'room', label:'Either way (leans inward)'}],
-    get:e=> e.wave ? (e.wave === true ? 'room' : e.wave) : undefined, apply:(e, v)=>{ e.wave = ['left','right','alternate'].includes(v) ? v : true; }},
+    get:e=> e.wave ? [(e.wave === true || typeof e.wave === 'number') ? 'room' : e.wave, waveParts(undefined, e).n] : undefined,
+    apply:(e, vals)=>{ const m = Array.isArray(vals) ? vals[0] : vals, n = Math.max(1, Math.round(Number(Array.isArray(vals) ? vals[1] : 1)) || 1);
+      e.wave = ['left','right','alternate'].includes(m) ? m : true; if(n > 1) e.waveN = n; else delete e.waveN; }},
   // Supreme Tide (user: "Blue Dragon - Has Supreme Tide!").
   // 2026-10-14 (fourth pass). Crab Claws (user: "Crab claws: Attacks left or right only.").
   // Crab Claws retired from the editor (2026-10-14, user: "Ignore Crab claws. Crabs have fork"): hidden:true keeps it working on any
@@ -1356,6 +1364,7 @@ const SKILL_DEFS = [
     key:p.key, category:p.category, label:p.label, kind:p.kind, desc:p.desc, longDesc:p.longDesc, mechLineGate:p.mechLineGate, hidden:p.hidden, retired:p.retired, reserved:p.reserved, oneOff:p.oneOff,
     get: p.get || (e=> e[p.key]), placeholders:p.placeholders, selectOptions:p.selectOptions, numberKey:p.numberKey, placeholder:p.placeholder, grantPlaceholders:p.grantPlaceholders, defaultValue:p.defaultValue, codexNote:p.codexNote, whoPicker:p.whoPicker, // (2026-10-18: + whoPicker, Esprit's Kin / Any; 2026-10-15: + the grant pickers' hints, defaultValue; 2026-10-17: + codexNote, a Codex-only sentence)
     apply: p.apply || ((e,v)=>{ if(p.kind==='boolean'){ e[p.key]=true; } else { const n=Number(v)||0; if(n>0) e[p.key]=n; } }),
+    numberWhen:p.numberWhen, numberTitle:p.numberTitle, // a passive selectNumber's N field (Wave N, 2026-10-18)
   })),
   {
     // 2026-10-16 skill audit: plain words, and the labels for its two numbers.
@@ -2049,6 +2058,13 @@ function abilityListHTML(lines){
 // targets'"). What players read on cards; the longer PASSIVE_DEFS desc stays as the editor's authoring help. Shared words:
 // upkeep = the start of each round (resolved in action order), adjacent = the columns left, centre and right of it.
 // A skill with no entry here falls back to its desc.
+// Wave N (2026-10-18): the way ('left' | 'right' | 'alternate' | 'either') and N (effects.waveN; a bare number in effects.wave is N with
+// no fixed way; 1 by default) from the editor's [way, N] pair, a stored value or the card's effects. The engine reads it the same way.
+function waveParts(v, e){
+  const pick = Array.isArray(v) ? v[0] : (e && e.wave != null ? e.wave : v), way = ['left', 'right', 'alternate'].includes(pick) ? pick : 'either';
+  const raw = Array.isArray(v) ? v[1] : (e && Number(e.waveN)) || (e && typeof e.wave === 'number' ? e.wave : 0) || 1;
+  return {way, n: raw === 'N' ? 'N' : Math.max(1, Math.round(Number(raw)) || 1)};
+}
 const SKILL_TEXT = {
   poison: v=> `Its hits add ${v} Poison.`, decay: v=> `Its hits add ${v} Decay.`, bleed: v=> `Its hits add ${v} Bleed.`, corrode: v=> `Its hits add ${v} Corrode.`,
   armor: v=> `Takes ${v} less damage from every hit.`,
@@ -2061,8 +2077,8 @@ const SKILL_TEXT = {
   pack: v=> `Pack units of its type standing side by side each get +1/+1 for every Pack point in the chain (two Pack ${numOr(v, 2)}s: +${2*numOr(v, 2)}/+${2*numOr(v, 2)} each).`, // 2026-10-16 skill audit: plain words, no "N = …"
   packLeader: ()=> `Links every Pack unit of its type on your side into one chain, adjacent or not, and adds +2/+2 of its own and +2/+2 for the type.`,
   bloomWhen: v=> `In bloom 🌸 while its conditions hold: it has the bonus.`,
-  wave: v=> ['left', 'right', 'alternate'].includes(v) ? `Its hits push the unit one column ${v === 'left' ? 'left' : v === 'right' ? 'right' : 'left, then right, in turn'} (swapping with any unit there).`
-    : 'Its hits push the unit one column either way, leaning inward (the other way if a unit is in the way; boxed in, it bobs).', // 2026-10-17
+  wave: (v, n, e)=>{ const w = waveParts(v, e), cols = w.n === 1 ? 'one column' : `${w.n} columns`; // Wave N (2026-10-18): it crashes, no swaps
+    return `Its hits push the unit ${cols} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right, in turn' : w.way}. If it crashes into a unit, it stops and both take ${w.n}.`; },
   supremeTide: ()=> `A Tide unit: +2 Attack and +2 Armor every round, Flood or Ebb. Tide effects can't take them away.`,
   crabClaws: ()=> `Each swing pinches a random enemy unit to its left or right, never the one in front. With none there, it hits the castle.`, // 2026-10-17
   meiosis: v=> { const n = v === true ? 1 : (Number(v)||1); return `When it dies, it splits into 2 halves: half the stats and skill numbers, ${n > 1 ? 'Meiosis ' + (n - 1) : 'no Meiosis'}.`; },
@@ -2404,7 +2420,7 @@ function describeEffects(def, liveCard){
     if(p.key==='bloomWhen'){ const on = !!(liveCard && (currentCardByUidSafe(liveCard.uid) || liveCard).inBloom); lines.push(`${ic('bloomWhen')}${bloomLabel(e.bloomWhen)} — ${skillText(p, v, e)}${on ? ' <span class="atk-bonus">🌸 In bloom now.</span>' : ''}`); return; }
     if(p.key==='pack' || p.key==='packLeader'){ const lc = liveCard ? (currentCardByUidSafe(liveCard.uid) || liveCard) : null; const pk = lc && lc.packChainBonus;
       const head0 = p.key==='pack' ? `${p.label}${valSuffix(v === true ? 2 : v)}` : p.label; lines.push(`${ic(p.key)}${head0} — ${skillText(p, v, e)}${pk && (p.key==='pack' || !e.pack) ? ` <span class="atk-bonus" title="Live pack bonus">🐺×${lc.packChain}: +${pk}/+${pk} now</span>` : ''}`); return; }
-    const head = p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
+    const head = p.key==='wave' ? `Wave${valSuffix(waveParts(v, e).n)}` /* Wave N (2026-10-18) */ : p.kind==='number' && typeof v === 'number' ? `${p.label}${valSuffix(v)}` : (p.key==='dynamite' && Array.isArray(v)) ? `${p.label} ${v[0]}` /* Fuse / Damage (2026-10-16 skill audit) */ : (p.kind==='twoNumber' && Array.isArray(v)) ? `${p.label} +${v[0]}/+${v[1]}` : (p.key==='kinship' && v && v.type) ? `${p.label} ${v.type} +${v.atk||0}/+${v.hp||0}` : p.label;
     const ans = (SKILL_COUNTERS[p.key]||[]).map(k=>{ const pd = PASSIVE_DEFS.find(x=> x.key===k); return pd ? `${ic(k)}${pd.label}` : SKILL_COUNTER_EXTRA[k] || k; });
     const gr = Array.isArray(def.granted) && def.granted.includes(p.key);
     lines.push(`${gr ? '<span class="granted-skill" title="Given by this fight">' : ''}${ic(p.key)}${head} — ${skillText(p, v, e)}${gr ? ' <small>(given by this fight)</small></span>' : ''}`); void ans; }); // "Answered by" lives in the Skill Codex now (2026-10-13)
@@ -6229,6 +6245,7 @@ const MAP_BATTLEFIELD_CLASS = {
   m10:'map-m10', // Eyrie Heights -- pale alpine sky
   m11:'map-m11', // The Sundered Peak -- dramatic dusk crimson
   m21:'map-m21', // The Quiet Summit -- snow and dawn
+  tw:'map-tw', mlb:'map-mlb', // 2026-10-18: the Babel Spire and the Long Burrow fight on their own (derived) backdrops
   m22:'map-m22', m23:'map-m23', m24:'map-m24', // 2026-10-17: the Rimefire Caldera (snow over a glowing crater), the Goldfeather Siege, Goldfeather Keep
   mf:'map-mf',   // Thistlewood -- wet forest, stream and pond (the Outskirts' old art since 2026-10-15)
   mb:'map-mb',   // Pebble Beach -- sand and shallows (2026-10-09)
@@ -6610,7 +6627,7 @@ function abilityBadges(d, bopts){
   if(e.moonpull) out.push(`<span class="ab-pair" title="Moonpull: when it arrives, the Tide comes in">${iconHTML('moonpull', '🌙')}<i>🌊</i></span>`);
   // 2026-10-14 (third pass): Bloom (conditions) shows 🌷, and 🌸 while it is in bloom; Wave, Brood, Supreme Tide.
   if(e.bloomWhen){ const on = !!(bopts && bopts.live && bopts.live.inBloom); out.push(`<span class="ab-bloom${on ? ' is-on' : ''}" title="${escapeAttr(bloomLabel(e.bloomWhen) + (on ? ' (in bloom now)' : ''))}">${on ? '🌸' : '🌷'}</span>`); }
-  if(e.wave) out.push(`<span title="Wave: its hits push the unit one column ${e.wave === true ? 'either way, leaning inward' : e.wave === 'alternate' ? 'left, then right' : e.wave}">〰️</span>`);
+  if(e.wave){ const w = waveParts(undefined, e); out.push(`<span title="Wave${w.n > 1 ? ' ' + w.n : ''}: its hits push the unit ${w.n === 1 ? 'one column' : w.n + ' columns'} ${w.way === 'either' ? 'either way, leaning inward' : w.way === 'alternate' ? 'left, then right' : w.way}; a crash hurts both">〰️${w.n > 1 ? n1(w.n) : ''}</span>`); } // Wave N (2026-10-18)
   if(e.brood) out.push(`<span title="Brood ${e.brood === true ? 1 : e.brood}: brood tokens hatch beside it">${iconHTML('brood', '🥚')}${n1(e.brood)}</span>`);
   if(e.supremeTide) out.push(`<span class="ab-supreme ab-supreme-tide" title="Supreme Tide: +2 Attack and +2 Armor every round, Flood or Ebb"><span class="ab-pair">${iconHTML('supreme-tide', '✨')}<i>🌊</i></span></span>`); // stacked (2026-10-17)
   // 2026-10-14 (fourth pass): Crab Claws, Meiosis, Nullify, Restless, Charge.
@@ -8573,7 +8590,7 @@ function skillRowHTML(row,i,categoryFilter,mechLine){
     ${'' /* 2026-10-13 (user: "In the future, i want to be able to add skills at different levels. To not clump up the UI, just have a + button per row"): a row can arrive at a level; ＋ adds a row for the same skill one level up */}
     ${row.lv ? `<label class="sk-lv" title="This skill arrives at this level">Lv <select data-sk="lv" data-i="${i}">${Array.from({length:11}, (_, k)=> k + 1).map(L=> `<option value="${L}" ${row.lv===L?'selected':''}>${L}</option>`).join('')}</select></label>` : ''}
     <button class="btn small ghost sk-add-lv" data-addskillrow="${i}" title="Add a row for this skill at a later level">＋</button>
-    <button class="btn small danger rm" data-rmskill="${i}">✕</button>
+    <button class="btn small danger rm" data-rmskill="${i}" aria-label="Remove this skill" title="Remove this skill">✕</button>
   </div>`;
 }
 // Which triggers hand a specific OTHER card through `extra` (see runCustomTriggers in the
@@ -8605,7 +8622,7 @@ function triggerRowHTML(t,i){
     <span>Pay</span><select data-t="cost" data-i="${i}" title="A cost paid first. With nothing to pay, the trigger doesn't go off."><option value="" ${!t.cost?'selected':''}>nothing</option><option value="burnLumber" ${t.cost==='burnLumber'?'selected':''}>Burn 1 Lumber</option></select>
     <span>Do</span><select data-t="do" data-i="${i}" title="${escapeAttr((ACTION_DEFS.find(x=>x.key===t.do)||{}).desc||'')}">${[...ACTION_DEFS].sort((a,b)=>a.label.localeCompare(b.label)).map(x=>`<option value="${x.key}" title="${escapeAttr(x.desc)}" ${t.do===x.key?'selected':''}>${x.label}</option>`).join('')}</select>
     ${actionFieldsHTML(t,i)}
-    <button class="btn small danger rm" data-rm="${i}">✕</button>
+    <button class="btn small danger rm" data-rm="${i}" aria-label="Remove this trigger" title="Remove this trigger">✕</button>
   </div>
   <div class="trigger-preview" data-preview-i="${i}">${escapeHtml(triggerPreviewText(t))}</div>
   </div>`;
@@ -9173,15 +9190,20 @@ async function trimMatchHistory(){
 async function loadMatchHistory(){
   if(!sbClient || !isSignedIn()){ matchHistoryList = []; return; }
   try{
-    const { data } = await sbClient.from('match_history').select('*').eq('profile_id', cloudUserId).order('played_at', {ascending:false}).limit(30);
-    matchHistoryList = data || [];
-  }catch(e){ matchHistoryList = []; }
+    const { data, error } = await sbClient.from('match_history').select('*').eq('profile_id', cloudUserId).order('played_at', {ascending:false}).limit(30);
+    if(error) throw error;
+    matchHistoryList = data || []; matchHistoryError = false;
+  }catch(e){ matchHistoryList = []; matchHistoryError = true; }
   if(currentTab==='profile') renderProfile();
 }
+// 2026-10-18 (R3-WP3): a failed load showed "No matches recorded yet"; it now says it couldn't load, with Retry.
+// var, not let: read by matchHistoryPanelHTML, which can run before this line on an early render.
+var matchHistoryError = false;
 const MATCH_HISTORY_MODE_LABEL = {ai:'Quick Battle', pvp:'PvP', async:'Async Arena', gauntlet:'Gauntlet', raidOnline:'Online Raid', raidOffline:'Raid', liveRanked:'Ranked 1v1 (Live)'};
 function matchHistoryPanelHTML(){
   if(!isSignedIn()) return ''; // same gate as logMatchHistory/loadMatchHistory — nothing to show a guest
   if(matchHistoryList===null) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">Loading…</p></div>`;
+  if(matchHistoryError) return `<div class="panel"><h2>📜 Match History</h2>${netErrorHTML(TX('net.match-history-failed'), 'matchHistory', ()=>{ matchHistoryList = null; matchHistoryError = false; if(currentTab==='profile') renderProfile(); else loadMatchHistory(); })}</div>`; // renderProfile starts the load itself
   if(matchHistoryList.length===0) return `<div class="panel"><h2>📜 Match History</h2><p class="panel-sub">No matches recorded yet — play a match and it shows up here.</p></div>`;
   return `<div class="panel">
     <h2>📜 Match History</h2>
@@ -9650,8 +9672,12 @@ function openNamePrompt(){
   inp.addEventListener('input', ()=> showNameLenMsg(inp, ov.querySelector('#npNameMsg'), false));
   ov.querySelector('form').addEventListener('submit', async e=>{ e.preventDefault(); const name = inp.value.trim().slice(0,24); if(!nameLongEnough(name)){ showNameLenMsg(inp, ov.querySelector('#npNameMsg'), true); inp.focus(); return; }
     saveMyProfile(Object.assign({}, myProfile||{}, {name})); markNameChosen(); ov.remove();
-    try{ if(sbClient && cloudUserId) await sbClient.from('profiles').update({display_name: name}).eq('id', cloudUserId); }catch(err){}
-    try{ renderEntranceAuth(); }catch(err){} showToast(TX('toast.welcome-to-the-grove', {name}), 'ok'); });
+    // 2026-10-18 (R3-WP3): the account write's error was ignored, so other players kept seeing the old name with no word to
+    // the player. The name is kept on this device either way; a failed account write now says so.
+    let nameErr = null;
+    try{ if(sbClient && cloudUserId){ const { error } = await sbClient.from('profiles').update({display_name: name}).eq('id', cloudUserId); nameErr = error || null; } }catch(err){ nameErr = err; }
+    try{ renderEntranceAuth(); }catch(err){} showToast(TX('toast.welcome-to-the-grove', {name}), 'ok');
+    if(nameErr) showToast(TX('toast.name-saved-here-not-online', {err: netErrText(nameErr)}), 'error'); });
 }
 async function initCloudSync(){
   // Coming back from Google (2026-10-02): Supabase hands the result back in the URL — tokens on
@@ -10285,7 +10311,7 @@ function openEnergyPanel(anchor){
     <button type="button" class="btn primary small" id="epFree" ${claimed ? 'disabled' : ''}>${claimed ? 'Free Energy claimed today' : `+${FREE_ENERGY_AMOUNT} free Energy`}</button>
     ${energyCapsules() ? `<button type="button" class="btn small" id="epCapsule">🔋 Use an Energy capsule (+${ENERGY_CAPSULE_AMOUNT}) · ${energyCapsules()} left</button>` : ''}
     ${isAdmin ? `<div class="ep-admin" role="group" aria-label="Admin Energy controls"><span class="ep-admin-h">🚨 Admin</span>
-      <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5">−5</button><button type="button" class="btn small" data-ep="-1">−1</button><button type="button" class="btn small" data-ep="1">+1</button><button type="button" class="btn small" data-ep="5">+5</button></div>
+      <div class="ep-admin-row"><button type="button" class="btn small" data-ep="-5" aria-label="Take 5 Energy">−5</button><button type="button" class="btn small" data-ep="-1" aria-label="Take 1 Energy">−1</button><button type="button" class="btn small" data-ep="1" aria-label="Give 1 Energy">+1</button><button type="button" class="btn small" data-ep="5" aria-label="Give 5 Energy">+5</button></div>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="empty">Empty</button><button type="button" class="btn small primary" id="epRefill">Fill</button><input type="number" min="0" max="999" class="w-60" id="epSet" value="${s.current}" aria-label="Set Energy"><button type="button" class="btn small" data-ep="set">Set</button></div>
       <div class="ep-admin-row"><button type="button" class="btn small" data-ep="tick">Next refill now</button></div></div>` : ''}`;
   document.body.appendChild(pop);
@@ -12824,7 +12850,7 @@ async function findLiveRankedMatch(){
     showToast(TX('toast.your-main-deck-has-cards-it-2', {v1: deckTotal(myDeckCounts), DECK_SIZE}), 'warn');
     return;
   }
-  liveQueueing = true;
+  liveQueueing = true; pollLiveQueue.fails = 0;
   renderArenaSubTabIfOpen();
   pollLiveQueue();
 }
@@ -12835,14 +12861,17 @@ async function pollLiveQueue(){
     const { data, error } = await sbClient.rpc('find_ranked_match', {
       p_rating: myRating, p_deck: publicDeck(myDeckCounts), p_character: myCharacterId, p_leader: matchLeaderId() || null,
     });
-    if(error){ console.warn('find_ranked_match error', error); }
-    else if(data){ await enterLiveMatch(data); return; } // matched — stop polling
-  }catch(e){ console.warn('find_ranked_match threw', e); }
+    if(error){ console.warn('find_ranked_match error', error); pollLiveQueue.fails = (pollLiveQueue.fails||0) + 1; }
+    else { pollLiveQueue.fails = 0; if(data){ await enterLiveMatch(data); return; } } // matched — stop polling
+  }catch(e){ console.warn('find_ranked_match threw', e); pollLiveQueue.fails = (pollLiveQueue.fails||0) + 1; }
+  // 2026-10-18 (R3-WP3): a queue that can't reach matchmaking used to spin "searching" with no word; after 3 failed polls
+  // in a row say so once (it keeps trying; Cancel still works)
+  if(pollLiveQueue.fails===3) showToast(TX('toast.can-t-reach-matchmaking-still-trying'), 'error');
   if(liveQueueing) liveQueuePollTimer = setTimeout(pollLiveQueue, 2200);
 }
 
 function cancelLiveRankedQueue(){
-  liveQueueing = false;
+  liveQueueing = false; pollLiveQueue.fails = 0;
   if(liveQueuePollTimer){ clearTimeout(liveQueuePollTimer); liveQueuePollTimer = null; }
   if(sbClient) sbClient.rpc('cancel_ranked_queue', {}).then(()=>{}, ()=>{});
   renderArenaSubTabIfOpen();
@@ -13138,8 +13167,10 @@ function livePushProgress(force){
   LiveData.progressPushedHash = h;
   const now = Date.now();
   try{ localStorage.setItem(PROGRESS_LOCAL_AT_KEY, String(now)); }catch(e){}
+  // 2026-10-18 (R3-WP3): a failed push forgets its hash, so the 20 s tick sends it again instead of treating it as saved
   sbClient.from('player_progress').upsert({profile_id: cloudUserId, data: snap, updated_at: new Date(now).toISOString()})
-    .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; }, ()=>{});
+    .then(({error})=>{ if(liveTableMissing(error)) LiveData.available = false; else if(error && LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; },
+      ()=>{ if(LiveData.progressPushedHash===h) LiveData.progressPushedHash = null; });
 }
 setInterval(()=>{ try{ livePushProgress(false); }catch(e){} }, 20000);
 window.addEventListener('pagehide', ()=>{ try{ livePushProgress(false); }catch(e){} });
@@ -13704,11 +13735,16 @@ function playDialogue(id, opts){
       if(line.options){
         const choice = await new Promise(resolve=>{
           const row = document.createElement('div'); row.className = 'dlg-replies';
-          row.innerHTML = line.options.map((o,k)=> `<button type="button" class="btn small dlg-reply" data-k="${k}">${escapeHtml(o.label)}</button>`).join('') + `<span class="dlg-timer" title="Answer within 30 seconds"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"></circle></svg><b>30</b></span>`;
+          // 2026-10-18 (a11y, WCAG 2.2.1 Timing Adjustable): the reply window follows the NPC dialogue speed (Slow = 45 s) and
+          // the clock stands still while the pointer is over the choices or keyboard focus is inside them.
+          const replyMs = Math.round(DIALOGUE_REPLY_MS * dialogueSpeedMul()), replyS = Math.ceil(replyMs/1000);
+          row.innerHTML = line.options.map((o,k)=> `<button type="button" class="btn small dlg-reply" data-k="${k}">${escapeHtml(o.label)}</button>`).join('') + `<span class="dlg-timer" title="Answer within ${replyS} seconds (the clock waits while you point at or focus the replies)"><svg viewBox="0 0 36 36"><circle cx="18" cy="18" r="15"></circle></svg><b>${replyS}</b></span>`;
           b.querySelector('.dlg-body').appendChild(row);
           const ring = row.querySelector('circle'), num = row.querySelector('.dlg-timer b');
-          const started = Date.now();
-          const tick = setInterval(()=>{ const left = Math.max(0, DIALOGUE_REPLY_MS - (Date.now()-started)); num.textContent = Math.ceil(left/1000); ring.style.strokeDashoffset = String(94.2 * (1 - left/DIALOGUE_REPLY_MS)); if(!left){ clearInterval(tick); resolve(null); } }, 250);
+          let used = 0, last = Date.now(), hover = false;
+          row.addEventListener('pointerenter', ()=>{ hover = true; }); row.addEventListener('pointerleave', ()=>{ hover = false; });
+          const tick = setInterval(()=>{ const now = Date.now(), paused = hover || row.contains(document.activeElement); if(!paused) used += now - last; last = now; row.classList.toggle('is-paused', paused);
+            const left = Math.max(0, replyMs - used); num.textContent = Math.ceil(left/1000); ring.style.strokeDashoffset = String(94.2 * (1 - left/replyMs)); if(!left){ clearInterval(tick); resolve(null); } }, 250);
           row.querySelectorAll('.dlg-reply').forEach(btn=> btn.onclick = ()=>{ clearInterval(tick); resolve(line.options[+btn.dataset.k]); });
         });
         // 2026-10-12 (user: "If the player doesn't interact, the NPC says they'll go for now and come back later. Don't penalise
@@ -13892,7 +13928,8 @@ function activateSpot(spot){
 // 2026-10-15 (user: "Are there any submaps with no background? fill them in."): the Old Bramble, Ice Hollow, Glimmer Depths,
 // Sunken Grove, Aerie Vault and Volcano Lair had art baked in but weren't listed here, so it never drew; Murgle Mayhem had none.
 // They now borrow a recoloured map (MAP_ART_DERIVED in assemble_arena.py), and the build fails if this list falls behind.
-const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm"]);
+// 2026-10-18: + the Babel Spire ("tw") and the Long Burrow ("mlb"), which drew only a gradient.
+const MAP_ART_IDS = new Set(["marena","mabyss","mf","mb","mg","mu","mp","mc","mw","mk","mh","mr","ml","mt","md","my","mq","mz","me","m1","m2","m3","m4","m5","m6","m7","m8","m9","m10","m11","m21","m22","m23","m24","mtut","mj","mo","mi","mn","ms","mv","mx","mm","mlb","tw"]);
 // Draggable map tiles (2026-10-09, user: "Let me drag and drop the secondary map tiles like armoury, nest, and
 // cave"): feature spots, the well, the chat cave and sub-map entrances keep their position in the same layout
 // override as the fight nodes, under keys starting with "~" (so publishing the layout carries them too).
@@ -14755,7 +14792,9 @@ const FIELD2 = {
   // 2026-10-17 (user, on the raid: "There should be all the related field effects but also some kind of psychic dampener"): rules.psychicDampener,
   // in the engine's psychicHit (half, rounded down) and rollStatusOnHit's Confuse (1 round less). The Goliath raid fights under it.
   psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', short:'Psychic halved; Confuse 1 round less', text:"The deep presses on every mind: Psychic damage is halved (rounded down), and a Confuse lasts 1 round less, so a 1-round Confuse doesn't land. Both sides."},
-  awash:         {icon:'〰️', name:'Awash', editor:'awash', short:'A unit is washed 1–3 columns; crashes hurt', text:'Each round from round 2, the water washes one random unit N columns (1–3) along its row, leaning slightly toward the middle. If it crashes into another unit on the way, both take N damage. Only the board\'s edge turns it back the other way. Pinned and Webbed units hold fast.'}, // 2026-10-18: crash damage
+  // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now. "Awashed" will be for
+  // something else - reserved."): on screen this field is "Wave" (Wave 1–3 on a random unit); the key stays awash for saves and data.
+  awash:         {icon:'〰️', name:'Wave', editor:'awash', short:'A unit rides a Wave 1–3 columns; crashes hurt', text:'Each round from round 2, a Wave takes one random unit N columns (1–3) along its row, leaning slightly toward the middle. If it crashes into another unit on the way, it stops beside it and both take N damage. Only the board\'s edge turns it back the other way. Pinned and Webbed units hold fast.'}, // 2026-10-18: crash damage
 };
 // 2026-10-17 (user: "Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow of the volcanoes"): the row the volcano
 // maps' uneven cycle shows, and the "after an Eruption" form of Ashy.
@@ -17222,7 +17261,7 @@ CONQUEST_MAPS.push(endlessDungeon({id:'mm', code:'MM', mapNumber:6, parent:'m8',
 // 2026-10-18 (WP4): Map 22 is a real map, so the only thing holding the Long Burrow back is the owner's go-ahead. Until then players
 // see its slot as "Coming soon" (not a lock they could meet). Releasing it is this one switch: set LONG_BURROW_RELEASED to true and
 // it opens for players once they reach the Rimefire Caldera (Dungeons tab, World map and the key button all follow `preview`).
-const LONG_BURROW_RELEASED = false;
+const LONG_BURROW_RELEASED = true; // 2026-10-18 (user: "Release long_burrow.")
 CONQUEST_MAPS.push(endlessDungeon({id:'mlb', code:'LB', mapNumber:22, parent:'m22', axis:'x', preview:!LONG_BURROW_RELEASED, entry:{x:50, y:50, label:'The Long Burrow'},
   name:'The Long Burrow', icon:'🦡', bossName:'The Sett Lord', bossIcon:'👑', floors:50, baseHq:200,
   blurb:'A badger run that tunnels sideways under the high country, sett after sett, further than any map has drawn it.',
@@ -18979,6 +19018,12 @@ function renderDungeonsSubTab(body){
   </div>`;
   body.querySelectorAll('[data-dungeon-go]').forEach(b=> b.addEventListener('click', ()=>{
     conquestWorldView = false; conquestSelectedMap = b.dataset.dungeonGo; conquestSelectedNodeKey = null; playSubTab = 'conquest'; renderPlay(); }));
+  // 2026-10-18 (audit R3-WP6: at 50/50 the Spire only offered "Keep climbing" into floor 50 again): from the summit you pick any
+  // floor to fight again, and the map opens with that floor selected.
+  body.querySelectorAll('[data-tower-replay]').forEach(b=> b.addEventListener('click', ()=>{
+    const sel = body.querySelector('[data-tower-floor]'), map = CONQUEST_MAPS.find(m=> m.id === 'tw'); if(!map) return;
+    const node = map.nodes[Math.max(0, Math.min(map.nodes.length - 1, (parseInt(sel && sel.value, 10) || map.nodes.length) - 1))];
+    conquestWorldView = false; conquestSelectedMap = 'tw'; conquestSelectedNodeKey = node ? node.key : null; playSubTab = 'conquest'; renderPlay(); }));
 }
 // The Tower in the Dungeons tab (2026-10-16): its own card under the daily dungeons. Locked until Map 20's last fight falls; admins can
 // always open it. No tickets: every floor costs Energy like any elite.
@@ -18986,12 +19031,21 @@ function towerCardHTML(progress){
   const map = CONQUEST_MAPS.find(m=> m.id === 'tw'); if(!map) return '';
   const admin = typeof adminModeEnabled !== 'undefined' && adminModeEnabled, unlocked = isMapUnlocked(map, progress), open = unlocked || admin, f = dungeonFloorProgress(map, progress);
   const next = map.nodes[Math.min(map.nodes.length - 1, f.done)], br = next ? enemyDeckLevel(next) : 0;
-  return `<div class="dg-tower-head"><h3>🗼 The Tower</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p></div>
+  // 2026-10-18 (audit R3-WP6): every floor cleared is the summit: no "Keep climbing", a floor picker to fight any of them again.
+  // The heading uses the map's own name (it said "The Tower" over a card titled "The Babel Spire").
+  const summit = unlocked && f.total > 0 && f.done >= f.total;
+  const climb = summit
+    ? `<div class="dg-floor dg-summit"><span class="wc-bar"><span style="width:100%"></span></span><span>🏔️ <b>Summit</b> · all ${f.total} floors</span></div>
+          <p class="dg-sub dg-summit-line">You stand atop ${escapeHtml(map.name)}. Nobody had seen the top until you did. The wind up here smells of every creature that ever tried.</p>
+          <div class="dg-acts"><label class="dg-floor-pick">Floor <select data-tower-floor aria-label="Floor to fight again">${map.nodes.map((n, i)=> `<option value="${i + 1}"${i === map.nodes.length - 1 ? ' selected' : ''}>${i + 1}${n.kind === 'boss' ? ' 👑' : ''}</option>`).join('')}</select></label>
+            <button type="button" class="btn primary" data-tower-replay>🔁 Fight it again</button></div>`
+    : `<div class="dg-floor"><span class="wc-bar"><span style="width:${Math.round(100 * f.done / f.total)}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total} · ⚔ ${br}</span></div>
+          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button></div>`;
+  return `<div class="dg-tower-head"><h3>${map.icon} ${escapeHtml(map.name)}</h3><p class="panel-sub">No tickets. It starts at a battle rating of ${TOWER_BR_START} and every floor is ${TOWER_BR_STEP} higher; its cards go past Level 10, up to ${TOWER_LEVEL_CAP}.</p></div>
     <div class="dg-list"><div class="dg-card dg-tower ${open ? '' : 'is-locked'}">${!unlocked && admin ? '<span class="dg-admin-tag" title="Players open it by clearing Map 20">🛠️ Admin preview</span>' : ''}<div class="dg-diamond map-theme-tw">${compassDiamondSVG('dg-tw', !open)}<span class="wd-ico">${open ? map.icon : '🔒'}</span></div>
       <div class="dg-body"><b class="dg-name">${escapeHtml(map.name)}</b><span class="dg-where">Map 20 · The Sundered Peak</span>
         <p class="dg-sub">${escapeHtml(map.blurb)}</p>
-        ${open ? `<div class="dg-floor"><span class="wc-bar"><span style="width:${Math.round(100 * f.done / f.total)}%"></span></span><span><b>Floor ${Math.min(f.total, f.done + 1)}</b> / ${f.total} · ⚔ ${br}</span></div>
-          <div class="dg-acts"><button type="button" class="btn primary" data-dungeon-go="tw">${unlocked ? (f.done ? '▶ Keep climbing' : '🗼 Enter') : '🛠️ Open (admin)'}</button></div>`
+        ${open ? climb
         : `<p class="dg-sub">🔒 Clear the Sundered Peak (Map 20) to open it.</p>`}</div></div></div>`;
 }
 // The World map's dungeon stops (2026-10-15): a smaller compass diamond beside its map's own, joined to it by a dotted branch.
@@ -19632,7 +19686,8 @@ function renderConquestSubTab(body){
   // so a click on a floor (which re-renders the pane) was followed 1.2 s later by a smooth scroll away to your next floor. Now it
   // only runs on a fresh visit, and only if your next floor isn't already in view (coming back from a fight keeps your place).
   if(map.endless && !sameMapRerender){ // start the long climb at your next floor
-    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
+    // 2026-10-18: a floor picked from the Spire's summit card (already selected) is the one to scroll to, not the top floor
+    setTimeout(()=>{ const cv = document.getElementById('conquestCanvas'); if(!cv) return; const next = (conquestSelectedNodeKey && map.nodes.find(n=> n.key === conquestSelectedNodeKey)) || map.nodes.find(n=> !progress.completed.includes(conquestNodeId(map.id, n.key))) || map.nodes[map.nodes.length-1];
       const el = cv.querySelector(`.map-node[data-lkey="${next.key}"]`), main = document.getElementById('conquestMain');
       if(el && main){ const er = el.getBoundingClientRect(), mr = main.getBoundingClientRect();
         if(er.top >= mr.top + 40 && er.bottom <= mr.bottom - 40 && er.left >= mr.left && er.right <= mr.right) return; // already in view
@@ -19640,7 +19695,7 @@ function renderConquestSubTab(body){
         const top = el.offsetTop - main.clientHeight / 2; main.scrollTo({top: Math.max(0, top), behavior: reducedMotion() ? 'auto' : 'smooth'}); } }, 1200); }
   { const ast = ambushState(); if(ast.justPopped && map.id === (ambushMap()||{}).id){ delete ast.justPopped; saveAmbushState(ast); } }
   if(tutPhase) tutBgZoom(1.25, false); else if(!tutZoomOut) tutBgZoom(1, false, true);
-  if(tutZoomOut){ try{ localStorage.removeItem('bramblewood_tut_zoomout_v1'); }catch(e){}
+  if(tutZoomOut){ // 2026-10-18 (audit R3-WP6): dropped the bramblewood_tut_zoomout_v1 key; it was written and cleared but never read
     const cv = document.getElementById('conquestCanvas'); tutBgZoom(1.25, false);
     if(cv){ cv.querySelectorAll('.map-trail-svg, .map-spot, .map-decor').forEach(el=> el.classList.add('tut-reveal'));
       // skirmishes drop in from above, nearest first, once the zoom has settled
@@ -20094,6 +20149,16 @@ function currentRaidStateFor(def, now){
   const cycle = RaidM.cycleOf(now);
   return RaidM.raidState(def, currentRaidAttempts(def, cycle), now, {cycle});
 }
+// Raid stages (2026-10-18, R3-WP2: Enraged and Thrashing did nothing): a stage's rules (bossAtk, bossHp, field, extraVolley,
+// castleHpPct, stripAbilities; RaidM.stageRules) land in the fight, and its one-line description shows wherever the stage does. A
+// stage's field is a FIELD_EFFECTS id (or a rule key), resolved to that effect's rules; it is named as its Environment card names it.
+function raidStageFieldRules(k){
+  const f = fieldEffectById(k) || FIELD_EFFECTS.find(x=> x.rules && Object.keys(x.rules)[0] === k);
+  return f && f.rules ? Object.assign({}, f.rules) : null;
+}
+function raidStageFieldName(k){ try{ const row = fieldConditionRows({[k]: true})[0]; return row ? String(row.name).replace(/ · .*$/, '') : ''; }catch(e){ return ''; } }
+function raidStageOpts(extra){ return Object.assign({fieldRules: raidStageFieldRules, fieldName: raidStageFieldName}, extra || {}); }
+function raidStageText(stage){ return RaidM && RaidM.describeStage ? RaidM.describeStage(stage, raidStageOpts()) : ''; }
 // One health bar per raid part (2026-10-15, user: "It's not clear what the 3 hp bars represent. Is it the 3 hp bars of the 3 entities
 // we can fight? or each has 3 hp bars. It should say health left like X/Y. So players feel the epic progress."): a part's health is
 // one bar with its "X / Y HP left" under it. Its phases (p.bars health bars of p.barHp each) are faint marks on that bar, and a
@@ -20173,8 +20238,9 @@ function raidPanelHTML(){
     <div class="r3-hero">
       <div class="r3-boss-card" aria-hidden="true">${raidBossIconHTML(def, '🐙')}<span class="r3-boss-glow"></span></div>
       <div class="r3-boss-info">
-        <h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
+        <h2>${escapeHtml(def.name)} ${st.stage ? `<span class="r2-stage" title="${escapeAttr(raidStageText(st.stage) || st.stage.name)}">${escapeHtml(st.stage.name)}</span>` : ''}</h2>
         <p class="r3-blurb">${escapeHtml(def.blurb||'')}</p>
+        ${st.stage && raidStageText(st.stage) ? `<p class="r3-hint r3-stage-now"><b>${escapeHtml(st.stage.name)}:</b> ${escapeHtml(raidStageText(st.stage))}</p>` : ''}
         <div class="r2-total"><div class="raid-boss-hp-bar r3-hp"><div class="raid-boss-hp-bar-fill" style="width:${Math.round(st.fraction*100)}%"></div></div>
           <span class="r2-total-line"><span>🐙 Boss health <b>${Math.ceil(st.remaining).toLocaleString()}</b> / ${st.total.toLocaleString()} left <small>(${pct}%)</small></span><span class="r2-days">⏳ ${daysLeft} day${daysLeft===1?'':'s'} left this week</span></span></div>
       </div>
@@ -20212,7 +20278,10 @@ function raidPanelHTML(){
         <p class="r3-note">Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's castle (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
       </section>
       <section class="r3-field"><h3>${ground === 'mabyss' ? 'Down in the deep' : 'The field'}</h3>
-        <div class="ar2-fields r3-fields">${raidFieldCardsHTML(raidFieldRulesOf(def, null))}</div></section>
+        <div class="ar2-fields r3-fields">${raidFieldCardsHTML(RaidM.fieldRulesFor ? RaidM.fieldRulesFor(def, null, RaidM.stageRules(st.stage, raidStageOpts())) : raidFieldRulesOf(def, null))}</div></section>
+      ${(def.stages || []).length ? `<section class="r3-stages"><h3>Stages</h3>
+        <p class="r3-note">As the boss's total Health falls, it changes. Every fight is under the stage it is in now.</p>
+        <ul class="r3-rw">${(def.stages || []).slice().sort((a, b)=> b.at - a.at).map(s=> `<li${st.stage === s ? ' aria-current="true"' : ''}><b>${st.stage === s ? '▶ ' : ''}${escapeHtml(s.name || 'Stage')} <small>below ${+(s.at * 100).toFixed(1)}%</small></b><span>${escapeHtml(raidStageText(s) || 'No change yet.')}</span></li>`).join('')}</ul></section>` : ''}
       <section class="r3-rewards"><h3>If it falls</h3>
         <ul class="r3-rw">
           <li><b>Everyone who fought</b><span>${kill || '—'}${raidCardIds(def).length ? ' and one of its own cards' : ''}</span></li>
@@ -20363,17 +20432,27 @@ function openRaidEditor(raidId){
           <label>Boss units dodge %<input data-pt="illusory" type="number" min="0" max="90" value="${Math.round((rl.illusory||0)*100)}"></label>
           <label class="se-chk"><input type="checkbox" data-pt="shield" ${T.shieldWhileEntities?'checked':''}> Castle shielded while entities stand</label>
         </div>
-        <div class="re-list"><b>Special attacks</b>${(T.attacks||[]).map((a,i)=> `<div class="re-li"><input data-at-name="${i}" value="${escapeAttr(a.name||'')}" placeholder="Name"><select data-at-pat="${i}"><option value="column" ${a.pattern==='column'?'selected':''}>Whole column (telegraphed)</option><option value="frontRow" ${a.pattern==='frontRow'?'selected':''}>Whole front row</option></select><label>dmg<input type="number" min="0" max="99" data-at-dmg="${i}" value="${a.dmg||0}"></label><label>every<input type="number" min="1" max="12" data-at-every="${i}" value="${a.every||1}"></label><button type="button" class="btn small ghost" data-at-del="${i}">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddAttack">＋ Attack</button></div>
-        <div class="re-list"><b>Entities on the boss board</b>${(T.entities||[]).map((e,i)=> `<div class="re-li"><input data-en-icon="${i}" value="${escapeAttr(e.icon||'')}" maxlength="4" class="re-ico"><input data-en-name="${i}" value="${escapeAttr(e.name||'')}" placeholder="Name"><label>atk<input type="number" min="0" max="99" data-en-atk="${i}" value="${e.attack||0}"></label><label>hp<input type="number" min="1" max="999" data-en-hp="${i}" value="${e.health||20}"></label><label>armour<input type="number" min="0" max="20" data-en-armor="${i}" value="${e.armor||0}"></label><label>+armour per ally<input type="number" min="0" max="10" data-en-aura="${i}" value="${e.aura||0}"></label><button type="button" class="btn small ghost" data-en-del="${i}">✕</button></div>`).join('')}${(T.entities||[]).length < 5 ? `<button type="button" class="btn small" id="reAddEntity">＋ Entity</button>` : ''}</div>`; })() : ''}
+        <div class="re-list"><b>Special attacks</b>${(T.attacks||[]).map((a,i)=> `<div class="re-li"><input data-at-name="${i}" value="${escapeAttr(a.name||'')}" placeholder="Name"><select data-at-pat="${i}"><option value="column" ${a.pattern==='column'?'selected':''}>Whole column (telegraphed)</option><option value="frontRow" ${a.pattern==='frontRow'?'selected':''}>Whole front row</option></select><label>dmg<input type="number" min="0" max="99" data-at-dmg="${i}" value="${a.dmg||0}"></label><label>every<input type="number" min="1" max="12" data-at-every="${i}" value="${a.every||1}"></label><button type="button" class="btn small ghost" data-at-del="${i}" aria-label="Remove this special attack" title="Remove this special attack">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddAttack">＋ Attack</button></div>
+        <div class="re-list"><b>Entities on the boss board</b>${(T.entities||[]).map((e,i)=> `<div class="re-li"><input data-en-icon="${i}" value="${escapeAttr(e.icon||'')}" maxlength="4" class="re-ico"><input data-en-name="${i}" value="${escapeAttr(e.name||'')}" placeholder="Name"><label>atk<input type="number" min="0" max="99" data-en-atk="${i}" value="${e.attack||0}"></label><label>hp<input type="number" min="1" max="999" data-en-hp="${i}" value="${e.health||20}"></label><label>armour<input type="number" min="0" max="20" data-en-armor="${i}" value="${e.armor||0}"></label><label>+armour per ally<input type="number" min="0" max="10" data-en-aura="${i}" value="${e.aura||0}"></label><button type="button" class="btn small ghost" data-en-del="${i}" aria-label="Remove this entity" title="Remove this entity">✕</button></div>`).join('')}${(T.entities||[]).length < 5 ? `<button type="button" class="btn small" id="reAddEntity">＋ Entity</button>` : ''}</div>`; })() : ''}
       <h3 class="se-h">${escapeHtml(P.name||P.id)} deck · ${Object.values(deck).reduce((t,n)=> t+n, 0)} cards</h3>
       <div class="se-deck">${Object.keys(deck).length ? Object.keys(deck).map(id=> `<div class="se-row"><span class="se-card">${defs[id] ? (defs[id].icon||'')+' '+escapeHtml(defs[id].name) : escapeHtml(id)+' (missing)'}</span><span class="se-stat">${defs[id] ? defs[id].attack+'/'+defs[id].health : ''}</span>
-        <button type="button" class="btn small" data-dec="${escapeAttr(id)}">−</button><b class="se-n">${deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
+        <button type="button" class="btn small" data-dec="${escapeAttr(id)}" aria-label="One fewer ${escapeAttr(defs[id] ? defs[id].name : id)}">−</button><b class="se-n">${deck[id]}</b><button type="button" class="btn small" data-inc="${escapeAttr(id)}" aria-label="One more ${escapeAttr(defs[id] ? defs[id].name : id)}">+</button></div>`).join('') : '<p class="panel-sub">Empty — add cards below.</p>'}</div>
       <input type="text" id="reSearch" placeholder="Search a card to add to this part's deck…" value="${escapeAttr(q)}" autocomplete="off">
       <div class="nr-results">${matches.map(id=> `<button type="button" class="nr-result" data-add="${escapeAttr(id)}"><span>${defs[id].icon||''} ${escapeHtml(defs[id].name)}</span><span class="nr-src">${defs[id].attack}/${defs[id].health}</span></button>`).join('')}</div>
-      <div class="re-part-actions"><button type="button" class="btn small" id="reSim">📊 Simulate 100 attempts vs my deck</button>${draft.stages.some(s=> (s.rules||[]).some(r=> r.stripAbilities)) ? `<button type="button" class="btn small" id="reSimExposed">📊 …as Exposed</button>` : ''}<span style="flex:1"></span><button type="button" class="btn small ghost" id="reDelPart">🗑 Remove part</button></div>
+      <div class="re-part-actions"><button type="button" class="btn small" id="reSim">📊 Simulate 100 attempts vs my deck</button>${draft.stages.some(s=> RaidM.stageRules(s).stripAbilities) ? `<button type="button" class="btn small" id="reSimExposed">📊 …as Exposed</button>` : ''}<span style="flex:1"></span><button type="button" class="btn small ghost" id="reDelPart">🗑 Remove part</button></div>
       ${simText[P.id] ? `<div class="se-sim">${simText[P.id]}</div>` : ''}` : ''}
       <h3 class="se-h">Stages (as total HP falls)</h3>
-      <div class="re-stages">${draft.stages.map((s,i)=> `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${(s.rules||[]).some(r=> r.stripAbilities)?'checked':''}> strips enemy abilities</label><button type="button" class="btn small ghost" data-st-del="${i}">✕</button></div>`).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
+      <div class="re-stages">${draft.stages.map((s,i)=>{ const sr = RaidM.stageRules(s), raw = Object.assign({}, ...[].concat(s.rules || []).filter(r=> r && typeof r === 'object')), fv = raw.field;
+        // 2026-10-18 (R3-WP2): each stage's rules as simple inputs (RaidM.setStageRules writes them back); a field the list can't show (a rules object) is kept as it is.
+        const fx = FIELD_EFFECTS.filter(f=> f.rules && !f.arenaOnly && f.group !== 'gift'), keep = fv && (typeof fv !== 'string' || !fx.some(f=> f.id === fv));
+        return `<div class="re-stage"><input data-st-name="${i}" value="${escapeAttr(s.name||'')}" placeholder="Stage name"><label>below<input type="number" min="0" max="99.9" step="0.1" data-st-at="${i}" value="${+(s.at*100).toFixed(2)}">%</label><label class="se-chk"><input type="checkbox" data-st-strip="${i}" ${sr.stripAbilities?'checked':''}> strips enemy abilities</label>
+          <label title="Every boss card (its deck, boss unit, guards and Commons) gains this much Attack">boss +Attack<input type="number" min="-20" max="50" data-st-batk="${i}" value="${sr.bossAtk||0}"></label>
+          <label title="Every boss card gains this much Health">boss +Health<input type="number" min="-50" max="200" data-st-bhp="${i}" value="${sr.bossHp||0}"></label>
+          <label title="The boss's back two rows strike this many times a round (half their Attack, like your ally rows)">back-row strikes<input type="number" min="0" max="3" data-st-volley="${i}" value="${sr.extraVolley||0}"></label>
+          <label title="Your castle's max Health changes by this % (-10 = 10% less)">your castle %<input type="number" min="-90" max="200" data-st-castle="${i}" value="${sr.castleHpPct||0}"></label>
+          <label>field<select data-st-field="${i}"><option value="">none</option>${keep ? `<option value="__keep" selected>${escapeHtml(typeof fv === 'string' ? fv : 'custom rules')} (kept)</option>` : ''}${fx.map(f=> `<option value="${escapeAttr(f.id)}" ${fv === f.id ? 'selected' : ''}>${escapeHtml(f.icon + ' ' + f.name)}</option>`).join('')}</select></label>
+          <button type="button" class="btn small ghost" data-st-del="${i}" aria-label="Remove this stage" title="Remove this stage">✕</button>
+          <small class="panel-sub re-stage-desc">${escapeHtml(raidStageText(s) || 'No rules: the stage is only a name.')}</small></div>`; }).join('')}<button type="button" class="btn small" id="reAddStage">＋ Stage</button></div>
       <h3 class="se-h">Scoring &amp; rewards</h3>
       <div class="se-grid">
         <label>Raid damage per castle HP<input id="reRate" type="number" min="1" value="${draft.scoring.perInFightHp||50}"></label>
@@ -20436,7 +20515,12 @@ function openRaidEditor(raidId){
     draft.stages.forEach((s,i)=>{
       const n = overlay.querySelector(`[data-st-name="${i}"]`), a = overlay.querySelector(`[data-st-at="${i}"]`), x = overlay.querySelector(`[data-st-strip="${i}"]`);
       if(n) s.name = n.value; if(a) s.at = Math.max(0, Math.min(0.999, num(a.value, 50)/100));
-      if(x){ s.rules = (s.rules||[]).filter(r=> !r.stripAbilities); if(x.checked) s.rules.push({stripAbilities:true}); }
+      // 2026-10-18 (R3-WP2): the stage's rules through RaidM.setStageRules (keys the editor doesn't show are kept)
+      const g = k=> overlay.querySelector(`[data-st-${k}="${i}"]`), vals = {};
+      if(x) vals.stripAbilities = x.checked;
+      [['batk', 'bossAtk'], ['bhp', 'bossHp'], ['volley', 'extraVolley'], ['castle', 'castleHpPct']].forEach(([a, k])=>{ if(g(a)) vals[k] = g(a).value; });
+      if(g('field') && g('field').value !== '__keep') vals.field = g('field').value;
+      RaidM.setStageRules(s, vals);
     });
   };
   const wire = ()=>{
@@ -20663,7 +20747,7 @@ function openTrenchMatch(def, partId, part, cfg, T, rowsInfo, myRow, cycle){
 }
 function startRaidPartMatch(def, partId){
   const st = currentRaidStateFor(def);
-  const f = RaidM.fightFor(def, st, partId);
+  const f = RaidM.fightFor(def, st, partId, raidStageOpts()); // 2026-10-18 (R3-WP2): with the stage's rules (raidStageOpts resolves its field)
   if(!f || f.locked || f.defeated) return;
   // 2026-10-12 (user: "I love that you made a whole entire minigame simulator of the full game. Lets bench that ... but for raids,
   // I want a FULL proper game. Just that, there's multi rows! like maybe 3 rows v 3 rows"): a trench raid is now a real match with
@@ -20682,9 +20766,13 @@ function startRaidPartMatch(def, partId){
     defs = Object.assign({}, defs); deck = {};
     Object.keys(f.deck).forEach(id=>{ if(!defs[id]) return; const nid = id+'~exposed'; defs[nid] = Object.assign({}, defs[id], {id:nid, effects:{}, name: defs[id].name+' (exposed)'}); deck[nid] = f.deck[id]; });
   }
-  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false});
+  // 2026-10-18 (R3-WP2): the stage's +Attack / +Health on run-only copies, its field, and your castle's Health (castleHpPct)
+  if(f.bossAtk || f.bossHp){ defs = Object.assign({}, defs); const d2 = {};
+    Object.keys(deck).forEach(id=>{ if(!defs[id]) return; const nid = f.stripAbilities ? id : id + '~raid'; defs[nid] = RaidM.stageCard(Object.assign({}, defs[id], {id:nid}), f); d2[nid] = deck[id]; }); deck = d2;
+    matchDefsOverlay = {}; Object.keys(deck).forEach(id=>{ matchDefsOverlay[id] = defs[id]; }); }
+  const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, suddenDeathCastles:false, rules: f.fieldRules});
   const sideOf = id=> id===1?'A':'B';
-  const myCharacter = myCastleDef();
+  const myCharacter = Object.assign({}, myCastleDef()); myCharacter.health = RaidM.scaleCastle(myCharacter.health || 30, f.castleHpPct);
   const players = {1: engine.newPlayer(1, myDeckCounts, myCharacter), 2: engine.newPlayer(2, deck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: f.castleHp, effects:{}})};
   const deckTotals = {1: players[1].deck.length, 2: players[2].deck.length};
   const stats = {};
@@ -20692,9 +20780,10 @@ function startRaidPartMatch(def, partId){
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false,
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1,
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
-    raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null};
+    raidCastleStart: f.castleHp, raidRoundCap: f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
+    raidFieldRules: f.fieldRules, raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : ''}; // 2026-10-18 (R3-WP2)
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar()};
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stripAbilities ? ' · EXPOSED' : ''} · castle ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · castle ${f.castleHp} · ${f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}}).then(()=> renderPlay());
 }
 function startRaidFullBattle(def, partId, f, st){
   if(!deckSizeOkOrWarn()) return;
@@ -20711,15 +20800,15 @@ function startRaidFullBattle(def, partId, f, st){
   const defs = Object.assign({}, getCardDefs()), illusory = (cfg.rules && cfg.rules.illusory) || 0, bossDeck = {};
   Object.keys(cfg.deck).forEach(id=>{ if(!defs[id]) return;
     const nid = id + (cfg.strip ? '~exposed' : illusory ? '~illusory' : '~raid'), src = defs[id];
-    defs[nid] = Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})});
+    defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : illusory ? Object.assign({}, src.effects || {}, {illusory}) : (src.effects || {})}), f); // + the stage's bossAtk / bossHp (2026-10-18)
     bossDeck[nid] = cfg.deck[id]; });
   const entIds = cfg.entities.map((e, i)=>{ const id = 'raid-ent-' + (e.id || i); const fx = {armor: e.armor || 0}; if(illusory) fx.illusory = illusory;
-    defs[id] = {id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}; return id; });
+    defs[id] = RaidM.stageCard({id, name: e.name || 'Guard', icon: e.icon || '🦑', attack: e.attack || 0, health: e.health || 20, wait:0, cost:0, token:true, effects:fx, rarity:'common'}, f); return id; });
   // the run-only copies must be visible to the board and tooltips too (they read getCardDefs, which folds in the overlay)
   // The boss's Commons (2026-10-17, user: "For the enemy, can you enhance it by letting them playing commons on the back 2 rows every turn
   // as well?"): the raid's common pool (RaidM.raidCommonPool), scaled like its deck, called in by raidBossCommons each round.
   const commonPool = (RaidM.raidCommonPool ? RaidM.raidCommonPool(def, f.part, defs) : []).map(id=>{ const nid = id + '~raid', src = defs[id];
-    if(!defs[nid]) defs[nid] = Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : (src.effects || {})});
+    if(!defs[nid]) defs[nid] = RaidM.stageCard(Object.assign({}, src, {id:nid, attack: Math.max(1, Math.round((src.attack||0) * RAID_BOSS_ATK)), health: Math.max(1, Math.round((src.health||1) * RAID_BOSS_HP)), effects: cfg.strip ? {} : (src.effects || {})}), f);
     return nid; });
   // The boss unit (2026-10-17, user: "I also noticed the raid has 2 variations of the same card. Then name them differently. Also the 100+
   // HP difference is too much."): it used to be the part's biggest card under its own name with its Health ×(2 + 10·r²) (a 24-Health
@@ -20732,7 +20821,7 @@ function startRaidFullBattle(def, partId, f, st){
   matchDefsOverlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss)$/.test(id) || id.startsWith('raid-ent-')) matchDefsOverlay[id] = defs[id]; });
   // The raid's field (2026-10-17, user: "There should be all the related field effects but also some kind of psychic dampener"): the
   // raid's (and the part's) fieldRules run in the engine and show as Environment cards (matchFieldRules reads m.raidFieldRules).
-  const raidRules = raidFieldRulesOf(def, f.part);
+  const raidRules = f.fieldRules || raidFieldRulesOf(def, f.part); // 2026-10-18 (R3-WP2): fightFor's, with the stage's field on top
   const engine = makeSimEngine(defs, nextMatchRng(), {recordEvents:true, battleMode:'open', reserveRows:2, suddenDeathCastles:false, rules: raidRules});
   const sideOf = id=> id===1?'A':'B';
   // Allies (2026-10-12, user: "Where are my allies? On the pre-screen it should show my allies and their levels, then during
@@ -20741,7 +20830,7 @@ function startRaidFullBattle(def, partId, f, st){
   // ally decks otherwise). Each has a castle; the three castles are one: their Health added up and their passives merged.
   const allies = (m0=> m0)(trenchAllies(def, [], (Math.random()*0xFFFFFFFF)>>>0)).slice(0, 2).map((a, i)=> raidAllyOf(a, i));
   const mine = myCastleDef(), merged = mergeRaidCastles([mine].concat(allies.map(a=> a.castle)));
-  const myHp = Math.max(merged.health || 30, (cfg.wallHp || 45) * 2);
+  const myHp = RaidM.scaleCastle(Math.max(merged.health || 30, (cfg.wallHp || 45) * 2), f.castleHpPct); // the stage's castleHpPct (2026-10-18)
   const players = {1: engine.newPlayer(1, myDeckCounts, Object.assign({}, merged, {health: myHp})), 2: engine.newPlayer(2, bossDeck, {id:'raid-'+def.id+'-'+partId, name: f.part.name, health: cfg.castleHp, effects:{}})};
   players[2].loopCards = [];
   // The boss's three rows: its guards hold the front, and cards from its deck stand in the middle and back.
@@ -20762,7 +20851,8 @@ function startRaidFullBattle(def, partId, f, st){
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
     raidCastleStart: cfg.castleHp, raidRoundCap: cfg.rounds || f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
     raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your castle'].concat(allies.map(a=> a.castle.name)),
-    raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId};
+    raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId,
+    raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0}; // 2026-10-18 (R3-WP2)
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
   // 2026-10-12 (11:26 list: "During the raid, all 3 players' leaders come onto the battlefield, 1 on each of the centre 3
   // columns. Of course taking their own respective rows"): your leader opens in the front row's centre, the allies' leaders in
@@ -20773,7 +20863,7 @@ function startRaidFullBattle(def, partId, f, st){
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
   const m0 = matchState;
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
@@ -20863,6 +20953,9 @@ function raidPickColumn(m){
   const cols = occ.size ? [...occ] : [-1, 0, 1]; return cols[Math.floor(Math.random()*cols.length)];
 }
 function raidSpecials(m, events){
+  // A stage's extraVolley (2026-10-18, R3-WP2; Enraged / Thrashing): the boss's back two rows strike too, as your ally rows do (engine
+  // reserveVolley: half Attack at the unit facing them, or your castle when that column is empty), N times a round.
+  for(let k = 0; k < Math.min(3, m.raidExtraVolley || 0) && m.engine.reserveVolley; k++){ m.engine.reserveVolley(m.players, m.sideOf, 2, m.stats, events); m.engine.removeDeadCards(m.players, m.sideOf, {}, m.stats, events); }
   const atks = m.raidAttacks || []; if(!atks.length) return;
   const pl = m.players[1], round = m.round; m.raidPending = m.raidPending || {};
   atks.forEach((a, i)=>{
@@ -23192,10 +23285,10 @@ function testKitManualHTML(){
       <button type="button" class="tk-speed-btn ${tgt==='enemy'?'is-on':''}" data-tktarget="enemy" role="radio" aria-checked="${tgt==='enemy'}">On the enemy facing it</button>
     </div>
     <div class="tk-manual-row">
-      <button type="button" class="btn small" data-tkact="dmg" data-n="1">−1</button>
-      <button type="button" class="btn small" data-tkact="dmg" data-n="5">−5</button>
-      <button type="button" class="btn small" data-tkact="heal" data-n="1">＋1</button>
-      <button type="button" class="btn small" data-tkact="heal" data-n="5">＋5</button>
+      <button type="button" class="btn small" data-tkact="dmg" data-n="1" aria-label="Deal 1 damage" title="Deal 1 damage">−1</button>
+      <button type="button" class="btn small" data-tkact="dmg" data-n="5" aria-label="Deal 5 damage" title="Deal 5 damage">−5</button>
+      <button type="button" class="btn small" data-tkact="heal" data-n="1" aria-label="Heal 1" title="Heal 1">＋1</button>
+      <button type="button" class="btn small" data-tkact="heal" data-n="5" aria-label="Heal 5" title="Heal 5">＋5</button>
       <button type="button" class="btn small" data-tkact="kill" title="Deal enough damage to kill it (death triggers fire)">☠ Kill</button>
     </div>
     <div class="tk-manual-row">
@@ -23458,7 +23551,7 @@ const FXL_FIELDS = [
     // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card.")
     // 2026-10-17: the raid's Psychic Dampener: a Psychic 3 hit lands for 1, and its 1-round Confuse never lands.
     ['psychicDampener', {psychicDampener:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Mind Eel', icon:'🧠', effects:{psychic:3, confuse:{chance:100, duration:1}}}}], foes:[{role:'foe', slot:0}]}, steps:['round'], note:"The Mind Eel's Psychic 3 lands for 1, and its sure 1-round Confuse fizzles."}],
-    ['awash', {awash:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-2}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, steps:['round', 'round', 'round'], note:'Each round one unit rides the water 1–3 columns; crashing into a unit hurts both for that many.'}],
+    ['awash', {awash:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-2}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, steps:['round', 'round', 'round'], note:'Each round one unit rides a Wave 1–3 columns; crashing into a unit hurts both for that many.'}], // the Wave field (rules.awash), 2026-10-18
   ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> WIND_TEXT.windy, rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: each one rolls its own wind (at your back, in your face or calm).'},
@@ -26184,7 +26277,7 @@ function renderMatchUI(){
         const first = !loadTutorial2Done() && !adminTest;
         // 2026-10-15 (user: "The pack award was abit anti-climatic cause i didnt expect to get it. Don't give it till I unlock the
         // armoury"): the Ally Pack that came with part 2 is gone; the first pack is Map 0-2's faction pack, next to the Armoury.
-        if(first){ saveTutorial2Done(); try{ localStorage.setItem('bramblewood_tut_zoomout_v1', '1'); }catch(e){} }
+        if(first) saveTutorial2Done(); // 2026-10-18: no more bramblewood_tut_zoomout_v1 (never read; the first-visit zoom keys off revealSet)
         const after = ()=>{
           // Both tribes (2026-10-12, 10:57 list): the Meerkat Wayfarer, another traveller on the road, joins your collection (not
           // your deck), and the otternarian has a word about how hard peace is.
@@ -34043,11 +34136,11 @@ function logText(ev){
     case 'dragonLightning': return {cls:'', text:`🐉⚡ Red lightning from ${nm(ev.attDefId)} strikes ${(ev.uids||[]).length} unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} each!`};
     case 'witherTick': return {cls:'poison', text:`💀 ${nm(ev.defId)} withers: −${ev.n} max Health${ev.left ? ` (${ev.left} more round${ev.left===1?'':'s'})` : ' (the Wither fades)'}.`};
     case 'hatch': return {cls:'', text:`🥚 ${sideLabel(ev.side)==='You' ? 'Your' : sideLabel(ev.side)+"'s"} ${nm(ev.fromDefId)} cracks open: out comes ${nm(ev.defId)}!`};
-    case 'wave': { const who = ev.awash ? 'The water' : `${nm(ev.attDefId)}'s wave`, cols = ev.cols > 1 ? ` ${ev.cols} columns` : ''; // + Awash, the bob and the bounce (2026-10-17)
+    case 'wave': { const who = ev.awash ? 'The Wave' : `${nm(ev.attDefId)}'s Wave`, cols = ev.cols > 1 ? ` ${ev.cols} columns` : ''; // + Awash, the bob and the bounce (2026-10-17)
       return {cls:'', text: ev.bob ? `〰️ ${who} lifts ${nm(ev.targetDefId)}, but it's boxed in: it bobs in place.` : ev.blocked ? `〰️ ${who} breaks on ${nm(ev.targetDefId)}: no room to push it ${ev.dir}.`
         : ev.crashUid != null && !(ev.cols > 0) ? `〰️ ${who} slams ${nm(ev.targetDefId)} ${ev.dir} into the unit beside it!`
-        : `〰️ ${who} ${ev.awash ? 'washes' : 'pushes'} ${nm(ev.targetDefId)} ${ev.dir}${cols}${ev.bounced ? ' (the other way was blocked)' : ''}${ev.swapUid != null ? ' (they swap places)' : ''}${ev.crashUid != null ? ', into another unit' : ''}!`}; } // Wave (2026-10-14)
-    case 'washCrash': return {cls:'', text:`💥 Crash! ${nm(ev.defId)} and ${nm(ev.otherDefId)} each take ${ev.n} (${ev.dmg} and ${ev.otherDmg}).`}; // Awash N (2026-10-18)
+        : `〰️ ${who} ${ev.awash ? 'washes' : 'pushes'} ${nm(ev.targetDefId)} ${ev.dir}${cols}${ev.bounced ? ' (the edge turned it back)' : ''}${ev.swapUid != null ? ' (they swap places)' : ''}${ev.crashUid != null ? ', into another unit' : ''}!`}; } // Wave (2026-10-14); 2026-10-18: Wave N crashes, no swaps (swapUid only in old replays)
+    case 'washCrash': return {cls:'', text:`💥 Crash! ${nm(ev.defId)} and ${nm(ev.otherDefId)} each take ${ev.n} (${ev.dmg} and ${ev.otherDmg}).`}; // Wave N (2026-10-18; the skill and the field)
     // 2026-10-14 (sixth pass)
     case 'fireball': return {cls:'', text: ev.castle ? `🟠 ${nm(ev.attDefId)} hurls a fireball at the castle!` : `🟠 ${nm(ev.attDefId)} hurls a fireball: it bursts over ${(ev.uids||[]).length} enemy unit${(ev.uids||[]).length===1?'':'s'} for ${ev.n} fire each!`};
     case 'meteor': return {cls:'', text: ev.castle ? `☄️ ${nm(ev.attDefId)} calls down a meteor on the castle!` : `☄️ ${nm(ev.attDefId)} calls down a meteor: ${ev.n} to the unit it lands on${(ev.sideUids||[]).length ? `, ${ev.sideN} to ${(ev.sideUids||[]).length} beside it` : ''}. The crater burns.`};
@@ -35826,7 +35919,7 @@ function field2LogText(ev, nm){
       case 'ashRainCastle': return {cls:'', text:`🌋 Ash settles on ${who(ev.side)} castle: −${ev.dmg}.`};
       case 'ashy': return {cls:'', text:'🌫️ The eruption leaves the ground Ashy: flyers are grounded and the air is thick (4 rounds).'};
       case 'arrowSlits': return {cls:'', text: ev.none ? '🏹 An arrow from the walls thuds into empty ground.' : `🏹 The walls loose an arrow at ${nm(ev.defId)}.`};
-      case 'awash': return {cls:'', text: ev.none ? '〰️ The water swirls over an empty field.' : `〰️ Awash ${ev.n}: the water takes ${nm(ev.defId)}.`}; // 2026-10-17
+      case 'awash': return {cls:'', text: ev.none ? '〰️ The water swirls over an empty field.' : `〰️ Wave ${ev.n}: the water takes ${nm(ev.defId)}.`}; // 2026-10-17; "Wave" on screen since 2026-10-18 (Awash and Wave are one)
       // The raid's back rows (2026-10-17)
       case 'volley': return {cls:'gold', text: ev.side === 'A' ? '🏹 Your allies\u2019 rows strike from behind the line.' : '🏹 The enemy\u2019s back rows strike.'};
       case 'volleyHit': return {cls:'', text:`🏹 ${nm(ev.fromDefId)} (${ev.row === 2 ? 'back' : 'middle'} row) hits ${nm(ev.defId)} for ${ev.dmg}.`};
@@ -35882,7 +35975,7 @@ function field2Vfx(ev){
       case 'ashRain': snd('boom'); if(fx()) boardSweepVfx('hail', 'A'); break;
       case 'ashy': snd('boom'); if(bf && fx()){ bf.classList.remove('erupt-rumble'); void bf.offsetWidth; bf.classList.add('erupt-rumble'); setTimeout(()=> bf.classList.remove('erupt-rumble'), 700); } break;
       case 'arrowSlits': if(!ev.none) snd('swipeTone'); break;
-      case 'awash': if(!ev.none){ const el = boardCardEl(ev.uid); fl(el, `〰️ Awash ${ev.n}`, 'quick'); } break; // 2026-10-17: the ride itself is the wave event that follows
+      case 'awash': if(!ev.none){ const el = boardCardEl(ev.uid); fl(el, `〰️ Wave ${ev.n}`, 'quick'); } break; // 2026-10-17: the ride itself is the wave event that follows (2026-10-18: "Wave", not "Awash")
       // The raid's back-row volley (2026-10-17): the striker bobs forward, the struck card (or castle) shows the number.
       case 'volleyHit': case 'volleyCastle': { const from = boardCardEl(ev.fromUid); if(from && fx()){ from.classList.remove('volley-lunge'); void from.offsetWidth; from.classList.add('volley-lunge'); setTimeout(()=> from.classList.remove('volley-lunge'), 500); }
         if(ev.field === 'volleyHit'){ const el = boardCardEl(ev.uid), rc = rcOf(ev.uid); if(rc && ev.dmg > 0) rc.hp = Math.max(0, (rc.hp||0) - ev.dmg); try{ updateCardHpDisplay(ev.uid); }catch(e){} if(el){ fl(el, `🏹-${ev.dmg}`, 'dmg'); try{ shakeEl(el); }catch(e){} } }
@@ -36825,7 +36918,7 @@ function renderVfxForEvent(ev){
         if(aL && bL){ const t = rr[aL][aI]; rr[aL][aI] = rr[bL][bI]; rr[bL][bI] = t; } }
       try{ renderBoard({collapseLandingUids:[]}); }catch(e){}
       const e2 = boardCardEl(ev.targetUid);
-      if(e2 && fromRect && rideFx) SkillFX.waveRide(e2, {from:fromRect, dir:ev.dir, scale:sc, speed:(matchState && matchState.speedMult) || 1, touch:ev.swapUid != null ? [boardCardEl(ev.swapUid)].filter(Boolean) : []}); }
+      if(e2 && fromRect && rideFx) SkillFX.waveRide(e2, {from:fromRect, dir:ev.dir, scale:sc, speed:(matchState && matchState.speedMult) || 1, touch:[ev.swapUid, ev.crashUid].filter(u=> u != null).map(u=> boardCardEl(u)).filter(Boolean)}); } // + the unit it crashes into rocks (Wave N, 2026-10-18)
   }
   // Crab Claws (2026-10-14): a sideways pinch, or a snap at thin air.
   if(ev.type==='crabClaw'){ const el = boardCardEl(ev.attUid); if(el){ floatText(el, ev.whiff ? '🦞 Whiff' : ev.dir === 'castle' ? '🦞 🏰' : (ev.dir === 'left' ? '🦞 ←' : '🦞 →'), 'quick'); el.style.setProperty('--crab-dx', ev.dir === 'right' ? '8px' : '-8px'); el.classList.remove('crab-pinch'); void el.offsetWidth; el.classList.add('crab-pinch'); setTimeout(()=> el.classList.remove('crab-pinch'), 500); } }
@@ -37283,9 +37376,9 @@ function renderSim(){
       <p class="panel-sub" id="simDeckSummary">Deck A: ${deckTotal(simDecks.A)} cards vs Deck B: ${deckTotal(simDecks.B)} cards</p>
       <div class="run-row">
         <label>Games: <input type="number" id="nInput" value="10000" min="1" max="2000000"></label>
-        <button class="btn small" data-preset="1000">1k</button>
-        <button class="btn small" data-preset="10000">10k</button>
-        <button class="btn small" data-preset="100000">100k</button>
+        <button class="btn small" data-preset="1000" aria-label="1,000 games">1k</button>
+        <button class="btn small" data-preset="10000" aria-label="10,000 games">10k</button>
+        <button class="btn small" data-preset="100000" aria-label="100,000 games">100k</button>
         <button class="btn primary" id="runBtn">▶ Run</button>
       </div>
       <p class="run-error" id="simRunError" hidden></p>
@@ -39553,7 +39646,7 @@ function renderDeckListTab(body){
       </div>
     </div>`;
   const grid = document.getElementById('deckMenuGrid');
-  body.querySelectorAll('[data-deckview]').forEach(b=> b.addEventListener('click', ()=>{ deckListView = b.dataset.deckview; try{ localStorage.setItem('bramblewood_deck_view', deckListView); }catch(e){} renderDeckListTab(body); }));
+  // 2026-10-18 (audit R3-WP6): the Large/Medium buttons went on 2026-10-13; their handler (and its never-read bramblewood_deck_view key) went too.
   if(deckListView==='medium'){
     grid.innerHTML = myDecks.map(d=> `<button type="button" class="dmp-btn" data-editdeck="${d.id}" aria-label="Edit ${escapeAttr(d.name)}">${deckMediumPreviewHTML(d)}</button>`).join('');
     grid.querySelectorAll('[data-editdeck]').forEach(b=> b.addEventListener('click', ()=>{ deckHeroView = false; deckEditingId = b.getAttribute('data-editdeck'); deckShowList = false; renderDeckSection(); }));
@@ -41733,13 +41826,35 @@ function openPackAnimation(pack, opened, opts){
    added a "leaderboard read" policy opening SELECT to everyone, since profiles carries nothing
    private (email lives in auth.users, never here) — see the migration this batch.
    ============================================================ */
+// Network feedback (2026-10-18, R3-WP3): a load that FAILED used to land in the same empty state as a load that found
+// nothing ("No ranked players yet", "You're not in a guild yet", "No matches recorded yet"), so a dropped connection read
+// as lost progress. Player-facing loads now tell the two apart: on failure this box says what couldn't load, plus Retry.
+// One delegated click listener runs the retries; each caller registers its retry under a short name. A function
+// declaration (hoisted, its state kept on itself) so any render can use it, early or late in the file.
+function netErrorHTML(what, retryName, retryFn){
+  if(!netErrorHTML.retry){
+    netErrorHTML.retry = {};
+    document.addEventListener('click', e=>{
+      const b = e.target && e.target.closest ? e.target.closest('[data-net-retry]') : null; if(!b) return;
+      const fn = netErrorHTML.retry[b.getAttribute('data-net-retry')]; if(!fn) return;
+      b.disabled = true; b.textContent = TX('net.retrying');
+      try{ fn(); }catch(err){ console.warn('retry', err); }
+    });
+  }
+  if(retryName && retryFn) netErrorHTML.retry[retryName] = retryFn;
+  return `<div class="empty-hint net-error" role="alert"><div>⚠️ ${escapeHtml(what)}</div>${retryName ? `<button type="button" class="btn small" data-net-retry="${escapeAttr(retryName)}" style="margin-top:8px">${escapeHtml(TX('net.retry'))}</button>` : ''}</div>`;
+}
+// The message an error carries, for the toast after a failed write the player asked for (else a plain "try again").
+function netErrText(err){ const raw = String((err && (err.message || err.details)) || ''); return raw || TX('net.something-went-wrong'); }
 let cloudLeaderboard = null; // top 50 profiles by rating, newest fetch wins; null = not loaded yet
+let cloudLeaderboardError = false; // 2026-10-18 (R3-WP3): the last load failed: shown as an error + Retry, not "no players yet"
 async function loadLeaderboard(){
   if(!sbClient){ setTimeout(()=>{ if(sbClient) loadLeaderboard(); }, 1500); return; } // initCloudSync() may not have finished yet
   try{
-    const { data } = await sbClient.from('profiles').select('id, display_name, rating').order('rating', {ascending:false}).limit(50);
-    cloudLeaderboard = data || [];
-  }catch(e){ cloudLeaderboard = []; }
+    const { data, error } = await sbClient.from('profiles').select('id, display_name, rating').order('rating', {ascending:false}).limit(50);
+    if(error) throw error;
+    cloudLeaderboard = data || []; cloudLeaderboardError = false;
+  }catch(e){ cloudLeaderboard = []; cloudLeaderboardError = true; }
   if(currentTab==='ranking') renderRanking();
 }
 function renderRanking(){
@@ -41749,7 +41864,7 @@ function renderRanking(){
     <div class="play-subtabs" role="tablist"><button class="btn small" id="rankingBackBtn">← Back</button></div>
     <div class="panel">
       <h2>🏆 Your Rank</h2>
-      <p class="panel-sub">Your rating goes up and down with your Online Raid and Ranked 1v1 results.</p>
+      <p class="panel-sub">${ONLINE_RAID_VISIBLE ? 'Your rating goes up and down with your Online Raid and Ranked 1v1 results.' : escapeHtml(TX('ui.rating-moves-with-pvp-ranked'))}</p>
       <div class="rank-me-row">
         <div class="rank-me-tile"><div class="rank-me-label">Tier</div><div class="rank-me-value">${myRank.label}</div></div>
         <div class="rank-me-tile"><div class="rank-me-label">Rating</div><div class="rank-me-value">${Math.round(myRating)}</div></div>
@@ -41758,13 +41873,16 @@ function renderRanking(){
     </div>
     <div class="panel">
       <h2>🌍 Leaderboard <span class="panel-sub-inline">(top 50 signed-in players)</span></h2>
-      <div id="leaderboardBody">${cloudLeaderboard===null ? '<div class="empty-hint">Loading leaderboard…</div>' : leaderboardTableHTML(cloudLeaderboard)}</div>
+      <div id="leaderboardBody">${cloudLeaderboard===null ? '<div class="empty-hint">Loading leaderboard…</div>'
+        : cloudLeaderboardError ? netErrorHTML(TX('net.leaderboard-failed'), 'leaderboard', ()=>{ cloudLeaderboard = null; cloudLeaderboardError = false; renderRanking(); })
+        : leaderboardTableHTML(cloudLeaderboard)}</div>
     </div>`;
   document.getElementById('rankingBackBtn').addEventListener('click', goHome);
   if(cloudLeaderboard===null) loadLeaderboard();
 }
 function leaderboardTableHTML(rows){
-  if(!rows.length) return '<div class="empty-hint">No ranked players yet — be the first! Fight an Online Raid boss to get on the board.</div>';
+  // 2026-10-18 (R3-WP3): Online Raid is hidden (ONLINE_RAID_VISIBLE), so point at the rated fights that exist: Arena PvP and Ranked Live.
+  if(!rows.length) return `<div class="empty-hint">${ONLINE_RAID_VISIBLE ? 'No ranked players yet — be the first! Fight an Online Raid boss to get on the board.' : escapeHtml(TX('ui.no-ranked-players-yet'))}</div>`;
   return `<div class="rank-table">
     <div class="rank-row rank-row-head"><span>#</span><span>Player</span><span>Tier</span><span>Rating</span></div>
     ${rows.map((r,i)=>{
@@ -41794,49 +41912,77 @@ let myGuild = null;         // {id,name,tag,icon,created_by} once loaded, or nul
 let myGuildMembers = null;  // [{profile_id, role, joined_at, profiles:{display_name,rating}}], null = not loaded yet
 let guildBrowseList = null; // all guilds, shown when you have none to join; null = not loaded yet
 let guildDataLoaded = false; // distinguishes "haven't asked yet" from "asked, and you're in no guild"
+let guildLoadError = false;  // 2026-10-18 (R3-WP3): the last load FAILED; shown as an error + Retry, not as "you're in no guild"
+let guildBrowseError = false; // same, for the list of guilds to join
 async function loadMyGuild(){
-  guildDataLoaded = false;
+  guildDataLoaded = false; guildLoadError = false;
   if(!sbClient || !cloudUserId){ myGuild=null; myGuildMembers=null; guildDataLoaded=true; if(currentTab==='guild') renderGuild(); return; }
   try{
-    const { data: membership } = await sbClient.from('guild_members').select('guild_id').eq('profile_id', cloudUserId).maybeSingle();
+    // 2026-10-18 (R3-WP3): each query's error is checked; before, a failed read came back as "no membership" and the
+    // screen offered to create a guild to a player who already has one.
+    const { data: membership, error: memErr } = await sbClient.from('guild_members').select('guild_id').eq('profile_id', cloudUserId).maybeSingle();
+    if(memErr) throw memErr;
     if(!membership){
       myGuild = null; myGuildMembers = null;
       loadGuildBrowseList();
     } else {
-      const { data: guild } = await sbClient.from('guilds').select('*').eq('id', membership.guild_id).maybeSingle();
+      const { data: guild, error: gErr } = await sbClient.from('guilds').select('*').eq('id', membership.guild_id).maybeSingle();
+      if(gErr) throw gErr;
+      const { data: members, error: mErr } = await sbClient.from('guild_members').select('profile_id, role, joined_at, profiles(display_name, rating)').eq('guild_id', membership.guild_id).order('joined_at', {ascending:true});
+      if(mErr) throw mErr;
       myGuild = guild;
-      const { data: members } = await sbClient.from('guild_members').select('profile_id, role, joined_at, profiles(display_name, rating)').eq('guild_id', membership.guild_id).order('joined_at', {ascending:true});
       myGuildMembers = members || [];
     }
-  }catch(e){ myGuild=null; myGuildMembers=null; }
+  }catch(e){ myGuild=null; myGuildMembers=null; guildLoadError = true; }
   guildDataLoaded = true;
   if(currentTab==='guild') renderGuild();
 }
 async function loadGuildBrowseList(){
   if(!sbClient) return;
   try{
-    const { data } = await sbClient.from('guilds').select('id,name,tag,icon').order('name', {ascending:true}).limit(50);
-    guildBrowseList = data || [];
-  }catch(e){ guildBrowseList = []; }
+    // created_by too (2026-10-18): lets a founder whose owner row didn't save re-join their own guild as its owner (createGuild)
+    const { data, error } = await sbClient.from('guilds').select('id,name,tag,icon,created_by').order('name', {ascending:true}).limit(50);
+    if(error) throw error;
+    guildBrowseList = data || []; guildBrowseError = false;
+  }catch(e){ guildBrowseList = []; guildBrowseError = true; }
   if(currentTab==='guild' && !myGuild) renderGuild();
 }
 async function createGuild(name, tag, icon){
   if(!sbClient || !cloudUserId) return {error:'Not signed in.'};
   const { data, error } = await sbClient.from('guilds').insert({name, tag, icon: icon||'🛡️', created_by: cloudUserId}).select().maybeSingle();
   if(error) return {error: /duplicate|unique/i.test(error.message) ? 'That guild name or tag is already taken.' : error.message};
-  const { error: memberErr } = await sbClient.from('guild_members').insert({guild_id: data.id, profile_id: cloudUserId, role:'owner'});
-  if(memberErr) return {error: memberErr.message};
+  if(!data) return {error: TX('net.something-went-wrong')};
+  // 2026-10-18 (R3-WP3): the guild row and the owner row are two inserts. If the second fails, try it once more, then take
+  // the guild back out so no ownerless guild is left holding the name. The live policies (read 2026-10-18) have NO delete
+  // policy on guilds, so that delete removes nothing until supabase/proposed/20261018_guild_creator_delete_empty.sql is
+  // applied; .select() tells the two cases apart, and the founder is told what happened either way.
+  let { error: memberErr } = await sbClient.from('guild_members').insert({guild_id: data.id, profile_id: cloudUserId, role:'owner'});
+  if(memberErr) ({ error: memberErr } = await sbClient.from('guild_members').insert({guild_id: data.id, profile_id: cloudUserId, role:'owner'}));
+  if(memberErr){
+    let removed = false;
+    try{ const { data: gone, error: delErr } = await sbClient.from('guilds').delete().eq('id', data.id).eq('created_by', cloudUserId).select('id'); removed = !delErr && !!(gone && gone.length); }catch(e){}
+    if(removed) return {error: TX('net.guild-create-rolled-back', {err: netErrText(memberErr)})};
+    guildBrowseList = null; // so the list below re-loads and shows the new guild with its Join button
+    return {error: TX('net.guild-create-half-done', {name: data.name, err: netErrText(memberErr)}), halfDone: true};
+  }
   return {data};
 }
 async function joinGuild(guildId){
   if(!sbClient || !cloudUserId) return {error:'Not signed in.'};
-  const { error } = await sbClient.from('guild_members').insert({guild_id: guildId, profile_id: cloudUserId, role:'member'});
+  // A founder joining their own guild (one whose owner row failed to save, see createGuild) joins as its owner.
+  const g = (guildBrowseList||[]).find(x=> x.id===guildId);
+  const role = g && g.created_by===cloudUserId ? 'owner' : 'member';
+  const { error } = await sbClient.from('guild_members').insert({guild_id: guildId, profile_id: cloudUserId, role});
   if(error) return {error: /duplicate/i.test(error.message) ? 'You\'re already in a guild — leave it first.' : error.message};
   return {ok:true};
 }
+// 2026-10-18 (R3-WP3): returns {error} instead of ignoring it, so a failed leave doesn't show the player as guildless.
 async function leaveGuild(){
-  if(!sbClient || !cloudUserId) return;
-  await sbClient.from('guild_members').delete().eq('profile_id', cloudUserId);
+  if(!sbClient || !cloudUserId) return {error: 'Not signed in.'};
+  try{
+    const { error } = await sbClient.from('guild_members').delete().eq('profile_id', cloudUserId);
+    return error ? {error: netErrText(error)} : {ok:true};
+  }catch(e){ return {error: netErrText(e)}; }
 }
 function renderGuild(){
   const root = document.getElementById('view-guild');
@@ -41844,7 +41990,7 @@ function renderGuild(){
     root.innerHTML = `
       <div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
       <div class="panel"><h2>🛡️ Guilds</h2>
-        <p class="panel-sub">Sign in to create or join a guild — membership syncs across devices, same as Online Raid and the Shop.</p>
+        <p class="panel-sub">${ONLINE_RAID_VISIBLE ? 'Sign in to create or join a guild — membership syncs across devices, same as Online Raid and the Shop.' : escapeHtml(TX('ui.guild-sign-in-syncs'))}</p>
         <button class="btn primary" id="guildSignInBtn">🔑 Sign in</button>
       </div>`;
     document.getElementById('guildBackBtn').addEventListener('click', goHome);
@@ -41857,6 +42003,13 @@ function renderGuild(){
     loadMyGuild();
     return;
   }
+  // 2026-10-18 (R3-WP3): a failed load says so (with Retry) instead of offering to create a guild
+  if(guildLoadError){
+    root.innerHTML = `<div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
+      <div class="panel"><h2>🛡️ Guilds</h2>${netErrorHTML(TX('net.guild-failed'), 'guild', ()=>{ guildLoadError = false; guildDataLoaded = false; guildBrowseList = null; renderGuild(); })}</div>`;
+    document.getElementById('guildBackBtn').addEventListener('click', goHome);
+    return;
+  }
   root.innerHTML = `
     <div class="play-subtabs" role="tablist"><button class="btn small" id="guildBackBtn">← Back</button></div>
     ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) : guildBrowseCreatePanelHTML()}`;
@@ -41865,7 +42018,10 @@ function renderGuild(){
     const leaveBtn = document.getElementById('guildLeaveBtn');
     if(leaveBtn) leaveBtn.addEventListener('click', async ()=>{
       if(!confirm(TX('dialog.leave-you-can-rejoin-or-found', {name: myGuild.name}))) return;
-      await leaveGuild();
+      leaveBtn.disabled = true;
+      const res = await leaveGuild();
+      // 2026-10-18 (R3-WP3): on failure the player is still in the guild: say so and keep the roster as it is
+      if(res.error){ leaveBtn.disabled = false; showToast(TX('toast.couldn-t-leave-the-guild', {err: res.error}), 'error'); return; }
       myGuild=null; myGuildMembers=null;
       loadMyGuild();
     });
@@ -41878,8 +42034,14 @@ function renderGuild(){
       const icon = document.getElementById('guildIconInput').value.trim() || '🛡️';
       const msgEl = document.getElementById('guildCreateMsg');
       msgEl.textContent = 'Creating…'; msgEl.classList.remove('is-err');
-      const res = await createGuild(name, tag, icon);
-      if(res.error){ msgEl.textContent = res.error; msgEl.classList.add('is-err'); return; }
+      let res;
+      try{ res = await createGuild(name, tag, icon); }catch(err){ res = {error: netErrText(err)}; }
+      if(res.error){
+        msgEl.textContent = res.error; msgEl.classList.add('is-err');
+        showToast(res.error, 'error'); // 2026-10-18 (R3-WP3): toast too, since a half-made guild re-renders the list below
+        if(res.halfDone) loadGuildBrowseList();
+        return;
+      }
       myGuild=null; myGuildMembers=null;
       loadMyGuild();
     });
@@ -41933,7 +42095,9 @@ function guildBrowseCreatePanelHTML(){
     </div>
     <div class="panel">
       <h2>🔍 Join a Guild</h2>
-      <div id="guildBrowseList">${guildBrowseList===null ? '<div class="empty-hint">Loading guilds…</div>' : guildBrowseListHTML(guildBrowseList)}</div>
+      <div id="guildBrowseList">${guildBrowseList===null ? '<div class="empty-hint">Loading guilds…</div>'
+        : guildBrowseError ? netErrorHTML(TX('net.guild-list-failed'), 'guildList', ()=>{ guildBrowseList = null; guildBrowseError = false; renderGuild(); })
+        : guildBrowseListHTML(guildBrowseList)}</div>
     </div>`;
 }
 function guildBrowseListHTML(list){
@@ -42040,7 +42204,7 @@ function profileHeroHTML(){
       <div class="pf-status">${isSignedIn() ? '<span class="pf-dot ok"></span>Synced to your account' : '<span class="pf-dot"></span>Guest · saved on this device'}${cloudCardAdmin ? ' · <span class="admin-badge">🛡 Admin</span>' : ''}</div>
       <div class="pf-level"><b>⭐ Level ${L.level}</b><span class="pf-bar"><span style="width:${Math.round(L.into/L.need*100)}%"></span></span><small>${L.into}/${L.need} XP</small></div>
     </div>
-    <div class="pf-rank" title="From Online Raid and Ranked results">
+    <div class="pf-rank" title="${ONLINE_RAID_VISIBLE ? 'From Online Raid and Ranked results' : escapeAttr(TX('ui.rank-from-pvp-ranked'))}">
       <span class="conquest-rank-badge">${rank.label}</span>
       <small>Rating ${Math.round(myRating)}</small>
     </div>
@@ -42255,8 +42419,13 @@ async function socialInit(){
     const { data, error } = await sbClient.from('profiles').select('friend_code').eq('id', cloudUserId).maybeSingle();
     if(error) throw error;
     Social.myCode = data && data.friend_code || null;
-    Social.ready = true;
-  }catch(e){ Social.ready = false; Social.checked = true; return; }
+    Social.ready = true; Social.initError = null;
+  }catch(e){
+    // 2026-10-18 (R3-WP3): only a missing column/table means "not switched on yet"; anything else is a failed load (Retry)
+    const raw = String((e && (e.message || e.details)) || '');
+    Social.initError = /relation .* does not exist|could not find the function|schema cache|column .* does not exist/i.test(raw) ? 'missing' : 'network';
+    Social.ready = false; Social.checked = true; return;
+  }
   Social.checked = true;
   await socialRefresh();
   // Presence: who's online right now (keyed by profile id).
@@ -42288,13 +42457,16 @@ async function socialInit(){
 function socialTeardown(){
   ['presence','friendSub','inviteSub'].forEach(k=>{ try{ if(Social[k] && sbClient) sbClient.removeChannel(Social[k]); }catch(e){} Social[k] = null; });
   if(Social.heartbeat){ clearInterval(Social.heartbeat); Social.heartbeat = null; }
-  Social.rows = []; Social.online = new Set(); Social.incomingInvites = []; Social.myCode = null; Social.outgoingInvite = null;
+  Social.rows = []; Social.online = new Set(); Social.incomingInvites = []; Social.myCode = null; Social.outgoingInvite = null; Social.listError = false;
   hideInviteBanner();
 }
 async function socialRefresh(){
   if(!Social.ready) return;
-  const { data, error } = await sbClient.from('friendships').select('*');
-  if(error){ console.warn('friendships', error); return; }
+  let data, error;
+  try{ ({ data, error } = await sbClient.from('friendships').select('*')); }catch(e){ error = e; }
+  // 2026-10-18 (R3-WP3): remembered, so the Friends list shows "couldn't load" + Retry instead of "No friends yet"
+  if(error){ console.warn('friendships', error); Social.listError = true; if(currentTab==='friends') renderFriendsListOnly(); return; }
+  Social.listError = false;
   Social.rows = data || [];
   const ids = Social.rows.map(r=> r.requester_id===cloudUserId ? r.addressee_id : r.requester_id);
   await Registry.users.get(ids);
@@ -42336,6 +42508,7 @@ function friendRowHTML(item, kind){
   </div>`;
 }
 function friendsListHTML(){
+  if(Social.listError) return netErrorHTML(TX('net.friends-list-failed'), 'friendsList', ()=>{ socialRefresh(); }); // socialRefresh re-renders either way
   const b = socialBuckets();
   const sec = (title, items, kind, empty)=> items.length || empty ? `<section class="fr-section"><h3>${title}${items.length?` <span class="fr-count">${items.length}</span>`:''}</h3>${items.length ? items.map(i=>friendRowHTML(i, kind)).join('') : `<p class="fr-empty">${empty}</p>`}</section>` : '';
   return sec('Requests', b.incoming, 'incoming', '')
@@ -42422,7 +42595,11 @@ function renderFriends(){
     return;
   }
   if(!Social.ready){
-    root.innerHTML = `<div class="panel fr-panel"><h2>👥 Friends</h2><p class="panel-sub">${Social.checked ? 'Friends aren’t switched on yet — the database update still needs to be applied.' : 'Connecting…'}</p><div id="frExtras">${friendsExtrasHTML(0)}</div></div>`;
+    // 2026-10-18 (R3-WP3): a failed connection gets an error + Retry; only a missing table keeps the "not switched on" line
+    const notReady = !Social.checked ? '<p class="panel-sub">Connecting…</p>'
+      : Social.initError==='network' ? netErrorHTML(TX('net.friends-failed'), 'friends', ()=>{ Social.checked = false; Social.initError = null; renderFriends(); })
+      : '<p class="panel-sub">Friends aren’t switched on yet — the database update still needs to be applied.</p>';
+    root.innerHTML = `<div class="panel fr-panel"><h2>👥 Friends</h2>${notReady}<div id="frExtras">${friendsExtrasHTML(0)}</div></div>`;
     wireFriendsExtras(root);
     if(!Social.checked) socialInit().then(()=>{ if(currentTab==='friends') renderFriends(); });
     return;
@@ -42536,8 +42713,12 @@ async function onMyInviteUpdated(inv){
   Social.outgoingInvite = null; clearTimeout(myInvitePoll);
   const name = ((Registry.users._cache.get(inv.to_id)||{}).display_name) || 'Your friend';
   if(inv.status==='accepted' && inv.match_id){
-    const { data: row } = await sbClient.from('live_matches').select('*').eq('id', inv.match_id).maybeSingle();
+    // 2026-10-18 (R3-WP3): a failed read of the match left the inviter with no word while the friend waited in it; try
+    // twice, then say what happened
+    let row = null;
+    for(let i = 0; i < 2 && !row; i++){ try{ ({ data: row } = await sbClient.from('live_matches').select('*').eq('id', inv.match_id).maybeSingle()); }catch(e){ row = null; } }
     if(row){ showToast(TX('toast.accepted-match-starting', {name}), 'ok'); switchTab('play'); await enterLiveMatch(row); return; }
+    showToast(TX('toast.accepted-but-match-failed', {name}), 'error');
   }
   if(inv.status==='declined') showToast(TX('toast.declined-the-invite', {name}));
   if(inv.status==='expired') showToast(TX('toast.your-invite-expired'));
@@ -42546,7 +42727,10 @@ async function onMyInviteUpdated(inv){
 async function cancelMyInvite(){
   const inv = Social.outgoingInvite; if(!inv) return;
   Social.outgoingInvite = null; clearTimeout(myInvitePoll);
-  try{ await sbClient.rpc('cancel_match_invite', {p_id: inv.id}); }catch(e){}
+  // 2026-10-18 (R3-WP3): if the cancel didn't reach the server the friend can still accept, so keep waiting on it and say so
+  let err = null;
+  try{ ({ error: err } = await sbClient.rpc('cancel_match_invite', {p_id: inv.id})); }catch(e){ err = e; }
+  if(err){ Social.outgoingInvite = inv; pollMyInvite(); showToast(TX('toast.couldn-t-cancel-the-invite', {err: netErrText(err)}), 'error'); }
   if(currentTab==='friends') renderFriends();
 }
 async function socialLoadInvites(){
@@ -42568,7 +42752,13 @@ function showInviteBanner(){
   el.innerHTML = `<span class="ib-text">⚔️ <b>${escapeHtml(from)}</b> invites you to a friendly match · ${mode?mode.icon+' '+escapeHtml(mode.label):''}${(inv.settings||{}).format==='standard'?' · 🃏 Standard':''}</span>
     <span class="ib-actions"><button type="button" class="btn small primary" id="ibAccept">Accept</button><button type="button" class="btn small" id="ibDecline">Decline</button></span>`;
   el.hidden = false;
-  document.getElementById('ibDecline').onclick = async ()=>{ try{ await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: false, p_deck: {}, p_character: null, p_leader: null}); }catch(e){} Social.incomingInvites.shift(); showInviteBanner(); refreshFriendsBadge(); };
+  document.getElementById('ibDecline').onclick = async ()=>{
+    // 2026-10-18 (R3-WP3): a decline that didn't reach the server leaves the friend waiting; keep the banner and say so
+    let err = null;
+    try{ ({ error: err } = await sbClient.rpc('respond_match_invite', {p_id: inv.id, p_accept: false, p_deck: {}, p_character: null, p_leader: null})); }catch(e){ err = e; }
+    // (a reply from the server itself, e.g. the invite already expired, has a code: then the invite is gone and the banner goes too)
+    if(err){ showToast(TX('toast.couldn-t-decline-the-invite', {err: netErrText(err)}), 'error'); if(!err.code) return; }
+    Social.incomingInvites.shift(); showInviteBanner(); refreshFriendsBadge(); };
   document.getElementById('ibAccept').onclick = async ()=>{
     const invStd = (inv.settings||{}).format==='standard', accDeck = invStd ? loadStandardDeck() : myDeckCounts;
     if(deckTotal(accDeck)!==DECK_SIZE){ showToast(TX('toast.your-deck-needs-exactly-cards-to', {v1: invStd?'Standard ':'', DECK_SIZE}), 'error'); if(invStd) openStandardDeckBuilder(); return; }
@@ -42597,8 +42787,9 @@ async function marketLoad(){
     Market.listings = data || []; Market.error = null;
     await Registry.users.get(Market.listings.map(l=>l.seller_id));
     if(isSignedIn()){
-      const { data: mine } = await sbClient.from('market_listings').select('*').eq('seller_id', cloudUserId).order('created_at', {ascending:false}).limit(60);
-      Market.mine = mine || [];
+      // 2026-10-18 (R3-WP3): a failed read of your own listings showed "You haven't listed anything yet"; now an error + Retry
+      const { data: mine, error: mineErr } = await sbClient.from('market_listings').select('*').eq('seller_id', cloudUserId).order('created_at', {ascending:false}).limit(60);
+      Market.mine = mine || []; Market.mineError = !!mineErr;
       await marketClaimProceeds();
     }
   }catch(err){ Market.listings = []; Market.error = socialErrText(err); }
@@ -42636,7 +42827,7 @@ async function marketClaimProceeds(){
   }catch(e){}
 }
 function marketBrowseHTML(){
-  if(Market.error) return `<p class="fr-empty">${escapeHtml(Market.error)}</p>`;
+  if(Market.error) return netErrorHTML(Market.error, 'market', marketRetry); // 2026-10-18 (R3-WP3): + Retry
   if(Market.loading || Market.listings===null) return '<p class="fr-empty">Loading the market…</p>';
   const q = Market.q.trim().toLowerCase();
   const rows = Market.listings.filter(l=>{ const d = Registry.card(l.card_id); return d && (!q || d.name.toLowerCase().includes(q)) && (!Market.rarity || d.rarity===Market.rarity); });
@@ -42674,6 +42865,7 @@ function marketSellHTML(){
 }
 function marketMineHTML(){
   if(!isSignedIn()) return '<p class="fr-empty">Sign in to see your listings.</p>';
+  if(Market.error || Market.mineError) return netErrorHTML(Market.error || TX('net.market-mine-failed'), 'marketMine', marketRetry);
   const mine = Market.mine||[];
   if(!mine.length) return '<p class="fr-empty">You haven’t listed anything yet.</p>';
   const label = {active:'For sale', sold:'Sold', cancelled:'Cancelled'};
@@ -42681,6 +42873,10 @@ function marketMineHTML(){
     return `<div class="fr-row"><div class="fr-avatar">${cardIcoHTML(d)}</div><div class="fr-main"><div class="fr-name">${escapeHtml(d.name)}${l.foil?' ✨':''}</div><div class="fr-sub">${label[l.status]||l.status} · ${priceHTML(l.price, l.currency)}${l.status==='sold'?' · '+relTime(l.sold_at):''}</div></div>
       <div class="fr-actions">${l.status==='active'?`<button type="button" class="btn small" data-mk-cancel="${l.id}">Cancel</button>`:''}</div></div>`; }).join('');
 }
+// Retry for the market's error boxes (2026-10-18, R3-WP3): re-load into the mount that is on screen.
+function marketRetry(){ const mount = document.getElementById('marketMount'); Market.error = null; Market.mineError = false; Market.listings = null;
+  if(mount) renderMarketInto(mount);
+  marketLoad().then(()=>{ const m = document.getElementById('marketMount'); if(m) renderMarketInto(m); }); }
 function renderFleaMarket(){
   const root = document.getElementById('view-market'); if(!root) return;
   root.innerHTML = `<div class="panel mk-panel"><h2>🧺 Flea Market</h2>
@@ -43139,7 +43335,7 @@ function renderEntranceAuth(){
       </form>
       <button type="button" class="btn ghost small entrance-signin-btn" id="entranceSignInBtn">🔑 Sign in</button>
       <p class="entrance-account-line" id="entranceAccountLine" hidden></p>
-      <p class="entrance-login-note">No account needed to play — Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync progress, Online Raid, and Shop packs across devices.</p>`;
+      <p class="entrance-login-note">${ONLINE_RAID_VISIBLE ? 'No account needed to play — Enter the Grove to jump straight in as a guest. Already have an account? Sign in above to sync progress, Online Raid, and Shop packs across devices.' : escapeHtml(TX('ui.entrance-login-note'))}</p>`; // 2026-10-18 (R3-WP3): Online Raid named only while it is visible
     const form = document.getElementById('loginForm');
     // Reliability hardening (2026-09-24, "im stuck. i cant enter." bug report): wrapped in
     // try/catch so a throw here (e.g. saveMyProfile or the re-render hitting something

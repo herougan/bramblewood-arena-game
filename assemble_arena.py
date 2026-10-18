@@ -11,6 +11,9 @@ ghosts_src = open(SCRATCH + "bramblewood-ghosts.js", encoding="utf-8").read() + 
 # Game texts (2026-10-15, user: "offload it into a excel so I can edit the text from there"): the TEXT table and TX(), after the
 # translation layer it hands its strings to. Edited through docs/game-texts.xlsx (tools/text/import_texts.py).
 ghosts_src += "\n" + open(SCRATCH + "bramblewood-texts.js", encoding="utf-8").read()
+# 2026-10-18 (R3-WP5 accessibility): modal focus management (aria-modal, focus in / Tab trap / Escape / focus back) for every
+# role=dialog overlay, by one MutationObserver. DOM-only and self-guarding, so it rides in the same script block.
+ghosts_src += "\n" + open(SCRATCH + "bramblewood-a11y.js", encoding="utf-8").read()
 raid_bosses_literal = json.dumps(json.load(open(SCRATCH + "canonical/raid-bosses.json", encoding="utf-8")), ensure_ascii=False)
 app_src = open(SCRATCH + "arena_app.js", encoding="utf-8").read()
 # GSAP (2026-09-16, "GSAP-quality" animation pass): a page published via the Artifact tool is
@@ -213,30 +216,34 @@ MAP_ART_DERIVED = {
     "mv": ("m10", 190, 1.00, 0.95),  # The Aerie Vault: Eyrie Heights, turned from slate blue to straw and twig
     "mx": ("m11", 16, 1.15, 0.78),   # Volcano Lair: the Sundered Peak, hotter orange and darker
     "mm": ("m8", 34, 1.10, 0.92),    # Murgle Mayhem (endless dungeon under Sable Swampmire): the swamp, tinted teal
+    # 2026-10-18 (audit R3-WP6: the Spire and the Long Burrow drew only a gradient): the two last dungeons get backdrops too.
+    "tw": ("m10", 12, 1.50, 0.82),   # The Babel Spire: Eyrie Heights' stone and sky pools, colder and bluer
+    "mlb": ("m4", 120, 0.85, 1.05),  # The Long Burrow: the caves turned from violet to packed earth and root
 }
 def _derived_map_png(src, dh, ds, dv):
     from PIL import Image
     import io as _io, numpy as _np
-    im = Image.open(SCRATCH + "art/maps/m%s.png" % src[1:]).convert("RGB")
+    im = Image.open(SCRATCH + "art/maps/%s.png" % src).convert("RGB")
     hsv = _np.array(im.convert("HSV")).astype(_np.float32)
     hsv[..., 0] = (hsv[..., 0] + dh * 255.0 / 360.0) % 256
     hsv[..., 1] = _np.clip(hsv[..., 1] * ds, 0, 255); hsv[..., 2] = _np.clip(hsv[..., 2] * dv, 0, 255)
     out = Image.fromarray(hsv.astype(_np.uint8), "HSV").convert("RGB")
     buf = _io.BytesIO(); out.save(buf, format="PNG", optimize=True); return buf.getvalue()
 _art_ids = []
-for _mid in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j", "m", "tut", "arena", "abyss"]:   # + the Arena's tourney ground and the raids' deep sea (2026-10-17)   # m1..m29 plus the 2026-10-09 field/beach maps
-    _fp = SCRATCH + "art/maps/m%s.png" % _mid
-    if ("m" + _mid) in MAP_ART_DERIVED:
-        _data = _derived_map_png(*MAP_ART_DERIVED["m" + _mid])
+# 2026-10-18: loops over whole map ids, so the Babel Spire ("tw", no "m" prefix) and the Long Burrow ("mlb") fit in.
+for _id in ["m" + _m for _m in [str(i) for i in range(1, 30)] + ["f", "b", "g", "u", "p", "c", "w", "k", "h", "r", "l", "t", "d", "y", "q", "z", "e", "x", "s", "n", "v", "i", "o", "j", "m", "lb", "tut", "arena", "abyss"]] + ["tw"]:   # + the Arena's tourney ground and the raids' deep sea (2026-10-17)   # m1..m29 plus the 2026-10-09 field/beach maps
+    _fp = SCRATCH + "art/maps/%s.png" % _id
+    if _id in MAP_ART_DERIVED:
+        _data = _derived_map_png(*MAP_ART_DERIVED[_id])
     elif os.path.exists(_fp):
         _data = open(_fp, "rb").read()
     else:
         continue
-    _art_ids.append("m" + _mid)
-    _map_css.append(".map-theme-m%s, .battlefield.map-m%s{--map-art:url(%s);}" % (_mid, _mid, asset_url("maps/m%s.png" % _mid, _data)))
+    _art_ids.append(_id)
+    _map_css.append(".map-theme-%s, .battlefield.map-%s{--map-art:url(%s);}" % (_id, _id, asset_url("maps/%s.png" % _id, _data)))
 # The app only draws art for ids in MAP_ART_IDS (arena_app.js); six side maps had art baked in but were missing from it.
 _mai = _re.search(r"const MAP_ART_IDS = new Set\(\[([^\]]*)\]\)", app_src)
-_missing = sorted(set(_art_ids) - set(_re.findall(r'"(m[a-z0-9]+)"', _mai.group(1) if _mai else "")))
+_missing = sorted(set(_art_ids) - set(_re.findall(r'"([a-z0-9]+)"', _mai.group(1) if _mai else "")))
 if _missing: raise SystemExit("MAP_ART_IDS in arena_app.js is missing maps that have art: %s" % ", ".join(_missing))
 # Forge art (2026-10-12): tools/make_forge_art.py -> art/forge/bg.png + anvil.png (PixelLab versions replace them).
 _fg = [(k, SCRATCH + "art/forge/%s.png" % f) for k, f in (("--forge-art", "bg"), ("--anvil-art", "anvil"))]
