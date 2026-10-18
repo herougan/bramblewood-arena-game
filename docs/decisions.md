@@ -355,3 +355,8 @@ _Generated from `decisions.json` (2026-10-10). The hub has a searchable, filtera
   - Leave as is
 - **Default:** Rarity pass, then stat fixes
 - **Outcome:** Taken as default on 'continue' (revertible): the 199 unrated cards got a rarity from measured strength, capped at Rare for now (114 Common, 11 Uncommon, 74 Rare), and 39 extreme outliers moved half-way toward their suggested stat (e.g. Feral Tomcat 3/5 → 3/3, Honey Badger Fury 5 → 3 Attack, Raccoon Nightcrew 5 → 7 Attack). Cards in band: 124 → 162 of 288. Walls, 3+ cost cards (B4) and the Wandering Traveller were left alone.
+
+## 2026-10-18 evening: emoji with cultural meaning (owner 21:26)
+
+- **Ward → 🧿 Nazar.** When a Ward skill is made (e.g. Prayer Ward in docs/gameplay-ideas-2026-10-19.md, or a ward against Blind / curses), its icon is the nazar, or a white/yellow East Asian paper charm (a talisman; no emoji exists, so that would be a drawn icon).
+- **🪬 Hamsa is not a generic effect icon.** It carries real cultural and religious meaning, so it is used only inside one animal society's own identity (its cards, banner or rites), never as an effect any unit can get. Which society is still open.
