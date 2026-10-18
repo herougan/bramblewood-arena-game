@@ -5827,10 +5827,12 @@ function renderCodex(){
   body.innerHTML = `
     <div class="codex-toolbar ${codexFiltersOpen?'filters-open':''}" id="codexToolbar">
       <input data-text-filter autocomplete="off" id="cxSearch" type="text" placeholder="Search card name…" value="${escapeAttr(codexFilter.q)}">
-      <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = [codexFilter.archetype, codexFilter.mechLine, codexFilter.rarity, (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
+      <button type="button" class="btn small cx-filters-toggle" id="cxFiltersToggle" aria-expanded="${codexFiltersOpen}" aria-controls="codexToolbar">⚙️ Filters${(()=>{ const n = codexFilterCount(); return n ? ` <b class="cx-fcount">${n}</b>` : ''; })()}</button>
       <select id="cxArch" title="Type Tags (biome/animal — includes Structure) filter"><option value="">All types</option>${archetypes.map(a=>`<option value="${a}" ${codexFilter.archetype===a?'selected':''}>${ARCHETYPE_ICON[a]||'🌰'} ${a}</option>`).join('')}</select>
       ${phylaUnlocked() ? `<select id="cxPhylum" title="Phylum: the big animal family a card's species belongs to (Beast, Bird, Arthropod…)"><option value="">🧬 All phyla</option>${[...new Set(Object.values(SPECIES_PHYLUM))].sort().map(ph=> `<option value="${ph}" ${codexFilter.phylum===ph?'selected':''}>${PHYLUM_ICON[ph]||'🧬'} ${ph}</option>`).join('')}</select>` : ''}
       <select id="cxRarity" aria-label="${escapeAttr(TX('ui.codex-all-rarities'))}"><option value="">${escapeHtml(TX('ui.codex-all-rarities'))}</option>${(()=>{ const have = new Set(Object.values(defs).map(d=> d.rarity || 'common')); return RARITY_DEFS.filter(r=> have.has(r.key)).map(r=> `<option value="${r.key}" ${codexFilter.rarity===r.key?'selected':''}>${escapeHtml(r.label)}</option>`).join(''); })()}</select>${'' /* 2026-10-18 (package C): the album's rarity filter */}
+      <button type="button" class="btn small cx-skill-btn" id="cxSkillBtn" aria-expanded="false" aria-controls="cxSkillPanel">✨ ${escapeHtml(TX('ui.codex-skill-filter'))}<b class="cx-fcount" ${codexSkillsChosen().length ? '' : 'hidden'}>${codexSkillsChosen().length}</b></button>
+      <div class="cx-skill-panel" id="cxSkillPanel" hidden></div>${'' /* 2026-10-18 (package C, owner 23:21): the skill filter */}
       <select id="cxMechLine" title="Archetype (resource line) filter"><option value="">All archetypes</option>${Object.entries(MECH_LINE_LABEL).filter(([k])=>k!=='none').map(([k,label])=>`<option value="${k}" ${codexFilter.mechLine===k?'selected':''}>${label}</option>`).join('')}</select>
       <select id="cxSort" aria-label="Sort cards">${'' /* 2026-10-15: Cost, Wait, Attack, Health first, the same list the Forge sorts by */}<option value="cost" ${codexFilter.sort==='cost'?'selected':''}>Sort: Cost</option><option value="wait" ${codexFilter.sort==='wait'?'selected':''}>Sort: Wait</option><option value="attack" ${codexFilter.sort==='attack'?'selected':''}>Sort: Attack</option><option value="health" ${codexFilter.sort==='health'?'selected':''}>Sort: Health</option><option value="rarity" ${codexFilter.sort==='rarity'?'selected':''}>Sort: Rarity</option><option value="name" ${codexFilter.sort==='name'?'selected':''}>Sort: Name</option>${phylaUnlocked() ? `<option value="phylum" ${codexFilter.sort==='phylum'?'selected':''}>Sort: Phylum</option>` : ''}<option value="advance" ${codexFilter.sort==='advance'?'selected':''}>Sort: Advancement</option></select>
       <button type="button" class="btn small" id="cxSortDir" title="Flip sort direction">${codexFilter.dir==='desc'?'↓ High to low':'↑ Low to high'}</button>
@@ -5852,6 +5854,7 @@ function renderCodex(){
       </select>
       ${devModeEnabled ? `<label class="cx-test-toggle" title="Test cards are hidden from ordinary Codex browsing by default -- check this to see ONLY test cards instead of the normal roster."><input type="checkbox" id="cxShowTest" ${codexFilter.showTest?'checked':''}> 🧪 Test cards</label>` : ''}
     </div>
+    <div class="cx-skill-active" id="cxSkillActive" hidden></div>
     <span id="codexResultCount"></span>
     <div class="${codexViewMode==='album' ? 'al-host' : 'grid-view'} ${codexViewMode==='full'?'full-art':''}" id="codexGrid"></div>
     ${(codexStatsDefs = defs, codexStatsHTML(defs))}`;
@@ -5876,7 +5879,8 @@ function renderCodex(){
     document.getElementById('codexGrid').classList.toggle('full-art', codexViewMode==='full');
     if((was === 'album') !== (codexViewMode === 'album')) renderCodexGrid(); // 2026-10-18 (package C): album <-> grid redraws
   });
-  { const ra = document.getElementById('cxRarity'); if(ra) ra.addEventListener('change', e=>{ codexFilter.rarity = e.target.value; renderCodexGrid(); }); }
+  { const ra = document.getElementById('cxRarity'); if(ra) ra.addEventListener('change', e=>{ codexFilter.rarity = e.target.value; codexFilterBadge(); renderCodexGrid(); }); }
+  wireCodexSkillFilter();
   const cxShowTest = document.getElementById('cxShowTest');
   if(cxShowTest) cxShowTest.addEventListener('change', e=>{ codexFilter.showTest = e.target.checked; renderCodexGrid(); });
   renderCodexGrid();
@@ -6058,6 +6062,7 @@ function renderCodexGrid(keepPage){
   if(codexFilter.mechLine) ids = ids.filter(id=> inferMechanicLine(defs[id])===codexFilter.mechLine);
   if(codexFilter.phylum && phylaUnlocked()) ids = ids.filter(id=> phylumOf(defs[id]).split(' & ').includes(codexFilter.phylum));
   if(codexFilter.rarity) ids = ids.filter(id=> (defs[id].rarity || 'common') === codexFilter.rarity); // 2026-10-18 (package C): the album's rarity filter
+  { const want = codexSkillsChosen(); if(want.length){ const ps = want.map(skillDefOf); ids = ids.filter(id=> ps.every((p, i)=> cardHasSkill(defs[id], want[i], p))); } } // 2026-10-18 (package C): every skill picked
   // 2026-09-26 (#1, "add a sort view to codex"): added Rarity (by RARITY_DEFS' own defined
   // order, common -> legendary etc., not alphabetically) and a dir flip. `base` always returns
   // the "natural" high-to-low/A-Z-first comparison; the dir flip below negates it uniformly
@@ -6273,6 +6278,61 @@ function wireCodexGrid(groupIds){
 function codexWireGridClick(gridEl){
   if(gridEl._cxClick) return; gridEl._cxClick = true;
   gridEl.addEventListener('click', e=>{ if(Date.now() - codexSwipedAt < 400) return; const t = e.target && e.target.closest && e.target.closest('.card-tile'); if(t && gridEl.contains(t)) openCardDetail(t.getAttribute('data-defid')); });
+}
+// ---- The skill filter (2026-10-18, package C, owner 23:21: "add a way to filter by skills in codex") ----
+// Browse (album, Compressed and Full Art): a ✨ Skills button with the other filters opens a panel of the skills you have seen (the
+// skills book's list, skillBookEntries; admins: all), each with its icon. Pick one or more: the Codex shows only cards that have
+// EVERY skill picked (ALL, so each pick narrows). The picks are a sticky choice (codexFilter.skills, saved with the other
+// filters), count in the ⚙️ Filters badge, and show under the toolbar as chips you can remove, with Clear. A pick redraws the
+// open page only (the album's 18 tiles; tiles come from codexTileCache); the panel is built once, when first opened.
+// The skills book's "Show cards with this skill" opens Browse with just that skill picked (codexShowCardsWithSkill).
+function codexSkillsChosen(){ return Array.isArray(codexFilter.skills) ? codexFilter.skills.filter(k=> typeof k === 'string') : []; }
+function skillDefOf(key){ return SKILL_DEFS.find(x=> x.key === key) || PASSIVE_DEFS.find(x=> x.key === key) || null; }
+// Has the card this skill? The same test the skills book uses to call a skill seen on a card (skillBookSeen).
+function cardHasSkill(d, key, p){
+  const e = (d && d.effects) || {}; p = p === undefined ? skillDefOf(key) : p;
+  try{ return p && p.get ? p.get(e) !== undefined : (e[key] != null && e[key] !== false); }catch(_){ return false; }
+}
+function codexFilterCount(){ return [codexFilter.archetype, codexFilter.mechLine, codexFilter.rarity, codexSkillsChosen().length ? 1 : '', (codexFilter.groupBy && codexFilter.groupBy!=='advance') ? 1 : '', codexViewMode==='full' ? 1 : ''].filter(Boolean).length; }
+function codexFilterBadge(){
+  const t = document.getElementById('cxFiltersToggle'); if(!t) return; const n = codexFilterCount(); let b = t.querySelector('.cx-fcount');
+  if(!n){ if(b) b.remove(); return; } if(!b){ b = document.createElement('b'); b.className = 'cx-fcount'; t.append(' ', b); } b.textContent = n;
+}
+function codexSkillChoices(){ try{ return skillBookEntries().filter(e=> e.ch === 'sk' && !e.hint).map(e=> ({key:e.key, icon:e.icon, name:e.name})); }catch(e){ return []; } }
+function codexSkillName(key){ const p = skillDefOf(key); return (p && p.label) || key; }
+function codexSkillPanelHTML(){
+  const list = codexSkillChoices(), on = new Set(codexSkillsChosen());
+  return `<div class="cx-skill-head"><small>${escapeHtml(TX('ui.codex-skill-hint'))}</small><button type="button" class="btn small ghost" data-cxskillclear ${on.size ? '' : 'disabled'}>${escapeHtml(TX('ui.codex-skill-clear'))}</button></div>`
+    + (list.length ? `<div class="cx-skill-chips">${list.map(s=> `<button type="button" class="cx-sk-chip" data-cxskill="${escapeAttr(s.key)}" aria-pressed="${on.has(s.key)}">${s.icon} ${escapeHtml(s.name)}</button>`).join('')}</div>` : `<p class="cx-skill-none">${escapeHtml(TX('ui.codex-skill-none'))}</p>`);
+}
+// The button's count, the chips under the toolbar, the Filters badge: after any change of the picks.
+function codexSkillUI(){
+  const want = codexSkillsChosen(), btn = document.getElementById('cxSkillBtn'), act = document.getElementById('cxSkillActive'), panel = document.getElementById('cxSkillPanel');
+  if(btn){ const b = btn.querySelector('.cx-fcount'); if(b){ b.textContent = want.length; b.hidden = !want.length; } btn.classList.toggle('primary', !!want.length); }
+  if(panel && panel.dataset.built){ const on = new Set(want); panel.querySelectorAll('[data-cxskill]').forEach(c=> c.setAttribute('aria-pressed', on.has(c.dataset.cxskill))); const cl = panel.querySelector('[data-cxskillclear]'); if(cl) cl.disabled = !want.length; }
+  if(act){ act.hidden = !want.length;
+    act.innerHTML = want.length ? `<span>${escapeHtml(TX('ui.codex-skill-active'))}</span>${want.map(k=> `<button type="button" class="cx-sk-chip is-on" data-cxskilloff="${escapeAttr(k)}" aria-label="${escapeAttr(TX('ui.codex-skill-remove'))}: ${escapeAttr(codexSkillName(k))}">${SKILL_ICON[k] || '✨'} ${escapeHtml(codexSkillName(k))} <i aria-hidden="true">✕</i></button>`).join('')}<button type="button" class="btn small ghost" data-cxskillclear>${escapeHtml(TX('ui.codex-skill-clear'))}</button>` : ''; }
+  codexFilterBadge();
+}
+function codexSetSkills(list){ codexFilter.skills = [...new Set(list)]; codexSkillUI(); renderCodexGrid(); }
+function wireCodexSkillFilter(){
+  const btn = document.getElementById('cxSkillBtn'), panel = document.getElementById('cxSkillPanel'), act = document.getElementById('cxSkillActive');
+  if(btn && panel) btn.addEventListener('click', ()=>{
+    if(!panel.dataset.built){ panel.innerHTML = codexSkillPanelHTML(); panel.dataset.built = '1'; }
+    panel.hidden = !panel.hidden; btn.setAttribute('aria-expanded', !panel.hidden); });
+  const onClick = e=>{ const t = e.target && e.target.closest ? e.target : null; if(!t) return;
+    const chip = t.closest('[data-cxskill]'), off = t.closest('[data-cxskilloff]'), clr = t.closest('[data-cxskillclear]');
+    if(chip){ const k = chip.dataset.cxskill, cur = codexSkillsChosen(); codexSetSkills(cur.includes(k) ? cur.filter(x=> x !== k) : cur.concat(k)); }
+    else if(off) codexSetSkills(codexSkillsChosen().filter(x=> x !== off.dataset.cxskilloff));
+    else if(clr) codexSetSkills([]); };
+  if(panel) panel.addEventListener('click', onClick); if(act) act.addEventListener('click', onClick);
+  codexSkillUI();
+}
+// From the skills book: Browse, showing only the cards with this skill (the other filters as they were; the search box empties).
+function codexShowCardsWithSkill(key){
+  if(!key) return; codexFilter.skills = [key]; codexFilter.q = ''; codexPage = 0;
+  try{ saveCodexFilters(); }catch(e){}
+  codexSubTab = 'browse'; renderCodex(); try{ codexPageTurn('back'); }catch(e){}
 }
 // ---- The card album (2026-10-18, package C, owner 20:31: "bestiary - look like a card album"; 20:36: "cards dont show up if you
 // havent seen them before") ----
@@ -7333,7 +7393,8 @@ function bookPaginate(heights, cap, gap, brk){
 }
 function bookLayout(){ const host = document.getElementById('codexBody'), w = (host && host.clientWidth) || window.innerWidth || 1200; return w >= 900 ? {pages:2, key:'2'} : {pages:1, key:'1'}; }
 function bookEntryHTML(e){
-  return `<article class="bk-entry${e.hint ? ' is-hint' : ''}"><div class="bk-ico" aria-hidden="true">${e.icon || '?'}</div><div class="bk-txt"><h4>${escapeHtml(e.name)}</h4><p>${e.html}</p>${e.ans ? `<p class="bk-ans">${_t('Answered by')}: ${e.ans}</p>` : ''}</div></article>`;
+  const show = e.ch === 'sk' && !e.hint ? `<button type="button" class="bk-show" data-bkskill="${escapeAttr(e.key)}">🔎 ${escapeHtml(TX('ui.book-show-cards'))}</button>` : ''; // 2026-10-18 (package C, owner 23:21)
+  return `<article class="bk-entry${e.hint ? ' is-hint' : ''}"><div class="bk-ico" aria-hidden="true">${e.icon || '?'}</div><div class="bk-txt"><h4>${escapeHtml(e.name)}</h4><p>${e.html}</p>${e.ans ? `<p class="bk-ans">${_t('Answered by')}: ${e.ans}</p>` : ''}${show}</div></article>`;
 }
 const BOOK_CHAPTERS = [{ch:'sk', icon:'📘', title:()=> TX('ui.book-skills')}, {ch:'st', icon:'🌀', title:()=> TX('ui.codex-statuses'), sub:()=> TX('ui.codex-statuses-sub')}, {ch:'fx', icon:'🗺️', title:()=> TX('ui.book-field-effects')}];
 function renderSkillBook(body){
@@ -7416,6 +7477,7 @@ function bookDraw(){
   book.innerHTML = bookSpreadHTML(S.pages, skillBookPage, per) + codexPagerNavHTML('book', skillBookPage, per, total, null);
   book.querySelectorAll('[data-bkgo]').forEach(b=> b.addEventListener('click', ()=> bookGo(+b.dataset.bkgo)));
   book.querySelectorAll('[data-turn]').forEach(b=> b.addEventListener('click', ()=> bookTurn(+b.dataset.turn)));
+  book.querySelectorAll('[data-bkskill]').forEach(b=> b.addEventListener('click', ()=> codexShowCardsWithSkill(b.dataset.bkskill)));
   codexTurnFn = bookTurn;
 }
 function bookTurn(dir){

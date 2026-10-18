@@ -2,6 +2,15 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 late (package C follow-up: filter the Codex by skill)
+- **✨ Skills filter in Codex Browse** (owner 23:21: "add a way to filter by skills in codex"). It works in the album, Compressed and Full Art views.
+  - The button sits with the other filters and opens a panel of every skill you have seen, each with its icon (admins see all).
+  - Pick one or more. The Codex then shows only cards that have **all** the skills picked, so each pick narrows the list.
+  - The picks show under the toolbar as removable chips with a Clear button. They count in the ⚙️ Filters badge and are kept between visits like rarity and sort.
+  - The panel is built only when first opened, and a pick redraws only the open page.
+- **The skills book's skill entries have "🔎 Show cards with this skill"**. It opens Browse with just that skill picked. The search box is emptied and the other filters are kept.
+- 7 new TX keys in all 12 packs (`tools/i18n_2026_10_18_codexbook.py`). `tests/codex-book-2026-10-19.js` section 9 covers it.
+
 ## 2026-10-18 late (RW follow-up: the Babel Spire's Victory card)
 - **A new Babel Spire floor won has its own Victory card** (owner 23:20: "The victory screen for Towers should be very slightly different as well. It's triumphant to know that your deck has reached the next tier.").
   - The card is cool sky and stone-gold: a notch below the boss crimson, and different from the gold card.

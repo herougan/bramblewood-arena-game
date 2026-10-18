@@ -166,5 +166,30 @@ const esc = s=> String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, 
   ok(/:root\[data-theme="dark"\]/.test(css) && !/\.bk-page\{[^}]*#[0-9a-f]{3,6}/i.test(css) && /\.bk-page\{[^}]*var\(--surface\)/.test(css), '8. the book\'s parchment is the theme\'s --surface (light and dark)');
 }
 
+// ---- 9. the skill filter (owner 23:21: "add a way to filter by skills in codex")
+{ const SKILL_DEFS = [{key:'flying', get: e=> e.flying ? true : undefined}, {key:'armor', get: e=> e.armor > 0 ? e.armor : undefined}];
+  const R = run(['skillDefOf', 'cardHasSkill', 'codexSkillsChosen', 'codexFilterCount'], {SKILL_DEFS, PASSIVE_DEFS: [{key:'thorns'}], codexFilter:{skills:['flying', 'armor', 5]}, codexViewMode:'album', Array, Set});
+  ok(R.cardHasSkill({effects:{flying:true}}, 'flying') && !R.cardHasSkill({effects:{}}, 'flying') && R.cardHasSkill({effects:{thorns:1}}, 'thorns') && !R.cardHasSkill({effects:{thorns:false}}, 'thorns'), '9. cardHasSkill: the skills book\'s own test (get, or a plain value)');
+  ok(JSON.stringify(R.codexSkillsChosen()) === '["flying","armor"]', '9. the picks are a list of skill keys (junk dropped)');
+  ok(R.codexFilterCount() === 1, '9. the picks count once in the ⚙️ Filters badge');
+  const g = fnSrc('renderCodexGrid');
+  ok(/const want = codexSkillsChosen\(\); if\(want\.length\)\{ const ps = want\.map\(skillDefOf\); ids = ids\.filter\(id=> ps\.every\(\(p, i\)=> cardHasSkill\(defs\[id\], want\[i\], p\)\)\); \}/.test(g), '9. Browse keeps only cards with EVERY skill picked (album and grid views: before the views split)');
+  ok(g.indexOf('const want = codexSkillsChosen()') < g.indexOf('codexDrawAlbum(gEl,'), '9. ... for the album and the grids alike');
+  ok(/const o = Object\.assign\(\{\}, codexFilter\)/.test(fnSrc('saveCodexFilters')) && !/skills/.test(fnSrc('saveCodexFilters')), '9. the picks are saved with the other non-text filters (sticky)');
+  const w = fnSrc('wireCodexSkillFilter');
+  ok(/if\(!panel\.dataset\.built\)\{ panel\.innerHTML = codexSkillPanelHTML\(\); panel\.dataset\.built = '1'; \}/.test(w), '9. the picker is built once, when first opened (no work on a Codex open)');
+  ok(/skillBookEntries\(\)\.filter\(e=> e\.ch === 'sk' && !e\.hint\)/.test(fnSrc('codexSkillChoices')), '9. the picker lists the skills you have seen (the book\'s list; admins: all), with their icons');
+  ok(/data-cxskillclear/.test(fnSrc('codexSkillPanelHTML')) && /data-cxskillclear/.test(fnSrc('codexSkillUI')) && /data-cxskilloff/.test(fnSrc('codexSkillUI')), '9. Clear in the picker and under the toolbar; each pick can be removed');
+  ok(/id="cxSkillBtn"/.test(src) && /id="cxSkillActive"/.test(src) && /wireCodexSkillFilter\(\);/.test(fnSrc('renderCodex')), '9. the Skills button sits with the other filters');
+  // the book's jump
+  const B = run(['bookEntryHTML'], {TX, escapeHtml: esc, escapeAttr: s=> String(s).replace(/"/g, '&quot;'), _t: s=> s});
+  ok(/data-bkskill="armor"/.test(B.bookEntryHTML({ch:'sk', key:'armor', name:'Armor', html:'x', icon:'🛡'})) && !/data-bkskill/.test(B.bookEntryHTML({ch:'sk', key:'flying', hint:true, name:'?', html:'x'})) && !/data-bkskill/.test(B.bookEntryHTML({ch:'fx', key:'tide', name:'Tide', html:'x'})), '9. each seen skill in the book offers "Show cards with this skill" (not the ? hints, statuses or field effects)');
+  const ctx = {codexFilter:{skills:['x'], q:'otter', rarity:'rare'}, codexPage:4, codexSubTab:'skills', saved:0, rendered:0, saveCodexFilters(){ ctx.saved++; }, renderCodex(){ ctx.rendered++; }, codexPageTurn(){}};
+  const J = run(['codexShowCardsWithSkill'], ctx); J.codexShowCardsWithSkill('armor');
+  ok(JSON.stringify(ctx.codexFilter.skills) === '["armor"]' && ctx.codexFilter.q === '' && ctx.codexFilter.rarity === 'rare' && ctx.codexSubTab === 'browse' && ctx.codexPage === 0 && ctx.saved === 1 && ctx.rendered === 1, '9. it opens Browse with just that skill picked (search emptied, other filters kept)');
+  ok(/data-bkskill.*codexShowCardsWithSkill/.test(fnSrc('bookDraw').replace(/\n/g, ' ')), '9. the book wires the button');
+  for(const f of ['codexSkillPanelHTML', 'codexSkillUI']){ const words = templateTexts(fnSrc(f)).map(t=> t.replace(/<[^>]*>/g, ' ')).join(' '); const eng = words.match(/[A-Za-z]{3,}/g) || []; ok(!eng.length, `9. ${f}: no inline English (${eng.slice(0, 4).join(' | ')})`); }
+}
+
 console.log(`codex-book: ${fail ? fail + ' failure(s)' : 'all passed'} (${n} checks)`);
 process.exit(fail ? 1 : 0);
