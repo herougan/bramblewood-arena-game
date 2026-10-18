@@ -2,6 +2,10 @@
 
 Headline changes only, newest first. The detail lives in git history, `MASTER.md` and the design addenda.
 
+## 2026-10-18 evening: trench castle after 20-turn raids
+
+- The raid trench's outer parts (Left / Right Tentacle, Tail) were overwhelmed in every fight once raids went to 20 turns: three rows snowball, dealing about 1,000 Health in 20 turns against 330 in 12. A part's `trench.castleHp` now overrides its fight castle Health for the trench only; the three outer parts use 1250, which brings overwhelm back to about 7% (as at 12 turns). The Core is unchanged.
+
 ## 2026-10-18 (package Z: field kit limit, premium dungeon Sweep, free Spire replays, ads notes)
 - **Two field-kit items a fight** (owner 17:28: "use two item(s) per map only. then it's grayed then faded out. Some bosses grant an item! In those circumstances, you can use +1 item."). "Per map" is per fight, as the kit always counted.
   - The 🎒 pill shows a "1/2" badge. After the second item it greys ("2/2") and fades out of the HUD. The next fight brings it back.
