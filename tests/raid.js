@@ -46,7 +46,7 @@ check(st.parts.every(p=> p.remaining >= 0), 'pool went negative');
 st = R.raidState(noStand, [Object.assign(kill('left'), {cycle: cycle-1}), Object.assign(kill('left'), {raidId:'other'})], start, {cycle});
 check(st.byId.left.real===0, 'attempts from another cycle or raid leaked in');
 
-check(R.fightFor(raid, R.raidState(noStand, [], start, {cycle}), 'left').rounds === 12, 'fight rounds should default to the raid fightRounds');
+check(R.fightFor(raid, R.raidState(noStand, [], start, {cycle}), 'left').rounds === 20, 'fight rounds should default to the raid fightRounds (20 from 2026-10-18)');
 
 // 4. rewards: kill vs compensation, tiers
 const att = [];

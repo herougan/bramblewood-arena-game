@@ -244,7 +244,8 @@
         "participant": {}
       }
     },
-    "fightRounds": 12,
+    "fightRounds": 20,
+    "bossHpBonusMax": 100,
     "trench": {
       "rows": 3,
       "wallHp": 45

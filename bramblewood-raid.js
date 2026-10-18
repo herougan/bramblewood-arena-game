@@ -170,9 +170,21 @@ function fightFor(def, state, partId, opts){
 function scaleCastle(hp, pct){ hp = Number(hp) || 0; return pct ? Math.max(1, Math.round(hp * (1 + pct / 100))) : hp; }
 // A boss card's copy under a stage: +bossAtk Attack and +bossHp Health (never below 0 Attack / 1 Health). Returns a new def.
 function stageCard(d, f){ if(!d || !f || !(f.bossAtk || f.bossHp)) return d; return Object.assign({}, d, {attack: Math.max(0, (Number(d.attack) || 0) + (f.bossAtk || 0)), health: Math.max(1, (Number(d.health) || 1) + (f.bossHp || 0))}); }
-// Each attempt lasts a fixed number of turns (part `fight.rounds`, else raid `fightRounds`, else 12):
+// Each attempt lasts a fixed number of turns (part `fight.rounds`, else raid `fightRounds`, else 20):
 // the part's deck is finite, so without a clock any deck would grind its castle down eventually.
-function fightRounds(def, p){ return Math.max(3, ((p && p.fight && p.fight.rounds) || def.fightRounds || 12) | 0); }
+// 2026-10-18 (owner 11:46: "Raid is changed to 20-turn limit (or your death)"): the default went from 12 to 20.
+const FIGHT_ROUNDS_DEFAULT = 20;
+function fightRounds(def, p){ return Math.max(3, ((p && p.fight && p.fight.rounds) || (def && def.fightRounds) || FIGHT_ROUNDS_DEFAULT) | 0); }
+// The super whales' might (2026-10-18, owner 11:46: "The super whales have hp% based on the remaining HP of the raid maybe? They
+// can start with additional HP beyond their peers up to almost 100+"): the raid's boss unit (the Kraken Brute and co.) carries
+// +round(bossHpBonusMax × the share of the raid's total Health still standing) Health on top of its peer-scaled Health: about
+// +100 on a fresh Goliath, about +0 on a nearly-dead one. The state is whatever raidState was given (the cloud's attempts, or
+// only this device's when offline). bossHpBonusMax is clamped to 0–1000; unset = no bonus.
+function bossHpBonus(def, state){
+  const max = Math.max(0, Math.min(1000, Math.round(Number(def && def.bossHpBonusMax) || 0)));
+  const fraction = state && state.total > 0 ? Math.max(0, Math.min(1, (Number(state.remaining) || 0) / state.total)) : 1;
+  return {bonus: Math.round(max * fraction), fraction, max};
+}
 function validateRaid(def, defs){
   const errs = [];
   if(!def || !def.id) errs.push('missing id');
@@ -236,7 +248,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
   return out;
 }
 
-const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, contributionFor, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
+const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));

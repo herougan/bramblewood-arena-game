@@ -5083,7 +5083,7 @@ function fullCardHTML(defId, liveCard, opts){
   let atkPlus = atkBonus + atkIrr, atkMinus = atkIrr; if(atkPlus < 0){ atkMinus -= atkPlus; atkPlus = 0; }
   const atkDisplay = (liveC && (atkPlus || atkMinus)) ? (atkIrr ? `⚔ ${splitHTML(effAtk, baseAtk, atkPlus, atkMinus, 'atk-red')}` : `⚔ <span class="atk-red">${effAtk}</span> <span class="atk-split">(<span class="atk-red">${baseAtk}</span> ${atkBonus > 0 ? '+' : '−'} <span class="atk-bonus ${atkBonus < 0 ? 'is-neg' : ''}" title="Bonus from skills and auras">${Math.abs(atkBonus)}</span>)</span>`) : `⚔${effAtk}`;
   const hpDisplay = (()=>{ if(!liveCard) return `❤${d.health}`; const lc = liveC || liveCard, irr = lc.irrHp||0, base = Number(d.health)||0, mx = liveCard.maxHp;
-    if(!irr) return `❤${Math.max(0,liveCard.hp)}/${mx}`;
+    if(!irr && !lc.bossHpBonus) return `❤${Math.max(0,liveCard.hp)}/${mx}`; // a raid boss unit's bonus Health shows as a bonus (2026-10-18)
     let plus = mx - base + irr, minus = irr; if(plus < 0){ minus -= plus; plus = 0; }
     return `❤${Math.max(0,liveCard.hp)}/${splitHTML(mx, base, plus, minus, 'hp-max')}`; })();
   // Irradiated skills (2026-10-14): what the radiation has weakened or taken, struck through.
@@ -14418,16 +14418,16 @@ const SKIRMISH_KINDS = ['skirmish','elite','champion','miniboss','subboss','boss
 // 2026-10-18), 1 Smart (it reads the battlefield), 2 Smartest (it also focuses kills, blocks, holds field cards, pitches better).
 // Auto, by the map number (mapNumberOf; a side map counts as its parent): Maps 0–4 Basic; Map 5+ Smart in every fight that isn't
 // an ordinary skirmish (elite, champion, mini-boss, sub-boss, boss, dungeon, world boss, raid, campaign boss), Basic in the
-// ordinary ones; Map 21+ Smartest everywhere. The Babel Spire (owner decision, a default): Smart below floor 25, Smartest from
-// it. Edit skirmish → Difficulty (node.ai: 'basic' | 'smart' | 'smartest') overrides Auto. Fights off the road keep the engine's
+// ordinary ones; Map 21+ Smartest everywhere. The Babel Spire: Smart on every floor (2026-10-18, owner 11:46: "Babel Spire is like
+// the ultimate difficulty. Smart by default."; it was Smartest from floor 25). Edit skirmish → Difficulty (node.ai: 'basic' | 'smart' | 'smartest') overrides Auto. Fights off the road keep the engine's
 // default, Smart (Arena vs AI, Gauntlet, PvP ghosts, raids, the old Dungeon run); the tutorial is Basic (cpuAiLevelOfMatch).
 const CPU_AI_KEYS = ['basic', 'smart', 'smartest'];
 const CPU_AI_LABEL = {basic:'Basic', smart:'Smart', smartest:'Smartest'};
-const CPU_SMART_FROM_MAP = 5, CPU_SMARTEST_FROM_MAP = 21, SPIRE_SMARTEST_FROM_FLOOR = 25;
+const CPU_SMART_FROM_MAP = 5, CPU_SMARTEST_FROM_MAP = 21;
 const CPU_SMART_KINDS = new Set(['elite','champion','miniboss','subboss','boss','dungeon','worldboss','raidboss','megaraid','finalboss']);
 function cpuAiAutoLevel(mapId, node){
   if(!node) return 1;
-  if(node.tower) return (Number(node.floor) || 0) >= SPIRE_SMARTEST_FROM_FLOOR ? 2 : 1;
+  if(node.tower) return 1;
   const n = mapNumberOf(mapId); if(n == null) return 1;
   if(n >= CPU_SMARTEST_FROM_MAP) return 2;
   return n >= CPU_SMART_FROM_MAP && CPU_SMART_KINDS.has(node.kind || 'skirmish') ? 1 : 0;
@@ -20147,8 +20147,12 @@ let raidDefEdits = {};
 try{ raidDefEdits = JSON.parse(localStorage.getItem(RAID_DEFS_KEY)||'{}') || {}; }catch(e){ raidDefEdits = {}; }
 // 2026-10-17: an edit saved before a raid had field effects, Commons or its own ground still gets the shipped ones (an edit that clears
 // them keeps an empty fieldRules / commonPool, so it stays cleared).
-const RAID_NEW_KEYS = ['fieldRules', 'commonPool', 'ground'];
-function allRaidDefs(){ const base = RAID_DEFS_BASE.map(d=>{ const e = raidDefEdits[d.id]; if(!e) return d; const add = RAID_NEW_KEYS.filter(k=> !(k in e) && (k in d)); return add.length ? Object.assign({}, e, Object.fromEntries(add.map(k=> [k, d[k]]))) : e; }); Object.keys(raidDefEdits).forEach(id=>{ if(!RAID_DEFS_BASE.some(d=> d.id===id)) base.push(raidDefEdits[id]); }); return base; }
+// 2026-10-18 (owner 11:46: 20-turn raids, super whales): bossHpBonusMax joins them, and an edit still on the retired 12-turn clock
+// (RAID_RETIRED_VALUES) takes the shipped fightRounds, unless it was saved since (the editor stamps roundsV: 2, so a 12 picked on
+// purpose stays).
+const RAID_NEW_KEYS = ['fieldRules', 'commonPool', 'ground', 'bossHpBonusMax'];
+const RAID_RETIRED_VALUES = {fightRounds: 12};
+function allRaidDefs(){ const base = RAID_DEFS_BASE.map(d=>{ const e = raidDefEdits[d.id]; if(!e) return d; const add = RAID_NEW_KEYS.filter(k=> !(k in e) && (k in d)).concat(e.roundsV >= 2 ? [] : Object.keys(RAID_RETIRED_VALUES).filter(k=> e[k] === RAID_RETIRED_VALUES[k] && (k in d) && d[k] !== e[k])); return add.length ? Object.assign({}, e, Object.fromEntries(add.map(k=> [k, d[k]]))) : e; }); Object.keys(raidDefEdits).forEach(id=>{ if(!RAID_DEFS_BASE.some(d=> d.id===id)) base.push(raidDefEdits[id]); }); return base; }
 // 2026-10-10 (user: "like the shop, its title is the first raid's title until you unlock the 2nd, then it's just called
 // 'Raids' and hosts all the raids you've unlocked"): with two or more live raids a row of raid buttons picks which one
 // the tab shows.
@@ -20357,7 +20361,8 @@ function raidPanelHTML(){
         </ol>
         <p class="r3-note">Your three castles are one: their Health added up, their skills merged. Allies are this week's raiders' decks${allyNames.length ? `, or stand-ins (${allyNames.map(escapeHtml).join(', ')})` : ''}.</p>
         <p class="r3-note">The boss holds three rows too: its guards in front, and each turn it also calls up to ${RaidM.REINFORCE ? RaidM.REINFORCE.perRow : 1} Common into each of its back two rows (${RaidM.REINFORCE ? RaidM.REINFORCE.max : 2} at most, only into a free slot with a card in front).</p>
-        <p class="r3-note">Each fight lasts ${def.fightRounds||12} turns and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's castle (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
+        ${(()=>{ const bh = RaidM.bossHpBonus ? RaidM.bossHpBonus(def, st) : {bonus:0}; return bh.max ? `<p class="r3-note r3-might">${escapeHtml(def.name || 'The boss')}'s might: its great beasts carry <b>+${bh.bonus} Health</b> while the raid is at ${Math.ceil(bh.fraction * 100)}%.</p>` : ''; })()}
+        <p class="r3-note">Each fight lasts ${RaidM.fightRounds(def)} turns (or until your bramble falls) and scores up to <b>${(sc.cap||5000).toLocaleString()}</b> raid damage; destroy the part's castle (an <b>overwhelm</b>) for <b>${(sc.overwhelmCap||10000).toLocaleString()}</b>.</p>
       </section>
       <section class="r3-field"><h3>${ground === 'mabyss' ? 'Down in the deep' : 'The field'}</h3>
         <div class="ar2-fields r3-fields">${raidFieldCardsHTML(RaidM.fieldRulesFor ? RaidM.fieldRulesFor(def, null, RaidM.stageRules(st.stage, raidStageOpts())) : raidFieldRulesOf(def, null))}</div></section>
@@ -20441,7 +20446,7 @@ function simulateRaidPart(def, part, strip, n){
     let lastSig = null, stalled = 0;
     const rounds = RaidM.fightRounds(def, part);
     for(let r=1; r<=rounds; r++){
-      engine.setSuddenDeath(r >= SUDDEN_DEATH_ROUND, r >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
+      engine.setSuddenDeath(r >= SUDDEN_DEATH_ROUND && rounds > SUDDEN_DEATH_ROUND, r >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1); // 2026-10-18: no sudden death in a raid that ends by turn 20 (as in the fight)
       [1,2].forEach(p=>{ P[p].playedThisTurn = false; P[p].discardUsedThisTurn = false; });
       engine.aiTakeTurn(P, sideOf, 1, stats, null); engine.aiTakeTurn(P, sideOf, 2, stats, null);
       if(engine.resolveCombat(P, sideOf, stats, null, r%2===0 ? 1 : 2)) break;
@@ -20481,7 +20486,8 @@ function openRaidEditor(raidId){
         <label>Icon<input id="reIcon" value="${escapeAttr(draft.icon||'')}" maxlength="4"></label>
         <label>Raid Points per fight<input id="reCostRp" type="number" min="0" max="5" value="${draft.cost.raidPoints||0}"></label>
         <label>Energy per fight<input id="reCostEn" type="number" min="0" max="20" value="${draft.cost.energy||0}"></label>
-        <label>Turns per fight<input id="reRounds" type="number" min="3" max="40" value="${draft.fightRounds||12}"></label>
+        <label>Turns per fight<input id="reRounds" type="number" min="3" max="40" value="${draft.fightRounds||RaidM.FIGHT_ROUNDS_DEFAULT||20}"></label>
+        <label title="The boss unit's extra Health on a fresh raid, shrinking with the raid's remaining Health (2026-10-18)">Boss unit bonus Health<input id="reBossHpBonus" type="number" min="0" max="1000" value="${draft.bossHpBonusMax||0}"></label>
         <label class="se-chk"><input type="checkbox" id="reTrench" ${draft.trench?'checked':''}> Trench fights (3 rows, auto-played)</label>
         ${draft.trench ? `<label>Trench wall HP<input id="reWall" type="number" min="5" max="999" value="${draft.trench.wallHp||45}"></label>` : ''}
         <label class="se-wide">Blurb<input id="reBlurb" value="${escapeAttr(draft.blurb||'')}"></label>
@@ -20559,7 +20565,8 @@ function openRaidEditor(raidId){
   const read = ()=>{
     const v = id=> (overlay.querySelector('#'+id)||{}).value;
     draft.name = v('reName') || draft.name; draft.icon = v('reIcon') || draft.icon; draft.blurb = v('reBlurb') || '';
-    draft.fightRounds = Math.max(3, Math.min(40, Math.round(num(v('reRounds'), 12))));
+    draft.fightRounds = Math.max(3, Math.min(40, Math.round(num(v('reRounds'), RaidM.FIGHT_ROUNDS_DEFAULT || 20)))); draft.roundsV = 2; // 20 turns by default (2026-10-18)
+    draft.bossHpBonusMax = Math.max(0, Math.min(1000, Math.round(num(v('reBossHpBonus'), 0))));
     const tr = overlay.querySelector('#reTrench');
     if(tr){ if(tr.checked) draft.trench = Object.assign({rows:3, wallHp:45}, draft.trench||{}); else delete draft.trench; }
     if(draft.trench && overlay.querySelector('#reWall')) draft.trench.wallHp = Math.max(5, num(v('reWall'), 45));
@@ -20900,6 +20907,9 @@ function startRaidFullBattle(def, partId, f, st){
   let bossUnitId = null; { const ids = Object.keys(bossDeck).filter(id=> defs[id]).sort((a, b)=> ((defs[b].attack||0) + (defs[b].health||0)) - ((defs[a].attack||0) + (defs[a].health||0)));
     if(ids.length){ const src = defs[ids[0]], base = String(ids[0]).replace(/~\w+$/, ''); let r = 1; try{ const ps = st.byId[String(partId)]; if(ps && ps.total) r = Math.max(0, Math.min(1, ps.remaining / ps.total)); }catch(e){}
       bossUnitId = base + '~boss'; defs[bossUnitId] = Object.assign({}, src, {id: bossUnitId, name: raidBossUnitName(base, src.name), attack: (src.attack||0) + 1, health: Math.max(1, Math.round((src.health||1) * (1.5 + 1.5 * r))), bossUnitOf: base, rarity: 'epic'}); } }
+  // 2026-10-18 (owner 11:46, the super whales): on top of that, +round(bossHpBonusMax × the raid's remaining share) Health (RaidM.bossHpBonus),
+  // fixed here as the fight is built (st: the cloud's attempts, or only this device's offline) and added as each boss unit comes in.
+  const bossHpBonus = (bossUnitId && RaidM.bossHpBonus) ? RaidM.bossHpBonus(def, st).bonus : 0;
   matchDefsOverlay = {}; Object.keys(defs).forEach(id=>{ if(/~(raid|exposed|illusory|boss)$/.test(id) || id.startsWith('raid-ent-')) matchDefsOverlay[id] = defs[id]; });
   // The raid's field (2026-10-17, user: "There should be all the related field effects but also some kind of psychic dampener"): the
   // raid's (and the part's) fieldRules run in the engine and show as Environment cards (matchFieldRules reads m.raidFieldRules).
@@ -20934,9 +20944,9 @@ function startRaidFullBattle(def, partId, f, st){
   matchState = {engine, players, sideOf, stats, over:false, winner:0, selectedUid:null, log:[], round:1, resolving:false, battleMode:'open',
     mode:'raidOffline', active:1, turnDone:{1:false,2:false}, awaitingPass:false, deckTotals, speedMult:1, raidFull:true,
     raidBoss: {id: def.id+':'+partId, name: `${def.name} — ${f.part.name}`, strength: 6, deck: f.deck}, raidDef: def, raidPart: partId, raidCycle: st.cycle,
-    raidCastleStart: cfg.castleHp, raidRoundCap: cfg.rounds || f.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
+    raidCastleStart: cfg.castleHp, raidRoundCap: f.rounds || cfg.rounds, opponentName: f.part.name, leaderDefId: matchLeaderId(), leaderUid: null,
     raidAttacks: cfg.attacks || [], raidPending: {}, raidAllies: allies, raidCastleNames: [mine.name || 'Your castle'].concat(allies.map(a=> a.castle.name)),
-    raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId,
+    raidFieldRules: raidRules, raidCommonPool: commonPool, raidBossUnitId: bossUnitId, raidBossHpBonus: bossHpBonus,
     raidStage: f.stage || null, raidStageText: st.stage ? raidStageText(st.stage) : '', raidExtraVolley: f.extraVolley || 0}; // 2026-10-18 (R3-WP2)
   (cfg.attacks||[]).forEach((a, i)=>{ if(a.pattern === 'column' && 2 % Math.max(1, a.every||1) === 0) matchState.raidPending[i] = raidPickColumn(matchState); });
   // 2026-10-12 (11:26 list: "During the raid, all 3 players' leaders come onto the battlefield, 1 on each of the centre 3
@@ -20948,7 +20958,7 @@ function startRaidFullBattle(def, partId, f, st){
   lastBoardSig = {1:null, 2:null}; knownBoardUids = new Set();
   const me = {name: (myProfile && myProfile.name) || 'You', deck: (getActiveDeck()||{}).name || 'My Deck', avatar: loadAvatar(), allies};
   const m0 = matchState;
-  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · castle ${cfg.castleHp} · ${cfg.rounds || f.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
+  showVsScreen(me, {name: `${f.part.icon||''} ${f.part.name}`, deck: `${def.name}${f.stage ? ' · ' + String(f.stage).toUpperCase() : ''} · three rows a side · castle ${cfg.castleHp} · ${f.rounds || cfg.rounds} turns`, avatar: {character:'otter', color:'night', title:'newcomer'}, art: raidBossArt(def)}).then(()=>{ renderPlay(); setTimeout(()=>{ if(matchState === m0) raidAlliesTurn(m0, null, true); }, 700); });
 }
 // Raid tuning with allies (2026-10-12): with two allies adding a card a turn between them and three castles' Health, the
 // boss's cards come back up from 35%/45% to 60% Attack and 70% Health. A first pass: watch it in play.
@@ -20973,7 +20983,8 @@ function raidAllyLeaderOf(a){
 // drops it starts to get exponential"): on rounds 3, 7 and 11 the part sends in its biggest card as a boss unit. Its Health
 // is ×(2 + 10·r²), r being the share of the part's Health still standing this week, so a fresh boss's unit is a wall and a
 // battered one's is ordinary.
-const RAID_BOSS_UNIT_ROUNDS = new Set([3, 7, 11]);
+// 2026-10-18 (20-turn raids): every fourth round from 3 now runs on to 15 and 19.
+const RAID_BOSS_UNIT_ROUNDS = new Set([3, 7, 11, 15, 19]);
 function raidBossUnit(m, events){
   if(!m || !m.raidFull || m.over || !RAID_BOSS_UNIT_ROUNDS.has(m.round)) return;
   const E = m.engine, P2 = m.players[2], defs = getCardDefs(), id = m.raidBossUnitId; // made at the start of the fight (startRaidFullBattle, 2026-10-17)
@@ -20983,7 +20994,8 @@ function raidBossUnit(m, events){
   const ev = []; E.debugSpawnCard(m.players, m.sideOf, 2, id, free, m.stats, ev);
   const c = E.allBoardCards(P2).filter(x=> x.defId === id).sort((a, b)=> b.uid - a.uid)[0]; if(!c) return;
   c.bossUnit = true;
-  (events || []).push(...ev, {type:'raidBossUnit', defId:id, uid:c.uid, hp:c.hp});
+  const bonus = Math.max(0, m.raidBossHpBonus | 0); if(bonus){ c.hp += bonus; c.maxHp = (c.maxHp || c.hp - bonus) + bonus; c.bossHpBonus = bonus; } // the super whales' might (2026-10-18)
+  (events || []).push(...ev, {type:'raidBossUnit', defId:id, uid:c.uid, hp:c.hp, bonus});
 }
 // The boss units' own names (2026-10-17): the raid's big card, grown, under a name of its own.
 const RAID_BOSS_UNIT_NAMES = {'kraken-spawnling':'Kraken Brute', 'goliath-tentacle':'Crushing Tentacle', 'humpback-elder':'Leviathan Elder', 'orca-vanguard':'Orca Warlord',
@@ -25828,7 +25840,7 @@ function hpRibbonHTML(m, side, label){
     <span class="bf-hp-num">${hp}<small>/${hq.maxHp}</small></span>${side === 'B' && m.over && m.mode !== 'sandbox' ? finalTurnPillHTML(m) : side === 'B' && m.raidRoundCap && !m.over ? raidClockPillHTML(m) : ''}</div>`;
 }
 // The raid's clock (2026-10-18, user: "Why did my raid randomly end although my bramble's hp was not 0?"): a raid attempt lasts
-// m.raidRoundCap turns (the part's fight.rounds, else 12), then the part sinks back and you score what you dealt. It used to end with
+// m.raidRoundCap turns (the part's fight.rounds, else the raid's fightRounds, 20 from 2026-10-18), then the part sinks back and you score what you dealt. It used to end with
 // no warning; the turn and the limit now sit on the boss's HP ribbon all fight, and the last turn is marked (and announced).
 function raidClockPillHTML(m){ const cap = m.raidRoundCap|0, n = Math.max(1, Math.min(cap, m.round || 1)), last = n >= cap;
   return `<span class="bf-turn-pill raid-clock${last ? ' is-last' : ''}" title="${last ? 'The last turn: the raid ends after this one, whatever the castles’ Health' : `The raid ends after turn ${cap}, whatever the castles’ Health`}">${last ? '🌊 Last turn' : `🌊 Turn ${n} / ${cap}`}</span>`; }
@@ -31193,7 +31205,8 @@ async function resolveRoundCore(opts){
   // then swip-swapping once that starts"): m.round (incremented once per resolved round, see
   // below) picks who wins a same-column tie THIS round — odd rounds keep the original "enemy
   // (side 2) acts first" default, even rounds flip it to the player (side 1) acting first.
-  if(m.engine.setSuddenDeath) m.engine.setSuddenDeath(m.round >= SUDDEN_DEATH_ROUND, m.round >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
+  // 2026-10-18 (20-turn raids): a raid that ends by turn 20 never goes into sudden death (as suddenDeathSky already showed).
+  if(m.engine.setSuddenDeath) m.engine.setSuddenDeath(m.round >= SUDDEN_DEATH_ROUND && !(m.raidRoundCap && m.raidRoundCap <= SUDDEN_DEATH_ROUND), m.round >= SUDDEN_DEATH_CASTLE_ROUND ? 2 : 1);
   setupEnemyBehaviour(m);
   // Forfeit (and anything else that ends the match without a combat round) sets m.forcedWinner
   // and calls resolveRound: skip combat, go straight to the normal end-of-match handling.
@@ -34349,7 +34362,7 @@ function logText(ev){
       return {cls:'', text:`${nm(ev.defId)} ${reasonText}`};
     }
     case 'raidAlly': return {cls:'gold', text:`🤝 ${ev.name} plays ${nm(ev.defId)} into your ${ev.where}.`};
-    case 'raidBossUnit': return {cls:'', text:`👑 The boss sends in ${nm(ev.defId)}: ${ev.hp} Health (less the more the raid has pounded it).`};
+    case 'raidBossUnit': return {cls:'', text:`👑 The boss sends in ${nm(ev.defId)}: ${ev.hp} Health${ev.bonus ? ` (+${ev.bonus} from the raid's might)` : ''} (less the more the raid has pounded it).`};
     case 'raidCommons': return {cls:'', text:`🐙 The boss calls in ${(ev.defIds||[]).map(nm).join(' and ')} behind its lines.`}; // 2026-10-17
     case 'boomerangReturn': return {cls:'quick', text:`${nm(ev.defId)}'s boomerang comes back around! 🪃`};
     case 'raidLastTurn': return {cls:'gold', text:`🌊 Last turn (${ev.round}): the tide turns after this one and the raid ends, whatever the castles' Health.`}; // 2026-10-18
