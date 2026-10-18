@@ -39373,6 +39373,48 @@ function loadItems(){
 function saveItems(o){ try{ localStorage.setItem(ITEMS_KEY, JSON.stringify(o)); }catch(e){} }
 function featureUnlockedSafe(k){ try{ return featureUnlocked(k); }catch(e){ return false; } }
 function itemCount(id){ return (loadItems().counts[id]||0); }
+// ---- Rename Ticket (2026-10-18, owner 15:05: "okay. + rename feature (but takes a rename ticket)"): a 🎫 item in the Inventory,
+// spent to rename your guild (renameGuild, in the Guilds section). It is not a field-kit item (it never goes in the 🎒 pack,
+// the kit rewards or the cart's daily kit stock), so it keeps its own count. Where it comes from: the Shop's shelf, for
+// RENAME_TICKET_PRICE Maple Leaves, and one free ticket for every guild owner whose guild was made before the feature shipped
+// (giftFounderRenameTicket). The count travels in the progress blob (player_progress), which a player can edit by hand: the
+// server can't check it until the optional ticket table in supabase/proposed/20261018_guild_rename.sql is applied.
+// Player names are left as they were: the name prompt never cost anything, so it doesn't take a ticket.
+const RENAME_TICKET = {icon:'🎫', name:'Rename Ticket', desc:'Spend one to rename your guild.'};
+const RENAME_TICKET_KEY = 'bramblewood_rename_tickets_v1', RENAME_TICKET_GIFT_KEY = 'bramblewood_rename_ticket_gift_v1';
+const RENAME_TICKET_PRICE = 250, RENAME_TICKET_CAP = 9;
+// The founders' gift goes to owners of guilds made before this date (the week the feature ships); later founders buy theirs.
+const RENAME_TICKET_GIFT_BEFORE = Date.parse('2026-10-26T00:00:00Z');
+PROGRESS_KEYS.push(RENAME_TICKET_KEY, RENAME_TICKET_GIFT_KEY); // so the tickets (and the gift flag) follow the account
+function renameTickets(){ try{ return Math.max(0, Math.floor(Number(localStorage.getItem(RENAME_TICKET_KEY)) || 0)); }catch(e){ return 0; } }
+function addRenameTickets(n){ const v = Math.max(0, Math.min(RENAME_TICKET_CAP, renameTickets() + n)); try{ localStorage.setItem(RENAME_TICKET_KEY, String(v)); }catch(e){} return v; }
+function spendRenameTicket(){ if(renameTickets() < 1) return false; addRenameTickets(-1); return true; }
+// once a save (the flag travels with the progress blob, so a second device doesn't pay it again)
+function giftFounderRenameTicket(guild){
+  if(!guild || !(Date.parse(guild.created_at) < RENAME_TICKET_GIFT_BEFORE)) return false;
+  try{ if(localStorage.getItem(RENAME_TICKET_GIFT_KEY) === '1') return false; localStorage.setItem(RENAME_TICKET_GIFT_KEY, '1'); }catch(e){ return false; }
+  addRenameTickets(1); return true;
+}
+// On the Shop's shelf once the Guild tab is open (the Arena spot); one a buy, up to RENAME_TICKET_CAP held.
+function shopTicketOnShelf(){ return adminModeEnabled || tabOpen('guild'); }
+function shopTicketFull(){ return renameTickets() >= RENAME_TICKET_CAP; }
+function shopTicketShelfHTML(i, selected){
+  const k = 'ticket:1', full = shopTicketFull(), tilt = ((i*37) % 7) - 3;
+  return `<button type="button" class="shelf-item is-kit ${full?'is-off':''} ${k===selected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===selected}" aria-label="${escapeAttr(RENAME_TICKET.name)}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${RENAME_TICKET.icon}</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(RENAME_TICKET.name)}</span><span class="shelf-tag">${full ? escapeHtml(TX('ui.rename-ticket-full-tag')) : shelfPriceHTML({gold:RENAME_TICKET_PRICE, gems:0})}</span></button>`;
+}
+function shopTicketDetailHTML(){
+  return `<b class="sd-name">${RENAME_TICKET.icon} ${escapeHtml(RENAME_TICKET.name)}</b><span class="sd-line">${escapeHtml(TX('ui.rename-ticket-shop-line'))}</span><span class="sd-line">${escapeHtml(TX('ui.rename-ticket-you-carry', {n: renameTickets(), cap: RENAME_TICKET_CAP}))}</span><span class="sd-price">${shelfPriceHTML({gold:RENAME_TICKET_PRICE, gems:0})}</span>${shopTicketFull() ? `<span class="sd-why">${escapeHtml(TX('ui.rename-ticket-full', {cap: RENAME_TICKET_CAP}))}</span>` : ''}`;
+}
+function shopTicketCounter(el){
+  const full = shopTicketFull(), afford = (myCurrencies.gold||0) >= RENAME_TICKET_PRICE;
+  el.innerHTML = `<div class="counter-goods"><span class="shelf-kit is-big" aria-hidden="true"><span class="sk-ico">${RENAME_TICKET.icon}</span></span></div><div class="counter-info">${shopTicketDetailHTML()}</div><div class="counter-act">${full ? '' : `<button class="btn primary" id="shopBuyTicket" ${afford?'':'aria-disabled="true"'}>${afford ? 'Buy' : `Need ${RENAME_TICKET_PRICE - (myCurrencies.gold||0)} more 🍁`}</button>`}</div>`;
+  const b = el.querySelector('#shopBuyTicket'); if(b) b.onclick = ()=>{
+    if(shopTicketFull() || (myCurrencies.gold||0) < RENAME_TICKET_PRICE){ denyShake(b); try{ SoundKit.deny && SoundKit.deny(); }catch(e){} return; }
+    myCurrencies.gold -= RENAME_TICKET_PRICE; saveCurrencies(); addRenameTickets(1);
+    try{ SoundKit.shelfPick(); SoundKit.gold && SoundKit.gold(); }catch(e){}
+    showToast(TX('toast.rename-ticket-bought', {n: renameTickets()}), 'ok');
+    renderShop(); };
+}
 function itemsUsableIn(m){ return !!m && !m.over && ITEM_PVE_MODES.has(m.mode) && !m.testKit && featureUnlockedSafe('fieldkit'); }
 function itemsHudHTML(m){
   if(!itemsUsableIn(m)) return '';
@@ -39570,6 +39612,7 @@ function renderInventory(){
       <p class="panel-sub inv-kit-note">In a skirmish, press 🎒 beside your Lumber to use one. One item a skirmish, and it doesn't use your play.</p>
       <p class="panel-sub inv-kit-src">Found on the road: your first ${SKIRMISH_KIT_PER_DAY} Conquest wins each day <b class="inv-kit-left ${left ? '' : 'is-done'}">${left ? `${left} left today` : 'done for today'}</b> · A notices and above · finished weekly tiers</p></div></section>`; })() : ''}
     ${(()=>{ const cap = shown([{key:'capsule', icon:'🔋', count:energyCapsules(), name:'Energy capsule', sub:'+' + ENERGY_CAPSULE_AMOUNT + ' Energy'}], 'en'); return cap.length ? `<section class="panel inv-sec"><h3>🔋 Energy capsules <small>tap ⚡ Energy to use one (+${ENERGY_CAPSULE_AMOUNT})</small></h3><div class="inv-slots">${slots(cap, '')}</div></section>` : ''; })()}
+    ${(()=>{ /* 2026-10-18 (guild rename): Rename Tickets, once you've held one */ const tk = shown([{key:'rename', icon:RENAME_TICKET.icon, count:renameTickets(), name:RENAME_TICKET.name, sub:RENAME_TICKET.desc}], 'tk'); return tk.length ? `<section class="panel inv-sec"><h3>🎫 Tickets <small>${escapeHtml(TX('ui.rename-ticket-inv-note'))}</small></h3><div class="inv-slots">${slots(tk, '')}</div></section>` : ''; })()}
     <section class="panel inv-sec"><h3>💠 Materia <button type="button" class="btn small" data-inv-go="smith">⚒️ Blacksmith</button></h3><div class="inv-slots">${mat}</div></section>
     <section class="panel inv-sec"><h3>🪺 In the Nest ${featureUnlockedSafe('nest') ? '<button type="button" class="btn small" data-inv-go="nest">🪺 Nest</button>' /* 2026-10-17 (user): "🪺 Nest", like "⚒️ Blacksmith" */ : `<small>🔒 the Nest opens on Map ${(FEATURE_SPOTS.find(x=> x.key === 'nest') || {mapNumber:4}).mapNumber}</small>`}</h3>${featureUnlockedSafe('nest') || !nestCells ? '' : `<p class="panel-sub">${escapeHtml(eggNeedsNestNote())}</p>`}<div class="inv-grid">${nestCells || '<p class="panel-sub">No eggs or babies right now.</p>'}</div></section>
     <section class="panel inv-sec"><h3>💎 Enchant crystals <button type="button" class="btn small" data-inv-go="enchant">💎 Enchant</button></h3><div class="inv-slots">${crystals}</div></section>
@@ -40429,7 +40472,7 @@ function shelfRows(){
   const chunk = (items, n, kinds)=>{ const out = []; for(let i = 0; i < items.length; i += n) out.push({kind:kinds[(i/n) % kinds.length], items:items.slice(i, i + n)}); return out; };
   const narrow = window.matchMedia && matchMedia('(max-width:620px)').matches;
   return [
-    ...chunk([...packs.map(p=> ({pack:p, qty:1})), ...(shopKitToday() ? [{kit:shopKitToday(), qty:1}] : []), {bread:true, qty:1}], narrow ? 2 : 5, ['straight', 'crooked-r']),
+    ...chunk([...packs.map(p=> ({pack:p, qty:1})), ...(shopKitToday() ? [{kit:shopKitToday(), qty:1}] : []), ...(shopTicketOnShelf() ? [{ticket:true, qty:1}] : []) /* 2026-10-18: 🎫 Rename Ticket */, {bread:true, qty:1}], narrow ? 2 : 5, ['straight', 'crooked-r']),
     ...(onSale.length === 1 ? [
       ...chunk(onSale.flatMap(p=> [10, 25].filter(q=> packQtyOptions(p).includes(q) || adminModeEnabled).map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, ['crooked', 'straight']),
       ...chunk(onSale.flatMap(p=> [50, 100].filter(q=> packQtyOptions(p).includes(q) || adminModeEnabled).map(q=> ({pack:p, qty:q}))), narrow ? 2 : 4, narrow ? ['straight', 'crooked-r'] : ['stepped'])] : []),
@@ -40462,10 +40505,11 @@ function shelfDetailHTML(p, qty){
 }
 function renderShopShelves(grid, signedIn){
   const rows = shelfRows(), all = rows.flatMap(r=> r.items);
-  const keyOf = it=> it.bread ? 'bread:1' : it.kit ? 'kit:' + it.kit.id : it.pack.id + ':' + it.qty;
+  const keyOf = it=> it.bread ? 'bread:1' : it.ticket ? 'ticket:1' : it.kit ? 'kit:' + it.kit.id : it.pack.id + ':' + it.qty;
   if(!shopSelected || !all.some(it=> keyOf(it)===shopSelected)){ const first = all.find(it=> it.pack && packOnSale(it.pack)) || all[0]; shopSelected = first ? keyOf(first) : null; }
   let propN = 0; const prop = ()=> `<span class="shelf-prop" aria-hidden="true">${SHELF_PROPS[(propN++ * 5 + rows.length) % SHELF_PROPS.length]}</span>`;
   const itemHTML = (it, i)=>{
+    if(it.ticket) return shopTicketShelfHTML(i, shopSelected); // 2026-10-18 (guild rename)
     if(it.kit){ const K = it.kit, sold = shopKitSold(K.day), full = shopKitFull(K.id), k = 'kit:' + K.id, tilt = ((i*37) % 7) - 3; // field-kit stock (2026-10-17)
       return `<button type="button" class="shelf-item is-kit ${sold||full?'is-off':''} ${k===shopSelected?'is-selected':''}" data-shelfitem="${k}" aria-pressed="${k===shopSelected}" aria-label="${escapeAttr(K.def.name + (sold ? ', sold out' : ''))}"><span class="shelf-kit" aria-hidden="true"><span class="sk-ico">${K.def.icon}</span><span class="sk-today">Today</span></span><span class="shelf-tape" style="--tilt:${tilt}deg">${escapeHtml(K.def.name)}</span><span class="shelf-tag">${sold ? 'Sold out' : full ? 'Pack full' : shelfPriceHTML({gold:K.price, gems:0})}</span></button>`; }
     if(it.bread){ const sold = shopBreadSold(), k = 'bread:1', tilt = ((i*37) % 7) - 3;
@@ -40496,7 +40540,7 @@ function renderShopShelves(grid, signedIn){
   const breadHTML = ()=> `<b class="sd-name">Bread</b><span class="sd-line">A warm loaf from the baker next door. It does nothing at all.</span><span class="sd-price">${shelfPriceHTML({gold:1, gems:0})}</span>${shopBreadSold() ? '<span class="sd-why">Sold out. The baker only makes one.</span>' : ''}`;
   const showHover = btn=>{
     const it = find(btn.dataset.shelfitem); if(!it) return;
-    hover.innerHTML = it.bread ? breadHTML() : it.kit ? kitHTML(it.kit) : shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
+    hover.innerHTML = it.bread ? breadHTML() : it.ticket ? shopTicketDetailHTML() : it.kit ? kitHTML(it.kit) : shelfDetailHTML(it.pack, it.qty); hover.hidden = false;
     const wr = wall.getBoundingClientRect(), br = btn.getBoundingClientRect();
     const x = Math.max(8, Math.min(wr.width - hover.offsetWidth - 8, br.left - wr.left + br.width/2 - hover.offsetWidth/2));
     const above = br.top - wr.top + wall.scrollTop - hover.offsetHeight - 10;
@@ -40507,6 +40551,7 @@ function renderShopShelves(grid, signedIn){
   const renderCounter = ()=>{
     const el = grid.querySelector('#shopCounter'), it = find(shopSelected);
     if(!el || !it) return;
+    if(it.ticket){ shopTicketCounter(el); return; } // 2026-10-18 (guild rename)
     if(it.kit){ const K = it.kit, sold = shopKitSold(K.day), full = shopKitFull(K.id), afford = (myCurrencies.gold||0) >= K.price;
       el.innerHTML = `<div class="counter-goods"><span class="shelf-kit is-big" aria-hidden="true"><span class="sk-ico">${K.def.icon}</span></span></div><div class="counter-info">${kitHTML(K)}</div><div class="counter-act">${sold || full ? '' : `<button class="btn primary" id="shopBuyKit" ${afford?'':'aria-disabled="true"'}>${afford ? 'Buy' : `Need ${K.price - (myCurrencies.gold||0)} more 🍁`}</button>`}</div>`;
       const kb = el.querySelector('#shopBuyKit'); if(kb) kb.onclick = ()=>{
@@ -42386,6 +42431,9 @@ async function loadMyGuild(){
       if(mErr) throw mErr;
       myGuild = guild;
       myGuildMembers = members || [];
+      // 2026-10-18 (guild rename): the founders' gift, one 🎫 Rename Ticket for an owner of a guild made before it shipped
+      const me = myGuildMembers.find(m=> m.profile_id===cloudUserId);
+      if(me && me.role==='owner' && giftFounderRenameTicket(guild)) setTimeout(()=>{ try{ showToast(TX('toast.rename-ticket-gift'), 'ok'); }catch(e){} }, 600);
     }
   }catch(e){ myGuild=null; myGuildMembers=null; guildLoadError = true; }
   guildDataLoaded = true;
@@ -42438,6 +42486,86 @@ async function leaveGuild(){
     return error ? {error: netErrText(error)} : {ok:true};
   }catch(e){ return {error: netErrText(e)}; }
 }
+// ---- Guild rename (2026-10-18, owner 15:05: "okay. + rename feature (but takes a rename ticket)"). The owner renames from the
+// guild panel for one 🎫 Rename Ticket. The live policies have no UPDATE on public.guilds, so the rename goes through the
+// rename_guild(p_guild, p_name) function in supabase/proposed/20261018_guild_rename.sql, which checks the caller owns the guild
+// and checks the name again. Until that file is applied the call comes back "function does not exist": the player is told
+// renaming isn't switched on yet, and the ticket is kept. A ticket is only spent once the server says the rename went through.
+const GUILD_NAME_MIN = 3, GUILD_NAME_MAX = 24; // the live guilds_name_len check (and the create form's minlength/maxlength)
+// The same rules as making a guild (trimmed, 3-24 characters; there is no word filter in the game), plus "not the same name".
+// Inner runs of spaces fold to one, as the server function does. Returns {name, err}; err is '' when the name is fine.
+function guildNameProblem(raw, current){
+  const name = String(raw == null ? '' : raw).trim().replace(/\s+/g, ' '), n = Array.from(name).length;
+  if(n < GUILD_NAME_MIN || n > GUILD_NAME_MAX) return {name, err: TX('ui.guild-name-length', {min: GUILD_NAME_MIN, max: GUILD_NAME_MAX, n})};
+  if(current != null && name === String(current)) return {name, err: TX('ui.guild-name-unchanged')};
+  return {name, err: ''};
+}
+// The function isn't there yet (not applied): PostgREST says PGRST202 / "Could not find the function", Postgres 42883 /
+// "function ... does not exist".
+function guildRenameRpcMissing(err){
+  const code = String((err && err.code) || ''), msg = String((err && (err.message || err.details || err.hint)) || '');
+  return code === 'PGRST202' || code === '42883' || /could not find the function|function\b[^]*\bdoes not exist/i.test(msg);
+}
+async function renameGuild(guildId, rawName, currentName){
+  if(!sbClient || !cloudUserId) return {error: TX('net.guild-rename-sign-in')};
+  const chk = guildNameProblem(rawName, currentName); if(chk.err) return {error: chk.err};
+  if(renameTickets() < 1) return {error: TX('ui.guild-rename-no-ticket', {price: RENAME_TICKET_PRICE})};
+  let res;
+  try{ res = await sbClient.rpc('rename_guild', {p_guild: guildId, p_name: chk.name}); }catch(e){ return {error: TX('net.guild-rename-failed', {err: netErrText(e)})}; }
+  const { data, error } = res || {};
+  if(error){
+    if(guildRenameRpcMissing(error)) return {error: TX('net.guild-rename-not-on'), notOn: true};
+    const m = String(error.message || '');
+    if(error.code === '23505' || /name_taken|duplicate|unique/i.test(m)) return {error: TX('net.guild-name-taken')};
+    if(error.code === '42501' || /not_owner/i.test(m)) return {error: TX('net.guild-rename-not-owner')};
+    if(/bad_length|guilds_name_len/i.test(m)) return {error: TX('ui.guild-name-length', {min: GUILD_NAME_MIN, max: GUILD_NAME_MAX, n: Array.from(chk.name).length})};
+    return {error: TX('net.guild-rename-failed', {err: netErrText(error)})};
+  }
+  spendRenameTicket();
+  return {ok: true, name: (typeof data === 'string' && data) ? data : chk.name};
+}
+// The rename dialog (the name prompt's look): the new name, the ticket it costs and how many you hold, Rename / Cancel.
+function openGuildRenameDialog(){
+  if(!myGuild || document.getElementById('guildRenameOverlay')) return;
+  const g = myGuild, have = renameTickets();
+  const ov = document.createElement('div'); ov.id = 'guildRenameOverlay'; ov.className = 'name-prompt-overlay';
+  ov.innerHTML = `<form class="name-prompt" role="dialog" aria-modal="true" aria-labelledby="grTitle" autocomplete="off" novalidate>
+    <div class="np-ico" aria-hidden="true">${escapeHtml(g.icon || '🛡️')}</div>
+    <h2 id="grTitle">${escapeHtml(TX('ui.guild-rename-title'))}</h2>
+    <p>${escapeHtml(TX('ui.guild-rename-rules', {min: GUILD_NAME_MIN, max: GUILD_NAME_MAX}))}</p>
+    <input id="grInput" type="text" maxlength="${GUILD_NAME_MAX}" minlength="${GUILD_NAME_MIN}" value="${escapeAttr(g.name || '')}" aria-label="${escapeAttr(TX('ui.guild-rename-title'))}" aria-describedby="grMsg grCost">
+    <p id="grCost">${escapeHtml(have ? TX('ui.guild-rename-cost', {n: have}) : TX('ui.guild-rename-no-ticket', {price: RENAME_TICKET_PRICE}))}</p>
+    <p class="name-len-msg" id="grMsg" role="alert" aria-live="polite" hidden></p>
+    <button type="submit" class="btn primary big" id="grOk" ${have ? '' : 'aria-disabled="true"'}>${escapeHtml(TX('ui.guild-rename-ok'))}</button>
+    ${have ? '' : `<button type="button" class="btn" id="grShop">${escapeHtml(TX('ui.guild-rename-to-shop'))}</button>`}
+    <button type="button" class="btn" id="grCancel">${escapeHtml(TX('ui.guild-rename-cancel'))}</button></form>`;
+  document.body.appendChild(ov);
+  const inp = ov.querySelector('#grInput'), msg = ov.querySelector('#grMsg'), okBtn = ov.querySelector('#grOk');
+  const say = t=>{ msg.textContent = t; msg.hidden = !t; if(t) inp.setAttribute('aria-invalid', 'true'); else inp.removeAttribute('aria-invalid'); };
+  const close = ()=>{ ov.remove(); document.removeEventListener('keydown', onKey); };
+  const onKey = e=>{ if(e.key === 'Escape') close(); };
+  document.addEventListener('keydown', onKey);
+  setTimeout(()=>{ inp.focus(); inp.select(); }, 50);
+  inp.addEventListener('input', ()=> say(''));
+  ov.querySelector('#grCancel').addEventListener('click', close);
+  ov.addEventListener('pointerdown', e=>{ if(e.target === ov) close(); });
+  const shopBtn = ov.querySelector('#grShop'); if(shopBtn) shopBtn.addEventListener('click', ()=>{ close(); shopSelected = 'ticket:1'; switchTab('shop'); });
+  ov.querySelector('form').addEventListener('submit', async e=>{
+    e.preventDefault(); if(okBtn.disabled) return;
+    if(renameTickets() < 1){ say(TX('ui.guild-rename-no-ticket', {price: RENAME_TICKET_PRICE})); denyShake(okBtn); return; }
+    const chk = guildNameProblem(inp.value, g.name); if(chk.err){ say(chk.err); denyShake(inp); inp.focus(); return; }
+    okBtn.disabled = true; say('');
+    const res = await renameGuild(g.id, chk.name, g.name);
+    okBtn.disabled = false;
+    if(res.error){ say(res.error); if(!res.notOn){ denyShake(inp); inp.focus(); } return; }
+    close();
+    if(myGuild && myGuild.id === g.id) myGuild.name = res.name;
+    guildBrowseList = null;
+    try{ SoundKit.unlockChime && SoundKit.unlockChime(); }catch(e2){}
+    showToast(TX('toast.guild-renamed', {name: res.name, n: renameTickets()}), 'ok');
+    if(currentTab === 'guild') renderGuild();
+  });
+}
 function renderGuild(){
   const root = document.getElementById('view-guild');
   if(!isSignedIn()){
@@ -42469,6 +42597,8 @@ function renderGuild(){
     ${myGuild ? guildRosterPanelHTML(myGuild, myGuildMembers||[]) : guildBrowseCreatePanelHTML()}`;
   document.getElementById('guildBackBtn').addEventListener('click', goHome);
   if(myGuild){
+    const renameBtn = document.getElementById('guildRenameBtn'); // 2026-10-18 (guild rename): owners only
+    if(renameBtn) renameBtn.addEventListener('click', openGuildRenameDialog);
     const leaveBtn = document.getElementById('guildLeaveBtn');
     if(leaveBtn) leaveBtn.addEventListener('click', async ()=>{
       if(!confirm(TX('dialog.leave-you-can-rejoin-or-found', {name: myGuild.name}))) return;
@@ -42520,6 +42650,7 @@ function guildRosterPanelHTML(guild, members){
              per explicit directive, the live game should never tell a player a feature isn't live
              yet. The mechanic still isn't designed, so it simply doesn't appear here until it is;
              no not-wired button or "coming soon" alert should ship in its place. -->
+        ${isOwner ? `<button class="btn" id="guildRenameBtn" title="${escapeAttr(TX('ui.guild-rename-btn-tip'))}">✏️ Rename guild <small>· 1 🎫 (${renameTickets()})</small></button>` : '' /* 2026-10-18 (guild rename) */}
         <button class="btn" id="guildLeaveBtn">🚪 Leave Guild</button>
       </div>
     </div>
