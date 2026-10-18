@@ -215,6 +215,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // CPU slot choice (2026-10-16, see aiChooseSlot): on in the game's own fights (they record events), off in the silent sims
   // (tools/difficulty_curve.js and friends) unless they pass aiAim:true, so their numbers stay comparable with earlier runs.
   const aiAim = opts.aiAim != null ? !!opts.aiAim : recordEvents;
+  // CPU difficulty (2026-10-18, owner: "Let me select the difficulty in the skirmish editor. The Smarter CPU can act in Map5+, in
+  // elite missions and bosses. At Map 21+, all maps use the smartest CPU."). opts.aiLevel, read only while aiAim is on (the sims
+  // keep their behaviour whatever it says): 0 basic = the CPU before 2026-10-18 (Sacrifice and the shared pitchCard stay, they are
+  // rules parity); 1 smart = the R3-WP1 battlefield reading (the default, so a caller that passes nothing plays as it did today);
+  // 2 smartest = smart plus aiChooseSlotSmartest, a held field card, the smarter pitch and Sacrifice timing (see aiTakeTurnOnce).
+  let aiLevel = opts.aiLevel != null ? Math.max(0, Math.min(2, Math.round(Number(opts.aiLevel)) || 0)) : 1;
+  const aiSmart = ()=> aiAim && aiLevel >= 1, aiSmartest = ()=> aiAim && aiLevel >= 2;
   const isGladiator = battleMode==='gladiator';
   // Reserve rows (2026-10-12, user: "for raids, I want a FULL proper game. Just that, there's multi rows! like maybe 3 rows v 3
   // rows"): opts.reserveRows (0–2) gives each side that many rows behind its front row, in Open (slot) battles. A card can be
@@ -4993,6 +5000,13 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         return ends[Math.floor(rnd() * ends.length)];
       }
     }
+    if(aiSmartest()) return aiChooseSlotSmartest(players, aiId, defId, legal); // 2026-10-18: the smartest CPU weighs every slot, no dice
+    if(!aiSmart()){ if(rnd() < 0.75){ // the basic CPU (aiLevel 0, 2026-10-18): the 2026-10-16 trade check, as it was
+      const fights = legal.map(sl=>{ const f = across(sl); if(!f) return null;
+        const kills = atk >= (f.hp || 0), lives = hp > (f.atk || 0);
+        return (kills || lives) ? {sl, score: (kills ? 2 : 0) + (lives ? 1 : 0) + rnd() * 0.5} : null; }).filter(Boolean);
+      if(fights.length) return fights.reduce((a, b)=> b.score > a.score ? b : a).sl; }
+      return legal[Math.floor(rnd() * legal.length)]; }
     if(rnd() < 0.75){
       // 2026-10-18 (engine parity, R3-WP1): the field's rules count, mildly. A swing that will often miss (the dark, Sun-shy, Night-
       // blind; an Illuminate unit facing it lights it) or that a Tide unit dodges (the Tide-evade rule: a non-swimmer facing a
@@ -5006,12 +5020,58 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     }
     return legal[Math.floor(rnd() * legal.length)];
   }
+  // Can this board unit swing at whatever faces it this round? (2026-10-18, the smartest CPU's look across the board.)
+  function aiCanSwing(c){ return !!c && (c.atk || 0) > 0 && !(c.wait > 0) && !c.stunned && !(c.frozen > 0) && !(c.asleep > 0) && !(c.paralyzed > 0) && !c.cageOf; }
+  // The smartest CPU's slot (2026-10-18, aiLevel 2). Every legal slot is scored, the best taken; ties go to the slot nearest the
+  // centre, then the left one (deterministic). For a slot facing one of your units:
+  //   focus: a Ready unit that kills it this round scores 3 plus a little for what the victim is worth (its Attack and Health), so
+  //     it takes the unit it can kill now, the best one first; a kill it can make later (it has Wait) still counts 1.5;
+  //   block: facing a unit that would otherwise hit its castle unopposed, it stops that hit: + the unit's Attack (more when its
+  //     castle is low), so it covers its weakest column, the one bleeding the most;
+  //   survival: a slot where the unit facing it kills it outright this round, while it can't kill first, costs 2.5, so it walks
+  //     into a slot like that only when nothing equal is left.
+  // An open column (nothing across) is worth its swing at the castle. The field's sight and Tide-evade rules count as for smart.
+  function aiChooseSlotSmartest(players, aiId, defId, legal){
+    const d = CARD_DEFS[defId] || {}, ai = players[aiId], foe = players[otherId(aiId)];
+    const atk = Number(d.attack) || 0, hp = Number(d.health) || 0, ready = !(Number(d.wait) > 0);
+    const myTide = isTideDef(d), tideOn = tideEvadeOn() && getTide() !== null, quick = !!((d.effects||{}).quick);
+    const myHq = ai.hq ? ai.hq.hp / Math.max(1, ai.hq.maxHp) : 1, blockW = myHq < 0.5 ? 0.6 : 0.3;
+    const score = sl=>{ const f = frontCardAt(foe, sl);
+      if(!f) return ready ? 0.8 + Math.min(atk, 8) * 0.1 : 0.4;
+      let hit = 1 - aiSightMissAt(defId, aiId, f); if(tideOn && isTide(f) && !myTide) hit *= 0.5;
+      const kills = atk >= (f.hp || 0) && atk > 0 && hit > 0.5, killNow = kills && ready;
+      const theyHit = aiCanSwing(f), fAtk = Math.max(0, f.atk || 0) * (tideOn && myTide && !isTide(f) ? 0.5 : 1);
+      const dies = theyHit && fAtk >= hp && !(killNow && quick);
+      let s = killNow ? 3 + ((f.atk || 0) + (f.hp || 0) * 0.45) * 0.1 : kills ? 1.5 : 0;
+      if(theyHit) s += Math.min(fAtk, 8) * blockW; // the castle hit it stops
+      if(dies) s -= 2.5; else s += 0.5;
+      return s; };
+    let best = null;
+    legal.forEach(sl=>{ const s = score(sl);
+      if(!best || s > best.s + 1e-9 || (Math.abs(s - best.s) <= 1e-9 && (Math.abs(sl) < Math.abs(best.sl) || (Math.abs(sl) === Math.abs(best.sl) && sl < best.sl)))) best = {sl, s}; });
+    return best ? best.sl : null;
+  }
+  // The best of your units a Ready unit of this card could kill this round from a slot the CPU may take (its worth), else 0.
+  function aiBestKillNow(players, aiId, defId){
+    if(!slotMode) return 0; const d = CARD_DEFS[defId] || {}, atk = Number(d.attack) || 0; if(d.cardType || Number(d.wait) > 0 || atk <= 0) return 0;
+    const foe = players[otherId(aiId)]; let best = 0;
+    legalSlots(players[aiId]).forEach(sl=>{ const f = frontCardAt(foe, sl);
+      if(f && atk >= (f.hp || 0) && aiSightMissAt(defId, aiId, f) < 0.5){ const v = (f.atk || 0) + (f.hp || 0) * 0.45; if(v > best) best = v; } });
+    return best;
+  }
+  // Would this unit of the CPU's die to what faces it this round? (2026-10-18, the smartest CPU's Sacrifice timing.)
+  function aiDoomed(players, aiId, c){
+    if(!slotMode || !c) return false; const f = frontCardAt(players[otherId(aiId)], c.slot);
+    return aiCanSwing(f) && (f.atk || 0) >= (c.hp || 0) + (c.tempHp || 0);
+  }
   // Which Dark Summon card to cast over which of its own Sacrifice N units (2026-10-18, see the call in aiTakeTurnOnce), or null.
-  function aiSacrificePick(ai, cardValue){
+  // (2026-10-18, aiLevel 2: a unit that dies to what faces it this round is expendable too, so it is spent before it is lost.)
+  function aiSacrificePick(ai, cardValue, players){
     const dark = ai.hand.filter(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon); if(!dark.length) return null;
     const fodder = allLive(ai).filter(c=> !c.cageOf && !c.isLeader && Number((CARD_DEFS[c.defId].effects||{}).sacrifice) > 0); if(!fodder.length) return null;
+    const doomedToo = !!(players && aiSmartest());
     const expendable = (f, newVal)=>{ const fd = CARD_DEFS[f.defId] || {}, hp = f.hp || 0;
-      return !!fd.token || hp <= 2 || hp <= (f.maxHp || hp) / 3 || ((f.poison||0) + (f.bleed||0)) >= hp || cardValue(f.defId) <= newVal * 0.6; };
+      return !!fd.token || hp <= 2 || hp <= (f.maxHp || hp) / 3 || ((f.poison||0) + (f.bleed||0)) >= hp || cardValue(f.defId) <= newVal * 0.6 || (doomedToo && aiDoomed(players, ai.id, f)); };
     let best = null;
     dark.forEach(hc=>{ const nv = cardValue(hc.defId), free = canPlay(ai, hc.defId, hc.uid);
       fodder.forEach(f=>{ const n = Number(CARD_DEFS[f.defId].effects.sacrifice);
@@ -5081,7 +5141,9 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     const fieldCard = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field && canPlay(ai, hc.defId, hc.uid));
     // 2026-10-18 (engine parity, R3-WP1): in the game's own fights (aiAim) a field card goes down only when it helps the CPU's board
     // more than yours (aiFieldWorth); the silent sims keep the old coin flip so their numbers stay comparable.
-    if(fieldCard && (aiAim ? aiFieldWorth(players, aiId, fieldCard.defId) > 0 : rnd() < 0.5)) placeCard(players, sideOf, aiId, fieldCard.uid, 'left', stats, events);
+    // 2026-10-18 (CPU difficulty): the basic CPU (aiLevel 0) keeps the old coin flip too; the smartest wants the field to be worth it
+    // (> 0.5), so a card that would barely help, or hurt it, waits in hand for its moment.
+    if(fieldCard && (aiSmart() ? aiFieldWorth(players, aiId, fieldCard.defId) > (aiSmartest() ? 0.5 : 0) : rnd() < 0.5)) placeCard(players, sideOf, aiId, fieldCard.uid, 'left', stats, events);
     if(ai.reserveLeaders && ai.reserveLeaders.length && !ai.playedThisTurn){
       const ready = ai.reserveLeaders.filter(id=> CARD_DEFS[id] && canPlay(ai, id, null));
       if(ready.length && (!affordable.length || rules.bossSurge || rnd() < 0.35)){ // a surging boss comes out the moment it can
@@ -5095,12 +5157,20 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
     // weakest other card to the Graveyard first (+1 Lumber, once a turn, same as a player), and once
     // a saved-for card is affordable it usually plays that instead of a random free one.
     const cardValue = id=>{ const d = CARD_DEFS[id] || {}; return (d.attack||0) + (d.health||0)*0.45 + Object.keys(d.effects||{}).length*1.5 + costOfCard(id)*2; };
+    // The pitch (2026-10-18, CPU difficulty): the basic and smart CPUs pitch their weakest card (cardValue); the smartest pitches the
+    // one least useful to it on this battlefield: a field card is kept for its moment (more so when it would help now), a unit that
+    // would swing blind here is worth less, a Tide unit with the tide in or a flyer in the wind more. No dice.
+    const useOf = hc=>{ const d = CARD_DEFS[hc.defId] || {}, e = d.effects || {}; let u = cardValue(hc.defId);
+      if(d.field) u += aiFieldWorth(players, aiId, hc.defId) > 0 ? 6 : 3;
+      else if(!d.cardType){ u -= aiSightMissAt(hc.defId, aiId, null) * 3; if(getTide() !== null && isTideDef(d)) u += 1.5; if(e.flying && (windMode() || rules.landslide)) u += 1; }
+      return u; };
+    const pitchPick = list=> aiSmartest() ? list.reduce((a, b)=> useOf(b) < useOf(a) ? b : a) : list.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
     if(!ai.discardUsedThisTurn && ai.hand.length > 1){
       const saving = ai.hand.filter(hc=> !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field) && costOfCard(hc.defId) > ai.lumber && costOfCard(hc.defId) <= ai.lumber + SAVE_REACH); // within two turns' reach: saving longer costs more tempo than the card gives back (tested 2026-10-09)
       if(saving.length){
         const pitchable = ai.hand.filter(hc=> !saving.includes(hc) && costOfCard(hc.defId) === 0 && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field));
         if(pitchable.length && (ai.hand.length >= 3 || !affordable.length)){
-          const worst = pitchable.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
+          const worst = pitchPick(pitchable);
           aiPitch(players, sideOf, aiId, worst, stats, events); // 2026-10-18: the player's pitch rules (was a flat +1 Lumber)
         }
       }
@@ -5116,15 +5186,17 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         if(placeCard(players, sideOf, aiId, near.uid, rnd() < 0.5 ? 'left' : 'right', stats, events, {prayerOffer: food.uid})) return; }
     }
     // (aiAim, 2026-10-18: a field card is decided above, by aiFieldWorth, so the main play can't spend it anyway.)
-    const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid) && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon) && !(aiAim && CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field));
+    const playable = ai.hand.filter(hc => canPlay(ai, hc.defId, hc.uid) && !(CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon) && !(aiSmart() && CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].field)); // (the basic CPU may still spend one as its play, as before)
     // Sacrifice (2026-10-18, engine parity R3-WP1): the CPU never sacrificed (only the player's drag did, sacrificeSummon). Now, with
     // a Dark Summon card in hand, it gives up one of its own Sacrifice N units for it when the unit is expendable (a token, nearly
     // dead, poisoned or bleeding to death, or worth much less than the new card) and the discount makes the play possible or saves
     // what it costs; else, it plays the card as before. No dice: the cheapest unit to lose, then the best card to gain.
-    { const sac = aiSacrificePick(ai, cardValue); // (a Dark Summon has its own allowance, darkPerTurn: not the turn's play)
+    { const sac = aiSacrificePick(ai, cardValue, players); // (a Dark Summon has its own allowance, darkPerTurn: not the turn's play)
       if(!(sac && sacrificeSummon(players, sideOf, aiId, sac.hc.uid, sac.fod.uid, stats, events))){
         const darkPick = ai.hand.find(hc=> CARD_DEFS[hc.defId] && CARD_DEFS[hc.defId].darkSummon && canPlay(ai, hc.defId, hc.uid));
-        if(darkPick) placeCard(players, sideOf, aiId, darkPick.uid, rnd() < 0.5 ? 'left' : 'right', stats, events); } }
+        if(darkPick){ let side = rnd() < 0.5 ? 'left' : 'right';
+          if(aiSmartest()){ const aim = aiChooseSlot(players, aiId, darkPick.defId); if(aim != null) side = aim; } // 2026-10-18: the smartest CPU aims it too
+          placeCard(players, sideOf, aiId, darkPick.uid, side, stats, events); } } }
     const hadPlay = playable.length && !ai.playedThisTurn;
     if(hadPlay){
       // 2026-10-10 (user: "they shouldn't just always play the cheapest card. If they have 1 1-lumber cost and 1 2-lumber
@@ -5143,7 +5215,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
         // the battlefield helps. The tide in: Tide units (+Attack on Flood, Armor on Ebb). Wind: flyers get a Tailwind or Headwind.
         // Landslide: flyers are above it. The dark, day or night: a unit that will swing blind is worth less. Arrow Slits: the walls
         // pick off small units on the attackers' side (player 1).
-        if(aiAim && !d.cardType){ if(getTide() !== null && isTideDef(d)) v += 1.5;
+        if(aiSmart() && !d.cardType){ if(getTide() !== null && isTideDef(d)) v += 1.5; // (2026-10-18: smart and smartest only)
           if(e.flying && (windMode() || rules.landslide)) v += 1;
           v -= aiSightMissAt(id, aiId, null) * 3;
           if(rules.arrowSlits && aiId === 1 && (d.health||0) <= fxN(rules.arrowSlits, 2)) v -= 1; }
@@ -5153,7 +5225,10 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
             : sp.do==='mend' ? mine.reduce((t, c)=> t + Math.min(n, (c.maxHp||0) - (c.hp||0)), 0) * 0.8
             : sp.do==='sap' ? foes.reduce((t, c)=> t + Math.min(n, c.atk||0), 0) * 2 : 0;
           v = gain > 0 ? gain : -99; }
-        return v + rnd()*1.5;
+        // Focus (2026-10-18, the smartest CPU): a Ready unit that can kill one of your units this round from a slot it may take is
+        // worth more (the better the victim, the more), and its pick is steadier (less noise).
+        if(aiSmartest() && !d.cardType){ const kv = aiBestKillNow(players, aiId, id); if(kv > 0) v += 1.5 + kv * 0.1; }
+        return v + rnd()*(aiSmartest() ? 0.5 : 1.5);
       };
       const scored = playable.map(hc=> [hc, situational(hc.defId)]);
       const best = scored.reduce((a, b)=> b[1] > a[1] ? b : a);
@@ -5174,7 +5249,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       const need = hc=> costOfCard(hc.defId) - (ai.lumber||0);
       const target = ai.hand.length > 1 ? ai.hand.reduce((a, b)=> (need(b) < need(a) || (need(b) === need(a) && cardValue(b.defId) > cardValue(a.defId))) ? b : a) : null;
       const pool = ai.hand.filter(hc=> hc !== target);
-      const worst = pool.reduce((a, b)=> cardValue(b.defId) < cardValue(a.defId) ? b : a);
+      const worst = pitchPick(pool);
       aiPitch(players, sideOf, aiId, worst, stats, events); // 2026-10-18: the player's pitch rules (was a flat +1 Lumber)
     } else if(!ai.hand.length){
       // 2026-09-25 (explicit user request, "when he runs out of cards, he just plays Bee
@@ -5673,6 +5748,11 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
       // would die after that, it skips the graveyard entirely and goes straight to the
       // Removal Zone instead (see the graveyard-vs-exile decision below) — a real, final death.
       if(cdef.effects && cdef.effects.revive && !card.revivedOnce && !card.nullified){ // a Nullify kill: no Revive (2026-10-14)
+        // 2026-10-18 (owner, 10:33: "Kill answered by revive still triggers On Kill"): the killer's On Kill still fires for a kill
+        // that Revive answers, as it did before R3-WP1 (still no kill stat, Crown or Midas: the unit didn't die). Its book entry is
+        // spent here, so the unit's real death later is credited to whoever lands that blow.
+        { const rc = killCredit[card.uid] || killerCreditOf(players, sideOf, pl, card);
+          if(rc && kills) rc.forEach(k=> kills.add(k)); delete killCredit[card.uid]; }
         card.revivedOnce = true;
         card.hasRemovalCounter = true;
         card.hp = 1; card.killedBy = null; card.killedByDef = null; card.killedByPid = null;
@@ -6907,7 +6987,7 @@ function makeSimEngine(CARD_DEFS, rnd, opts){
   // For the app's live attack display: finds the board instance by uid (the app often renders copies of cards).
   function swarmBonusOf(players, card){ if(!card) return 0; let real = null; for(const pid of [1,2]){ const pl = players && players[pid]; if(!pl) continue; real = [...pl.row.left, ...pl.row.center, ...pl.row.right].find(x=> x.uid===card.uid); if(real) break; }
     if(!real) return 0; const prev = curPlayers; curPlayers = players; try{ return swarmBonus(real); } finally { curPlayers = prev; } }
-  return { tideEvadeOn, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
+  return { tideEvadeOn, setAiLevel: n=>{ aiLevel = Math.max(0, Math.min(2, Math.round(Number(n)) || 0)); }, getAiLevel: ()=> aiLevel, turnNo: ()=> turnNo, illusionDefOf, laneBonusOf, firePitchTriggers, pitchCard, pitchYieldOfDef, amoreStateOf, isFullMoon, eggPoolFor, meiosisDefOf, chargeOf, fireOnSacrifice, restlessMoves, startTide: ()=>{ if(tideStart === null) tideStart = turnNo; }, packChainsOf, packPlacementFor, waveHit, bloomStateOf, BLOOM_CONDS, debugIrradiatePoint, irrAbilities, effectsOf, isTide, spawnBeside, isWindy, windSideOf, nightDim, sightMiss, reserveRows: RESERVE_ROWS, legalReserveSlots, fillReserve, advanceReserves, reserveVolley, moonPhase, moonFullness, addLumber, addOre, syncPhaseStats, secondPlayerBonus, applySecondPlayerBonus, actionsPerTurn: ()=> ACTIONS, swarmBonusOf, getPhaseLen: ()=> Math.max(1, Number(rules.phaseLen)||3), phaseStepInfo, isAshy: ashyNow, chokeOf, getPhaseMode: ()=> zeitStart !== null ? 'cycle' : phaseMode, forecast, getCometRounds: ()=> cometRounds, getZeitStart: ()=> zeitStart, prayerOf, prayerReqOf, prayerOfferReady, volcanoChances, isEcclesiaDef, canOfferPrayer, canEquip, equip, debugAttack, debugDamage, debugHeal, debugFireTrigger, roundStart, getField, setField, getPhase, getTide, getCurses, FIELDS, devour, sacrificeSummon, placeCage, cageHpForLevel, canCastFromExile, castFromExile, ritualProgress, derivedDefs, darkPerTurn, damageCard, damageCardFlat, removeDeadCards, allBoardCards, setSuddenDeath, isSuddenDeath, battleMode, legalSlots, placeGladiatorLeader, syncSlots, newPlayer, draw, placeCard, debugSpawnCard, summonLeader, aiTakeTurn, resolveCombat, canPlay, costOfCard, graceCostOfCard, devilryCostOfCard, exileCostOfCard, makeBoardCard, setCastle, getHazards };
 }
 
 function simulateOneMatch(CARD_DEFS, deckCountsA, deckCountsB, opts){
