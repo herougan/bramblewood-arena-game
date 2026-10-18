@@ -18,7 +18,7 @@
 const fs = require('fs'), path = require('path');
 const ROOT = path.join(__dirname, '..');
 const APP = path.join(ROOT, 'arena_app.js'), CARDS = path.join(ROOT, 'canonical', 'cards.json');
-const PLAN = path.join(ROOT, 'docs', 'balance', 'thematic-pass-2026-10-19.json');
+const PLAN = path.join(ROOT, 'docs', 'balance', 'thematic-pass-2026-10-19.json'), PLACED = path.join(ROOT, 'docs', 'balance', 'thematic-placed-2026-10-19.json');
 const argv = process.argv.slice(2), CMD = argv[0] || 'audit';
 // canonical/cards.json is written by Python (json.dumps indent 2, ASCII escapes); the same bytes from Node
 const writeCards = cards=> fs.writeFileSync(CARDS, JSON.stringify(cards, null, 2).replace(/[\u0080-\uffff]/g, ch=> '\\u' + ch.charCodeAt(0).toString(16).padStart(4, '0')) + '\n');
@@ -118,7 +118,7 @@ function readPlan(){ return JSON.parse(fs.readFileSync(PLAN, 'utf8')); }
 // The next live card number the way the Admin's placement gives it (nextNumericId: the highest live numericId + 1; pool numbers 9001+
 // don't count because the game never loads pool cards).
 function placeCards(cards, plan, MAPS){
-  let next = Math.max(...cards.filter(c=> !c.pool).map(c=> +c.numericId || 0)) + 1; const log = [];
+  let next = Math.max(...cards.filter(c=> !c.pool).map(c=> +c.numericId || 0)) + 1; const log = [], placed = [];
   for(const p of plan.place){
     const c = cards.find(x=> x.id === p.id); if(!c) throw new Error('no card ' + p.id);
     if(!c.pool){ log.push(`${p.id}: already live (#${c.numericId})`); continue; }
@@ -127,12 +127,13 @@ function placeCards(cards, plan, MAPS){
     else { const fam = familyOf(MAPS, MAPS.find(m=> m.id === mapId)), host = fam.find(mm=> mm.nodes.some(n=> n.key === p.node));
       if(!host) throw new Error(`${p.id}: no fight ${p.node} on ${mapId}`); c.source = {kind: 'map', id: host.id, node: p.node}; }
     const was = c.numericId; c.numericId = next++;
+    placed.push({id: c.id, name: c.name, rarity: c.rarity, poolNo: was, numericId: c.numericId, poolMap: c.poolMap, poolSlot: c.poolSlot, source: c.source, why: p.why || ''});
     const where = p.slot === 'pack' ? 'the basic packs (pack pool 1: Hedgerow Pouch, Tidemire Chest, Highcrest Case)' : `the ${p.node} reward`;
     c.creatorNote = (c.creatorNote || '') + ` 2026-10-19 (package TH, thematic pass): placed from the pool (pool #${was}) as ${where}` + (p.why ? `: ${p.why}` : '') + '.';
     delete c.pool; delete c.poolMap; delete c.poolSlot;
     log.push(`${p.id}: #${was} -> #${c.numericId}, ${where}`);
   }
-  return log;
+  log.placed = placed; return log;
 }
 // rules literal for a node line: JS object text like {ashRain:true, volcano:"low"}
 function rulesText(r){ return '{' + Object.entries(r).map(([k, v])=> `${k}:${JSON.stringify(v)}`).join(', ') + '}'; }
@@ -165,7 +166,9 @@ if(require.main === module && CMD === 'apply'){
   const pl = placeCards(cards, plan, MAPS);
   const ed = editFights(fs.readFileSync(APP, 'utf8'), plan, MAPS);
   console.log(pl.join('\n')); console.log('fights edited:', ed.log.length);
-  if(!argv.includes('--dry')){ writeCards(cards); fs.writeFileSync(APP, ed.src); console.log('written'); }
+  if(!argv.includes('--dry')){ writeCards(cards); fs.writeFileSync(APP, ed.src);
+    if(pl.placed.length) fs.writeFileSync(PLACED, JSON.stringify({note: 'Package TH (2026-10-19): the pool cards the thematic pass placed, with the pool number, map and slot each had (the card itself drops its pool fields, as the Admin placement does).', placed: pl.placed}, null, 1) + '\n');
+    console.log('written'); }
 }
 // For the curve tuner (tools/skirmish_pass.js themedPool): may a fight on this map take this card in? Not when it is off the map's
 // theme, nor when the map caps it (the Pelican Divers on Gannet Cliffs), so a retune never brings the drift back.

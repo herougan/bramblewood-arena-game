@@ -12,6 +12,9 @@
 //      tagged Pool, and opens one in the editor as a new card to place;
 //   5. translated: names in every lang/cards pack, flavour in every lang/ui pack, the filter's texts in every main pack; emoji in all
 //      three shipped sets.
+// 2026-10-19 (package TH, the thematic pass): 96 of the 100 pool cards are placed (live, with a source; the record is
+// docs/balance/thematic-placed-2026-10-19.json, which keeps each one's pool map and slot). The make-up checks (1, 2, 5) read the
+// whole AN set, placed or not, with its pool map from that record; the out-of-the-game checks (3, 4) read the cards still in the pool.
 'use strict';
 const fs = require('fs'), path = require('path'), vm = require('vm');
 const ROOT = path.join(__dirname, '..');
@@ -22,7 +25,11 @@ const cards = readJSON('canonical/cards.json');
 const allPool = cards.filter(c=> c.pool), live = cards.filter(c=> !c.pool);
 // 2026-10-19 (package GI): the checks of this pool's own make-up (counts per map, polar set, measured win rates) read package AN's cards;
 // the pool-wide rules (out of the game, the build, the Admin list) read every pool card, GI's skill examples too.
-const pool = allPool.filter(c=> !/package GI/.test(c.creatorNote || ''));
+const PLACED = (()=>{ try{ return readJSON('docs/balance/thematic-placed-2026-10-19.json').placed; }catch(e){ return []; } })();
+const placedOf = Object.fromEntries(PLACED.map(p=> [p.id, p]));
+const isGI = c=> /package GI/.test(c.creatorNote || '');
+const pool = cards.filter(c=> !isGI(c) && (c.pool || placedOf[c.id])).map(c=> c.pool ? c : Object.assign({}, c, {poolMap: placedOf[c.id].poolMap, poolSlot: placedOf[c.id].poolSlot})); // package AN's set, placed or not
+const stillPool = pool.filter(c=> c.pool);
 const slice = (a, b)=>{ const i = src.indexOf(a), j = src.indexOf(b, i); if(i < 0 || j < 0) throw new Error('missing ' + a); return src.slice(i, j); };
 // eslint-disable-next-line no-eval
 const RR = eval(slice('// ROAD_RARITY:BEGIN', '// ROAD_RARITY:END') + ';({roadRarityCap, roadRarityStep, roadRarityOk})');
@@ -34,7 +41,7 @@ const numOf = id=>{ const m = MAPS.find(x=> x.id === id); return m ? mains.index
 
 // ---- 1. the pool
 ok(pool.length >= 90, `the pool has its cards (${pool.length})`);
-ok(pool.every(c=> c.pool === true && MAPS.some(m=> m.id === c.poolMap) && ['skirmish', 'pack'].includes(c.poolSlot)), '1. each has pool: true, a real poolMap and a poolSlot (skirmish / pack)');
+ok(pool.every(c=> (c.pool === true || placedOf[c.id]) && MAPS.some(m=> m.id === c.poolMap) && ['skirmish', 'pack'].includes(c.poolSlot)), '1. each has pool: true (or a placement record), a real poolMap and a poolSlot (skirmish / pack)');
 for(let k = 0; k <= 12; k++){ const m = mains[k], cnt = pool.filter(c=> c.poolMap === m.id).length; ok(cnt >= 5 && cnt <= 8, `1. Map ${k} (${m.name}) has 5–8 pool cards (${cnt})`); }
 const polar = pool.filter(c=> ['m6', 'mi', 'mt'].includes(c.poolMap));
 ok(polar.length >= 8, `1. a polar set on the tundra / ice / taiga maps (${polar.length})`);
@@ -47,7 +54,8 @@ const spider = pool.find(c=> c.id === 'giant-cave-huntsman');
 ok(spider && ['rare', 'veryrare', 'epic'].includes(spider.rarity) && spider.effects.poison && spider.effects.pounce && /owner request/i.test(spider.creatorNote), '1. owner 23:32: the scary spider (Rare+, Poison, Pounce), flagged owner request');
 ['Mink', 'Water Vole', 'Muskrat', 'Water Shrew', 'Desman', 'Grey Seal'].forEach(w=> ok(pool.some(c=> c.name.includes(w)), `1. a temperate water-going mammal: ${w}`));
 const liveNames = new Set(live.map(c=> c.name.toLowerCase())), liveIds = new Set(live.map(c=> c.id));
-ok(pool.every(c=> !liveNames.has(c.name.toLowerCase()) && !liveIds.has(c.id)), '1. no pool card repeats a live card\'s name or id');
+{ const unplaced = live.filter(c=> !placedOf[c.id]); const n2 = new Set(unplaced.map(c=> c.name.toLowerCase())), i2 = new Set(unplaced.map(c=> c.id));
+  ok(pool.every(c=> !n2.has(c.name.toLowerCase()) && !i2.has(c.id)), '1. no pool card repeats another live card\'s name or id'); }
 ok(new Set(pool.map(c=> c.name)).size === pool.length, '1. pool names are unique');
 const long = pool.filter(c=> c.flavor.trim().split(/\s+/).length >= 20); ok(!long.length, `1. flavour under 20 words (${long.map(c=> c.id)})`);
 ok(new Set(cards.map(c=> c.numericId)).size === cards.length && new Set(cards.map(c=> c.uuid)).size === cards.length, '1. numericIds and uuids are unique');
@@ -68,12 +76,13 @@ pool.forEach(c=>{
 });
 
 // ---- 3. out of the live game
-ok(pool.every(c=> !c.source && c.locked === true && !c.basic && !c.hidden), '3. no source (no pack, reward or base card), locked');
+ok(stillPool.every(c=> !c.source && c.locked === true && !c.basic && !c.hidden), '3. no source (no pack, reward or base card), locked');
+ok(pool.filter(c=> !c.pool).every(c=> c.source && (c.source.kind === 'pack' ? c.poolSlot === 'pack' : c.source.kind === 'map' && c.poolSlot === 'skirmish') && !('poolMap' in cards.find(x=> x.id === c.id))), '3. (TH) each placed card has a source matching its slot and no pool fields');
 const deckIds = new Set(); MAPS.forEach(m=> (m.nodes || []).forEach(nd=>{ Object.keys(nd.deck || {}).forEach(id=> deckIds.add(id)); (nd.leaders || []).forEach(id=> deckIds.add(id));
   ((nd.dungeon && nd.dungeon.waveDecks) || []).forEach(w=> w && Object.keys(w).forEach(id=> deckIds.add(id))); }));
-ok(pool.every(c=> !deckIds.has(c.id)), '3. in no map deck');
+ok(stillPool.every(c=> !deckIds.has(c.id)), '3. in no map deck');
 const H = require('./lib/harness.js'), defs = H.loadCardDefs();
-ok(pool.every(c=> !defs[c.id]) && !H.fieldableIds().some(id=> pool.some(c=> c.id === id)), '3. the test harness (card matrix) never sees them');
+ok(stillPool.every(c=> !defs[c.id]) && !H.fieldableIds().some(id=> stillPool.some(c=> c.id === id)), '3. the test harness (card matrix) never sees them');
 const I = require(path.join(ROOT, 'bramblewood-integrity.js'));
 ok(I.cardDataHash(cards) === I.cardDataHash(live), '3. the card hash ignores pool cards (server list = built page)');
 const html = read('index.html');
@@ -82,8 +91,9 @@ const lit = name=>{ const k = html.indexOf('const ' + name + ' = '); if(k < 0) r
     if(ch === '"') q = true; else if(ch === '{') depth++; else if(ch === '}'){ depth--; if(!depth) break; } }
   return JSON.parse(html.slice(s, e + 1)); };
 const built = lit('CARD_DEFS_BASELINE'), builtPool = lit('POOL_CARD_DEFS');
-ok(built && pool.every(c=> !built[c.id]), '3. the built page\'s card list leaves them out (rebuild?)');
-ok(builtPool && pool.every(c=> builtPool[c.id] && builtPool[c.id].pool) && Object.keys(builtPool).length === allPool.length, '4. the built page carries them in POOL_CARD_DEFS (rebuild?)');
+ok(built && stillPool.every(c=> !built[c.id]), '3. the built page\'s card list leaves them out (rebuild?)');
+ok(built && pool.filter(c=> !c.pool).every(c=> built[c.id]), '3. (TH) the placed ones are in the built page\'s card list (rebuild?)');
+ok(builtPool && stillPool.every(c=> builtPool[c.id] && builtPool[c.id].pool) && Object.keys(builtPool).length === allPool.length, '4. the built page carries them in POOL_CARD_DEFS (rebuild?)');
 const vb = JSON.parse(read('version.json')); ok(built && vb.cardHash === I.cardDataHash(built), '3. version.json\'s card hash is the live cards\'');
 const G = require(path.join(ROOT, 'bramblewood-ghosts.js'));
 const withPool = Object.assign({}, defs); allPool.forEach(c=> withPool[c.id] = Object.assign({effects:{}}, c));
@@ -111,12 +121,12 @@ ok(/poolCardForEditor\(defId\)/.test(slice('function openCardEditor(', '\n}')), 
   vm.runInContext(['adminPoolCardIds', 'adminPoolGridHTML', 'poolCardForEditor'].map(fn).join('\n') + '\nthis.f = {adminPoolCardIds, adminPoolGridHTML, poolCardForEditor};', ctx);
   const ids = ctx.f.adminPoolCardIds(), grid = ctx.f.adminPoolGridHTML();
   ok(ids.length === allPool.length, `4. the filter lists every pool card (${ids.length})`);
-  { const an = ids.filter(id=> pool.some(c=> c.id === id)); ok(numOf(ctx.POOL_CARD_DEFS[an[0]].poolMap) === 0 && ['m6', 'mi'].includes(ctx.POOL_CARD_DEFS[an[an.length - 1]].poolMap), '4. grouped by map, Map 0 first, the tundra last (of this pool)');
+  { const an = ids.filter(id=> pool.some(c=> c.id === id)); ok(an.length && numOf(ctx.POOL_CARD_DEFS[an[0]].poolMap) <= numOf(ctx.POOL_CARD_DEFS[an[an.length - 1]].poolMap), '4. grouped by map, the lowest map first (of this pool)');
     ok(ids.every((id, i)=> !i || numOf(ctx.POOL_CARD_DEFS[ids[i - 1]].poolMap) <= numOf(ctx.POOL_CARD_DEFS[id].poolMap) || numOf(ctx.POOL_CARD_DEFS[id].poolMap) < 0), '4. every pool card in map order'); }
-  ok((grid.match(/class="admin-pool-tag">Pool/g) || []).length === allPool.length && /admin-pool-head/.test(grid) && grid.includes('Map 17'), '4. each tile is tagged Pool, under its map\'s heading');
-  ctx.placed['water-vole'] = {id:'water-vole'}; ok(!ctx.f.adminPoolCardIds().includes('water-vole'), '4. a placed (live) card drops off the pool list');
-  const ed = ctx.f.poolCardForEditor('pincushion-urchin'); ok(ed && !ed.pool && !ed.poolMap && ed.source && ed.source.kind === 'map' && ed.source.id === 'mb', '4. placing opens it as a live card with its map pre-filled under From');
-  ctx.adminCardSearch = 'urchin'; ok(ctx.f.adminPoolCardIds().length === 1, '4. the search narrows the pool list too');
+  ok((grid.match(/class="admin-pool-tag">Pool/g) || []).length === allPool.length && /admin-pool-head/.test(grid) && grid.includes('Map ' + numOf(ctx.POOL_CARD_DEFS[ids[0]].poolMap)), '4. each tile is tagged Pool, under its map\'s heading');
+  ctx.placed['wallcreeper'] = {id:'wallcreeper'}; ok(!ctx.f.adminPoolCardIds().includes('wallcreeper'), '4. a placed (live) card drops off the pool list');
+  const ed = ctx.f.poolCardForEditor('sanderling'); ok(ed && !ed.pool && !ed.poolMap && ed.source && ed.source.kind === 'map' && ed.source.id === 'mb', '4. placing opens it as a live card with its map pre-filled under From');
+  ctx.adminCardSearch = 'sanderling'; ok(ctx.f.adminPoolCardIds().length === 1, '4. the search narrows the pool list too');
 }
 
 // ---- 5. translations and emoji

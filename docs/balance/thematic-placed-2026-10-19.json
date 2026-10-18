@@ -1,0 +1,1401 @@
+{
+ "note": "Package TH (2026-10-19): the pool cards the thematic pass placed, with the pool number, map and slot each had (the card itself drops its pool fields, as the Admin placement does).",
+ "placed": [
+  {
+   "id": "water-vole",
+   "name": "Water Vole",
+   "rarity": "common",
+   "poolNo": 9001,
+   "numericId": 1235,
+   "poolMap": "m1",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-1"
+   },
+   "why": "the river bank vole on the Otter Patrol"
+  },
+  {
+   "id": "river-mink",
+   "name": "River Mink",
+   "rarity": "uncommon",
+   "poolNo": 9002,
+   "numericId": 1236,
+   "poolMap": "m1",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-2"
+   },
+   "why": "a hedge-and-river raider for the fight that had no reward"
+  },
+  {
+   "id": "grass-snake",
+   "name": "Grass Snake",
+   "rarity": "uncommon",
+   "poolNo": 9006,
+   "numericId": 1237,
+   "poolMap": "m1",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-2"
+   },
+   "why": "the swimming snake that plays dead, in the ambush"
+  },
+  {
+   "id": "pine-marten",
+   "name": "Pine Marten",
+   "rarity": "rare",
+   "poolNo": 9004,
+   "numericId": 1238,
+   "poolMap": "m1",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m1",
+    "node": "0-3"
+   },
+   "why": "the chipmunk hunter, beside the Chipmunk Cavalry reward"
+  },
+  {
+   "id": "signal-crayfish",
+   "name": "Signal Crayfish",
+   "rarity": "common",
+   "poolNo": 9003,
+   "numericId": 1239,
+   "poolMap": "m1",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "woodcock-lookout",
+   "name": "Woodcock Lookout",
+   "rarity": "common",
+   "poolNo": 9005,
+   "numericId": 1240,
+   "poolMap": "m1",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "robin-redbreast",
+   "name": "Robin Redbreast",
+   "rarity": "uncommon",
+   "poolNo": 9011,
+   "numericId": 1241,
+   "poolMap": "mf",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-1"
+   },
+   "why": "the garden robin with the hedgerow scouts"
+  },
+  {
+   "id": "ladybird-guard",
+   "name": "Ladybird Guard",
+   "rarity": "common",
+   "poolNo": 9007,
+   "numericId": 1242,
+   "poolMap": "mf",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-2"
+   },
+   "why": "an insect for the Cricket Chorus"
+  },
+  {
+   "id": "rivergate-drummer",
+   "name": "Rivergate Drummer",
+   "rarity": "uncommon",
+   "poolNo": 9507,
+   "numericId": 1243,
+   "poolMap": "mf",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-3"
+   },
+   "why": "package GI's Kin Rally Otter, on the Otter road (GI note: Thistlewood)"
+  },
+  {
+   "id": "stag-beetle",
+   "name": "Stag Beetle",
+   "rarity": "rare",
+   "poolNo": 9009,
+   "numericId": 1244,
+   "poolMap": "mf",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mf",
+    "node": "1-5"
+   },
+   "why": "the Thistle Baron's beetle: it fights in his deck too"
+  },
+  {
+   "id": "hedgerow-shrew",
+   "name": "Hedgerow Shrew",
+   "rarity": "common",
+   "poolNo": 9008,
+   "numericId": 1245,
+   "poolMap": "mf",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "slow-worm",
+   "name": "Slow-worm",
+   "rarity": "common",
+   "poolNo": 9010,
+   "numericId": 1246,
+   "poolMap": "mf",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "field-vole",
+   "name": "Field Vole",
+   "rarity": "common",
+   "poolNo": 9012,
+   "numericId": 1247,
+   "poolMap": "mf",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "pincushion-urchin",
+   "name": "Pincushion Urchin",
+   "rarity": "common",
+   "poolNo": 9013,
+   "numericId": 1248,
+   "poolMap": "mb",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mb",
+    "node": "2-1"
+   },
+   "why": "owner's example (sea urchin), in the rock pools"
+  },
+  {
+   "id": "tidepool-trapper-crab",
+   "name": "Tidepool Trapper Crab",
+   "rarity": "common",
+   "poolNo": 9502,
+   "numericId": 1249,
+   "poolMap": "mb",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mb",
+    "node": "2-3"
+   },
+   "why": "package GI's Crab Trap (Hunter vs Wet) on the Tide beach, with the hermit crabs"
+  },
+  {
+   "id": "grey-seal-bull",
+   "name": "Grey Seal Bull",
+   "rarity": "rare",
+   "poolNo": 9017,
+   "numericId": 1250,
+   "poolMap": "mb",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mb",
+    "node": "2-5"
+   },
+   "why": "the bull guarding the shingle, The Old Shell's guard"
+  },
+  {
+   "id": "rock-pool-starfish",
+   "name": "Rock Pool Starfish",
+   "rarity": "common",
+   "poolNo": 9014,
+   "numericId": 1251,
+   "poolMap": "mb",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "oystercatcher",
+   "name": "Oystercatcher",
+   "rarity": "common",
+   "poolNo": 9015,
+   "numericId": 1252,
+   "poolMap": "mb",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "limpet-clinger",
+   "name": "Limpet Clinger",
+   "rarity": "common",
+   "poolNo": 9018,
+   "numericId": 1253,
+   "poolMap": "mb",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "puffin-diver",
+   "name": "Puffin Diver",
+   "rarity": "common",
+   "poolNo": 9019,
+   "numericId": 1254,
+   "poolMap": "mc",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mc",
+    "node": "3-2"
+   },
+   "why": "the cliff's sea parrot"
+  },
+  {
+   "id": "fulmar-spitter",
+   "name": "Fulmar Spitter",
+   "rarity": "uncommon",
+   "poolNo": 9023,
+   "numericId": 1255,
+   "poolMap": "mc",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mc",
+    "node": "3-4"
+   },
+   "why": "rides the thermals with the condors"
+  },
+  {
+   "id": "peregrine-stooper",
+   "name": "Peregrine Stooper",
+   "rarity": "rare",
+   "poolNo": 9022,
+   "numericId": 1256,
+   "poolMap": "mc",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mc",
+    "node": "3-5"
+   },
+   "why": "the stoop itself (Eagle Stoop)"
+  },
+  {
+   "id": "razorbill",
+   "name": "Razorbill",
+   "rarity": "uncommon",
+   "poolNo": 9020,
+   "numericId": 1257,
+   "poolMap": "mc",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "kittiwake-flock",
+   "name": "Kittiwake Flock",
+   "rarity": "common",
+   "poolNo": 9021,
+   "numericId": 1258,
+   "poolMap": "mc",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "red-billed-chough",
+   "name": "Red-billed Chough",
+   "rarity": "common",
+   "poolNo": 9024,
+   "numericId": 1259,
+   "poolMap": "mc",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "pyrenean-desman",
+   "name": "Pyrenean Desman",
+   "rarity": "uncommon",
+   "poolNo": 9027,
+   "numericId": 1260,
+   "poolMap": "m2",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-1"
+   },
+   "why": "the trunked swimmer"
+  },
+  {
+   "id": "muskrat-lodgekeeper",
+   "name": "Muskrat Lodgekeeper",
+   "rarity": "uncommon",
+   "poolNo": 9025,
+   "numericId": 1261,
+   "poolMap": "m2",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-2"
+   },
+   "why": "the reed lodge, in the Beaver Builders' place"
+  },
+  {
+   "id": "old-sturgeon",
+   "name": "Old Sturgeon",
+   "rarity": "rare",
+   "poolNo": 9029,
+   "numericId": 1262,
+   "poolMap": "m2",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m2",
+    "node": "4-4"
+   },
+   "why": "the ancient fish in the Kraken's Maw"
+  },
+  {
+   "id": "water-shrew",
+   "name": "Water Shrew",
+   "rarity": "common",
+   "poolNo": 9026,
+   "numericId": 1263,
+   "poolMap": "m2",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "great-crested-grebe",
+   "name": "Great Crested Grebe",
+   "rarity": "common",
+   "poolNo": 9028,
+   "numericId": 1264,
+   "poolMap": "m2",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "diving-bell-spider",
+   "name": "Diving Bell Spider",
+   "rarity": "uncommon",
+   "poolNo": 9030,
+   "numericId": 1265,
+   "poolMap": "m2",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "plague-gnat-cloud",
+   "name": "Plague Gnat Cloud",
+   "rarity": "common",
+   "poolNo": 9505,
+   "numericId": 1266,
+   "poolMap": "mw",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-1"
+   },
+   "why": "GI: Proliferate with Swamp Fever and the leeches"
+  },
+  {
+   "id": "anhinga-spearbird",
+   "name": "Anhinga Spearbird",
+   "rarity": "uncommon",
+   "poolNo": 9035,
+   "numericId": 1267,
+   "poolMap": "mw",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-2"
+   },
+   "why": "the snakebird of Toad Hollow"
+  },
+  {
+   "id": "fire-ant-raft",
+   "name": "Fire Ant Raft",
+   "rarity": "uncommon",
+   "poolNo": 9034,
+   "numericId": 1268,
+   "poolMap": "mw",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-3"
+   },
+   "why": "the floating colony in the cypress roots"
+  },
+  {
+   "id": "fen-mink",
+   "name": "Fen Mink",
+   "rarity": "uncommon",
+   "poolNo": 9501,
+   "numericId": 1269,
+   "poolMap": "mw",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-5"
+   },
+   "why": "GI: Hunter (Poisoned) beside the gators and vipers"
+  },
+  {
+   "id": "alligator-gar",
+   "name": "Alligator Gar",
+   "rarity": "rare",
+   "poolNo": 9031,
+   "numericId": 1270,
+   "poolMap": "mw",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mw",
+    "node": "5-6"
+   },
+   "why": "the gator-toothed fish of Behemoth Bog"
+  },
+  {
+   "id": "swamp-rabbit",
+   "name": "Swamp Rabbit",
+   "rarity": "common",
+   "poolNo": 9032,
+   "numericId": 1271,
+   "poolMap": "mw",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "mosquito-cloud",
+   "name": "Mosquito Cloud",
+   "rarity": "common",
+   "poolNo": 9033,
+   "numericId": 1272,
+   "poolMap": "mw",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "giant-water-bug",
+   "name": "Giant Water Bug",
+   "rarity": "uncommon",
+   "poolNo": 9038,
+   "numericId": 1273,
+   "poolMap": "m8",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-3"
+   },
+   "why": "the toe-biter in the Toad Chorus"
+  },
+  {
+   "id": "booming-bittern",
+   "name": "Booming Bittern",
+   "rarity": "uncommon",
+   "poolNo": 9037,
+   "numericId": 1274,
+   "poolMap": "m8",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-4"
+   },
+   "why": "the reed-hider of the Root Snare"
+  },
+  {
+   "id": "bogfire-newt",
+   "name": "Bogfire Newt",
+   "rarity": "uncommon",
+   "poolNo": 9504,
+   "numericId": 1275,
+   "poolMap": "m8",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-5"
+   },
+   "why": "GI: Detonate on the Venomlord's poison"
+  },
+  {
+   "id": "greater-siren",
+   "name": "Greater Siren",
+   "rarity": "rare",
+   "poolNo": 9040,
+   "numericId": 1276,
+   "poolMap": "m8",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m8",
+    "node": "6-6"
+   },
+   "why": "the eel-salamander of the Crocodile Run"
+  },
+  {
+   "id": "marsh-harrier",
+   "name": "Marsh Harrier",
+   "rarity": "uncommon",
+   "poolNo": 9041,
+   "numericId": 1277,
+   "poolMap": "m8",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "raft-spider",
+   "name": "Raft Spider",
+   "rarity": "common",
+   "poolNo": 9042,
+   "numericId": 1278,
+   "poolMap": "m8",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "truffle-piglet",
+   "name": "Truffle Piglet",
+   "rarity": "uncommon",
+   "poolNo": 9045,
+   "numericId": 1279,
+   "poolMap": "mu",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-1"
+   },
+   "why": "it finds what grows under the spores"
+  },
+  {
+   "id": "wolf-spider-mother",
+   "name": "Wolf Spider Mother",
+   "rarity": "rare",
+   "poolNo": 9044,
+   "numericId": 1280,
+   "poolMap": "mu",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mu",
+    "node": "7-5"
+   },
+   "why": "the Oath Ring's hunter"
+  },
+  {
+   "id": "leopard-slug",
+   "name": "Leopard Slug",
+   "rarity": "common",
+   "poolNo": 9043,
+   "numericId": 1281,
+   "poolMap": "mu",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "fungus-gnat-cloud",
+   "name": "Fungus Gnat Cloud",
+   "rarity": "common",
+   "poolNo": 9046,
+   "numericId": 1282,
+   "poolMap": "mu",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "springtail-hopper",
+   "name": "Springtail Hopper",
+   "rarity": "common",
+   "poolNo": 9047,
+   "numericId": 1283,
+   "poolMap": "mu",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "red-backed-salamander",
+   "name": "Red-backed Salamander",
+   "rarity": "common",
+   "poolNo": 9048,
+   "numericId": 1284,
+   "poolMap": "mu",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "ghost-crayfish",
+   "name": "Ghost Crayfish",
+   "rarity": "uncommon",
+   "poolNo": 9050,
+   "numericId": 1285,
+   "poolMap": "m4",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-2"
+   },
+   "why": "the pale crayfish of the Glowworm Grotto pools"
+  },
+  {
+   "id": "whip-spider",
+   "name": "Whip Spider",
+   "rarity": "uncommon",
+   "poolNo": 9053,
+   "numericId": 1286,
+   "poolMap": "m4",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-4"
+   },
+   "why": "feels its way through the Echo Chamber"
+  },
+  {
+   "id": "giant-cave-huntsman",
+   "name": "Giant Cave Huntsman",
+   "rarity": "rare",
+   "poolNo": 9054,
+   "numericId": 1287,
+   "poolMap": "m4",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m4",
+    "node": "8-6"
+   },
+   "why": "owner request 23:32 (the scary spider), in the Glowworm Deep"
+  },
+  {
+   "id": "cave-cricket",
+   "name": "Cave Cricket",
+   "rarity": "common",
+   "poolNo": 9049,
+   "numericId": 1288,
+   "poolMap": "m4",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "cave-swiftlet",
+   "name": "Cave Swiftlet",
+   "rarity": "common",
+   "poolNo": 9051,
+   "numericId": 1289,
+   "poolMap": "m4",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "cave-pseudoscorpion",
+   "name": "Cave Pseudoscorpion",
+   "rarity": "common",
+   "poolNo": 9052,
+   "numericId": 1290,
+   "poolMap": "m4",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "guano-beetle",
+   "name": "Guano Beetle",
+   "rarity": "common",
+   "poolNo": 9055,
+   "numericId": 1291,
+   "poolMap": "m4",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "banded-sea-krait",
+   "name": "Banded Sea Krait",
+   "rarity": "uncommon",
+   "poolNo": 9056,
+   "numericId": 1292,
+   "poolMap": "mk",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-4"
+   },
+   "why": "owner's example (sea snakes), night hunter in the Kelp Curtains"
+  },
+  {
+   "id": "fishing-cat",
+   "name": "Fishing Cat",
+   "rarity": "rare",
+   "poolNo": 9057,
+   "numericId": 1293,
+   "poolMap": "mk",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-5"
+   },
+   "why": "dives for the fish of the Moray Den"
+  },
+  {
+   "id": "mangrove-manatee",
+   "name": "Mangrove Manatee",
+   "rarity": "rare",
+   "poolNo": 9061,
+   "numericId": 1294,
+   "poolMap": "mk",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mk",
+    "node": "9-7"
+   },
+   "why": "the Kelp Witch's great guardian"
+  },
+  {
+   "id": "proboscis-monkey",
+   "name": "Proboscis Monkey",
+   "rarity": "uncommon",
+   "poolNo": 9058,
+   "numericId": 1295,
+   "poolMap": "mk",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "horseshoe-crab",
+   "name": "Horseshoe Crab",
+   "rarity": "common",
+   "poolNo": 9059,
+   "numericId": 1296,
+   "poolMap": "mk",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "sea-hare",
+   "name": "Sea Hare",
+   "rarity": "common",
+   "poolNo": 9060,
+   "numericId": 1297,
+   "poolMap": "mk",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "crown-of-thorns-star",
+   "name": "Crown-of-thorns Star",
+   "rarity": "uncommon",
+   "poolNo": 9063,
+   "numericId": 1298,
+   "poolMap": "m7",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-2"
+   },
+   "why": "a second reward for the Moray Ambush"
+  },
+  {
+   "id": "yellow-bellied-sea-snake",
+   "name": "Yellow-bellied Sea Snake",
+   "rarity": "rare",
+   "poolNo": 9062,
+   "numericId": 1299,
+   "poolMap": "m7",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-5"
+   },
+   "why": "owner's example (sea snakes), for the fight that had no reward"
+  },
+  {
+   "id": "great-barracuda",
+   "name": "Great Barracuda",
+   "rarity": "rare",
+   "poolNo": 9067,
+   "numericId": 1300,
+   "poolMap": "m7",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-6"
+   },
+   "why": "with the Reef Shark Pack (no reward before)"
+  },
+  {
+   "id": "whale-shark",
+   "name": "Whale Shark",
+   "rarity": "rare",
+   "poolNo": 9068,
+   "numericId": 1301,
+   "poolMap": "m7",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m7",
+    "node": "10-8"
+   },
+   "why": "the Sea Turtle Elder's court (no reward before)"
+  },
+  {
+   "id": "parrotfish",
+   "name": "Parrotfish",
+   "rarity": "common",
+   "poolNo": 9064,
+   "numericId": 1302,
+   "poolMap": "m7",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "lionfish",
+   "name": "Lionfish",
+   "rarity": "uncommon",
+   "poolNo": 9065,
+   "numericId": 1303,
+   "poolMap": "m7",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "giant-clam",
+   "name": "Giant Clam",
+   "rarity": "common",
+   "poolNo": 9066,
+   "numericId": 1304,
+   "poolMap": "m7",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "mountain-hare",
+   "name": "Mountain Hare",
+   "rarity": "common",
+   "poolNo": 9074,
+   "numericId": 1305,
+   "poolMap": "m10",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-1"
+   },
+   "why": "with the goat-trail runners"
+  },
+  {
+   "id": "apollo-butterfly",
+   "name": "Apollo Butterfly",
+   "rarity": "uncommon",
+   "poolNo": 9073,
+   "numericId": 1306,
+   "poolMap": "m10",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-3"
+   },
+   "why": "the alpine butterfly over the herd"
+  },
+  {
+   "id": "chamois-leaper",
+   "name": "Chamois Leaper",
+   "rarity": "uncommon",
+   "poolNo": 9069,
+   "numericId": 1307,
+   "poolMap": "m10",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m10",
+    "node": "11-9"
+   },
+   "why": "for the Condor Sovereign's fight, which had no reward"
+  },
+  {
+   "id": "alpine-swift",
+   "name": "Alpine Swift",
+   "rarity": "common",
+   "poolNo": 9070,
+   "numericId": 1308,
+   "poolMap": "m10",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "alpine-salamander",
+   "name": "Alpine Salamander",
+   "rarity": "common",
+   "poolNo": 9072,
+   "numericId": 1309,
+   "poolMap": "m10",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "thorn-shrike",
+   "name": "Thorn Shrike",
+   "rarity": "rare",
+   "poolNo": 9075,
+   "numericId": 1310,
+   "poolMap": "mh",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mh",
+    "node": "12-4"
+   },
+   "why": "the butcher bird of the Thornvine Arch"
+  },
+  {
+   "id": "hedge-weasel",
+   "name": "Hedge Weasel",
+   "rarity": "uncommon",
+   "poolNo": 9076,
+   "numericId": 1311,
+   "poolMap": "mh",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mh",
+    "node": "12-6"
+   },
+   "why": "follows the mice into the Rodent Court"
+  },
+  {
+   "id": "hawthorn-shieldbug",
+   "name": "Hawthorn Shieldbug",
+   "rarity": "common",
+   "poolNo": 9077,
+   "numericId": 1312,
+   "poolMap": "mh",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "muntjac-barker",
+   "name": "Muntjac Barker",
+   "rarity": "uncommon",
+   "poolNo": 9078,
+   "numericId": 1313,
+   "poolMap": "mh",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "anvil-thrush",
+   "name": "Anvil Thrush",
+   "rarity": "common",
+   "poolNo": 9079,
+   "numericId": 1314,
+   "poolMap": "mh",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "garden-tiger-moth",
+   "name": "Garden Tiger Moth",
+   "rarity": "common",
+   "poolNo": 9080,
+   "numericId": 1315,
+   "poolMap": "mh",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "grave-grin-hyena",
+   "name": "Grave-Grin Hyena",
+   "rarity": "uncommon",
+   "poolNo": 9503,
+   "numericId": 1316,
+   "poolMap": "m5",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m5",
+    "node": "14-2"
+   },
+   "why": "GI: Executioner, in the Hyena Chorus (Savanna Reaches)"
+  },
+  {
+   "id": "glasswing-moth",
+   "name": "Glasswing Moth",
+   "rarity": "common",
+   "poolNo": 9506,
+   "numericId": 1317,
+   "poolMap": "md",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "md",
+    "node": "18-5"
+   },
+   "why": "GI: Brittle beside the Obsidian Scorpions and the Glass-storm (Glass job for Shatter)"
+  },
+  {
+   "id": "chapel-tortoise",
+   "name": "Chapel Tortoise",
+   "rarity": "uncommon",
+   "poolNo": 9509,
+   "numericId": 1318,
+   "poolMap": "m21",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m21",
+    "node": "21-3"
+   },
+   "why": "GI: Prayer Bastion on the Quiet Summit (the Cathedral Eagle's Worship is two fights on)"
+  },
+  {
+   "id": "weathervane-swift",
+   "name": "Weathervane Swift",
+   "rarity": "rare",
+   "poolNo": 9510,
+   "numericId": 1319,
+   "poolMap": "m22",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m22",
+    "node": "22-7"
+   },
+   "why": "GI: Field Breaker as a late reward on the heaviest field fight (Heatwave + Hail)"
+  },
+  {
+   "id": "frostmoon-howler",
+   "name": "Frostmoon Howler",
+   "rarity": "rare",
+   "poolNo": 9508,
+   "numericId": 1320,
+   "poolMap": "m6",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m6",
+    "node": "17-7"
+   },
+   "why": "GI: Pack Howl, the wolves' identity, at the Alpha Howler's Den"
+  },
+  {
+   "id": "woodland-caribou",
+   "name": "Woodland Caribou",
+   "rarity": "uncommon",
+   "poolNo": 9089,
+   "numericId": 1321,
+   "poolMap": "mt",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mt",
+    "node": "16-3"
+   },
+   "why": "crosses with the elk"
+  },
+  {
+   "id": "musk-ox-calf",
+   "name": "Musk Ox Calf",
+   "rarity": "uncommon",
+   "poolNo": 9090,
+   "numericId": 1322,
+   "poolMap": "mt",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "beluga",
+   "name": "Beluga",
+   "rarity": "rare",
+   "poolNo": 9083,
+   "numericId": 1323,
+   "poolMap": "m6",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m6",
+    "node": "17-4"
+   },
+   "why": "the sea canary by the seals"
+  },
+  {
+   "id": "polar-bear",
+   "name": "Polar Bear",
+   "rarity": "veryrare",
+   "poolNo": 9081,
+   "numericId": 1324,
+   "poolMap": "m6",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "m6",
+    "node": "17-5"
+   },
+   "why": "for the Musk Ox Bulwark, which had no reward"
+  },
+  {
+   "id": "greenland-shark",
+   "name": "Greenland Shark",
+   "rarity": "rare",
+   "poolNo": 9087,
+   "numericId": 1325,
+   "poolMap": "mi",
+   "poolSlot": "skirmish",
+   "source": {
+    "kind": "map",
+    "id": "mi",
+    "node": "17-A-4"
+   },
+   "why": "under the ice, the Hollow King's"
+  },
+  {
+   "id": "harp-seal-pup",
+   "name": "Harp Seal Pup",
+   "rarity": "common",
+   "poolNo": 9082,
+   "numericId": 1326,
+   "poolMap": "m6",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "arctic-tern",
+   "name": "Arctic Tern",
+   "rarity": "uncommon",
+   "poolNo": 9084,
+   "numericId": 1327,
+   "poolMap": "m6",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "lemming-swarm",
+   "name": "Lemming Swarm",
+   "rarity": "common",
+   "poolNo": 9085,
+   "numericId": 1328,
+   "poolMap": "m6",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "krill-swarm",
+   "name": "Krill Swarm",
+   "rarity": "common",
+   "poolNo": 9086,
+   "numericId": 1329,
+   "poolMap": "m6",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  },
+  {
+   "id": "ringed-seal",
+   "name": "Ringed Seal",
+   "rarity": "common",
+   "poolNo": 9088,
+   "numericId": 1330,
+   "poolMap": "mi",
+   "poolSlot": "pack",
+   "source": {
+    "kind": "pack",
+    "tier": 1
+   },
+   "why": ""
+  }
+ ]
+}

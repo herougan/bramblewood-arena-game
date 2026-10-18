@@ -373,7 +373,7 @@ if(CMD === 'list'){
   const OUT = path.join(OUTDIR, `skirmish-pass-${opt('tag', 'before')}.jsonl`), done = new Set(readJsonl(OUT).map(r=> r.map + ':' + r.key));
   const mine = all.filter((f, i)=> i % NSH === SHARD && !done.has(f.map + ':' + f.key));
   console.log('fights', all.length, 'mine', mine.length);
-  for(const f of mine){ const t = Date.now(), r = measure(f, null, N, opt('seed') ? TUNE_SEED : undefined); /* --seed=K: a fresh seed set (the verify run) */ fs.appendFileSync(OUT, JSON.stringify(rowOf(f, Object.assign(r, {verdict: verdict(r.win), games: N, ms: Date.now() - t}, bandOf(f, r.win)))) + '\n'); }
+  for(const f of mine){ const t = Date.now(), r = measure(f, null, N, opt('seed') ? TUNE_SEED : undefined); /* --seed=K: a fresh seed set (the verify run) */ fs.appendFileSync(OUT, JSON.stringify(rowOf(f, Object.assign(r, {verdict: verdict(r.win), games: N, ms: Date.now() - t}, bandOf(f, r.win), {deck: f.n.deck /* 2026-10-19 (TH): which deck was measured */}))) + '\n'); }
   console.log('done');
 } else if(CMD === 'tune'){
   const before = readJsonl(path.join(OUTDIR, `skirmish-pass-${opt('from', 'before')}.jsonl`));

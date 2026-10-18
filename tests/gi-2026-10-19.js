@@ -165,16 +165,22 @@ ok(T.cardS({kinRally:1}).S === 3.75 && T.cardS({kinRally:2}).S === 7.5, `Kin Ral
 ok(T.cardS({packHowl:1}).S === 2.5 && T.cardS({packHowl:2}).S === 5, 'Pack Howl N = 2.5 × N');
 ok(T.cardS({hunter:2, hunterVs:'wet'}).S === 2 && T.cardS({executioner:3}).S === 2 && T.cardS({detonate:true}).S === 1 && T.cardS({proliferate:1}).S === 2 && T.cardS({prayerWard:2}).S === 1.5 && T.cardS({fieldBreaker:2}).S === 2 && T.cardS({brittle:2}).S === 1, 'the keyword costs');
 // ---- 16. The example POOL cards
-const ALL = JSON.parse(R('canonical/cards.json')), POOL = ALL.filter(c=> c.pool && c.numericId >= 9501 && c.numericId <= 9599);
+// 2026-10-19 (package TH, the thematic pass): the ten examples are placed now (live, with a source; docs/balance/thematic-placed-2026-10-19.json
+// keeps their pool numbers 9501-9510 and maps). Unmeasured, they won 88-100% on card_balance.js's yardstick, so TH stepped each one into
+// its rarity band first (tools/thematic_pass_2026_10_19.js tunegi): the "not far under budget" check gives way to "measured in band".
+const ALL = JSON.parse(R('canonical/cards.json')), PLACED = JSON.parse(R('docs/balance/thematic-placed-2026-10-19.json')).placed;
+const GI_PLACED = PLACED.filter(p=> p.poolNo >= 9501 && p.poolNo <= 9599), POOL = ALL.filter(c=> GI_PLACED.some(p=> p.id === c.id) || (c.pool && c.numericId >= 9501 && c.numericId <= 9599));
 const appSrc = R('arena_app.js'), mapIds = new Set((appSrc.match(/\{ id:"(m[a-z0-9]+)"/g) || []).map(x=> x.slice(6, -1)));
 const GI_KEYS = ['hunter', 'executioner', 'detonate', 'proliferate', 'brittle', 'kinRally', 'packHowl', 'prayerWard', 'fieldBreaker'];
-ok(POOL.length === 10, `ten example pool cards (${POOL.length})`);
-GI_KEYS.forEach(k=> ok(POOL.some(c=> c.effects && c.effects[k]), `a pool card shows ${k}`));
-ok(!ALL.some(c=> !c.pool && GI_KEYS.some(k=> c.effects && c.effects[k] != null)), 'no live card has a new skill yet (the placement phase does that)');
-POOL.forEach(c=>{ const b = T.budget(c);
-  ok(c.pool === true && mapIds.has(c.poolMap) && c.poolSlot && c.locked && c.uuid && c.creatorNote, `${c.id}: pool:true, poolMap ${c.poolMap} is a map, a note`);
-  ok(b.ok && !b.missing.length && b.x1 > b.N * 0.6, `${c.id}: inside budget v3 and not far under (2A+H+S ${b.x1} / N ${b.N}, A*H+S ${b.x2} / ${b.N2})`);
-  ok(!H.loadCardDefs()[c.id], `${c.id}: not live (the harness, like the build, leaves pool cards out)`); });
+const GI_BANDS = {common: [35, 60], uncommon: [45, 68], rare: [52, 75]};
+ok(POOL.length === 10, `ten example cards (${POOL.length})`);
+GI_KEYS.forEach(k=> ok(POOL.some(c=> c.effects && c.effects[k]), `an example card shows ${k}`));
+ok(!ALL.some(c=> !POOL.includes(c) && GI_KEYS.some(k=> c.effects && c.effects[k] != null)), 'no other card has a new skill yet');
+POOL.forEach(c=>{ const b = T.budget(c), pl = GI_PLACED.find(p=> p.id === c.id), wr = /Measured ([\d.]+)% over (\d+) games/.exec(c.creatorNote || ''), band = GI_BANDS[c.rarity];
+  ok(!c.pool && pl && mapIds.has(pl.poolMap) && c.source && c.locked && c.uuid && c.creatorNote, `${c.id}: placed (source ${c.source && c.source.kind}), its pool map ${pl && pl.poolMap} is a map, a note`);
+  ok(b.ok && !b.missing.length, `${c.id}: inside budget v3 (2A+H+S ${b.x1} / N ${b.N}, A*H+S ${b.x2} / ${b.N2})`);
+  ok(wr && band && +wr[1] >= band[0] && +wr[1] <= band[1], `${c.id}: measured inside its ${c.rarity} band (${wr && wr[1]}%)`);
+  ok(!!H.loadCardDefs()[c.id], `${c.id}: live (the harness, like the build, has it)`); });
 ok(new Set(ALL.map(c=> c.numericId)).size === ALL.length, 'numericIds stay unique');
 // ---- 17. The app: lines, Codex, chapters, the log and the looks
 const TXT = (()=>{ const t = R('bramblewood-texts.js'); return JSON.parse(t.slice(t.indexOf('/*TEXT-TABLE-START*/') + 20, t.indexOf('/*TEXT-TABLE-END*/'))); })();
