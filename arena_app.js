@@ -1239,7 +1239,7 @@ const ACTIVE_PRESETS = [
   // underlying effects.revive:true data shape and all engine logic are unchanged, this is a
   // display-label-only change.
   // 2026-10-16 skill audit (user: "so the skills are as simply named ... as possible"): Revivificated → Revive (label only).
-  {key:'revive', category:'passive', label:'Revive', kind:'none', build:()=>({revive:true}), desc:()=>`The first time it dies, it comes back with 1 Health and its statuses cleared. This only happens once.`},
+  {key:'revive', category:'passive', label:'Revive', kind:'none', build:()=>({revive:true}), desc:()=> TX('ui.skill-revive')}, // 2026-10-19 (package RV, owner 00:19): a true death, then it comes back
 ];
 const TRIGGER_DEFS = [
   {key:'onSpawn', label:'On Spawn', desc:'the moment this card is played'},
@@ -2387,7 +2387,7 @@ Object.assign(SKILL_TEXT, {
   shock: procSkillText('Shock the target'), stagger: procSkillText('Stagger the target'),
   chained: v=> { const [on, n] = Array.isArray(v) ? v : ['damage', 1]; return on === 'enemySpawn' ? `Can't attack until the opponent plays a card.` : `Can't attack until one hit deals it more than ${Number(n)||1} damage.`; },
   render: v=> `When played, the enemy facing it loses ${numOr(v, 1)} Attack.`,
-  revive: ()=> `The first time it dies, it comes back with 1 Health and no statuses.`,
+  revive: ()=> TX('ui.skill-revive'), // 2026-10-19 (package RV)
   onDeathSpawn: v=> Array.isArray(v) && v[0] ? `When it dies, ${Number(v[1])||1}× ${cardName(v[0])} take its place.` : `When it dies, new units take its place.`,
 });
 // 2026-10-17 skills (user's notes, 20:19): the short card lines.
@@ -2660,6 +2660,10 @@ function nextMatchRng(){
 }
 let codexFiltersOpen = false; // UX A7: phone-only Codex filter disclosure
 const CARD_DEFS_BASELINE = __CARD_DEFS__;
+// Pool cards (2026-10-19, package AN, owner 23:04: "More thematic animals ... I'll pick and choose when balancing for a map"): the
+// candidates marked "pool": true in canonical/cards.json. The build keeps them OUT of CARD_DEFS_BASELINE, so no pack, reward, Codex,
+// CPU deck or card list sees them; only Admin's Manage Cards lists them (its "Pool cards" filter), tagged Pool, to browse and place.
+const POOL_CARD_DEFS = __POOL_CARD_DEFS__;
 // Character-select roster: small, fixed set of "background" cards (Castle/Collapsed Mine/Plains
 // Terrace/...) picked once before a match, each setting your HQ's max HP and granting a team-wide
 // passive. Not part of the card pool at all — no lock system, no live-db editing (yet).
@@ -7406,7 +7410,7 @@ function skillBookEntriesNow(){
   const pr = loadConquestProgress(), rows = new Map();
   CONQUEST_MAPS.filter(m=> !m.reserved && !m.endless && (adminModeEnabled || isMapUnlocked(m, pr))).forEach(m=> m.nodes.forEach(n=>{ if(n.kind === 'tutorial') return;
     let r = null; try{ r = fightRules(m.id, n); }catch(e){} fieldConditionRows(r).forEach(row=>{ if(!rows.has(row.key) && (adminModeEnabled || fieldRowState(row.key) !== 'unknown')) rows.set(row.key, row); }); }));
-  [...rows.values()].sort((a, b)=> a.name.localeCompare(b.name)).forEach(row=> out.push({ch:'fx', key:row.key, icon:row.icon, name:row.name, html:keywordizeHTML(escapeHtml(row.text)), ans:'', find:(row.name + ' ' + row.text).toLowerCase()}));
+  [...rows.values()].sort((a, b)=> a.name.localeCompare(b.name)).forEach(row=> out.push({ch:'fx', key:row.key, icon:row.icon, name:row.name, html:keywordizeHTML(escapeHtml(row.text + (row.codex ? ' ' + row.codex : ''))) /* 2026-10-19 (package RV): + the Codex line, as the Maps page has */, ans:'', find:(row.name + ' ' + row.text).toLowerCase()}));
   return out;
 }
 // Packs measured heights into pages of at most `cap` px (gap between items); an item with brk starts a new page. Returns pages of indices.
@@ -8424,7 +8428,8 @@ function wireLevelStatsEditor(){
 function openCardEditor(defId, versionDef){
   // 2026-10-07 audit: start from the shared definition, not getCardDefs() — that one applies THIS
   // player's card level and personal unlocks, which a plain Save used to bake into the card for everyone.
-  editingCard = defId ? (rawCardDef(defId) || JSON.parse(JSON.stringify(getCardDefs()[defId]))) : blankCard();
+  // 2026-10-19 (package AN): a pool card (Admin's Pool cards filter) isn't in the live defs: it opens as a new card to place.
+  editingCard = defId ? (rawCardDef(defId) || (getCardDefs()[defId] ? JSON.parse(JSON.stringify(getCardDefs()[defId])) : poolCardForEditor(defId)) || blankCard()) : blankCard();
   // History → "Load": the earlier version goes into the form unsaved (art it can't restore stays as is).
   if(versionDef){ const art = editingCard.art; editingCard = JSON.parse(JSON.stringify(versionDef)); if(editingCard.art==='__uploaded__'){ if(art) editingCard.art = art; else delete editingCard.art; } editingCard.__fromHistory = true; const ov = document.getElementById('editorOverlay'); if(ov) ov.innerHTML = ''; }
   delete editingCard.level;
@@ -15780,7 +15785,7 @@ function fieldRowHidden(key){ return fieldRowState(key) === 'unknown' && !(typeo
 function fieldRowGated(key){ try{ const f = FIELD2[key]; return !!(f && f.revealAfter && !revealAfterMet(f.revealAfter)); }catch(e){ return false; } }
 function fieldRowState(key){ if(fieldRowGated(key)) return 'unknown'; const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
 // Rows that are in force from the first round (no event to wait for) count as happening when the fight starts.
-const FIELD_ROWS_AT_START = new Set(['lumberEvery', 'midsummer', 'dusk', 'restless', 'firstBlood', 'actions', 'collapse', 'terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1', 'ashy', 'volcanoGlow']); // + field effects 2 that have no event of their own (2026-10-16); Ashy all fight and the Volcano Glow (2026-10-17)
+const FIELD_ROWS_AT_START = new Set(['quietContemplation' /* 2026-10-19 (package RV): in force all fight */, 'lumberEvery', 'midsummer', 'dusk', 'restless', 'firstBlood', 'actions', 'collapse', 'terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1', 'ashy', 'volcanoGlow']); // + field effects 2 that have no event of their own (2026-10-16); Ashy all fight and the Volcano Glow (2026-10-17)
 // Volcano hazards with odds (2026-10-14, user: "Volcano: Lava Tide, Petrification, Eruption - 1%, 2%, 3% (Hovering says 'Very Low'),
 // 10/12/14% (Low), 20/22/24% (Medium), 45/50/55 and increasing (1/2 chance), 60 and above, (High)"). rules.volcano is the level;
 // rules.lavaTideChance / petrifyChance / eruptionChance override one hazard (0–100). The engine rolls them (volcanoTick); the
@@ -15839,6 +15844,9 @@ const FIELD2 = {
   // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now. "Awashed" will be for
   // something else - reserved."): on screen this field is "Wave" (Wave 1–3 on a random unit); the key stays awash for saves and data.
   awash:         {icon:'〰️', name:'Wave', editor:'awash', short:'A unit rides a Wave 1–3 columns; crashes hurt', text:TX('ui.fx-awash'), codex:TX('ui.fxx-awash')}, // 2026-10-18: crash damage
+  // 2026-10-19 (package RV, owner 00:19: "Quiet Contemplation on Map 21's boss: no 2x and re-enablement effects."): rules.quietContemplation,
+  // the Cathedral Eagle's fight (21-6). The engine's quietOn / quietStills hold the list (the Codex line names it).
+  quietContemplation:{icon:'🧘', name:TX('ui.fx-name-quiet-contemplation'), editor:'quietcontemplation', short:TX('ui.fx-quiet-contemplation-short'), text:TX('ui.fx-quiet-contemplation'), codex:TX('ui.fxx-quiet-contemplation')},
 };
 // 2026-10-17 (user: "Instead or 1-3 Day, 4-6 Night; 1-4 Day, 5-6 Night - because of the hot glow of the volcanoes"): the row the volcano
 // maps' uneven cycle shows, and the "after an Eruption" form of Ashy.
@@ -15965,6 +15973,7 @@ function noteFieldEvent(ev){
   else if(ev.type === 'fieldTick' && ev.field === 'ashy') hit = markFieldRow('ashyAfter');
   else if(ev.type === 'evaded' && ev.reason === 'ashy') hit = markFieldRow(r.ashy ? 'ashy' : 'ashyAfter');
   else if((ev.type === 'psychic' && ev.dampened) || ev.type === 'dampened') hit = markFieldRow('psychicDampener'); // 2026-10-17
+  else if(ev.type === 'quiet') hit = markFieldRow('quietContemplation'); // 2026-10-19 (package RV)
   else if(ev.type === 'lumber' && ev.rule && r.lumberEvery) hit = markFieldRow('lumberEvery'); // the Arena's Lumber Rush / Timber Fair (2026-10-17)
   if(hit){ const p = document.getElementById('fieldCondCard'); if(p){ p.classList.add('has-new'); try{ fxHook('fieldReveal', p); }catch(e){} } }
 }
@@ -18278,7 +18287,7 @@ const CONQUEST_MAPS = [
       { key:"21-3", kind:"skirmish", name:"Cloud Ledge", icon:"☁️", deck:{"eagle-diver":2,"golden-eagle-diver":2,"peak-condor":3,"stonedrop-vulture":2,"ash-cloud-condor":1,"hawk-arrowkeeper":2}, hqHp:210, flavor:"Step off the ledge and you land on cloud. Probably.", requires:["21-1"] },
       { key:"21-4", kind:"elite", name:"The Avalanche's Wake", icon:"🏔️", deck:{"alpine-avalanche":2,"rockslide-ram":2,"glacier-yak":2,"scree-goat":2,"eagle-sharpshooter":2,"mountain-goat-climber":2,"eagle-diver":2}, hqHp:240, flavor:"The snow came down last night. The rams are still standing on top of it.", requires:["21-2"] },
       { key:"21-5", kind:"elite", name:"Snow Owl Parliament", icon:"🦉", deck:{"snow-owl-sentinel":3,"golden-eagle-diver":1,"snowshoe-hare":2,"eagle-diver":4,"fumarole-ibex":2}, hqHp:230, flavor:"They have been debating your arrival since dawn. They have reached no decision, only a verdict.", requires:["21-3"] },
-      { key:"21-6", kind:"boss", name:"The Cathedral Eagle", icon:"🦅", deck:{"cathedral-eagle":1,"eagle-diver":2,"peak-condor":2,"golden-eagle-diver":2,"snow-owl-sentinel":2,"alpine-avalanche":1,"eagle-sharpshooter":2}, hqHp:280, flavor:"It nests on the very top of the world, and it saw you coming three maps ago.", requires:["21-4","21-5"] },
+      { key:"21-6", kind:"boss", name:"The Cathedral Eagle", icon:"🦅", deck:{"cathedral-eagle":1,"eagle-diver":2,"peak-condor":2,"golden-eagle-diver":2,"snow-owl-sentinel":2,"alpine-avalanche":1,"eagle-sharpshooter":2}, hqHp:280, flavor:"It nests on the very top of the world, and it saw you coming three maps ago.", requires:["21-4","21-5"], rules:{"quietContemplation":true} }, // Quiet Contemplation (2026-10-19, package RV, owner 00:19)
     ]},
   // Map 22, the Rimefire Caldera (2026-10-17, user: "Ice volcano stage, in 22 or 23. Story is, you're still very high up, traveling around"):
   // past the Quiet Summit the road crosses a snow-capped crater that never went cold. Frozen lava, steam vents, blue ice on black glass.
@@ -25327,6 +25336,8 @@ const FXL_FIELDS = [
     // 2026-10-17: the raid's Psychic Dampener: a Psychic 3 hit lands for 1, and its 1-round Confuse never lands.
     ['psychicDampener', {psychicDampener:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Mind Eel', icon:'🧠', effects:{psychic:3, confuse:{chance:100, duration:1}}}}], foes:[{role:'foe', slot:0}]}, steps:['round'], note:"The Mind Eel's Psychic 3 lands for 1, and its sure 1-round Confuse fizzles."}],
     ['awash', {awash:true}, {units:{mine:[{role:'subject', slot:0}, {role:'ally', slot:-2}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:1}]}, steps:['round', 'round', 'round'], note:'Each round one unit rides a Wave 1–3 columns; crashing into a unit hurts both for that many.'}], // the Wave field (rules.awash), 2026-10-18
+    // 2026-10-19 (package RV): a Twin Strike unit swings once and a Fast Forward unit takes no extra turn (no note: the field's own text says it)
+    ['quietContemplation', {quietContemplation:true}, {units:{mine:[{role:'subject', slot:0, def:{name:'Alley Cat', icon:'🐈', effects:{twinStrike:true}}}, {role:'ally', slot:-1, def:{name:'Swift Fox', icon:'🦊', effects:{fastForward:2}}}], foes:[{role:'foe', slot:0}, {role:'foe2', slot:-1}]}, steps:['round', 'round']}],
   ].map(([k, rules, o])=> Object.assign({key:k, icon:FIELD2[k].icon, name:FIELD2[k].name, text:()=> FIELD2[k].text, rules}, o)),
   {key:'tideSpout', icon:'⛲', name:'Tide-spout', text:()=> TIDESPOUT_TEXT, rules:{tideSpout:true}, units:FXL_TIDE_UNITS}, // 2026-10-16: no longer brings the tide
   {key:'windy', icon:'🌬️', name:'Windy', text:()=> WIND_TEXT.windy, rules:{wind:'windy'}, units:FXL_FLYER_UNITS, steps:['round', 'round', 'round'], note:'Three rounds: each one rolls its own wind (at your back, in your face or calm).'},
@@ -25971,9 +25982,35 @@ async function adminResetProgress(){
 // full ~300+ card grid) since this is a lookup tool for someone who already knows roughly what
 // they're after, not a browsing experience — that's what the Codex is for.
 let adminCardSearch = '';
+// Pool cards filter (2026-10-19, package AN): shows the unplaced candidates (POOL_CARD_DEFS) instead of the live cards, grouped by
+// the map each was made for, each tagged Pool. A click opens it in the card editor with its map filled in: pick the skirmish (or
+// a pack) under From and Save, and it goes live as a new card. One that is live already (placed) drops off the list.
+let adminPoolOnly = false;
+function adminPoolCardIds(){
+  const live = getCardDefs(), q = adminCardSearch.trim().toLowerCase(), maps = typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : [];
+  const order = id=>{ const m = (POOL_CARD_DEFS[id] || {}).poolMap, n = mapNumberOf(m); return (n == null ? 999 : n) * 10 + (maps.find(x=> x.id === m && x.sub) ? 1 : 0); };
+  return Object.keys(POOL_CARD_DEFS).filter(id=> !live[id] && (!q || (POOL_CARD_DEFS[id].name || '').toLowerCase().includes(q)))
+    .sort((a, b)=> order(a) - order(b) || String(POOL_CARD_DEFS[a].poolMap).localeCompare(String(POOL_CARD_DEFS[b].poolMap)) || POOL_CARD_DEFS[a].name.localeCompare(POOL_CARD_DEFS[b].name));
+}
+function adminPoolGridHTML(){
+  const ids = adminPoolCardIds(); if(!ids.length) return `<p class="panel-sub">${escapeHtml(TX('ui.admin-pool-none'))}</p>`;
+  const maps = typeof CONQUEST_MAPS !== 'undefined' ? CONQUEST_MAPS : [], groups = [];
+  ids.forEach(id=>{ const m = POOL_CARD_DEFS[id].poolMap; let g = groups[groups.length - 1]; if(!g || g.m !== m){ g = {m, ids:[]}; groups.push(g); } g.ids.push(id); });
+  return groups.map(g=>{ const mp = maps.find(x=> x.id === g.m), n = mapNumberOf(g.m);
+    const head = `${mp ? escapeHtml(mp.icon || '') + ' ' : ''}${n == null ? '' : escapeHtml(TX('ui.admin-pool-map', {n})) + ' · '}${escapeHtml(mp ? mp.name : (g.m || '?'))} <small>(${g.ids.length})</small>`;
+    return `<h4 class="admin-pool-head">${head}</h4><div class="grid-view admin-manage-grid">${g.ids.map(id=>{ const d = POOL_CARD_DEFS[id];
+      return `<div class="admin-pool-wrap" title="${escapeAttr(d.creatorNote || '')}"><span class="admin-pool-tag">${escapeHtml(TX('ui.admin-pool-tag'))}${d.poolSlot ? ' · ' + escapeHtml(d.poolSlot === 'pack' ? TX('ui.admin-pool-slot-pack') : TX('ui.admin-pool-slot-skirmish')) : ''}</span>${cardTileHTML(d, {extraClass:'admin-manage-tile is-pool-card'})}</div>`; }).join('')}</div>`; }).join('');
+}
+function poolCardForEditor(id){ // the pool card as a new live card to place: its pool fields go, its map is pre-filled under From
+  const d = POOL_CARD_DEFS[id]; if(!d) return null;
+  const c = JSON.parse(JSON.stringify(d)); delete c.pool; delete c.poolMap; delete c.poolSlot; delete c.numericId; // its pool number (9001+) gives way to the next live card number on Save
+  if(d.poolMap && !c.source) c.source = {kind:'map', id:d.poolMap};
+  return c;
+}
 function adminManageCardsGridHTML(){
   const defs = getCardDefs();
   const q = adminCardSearch.trim().toLowerCase();
+  if(adminPoolOnly) return adminPoolGridHTML();
   if(!q) return '<p class="panel-sub">Type a card name above to find it, or use Create a Card.</p>';
   const matches = Object.keys(defs).filter(id=>defs[id].name.toLowerCase().includes(q)).sort((a,b)=>defs[a].name.localeCompare(defs[b].name)).slice(0,60);
   if(!matches.length) return '<p class="panel-sub">No cards match that search.</p>';
@@ -25991,6 +26028,7 @@ function adminManageCardsHTML(){
       <p class="panel-sub">Create a new card, or search below to edit an existing one. The Codex itself (every player's view) is read-only now — a click there opens a "learn more" detail view instead.</p>
       <button class="btn primary small" id="adminNewCardBtn" type="button">🆕 Create a Card</button>
       <div style="margin-top:10px;"><input data-text-filter autocomplete="off" type="text" id="adminCardSearchInput" placeholder="Search card name to edit…" value="${escapeAttr(adminCardSearch)}"></div>
+      <label class="admin-toggle-label admin-pool-filter" title="${escapeAttr(TX('ui.admin-pool-hint'))}"><input type="checkbox" id="adminPoolOnlyChk" ${adminPoolOnly ? 'checked' : ''}> ${escapeHtml(TX('ui.admin-pool-filter', {n: Object.keys(POOL_CARD_DEFS).length}))}</label>
       <div id="adminManageGrid">${adminManageCardsGridHTML()}</div>
     </div>`;
 }
@@ -26003,6 +26041,8 @@ function wireAdminManageCards(){
     const grid = document.getElementById('adminManageGrid');
     if(grid){ grid.innerHTML = adminManageCardsGridHTML(); wireAdminManageGrid(); }
   });
+  const poolChk = document.getElementById('adminPoolOnlyChk'); // 2026-10-19 (package AN): the Pool cards filter
+  if(poolChk) poolChk.addEventListener('change', e=>{ adminPoolOnly = e.target.checked; const grid = document.getElementById('adminManageGrid'); if(grid){ grid.innerHTML = adminManageCardsGridHTML(); wireAdminManageGrid(); } });
   wireAdminManageGrid();
 }
 // Roll Table editor (2026-09-24, per explicit request: "do the pack animation and table for
@@ -33099,7 +33139,7 @@ async function resolveRoundCore(opts){
       const rest = mainEvents.slice(evIdx+1); rest.forEach(e=> pushLog(e));
       // 2026-10-12 (user: "the enemy just placed a new card, and it disappears after i win"): a card that died in the
       // skipped tail of the round used to vanish at the final sync render. Those deaths now play together, quickly.
-      const lateDeaths = rest.filter(e=> e.type==='death' && e.uid!=null && boardCardEl(e.uid));
+      const lateDeaths = rest.filter(e=> e.type==='death' && !e.revives && e.uid!=null && boardCardEl(e.uid)); // not one a revive follows (2026-10-19)
       if(lateDeaths.length){
         lateDeaths.forEach(e=>{ try{ renderVfxForEvent(e); }catch(_){} });
         await sleep(Math.round(650 / Math.max(1, m.speedMult||1)));
@@ -33107,7 +33147,8 @@ async function resolveRoundCore(opts){
       }
       break;
     }
-    if(ev.type==='death'){
+    // 2026-10-19 (package RV): a death that a revive follows (ev.revives) keeps its tile; the 'revive' event brings it back.
+    if(ev.type==='death' && !ev.revives){
       // Task list item 2 — record this dying card's real on-screen position (see
       // lastDeathOrigin's own declaration comment) BEFORE removeUidFromReplayRow/renderBoard
       // below tear its element out of the DOM — this is the last point it's still measurable.
@@ -34229,7 +34270,7 @@ function matchFieldTileHTML(def, cls, attrs, badges){
 // lasting field rule (the High Tide, the Tide-spout, the darkness, the wind…), fanned in a little stack beside the enemy's Deck.
 // Each card says one short line; hover (or hold) shows that rule in full. The stack keeps the old #fieldCondCard id, so the
 // terrain banner still flies into it and a new row still lights it.
-const FIELD2_BIOME = {psychicDampener:'cave', lumberEvery:'forest', firstBlood:'ash', actions:'alpine', collapse:'alpine', midsummer:'desert', dusk:'cave', restless:'cave', awash:'water', lavaSpout:'ash', crushingDepths:'water', hail:'tundra', slippery:'tundra', canopy:'forest', undergrowth:'forest', tallGrass:'forest', glassStorm:'desert', haunted:'cave', landslide:'alpine'}; // 2026-10-16
+const FIELD2_BIOME = {quietContemplation:'alpine' /* 2026-10-19: the Quiet Summit */, psychicDampener:'cave', lumberEvery:'forest', firstBlood:'ash', actions:'alpine', collapse:'alpine', midsummer:'desert', dusk:'cave', restless:'cave', awash:'water', lavaSpout:'ash', crushingDepths:'water', hail:'tundra', slippery:'tundra', canopy:'forest', undergrowth:'forest', tallGrass:'forest', glassStorm:'desert', haunted:'cave', landslide:'alpine'}; // 2026-10-16
 function fieldEnvBiome(key){ if(FIELD2_BIOME[key]) return FIELD2_BIOME[key]; return key === 'dark' ? 'cave' : (key === 'gale' || key === 'wind') ? 'alpine' : /tide|Spout/i.test(key) ? 'water' : /frost/.test(key) ? 'tundra' : (key === 'night' || key === 'twilight' || key === 'misty') ? 'cave' : 'ash'; }
 // The field's rows in a fight (2026-10-15): Map 0's Mist is only a pill (its hover says "?"), not a card; a misty map that cares about
 // the moon adds "The Moon is not visible." to its Mist card.
@@ -36272,7 +36313,8 @@ function logText(ev){
     case 'bleedTick': return {cls:'bleed', text:`${nm(ev.defId)} took ${ev.dmg} bleed damage. 🩸`};
     case 'arrow': return {cls:'', text:`${nm(ev.defId)} looses ${ev.fire ? 'a flaming arrow 🔥🏹' : ev.ice ? 'an icy arrow 🧊🏹' : ev.volley ? 'a volley arrow 🏹' : ev.twin ? 'a twin shot 🏹🏹' : 'an arrow 🏹'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`};
     case 'bolt': return {cls:'', text:`${nm(ev.defId)} spits ${({fire:'a fire bolt 🔥', acid:'an acid bolt 🧪', poison:'a poison bolt 🐍', ice:'an ice bolt ❄️', shock:'a shock bolt ⚡'})[ev.element] || 'a bolt'}${ev.targetDefId ? ' at ' + nm(ev.targetDefId) : ' at the bramble'}`}; // the Bolts (2026-10-15)
-    case 'revive': return {cls:'gold', text:`${nm(ev.defId)} refused to die — revived at 1 HP! ✨`};
+    case 'revive': return {cls:'gold', text:TX('ui.log-revive', {name: nm(ev.defId)})}; // 2026-10-19 (package RV): it did die (the death line is just before)
+    case 'quiet': return ev.defId ? {cls:'', text:TX('ui.log-quiet-stills', {name: nm(ev.defId)})} : null; // 2026-10-19 (package RV): Quiet Contemplation stopped a doubling or an extra go
     case 'collapseIn': return {cls:'', text:`${nm(ev.defId)} falls into the center from the ${ev.fromSide}. ➡`};
     case 'death': return {cls:'', text:`${nm(ev.defId)} died.`};
     case 'spawn': return ev.cause==='shieldCall' ? {cls:'', text:`A ${nm(ev.defId)} drops into place. 🛡️`} : {cls:'', text:`${nm(ev.defId)} ×${ev.count} spawned. 🐝`};
@@ -39445,7 +39487,7 @@ function renderVfxForEvent(ev){
     if(el){ floatText(el, '✨ Revived!', 'gold'); el.classList.remove('has-wings', 'has-revive'); el.querySelectorAll('.angel-wings, .revive-mark').forEach(x=> x.classList.add('is-spending')); el.querySelectorAll('.ab-revive').forEach(x=> x.classList.add('is-used')); }
     updateCardHpDisplay(ev.uid); updateCardStatusDisplay(ev.uid);
   }
-  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); deathVfx(ev.uid); }); try{ maybeBark(ev.uid, 'death'); }catch(e){} maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death');
+  if(ev.type==='death'){ SoundKit.at(boardCardEl(ev.uid), ()=>{ SoundKit.death(); if(!ev.revives) deathVfx(ev.uid); }); /* 2026-10-19 (package RV): no topple for a unit about to revive */ try{ maybeBark(ev.uid, 'death'); }catch(e){} maybeSpeak(ev.uid, 'onDeath'); maybeEmote(ev.uid, 'death');
     { const k = EMOTE_LAST_HIT.get(String(ev.uid)); EMOTE_LAST_HIT.delete(String(ev.uid));
       // only a hit this same round counts as the kill (a poison tick rounds later isn't the attacker's)
       // 2026-10-16: the killer may bark (voice barks); its emote only shows when it said nothing

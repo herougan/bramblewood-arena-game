@@ -5,7 +5,7 @@
 //   R  the CPU's pitch gives what the player's does (one engine pitchCard: yield, Lumberjack, Dark Points, Core Evil, On Discard).
 //   E  the CPU sacrifices an expendable Sacrifice N unit for a Dark Summon card.
 //   P  the CPU plays a field card only when it helps its own board more than yours; its slot choice reads the Tide-evade rule.
-// 2026-10-18 (package D): a kill answered by Revive still fires On Kill; the CPU levels (aiLevel 0 basic / 1 smart / 2 smartest)
+// 2026-10-18 (package D): a kill answered by Revive still fires On Kill (2026-10-19, package RV: and counts, a true death); the CPU levels (aiLevel 0 basic / 1 smart / 2 smartest)
 //   and who gets which (arena_app.js cpuAiAutoLevel, Edit skirmish's Difficulty).
 'use strict';
 const fs = require('fs'), path = require('path');
@@ -147,17 +147,18 @@ ok(fieldRun(0, 4) === false, 'Spring Rain: the CPU holds it when it would heal y
     if(h.slot === 1) toLand++; else if(h.slot === -1) toLand--; }
   ok(tries > 0 && toLand > 0, `Tide-evade: the CPU's non-swimmer goes across from the non-swimmer more often (net ${toLand} of ${tries})`); }
 
-// ---- 2026-10-18 (owner, 10:33): "Kill answered by revive still triggers On Kill" (no kill stat, as before R3-WP1)
+// ---- 2026-10-18 (owner, 10:33): "Kill answered by revive still triggers On Kill"; 2026-10-19 (package RV, owner 00:19: "Revive is
+// true death"): the kill stat counts it too (the full rules are in tests/rv-2026-10-19.js)
 { const {e, P} = mk(); const S = put(e, P, 1, 'pa-sword', 0); const X = put(e, P, 2, 'pa-phoenix', 0); put(e, P, 2, 'pa-wall', 1);
   const stats = {}, l0 = P[1].lumber; e.debugAttack(P, so, S.uid, stats, []);
   ok(all(P[2]).includes(X) && X.hp === 1, 'Revive: the unit came back at 1 Health');
   ok(P[1].lumber - l0 === 2, `Revive: the killer's On Kill still fired (+${P[1].lumber - l0})`);
-  ok(kills(stats, 'A', 'pa-sword') === 0, `Revive: still no kill stat (${kills(stats, 'A', 'pa-sword')})`);
+  ok(kills(stats, 'A', 'pa-sword') === 1, `Revive: a true death, so the kill stat counts it (${kills(stats, 'A', 'pa-sword')})`);
   e.debugAttack(P, so, S.uid, stats, []);
-  ok(!all(P[2]).includes(X) && kills(stats, 'A', 'pa-sword') === 1 && P[1].lumber - l0 === 4, `Revive: the real death later is one kill and one more On Kill (kills ${kills(stats, 'A', 'pa-sword')}, +${P[1].lumber - l0})`); }
+  ok(!all(P[2]).includes(X) && kills(stats, 'A', 'pa-sword') === 2 && P[1].lumber - l0 === 4, `Revive: the final death later is one more kill and one more On Kill (kills ${kills(stats, 'A', 'pa-sword')}, +${P[1].lumber - l0})`); }
 { const {e, P} = mk(); const A = put(e, P, 1, 'pa-archer', 0); put(e, P, 2, 'pa-phoenix', 0); put(e, P, 2, 'pa-wall', 1);
   const stats = {}, l0 = P[1].lumber; e.debugAttack(P, so, A.uid, stats, []);
-  ok(P[1].lumber - l0 === 2 && kills(stats, 'A', 'pa-archer') === 0, `Revive: a shot's answered kill fires On Kill too, no kill stat (+${P[1].lumber - l0}, kills ${kills(stats, 'A', 'pa-archer')})`); }
+  ok(P[1].lumber - l0 === 2 && kills(stats, 'A', 'pa-archer') === 1, `Revive: a shot's kill a Revive answers fires On Kill and counts (+${P[1].lumber - l0}, kills ${kills(stats, 'A', 'pa-archer')})`); }
 
 // ---- 2026-10-18 (package D): CPU levels. opts.aiLevel 0 basic / 1 smart (default) / 2 smartest, read only while aiAim is on.
 { const {e} = mk(); ok(e.getAiLevel() === 1, 'the default level is Smart (1)');
