@@ -2851,7 +2851,12 @@
      shape — picking one up and playing it no longer visibly changes its footprint. */
   .hand-strip .card-tile{position:relative;}
   .whynot-tag{position:absolute; left:4px; right:4px; bottom:30%; z-index:6; padding:3px 4px; border-radius:6px; background:rgba(20,14,6,.82); color:#fff3d6; font-family:system-ui, sans-serif; font-size:10.5px; font-weight:700; line-height:1.2; text-align:center; opacity:0; transition:opacity .15s; pointer-events:none;}
-  .hand-strip .card-tile.unplayable:hover .whynot-tag, .hand-strip .card-tile.unplayable:focus-within .whynot-tag, .hand-strip .card-tile.unplayable.armed .whynot-tag{opacity:1;}
+  /* 2026-10-18 (package U, user: 'The "Already played this turn" label does not fade out after hover out if you played a card with the
+     same name'): a mouse click on a greyed card arms it and focuses it (renderHand re-focuses it by uid), and :focus-within / .armed
+     kept the label up after the pointer left. With a mouse the label now follows the hover only; keyboard focus (:focus-visible) and
+     an armed card on a touch screen (no hover there) still show it. */
+  .hand-strip .card-tile.unplayable:hover .whynot-tag, .hand-strip .card-tile.unplayable:focus-visible .whynot-tag{opacity:1;}
+  @media (hover:none){ .hand-strip .card-tile.unplayable.armed .whynot-tag{opacity:1;} }
   .hand-strip .card-tile{width:var(--match-card-w); height:var(--match-card-h); box-sizing:border-box; padding:9px 7px 7px; font-size:13.5px; display:flex; flex-direction:column; justify-content:flex-start;}
   .hand-strip .card-tile .ico{font-size:56px; display:flex; align-items:center; justify-content:center;}
   .hand-strip .card-tile .nm{font-size:13px; min-height:1.9em; margin:3px 0 2px;}
@@ -10690,7 +10695,7 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   @keyframes ds2In{from{opacity:0;} to{opacity:1;}}
   .ds2{width:min(600px, 100%); max-height:calc(100vh - 32px); overflow:auto; overflow-x:hidden; box-sizing:border-box; background:#f6ecd6; color:#2b1d10; border:2px solid #c9a25a; border-radius:18px; padding:16px 18px 14px; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.55); transform-origin:50% 55%;}
   /* 2026-10-17 (user: "Left is your deck, Right is cards not in your deck"): two columns, each its pick, ‹ › and the other candidates. */
-  .ds2-stage{position:relative; display:flex; justify-content:center; align-items:flex-start; gap:34px;}
+  .ds2-stage{position:relative; display:flex; justify-content:center; align-items:flex-start; gap:54px;} /* 2026-10-18 (package U, user: "In the swap window, place the left cards UI and the right to-swap UI abit further apart."): 34 -> 54px; phones 18 -> 30px */
   .ds2-col{display:flex; flex-direction:column; align-items:center; gap:6px; min-width:0;}
   .ds2-col-h{font:800 12px/1.2 'Baloo 2',system-ui,sans-serif; letter-spacing:.04em; text-transform:uppercase; color:#7a5a30;}
   .ds2-pick{display:flex; align-items:center; gap:4px;}
@@ -10715,7 +10720,7 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
     .ds2-overlay{align-items:flex-end; padding:0;}
     .ds2{width:100%; max-height:78vh; border-radius:18px 18px 0 0; border-width:2px 0 0; padding:12px 10px calc(12px + env(safe-area-inset-bottom)); transform-origin:50% 100%;}
     .ds2-lbl-x{display:none;}
-    .ds2-stage{gap:18px;}
+    .ds2-stage{gap:30px;}
     .ds2-nav{width:22px; height:38px; font-size:18px;}
     .ds2-thumb .card-tile{width:36px !important;}
     .ds2-arrows{top:76px; font-size:18px;}
@@ -10733,7 +10738,10 @@ body.cave-screen .conquest-headline h3, body.cave-screen .conquest-headline .pan
   /* 2026-10-17 (menus): results, one Rewards block (packs and chips inside), New cards seen with what opened */
   .rw-rewards .rw-pack-row{margin-top:10px;}
   .rw-rewards .rw-item-row{flex-wrap:wrap; justify-content:center; gap:8px;}
-  .rw-seen .rw-open-row, .rw-seen .rw-fight-row{margin-top:8px; flex-wrap:wrap; justify-content:center; gap:8px;}
+  .rw-seen .rw-open-row, .rw-seen .rw-fight-row{margin-top:8px; flex-wrap:wrap; justify-content:center; align-items:center; gap:8px;}
+  /* 2026-10-18 (package U, user: "Put the title rewards in-line/in-group with skirmish unlocks."): titles, characters and maps share the
+     one row with the new fights, in the fights' chip look (cream face, gold rim, same 44px height). */
+  .rw-seen .rw-open-row .rw-act{height:44px; box-sizing:border-box; padding:0 14px; background:#f4ecd8; border:3px solid #c9a46a; color:#3b2a14; box-shadow:0 3px 8px rgba(0,0,0,.3);}
   .rw-card.is-unlock .rw-new{z-index:7;}
   /* 2026-10-17 (menus): Wildpaths hover tooltips */
   .wp-tip{position:fixed; z-index:9500; max-width:min(280px, calc(100vw - 16px)); box-sizing:border-box; padding:9px 11px; border-radius:10px; background:#fff8e6; color:#2b2117; box-shadow:0 8px 22px rgba(0,0,0,.4); font-size:13px; line-height:1.4; pointer-events:none; display:flex; flex-direction:column; gap:3px; text-align:left;}

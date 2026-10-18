@@ -328,6 +328,7 @@ Object.assign(SKILL_ICON, {iceArrow:'🧊🏹', twinShot:'🏹🏹', volley:'�
 Object.assign(SKILL_ICON, {fencing:'🤺', fireball:'🟠', meteor:'☄️', banana:'🍌', bananarang:'🍌🪃', durian:'🌰', shield:'💠', electricity:'🔌', keenSense:'👃'});
 Object.assign(SKILL_ICON, {chainLightning:'🌩️'}); // 2026-10-17: Chain Lightning
 SKILL_ICON.rebuild = '🔨🏰'; // Rebuild N (2026-10-17; 🧱 alone is Bulwark's)
+SKILL_ICON.creative = '🎨'; // 2026-10-18 (package U, user: "New skills: Creative - not sure what it does yet, but it gives Creativity counters to cards somehow")
 // 2026-10-14 (seventh pass). Psychic is 💭 because Hive Mind already has 🧠; Smoke Bomb is a drawn bomb with a puff (SKILL_ICON_HTML)
 // because 💨 is Swift's, 🌫️ Shade's and 🫧 Poison's, with 💣💨 where only text fits.
 Object.assign(SKILL_ICON, {psychic:'💭', smokeBomb:'💣💨'});
@@ -1126,6 +1127,11 @@ const PASSIVE_DEFS = [
   // every upkeep while Ready. Its action form is "Rebuild castle" in ACTION_DEFS.
   {key:'rebuild', category:'passive', label:'Rebuild', kind:'number', min:1, defaultValue:2, desc:v=>`While Ready, it restores ${numOr(v, 2)} Health to your castle every upkeep (every round it is awake, from the upkeep its Wait runs out), never above the castle's max. It mends the castle, not a unit: Herbalist doesn't add to it.`, get:e=> e.rebuild ? numOr(e.rebuild, 2) : undefined,
     codexNote:'Its action form, Rebuild castle N, mends your castle once whenever its trigger fires (any trigger).'},
+  // 2026-10-18 (package U, user: "New skills: Creative - not sure what it does yet, but it gives Creativity counters to cards somehow"):
+  // a real but minimal skill. Every upkeep while Ready (as Rebuild), N Creativity counters go on one random other unit on its side.
+  // The counters show (🎨 N) and do nothing yet: the Codex says the effect is to come. On no card; stat budget 0 (SB_DEFAULT_SKILLS).
+  {key:'creative', category:'passive', label:'Creative', kind:'number', min:1, defaultValue:1, desc:v=> TX('ui.creative-desc', {n: numOr(v, 1)}), get:e=> e.creative ? numOr(e.creative, 1) : undefined,
+    codexNote:TX('ui.creative-codex-note')},
 ];
 // One-offs (2026-10-15, user: "We will designate some skills as 1-offs. These are not 'Map-specific'. Just specific to the animal.
 // Coffee, Chilli, Banana, Bananarang, Rabid, SupremeTide, SmokeBomb, Avalanche, Earthquake, Tornado, Hurricane, Crepuscular,
@@ -2302,6 +2308,7 @@ Object.assign(SKILL_TEXT, {
   herbalist: v=> `Every heal on your units heals ${numOr(v, 1)} more.`,
   shatter: v=> `Its hits deal ${numOr(v, 2)} more damage to Frozen units.`,
   rebuild: v=> `While Ready, restore ${numOr(v, 2)} Health to your castle every upkeep.`, // 2026-10-17
+  creative: v=> TX('ui.creative-text', {n: numOr(v, 1)}), // 2026-10-18 (package U): Creative N
 });
 function numOr(v, d){ return v === true || v == null ? d : (Number(v) || d); }
 // Pounce's amount in words (2026-10-16): "5", "<Att>" (its Attack) or "<Hp>" (its Health); an editor row value [mode, n] too.
@@ -2349,8 +2356,25 @@ function skillHiddenNow(key){ return hiddenSkillSet().has(key); }
 const skillValOn = v=> v != null && v !== false && v !== 0 && v !== '';
 function hiddenSkillsOf(d){ const e = d && d.effects; if(!e) return []; const h = hiddenSkillSet(); if(!h.size) return [];
   return [...h].filter(k=> skillValOn(e[k]) || (SKILL_REVEAL_PARTS[k]||[]).some(x=> skillValOn(e[x]))); }
+// Per-card / per-field reveal (2026-10-18, package U, user: "I think Quarry mole's effects are '?' until Map 0 is complete." and
+// "Psychic Dampener is ? until you win Map 41+."): a card (canonical/cards.json) or a field effect (FIELD2) can carry
+//   revealAfter: {map:'m1'}   -> until that map is cleared (m1 = Map 0, the Outskirts), or
+//   revealAfter: {mapNum:41}  -> until the player has won a fight on Map 41 or further on.
+// Until then the card keeps its name but every skill reads as the one "?" chip, and the field row reads "?". Display only: the
+// engine plays the real card / field. Admin Mode shows everything. Not remembered: it is worked out from the conquest progress.
+function revealAfterMet(ra){ if(!ra) return true; if(typeof adminModeEnabled !== 'undefined' && adminModeEnabled) return true;
+  try{
+    if(ra.map && !(typeof conquestMapCleared === 'function' && conquestMapCleared(ra.map))) return false;
+    if(ra.mapNum != null){ const n = Number(ra.mapNum); if(!(loadConquestProgress().completed||[]).some(id=>{ const k = mapNumberOf(String(id).split(':')[0]); return k != null && k >= n; })) return false; }
+  }catch(e){ return false; }
+  return true; }
+function cardRevealAfter(d){ if(!d) return null; if(d.revealAfter) return d.revealAfter;
+  try{ const b = typeof CARD_DEFS_BASELINE !== 'undefined' && CARD_DEFS_BASELINE[d.derivedFrom || d.id]; return (b && b.revealAfter) || null; }catch(e){ return null; } } // a cloud edit saved without the field keeps the shipped gate
 // A display copy of a card with its hidden skills taken off (the engine keeps the real card).
-function maskHiddenSkills(d){ const hid = hiddenSkillsOf(d); if(!hid.length) return d;
+function maskHiddenSkills(d){
+  { const ra = cardRevealAfter(d); if(ra && !revealAfterMet(ra)){ const n = Object.keys(d.effects||{}).filter(k=> skillValOn(d.effects[k])).length; // 2026-10-18: the whole card's skills (revealAfter)
+    if(n) return Object.assign({}, d, {effects: {}, _hiddenSkills: n, _revealGated: true}); } }
+  const hid = hiddenSkillsOf(d); if(!hid.length) return d;
   const e = Object.assign({}, d.effects); hid.forEach(k=>{ delete e[k]; (SKILL_REVEAL_PARTS[k]||[]).forEach(x=> delete e[x]); });
   return Object.assign({}, d, {effects: e, _hiddenSkills: hid.length}); }
 function skillQChipHTML(){ return `<span class="skill-q" title="${escapeAttr(SKILL_Q_TIP)}" aria-label="${escapeAttr(SKILL_Q_TIP)}">?</span>`; }
@@ -6554,7 +6578,7 @@ function triggerBadges(d, live){
   });
 }
 const CHIP_FALLBACK_SKILLS = ['nocturnal', 'diurnal', 'bleed', 'regen', 'guardian', 'swarm', 'arrow', 'prayer', 'stealth', 'fireArrow', 'scare', 'remember', 'pierce', 'backstab', 'gash', 'ambush', 'immolation', 'reach', 'sacrifice', 'worship', 'healing', 'lightning', 'expose', 'reload', 'stunOnHit', 'siege', 'corrode', 'freeze', 'shock', 'decay', 'counterattack', 'spiteful', 'dictator', 'shieldCall', 'magic', 'midas', 'retribution', 'satiety', 'desecrate', 'crit', 'fester', 'rupture', 'bulwark', 'reflect', 'momentum', 'bloom', 'frenzy', 'skyfall', 'sleep', 'paralyze', 'stagger',
-  'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'shatter', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
+  'sap', 'vanguard', 'web', 'sentry', 'carrion', 'hoard', 'venomMaster', 'fletcher', 'herbalist', 'shatter', 'creative', 'rebuild']; // + the 2026-10-17 skills (and Rebuild) (and Leech, which had no chip) // 2026-10-16 (leader is left out: leaders have their own ring)
 function abilityBadges(d, bopts){
   d = maskHiddenSkills(d); // 2026-10-15: a skill not met yet shows as one "?" chip (SKILL_REVEAL)
   const e = d.effects||{};
@@ -14736,7 +14760,10 @@ function markFieldRow(key){ if(matchState && matchState.fxLib) return false; /* 
 // 2026-10-17 (raids: "make sure raid fields still use it correctly (and that admins see them)"): a row still "?" to the player shows its
 // words to an admin, as hidden skills do (hiddenSkillSet).
 function fieldRowHidden(key){ return fieldRowState(key) === 'unknown' && !(typeof adminModeEnabled !== 'undefined' && adminModeEnabled); }
-function fieldRowState(key){ const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
+// 2026-10-18 (package U, user: "Psychic Dampener is ? until you win Map 41+."): a FIELD2 row with revealAfter stays "?" (unknown)
+// until its gate is met (revealAfterMet, in the SKILL_REVEAL block), even once it has happened; admins still read it (fieldRowHidden).
+function fieldRowGated(key){ try{ const f = FIELD2[key]; return !!(f && f.revealAfter && !revealAfterMet(f.revealAfter)); }catch(e){ return false; } }
+function fieldRowState(key){ if(fieldRowGated(key)) return 'unknown'; const v = fieldRowsSeen()[key]; return v == null ? 'unknown' : (v === fightSerial() && matchState && !matchState.over ? 'new' : 'known'); }
 // Rows that are in force from the first round (no event to wait for) count as happening when the fight starts.
 const FIELD_ROWS_AT_START = new Set(['lumberEvery', 'midsummer', 'dusk', 'restless', 'firstBlood', 'actions', 'collapse', 'terrain', 'night', 'bossSurge', 'enemyOre', 'secondWind', 'permaTide', 'misty', 'rookRow', 'bishopPath', 'canopy', 'undergrowth', 'tallGrass', 'leylines1', 'ashy', 'volcanoGlow']); // + field effects 2 that have no event of their own (2026-10-16); Ashy all fight and the Volcano Glow (2026-10-17)
 // Volcano hazards with odds (2026-10-14, user: "Volcano: Lava Tide, Petrification, Eruption - 1%, 2%, 3% (Hovering says 'Very Low'),
@@ -14791,7 +14818,7 @@ const FIELD2 = {
   // 2026-10-17 (user: "New field effect: Awash 1-3 every turn to a random card."): rules.awash; the push is Wave's (washPush in the engine).
   // 2026-10-17 (user, on the raid: "There should be all the related field effects but also some kind of psychic dampener"): rules.psychicDampener,
   // in the engine's psychicHit (half, rounded down) and rollStatusOnHit's Confuse (1 round less). The Goliath raid fights under it.
-  psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', short:'Psychic halved; Confuse 1 round less', text:"The deep presses on every mind: Psychic damage is halved (rounded down), and a Confuse lasts 1 round less, so a 1-round Confuse doesn't land. Both sides."},
+  psychicDampener:{icon:'🧠', name:'Psychic Dampener', editor:'psychicdampener', revealAfter:{mapNum:41} /* 2026-10-18 (package U): "?" until a Map 41+ win */, short:'Psychic halved; Confuse 1 round less', text:"The deep presses on every mind: Psychic damage is halved (rounded down), and a Confuse lasts 1 round less, so a 1-round Confuse doesn't land. Both sides."},
   // 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now. "Awashed" will be for
   // something else - reserved."): on screen this field is "Wave" (Wave 1–3 on a random unit); the key stays awash for saves and data.
   awash:         {icon:'〰️', name:'Wave', editor:'awash', short:'A unit rides a Wave 1–3 columns; crashes hurt', text:'Each round from round 2, a Wave takes one random unit N columns (1–3) along its row, leaning slightly toward the middle. If it crashes into another unit on the way, it stops beside it and both take N damage. Only the board\'s edge turns it back the other way. Pinned and Webbed units hold fast.'}, // 2026-10-18: crash damage
@@ -19321,7 +19348,7 @@ function strictlyDominates(d, o){
   if(c(d) > c(o) || w(d) > w(o) || a(d) < a(o) || h(d) < h(o) || cardSkillCount(d) < cardSkillCount(o)) return false;
   return c(d) < c(o) || w(d) < w(o) || a(d) > a(o) || h(d) > h(o);
 }
-function swapEligibleDef(d){ return !!(d && !d.token && !d.test && !d.hero && !d.isLeader && (!d.cardType || d.cardType === 'unit') && d.id !== 'wandering-traveller' && typeof d.attack === 'number' && (d.health || 0) > 0); }
+function swapEligibleDef(d){ return !!(d && !d.token && !d.test && !d.hero && !d.isLeader && !isEggRewardCard(d) /* 2026-10-18: eggs hatch in the Nest, never a swap */ && (!d.cardType || d.cardType === 'unit') && d.id !== 'wandering-traveller' && typeof d.attack === 'number' && (d.health || 0) > 0); }
 // The weakest card in your main deck that `id` strictly dominates, or null.
 function dominatedDeckCard(id){
   const defs = getCardDefs(), d = defs[id]; if(!swapEligibleDef(d)) return null;
@@ -19353,7 +19380,8 @@ function noteGainedForSwap(id, source){
 function maybeOfferDeckSwap(){
   if(!pendingDeckSwap || !pendingDeckSwap.length || (typeof matchState !== 'undefined' && matchState) || document.getElementById('deckSwapOverlay') || document.querySelector('.starter-step') || tutorialRewardPopPending) return;
   // not over a pack being opened, nor with one still waiting to be shown (2026-10-15); the opener calls back when it closes
-  { const po = document.getElementById('packOpenOverlay'); if((po && !po.hidden) || (typeof packRevealQueue !== 'undefined' && packRevealQueue.length)) return; }
+  // 2026-10-18: ...nor while a won pack is floating up into the opener (packRevealBusy covers the queue, the flight and the opener)
+  if(packRevealBusy()) return;
   const defs = getCardDefs(); let item = pendingDeckSwap.shift(); if(typeof item === 'string') item = {id:item};
   const id = item.id, d = defs[id]; if(!d){ maybeOfferDeckSwap(); return; }
   if((myDeckCounts[id]||0) > 0 && (myDeckCounts[id]||0) >= Math.min(maxCopiesForRarity(d.rarity), copiesOwned(id))){ setTimeout(maybeOfferDeckSwap, 50); return; }
@@ -22609,7 +22637,7 @@ function runCardCheck(host){
 //   Colours: green = within both, red = over either, pink = within both with the first score at or below 60% of N.
 const SB_KEY = 'bramblewood_stat_budget_v3', SB_KEY_V2 = 'bramblewood_stat_budget_v2';
 // 2026-10-16: '-v' = a payment (Penance, Blood Tithe): minus its value, a discount on the score.
-const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
+const SB_DEFAULT_SKILLS = {penance:'-v', bloodTithe:'-v', flying:0, evasive:0, swift:0, shadow:0, blind:0, bounty:0, quick:2, helmet:2, darksight:1, swimmer:1, diurnal:1, nocturnal:1, crepuscular:1, tide:1, molting:1, dynamite:0, leader:0, armor:'v', poison:'v', thorns:'v', heal:'v', regen:'v', rebuild:'v' /* 2026-10-17: like a heal */, creative:0 /* 2026-10-18: Creativity does nothing yet */, bleed:'v', snipe:'v', arrows:'v', crabClaws:0}; // 2026-10-17 (user: "N for crab claw is 0"): Crab Claws costs nothing (a sidestep, not a gain)
 const SB_HALF_MISS = ['evasive', 'swift', 'flying', 'shadow', 'blind'];
 const SB_PAY_DEF = {penance:3, bloodTithe:2}; // a payment saved as true counts its default (2026-10-16)
 const SB_V3_DEFAULTS = {base:20, perLevel:2, perRarity:1, perWait:6, perWait2:0.5, perLumber:4, perLumber2:0.4, missMult:1.5};
@@ -26225,7 +26253,10 @@ function renderMatchUI(){
       // should be the one speaking. Draws stay silent, same convention as the star-fall gate just
       // above. `force:true` because this is a deliberate one-shot match-end beat, not ambient
       // chatter — it should always play, not roll SPEECH_CHANCE like castleOnHit does.
-      if(!isPc && m.winner!==0) maybeSpeakHQ('A', m.winner===1 ? 'castleOnWin' : 'castleOnLoss', {force:true});
+      // 2026-10-18 (package U, "Lags abit on victory"): the bubble measures itself (offsetWidth), which in the middle of this render
+      // forced a layout of the whole freshly built match screen (~0.2 s on a slow machine) before the results could paint. It now
+      // speaks once the results have painted (two frames on), when that measurement costs next to nothing.
+      if(!isPc && m.winner!==0){ const bank = m.winner===1 ? 'castleOnWin' : 'castleOnLoss'; requestAnimationFrame(()=> requestAnimationFrame(()=>{ if(matchState === m) maybeSpeakHQ('A', bank, {force:true}); })); }
     }
     const skipTut = document.getElementById('wlSkipTutBtn');
     if(skipTut) skipTut.addEventListener('click', ()=>{
@@ -26331,16 +26362,13 @@ function renderMatchUI(){
       const overlayEl = document.querySelector('.winloss-overlay');
       const cardEl = document.querySelector('.winloss-card');
       const icoEl = document.querySelector('.winloss-card .pass-ico');
-      if(overlayEl && cardEl){
-        gsap.set(overlayEl, {opacity:0});
-        gsap.set(cardEl, {opacity:0, scale:.55, y:26, rotate:-3});
-        gsap.timeline()
-          .to(overlayEl, {opacity:1, duration:.28, ease:'power1.out'}, 0)
-          .to(cardEl, {opacity:1, scale:1, y:0, rotate:0, duration:.62, ease:'back.out(1.8)'}, 0.05);
-        if(icoEl){
-          gsap.set(icoEl, {scale:0, rotate:-20});
-          gsap.to(icoEl, {scale:1, rotate:0, duration:.5, ease:'back.out(3.2)', delay:.32});
-        }
+      // 2026-10-18 (package U, "Lags abit on victory"): the same entrance on the Web Animations API. Each gsap.set here read the
+      // element's computed transform straight after the whole match screen had been rebuilt, so the results' first frame paid for
+      // three or four full layouts instead of one. element.animate reads nothing. back.out(1.8) ~ cubic-bezier(.34,1.56,.64,1).
+      if(overlayEl && cardEl && overlayEl.animate){
+        overlayEl.animate([{opacity:0}, {opacity:1}], {duration:280, easing:'cubic-bezier(.25,.46,.45,.94)', fill:'backwards'});
+        cardEl.animate([{opacity:0, transform:'translateY(26px) rotate(-3deg) scale(.55)'}, {opacity:1, transform:'none'}], {duration:620, delay:50, easing:'cubic-bezier(.34,1.56,.64,1)', fill:'backwards'});
+        if(icoEl) icoEl.animate([{transform:'rotate(-20deg) scale(0)'}, {transform:'none'}], {duration:500, delay:320, easing:'cubic-bezier(.34,1.9,.64,1)', fill:'backwards'});
       }
       wireWinLossRewardAnim();
     }
@@ -27055,7 +27083,7 @@ function renderBoard(opts){
     // number of later reflows within the same round, exactly like the hit that applied it. rally
     // Bonus remains untracked (a display-only recompute, not an event-driven status), so it still
     // defaults away for the transient mid-round view.
-    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
+    return {uid, slot:rc.slot, gladiatorLeader:!!rc.gladiatorLeader, defId:rc.defId, hp:rc.hp, maxHp:rc.maxHp, atk: rc.atk!=null ? rc.atk : (d.attack||0), rallyBonus:rc.rallyBonus||0, worshipBonus:rc.worshipBonus||0, phaseAtk:rc.phaseAtk||0, shellUntil:rc.shellUntil, shellArmor:rc.shellArmor||0, tempHp:rc.tempHp||0, shield:rc.shield||0, thornsBonus:rc.thornsBonus||0, inspired:rc.inspired||0, /* 2026-10-10: was the printed base (Sunspire Envoy's attack flickered back to base mid-round) */ poison:rc.poison||0, bleed:rc.bleed||0, scar:rc.scar||0, stunned:!!rc.stunned, wait:rc.wait||0, chained:!!rc.chained, frozen:rc.frozen||0, asleep:rc.asleep||0, paralyzed:rc.paralyzed||0, blind:rc.blind||0, smoke:rc.smoke||0, tipsy:rc.tipsy||0, confused:rc.confused||0, shocked:rc.shocked||0, corrode:rc.corrode||0, exposed:rc.exposed||0, creativity:rc.creativity||0, staggered:rc.staggered||0, bound:rc.bound||0, webbed:rc.webbed||0, toxin:rc.toxin||0, invisible:rc.invisible||0, invincible:rc.invincible||0, daunts: rc.daunts ? rc.daunts.slice() : [], rallyBonus:0, inBloom:!!rc.inBloom, packChain:rc.packChain||0, packChainBonus:rc.packChainBonus||0, revivedOnce:!!rc.revivedOnce}; // + revivedOnce (2026-10-17: the Revive mark and its used line)
   }
   function rowsFor(pl){
     const rr = m.replayRows && m.replayRows[pl.id];
@@ -27189,7 +27217,7 @@ function renderBoard(opts){
   // the opponent's flank still has to shift how many invisible spacers line up on this side, or
   // the two rows' columns drift out of alignment.
   function cardSigPiece(c){
-    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
+    return `${m.unmasked && m.unmasked.has(String(c.uid)) ? 'u' : ''}${c.uid}:${c.defId}:${c.hp}:${c.maxHp}:${c.atk}:${c.poison||0}:${c.bleed||0}:${c.scar||0}:${c.exposed||0}:${c.creativity||0}:${c.stunned?1:0}:${c.wait||0}:${c.chained?1:0}:${c.frozen||0}:${c.asleep||0}:${c.paralyzed||0}:${c.rallyBonus||0}`;
   }
   function rowSignature(rows, dance){
     // Fixed-slot modes: column range, each card's slot and the viewer's legal "+" targets are all
@@ -28734,6 +28762,7 @@ function boardCardHTML(c, defs, opts){
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
   if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
+  if(c.creativity>0) badges.push(`<span class="abadge creativity" title="${escapeAttr(creativityTip(c.creativity))}">🎨${c.creativity}</span>`); // Creativity (2026-10-18)
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   // 2026-09-20 fix: blind/shocked/corrode badges existed in updateCardStatusDisplay's live-patch
@@ -30143,6 +30172,7 @@ function updateCardStatusDisplay(uid){
   if(c.bleed>0) badges.push(`<span class="abadge bleed">🩸${c.bleed}</span>`);
   if(c.scar>0) badges.push(`<span class="abadge scar">🗡${c.scar}</span>`);
   if(c.exposed>0) badges.push(`<span class="abadge exposed" title="${escapeAttr(exposedTip(c.exposed))}">🎯${c.exposed}</span>`); // Exposed (2026-10-15)
+  if(c.creativity>0) badges.push(`<span class="abadge creativity" title="${escapeAttr(creativityTip(c.creativity))}">🎨${c.creativity}</span>`); // Creativity (2026-10-18)
   if(c.asleep>0) badges.push(`<span class="abadge sleep">💤${c.asleep}</span>`); // (Frozen: its counters are on the icy clock now, 2026-10-14)
   if(c.paralyzed>0) badges.push(`<span class="abadge paralyze">⚡${c.paralyzed}</span>`);
   if(c.blind>0) badges.push(`<span class="abadge blind">👁${c.blind}</span>`);
@@ -31069,7 +31099,7 @@ async function resolveRoundCore(opts){
   [1,2].forEach(pid=>{
     ['left','center','right'].forEach(side=>{
       m.players[pid].row[side].forEach(c=>{
-        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
+        m.replayCards[c.uid] = {slot:c.slot, gladiatorLeader:!!c.gladiatorLeader, atk:c.atk, rallyBonus:c.rallyBonus||0, worshipBonus:c.worshipBonus||0, phaseAtk:c.phaseAtk||0, shellUntil:c.shellUntil, shellArmor:c.shellArmor||0, tempHp:c.tempHp||0, shield:c.shield||0, thornsBonus:c.thornsBonus||0, inspired:c.inspired||0, hp:c.hp, maxHp:c.maxHp, poison:c.poison||0, bleed:c.bleed||0, scar:c.scar||0, stunned:!!c.stunned, defId:c.defId, wait:c.wait||0, chained:!!c.chained, frozen:c.frozen||0, asleep:c.asleep||0, paralyzed:c.paralyzed||0, blind:c.blind||0, smoke:c.smoke||0, tipsy:c.tipsy||0, confused:c.confused||0, shocked:c.shocked||0, corrode:c.corrode||0, exposed:c.exposed||0, creativity:c.creativity||0, staggered:c.staggered||0, bound:c.bound||0, webbed:c.webbed||0, toxin:c.toxin||0, invisible:c.invisible||0, invincible:c.invincible||0, irradiation:c.irradiation||0, inBloom:!!c.inBloom, packChain:c.packChain||0, packChainBonus:c.packChainBonus||0, revivedOnce:!!c.revivedOnce};
       });
     });
   });
@@ -33223,15 +33253,30 @@ async function showEndSign(m){
       if(Math.random() < (moved.has(String(u)) ? .2 : .85)){ const i = n++; setTimeout(()=> maybeEmote(u, 'loss', {el:c, force:true}), 600 + i*260); } }); }catch(e){}
   if(kind==='victory' && hasGsap()){
     const r = battlefield.getBoundingClientRect();
+    // 2026-10-18 (package U, user: "Lags abit on victory - could be the redraw problem"): the 28 leaves used to be appended and
+    // tweened one by one (gsap.set + two gsap.to each), and every tween's start read the new leaf's computed transform: ~50 full style
+    // recalcs and layouts of the board at the very moment of the win. They are all added in one go now and fly on the Web Animations
+    // API, which reads nothing: out from the middle (power2.out), then from 0.95 s a 90 px drop as they fade (power1.in).
+    const frag = document.createDocumentFragment(), leaves = [];
     for(let i=0;i<28;i++){
       const p = document.createElement('span'); p.className = 'end-confetti';
       p.textContent = ['🍂','🍁','✨','⭐','🌰'][i%5];
-      battlefield.appendChild(p);
+      p.style.left = '50%'; p.style.top = '50%'; p.style.transform = 'translate(-50%, -50%) scale(.4)';
+      frag.appendChild(p);
       const ang = Math.random()*Math.PI*2, dist = 120 + Math.random()*Math.min(r.width, 520)*0.5;
-      gsap.set(p, {left:'50%', top:'50%', xPercent:-50, yPercent:-50, scale:.4, opacity:1});
-      gsap.to(p, {x:Math.cos(ang)*dist, y:Math.sin(ang)*dist*0.6 - 40, rotation:Math.random()*360-180, scale:1+Math.random()*.6, duration:.9+Math.random()*.5, ease:'power2.out'});
-      gsap.to(p, {y:'+=90', opacity:0, duration:.7, delay:.95, ease:'power1.in', onComplete:()=> p.remove()});
+      leaves.push([p, Math.cos(ang)*dist, Math.sin(ang)*dist*0.6 - 40, Math.random()*360-180, 1+Math.random()*.6, 900 + Math.random()*500]);
     }
+    battlefield.appendChild(frag);
+    leaves.forEach(([p, dx, dy, rot, sc, ms])=>{
+      if(!p.animate){ p.remove(); return; }
+      const tf = (e, y)=> `translate(-50%, -50%) translate(${(dx*e).toFixed(1)}px, ${(dy*e + y).toFixed(1)}px) rotate(${(rot*e).toFixed(1)}deg) scale(${(.4 + (sc - .4)*e).toFixed(2)})`;
+      const total = 950 + 700, e = 1 - Math.pow(1 - Math.min(1, 950 / ms), 2); // how far the fling (power2.out over ms) has got when the drop starts
+      const a = p.animate([
+        {offset:0, transform: tf(0, 0), opacity:1, easing:'cubic-bezier(.33,1,.68,1)'},
+        {offset: 950 / total, transform: tf(e, 0), opacity:1, easing:'cubic-bezier(.55,.085,.68,.53)'},
+        {offset:1, transform: tf(1, 90), opacity:0}], {duration: total, fill:'forwards'});
+      a.onfinish = ()=> p.remove();
+    });
   }
   const mult = Math.min(2, m.speedMult || 1);
   // 2026-10-08 review: the board re-renders right after this sign, replacing the tossed cards, so let
@@ -33558,6 +33603,33 @@ function gloryBadgesHTML(m){
     ${reward && reward.isFirstClear ? `<span class="wl-firstclear" title="${escapeAttr(TX('results.first-time-clearing-this-fight-a'))}"><span>${TX('results.first-clear')}</span></span>` : ''}
   </div>`;
 }
+// 2026-10-18 (package U, user: "Once my deck is above a certain rarity, don't show me "Put it in my deck" options in the reward menu.
+// E.g. if im holding many rares, dont ask me to put an uncommon inside. and so on"): the main deck's floor is the rarity tier that at
+// least half of its cards (every copy counts) are at or above, i.e. the lower median; a special rarity ranks as the tier it stands for
+// (RARITY_TIER_BANDS.indexOf). A won card below that floor would be a step down, so the results don't offer to put it in the deck; a
+// card at or above it still gets the offer. The card joins the collection either way. An empty deck has no floor (-1).
+function deckRarityFloor(counts){
+  const defs = getCardDefs(), tiers = [];
+  Object.keys(counts || {}).forEach(id=>{ const n = counts[id] | 0, d = defs[id]; if(n > 0 && d) for(let i = 0; i < n; i++) tiers.push(Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common'))); });
+  if(!tiers.length) return -1;
+  tiers.sort((a, b)=> b - a);
+  return tiers[Math.ceil(tiers.length / 2) - 1];
+}
+function rewardWorthDeckPrompt(id, counts){
+  const d = getCardDefs()[id]; if(!d || isEggRewardCard(d)) return false;
+  if(counts === undefined){ try{ const md = (myDecks || []).find(x=> x.id === mainDeckId) || getActiveDeck(); counts = md ? md.counts : myDeckCounts; }catch(e){ counts = null; } }
+  return Math.max(0, RARITY_TIER_BANDS.indexOf(d.rarity || 'common')) >= deckRarityFloor(counts);
+}
+// 2026-10-18 (package U, user: "Shouldn't Cocoon be a card reward under the baby/egg category? The text should say "An egg! You'll need
+// a place to hatch it.""): an egg card (egg-woodland ... egg-bug "Cocoon" ... egg-red-dragon) won as a card reward is listed with the egg
+// and the rescued baby in the Rewards block, with that line, and never with the cards or the "Put it in my deck" button.
+function isEggRewardCard(d){ return !!(d && d.hatchInto && (/^egg-/.test(d.id || '') || (d.source && d.source.egg))); }
+function eggCardRewardNote(){
+  let where = '';
+  try{ if(!featureUnlocked('nest')){ const sp = FEATURE_SPOTS.find(x=> x.key === 'nest'), mp = sp && CONQUEST_MAPS.find(x=> x.id === sp.map);
+    where = ' ' + TX('results.egg-nest-on-map', {n: sp ? sp.mapNumber : 4, where: mp ? ` (${mp.name})` : ''}); } }catch(e){}
+  return TX('results.egg-card-hatch') + where;
+}
 function rewardsPanelHTML(m){
   const secs = [];
   const reward = m.conquestRewardEarned;
@@ -33567,15 +33639,18 @@ function rewardsPanelHTML(m){
   // seen it for the first time, put a NEW! on it as well."): three blocks now. Cards won sit on the left (a first-seen one also wears
   // NEW!); on the right, "New cards seen" comes first and also carries what opened (titles, characters, maps, new fights), then one
   // Rewards block with every reward: currencies, packs, Kibble, egg, castle, dungeon key, Base growth.
-  const cards = m.rewardCardIds || m.conquestCardsEarned || [];
+  const wonIds = m.rewardCardIds || m.conquestCardsEarned || [];
+  const eggCards = wonIds.filter(id=> isEggRewardCard(getCardDefs()[id])); // 2026-10-18: eggs go with the egg / baby rewards below
+  const cards = wonIds.filter(id=> !eggCards.includes(id));
   const firstSeen = new Set(m.discoveredThisMatch || []);
   if(cards.length){
     const defs = getCardDefs();
+    const deckable = cards.filter(id=> rewardWorthDeckPrompt(id)); // 2026-10-18: no deck offer for a card below the main deck's rarity floor
     secs.push(`<div class="rw-sec rw-unlocks"><div class="rw-head">${TX('results.cards-won')}</div><div class="rw-cards" style="--n:${cards.length}">${cards.map(id=> defs[id] ? `<div class="rw-card is-unlock${firstSeen.has(id) ? ' is-first-seen' : ''}" data-tip="${escapeAttr(TX('results.now-in-your-collection', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-lock" aria-hidden="true"><i class="l">🔒</i></span>${firstSeen.has(id) ? `<span class="rw-new" aria-hidden="true">${TX('results.new')}</span>` : ''}</div>` : '').join('')}</div>
-      ${tabOpen('deck') ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: cards.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: cards.length===1?'it':'them'})}</button>` : ''}</div>`);
+      ${tabOpen('deck') && deckable.length ? `<button type="button" class="btn small rw-to-deck" id="wlToDeckBtn" title="${escapeAttr(TX('results.open-your-deck-to-swap-in', {plural_them: deckable.length===1?'it':'them'}))}">${TX('results.put-in-my-deck', {plural_them: deckable.length===1?'it':'them'})}</button>` : ''}</div>`);
   }
   // New cards seen, with what opened (2026-10-17): titles / characters / maps, then the new fights as map circles.
-  const seen = (m.discoveredThisMatch||[]).filter((id, i, a)=> a.indexOf(id)===i && !cards.includes(id));
+  const seen = (m.discoveredThisMatch||[]).filter((id, i, a)=> a.indexOf(id)===i && !wonIds.includes(id));
   const openRows = [];
   if(m.mode==='tutorial' && m.winner===1){
     const t2 = (m.tutorialStage||1) >= 2; // Tutorial Complete (2026-10-13, user): part 1 unlocks only "Tutorial Part 2", part 2 only "Conquest Map"
@@ -33585,7 +33660,7 @@ function rewardsPanelHTML(m){
       return `<span class="rw-node kind-${n.kind}" tabindex="0" data-tip="${escapeAttr(TX('results.hp', {name: n.name, v2: KIND_LABEL[n.kind]||n.kind, hqHp: n.hqHp, v4: e?` · ${e}⚡`:'', v5: n.flavor?'. '+n.flavor:''}))}"><span>${n.icon}</span></span>`; }).join('') : '';
   if(seen.length || openRows.length || fightRow){
     const defs = getCardDefs();
-    secs.push(`<div class="rw-sec rw-seen"><div class="rw-head">${seen.length ? TX('results.new-cards-seen') : TX('results.unlocked')}</div>${seen.length ? `<div class="rw-cards">${seen.map(id=> defs[id] ? `<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>` : '').join('')}</div>` : ''}${openRows.length ? `<div class="rw-row rw-open-row">${openRows.join('')}</div>` : ''}${fightRow ? `<div class="rw-row rw-fight-row">${fightRow}</div>` : ''}</div>`);
+    secs.push(`<div class="rw-sec rw-seen"><div class="rw-head">${seen.length ? TX('results.new-cards-seen') : TX('results.unlocked')}</div>${seen.length ? `<div class="rw-cards">${seen.map(id=> defs[id] ? `<div class="rw-card is-seen" data-tip="${escapeAttr(TX('results.now-in-your-codex', {v1: escapeAttr(defs[id].name)}))}">${cardTileHTML(defs[id], {inPlay:true})}<span class="rw-new" aria-hidden="true">${TX('results.new')}</span></div>` : '').join('')}</div>` : ''}${openRows.length || fightRow ? `<div class="rw-row rw-open-row">${openRows.join('')}${fightRow}</div>` : ''}</div>`); // 2026-10-18 (package U, user: "Put the title rewards in-line/in-group with skirmish unlocks."): one row, one chip look
   }
   // Packs won (2026-10-15, user: "it should be more obviously a reward in the post-battle analysis! Than it hovers up and goes
   // into the pack opening screen"): the pack itself, glowing, with its name; leaving the screen lifts it into the opener.
@@ -33619,11 +33694,14 @@ function rewardsPanelHTML(m){
     acts.push(`<span class="rw-act rw-kit" data-tip="${escapeAttr(TX('results.field-kit-your-first-conquest-wins', {of: m.conquestKitItem.of, nth: m.conquestKitItem.nth}))}"><span class="rw-kit-bag" aria-hidden="true"></span>${kd.icon} ${escapeHtml(kd.name)}</span>`); }
   if(m.conquestEggDrop){ const ek = EGG_KINDS[m.conquestEggDrop] || {}, noNest = eggNeedsNestNote(); // 2026-10-15: found before the Nest opens
     acts.push(`<span class="rw-act rw-egg" data-tip="${escapeAttr(noNest || TX('results.it-s-in-your-pack-place'))}">${ek.icon || '🥚'} ${escapeHtml(ek.name || TX('results.an-egg'))}</span>`); }
+  // 2026-10-18 (package U): egg cards won as card rewards (Cocoon and the rest), in the egg look, beside the egg and the baby
+  eggCards.forEach(id=>{ const d = getCardDefs()[id];
+    acts.push(`<span class="rw-act rw-egg rw-egg-card" data-tip="${escapeAttr(eggCardRewardNote())}">${d.icon || '🥚'} ${escapeHtml(d.name)}</span>`); });
   // 2026-10-12 (user: "When playing again - don't show the 'First cleared - already earned' section. Just show the rewards").
   if(m.conquestCastleSpare) acts.push(`<span class="rw-act rw-castle" data-tip="${escapeAttr(TX('results.fuse-it-in-the-forge-castles'))}">🏰 ${escapeHtml(m.conquestCastleSpare)}</span>`);
   if(m.dungeonOutcome && m.dungeonOutcome.keyBack) acts.push(`<span class="rw-act rw-dkey" data-tip="${escapeAttr(TX('results.a-win-gives-your-key-back'))}">${TX('results.dungeon-key-back', {n: dungeonTicketsLeft()})}</span>`); // 2026-10-16
   const itemsHTML = `${bgDust ? `<span class="rw-dust-cards" data-tip="${escapeAttr(TX('results.your-base-cards-had-nothing-left'))}">${(bg.dustSlots && bg.dustSlots.length ? bg.dustSlots : [{id:null, dust:bgDust}]).map(s=>{ const d = s.id && getCardDefs()[s.id]; return `<span class="rw-dust-card" data-dust="${s.dust}">${d ? cardTileHTML(d, {inPlay:true}) : '<span class="rw-dust-back bw-back bk-unit" aria-hidden="true"></span>'}</span>`; }).join('')}</span>` : ''}${m.conquestRareFind ? `<span class="hud-pill rank-bonus-pill" data-tip="${escapeAttr(TX('results.an-s-rank-win-on-this'))}">${TX('results.rare-find')}</span>` : ''}${m.conquestBabyEarned ? `<span class="hud-pill rw-baby" data-tip="${escapeAttr(TX('results.it-s-safe-in-your-nest', {v1: escapeAttr((NEST_TYPES[m.conquestBabyEarned]||{}).name||'')}))}">${TX('results.rescued-a-baby')}</span>` : ''}${m.conquestScaleEarned ? `<span class="hud-pill rank-bonus-pill rw-scale" data-tip="${escapeAttr(m.conquestScaleEarned.line)}">${TX('results.dragon-scale', {index: m.conquestScaleEarned.index, total: m.conquestScaleEarned.total})}</span>` : ''}${m.conquestMateriaEarned ? Object.entries(m.conquestMateriaEarned).map(([id, n])=>{ const md = getCardDefs()[id] || {}; return `<span class="hud-pill rw-materia" data-tip="${escapeAttr(TX('results.materia-for-the-blacksmith-forge'))}">${md.icon||'💠'} ${n} ${escapeHtml(md.name||id)}</span>`; }).join('') : ''}${m.conquestBaseGrowth ? (()=>{ const g = m.conquestBaseGrowth, defs = getCardDefs(); return g.levels.map(x=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-base-card-in-your-deck'))}">${TX('results.lv', {v1: escapeHtml((defs[x.id]||{}).name||x.id), to: x.to})}</span>`).join('') + g.copies.map(id=> `<span class="hud-pill rw-base-grow" data-tip="${escapeAttr(TX('results.a-spare-copy-of-a-base'))}">🧩 ${escapeHtml((defs[id]||{}).name||id)}</span>`).join(''); })() : ''}`;
-  const eggNote = m.conquestEggDrop ? eggNeedsNestNote() : '';
+  const eggNote = eggCards.length ? eggCardRewardNote() : m.conquestEggDrop ? eggNeedsNestNote() : ''; // 2026-10-18: one egg line
   if(cur.length || packRow || acts.length || itemsHTML){
     secs.push(`<div class="rw-sec rw-cheer rw-rewards"><div class="rw-head">${TX('results.rewards')}</div>${cur.length ? `<div class="rw-row rw-cur-row">${cur.map(([k,n])=>{ const meta = CURRENCY_META[k]||{}; return `<span class="hud-pill cur-pill rw-cur" data-cur="${escapeAttr(k)}" data-tip="${escapeAttr(meta.label||k)}${reward&&k!=='metal'?(reward.isFirstClear?(' ' + TX('results.first-clear-bonus')):(' ' + TX('results.repeat-clear-payout'))):''}">${meta.glyph||''} ${k==='dust' && bgDust ? `<span class="reward-count" data-target="${n}" data-bonus="${bgDust}">+${n}</span>` : rewardCountSpan(n)}<span class="cur-label">${escapeHtml(meta.label||k)}</span></span>`; }).join('')}</div>` : ''}${packRow}${itemsHTML || acts.length ? `<div class="rw-row rw-item-row">${itemsHTML}${acts.join('')}</div>` : ''}${eggNote ? `<p class="panel-sub rw-egg-note">${escapeHtml(eggNote)}</p>` : ''}</div>`);
   }
@@ -33647,12 +33725,23 @@ function nextBattleButtonHTML(m){
 function rewardsCheer(){
   const row = document.querySelector('.rw-cheer'); if(!row || !hasGsap()) return;
   try{ if(SoundKit.coin) SoundKit.coin(); }catch(e){}
+  // 2026-10-18 (package U, user: "Lags abit on victory - could be the redraw problem"): the sparks and the coins below run on the Web
+  // Animations API now. Each GSAP tween on a fresh element read its computed transform when it started, and with the new element just
+  // added (and the results' own tweens writing) every one of those reads restyled the whole page: the sparks and coins together forced
+  // ~50 full style recalcs, the largest share of the main-thread time behind the results (Chromium, 4x CPU throttle). element.animate
+  // reads nothing, and the motion is the same (power2.out ~ cubic-bezier(.33,1,.68,1), power2.in ~ cubic-bezier(.32,0,.67,0)).
+  const canAnimate = typeof Element !== 'undefined' && !!Element.prototype.animate;
   setTimeout(()=>{
+    const frag = document.createDocumentFragment(), sparks = [];
     for(let i=0;i<16;i++){
-      const s = document.createElement('span'); s.className = 'rw-spark'; s.textContent = ['✨','🍁','⭐','✨'][i%4]; row.appendChild(s);
-      const ang = Math.random()*Math.PI*2, d = 40+Math.random()*70;
-      gsap.fromTo(s, {x:0, y:0, opacity:1, scale:.5}, {x:Math.cos(ang)*d, y:Math.sin(ang)*d*0.6-20, opacity:0, scale:1.2, duration:.9+Math.random()*.4, ease:'power2.out', onComplete:()=> s.remove()});
+      const s = document.createElement('span'); s.className = 'rw-spark'; s.textContent = ['✨','🍁','⭐','✨'][i%4]; frag.appendChild(s);
+      const ang = Math.random()*Math.PI*2, d = 40+Math.random()*70; sparks.push([s, Math.cos(ang)*d, Math.sin(ang)*d*0.6-20, 900 + Math.random()*400]);
     }
+    if(!row.isConnected) return; row.appendChild(frag);
+    sparks.forEach(([s, dx, dy, ms])=>{
+      if(!canAnimate){ s.remove(); return; }
+      const a = s.animate([{transform:'translate(0px, 0px) scale(.5)', opacity:1}, {transform:`translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px) scale(1.2)`, opacity:0}], {duration:ms, easing:'cubic-bezier(.33,1,.68,1)', fill:'forwards'});
+      a.onfinish = ()=> s.remove(); });
   }, 900);
   // Coin shower (2026-10-07, effects list two): each currency's glyph rains into its pill one at a
   // time, the pill popping as each lands — the reward visibly arrives rather than just appearing.
@@ -33661,22 +33750,33 @@ function rewardsCheer(){
   // to aim at where each pill was the instant the results opened, while the card and its pills were still springing in (scaled to
   // half, shifted), so they rained onto empty space. Each coin now finds its pill when it starts falling, and skips a pill that has
   // gone (a re-render) or isn't on screen.
-  row.querySelectorAll('.rw-cur').forEach((pill, pi)=>{
-    const glyph = (EmojiStyle.textOf(pill).trim().match(/^\S+/) || ['🪙'])[0], cur = pill.getAttribute('data-cur');
-    const livePill = ()=>{ if(pill.isConnected) return pill; const p2 = cur && document.querySelector(`.winloss-conquest-rewards .rw-cur[data-cur="${cur}"]`); return p2 || null; };
+  // 2026-10-18 (package U, user: "Lags abit on victory - could be the redraw problem"): every coin used to read its pill's position in
+  // its own delayedCall, in the middle of GSAP's frame after the results' other tweens had written theirs, so each of the 32 coins
+  // forced a full style recalc of the page (about 2/3 of the results' main-thread time under a 4x CPU throttle). The pills are now
+  // read once per frame at the very start of GSAP's tick, before any tween writes (as bubbleFollowTick does), and the coins use that.
+  const pillRects = new Map(); let pillRectsOn = true;
+  const pills = [...row.querySelectorAll('.rw-cur')];
+  const livePillOf = (pill, cur)=>{ if(pill.isConnected) return pill; const p2 = cur && document.querySelector(`.winloss-conquest-rewards .rw-cur[data-cur="${cur}"]`); return p2 || null; };
+  const readPills = ()=>{ if(!pillRectsOn) return; pills.forEach(pill=>{ const cur = pill.getAttribute('data-cur'), p = livePillOf(pill, cur); pillRects.set(pill, p ? {p, r: p.getBoundingClientRect()} : null); }); };
+  gsap.ticker.add(readPills, false, true);
+  gsap.delayedCall(0.75 + pills.length*0.25 + 8*0.09 + 0.2, ()=>{ pillRectsOn = false; gsap.ticker.remove(readPills); });
+  pills.forEach((pill, pi)=>{
+    const glyph = (EmojiStyle.textOf(pill).trim().match(/^\S+/) || ['🪙'])[0];
     const n = 8;
     for(let i = 0; i < n; i++){
       const t0 = 0.75 + pi*0.25 + i*0.09;
       gsap.delayedCall(t0, ()=>{
-        const p = livePill(); if(!p) return; const pr = p.getBoundingClientRect(); if(!pr.width || pr.bottom < 0 || pr.top > innerHeight) return;
+        const got = pillRects.get(pill); if(!got) return; const p = got.p, pr = got.r; if(!pr.width || pr.bottom < 0 || pr.top > innerHeight) return;
         const c = document.createElement('span'); c.className = 'coin-drop'; c.textContent = glyph; c.setAttribute('aria-hidden','true');
         document.body.appendChild(c);
         const x = pr.left + pr.width*(0.2 + Math.random()*0.6), y = pr.top + pr.height/2;
-        gsap.fromTo(c, {x: x + (Math.random()*60 - 30), y: y - 140 - Math.random()*60, opacity:0, rotation: Math.random()*180 - 90, scale:.9},
-          {x, y, opacity:1, rotation:0, scale:.6, duration:.42, ease:'power2.in', onComplete:()=>{
-            c.remove(); gsap.fromTo(p, {scale:1.12}, {scale:1, duration:.18, ease:'power2.out', clearProps:'scale'});
-            try{ if(i % 2 === 0 && SoundKit.coin) SoundKit.coin(); }catch(e){}
-          }});
+        const x0 = x + (Math.random()*60 - 30), y0 = y - 140 - Math.random()*60, r0 = Math.random()*180 - 90;
+        const landed = ()=>{ c.remove(); if(canAnimate && p.isConnected) p.animate([{scale:'1.12'}, {scale:'1'}], {duration:180, easing:'cubic-bezier(.33,1,.68,1)'});
+          try{ if(i % 2 === 0 && SoundKit.coin) SoundKit.coin(); }catch(e){} };
+        if(!canAnimate){ landed(); return; }
+        const tf = (tx, ty, r, sc)=> `translate(-50%, -50%) translate(${tx.toFixed(1)}px, ${ty.toFixed(1)}px) rotate(${r.toFixed(1)}deg) scale(${sc})`; // .coin-drop centres itself (-50%)
+        const a = c.animate([{transform:tf(x0, y0, r0, .9), opacity:0}, {transform:tf(x, y, 0, .6), opacity:1}], {duration:420, easing:'cubic-bezier(.32,0,.67,0)', fill:'forwards'});
+        a.onfinish = landed;
       });
     }
   });
@@ -33815,8 +33915,9 @@ function wireWinLossRewardAnim(){
   if(!rewardsEl) return;
   const pieces = Array.from(rewardsEl.children);
   if(!pieces.length) return;
-  gsap.set(pieces, {opacity:0, scale:.5, y:10});
-  gsap.to(pieces, {opacity:1, scale:1, y:0, duration:.5, ease:'back.out(2.6)', stagger:.13, delay:.5});
+  // 2026-10-18 (package U, "Lags abit on victory"): on the Web Animations API, as the card's entrance in renderMatchUI: gsap.set read
+  // each piece's computed transform right after the rebuild, one full layout per piece. back.out(2.6) ~ cubic-bezier(.34,2.1,.64,1).
+  if(pieces[0].animate) pieces.forEach((el, i)=> el.animate([{opacity:0, transform:'translateY(10px) scale(.5)'}, {opacity:1, transform:'none'}], {duration:500, delay:500 + i*130, easing:'cubic-bezier(.34,2.1,.64,1)', fill:'backwards'}));
   // 2026-10-10 (user: "Reward numbers - they slowly count up from 0 to their number"): every "+N" sits at +0 until the
   // card-reveal stage has cleared (it used to finish counting hidden behind it), then climbs slowly (about 1-2 s, a
   // little longer for bigger payouts), easing out, with a soft tick as it goes.
@@ -33901,15 +34002,21 @@ function rewardCardsReveal(){
 }
 function lockShards(lock){
   const r = lock.getBoundingClientRect();
+  // 2026-10-18 (package U, "Lags abit on victory"): the shards fly on the Web Animations API (a GSAP tween per new shard read its
+  // computed transform, one page restyle each, 5 per padlock on the results); same path, power2.out ~ cubic-bezier(.33,1,.68,1).
+  const x0 = r.left + r.width/2, y0 = r.top + r.height/2;
   ['🔒','✨','✨','·','✨'].forEach((g, i)=>{
     const p = document.createElement('span'); p.className = 'lock-shard'; p.textContent = g; p.setAttribute('aria-hidden','true'); document.body.appendChild(p);
-    const ang = (i/5)*Math.PI*2 + Math.random()*.5, d = 30 + Math.random()*30;
-    gsap.fromTo(p, {x:r.left + r.width/2, y:r.top + r.height/2, opacity:1, scale: i ? .7 : .55, rotation:0},
-      {x:`+=${Math.cos(ang)*d}`, y:`+=${Math.sin(ang)*d + 30}`, rotation:(Math.random()*2-1)*180, opacity:0, duration:.75, ease:'power2.out', onComplete:()=> p.remove()});
+    const ang = (i/5)*Math.PI*2 + Math.random()*.5, d = 30 + Math.random()*30, sc = i ? .7 : .55, rot = (Math.random()*2-1)*180;
+    if(!p.animate){ p.remove(); return; }
+    p.animate([{transform:`translate(${x0.toFixed(1)}px, ${y0.toFixed(1)}px) scale(${sc})`, opacity:1},
+      {transform:`translate(${(x0 + Math.cos(ang)*d).toFixed(1)}px, ${(y0 + Math.sin(ang)*d + 30).toFixed(1)}px) rotate(${rot.toFixed(1)}deg) scale(${sc})`, opacity:0}],
+      {duration:750, easing:'cubic-bezier(.33,1,.68,1)', fill:'forwards'}).onfinish = ()=> p.remove();
   });
 }
 // 2026-10-15: names for the statusEnd log line (the engine logs a status running out).
 // Exposed (2026-10-15) (2026-10-15, user: "I like expose. It should give a debuff 'exposed'. This unit takes +1 damage and attacks on this unit don't miss.")
+function creativityTip(n){ return TX('ui.creativity-tip', {n}); } // 2026-10-18 (package U): Creativity counters, reserved
 function exposedTip(n){ return `Exposed ${n}: the next ${n} hit${n===1 ? '' : 's'} on it ${n===1 ? 'is a crit' : 'are crits'} (double damage), 1 counter each, and attacks at it can't miss.`; } // 2026-10-16: counters
 const STATUS_END_NAMES = {webbed:'Web', poison:'Poison', bleed:'Bleed', decay:'Decay', frozen:'Freeze', asleep:'Sleep', paralyzed:'Paralyze', stunned:'Stun', staggered:'Stagger', blind:'Blind', tipsy:'Tipsy', confused:'Confusion', shocked:'Shock', corrode:'Corrode', exposed:'Exposed', daunt:'Daunt', wither:'Wither', irradiation:'Irradiation', smoke:'Smoke', scar:'Scar', petrified:'Petrification', bound:'Bound', invisible:'Invisible', invincible:'Invincible'}; // + W2 (2026-10-16)
 function logText(ev){
@@ -34032,6 +34139,7 @@ function logText(ev){
           herbBane: ()=> `⚗️ The Herb Refinery's bitter brew splashes ${nm(ev.targetDefId)} (${ev.amount}).`, castleSpawn: ()=> `🏰 ${ev.amount > 1 ? ev.amount + '× ' : ''}${nm(ev.targetDefId)} ${ev.amount > 1 ? 'pour' : 'slips'} out of the castle.`}[ev.kind];
         if(castleTxt) return {cls: ev.kind==='herbHeal' ? 'heal' : '', text: castleTxt()}; }
       if(ev.kind === 'exposedHit') return {cls:'', text:`🎯 ${nm(ev.targetDefId)} is Exposed: ${ev.crit === false ? 'the swing had crit already' : 'a crit'}, 1 counter used${ev.amount ? ` (${ev.amount} left)` : ' (none left)'}.`}; // 2026-10-15; a crit per counter (2026-10-16)
+      if(ev.kind === 'creativity') return {cls:'', text:TX('ui.creativity-log', {who: nm(ev.attDefId), target: nm(ev.targetDefId), n: ev.amount||1})}; // Creative N (2026-10-18)
       if(ev.kind === 'exposeFade') return {cls:'', text:`🎯 No enemy units left to strike ${nm(ev.targetDefId)}: its Expose ${ev.amount > 1 ? ev.amount + ' counters fade' : 'counter fades'}.`}; // 2026-10-17
       const kindText = {
         surge: `surges with the mountain's fire: +${ev.atk} Attack, +${ev.hp} Health 🌋`,
@@ -36749,6 +36857,7 @@ function renderVfxForEvent(ev){
     else if(ev.kind==='frostbite'){ if(el) floatText(el, `🥶 Frostbite +${ev.amount}/+${ev.amount}`, 'buff'); try{ SoundKit.freezeChime(); }catch(e){} }
     else if(ev.kind==='firstBlood'){ if(el) floatText(el, `🩸 First blood +${ev.amount}`, 'debuff'); try{ SoundKit.backstabSlice ? SoundKit.backstabSlice() : null; }catch(e){} }
     else if(ev.kind==='octolash'){ if(el) floatText(el, `🐙 Octolash ×${ev.amount}`, 'quick'); }
+    else if(ev.kind==='creativity'){ if(el) floatText(el, `🎨 +${ev.amount||1}`, 'buff'); if(rc){ rc.creativity = ev.total != null ? ev.total : (rc.creativity||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Creative N (2026-10-18)
     else if(ev.kind==='expose'){ SoundKit.exposeTone(); if(el) floatText(el, '🎯 Exposed', 'debuff'); if(rc){ rc.exposed = (rc.exposed||0) + (ev.amount||1); try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // Exposed (2026-10-15)
     else if(ev.kind==='exposedHit'){ if(rc){ rc.exposed = ev.amount||0; try{ updateCardStatusDisplay(ev.targetUid); }catch(e){} } } // one Exposed hit used up (its "🎯 +1" chip is FX.B.exposeCash)
     // 2026-10-17 (user: "When there are no units on the opposing side, the other side's expose counters are removed - effect fades off."):
@@ -38220,7 +38329,7 @@ function scaleTrailScreenFree(){
   try{
     if(typeof matchState !== 'undefined' && matchState) return false;
     if(document.querySelector('.winloss-overlay')) return false;
-    const po = document.getElementById('packOpenOverlay'); if(po && !po.hidden) return false;
+    if(packRevealBusy()) return false; // 2026-10-18 (package U): not over a pack, a queued one, or one floating up into the opener
     const ag = document.getElementById('authGateOverlay'); if(ag && !ag.hidden) return false;
     return true;
   }catch(e){ return false; }
@@ -41080,6 +41189,13 @@ function creditFactionPack(id){
 // The reveal queue: what was credited, shown once no fight is on screen (a pack won in a fight opens when you leave the
 // results), one pack after another; several of the same pack go through the bundle table (Open all).
 const packRevealQueue = []; let packRevealTimer = null;
+// 2026-10-18 (package U, user: "The Swap UI popping up after 0-2 should wait for my pack opening animation first, before popping up once
+// i finished my pack opening. Currently both UI come out at the same time."): a reveal is "in flight" from the moment it leaves the queue
+// (the pack floats up out of the results for ~1 s before the opener exists) until the opener closes. The map's swap check (600 ms after
+// it renders) used to land in that gap, with the queue empty and no opener yet. packRevealBusy() is the one gate for every overlay that
+// must wait for the packs (the deck swap, the Scale Trail finale); the opener's onClose offers the swap once the last pack is done.
+let packRevealInFlight = false;
+function packRevealBusy(){ const ov = document.getElementById('packOpenOverlay'); return packRevealInFlight || !!(ov && !ov.hidden) || packRevealQueue.length > 0; }
 function queuePackReveal(pack, o){ packRevealQueue.push({pack, o}); schedulePackReveals(); }
 function packRevealReady(){
   const ov = document.getElementById('packOpenOverlay'); if(ov && !ov.hidden) return false;
@@ -41126,9 +41242,11 @@ function schedulePackReveals(){
     const first = packRevealQueue[0], same = [], rest = [];
     packRevealQueue.splice(0).forEach(b=> (b.pack.id === first.pack.id ? same : rest).push(b));
     packRevealQueue.push(...rest);
+    packRevealInFlight = true; // 2026-10-18: until this opener closes (see packRevealBusy)
     const open = ()=>{ try{ SoundKit.tapeRip && SoundKit.tapeRip(); }catch(e){}
-      openPackAnimation(first.pack, same.map(b=> b.o), {bundle: same.length > 1 ? same.length : 0, oneByOne:true, moreAfter: rest.length,
-        onClose: ()=>{ schedulePackReveals(); if(!packRevealQueue.length) setTimeout(()=>{ try{ maybeOfferDeckSwap(); }catch(e){} }, 400); }}); };
+      try{ openPackAnimation(first.pack, same.map(b=> b.o), {bundle: same.length > 1 ? same.length : 0, oneByOne:true, moreAfter: rest.length,
+        onClose: ()=>{ packRevealInFlight = false; schedulePackReveals(); if(!packRevealQueue.length) setTimeout(()=>{ try{ maybeOfferDeckSwap(); }catch(e){} }, 400); }}); }
+      catch(e){ packRevealInFlight = false; console.error('[Bramblewood] pack reveal', e); schedulePackReveals(); } };
     floatRewardPackUp(open); };
   packRevealTimer = setTimeout(tick, 80);
 }
