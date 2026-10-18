@@ -95,7 +95,8 @@ function claimableReward(def, state, owner, now){
 //   bossAtk / bossHp  +N Attack / +N Health on every boss card (its deck, its boss unit, its guards and the Commons it calls in)
 //   field           a field effect for this stage: a field-effect id or rule key ("landslide"), a list of them, or a rules object;
 //                   it goes on top of the raid's and the part's own field (a key it names replaces theirs)
-//   extraVolley     the boss's back two rows strike N times a round too (the volley your ally rows already make: half Attack)
+//   extraVolley     the boss's back two rows strike N extra times as each round starts (half Attack, on top of every reserve unit's
+//                   own strike in combat, 2026-10-18)
 //   castleHpPct     your (the raiders') castle's max Health changes by N% (-10 = 10% less)
 const STAGE_NUM_KEYS = {bossAtk:[-20, 50], bossHp:[-50, 200], extraVolley:[0, 3], castleHpPct:[-90, 200]};
 function stageFieldOf(v, resolve){
@@ -139,9 +140,10 @@ function describeStage(stage, opts){
   if(r.bossAtk && r.bossHp) bits.push(`every boss card ${sg(r.bossAtk)} Attack, ${sg(r.bossHp)} Health`);
   else if(r.bossAtk) bits.push(`every boss card ${sg(r.bossAtk)} Attack`);
   else if(r.bossHp) bits.push(`every boss card ${sg(r.bossHp)} Health`);
-  if(r.extraVolley) bits.push(r.extraVolley === 1 ? 'its back two rows strike too, once a round' : `its back two rows strike ${r.extraVolley} times a round`);
+  // 2026-10-18: every back-row unit already strikes once in each round's combat (the engine's reserveActs), so a stage's volley is extra
+  if(r.extraVolley) bits.push(r.extraVolley === 1 ? 'its back two rows strike an extra time as each round starts' : `its back two rows strike ${r.extraVolley} extra times as each round starts`);
   if(r.field){ const names = [...new Set(Object.keys(r.field).filter(k=> r.field[k] !== false).map(k=> nm(k)).filter(Boolean))]; if(names.length) bits.push(names.join(' and ') + ' on the field'); }
-  if(r.castleHpPct) bits.push(`your castle ${r.castleHpPct > 0 ? '+' : '−'}${Math.abs(r.castleHpPct)}% Health`);
+  if(r.castleHpPct) bits.push(`your bramble ${r.castleHpPct > 0 ? '+' : '−'}${Math.abs(r.castleHpPct)}% Health`);
   if(!bits.length) return '';
   const s = bits.join('; '); return s.charAt(0).toUpperCase() + s.slice(1) + '.';
 }
@@ -168,9 +170,21 @@ function fightFor(def, state, partId, opts){
 function scaleCastle(hp, pct){ hp = Number(hp) || 0; return pct ? Math.max(1, Math.round(hp * (1 + pct / 100))) : hp; }
 // A boss card's copy under a stage: +bossAtk Attack and +bossHp Health (never below 0 Attack / 1 Health). Returns a new def.
 function stageCard(d, f){ if(!d || !f || !(f.bossAtk || f.bossHp)) return d; return Object.assign({}, d, {attack: Math.max(0, (Number(d.attack) || 0) + (f.bossAtk || 0)), health: Math.max(1, (Number(d.health) || 1) + (f.bossHp || 0))}); }
-// Each attempt lasts a fixed number of turns (part `fight.rounds`, else raid `fightRounds`, else 12):
+// Each attempt lasts a fixed number of turns (part `fight.rounds`, else raid `fightRounds`, else 20):
 // the part's deck is finite, so without a clock any deck would grind its castle down eventually.
-function fightRounds(def, p){ return Math.max(3, ((p && p.fight && p.fight.rounds) || def.fightRounds || 12) | 0); }
+// 2026-10-18 (owner 11:46: "Raid is changed to 20-turn limit (or your death)"): the default went from 12 to 20.
+const FIGHT_ROUNDS_DEFAULT = 20;
+function fightRounds(def, p){ return Math.max(3, ((p && p.fight && p.fight.rounds) || (def && def.fightRounds) || FIGHT_ROUNDS_DEFAULT) | 0); }
+// The super whales' might (2026-10-18, owner 11:46: "The super whales have hp% based on the remaining HP of the raid maybe? They
+// can start with additional HP beyond their peers up to almost 100+"): the raid's boss unit (the Kraken Brute and co.) carries
+// +round(bossHpBonusMax × the share of the raid's total Health still standing) Health on top of its peer-scaled Health: about
+// +100 on a fresh Goliath, about +0 on a nearly-dead one. The state is whatever raidState was given (the cloud's attempts, or
+// only this device's when offline). bossHpBonusMax is clamped to 0–1000; unset = no bonus.
+function bossHpBonus(def, state){
+  const max = Math.max(0, Math.min(1000, Math.round(Number(def && def.bossHpBonusMax) || 0)));
+  const fraction = state && state.total > 0 ? Math.max(0, Math.min(1, (Number(state.remaining) || 0) / state.total)) : 1;
+  return {bonus: Math.round(max * fraction), fraction, max};
+}
 function validateRaid(def, defs){
   const errs = [];
   if(!def || !def.id) errs.push('missing id');
@@ -234,7 +248,7 @@ function bossReinforce(E, pl, pool, rnd, opts){
   return out;
 }
 
-const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, contributionFor, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
+const api = {CYCLE_MS, cycleOf, partTotal, fightRounds, FIGHT_ROUNDS_DEFAULT, bossHpBonus, contributionFor, raidState, contributionTier, claimableReward, fightFor, stageRules, setStageRules, describeStage, fieldRulesFor, scaleCastle, stageCard, validateRaid, allySlot, raidCommonPool, bossReinforce, REINFORCE};
 if(typeof module !== 'undefined' && module.exports) module.exports = api;
 if(root) root.BramblewoodRaid = api;
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : null));

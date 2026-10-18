@@ -594,7 +594,7 @@ M.castleDrop = function(el, opts){
       ring(c.x, y - 6, {color:'#d8d4c8', size:90, dur:.45, glow:false}); })
     .to(cs, {scaleY:.78, scaleX:1.14, duration:.07}).to(cs, {scaleY:1, scaleX:1, duration:.35, ease:'elastic.out(1.2, .4)'})
     .to(fl, {scale:1, duration:.25, ease:'back.out(3)'}, '-=.25').to(fl, {rotation:12, duration:.15, yoyo:true, repeat:3}, '<')
-    .add(()=> label(c.x, y - 70, opts.text || 'New castle!', 'gold'), '<')
+    .add(()=> label(c.x, y - 70, opts.text || 'New bramble!', 'gold'), '<')
     .to([cs, fl], {opacity:0, y:'-=8', duration:.3}, '+=.6'));
 };
 // Hero skill picked: the skill badge stamps onto the hero.
@@ -1524,7 +1524,7 @@ H.toast = (t, message, kind, env)=>{
   if(!medOK(env)) return;
   const m = String(message || '');
   later(()=>{ if(!alive(t)) return;
-    if(/^🏰 A (new|spare) castle/.test(m)) M.castleDrop(t, {text:/spare/i.test(m) ? 'Spare castle' : 'New castle!'});
+    if(/^🏰 A (new|spare) (?:bramble|castle)/.test(m)) M.castleDrop(t, {text:/spare/i.test(m) ? 'Spare bramble' : 'New bramble!'}); // 2026-10-18: the base is officially the bramble (owner); old wording still matches
     else if(/^👑/.test(m)) M.bossLeader(t);
     else if(/^🎒/.test(m)) M.inventoryNew(t);
     else if(/^⚡ Max Energy is now/.test(m)){ const p = energyPill(); if(p) M.energyUpgrade(p); const pips = $('.stamina-panel .wp-stam-pips, .wp-stam-pips'); if(pips && alive(pips)) M.stamina(pips); }
@@ -1612,7 +1612,7 @@ H.resultsShown = (card, m, env)=>{
   add(c=> c.querySelector('.rw-materia'), el=> M.materiaDrop(el));
   // 2026-10-17: the egg and the castle are chips in the one Rewards block now (rewardsPanelHTML), found by their own class.
   add(c=> c.querySelector('.rw-act.rw-egg') || (()=>{ const s = sec(c, 'Found'); return s && s.querySelector('.rw-act'); })(), el=> M.nestEggDrop(el, {icon:el.textContent.trim().split(' ')[0] || '🥚'}));
-  add(c=> c.querySelector('.rw-act.rw-castle') || (()=>{ const s = sec(c, 'Spare castle'); return s && s.querySelector('.rw-act'); })(), el=> M.castleDrop(el, {text:/New castle/.test(el.textContent) ? 'New castle!' : 'Spare castle'}));
+  add(c=> c.querySelector('.rw-act.rw-castle') || (()=>{ const s = sec(c, 'Spare bramble'); return s && s.querySelector('.rw-act'); })(), el=> M.castleDrop(el, {text:/New (?:bramble|castle)/.test(el.textContent) ? 'New bramble!' : 'Spare bramble'}));
   add(c=> [...c.querySelectorAll('.rw-act')].find(x=> /Your character/.test(x.getAttribute('data-tip') || '')), el=> M.avatarUnlock(el));
   add(c=> c.querySelector('.rw-card.is-seen'), (_, c)=> [...c.querySelectorAll('.rw-card.is-seen')].slice(0, 3).forEach((s, i)=> later(()=> M.codexNew(s), i*180)));
   add(c=> c.querySelector('.winloss-achv'), el=> M.achvUnlocked(el));

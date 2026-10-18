@@ -24,23 +24,31 @@ function tideWater(ctx, kind){ const bf = ctx.board.el; bf.classList.toggle('tid
 function hover(el, cls){ const t = el.querySelector('.card-tile'); if(!t || el.querySelector('.fly-body')) return; const b = document.createElement('div'); b.className = 'fly-body' + (cls === 'is-floating' ? ' float-body' : '');
   t.parentNode.insertBefore(b, t); b.appendChild(t); const s = document.createElement('span'); s.className = 'fly-shadow' + (cls === 'is-floating' ? ' is-float' : ''); el.insertBefore(s, b); el.classList.add(cls); }
 
-// ---- Wave (note 22)
-R({id:'sk-wave', stage:'board', inGameHook:'renderVfxForEvent (arena_app.js) on wave {dir, moves, cols} → the board re-renders, then SkillFX.waveRide(card, {from: its old rect}); blocked → SkillFX.waveBob',
-  note:'2026-10-17: the card used to teleport (the old .wave-pushed CSS nudge overrode the board\'s glide). A Wave with no fixed way leans inward 55/45, goes the other way when a unit is in the way, and bobs when boxed in.',
+// ---- Wave (note 22). 2026-10-18 (user: "I think Wave and Awash refer to the same skill. We can call all of them wave for now."): Wave N,
+// one push for the skill and the field: it rides N columns, and a unit in the way is crashed into (both take N). Nothing swaps now.
+// The lab's rows are packed, so a ride here slides the neighbours over; in the game the unit rides into free columns.
+// A crash: the pushed unit lurches into the one beside it (SkillFX.waveBob with that one as the touch), then both show the N (washCrash).
+const crash = (ctx, t, other, dir, n)=>{ S().waveBob(t, {dir, scale:zoomOf(t), touch:[other].filter(Boolean)});
+  setTimeout(()=>{ if(!ctx.alive()) return; ctx.sound('thud'); ctx.float(t, '💥 -' + n, 'dmg'); if(other) ctx.float(other, '💥 -' + n, 'dmg'); }, 380); };
+R({id:'sk-wave', stage:'board', inGameHook:'renderVfxForEvent (arena_app.js) on wave {dir, moves, cols, crashUid} → the board re-renders, then SkillFX.waveRide(card, {from: its old rect, touch: the crashed-into unit}); blocked → SkillFX.waveBob; then washCrash → both shake and show the N',
+  note:'2026-10-17: the card used to teleport (the old .wave-pushed CSS nudge overrode the board\'s glide). 2026-10-18: Wave N: N columns, a crash hurts both for N, no swaps; with no fixed way it leans inward 55/45 and only the board\'s edge turns it back.',
   variants:[
-    {key:'C', label:'2026-10-17: it rides the crest one column over (a fixed-way Wave: the two swap, the other rocks)', play:ctx=>{ ctx.sound('splash'); const t = foe(ctx)[1]; ctx.float(t, '〰️ →', 'quick'); ride(ctx, t, 1, {touch:true}); return ctx.wait(1500); }},
-    {key:'D', label:'2026-10-17: Awash 2: it rides two columns along', play:ctx=>{ ctx.sound('splash'); const t = foe(ctx)[0]; ctx.float(t, '〰️ → 2', 'quick'); ride(ctx, t, 2); return ctx.wait(1600); }}]});
+    {key:'C', label:'2026-10-17: it rides the crest one column over (the ride; the lab\'s packed row slides its neighbour over)', play:ctx=>{ ctx.sound('splash'); const t = foe(ctx)[1]; ctx.float(t, '〰️ →', 'quick'); ride(ctx, t, 1); return ctx.wait(1500); }},
+    {key:'D', label:'2026-10-17: Wave 2: it rides two columns along', play:ctx=>{ ctx.sound('splash'); const t = foe(ctx)[0]; ctx.float(t, '〰️ → 2', 'quick'); ride(ctx, t, 2); return ctx.wait(1600); }},
+    {key:'E', label:'2026-10-18: Wave 2 into a unit: it slams into the one beside it, and both take 2', play:ctx=>{ ctx.sound('splash'); const f = foe(ctx), t = f[1] || f[0], o = f[2] || f[0];
+      ctx.float(t, '〰️ → 2', 'quick'); crash(ctx, t, o !== t ? o : null, 'right', 2); return ctx.wait(1700); }}]});
 R({id:'sk-wave-bob', stage:'board', inGameHook:'renderVfxForEvent (arena_app.js) on wave {blocked, bob, touchUids} → SkillFX.waveBob(card, {touch})',
-  variants:[{key:'A', label:'Boxed in: it bobs up and down as the crest rolls past; the units beside it rock a little', play:ctx=>{ ctx.sound('splash'); const f = foe(ctx), t = f[1] || f[0];
+  note:'2026-10-18: with Wave N crashing into units, a bob is rare: a packed row with the unit alone, or a fixed-way Wave at the board\'s edge (blocked).',
+  variants:[{key:'A', label:'Blocked: it bobs up and down as the crest rolls past; the units beside it rock a little', play:ctx=>{ ctx.sound('splash'); const f = foe(ctx), t = f[1] || f[0];
     ctx.float(t, '〰️ Bob', 'quick'); S().waveBob(t, {dir:'right', scale:zoomOf(t), touch:[f[0], f[2]].filter(x=> x && x !== t)}); return ctx.wait(1600); }}]});
-// ---- Awash (note 11)
-R({id:'fld2-awash', stage:'board', inGameHook:'field2Vfx (arena_app.js) on fieldTick {field:\'awash\', uid, n} ("〰️ Awash N"), then the wave event {awash:true}: SkillFX.waveRide / waveBob',
-  note:'rules.awash: each round from round 2 one random unit is washed 1–3 columns (Wave\'s rules for a push with no fixed way).',
+// ---- The Wave field (note 11; rules.awash, the key kept for saves: the word "Awashed" is reserved for a future mechanic, 2026-10-18)
+R({id:'fld2-awash', stage:'board', inGameHook:'field2Vfx (arena_app.js) on fieldTick {field:\'awash\', uid, n} ("〰️ Wave N"), then the wave event {awash:true}: SkillFX.waveRide, and washCrash on a crash',
+  note:'rules.awash ("Wave" on screen): each round from round 2 one random unit rides a Wave 1–3 columns (Wave N with no fixed way); a unit in the way is crashed into, both take N.',
   variants:[
-    {key:'A', label:'Awash 1: one column along', play:ctx=>{ ctx.sound('splash'); const t = mine(ctx)[1]; ctx.float(t, '〰️ Awash 1', 'quick'); ride(ctx, t, -1); return ctx.wait(1500); }},
-    {key:'B', label:'Awash 3: it rides as far as the row goes', play:ctx=>{ ctx.sound('splash'); const t = mine(ctx)[0]; ctx.float(t, '〰️ Awash 3', 'quick'); ride(ctx, t, 3); return ctx.wait(1700); }},
-    {key:'C', label:'Boxed in: it bobs where it is', play:ctx=>{ ctx.sound('splash'); const m = mine(ctx), t = m[1] || m[0]; ctx.float(t, '〰️ Awash 2', 'quick');
-      S().waveBob(t, {dir:'left', scale:zoomOf(t), touch:[m[0], m[2]].filter(x=> x && x !== t)}); return ctx.wait(1600); }}]});
+    {key:'A', label:'Wave 1: one column along', play:ctx=>{ ctx.sound('splash'); const t = mine(ctx)[1]; ctx.float(t, '〰️ Wave 1', 'quick'); ride(ctx, t, -1); return ctx.wait(1500); }},
+    {key:'B', label:'Wave 3: it rides as far as the row goes', play:ctx=>{ ctx.sound('splash'); const t = mine(ctx)[0]; ctx.float(t, '〰️ Wave 3', 'quick'); ride(ctx, t, 3); return ctx.wait(1700); }},
+    {key:'D', label:'2026-10-18: Wave 2 with a unit right beside it: it crashes into it, both take 2', play:ctx=>{ ctx.sound('splash'); const m = mine(ctx), t = m[1] || m[0], o = m[0] !== t ? m[0] : m[2];
+      ctx.float(t, '〰️ Wave 2', 'quick'); crash(ctx, t, o || null, 'left', 2); return ctx.wait(1700); }}]});
 // ---- Boomerang (note 10)
 const throwAndReturn = (ctx, whiff)=>{ const a = mine(ctx)[1], t = foe(ctx)[1]; ctx.sound('boomerangWhirr'); S().boomerangThrow(a, t, {flight:420, key:'lab'});
   setTimeout(()=>{ if(!ctx.alive()) return; ctx.float(a, '🪃 Boomerang returns!', 'quick'); ctx.sound('boomerangWhirr');
