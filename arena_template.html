@@ -10732,6 +10732,10 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   /* 2026-10-17: 1.2em, the size an emoji font glyph shows at (at 1em the bundled sets looked a size smaller than System) */
   img.tw-emoji{display:inline-block; width:1.2em; height:1.2em; margin:0 .02em; vertical-align:-.22em; pointer-events:none;}
   .card-tile .ico > img.tw-emoji, .card-tile .ico .ico-emoji-fallback img.tw-emoji{width:1em; height:1em; margin:0;}
+  /* 2026-10-18 (emoji speed): an emoji from the set's sprite sheet. Its src is a shared 1x1 transparent GIF; the picture is the
+     sheet as the background, placed by the generated #bwEmojiAtlas stylesheet (background-image/-size on img.emo, one
+     background-position per .e-<key>). Percent sizes, so it scales with the img like the SVG did. */
+  img.tw-emoji.emo{background-repeat:no-repeat; background-color:transparent; background-origin:border-box; background-clip:border-box; padding:0; border:0;}
   .ico-fireball{display:inline-block; position:relative; width:.86em; height:.86em; margin:0 .1em 0 .18em; vertical-align:-.08em; border-radius:50%;
     background:radial-gradient(circle at 40% 38%, #fffbe0 0, #ffd54a 26%, #ff8a1e 55%, #d8380e 85%); box-shadow:0 0 .25em rgba(255,130,30,.8);}
   .ico-fireball::before{content:''; position:absolute; right:68%; top:8%; width:.62em; height:.5em; border-radius:60% 0 0 60% / 50% 0 0 50%;

@@ -10777,6 +10777,10 @@ body.cave-screen .conquest-map-canvas > .cave-dark.is-masked{border-radius:0;}
   /* 2026-10-17: 1.2em, the size an emoji font glyph shows at (at 1em the bundled sets looked a size smaller than System) */
   img.tw-emoji{display:inline-block; width:1.2em; height:1.2em; margin:0 .02em; vertical-align:-.22em; pointer-events:none;}
   .card-tile .ico > img.tw-emoji, .card-tile .ico .ico-emoji-fallback img.tw-emoji{width:1em; height:1em; margin:0;}
+  /* 2026-10-18 (emoji speed): an emoji from the set's sprite sheet. Its src is a shared 1x1 transparent GIF; the picture is the
+     sheet as the background, placed by the generated #bwEmojiAtlas stylesheet (background-image/-size on img.emo, one
+     background-position per .e-<key>). Percent sizes, so it scales with the img like the SVG did. */
+  img.tw-emoji.emo{background-repeat:no-repeat; background-color:transparent; background-origin:border-box; background-clip:border-box; padding:0; border:0;}
   .ico-fireball{display:inline-block; position:relative; width:.86em; height:.86em; margin:0 .1em 0 .18em; vertical-align:-.08em; border-radius:50%;
     background:radial-gradient(circle at 40% 38%, #fffbe0 0, #ffd54a 26%, #ff8a1e 55%, #d8380e 85%); box-shadow:0 0 .25em rgba(255,130,30,.8);}
   .ico-fireball::before{content:''; position:absolute; right:68%; top:8%; width:.62em; height:.5em; border-radius:60% 0 0 60% / 50% 0 0 50%;
@@ -35747,6 +35751,15 @@ function iconHTML(key, fallbackEmoji, opts){
 // textareas, selects, <svg>/<canvas>, contenteditable or .no-emoji. An emoji the set doesn't have stays the system one. Tooltips,
 // title= and SKILL_ICON text stay plain emoji (screen readers need text); the <img>'s alt holds the emoji, so restore() and
 // EmojiStyle.textOf(el) give the text back.
+// 2026-10-18 (Codex profiling: each emoji <img> was its own small SVG document, about 8 per card, laid out, painted and
+// re-rasterised on every frame; the biggest render cost left in the Codex and on the board and hand): each set also ships as
+// ONE sprite sheet, assets/emoji/<set>-atlas.webp (64 px cells, drawn from the same SVGs by tools/emoji/build_atlas.py at
+// assemble time). An emoji in the sheet is still an <img class="emoji tw-emoji emo e-<key>" alt="<emoji>">, so screen readers,
+// copy, restore(), textOf() and the translator see what they did, but its src is one shared 1x1 transparent GIF and the picture
+// is the sheet as its background (one decoded bitmap for the whole game, no SVG to lay out or rasterise). The sheet's
+// positions come from one generated stylesheet (#bwEmojiAtlas). With no sheet, a sheet that fails to load, or an emoji the
+// sheet lacks ("miss"), that emoji is drawn the old way from the SVG set file. EMOJI_ATLAS is filled by assemble_arena.py.
+var EMOJI_ATLAS = {"fluent":{"cell":64,"pad":2,"pitch":68,"cols":24,"rows":23,"w":1632,"h":1564,"vs":["2139","2194","21a9","23f2","23f8","25b6","2714","27a1","2b06","2b07","3030"],"miss":[],"keys":["1f0cf","1f195","1f1e8-1f1f3","1f1e9-1f1ea","1f1ea-1f1f8","1f1eb-1f1f7","1f1ec-1f1e7","1f1ee-1f1e9","1f1ee-1f1f3","1f1ee-1f1f9","1f1ef-1f1f5","1f1f0-1f1f7","1f1f5-1f1ed","1f1f5-1f1f9","1f1f9-1f1fc","1f1fa-1f1f8","1f300","1f305","1f306","1f308","1f30a","1f30b","1f30c","1f30d","1f30e","1f310","1f311","1f312","1f313","1f314","1f315","1f316","1f317","1f318","1f319","1f31e","1f31f","1f320","1f326","1f327","1f328","1f329","1f32a","1f32b","1f32c","1f330","1f331","1f332","1f333","1f334","1f335","1f336","1f337","1f338","1f339","1f33a","1f33b","1f33c","1f33e","1f33f","1f340","1f341","1f342","1f343","1f344","1f34c","1f352","1f35e","1f36a","1f36f","1f374","1f37a","1f37c","1f37e","1f380","1f381","1f382","1f383","1f386","1f388","1f389","1f38a","1f392","1f393","1f396","1f39f","1f3a3","1f3a8","1f3a9","1f3ab","1f3ac","1f3ad","1f3ae","1f3af","1f3b2","1f3b5","1f3b6","1f3b9","1f3bc","1f3c1","1f3c3","1f3c5","1f3c6","1f3c7","1f3ca","1f3d4","1f3d5","1f3d6","1f3d7","1f3d8","1f3db","1f3dc","1f3de","1f3df","1f3e0","1f3ed","1f3ee","1f3ef","1f3f0","1f3f3","1f3f7","1f3f9","1f3fa","1f400","1f401","1f402","1f404","1f406","1f407","1f408","1f408-200d-2b1b","1f409","1f40a","1f40b","1f40c","1f40d","1f40e","1f40f","1f410","1f411","1f412","1f415","1f415-200d-1f9ba","1f417","1f418","1f419","1f41a","1f41b","1f41c","1f41d","1f41e","1f41f","1f420","1f421","1f422","1f423","1f424","1f426","1f426-200d-1f525","1f426-200d-2b1b","1f42b","1f42c","1f42d","1f432","1f433","1f434","1f438","1f439","1f43a","1f43b","1f43e","1f43f","1f440","1f441","1f443","1f444","1f446","1f449","1f44a","1f44b","1f451","1f45b","1f462","1f463","1f464","1f465","1f46f","1f479","1f47a","1f47b","1f480","1f483","1f48a","1f48e","1f494","1f495","1f49a","1f49b","1f4a0","1f4a1","1f4a2","1f4a3","1f4a4","1f4a5","1f4a6","1f4a7","1f4a8","1f4aa","1f4ab","1f4ac","1f4ad","1f4b0","1f4be","1f4c2","1f4c7","1f4c8","1f4c9","1f4ca","1f4cb","1f4cc","1f4d0","1f4d1","1f4d6","1f4d8","1f4da","1f4dc","1f4dd","1f4e1","1f4e2","1f4e3","1f4e5","1f4e6","1f4e8","1f4ef","1f4ff","1f500","1f501","1f503","1f504","1f50a","1f50b","1f50c","1f50d","1f50e","1f50f","1f511","1f512","1f513","1f514","1f517","1f522","1f525","1f527","1f528","1f529","1f52a","1f52c","1f52e","1f531","1f535","1f537","1f53b","1f54a","1f550","1f551","1f56f","1f570","1f573","1f576","1f577","1f578","1f590","1f5a4","1f5bc","1f5c2","1f5d1","1f5dd","1f5e1","1f5e3","1f5e8","1f5fa","1f5fb","1f5fc","1f5ff","1f600","1f604","1f607","1f608","1f60c","1f60e","1f60f","1f616","1f61c","1f61e","1f620","1f621","1f623","1f624","1f628","1f629","1f62b","1f62c","1f62d","1f630","1f631","1f633","1f634","1f635","1f635-200d-1f4ab","1f637","1f63c","1f642","1f648","1f64c","1f64f","1f680","1f69c","1f6a8","1f6a9","1f6aa","1f6ab","1f6cd","1f6d2","1f6d5","1f6d6","1f6df","1f6e0","1f6e1","1f6f6","1f7e0","1f7e4","1f90e","1f914","1f915","1f916","1f918","1f91d","1f922","1f929","1f92c","1f92e","1f92f","1f934","1f938","1f93a","1f93f","1f940","1f941","1f947","1f948","1f949","1f94a","1f950","1f956","1f95a","1f970","1f971","1f973","1f974","1f975","1f976","1f977","1f980","1f981","1f982","1f984","1f985","1f986","1f987","1f988","1f989","1f98a","1f98b","1f98c","1f98d","1f98e","1f98f","1f990","1f991","1f992","1f993","1f994","1f995","1f996","1f997","1f99c","1f99d","1f99e","1f99f","1f9a0","1f9a1","1f9a2","1f9a3","1f9a4","1f9a5","1f9a6","1f9a8","1f9a9","1f9aa","1f9ab","1f9ac","1f9ad","1f9ae","1f9b4","1f9b7","1f9b8","1f9ba","1f9be","1f9ca","1f9d1-200d-1f37c","1f9d7","1f9d9","1f9db","1f9dc","1f9df","1f9e0","1f9e4","1f9e5","1f9e8","1f9e9","1f9ea","1f9eb","1f9ec","1f9ed","1f9f0","1f9f1","1f9f2","1f9f3","1f9f4","1f9f9","1f9fa","1f9fe","1fa78","1fa79","1fa81","1fa83","1fa84","1fa8f","1fa93","1fa94","1fa96","1fa99","1fa9e","1fa9f","1faa1","1faa2","1faa4","1faa6","1faa7","1faa8","1fab0","1fab1","1fab2","1fab4","1fab5","1fab6","1fab7","1fab8","1faba","1fabc","1fabd","1fabf","1fac0","1fac2","1facf","1fad6","1fad8","1fad9","1fae0","1fae1","1fae3","1fae5","1fae6","1fae7","1fae8","1faf3","1faf6","2139","2194","21a9","23e9","23ea","23f2","23f3","23f8","25b6","2600","2601","2604","2615","2620","2622","2623","2668","267b","267e","2692","2693","2694","2696","2697","2699","269c","26a0","26a1","26aa","26ab","26b1","26cf","26d3","26d4","26ea","26f0","26f2","26f8","26fa","2702","2705","2709","270a","270b","270f","2712","2714","2728","2733","2734","2744","2753","2754","2757","2764","2795","27a1","27bf","2b06","2b07","2b50","3030"],"url":"assets/emoji/fluent-atlas.webp?v=bff61f95c8"},"noto":{"cell":64,"pad":2,"pitch":68,"cols":24,"rows":23,"w":1632,"h":1564,"vs":["2139","2194","21a9","23f2","23f8","25b6","2714","27a1","2b06","2b07","3030"],"miss":[],"keys":["1f0cf","1f195","1f1e8-1f1f3","1f1e9-1f1ea","1f1ea-1f1f8","1f1eb-1f1f7","1f1ec-1f1e7","1f1ee-1f1e9","1f1ee-1f1f3","1f1ee-1f1f9","1f1ef-1f1f5","1f1f0-1f1f7","1f1f5-1f1ed","1f1f5-1f1f9","1f1f9-1f1fc","1f1fa-1f1f8","1f300","1f305","1f306","1f308","1f30a","1f30b","1f30c","1f30d","1f30e","1f310","1f311","1f312","1f313","1f314","1f315","1f316","1f317","1f318","1f319","1f31e","1f31f","1f320","1f326","1f327","1f328","1f329","1f32a","1f32b","1f32c","1f330","1f331","1f332","1f333","1f334","1f335","1f336","1f337","1f338","1f339","1f33a","1f33b","1f33c","1f33e","1f33f","1f340","1f341","1f342","1f343","1f344","1f34c","1f352","1f35e","1f36a","1f36f","1f374","1f37a","1f37c","1f37e","1f380","1f381","1f382","1f383","1f386","1f388","1f389","1f38a","1f392","1f393","1f396","1f39f","1f3a3","1f3a8","1f3a9","1f3ab","1f3ac","1f3ad","1f3ae","1f3af","1f3b2","1f3b5","1f3b6","1f3b9","1f3bc","1f3c1","1f3c3","1f3c5","1f3c6","1f3c7","1f3ca","1f3d4","1f3d5","1f3d6","1f3d7","1f3d8","1f3db","1f3dc","1f3de","1f3df","1f3e0","1f3ed","1f3ee","1f3ef","1f3f0","1f3f3","1f3f7","1f3f9","1f3fa","1f400","1f401","1f402","1f404","1f406","1f407","1f408","1f408-200d-2b1b","1f409","1f40a","1f40b","1f40c","1f40d","1f40e","1f40f","1f410","1f411","1f412","1f415","1f415-200d-1f9ba","1f417","1f418","1f419","1f41a","1f41b","1f41c","1f41d","1f41e","1f41f","1f420","1f421","1f422","1f423","1f424","1f426","1f426-200d-1f525","1f426-200d-2b1b","1f42b","1f42c","1f42d","1f432","1f433","1f434","1f438","1f439","1f43a","1f43b","1f43e","1f43f","1f440","1f441","1f443","1f444","1f446","1f449","1f44a","1f44b","1f451","1f45b","1f462","1f463","1f464","1f465","1f46f","1f479","1f47a","1f47b","1f480","1f483","1f48a","1f48e","1f494","1f495","1f49a","1f49b","1f4a0","1f4a1","1f4a2","1f4a3","1f4a4","1f4a5","1f4a6","1f4a7","1f4a8","1f4aa","1f4ab","1f4ac","1f4ad","1f4b0","1f4be","1f4c2","1f4c7","1f4c8","1f4c9","1f4ca","1f4cb","1f4cc","1f4d0","1f4d1","1f4d6","1f4d8","1f4da","1f4dc","1f4dd","1f4e1","1f4e2","1f4e3","1f4e5","1f4e6","1f4e8","1f4ef","1f4ff","1f500","1f501","1f503","1f504","1f50a","1f50b","1f50c","1f50d","1f50e","1f50f","1f511","1f512","1f513","1f514","1f517","1f522","1f525","1f527","1f528","1f529","1f52a","1f52c","1f52e","1f531","1f535","1f537","1f53b","1f54a","1f550","1f551","1f56f","1f570","1f573","1f576","1f577","1f578","1f590","1f5a4","1f5bc","1f5c2","1f5d1","1f5dd","1f5e1","1f5e3","1f5e8","1f5fa","1f5fb","1f5fc","1f5ff","1f600","1f604","1f607","1f608","1f60c","1f60e","1f60f","1f616","1f61c","1f61e","1f620","1f621","1f623","1f624","1f628","1f629","1f62b","1f62c","1f62d","1f630","1f631","1f633","1f634","1f635","1f635-200d-1f4ab","1f637","1f63c","1f642","1f648","1f64c","1f64f","1f680","1f69c","1f6a8","1f6a9","1f6aa","1f6ab","1f6cd","1f6d2","1f6d5","1f6d6","1f6df","1f6e0","1f6e1","1f6f6","1f7e0","1f7e4","1f90e","1f914","1f915","1f916","1f918","1f91d","1f922","1f929","1f92c","1f92e","1f92f","1f934","1f938","1f93a","1f93f","1f940","1f941","1f947","1f948","1f949","1f94a","1f950","1f956","1f95a","1f970","1f971","1f973","1f974","1f975","1f976","1f977","1f980","1f981","1f982","1f984","1f985","1f986","1f987","1f988","1f989","1f98a","1f98b","1f98c","1f98d","1f98e","1f98f","1f990","1f991","1f992","1f993","1f994","1f995","1f996","1f997","1f99c","1f99d","1f99e","1f99f","1f9a0","1f9a1","1f9a2","1f9a3","1f9a4","1f9a5","1f9a6","1f9a8","1f9a9","1f9aa","1f9ab","1f9ac","1f9ad","1f9ae","1f9b4","1f9b7","1f9b8","1f9ba","1f9be","1f9ca","1f9d1-200d-1f37c","1f9d7","1f9d9","1f9db","1f9dc","1f9df","1f9e0","1f9e4","1f9e5","1f9e8","1f9e9","1f9ea","1f9eb","1f9ec","1f9ed","1f9f0","1f9f1","1f9f2","1f9f3","1f9f4","1f9f9","1f9fa","1f9fe","1fa78","1fa79","1fa81","1fa83","1fa84","1fa8f","1fa93","1fa94","1fa96","1fa99","1fa9e","1fa9f","1faa1","1faa2","1faa4","1faa6","1faa7","1faa8","1fab0","1fab1","1fab2","1fab4","1fab5","1fab6","1fab7","1fab8","1faba","1fabc","1fabd","1fabf","1fac0","1fac2","1facf","1fad6","1fad8","1fad9","1fae0","1fae1","1fae3","1fae5","1fae6","1fae7","1fae8","1faf3","1faf6","2139","2194","21a9","23e9","23ea","23f2","23f3","23f8","25b6","2600","2601","2604","2615","2620","2622","2623","2668","267b","267e","2692","2693","2694","2696","2697","2699","269c","26a0","26a1","26aa","26ab","26b1","26cf","26d3","26d4","26ea","26f0","26f2","26f8","26fa","2702","2705","2709","270a","270b","270f","2712","2714","2728","2733","2734","2744","2753","2754","2757","2764","2795","27a1","27bf","2b06","2b07","2b50","3030"],"url":"assets/emoji/noto-atlas.webp?v=590e4567b0"},"twemoji":{"cell":64,"pad":2,"pitch":68,"cols":24,"rows":23,"w":1632,"h":1564,"vs":["2139","2194","21a9","23f2","23f8","25b6","2714","27a1","2b06","2b07","3030"],"miss":[],"keys":["1f0cf","1f195","1f1e8-1f1f3","1f1e9-1f1ea","1f1ea-1f1f8","1f1eb-1f1f7","1f1ec-1f1e7","1f1ee-1f1e9","1f1ee-1f1f3","1f1ee-1f1f9","1f1ef-1f1f5","1f1f0-1f1f7","1f1f5-1f1ed","1f1f5-1f1f9","1f1f9-1f1fc","1f1fa-1f1f8","1f300","1f305","1f306","1f308","1f30a","1f30b","1f30c","1f30d","1f30e","1f310","1f311","1f312","1f313","1f314","1f315","1f316","1f317","1f318","1f319","1f31e","1f31f","1f320","1f326","1f327","1f328","1f329","1f32a","1f32b","1f32c","1f330","1f331","1f332","1f333","1f334","1f335","1f336","1f337","1f338","1f339","1f33a","1f33b","1f33c","1f33e","1f33f","1f340","1f341","1f342","1f343","1f344","1f34c","1f352","1f35e","1f36a","1f36f","1f374","1f37a","1f37c","1f37e","1f380","1f381","1f382","1f383","1f386","1f388","1f389","1f38a","1f392","1f393","1f396","1f39f","1f3a3","1f3a8","1f3a9","1f3ab","1f3ac","1f3ad","1f3ae","1f3af","1f3b2","1f3b5","1f3b6","1f3b9","1f3bc","1f3c1","1f3c3","1f3c5","1f3c6","1f3c7","1f3ca","1f3d4","1f3d5","1f3d6","1f3d7","1f3d8","1f3db","1f3dc","1f3de","1f3df","1f3e0","1f3ed","1f3ee","1f3ef","1f3f0","1f3f3","1f3f7","1f3f9","1f3fa","1f400","1f401","1f402","1f404","1f406","1f407","1f408","1f408-200d-2b1b","1f409","1f40a","1f40b","1f40c","1f40d","1f40e","1f40f","1f410","1f411","1f412","1f415","1f415-200d-1f9ba","1f417","1f418","1f419","1f41a","1f41b","1f41c","1f41d","1f41e","1f41f","1f420","1f421","1f422","1f423","1f424","1f426","1f426-200d-1f525","1f426-200d-2b1b","1f42b","1f42c","1f42d","1f432","1f433","1f434","1f438","1f439","1f43a","1f43b","1f43e","1f43f","1f440","1f441","1f443","1f444","1f446","1f449","1f44a","1f44b","1f451","1f45b","1f462","1f463","1f464","1f465","1f46f","1f479","1f47a","1f47b","1f480","1f483","1f48a","1f48e","1f494","1f495","1f49a","1f49b","1f4a0","1f4a1","1f4a2","1f4a3","1f4a4","1f4a5","1f4a6","1f4a7","1f4a8","1f4aa","1f4ab","1f4ac","1f4ad","1f4b0","1f4be","1f4c2","1f4c7","1f4c8","1f4c9","1f4ca","1f4cb","1f4cc","1f4d0","1f4d1","1f4d6","1f4d8","1f4da","1f4dc","1f4dd","1f4e1","1f4e2","1f4e3","1f4e5","1f4e6","1f4e8","1f4ef","1f4ff","1f500","1f501","1f503","1f504","1f50a","1f50b","1f50c","1f50d","1f50e","1f50f","1f511","1f512","1f513","1f514","1f517","1f522","1f525","1f527","1f528","1f529","1f52a","1f52c","1f52e","1f531","1f535","1f537","1f53b","1f54a","1f550","1f551","1f56f","1f570","1f573","1f576","1f577","1f578","1f590","1f5a4","1f5bc","1f5c2","1f5d1","1f5dd","1f5e1","1f5e3","1f5e8","1f5fa","1f5fb","1f5fc","1f5ff","1f600","1f604","1f607","1f608","1f60c","1f60e","1f60f","1f616","1f61c","1f61e","1f620","1f621","1f623","1f624","1f628","1f629","1f62b","1f62c","1f62d","1f630","1f631","1f633","1f634","1f635","1f635-200d-1f4ab","1f637","1f63c","1f642","1f648","1f64c","1f64f","1f680","1f69c","1f6a8","1f6a9","1f6aa","1f6ab","1f6cd","1f6d2","1f6d5","1f6d6","1f6df","1f6e0","1f6e1","1f6f6","1f7e0","1f7e4","1f90e","1f914","1f915","1f916","1f918","1f91d","1f922","1f929","1f92c","1f92e","1f92f","1f934","1f938","1f93a","1f93f","1f940","1f941","1f947","1f948","1f949","1f94a","1f950","1f956","1f95a","1f970","1f971","1f973","1f974","1f975","1f976","1f977","1f980","1f981","1f982","1f984","1f985","1f986","1f987","1f988","1f989","1f98a","1f98b","1f98c","1f98d","1f98e","1f98f","1f990","1f991","1f992","1f993","1f994","1f995","1f996","1f997","1f99c","1f99d","1f99e","1f99f","1f9a0","1f9a1","1f9a2","1f9a3","1f9a4","1f9a5","1f9a6","1f9a8","1f9a9","1f9aa","1f9ab","1f9ac","1f9ad","1f9ae","1f9b4","1f9b7","1f9b8","1f9ba","1f9be","1f9ca","1f9d1-200d-1f37c","1f9d7","1f9d9","1f9db","1f9dc","1f9df","1f9e0","1f9e4","1f9e5","1f9e8","1f9e9","1f9ea","1f9eb","1f9ec","1f9ed","1f9f0","1f9f1","1f9f2","1f9f3","1f9f4","1f9f9","1f9fa","1f9fe","1fa78","1fa79","1fa81","1fa83","1fa84","1fa8f","1fa93","1fa94","1fa96","1fa99","1fa9e","1fa9f","1faa1","1faa2","1faa4","1faa6","1faa7","1faa8","1fab0","1fab1","1fab2","1fab4","1fab5","1fab6","1fab7","1fab8","1faba","1fabc","1fabd","1fabf","1fac0","1fac2","1facf","1fad6","1fad8","1fad9","1fae0","1fae1","1fae3","1fae5","1fae6","1fae7","1fae8","1faf3","1faf6","2139","2194","21a9","23e9","23ea","23f2","23f3","23f8","25b6","2600","2601","2604","2615","2620","2622","2623","2668","267b","267e","2692","2693","2694","2696","2697","2699","269c","26a0","26a1","26aa","26ab","26b1","26cf","26d3","26d4","26ea","26f0","26f2","26f8","26fa","2702","2705","2709","270a","270b","270f","2712","2714","2728","2733","2734","2744","2753","2754","2757","2764","2795","27a1","27bf","2b06","2b07","2b50","3030"],"url":"assets/emoji/twemoji-atlas.webp?v=a25d089cc8"}};
 var EMOJI_STYLE_KEY = 'bramblewood_emoji_style';
 var EMOJI_SET_URLS = {"fluent": "assets/emoji/fluent.js?v=ae128310d5", "noto": "assets/emoji/noto.js?v=cff90ce661", "twemoji": "assets/emoji/twemoji.js?v=cda7508398"};
 var EMOJI_SET_NAMES = {fluent:'Fluent', twemoji:'Twemoji', noto:'Noto Emoji', system:'System'};
@@ -35756,11 +35769,50 @@ var EMOJI_CREDITS = {
   noto: 'Noto Emoji graphics © Google, Apache 2.0; flags Twemoji CC-BY 4.0.',
 };
 var EmojiStyle = (function(){
-  const SETS = Object.keys(EMOJI_SET_NAMES).filter(k=> k !== 'system' && EMOJI_SET_URLS && EMOJI_SET_URLS[k]);
+  const SETS = Object.keys(EMOJI_SET_NAMES).filter(k=> k !== 'system' && ((EMOJI_SET_URLS && EMOJI_SET_URLS[k]) || (EMOJI_ATLAS && EMOJI_ATLAS[k])));
   const SKIP = 'script,style,textarea,input,select,option,title,noscript,svg,canvas,[contenteditable=""],[contenteditable="true"],.no-emoji';
   let pre = /(?!)/u;   // cheap first test, set by compile(): any first code point of an emoji the set has
   const XHTML = 'http://www.w3.org/1999/xhtml';
   let active = false, data = null, re = null, urls = {}, observer = null, loading = {};
+  // 2026-10-18 (sprite sheet, see EMOJI_ATLAS): sheet = {idx: {key: cell}} of the active set, or null (every emoji its SVG).
+  const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
+  let sheet = null, sheetLoading = {}, sheetImgs = {};
+  const loadSheet = set=>{
+    const a = EMOJI_ATLAS && EMOJI_ATLAS[set];
+    if(!a || !a.url || !a.keys || !a.keys.length) return Promise.reject(new Error('no sheet'));
+    if(sheetLoading[set]) return sheetLoading[set];
+    return (sheetLoading[set] = new Promise((res, rej)=>{
+      const img = new Image(), t = setTimeout(()=> rej(new Error('timeout')), 15000);
+      img.onload = ()=>{ clearTimeout(t); (img.decode ? img.decode().catch(()=>{}) : Promise.resolve()).then(()=>{ sheetImgs[set] = img; res(a); }); }; // decoded before the first swap: no blank frame
+      img.onerror = ()=>{ clearTimeout(t); rej(new Error('load failed')); };
+      img.src = a.url;
+    }).catch(e=>{ sheetLoading[set] = null; throw e; }));
+  };
+  // The sheet's stylesheet: the picture and its size once, then one background-position per emoji (percentages, so the
+  // same rule fits a 12 px card chip and a 40 px shop icon: p = x / (sheetWidth - cell)).
+  const sheetCss = a=>{
+    const W = a.w, H = a.h, c = a.cell, f = v=> +v.toFixed(4);
+    let css = `img.emo{background-image:url("${String(a.url).replace(/["\\\n]/g, '')}");background-size:${f(W / c * 100)}% ${f(H / c * 100)}%}`;
+    a.keys.forEach((k, i)=>{ const x = (i % a.cols) * a.pitch + a.pad, y = Math.floor(i / a.cols) * a.pitch + a.pad; css += `.e-${k}{background-position:${f(x / (W - c) * 100)}% ${H > c ? f(y / (H - c) * 100) : 0}%}`; });
+    return css;
+  };
+  const setSheet = a=>{
+    let st = document.getElementById('bwEmojiAtlas');
+    if(!a){ if(st) st.remove(); sheet = null; return; }
+    if(!st){ st = document.createElement('style'); st.id = 'bwEmojiAtlas'; document.head.appendChild(st); }
+    st.textContent = sheetCss(a);
+    const miss = new Set(a.miss || []), idx = {};
+    a.keys.forEach((k, i)=>{ if(!miss.has(k)) idx[k] = i; });
+    sheet = {idx};
+  };
+  // The set to draw: the sheet when there is one (plus the SVG file only for emoji the sheet missed), else the SVG file.
+  const loadStyle = set=> loadSheet(set).then(a=>{
+    const emoji = {}; a.keys.forEach(k=> emoji[k] = 1);
+    const miss = (a.miss || []).filter(k=> k in emoji);
+    if(!miss.length) return {a, d: {vs: a.vs || [], emoji}};
+    miss.forEach(k=> delete emoji[k]);
+    return (EMOJI_SET_URLS && EMOJI_SET_URLS[set] ? load(set) : Promise.reject(new Error('no svg'))).then(svg=>{ miss.forEach(k=>{ if(svg.emoji[k]) emoji[k] = svg.emoji[k]; }); return {a, d: {vs: a.vs || svg.vs || [], emoji}}; }, ()=> ({a, d: {vs: a.vs || [], emoji}}));
+  }, ()=> load(set).then(d=> ({a: null, d})));
   const get = ()=>{ try{ const v = localStorage.getItem(EMOJI_STYLE_KEY); return v === 'system' || SETS.includes(v) ? v : (SETS[0] || 'system'); }catch(e){ return SETS[0] || 'system'; } };
   const load = set=>{
     const have = window.BW_EMOJI_SETS && window.BW_EMOJI_SETS[set];
@@ -35789,7 +35841,17 @@ var EmojiStyle = (function(){
     const svg = data.emoji[k];
     try{ return (urls[k] = URL.createObjectURL(new Blob([svg], {type:'image/svg+xml'}))); }catch(e){ return (urls[k] = 'data:image/svg+xml,' + encodeURIComponent(svg)); }
   };
-  const imgFor = m=>{ const img = document.createElement('img'); img.className = 'emoji tw-emoji emoji-' + active; img.alt = m; img.draggable = false; img.decoding = 'sync'; img.src = srcOf(keyOf(m)); return img; };
+  const imgFor = m=>{
+    const k = keyOf(m), img = document.createElement('img'); img.alt = m; img.draggable = false;
+    if(sheet && sheet.idx[k] != null){ img.className = 'emoji tw-emoji emoji-' + active + ' emo e-' + k; img.src = BLANK; return img; } // 2026-10-18: from the sprite sheet
+    img.className = 'emoji tw-emoji emoji-' + active; img.decoding = 'sync'; img.src = srcOf(k); return img;
+  };
+  // The same as a string, for html() / htmlBlock().
+  const imgHTML = m=>{
+    const k = keyOf(m);
+    if(sheet && sheet.idx[k] != null) return `<img class="emoji tw-emoji emoji-${active} emo e-${k}" alt="${m}" draggable="false" src="${BLANK}">`;
+    return `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(k)}">`;
+  };
   const swapText = t=>{
     const s = t.data; if(!s || !pre.test(s)) return;
     re.lastIndex = 0; if(!re.test(s)) return;
@@ -35827,12 +35889,12 @@ var EmojiStyle = (function(){
   const apply = ()=>{
     const style = get();
     document.documentElement.dataset.emoji = style;
-    if(active && active !== style){ unwatch(); restore(); active = false; drop(); }
-    if(style === 'system'){ unwatch(); restore(); active = false; data = null; re = null; drop(); refreshCredits(); return Promise.resolve(false); }
+    if(active && active !== style){ unwatch(); restore(); active = false; drop(); setSheet(null); }
+    if(style === 'system'){ unwatch(); restore(); active = false; data = null; re = null; drop(); setSheet(null); refreshCredits(); return Promise.resolve(false); }
     if(active === style) return Promise.resolve(true);
-    return load(style).then(d=>{
+    return loadStyle(style).then(({a, d})=>{
       if(get() !== style) return false;
-      data = d; re = compile(d); active = style;
+      setSheet(a); data = d; re = compile(d); active = style;
       if(document.body){ swapIn(document.body); watch(); }
       refreshCredits(); return true;
     }).catch(()=>{ active = false; document.documentElement.dataset.emoji = 'system'; refreshCredits(); return false; }); // file missing: stay on System
@@ -35844,7 +35906,7 @@ var EmojiStyle = (function(){
     s = s == null ? '' : String(s);
     if(!active || !s || s.indexOf('<') >= 0 || !pre.test(s)) return s;
     re.lastIndex = 0;
-    return s.replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`);
+    return s.replace(re, imgHTML);
   };
   // 2026-10-17 (user: "Playing a card and when a card dies consistently lags the game by 0.1s"): a whole block of HTML the game
   // is about to insert (the board rows) gets its emoji as <img> in the string, so the browser builds the pictures while parsing
@@ -35859,7 +35921,7 @@ var EmojiStyle = (function(){
     for(let i = 0; i < parts.length; i++){
       const p = parts[i]; if(!p) continue;
       if(p.charCodeAt(0) === 60){ const m = /^<(\/?)([a-zA-Z0-9-]+)/.exec(p); if(m && SKIP_TAGS.test(m[2]) && !/\/>$/.test(p)) skip += m[1] ? -1 : 1; if(skip < 0) skip = 0; continue; }
-      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = p.replace(re, m=> `<img class="emoji tw-emoji emoji-${active}" alt="${m}" draggable="false" decoding="sync" src="${srcOf(keyOf(m))}">`); }
+      if(!skip && pre.test(p)){ re.lastIndex = 0; parts[i] = p.replace(re, imgHTML); }
     }
     return parts.join('');
   };
@@ -35870,7 +35932,8 @@ var EmojiStyle = (function(){
     let out = ''; const walk = n=>{ for(const c of n.childNodes){ if(c.nodeType === 3) out += c.data; else if(c.nodeType === 1) c.nodeName === 'IMG' && c.classList.contains('tw-emoji') ? out += (c.alt || '') : walk(c); } };
     walk(el); return out;
   };
-  return {get, set, apply, isActive: ()=> !!active, active: ()=> active || 'system', sets: ()=> SETS.slice(), refreshCredits, html, htmlBlock, textOf};
+  return {get, set, apply, isActive: ()=> !!active, active: ()=> active || 'system', sets: ()=> SETS.slice(), refreshCredits, html, htmlBlock, textOf,
+    usesSheet: ()=> !!sheet}; // 2026-10-18: true while the active set draws from its sprite sheet (tests/e2e/emoji_perf.py)
 })();
 try{ if(EmojiStyle.get() !== 'system'){ const go = ()=> EmojiStyle.apply(); document.body ? setTimeout(go, 0) : document.addEventListener('DOMContentLoaded', go); } }catch(e){}
 // Crabs fork (2026-10-14, user: "Ignore Crab claws. Crabs have fork - thematically. And the symbol can be a Crab claw."): on a crab
@@ -37999,7 +38062,7 @@ const BASELINE_CARD_HASH = IntegrityM ? IntegrityM.cardDataHash(CARD_DEFS_BASELI
 //   a different build id      → this copy is out of date: offer Update (reload);
 //   same build, other hash    → the server's card data for this build doesn't match: report corruption;
 //   card data in this page ≠ the hash it was built with → this copy's data is corrupted: offer Reload.
-const BUILD_ID = 'd9e2e5784375', BUILD_CARD_HASH = 'dff73bdbca0ca3dd43c918da8a82456e9bbb044a1a2fc02b57ed38a3010d7548';
+const BUILD_ID = 'd245e69900d1', BUILD_CARD_HASH = 'dff73bdbca0ca3dd43c918da8a82456e9bbb044a1a2fc02b57ed38a3010d7548';
 const VERSION_SEEN_KEY = 'bramblewood_version_checked_at';
 function versionBanner(kind, text, btnLabel, onBtn){
   if(document.getElementById('versionBanner')) return;
